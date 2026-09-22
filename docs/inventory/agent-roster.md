@@ -88,7 +88,7 @@
 | java-reviewer | 3 | — | opus | Expert Java code reviewer for Spring Boot and Quarkus projects. |
 | kotlin-build-resolver | 3 | — | sonnet | Kotlin/Gradle build, compilation, and dependency error resolution specialist. |
 | kotlin-reviewer | 3 | — | opus | Kotlin and Android/KMP code reviewer. |
-| lead-triage-analyst | 2 | cro-victor | opus | Report under Victor (CRO): triages Follow Up Boss leads — new leads since a given time, first-response gaps against the 5-minute SLA, missin |
+| lead-triage-analyst | 2 | cro-victor | opus | Report under Victor (CRO): triages Lofty leads — new leads since a given time, first-response gaps against the 5-minute SLA, missin |
 | listing-agent-elite | 2 | cro-victor | opus | Report under Victor (CRO): the seller-side representation practitioner — preps Steven to win the listing appointment and then run the listin |
 | loan-servicing-transfer | 2 | cco-alexandra | sonnet | Report under Alexandra (Compliance): handles the post-funding period — servicing transfer notices and the 60-day grace period, first payment |
 | loop-operator | 2 | caio-nadia | sonnet | Operate autonomous agent loops, monitor progress, and intervene safely when loops stall. |
@@ -101,7 +101,7 @@
 | military-licensing-partnerships | 2 | cco-alexandra | opus | Report under Alexandra (Compliance): tracks NMLS licensing and CE across Steven's states, researches requirements for target military market |
 | military-relocation-specialist | 2 | cro-victor | opus | Report under Victor (CRO): owns the relocation client — PCS timelines and orders, BAH-versus-ownership analysis, base-area intelligence for  |
 | mktg-affiliate-partnerships | 2 | cmo-sofia | sonnet | Report under Sofia (CMO): hunts residual and affiliate income — products, tools, platforms and sponsorships Steven can credibly endorse to h |
-| mktg-analytics-lead | 2 | cmo-sofia | opus | Report under Sofia (CMO): measures what marketing actually produced — source attribution across Follow Up Boss and Zoho, cost per lead, cost |
+| mktg-analytics-lead | 2 | cmo-sofia | opus | Report under Sofia (CMO): measures what marketing actually produced — source attribution across Lofty and Zoho, cost per lead, cost |
 | mktg-brand-strategist | 2 | cmo-sofia | sonnet | Report under Sofia (CMO): owns positioning, brand architecture and the message hierarchy across Steven's four brands — Patriot Pacific MLO,  |
 | mktg-creative-designer | 2 | cmo-sofia | sonnet | Report under Sofia (CMO): owns visual identity and creative direction across every asset — brand kit, templates, ad creative, listing collat |
 | mktg-direct-mail-farming | 2 | cmo-sofia | sonnet | Report under Sofia (CMO): runs geographic farming and direct mail — farm selection on turnover and absorption math, mail piece copy and cade |

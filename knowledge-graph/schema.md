@@ -30,7 +30,7 @@ Typed, directed, and written `SUBJECT --REL--> OBJECT`.
 | `USES` | Agent / Task → Tool | Runtime dependency |
 | `WRITES` | Task → Doc | This task produces that document |
 | `READS` | Doc / Agent → Doc | Consumption, for blast-radius questions |
-| `REPLACED_BY` | Tool → Tool | Retirement with history kept (FUB → Lofty) |
+| `REPLACED_BY` | Tool → Tool | A retired tool → the tool that took over from it |
 | `BLOCKED_BY` | Task / Doc → Decision / Tool | Why something is not running |
 | `WORKS_WITH` | Person → Org | Affiliation |
 | `REFERRED_BY` | Client → Person / Org | Lead source, opaque on the client side |
@@ -50,8 +50,9 @@ sensitivity: public            # public | internal | sensitive
 source: context/decisions.md#2026-09-22-lofty
 asOf: 2026-09-22
 props: {}                      # small scalars only — never a document body
-edges:
-  - {rel: REPLACED_BY, to: tool.follow-up-boss, asOf: 2026-09-22}
+edges: []                      # a Tool node's only outbound relation is REPLACED_BY,
+                               # written on the RETIRED tool's node, pointing at its
+                               # successor — so the successor's own node carries none
 ```
 
 ## Rules

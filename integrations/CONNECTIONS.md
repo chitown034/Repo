@@ -20,10 +20,9 @@ Trust levels: **L1** report-only · **L2** drafts for Steven's approval · **L3*
 
 | System | Path | Status today | What Steven must do | Trust |
 |---|---|---|---|---|
-| Follow Up Boss | Composio `follow_up_boss` | **RETIRED 2026-09-22.** Composio reports ACTIVE, but `r2-lead-response-watchdog` and `lead-triage-daily` have logged "Invalid API Key or authentication credentials" since 2026-09-16. Replaced by Lofty. | Nothing — retire the connection at his convenience. History stays labelled "was Follow Up Boss until 2026-09-22". | n/a |
 | You.com | connector + `you-*` tools | **RETIRED 2026-09-22** — replaced by the Claude subscription. Free tier returned "limit exceeded" 08:40 UTC 2026-09-22. | Nothing. Research now runs on WebSearch/WebFetch in scheduled tasks and Perplexity for depth. | n/a |
 | Notion | connector (connected + enabled) | Working. `brain-deck-sync` ok; Second Brain 68 rows. Will also host the Health Log. | Nothing. | L2 |
-| Composio | connected apps: api_ninjas, discord, follow_up_boss, github, gmail, googleads, googledocs, googlesheets, googletasks, perplexityai, youtube, zoho | Working as a transport. The failures above are on the far side of it, not in Composio. | Nothing. | L1 |
+| Composio | connected apps: api_ninjas, discord, github, gmail, googleads, googledocs, googlesheets, googletasks, perplexityai, youtube, zoho — plus one **retired legacy-CRM connection** Steven can delete at his convenience. **No Lofty toolkit exists in Composio** — Lofty runs over the Mac bridge, not Composio. | Working as a transport. The failures above are on the far side of it, not in Composio. | Nothing. | L1 |
 | Google Calendar | connector | Working — `calendar-daily-sync` ok 2026-09-21. | Nothing. | L2 |
 | Gmail | connector + Composio | Working — `r12-inbox-triage` ok; drafts only, never sends. | Nothing. | L2 |
 | Strava | connector | Connected. The `stravaSnapshot` doc was repaired to `{v:…}` on 2026-09-22, but the Mac task `strava-daily-sync` (`20 5 * * *` PT = 12:20 UTC) still writes it **bare** and re-broke it at 12:32 UTC that day — it will keep overwriting the repair until its prompt is fixed on the Mac (P1, open). | Nothing — engineering fix. | L1 |

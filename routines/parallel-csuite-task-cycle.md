@@ -62,8 +62,9 @@ Run the Parallel C-Suite Task Cycle using the vanessa-orchestrator skill. You ar
 10. Print the synthesis in the run output as well, so the cycle is readable even if a write fails.
 
 Honest status rules: a task that exists is not a task that runs. Say "never run under the runner",
-"last ok <date>", "failed <date>: <reason>". Follow Up Boss is retired (2026-09-22, replaced by
-Lofty); Zoho is connected but every CRM call returns 403 Crm_Implied_Api_Access; You.com is retired;
+"last ok <date>", "failed <date>: <reason>". Lofty is the real-estate system of record (since
+2026-09-22) and is **not connected yet** — no real-estate lead number is live, so say "not connected
+yet"; Zoho is connected but every CRM call returns 403 Crm_Implied_Api_Access; You.com is retired;
 there are no OpenRouter or Plaid keys. Never send anything to a client, partner or the ISA.
 ```
 

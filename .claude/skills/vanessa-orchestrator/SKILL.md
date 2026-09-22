@@ -101,9 +101,10 @@ status:"needs-steven", task:"<one line>", note:"<blocked on what · tried · opt
 - Never exceed the caps (8 concurrent, 4 Perplexity per wave) and never chain waves to dodge them.
 - Keep context per sub-agent minimal; do not pass the whole deck to a seat that needs one doc.
 - Do not edit prompts, skills, tasks or routines mid-cycle; that is the weekly loop's job, gated.
-- Retired/blocked systems must be described honestly: Follow Up Boss **retired 2026-09-22** (replaced
-  by Lofty), Zoho CRM connected but every call returns `Crm_Implied_Api_Access` 403, You.com retired,
-  no OpenRouter or Plaid keys.
+- Retired/blocked systems must be described honestly: **Lofty** is the real-estate system of record
+  since 2026-09-22 and is **not connected yet** — no real-estate lead number is live; Zoho CRM
+  connected but every call returns `Crm_Implied_Api_Access` 403, You.com retired, no OpenRouter or
+  Plaid keys.
 
 ## HALT conditions
 Halt the task, write the packet, and continue the rest of the cycle. Escalate **"anything

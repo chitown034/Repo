@@ -93,6 +93,24 @@ opened exactly one leaf file.
 Every third-party tool Steven asked about — Headroom, Graphify, CodeBurn, Strix, Agent Reach, the plugins and
 the nine vendored skills — has its own verified runbook: `MAC-INSTALL-tooling.md`. Do it after step 7, not before.
 
+## 9. Run it — `MAC-SETUP.sh`, then `mac-verify.sh`
+
+The two runbooks in step 8 are the reasoning; `MAC-SETUP.sh` is the executable form of both, and
+`mac-verify.sh` tells you what actually landed. Both are idempotent and safe to re-run.
+
+```bash
+./MAC-SETUP.sh --dry-run     # prints every command it would run, changes nothing — read this first
+./MAC-SETUP.sh               # install; --only <step> / --skip <step> to scope it, --list for the names
+./mac-verify.sh              # read-only check; exit 0 only when everything required is healthy
+```
+
+`--list` also names the seven tools the installer **refuses** to install, each with its reason.
+It writes no key: where a tool needs one it creates `~/.config/<tool>/.env` (`chmod 600`) holding the
+variable **names** only, and prints what is still missing. Everything on a HALT row — a key's value,
+an account, a LaunchAgent, a live task or a live prompt — is reported as NEEDS-STEVEN and left to you.
+Log: `~/Library/Logs/vanessa-setup/<date>.log`. Neither script has ever been run on a Mac —
+`docs/findings/findings-M3.json` lists line by line what is untested.
+
 ## What NOT to do
 
 - Do not copy client pages into this repo. They live in the vault, on the Mac, and they are not

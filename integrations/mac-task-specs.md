@@ -31,7 +31,7 @@ failure and stops — it never writes a number it did not receive.**
 > self-test does not return 200, write the `loftyLeads` doc with `status:"not-configured"` or
 > `status:"error"`, the verbatim error, empty `stageTotals`, `newLeads90d: []` and
 > `firstResponse:{medianMin:null,over5:null,sample:0}`, log it, and stop — do not touch
-> `leadTriage`, `leadResponse` or `isaKpi`, and do not report any Follow Up Boss number as Lofty.
+> `leadTriage`, `leadResponse` or `isaKpi`, and never report another system's number as Lofty.
 > On a 200: pull stage totals and leads created in the last 90 days, pull each of those leads'
 > activity timeline (cap 200 leads; say so if you truncate), compute median first-response minutes
 > and the count over the 5-minute standard, and write `loftyLeads` in the exact §4 shape with
@@ -260,8 +260,10 @@ wrapper and updates `cliAnythingStatus`. A wrapper whose output starts contradic
 2. Add `OUTPUT_WATCH` rows: `{doc:"loftyLeads", label:"Lofty CRM import", task:"lofty-crm-sync", hrs:14}`,
    `{doc:"zohoSync", label:"Zoho CRM sync", task:"zoho-crm-sync", hrs:14}` and
    `{doc:"healthNotionSync", label:"Apple Health via Notion", task:"health-notion-sync", hrs:16}`.
-3. Re-point `r2-lead-response-watchdog`, `lead-triage-daily`, `r11-isa-kpi-compile` and
-   `showing-sync` off Follow Up Boss and onto Lofty (see `lofty-crm-sync/SKILL.md`).
+3. Point `r2-lead-response-watchdog`, `lead-triage-daily`, `r11-isa-kpi-compile` and
+   `showing-sync` at **Lofty** as their lead source (see `lofty-crm-sync/SKILL.md`). Lofty is not
+   connected yet — the key goes in `~/.config/lofty/.env` as `LOFTY_API_KEY`; until it is there
+   these tasks have no lead source and must report "not connected yet", not a number.
 4. Run each new task **once, manually**, and record the result. A task that "exists" has not run.
 5. Only after 7 consecutive correct runs does a task graduate L1 → L2.
 6. WhatsApp: add the `whatsappInboxState` watch row above; the task stays disabled until Steven's first manual run and the dedicated number exist.

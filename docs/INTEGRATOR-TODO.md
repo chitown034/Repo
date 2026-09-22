@@ -3,11 +3,13 @@
 Applied after all branches merge, before the splice and republish.
 
 ## From E3 (wealth)
-- [ ] Base lines ~14006–14007, `SOD_ITEMS`: "then FUB for real estate" and "FUB Phone" — in panel-easop,
-      E4b's region. Verify E4b caught them; if not, change to Lofty here.
-- [ ] Base line ~18278 and the `cdStateSeed` seed at line 6633: `dmaicProjects` note reads "pulled from
-      FUB/Zoho". The live `dmaicProjects` document says the same. Fix both the seed and the live doc —
-      the speed-to-lead baseline now comes from Lofty.
+- [ ] Base lines ~14006–14007, `SOD_ITEMS` in panel-easop (E4b's region): the two real-estate CRM
+      items — the start-of-day CRM step and the CRM phone step — must read **Lofty**. Verify E4b
+      caught them; if not, change them here.
+- [ ] Base line ~18278 and the `cdStateSeed` seed at line 6633: the `dmaicProjects` speed-to-lead
+      note names the wrong CRM as its source, and the live `dmaicProjects` document says the same.
+      Fix both the seed and the live doc — the speed-to-lead baseline comes from **Lofty**, which is
+      not connected yet.
 - [ ] `MEMBERSHIP_ASSOC` (~line 4940) has no date evaluation at all, so every row reads as upcoming.
       Reuse E3's new `membershipExpiryNote()` helper rather than writing a second one.
 

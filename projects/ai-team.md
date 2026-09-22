@@ -31,8 +31,9 @@ report to Steven cc Vanessa.
 
 - Model tiering is decided and recorded (`context/decisions.md`), not yet enforced by tooling.
 - **Skills present on the Mac:** continuous-process-improvement, automation-audit, automation-audit-ops,
-  ai-ecosystem-backup, deck-backup, fub-followups (a Follow Up Boss template library — needs porting
-  to Lofty). **Not present:** interview-me, prompt-master, vanessa-orchestrator (it exists as an agent,
+  ai-ecosystem-backup, deck-backup, `fub-followups` (legacy template library — needs porting to
+  Lofty; the folder name on the Mac is left as-is until Steven renames the skill there).
+  **Not present:** interview-me, prompt-master, vanessa-orchestrator (it exists as an agent,
   and the CI log records a Mac skill on 2026-09-08, but it is not in the snapshot's 1,400 names),
   loop-engineering, scale-growth-engine. `skills-refresh` exists as a **Sunday task that has never run**,
   not as a skill.

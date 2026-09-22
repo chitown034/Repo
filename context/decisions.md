@@ -9,16 +9,18 @@ deck's CI log and the loop log; this file starts here on purpose.
 
 ---
 
-## 2026-09-22 — Follow Up Boss is retired; Lofty is the real-estate CRM
+## 2026-09-22 — Lofty is the real-estate CRM
 
-- **Decision.** Follow Up Boss is replaced by **Lofty** (formerly Chime) as the real-estate CRM.
-  Every FUB dependency is retired. History stays honest: where a number came from FUB, it is
-  labelled "was Follow Up Boss until 2026-09-22".
-- **Why.** The Mac tasks `r2-lead-response-watchdog` and `lead-triage-daily` have logged
-  "Invalid API Key or authentication credentials" since 2026-09-16, even though Composio still
-  reports the FUB connection ACTIVE.
+- **Decision.** **Lofty** (formerly Chime) is the real-estate system of record as of 2026-09-22.
+  It is the only real-estate CRM any task, document or surface may read or name. The previous
+  real-estate CRM path is retired and is not referenced anywhere in the brain.
+- **Why.** Steven's call, 2026-09-22 (restated the same day: remove the old CRM everywhere and
+  replace it with Lofty). The prior path had stopped authenticating and its dependencies are gone.
+- **No Lofty number is live.** Until the first `lofty-crm-sync` run succeeds, every real-estate
+  lead figure reads "not connected yet". Never carry another system's figure under a Lofty label.
 - **How Lofty is reached.** The Mac has `lofty-bridge` (read-only MCP over Lofty's REST API; key
-  expected in `~/.config/lofty/.env`, obtained at Lofty → Settings → Integrations → API) and
+  expected in `~/.config/lofty/.env` as `LOFTY_API_KEY`, obtained at Lofty → Settings →
+  Integrations → API) and
   `lofty-cli` (npm `@loftyai/lofty-cli`). Composio has **no** Lofty toolkit. Whether the key is
   actually present cannot be verified from the cloud.
 - **Owner.** Integration Engineer (under Elon) for the rewiring; Steven for the API key.

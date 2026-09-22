@@ -4,8 +4,10 @@
 #   ./mac-verify.sh          # per-item report; exit 0 only if everything required is healthy
 #   ./mac-verify.sh --quiet  # the summary and the failures only
 #
-# It writes nothing, anywhere: no file is created, edited, chmod'ed or deleted, no task is touched,
-# no service is started. Every command it runs is a version query, a listing or a status read.
+# It writes nothing: it creates, edits, chmods or deletes no file, touches no task, starts no service.
+# Every command it runs is a version query, a listing or a status read. Two of those commands keep
+# their own caches under $HOME and refresh them as a side effect — `uv python find` (uv's
+# interpreter cache) and `claude mcp list` (~/.claude.json, ~/.claude/). Nothing of its own is written.
 # It never prints the value of a key — only whether the NAME has one.
 # Written for macOS /bin/bash 3.2. Companion to MAC-SETUP.sh and MAC-INSTALL.md §9.
 # Author: M3 (Build/Release) 2026-09-22. Not executed on a Mac by its author — see the report.
@@ -37,13 +39,35 @@ info() { N_INFO=$((N_INFO+1)); [ "$QUIET" -eq 1 ] || printf '  --    %-26s %s\n'
 sect() { [ "$QUIET" -eq 1 ] || printf '\n== %s\n' "$*"; }
 
 have() { command -v "$1" >/dev/null 2>&1; }
+NPM_ROOT=$(npm root -g 2>/dev/null || true)
 ver()  { "$@" 2>/dev/null | head -1 | tr -d '\r'; }
-filemode() { stat -f '%OLp' "$1" 2>/dev/null || stat -c '%a' "$1" 2>/dev/null || printf '?'; }
+# GNU stat first and validated: on Linux `stat -f` means "file SYSTEM status" and succeeds with the
+# wrong output, so the usual BSD-first fallback silently prints a filesystem report as a file mode.
+filemode() {
+  _m=$(stat -c '%a' "$1" 2>/dev/null || true)
+  case "${_m:-x}" in ''|*[!0-7]*) _m='' ;; esac
+  if [ -z "$_m" ]; then
+    _m=$(stat -f '%OLp' "$1" 2>/dev/null || true)          # macOS / BSD
+    case "${_m:-x}" in ''|*[!0-7]*) _m='?' ;; esac
+  fi
+  printf '%s' "$_m"
+}
 
-# check_cmd <label> <command> <version args...>  — present + version, or FAIL
+# check_cmd <label> <command> <version args...>
+# on PATH -> ok with its version; installed but unreachable -> NEED (a PATH problem, not a broken
+# install); nowhere -> FAIL.
 check_cmd() {
   _label=$1; _cmd=$2; shift 2
-  if have "$_cmd"; then ok "$_label" "$(ver "$_cmd" "$@")"; else bad "$_label" "not on PATH"; fi
+  _p=$(command -v "$_cmd" 2>/dev/null || true)
+  if [ -n "$_p" ]; then ok "$_label" "$("$_p" "$@" 2>/dev/null | head -1 | tr -d '\r')"; return; fi
+  if [ -x "$BINDIR/$_cmd" ]; then
+    need "$_label" "installed at $BINDIR/$_cmd but $BINDIR is not on PATH"; return
+  fi
+  # a directory test, not `npm ls` — a failing `npm ls` writes a debug log into ~/.npm
+  if [ -n "${NPM_ROOT:-}" ] && [ -d "$NPM_ROOT/$_cmd" ]; then
+    need "$_label" "npm has it at $NPM_ROOT/$_cmd but npm's global bin is not on PATH"; return
+  fi
+  bad "$_label" "not installed"
 }
 
 printf 'mac-verify.sh — %s — host %s — repo %s\n' "$(date +%Y-%m-%dT%H:%M:%S%z)" "$(uname -s)" "$REPO_DIR"

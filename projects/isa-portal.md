@@ -15,8 +15,8 @@ talks to the ISA — no other seat contacts her directly.
   from 24 h because overnight runs moved no messages.
 - **The ISA has posted nothing since 2026-09-16.** The bridge running is not the same as traffic
   flowing; say both.
-- `r11-isa-kpi-compile` (Sun 04:40 PT) has **never run under the runner**. It was built to turn
-  Follow Up Boss events into KPI actuals and must be re-pointed at Lofty — see `context/decisions.md`.
+- `r11-isa-kpi-compile` (Sun 04:40 PT) has **never run under the runner**. It must turn **Lofty**
+  events into KPI actuals; **Lofty is not connected yet** — see `context/decisions.md`.
 - The `isaKpi` doc carries real KPI actuals stamped **2026-09-13**. Render or cite it with that date.
 
 ## Where the live data lives
@@ -35,8 +35,8 @@ artifacts, that is the bug — do not "fix" one side by editing the other's coun
 
 ## Update — 2026-09-22 (second pass)
 
-- Published as **version 27**: You.com grant dropped, Follow Up Boss retired in favour of Lofty, the
-  four sync-engine reliability fixes ported.
+- Published as **version 27**: You.com grant dropped, **Lofty** set as the real-estate system of
+  record, the four sync-engine reliability fixes ported.
 - **Daily scorecard form added** to the Virtual EA / ISA Operations panel. It writes `isaScorecard`
   rows in the Command Deck's own shape, and "Send to Steven" posts the day's numbers on the ISA line.
 - **Sync is real now**: a cloud routine carries `reClients`, `pipeline`, `isaGradingScores`,

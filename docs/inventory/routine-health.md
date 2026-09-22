@@ -4,7 +4,7 @@
 |---|---|---|---|---|---|
 | Cloud routines (RemoteTrigger) | cloud | — | None | None | not checked headless — RemoteTrigger is not available to the runner |
 | r1-morning-brief | runner | daily 5:30am | 2026-09-17T17:02:05Z | twinBrief | failed: network/API unreachable at last recorded run (ERROR API Error: Can't reach the API server, 2026-09-17T17:02Z) — no successful r1 run logged since. Note: twinBrief is fresh, but its content (evening sweep, twinQueue items) matches steve-twin-sweep's output, not a morning brief — doc-to-task wiring should be confirmed with Derek. |
-| r2-lead-response-watchdog | runner | every 30m, 7a-7:40p PT | 2026-09-21T20:02:33Z | leadResponse | failed: Follow Up Boss/Composio API authentication rejected (invalid API key) — leadResponse doc correctly recorded status:failed, no leads fabricated. |
+| r2-lead-response-watchdog | runner | every 30m, 7a-7:40p PT | 2026-09-21T20:02:33Z | leadResponse | failed: CRM API authentication rejected — the task has no working lead source. It must read **Lofty**, which is **not connected yet** (needs `LOFTY_API_KEY` in `~/.config/lofty/.env`). leadResponse doc correctly recorded status:failed, no leads fabricated. |
 | r3-eod-rollup | runner | daily 10:20pm | 2026-09-15T22:49:22Z | eodRollup | late: no run recorded since 2026-09-15/16 — roughly 6 daily cycles missed; task is currently queued in the waiting backlog. |
 | r4-quantvue-sync | runner | weekdays 11:20pm | 2026-09-15T23:27:43Z | strategySnapshot | late: no run since 2026-09-15/16 — 3 weekday cycles missed (17th,18th,19th); currently queued in the waiting backlog. |
 | r5-rates-market-refresh | runner | Mon 5:05am | None | ratesSnapshot | never run — zero execution evidence under claude-runner since migration. The ratesSnapshot doc is actually being kept fresh by a separate task, mortgage-rates-daily (last ok 2026-09-21T19:24Z), not by r5 itself — doc-to-task wiring should be confirmed with Derek. |
@@ -23,7 +23,7 @@
 | weather-news-refresh | runner | 2x daily 8:05am/8:05pm | 2026-09-21T20:10:40Z | weatherSnapshot, newsSnapshot | ok |
 | steve-twin-sweep | runner | weekdays 12:55pm | 2026-09-21T19:27:15Z | twinLog | failed: refused-tool: Bash (write access to ~/Shearrill-Vault) — vault step (B2) incomplete. twinLog/twinQueue otherwise wrote successfully to the Deck. Circuit breaker open until 2026-09-22T01:27:15Z. |
 | showing-sync | runner | 3x Mon-Sat 8:15/12:15/4:15 PT | 2026-09-21T19:26:40Z | showingSyncRequests | ok — queue empty, scored status-only per spec. |
-| lead-triage-daily | runner | weekdays 11:33am PT | 2026-09-21T19:20:32Z | leadTriage | failed: Follow Up Boss/Composio authentication failure (same root cause as r2) — leadTriage doc correctly recorded the failure honestly, no data fabricated. |
+| lead-triage-daily | runner | weekdays 11:33am PT | 2026-09-21T19:20:32Z | leadTriage | failed: CRM API authentication rejected (same root cause as r2) — the task has no working lead source. It must read **Lofty**, which is **not connected yet**. leadTriage doc correctly recorded the failure honestly, no data fabricated. |
 | coach-weekly-recs | runner | Mon 6:10am | None | coachLog | never run — the doc's single entry (2026-09-10) predates the runner and was written by hand in a chat session, not by this task. |
 | vanessa-ops-review | runner | Fri 10:35pm | None | vanessaRuns | never run — doc's single entry (2026-09-11) is from the old cloud/desktop era; the cloud duplicate of this routine is separately stuck ABANDONED/requires_action per loopLog. |
 | weekly-self-update | runner | Fri 11:10pm | None | improvementProposals | never run |
@@ -35,4 +35,4 @@
 | automation-audit-quarterly | runner | Jan/Apr/Jul/Oct 1st 3:30am | None | loopLog entry kind=quarterly-audit | never run — no matching loopLog entry found (5 entries present, none kind=quarterly-audit). |
 | cpi-daily-scan | runner | daily 10:30pm | 2026-09-17T12:47:49Z | cpiOpportunityLog (execution-only) | failed: network/API unreachable at last recorded run (2026-09-17) — no successful run since 2026-09-16; currently queued in the waiting backlog for tonight's 10:30pm slot. |
 | vanessa-sweep | runner | weekdays 12:35pm | 2026-09-21T19:21:36Z | vanessaBrief | ok |
-| Mortgage lead flow (Zoho + ARIVE) | none | — | None | None | UNMONITORED — every speed-to-lead and KPI job reads Follow Up Boss only; the mortgage system of record has no watchdog |
+| Mortgage lead flow (Zoho + ARIVE) | none | — | None | None | UNMONITORED — every speed-to-lead and KPI job is pointed at the real-estate CRM (Lofty) only; the mortgage system of record has no watchdog |

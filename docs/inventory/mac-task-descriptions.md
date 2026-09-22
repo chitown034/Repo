@@ -16,7 +16,7 @@
 - **health-full-analysis** — Daily after the 5:10 AM sync: deep analysis of Steven's Apple Health data (trends, week-over-week, workouts, sleep, recovery, ECG/symptoms/s
 - **incentives-daily-scan** — Daily search for new and changed incentives, rebates, grants, credits, veteran benefits and promotions (Temecula/SW Riverside, San Diego Cou
 - **isa-comms-bridge-local** — Merges the shared message thread both ways. Narrowed from 24 hours to 7 AM–9 PM: the ISA works 12–4 PM, so overnight runs moved no messages 
-- **lead-triage-daily** — Reads Follow Up Boss through Composio for the last 24 hours of leads, measures first-response gaps against the 5-minute standard, lists lead
+- **lead-triage-daily** — Must read **Lofty** for the last 24 hours of leads, measure first-response gaps against the 5-minute standard, and list leads needing a next task. **Not connected yet** — needs `LOFTY_API_KEY` in `~/.config/lofty/.env`.
 - **local-bridge-queue** — Reads the Command Deck's localBridgeQueue and runs each queued verb through ~/Applications/local-bridge/run.sh, which enforces a read-only a
 - **loop-engineering-weekly** — The full self-improvement cycle: nine parallel audit passes, Nadia's disruption brief, the CTO Innovator's feasibility gate, the CPI and Sca
 - **month-end-close-prep** — On the 28th: Marcus's bookkeeper drafts the month-end close checklist from the dashboard's accounts, liabilities, income and (if present) Pl
@@ -29,12 +29,12 @@
 - **ops-knowledge-graph** — Graphs the dashboard export, playbooks, decisions and agent roster into the Obsidian vault so the team can query how things connect.
 - **r1-morning-brief** — One merged morning brief: calendar, ISA line, alerts, overnight leads, twin prep, top 3 decisions. Writes twinBrief and pushes to the phone.
 - **r10-automation-health** — Scores every routine and task on OUTPUT, not execution. Moved to 10:10 PM so it runs inside the hours the desktop app is actually open, and 
-- **r11-isa-kpi-compile** — Turns Follow Up Boss events into real KPI actuals on the ISA Portal: median first response, share of leads with a next task, overdue tasks.
+- **r11-isa-kpi-compile** — Turns **Lofty** events into real KPI actuals on the ISA Portal: median first response, share of leads with a next task, overdue tasks. **Not connected yet** — needs `LOFTY_API_KEY` in `~/.config/lofty/.env`.
 - **r12-inbox-triage** — Classifies Gmail into skip / info / meeting / action, writes reply drafts into Gmail Drafts, posts a short digest. Never sends.
 - **r13-appointment-prep** — About an hour before each meeting, pushes a one-page brief: who they are, CRM history, last touch, open items, three questions to ask.
 - **r14-content-pipeline** — Drafts the day's post, runs the compliance pass and queues it — moved to 5:45 AM so the draft is waiting before the day starts, and so it la
 - **r17-trading-day-log** — Asks for the day's daily-loss-limit triggers and account status, then computes drawdown against the 6–10 percent high-water-mark rule.
-- **r2-lead-response-watchdog** — Flags Follow Up Boss leads with no logged first contact against the 5-minute SLA, posts Urgent to the ISA line, escalates to Steven past 15 
+- **r2-lead-response-watchdog** — Flags **Lofty** leads with no logged first contact against the 5-minute SLA, posts Urgent to the ISA line, escalates to Steven past 15 minutes. **Not connected yet** — needs `LOFTY_API_KEY` in `~/.config/lofty/.env`.
 - **r20-weekly-review-local** — The Friday review moved onto the Mac so its findings write into Next Big Moves and the task board instead of only being emailed.
 - **r3-eod-rollup** — End-of-day roll-up and ISA nudge, moved to 10:20 PM: inside the app's real uptime window, and late enough to see the ISA's whole 12–4 shift 
 - **r4-quantvue-sync** — Re-reads the live QuantVue Google Sheet, writes strategySnapshot, and flags any strategy under −4% month to date.
@@ -45,7 +45,7 @@
 - **r9-feed-freshness-sweep** — Re-runs the research passes for every dashboard feed marked Due and republishes through the safe checklist.
 - **revenue-scan-weekly** — Sunday: runs the four opportunity agents in parallel — refinance hunter, realtor reciprocity, predictive seller intelligence and borrower re
 - **runner-probe** — One harmless Command Deck write that proves a headless runner task can reach the deck database through the approver.
-- **showing-sync** — Works the Command Deck showing sync queue three times a day: creates calendar events and Follow Up Boss appointments for confirmed showings,
+- **showing-sync** — Works the Command Deck showing sync queue three times a day: creates calendar events and **Lofty** appointments for confirmed showings. **Not connected yet** — needs `LOFTY_API_KEY` in `~/.config/lofty/.env`.
 - **skills-refresh-weekly** — Sundays 7:00 AM - audits every SKILL.md on this Mac (skills, scheduled tasks, plugin skills) for frontmatter that will not load, dead paths,
 - **steve-twin-sweep** — Runs Steven's digital twin locally three times each weekday: works the Command Deck twin queue by tier, does the standing prep/content work,
 - **strava-daily-sync** — Pulls recent Strava activities through the connector and writes the stravaSnapshot document, so the Strava panel refreshes daily instead of 
@@ -124,7 +124,7 @@
 - **apination-bridge** (MCP servers) · status=RUN · MCP bridge to API Nation: trigger workflows, read pushed webhook events into a local inbox
 - **command-deck-backups** (Reference) · status=— · Dated JSON exports of both dashboard stores (Command Deck + ISA Portal), written by the Sunday /deck-backup task and pruned to twelve weeks. Currently empty.
 - **ops-graph-corpus** (Reference) · status=— · Corpus folder the /ops-graph skill builds the operation knowledge graph from (dashboard stores, playbooks, memos, AI Team roster) into the Obsidian vault. Currently empty.
-- **fub-followups** (Claude config) · status=— · Rewritten client follow-up library for Follow Up Boss — texts, emails, VA/military sequences, cadences + audit of the 393 inherited templates
+- **fub-followups** (Claude config) · status=— · Rewritten client follow-up library — texts, emails, VA/military sequences, cadences + audit of the 393 inherited templates. Needs porting to **Lofty**: the merge/send fields target the previous CRM. Folder name on the Mac left as-is.
 - **james-wealth** (AI orchestration) · status=— · James — Wealth Advisor Mentor / Family Office persona skill (standalone, packaged as james-wealth.skill)
 - **automation-audit** (Notable skills) · status=RUN · Chief Automation Strategist: four-phase audit-and-remediate over the whole automation ecosystem, scored on output not execution; produces the Master Findings Table the weekly loop works against
 - **ai-ecosystem-backup** (Notable skills) · status=RUN · Weekly, verified backup of both dashboards, Claude config (secrets redacted) and the latest audit/loop reports to ~/Documents/AI-Ecosystem-Backups/; integrity check, one retry, 8-week retention
@@ -183,7 +183,7 @@
 - **cfg-skills** (Claude config) · status=— · 1396 skill dirs. Most are Composio *-automation; the rest hand-installed (graphify, steve-twin, gstack, osint-*, deep-research, ui-ux-pro-max, apple-design).
 - **cfg-plugins** (Claude config) · status=— · 52 plugins installed: claude-code-setup, developer-essentials, python-development, javascript-typescript, full-stack-orchestration, watch, apple-health-sync, linkedin-skills, ponytail, agent-skills, 4
 - **local-bridge** (Automation) · status=RUN · Allow-listed read-only bridge letting the Command Deck run local lookups remotely (mcp, services, tasks, toolbox, agents, skills, vault, backup, market, health) via the localBridgeQueue document
-- **lofty-bridge** (CRM) · status=RUN · Local read-only MCP bridge over the Lofty CRM REST API (leads list/search/get, activity timeline, status). Key from Settings→Integrations→API in ~/.config/lofty/.env. Replaces FUB once live.
+- **lofty-bridge** (CRM) · status=RUN · Local read-only MCP bridge over the Lofty CRM REST API (leads list/search/get, activity timeline, status). Key from Settings→Integrations→API in ~/.config/lofty/.env. Sole CRM path once the key is in place — not connected yet.
 - **alex-life-marketplace** (Health) · status=— · Claude plugin marketplace (body/mind/work/lifestyle/relationships); local branch apple-health rewires body skills to the apple-health MCP
 - **healthai** (Health) · status=RUN · healthai CLI: chat with an Apple Health export.xml via any LLM (pipx, local clone)
 - **apple-health-parser** (Health) · status=RUN · Parse/plot Apple Health export.zip; CLIs apple-health-parser-export and -year-recap (pipx)

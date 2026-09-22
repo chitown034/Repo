@@ -1,12 +1,13 @@
 ---
 name: lofty-crm-sync
-description: "Sync Lofty (formerly Chime), Steven's real-estate CRM since 2026-09-22, into the Command Deck — writes the loftyLeads doc (stage totals, 90-day new leads, speed-to-lead) and re-points the lead-triage / lead-response / ISA-KPI docs off the retired Follow Up Boss. Use when Steven asks to run the Lofty sync, refresh CRM numbers, check speed to lead, or when the Live CRM import card is empty."
+description: "Sync Lofty (formerly Chime), Steven's real-estate CRM since 2026-09-22, into the Command Deck — writes the loftyLeads doc (stage totals, 90-day new leads, speed-to-lead) and points the lead-triage / lead-response / ISA-KPI docs at Lofty. Use when Steven asks to run the Lofty sync, refresh CRM numbers, check speed to lead, or when the Live CRM import card is empty."
 ---
 
 # lofty-crm-sync — Lofty → Command Deck
 
-Status today (verified 2026-09-22): **Follow Up Boss is retired.** Steven replaced it with Lofty on
-2026-09-22. Composio has **no Lofty toolkit** (searched — there is none). The Mac has two paths:
+Status today (verified 2026-09-22): **Lofty is Steven's real-estate system of record**, his call of
+2026-09-22, and the only real-estate CRM this skill may name. Composio has **no Lofty toolkit**
+(searched — there is none). The Mac has two paths:
 `lofty-bridge` (local read-only MCP over Lofty's REST API, status RUN, `claude mcp` shows server
 `lofty` connected) and `lofty-cli` (npm `@loftyai/lofty-cli`, status RUN). **Whether the API key is
 actually present in `~/.config/lofty/.env` has not been verified from the cloud.** Until a run
@@ -33,8 +34,8 @@ lead's activity timeline. Some endpoints (e.g. published listings) are OAuth-onl
      newLeads90d: [{name, stage, ageDays, source, created}, ...],
      firstResponse: {medianMin, over5, sample} }}
 ```
-- `stageTotals` — Lofty's own stage names, in Lofty's own order. Do **not** remap them onto the
-  retired FUB stage list; the card renders whatever the doc carries.
+- `stageTotals` — Lofty's own stage names, in Lofty's own order. Do **not** remap them onto any
+  other CRM's stage list; the card renders whatever the doc carries.
 - `newLeads90d` — leads created in the last 90 days, newest first. `ageDays` is age **at pull time**.
   `name` is first name + last initial (the deck is shared on-screen); never a full contact record,
   never a phone number or email.
@@ -69,34 +70,36 @@ lead's activity timeline. Some endpoints (e.g. published listings) are OAuth-onl
 6. **Re-point the three downstream docs** (same run, same honest rules):
    - `leadTriage` — keep its shape (`gaps, history[], metrics{medianFirstResponseMin, over5, total},
      missingNext[], newLeads, note, ranAt, source, suggested[], window`). Set
-     `source:"Lofty via lofty-bridge"`. Its current contents are a **failure record**: FUB auth
-     failed, `source:"unavailable"`, ranAt 2026-09-21T18:33Z. Replace it only with a successful
-     Lofty pull; on failure write a new failure record in the same words, naming Lofty, not FUB.
+     `source:"Lofty via lofty-bridge"`. Its current contents are a **failure record**:
+     `source:"unavailable"`, ranAt 2026-09-21T18:33Z, no working CRM credential. Replace it only
+     with a successful Lofty pull; on failure write a new failure record naming **Lofty**.
    - `leadResponse` — keep its shape (`breaches, leads[], leadsChecked, medianMinutes, source,
      status, syncedAt, target:5, windowStart, failedAt, failureReason, staleSince`). Set
-     `source:"Lofty via lofty-bridge"`. Its current `status:"failed"` / FUB auth error stands until
-     a Lofty run succeeds.
+     `source:"Lofty via lofty-bridge"`. Its current `status:"failed"` stands until a Lofty run
+     succeeds.
    - `isaKpi` — keep its shape (`metrics[{name, actual, target, sample, note}], syncedAt,
-     weekEnding`). Every note that says "FUB" must be rewritten to name Lofty **for new runs only**;
-     historic rows keep their wording, prefixed "was Follow Up Boss until 2026-09-22".
+     weekEnding`). Every note must name **Lofty** and no other CRM. A row whose number did
+     not come from Lofty is dropped, not relabelled — never present another system's figure as a
+     Lofty figure; where there is no Lofty number, the note reads "not connected yet".
 7. The deck must display each doc's own `source` string. Never hard-code a CRM name in the page.
 
 ## Task re-pointing (hand to Derek's automation-engineer)
 | Task | Cron (PT) | Today | After |
 |---|---|---|---|
-| `r2-lead-response-watchdog` | `10,40 7-19 * * *` | ok, but FUB auth failed since 2026-09-16 | read Lofty timeline → `leadResponse` |
-| `lead-triage-daily` | `33 11 * * 1-5` | ok, but FUB auth failed | read Lofty → `leadTriage` |
+| `r2-lead-response-watchdog` | `10,40 7-19 * * *` | ok, but no working CRM credential since 2026-09-16 | read Lofty timeline → `leadResponse` |
+| `lead-triage-daily` | `33 11 * * 1-5` | ok, but no working CRM credential | read Lofty → `leadTriage` |
 | `r11-isa-kpi-compile` | `40 4 * * 0` | never run | read Lofty → `isaKpi` |
-| `showing-sync` | `15 8,12,16 * * 1-6` | ok | create Lofty appointments, not FUB |
+| `showing-sync` | `15 8,12,16 * * 1-6` | ok | create Lofty appointments |
 | `lofty-crm-sync` (new) | `5 7,13,19 * * *` | does not exist | writes `loftyLeads` |
-The `fub-followups` Mac skill (FUB template library) still exists and needs porting to Lofty —
-separate ticket, not this skill's job.
+The `fub-followups` Mac skill (legacy template library — folder name unchanged on the Mac) still
+exists and needs porting to Lofty — separate ticket, not this skill's job.
 
 ## Guardrails
 - **Never fabricate CRM data.** No lead, stage count, median or breach that did not come from a 200
   response this run. An empty CRM is a fact; an invented one is a fired-employee event.
-- Never present the retired FUB numbers as Lofty numbers. The deck may keep them in a collapsed
-  "last Follow Up Boss import, 2026-09-07 — retired" block, labelled as history.
+- Never present another system's numbers as Lofty numbers, and never carry a legacy CRM import
+  forward onto the deck. Where there is no Lofty number the surface says **"not connected yet"** —
+  never a substituted figure.
 - Read-only. This skill never creates, updates or deletes anything in Lofty.
 - No API key in prompts, logs, task text, findings or the deck. The bridge holds it; you don't.
 - No full contact details (phone, email, street address) leave Lofty into the deck.
@@ -104,7 +107,7 @@ separate ticket, not this skill's job.
 ## HALT conditions
 - Any write to Lofty is requested → stop, escalate to Steven (write-back is an L2 proposal, not built).
 - The key is missing or rejected → `not-configured` / `error`, stop. Do **not** try another
-  credential, another account, or the retired FUB connection.
+  credential, another account, or any other CRM connection.
 - Lofty returns a lead set drastically smaller than the last successful run (>50% drop) → write the
   doc with `status:"error"`, note the drop, and ask Steven before overwriting the good numbers.
 

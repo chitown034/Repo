@@ -69,7 +69,7 @@ measured:n, cumulativeSaved:"<total>", rejected:[{id,why}]}}`.
 - Never implant on a daily run. Daily is OBSERVE + IDENTIFY, full stop.
 - Never close an item because it "looks done" — it closes on a measurement.
 - Do not log an opportunity whose real cause is an outage (that is a Reliability finding); route it
-  and say so. Example from this cycle: the FUB/Composio key rejection (`cpi-20260922-01`) is an
+  and say so. Example from this cycle: the real-estate CRM key rejection (`cpi-20260922-01`) is an
   integration failure — the CPI item is the *missed detection*, not the key.
 - No secrets, client names, or account numbers in any log entry.
 

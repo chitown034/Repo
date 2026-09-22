@@ -34,8 +34,9 @@ Source of truth: the `runnerStatus` doc and the routine-health export, not the t
 - **The Mac runner bounds everything L5.** `claude-runner` is headless with pre-approved tools, 60
   tasks. If the Mac is asleep, nothing in `always-on/README.md` happens. That is the single biggest
   availability risk in the brain.
-- **Follow Up Boss is retired** (2026-09-22). Where a number came from it, label it
-  "was Follow Up Boss until 2026-09-22". Lofty replaces it; first sync pending.
+- **Lofty is the real-estate system of record** (since 2026-09-22) and is **not connected yet** —
+  Composio has no Lofty toolkit and Steven's API key is not installed. No CRM lead number on the
+  deck is live. Show "not connected yet"; never carry an old CRM's figure under a Lofty label.
 - **Zoho is API-blocked** pending a permission only Steven can grant. Deck Zoho data is the Sep 14 paste.
 - **You.com is retired.** No surface may call it. Research = Claude subscription + Perplexity.
 - **Knowledge fabric counts** (`fabric-deck-sync`, stamp 2026-09-22 04:05 UTC): Second Brain 68 rows ·

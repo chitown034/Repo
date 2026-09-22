@@ -26,7 +26,7 @@
    "measuredImpact": "None yet. cpi-daily-scan has been in error since 2026-09-17, so nothing has been measured; an item with no measurement is unproven, not done.",
    "cumulativeSaved": "0 - no CPI item has a recorded before-and-after",
    "topThree": [
-    "Connector-health watchdog with detection inside 24 hours. The Follow Up Boss break sat five days before it surfaced, and only then as a decision item rather than an alert.",
+    "Connector-health watchdog with detection inside 24 hours. The real-estate CRM break sat five days before it surfaced, and only then as a decision item rather than an alert.",
     "Bounded escalation ladder for the ISA nudge, which has sent the same verbatim message four times with no reply and no escalation.",
     "Re-wire four OUTPUT_WATCH rows that point at the wrong task, so a fresh reading can no longer come from a document a different task wrote."
    ]

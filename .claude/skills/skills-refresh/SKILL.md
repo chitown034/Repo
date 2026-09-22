@@ -48,8 +48,9 @@ run output and leave the write to the Mac.
    - task-orphan — a scheduled task whose prompt names a skill that is not installed.
 6. **Known gaps to confirm, not assume** (brief §2, 2026-09-22): present — `continuous-process-improvement`,
    `automation-audit`, `automation-audit-ops`, `ai-ecosystem-backup`, `deck-backup`, `fub-followups`
-   (a Follow Up Boss template library — FUB was retired 2026-09-22, so flag it as *needs porting to
-   Lofty*, not as healthy). Not present in the snapshot — `interview-me`, `prompt-master`,
+   (a legacy client-follow-up template library whose merge/send fields target the previous CRM —
+   flag it as *needs porting to Lofty*, not as healthy; match it on disk by that exact folder name,
+   which Steven has not renamed). Not present in the snapshot — `interview-me`, `prompt-master`,
    `vanessa-orchestrator`, `loop-engineering`, `scale-growth-engine`. `skills-refresh` exists as the
    Sunday **task**, and as this repo skill; check whether the repo skills have been installed on the
    Mac yet before reporting them as live.

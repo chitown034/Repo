@@ -8,6 +8,10 @@
 #   ./MAC-SETUP.sh --skip scrapegraphai # everything but that (repeatable)
 #   ./MAC-SETUP.sh --list               # the step names, and what is refused
 #
+# --dry-run installs nothing, writes no file of its own and does not even create the log. The
+# read-only probes it uses to decide what is already present (command -v, uv python find) can still
+# refresh uv's own interpreter cache — that is the only footprint, and it is uv's, not this script's.
+#
 # Written for macOS /bin/bash 3.2: no associative arrays, no mapfile, no ${x^^}, no &>>.
 # It never writes a secret. Where a tool needs a key it creates ~/.config/<tool>/.env with the
 # variable NAMES only (chmod 600) and prints what is still missing at the end.
@@ -23,9 +27,9 @@ set -euo pipefail
 # name|one-line reason. Nothing here is ever installed, and --only <name> on one is an error.
 REFUSED_LIST='vphone-cli|needs SIP/AMFI relaxation on the Mac that holds the keychain and client files — a security regression (FR5a §15)
 agent402|pay-per-call tool market settled from an agent-held wallet; spends money by design (CLAUDE.md HALT line 1, FR5a §16)
-agent-skills-plugin|the whole addyosmani/agent-skills plugin ships an interview-me that collides by name with the brain own skill — the six wanted skills are vendored individually (FR5a §6)
+agent-skills-plugin|the whole addyosmani/agent-skills plugin ships an interview-me that collides by name with the interview-me skill this brain already has — the six wanted skills are vendored individually (FR5a §6)
 media-inference-worker|framepipe-dev/media-inference-worker commits a live-looking third-party credential in its repo — never clone it, never run it (FR5b §4)
-agent-reach-skill|its SKILL.md frontmatter says MUST USE for any research request, which would hijack the router research path (FR5a §11)
+agent-reach-skill|its SKILL.md frontmatter says MUST USE for any research request, which would hijack the research path the router defines (FR5a §11)
 whatsapp-plugin|the whatsapp-cli Claude plugin lets every Claude Code session on the Mac read and send WhatsApp; the task needs only the CLI (FR5b §1)
 whatscli|normen/whatscli is a TUI with no automation and emulates a WhatsApp Web device — ban risk, and nothing a runner task can call (FR5b §1b)'
 
@@ -58,7 +62,7 @@ R_INSTALLED=''; R_SKIPPED=''; R_FAILED=''; R_NEEDS=''; R_ENVMISS=''
 CUR_STEP='(startup)'
 
 # --------------------------------------------------------------------------- plumbing
-usage() { sed -n '2,18p' "$0" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '2,22p' "$0" | sed 's/^# \{0,1\}//'; }
 
 in_list() { # in_list needle "space separated haystack"
   _n=$1; _h=${2:-}
@@ -95,21 +99,38 @@ $REFUSED_GUARDS
 EOF
 }
 
+# NOTE: `_rc=$?` after an `if cmd; then ...; fi` reads the *if statement's* status, which is 0 on the
+# else branch — that silently turned every failure into a success. Capture it with `|| _rc=$?` instead.
 run() { # run cmd arg...   (no shell metacharacters)
   guard_refused "$*"
   if [ "$DRY_RUN" -eq 1 ]; then printf '  would run: %s\n' "$*"; return 0; fi
   log_line "RUN $*"
-  if "$@" >>"$LOG_FILE" 2>&1; then return 0; fi
-  _rc=$?; log_line "EXIT $_rc  $*"; return "$_rc"
+  _rc=0
+  "$@" >>"$LOG_FILE" 2>&1 || _rc=$?
+  [ "$_rc" -eq 0 ] || log_line "EXIT $_rc  $*"
+  return "$_rc"
 }
 
 run_sh() { # run_sh 'shell string'   (pipes, redirection, globs)
   guard_refused "$1"
   if [ "$DRY_RUN" -eq 1 ]; then printf '  would run: %s\n' "$1"; return 0; fi
   log_line "RUN $1"
-  if bash -c "$1" >>"$LOG_FILE" 2>&1; then return 0; fi
-  _rc=$?; log_line "EXIT $_rc  $1"; return "$_rc"
+  _rc=0
+  bash -c "$1" >>"$LOG_FILE" 2>&1 || _rc=$?
+  [ "$_rc" -eq 0 ] || log_line "EXIT $_rc  $1"
+  return "$_rc"
 }
+
+# npm's global bin is not always on PATH (the Mac uses $HOME/.npm-global/bin, which launchd jobs
+# get only via an explicit PATH), so presence is checked by the registry listing too.
+npm_present() { # npm_present <command> <package>
+  have "$1" && return 0
+  have npm && npm ls -g --depth=0 "$2" >/dev/null 2>&1 && return 0
+  return 1
+}
+
+# uv tool / pipx put their shims in ~/.local/bin, which is not always on PATH either.
+uv_tool_present() { have "$1" && return 0; [ -x "$BINDIR/$1" ] && return 0; return 1; }
 
 have() { command -v "$1" >/dev/null 2>&1; }
 ver()  { "$@" 2>/dev/null | head -1 | tr -d '\r'; }
@@ -146,8 +167,7 @@ EOF
     if [ "$DRY_RUN" -eq 1 ]; then
       printf '  would run: (umask 077; mkdir -p %s)\n' "$_dir"
       printf '  would run: write %s then chmod 600 it — variable NAMES only, no values:%s\n' "$_f" "$_names"
-    else
-      ( umask 077
+    elif ( umask 077
         mkdir -p "$_dir"
         {
           printf '# %s — variable NAMES only. Fill each value in yourself; nothing here is committed.\n' "$_tool"
@@ -156,9 +176,10 @@ EOF
             [ -n "${_n:-}" ] || continue
             printf '\n# %s\n%s=\n' "${_h:-value from the vendor}" "$_n"
           done
-        } >"$_f" )
-      chmod 600 "$_f"
+        } >"$_f" ) && chmod 600 "$_f"; then
       installed "$_f created with variable names only (chmod 600)"
+    else
+      failed "could not write $_f — no key file was created"
     fi
   else
     [ "$DRY_RUN" -eq 1 ] || chmod 600 "$_f"
@@ -235,7 +256,7 @@ else
     printf 'Use --dry-run anywhere; set VANESSA_SETUP_ALLOW_NON_DARWIN=1 only for a sandbox test.\n' >&2
     exit 1
   fi
-  mkdir -p "$LOG_DIR"
+  mkdir -p "$LOG_DIR" || { printf 'cannot create the log directory %s\n' "$LOG_DIR" >&2; exit 1; }
 fi
 say "MAC-SETUP.sh — $(date +%Y-%m-%dT%H:%M:%S%z) — host $(uname -s) — repo $REPO_DIR"
 [ "$DRY_RUN" -eq 1 ] || say "log: $LOG_FILE"
@@ -308,9 +329,11 @@ fi
 # --------------------------------------------------------------------------- FR5a, in its order
 if should_run codeburn; then
   header codeburn "token/cost meter — baseline the spend before anything else (FR5a §3)"
-  if have codeburn; then skipped "codeburn $(ver codeburn --version)"
+  if npm_present codeburn codeburn; then skipped "codeburn $(ver codeburn --version)"
   elif have npm || [ "$DRY_RUN" -eq 1 ]; then
-    if run npm install -g codeburn; then installed "codeburn"; else failed "npm install -g codeburn"; fi
+    if run npm install -g codeburn && { [ "$DRY_RUN" -eq 1 ] || npm_present codeburn codeburn; }; then
+      installed "codeburn"
+    else failed "npm install -g codeburn — see $LOG_FILE for npm's own error"; fi
   else failed "npm missing"; fi
   say "      read-only check afterwards: codeburn overview --no-color"
   say "      keep 'share' and 'devices' off — it reads session logs that contain conversation text"
@@ -318,12 +341,15 @@ fi
 
 if should_run graphify; then
   header graphify "knowledge-graph CLI + skill (FR5a §2) — the L4 store"
-  if have graphify; then skipped "graphify $(ver graphify --version)"
-  elif have pipx || [ "$DRY_RUN" -eq 1 ]; then
-    if run pipx install graphifyy; then installed "graphifyy (CLI is named graphify)"
-    elif have uv && run uv tool install graphifyy; then installed "graphifyy via uv tool"
-    else failed "pipx install graphifyy"; fi
-  else failed "pipx missing"; fi
+  if uv_tool_present graphify; then skipped "graphify $(ver graphify --version)"
+  elif have pipx || have uv || [ "$DRY_RUN" -eq 1 ]; then
+    ok=0
+    if have pipx || [ "$DRY_RUN" -eq 1 ]; then run pipx install graphifyy && ok=1; fi
+    if [ "$ok" -eq 0 ] && have uv; then run uv tool install graphifyy && ok=1; fi
+    if [ "$ok" -eq 1 ] && { [ "$DRY_RUN" -eq 1 ] || uv_tool_present graphify; }; then
+      installed "graphifyy (the CLI is named graphify)"
+    else failed "could not install graphifyy — see $LOG_FILE"; fi
+  else failed "neither pipx nor uv present"; fi
   needs_steven "'graphify install --platform claude' writes ~/.claude/skills/graphify/ and APPENDS to ~/.claude/CLAUDE.md — that is a live-prompt edit, so run it yourself after reading what it appends."
   say "      never run /graphify over wiki/clients/ or a vault client folder; keep graphify-out/ out of git"
 fi
@@ -336,10 +362,12 @@ fi
 
 if should_run headroom; then
   header headroom "context-compression proxy, measured trial only (FR5a §1)"
-  if have headroom; then skipped "headroom $(ver headroom --version)"
+  if uv_tool_present headroom; then skipped "headroom $(ver headroom --version)"
   elif have uv || [ "$DRY_RUN" -eq 1 ]; then
     uv_python 13 || true
-    if run uv tool install --python 3.13 "headroom-ai[all]"; then installed "headroom-ai"; else failed "uv tool install headroom-ai[all]"; fi
+    if run uv tool install --python 3.13 "headroom-ai[all]" && { [ "$DRY_RUN" -eq 1 ] || uv_tool_present headroom; }; then
+      installed "headroom-ai"
+    else failed "uv tool install headroom-ai[all] — see $LOG_FILE"; fi
   else failed "uv missing"; fi
   needs_steven "'headroom wrap claude' / 'headroom mcp install' re-point a live session's traffic through 127.0.0.1:8787 — start it yourself on ONE report seat and compare a week of CodeBurn."
   say "      read the HEADROOM_BEACON telemetry section and turn it off; keep its local cache off iCloud;"
@@ -374,9 +402,11 @@ fi
 
 if should_run omniroute; then
   header omniroute "subscription-first failover with a PII gate (FR5b §2)"
-  if have omniroute; then skipped "omniroute $(ver omniroute --version)"
+  if npm_present omniroute omniroute; then skipped "omniroute $(ver omniroute --version)"
   elif have npm || [ "$DRY_RUN" -eq 1 ]; then
-    if run npm install -g omniroute; then installed "omniroute"; else failed "npm install -g omniroute"; fi
+    if run npm install -g omniroute && { [ "$DRY_RUN" -eq 1 ] || npm_present omniroute omniroute; }; then
+      installed "omniroute"
+    else failed "npm install -g omniroute — see $LOG_FILE for npm's own error"; fi
   else failed "npm missing"; fi
   ensure_env_file omniroute <<'EOF'
 OMNIROUTE_API_KEY|OmniRoute's own loopback key: start OmniRoute, open http://127.0.0.1:20128, set the dashboard password, issue an API key
@@ -456,11 +486,12 @@ if should_run strix; then
   if ! named_explicitly strix; then
     advisory "FR5a: never Strix without a Needs-Steven packet. It needs Docker Desktop, an LLM key that spends money, and written authorization for every target." \
       "$0 --only strix   (installs the binary only; it is never run for you)"
-  elif have strix; then skipped "strix $(ver strix --version)"
+  elif uv_tool_present strix; then skipped "strix $(ver strix --version)"
   elif have uv || [ "$DRY_RUN" -eq 1 ]; then
     uv_python 12 || true
-    if run uv tool install --python 3.12 strix-agent; then installed "strix-agent (pip on 3.11 refuses it — needs >=3.12)"
-    else failed "uv tool install strix-agent"; fi
+    if run uv tool install --python 3.12 strix-agent && { [ "$DRY_RUN" -eq 1 ] || uv_tool_present strix; }; then
+      installed "strix-agent (pip on 3.11 refuses it — needs >=3.12)"
+    else failed "uv tool install strix-agent — see $LOG_FILE"; fi
     ensure_env_file strix <<'EOF'
 STRIX_LLM|the model id Strix should drive, e.g. from its README's provider list
 LLM_API_KEY|your own provider key — this SPENDS MONEY per run; decide the budget before you fill it in
