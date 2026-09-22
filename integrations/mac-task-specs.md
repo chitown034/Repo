@@ -207,28 +207,95 @@ described on the deck as "runs on schedule, writes nothing since 2026-09-17 — 
 | **Cron (PT)** | none — **on demand.** Create it disabled; delete it after a successful install |
 | **Model** | Opus 5 (judgment: it installs software and reviews security) |
 | **Skill** | `cli-anything-connectors` |
-| **Tools** | `Bash` (`pip install cli-anything-hub`, `cli-hub …`) · Claude Code plugin commands · `Artifact` `write_db` for `cliAnythingStatus` |
+| **Tools** | `Bash` (`pip install cli-anything-hub`, `cli-hub …`, `cli-anything-browser …`) · Claude Code plugin commands · `Artifact` `write_db` for `cliAnythingStatus` |
+| **Env** | `CLI_HUB_NO_ANALYTICS=1` in the runner's shell profile, set **before the first command** |
 
 **This one cannot run headless.** `/plugin marketplace add` and `/plugin install` are interactive
 Claude Code commands and the generation step asks questions. Steven runs it in an interactive
 session on the Mac; the runner's only job afterwards is the weekly validation pass.
 
-**Prompt (Steven pastes this into Claude Code on the Mac)**
-> Use the `cli-anything-connectors` skill. Install CLI-Anything: `pip install cli-anything-hub`,
-> then `/plugin marketplace add HKUDS/CLI-Anything` and `/plugin install cli-anything`. Verify with
-> `cli-hub list`. Then generate the **homes.com** wrapper first (lowest risk, public data) with
-> `/cli-anything`, run `/cli-anything:validate` and `/cli-anything:test` on it, and confirm
-> `cli-anything-homes search --city Temecula --json` returns parseable JSON. Read-only verbs only —
-> no write, submit, send, sign or delete verb on any target without my explicit written approval for
-> that verb. Credentials go in the macOS keychain or a `.env` the harness reads itself, never into a
-> prompt or a log. Then write `cliAnythingStatus` to the Command Deck with the real per-wrapper
-> status, and stop before SkySlope and zipForms — those touch legally binding documents and need the
-> ECC security review first. Tell me in one line what installed and what passed its tests.
+**Verified 2026-09-22, in a cloud sandbox that installs nothing on the Mac:** `cli-anything-hub`
+**0.4.1** installs clean from PyPI; `pip install .` in `browser/agent-harness/` builds
+`cli-anything-browser`, which drives the **DOMShell** Chrome extension against a live logged-in
+Chrome session (needs Node/npx, Chrome running, the extension from the Web Store). Of **83 wrapper
+directories in the repo, none** is a real-estate, CRM, Lofty, ShowingTime, Showami, zipForms,
+SkySlope or homes.com entry, and `clianything.cc` is egress-blocked, so **every wrapper is generated
+on the Mac and none can be downloaded**. Two security facts for the runbook: CLI-Hub's telemetry is
+**opt-out** (PostHog token, reports hostname + CLI + hub version + which agent tool is running, on
+install/uninstall/launch/every call — hence the `Env` row above), and **DOMShell is a third-party
+extension with page-content access** on a Chrome logged into Lofty, SkySlope and zipForms.
+
+### Build order, and the gates between the steps
+
+| # | Target | Gate before it starts | Why it sits here |
+|---|---|---|---|
+| 1 | **homes.com** | none — do this first | Public read-only data. Lowest blast radius; it proves the toolchain before anything with consequences is attempted |
+| 2 | **ShowingTime** | step 1 green | Read-only only. Every outward verb requests or confirms an appointment with **another agent or a seller** — writing to a client-facing system, HALT |
+| 3 | **Showami** | step 1 green | Read-only only. Posting a request **hires a licensed person and spends money** — the first line of the HALT list, twice over |
+| — | **Lofty** | — | **Not a CLI-Anything target.** It has a documented REST API and the bridge + CLI are installed; see §1. Browser wrapper is a fallback only, and only for something the API is shown not to expose |
+| 4 | **SkySlope** | **ECC security review, with a sign-off date** | Legally binding transaction documents. Gate holds even after CLI-Anything installs |
+| 5 | **zipForms / Lone Wolf** | **ECC security review, with a sign-off date** | Contract forms. A wrong one sent or signed is not recoverable |
+
+**The one control that makes steps 2 and 3 safe.** `cli-anything-browser` splits cleanly: `fs
+ls|cd|cat|grep|pwd`, `page info|back|forward|reload` and `session status` only read; **`act click`
+and `act type` are the entire write surface.** Every disabled verb — showing request, showing
+confirm, Showami post, e-sign send — is an `act` call underneath, so denying `act` denies all of
+them at once. Carry that as a literal **Bash allow-list on the task**, not as an instruction to
+behave. `page open` is allowed but URL-allow-listed per target: a crafted URL can itself perform an
+action on some sites.
+
+**Prompt (Steven pastes this into Claude Code on the Mac — step 1)**
+> Use the `cli-anything-connectors` skill. First `export CLI_HUB_NO_ANALYTICS=1` — CLI-Hub's
+> telemetry is opt-out and reports this machine's hostname. Then install CLI-Anything:
+> `pip install cli-anything-hub`, `/plugin marketplace add HKUDS/CLI-Anything`,
+> `/plugin install cli-anything`, install the DOMShell Chrome extension, and `pip install .` from
+> `browser/agent-harness/`. Verify with `cli-hub list` and `cli-anything-browser --help`. Then
+> generate the **homes.com** wrapper first (lowest risk, public data) with `/cli-anything`, run
+> `/cli-anything:validate` and `/cli-anything:test` on it, and confirm a read recipe returns
+> parseable JSON. Read-only verbs only — no write, submit, send, sign or delete verb on any target
+> without my explicit written approval for that verb; `act click` and `act type` must not appear in
+> any generated harness at all. Credentials go in the macOS keychain or a `.env` the harness reads
+> itself, never into a prompt or a log. Then write `cliAnythingStatus` to the Command Deck with the
+> real per-wrapper status, and stop before SkySlope and zipForms — those touch legally binding
+> documents and need the ECC security review first. Tell me in one line what installed and what
+> passed its tests.
+
+**Prompt (steps 2 and 3 — the showing wrappers; only after step 1 is green)**
+> Use the `cli-anything-connectors` skill. homes.com is already generated and passing, so now
+> generate two more **read-only** browser wrappers with `/cli-anything`, one at a time:
+> **ShowingTime** with the recipes `todays-showings`, `showing-status`, `feedback-inbox`,
+> `my-listing-activity`; then **Showami** with `my-requests`, `request-status`,
+> `assistant-feedback`, `posted-price`. Both drive DOMShell against my already-logged-in Chrome —
+> if either login needs MFA, SSO or a CAPTCHA, stop and tell me, do not automate around it.
+> **Build them read-only by construction:** only `fs ls|cd|cat|grep|pwd`, `page
+> info|back|forward|reload`, `session status`, and `page open` restricted to the URL prefixes for
+> that one site. `act click` and `act type` must not be present in either harness — check that
+> `act` appears nowhere in `--help` output and treat its presence as a failed build. Neither
+> wrapper may request, confirm, cancel or reschedule a showing, submit feedback, post a Showami
+> job, accept a bid or message a showing agent: those send a request to another agent, commit a
+> seller, or hire a person and spend my money, and every one of them needs my written approval for
+> that specific verb before it exists. Validate each with `/cli-anything:validate` and
+> `/cli-anything:test`; then prove three things per wrapper and paste me the output — (a) a read
+> recipe returns parseable JSON or an explicit empty-result object, (b) with Chrome logged out it
+> returns an explicit auth error rather than a stale or cached result, (c) the rows it returns match
+> what the site shows me on screen right now. Update `cliAnythingStatus`: `connState`
+> `"read-only-live"` only with a real `lastRun`, otherwise `"installed-untested"`; list the read
+> verbs in `verbsEnabled` and every verb above in `verbsDisabled`; never put an outward verb in
+> `verbsEnabled` — the Showings panel treats that as a tripwire and turns red. Log every run to
+> `cliAnythingLog` with arguments redacted and no credential or cookie. Then stop: SkySlope and
+> zipForms are not part of this and stay gated on the ECC security review. One line back: what
+> generated, what passed, what you could not prove.
 
 **Follow-on task (only after the install succeeds):** `cli-anything-validate`, Sundays
 `30 8 * * 0` PT (`30 15 * * 0` UTC), Sonnet 5 — re-runs `/cli-anything:validate` on every generated
 wrapper and updates `cliAnythingStatus`. A wrapper whose output starts contradicting the UI gets
-`status:"failed"` and is disabled, not patched quietly.
+`status:"failed"` and is disabled, not patched quietly. It also re-asserts the read-only build: if
+`act` has appeared in any harness's `--help`, that wrapper is disabled the same run and escalated.
+
+**Run now once to prove it:** after step 1, run `cli-anything-browser session status` and one
+homes.com read recipe by hand and keep the output. Until that exists the honest deck line is
+"CLI-Anything not installed — spec written, nothing generated", which is what the Showings panel's
+connector card says today with no `cliAnythingStatus` document at all.
 
 ---
 
