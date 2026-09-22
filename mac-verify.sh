@@ -114,10 +114,13 @@ esac
 sect "vendored skills (they ship with the repo — nothing to install)"
 # F-V2-24: a file being there is not a skill loading. For each one: the frontmatter (the block between the
 # two --- fences) must parse, its name must equal the directory name, its description must be non-empty, and
-# every relative ](link) in the body must resolve. Nine local files, no network.
-for s in code-review-and-quality git-workflow-and-versioning source-driven-development \
-         documentation-and-adrs security-and-hardening debugging-and-error-recovery \
-         find-skills apple-design karpathy-coding-principles; do
+# every relative ](link) in the body must resolve. Local files only, no network.
+# Enumerated rather than listed (F-P6-03, 2026-09-22): this was a hard-coded nine against a repo
+# holding 22, so 13 skills were verified by nothing and any skill added later would join them
+# silently. skill_seen guards the other direction — an empty directory must not read as a pass.
+skill_seen=0
+for s in $(ls "$REPO_DIR/.claude/skills" 2>/dev/null | sort); do
+  skill_seen=$((skill_seen + 1))
   f="$REPO_DIR/.claude/skills/$s/SKILL.md"
   if [ ! -f "$f" ]; then bad "skill $s" "SKILL.md missing"; continue; fi
   fm=$(awk 'NR==1{if($0!="---"){nofm=1; exit 2}; next} /^---[[:space:]]*$/{found=1; exit 0} {print} END{if(!found && !nofm) exit 3}' "$f"); fm_rc=$?
@@ -140,6 +143,7 @@ EOF
   if [ -n "$dead" ]; then bad "skill $s" "dead relative link(s):$dead"
   else ok "skill $s" "loads: name matches, description $(printf '%s' "$desc" | wc -c | tr -d ' ') chars, links resolve"; fi
 done
+[ "$skill_seen" -eq 0 ] && bad "skills" "no skills found in $REPO_DIR/.claude/skills — an empty directory is not a pass"
 
 # --------------------------------------------------------------------------- FR5a tools
 sect "FR5a tooling"

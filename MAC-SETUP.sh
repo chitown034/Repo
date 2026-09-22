@@ -352,15 +352,20 @@ fi
 
 # --------------------------------------------------------------------------- the brain itself
 if should_run vendored-skills; then
-  header vendored-skills "the nine skills vendored in this repo — verified, never installed globally"
+  header vendored-skills "every skill vendored in this repo — verified, never installed globally"
   missing=''
-  for s in code-review-and-quality git-workflow-and-versioning source-driven-development \
-           documentation-and-adrs security-and-hardening debugging-and-error-recovery \
-           find-skills apple-design karpathy-coding-principles; do
+  skill_n=0
+  # Enumerated, not listed (F-P6-03, 2026-09-22). This was a hard-coded nine while the repo held 22,
+  # so 13 skills were checked by nothing and a newly added one would be silently unverified forever.
+  for s in $(ls "$REPO_DIR/.claude/skills" 2>/dev/null | sort); do
+    skill_n=$((skill_n + 1))
     if [ -f "$REPO_DIR/.claude/skills/$s/SKILL.md" ]; then :; else missing="$missing $s"; fi
   done
-  if [ -z "$missing" ]; then skipped "all nine vendored skills present — they load with the repo, nothing to install"
-  else failed "vendored skills missing from this checkout:$missing (pull the repo again)"; fi
+  # Enumerating means an empty or absent skills directory runs the loop zero times, leaves $missing
+  # empty, and would report "all present" — a green light for nothing at all. Count, then judge.
+  if [ "$skill_n" -eq 0 ]; then failed "no skills found in $REPO_DIR/.claude/skills (empty or missing — pull the repo again)"
+  elif [ -z "$missing" ]; then skipped "all $skill_n vendored skills present — they load with the repo, nothing to install"
+  else failed "vendored skills missing a SKILL.md:$missing (pull the repo again)"; fi
   needs_steven "Run skills-refresh once in Claude Code so the deck's toolkit table learns about them (FR5a order of operations, step 1). Installing a skill globally is a live-prompt edit — not this script's job."
 fi
 
