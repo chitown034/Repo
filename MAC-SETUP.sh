@@ -43,11 +43,20 @@ whatscli|*whatscli*
 agent-reach-skill|*Agent-Reach@agent-reach*
 whatsapp-plugin|*plugins?install?whatsapp*'
 
+# --------------------------------------------------------------------------- DECLINED
+# name|one-line reason. Evaluated against a named alternative and NOT installed. This is not the
+# REFUSED list: there is no safety objection to any of these, they are simply not the tool for this
+# stack. They live here so that "was this ever looked at?" has an answer the script itself can give
+# — `--only <name>` on one prints the reason instead of "unknown step". (V1 reconciliation 2026-09-22.)
+DECLINED_LIST='freellmapi|tashfeenahmed/freellmapi is a SECOND free-tier aggregator (MIT, Docker on :3001, desktop app, its own encrypted key store, USD 19/yr for the live catalogue). It is NOT a key source. OmniRoute already holds that seat, and running two routers would mean two egress surfaces to audit for client data. Its public catalogue (freellmapi.co/models, 34 providers) is used as reference only.
+free-llm-api-resources|cheahjs/free-llm-api-resources returns HTTP 404 — the repo is gone (re-verified 2026-09-22). It was wanted only as a free-tier catalogue: OmniRoute ships docs/reference/FREE_TIERS.md (audited 2026-09-03) and freellmapi.co/models is the live second opinion.
+openalternative|openalternative.co/alternatives/ is a directory to read, not software to install. Registered in references/index.md; consult it when a paid SaaS comes up for renewal (FR5a §13).'
+
 STEPS_PREREQ='homebrew uv pipx node python-toolchain'
 STEPS_BRAIN='vendored-skills'
 STEPS_FR5A='codeburn graphify claude-code-setup headroom'
-STEPS_FR5B='whatsapp-cli omniroute scrapers-venv scrapling scrapegraphai cli-anything'
-STEPS_ONDEMAND='strix ponytail prompts-chat screenshot-to-code agent-reach laya'
+STEPS_FR5B='whatsapp-cli omniroute scrapers-venv scrapling scrapegraphai cli-anything lofty-keyfile'
+STEPS_ONDEMAND='strix ponytail prompts-chat screenshot-to-code agent-reach laya higgsfield'
 ALL_STEPS="$STEPS_PREREQ $STEPS_BRAIN $STEPS_FR5A $STEPS_FR5B $STEPS_ONDEMAND"
 
 DRY_RUN=0; ONLY=''; SKIP=''; LIST=0
@@ -72,6 +81,12 @@ in_list() { # in_list needle "space separated haystack"
 
 refused_reason() {
   printf '%s\n' "$REFUSED_LIST" | while IFS='|' read -r _n _r; do
+    if [ "$_n" = "$1" ]; then printf '%s\n' "$_r"; fi
+  done
+}
+
+declined_reason() {
+  printf '%s\n' "$DECLINED_LIST" | while IFS='|' read -r _n _r; do
     if [ "$_n" = "$1" ]; then printf '%s\n' "$_r"; fi
   done
 }
@@ -151,6 +166,22 @@ header() { CUR_STEP=$1; shift; say ""; say "== $CUR_STEP — $*"; }
 # advisory <why not installed> <the command Steven would run>
 advisory() { needs_steven "$1"; say "      command: $2"; }
 
+# plugin_advisory <the real reason it is not automatic> <the command Steven would run>
+#
+# CORRECTION, 2026-09-22 (V1). An earlier spec held that Claude Code plugin installs are interactive
+# and cannot run unattended. That is FALSE and it is not the reason any block below is manual. Both
+#   claude plugin marketplace add <owner/repo>   -> "Successfully added marketplace"
+#   claude plugin install <name>@<marketplace>   -> "Successfully installed plugin"
+# were verified non-interactive, exit 0, in a throwaway HOME — and the cli-anything step further down
+# already runs exactly that pair unattended. So every plugin block here is held by POLICY or by VALUE,
+# never by a technical limit, and each one states which. Nothing is promoted to automatic by this note.
+plugin_advisory() {
+  needs_steven "$1"
+  say "      command: $2"
+  say "      Technically scriptable: both 'claude plugin' commands run non-interactively (verified 2026-09-22, exit 0)."
+  say "      It stays manual for the reason above, not because a script could not do it. Your call, then your command."
+}
+
 # ensure_env_file <tool> — reads NAME|where-to-get-it lines on stdin.
 # Creates the file with names and empty values only if it does not exist; never rewrites one that
 # does (it may already hold values); always chmod 600; never reads, prints or logs a value.
@@ -225,6 +256,8 @@ if [ "$LIST" -eq 1 ]; then
   printf 'on named need : %s   (reported, not installed, unless named with --only)\n' "$STEPS_ONDEMAND"
   printf '\nREFUSED — never installed by this script:\n'
   printf '%s\n' "$REFUSED_LIST" | while IFS='|' read -r n r; do printf '  %-24s %s\n' "$n" "$r"; done
+  printf '\nDECLINED — evaluated, not installed, no safety objection:\n'
+  printf '%s\n' "$DECLINED_LIST" | while IFS='|' read -r n r; do printf '  %-24s %s\n' "$n" "$r"; done
   exit 0
 fi
 
@@ -233,6 +266,11 @@ for n in $ONLY $SKIP; do
     if printf '%s\n' "$REFUSED_LIST" | grep -q "^$n|"; then
       printf 'REFUSED: %s — %s\n' "$n" "$(refused_reason "$n")" >&2
       printf 'This script will not install it. Nothing was done.\n' >&2
+      exit 2
+    fi
+    if printf '%s\n' "$DECLINED_LIST" | grep -q "^$n|"; then
+      printf 'DECLINED: %s — %s\n' "$n" "$(declined_reason "$n")" >&2
+      printf 'Evaluated and not installed. No safety objection — argue the case if you disagree. Nothing was done.\n' >&2
       exit 2
     fi
     printf 'unknown step: %s (see --list)\n' "$n" >&2; exit 2
@@ -356,8 +394,14 @@ fi
 
 if should_run claude-code-setup; then
   header claude-code-setup "Anthropic's read-only project analyser (FR5a §9)"
-  advisory "A plugin install lands in your live Claude Code user scope — yours to approve, not a script's." \
-    "/plugin marketplace add anthropics/claude-plugins-official  →  /plugin install claude-code-setup@claude-plugins-official"
+  # POLICY, and the weakest of the three holds — the honest reading. The plugin adds no hooks and is
+  # inert until invoked, so the install itself is low-risk. It is held because (a) it lands in the
+  # live user scope of the Mac that holds the vault and wiki/clients/, so every session there gains
+  # it, including unattended claude-runner tasks, and (b) what it PRODUCES is recommendations that
+  # edit hooks and settings — HALT-class changes needing a Needs-Steven packet each (FR5a §9).
+  # If Steven says yes once, this is the first candidate to promote to an automatic step.
+  plugin_advisory "POLICY (not technical): it lands in the live Claude Code user scope of the business Mac, and every recommendation it makes is a hooks/settings edit — HALT-class. Choosing what the user scope carries is yours. The install is otherwise read-only and low risk; say the word and it becomes an automatic step." \
+    "claude plugin marketplace add anthropics/claude-plugins-official  &&  claude plugin install claude-code-setup@claude-plugins-official"
 fi
 
 if should_run headroom; then
@@ -530,7 +574,49 @@ CAENV
   say "      REFUSED here: any 'act click' / 'act type' verb in a generated harness — that is the entire write surface"
 fi
 
+if should_run lofty-keyfile; then
+  header lofty-keyfile "Lofty CRM — the key file the API path has always needed (F-S1-11)"
+  # Steven asked to "setup lofty … using anything cli". S1's answer was right and stands: Lofty is
+  # NOT a CLI-Anything target, because it has a documented REST API (api.lofty.com/v1.0,
+  # 'Authorization: token <key>') and lofty-bridge MCP + lofty-cli are already installed on the Mac.
+  # A browser wrapper would be strictly worse. But the one concrete, automatable, secret-free step
+  # that follows from that answer was never written anywhere: nothing creates the file the key goes
+  # in. CONNECTIONS.md and docs/SECOND-MAC-SETUP.md both name ~/.config/lofty/.env as the location,
+  # and F-S1-11 names the empty LOFTY_API_KEY as the real blocker — "no pull has ever succeeded".
+  # So: create the skeleton, by NAME only. The value is Steven's, and it is a HALT item.
+  ensure_env_file lofty <<'LOFTYENV'
+LOFTY_API_KEY|Lofty -> Settings -> Integrations -> API -> generate a key. This file is the only place it goes; never a prompt, a task definition, a skill or a .md
+LOFTYENV
+  needs_steven "Generate the Lofty API key yourself (Lofty → Settings → Integrations → API), put the value in ~/.config/lofty/.env, then run lofty-crm-sync ONCE by hand and read what it wrote. Generating a credential is a HALT item — this script only made the empty file. Lofty stays on the REST API: do NOT build a CLI-Anything wrapper for it (F-S1-11)."
+  say "      lofty-bridge MCP and lofty-cli are already installed on the Mac — the key is the only thing missing"
+fi
+
 # --------------------------------------------------------------------------- on a named need only
+if should_run higgsfield; then
+  header higgsfield "Higgsfield media API — the API, reached WITHOUT the refused repo (FR5b §4)"
+  # Steven asked for the Higgsfield API. The REPO he named it through
+  # (a third-party test client) is REFUSED because it commits a live-looking credential — that
+  # refusal stands and is enforced by the guard above. But the refusal is of the repo, not of the
+  # vendor: Higgsfield is an ordinary hosted HTTPS API, and the client is ~60 lines of `requests`
+  # POSTing to platform.higgsfield.ai/<vendor>/<model>/text-to-image|text-to-video with
+  # 'Authorization: Key <id>:<secret>' and polling status_url. Anyone can write that against their
+  # own account; nothing about it requires cloning anybody's repo. So the request is answerable:
+  # the safe path is Steven's own account, his own two values, and a few lines of curl/requests.
+  # FR5b's business verdict still stands and is repeated below — no use today, paid account needed.
+  if ! named_explicitly higgsfield; then
+    advisory "FR5b §4 verdict for Sofia's lane: NO USE TODAY — it needs a paid account Steven does not have, and the deck already has Canva (needs reconnect) and Magica. Named here so the request is not left 'refused by association' with the repo: the API itself is fine, only that repo is refused." \
+      "$0 --only higgsfield   (creates the empty key file only — it calls nothing and spends nothing)"
+    say "      the safe client is a few lines of your own against platform.higgsfield.ai — never anyone else's committed key"
+  else
+    ensure_env_file higgsfield <<'HFENV'
+HF_API_KEY_ID|Your OWN Higgsfield account -> API keys. Never a key found in someone else's repository
+HF_API_KEY_SECRET|The matching secret for your own key. Paid account — decide the budget before you fill this in
+HFENV
+    needs_steven "A funded Higgsfield account of Steven's own and both values — that is a spend decision and a credential, two HALT rows. This script created an empty file and called nothing. Write the client yourself against platform.higgsfield.ai (Authorization: Key <id>:<secret>, poll status_url); do not obtain it by cloning the refused repo."
+    say "      REFUSED and unchanged: that third-party worker repo ships a live-looking credential — never clone it, never run it"
+  fi
+fi
+
 if should_run strix; then
   header strix "AI pentester — one scan of the ISA portal, nothing else (FR5a §10)"
   if ! named_explicitly strix; then
@@ -553,14 +639,24 @@ fi
 
 if should_run ponytail; then
   header ponytail "lazy-senior-dev ruleset (FR5a §4)"
-  advisory "Its two Node hooks run on every prompt of every session and inject into every subagent — that touches Vanessa's dispatch. It also overlaps the vendored karpathy-coding-principles skill." \
-    "/plugin marketplace add DietrichGebert/ponytail  →  /plugin install ponytail@ponytail"
+  # POLICY, and the strongest hold of the three. Unlike the other two plugins this one is NOT inert:
+  # two Node lifecycle hooks fire on every prompt of every session and inject into every subagent,
+  # so installing it silently rewrites how Vanessa dispatches work on the Mac that holds client
+  # files — no one invokes it, it is simply on. That is a live-prompt/live-dispatch change, which is
+  # on CLAUDE.md's HALT list, and it is Steven's decision, not a script's. It also duplicates the
+  # vendored karpathy-coding-principles skill, and leaves ~/.claude/.ponytail-active on uninstall.
+  plugin_advisory "POLICY (not technical), and this is the one that genuinely needs your decision: its two Node hooks run on EVERY prompt of EVERY session and inject into every subagent, so it changes Vanessa's dispatch on the Mac holding client files without ever being invoked — a live-prompt edit, HALT-class. It also overlaps the vendored karpathy-coding-principles skill." \
+    "claude plugin marketplace add DietrichGebert/ponytail  &&  claude plugin install ponytail@ponytail --scope user"
 fi
 
 if should_run prompts-chat; then
   header prompts-chat "prompt library (FR5a §12)"
-  advisory "A plugin/MCP install that talks to a remote service, and FR5a found no business skill inside it." \
-    "npx prompts.chat   (or /plugin marketplace add f/prompts.chat)"
+  # VALUE, not safety, and not a technical limit — the honest reason. FR5a read the catalogue and
+  # found no skill that does anything for a mortgage/real-estate operation: Steven's prompts are his
+  # persona skills. There is one security footnote (its MCP server talks to prompts.chat, so never
+  # "improve" a prompt holding client detail) but that is a usage rule, not the reason it is skipped.
+  plugin_advisory "VALUE, not safety: FR5a read it and found no business skill inside — Steven's prompts are his persona skills, so this buys nothing. Nothing here is blocked; it is simply not worth the user-scope slot. (Footnote: its MCP server talks to prompts.chat — never paste a prompt holding client detail into it.)" \
+    "npx prompts.chat   (or: claude plugin marketplace add f/prompts.chat && claude plugin install prompts.chat@prompts.chat)"
 fi
 
 if should_run screenshot-to-code; then

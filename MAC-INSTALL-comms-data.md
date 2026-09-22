@@ -17,6 +17,7 @@ and nothing contacts a client without Steven. Read a section, do its steps, run 
 | 3b | **Scrapegraph-ai 2.2.4** | Python ≥ 3.12: `pip install scrapegraphai` + `playwright install`; LLM = local Ollama `llama3.1:8b` (Jarvis) | **Yes on 3.12** — install exit 0, `SmartScraperGraph` constructs with `ChatOllama`; run needs Playwright browsers + Ollama (the Mac has both). On 3.11 PyPI serves the broken 1.76.0 | none with Ollama (`SGAI_API_KEY` only for the paid cloud service) | Same public pages, LLM-extracted to JSON; the local model keeps it PII-safe |
 | 4 | Higgsfield API via `framepipe-dev/media-inference-worker` | `pip install requests` + `python generate.py <model> "<prompt>"` | **Read only, not run** — running it would use someone else's committed credential | `HF_API_KEY_ID`, `HF_API_KEY_SECRET` (Steven's own, if ever) | **None today** for Sofia's lane. The repo ships a live-looking third-party key — never use it |
 | 5 | Apple Health: `Rachnog/alex-honchar-claude-for-life` | Claude plugin marketplace (UI) | **Read only** — nothing to install | none (Oura / Garmin / Withings MCPs) | Complementary reference only; it never reads Apple Health — `integrations/apple-health-dashboard.md` |
+| 6 | `tashfeenahmed/freellmapi` (evaluated, **declined**) | Docker Compose on `:3001`, or a desktop app; keys go in its own encrypted store via its dashboard | **Yes** — repo cloned and read 2026-09-22 (V1); live, MIT, active | none for us — it holds provider keys itself | **None.** It is a *second* free-tier aggregator, not a key source — OmniRoute already holds that seat. Its public catalogue (`freellmapi.co/models`) is used as **reference only**. §6 below |
 
 ## 1. WhatsApp for Vanessa — `whatsapp-cli` (marcelrgberger) vs `whatscli` (normen)
 **What/why.** Steven wants WhatsApp beside the iMessage path (`REMOTE-ACCESS.md`). The deciding question was
@@ -161,6 +162,33 @@ account):** `pip install requests`, put his own two values in `~/.config/higgsfi
 **Verdict for Sofia's lane, one line: no use today** — the deck already has Canva (needs reconnect) and Magica,
 Higgsfield needs a paid account Steven does not have, and the worker adds nothing a curl would not.
 
+**Correction, 2026-09-22 (V1): the refusal is of the REPO, not of the vendor.** Steven asked for the *Higgsfield
+API*, which is a separate thing from the test client he named it through. Leaving the whole request refused by
+association was wrong, because the API is an ordinary hosted HTTPS endpoint: the safe path is Steven's own
+account, his own two values in `~/.config/higgsfield/.env`, and a few lines of `requests`/`curl` written here —
+`POST https://platform.higgsfield.ai/<vendor>/<model>/text-to-image|text-to-video`, header
+`Authorization: Key <HF_API_KEY_ID>:<HF_API_KEY_SECRET>`, then poll `status_url`. Nothing about that requires
+cloning anybody's repository. `MAC-SETUP.sh --only higgsfield` now creates that key file (**names only**) and
+calls nothing; without `--only` it prints the no-use-today verdict. The repo itself stays REFUSED and the
+script's runtime guard still aborts on it. The business verdict above is unchanged — this only means the
+request has an answer instead of a silence, and the spend decision is Steven's.
+
+## 6. `tashfeenahmed/freellmapi` — evaluated, declined (was never written down until now)
+
+Steven listed this beside the free-key sources. It was read in 2026-09-22 and the verdict was recorded only in a
+table row inside `integrations/omniroute-failover/README.md`, where nobody could find it — so it looked dropped.
+Re-verified by cloning it (V1, 2026-09-22): **live, MIT, actively maintained.** What it is: a self-hosted
+aggregator that puts ~34 providers' free tiers behind one OpenAI-compatible `/v1` endpoint, with its own router,
+failover, per-key quota tracking and an **encrypted key store fed from its own dashboard** on `:3001`. Desktop
+apps for macOS/Windows; USD 19/yr buys the live catalogue (the free install gets a 30-day-old snapshot).
+
+**Declined, and why:** it is *not a key source* — it is a competitor to OmniRoute, which already holds that seat
+in `integrations/omniroute-failover/`. Running both would mean **two routers and two egress surfaces to audit for
+client data**, against one PII canary. It also does not cover `bytez`, one of the three sources Steven named.
+**What is kept:** its public catalogue page `freellmapi.co/models` is adopted as the live replacement for the
+dead `cheahjs` catalogue (§ below) — read-only reference, nothing installed. `MAC-SETUP.sh --only freellmapi`
+now prints this reason rather than "unknown step".
+
 ## 5. Apple Health — `Rachnog/alex-honchar-claude-for-life`
 Read in full. It is a Claude Code plugin marketplace of life-area skills, JSON schemas and cadence reviews whose
 body data comes from **Oura, Garmin and Withings MCPs — it never touches Apple Health** (zero mentions of
@@ -173,6 +201,20 @@ No LICENSE file in the repo; ask before copying a schema. The `apple-health-noti
 the proxy. `github.com/cheahjs/free-llm-api-resources` — HTTP 404. The session's WebSearch budget was exhausted
 before this task, so no page was substituted by search: OmniRoute's own audited `docs/reference/FREE_TIERS.md` is
 the free-tier catalogue used instead. Live fetches from Python were blocked (403) — parsing was proven offline.
+
+**Re-verified 2026-09-22 (V1), independently:** `github.com/cheahjs/free-llm-api-resources` is **still HTTP 404 —
+the repository is gone**, not merely unreachable from here. It was wanted only as a catalogue of free tiers, and
+that need is covered twice over: OmniRoute's `docs/reference/FREE_TIERS.md` (audited 2026-09-03, ships with the
+tool) and `freellmapi.co/models` (live, §6). Nothing Steven asked for is lost with that repo.
+
+**The three free-key sources — key NAMES are wired, values are not (verified, not assumed).** All three pages
+stay egress-blocked, so no limit or price below is claimed from a page read. What matters is that Steven only has
+to paste values, and that is in place: `MAC-SETUP.sh --only omniroute` creates `~/.config/omniroute/.env` at
+`chmod 600` holding `OMNIROUTE_API_KEY`, `OPENROUTER_API_KEY`, `NVIDIA_API_KEY`, `BYTEZ_API_KEY` as **empty
+names**, prints which are still unset, and `mac-verify.sh` checks the same four by name. The `omniroute providers
+add … --credential-env <NAME>` lines that load them are written out in `integrations/omniroute-failover/README.md`.
+A dry run prints all four names; the file-writing code path was executed for real (V1, throwaway `HOME`) through
+the identical `ensure_env_file` used by the `lofty` and `higgsfield` steps.
 
 ## What NOT to do
 - Do not link Steven's client-facing WhatsApp to the Mac's desktop app for this. Dedicated number, always.

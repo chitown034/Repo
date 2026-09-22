@@ -27,6 +27,7 @@ REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 BINDIR="$HOME/.local/bin"
 SCRAPERS_PY="$HOME/Applications/scrapers/.venv/bin/python"
 WA_BIN="$HOME/Applications/whatsapp-cli/.venv/bin/whatsapp-cli"
+CA_BROWSER="$HOME/Applications/CLI-Anything/.venv/bin/cli-anything-browser"
 N_OK=0; N_FAIL=0; N_NEED=0; N_INFO=0
 FAILS=''; NEEDS=''
 
@@ -152,6 +153,22 @@ if [ -x "$SCRAPERS_PY" ]; then
   esac
 else bad "scrapers venv" "missing at $SCRAPERS_PY"; fi
 
+# CLI-Anything: MAC-SETUP.sh installs three separate halves (hub, Claude plugin, browser harness)
+# and nothing here checked any of them until the V1 reconciliation (2026-09-22).
+if have cli-hub; then
+  ok "cli-hub" "$(ver cli-hub --version)"
+  case "${CLI_HUB_NO_ANALYTICS:-}" in
+    1|true|TRUE|yes) ok "  cli-hub telemetry" "CLI_HUB_NO_ANALYTICS is set in this shell" ;;
+    *) need "  cli-hub telemetry" "CLI_HUB_NO_ANALYTICS is NOT set here — its analytics are opt-OUT and report this machine's hostname (F-S1-05). Put it in your shell profile AND the runner task env" ;;
+  esac
+else info "cli-hub" "not installed — MAC-SETUP.sh --only cli-anything"; fi
+if [ -x "$CA_BROWSER" ]; then ok "cli-anything-browser" "built"
+else info "cli-anything-browser" "not built at $CA_BROWSER (DOMShell harness — every web target runs on it)"; fi
+if have claude; then
+  if claude plugin list 2>/dev/null | grep -q 'cli-anything'; then ok "  cli-anything plugin" "installed"
+  else info "  cli-anything plugin" "not installed — MAC-SETUP.sh --only cli-anything installs it non-interactively"; fi
+fi
+
 # --------------------------------------------------------------------------- credentials (names only)
 sect "key files — names only, never a value"
 check_env_file() { # check_env_file <tool> <NAME>...
@@ -167,7 +184,12 @@ check_env_file() { # check_env_file <tool> <NAME>...
   done
 }
 check_env_file omniroute OMNIROUTE_API_KEY OPENROUTER_API_KEY NVIDIA_API_KEY BYTEZ_API_KEY
+# Lofty: F-S1-11 — the bridge and the CLI are installed, the REST API is the right path, and the
+# empty LOFTY_API_KEY is the only reason no pull has ever succeeded. Checked here since 2026-09-22.
+check_env_file lofty LOFTY_API_KEY
 if have strix; then check_env_file strix STRIX_LLM LLM_API_KEY; fi
+if [ -f "$HOME/.config/cli-anything/.env" ]; then check_env_file cli-anything HOMES_USER SHOWINGTIME_USER SHOWAMI_USER; fi
+if [ -f "$HOME/.config/higgsfield/.env" ]; then check_env_file higgsfield HF_API_KEY_ID HF_API_KEY_SECRET; fi
 
 # --------------------------------------------------------------------------- MCP servers
 sect "MCP servers (read-only listing)"

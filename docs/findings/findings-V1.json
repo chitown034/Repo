@@ -1,0 +1,112 @@
+[
+  {
+    "id": "F-V1-01",
+    "severity": "high",
+    "area": "Reconciliation — never addressed: Google Drive",
+    "finding": "Steven asked for the second brain to be optimised 'with Notion + Drive'. Notion was wired; Google Drive never was, and nothing in the repo said so. There is no Drive connector, no Drive MCP server, no CLI, no key file and no entry in OPTIMIZATION.md's component table. Worse than absent: two scheduled tasks assert they read a Drive 'Second Brain' folder (brain-learn-daily, openjarvis), and the knowledge-fabric tile counts a Drive store that reads 0 files on every sample — a false green on the deck for a store nothing can reach. Composio carries googledocs, googlesheets and googletasks but no googledrive.",
+    "evidence": "Exhaustive grep of the tree for drive/gdrive/googleapis/rclone returned no integration, only claims: always-on/README.md line 22 and docs/inventory/mac-task-descriptions.md lines 7 and 198 describe the Drive hop; wiki/dashboard-ops/index.md line 44 and findings-E8.json 'Drive folder 0 files'; recall-cache.md line 48 already lists a 0-count Drive folder as an ALERT condition, so it has been firing. integrations/CONNECTIONS.md had no Drive row at all — neither connected nor not-connected. OPTIMIZATION.md's table listed seven components and omitted both Notion and Drive.",
+    "fix": "Wrote integrations/google-drive-brain.md: states plainly that it was never addressed, sets out the decision Steven owes (wire it, or drop the Drive line from the fabric counts — a 0-file store is a false green), and specs the shape if wired: read-only L2 SOURCE feeding Jarvis and the vault, never a sixth store to query, three candidate paths cheapest-first (Google Drive for Desktop's existing local mount, then rclone read-only, then a Drive MCP/Composio toolkit), credential location ~/.config/gdrive/.env by NAME only, inherited HALT rules (read-only, redaction before indexing, no client PII into the vector index or graph, folder-scoped grant, Sunday review gate) and a three-part acceptance test. Added the missing Notion and Google Drive rows to OPTIMIZATION.md's component table with the note that Notion was wired all along and Drive never was. Added a Google Drive row to integrations/CONNECTIONS.md reading NEVER ADDRESSED.",
+    "halt": true,
+    "haltReason": "Path B or C needs a new Google OAuth grant on Steven's account — a credential and an account change, two HALT rows. Nothing was granted, installed or connected. The choice between wiring it and dropping it is Steven's."
+  },
+  {
+    "id": "F-V1-02",
+    "severity": "high",
+    "area": "Reconciliation — half-done: Lofty",
+    "finding": "Steven asked to 'setup lofty/zipforms/skyslope/zoho/homes.com using anything cli'. S1's answer for Lofty was correct and stands — Lofty is NOT a CLI-Anything target because it has a documented REST API and lofty-bridge MCP plus lofty-cli are already installed on the Mac, so a browser wrapper would be strictly worse. But the one concrete, automatable, secret-free step that follows from that answer was never written: nothing created the file the key goes in. F-S1-11 names the empty LOFTY_API_KEY as the real blocker ('no pull has ever succeeded'), CONNECTIONS.md and docs/SECOND-MAC-SETUP.md both name ~/.config/lofty/.env as its location, and MAC-SETUP.sh created env skeletons for omniroute, cli-anything and strix but not lofty. mac-verify.sh did not check it either. The request was reclassified as a research answer and the buildable half fell off.",
+    "evidence": "grep -n 'ensure_env_file' MAC-SETUP.sh returned exactly three call sites (omniroute, cli-anything, strix), none for lofty; grep for lofty in mac-verify.sh returned nothing. docs/SECOND-MAC-SETUP.md line ~118 lists ~/.config/lofty/.env / LOFTY_API_KEY as a file to create 'by hand'.",
+    "fix": "Added a lofty-keyfile step to MAC-SETUP.sh (STEPS_FR5B) that creates ~/.config/lofty/.env at chmod 600 with LOFTY_API_KEY as an empty NAME, restates that Lofty stays on the REST API and must not get a CLI-Anything wrapper, and reports the key value as NEEDS-STEVEN. Added check_env_file lofty LOFTY_API_KEY to mac-verify.sh. Executed for real under HOME=/tmp/v1-home: file created mode 600 holding the name only, second run reported 'already present', verifier reported 'ok lofty/.env mode 600' and 'NEED LOFTY_API_KEY no value yet'.",
+    "halt": true,
+    "haltReason": "Generating the Lofty API key is a credential action on a client-facing CRM. The script creates an empty file and nothing else; the value and the first lofty-crm-sync run are Steven's."
+  },
+  {
+    "id": "F-V1-03",
+    "severity": "high",
+    "area": "Reconciliation — refused by association: Higgsfield API",
+    "finding": "Steven asked for the Higgsfield API and named it alongside a third-party test client. That repo is REFUSED, correctly and permanently, because it commits a live-looking credential. But the refusal was allowed to swallow the whole request: MAC-SETUP.sh had no higgsfield step, so the API itself — an ordinary hosted HTTPS endpoint with no dependency on anybody's repository — had no path at all, while docs/SECOND-MAC-SETUP.md separately told Steven to create ~/.config/higgsfield/.env by hand. A refusal of a repo was being reported as a refusal of a vendor.",
+    "evidence": "MAC-SETUP.sh step groups contained no higgsfield entry; the only in-repo references were the REFUSED_LIST line, two REFUSED_GUARDS globs and the runbook section. docs/SECOND-MAC-SETUP.md line 121 lists ~/.config/higgsfield/.env with HF_API_KEY_ID and HF_API_KEY_SECRET as expected on a second Mac, with nothing creating it.",
+    "fix": "Added an on-a-named-need higgsfield step to MAC-SETUP.sh. Without --only it prints FR5b's unchanged business verdict (no use today — paid account Steven does not have). With --only higgsfield it creates ~/.config/higgsfield/.env at chmod 600 with HF_API_KEY_ID and HF_API_KEY_SECRET as empty NAMES and calls nothing. The step never references the refused repo in any executed command, and the runtime guard is untouched. Added a correction paragraph to MAC-INSTALL-comms-data.md section 4 stating the refusal is of the repo, not the vendor, and giving the safe shape (POST platform.higgsfield.ai/<vendor>/<model>/..., Authorization: Key <id>:<secret>, poll status_url — a few lines written here against Steven's own account). Added a conditional higgsfield check to mac-verify.sh. Executed for real under a throwaway HOME: file created mode 600, names only, idempotent on re-run.",
+    "halt": true,
+    "haltReason": "A funded Higgsfield account and both key values — a spend decision and a credential. Nothing was purchased, called or configured."
+  },
+  {
+    "id": "F-V1-04",
+    "severity": "medium",
+    "area": "Reconciliation — untraceable verdict: tashfeenahmed/freellmapi",
+    "finding": "This item looked silently dropped because its verdict existed in exactly one place nobody would look: a single table row inside integrations/omniroute-failover/README.md line 97. It was absent from MAC-INSTALL-comms-data.md's summary table, absent from every findings file, and `./MAC-SETUP.sh --only freellmapi` answered 'unknown step' — indistinguishable from never having been considered. The underlying verdict is nevertheless correct.",
+    "evidence": "Re-verified by cloning the repo (shallow, 27 MB, deleted afterwards): live, MIT, actively maintained. It aggregates ~34 providers' free tiers behind one OpenAI-compatible /v1 endpoint with its own router, failover and per-key quota tracking; keys enter through its own dashboard on :3001 into an encrypted store (docker/README.md lines 3, 17, 26, 78); desktop apps; USD 19/yr for the live catalogue, free installs get a 30-day-old snapshot. It is therefore a competitor to OmniRoute, not a source of keys, and it does not cover bytez — one of the three sources Steven named.",
+    "fix": "Declined, and made findable three ways. (1) A DECLINED_LIST was added to MAC-SETUP.sh — printed by --list, and `--only freellmapi` now exits 2 with the full reason instead of 'unknown step'. (2) MAC-INSTALL-comms-data.md gained a summary-table row and a section 6 with the evaluation. (3) The reconciliation table in MAC-INSTALL.md. Reason for declining: OmniRoute already holds that seat, and two routers would mean two egress surfaces to audit for client data against one PII canary. Kept: its public catalogue freellmapi.co/models as read-only reference.",
+    "halt": false,
+    "haltReason": ""
+  },
+  {
+    "id": "F-V1-05",
+    "severity": "medium",
+    "area": "Reconciliation — confirmed dead: cheahjs/free-llm-api-resources",
+    "finding": "Independently re-verified today: the repository returns HTTP 404. It is gone, not merely unreachable from this sandbox — the earlier finding F-FR5b-08 was right. It was wanted only as a catalogue of free tiers, and that need is covered twice over, so nothing Steven asked for is lost with it.",
+    "evidence": "WebFetch of https://github.com/cheahjs/free-llm-api-resources returned HTTP 404 Not Found on 2026-09-22. Plain curl through the agent proxy returns 403 for every github.com URL including ones that certainly exist, so curl alone cannot distinguish a dead repo from a blocked one — the WebFetch result is the load-bearing evidence. Coverage: OmniRoute ships docs/reference/FREE_TIERS.md (audited 2026-09-03), and freellmapi.co/models is a live second opinion.",
+    "fix": "Recorded as DECLINED in MAC-SETUP.sh with the reason and both replacement catalogues, so --only free-llm-api-resources answers instead of erroring. Re-verification paragraph added to MAC-INSTALL-comms-data.md's unreachable-sources section.",
+    "halt": false,
+    "haltReason": ""
+  },
+  {
+    "id": "F-V1-06",
+    "severity": "medium",
+    "area": "Verified, not assumed — the three free-key sources",
+    "finding": "bytez.com, openrouter.ai/models?q=free and build.nvidia.com/models remain egress-blocked, so no page was read and no limit or price is claimed from one. The question that matters is whether Steven only has to paste values, and the answer is yes: the key NAMES are wired and checked. This is confirmed by execution, not by reading the source.",
+    "evidence": "MAC-SETUP.sh's omniroute step calls ensure_env_file with OMNIROUTE_API_KEY, OPENROUTER_API_KEY, NVIDIA_API_KEY and BYTEZ_API_KEY plus a where-to-get-it hint each; ./MAC-SETUP.sh --dry-run printed all four under 'MISSING KEY VALUES (names only)'. mac-verify.sh line ~169 checks the same four by name and reports 'no value yet' per name. The identical ensure_env_file code path was executed for real under HOME=/tmp/v1-home by the new lofty and higgsfield steps: files created at mode 600 containing NAME= and nothing else. The omniroute providers add --credential-env <NAME> lines that load them are written out in integrations/omniroute-failover/README.md.",
+    "fix": "No change needed to the wiring — it was already correct. Documented the verification in MAC-INSTALL-comms-data.md so it is not re-litigated. Not executed anywhere: the omniroute step's own npm install -g omniroute and its .env creation were not run for real in this session (only dry-run), because the step also installs a package.",
+    "halt": false,
+    "haltReason": ""
+  },
+  {
+    "id": "F-V1-07",
+    "severity": "high",
+    "area": "Wrong reason recorded — plugin advisories rested on a false premise",
+    "finding": "Three steps (claude-code-setup, ponytail, prompts-chat) were held as advisory partly on the belief that Claude Code plugin installs are interactive and cannot run unattended. That belief is false — F-S1-18 had already disproven it for CLI-Anything, and MAC-SETUP.sh's own cli-anything step runs both plugin commands unattended 130 lines further down. So the script simultaneously told Steven that a plugin install is 'yours to approve, not a script's' and performed one automatically. Two contradictory policies in one file, and the three advisory notes did not distinguish a technical barrier from a policy one — which matters, because the three are held for three different reasons and only one of them is genuinely a decision Steven must make.",
+    "evidence": "claude plugin marketplace add <owner/repo> -> 'Successfully added marketplace' and claude plugin install <name>@<marketplace> -> 'Successfully installed plugin', both non-interactive, exit 0 (re-confirmed by the caller today; measured 2026-09-22 in a throwaway HOME per F-S1-18). MAC-SETUP.sh's cli-anything step already calls both through run(). The old claude-code-setup advisory read 'A plugin install lands in your live Claude Code user scope — yours to approve, not a script's.'",
+    "fix": "Added a plugin_advisory() helper carrying the correction in a comment block and printing, after every plugin block, 'Technically scriptable: both claude plugin commands run non-interactively (verified 2026-09-22, exit 0). It stays manual for the reason above, not because a script could not do it.' Then rewrote each reason to state its real, separate ground: ponytail = POLICY, the strongest hold — its two Node hooks fire on every prompt of every session and inject into every subagent, so it changes Vanessa's dispatch on the Mac holding client files without ever being invoked (a live-prompt edit, HALT-class), and it duplicates the vendored karpathy skill; claude-code-setup = POLICY, and honestly the weakest — the plugin adds no hooks and is inert until invoked, so it is held because it lands in the live user scope of the business Mac and because everything it PRODUCES is a hooks/settings edit, and it is flagged in the text as the first candidate to promote if Steven says yes; prompts-chat = VALUE, not safety — FR5a found no business skill inside it, with the remote-MCP point demoted to the usage footnote it always was. Nothing was promoted to automatic.",
+    "halt": false,
+    "haltReason": ""
+  },
+  {
+    "id": "F-V1-08",
+    "severity": "medium",
+    "area": "Stale instruction never applied — F-S1-19",
+    "finding": "F-S1-19 recorded that integrations/CONNECTIONS.md still carried the superseded manual instruction for CLI-Anything, supplied the exact replacement text, and handed it to the coordinator rather than applying it. It was never applied. The file still told Steven to type /plugin marketplace add and /plugin install by hand, and still described the row as 'Spec written this cycle', after MAC-SETUP.sh had gained a cli-anything step that does all three halves unattended.",
+    "evidence": "integrations/CONNECTIONS.md, CLI-Anything row of 'The four that need Steven today', read 2026-09-22. F-S1-19's own fix field: 'I did not edit CONNECTIONS.md ... Handed to the coordinator with the exact replacement text.'",
+    "fix": "Applied the handed-over text. The status cell now reads 'Not installed on the Mac, but no longer manual' and names F-S1-18; the action cell reads 'Run ./MAC-SETUP.sh (hub, plugin and browser harness install non-interactively), install the DOMShell Chrome extension and sign in, then say generate the homes.com wrapper — generation is the only interactive step.' F-S1-19 can be closed.",
+    "halt": false,
+    "haltReason": ""
+  },
+  {
+    "id": "F-V1-09",
+    "severity": "medium",
+    "area": "mac-verify.sh did not check the newest step",
+    "finding": "MAC-SETUP.sh's cli-anything step installs three separate halves — the pip hub, the Claude Code plugin and the browser harness — and mac-verify.sh checked none of them. A step that cannot be verified is a step that can silently not be there. Its opt-OUT telemetry (F-S1-05: cli_hub/analytics.py reports this machine's hostname on install, uninstall, launch and every call) was likewise unverifiable, even though the installer's own NEEDS-STEVEN line tells Steven to export CLI_HUB_NO_ANALYTICS=1 in his shell profile and the runner task env.",
+    "evidence": "grep for cli-anything, cli-hub, lofty and higgsfield in mac-verify.sh returned nothing before this change.",
+    "fix": "Added a CLI-Anything block to mac-verify.sh: cli-hub presence and version, the cli-anything-browser harness at ~/Applications/CLI-Anything/.venv/bin/, the plugin via claude plugin list, and a NEED if CLI_HUB_NO_ANALYTICS is not set in the checking shell, naming F-S1-05. Added conditional env-file checks for cli-anything and higgsfield. bash -n and shellcheck 0.11.0 clean.",
+    "halt": false,
+    "haltReason": ""
+  },
+  {
+    "id": "F-V1-10",
+    "severity": "high",
+    "area": "Testing honesty — what has and has not been executed",
+    "finding": "Reported explicitly so it is not inferred. EXECUTED in this session: bash -n and shellcheck 0.11.0 on both scripts (clean, before and after); ./MAC-SETUP.sh --dry-run end to end, exit 0, 22 steps; --dry-run --only for each new step; --only on a REFUSED name (exit 2, reason printed) and on both DECLINED names (exit 2, reason printed); and a REAL run of lofty-keyfile and higgsfield under HOME=/tmp/v1-home with VANESSA_SETUP_ALLOW_NON_DARWIN=1, twice, proving creation at mode 600 with names only and then idempotent 'already present'; mac-verify.sh against that HOME. NEVER EXECUTED ANYWHERE, by me or anyone: every brew install line; the npm install -g lines for codeburn and omniroute; the uv tool install lines for headroom and strix-agent; the git clone and uv venv builds for whatsapp-cli and cli-anything-browser; pipx install cli-anything-hub; the scrapling/scrapegraphai installs into the shared venv; both claude plugin commands inside the cli-anything step (the commands themselves were verified non-interactive elsewhere, but this script's invocation of them has never run); and every macOS-only path in mac-verify.sh. Neither script has ever run on a Mac.",
+    "evidence": "Session transcript. The real run was confined to a throwaway HOME under /tmp and both the venv used for shellcheck and that HOME were deleted afterwards; the freellmapi clone (27 MB) was deleted after reading.",
+    "fix": "No fix — this is the disclosure. The first real run on the Mac should be ./MAC-SETUP.sh --dry-run, read in full, then ./MAC-SETUP.sh, then ./mac-verify.sh.",
+    "halt": false,
+    "haltReason": ""
+  },
+  {
+    "id": "F-V1-11",
+    "severity": "info",
+    "area": "REFUSED list — reviewed, unchanged",
+    "finding": "All seven refusals were re-read against their stated reasons and all seven stand: vphone-cli (SIP/AMFI relaxation on the Mac holding the keychain and client files), Agent402 (spends money per call by design), the whole addyosmani/agent-skills plugin (its interview-me collides by name with the brain's own skill; the six wanted skills are vendored individually), framepipe-dev/media-inference-worker (committed live-looking third-party credential), the Agent-Reach skill (frontmatter claiming MUST USE for any research would hijack the router's research path), the whatsapp-cli plugin (would give every session on the Mac WhatsApp), normen/whatscli (no automation by its own README, and emulates a WhatsApp Web device). Nothing was removed or weakened. The one adjacent correction is F-V1-03: refusing the media-inference worker repo is right, and it never extended to the Higgsfield vendor.",
+    "evidence": "REFUSED_LIST and REFUSED_GUARDS in MAC-SETUP.sh unchanged by this session; --only vphone-cli still exits 2 with its reason; the new higgsfield step references the refused repo in no executed command.",
+    "fix": "None. Recorded so the next reconciliation does not re-open them.",
+    "halt": false,
+    "haltReason": ""
+  }
+]

@@ -35,6 +35,14 @@ them into **one recall path in** and **one dispatch path out**.
 | **RAG** (`vector-index/`) | Finding a passage in a high-volume corpus | Anything that must be read whole |
 | **ECC** (under Derek) | A **gate** on every change: standards, test, observability, accessibility, security, dependency, agent-safety | Recall. It stores nothing |
 | **Orca Computer Use** (v1.4.203, Stably AI) | Computer-use / browser execution where there is no API | Recall, and anything unattended and irreversible |
+| **Notion** (Second Brain DB, 68–70 rows) | **The record.** What survives a session, synced by `brain-deck-sync`; also hosts the Health Log | Asking it a question directly. It is the destination, not the index |
+| **Google Drive** ("Second Brain" folder) | **Nothing yet — not wired.** Intended as a read-only *source* that feeds Jarvis and the vault | Everything, today. See below |
+
+Steven asked for this to be "Notion **+ Drive**/Graphify/Obsidian/RAG/ECC as one self-improving
+Vanessa". The two rows above were missing from this table until 2026-09-22. Notion was in fact wired
+all along (it is the record); **Drive never was.** Two tasks claim to read a Drive folder, and the
+fabric tile has counted **0 files** in it every time it has been sampled — a store on the deck that
+nothing can reach. Decide it, do not leave it: `integrations/google-drive-brain.md`.
 
 **Orca's honest status:** the standalone computer-use app **is installed** on the Mac. It is **not**
 integrated with Claude Code, and the parallel-worktree IDE integration is **not** done. As an
