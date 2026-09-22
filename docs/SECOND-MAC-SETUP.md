@@ -100,7 +100,7 @@ You do **not** need all of them on Mac #2. Take them in three groups:
 | **Needed to answer like Vanessa** | `perplexity` (research), `notion-brain` (Second Brain), `plugin:ruflo-core:ruflo` (recall) | **Yes** |
 | **Tied to Mac #1's data or hardware** | `lofty`, `apple-health`, `apple-health-xml`, `health-export`, `openterminal`, `tradingview`, `apination`, `openrouter` | **Only if this Mac becomes PRIMARY.** They read local daemons, local files or a machine-local key |
 
-`plugin:ruflo-core:ruflo` arrives with the `ruflo-core` plugin, not as a standalone server.
+`plugin:ruflo-core:ruflo` arrives with the `ruflo-core` plugin, not as a standalone server. For the wider tooling set, `./MAC-SETUP.sh --dry-run` then `./mac-verify.sh` cover it.
 
 ```bash
 claude mcp list
