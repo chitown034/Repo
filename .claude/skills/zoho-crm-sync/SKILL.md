@@ -102,3 +102,36 @@ doc `zohoSyncLog` (`read_db` get → missing means `[]` → `write_db` **set**);
 **In Zoho CRM go to Setup → Security Control → Profiles → the connected user's profile and enable
 "Zoho CRM API Access".** Nothing else unblocks this; the sync re-tests every few hours and fills the
 board automatically the moment it lands.
+
+## Direct REST path from the Mac (added 2026-09-22) — where a Zoho API credential goes
+
+Composio is the primary path and holds its own OAuth connection. If Steven has generated a Zoho
+credential of his own (a **Self Client** in the Zoho API Console, or a refresh token from any OAuth
+client), it is NOT pasted into chat, a prompt, a finding or this file. It goes on the Mac, by name:
+
+```
+~/.config/zoho/.env            (chmod 600)
+ZOHO_ACCOUNTS_URL=https://accounts.zoho.com     # .eu / .in / .com.au if the org lives in another data center
+ZOHO_API_URL=https://www.zohoapis.com
+ZOHO_CLIENT_ID=
+ZOHO_CLIENT_SECRET=
+ZOHO_REFRESH_TOKEN=            # scopes needed: ZohoCRM.modules.ALL,ZohoCRM.settings.READ
+```
+
+The task then runs the same sync without Composio:
+
+1. Exchange the refresh token for an access token:
+   `POST $ZOHO_ACCOUNTS_URL/oauth/v2/token` with `grant_type=refresh_token`, `client_id`,
+   `client_secret`, `refresh_token`. Access tokens last one hour; never store one.
+2. `GET $ZOHO_API_URL/crm/v8/Leads?fields=Last_Name,Company,Lead_Status,Lead_Source,Modified_Time&per_page=200`
+   with header `Authorization: Zoho-oauthtoken <access token>`; same for `Deals` with
+   `Deal_Name,Amount,Stage,Closing_Date,Modified_Time`. Page with `page_token`.
+3. Write `zohoSync`, `zohoLeads`, `zohoDeals` in the exact shapes above, with
+   `source:"Zoho CRM via direct REST (Mac)"`.
+
+**The profile permission still gates everything.** A 403 `NO_PERMISSION` / `Crm_Implied_Api_Access`
+on this path means the same thing it means on Composio: the user who authorized the token is on a
+profile without *Zoho CRM API Access* (Setup → Security Control → Profiles → that profile →
+Developer Permissions → toggle ON). No credential fixes that; only the toggle does. Re-verify with
+one `Leads` call after flipping it, and if it was a Composio-authorized user, re-authorize the
+Composio connection once so the new permission is picked up.
