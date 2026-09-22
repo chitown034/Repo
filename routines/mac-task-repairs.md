@@ -22,6 +22,8 @@ Work top to bottom. Item 1 has a deadline.
 | 7 | Nine failing cloud routines | **Read** — one root cause, not nine | This week |
 | 8 | Old Pipeline Sync still lying | **Click** disable | Low, but it never stops on its own |
 | 9 | Connector card has never been told anything | **Paste** a prompt (new Mac task `cli-anything-status`) | After the installer runs |
+| 10 | `revenueScan` has never been written | **Run now** once, then **paste** an amendment | This week |
+| 11 | `healthCoaching` has never been written | **Run now** once, then **paste** an amendment | This week |
 
 ---
 
@@ -711,6 +713,307 @@ cliAnythingStatus document has ever been written"*. After a clean run it must sa
 NOT installed (checked …)"* with a time that matches when you ran it — and if the card is **red**
 with "WRITE VERB ENABLED", the document put a recipe name or a real write verb in `verbsEnabled`:
 read the row it names, do not clear the alarm by editing the document until you know which.
+
+---
+
+## 10. `revenue-scan-weekly` — the task is real and enabled; its document has never existed
+
+**Added 2026-09-23 by P3.** The Output-watch board has carried a red *"Never produced output"* row for
+`revenueScan` since the board was built, and the backup/restore gate is Degraded because of it: a
+document that was never written cannot be restored.
+
+### What is broken
+
+Two separate causes. Both have to clear or the row stays red.
+
+**(a) The task has never fired.** Live `runnerStatus`, read 2026-09-22T20:10:15Z:
+`{"cron":"40 5 * * 0","enabled":true,"lastEnd":null,"lastStatus":null,"nextSlot":"2026-09-27T05:40:00","task":"revenue-scan-weekly"}`.
+Registered, enabled, never run. It was already in the task list at the 2026-09-16T00:52:24Z toolkit
+sync, so the **Sunday 2026-09-20 05:40 PT slot passed with the task enabled and nothing ran**. F-E8-39
+says the never-run tasks' "first slots fall 2026-09-25 to 2026-10-01"; for this task that is wrong, a
+slot has already been missed, and waiting for 09-27 will not settle it. Mac tasks only run while the
+desktop app is open, and a scheduled run cannot answer a permission prompt — so the first run has to
+be a supervised **Run now**, approving each tool as it asks.
+
+**(b) Nothing tells it what to write.** No prompt in this repo, in `toolkitSnapshot`, or on the deck
+names the document, its shape, or the `{v:…}` wrapper. The stored description stops mid-word at 140
+characters — *"Sunday: runs the four opportunity agents in parallel — refinance hunter, realtor
+reciprocity, predictive seller intelligence and borrower re"* — and **the full prompt lives only on
+Steven's Mac and could not be read from a cloud session**. The two most recent writer defects in this
+file are exactly this failure mode: §1 wrote the value bare, §5 had no write step at all. The
+amendment below is additive and is safe to paste whether or not the live prompt already names the
+document.
+
+### Evidence
+
+- Live `get` on `state/revenueScan`, 2026-09-22: **`No document "revenueScan" in collection "state"`**.
+  Same result for a full `list` of the collection (174 documents, no `revenueScan`).
+- `command-deck.html:20239` — `{ doc: "revenueScan", label: "Revenue scan", task: "revenue-scan-weekly", hrs: 200 }`.
+- Executed, not read: the harness renders the board's first row as
+  **"Revenue scan · revenueScan · revenue-scan-weekly · Never produced output"**, and the board's own
+  summary line reads **"14 current · 10 stale · 4 never produced output"**.
+- The four named agents all exist in the 172-agent roster: `refinance-hunter`,
+  `realtor-reciprocity-agent`, `predictive-seller-intelligence`, `borrower-retention-agent`
+  (`docs/inventory/agent-roster.md`).
+
+### What the deck actually needs
+
+`revenueScan` has **no renderer** — `outputWatchRows()` is the only reader. It needs a non-empty value
+carrying one of `syncedAt`, `ranAt`, `updatedAt`, `checkedAt`, `ts`, `generatedAt`, parseable, not in
+the future, under 200 h old. `[]` and `{}` both still count as *never produced output* — that is why
+`improvementProposals` and `isaScorecard`, both `{v:[]}` in the store, are red as well.
+
+Watched-but-not-rendered is normal here, not a dead panel: `vanessaRuns` and `vanessaBrief` are read by
+nothing on the page either, exist in the store, and are written by their owners. Dropping `revenueScan`
+from the board would hide a dead automation, which is the opposite of the fix.
+
+### The amendment — append this to the task's prompt on the Mac
+
+> **Write the result. This is the step the task has never performed.**
+>
+> When the four opportunity agents have finished, write the Command Deck `revenueScan` document.
+> Nothing else writes it, and the deck's Output-watch board scores this task on that document alone —
+> not on whether the task ran.
+>
+> **1. Build the value.**
+> - `ranAt` — the **actual UTC time of this write**, ISO-8601 with a `Z`, taken from a UTC clock
+>   (`date -u`). Never the Mac's local clock with a `Z` stuck on the end: that is seven hours wrong and
+>   the board reads a future stamp as stale.
+> - `weekOf` — the Sunday this scan covers, `YYYY-MM-DD`.
+> - `source` — the string `"revenue-scan-weekly (Mac)"`.
+> - `by` — the agents that actually contributed, as an array of strings:
+>   `["refinance-hunter","realtor-reciprocity-agent","predictive-seller-intelligence","borrower-retention-agent"]`.
+>   Drop any agent that did not run, and say why in `dataGaps`.
+> - `counts` — `{refinance, reciprocity, seller, retention, total}`, integers.
+> - `opportunities` — one object per opportunity, highest value first:
+>   `{id, agent, lens, recordId, headline, evidence, estimate, nextStep, status}`.
+>   `id` is `rev-<YYYYMMDD>-<nn>`. `status` is one of `Proposed`, `Actioned`, `Dismissed`.
+> - `dataGaps` — array of strings: every source that was unreadable, and what it would have added.
+> - `needsSteven` — array of strings: anything that needs a credential, a permission or a decision.
+>
+> **2. Two hard rules on the content.**
+>
+> - **No client identifiers.** No names, addresses, phone numbers, emails, loan numbers or account
+>   numbers. Reference a client by their CRM record id only, in `recordId`. This document is in a
+>   published artifact's store; aggregates are safe to report, individuals are not.
+> - **No rate or APR figures, ever.** Stating an available rate or APR is licensed activity and a
+>   triggering term under Reg Z — the refinance hunter's own seat prompt already says so. Savings are
+>   ESTIMATES requiring a full file, and `estimate` must say so in its own text.
+>
+> **3. Write it wrapped.**
+>
+> Every document in collection `state` is `{v:<value>}` — no exceptions. Send `data:{v:<the whole
+> value>}`, never the bare value. Use `set`, not `update`, so the top level is replaced outright.
+>
+> ```
+> ArtifactData action:"set"
+>   url:        https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d
+>   collection: "state"
+>   doc_id:     "revenueScan"
+>   data: {
+>     "v": {
+>       "ranAt": "2026-09-27T12:41:03Z",
+>       "weekOf": "2026-09-27",
+>       "source": "revenue-scan-weekly (Mac)",
+>       "by": ["refinance-hunter","realtor-reciprocity-agent","predictive-seller-intelligence","borrower-retention-agent"],
+>       "counts": {"refinance":0,"reciprocity":0,"seller":0,"retention":0,"total":0},
+>       "opportunities": [],
+>       "dataGaps": ["Zoho CRM returns 403 NO_PERMISSION, so the past-client book could not be read."],
+>       "needsSteven": ["Zoho CRM API Access on the connected user's profile."]
+>     }
+>   }
+> ```
+>
+> **4. A scan that found nothing still writes.** `opportunities: []` with an honest `ranAt`, honest
+> `counts` and a filled `dataGaps` is a correct, useful result. Writing nothing is not — it is
+> indistinguishable from the task being dead, and it has been indistinguishable for weeks. The only
+> thing you must never do is invent an opportunity, a saving or a client to make the row green.
+>
+> **5. Read it back.** After writing, read `state/revenueScan` again and confirm its top level is
+> exactly one key, `v`. If it is not, say so plainly and stop — do not attempt a second repairing write.
+>
+> **6. Log one row.** Append one row to `ciLog` — `{date:"<YYYY-MM-DD>", text:"<one line>"}` and no
+> other shape, e.g. `{date:"2026-09-27", text:"revenue-scan-weekly — ok, <n> opportunities, v-wrapped."}`.
+> Read `ciLog`, append to its array, write the whole array back as `data:{v:<array>}`. Never remove or
+> alter an existing row.
+
+### The check Steven runs afterwards
+
+The first run must be started by hand — open the desktop app's **Scheduled** section, find
+`revenue-scan-weekly`, press **Run now**, and approve each tool as it asks. Approvals from a Claude
+session do not transfer, and a scheduled run cannot ask anyone, so it dies silently on the first
+prompt. Then paste this into Claude Code on the Mac:
+
+```
+Read state/revenueScan on https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d
+and tell me two things: is its top level exactly one key named v, and what does ranAt say?
+```
+
+Wrapped, with a `ranAt` that matches when you pressed Run now, means it is fixed: the deck's
+Output-watch row turns from red *"Never produced output"* to a green age, and the backup/restore gate
+stops reporting an unrestorable document. A top level of `ranAt/weekOf/source/...` means the paste did
+not take.
+
+---
+
+## 11. `health-coaching-weekly` — same shape of failure, plus a document contract the page already enforces
+
+**Added 2026-09-23 by P3.** Same two causes as §10 — never fired, and nothing tells it what to write —
+but `healthCoaching` is the harder of the two, because the deck **does** render it and the renderer has
+a precise contract that an improvised write will not satisfy.
+
+### What is broken
+
+**(a) The task has never fired.** Live `runnerStatus`, read 2026-09-22T20:10:15Z:
+`{"cron":"30 6 * * 0","enabled":true,"lastEnd":null,"lastStatus":null,"nextSlot":"2026-09-27T06:30:00","task":"health-coaching-weekly"}`.
+Registered at the 2026-09-16T00:52:24Z toolkit sync, so the **Sunday 2026-09-20 06:30 PT slot passed
+with nothing run**. Same supervised **Run now** requirement as §10.
+
+**(b) Its inputs are dead, and it has no instruction for that case.** `appleHealth` last carried data
+through 2026-09-12 (ingest daemon down since 09-13), `health-full-analysis` is in `error`, and
+`r8-apple-health-snapshot` reports `ok` twice a day while writing nothing — F-E5-27's ordered repair
+plan and NEEDS-STEVEN item 14. A coaching task with no data will, on the obvious reading of its
+prompt, write nothing at all. **The deck was built for the opposite behaviour**: `renderHealthCoaching`
+has a dedicated red banner and an "ingest stopped" badge for a brief that says its own pipeline is
+broken. Writing the honest broken-pipeline document is the designed outcome; silence is not.
+
+**(c) The document's first key decides whether the card renders at all.** The renderer's guard is
+`if (!c || typeof c !== "object" || !c.headline)` — a document without a `headline` string renders as
+*"No coaching brief yet"* even after a completely successful write, and the Output-watch row would go
+green while the card stayed empty. That is the worst of the three outcomes and the easiest to hit.
+
+### Evidence
+
+- Live `get` on `state/healthCoaching`, 2026-09-22: **`No document "healthCoaching" in collection "state"`**.
+- `command-deck.html:20249` — `{ doc: "healthCoaching", label: "Health coaching", task: "health-coaching-weekly", hrs: 200 }`;
+  the card is `healthCoachingCard` in `panel-wellness`, body `hcBody`, badge `hcBadge`, banner `hcFresh`.
+- Executed, not read: with the document absent, `hcBody` renders *"No coaching brief yet. Set your
+  goals below; the first brief runs Sunday 6:30 AM from the Mac (task health-coaching-weekly), or ask
+  Vanessa for one now."* and `hcBadge` is grey *"no brief yet"*. The card is honest today — it is the
+  automation behind it that is silent.
+- Executed, not read: a document written to the contract below renders the full brief, sets `hcBadge`
+  red *"ingest stopped"* and fires the `hc-broken` banner with the pipeline nudge.
+- The three named agents exist in the roster: `health-coach-analyst`, `fitness-trainer`, `meal-planner`.
+
+### A latent crash this fix would otherwise have exposed — fixed in the page
+
+`renderHealthCoaching` had one unguarded `.join()`: `chatEsc((c.by || []).join(", "))`. Every other
+array in that function is guarded with `Array.isArray`. `c.by` was not, so a `by` that arrives as an
+object or a string — the exact mutation the stress sweep's "wrong-typed fields" case produces — threw a
+TypeError inside the renderer. `safeRun` caught it, so the page stayed up and the card rendered **empty
+with no on-page reason**, which is the failure the card exists to prevent.
+
+This never fired because the document has never existed. It would have fired on the first real write.
+Fixed in the page at `command-deck.html:16399`:
+
+```
+- h += '<p class="src-note" ...>By ' + chatEsc((c.by || []).join(", ")) + ". Coaching only; not medical advice.</p>";
++ h += '<p class="src-note" ...>By ' + chatEsc((Array.isArray(c.by) ? c.by : []).join(", ")) + ". Coaching only; not medical advice.</p>";
+```
+
+Before the fix, with the document present, the sweep's `Document healthCoaching (malformed input)` row
+read **Degraded — 1 of 7 malformed shapes reach a renderer and throw**. After it, the same row reads
+**Pass**. The edit is in the deck source; it is not published, and the deck is not committed to this repo.
+
+### The contract the renderer enforces — the amendment must match it exactly
+
+`headline` (string, **required**) · `weekOf` · `generatedAt` (the board's stamp) · `goalsStatus` ·
+`askSteven[]` · `freshness{pipeline, watcher, stale, dataThrough, lastIngestAt, nudge}` ·
+`brief{movement[], meaning[], recommendations[], question}` ·
+`goalProgress[]{goal, target, current, asOf, delta, onTrack}` ·
+`training{summary, week[]{day, focus, session, intensity, durationMin, stopIf}, cautions[]}` ·
+`meals{summary, days[]{day, breakfast, lunch, dinner, snacks}, grocery[]{section, items[]}, flags[]}` ·
+`flags[]` · `dataGaps[]` · `by[]`.
+
+### The amendment — append this to the task's prompt on the Mac
+
+> **Write the brief. This is the step the task has never performed.**
+>
+> When the three seats have finished, write the Command Deck `healthCoaching` document. Nothing else
+> writes it. The card on the deck renders straight from these fields, so the field names below are a
+> contract, not a suggestion.
+>
+> **1. Read the goals first.** `state/healthGoals` is what Steven typed into the card. Coach against
+> those, not against generic targets. If it is empty, set `goalsStatus` to `"not set"` and put one
+> sentence in `askSteven` telling him which two goals would unlock the most useful coaching.
+>
+> **2. Build the value. `headline` is required** — a one-sentence plain-English summary. The card's
+> guard is `!c.headline`, so a brief without it renders as "no coaching brief yet" no matter how
+> complete the rest is.
+> - `generatedAt` — the **actual UTC time of this write**, ISO-8601 with a `Z`, from `date -u`.
+> - `weekOf` — the Sunday this brief covers, `YYYY-MM-DD`.
+> - `goalsStatus` — `"set"` or `"not set"`. `askSteven` — array of strings.
+> - `freshness` — `{pipeline, watcher, stale, dataThrough, lastIngestAt, nudge}`. `pipeline` is
+>   `"ok"` or `"broken"`; `watcher` is `"running"` or anything else; `stale` is a boolean;
+>   `dataThrough` is the last date the data actually covers; `nudge` is the one line the banner shows.
+> - `brief` — `{movement[], meaning[], recommendations[], question}`, all arrays of plain strings.
+> - `goalProgress` — `[{goal, target, current, asOf, delta, onTrack}]`. `onTrack` is `true`, `false`
+>   or `null` — never a string.
+> - `training` — `{summary, week[{day, focus, session, intensity, durationMin, stopIf}], cautions[]}`.
+>   `durationMin` is a number. `stopIf` is the symptom that ends the session.
+> - `meals` — `{summary, days[{day, breakfast, lunch, dinner, snacks}], grocery[{section, items[]}], flags[]}`.
+> - `flags` — clinician flags, shown apart from the tips. `dataGaps` — array of strings.
+> - `by` — **an array of strings**, the seats that contributed, e.g.
+>   `["health-coach-analyst","fitness-trainer","meal-planner"]`. An array, never a bare string.
+>
+> **3. When the data is stale or the ingest is dead, write the brief anyway and say so.** As of
+> 2026-09-13 the Apple Health ingest daemon is down and `appleHealth` covers only through 2026-09-12.
+> Do not skip the write. Set `freshness.pipeline` to `"broken"`, `freshness.watcher` to `"stopped"`,
+> `freshness.stale` to `true`, `dataThrough` to the real last date, and put the reason in `nudge` and
+> in `dataGaps`. The card has a red banner and an "ingest stopped" badge built for exactly this, and a
+> brief that says "the pipeline is broken and here is what I could still see" is worth more than
+> silence — silence looks identical to the task being dead, which is how this went unnoticed.
+>
+> **Never infer, average or carry forward a health number that is not in the data.** A missing metric
+> goes in `dataGaps`. Coaching only, never a diagnosis; anything clinical goes in `flags`, not in
+> `recommendations`.
+>
+> **4. Write it wrapped.** Every document in collection `state` is `{v:<value>}` — no exceptions.
+> Send `data:{v:<the whole value>}`, never the bare value. Use `set`, not `update`.
+>
+> ```
+> ArtifactData action:"set"
+>   url:        https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d
+>   collection: "state"
+>   doc_id:     "healthCoaching"
+>   data: { "v": {
+>     "headline": "…",
+>     "generatedAt": "2026-09-27T13:31:12Z",
+>     "weekOf": "2026-09-27",
+>     "goalsStatus": "not set",
+>     "askSteven": ["…"],
+>     "freshness": {"pipeline":"broken","watcher":"stopped","stale":true,
+>                   "dataThrough":"2026-09-12","lastIngestAt":"2026-09-13T14:30:00Z","nudge":"…"},
+>     "brief": {"movement":[],"meaning":[],"recommendations":[],"question":"…"},
+>     "goalProgress": [], "training": {"summary":"…","week":[],"cautions":[]},
+>     "meals": {"summary":"…","days":[],"grocery":[],"flags":[]},
+>     "flags": [], "dataGaps": ["…"],
+>     "by": ["health-coach-analyst","fitness-trainer","meal-planner"]
+>   } }
+> ```
+>
+> **5. Read it back.** Read `state/healthCoaching` again and confirm its top level is exactly one key,
+> `v`, and that `v.headline` is a non-empty string. If either is wrong, say so plainly and stop.
+>
+> **6. Log one row** in `ciLog` — `{date, text}` and no other shape; read, append, write the whole
+> array back as `data:{v:<array>}`.
+>
+> This document stays on the dashboard. Nothing in it is texted, posted or emailed, and none of it is
+> medical advice.
+
+### The check Steven runs afterwards
+
+Start the first run by hand — desktop app → **Scheduled** → `health-coaching-weekly` → **Run now**,
+approving each tool as it asks. Then open the deck's Health coaching card in **Health & Wellness**:
+
+- grey *"no brief yet"* → the write did not happen, or the document has no `headline`;
+- red *"ingest stopped"* with the broken-pipeline banner → **correct** while the Apple Health daemon is
+  down, and proof the whole path works;
+- green *"generated …"* → the brief is live and the data behind it is fresh.
+
+This task is downstream of NEEDS-STEVEN item 14 (the Apple Health branch decision). It is worth running
+before that is settled — the broken-pipeline brief is the honest state and it proves the writer — but it
+cannot produce real coaching until the ingest question is answered.
 
 ---
 
