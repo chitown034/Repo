@@ -10,10 +10,10 @@ Escalated is waiting on Steven and says why in its halt reason.
 
 | By priority | | By resolution | | By owner | |
 |---|---|---|---|---|---|
-| P1 | 94 | Open | 117 | Reliability Engineer | 67 |
-| P2 | 132 | Fixed | 88 | Integration Engineer | 53 |
-| P3 | 59 | Escalated | 48 | Steven | 46 |
-|  |  | Implemented | 21 | Capability Engineer | 36 |
+| P1 | 94 | Open | 116 | Reliability Engineer | 67 |
+| P2 | 132 | Fixed | 93 | Integration Engineer | 53 |
+| P3 | 59 | Escalated | 45 | Steven | 46 |
+|  |  | Implemented | 20 | Capability Engineer | 36 |
 |  |  | Improved | 10 | Vanessa | 33 |
 |  |  | Recommended | 1 | CTO Innovator | 23 |
 |  |  |  |  | Efficiency Engineer | 15 |
@@ -22,7 +22,7 @@ Escalated is waiting on Steven and says why in its halt reason.
 |  |  |  |  | Victor | 2 |
 |  |  |  |  | CRO | 1 |
 
-## Halted — waiting on Steven (54)
+## Halted — waiting on Steven (50)
 
 - **F-E1-13** — The speed-to-lead card measured 'time from a Follow Up Boss lead arriving to first contact' and its empty state said it fills once the watchdog runs 'reading Follow Up Boss through  
   *Re-pointing r2-lead-response-watchdog, lead-triage-daily, r11-isa-kpi-compile and showing-sync from Follow Up Boss to Lofty needs a Mac-side task edit plus the LOFTY_API_KEY in ~/.config/lofty/.env, which cannot be reached or verified from the cloud.*
@@ -36,18 +36,10 @@ Escalated is waiting on Steven and says why in its halt reason.
   *Only Steven knows whether the (619) 651-9845 line and steven.shearrill@followupboss.me were migrated to Lofty. The human ISA is told to use them on every lead call.*
 - **F-E12-05** — Zoho remains the system of record for mortgage, but every CRM call returns HTTP 403 NO_PERMISSION Crm_Implied_Api_Access (re-verified 2026-09-22 08:17 UTC). Several places on the p  
   *Fix is Zoho-side and only Steven can do it: Zoho CRM -> Setup -> Security Control -> Profiles -> the connected user's profile -> enable 'Zoho CRM API Access'.*
-- **F-E12-10** — The routine runs four times a day and reports SUCCESS every time, but it has never synced anything: an unattended cloud run cannot write an artifact database - the write parks on a  
-  *The routine cannot be fixed in the cloud. It needs replacing with a Mac task (the isa-comms-bridge-local pattern), or disabling so it stops reporting a green tick for work it cannot do.*
-- **F-E12-11** — Read live on 2026-09-22: this portal's pipeline document holds 2 mortgage deals (R. Alvarez $480,000 Underwriting; T. Nguyen $355,000 Clear to close). Command Deck's pipeline docum  
-  *Closing it needs a write to Command Deck's store, which the publishing engineer performs; keeping it closed needs a Mac task.*
-- **F-E12-12** — This portal holds 2 real-estate clients (J. Whitfield, buyer, Active search; M. Delgado, seller, Consult scheduled). On Command Deck the reClients document does not exist at all -   
-  *Same as F-E12-11: needs a write to the other store plus a task to keep it carried.*
 - **F-E12-15** — The ISA line works, and it is the only thing that crosses: isa-comms-bridge-local on Steven's Mac, hourly 7:37 AM - 9:37 PM PT, last ok 2026-09-21 8:38 PM PT. Both copies of the th  
   *Steven has to decide whether to accept a Mac-only bridge or fund a path that survives his Mac being asleep.*
 - **F-E12-22** — Lofty is the CRM of record from 2026-09-22 but no loftyLeads document has ever been written. The Mac has the lofty-bridge MCP server and lofty-cli; the API key (Lofty -> Settings -  
   *The API key lives on Steven's Mac and only he can add it. Until then there are no live real-estate lead numbers on either dashboard.*
-- **F-E12-23** — The artifact's published capabilities are {"db":{},"mcp":{"servers":[{"server":"You.com","tools":["you-search"]}]},"sample":{}}. No code in the file uses the mcp capability any mor  
-  *Republishing is the caller's step; the page cannot change its own capability declaration.*
 - **F-E2-09** — The Remote Run card presented the cloud routine as the primary working path. The live hfRequest doc says otherwise: AAPL, requested 2026-09-11, started 2026-09-13, status failed at  
   *Restoring the committee's cloud path needs network egress opened for the cloud routine environment (Yahoo Finance, stooq, sec.gov, apple.com, macrotrends) - an infrastructure/permission decision outside an engineer's scope. Until then the honest position, now on the card, is Mac-only.*
 - **F-E2-11** — The Risk monitor card offered two number inputs and nothing else. It never read the riskMonitor document at all - the deck stores riskDailyLossTriggered and riskAccountsBlown as se  
@@ -150,14 +142,14 @@ Escalated is waiting on Steven and says why in its halt reason.
 | F-E12-06 | Bug | take() returned early on !m.id, so any ISA-line message without an id was dropped silently on both sides of the merge. This is the human ISA's only written channel to Steven. | P1 | M | Broken | Fixed | Pass | 2026-09-22 | Reliability Engineer |
 | F-E12-07 | Bug | lsSetLocal had an empty catch, so a full or blocked browser store looked exactly like a successful save: the panel re-rendered from the in-memory value, the sync pill read normally, and what the ISA typed was gone on reload. | P1 | M | Broken | Fixed | Pass | 2026-09-22 | Reliability Engineer |
 | F-E12-08 | Bug | A document arriving without a {v: ...} wrapper was skipped outright, so it never reached the device and a restore silently lost it. Command Deck writes stravaSnapshot in exactly that shape. | P1 | S | Broken | Fixed | Pass | 2026-09-22 | Reliability Engineer |
-| F-E12-10 | Routine | The routine runs four times a day and reports SUCCESS every time, but it has never synced anything: an unattended cloud run cannot write an artifact database - the write parks on a permission prompt. Reading both stores on 2026-09-22 pro... | P1 | M | Broken | Escalated | Pass | — | CTO Innovator |
-| F-E12-11 | Current State | Read live on 2026-09-22: this portal's pipeline document holds 2 mortgage deals (R. Alvarez $480,000 Underwriting; T. Nguyen $355,000 Clear to close). Command Deck's pipeline document is an empty list, version 3, untouched since 2026-09-... | P1 | S | Broken | Escalated | Pass | — | Steven |
-| F-E12-12 | Current State | This portal holds 2 real-estate clients (J. Whitfield, buyer, Active search; M. Delgado, seller, Consult scheduled). On Command Deck the reClients document does not exist at all - it has never been created there. | P1 | S | Broken | Escalated | Pass | — | Steven |
+| F-E12-10 | Routine | The routine runs four times a day and reports SUCCESS every time, but it has never synced anything: an unattended cloud run cannot write an artifact database - the write parks on a permission prompt. Reading both stores on 2026-09-22 pro... | P1 | M | Resolved | Fixed | Pass — root cause found in the routine's own prompt, which opens "RESEARCH-ONLY MODE" and forbids writing. It compared cdStateSeed blobs, both {}, so equal seeds meant success forever. Replaced by trig_01M5zR1Po44gnHvTwA9ogZaB, which reads and writes the live databases with ArtifactData and verifies by reading back. | 2026-09-22 | CTO Innovator |
+| F-E12-11 | Current State | Read live on 2026-09-22: this portal's pipeline document holds 2 mortgage deals (R. Alvarez $480,000 Underwriting; T. Nguyen $355,000 Clear to close). Command Deck's pipeline document is an empty list, version 3, untouched since 2026-09-... | P1 | S | Resolved | Fixed | Pass — pipeline written to Command Deck (version 4) matching the portal, and a cloud routine now keeps it that way four times a day. | 2026-09-22 | Steven |
+| F-E12-12 | Current State | This portal holds 2 real-estate clients (J. Whitfield, buyer, Active search; M. Delgado, seller, Consult scheduled). On Command Deck the reClients document does not exist at all - it has never been created there. | P1 | S | Resolved | Fixed | Pass — reClients created on Command Deck (version 1) and carried by the same cloud sync routine. | 2026-09-22 | Steven |
 | F-E12-13 | Stale Content | The card stated 'The bridge carries changes both ways on the hour, merging by row, so a status you set here shows up on his side.' Verified false: nothing carries showings. The integration table also claimed a green 'Live' status for Ste... | P1 | M | Stale | Fixed | Pass | 2026-09-22 | Reliability Engineer |
 | F-E12-15 | Routine | The ISA line works, and it is the only thing that crosses: isa-comms-bridge-local on Steven's Mac, hourly 7:37 AM - 9:37 PM PT, last ok 2026-09-21 8:38 PM PT. Both copies of the thread held the same 9 messages on 2026-09-22. The hourly C... | P1 | M | Broken | Escalated | Pass | — | CTO Innovator |
 | F-E12-16 | Stale Content | The rate table was a 2026-09-07/09-10 Bankrate and Veterans United snapshot, 12 days old, while Command Deck's ratesSnapshot document (2026-09-22 02:24 UTC, written daily by mortgage-rates-daily) carried fresher Optimal Blue figures. | P1 | M | Stale | Fixed | Pass | 2026-09-22 | Capability Engineer |
 | F-E12-22 | Plugin/Integration | Lofty is the CRM of record from 2026-09-22 but no loftyLeads document has ever been written. The Mac has the lofty-bridge MCP server and lofty-cli; the API key (Lofty -> Settings -> Integrations -> API) and one proving run are outstandin... | P1 | M | Missing | Escalated | Pending | — | Steven |
-| F-E12-23 | Plugin/Integration | The artifact's published capabilities are {"db":{},"mcp":{"servers":[{"server":"You.com","tools":["you-search"]}]},"sample":{}}. No code in the file uses the mcp capability any more, so the declaration grants a retired connector for noth... | P1 | S | Stale | Open | Pending | — | Steven |
+| F-E12-23 | Plugin/Integration | The artifact's published capabilities are {"db":{},"mcp":{"servers":[{"server":"You.com","tools":["you-search"]}]},"sample":{}}. No code in the file uses the mcp capability any more, so the declaration grants a retired connector for noth... | P1 | S | Resolved | Fixed | Pass — ISA Portal republished as version 27 on 2026-09-22 with capabilities {db, sample}. The You.com mcp grant is gone and zero call sites remain. | 2026-09-22 | Steven |
 | F-E2-01 | Stale Content | The visible strategy tables were a hard-coded 2026-09-07 hand read (6 strategies + 9 stacks) while the live strategySnapshot doc, written 2026-09-16T03:26Z, carried 28 individual strategies with materially different figures (e.g. Q ORB N... | P1 | M | Stale | Fixed | Pass | 2026-09-22 | Reliability Engineer |
 | F-E2-02 | Bug | The deck claimed in its freshness copy that 'the page prefers that document over its baked-in seed' for strategySnapshot. That was false for the visible tables: only the Vanessa/hedge-fund chat-context helpers (marketContextText, dashboa... | P1 | S | Broken | Fixed | Pass | 2026-09-22 | Reliability Engineer |
 | F-E2-04 | Stale Content | The calendar showed five already-released events as pending consensus, including the Sep 15-16 FOMC as 'hike risk live' when the meeting had already delivered a 25bp hike, and retail sales as 'roughly flat to +0.4%' when the actual was +... | P1 | M | Stale | Fixed | Pass | 2026-09-22 | Reliability Engineer |
@@ -229,7 +221,7 @@ Escalated is waiting on Steven and says why in its halt reason.
 | F-INT-04 | Plugin/Integration | Follow Up Boss is retired as the real-estate CRM and replaced by Lofty (Steven's decision, 2026-09-22). Follow Up Boss had in any case been rejecting its API key on every call since 2026-09-16, so the speed-to-lead and lead-triage number... | P1 | M | Missing | Implemented | Pending | 2026-09-22 | Integration Engineer |
 | F-INT-05 | Plugin/Integration | Composio disclosed a security incident on 2026-05-21: roughly 5,241 API keys and 5,001 GitHub OAuth tokens exfiltrated through a compromised employee OAuth token. Composio is the path that currently carries Zoho, Gmail, GitHub, Google Ad... | P1 | S | New | Escalated | Pending | — | Steven |
 | F-INT-06 | Orchestrator Agent | The ecosystem had no surface showing the machinery that governs it: no master findings table, no stress test report, no scale log, no trust levels, no weekly brief, and no statement of the halt conditions. Every prior cycle's findings li... | P1 | L | Missing | Implemented | Pass | 2026-09-22 | Capability Engineer |
-| F-INT-07 | Current State | The weekly backup has never run under the Mac's claude-runner. It missed its 2026-09-20 Sunday slot entirely. The last verified backup is 2026-09-14 (7,931 documents, 109 MB, integrity pass, restore test 13 of 13 on 2026-09-15) and reten... | P1 | M | Broken | Implemented | Pending | 2026-09-22 | Reliability Engineer |
+| F-INT-07 | Current State | The weekly backup has never run under the Mac's claude-runner. It missed its 2026-09-20 Sunday slot entirely. The last verified backup is 2026-09-14 (7,931 documents, 109 MB, integrity pass, restore test 13 of 13 on 2026-09-15) and reten... | P1 | M | Resolved | Fixed | Pass — a cloud backup routine ran unattended on 2026-09-22 and backed up 170 of 170 Command Deck documents and 13 of 13 ISA Portal documents, verifying doc count, full id coverage and byte-identical spot checks. backupStatus reads GREEN, verified true, consecutiveFailures 0. | 2026-09-22 | Reliability Engineer |
 | F-INT-10 | Unlisted Capability | The knowledge stack existed as five separate stores (Notion, the Obsidian vault, Jarvis, Graphify, Ruflo) with a recall order described in prose on the Toolkit panel, but no files a Claude Code session actually loads and no routing rules... | P1 | L | Missing | Implemented | Pass | 2026-09-22 | Capability Engineer |
 | F-E1-02 | Stale Content | The baked weather seed was 2026-09-07 10:05 AM PDT (Temecula 77F, heat alerts, Hurricane Marie surf alert) while the live weatherSnapshot doc carried 2026-09-21 08:05 PM PDT. Any device without the stored doc saw two-week-old conditions ... | P2 | S | Stale | Fixed | Pass | 2026-09-22 | Reliability Engineer |
 | F-E1-03 | Stale Content | News seeds were dated 2026-09-07 (5 global headlines, 11 city lists) while newsSnapshot carried 2026-09-21 08:05 PM PDT for the same 11 cities. Re-baked both arrays and the stamp from the live doc, keeping the seed's exact row shape {tit... | P2 | M | Stale | Fixed | Pass | 2026-09-22 | Reliability Engineer |
@@ -479,15 +471,15 @@ After: The whole document is accepted as the value and lsShapeWarn records the s
 
 **F-E12-10 — Routine**  
 Before: No mention on the page; the routine's green tick was the only signal anyone had.  
-After: The Sync status panel names the routine and explains that its green tick means 'the routine finished', not 'the pipeline crossed', with the empty documents cited as proof.  
+After: A replacement routine that actually writes. The old one is created via the web interface so an agent cannot disable it; Steven must turn it off.  
 
 **F-E12-11 — Current State**  
 Before: The page implied pipeline edits reached Command Deck.  
-After: Named in the Sync status drift table with both sides' actual contents, and the exact value to write is in audit/E12-write-cd-pipeline.json.  
+After: trig_01M5zR1Po44gnHvTwA9ogZaB syncs pipeline both directions on the live databases, merges rather than overwrites, and verifies by reading back.  
 
 **F-E12-12 — Current State**  
 Before: The page implied client-stage changes reached Command Deck.  
-After: Named in the drift table; exact value in audit/E12-write-cd-reClients.json.  
+After: Same routine as F-E12-11. The document now exists on both stores instead of only on the portal.  
 
 **F-E12-13 — Stale Content**  
 Before: Green 'Live' badge and hourly two-way sync copy.  
@@ -507,7 +499,7 @@ After: The card reads loftyLeads and states exactly this while it is absent, tel
 
 **F-E12-23 — Plugin/Integration**  
 Before: mcp/You.com declared and used by 6 call sites.  
-After: Zero mcp call sites remain. Republish with {"db":{},"sample":{}} - db for cross-device sync and the ISA line, sample for the Vanessa and Steve chats, which are still live and still needed.  
+After: The published declaration now matches what the page actually uses.  
 
 **F-E2-01 — Stale Content**  
 Before: STRATEGY_SYNCED_AT "2026-09-07"; STRATEGIES = 6 rows with size/ytd/month/pnl from a hand read; the doc was never read by the tables.  
@@ -795,7 +787,7 @@ After: Panel 39, Orchestration and Loop Engineering, on its own page: cycle tile
 
 **F-INT-07 — Current State**  
 Before: r6-weekly-backup scheduled Sunday 5:00 AM, zero execution evidence, no watchdog  
-After: An ai-ecosystem-backup skill to the full specification (scope, dated folders, 8-week rolling window, integrity check, restore test, retry once, escalate after two failures, log every run) plus a Sunday cloud watchdog that reads backupStatus, counts the live store for comparison, and escalates when the backup is missing, late or unverified  
+After: trig_01JcPh3AM2z21Bsv34SvSkqM, Sundays 11:00 UTC, 8-week rolling retention, escalates on the ISA line after two consecutive failures. It runs in the cloud, so a closed laptop no longer means no backup.  
 
 **F-INT-10 — Unlisted Capability**  
 Before: A prose description of a five-level framework, with the levels mapped to tools but not to files  

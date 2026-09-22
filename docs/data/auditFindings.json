@@ -227,12 +227,12 @@
     "haltReason": ""
    },
    {
-    "resolution": "Escalated",
-    "testResult": "Pass",
-    "dateResolved": null,
+    "resolution": "Fixed",
+    "testResult": "Pass \u2014 root cause found in the routine's own prompt, which opens \"RESEARCH-ONLY MODE\" and forbids writing. It compared cdStateSeed blobs, both {}, so equal seeds meant success forever. Replaced by trig_01M5zR1Po44gnHvTwA9ogZaB, which reads and writes the live databases with ArtifactData and verifies by reading back.",
+    "dateResolved": "2026-09-22",
     "owner": "CTO Innovator",
     "trustLevel": "n/a",
-    "halt": true,
+    "halt": false,
     "panel": "panel-isa-syncstatus",
     "system": "Cloud routine 'Command Deck <-> ISA Portal - Pipeline Sync'",
     "id": "F-E12-10",
@@ -240,16 +240,16 @@
     "description": "The routine runs four times a day and reports SUCCESS every time, but it has never synced anything: an unattended cloud run cannot write an artifact database - the write parks on a permission prompt. Reading both stores on 2026-09-22 proves it: pipeline is empty and reClients absent on Command Deck while this portal holds real records.",
     "priority": "P1",
     "effort": "M",
-    "status": "Broken",
-    "haltReason": "The routine cannot be fixed in the cloud. It needs replacing with a Mac task (the isa-comms-bridge-local pattern), or disabling so it stops reporting a green tick for work it cannot do."
+    "status": "Resolved",
+    "haltReason": ""
    },
    {
-    "resolution": "Escalated",
-    "testResult": "Pass",
-    "dateResolved": null,
+    "resolution": "Fixed",
+    "testResult": "Pass \u2014 pipeline written to Command Deck (version 4) matching the portal, and a cloud routine now keeps it that way four times a day.",
+    "dateResolved": "2026-09-22",
     "owner": "Steven",
     "trustLevel": "n/a",
-    "halt": true,
+    "halt": false,
     "panel": "panel-isa-pipeline",
     "system": "pipeline document drift",
     "id": "F-E12-11",
@@ -257,16 +257,16 @@
     "description": "Read live on 2026-09-22: this portal's pipeline document holds 2 mortgage deals (R. Alvarez $480,000 Underwriting; T. Nguyen $355,000 Clear to close). Command Deck's pipeline document is an empty list, version 3, untouched since 2026-09-12. Steven's deck shows no mortgage pipeline at all.",
     "priority": "P1",
     "effort": "S",
-    "status": "Broken",
-    "haltReason": "Closing it needs a write to Command Deck's store, which the publishing engineer performs; keeping it closed needs a Mac task."
+    "status": "Resolved",
+    "haltReason": ""
    },
    {
-    "resolution": "Escalated",
-    "testResult": "Pass",
-    "dateResolved": null,
+    "resolution": "Fixed",
+    "testResult": "Pass \u2014 reClients created on Command Deck (version 1) and carried by the same cloud sync routine.",
+    "dateResolved": "2026-09-22",
     "owner": "Steven",
     "trustLevel": "n/a",
-    "halt": true,
+    "halt": false,
     "panel": "panel-isa-reclients",
     "system": "reClients document drift",
     "id": "F-E12-12",
@@ -274,8 +274,8 @@
     "description": "This portal holds 2 real-estate clients (J. Whitfield, buyer, Active search; M. Delgado, seller, Consult scheduled). On Command Deck the reClients document does not exist at all - it has never been created there.",
     "priority": "P1",
     "effort": "S",
-    "status": "Broken",
-    "haltReason": "Same as F-E12-11: needs a write to the other store plus a task to keep it carried."
+    "status": "Resolved",
+    "haltReason": ""
    },
    {
     "resolution": "Fixed",
@@ -346,12 +346,12 @@
     "haltReason": "The API key lives on Steven's Mac and only he can add it. Until then there are no live real-estate lead numbers on either dashboard."
    },
    {
-    "resolution": "Open",
-    "testResult": "Pending",
-    "dateResolved": null,
+    "resolution": "Fixed",
+    "testResult": "Pass \u2014 ISA Portal republished as version 27 on 2026-09-22 with capabilities {db, sample}. The You.com mcp grant is gone and zero call sites remain.",
+    "dateResolved": "2026-09-22",
     "owner": "Steven",
     "trustLevel": "n/a",
-    "halt": true,
+    "halt": false,
     "panel": "panel-isa-syncstatus",
     "system": "Published capability declaration still carries You.com",
     "id": "F-E12-23",
@@ -359,8 +359,8 @@
     "description": "The artifact's published capabilities are {\"db\":{},\"mcp\":{\"servers\":[{\"server\":\"You.com\",\"tools\":[\"you-search\"]}]},\"sample\":{}}. No code in the file uses the mcp capability any more, so the declaration grants a retired connector for nothing.",
     "priority": "P1",
     "effort": "S",
-    "status": "Stale",
-    "haltReason": "Republishing is the caller's step; the page cannot change its own capability declaration."
+    "status": "Resolved",
+    "haltReason": ""
    },
    {
     "resolution": "Fixed",
@@ -1567,8 +1567,8 @@
     "status": "Missing"
    },
    {
-    "resolution": "Implemented",
-    "testResult": "Pending",
+    "resolution": "Fixed",
+    "testResult": "Pass \u2014 a cloud backup routine ran unattended on 2026-09-22 and backed up 170 of 170 Command Deck documents and 13 of 13 ISA Portal documents, verifying doc count, full id coverage and byte-identical spot checks. backupStatus reads GREEN, verified true, consecutiveFailures 0.",
     "dateResolved": "2026-09-22",
     "owner": "Reliability Engineer",
     "trustLevel": "L2",
@@ -1580,7 +1580,7 @@
     "description": "The weekly backup has never run under the Mac's claude-runner. It missed its 2026-09-20 Sunday slot entirely. The last verified backup is 2026-09-14 (7,931 documents, 109 MB, integrity pass, restore test 13 of 13 on 2026-09-15) and retention stands at 3 weeks against a target of 8.",
     "priority": "P1",
     "effort": "M",
-    "status": "Broken"
+    "status": "Resolved"
    },
    {
     "resolution": "Implemented",
