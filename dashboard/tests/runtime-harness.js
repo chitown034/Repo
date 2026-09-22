@@ -411,7 +411,10 @@ async function run(cfg) {
     // textContent renders correctly and still shows up nowhere. This closes that
     // blind spot without changing any verdict.
     dumpText: (cfg.dumpText || []).reduce(function (acc, id) {
-      var el = null; try { el = doc.getElementById(id); } catch (eD) {}
+      // a plain id, or any CSS selector (so ".panel-stamp"-style elements that carry
+      // no id can still be read back)
+      var el = null;
+      try { el = /^[A-Za-z][\w-]*$/.test(id) ? doc.getElementById(id) : doc.querySelector(id); } catch (eD) {}
       acc[id] = el ? { text: String(el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 240), cls: el.className || "", href: el.getAttribute ? (el.getAttribute("href") || "") : "" } : null;
       return acc;
     }, {}),
