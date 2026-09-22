@@ -417,7 +417,7 @@
         <div class="chat-bar"><span class="chat-bar-dot" id="isaVanessaChatDot"></span><span class="chat-bar-name">Vanessa</span><span class="chat-bar-role">Chief of Staff · 7 specialists on call · your own private thread</span><div class="chat-bar-right"><button type="button" class="ghost" id="isaVanessaClearBtn" title="Clear this thread on this portal">Clear</button></div></div>
         <div class="chat-thread" id="isaVanessaChatThread" aria-live="polite" aria-atomic="false"></div>
         <div class="chat-chips" id="isaVanessaChips">
-          <button type="button" class="chat-chip" data-prompt="Walk me through the 5-minute lead response SOP for a brand-new real-estate lead that just came in through Lofty (we moved off Follow Up Boss on 2026-09-22).">New lead — what's the SOP?</button>
+          <button type="button" class="chat-chip" data-prompt="Walk me through the 5-minute lead response SOP for a brand-new real-estate lead that just came in through Lofty (our real-estate CRM of record since 2026-09-22).">New lead — what's the SOP?</button>
           <button type="button" class="chat-chip" data-prompt="A borrower is asking me what rate they'd qualify for. What exactly should I say, and how do I get them to Steven?">Borrower asked about a rate</button>
           <button type="button" class="chat-chip" data-prompt="Which CRM does this go in — Zoho or Lofty — for a past real-estate client who now wants a refinance?">Which CRM does this go in?</button>
           <button type="button" class="chat-chip" data-prompt="Draft an end-of-day pipeline summary for Steven from what I tell you next. I'll paste the day's notes.">Draft EOD summary for Steven</button>
@@ -440,7 +440,7 @@
   </section>
 
   <section class="panel" id="panel-isa-playbook">
-    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;14</span><h2 class="panel-title">Your Week — Daily Playbook</h2><span class="panel-note">Mon–Fri · 12–4 PM Pacific · theme days · weekly targets</span></div>
+    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;02</span><h2 class="panel-title">Your Week — Daily Playbook</h2><span class="panel-note">Mon–Fri · 12–4 PM Pacific · theme days · weekly targets</span></div>
     <div class="card" style="margin-bottom:16px;border-left:4px solid var(--gold);">
       <p class="card-title">Today</p>
       <p class="card-sub" id="isaPbToday" style="margin-bottom:0;font-size:13.5px;"></p>
@@ -471,7 +471,7 @@
   </section>
 
   <section class="panel" id="panel-isa-syncstatus">
-    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;02</span><h2 class="panel-title">Sync status</h2></div>
+    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;03</span><h2 class="panel-title">Sync status</h2></div>
     <div class="card" style="border-left:4px solid var(--gold);">
       <p class="card-title">How this page and Steven's Command Deck actually connect</p>
       <p class="card-sub" style="margin-top:0;">Start here, because the short version is not what the old copy on this page said. <b>ISA Portal and Command Deck are two separate published pages, each with its own database. Neither page can read the other's store — there is no browser-side link between them at all.</b> Anything that crosses does so because a task on Steven's Mac reads both stores and copies documents between them. Exactly one such task is running today, and it carries exactly one thing: the ISA line.</p>
@@ -510,10 +510,10 @@
   </section>
 
   <section class="panel" id="panel-isa-crmimport">
-    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;03</span><h2 class="panel-title">Live CRM Import</h2></div>
+    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;04</span><h2 class="panel-title">Live CRM Import</h2></div>
     <div class="card" style="margin-bottom:16px;">
       <div class="card-title-row">
-        <div><p class="card-title">Real estate — Lofty</p><p class="card-sub">Lofty (formerly Chime) replaced Follow Up Boss as the real-estate CRM on 2026-09-22. This card reads the <code>loftyLeads</code> document; first name + stage only, never phone, email or loan detail.</p></div>
+        <div><p class="card-title">Real estate — Lofty</p><p class="card-sub">Lofty (formerly Chime) is the real-estate CRM of record since 2026-09-22. This card reads the <code>loftyLeads</code> document; first name + stage only, never phone, email or loan detail.</p></div>
       </div>
       <p class="src-note" id="loftySyncNote" style="margin-bottom:10px;"></p>
       <div class="stat-row" id="loftyStageStats" style="grid-template-columns: repeat(4,1fr); margin-bottom:14px;"></div>
@@ -532,25 +532,12 @@
 
     <div class="card" style="margin-bottom:16px;">
       <p class="card-title">Lead intake numbers — confirm with Steven before you use them</p>
-      <div class="stat-row" id="fubKeyNumbers" style="grid-template-columns:repeat(2,1fr);margin-bottom:0;">
-        <div class="stat" style="border-left:3px solid var(--warning);"><div class="stat-label">Calling number on file (was the Follow Up Boss line)</div><div class="stat-value" style="font-size:20px;"><a href="tel:+16196519845" style="text-decoration:none;color:inherit;">(619) 651-9845</a></div><div class="src-note">Added Sep 8, 2026 as Steven's Follow Up Boss line — the number leads see, ringing both FUB and him. Follow Up Boss was retired 2026-09-22, so whether this number now routes through Lofty is <b>not something this page can verify</b>. Ask Steven on the ISA line before you use it for a lead call or text, and never a personal cell either way.</div></div>
-        <div class="stat" style="border-left:3px solid var(--warning);"><div class="stat-label">Lead-forwarding email (Follow Up Boss — retired)</div><div class="stat-value" style="font-size:16px;">steven.shearrill@followupboss.me</div><div class="src-note">This created a contact in Follow Up Boss automatically. With FUB retired, assume it goes nowhere. Do not route a new lead source to it — ask Steven for the Lofty forwarding address.</div></div>
+      <div class="stat-row" id="leadIntakeNumbers" style="grid-template-columns:repeat(1,1fr);margin-bottom:0;">
+        <div class="stat" style="border-left:3px solid var(--warning);"><div class="stat-label">Calling number on file — the lead-facing line</div><div class="stat-value" style="font-size:20px;"><a href="tel:+16196519845" style="text-decoration:none;color:inherit;">(619) 651-9845</a></div><div class="src-note">Added Sep 8, 2026 as Steven's lead-facing calling line — the number leads see, ringing both the CRM and him. Whether it now routes through Lofty is <b>not something this page can verify</b>. Ask Steven on the ISA line before you use it for a lead call or text, and never a personal cell either way.</div></div>
       </div>
+      <p class="src-note" style="margin-top:10px;"><b>Lead-forwarding address — not connected yet.</b> This portal has no Lofty lead-forwarding address on file and cannot look one up: the Lofty API key is not installed. Ask Steven on the ISA line before you point any new lead source at an inbox, and do not reuse an older forwarding address.</p>
     </div>
 
-    <details class="check-group" style="margin-bottom:16px;">
-      <summary><span style="flex:1;">Last Follow Up Boss import — 2026-09-07 (retired, kept as history)</span><span class="progress-num" id="fubNewCount">0</span></summary>
-      <div class="check-body">
-        <p class="src-note" id="fubSyncNote" style="margin-bottom:10px;"></p>
-        <div class="stat-row" id="fubStageStats" style="grid-template-columns: repeat(4,1fr); margin-bottom:14px;"></div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Name</th><th>Stage</th><th>Days since created (at pull)</th><th>Source</th><th>Created</th></tr></thead>
-            <tbody id="fubNewLeadRows"></tbody>
-          </table>
-        </div>
-      </div>
-    </details>
     <div class="card" style="margin-bottom:16px;">
       <p class="card-title">Mortgage — Zoho CRM <span class="badge red">API blocked</span></p>
       <p class="card-sub" style="margin-top:0;"><b>Zoho CRM is still the system of record for mortgage</b> — that has not changed. What has changed is that nobody can read it from here. The Composio connection is ACTIVE, but every CRM call returns <code>HTTP 403 NO_PERMISSION: Crm_Implied_Api_Access</code> (re-verified 2026-09-22 08:17 UTC on both the leads and the deals endpoint). <b>There is no live Zoho data anywhere on this portal</b>, and there has not been since before Sep 14 — anything you see attributed to Zoho is a hand-entered figure. The mortgage pipeline table below is the manual track, and it is what you should work from.</p>
@@ -559,7 +546,7 @@
   </section>
 
   <section class="panel" id="panel-isa-reclients">
-    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;04</span><h2 class="panel-title">Real Estate Clients</h2></div>
+    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;05</span><h2 class="panel-title">Real Estate Clients</h2></div>
     <div class="card">
       <p class="card-sub" style="margin-top:0;">Update the stage as each client moves through the process — the service-standard note below each row shows what's expected at that stage.</p>
       <div id="reClientRows"></div>
@@ -568,7 +555,7 @@
   </section>
 
   <section class="panel" id="panel-isa-pipeline">
-    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;05</span><h2 class="panel-title">Mortgage Pipeline</h2></div>
+    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;06</span><h2 class="panel-title">Mortgage Pipeline</h2></div>
     <div class="card">
       <p class="card-sub" style="margin-top:0;">Deals in progress — editable.</p>
       <div id="pipelineRows"></div>
@@ -577,7 +564,7 @@
   </section>
 
   <section class="panel" id="panel-isa-showings">
-    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;13</span><h2 class="panel-title">Showings — Schedule by Client</h2><span class="panel-note">Mirrored with Command Deck · ShowingTime · Showami · route planner</span></div>
+    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;07</span><h2 class="panel-title">Showings — Schedule by Client</h2><span class="panel-note">Mirrored with Command Deck · ShowingTime · Showami · route planner</span></div>
     <div class="card" style="margin-bottom:16px;border-left:4px solid var(--gold);">
       <p class="card-title">How this works from your seat</p>
       <p class="card-sub" style="margin:0;">This schedule lives in this portal's own store. <b>It does not cross to Steven's Command Deck</b> — verified 2026-09-22; the only thing any bridge carries between the two pages is the ISA line. An earlier version of this card said changes crossed both ways on the hour; they never did. Post anything he needs to see on the <a href="#isaLineCard">ISA line</a>. You own the coordination: request the showing in ShowingTime, book the Showami showing agent, confirm access with the listing agent, send the buyer the confirmation, then mark the row <b>Confirmed</b>. Confirmed rows can be queued for sync — the queue is worked by the <code>showing-sync</code> task on Steven's Mac, which logs them on the calendar and hands back anything it cannot do. Nothing on this page contacts a client or a listing agent by itself. Keep names to a first name and last initial; phone numbers and emails live in the CRM, never here.</p>
@@ -657,7 +644,7 @@
   </section>
 
   <section class="panel" id="panel-isa-mortgagerates">
-    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;06</span><h2 class="panel-title">Mortgage Rates &amp; Local Market</h2></div>
+    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;08</span><h2 class="panel-title">Mortgage Rates &amp; Local Market</h2></div>
     <div class="card" style="margin-bottom:16px;">
       <p class="card-title">Credentials</p>
       <p class="card-sub">CA Real Estate Broker, acting as Broker Associate with LPT Realty · MLO personally licensed in CA, NV, AZ, FL &amp; IL · Patriot Pacific Financial Corp (NMLS #1921615) licensed in 43 states.</p>
@@ -710,7 +697,7 @@
   </section>
 
   <section class="panel" id="panel-isa-pst">
-    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;07</span><h2 class="panel-title">Property Search Strategy Tool</h2></div>
+    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;09</span><h2 class="panel-title">Property Search Strategy Tool</h2></div>
     <div class="card">
       <p class="card-sub" style="margin-top:0;">Structures a client's wants/must-haves into a search-expansion strategy, AND pulls real current listings via live search (new listings + price reductions) with an AI read on fit against the criteria. For licensed real-time inventory, use Steven's own CRMLS/IDX search directly — the three links below are his actual MLS access, not a public consumer feed:</p>
       <div class="stat-row" style="grid-template-columns:repeat(4,1fr); margin-bottom:14px;">
@@ -773,7 +760,7 @@
   </section>
 
   <section class="panel" id="panel-isa-loanprograms">
-    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;08</span><h2 class="panel-title">Loan Programs, Lenders &amp; Scenario Builder</h2></div>
+    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;10</span><h2 class="panel-title">Loan Programs, Lenders &amp; Scenario Builder</h2></div>
     <div class="card" style="margin-bottom:16px;border-left:4px solid var(--gold);">
       <div class="card-title-row">
         <div>
@@ -922,7 +909,7 @@
   </section>
 
   <section class="panel" id="panel-isa-workflows">
-    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;09</span><h2 class="panel-title">Lending &amp; Real Estate Workflows — Implemented from Your SOPs</h2></div>
+    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;11</span><h2 class="panel-title">Lending &amp; Real Estate Workflows — Implemented from Your SOPs</h2></div>
     <div class="editable-reset-row" style="text-align:left;margin:0 0 10px;"><span class="editable-hint">Click any title or checklist line to edit it</span> <button type="button" id="resetSopEditsBtn" style="margin-left:8px;">↺ Reset edits in this section</button></div>
     <div class="card" style="margin-bottom:16px;">
       <p class="card-title" data-editable-id="sop-title-src">Source documents</p>
@@ -1244,7 +1231,7 @@
       </details>
     </div>    <div class="card" style="margin-bottom:16px;">
       <p class="card-title" data-editable-id="sop-title-relead">Real estate transaction — lead to close</p>
-      <p class="card-sub" style="margin-top:0;">CRM pipeline (Lofty since 2026-09-22, Follow Up Boss before that): Lead → Hot Prospect → Nurture → Active → Pending → Closed. Confirm the stage names in Lofty before relying on them — these are the Follow Up Boss names and the first Lofty sync has not run.</p>
+      <p class="card-sub" style="margin-top:0;">CRM pipeline (Lofty since 2026-09-22): Lead → Hot Prospect → Nurture → Active → Pending → Closed. Confirm the stage names in Lofty before relying on them — these are carried over from the previous CRM, not read from Lofty, and the first Lofty sync has not run.</p>
       <ol class="simple-list">
         <li><b>Lead intake</b> — auto-text within 60 sec, call within 5 min, LPMAMA qualification.</li>
         <li><b>First-10-Days Sprint</b> — Day 0/1/2/3/5/7/10 sequence, then A/B/C tiered long-game nurture.</li>
@@ -1283,7 +1270,7 @@
   </section>
 
   <section class="panel" id="panel-isa-team">
-    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;10</span><h2 class="panel-title">Team &amp; Delegation</h2></div>
+    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;12</span><h2 class="panel-title">Team &amp; Delegation</h2></div>
     <div class="card">
       <p class="card-sub" style="margin-top:0;">Who owns each stage — Ritz-Carlton standard: every stage has a named owner and a same-day response commitment.</p>
       <div class="table-wrap">
@@ -1301,7 +1288,7 @@
   </section>
 
   <section class="panel" id="panel-isa-easop">
-    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;11</span><h2 class="panel-title">Virtual EA / ISA Operations</h2><span class="panel-note">Patriot Pacific Financial + LPT Realty / Space RE — SOP v1.0</span></div>
+    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;13</span><h2 class="panel-title">Virtual EA / ISA Operations</h2><span class="panel-note">Patriot Pacific Financial + LPT Realty / Space RE — SOP v1.0</span></div>
     <div class="card">
       <div class="card-title-row">
         <div><p class="card-sub" style="margin-top:0;">Graded against the ISA-owned stages in the real estate &amp; mortgage service playbooks (Lead, Closed/Funded, Post-close follow-up). Score 1–5 each review cycle — this mirrors the Command Deck exactly.</p></div>
@@ -1319,12 +1306,46 @@
     </div>
     <div class="card" style="margin-top:16px;">
       <div class="card-title-row">
-        <div><p class="card-title">ISA KPI scorecard — real estate &amp; mortgage</p><p class="card-sub">Pulled directly from the VA/ISA SOP, Section 16 — filtered to the real estate &amp; mortgage / ISA-execution rows. <b>Zoho CRM is the system of record for mortgage</b> (still true — but its API is returning 403 NO_PERMISSION, so no live Zoho figure can be read from this page); <b>Lofty is the system of record for real estate</b> since 2026-09-22, replacing Follow Up Boss. Per SOP Section 4.1. Actuals in the table are what you enter here — they are not pulled from either CRM. One thing worth knowing: a measured <code>isaKpi</code> document (week ending 2026-09-13, written by Steven's weekly KPI task and carried onto both stores) does exist and matches on his deck and this portal, but this table does not read it — its numbers are on the ISA line message of Sep 13. Ask for it to be wired in if you want the measured week beside the targets.</p></div>
+        <div><p class="card-title">ISA KPI scorecard — real estate &amp; mortgage</p><p class="card-sub">Pulled directly from the VA/ISA SOP, Section 16 — filtered to the real estate &amp; mortgage / ISA-execution rows. <b>Zoho CRM is the system of record for mortgage</b> (still true — but its API is returning 403 NO_PERMISSION, so no live Zoho figure can be read from this page); <b>Lofty is the system of record for real estate</b> since 2026-09-22. Per SOP Section 4.1. Actuals in the table are what you enter here — they are not pulled from either CRM. One thing worth knowing: a measured <code>isaKpi</code> document (week ending 2026-09-13, written by Steven's weekly KPI task and carried onto both stores) does exist and matches on his deck and this portal, but this table does not read it — its numbers are on the ISA line message of Sep 13. Ask for it to be wired in if you want the measured week beside the targets.</p></div>
       </div>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Category</th><th>Metric</th><th>Target</th><th>Actual</th><th>Cadence</th></tr></thead>
           <tbody id="isaKpiSopRows"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px;border-left:4px solid var(--gold);" id="isaScorecardCard">
+      <div class="card-title-row">
+        <div><p class="card-title">Your daily scorecard — due 4:10 PM each shift day</p><p class="card-sub">Added 2026-09-22. Until today the only way a scorecard could exist was Steven typing what you told him; this form writes it yourself. Enter the day's numbers, save, then press <b>Send to Steven</b> — the numbers post on the ISA line and reach his Command Deck on the next sync (four times a day). Targets from the contract: 60–100 attempts, 15–30 live conversations, 5–12 asks, 1–3 real-estate and 1–3 mortgage appointments, 100% confirmations / handoffs / CRM next actions.</p></div>
+        <span class="badge amber" id="isaScBadge">—</span>
+      </div>
+      <div class="row-line" style="grid-template-columns:1fr 1fr 1fr 1fr;">
+        <div><label class="field-label" for="isaScDate">Date</label><input type="date" id="isaScDate"></div>
+        <div><label class="field-label" for="isaScAttempts">Attempts</label><input type="number" id="isaScAttempts" placeholder="60–100"></div>
+        <div><label class="field-label" for="isaScLive">Live convos</label><input type="number" id="isaScLive" placeholder="15–30"></div>
+        <div><label class="field-label" for="isaScAsks">Appt asks</label><input type="number" id="isaScAsks" placeholder="5–12"></div>
+      </div>
+      <div class="row-line" style="grid-template-columns:1fr 1fr 1fr 1fr;">
+        <div><label class="field-label" for="isaScRe">RE appts set</label><input type="number" id="isaScRe" placeholder="1–3"></div>
+        <div><label class="field-label" for="isaScMtg">Mtg consults set</label><input type="number" id="isaScMtg" placeholder="1–3"></div>
+        <div><label class="field-label" for="isaScDual">Dual-service opps</label><input type="number" id="isaScDual" placeholder="0"></div>
+        <div><label class="field-label" for="isaScCrm">CRM next-action %</label><input type="number" id="isaScCrm" placeholder="100"></div>
+      </div>
+      <div class="row-line" style="grid-template-columns:1fr 1fr;">
+        <div><label class="field-label" for="isaScHot">Hot handoffs sent (count, or first names only)</label><input type="text" id="isaScHot" placeholder="e.g. 2 — J., M."></div>
+        <div><label class="field-label" for="isaScTop3">Tomorrow's top 3</label><input type="text" id="isaScTop3" placeholder="1) … 2) … 3) …"></div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px;">
+        <button type="button" class="primary" id="isaScSave">Save today's scorecard</button>
+        <button type="button" id="isaScSend">Send to Steven on the ISA line</button>
+        <span class="src-note" id="isaScNote" aria-live="polite"></span>
+      </div>
+      <div class="table-wrap" style="margin-top:12px;">
+        <table>
+          <thead><tr><th>Date</th><th class="num">Attempts</th><th class="num">Live</th><th class="num">Asks</th><th class="num">RE set</th><th class="num">Mtg set</th><th class="num">CRM %</th><th></th></tr></thead>
+          <tbody id="isaScRows"></tbody>
         </table>
       </div>
     </div>
@@ -1412,7 +1433,6 @@
       <ul class="simple-list">
         <li><b>Zoho CRM</b> — connected through Composio (account created 2026-09-21), but every CRM call returns <code>403 NO_PERMISSION: Crm_Implied_Api_Access</code>. Still the system of record for mortgage; simply not readable from here. Only Steven can fix it: Zoho CRM → Setup → Security Control → Profiles → enable "Zoho CRM API Access".</li>
         <li><b>Lofty</b> — the real-estate CRM of record since 2026-09-22. Composio has no Lofty toolkit; the path is the <code>lofty-bridge</code> MCP server and <code>lofty-cli</code> already installed on Steven's Mac. The API key and the first proving run are outstanding, so no Lofty data has reached this portal yet.</li>
-        <li><b>Follow Up Boss</b> — <b>RETIRED 2026-09-22.</b> Its API key had been rejecting every call since 2026-09-16 (the lead-triage and lead-response tasks on the Mac logged "Invalid API Key" daily). Anything on this page attributed to Follow Up Boss is dated history.</li>
         <li><b>You.com</b> — <b>RETIRED 2026-09-22</b>, replaced by the Claude subscription. Every in-page live web search on this portal ran on it and has been converted to a queued research request.</li>
         <li><b>Working today:</b> Strava (official remote MCP server), Notion and Google Calendar (claude.ai connectors), Slack, Gmail, Inkbox.</li>
         <li><b>Not connected:</b> Canva (needs reconnect), Microsoft 365, BlackRock Advisor Center, Health Data Avatar, PlayMCP.</li>
@@ -1420,12 +1440,12 @@
       <p class="src-note"><b>Likely connectable via Composio's 1,000+ toolkit catalog</b> (worth checking case-by-case, same pattern as Zoho/Strava): Zoom, LinkedIn, Google Ads, Meta Business Suite — mainstream SaaS platforms Composio tends to cover. It does <i>not</i> cover Lofty.</p>
       <p class="src-note"><b>Sites with no usable API at all</b> — homes.com, SkySlope, zipForms/Lone Wolf: the plan is CLI-Anything wrappers driving them through a browser automation path. Specified 2026-09-22; nothing is installed on the Mac yet.</p>
       <p class="src-note"><b>Typically NOT available through a generic connector platform</b> — these need a direct vendor API agreement/credentials from Steven, not something a third-party connector can supply: CRMLS Matrix, RPR, Realist/Cotality, ShowingTime, Dotloop, SkySlope, InfoSparks, Ticor Title, Arive. MLS and title/escrow systems in particular gate API access behind board membership or vendor contracts.</p>
-      <p class="src-note"><b>Net:</b> don't assume "API exists" for every row above — it's genuinely mixed, and two of the connections this card used to call proven (Follow Up Boss, You.com) are now retired. The honest path is check-one-at-a-time, not a blanket connect-everything pass — and a connector being "connected" is not the same as it returning data, which Zoho proves daily.</p>
+      <p class="src-note"><b>Net:</b> don't assume "API exists" for every row above — it's genuinely mixed, and one of the connections this card used to call proven (You.com) is now retired. The honest path is check-one-at-a-time, not a blanket connect-everything pass — and a connector being "connected" is not the same as it returning data, which Zoho proves daily.</p>
     </div>
   </section>
 
   <section class="panel" id="panel-isa-vamastermind">
-    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;12</span><h2 class="panel-title">Part 3 — Business Blueprint: VA Loan Mastermind</h2></div>
+    <div class="panel-head"><span class="panel-tag">PANEL&nbsp;14</span><h2 class="panel-title">Part 3 — Business Blueprint: VA Loan Mastermind</h2></div>
     <div class="card" style="margin-bottom:16px;">
       <p class="card-sub" style="margin-top:0;"><a href="https://thevaloanmastermind.com" target="_blank" rel="noopener">thevaloanmastermind.com</a> · CA Real Estate Broker (Broker Associate, LPT Realty) · MLO licensed CA/NV/AZ/FL/IL · Patriot Pacific Financial Corp licensed in 43 states<br>A vertically integrated mortgage &amp; real estate enterprise for military, veteran, and hometown hero communities. Blueprint dated Jun 8, 2026, consolidated Aug 16, 2026.</p>
     </div>
@@ -1494,7 +1514,7 @@
     <details class="check-group">
       <summary>Multi-state licensing plan</summary>
       <div class="check-body">
-        <p class="src-note" style="margin-top:0;"><b>Q3 2026 (TX, VA, NC) is the active window right now — only ~6 weeks left before quarter-end. Top near-term priority.</b></p>
+        <p class="src-note" style="margin-top:0;"><b>Q3 2026 (TX, VA, NC) is the active window right now — as of 2026-09-22 only 8 days are left before it closes on 2026-09-30. Top near-term priority; anything not filed by then rolls into the Q4 window with FL, GA, WA.</b></p>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Window</th><th>States</th><th>Running total</th></tr></thead>
@@ -1529,7 +1549,7 @@
           <li><b>Vetting:</b> MRP designation, 3+ yrs experience, 12+ transactions/yr, VA loan familiarity</li>
           <li><b>Coverage:</b> 2–3 vetted agents per metro per state</li>
           <li><b>Terms:</b> 25% referral fee, written agreements (Dotloop/DocuSign), 90-day exclusivity</li>
-          <li><b>Tech:</b> Lofty CRM (replaced Follow Up Boss 2026-09-22) / Sierra Interactive, ReferralExchange/Airtable tracking, co-branded landing pages</li>
+          <li><b>Tech:</b> Lofty CRM (CRM of record since 2026-09-22) / Sierra Interactive, ReferralExchange/Airtable tracking, co-branded landing pages</li>
           <li><b>Cadence:</b> quarterly partner calls</li>
         </ul>
       </div>
@@ -1538,7 +1558,7 @@
     <details class="check-group">
       <summary>Marketing stack &amp; webinars</summary>
       <div class="check-body">
-        <p class="src-note" style="margin-top:0;"><b>Stack:</b> WebinarJam/Zoom · Lofty (replaced Follow Up Boss 2026-09-22)/HubSpot · ActiveCampaign · ClickFunnels/Unbounce · GTM+GA4 · CallRail · Smarsh/Global Relay (compliance archive)</p>
+        <p class="src-note" style="margin-top:0;"><b>Stack:</b> WebinarJam/Zoom · Lofty (CRM of record since 2026-09-22)/HubSpot · ActiveCampaign · ClickFunnels/Unbounce · GTM+GA4 · CallRail · Smarsh/Global Relay (compliance archive)</p>
         <div class="table-wrap" style="margin-top:10px;">
           <table>
             <thead><tr><th>Series</th><th>Cadence</th></tr></thead>
@@ -1619,7 +1639,7 @@
   </section>
 
   <p class="src-note" id="isaRenderErrors" hidden style="border:1px solid var(--negative);background:var(--negative-soft);color:var(--negative);border-radius:8px;padding:10px 12px;margin-bottom:14px;"></p>
-  <footer class="deck-foot">ISA PORTAL · SCOPED ACCESS · REAL ESTATE &amp; MORTGAGE ONLY<br><span style="opacity:.75;">Build 2026-09-22 · You.com retired, Follow Up Boss retired in favour of Lofty, sync status re-measured against both databases - if two sessions edit this page, the newer build wins; check this stamp before assuming your change is live.</span></footer>
+  <footer class="deck-foot">ISA PORTAL · SCOPED ACCESS · REAL ESTATE &amp; MORTGAGE ONLY<br><span style="opacity:.75;">Build 2026-09-22 · You.com retired, Lofty is the real-estate CRM of record, sync status re-measured against both databases - if two sessions edit this page, the newer build wins; check this stamp before assuming your change is live.</span></footer>
 </div>
 
 <script>
@@ -1951,11 +1971,11 @@
      "9 messages", "The same 9 messages, byte for byte",
      "green", "In sync — carried by isa-comms-bridge-local"],
     ["<code>pipeline</code><div class=\"src-note\">Mortgage deals you track here</div>",
-     "2 deals — R. Alvarez $480,000 (Underwriting), T. Nguyen $355,000 (Clear to close)",
+     function () { return driftLocalSummary("pipeline", "deal"); },
      "Empty. The document is an empty list and has not changed since 2026-09-12",
      "red", "NOT synced — Steven's deck shows no mortgage pipeline at all"],
     ["<code>reClients</code><div class=\"src-note\">Real-estate clients</div>",
-     "2 — J. Whitfield (buyer, Active search), M. Delgado (seller, Consult scheduled)",
+     function () { return driftLocalSummary("reClients", "client"); },
      "The document does not exist on his side at all",
      "red", "NOT synced — it has never been created there"],
     ["<code>ratesSnapshot</code><div class=\"src-note\">Rates + market medians</div>",
@@ -1972,10 +1992,31 @@
      "Nothing saved yet", "Empty on his side too",
      "amber", "No drift today only because both are empty — nothing carries them"]
   ];
+  /* Client rows are never written into this file. The two cells that describe what is on THIS
+     device are counted from the live document at render time and deliberately print no name and
+     no dollar amount — a drift table needs to know whether the rows exist and how many, not who
+     they are. This page ships to a git repo; client identifiers must not travel with it. */
+  function driftLocalSummary(key, noun) {
+    var v = lsGet(key, null);
+    if (v == null) return "No document on this device";
+    if (!Array.isArray(v)) return "Present, but not a list \u2014 shape unreadable";
+    if (!v.length) return "Empty list";
+    var stages = [], seen = {};
+    v.forEach(function (r) {
+      var st = r && typeof r === "object" ? (r.stage || r.status || "") : "";
+      st = String(st || "").trim();
+      if (st && !seen[st]) { seen[st] = 1; stages.push(st); }
+    });
+    return v.length + " " + noun + (v.length === 1 ? "" : "s") +
+      (stages.length ? " \u2014 " + stages.join(", ") : "") +
+      '<div class="src-note">Counted from this device\u2019s own document as the table rendered. Names and amounts are withheld here on purpose.</div>';
+  }
   function renderIsaDrift() {
     var tb = $("isaDriftRows"); if (!tb) return;
     tb.innerHTML = DRIFT_ROWS.map(function (r) {
-      return "<tr><td>" + r[0] + "</td><td>" + r[1] + "</td><td>" + r[2] + '</td><td><span class="badge ' + r[3] + '">' + r[4] + "</span></td></tr>";
+      var mine = r[1];
+      if (typeof mine === "function") { try { mine = mine(); } catch (eCell) { mine = "Could not read this device\u2019s document"; } }
+      return "<tr><td>" + r[0] + "</td><td>" + mine + "</td><td>" + r[2] + '</td><td><span class="badge ' + r[3] + '">' + r[4] + "</span></td></tr>";
     }).join("") +
     '<tr><td colspan="4" class="src-note">Both databases read directly on ' + DRIFT_CHECKED_AT +
     '. This is a hand-measured snapshot, not a live probe — no page can read the other page\'s store.</td></tr>';
@@ -2065,84 +2106,15 @@
     }).join("") + "</select>";
   }
   /* ================= LIVE CRM IMPORT — LOFTY (REAL ESTATE) =================
-     Steven replaced Follow Up Boss with Lofty (formerly Chime) on 2026-09-22. The FUB API key had
-     been rejecting every call since 2026-09-16, so the numbers below stopped being an import on
-     that date and became a dead snapshot wearing an import's clothes. They are kept, dated and
-     labelled as the last Follow Up Boss pull — never relabelled as Lofty. The live card reads the
-     `loftyLeads` document; until a sync writes it, the card says so plainly. */
-  var FUB_SYNC_AT = "2026-09-07";
-  var FUB_RETIRED_AT = "2026-09-22";
-  var FUB_AUTH_FAILING_SINCE = "2026-09-16";
-  var FUB_STAGE_TOTALS = [
-    ["Prospect", 2], ["Lead", 135], ["Attempted Contact", 50], ["Spoke with Customer", 6080],
-    ["Appointment Set", 49], ["Met with Customer", 17], ["Showing Homes", 10], ["Nurture", 87],
-    ["Listing Agreement", 0], ["Active Listing", 0], ["Submitting Offers", 0], ["Under Contract", 1],
-    ["Closed", 24], ["Trash", 5]
-  ];
-  // Contacts created in the last 90 days (FUB /people sorted by -created, pulled live through Composio on 2026-09-07). Days = age at pull.
-  var FUB_NEW_LEADS_90D = [
-    ["Patrick S.", "Spoke with Customer", 3, "Zillow Preferred", "2026-09-04"],
-    ["Isamar", "Spoke with Customer", 11, "Zillow Preferred", "2026-08-27"],
-    ["N Y.", "Spoke with Customer", 11, "Zillow Preferred", "2026-08-27"],
-    ["Mike P.", "Lead", 17, "HomeStack", "2026-08-21"],
-    ["Karen", "Spoke with Customer", 27, "Zillow Preferred", "2026-08-11"],
-    ["Michael M.", "Spoke with Customer", 31, "Zillow Preferred", "2026-08-07"],
-    ["Abeba H.", "Spoke with Customer", 31, "Zillow Preferred", "2026-08-07"],
-    ["Kim D.", "Attempted Contact", 43, "Zillow Preferred", "2026-07-26"],
-    ["Chasw L.", "Lead", 45, "HomeStack", "2026-07-24"],
-    ["Monica N.", "Attempted Contact", 47, "Zillow Preferred", "2026-07-22"],
-    ["Lena L.", "Spoke with Customer", 50, "Zillow Preferred", "2026-07-19"],
-    ["Maricarmen E.", "Spoke with Customer", 50, "Zillow Preferred", "2026-07-19"],
-    ["Jian-Ou D.", "Met with Customer", 50, "Zillow Preferred", "2026-07-19"],
-    ["Raymond E.", "Spoke with Customer", 55, "Zillow Preferred", "2026-07-14"],
-    ["Cesar C.", "Appointment Set", 55, "Zillow Preferred", "2026-07-14"],
-    ["Sarah V.", "Spoke with Customer", 55, "Zillow Preferred", "2026-07-14"],
-    ["Kyla J.", "Lead", 57, "HomeStack", "2026-07-12"],
-    ["Luigge", "Attempted Contact", 59, "Zillow Preferred", "2026-07-10"],
-    ["Blake S.", "Spoke with Customer", 59, "Zillow Preferred", "2026-07-10"],
-    ["Scott H.", "Attempted Contact", 59, "Zillow Preferred", "2026-07-10"],
-    ["Shardae S.", "Spoke with Customer", 61, "Zillow Preferred", "2026-07-08"],
-    ["Mayara G.", "Spoke with Customer", 62, "Zillow Preferred", "2026-07-07"],
-    ["Maria J.", "Met with Customer", 67, "Zillow Preferred", "2026-07-02"],
-    ["Bob S.", "Lead", 72, "Zillow Preferred", "2026-06-27"],
-    ["Giselle C.", "Attempted Contact", 74, "Zillow Preferred", "2026-06-25"],
-    ["Shanita F.", "Met with Customer", 74, "Zillow Preferred", "2026-06-25"],
-    ["Yashes P.", "Spoke with Customer", 74, "Zillow Preferred", "2026-06-25"],
-    ["Jay S.", "Lead", 77, "Zillow Preferred", "2026-06-22"],
-    ["Steven S.", "Spoke with Customer", 79, "Zillow Preferred", "2026-06-20"],
-    ["Sam", "Nurture", 80, "Zillow Preferred", "2026-06-19"],
-    ["Helen S.", "Nurture", 83, "Zillow Preferred", "2026-06-16"],
-    ["Brandon S.", "Spoke with Customer", 84, "Zillow Preferred", "2026-06-15"],
-    ["Dony J.", "Spoke with Customer", 84, "Zillow Preferred", "2026-06-15"],
-    ["Sondra H.", "Nurture", 84, "Zillow Preferred", "2026-06-15"],
-    ["Dane D.", "Spoke with Customer", 84, "Zillow Preferred", "2026-06-15"],
-    ["Yani", "Spoke with Customer", 85, "Zillow Preferred", "2026-06-14"],
-    ["Adriana H.", "Spoke with Customer", 86, "Zillow Preferred", "2026-06-13"],
-    ["Quartnee S.", "Spoke with Customer", 88, "Zillow Preferred", "2026-06-11"],
-    ["Cullen K.", "Spoke with Customer", 88, "Zillow Preferred", "2026-06-11"]
-  ];
-  function renderFubImport() {
-    var syncEl = $("fubSyncNote");
-    if (!syncEl) return;
-    var total = FUB_STAGE_TOTALS.reduce(function (s, r) { return s + r[1]; }, 0);
-    syncEl.textContent = "HISTORY \u2014 the last Follow Up Boss import, pulled " + FUB_SYNC_AT + " through Composio: " +
-      total.toLocaleString("en-US") + " total contacts in total \u2014 stage counts include Trash \u2014 and " + FUB_NEW_LEADS_90D.length +
-      " created in the 90 days before that pull. Nothing has refreshed it since: the FUB API key started rejecting every call on " +
-      FUB_AUTH_FAILING_SINCE + ", and Steven retired Follow Up Boss on " + FUB_RETIRED_AT +
-      ". Treat every figure here as a " + isaDaysSince(FUB_SYNC_AT) + " snapshot of a CRM that is no longer in use \u2014 useful for history, never for a callback list.";
-    $("fubStageStats").innerHTML = FUB_STAGE_TOTALS.filter(function (r) { return r[1] > 0; }).map(function (r) {
-      return '<div class="stat"><div class="stat-label">' + r[0] + '</div><div class="stat-value" style="font-size:16px;">' + r[1].toLocaleString("en-US") + "</div></div>";
-    }).join("");
-    $("fubNewCount").textContent = FUB_NEW_LEADS_90D.length;
-    $("fubNewLeadRows").innerHTML = FUB_NEW_LEADS_90D.map(function (r) {
-      return "<tr><td>" + r[0] + "</td><td>" + r[1] + "</td><td>" + r[2] + "</td><td>" + r[3] + "</td><td>" + r[4] + "</td></tr>";
-    }).join("");
-  }
-  safeRun(renderFubImport, "renderFubImport");
+     Lofty (formerly Chime) is the real-estate CRM of record. The card below reads the
+     `loftyLeads` document written by the lofty-crm-sync task on the Mac; until that document
+     exists there are no real-estate lead numbers on this portal, and the card says so plainly
+     instead of showing a figure that came from somewhere else. */
+  var LOFTY_SINCE = "2026-09-22";
 
   /* ---- Lofty: the live card. Reads the `loftyLeads` document written by the lofty-crm-sync scheduled
-     task on the Mac, which reads Lofty through the lofty-bridge MCP server over Lofty's REST API. Absent means absent — it never borrows the
-     retired Follow Up Boss numbers to look populated. ---- */
+     task on the Mac, which reads Lofty through the lofty-bridge MCP server over Lofty's REST API. Absent means absent — it never borrows
+     another CRM's numbers to look populated. ---- */
   function loftyDoc() {
     var v = lsGet("loftyLeads", null);
     if (v === null || v === undefined) return null;
@@ -2161,9 +2133,9 @@
       if (block) block.hidden = true;
     }
     if (!d) {
-      empty('<b>Awaiting first Lofty sync.</b> No <code>loftyLeads</code> document has been written to this portal yet, so there are no Lofty numbers to show and this card will not borrow the retired Follow Up Boss ones. ' +
-        'Where it stands: Steven moved the real-estate CRM to Lofty on ' + FUB_RETIRED_AT + '; his Mac already has the <code>lofty-bridge</code> MCP server and the <code>lofty-cli</code> tool installed, and the API key plus one proving run are what is outstanding. ' +
-        'Until it lands, work real-estate leads from Lofty itself, not from this page. The retired Follow Up Boss import is kept below, dated, for history only.');
+      empty('<b>Awaiting first Lofty sync.</b> No <code>loftyLeads</code> document has been written to this portal yet, so there are no Lofty numbers to show, and this card will not borrow numbers from another CRM to look populated. ' +
+        'Where it stands: Lofty has been the real-estate CRM of record since ' + LOFTY_SINCE + '; his Mac already has the <code>lofty-bridge</code> MCP server and the <code>lofty-cli</code> tool installed, and the API key plus one proving run are what is outstanding. ' +
+        'Until it lands, work real-estate leads from Lofty itself, not from this page.');
       return;
     }
     var status = String(d.status || "");
@@ -2291,19 +2263,20 @@
      document carries replace the Sep 7-10 Bankrate/Veterans United seeds, and a USDA row is new;
      their APR column is now "—" on purpose, because the document publishes a rate and no APR and
      leaving the old APR beside a new rate would be an unsourced quote. Three rows the document
-     does NOT carry — VA 30-yr refinance, VA 15-yr fixed, Jumbo 15-yr fixed — are kept at their
-     older dated values and say so in the Source column. */
-  var MORTGAGE_RATES_SYNCED_AT = "2026-09-22 02:24 UTC — re-baked by hand from Command Deck's ratesSnapshot document (Optimal Blue via FRED, rate week ending Sep 18, 2026)";
+     does NOT carry — VA 30-yr refinance, VA 15-yr fixed, Jumbo 15-yr fixed — were re-verified by
+     hand on 2026-09-22 (Veterans United / Navy Federal, each dated in its own Source column; the old
+     VA 15-yr figure turned out to be Navy Federal's Jan 8, 2026 sheet under a "verified Sep 2" label). */
+  var MORTGAGE_RATES_SYNCED_AT = "2026-09-22 02:24 UTC — re-baked by hand from Command Deck's ratesSnapshot document (Optimal Blue via FRED, rate week ending Sep 18, 2026); the three rows that document does not carry — VA 30-yr refinance, VA 15-yr fixed, Jumbo 15-yr fixed — re-verified 2026-09-22 13:00 UTC from Veterans United's rates page (valid as of Sep 21, 4:05 PM CST) and Navy Federal's rates page (rates as of Sep 22, 2026 ET), read through WebSearch/Perplexity because this session cannot fetch lender pages directly";
   var MORTGAGE_RATES = [
     { type: "Conventional", term: "30-yr fixed", rate: 7.038, apr: null, source: "Optimal Blue via FRED (OBMMIC30YF) · Sep 18, 2026", url: "https://fred.stlouisfed.org/series/OBMMIC30YF" },
     { type: "Conventional", term: "15-yr fixed", rate: 6.257, apr: null, source: "Optimal Blue via FRED (OBMMIC15YF) · Sep 18, 2026", url: "https://fred.stlouisfed.org/series/OBMMIC15YF" },
     { type: "VA", term: "30-yr fixed", rate: 6.751, apr: null, source: "Optimal Blue via FRED (OBMMIVA30YF) · Sep 18, 2026", url: "https://fred.stlouisfed.org/series/OBMMIVA30YF" },
-    { type: "VA", term: "30-yr refinance", rate: 6.25, apr: null, source: "Veterans United, Sep 9 — NOT in the daily snapshot; still the manual figure", url: "https://www.veteransunited.com/va-loans/va-mortgage-rates/" },
-    { type: "VA", term: "15-yr fixed", rate: 5.50, apr: 6.196, source: "Navy Federal / Veterans United, verified Sep 2 — NOT in the daily snapshot; still the manual figure", url: "https://www.navyfederal.org/loans-cards/mortgage/mortgage-rates.html" },
+    { type: "VA", term: "30-yr refinance", rate: 6.50, apr: 6.822, source: "Veterans United rates page — 30-yr fixed VA refinance 6.500% / 6.822% APR (1.8750 pts, 720 score), “VA Loan Rates and APR calculations valid as of Sep 21st, 04:05 PM CST” — re-verified 2026-09-22; NOT in the daily snapshot", url: "https://www.veteransunited.com/va-loans/va-mortgage-rates/" },
+    { type: "VA", term: "15-yr fixed", rate: 5.75, apr: 6.409, source: "Navy Federal VA 15-yr fixed “as low as” 5.750% / 6.409% APR (0.250 discount pts + 1.00% origination fee), “Rates as of Sep 22, 2026 ET” — re-verified 2026-09-22; cross-check Veterans United 5.990% / 6.735% APR valid as of Sep 21, 4:05 PM CST; NOT in the daily snapshot (the previous 5.50% / 6.196% was Navy Federal’s Jan 8, 2026 sheet under a “verified Sep 2” label)", url: "https://www.navyfederal.org/loans-cards/mortgage/mortgage-rates.html" },
     { type: "FHA", term: "30-yr fixed", rate: 6.799, apr: null, source: "Optimal Blue via FRED (OBMMIFHA30YF) · Sep 18, 2026", url: "https://fred.stlouisfed.org/series/OBMMIFHA30YF" },
     { type: "USDA", term: "30-yr fixed", rate: 6.71, apr: null, source: "Optimal Blue via FRED (OBMMIUSDA30YF) · Sep 18, 2026", url: "https://fred.stlouisfed.org/series/OBMMIUSDA30YF" },
     { type: "Jumbo", term: "30-yr fixed", rate: 7.032, apr: null, source: "Optimal Blue via FRED (OBMMIJUMBO30YF) · Sep 18, 2026", url: "https://fred.stlouisfed.org/series/OBMMIJUMBO30YF" },
-    { type: "Jumbo", term: "15-yr fixed", rate: 6.29, apr: 6.36, source: "Bankrate, verified Sep 2 — NOT in the daily snapshot; still the manual figure", url: "https://www.bankrate.com/mortgages/jumbo-loan-rates/" },
+    { type: "Jumbo", term: "15-yr fixed", rate: 6.50, apr: 6.740, source: "Navy Federal 15-yr Jumbo fixed “as low as” 6.500% / 6.740% APR (0.500 discount pts + 1.00% origination fee), “Rates as of Sep 22, 2026 ET” — re-verified 2026-09-22; source moved from Bankrate because its jumbo page could not be read from this session; NOT in the daily snapshot", url: "https://www.navyfederal.org/loans-cards/mortgage/mortgage-rates.html" },
     { type: "Benchmark", term: "PMMS 30-yr (weekly survey)", rate: 6.95, apr: null, source: "Freddie Mac PMMS · week of Sep 17, 2026 (52-wk 5.98–6.95)", url: "https://www.freddiemac.com/pmms" },
     { type: "Benchmark", term: "PMMS 15-yr (weekly survey)", rate: 6.26, apr: null, source: "Freddie Mac PMMS · week of Sep 17, 2026 (52-wk 5.35–6.26)", url: "https://www.freddiemac.com/pmms" },
     { type: "Benchmark", term: "10-yr Treasury yield", rate: 5.01, apr: null, source: "FRED (DGS10) · Sep 18, 2026 · 52-wk 3.97–5.01", url: "https://fred.stlouisfed.org/series/DGS10" },
@@ -2345,7 +2318,7 @@
   }
   function mortRowId(r, i) { return "mortrate-" + i; }
   function renderMortgageRates() {
-    $("mortgageRatesSyncNote").textContent = "Snapshot synced " + MORTGAGE_RATES_SYNCED_AT + " (" + isaDaysSince(MORTGAGE_RATES_SYNCED_AT) + ") - a dated, sourced snapshot copied across by hand, not a live feed. Nothing on this page refreshes it; the daily task that writes the source document runs on Steven's Mac and writes to HIS store, which this page cannot read. Rows marked \"NOT in the daily snapshot\" are older manual figures. APR shows \"-\" wherever the source publishes a rate and no APR - an APR from a different pull does not belong beside it. Verify against a current lender quote before it reaches a borrower, and never state a rate to one yourself.";
+    $("mortgageRatesSyncNote").textContent = "Snapshot synced " + MORTGAGE_RATES_SYNCED_AT + " (" + isaDaysSince(MORTGAGE_RATES_SYNCED_AT) + ") - a dated, sourced snapshot copied across by hand, not a live feed. Nothing on this page refreshes it; the daily task that writes the source document runs on Steven's Mac and writes to HIS store, which this page cannot read. Rows marked \"NOT in the daily snapshot\" are lender-page figures verified by hand, each carrying its own source date. APR shows \"-\" wherever the source publishes a rate and no APR - an APR from a different pull does not belong beside it. Verify against a current lender quote before it reaches a borrower, and never state a rate to one yourself.";
     $("mortgageRateRows").innerHTML = MORTGAGE_RATES.map(function (r, i) {
       return "<tr id=\"" + mortRowId(r, i) + "\"><td>" + r.type + "</td><td>" + r.term + '</td><td class="num mrate-cell">' + r.rate.toFixed(3).replace(/0+$/, "").replace(/\.$/, "") + '%</td><td class="num">' +
         (r.apr ? r.apr + "%" : "—") + '</td><td><a href="' + chatEsc(safeUrl(r.url)) + '" target="_blank" rel="noopener" class="src-note">' + chatEsc(r.source) + "</a></td></tr>";
@@ -2394,7 +2367,7 @@
     ["Brokers Advantage", "Agency Wholesale broker portal"],
     ["CALVET", "Niche/Govt — California Department of Veterans Affairs home loans"],
     ["Champions Funding", "Non-QM / CDFI — ITIN, DSCR, foreign national, community lending"],
-    ["Change Wholesale", "Non-QM \u2014 Community Mortgage program, no-ratio (verified Sep 2026: lost its Treasury CDFI designation per 2024 reporting \u2014 don\u2019t repeat the \u201cCDFI\u201d label until confirmed directly with the lender)"],
+    ["Change Wholesale", "Non-QM — Community Mortgage program, no-ratio (verified 2026-09-22: the earlier “lost its CDFI designation” note was out of date — Treasury decertified Change Lending in Aug 2023, the Nov 15, 2023 settlement restored it, the CDFI Fund renewed the certification Feb 7, 2024 and carried it on its Jan 10, 2024 certified list; the company’s Apr 2026 fact sheet says still certified, but no 2026 Treasury list or determination was found — ask the AE for the current certificate before marketing the CDFI angle)"],
     ["Click N Close Mortgage", "DPA / Bond programs, Conv & Govt with built-in down payment assistance"],
     ["Commercial Capital Bidco", "Commercial Real Estate lending"],
     ["eLend", "Agency Wholesale — Conv/Govt online channel"],
@@ -2411,9 +2384,9 @@
     ["Kennedy Funding", "Commercial — Bridge & hard-money commercial real estate"],
     ["Kiavi", "DSCR / Investor — Fix & Flip, DSCR rental, bridge (tech-forward)"],
     ["Kind Lending", "Agency Wholesale — Conv & Govt (founded by Glenn Stearns)"],
-    ["Kings Mortgage Services", "Agency Wholesale \u2014 Conv & Govt (verified Sep 2026: public info shows a Visalia, CA-based operation with 5 CA branches \u2014 could not confirm a national wholesale TPO channel; verify directly before relying on this)"],
+    ["Kings Mortgage Services", "Agency Wholesale — Conv & Govt (verified 2026-09-22: kingsmortgage.com bills itself “A Problem-Solving Wholesale Lender” with in-house processing, underwriting and funding — Visalia, CA HQ, five Central Valley/Central Coast retail offices, able to lend statewide in California; still no evidence of a national TPO channel, so treat it as a California-only wholesale option and confirm broker approval directly)"],
     ["LendSure", "Non-QM — DSCR, Bank Statement, Foreign National"],
-    ["Liberty Reverse Mortgage", "Reverse Mortgage \u2014 HECM specialist (\u26a0\ufe0f verified Sep 2026: parent Onity Group reportedly exiting reverse-mortgage origination \u2014 confirm they\u2019re still active before sending a client here)"],
+    ["Liberty Reverse Mortgage", "Reverse Mortgage — HECM specialist (⚠️ verified 2026-09-22: NO LONGER ORIGINATING — parent Onity Group/PHH sold its reverse business to Finance of America; Onity Mortgage stopped purchasing or funding reverse loans effective May 29, 2026 and the HECM servicing-portfolio sale to FAR was cleared Jun 2, 2026. Kept on this list for history only — route reverse files to FAR, Longbridge or Mutual of Omaha)"],
     ["Longbridge Financial Reverse", "Reverse Mortgage — HECM + Platinum proprietary reverse"],
     ["Mega Capital Funding", "Agency Wholesale + Non-QM"],
     ["Mortgage Solutions Financial", "Agency Wholesale — Conv/Govt with manual underwrite capability"],
@@ -2423,7 +2396,7 @@
     ["NextRes (NewRez TPO)", "Agency Wholesale + Smart Series Non-QM (broker channel)"],
     ["Oaktree Funding", "Non-QM — Bank Statement, DSCR, Foreign National"],
     ["Orion Lending", "Agency Wholesale + Non-QM"],
-    ["Oval Mortgage", "Agency Wholesale broker channel \u2014 Conv & Govt (\u26a0\ufe0f verified Sep 2026: no public wholesale site, NMLS record, or press coverage found \u2014 do an NMLS Consumer Access lookup or call before using)"],
+    ["Oval Mortgage", "Agency Wholesale broker channel — Conv & Govt (⚠️ verified 2026-09-22, second pass: still no public wholesale site, NMLS record, or press coverage found under this name — do an NMLS Consumer Access lookup or call before using; if Steven has an AE contact, that is the only lead)"],
     ["PB Financial Group", "Hard Money — California private money & bridge"],
     ["Plaza Home Mortgage", "Agency Wholesale — Conv/Govt + Renovation + Non-QM"],
     ["PRMG (Paramount Residential)", "Agency Wholesale — full Conv/Govt + Non-QM"],
@@ -2444,7 +2417,7 @@
     ["Val-Chris Investments", "Hard Money — California private money & bridge"],
     ["Velocity Mortgage Capital", "DSCR / Investor — 1–4 unit investor + small balance commercial"],
     ["Windsor Mortgage", "Agency Wholesale — Conv/Govt + manufactured homes"],
-    ["Loan United", "Niche — FHA/VA down to 500 FICO, manual underwrite, no-FICO IRRRL/streamline, mfg. homes, licensed 41 states"]
+    ["Loan United", "Niche — FHA/VA down to 500 FICO, manual underwrite, no-FICO IRRRL/streamline, mfg. homes, licensed in 24 states/jurisdictions (verified 2026-09-22 against its own licenses page — LoanUnited.com, LLC, NMLS 1767490; the old “41 states” figure did not hold. CA, TX, FL, GA and WA are on the list; the two versions of that page differ on a few states, so confirm any other state on NMLS Consumer Access)"]
   ];
   function renderLenderDirectory(filterText) {
     var f = (filterText || "").toLowerCase();
@@ -2568,6 +2541,62 @@
     });
   }
   safeRun(renderIsaKpiSop, "renderIsaKpiSop");
+
+  /* ================= ISA DAILY SCORECARD — the ISA's own write path (added 2026-09-22) =================
+     Rows are written in exactly the shape the Command Deck's scorecard card reads (same keys), the
+     cloud pipeline-sync carries the isaScorecard document across four times a day, and "Send to
+     Steven" posts the numbers on the ISA line — the first thing that counts as an ISA-authored message
+     for the escalation ladder. Nothing here contacts anyone outside the two dashboards. */
+  function isaScRows() { var v = lsGetSeeded("isaScorecard", []); return Array.isArray(v) ? v.filter(function (r) { return r && typeof r === "object" && r.date; }) : []; }
+  function isaScToday() { var d = new Date(); var p = function (n) { return (n < 10 ? "0" : "") + n; }; return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()); }
+  function isaScNum(v) { return v == null || v === "" ? "\u2014" : v; }
+  function renderIsaScorecardPortal() {
+    var tb = $("isaScRows"); if (!tb) return;
+    var rows = isaScRows().slice().sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+    if ($("isaScDate") && !$("isaScDate").value) $("isaScDate").value = isaScToday();
+    var badge = $("isaScBadge");
+    var hasToday = rows.some(function (r) { return r.date === isaScToday(); });
+    if (badge) { badge.textContent = hasToday ? "today logged" : rows.length ? "last logged " + rows[0].date : "nothing logged yet"; badge.className = "badge " + (hasToday ? "green" : "amber"); }
+    tb.innerHTML = rows.length ? rows.slice(0, 10).map(function (r) {
+      return "<tr><td>" + chatEsc(r.date) + '</td><td class="num">' + isaScNum(r.attempts) + '</td><td class="num">' + isaScNum(r.live) + '</td><td class="num">' + isaScNum(r.asks) + '</td><td class="num">' + isaScNum(r.re) + '</td><td class="num">' + isaScNum(r.mtg) + '</td><td class="num">' + (r.crm == null || r.crm === "" ? "\u2014" : r.crm + "%") + '</td><td><button type="button" class="ghost" data-isasc-remove="' + chatEsc(r.date) + '" title="Remove this day" aria-label="Remove">\u00d7</button></td></tr>';
+    }).join("") : '<tr><td colspan="8" class="src-note">No scorecards yet \u2014 the first 4:10 PM entry starts the record. Steven sees it on his deck on the next sync.</td></tr>';
+    tb.querySelectorAll("[data-isasc-remove]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        if (!armedOnce(b, "Remove? Click again")) return;
+        lsSet("isaScorecard", isaScRows().filter(function (r) { return r.date !== b.getAttribute("data-isasc-remove"); }));
+        renderIsaScorecardPortal();
+      });
+    });
+  }
+  function isaScSummaryText(r) {
+    return "Scorecard " + r.date + ": " + isaScNum(r.attempts) + " attempts \u00b7 " + isaScNum(r.live) + " live \u00b7 " + isaScNum(r.asks) + " asks \u00b7 " +
+      isaScNum(r.re) + " RE set \u00b7 " + isaScNum(r.mtg) + " mtg set \u00b7 " + isaScNum(r.dual) + " dual-service \u00b7 CRM next-action " +
+      (r.crm == null || r.crm === "" ? "\u2014" : r.crm + "%") + (r.hot ? " \u00b7 hot handoffs: " + r.hot : "") + (r.top3 ? " \u00b7 tomorrow: " + r.top3 : "");
+  }
+  (function initIsaScorecardPortal() {
+    if (!$("isaScSave")) return;
+    renderIsaScorecardPortal();
+    $("isaScSave").addEventListener("click", function () {
+      var date = $("isaScDate").value; if (!date) { $("isaScNote").textContent = "Pick the date first."; return; }
+      var num = function (id) { var v = $(id).value; return v === "" ? null : Number(v); };
+      var nowIso = new Date().toISOString();
+      var entry = { date: date, attempts: num("isaScAttempts"), live: num("isaScLive"), asks: num("isaScAsks"), re: num("isaScRe"), mtg: num("isaScMtg"), dual: num("isaScDual"), crm: num("isaScCrm"), hot: ($("isaScHot").value || "").trim(), top3: ($("isaScTop3").value || "").trim(), by: "isa", ts: nowIso, submittedAt: nowIso };
+      var rows = isaScRows().filter(function (r) { return r.date !== date; }); rows.push(entry);
+      if (rows.length > 120) rows = rows.slice(rows.length - 120);
+      lsSet("isaScorecard", rows);
+      $("isaScNote").textContent = "Saved " + date + ". It reaches Steven's deck on the next sync \u2014 press Send to put it on the line now.";
+      renderIsaScorecardPortal();
+    });
+    armConfirm($("isaScSend"), "Send today's numbers to Steven? Click again", function () {
+      var date = $("isaScDate").value || isaScToday();
+      var row = isaScRows().filter(function (r) { return r.date === date; })[0];
+      if (!row) { $("isaScNote").textContent = "Save the scorecard for " + date + " first, then send it."; return; }
+      if (typeof isaLineAppend !== "function") { $("isaScNote").textContent = "The ISA line isn't available on this page."; return; }
+      isaLineAppend({ from: "isa", to: "steven", priority: "normal", text: isaScSummaryText(row) });
+      if (typeof renderIsaLine === "function") renderIsaLine();
+      $("isaScNote").textContent = "Sent on the ISA line \u2014 it reaches Steven's Command Deck on the next bridge run.";
+    });
+  })();
 
   /* ================= PANEL 13: DAILY RESET SEQUENCES ================= */
   var SOD_ITEMS = [
@@ -2696,7 +2725,7 @@
   /* ================= TECHNOLOGY STACK — TOOL ACCESS DIRECTORY ================= */
   var TECH_STACK = [
     ["Zoho CRM", "https://zoho.com/crm", "4.1, 4.4, 4.5"],
-    ["Lofty (real-estate CRM of record since 2026-09-22 — replaced Follow Up Boss)", "https://www.lofty.com", "4.1, 4.4"],
+    ["Lofty (formerly Chime) — real-estate CRM of record since 2026-09-22", "https://lofty.com", "4.1, 4.4"],
     ["Arive", "https://arive.com", "4.1, 4.5"],
     ["Otter.ai", "https://otter.ai", "4.2"],
     ["Slack", "https://slack.com", "4.3"],
@@ -2914,16 +2943,16 @@
   var FICO_BAND_MIN = { "lt500": 0, "500-579": 500, "580-619": 580, "620-679": 620, "680-739": 680, "740plus": 740 };
   var DOWN_BAND_MIN = { "0": 0, "1-4": 1, "5-19": 5, "20plus": 20 };
   var DTI_MAX = { "lt36": 36, "36-43": 43, "44-50": 50, "gt50": 65 };
-  var PROGRAM_FACTS_SYNCED_AT = "2026-09-07";
+  var PROGRAM_FACTS_SYNCED_AT = "2026-09-22 13:00 UTC — every row re-checked (VA funding-fee tiers, ROAD to Housing Act, FHA 2026 limits and MIP, FHFA 2026 conforming limits incl. San Diego and Riverside, USDA FY2026 fees and income caps, jumbo/DSCR/non-QM/HELOC lender-typical ranges); agency pages could not be fetched directly from this session, so each row's source names the pages the WebSearch results quoted";
   var PROGRAM_FACTS = [
-    { key: "va", match: ["va "], label: "VA", minFico: "Lender-set (no VA minimum; typical floor ~620, some to 580)", down: "0%", maxDti: "No hard cap \u2014 residual-income test governs, not DTI (guideline ref. 41%)", mi: "None ever. Funding fee instead (2026): 2.15% first use / 3.30% subsequent use with <5% down; 1.50% at 5\u20139.99% down; 1.25% at 10%+ down (waived for veterans on VA disability comp, Purple Heart recipients, qualifying surviving spouses). Deductible again on Schedule A for tax year 2026", bestFor: "Any eligible veteran/active-duty/qualifying spouse \u2014 the only $0-down, no-MI program at any credit tier", note: "Loan limits eliminated for full-entitlement borrowers since 2020 \u2014 still current in 2026. 21st Century ROAD to Housing Act (law Jul 11, 2026) now requires the uniform residential mortgage application to tell veterans they may qualify for a VA loan and FHA disclosures to include a VA comparison", source: "VA.gov / VA Loan Network / Bay News 9 (Sep 4, 2026)" },
-    { key: "conventional", match: ["conforming", "conventional", "high balance"], label: "Conventional (Conforming)", minFico: "620 typical lender floor (Fannie DU risk-model changes reported loosening this \u2014 verify per-lender before quoting)", down: "3% (first-time/HomeReady/Home Possible) or 5% standard", maxDti: "Up to 45% standard, up to ~50% with strong compensating factors (reserves, high score, low LTV)", mi: "PMI required above 80% LTV; auto-terminates at 78% of original value (HPA); borrower can request cancellation at 80% LTV", bestFor: "680+ credit, 3\u201320% down \u2014 usually the lowest all-in cost for strong-credit borrowers", note: "2026 conforming limit: $832,750 baseline / $1,249,125 high-cost ceiling (FHFA, +3.26% YoY). Your counties: San Diego $1,104,000 (intermediate tier), Riverside $832,750 (baseline \u2014 not a high-cost county)", source: "FHFA / Compass SD Housing Market / Marchena Home Team (2026 county tables)" },
-    { key: "fha", match: ["fha"], label: "FHA", minFico: "580 for 3.5% down; 500\u2013579 requires 10% down (program floor \u2014 most lenders overlay 620\u2013640 in practice)", down: "3.5% (\u2265580 score) or 10% (500\u2013579)", maxDti: "31%/43% baseline, tiers to 40%/50%+ with compensating factors, up to ~56.9% in the strongest cases", mi: "Upfront MIP 1.75% (financeable) + annual MIP ~0.15\u20130.75% (typically ~0.55%). Runs life of loan if <10% down; cancellable after 11 years if \u226510% down", bestFor: "Lower credit score or thin down payment, no VA eligibility \u2014 classic first-time-buyer program", note: "2026 loan limits: $541,287 floor / $1,249,125 ceiling (1-unit). Several 2026 Mortgagee Letters eased lender compliance burden, no change to borrower qualification", source: "HUD/FHA / LendingTree / Freedom Mortgage" },
-    { key: "usda", match: ["usda"], label: "USDA Rural Development", minFico: "No USDA floor; GUS automated underwriting typically wants 640+, manual path possible 580\u2013639", down: "0%", maxDti: "29%/41% guideline, back-end can exceed with strong compensating factors at lender discretion", mi: "Guarantee fee: 1% upfront (financeable) + 0.35% annual on remaining balance, for the life of the loan", bestFor: "USDA-eligible rural/suburban-fringe property, income under the local 2026 cap ($122,800 for 1\u20134 members in most counties), no VA eligibility", note: "Verify property eligibility on USDA's live map \u2014 designated-area boundaries shift periodically", source: "USDA Rural Development / Neighbors Bank / GMFS Partners" },
-    { key: "jumbo", match: ["jumbo"], label: "Jumbo", minFico: "700 typical, many lenders want 720+, tightening to 740+ above ~$1.5M", down: "10\u201320%+ typical, rising toward 20%+ minimum on $1.5M\u2013$2.5M+ loans", maxDti: "Generally \u226443%, reserve requirements (6\u201312 mo PITI) often substitute for DTI flexibility", mi: "Not standardized \u2014 many programs avoid MI via larger down payment/reserves instead; verify per-lender", bestFor: "High-income/HNW borrowers above the 2026 conforming ceiling \u2014 common in CA/NV markets", note: "2026 conforming-limit increase shrinks the jumbo population in high-cost counties (more loans now qualify conforming)", source: "Rocket Mortgage / Own Luxury Homes" },
-    { key: "dscr", match: ["dscr"], label: "DSCR / Investor", minFico: "660\u2013680 typical, some to 620 with compensating factors", down: "20\u201325% standard, 25\u201330% if DSCR <1.0 or credit <680, some 15% programs at 740+/DSCR 1.25+", maxDti: "N/A \u2014 qualifies on the property's own cash flow, not personal DTI. Min DSCR typically 1.00, 1.25+ for best pricing", mi: "Not applicable \u2014 risk priced into rate instead", bestFor: "Real estate investors who can't easily document personal income for qualification", note: "No federal agency backs DSCR \u2014 every figure here is a lender-typical range, not a fixed rule", source: "LendingOne / DSCRTool (non-QM, lender-set)" },
-    { key: "nonqm", match: ["bank statement", "no income verification", "all in one", "i/o (interest"], label: "Bank Statement / Non-QM", minFico: "620\u2013680 working floor, some lenders lower at reduced LTV", down: "10\u201325% typical; 10% tier usually needs 680+ score and a loan-amount cap", maxDti: "No hard government cap (non-QM, no ATR/QM safe harbor); most lenders self-impose ~45\u201350%", mi: "Not required \u2014 higher rate/pricing substitutes. Often needs 6\u201312 mo PITIA reserves separate from down payment", bestFor: "Self-employed borrowers (2+ yrs) whose tax returns understate true cash flow", note: "No federal agency backs Non-QM \u2014 every figure here is a lender-typical range, not a fixed rule", source: "Griffin Funding / Defy Mortgage (non-QM, lender-set)" },
-    { key: "heloc", match: ["heloc", "second (2nd", "piggyback"], label: "HELOC / Home Equity", minFico: "680+ typical target, some programs to 600 with rate/CLTV tradeoffs", down: "N/A \u2014 equity product, not purchase-money. Generally needs 15\u201320% equity retained", maxDti: "Typically below 43%", mi: "Not applicable", bestFor: "Existing homeowners tapping equity for renovation, debt consolidation, or a down payment on a second property without refinancing a low first-mortgage rate", note: "Max CLTV typically 80\u201385%, some credit unions to 85\u201390%. Rates usually variable, prime-indexed", source: "The Mortgage Reports / HonestCasa" }
+    { key: "va", match: ["va "], label: "VA", minFico: "Lender-set (no VA minimum; typical floor ~620, some to 580)", down: "0%", maxDti: "No hard cap — residual-income test governs, not DTI (guideline ref. 41%)", mi: "None ever. Funding fee instead (2026): 2.15% first use / 3.30% subsequent use with <5% down; 1.50% at 5–9.99% down; 1.25% at 10%+ down; IRRRL 0.50%; cash-out refinance 2.15% first use / 3.30% subsequent (waived for veterans receiving VA disability compensation, Purple Heart recipients on active duty, qualifying surviving spouses). Deductible again on Schedule A from tax year 2026 — the mortgage-insurance-premium deduction was made permanent by the One Big Beautiful Bill Act; itemizers only", bestFor: "Any eligible veteran/active-duty/qualifying spouse — the only $0-down, no-MI program at any credit tier", note: "Loan limits eliminated for full-entitlement borrowers since 2020 — still current in 2026. 21st Century ROAD to Housing Act (signed into law Jul 11, 2026): §601 adds a you-may-qualify-for-a-VA-loan notice to the Uniform Residential Loan Application (FHFA implementing order due within six months, i.e. by Jan 11, 2027) and §602 (VALID Act) makes FHA disclosures include a VA comparison — verified 2026-09-22", source: "VA.gov funding-fee page · VA News on the funding-fee deduction · Veterans United / VA Loan Network 2026 fee charts · Bipartisan Policy Center explainer + KFYR (Jul 11, 2026) on the ROAD to Housing Act — https://www.va.gov/housing-assistance/home-loans/funding-fee-and-closing-costs/ · https://news.va.gov/145096/borrowers-can-deduct-funding-fees/ · https://www.veteransunited.com/valoans/va-funding-fee/ · https://bipartisanpolicy.org/explainer/whats-in-the-21st-century-road-to-housing-act/ · https://www.kfyrtv.com/2026/07/11/bipartisan-va-home-loan-awareness-bill-becomes-law/ (verified 2026-09-22 via WebSearch)" },
+    { key: "conventional", match: ["conforming", "conventional", "high balance"], label: "Conventional (Conforming)", minFico: "620 typical lender floor (Fannie DU risk-model changes reported loosening this — verify per-lender before quoting)", down: "3% (first-time/HomeReady/Home Possible) or 5% standard", maxDti: "Up to 45% standard, up to ~50% with strong compensating factors (reserves, high score, low LTV)", mi: "PMI required above 80% LTV; auto-terminates at 78% of original value (HPA); borrower can request cancellation at 80% LTV", bestFor: "680+ credit, 3–20% down — usually the lowest all-in cost for strong-credit borrowers", note: "2026 conforming limit: $832,750 baseline / $1,249,125 high-cost ceiling (FHFA, +3.26% YoY from $806,500). Your counties: San Diego $1,104,000 (intermediate tier — high-balance conforming from $832,751 to $1,104,000, jumbo above that), Riverside $832,750 (baseline — not a high-cost county) — verified 2026-09-22", source: "FHFA 2026 conforming-loan-limit release (Nov 25, 2025) · JVM Lending / Compass SD Housing Market / DiVita Home Finance 2026 California county tables — https://www.fhfa.gov/news/news-release/fhfa-announces-conforming-loan-limit-values-for-2026 · https://www.jvmlending.com/blog/california-conforming-loan-limits/ · https://sdhousingmarket.com/news/increased-conforming-loan-limits-san-diego-county-2026/ · https://mycahomeloan.com/2026-conforming-loan-limits-california/ (verified 2026-09-22 via WebSearch)" },
+    { key: "fha", match: ["fha"], label: "FHA", minFico: "580 for 3.5% down; 500–579 requires 10% down (program floor — most lenders overlay 620–640 in practice)", down: "3.5% (≥580 score) or 10% (500–579)", maxDti: "31%/43% baseline, tiers to 40%/50%+ with compensating factors, up to ~56.9% in the strongest cases", mi: "Upfront MIP 1.75% (financeable) + annual MIP ~0.15–0.75% (typically ~0.55% on a 30-yr with 3.5% down). Runs life of loan if <10% down; cancellable after 11 years if ≥10% down", bestFor: "Lower credit score or thin down payment, no VA eligibility — classic first-time-buyer program", note: "2026 loan limits: $541,287 floor / $1,249,125 ceiling (1-unit), for FHA case numbers assigned on or after Jan 1, 2026 (Mortgagee Letter 2025-23). Five Mortgagee Letters dated Jun 23, 2026 (ML 2026-06 to 2026-10) eased lender compliance burden — e.g. the HUD-92900-B Important Notice to Homebuyers was rescinded and Limited 203(k) draws were expanded — with no change to borrower qualification — verified 2026-09-22", source: "HUD Mortgagee Letter 2025-23 (2026 forward limits) · HUD MLs 2026-06 to 2026-10 as summarized by Consumer Finance Monitor (Jun 26, 2026) · Neighbors Bank / AmeriSave 2026 MIP tables — https://www.hud.gov/sites/dfiles/hudclips/documents/2025-23hsgml.pdf · https://www.consumerfinancemonitor.com/2026/06/26/hud-modifies-fha-mortgage-loan-policies-to-reduce-regulatory-burdens-and-promote-affordability/ · https://www.neighborsbank.com/fha-loans/fha-mortgage-insurance/ (verified 2026-09-22 via WebSearch)" },
+    { key: "usda", match: ["usda"], label: "USDA Rural Development", minFico: "No USDA floor; GUS automated underwriting typically wants 640+, manual path possible 580–639", down: "0%", maxDti: "29%/41% guideline, back-end can exceed with strong compensating factors at lender discretion", mi: "Guarantee fee (FY2026): 1% upfront (financeable) + 0.35% annual on the remaining balance, for the life of the loan", bestFor: "USDA-eligible rural/suburban-fringe property, household income under the local 2026 moderate-income cap ($122,800 for 1–4 members in most counties; San Diego County reported at $130,650 for 1–4 / $172,450 for 5–8 — Riverside County and every property must be checked on USDA's income-eligibility tool), no VA eligibility", note: "Verify property eligibility on USDA's live map — designated-area boundaries shift periodically; income caps are county-specific, so never quote the $122,800 figure for a San Diego or Riverside County file without the tool — verified 2026-09-22", source: "USDA RD Single Family Housing Guaranteed Loan Program page + USDA income/property eligibility tool · Neighbors Bank / AmeriSave FY2026 fee and income-limit pages · San Diego Real Estate Hunter 2026 county limits — https://www.rd.usda.gov/programs-services/single-family-housing-programs/single-family-housing-guaranteed-loan-program · https://eligibility.sc.egov.usda.gov/ · https://www.neighborsbank.com/usda-loans/income-limits/ · https://www.sandiegorealestatehunter.com/blog/san-diego-usda-home-loan/ (verified 2026-09-22 via WebSearch)" },
+    { key: "jumbo", match: ["jumbo"], label: "Jumbo", minFico: "700 typical, many lenders want 720+, tightening to 740+ above ~$1.5M", down: "10–20%+ typical, rising toward 20%+ minimum on $1.5M–$2.5M+ loans", maxDti: "Generally ≤43%, reserve requirements (6–12 mo PITI, up to 18 mo above $2M) often substitute for DTI flexibility", mi: "Not standardized — many programs avoid MI via larger down payment/reserves instead; verify per-lender", bestFor: "High-income/HNW borrowers above the 2026 conforming ceiling — common in CA/NV markets", note: "2026 conforming-limit increase shrinks the jumbo population in high-cost counties (more loans now qualify conforming); in San Diego County anything above $1,104,000 is jumbo, in Riverside County anything above $832,750 — verified 2026-09-22", source: "The Mortgage Reports / Lower.com / Future.loans 2026 jumbo requirement guides (lender-typical, not agency rules) — https://themortgagereports.com/58660/jumbo-loans-with-low-down-payment-and-no-mortgage-insurance · https://www.lower.com/mortgages/jumbo-loan/how-to-qualify-for-a-jumbo-loan · https://future.loans/jumbo-loan-requirements-in-2026-credit-score-down-payment-reserves/ (verified 2026-09-22 via WebSearch)" },
+    { key: "dscr", match: ["dscr"], label: "DSCR / Investor", minFico: "660–680 typical, some to 620 with compensating factors", down: "20–25% standard, 25–30% if DSCR <1.0 or credit <680, some 15% programs at 740+/DSCR 1.25+", maxDti: "N/A — qualifies on the property's own cash flow, not personal DTI. Min DSCR typically 1.00, 1.25+ for best pricing", mi: "Not applicable — risk priced into rate instead", bestFor: "Real estate investors who can't easily document personal income for qualification", note: "No federal agency backs DSCR — every figure here is a lender-typical range, not a fixed rule — re-checked 2026-09-22, unchanged", source: "LendingOne 2026 DSCR guide · DSCRTool · Pinnacle Funding Network (non-QM, lender-set) — https://lendingone.com/insight/a-guide-to-dscr-loans-for-real-estate-investors/ · https://www.dscrtool.com/dscr-loan-requirements · https://www.pinnaclefundingnetwork.com/blog/24-dscr-loan-down-payment.html (verified 2026-09-22 via WebSearch)" },
+    { key: "nonqm", match: ["bank statement", "no income verification", "all in one", "i/o (interest"], label: "Bank Statement / Non-QM", minFico: "620–680 working floor (most programs 640+), some lenders lower at reduced LTV", down: "10–25% typical; 10% tier usually needs 680+ score and a loan-amount cap; 15–20% is the standard tier", maxDti: "No hard government cap (non-QM, no ATR/QM safe harbor); most lenders self-impose ~45–50%", mi: "Not required — higher rate/pricing substitutes. Needs 3–12 mo PITIA reserves separate from the down payment (3 at ≤80% LTV, 6 at 80–85%, 9+ above $1.5M)", bestFor: "Self-employed borrowers (2+ yrs) whose tax returns understate true cash flow", note: "No federal agency backs Non-QM — every figure here is a lender-typical range, not a fixed rule — re-checked 2026-09-22 (reserve range widened from 6–12 to 3–12 months per current lender guides)", source: "Griffin Funding / Defy Mortgage / mbanc / 1st Northwest Mortgage 2026 bank-statement guides (non-QM, lender-set) — https://griffinfunding.com/non-qm-mortgages/bank-statement-loans/ · https://defymortgage.com/learn/bank-statement-loan-requirements/ · https://mbanc.com/blog/non-qm-loan-requirements · https://www.1stnwm.com/blog/bank-statement-loan-requirements-2026-complete-guide/ (verified 2026-09-22 via WebSearch)" },
+    { key: "heloc", match: ["heloc", "second (2nd", "piggyback"], label: "HELOC / Home Equity", minFico: "680+ typical target, some programs to 600 with rate/CLTV tradeoffs", down: "N/A — equity product, not purchase-money. Generally needs 15–20% equity retained", maxDti: "Typically below 43%, a few lenders to 50% at a price", mi: "Not applicable", bestFor: "Existing homeowners tapping equity for renovation, debt consolidation, or a down payment on a second property without refinancing a low first-mortgage rate", note: "Max CLTV typically 80–85%, some credit unions to 85–90%; lower scores tightened to 70–75%. Rates usually variable, WSJ-prime-indexed (prime + 0 to + 2 typical) — re-checked 2026-09-22, unchanged", source: "The Mortgage Reports / AmeriSave / HonestCasa 2026 HELOC requirement guides (lender-set) — https://themortgagereports.com/95014/home-equity-line-of-credit-requirements · https://www.amerisave.com/learn/heloc-requirements-you-must-meet-in · https://honestcasa.com/blog/heloc-basics-2026-beginners (verified 2026-09-22 via WebSearch)" }
   ];
   function factsFor(program) {
     var n = (program.name + " " + program.cat).toLowerCase();
@@ -3020,13 +3049,25 @@
 
 
   /* ================= BUILDER INCENTIVES & RATE BUYDOWNS ================= */
-  var BUILDER_INCENTIVE_SYNCED_AT = "2026-09-02";
+  /* Re-researched 2026-09-22 (WebSearch + Perplexity sonar-pro, domain-filtered to the builders' own
+     pages; nothing on this page fetches a builder site directly — every outbound fetch from this
+     session is blocked by the egress proxy, and NewHomeSource could therefore not be tested at all).
+     Pages read, with the date each showed: D.R. Horton Spring Creek (Menifee, Sep 18), Juniper at
+     Canterwood (Winchester, Sep 21), Sycamore at Canterwood (Winchester, Aug 23), La Ventana
+     (Winchester, Sep 17), Tesoro Square (Escondido, Sep 20) — all https://www.drhorton.com/california/...;
+     Lennar Inland Empire "Fall Super Savings 2026" https://www.lennar.com/new-homes/california/inland-empire/promo/inllen_fss26 (Sep 18);
+     Lennar San Diego "Labor Day Sale 2026" https://www.lennar.com/new-homes/california/san-diego/promo/sdglen_fss26 (Sep 20);
+     Richmond American Inland Empire https://www.richmondamerican.com/campaigns/1807/ (Sep 2) and Los Angeles /campaigns/2401/ (Sep 19);
+     Meritage SoCal http://cloud.e.meritagehomes.com/great-rate-socal (Aug 31, but its fine print is the Oct 2024 event);
+     NAHB/Wells Fargo HMI Sep 2026 https://www.nahb.org/news-and-economics/press-releases/2026/09/builder-sentiment-falls-on-higher-interest-rates-and-costs;
+     Lennar Q3 FY2026 results (Sep 16) https://investors.lennar.com/press-releases/2026/09-16-2026-213038087. */
+  var BUILDER_INCENTIVE_SYNCED_AT = "2026-09-22 13:05 UTC — WebSearch + Perplexity (sonar-pro, domain-filtered to the builders' own sites); no builder page could be fetched directly from this session";
   var BUILDER_INCENTIVES = [
-    { area: "Temecula, CA", summary: "The trend itself is confirmed still active — Lennar, KB Home, Taylor Morrison, Richmond American, Meritage, and Brookfield are all currently building/selling in the Temecula submarket, and 2-1 buydowns are actively in use here right now (e.g. a Murrieta resale listing Aug 25, 2026 advertised concessions up to 4% plus a 2-1 buydown). The specific “8 builders / ~30 communities” figure could NOT be independently re-verified this pass — NewHomeSource blocked automated access with a bot-detection wall, and a cached snapshot shows the same number, which may just mean it's stale in their own index. Treat as unconfirmed-but-plausible until someone manually re-checks the live page.", source: "NewHomeSource (cached) / Trulia", url: "https://www.newhomesource.com/communities/ca/riverside-san-bernardino-area/temecula?hotdeals=true" },
-    { area: "San Diego, CA", summary: "Confirmed via harder data than the prior sourcing: in August 2026, buyers using builder-affiliated lenders nationally averaged a 30-year rate of ~5.23% vs. ~6.60% through non-builder lenders — a 137bp gap reflecting heavy builder rate-buydown spend (Lennar's own SEC filings show incentives averaging $62,700/home in FY2025, 13.8% of sales revenue, up from 8.8% in FY2023; D.R. Horton uses the same accounting). Local San Diego brokers (Palisade Realty, Left Coast Leaders, both dated mid-to-late Aug 2026) independently describe active 2-1 buydowns (~2.99%/~3.99%) with incentive packages in the $20K–$138K range — real but sourced from real-estate-agent blogs rather than primary builder disclosures, so treat specific dollar figures as directional.", source: "National Mortgage News (via AnnieMac) / CFA Institute", url: "https://annie-mac.com/blogs/brettturner/why-the-biggest-builders-are-buying-down-rates-instead-of-cutting-prices/" }
+    { area: "Temecula / Murrieta / Menifee / Winchester, CA", summary: "Re-researched 2026-09-22 from the builders' own pages. What is actually advertised right now: <b>D.R. Horton</b> — Southern California “Special Interest Rate on certain D.R. Horton homes”: FHA 30-yr fixed 4.990% (5.843% APR, 3.5% down) or conventional 30-yr fixed 5.500% (5.947% APR, 5% down), DHI Mortgage required, “must contract on or after 07/27/26 and close by 10/30/26”, funds limited — shown on Spring Creek (Menifee, page updated Sep 18), Juniper at Canterwood (Winchester, Sep 21), Sycamore at Canterwood (Winchester, Aug 23) and La Ventana (Winchester, Sep 17). <b>Lennar</b> — Inland Empire “Fall Super Savings 2026”: promotional FHA fixed 3.990% (4.748% APR) or promotional fixed 4.250% (4.501% APR) through Lennar Mortgage, but only for purchase agreements signed 09/14/26–09/20/26 closing by 10/31/26 — that window closed on Sep 20 and the next one had not posted on the Sep 18 page snapshot; Lennar's active Menifee community is Legado (low $500,000s), Quartz Trail shows no homes available. <b>Richmond American</b> — the Inland Empire offer page (updated Sep 2) showed a 5.508% APR permanent-buydown offer for agreements signed Sep 1–15, 2026 (expired; the spring version was “up to $60,000 promotional value” toward closing costs, a permanent buydown with HomeAmerican Mortgage, or a 2% price discount). <b>Meritage</b> — its “up to $20K to lower your rate + appliances &amp; blinds” SoCal page is still online, but its fine print is the Oct 1–20, 2024 event; no current Meritage offer for this submarket could be verified (Winchester alone has ~20–25 actively selling neighborhoods across 8 builders including Meritage, per a Sept 2026 local guide). <b>KB Home</b> and <b>Taylor Morrison</b> — no current SW-Riverside rate offer found (KB reports Q3 earnings today, Sep 22). NewHomeSource's Temecula “hot deals” index line still reads 8 builders / 30 communities, but the page itself could not be reached from this session, so that count is unverified. Context: the NAHB/Wells Fargo HMI for September 2026 fell to 32 (lowest in a year) with 66% of builders using incentives and 38% cutting prices (average cut 6%); Lennar's Q3 FY2026 results (Sep 16) put incentives at ~12.0% of a $372,000 average sales price. Pattern to brief clients on: sub-5% to 5.5% FHA/conventional promotional rates through the builder's own lender, sold in one-to-two-week signing windows with a hard closing date — ask the sales office for the current window before a client tours, and compare against the Optimal Blue averages on this page (VA 6.751%, conforming 7.038% as of Sep 18) before calling it a deal.", source: "D.R. Horton Spring Creek (Menifee) page, updated Sep 18, 2026 — the current SoCal special-rate offer; other pages listed in the code comment above", url: "https://www.drhorton.com/california/inland-empire/menifee/spring-creek" },
+    { area: "San Diego County, CA", summary: "Re-researched 2026-09-22 from the builders' own pages. <b>Lennar</b> — San Diego “Labor Day Sale 2026” page (published Sep 11, updated Sep 20): promotional conventional fixed loan with a temporary 2-1 buydown, 2.99% year 1 / 3.99% year 2 / 4.99% for the balance of the term (5.327% APR), Lennar Mortgage required, purchase agreements 09/14/26–09/20/26 closing by 11/30/26 — the signing window closed on Sep 20 while the page was still up; Lennar's San Diego-area communities on its site are Cota Vera (Chula Vista), The Row (San Marcos), Junipers (San Diego 92129), North River Farms (Oceanside) and Creekside Crossing (Ramona). <b>D.R. Horton</b> — Tesoro Square (Escondido, page updated Sep 20) carries the same Southern California special rate as the Inland Empire: FHA 30-yr fixed 4.990% (5.843% APR) or conventional 5.500% (5.947% APR), DHI Mortgage required, contract on or after 07/27/26 and close by 10/30/26. <b>Richmond American</b> — its Los Angeles/San Diego offer page (updated Sep 19) says up to $35,000 promotional value toward closing costs, a permanent buydown with HomeAmerican Mortgage, or a 2% price discount, with no signing window shown in the extract. KB Home, Taylor Morrison, Meritage, Shea, Pardee/Tri Pointe, Toll Brothers and Brookfield — no current, dated San Diego County rate offer could be verified today. NewHomeSource's San Diego index line lists 66 builders / 131 communities / 430 homes (page not reachable from here). No September 2026 study of the builder-lender vs. market-rate gap was found: the Sep 2 pass's figures (Aug 2026 builder-affiliated ~5.23% vs ~6.60% non-builder; Lennar FY2025 incentives $62,700/home, 13.8% of revenue) were NOT re-verified 2026-09-22 and are kept only as that pass's context — the fresh comparable is Lennar's Q3 FY2026 ~12.0% incentive load (Sep 16). Against Optimal Blue's Sep 18 averages on this page (VA 6.751%, conforming 7.038%), the advertised 4.99–5.50% builder rates are a 1.5–2 point subsidy — real, but only through the builder's lender and only inside the posted window, so never repeat one to a client as a market rate.", source: "Lennar San Diego “Labor Day Sale 2026” promo page, updated Sep 20, 2026; D.R. Horton Tesoro Square and the other pages are listed in the code comment above", url: "https://www.lennar.com/new-homes/california/san-diego/promo/sdglen_fss26" }
   ];
   function renderBuilderIncentives() {
-    $("builderIncentiveSyncNote").textContent = "Snapshot researched " + BUILDER_INCENTIVE_SYNCED_AT + " \u2014 a dated manual snapshot, " + isaDaysSince(BUILDER_INCENTIVE_SYNCED_AT) + ". The live results that used to sit under it ran on the You.com connector, retired 2026-09-22. A builder-incentive scan does still run daily \u2014 the incentives-daily-scan task on Steven's Mac (last ok 2026-09-22) \u2014 but it writes to Command Deck's store, and no page can read another page's store, so it does not reach this card. Ask for a re-sync on the ISA line, or use the research queue in the Property Search panel.";
+    $("builderIncentiveSyncNote").textContent = "Snapshot researched " + BUILDER_INCENTIVE_SYNCED_AT + " — a dated manual snapshot, " + isaDaysSince(BUILDER_INCENTIVE_SYNCED_AT) + ". The live results that used to sit under it ran on the You.com connector, retired 2026-09-22. No task tracks builder buydowns: the incentives-daily-scan task on Steven's Mac writes an incentivePrograms document of down-payment-assistance, utility, tax and veteran programs for Temecula/SW Riverside and San Diego (last written 2026-09-22 02:22 UTC) — useful, but not builder incentives — and it lands in Command Deck's store, which this page cannot read. This card moves only when someone re-researches it in a Claude session: ask for a re-sync on the ISA line, or use the research queue in the Property Search panel.";
     var wrap = $("builderIncentiveRows");
     wrap.innerHTML = "";
     BUILDER_INCENTIVES.forEach(function (b, i) {
@@ -3734,7 +3775,7 @@
     underwriter: { name: "Howard", role: "CA Underwriter (pre-underwrite read)", prompt: "You are Howard, a top-1% mortgage underwriter's read on a file for Steven Shearrill's AI Team (MLO NMLS 2449246, Patriot Pacific Financial Corp, Company NMLS 1921615; Steven is a former underwriter himself), reporting to Alexandra (Compliance). You catch what underwriting will say before it says it: compute front and back DTI, LTV/CLTV, VA residual income by region and family size, reserves and seasoning, and self-employment income as the real two-year average with add-backs cited by form and line — from numbers actually supplied, showing the math. Produce a pre-underwrite read (approve-as-submitted likely / will draw conditions — name them / won't support as structured — why, and what would fix it), the conditions to expect written the way an underwriter issues them, a manual-underwrite flag when the file sits outside AUS territory, and a guideline citation for every number (DU/LPA message, agency selling-guide section, VA Lender's Handbook chapter). Hard limits: never issue a credit decision; never quote a rate, APR or payment; never invent a number — say 'cannot compute without <the missing figure>'; always distinguish stated from verified; flag undisclosed debt or document inconsistencies plainly to Steven, never resolve them quietly." + ISA_COA_INSTRUCTION },
     ciso: { name: "Elena", role: "Chief Information Security Officer", prompt: "You are Elena, Chief Information Security Officer for Steven Shearrill's business — data/cyber risk and credential hygiene sized right for a solo-operator business handling client PII and financial data, never enterprise-security theater that doesn't fit his scale." + ISA_COA_INSTRUCTION }
   };
-  var ISA_VANESSA_PREAMBLE = "You are Vanessa, Chief of Staff / Executive Assistant / COO for Steven Shearrill (mortgage loan officer, Patriot Pacific Financial Corp; Realtor/Broker Associate, LPT Realty / SPACE Real Estate Team; serving military/veteran and hometown-hero communities in San Diego/Temecula/Southwest Riverside County). Trained on Steven's real EA/ISA SOP: dual-CRM, never blended — Zoho CRM (with the ARIVE wholesale LOS) is the system of record for mortgage; and Lofty (formerly Chime) has been the system of record for real estate since 2026-09-22, replacing Follow Up Boss. Two current facts you must not paper over: Zoho's CRM API is returning 403 NO_PERMISSION (Crm_Implied_Api_Access) so nobody can read live Zoho data from the ISA Portal or the Command Deck — only Steven can fix that in Zoho's profile settings; and the first Lofty sync has not run yet, so there are no live real-estate lead counts either. If a question needs a live CRM number, say plainly that it cannot be read right now. Non-negotiables: 5-minute lead response during coverage hours, every active lead has a documented next step, zero avoidable missed deadlines. You never independently quote a rate/APR/payment, determine eligibility or underwriting outcome, negotiate a real-estate offer/price/contingency, or interpret a contract. You are talking here with Steven's real, human Executive Assistant / ISA on ISA Portal, not with Steven directly — she may ask about pipeline status, deal notes, or anything else in her scope, or relay something to or from Steven. Answer yourself when it's straightforward, or use the consult_specialist tool for anything centrally about finances (cfo/Marcus), marketing (cmo/Sofia), systems/automation (cto/Derek), compliance (compliance/Alexandra), AI strategy (caio/Nadia), revenue/pipeline (cro/Victor), or security/data risk (ciso/Elena) — and when you do, say plainly in your final answer which specialist(s) you checked with." + ISA_COA_INSTRUCTION + " Never fabricate a specific number, rate, or fact — say when something isn't available from here.";
+  var ISA_VANESSA_PREAMBLE = "You are Vanessa, Chief of Staff / Executive Assistant / COO for Steven Shearrill (mortgage loan officer, Patriot Pacific Financial Corp; Realtor/Broker Associate, LPT Realty / SPACE Real Estate Team; serving military/veteran and hometown-hero communities in San Diego/Temecula/Southwest Riverside County). Trained on Steven's real EA/ISA SOP: dual-CRM, never blended — Zoho CRM (with the ARIVE wholesale LOS) is the system of record for mortgage; and Lofty (formerly Chime) has been the system of record for real estate since 2026-09-22. Two current facts you must not paper over: Zoho's CRM API is returning 403 NO_PERMISSION (Crm_Implied_Api_Access) so nobody can read live Zoho data from the ISA Portal or the Command Deck — only Steven can fix that in Zoho's profile settings; and the first Lofty sync has not run yet, so there are no live real-estate lead counts either. If a question needs a live CRM number, say plainly that it cannot be read right now. Non-negotiables: 5-minute lead response during coverage hours, every active lead has a documented next step, zero avoidable missed deadlines. You never independently quote a rate/APR/payment, determine eligibility or underwriting outcome, negotiate a real-estate offer/price/contingency, or interpret a contract. You are talking here with Steven's real, human Executive Assistant / ISA on ISA Portal, not with Steven directly — she may ask about pipeline status, deal notes, or anything else in her scope, or relay something to or from Steven. Answer yourself when it's straightforward, or use the consult_specialist tool for anything centrally about finances (cfo/Marcus), marketing (cmo/Sofia), systems/automation (cto/Derek), compliance (compliance/Alexandra), AI strategy (caio/Nadia), revenue/pipeline (cro/Victor), or security/data risk (ciso/Elena) — and when you do, say plainly in your final answer which specialist(s) you checked with." + ISA_COA_INSTRUCTION + " Never fabricate a specific number, rate, or fact — say when something isn't available from here.";
   function isaVanessaChatHistory() { return lsGetSeeded("isaVanessaChat", []); }
   /* ================= AI AGENT ENGAGEMENT: chat renderer (mirrors Command Deck) ================= */
   function chatEsc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
@@ -4071,7 +4112,7 @@
   })();
 
   /* ---- ISA Portal side: compose to Steven (relayed) or to Vanessa / Steve / the team (answered live, copied to Steven) ---- */
-  var ISA_STEVE_PREAMBLE = "You are Steve, Steven Shearrill's digital twin, talking on the ISA line with Steven's real, human Executive Assistant / ISA (not with Steven). You reason AS Steven and speak in the first person, in his voice: a retired Navy Chief, decisive, warm, direct, who runs a mortgage business (Patriot Pacific Financial Corp, ARIVE + Zoho CRM as the mortgage system of record) and a real-estate practice (LPT Realty / SPACE team, Lofty as the real-estate system of record since 2026-09-22, replacing Follow Up Boss) serving military, veteran and hometown-hero families in San Diego / Temecula / Southwest Riverside County. Non-negotiables you enforce: 5-minute lead response in coverage hours, every active lead has a documented next step, zero avoidable missed deadlines, bad news by phone first. YOU MAY: answer routine process questions, prioritize her day, give direction within the SOP, draft client-facing text she sends under her own name, and settle small calls Steven would obviously settle the same way. YOU MAY NOT: quote or commit a rate, APR, payment, or eligibility outcome; approve spending; sign or commit Steven to anything with a client; or make licensed-activity decisions — for those, say plainly that Steven himself has to make the call. Keep replies under 150 words unless she asked for a draft. END EVERY REPLY with a final line that is exactly 'NEEDS STEVEN: no' or 'NEEDS STEVEN: yes — <one line telling Steven what to decide>'.";
+  var ISA_STEVE_PREAMBLE = "You are Steve, Steven Shearrill's digital twin, talking on the ISA line with Steven's real, human Executive Assistant / ISA (not with Steven). You reason AS Steven and speak in the first person, in his voice: a retired Navy Chief, decisive, warm, direct, who runs a mortgage business (Patriot Pacific Financial Corp, ARIVE + Zoho CRM as the mortgage system of record) and a real-estate practice (LPT Realty / SPACE team, Lofty as the real-estate system of record since 2026-09-22) serving military, veteran and hometown-hero families in San Diego / Temecula / Southwest Riverside County. Non-negotiables you enforce: 5-minute lead response in coverage hours, every active lead has a documented next step, zero avoidable missed deadlines, bad news by phone first. YOU MAY: answer routine process questions, prioritize her day, give direction within the SOP, draft client-facing text she sends under her own name, and settle small calls Steven would obviously settle the same way. YOU MAY NOT: quote or commit a rate, APR, payment, or eligibility outcome; approve spending; sign or commit Steven to anything with a client; or make licensed-activity decisions — for those, say plainly that Steven himself has to make the call. Keep replies under 150 words unless she asked for a draft. END EVERY REPLY with a final line that is exactly 'NEEDS STEVEN: no' or 'NEEDS STEVEN: yes — <one line telling Steven what to decide>'.";
   function isaPortalSnapshot() {
     var parts = [];
     try { var deals = lsGetSeeded("pipeline", []); if (deals.length) parts.push("Mortgage pipeline (" + deals.length + "): " + deals.map(function (d) { return d.client + " " + (d.amount ? "$" + Math.round(d.amount).toLocaleString("en-US") : "") + " — " + d.stage; }).join("; ") + "."); } catch (e) {}
@@ -4081,7 +4122,7 @@
       if (lf && lf.status !== "not-configured" && lf.status !== "error" && Array.isArray(lf.newLeads90d)) {
         parts.push("Lofty (real-estate CRM since 2026-09-22): " + lf.newLeads90d.length + " new leads in the last 90 days (synced " + (lf.syncedAt || "no stamp") + ").");
       } else {
-        parts.push("Lofty (real-estate CRM since 2026-09-22): awaiting the first sync \u2014 no live lead counts available from this portal. The last Follow Up Boss import was " + FUB_SYNC_AT + " (" + FUB_NEW_LEADS_90D.length + " new leads in the 90 days before it); FUB is retired and that number is history, not current.");
+        parts.push("Lofty (real-estate CRM since 2026-09-22): awaiting the first sync \u2014 no live lead counts available from this portal. Lofty is not connected yet \u2014 the API key is not installed \u2014 so there is no real-estate lead count to quote. Say so rather than giving a number.");
       }
     } catch (e) {}
     try { parts.push("Zoho CRM remains the system of record for mortgage, but its API returns 403 NO_PERMISSION \u2014 no live Zoho data is readable from this portal."); } catch (e) {}
@@ -4304,6 +4345,28 @@
     refreshSectionSlider();
   })();
 
+  // Last day each reference panel was re-verified end to end. Absent here = dateless "Reference".
+  /* How recently anyone actually checked a reference panel, and HOW FAR the check went.
+     scope "full"   = every fact in the panel re-sourced that day.
+     scope "part"   = named cards re-sourced; the rest of the panel carries older dates.
+     scope "review" = the panel was read and its stamp resolved, but its content was not re-sourced.
+     The three read differently on the badge on purpose. The freshness pass of 2026-09-22 reported
+     that NO panel on this page qualified as "full" from its work alone, so nothing claims more
+     than it earned. Entries are only read for kind:"ref" panels; a panel the reader maintains
+     ("you") or a document-fed one ("synced") gets its date from the data itself. */
+  var ISA_PANEL_VERIFIED_AT = {
+    "panel-isa-syncstatus":    { at: "2026-09-22", scope: "full",
+      note: "Both artifact databases\u2019 state collections were read by hand, and the two rows that describe client documents are now counted from the live document as the table renders." },
+    "panel-isa-loanprograms":  { at: "2026-09-22", scope: "part",
+      note: "Re-sourced today: the eight 2026 program-fact rows and five lender rows (Change Wholesale, Kings Mortgage, Liberty Reverse, Oval, Loan United). The other 56 lender rows and the 39 loan programs were counted, not re-sourced." },
+    "panel-isa-easop":         { at: "2026-09-22", scope: "part",
+      note: "Re-sourced today: the Lofty row of the tech stack. The SOP text is versioned and was last revised earlier." },
+    "panel-isa-vamastermind":  { at: "2026-09-22", scope: "part",
+      note: "Re-sourced today: the Q3 licensing deadline line (8 days left, closes 2026-09-30). The rest of the blueprint is versioned playbook content." },
+    "panel-isa-playbook":      { at: "2026-09-22", scope: "review" },
+    "panel-isa-workflows":     { at: "2026-09-22", scope: "review" },
+    "panel-isa-team":          { at: "2026-09-22", scope: "review" }
+  };
   function isaPanelStampRegistry() {
     var mortgageRatesIso = typeof MORTGAGE_RATES_SYNCED_AT === "string" ? MORTGAGE_RATES_SYNCED_AT : null;
     return {
@@ -4335,7 +4398,22 @@
       if (!cfg) {
         cls += " st-you"; txt = "—";
       } else if (cfg.kind === "ref") {
-        txt = "Reference"; title = cfg.note || "Stable reference material — no refresh cadence.";
+        // A dateless "Reference" badge hid how long it had been since anyone checked the content.
+        var vCfg = ISA_PANEL_VERIFIED_AT[panel.id] || null;
+        // typeof, not truthiness: a bare-string entry left by an older edit would hit
+        // String.prototype.at (ES2022) — a truthy FUNCTION — and print it into the tooltip.
+        var vAt = vCfg && typeof vCfg.at === "string" ? vCfg.at : null, vd = vAt ? isaStampAgeDays(vAt) : null;
+        if (vAt) {
+          var sc = vCfg.scope || "review";
+          cls += vd === null || sc === "review" ? "" : vd > 30 ? " st-warn" : " st-fresh";
+          txt = (sc === "full" ? "Verified " : sc === "part" ? "Part-checked " : "Reviewed ") + isaStampRelative(vd);
+          title = (sc === "full" ? "Every fact in this panel was re-sourced on " + vAt + "."
+                 : sc === "part" ? "Only parts of this panel were re-sourced on " + vAt + "."
+                 : "Read and stamp-resolved on " + vAt + "; the content itself was not re-sourced that day.")
+                + (vCfg.note ? " " + vCfg.note : "") + (cfg.note ? " " + cfg.note : "");
+        } else {
+          txt = "Reference"; title = cfg.note || "Stable reference material — no refresh cadence.";
+        }
       } else if (cfg.kind === "you") {
         var iso = isaStampFromEdits(cfg.keys);
         if (iso) {
@@ -4367,7 +4445,7 @@
   var SH_INTEGRATIONS = [
     ["ShowingTime", "Request the showing in the ShowingTime app / MLS listing; the row's Request button opens ShowingTime and copies the request text.", ["amber", "App + you today"], "ShowingTime's API is partner-level (brokerage / MLS agreement, not self-serve). Until LPT or CRMLS grants it, ShowingTime rows always sync as a manual request."],
     ["Showami", "Book a licensed showing agent; the row's Book button opens Showami and copies a complete request.", ["amber", "Web + you today · API queue ready"], "A Showami brokerage account with API access. Once Steven adds the key, the sync task posts requests itself."],
-    ["Lofty (CRM of record since 2026-09-22)", "Confirmed showings would be logged on the client's Lofty record by the sync task once it is re-pointed off Follow Up Boss.", ["amber", "Re-pointing pending"], "Follow Up Boss was retired 2026-09-22 (its API key had been rejecting every call since 2026-09-16). The Mac has the lofty-bridge MCP server; the API key and the first run are still pending, so nothing is being logged to a CRM right now."],
+    ["Lofty (CRM of record since 2026-09-22)", "Confirmed showings would be logged on the client's Lofty record by the sync task once it is wired to Lofty.", ["amber", "Wiring pending"], "The Mac has the lofty-bridge MCP server; the Lofty API key and the first proving run are still pending, so nothing is being logged to a CRM right now."],
     ["Google Calendar", "Every row has an Add-to-Calendar link (works now); the sync task also creates the event for confirmed showings.", ["green", "Live"], "Nothing — the link path works today."],
     ["Route planner", "The route planner below builds the multi-stop Google Maps route.", ["green", "Live"], "Nothing."],
     ["Steven's Command Deck", "It does not. Showings stay in this portal's store — verified 2026-09-22 by reading both databases. Send him the plan on the ISA line, which is the one thing that crosses.", ["red", "Not synced"], "A Mac task that reads both stores and copies showingSchedule the way isa-comms-bridge-local copies isaLine. The cloud \u201cPipeline Sync\u201d routine cannot do it — an unattended cloud run cannot write an artifact database."]

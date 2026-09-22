@@ -42,6 +42,16 @@ sect() { [ "$QUIET" -eq 1 ] || printf '\n== %s\n' "$*"; }
 have() { command -v "$1" >/dev/null 2>&1; }
 NPM_ROOT=$(npm root -g 2>/dev/null || true)
 ver()  { "$@" 2>/dev/null | head -1 | tr -d '\r'; }
+# Anything this script echoes from another tool's output passes through here first, so a key that a tool
+# prints in its own listing (an MCP server's command line, say) never reaches the report. Same shapes as
+# the failover scripts' redact(): NAME=value, name: value, "name":"value", Bearer/sk- tokens, long opaque runs.
+redact_line() {
+  sed -E \
+    -e 's/([A-Za-z0-9_.-]*([Kk][Ee][Yy]|[Tt][Oo][Kk][Ee][Nn]|[Ss][Ee][Cc][Rr][Ee][Tt]|[Pp][Aa][Ss][Ss][A-Za-z]*|[Aa][Uu][Tt][Hh][A-Za-z]*|[Cc][Rr][Ee][Dd][A-Za-z]*)[A-Za-z0-9_.-]*["'"'"']?[[:space:]]*[=:][[:space:]]*["'"'"']?)(([Bb][Ee][Aa][Rr][Ee][Rr]|[Bb][Aa][Ss][Ii][Cc]|[Tt][Oo][Kk][Ee][Nn])[[:space:]]+)?[^[:space:]"'"'"',;}]+/\1[REDACTED]/g' \
+    -e 's/(([Kk][Ee][Yy]|[Tt][Oo][Kk][Ee][Nn]|[Ss][Ee][Cc][Rr][Ee][Tt]|[Pp][Aa][Ss][Ss][Ww]?[Oo]?[Rr]?[Dd]?)[-_[:space:]]+)[A-Za-z0-9._-]{8,}/\1[REDACTED]/g' \
+    -e 's/(sk-(ant-)?|[Bb][Ee][Aa][Rr][Ee][Rr][[:space:]]+|ghp_|xox[a-z]-)[A-Za-z0-9._-]{6,}/\1[REDACTED]/g' \
+    -e 's/[A-Za-z0-9+\/_=.-]{32,}/[REDACTED-LONG]/g'
+}
 # GNU stat first and validated: on Linux `stat -f` means "file SYSTEM status" and succeeds with the
 # wrong output, so the usual BSD-first fallback silently prints a filesystem report as a file mode.
 filemode() {
@@ -60,7 +70,16 @@ filemode() {
 check_cmd() {
   _label=$1; _cmd=$2; shift 2
   _p=$(command -v "$_cmd" 2>/dev/null || true)
-  if [ -n "$_p" ]; then ok "$_label" "$("$_p" "$@" 2>/dev/null | head -1 | tr -d '\r')"; return; fi
+  if [ -n "$_p" ]; then
+    # F-V2-27: a binary that is on PATH but cannot run is broken, not healthy — the exit status and the
+    # output are both tested, instead of printing whatever (possibly nothing) came out.
+    _out=$("$_p" "$@" 2>/dev/null); _rc=$?
+    _out=$(printf '%s\n' "$_out" | head -1 | tr -d '\r')
+    if [ "$_rc" -ne 0 ]; then bad "$_label" "on PATH at $_p but '$_cmd $*' exited $_rc"
+    elif [ -z "$_out" ]; then bad "$_label" "on PATH at $_p but '$_cmd $*' printed nothing"
+    else ok "$_label" "$_out"; fi
+    return
+  fi
   if [ -x "$BINDIR/$_cmd" ]; then
     need "$_label" "installed at $BINDIR/$_cmd but $BINDIR is not on PATH"; return
   fi
@@ -93,13 +112,34 @@ esac
 
 # --------------------------------------------------------------------------- the brain's own files
 sect "vendored skills (they ship with the repo — nothing to install)"
-missing=''
+# F-V2-24: a file being there is not a skill loading. For each one: the frontmatter (the block between the
+# two --- fences) must parse, its name must equal the directory name, its description must be non-empty, and
+# every relative ](link) in the body must resolve. Nine local files, no network.
 for s in code-review-and-quality git-workflow-and-versioning source-driven-development \
          documentation-and-adrs security-and-hardening debugging-and-error-recovery \
          find-skills apple-design karpathy-coding-principles; do
-  [ -f "$REPO_DIR/.claude/skills/$s/SKILL.md" ] || missing="$missing $s"
+  f="$REPO_DIR/.claude/skills/$s/SKILL.md"
+  if [ ! -f "$f" ]; then bad "skill $s" "SKILL.md missing"; continue; fi
+  fm=$(awk 'NR==1{if($0!="---"){nofm=1; exit 2}; next} /^---[[:space:]]*$/{found=1; exit 0} {print} END{if(!found && !nofm) exit 3}' "$f"); fm_rc=$?
+  if [ "$fm_rc" -ne 0 ]; then bad "skill $s" "frontmatter fences missing or unterminated (a session cannot load it)"; continue; fi
+  name=$(printf '%s\n' "$fm" | sed -n 's/^name:[[:space:]]*//p' | head -1 | sed -e "s/^[\"']//" -e "s/[\"']*[[:space:]]*$//")
+  desc=$(printf '%s\n' "$fm" | sed -n 's/^description:[[:space:]]*//p' | head -1 | sed -e 's/[[:space:]]*$//')
+  case "$desc" in '>'|'|'|'>-'|'|-'|'>+'|'|+')   # block scalar: the text is on the indented lines that follow
+    desc=$(printf '%s\n' "$fm" | sed -n '/^description:/,/^[^[:space:]]/p' | sed -n '2,$p' | grep -E '^[[:space:]]+[^[:space:]]' | head -1) ;;
+  esac
+  desc=$(printf '%s' "$desc" | sed -e "s/^[[:space:]]*[\"']*//" -e "s/[\"']*[[:space:]]*$//")
+  if [ "$name" != "$s" ]; then bad "skill $s" "frontmatter name '${name:-<none>}' is not the directory name — the loader rejects it"; continue; fi
+  if [ -z "$desc" ]; then bad "skill $s" "frontmatter description is empty — the loader rejects it"; continue; fi
+  dead=''
+  while IFS= read -r l; do
+    [ -n "$l" ] || continue
+    [ -e "$REPO_DIR/.claude/skills/$s/$l" ] || dead="$dead $l"
+  done <<EOF
+$(grep -oE '\]\([^)]+\)' "$f" | sed -e 's/^](//' -e 's/)$//' | grep -vE '^(https?:|mailto:|#|/)' | sed 's/#.*//' | sort -u)
+EOF
+  if [ -n "$dead" ]; then bad "skill $s" "dead relative link(s):$dead"
+  else ok "skill $s" "loads: name matches, description $(printf '%s' "$desc" | wc -c | tr -d ' ') chars, links resolve"; fi
 done
-if [ -z "$missing" ]; then ok "vendored skills" "all nine present"; else bad "vendored skills" "missing:$missing"; fi
 
 # --------------------------------------------------------------------------- FR5a tools
 sect "FR5a tooling"
@@ -127,12 +167,38 @@ for f in claude-auto probe.sh; do
     src="$REPO_DIR/integrations/omniroute-failover/${f%.sh}.sh"
     [ "$f" = "probe.sh" ] && src="$REPO_DIR/integrations/omniroute-failover/probe.sh"
     if [ -f "$src" ] && cmp -s "$src" "$BINDIR/$f"; then ok "$f" "matches the repo copy"
-    else ok "$f" "installed (differs from the repo copy — diff it before trusting it)"; fi
+    elif [ -f "$src" ]; then
+      # F-V2-25: the installed launcher IS the PII gate. A copy that differs from the repo is unverified,
+      # and unverified is not ok — it lands in the summary and blocks exit 0 until it is diffed and replaced.
+      need "$f" "installed copy DIFFERS from the repo copy — diff it, then reinstall from the repo before trusting the gate"
+    else bad "$f" "repo copy missing at $src — cannot verify the installed one"; fi
   else bad "$f" "not in $BINDIR"; fi
 done
-if [ -r "$HOME/.config/omniroute/state/mode" ]; then
-  ok "omniroute route mode" "$(cat "$HOME/.config/omniroute/state/mode" 2>/dev/null)"
+# F-V2-26: only mode=subscription is healthy. Anything else means tasks are on free providers or deferred —
+# the condition the whole design exists to keep temporary — so it is reported with its age, never as ok.
+# route.env is parsed with sed, never sourced.
+OMNI_STATE="$HOME/.config/omniroute/state"
+if [ -r "$OMNI_STATE/mode" ]; then
+  rmode=$(tr -dc 'A-Za-z0-9-' < "$OMNI_STATE/mode")
+  if [ "$rmode" = "subscription" ]; then ok "omniroute route mode" "subscription"
+  else
+    rsince=''; rreason=''
+    if [ -r "$OMNI_STATE/route.env" ]; then
+      rsince=$(sed -n 's/^since=//p' "$OMNI_STATE/route.env" | tail -1 | tr -dc '0-9')
+      rreason=$(sed -n 's/^reason=//p' "$OMNI_STATE/route.env" | tail -1 | tr -dc 'A-Za-z0-9 _.:=/-')
+    fi
+    if [ -n "$rsince" ]; then rage=$(( ($(date +%s) - rsince) / 60 )); ragestr="for $((rage / 60))h$((rage % 60))m"
+    else ragestr="for an unknown time (no since= in route.env)"; fi
+    need "omniroute route mode" "${rmode:-?} $ragestr (reason: ${rreason:-?}) — the probe has not restored the subscription"
+  fi
 else info "omniroute route mode" "no state/mode yet — claude-auto has not run"; fi
+if [ -f "$OMNI_STATE/NEEDS-STEVEN" ]; then
+  need "omniroute probe" "ESCALATED — $(head -1 "$OMNI_STATE/NEEDS-STEVEN" | tr -dc 'A-Za-z0-9 _.:=/()-' | cut -c1-170)"
+fi
+if [ -f "$OMNI_STATE/probe-failures" ]; then
+  pf=$(tr -dc '0-9' < "$OMNI_STATE/probe-failures")
+  [ "${pf:-0}" -gt 0 ] && info "omniroute probe" "$pf consecutive inconclusive probe(s) so far (escalates at 4)"
+fi
 
 if [ -x "$SCRAPERS_PY" ]; then
   if "$SCRAPERS_PY" -c 'from scrapling.fetchers import Fetcher' >/dev/null 2>&1; then
@@ -179,8 +245,19 @@ check_env_file() { # check_env_file <tool> <NAME>...
   if [ "$_m" = "600" ]; then ok "$_tool/.env" "mode 600"
   else bad "$_tool/.env" "mode $_m — must be 600 (chmod 600 '$_f')"; fi
   for _n in "$@"; do
-    if grep -q "^[[:space:]]*${_n}=[^[:space:]]" "$_f" 2>/dev/null; then ok "  $_n" "set"
-    else need "  $_n" "no value yet"; fi
+    # F-V2-29: a placeholder is not a value. The value is read into a variable, classified by shape, and
+    # never printed — the report says set / no value / placeholder, nothing more.
+    _v=$(sed -n "s/^[[:space:]]*${_n}=//p" "$_f" 2>/dev/null | tail -1 | tr -d '\r' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e "s/^[\"']//" -e "s/[\"']$//")
+    _lv=$(printf '%s' "$_v" | tr '[:upper:]' '[:lower:]')
+    if [ -z "$_v" ]; then need "  $_n" "no value yet"
+    else
+      case "$_lv" in
+        changeme|change-me|change_me|xxx*|todo*|tbd*|fixme*|'<'*'>'|*your-*|*your_*|*-here|*_here|placeholder*|example*|dummy*|sample*|none|null|n/a|replace*|*paste*|'...'|'…'|'$'*)
+          need "  $_n" "placeholder value — replace it with the real key (value not shown)" ;;
+        *) ok "  $_n" "set" ;;
+      esac
+    fi
+    _v=''; _lv=''
   done
 }
 check_env_file omniroute OMNIROUTE_API_KEY OPENROUTER_API_KEY NVIDIA_API_KEY BYTEZ_API_KEY
@@ -194,15 +271,25 @@ if [ -f "$HOME/.config/higgsfield/.env" ]; then check_env_file higgsfield HF_API
 # --------------------------------------------------------------------------- MCP servers
 sect "MCP servers (read-only listing)"
 if have claude; then
-  mcp=$(claude mcp list 2>&1)
-  if [ -n "$mcp" ]; then
-    n=$(printf '%s\n' "$mcp" | grep -c .)
-    ok "claude mcp list" "$n line(s) returned"
-    [ "$QUIET" -eq 1 ] || printf '%s\n' "$mcp" | sed 's/^/        /'
+  # F-V2-28: stdout only, exit status tested, the empty-state message is NEED, servers counted rather than
+  # lines. stderr is read separately (a second, identical read-only call) only when the first call failed.
+  mcp=$(claude mcp list 2>/dev/null); mcp_rc=$?
+  if [ "$mcp_rc" -ne 0 ]; then
+    mcp_err=$(claude mcp list 2>&1 >/dev/null | head -1 | redact_line | cut -c1-120)
+    bad "claude mcp list" "exited $mcp_rc${mcp_err:+ — $mcp_err}"
+  elif printf '%s' "$mcp" | grep -qi 'No MCP servers configured'; then
+    need "claude mcp list" "no MCP servers configured for this user — the brain's local servers are not registered"
+  elif [ -z "$(printf '%s' "$mcp" | tr -d '[:space:]')" ]; then bad "claude mcp list" "exit 0 but printed nothing"
+  else
+    n=$(printf '%s\n' "$mcp" | grep -cE '^[A-Za-z0-9_.-]+:')
+    nbad=$(printf '%s\n' "$mcp" | grep -cE '(✗|Failed to connect|Error:)')
+    ok "claude mcp list" "$n server(s) listed"
+    [ "$nbad" -gt 0 ] && need "MCP servers failing" "$nbad server(s) not connected — see the listing"
+    [ "$QUIET" -eq 1 ] || printf '%s\n' "$mcp" | redact_line | sed 's/^/        /'
     if printf '%s' "$mcp" | grep -qi 'agent402'; then
       bad "MCP agent402" "REGISTERED — it is on the refused list (pay-per-call wallet). Remove it: claude mcp remove agent402"
     fi
-  else bad "claude mcp list" "returned nothing"; fi
+  fi
 else need "claude CLI" "not on PATH — cannot list MCP servers"; fi
 
 # --------------------------------------------------------------------------- scheduled work
