@@ -97,3 +97,41 @@ Deterministic; no network. (A first run had one failure in a test fixture — th
 - The REPL has not been driven interactively (prompt-toolkit needs a TTY).
 - No `zohoSync` / `zohoLeads` / `zohoDeals` / `zohoSyncLog` write has been made; this CLI writes
   no deck document.
+
+## Part 4 — Install-and-test verification (H2b, 2026-09-22, venv `/tmp/h2b-venv`, Python 3.11.15)
+
+This is the install-and-test pass the Part 2 transcript describes, carried out independently in a
+clean throwaway venv and reproduced exactly:
+
+- `pip install .` → `Successfully installed cli-anything-zoho-0.1.0` (exit 0). Resolves from PyPI
+  alone — click, prompt-toolkit, requests — with no `cli-anything-browser` dependency, so the
+  result is environment-independent.
+- `cli-anything-zoho --help` → exit 0.
+- `grep -w act` over that help output → **no match** (the substring occurs only in "redact",
+  "redacted" and "interactive"); no `act` group exists.
+- `python -m pytest cli_anything/zoho/tests -v` → **43 passed in 0.78s**, no skips, no failures.
+  `CLI_ANYTHING_REPO_ROOT=/home/user/Repo` is set so
+  `TestGetOnly::test_token_minting_is_outside_the_package` finds `tools/mint-access-token.sh`;
+  without it that one test **skips** rather than fails, which is worth knowing when the suite is
+  run from site-packages.
+
+### The 403 mapping, exercised directly
+
+Beyond the assertions in `TestProfilePermission`, the CLI itself was driven with `requests.get`
+patched to return the recorded 403 body — offline, no network, no Zoho call. Observed:
+
+| Invocation | exit | `requests.get` calls | Result |
+|---|---|---|---|
+| `--json leads list` | **4** | **1** | `type: profile_permission_denied`, `httpStatus: 403`, `zohoCode: NO_PERMISSION`, `details.permissions: ["Crm_Implied_Api_Access"]`, no `rows` key |
+| `--json selftest` | **4** | **1** | `status: "blocked"`, `httpCode: 403`, `leads: null`, `deals: null` |
+| `leads list` (text) | **4** | **1** | one `Error:` line then one `Fix:` line — no traceback |
+| `--json leads list` with a 403 `INVALID_REQUEST` | **1** | **1** | plain `auth_error`; the profile message is **absent** |
+
+Every message began with the exact words *"profile permission not granted — this is a Zoho-side
+setting, not a credential problem"*, and every `fix` carried the full click path
+*Setup → Security Control → Profiles → the connected user's profile → Developer Permissions →
+enable 'Zoho CRM API Access'*. `requests.get` was called **once** in every case: the block is
+surfaced, never swallowed, and never retried into.
+
+Part 3 is unchanged by this pass. Nothing here touched Zoho; the 403 was replayed from the
+recorded body, not observed live through this CLI.

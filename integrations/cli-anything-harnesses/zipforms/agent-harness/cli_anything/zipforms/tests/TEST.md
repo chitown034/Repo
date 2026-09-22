@@ -123,3 +123,25 @@ test_core.py::TestInstalledCommand::test_recipe_refused_exit_3 PASSED [100%]
 - Validation rules 2–4 and 7 of the connectors skill (a live recipe returning rows, logged-out
   behaviour live, rows matching the UI, the ECC review itself) are outstanding.
 - No `cliAnythingStatus` or `cliAnythingLog` write has been made.
+
+## Part 4 — Independent re-verification (H2b, 2026-09-22, venv `/tmp/h2b-venv`, Python 3.11.15)
+
+The Part 2 run was reproduced from a clean throwaway venv built for this pass:
+`pip install .` → `cli-anything-zipforms 0.1.0`; `cli-anything-zipforms --help` → exit 0;
+`grep -w act` over that help output → **no match**. (The substring `act` does occur, in
+"action group" and "interactive" — the check is a whole-word match precisely because a substring
+match false-trips on names like ShowingTime's `my-listing-activity`.)
+
+```
+67 passed, 3 skipped in 0.49s
+```
+
+**The 3 skips are the Part 1 caveat made visible, not a regression.** `TestSeamBinding` opens with
+`pytest.importorskip("cli_anything.browser.core.fs", …)`. `cli-anything-browser` is not on PyPI and
+is not vendored in this repo — `MAC-SETUP.sh` git-clones `HKUDS/CLI-Anything` and builds it into
+`~/Applications/CLI-Anything/.venv` — so in any environment without it those three tests skip
+rather than fail. Part 2's `70 passed, 0 skipped` and this run's `67 passed, 3 skipped` are both
+correct for their environment; read the former as "with the browser harness present".
+
+Still true after the re-run: all 4 `paths.json` recipes carry `verified: false`, and nothing in
+Part 3 has changed — no live zipForms call has ever been made.

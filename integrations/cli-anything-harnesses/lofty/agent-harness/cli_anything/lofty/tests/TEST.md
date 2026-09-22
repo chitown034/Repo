@@ -84,3 +84,19 @@ test_core.py::TestInstalledCommand::test_not_configured_exit_5_no_traceback PASS
   `GET /v1.0/me` returns an identity object in the shape the skill assumes.
 - The REPL has not been driven interactively (prompt-toolkit needs a TTY).
 - No `loftyLeads` / `loftySyncLog` write has been made; this CLI writes no deck document.
+
+## Part 4 — Independent re-verification (H2b, 2026-09-22, venv `/tmp/h2b-venv`, Python 3.11.15)
+
+The Part 2 run was reproduced exactly from a clean throwaway venv built for this pass:
+`pip install .` → `cli-anything-lofty 0.1.0`; `cli-anything-lofty --help` → exit 0;
+`grep -w act` over that help output → **no match** (the substring occurs only in "redact",
+"redacted" and "interactive"); `37 passed in 0.79s`, same count, no skips, no failures.
+
+Unlike the browser-backed harnesses, this package has no `cli-anything-browser` dependency, so the
+count is environment-independent: `pip install .` resolves from PyPI alone (click, prompt-toolkit,
+requests) and the whole suite runs anywhere.
+
+Still true after the re-run: Part 3 is unchanged. **No Lofty call has ever been made from this
+package** — `LOFTY_API_KEY` has never existed in any environment it was built or verified in, so
+the pagination parameter names, the response envelope and the stage field name remain guesses that
+only a live run can confirm.

@@ -242,3 +242,21 @@ per-site not-applicable cases.
 - `/cli-anything:validate` and `/cli-anything:test` from the Claude Code plugin.
 - The ECC security review.
 - The spec's spot-check: "its numbers match the UI".
+
+## Part 4 — Prerequisite note from the verification pass (H2b, 2026-09-22)
+
+The Part 2 run above was made in a venv where `cli-anything-browser 1.0.0` was **already present**,
+and that is load-bearing. Re-checked in a clean venv on 2026-09-22:
+
+- `pip install .` **fails**: `ERROR: Could not find a version that satisfies the requirement
+  cli-anything-browser>=1.0.0 … (from versions: none)`. The package is not on PyPI and is not
+  vendored in this repo.
+- Installed with `--no-deps`, `cli-anything-showami --help` **exits 1** with
+  `ModuleNotFoundError: No module named 'cli_anything.browser'` — `showami_cli.py` imports
+  `cli_anything.browser.core` at module level, so the dependency is required at import time, not
+  just at call time. `pytest` then fails at collection for the same reason.
+
+This is the documented prerequisite, not a defect: `MAC-SETUP.sh` git-clones `HKUDS/CLI-Anything`
+and `pip install`s `browser/agent-harness` into `~/Applications/CLI-Anything/.venv` before these
+harnesses go in. Install the browser harness first, into the same environment, or the Part 2
+numbers cannot be reproduced. Part 3 is unchanged: nothing has ever run live.

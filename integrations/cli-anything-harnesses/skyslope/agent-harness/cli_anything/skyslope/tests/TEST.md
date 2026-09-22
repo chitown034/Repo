@@ -125,3 +125,19 @@ test_core.py::TestInstalledCommand::test_recipe_refused_exit_3 PASSED [100%]
 - Validation rules 2–4 and 7 of the connectors skill (a live recipe returning rows, logged-out
   behaviour live, rows matching the UI, the ECC review itself) are outstanding.
 - No `cliAnythingStatus` or `cliAnythingLog` write has been made.
+
+## Part 4 — Independent re-verification (H2b, 2026-09-22, venv `/tmp/h2b-venv`, Python 3.11.15)
+
+Re-run from a clean throwaway venv: `pip install .` → `cli-anything-skyslope 0.1.0`;
+`--help` → exit 0; `grep -w act` over that help output → **no match** (the substring occurs only in
+"action group" and "interactive"); `68 passed, 3 skipped in 0.50s`.
+
+**The 3 skips are `TestSeamBinding`**, which opens with
+`pytest.importorskip("cli_anything.browser.core.fs", …)`. `cli-anything-browser` is not on PyPI and
+is not vendored in this repo — `MAC-SETUP.sh` git-clones `HKUDS/CLI-Anything` and builds it on the
+Mac — so without it those three skip rather than fail. Part 2's `71 passed, 0 skipped` and this
+run's `68 passed, 3 skipped` are both correct for their environment; read the former as "with the
+browser harness present".
+
+Still true after the re-run: all 5 `paths.json` recipes carry `verified: false`, and Part 3 is
+unchanged — no live SkySlope call has ever been made.
