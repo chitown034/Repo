@@ -27,6 +27,10 @@
                            "removeSeed":      true,               // delete the cdStateSeed block
                            "noTimers":        true }
      --out <file>      write the result JSON here
+     --dump-text <ids> comma-separated element ids; print what each one SAYS after
+                       the render (textContent + class). containersRendered only
+                       tracks innerHTML, so a card built with textContent is
+                       invisible to it — this is how you check those.
      --json            print the result JSON to stdout
      --timers <n>      max timer callbacks to drain after the main pass (default 1500)
 
@@ -50,6 +54,7 @@ function parseArgs(argv) {
     else if (a === "--store-raw") out.storeRaw = true;
     else if (a === "--inject") out.inject = argv[++i];
     else if (a === "--out") out.out = argv[++i];
+    else if (a === "--dump-text") out.dumpText = String(argv[++i] || "").split(",").map(function (x) { return x.trim(); }).filter(Boolean);
     else if (a === "--label") out.label = argv[++i];
     else if (a === "--timers") out.timers = parseInt(argv[++i], 10) || 0;
     else if (a === "--json") out.json = true;
@@ -401,6 +406,15 @@ async function run(cfg) {
     exceptions: exceptions,
     safeRunFailures: safeRunFailures,
     containersRendered: containers.map(function (c) { return c.id; }),
+    // --dump-text: read back what named elements actually SAY after the render.
+    // containersRendered only tracks innerHTML writes, so a card built with
+    // textContent renders correctly and still shows up nowhere. This closes that
+    // blind spot without changing any verdict.
+    dumpText: (cfg.dumpText || []).reduce(function (acc, id) {
+      var el = null; try { el = doc.getElementById(id); } catch (eD) {}
+      acc[id] = el ? { text: String(el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 240), cls: el.className || "", href: el.getAttribute ? (el.getAttribute("href") || "") : "" } : null;
+      return acc;
+    }, {}),
     containerDetail: containers,
     anonymousContainerWrites: anonContainers.length,
     shapeMismatch: probe.SHAPE_MISMATCH || [],
@@ -468,6 +482,13 @@ function summarize(r) {
       r.store.parseFailures.length + " parse failures, " + r.store.missingV.length + " without a v wrapper" +
       (r.store.missingV.length ? " [" + r.store.missingV.join(", ") + "]" : ""));
   }
+  if (r.dumpText && Object.keys(r.dumpText).length) {
+    L.push("   text dump     :");
+    Object.keys(r.dumpText).forEach(function (id) {
+      var d = r.dumpText[id];
+      L.push("     " + id.padEnd(18) + (d ? (d.cls ? "[" + d.cls + "] " : "") + JSON.stringify(d.text) : "** NO SUCH ELEMENT **"));
+    });
+  }
   L.push("   verdict       : " + (r.ok ? "PASS" : (r.completedTopLevel ? "DEGRADED (page up, panels failed)" : "FAIL")));
   return L.join("\n");
 }
@@ -487,7 +508,7 @@ async function main() {
   }
   const r = await run({
     file: a._[0], store: a.store, storeRaw: a.storeRaw, inject: inject,
-    timers: a.timers, label: a.label
+    timers: a.timers, label: a.label, dumpText: a.dumpText
   });
   delete r._context; delete r._window; delete r._probe;
   if (!a.quiet) console.log(summarize(r));
