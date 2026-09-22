@@ -55,7 +55,7 @@ openalternative|openalternative.co/alternatives/ is a directory to read, not sof
 STEPS_PREREQ='homebrew uv pipx node python-toolchain'
 STEPS_BRAIN='vendored-skills'
 STEPS_FR5A='codeburn graphify claude-code-setup headroom'
-STEPS_FR5B='whatsapp-cli omniroute scrapers-venv scrapling scrapegraphai cli-anything lofty-keyfile'
+STEPS_FR5B='whatsapp-cli omniroute scrapers-venv scrapling scrapegraphai cli-anything cli-anything-harnesses lofty-keyfile'
 STEPS_ONDEMAND='strix ponytail prompts-chat screenshot-to-code agent-reach laya higgsfield'
 ALL_STEPS="$STEPS_PREREQ $STEPS_BRAIN $STEPS_FR5A $STEPS_FR5B $STEPS_ONDEMAND"
 
@@ -545,6 +545,14 @@ if should_run cli-anything; then
     else failed "claude plugin install cli-anything@cli-anything"; fi
   else failed "claude CLI missing — the plugin half cannot install"; fi
   # The browser harness is what every web target actually runs on (DOMShell).
+  # STILL HERE ON PURPOSE (P1, 2026-09-22), though the cli-anything-harnesses step below now
+  # vendors and builds this same harness from the repo. This step keeps two things that step does
+  # NOT provide: cli-hub (pipx, from PyPI) and the Claude Code plugin (from the marketplace).
+  # What IS now redundant is this clone+build as a PREREQUISITE for the seven site harnesses —
+  # they no longer need ~/Applications/CLI-Anything to exist. It is left in place because it is
+  # idempotent (an existing build reports "already built" and re-clones nothing), because
+  # mac-verify.sh and the runbooks already report on this exact path, and because ripping out a
+  # working block buys nothing today. Retiring it is a separate, reviewable change.
   if [ -x "$CA_DIR/.venv/bin/cli-anything-browser" ]; then skipped "cli-anything-browser already built"
   elif have uv || [ "$DRY_RUN" -eq 1 ]; then
     _ca_ok=1
@@ -574,6 +582,87 @@ CAENV
   say "      REFUSED here: any 'act click' / 'act type' verb in a generated harness — that is the entire write surface"
 fi
 
+if should_run cli-anything-harnesses; then
+  header cli-anything-harnesses "the eight harnesses vendored in THIS repo — browser engine + seven read-only site CLIs"
+  # Why this step exists (P1, 2026-09-22). The cli-anything step above clones HKUDS/CLI-Anything and
+  # builds its browser harness into ~/Applications/CLI-Anything/.venv. That worked, but it made the
+  # repo's own packages depend on a clone: homes, showingtime and showami declare
+  # cli-anything-browser>=1.0.0, which is NOT on PyPI, and they import cli_anything.browser.core at
+  # module level. Without that clone `pip install .` said "No matching distribution found", and with
+  # --no-deps their --help exited 1 and pytest aborted at collection. The browser harness is now
+  # vendored at integrations/cli-anything-harnesses/browser/agent-harness (Apache-2.0, unmodified,
+  # provenance in its VENDORED.md), so all eight install and test from this checkout alone.
+  CAH_SRC="$REPO_DIR/integrations/cli-anything-harnesses"
+  CAH_DIR="$HOME/Applications/cli-anything-harnesses"
+  CAH_PY="$CAH_DIR/.venv/bin/python"
+  # browser MUST stay first. The seven site packages are installed in the SAME uv command so the
+  # local browser distribution satisfies their cli-anything-browser>=1.0.0 pin inside one resolution;
+  # installing homes on its own sends uv to PyPI for a package that is not there, and it fails.
+  CAH_PKGS='browser homes showingtime showami skyslope zipforms lofty zoho'
+
+  cah_missing=''
+  for p in $CAH_PKGS; do
+    [ -f "$CAH_SRC/$p/agent-harness/setup.py" ] || cah_missing="$cah_missing $p"
+  done
+  # PEP 420: eight distributions share one cli_anything/ namespace. An __init__.py directly under any
+  # cli_anything/ turns that portion into a regular package and hides the other seven. Checked, not assumed.
+  cah_initpy=''
+  for p in $CAH_PKGS; do
+    [ -f "$CAH_SRC/$p/agent-harness/cli_anything/__init__.py" ] && cah_initpy="$cah_initpy $p"
+  done
+
+  if [ -n "$cah_missing" ]; then
+    failed "harness sources missing from this checkout:$cah_missing (pull the repo again)"
+  elif [ -n "$cah_initpy" ]; then
+    failed "PEP 420 violation — cli_anything/__init__.py exists in:$cah_initpy . That hides the other portions; delete it before installing."
+  else
+    cah_have_all=1
+    for p in $CAH_PKGS; do
+      [ -x "$CAH_DIR/.venv/bin/cli-anything-$p" ] || cah_have_all=0
+    done
+    if [ "$cah_have_all" -eq 1 ]; then
+      skipped "all eight harnesses already built in $CAH_DIR/.venv"
+    elif have uv || [ "$DRY_RUN" -eq 1 ]; then
+      cah_ok=1
+      run mkdir -p "$CAH_DIR" || cah_ok=0
+      [ -x "$CAH_PY" ] || run uv venv "$CAH_DIR/.venv" || cah_ok=0
+      if [ "$cah_ok" -eq 1 ]; then
+        # one command, browser first — see the note above
+        run uv pip install --python "$CAH_PY" \
+          "$CAH_SRC/browser/agent-harness" \
+          "$CAH_SRC/homes/agent-harness" \
+          "$CAH_SRC/showingtime/agent-harness" \
+          "$CAH_SRC/showami/agent-harness" \
+          "$CAH_SRC/skyslope/agent-harness" \
+          "$CAH_SRC/zipforms/agent-harness" \
+          "$CAH_SRC/lofty/agent-harness" \
+          "$CAH_SRC/zoho/agent-harness" || cah_ok=0
+      fi
+      if [ "$cah_ok" -eq 1 ]; then
+        run mkdir -p "$BINDIR" || true
+        for p in $CAH_PKGS; do
+          run ln -sf "$CAH_DIR/.venv/bin/cli-anything-$p" "$BINDIR/cli-anything-$p" || true
+        done
+        installed "eight harnesses (browser engine + homes, showingtime, showami, skyslope, zipforms, lofty, zoho) + symlinks in $BINDIR"
+      else failed "uv pip install of the eight harnesses — see $LOG_FILE"; fi
+    else failed "uv missing — run this script's uv step first"; fi
+  fi
+
+  # Zoho is the one harness with no key skeleton anywhere: lofty-keyfile below covers Lofty, and the
+  # cli-anything step covers the three browser sites. Names only, no values, never rewritten.
+  ensure_env_file zoho <<'ZOHOENV'
+ZOHO_ACCOUNTS_URL|your Zoho accounts host, e.g. the accounts.zoho.<region> that matches your data centre
+ZOHO_API_URL|your Zoho CRM API host for the same data centre
+ZOHO_CLIENT_ID|Zoho API console -> your self-client / server app
+ZOHO_CLIENT_SECRET|the matching secret — this file is the only place it goes; never a prompt, a task, a skill or a .md
+ZOHO_REFRESH_TOKEN|minted once against scopes ZohoCRM.modules.ALL,ZohoCRM.settings.READ
+ZOHOENV
+  needs_steven "DOMSHELL_TOKEN is required before cli-anything-browser will connect — it is printed by the DOMShell server at startup and is a credential, so this script never reads, writes or guesses it. Export it in the shell (and in the runner task env) that drives the harness."
+  needs_steven "Zoho stays blocked on the profile toggle, not on a credential: Setup -> Security Control -> Profiles -> Developer Permissions -> enable 'Zoho CRM API Access'. That is an account permission change — a HALT row. The harness is GET-only and reports the 403 honestly rather than inventing pipeline data."
+  say "      the seven site harnesses have NO act verb — that is the read-only guarantee, and mac-verify.sh re-checks it by word match"
+  say "      the browser ENGINE does have 'act click' / 'act type'. It is the DOMShell write surface; never point it at a client-facing system by hand"
+  say "      recommended in the harness env: CLI_ANYTHING_BROWSER_BLOCK_PRIVATE=true — SSRF blocking is OFF by default and is read at import time (P1 review, F-P1-05)"
+fi
 if should_run lofty-keyfile; then
   header lofty-keyfile "Lofty CRM — the key file the API path has always needed (F-S1-11)"
   # Steven asked to "setup lofty … using anything cli". S1's answer was right and stands: Lofty is

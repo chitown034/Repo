@@ -235,6 +235,63 @@ if have claude; then
   else info "  cli-anything plugin" "not installed — MAC-SETUP.sh --only cli-anything installs it non-interactively"; fi
 fi
 
+# --------------------------------------------------------------------------- the eight repo harnesses
+# P1, 2026-09-22. Nothing checked these until now. For each of the eight: is it there, does --help exit 0,
+# and does the help name an `act` verb?
+#
+# WORD match, never substring. Measured 2026-09-22 against all eight real --help outputs: `grep -q act`
+# matches "interactive" in all seven site harnesses, plus "action" in skyslope/zipforms and
+# "redact"/"redacted" in lofty/zoho — it would report a write surface on seven harnesses that have
+# none. (Recipe names like showingtime's my-listing-activity are the same trap one level down.)
+# `grep -qw act` is the check; it matches none of those and does match a real `act` command group.
+#
+# The seven SITE harnesses must have no act verb: that is the read-only guarantee, so act there is a FAIL.
+# The browser ENGINE genuinely ships `act click` / `act type` — that is DOMShell's write surface and the
+# reason the engine exists. It is reported by name every run rather than passed silently or failed forever.
+sect "cli-anything harnesses (eight — browser engine + seven read-only site CLIs)"
+CAH_VENV="$HOME/Applications/cli-anything-harnesses/.venv"
+harness_check() { # harness_check <name> <act-is-expected: yes|no>
+  _h="cli-anything-$1"; _expect_act=$2
+  _p=$(command -v "$_h" 2>/dev/null || true)
+  [ -n "$_p" ] || { [ -x "$CAH_VENV/bin/$_h" ] && _p="$CAH_VENV/bin/$_h"; }
+  [ -n "$_p" ] || { [ -x "$BINDIR/$_h" ] && _p="$BINDIR/$_h"; }
+  if [ -z "$_p" ]; then
+    bad "$_h" "not installed — MAC-SETUP.sh --only cli-anything-harnesses"; return
+  fi
+  _out=$("$_p" --help 2>&1); _rc=$?
+  if [ "$_rc" -ne 0 ]; then
+    bad "$_h" "present at $_p but '--help' exited $_rc (the browser dependency is the usual cause)"; return
+  fi
+  if printf '%s\n' "$_out" | grep -qw act; then
+    if [ "$_expect_act" = yes ]; then
+      info "$_h" "--help ok; has the act verb (act click / act type) — DOMShell's write surface, expected on the engine only"
+    else
+      bad "$_h" "--help ok BUT its help names an 'act' verb — a site harness must be read-only (word match, not substring)"
+    fi
+  else
+    if [ "$_expect_act" = yes ]; then
+      need "$_h" "--help ok but no act verb — expected on the engine; a different build than this repo vendors?"
+    else
+      ok "$_h" "--help exits 0, no act verb"
+    fi
+  fi
+}
+harness_check browser yes
+for _s in homes showingtime showami skyslope zipforms lofty zoho; do harness_check "$_s" no; done
+# PEP 420: the eight share one cli_anything/ namespace. An __init__.py directly under it hides the others.
+if [ -x "$CAH_VENV/bin/python" ]; then
+  _sp=$("$CAH_VENV/bin/python" -c 'import sysconfig;print(sysconfig.get_paths()["purelib"])' 2>/dev/null)
+  if [ -n "$_sp" ] && [ -d "$_sp/cli_anything" ]; then
+    if [ -f "$_sp/cli_anything/__init__.py" ]; then
+      bad "cli_anything namespace" "an __init__.py sits directly under cli_anything/ — that hides the other portions (PEP 420)"
+    else
+      _n=0
+      for _d in "$_sp"/cli_anything/*/; do [ -d "$_d" ] && _n=$((_n+1)); done
+      ok "cli_anything namespace" "PEP 420, no __init__.py, $_n portion(s) installed"
+    fi
+  fi
+fi
+
 # --------------------------------------------------------------------------- credentials (names only)
 sect "key files — names only, never a value"
 check_env_file() { # check_env_file <tool> <NAME>...
