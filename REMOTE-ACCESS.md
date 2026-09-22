@@ -12,7 +12,7 @@ row says what it can actually do: "connected" and "can write" are not the same t
 | **iMessage** | `+1 650-484-9720`, via Inkbox. `vanessa-imessage-inbox` polls every 10 min; `voice-reply-render` renders replies in-persona | Reads and replies; queues work |
 | **Discord `#vanessa`** | Via the local bot + Inkbox. `vanessa-discord-inbox` every 5 min | Reads and replies |
 | **WhatsApp** | A dedicated number in the WhatsApp desktop app on the Mac, read by `whatsapp-cli`; `vanessa-whatsapp-inbox` every 10 min. **Spec only — written 2026-09-22, install pending, not live.** Never the client-facing number | Will read and reply once installed; needs that Mac unlocked |
-| **Cloud routines** | `claude.ai/code/routines` — 50 total, 46 enabled | **Yes, unattended — proven 2026-09-22** (below). No MCP connectors when an agent creates the routine |
+| **Cloud routines** | `claude.ai/code/routines` — **57 total, 53 enabled** (counted 2026-09-23) | **Yes, unattended — proven 2026-09-22** (below). No MCP connectors when an agent creates the routine |
 | **Local Bridge queue** | `localBridgeQueue` doc → `local-bridge-queue` task (hourly :25, 6 AM–9 PM PT) → `~/Applications/local-bridge/run.sh` | **Read-only verbs**, enforced by an allow-list |
 | **Research queue** | `vanessaResearch` doc → `vanessa-research-queue` (hourly :30, 7:30 AM–9:30 PM PT) | Writes answers back to the doc |
 | **Push / text** | `vanessa-significant-alerts` (11 AM, 3 PM, 7 PM PT) and the morning text | Outbound only |

@@ -1,7 +1,7 @@
 # Mac runner task specs — the five new integration tasks
 
 **Baseline 2026-09-12 · verified 2026-09-22.** For `claude-runner` (headless, pre-approved tools,
-60 tasks today). Cron is **Mac local / Pacific**, as the runner stores it; UTC is given for anyone
+**59** tasks at the 2026-09-23 count — the live runnerStatus doc, syncedAt 2026-09-22T20:10:15Z, holds 59; "60" was stale). Cron is **Mac local / Pacific**, as the runner stores it; UTC is given for anyone
 reading from the cloud. September 2026 is PDT = UTC−7.
 
 Slot hygiene: `brain-deck-sync` occupies `:20` of every hour 07–22, `r2-lead-response-watchdog`
@@ -374,7 +374,7 @@ made. Shape: `docs/data/cliAnythingStatus.doc.json` (template). The task that fi
 
 | | |
 |---|---|
-| **Cron (PT)** | `4-59/10 * * * *` — :04, :14, :24, :34, :44, :54. Checked against all 60 tasks in `docs/inventory/mac-runner-status.md`: nothing else holds those minutes (iMessage inbox is `*/10` at :00, Discord `*/5`) |
+| **Cron (PT)** | `4-59/10 * * * *` — :04, :14, :24, :34, :44, :54. Checked against all **59** tasks in the live `runnerStatus` doc (the repo snapshot in `docs/inventory/mac-runner-status.md` is older): nothing else holds those minutes (iMessage inbox is `*/10` at :00, Discord `*/5`) |
 | **Cron (UTC)** | same minutes, every hour |
 | **Model** | Same seat as `vanessa-imessage-inbox` — Vanessa answers, so Fable 5.1 per the 2026-09-22 tiering; execution sub-steps on Sonnet 5 |
 | **Skill / handler** | **The same inbound handler the iMessage task uses**: `vanessa-orchestrator` intake → answer as Vanessa with the AI team → HALT list → `agentInbox` log. Only the transport differs. Never `whatsapp-cli monitor auto-reply` — it calls `claude -p` itself and bypasses the handler, the HALT list and the log |

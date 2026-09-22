@@ -1,7 +1,7 @@
 # L5 — Always-on
 
 What keeps the brain current while nobody is watching. Everything here runs under **`claude-runner`**
-on the Mac (headless, pre-approved tools, 60 tasks).
+on the Mac (headless, pre-approved tools, **59** tasks — counted from the live runnerStatus doc 2026-09-23).
 
 > **Everything on this page that is broken has a written repair in
 > [`routines/mac-task-repairs.md`](../routines/mac-task-repairs.md)** — one section each, with the

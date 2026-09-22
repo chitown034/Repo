@@ -57,7 +57,7 @@ APPLE HEALTH: existing pipeline Health Auto Export → ingest daemon (LaunchAgen
   Steven wants the Substack recipe (Jenna Redfield, "I Built an Automated Health Dashboard in Claude (Apple Health Sync) Using Notion Data",
   2026-06-30): the Claude iOS app reads Apple Health directly on the phone → Claude writes the day's stats into Notion databases →
   dashboards read Notion. Daily loop: open Claude on the phone → "update my health stats" → approve → Notion. Notion is connected.
-MAC RUNNER (claude-runner, headless, pre-approved tools, 60 tasks) — statuses in inventory/mac-runner-status.md and routine-health.md.
+MAC RUNNER (claude-runner, headless, pre-approved tools, 59 tasks as of 2026-09-23) — statuses in inventory/mac-runner-status.md and routine-health.md.
   As of 2026-09-22: error — cpi-daily-scan, fabric-deck-sync, health-full-analysis, nightly-self-test (timeout exit 124),
   openrouter-feeds-refresh, r1-morning-brief (API unreachable 2026-09-17), r14-content-pipeline, r17-trading-day-log,
   r8-apple-health-snapshot (daemon), strava-daily-sync, vanessa-significant-alerts; refused — steve-twin-sweep (Bash write to

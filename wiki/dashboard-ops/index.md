@@ -21,7 +21,7 @@ Source of truth: the `runnerStatus` doc and the routine-health export, not the t
 | Question | Source |
 |---|---|
 | Did a Mac task run? | `runnerStatus` (last end + last status per task) |
-| Did a cloud routine run? | The routines list — 50 total, 46 enabled as of 2026-09-22 |
+| Did a cloud routine run? | The routines list — **57 total, 53 enabled**, counted 2026-09-23 (the long-standing "50 / 46" was stale) |
 | Did the deck get the data? | The target doc's own `syncedAt` / `checkedAt` stamp |
 | Is a feed stale? | Compare the doc stamp to the task's cadence, not to today |
 | Did a backup happen? | `backupStatus` — GREEN, `lastBackup 2026-09-22`, `verified:true`, taken by the cloud writer (170+13 docs); the Sunday watchdog re-checks it |
@@ -52,7 +52,7 @@ Source of truth: the `runnerStatus` doc and the routine-health export, not the t
 
 | Page | One-line summary |
 |---|---|
-| `db-docs.md` | What each of the 161 `state` docs means and who writes it |
+| `db-docs.md` | What each `state` doc means and who writes it — **174 documents** at the 2026-09-23 count (this page long said 161) |
 | `panel-map.md` | Panel id → what it shows → which docs feed it |
 | `task-catalog.md` | Each Mac task: cron, what it writes, current status |
 | `routine-catalog.md` | Each cloud routine: schedule, and what it can and cannot write |
