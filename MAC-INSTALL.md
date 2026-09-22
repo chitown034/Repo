@@ -88,6 +88,11 @@ grep -rniE 'api[_-]?key|secret|token|password|bearer ' --include='*.md' . | grep
 Both should come back clean. Then ask Claude one question from each routing-table row and check it
 opened exactly one leaf file.
 
+## 8. Optional tooling (not required for the brain)
+
+Every third-party tool Steven asked about — Headroom, Graphify, CodeBurn, Strix, Agent Reach, the plugins and
+the nine vendored skills — has its own verified runbook: `MAC-INSTALL-tooling.md`. Do it after step 7, not before.
+
 ## What NOT to do
 
 - Do not copy client pages into this repo. They live in the vault, on the Mac, and they are not
