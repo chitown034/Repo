@@ -4,7 +4,7 @@ description: Conducts multi-axis code review. Use before merging any change. Use
 ---
 > Vendored from https://github.com/addyosmani/agent-skills/blob/main/skills/code-review-and-quality/SKILL.md — fetched 2026-09-22 by FR5a; upstream text below is unmodified.
 > License: MIT License, Copyright (c) 2025 Addy Osmani (upstream LICENSE).
-> Note: `../../references/security-checklist.md` and `../../references/performance-checklist.md` refer to upstream repo-level checklists (https://github.com/addyosmani/agent-skills/tree/main/references); not vendored.
+> Note: `../../references/security-checklist.md` and `../../references/performance-checklist.md` are upstream repo-level checklists (https://github.com/addyosmani/agent-skills/tree/main/references); both vendored 2026-09-22 by V2 at `.claude/references/`, so the links above resolve.
 
 # Code Review and Quality
 

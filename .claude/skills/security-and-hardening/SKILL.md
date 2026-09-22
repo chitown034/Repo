@@ -4,7 +4,7 @@ description: Hardens code against vulnerabilities. Use when auditing an input ha
 ---
 > Vendored from https://github.com/addyosmani/agent-skills/blob/main/skills/security-and-hardening/SKILL.md — fetched 2026-09-22 by FR5a; upstream text below is unmodified.
 > License: MIT License, Copyright (c) 2025 Addy Osmani (upstream LICENSE).
-> Note: `references/hardening-patterns.md` is vendored alongside this file; `../../references/security-checklist.md` refers to upstream (https://github.com/addyosmani/agent-skills/tree/main/references); not vendored.
+> Note: `references/hardening-patterns.md` is vendored alongside this file; `../../references/security-checklist.md` is the upstream repo-level checklist (https://github.com/addyosmani/agent-skills/tree/main/references), vendored 2026-09-22 by V2 at `.claude/references/`, so both links resolve. `references/hardening-patterns.md` reaches the same file as `../../../references/security-checklist.md`.
 
 # Security and Hardening
 
