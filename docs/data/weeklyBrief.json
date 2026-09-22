@@ -1,0 +1,82 @@
+{
+ "v": {
+  "cycle": 6,
+  "weekEnding": "2026-09-26",
+  "ranAt": "2026-09-22T09:00:00Z",
+  "headline": "Two CRMs, one dead and one blocked, were driving the lead numbers on this page. Both are now honest, and the machinery that was supposed to notice has been rebuilt and tested.",
+  "caio": [
+   "Composio disclosed a credential-exfiltration incident on 2026-05-21: roughly 5,241 API keys and 5,001 GitHub OAuth tokens. Composio is the path carrying Zoho, Gmail, GitHub, Google Ads and Perplexity for this account. Nothing shows Steven was affected and nothing shows he was not. Rotate the key, re-authorize GitHub, enable IP allowlisting.",
+   "Move Zoho onto Zoho's own connector and keep Composio as the fallback, so one custody path is not carrying every business system.",
+   "Apple Health: the Claude iOS app has read Apple Health directly since 2026-01-22. The four-hop Mac daemon pipeline is obsolete by design and has been dead since 2026-09-13. Adopt the phone to Notion route.",
+   "Lofty AI Sales Agent is worth a pilot as the 24/7 first-response layer while the human ISA seat is unfilled, from about $60 a month per 200 leads. Needs a consent review before any outbound.",
+   "Claude Code 2.1.277, released 2026-09-18, states that scheduled routine runs save data to editable artifacts without asking. That contradicts the assumption five loop cycles have been built on. A probe was fired today to settle it.",
+   "The MCP specification of 2026-07-28 starts a twelve-month clock on HTTP+SSE and three deprecated features. The Mac's fifteen servers need a transport audit.",
+   "The Ollama model tagged claude-fable-5.1 on the Mac is llama3.1:8b with a system prompt. Any status page printing that name is misleading. Rename it."
+  ],
+  "ctoInnovator": [
+   "Feasibility verdict on the cloud-write question: until the probe returns, writes stay on the Mac runner and cloud routines stay research-and-report. This is the architecture every routine prompt now states explicitly.",
+   "The engineering bench ran for real this cycle: twelve engineers in parallel git worktrees, each owning one region, each gated by the same two tests. That pattern is itself a replication template.",
+   "Build specs produced and ready: lofty-crm-sync, zoho-crm-sync, apple-health-notion, cli-anything-connectors, with exact cron, tools and document shapes.",
+   "Architecture debt named: the dashboard is one 3 MB immediately-invoked function, so a single load-time throw empties every card below it while node --check still passes. The new runtime harness is the only thing that catches it."
+  ],
+  "cpi": {
+   "newOpportunities": 13,
+   "logged": 16,
+   "implemented": 0,
+   "measuredImpact": "None yet. cpi-daily-scan has been in error since 2026-09-17, so nothing has been measured; an item with no measurement is unproven, not done.",
+   "cumulativeSaved": "0 - no CPI item has a recorded before-and-after",
+   "topThree": [
+    "Connector-health watchdog with detection inside 24 hours. The Follow Up Boss break sat five days before it surfaced, and only then as a decision item rather than an alert.",
+    "Bounded escalation ladder for the ISA nudge, which has sent the same verbatim message four times with no reply and no escalation.",
+    "Re-wire four OUTPUT_WATCH rows that point at the wrong task, so a fresh reading can no longer come from a document a different task wrote."
+   ]
+  },
+  "scale": {
+   "logged": 12,
+   "automate": 7,
+   "delegate": 2,
+   "replicate": 3,
+   "blocked": 3,
+   "capacityImpact": "Nothing measured. Every row carries its metric and the arithmetic to check it, and cumulativeCapacityUnlocked stays at zero until one is measured.",
+   "growthRoadmap": "Now: speed-to-lead on Lofty with a drafted first touch, and both CRMs monitored on one document shape each. Next: the Friday parallel C-suite review on the Mac, and cloud routines that deliver rather than just run. Later: the human-ISA success layer and the Executive Assistant seat, both halted until Steven names a receiving owner.",
+   "haltedForNoOwner": [
+    "scale-20260922-04 - human-ISA success layer: halted until Steven confirms the seat",
+    "scale-20260922-05 - Executive Assistant agent: no confirmed receiving owner",
+    "scale-20260922-12 - CLI-Anything wrapper factory: needs the security steward and a terms-of-service check"
+   ]
+  },
+  "engineering": {
+   "stressTests": 24,
+   "pass": 14,
+   "degraded": 9,
+   "fail": 1,
+   "weaknesses": [
+    "The ISA line merge silently discarded any message without an id. On a two-way channel with a person, that is lost correspondence, not a rounding error.",
+    "A document written without the standard wrapper was skipped on restore: 160 of 161 documents came back, and the missing one was the Strava sync.",
+    "Every local save failure was swallowed by an empty catch, so a full browser store looked exactly like a successful save.",
+    "An identical replayed snapshot reported a change, which could ride the reload throttle in a loop.",
+    "At 5 MB of documents the page takes eight times its baseline to render, which is the browser storage budget itself.",
+    "Six element ids are looked up and never exist; one count is read one line before it is created."
+   ],
+   "fixesApplied": "Four fixes landed on the shared sync engine and were re-tested under the harness: zero exceptions, zero render failures, 322 containers rendering against all 161 live documents.",
+   "retests": "The four fixed items pass the same tests that found them. The remaining degraded rows are routed to the Efficiency and Capability engineers and stay open rather than being closed on a promise."
+  },
+  "backup": {
+   "lastBackup": "2026-09-14",
+   "verified": true,
+   "restoreTest": "13 of 13 checks passed on 2026-09-15, and a fresh restore of all 161 live documents this cycle returned 160 - the one loss is now fixed at the reader.",
+   "weeksKept": 3,
+   "target": "8 weeks in Documents/AI-Ecosystem-Backups",
+   "status": "AMBER - the Sunday backup has never run under the Mac runner and missed 2026-09-20. A verified bundle was taken by hand this cycle. A Sunday watchdog now escalates when the backup is missing, late or unverified."
+  },
+  "halted": [
+   "Zoho CRM API Access on the connected profile - one checkbox, and the mortgage board goes live",
+   "Lofty API key in the Mac's configuration, then one sync run - and the real-estate lead numbers come back",
+   "Composio credential rotation after the disclosed 2026-05-21 incident",
+   "Six cloud routines created in the web interface still collide on Sunday and can only be retimed there",
+   "The Mac runner's allow-list blocks writes to the Obsidian vault, so the knowledge graph and the twin cannot populate the brain",
+   "The human ISA seat: no ISA-authored message since 2026-09-16 and an empty scorecard"
+  ],
+  "trust": "Fourteen loops recorded. One at L3 by construction (the feed writers, verified fresh), four at L2, nine at L1. The nightly self-test was demoted from L2 to L1 this cycle: it timed out on 2026-09-16 and its document has never existed, so the prior level was unearned."
+ }
+}

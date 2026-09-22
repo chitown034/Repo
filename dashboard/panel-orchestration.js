@@ -205,18 +205,28 @@
     body.innerHTML = rows.map(function (r) {
       var lens = String(r.lens || "—");
       var lensCls = lens === "Automate" ? "green" : lens === "Delegate" ? "amber" : lens === "Replicate" ? "gold" : "gray";
-      var noOwner = /delegate/i.test(lens) && !r.delegateTarget;
+      /* The scale-growth-engine skill names the receiving owner `owner`; this panel seeded it as
+         `delegateTarget`. Read either, and treat a delegation with neither as the halt it is. */
+      var target = r.owner || r.delegateTarget || "";
+      var noOwner = /delegate/i.test(lens) && !target;
       return '<tr><td style="font-family:var(--font-mono);font-size:11.5px;white-space:nowrap;">' + orEsc(r.id) + "</td>" +
         '<td style="font-family:var(--font-mono);font-size:11.5px;">' + orEsc(r.date) + "</td>" +
         "<td>" + orEsc(r.opportunity) + "</td>" +
         '<td><span class="badge ' + lensCls + '">' + orEsc(lens) + "</span></td>" +
-        "<td>" + (noOwner ? '<span class="badge red">no confirmed owner — halted</span>' : orEsc(r.delegateTarget || "—")) + "</td>" +
+        "<td>" + (noOwner ? '<span class="badge red">no confirmed owner \u2014 halted</span>' : orEsc(target || "\u2014")) +
+          (r.reasoning ? '<br><span class="src-note">' + orEsc(r.reasoning) + "</span>" : "") + "</td>" +
         "<td>" + orEsc(r.capacityImpact || "not measured") + "</td>" +
-        "<td>" + orEsc(r.status || "Proposed") + "</td></tr>";
+        "<td>" + orEsc(r.status || "Proposed") +
+          (r.blocker ? ' <span class="badge amber">blocked</span><br><span class="src-note">' + orEsc(r.blocker) + "</span>" : "") + "</td></tr>";
     }).join("");
     var note = $("orchScaleNote");
     if (note) {
-      note.textContent = "Automate " + byLens.Automate + " · Delegate " + byLens.Delegate + " · Replicate " + byLens.Replicate +
+      var cum = "";
+      for (var ci = rows.length - 1; ci >= 0; ci--) {
+        if (rows[ci] && rows[ci].cumulativeCapacityUnlocked) { cum = String(rows[ci].cumulativeCapacityUnlocked); break; }
+      }
+      note.textContent = "Automate " + byLens.Automate + " \u00b7 Delegate " + byLens.Delegate + " \u00b7 Replicate " + byLens.Replicate +
+        (cum ? " \u00b7 cumulative capacity unlocked: " + cum : "") +
         ". A delegation without a confirmed receiving owner is halted by rule, not merely flagged.";
     }
   }
@@ -225,7 +235,21 @@
   function renderOrchTrust() {
     var body = $("orchTrustRows"); if (!body) return;
     var doc = orDoc("trustLevels");
+    /* Two writers, two shapes, and both are legitimate: this panel seeded an array under `loops`,
+       while the loop-engineering skill writes a map keyed by capability
+       ({"<capability>": {level, streak, lastCorrectRun, evidence}}). Normalise here rather than
+       forcing either side to change — a shape disagreement must never render as "no loops". */
     var rows = orArr(doc, "loops").map(orRow);
+    if (!rows.length && doc && typeof doc === "object" && !Array.isArray(doc)) {
+      rows = Object.keys(doc).filter(function (k) {
+        return doc[k] && typeof doc[k] === "object" && doc[k].level;
+      }).map(function (k) {
+        var x = doc[k];
+        return { name: k, level: x.level, streak: x.streak, gate: x.gate,
+                 owner: x.owner || "", note: x.evidence || x.note ||
+                   (x.lastCorrectRun ? "last correct run " + x.lastCorrectRun : "") };
+      });
+    }
     if (!rows.length) {
       orBadge("orchTrustBadge", "Not recorded", "gray");
       body.innerHTML = orEmpty(5, "No loop has a recorded trust level yet",

@@ -16,7 +16,8 @@ Capability, Integration, Stress Test) does the work; report seats run on Sonnet 
 - **Nightly** — `nightly-self-test`, cron `0 23 * * *` = 11:00 PM PT; **error (timeout, exit 124)**,
   last end 2026-09-15. It runs the self-test suite only, not the full cycle.
 - On demand when Steven asks for a loop cycle. Cycle numbering continues the `loopLog` (cycles 1–5
-  ran Sep 9–10, 2026; this brief's session is cycle 6).
+  ran Sep 9–10, 2026; the exported log carries four entries — 1, 3, 4, 5 — cycle 2 is referenced
+  inside cycle 3 but was never logged; this session is cycle 6).
 
 ## Inputs
 `loopLog` (previous cycles, trust levels, open halts, triage), `routineHealth`, `runnerStatus`,
@@ -152,8 +153,8 @@ when the cycle changed the dashboard.
 
 ## Self-test (`selftest:loop-engineering`, nightly suite, Regression)
 Offline, ≤60 s, no sub-agents.
-1. `loopLog` round trip: read, append a synthetic cycle in memory, assert the five live cycles are
-   unchanged and every key above is present. Do not write.
+1. `loopLog` round trip: read, append a synthetic cycle in memory, assert the four logged cycles
+   (1, 3, 4, 5) are unchanged and every key above is present. Do not write.
 2. Holdout integrity: with a fixture cycle, assert no holdout item appears in `promoted` or `healed`.
 3. Trust ladder: feed 6 correct runs → still L1; the 7th → L2; then one incorrect run → streak 0 and
    the level does not rise. Assert a direct L1→L3 jump is refused.

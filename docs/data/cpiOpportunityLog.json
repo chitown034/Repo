@@ -1,0 +1,168 @@
+{
+ "v": [
+  {
+   "date": "2026-09-13",
+   "evidence": "isaLine message cd-r11-20260913172400 (2026-09-13T17:24:00-07:00): \"Your weekly self-report (isaScorecard) is empty so I couldn't compare it to FUB.\" Same message also notes 0 calls/texts logged in FUB for the week's one new lead and 0 appointments logged \u2014 the scorecard is meant to be the ISA's own input feeding that comparison.",
+   "id": "cpi-20260913-01",
+   "opportunity": "ISA's weekly self-report (isaScorecard) is coming up empty, blocking the automated weekly KPI comparison against FUB",
+   "status": "Proposed"
+  },
+  {
+   "date": "2026-09-14",
+   "evidence": "isaLine messages cd-r3-20260913053530 (2026-09-13T05:35:30Z) and cd-r3-20260915022515 (2026-09-15T02:25:15Z) carry near-identical text (\"EOD summary not in yet \u2014 send it here when you get a minute: wins, appointments set, hot leads, risks, anything you need from me.\") sent roughly two days apart, with no ISA reply logged between them and no change in wording or escalation on the second send.",
+   "id": "cpi-20260914-01",
+   "opportunity": "The automated 'EOD summary not in yet' nudge to the ISA line repeats verbatim with no check for a reply and no escalation when ignored",
+   "status": "Proposed"
+  },
+  {
+   "date": "2026-09-22",
+   "evidence": "twinLog entry ts 2026-09-22T02:24:35Z, tier 3: \"needs-steven \u2014 FUB/Composio API key rejected, blocking lead triage; decision packet in twinQueue\". isaLine has carried no ISA-authored message since 2026-09-16T02:47:52Z (only repeated automated nudges before that), consistent with the connection break going unnoticed until it surfaced as a twinQueue decision item rather than an immediate alert.",
+   "id": "cpi-20260922-01",
+   "opportunity": "FUB/Composio connection broke (API key rejected) and sat undetected until it blocked daily lead-triage automation, surfacing only as a twinQueue decision item rather than an immediate alert",
+   "status": "Proposed"
+  },
+  {
+   "id": "cpi-20260922-02",
+   "date": "2026-09-22",
+   "opportunity": "Bounded ISA nudge ladder instead of verbatim repeats",
+   "evidence": "isaLine cd-r3-* \u00d74 (Sep 13\u201316); cpi-20260914-01",
+   "expectedSaving": "4 no-op sends/week; one real escalation",
+   "complexity": "Low",
+   "status": "Proposed",
+   "implantEligible": "Yes (low-risk, high-confidence)",
+   "measured": ""
+  },
+  {
+   "id": "cpi-20260922-03",
+   "date": "2026-09-22",
+   "opportunity": "Connector-health watchdog with \u226424 h detection",
+   "evidence": "leadResponse staleSince 09-16 \u2192 noticed 09-22",
+   "expectedSaving": "5 days of blind pipeline per incident",
+   "complexity": "Low",
+   "status": "Proposed",
+   "implantEligible": "Yes",
+   "measured": ""
+  },
+  {
+   "id": "cpi-20260922-04",
+   "date": "2026-09-22",
+   "opportunity": "Cloud backup watchdog via notifications",
+   "evidence": "backupStatus 09-14; r6 never run; lb2 \"no backup directory\"",
+   "expectedSaving": "Detection \u22648 h after a missed Sunday",
+   "complexity": "Low",
+   "status": "Proposed",
+   "implantEligible": "Yes",
+   "measured": ""
+  },
+  {
+   "id": "cpi-20260922-05",
+   "date": "2026-09-22",
+   "opportunity": "Event-driven showing-sync",
+   "evidence": "showingSyncRequests [] on every run; 18 runs/week",
+   "expectedSaving": "~18 LLM runs/week; pool slots",
+   "complexity": "Low",
+   "status": "Proposed",
+   "implantEligible": "Yes",
+   "measured": ""
+  },
+  {
+   "id": "cpi-20260922-06",
+   "date": "2026-09-22",
+   "opportunity": "OUTPUT_WATCH re-wiring (4 rows)",
+   "evidence": "routineHealth notes on r1/r5/r11; cpiCycles vs cpiOpportunityLog",
+   "expectedSaving": "False stale/fresh readings removed",
+   "complexity": "Low",
+   "status": "Proposed",
+   "implantEligible": "Yes (E1 region)",
+   "measured": ""
+  },
+  {
+   "id": "cpi-20260922-07",
+   "date": "2026-09-22",
+   "opportunity": "r7 honest \"not-configured\" state",
+   "evidence": "r7 \"ok\" with no keys; plaidBalances absent",
+   "expectedSaving": "Ends a false-green",
+   "complexity": "Low",
+   "status": "Proposed",
+   "implantEligible": "Yes",
+   "measured": ""
+  },
+  {
+   "id": "cpi-20260922-08",
+   "date": "2026-09-22",
+   "opportunity": "r17 reads the QuantVue sheet instead of asking a human",
+   "evidence": "riskMonitor \"awaiting entry\"; r17 description",
+   "expectedSaving": "~5 min/day + a real log",
+   "complexity": "Medium",
+   "status": "Proposed",
+   "implantEligible": "Yes after one supervised run",
+   "measured": ""
+  },
+  {
+   "id": "cpi-20260922-09",
+   "date": "2026-09-22",
+   "opportunity": "Trim connector grants on all 50 routines",
+   "evidence": "cloud-routines.json conns",
+   "expectedSaving": "Attack surface; fewer permission prompts",
+   "complexity": "Low",
+   "status": "Proposed",
+   "implantEligible": "Yes",
+   "measured": ""
+  },
+  {
+   "id": "cpi-20260922-10",
+   "date": "2026-09-22",
+   "opportunity": "Retire six dead cloud routines",
+   "evidence": "FAILED/ABANDONED list",
+   "expectedSaving": "Ops Radar count becomes truthful",
+   "complexity": "Low",
+   "status": "Proposed",
+   "implantEligible": "Yes",
+   "measured": ""
+  },
+  {
+   "id": "cpi-20260922-11",
+   "date": "2026-09-22",
+   "opportunity": "Morning brief: one writer + cloud fallback",
+   "evidence": "r1 error 09-17, vanessa-morning-brief-text limited, cloud briefs undelivered",
+   "expectedSaving": "Brief delivered daily",
+   "complexity": "Medium",
+   "status": "Proposed",
+   "implantEligible": "Yes",
+   "measured": ""
+  },
+  {
+   "id": "cpi-20260922-12",
+   "date": "2026-09-22",
+   "opportunity": "Pipeline/reClients filled from the ISA Portal",
+   "evidence": "pipeline [], reClients absent vs Portal \"2 loans $835K\"",
+   "expectedSaving": "Post-close ticklers + true pipeline view",
+   "complexity": "Medium",
+   "status": "Proposed",
+   "implantEligible": "No \u2014 needs Steven's confirmation of the Portal as source of truth",
+   "measured": ""
+  },
+  {
+   "id": "cpi-20260922-13",
+   "date": "2026-09-22",
+   "opportunity": "Second Brain inbox triage list",
+   "evidence": "54/70 Inbox rows",
+   "expectedSaving": "~30 min/week",
+   "complexity": "Low",
+   "status": "Proposed",
+   "implantEligible": "Yes (review list only; status changes wait for Steven)",
+   "measured": ""
+  },
+  {
+   "id": "cpi-20260922-14",
+   "date": "2026-09-22",
+   "opportunity": "Slack scan inside r12",
+   "evidence": "twin's manual Slack scan 09-21",
+   "expectedSaving": "~10 min/day",
+   "complexity": "Low",
+   "status": "Proposed",
+   "implantEligible": "Yes",
+   "measured": ""
+  }
+ ]
+}

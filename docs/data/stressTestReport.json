@@ -1,0 +1,4828 @@
+{
+ "v": {
+  "generatedAt": "2026-09-22T09:03:17.290Z",
+  "engineer": "E7 \u2014 Stress Test Engineer",
+  "cycle": "Loop Cycle 6 \u00b7 2026-09-22",
+  "baselineLabel": "Baseline 2026-09-12 \u00b7 verified 2026-09-22",
+  "deck": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/tests/baseline-5fbe844.html",
+  "deckSha256": "1a9e203b1a08c5596e828a5765500bc2ebdc621c3c19a33349c38ceca06ee9ee",
+  "deckLines": 25595,
+  "deckProvenance": "git master commit 5fbe844 (the published build 2026-09-15 02:19 PT), pinned to tests/baseline-5fbe844.html so every line number in this report stays valid while seven engineers edit their worktrees",
+  "harness": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/tests/runtime-harness.js",
+  "node": "v22.22.2",
+  "summary": {
+   "total": 61,
+   "pass": 48,
+   "degraded": 12,
+   "fail": 1
+  },
+  "rows": [
+   {
+    "capability": "Whole page \u2014 published seed, no synced docs",
+    "testType": "Functional",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "318 container ids received innerHTML; 1466 ms; 0 exceptions"
+   },
+   {
+    "capability": "Element wiring \u2014 $() targets that do not exist in the document",
+    "testType": "Regression",
+    "result": "Degraded",
+    "weakness": "6 ids are looked up but never exist: vanessaVoiceToggle, steveVoiceToggle, vanessaMicBtn, steveMicBtn, isaPbTracker, isaPbVip. Every call site is null-guarded so nothing throws \u2014 the features simply never wire up (voice toggles, both mic buttons, the ISA power-block tracker + VIP tiles).",
+    "engineer": "Capability Engineer",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Escalated",
+    "evidence": "presenceAttachMic('vanessaMicBtn'\u2026) html:23632 \u00b7 presenceAttachMic('steveMicBtn'\u2026) html:23633 \u00b7 voice toggles html:23627 \u00b7 renderIsaPlaybook trackEl/vipEl html:25040"
+   },
+   {
+    "capability": "Travel panel \u2014 'N showing' count on first paint",
+    "testType": "Regression",
+    "result": "Degraded",
+    "weakness": "renderTravelPage reads $('travelVisibleCount') one line BEFORE renderTravelFilters() creates that span, so the count is empty on the first paint and only fills on a later re-render.",
+    "engineer": "Reliability Engineer",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Open",
+    "evidence": "html:17776 reads the id, html:17778 calls renderTravelFilters() which emits it (html:17719)"
+   },
+   {
+    "capability": "Automation health board (routineHealth)",
+    "testType": "Volume",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "payload 1093 KB \u00b7 page 2613 ms (+1147 ms vs baseline) \u00b7 318 containers \u00b7 largest single innerHTML write 814 KB into #autoHealthBody"
+   },
+   {
+    "capability": "Task board (kanbanCards)",
+    "testType": "Volume",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "payload 237 KB \u00b7 page 1727 ms (+261 ms vs baseline) \u00b7 318 containers \u00b7 largest single innerHTML write 61 KB into #eliteTaxStrategyRows"
+   },
+   {
+    "capability": "ISA direct line (isaLine)",
+    "testType": "Volume",
+    "result": "Degraded",
+    "weakness": "slowest render renderNotifications (final pass) 732 ms \u00b7 one innerHTML write of 5.11 MB into #isaLineThread \u2014 no display cap on this list",
+    "engineer": "Efficiency Engineer",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Monitoring",
+    "evidence": "payload 2539 KB \u00b7 page 6694 ms (+5228 ms vs baseline) \u00b7 318 containers \u00b7 largest single innerHTML write 5237 KB into #isaLineThread"
+   },
+   {
+    "capability": "Live research feeds (liveFeeds)",
+    "testType": "Volume",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "payload 1270 KB \u00b7 page 2059 ms (+593 ms vs baseline) \u00b7 320 containers \u00b7 largest single innerHTML write 61 KB into #eliteTaxStrategyRows"
+   },
+   {
+    "capability": "Whole page under all four volume payloads at once",
+    "testType": "Volume",
+    "result": "Degraded",
+    "weakness": "page time 8990 ms vs 1466 ms baseline (6.1x); 5.0 MB of documents is ~1.0x the 5 MB localStorage budget",
+    "engineer": "Efficiency Engineer",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Monitoring",
+    "evidence": "slowest: renderNotifications (final pass) 803ms, renderExecBrief (final pass) 471ms, renderKanban 187ms"
+   },
+   {
+    "capability": "Document `weatherSnapshot` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `liveFeeds` (malformed input)",
+    "testType": "Edge",
+    "result": "Degraded",
+    "weakness": "1 of 7 malformed shapes (wrong-typed fields) reach a renderer and throw: renderNews @html:21367; renderOrFeeds @html:21367. safeRun catches each one, so the page stays up but those panels render empty with no on-page reason.",
+    "engineer": "Reliability Engineer",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Open",
+    "evidence": "null:guarded []:guarded {}:ok \"string\":guarded wrong-typed fields:throw row is a number:guarded truncated JSON:guarded"
+   },
+   {
+    "capability": "Document `calendarSnapshot` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `stravaSnapshot` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `strategySnapshot` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `leadTriage` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:guarded"
+   },
+   {
+    "capability": "Document `twinBrief` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:guarded"
+   },
+   {
+    "capability": "Document `twinLog` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `vanessaBrief` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `vanessaRuns` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `revenueScan` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "Doc is not in the 161-doc export at all \u2014 the deck reads it but no task has ever written it.",
+    "engineer": "Integration Engineer",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Escalated",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `improvementProposals` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:guarded []:ok {}:guarded \"string\":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `loopLog` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `cpiCycles` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:guarded []:ok {}:guarded \"string\":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:guarded"
+   },
+   {
+    "capability": "Document `routineHealth` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `backupStatus` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `ratesSnapshot` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `isaScorecard` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:guarded []:ok {}:guarded \"string\":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `appleHealth` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `healthAnalysis` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `healthCoaching` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "Doc is not in the 161-doc export at all \u2014 the deck reads it but no task has ever written it.",
+    "engineer": "Integration Engineer",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Escalated",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `toolkitSnapshot` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `knowledgeFabric` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `aiTeamRoster` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `runnerStatus` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `marketingQueue` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:guarded []:ok {}:guarded \"string\":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:guarded"
+   },
+   {
+    "capability": "Document `zohoLeads` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "Doc is not in the 161-doc export at all \u2014 the deck reads it but no task has ever written it.",
+    "engineer": "Integration Engineer",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Escalated",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `twinQueue` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:guarded []:ok {}:guarded \"string\":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:guarded"
+   },
+   {
+    "capability": "Document `vanessaRecommendations` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "null:guarded []:ok {}:guarded \"string\":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:guarded"
+   },
+   {
+    "capability": "Claude capability handshake (initSync / claudeUse)",
+    "testType": "FailureInjection",
+    "result": "Fail",
+    "weakness": "P1 \u2014 the whole page dies. `(function initSync(){...})` calls `window.claude.use(\"db\").then(...)` at html:6921 with NO try/catch; only the promise is `.catch()`ed. A SYNCHRONOUS throw from claude.use propagates out of the IIFE and halts every remaining top-level statement, so 0 of 318 containers render \u2014 a blank dashboard, exactly the 2026-09-03 CI-log regression class. Exception: claude.use('db') exploded (injected failure) @ html:6921. Fix: wrap the use() call in try/catch and fall back to setSyncStatus(\"Local only (this device)\",\"off\").",
+    "engineer": "Reliability Engineer",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Escalated",
+    "evidence": "page HALTED \u00b7 0 containers \u00b7 0 shape warnings \u00b7 0 console warnings"
+   },
+   {
+    "capability": "Claude capability handshake \u2014 rejected promise",
+    "testType": "FailureInjection",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "page ran to completion \u00b7 318 containers \u00b7 0 shape warnings \u00b7 0 console warnings"
+   },
+   {
+    "capability": "Local persistence \u2014 write path",
+    "testType": "FailureInjection",
+    "result": "Degraded",
+    "weakness": "Every write is silently swallowed by lsSetLocal's empty catch \u2014 the page renders normally and the sync pill still reads 'Local only (this device)'. A user typing into any panel loses the edit with no warning.",
+    "engineer": "Reliability Engineer",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Open",
+    "evidence": "page ran to completion \u00b7 318 containers \u00b7 0 shape warnings \u00b7 0 console warnings"
+   },
+   {
+    "capability": "Local persistence \u2014 read path",
+    "testType": "FailureInjection",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "page ran to completion \u00b7 318 containers \u00b7 0 shape warnings \u00b7 0 console warnings"
+   },
+   {
+    "capability": "Local persistence \u2014 quota exhausted part-way through hydration",
+    "testType": "FailureInjection",
+    "result": "Degraded",
+    "weakness": "localStorage fills up part-way through hydrateFromSeed and every later write throws QuotaExceededError into lsSetLocal's empty catch. The page renders, but half the seed never persists and NOTHING on the page says a write failed \u2014 LS_UNAVAILABLE is only set on a failing READ (lsGetSeeded, html:6724), never on a failing write.",
+    "engineer": "Reliability Engineer",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Open",
+    "evidence": "page ran to completion \u00b7 318 containers \u00b7 0 shape warnings \u00b7 0 console warnings"
+   },
+   {
+    "capability": "Local persistence \u2014 5 MB browser quota with the real store",
+    "testType": "FailureInjection",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "page ran to completion \u00b7 322 containers \u00b7 0 shape warnings \u00b7 0 console warnings"
+   },
+   {
+    "capability": "Published seed hydration (hydrateFromSeed)",
+    "testType": "FailureInjection",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "page ran to completion \u00b7 318 containers \u00b7 0 shape warnings \u00b7 0 console warnings"
+   },
+   {
+    "capability": "Cross-device merge \u2014 200-change burst (applyRemoteSnapshot) [db-connected]",
+    "testType": "Concurrency",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "200 doc changes applied in 10 ms, no throw; 163 keys in localStorage afterwards"
+   },
+   {
+    "capability": "Merge idempotence \u2014 identical burst replayed [db-connected]",
+    "testType": "Concurrency",
+    "result": "Degraded",
+    "weakness": "replaying the identical snapshot reported changed=true and rewrote 0 keys () \u2014 a second device echoing the same documents back can loop the 30 s location.reload() throttle.",
+    "engineer": "Reliability Engineer",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Open",
+    "evidence": "changed(first)=true changed(replay)=true keys rewritten=0"
+   },
+   {
+    "capability": "ISA line conflict merge (isaLineMergeArrays) [db-connected]",
+    "testType": "Concurrency",
+    "result": "Degraded",
+    "weakness": "2 messages WITHOUT an `id` were silently discarded \u2014 isaLineMergeArrays' take() returns early on `!m.id`, so any relay that omits an id vanishes with no warning anywhere",
+    "engineer": "Reliability Engineer",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Open",
+    "evidence": "html:24531 isaLineMergeArrays take(); 88 of 82 messages survived; ISA_LINE_MAX=300 cap"
+   },
+   {
+    "capability": "Cross-device merge \u2014 200-change burst (applyRemoteSnapshot) [local-only]",
+    "testType": "Concurrency",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "200 doc changes applied in 8 ms, no throw; 163 keys in localStorage afterwards"
+   },
+   {
+    "capability": "Merge idempotence \u2014 identical burst replayed [local-only]",
+    "testType": "Concurrency",
+    "result": "Degraded",
+    "weakness": "replaying the identical snapshot reported changed=true and rewrote 0 keys () \u2014 a second device echoing the same documents back can loop the 30 s location.reload() throttle.",
+    "engineer": "Reliability Engineer",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Open",
+    "evidence": "changed(first)=true changed(replay)=true keys rewritten=0"
+   },
+   {
+    "capability": "ISA line conflict merge (isaLineMergeArrays) [local-only]",
+    "testType": "Concurrency",
+    "result": "Degraded",
+    "weakness": "40 ID'd messages lost in the merge \u00b7 2 messages WITHOUT an `id` were silently discarded \u2014 isaLineMergeArrays' take() returns early on `!m.id`, so any relay that omits an id vanishes with no warning anywhere",
+    "engineer": "Reliability Engineer",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Open",
+    "evidence": "html:24531 isaLineMergeArrays take(); 48 of 82 messages survived; ISA_LINE_MAX=300 cap"
+   },
+   {
+    "capability": "Restore all 161 exported documents and run the page",
+    "testType": "BackupRecovery",
+    "result": "Degraded",
+    "weakness": "stravaSnapshot has no `v` wrapper, so applyRemoteSnapshot skips it and a restore silently loses it (160/161 restored) \u00b7 2 watched documents were never written by their task and therefore cannot be restored: revenueScan, healthCoaching",
+    "engineer": "Integration Engineer",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Escalated",
+    "evidence": "160/161 restored \u00b7 863 KB \u00b7 322 containers rendered \u00b7 0 exceptions"
+   },
+   {
+    "capability": "OUTPUT_WATCH freshness board after a full restore",
+    "testType": "BackupRecovery",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "all 26 OUTPUT_WATCH docs are read by outputWatchRows(); autoHealthBody rendered=true"
+   },
+   {
+    "capability": "Backup bundle backup/2026-09-22 (sha256 manifest)",
+    "testType": "BackupRecovery",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "161 docs + the deck, 4.71 MB, every file re-hashed after write and matched"
+   },
+   {
+    "capability": "Runtime gate \u2014 deck/command-deck.html (working tree)",
+    "testType": "Regression",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "sha256 cc85ed1f4b9d \u00b7 325 containers \u00b7 1055 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
+   },
+   {
+    "capability": "Runtime gate \u2014 wt-e1-daily/command-deck.html",
+    "testType": "Regression",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "sha256 f85a73c2bffe \u00b7 318 containers \u00b7 1122 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
+   },
+   {
+    "capability": "Runtime gate \u2014 wt-e2-markets/command-deck.html",
+    "testType": "Regression",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "sha256 8f3afaa288a1 \u00b7 320 containers \u00b7 1228 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
+   },
+   {
+    "capability": "Runtime gate \u2014 wt-e3-wealth/command-deck.html",
+    "testType": "Regression",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "sha256 4cf3891cadf0 \u00b7 318 containers \u00b7 1146 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
+   },
+   {
+    "capability": "Runtime gate \u2014 wt-e4a-crm/command-deck.html",
+    "testType": "Regression",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "sha256 2bd714512600 \u00b7 322 containers \u00b7 1053 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
+   },
+   {
+    "capability": "Runtime gate \u2014 wt-e4b-realestate/command-deck.html",
+    "testType": "Regression",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "sha256 2d4b60a0b40e \u00b7 319 containers \u00b7 1161 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
+   },
+   {
+    "capability": "Runtime gate \u2014 wt-e5-life/command-deck.html",
+    "testType": "Regression",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "sha256 c91460ff4de0 \u00b7 319 containers \u00b7 1104 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
+   },
+   {
+    "capability": "Runtime gate \u2014 wt-e6-aiteam/command-deck.html",
+    "testType": "Regression",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Resolved",
+    "evidence": "sha256 cabb1bafe36a \u00b7 318 containers \u00b7 1156 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
+   }
+  ],
+  "detail": {
+   "deckSha256": "1a9e203b1a08c5596e828a5765500bc2ebdc621c3c19a33349c38ceca06ee9ee",
+   "deckLines": 25595,
+   "baseline": {
+    "ok": true,
+    "durationMs": 1466,
+    "containers": 318,
+    "scriptStartLine": 6635,
+    "scriptLines": 18959,
+    "largestInnerHtmlWrites": [
+     {
+      "id": "eliteTaxStrategyRows",
+      "writes": 1,
+      "lastBytes": 62222,
+      "totalBytes": 62222
+     },
+     {
+      "id": "coreStructureRows",
+      "writes": 1,
+      "lastBytes": 55609,
+      "totalBytes": 55609
+     },
+     {
+      "id": "orgChartTree",
+      "writes": 1,
+      "lastBytes": 50005,
+      "totalBytes": 50005
+     },
+     {
+      "id": "aiTeamRosterRows",
+      "writes": 1,
+      "lastBytes": 49520,
+      "totalBytes": 49520
+     },
+     {
+      "id": "hfReportsBody",
+      "writes": 1,
+      "lastBytes": 29361,
+      "totalBytes": 29361
+     },
+     {
+      "id": "institutionRows",
+      "writes": 1,
+      "lastBytes": 26493,
+      "totalBytes": 26493
+     },
+     {
+      "id": "aiOrgTree",
+      "writes": 1,
+      "lastBytes": 26052,
+      "totalBytes": 26052
+     },
+     {
+      "id": "riskRegisterRows",
+      "writes": 1,
+      "lastBytes": 20918,
+      "totalBytes": 20918
+     },
+     {
+      "id": "notifList",
+      "writes": 3,
+      "lastBytes": 19468,
+      "totalBytes": 58404
+     },
+     {
+      "id": "oppRadarList",
+      "writes": 1,
+      "lastBytes": 17851,
+      "totalBytes": 17851
+     },
+     {
+      "id": "freshRows",
+      "writes": 1,
+      "lastBytes": 17029,
+      "totalBytes": 17029
+     },
+     {
+      "id": "namedDealsRows",
+      "writes": 1,
+      "lastBytes": 16837,
+      "totalBytes": 16837
+     }
+    ],
+    "totalInnerHtmlBytes": 1202526,
+    "containersRendered": [
+     "accountRows",
+     "advisorRows",
+     "affluentEmpireRows",
+     "ahGrid",
+     "aiModelRows",
+     "aiNewsList",
+     "aiOrgFlows",
+     "aiOrgTools",
+     "aiOrgTree",
+     "aiTeamRosterRows",
+     "aiToolingList",
+     "aiTrainingRows",
+     "allocBar",
+     "allocLegend",
+     "annualTodoAccordion",
+     "apexChatThread",
+     "apptRows",
+     "assetAllocBar",
+     "assetAllocLegend",
+     "assetItemRows",
+     "augustaRows",
+     "autoHealthBody",
+     "backupStatusBody",
+     "bearsDetail",
+     "bearsLiveNews",
+     "bearsStandingsRows",
+     "biohackRows",
+     "brandLicensingRows",
+     "builderIncentiveLiveList",
+     "builderIncentiveRows",
+     "caTaxLeverRows",
+     "caioList",
+     "calUpcomingList",
+     "checklistGroups",
+     "ciLogRows",
+     "communityRankRows",
+     "communityRankSource",
+     "coreStructureRows",
+     "councilHistory",
+     "councilOutside",
+     "cpiRows",
+     "cpiStatRow",
+     "deadlineRows",
+     "dealsFeedRows",
+     "defenseDisruptorRows",
+     "defenseUpdatesList",
+     "dividendRows",
+     "dmaicPhaseBar",
+     "dmaicPhaseLegend",
+     "dmaicRows",
+     "downtimeRows",
+     "dreamFeatureList",
+     "dreamPropertyRows",
+     "econodayLiveList",
+     "econodayRows",
+     "educationRows",
+     "elitCarRentalList",
+     "elitCardOffersRows",
+     "elitCreditBurnRows",
+     "elitExpiringList",
+     "elitHotelCasinoList",
+     "elitLocalDealsList",
+     "elitMilVetList",
+     "elitRiskAlertsList",
+     "elitScanLiveList",
+     "elitShoppingStackRows",
+     "elitStatusMatchRows",
+     "elitSubTrackerRows",
+     "elitTopActionsRows",
+     "elitTransferBonusList",
+     "eliteAffluentLiveList",
+     "eliteTaxStrategyRows",
+     "entityRows",
+     "eodList",
+     "estateRows",
+     "execExceptionList",
+     "execStatRow",
+     "feasibilityRows",
+     "fedBrowserRows",
+     "fedFootprintRows",
+     "fedGrade",
+     "fedLadderRows",
+     "fedLocality",
+     "fedStep",
+     "fedYears",
+     "feoStrategyRows",
+     "fersCompare",
+     "fersGrade",
+     "fersGsRows",
+     "fersLocality",
+     "fersRetGrade",
+     "fersRetLocality",
+     "fersRetStep",
+     "fersStep",
+     "fersTableLocality",
+     "fersVaRating",
+     "fersVaRows",
+     "foActionList",
+     "foPhaseAccordion",
+     "foReviewRows",
+     "freshRows",
+     "fubNewLeadRows",
+     "fubStageStats",
+     "funderDirectoryRows",
+     "grantPipelineRows",
+     "hacksAccordion",
+     "hcBody",
+     "healthMetricRows",
+     "hfMemoBody",
+     "hfMemoTags",
+     "hfReportsBody",
+     "hfSourcesBody",
+     "hfVerificationBody",
+     "hlChartWrap",
+     "hlCompare",
+     "hlDaily",
+     "hlFlags",
+     "hlMetric",
+     "hlRecords",
+     "hlStats",
+     "hlWorkouts",
+     "hvmAccordion",
+     "hvmRoadmapAccordion",
+     "improveRows",
+     "inboxRows",
+     "incentBody",
+     "incentFilters",
+     "incomeMixBar",
+     "incomeMixLegend",
+     "incomeStreamGroups",
+     "institutionRows",
+     "isaGradingRows",
+     "isaKpiSopRows",
+     "isaLineThread",
+     "isaPbBlocks",
+     "isaPbDays",
+     "isaPbToday",
+     "isaScRows",
+     "jamesChatThread",
+     "kaizenDoneCol",
+     "kaizenIdeaCol",
+     "kaizenProgressCol",
+     "kanbanBoard",
+     "kanbanOwnerFilter",
+     "kanbanWeek",
+     "kevinChatThread",
+     "kpiRows",
+     "lbList",
+     "lenderDirectoryRows",
+     "liabRiskBar",
+     "liabRiskLegend",
+     "liabilityRows",
+     "licenseRows",
+     "licenseTrackerRows",
+     "loanProgramGroups",
+     "loanUnitedNicheList",
+     "ltBody",
+     "ltStats",
+     "lumenRows",
+     "marketUpdateCards",
+     "marketUpdateLiveList_san-diego-ca",
+     "marketUpdateLiveList_temecula-ca",
+     "marketingRows",
+     "melloRoosRows",
+     "melloRoosSource",
+     "membershipAssocRows",
+     "membershipRows",
+     "milFamOfficeSteps",
+     "militaryDiscountRows",
+     "mktHonestyNote",
+     "mktMoversList",
+     "mktSectorList",
+     "mktTileRow",
+     "mortgageRateRows",
+     "myCardRows",
+     "namedDealsRows",
+     "namedTaxCaseRows",
+     "newsGlobalList",
+     "newsLocalCards",
+     "nextMovesDecisions",
+     "ningStateRows",
+     "notifList",
+     "nqGuideList",
+     "nutritionRows",
+     "onThisDayBirthdayList",
+     "onThisDayHistoryList",
+     "onboardGroups",
+     "openDecisionsList",
+     "oppRadarList",
+     "oppRadarLiveList",
+     "orMeter",
+     "orNote",
+     "orgChartTree",
+     "otBadges",
+     "otCmdList",
+     "otTape",
+     "pageCrumb",
+     "pageTabs",
+     "partnerRows",
+     "peMovesRows",
+     "pedefenseLiveList",
+     "peptideRows",
+     "pipelineRows",
+     "plaidBridgeStatus",
+     "planDecisions",
+     "prenupCaseRows",
+     "priorityActionsList",
+     "priorityList",
+     "programFactsRows",
+     "programStatusStrip",
+     "propertyRows",
+     "pstTaxContext",
+     "pstTaxQuickEstimate",
+     "ptoBridgeRows",
+     "ptoSummaryRows",
+     "ptoYearSelect",
+     "qetPaymentRows",
+     "quickTaskList",
+     "qvStrategyAccordion",
+     "reClientRows",
+     "recommendationsLog",
+     "recruitRows",
+     "recruitSummary",
+     "refLinkRows",
+     "refiRows",
+     "reminderList",
+     "reviewRows",
+     "riskRegisterRows",
+     "rosterRows",
+     "runnerRows",
+     "scheduleRows",
+     "secLabel",
+     "selfCheckResults",
+     "selfCheckStats",
+     "sellerCreditRows",
+     "shClients",
+     "shIntegrationRows",
+     "shShowings",
+     "shSyncRows",
+     "sixLeversSliders",
+     "sodList",
+     "sportsFranchiseRows",
+     "srStops",
+     "stackRows",
+     "steveChatThread",
+     "steveVoiceBar",
+     "steveVoiceDiag",
+     "stlBody",
+     "stlRows",
+     "strategyRows",
+     "strategyTipsList",
+     "stravaActivityRows",
+     "subsRows",
+     "subsTotals",
+     "sundayReviewList",
+     "supplementRows",
+     "swotGrid",
+     "taxBracketRows",
+     "taxCalendarRows",
+     "taxCategoryGroups",
+     "taxProjectorRows",
+     "tcRows",
+     "teamMatrixRows",
+     "techStackRows",
+     "tenAheadList",
+     "tkFabric",
+     "tkList",
+     "tkMcpList",
+     "tkTaskList",
+     "tkTiles",
+     "tkToolRows",
+     "tocList",
+     "todoGroups",
+     "topDividendRows",
+     "topEtfsRows",
+     "topFundsRows",
+     "topHeadlinesList",
+     "topPerformersLiveList",
+     "topStocksRows",
+     "trackedCalendarRows",
+     "tradingLoginRows",
+     "travelFilterCats",
+     "travelFilterOpts",
+     "travelLaRows",
+     "travelMenifeeRows",
+     "travelMurrietaRows",
+     "travelOcRows",
+     "travelPechangaRows",
+     "travelRiversideRows",
+     "travelSanDiegoRows",
+     "travelTemeculaRows",
+     "travelVegasRows",
+     "twinBriefBox",
+     "twinQueueRows",
+     "uwpGroups",
+     "vanessaChatThread",
+     "vanessaRecRows",
+     "vanessaResearchList",
+     "vanessaVoiceBar",
+     "vanessaVoiceDiag",
+     "vistaPeerRows",
+     "weatherCards",
+     "webinarRows",
+     "webinarTotals",
+     "wellnessMetricGroups",
+     "wheelSliders",
+     "workoutRows",
+     "worldClockBar",
+     "wxcity-ChicagoIL",
+     "wxcity-LasVegasNV",
+     "wxcity-LosAngelesCA",
+     "wxcity-NewBraunfelsTX",
+     "wxcity-SanDiegoCA",
+     "wxcity-TemeculaCA",
+     "wxcity-WashingtonDC",
+     "zhBoard",
+     "zhFilterGroups",
+     "zhNewStage"
+    ],
+    "safeRunFailures": [],
+    "exceptions": [],
+    "missingIds": [
+     {
+      "id": "travelVisibleCount",
+      "lookups": 1
+     },
+     {
+      "id": "vanessaVoiceToggle",
+      "lookups": 1
+     },
+     {
+      "id": "steveVoiceToggle",
+      "lookups": 1
+     },
+     {
+      "id": "vanessaMicBtn",
+      "lookups": 1
+     },
+     {
+      "id": "steveMicBtn",
+      "lookups": 1
+     },
+     {
+      "id": "isaPbTracker",
+      "lookups": 1
+     },
+     {
+      "id": "isaPbVip",
+      "lookups": 1
+     }
+    ],
+    "slowestRenders": [
+     {
+      "name": "renderPanelStamps",
+      "ms": 46
+     },
+     {
+      "name": "renderMemberships",
+      "ms": 28
+     },
+     {
+      "name": "renderHvmRoadmap",
+      "ms": 26
+     },
+     {
+      "name": "renderWeather",
+      "ms": 24
+     },
+     {
+      "name": "renderDreamProperties",
+      "ms": 22
+     },
+     {
+      "name": "renderTaxCalendar",
+      "ms": 19
+     },
+     {
+      "name": "renderRiskRegister",
+      "ms": 19
+     },
+     {
+      "name": "renderAiModels",
+      "ms": 18
+     },
+     {
+      "name": "renderKaizen",
+      "ms": 18
+     },
+     {
+      "name": "renderInstitutionDirectory",
+      "ms": 17
+     },
+     {
+      "name": "renderTechStack",
+      "ms": 17
+     },
+     {
+      "name": "renderNotifications",
+      "ms": 16
+     },
+     {
+      "name": "renderExecBrief",
+      "ms": 15
+     },
+     {
+      "name": "renderExecBrief (final pass)",
+      "ms": 15
+     },
+     {
+      "name": "numberSections",
+      "ms": 14
+     }
+    ],
+    "stats": {
+     "getElementByIdHits": 1380,
+     "innerHtmlWriteSites": 1187,
+     "timersScheduled": 94,
+     "timersRun": 84,
+     "reloadsRequested": 0,
+     "consoleWarnings": 0,
+     "consoleErrors": 0,
+     "clipboardWrites": 0,
+     "localStorageKeys": 110,
+     "claudeCapabilitiesRequested": []
+    },
+    "shapeMismatch": []
+   },
+   "volume": [
+    {
+     "case": "routineHealth \u00b7 5,000 routine rows",
+     "key": "routineHealth",
+     "payloadBytes": 1119703,
+     "durationMs": 2613,
+     "deltaVsBaselineMs": 1147,
+     "verdict": "Pass",
+     "slowestRenders": [
+      {
+       "name": "renderPanelStamps",
+       "ms": 73
+      },
+      {
+       "name": "renderNotifications",
+       "ms": 73
+      },
+      {
+       "name": "renderDreamProperties",
+       "ms": 54
+      },
+      {
+       "name": "renderDreamFeatures",
+       "ms": 41
+      },
+      {
+       "name": "renderNotifications (final pass)",
+       "ms": 36
+      }
+     ],
+     "safeRunFailures": [],
+     "exceptions": [],
+     "containers": 318,
+     "shapeMismatch": [],
+     "largestInnerHtmlWrites": [
+      {
+       "id": "autoHealthBody",
+       "writes": 1,
+       "lastBytes": 833919,
+       "totalBytes": 833919
+      },
+      {
+       "id": "eliteTaxStrategyRows",
+       "writes": 1,
+       "lastBytes": 62222,
+       "totalBytes": 62222
+      },
+      {
+       "id": "coreStructureRows",
+       "writes": 1,
+       "lastBytes": 55609,
+       "totalBytes": 55609
+      },
+      {
+       "id": "orgChartTree",
+       "writes": 1,
+       "lastBytes": 50005,
+       "totalBytes": 50005
+      },
+      {
+       "id": "aiTeamRosterRows",
+       "writes": 1,
+       "lastBytes": 49520,
+       "totalBytes": 49520
+      },
+      {
+       "id": "hfReportsBody",
+       "writes": 1,
+       "lastBytes": 29361,
+       "totalBytes": 29361
+      }
+     ],
+     "totalInnerHtmlBytes": 2031398
+    },
+    {
+     "case": "kanbanCards \u00b7 2,000 cards",
+     "key": "kanbanCards",
+     "payloadBytes": 242450,
+     "durationMs": 1727,
+     "deltaVsBaselineMs": 261,
+     "verdict": "Pass",
+     "slowestRenders": [
+      {
+       "name": "renderKanban",
+       "ms": 157
+      },
+      {
+       "name": "renderPanelStamps",
+       "ms": 66
+      },
+      {
+       "name": "renderReminders",
+       "ms": 45
+      },
+      {
+       "name": "renderHvmPlaybook",
+       "ms": 27
+      },
+      {
+       "name": "renderExecBrief (final pass)",
+       "ms": 25
+      }
+     ],
+     "safeRunFailures": [],
+     "exceptions": [],
+     "containers": 318,
+     "shapeMismatch": [],
+     "largestInnerHtmlWrites": [
+      {
+       "id": "eliteTaxStrategyRows",
+       "writes": 1,
+       "lastBytes": 62222,
+       "totalBytes": 62222
+      },
+      {
+       "id": "coreStructureRows",
+       "writes": 1,
+       "lastBytes": 55609,
+       "totalBytes": 55609
+      },
+      {
+       "id": "orgChartTree",
+       "writes": 1,
+       "lastBytes": 50005,
+       "totalBytes": 50005
+      },
+      {
+       "id": "aiTeamRosterRows",
+       "writes": 1,
+       "lastBytes": 49520,
+       "totalBytes": 49520
+      },
+      {
+       "id": "hfReportsBody",
+       "writes": 1,
+       "lastBytes": 29361,
+       "totalBytes": 29361
+      },
+      {
+       "id": "institutionRows",
+       "writes": 1,
+       "lastBytes": 26493,
+       "totalBytes": 26493
+      }
+     ],
+     "totalInnerHtmlBytes": 1213584
+    },
+    {
+     "case": "isaLine \u00b7 10,000 messages",
+     "key": "isaLine",
+     "payloadBytes": 2600281,
+     "durationMs": 6694,
+     "deltaVsBaselineMs": 5228,
+     "verdict": "Pass",
+     "slowestRenders": [
+      {
+       "name": "renderNotifications (final pass)",
+       "ms": 732
+      },
+      {
+       "name": "renderExecBrief (final pass)",
+       "ms": 412
+      },
+      {
+       "name": "renderNotifications",
+       "ms": 89
+      },
+      {
+       "name": "renderExecBrief",
+       "ms": 66
+      },
+      {
+       "name": "renderPanelStamps",
+       "ms": 45
+      }
+     ],
+     "safeRunFailures": [],
+     "exceptions": [],
+     "containers": 318,
+     "shapeMismatch": [],
+     "largestInnerHtmlWrites": [
+      {
+       "id": "isaLineThread",
+       "writes": 1,
+       "lastBytes": 5362720,
+       "totalBytes": 5362720
+      },
+      {
+       "id": "notifList",
+       "writes": 3,
+       "lastBytes": 1884584,
+       "totalBytes": 3788585
+      },
+      {
+       "id": "execExceptionList",
+       "writes": 3,
+       "lastBytes": 808611,
+       "totalBytes": 1627106
+      },
+      {
+       "id": "eliteTaxStrategyRows",
+       "writes": 1,
+       "lastBytes": 62222,
+       "totalBytes": 62222
+      },
+      {
+       "id": "coreStructureRows",
+       "writes": 1,
+       "lastBytes": 55609,
+       "totalBytes": 55609
+      },
+      {
+       "id": "orgChartTree",
+       "writes": 1,
+       "lastBytes": 50005,
+       "totalBytes": 50005
+      }
+     ],
+     "totalInnerHtmlBytes": 11892754
+    },
+    {
+     "case": "liveFeeds \u00b7 50 feeds x 200 citations",
+     "key": "liveFeeds",
+     "payloadBytes": 1300518,
+     "durationMs": 2059,
+     "deltaVsBaselineMs": 593,
+     "verdict": "Pass",
+     "slowestRenders": [
+      {
+       "name": "renderExecBrief (final pass)",
+       "ms": 98
+      },
+      {
+       "name": "renderEliteAffluentPage",
+       "ms": 88
+      },
+      {
+       "name": "renderNotifications",
+       "ms": 88
+      },
+      {
+       "name": "renderNotifications (final pass)",
+       "ms": 87
+      },
+      {
+       "name": "renderNews",
+       "ms": 76
+      }
+     ],
+     "safeRunFailures": [],
+     "exceptions": [],
+     "containers": 320,
+     "shapeMismatch": [],
+     "largestInnerHtmlWrites": [
+      {
+       "id": "eliteTaxStrategyRows",
+       "writes": 1,
+       "lastBytes": 62222,
+       "totalBytes": 62222
+      },
+      {
+       "id": "coreStructureRows",
+       "writes": 1,
+       "lastBytes": 55609,
+       "totalBytes": 55609
+      },
+      {
+       "id": "orgChartTree",
+       "writes": 1,
+       "lastBytes": 50005,
+       "totalBytes": 50005
+      },
+      {
+       "id": "aiTeamRosterRows",
+       "writes": 1,
+       "lastBytes": 49520,
+       "totalBytes": 49520
+      },
+      {
+       "id": "hfReportsBody",
+       "writes": 1,
+       "lastBytes": 29361,
+       "totalBytes": 29361
+      },
+      {
+       "id": "institutionRows",
+       "writes": 1,
+       "lastBytes": 26493,
+       "totalBytes": 26493
+      }
+     ],
+     "totalInnerHtmlBytes": 1240642
+    }
+   ],
+   "volumeCombined": {
+    "payloadBytes": 5262952,
+    "durationMs": 8990,
+    "verdict": "Pass",
+    "slowestRenders": [
+     {
+      "name": "renderNotifications (final pass)",
+      "ms": 803
+     },
+     {
+      "name": "renderExecBrief (final pass)",
+      "ms": 471
+     },
+     {
+      "name": "renderKanban",
+      "ms": 187
+     },
+     {
+      "name": "renderNotifications",
+      "ms": 135
+     },
+     {
+      "name": "renderPanelStamps",
+      "ms": 134
+     },
+     {
+      "name": "renderDataFreshness",
+      "ms": 107
+     },
+     {
+      "name": "renderExecBrief",
+      "ms": 102
+     },
+     {
+      "name": "renderEliteAffluentPage",
+      "ms": 83
+     }
+    ],
+    "safeRunFailures": [],
+    "exceptions": []
+   },
+   "edge": [
+    {
+     "doc": "weatherSnapshot",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "liveFeeds",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "liveFeeds expected object, got null"
+       ],
+       "shapeMismatchCount": 14,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "liveFeeds expected object, got array"
+       ],
+       "shapeMismatchCount": 14,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "liveFeeds expected object, got string"
+       ],
+       "shapeMismatchCount": 14,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [
+        {
+         "fn": "renderNews",
+         "error": "(d.citations || []).filter is not a function",
+         "htmlLine": 21367,
+         "at": "at orPaintFeed (baseline-5fbe844.html:21367:37) | at orRenderFeedInto (baseline-5fbe844.html:21338:5)"
+        },
+        {
+         "fn": "renderOrFeeds",
+         "error": "(d.citations || []).filter is not a function",
+         "htmlLine": 21367,
+         "at": "at orPaintFeed (baseline-5fbe844.html:21367:37) | at baseline-5fbe844.html:21352:7"
+        }
+       ],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 308,
+       "containersLost": [
+        "bearsLiveNews",
+        "builderIncentiveLiveList",
+        "defenseUpdatesList",
+        "econodayLiveList",
+        "elitScanLiveList",
+        "eliteAffluentLiveList",
+        "oppRadarLiveList",
+        "pedefenseLiveList",
+        "topHeadlinesList",
+        "topPerformersLiveList"
+       ]
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "liveFeeds expected object, got array"
+       ],
+       "shapeMismatchCount": 14,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "liveFeeds expected valid JSON, got string"
+       ],
+       "shapeMismatchCount": 14,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "calendarSnapshot",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "stravaSnapshot",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "strategySnapshot",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "leadTriage",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "leadTriage expected valid JSON, got string"
+       ],
+       "shapeMismatchCount": 7,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "twinBrief",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "twinBrief expected valid JSON, got string"
+       ],
+       "shapeMismatchCount": 1,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "twinLog",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "vanessaBrief",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "vanessaRuns",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "revenueScan",
+     "inExport": false,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "improvementProposals",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "improvementProposals expected array, got null"
+       ],
+       "shapeMismatchCount": 7,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "improvementProposals expected array, got object"
+       ],
+       "shapeMismatchCount": 7,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "improvementProposals expected array, got string"
+       ],
+       "shapeMismatchCount": 7,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "improvementProposals expected array, got object"
+       ],
+       "shapeMismatchCount": 7,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "loopLog",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "cpiCycles",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "cpiCycles expected array, got null"
+       ],
+       "shapeMismatchCount": 1,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "cpiCycles expected array, got object"
+       ],
+       "shapeMismatchCount": 1,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "cpiCycles expected array, got string"
+       ],
+       "shapeMismatchCount": 1,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "cpiCycles expected array, got object"
+       ],
+       "shapeMismatchCount": 1,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "cpiCycles expected valid JSON, got string"
+       ],
+       "shapeMismatchCount": 1,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "routineHealth",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "backupStatus",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "ratesSnapshot",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 319,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "isaScorecard",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "isaScorecard expected array, got null"
+       ],
+       "shapeMismatchCount": 7,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "isaScorecard expected array, got object"
+       ],
+       "shapeMismatchCount": 7,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "isaScorecard expected array, got string"
+       ],
+       "shapeMismatchCount": 7,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "isaScorecard expected array, got object"
+       ],
+       "shapeMismatchCount": 7,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "appleHealth",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "healthAnalysis",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "healthCoaching",
+     "inExport": false,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "toolkitSnapshot",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "knowledgeFabric",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "aiTeamRoster",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "runnerStatus",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "marketingQueue",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "marketingQueue expected array, got null"
+       ],
+       "shapeMismatchCount": 1,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "marketingQueue expected array, got object"
+       ],
+       "shapeMismatchCount": 1,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "marketingQueue expected array, got string"
+       ],
+       "shapeMismatchCount": 1,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "marketingQueue expected array, got object"
+       ],
+       "shapeMismatchCount": 1,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "marketingQueue expected valid JSON, got string"
+       ],
+       "shapeMismatchCount": 1,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "zohoLeads",
+     "inExport": false,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "twinQueue",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "twinQueue expected array, got null"
+       ],
+       "shapeMismatchCount": 7,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "twinQueue expected array, got object"
+       ],
+       "shapeMismatchCount": 7,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "twinQueue expected array, got string"
+       ],
+       "shapeMismatchCount": 7,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "twinQueue expected array, got object"
+       ],
+       "shapeMismatchCount": 7,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "twinQueue expected valid JSON, got string"
+       ],
+       "shapeMismatchCount": 7,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "vanessaRecommendations",
+     "inExport": true,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "vanessaRecommendations expected array, got null"
+       ],
+       "shapeMismatchCount": 1,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "vanessaRecommendations expected array, got object"
+       ],
+       "shapeMismatchCount": 1,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "vanessaRecommendations expected array, got string"
+       ],
+       "shapeMismatchCount": 1,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "vanessaRecommendations expected array, got object"
+       ],
+       "shapeMismatchCount": 1,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 318,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [
+        "vanessaRecommendations expected valid JSON, got string"
+       ],
+       "shapeMismatchCount": 1,
+       "containers": 318,
+       "containersLost": []
+      }
+     ]
+    }
+   ],
+   "failureInjection": [
+    {
+     "case": "window.claude present, use() throws",
+     "verdict": "Fail",
+     "durationMs": 180,
+     "exceptions": [
+      {
+       "where": "top-level IIFE",
+       "message": "claude.use('db') exploded (injected failure)",
+       "line": 6921,
+       "scriptLine": 287,
+       "stack": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/tests/runtime-harness.js:235 |       use: function (cap) { claudeCalls.push(cap); throw new Error(\"claude.use('\" + cap + \"') exploded (injected failure)\"); }, |                                                    ^ |  | Error: claude.use('db') exploded (injected failure) |     at Object.use (/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/tests/runtime-harness.js:235:58)"
+      }
+     ],
+     "safeRunFailures": [],
+     "honest": {
+      "lsUnavailableFlag": false,
+      "shapeMismatchReported": 0,
+      "consoleWarnings": 0,
+      "containers": 0,
+      "containersLost": [
+       "accountRows",
+       "advisorRows",
+       "affluentEmpireRows",
+       "ahGrid",
+       "aiModelRows",
+       "aiNewsList",
+       "aiOrgFlows",
+       "aiOrgTools",
+       "aiOrgTree",
+       "aiTeamRosterRows",
+       "aiToolingList",
+       "aiTrainingRows",
+       "allocBar",
+       "allocLegend",
+       "annualTodoAccordion",
+       "apexChatThread",
+       "apptRows",
+       "assetAllocBar",
+       "assetAllocLegend",
+       "assetItemRows",
+       "augustaRows",
+       "autoHealthBody",
+       "backupStatusBody",
+       "bearsDetail",
+       "bearsLiveNews",
+       "bearsStandingsRows",
+       "biohackRows",
+       "brandLicensingRows",
+       "builderIncentiveLiveList",
+       "builderIncentiveRows",
+       "caTaxLeverRows",
+       "caioList",
+       "calUpcomingList",
+       "checklistGroups",
+       "ciLogRows",
+       "communityRankRows",
+       "communityRankSource",
+       "coreStructureRows",
+       "councilHistory",
+       "councilOutside",
+       "cpiRows",
+       "cpiStatRow",
+       "deadlineRows",
+       "dealsFeedRows",
+       "defenseDisruptorRows",
+       "defenseUpdatesList",
+       "dividendRows",
+       "dmaicPhaseBar",
+       "dmaicPhaseLegend",
+       "dmaicRows",
+       "downtimeRows",
+       "dreamFeatureList",
+       "dreamPropertyRows",
+       "econodayLiveList",
+       "econodayRows",
+       "educationRows",
+       "elitCarRentalList",
+       "elitCardOffersRows",
+       "elitCreditBurnRows",
+       "elitExpiringList",
+       "elitHotelCasinoList",
+       "elitLocalDealsList",
+       "elitMilVetList",
+       "elitRiskAlertsList",
+       "elitScanLiveList",
+       "elitShoppingStackRows",
+       "elitStatusMatchRows",
+       "elitSubTrackerRows",
+       "elitTopActionsRows",
+       "elitTransferBonusList",
+       "eliteAffluentLiveList",
+       "eliteTaxStrategyRows",
+       "entityRows",
+       "eodList",
+       "estateRows",
+       "execExceptionList",
+       "execStatRow",
+       "feasibilityRows",
+       "fedBrowserRows",
+       "fedFootprintRows",
+       "fedGrade",
+       "fedLadderRows",
+       "fedLocality",
+       "fedStep",
+       "fedYears",
+       "feoStrategyRows",
+       "fersCompare",
+       "fersGrade",
+       "fersGsRows",
+       "fersLocality",
+       "fersRetGrade",
+       "fersRetLocality",
+       "fersRetStep",
+       "fersStep",
+       "fersTableLocality",
+       "fersVaRating",
+       "fersVaRows",
+       "foActionList",
+       "foPhaseAccordion",
+       "foReviewRows",
+       "freshRows",
+       "fubNewLeadRows",
+       "fubStageStats",
+       "funderDirectoryRows",
+       "grantPipelineRows",
+       "hacksAccordion",
+       "hcBody",
+       "healthMetricRows",
+       "hfMemoBody",
+       "hfMemoTags",
+       "hfReportsBody",
+       "hfSourcesBody",
+       "hfVerificationBody",
+       "hlChartWrap",
+       "hlCompare",
+       "hlDaily",
+       "hlFlags",
+       "hlMetric",
+       "hlRecords",
+       "hlStats",
+       "hlWorkouts",
+       "hvmAccordion",
+       "hvmRoadmapAccordion",
+       "improveRows",
+       "inboxRows",
+       "incentBody",
+       "incentFilters",
+       "incomeMixBar",
+       "incomeMixLegend",
+       "incomeStreamGroups",
+       "institutionRows",
+       "isaGradingRows",
+       "isaKpiSopRows",
+       "isaLineThread",
+       "isaPbBlocks",
+       "isaPbDays",
+       "isaPbToday",
+       "isaScRows",
+       "jamesChatThread",
+       "kaizenDoneCol",
+       "kaizenIdeaCol",
+       "kaizenProgressCol",
+       "kanbanBoard",
+       "kanbanOwnerFilter",
+       "kanbanWeek",
+       "kevinChatThread",
+       "kpiRows",
+       "lbList",
+       "lenderDirectoryRows",
+       "liabRiskBar",
+       "liabRiskLegend",
+       "liabilityRows",
+       "licenseRows",
+       "licenseTrackerRows",
+       "loanProgramGroups",
+       "loanUnitedNicheList",
+       "ltBody",
+       "ltStats",
+       "lumenRows",
+       "marketUpdateCards",
+       "marketUpdateLiveList_san-diego-ca",
+       "marketUpdateLiveList_temecula-ca",
+       "marketingRows",
+       "melloRoosRows",
+       "melloRoosSource",
+       "membershipAssocRows",
+       "membershipRows",
+       "milFamOfficeSteps",
+       "militaryDiscountRows",
+       "mktHonestyNote",
+       "mktMoversList",
+       "mktSectorList",
+       "mktTileRow",
+       "mortgageRateRows",
+       "myCardRows",
+       "namedDealsRows",
+       "namedTaxCaseRows",
+       "newsGlobalList",
+       "newsLocalCards",
+       "nextMovesDecisions",
+       "ningStateRows",
+       "notifList",
+       "nqGuideList",
+       "nutritionRows",
+       "onThisDayBirthdayList",
+       "onThisDayHistoryList",
+       "onboardGroups",
+       "openDecisionsList",
+       "oppRadarList",
+       "oppRadarLiveList",
+       "orMeter",
+       "orNote",
+       "orgChartTree",
+       "otBadges",
+       "otCmdList",
+       "otTape",
+       "pageCrumb",
+       "pageTabs",
+       "partnerRows",
+       "peMovesRows",
+       "pedefenseLiveList",
+       "peptideRows",
+       "pipelineRows",
+       "plaidBridgeStatus",
+       "planDecisions",
+       "prenupCaseRows",
+       "priorityActionsList",
+       "priorityList",
+       "programFactsRows",
+       "programStatusStrip",
+       "propertyRows",
+       "pstTaxContext",
+       "pstTaxQuickEstimate",
+       "ptoBridgeRows",
+       "ptoSummaryRows",
+       "ptoYearSelect",
+       "qetPaymentRows",
+       "quickTaskList",
+       "qvStrategyAccordion",
+       "reClientRows",
+       "recommendationsLog",
+       "recruitRows",
+       "recruitSummary",
+       "refLinkRows",
+       "refiRows",
+       "reminderList",
+       "reviewRows",
+       "riskRegisterRows",
+       "rosterRows",
+       "runnerRows",
+       "scheduleRows",
+       "secLabel",
+       "selfCheckResults",
+       "selfCheckStats",
+       "sellerCreditRows",
+       "shClients",
+       "shIntegrationRows",
+       "shShowings",
+       "shSyncRows",
+       "sixLeversSliders",
+       "sodList",
+       "sportsFranchiseRows",
+       "srStops",
+       "stackRows",
+       "steveChatThread",
+       "steveVoiceBar",
+       "steveVoiceDiag",
+       "stlBody",
+       "stlRows",
+       "strategyRows",
+       "strategyTipsList",
+       "stravaActivityRows",
+       "subsRows",
+       "subsTotals",
+       "sundayReviewList",
+       "supplementRows",
+       "swotGrid",
+       "taxBracketRows",
+       "taxCalendarRows",
+       "taxCategoryGroups",
+       "taxProjectorRows",
+       "tcRows",
+       "teamMatrixRows",
+       "techStackRows",
+       "tenAheadList",
+       "tkFabric",
+       "tkList",
+       "tkMcpList",
+       "tkTaskList",
+       "tkTiles",
+       "tkToolRows",
+       "tocList",
+       "todoGroups",
+       "topDividendRows",
+       "topEtfsRows",
+       "topFundsRows",
+       "topHeadlinesList",
+       "topPerformersLiveList",
+       "topStocksRows",
+       "trackedCalendarRows",
+       "tradingLoginRows",
+       "travelFilterCats",
+       "travelFilterOpts",
+       "travelLaRows",
+       "travelMenifeeRows",
+       "travelMurrietaRows",
+       "travelOcRows",
+       "travelPechangaRows",
+       "travelRiversideRows",
+       "travelSanDiegoRows",
+       "travelTemeculaRows",
+       "travelVegasRows",
+       "twinBriefBox",
+       "twinQueueRows",
+       "uwpGroups",
+       "vanessaChatThread",
+       "vanessaRecRows",
+       "vanessaResearchList",
+       "vanessaVoiceBar",
+       "vanessaVoiceDiag",
+       "vistaPeerRows",
+       "weatherCards",
+       "webinarRows",
+       "webinarTotals",
+       "wellnessMetricGroups",
+       "wheelSliders",
+       "workoutRows",
+       "worldClockBar",
+       "wxcity-ChicagoIL",
+       "wxcity-LasVegasNV",
+       "wxcity-LosAngelesCA",
+       "wxcity-NewBraunfelsTX",
+       "wxcity-SanDiegoCA",
+       "wxcity-TemeculaCA",
+       "wxcity-WashingtonDC",
+       "zhBoard",
+       "zhFilterGroups",
+       "zhNewStage"
+      ]
+     }
+    },
+    {
+     "case": "window.claude present, use() rejects",
+     "verdict": "Pass",
+     "durationMs": 1081,
+     "exceptions": [],
+     "safeRunFailures": [],
+     "honest": {
+      "lsUnavailableFlag": false,
+      "shapeMismatchReported": 0,
+      "consoleWarnings": 0,
+      "containers": 318,
+      "containersLost": []
+     }
+    },
+    {
+     "case": "localStorage.setItem throws (quota)",
+     "verdict": "Pass",
+     "durationMs": 1107,
+     "exceptions": [],
+     "safeRunFailures": [],
+     "honest": {
+      "lsUnavailableFlag": false,
+      "shapeMismatchReported": 0,
+      "consoleWarnings": 0,
+      "containers": 318,
+      "containersLost": []
+     }
+    },
+    {
+     "case": "localStorage.getItem throws (disabled)",
+     "verdict": "Pass",
+     "durationMs": 1019,
+     "exceptions": [],
+     "safeRunFailures": [],
+     "honest": {
+      "lsUnavailableFlag": true,
+      "shapeMismatchReported": 0,
+      "consoleWarnings": 0,
+      "containers": 318,
+      "containersLost": []
+     }
+    },
+    {
+     "case": "localStorage 100 KB quota (writes fail part-way)",
+     "verdict": "Pass",
+     "durationMs": 1097,
+     "exceptions": [],
+     "safeRunFailures": [],
+     "honest": {
+      "lsUnavailableFlag": false,
+      "shapeMismatchReported": 0,
+      "consoleWarnings": 0,
+      "containers": 318,
+      "containersLost": []
+     }
+    },
+    {
+     "case": "localStorage 5 MB quota + all 161 live docs",
+     "verdict": "Pass",
+     "durationMs": 1273,
+     "exceptions": [],
+     "safeRunFailures": [],
+     "honest": {
+      "lsUnavailableFlag": false,
+      "shapeMismatchReported": 0,
+      "consoleWarnings": 0,
+      "containers": 322,
+      "containersLost": []
+     }
+    },
+    {
+     "case": "cdStateSeed block removed",
+     "verdict": "Pass",
+     "durationMs": 1040,
+     "exceptions": [],
+     "safeRunFailures": [],
+     "honest": {
+      "lsUnavailableFlag": false,
+      "shapeMismatchReported": 0,
+      "consoleWarnings": 0,
+      "containers": 318,
+      "containersLost": []
+     }
+    }
+   ],
+   "concurrency": {
+    "db-connected": {
+     "applyRemoteSnapshotExposed": true,
+     "burstSize": 200,
+     "firstApplyMs": 10,
+     "replayApplyMs": 9,
+     "changedFirst": true,
+     "changedOnReplay": true,
+     "errors": [],
+     "keysAfterFirst": 163,
+     "keysAfterReplay": 163,
+     "keysThatChangedOnReplay": [],
+     "isaMessagesIn": 82,
+     "isaMessagesStored": 88,
+     "isaMessagesWithoutIdDropped": 2,
+     "isaIdsLost": [],
+     "isaOrderIndependent": true,
+     "reloadsRequested": 0,
+     "mode": "db-connected"
+    },
+    "local-only": {
+     "applyRemoteSnapshotExposed": true,
+     "burstSize": 200,
+     "firstApplyMs": 8,
+     "replayApplyMs": 8,
+     "changedFirst": true,
+     "changedOnReplay": true,
+     "errors": [],
+     "keysAfterFirst": 163,
+     "keysAfterReplay": 163,
+     "keysThatChangedOnReplay": [],
+     "isaMessagesIn": 82,
+     "isaMessagesStored": 48,
+     "isaMessagesWithoutIdDropped": 2,
+     "isaIdsLost": [
+      "conc-b-0",
+      "conc-b-1",
+      "conc-b-2",
+      "conc-b-3",
+      "conc-b-4",
+      "conc-b-5",
+      "conc-b-6",
+      "conc-b-7",
+      "conc-b-8",
+      "conc-b-9",
+      "conc-b-10",
+      "conc-b-11",
+      "conc-b-12",
+      "conc-b-13",
+      "conc-b-14",
+      "conc-b-15",
+      "conc-b-16",
+      "conc-b-17",
+      "conc-b-18",
+      "conc-b-19",
+      "conc-b-20",
+      "conc-b-21",
+      "conc-b-22",
+      "conc-b-23",
+      "conc-b-24",
+      "conc-b-25",
+      "conc-b-26",
+      "conc-b-27",
+      "conc-b-28",
+      "conc-b-29",
+      "conc-b-30",
+      "conc-b-31",
+      "conc-b-32",
+      "conc-b-33",
+      "conc-b-34",
+      "conc-b-35",
+      "conc-b-36",
+      "conc-b-37",
+      "conc-b-38",
+      "conc-b-39"
+     ],
+     "isaOrderIndependent": true,
+     "reloadsRequested": 0,
+     "mode": "local-only"
+    }
+   },
+   "restoreTest": {
+    "at": "2026-09-22T09:03:07.510Z",
+    "deck": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/tests/baseline-5fbe844.html",
+    "store": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/db/state",
+    "lsPrefix": "commandDeck.",
+    "docs": 161,
+    "docsRestored": 160,
+    "sizeBytes": 884081,
+    "parseFailures": [],
+    "missingV": [
+     "stravaSnapshot"
+    ],
+    "outputWatchDocs": 26,
+    "outputWatchDocsMissingFromExport": [
+     "revenueScan",
+     "healthCoaching"
+    ],
+    "containersRendered": 322,
+    "containersRenderedIds": [
+     "accountRows",
+     "advisorRows",
+     "affluentEmpireRows",
+     "ahGrid",
+     "aiModelRows",
+     "aiNewsList",
+     "aiOrgFlows",
+     "aiOrgTools",
+     "aiOrgTree",
+     "aiTeamRosterRows",
+     "aiToolingList",
+     "aiTrainingRows",
+     "allocBar",
+     "allocLegend",
+     "annualTodoAccordion",
+     "apexChatThread",
+     "apptRows",
+     "assetAllocBar",
+     "assetAllocLegend",
+     "assetItemRows",
+     "augustaRows",
+     "autoHealthBody",
+     "backupStatusBody",
+     "bearsDetail",
+     "bearsLiveNews",
+     "bearsStandingsRows",
+     "biohackRows",
+     "brandLicensingRows",
+     "builderIncentiveLiveList",
+     "builderIncentiveRows",
+     "caTaxLeverRows",
+     "caioList",
+     "calUpcomingList",
+     "checklistGroups",
+     "ciLogRows",
+     "communityRankRows",
+     "communityRankSource",
+     "coreStructureRows",
+     "councilHistory",
+     "councilOutside",
+     "cpiRows",
+     "cpiStatRow",
+     "deadlineRows",
+     "dealsFeedRows",
+     "defenseDisruptorRows",
+     "defenseUpdatesList",
+     "dividendRows",
+     "dmaicPhaseBar",
+     "dmaicPhaseLegend",
+     "dmaicRows",
+     "downtimeRows",
+     "dreamFeatureList",
+     "dreamPropertyRows",
+     "econodayLiveList",
+     "econodayRows",
+     "educationRows",
+     "elitCarRentalList",
+     "elitCardOffersRows",
+     "elitCreditBurnRows",
+     "elitExpiringList",
+     "elitHotelCasinoList",
+     "elitLocalDealsList",
+     "elitMilVetList",
+     "elitRiskAlertsList",
+     "elitScanLiveList",
+     "elitShoppingStackRows",
+     "elitStatusMatchRows",
+     "elitSubTrackerRows",
+     "elitTopActionsRows",
+     "elitTransferBonusList",
+     "eliteAffluentLiveList",
+     "eliteTaxStrategyRows",
+     "entityRows",
+     "eodList",
+     "estateRows",
+     "execExceptionList",
+     "execStatRow",
+     "feasibilityRows",
+     "fedBrowserRows",
+     "fedFootprintRows",
+     "fedGrade",
+     "fedLadderRows",
+     "fedLocality",
+     "fedStep",
+     "fedYears",
+     "feoStrategyRows",
+     "fersCompare",
+     "fersGrade",
+     "fersGsRows",
+     "fersLocality",
+     "fersRetGrade",
+     "fersRetLocality",
+     "fersRetStep",
+     "fersStep",
+     "fersTableLocality",
+     "fersVaRating",
+     "fersVaRows",
+     "foActionList",
+     "foPhaseAccordion",
+     "foReviewRows",
+     "freshRows",
+     "fubNewLeadRows",
+     "fubStageStats",
+     "funderDirectoryRows",
+     "grantPipelineRows",
+     "hacksAccordion",
+     "hcBody",
+     "healthMetricRows",
+     "hfMemoBody",
+     "hfMemoTags",
+     "hfReportsBody",
+     "hfReqStatus",
+     "hfSourcesBody",
+     "hfVerificationBody",
+     "hlChartWrap",
+     "hlCompare",
+     "hlDaily",
+     "hlFlags",
+     "hlMetric",
+     "hlRecords",
+     "hlStats",
+     "hlWorkouts",
+     "hvmAccordion",
+     "hvmRoadmapAccordion",
+     "improveRows",
+     "inboxRows",
+     "incentBody",
+     "incentFilters",
+     "incomeMixBar",
+     "incomeMixLegend",
+     "incomeStreamGroups",
+     "institutionRows",
+     "isaGradingRows",
+     "isaKpiSopRows",
+     "isaLineThread",
+     "isaPbBlocks",
+     "isaPbDays",
+     "isaPbToday",
+     "isaScRows",
+     "jamesChatThread",
+     "kaizenDoneCol",
+     "kaizenIdeaCol",
+     "kaizenProgressCol",
+     "kanbanBoard",
+     "kanbanOwnerFilter",
+     "kanbanWeek",
+     "kevinChatThread",
+     "kpiRows",
+     "lbList",
+     "lenderDirectoryRows",
+     "liabRiskBar",
+     "liabRiskLegend",
+     "liabilityRows",
+     "licenseRows",
+     "licenseTrackerRows",
+     "loanProgramGroups",
+     "loanUnitedNicheList",
+     "ltBody",
+     "ltStats",
+     "lumenRows",
+     "marketUpdateCards",
+     "marketUpdateLiveList_murrieta-ca",
+     "marketUpdateLiveList_san-diego-ca",
+     "marketUpdateLiveList_temecula-ca",
+     "marketingRows",
+     "melloRoosRows",
+     "melloRoosSource",
+     "membershipAssocRows",
+     "membershipRows",
+     "milFamOfficeSteps",
+     "militaryDiscountRows",
+     "mktHonestyNote",
+     "mktMoversList",
+     "mktSectorList",
+     "mktTileRow",
+     "mortgageRateRows",
+     "myCardRows",
+     "namedDealsRows",
+     "namedTaxCaseRows",
+     "newsGlobalList",
+     "newsLocalCards",
+     "newsLocalList_san-diego-ca",
+     "newsLocalList_temecula-ca",
+     "nextMovesDecisions",
+     "ningStateRows",
+     "notifList",
+     "nqGuideList",
+     "nutritionRows",
+     "onThisDayBirthdayList",
+     "onThisDayHistoryList",
+     "onboardGroups",
+     "openDecisionsList",
+     "oppRadarList",
+     "oppRadarLiveList",
+     "orMeter",
+     "orNote",
+     "orgChartTree",
+     "otBadges",
+     "otCmdList",
+     "otTape",
+     "pageCrumb",
+     "pageTabs",
+     "partnerRows",
+     "peMovesRows",
+     "pedefenseLiveList",
+     "peptideRows",
+     "pipelineRows",
+     "plaidBridgeStatus",
+     "planDecisions",
+     "prenupCaseRows",
+     "priorityActionsList",
+     "priorityList",
+     "programFactsRows",
+     "programStatusStrip",
+     "propertyRows",
+     "pstTaxContext",
+     "pstTaxQuickEstimate",
+     "ptoBridgeRows",
+     "ptoSummaryRows",
+     "ptoYearSelect",
+     "qetPaymentRows",
+     "quickTaskList",
+     "qvStrategyAccordion",
+     "reClientRows",
+     "recommendationsLog",
+     "recruitRows",
+     "recruitSummary",
+     "refLinkRows",
+     "refiRows",
+     "reminderList",
+     "reviewRows",
+     "riskRegisterRows",
+     "rosterRows",
+     "runnerRows",
+     "scheduleRows",
+     "secLabel",
+     "selfCheckResults",
+     "selfCheckStats",
+     "sellerCreditRows",
+     "shClients",
+     "shIntegrationRows",
+     "shShowings",
+     "shSyncRows",
+     "sixLeversSliders",
+     "sodList",
+     "sportsFranchiseRows",
+     "srStops",
+     "stackRows",
+     "steveChatThread",
+     "steveVoiceBar",
+     "steveVoiceDiag",
+     "stlBody",
+     "stlRows",
+     "strategyRows",
+     "strategyTipsList",
+     "stravaActivityRows",
+     "subsRows",
+     "subsTotals",
+     "sundayReviewList",
+     "supplementRows",
+     "swotGrid",
+     "taxBracketRows",
+     "taxCalendarRows",
+     "taxCategoryGroups",
+     "taxProjectorRows",
+     "tcRows",
+     "teamMatrixRows",
+     "techStackRows",
+     "tenAheadList",
+     "tkFabric",
+     "tkList",
+     "tkMcpList",
+     "tkTaskList",
+     "tkTiles",
+     "tkToolRows",
+     "tocList",
+     "todoGroups",
+     "topDividendRows",
+     "topEtfsRows",
+     "topFundsRows",
+     "topHeadlinesList",
+     "topPerformersLiveList",
+     "topStocksRows",
+     "trackedCalendarRows",
+     "tradingLoginRows",
+     "travelFilterCats",
+     "travelFilterOpts",
+     "travelLaRows",
+     "travelMenifeeRows",
+     "travelMurrietaRows",
+     "travelOcRows",
+     "travelPechangaRows",
+     "travelRiversideRows",
+     "travelSanDiegoRows",
+     "travelTemeculaRows",
+     "travelVegasRows",
+     "twinBriefBox",
+     "twinQueueRows",
+     "uwpGroups",
+     "vanessaChatThread",
+     "vanessaRecRows",
+     "vanessaResearchList",
+     "vanessaVoiceBar",
+     "vanessaVoiceDiag",
+     "vistaPeerRows",
+     "weatherCards",
+     "webinarRows",
+     "webinarTotals",
+     "wellnessMetricGroups",
+     "wheelSliders",
+     "workoutRows",
+     "worldClockBar",
+     "wxcity-ChicagoIL",
+     "wxcity-LasVegasNV",
+     "wxcity-LosAngelesCA",
+     "wxcity-NewBraunfelsTX",
+     "wxcity-SanDiegoCA",
+     "wxcity-TemeculaCA",
+     "wxcity-WashingtonDC",
+     "zhBoard",
+     "zhFilterGroups",
+     "zhNewStage"
+    ],
+    "containersLostVsSeedOnly": [],
+    "containersGainedVsSeedOnly": [
+     "hfReqStatus",
+     "marketUpdateLiveList_murrieta-ca",
+     "newsLocalList_san-diego-ca",
+     "newsLocalList_temecula-ca"
+    ],
+    "exceptions": [],
+    "safeRunFailures": [],
+    "shapeMismatch": [],
+    "durationMs": 1235,
+    "verdict": "PASS WITH EXCEPTIONS",
+    "notes": [
+     "1 document(s) carry no `v` wrapper (stravaSnapshot). applyRemoteSnapshot rejects any doc without `v` (`if (!data || typeof data !== \"object\" || !(\"v\" in data)) return;`), so these are UNRESTORABLE by the page's own sync path \u2014 restored count is 160 of 161.",
+     "2 OUTPUT_WATCH document(s) do not exist in the export at all: revenueScan, healthCoaching \u2014 the owning task has never written them, so a restore cannot bring them back.",
+     "restore is verified by execution, not by file count: the deck was run against the restored store and 322 container ids received innerHTML with 0 exceptions and 0 safeRun failures."
+    ]
+   },
+   "backupBundle": {
+    "dir": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/backup/2026-09-22",
+    "docCount": 161,
+    "fileCount": 162,
+    "totalBytes": 4941957,
+    "docBytes": 884081,
+    "missingV": [
+     "stravaSnapshot"
+    ],
+    "parseFailures": [],
+    "verifyFailures": [],
+    "manifest": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/backup/2026-09-22/manifest.json"
+   },
+   "drift": [
+    {
+     "label": "deck/command-deck.html (working tree)",
+     "sha256": "cc85ed1f4b9d180caa8d19c545eaaa422dd1b568260130610876cb7a7183648c",
+     "verdict": "Pass",
+     "completed": true,
+     "durationMs": 1055,
+     "containers": 325,
+     "containersVsBaseline": 7,
+     "exceptions": [],
+     "newSafeRunFailures": [],
+     "newMissingIds": [],
+     "shapeMismatch": []
+    },
+    {
+     "label": "wt-e1-daily/command-deck.html",
+     "sha256": "f85a73c2bffe0eb60adffee459ddf946174e537c15882e9a2b5a6fe895e5dc64",
+     "verdict": "Pass",
+     "completed": true,
+     "durationMs": 1122,
+     "containers": 318,
+     "containersVsBaseline": 0,
+     "exceptions": [],
+     "newSafeRunFailures": [],
+     "newMissingIds": [],
+     "shapeMismatch": []
+    },
+    {
+     "label": "wt-e2-markets/command-deck.html",
+     "sha256": "8f3afaa288a1d2bccd1d17e211c829b5130f35131f6eba7310524d962d32d824",
+     "verdict": "Pass",
+     "completed": true,
+     "durationMs": 1228,
+     "containers": 320,
+     "containersVsBaseline": 2,
+     "exceptions": [],
+     "newSafeRunFailures": [],
+     "newMissingIds": [],
+     "shapeMismatch": []
+    },
+    {
+     "label": "wt-e3-wealth/command-deck.html",
+     "sha256": "4cf3891cadf065c38018795b0f8298fae98138bff8a336252f7b1ccc379e5315",
+     "verdict": "Pass",
+     "completed": true,
+     "durationMs": 1146,
+     "containers": 318,
+     "containersVsBaseline": 0,
+     "exceptions": [],
+     "newSafeRunFailures": [],
+     "newMissingIds": [],
+     "shapeMismatch": []
+    },
+    {
+     "label": "wt-e4a-crm/command-deck.html",
+     "sha256": "2bd71451260017209f57b7c11b0e3b54d9f66f791104d0f07a7602714652badf",
+     "verdict": "Pass",
+     "completed": true,
+     "durationMs": 1053,
+     "containers": 322,
+     "containersVsBaseline": 4,
+     "exceptions": [],
+     "newSafeRunFailures": [],
+     "newMissingIds": [],
+     "shapeMismatch": []
+    },
+    {
+     "label": "wt-e4b-realestate/command-deck.html",
+     "sha256": "2d4b60a0b40e8f0c1b210c937bad958d05144e0a9a637a99ca2a5dcc6ae406ca",
+     "verdict": "Pass",
+     "completed": true,
+     "durationMs": 1161,
+     "containers": 319,
+     "containersVsBaseline": 1,
+     "exceptions": [],
+     "newSafeRunFailures": [],
+     "newMissingIds": [],
+     "shapeMismatch": []
+    },
+    {
+     "label": "wt-e5-life/command-deck.html",
+     "sha256": "c91460ff4de063897dead56577854b0f74b6dfe194089d29327c03e7a0cb1e2e",
+     "verdict": "Pass",
+     "completed": true,
+     "durationMs": 1104,
+     "containers": 319,
+     "containersVsBaseline": 1,
+     "exceptions": [],
+     "newSafeRunFailures": [],
+     "newMissingIds": [],
+     "shapeMismatch": []
+    },
+    {
+     "label": "wt-e6-aiteam/command-deck.html",
+     "sha256": "cabb1bafe36a6f2e9d52b7e81a4809a9496bd31d64dbd9d12526cc243e590361",
+     "verdict": "Pass",
+     "completed": true,
+     "durationMs": 1156,
+     "containers": 318,
+     "containersVsBaseline": 0,
+     "exceptions": [],
+     "newSafeRunFailures": [],
+     "newMissingIds": [],
+     "shapeMismatch": []
+    }
+   ]
+  }
+ }
+}

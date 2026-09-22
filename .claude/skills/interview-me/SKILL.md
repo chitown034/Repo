@@ -60,7 +60,7 @@ source: interview-me
 interviewedAt: <ISO 8601, America/Los_Angeles>
 sensitivity: public|internal|sensitive
 review: none|pending
-entities: [<slug>, …]
+entities: [<type>.<slug>, …]
 openQuestions: [<string>, …]
 ---
 ## Frame
@@ -70,18 +70,24 @@ openQuestions: [<string>, …]
 ## Failure modes
 ## Open questions
 ```
-**Entity stubs** — `knowledge-graph/entities/<type>/<slug>.md`, one per entity, using only the types
-and relationship verbs in `knowledge-graph/schema.md` (clients, lenders, partners, agents, tools):
-```markdown
----
-type: <entity type from schema.md>
-slug: <slug>
-firstSeen: <ISO date>
-sources: [60-Knowledge/<note file>]
----
-- <relationship verb> :: <target slug>   # one line per typed relationship
+**Entity stubs** — one file per entity in `knowledge-graph/entities/`, in the node shape defined by
+`knowledge-graph/schema.md`. Types and relations are a **closed vocabulary** — never invent one; if a
+type is missing, record it under `openQuestions` and leave the entity out:
+```yaml
+id: <type>.<slug>          # lowercase, stable — rename the label, never the id
+type: Person|Client|Org|Agent|Tool|Task|Doc|Program|Property|Topic|Decision
+label: <display name>
+sensitivity: public|internal|sensitive
+source: 60-Knowledge/<note file>
+asOf: <ISO date>
+props: {}                  # small scalars only — never a document body
+edges:
+  - {rel: <RELATION from schema.md>, to: <type>.<slug>, asOf: <ISO date>}
 ```
-**Deck log** — `interviewLog`, `{v:[{ts, topic, rounds, questionsAsked, notePath, entities:[slug],
+A node marked `sensitivity: sensitive` never reaches the graph build (schema rule 1) — it stays in
+the `_review/` note until the Sunday gate clears it.
+
+**Deck log** — `interviewLog`, `{v:[{ts, topic, rounds, questionsAsked, notePath, entities:[<type>.<slug>],
 sensitive:bool, heldForReview:bool, openQuestions:n}]}`, newest last, keep the most recent 200.
 
 ## Guardrails
