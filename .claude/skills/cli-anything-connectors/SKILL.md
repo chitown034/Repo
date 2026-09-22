@@ -1,6 +1,6 @@
 ---
 name: cli-anything-connectors
-description: "Install CLI-Anything on the Mac and generate agent-native CLI wrappers for the real-estate tools that have no usable API — homes.com, ShowingTime, Showami, SkySlope, zipForms/Lone Wolf — plus the Lofty and Zoho fallbacks. Read-only by construction, credentials in the keychain, ECC security review before anything is enabled. Use when Steven asks to connect homes.com / ShowingTime / Showami / SkySlope / zipForms / Lofty, or asks how to drive a site that has no API."
+description: "Install CLI-Anything on the Mac and the seven pre-built, read-only agent-native CLI wrappers for the real-estate tools that have no usable API — homes.com, ShowingTime, Showami, SkySlope, zipForms/Lone Wolf — plus the Lofty and Zoho REST harnesses; generation is still the path for any new target. Read-only by construction, credentials in the keychain, ECC security review before anything is enabled. Use when Steven asks to connect homes.com / ShowingTime / Showami / SkySlope / zipForms / Lofty, or asks how to drive a site that has no API."
 ---
 
 # cli-anything-connectors — wrappers for the tools with no API
@@ -14,16 +14,21 @@ is on Steven's Mac:**
 
 - `cli-anything-hub` **0.4.1** installs clean from PyPI. Commands: `can · info · install · launch ·
   list · matrix · previews · search · uninstall · update`.
-- `pip install .` in `browser/agent-harness/` builds **`cli-anything-browser`**, the wrapper all five
-  web targets use. Prerequisites: Node/npx, Chrome running, the DOMShell extension installed.
-- The repo holds **83 wrapper directories and not one** for real estate, a CRM, Lofty, ShowingTime,
-  Showami, zipForms, SkySlope or homes.com. `cli-hub search` can't confirm that from the sandbox —
-  every registry lookup goes to `clianything.cc`, which is egress-blocked — but the cloned repo *is*
-  the registry source. **Every wrapper Steven needs is generated on his Mac. None is downloadable.**
-- **No committed credential** anywhere in the repo. `SECURITY.md` names prompt-injected agents as a
-  threat model, which is the right instinct for a tool that reads attacker-controlled DOM.
+- **`cli-anything-browser` is not on PyPI** (F-H1-02). It is **vendored into this repo** at
+  `integrations/cli-anything-harnesses/browser/agent-harness/` (Apache-2.0, unmodified, provenance in
+  its `VENDORED.md`) and installed from there; the upstream CLI-Anything checkout stays only for the
+  hub and the Claude Code plugin. It is the layer all five web targets run on. Prerequisites:
+  Node/npx, Chrome running, the DOMShell extension installed, `DOMSHELL_TOKEN` exported.
+- The upstream registry holds **83 wrapper directories and not one** for real estate, a CRM, Lofty,
+  ShowingTime, Showami, zipForms, SkySlope or homes.com, and every registry lookup goes to
+  `clianything.cc`, which is egress-blocked — so **nothing Steven needs is downloadable**. It no
+  longer has to be generated either: **seven read-only harness packages are pre-built in this repo**
+  (table below), built and unit-tested offline 2026-09-22. `/cli-anything` is for a *new* target.
+- **No committed credential** anywhere in the repo, and none in the seven packages — their fixtures
+  are synthetic (F-H2b-11). `SECURITY.md` names prompt-injected agents as a threat model, which is
+  the right instinct for a tool that reads attacker-controlled DOM.
 
-## Install — scriptable. Only generation is interactive.
+## Install — scriptable end to end. The seven targets are no longer generated.
 
 The install half needs nobody. Verified non-interactive, exit 0, 2026-09-22:
 ```
@@ -31,19 +36,27 @@ export CLI_HUB_NO_ANALYTICS=1                        # FIRST. See "Two security 
 pip install cli-anything-hub                         # 0.4.1
 claude plugin marketplace add HKUDS/CLI-Anything     # → "Successfully added marketplace: cli-anything"
 claude plugin install cli-anything@cli-anything      # → "Successfully installed plugin (scope: user)"
-pip install .                                        # in browser/agent-harness/ → cli-anything-browser
-cli-hub list && cli-anything-browser --help          # self-test: both exit 0
+./MAC-SETUP.sh --only cli-anything-harnesses         # the eight vendored harnesses; one uv command, browser FIRST:
+#   uv pip install --python ~/Applications/cli-anything-harnesses/.venv/bin/python \
+#     integrations/cli-anything-harnesses/{browser,homes,showingtime,showami,skyslope,zipforms,lofty,zoho}/agent-harness
+#   → console scripts symlinked into ~/.local/bin
+cli-hub list && cli-anything-homes --help            # self-test: both exit 0
 ```
+Browser **first, in the same command**: the five web packages pin `cli-anything-browser>=1.0.0` and
+import it at module level, so resolving them separately sends uv to PyPI for a package that is not
+there, and a venv without it fails at `--help` rather than at call time (F-H1-02, F-H2b-03).
 All of that belongs in `MAC-SETUP.sh` as an ordinary step. **Do not write that it must be run by
 hand** — the claim that `/plugin` is interactive is wrong and it is what kept this manual.
 
 What actually needs Steven, in order: **(1)** `./MAC-SETUP.sh`; **(2)** Chrome plus the DOMShell
-extension, and signing in to the target — unavoidable; **(3)** `/cli-anything` per target, homes.com
-first — interactive, one per site, because generation needs the app open in front of it;
-**(4)** `:validate` and `:test` on each, then the read-only allow-list.
+extension, and signing in to the target by hand — unavoidable; **(3)** `--discover` once per recipe
+and an edit of his own `paths.json` copy until the values match the screen — **required**, because
+every path map ships `verified: false` and no site has ever been reached (F-H1-01); **(4)** the
+read-only allow-list, plus the ECC sign-off date before SkySlope or zipForms runs at all.
 
 The plugin ships exactly five commands: `/cli-anything` (generate) · `/cli-anything:list` ·
-`:refine <path> "<focus>"` · `:test <path>` · `:validate <path>`.
+`:refine <path> "<focus>"` · `:test <path>` · `:validate <path>`. **That is the path for a NEW
+target** — interactive, one per site, the app open in front of it. None of the seven below needs it.
 Always pass `--json` — agents parse, they don't read.
 
 ### Two security facts that belong in the runbook, not a footnote
@@ -54,6 +67,10 @@ Always pass `--json` — agents parse, they don't read.
   command**, set in the runner's shell profile, not typed once.
 - **DOMShell is a third-party Chrome extension with page-content access**, driving a Chrome already
   logged into Lofty, SkySlope and zipForms. That is a deliberate risk to accept, not a detail.
+  `DOMSHELL_TOKEN` is a credential: exported in the harness's shell, never read or written by a
+  script. Set **`CLI_ANYTHING_BROWSER_BLOCK_PRIVATE=true`** in the same env — the vendored engine's
+  SSRF blocking is off by default and read at import time (F-P1-05). The engine itself *does* carry
+  `act click`/`act type`; the seven site harnesses do not.
 
 ## The control: read-only is an allow-list, not a promise
 
@@ -71,31 +88,41 @@ So every disabled verb below — every showing request, every Showami booking, e
 an `act click`/`act type` underneath. **Denying `act` denies all of them at once.** Put that in the
 task's Bash allow-list as literal permitted argv prefixes; do not ask a wrapper to behave.
 
-## The six targets, in the order they get built
+## The seven targets, in the order they are brought up
 
+All seven are **already built**: `integrations/cli-anything-harnesses/<target>/agent-harness/`,
+installed with `pip install .`, unit-tested offline 2026-09-22, **never run live** (F-H2b-13).
 homes.com first (public data, lowest blast radius — it proves the toolchain). Then ShowingTime and
 Showami, read-only. **Stop before SkySlope and zipForms**: they touch legally binding documents and
-are gated on the ECC security review, which is Steven's decision, not a task. Lofty is not a
-CLI-Anything target at all.
+are gated on the ECC security review, which is Steven's decision, not a task — and both harnesses
+enforce that gate themselves, refusing every live command with exit 3 until
+`CLI_ANYTHING_ECC_REVIEWED_AT` holds a real, past-or-today sign-off date.
 
-> **Lofty — do not build the browser path.** Lofty has a documented REST API
+> **Lofty — still not a browser target.** Lofty has a documented REST API
 > (`api.lofty.com/v1.0`, `Authorization: token <key>`), and `lofty-bridge` MCP + `lofty-cli` are
 > already installed and connected on the Mac. A browser wrapper would be strictly worse: more
-> fragile, breaks on any UI change, and needs a logged-in session instead of a key. The blocker is
-> not tooling — it is that `LOFTY_API_KEY` is not yet in `~/.config/lofty/.env`, so no pull has ever
-> succeeded. **The API stays the recommendation.** A CLI-Anything wrapper is a fallback *only* for
-> something the API is demonstrably shown not to expose, and nothing is known to be missing yet.
+> fragile, breaks on any UI change, and needs a logged-in session instead of a key — so none was
+> built. `cli-anything-lofty` is the CLI-Anything-shaped front to that **same** API and the same key
+> file, GET-only by construction: not a second credential location and not a second source of truth.
+> **`lofty-bridge` stays the primary path and the API stays the recommendation.** The blocker is not
+> tooling — it is that `LOFTY_API_KEY` is not yet in `~/.config/lofty/.env`, so no pull has ever
+> succeeded through any path.
 
-### What each wrapper reads (the only verbs that get built)
+### What each wrapper reads (the only verbs that exist)
 
-| Target | Mode | Read recipes over `fs`/`page`, all `--json` |
-|---|---|---|
-| **homes.com** | DOMShell | `search-listings`, `saved-searches`, `listing-detail` |
-| **ShowingTime** | DOMShell | `todays-showings`, `showing-status`, `feedback-inbox`, `my-listing-activity` |
-| **Showami** | DOMShell | `my-requests`, `request-status`, `assistant-feedback`, `posted-price` |
-| **SkySlope** | DOMShell | `transactions`, `transaction-detail`, `document-index`, `checklist-status` |
-| **zipForms / Lone Wolf** | DOMShell | `form-index`, `form-detail`, `packet-index` |
-| **Lofty** | REST via `lofty-bridge` MCP (read-only) | leads list, lead get, stage totals, activity timeline |
+| Target | Package → console script | Mode | Read recipes, all `--json` |
+|---|---|---|---|
+| **homes.com** | `homes/` → `cli-anything-homes` | DOMShell | `search-listings`, `saved-searches`, `listing-detail` |
+| **ShowingTime** | `showingtime/` → `cli-anything-showingtime` | DOMShell | `todays-showings`, `showing-status`, `feedback-inbox`, `my-listing-activity` |
+| **Showami** | `showami/` → `cli-anything-showami` | DOMShell | `my-requests`, `request-status`, `assistant-feedback`, `posted-price` |
+| **SkySlope** | `skyslope/` → `cli-anything-skyslope` | DOMShell, **ECC-gated** | `transactions`, `transaction-detail`, `document-index`, `checklist-status` |
+| **zipForms / Lone Wolf** | `zipforms/` → `cli-anything-zipforms` | DOMShell, **ECC-gated** | `form-index`, `form-detail`, `packet-index` |
+| **Lofty** | `lofty/` → `cli-anything-lofty` | REST GET-only (`lofty-bridge` stays primary) | `me`, `leads list`, `leads get`, `leads stage-totals`, `leads timeline` |
+| **Zoho CRM** | `zoho/` → `cli-anything-zoho` | REST GET-only (v8) | `selftest`, `leads list`/`get`, `deals list`/`get`, `fields MODULE` |
+
+Zoho answers every CRM call with **403 `NO_PERMISSION` / `Crm_Implied_Api_Access`** until the
+profile toggle is set; the harness maps exactly that case to exit 4 with the verbatim click path and
+never retries into it (F-H2b-02). That is a Zoho-side account change — HALT, Steven's only.
 
 `document-index` lists documents; it does **not** download them. A download lands client PII on
 disk — allowed only into a path Steven names, never into the vector index or the knowledge graph.
@@ -161,13 +188,18 @@ target**, and on the browser path each is an `act` call, so all are denied by th
 - **MFA/SSO is a HALT, not a puzzle.** ShowingTime is MLS-SSO'd in many markets (CRMLS included).
 
 ## Validation each wrapper passes before it is trusted
-1. `cli-anything-<name> --help` exits 0, **and `act` appears nowhere in its help output** — read-only
-   means the verb is absent from the built harness, not switched off in config.
+1. `cli-anything-<name> --help` exits 0, **and no `act` verb exists** — read-only means the verb is
+   absent from the built harness, not switched off in config. Check it with a **word match**:
+   `cli-anything-<name> --help | grep -qw act && fail`. A substring check false-positives and
+   already has: `my-listing-activity`, `redact`, `contact`, `interactive` and `exact` all contain
+   it (F-H1-04).
 2. A named read recipe returns parseable JSON with ≥1 row, or an explicit empty-result object.
 3. Logged out, it returns an explicit auth error and **never** a partial or cached result as if live.
 4. Spot-check: its numbers match the UI. Silent scrape drift is the failure that poisons decisions.
-5. `/cli-anything:validate` and `/cli-anything:test` both pass. A harness that fails its own suite is
-   not enabled.
+5. For a **generated** wrapper, `/cli-anything:validate` and `/cli-anything:test` both pass. The
+   seven pre-built packages were written by hand, not generated, so their equivalent is each one's
+   own pytest suite under `cli_anything/<target>/tests` (per-environment counts in its `TEST.md`).
+   A harness that fails its own suite is not enabled.
 6. No credential, session cookie or full client record appears in `cliAnythingLog`.
 7. **ECC security review** (Elena's lens) before enabling: what it can reach, what it stores, what a
    prompt-injected page could make it do. Browser harnesses read attacker-controlled DOM — treat
@@ -181,9 +213,17 @@ wrappers:[{name, target, mode:"domshell"|"api", status:"planned"|"generated"|"te
 string|null, lastCheckedAt:string|null, eccReviewedAt:string|null, error:string|null,
 action:string|null}], note}}`. A wrapper that has never run is `"planned"` / `"not-installed"`.
 Never `"enabled"` or `"read-only-live"` without a real `lastRun`; never either for SkySlope or
-zipForms without an `eccReviewedAt` date. The Command Deck's Showings panel renders this document
-and **clamps** anything it claims but does not evidence, so an over-optimistic write is visibly held
-back rather than believed.
+zipForms without an `eccReviewedAt` date; `readOnly:false` is an error, not a state. The Command
+Deck's Showings panel renders this document and **clamps** all three, so an over-optimistic write is
+visibly held back rather than believed. It also tests every `verbsEnabled` string against a
+write-verb pattern and turns the whole card red on one match — so list verb **groups**, never recipe
+names (Showami's `my-requests`, `request-status` and `posted-price` all match it; F-P2-15).
+
+**Only a task running on the Mac may write this document, and it has never been written.** With no
+document the card says "nothing has ever checked any of these on your Mac", which is true; any
+document carrying a `checkedAt` makes the card claim this Mac was inspected at that time, which no
+cloud session can make true. The shape, field by field, is `docs/data/cliAnythingStatus.doc.json`
+(a template, not a payload); the paste-ready task that fills it is `routines/mac-task-repairs.md` §9.
 
 ## Guardrails
 - **Read-only first.** No write, submit, send, sign or delete verb on any target without Steven's
@@ -215,7 +255,9 @@ has no equivalent of the `act` allow-list, so the read-only guarantee would have
 scratch. A CTO-Innovator proposal, not a shipped path — do not describe it as connected.
 
 ## The one line Steven has to do
-**Run `./MAC-SETUP.sh` on the Mac — hub, plugin and browser harness install themselves. Then install
-the DOMShell Chrome extension, sign in to homes.com, and in Claude Code say "generate the homes.com
-wrapper". Generation is the only interactive step, and it is one per site. Nothing can be installed
-on the Mac from a cloud session.**
+**Run `./MAC-SETUP.sh` on the Mac — hub, plugin, the vendored `cli-anything-browser` and all seven
+harness packages install themselves (`--only cli-anything-harnesses` for just the eight). Then install the DOMShell Chrome extension, sign in to
+homes.com by hand, and run `cli-anything-homes --json recipe search-listings --discover --text`,
+editing `~/.config/cli-anything/homes-paths.json` until the rows match the screen. Nothing is
+generated — the wrappers are built; the path maps are the work. Nothing can be installed on the Mac
+from a cloud session.**

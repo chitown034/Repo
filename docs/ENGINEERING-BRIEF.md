@@ -48,6 +48,10 @@ CLI-ANYTHING (HKUDS/CLI-Anything, Apache-2.0): `pip install cli-anything-hub`; `
   `cli-anything-<software>` with `--json`; web apps without APIs go through its DOMShell MCP / Playwright path. Hub has no CRM or
   real-estate entries (README checked 2026-09-22; clianything.cc is egress-blocked from this sandbox). Steven wants connections for
   homes.com, SkySlope, zipForms (Lone Wolf), Zoho and Lofty through it — spec + install prompt; nothing can be installed on the Mac from here.
+  SUPERSEDED 2026-09-22 (F-H1-10): the spec is written AND seven read-only harness packages are pre-built in
+  integrations/cli-anything-harnesses/ — homes, showingtime, showami, skyslope, zipforms, lofty, zoho — installed with `pip install .`.
+  Generation (/cli-anything) is now only for a NEW target. cli-anything-browser is not on PyPI and is vendored in this repo (F-H1-02).
+  No path map is verified and no harness has ever made a live call (F-H1-01, F-H2b-13).
 APPLE HEALTH: existing pipeline Health Auto Export → ingest daemon (LaunchAgent :8765) → DuckDB → apple-health MCP. The daemon is NOT
   responding; `appleHealth` doc last real ingest 2026-09-13 (9 days stale); r8-apple-health-snapshot runs and writes nothing.
   Steven wants the Substack recipe (Jenna Redfield, "I Built an Automated Health Dashboard in Claude (Apple Health Sync) Using Notion Data",

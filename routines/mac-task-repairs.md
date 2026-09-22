@@ -21,6 +21,7 @@ Work top to bottom. Item 1 has a deadline.
 | 6 | `isaLadder.updatedAt` stamps the future | **Paste** one line | Low |
 | 7 | Nine failing cloud routines | **Read** — one root cause, not nine | This week |
 | 8 | Old Pipeline Sync still lying | **Click** disable | Low, but it never stops on its own |
+| 9 | Connector card has never been told anything | **Paste** a prompt (new Mac task `cli-anything-status`) | After the installer runs |
 
 ---
 
@@ -616,6 +617,100 @@ working.
 
 A green row for work that is not being done is worse than no row at all, and this one is the reason
 the register cannot use routine status as evidence anywhere.
+
+---
+
+## 9. `cli-anything-status` — the connector card has never been told anything, and only the Mac may tell it
+
+**Added 2026-09-22 by P2.** This is a NEW task, not a repair of an existing one, and it is the only
+thing that may ever write the `cliAnythingStatus` document.
+
+### What is happening now, and why it is correct
+
+The Command Deck's CLI-Anything connector card reads a document called `cliAnythingStatus`. **That
+document has never been written.** With no document the card says:
+
+> "No cliAnythingStatus document has ever been written, so nothing has ever checked any of these on
+> your Mac."
+
+That sentence is **true**, and it must stay true until something really looks at the Mac. The moment
+any document exists carrying a `checkedAt`, the same card instead says *"The cliAnythingStatus
+document says CLI-Anything is NOT installed (checked &lt;time&gt;)"* — which asserts that something
+inspected Steven's machine at that time. **No cloud session can make that true**, so no cloud
+session may write this document. The honest state today: CLI-Anything was installed and exercised
+**once in a throwaway cloud sandbox on 2026-09-22**, which proves the toolchain and changes nothing
+on Steven's machine; the seven read-only harness packages are pre-built in the repo and have never
+run on the Mac or anywhere live.
+
+The document's exact shape, field by field, with the page's three clamps and its write-verb
+tripwire, is in **`docs/data/cliAnythingStatus.doc.json`** — a template, not a payload. Field names
+there were read out of the renderer, not out of prose.
+
+### The task
+
+| | |
+|---|---|
+| **Name** | `cli-anything-status` |
+| **Cron (PT)** | none at first — run it by hand after `./MAC-SETUP.sh`. Once it has run clean twice, Sundays `35 8 * * 0` PT (`35 15 * * 0` UTC), just behind `cli-anything-validate` |
+| **Model** | Sonnet 5 (it inspects and reports; it decides nothing) |
+| **Tools** | `Bash` (read-only argv prefixes only) · `Artifact` `write_db` for `cliAnythingStatus` |
+| **Env** | `CLI_HUB_NO_ANALYTICS=1`, and `DOMSHELL_TOKEN` only if a live read is in scope |
+
+### The prompt — paste this as the task's prompt on the Mac
+
+> You are on Steven's Mac. Inspect what is actually installed for CLI-Anything and write the
+> `cliAnythingStatus` document from what you find. **Never write a value you did not observe this
+> run**, and never write this document from anywhere but this Mac: the deck's card turns your
+> `checkedAt` into the sentence "checked &lt;time&gt;", which claims this machine was inspected.
+> If you cannot inspect it, write nothing and say so.
+>
+> Read `docs/data/cliAnythingStatus.doc.json` in the repo for the exact shape and the page's clamps.
+> Establish each value by looking:
+> - `cli-hub --version` → `hubVersion` (null if the command is missing).
+> - `claude plugin list` → is `cli-anything` present.
+> - `ls ~/Applications/cli-anything-harnesses/.venv/bin/cli-anything-*` and `command -v
+>   cli-anything-<target>` → which of the eight (browser engine + homes, showingtime, showami,
+>   skyslope, zipforms, lofty, zoho) exist.
+> - `installed: true` only if the hub, the plugin **and** the harness venv are all present. Anything
+>   less is `false`.
+> - Per wrapper, `cli-anything-<target> --help` → the verb groups it really exposes. **`verbsEnabled`
+>   must come from that help output, never from a default, never from this prompt.**
+> - `cli-anything-<target> --json recipes` → which path maps are `verified` (all ship `verified:
+>   false`; a map is only true after a human spot-check against the page).
+> - `cli-anything-skyslope --json gate status` and the same for zipforms → `eccReviewedAt`. Copy the
+>   date the gate reports from `CLI_ANYTHING_ECC_REVIEWED_AT`; **never type a date to make a row go
+>   green.** No date means `connState: "disabled-by-policy"`, which is what those two must say.
+> - `lastRun` is an ISO-8601 stamp of a **real** recipe run that returned rows or an explicit empty
+>   result. If nothing has run, it is `null`. `connState: "read-only-live"` without a `lastRun` is
+>   clamped by the page anyway — do not claim it.
+>
+> **The read-only check is a WORD match.** `cli-anything-<target> --help | grep -qw act` must find
+> nothing. Do not use a substring match: `my-listing-activity`, `redact`, `contact`, `interactive`
+> and `exact` all contain "act" and a substring check has already produced a false failure (F-H1-04).
+> If a real `act` verb ever appears, stop, write `status:"failed"` with the evidence, and escalate —
+> that is the entire write surface of the browser path.
+>
+> **Do not put a recipe name in `verbsEnabled`.** The card tests every entry against a write-verb
+> pattern and one match turns the whole card red; Showami's read recipes `my-requests`,
+> `request-status` and `posted-price` all match it. List verb groups — `recipe`, `fs ls`, `fs cat`,
+> `fs grep`, `fs pwd`, `page info`, `page open`, `session status` — at most 8; the card shows the
+> recipe names itself.
+>
+> Write the document as `{v: {...}}` — the whole document under a single `v` key, never the bare
+> value. Read it first (`read_db` get; missing means write a fresh one). Then tell me in one line:
+> what is installed, which maps are verified, and what is still `null` and why.
+>
+> Do not install anything, do not sign in to anything, do not run a write, submit, send, sign or
+> delete verb on any target, and do not touch SkySlope or zipForms beyond `gate status` until the
+> ECC review has a sign-off date.
+
+### The check Steven runs afterwards
+
+Open the deck's CLI-Anything connector card. Before this task has ever run it must say *"No
+cliAnythingStatus document has ever been written"*. After a clean run it must say *"CLI-Anything is
+NOT installed (checked …)"* with a time that matches when you ran it — and if the card is **red**
+with "WRITE VERB ENABLED", the document put a recipe name or a real write verb in `verbsEnabled`:
+read the row it names, do not clear the alarm by editing the document until you know which.
 
 ---
 

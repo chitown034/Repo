@@ -1,0 +1,146 @@
+[
+  {
+    "id": "F-P2-01",
+    "severity": "P2",
+    "area": ".claude/skills/cli-anything-connectors/SKILL.md",
+    "finding": "The connector skill still told every agent and Steven that each wrapper is generated interactively on the Mac with /cli-anything, one per site — 'Generation is the only interactive step, and it is one per site' — and that 'Every wrapper Steven needs is generated on his Mac.' Seven read-only harness packages are pre-built in the repo and install with `pip install .`, so anyone following the skill would have done work that was already done, and would have skipped the step that actually matters (the per-recipe --discover-and-edit pass).",
+    "evidence": "SKILL.md lines 22, 42-43 and 217-221 before this pass; packages at integrations/cli-anything-harnesses/{homes,showingtime,showami,skyslope,zipforms,lofty,zoho}/agent-harness/ with console scripts cli-anything-<target>. F-H1-10 recorded the same staleness and left it to this file's owner.",
+    "fix": "FIXED. Re-scoped generation to new targets only ('The plugin ships exactly five commands … That is the path for a NEW target … None of the seven below needs it'), replaced the install block with the vendored-browser build plus one uv pip install of the seven packages, rewrote 'The one line Steven has to do' around --discover and the path map, and rewrote the targets section as 'The seven targets'. The methodology is re-scoped, not deleted.",
+    "halt": false
+  },
+  {
+    "id": "F-P2-02",
+    "severity": "P2",
+    "area": "integrations/CONNECTIONS.md row 16 (CLI-Anything)",
+    "finding": "Row 16's action cell ended '…then say \"generate the homes.com wrapper\" — generation is the only interactive step.' Its title also named only three of the targets (homes.com, SkySlope, zipForms) and the row claimed nothing about the unverified path maps, so the one file that is supposed to say what a run proved implied a generation step that no longer exists and omitted the constraint that nothing has ever been verified.",
+    "evidence": "CONNECTIONS.md line 16 before this pass. Counter-evidence: 18 recipes across five paths.json files, every 'verified' flag false (F-H2b-10); no live call from any of the seven (F-H2b-13).",
+    "fix": "FIXED. Row 16 rewritten: seven pre-built packages, `pip install .`, the vendored (not-PyPI) cli-anything-browser, 'Nothing is verified: all 18 browser recipes ship verified:false … not one of the seven has ever made a live call', the SkySlope/zipForms exit-3 ECC gate, and an action that ends in --discover + paths.json rather than generation. Column count unchanged (6 pipes).",
+    "halt": false
+  },
+  {
+    "id": "F-P2-03",
+    "severity": "P2",
+    "area": "integrations/mac-task-specs.md §4 (cli-anything-install)",
+    "finding": "§4 drew the manual boundary at generation ('The only genuinely interactive part is generation'), listed '/cli-anything per target, homes.com first' as Steven's step 3, and both paste-ready prompts told the Mac session to generate wrappers and then run /cli-anything:validate and :test on them. Following that prompt on the Mac today would try to regenerate seven packages that already exist and would never reach the path-map work.",
+    "evidence": "mac-task-specs.md lines 203-319 before this pass (heading, Cron/Tools rows, 'Correction, 2026-09-22', the build-order table, both prompts, the cli-anything-validate follow-on and the closing 'honest deck line').",
+    "fix": "FIXED. Added 'Correction 2 — generation is no longer needed for these targets (F-H1-10)' and a 'What replaces generation is the path map' paragraph; Steven's step 3 is now --discover + paths.json; both prompts rewritten to install-and-discover with an explicit 'Do not generate anything'; Lofty and Zoho rows added to the bring-up table; the weekly cli-anything-validate task now re-runs each package's own pytest suite (with /cli-anything:validate reserved for generated wrappers); the closing honest deck line now matches docs/data/cliAnythingStatus.doc.json.",
+    "halt": false
+  },
+  {
+    "id": "F-P2-04",
+    "severity": "P2",
+    "area": "MAC-SETUP.sh line 581 (was 573) cli-anything step — NOT EDITED, another engineer holds the file",
+    "finding": "The installer's NEEDS-STEVEN text still says 'Generation is the only interactive step: run /cli-anything for homes.com FIRST, then ShowingTime and Showami read-only.' It is the single most-read instruction in the repo — Steven is told to run ./MAC-SETUP.sh first — and it sends him to a generator for wrappers that already exist. Line 582 also frames the act refusal as applying to 'a generated harness'. While this pass ran, P1 added a whole cli-anything-harnesses step (lines 585-665) that installs the eight vendored harnesses correctly; the two stale sentences in the older cli-anything step above it were not touched and now contradict the step directly beneath them.",
+    "evidence": "MAC-SETUP.sh:581 and :582, read 2026-09-22 23:30 UTC after P1's edit. The new step at 585-665 installs browser+seven into ~/Applications/cli-anything-harnesses/.venv in one uv command, browser first, and symlinks the console scripts into $BINDIR — so by line 585 the generation instruction at 581 is already false in the same file.",
+    "fix": "REPORTED, NOT APPLIED (file off-limits this pass). Two line replacements only — P1's new step needs no change. Line 581 →   needs_steven \"Put 'export CLI_HUB_NO_ANALYTICS=1' in your shell profile AND in the cli-anything runner task's env — this script only covers its own run. Then install the DOMShell Chrome extension and sign in to the target BY HAND — the harnesses cannot sign in, and MFA/SSO is a HALT. Nothing needs generating: the seven read-only packages in integrations/cli-anything-harnesses/ are pre-built and this script installs them; /cli-anything is only for a target we do not have (F-H1-10). Your work is the path maps: run 'cli-anything-homes --json recipe <name> --discover --text' once per recipe, edit ~/.config/cli-anything/homes-paths.json until the values match the screen, then ShowingTime and Showami the same way — all 18 browser recipes ship verified:false and no site has ever been reached (F-H1-01). SkySlope and zipForms refuse every live command, exit 3, until CLI_ANYTHING_ECC_REVIEWED_AT holds the ECC security review's sign-off date (F-S1-10).\" ; line 582 →   say \"      REFUSED here: any 'act click' / 'act type' verb — that is the entire write surface, and no harness has one. Check it with a WORD match: cli-anything-<target> --help | grep -qw act (a substring match false-trips on my-listing-activity, redact, contact, interactive, exact — F-H1-04)\"",
+    "halt": false
+  },
+  {
+    "id": "F-P2-05",
+    "severity": "P2",
+    "area": "Substring `act` checks in the two files P2 owns (F-H1-04)",
+    "finding": "Two documented checks for the absence of the `act` verb were substring checks. SKILL.md validation item 1 said '`act` appears nowhere in its help output'; the mac-task-specs prompt for the showing wrappers told the Mac session to 'check that `act` appears nowhere in --help output and treat its presence as a failed build'. ShowingTime's own recipe `my-listing-activity` contains the substring, so that check reports a failed build on a harness that is correct — it has already produced that false positive.",
+    "evidence": "`cli-anything-showingtime recipe --help` lists my-listing-activity; grep -c act on that output is 1, grep -cw act is 0 (F-H1-04). Each package asserts the token-level guarantee itself in test_act_absent_from_every_help_page.",
+    "fix": "FIXED in both: validation item 1 now reads 'Check it with a word match: cli-anything-<name> --help | grep -qw act && fail' and names the five false-positive words; the showing-wrapper prompt now uses grep -qw act and says a substring match is wrong here. See F-P2-06 and F-P2-07 for the copies P2 may not edit.",
+    "halt": false
+  },
+  {
+    "id": "F-P2-06",
+    "severity": "P3",
+    "area": "integrations/cli-anything-harnesses/{homes,showingtime,showami}/… — NOT EDITED, off-limits",
+    "finding": "Six lines inside the three browser packages still state the check as a substring one: HOMES.md:137, SHOWINGTIME.md:148 and SHOWAMI.md:147 ('`cli-anything-<x> --help` exits 0 and `act` appears nowhere'), and each package README line 28 ('# exits 0; the word \"act\" appears nowhere'). The packages' own tests are token-level and correct; only the prose invites a shell-side substring check. The zipForms, SkySlope, Lofty and Zoho TEST.md files already say grep -w and explain why.",
+    "evidence": "grep over the harness tree, 2026-09-22. showingtime README line 28 is the one most likely to be pasted verbatim, and that package is the one whose recipe name trips the check.",
+    "fix": "Owner of the harness packages: change those six lines to the word form, e.g. 'cli-anything-showingtime --help | grep -qw act  # exits 0, no match — a substring match false-trips on my-listing-activity'. No code change; the tests are already correct.",
+    "halt": false
+  },
+  {
+    "id": "F-P2-07",
+    "severity": "info",
+    "area": "mac-verify.sh CLI-Anything block — RESOLVED BY P1 DURING THIS PASS, verified not edited by P2",
+    "finding": "When this pass began, mac-verify.sh checked cli-hub, the cli-anything-browser binary, the plugin and the env file, but had no check that the harnesses carry no write verb and no check that any package was installed — the risk F-H1-04 names is that such a check gets added later as a substring grep. P1 added it during this pass, and added it correctly.",
+    "evidence": "mac-verify.sh now carries a comment at line 246 ('`grep -qw act` is the check; it matches none of those and does match a real `act` command group'), CAH_VENV=~/Applications/cli-anything-harnesses/.venv at 252, a per-harness 'not installed — MAC-SETUP.sh --only cli-anything-harnesses' at 259 and the word-match test at 265. Confirmed by reading only; git status shows P2 modified no .sh file.",
+    "fix": "None needed. Recorded so the word-match requirement has a verified owner and is not re-litigated.",
+    "halt": false
+  },
+  {
+    "id": "F-P2-08",
+    "severity": "P2",
+    "area": "cli-anything-browser install path across the docs (F-H1-02)",
+    "finding": "Every doc described cli-anything-browser as built by `pip install .` in browser/agent-harness/ of an upstream clone. It is not on PyPI, the five browser packages import cli_anything.browser at module level and pin it, and it was being vendored into the repo while this pass ran — so the documented path had to move to the vendored copy, and to the venv and single-resolution install the new installer step actually uses.",
+    "evidence": "F-H1-02; F-H2b-03 (clean venv: 'Could not find a version that satisfies the requirement cli-anything-browser>=1.0.0', then ModuleNotFoundError after --no-deps). P1 landed the vendored tree at integrations/cli-anything-harnesses/browser/agent-harness (Apache-2.0, unmodified, VENDORED.md carries upstream commit 34f5195 and a diff -r check) and MAC-SETUP.sh step 'cli-anything-harnesses' at lines 585-665: one uv pip install of browser+seven into ~/Applications/cli-anything-harnesses/.venv, browser FIRST because resolving a site package alone sends uv to PyPI for a distribution that is not there.",
+    "fix": "FIXED and RECONCILED. The path P2 documented and the path P1 vendored are the same one, verified after the fact by reading the tree. All three files now name the vendored copy, state that the upstream checkout stays only for the hub and the Claude Code plugin, and give the real install: ./MAC-SETUP.sh --only cli-anything-harnesses, one command, browser first, into ~/Applications/cli-anything-harnesses/.venv, symlinked into ~/.local/bin. The earlier ~/Applications/CLI-Anything/.venv wording was corrected before hand-back. DOMSHELL_TOKEN and CLI_ANYTHING_BROWSER_BLOCK_PRIVATE=true (F-P1-05) added to the skill's security facts.",
+    "halt": false
+  },
+  {
+    "id": "F-P2-09",
+    "severity": "P1",
+    "area": "cliAnythingStatus document — template written, NOTHING written to the store (corrected mid-pass)",
+    "finding": "The connector card reads a cliAnythingStatus document that has never been written. The first half of this pass composed real content for it; that was wrong and was withdrawn. Reading the renderer settles it: with no document the card says 'No cliAnythingStatus document has ever been written, so nothing has ever checked any of these on your Mac', which is TRUE. Any document carrying a checkedAt flips the headline to 'CLI-Anything is NOT installed (checked <time>)' — an assertion that this Mac was inspected at that moment. No cloud session can make that true, so no cloud session may write this document. The card's no-document default is the honest state and must survive until a Mac task looks.",
+    "evidence": "command-deck.html renderCliConnectors, ~26953-27081: CC_TARGETS holds six baked-in rows (no Zoho); ccWrapperFor matches a document row to a card row by substring of the row key in w.target or w.name; ccState reads connState, error, status, lastRun, eccReviewedAt, readOnly; three clamps (read-only-live without lastRun -> installed-untested; a gated row claiming read-only-live without eccReviewedAt -> disabled-by-policy; readOnly:false -> error); ccVerbs reads verbsEnabled and keeps the first 8 strings; the headline strings are at 27070-27073. The field names the page reads are verbsEnabled, eccReviewedAt, lastRun and lastCheckedAt — not enabledVerbs / eccSignedOffAt / lastRunAt.",
+    "fix": "docs/data/cliAnythingStatus.doc.json is now a SHAPE TEMPLATE, not a payload: a _template header saying it must not be written from here and why, a _fields and a _clamps header derived from the renderer, and every value a visible <angle-bracket> placeholder except the constants that are genuinely fixed (readOnly:true, the verbsDisabled blast-radius lists, the two gated rows' eccReviewedAt-null posture). routines/mac-task-repairs.md §9 adds the paste-ready `cli-anything-status` Mac task that fills it by actually looking — hub version, plugin presence, which of the eight console scripts exist, the verb groups from each --help (never a default), the verified flags from `--json recipes`, and eccReviewedAt only from `gate status`. Nothing was written to the artifact DB.",
+    "halt": true
+  },
+  {
+    "id": "F-P2-10",
+    "severity": "P2",
+    "area": "docs/NEEDS-STEVEN.md — the three HALT items gating the first live runs",
+    "finding": "Two of the three first-live-run blockers were on the list but carried none of the harness findings, and the third was not a row at all. The Zoho profile toggle (item 5) and the Lofty API key (item 6) did not mention that they now also gate cli-anything-zoho and cli-anything-lofty; the ECC sign-off date appeared only as a clause inside the CLI-Anything Mac bundle (item 38) and inside the compliance line, with no statement of the action — the env var CLI_ANYTHING_ECC_REVIEWED_AT was named nowhere on the page, although both harnesses refuse every live command without it.",
+    "evidence": "docs/NEEDS-STEVEN.md items 5, 6, 38 and 42 as written 2026-09-22 ~15:15 UTC; F-H2b-02 (Zoho toggle), F-H2b-07 (the token helper needs a credential), F-H2b-13 (all three blockers named together).",
+    "fix": "FIXED. Item 5 now names cli-anything-zoho's exit-4 behaviour and carries F-H2b-02, F-H2b-07, F-H2b-13; item 6 names cli-anything-lofty and carries F-H2b-13; item 38 rewritten for seven pre-built packages, 'nothing is generated any more', the same-venv install and the verified:false constraint, carrying F-H1-02, F-H1-10 and F-H2b-03/13; and a new item 39 — the ECC security review sign-off date, with the export CLI_ANYTHING_ECC_REVIEWED_AT action and F-S1-10/F-H2b-13/F-FR5b-11/F-M3-11 — inserted in the Mac-session section. Old items 39-42 renumbered 40-43; no cross-reference in the file points at any of them (the only forward reference is 'item 35', unchanged). No row duplicated.",
+    "halt": true
+  },
+  {
+    "id": "F-P2-11",
+    "severity": "P3",
+    "area": ".claude/skills/cli-anything-connectors/SKILL.md — length vs the repo convention",
+    "finding": "The skill was already 221 lines against the repo's ~200-line convention (F-S1-16) and is 251 after this correction. The growth is all load-bearing (the vendored install path, the seven-package table, the path-map constraint, the word-match check), but the file is now the largest skill in the tree.",
+    "evidence": "wc -l before 221, after 251; F-S1-16 records the convention and the comparable sizes (most skills 110-165; apple-health-notion 205).",
+    "fix": "If it must come down: the 25-row 'Specified, disabled, and why' blast-radius table is now duplicated inside each package (target.py DISABLED_WRITE_VERBS, surfaced by `<cli> verbs --json`), so it could be reduced to the four highest-blast-radius rows plus a pointer. Not done here — deleting a safety table to hit a line count is the wrong trade without the skill owner's call.",
+    "halt": false
+  },
+  {
+    "id": "F-P2-12",
+    "severity": "P3",
+    "area": ".claude/skills/cli-anything-connectors/SKILL.md — 'Lofty is not a CLI-Anything target at all'",
+    "finding": "The skill flatly denied that Lofty is a CLI-Anything target. A cli-anything-lofty package now exists — a GET-only REST front to the same API and the same key file — so the sentence would send an agent looking for something it was told does not exist, or worse, prompt someone to build the browser wrapper the same paragraph forbids.",
+    "evidence": "integrations/cli-anything-harnesses/lofty/agent-harness (console script cli-anything-lofty, recipes me / leads list / leads get / leads stage-totals / leads timeline; TestGetOnly greps for every non-GET call site).",
+    "fix": "FIXED without changing the recommendation: the block quote now reads 'Lofty — still not a browser target', states that lofty-bridge stays the primary path and the API stays the recommendation, and describes the package as GET-only, not a second credential location and not a second source of truth. A Zoho row was added to the same table with its 403 behaviour.",
+    "halt": false
+  },
+  {
+    "id": "F-P2-13",
+    "severity": "P3",
+    "area": "docs/ENGINEERING-BRIEF.md §CLI-ANYTHING (line ~47)",
+    "finding": "The cycle-6 brief every engineer in this pass reads still described the CLI-Anything work as 'spec + install prompt' wanted for homes.com, SkySlope, zipForms, Zoho and Lofty, with /cli-anything as the way to get them. An engineer reading it today would re-spec or re-generate work that is already built.",
+    "evidence": "docs/ENGINEERING-BRIEF.md CLI-ANYTHING paragraph, dated 2026-09-22 cycle 6, written before the seven packages landed (commit 629ada4).",
+    "fix": "FIXED by appending a dated SUPERSEDED clause rather than rewriting the brief's history: names the seven pre-built packages, the pip install path, generation as new-targets-only, the vendored browser harness, and that no path map is verified and no live call has ever been made.",
+    "halt": false
+  },
+  {
+    "id": "F-P2-14",
+    "severity": "P3",
+    "area": "Live Mac task 'cli-anything' description (mirrored at docs/inventory/mac-task-descriptions.md:200)",
+    "finding": "The Mac task's own description is 'CLI-Anything … generates agent-friendly CLIs from source code or an API spec (/cli-anything)'. That remains a true description of the plugin, so the inventory mirror is correct as a record — but the live task on the Mac is the one that will be pointed at these seven targets, and its prompt (mac-task-specs §4) has been re-scoped to install-and-discover while the task's own text still frames the job as generation.",
+    "evidence": "docs/inventory/mac-task-descriptions.md line 200; mac-task-specs.md §4 as rewritten in this pass. The task is create-disabled and has never run.",
+    "fix": "No repo edit — the inventory line honestly mirrors the Mac. When Steven next touches that task (item 38/39 on the Needs-Steven list), re-scope its description to 'installs the seven pre-built read-only harnesses and verifies their path maps; /cli-anything only for a new target'. Mac-side, so HALT for an agent.",
+    "halt": false
+  },
+  {
+    "id": "F-P2-15",
+    "severity": "P2",
+    "area": "Command Deck connector card — CC_WRITE_VERB tripwire vs Showami's read recipe names (dashboard, not edited)",
+    "finding": "The card tests every verbsEnabled string against /(\\bact\\b|request|confirm|cancel|reschedul|post|accept|assign|book|hire|send|submit|sign|upload|delete|creat|updat|fill|pay|invit|messag|click|type)/i and a single match turns that row AND the whole card red with 'STOP. The status document reports an outward verb as enabled'. Three of Showami's four READ recipes match it — my-requests and request-status on 'request', posted-price on 'post' — as does ShowingTime's showing-status on nothing but its neighbours are close. So an accurate status document that lists the read recipes as enabled verbs raises a false write-verb alarm on the deck. It is the same substring-vs-word defect as F-H1-04, one layer up: 'act' is already word-bounded in that pattern, the other 20 alternatives are not.",
+    "evidence": "command-deck.html line 26985 (CC_WRITE_VERB) and 27038-27041 (one match sets the row state to error and pushes an alarm). Showami's recipes are my-requests, request-status, assistant-feedback, posted-price (integrations/cli-anything-harnesses/showami/.../paths.json, and the same four in the connector skill). A local scan of the verb lists P2 first composed matched three entries, all read-only.",
+    "fix": "Two halves. Now, in the document: list verb GROUPS only (recipe, fs ls, fs cat, fs grep, fs pwd, page info, page open, session status) and never a recipe name — the card prints the recipe names itself from its own baseline. That rule is written into the template, into §9's prompt and into the connector skill. Properly, on the deck (owner's call, P2 may not edit a dashboard): word-bound the alternatives the same way 'act' already is, or match only the leading verb token of each entry — e.g. test /^(\\s*)(act|request|confirm|…)\\b/i against the first word rather than a substring anywhere in the string.",
+    "halt": false
+  },
+  {
+    "id": "F-P2-16",
+    "severity": "P3",
+    "area": "Command Deck connector card — baseline prose (dashboard, not edited)",
+    "finding": "The card's own no-document baseline still describes the world before the seven packages existed: its headline says 'Installing it for real is a script step … and only generating each wrapper needs you', its homes.com row's action says 'run /cli-anything for THIS target first', the card's sub-heading says 'Six targets, one toolchain', and the source comment says 'every wrapper Steven needs is GENERATED on his machine, never downloaded'. Generation is no longer the path for any of these (F-H1-10); the packages are pre-built, there are seven of them, and the remaining manual work is --discover plus a paths.json edit per recipe.",
+    "evidence": "command-deck.html lines 4339, 26925-26932, 26958 and 27070. Counter-evidence: integrations/cli-anything-harnesses/{browser,homes,showingtime,showami,skyslope,zipforms,lofty,zoho}/agent-harness and MAC-SETUP.sh's cli-anything-harnesses step.",
+    "fix": "Deck owner: replace 'only generating each wrapper needs you' with 'the wrappers are pre-built — what needs you is signing in and fixing each path map with --discover'; retarget the homes.com row's action the same way; and either add a seventh (Zoho) row or leave six and note that the Zoho harness is REST and lives on the Zoho card. P2 may not edit a dashboard, so this is reported, not applied. No clamp, state or field name needs to change — only prose.",
+    "halt": false
+  }
+]
