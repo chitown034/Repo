@@ -28,7 +28,7 @@ kept verbatim, and neither is a router leaf — expect that check to list them.
 | 14 | Karpathy CLAUDE.md | vendored as skill; or `/plugin marketplace add multica-ai/andrej-karpathy-skills` → `/plugin install andrej-karpathy-skills@karpathy-skills` | Yes — plugin 1.0.0 installed (fake HOME) | none | Yes — surgical-change discipline for every agent | **yes** (`karpathy-coding-principles`) |
 | 15 | vphone-cli | `brew install zqxwce/tap/vphone-cli` (macOS only) | No — macOS-only; README verified | none | **None** — do not install (needs SIP/AMFI relaxation) | — |
 | 16 | Agent402 | `claude mcp add agent402 -- npx -y agent402-mcp` | Registry metadata only; not run | none free; wallet / `STRIPE_SECRET_KEY` / `AGENT402_CREDITS_KEY` paid | **None** — pay-per-call crypto tool market; do not install | — |
-| 17 | Laya | `uv venv ~/laya-venv && uv pip install --python ~/laya-venv/bin/python laya` (Python library) | Yes — pip 0.3.5, `import laya` ok; checkpoints not downloaded | none (optional `HF_TOKEN`) | Not now — local PII-safe triage classifier only after fine-tuning | — |
+| 17 | Laya | `uv venv ~/laya-venv && uv pip install --python ~/laya-venv/bin/python laya` (Python library) | **Yes, re-proven 2026-09-22 (P6)** — 0.3.6 into a *fresh empty* venv, exit 0; `import laya` ok; 7 of 8 upstream test scripts pass; checkpoints not downloaded | none (optional `HF_TOKEN`) | Not now — local PII-safe triage classifier only after fine-tuning | — |
 
 ## 1. Headroom — `headroom-ai` 0.38.0, Apache-2.0
 - **What / why:** local context-compression proxy between a coding agent and the model API (tool output, logs,
@@ -212,7 +212,7 @@ software. Nothing to install. Registered in `references/index.md`; consult it wh
 - **Keys (paid only):** `WALLET_ADDRESS`, `CDP_FACILITATOR_*`, `STRIPE_SECRET_KEY`, `AGENT402_CREDITS_KEY`.
   Sandbox: registry metadata only; not run (it would connect to agent402.tools).
 
-## 17. Laya — PyPI `laya` 0.3.5, Apache-2.0 (Convai Innovations) — **not now**
+## 17. Laya — PyPI `laya` 0.3.6, Apache-2.0 (Convai Innovations) — **not now**
 - **What:** a Python library, not an agent tool: small encoder checkpoints from Hugging Face (ModernBERT-large
   421M / mmBERT-base 322M) that answer typed questions — `choice`, `score`, `noul` (calibrated yes/no) — over an
   email, ticket or JSON in one forward pass (33 ms on a T4 GPU; 193–464 ms on CPU). Built-in question packs:
@@ -224,12 +224,33 @@ software. Nothing to install. Registered in `references/index.md`; consult it wh
   text on the Mac, which the HALT list likes. But it needs fine-tuning on ~30k labelled questions and GPUs he
   does not have, and the Claude-driven triage already works. Revisit only if volume or a PII rule forces a
   local model.
-- **Commands (if revisited):** `uv venv --python 3.12 ~/laya-venv && uv pip install --python ~/laya-venv/bin/python laya`;
-  first `laya.load(...)`/`Router(preload=True)` downloads 1–2 GB of checkpoints into `~/.cache/huggingface`.
-  Sandbox: `pip install laya` exit 0 → laya 0.3.5 with torch 2.14.0+cu130 and transformers 5.17.0; `import laya`
-  ok. Linux pulled ~9 GB of CUDA wheels (a Mac gets the CPU/MPS build, a few hundred MB); no checkpoint downloaded.
+- **Commands (if revisited) — re-proven end to end 2026-09-22 (P6), not copied forward:**
+  ```bash
+  uv venv --python 3.12 ~/laya-venv        # 3.11 also works (proven); 3.12 is the house pin, keep it
+  uv pip install --python ~/laya-venv/bin/python laya
+  ~/laya-venv/bin/python -c "import laya; print(laya.__version__)"
+  ```
+  First `laya.load(...)`/`Router(preload=True)` downloads 1–2 GB of checkpoints into `~/.cache/huggingface`.
+  **Sandbox record (fresh, empty venv — `pip list` held only pip+setuptools before the install):**
+  `pip install --no-cache-dir laya` → **exit 0, laya 0.3.6** with torch 2.14.0+cu130 and transformers 5.17.0
+  on **CPython 3.11**; `import laya` ok. Linux pulled ~5 GB of CUDA wheels (a Mac gets the CPU/MPS build, a
+  few hundred MB); no checkpoint downloaded. The venv and the clone were deleted afterwards.
+- **Upstream test suite — 7 of 8 pass, and it is NOT a pytest suite.** `pytest tests/` aborts with
+  `INTERNALERROR … SystemExit` because every file calls `sys.exit()` at module level. Run them as plain
+  scripts instead, one per file:
+  ```bash
+  cd <a clone of github.com/NandhaKishorM/laya>
+  for t in tests/*.py; do ~/laya-venv/bin/python "$t"; done
+  ```
+  Result here: `test_criteria` 34 passed · `test_decision_model` ok · `test_download` ok · `test_email`
+  11 passed · `test_packaging` ok · `test_router` ok · `test_shortlist` 81 passed · **`test_local_e2e` fails
+  (rc 1)** with `FileNotFoundError: Local model path not found: '~/laya_models/laya-multilingual'` — expected,
+  it wants checkpoints nobody downloaded. That one failure is not a defect; the other seven are the proof.
 - **Keys:** none for the public checkpoints; `HF_TOKEN` only to push a fine-tune or if the Hub rate-limits.
-- **Check:** `python -c "import laya; print(laya.__version__)"`.
+- **Check:** `~/laya-venv/bin/python -c "import laya; print(laya.__version__)"` → `0.3.6`.
+  Nothing in `MAC-SETUP.sh` installs this and nothing in `mac-verify.sh` checks it — it is an advisory step
+  (`MAC-SETUP.sh --only laya` prints the command, it does not run it). That is deliberate given the verdict
+  below; the commands above are what to paste the day the verdict changes.
 - **Security:** runs locally; checkpoints are safetensors (no pickle execution). Never upload a fine-tuning set
   containing client PII to Kaggle or the Hub — that is PII leaving the local model (HALT).
 

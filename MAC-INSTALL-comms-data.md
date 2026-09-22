@@ -37,6 +37,13 @@ the keyboard. Both repos were cloned and read in full (2026-09-22).
 of impersonating one. Its costs are real and stated: macOS only, the WhatsApp desktop app must stay logged in,
 and **sends need a GUI session** (Mac awake, user logged in, Accessibility granted) while reads work headless.
 
+**Trap — the PyPI name is somebody else's package (found 2026-09-22, P6).** `pip install whatsapp-cli`
+installs **`yausername/whatsapp-cli` 0.1.3** ("CLI for whatsapp", MIT), an unrelated project — not
+marcelrgberger's 1.0.0. This is the same class of trap as Agent Reach (`MAC-INSTALL-tooling.md` §11), and it
+had not been written down. The install below is safe because it installs **from the clone's `agent-harness`
+directory**, never from PyPI by name; `MAC-SETUP.sh` does the same (`uv pip install … "$WA_DIR/agent-harness"`).
+Never "simplify" it to `pip install whatsapp-cli`.
+
 **Install (Steven, on the Mac) — verified form**
 ```bash
 brew install uv                                   # or python@3.12; the code needs 3.12, README's "3.10+" is wrong

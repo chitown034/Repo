@@ -90,8 +90,18 @@ opened exactly one leaf file.
 
 ## 8. Optional tooling (not required for the brain)
 
-Every third-party tool Steven asked about — Headroom, Graphify, CodeBurn, Strix, Agent Reach, the plugins and
-the nine vendored skills — has its own verified runbook: `MAC-INSTALL-tooling.md`. Do it after step 7, not before.
+Most third-party tools Steven asked about — Headroom, Graphify, CodeBurn, Ponytail, Screenshot-to-Code,
+Agent Skills, Find Skills, Apple Design, Claude Code Setup, Strix, Agent Reach, prompts.chat,
+openalternative, Karpathy, vphone-cli, Agent402, Laya — have a verified runbook in `MAC-INSTALL-tooling.md`,
+and the comms/data set (WhatsApp, OmniRoute, the scrapers, Higgsfield, Apple Health, freellmapi) in
+`MAC-INSTALL-comms-data.md`. Do it after step 7, not before.
+
+**Three of them are documented somewhere else, and looking for them here finds nothing** (P6, 2026-09-22):
+
+- **CLI-Anything** and its seven targets → the `cli-anything-connectors` skill + `integrations/mac-task-specs.md` §4.
+- **The second-brain unification's Drive half** → `integrations/google-drive-brain.md` (spec only — see §10).
+- **The Apple Health sync itself** (as opposed to the `Rachnog` alternative in comms §5) →
+  the `apple-health-notion` skill + `integrations/apple-health-dashboard.md`.
 
 ## 9. Run it — `MAC-SETUP.sh`, then `mac-verify.sh`
 
@@ -119,9 +129,15 @@ Log: `~/Library/Logs/vanessa-setup/<date>.log`. Neither script has ever been run
 and `docs/findings/`.** This is the list to re-read when something "was supposed to be installed".
 Full reasoning: `docs/findings/findings-V1.json`. `./MAC-SETUP.sh --list` prints the last two groups.
 
+**Re-checked as a list against live upstreams on 2026-09-22 (P6) — `docs/INSTALL-COVERAGE.md`.** That file
+is the per-item matrix: upstream live/dead, licence, what installs it, what proves it, and a status for
+each. Headline: **nothing is mentioned-only**, exactly one upstream is dead (`cheahjs`, already routed
+around, no installer points at it), and **nothing on the list has ever run on a Mac**. Read it before
+re-litigating whether something was done; read the table below for what was decided and why.
+
 | What Steven asked for | True state | Where |
 |---|---|---|
-| WhatsApp → Vanessa (`marcelrgberger/whatsapp-cli`) | in `MAC-SETUP.sh` (`whatsapp-cli`) | FR5b §1 |
+| WhatsApp → Vanessa (`marcelrgberger/whatsapp-cli`) | in `MAC-SETUP.sh` (`whatsapp-cli`) — installed **from the clone**, never by name. **PyPI `whatsapp-cli` is a different project** (`yausername`, 0.1.3); never "simplify" it to `pip install whatsapp-cli` (P6) | FR5b §1 |
 | Headroom · Graphify · CodeBurn | in `MAC-SETUP.sh` | FR5a §1, §2, §3 |
 | OmniRoute + switch to free models on limit, back on refresh | in `MAC-SETUP.sh` (`omniroute`) + `integrations/omniroute-failover/` | FR5b §2 |
 | Scrapling · Scrapegraph-ai | in `MAC-SETUP.sh` | FR5b §3a/3b |
@@ -132,7 +148,7 @@ Full reasoning: `docs/findings/findings-V1.json`. `./MAC-SETUP.sh --list` prints
 | Agent Skills (addyosmani) | six skills **vendored individually**; the whole plugin is REFUSED (name collision) | FR5a §6 |
 | Apple Health sync · Apple Health with Notion | `apple-health-notion` skill + `health-notion-sync` task spec. The `Rachnog` repo never reads Apple Health — reference only | FR5b §5 |
 | Claude Code Setup · Ponytail · prompts.chat | **advisory, and the reasons were wrong.** Plugin installs are **not** interactive — verified exit 0. Each now states its real reason: policy (Setup), policy (Ponytail — hooks fire on every prompt), value (prompts.chat) | FR5a §4, §9, §12 |
-| Screenshot-to-Code · Strix · Agent Reach · laya | advisory / on a named need; each with its own reason | FR5a §5, §10, §11, §17 |
+| Screenshot-to-Code · Strix · Agent Reach · laya | advisory / on a named need; each with its own reason. **Laya re-proven 2026-09-22 (P6): 0.3.6 into a fresh empty venv, exit 0, 7 of 8 upstream tests pass** — verdict "not now" unchanged, commands now proven | FR5a §5, §10, §11, §17 |
 | **Higgsfield API** | **was refused by association.** The *repo* is REFUSED (committed credential) — the *API* is not. **Fixed: new `higgsfield` step** creates the key file, names only, calls nothing | FR5b §4 |
 | **Free AI API keys** (bytez · openrouter free · build.nvidia) | key **names** wired in `~/.config/omniroute/.env` + checked by `mac-verify.sh`. Pages still egress-blocked; Steven pastes values only | FR5b §2 |
 | **`tashfeenahmed/freellmapi`** | **evaluated and DECLINED** — a second aggregator, not a key source. The verdict existed but was unfindable; now in `--list` and FR5b §6 | FR5b §6 |
