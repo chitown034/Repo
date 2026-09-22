@@ -1,0 +1,63 @@
+# CONNECTIONS — every integration, its real status, and the one thing Steven must do
+
+**Baseline 2026-09-12 · verified 2026-09-22.** Owner: Integration Engineer (under CTO Innovator,
+reporting line Derek/CTO). Rule of this file: *connected ≠ working.* A row says what a run proved,
+not what a settings page claims.
+
+Trust levels: **L1** report-only · **L2** drafts for Steven's approval · **L3** owns end-to-end ·
+**n/a** not an agent path.
+
+## The four that need Steven today
+
+| System | Path | Status today | **What Steven must do (one line)** | Trust |
+|---|---|---|---|---|
+| **Lofty** (real-estate CRM) | `lofty-bridge` MCP (read-only) + `lofty-cli` on the Mac; REST `api.lofty.com/v1.0`, `Authorization: token <key>` | Bridge and CLI installed (status RUN, MCP server `lofty` connected). **API key presence unverified from the cloud — no successful pull yet.** Composio has no Lofty toolkit. | **In Lofty → Settings → Integrations → API, generate an API key and put it in `~/.config/lofty/.env` on the Mac as `LOFTY_API_KEY=…`, then run `lofty-crm-sync` once.** | L1 → L2 after 7 clean runs |
+| **Zoho CRM** (mortgage system of record) | Composio toolkit `zoho`, account `zoho_talite-spike` | Connection **ACTIVE**, but every CRM call returns **HTTP 403 NO_PERMISSION `Crm_Implied_Api_Access`** (reproduced on `ZOHO_LIST_LEADS` and `ZOHO_LIST_DEALS`, 2026-09-22 08:17 UTC). Deck shows the **Sep 14 paste**, 48 leads. | **In Zoho CRM → Setup → Security Control → Profiles → the connected user's profile, enable "Zoho CRM API Access".** | L1 → L2 once unblocked |
+| **CLI-Anything** (homes.com, SkySlope, zipForms) | `cli-anything-hub` + Claude Code plugin; DOMShell MCP browser path for sites with no API | **Not installed.** Spec written this cycle. Hub registry has no CRM or real-estate entries (README checked 2026-09-22; `clianything.cc` egress-blocked). Nothing can be installed on the Mac from the cloud. | **On the Mac in Claude Code run `/plugin marketplace add HKUDS/CLI-Anything` then `/plugin install cli-anything` (and `pip install cli-anything-hub`), then say "generate the homes.com wrapper".** | L1, read-only |
+| **Apple Health** | New: Claude iOS → Notion "Health Log" → `health-notion-sync` → `appleHealth` doc. Old: Health Auto Export → daemon :8765 → DuckDB → `apple-health` MCP | Old pipeline **down** — daemon not responding, doc 9 days stale (`last_received 2026-09-13 14:30:40`), `r8-apple-health-snapshot` errors since 2026-09-17. New path: **spec written, first phone run pending.** | **Open Claude on your iPhone, say "update my health stats in Notion", and approve the Apple Health read + Notion write prompts once.** | L2 |
+
+## Everything else
+
+| System | Path | Status today | What Steven must do | Trust |
+|---|---|---|---|---|
+| Follow Up Boss | Composio `follow_up_boss` | **RETIRED 2026-09-22.** Composio reports ACTIVE, but `r2-lead-response-watchdog` and `lead-triage-daily` have logged "Invalid API Key or authentication credentials" since 2026-09-16. Replaced by Lofty. | Nothing — retire the connection at his convenience. History stays labelled "was Follow Up Boss until 2026-09-22". | n/a |
+| You.com | connector + `you-*` tools | **RETIRED 2026-09-22** — replaced by the Claude subscription. Free tier returned "limit exceeded" 08:40 UTC 2026-09-22. | Nothing. Research now runs on WebSearch/WebFetch in scheduled tasks and Perplexity for depth. | n/a |
+| Notion | connector (connected + enabled) | Working. `brain-deck-sync` ok; Second Brain 68 rows. Will also host the Health Log. | Nothing. | L2 |
+| Composio | connected apps: api_ninjas, discord, follow_up_boss, github, gmail, googleads, googledocs, googlesheets, googletasks, perplexityai, youtube, zoho | Working as a transport. The failures above are on the far side of it, not in Composio. | Nothing. | L1 |
+| Google Calendar | connector | Working — `calendar-daily-sync` ok 2026-09-21. | Nothing. | L2 |
+| Gmail | connector + Composio | Working — `r12-inbox-triage` ok; drafts only, never sends. | Nothing. | L2 |
+| Strava | connector | Connected, but `strava-daily-sync` is in **error** and the `stravaSnapshot` doc is written without the `v` wrapper, so the page ignores it (P1 bug, E5 owns). | Nothing — engineering fix. | L1 |
+| Slack | connector | Connected. Not load-bearing for any task. | Nothing. | L1 |
+| Inkbox | connector | Working — iMessage +1 650-484-9720 and Discord #vanessa; `vanessa-imessage-inbox` ok. | Nothing. | L2 |
+| Perplexity | Composio `perplexityai` + local `perplexity` MCP | Working — carries the research load since You.com retired. | Nothing. | L1 |
+| Context7 | connector | Connected. Docs lookup only. | Nothing. | L1 |
+| Canva | connector | **needs_reconnect.** | Reconnect it in claude.ai → Settings → Connectors if he still wants it; otherwise drop it. | n/a |
+| Microsoft 365 | connector | **Not connected.** | Nothing unless he wants it. | n/a |
+| BlackRock Advisor Center | connector | **Not connected.** | Nothing. | n/a |
+| Health Data Avatar (HDA) | connector | **Not connected.** Not needed by the Notion health recipe. | Nothing. | n/a |
+| PlayMCP | connector | **connect_incomplete.** | Finish or remove it. | n/a |
+| Eromify | connector | Connected. Out of scope for the business stack. | Nothing. | n/a |
+| OpenRouter | local MCP | Connected, **no API key** — council outside-model seats are unpriced and unused. Do not present them as available. | Add a key only if he wants outside models; otherwise leave it. | n/a |
+| Plaid | — | **No keys.** `r7-plaid-balances` runs and reports nothing; the deck's balances are manual. | Add Plaid keys, or accept manual balances. | n/a |
+| Orca Computer Use v1.4.203 | Stably AI desktop app (`com.stablyai.orca`) | **Installed on the Mac**, but a standalone computer-use app — **not integrated with Claude Code.** The stablyai/orca parallel-worktree IDE integration is not done. | Nothing — proposal, vetted by the CTO Innovator. | n/a |
+| `apple-health` MCP / `apple-health-xml` / `health-export` | local MCP servers | Connected as servers; the **data behind them is stale** because the ingest daemon is down. Connected server ≠ fresh data. | Covered by the Apple Health row above. | L1 |
+
+## Standing rules for every row here
+1. **Self-test before you sync.** Each sync skill proves its connection on its own smallest call
+   before writing anything. A failed self-test writes an honest status doc and stops.
+2. **Never fabricate CRM or health data.** No lead, stage, deal, dollar or vital that did not come
+   from a 200 response this run. An empty result is a fact worth reporting.
+3. **The page displays the doc's own `source` string.** No hard-coded CRM name anywhere in the deck.
+4. **Deck-only records survive every sync.** A lead carrying `local:true` that the CRM does not
+   return is carried forward untouched.
+5. **Credentials live in the Mac keychain or a `.env` the tool reads itself** — never in a prompt,
+   a task definition, a skill file, a log, a finding or the deck.
+6. **Read-only until Steven approves a write verb, per system, in writing.** Write-back to Lofty and
+   Zoho is an L2 proposal, not built.
+7. **Trust graduation is earned:** L1 → L2 → L3 only after 7 consecutive correct runs. Never
+   straight to L3.
+
+## Related files
+- `.claude/skills/lofty-crm-sync/SKILL.md` · `.claude/skills/zoho-crm-sync/SKILL.md`
+- `.claude/skills/apple-health-notion/SKILL.md` · `.claude/skills/cli-anything-connectors/SKILL.md`
+- `integrations/apple-health-dashboard.md` · `integrations/mac-task-specs.md`

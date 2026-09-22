@@ -1,0 +1,128 @@
+{
+  "v": [
+    {
+      "agents": 5,
+      "critical": [
+        "health daemon SQL endpoint could read local files — fixed, verified by live probe",
+        "plist backup carried the plaintext ingest token — deleted"
+      ],
+      "cycle": 1,
+      "halted": 2,
+      "halts": [
+        "ISA-line outbox refactor — touches five tasks, changes what the ISA sees",
+        "skill prune — destructive"
+      ],
+      "healed": 0,
+      "needsSteven": [
+        "Zoho CRM API access",
+        "phone ingest URL",
+        "Plaid keys",
+        "Run now on each new task",
+        "one coverage-hours definition + PTO plan",
+        "ISA boundary card wording",
+        "rotate plaintext key in settings; wire or remove inert ECC hooks",
+        "scoped FUB create-task write (recommend L2 permanently); ISA-line outbox refactor",
+        "skill prune after /skill-doctor"
+      ],
+      "promoted": 19,
+      "proposed": 22,
+      "rejected": 2,
+      "report": "Loop Engineering Cycle 1 artifact",
+      "tested": 19,
+      "triage": [
+        "pre-existing failing daemon test: test_dedup_class3_overlapping_workout_detected (fails identically before and after hardening)",
+        "health database empty: phone still pointed at the old ingest address"
+      ],
+      "trustLevels": {
+        "caioBrief": "L1 permanent",
+        "desktopWriters": "L3 by construction",
+        "innovatorVerdicts": "L1, one clean week to L2",
+        "nightlySelfHeal": "L2",
+        "productionPromotion": "L1"
+      },
+      "ts": "2026-09-09T03:05:00Z",
+      "vaultNote": "40-Decisions/2026-09-08 loop cycle 1.md"
+    },
+    {
+      "agents": 0,
+      "cycle": 3,
+      "findings": [
+        "F-001 UNCHANGED, reconfirmed live: read_db get on routineHealth, backupStatus, vanessaBrief, cpiOpportunityLog — none exist. list_scheduled_tasks on all 32 tasks shows r10-automation-health, r6-weekly-backup, automation-audit-quarterly, cpi-daily-scan and vanessa-sweep with NO lastRunAt at all — including r10 and vanessa-sweep, whose scheduled slots today (7:27 AM and 5:35 PM PT respectively) have already passed with zero record of firing. The one open blocker from Cycles 1 and 2 is identical: Steven has not yet pressed Run now on these tasks in the desktop app, so none of the built infrastructure has ever executed even once.",
+        "No new structural findings beyond F-001. team-avatars and vanessa-sweep (built this session, after Cycle 2) registered correctly and did not disturb anything else."
+      ],
+      "halted": 0,
+      "healed": 0,
+      "kind": "verification-only, no rebuild",
+      "needsSteven": [
+        "Run now on every task in the desktop app — the single blocker holding back r10, r6-weekly-backup, cpi-daily-scan, automation-audit-quarterly, vanessa-sweep, and everything they were meant to prove"
+      ],
+      "promoted": 0,
+      "proposed": 0,
+      "rejected": 0,
+      "report": "Steven re-submitted the identical Chief-Automation-Strategist mega-prompt verbatim. Verified rather than rebuilt: every Phase 3/4/5 item it asks for (CAIO+scout, CTO Innovator+sandbox-qa, ai-ecosystem-backup skill, continuous-process-improvement engine, loop-engineering trust gate + holdout) was already built in Cycle 2 (2026-09-09). Rebuilding would only relabel existing work.",
+      "tested": 36,
+      "triage": [],
+      "trustLevels": {
+        "caioBrief": "L1 permanent, unchanged",
+        "innovatorVerdicts": "L1, streak 0 — no task has produced a countable run yet",
+        "nightlySelfHeal": "L1, unproven — nightly-self-test itself has a lastRunAt but no confirmed selfTest doc",
+        "productionPromotion": "L1, unchanged"
+      },
+      "ts": "2026-09-10T02:20:00Z"
+    },
+    {
+      "agents": 0,
+      "cycle": 4,
+      "findings": [
+        "F-001 SUPERSEDED — the Cycle 1-3 diagnosis was WRONG and is now corrected by hard evidence. Cycle 3 concluded 'Steven has never pressed Run now, so nothing has ever executed.' list_scheduled_tasks on 2026-09-10 shows 11 of 32 tasks carry a real lastRunAt on 2026-09-09 (weather-news-refresh, steve-twin-sweep, showing-sync, lead-triage-daily, r1-morning-brief, r2-lead-response-watchdog, r13-appointment-prep, isa-comms-bridge-local, r7-plaid-balances, r8-apple-health-snapshot, nightly-self-test). First-run approvals therefore WORK and those tasks execute. The true root cause is DESKTOP APP UPTIME COVERAGE: every recorded lastRunAt falls in a single window, roughly 04:49-13:09 UTC on 2026-09-09 (about 9:49 PM - 6:09 AM PT). Tasks scheduled outside that window simply never get a chance to fire, because a desktop scheduled task only runs while the Claude desktop app is open.",
+        "F-024 NEW, P1 — 8 DAILY/WEEKDAY tasks have never fired despite their slot having passed at least once: r3-eod-rollup, r10-automation-health, r12-inbox-triage, cpi-daily-scan, r17-trading-day-log, r14-content-pipeline, r4-quantvue-sync, vanessa-sweep. All sit outside the app's observed open window (e.g. r10-automation-health at 7:27 AM PT, r3-eod-rollup at 6:05 PM PT, cpi-daily-scan at 9:17 PM PT). This is why routineHealth, leadResponse, weatherSnapshot's daily refresh, cpiOpportunityLog and scaleOpportunityLog are all still absent from the store. Fix is a scheduling decision only Steven can make: either keep the app open across those hours, or move each task into the window the Mac is actually awake and the app is actually running.",
+        "F-025 NOT A FAULT — 13 tasks show no lastRunAt purely because their first scheduled slot has not arrived since they were created on 2026-09-08/09: vanessa-ops-review, weekly-self-update, coach-weekly-recs, r6-weekly-backup, r5-rates-market-refresh, r9-feed-freshness-sweep, r11-isa-kpi-compile, r20-weekly-review-local, ops-knowledge-graph, loop-engineering-weekly, access-audit-monthly, month-end-close-prep, automation-audit-quarterly. These were previously miscounted as broken. Weekly and monthly tasks cannot be judged until their slot passes.",
+        "F-026 NEW, P1, CONFIRMED BY LIVE CALL — the You.com connector is OUT OF CREDIT. A real you-search call returned: 'Your prepaid credit balance has been depleted. Please add credits to continue using the API.' Every dashboard feature that reads through You.com is therefore silently degraded and falling back to its static snapshot: live mortgage rates, market-update headlines, builder incentives, the Property Search Strategy live listings, the AI-directed similar-property search, and the property tax-record search. This also explains the standing 'connector declared but never successfully called' warning on every publish since Cycle 2. Fix requires Steven to add credit at you.com/platform; no code change will restore it.",
+        "F-027 NEW, P1, FIXED THIS CYCLE — Steve's and Vanessa's voices did not speak. Root cause: browsers only permit speechSynthesis while the page holds user activation, which expires seconds after a click; a chat reply arrives 5-20s later, so speak() was being called with activation already expired and silently did nothing inside the embedded artifact. Remediated: voicePrime() now runs ON the send click and on the voice toggle (unlocking the engine for the session), a Test voice button gives an explicit unlocking gesture, a 2.6s watchdog reports on screen when audio is still blocked instead of leaving silence, and a diagnostics line under each voice control reports Claude runtime / speech support / voices loaded / unlocked / microphone in the actual viewing browser.",
+        "F-028 NEW, P2, FIXED THIS CYCLE — Steve's chat bubbles had been rendering Vanessa's photograph since the avatar patch, because createSimpleMentorChat was passed VANESSA_AVATAR_STYLE. He now has his own STEVE_AVATAR_STYLE.",
+        "F-029 NEW CAPABILITY, P1 GAP CLOSED — there was no test anywhere in the stack that could catch a runtime JavaScript regression in either dashboard. Both are one ~20k-line IIFE: a load-time throw kills every render after it, the page still opens, cards just sit empty, and node --check passes because the syntax is valid. Built /dashboard-selftest (jsdom harness, exit 0 PASS / 1 FAIL), wired it into nightly-self-test as a P1-never-a-proposal gate, and registered it in the Toolbox. Both dashboards currently PASS with 0 load errors."
+      ],
+      "halted": 0,
+      "healed": 3,
+      "kind": "audit + remediation (Opus, on-demand)",
+      "openForSteven": [
+        "F-024 — decide the scheduling fix: keep the desktop app open across the needed hours, or move the 8 missed tasks into hours the Mac is actually awake.",
+        "F-026 — add You.com credit, or accept that the live-research features stay on their static snapshots."
+      ],
+      "ts": "2026-09-10T07:30:00Z",
+      "verified": [
+        "Command Deck: 0 load errors, 11/11 regions render (chats, org chart, council, playbook, roster, tech stack, twin queue, both voice diagnostics).",
+        "ISA Portal: 0 load errors, 9/9 regions render.",
+        "Command Deck store: 89 documents present. Docs written only by a task that has never fired remain absent, consistent with F-024.",
+        "40 AI Team agent files given the standing top-1% / 30-year expertise calibration; the 65 generic engineering agents deliberately left untouched."
+      ]
+    },
+    {
+      "agents": 0,
+      "cycle": 5,
+      "findings": [
+        "F-026 RESOLVED — You.com credit exhaustion closed out. All research and feed refresh moved onto Claude's own WebSearch inside scheduled tasks: zero API keys, zero marginal cost. Seven dashboard feeds migrated off the dead in-page connector, then three more orphans (market movers, sector performance, AI news) wired into the same document system. Ten feeds now covered by three tiered tasks.",
+        "F-030 NEW, FIXED — refresh cadence was uniform (everything 2x/day) rather than matched to how fast each feed's data actually changes. Retiered: rates 2x daily, headlines/Bears/AI news daily, market feeds weekday post-close, builders/card-offers/PE-defense weekly. Weekly search volume 98 -> 29 with rates fresher.",
+        "F-031 NEW, FIXED — the card-offers feed carries expiry dates, so a weekly refresh could show a lapsed offer on a card that looked current. Added per-feed staleHrs budgets (18h rates / 30h daily / 192h weekly) driving an on-card warning band and an OVERDUE marker.",
+        "F-032 NEW, FIXED — stale VA 30-year rate of 6.53% (Sep 7 pull) on a licensed originator's dashboard; actual was 6.125% as of Sep 9, a 40bp error. Both dashboards corrected with source and date, VA refinance row added, and the sync stamp now says explicitly which rows were re-verified and which were not.",
+        "F-033 NEW, FIXED — every AI Team agent now pins its Claude model in frontmatter: 20 opus seats where being wrong is expensive, 20 sonnet execution seats. Council seats reason at differing depth, with The Outsider deliberately light because that seat's job is reacting without expert context.",
+        "F-034 NEW, FIXED — 23 tasks retimed into the desktop app's real uptime window (F-024's root cause) and every title corrected to state its actual time. Over-frequent refreshes cut: Apple Health 2h->4h, Plaid 6h->2x daily, ISA bridge 24h->7am-9pm, weather 3x->2x.",
+        "F-035 NEW, FIXED — doc `openrouterFeeds` renamed `liveFeeds`; the old name implied an API dependency that no longer exists."
+      ],
+      "halted": 0,
+      "healed": 6,
+      "kind": "remediation — Claude-native refresh architecture",
+      "openForSteven": [
+        "F-024 — desktop app uptime still gates 7 business-hours tasks whose meaning would break if moved.",
+        "13 interactive You.com call sites remain (property search, tax lookup, weather overlay, on-this-day). They fail visibly rather than silently, so they mislead nobody, but they are dead."
+      ],
+      "ts": "2026-09-10T10:00:00Z",
+      "verified": [
+        "Both dashboards: 0 load errors, all probed regions render, via /dashboard-selftest.",
+        "All 36 scheduled tasks grepped: zero depend on an external LLM or search API. The six OpenRouter mentions are the storage doc name (3) and explicitly optional passes (3).",
+        "Feed coverage check: all 10 wired list ids have exactly one owning task; oppRadar intentionally has two.",
+        "Feeds populated with real data and 25 citations at time of writing."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,208 @@
+# Mac scheduled task descriptions (toolkitSnapshot doc, syncedAt 2026-09-16T00:52:24Z; counts {"agents": 172, "mcpConnected": 15, "mcpServers": 15, "running": 80, "skills": 1400, "tasks": 60, "tools": 127})
+
+- **access-audit-monthly** — First business morning of the month: Elena's access-auditor reviews who and what can read or write each store and connector, plaintext-secre
+- **automation-audit-quarterly** — The full seven-phase audit-and-remediate pass — nine parallel audit passes scored on output not execution, every Finding ID driven to resolv
+- **automation-audit-weekly** — Weekly seven-phase audit-and-remediate pass driven by the chief-automation-strategist agent, including the AI Agent Engineering Team stress-
+- **brain-deck-sync** — Copies every Second Brain row (name, summary, type, status, tags, link) from Notion into the Command Deck's secondBrain doc so Vanessa, Stev
+- **brain-learn-daily** — Distills Steven's own words (chat transcripts) and his personal Google Drive "Second Brain" folder into Second Brain rows; flagged items wai
+- **brain-weekly-verify** — Sunday review list for Steven: what the brain learned this week (Notion Inbox rows) plus sensitive items held back; re-indexes the Obsidian 
+- **calendar-daily-sync** — Pulls the next 7 days from Steven's business Google Calendars through the connector and writes the calendarSnapshot document, so the Command
+- **coach-weekly-recs** — Monday 7 AM: Maxwell, the broker mentor & coach, reviews the week's pipeline, showings, lead triage, ISA scorecard, kanban and licenses, and
+- **cpi-daily-scan** — Cheap daily OBSERVE + IDENTIFY pass — no subagents. Logs new, specific automation opportunities to the CPI Opportunity Log for Saturday's de
+- **fabric-deck-sync** — Keeps the Command Deck's knowledge-fabric tiles live — counts every store (Second Brain rows, vault notes, Jarvis documents, graph nodes, Ru
+- **feeds-market-close** — Weekday post-close refresh of the market feed and a second read on VA rates, using Perplexity. No API key.
+- **feeds-weekly** — Evening-tier feeds (builders, offers, PE defense, affluent, city news) refreshed daily via Perplexity on the Claude subscription. No API key
+- **health-coaching-weekly** — Sundays 6:30 AM - dispatches health-coach-analyst, fitness-trainer and meal-planner together against Steven's Apple Health data and his heal
+- **health-full-analysis** — Daily after the 5:10 AM sync: deep analysis of Steven's Apple Health data (trends, week-over-week, workouts, sleep, recovery, ECG/symptoms/s
+- **incentives-daily-scan** — Daily search for new and changed incentives, rebates, grants, credits, veteran benefits and promotions (Temecula/SW Riverside, San Diego Cou
+- **isa-comms-bridge-local** — Merges the shared message thread both ways. Narrowed from 24 hours to 7 AM–9 PM: the ISA works 12–4 PM, so overnight runs moved no messages 
+- **lead-triage-daily** — Reads Follow Up Boss through Composio for the last 24 hours of leads, measures first-response gaps against the 5-minute standard, lists lead
+- **local-bridge-queue** — Reads the Command Deck's localBridgeQueue and runs each queued verb through ~/Applications/local-bridge/run.sh, which enforces a read-only a
+- **loop-engineering-weekly** — The full self-improvement cycle: nine parallel audit passes, Nadia's disruption brief, the CTO Innovator's feasibility gate, the CPI and Sca
+- **month-end-close-prep** — On the 28th: Marcus's bookkeeper drafts the month-end close checklist from the dashboard's accounts, liabilities, income and (if present) Pl
+- **mortgage-desk-weekly** — Sunday: Harrison runs the mortgage desk with his declared hand-off partners in parallel, and every hand-off is recorded to the Command Deck 
+- **mortgage-rates-daily** — Weekdays 06:40 and 13:40, publishes the free daily mortgage-rate feed (Optimal Blue lock-based indices for conforming 30 and 15, FHA, VA, US
+- **nightly-self-test** — Cheap functional and integration check across every skill, task, agent and connector. Self-heals the routine breakage, sends real regression
+- **openrouter-credits-refresh** — Two writes each night. The credit balance runs through the local bridge and only reports a figure once a key is set. The council price table
+- **openrouter-feeds-refresh** — Daily-tier feeds (headlines, Bears, VA rates) refreshed via Perplexity on the Claude subscription. NO OpenRouter call is made and no API key
+- **openterminal-remote-queue** — Reads the Command Deck's openTerminalQueue document and runs each queued market lookup against the local OpenTerminal API through a strict a
+- **ops-knowledge-graph** — Graphs the dashboard export, playbooks, decisions and agent roster into the Obsidian vault so the team can query how things connect.
+- **r1-morning-brief** — One merged morning brief: calendar, ISA line, alerts, overnight leads, twin prep, top 3 decisions. Writes twinBrief and pushes to the phone.
+- **r10-automation-health** — Scores every routine and task on OUTPUT, not execution. Moved to 10:10 PM so it runs inside the hours the desktop app is actually open, and 
+- **r11-isa-kpi-compile** — Turns Follow Up Boss events into real KPI actuals on the ISA Portal: median first response, share of leads with a next task, overdue tasks.
+- **r12-inbox-triage** — Classifies Gmail into skip / info / meeting / action, writes reply drafts into Gmail Drafts, posts a short digest. Never sends.
+- **r13-appointment-prep** — About an hour before each meeting, pushes a one-page brief: who they are, CRM history, last touch, open items, three questions to ask.
+- **r14-content-pipeline** — Drafts the day's post, runs the compliance pass and queues it — moved to 5:45 AM so the draft is waiting before the day starts, and so it la
+- **r17-trading-day-log** — Asks for the day's daily-loss-limit triggers and account status, then computes drawdown against the 6–10 percent high-water-mark rule.
+- **r2-lead-response-watchdog** — Flags Follow Up Boss leads with no logged first contact against the 5-minute SLA, posts Urgent to the ISA line, escalates to Steven past 15 
+- **r20-weekly-review-local** — The Friday review moved onto the Mac so its findings write into Next Big Moves and the task board instead of only being emailed.
+- **r3-eod-rollup** — End-of-day roll-up and ISA nudge, moved to 10:20 PM: inside the app's real uptime window, and late enough to see the ISA's whole 12–4 shift 
+- **r4-quantvue-sync** — Re-reads the live QuantVue Google Sheet, writes strategySnapshot, and flags any strategy under −4% month to date.
+- **r5-rates-market-refresh** — Weekly mortgage rates, local market figures and active listing counts into one ratesSnapshot both dashboards read.
+- **r6-weekly-backup** — Exports both dashboard stores, a redacted copy of the Claude configuration, and the latest audit findings table + loop report to a dated fol
+- **r7-plaid-balances** — Bank balances twice daily instead of every 6 hours. Balances settle overnight, so four runs a day bought nothing, and two of the four fell o
+- **r8-apple-health-snapshot** — Twice daily: builds the Apple Health snapshot (90-day daily series, workouts, sleep, sources, symptoms/ECG/state-of-mind records) from the M
+- **r9-feed-freshness-sweep** — Re-runs the research passes for every dashboard feed marked Due and republishes through the safe checklist.
+- **revenue-scan-weekly** — Sunday: runs the four opportunity agents in parallel — refinance hunter, realtor reciprocity, predictive seller intelligence and borrower re
+- **runner-probe** — One harmless Command Deck write that proves a headless runner task can reach the deck database through the approver.
+- **showing-sync** — Works the Command Deck showing sync queue three times a day: creates calendar events and Follow Up Boss appointments for confirmed showings,
+- **skills-refresh-weekly** — Sundays 7:00 AM - audits every SKILL.md on this Mac (skills, scheduled tasks, plugin skills) for frontmatter that will not load, dead paths,
+- **steve-twin-sweep** — Runs Steven's digital twin locally three times each weekday: works the Command Deck twin queue by tier, does the standing prep/content work,
+- **strava-daily-sync** — Pulls recent Strava activities through the connector and writes the stravaSnapshot document, so the Strava panel refreshes daily instead of 
+- **toolkit-deck-sync** — Twice daily: builds the toolkitSnapshot document (tools, agents, skills, scheduled tasks, MCP servers) from what is installed on the Mac and
+- **vanessa-discord-inbox** — Answers Discord questions queued by the local bot, as Vanessa with full deck and agent access, and posts replies back through the same bot.
+- **vanessa-imessage-inbox** — Polls Inkbox for inbound iMessages from Steven, answers as Vanessa using the AI team, replies on the same thread, and logs to the Command De
+- **vanessa-morning-brief-text** — Texts Steven a short morning brief as Vanessa, delivered over the Inkbox iMessage channel, composed from the Command Deck's real documents.
+- **vanessa-ops-review** — Fridays: Vanessa orchestrates Victor, Marcus, Derek and Elena in parallel, plus one rotating deep-dive seat, writes the brief and decisions 
+- **vanessa-research-queue** — Reads the Command Deck's vanessaResearch document, researches every queued question with Perplexity and the AI team, and writes the answers 
+- **vanessa-significant-alerts** — Texts Steven only genuinely significant new items as Vanessa — money at risk, a deadline inside 48h, client/licence exposure, or a security 
+- **vanessa-sweep** — Vanessa's local queue sweep, three times a day, weekdays — the same operating rhythm as the Steve twin's sweep, but for orchestration-sized 
+- **voice-reply-render** — Reads the Command Deck's voiceReplyQueue, renders each new Vanessa or Steve chat reply in that persona's own voice with Magica Seed Audio (f
+- **weather-news-refresh** — Weather and news snapshots twice daily. Cut from 3x to 2x because the midday and 5:45 PM slots sat outside the hours the desktop app is open
+- **weekly-self-update** — Friday 4 PM audit of what ran this week across routines, desktop tasks, the twin, agents and feeds; writes ≤5 improvement proposals with hum
+
+## MCP servers on the Mac
+- plugin:ruflo-core:ruflo: connected
+- perplexity: connected
+- filesystem: connected
+- fetch: connected
+- memory: connected
+- git: connected
+- tradingview: connected
+- apple-health: connected
+- apination: connected
+- openrouter: connected
+- openterminal: connected
+- lofty: connected
+- notion-brain: connected
+- apple-health-xml: connected
+- health-export: connected
+
+## Tools index (id · category · description)
+- **ruflo** (AI orchestration) · status=RUN · Swarm orchestration CLI. 45 ruflo-* plugins installed; claude-flow MCP server in ~/Applications/.mcp.json. CLI runs on node@22 through ~/.local/bin/ruflo (Node 24.19 aborts every short-lived run, node
+- **omniroute** (AI orchestration) · status=RUN · Smart AI router with auto-fallback across providers. Web UI on port 20128 once started. Health probe: GET /healthz (lightweight) or /api/health, both 200; there is no /health route (404, measured 2026
+- **graphify** (AI orchestration) · status=RUN · Turns any input into a knowledge graph. Also the /graphify skill and graphify-mcp server.
+- **langflow** (AI orchestration) · status=RUN · Visual agent and workflow builder (source checkout). Starts on port 7860.
+- **freellmapi** (AI orchestration) · status=— · Aggregates 34 free LLM providers behind one OpenAI-compatible /v1 endpoint.
+- **event-driven-autonomous-loop** (AI orchestration) · status=— · Starter kit that keeps a coding agent working: durable work queue, completion-triggered wake, continue-instead-of-stall stop hook.
+- **steve-twin** (AI orchestration) · status=— · Digital-twin skill with 3-tier delegation (twinQueue, twinLog, twinBrief). Packaged as steve-twin.skill.
+- **kronos** (Trading & finance) · status=RUN · Foundation model for financial market K-lines. Web UI for forecasts and fine-tuning on port 7070.
+- **ai-hedge-fund** (Trading & finance) · status=RUN · Claude equity research committee: scout, technical, fundamental, news, quant, risk, portfolio manager. Also the /ai-hedge-fund-team command and a cloud routine.
+- **tradingview-claude** (Trading & finance) · status=RUN · Relaunches TradingView Desktop with the debug port so Claude can drive charts directly. Run this first, then use the tradingview MCP.
+- **tradingview-mcp** (Trading & finance) · status=RUN · 84 tools for reading and controlling a live TradingView chart. Registered as user-scope MCP 'tradingview'; starts automatically with Claude.
+- **grok-bot-desk** (Trading & finance) · status=RUN · One-person trading desk: six LLM roles file reports each cycle, Head of Desk decides whether to alert.
+- **ai-job-search** (Career) · status=— · Local-first job search run by Claude Code: CV, cover letters, company research, scraper, salary lookup. Open the folder in Claude and ask.
+- **estorides** (OSINT & security) · status=RUN · OSINT platform: entities, signals, fusion store with provenance.
+- **claude-osint** (OSINT & security) · status=— · 8 Claude OSINT skills, 80 secret regexes, 80+ dorks, 27 attack-path templates.
+- **tookie-osint** (OSINT & security) · status=RUN · Username and account recon across sites.
+- **bbot** (OSINT & security) · status=RUN · Recursive internet scanner and recon framework.
+- **strix** (OSINT & security) · status=RUN · Agentic security testing CLI.
+- **agent-reach** (OSINT & security) · status=RUN · Gives agents reach into external platforms.
+- **apple-health-mcp** (Health) · status=RUN · Health Auto Export → ingest daemon (LaunchAgent, port 8765) → DuckDB → apple-health MCP. Ask Claude about steps, sleep, workouts.
+- **heretic** (Media & other) · status=RUN · Automatic censorship removal for transformer LLMs.
+- **screenshot-to-code** (Media & other) · status=— · Turns screenshots into code (frontend + backend, docker-compose).
+- **iptv** (Media & other) · status=— · iptv-org collection of public channels (index.m3u).
+- **media-inference-worker** (Media & other) · status=— · Old media pipeline test client. Credit balance unknown.
+- **mcp-perplexity** (MCP servers) · status=— · User scope. npx @perplexity-ai/mcp-server. Source checkout in ~/mcp-servers/perplexity.
+- **mcp-filesystem** (MCP servers) · status=— · User scope. Reference filesystem server rooted at home.
+- **mcp-fetch** (MCP servers) · status=— · User scope. uvx mcp-server-fetch.
+- **mcp-memory** (MCP servers) · status=— · User scope. Knowledge-graph memory server.
+- **mcp-git** (MCP servers) · status=— · User scope. uvx mcp-server-git.
+- **mcp-tradingview** (MCP servers) · status=— · User scope. node ~/tradingview-mcp/src/server.js. Needs TradingView running with CDP.
+- **mcp-apple-health** (MCP servers) · status=— · User scope. Python module in apple-health-mcp/.venv.
+- **mcp-claude-flow** (MCP servers) · status=— · Project scope (~/Applications/.mcp.json). npx ruflo mcp start, hierarchical-mesh, 15 agents.
+- **mcp-magica** (MCP servers) · status=— · HTTP MCP at inference.magica.com for image, video and TTS. Sofia directs, Steve renders.
+- **cfg-agents** (Claude config) · status=— · Subagent definitions: planner, architect, code-reviewer, hedge-fund committee, and more.
+- **cfg-commands** (Claude config) · status=— · Slash commands: /ai-hedge-fund-team, /graphify, /code-review, /hookify, sparc, swarm, hive-mind.
+- **cfg-mcp** (Claude config) · status=— · ~/.claude.json (user MCPs), ~/Applications/.mcp.json, Claude Desktop config. Symlinked under mcp/.
+- **cfg-bin** (Claude config) · status=RUN · ~/.local/bin: graphify, bbot, tookie-osint, heretic, strix, agent-reach, skillspector, composio, uv, poetry. ~/.npm-global/bin: claude, omniroute, ruflo, pnpm.
+- **awesome-llm-apps** (Reference) · status=— · Example LLM app collection from Unwind AI.
+- **awesome-mcp-servers** (Reference) · status=— · Curated MCP server directory.
+- **mcp-reference-servers** (Reference) · status=— · Official modelcontextprotocol/servers repo.
+- **public-apis** (Reference) · status=— · public-apis list.
+- **plaid-bridge** (Trading & finance) · status=— · Plaid banking-data bridge (Python, being built 2026-09-08; see pyproject.toml). Set up .env from .env.example first.
+- **apination-bridge** (MCP servers) · status=RUN · MCP bridge to API Nation: trigger workflows, read pushed webhook events into a local inbox
+- **command-deck-backups** (Reference) · status=— · Dated JSON exports of both dashboard stores (Command Deck + ISA Portal), written by the Sunday /deck-backup task and pruned to twelve weeks. Currently empty.
+- **ops-graph-corpus** (Reference) · status=— · Corpus folder the /ops-graph skill builds the operation knowledge graph from (dashboard stores, playbooks, memos, AI Team roster) into the Obsidian vault. Currently empty.
+- **fub-followups** (Claude config) · status=— · Rewritten client follow-up library for Follow Up Boss — texts, emails, VA/military sequences, cadences + audit of the 393 inherited templates
+- **james-wealth** (AI orchestration) · status=— · James — Wealth Advisor Mentor / Family Office persona skill (standalone, packaged as james-wealth.skill)
+- **automation-audit** (Notable skills) · status=RUN · Chief Automation Strategist: four-phase audit-and-remediate over the whole automation ecosystem, scored on output not execution; produces the Master Findings Table the weekly loop works against
+- **ai-ecosystem-backup** (Notable skills) · status=RUN · Weekly, verified backup of both dashboards, Claude config (secrets redacted) and the latest audit/loop reports to ~/Documents/AI-Ecosystem-Backups/; integrity check, one retry, 8-week retention
+- **continuous-process-improvement** (Notable skills) · status=RUN · Standing OBSERVE/IDENTIFY/RECOMMEND/IMPLANT/MEASURE engine for finding new automation opportunities; daily light scan + Saturday deep scan inside the weekly loop; feeds cpiOpportunityLog
+- **llm-council-skill** (AI orchestration) · status=— · Karpathy-style 5-advisor council skill: peer-reviewed, chairman-synthesized verdict on any decision. Extended here to spawn the AI Team C-suite (Marcus/Sofia/Derek/Alexandra/Nadia/Victor/Elena) as adv
+- **llm-council-app** (AI orchestration) · status=RUN · Karpathy's local multi-model council web app (FastAPI + React): GPT-5.1, Gemini 3 Pro, Claude Sonnet 4.5 and Grok 4 via OpenRouter answer independently, peer-review each other anonymously, then a chai
+- **team-avatars** (Notable skills) · status=RUN · Visual + voice identity for the AI Team: 22 personas with original portraits (Magica flux-2-max) and real catalog voices, rendered as lip-synced talking-avatar video on demand. Live/real-time avatar i
+- **arcads-claude-code** (Notable skills) · status=RUN · Arcads AI video/image ad-creative agent skill pack (Seedance, Sora, Veo, Kling, Nano Banana) for Claude Code / Cursor
+- **free-claude-code** (AI orchestration) · status=RUN · Local proxy (FCC) routing the official Claude Code CLI (and other agent CLIs) through free/alt model providers; installed Claude-Code-only via fcc-claude/fcc-server
+- **watermarks-remover** (Notable skills) · status=RUN · Strips multi-vendor AI provenance marks (invisible Unicode, C2PA/EXIF/XMP, statistical text watermarks) from files; installed as Claude plugin w/ auto-clean PostToolUse hook + LaunchAgent service on :
+- **gods-eye-view** (AI orchestration) · status=RUN · OSINT 3D globe: live flights/ships/satellites/earthquakes/CCTV, voice control (Cesium+Vite)
+- **scale-growth-engine** (Notable skills) · status=RUN · Automate-Delegate-Replicate capacity engine: three lenses on every workflow (handle 5x volume, map to a confirmed owner, package as a reusable template), Scale Opportunity Log + Growth Roadmap, weekly
+- **linkedin-scraper** (python) · status=RUN · Async Playwright-based LinkedIn scraper for profiles, companies, jobs (joeyism)
+- **linkedin-mcp-server** (mcp) · status=RUN · MCP server exposing LinkedIn profiles/companies/jobs to Claude via browser session (stickerdaniel)
+- **isa-daily-playbook** (Notable skills) · status=RUN · ISA daily playbook — Mon–Fri 12–4 PM theme-day schedule (VIP-50 / status / leads / past clients / new business), hourly blocks, Greatness Tracker two-track targets, VIP-50 filter; adapted from Rick Ru
+- **dashboard-selftest** (Notable skills) · status=RUN · Runs a published dashboard's real HTML in a real DOM (jsdom) and reports load-time throws plus per-region render status — the only check that catches a silent JS regression that empties half a dashboa
+- **ponytail** (Notable skills) · status=RUN · Claude Code plugin (ponytail@ponytail, v4.9.0): 'lazy senior dev' mode. 6 skills + 3 hooks forcing YAGNI/stdlib-first, shortest-solution-that-works. Levels: /ponytail lite|full|ultra|off.
+- **agent-skills** (Notable skills) · status=RUN · Claude Code plugin (agent-skills@addy-agent-skills, v0.6.9) by Addy Osmani: 34 SDLC skills + 4 agents. Commands /spec /plan /build /test /review /ship /constraints /webperf /code-simplify.
+- **openrouter-bridge** (MCP servers) · status=RUN · OpenRouter bridge: credits meter, research tiers (quick/reason/deep), and a council fan-out that runs GPT/Gemini/Grok/Llama as outside council seats. council-estimate prices a run with no API key. Key
+- **awesome-ai-tools-for-ui** (reference) · status=— · Curated README list of AI tools for building UI/UX (skills, apps, MCP servers, design tools)
+- **ui-ux-pro-max-skill** (skill) · status=RUN · Claude skill: searchable design intelligence — 79 UI styles, 192 color palettes, 74 font pairings, 119 UX guidelines, 25 chart types across 22 stacks
+- **claude-fable-5.1** (AI orchestration) · status=RUN · Local Ollama model 'claude-fable-5.1': llama3.1:8b with the Claude Fable 5.1 system-prompt reference (reference.md) baked in as SYSTEM via Modelfile. Swap FROM in the Modelfile to change the base.
+- **awesome-freellm-apis** (reference) · status=— · Curated index of 480+ free LLM APIs from 31 providers; live at freellm.net with a model browser, playground and config generator.
+- **harper** (Media & other) · status=RUN · Offline grammar and spell checker (Automattic). harper-cli + harper-ls language server; browser/VS Code/Obsidian clients install separately.
+- **actual-budget** (Trading & finance) · status=RUN · Local-first envelope budgeting (the free Mint). Budget file stays on this Mac; no free automatic bank sync - import CSV.
+- **apple-design** (Notable skills) · status=— · Emil Kowalski's skill encoding Apple's design and motion guidance: typography, springs, interruptible motion, translucency. Not an Apple release.
+- **commerce-builder** (Claude config) · status=— · Anthropic's open-source shopping + merchant agents. /scaffold-commerce-agent builds one against a real store; demo needs ANTHROPIC_API_KEY.
+- **diagram-design** (Claude config) · status=— · 27 diagram types as self-contained HTML+SVG, matched to your brand colours. PNG export needs a one-time playwright+chromium install.
+- **google-skills** (Claude config) · status=— · Google's own 223 skills. 17 GCP data plugins are installable; the Ads (14) and Analytics (2) skills are plain dirs - 5 copied into ~/.claude/skills.
+- **rembg** (Media & other) · status=RUN · Local background remover, transparent PNG out, nothing uploaded. Default BRIA RMBG 2.0 needs a paid licence commercially - use -m birefnet-general to stay free.
+- **career-ops** (Career) · status=— · Scans job portals, grades every listing 1-5, tailors the CV, tracks applications. Needs cv.md + config/profile.yml before first run.
+- **openmontage** (Media & other) · status=— · AI video studio driven from Claude Code: 11 pipelines, scripts/narrates/edits/renders with approval gates. Base is free and offline; cloud clips need keys in .env.
+- **moneyprinterturbo** (Media & other) · status=— · Topic in, finished captioned HD short out. Deps installed in .venv. Needs your own LLM API key in config.toml; Edge TTS and Pexels footage are free.
+- **docuseal** (Media & other) · status=— · Open-source DocuSign: drop fields on a PDF, multi-signer, audit trail. Self-hosting needs Docker (NOT installed on this Mac) or a Ruby setup.
+- **cap** (Media & other) · status=RUN · Screen recorder (open-source Loom), recordings stay local. Free tier caps at 5 min and personal use; commercial desktop licence is $29/yr.
+- **openwork** (AI orchestration) · status=RUN · Desktop GUI where an agent does real work on this Mac. Powered by opencode, not Claude itself - needs your own model key or plan.
+- **cloudflare-computer** (Reference) · status=— · Persistent filesystem plus container/shell/JS sandboxes for agents, state kept in a database. Preview only, APIs unstable - read it, don't build on it.
+- **cloudflare-os** (AI orchestration) · status=— · Cloudflare's internal agent workspace: agent chat with company context, sandboxed gadget apps, Gatekeepers security layer. pnpm run-local then :8787.
+- **quill** (Media & other) · status=RUN · Local meeting recorder: mic and system audio as two tracks so the transcript knows who spoke, on-device. Output in ~/Recordings. First run pulls ~600MB of models.
+- **parrot** (Media & other) · status=RUN · Hold-Fn dictation, fully on-device via the Neural Engine; text types in at the cursor. Run 'parrot setup' once for mic + accessibility. Unsigned build.
+- **claude-obsidian** (Claude config) · status=— · 15 skills that turn an Obsidian vault into a second brain that writes itself: ingests PDFs/links/video, cites sources, links notes. Open as a vault, run Claude Code inside.
+- **obsidian** (Claude config) · status=RUN · Markdown knowledge base over a local folder. Installed as the dependency claude-obsidian needs.
+- **notebooklm** (AI orchestration) · status=— · Second brain in NotebookLM/Gemini Notebook, driven through Claude in Chrome (no API exists). /notebooklm pushes notes and asks the notebook.
+- **openterminal** (Trading & finance) · status=RUN · Bloomberg-style market terminal on free public data (Nasdaq/Yahoo/TradingView/CoinGecko/FRED), no API keys. Charts, screener, heatmap, options, crypto, macro, portfolio (SQLite). Web on :3000, API on 
+- **openterminal-daemon** (Trading & finance) · status=RUN · LaunchAgent keeping OpenTerminal alive (API :4000, web :3000) so its market feeds stay up across reboots; snapshot.sh pushes a tape to the Command Deck
+- **openterminal-mcp** (Trading & finance) · status=RUN · Local MCP server (user scope) wrapping the OpenTerminal API as host:openterminal — read-only market_tape + market_quotes; lets the Command Deck artifact pull LIVE market data through the Claude connec
+- **whisper** (Media & other) · status=RUN · OpenAI Whisper speech-to-text. CLI installed via uv from this checkout; models download on first use. Backs the /watch skill's transcription fallback.
+- **yt-dlp** (Media & other) · status=RUN · Video/audio downloader. Source checkout; the runnable binary is Homebrew's yt-dlp 2026.08.19 already on PATH.
+- **penpot-mcp** (MCP servers) · status=RUN · Penpot MCP server + Penpot plugin. Built (mcp-server/dist/index.js). Not yet registered in any .mcp.json.
+- **n8n** (Self-hosted apps) · status=RUN · Workflow automation / AI agent builder. Built from source (v2.39.0, 70/70 tasks); sqlite3 native module rebuilt against Python 3.11. Editor on :5678.
+- **fooocus** (Media & other) · status=RUN · Stable Diffusion image generation, no-prompt-engineering UI. Python 3.11 venv with torch 2.14 (MPS available). Checkpoints (~6GB) download on first launch.
+- **bitwarden-server** (Self-hosted apps) · status=RUN · Self-hosted Bitwarden password manager backend (.NET 10). Api + Identity build clean. Running it needs SQL Server plus an installation id/key from bitwarden.com; util/RustSdk needs cargo (not installe
+- **cal-diy** (Self-hosted apps) · status=RUN · Cal.com scheduling monorepo (cal.diy variant). Deps installed via Yarn 4. Needs PostgreSQL >=13 + .env before 'yarn dev' (web on :3000).
+- **plausible** (Self-hosted apps) · status=RUN · Plausible privacy-friendly web analytics (Elixir/Phoenix). Elixir 1.20 installed, mix deps fetched. Needs PostgreSQL + ClickHouse to run (no local Docker).
+- **appflowy** (Self-hosted apps) · status=RUN · AppFlowy open-source Notion alternative. Installed as the prebuilt desktop app via Homebrew cask (v0.14.2); source clone at ~/Applications/repos/AppFlowy for reference.
+- **cfg-skills** (Claude config) · status=— · 1396 skill dirs. Most are Composio *-automation; the rest hand-installed (graphify, steve-twin, gstack, osint-*, deep-research, ui-ux-pro-max, apple-design).
+- **cfg-plugins** (Claude config) · status=— · 52 plugins installed: claude-code-setup, developer-essentials, python-development, javascript-typescript, full-stack-orchestration, watch, apple-health-sync, linkedin-skills, ponytail, agent-skills, 4
+- **local-bridge** (Automation) · status=RUN · Allow-listed read-only bridge letting the Command Deck run local lookups remotely (mcp, services, tasks, toolbox, agents, skills, vault, backup, market, health) via the localBridgeQueue document
+- **lofty-bridge** (CRM) · status=RUN · Local read-only MCP bridge over the Lofty CRM REST API (leads list/search/get, activity timeline, status). Key from Settings→Integrations→API in ~/.config/lofty/.env. Replaces FUB once live.
+- **alex-life-marketplace** (Health) · status=— · Claude plugin marketplace (body/mind/work/lifestyle/relationships); local branch apple-health rewires body skills to the apple-health MCP
+- **healthai** (Health) · status=RUN · healthai CLI: chat with an Apple Health export.xml via any LLM (pipx, local clone)
+- **apple-health-parser** (Health) · status=RUN · Parse/plot Apple Health export.zip; CLIs apple-health-parser-export and -year-recap (pipx)
+- **health-export-mcp** (Health) · status=RUN · Zero-dep Apple Health MCP for the MetricBridge iOS app (iCloud folder); MCP name health-export
+- **apple-health-xml-mcp** (Health) · status=RUN · Momentum Apple Health MCP (DuckDB backend) over export.xml; MCP name apple-health-xml. Empty until an export is imported.
+- **notion-brain-mcp** (mcp) · status=RUN · Live READ-ONLY Second Brain access for every agent: official @notionhq/notion-mcp-server 2.5.1 over stdio, token from a 600 file (save-token.sh); registered user-scope as notion-brain
+- **brain-learner** (automation) · status=RUN · Captures Steven's own words from Claude Code transcripts (redacted, incremental) for /brain learn; launchd com.stevenshearrill.brainlearner at 12:05 and 21:05
+- **discord-bridge** (automation) · status=RUN · Reply path for Vanessa on Discord: post.sh --file hands text to the Vanessa bot's outbox (no webhook needed); incoming webhook kept only as a fallback
+- **vanessa-discord-bot** (automation) · status=RUN · Private Discord bot for talking to Vanessa: relay mode (no API key) queues #vanessa messages for the answering task and posts her replies from its outbox. Fail-closed allowlist, LaunchAgent. Needs a D
+- **voice-reply** (automation) · status=RUN · Vanessa & Steve full replies in their own voices: chunk text, encode Magica Seed Audio renders into <=250 KB Command Deck docs, or concat into one voice note for Discord/iMessage. Used by the voice-re
+- **task-watchdog** (automation) · status=RUN · No-LLM watchdog outside the scheduled-task pool: flags HUNG / NO_OUTPUT runs, stale backup, silent vault; writes ~/.claude/state/watchdog.json (LaunchAgent template, not installed)
+- **openjarvis** (AI orchestration) · status=RUN · Personal on-device AI (OpenJarvis). Rust memory store BUILT 2026-09-13; indexes the Obsidian vault + redacted Drive brain folder into ~/.openjarvis/memory.db; local llama3.1:8b via Ollama
+- **claude-fallback** (AI orchestration) · status=RUN · claude-auto: Claude subscription first; when its limit is hit, Claude Code runs on FREE providers via OmniRoute (loopback :20128, combo free-only) with a client-data guard hook; back to the subscripti
+- **cli-anything** (AI orchestration) · status=RUN · CLI-Anything (HKUDS, MIT) Claude Code plugin: generates agent-friendly CLIs from source code or an API spec (/cli-anything). Commands only, no hooks
+- **agent-lint** (AI orchestration) · status=RUN · Lints all 169 ~/.claude/agents/*.md for frontmatter, standing blocks, dangling hand-offs, least-capability and duplicate-domain; emits roster-tiers.json for Vanessa's dispatch caps
+- **vanessa-live** (AI orchestration) · status=RUN · Vanessa Live: the front door. 'vanessa' starts a Remote Control session as agent vanessa-orchestrator on the Claude subscription (phone via Claude app > Code); CLAUDE.md carries the live rules, .claud
+- **claude-runner** (Automation) · status=RUN · claude-runner: runs the scheduled AI tasks headlessly (claude -p) outside the desktop app's approval pool, so nothing waits for a click. Supervisor LaunchAgent com.stevenshearrill.claude-runner fires 
+- **lofty-cli** (CRM) · status=RUN · Lofty's official CLI (npm @loftyai/lofty-cli): leads, tasks, listings, transactions from the terminal. Sign in once with 'lofty-cli auth login' (your Lofty login or API key from Settings > Integration
+- **rates-feed** (Trading & finance) · status=RUN · Free daily mortgage rates for every loan type (Optimal Blue conforming 30/15, FHA, VA, USDA, jumbo; Freddie Mac PMMS; 10-yr Treasury) from FRED's keyless CSV. Plain Python LaunchAgent 06:30/13:30, no 
+- **runnerctl** (Automation) · status=RUN · runnerctl: control the no-approval task runner — status, list, run <task>, dry <task>, pause/resume, logs, login (claude auth login), save-token (setup-token, hidden input), restart. Supervisor Launch
+- **vanessa** (cli) · status=RUN · Vanessa Live launcher: claude-auto --remote-control 'Vanessa' --agent vanessa-orchestrator (Fable 5.1 masterminds, subagents on their own model). Phone: Claude app → Code → session Vanessa.
+- **orca** (AI orchestration) · status=RUN · Orca Computer Use (Stably AI) v1.4.203, bundle com.stablyai.orca -- standalone computer-use/browser-automation desktop app. Not integrated with Claude Code: no MCP or API of its own found, not registe

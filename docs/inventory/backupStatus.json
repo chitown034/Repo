@@ -1,0 +1,53 @@
+{
+  "v": {
+    "currency": "current",
+    "docs": 7931,
+    "history": [
+      {
+        "at": "2026-09-12T20:25:00Z",
+        "docs": 6736,
+        "integrityCheck": "pass",
+        "lastBackup": "2026-09-12",
+        "restoreTest": "pass",
+        "retried": false,
+        "sizeBytes": 89213178
+      },
+      {
+        "at": "2026-09-13T22:55:00Z",
+        "docs": 6782,
+        "integrityCheck": "pass",
+        "lastBackup": "2026-09-13",
+        "retried": false,
+        "sizeBytes": 89942579
+      },
+      {
+        "at": "2026-09-15T03:48:16Z",
+        "docs": 7931,
+        "integrityCheck": "pass",
+        "lastBackup": "2026-09-14",
+        "restoreTest": "pass",
+        "retried": false,
+        "sizeBytes": 109378368
+      }
+    ],
+    "integrityCheck": "pass",
+    "lastBackup": "2026-09-14",
+    "path": "~/AI-Ecosystem-Backups/2026-09-14",
+    "restoreTest": {
+      "at": "2026-09-15T03:48:16Z",
+      "checks": 13,
+      "failed": 0,
+      "note": "13/13 pass; selected by backup.py latest, which now refuses a folder whose integrityCheck is not pass",
+      "source": "2026-09-14"
+    },
+    "retried": false,
+    "sameDiskOnly": true,
+    "sizeBytes": 109378368,
+    "stores": {
+      "commandDeck": 161,
+      "isaPortal": 13
+    },
+    "syncedAt": "2026-09-15T03:48:16Z",
+    "weeksKept": 3
+  }
+}

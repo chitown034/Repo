@@ -1,0 +1,221 @@
+  <!-- PANEL: ORCHESTRATION & LOOP ENGINEERING -->
+  <section class="panel" id="panel-orchestration" data-page="orchestration">
+    <div class="panel-head">
+      <span class="panel-tag">PANEL&nbsp;39</span>
+      <h2 class="panel-title">Orchestration &amp; Loop Engineering</h2>
+      <p class="panel-note">Findings · stress tests · CPI · scale · trust gates · weekly loop</p>
+    </div>
+
+    <div class="callout" style="margin-bottom:18px;">
+      <b>What this panel is.</b> One place for the machinery that keeps the rest of the dashboard honest: every audit finding
+      with its resolution, every stress test with its re-test, the improvement and scale logs, the trust level of each
+      automated loop, and the weekly brief. Every table below reads a live document. A table that is empty says which
+      task was supposed to fill it — an empty table is never dressed up as a clean bill of health.
+      <ul>
+        <li><b>Writes happen on the Mac.</b> An unattended cloud routine cannot reliably write this page's database or republish the page; both park on an approval nobody is there to give. Cloud routines research, test and report; the Mac's <code>claude-runner</code> tasks write.</li>
+        <li><b>Output, not execution.</b> A loop counts as working only when the document it owns actually got fresher. "The task ran" is not the measure.</li>
+      </ul>
+    </div>
+
+    <h3 class="section-label collapsible" data-secnum="39.1">Cycle status</h3>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title-row">
+        <div>
+          <p class="card-title">Loop cycle — headline numbers</p>
+          <p class="card-sub" style="margin:0;">Read from <code>auditFindings</code>, <code>stressTestReport</code>, <code>trustLevels</code> and <code>backupStatus</code>. Nothing here is typed by hand.</p>
+        </div>
+        <span class="badge gray" id="orchCycleBadge">—</span>
+      </div>
+      <div class="tk-tiles" id="orchTiles"></div>
+      <p class="src-note" id="orchCycleNote" style="margin-top:8px;"></p>
+    </div>
+
+    <h3 class="section-label collapsible" data-secnum="39.2">Master Findings Table</h3>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title-row">
+        <div>
+          <p class="card-title">Every finding, with what was actually done about it</p>
+          <p class="card-sub" style="margin:0;">Finding ID · Category · Description · Priority · Effort · Status · Resolution · Test result · Date resolved · Owner. Escalated rows are the ones waiting on Steven.</p>
+        </div>
+        <span class="badge gray" id="orchFindBadge">—</span>
+      </div>
+      <div class="kanban-filter" id="orchFindFilter" role="group" aria-label="Filter findings"></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Category</th><th>Finding</th><th>Pri</th><th>Eff</th><th>Status</th><th>Resolution</th><th>Test</th><th>Resolved</th><th>Owner</th></tr></thead>
+          <tbody id="orchFindRows"></tbody>
+        </table>
+      </div>
+      <p class="src-note" id="orchFindNote" style="margin-top:8px;"></p>
+    </div>
+
+    <h3 class="section-label collapsible" data-secnum="39.3">Stress Test Report</h3>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title-row">
+        <div>
+          <p class="card-title">AI Agent Engineering Team — what broke, and whether the fix held</p>
+          <p class="card-sub" style="margin:0;">Volume · edge case · failure injection · concurrency · backup and recovery. Nothing is marked Resolved until it passes the same test that originally broke it.</p>
+        </div>
+        <span class="badge gray" id="orchStressBadge">—</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Capability</th><th>Test type</th><th>Result</th><th>Weakness found</th><th>Engineer</th><th>Fix applied</th><th>Re-test</th><th>Status</th></tr></thead>
+          <tbody id="orchStressRows"></tbody>
+        </table>
+      </div>
+      <p class="src-note" id="orchStressNote" style="margin-top:8px;"></p>
+    </div>
+
+    <h3 class="section-label collapsible" data-secnum="39.4">CPI Opportunity Log</h3>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title-row">
+        <div>
+          <p class="card-title">Continuous process improvement — observe, identify, recommend, implant, measure</p>
+          <p class="card-sub" style="margin:0;">Daily light scan and weekly deep scan. An item only counts as Measured once a real before-and-after number is recorded; an implanted item with no measurement is flagged Unproven, not Done.</p>
+        </div>
+        <span class="badge gray" id="orchCpiBadge">—</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Date</th><th>Opportunity</th><th>Evidence</th><th>Expected saving</th><th>Complexity</th><th>Status</th><th>Measured</th></tr></thead>
+          <tbody id="orchCpiRows"></tbody>
+        </table>
+      </div>
+      <p class="src-note" id="orchCpiNote" style="margin-top:8px;"></p>
+    </div>
+
+    <h3 class="section-label collapsible" data-secnum="39.5">Scale Opportunity Log — Automate, Delegate, Replicate</h3>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title-row">
+        <div>
+          <p class="card-title">Handling five to ten times the volume without five to ten times the effort</p>
+          <p class="card-sub" style="margin:0;">Automate for scale, then delegate to a named owner, then package what works as a reusable template. A delegation with no confirmed receiving owner is a halt condition, not a plan.</p>
+        </div>
+        <span class="badge gray" id="orchScaleBadge">—</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Date</th><th>Opportunity</th><th>Lens</th><th>Delegate target</th><th>Capacity impact</th><th>Status</th></tr></thead>
+          <tbody id="orchScaleRows"></tbody>
+        </table>
+      </div>
+      <p class="src-note" id="orchScaleNote" style="margin-top:8px;"></p>
+    </div>
+
+    <h3 class="section-label collapsible" data-secnum="39.6">Trust graduation and halt conditions</h3>
+    <div class="grid grid-2" style="margin-bottom:16px;">
+      <div class="card">
+        <div class="card-title-row">
+          <div>
+            <p class="card-title">Trust level of every active loop</p>
+            <p class="card-sub" style="margin:0;">L1 report only → L2 assisted, approval before execution → L3 unattended. Promotion needs a full week of correct runs. Nothing jumps straight to L3.</p>
+          </div>
+          <span class="badge gray" id="orchTrustBadge">—</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Loop</th><th>Level</th><th>Streak</th><th>Gate to next level</th><th>Owner</th></tr></thead>
+            <tbody id="orchTrustRows"></tbody>
+          </table>
+        </div>
+        <p class="src-note" id="orchTrustNote" style="margin-top:8px;"></p>
+      </div>
+      <div class="card">
+        <p class="card-title">Halt conditions — these always come to Steven first</p>
+        <p class="card-sub" style="margin-top:0;">A loop that meets any of these stops and produces a decision packet instead of acting. This list is fixed; a routine cannot widen its own authority.</p>
+        <ul class="simple-list">
+          <li>Anything irreversible: deleting data, sending an outside message, moving money.</li>
+          <li>Any change touching a system outside the task's defined scope.</li>
+          <li>Any loop without a clear, checkable success condition.</li>
+          <li>Any Chief AI Officer or CTO Innovator "replace or rebuild" recommendation before it has cleared L1 to L2 to L3.</li>
+          <li>Any improvement or scale change whose measured impact came back negative.</li>
+          <li>Any delegation that hands work off without a confirmed receiving owner.</li>
+          <li>Any capability that fails the same stress test twice in a row.</li>
+        </ul>
+        <p class="src-note" style="margin-top:8px;">Every change leaves a reviewable entry: the continuous improvement log on Process Excellence, the findings table above, and the loop log this panel reads.</p>
+      </div>
+    </div>
+
+    <h3 class="section-label collapsible" data-secnum="39.7">Weekly Brief</h3>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title-row">
+        <div>
+          <p class="card-title">Disruption, innovation, improvement, scale, stress tests and backup — one brief</p>
+          <p class="card-sub" style="margin:0;">Written by the weekly loop. Each section names its owner so a thin section is visibly somebody's gap rather than a quiet week.</p>
+        </div>
+        <span class="badge gray" id="orchBriefBadge">—</span>
+      </div>
+      <div id="orchBriefBody"></div>
+      <p class="src-note" id="orchBriefNote" style="margin-top:8px;"></p>
+    </div>
+
+    <h3 class="section-label collapsible" data-secnum="39.8">Rollout roadmap</h3>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title-row">
+        <div>
+          <p class="card-title">Quick wins, mid-term, long-term</p>
+          <p class="card-sub" style="margin:0;">Sorted from the findings table by priority against effort. Quick wins are P1 or P2 at small effort; long-term is large effort or work that depends on somebody else first.</p>
+        </div>
+        <span class="badge gray" id="orchRoadBadge">—</span>
+      </div>
+      <div class="grid grid-3" id="orchRoadmap"></div>
+      <p class="src-note" id="orchRoadNote" style="margin-top:8px;"></p>
+    </div>
+
+    <h3 class="section-label collapsible" data-secnum="39.9">Architecture — how the layers actually connect</h3>
+    <div class="card" style="margin-bottom:16px;">
+      <p class="card-title">Steven at the top; everything below drafts, tests and recommends</p>
+      <p class="card-sub" style="margin-top:0;">Read top to bottom. An arrow means "dispatches and receives back", never "acts on your behalf". Sending, signing, spending, booking, trading and every licensed call stay with Steven.</p>
+      <pre class="tk-out" style="max-height:none;" id="orchArch">STEVEN  (principal — every licensed decision, every approval)
+   │
+   ├── VANESSA — Chief of Staff, orchestrator, single point of contact
+   │      │   decomposes a goal → dispatches in parallel → resolves conflicts → returns ONE brief
+   │      │   masterminding on Claude Fable 5.1; ≤ 8 agents in parallel; ≤ 4 research calls per wave
+   │      │
+   │      ├── C-SUITE (Claude Opus 5 — judgment seats)
+   │      │     Marcus CFO · Sofia CMO · Derek CTO · Alexandra Compliance
+   │      │     Victor CRO · Elena CISO · Nadia CAIO · Elon CTO Innovator
+   │      │        └── each seat's reports and benches (Claude Sonnet 5 — execution seats)
+   │      │            research heavy lifting goes to Perplexity, capped and asynchronous
+   │      │
+   │      ├── STEVE — digital twin, does the tier-1 work, never sends or books
+   │      └── HUMAN ISA — first response, follow-up, appointments (ISA line, both dashboards)
+   │
+   ├── NADIA (CAIO) — OUTWARD: scans the field, flags obsolescence, writes the weekly
+   │      Disruption Brief (adopt / pilot / watch / ignore). Proposal authority only.
+   │             └── Disruption Scout · Research Analyst · Agent Evaluator
+   │                          ↓ hands every candidate to
+   ├── ELON (CTO Innovator) — INWARD: feasibility, integration cost, security risk,
+   │      real versus hyped. Writes the build spec. Runs the engineering bench.
+   │      │
+   │      └── AI AGENT ENGINEERING TEAM
+   │            Stress Test Engineer   — finds the breaking point, closes nothing early
+   │            Reliability Engineer   — root causes, never a weakened check
+   │            Efficiency Engineer    — speed and cost, measured before and after
+   │            Capability Engineer    — new scope against a named gap
+   │            Integration Engineer   — connectors, MCP servers, bridges, CRMs
+   │            Sandbox QA             — isolated test-and-compare, promote or reject
+   │
+   └── SECOND BRAIN — one recall path, five levels
+          L1 router (CLAUDE.md / AGENTS.md) → L2 wikis + auto-memory → L3 semantic search
+          → L4 knowledge graph → L5 always-on sync, bounded by the Mac being awake
+
+CROSS-CUTTING LAYERS, wrapping everything above
+   CPI engine      daily light scan, weekly deep scan → CPI Opportunity Log
+   Scale engine    weekly → Automate, Delegate, Replicate → Scale Opportunity Log
+   Stress testing  weekly sweep → Stress Test Report → routed to the right engineer
+   WEEKLY LOOP     goal → propose → test → compare → promote or reject → log → repeat
+                   with an untouched holdout set kept for final validation only
+   Backup          Sunday, verified, restore-tested, eight weeks retained
+   Trust gate      L1 → L2 → L3 on every loop; halt conditions come to Steven</pre>
+    </div>
+
+    <h3 class="section-label collapsible" data-secnum="39.10">Templates, ready to populate</h3>
+    <div class="card" style="margin-bottom:16px;">
+      <p class="card-title">Four templates the next cycle fills in</p>
+      <p class="card-sub" style="margin-top:0;">Copy one into a Claude Code session on the Mac and it writes the matching document, which is what these tables read.</p>
+      <div class="tk-btn-row" id="orchTemplateBtns"></div>
+      <pre class="tk-out" id="orchTemplateOut">Pick a template above to see it here.</pre>
+    </div>
+  </section>
