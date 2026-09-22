@@ -1,14 +1,39 @@
 # Command Deck — Stress Test Report
 
-**Engineer:** E7 — Stress Test Engineer · **Cycle:** Loop Cycle 6 · **Run:** 2026-09-22T09:03:17.290Z
-**Baseline 2026-09-12 · verified 2026-09-22** · Deck under test: `tests/baseline-5fbe844.html`  
-sha256 `1a9e203b1a08c5596e828a5765500bc2…` · 25595 lines · git master commit 5fbe844 (the published build 2026-09-15 02:19 PT), pinned to tests/baseline-5fbe844.html so every line number in this report stays valid while seven engineers edit their worktrees · Node v22.22.2
-**Harness:** `tests/runtime-harness.js` (pure Node DOM shim — no npm, no jsdom) + `tests/dom-shim.js`
+**Engineer:** E7 — Stress Test Engineer · **Cycle:** Loop Cycle 6 · 2026-09-22 · **Run:** 2026-09-22T09:16:28.668Z
+**Baseline 2026-09-12 · verified 2026-09-22**
 
-Result counts: **48 Pass · 12 Degraded · 1 Fail** of 61 tests.
+| | |
+| --- | --- |
+| Deck under test | `command-deck.html` |
+| sha256 | `bbd64191b5de095812e9a424578be697…` |
+| Lines | 27127 |
+| Provenance | git master commit 5fbe844 (the published build 2026-09-15 02:19 PT), pinned to tests/baseline-5fbe844.html so every line number in this report stays valid while seven engineers edit their worktrees |
+| Harness | `tests/runtime-harness.js` + `tests/dom-shim.js` (pure Node, no npm, no jsdom) · Node v22.22.2 |
+| Result | **52 Pass · 10 Degraded · 0 Fail** of 62 tests |
 
-`Fix Applied` and `Re-test Result` are deliberately empty/Pending: E7 does not edit the deck. Nothing here is
-marked Resolved on the strength of a fix — only on the strength of a test that passed.
+## What these numbers are, and what they are not
+
+The harness executes the deck's inline script under a **DOM shim written in JavaScript**, not in a browser.
+It proves, exactly: that the script reaches its last line; which container ids receive `innerHTML`; which
+`$()` targets have no element; which renderer throws on which document shape, with the function name and the
+line; and the relative cost of each render.
+
+`node harness-selftest.js` proves the harness is doing that job: it rebuilds the 2026-09-03 regression (a
+function still called but no longer defined — the exact bug `node --check` and `quickcheck.py` both wave
+through), and the harness catches it as `updateHeaderClock is not defined @ html:18204`, with only 195 of
+318 containers rendered before the halt. 6 of 6 self-tests pass.
+
+It does **not** prove layout, CSS, real clipboard / speech / canvas behaviour, cross-origin fetches, or the
+real artifact `db` capability (`window.claude` is absent unless a test injects it). **Treat every millisecond
+below as a relative, worst-case figure, not a browser measurement** — `querySelectorAll` and `innerHTML`
+parsing are native in a browser and are plain JavaScript here, so shim-side work inflates them. What the
+numbers are good for is comparison: baseline vs. load, and one render against another in the same run.
+
+`Fix Applied` and `Re-test Result` are deliberately empty / Pending: **E7 does not edit the deck.** Nothing in
+this table is marked Resolved on the strength of a fix — only on the strength of a test that passed.
+
+## Results
 
 | Capability | Test Type | Result | Weakness Found | Engineer Assigned | Fix Applied | Re-test Result | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -17,20 +42,22 @@ marked Resolved on the strength of a fix — only on the strength of a test that
 | Travel panel — 'N showing' count on first paint | Regression | Degraded | renderTravelPage reads $('travelVisibleCount') one line BEFORE renderTravelFilters() creates that span, so the count is empty on the first paint and only fills on a later re-render. | Reliability Engineer | — | Pending | Open |
 | Automation health board (routineHealth) | Volume | Pass | — | — | — | Pending | Resolved |
 | Task board (kanbanCards) | Volume | Pass | — | — | — | Pending | Resolved |
-| ISA direct line (isaLine) | Volume | Degraded | slowest render renderNotifications (final pass) 732 ms · one innerHTML write of 5.11 MB into #isaLineThread — no display cap on this list | Efficiency Engineer | — | Pending | Monitoring |
+| ISA direct line (isaLine) | Volume | Degraded | slowest render renderNotifications (final pass) 822 ms · one innerHTML write of 5.11 MB into #isaLineThread — no display cap on this list | Efficiency Engineer | — | Pending | Monitoring |
 | Live research feeds (liveFeeds) | Volume | Pass | — | — | — | Pending | Resolved |
-| Whole page under all four volume payloads at once | Volume | Degraded | page time 8990 ms vs 1466 ms baseline (6.1x); 5.0 MB of documents is ~1.0x the 5 MB localStorage budget | Efficiency Engineer | — | Pending | Monitoring |
+| Whole page under all four volume payloads at once | Volume | Degraded | page time 8203 ms vs 1464 ms baseline (5.6x); 5.02 MB of documents against the ~5 MB localStorage budget a browser gives one origin (1.00x — at the cap, so the next document written is the one that fails), and nothing on the page measures its own storage footprint | Efficiency Engineer | — | Pending | Monitoring |
 | Document `weatherSnapshot` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
-| Document `liveFeeds` (malformed input) | Edge | Degraded | 1 of 7 malformed shapes (wrong-typed fields) reach a renderer and throw: renderNews @html:21367; renderOrFeeds @html:21367. safeRun catches each one, so the page stays up but those panels render empty with no on-page reason. | Reliability Engineer | — | Pending | Open |
+| Document `liveFeeds` (malformed input) | Edge | Degraded | 1 of 7 malformed shapes (wrong-typed fields) reach a renderer and throw: renderNews @html:22332; renderOrFeeds @html:22332. safeRun catches each one, so the page stays up but those panels render empty with no on-page reason. | Reliability Engineer | — | Pending | Open |
 | Document `calendarSnapshot` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
 | Document `stravaSnapshot` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
 | Document `strategySnapshot` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
 | Document `leadTriage` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
+| Document `loftyLeads` (malformed input) | Edge | Pass | Not an edge failure — all 7 malformed shapes were handled. Separate observation: this document is not in the 161-document export at all, so the deck reads it but no task has ever written it. | Integration Engineer | — | Pending | Escalated |
+| Document `zohoSync` (malformed input) | Edge | Pass | Not an edge failure — all 7 malformed shapes were handled. Separate observation: this document is not in the 161-document export at all, so the deck reads it but no task has ever written it. | Integration Engineer | — | Pending | Escalated |
 | Document `twinBrief` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
 | Document `twinLog` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
 | Document `vanessaBrief` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
 | Document `vanessaRuns` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
-| Document `revenueScan` (malformed input) | Edge | Pass | Doc is not in the 161-doc export at all — the deck reads it but no task has ever written it. | Integration Engineer | — | Pending | Escalated |
+| Document `revenueScan` (malformed input) | Edge | Pass | Not an edge failure — all 7 malformed shapes were handled. Separate observation: this document is not in the 161-document export at all, so the deck reads it but no task has ever written it. | Integration Engineer | — | Pending | Escalated |
 | Document `improvementProposals` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
 | Document `loopLog` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
 | Document `cpiCycles` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
@@ -40,32 +67,31 @@ marked Resolved on the strength of a fix — only on the strength of a test that
 | Document `isaScorecard` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
 | Document `appleHealth` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
 | Document `healthAnalysis` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
-| Document `healthCoaching` (malformed input) | Edge | Pass | Doc is not in the 161-doc export at all — the deck reads it but no task has ever written it. | Integration Engineer | — | Pending | Escalated |
+| Document `healthCoaching` (malformed input) | Edge | Pass | Not an edge failure — all 7 malformed shapes were handled. Separate observation: this document is not in the 161-document export at all, so the deck reads it but no task has ever written it. | Integration Engineer | — | Pending | Escalated |
 | Document `toolkitSnapshot` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
 | Document `knowledgeFabric` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
 | Document `aiTeamRoster` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
 | Document `runnerStatus` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
 | Document `marketingQueue` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
-| Document `zohoLeads` (malformed input) | Edge | Pass | Doc is not in the 161-doc export at all — the deck reads it but no task has ever written it. | Integration Engineer | — | Pending | Escalated |
+| Document `zohoLeads` (malformed input) | Edge | Pass | Not an edge failure — all 7 malformed shapes were handled. Separate observation: this document is not in the 161-document export at all, so the deck reads it but no task has ever written it. | Integration Engineer | — | Pending | Escalated |
 | Document `twinQueue` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
 | Document `vanessaRecommendations` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
-| Claude capability handshake (initSync / claudeUse) | FailureInjection | Fail | P1 — the whole page dies. `(function initSync(){...})` calls `window.claude.use("db").then(...)` at html:6921 with NO try/catch; only the promise is `.catch()`ed. A SYNCHRONOUS throw from claude.use propagates out of the IIFE and halts every remaining top-level statement, so 0 of 318 containers render — a blank dashboard, exactly the 2026-09-03 CI-log regression class. Exception: claude.use('db') exploded (injected failure) @ html:6921. Fix: wrap the use() call in try/catch and fall back to setSyncStatus("Local only (this device)","off"). | Reliability Engineer | — | Pending | Escalated |
+| Claude capability handshake (initSync / claudeUse) | FailureInjection | Pass | — | — | — | Pending | Resolved |
 | Claude capability handshake — rejected promise | FailureInjection | Pass | — | — | — | Pending | Resolved |
-| Local persistence — write path | FailureInjection | Degraded | Every write is silently swallowed by lsSetLocal's empty catch — the page renders normally and the sync pill still reads 'Local only (this device)'. A user typing into any panel loses the edit with no warning. | Reliability Engineer | — | Pending | Open |
+| Local persistence — write path | FailureInjection | Degraded | Every write is silently swallowed by lsSetLocal's empty catch (html:6647). The page rendered all 335 containers, raised 439 console warnings, reported 0 shape warnings and left LS_UNAVAILABLE false, and the sync pill still reads 'Local only (this device)'. Nothing anywhere says a save failed, so anything Steven types into a panel is gone on reload with no warning. | Reliability Engineer | — | Pending | Open |
 | Local persistence — read path | FailureInjection | Pass | — | — | — | Pending | Resolved |
-| Local persistence — quota exhausted part-way through hydration | FailureInjection | Degraded | localStorage fills up part-way through hydrateFromSeed and every later write throws QuotaExceededError into lsSetLocal's empty catch. The page renders, but half the seed never persists and NOTHING on the page says a write failed — LS_UNAVAILABLE is only set on a failing READ (lsGetSeeded, html:6724), never on a failing write. | Reliability Engineer | — | Pending | Open |
+| Local persistence — quota exhausted part-way through hydration | FailureInjection | Degraded | With the storage budget exhausted part-way through hydrateFromSeed, 1 of 110 key(s) failed to persist and each QuotaExceededError went into lsSetLocal's empty catch. The page still rendered 335 containers, raised 2 console warnings and left LS_UNAVAILABLE false — LS_UNAVAILABLE is only ever set on a failing READ (lsGetSeeded, html:6725), never on a failing write, so a full store is indistinguishable from a healthy day. | Reliability Engineer | — | Pending | Open |
 | Local persistence — 5 MB browser quota with the real store | FailureInjection | Pass | — | — | — | Pending | Resolved |
 | Published seed hydration (hydrateFromSeed) | FailureInjection | Pass | — | — | — | Pending | Resolved |
 | Cross-device merge — 200-change burst (applyRemoteSnapshot) [db-connected] | Concurrency | Pass | — | — | — | Pending | Resolved |
-| Merge idempotence — identical burst replayed [db-connected] | Concurrency | Degraded | replaying the identical snapshot reported changed=true and rewrote 0 keys () — a second device echoing the same documents back can loop the 30 s location.reload() throttle. | Reliability Engineer | — | Pending | Open |
+| Merge idempotence — identical burst replayed [db-connected] | Concurrency | Pass | — | — | — | Pending | Resolved |
 | ISA line conflict merge (isaLineMergeArrays) [db-connected] | Concurrency | Degraded | 2 messages WITHOUT an `id` were silently discarded — isaLineMergeArrays' take() returns early on `!m.id`, so any relay that omits an id vanishes with no warning anywhere | Reliability Engineer | — | Pending | Open |
 | Cross-device merge — 200-change burst (applyRemoteSnapshot) [local-only] | Concurrency | Pass | — | — | — | Pending | Resolved |
-| Merge idempotence — identical burst replayed [local-only] | Concurrency | Degraded | replaying the identical snapshot reported changed=true and rewrote 0 keys () — a second device echoing the same documents back can loop the 30 s location.reload() throttle. | Reliability Engineer | — | Pending | Open |
-| ISA line conflict merge (isaLineMergeArrays) [local-only] | Concurrency | Degraded | 40 ID'd messages lost in the merge · 2 messages WITHOUT an `id` were silently discarded — isaLineMergeArrays' take() returns early on `!m.id`, so any relay that omits an id vanishes with no warning anywhere | Reliability Engineer | — | Pending | Open |
-| Restore all 161 exported documents and run the page | BackupRecovery | Degraded | stravaSnapshot has no `v` wrapper, so applyRemoteSnapshot skips it and a restore silently loses it (160/161 restored) · 2 watched documents were never written by their task and therefore cannot be restored: revenueScan, healthCoaching | Integration Engineer | — | Pending | Escalated |
+| Merge idempotence — identical burst replayed [local-only] | Concurrency | Pass | — | — | — | Pending | Resolved |
+| ISA line conflict merge (isaLineMergeArrays) [local-only] | Concurrency | Degraded | 40 ID'd message(s) never reached the document (49 stored vs 90 expected) — NOT the merge's doing: the isaLine branch calls syncKeyToDb, which with no db capability queues a pendingDbWrites entry, and the very next guard (`!dbReady && pendingDbWrites[key]`, html:6881) then discards every later isaLine change in the session · 2 messages WITHOUT an `id` were silently discarded — isaLineMergeArrays' take() returns early on `!m.id`, so any relay that omits an id vanishes with no warning anywhere | Reliability Engineer | — | Pending | Open |
+| Restore all 161 exported documents and run the page | BackupRecovery | Degraded | stravaSnapshot has no `v` wrapper, so applyRemoteSnapshot skips it and a restore silently loses it (160/161 restored) · 4 watched documents were never written by their task and therefore cannot be restored: loftyLeads, zohoSync, revenueScan, healthCoaching | Integration Engineer | — | Pending | Escalated |
 | OUTPUT_WATCH freshness board after a full restore | BackupRecovery | Pass | — | — | — | Pending | Resolved |
 | Backup bundle backup/2026-09-22 (sha256 manifest) | BackupRecovery | Pass | — | — | — | Pending | Resolved |
-| Runtime gate — deck/command-deck.html (working tree) | Regression | Pass | — | — | — | Pending | Resolved |
 | Runtime gate — wt-e1-daily/command-deck.html | Regression | Pass | — | — | — | Pending | Resolved |
 | Runtime gate — wt-e2-markets/command-deck.html | Regression | Pass | — | — | — | Pending | Resolved |
 | Runtime gate — wt-e3-wealth/command-deck.html | Regression | Pass | — | — | — | Pending | Resolved |
@@ -74,145 +100,202 @@ marked Resolved on the strength of a fix — only on the strength of a test that
 | Runtime gate — wt-e5-life/command-deck.html | Regression | Pass | — | — | — | Pending | Resolved |
 | Runtime gate — wt-e6-aiteam/command-deck.html | Regression | Pass | — | — | — | Pending | Resolved |
 
-## Evidence per row
-
-**1. Whole page — published seed, no synced docs** (Functional · Pass) — 318 container ids received innerHTML; 1466 ms; 0 exceptions
-**2. Element wiring — $() targets that do not exist in the document** (Regression · Degraded) — presenceAttachMic('vanessaMicBtn'…) html:23632 · presenceAttachMic('steveMicBtn'…) html:23633 · voice toggles html:23627 · renderIsaPlaybook trackEl/vipEl html:25040
-**3. Travel panel — 'N showing' count on first paint** (Regression · Degraded) — html:17776 reads the id, html:17778 calls renderTravelFilters() which emits it (html:17719)
-**4. Automation health board (routineHealth)** (Volume · Pass) — payload 1093 KB · page 2613 ms (+1147 ms vs baseline) · 318 containers · largest single innerHTML write 814 KB into #autoHealthBody
-**5. Task board (kanbanCards)** (Volume · Pass) — payload 237 KB · page 1727 ms (+261 ms vs baseline) · 318 containers · largest single innerHTML write 61 KB into #eliteTaxStrategyRows
-**6. ISA direct line (isaLine)** (Volume · Degraded) — payload 2539 KB · page 6694 ms (+5228 ms vs baseline) · 318 containers · largest single innerHTML write 5237 KB into #isaLineThread
-**7. Live research feeds (liveFeeds)** (Volume · Pass) — payload 1270 KB · page 2059 ms (+593 ms vs baseline) · 320 containers · largest single innerHTML write 61 KB into #eliteTaxStrategyRows
-**8. Whole page under all four volume payloads at once** (Volume · Degraded) — slowest: renderNotifications (final pass) 803ms, renderExecBrief (final pass) 471ms, renderKanban 187ms
-**9. Document `weatherSnapshot` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
-**10. Document `liveFeeds` (malformed input)** (Edge · Degraded) — null:guarded []:guarded {}:ok "string":guarded wrong-typed fields:throw row is a number:guarded truncated JSON:guarded
-**11. Document `calendarSnapshot` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
-**12. Document `stravaSnapshot` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
-**13. Document `strategySnapshot` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
-**14. Document `leadTriage` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:guarded
-**15. Document `twinBrief` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:guarded
-**16. Document `twinLog` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
-**17. Document `vanessaBrief` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
-**18. Document `vanessaRuns` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
-**19. Document `revenueScan` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
-**20. Document `improvementProposals` (malformed input)** (Edge · Pass) — null:guarded []:ok {}:guarded "string":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:ok
-**21. Document `loopLog` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
-**22. Document `cpiCycles` (malformed input)** (Edge · Pass) — null:guarded []:ok {}:guarded "string":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:guarded
-**23. Document `routineHealth` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
-**24. Document `backupStatus` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
-**25. Document `ratesSnapshot` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
-**26. Document `isaScorecard` (malformed input)** (Edge · Pass) — null:guarded []:ok {}:guarded "string":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:ok
-**27. Document `appleHealth` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
-**28. Document `healthAnalysis` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
-**29. Document `healthCoaching` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
-**30. Document `toolkitSnapshot` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
-**31. Document `knowledgeFabric` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
-**32. Document `aiTeamRoster` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
-**33. Document `runnerStatus` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
-**34. Document `marketingQueue` (malformed input)** (Edge · Pass) — null:guarded []:ok {}:guarded "string":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:guarded
-**35. Document `zohoLeads` (malformed input)** (Edge · Pass) — null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
-**36. Document `twinQueue` (malformed input)** (Edge · Pass) — null:guarded []:ok {}:guarded "string":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:guarded
-**37. Document `vanessaRecommendations` (malformed input)** (Edge · Pass) — null:guarded []:ok {}:guarded "string":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:guarded
-**38. Claude capability handshake (initSync / claudeUse)** (FailureInjection · Fail) — page HALTED · 0 containers · 0 shape warnings · 0 console warnings
-**39. Claude capability handshake — rejected promise** (FailureInjection · Pass) — page ran to completion · 318 containers · 0 shape warnings · 0 console warnings
-**40. Local persistence — write path** (FailureInjection · Degraded) — page ran to completion · 318 containers · 0 shape warnings · 0 console warnings
-**41. Local persistence — read path** (FailureInjection · Pass) — page ran to completion · 318 containers · 0 shape warnings · 0 console warnings
-**42. Local persistence — quota exhausted part-way through hydration** (FailureInjection · Degraded) — page ran to completion · 318 containers · 0 shape warnings · 0 console warnings
-**43. Local persistence — 5 MB browser quota with the real store** (FailureInjection · Pass) — page ran to completion · 322 containers · 0 shape warnings · 0 console warnings
-**44. Published seed hydration (hydrateFromSeed)** (FailureInjection · Pass) — page ran to completion · 318 containers · 0 shape warnings · 0 console warnings
-**45. Cross-device merge — 200-change burst (applyRemoteSnapshot) [db-connected]** (Concurrency · Pass) — 200 doc changes applied in 10 ms, no throw; 163 keys in localStorage afterwards
-**46. Merge idempotence — identical burst replayed [db-connected]** (Concurrency · Degraded) — changed(first)=true changed(replay)=true keys rewritten=0
-**47. ISA line conflict merge (isaLineMergeArrays) [db-connected]** (Concurrency · Degraded) — html:24531 isaLineMergeArrays take(); 88 of 82 messages survived; ISA_LINE_MAX=300 cap
-**48. Cross-device merge — 200-change burst (applyRemoteSnapshot) [local-only]** (Concurrency · Pass) — 200 doc changes applied in 8 ms, no throw; 163 keys in localStorage afterwards
-**49. Merge idempotence — identical burst replayed [local-only]** (Concurrency · Degraded) — changed(first)=true changed(replay)=true keys rewritten=0
-**50. ISA line conflict merge (isaLineMergeArrays) [local-only]** (Concurrency · Degraded) — html:24531 isaLineMergeArrays take(); 48 of 82 messages survived; ISA_LINE_MAX=300 cap
-**51. Restore all 161 exported documents and run the page** (BackupRecovery · Degraded) — 160/161 restored · 863 KB · 322 containers rendered · 0 exceptions
-**52. OUTPUT_WATCH freshness board after a full restore** (BackupRecovery · Pass) — all 26 OUTPUT_WATCH docs are read by outputWatchRows(); autoHealthBody rendered=true
-**53. Backup bundle backup/2026-09-22 (sha256 manifest)** (BackupRecovery · Pass) — 161 docs + the deck, 4.71 MB, every file re-hashed after write and matched
-**54. Runtime gate — deck/command-deck.html (working tree)** (Regression · Pass) — sha256 cc85ed1f4b9d · 325 containers · 1055 ms · point-in-time snapshot taken during the cycle, files were still being edited
-**55. Runtime gate — wt-e1-daily/command-deck.html** (Regression · Pass) — sha256 f85a73c2bffe · 318 containers · 1122 ms · point-in-time snapshot taken during the cycle, files were still being edited
-**56. Runtime gate — wt-e2-markets/command-deck.html** (Regression · Pass) — sha256 8f3afaa288a1 · 320 containers · 1228 ms · point-in-time snapshot taken during the cycle, files were still being edited
-**57. Runtime gate — wt-e3-wealth/command-deck.html** (Regression · Pass) — sha256 4cf3891cadf0 · 318 containers · 1146 ms · point-in-time snapshot taken during the cycle, files were still being edited
-**58. Runtime gate — wt-e4a-crm/command-deck.html** (Regression · Pass) — sha256 2bd714512600 · 322 containers · 1053 ms · point-in-time snapshot taken during the cycle, files were still being edited
-**59. Runtime gate — wt-e4b-realestate/command-deck.html** (Regression · Pass) — sha256 2d4b60a0b40e · 319 containers · 1161 ms · point-in-time snapshot taken during the cycle, files were still being edited
-**60. Runtime gate — wt-e5-life/command-deck.html** (Regression · Pass) — sha256 c91460ff4de0 · 319 containers · 1104 ms · point-in-time snapshot taken during the cycle, files were still being edited
-**61. Runtime gate — wt-e6-aiteam/command-deck.html** (Regression · Pass) — sha256 cabb1bafe36a · 318 containers · 1156 ms · point-in-time snapshot taken during the cycle, files were still being edited
-
 ## Weakness dossier — for the Reliability / Efficiency / Capability / Integration Engineers
 
-Every line below is reproducible with the command in the next section. Line numbers are lines of
-`deck/command-deck.html` as shipped (commit 5fbe844); the inline script starts at line 6635.
+Line numbers are lines of the pinned baseline (`tests/baseline-5fbe844.html`, identical to
+`deck/command-deck.html` at git commit 5fbe844); the inline script starts at line 6937.
 
 **W1 · Element wiring — $() targets that do not exist in the document** — *Regression / Degraded / Capability Engineer*  
 6 ids are looked up but never exist: vanessaVoiceToggle, steveVoiceToggle, vanessaMicBtn, steveMicBtn, isaPbTracker, isaPbVip. Every call site is null-guarded so nothing throws — the features simply never wire up (voice toggles, both mic buttons, the ISA power-block tracker + VIP tiles).  
-*Evidence:* presenceAttachMic('vanessaMicBtn'…) html:23632 · presenceAttachMic('steveMicBtn'…) html:23633 · voice toggles html:23627 · renderIsaPlaybook trackEl/vipEl html:25040
+*Evidence:* voice toggles html:23626 · presenceAttachMic('vanessaMicBtn'…) html:23631 · presenceAttachMic('steveMicBtn'…) html:23632 · renderIsaPlaybook trackEl/vipEl html:25039
 
 **W2 · Travel panel — 'N showing' count on first paint** — *Regression / Degraded / Reliability Engineer*  
 renderTravelPage reads $('travelVisibleCount') one line BEFORE renderTravelFilters() creates that span, so the count is empty on the first paint and only fills on a later re-render.  
 *Evidence:* html:17776 reads the id, html:17778 calls renderTravelFilters() which emits it (html:17719)
 
 **W3 · ISA direct line (isaLine)** — *Volume / Degraded / Efficiency Engineer*  
-slowest render renderNotifications (final pass) 732 ms · one innerHTML write of 5.11 MB into #isaLineThread — no display cap on this list  
-*Evidence:* payload 2539 KB · page 6694 ms (+5228 ms vs baseline) · 318 containers · largest single innerHTML write 5237 KB into #isaLineThread
+slowest render renderNotifications (final pass) 822 ms · one innerHTML write of 5.11 MB into #isaLineThread — no display cap on this list  
+*Evidence:* payload 2539 KB · page 6518 ms (+5054 ms vs baseline) · 335 containers · largest single innerHTML write 5237 KB into #isaLineThread
 
 **W4 · Whole page under all four volume payloads at once** — *Volume / Degraded / Efficiency Engineer*  
-page time 8990 ms vs 1466 ms baseline (6.1x); 5.0 MB of documents is ~1.0x the 5 MB localStorage budget  
-*Evidence:* slowest: renderNotifications (final pass) 803ms, renderExecBrief (final pass) 471ms, renderKanban 187ms
+page time 8203 ms vs 1464 ms baseline (5.6x); 5.02 MB of documents against the ~5 MB localStorage budget a browser gives one origin (1.00x — at the cap, so the next document written is the one that fails), and nothing on the page measures its own storage footprint  
+*Evidence:* slowest: renderNotifications (final pass) 816ms, renderExecBrief (final pass) 400ms, renderKanban 174ms
 
 **W5 · Document `liveFeeds` (malformed input)** — *Edge / Degraded / Reliability Engineer*  
-1 of 7 malformed shapes (wrong-typed fields) reach a renderer and throw: renderNews @html:21367; renderOrFeeds @html:21367. safeRun catches each one, so the page stays up but those panels render empty with no on-page reason.  
+1 of 7 malformed shapes (wrong-typed fields) reach a renderer and throw: renderNews @html:22332; renderOrFeeds @html:22332. safeRun catches each one, so the page stays up but those panels render empty with no on-page reason.  
 *Evidence:* null:guarded []:guarded {}:ok "string":guarded wrong-typed fields:throw row is a number:guarded truncated JSON:guarded
 
-**W6 · Document `revenueScan` (malformed input)** — *Edge / Pass / Integration Engineer*  
-Doc is not in the 161-doc export at all — the deck reads it but no task has ever written it.  
+**W6 · Document `loftyLeads` (malformed input)** — *Edge / Pass / Integration Engineer*  
+Not an edge failure — all 7 malformed shapes were handled. Separate observation: this document is not in the 161-document export at all, so the deck reads it but no task has ever written it.  
 *Evidence:* null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
 
-**W7 · Document `healthCoaching` (malformed input)** — *Edge / Pass / Integration Engineer*  
-Doc is not in the 161-doc export at all — the deck reads it but no task has ever written it.  
+**W7 · Document `zohoSync` (malformed input)** — *Edge / Pass / Integration Engineer*  
+Not an edge failure — all 7 malformed shapes were handled. Separate observation: this document is not in the 161-document export at all, so the deck reads it but no task has ever written it.  
 *Evidence:* null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
 
-**W8 · Document `zohoLeads` (malformed input)** — *Edge / Pass / Integration Engineer*  
-Doc is not in the 161-doc export at all — the deck reads it but no task has ever written it.  
+**W8 · Document `revenueScan` (malformed input)** — *Edge / Pass / Integration Engineer*  
+Not an edge failure — all 7 malformed shapes were handled. Separate observation: this document is not in the 161-document export at all, so the deck reads it but no task has ever written it.  
 *Evidence:* null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
 
-**W9 · Claude capability handshake (initSync / claudeUse)** — *FailureInjection / Fail / Reliability Engineer*  
-P1 — the whole page dies. `(function initSync(){...})` calls `window.claude.use("db").then(...)` at html:6921 with NO try/catch; only the promise is `.catch()`ed. A SYNCHRONOUS throw from claude.use propagates out of the IIFE and halts every remaining top-level statement, so 0 of 318 containers render — a blank dashboard, exactly the 2026-09-03 CI-log regression class. Exception: claude.use('db') exploded (injected failure) @ html:6921. Fix: wrap the use() call in try/catch and fall back to setSyncStatus("Local only (this device)","off").  
-*Evidence:* page HALTED · 0 containers · 0 shape warnings · 0 console warnings
+**W9 · Document `healthCoaching` (malformed input)** — *Edge / Pass / Integration Engineer*  
+Not an edge failure — all 7 malformed shapes were handled. Separate observation: this document is not in the 161-document export at all, so the deck reads it but no task has ever written it.  
+*Evidence:* null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
 
-**W10 · Local persistence — write path** — *FailureInjection / Degraded / Reliability Engineer*  
-Every write is silently swallowed by lsSetLocal's empty catch — the page renders normally and the sync pill still reads 'Local only (this device)'. A user typing into any panel loses the edit with no warning.  
-*Evidence:* page ran to completion · 318 containers · 0 shape warnings · 0 console warnings
+**W10 · Document `zohoLeads` (malformed input)** — *Edge / Pass / Integration Engineer*  
+Not an edge failure — all 7 malformed shapes were handled. Separate observation: this document is not in the 161-document export at all, so the deck reads it but no task has ever written it.  
+*Evidence:* null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
 
-**W11 · Local persistence — quota exhausted part-way through hydration** — *FailureInjection / Degraded / Reliability Engineer*  
-localStorage fills up part-way through hydrateFromSeed and every later write throws QuotaExceededError into lsSetLocal's empty catch. The page renders, but half the seed never persists and NOTHING on the page says a write failed — LS_UNAVAILABLE is only set on a failing READ (lsGetSeeded, html:6724), never on a failing write.  
-*Evidence:* page ran to completion · 318 containers · 0 shape warnings · 0 console warnings
+**W11 · Local persistence — write path** — *FailureInjection / Degraded / Reliability Engineer*  
+Every write is silently swallowed by lsSetLocal's empty catch (html:6647). The page rendered all 335 containers, raised 439 console warnings, reported 0 shape warnings and left LS_UNAVAILABLE false, and the sync pill still reads 'Local only (this device)'. Nothing anywhere says a save failed, so anything Steven types into a panel is gone on reload with no warning.  
+*Evidence:* page ran to completion · 335 containers · 0 shape warnings · 439 console warnings
 
-**W12 · Merge idempotence — identical burst replayed [db-connected]** — *Concurrency / Degraded / Reliability Engineer*  
-replaying the identical snapshot reported changed=true and rewrote 0 keys () — a second device echoing the same documents back can loop the 30 s location.reload() throttle.  
-*Evidence:* changed(first)=true changed(replay)=true keys rewritten=0
+**W12 · Local persistence — quota exhausted part-way through hydration** — *FailureInjection / Degraded / Reliability Engineer*  
+With the storage budget exhausted part-way through hydrateFromSeed, 1 of 110 key(s) failed to persist and each QuotaExceededError went into lsSetLocal's empty catch. The page still rendered 335 containers, raised 2 console warnings and left LS_UNAVAILABLE false — LS_UNAVAILABLE is only ever set on a failing READ (lsGetSeeded, html:6725), never on a failing write, so a full store is indistinguishable from a healthy day.  
+*Evidence:* page ran to completion · 335 containers · 0 shape warnings · 2 console warnings
 
 **W13 · ISA line conflict merge (isaLineMergeArrays) [db-connected]** — *Concurrency / Degraded / Reliability Engineer*  
 2 messages WITHOUT an `id` were silently discarded — isaLineMergeArrays' take() returns early on `!m.id`, so any relay that omits an id vanishes with no warning anywhere  
-*Evidence:* html:24531 isaLineMergeArrays take(); 88 of 82 messages survived; ISA_LINE_MAX=300 cap
+*Evidence:* isaLineMergeArrays take() at html:24534; doc held 8 messages, burst added 80 with an id and 2 without; 90 stored afterwards vs 90 if nothing were lost; ISA_LINE_MAX=300 cap at html:24524
 
-**W14 · Merge idempotence — identical burst replayed [local-only]** — *Concurrency / Degraded / Reliability Engineer*  
-replaying the identical snapshot reported changed=true and rewrote 0 keys () — a second device echoing the same documents back can loop the 30 s location.reload() throttle.  
-*Evidence:* changed(first)=true changed(replay)=true keys rewritten=0
+**W14 · ISA line conflict merge (isaLineMergeArrays) [local-only]** — *Concurrency / Degraded / Reliability Engineer*  
+40 ID'd message(s) never reached the document (49 stored vs 90 expected) — NOT the merge's doing: the isaLine branch calls syncKeyToDb, which with no db capability queues a pendingDbWrites entry, and the very next guard (`!dbReady && pendingDbWrites[key]`, html:6881) then discards every later isaLine change in the session · 2 messages WITHOUT an `id` were silently discarded — isaLineMergeArrays' take() returns early on `!m.id`, so any relay that omits an id vanishes with no warning anywhere  
+*Evidence:* isaLineMergeArrays take() at html:24534; doc held 8 messages, burst added 80 with an id and 2 without; 49 stored afterwards vs 90 if nothing were lost; ISA_LINE_MAX=300 cap at html:24524
 
-**W15 · ISA line conflict merge (isaLineMergeArrays) [local-only]** — *Concurrency / Degraded / Reliability Engineer*  
-40 ID'd messages lost in the merge · 2 messages WITHOUT an `id` were silently discarded — isaLineMergeArrays' take() returns early on `!m.id`, so any relay that omits an id vanishes with no warning anywhere  
-*Evidence:* html:24531 isaLineMergeArrays take(); 48 of 82 messages survived; ISA_LINE_MAX=300 cap
+**W15 · Restore all 161 exported documents and run the page** — *BackupRecovery / Degraded / Integration Engineer*  
+stravaSnapshot has no `v` wrapper, so applyRemoteSnapshot skips it and a restore silently loses it (160/161 restored) · 4 watched documents were never written by their task and therefore cannot be restored: loftyLeads, zohoSync, revenueScan, healthCoaching  
+*Evidence:* 160/161 restored · 863 KB · 341 containers rendered · 0 exceptions
 
-**W16 · Restore all 161 exported documents and run the page** — *BackupRecovery / Degraded / Integration Engineer*  
-stravaSnapshot has no `v` wrapper, so applyRemoteSnapshot skips it and a restore silently loses it (160/161 restored) · 2 watched documents were never written by their task and therefore cannot be restored: revenueScan, healthCoaching  
-*Evidence:* 160/161 restored · 863 KB · 322 containers rendered · 0 exceptions
+## Baseline digest
 
-## How to reproduce
+- Ran to completion in **1464 ms**, **335 container ids** received innerHTML, **0 exceptions**, **0 safeRun failures**, **0 shape warnings**.
+- `document.getElementById` was called 1426 times and missed 7 distinct ids.
+- Slowest renders (shim time): `renderPanelStamps` 48 ms · `renderKanban` 30 ms · `renderKaizen` 29 ms · `renderTechStack` 28 ms · `renderAccounts` 21 ms · `renderWeather` 20 ms
+- Timers: 84 of 94 drained.
+
+## Volume digest
+
+| Payload | Bytes | Page time | vs baseline | Slowest render | Largest single innerHTML write |
+| --- | --- | --- | --- | --- | --- |
+| routineHealth · 5,000 routine rows | 1093 KB | 2558 ms | +1094 ms | `renderPanelStamps` 78 ms | 815 KB → `#autoHealthBody` |
+| kanbanCards · 2,000 cards | 237 KB | 1751 ms | +287 ms | `renderKanban` 157 ms | 61 KB → `#eliteTaxStrategyRows` |
+| isaLine · 10,000 messages | 2539 KB | 6518 ms | +5054 ms | `renderNotifications (final pass)` 822 ms | 5237 KB → `#isaLineThread` |
+| liveFeeds · 50 feeds x 200 citations | 1270 KB | 1854 ms | +390 ms | `renderPanelStamps` 97 ms | 61 KB → `#eliteTaxStrategyRows` |
+| **all four at once** | 5140 KB | 8203 ms | — | `renderNotifications (final pass)` 816 ms | — |
+
+## Edge digest — 7 malformed shapes per document
+
+Variants: `null` · `[]` · `{}` · `"string"` · wrong-typed fields · a row that is a number · truncated JSON.
+`guarded` means `lsGetSeeded` caught the shape and fell back to the seed with a recorded SHAPE_MISMATCH;
+`throw` means the value reached a renderer and `safeRun` had to catch it, blanking that panel.
+
+| Document | In the 2026-09-22 export | Variants that threw | Function(s) reached |
+| --- | --- | --- | --- |
+| `weatherSnapshot` | yes | 0/7 | — |
+| `liveFeeds` | yes | 1/7 (wrong-typed fields) | `renderNews` @ html:22332 · `renderOrFeeds` @ html:22332 |
+| `calendarSnapshot` | yes | 0/7 | — |
+| `stravaSnapshot` | yes | 0/7 | — |
+| `strategySnapshot` | yes | 0/7 | — |
+| `leadTriage` | yes | 0/7 | — |
+| `loftyLeads` | **no — never written** | 0/7 | — |
+| `zohoSync` | **no — never written** | 0/7 | — |
+| `twinBrief` | yes | 0/7 | — |
+| `twinLog` | yes | 0/7 | — |
+| `vanessaBrief` | yes | 0/7 | — |
+| `vanessaRuns` | yes | 0/7 | — |
+| `revenueScan` | **no — never written** | 0/7 | — |
+| `improvementProposals` | yes | 0/7 | — |
+| `loopLog` | yes | 0/7 | — |
+| `cpiCycles` | yes | 0/7 | — |
+| `routineHealth` | yes | 0/7 | — |
+| `backupStatus` | yes | 0/7 | — |
+| `ratesSnapshot` | yes | 0/7 | — |
+| `isaScorecard` | yes | 0/7 | — |
+| `appleHealth` | yes | 0/7 | — |
+| `healthAnalysis` | yes | 0/7 | — |
+| `healthCoaching` | **no — never written** | 0/7 | — |
+| `toolkitSnapshot` | yes | 0/7 | — |
+| `knowledgeFabric` | yes | 0/7 | — |
+| `aiTeamRoster` | yes | 0/7 | — |
+| `runnerStatus` | yes | 0/7 | — |
+| `marketingQueue` | yes | 0/7 | — |
+| `zohoLeads` | **no — never written** | 0/7 | — |
+| `twinQueue` | yes | 0/7 | — |
+| `vanessaRecommendations` | yes | 0/7 | — |
+
+## Failure-injection digest
+
+| Injected failure | Page | Containers | LS_UNAVAILABLE raised | Shape warnings | Console warnings |
+| --- | --- | --- | --- | --- | --- |
+| window.claude present, use() throws | ran to completion | 335 | false | 1 | 1 |
+| window.claude present, use() rejects | ran to completion | 335 | false | 0 | 0 |
+| localStorage.setItem throws (quota) | ran to completion | 335 | false | 0 | 439 |
+| localStorage.getItem throws (disabled) | ran to completion | 335 | true | 0 | 0 |
+| localStorage 100 KB quota (writes fail part-way) | ran to completion | 335 | false | 0 | 2 |
+| localStorage 5 MB quota + all 161 live docs | ran to completion | 341 | false | 0 | 0 |
+| cdStateSeed block removed | ran to completion | 335 | false | 0 | 0 |
+
+## Concurrency digest
+
+| Mode | Burst | Apply | Replay | changed on replay | Keys rewritten on replay | isaLine stored / expected | ID'd lost | id-less dropped | Order-independent |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| db-connected | 200 changes | 10 ms | 6 ms | false | 0 | 90 / 90 | 0 | 2 | true |
+| local-only | 200 changes | 10 ms | 5 ms | false | 0 | 49 / 90 | 40 | 2 | true |
+
+The burst is 200 document changes replayed through `applyRemoteSnapshot` — every exported document plus TWO CONFLICTING `isaLine` arrays
+in the same snapshot (40 messages from each side, each side also sending one message with no `id`).
+"expected" = what the document would hold if nothing were lost: what it already held, plus every message in the burst.
+
+## Backup / recovery digest
+
+- Restored **160 of 161** exported documents (863 KB) into the shim's localStorage under `commandDeck.`, then ran the page.
+- Parse failures: **0** · documents with no `v` wrapper: **1 (stravaSnapshot)**
+- All **28** OUTPUT_WATCH documents are read by `outputWatchRows()`; **4** of them do not exist in the export (loftyLeads, zohoSync, revenueScan, healthCoaching).
+- Containers rendered from the restored store: **341** (seed-only baseline: 335); lost vs seed-only: 0; gained: 6 (hfReqStatus, marketUpdateLiveList_murrieta-ca, newsLocalList_san-diego-ca, newsLocalList_temecula-ca, sbL5Status, sessionReadSrc).
+- **Verdict: PASS WITH EXCEPTIONS** — written to `backup/restore-test.json`.
+- Bundle: `backup/2026-09-22/` — 161 documents + the deck, 162 files, 4.87 MB, sha256 per file recomputed from disk after write, 0 integrity failures.
+
+## Drift check — the files this cycle is editing (point in time)
+
+Snapshots taken while seven engineers were still editing, so these are advisory, not a gate.
+
+| File | sha256 | Page | Containers (Δ vs baseline) | New safeRun failures | New dead ids |
+| --- | --- | --- | --- | --- | --- |
+| `deck/command-deck.html (working tree)` | `bbd64191b5de` | identical to baseline — not re-run | — | — | — |
+| `wt-e1-daily/command-deck.html` | `f85a73c2bffe` | ran to completion | 318 (-17) | none | none |
+| `wt-e2-markets/command-deck.html` | `8f3afaa288a1` | ran to completion | 320 (-15) | none | none |
+| `wt-e3-wealth/command-deck.html` | `4cf3891cadf0` | ran to completion | 318 (-17) | none | none |
+| `wt-e4a-crm/command-deck.html` | `2bd714512600` | ran to completion | 322 (-13) | none | none |
+| `wt-e4b-realestate/command-deck.html` | `2d4b60a0b40e` | ran to completion | 319 (-16) | none | none |
+| `wt-e5-life/command-deck.html` | `c91460ff4de0` | ran to completion | 319 (-16) | none | none |
+| `wt-e6-aiteam/command-deck.html` | `cabb1bafe36a` | ran to completion | 318 (-17) | none | none |
+
+## How to rerun
 
 ```bash
-cd 
-node runtime-harness.js ../deck/command-deck.html                 # baseline
-node runtime-harness.js ../deck/command-deck.html --store ../db/state   # with all 161 live docs
-node runtime-harness.js <file.html> --inject '{"claude":"throwing"}'   # failure injection
-node stress-sweep.js                                              # the whole sweep
+cd scratchpad/tests
+
+# 1. one file, end to end — exit 0 = the script reached its last line, exit 2 = it halted
+node runtime-harness.js ../deck/command-deck.html
+node runtime-harness.js ../wt-e5-life/command-deck.html --out /tmp/e5.json
+
+# 2. with every live document restored into localStorage
+node runtime-harness.js ../deck/command-deck.html --store ../db/state
+
+# 3. failure injection (inline JSON or a file path)
+node runtime-harness.js ../deck/command-deck.html --inject '{"claude":"throwing"}'
+node runtime-harness.js ../deck/command-deck.html --inject '{"setItemThrows":true}'
+node runtime-harness.js ../deck/command-deck.html --inject '{"removeSeed":true}'
+node runtime-harness.js ../deck/command-deck.html --inject '{"localStorage":{"liveFeeds":{"feeds":{"aiNewsList":{"citations":{"not":"an array"}}}}}}'
+
+# 4. the whole sweep (~20 min under load; writes this report, the findings input and the backup bundle)
+node stress-sweep.js baseline-5fbe844.html      # pinned 5fbe844 — reproduces this report exactly
+node stress-sweep.js                            # whatever ../deck/command-deck.html holds now
+
+# 5. prove the harness still catches the bug it exists for (6 self-tests)
+node harness-selftest.js
+
+# 6. regenerate just the write-ups / the backup bundle
+node write-reports.js
+node make-findings.js            # -> ../audit/findings-E7.json
+node make-backup.js              # -> ../backup/2026-09-22/{state,command-deck.html,manifest.json}
 ```

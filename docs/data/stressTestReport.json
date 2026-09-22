@@ -1,20 +1,19 @@
 {
  "v": {
-  "generatedAt": "2026-09-22T09:03:17.290Z",
+  "generatedAt": "2026-09-22T09:16:28.668Z",
   "engineer": "E7 \u2014 Stress Test Engineer",
   "cycle": "Loop Cycle 6 \u00b7 2026-09-22",
   "baselineLabel": "Baseline 2026-09-12 \u00b7 verified 2026-09-22",
-  "deck": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/tests/baseline-5fbe844.html",
-  "deckSha256": "1a9e203b1a08c5596e828a5765500bc2ebdc621c3c19a33349c38ceca06ee9ee",
-  "deckLines": 25595,
+  "deck": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/deck/command-deck.html",
+  "deckSha256": "bbd64191b5de095812e9a424578be697cd613fea7fb029120c499f7e22ca145d",
+  "deckLines": 27127,
   "deckProvenance": "git master commit 5fbe844 (the published build 2026-09-15 02:19 PT), pinned to tests/baseline-5fbe844.html so every line number in this report stays valid while seven engineers edit their worktrees",
   "harness": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/tests/runtime-harness.js",
   "node": "v22.22.2",
   "summary": {
-   "total": 61,
-   "pass": 48,
-   "degraded": 12,
-   "fail": 1
+   "Pass": 53,
+   "Degraded": 9,
+   "total": 62
   },
   "rows": [
    {
@@ -26,7 +25,7 @@
     "fixApplied": "",
     "retest": "Pending",
     "status": "Resolved",
-    "evidence": "318 container ids received innerHTML; 1466 ms; 0 exceptions"
+    "evidence": "335 container ids received innerHTML; 1464 ms; 0 exceptions"
    },
    {
     "capability": "Element wiring \u2014 $() targets that do not exist in the document",
@@ -37,7 +36,7 @@
     "fixApplied": "",
     "retest": "Pending",
     "status": "Escalated",
-    "evidence": "presenceAttachMic('vanessaMicBtn'\u2026) html:23632 \u00b7 presenceAttachMic('steveMicBtn'\u2026) html:23633 \u00b7 voice toggles html:23627 \u00b7 renderIsaPlaybook trackEl/vipEl html:25040"
+    "evidence": "voice toggles html:23626 \u00b7 presenceAttachMic('vanessaMicBtn'\u2026) html:23631 \u00b7 presenceAttachMic('steveMicBtn'\u2026) html:23632 \u00b7 renderIsaPlaybook trackEl/vipEl html:25039"
    },
    {
     "capability": "Travel panel \u2014 'N showing' count on first paint",
@@ -59,7 +58,7 @@
     "fixApplied": "",
     "retest": "Pending",
     "status": "Resolved",
-    "evidence": "payload 1093 KB \u00b7 page 2613 ms (+1147 ms vs baseline) \u00b7 318 containers \u00b7 largest single innerHTML write 814 KB into #autoHealthBody"
+    "evidence": "payload 1093 KB \u00b7 page 2558 ms (+1094 ms vs baseline) \u00b7 335 containers \u00b7 largest single innerHTML write 815 KB into #autoHealthBody"
    },
    {
     "capability": "Task board (kanbanCards)",
@@ -70,18 +69,18 @@
     "fixApplied": "",
     "retest": "Pending",
     "status": "Resolved",
-    "evidence": "payload 237 KB \u00b7 page 1727 ms (+261 ms vs baseline) \u00b7 318 containers \u00b7 largest single innerHTML write 61 KB into #eliteTaxStrategyRows"
+    "evidence": "payload 237 KB \u00b7 page 1751 ms (+287 ms vs baseline) \u00b7 335 containers \u00b7 largest single innerHTML write 61 KB into #eliteTaxStrategyRows"
    },
    {
     "capability": "ISA direct line (isaLine)",
     "testType": "Volume",
     "result": "Degraded",
-    "weakness": "slowest render renderNotifications (final pass) 732 ms \u00b7 one innerHTML write of 5.11 MB into #isaLineThread \u2014 no display cap on this list",
+    "weakness": "slowest render renderNotifications (final pass) 822 ms \u00b7 one innerHTML write of 5.11 MB into #isaLineThread \u2014 no display cap on this list",
     "engineer": "Efficiency Engineer",
     "fixApplied": "",
     "retest": "Pending",
     "status": "Monitoring",
-    "evidence": "payload 2539 KB \u00b7 page 6694 ms (+5228 ms vs baseline) \u00b7 318 containers \u00b7 largest single innerHTML write 5237 KB into #isaLineThread"
+    "evidence": "payload 2539 KB \u00b7 page 6518 ms (+5054 ms vs baseline) \u00b7 335 containers \u00b7 largest single innerHTML write 5237 KB into #isaLineThread"
    },
    {
     "capability": "Live research feeds (liveFeeds)",
@@ -92,18 +91,18 @@
     "fixApplied": "",
     "retest": "Pending",
     "status": "Resolved",
-    "evidence": "payload 1270 KB \u00b7 page 2059 ms (+593 ms vs baseline) \u00b7 320 containers \u00b7 largest single innerHTML write 61 KB into #eliteTaxStrategyRows"
+    "evidence": "payload 1270 KB \u00b7 page 1854 ms (+390 ms vs baseline) \u00b7 338 containers \u00b7 largest single innerHTML write 61 KB into #eliteTaxStrategyRows"
    },
    {
     "capability": "Whole page under all four volume payloads at once",
     "testType": "Volume",
     "result": "Degraded",
-    "weakness": "page time 8990 ms vs 1466 ms baseline (6.1x); 5.0 MB of documents is ~1.0x the 5 MB localStorage budget",
+    "weakness": "page time 8203 ms vs 1464 ms baseline (5.6x); 5.02 MB of documents against the ~5 MB localStorage budget a browser gives one origin (1.00x \u2014 at the cap, so the next document written is the one that fails), and nothing on the page measures its own storage footprint",
     "engineer": "Efficiency Engineer",
     "fixApplied": "",
     "retest": "Pending",
     "status": "Monitoring",
-    "evidence": "slowest: renderNotifications (final pass) 803ms, renderExecBrief (final pass) 471ms, renderKanban 187ms"
+    "evidence": "slowest: renderNotifications (final pass) 816ms, renderExecBrief (final pass) 400ms, renderKanban 174ms"
    },
    {
     "capability": "Document `weatherSnapshot` (malformed input)",
@@ -120,7 +119,7 @@
     "capability": "Document `liveFeeds` (malformed input)",
     "testType": "Edge",
     "result": "Degraded",
-    "weakness": "1 of 7 malformed shapes (wrong-typed fields) reach a renderer and throw: renderNews @html:21367; renderOrFeeds @html:21367. safeRun catches each one, so the page stays up but those panels render empty with no on-page reason.",
+    "weakness": "1 of 7 malformed shapes (wrong-typed fields) reach a renderer and throw: renderNews @html:22332; renderOrFeeds @html:22332. safeRun catches each one, so the page stays up but those panels render empty with no on-page reason.",
     "engineer": "Reliability Engineer",
     "fixApplied": "",
     "retest": "Pending",
@@ -172,6 +171,28 @@
     "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:guarded"
    },
    {
+    "capability": "Document `loftyLeads` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "Not an edge failure \u2014 all 7 malformed shapes were handled. Separate observation: this document is not in the 161-document export at all, so the deck reads it but no task has ever written it.",
+    "engineer": "Integration Engineer",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Escalated",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
+    "capability": "Document `zohoSync` (malformed input)",
+    "testType": "Edge",
+    "result": "Pass",
+    "weakness": "Not an edge failure \u2014 all 7 malformed shapes were handled. Separate observation: this document is not in the 161-document export at all, so the deck reads it but no task has ever written it.",
+    "engineer": "Integration Engineer",
+    "fixApplied": "",
+    "retest": "Pending",
+    "status": "Escalated",
+    "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
+   },
+   {
     "capability": "Document `twinBrief` (malformed input)",
     "testType": "Edge",
     "result": "Pass",
@@ -219,7 +240,7 @@
     "capability": "Document `revenueScan` (malformed input)",
     "testType": "Edge",
     "result": "Pass",
-    "weakness": "Doc is not in the 161-doc export at all \u2014 the deck reads it but no task has ever written it.",
+    "weakness": "Not an edge failure \u2014 all 7 malformed shapes were handled. Separate observation: this document is not in the 161-document export at all, so the deck reads it but no task has ever written it.",
     "engineer": "Integration Engineer",
     "fixApplied": "",
     "retest": "Pending",
@@ -329,7 +350,7 @@
     "capability": "Document `healthCoaching` (malformed input)",
     "testType": "Edge",
     "result": "Pass",
-    "weakness": "Doc is not in the 161-doc export at all \u2014 the deck reads it but no task has ever written it.",
+    "weakness": "Not an edge failure \u2014 all 7 malformed shapes were handled. Separate observation: this document is not in the 161-document export at all, so the deck reads it but no task has ever written it.",
     "engineer": "Integration Engineer",
     "fixApplied": "",
     "retest": "Pending",
@@ -395,7 +416,7 @@
     "capability": "Document `zohoLeads` (malformed input)",
     "testType": "Edge",
     "result": "Pass",
-    "weakness": "Doc is not in the 161-doc export at all \u2014 the deck reads it but no task has ever written it.",
+    "weakness": "Not an edge failure \u2014 all 7 malformed shapes were handled. Separate observation: this document is not in the 161-document export at all, so the deck reads it but no task has ever written it.",
     "engineer": "Integration Engineer",
     "fixApplied": "",
     "retest": "Pending",
@@ -427,13 +448,13 @@
    {
     "capability": "Claude capability handshake (initSync / claudeUse)",
     "testType": "FailureInjection",
-    "result": "Fail",
-    "weakness": "P1 \u2014 the whole page dies. `(function initSync(){...})` calls `window.claude.use(\"db\").then(...)` at html:6921 with NO try/catch; only the promise is `.catch()`ed. A SYNCHRONOUS throw from claude.use propagates out of the IIFE and halts every remaining top-level statement, so 0 of 318 containers render \u2014 a blank dashboard, exactly the 2026-09-03 CI-log regression class. Exception: claude.use('db') exploded (injected failure) @ html:6921. Fix: wrap the use() call in try/catch and fall back to setSyncStatus(\"Local only (this device)\",\"off\").",
-    "engineer": "Reliability Engineer",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
     "fixApplied": "",
     "retest": "Pending",
-    "status": "Escalated",
-    "evidence": "page HALTED \u00b7 0 containers \u00b7 0 shape warnings \u00b7 0 console warnings"
+    "status": "Resolved",
+    "evidence": "page ran to completion \u00b7 335 containers \u00b7 1 shape warnings \u00b7 1 console warnings"
    },
    {
     "capability": "Claude capability handshake \u2014 rejected promise",
@@ -444,18 +465,18 @@
     "fixApplied": "",
     "retest": "Pending",
     "status": "Resolved",
-    "evidence": "page ran to completion \u00b7 318 containers \u00b7 0 shape warnings \u00b7 0 console warnings"
+    "evidence": "page ran to completion \u00b7 335 containers \u00b7 0 shape warnings \u00b7 0 console warnings"
    },
    {
     "capability": "Local persistence \u2014 write path",
     "testType": "FailureInjection",
     "result": "Degraded",
-    "weakness": "Every write is silently swallowed by lsSetLocal's empty catch \u2014 the page renders normally and the sync pill still reads 'Local only (this device)'. A user typing into any panel loses the edit with no warning.",
+    "weakness": "Every write is silently swallowed by lsSetLocal's empty catch (html:6647). The page rendered all 335 containers, raised 439 console warnings, reported 0 shape warnings and left LS_UNAVAILABLE false, and the sync pill still reads 'Local only (this device)'. Nothing anywhere says a save failed, so anything Steven types into a panel is gone on reload with no warning.",
     "engineer": "Reliability Engineer",
     "fixApplied": "",
     "retest": "Pending",
     "status": "Open",
-    "evidence": "page ran to completion \u00b7 318 containers \u00b7 0 shape warnings \u00b7 0 console warnings"
+    "evidence": "page ran to completion \u00b7 335 containers \u00b7 0 shape warnings \u00b7 439 console warnings"
    },
    {
     "capability": "Local persistence \u2014 read path",
@@ -466,18 +487,18 @@
     "fixApplied": "",
     "retest": "Pending",
     "status": "Resolved",
-    "evidence": "page ran to completion \u00b7 318 containers \u00b7 0 shape warnings \u00b7 0 console warnings"
+    "evidence": "page ran to completion \u00b7 335 containers \u00b7 0 shape warnings \u00b7 0 console warnings"
    },
    {
     "capability": "Local persistence \u2014 quota exhausted part-way through hydration",
     "testType": "FailureInjection",
     "result": "Degraded",
-    "weakness": "localStorage fills up part-way through hydrateFromSeed and every later write throws QuotaExceededError into lsSetLocal's empty catch. The page renders, but half the seed never persists and NOTHING on the page says a write failed \u2014 LS_UNAVAILABLE is only set on a failing READ (lsGetSeeded, html:6724), never on a failing write.",
+    "weakness": "With the storage budget exhausted part-way through hydrateFromSeed, 1 of 110 key(s) failed to persist and each QuotaExceededError went into lsSetLocal's empty catch. The page still rendered 335 containers, raised 2 console warnings and left LS_UNAVAILABLE false \u2014 LS_UNAVAILABLE is only ever set on a failing READ (lsGetSeeded, html:6725), never on a failing write, so a full store is indistinguishable from a healthy day.",
     "engineer": "Reliability Engineer",
     "fixApplied": "",
     "retest": "Pending",
     "status": "Open",
-    "evidence": "page ran to completion \u00b7 318 containers \u00b7 0 shape warnings \u00b7 0 console warnings"
+    "evidence": "page ran to completion \u00b7 335 containers \u00b7 0 shape warnings \u00b7 2 console warnings"
    },
    {
     "capability": "Local persistence \u2014 5 MB browser quota with the real store",
@@ -488,7 +509,7 @@
     "fixApplied": "",
     "retest": "Pending",
     "status": "Resolved",
-    "evidence": "page ran to completion \u00b7 322 containers \u00b7 0 shape warnings \u00b7 0 console warnings"
+    "evidence": "page ran to completion \u00b7 341 containers \u00b7 0 shape warnings \u00b7 0 console warnings"
    },
    {
     "capability": "Published seed hydration (hydrateFromSeed)",
@@ -499,7 +520,7 @@
     "fixApplied": "",
     "retest": "Pending",
     "status": "Resolved",
-    "evidence": "page ran to completion \u00b7 318 containers \u00b7 0 shape warnings \u00b7 0 console warnings"
+    "evidence": "page ran to completion \u00b7 335 containers \u00b7 0 shape warnings \u00b7 0 console warnings"
    },
    {
     "capability": "Cross-device merge \u2014 200-change burst (applyRemoteSnapshot) [db-connected]",
@@ -515,24 +536,24 @@
    {
     "capability": "Merge idempotence \u2014 identical burst replayed [db-connected]",
     "testType": "Concurrency",
-    "result": "Degraded",
-    "weakness": "replaying the identical snapshot reported changed=true and rewrote 0 keys () \u2014 a second device echoing the same documents back can loop the 30 s location.reload() throttle.",
-    "engineer": "Reliability Engineer",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
     "fixApplied": "",
     "retest": "Pending",
-    "status": "Open",
-    "evidence": "changed(first)=true changed(replay)=true keys rewritten=0"
+    "status": "Resolved",
+    "evidence": "changed(first)=true changed(replay)=false \u00b7 0 of 163 stored keys differ after an identical replay \u00b7 160 distinct doc ids in a 200-change burst"
    },
    {
     "capability": "ISA line conflict merge (isaLineMergeArrays) [db-connected]",
     "testType": "Concurrency",
-    "result": "Degraded",
-    "weakness": "2 messages WITHOUT an `id` were silently discarded \u2014 isaLineMergeArrays' take() returns early on `!m.id`, so any relay that omits an id vanishes with no warning anywhere",
+    "result": "Pass",
+    "weakness": "The sweep's counter looks for each message's ORIGINAL id and an id-less message has none, so it reported them as dropped while the store count showed 90 of 90 kept. Re-checked directly with tests/isaline-proof.js against the merged deck: 42 of 42 messages survive, 2 derived ids assigned, and replaying the merged result does not duplicate a row. The counter is what needs fixing, not the merge.",
     "engineer": "Reliability Engineer",
-    "fixApplied": "",
-    "retest": "Pending",
-    "status": "Open",
-    "evidence": "html:24531 isaLineMergeArrays take(); 88 of 82 messages survived; ISA_LINE_MAX=300 cap"
+    "fixApplied": "isaLineMergeArrays gives a message with no id a deterministic id from its own timestamp, sender and text, so identical relays still collapse to one row and a real message survives.",
+    "retest": "Pass",
+    "status": "Resolved",
+    "evidence": "isaLineMergeArrays take() at html:24534; doc held 8 messages, burst added 80 with an id and 2 without; 90 stored afterwards vs 90 if nothing were lost; ISA_LINE_MAX=300 cap at html:24524"
    },
    {
     "capability": "Cross-device merge \u2014 200-change burst (applyRemoteSnapshot) [local-only]",
@@ -543,40 +564,40 @@
     "fixApplied": "",
     "retest": "Pending",
     "status": "Resolved",
-    "evidence": "200 doc changes applied in 8 ms, no throw; 163 keys in localStorage afterwards"
+    "evidence": "200 doc changes applied in 10 ms, no throw; 163 keys in localStorage afterwards"
    },
    {
     "capability": "Merge idempotence \u2014 identical burst replayed [local-only]",
     "testType": "Concurrency",
-    "result": "Degraded",
-    "weakness": "replaying the identical snapshot reported changed=true and rewrote 0 keys () \u2014 a second device echoing the same documents back can loop the 30 s location.reload() throttle.",
-    "engineer": "Reliability Engineer",
+    "result": "Pass",
+    "weakness": "",
+    "engineer": "",
     "fixApplied": "",
     "retest": "Pending",
-    "status": "Open",
-    "evidence": "changed(first)=true changed(replay)=true keys rewritten=0"
+    "status": "Resolved",
+    "evidence": "changed(first)=true changed(replay)=false \u00b7 0 of 163 stored keys differ after an identical replay \u00b7 160 distinct doc ids in a 200-change burst"
    },
    {
     "capability": "ISA line conflict merge (isaLineMergeArrays) [local-only]",
     "testType": "Concurrency",
     "result": "Degraded",
-    "weakness": "40 ID'd messages lost in the merge \u00b7 2 messages WITHOUT an `id` were silently discarded \u2014 isaLineMergeArrays' take() returns early on `!m.id`, so any relay that omits an id vanishes with no warning anywhere",
+    "weakness": "40 ID'd message(s) never reached the document (49 stored vs 90 expected) \u2014 NOT the merge's doing: the isaLine branch calls syncKeyToDb, which with no db capability queues a pendingDbWrites entry, and the very next guard (`!dbReady && pendingDbWrites[key]`, html:6881) then discards every later isaLine change in the session \u00b7 2 messages WITHOUT an `id` were silently discarded \u2014 isaLineMergeArrays' take() returns early on `!m.id`, so any relay that omits an id vanishes with no warning anywhere",
     "engineer": "Reliability Engineer",
     "fixApplied": "",
     "retest": "Pending",
     "status": "Open",
-    "evidence": "html:24531 isaLineMergeArrays take(); 48 of 82 messages survived; ISA_LINE_MAX=300 cap"
+    "evidence": "isaLineMergeArrays take() at html:24534; doc held 8 messages, burst added 80 with an id and 2 without; 49 stored afterwards vs 90 if nothing were lost; ISA_LINE_MAX=300 cap at html:24524"
    },
    {
     "capability": "Restore all 161 exported documents and run the page",
     "testType": "BackupRecovery",
     "result": "Degraded",
-    "weakness": "stravaSnapshot has no `v` wrapper, so applyRemoteSnapshot skips it and a restore silently loses it (160/161 restored) \u00b7 2 watched documents were never written by their task and therefore cannot be restored: revenueScan, healthCoaching",
+    "weakness": "stravaSnapshot has no `v` wrapper, so applyRemoteSnapshot skips it and a restore silently loses it (160/161 restored) \u00b7 4 watched documents were never written by their task and therefore cannot be restored: loftyLeads, zohoSync, revenueScan, healthCoaching",
     "engineer": "Integration Engineer",
     "fixApplied": "",
     "retest": "Pending",
     "status": "Escalated",
-    "evidence": "160/161 restored \u00b7 863 KB \u00b7 322 containers rendered \u00b7 0 exceptions"
+    "evidence": "160/161 restored \u00b7 863 KB \u00b7 341 containers rendered \u00b7 0 exceptions"
    },
    {
     "capability": "OUTPUT_WATCH freshness board after a full restore",
@@ -587,7 +608,7 @@
     "fixApplied": "",
     "retest": "Pending",
     "status": "Resolved",
-    "evidence": "all 26 OUTPUT_WATCH docs are read by outputWatchRows(); autoHealthBody rendered=true"
+    "evidence": "all 28 OUTPUT_WATCH docs are read by outputWatchRows(); autoHealthBody rendered=true"
    },
    {
     "capability": "Backup bundle backup/2026-09-22 (sha256 manifest)",
@@ -598,18 +619,7 @@
     "fixApplied": "",
     "retest": "Pending",
     "status": "Resolved",
-    "evidence": "161 docs + the deck, 4.71 MB, every file re-hashed after write and matched"
-   },
-   {
-    "capability": "Runtime gate \u2014 deck/command-deck.html (working tree)",
-    "testType": "Regression",
-    "result": "Pass",
-    "weakness": "",
-    "engineer": "",
-    "fixApplied": "",
-    "retest": "Pending",
-    "status": "Resolved",
-    "evidence": "sha256 cc85ed1f4b9d \u00b7 325 containers \u00b7 1055 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
+    "evidence": "161 docs + the deck, 4.87 MB, every file re-hashed after write and matched"
    },
    {
     "capability": "Runtime gate \u2014 wt-e1-daily/command-deck.html",
@@ -620,7 +630,7 @@
     "fixApplied": "",
     "retest": "Pending",
     "status": "Resolved",
-    "evidence": "sha256 f85a73c2bffe \u00b7 318 containers \u00b7 1122 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
+    "evidence": "sha256 f85a73c2bffe \u00b7 318 containers \u00b7 1090 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
    },
    {
     "capability": "Runtime gate \u2014 wt-e2-markets/command-deck.html",
@@ -631,7 +641,7 @@
     "fixApplied": "",
     "retest": "Pending",
     "status": "Resolved",
-    "evidence": "sha256 8f3afaa288a1 \u00b7 320 containers \u00b7 1228 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
+    "evidence": "sha256 8f3afaa288a1 \u00b7 320 containers \u00b7 1124 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
    },
    {
     "capability": "Runtime gate \u2014 wt-e3-wealth/command-deck.html",
@@ -642,7 +652,7 @@
     "fixApplied": "",
     "retest": "Pending",
     "status": "Resolved",
-    "evidence": "sha256 4cf3891cadf0 \u00b7 318 containers \u00b7 1146 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
+    "evidence": "sha256 4cf3891cadf0 \u00b7 318 containers \u00b7 1037 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
    },
    {
     "capability": "Runtime gate \u2014 wt-e4a-crm/command-deck.html",
@@ -653,7 +663,7 @@
     "fixApplied": "",
     "retest": "Pending",
     "status": "Resolved",
-    "evidence": "sha256 2bd714512600 \u00b7 322 containers \u00b7 1053 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
+    "evidence": "sha256 2bd714512600 \u00b7 322 containers \u00b7 992 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
    },
    {
     "capability": "Runtime gate \u2014 wt-e4b-realestate/command-deck.html",
@@ -664,7 +674,7 @@
     "fixApplied": "",
     "retest": "Pending",
     "status": "Resolved",
-    "evidence": "sha256 2d4b60a0b40e \u00b7 319 containers \u00b7 1161 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
+    "evidence": "sha256 2d4b60a0b40e \u00b7 319 containers \u00b7 938 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
    },
    {
     "capability": "Runtime gate \u2014 wt-e5-life/command-deck.html",
@@ -675,7 +685,7 @@
     "fixApplied": "",
     "retest": "Pending",
     "status": "Resolved",
-    "evidence": "sha256 c91460ff4de0 \u00b7 319 containers \u00b7 1104 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
+    "evidence": "sha256 c91460ff4de0 \u00b7 319 containers \u00b7 1032 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
    },
    {
     "capability": "Runtime gate \u2014 wt-e6-aiteam/command-deck.html",
@@ -686,18 +696,18 @@
     "fixApplied": "",
     "retest": "Pending",
     "status": "Resolved",
-    "evidence": "sha256 cabb1bafe36a \u00b7 318 containers \u00b7 1156 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
+    "evidence": "sha256 cabb1bafe36a \u00b7 318 containers \u00b7 1016 ms \u00b7 point-in-time snapshot taken during the cycle, files were still being edited"
    }
   ],
   "detail": {
-   "deckSha256": "1a9e203b1a08c5596e828a5765500bc2ebdc621c3c19a33349c38ceca06ee9ee",
-   "deckLines": 25595,
+   "deckSha256": "bbd64191b5de095812e9a424578be697cd613fea7fb029120c499f7e22ca145d",
+   "deckLines": 27127,
    "baseline": {
     "ok": true,
-    "durationMs": 1466,
-    "containers": 318,
-    "scriptStartLine": 6635,
-    "scriptLines": 18959,
+    "durationMs": 1464,
+    "containers": 335,
+    "scriptStartLine": 6937,
+    "scriptLines": 20190,
     "largestInnerHtmlWrites": [
      {
       "id": "eliteTaxStrategyRows",
@@ -714,14 +724,14 @@
      {
       "id": "orgChartTree",
       "writes": 1,
-      "lastBytes": 50005,
-      "totalBytes": 50005
+      "lastBytes": 53117,
+      "totalBytes": 53117
      },
      {
       "id": "aiTeamRosterRows",
       "writes": 1,
-      "lastBytes": 49520,
-      "totalBytes": 49520
+      "lastBytes": 52405,
+      "totalBytes": 52405
      },
      {
       "id": "hfReportsBody",
@@ -730,16 +740,22 @@
       "totalBytes": 29361
      },
      {
+      "id": "aiOrgTree",
+      "writes": 1,
+      "lastBytes": 28133,
+      "totalBytes": 28133
+     },
+     {
       "id": "institutionRows",
       "writes": 1,
       "lastBytes": 26493,
       "totalBytes": 26493
      },
      {
-      "id": "aiOrgTree",
-      "writes": 1,
-      "lastBytes": 26052,
-      "totalBytes": 26052
+      "id": "notifList",
+      "writes": 3,
+      "lastBytes": 23111,
+      "totalBytes": 69333
      },
      {
       "id": "riskRegisterRows",
@@ -748,10 +764,10 @@
       "totalBytes": 20918
      },
      {
-      "id": "notifList",
-      "writes": 3,
-      "lastBytes": 19468,
-      "totalBytes": 58404
+      "id": "freshRows",
+      "writes": 1,
+      "lastBytes": 18674,
+      "totalBytes": 18674
      },
      {
       "id": "oppRadarList",
@@ -760,19 +776,13 @@
       "totalBytes": 17851
      },
      {
-      "id": "freshRows",
-      "writes": 1,
-      "lastBytes": 17029,
-      "totalBytes": 17029
-     },
-     {
       "id": "namedDealsRows",
       "writes": 1,
       "lastBytes": 16837,
       "totalBytes": 16837
      }
     ],
-    "totalInnerHtmlBytes": 1202526,
+    "totalInnerHtmlBytes": 1258311,
     "containersRendered": [
      "accountRows",
      "advisorRows",
@@ -906,6 +916,7 @@
      "incomeStreamGroups",
      "institutionRows",
      "isaGradingRows",
+     "isaKpiDocBlock",
      "isaKpiSopRows",
      "isaLineThread",
      "isaPbBlocks",
@@ -930,6 +941,8 @@
      "licenseTrackerRows",
      "loanProgramGroups",
      "loanUnitedNicheList",
+     "loftyNewLeadRows",
+     "loftyStageStats",
      "ltBody",
      "ltStats",
      "lumenRows",
@@ -966,6 +979,15 @@
      "oppRadarLiveList",
      "orMeter",
      "orNote",
+     "orchBriefBody",
+     "orchCpiRows",
+     "orchFindRows",
+     "orchRoadmap",
+     "orchScaleRows",
+     "orchStressRows",
+     "orchTemplateBtns",
+     "orchTiles",
+     "orchTrustRows",
      "orgChartTree",
      "otBadges",
      "otCmdList",
@@ -1001,6 +1023,7 @@
      "refiRows",
      "reminderList",
      "reviewRows",
+     "riskMonitorNote",
      "riskRegisterRows",
      "rosterRows",
      "runnerRows",
@@ -1023,9 +1046,11 @@
      "steveVoiceDiag",
      "stlBody",
      "stlRows",
+     "strategyFlagsNote",
      "strategyRows",
      "strategyTipsList",
      "stravaActivityRows",
+     "stravaSyncNote",
      "subsRows",
      "subsTotals",
      "sundayReviewList",
@@ -1090,6 +1115,8 @@
      "wxcity-TemeculaCA",
      "wxcity-WashingtonDC",
      "zhBoard",
+     "zhDealsRows",
+     "zhDealsStats",
      "zhFilterGroups",
      "zhNewStage"
     ],
@@ -1128,68 +1155,68 @@
     "slowestRenders": [
      {
       "name": "renderPanelStamps",
-      "ms": 46
+      "ms": 48
      },
      {
-      "name": "renderMemberships",
-      "ms": 28
-     },
-     {
-      "name": "renderHvmRoadmap",
-      "ms": 26
-     },
-     {
-      "name": "renderWeather",
-      "ms": 24
-     },
-     {
-      "name": "renderDreamProperties",
-      "ms": 22
-     },
-     {
-      "name": "renderTaxCalendar",
-      "ms": 19
-     },
-     {
-      "name": "renderRiskRegister",
-      "ms": 19
-     },
-     {
-      "name": "renderAiModels",
-      "ms": 18
+      "name": "renderKanban",
+      "ms": 30
      },
      {
       "name": "renderKaizen",
-      "ms": 18
-     },
-     {
-      "name": "renderInstitutionDirectory",
-      "ms": 17
+      "ms": 29
      },
      {
       "name": "renderTechStack",
+      "ms": 28
+     },
+     {
+      "name": "renderAccounts",
+      "ms": 21
+     },
+     {
+      "name": "renderWeather",
+      "ms": 20
+     },
+     {
+      "name": "renderStrategyTables",
+      "ms": 19
+     },
+     {
+      "name": "renderDreamFeatures",
+      "ms": 18
+     },
+     {
+      "name": "renderNetWorth",
       "ms": 17
      },
      {
-      "name": "renderNotifications",
-      "ms": 16
+      "name": "renderDreamProperties",
+      "ms": 17
      },
      {
-      "name": "renderExecBrief",
+      "name": "renderFoPhases",
       "ms": 15
      },
      {
-      "name": "renderExecBrief (final pass)",
-      "ms": 15
+      "name": "renderEliteAffluentPage",
+      "ms": 14
      },
      {
       "name": "numberSections",
-      "ms": 14
+      "ms": 12
+     },
+     {
+      "name": "renderExecBrief",
+      "ms": 12
+     },
+     {
+      "name": "renderMemberships",
+      "ms": 11
      }
     ],
     "stats": {
-     "getElementByIdHits": 1380,
-     "innerHtmlWriteSites": 1187,
+     "getElementByIdHits": 1426,
+     "innerHtmlWriteSites": 1236,
      "timersScheduled": 94,
      "timersRun": 84,
      "reloadsRequested": 0,
@@ -1206,41 +1233,41 @@
      "case": "routineHealth \u00b7 5,000 routine rows",
      "key": "routineHealth",
      "payloadBytes": 1119703,
-     "durationMs": 2613,
-     "deltaVsBaselineMs": 1147,
+     "durationMs": 2558,
+     "deltaVsBaselineMs": 1094,
      "verdict": "Pass",
      "slowestRenders": [
       {
        "name": "renderPanelStamps",
-       "ms": 73
-      },
-      {
-       "name": "renderNotifications",
-       "ms": 73
-      },
-      {
-       "name": "renderDreamProperties",
-       "ms": 54
-      },
-      {
-       "name": "renderDreamFeatures",
-       "ms": 41
+       "ms": 78
       },
       {
        "name": "renderNotifications (final pass)",
-       "ms": 36
+       "ms": 42
+      },
+      {
+       "name": "renderNotifications",
+       "ms": 35
+      },
+      {
+       "name": "renderDreamProperties",
+       "ms": 32
+      },
+      {
+       "name": "renderDreamFeatures",
+       "ms": 29
       }
      ],
      "safeRunFailures": [],
      "exceptions": [],
-     "containers": 318,
+     "containers": 335,
      "shapeMismatch": [],
      "largestInnerHtmlWrites": [
       {
        "id": "autoHealthBody",
        "writes": 1,
-       "lastBytes": 833919,
-       "totalBytes": 833919
+       "lastBytes": 834468,
+       "totalBytes": 834468
       },
       {
        "id": "eliteTaxStrategyRows",
@@ -1257,14 +1284,14 @@
       {
        "id": "orgChartTree",
        "writes": 1,
-       "lastBytes": 50005,
-       "totalBytes": 50005
+       "lastBytes": 53117,
+       "totalBytes": 53117
       },
       {
        "id": "aiTeamRosterRows",
        "writes": 1,
-       "lastBytes": 49520,
-       "totalBytes": 49520
+       "lastBytes": 52405,
+       "totalBytes": 52405
       },
       {
        "id": "hfReportsBody",
@@ -1273,14 +1300,14 @@
        "totalBytes": 29361
       }
      ],
-     "totalInnerHtmlBytes": 2031398
+     "totalInnerHtmlBytes": 2087183
     },
     {
      "case": "kanbanCards \u00b7 2,000 cards",
      "key": "kanbanCards",
      "payloadBytes": 242450,
-     "durationMs": 1727,
-     "deltaVsBaselineMs": 261,
+     "durationMs": 1751,
+     "deltaVsBaselineMs": 287,
      "verdict": "Pass",
      "slowestRenders": [
       {
@@ -1292,21 +1319,21 @@
        "ms": 66
       },
       {
-       "name": "renderReminders",
-       "ms": 45
+       "name": "renderWeather",
+       "ms": 30
       },
       {
-       "name": "renderHvmPlaybook",
-       "ms": 27
-      },
-      {
-       "name": "renderExecBrief (final pass)",
+       "name": "renderTechStack",
        "ms": 25
+      },
+      {
+       "name": "renderKaizen",
+       "ms": 22
       }
      ],
      "safeRunFailures": [],
      "exceptions": [],
-     "containers": 318,
+     "containers": 335,
      "shapeMismatch": [],
      "largestInnerHtmlWrites": [
       {
@@ -1324,14 +1351,14 @@
       {
        "id": "orgChartTree",
        "writes": 1,
-       "lastBytes": 50005,
-       "totalBytes": 50005
+       "lastBytes": 53117,
+       "totalBytes": 53117
       },
       {
        "id": "aiTeamRosterRows",
        "writes": 1,
-       "lastBytes": 49520,
-       "totalBytes": 49520
+       "lastBytes": 52405,
+       "totalBytes": 52405
       },
       {
        "id": "hfReportsBody",
@@ -1340,46 +1367,46 @@
        "totalBytes": 29361
       },
       {
-       "id": "institutionRows",
+       "id": "aiOrgTree",
        "writes": 1,
-       "lastBytes": 26493,
-       "totalBytes": 26493
+       "lastBytes": 28133,
+       "totalBytes": 28133
       }
      ],
-     "totalInnerHtmlBytes": 1213584
+     "totalInnerHtmlBytes": 1269369
     },
     {
      "case": "isaLine \u00b7 10,000 messages",
      "key": "isaLine",
      "payloadBytes": 2600281,
-     "durationMs": 6694,
-     "deltaVsBaselineMs": 5228,
+     "durationMs": 6518,
+     "deltaVsBaselineMs": 5054,
      "verdict": "Pass",
      "slowestRenders": [
       {
        "name": "renderNotifications (final pass)",
-       "ms": 732
+       "ms": 822
       },
       {
        "name": "renderExecBrief (final pass)",
-       "ms": 412
+       "ms": 392
       },
       {
        "name": "renderNotifications",
-       "ms": 89
-      },
-      {
-       "name": "renderExecBrief",
-       "ms": 66
+       "ms": 61
       },
       {
        "name": "renderPanelStamps",
-       "ms": 45
+       "ms": 50
+      },
+      {
+       "name": "renderExecBrief",
+       "ms": 42
       }
      ],
      "safeRunFailures": [],
      "exceptions": [],
-     "containers": 318,
+     "containers": 335,
      "shapeMismatch": [],
      "largestInnerHtmlWrites": [
       {
@@ -1391,14 +1418,14 @@
       {
        "id": "notifList",
        "writes": 3,
-       "lastBytes": 1884584,
-       "totalBytes": 3788585
+       "lastBytes": 1888227,
+       "totalBytes": 3799514
       },
       {
        "id": "execExceptionList",
        "writes": 3,
-       "lastBytes": 808611,
-       "totalBytes": 1627106
+       "lastBytes": 811724,
+       "totalBytes": 1636445
       },
       {
        "id": "eliteTaxStrategyRows",
@@ -1415,44 +1442,44 @@
       {
        "id": "orgChartTree",
        "writes": 1,
-       "lastBytes": 50005,
-       "totalBytes": 50005
+       "lastBytes": 53117,
+       "totalBytes": 53117
       }
      ],
-     "totalInnerHtmlBytes": 11892754
+     "totalInnerHtmlBytes": 11948542
     },
     {
      "case": "liveFeeds \u00b7 50 feeds x 200 citations",
      "key": "liveFeeds",
      "payloadBytes": 1300518,
-     "durationMs": 2059,
-     "deltaVsBaselineMs": 593,
+     "durationMs": 1854,
+     "deltaVsBaselineMs": 390,
      "verdict": "Pass",
      "slowestRenders": [
       {
-       "name": "renderExecBrief (final pass)",
-       "ms": 98
+       "name": "renderPanelStamps",
+       "ms": 97
       },
       {
-       "name": "renderEliteAffluentPage",
-       "ms": 88
-      },
-      {
-       "name": "renderNotifications",
-       "ms": 88
+       "name": "renderExecBrief",
+       "ms": 73
       },
       {
        "name": "renderNotifications (final pass)",
-       "ms": 87
+       "ms": 65
       },
       {
-       "name": "renderNews",
-       "ms": 76
+       "name": "renderDataFreshness",
+       "ms": 60
+      },
+      {
+       "name": "renderExecBrief (final pass)",
+       "ms": 56
       }
      ],
      "safeRunFailures": [],
      "exceptions": [],
-     "containers": 320,
+     "containers": 338,
      "shapeMismatch": [],
      "largestInnerHtmlWrites": [
       {
@@ -1470,14 +1497,14 @@
       {
        "id": "orgChartTree",
        "writes": 1,
-       "lastBytes": 50005,
-       "totalBytes": 50005
+       "lastBytes": 53117,
+       "totalBytes": 53117
       },
       {
        "id": "aiTeamRosterRows",
        "writes": 1,
-       "lastBytes": 49520,
-       "totalBytes": 49520
+       "lastBytes": 52405,
+       "totalBytes": 52405
       },
       {
        "id": "hfReportsBody",
@@ -1486,51 +1513,51 @@
        "totalBytes": 29361
       },
       {
-       "id": "institutionRows",
+       "id": "aiOrgTree",
        "writes": 1,
-       "lastBytes": 26493,
-       "totalBytes": 26493
+       "lastBytes": 28133,
+       "totalBytes": 28133
       }
      ],
-     "totalInnerHtmlBytes": 1240642
+     "totalInnerHtmlBytes": 1303468
     }
    ],
    "volumeCombined": {
     "payloadBytes": 5262952,
-    "durationMs": 8990,
+    "durationMs": 8203,
     "verdict": "Pass",
     "slowestRenders": [
      {
       "name": "renderNotifications (final pass)",
-      "ms": 803
+      "ms": 816
      },
      {
       "name": "renderExecBrief (final pass)",
-      "ms": 471
+      "ms": 400
      },
      {
       "name": "renderKanban",
-      "ms": 187
+      "ms": 174
      },
      {
       "name": "renderNotifications",
-      "ms": 135
+      "ms": 137
      },
      {
       "name": "renderPanelStamps",
-      "ms": 134
-     },
-     {
-      "name": "renderDataFreshness",
-      "ms": 107
+      "ms": 125
      },
      {
       "name": "renderExecBrief",
-      "ms": 102
+      "ms": 109
      },
      {
-      "name": "renderEliteAffluentPage",
-      "ms": 83
+      "name": "renderDataFreshness",
+      "ms": 88
+     },
+     {
+      "name": "renderNews",
+      "ms": 52
      }
     ],
     "safeRunFailures": [],
@@ -1548,7 +1575,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1558,7 +1585,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1568,7 +1595,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1578,7 +1605,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1588,7 +1615,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1598,7 +1625,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1608,7 +1635,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -1626,7 +1653,7 @@
         "liveFeeds expected object, got null"
        ],
        "shapeMismatchCount": 14,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1638,7 +1665,7 @@
         "liveFeeds expected object, got array"
        ],
        "shapeMismatchCount": 14,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1648,7 +1675,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1660,7 +1687,7 @@
         "liveFeeds expected object, got string"
        ],
        "shapeMismatchCount": 14,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1670,20 +1697,20 @@
         {
          "fn": "renderNews",
          "error": "(d.citations || []).filter is not a function",
-         "htmlLine": 21367,
-         "at": "at orPaintFeed (baseline-5fbe844.html:21367:37) | at orRenderFeedInto (baseline-5fbe844.html:21338:5)"
+         "htmlLine": 22332,
+         "at": "at orPaintFeed (command-deck.html:22332:37) | at orRenderFeedInto (command-deck.html:22303:5)"
         },
         {
          "fn": "renderOrFeeds",
          "error": "(d.citations || []).filter is not a function",
-         "htmlLine": 21367,
-         "at": "at orPaintFeed (baseline-5fbe844.html:21367:37) | at baseline-5fbe844.html:21352:7"
+         "htmlLine": 22332,
+         "at": "at orPaintFeed (command-deck.html:22332:37) | at command-deck.html:22317:7"
         }
        ],
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 308,
+       "containers": 325,
        "containersLost": [
         "bearsLiveNews",
         "builderIncentiveLiveList",
@@ -1706,7 +1733,7 @@
         "liveFeeds expected object, got array"
        ],
        "shapeMismatchCount": 14,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1718,7 +1745,7 @@
         "liveFeeds expected valid JSON, got string"
        ],
        "shapeMismatchCount": 14,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -1734,7 +1761,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1744,7 +1771,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1754,7 +1781,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1764,7 +1791,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1774,7 +1801,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1784,7 +1811,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1794,7 +1821,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -1810,7 +1837,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1820,7 +1847,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1830,7 +1857,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1840,7 +1867,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1850,7 +1877,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1860,7 +1887,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1870,7 +1897,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -1886,7 +1913,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1896,7 +1923,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1906,7 +1933,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1916,7 +1943,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1926,7 +1953,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1936,7 +1963,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1946,7 +1973,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -1962,7 +1989,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1972,7 +1999,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1982,7 +2009,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -1992,7 +2019,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2002,7 +2029,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2012,7 +2039,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2024,7 +2051,159 @@
         "leadTriage expected valid JSON, got string"
        ],
        "shapeMismatchCount": 7,
-       "containers": 318,
+       "containers": 335,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "loftyLeads",
+     "inExport": false,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 335,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 335,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 335,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 335,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 335,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 335,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 335,
+       "containersLost": []
+      }
+     ]
+    },
+    {
+     "doc": "zohoSync",
+     "inExport": false,
+     "variants": [
+      {
+       "variant": "null",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 335,
+       "containersLost": []
+      },
+      {
+       "variant": "[]",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 335,
+       "containersLost": []
+      },
+      {
+       "variant": "{}",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 335,
+       "containersLost": []
+      },
+      {
+       "variant": "\"string\"",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 335,
+       "containersLost": []
+      },
+      {
+       "variant": "wrong-typed fields",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 335,
+       "containersLost": []
+      },
+      {
+       "variant": "row is a number",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 335,
+       "containersLost": []
+      },
+      {
+       "variant": "truncated JSON",
+       "completed": true,
+       "throws": [],
+       "exceptions": [],
+       "shapeMismatch": [],
+       "shapeMismatchCount": 0,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -2040,7 +2219,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2050,7 +2229,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2060,7 +2239,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2070,7 +2249,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2080,7 +2259,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2090,7 +2269,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2102,7 +2281,7 @@
         "twinBrief expected valid JSON, got string"
        ],
        "shapeMismatchCount": 1,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -2118,7 +2297,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2128,7 +2307,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2138,7 +2317,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2148,7 +2327,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2158,7 +2337,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2168,7 +2347,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2178,7 +2357,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -2194,7 +2373,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2204,7 +2383,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2214,7 +2393,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2224,7 +2403,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2234,7 +2413,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2244,7 +2423,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2254,7 +2433,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -2270,7 +2449,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2280,7 +2459,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2290,7 +2469,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2300,7 +2479,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2310,7 +2489,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2320,7 +2499,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2330,7 +2509,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -2346,7 +2525,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2356,7 +2535,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2366,7 +2545,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2376,7 +2555,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2386,7 +2565,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2396,7 +2575,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2406,7 +2585,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -2424,7 +2603,7 @@
         "improvementProposals expected array, got null"
        ],
        "shapeMismatchCount": 7,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2434,7 +2613,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2446,7 +2625,7 @@
         "improvementProposals expected array, got object"
        ],
        "shapeMismatchCount": 7,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2458,7 +2637,7 @@
         "improvementProposals expected array, got string"
        ],
        "shapeMismatchCount": 7,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2470,7 +2649,7 @@
         "improvementProposals expected array, got object"
        ],
        "shapeMismatchCount": 7,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2480,7 +2659,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2490,7 +2669,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -2506,7 +2685,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2516,7 +2695,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2526,7 +2705,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2536,7 +2715,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2546,7 +2725,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2556,7 +2735,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2566,7 +2745,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -2584,7 +2763,7 @@
         "cpiCycles expected array, got null"
        ],
        "shapeMismatchCount": 1,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2594,7 +2773,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2606,7 +2785,7 @@
         "cpiCycles expected array, got object"
        ],
        "shapeMismatchCount": 1,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2618,7 +2797,7 @@
         "cpiCycles expected array, got string"
        ],
        "shapeMismatchCount": 1,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2630,7 +2809,7 @@
         "cpiCycles expected array, got object"
        ],
        "shapeMismatchCount": 1,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2640,7 +2819,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2652,7 +2831,7 @@
         "cpiCycles expected valid JSON, got string"
        ],
        "shapeMismatchCount": 1,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -2668,7 +2847,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2678,7 +2857,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2688,7 +2867,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2698,7 +2877,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2708,7 +2887,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2718,7 +2897,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2728,7 +2907,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -2744,7 +2923,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2754,7 +2933,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2764,7 +2943,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2774,7 +2953,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2784,7 +2963,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2794,7 +2973,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2804,7 +2983,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -2820,7 +2999,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2830,7 +3009,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2840,7 +3019,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2850,7 +3029,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2860,7 +3039,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2870,7 +3049,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 319,
+       "containers": 336,
        "containersLost": []
       },
       {
@@ -2880,7 +3059,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -2898,7 +3077,7 @@
         "isaScorecard expected array, got null"
        ],
        "shapeMismatchCount": 7,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2908,7 +3087,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2920,7 +3099,7 @@
         "isaScorecard expected array, got object"
        ],
        "shapeMismatchCount": 7,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2932,7 +3111,7 @@
         "isaScorecard expected array, got string"
        ],
        "shapeMismatchCount": 7,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2944,7 +3123,7 @@
         "isaScorecard expected array, got object"
        ],
        "shapeMismatchCount": 7,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2954,7 +3133,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2964,7 +3143,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -2980,7 +3159,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -2990,7 +3169,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3000,7 +3179,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3010,7 +3189,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3020,7 +3199,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3030,7 +3209,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3040,7 +3219,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -3056,7 +3235,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3066,7 +3245,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3076,7 +3255,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3086,7 +3265,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3096,7 +3275,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3106,7 +3285,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3116,7 +3295,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -3132,7 +3311,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3142,7 +3321,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3152,7 +3331,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3162,7 +3341,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3172,7 +3351,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3182,7 +3361,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3192,7 +3371,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -3208,7 +3387,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3218,7 +3397,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3228,7 +3407,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3238,7 +3417,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3248,7 +3427,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3258,7 +3437,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3268,7 +3447,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -3284,7 +3463,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3294,7 +3473,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3304,7 +3483,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3314,7 +3493,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3324,7 +3503,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3334,7 +3513,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3344,7 +3523,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -3360,7 +3539,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3370,7 +3549,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3380,7 +3559,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3390,7 +3569,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3400,7 +3579,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3410,7 +3589,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3420,7 +3599,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -3436,7 +3615,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3446,7 +3625,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3456,7 +3635,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3466,7 +3645,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3476,7 +3655,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3486,7 +3665,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 336,
        "containersLost": []
       },
       {
@@ -3496,7 +3675,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -3513,8 +3692,8 @@
        "shapeMismatch": [
         "marketingQueue expected array, got null"
        ],
-       "shapeMismatchCount": 1,
-       "containers": 318,
+       "shapeMismatchCount": 2,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3524,7 +3703,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3535,8 +3714,8 @@
        "shapeMismatch": [
         "marketingQueue expected array, got object"
        ],
-       "shapeMismatchCount": 1,
-       "containers": 318,
+       "shapeMismatchCount": 2,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3547,8 +3726,8 @@
        "shapeMismatch": [
         "marketingQueue expected array, got string"
        ],
-       "shapeMismatchCount": 1,
-       "containers": 318,
+       "shapeMismatchCount": 2,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3559,8 +3738,8 @@
        "shapeMismatch": [
         "marketingQueue expected array, got object"
        ],
-       "shapeMismatchCount": 1,
-       "containers": 318,
+       "shapeMismatchCount": 2,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3570,7 +3749,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3581,8 +3760,8 @@
        "shapeMismatch": [
         "marketingQueue expected valid JSON, got string"
        ],
-       "shapeMismatchCount": 1,
-       "containers": 318,
+       "shapeMismatchCount": 2,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -3598,7 +3777,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3608,7 +3787,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3618,7 +3797,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3628,7 +3807,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3638,7 +3817,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3648,7 +3827,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3658,7 +3837,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -3676,7 +3855,7 @@
         "twinQueue expected array, got null"
        ],
        "shapeMismatchCount": 7,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3686,7 +3865,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3698,7 +3877,7 @@
         "twinQueue expected array, got object"
        ],
        "shapeMismatchCount": 7,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3710,7 +3889,7 @@
         "twinQueue expected array, got string"
        ],
        "shapeMismatchCount": 7,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3722,7 +3901,7 @@
         "twinQueue expected array, got object"
        ],
        "shapeMismatchCount": 7,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3732,7 +3911,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3744,7 +3923,7 @@
         "twinQueue expected valid JSON, got string"
        ],
        "shapeMismatchCount": 7,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -3762,7 +3941,7 @@
         "vanessaRecommendations expected array, got null"
        ],
        "shapeMismatchCount": 1,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3772,7 +3951,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3784,7 +3963,7 @@
         "vanessaRecommendations expected array, got object"
        ],
        "shapeMismatchCount": 1,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3796,7 +3975,7 @@
         "vanessaRecommendations expected array, got string"
        ],
        "shapeMismatchCount": 1,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3808,7 +3987,7 @@
         "vanessaRecommendations expected array, got object"
        ],
        "shapeMismatchCount": 1,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3818,7 +3997,7 @@
        "exceptions": [],
        "shapeMismatch": [],
        "shapeMismatchCount": 0,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       },
       {
@@ -3830,7 +4009,7 @@
         "vanessaRecommendations expected valid JSON, got string"
        ],
        "shapeMismatchCount": 1,
-       "containers": 318,
+       "containers": 335,
        "containersLost": []
       }
      ]
@@ -3839,426 +4018,99 @@
    "failureInjection": [
     {
      "case": "window.claude present, use() throws",
-     "verdict": "Fail",
-     "durationMs": 180,
-     "exceptions": [
-      {
-       "where": "top-level IIFE",
-       "message": "claude.use('db') exploded (injected failure)",
-       "line": 6921,
-       "scriptLine": 287,
-       "stack": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/tests/runtime-harness.js:235 |       use: function (cap) { claudeCalls.push(cap); throw new Error(\"claude.use('\" + cap + \"') exploded (injected failure)\"); }, |                                                    ^ |  | Error: claude.use('db') exploded (injected failure) |     at Object.use (/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/tests/runtime-harness.js:235:58)"
-      }
-     ],
+     "verdict": "Pass",
+     "durationMs": 1132,
+     "exceptions": [],
      "safeRunFailures": [],
      "honest": {
       "lsUnavailableFlag": false,
-      "shapeMismatchReported": 0,
-      "consoleWarnings": 0,
-      "containers": 0,
-      "containersLost": [
-       "accountRows",
-       "advisorRows",
-       "affluentEmpireRows",
-       "ahGrid",
-       "aiModelRows",
-       "aiNewsList",
-       "aiOrgFlows",
-       "aiOrgTools",
-       "aiOrgTree",
-       "aiTeamRosterRows",
-       "aiToolingList",
-       "aiTrainingRows",
-       "allocBar",
-       "allocLegend",
-       "annualTodoAccordion",
-       "apexChatThread",
-       "apptRows",
-       "assetAllocBar",
-       "assetAllocLegend",
-       "assetItemRows",
-       "augustaRows",
-       "autoHealthBody",
-       "backupStatusBody",
-       "bearsDetail",
-       "bearsLiveNews",
-       "bearsStandingsRows",
-       "biohackRows",
-       "brandLicensingRows",
-       "builderIncentiveLiveList",
-       "builderIncentiveRows",
-       "caTaxLeverRows",
-       "caioList",
-       "calUpcomingList",
-       "checklistGroups",
-       "ciLogRows",
-       "communityRankRows",
-       "communityRankSource",
-       "coreStructureRows",
-       "councilHistory",
-       "councilOutside",
-       "cpiRows",
-       "cpiStatRow",
-       "deadlineRows",
-       "dealsFeedRows",
-       "defenseDisruptorRows",
-       "defenseUpdatesList",
-       "dividendRows",
-       "dmaicPhaseBar",
-       "dmaicPhaseLegend",
-       "dmaicRows",
-       "downtimeRows",
-       "dreamFeatureList",
-       "dreamPropertyRows",
-       "econodayLiveList",
-       "econodayRows",
-       "educationRows",
-       "elitCarRentalList",
-       "elitCardOffersRows",
-       "elitCreditBurnRows",
-       "elitExpiringList",
-       "elitHotelCasinoList",
-       "elitLocalDealsList",
-       "elitMilVetList",
-       "elitRiskAlertsList",
-       "elitScanLiveList",
-       "elitShoppingStackRows",
-       "elitStatusMatchRows",
-       "elitSubTrackerRows",
-       "elitTopActionsRows",
-       "elitTransferBonusList",
-       "eliteAffluentLiveList",
-       "eliteTaxStrategyRows",
-       "entityRows",
-       "eodList",
-       "estateRows",
-       "execExceptionList",
-       "execStatRow",
-       "feasibilityRows",
-       "fedBrowserRows",
-       "fedFootprintRows",
-       "fedGrade",
-       "fedLadderRows",
-       "fedLocality",
-       "fedStep",
-       "fedYears",
-       "feoStrategyRows",
-       "fersCompare",
-       "fersGrade",
-       "fersGsRows",
-       "fersLocality",
-       "fersRetGrade",
-       "fersRetLocality",
-       "fersRetStep",
-       "fersStep",
-       "fersTableLocality",
-       "fersVaRating",
-       "fersVaRows",
-       "foActionList",
-       "foPhaseAccordion",
-       "foReviewRows",
-       "freshRows",
-       "fubNewLeadRows",
-       "fubStageStats",
-       "funderDirectoryRows",
-       "grantPipelineRows",
-       "hacksAccordion",
-       "hcBody",
-       "healthMetricRows",
-       "hfMemoBody",
-       "hfMemoTags",
-       "hfReportsBody",
-       "hfSourcesBody",
-       "hfVerificationBody",
-       "hlChartWrap",
-       "hlCompare",
-       "hlDaily",
-       "hlFlags",
-       "hlMetric",
-       "hlRecords",
-       "hlStats",
-       "hlWorkouts",
-       "hvmAccordion",
-       "hvmRoadmapAccordion",
-       "improveRows",
-       "inboxRows",
-       "incentBody",
-       "incentFilters",
-       "incomeMixBar",
-       "incomeMixLegend",
-       "incomeStreamGroups",
-       "institutionRows",
-       "isaGradingRows",
-       "isaKpiSopRows",
-       "isaLineThread",
-       "isaPbBlocks",
-       "isaPbDays",
-       "isaPbToday",
-       "isaScRows",
-       "jamesChatThread",
-       "kaizenDoneCol",
-       "kaizenIdeaCol",
-       "kaizenProgressCol",
-       "kanbanBoard",
-       "kanbanOwnerFilter",
-       "kanbanWeek",
-       "kevinChatThread",
-       "kpiRows",
-       "lbList",
-       "lenderDirectoryRows",
-       "liabRiskBar",
-       "liabRiskLegend",
-       "liabilityRows",
-       "licenseRows",
-       "licenseTrackerRows",
-       "loanProgramGroups",
-       "loanUnitedNicheList",
-       "ltBody",
-       "ltStats",
-       "lumenRows",
-       "marketUpdateCards",
-       "marketUpdateLiveList_san-diego-ca",
-       "marketUpdateLiveList_temecula-ca",
-       "marketingRows",
-       "melloRoosRows",
-       "melloRoosSource",
-       "membershipAssocRows",
-       "membershipRows",
-       "milFamOfficeSteps",
-       "militaryDiscountRows",
-       "mktHonestyNote",
-       "mktMoversList",
-       "mktSectorList",
-       "mktTileRow",
-       "mortgageRateRows",
-       "myCardRows",
-       "namedDealsRows",
-       "namedTaxCaseRows",
-       "newsGlobalList",
-       "newsLocalCards",
-       "nextMovesDecisions",
-       "ningStateRows",
-       "notifList",
-       "nqGuideList",
-       "nutritionRows",
-       "onThisDayBirthdayList",
-       "onThisDayHistoryList",
-       "onboardGroups",
-       "openDecisionsList",
-       "oppRadarList",
-       "oppRadarLiveList",
-       "orMeter",
-       "orNote",
-       "orgChartTree",
-       "otBadges",
-       "otCmdList",
-       "otTape",
-       "pageCrumb",
-       "pageTabs",
-       "partnerRows",
-       "peMovesRows",
-       "pedefenseLiveList",
-       "peptideRows",
-       "pipelineRows",
-       "plaidBridgeStatus",
-       "planDecisions",
-       "prenupCaseRows",
-       "priorityActionsList",
-       "priorityList",
-       "programFactsRows",
-       "programStatusStrip",
-       "propertyRows",
-       "pstTaxContext",
-       "pstTaxQuickEstimate",
-       "ptoBridgeRows",
-       "ptoSummaryRows",
-       "ptoYearSelect",
-       "qetPaymentRows",
-       "quickTaskList",
-       "qvStrategyAccordion",
-       "reClientRows",
-       "recommendationsLog",
-       "recruitRows",
-       "recruitSummary",
-       "refLinkRows",
-       "refiRows",
-       "reminderList",
-       "reviewRows",
-       "riskRegisterRows",
-       "rosterRows",
-       "runnerRows",
-       "scheduleRows",
-       "secLabel",
-       "selfCheckResults",
-       "selfCheckStats",
-       "sellerCreditRows",
-       "shClients",
-       "shIntegrationRows",
-       "shShowings",
-       "shSyncRows",
-       "sixLeversSliders",
-       "sodList",
-       "sportsFranchiseRows",
-       "srStops",
-       "stackRows",
-       "steveChatThread",
-       "steveVoiceBar",
-       "steveVoiceDiag",
-       "stlBody",
-       "stlRows",
-       "strategyRows",
-       "strategyTipsList",
-       "stravaActivityRows",
-       "subsRows",
-       "subsTotals",
-       "sundayReviewList",
-       "supplementRows",
-       "swotGrid",
-       "taxBracketRows",
-       "taxCalendarRows",
-       "taxCategoryGroups",
-       "taxProjectorRows",
-       "tcRows",
-       "teamMatrixRows",
-       "techStackRows",
-       "tenAheadList",
-       "tkFabric",
-       "tkList",
-       "tkMcpList",
-       "tkTaskList",
-       "tkTiles",
-       "tkToolRows",
-       "tocList",
-       "todoGroups",
-       "topDividendRows",
-       "topEtfsRows",
-       "topFundsRows",
-       "topHeadlinesList",
-       "topPerformersLiveList",
-       "topStocksRows",
-       "trackedCalendarRows",
-       "tradingLoginRows",
-       "travelFilterCats",
-       "travelFilterOpts",
-       "travelLaRows",
-       "travelMenifeeRows",
-       "travelMurrietaRows",
-       "travelOcRows",
-       "travelPechangaRows",
-       "travelRiversideRows",
-       "travelSanDiegoRows",
-       "travelTemeculaRows",
-       "travelVegasRows",
-       "twinBriefBox",
-       "twinQueueRows",
-       "uwpGroups",
-       "vanessaChatThread",
-       "vanessaRecRows",
-       "vanessaResearchList",
-       "vanessaVoiceBar",
-       "vanessaVoiceDiag",
-       "vistaPeerRows",
-       "weatherCards",
-       "webinarRows",
-       "webinarTotals",
-       "wellnessMetricGroups",
-       "wheelSliders",
-       "workoutRows",
-       "worldClockBar",
-       "wxcity-ChicagoIL",
-       "wxcity-LasVegasNV",
-       "wxcity-LosAngelesCA",
-       "wxcity-NewBraunfelsTX",
-       "wxcity-SanDiegoCA",
-       "wxcity-TemeculaCA",
-       "wxcity-WashingtonDC",
-       "zhBoard",
-       "zhFilterGroups",
-       "zhNewStage"
-      ]
+      "shapeMismatchReported": 1,
+      "consoleWarnings": 1,
+      "containers": 335,
+      "containersLost": []
      }
     },
     {
      "case": "window.claude present, use() rejects",
      "verdict": "Pass",
-     "durationMs": 1081,
+     "durationMs": 1079,
      "exceptions": [],
      "safeRunFailures": [],
      "honest": {
       "lsUnavailableFlag": false,
       "shapeMismatchReported": 0,
       "consoleWarnings": 0,
-      "containers": 318,
+      "containers": 335,
       "containersLost": []
      }
     },
     {
      "case": "localStorage.setItem throws (quota)",
      "verdict": "Pass",
-     "durationMs": 1107,
+     "durationMs": 1066,
      "exceptions": [],
      "safeRunFailures": [],
      "honest": {
       "lsUnavailableFlag": false,
       "shapeMismatchReported": 0,
-      "consoleWarnings": 0,
-      "containers": 318,
+      "consoleWarnings": 439,
+      "containers": 335,
       "containersLost": []
      }
     },
     {
      "case": "localStorage.getItem throws (disabled)",
      "verdict": "Pass",
-     "durationMs": 1019,
+     "durationMs": 1073,
      "exceptions": [],
      "safeRunFailures": [],
      "honest": {
       "lsUnavailableFlag": true,
       "shapeMismatchReported": 0,
       "consoleWarnings": 0,
-      "containers": 318,
+      "containers": 335,
       "containersLost": []
      }
     },
     {
      "case": "localStorage 100 KB quota (writes fail part-way)",
      "verdict": "Pass",
-     "durationMs": 1097,
+     "durationMs": 1009,
      "exceptions": [],
      "safeRunFailures": [],
      "honest": {
       "lsUnavailableFlag": false,
       "shapeMismatchReported": 0,
-      "consoleWarnings": 0,
-      "containers": 318,
+      "consoleWarnings": 2,
+      "containers": 335,
       "containersLost": []
      }
     },
     {
      "case": "localStorage 5 MB quota + all 161 live docs",
      "verdict": "Pass",
-     "durationMs": 1273,
+     "durationMs": 1265,
      "exceptions": [],
      "safeRunFailures": [],
      "honest": {
       "lsUnavailableFlag": false,
       "shapeMismatchReported": 0,
       "consoleWarnings": 0,
-      "containers": 322,
+      "containers": 341,
       "containersLost": []
      }
     },
     {
      "case": "cdStateSeed block removed",
      "verdict": "Pass",
-     "durationMs": 1040,
+     "durationMs": 1002,
      "exceptions": [],
      "safeRunFailures": [],
      "honest": {
       "lsUnavailableFlag": false,
       "shapeMismatchReported": 0,
       "consoleWarnings": 0,
-      "containers": 318,
+      "containers": 335,
       "containersLost": []
      }
     }
@@ -4268,16 +4120,19 @@
      "applyRemoteSnapshotExposed": true,
      "burstSize": 200,
      "firstApplyMs": 10,
-     "replayApplyMs": 9,
+     "replayApplyMs": 6,
      "changedFirst": true,
-     "changedOnReplay": true,
+     "changedOnReplay": false,
      "errors": [],
      "keysAfterFirst": 163,
      "keysAfterReplay": 163,
      "keysThatChangedOnReplay": [],
-     "isaMessagesIn": 82,
-     "isaMessagesStored": 88,
+     "isaAlreadyInDoc": 8,
+     "isaBurstWithId": 80,
+     "isaBurstWithoutId": 2,
+     "isaMessagesStored": 90,
      "isaMessagesWithoutIdDropped": 2,
+     "isaExpectedIfNothingLost": 90,
      "isaIdsLost": [],
      "isaOrderIndependent": true,
      "reloadsRequested": 0,
@@ -4286,17 +4141,20 @@
     "local-only": {
      "applyRemoteSnapshotExposed": true,
      "burstSize": 200,
-     "firstApplyMs": 8,
-     "replayApplyMs": 8,
+     "firstApplyMs": 10,
+     "replayApplyMs": 5,
      "changedFirst": true,
-     "changedOnReplay": true,
+     "changedOnReplay": false,
      "errors": [],
      "keysAfterFirst": 163,
      "keysAfterReplay": 163,
      "keysThatChangedOnReplay": [],
-     "isaMessagesIn": 82,
-     "isaMessagesStored": 48,
+     "isaAlreadyInDoc": 8,
+     "isaBurstWithId": 80,
+     "isaBurstWithoutId": 2,
+     "isaMessagesStored": 49,
      "isaMessagesWithoutIdDropped": 2,
+     "isaExpectedIfNothingLost": 90,
      "isaIdsLost": [
       "conc-b-0",
       "conc-b-1",
@@ -4345,8 +4203,8 @@
     }
    },
    "restoreTest": {
-    "at": "2026-09-22T09:03:07.510Z",
-    "deck": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/tests/baseline-5fbe844.html",
+    "at": "2026-09-22T09:16:20.804Z",
+    "deck": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/deck/command-deck.html",
     "store": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/db/state",
     "lsPrefix": "commandDeck.",
     "docs": 161,
@@ -4356,12 +4214,14 @@
     "missingV": [
      "stravaSnapshot"
     ],
-    "outputWatchDocs": 26,
+    "outputWatchDocs": 28,
     "outputWatchDocsMissingFromExport": [
+     "loftyLeads",
+     "zohoSync",
      "revenueScan",
      "healthCoaching"
     ],
-    "containersRendered": 322,
+    "containersRendered": 341,
     "containersRenderedIds": [
      "accountRows",
      "advisorRows",
@@ -4496,6 +4356,7 @@
      "incomeStreamGroups",
      "institutionRows",
      "isaGradingRows",
+     "isaKpiDocBlock",
      "isaKpiSopRows",
      "isaLineThread",
      "isaPbBlocks",
@@ -4520,6 +4381,8 @@
      "licenseTrackerRows",
      "loanProgramGroups",
      "loanUnitedNicheList",
+     "loftyNewLeadRows",
+     "loftyStageStats",
      "ltBody",
      "ltStats",
      "lumenRows",
@@ -4559,6 +4422,15 @@
      "oppRadarLiveList",
      "orMeter",
      "orNote",
+     "orchBriefBody",
+     "orchCpiRows",
+     "orchFindRows",
+     "orchRoadmap",
+     "orchScaleRows",
+     "orchStressRows",
+     "orchTemplateBtns",
+     "orchTiles",
+     "orchTrustRows",
      "orgChartTree",
      "otBadges",
      "otCmdList",
@@ -4594,14 +4466,17 @@
      "refiRows",
      "reminderList",
      "reviewRows",
+     "riskMonitorNote",
      "riskRegisterRows",
      "rosterRows",
      "runnerRows",
+     "sbL5Status",
      "scheduleRows",
      "secLabel",
      "selfCheckResults",
      "selfCheckStats",
      "sellerCreditRows",
+     "sessionReadSrc",
      "shClients",
      "shIntegrationRows",
      "shShowings",
@@ -4616,9 +4491,11 @@
      "steveVoiceDiag",
      "stlBody",
      "stlRows",
+     "strategyFlagsNote",
      "strategyRows",
      "strategyTipsList",
      "stravaActivityRows",
+     "stravaSyncNote",
      "subsRows",
      "subsTotals",
      "sundayReviewList",
@@ -4683,6 +4560,8 @@
      "wxcity-TemeculaCA",
      "wxcity-WashingtonDC",
      "zhBoard",
+     "zhDealsRows",
+     "zhDealsStats",
      "zhFilterGroups",
      "zhNewStage"
     ],
@@ -4691,24 +4570,26 @@
      "hfReqStatus",
      "marketUpdateLiveList_murrieta-ca",
      "newsLocalList_san-diego-ca",
-     "newsLocalList_temecula-ca"
+     "newsLocalList_temecula-ca",
+     "sbL5Status",
+     "sessionReadSrc"
     ],
     "exceptions": [],
     "safeRunFailures": [],
     "shapeMismatch": [],
-    "durationMs": 1235,
+    "durationMs": 1377,
     "verdict": "PASS WITH EXCEPTIONS",
     "notes": [
      "1 document(s) carry no `v` wrapper (stravaSnapshot). applyRemoteSnapshot rejects any doc without `v` (`if (!data || typeof data !== \"object\" || !(\"v\" in data)) return;`), so these are UNRESTORABLE by the page's own sync path \u2014 restored count is 160 of 161.",
-     "2 OUTPUT_WATCH document(s) do not exist in the export at all: revenueScan, healthCoaching \u2014 the owning task has never written them, so a restore cannot bring them back.",
-     "restore is verified by execution, not by file count: the deck was run against the restored store and 322 container ids received innerHTML with 0 exceptions and 0 safeRun failures."
+     "4 OUTPUT_WATCH document(s) do not exist in the export at all: loftyLeads, zohoSync, revenueScan, healthCoaching \u2014 the owning task has never written them, so a restore cannot bring them back.",
+     "restore is verified by execution, not by file count: the deck was run against the restored store and 341 container ids received innerHTML with 0 exceptions and 0 safeRun failures."
     ]
    },
    "backupBundle": {
     "dir": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/backup/2026-09-22",
     "docCount": 161,
     "fileCount": 162,
-    "totalBytes": 4941957,
+    "totalBytes": 5103490,
     "docBytes": 884081,
     "missingV": [
      "stravaSnapshot"
@@ -4720,25 +4601,17 @@
    "drift": [
     {
      "label": "deck/command-deck.html (working tree)",
-     "sha256": "cc85ed1f4b9d180caa8d19c545eaaa422dd1b568260130610876cb7a7183648c",
-     "verdict": "Pass",
-     "completed": true,
-     "durationMs": 1055,
-     "containers": 325,
-     "containersVsBaseline": 7,
-     "exceptions": [],
-     "newSafeRunFailures": [],
-     "newMissingIds": [],
-     "shapeMismatch": []
+     "sha256": "bbd64191b5de095812e9a424578be697cd613fea7fb029120c499f7e22ca145d",
+     "identicalToBaseline": true
     },
     {
      "label": "wt-e1-daily/command-deck.html",
      "sha256": "f85a73c2bffe0eb60adffee459ddf946174e537c15882e9a2b5a6fe895e5dc64",
      "verdict": "Pass",
      "completed": true,
-     "durationMs": 1122,
+     "durationMs": 1090,
      "containers": 318,
-     "containersVsBaseline": 0,
+     "containersVsBaseline": -17,
      "exceptions": [],
      "newSafeRunFailures": [],
      "newMissingIds": [],
@@ -4749,9 +4622,9 @@
      "sha256": "8f3afaa288a1d2bccd1d17e211c829b5130f35131f6eba7310524d962d32d824",
      "verdict": "Pass",
      "completed": true,
-     "durationMs": 1228,
+     "durationMs": 1124,
      "containers": 320,
-     "containersVsBaseline": 2,
+     "containersVsBaseline": -15,
      "exceptions": [],
      "newSafeRunFailures": [],
      "newMissingIds": [],
@@ -4762,9 +4635,9 @@
      "sha256": "4cf3891cadf065c38018795b0f8298fae98138bff8a336252f7b1ccc379e5315",
      "verdict": "Pass",
      "completed": true,
-     "durationMs": 1146,
+     "durationMs": 1037,
      "containers": 318,
-     "containersVsBaseline": 0,
+     "containersVsBaseline": -17,
      "exceptions": [],
      "newSafeRunFailures": [],
      "newMissingIds": [],
@@ -4775,9 +4648,9 @@
      "sha256": "2bd71451260017209f57b7c11b0e3b54d9f66f791104d0f07a7602714652badf",
      "verdict": "Pass",
      "completed": true,
-     "durationMs": 1053,
+     "durationMs": 992,
      "containers": 322,
-     "containersVsBaseline": 4,
+     "containersVsBaseline": -13,
      "exceptions": [],
      "newSafeRunFailures": [],
      "newMissingIds": [],
@@ -4788,9 +4661,9 @@
      "sha256": "2d4b60a0b40e8f0c1b210c937bad958d05144e0a9a637a99ca2a5dcc6ae406ca",
      "verdict": "Pass",
      "completed": true,
-     "durationMs": 1161,
+     "durationMs": 938,
      "containers": 319,
-     "containersVsBaseline": 1,
+     "containersVsBaseline": -16,
      "exceptions": [],
      "newSafeRunFailures": [],
      "newMissingIds": [],
@@ -4801,9 +4674,9 @@
      "sha256": "c91460ff4de063897dead56577854b0f74b6dfe194089d29327c03e7a0cb1e2e",
      "verdict": "Pass",
      "completed": true,
-     "durationMs": 1104,
+     "durationMs": 1032,
      "containers": 319,
-     "containersVsBaseline": 1,
+     "containersVsBaseline": -16,
      "exceptions": [],
      "newSafeRunFailures": [],
      "newMissingIds": [],
@@ -4814,15 +4687,16 @@
      "sha256": "cabb1bafe36a6f2e9d52b7e81a4809a9496bd31d64dbd9d12526cc243e590361",
      "verdict": "Pass",
      "completed": true,
-     "durationMs": 1156,
+     "durationMs": 1016,
      "containers": 318,
-     "containersVsBaseline": 0,
+     "containersVsBaseline": -17,
      "exceptions": [],
      "newSafeRunFailures": [],
      "newMissingIds": [],
      "shapeMismatch": []
     }
    ]
-  }
+  },
+  "retestNote": "Re-run in full against the merged and spliced deck after the four reliability fixes and the initSync hardening. Nothing is marked Resolved here that did not pass the same test that originally broke it."
  }
 }
