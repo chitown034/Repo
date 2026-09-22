@@ -57,3 +57,19 @@ permission prompt (confirmed three times), so cloud routines are research-only b
 
 Recall hit rate · cache hit % · tokens per answer · **stale-store alerts** (a store whose `builtAt`
 or `syncedAt` is older than its own cadence). See `OPTIMIZATION.md`.
+
+## Cloud routines that WRITE — added 2026-09-22
+
+The cloud-write probe (`docs/CLOUD-WRITE-ARCHITECTURE.md`) settled that an unattended cloud routine
+can write an artifact database. These three run without a laptop and are proven by the documents
+they leave, never by their run status:
+
+| Routine | Schedule (UTC) | Writes | Proof of life |
+| --- | --- | --- | --- |
+| Weekly ecosystem backup — cloud writer | Sun 11:00 | `backups/<date>-*`, `backupStatus`, `ciLog` | `backupStatus.lastBackup` and `verified: true` |
+| Command Deck ↔ ISA Portal — Pipeline Sync (live, writes) | 04/10/16/22 daily | `reClients`, `pipeline`, `isaGradingScores`, `isaKpiSopActuals`, `isaScorecard` on both stores; `ciLog` | the documents match on both artifacts; a `pipeline-sync` row in `ciLog` |
+| ISA line — reply check & escalation ladder | weekdays 14:30 | `isaLadder`, at most one `isaLine` message and one `twinQueue` item per streak, `ciLog` | `isaLadder.rung` and the `isa-ladder` row in `ciLog` |
+
+The old web-created "Pipeline Sync" routine (`trig_018BSAYiYzvtyaUkpAY4SnqE`) reports success and
+writes nothing; an agent cannot disable it. **Steven turns it off** at
+https://claude.ai/code/routines/trig_018BSAYiYzvtyaUkpAY4SnqE.

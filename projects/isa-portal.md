@@ -32,3 +32,16 @@ artifacts, that is the bug — do not "fix" one side by editing the other's coun
   to both, or it silently diverges.
 - Nothing here contacts a client or a listing agent directly. Hand-offs land on the ISA line and
   reach the portal on the next bridge run.
+
+## Update — 2026-09-22 (second pass)
+
+- Published as **version 27**: You.com grant dropped, Follow Up Boss retired in favour of Lofty, the
+  four sync-engine reliability fixes ported.
+- **Daily scorecard form added** to the Virtual EA / ISA Operations panel. It writes `isaScorecard`
+  rows in the Command Deck's own shape, and "Send to Steven" posts the day's numbers on the ISA line.
+- **Sync is real now**: a cloud routine carries `reClients`, `pipeline`, `isaGradingScores`,
+  `isaKpiSopActuals` and `isaScorecard` both ways four times a day and verifies by reading back.
+  The ISA line still crosses on the Mac bridge (hourly 7:37 AM–9:37 PM PT).
+- **The seat**: 9 messages on the line, all Steven → ISA; 0 ISA-authored, ever; scorecard never
+  filled; last opened 2026-09-13. Decision packet: `docs/ISA-SEAT-DECISION.md`.
+- Panels renumbered 01–14 top to bottom; reference panels carry a "Verified <date>" stamp.
