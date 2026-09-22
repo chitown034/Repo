@@ -134,7 +134,7 @@ Never in a prompt, a task definition, a skill file, a log, a finding or the deck
 
 ## Validation before it is trusted (from the connector spec)
 
-1. `cli-anything-homes --help` exits 0 and `act` appears nowhere — **done, mechanical, in the test suite.**
+1. `cli-anything-homes --help` exits 0, and `cli-anything-homes --help | grep -qw act` finds nothing (exit 1). A **word** match: a substring match false-trips on `my-listing-activity`, `redact`, `contact`, `interactive`, `exact` — **done, mechanical, in the test suite.**
 2. A named read recipe returns parseable JSON with ≥1 row, or an explicit empty-result object — **done offline
    against synthetic trees; not yet live.**
 3. Logged out → explicit auth error, never a partial or cached result — **done offline (login wall, login redirect,

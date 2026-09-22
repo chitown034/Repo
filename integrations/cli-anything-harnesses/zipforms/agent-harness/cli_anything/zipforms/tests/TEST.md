@@ -139,7 +139,7 @@ match false-trips on names like ShowingTime's `my-listing-activity`.)
 **The 3 skips are the Part 1 caveat made visible, not a regression.** `TestSeamBinding` opens with
 `pytest.importorskip("cli_anything.browser.core.fs", …)`. `cli-anything-browser` is not on PyPI and
 is not vendored in this repo — `MAC-SETUP.sh` git-clones `HKUDS/CLI-Anything` and builds it into
-`~/Applications/CLI-Anything/.venv` — so in any environment without it those three tests skip
+`~/Applications/cli-anything-harnesses/.venv` — so in any environment without it those three tests skip
 rather than fail. Part 2's `70 passed, 0 skipped` and this run's `67 passed, 3 skipped` are both
 correct for their environment; read the former as "with the browser harness present".
 

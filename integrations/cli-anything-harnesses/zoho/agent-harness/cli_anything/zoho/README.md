@@ -17,7 +17,7 @@ with the click path, exit code 4, and never retries into it.
 ## Install
 
 ```bash
-VENV="$HOME/Applications/CLI-Anything/.venv"
+VENV="$HOME/Applications/cli-anything-harnesses/.venv"
 "$VENV/bin/pip" install integrations/cli-anything-harnesses/zoho/agent-harness
 "$VENV/bin/cli-anything-zoho" --help
 ```
@@ -65,8 +65,14 @@ granted · `5` not configured.
 ## Tests
 
 ```bash
-python -m pytest cli_anything/zoho/tests -v
+CLI_ANYTHING_REPO_ROOT=<repo> python -m pytest cli_anything/zoho/tests -v
 ```
+
+**Set `CLI_ANYTHING_REPO_ROOT`.** One test needs a helper that lives in the repo checkout, not in
+the installed package. Without the variable it **skips silently** and the suite still reports green
+— 42 passed, 1 skipped instead of 43 passed. Verified 2026-09-22 in a clean venv: the skip reason is
+*"helper lives in the repo checkout; set CLI_ANYTHING_REPO_ROOT to find it from site-packages"*. A
+green run with a hidden skip is the kind of thing this harness exists to stop, so check the count.
 
 Offline: `requests.get` is patched at the backend; every record is invented. `tests/TEST.md`
 separates what ran from what has never run.

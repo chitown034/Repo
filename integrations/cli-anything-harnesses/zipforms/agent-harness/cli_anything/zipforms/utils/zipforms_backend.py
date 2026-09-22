@@ -6,9 +6,10 @@ forward — and nothing else. No click, no type, no download, no upload exist
 here, so nothing above this module can reach them. Unit tests mock these
 functions; the rest of the package does not know DOMShell exists.
 
-``cli-anything-browser`` is not on PyPI. It is built from the CLI-Anything
-clone into the same venv (``MAC-SETUP.sh`` does this into
-``$HOME/Applications/CLI-Anything/.venv``).
+``cli-anything-browser`` is not on PyPI. It is vendored in this repo at
+``integrations/cli-anything-harnesses/browser/agent-harness`` and installs into
+the same venv (``MAC-SETUP.sh`` does this into
+``$HOME/Applications/cli-anything-harnesses/.venv``).
 """
 
 from __future__ import annotations
@@ -19,9 +20,9 @@ from cli_anything.zipforms.utils import security as _security
 
 INSTALL_HINT = (
     "cli-anything-browser is not installed in this Python environment. It is not on "
-    "PyPI: build it from the CLI-Anything clone into the same venv as this harness — "
-    "  pip install \"$HOME/Applications/CLI-Anything/browser/agent-harness\"  — "
-    "(MAC-SETUP.sh does this into $HOME/Applications/CLI-Anything/.venv)."
+    "PyPI: it is vendored in this repo and installs into the same venv as this harness — "
+    "  pip install \"<repo>/integrations/cli-anything-harnesses/browser/agent-harness\"  — "
+    "(MAC-SETUP.sh does this into $HOME/Applications/cli-anything-harnesses/.venv)."
 )
 
 READ_ONLY_SURFACE = ("is_available", "new_session", "open_url", "ls", "cat", "grep",

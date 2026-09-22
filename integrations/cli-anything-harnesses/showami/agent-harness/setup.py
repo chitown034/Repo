@@ -5,7 +5,7 @@ Namespace-package layout (PEP 420): `cli_anything/` has NO __init__.py so this
 package coexists with cli-anything-browser and the other site harnesses in one
 environment. `cli-anything-browser` must already be installed in the same
 environment (it is not on PyPI; MAC-SETUP.sh builds it from the CLI-Anything
-checkout into ~/Applications/CLI-Anything/.venv).
+checkout into ~/Applications/cli-anything-harnesses/.venv).
 """
 from pathlib import Path
 

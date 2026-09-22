@@ -12,11 +12,11 @@ asserts the word never appears in `--help`.
 ## Installation
 
 Prerequisites: `cli-anything-browser` in the same environment (built by `MAC-SETUP.sh` into
-`~/Applications/CLI-Anything/.venv`), Node.js/npx, Chrome with the DOMShell extension, `DOMSHELL_TOKEN` exported,
+`~/Applications/cli-anything-harnesses/.venv`), Node.js/npx, Chrome with the DOMShell extension, `DOMSHELL_TOKEN` exported,
 and a **manual** sign-in to Showami in that Chrome profile.
 
 ```bash
-uv pip install --python ~/Applications/CLI-Anything/.venv/bin/python ./integrations/cli-anything-harnesses/showami/agent-harness
+uv pip install --python ~/Applications/cli-anything-harnesses/.venv/bin/python ./integrations/cli-anything-harnesses/showami/agent-harness
 cli-anything-showami --help
 ```
 

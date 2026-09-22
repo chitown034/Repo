@@ -462,7 +462,7 @@ def repl():
     # The plugin skin advertises `npx skills add HKUDS/CLI-Anything …`, which does
     # not carry this skill. Show the truthful install line and the packaged SKILL.md.
     skin.skill_install_cmd = (
-        "uv pip install --python ~/Applications/CLI-Anything/.venv/bin/python "
+        "uv pip install --python ~/Applications/cli-anything-harnesses/.venv/bin/python "
         f"<repo>/integrations/cli-anything-harnesses/{SITE}/agent-harness  (README.md)"
     )
     skin.global_skill_path = skin.skill_path or skin.global_skill_path

@@ -14,7 +14,7 @@ been present anywhere this was built, and no pull has ever succeeded through any
 ## Install
 
 ```bash
-VENV="$HOME/Applications/CLI-Anything/.venv"
+VENV="$HOME/Applications/cli-anything-harnesses/.venv"
 "$VENV/bin/pip" install integrations/cli-anything-harnesses/lofty/agent-harness
 "$VENV/bin/cli-anything-lofty" --help
 ```

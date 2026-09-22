@@ -578,8 +578,8 @@ SHOWINGTIME_PASS|ShowingTime password — keychain preferred
 SHOWAMI_USER|Showami sign-in
 SHOWAMI_PASS|Showami password — keychain preferred
 CAENV
-  needs_steven "Put 'export CLI_HUB_NO_ANALYTICS=1' in your shell profile AND in the cli-anything runner task's env — this script only covers its own run. Then install the DOMShell Chrome extension and sign in to the target. Generation is the only interactive step: run /cli-anything for homes.com FIRST, then ShowingTime and Showami read-only. SkySlope and zipForms stay gated on the ECC security review (F-S1-10)."
-  say "      REFUSED here: any 'act click' / 'act type' verb in a generated harness — that is the entire write surface"
+  needs_steven "Put 'export CLI_HUB_NO_ANALYTICS=1' in your shell profile AND in the cli-anything runner task's env — this script only covers its own run. Then install the DOMShell Chrome extension and sign in to the target BY HAND — the harnesses cannot sign in, and MFA/SSO is a HALT. Nothing needs generating: the seven read-only packages in integrations/cli-anything-harnesses/ are pre-built and this script installs them; /cli-anything is only for a target we do not have (F-H1-10). Your work is the path maps: run 'cli-anything-homes --json recipe <name> --discover --text' once per recipe, edit ~/.config/cli-anything/homes-paths.json until the values match the screen, then ShowingTime and Showami the same way — all 18 browser recipes ship verified:false and no site has ever been reached (F-H1-01). SkySlope and zipForms refuse every live command, exit 3, until CLI_ANYTHING_ECC_REVIEWED_AT holds the ECC security review's sign-off date (F-S1-10)."
+  say "      REFUSED here: any 'act click' / 'act type' verb in a SITE harness — that is the entire write surface, and none of the seven has one (the vendored browser engine does; that is the layer, not a wrapper). Check it with a WORD match: cli-anything-<target> --help | grep -qw act (a substring match false-trips on my-listing-activity, redact, contact, interactive, exact — F-H1-04)"
 fi
 
 if should_run cli-anything-harnesses; then

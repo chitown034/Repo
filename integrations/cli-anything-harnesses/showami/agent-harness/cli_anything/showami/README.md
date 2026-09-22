@@ -13,7 +13,7 @@ Showami's accessibility tree that return JSON. It does not re-implement DOMShell
 Prerequisites, in order:
 
 1. `./MAC-SETUP.sh` from the repo root — installs `cli-anything-hub`, the Claude Code plugin and builds
-   `cli-anything-browser` into `~/Applications/CLI-Anything/.venv`. `cli-anything-browser` is **not on PyPI**;
+   `cli-anything-browser` into `~/Applications/cli-anything-harnesses/.venv`. `cli-anything-browser` is **not on PyPI**;
    this package declares it as a dependency, so it must already be in the target environment.
 2. Node.js (`npx`), Chrome running, the [DOMShell extension](https://chromewebstore.google.com/detail/domshell)
    installed, and `DOMSHELL_TOKEN` exported (the token DOMShell prints at startup; `DOMSHELL_PORT` if not 3001).
@@ -23,9 +23,12 @@ Then, from the repo root:
 
 ```bash
 export CLI_HUB_NO_ANALYTICS=1
-uv pip install --python ~/Applications/CLI-Anything/.venv/bin/python ./integrations/cli-anything-harnesses/showami/agent-harness
-ln -sf ~/Applications/CLI-Anything/.venv/bin/cli-anything-showami ~/.local/bin/cli-anything-showami
-cli-anything-showami --help        # exits 0; the word "act" appears nowhere
+uv pip install --python ~/Applications/cli-anything-harnesses/.venv/bin/python ./integrations/cli-anything-harnesses/showami/agent-harness
+ln -sf ~/Applications/cli-anything-harnesses/.venv/bin/cli-anything-showami ~/.local/bin/cli-anything-showami
+cli-anything-showami --help                 # exits 0
+cli-anything-showami --help | grep -qw act  # exit 1 = no match. A WORD match: a substring
+                                        # match false-trips on my-listing-activity,
+                                        # redact, contact, interactive, exact
 ```
 
 (Plain `pip install .` inside `showami/agent-harness/` works in any environment that already has `cli-anything-browser`.)

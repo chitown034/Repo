@@ -249,6 +249,6 @@ and that is load-bearing. Re-checked in a clean venv on 2026-09-22:
   just at call time. `pytest` then fails at collection for the same reason.
 
 This is the documented prerequisite, not a defect: `MAC-SETUP.sh` git-clones `HKUDS/CLI-Anything`
-and `pip install`s `browser/agent-harness` into `~/Applications/CLI-Anything/.venv` before these
+and `pip install`s `browser/agent-harness` into `~/Applications/cli-anything-harnesses/.venv` before these
 harnesses go in. Install the browser harness first, into the same environment, or the Part 2
 numbers cannot be reproduced. Part 3 is unchanged: nothing has ever run live.

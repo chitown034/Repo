@@ -12,7 +12,7 @@ best-effort guess (see `ZIPFORMS.md`).
 
 1. Python 3.10+.
 2. **`cli-anything-browser`** — not on PyPI. Built from the CLI-Anything clone; on the Mac
-   `MAC-SETUP.sh` puts it in `$HOME/Applications/CLI-Anything/.venv`. Install this harness into
+   `MAC-SETUP.sh` puts it in `$HOME/Applications/cli-anything-harnesses/.venv`. Install this harness into
    that same venv.
 3. Node/npx, Chrome and the DOMShell extension, with `DOMSHELL_TOKEN` (and `DOMSHELL_PORT`) set
    as the browser harness documents. Chrome must already be signed in to zipForms.
@@ -22,8 +22,8 @@ best-effort guess (see `ZIPFORMS.md`).
 ## Install
 
 ```bash
-VENV="$HOME/Applications/CLI-Anything/.venv"
-"$VENV/bin/pip" install "$HOME/Applications/CLI-Anything/browser/agent-harness"   # if not already built
+VENV="$HOME/Applications/cli-anything-harnesses/.venv"
+"$VENV/bin/pip" install "<repo>/integrations/cli-anything-harnesses/browser/agent-harness"   # vendored here; MAC-SETUP.sh installs it
 "$VENV/bin/pip" install integrations/cli-anything-harnesses/zipforms/agent-harness
 "$VENV/bin/cli-anything-zipforms" --help
 ```
