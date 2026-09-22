@@ -128,3 +128,44 @@ deck's CI log and the loop log; this file starts here on purpose.
   migration plus a Mac task edit. Neither is started.
 - **Owner.** Coordinating session. **Status.** Active. Supersedes the "not referenced anywhere"
   sentence in the first entry of this file.
+
+## 2026-09-22 — `act` is allowed in the CLI-Anything browser engine, never in a site harness
+
+- **Decision.** The read-only guarantee on the CLI-Anything wrappers is enforced as a **word match on
+  `act`** in each package's `--help`, and it applies to the **seven site harnesses only** — homes.com,
+  ShowingTime, Showami, SkySlope, zipForms, Lofty, Zoho. `act` appearing in any of those **fails**
+  `mac-verify.sh`. The `cli-anything-browser` **engine** is exempt: it genuinely ships an `act` group
+  (`act click`, `act type`) at `browser_cli.py:308-336`, because that is DOMShell's write surface and
+  the reason the engine exists. The engine instead **reports its `act` group by name on every run**,
+  as an information line.
+- **Why not simply fail the engine too.** A check that is red forever is a check everyone learns to
+  scroll past, and it would take the seven real checks down with it. Naming the write surface out
+  loud on every run keeps it visible without training Steven to ignore the verifier.
+- **Why a word match and not a substring.** Measured against all eight real `--help` outputs on
+  2026-09-22: a bare `grep -q act` matches **all seven** site harnesses — `interactive` everywhere,
+  `action` in SkySlope and zipForms, `redact`/`redacted` in Lofty and Zoho. `grep -qw act` is the
+  version that means what it says.
+- **What the guarantee actually rests on.** Denying `act` denies every outward verb on all five web
+  targets at once: every showing request, every Showami booking, every e-sign send is an
+  `act click`/`act type` underneath. `page open` stays allowed but URL-allow-listed, because a
+  crafted URL can itself perform an action on some sites.
+- **Owner.** Build Engineer proposed; coordinating session confirmed. **Status.** Active, implemented
+  in `mac-verify.sh` 2026-09-22 and proven on all five branches (ok · engine-info · `act` on a site
+  harness ⇒ FAIL · `--help` non-zero ⇒ FAIL · missing ⇒ FAIL). Never run on macOS — see the
+  verification caveats in `docs/findings/findings-P1.json`.
+
+## 2026-09-22 — CLI-Anything is Apache 2.0, and `setup.py` saying MIT does not change that
+
+- **Decision.** Upstream HKUDS/CLI-Anything is governed by **Apache License 2.0**. Its
+  `browser/agent-harness/setup.py:29` declares `license="MIT"` with an OSI MIT classifier; that
+  string is **wrong and is left exactly as upstream wrote it**, because the vendored tree is
+  unmodified and a provenance record that quietly "corrects" upstream is no longer a provenance
+  record.
+- **Why Apache governs.** The repository's own `LICENSE` file is 201 lines of verbatim Apache 2.0,
+  `README.md` and `cli_anything/browser/README.md` both agree, and Apache is the stricter of the two
+  on attribution — so it is also the safe reading if the ambiguity is ever tested.
+- **What compliance required.** `LICENSE` vendored beside the tree byte-identical to upstream; no
+  NOTICE file exists upstream, so there is none to carry; no upstream file modified, so §4(b)
+  modified-file notices did not arise **at the time of vendoring**. If any file is later patched,
+  §4(b) applies and `VENDORED.md` must stop claiming the tree is unmodified.
+- **Owner.** Build Engineer. **Status.** Active. Upstream commit `34f5195`, fetched 2026-09-22.
