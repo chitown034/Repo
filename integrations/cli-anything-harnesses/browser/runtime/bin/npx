@@ -1,0 +1,102 @@
+#!/bin/sh
+# npx shim — closes F-P1-02 (unpinned runtime package fetch).
+#
+# The vendored harness spawns, verbatim:
+#     npx -p @apireno/domshell domshell-proxy --port <p> --token <t>
+# with no version pin, so npx resolves and executes whatever the npm registry
+# serves at call time, on the machine that holds Steven's client files.
+#
+# Put this directory first on PATH (run-browser-harness.sh does) and that
+# spawn is answered locally instead: any invocation naming @apireno/domshell
+# is served from the lockfile-pinned tree in $CLI_ANYTHING_DOMSHELL_PIN_DIR,
+# or it FAILS LOUDLY. It never falls back to the registry, because a silent
+# fallback is exactly the finding.
+#
+# Every other npx invocation is passed straight through to the real npx.
+#
+# NOTHING IS EVER WRITTEN TO STDOUT. The harness speaks MCP JSON-RPC over this
+# process's stdio; a stray line on stdout corrupts the stream. Diagnostics go
+# to stderr only.
+
+set -eu
+
+warn() { printf '%s\n' "$*" >&2; }
+
+# Is @apireno/domshell named anywhere in the argv?
+pinned=0
+for a in "$@"; do
+    case "$a" in
+        @apireno/domshell|@apireno/domshell@*) pinned=1 ;;
+    esac
+done
+
+if [ "$pinned" -eq 0 ]; then
+    # Not our package. Hand off to the real npx, with this shim's directory
+    # stripped from PATH so we do not re-enter ourselves.
+    CDPATH=''
+    self_dir=$(cd -- "$(dirname -- "$0")" && pwd)
+    clean_path=$(printf '%s' "$PATH" | tr ':' '\n' | grep -vxF "$self_dir" | paste -sd: -)
+    PATH="$clean_path"; export PATH
+    exec npx "$@"
+fi
+
+PIN_DIR="${CLI_ANYTHING_DOMSHELL_PIN_DIR:-$HOME/Applications/cli-anything-harnesses/domshell-pin}"
+WANT="${CLI_ANYTHING_DOMSHELL_PINNED_VERSION:-2.0.10}"
+
+if [ ! -d "$PIN_DIR/node_modules/@apireno/domshell" ]; then
+    warn "npx shim: refusing to fetch @apireno/domshell from the npm registry."
+    warn "npx shim: no pinned copy at $PIN_DIR/node_modules/@apireno/domshell"
+    warn "npx shim: run  integrations/cli-anything-harnesses/browser/runtime/posture.sh install"
+    exit 127
+fi
+
+have=$(sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' \
+       "$PIN_DIR/node_modules/@apireno/domshell/package.json" | head -1)
+if [ "$have" != "$WANT" ]; then
+    warn "npx shim: pinned copy is @apireno/domshell@$have, expected @$WANT."
+    warn "npx shim: refusing to run an unexpected version. Re-run posture.sh install."
+    exit 127
+fi
+
+# Drop the package-selection flags and keep the bin name + its arguments.
+# The harness uses BOTH npx forms and they resolve the binary differently:
+#
+#   utils/domshell_backend.py:53  npx -p @apireno/domshell domshell-proxy …
+#       explicit bin name after the spec.
+#   utils/domshell_backend.py:101 npx @apireno/domshell --version
+#       no bin name — npx falls back to the package's default binary. This one
+#       fires from is_available() on EVERY CLI invocation, so getting it wrong
+#       breaks the harness outright rather than only at connect time.
+#
+# DEFAULT_BIN is that fallback: the bin whose name matches the package.
+DEFAULT_BIN=domshell
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -p|--package) [ $# -ge 2 ] || { warn "npx shim: $1 needs a value"; exit 2; }; shift 2 ;;
+        --package=*|-p=*) shift ;;
+        # The spec in the bare `npx <pkg> <args>` form: everything after it
+        # belongs to the package, so stop parsing npx flags here.
+        @apireno/domshell|@apireno/domshell@*) shift; break ;;
+        --) shift; break ;;
+        --yes|-y|--no|--quiet|--silent|--no-install) shift ;;
+        -*) warn "npx shim: unsupported npx flag $1 for the pinned package"; exit 2 ;;
+        *) break ;;
+    esac
+done
+
+# No bin name left (or the next token is an argument, not a command) — use the
+# package's default binary, which is what npx itself would have done.
+case "${1:-}" in
+    ""|-*) set -- "$DEFAULT_BIN" "$@" ;;
+esac
+
+BIN="$PIN_DIR/node_modules/.bin/$1"
+if [ ! -x "$BIN" ]; then
+    warn "npx shim: $1 is not a binary of the pinned @apireno/domshell@$WANT"
+    exit 127
+fi
+shift
+
+warn "npx shim: exec pinned @apireno/domshell@$WANT from $PIN_DIR"
+exec "$BIN" "$@"

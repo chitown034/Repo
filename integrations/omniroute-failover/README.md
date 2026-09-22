@@ -6,6 +6,11 @@ already on the Mac (`docs/inventory/mac-task-descriptions.md`: "Claude subscript
 is hit, Claude Code runs on FREE providers via OmniRoute (loopback :20128, combo free-only) with a
 client-data guard hook") whose guard coverage the audit could not verify — **F-E8-60**.
 
+**Extended 2026-09-22 by P7 (Platform Engineer)** with the PRIMARY/STANDBY **task lease** — see *The task
+lease* below. It moves `REMOTE-ACCESS.md`'s 59-prompt LEASE CHECK into this one launcher, so installing one
+script becomes the whole of what makes a second Mac safe. It is an **additional** gate in front of the PII
+gate and changes nothing about it.
+
 **Hardened 2026-09-22 by H3 (Security Engineer)** after the verification pass (`docs/findings/findings-V2.json`
 F-V2-07..18) executed the first draft and proved its PII gate failed open. Every change below is sandbox-tested
 against a stub `claude`; the exact before/after runs are in `docs/findings/findings-H3.json`.
@@ -16,23 +21,30 @@ runs out and then switches back to subscription model when subscription refreshe
 ## Files
 | File | Role |
 |---|---|
-| `claude-auto.sh` | Launcher. Decides the route per invocation, publishes the mode, gates client-data work — **closed by default**. Drop-in for `claude`: `claude-auto [--task NAME] [--pii\|--no-pii] [--force …] [--] <claude args>`; the options are recognised in any position before `--` |
+| `claude-auto.sh` | Launcher. Decides the route per invocation, publishes the mode, gates client-data work — **closed by default** — and holds the **PRIMARY/STANDBY task lease** (below). Drop-in for `claude`: `claude-auto [--task NAME] [--pii\|--no-pii] [--force …] [--lease\|--no-lease\|--lease-check] [--] <claude args>`; the options are recognised in any position before `--` |
+| `lease-tests.sh` | The executed test harness for the lease gate, plus a regression pass over the PII gate and the limit detection. Drives `claude-auto.sh` against a stub `claude` that implements the five lease steps against a fake document, `if_version` pin included. `./lease-tests.sh` — 102 assertions, no Mac, no login, no network |
 | `probe.sh` | Every 15 min: if the route is not `subscription`, probes the subscription with one 1-turn, no-tool call and restores it. Four inconclusive probes in a row → `state/NEEDS-STEVEN` + fall back to plain `claude` |
 | `~/.config/omniroute/.env` | On the Mac only, `chmod 600`. Holds `OMNIROUTE_API_KEY` (the key OmniRoute's dashboard issues for its own loopback endpoint). **Never a provider key, never committed** |
 | `~/.config/omniroute/free-ok-tasks.txt` | Optional. Task-name glob patterns **permitted on a free provider**, one per line, `#` comments. Adds to `DEFAULT_FREE_OK_TASKS` in the launcher. A name goes in here only with the security steward's sign-off |
 | `~/.config/omniroute/pii-tasks.txt` | Optional. Client-data glob patterns, one per line. Adds to `DEFAULT_PII_TASKS`. A match here wins over the allow-list and over `--no-pii` |
-| `~/.config/omniroute/state/` (mode 700) | `mode` (one word), `route.env` (parsed, never sourced), `claude-auto.log`, `probe.log`, `limit-samples.log` (exit status + hash per detected limit, never task output), `probe-failures` (consecutive inconclusive probes), `NEEDS-STEVEN` (escalation marker — its presence is a `NEED` in `mac-verify.sh`) |
+| `~/.config/claude-runner/role` | **One word: `primary` or `standby`.** Absent or unreadable = `standby`. This is the entire per-machine configuration the second Mac needs |
+| `~/.config/claude-runner/id` | Optional. A short stable lease id for this machine; absent, it is derived from the computer name |
+| `~/.config/omniroute/state/` (mode 700) | `mode` (one word), `route.env` (parsed, never sourced), `claude-auto.log`, `probe.log`, `limit-samples.log` (exit status + hash per detected limit, never task output), `probe-failures` (consecutive inconclusive probes), `NEEDS-STEVEN` (escalation marker — its presence is a `NEED` in `mac-verify.sh`), `lease.env` (the cached lease decision, parsed never sourced), `lease.lock` (transient) |
 
 ## How it works
 ```
-claude-auto ──reads──▶ state/mode ─┬─ subscription  → plain `claude`, OAuth login, no proxy env at all
-                                   ├─ free-fallback → ANTHROPIC_BASE_URL=http://127.0.0.1:20128
-                                   │                  ANTHROPIC_AUTH_TOKEN=$OMNIROUTE_API_KEY
-                                   │                  ANTHROPIC_MODEL=auto/coding:free (+ every alias)
-                                   │                  CLAUDE_CODE_OAUTH_TOKEN / ANTHROPIC_API_KEY unset
-                                   │                  --task on the free-OK allow-list, or --no-pii? → run there
-                                   │                  anything else (no task, unknown task, client task) → exit 75 (deferred) or local model
-                                   └─ local-only     → same proxy, model pinned to OMNIROUTE_LOCAL_MODEL (Jarvis)
+claude-auto ─▶ LEASE GATE (--task invocations only) ─┬─ HELD / ACQUIRED ─────▶ on to the route
+            │                                       ├─ FOREIGN / RACE ──────▶ exit 75, nothing written
+            │                                       └─ inconclusive ─┬ PRIMARY ▶ on (fails OPEN)
+            │                                                        └ STANDBY ▶ exit 75 (fails CLOSED)
+            └─reads─▶ state/mode ─┬─ subscription  → plain `claude`, OAuth login, no proxy env at all
+                                  ├─ free-fallback → ANTHROPIC_BASE_URL=http://127.0.0.1:20128
+                                  │                  ANTHROPIC_AUTH_TOKEN=$OMNIROUTE_API_KEY
+                                  │                  ANTHROPIC_MODEL=auto/coding:free (+ every alias)
+                                  │                  CLAUDE_CODE_OAUTH_TOKEN / ANTHROPIC_API_KEY unset
+                                  │                  --task on the free-OK allow-list, or --no-pii? → run there
+                                  │                  anything else (no task, unknown task, client task) → exit 75 (deferred) or local model
+                                  └─ local-only     → same proxy, model pinned to OMNIROUTE_LOCAL_MODEL (Jarvis)
 probe.sh (LaunchAgent, 15 min) ──▶ subscription usable again? → state/mode = subscription
                                    4 × inconclusive in a row? → state/NEEDS-STEVEN, state/mode = subscription (plain claude)
 ```
@@ -119,6 +131,133 @@ Two layers, on purpose: this launcher-level gate, plus the existing client-data 
 and which the canary below tests. The launcher sees task names, not prompt text: an allow-listed task whose
 prompt drags in a client file is the hook's job. Neither replaces the HALT list in `CLAUDE.md`.
 
+## The task lease — one writer across two Macs (P7, 2026-09-22)
+
+Two Macs running the same 59 `claude-runner` tasks double-write the same artifact documents: duplicate
+`ciLog` rows, `isaLine` messages sent twice, churn on `sectionEdits`. `REMOTE-ACCESS.md` specifies the cure
+as a lease, and originally as a five-step **LEASE CHECK** block pasted at the top of **all 59 task prompts**.
+That is a HALT an agent cannot perform (editing live task prompts) and a chore that in practice never
+finishes — so Mac #2 stayed off and the "both Macs" capability stayed blocked.
+
+`claude-auto.sh` is already the single choke point in front of every task: it already takes `--task NAME`,
+already decides whether a task may run, and already defers with **exit 75**. So the same five steps run
+**here** instead — same document, same 90-minute TTL, same `if_version` pin, same step-4 re-read.
+**Installing one script is now the whole of what makes a second Mac safe.** The prompt-level block stays
+documented in `REMOTE-ACCESS.md` as the fallback for any writer that does **not** go through this launcher
+(a cloud routine, a hand-run Claude Code session, a future non-`claude-auto` task runner).
+
+### What it reads and writes
+| Thing | Where | Notes |
+|---|---|---|
+| Role | `~/.config/claude-runner/role` | First non-comment line, case-insensitive: `primary` or `standby`. **Absent, unreadable, not owned by this user, group/world-writable, or holding anything else → `standby`** — the safe direction for a freshly imaged Mac. `# comments` and blank lines are allowed |
+| Holder id | `~/.config/claude-runner/id` (optional) | A short stable id per machine. Absent → derived from `scutil --get ComputerName`, else `hostname`, lower-cased and reduced to `[a-z0-9._-]`, 40 chars. **Two Macs with the same id defeats the mechanism** — `SECOND-MAC-SETUP.md` §11 checks the names differ |
+| Lease | `state/taskLease` on artifact `1624daae-d683-405a-971d-c5828dce0f8d` | `{v:{holder, hostname, acquiredAt, expiresAt}}`, TTL **90 min**. Shape fixed by `REMOTE-ACCESS.md`; Steven's promotion command writes the same document. **The document does not exist yet** (re-read from the store 2026-09-22) — the first real run on a Mac creates it |
+| Decision cache | `~/.config/omniroute/state/lease.env` (mode 600) | `decision= verdict= role= checked_at= expires_iso= holder= fails=`. Parsed with `sed` and validated, **never sourced**; a file that is not plain, owner-only and owned by this user is discarded, not trusted (same rule as `route.env`, F-V2-18) |
+| Check lock | `~/.config/omniroute/state/lease.lock` | A `mkdir` lock. 59 tasks firing in the same minute pay for **one** check, not 59. A lock older than `LEASE_TIMEOUT + 60 s` is treated as a leftover and removed |
+
+### How the check runs
+A bash script cannot read the artifact DB — there is no HTTP API for it, only the Claude tool layer. So the
+check is **one `claude -p` turn**, in the same shape `probe.sh` uses: `--max-turns 8 --output-format json
+--no-session-persistence`, the proxy variables stripped with `env -u` so it can never reach OmniRoute, and a
+tool allow-list of exactly one — `--allowedTools ArtifactData` plus an explicit `--disallowedTools` for
+Bash/Task/WebFetch/WebSearch/Write/Edit/NotebookEdit. The prompt carries only the artifact id, this machine's
+id and hostname, and two timestamps the **shell** computed (the model is never asked what time it is). No
+credential, no client data, no task name.
+
+The reply must be exactly one line — `LEASE HELD|ACQUIRED|FOREIGN|RACE holder=… expires=…` — and only the
+CLI's own `result` field is parsed, never the prompt we sent. Anything else (no verdict, two contradictory
+verdicts, a `HELD` that names a different machine, a non-zero exit, a timeout) is **inconclusive**.
+
+### The asymmetry — the important design decision
+The role decides exactly one thing: **what to do when the check itself cannot complete.** It never overrides
+a conclusive answer.
+
+| | PRIMARY | STANDBY (and unset/unreadable) |
+|---|---|---|
+| `HELD` / `ACQUIRED` | run | run — it is the writer now |
+| `FOREIGN` (a live lease someone else holds) | **exit 75** | **exit 75** |
+| `RACE` (the pinned write was refused, or the step-4 re-read shows another holder) | **exit 75**, nothing written | **exit 75**, nothing written |
+| check inconclusive — network down, `claude` not logged in, a timeout | **runs the task. FAILS OPEN.** | **exit 75. FAILS CLOSED.** |
+
+**Why open on the primary:** a blip must never silently stop all of Steven's automation. The lease has a
+90-minute TTL precisely so the machine that holds it can work through one. The cost of being wrong is a
+double-write window; the cost of being right-but-down is every feed going stale, which is what put ~50 feeds
+on one sleeping laptop in the first place.
+**Why closed on the standby:** a standby that cannot *prove* it should take over and guesses is exactly the
+double-write this exists to prevent. A "primary" row that ignored a live foreign lease would make the whole
+mechanism pointless, which is why `FOREIGN` defers on both roles.
+
+### Precedence against the existing gates
+```
+1. argument validation            exit 64   (unchanged, still first — an illegal --task never reaches a check)
+2. --force / route read / self-probe        (unchanged)
+3. --status  /  --lease-check     exit 0/1  (diagnostics: they spend nothing and take no lease)
+4. THE LEASE GATE                 exit 75   <-- new
+5. route dispatch -> OmniRoute health -> .env mode -> THE PII GATE   exit 75 / 78  (unchanged)
+6. run
+```
+The lease gate sits **in front of** the PII gate, never inside it. They compose as **AND** — a task runs only
+if the lease says this Mac may work *and* the route/PII gate says this data may go where the route points —
+and both fail towards exit 75. The lease path sets no variable the PII gate reads, so a lease *allow* leaves
+the PII decision byte-identical. Lease first, for three reasons:
+- "May this Mac do work at all" is strictly broader than "which provider may see this data".
+- A lease deferral must not depend on route state: a standby defers identically on the subscription route,
+  where the PII gate is not consulted at all.
+- **Reversed, it would leak a takeover.** A client task on a limited subscription defers at the PII gate. If
+  that happened before the lease gate, a busy primary whose subscription went free would stop renewing its
+  lease, it would expire after 90 minutes, and the standby would take over while the primary was merely
+  waiting for a reset. Renewing on the primary regardless of the PII outcome is correct, and only lease-first
+  gives it.
+One thing deliberately **not** shared: the lease check's own output is never matched against `LIMIT_RE`. Only
+a real task run may move the route (F-V2-10). A lease check that fails with "Usage limit reached" leaves
+`state/mode` exactly where it was — tested.
+
+### Cost control
+A `claude -p` per task invocation is unaffordable: the 59 enabled crons in
+`docs/inventory/mac-runner-status.md` fire **733 task invocations a day** (`*/5` Discord inbox alone is 288).
+The decision is therefore cached for `LEASE_CACHE_TTL`, **1800 s (30 minutes)**, which bounds real checks at
+`1440 / 30 = 48 a day` however many tasks fire — measured at exactly `ceil(elapsed / TTL)` on a compressed
+clock, independent of invocation count. 30 minutes also gives **three renewals inside every 90-minute lease**,
+so a primary survives two missed windows before its lease can lapse.
+The cache is invalidated early, never late, by three rules:
+- **the role file changed** — flipping `primary`↔`standby` takes effect on the very next task, at no cost;
+- **a cached `FOREIGN` never outlives the lease it saw** — the moment that lease's `expiresAt` passes, the
+  standby re-checks and takes over rather than waiting the cache out;
+- **an untrusted `lease.env`** is discarded.
+An *inconclusive* check backs off 5 → 10 → 20 → 30 min (`fails=` in the cache) so a sustained outage cannot
+turn into hundreds of retried checks, while a single blip recovers within five minutes.
+
+### Scope — what is not gated, on purpose
+An invocation with **no `--task`** is not lease-gated. It is not one of the 59 scheduled writers: it is
+interactive Vanessa Live or a one-off, with a human present — the same reasoning the Command Deck uses. This
+is what lets Mac #2 reach level (ii) "drive Vanessa" while still standing by at level (iii). The residual is
+stated plainly: a human at the standby can still write documents by hand. `--lease` gates a no-task
+invocation anyway; `--no-lease` skips the gate and is logged as a `WARN` with the task name and the user —
+for a deliberate one-off or recovery, **never in a task definition**.
+
+### Diagnostics and knobs
+`claude-auto --status` adds `lease_role=`, `lease_role_src=`, `lease_id=` and the cached decision with its
+age. It spends nothing and takes no lease. `claude-auto --lease-check` forces one real check, prints
+`verdict=… holder=… expires=… decision=…`, exits **0** when conclusive and **1** when not — and when it is
+inconclusive it says what a task on this role *would* do and which tool name to check. Run it on each Mac
+before enabling the runner. Environment overrides, none of them required:
+`CLAUDE_RUNNER_CFG`, `CLAUDE_RUNNER_LEASE_ARTIFACT`, `CLAUDE_RUNNER_LEASE_TTL` (fixed at 90 min by spec),
+`CLAUDE_RUNNER_LEASE_CACHE_TTL`, `CLAUDE_RUNNER_LEASE_FAIL_TTL`, `CLAUDE_RUNNER_LEASE_TIMEOUT`,
+`CLAUDE_RUNNER_LEASE_MODEL`, `CLAUDE_RUNNER_LEASE_TOOLS`, `CLAUDE_RUNNER_LEASE_TIMEOUT_BIN`.
+
+### Lease canary (run on the Mac, with the probe LaunchAgent loaded or not — it does not matter here)
+1. `claude-auto --status` → `lease_role=` is what you expect on *this* machine, `lease_cached=none`.
+2. `claude-auto --lease-check` on **Mac #1** → `verdict=ACQUIRED decision=run`. This is the run that
+   **creates** `state/taskLease`; it must be a Mac that does it, never the cloud.
+3. `claude-auto --lease-check` on **Mac #2** → `verdict=FOREIGN holder=<Mac #1>`, exit 0.
+4. Mac #2: `claude-auto --task r10-automation-health -p 'say hi'` → **exit 75**, stderr
+   `standby: lease held by <Mac #1's id>`, and nothing written.
+5. Mac #2: `claude-auto -p 'say hi'` (no `--task`) → **runs**. Vanessa Live is not lease-gated.
+6. Mac #1: run any two tasks back to back → the second logs `cached HELD`, and `state/lease.env` shows one
+   `checked_at`. If it says `ACQUIRED` twice, the cache is not being written — check `state/` is mode 700.
+7. Promote Mac #2 with the one command in `REMOTE-ACCESS.md`, then flip **both** role files. Mac #2's next
+   task runs; Mac #1's next task exits 75. Hand back by doing the same in reverse.
+
 ## State-file hygiene
 `state/` is created mode 700 and every file in it 600 (`umask 077`). `route.env` is a data file: the six
 known keys are read with `sed` and validated (`mode` must be one of three words, numbers must be digits, the
@@ -152,10 +291,17 @@ Free-tier keys are still credentials: a leaked one burns the quota and, on some 
 1. `npm install -g omniroute@3.8.50` (already present per the inventory; `omniroute --version` must print 3.8.50 or newer). Start it, open `http://127.0.0.1:20128`, **create the dashboard password and an API key** → `~/.config/omniroute/.env` as `OMNIROUTE_API_KEY=…`, then `chmod 600` that file.
 2. **Add the free providers** with the `providers add … --credential-env` lines above. Do not add the Claude subscription as an OmniRoute provider (its OAuth-in-a-gateway path keeps the subscription token inside a third-party process — not for the business Mac).
 3. Copy `claude-auto.sh` and `probe.sh` to `~/.local/bin/` (as `claude-auto` and `probe.sh`, the same directory — the launcher finds the probe next to itself), `chmod +x`, and point the `vanessa` launcher and the runner's task wrapper at `claude-auto` (the current one is replaced, not run beside it). **Every runner task passes `--task <its name>`**; a task with no name is deferred whenever the route is free. Tasks that should keep running on free providers go on the allow-list (`free-ok-tasks.txt`) **only after the security steward has read what they read**.
+3b. **Declare this Mac's role** — one line, and it is the whole of what makes the second Mac safe:
+   `mkdir -p ~/.config/claude-runner && printf 'primary\n' > ~/.config/claude-runner/role` on the Mac that runs
+   the tasks today, `standby` on the other. **Do this before pointing the runner at `claude-auto`**: an absent
+   role file reads as `standby`, so a Mac with no role file whose lease check cannot complete will defer every
+   task — loudly and safely, but it will defer. Then `claude-auto --lease-check` on each Mac; the one on the
+   primary is the run that creates `state/taskLease`. Full runbook: `docs/SECOND-MAC-SETUP.md`.
 4. LaunchAgent `~/Library/LaunchAgents/com.stevenshearrill.omniroute-probe.plist`: `ProgramArguments` = `/bin/bash`, `$HOME/.local/bin/probe.sh`; `StartInterval` = `900`; `EnvironmentVariables.PATH` = `$HOME/.npm-global/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin` (where `claude` lives). `launchctl load` it.
 5. `claude-auto --status` → `mode=subscription`. `claude-auto --force free --no-pii -p 'say hi' --output-format json` → the reply comes from OmniRoute (its `X-OmniRoute-Decision` response header names the provider; `omniroute health` shows the call). `probe.sh --now` → mode back to `subscription`. `mac-verify.sh` → `claude-auto` and `probe.sh` "match the repo copy", route mode `ok subscription`.
    A forced mode holds until the next probe finds the subscription healthy — at most 15 min with the LaunchAgent loaded — so run a forced test within that window or re-force before each step; `--force` stamps the state as freshly probed so the launcher itself does not undo it on the next call.
-6. **Run the PII canary below with the security steward before enabling the runner on `claude-auto`.**
+6. **Run the PII canary below with the security steward before enabling the runner on `claude-auto`**, and the
+   lease canary in *The task lease* above on **both** Macs.
 
 ## PII canary (the test that closes F-E8-60 — every bypass V2 found, not only the ordering that already passed)
 `~/.config/omniroute/canary/client-canary.txt` holds an obviously fake record: `CANARY CLIENT Jane Q.
@@ -180,5 +326,16 @@ may reach `:20128`**; 9 and 10 must reach it (the legitimate path); 11 is the ho
 - `npm --prefix /tmp/fr5b-npm install omniroute` → 3.8.50, MIT, exit 0; `omniroute --version` → `3.8.50`; provider ids `openrouter`, `openrouter-free`, `nvidia`, `nvidia-nim`, `bytez` present in its catalog; `auto/<category>:free` tier documented; `/healthz` documented; `providers add --credential-env` documented; Claude Code root URL without `/v1` documented.
 - Both scripts pass `bash -n` and `shellcheck` (H3: 0.11.0; H3b re-ran 0.9.0 — both default and `-S style`, no output). **Executed** in the cloud sandbox by V2, H3 and H3b with a stub `claude`, a dead `:20128`, a live stand-in `/healthz` and a throwaway `HOME` — no `claude` login, no Mac, no OmniRoute server: every case in the canary above, the six false-positive strings from F-V2-10, a broken probe binary (escalation at the 4th run), a year-2100 `reset_at`, a world-writable and a shell-injected `route.env`, and the `.env` mode check on Linux. The `env -u` and `mktemp` forms are the macOS ones with GNU fallbacks; the `stat` form is GNU-first-then-BSD, validated (F-V2-15).
 - H3b (2026-09-22) re-ran every one of those cases against the **pre-fix scripts restored from git** as well as the current ones, so each claim above has a recorded before *and* after rather than an after alone. Doing so found one bypass H3's rewrite left open — the case-sensitive deny-list, F-H3b-01, now fixed and canary step 8 — and one residual the regex cannot close: see the next bullet.
+- The lease gate (P7, 2026-09-22) is **executed**, not reviewed: `./lease-tests.sh` runs 102 assertions against
+  a stub `claude` that implements the five lease steps against a fake document — so the `if_version` pin really
+  is refused when the version moves, rather than being asserted. Covered: primary holds → runs; standby with a
+  live foreign lease → 75 with nothing written; standby with an **expired** foreign lease → acquires and runs;
+  the pinned-write race and the step-4 race → 75 with the other Mac's write left standing; check fails on
+  PRIMARY → runs; check fails on STANDBY → defers; an absent, world-writable or junk role file → standby; a
+  timeout on both the `timeout(1)` and the built-in-watchdog paths; the cache serving four tasks from one check;
+  a cached FOREIGN expiring with the lease it saw; a role flip busting the cache; two concurrent invocations
+  paying for one check; and a full regression pass over F-V2-07/08/09/10, F-H3b-01, the `--no-pii` override, the
+  `route.env` injection and the state-file modes. Recorded in `docs/findings/findings-P7.json`. **Not** covered:
+  anything that needs a real Mac — see that file's F-P7-10.
 - Known residual (F-H3b-02, **not** fixed): `LIMIT_RE` is matched against the error envelope, and in `--output-format json` that envelope includes the CLI's `result` field, which on a failed run is the model's own text. A task that both **fails** and produces text such as "the escrow usage limit reached its cap" still flips the route to `free-fallback`. It cannot leak anything — the gate is closed on the new route and client tasks defer — and the 15-minute probe restores the subscription, so it costs one deferred cycle. Narrowing it further means guessing at the real limit wording, which this file has said twice is unconfirmed; tighten it from `limit-samples.log`'s `branch=` field once a real hit is recorded on the Mac, not before.
 - Not verified: the exact wording of today's usage-limit message as `claude -p` prints it on the Mac — `LIMIT_RE` is built from the strings in the 2.1.278 binary, and `limit-samples.log` records which branch fired on each real hit, so it can be tightened from the log; whether a free combo answers Claude Code's tool-use format well enough for the runner's prompts (expect degraded, not equal, output); OmniRoute's local-Ollama provider id for Jarvis (set `OMNIROUTE_LOCAL_MODEL` only after `omniroute providers list` shows it).

@@ -11,10 +11,42 @@
 # the runner retries after the reset) or, when OMNIROUTE_LOCAL_MODEL names the local Jarvis model inside OmniRoute,
 # pinned to that local model. Mode is published for every task to read.
 # Spec: integrations/omniroute-failover/README.md · written 2026-09-22 · NOT yet installed on the Mac.
-# Usage: claude-auto [--task NAME] [--pii|--no-pii] [--force subscription|free|local] [--status] [--] <claude args…>
+# Usage: claude-auto [--task NAME] [--pii|--no-pii] [--force subscription|free|local] [--status]
+#                    [--lease|--no-lease|--lease-check] [--] <claude args…>
 #   The options are recognised anywhere before `--` — argument order does not matter (F-V2-07). Every other
 #   argument, and everything after `--`, is passed to claude untouched, in its original order.
 # No secrets live in this file. OMNIROUTE_API_KEY is read from ~/.config/omniroute/.env (must be chmod 600).
+#
+# TASK LEASE — PRIMARY/STANDBY, and it FAILS ASYMMETRICALLY (P7, 2026-09-22). Two Macs running the same ~59
+# claude-runner tasks double-write the same artifact documents: duplicate `ciLog` rows, `isaLine` sent twice,
+# churn on `sectionEdits`. REMOTE-ACCESS.md specifies the cure as a five-step LEASE CHECK pasted at the top of
+# all 59 task prompts; editing 59 live prompts is a HALT an agent cannot do and a chore that never finishes, so
+# the same five steps — same document, same 90-minute TTL, same `if_version` pin, same step-4 re-read — run HERE
+# instead, once, in the one choke point every task already goes through. The prompt-level block stays documented
+# in REMOTE-ACCESS.md as the fallback for any writer that does NOT come through this launcher.
+#   Role: the first `primary` or `standby` line of ~/.config/claude-runner/role. Unset, unreadable, not owned by
+#   this user, group/world-writable, or holding anything else  ->  STANDBY. A freshly imaged Mac is a standby.
+#   The role decides ONE thing: what to do when the check itself cannot complete. It never overrides an answer.
+#     conclusive HELD / ACQUIRED  -> run       (on either role: we are the writer)
+#     conclusive FOREIGN / RACE   -> exit 75   (on either role — a "primary" that ignored a live foreign lease
+#                                               would make the whole mechanism pointless)
+#     inconclusive on PRIMARY     -> RUN. Fails OPEN. A network blip, a logged-out `claude` or a timeout must
+#                                   never silently stop all of Steven's automation; the lease has a 90-minute
+#                                   TTL precisely so a primary may keep working through one.
+#     inconclusive on STANDBY     -> exit 75. Fails CLOSED. A standby that cannot PROVE it should take over and
+#                                   guesses is exactly the double-write this exists to prevent.
+#   Cost: a bash script cannot read the artifact DB, so the check is one `claude -p` turn (the probe.sh shape).
+#   One per task invocation would be unaffordable, so the decision is cached in state/lease.env for 30 min —
+#   about 48 real checks a day worst case, three renewals inside every 90-minute lease. See README.md.
+#   Precedence: the lease gate runs AFTER --status/--lease-check and BEFORE everything that can invoke claude for
+#   the task, so it sits in front of — never inside — the PII gate. They compose as AND and both fail towards
+#   exit 75; the lease path sets nothing the PII gate reads. Lease first because "may this Mac work at all" is
+#   broader than "which provider may see this data", and because the reverse order would let a primary whose
+#   subscription is limited defer a client task for PII reasons WITHOUT renewing its lease — silently handing
+#   the standby a takeover. The lease check's own output is never scanned for LIMIT_RE: only a real task run may
+#   move the route (F-V2-10). Invocations with no --task are not gated (interactive Vanessa Live has a human
+#   present and is not one of the 59 scheduled writers); --lease gates them anyway, --no-lease skips the gate and
+#   is logged as a WARN.
 # Written for macOS bash 3.2 (no associative arrays, no mapfile, no ${var,,}); BSD and GNU userland.
 set -u
 set -f                                                    # the task lists are glob PATTERNS: never let the shell expand them against the cwd
@@ -33,6 +65,20 @@ LOCAL_MODEL="${OMNIROUTE_LOCAL_MODEL:-}"                  # e.g. ollama-local/ll
 PROBE_MAX_AGE="${OMNIROUTE_PROBE_MAX_AGE:-1500}"          # seconds of stale state before the launcher re-probes on its own
 PROBE_FORCE_AGE="${OMNIROUTE_PROBE_FORCE_AGE:-21600}"     # re-probe at least this often (6 h) even while reset_at is in the future (F-V2-12)
 RESET_MAX_AHEAD="${OMNIROUTE_RESET_MAX_AHEAD:-172800}"    # a parsed reset epoch more than 48 h out is a parse failure, not a wait (F-V2-12)
+# --- task lease (P7). The document's shape is fixed by REMOTE-ACCESS.md; these are locations and budgets only.
+RUNNER_CFG="${CLAUDE_RUNNER_CFG:-$HOME/.config/claude-runner}"     # the runner's config, NOT omniroute's
+ROLEFILE="$RUNNER_CFG/role"                                        # first non-comment line: primary | standby (absent = standby)
+IDFILE="$RUNNER_CFG/id"                                            # optional short stable holder id; absent = derived from the computer name
+LEASE_CACHE="$STATE/lease.env"                                     # decision= verdict= role= checked_at= expires_iso= holder= fails= — PARSED, never sourced
+LEASE_LOCK="$STATE/lease.lock"                                     # mkdir-lock: 59 tasks firing at once pay for ONE check, not 59
+LEASE_ART="${CLAUDE_RUNNER_LEASE_ARTIFACT:-1624daae-d683-405a-971d-c5828dce0f8d}"  # Command Deck store; document state/taskLease
+LEASE_TTL="${CLAUDE_RUNNER_LEASE_TTL:-5400}"                       # 90 min — FIXED by REMOTE-ACCESS.md, not a tuning knob
+LEASE_CACHE_TTL="${CLAUDE_RUNNER_LEASE_CACHE_TTL:-1800}"           # 30 min between real checks: ~48/day, 3 renewals per lease
+LEASE_FAIL_TTL="${CLAUDE_RUNNER_LEASE_FAIL_TTL:-300}"              # first retry after an inconclusive check; doubles up to LEASE_CACHE_TTL
+LEASE_TIMEOUT="${CLAUDE_RUNNER_LEASE_TIMEOUT:-60}"                 # seconds the one-turn check may take before it is killed
+LEASE_MODEL="${CLAUDE_RUNNER_LEASE_MODEL:-sonnet}"                 # execution seat (CLAUDE.md tiering); same choice as probe.sh
+LEASE_TOOLS="${CLAUDE_RUNNER_LEASE_TOOLS:-ArtifactData}"           # the artifact-DB tool's CLI name — override here if the CLI renames it
+LEASE_TIMEOUT_BIN="${CLAUDE_RUNNER_LEASE_TIMEOUT_BIN:-auto}"       # auto = use timeout/gtimeout when present; none = always the built-in watchdog
 
 # Usage-limit vocabulary (F-V2-10). Taken from the strings inside the Claude Code 2.1.278 binary itself (grep,
 # 2026-09-22): "Usage limit reached", "You've hit your limit", "rate_limit_error", "rate limited", and the API's
@@ -53,7 +99,7 @@ DEFAULT_PII_TASKS="lofty-* zoho-* *crm* isa-* *-isa-* lead-* *-lead-* r12-inbox-
 log()  { printf '%s %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*" >> "$LOG"; }
 now()  { date +%s; }
 write_marker() { printf '%s %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*" >> "$MARKER"; }
-usage_err() { echo "claude-auto: $*" >&2; echo "usage: claude-auto [--task NAME] [--pii|--no-pii] [--force subscription|free|local] [--status] [--] <claude args…>" >&2; exit 64; }
+usage_err() { echo "claude-auto: $*" >&2; echo "usage: claude-auto [--task NAME] [--pii|--no-pii] [--force subscription|free|local] [--status] [--lease|--no-lease|--lease-check] [--] <claude args…>" >&2; exit 64; }
 
 # GNU stat first and validated: on Linux `stat -f` means "file SYSTEM status" and succeeds with the wrong output,
 # so a BSD-first fallback prints a filesystem report as a file mode (F-V2-15). Same shape as mac-verify.sh.
@@ -118,8 +164,243 @@ write_route() { # mode since reset_at reason omni_ok probed_at
   printf 'mode=%s\nsince=%s\nreset_at=%s\nreason=%s\nomni_ok=%s\nprobed_at=%s\n' "$1" "$2" "$3" "'$r'" "$5" "$6" > "$ROUTE"
   printf '%s\n' "$1" > "$MODEFILE"; }
 
+# ---------------------------------------------------------------- the task lease (P7): one writer across two Macs
+filemtime() { # GNU first and validated, then BSD — same reason as filemode (F-V2-15)
+  _s=$(stat -c '%Y' "$1" 2>/dev/null || true)
+  case "${_s:-x}" in ''|*[!0-9]*) _s='' ;; esac
+  if [ -z "$_s" ]; then
+    _s=$(stat -f '%m' "$1" 2>/dev/null || true)
+    case "${_s:-x}" in ''|*[!0-9]*) _s=0 ;; esac
+  fi
+  printf '%s' "$_s"
+}
+iso_at() { # epoch -> ISO-8601 Z. GNU `date -d @` first and VALIDATED, then BSD `date -r`; empty if neither works
+  _v=$(date -u -d "@$1" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || true)
+  case "$_v" in [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]Z) printf '%s' "$_v"; return 0 ;; esac
+  _v=$(date -u -r "$1" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || true)
+  case "$_v" in [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]Z) printf '%s' "$_v"; return 0 ;; esac
+  printf ''
+}
+iso_num() { # ISO-8601 Z -> YYYYMMDDHHMMSS for a locale-proof numeric compare; empty when it is not 14 digits
+  _d=$(printf '%s' "$1" | tr -dc '0-9' | cut -c1-14)
+  case "$_d" in [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]) printf '%s' "$_d" ;; *) printf '' ;; esac
+}
+# Anything that is not an explicit, owner-only, not-world-writable `primary` is a STANDBY. Sets ROLE and ROLE_WHY.
+read_role() {
+  ROLE=standby; ROLE_WHY="no role file at $ROLEFILE"
+  [ -f "$ROLEFILE" ] && [ ! -L "$ROLEFILE" ] || return 0
+  [ "$(fileowner "$ROLEFILE")" = "$(id -u)" ] || { ROLE_WHY="$ROLEFILE is not owned by uid $(id -u)"; return 0; }
+  _rm=$(filemode "$ROLEFILE")
+  case "$_rm" in [0-7][0-7][0-7][0-7]) _rm=${_rm#?} ;; [0-7][0-7][0-7]) ;; *) _rm=777 ;; esac
+  case "${_rm#?}" in *[2367]*) ROLE_WHY="$ROLEFILE is group- or world-writable (mode $_rm)"; return 0 ;; esac
+  _r=$(sed -e 's/#.*//' -e 's/[[:space:]]//g' "$ROLEFILE" 2>/dev/null | grep -v '^$' | head -1 | tr '[:upper:]' '[:lower:]')
+  case "$_r" in
+    primary|standby) ROLE="$_r"; ROLE_WHY="$ROLEFILE" ;;
+    *) ROLE_WHY="$ROLEFILE holds no primary/standby line" ;;
+  esac
+}
+lease_my_id() { # a short stable id per machine; two Macs with the same id defeats the whole mechanism
+  _i=''
+  if [ -f "$IDFILE" ] && [ ! -L "$IDFILE" ]; then
+    _i=$(sed -e 's/#.*//' -e 's/[[:space:]]//g' "$IDFILE" 2>/dev/null | grep -v '^$' | head -1)
+  fi
+  [ -n "$_i" ] || _i=$(scutil --get ComputerName 2>/dev/null || true)
+  [ -n "$_i" ] || _i=$(hostname 2>/dev/null || true)
+  [ -n "$_i" ] || _i=unknown-mac
+  printf '%s' "$_i" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9._-' '-' | cut -c1-40
+}
+lease_my_host() { # `hostname` for humans, exactly as REMOTE-ACCESS.md specifies
+  _h=$(scutil --get ComputerName 2>/dev/null || true)
+  [ -n "$_h" ] || _h=$(hostname 2>/dev/null || true)
+  [ -n "$_h" ] || _h=unknown
+  printf '%s' "$_h" | tr -c 'A-Za-z0-9 ._-' '_' | cut -c1-60
+}
+# lease.env gets the same treatment as route.env: six known keys, read with sed, validated, NEVER sourced (F-V2-18).
+lease_get() { _v=$(sed -n "s/^$1=//p" "$LEASE_CACHE" 2>/dev/null | tail -1); printf '%s' "$_v" | tr -d "'\"" | tr -c 'A-Za-z0-9_.:-' '_'; }
+lease_num() { _v=$(lease_get "$1"); case "$_v" in ''|*[!0-9]*) printf '%s' "$2" ;; *) printf '%s' "$_v" ;; esac; }
+read_lease_cache() {
+  c_decision=''; c_verdict=''; c_role=''; c_checked=0; c_expires='-'; c_holder='-'; c_fails=0
+  [ -e "$LEASE_CACHE" ] || return 0
+  if ! route_file_trusted "$LEASE_CACHE"; then
+    log "WARN $LEASE_CACHE is not a plain owner-only file (mode $(filemode "$LEASE_CACHE"), owner $(fileowner "$LEASE_CACHE")) — discarded, the lease is re-checked"
+    rm -f "$LEASE_CACHE"; return 0
+  fi
+  c_decision=$(lease_get decision); c_verdict=$(lease_get verdict); c_role=$(lease_get role)
+  c_checked=$(lease_num checked_at 0); c_fails=$(lease_num fails 0)
+  c_expires=$(lease_get expires_iso); [ -n "$c_expires" ] || c_expires='-'
+  c_holder=$(lease_get holder); [ -n "$c_holder" ] || c_holder='-'
+  case "$c_decision" in run|defer) ;; *) c_decision='' ;; esac
+  case "$c_role" in primary|standby) ;; *) c_decision='' ;; esac
+}
+write_lease_cache() { # decision verdict role checked_at expires_iso holder fails
+  printf 'decision=%s\nverdict=%s\nrole=%s\nchecked_at=%s\nexpires_iso=%s\nholder=%s\nfails=%s\n' \
+    "$1" "$2" "$3" "$4" "$5" "$6" "$7" > "$LEASE_CACHE"
+}
+LOCKHELD=0
+lease_unlock() { [ "$LOCKHELD" = 1 ] && { rmdir "$LEASE_LOCK" 2>/dev/null || true; LOCKHELD=0; trap - EXIT INT TERM; }; return 0; }
+lease_run_timeout() { # seconds outfile cmd… — stdout+stderr to outfile, 124 on timeout. macOS ships no `timeout`.
+  _to="$1"; _of="$2"; shift 2
+  if [ "$LEASE_TIMEOUT_BIN" != none ]; then
+    if command -v timeout >/dev/null 2>&1; then timeout "$_to" "$@" >"$_of" 2>&1; return $?; fi
+    if command -v gtimeout >/dev/null 2>&1; then gtimeout "$_to" "$@" >"$_of" 2>&1; return $?; fi
+  fi
+  "$@" >"$_of" 2>&1 & _pid=$!
+  _i=0
+  while [ "$_i" -lt "$_to" ]; do kill -0 "$_pid" 2>/dev/null || break; sleep 1; _i=$((_i + 1)); done
+  if kill -0 "$_pid" 2>/dev/null; then
+    kill -TERM "$_pid" 2>/dev/null; sleep 1; kill -KILL "$_pid" 2>/dev/null
+    wait "$_pid" 2>/dev/null; return 124
+  fi
+  wait "$_pid"; return $?
+}
+lease_prompt() { # my-id hostname now-iso expires-iso — REMOTE-ACCESS.md's five steps, verbatim in intent.
+  cat <<PROMPT
+Task-lease check for a claude-runner host. Use ONLY the artifact database tool. Do not read or write files, do
+not run commands, do not ask questions, do not explain, do not summarise.
+ARTIFACT: https://claude.ai/code/artifact/$LEASE_ART
+COLLECTION: state    DOCUMENT: taskLease
+MY_ID: $1
+HOSTNAME: $2
+NOW: $3
+EXPIRES: $4
+Steps, in order:
+1. Get the document taskLease from collection state on that artifact. Remember its version, or that it is absent.
+2. If it exists AND its v.holder is not $1 AND its v.expiresAt is later than $3, print exactly one line
+   LEASE FOREIGN holder=<its v.holder> expires=<its v.expiresAt>
+   and stop. Write nothing.
+3. Otherwise set state/taskLease to
+   {"v":{"holder":"$1","hostname":"$2","acquiredAt":"$3","expiresAt":"$4"}}
+   pinned with if_version = the version you read in step 1. Omit if_version ONLY if the document was absent.
+   If that write is refused because the version has moved, print exactly one line
+   LEASE RACE holder=- expires=-
+   and stop. Do not retry it and do not write it unpinned.
+4. Get state/taskLease again. If its v.holder is not $1, print exactly one line
+   LEASE RACE holder=<its v.holder> expires=<its v.expiresAt>
+   and stop.
+5. Otherwise print exactly one line:
+   LEASE HELD holder=$1 expires=$4        if step 1 found the document already held by $1
+   LEASE ACQUIRED holder=$1 expires=$4    if it was absent, or its v.expiresAt was not later than $3
+Your entire reply is that one line. No other words, no markdown, no code fences.
+PROMPT
+}
+lease_result_text() { # stdin: the check's raw output -> the CLI's own result field only, never the prompt we sent
+  _o=$(cat)
+  if printf '%s\n' "$_o" | grep -qE '^\{.*"type": ?"result"'; then
+    printf '%s\n' "$_o" | grep -E '^\{.*"type": ?"result"' | tail -1 | grep -oE '"result": ?"(\\.|[^"\\])*"'
+  else
+    printf '%s\n' "$_o" | tail -n 5
+  fi
+}
+lease_verdict() { # stdin -> HELD|ACQUIRED|FOREIGN|RACE, and NOTHING unless exactly one of them is present
+  _v=$(grep -oE 'LEASE (HELD|ACQUIRED|FOREIGN|RACE)' | sed 's/^LEASE //' | sort -u | tr '\n' ' ')
+  case "$_v" in 'HELD ') printf 'HELD' ;; 'ACQUIRED ') printf 'ACQUIRED' ;; 'FOREIGN ') printf 'FOREIGN' ;; 'RACE ') printf 'RACE' ;; *) printf '' ;; esac
+}
+lease_field() { # field-name, stdin: result text -> the value, charset-limited and truncated. Never raw model text.
+  # `tr -d` before `tr -c`: tr -c maps the trailing newline too, and a holder of "mac-one_" matches no machine.
+  grep -oE "$1=[^ \"\\]+" | tail -1 | sed "s/^$1=//" | tr -d '\n' | tr -c 'A-Za-z0-9_.:-' '_' | cut -c1-40
+}
+# One `claude -p` turn, the probe.sh shape: no session file, proxy variables stripped so it can never reach
+# OmniRoute, and a tool allow-list of one. Its output is NEVER scanned for LIMIT_RE — only a real task run may
+# move the route (F-V2-10). Sets LEASE_VERDICT / LEASE_HOLDER / LEASE_EXP / LEASE_RC; rc 1 = inconclusive.
+lease_check_now() {
+  LEASE_VERDICT=''; LEASE_HOLDER='-'; LEASE_EXP='-'; LEASE_RC=0
+  LEASE_MY_ID=$(lease_my_id); _host=$(lease_my_host); _t=$(now)
+  _now_iso=$(iso_at "$_t"); _exp_iso=$(iso_at $((_t + LEASE_TTL)))
+  if [ -z "$_now_iso" ] || [ -z "$_exp_iso" ]; then
+    log "lease check impossible: neither GNU nor BSD date produced an ISO-8601 stamp"; LEASE_RC=70; return 1
+  fi
+  _p=$(lease_prompt "$LEASE_MY_ID" "$_host" "$_now_iso" "$_exp_iso")
+  _lt=$(mktemp "${TMPDIR:-/tmp}/claude-auto-lease.XXXXXX") || { LEASE_RC=71; return 1; }
+  lease_run_timeout "$LEASE_TIMEOUT" "$_lt" \
+    env -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_API_KEY \
+        claude -p "$_p" --model "$LEASE_MODEL" --max-turns 8 --output-format json \
+               --no-session-persistence --allowedTools "$LEASE_TOOLS" \
+               --disallowedTools 'Bash,Task,WebFetch,WebSearch,Write,Edit,NotebookEdit'
+  LEASE_RC=$?
+  _res=$(lease_result_text < "$_lt")
+  LEASE_VERDICT=$(printf '%s' "$_res" | lease_verdict)
+  LEASE_HOLDER=$(printf '%s' "$_res" | lease_field holder); [ -n "$LEASE_HOLDER" ] || LEASE_HOLDER='-'
+  LEASE_EXP=$(printf '%s' "$_res" | lease_field expires);   [ -n "$LEASE_EXP" ] || LEASE_EXP='-'
+  rm -f "$_lt"
+  [ -n "$LEASE_VERDICT" ] || return 1
+  # a HELD/ACQUIRED that does not name US is a confused answer, not a licence to write
+  case "$LEASE_VERDICT" in
+    HELD|ACQUIRED) [ "$LEASE_HOLDER" = "$LEASE_MY_ID" ] || { log "lease check answered $LEASE_VERDICT but holder=$LEASE_HOLDER is not $LEASE_MY_ID — treated as inconclusive"; LEASE_VERDICT=''; return 1; } ;;
+  esac
+  return 0
+}
+# Returns 0 = this invocation may run, 1 = defer. Sets LEASE_WHY and LEASE_SEEN_HOLDER for the caller's messages.
+lease_gate() {
+  read_role; read_lease_cache
+  LEASE_WHY=''; LEASE_SEEN_HOLDER='-'
+  _t=$(now); _use=0
+  if [ -n "$c_decision" ] && [ "$c_role" = "$ROLE" ]; then
+    if [ "$c_verdict" = none ]; then                      # an inconclusive check backs off 5 -> 10 -> 20 -> 30 min
+      _ttl="$LEASE_FAIL_TTL"; _n="$c_fails"
+      while [ "$_n" -gt 1 ] && [ "$_ttl" -lt "$LEASE_CACHE_TTL" ]; do _ttl=$((_ttl * 2)); _n=$((_n - 1)); done
+      [ "$_ttl" -gt "$LEASE_CACHE_TTL" ] && _ttl="$LEASE_CACHE_TTL"
+    else _ttl="$LEASE_CACHE_TTL"; fi
+    if [ $((_t - c_checked)) -lt "$_ttl" ] && [ "$c_checked" -le "$_t" ]; then
+      _use=1
+      # a cached "someone else holds it" never outlives the lease it saw: the moment that lease expires we
+      # re-check, so a standby takes over promptly instead of waiting the cache out
+      if [ "$c_verdict" = FOREIGN ]; then
+        _en=$(iso_num "$c_expires"); _nn=$(iso_num "$(iso_at "$_t")")
+        if [ -z "$_en" ] || [ -z "$_nn" ] || [ "$_en" -le "$_nn" ]; then _use=0; fi
+      fi
+    fi
+  fi
+  if [ "$_use" = 1 ]; then
+    LEASE_SEEN_HOLDER="$c_holder"
+    LEASE_WHY="cached $c_verdict holder=$c_holder $(( (_t - c_checked) / 60 ))m old"
+    [ "$c_decision" = run ] && return 0
+    return 1
+  fi
+  # no usable cache: one real check, under a lock, so 59 tasks firing together pay for one and not 59
+  c0_checked="$c_checked"                                    # what we saw before the lock: anything NEWER is somebody's fresh answer
+  if ! mkdir "$LEASE_LOCK" 2>/dev/null; then
+    _lm=$(filemtime "$LEASE_LOCK")
+    if [ "$_lm" -gt 0 ] && [ $((_t - _lm)) -gt $((LEASE_TIMEOUT + 60)) ]; then
+      log "WARN removing a stale lease lock at $LEASE_LOCK ($((_t - _lm))s old)"
+      rmdir "$LEASE_LOCK" 2>/dev/null || true
+    fi
+    if ! mkdir "$LEASE_LOCK" 2>/dev/null; then                 # someone else is mid-check: wait for their answer
+      _i=0
+      while [ "$_i" -lt 3 ]; do
+        sleep 2; _i=$((_i + 1)); read_lease_cache
+        if [ -n "$c_decision" ] && [ "$c_role" = "$ROLE" ] && [ "$c_checked" -gt "$c0_checked" ]; then
+          LEASE_SEEN_HOLDER="$c_holder"; LEASE_WHY="another claude-auto was mid-check; used its $c_verdict"
+          [ "$c_decision" = run ] && return 0
+          return 1
+        fi
+      done
+      LEASE_WHY="another claude-auto holds $LEASE_LOCK and produced no answer"
+      [ "$ROLE" = primary ] && return 0                        # same asymmetry: primary open, standby closed
+      return 1
+    fi
+  fi
+  LOCKHELD=1; trap 'lease_unlock' EXIT INT TERM
+  if lease_check_now; then
+    _dec=defer; case "$LEASE_VERDICT" in HELD|ACQUIRED) _dec=run ;; esac
+    write_lease_cache "$_dec" "$LEASE_VERDICT" "$ROLE" "$_t" "$LEASE_EXP" "$LEASE_HOLDER" 0
+    lease_unlock
+    LEASE_SEEN_HOLDER="$LEASE_HOLDER"; LEASE_WHY="$LEASE_VERDICT holder=$LEASE_HOLDER expires=$LEASE_EXP"
+    [ "$_dec" = run ] && return 0
+    return 1
+  fi
+  _n=$((c_fails + 1))
+  if [ "$ROLE" = primary ]; then
+    write_lease_cache run none primary "$_t" '-' '-' "$_n"; lease_unlock
+    LEASE_WHY="check inconclusive (rc=$LEASE_RC, $_n in a row) — PRIMARY fails OPEN, the task runs"
+    return 0
+  fi
+  write_lease_cache defer none standby "$_t" '-' '-' "$_n"; lease_unlock
+  LEASE_WHY="check inconclusive (rc=$LEASE_RC, $_n in a row) — STANDBY fails CLOSED (role: $ROLE_WHY)"
+  return 1
+}
+
 # ---------------------------------------------------------------- options: all of them, wherever they are (F-V2-07)
-TASK=""; PII=""; FORCE=""; SHOW=0; CARGS=()
+TASK=""; PII=""; FORCE=""; SHOW=0; CARGS=(); LEASE_GATE=auto; LEASE_CHECK=0
 while [ $# -gt 0 ]; do
   case "$1" in
     --task)    [ $# -ge 2 ] || usage_err "--task needs a value"; TASK="$2"; shift 2 ;;
@@ -129,6 +410,9 @@ while [ $# -gt 0 ]; do
     --pii)     PII=1; shift ;;
     --no-pii)  PII=0; shift ;;
     --status)  SHOW=1; shift ;;
+    --lease)   LEASE_GATE=on; shift ;;          # gate this invocation even without --task
+    --no-lease) LEASE_GATE=off; shift ;;        # skip the lease gate — logged as a WARN; manual use only
+    --lease-check) LEASE_CHECK=1; shift ;;      # force one real check now, print the verdict, run nothing
     --)        shift; CARGS=(${CARGS[@]+"${CARGS[@]}"} "$@"); break ;;
     *)         CARGS=(${CARGS[@]+"${CARGS[@]}"} "$1"); shift ;;
   esac
@@ -197,8 +481,56 @@ fi
 if [ $SHOW = 1 ]; then
   cat "$ROUTE" 2>/dev/null || echo "mode=subscription"
   [ -f "$STATE/probe-failures" ] && echo "probe_failures=$(tr -dc '0-9' < "$STATE/probe-failures")"
+  read_role; printf 'lease_role=%s\nlease_role_src=%s\nlease_id=%s\n' "$ROLE" "$ROLE_WHY" "$(lease_my_id)"
+  if [ -e "$LEASE_CACHE" ]; then read_lease_cache
+    printf 'lease_cached=%s verdict=%s holder=%s expires=%s age=%ss fails=%s\n' "${c_decision:-untrusted}" "$c_verdict" "$c_holder" "$c_expires" "$(( $(now) - c_checked ))" "$c_fails"
+  else echo "lease_cached=none (no check yet)"; fi
   [ -f "$MARKER" ] && { echo "NEEDS-STEVEN:"; cat "$MARKER"; }
   exit 0
+fi
+
+
+# ---------------------------------------------------------------- the lease gate (P7). Header: why it lives here.
+# After --status/--lease-check (a diagnostic must never spend a token or take a lease) and before everything that
+# can invoke claude for the task, so it is the FIRST gate a task meets and the PII gate below is reached only when
+# this Mac is allowed to work at all. The two compose as AND and both fail towards exit 75.
+rotate "$LOG" 5000                                          # the gate can exit before the rotate further down
+if [ "$LEASE_CHECK" = 1 ]; then
+  read_role
+  printf 'lease_role=%s (%s)\nlease_id=%s\nlease_hostname=%s\nlease_artifact=%s\nlease_tool=%s\n' \
+    "$ROLE" "$ROLE_WHY" "$(lease_my_id)" "$(lease_my_host)" "$LEASE_ART" "$LEASE_TOOLS"
+  rm -f "$LEASE_CACHE"                                      # --lease-check means "ignore the cache and really ask"
+  if lease_check_now; then
+    ldec=defer; case "$LEASE_VERDICT" in HELD|ACQUIRED) ldec=run ;; esac
+    write_lease_cache "$ldec" "$LEASE_VERDICT" "$ROLE" "$(now)" "$LEASE_EXP" "$LEASE_HOLDER" 0
+    printf 'verdict=%s holder=%s expires=%s decision=%s\n' "$LEASE_VERDICT" "$LEASE_HOLDER" "$LEASE_EXP" "$ldec"
+    log "lease-check verdict=$LEASE_VERDICT holder=$LEASE_HOLDER expires=$LEASE_EXP decision=$ldec role=$ROLE"
+    exit 0
+  fi
+  if [ "$ROLE" = primary ]; then lwould=RUN; else lwould=DEFER; fi
+  printf 'verdict=INCONCLUSIVE rc=%s — with role=%s a task would %s\n' "$LEASE_RC" "$ROLE" "$lwould"
+  printf 'check that claude is logged in, and that the artifact-DB tool is really named "%s" (override: CLAUDE_RUNNER_LEASE_TOOLS)\n' "$LEASE_TOOLS"
+  log "lease-check INCONCLUSIVE rc=$LEASE_RC role=$ROLE tool=$LEASE_TOOLS"
+  exit 1
+fi
+LEASE_WHY=''; LEASE_SEEN_HOLDER='-'
+if [ "$LEASE_GATE" = off ]; then
+  log "WARN lease gate SKIPPED by --no-lease task=${TASK:-none} by $(id -un) — manual use only, never in a task definition"
+elif [ "$LEASE_GATE" = auto ] && [ -z "$TASK" ]; then
+  : # no --task: not one of the 59 scheduled writers. Interactive Vanessa Live, or a one-off with a human
+    # present — the same reasoning the Command Deck uses. `--lease` gates those too.
+elif lease_gate; then
+  log "lease ok role=$ROLE task=${TASK:-none} mode=$mode ($LEASE_WHY)"
+else
+  log "defer task=${TASK:-none} role=$ROLE mode=$mode: lease — $LEASE_WHY"
+  if [ "$LEASE_SEEN_HOLDER" != '-' ] && [ -n "$LEASE_SEEN_HOLDER" ]; then
+    echo "claude-auto: standby: lease held by $LEASE_SEEN_HOLDER — this Mac is not the task writer." >&2
+  else
+    echo "claude-auto: standby: this Mac cannot prove it holds the task lease." >&2
+  fi
+  echo "claude-auto: $LEASE_WHY" >&2
+  echo "claude-auto: deferred (exit 75); the runner retries. To make this Mac PRIMARY see REMOTE-ACCESS.md." >&2
+  exit 75
 fi
 
 headless=0; for a in "$@"; do case "$a" in -p|--print) headless=1 ;; esac; done
