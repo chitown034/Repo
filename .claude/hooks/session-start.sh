@@ -53,3 +53,32 @@ pnpm run build:cli
 
 chmod +x "$ORCA_SRC/out/cli/index.js"
 ln -sf "$ORCA_SRC/out/cli/index.js" /usr/local/bin/orca
+
+# --- OmniRoute (https://github.com/diegosouzapw/OmniRoute) ---
+# Free multi-provider AI gateway. Installed and kept running so Claude Code
+# can be pointed at it instead of talking to Anthropic directly. Its
+# "priority" combo strategy + circuit breaker auto-heal is what implements
+# the subscription<->fallback transition: prefer the real Claude
+# subscription, fail over to a free provider once it's rate-limited or
+# exhausted, and automatically resume the Claude subscription once its quota
+# window resets - no restart needed, since OmniRoute makes that decision
+# per-request, transparently.
+#
+# Installing/running the gateway is scripted here; actually routing traffic
+# through it (the ANTHROPIC_BASE_URL/ANTHROPIC_MODEL env block) still
+# requires the one-time manual OAuth step documented in OMNIROUTE.md
+# (connecting the real Claude subscription + a fallback provider, and
+# creating the priority combo) - that can't be scripted since it needs a
+# live login.
+npm install --global --silent omniroute >/dev/null 2>&1 || true
+
+# Any HTTP response (even 401 - no API key configured yet) means the server
+# is already up; "000" means curl couldn't connect at all. curl's -w prints
+# "000" itself on a failed connection (and nothing if it can't even do
+# that), so only neutralize the exit code here - don't also echo a
+# fallback, or a failed connection reports "000000".
+OMNIROUTE_STATUS="$(curl -s -o /dev/null -w '%{http_code}' --max-time 2 http://localhost:20128/v1/models 2>/dev/null || true)"
+if command -v omniroute >/dev/null 2>&1 && [ "$OMNIROUTE_STATUS" != "200" ] && [ "$OMNIROUTE_STATUS" != "401" ]; then
+  nohup omniroute serve >/tmp/omniroute.log 2>&1 &
+  disown || true
+fi
