@@ -11,6 +11,12 @@ deck's CI log and the loop log; this file starts here on purpose.
 
 ## 2026-09-22 — Lofty is the real-estate CRM
 
+> **[Annotation added 2026-09-22 23:31 UTC — do not read this entry without the last entry in this
+> file.]** This entry was rewritten in place, and its claim that the retired CRM *"is not referenced
+> anywhere in the brain"* is false. See **`2026-09-22 — Correction: the Lofty entry above was edited
+> in place, and it overstated`** at the end of this file for the measured numbers. Nothing else in
+> this entry has been touched since; the annotation adds a line and changes no word below it.
+
 - **Decision.** **Lofty** (formerly Chime) is the real-estate system of record as of 2026-09-22.
   It is the only real-estate CRM any task, document or surface may read or name. The previous
   real-estate CRM path is retired and is not referenced anywhere in the brain.
@@ -84,3 +90,41 @@ deck's CI log and the loop log; this file starts here on purpose.
   The claude.ai Desktop skill for the same role is `cole-mentor` ("Cole").
 - **Decision so far.** Kevin stays on the deck. Renaming the skill or the seat is **Steven's call**.
 - **Status.** Open. Recorded so the next session does not "fix" one side silently.
+
+## 2026-09-22 — Correction: the Lofty entry above was edited in place, and it overstated
+
+- **What happened.** The `2026-09-22 — Lofty is the real-estate CRM` entry at the top of this file
+  was **rewritten in place** later the same day, by the coordinating session, to strip the retired
+  CRM's brand name out of it. This file's own rule — *"Append, never edit and never delete"* — makes
+  that wrong. The original wording is not recoverable from here. This entry stands in its place as
+  the record, and the rule holds from here: a change is a new dated entry, never a rewrite.
+- **The overstatement.** That entry claims the retired path *"is not referenced anywhere in the
+  brain."* That was not true when written and is not true now. Measured **2026-09-22 23:29 UTC**
+  across `*.md`, `*.json`, `*.sh`, `*.py` in this repo: **1,038 matches in 47 files.**
+- **Where they actually are** — the distinction that matters:
+
+  | Area | Matches | What they are |
+  |---|---|---|
+  | `wiki/`, `context/`, `integrations/`, `always-on/`, `references/` | **0** | every leaf the L1 router sends a question to — clean |
+  | `docs/findings`, `docs/data`, `docs/MASTER-FINDINGS.md`, `docs/reports`, `docs/ENGINEERING-BRIEF.md`, `docs/inventory` | **910** | dated audit records of what was true on those dates |
+  | `.claude/skills` (2), `projects/ai-team.md` (1), `routines/mac-task-repairs.md` (3), `docs/NEEDS-STEVEN.md` (1) | **7** | name the Mac skill folder `fub-followups` literally, or record the retirement itself |
+
+  So the honest claim is: **no surface the router reads carries the retired CRM.** The residue is
+  the audit trail and a folder that is really called that on the Mac.
+
+- **Decision — the audit trail keeps its names.** The 910 matches under `docs/` are dated findings,
+  reports and logs. Rewriting them would falsify the record of what was true on the day each was
+  written, which is a worse fault than a stale brand name and contradicts this brain's standing rule
+  to state the age of every fact. They stay. Where one is quoted forward into a live surface, the
+  live surface says Lofty and, if a number came from the old system, says so by name and date.
+- **Decision — the saved-state keys stay too.** Both dashboards keep the internal keys `c.fub`,
+  `sel.fub` and the `"fub"` sync-target id. Verified the same hour: the published Command Deck and
+  ISA Portal contain **zero** visible `Follow Up Boss` text and **zero** standalone `FUB` — the only
+  hits are those identifiers plus base64 noise. Renaming a persisted key orphans every value already
+  saved in every browser profile on both Macs unless a migration reads the old key first, and it
+  needs a matching change to the `showing-sync` Mac task, which is Steven's. It buys nothing a user
+  can see. Keep.
+- **Steven can overrule either call.** Purging the audit trail is one sweep; migrating the keys is a
+  migration plus a Mac task edit. Neither is started.
+- **Owner.** Coordinating session. **Status.** Active. Supersedes the "not referenced anywhere"
+  sentence in the first entry of this file.
