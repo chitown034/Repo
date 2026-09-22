@@ -98,10 +98,18 @@ The gate is an **allow-list** (F-V2-08/09). A deny-list of client tasks fails op
 task; an allow-list fails closed. Both exist, and the deny-list wins:
 | Invocation on `free-fallback` | Result |
 |---|---|
-| `--task` matches a client-data pattern (`DEFAULT_PII_TASKS` in the launcher: `lofty-*`, `zoho-*`, `*crm*`, `isa-*`, `lead-*`, `*inbox*`, `showing-*`, `steve-twin-*`, `vanessa-imessage-*`, `health-*`, `strava-*`, `calendar-*`, `r7-plaid-*`, `*client*`, `*loan*`, `*borrower*`, … plus `pii-tasks.txt`) | **Deferred** — exit 75, even with `--no-pii`. If `OMNIROUTE_LOCAL_MODEL` names the local Jarvis model as an OmniRoute provider, runs there instead (`mode=local-only`, `VANESSA_PII_OK=1`) |
-| `--task` on the free-OK allow-list (`DEFAULT_FREE_OK_TASKS`: `weather-news-refresh`, `mortgage-rates-daily`, `r5-rates-market-refresh`, `feeds-market-close`, `feeds-weekly`, `openrouter-feeds-refresh`, `incentives-daily-scan`, `skills-refresh-weekly`, `r9-feed-freshness-sweep`, `r10-automation-health`, `toolkit-deck-sync` — public or system data only — plus `free-ok-tasks.txt`) | Runs on the free combo (`VANESSA_PII_OK=0`) |
+| `--task` matches a client-data pattern (`DEFAULT_PII_TASKS` in the launcher: `lofty-*`, `zoho-*`, `*crm*`, `isa-*`, `lead-*`, `*inbox*`, `showing-*`, `steve-twin-*`, `vanessa-imessage-*`, `health-*`, `strava-*`, `calendar-*`, `r7-plaid-*`, `*client*`, `*loan*`, `*borrower*`, … plus `pii-tasks.txt`), **matched case-insensitively** | **Deferred** — exit 75, even with `--no-pii`. If `OMNIROUTE_LOCAL_MODEL` names the local Jarvis model as an OmniRoute provider, runs there instead (`mode=local-only`, `VANESSA_PII_OK=1`) |
+| `--task` on the free-OK allow-list (`DEFAULT_FREE_OK_TASKS`: `weather-news-refresh`, `mortgage-rates-daily`, `r5-rates-market-refresh`, `feeds-market-close`, `feeds-weekly`, `openrouter-feeds-refresh`, `incentives-daily-scan`, `skills-refresh-weekly`, `r9-feed-freshness-sweep`, `r10-automation-health`, `toolkit-deck-sync` — public or system data only — plus `free-ok-tasks.txt`), matched **case-sensitively** | Runs on the free combo (`VANESSA_PII_OK=0`) |
 | explicit `--no-pii` (in any position) and no client-data pattern objects | Runs on the free combo — the caller has asserted there is no client data |
 | **everything else**: no `--task`, an unknown task, a new task nobody has classified yet, an interactive session | **Deferred** — exit 75 with the reason on stderr and in `claude-auto.log` (`task=… pii=1 (…)`) |
+
+The case asymmetry in rows 1 and 2 is deliberate (F-H3b-01). Shell globs are case-sensitive, so while both
+lists were matched as written, a client task renamed `Lofty-CRM-Refresh` did **not** match `lofty-*`, and one
+broad pattern in `free-ok-tasks.txt` that happened to match its case was enough to send it to a free provider.
+The task name and the deny patterns are now folded to lower case before the deny check — which can only ever
+catch more — while the allow check is left unfolded — which can only ever admit fewer. `WEATHER-NEWS-REFRESH`
+is therefore *not* allow-listed and defers; `Lofty-CRM-Refresh` is caught by `lofty-*`. Both errors fall the
+same way: towards deferring.
 
 The flag every task can read: `VANESSA_ROUTE_MODE` (`subscription` / `free-fallback` / `local-only`),
 `VANESSA_PII_OK` (`1` / `0`), and the file `~/.config/omniroute/state/mode`. Task prompts add one line:
@@ -153,8 +161,8 @@ Free-tier keys are still credentials: a leaked one burns the quota and, on some 
 `~/.config/omniroute/canary/client-canary.txt` holds an obviously fake record: `CANARY CLIENT Jane Q.
 Sample · SSN 000-00-0000 · loan CANARY-0001`. `P='Summarize ~/.config/omniroute/canary/client-canary.txt'`.
 With OmniRoute's request log open and the probe LaunchAgent **unloaded for the duration** (a healthy probe
-would restore the subscription mid-canary), run each line; **every one of 1–7 must exit 75 and zero requests
-may reach `:20128`**; 8 and 9 must reach it (the legitimate path); 10 is the hook's test:
+would restore the subscription mid-canary), run each line; **every one of 1–8 must exit 75 and zero requests
+may reach `:20128`**; 9 and 10 must reach it (the legitimate path); 11 is the hook's test:
 1. `claude-auto --force free --task lofty-crm-sync -p "$P"` — client task, options first (the ordering the first draft handled).
 2. `claude-auto --force free -p "$P" --task lofty-crm-sync` — the same task with `--task` **after** the claude arguments (F-V2-07).
 3. `claude-auto --force free -p "$P"` — no `--task` at all (F-V2-08).
@@ -162,12 +170,15 @@ may reach `:20128`**; 8 and 9 must reach it (the legitimate path); 10 is the hoo
 5. `claude-auto --force free --task some-brand-new-task -p "$P"` — a task nobody has classified.
 6. `claude-auto --force free --task lofty-crm-sync --no-pii -p "$P"` — `--no-pii` on a client task: the deny-list must win.
 7. `claude-auto --force free` (interactive, no `-p`, no task) — must defer, not open a session on a free provider.
-8. `claude-auto --force free --task weather-news-refresh -p 'say hi' --output-format json` — allow-listed: the reply must come **from OmniRoute** (`X-OmniRoute-Decision`), with `VANESSA_PII_OK=0` in the task's env.
-9. `claude-auto --force free -p 'say hi' --no-pii` — explicit `--no-pii`, no task: from OmniRoute.
-10. `claude-auto --force free --task weather-news-refresh -p "$P"` — an allow-listed task whose **prompt** drags in the canary: the launcher cannot see prompt text, so **the existing guard hook must block this** before any request; grep OmniRoute's log for `CANARY` — it must be absent.
-11. `claude-auto --force subscription`. Record all results in `docs/MASTER-FINDINGS.md` under F-E8-60. Fail any → the runner stays on plain `claude` until fixed.
+8. `printf '%s\n' '*Refresh*' >> ~/.config/omniroute/free-ok-tasks.txt`, then `claude-auto --force free --task Lofty-CRM-Refresh -p "$P"` — a client task in **different case** against a broad allow-list entry (F-H3b-01). The log must read `matches client-data pattern 'lofty-*'`, not `not on the free-OK allow-list`. **Remove that line from `free-ok-tasks.txt` again before step 9.**
+9. `claude-auto --force free --task weather-news-refresh -p 'say hi' --output-format json` — allow-listed: the reply must come **from OmniRoute** (`X-OmniRoute-Decision`), with `VANESSA_PII_OK=0` in the task's env.
+10. `claude-auto --force free -p 'say hi' --no-pii` — explicit `--no-pii`, no task: from OmniRoute.
+11. `claude-auto --force free --task weather-news-refresh -p "$P"` — an allow-listed task whose **prompt** drags in the canary: the launcher cannot see prompt text, so **the existing guard hook must block this** before any request; grep OmniRoute's log for `CANARY` — it must be absent.
+12. `claude-auto --force subscription`. Record all results in `docs/MASTER-FINDINGS.md` under F-E8-60. Fail any → the runner stays on plain `claude` until fixed.
 
 ## Verified in the sandbox (2026-09-22) / not verified
 - `npm --prefix /tmp/fr5b-npm install omniroute` → 3.8.50, MIT, exit 0; `omniroute --version` → `3.8.50`; provider ids `openrouter`, `openrouter-free`, `nvidia`, `nvidia-nim`, `bytez` present in its catalog; `auto/<category>:free` tier documented; `/healthz` documented; `providers add --credential-env` documented; Claude Code root URL without `/v1` documented.
-- Both scripts pass `bash -n` and `shellcheck` (0.11.0, default and `-S style`). **Executed** in the cloud sandbox by V2 and H3 with a stub `claude`, a dead `:20128`, a live stand-in `/healthz` and a throwaway `HOME` — no `claude` login, no Mac, no OmniRoute server: every case in the canary above, the six false-positive strings from F-V2-10, a broken probe binary (escalation at the 4th run), a year-2100 `reset_at`, a world-writable and a shell-injected `route.env`, and the `.env` mode check on Linux. The `env -u` and `mktemp` forms are the macOS ones with GNU fallbacks; the `stat` form is GNU-first-then-BSD, validated (F-V2-15).
+- Both scripts pass `bash -n` and `shellcheck` (H3: 0.11.0; H3b re-ran 0.9.0 — both default and `-S style`, no output). **Executed** in the cloud sandbox by V2, H3 and H3b with a stub `claude`, a dead `:20128`, a live stand-in `/healthz` and a throwaway `HOME` — no `claude` login, no Mac, no OmniRoute server: every case in the canary above, the six false-positive strings from F-V2-10, a broken probe binary (escalation at the 4th run), a year-2100 `reset_at`, a world-writable and a shell-injected `route.env`, and the `.env` mode check on Linux. The `env -u` and `mktemp` forms are the macOS ones with GNU fallbacks; the `stat` form is GNU-first-then-BSD, validated (F-V2-15).
+- H3b (2026-09-22) re-ran every one of those cases against the **pre-fix scripts restored from git** as well as the current ones, so each claim above has a recorded before *and* after rather than an after alone. Doing so found one bypass H3's rewrite left open — the case-sensitive deny-list, F-H3b-01, now fixed and canary step 8 — and one residual the regex cannot close: see the next bullet.
+- Known residual (F-H3b-02, **not** fixed): `LIMIT_RE` is matched against the error envelope, and in `--output-format json` that envelope includes the CLI's `result` field, which on a failed run is the model's own text. A task that both **fails** and produces text such as "the escrow usage limit reached its cap" still flips the route to `free-fallback`. It cannot leak anything — the gate is closed on the new route and client tasks defer — and the 15-minute probe restores the subscription, so it costs one deferred cycle. Narrowing it further means guessing at the real limit wording, which this file has said twice is unconfirmed; tighten it from `limit-samples.log`'s `branch=` field once a real hit is recorded on the Mac, not before.
 - Not verified: the exact wording of today's usage-limit message as `claude -p` prints it on the Mac — `LIMIT_RE` is built from the strings in the 2.1.278 binary, and `limit-samples.log` records which branch fired on each real hit, so it can be tightened from the log; whether a free combo answers Claude Code's tool-use format well enough for the runner's prompts (expect degraded, not equal, output); OmniRoute's local-Ollama provider id for Jarvis (set `OMNIROUTE_LOCAL_MODEL` only after `omniroute providers list` shows it).

@@ -1,0 +1,236 @@
+[
+  {
+    "id": "F-H3b-01",
+    "severity": "high",
+    "area": "omniroute failover — new bypass, found and fixed",
+    "finding": "A client-data task renamed into different CASE evaded the deny-list. Shell `case` globs are case-sensitive, so `Lofty-CRM-Refresh` did not match `lofty-*`. On its own that still deferred (fail-closed caught it), but one broad pattern in ~/.config/omniroute/free-ok-tasks.txt matching the same case was enough to route the task to a free provider. This is exactly the class F-V2-09 was about — a renamed client task failing open — surviving H3's allow-list rewrite because only the matching was changed, not its case handling.",
+    "evidence": "Executed, /tmp/h3b-* harness, stub `claude`, live stand-in /healthz on :20128, throwaway HOME. With `printf '*Refresh*' > free-ok-tasks.txt`: `claude-auto --force free --task Lofty-CRM-Refresh -p 'summarize the client file'` REACHED the free provider (stub recorded ANTHROPIC_MODEL=auto/coding:free), while the lower-case `lofty-crm-Refresh` deferred with 'matches client-data pattern lofty-*'. After the fix both defer and the log reads `defer task=Lofty-CRM-Refresh pii=1 (task matches client-data pattern 'lofty-*')`. The allow-list stayed case-sensitive, proven by `--task WEATHER-NEWS-REFRESH` deferring as 'not on the free-OK allow-list' while `weather-news-refresh` still routes.",
+    "fix": "DONE. claude-auto.sh:150-161 — pii_list is folded to lower case when it is built, the task name is folded into task_lc, and the deny check matches task_lc; the allow check still matches $TASK unfolded. Folding the deny side can only catch more, leaving the allow side unfolded can only admit fewer, so both errors fall towards deferring. README.md PII-policy table + a new paragraph state the asymmetry; canary step 8 tests it; CONNECTIONS.md:45 records it.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-02",
+    "severity": "low",
+    "area": "omniroute failover — residual, deliberately NOT fixed",
+    "finding": "LIMIT_RE is matched against the error envelope (F-V2-10 fixed), but in --output-format json that envelope includes the CLI's `result` field, which on a failed run carries the model's own text. A task that BOTH fails (rc!=0 or is_error true) AND produces text mentioning a usage limit still flips the route to free-fallback. Far narrower than the original bug — a healthy run's output is never scanned at all — but not zero.",
+    "evidence": "Executed: a stub returning rc=1 and {\"type\":\"result\",\"is_error\":true,\"result\":\"...the borrower hit your credit limit and the escrow usage limit reached its cap...\"} flipped mode to free-fallback with `branch=usage-limit`. The six V2 false-positive strings on a HEALTHY run, and the same six on a FAILED run in text mode, both left mode=subscription — so the finding as V2 wrote it is closed; this is the remaining edge.",
+    "fix": "NOT FIXED, on purpose. It cannot leak: on the new route the gate is closed, client tasks defer and only allow-listed tasks run free. The 15-minute probe restores the subscription, so the cost is one deferred cycle. Narrowing further means guessing the real limit wording, which the README twice records as unconfirmed, and a wrong guess misses a REAL limit. Tighten it from limit-samples.log's `branch=` field after a real hit is recorded on the Mac. Documented in README 'Known residual' and CONNECTIONS.md:45.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-03",
+    "severity": "info",
+    "area": "engagement state — the brief's premise was wrong",
+    "finding": "The task said mac-verify.sh 'shows as modified — that may be its partial work' from a rate-limited earlier attempt. It does not. `git status --short` is empty and the tree is clean. The earlier engineer's work was COMMITTED, not left dirty: the failover rewrite is in 629ada4 and the mac-verify.sh changes in 9872e03, and findings-H3.json records 25 rows claiming every fix DONE. There was no partial work to judge or rebuild.",
+    "evidence": "git status --short: no output, 'nothing to commit, working tree clean'. git stash list: empty. git fsck --no-reflog: no dangling objects. git log --stat shows mac-verify.sh last touched in HEAD (9872e03, +117 lines) and the three failover files in 629ada4.",
+    "fix": "Nothing to fix. Recorded so the next engineer does not go looking for lost work. I treated H3's committed claims as unverified assertions and re-derived every one against the pre-fix scripts restored from git, which is what found F-H3b-01.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-04",
+    "severity": "high",
+    "area": "F-V2-07 (omniroute failover)",
+    "finding": "Verified closed. Options are recognised in any position before `--`; both orderings of the same task produce an identical decision and an identical log line.",
+    "evidence": "BEFORE (c3c9de3, only the stat bug patched out so the gate was reachable): `claude-auto -p hello --task lofty-crm-sync` REACHED the free provider — the stub recorded `INVOKE args=[-p hello --task lofty-crm-sync] ANTHROPIC_MODEL=auto/coding:free VANESSA_PII_OK=0`, and note the unparsed --task was passed to claude as its own argument. `--task lofty-crm-sync -p hello` deferred. AFTER: both exit 75, claude never invoked, and both log `defer task=lofty-crm-sync pii=1 (task matches client-data pattern 'lofty-*')` — byte-identical.",
+    "fix": "Verified against the pre-fix script restored from git and the current one; no further change needed beyond what is recorded in F-H3b-01/02.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-05",
+    "severity": "high",
+    "area": "F-V2-08 (omniroute failover)",
+    "finding": "Verified closed. No --task and no --pii now means deferred.",
+    "evidence": "BEFORE: `claude-auto -p hello` with no --task REACHED the free provider (stub recorded MODEL=auto/coding:free, PII_OK=0). AFTER: exit 75, claude never invoked, stderr 'not cleared for a free provider — no --task and no --no-pii: fail closed'. An unclassified name (`--task some-brand-new-task`) also defers with 'task not on the free-OK allow-list: fail closed'.",
+    "fix": "Verified against the pre-fix script restored from git and the current one; no further change needed beyond what is recorded in F-H3b-01/02.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-06",
+    "severity": "high",
+    "area": "F-V2-09 (omniroute failover)",
+    "finding": "Verified closed, and the allow-list was the right call. `lofty-crm-sync-v2` is caught by the same `lofty-*` that catches `lofty-crm-sync`. H3 chose an allow-list of free-OK tasks with a pattern deny-list layered over it, which is what the brief asked for: a deny-list alone fails open on every new task, and the fail-closed default means an unknown name never needs to be in either list to be safe.",
+    "evidence": "BEFORE: `--task lofty-crm-sync-v2` REACHED the free provider. AFTER: exit 75, 'task matches client-data pattern lofty-*'. Deny beats allow and beats --no-pii: `--task lofty-crm-sync --no-pii` defers with '(--no-pii refused)'. Nine adversarial shapes all fail closed — `--task=lofty-crm-sync`, `--task=LOFTY-CRM-SYNC`, `-- --task lofty-crm-sync`, `--task --no-pii`, `-p hello -- --no-pii`, repeated --no-pii, a trailing dot, an empty `--task=`, and `weather-news-refresh-lofty` (an allow-listed name as a prefix of a longer one).",
+    "fix": "Verified against the pre-fix script restored from git and the current one; no further change needed beyond what is recorded in F-H3b-01/02.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-07",
+    "severity": "high",
+    "area": "F-V2-10 (omniroute failover)",
+    "finding": "Verified closed both ways: the regex no longer matches the six prose samples, still matches real limit wording, and no longer reads a healthy task's output at all. LIMIT_RE is byte-identical in claude-auto.sh and probe.sh (checked by extracting both).",
+    "evidence": "All six V2 false positives matched the OLD regex and none match the NEW one: 'Loan amount $429,000 on the subject property', 'Comp at 429, Elm Street', 'HTTP 200 OK, 429 ms elapsed', 'Property tax resets at the start of the fiscal year', 'The escrow limit has been reached for this account', 'Index 429 of 5000 rows processed'. Seven real limit strings still match, including one the OLD regex missed ('rate limited - please retry'). End-to-end: a healthy run whose stdout was those loan strings left mode=subscription; a FAILED run whose stdout was three of them left mode=subscription; a genuine limit envelope flipped to free-fallback with exit 75. Residual edge in F-H3b-02.",
+    "fix": "Verified against the pre-fix script restored from git and the current one; no further change needed beyond what is recorded in F-H3b-01/02.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-08",
+    "severity": "high",
+    "area": "F-V2-11 (omniroute failover)",
+    "finding": "Verified closed. A failing probe counts, escalates, leaves a visible marker and falls the route BACK to plain `claude` rather than stranding on free providers. claude-auto records the probe's exit status instead of `|| true`.",
+    "evidence": "BEFORE (probe.sh @c3c9de3, stub `claude` exiting 2): five consecutive runs, mode stayed free-fallback every time, no counter, no marker, log only 'probe inconclusive (rc=2) — mode kept: free-fallback'. AFTER, same stub: failcount 1,2,3 with 'escalates at 4', then at the 4th run mode=subscription, NEEDS-STEVEN written, counter reset, log 'ESCALATED: 4 consecutive inconclusive probes (rc=2)'. The pre-fix swallow is claude-auto.sh:62 `probe.sh --now >/dev/null 2>&1 || true`; the current line 182-183 is `\"$probe\" --now >>\"$LOG\" 2>&1; prc=$?` followed by `log \"self-probe rc=$prc\"` — observed logging rc=1. A missing probe.sh writes its own marker ('switch-back is impossible until it is installed next to claude-auto'). A healthy probe restores subscription AND clears the marker — observed.",
+    "fix": "Verified against the pre-fix script restored from git and the current one; no further change needed beyond what is recorded in F-H3b-01/02.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-09",
+    "severity": "medium",
+    "area": "F-V2-12 (omniroute failover)",
+    "finding": "Verified closed. The parsed epoch is clamped to now-1h..now+48h in both the parser and in read_route, so a planted far-future value can no longer silence the probe.",
+    "evidence": "Parser: an epoch of now+1h was STORED verbatim (reset_at=1790119041); 4102444800 (2100-01-01) and now-2h were both REJECTED to 0 with 'reset epoch ... is outside now-1h..now+172800s'. State clamp: with reset_at=4102444800 planted in route.env, the pre-fix probe logged 'waiting: mode=free-fallback reset_at=4102444800' and exited 0 having done nothing — the permanent strand. The current probe logged the WARN, treated it as 0, probed, and RESTORED the subscription in the same run.",
+    "fix": "Verified against the pre-fix script restored from git and the current one; no further change needed beyond what is recorded in F-H3b-01/02.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-10",
+    "severity": "medium",
+    "area": "F-V2-13 (omniroute failover)",
+    "finding": "Verified closed. All four shapes V2 named, plus two more, are redacted. No real credential was used; every test value was an obvious fake.",
+    "evidence": "OLD vs NEW on the same inputs — OLD leaked, NEW redacted, for: `OMNIROUTE_API_KEY=<fake>`, `Invalid token: <fake>`, `{\"api_key\":\"<fake>\"}`, `x-api-key: <fake>`, `password: <fake>`. Both redact `ANTHROPIC_AUTH_TOKEN=sk-ant-<fake>`, `Authorization: Bearer <fake>` and `--api-key <fake>`. The same shape is in mac-verify.sh's redact_line(), proven live: an MCP listing containing `--token <fake>` printed as `--token [REDACTED]`.",
+    "fix": "Verified against the pre-fix script restored from git and the current one; no further change needed beyond what is recorded in F-H3b-01/02.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-11",
+    "severity": "medium",
+    "area": "F-V2-14 (omniroute failover)",
+    "finding": "Verified closed. The failing task's output no longer reaches disk; the line is exit status, branch label, byte count and a fixed-width sha256. Directory 700, file 600.",
+    "evidence": "A stub whose output carried an obvious fake client marker (a made-up surname, loan number, address and rate) plus a real limit line: BEFORE, limit-samples.log (mode 644) contained the marker twice, verbatim. AFTER, the file (mode 600, dir 700) contained one line — `... task=none rc=1 pii=0 branch=usage-limit bytes=177 sha256=2848fe33...` — and 0 occurrences of the marker. State dir created by the pre-fix script: 755; by the current one: 700. Deviation from V2's suggested fix, accepted: H3 records the line even when is_pii=1 rather than skipping it, which is safe because no text is stored at all, only a one-way digest of the error envelope.",
+    "fix": "Verified against the pre-fix script restored from git and the current one; no further change needed beyond what is recorded in F-H3b-01/02.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-12",
+    "severity": "medium",
+    "area": "F-V2-15 (omniroute failover)",
+    "finding": "Verified closed. filemode() is the mac-verify.sh shape (GNU first, validated as octal, BSD fallback) and works on Linux.",
+    "evidence": "BEFORE, against a genuinely chmod-600 .env on this Linux host: 'claude-auto: ... must be chmod 600 (is   File: \"...\" ID: ... Namelen: 255 Type: ext2/ext3 Block size: 4096 ...600)' and exit 78 — the whole free route refused to run, and it masked every PII test until I patched that one line out of the before copy. AFTER: the 600 file passes and the task runs; deliberately loosened to 644 it refuses with the real mode, 'must be chmod 600 (is 644)'.",
+    "fix": "Verified against the pre-fix script restored from git and the current one; no further change needed beyond what is recorded in F-H3b-01/02.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-13",
+    "severity": "medium",
+    "area": "F-V2-18 (omniroute failover)",
+    "finding": "Verified closed. route.env is parsed with sed and validated, never sourced, and an untrusted file is discarded and reset to the safe route rather than merely skipped.",
+    "evidence": "A route.env carrying `EVIL=$(touch /tmp/.../PWNED-code-executed)`: the pre-fix script (`. \"$ROUTE\"`) CREATED the file — arbitrary code ran in the launcher that fronts every task. The current script did not. Permission check: the same file at 666 and at 620 is discarded, logged as 'not a plain owner-only file (mode 666, owner 0) — content discarded, route reset to subscription', and the launcher reports mode=subscription; at 600 with probed_at=now its mode=free-fallback is honoured.",
+    "fix": "Verified against the pre-fix script restored from git and the current one; no further change needed beyond what is recorded in F-H3b-01/02.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-14",
+    "severity": "medium",
+    "area": "F-V2-20 (omniroute failover)",
+    "finding": "Verified and extended. H3's canary already covered every V2 bypass (11 steps). I executed steps 1-9 in the sandbox — all pass — and added a step for the bypass I found.",
+    "evidence": "Canary steps 1-7 all exit 75 with zero requests reaching the stub provider; steps 8 and 9 reach it with VANESSA_PII_OK=0 and MODEL=auto/coding:free. The canary marker string never appears in any state file (grep -rc CANARY over state/: 0,0,0). Step 8 is new (F-H3b-01: a client task in different case against a broad allow-list entry) and the later steps are renumbered; step 11 (the prompt-level guard hook) and step 12 remain Steven's to run on the Mac.",
+    "fix": "Verified against the pre-fix script restored from git and the current one; no further change needed beyond what is recorded in F-H3b-01/02.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-15",
+    "severity": "medium",
+    "area": "F-V2-21 (omniroute failover)",
+    "finding": "Verified corrected by H3 and updated again by me. The row no longer asserts a gate behaviour that was false; it now states what was tested, by whom, and what remains open.",
+    "evidence": "The false sentence ('Client-data tasks defer (exit 75) while on free providers', next to 'syntax-checked, not executed') is gone. The row now records: executed by H3 and re-run independently by H3b against the pre-fix copies; the fail-closed rule in any argument order; case-insensitive deny patterns; F-V2-07/08/09/10/11/12/13/14/15/18 plus F-H3b-01 fixed; and the F-H3b-02 residual named as unfixed with its reason.",
+    "fix": "Verified against the pre-fix script restored from git and the current one; no further change needed beyond what is recorded in F-H3b-01/02.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-16",
+    "severity": "high",
+    "area": "mac-verify.sh — F-V2-24",
+    "finding": "Verified closed. The skills check now parses frontmatter rather than testing for a file, and every broken shape is FAIL.",
+    "evidence": "BEFORE: with security-and-hardening/SKILL.md replaced by invalid YAML and `name: TOTALLY-WRONG-NAME`, the output was 'ok vendored skills all nine present'. AFTER, the same file: 'FAIL skill security-and-hardening frontmatter name TOTALLY-WRONG-NAME is not the directory name — the loader rejects it'. Also proven per-shape: an empty description -> FAIL 'description is empty'; no fences -> FAIL 'fences missing or unterminated'; an unterminated fence -> the same; a dead relative link -> FAIL 'dead relative link(s): references/nope.md'; restored intact -> 'ok ... name matches, description 581 chars, links resolve'. The other eight skills report ok individually.",
+    "fix": "Verified against the pre-fix mac-verify.sh (525e653) and the current one; no further change needed.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-17",
+    "severity": "high",
+    "area": "mac-verify.sh — F-V2-25",
+    "finding": "Verified closed. A drifted claude-auto is NEED, lands in the summary and blocks exit 0.",
+    "evidence": "A two-line stub echoing TAMPERED installed at $HOME/.local/bin/claude-auto: BEFORE 'ok claude-auto installed (differs from the repo copy — diff it before trusting it)'; AFTER 'NEED claude-auto installed copy DIFFERS from the repo copy — diff it, then reinstall from the repo before trusting the gate', repeated in the NEEDS STEVEN block. An undrifted probe.sh still reports 'ok probe.sh matches the repo copy' in the same run.",
+    "fix": "Verified against the pre-fix mac-verify.sh (525e653) and the current one; no further change needed.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-18",
+    "severity": "high",
+    "area": "mac-verify.sh — F-V2-26",
+    "finding": "Verified closed. Only mode=subscription is ok; anything else is NEED with its age and reason.",
+    "evidence": "With state/mode=free-fallback and since= set to 3h15m ago: BEFORE 'ok omniroute route mode free-fallback'; AFTER 'NEED omniroute route mode free-fallback for 3h15m (reason: still-limited) — the probe has not restored the subscription'. All four modes checked: subscription -> ok; free-fallback and local-only -> NEED with the age; absent -> info 'claude-auto has not run'. The escalation marker surfaces as its own NEED ('ESCALATED — ...') and a non-zero probe-failures counter as info ('3 consecutive inconclusive probe(s) so far (escalates at 4)').",
+    "fix": "Verified against the pre-fix mac-verify.sh (525e653) and the current one; no further change needed.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-19",
+    "severity": "medium",
+    "area": "mac-verify.sh — F-V2-27",
+    "finding": "Verified closed. A tool that is on PATH but cannot run is FAIL, with the reason.",
+    "evidence": "A graphify stub exiting 1 and a headroom stub exiting 0 with no output: BEFORE 'ok graphify' and 'ok headroom', both with a blank version field. AFTER 'FAIL graphify on PATH at ... but graphify --version exited 1' and 'FAIL headroom on PATH at ... but headroom --version printed nothing'. The PATH-problem branch (installed in ~/.local/bin but not on PATH) still reports NEED rather than FAIL.",
+    "fix": "Verified against the pre-fix mac-verify.sh (525e653) and the current one; no further change needed.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-20",
+    "severity": "medium",
+    "area": "mac-verify.sh — F-V2-28",
+    "finding": "Verified closed. stdout and stderr are separated, the exit status is tested, servers are counted rather than lines, and the empty-state message is NEED.",
+    "evidence": "BEFORE, with the CLI printing 'No MCP servers configured. Use `claude mcp add` to add a server.': 'ok claude mcp list 1 line(s) returned'. AFTER: 'NEED claude mcp list no MCP servers configured for this user'. Other shapes: exit 3 with a stderr message -> 'FAIL claude mcp list exited 3 — Error: could not connect to config' (stderr re-read by a second read-only call, redacted, truncated); a two-server listing -> 'ok claude mcp list 2 server(s) listed' with the listing printed through redact_line, so a `--token <fake>` in a server's command line rendered as `--token [REDACTED]`; an agent402 entry still raises the refused-list FAIL.",
+    "fix": "Verified against the pre-fix mac-verify.sh (525e653) and the current one; no further change needed.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-21",
+    "severity": "low",
+    "area": "mac-verify.sh — F-V2-29",
+    "finding": "Verified closed. Placeholder values are NEED, and the value is never printed.",
+    "evidence": "BEFORE, with NVIDIA_API_KEY=changeme: 'ok NVIDIA_API_KEY set'. AFTER: 'NEED NVIDIA_API_KEY placeholder value — replace it with the real key (value not shown)'. Also caught: BYTEZ_API_KEY=<your-key-here> and LOFTY_API_KEY=TODO. The genuinely empty case still reports 'no value yet' and a real-looking value still reports 'set'.",
+    "fix": "Verified against the pre-fix mac-verify.sh (525e653) and the current one; no further change needed.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-22",
+    "severity": "info",
+    "area": "mac-verify.sh — the guarantees V2 tested",
+    "finding": "Both guarantees still hold after the six additions: it never prints a value, and it writes nothing.",
+    "evidence": "Never-print: with an obvious fake value in omniroute/.env, grep over the entire report for that value, for 'changeme', for 'your-key-here' and for 'TODO' returned 0 occurrences each, in a run that reported all four of those keys. Read-only: a find fingerprint (path, size, mtime) over the fake HOME and the fake repo was byte-identical before and after a full run — nothing created, modified or deleted. Exit status 1 while FAILs or NEEDs remain.",
+    "fix": "Verified against the pre-fix mac-verify.sh (525e653) and the current one; no further change needed.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-23",
+    "severity": "info",
+    "area": "omniroute failover — fail-safe behaviour confirmed, no change",
+    "finding": "claude-auto writes omni_ok=1 when it detects a limit, without probing OmniRoute first, so route.env can assert a health it has not checked. It is self-correcting rather than a hole: route_omni makes its own live /healthz call immediately before exec.",
+    "evidence": "With the stub OmniRoute killed and probed_at seeded to now so no self-probe fires: omni_ok=1 + --no-pii -> exit 75 'OmniRoute not answering on http://127.0.0.1:20128 — deferred'; omni_ok=1 + a client task -> exit 75 at the gate; omni_ok=0 -> both defer with 'subscription limited and OmniRoute unhealthy'. All four combinations defer; none reached a provider.",
+    "fix": "No change. Fixing it would mean a curl on every limit detection for a value that is re-checked a moment later anyway.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-24",
+    "severity": "info",
+    "area": "deliberately not changed",
+    "finding": "(1) F-H3b-02, the residual limit false positive — reason in that row. (2) claude-auto.sh and probe.sh still duplicate their helper functions instead of sharing a lib; H3 recorded why (the install contract copies exactly two files and MAC-SETUP.sh is outside my file list) and I agree. (3) `--task --no-pii` silently consumes the flag as a task name because '-' is in the allowed charset; it fails closed, so it is a usability wart, not a hole, and tightening the charset risks rejecting a real task name. (4) MAC-SETUP.sh, MAC-INSTALL-comms-data.md and the dashboards — outside my file list, other engineers are in this tree. (5) The free-OK allow-list membership itself is a policy call, not an engineering one — see F-H3b-25.",
+    "evidence": "Each was reached during testing and left alone on purpose; (3) was executed and deferred.",
+    "fix": "No action. Recorded so the next engineer does not re-litigate them.",
+    "halt": false
+  },
+  {
+    "id": "F-H3b-25",
+    "severity": "high",
+    "area": "HALT — Steven's calls, not mine",
+    "finding": "Three things this work cannot close. (1) The 11-name free-OK allow-list is H3's classification of what is safe on a free third-party provider; nothing I ran validates that judgement, only that the mechanism enforces it. (2) The launcher gates on task NAMES and cannot see prompt text, so an allow-listed task whose prompt pulls in a client file is stopped only by the existing client-data guard hook, whose coverage F-E8-60 says was never verified — canary step 11 is its first test. (3) Nothing has run on the Mac: no install, no LaunchAgent, no real `claude` login, no OmniRoute server.",
+    "evidence": "The allow-list is claude-auto.sh:48. The name-only limitation is inherent: the launcher sees argv, not the prompt file. All my evidence comes from a sandbox with a stub `claude` and a stand-in /healthz.",
+    "fix": "Steven, with the security steward: ratify or trim the allow-list before the runner is pointed at claude-auto; run the 12-step canary on the Mac and record it under F-E8-60; if step 11 fails, fix the hook or remove prompt-file access from allow-listed tasks before enabling anything. I made no Mac change, installed nothing, spent nothing and touched no credential.",
+    "halt": true
+  },
+  {
+    "id": "F-H3b-26",
+    "severity": "info",
+    "area": "verification method and the boundary of the evidence",
+    "finding": "How this was proven. Throwaway harness under /tmp/h3b-* (deleted afterwards): a stub `claude` recording the routing env it was handed (BASE_URL, whether AUTH_TOKEN was set, MODEL, VANESSA_ROUTE_MODE, VANESSA_PII_OK) and answering per STUB_MODE; a stub /healthz on 127.0.0.1:20128, also tested dead; a throwaway HOME; and for mac-verify a fake repo with the nine real skills (one deliberately broken) and a fake HOME with stub tools. Crucially, every 'before' figure is the PRE-FIX script restored from git (claude-auto.sh and probe.sh from c3c9de3, mac-verify.sh from 525e653) and executed, not quoted from V2.",
+    "evidence": "One methodological note worth recording: the pre-fix claude-auto.sh could not reach its own PII gate on Linux at all, because the F-V2-15 stat bug exits 78 first. To expose the bypasses underneath it I patched exactly one line (71) in a copy of the before script — diff confirms a one-line difference — and said so wherever a 'before' figure comes from that copy. Static checks on all three scripts: bash -n OK, shellcheck 0.9.0 clean at default and at -S style, and a scan for bash-4 constructs (mapfile/readarray, declare -A, ${x^^}/${x,,}, &>>, wait -n, readlink -f) is clean once comment lines are excluded — the only hits are the header comment that names them.",
+    "fix": "None needed. Not covered by any of this: the real usage-limit wording on the Mac, whether a free combo handles Claude Code's tool-use format, OmniRoute's real behaviour, the guard hook, and macOS itself (all testing was on Linux with GNU userland, so the BSD halves of filemode/fileowner were exercised only as fallbacks).",
+    "halt": false
+  }
+]

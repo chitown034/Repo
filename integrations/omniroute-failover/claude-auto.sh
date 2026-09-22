@@ -147,12 +147,18 @@ match_list() { # name pattern… → prints the first glob pattern the name matc
   for _p in "$@"; do case "$_n" in $_p) printf '%s' "$_p"; return 0 ;; esac; done
   return 1
 }
-pii_list="$DEFAULT_PII_TASKS $(list_file "$CFG/pii-tasks.txt")"
+# The DENY-list is matched case-INSENSITIVELY and the ALLOW-list case-SENSITIVELY (H3b, closes F-H3b-01).
+# Globs in `case` are case-sensitive, so with only the original matching a client task renamed
+# `Lofty-CRM-Refresh` slipped past `lofty-*` and, given any allow-list pattern that matched its case, reached
+# a free provider. Folding the name and the deny patterns to lower case can only ever catch MORE; leaving the
+# allow-list unfolded can only ever admit FEWER. Both directions of the asymmetry favour deferring.
+pii_list=$(printf '%s %s' "$DEFAULT_PII_TASKS" "$(list_file "$CFG/pii-tasks.txt")" | tr '[:upper:]' '[:lower:]')
 free_list="$DEFAULT_FREE_OK_TASKS $(list_file "$CFG/free-ok-tasks.txt")"
+task_lc=$(printf '%s' "$TASK" | tr '[:upper:]' '[:lower:]')
 is_pii=1; why="no --task and no --no-pii: fail closed"
 # shellcheck disable=SC2086  # the lists are split into one pattern per word on purpose; set -f stops pathname expansion
 if [ "$PII" = 1 ]; then why="--pii"
-elif [ -n "$TASK" ] && hit=$(match_list "$TASK" $pii_list); then
+elif [ -n "$TASK" ] && hit=$(match_list "$task_lc" $pii_list); then
   why="task matches client-data pattern '$hit'"; [ "$PII" = 0 ] && why="$why (--no-pii refused)"
 elif [ "$PII" = 0 ]; then is_pii=0; why="--no-pii (explicit, no task pattern objected)"
 elif [ -n "$TASK" ]; then
