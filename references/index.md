@@ -29,6 +29,12 @@ rather than the full document.
 | Graphify | The knowledge graph in `vault/60-Knowledge` | `knowledge-graph/README.md` |
 | Ruflo | Research-and-memory bench; weekly graph summaries | `OPTIMIZATION.md` |
 
+## External directories (pointers only)
+
+| Source | What it is | How current | Why you would open it |
+|---|---|---|---|
+| openalternative.co/alternatives/ | A public directory of open-source alternatives to commercial software (Steven's description; site egress-blocked from the cloud on 2026-09-22, not yet read) | Live site, unverified | When a paid SaaS comes up for renewal, or CTO Innovator wants a self-hosted option. Nothing to install. |
+
 ## Registering a source
 
 One row, four facts: **what it is · where it lives · how current · why you would open it.** If you
