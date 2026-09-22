@@ -1,6 +1,6 @@
 # Master Findings Table — Cycle 6
 
-**Baseline:** 2026-09-12 04:47 UTC · **Audited and remediated:** 2026-09-22 · **Findings:** 205
+**Baseline:** 2026-09-12 04:47 UTC · **Audited and remediated:** 2026-09-22 · **Findings:** 285
 
 Every row below was produced by an engineer working one named region of the ecosystem, and is
 traceable to a live document, a scheduled task, or a dated external source. A row marked
@@ -10,18 +10,19 @@ Escalated is waiting on Steven and says why in its halt reason.
 
 | By priority | | By resolution | | By owner | |
 |---|---|---|---|---|---|
-| P1 | 61 | Open | 91 | Reliability Engineer | 45 |
-| P2 | 100 | Fixed | 61 | Integration Engineer | 39 |
-| P3 | 44 | Escalated | 31 | Steven | 32 |
-|  |  | Implemented | 17 | Vanessa | 27 |
-|  |  | Improved | 5 | Capability Engineer | 27 |
-|  |  |  |  | CTO Innovator | 18 |
-|  |  |  |  | Efficiency Engineer | 10 |
-|  |  |  |  | Stress Test Engineer | 3 |
+| P1 | 94 | Open | 117 | Reliability Engineer | 67 |
+| P2 | 132 | Fixed | 88 | Integration Engineer | 53 |
+| P3 | 59 | Escalated | 48 | Steven | 46 |
+|  |  | Implemented | 21 | Capability Engineer | 36 |
+|  |  | Improved | 10 | Vanessa | 33 |
+|  |  | Recommended | 1 | CTO Innovator | 23 |
+|  |  |  |  | Efficiency Engineer | 15 |
+|  |  |  |  | Stress Test Engineer | 6 |
 |  |  |  |  | CAIO | 3 |
+|  |  |  |  | Victor | 2 |
 |  |  |  |  | CRO | 1 |
 
-## Halted — waiting on Steven (38)
+## Halted — waiting on Steven (54)
 
 - **F-E1-13** — The speed-to-lead card measured 'time from a Follow Up Boss lead arriving to first contact' and its empty state said it fills once the watchdog runs 'reading Follow Up Boss through  
   *Re-pointing r2-lead-response-watchdog, lead-triage-daily, r11-isa-kpi-compile and showing-sync from Follow Up Boss to Lofty needs a Mac-side task edit plus the LOFTY_API_KEY in ~/.config/lofty/.env, which cannot be reached or verified from the cloud.*
@@ -31,10 +32,36 @@ Escalated is waiting on Steven and says why in its halt reason.
   *Diagnosing and re-running a failing Mac runner task needs access to the Mac and its task logs; a scheduled run that dies on a permission prompt can only be cleared by Steven pressing Run now once in the desktop app.*
 - **F-E11A-02** — Backup spec vs reality drift: Steven's spec is Sunday 00:00 local into Documents/AI-Ecosystem-Backups/YYYY-MM-DD with an 8-week rolling window; the Mac task r6-weekly-backup is cro  
   *Changing the backup cron and moving the backup root are Steven's decisions; pruning or moving existing backup folders is irreversible.*
+- **F-E12-04** — The portal pinned Steven's Follow Up Boss calling number and lead-forwarding email as the numbers to use for every real-estate lead. With FUB retired, whether that number now route  
+  *Only Steven knows whether the (619) 651-9845 line and steven.shearrill@followupboss.me were migrated to Lofty. The human ISA is told to use them on every lead call.*
+- **F-E12-05** — Zoho remains the system of record for mortgage, but every CRM call returns HTTP 403 NO_PERMISSION Crm_Implied_Api_Access (re-verified 2026-09-22 08:17 UTC). Several places on the p  
+  *Fix is Zoho-side and only Steven can do it: Zoho CRM -> Setup -> Security Control -> Profiles -> the connected user's profile -> enable 'Zoho CRM API Access'.*
+- **F-E12-10** — The routine runs four times a day and reports SUCCESS every time, but it has never synced anything: an unattended cloud run cannot write an artifact database - the write parks on a  
+  *The routine cannot be fixed in the cloud. It needs replacing with a Mac task (the isa-comms-bridge-local pattern), or disabling so it stops reporting a green tick for work it cannot do.*
+- **F-E12-11** — Read live on 2026-09-22: this portal's pipeline document holds 2 mortgage deals (R. Alvarez $480,000 Underwriting; T. Nguyen $355,000 Clear to close). Command Deck's pipeline docum  
+  *Closing it needs a write to Command Deck's store, which the publishing engineer performs; keeping it closed needs a Mac task.*
+- **F-E12-12** — This portal holds 2 real-estate clients (J. Whitfield, buyer, Active search; M. Delgado, seller, Consult scheduled). On Command Deck the reClients document does not exist at all -   
+  *Same as F-E12-11: needs a write to the other store plus a task to keep it carried.*
+- **F-E12-15** — The ISA line works, and it is the only thing that crosses: isa-comms-bridge-local on Steven's Mac, hourly 7:37 AM - 9:37 PM PT, last ok 2026-09-21 8:38 PM PT. Both copies of the th  
+  *Steven has to decide whether to accept a Mac-only bridge or fund a path that survives his Mac being asleep.*
+- **F-E12-22** — Lofty is the CRM of record from 2026-09-22 but no loftyLeads document has ever been written. The Mac has the lofty-bridge MCP server and lofty-cli; the API key (Lofty -> Settings -  
+  *The API key lives on Steven's Mac and only he can add it. Until then there are no live real-estate lead numbers on either dashboard.*
+- **F-E12-23** — The artifact's published capabilities are {"db":{},"mcp":{"servers":[{"server":"You.com","tools":["you-search"]}]},"sample":{}}. No code in the file uses the mcp capability any mor  
+  *Republishing is the caller's step; the page cannot change its own capability declaration.*
+- **F-E2-09** — The Remote Run card presented the cloud routine as the primary working path. The live hfRequest doc says otherwise: AAPL, requested 2026-09-11, started 2026-09-13, status failed at  
+  *Restoring the committee's cloud path needs network egress opened for the cloud routine environment (Yahoo Finance, stooq, sec.gov, apple.com, macrotrends) - an infrastructure/permission decision outside an engineer's scope. Until then the honest position, now on the card, is Mac-only.*
+- **F-E2-11** — The Risk monitor card offered two number inputs and nothing else. It never read the riskMonitor document at all - the deck stores riskDailyLossTriggered and riskAccountsBlown as se  
+  *Making the daily trading log real needs Steven to decide whether the 69 futures / 45+ forex prop accounts get wired into riskMonitor.accounts (credentials and a data path per firm), and Derek to repair r17-trading-day-log. Neither is an in-page change.*
 - **F-E4a-02** — No loftyLeads document exists in the live store (checked against all 161 exported docs, 2026-09-22 08:10 UTC) and no lofty-crm-sync task exists under claude-runner. The Mac has lof  
   *Needs the Lofty API key (Lofty → Settings → Integrations → API) placed in ~/.config/lofty/.env on the Mac. A credential cannot be obtained or verified from this sandbox.*
 - **F-E4a-04** — The Composio Zoho connection is ACTIVE (created 2026-09-21) but every CRM call returns HTTP 403 NO_PERMISSION: Crm_Implied_Api_Access — re-verified 2026-09-22 08:17 UTC against ZOH  
   *Requires a permission change inside Steven's Zoho CRM admin console. Not doable from the deck, Composio or this sandbox.*
+- **F-E4b-07** — The Showings integrations table listed Follow Up Boss as green / 'Composio connected' and claimed confirmed showings are logged on the client's CRM record by the sync task. That ha  
+  *Needs Steven: the Lofty API key at ~/.config/lofty/.env (Lofty Settings -> Integrations -> API), then showing-sync re-pointed off the 'fub' leg. No credential can be obtained or installed from the cloud.*
+- **F-E4b-18** — Everything E4b rewrote to say 'Lofty' now depends on a Lofty connection that does not yet write. Composio has no Lofty toolkit; the Mac has lofty-bridge (read-only MCP over Lofty's  
+  *Needs Steven: obtain the Lofty API key (Lofty Settings -> Integrations -> API), place it in ~/.config/lofty/.env on the Mac, and run lofty-crm-sync once. Nothing about this can be done from the cloud, and no write path to Lofty exists today.*
+- **F-E4b-19** — The ISA measurement loop is broken at every link and the deck previously showed none of it. r11-isa-kpi-compile (Sun 4:40 AM PT) has never run under claude-runner. The isaKpi docum  
+  *Needs Steven / the human ISA: the daily 4:10 PM scorecard has never been filled in, so no self-report delta can ever be computed. Plus r11-isa-kpi-compile must be proven with one manual run.*
 - **F-E5-02** — Root cause of F-E5-01 is at the WRITER, and it is outside this deck. Whatever wrote stravaSnapshot on 2026-09-20 (via string: 'claude-code-session (Strava connector, direct read)')  
   *Requires changing a Mac task / cloud routine outside the deck, or changing the shared sync engine — neither is in E5's scope.*
 - **F-E5-08** — The Apple Health card described a working pipeline ('The R8 sync writes this card's snapshot at 5:10 AM and 9:10 PM'). Truth on 2026-09-22: the ingest daemon (LaunchAgent, port 876  
@@ -67,16 +94,22 @@ Escalated is waiting on Steven and says why in its halt reason.
   *Changing Google Calendar sharing on sshearrill@patriotpacific.com from free/busy to full detail, and repairing the SPACE CA calendar subscription, are account-permission changes only Steven can make.*
 - **F-E11A-06** — The Mac still carries the fub-followups skill (a Follow Up Boss template library) after Follow Up Boss was retired 2026-09-22 in favour of Lofty. skills-refresh flags it as needing  
   *Pruning or replacing an installed skill is destructive (standing loop halt: 'skill prune — destructive').*
+- **F-E12-21** — The ISA's self-grades and KPI actuals are written to isaGradingScores and isaKpiSopActuals. Neither document exists on the ISA Portal store or on Command Deck - checked both on 202  
+  *Needs a decision on whether the ISA's self-grades should reach Steven automatically, and a task to carry them if so.*
 - **F-E3-06** — Baseline 2026-09-12 · verified 2026-09-22. Per brief §2 there are no Plaid API keys, and the 161-doc live export contains no plaidBalances document at all — it has never been writt  
   *Live balances need Plaid Production credentials — money and a vendor account. Steven only: dashboard.plaid.com → Team Settings → Keys, then ~/Applications/plaid-bridge/.env.*
 - **F-E4a-12** — CLI-Anything is installed on the Mac as a Claude Code plugin (toolbox status RUN, commands only, no hooks), but its hub carries no CRM or real-estate entry (README checked 2026-09-  
   *Installation and credential entry must happen in a Claude session on Steven's Mac; ECC security review is required before any non-read-only action is enabled.*
+- **F-E4b-14** — licenseAlerts() is correct (expired, 7, 30 and 60-day tiers all handled and an expired row is labelled 'expired N days ago', not 'due'), but it only fires on rows that carry a date  
+  *Needs Steven: only he can confirm the real renewal dates from the source documents. Writing them from a second store would be a guess on a licensing surface.*
 - **F-E5-12** — Mentor naming drift, kept per instruction and logged for Steven. The deck's mentor is Kevin (panel-kevin, kevinChat, panel title 'Kevin — High-Value Man Mentor'); the installed Cla  
   *Renaming a skill or a dashboard seat is a human naming decision, and merging the two chat documents would overwrite one of them.*
 - **F-E6-09** — Baseline 2026-09-12 · verified 2026-09-22 — Last run 2026-09-21 was refused its vault step: Bash write to ~/Shearrill-Vault is not on the task allow-list (routineHealth). Queue/bri  
   *permission change on the Mac runner allow-list*
 - **F-E6-21** — Baseline 2026-09-12 · verified 2026-09-22 — 'Three more queued, not installed' → interview-me, prompt-master, skills-refresh (plus lofty-crm-sync, zoho-crm-sync, cli-anything-conne  
   *Mac install needs a Claude Code session on the Mac (Steven)*
+- **F-E7-12** — r6-weekly-backup has never run under the runner and missed its 2026-09-20 slot; backupStatus still reports the 2026-09-14 backup. This cycle produced a verified bundle as a rehears  
+  *A scheduled task cannot approve its own tool prompts. Steven must open r6-weekly-backup in the desktop app's Scheduled section and press Run now once, approving each tool, before the weekly backup can be called live.*
 - **F-E8-08** — appleHealth syncedAt 2026-09-13T23:15:59Z (9 days stale); r8-apple-health-snapshot 'RAN BUT PRODUCED NOTHING — ingest daemon on port 8765 not responding'; health-full-analysis erro  
   *The first 'update my health stats' run on the phone and the Notion Health Log database creation are Steven's actions.*
 - **F-E8-52** — steve-twin-sweep (weekdays 12:55 PT) last status 'refused: Bash (write access to ~/Shearrill-Vault) — vault step (B2) incomplete; circuit breaker open until 2026-09-22T01:27Z'; the  
@@ -110,6 +143,29 @@ Escalated is waiting on Steven and says why in its halt reason.
 | F-E1-18 | Routine | The task that is supposed to write six of the dashboard's daily research feeds has been in error since 2026-09-17 (last end 2026-09-17T19:04:11). The feeds are not empty only because a Claude session filled them by hand - every one of th... | P1 | M | Broken | Escalated | Pending | — | Steven |
 | F-E11A-02 | Routine | Backup spec vs reality drift: Steven's spec is Sunday 00:00 local into Documents/AI-Ecosystem-Backups/YYYY-MM-DD with an 8-week rolling window; the Mac task r6-weekly-backup is cron 0 5 * * 0 (Sun 5:00 AM PT), has NEVER run under claude-... | P1 | S | Broken | Escalated | Fail | — | Steven |
 | F-E11A-03 | Routine | Every skill written this cycle registers a nightly self-test, but nightly-self-test itself is in error — timeout, exit 124, last end 2026-09-15 — and loopLog cycle 3 records that no selfTest doc has ever been confirmed written. Each self... | P1 | M | Broken | Open | Fail | — | Reliability Engineer |
+| F-E12-01 | Plugin/Integration | You.com was retired 2026-09-22. All 8 references in the file were in-page live-search paths: 2 callTool sites in the property listing search, 1 in the AI-directed comparable search, 1 in the tax-record search, 1 watchTool subscription, a... | P1 | L | Broken | Fixed | Pass | 2026-09-22 | Integration Engineer |
+| F-E12-03 | Stale Content | The card was titled 'Real estate - Follow Up Boss (live)' and described a live Composio pull. The FUB API key had been rejecting every call since 2026-09-16 and Steven retired FUB on 2026-09-22, so FUB_SYNC_AT 2026-09-07, FUB_STAGE_TOTAL... | P1 | L | Stale | Fixed | Pass | 2026-09-22 | Integration Engineer |
+| F-E12-04 | Current State | The portal pinned Steven's Follow Up Boss calling number and lead-forwarding email as the numbers to use for every real-estate lead. With FUB retired, whether that number now routes through Lofty cannot be verified from here, and the for... | P1 | S | Broken | Escalated | Pending | — | Steven |
+| F-E12-05 | Plugin/Integration | Zoho remains the system of record for mortgage, but every CRM call returns HTTP 403 NO_PERMISSION Crm_Implied_Api_Access (re-verified 2026-09-22 08:17 UTC). Several places on the page implied the ISA could see live Zoho data. | P1 | S | Broken | Escalated | Pending | — | Steven |
+| F-E12-06 | Bug | take() returned early on !m.id, so any ISA-line message without an id was dropped silently on both sides of the merge. This is the human ISA's only written channel to Steven. | P1 | M | Broken | Fixed | Pass | 2026-09-22 | Reliability Engineer |
+| F-E12-07 | Bug | lsSetLocal had an empty catch, so a full or blocked browser store looked exactly like a successful save: the panel re-rendered from the in-memory value, the sync pill read normally, and what the ISA typed was gone on reload. | P1 | M | Broken | Fixed | Pass | 2026-09-22 | Reliability Engineer |
+| F-E12-08 | Bug | A document arriving without a {v: ...} wrapper was skipped outright, so it never reached the device and a restore silently lost it. Command Deck writes stravaSnapshot in exactly that shape. | P1 | S | Broken | Fixed | Pass | 2026-09-22 | Reliability Engineer |
+| F-E12-10 | Routine | The routine runs four times a day and reports SUCCESS every time, but it has never synced anything: an unattended cloud run cannot write an artifact database - the write parks on a permission prompt. Reading both stores on 2026-09-22 pro... | P1 | M | Broken | Escalated | Pass | — | CTO Innovator |
+| F-E12-11 | Current State | Read live on 2026-09-22: this portal's pipeline document holds 2 mortgage deals (R. Alvarez $480,000 Underwriting; T. Nguyen $355,000 Clear to close). Command Deck's pipeline document is an empty list, version 3, untouched since 2026-09-... | P1 | S | Broken | Escalated | Pass | — | Steven |
+| F-E12-12 | Current State | This portal holds 2 real-estate clients (J. Whitfield, buyer, Active search; M. Delgado, seller, Consult scheduled). On Command Deck the reClients document does not exist at all - it has never been created there. | P1 | S | Broken | Escalated | Pass | — | Steven |
+| F-E12-13 | Stale Content | The card stated 'The bridge carries changes both ways on the hour, merging by row, so a status you set here shows up on his side.' Verified false: nothing carries showings. The integration table also claimed a green 'Live' status for Ste... | P1 | M | Stale | Fixed | Pass | 2026-09-22 | Reliability Engineer |
+| F-E12-15 | Routine | The ISA line works, and it is the only thing that crosses: isa-comms-bridge-local on Steven's Mac, hourly 7:37 AM - 9:37 PM PT, last ok 2026-09-21 8:38 PM PT. Both copies of the thread held the same 9 messages on 2026-09-22. The hourly C... | P1 | M | Broken | Escalated | Pass | — | CTO Innovator |
+| F-E12-16 | Stale Content | The rate table was a 2026-09-07/09-10 Bankrate and Veterans United snapshot, 12 days old, while Command Deck's ratesSnapshot document (2026-09-22 02:24 UTC, written daily by mortgage-rates-daily) carried fresher Optimal Blue figures. | P1 | M | Stale | Fixed | Pass | 2026-09-22 | Capability Engineer |
+| F-E12-22 | Plugin/Integration | Lofty is the CRM of record from 2026-09-22 but no loftyLeads document has ever been written. The Mac has the lofty-bridge MCP server and lofty-cli; the API key (Lofty -> Settings -> Integrations -> API) and one proving run are outstandin... | P1 | M | Missing | Escalated | Pending | — | Steven |
+| F-E12-23 | Plugin/Integration | The artifact's published capabilities are {"db":{},"mcp":{"servers":[{"server":"You.com","tools":["you-search"]}]},"sample":{}}. No code in the file uses the mcp capability any more, so the declaration grants a retired connector for noth... | P1 | S | Stale | Open | Pending | — | Steven |
+| F-E2-01 | Stale Content | The visible strategy tables were a hard-coded 2026-09-07 hand read (6 strategies + 9 stacks) while the live strategySnapshot doc, written 2026-09-16T03:26Z, carried 28 individual strategies with materially different figures (e.g. Q ORB N... | P1 | M | Stale | Fixed | Pass | 2026-09-22 | Reliability Engineer |
+| F-E2-02 | Bug | The deck claimed in its freshness copy that 'the page prefers that document over its baked-in seed' for strategySnapshot. That was false for the visible tables: only the Vanessa/hedge-fund chat-context helpers (marketContextText, dashboa... | P1 | S | Broken | Fixed | Pass | 2026-09-22 | Reliability Engineer |
+| F-E2-04 | Stale Content | The calendar showed five already-released events as pending consensus, including the Sep 15-16 FOMC as 'hike risk live' when the meeting had already delivered a 25bp hike, and retail sales as 'roughly flat to +0.4%' when the actual was +... | P1 | M | Stale | Fixed | Pass | 2026-09-22 | Reliability Engineer |
+| F-E2-06 | Stale Content | An undated paragraph described an Aug 28, 2026 session ('Nasdaq slid 0.52% to 26,402.42 ... September hike odds jumped to 57%'). By 2026-09-22 it was flatly contradicted by the live feeds: the Fed had already hiked on Sep 16, and the Nas... | P1 | S | Stale | Fixed | Pass | 2026-09-22 | Reliability Engineer |
+| F-E2-07 | Bug | All seven agent prompts instructed the model to 'Use the search_market_data tool'. That tool no longer exists: when the in-page search connector was retired on 2026-09-11 the tool was renamed dashboard_market_data, and the prompts were n... | P1 | S | Broken | Fixed | Pass | 2026-09-22 | Capability Engineer |
+| F-E2-08 | Stale Content | The card said 'Each agent can search the live web for market data, news, and macro context' and 'it gathers data from public web search'. Neither is true of the in-page runner: a published artifact cannot call any external host and the s... | P1 | S | Stale | Fixed | Pass | 2026-09-22 | Capability Engineer |
+| F-E2-09 | Plugin/Integration | The Remote Run card presented the cloud routine as the primary working path. The live hfRequest doc says otherwise: AAPL, requested 2026-09-11, started 2026-09-13, status failed at 2026-09-13T00:15Z - cloud egress was blocked to every pr... | P1 | M | Broken | Escalated | Fail | 2026-09-22 | Steven |
+| F-E2-11 | Bug | The Risk monitor card offered two number inputs and nothing else. It never read the riskMonitor document at all - the deck stores riskDailyLossTriggered and riskAccountsBlown as separate local docs, while r17-trading-day-log writes riskM... | P1 | M | Broken | Improved | Pass | 2026-09-22 | Steven |
 | F-E3-02 | Bug | Baseline 2026-09-12 · verified 2026-09-22. 30 of the 50 rows in the 2026 tax calendar are already in the past, but a passed row was only dimmed to 45% opacity and kept its original type badge — so passed EXECUTION WINDOW rows (Jun 15 CA ... | P1 | S | Broken | Fixed | Pass | 2026-09-22 | Reliability Engineer |
 | F-E3-03 | Bug | Baseline 2026-09-12 · verified 2026-09-22. The payment tracker listed Q1 Apr 15 2026, Q2 Jun 15 2026 and Q3 Sep 15 2026 as plain due dates with no indication they had passed — Q3 went by 7 days ago. A missed estimated payment accrues pen... | P1 | S | Broken | Fixed | Pass | 2026-09-22 | Reliability Engineer |
 | F-E3-04 | Bug | Baseline 2026-09-12 · verified 2026-09-22. Membership expiry was rendered as a bare editable text box with no status at all, so Enterprise Plus Platinum (stored expiry '2/28/2026', lapsed 206 days ago) looked exactly like a current statu... | P1 | M | Broken | Fixed | Pass | 2026-09-22 | Steven |
@@ -122,6 +178,14 @@ Escalated is waiting on Steven and says why in its halt reason.
 | F-E4a-10 | Automation Opportunity | Four claude-runner tasks still read Follow Up Boss through Composio and must be re-pointed at Lofty. r2-lead-response-watchdog (cron `10,40 7-19 * * *`, last ran 2026-09-21T20:02:33, writes leadResponse — currently status:failed, "Invali... | P1 | M | Recommended | Open | Pending | — | CTO Innovator |
 | F-E4a-14 | Stale Content | After E4a's edits, 37 source lines outside E4a's regions still name Follow Up Boss or FUB — 28 "Follow Up Boss" and 16 "FUB" occurrences. Distribution: panel-aiteam 11, panel-showings 7, panel-easop 7, panel-property 3, panel-masterplan ... | P1 | M | Stale | Open | Pending | — | Vanessa |
 | F-E4a-16 | ISA Coverage | routine-health.md records the mortgage system of record as UNMONITORED: every speed-to-lead, lead-triage and KPI job on the Mac reads the real-estate CRM only, so a mortgage lead can sit past the 5-minute standard with nothing watching. ... | P1 | M | Missing | Open | Fail | — | CRO |
+| F-E4b-01 | Stale Content | The baked rate seed was 12-15 days old on a licensed MLO's client-facing surface: 30-yr conventional 6.84%, VA 6.125%, FHA 6.48%, jumbo 6.88%, stamped '2026-09-10 - VA rows re-verified today'. The live ratesSnapshot document (syncedAt 20... | P1 | M | Stale | Fixed | Pass | 2026-09-22 | Vanessa |
+| F-E4b-02 | Bug | ratesSnapshot writes yoy as a display string ('+5.7%', '-3.7%'), but applyMarketsDoc fed it straight into marketNum(), which does Number('+5.7%') -> NaN -> null. The year-over-year figure therefore never refreshed once since the merge wa... | P1 | S | Broken | Fixed | Pass | 2026-09-22 | Reliability Engineer |
+| F-E4b-05 | Stale Content | Steven retired Follow Up Boss for Lofty on 2026-09-22. Every Follow Up Boss reference inside E4b's regions was rewritten to Lofty with honest history rather than erased: the real-estate tool quick-link row (now Lofty, with the Composio-h... | P1 | M | Stale | Fixed | Pass | 2026-09-22 | Vanessa |
+| F-E4b-06 | Bug | The leadTriage document records its own failure honestly (source:'unavailable', note: 'Follow Up Boss pull failed at the first call: composio proxy to /v1/people returned Invalid API Key...'), and the page threw all of it away. A failed ... | P1 | M | Broken | Fixed | Pass | 2026-09-22 | Reliability Engineer |
+| F-E4b-07 | Plugin/Integration | The Showings integrations table listed Follow Up Boss as green / 'Composio connected' and claimed confirmed showings are logged on the client's CRM record by the sync task. That has not been true since 2026-09-16 (FUB auth failures) and ... | P1 | M | Broken | Escalated | Pass | 2026-09-22 | Steven |
+| F-E4b-10 | Stale Content | The tax card told the reader 'Claude searches the live web (by address and, if entered, APN) ... prioritizing Zillow/Redfin/PropertyShark ... then combines that with this dashboard's own researched community tax-rate data', and the simil... | P1 | S | Stale | Fixed | Pass | 2026-09-22 | Vanessa |
+| F-E4b-18 | Plugin/Integration | Everything E4b rewrote to say 'Lofty' now depends on a Lofty connection that does not yet write. Composio has no Lofty toolkit; the Mac has lofty-bridge (read-only MCP over Lofty's REST API) and lofty-cli, with the API key expected in ~/... | P1 | L | Missing | Escalated | Pending | 2026-09-22 | Steven |
+| F-E4b-19 | ISA Coverage | The ISA measurement loop is broken at every link and the deck previously showed none of it. r11-isa-kpi-compile (Sun 4:40 AM PT) has never run under claude-runner. The isaKpi document it would refresh is from 2026-09-13 and its own notes... | P1 | M | Broken | Escalated | Pass | 2026-09-22 | Victor |
 | F-E5-01 | Bug | CONFIRMED shape bug. Every document in collection `state` is stored as {v:...} except stravaSnapshot, whose top-level keys are activities/syncedAt/via. applyRemoteSnapshot() at the sync layer returns early on `if (!data // typeof data !=... | P1 | M | Broken | Fixed | Pass | 2026-09-22 | Reliability Engineer |
 | F-E5-02 | Bug | Root cause of F-E5-01 is at the WRITER, and it is outside this deck. Whatever wrote stravaSnapshot on 2026-09-20 (via string: 'claude-code-session (Strava connector, direct read)') set the document body directly instead of {v:{...}} — th... | P1 | S | Broken | Escalated | Pending | — | Integration Engineer |
 | F-E5-07 | Stale Content | Card said 'refreshed twice daily by an automated routine' and 'refreshes twice daily'. Neither holds: the Mac task strava-daily-sync has status error with its last run 2026-09-17 (mac-runner-status.md), and the cloud routine 'Command Dec... | P1 | S | Stale | Fixed | Pass | 2026-09-22 | CTO Innovator |
@@ -139,6 +203,8 @@ Escalated is waiting on Steven and says why in its halt reason.
 | F-E6-15 | Current State | Baseline 2026-09-12 · verified 2026-09-22 — Added 'Second Brain — five levels, one Vanessa' after the org chart: L1–L5 table (level · what · where · owner · status) in the canonical §3 words, remote/live-access line, ECC-as-gate line; re... | P1 | M | New | Implemented | Pass | 2026-09-22 | Vanessa |
 | F-E6-17 | Stale Content | Baseline 2026-09-12 · verified 2026-09-22 — Rows claimed Composio → Follow Up Boss, GoHighLevel pending, Canva connected, cloud Steve twin/ISA bridge running, Desktop tasks at old times, skills list without this cycle's additions, agents... | P1 | M | Stale | Fixed | Pass | 2026-09-22 | CTO Innovator |
 | F-E6-20 | Routine | Baseline 2026-09-12 · verified 2026-09-22 — None of the weekly/monthly runner slots that the AI Team panel depends on has ever run under claude-runner (runnerStatus 2026-09-22); their cloud duplicates FAILED Sep 18–20. The panel now says... | P1 | M | Broken | Open | Pending | — | Reliability Engineer |
+| F-E7-01 | Bug | A SYNCHRONOUS throw from window.claude.use kills the entire dashboard. `(function initSync(){ ... window.claude.use("db").then(...).catch(...) })()` guards only the PROMISE; the call itself is unguarded, so a throw propagates out of the ... | P1 | S | Broken | Open | Fail | — | Reliability Engineer |
+| F-E7-03 | Bug | stravaSnapshot is the only one of the 161 exported documents with no `v` wrapper (top-level activities/syncedAt/via). applyRemoteSnapshot rejects any doc without `v` (`if (!data // typeof data !== "object" // !("v" in data)) return;`), s... | P1 | S | Broken | Open | Fail | — | Integration Engineer |
 | F-E8-01 | Current State | Speed-to-lead and lead triage have been blind since 2026-09-16: leadResponse doc status=failed, staleSince 2026-09-16T02:42:40Z, failedAt 2026-09-22T03:02:14Z ('Invalid API Key or authentication credentials'); leadTriage ranAt 2026-09-21... | P1 | M | Broken | Escalated | Fail | — | Integration Engineer |
 | F-E8-02 | Current State | Composio connection zoho_talite-spike is ACTIVE (created 2026-09-21) but every CRM call returns HTTP 403 NO_PERMISSION Crm_Implied_Api_Access (verified 2026-09-22 08:17 UTC on ZOHO_LIST_LEADS and ZOHO_LIST_DEALS). zohoSync and zohoDeals ... | P1 | S | Broken | Escalated | Fail | — | Steven |
 | F-E8-03 | Current State | runnerStatus (syncedAt 2026-09-22T04:05:04Z, loggedIn=true): 11 tasks in error (cpi-daily-scan, fabric-deck-sync, health-full-analysis, nightly-self-test exit 124, openrouter-feeds-refresh, r1-morning-brief 'API unreachable' 2026-09-17, ... | P1 | L | Broken | Open | Fail | — | Reliability Engineer |
@@ -183,6 +249,20 @@ Escalated is waiting on Steven and says why in its halt reason.
 | F-E11A-04 | Orchestrator Agent | The Parallel C-Suite Task Cycle has two competing homes: the Mac task vanessa-ops-review (Fri 10:35 PM PT, enabled, never run) and the cloud routine 'Vanessa orchestrated ops review' (Fri 23:00 UTC, FAILED 2026-09-18), which cannot write... | P2 | S | Recommended | Open | Pending | — | CTO Innovator |
 | F-E11A-05 | Current State | Five documents these skills write have no proven shape in the live store: improvementProposals is an empty array (never written), and trustLevels, selfTest, skillsAudit and scaleOpportunityLog do not exist in the 161-doc export. Shapes w... | P2 | S | New | Open | Pending | — | Capability Engineer |
 | F-E11A-06 | Skill | The Mac still carries the fub-followups skill (a Follow Up Boss template library) after Follow Up Boss was retired 2026-09-22 in favour of Lofty. skills-refresh flags it as needing a port to Lofty rather than reporting it healthy; deleti... | P2 | M | Stale | Open | Pending | — | Steven |
+| F-E12-02 | Bug | The market-update and builder-incentive cards said their headline lists 'refresh automatically'. They were fed by a You.com watch subscription; with the connector gone the promise stayed and the list stayed empty. | P2 | S | Broken | Fixed | Pass | 2026-09-22 | Integration Engineer |
+| F-E12-09 | Bug | A replayed identical snapshot, or one whose local write failed, could report changed and ride the 30-second reload throttle in a loop. | P2 | S | Broken | Fixed | Pass | 2026-09-22 | Reliability Engineer |
+| F-E12-17 | Stale Content | The market snapshot was the 2026-09-07 pull with San Diego on the July 2026 period, while the same ratesSnapshot document carried August county figures and a Murrieta market this portal did not track. | P2 | M | Stale | Fixed | Pass | 2026-09-22 | Capability Engineer |
+| F-E12-18 | Stale Content | The note blamed 'the daily cloud routine that used to refresh this was retired after repeated rate limits'. In fact a builder-incentive scan does still run daily - incentives-daily-scan on Steven's Mac, last ok 2026-09-22 - it simply wri... | P2 | S | Stale | Fixed | Pass | 2026-09-22 | Capability Engineer |
+| F-E12-20 | Automation Opportunity | A measured isaKpi document (week ending 2026-09-13, written by the r11 task) exists in this portal's store AND on Command Deck, and the two copies are byte-identical. No code on this page reads it: the KPI scorecard shows SOP targets aga... | P2 | M | Missing | Open | Pass | 2026-09-22 | Capability Engineer |
+| F-E12-21 | ISA Coverage | The ISA's self-grades and KPI actuals are written to isaGradingScores and isaKpiSopActuals. Neither document exists on the ISA Portal store or on Command Deck - checked both on 2026-09-22. Steven cannot see the ISA's self-assessment at a... | P2 | M | Missing | Escalated | Pass | — | Steven |
+| F-E12-24 | Automation Opportunity | Queued research is written to this portal's vanessaResearch document. The vanessa-research-queue task on the Mac reads Command Deck's store, not this one, so the document alone would never be answered. Every queued item is therefore ALSO... | P2 | M | Recommended | Open | Pass | 2026-09-22 | Integration Engineer |
+| F-E2-03 | Routine | r4-quantvue-sync (cron 20 23 * * 1-5) last ended 2026-09-15T23:27:43 and routineHealth marks it late with 3 weekday cycles missed (17th, 18th, 19th), currently sitting in the waiting backlog. The cloud routine that covers the same job re... | P2 | S | Broken | Escalated | Fail | — | Reliability Engineer |
+| F-E2-05 | Routine | The Econoday card advertised a healthy 'daily feed task, 5:50 AM PT'. That task is openrouter-feeds-refresh (cron 50 5 * * *), whose last end was 2026-09-17T19:04:11 with status error. The econodayLiveList entry that is actually on the d... | P2 | S | Broken | Escalated | Fail | — | Reliability Engineer |
+| F-E2-12 | Stale Content | The sector list appended a hard-coded sentence: '9 of 11 S&P sectors were higher; Materials and Communication Services weren't in this pull - not listed rather than guessed at. As of 4:15pm EDT, Sep 2, 2026.' It is invisible whenever liv... | P2 | S | Stale | Fixed | Pass | 2026-09-22 | Reliability Engineer |
+| F-E2-13 | Current State | The tape is openTerminalSnapshot syncedAt 2026-09-13T22:47:04Z, via 'snapshot.sh (hand-run on the Mac)' - 9 days old at audit time - while openterminal-daemon reports status RUN. There is no baked seed (OPENTERMINAL_SEED_STAMP is null, b... | P2 | S | Stale | Improved | Pass | 2026-09-22 | Integration Engineer |
+| F-E2-15 | Stale Content | The four Top-performer tables (stocks, ETFs, dividends, mutual funds) are a 2026-09-07 research pass with Sep 4 session data. They cannot be re-baked from topPerformersLiveList: that feed is an index/mover narrative (checked 2026-09-22),... | P2 | S | Stale | Open | Pending | — | Efficiency Engineer |
+| F-E2-16 | Current State | Two wiring claims outside E2's editable regions do not match the evidence. (1) FRESH_FEEDERS says 'The feeds-market-close runner task writes topPerformersLiveList into liveFeeds on weekdays at 10:15 PM' - but feeds-market-close last ende... | P2 | S | Stale | Open | Pending | — | CTO Innovator |
+| F-E2-19 | Automation Opportunity | strategySnapshot carries only {name, ytdPct, mtdPct} per strategy. The sheet also has the sim-size column (4x max drawdown) and a BT/fwd P&L column, and a whole diversified-stacks section (Ratio Tiers A-D, Equal Weighted Tiers 1-5) that ... | P2 | M | Missing | Open | Pending | — | Integration Engineer |
 | F-E3-01 | Bug | Baseline 2026-09-12 · verified 2026-09-22. Three literal \u2019 escape sequences sat in plain HTML text, so the card rendered "didn\u2019t find a reliable exact estimate" verbatim to Steven instead of a typographic apostrophe. JS-style e... | P2 | S | Broken | Fixed | Pass | 2026-09-22 | Reliability Engineer |
 | F-E3-05 | Bug | Baseline 2026-09-12 · verified 2026-09-22. A single null or non-object row in the memberships array threw TypeError "Cannot read properties of null (reading 'cat')" at escAttr(m.cat) and killed the whole card. Reproduced against the unto... | P2 | S | Broken | Fixed | Pass | 2026-09-22 | Reliability Engineer |
 | F-E3-06 | Stale Content | Baseline 2026-09-12 · verified 2026-09-22. Per brief §2 there are no Plaid API keys, and the 161-doc live export contains no plaidBalances document at all — it has never been written. The status strip nevertheless showed an amber 'Plaid ... | P2 | S | Stale | Fixed | Pass | 2026-09-22 | Steven |
@@ -196,6 +276,15 @@ Escalated is waiting on Steven and says why in its halt reason.
 | F-E4a-07 | Stale Content | The board said "Moves are saved on this dashboard only — Zoho is not updated until its API access is granted" and "Deck only — it is NOT created in Zoho until API access is granted". Both implied that granting API access would start push... | P2 | S | Stale | Fixed | Pass | 2026-09-22 | Integration Engineer |
 | F-E4a-11 | Bug | The speed-to-lead empty state hard-codes "reading Follow Up Boss through Composio and writing the leadResponse document", and the card sub-title hard-codes "median time from a Follow Up Boss lead arriving". §4 requires the page to displa... | P2 | S | Broken | Open | Fail | — | Integration Engineer |
 | F-E4a-12 | Plugin/Integration | CLI-Anything is installed on the Mac as a Claude Code plugin (toolbox status RUN, commands only, no hooks), but its hub carries no CRM or real-estate entry (README checked 2026-09-22; clianything.cc is egress-blocked from this sandbox), ... | P2 | L | Recommended | Escalated | Pending | — | Steven |
+| F-E4b-03 | Stale Content | Six user-visible strings and three code comments credited r5-rates-market-refresh with writing the rates and market figures. Per inventory/routine-health.md r5 has NEVER run under claude-runner (zero execution evidence, next slot Mon 202... | P2 | S | Stale | Fixed | Pass | 2026-09-22 | CTO Innovator |
+| F-E4b-04 | Stale Content | Two freshness-board entries outside my regions still carry the same wrong attribution fixed in F-E4b-03. OUTPUT_WATCH has {doc:'ratesSnapshot', label:'Rates & market', task:'r5-rates-market-refresh', hrs:200} - the doc is written by mort... | P2 | S | Stale | Open | Pending | 2026-09-22 | Integration Engineer |
+| F-E4b-08 | Current State | The isaKpi document is the only place on the deck holding MEASURED ISA numbers, and nothing rendered it. The ISA KPI scorecard card showed SOP targets beside a free-text Actual column typed in by hand, which read like a measured scorecar... | P2 | M | Missing | Implemented | Pass | 2026-09-22 | Vanessa |
+| F-E4b-09 | Bug | Both live-search buttons in the Property search strategy tool were You.com-era features whose call sites had already been stripped. They did not fail silently, but they dead-ended: every click printed a refusal and offered nothing. Appli... | P2 | M | Broken | Implemented | Pass | 2026-09-22 | Capability Engineer |
+| F-E4b-11 | Bug | renderBuilderIncentives wrote the seed's provenance ('Snapshot researched 2026-09-07') into builderIncentiveSyncNote, and orPaintFeed later overwrote that same element with the LIVE feed's stamp. On any synced device the three hand-resea... | P2 | S | Broken | Fixed | Pass | 2026-09-22 | Efficiency Engineer |
+| F-E4b-14 | Current State | licenseAlerts() is correct (expired, 7, 30 and 60-day tiers all handled and an expired row is labelled 'expired N days ago', not 'due'), but it only fires on rows that carry a date. In the live licenses document every row's due is blank ... | P2 | S | Missing | Escalated | Pass | 2026-09-22 | Steven |
+| F-E4b-16 | Current State | Every store behind Practice Trackers and the Showings panel is empty in the 2026-09-22 export: showingSchedule null, showingSyncRequests [], refiWatch [], recruitPipeline [], reviewPipeline [], referralPartners [], webinarFunnel [], deal... | P2 | S | New | Open | Pass | 2026-09-22 | Victor |
+| F-E4b-20 | Automation Opportunity | Three rate rows on a licensed MLO's client-facing card are not covered by any feed: VA 30-yr refinance (Veterans United, Sep 9), VA 15-yr fixed (Navy Federal / Veterans United, Sep 2) and Jumbo 15-yr fixed (Bankrate, Sep 2) - 13 to 20 da... | P2 | M | Recommended | Open | Pending | 2026-09-22 | Integration Engineer |
+| F-E4b-21 | Stale Content | File-wide inventory after E4b's pass, for whoever owns each region. E4a's cards: 2462-2472 (the Live CRM import card and its ids). E5/E6/E1 panels: 4629 (twin task placeholder), 4744 and 4747 (Derek/Victor AI-team rows), 4983 and 4988 (E... | P2 | M | Stale | Open | Pending | 2026-09-22 | Integration Engineer |
 | F-E5-03 | Stale Content | Seed was STRAVA_SYNC_AT="2026-09-07" with 2 activities; the live stravaSnapshot document (syncedAt 2026-09-20T21:03:00Z) is newer and carries 3. Re-baked per brief rule 5.4 from scratchpad/db/state/stravaSnapshot.json, keeping the array-... | P2 | S | Stale | Fixed | Pass | 2026-09-22 | Capability Engineer |
 | F-E5-04 | Bug | The 30-day activity count was a hard-coded constant (2). A count relative to 'today' baked into a published file is wrong the day after it is written — as of 2026-09-22 the truth was 3. Now derived at render from the rows' own dates via ... | P2 | S | Broken | Fixed | Pass | 2026-09-22 | Reliability Engineer |
 | F-E5-05 | Bug | The chart read column 3 of each row as distance and labelled the axis 'mi'. Column 3 is moving time in the live document ('4:05' plotted as 4 miles) and was kcal in the old seed ('494 kcal' plotted as 494 miles, setting the whole axis). ... | P2 | S | Broken | Fixed | Pass | 2026-09-22 | Reliability Engineer |
@@ -223,6 +312,15 @@ Escalated is waiting on Steven and says why in its halt reason.
 | F-E6-25 | Stale Content | Baseline 2026-09-12 · verified 2026-09-22 — Console said '10 min once the bridge runner is installed'; Second Brain said Drive read twice a day; five-level paragraph and token-discipline paragraph predated the canonical §3 wording; Orca ... | P2 | S | Stale | Fixed | Pass | 2026-09-22 | Vanessa |
 | F-E6-26 | Routine | Baseline 2026-09-12 · verified 2026-09-22 — Last ok 2026-09-15 — no run logged for six daily slots although runnerStatus shows it enabled; the Drive folder it reads holds 0 files. | P2 | S | Broken | Open | Pending | — | Reliability Engineer |
 | F-E6-27 | Routine | Baseline 2026-09-12 · verified 2026-09-22 — Never run under the runner; the Graphify graph is from 2026-09-13 (750 nodes / 1,104 edges). L4 is 9 days stale. | P2 | S | Broken | Open | Pending | — | Reliability Engineer |
+| F-E7-02 | Bug | `var cites = (d.citations // []).filter(...)` assumes liveFeeds.feeds[x].citations is an array. A feed document whose citations field is an object, a number or a string throws "(d.citations // []).filter is not a function" and safeRun bl... | P2 | S | Broken | Open | Fail | — | Reliability Engineer |
+| F-E7-04 | Bug | renderIsaLine does `wrap.innerHTML = msgs.map(isaLineMsgHtml).join("")` with no display cap. ISA_LINE_MAX (300) is applied ONLY inside isaLineMergeArrays, so any isaLine document written directly by a task — or restored from a larger sto... | P2 | S | Broken | Open | Fail | — | Efficiency Engineer |
+| F-E7-05 | Bug | take() returns early on `!m.id`, so any relayed message without an id is discarded with no record anywhere — not a console warning, not SHAPE_MISMATCH, not the Ops Radar. Measured in the concurrency burst: 2 id-less messages sent, 2 drop... | P2 | S | Broken | Open | Fail | — | Reliability Engineer |
+| F-E7-06 | Bug | A failing localStorage WRITE is completely invisible. lsSetLocal's catch is empty and LS_UNAVAILABLE is only ever set from a failing READ inside lsGetSeeded, so with setItem throwing the page still rendered all 318 containers, raised 0 c... | P2 | S | Broken | Open | Fail | — | Reliability Engineer |
+| F-E7-09 | Current State | While dbReady is false, any key that already has a queued local write is skipped entirely ("local is newer; it flushes next"). The isaLine branch itself calls syncKeyToDb, so in local-only mode the FIRST isaLine change queues a pending w... | P2 | M | New | Open | Fail | — | Reliability Engineer |
+| F-E7-10 | Current State | The four volume payloads together are 5.02 MB — about 1.0x the ~5 MB localStorage budget a browser gives one origin — and the page took 7215 ms to render them against a 1070 ms baseline. Nothing in the page measures its own storage footp... | P2 | M | New | Recommended | Fail | — | Efficiency Engineer |
+| F-E7-11 | Current State | 2 of the 26 watched documents do not exist in the 161-document export at all: revenueScan, healthCoaching. Their owning tasks have never written them, so no backup can restore them and the Output-watch board is correct to say "never prod... | P2 | M | Missing | Escalated | Pass | — | Integration Engineer |
+| F-E7-12 | Routine | r6-weekly-backup has never run under the runner and missed its 2026-09-20 slot; backupStatus still reports the 2026-09-14 backup. This cycle produced a verified bundle as a rehearsal of Steven's spec: 161 documents plus the deck, 4.71 MB... | P2 | S | Broken | Escalated | Pass | — | Steven |
+| F-E7-13 | Automation Opportunity | The deck has no automated runtime gate. quickcheck.py is static only and cannot see a function that is called but no longer defined — the exact bug that blanked Market Snapshot on 2026-09-03. tests/runtime-harness.js now executes the who... | P2 | S | Recommended | Implemented | Pass | 2026-09-22 | CTO Innovator |
 | F-E8-04 | Current State | 50 routines, 46 enabled; research-only by design because an unattended write to the artifact DB parks on a permission prompt (confirmed three times, quoted in the 'weekly improvement loop' prompt). Last run FAILED Sep 18–20 for 10 routin... | P2 | M | Broken | Open | Fail | — | CTO Innovator |
 | F-E8-07 | Current State | twinQueue holds 10 items: 5 completed (4 on 2026-09-22T02:24:35Z by steve-twin-sweep), 5 standing pending (recruiting drafts Tue, decision memos monthly, reading digests Thu, USC drafts Sun, client-text drafts daily), 1 p1 needs-steven. ... | P2 | S | Missing | Open | Fail | — | Capability Engineer |
 | F-E8-08 | Current State | appleHealth syncedAt 2026-09-13T23:15:59Z (9 days stale); r8-apple-health-snapshot 'RAN BUT PRODUCED NOTHING — ingest daemon on port 8765 not responding'; health-full-analysis error since 2026-09-17; healthInsight (2026-09-13) already fl... | P2 | M | Broken | Escalated | Pending | — | Integration Engineer |
@@ -263,11 +361,18 @@ Escalated is waiting on Steven and says why in its halt reason.
 | F-E8-70 | ISA Coverage | isaScorecard is [] (deck says 'Due 4:10 PM each shift day'); isaKpi metric 'ISA self-report vs FUB delta' = 'no self-report on file'; r11-isa-kpi-compile (Sun 04:40) never ran under the runner; OUTPUT_WATCH wires isaScorecard to r11 (F-E... | P2 | S | Missing | Open | Fail | — | Capability Engineer |
 | F-E8-71 | ISA Coverage | Standing twin task tw_1788922006_standing_client_texts drafts 'the follow-up, confirmation, check-in or review-request text the ISA sends under her own name … no rate or payment or eligibility language'; the marketing calendar states 'Al... | P2 | S | Missing | Open | Pending | — | Vanessa |
 | F-E8-73 | Unlisted Capability | Fresh-session cloud routines can end with a push and/or email notification (create_trigger notifications {push,email}); none of the 50 routines' outputs are delivered anywhere today, and the deck's copy assumes cloud routines are useless... | P2 | S | Recommended | Open | Pending | — | CTO Innovator |
-| F-INT-08 | Current State | Every prior cycle concluded that an unattended cloud routine cannot write the artifact database because the write parks on a permission prompt. The conclusion was never re-tested after the platform changed, yet the whole architecture res... | P2 | S | New | Implemented | Pending | 2026-09-22 | Integration Engineer |
+| F-INT-08 | Current State | Every prior cycle concluded that an unattended cloud routine cannot write the artifact database because the write parks on a permission prompt. The conclusion was never re-tested after the platform changed, yet the whole architecture res... | P2 | S | Resolved | Implemented | PASS — the one-shot probe routine fired unattended at 2026-09-22 09:05 UTC and the cloudWriteProbe document exists at version 1, updatedAt 09:05:56Z, with result "write succeeded unattended". No permission prompt, no human present. The five-cycle assumption is false: a cloud routine CAN write this artifact database. | 2026-09-22 | Integration Engineer |
 | F-INT-09 | Skill | Three skills had been listed on the dashboard as queued since 2026-09-07 and never built: interview-me, prompt-master and skills-refresh. The orchestration, backup, improvement, scale, loop and stress-test skills existed only as prose in... | P2 | L | Missing | Implemented | Pass | 2026-09-22 | Capability Engineer |
 | F-E1-05 | Stale Content | The Bears tracker still showed preseason state ('2-1 (preseason) - regular season opens Sun Sep 13', 'Regular season not yet started (NFC North 0-0-0)', a Sep 7 injury report) and its stat tile was labelled '2025 record'. The liveFeeds b... | P3 | S | Stale | Fixed | Pass | 2026-09-22 | Reliability Engineer |
 | F-E1-17 | Stale Content | The referral blueprint and webinar marketing stack still named Follow Up Boss as the CRM. Steven replaced Follow Up Boss with Lofty on 2026-09-22. These are plan text rather than a number sourced from FUB, so the lines now name Lofty and... | P3 | S | Stale | Fixed | Pass | 2026-09-22 | Integration Engineer |
 | F-E1-21 | Current State | Reviewed the whole panel for stale claims as assigned. It carries no dated assertions, no capability claims and no references to retired systems: every tracker renders from its own document (dmaicProjects, kaizenBoard, downtimeFound, cpi... | P3 | S | New | Open | Pass | 2026-09-22 | Reliability Engineer |
+| F-E12-14 | Stale Content | The panel stamp tooltip still claimed the sync-status panel 'updates automatically via the twice-daily drift check'. No drift check has ever run. | P3 | S | Stale | Fixed | Pass | 2026-09-22 | Reliability Engineer |
+| F-E12-19 | Stale Content | Program facts are dated 2026-09-07 and nothing refreshes them. No newer live document exists on either store, so the seed was left alone per the re-bake rule. | P3 | S | Stale | Open | Pass | 2026-09-22 | Capability Engineer |
+| F-E12-25 | Bug | quickcheck.py reports three failures on this file that were all present at the base commit: a duplicate-id hit on the JS template string "' + id + '", an unbalanced <div> count of open 1 / close 0, and a called-but-undefined list of 145 ... | P3 | S | New | Open | Pass | 2026-09-22 | Stress Test Engineer |
+| F-E2-10 | Stale Content | The committee memo card is still the 2026-09-07 AAPL run (ranAt 2026-09-07T20:50:00-07:00). No later run has written a memo - the only attempt since failed on 2026-09-13. The card's own badges stamp the run date honestly, but the surroun... | P3 | S | Stale | Improved | Pass | 2026-09-22 | Vanessa |
+| F-E2-14 | Automation Opportunity | The Mac task openterminal-remote-queue (cron 45 6-21 * * *, last end 2026-09-21T20:45:44, status ok) already works the deck's queue hourly, but the panel never named it, so a queued lookup looked like it needed Steven to go and ask. Sepa... | P3 | S | Recommended | Improved | Pass | 2026-09-22 | Integration Engineer |
+| F-E2-17 | Current State | Verification, no change needed. There is no You.com call site, credit, button or you-* tool name anywhere in panel-apex, panel-quantvue, panel-hedgefund, panel-openterminal or the JS E2 owns. The file's only four You.com mentions are at ... | P3 | S | New | Open | Pass | 2026-09-22 | Vanessa |
+| F-E2-18 | Skill | The Apex card says the dedicated apex-trader skill 'exists but hasn't reliably stayed installed on Desktop', which is why vanessa-broker carries Apex's persona as a fallback. The skill is present in this session's skill roster. The brief... | P3 | S | New | Open | Pending | — | Steven |
 | F-E3-10 | Current State | Baseline 2026-09-12 · verified 2026-09-22. Checked as assigned: the licence & credential tracker already sorts by expiry and flags EXPIRED in red for any past date, red ≤30 days, amber ≤90 days, green beyond. Against today no row is expi... | P3 | S | New | Improved | Pass | 2026-09-22 | Steven |
 | F-E3-11 | Current State | Baseline 2026-09-12 · verified 2026-09-22. Checked as assigned and left unchanged: the VA table is stamped 'Effective Dec 1, 2025 (2.8% COLA)' and its 100%-plus-SMC-K figure ($4,078.45/mo, $48,941.40/yr) reconciles exactly with the Milit... | P3 | S | New | Improved | Pass | 2026-09-22 | Capability Engineer |
 | F-E3-12 | Current State | Baseline 2026-09-12 · verified 2026-09-22. Checked as assigned, NOT edited (panel-aiteam belongs to E6). openrouterCredits reads {state:'no_key', ok:false, checkedAt 2026-09-16} and councilPricing carries a real 2026-09-16 price table fo... | P3 | S | New | Open | Pass | — | Steven |
@@ -276,6 +381,10 @@ Escalated is waiting on Steven and says why in its halt reason.
 | F-E3-17 | Current State | Baseline 2026-09-12 · verified 2026-09-22. Ownership overlap flagged, deliberately NOT edited. The Top performers card is physically inside panel-personalaccounts (my HTML region) but its data is TOP_PERFORMERS / liveFeeds.topPerformersL... | P3 | S | Recommended | Open | Pending | — | Integration Engineer |
 | F-E4a-13 | Current State | Composio still lists follow_up_boss among the twelve connected apps and reports it ACTIVE, even though its credentials have been rejected since 2026-09-16 and the product is retired as of 2026-09-22. Composio has no Lofty toolkit at all ... | P3 | S | Recommended | Open | Pending | — | Steven |
 | F-E4a-15 | Current State | Per the editing rules the ids fubSyncNote, fubStageStats, fubNewCount, fubNewLeadRows and the identifiers FUB_SYNC_AT, FUB_STAGE_TOTALS, FUB_NEW_LEADS_90D were kept rather than renamed; they now live inside the collapsed retired-history ... | P3 | S | New | Implemented | Pass | 2026-09-22 | Integration Engineer |
+| F-E4b-12 | Stale Content | builderIncentiveLiveList is stamped 2026-09-22T07:58:23Z but its own source field says 'Web research (WebSearch/WebFetch) -- Perplexity MCP connection failed (CONNECT_TIMEOUT), Sep 22, 2026' - i.e. a Claude session wrote it, not the feed... | P3 | S | Stale | Open | Pending | 2026-09-22 | Integration Engineer |
+| F-E4b-13 | Current State | Verified by parsing the array literals before and after this cycle's edits: LOAN_PROGRAMS = 39 entries, LENDER_DIRECTORY = 61 entries, both unchanged. The card subs that advertise '39 programs' and '61 approved lenders' are therefore sti... | P3 | S | New | Improved | Pass | 2026-09-22 | Stress Test Engineer |
+| F-E4b-15 | Bug | COUNTY_BY_CITY values already end in 'County' ('Riverside County'), and the handler appended another one, producing 'Riverside County County assessor'. Pre-existing; inherited into the new copy and fixed in both places on the way through. | P3 | S | Broken | Fixed | Pass | 2026-09-22 | Reliability Engineer |
+| F-E4b-17 | Current State | Per the brief, MARKET_SYNCED_AT was treated as reference and the seed values were left alone (Redfin's July 2026 period is still the latest published for Temecula/Murrieta). With the yoy bug fixed (F-E4b-02) the live document now fully o... | P3 | S | New | Open | Pass | 2026-09-22 | Integration Engineer |
 | F-E5-10 | Stale Content | The note said 'N metrics, N nights of sleep, N workouts in the last 14 days', which reads as the 14 days ending today. It is the 14-day window that ended when the snapshot was taken. Now names that end date and appends 'this snapshot is ... | P3 | S | Stale | Fixed | Pass | 2026-09-22 | Capability Engineer |
 | F-E5-13 | Stale Content | The Kevin avatar SVG drew the letter 'C' (Cole) on a card titled Kevin; changed to 'K' (the gradient id kevinAvatarGrad is unchanged). Residual Cole/kevin-mentor naming outside E5's regions, for the integrator to route: the HTML comment ... | P3 | S | Stale | Improved | Pass | 2026-09-22 | Capability Engineer |
 | F-E5-22 | Current State | Verified as asked: the passed-event logic is correct and needed no change. Extracted travelEndDate/travelStatus and ran them under Node against the real seed strings. 'Sep 19, 2026, 8:00 PM' -> passed, 'Sep 18, 2026, 6:30 PM' -> passed, ... | P3 | S | Stale | Fixed | Pass | 2026-09-22 | Capability Engineer |
@@ -290,6 +399,10 @@ Escalated is waiting on Steven and says why in its halt reason.
 | F-E6-29 | Bug | Baseline 2026-09-12 · verified 2026-09-22 — Four HTML text nodes in my regions rendered a literal backslash-u2014 instead of an em dash (lines 1360, 1364, 4587, 4591 of the base). Fixed in-region; 14 more remain elsewhere in body markup ... | P3 | S | Broken | Fixed | Pass | 2026-09-22 | Vanessa |
 | F-E6-30 | Stale Content | Baseline 2026-09-12 · verified 2026-09-22 — Deck mentor is 'Kevin' (panel-kevin, kevinChat); the Claude Desktop skill is cole-mentor ('Cole'). Kept Kevin on the deck; noted on his org-chart seat. Rename the skill or the seat — Steven's c... | P3 | S | Stale | Escalated | Pending | — | Steven |
 | F-E6-31 | Stale Content | Baseline 2026-09-12 · verified 2026-09-22 — Badges said 'Opus researches'; seat detail said seven executives. | P3 | S | Stale | Fixed | Pass | 2026-09-22 | Vanessa |
+| F-E7-07 | Bug | 6 element ids are looked up by the script and exist nowhere in the 25,595-line pinned baseline (git 5fbe844): vanessaVoiceToggle, steveVoiceToggle, vanessaMicBtn, steveMicBtn, isaPbTracker, isaPbVip. Every call site is null-guarded so no... | P3 | M | Missing | Open | Fail | — | Capability Engineer |
+| F-E7-08 | Bug | renderTravelPage reads $("travelVisibleCount") at html:17776, one line before renderTravelFilters() (html:17778) creates that span at html:17719. On the first paint the element does not exist yet, the `if (cnt)` guard swallows it, and th... | P3 | S | Broken | Open | Fail | — | Reliability Engineer |
+| F-E7-14 | Bug | renderPanelStamps is the single slowest render on a clean baseline (44 ms of a 1070 ms page) and it is re-run on a 400 ms debounce after EVERY recordSectionEdit, i.e. after every keystroke-driven save. Under the routineHealth volume payl... | P3 | M | New | Open | Fail | — | Efficiency Engineer |
+| F-E7-15 | Current State | The harness runs the script under a DOM shim, not a browser. It proves: the script reaches its last line, which container ids receive innerHTML, which $() targets are missing, which renderers throw and on which document shape, and how lo... | P3 | S | New | Implemented | Pass | 2026-09-22 | Stress Test Engineer |
 | F-E8-10 | Current State | aiTeamRoster (2026-09-16): 172 agents — tier 1: 17, tier 2: 96, tier 3: 59 (60 with no lead, by-name only); models opus 93 / sonnet 78 / fable 1 (vanessa-orchestrator); dispatch rules maxParallel 8, maxPerplexityPerWave 4, hardCap 12. Le... | P3 | S | New | Open | Pass | — | Vanessa |
 | F-E8-17 | Stale Content | panel-aiteam: Local Bridge copy says '12 live MCP servers … the 169 agents' (toolkitSnapshot 2026-09-16 counts: mcpServers 15, agents 172, tasks 60); Orca card says 'Not installed yet … brew install --cask stablyai/orca/orca' although th... | P3 | S | Stale | Open | Pending | — | Capability Engineer |
 | F-E8-19 | Stale Content | panel-nextmoves lists '15 recurring cloud routines already run this dashboard … weekly Six Sigma process review, weekly self-improvement loop, weekly Elite Affluent Tracker' as 'real automation already in place'. On 2026-09-22 the weekly... | P3 | S | Stale | Open | Pending | — | Efficiency Engineer |
@@ -335,6 +448,98 @@ After: ai-ecosystem-backup v2 specifies the canonical root, 8-week prune, integr
 **F-E11A-03 — Routine**  
 Before: nightly-self-test error (timeout) since 2026-09-15; no selfTest doc in the 161-doc export  
 After: self-test suite categories, per-test budget and the selfTest doc shape specified; the timeout fix is a Reliability Engineer task  
+
+**F-E12-01 — Plugin/Integration**  
+Before: Three buttons called mcp.callTool('You.com','you-search'); a fourth path opened a 6-hourly watchTool subscription. With the connector retired the calls reject and the lists stay empty under live-data copy.  
+After: wireLivePropertySearch, renderAiFitRecommendation and wireLiveNewsList removed. The three buttons now read 'Queue research (answered by Vanessa)', 'Queue a comparable-property search' and 'Queue a tax-record lookup'; each writes an item to the vanessaResearch document and posts a #research message on the ISA line. The two watch-driven feeds carry plain text naming the task that actually refreshes them.  
+
+**F-E12-03 — Stale Content**  
+Before: 'Synced 2026-09-07 - 6,460 total contacts in FUB - same live pull as Command Deck'.  
+After: New live card reads the loftyLeads document with an explicit 'Awaiting first Lofty sync' state that never borrows the FUB numbers; handles not-configured / error / ok and renders stage totals, 90-day leads and speed-to-lead. The FUB numbers are kept in a collapsed block labelled 'Last Follow Up Boss import - 2026-09-07 (retired, kept as history)' and were not relabelled.  
+
+**F-E12-04 — Current State**  
+Before: 'Use it for every real-estate lead call and text so the activity logs in FUB.'  
+After: Both tiles amber-flagged with the retirement date and an instruction to confirm the Lofty calling number and forwarding address with Steven before use.  
+
+**F-E12-05 — Plugin/Integration**  
+Before: Zoho card mentioned the error but the KPI card, the SOP checklist and the personas still implied live Zoho visibility.  
+After: Zoho card rewritten with the verified date, an explicit 'there is no live Zoho data anywhere on this portal', and the exact fix path. The KPI card, the start-of-day checklist, the capacity-audit row and both AI personas now say the API is blocked.  
+
+**F-E12-06 — Bug**  
+Before: Unit test against the base commit: merging a 1-message array with a 2-message array containing the same id-less message returned 1 message - one was lost with nothing logged.  
+After: An id-less message gets a deterministic id hashed from ts|from|text, so identical relays still collapse to one row and a genuinely new message survives; lsShapeWarn records it. Same test now returns 2 messages and 2 distinct id-less messages stay distinct.  
+
+**F-E12-07 — Bug**  
+Before: Unit test with a localStorage whose setItem throws QuotaExceededError: the write silently vanished and nothing was recorded.  
+After: lsSetLocal returns true/false, records every failure in LS_WRITE_FAILURES, and renderIsaStateWarnings surfaces the list in the Sync status panel naming the keys that were not saved. Verified: returns false and records {key:'pipeline', error:'QuotaExceededError'}.  
+
+**F-E12-08 — Bug**  
+Before: Unit test against the base commit: a no-v document left the local store completely empty - the document was lost with nothing logged.  
+After: The whole document is accepted as the value and lsShapeWarn records the shape so the writer gets fixed. Verified: the document is now stored and one shape warning is recorded.  
+
+**F-E12-10 — Routine**  
+Before: No mention on the page; the routine's green tick was the only signal anyone had.  
+After: The Sync status panel names the routine and explains that its green tick means 'the routine finished', not 'the pipeline crossed', with the empty documents cited as proof.  
+
+**F-E12-11 — Current State**  
+Before: The page implied pipeline edits reached Command Deck.  
+After: Named in the Sync status drift table with both sides' actual contents, and the exact value to write is in audit/E12-write-cd-pipeline.json.  
+
+**F-E12-12 — Current State**  
+Before: The page implied client-stage changes reached Command Deck.  
+After: Named in the drift table; exact value in audit/E12-write-cd-reClients.json.  
+
+**F-E12-13 — Stale Content**  
+Before: Green 'Live' badge and hourly two-way sync copy.  
+After: Card says the schedule stays in this portal's store, that the claim was never true, and to post anything Steven needs on the ISA line. The Command Deck integration row is now a red 'Not synced' with what would be required.  
+
+**F-E12-15 — Routine**  
+Before: The page said messages crossed 'every 10 minutes while his Claude Code loop is on, hourly by cloud routine once he has approved its write'.  
+After: Every bridge string now names the Mac task, its hours, the Mac-awake condition and the disabled cloud routine, and tells the ISA to call or text when a message has not turned green.  
+
+**F-E12-16 — Stale Content**  
+Before: Conventional 30 6.84%/6.90 APR, VA 30 6.125%, FHA 30 6.48%, Jumbo 30 6.88%, no USDA row.  
+After: Re-baked from the document: Conventional 30 7.038, Conventional 15 6.257, VA 30 6.751, FHA 30 6.799, USDA 30 6.71 (new), Jumbo 30 7.032, all Sep 18 Optimal Blue via FRED, plus 4 benchmark rows (PMMS 30 6.95, PMMS 15 6.26, 10-yr Treasury 5.01, MND top-tier 7.19). APR shows '-' on re-baked rows because the document publishes no APR and an APR from a different pull must not sit beside a new rate. Three rows the document lacks (VA 30-yr refinance, VA 15-yr fixed, Jumbo 15-yr fixed) are kept at their  
+
+**F-E12-22 — Plugin/Integration**  
+Before: No Lofty support on the page at all.  
+After: The card reads loftyLeads and states exactly this while it is absent, telling the ISA to work real-estate leads in Lofty itself rather than from this page.  
+
+**F-E12-23 — Plugin/Integration**  
+Before: mcp/You.com declared and used by 6 call sites.  
+After: Zero mcp call sites remain. Republish with {"db":{},"sample":{}} - db for cross-device sync and the ISA line, sample for the Vanessa and Steve chats, which are still live and still needed.  
+
+**F-E2-01 — Stale Content**  
+Before: STRATEGY_SYNCED_AT "2026-09-07"; STRATEGIES = 6 rows with size/ytd/month/pnl from a hand read; the doc was never read by the tables.  
+After: STRATEGY_SYNCED_AT "2026-09-16 (03:26 UTC ...)"; STRATEGIES = the doc's 28 rows; renderStrategyTables() prefers lsGet('strategySnapshot'); Sim size and BT/fwd P&L render an em dash because the sync carries percentages only.  
+
+**F-E2-02 — Bug**  
+Before: buildRows(STRATEGIES,'strategyRows') called once at module scope with no document read.  
+After: renderStrategyTables() reads the doc, falls back to the seed, recomputes MAX_YTD, and is wrapped in safeRun. Verified in a Node shim against the live doc, an empty store and a malformed doc - no throws.  
+
+**F-E2-04 — Stale Content**  
+Before: 8 rows, ECONODAY_SYNCED_AT '2026-09-07'; FOMC remaining list still contained 'Sep 15-16'.  
+After: 15 rows, 8 marked RELEASED with actuals (FOMC 12-0 to 3.75-4.00%, retail sales +1.2%, starts -2.6%, claims 196K, UMich 47.8); ECONODAY_FOMC_REMAINING_2026 = Oct 27-28, Dec 8-9, with the Sep hike stated in the note. Release clock times left as an em dash on new rows rather than assumed.  
+
+**F-E2-06 — Stale Content**  
+Before: Undated Aug 28 copy with Aug 27/28 Yahoo and CNBC links.  
+After: Stamped Sep 21 close baked in, and renderSessionRead() replaces it with liveFeeds.topPerformersLiveList's own text, citations and checkedAt when a feed has reached the device.  
+
+**F-E2-07 — Bug**  
+Before: 5 prompt sites referencing search_market_data; the only declared tool is dashboard_market_data.  
+After: All 5 renamed; the Market Scout prompt also now states that the tool returns only this dashboard's documents and that anything missing must be written 'NOT AVAILABLE - verify manually'.  
+
+**F-E2-08 — Stale Content**  
+Before: Blanket claim of live web search for every agent.  
+After: Separates the Mac path (real web + filings) from the in-page path (this deck's documents plus what Steven pastes); the 'Run the committee' card says the paste is the only outside fact the in-page committee gets.  
+
+**F-E2-09 — Plugin/Integration**  
+Before: '1 - From here: ... A cloud routine picks up the pending request, runs all seven roles with primary-source verification, writes the memo back here, and pushes a notification.'  
+After: The Mac path is listed first as the one that works; the cloud path carries a red 'Known broken' badge with the exact 2026-09-13 failure, the blocked hosts, and the fact that the Sep 21 SUCCEEDED run wrote no memo. hfReqStatus now tells a failed request to re-run on the Mac.  
+
+**F-E2-11 — Bug**  
+Before: Two unexplained inputs; riskMonitor orphaned; no statement anywhere that the daily log had stopped.  
+After: A new riskMonitorNote reads the doc and states: the boxes are hand-entered, r17-trading-day-log last ran 2026-09-17 and errored, the doc carries 0 accounts and 0 recorded daily-loss figures, plus the last three session rows. Renders safely with the doc absent or malformed.  
 
 **F-E3-02 — Bug**  
 Before: days<0 rows dimmed only; badgeCls = row[3]==="EXECUTION WINDOW" ? "amber" : "gray"; no passed label.  
@@ -383,6 +588,38 @@ After: E4a's own regions are clean; the remaining 37 lines are routed with line 
 **F-E4a-16 — ISA Coverage**  
 Before: No monitoring on the mortgage pipeline; no deck surface showing that the gap exists.  
 After: The new Zoho deals table plus the dynamic zohoSync badge make the gap visible; the watchdog itself is blocked on the Zoho permission.  
+
+**F-E4b-01 — Stale Content**  
+Before: MORTGAGE_RATES_SYNCED_AT = '2026-09-10 - VA rows re-verified today...'; Conventional 30-yr 6.84% / VA 30-yr 6.125% / FHA 6.48% / Jumbo 7-yr 6.88%; 8 rows, no USDA.  
+After: MORTGAGE_RATES_SYNCED_AT = '2026-09-22 02:24 UTC - 6 of 9 rows re-baked from ratesSnapshot (mortgage-rates-daily; Optimal Blue via FRED, index date Sep 18, 2026)...'; Conventional 30-yr 7.038% / 15-yr 6.257% / VA 30-yr 6.751% / FHA 6.799% / USDA 6.71% / Jumbo 7.032%; 9 rows. Node harness against the real doc: 6 live, 3 seed, no duplicate USDA row.  
+
+**F-E4b-02 — Bug**  
+Before: San Diego priceChangeYoy 2.4 (Sep 7 seed) with a 2026-09-22 stamp above it; liveFields never contained priceChangeYoy.  
+After: San Diego 961,781 / DOM 28 / +5.7% / 3 months supply, all four in liveFields; Temecula +2.0%; Murrieta -3.7%. Verified by running the real merge under Node against db/state/ratesSnapshot.json.  
+
+**F-E4b-05 — Stale Content**  
+Before: 12 'Follow Up Boss'/'FUB' strings in E4b's regions presented FUB as the current, working real-estate system of record.  
+After: Lofty named as system of record since 2026-09-22 everywhere, with 'Follow Up Boss until then' kept wherever a number or a saved link came from FUB. Remaining FUB strings in E4b's regions are history statements or JS identifiers only.  
+
+**F-E4b-06 — Bug**  
+Before: badge 'ran 2026-09-21T18:33:00Z' class 'badge green'; four zero tiles; lt.note never rendered; copy claimed a working FUB read at 11:40 AM.  
+After: badge 'run failed 2026-09-21T18:33:00Z' class 'badge red'; the doc's own failure note printed above the (empty) sections; copy dated at 11:33 AM with the auth failure and the Lofty dependency. Verified under Node against db/state/leadTriage.json.  
+
+**F-E4b-07 — Plugin/Integration**  
+Before: 'Follow Up Boss ... green / Composio connected ... Verified on the first sync run'; queue rows read 'targets: gcal, fub'.  
+After: 'Lofty (was Follow Up Boss until 2026-09-22) ... red / Not connected - Lofty sync pending'; queue rows read 'targets: Google Calendar, CRM (not writing - Lofty re-point pending)'.  
+
+**F-E4b-10 — Stale Content**  
+Before: 'Claude searches the live web ... prioritizing Zillow/Redfin/PropertyShark ... to compute a rate and $ estimate for a buyer at that price.'  
+After: 'Nothing on this page searches the web either: an artifact has no outbound network path at all, and the You.com connection this card used to lean on was retired on 2026-09-22. What the button does instead is real: ...'  
+
+**F-E4b-18 — Plugin/Integration**  
+Before: Follow Up Boss named as connected and working.  
+After: Lofty named with 'API key + first sync still pending' / 'Not connected - Lofty sync pending' wherever the connection is claimed.  
+
+**F-E4b-19 — ISA Coverage**  
+Before: No measured ISA figure appeared anywhere on the deck.  
+After: The measured figures and their caveats are on the card, under a note naming r11 as never-run and isaScorecard as empty.  
 
 **F-E5-01 — Bug**  
 Before: lsGet("stravaSnapshot") returned the raw doc; code required __sd.activities at the top level, and applyRemoteSnapshot never stored it at all — card always rendered the baked 2026-09-07 seed.  
@@ -451,6 +688,14 @@ After: Connectors (Zoho blocked, Lofty via Mac, FUB + You.com retired, Canva nee
 **F-E6-20 — Routine**  
 Before: cards implied they run  
 After: cards say never run  
+
+**F-E7-01 — Bug**  
+Before: window.claude.use("db").then(function (api) { ... }).catch(function () { setSyncStatus("Local only (this device)", "off"); });  
+After: try { window.claude.use("db").then(...).catch(...); } catch (e) { setSyncStatus("Local only (this device)", "off"); }  
+
+**F-E7-03 — Bug**  
+Before: db doc stravaSnapshot = {activities, syncedAt, via}  → skipped by applyRemoteSnapshot; 160/161 docs restore  
+After: either the writing task wraps it as {v:{...}}, or the page accepts both shapes on read (lsGet fallback) — E5 owns the page-side half of this  
 
 **F-E8-01 — Current State**  
 Before: r2-lead-response-watchdog (every 30 min 7–19 PT) and lead-triage-daily (11:33 PT) both read FUB via Composio and both fail; the Mac's lofty-bridge MCP shows connected but its API key cannot be verified from the cloud.  
@@ -628,6 +873,62 @@ After: shapes specified in the skills; integrator to confirm the render code agr
 Before: fub-followups present in the toolkit snapshot, described as a live template library  
 After: flagged for porting by skills-refresh; no prune performed  
 
+**F-E12-02 — Bug**  
+Before: Two <ul> elements and copy claiming automatic refresh.  
+After: Elements removed. The market card now states that medians/DOM/YoY come from the ratesSnapshot document written by mortgage-rates-daily on Steven's Mac and were copied here by hand; the builder card names incentives-daily-scan and says plainly that it writes to Command Deck's store, which this page cannot read.  
+
+**F-E12-09 — Bug**  
+Before: changed was set whenever the JSON differed, without checking that the local write had actually landed.  
+After: changed is set only when the value genuinely differs AND lsSetLocal reports the write landed. Verified: first write true, identical replay false, blocked-store write false.  
+
+**F-E12-17 — Stale Content**  
+Before: San Diego $937,251 / 29 DOM / +2.4% (Jul 2026); two markets; no Murrieta.  
+After: San Diego County re-baked to $961,781 / 28 DOM / +5.7% (Aug 2026); Temecula confirmed unchanged against the document; Murrieta added at $659,670 / 44 DOM / -3.7% with its missing sale-to-list left blank rather than guessed. Active-listing counts and sale-to-list ratios stay the older manual pulls and are dated in place.  
+
+**F-E12-18 — Stale Content**  
+Before: Snapshot researched 2026-09-02 with an inaccurate explanation and a You.com live list beneath it.  
+After: Note states the snapshot's age from the date, names incentives-daily-scan and explains why its output does not reach this card, and points at the research queue.  
+
+**F-E12-20 — Automation Opportunity**  
+Before: No reference to the document anywhere in the file.  
+After: KPI card now says the document exists, matches Steven's copy, and is not rendered - with an invitation to have it wired in. Wiring it is a small, well-scoped follow-up.  
+
+**F-E12-21 — ISA Coverage**  
+Before: The page implied the grading table 'mirrors the Command Deck exactly'.  
+After: Named in the drift table as NOT synced, with the plain statement that he cannot see her self-grades.  
+
+**F-E12-24 — Automation Opportunity**  
+Before: No research queue existed on this portal.  
+After: queueResearch writes the document and relays on the ISA line, and says in the confirmation text which of the two succeeded. The durable fix is to point vanessa-research-queue at both stores.  
+
+**F-E2-03 — Routine**  
+Before: Nothing on the deck said the sync had stalled; the stamp came from the doc, which simply stopped moving.  
+After: STRATEGY_SYNCED_AT now states the stall and the cloud routine's inability to write. Clearing the runner backlog is a Mac-side fix for Derek.  
+
+**F-E2-05 — Routine**  
+Before: 'Synced <date> - daily feed task, 5:50 AM PT.'  
+After: Names the task, states it has been erroring since 2026-09-17, and says the list was last filled by a Claude session on Sep 20. The task itself needs repair on the Mac.  
+
+**F-E2-12 — Stale Content**  
+Before: Hard-coded counts and a hard-coded Sep 2, 2026 timestamp.  
+After: Counts derived from data.sectors and the date from the document's own asOf, with a line saying this is the fallback view that a liveFeeds sector read replaces.  
+
+**F-E2-13 — Current State**  
+Before: Badge read 'Snapshot > 24h old' whether it was 25 hours or 9 days.  
+After: Badge reads the age in days (red past 72h) and states that snapshot.sh is hand-run, not scheduled.  
+
+**F-E2-15 — Stale Content**  
+Before: TOP_PERFORMERS_SYNCED_AT '2026-09-07'; one note element shared by a Sep 7 table block and a Sep 22 feed.  
+After: Stamp text and the note now say the tables are a Sep 7 research pass and each row carries its own source date. The structural fix - a second note element so the live feed stops stamping the static tables - sits in panel-personalaccounts markup (E3's region) and was not made.  
+
+**F-E2-16 — Current State**  
+Before: FRESH_FEEDERS (base file ~line 19761) credits feeds-market-close with a feed a Claude session actually wrote.  
+After: Not changed - FRESH_FEEDERS is E1's region. Listed here so the integrator can route it.  
+
+**F-E2-19 — Automation Opportunity**  
+Before: Sync writes percentages only; sim size and P&L were carried by a hand read that is now 15 days old.  
+After: Deck shows an honest em dash instead of an old figure. The durable fix is on the Mac task, not in the page.  
+
 **F-E3-01 — Bug**  
 Before: Fill in the value column yourself for the properties below — didn\u2019t find a reliable exact estimate to pre-fill and won\u2019t guess at your own home\u2019s equity.  
 After: Fill in the value column yourself for the properties below — didn’t find a reliable exact estimate to pre-fill and won’t guess at your own home’s equity.  
@@ -679,6 +980,42 @@ After: Not changed by E4a — listed for the integrator with line numbers.
 **F-E4a-12 — Plugin/Integration**  
 Before: No mention of CLI-Anything, homes.com, SkySlope or zipForms anywhere on the connectivity card.  
 After: Dedicated bullet plus a data-copy button carrying the full read-only-first install prompt, credential rule (keychain/.env, never in a prompt) and the ECC security-review gate.  
+
+**F-E4b-03 — Stale Content**  
+Before: 'written by r5-rates-market-refresh, not pulled by this page'; 'r5-rates-market-refresh (Mon 5:07 AM PT) writes the live rows'; 'Added by r5-rates-market-refresh'.  
+After: Credits mortgage-rates-daily (weekdays 6:38 AM / 1:38 PM PT) as the writer, names ratesSnapshot as the document, and states plainly that r5-rates-market-refresh has never run under claude-runner.  
+
+**F-E4b-04 — Stale Content**  
+Before: OUTPUT_WATCH line 18892 task:'r5-rates-market-refresh'; FRESH_FEEDERS line 19753 credits r5.  
+After: Not changed - outside E4b's assigned regions. Recommend task:'mortgage-rates-daily' and a line saying r5 has never run.  
+
+**F-E4b-08 — Current State**  
+Before: isaKpi doc existed in the store and was never read by any render function; the card's Actual column was hand-typed and undated.  
+After: isaKpiDocBlock renders 6 measured metrics + header row with the doc's own stamp and caveats; the SOP card's sub now says plainly which column is a target and which is hand-typed. Verified under Node against db/state/isaKpi.json.  
+
+**F-E4b-09 — Bug**  
+Before: 'Where to search for similar properties' and 'Search tax record' both printed a refusal and returned nothing actionable.  
+After: Both write a vanessaResearch item (askedBy 'Property search tool'), re-render the Vanessa queue, and report 'Queued - not answered yet'. Duplicate clicks report the original queue time instead of queueing twice. Verified under Node.  
+
+**F-E4b-11 — Bug**  
+Before: Sep 7 area paragraphs under a note reading 'Builder incentives via ... updated 1h ago'; the seed's own date was erased at render time.  
+After: 'The three area write-ups below are a hand snapshot from 2026-09-07 and do not refresh...' printed inside the card body above the rows; the live list underneath keeps its own stamp.  
+
+**F-E4b-14 — Current State**  
+Before: 'Dates start blank on purpose - fill each one from the source document rather than trusting a guess.' with no hint that the deck already holds two of them.  
+After: Same, plus: 'the credential tracker carries NMLS to 2026-12-31 and the CA Real Estate Broker license to 2028-07-16. Until a row has a date, it raises no alert at all.'  
+
+**F-E4b-16 — Current State**  
+Before: 10 empty stores behind 12 cards.  
+After: Unchanged - recorded as current state, not patched over.  
+
+**F-E4b-20 — Automation Opportunity**  
+Before: Three hand-checked rows looked identical to fed rows.  
+After: Each says 'not carried by the daily feed' with its own hand-check date; a task change is still needed to actually keep them current.  
+
+**F-E4b-21 — Stale Content**  
+Before: 35 'Follow Up Boss' and 22 'FUB' occurrences file-wide at the start of the cycle.  
+After: E4b's regions cleared; the lines above listed with numbers so the integrator can route each one.  
 
 **F-E5-03 — Stale Content**  
 Before: STRAVA_SYNC_AT = "2026-09-07"; 2 rows, newest 2026-08-31.  
@@ -787,6 +1124,42 @@ After: Toolkit + L5 rows state it
 **F-E6-27 — Routine**  
 Before: graph 2026-09-13  
 After: stated on L4 row, Notes card, fabric node  
+
+**F-E7-02 — Bug**  
+Before: var cites = (d.citations || []).filter(function (c) { return c && c.url; }).slice(0, 5);  
+After: var cites = docRows(d.citations).filter(function (c) { return c && c.url; }).slice(0, 5);  
+
+**F-E7-04 — Bug**  
+Before: wrap.innerHTML = msgs.map(isaLineMsgHtml).join("");  // harness milliseconds are relative, not browser timings — the unbounded write SIZE is the durable finding  
+After: render the last ISA_LINE_MAX messages and say how many older ones are held back  
+
+**F-E7-05 — Bug**  
+Before: if (!m || typeof m !== "object" || !m.id) return;  
+After: if (!m || typeof m !== "object") return; var key = m.id || (String(m.ts) + "|" + String(m.origin));  
+
+**F-E7-06 — Bug**  
+Before: function lsSetLocal(key, value) { try { localStorage.setItem(...); } catch (e) {} }  
+After: catch (e) { LS_WRITE_FAILED = true; } plus an Ops Radar alert alongside localStorageUnavailableAlerts()  
+
+**F-E7-09 — Current State**  
+Before: second and later isaLine snapshots dropped in local-only mode  
+After: exempt the merge-on-read keys (isaLine, isaLineRead) from the pendingDbWrites skip, since they merge rather than overwrite  
+
+**F-E7-10 — Current State**  
+Before: no storage-budget instrumentation anywhere on the page  
+After: a size check in the freshness board (sum of prefixed keys vs 5 MB) and a hard cap on the three unbounded lists (isaLine, liveFeeds citations, routineHealth rows)  
+
+**F-E7-11 — Current State**  
+Before: watched documents with no writer output: revenueScan, healthCoaching; every document the edge sweep read that is absent from the export: revenueScan, healthCoaching, zohoLeads  
+After: either run the owning task once to prove it, or take the row off OUTPUT_WATCH — a watch that can never go green is noise  
+
+**F-E7-12 — Routine**  
+Before: last verified backup 2026-09-14; r6-weekly-backup never run under claude-runner  
+After: scratchpad/backup/2026-09-22/{state/*.json, command-deck.html, manifest.json} + restore-test.json, integrity pass  
+
+**F-E7-13 — Automation Opportunity**  
+Before: static checks only; runtime regressions found by Steven noticing a blank card  
+After: node tests/runtime-harness.js <file> — exit 0 when the script runs to completion, exit 2 when it halts; 318 containers is the baseline to diff against. tests/harness-selftest.js proves the harness catches that exact bug class before anyone trusts its PASS (6/6, it reconstructs the 2026-09-03 failure and reports `updateHeaderClock is not defined @ html:18204`).  
 
 **F-E8-04 — Current State**  
 Before: The weekly self-improvement layer in the cloud has produced nothing usable since Sep 13; the Mac duplicates (loop-engineering-weekly, weekly-self-update, vanessa-ops-review) have never run.  
@@ -950,7 +1323,7 @@ After: Every research routine that matters carries notifications; the Mac runner
 
 **F-INT-08 — Current State**  
 Before: An assumption repeated across five loop cycles, last tested 2026-09-04  
-After: A one-shot probe routine that attempts a single named write, reads it back, and reports true or false with the verbatim error. Whichever way it lands, the answer is recorded rather than assumed.  
+After: Settled by measurement, not assumption. Cloud routines are writers. The Mac-only-writer constraint that shaped every routine prompt in this ecosystem is lifted, and the feeder tasks that currently exist only on the Mac can be rebuilt as cloud routines that survive a closed laptop.  
 
 **F-INT-09 — Skill**  
 Before: Six skills named on the AI Team panel with no file behind them; three queued and never started  
@@ -967,6 +1340,34 @@ After: 'Tech: Lofty CRM (replaced Follow Up Boss on 2026-09-22) / Sierra Interac
 **F-E1-21 — Current State**  
 Before: n/a - inspection only  
 After: n/a - no edit required  
+
+**F-E12-14 — Stale Content**  
+Before: 'updates automatically via the twice-daily drift check, see below'.  
+After: 'Sync map, verified 2026-09-22 by reading both stores. No drift check runs on its own - the table is updated by hand when someone re-checks.'  
+
+**F-E12-19 — Stale Content**  
+Before: 'Researched 2026-09-07' with no statement about refresh.  
+After: Note adds the computed age and 'No task or routine refreshes this table - it moves only when someone re-researches it in a Claude session.' Values unchanged.  
+
+**F-E12-25 — Bug**  
+Before: Base commit 508ebae: same three failures, 145 undefined names.  
+After: After this work: same three failures, 137 undefined names, zero NEW names versus the base commit (checked by set difference). No real duplicate id exists in the static markup - verified separately. The runtime harness is a clean PASS: 0 exceptions, 0 safeRun failures, 0 missing ids, 48 containers rendered.  
+
+**F-E2-10 — Stale Content**  
+Before: Closing note described only the Sep 7 verification win.  
+After: Closing note adds: 'The memo card above is still that Sep 7 run: no later run has written a memo.'  
+
+**F-E2-14 — Automation Opportunity**  
+Before: 'Queue a lookup here and a Claude Code session on the Mac runs it' - no task, no cadence, no last-run evidence.  
+After: Names openterminal-remote-queue, its hourly 6:45 AM - 9:45 PM PT window and its last clean run, so a queued lookup carries an expected turnaround. The snapshot task is a recommendation only - nothing can be installed on the Mac from here.  
+
+**F-E2-17 — Current State**  
+Before: n/a - checked rather than changed.  
+After: Connector-list and retirement copy for You.com lives outside E2's regions (E6 owns the connector table).  
+
+**F-E2-18 — Skill**  
+Before: 'the dedicated apex-trader skill exists but hasn't reliably stayed installed on Desktop'  
+After: Unchanged. If Steven confirms it now stays installed, the sentence should become a plain statement and the vanessa-broker fallback kept as a fallback.  
 
 **F-E3-10 — Current State**  
 Before: —  
@@ -999,6 +1400,22 @@ After: Connectivity card states the connection still reports ACTIVE while failin
 **F-E4a-15 — Current State**  
 Before: n/a  
 After: Old identifiers retained and documented in a block comment above FUB_SYNC_AT; new Lofty identifiers added alongside.  
+
+**F-E4b-12 — Stale Content**  
+Before: FRESH_FEEDERS credits feeds-weekly with a daily 9:40 PM write it has not made since 2026-09-17.  
+After: Not changed - outside E4b's regions. Recommend naming the Claude-session fallback and feeds-weekly's 'limited' status.  
+
+**F-E4b-13 — Current State**  
+Before: 39 / 61  
+After: 39 / 61 (unchanged; confirmed by literal parse, not by reading the card copy)  
+
+**F-E4b-15 — Bug**  
+Before: 'Pull the record from the Riverside County County assessor'  
+After: 'Riverside County treasurer-tax-collector link below' / 'County of record: Riverside County, CA.'  
+
+**F-E4b-17 — Current State**  
+Before: Seed San Diego $937,251 / DOM 29 / +2.4%; Temecula $739,630 / DOM 37 / +2.0%; no Murrieta.  
+After: Seed unchanged per brief; merged view now correct on any synced device. Decision recorded for the integrator.  
 
 **F-E5-10 — Stale Content**  
 Before: '11 metrics, 0 nights of sleep, 3 workouts in the last 14 days · 19 export batches received.'  
@@ -1055,6 +1472,22 @@ After: Kevin kept; drift recorded on the seat
 **F-E6-31 — Stale Content**  
 Before: 'Fable masterminds · Opus researches · Sonnet executes'; 'seven executives'  
 After: 'Fable 5.1 masterminds · Opus 5 judges · Sonnet 5 executes · Perplexity researches'; 'eight executives (including the CTO Innovator)'  
+
+**F-E7-07 — Bug**  
+Before: vanessaVoiceToggle, steveVoiceToggle, vanessaMicBtn, steveMicBtn, isaPbTracker, isaPbVip — referenced, never present  
+After: either add the markup or delete the dead wiring; the harness's missingIds list is the regression test  
+
+**F-E7-08 — Bug**  
+Before: var cnt = $("travelVisibleCount"); if (cnt) cnt.textContent = shown + " shown"; renderTravelFilters();  
+After: renderTravelFilters(); then read and fill travelVisibleCount  
+
+**F-E7-14 — Bug**  
+Before: full re-walk of every panel stamp on a 400 ms debounce after each edit  
+After: stamp only the panel whose key changed  
+
+**F-E7-15 — Current State**  
+Before: no runtime coverage statement anywhere  
+After: tests/stress-report.md documents the scope and the exact rerun commands  
 
 **F-E8-10 — Current State**  
 Before: Model tiering is already pinned per agent (loopLog cycle 5 F-033); Steven's 2026-09-22 tiering (Fable 5.1 masterminds / Opus 5 executives / Sonnet 5 execution / Perplexity research) matches the roster except that executive seats are labelled 'opus' without a version.  
@@ -1134,14 +1567,14 @@ After: </script>\n</body>\n</html>
 
 ## By category
 
-- Stale Content: 49
-- Bug: 35
-- Current State: 34
-- Routine: 21
-- Plugin/Integration: 18
-- Automation Opportunity: 13
-- Skill: 9
+- Stale Content: 70
+- Bug: 58
+- Current State: 49
+- Routine: 26
+- Plugin/Integration: 25
+- Automation Opportunity: 19
+- Skill: 10
+- ISA Coverage: 9
 - Orchestrator Agent: 8
 - Unlisted Capability: 8
-- ISA Coverage: 7
 - AI Clone: 3
