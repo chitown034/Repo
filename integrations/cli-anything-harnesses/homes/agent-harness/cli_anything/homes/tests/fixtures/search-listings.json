@@ -1,0 +1,160 @@
+{
+  "_synthetic": "All values invented for tests. No real person, listing or client.",
+  "url": "https://www.homes.com/exampleton-ca/",
+  "tree": {
+    "name": "/",
+    "role": "document",
+    "children": [
+      {
+        "name": "navigation_1",
+        "role": "navigation",
+        "children": [
+          {
+            "name": "link_1",
+            "role": "link",
+            "text": "Home"
+          },
+          {
+            "name": "link_2",
+            "role": "link",
+            "text": "Sign In"
+          },
+          {
+            "name": "link_3",
+            "role": "link",
+            "text": "Create Account"
+          }
+        ]
+      },
+      {
+        "name": "main",
+        "role": "main",
+        "children": [
+          {
+            "name": "heading_1",
+            "role": "heading",
+            "text": "Exampleton, CA Homes for Sale"
+          },
+          {
+            "name": "listitem_1",
+            "role": "listitem",
+            "children": [
+              {
+                "name": "link_1",
+                "role": "link",
+                "text": "4127 Sample Grove Ct, Exampleton, CA 90000"
+              },
+              {
+                "name": "text_1",
+                "role": "text",
+                "text": "$749,000"
+              },
+              {
+                "name": "text_2",
+                "role": "text",
+                "text": "3 bd \u00b7 2 ba \u00b7 1,850 sq ft"
+              },
+              {
+                "name": "text_3",
+                "role": "text",
+                "text": "Open House"
+              },
+              {
+                "name": "text_4",
+                "role": "text",
+                "text": "Listed by Avery Fixture, Placeholder Realty"
+              }
+            ]
+          },
+          {
+            "name": "listitem_2",
+            "role": "listitem",
+            "children": [
+              {
+                "name": "link_1",
+                "role": "link",
+                "text": "88 Mock Meadow Ln, Exampleton, CA 90000"
+              },
+              {
+                "name": "text_1",
+                "role": "text",
+                "text": "$1,125,000"
+              },
+              {
+                "name": "text_2",
+                "role": "text",
+                "text": "4 bd \u00b7 3 ba \u00b7 2,640 sq ft"
+              },
+              {
+                "name": "text_3",
+                "role": "text",
+                "text": "New"
+              },
+              {
+                "name": "text_4",
+                "role": "text",
+                "text": "Listed by Jordan Synthetic, Example Homes Group"
+              }
+            ]
+          },
+          {
+            "name": "listitem_3",
+            "role": "listitem",
+            "children": [
+              {
+                "name": "link_1",
+                "role": "link",
+                "text": "9015 Test Pattern Dr, Fictionville, CA 90001"
+              },
+              {
+                "name": "text_1",
+                "role": "text",
+                "text": "$615,500"
+              },
+              {
+                "name": "text_2",
+                "role": "text",
+                "text": "2 bd \u00b7 2 ba \u00b7 1,210 sq ft"
+              },
+              {
+                "name": "text_3",
+                "role": "text",
+                "text": "Price Reduced"
+              },
+              {
+                "name": "text_4",
+                "role": "text",
+                "text": "Listed by Riley Fixture, Sample Brokerage"
+              }
+            ]
+          },
+          {
+            "name": "navigation_2",
+            "role": "navigation",
+            "children": [
+              {
+                "name": "link_1",
+                "role": "link",
+                "text": "Next page"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "expect": {
+    "kind": "list",
+    "count": 3,
+    "auth_state": "not_required",
+    "row0": {
+      "address_contains": "Sample Grove",
+      "price": "$749,000",
+      "beds": "3",
+      "baths": "2",
+      "sqft": "1,850",
+      "status": "Open House",
+      "listed_by_contains": "Avery Fixture"
+    }
+  }
+}

@@ -355,3 +355,81 @@ connector card says today with no `cliAnythingStatus` document at all.
 4. Run each new task **once, manually**, and record the result. A task that "exists" has not run.
 5. Only after 7 consecutive correct runs does a task graduate L1 → L2.
 6. WhatsApp: add the `whatsappInboxState` watch row above; the task stays disabled until Steven's first manual run and the dedicated number exist.
+
+---
+
+## 6. `voice-reply-render` + `vanessa-imessage-inbox` — AMENDMENTS so Vanessa speaks off the dashboard
+
+Both tasks already exist, are installed, and run `*/10 * * * *` with `lastStatus ok`. Neither is
+being replaced. Each gets one block appended to its existing prompt. Background, the live-document
+evidence and the rules are in `integrations/vanessa-voice-everywhere.md` — read it before pasting.
+
+**Why:** `voiceReplyQueue` is written by the Command Deck page and by nothing else, so Vanessa only
+ever speaks while Steven is at the dashboard. On iMessage she answers in text, silently. The queue
+has held one test item since 2026-09-12 for exactly this reason.
+
+### 6a. Append to `vanessa-imessage-inbox`
+
+> **After your text reply has been sent — never before, and never instead — consider queuing it to
+> be spoken.** The text reply is the answer and must go out first; voice is additive and must never
+> block, delay or replace it. If anything below is in doubt, send the text and queue nothing.
+>
+> Queue it only if ALL of these hold:
+> - the spoken text is **40–700 characters** after stripping markdown, links and code;
+> - it is **not** a HALT answer (Needs-Steven packet, rate quote, eligibility call, negotiation,
+>   signature, legal or compliance interpretation) — those are read and kept, not heard once;
+> - it names **no client, address, loan amount or account number**. Audio of client data crossing a
+>   third-party messaging API is a disclosure the text reply is not. If it does, queue nothing and
+>   log `voice-skipped — client data` in your run note;
+> - the thread is **Steven's own number**. Never a client, never a group, never an unknown number.
+>
+> To queue: read `voiceReplyQueue` from `https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d`,
+> collection `state`, append ONE item to `items`, keep the newest 10, write the whole document back
+> as `data:{v:{items:[…]}}` pinned with `if_version`. Every document in this store is `{v:<value>}` —
+> no exceptions; a top level that is not a single `v` key is a bug to fix, not a shape to copy.
+>
+> ```
+> {id: "i" + <base36 ms> + <4 random base36>,   // "i" marks an iMessage-originated item
+>  who: "Vanessa",                               // or "Steve" if the twin answered
+>  text: "<the spoken text, 40–700 chars>",
+>  ts: "<actual UTC now, ISO-8601 with Z>",
+>  channel: "imessage",
+>  deliver: "imessage",
+>  replyTo: "<the conversation_id you just replied on>"}
+> ```
+>
+> Never write any other key of `voiceReplyQueue`, and never remove an existing item other than by
+> the newest-10 trim.
+
+### 6b. Append to `voice-reply-render`
+
+> **Deliver the audio when the queue item asks for it.** After you have written all
+> `voiceReply_<id>_<n>` parts and set `voiceReplyStatus.items[<id>].status = "ready"`, look at the
+> queue item's `deliver` field. If it is absent or null, stop — the dashboard plays it, exactly as
+> today. That path is unchanged.
+>
+> If `deliver` is `"imessage"`:
+> 1. **Concatenate the parts into ONE clip.** A thread of six voice notes is worse than one; Steven
+>    gets a single voice note per reply.
+> 2. Stage it: `inkbox_media_stage` with `source_type: "base64"`, `purpose: "imessage"`,
+>    `content_type: "audio/mpeg"`, `data` = standard base64 of the MP3 bytes — no data-URI prefix,
+>    no URL-safe alphabet, `=` padding present. The cap is 10 MiB; if the clip exceeds it, do not
+>    truncate mid-sentence — record `error: "clip too large for imessage"` and stop.
+> 3. Send it: `inkbox_imessage_send` with the item's `replyTo` as `conversation_id`, Steven's number
+>    as `recipient`, and `media: [{handle, content_hash}]` from the staging result. Send **no text**
+>    with it — the text reply already went out ten minutes ago and repeating it is noise.
+> 4. Record the outcome on the status document, whether it worked or not:
+>    `voiceReplyStatus.items[<id>].delivered = {channel: "imessage", at: "<actual UTC now>", ok: <bool>, error: "<verbatim, or null>"}`.
+>
+> Delivery failure is never silent and never fatal: set `ok:false` with the verbatim error, leave
+> `status: "ready"` alone so the dashboard can still play it, and carry on to the next item. Never
+> retry a send more than once — a duplicated voice note is worse than a missing one.
+>
+> `deliver` values other than `"imessage"` are not implemented. Record
+> `delivered: {channel: <value>, ok: false, error: "channel not implemented"}` and move on.
+
+### What proves it worked
+
+Text Vanessa something that takes more than a sentence. Within ~20 minutes: a text reply, then her
+voice on the same thread. If only the text arrives, read `state/voiceReplyStatus` — `status` says
+whether it rendered, `delivered.ok` says whether it sent, and `delivered.error` says which failed.
