@@ -50,6 +50,65 @@ fi
 
 pnpm install --no-frozen-lockfile
 pnpm run build:cli
+# Builds out/main + out/preload + out/renderer, the pieces `orca-dev serve`
+# needs to actually launch Electron as a headless runtime (out/cli alone is
+# just a thin client with nothing to talk to).
+pnpm run build:electron-vite
 
 chmod +x "$ORCA_SRC/out/cli/index.js"
 ln -sf "$ORCA_SRC/out/cli/index.js" /usr/local/bin/orca
+
+# Electron refuses to start as root without --no-sandbox / this env var; there
+# is no setuid sandbox helper available in this container anyway.
+export ELECTRON_DISABLE_SANDBOX=1
+
+ORCA_SERVE_LOG="/root/.orca-serve.log"
+ORCA_SERVE_PID_FILE="/root/.orca-serve.pid"
+
+runtime_reachable() {
+  orca-dev status --json 2>/dev/null | node -e '
+    let d = "";
+    process.stdin.on("data", c => (d += c));
+    process.stdin.on("end", () => {
+      try {
+        process.exit(JSON.parse(d).result?.runtime?.reachable ? 0 : 1)
+      } catch {
+        process.exit(1)
+      }
+    })
+  '
+}
+
+# `orca-dev serve` runs in the foreground forever, so only (re-)launch it if
+# nothing is already listening (re-running this hook on resume/compact should
+# not spawn a second runtime process).
+if ! runtime_reachable; then
+  nohup orca-dev serve --json >"$ORCA_SERVE_LOG" 2>&1 &
+  echo $! >"$ORCA_SERVE_PID_FILE"
+  for _ in $(seq 1 60); do
+    if grep -q '"type":"orca_server_ready"' "$ORCA_SERVE_LOG" 2>/dev/null; then
+      break
+    fi
+    sleep 1
+  done
+fi
+
+# Register this checkout with Orca so it shows up as a managed project,
+# without piling up duplicate entries across hook re-runs.
+if [ -n "${CLAUDE_PROJECT_DIR:-}" ]; then
+  repo_already_tracked=$(orca-dev repo list --json 2>/dev/null | node -e '
+    let d = "";
+    process.stdin.on("data", c => (d += c));
+    process.stdin.on("end", () => {
+      try {
+        const repos = JSON.parse(d).result?.repos ?? []
+        console.log(repos.some(r => r.path === process.env.CLAUDE_PROJECT_DIR) ? "1" : "0")
+      } catch {
+        console.log("0")
+      }
+    })
+  ')
+  if [ "$repo_already_tracked" != "1" ]; then
+    orca-dev repo add --path "$CLAUDE_PROJECT_DIR" --json >/dev/null 2>&1 || true
+  fi
+fi
