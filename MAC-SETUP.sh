@@ -46,7 +46,7 @@ whatsapp-plugin|*plugins?install?whatsapp*'
 STEPS_PREREQ='homebrew uv pipx node python-toolchain'
 STEPS_BRAIN='vendored-skills'
 STEPS_FR5A='codeburn graphify claude-code-setup headroom'
-STEPS_FR5B='whatsapp-cli omniroute scrapers-venv scrapling scrapegraphai'
+STEPS_FR5B='whatsapp-cli omniroute scrapers-venv scrapling scrapegraphai cli-anything'
 STEPS_ONDEMAND='strix ponytail prompts-chat screenshot-to-code agent-reach laya'
 ALL_STEPS="$STEPS_PREREQ $STEPS_BRAIN $STEPS_FR5A $STEPS_FR5B $STEPS_ONDEMAND"
 
@@ -478,6 +478,56 @@ if should_run scrapegraphai; then
     *) skipped "scrapegraphai $sg" ;;
   esac
   needs_steven "Ollama running with llama3.1:8b for the local, PII-safe model ('ollama list'). SGAI_API_KEY is the paid cloud service — not used; a cloud extractor would ship page text off the Mac."
+fi
+
+if should_run cli-anything; then
+  header cli-anything "agent-native CLI wrappers for the sites with no API — read-only (S1, mac-task-specs §4)"
+  # Telemetry is opt-OUT: cli_hub/analytics.py reports this machine's HOSTNAME, the CLI name, the hub
+  # version and which agent tool is running, on install/uninstall/launch/every call. Export it before
+  # the first cli-hub command so nothing in this run leaks it.
+  export CLI_HUB_NO_ANALYTICS=1
+  CA_DIR="$HOME/Applications/CLI-Anything"
+  if have cli-hub; then skipped "cli-hub $(ver cli-hub --version)"
+  elif have pipx || [ "$DRY_RUN" -eq 1 ]; then
+    if run pipx install cli-anything-hub; then installed "cli-anything-hub (cli-hub) 0.4.1 verified"
+    else failed "pipx install cli-anything-hub"; fi
+  else failed "pipx missing"; fi
+  # Verified non-interactive 2026-09-22, both exit 0. 'marketplace add' is idempotent and may exit
+  # non-zero when already declared, so it must not gate the install.
+  if have claude || [ "$DRY_RUN" -eq 1 ]; then
+    run claude plugin marketplace add HKUDS/CLI-Anything || true
+    if run claude plugin install cli-anything@cli-anything; then
+      installed "cli-anything Claude Code plugin (user scope) — /cli-anything, :list, :refine, :test, :validate"
+    else failed "claude plugin install cli-anything@cli-anything"; fi
+  else failed "claude CLI missing — the plugin half cannot install"; fi
+  # The browser harness is what every web target actually runs on (DOMShell).
+  if [ -x "$CA_DIR/.venv/bin/cli-anything-browser" ]; then skipped "cli-anything-browser already built"
+  elif have uv || [ "$DRY_RUN" -eq 1 ]; then
+    _ca_ok=1
+    if [ ! -d "$CA_DIR/.git" ]; then
+      run mkdir -p "$HOME/Applications" || _ca_ok=0
+      run git clone https://github.com/HKUDS/CLI-Anything "$CA_DIR" || _ca_ok=0
+    fi
+    if [ "$_ca_ok" -eq 1 ]; then
+      run uv venv "$CA_DIR/.venv" || _ca_ok=0
+      run uv pip install --python "$CA_DIR/.venv/bin/python" "$CA_DIR/browser/agent-harness" || _ca_ok=0
+    fi
+    if [ "$_ca_ok" -eq 1 ]; then
+      run mkdir -p "$BINDIR" || true
+      run ln -sf "$CA_DIR/.venv/bin/cli-anything-browser" "$BINDIR/cli-anything-browser" || true
+      installed "cli-anything-browser (DOMShell harness) + symlink in $BINDIR"
+    else failed "cli-anything-browser build"; fi
+  else failed "uv missing"; fi
+  ensure_env_file cli-anything <<'CAENV'
+HOMES_USER|homes.com sign-in, only if the harness cannot use the logged-in Chrome profile
+HOMES_PASS|homes.com password — keychain is preferred; never paste it into a prompt or a task
+SHOWINGTIME_USER|ShowingTime sign-in. If your MLS uses SSO or MFA, STOP: do not automate around it
+SHOWINGTIME_PASS|ShowingTime password — keychain preferred
+SHOWAMI_USER|Showami sign-in
+SHOWAMI_PASS|Showami password — keychain preferred
+CAENV
+  needs_steven "Put 'export CLI_HUB_NO_ANALYTICS=1' in your shell profile AND in the cli-anything runner task's env — this script only covers its own run. Then install the DOMShell Chrome extension and sign in to the target. Generation is the only interactive step: run /cli-anything for homes.com FIRST, then ShowingTime and Showami read-only. SkySlope and zipForms stay gated on the ECC security review (F-S1-10)."
+  say "      REFUSED here: any 'act click' / 'act type' verb in a generated harness — that is the entire write surface"
 fi
 
 # --------------------------------------------------------------------------- on a named need only

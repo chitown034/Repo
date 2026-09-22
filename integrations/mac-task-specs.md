@@ -200,23 +200,45 @@ described on the deck as "runs on schedule, writes nothing since 2026-09-17 — 
 
 ---
 
-## 4. `cli-anything-install` — ONE-SHOT, Steven-run
+## 4. `cli-anything-install` — install is SCRIPTABLE, only generation is Steven's
 
 | | |
 |---|---|
-| **Cron (PT)** | none — **on demand.** Create it disabled; delete it after a successful install |
+| **Cron (PT)** | none — **on demand.** The install half is a `MAC-SETUP.sh` step; this task covers the generation half. Create it disabled; delete it after the wrappers exist |
 | **Model** | Opus 5 (judgment: it installs software and reviews security) |
 | **Skill** | `cli-anything-connectors` |
 | **Tools** | `Bash` (`pip install cli-anything-hub`, `cli-hub …`, `cli-anything-browser …`) · Claude Code plugin commands · `Artifact` `write_db` for `cliAnythingStatus` |
 | **Env** | `CLI_HUB_NO_ANALYTICS=1` in the runner's shell profile, set **before the first command** |
 
-**This one cannot run headless.** `/plugin marketplace add` and `/plugin install` are interactive
-Claude Code commands and the generation step asks questions. Steven runs it in an interactive
-session on the Mac; the runner's only job afterwards is the weekly validation pass.
+**Correction, 2026-09-22 — the install is NOT interactive.** This spec previously said
+`/plugin marketplace add` and `/plugin install` are interactive Claude Code commands and that the
+whole thing had to be run by hand. That was wrong, and it is the sentence that kept this manual.
+Both work from the CLI, non-interactively, exit 0, in a throwaway HOME:
+
+```
+claude plugin marketplace add HKUDS/CLI-Anything
+  → "Successfully added marketplace: cli-anything (declared in user settings)"
+claude plugin install cli-anything@cli-anything
+  → "Successfully installed plugin: cli-anything@cli-anything (scope: user)"
+```
+
+So `pip install cli-anything-hub`, both plugin commands and the `browser` harness build are all
+**script-installable** and belong in `MAC-SETUP.sh` as an ordinary step. **The only genuinely
+interactive part is generation** — `/cli-anything` needs the target app open in front of it and asks
+questions. The plugin ships exactly five commands: `/cli-anything`, `/cli-anything:list`, `:refine`,
+`:test`, `:validate`. Draw the manual boundary there, precisely, not around the whole install.
+
+**Where Steven's involvement actually begins:**
+1. `./MAC-SETUP.sh` — hub, plugin, browser harness, all automatic, `CLI_HUB_NO_ANALYTICS=1` set. **Not his.**
+2. Chrome plus the DOMShell extension, and signing in to the target. **His, unavoidable.**
+3. `/cli-anything` per target, homes.com first. **His, interactive, one per site.**
+4. `:validate` and `:test` on each, then the read-only allow-list. Scriptable once the wrapper exists.
+
+The runner's only job afterwards is the weekly validation pass.
 
 **Verified 2026-09-22, in a cloud sandbox that installs nothing on the Mac:** `cli-anything-hub`
-**0.4.1** installs clean from PyPI; `pip install .` in `browser/agent-harness/` builds
-`cli-anything-browser`, which drives the **DOMShell** Chrome extension against a live logged-in
+**0.4.1** installs clean from PyPI; both `claude plugin` commands above run non-interactively;
+`pip install .` in `browser/agent-harness/` builds `cli-anything-browser`, which drives the **DOMShell** Chrome extension against a live logged-in
 Chrome session (needs Node/npx, Chrome running, the extension from the Web Store). Of **83 wrapper
 directories in the repo, none** is a real-estate, CRM, Lofty, ShowingTime, Showami, zipForms,
 SkySlope or homes.com entry, and `clianything.cc` is egress-blocked, so **every wrapper is generated
@@ -229,7 +251,7 @@ extension with page-content access** on a Chrome logged into Lofty, SkySlope and
 
 | # | Target | Gate before it starts | Why it sits here |
 |---|---|---|---|
-| 1 | **homes.com** | none — do this first | Public read-only data. Lowest blast radius; it proves the toolchain before anything with consequences is attempted |
+| 1 | **homes.com** | `./MAC-SETUP.sh` done, DOMShell installed, signed in | Public read-only data. Lowest blast radius; it proves the toolchain before anything with consequences is attempted |
 | 2 | **ShowingTime** | step 1 green | Read-only only. Every outward verb requests or confirms an appointment with **another agent or a seller** — writing to a client-facing system, HALT |
 | 3 | **Showami** | step 1 green | Read-only only. Posting a request **hires a licensed person and spends money** — the first line of the HALT list, twice over |
 | — | **Lofty** | — | **Not a CLI-Anything target.** It has a documented REST API and the bridge + CLI are installed; see §1. Browser wrapper is a fallback only, and only for something the API is shown not to expose |
@@ -244,13 +266,12 @@ them at once. Carry that as a literal **Bash allow-list on the task**, not as an
 behave. `page open` is allowed but URL-allow-listed per target: a crafted URL can itself perform an
 action on some sites.
 
-**Prompt (Steven pastes this into Claude Code on the Mac — step 1)**
-> Use the `cli-anything-connectors` skill. First `export CLI_HUB_NO_ANALYTICS=1` — CLI-Hub's
-> telemetry is opt-out and reports this machine's hostname. Then install CLI-Anything:
-> `pip install cli-anything-hub`, `/plugin marketplace add HKUDS/CLI-Anything`,
-> `/plugin install cli-anything`, install the DOMShell Chrome extension, and `pip install .` from
-> `browser/agent-harness/`. Verify with `cli-hub list` and `cli-anything-browser --help`. Then
-> generate the **homes.com** wrapper first (lowest risk, public data) with `/cli-anything`, run
+**Prompt (Steven pastes this into Claude Code on the Mac — step 3, after `./MAC-SETUP.sh`)**
+> Use the `cli-anything-connectors` skill. `./MAC-SETUP.sh` has already installed the hub, the
+> Claude Code plugin and `cli-anything-browser`, with `CLI_HUB_NO_ANALYTICS=1` set — confirm with
+> `cli-hub list` and `cli-anything-browser --help`, and if either fails, say so and stop rather than
+> installing anything by hand. I have installed the DOMShell Chrome extension and I am signed in.
+> Then generate the **homes.com** wrapper first (lowest risk, public data) with `/cli-anything`, run
 > `/cli-anything:validate` and `/cli-anything:test` on it, and confirm a read recipe returns
 > parseable JSON. Read-only verbs only — no write, submit, send, sign or delete verb on any target
 > without my explicit written approval for that verb; `act click` and `act type` must not appear in
@@ -292,7 +313,7 @@ wrapper and updates `cliAnythingStatus`. A wrapper whose output starts contradic
 `status:"failed"` and is disabled, not patched quietly. It also re-asserts the read-only build: if
 `act` has appeared in any harness's `--help`, that wrapper is disabled the same run and escalated.
 
-**Run now once to prove it:** after step 1, run `cli-anything-browser session status` and one
+**Run now once to prove it:** after `./MAC-SETUP.sh`, run `cli-anything-browser session status` and one
 homes.com read recipe by hand and keep the output. Until that exists the honest deck line is
 "CLI-Anything not installed — spec written, nothing generated", which is what the Showings panel's
 connector card says today with no `cliAnythingStatus` document at all.

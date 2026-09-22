@@ -23,18 +23,27 @@ is on Steven's Mac:**
 - **No committed credential** anywhere in the repo. `SECURITY.md` names prompt-injected agents as a
   threat model, which is the right instinct for a tool that reads attacker-controlled DOM.
 
-## Install (on the Mac, once — interactive, Steven runs it)
+## Install — scriptable. Only generation is interactive.
+
+The install half needs nobody. Verified non-interactive, exit 0, 2026-09-22:
 ```
-export CLI_HUB_NO_ANALYTICS=1          # FIRST. See "Two security facts" below.
-pip install cli-anything-hub           # 0.4.1
-cli-hub list                           # self-test: exits 0, returns the registry
-# install the DOMShell extension from the Chrome Web Store, then:
-pip install .                          # from browser/agent-harness/ → cli-anything-browser
+export CLI_HUB_NO_ANALYTICS=1                        # FIRST. See "Two security facts" below.
+pip install cli-anything-hub                         # 0.4.1
+claude plugin marketplace add HKUDS/CLI-Anything     # → "Successfully added marketplace: cli-anything"
+claude plugin install cli-anything@cli-anything      # → "Successfully installed plugin (scope: user)"
+pip install .                                        # in browser/agent-harness/ → cli-anything-browser
+cli-hub list && cli-anything-browser --help          # self-test: both exit 0
 ```
-In Claude Code on the Mac: `/plugin marketplace add HKUDS/CLI-Anything` then
-`/plugin install cli-anything`. Generation and refinement:
-`/cli-anything <path-or-repo>` · `/cli-anything:refine <path> "<focus>"` ·
-`/cli-anything:test <path>` · `/cli-anything:validate <path>`.
+All of that belongs in `MAC-SETUP.sh` as an ordinary step. **Do not write that it must be run by
+hand** — the claim that `/plugin` is interactive is wrong and it is what kept this manual.
+
+What actually needs Steven, in order: **(1)** `./MAC-SETUP.sh`; **(2)** Chrome plus the DOMShell
+extension, and signing in to the target — unavoidable; **(3)** `/cli-anything` per target, homes.com
+first — interactive, one per site, because generation needs the app open in front of it;
+**(4)** `:validate` and `:test` on each, then the read-only allow-list.
+
+The plugin ships exactly five commands: `/cli-anything` (generate) · `/cli-anything:list` ·
+`:refine <path> "<focus>"` · `:test <path>` · `:validate <path>`.
 Always pass `--json` — agents parse, they don't read.
 
 ### Two security facts that belong in the runbook, not a footnote
@@ -201,7 +210,7 @@ has no equivalent of the `act` allow-list, so the read-only guarantee would have
 scratch. A CTO-Innovator proposal, not a shipped path — do not describe it as connected.
 
 ## The one line Steven has to do
-**On the Mac, in Claude Code: `export CLI_HUB_NO_ANALYTICS=1`, `pip install cli-anything-hub`,
-`/plugin marketplace add HKUDS/CLI-Anything`, `/plugin install cli-anything`, install the DOMShell
-Chrome extension — then say "generate the homes.com wrapper". Nothing can be installed on the Mac
-from a cloud session.**
+**Run `./MAC-SETUP.sh` on the Mac — hub, plugin and browser harness install themselves. Then install
+the DOMShell Chrome extension, sign in to homes.com, and in Claude Code say "generate the homes.com
+wrapper". Generation is the only interactive step, and it is one per site. Nothing can be installed
+on the Mac from a cloud session.**
