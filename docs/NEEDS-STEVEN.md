@@ -8,6 +8,27 @@ an account change, or a decision. The corrected prompts and the checks that prov
 written; each line names the file. Everything else from today is either done or queued to the
 integrator.
 
+## Disclosure — read this one first
+
+0. 🔴 **15 named client leads were published in the Command Deck and are still in its version
+   history.** Each was a real first+last name with a stage and two timestamps, pasted from the Zoho
+   kanban on 2026-09-14 and baked into the page's own source as `ZH_SEED`. Because no `zohoLeads`
+   document exists, the board fell back to that seed, so the names rendered for anyone who could
+   open the artifact — and they sat in the page source whether the board was opened or not. This is
+   the same defect already fixed in the ISA Portal; this panel was missed at the time.
+   **Already done, no action needed:** the rows were removed and the deck republished as **v148** on
+   2026-09-23, verified by re-reading the page; the aggregate stage counts were kept, because
+   aggregates are safe to report where individuals are not. The `isaKpi` document, which also named
+   a client in a rendered KPI note, was corrected in the store the same night (now version 2).
+   **What is yours, and why only you:** (a) **decide what happens to versions v147 and earlier** —
+   artifact version history is retained and still contains the names; an agent can delete the whole
+   artifact but cannot remove one version, and deleting it would destroy the URL and the 174-document
+   store, so this is a judgement call, not a chore; (b) **the weekly deck backups** under
+   `Documents/AI-Ecosystem-Backups/` were taken while the seed was live and hold the same names —
+   decide whether those are purged; (c) decide whether anyone outside you has ever had access to the
+   artifact link, which determines whether this was an exposure or only a latent one.
+   · F-P4-01.
+
 ## Clocked — in deadline order
 
 1. ⏱ **Before Wed 2026-09-23 12:20 UTC (05:20 PT)** — the Mac task `strava-daily-sync` writes `stravaSnapshot` without the `{v:…}` wrapper and will overwrite today's hand repair (document v9) on its next run · the task prompt lives only on your Mac · **paste** `routines/mac-task-repairs.md` §1 over the task's prompt, then after the 12:20 run ask a Mac session the one-line check in §1 · F-W2-01, F-M5-01, F-M5-02, F-FR2-15, F-E5-02, F-E7-03, F-E8-29.
