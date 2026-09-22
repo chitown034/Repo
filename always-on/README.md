@@ -3,16 +3,27 @@
 What keeps the brain current while nobody is watching. Everything here runs under **`claude-runner`**
 on the Mac (headless, pre-approved tools, 60 tasks).
 
-**Status source:** the `runnerStatus` doc, `syncedAt 2026-09-22T04:05:04Z`. Crons are Mac local (PT).
+> **Everything on this page that is broken has a written repair in
+> [`routines/mac-task-repairs.md`](../routines/mac-task-repairs.md)** — one section each, with the
+> corrected prompt or command already written and the check that proves it worked. This page says
+> *what is wrong*; that one says *what to paste*. **Item 1 has a deadline: 2026-09-23 12:20 UTC.**
+
+**Status source:** the `runnerStatus` doc, `syncedAt 2026-09-22T07:06:12Z`. Crons are Mac local (PT).
 "Last end" is the last completion the runner recorded — **not** proof that today's slot ran.
 
-> **`runnerStatus` itself is stale, and it understates the runner.** Its newest entry is
-> 2026-09-21 21:05 PT, yet `vanessa-discord-inbox` runs every 5 minutes — so the doc stopped being
-> written ~9.5 h before this audit, not the runner. Two documents prove the runner ran **today**:
-> `toolkitSnapshot` stamped `2026-09-22T13:15:45Z` against `toolkit-deck-sync`'s 06:15 PT slot
-> (= 13:15 UTC, exact), and `knowledgeFabric` stamped `04:05:04Z` against `fabric-deck-sync`'s
-> 21:05 PT slot. Both tasks are marked `limited` / `error` below from a Sep 16–17 log.
-> **Read every "Last end" in this file as a floor, never as the truth.** Audited 2026-09-22 13:32 UTC.
+> **Corrected 2026-09-22 14:40 UTC: `runnerStatus` is not dead. Its clock is.** The earlier reading
+> on this page — that the doc stopped being written at `04:05:04Z`, ~9.5 h before the audit — was
+> wrong, and it was wrong in a way worth naming, because it made a live machine look like a dead one.
+> `runnerStatus` (v8) and `knowledgeFabric` (v7) carry the **identical** writer stamp
+> `2026-09-22T07:06:12Z` — one `run.sh fabric` pass wrote both. The **server** recorded that write at
+> `updatedAt 2026-09-22T14:07:22.431452Z`. The gap is **7 h 01 m**, exactly the PDT offset: the
+> runner stamps **Mac-local Pacific time and appends a `Z`**. So that doc was written at ~14:06 UTC,
+> about an hour before the audit, and its newest `lastEnd` — `vanessa-discord-inbox 07:05:00` PT
+> (= 14:05 UTC) — is one minute older than the write.
+>
+> **Read every "Last end" in this file as a floor, and assume every writer stamp may be seven hours
+> behind the true write time until the fix in `routines/mac-task-repairs.md` §2 is applied.** A doc's
+> own server `updatedAt` is the only timestamp here that is unambiguously UTC.
 
 ## The brain's own tasks
 
@@ -81,6 +92,7 @@ leave, never by their run status — three writers and one read-only watchdog:
 | Command Deck ↔ ISA Portal — Pipeline Sync (live, writes) | 04/10/16/22 daily | `reClients`, `pipeline`, `isaGradingScores`, `isaKpiSopActuals`, `isaScorecard` on both stores; `ciLog` | **working** — ran 10:09Z; `reClients` and `pipeline` carry 2 rows each and three `pipeline-sync — ok` rows are in `ciLog`. Note `isaScorecard` is `[]` on both sides — equal, so the sync is honest, but there is nothing in it yet |
 | ISA line — reply check & escalation ladder | weekdays 14:30 | `isaLadder`, at most one `isaLine` message and one `twinQueue` item per streak, `ciLog` | **working, bad stamp** — ran 12:59Z; `isaLadder.rung: "halted"`, packet `tw_isa_seat_20260922`, two `isa-ladder — halted` rows in `ciLog`. But `isaLadder.updatedAt` reads `2026-09-22T14:35:00Z` — **an hour in the future** at audit time. The proof-of-life field is wrong; fix it to the real write time |
 | Backup verification watchdog | Sun 17:30 | nothing — read-only by design | **not yet due** — created 2026-09-22, no run recorded, first firing Sun 2026-09-27 17:35Z. Unproven, not failing. Its spec's "expected first result" (`lastBackup 2026-09-14`, "if it returns CURRENT the watchdog is wrong") is now stale — the Sep 22 backup is real, so CURRENT will be the correct verdict |
+| Feed freshness watchdog | daily 16:12 | `feedFreshness`, one `ciLog` row | **unproven** — created 2026-09-22, cron `12 16 * * *`, **no run recorded** and no `feedFreshness` document in `state` yet (173-doc listing, 14:20 UTC). First firing 2026-09-22T16:12Z. It exists because `r9-feed-freshness-sweep` never ran and five feeds rotted unnoticed. It is not working until that run leaves a document — check for `feedFreshness` after 16:12Z, not the routine's status |
 
 The old web-created "Pipeline Sync" routine (`trig_018BSAYiYzvtyaUkpAY4SnqE`) reports success and
 writes nothing; an agent cannot disable it. It fired again at 13:08Z today and reported SUCCEEDED.
@@ -93,20 +105,35 @@ These are the ones that pass their own status check and fail that test.
 
 | Thing | Schedule | Should write | The document actually says | Verdict |
 | --- | --- | --- | --- | --- |
-| `r8-apple-health-snapshot` | `10 5,21 * * *` PT | `appleHealth` | `syncedAt 2026-09-13T23:15:59Z` — 9 days stale across ~18 slots | **lying** — runs, ingest daemon is down, writes nothing. Known since 2026-09-17 |
-| `health-full-analysis` | `25 5 * * *` PT | `healthAnalysis` | `generatedAt 2026-09-13T01:08:00Z` | **silent** — nothing to analyse while `appleHealth` is frozen |
-| `r4-quantvue-sync` | `20 23 * * 1-5` PT | a QuantVue doc | **no such doc exists in `state`** — nothing to check it against | **silent** since 2026-09-16 |
-| Strategy cycle | weekly | `strategySnapshot` | `syncedAt 2026-09-16T03:26:59Z` | **silent** — four runs missed |
+| `r8-apple-health-snapshot` | `10 5,21 * * *` PT | `appleHealth` | newest source row ends `2026-09-13 00:00:00` — 9 days stale across ~18 slots | **lying** — live `runnerStatus` says `lastStatus "ok"`, `lastEnd 2026-09-22T05:12:04`. It is **not** erroring as recorded here before; it reports ok twice a day and writes nothing, which is worse. Retire it — `routines/mac-task-repairs.md` §3 |
+| `health-full-analysis` | `25 5 * * *` PT | `healthAnalysis` | `generatedAt 2026-09-13T01:08:00Z` | **silent** — nothing to analyse while `appleHealth` is frozen. Also reports `ok`, `lastEnd 2026-09-22T05:32:45` |
+| `r4-quantvue-sync` | `20 23 * * 1-5` PT | **`strategySnapshot`** — not a separate QuantVue doc | `syncedAt 2026-09-16T03:26:59Z` | **refused, not silent** — live `runnerStatus` says `lastStatus "refused"`, `lastEnd 2026-09-22T01:19:43`. It runs on schedule and a tool or path is denied. `mac-task-descriptions.md:40` names `strategySnapshot` as its output; a 173-doc listing confirms no separate QuantVue doc was ever expected. §4 |
+| Strategy cycle — `trig_011CXFHCT3hou6uaCfb5rWkC` | weekdays 22:00 UTC | `strategySnapshot` | `syncedAt 2026-09-16T03:26:59Z` | **lying** — SUCCEEDED 2026-09-21T22:03:34Z and moved nothing. Its own prompt: *"Your only job is to fetch real data and report it … FINAL MESSAGE ONLY"*. No write step exists in it. `http_api`, so **only Steven can edit it**. Corrected prompt in §5 |
 | `strava-daily-sync` | `20 5 * * *` PT (= 12:20 UTC) | `stravaSnapshot` as `{v:…}` | wrote it **bare** at 12:32 UTC today, no `v` wrapper — repaired by hand the same afternoon | **corrupting** — see below |
-| Old "Pipeline Sync" (`trig_018BS…`) | 01/07/13/19 UTC | nothing (research-only prompt) | green row, no document ever moved | **lying** — only Steven can disable it |
+| Old "Pipeline Sync" (`trig_018BS…`) | 01/07/13/19 UTC | nothing (research-only prompt) | green row, no document ever moved | **lying** — only Steven can disable it. Disable retried and refused again 2026-09-22 (`created_via http_api`); fired 13:08:44Z, SUCCEEDED, moved nothing. Third confirmation |
+
+### Nine routines that are not running at all — one cause, not nine
+
+Separate from the table above, which is about routines that run and write nothing. These nine never
+reach their prompt. Four `http_api` FAILED in **5.5–6.0 s**, three `meta_mcp` FAILED in
+**9.6–10.5 s**, and two ABANDONED runs have no `finished_at` at all. Routines with different
+prompts, tools and targets cannot coincidentally die at the same point in their lifecycle, and the
+three `meta_mcp` ones have Monday, Tuesday and Wednesday crons yet all last ran on Friday 2026-09-18
+within two hours of each other. Everything that fired on 2026-09-22 succeeded and ran for 1 m 36 s
+to 8 m 47 s, so the platform is healthy now. **Do not rewrite nine prompts** — the next natural
+firing is the free test. Full timing table, the two genuine latent defects, and the four links only
+Steven can use: `routines/mac-task-repairs.md` §7.
 
 ### The `stravaSnapshot` writer — P1, open
 
 Every doc in `state` is `{v:<value>}`. `strava-daily-sync` writes the body bare
 (`{activities, syncedAt, via}`), which the page's reader tolerates and nothing else does. It was
-repaired to `{v:{…}}` on 2026-09-22 (now version 9) and **will be re-broken on the next 05:20 PT
-run**. The task prompt lives on the Mac, so only Steven can fix it; the repo-side specs that told
-agents the bare shape was correct have been corrected. A 172-doc sweep of `state` on 2026-09-22
+repaired to `{v:{…}}` on 2026-09-22 (now version 9, re-read 14:05 UTC — still correct) and **will be
+re-broken on the next 05:20 PT run**. That run is **2026-09-23 12:20 UTC, and it is a deadline**: the
+corrected prompt is written out ready to paste in `routines/mac-task-repairs.md` §1, and if it is not
+pasted before then the repair is lost and the cycle repeats. The task prompt lives on the Mac, so
+only Steven can apply it; the repo-side specs that told agents the bare shape was correct have been
+corrected. A 172-doc sweep of `state` on 2026-09-22
 found exactly one other malformed doc: `marketingQueue`, which carries both `v` (3 rows, live) and
 an orphaned `data.v` (2 rows, frozen 2026-09-15) — a writer that passed the API envelope as the
 document body.

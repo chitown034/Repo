@@ -13,7 +13,7 @@ Trust levels: **L1** report-only · **L2** drafts for Steven's approval · **L3*
 |---|---|---|---|---|
 | **Lofty** (real-estate CRM) | `lofty-bridge` MCP (read-only) + `lofty-cli` on the Mac; REST `api.lofty.com/v1.0`, `Authorization: token <key>` | Bridge and CLI installed (status RUN, MCP server `lofty` connected). **API key presence unverified from the cloud — no successful pull yet.** Composio has no Lofty toolkit. | **In Lofty → Settings → Integrations → API, generate an API key and put it in `~/.config/lofty/.env` on the Mac as `LOFTY_API_KEY=…`, then run `lofty-crm-sync` once.** | L1 → L2 after 7 clean runs |
 | **Zoho CRM** (mortgage system of record) | Composio toolkit `zoho`, account `zoho_talite-spike` | Connection **ACTIVE**, but every CRM call returns **HTTP 403 NO_PERMISSION `Crm_Implied_Api_Access`** (reproduced on `ZOHO_LIST_LEADS` and `ZOHO_LIST_DEALS`, 2026-09-22 08:17 UTC). Deck shows the **Sep 14 paste**, 48 leads. | **In Zoho CRM → Setup → Security Control → Profiles → the connected user's profile, enable "Zoho CRM API Access".** | L1 → L2 once unblocked |
-| **CLI-Anything** (homes.com, SkySlope, zipForms) | `cli-anything-hub` + Claude Code plugin; DOMShell MCP browser path for sites with no API | **Not installed on the Mac**, but no longer manual: the hub, the plugin and the browser harness are all a scripted step (`MAC-SETUP.sh --only cli-anything`). The earlier claim that the install is interactive was wrong (F-S1-18). Hub registry has no CRM or real-estate entries (README checked 2026-09-22; `clianything.cc` egress-blocked). | **Run `./MAC-SETUP.sh` (hub, plugin and browser harness install non-interactively), install the DOMShell Chrome extension and sign in, then say "generate the homes.com wrapper" — generation is the only interactive step.** | L1, read-only |
+| **CLI-Anything** (homes.com, SkySlope, zipForms) | `cli-anything-hub` + Claude Code plugin; DOMShell MCP browser path for sites with no API | **Not installed on the Mac**, but no longer manual: the hub, the plugin and the browser harness are all a scripted step (`MAC-SETUP.sh --only cli-anything`). The earlier claim that the install is interactive was wrong (F-S1-18). Hub registry has no CRM or real-estate entries (README checked 2026-09-22; `clianything.cc` egress-blocked). | **Run `./MAC-SETUP.sh` (hub, plugin and browser harness install non-interactively), put `export CLI_HUB_NO_ANALYTICS=1` in your shell profile **and** the runner task's env — the script only covers its own run — install the DOMShell Chrome extension and sign in, then say "generate the homes.com wrapper" — generation is the only interactive step.** | L1, read-only |
 | **Apple Health** | New: Claude iOS → Notion "Health Log" → `health-notion-sync` → `appleHealth` doc. Old: Health Auto Export → daemon :8765 → DuckDB → `apple-health` MCP | Old pipeline **down** — daemon not responding, doc 9 days stale (`last_received 2026-09-13 14:30:40`), `r8-apple-health-snapshot` errors since 2026-09-17. New path: **spec written, first phone run pending.** | **Open Claude on your iPhone, say "update my health stats in Notion", and approve the Apple Health read + Notion write prompts once.** | L2 |
 
 ## Everything else
@@ -53,7 +53,16 @@ Trust levels: **L1** report-only · **L2** drafts for Steven's approval · **L3*
 4. **Deck-only records survive every sync.** A lead carrying `local:true` that the CRM does not
    return is carried forward untouched.
 5. **Credentials live in the Mac keychain or a `.env` the tool reads itself** — never in a prompt,
-   a task definition, a skill file, a log, a finding or the deck.
+   a task definition, a skill file, a log, a finding or the deck. **One location per secret, and the
+   file is named after the tool that reads it** (`~/.config/<tool>/.env`, which is what
+   `MAC-SETUP.sh`'s `ensure_env_file` creates). Decided 2026-09-22: the five browser-harness logins
+   — homes.com, ShowingTime, **Showami**, SkySlope, zipForms — live in the keychain under
+   `cli-anything.<target>`, or in **`~/.config/cli-anything/.env`**. The `~/.config/showing-sync/.env`
+   path named on the deck's `SH_INTEGRATIONS` row is **superseded**: nothing creates it and nothing
+   reads it, the credential is a CLI-Anything harness login rather than anything `showing-sync`
+   signs in with, and `MAC-SETUP.sh` and `mac-verify.sh` both already create and check the
+   `cli-anything` file. Two locations for one secret is how a secret ends up in the wrong one
+   (F-S1-17).
 6. **Read-only until Steven approves a write verb, per system, in writing.** Write-back to Lofty and
    Zoho is an L2 proposal, not built.
 7. **Trust graduation is earned:** L1 → L2 → L3 only after 7 consecutive correct runs. Never

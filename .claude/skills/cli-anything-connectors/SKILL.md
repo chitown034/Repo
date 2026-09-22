@@ -150,6 +150,11 @@ target**, and on the browser path each is an `act` call, so all are denied by th
   `HOMES_PASS`, `SHOWINGTIME_USER`/`SHOWINGTIME_PASS`, `SHOWAMI_USER`/`SHOWAMI_PASS`,
   `SKYSLOPE_USER`/`SKYSLOPE_PASS`, `ZIPFORMS_USER`/`ZIPFORMS_PASS`. `SHOWAMI_API_KEY` is reserved and
   unused — add it only if Steven's account is ever granted Showami API automation.
+- **`~/.config/cli-anything/.env` is the only location for these five, Showami included** (decided
+  2026-09-22, `integrations/CONNECTIONS.md` rule 5). `MAC-SETUP.sh` creates that file and
+  `mac-verify.sh` checks it for `HOMES_USER`, `SHOWINGTIME_USER` and `SHOWAMI_USER`. The
+  `~/.config/showing-sync/.env` path still shown on the deck's `SH_INTEGRATIONS` row is superseded —
+  nothing creates or reads it. If you are about to put a Showami login anywhere else, stop.
 - **Lofty:** `~/.config/lofty/.env`, variable `LOFTY_API_KEY`, from Lofty → Settings → Integrations → API.
 - Never in a prompt, a task definition, a skill file, a log, a finding or the deck. If a harness
   wants a password typed into a prompt, that harness is wrong.
