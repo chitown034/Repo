@@ -1,7 +1,21 @@
 # Apple Health → Claude iOS → Notion → Command Deck
 
 **Baseline 2026-09-12 · verified 2026-09-22.** Owner: Integration Engineer (under CTO Innovator).
-Status: **spec written, first phone run pending.** Nothing below is live yet.
+
+## What is live, precisely (2026-09-22)
+
+| Piece | State |
+|---|---|
+| Notion database **Health Log** | **created and verified.** `https://app.notion.com/p/bc71c45aac934a4f8aeddc54345136ef` · database id `bc71c45aac934a4f8aeddc54345136ef` · data source `af1ceecf-fd60-4d95-b0e9-61fa0f49c9c4` · 23 properties · Steven's **private** workspace |
+| Rows in it | **zero.** Read back empty by a read-only query on 2026-09-22. No row exists until Steven runs the phone step |
+| Deck card `#healthNotionCard` | **live** — `renderHealthNotionStatus()` renders it from the `healthNotionSync` doc |
+| Deck doc `healthNotionSync` | **written** — carries the url + both ids, `rows: 0`, `status: "awaiting-first-phone-run"` |
+| The "via" badge label | **done** — `notion-health-log` and `scheduled-sync` now render as themselves |
+| Mac task `health-notion-sync` | **spec only.** Not installed, not scheduled, never run — `integrations/mac-task-specs.md` §3 |
+| `appleHealth` doc (the twelve tiles) | **untouched — still the dead daemon's data.** `meta.last_received 2026-09-13 14:30:40`, `via:"scheduled-sync"`, `read:"daemon"`, 11 metric keys, `daily` days 2026-09-06 → 2026-09-12, 3 workouts, `sleep: []` |
+
+**The database and the card are real; the sync and the data are not.** The tiles keep showing
+2026-09-13 with an honest age until Steven's first phone run *and* the Mac task both exist.
 
 ## Source, honestly
 The recipe this adapts is Jenna Redfield, *"I Built an Automated Health Dashboard in Claude (Apple
@@ -38,13 +52,15 @@ Apple Health (iPhone)
 Nothing on the deck changes shape. `ahSnapshot()` / `renderAppleHealth()` keep reading the same doc;
 only who fills it changes.
 
-## Notion "Health Log" database
-One page per calendar day, `America/Los_Angeles`. Claude can create this itself via the Notion
-connector (`notion-create-database`) inside Steven's private workspace — he does not have to build it.
+## Notion "Health Log" database — schema read back from the real database, 2026-09-22
+One page per calendar day, `America/Los_Angeles`. It already exists (ids above); it was created
+through the Notion connector inside Steven's private workspace. **The table below is the live
+schema, read back out of data source `af1ceecf-…`, not the plan.** All 23 properties:
 
 | Property | Type | Unit | Notes |
 |---|---|---|---|
-| Date | Date | — | the row key; one row per day |
+| **Day** | **Title** | — | `YYYY-MM-DD`. **This is the row key** — the title property, not `Date` |
+| Date | Date | — | the calendar day the row covers; the sortable/filterable copy of `Day` |
 | Steps | Number | count | day total |
 | Active Energy | Number | kcal | day total |
 | Exercise Minutes | Number | min | day total |
@@ -52,17 +68,29 @@ connector (`notion-create-database`) inside Steven's private workspace — he do
 | Walk+Run Distance | Number | mi | day total |
 | Resting HR | Number | bpm | daily value |
 | HRV | Number | ms | SDNN, daily average |
-| VO2 Max | Number | mL/min·kg | latest reading |
+| VO2 Max | Number | mL/min/kg | latest reading |
 | Blood Oxygen | Number | % | daily average |
 | Body Temperature | Number | degF | daily average |
 | Weight | Number | lb | latest reading |
 | Mindful Minutes | Number | min | day total |
 | Sleep Total | Number | min | asleep minutes |
-| Sleep Deep / REM / Core / Awake / In Bed | Number | min | five separate properties |
+| Sleep Deep / Sleep REM / Sleep Core / Sleep Awake / Sleep In Bed | Number | min | five separate properties, those exact names |
 | Workouts | Rich text | JSON | `[{type,start_local,minutes,kcal,avg_hr,max_hr,source}]` |
-| Source | Select | — | `claude-ios` |
+| Notes | Rich text | — | whatever the phone flagged. Numbers and flags only — **no medical interpretation** |
+| Source | Select | — | `claude-ios` · `health-auto-export` · `manual` |
+
+**Three things the real database says that the first draft of this table did not** (the real
+database wins; this table has been corrected to match it):
+1. The row key is the **`Day` title property**, not `Date`. `Date` exists as well — both are written,
+   and the sync keys off `Day`, falling back to `Date` if a row's title is blank.
+2. There is a **`Notes`** rich-text property. It is not mapped to any tile and is never parsed.
+3. **`Source` has three options**, not one: `claude-ios`, `health-auto-export`, `manual`.
 
 **Empty means unknown.** A metric the phone cannot read leaves the property blank. Never a zero.
+
+Querying it in SQL mode: the date property is exposed as the expanded columns
+`"date:Date:start"` / `"date:Date:end"` / `"date:Date:is_datetime"` — `Date` itself is not queryable
+by its plain name. Rows mode sorts on `Date` normally.
 
 ## Mapping into the `appleHealth` doc (what the tiles actually read)
 The tiles bucket metrics by regex into twelve categories and look up display labels by metric key,
@@ -84,6 +112,9 @@ so the **key names below are not negotiable** — they are what `AH_LABELS` / `A
 | Mindful Minutes | `mindful_minutes` | Mindfulness | yes |
 | Sleep * | `sleep[]` rows, not a metric | Sleep | — |
 | Workouts | `workouts[]` rows | Activity | — |
+| **Day** / **Date** | not a metric — the `daily` day key and each row's date | — | — |
+| **Notes** | **not mapped.** Never parsed, never rendered, never analysed | — | — |
+| **Source** | not mapped — provenance only | — | — |
 
 Shapes, copied from what the page already parses:
 - `metrics[key] = {metric, unit, latest, latest_at, avg7, min7, max7, sum7, n7, days7, pavg7, psum7,
@@ -96,22 +127,57 @@ Shapes, copied from what the page already parses:
   stale-health alert (warn past 2 days, critical past 7).
 - `syncedAt` ISO, `via:"notion-health-log"`, `read:"notion"`.
 
-**One known display nit, flagged rather than hidden:** the "via" badge only special-cases
-`mac-app` and `excel-import`; any other value renders as "Claude session". `notion-health-log` will
-therefore read "via Claude session" until someone adds the label. Honest, just imprecise — a P3 for
-whoever owns panel-wellness. Do not change the doc key to game the badge.
+**Three keys the live doc carries that this spec did not list** (read back 2026-09-22, doc version 11):
+`dailyDays` (integer, currently `7` — the count of distinct days in `daily`), `records` (object,
+currently `{}`) and `sources` (array of `{metric, source, n, first_at, last_at}`, currently 12 entries
+naming the devices the daemon ingested from). A writer that emits only the documented keys
+**silently deletes all three.** Carry them forward; recompute `dailyDays` from the merged `daily`; append to `sources`
+rather than replacing it.
+
+**Timestamp formats are not ISO and must not be "fixed" into ISO.** As the doc actually stores them:
+`metrics[].latest_at`, `workouts[].start` and `workouts[].start_local` are `"YYYY-MM-DD HH:MM:SS"`
+(a space, no `T`, no `Z`); `metrics[].earliest` is a bare `"YYYY-MM-DD"`; `meta.last_received` is
+`"YYYY-MM-DD HH:MM:SS.ffffff"`; only `syncedAt` is ISO-with-`Z`. The merge tie-break compares
+`latest_at` **as a parsed timestamp**, never as a raw string — mixing a space format and a `T`
+format in one field makes a lexicographic compare quietly wrong.
+
+**The display nit is fixed.** The "via" badge used to special-case only `mac-app` and `excel-import`,
+so every other value rendered as "Claude session" and `notion-health-log` would have read "via Claude
+session". **The labels were added on 2026-09-22** — `notion-health-log` and `scheduled-sync` now each
+render as themselves. Nothing was renamed to game the badge: the doc key is still `via:"notion-health-log"`,
+which is what the sync writes. Any *further* `via` value added later needs its own label or it falls
+back to "Claude session" again.
 
 ## Merge rule (the daemon's history must survive)
 `health-notion-sync` reads the existing doc first and keeps every `daily` day, `sleep` night (by
 `night`) and `workout` (by `id`) that Notion did not supply. For a metric in both, the entry with
-the newer `latest_at` wins. The Sep 6–13 daemon history stays on the tiles.
+the newer `latest_at` wins (compared as a parsed timestamp — see the format note above).
+
+What that has to protect, as the doc stands today: the `daily` days **2026-09-06 → 2026-09-12**
+(`meta.last_received` is 2026-09-13; the daily buckets stop at the 12th), the 3 existing workouts by
+their uppercase-UUID `id`, and the **five metric keys Notion can never supply** —
+`headphone_audio_exposure`, `walking_asymmetry_percentage`, `walking_double_support_percentage`,
+`walking_speed`, `walking_step_length`. Those five exist only because the daemon wrote them; a sync
+that rebuilds `metrics` from Notion alone erases them. Plus `dailyDays`, `records` and `sources`.
+
+If Notion returns **no new rows**, the correct action is to write nothing to `appleHealth` at all —
+not a re-stamped copy of itself. Only `healthNotionSync` moves.
 
 ## Daily routine (Steven, ~20 seconds)
-> Open Claude on the iPhone → **"Update my health stats in Notion."** → approve the Apple Health
-> read and the Notion write → done.
+> **On the iPhone:**
+> 1. Open **Claude**.
+> 2. Say: **"Update my health stats in Notion."**
+> 3. Approve the two prompts it shows you — the **Apple Health read**, then the **Notion write**.
+>
+> That is the whole job. You will not have to approve them again after the first time.
 
-Twice a day the Mac task picks it up and the deck refreshes. If the phone run is skipped, the tiles
-show the last real day with an honest age, never a filled-in guess.
+Twice a day (07:45 and 21:45 PT) the Mac task picks the rows up and the deck refreshes.
+
+**If you skip a day, nothing breaks and nothing is invented.** The tiles keep showing the last real
+day with its honest age on the badge — "2 days ago", "5 days ago" — and the stale-health alert warns
+past 2 days and goes critical past 7. A skipped day is a *gap*, not a zero: no row is written for it,
+no value is carried forward into it, and no day is ever stamped with data it does not have. Run the
+phone step again whenever you like and the gap simply stays a gap while the new days fill in.
 
 ## What happens to the dead ingest daemon
 Keep it installed as an **optional second source**. It is no longer the path and nothing depends on
@@ -120,6 +186,18 @@ Export is almost certainly still posting to a Mac LAN address that changed, or t
 longer listening on 8765. That is a Reliability Engineer ticket, not a blocker for this recipe.
 Meanwhile `r8-apple-health-snapshot` should be left enabled but described honestly on the deck:
 "runs on schedule, writes nothing since 2026-09-17 — daemon down".
+
+## Alternative source, evaluated 2026-09-22: `Rachnog/alex-honchar-claude-for-life`
+Read in full (shallow clone, last commit 2026-07-05). It is a Claude Code plugin marketplace — body,
+mind, work, lifestyle, relationships — of SKILL.md files plus JSON schemas and weekly-to-yearly cadence
+reviews, run on a Mac against an Obsidian vault. **It never touches Apple Health**: body data comes from
+Oura, Garmin and Withings MCP servers (grep of the repo: 27/34/22 mentions; zero for Apple Health,
+HealthKit or Health Auto Export). So it is not a better path for the phone → Notion → deck chain above
+and does not replace `apple-health-notion`. Complementary, narrowly: (1) `plugins/body/schemas/{sleep,
+recovery,body-composition,diet,exercise,medical-checkups,cadence-review}.json` are a clean reference for
+structuring `health-coaching-weekly` output; (2) if Steven ever wears a Garmin, Oura or Withings, its
+MCP-first source is cleaner than Apple Health. The repo has **no LICENSE file** — ask the author before
+copying a schema verbatim. Nothing was installed and nothing in this chain changed.
 
 ## Privacy
 - Health data stays in Steven's **private** Notion workspace and his own Command Deck doc.

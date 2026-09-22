@@ -26,8 +26,10 @@ from what exists; this skill asks what breaks at 5x and what Steven should stop 
 ## Data access
 `Artifact` tool against `https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d`:
 `read_db`, `db_op:"get"`, `collection:"state"`, `doc_id`; `write_db`, `db_op:"set"` (not `update`),
-`data:{v:<whole doc>}`. Read-then-append; the log is append-only. Docs are `{v:…}` except
-`stravaSnapshot`. From a cloud routine the write parks on a permission prompt — report, let the Mac write.
+`data:{v:<whole doc>}`. Read-then-append; the log is append-only. **Every doc is `{v:<value>}` — no exceptions:** send
+`data:{v:<whole doc>}`, never the bare value. A top level that is not a single `v` key is a bug to
+fix, not a shape to copy. From a cloud routine the write parks on a permission prompt — report, let
+the Mac write.
 
 ## Procedure
 1. **Measure the baseline.** For each workflow: throughput (units/week), cost per output (minutes or

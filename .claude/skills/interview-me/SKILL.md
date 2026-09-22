@@ -26,7 +26,8 @@ Deck reads/writes go through the `Artifact` tool against the Command Deck artifa
 where the host names it that): `read_db`, `db_op:"get"`, `collection:"state"`, `doc_id:"<doc>"`;
 `write_db`, `db_op:"set"` — not `update`, which fails when the doc does not exist yet — with
 `data:{v:<the whole doc>}`. Read before every write and append; never overwrite an array you have
-not read. Every doc is `{v:…}` except `stravaSnapshot`.
+not read. **Every doc is `{v:<value>}` — no exceptions:** send `data:{v:<whole doc>}`, never the bare
+value; a top level that is not a single `v` key is a bug to fix, not a shape to copy.
 
 ## Procedure
 1. **Scope.** State the topic back in one line and name the output path you will write. Ask Steven to

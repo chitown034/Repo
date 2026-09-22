@@ -23,8 +23,10 @@ the 2026-09-22 export. Ask the doc, never the page source, for a current number.
 | Knowledge stores | `knowledgeFabric`, `secondBrain`, `toolkitSnapshot` |
 | Automation truth | `runnerStatus`, `routineHealth`, `ciLog`, `backupStatus` |
 
-Every doc is `{"v": ...}` **except `stravaSnapshot`**, which has top-level `activities`/`syncedAt`/
-`via` — a known shape bug; code that reads it must accept both shapes.
+Every doc is `{"v": ...}` — **no exceptions.** Write `data:{v:<whole doc>}`, never the bare value.
+`stravaSnapshot` was written bare (top-level `activities`/`syncedAt`/`via`) until 2026-09-22, when it
+was repaired to `{v:{activities,syncedAt,via}}`. Readers still accept both shapes defensively, but a
+doc whose top level is not a single `v` key is a **writer bug to fix**, not a shape to reproduce.
 
 ## Rules for working on it
 
@@ -39,7 +41,9 @@ Every doc is `{"v": ...}` **except `stravaSnapshot`**, which has top-level `acti
 ## Known open items (2026-09-22)
 
 - `r17-trading-day-log` failing since 2026-09-17 — the deck still claims a daily trading log.
-- `stravaSnapshot` is ignored by `applyRemoteSnapshot` because it has no `v` wrapper (P1).
+- `stravaSnapshot`: the document was repaired to `{v:…}` on 2026-09-22, but the Mac task
+  `strava-daily-sync` (`20 5 * * *` PT) still writes it bare and will undo the repair on its next
+  run — the task prompt is on the Mac and only Steven can edit it (P1).
 - The Orca card says "Not installed yet". Truth: "Orca Computer Use" v1.4.203 (Stably AI) **is**
   installed on the Mac as a standalone computer-use app; the IDE/worktree integration is **not** done.
 - Cloud routines cannot write to the artifact DB unattended — the write parks on a permission prompt.

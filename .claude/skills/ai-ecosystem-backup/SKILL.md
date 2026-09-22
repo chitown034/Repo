@@ -32,8 +32,9 @@ unattended (the write parks on a permission prompt, confirmed three times).
 `Artifact` tool against `https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d`:
 `read_db` with `db_op:"list"` on `collection:"state"` to enumerate, then `db_op:"get"` per doc;
 `write_db` with `db_op:"set"` and `data:{v:…}` for `backupStatus`. Read `backupStatus` before
-writing so `history` is appended, never replaced. Docs are `{v:…}` except `stravaSnapshot`
-(top-level `activities`/`syncedAt`/`via` — a known shape bug; back it up as-is and note it).
+writing so `history` is appended, never replaced. **Every doc is `{v:<value>}` — no exceptions:**
+send `data:{v:<whole doc>}`, never the bare value. Back every doc up exactly as found, and **report
+any doc whose top level is not a single `v` key** — that is a writer bug, not a shape to preserve.
 
 ## Procedure
 1. **Resolve the root.** Canonical root is `~/Documents/AI-Ecosystem-Backups/`; this run's folder is
@@ -46,9 +47,10 @@ writing so `history` is appended, never replaced. Docs are `{v:…}` except `str
    the integrity check; any hit fails the run.
 5. **Manifest** — write `manifest.json` (shape below) with a sha256 per file.
 6. **Integrity check** — every file: exists, non-empty, readable, parses (JSON where JSON is
-   expected), and has the expected structure (`{v:…}` for deck docs, with `stravaSnapshot` as the
-   known exception). Doc count must equal the enumeration from step 3. Pass/fail is recorded, never
-   assumed.
+   expected), and has the expected structure — **every deck doc's top level is a single `v` key**.
+   List any doc that fails that test by id in the run output and in `backupStatus.note`; a bare-value
+   doc is a writer bug and must be named, never silently backed up as correct. Doc count must equal
+   the enumeration from step 3. Pass/fail is recorded, never assumed.
 7. **Retry once.** On any failure, delete the partial folder and run steps 2–6 again exactly once.
    Record `retried:true`.
 8. **Restore test** (monthly, or after any retry): restore the folder into a scratch namespace,

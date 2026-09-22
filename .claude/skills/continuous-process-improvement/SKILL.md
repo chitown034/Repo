@@ -25,7 +25,9 @@ the AI Agent Engineering Team under Elon (CTO Innovator).
 `Artifact` tool against `https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d`:
 `read_db`, `db_op:"get"`, `collection:"state"`, `doc_id`; `write_db`, `db_op:"set"` (not `update` —
 it fails on a doc that does not exist) with `data:{v:<whole doc>}`. Always read the log first and
-append; the log is append-only. Docs are `{v:…}` except `stravaSnapshot`.
+append; the log is append-only. **Every doc is `{v:<value>}` — no exceptions:** send
+`data:{v:<whole doc>}`, never the bare value; a top level that is not a single `v` key is a bug to
+fix, not a shape to copy.
 
 ## Procedure
 1. **OBSERVE.** Read the inputs for the window (24 h daily, 7 days weekly). Look for: repeated manual

@@ -15,7 +15,8 @@ It fills itself as sessions run. Do not seed it with facts that belong in the wi
 One dated line each, newest at the bottom:
 
 - A durable preference. *"Steven wants staleness stated before the number, not after."*
-- A correction that must not be repeated. *"`stravaSnapshot` has no `v` wrapper — accept both shapes."*
+- A correction that must not be repeated. *"Every deck doc is `{v:…}` — no exceptions. `stravaSnapshot`
+  was written bare until 2026-09-22; readers tolerate both shapes, but never write the bare shape."*
 - A routing shortcut learned the hard way. *"Lead-count questions: `loftyLeads`, not the deck panel."*
 - A dead end worth remembering. *"clianything.cc is egress-blocked from the sandbox."*
 

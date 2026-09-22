@@ -20,8 +20,9 @@ not fix the thing it broke.**
 - A full doc export of `collection:"state"` (161 docs at 2026-09-22) for fixtures and restore tests.
 - `OUTPUT_WATCH` (the deck's watched-doc list), plus `zohoLeads`, `zohoSync`, `loftyLeads`,
   `routineHealth`, `backupStatus`, `twinQueue`, `vanessaRecommendations`, `calendarSnapshot`,
-  `weatherSnapshot`, `stravaSnapshot` (**no `v` wrapper** — the known shape bug; it must be in every
-  Edge run).
+  `weatherSnapshot`, `stravaSnapshot`. Plus a **synthetic bare-value document** (a doc body with no
+  `v` wrapper) — it must be in every Edge run, because the reader has to survive one even though no
+  live doc should ever be in that shape.
 - Previous `stressTestReport` for the retest list.
 
 ## Data access
@@ -46,8 +47,9 @@ fixtures live in the harness's shimmed `localStorage`, never in the artifact DB.
 5. **Concurrency.** Apply a burst of 200 doc changes, including two conflicting `isaLine` arrays, and
    verify merge idempotence: applying the same burst twice produces the same state.
 6. **BackupRecovery.** Restore the full export into the shim under the page's storage prefix, run the
-   page, and count: docs restored, parse failures, docs missing `v` (expect the `stravaSnapshot`
-   exception), and watched containers rendered.
+   page, and count: docs restored, parse failures, docs missing `v` (**expect zero — any doc whose
+   top level is not a single `v` key is a live writer bug; name it and route it to the Integration
+   Engineer**), and watched containers rendered.
 7. **Route every weakness.** One row per finding, with the owning engineer:
    - crash, throw, unhandled empty state, flaky render → **Reliability Engineer**
    - slow render, O(n²) loop, oversized payload, token waste → **Efficiency Engineer**
@@ -69,7 +71,7 @@ fixtures live in the harness's shimmed `localStorage`, never in the artifact DB.
    "retest":"Pending|Pass|Fail","status":"Resolved|Monitoring|Escalated|Open"}]}}
 ```
 Restore-test record (BackupRecovery rows also write this to disk next to the backup):
-`{"at":"<ISO>","docs":0,"sizeBytes":0,"parseFailures":0,"missingV":["stravaSnapshot"],
+`{"at":"<ISO>","docs":0,"sizeBytes":0,"parseFailures":0,"missingV":[],
 "containersRendered":0,"verdict":"pass|fail"}`
 Return block for the loop: `{stress:{rows:n, fail:n, degraded:n, routed:{reliability:n, efficiency:n,
 capability:n, integration:n}, stillOpen:[{capability, why}]}}`.
@@ -111,7 +113,7 @@ A miniature sweep, offline, ≤60 s, no sub-agents — the nightly suite already
    renders at least one watched container. Any exception is a Fail with the function name.
 2. Edge mini-set: inject `null`, `[]` and `"string"` into three watched docs; assert no throw and an
    honest empty state in each.
-3. `stravaSnapshot` shape bug: inject the no-`v` document; assert the page reports it rather than
+3. Bare-value shape bug: inject a synthetic no-`v` document; assert the page reports it rather than
    rendering stale numbers as if they were current.
 4. Quota injection: make `localStorage.setItem` throw once; assert the page still renders and says so.
 5. Report shape: build one `stressTestReport` row; assert `testType`, `result`, `engineer` and

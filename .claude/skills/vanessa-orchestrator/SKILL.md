@@ -44,7 +44,9 @@ James (wealth/family office), Maxwell (broker coach). Reach: 8 executives + 4 me
 `Artifact` tool against `https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d`:
 `read_db`, `db_op:"get"`, `collection:"state"`, `doc_id`; `write_db`, `db_op:"set"` — not `update`,
 which fails when the doc does not exist — with `data:{v:<whole doc>}`. Read-modify-write every time.
-Docs are `{v:…}` except `stravaSnapshot`. An unattended **cloud** run's DB write parks on a
+**Every doc is `{v:<value>}` — no exceptions:** send `data:{v:<whole doc>}`, never the bare value; a
+top level that is not a single `v` key is a bug to fix, not a shape to copy.
+An unattended **cloud** run's DB write parks on a
 permission prompt (confirmed three times) — from the cloud, deliver the report in the run output and
 let the Mac runner write.
 

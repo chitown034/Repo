@@ -1,4 +1,4 @@
-# Mac runner task specs — the four new integration tasks
+# Mac runner task specs — the five new integration tasks
 
 **Baseline 2026-09-12 · verified 2026-09-22.** For `claude-runner` (headless, pre-approved tools,
 60 tasks today). Cron is **Mac local / Pacific**, as the runner stores it; UTC is given for anyone
@@ -84,36 +84,119 @@ Until then the correct run result is `status:"blocked"` — that is the task wor
 
 | | |
 |---|---|
-| **Cron (PT)** | `45 7,21 * * *` — 07:45 and 21:45 daily |
-| **Cron (UTC)** | `45 14 * * *` and `45 4 * * *` |
-| **Model** | Sonnet 5 |
+| **Cron (PT)** | `45 7,21 * * *` — 07:45 and 21:45 daily. `:45` collides with nothing in the slot-hygiene list above |
+| **Cron (UTC)** | `45 14 * * *` and `45 4 * * *` (PDT = UTC−7; 21:45 PT lands the next UTC day) |
+| **Model** | Sonnet 5 (execution seat — this task computes, it does not judge) |
 | **Skill** | `apple-health-notion` |
-| **Tools** | Notion connector (`notion-query-data-sources`, `notion-fetch`, `notion-search`) · `Artifact` `read_db` + `write_db`, collection `state` · no WebSearch/WebFetch |
-| **Writes** | `appleHealth` (merged), `appleHealthSync` (status), `healthSyncLog` |
+| **Tools** | Notion connector, **read verbs only**: `notion-query-data-sources`, `notion-fetch`, `notion-search`. **Explicitly not allow-listed:** `notion-create-pages`, `notion-update-page`, `notion-create-database`, `notion-update-data-source`, `notion-create-comment` — this task has no reason to write to Notion and must not be able to. · `Artifact` `read_db` + `write_db` on artifact `1624daae-d683-405a-971d-c5828dce0f8d`, collection `state`, limited to the three docs below · **no** WebSearch, **no** WebFetch, **no** Bash |
+| **Reads** | Notion data source `af1ceecf-fd60-4d95-b0e9-61fa0f49c9c4` (database `bc71c45aac934a4f8aeddc54345136ef`, "Health Log", 23 properties) · deck doc `appleHealth` |
+| **Writes** | `healthNotionSync` **every run** · `appleHealth` **only when Notion returned at least one row the doc does not already have** · a run line into `healthSyncLog` |
+| **Freshness** | `OUTPUT_WATCH {doc:"healthNotionSync", label:"Apple Health via Notion", task:"health-notion-sync", hrs:16}` — the widest gap between runs is 07:45→21:45 = 14 h, so 16 h leaves 2 h of margin and does not flap |
+| **Privacy** | Health data. Stays in Steven's private Notion workspace and this deck doc. Never into the knowledge graph, the vector index, a shared or published page, a research prompt or an outside-model call. **No medical interpretation anywhere in this path — numbers only.** The `Notes` property is never parsed |
+
+**The mapping — these key names are not negotiable.** They are what `AH_LABELS` / `AH_PRIORITY`
+already know; a key that is not on this list does not render.
+
+| Notion property | `appleHealth` key | Where it lands |
+|---|---|---|
+| Day *(title)* / Date | — | the `daily` day key, `YYYY-MM-DD`, `America/Los_Angeles` |
+| Steps | `step_count` | `metrics` + `daily` (cumulative) |
+| Active Energy | `active_energy` | `metrics` + `daily` (cumulative) |
+| Exercise Minutes | `apple_exercise_time` | `metrics` + `daily` (cumulative) |
+| Flights Climbed | `flights_climbed` | `metrics` + `daily` (cumulative) |
+| Walk+Run Distance | `walking_running_distance` | `metrics` + `daily` (cumulative) |
+| Weight | `weight_body_mass` | `metrics` + `daily` (point value) |
+| Resting HR | `resting_heart_rate` | `metrics` + `daily` (point value) |
+| HRV | `heart_rate_variability` | `metrics` + `daily` (point value) |
+| VO2 Max | `vo2_max` | `metrics` + `daily` (point value) |
+| Blood Oxygen | `blood_oxygen_saturation` | `metrics` + `daily` (point value) |
+| Body Temperature | `body_temperature` | `metrics` + `daily` (point value) |
+| Mindful Minutes | `mindful_minutes` | `metrics` + `daily` (cumulative) |
+| Sleep Total / Deep / REM / Core / Awake / In Bed | — | one `sleep[]` row: `{night, in_bed_min, asleep_min, core_min, deep_min, rem_min, awake_min}` |
+| Workouts *(JSON text)* | — | `workouts[]` rows, each with a stable `id` |
+| Notes, Source | — | **not mapped.** Never parsed, never rendered |
+
+**Every document in this DB is wrapped in `{v: …}`. A bare value is a bug** — one was found in
+`stravaSnapshot` on 2026-09-22. Write exactly this shape, `write_db` **set**:
+
+```jsonc
+// collection "state", doc "appleHealth"   — <n> marks a real number; no real value belongs in this repo
+{ "v": {
+    "metrics":   { "step_count": { "metric":"step_count", "unit":"count", "latest":<n>,
+                                   "latest_at":"2026-09-22 23:59:00", "earliest":"2026-09-16",
+                                   "avg7":<n>, "min7":<n>, "max7":<n>, "sum7":<n>, "n7":<n>, "days7":<n>,
+                                   "pavg7":null, "psum7":null, "pdays7":null, "samples":<n> } },
+    "daily":     { "step_count": { "2026-09-22": { "sum":<n>,"avg":<n>,"min":<n>,"max":<n>,"last":<n>,"n":1 } } },
+    "dailyDays": <n>,                       // recomputed from the MERGED daily, not from Notion alone
+    "sleep":     [ { "night":"2026-09-22", "in_bed_min":<n>, "asleep_min":<n>, "core_min":<n>,
+                     "deep_min":<n>, "rem_min":<n>, "awake_min":<n> } ],
+    "workouts":  [ { "id":"<uuid>", "type":"<type>", "start":"2026-09-22 06:10:00",
+                     "start_local":"2026-09-21 23:10:00", "minutes":<n>, "kcal":<n>, "km":<n>,
+                     "avg_hr":<n>, "max_hr":<n>, "source":"claude-ios" } ],
+    "records":   {},                        // carried forward untouched
+    "sources":   [ { "metric":"step_count","source":"claude-ios","n":<n>,
+                     "first_at":"2026-09-22 00:00:00","last_at":"2026-09-22 23:59:00" } ],
+    "meta":      { "last_received":"2026-09-22 23:59:00.000000", "ingests":<n>, "db_now":"<now>" },
+    "syncedAt":  "2026-09-22T14:45:00Z",    // the only ISO-with-Z field
+    "via":       "notion-health-log",
+    "read":      "notion"
+} }
+```
+
+```jsonc
+// collection "state", doc "healthNotionSync"  — written EVERY run, success or failure
+{ "v": { "checkedAt":"<iso>", "status":"ok", "rows":<n>, "lastRowDate":"2026-09-22",
+         "lastSyncAt":"<iso>", "error":null, "databaseId":"bc71c45aac934a4f8aeddc54345136ef",
+         "dataSourceId":"af1ceecf-fd60-4d95-b0e9-61fa0f49c9c4",
+         "databaseUrl":"https://app.notion.com/p/bc71c45aac934a4f8aeddc54345136ef",
+         "title":"Health Log", "properties":23, "macTask":"health-notion-sync",
+         "phonePrompt":"Update my health stats in Notion",
+         "spec":"integrations/apple-health-dashboard.md" } }
+```
+
+`status` is **exactly one of** `ok` · `stale` · `not-configured` · `error` ·
+`awaiting-first-phone-run` · `not-created`. That set is what the deck's `#healthNotionCard`
+(`renderHealthNotionStatus()`) renders; any other string is an unrendered card. Which to use:
+`not-created` the database is gone · `not-configured` the connector is not connected or not
+authorised · `error` the query threw, with the verbatim error in `error` · `awaiting-first-phone-run`
+the query worked and returned **zero** rows (today's state) · `stale` rows exist but the newest is
+older than 48 h · `ok` rows exist and the newest is within 48 h.
 
 **Prompt**
-> Use the `apple-health-notion` skill. Self-test first: query the Notion "Health Log" data source
-> for the most recent row. If the database is missing or the connector fails, write
-> `appleHealthSync` with the status and the verbatim error and stop — leave `appleHealth` untouched.
-> Otherwise read the last 90 days of rows, read the existing `appleHealth` doc, and build the
-> snapshot in the exact shape the tiles parse: `metrics[key] = {metric, unit, latest, latest_at,
-> avg7, min7, max7, sum7, n7, days7, pavg7, psum7, pdays7, samples, earliest}`,
-> `daily[key][YYYY-MM-DD] = {sum, avg, min, max, last, n}`, `sleep[] = {night, in_bed_min,
-> asleep_min, core_min, deep_min, rem_min, awake_min}`, `workouts[] = {id, type, start, start_local,
-> minutes, kcal, km, avg_hr, max_hr, source}`, `meta = {last_received, ingests, db_now}`,
-> `via:"notion-health-log"`, `read:"notion"`. Use the metric keys in
-> `integrations/apple-health-dashboard.md` — `step_count`, `active_energy`, `apple_exercise_time`,
-> `flights_climbed`, `walking_running_distance`, `weight_body_mass`, `resting_heart_rate`,
-> `heart_rate_variability`, `vo2_max`, `blood_oxygen_saturation`, `body_temperature`,
-> `mindful_minutes` — nothing else renders. Merge, never clobber: keep every day, night and workout
-> already in the doc that Notion did not supply. An empty Notion property is an empty value, never a
-> zero. Write with `write_db` **set**. Reply in one line: metrics, days, nights, workouts, newest
+> Use the `apple-health-notion` skill. **Self-test first:** query data source
+> `af1ceecf-fd60-4d95-b0e9-61fa0f49c9c4` ("Health Log") for the single most recent row, sorted by
+> `Date` descending. If the connector fails or the database is not found, write `healthNotionSync`
+> with the right status from the six-value set, the verbatim error, and stop — **leave `appleHealth`
+> exactly as it is.** If the query succeeds but returns zero rows, write `healthNotionSync` with
+> `status:"awaiting-first-phone-run"`, `rows:0`, `lastRowDate:null`, and stop — do not touch
+> `appleHealth`. Notion is **read-only** to you: do not create, update or comment on anything there.
+> Otherwise: read the last 90 days of rows, read the existing `appleHealth` doc with `read_db`, and
+> build the snapshot in the exact shape above, using only the mapped metric keys — `step_count`,
+> `active_energy`, `apple_exercise_time`, `flights_climbed`, `walking_running_distance`,
+> `weight_body_mass`, `resting_heart_rate`, `heart_rate_variability`, `vo2_max`,
+> `blood_oxygen_saturation`, `body_temperature`, `mindful_minutes`. Nothing else renders; do not
+> invent a key. **Merge, never clobber:** keep every `daily` day, every `sleep` night (by `night`)
+> and every `workout` (by `id`) already in the doc that Notion did not supply, and keep every metric
+> key Notion cannot supply — `headphone_audio_exposure`, `walking_asymmetry_percentage`,
+> `walking_double_support_percentage`, `walking_speed`, `walking_step_length` — plus `records` and
+> `sources`. For a metric present in both, the entry with the newer `latest_at` wins, compared as a
+> parsed timestamp, not as a string. The daemon's 2026-09-06 → 2026-09-12 history must still be on
+> the tiles when you are done. Recompute `dailyDays` from the merged `daily`. An empty Notion
+> property is an **empty value, never a zero**; a day with no row is a gap, not a zero — never
+> backfill it, never carry a value forward into it, never stamp a day that has no data. If Notion
+> returned no row the doc does not already have, write **nothing** to `appleHealth` — not even a
+> re-stamped copy — and say so. Every write is `{v: …}` wrapped; a bare value is a bug. Then write
+> `healthNotionSync` with `rows`, `lastRowDate`, `lastSyncAt` and the status, and append the run line
+> to `healthSyncLog`. Reply in one line: status, rows, metrics, days, nights, workouts, newest
 > Health Log date.
 
-**Run now once to prove it:** run manually right after Steven's first phone sync. Expect the Apple
-Health tiles to show today's date and the "Last export received" badge to move off 2026-09-13.
-Leave `r8-apple-health-snapshot` enabled as the optional second source, described on the deck as
-"runs on schedule, writes nothing since 2026-09-17 — daemon down".
+**Run now once to prove it:** run manually right after Steven's first phone sync. Expect
+`healthNotionSync.status === "ok"` with a non-zero `rows`, the Apple Health tiles showing that day,
+and the "Last export received" badge off 2026-09-13 — **and** the Sep 6–12 daemon days still
+present. If the daemon history vanished, the merge is wrong: roll back and fix it before enabling
+the task. Until that run exists the honest deck line is "Health Log created and empty — awaiting
+Steven's first phone run". Leave `r8-apple-health-snapshot` enabled as the optional second source,
+described on the deck as "runs on schedule, writes nothing since 2026-09-17 — daemon down".
 
 ---
 
@@ -149,11 +232,36 @@ wrapper and updates `cliAnythingStatus`. A wrapper whose output starts contradic
 
 ---
 
+## 5. `vanessa-whatsapp-inbox` — NEW (spec 2026-09-22 · not installed · not live)
+
+| | |
+|---|---|
+| **Cron (PT)** | `4-59/10 * * * *` — :04, :14, :24, :34, :44, :54. Checked against all 60 tasks in `docs/inventory/mac-runner-status.md`: nothing else holds those minutes (iMessage inbox is `*/10` at :00, Discord `*/5`) |
+| **Cron (UTC)** | same minutes, every hour |
+| **Model** | Same seat as `vanessa-imessage-inbox` — Vanessa answers, so Fable 5.1 per the 2026-09-22 tiering; execution sub-steps on Sonnet 5 |
+| **Skill / handler** | **The same inbound handler the iMessage task uses**: `vanessa-orchestrator` intake → answer as Vanessa with the AI team → HALT list → `agentInbox` log. Only the transport differs. Never `whatsapp-cli monitor auto-reply` — it calls `claude -p` itself and bypasses the handler, the HALT list and the log |
+| **Tools** | `Bash` allow-listed to exactly `whatsapp-cli --json session status`, `whatsapp-cli --json monitor since <ts> --chat <name>`, `whatsapp-cli --json message get <name> --after <iso>`, `whatsapp-cli message send <name> <text>` · `Artifact` `read_db` + `write_db`, collection `state` · otherwise identical to `vanessa-imessage-inbox` |
+| **Reads** | `whatsappInboxState` `{v:{chatName, allowFrom:"<the allow-listed sender JID>", lastSeenTime, lastSeenPk, pending:[{id,text,attempts}]}}`, then `monitor since <lastSeenTime>` filtered to `is_from_me:false` **and** `sender == allowFrom` |
+| **Writes** | `agentInbox` (merge, keep the newest 200): inbound `{id, channel:"whatsapp", direction:"inbound", from:"steven (allow-listed)", askedAt, question, status}`, outbound `{id, channel:"whatsapp", direction:"outbound", to:"steven", sentAt, text, agents, status}` — the shapes the iMessage task already writes, no phone number in the doc; `channels.whatsapp` status string; `whatsappInboxState` |
+| **Freshness** | `OUTPUT_WATCH {doc:"whatsappInboxState", label:"WhatsApp inbox", task:"vanessa-whatsapp-inbox", hrs:1}` |
+| **Route gate** | If `VANESSA_PII_OK` is `0` (subscription limited, free route — `integrations/omniroute-failover/README.md`), reply only "Vanessa is on the free route until the subscription resets; I will answer then", log it, stop |
+
+**Prompt**
+> Self-test first: `whatsapp-cli --json session status`. On any error write `agentInbox.channels.whatsapp = "error — <verbatim>"` and stop. Read `whatsappInboxState`; run `whatsapp-cli --json monitor since <lastSeenTime> --chat "<chatName>"`; keep only rows with `is_from_me:false` and `sender == allowFrom` — log anything else as `ignored — not allow-listed` and never reply to it. For each kept message do exactly what `vanessa-imessage-inbox` does with an iMessage from Steven: answer as Vanessa with the AI team; a HALT-list item (licensed decision, client send, credential, money) becomes a Needs-Steven packet, not an attempt; queue what you cannot answer to `vanessaResearch`. Reply with `whatsapp-cli message send "<chatName>" "<text>"` in parts of at most 1,500 characters. If the send exits non-zero (no GUI session, screen locked), keep the reply in `pending` as `status:"draft — send pending"`, retry on the next three polls, then mark it `failed` and tell Steven on iMessage that a WhatsApp reply is waiting. Advance `lastSeenTime`/`lastSeenPk`, write the docs, reply in one line: read, answered, pending, ignored.
+
+**Why sends can fail while reads never do:** `message send` opens `whatsapp://send?…` in the WhatsApp desktop app and presses Return through System Events — it needs the Mac awake, a logged-in GUI session and Accessibility permission for the runner's shell. Reads are plain read-only SQLite (`mode=ro` in the source) and work headless with Full Disk Access. Voice notes (`message send-file` fed by `voice-reply-render`) are phase 2, unverified.
+
+**Run now once to prove it:** after `MAC-INSTALL-comms-data.md §1`, text the dedicated number from Steven's phone, run the task by hand, and expect one inbound and one outbound `channel:"whatsapp"` item in `agentInbox`. Create the task **disabled**; enable it only after that run exists.
+
+---
+
 ## Registration checklist (whoever adds these to the runner)
 1. Add each task with the cron above; confirm no minute collides with an existing task.
-2. Add `OUTPUT_WATCH` rows: `{doc:"loftyLeads", label:"Lofty CRM import", task:"lofty-crm-sync", hrs:14}`
-   and `{doc:"zohoSync", label:"Zoho CRM sync", task:"zoho-crm-sync", hrs:14}`.
+2. Add `OUTPUT_WATCH` rows: `{doc:"loftyLeads", label:"Lofty CRM import", task:"lofty-crm-sync", hrs:14}`,
+   `{doc:"zohoSync", label:"Zoho CRM sync", task:"zoho-crm-sync", hrs:14}` and
+   `{doc:"healthNotionSync", label:"Apple Health via Notion", task:"health-notion-sync", hrs:16}`.
 3. Re-point `r2-lead-response-watchdog`, `lead-triage-daily`, `r11-isa-kpi-compile` and
    `showing-sync` off Follow Up Boss and onto Lofty (see `lofty-crm-sync/SKILL.md`).
 4. Run each new task **once, manually**, and record the result. A task that "exists" has not run.
 5. Only after 7 consecutive correct runs does a task graduate L1 → L2.
+6. WhatsApp: add the `whatsappInboxState` watch row above; the task stays disabled until Steven's first manual run and the dedicated number exist.

@@ -11,7 +11,8 @@ inventory below proves it. Never invent a number, headline, name, date or status
 - Base deck (read-only reference): SCRATCH/deck/command-deck.html   (git master, commit 5fbe844)
 - YOUR worktree (edit here only): SCRATCH/wt-<your id>/command-deck.html  (git branch <your id>)
 - Live DB export (161 docs, collection `state`, pulled 2026-09-22 ~08:10 UTC): SCRATCH/db/state/<doc>.json
-  Every doc is `{"v": ...}` EXCEPT stravaSnapshot (top-level keys activities/syncedAt/via — a known shape bug).
+  Every doc is `{"v": ...}` — no exceptions. (stravaSnapshot was bare until 2026-09-22; it is now wrapped.
+  A doc whose top level is not a single `v` key is a writer bug — report it, never copy the shape.)
 - Inventory: SCRATCH/inventory/{cloud-routines.md, mac-runner-status.md, routine-health.md,
   mac-task-descriptions.md, db-docs.md, agent-roster.md, loopLog.json, cpiOpportunityLog.json, backupStatus.json}
 - Static gate: `python3 SCRATCH/tests/quickcheck.py <file>` (the "called-but-undefined" check has known
