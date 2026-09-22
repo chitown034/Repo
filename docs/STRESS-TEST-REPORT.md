@@ -1,6 +1,6 @@
 # Command Deck — Stress Test Report
 
-**Engineer:** E7 — Stress Test Engineer · **Cycle:** Loop Cycle 6 · 2026-09-22 · **Run:** 2026-09-22T09:16:28.668Z
+**Engineer:** E7 — Stress Test Engineer · **Cycle:** Loop Cycle 6 · 2026-09-22 · **Run:** 2026-09-22T09:46:19.463Z
 **Baseline 2026-09-12 · verified 2026-09-22**
 
 | | |
@@ -10,7 +10,7 @@
 | Lines | 27127 |
 | Provenance | git master commit 5fbe844 (the published build 2026-09-15 02:19 PT), pinned to tests/baseline-5fbe844.html so every line number in this report stays valid while seven engineers edit their worktrees |
 | Harness | `tests/runtime-harness.js` + `tests/dom-shim.js` (pure Node, no npm, no jsdom) · Node v22.22.2 |
-| Result | **52 Pass · 10 Degraded · 0 Fail** of 62 tests |
+| Result | **55 Pass · 7 Degraded · 0 Fail** of 62 tests |
 
 ## What these numbers are, and what they are not
 
@@ -42,9 +42,9 @@ this table is marked Resolved on the strength of a fix — only on the strength 
 | Travel panel — 'N showing' count on first paint | Regression | Degraded | renderTravelPage reads $('travelVisibleCount') one line BEFORE renderTravelFilters() creates that span, so the count is empty on the first paint and only fills on a later re-render. | Reliability Engineer | — | Pending | Open |
 | Automation health board (routineHealth) | Volume | Pass | — | — | — | Pending | Resolved |
 | Task board (kanbanCards) | Volume | Pass | — | — | — | Pending | Resolved |
-| ISA direct line (isaLine) | Volume | Degraded | slowest render renderNotifications (final pass) 822 ms · one innerHTML write of 5.11 MB into #isaLineThread — no display cap on this list | Efficiency Engineer | — | Pending | Monitoring |
+| ISA direct line (isaLine) | Volume | Degraded | slowest render renderNotifications (final pass) 638 ms · one innerHTML write of 5.11 MB into #isaLineThread — no display cap on this list | Efficiency Engineer | — | Pending | Monitoring |
 | Live research feeds (liveFeeds) | Volume | Pass | — | — | — | Pending | Resolved |
-| Whole page under all four volume payloads at once | Volume | Degraded | page time 8203 ms vs 1464 ms baseline (5.6x); 5.02 MB of documents against the ~5 MB localStorage budget a browser gives one origin (1.00x — at the cap, so the next document written is the one that fails), and nothing on the page measures its own storage footprint | Efficiency Engineer | — | Pending | Monitoring |
+| Whole page under all four volume payloads at once | Volume | Degraded | page time 7260 ms vs 979 ms baseline (7.4x); 5.02 MB of documents against the ~5 MB localStorage budget a browser gives one origin (1.00x — at the cap, so the next document written is the one that fails), and nothing on the page measures its own storage footprint | Efficiency Engineer | — | Pending | Monitoring |
 | Document `weatherSnapshot` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
 | Document `liveFeeds` (malformed input) | Edge | Degraded | 1 of 7 malformed shapes (wrong-typed fields) reach a renderer and throw: renderNews @html:22332; renderOrFeeds @html:22332. safeRun catches each one, so the page stays up but those panels render empty with no on-page reason. | Reliability Engineer | — | Pending | Open |
 | Document `calendarSnapshot` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
@@ -78,18 +78,18 @@ this table is marked Resolved on the strength of a fix — only on the strength 
 | Document `vanessaRecommendations` (malformed input) | Edge | Pass | — | — | — | Pending | Resolved |
 | Claude capability handshake (initSync / claudeUse) | FailureInjection | Pass | — | — | — | Pending | Resolved |
 | Claude capability handshake — rejected promise | FailureInjection | Pass | — | — | — | Pending | Resolved |
-| Local persistence — write path | FailureInjection | Degraded | Every write is silently swallowed by lsSetLocal's empty catch (html:6647). The page rendered all 335 containers, raised 439 console warnings, reported 0 shape warnings and left LS_UNAVAILABLE false, and the sync pill still reads 'Local only (this device)'. Nothing anywhere says a save failed, so anything Steven types into a panel is gone on reload with no warning. | Reliability Engineer | — | Pending | Open |
+| Local persistence — write path | FailureInjection | Pass | — | — | — | Pending | Resolved |
 | Local persistence — read path | FailureInjection | Pass | — | — | — | Pending | Resolved |
-| Local persistence — quota exhausted part-way through hydration | FailureInjection | Degraded | With the storage budget exhausted part-way through hydrateFromSeed, 1 of 110 key(s) failed to persist and each QuotaExceededError went into lsSetLocal's empty catch. The page still rendered 335 containers, raised 2 console warnings and left LS_UNAVAILABLE false — LS_UNAVAILABLE is only ever set on a failing READ (lsGetSeeded, html:6725), never on a failing write, so a full store is indistinguishable from a healthy day. | Reliability Engineer | — | Pending | Open |
+| Local persistence — quota exhausted part-way through hydration | FailureInjection | Pass | — | — | — | Pending | Resolved |
 | Local persistence — 5 MB browser quota with the real store | FailureInjection | Pass | — | — | — | Pending | Resolved |
 | Published seed hydration (hydrateFromSeed) | FailureInjection | Pass | — | — | — | Pending | Resolved |
 | Cross-device merge — 200-change burst (applyRemoteSnapshot) [db-connected] | Concurrency | Pass | — | — | — | Pending | Resolved |
 | Merge idempotence — identical burst replayed [db-connected] | Concurrency | Pass | — | — | — | Pending | Resolved |
-| ISA line conflict merge (isaLineMergeArrays) [db-connected] | Concurrency | Degraded | 2 messages WITHOUT an `id` were silently discarded — isaLineMergeArrays' take() returns early on `!m.id`, so any relay that omits an id vanishes with no warning anywhere | Reliability Engineer | — | Pending | Open |
+| ISA line conflict merge (isaLineMergeArrays) [db-connected] | Concurrency | Pass | — | Reliability Engineer | — | Pending | Resolved |
 | Cross-device merge — 200-change burst (applyRemoteSnapshot) [local-only] | Concurrency | Pass | — | — | — | Pending | Resolved |
 | Merge idempotence — identical burst replayed [local-only] | Concurrency | Pass | — | — | — | Pending | Resolved |
-| ISA line conflict merge (isaLineMergeArrays) [local-only] | Concurrency | Degraded | 40 ID'd message(s) never reached the document (49 stored vs 90 expected) — NOT the merge's doing: the isaLine branch calls syncKeyToDb, which with no db capability queues a pendingDbWrites entry, and the very next guard (`!dbReady && pendingDbWrites[key]`, html:6881) then discards every later isaLine change in the session · 2 messages WITHOUT an `id` were silently discarded — isaLineMergeArrays' take() returns early on `!m.id`, so any relay that omits an id vanishes with no warning anywhere | Reliability Engineer | — | Pending | Open |
-| Restore all 161 exported documents and run the page | BackupRecovery | Degraded | stravaSnapshot has no `v` wrapper, so applyRemoteSnapshot skips it and a restore silently loses it (160/161 restored) · 4 watched documents were never written by their task and therefore cannot be restored: loftyLeads, zohoSync, revenueScan, healthCoaching | Integration Engineer | — | Pending | Escalated |
+| ISA line conflict merge (isaLineMergeArrays) [local-only] | Concurrency | Degraded | 40 ID'd message(s) never reached the document (49 stored vs 90 expected) — NOT the merge's doing: the isaLine branch calls syncKeyToDb, which with no db capability queues a pendingDbWrites entry, and the very next guard (`!dbReady && pendingDbWrites[key]`, html:6881) then discards every later isaLine change in the session · 1 of 2 message(s) WITHOUT an `id` were discarded by the merge — on a two-way channel with a person that is lost correspondence, not a rounding error | Reliability Engineer | — | Pending | Open |
+| Restore all 161 exported documents and run the page | BackupRecovery | Degraded | 4 watched documents were never written by their task and therefore cannot be restored: loftyLeads, zohoSync, revenueScan, healthCoaching | Integration Engineer | — | Pending | Escalated |
 | OUTPUT_WATCH freshness board after a full restore | BackupRecovery | Pass | — | — | — | Pending | Resolved |
 | Backup bundle backup/2026-09-22 (sha256 manifest) | BackupRecovery | Pass | — | — | — | Pending | Resolved |
 | Runtime gate — wt-e1-daily/command-deck.html | Regression | Pass | — | — | — | Pending | Resolved |
@@ -114,12 +114,12 @@ renderTravelPage reads $('travelVisibleCount') one line BEFORE renderTravelFilte
 *Evidence:* html:17776 reads the id, html:17778 calls renderTravelFilters() which emits it (html:17719)
 
 **W3 · ISA direct line (isaLine)** — *Volume / Degraded / Efficiency Engineer*  
-slowest render renderNotifications (final pass) 822 ms · one innerHTML write of 5.11 MB into #isaLineThread — no display cap on this list  
-*Evidence:* payload 2539 KB · page 6518 ms (+5054 ms vs baseline) · 335 containers · largest single innerHTML write 5237 KB into #isaLineThread
+slowest render renderNotifications (final pass) 638 ms · one innerHTML write of 5.11 MB into #isaLineThread — no display cap on this list  
+*Evidence:* payload 2539 KB · page 5426 ms (+4447 ms vs baseline) · 335 containers · largest single innerHTML write 5237 KB into #isaLineThread
 
 **W4 · Whole page under all four volume payloads at once** — *Volume / Degraded / Efficiency Engineer*  
-page time 8203 ms vs 1464 ms baseline (5.6x); 5.02 MB of documents against the ~5 MB localStorage budget a browser gives one origin (1.00x — at the cap, so the next document written is the one that fails), and nothing on the page measures its own storage footprint  
-*Evidence:* slowest: renderNotifications (final pass) 816ms, renderExecBrief (final pass) 400ms, renderKanban 174ms
+page time 7260 ms vs 979 ms baseline (7.4x); 5.02 MB of documents against the ~5 MB localStorage budget a browser gives one origin (1.00x — at the cap, so the next document written is the one that fails), and nothing on the page measures its own storage footprint  
+*Evidence:* slowest: renderNotifications (final pass) 834ms, renderExecBrief (final pass) 386ms, renderNotifications 139ms
 
 **W5 · Document `liveFeeds` (malformed input)** — *Edge / Degraded / Reliability Engineer*  
 1 of 7 malformed shapes (wrong-typed fields) reach a renderer and throw: renderNews @html:22332; renderOrFeeds @html:22332. safeRun catches each one, so the page stays up but those panels render empty with no on-page reason.  
@@ -145,42 +145,30 @@ Not an edge failure — all 7 malformed shapes were handled. Separate observatio
 Not an edge failure — all 7 malformed shapes were handled. Separate observation: this document is not in the 161-document export at all, so the deck reads it but no task has ever written it.  
 *Evidence:* null:ok []:ok {}:ok "string":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok
 
-**W11 · Local persistence — write path** — *FailureInjection / Degraded / Reliability Engineer*  
-Every write is silently swallowed by lsSetLocal's empty catch (html:6647). The page rendered all 335 containers, raised 439 console warnings, reported 0 shape warnings and left LS_UNAVAILABLE false, and the sync pill still reads 'Local only (this device)'. Nothing anywhere says a save failed, so anything Steven types into a panel is gone on reload with no warning.  
-*Evidence:* page ran to completion · 335 containers · 0 shape warnings · 439 console warnings
-
-**W12 · Local persistence — quota exhausted part-way through hydration** — *FailureInjection / Degraded / Reliability Engineer*  
-With the storage budget exhausted part-way through hydrateFromSeed, 1 of 110 key(s) failed to persist and each QuotaExceededError went into lsSetLocal's empty catch. The page still rendered 335 containers, raised 2 console warnings and left LS_UNAVAILABLE false — LS_UNAVAILABLE is only ever set on a failing READ (lsGetSeeded, html:6725), never on a failing write, so a full store is indistinguishable from a healthy day.  
-*Evidence:* page ran to completion · 335 containers · 0 shape warnings · 2 console warnings
-
-**W13 · ISA line conflict merge (isaLineMergeArrays) [db-connected]** — *Concurrency / Degraded / Reliability Engineer*  
-2 messages WITHOUT an `id` were silently discarded — isaLineMergeArrays' take() returns early on `!m.id`, so any relay that omits an id vanishes with no warning anywhere  
-*Evidence:* isaLineMergeArrays take() at html:24534; doc held 8 messages, burst added 80 with an id and 2 without; 90 stored afterwards vs 90 if nothing were lost; ISA_LINE_MAX=300 cap at html:24524
-
-**W14 · ISA line conflict merge (isaLineMergeArrays) [local-only]** — *Concurrency / Degraded / Reliability Engineer*  
-40 ID'd message(s) never reached the document (49 stored vs 90 expected) — NOT the merge's doing: the isaLine branch calls syncKeyToDb, which with no db capability queues a pendingDbWrites entry, and the very next guard (`!dbReady && pendingDbWrites[key]`, html:6881) then discards every later isaLine change in the session · 2 messages WITHOUT an `id` were silently discarded — isaLineMergeArrays' take() returns early on `!m.id`, so any relay that omits an id vanishes with no warning anywhere  
+**W11 · ISA line conflict merge (isaLineMergeArrays) [local-only]** — *Concurrency / Degraded / Reliability Engineer*  
+40 ID'd message(s) never reached the document (49 stored vs 90 expected) — NOT the merge's doing: the isaLine branch calls syncKeyToDb, which with no db capability queues a pendingDbWrites entry, and the very next guard (`!dbReady && pendingDbWrites[key]`, html:6881) then discards every later isaLine change in the session · 1 of 2 message(s) WITHOUT an `id` were discarded by the merge — on a two-way channel with a person that is lost correspondence, not a rounding error  
 *Evidence:* isaLineMergeArrays take() at html:24534; doc held 8 messages, burst added 80 with an id and 2 without; 49 stored afterwards vs 90 if nothing were lost; ISA_LINE_MAX=300 cap at html:24524
 
-**W15 · Restore all 161 exported documents and run the page** — *BackupRecovery / Degraded / Integration Engineer*  
-stravaSnapshot has no `v` wrapper, so applyRemoteSnapshot skips it and a restore silently loses it (160/161 restored) · 4 watched documents were never written by their task and therefore cannot be restored: loftyLeads, zohoSync, revenueScan, healthCoaching  
-*Evidence:* 160/161 restored · 863 KB · 341 containers rendered · 0 exceptions
+**W12 · Restore all 161 exported documents and run the page** — *BackupRecovery / Degraded / Integration Engineer*  
+4 watched documents were never written by their task and therefore cannot be restored: loftyLeads, zohoSync, revenueScan, healthCoaching  
+*Evidence:* 161/161 restored · 863 KB · 341 containers rendered · 0 exceptions
 
 ## Baseline digest
 
-- Ran to completion in **1464 ms**, **335 container ids** received innerHTML, **0 exceptions**, **0 safeRun failures**, **0 shape warnings**.
+- Ran to completion in **979 ms**, **335 container ids** received innerHTML, **0 exceptions**, **0 safeRun failures**, **0 shape warnings**.
 - `document.getElementById` was called 1426 times and missed 7 distinct ids.
-- Slowest renders (shim time): `renderPanelStamps` 48 ms · `renderKanban` 30 ms · `renderKaizen` 29 ms · `renderTechStack` 28 ms · `renderAccounts` 21 ms · `renderWeather` 20 ms
+- Slowest renders (shim time): `renderPanelStamps` 42 ms · `renderKanban` 23 ms · `renderWeather` 19 ms · `renderTechStack` 16 ms · `renderDreamProperties` 16 ms · `renderDreamFeatures` 15 ms
 - Timers: 84 of 94 drained.
 
 ## Volume digest
 
 | Payload | Bytes | Page time | vs baseline | Slowest render | Largest single innerHTML write |
 | --- | --- | --- | --- | --- | --- |
-| routineHealth · 5,000 routine rows | 1093 KB | 2558 ms | +1094 ms | `renderPanelStamps` 78 ms | 815 KB → `#autoHealthBody` |
-| kanbanCards · 2,000 cards | 237 KB | 1751 ms | +287 ms | `renderKanban` 157 ms | 61 KB → `#eliteTaxStrategyRows` |
-| isaLine · 10,000 messages | 2539 KB | 6518 ms | +5054 ms | `renderNotifications (final pass)` 822 ms | 5237 KB → `#isaLineThread` |
-| liveFeeds · 50 feeds x 200 citations | 1270 KB | 1854 ms | +390 ms | `renderPanelStamps` 97 ms | 61 KB → `#eliteTaxStrategyRows` |
-| **all four at once** | 5140 KB | 8203 ms | — | `renderNotifications (final pass)` 816 ms | — |
+| routineHealth · 5,000 routine rows | 1093 KB | 2016 ms | +1037 ms | `renderPanelStamps` 79 ms | 815 KB → `#autoHealthBody` |
+| kanbanCards · 2,000 cards | 237 KB | 1337 ms | +358 ms | `renderKanban` 119 ms | 61 KB → `#eliteTaxStrategyRows` |
+| isaLine · 10,000 messages | 2539 KB | 5426 ms | +4447 ms | `renderNotifications (final pass)` 638 ms | 5237 KB → `#isaLineThread` |
+| liveFeeds · 50 feeds x 200 citations | 1270 KB | 1532 ms | +553 ms | `renderPanelStamps` 65 ms | 61 KB → `#eliteTaxStrategyRows` |
+| **all four at once** | 5140 KB | 7260 ms | — | `renderNotifications (final pass)` 834 ms | — |
 
 ## Edge digest — 7 malformed shapes per document
 
@@ -238,8 +226,8 @@ Variants: `null` · `[]` · `{}` · `"string"` · wrong-typed fields · a row th
 
 | Mode | Burst | Apply | Replay | changed on replay | Keys rewritten on replay | isaLine stored / expected | ID'd lost | id-less dropped | Order-independent |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| db-connected | 200 changes | 10 ms | 6 ms | false | 0 | 90 / 90 | 0 | 2 | true |
-| local-only | 200 changes | 10 ms | 5 ms | false | 0 | 49 / 90 | 40 | 2 | true |
+| db-connected | 200 changes | 10 ms | 6 ms | false | 0 | 90 / 90 | 0 | 0 | true |
+| local-only | 200 changes | 8 ms | 5 ms | false | 0 | 49 / 90 | 40 | 1 | true |
 
 The burst is 200 document changes replayed through `applyRemoteSnapshot` — every exported document plus TWO CONFLICTING `isaLine` arrays
 in the same snapshot (40 messages from each side, each side also sending one message with no `id`).
@@ -247,7 +235,7 @@ in the same snapshot (40 messages from each side, each side also sending one mes
 
 ## Backup / recovery digest
 
-- Restored **160 of 161** exported documents (863 KB) into the shim's localStorage under `commandDeck.`, then ran the page.
+- Restored **161 of 161** exported documents (863 KB) into the shim's localStorage under `commandDeck.`, then ran the page.
 - Parse failures: **0** · documents with no `v` wrapper: **1 (stravaSnapshot)**
 - All **28** OUTPUT_WATCH documents are read by `outputWatchRows()`; **4** of them do not exist in the export (loftyLeads, zohoSync, revenueScan, healthCoaching).
 - Containers rendered from the restored store: **341** (seed-only baseline: 335); lost vs seed-only: 0; gained: 6 (hfReqStatus, marketUpdateLiveList_murrieta-ca, newsLocalList_san-diego-ca, newsLocalList_temecula-ca, sbL5Status, sessionReadSrc).

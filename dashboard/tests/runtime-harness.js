@@ -13,10 +13,11 @@
      --store <dir>     restore a directory of exported DB docs (<doc>.json, each
                        normally {"v": ...}) into the shim's localStorage under the
                        page's own LS_PREFIX, exactly the way applyRemoteSnapshot
-                       would: a doc with no "v" key is NOT restored and is counted
-                       in missingV. Add --store-raw to restore those docs anyway.
+                       does: a doc with no "v" key is adopted as {v: <doc>} and is
+                       still listed in missingV/adoptedWithoutV so the writer gets
+                       fixed. It counts as restored, because the page restores it.
      --inject <json>   a JSON file path OR inline JSON of test knobs:
-                         { "claude": "absent"|"ok"|"throwing",
+                         { "claude": "absent"|"ok"|"throwing"|"rejecting",
                            "localStorage":    { key: <value> },   // JSON-encoded for you
                            "localStorageRaw": { key: "<raw>"  },  // stored verbatim (corrupt JSON)
                            "removeKeys":      ["key", ...],
@@ -124,15 +125,24 @@ function instrument(code) {
 }
 
 /* ------------------------------------------------------------------ helpers */
-function lineOf(stack, startLine) {
+/* Pull the first stack frame that belongs to the deck file itself. Frames from the
+   harness (an injected throwing claude.use, a shim method) must never be reported as
+   the deck's line number. */
+function lineOf(stack, startLine, deckName) {
   if (!stack) return null;
-  const m = /:(\d+):(\d+)\)?/.exec(String(stack).split("\n").slice(1).join("\n"));
-  if (!m) return null;
-  return { html: parseInt(m[1], 10), script: parseInt(m[1], 10) - startLine + 1 };
+  const frames = String(stack).split("\n");
+  for (let i = 0; i < frames.length; i++) {
+    if (deckName && frames[i].indexOf(deckName) === -1) continue;
+    const m = /:(\d+):(\d+)\)?\s*$/.exec(frames[i].trim());
+    if (!m) continue;
+    const html = parseInt(m[1], 10);
+    return { html: html, script: html - startLine + 1, frame: frames[i].trim() };
+  }
+  return null;
 }
 
 function loadStore(dir, opts) {
-  const res = { docs: 0, restored: 0, parseFailures: [], missingV: [], sizeBytes: 0, values: {} };
+  const res = { docs: 0, restored: 0, parseFailures: [], missingV: [], adoptedWithoutV: [], sizeBytes: 0, values: {} };
   const files = fs.readdirSync(dir).filter(function (f) { return f.endsWith(".json"); }).sort();
   files.forEach(function (f) {
     const full = path.join(dir, f);
@@ -147,8 +157,15 @@ function loadStore(dir, opts) {
       res.values[key] = JSON.stringify(parsed.v);
       res.restored++;
     } else {
-      res.missingV.push(key);
-      if (opts && opts.storeRaw) { res.values[key] = JSON.stringify(parsed); res.restored++; }
+      // This branch used to model applyRemoteSnapshot's old behaviour — drop any
+      // document with no {v: ...} wrapper — which is how a Strava sync went missing
+      // from a restore. The page adopts such a document now (`data = { v: data }`
+      // after a shape warning), so the loader adopts it too. Dropping it here would
+      // make the restore test report a loss the page no longer suffers.
+      res.missingV.push(key);      // still worth naming: the writer should be fixed
+      res.adoptedWithoutV.push(key);
+      res.values[key] = JSON.stringify(parsed);
+      res.restored++;
     }
   });
   return res;
@@ -187,6 +204,7 @@ async function run(cfg) {
   const ex = prep.ex;
   const inst = prep.inst;
   const LS_PREFIX = prep.lsPrefix;
+  const DECK_NAME = path.basename(file);
 
   const dom = createDom(html, {});
   const win = dom.window;
@@ -288,7 +306,7 @@ async function run(cfg) {
     script.runInContext(context, { timeout: cfg.scriptTimeoutMs || 120000 });
   } catch (e) {
     topLevelOk = false;
-    const ln = lineOf(e && e.stack, ex.startLine);
+    const ln = lineOf(e && e.stack, ex.startLine, DECK_NAME);
     exceptions.push({
       where: "top-level IIFE",
       message: (e && e.message) || String(e),
@@ -323,7 +341,7 @@ async function run(cfg) {
         stats.timersRun++;
         try { t.fn.apply(win, t.args); }
         catch (e) {
-          const ln = lineOf(e && e.stack, ex.startLine);
+          const ln = lineOf(e && e.stack, ex.startLine, DECK_NAME);
           exceptions.push({
             where: "timer(" + t.kind + " " + t.ms + "ms)",
             message: (e && e.message) || String(e),
@@ -341,7 +359,7 @@ async function run(cfg) {
   // ---- collect
   const probe = context.__cdProbe || {};
   const safeRunFailures = (probe.RENDER_FAILURES || []).map(function (f) {
-    const ln = lineOf(f.stack, ex.startLine);
+    const ln = lineOf(f.stack, ex.startLine, DECK_NAME);
     return {
       name: f.name,
       error: f.error,
@@ -357,6 +375,10 @@ async function run(cfg) {
     else anonContainers.push(rec);
   }
   containers.sort(function (a, b) { return a.id < b.id ? -1 : 1; });
+
+  const allWrites = Array.from(stats.innerHtmlWrites.values())
+    .map(function (r) { return { id: r.id || ("<" + r.tag + ">"), writes: r.writes, lastBytes: r.lastBytes, totalBytes: r.bytes }; })
+    .sort(function (a, b) { return b.lastBytes - a.lastBytes; });
 
   const missingIds = Array.from(stats.missingIds.entries())
     .map(function (e) { return { id: e[0], lookups: e[1] }; })
@@ -385,6 +407,8 @@ async function run(cfg) {
     localStorageUnavailable: probe.LS_UNAVAILABLE === true,
     missingIds: missingIds,
     slowestRenders: renderTimes.slice(0, 15),
+    largestInnerHtmlWrites: allWrites.slice(0, 12),
+    totalInnerHtmlBytes: allWrites.reduce(function (a, w) { return a + w.totalBytes; }, 0),
     outputWatchDocs: (probe.OUTPUT_WATCH || []).map(function (w) { return w.doc; }),
     stats: {
       getElementByIdHits: stats.getByIdHits,
@@ -394,6 +418,11 @@ async function run(cfg) {
       reloadsRequested: stats.reloads,
       consoleWarnings: stats.consoleWarn.length,
       consoleErrors: stats.consoleError.length,
+      // A failed local save must be visible to somebody. The page reports one as
+      // "[state] could not save <key> on this device: <reason>". Counting those is
+      // the only way a test can tell a surfaced failure from a swallowed one —
+      // container counts and the LS_UNAVAILABLE flag are identical either way.
+      saveFailureWarnings: stats.consoleWarn.filter(function (m) { return /could not save/i.test(m); }).length,
       clipboardWrites: stats.clipboardWrites,
       localStorageKeys: win.localStorage._map.size,
       claudeCapabilitiesRequested: claudeCalls

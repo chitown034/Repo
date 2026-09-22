@@ -432,18 +432,26 @@ async function sectionFailure() {
       weakness = "localStorage reads throw but LS_UNAVAILABLE was never set, so the 'Local storage is unavailable in this view' alert never fires — every panel silently shows its seed. lsGet() swallows the throw in its own catch; only lsGetSeeded() sets the flag.";
       engineer = "Reliability Engineer"; status = "Open";
     }
-    if (c.inject.quotaBytes && c.inject.quotaBytes < 1024 * 1024 && !r.localStorageUnavailable && !r.shapeMismatch.length) {
+    // Both write-failure cases below used to assert the defect by construction: they
+    // fired on the injection alone, looking only at container counts and the
+    // LS_UNAVAILABLE flag, neither of which changes when the failure IS surfaced. So
+    // they reported Degraded forever, fix or no fix — a red that was never measured.
+    // The question a write-failure test must actually ask is whether anything told the
+    // user the save failed. r.stats.saveFailureWarnings answers it.
+    const saveFailuresSurfaced = (r.stats && r.stats.saveFailureWarnings) || 0;
+    if (c.inject.quotaBytes && c.inject.quotaBytes < 1024 * 1024 && !r.localStorageUnavailable && !r.shapeMismatch.length && !saveFailuresSurfaced) {
       const keysLost = BASELINE.stats.localStorageKeys - r.stats.localStorageKeys;
       weakness = "With the storage budget exhausted part-way through hydrateFromSeed, " + keysLost + " of " +
-        BASELINE.stats.localStorageKeys + " key(s) failed to persist and each QuotaExceededError went into lsSetLocal's empty catch. The page still rendered " +
+        BASELINE.stats.localStorageKeys + " key(s) failed to persist and every QuotaExceededError was swallowed. The page still rendered " +
         r.containersRendered.length + " containers, raised " + r.stats.consoleWarnings +
-        " console warnings and left LS_UNAVAILABLE false — LS_UNAVAILABLE is only ever set on a failing READ (lsGetSeeded, html:6725), never on a failing write, so a full store is indistinguishable from a healthy day.";
+        " console warnings, surfaced 0 of them as save failures and left LS_UNAVAILABLE false — LS_UNAVAILABLE is only ever set on a failing READ, never on a failing write, so a full store is indistinguishable from a healthy day.";
       engineer = "Reliability Engineer"; status = "Open";
     }
-    if (c.inject.setItemThrows && honest.containersLost.length === 0 && !r.localStorageUnavailable) {
-      weakness = "Every write is silently swallowed by lsSetLocal's empty catch (html:6647). The page rendered all " +
+    if (c.inject.setItemThrows && honest.containersLost.length === 0 && !r.localStorageUnavailable && !saveFailuresSurfaced) {
+      weakness = "Every write is swallowed silently. The page rendered all " +
         r.containersRendered.length + " containers, raised " + r.stats.consoleWarnings +
-        " console warnings, reported " + r.shapeMismatch.length + " shape warnings and left LS_UNAVAILABLE false, and the sync pill still reads 'Local only (this device)'. Nothing anywhere says a save failed, so anything Steven types into a panel is gone on reload with no warning.";
+        " console warnings of which 0 named a failed save, reported " + r.shapeMismatch.length +
+        " shape warnings and left LS_UNAVAILABLE false, and the sync pill still reads 'Local only (this device)'. Nothing anywhere says a save failed, so anything Steven types into a panel is gone on reload with no warning.";
       engineer = "Reliability Engineer"; status = "Open";
     }
     if (c.inject.removeSeed && honest.containersLost.length) {
@@ -567,7 +575,12 @@ async function concurrencyMode(mode, inject) {
   isaA.concat(isaB).forEach(function (m) { if (m.id) idsIn[m.id] = 1; });
   const idsOut = {};
   (isa1 || []).forEach(function (m) { if (m && m.id) idsOut[m.id] = 1; });
-  const droppedNoId = (isa1 || []).filter(function (m) { return m && !m.id; }).length;
+  // An id-less message that SURVIVED the merge no longer looks id-less on the way
+  // out: isaLineMergeArrays gives it a deterministic id derived from its own
+  // timestamp, sender and text, and marks it idDerived. Counting output rows with
+  // no id therefore counts zero survivors and reports every one of them as dropped,
+  // fix or no fix. Count the rows that actually carry an id-less message instead.
+  const survivedNoId = (isa1 || []).filter(function (m) { return m && (!m.id || m.idDerived); }).length;
   const lost = Object.keys(idsIn).filter(function (id) { return !idsOut[id]; });
   const orderStable = JSON.stringify(isa1) === JSON.stringify(isa3);
 
@@ -584,7 +597,8 @@ async function concurrencyMode(mode, inject) {
   out.isaBurstWithId = Object.keys(idsIn).length;
   out.isaBurstWithoutId = 2;
   out.isaMessagesStored = (isa1 || []).length;
-  out.isaMessagesWithoutIdDropped = 2 - droppedNoId;
+  out.isaMessagesWithoutIdSurvived = survivedNoId;
+  out.isaMessagesWithoutIdDropped = Math.max(0, 2 - survivedNoId);
   out.isaExpectedIfNothingLost = isaBefore + Object.keys(idsIn).length + 2;
   out.isaIdsLost = lost;
   out.isaOrderIndependent = orderStable;
@@ -632,7 +646,7 @@ async function concurrencyMode(mode, inject) {
         out.isaExpectedIfNothingLost + " expected)" + (mode === "local-only"
           ? " — NOT the merge's doing: the isaLine branch calls syncKeyToDb, which with no db capability queues a pendingDbWrites entry, and the very next guard (`!dbReady && pendingDbWrites[key]`, html:6881) then discards every later isaLine change in the session"
           : "") : "",
-      out.isaMessagesWithoutIdDropped ? out.isaMessagesWithoutIdDropped + " messages WITHOUT an `id` were silently discarded — isaLineMergeArrays' take() returns early on `!m.id`, so any relay that omits an id vanishes with no warning anywhere" : "",
+      out.isaMessagesWithoutIdDropped ? out.isaMessagesWithoutIdDropped + " of " + out.isaBurstWithoutId + " message(s) WITHOUT an `id` were discarded by the merge — on a two-way channel with a person that is lost correspondence, not a rounding error" : "",
       orderStable ? "" : "merge is order-dependent: swapping the two conflicting isaLine arrays produced a different stored array"
     ].filter(Boolean).join(" · "),
     engineer: "Reliability Engineer",
@@ -676,11 +690,11 @@ async function sectionBackup() {
     shapeMismatch: r.shapeMismatch,
     durationMs: r.durationMs,
     verdict: (r.completedTopLevel && !r.exceptions.length && !r.safeRunFailures.length && s.parseFailures.length === 0)
-      ? (s.missingV.length === 0 && owMissingFromExport.length === 0 ? "PASS" : "PASS WITH EXCEPTIONS")
+      ? (s.restored === s.docs && owMissingFromExport.length === 0 ? "PASS" : "PASS WITH EXCEPTIONS")
       : "FAIL",
     notes: [
       s.missingV.length
-        ? s.missingV.length + " document(s) carry no `v` wrapper (" + s.missingV.join(", ") + "). applyRemoteSnapshot rejects any doc without `v` (`if (!data || typeof data !== \"object\" || !(\"v\" in data)) return;`), so these are UNRESTORABLE by the page's own sync path — restored count is " + s.restored + " of " + s.docs + "."
+        ? s.missingV.length + " document(s) carry no `v` wrapper (" + s.missingV.join(", ") + "). applyRemoteSnapshot now adopts such a document as {v: <doc>} after a shape warning instead of skipping it, so all " + s.restored + " of " + s.docs + " restore. The writing task still needs fixing — a document that only survives because the reader is forgiving is one bad deploy from being lost."
         : "every document carries a `v` wrapper",
       owMissingFromExport.length
         ? owMissingFromExport.length + " OUTPUT_WATCH document(s) do not exist in the export at all: " + owMissingFromExport.join(", ") + " — the owning task has never written them, so a restore cannot bring them back."
@@ -700,13 +714,13 @@ async function sectionBackup() {
   addRow({
     capability: "Restore all " + s.docs + " exported documents and run the page",
     testType: "BackupRecovery",
-    result: restoreTest.verdict === "FAIL" ? "Fail" : (s.missingV.length || owMissingFromExport.length ? "Degraded" : "Pass"),
+    result: restoreTest.verdict === "FAIL" ? "Fail" : ((s.restored !== s.docs) || owMissingFromExport.length ? "Degraded" : "Pass"),
     weakness: [
-      s.missingV.length ? "stravaSnapshot has no `v` wrapper, so applyRemoteSnapshot skips it and a restore silently loses it (" + s.restored + "/" + s.docs + " restored)" : "",
+      (s.restored !== s.docs) ? (s.docs - s.restored) + " document(s) could not be restored (" + s.restored + "/" + s.docs + ")" : "",
       owMissingFromExport.length ? owMissingFromExport.length + " watched documents were never written by their task and therefore cannot be restored: " + owMissingFromExport.join(", ") : ""
     ].filter(Boolean).join(" · "),
-    engineer: s.missingV.length ? "Integration Engineer" : "",
-    status: (s.missingV.length || owMissingFromExport.length) ? "Escalated" : "Resolved",
+    engineer: ((s.restored !== s.docs) || owMissingFromExport.length) ? "Integration Engineer" : "",
+    status: ((s.restored !== s.docs) || owMissingFromExport.length) ? "Escalated" : "Resolved",
     evidence: s.restored + "/" + s.docs + " restored · " + (s.sizeBytes / 1024).toFixed(0) + " KB · " + r.containersRendered.length + " containers rendered · " + r.exceptions.length + " exceptions"
   });
   addRow({
