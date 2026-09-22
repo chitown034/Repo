@@ -9,6 +9,11 @@ log or in the deck** — only the file it lives in and the variable's NAME. And 
 **STANDBY**: tasks installed and identical, but the `taskLease` keeps them from running — see
 `REMOTE-ACCESS.md` → *Primary / standby*.
 
+**What changed on 2026-09-22:** standing by no longer means editing 59 task prompts. The lease check moved
+into `claude-auto`, the one launcher every task already goes through, so this Mac becomes a safe standby by
+**installing that one script and writing one word into one file** (step 11b). An absent role file already
+reads as `standby`, so the failure direction of forgetting is "this Mac does nothing", not "both Macs write".
+
 ---
 
 ## Level (i) — read the dashboards  (2 minutes, nothing to install)
@@ -117,7 +122,7 @@ definition, a skill, a log or the deck (`integrations/CONNECTIONS.md` rule 5).
 | File | Variable NAMES it holds | Needed on Mac #2 |
 |---|---|---|
 | `~/.config/lofty/.env` | `LOFTY_API_KEY` | Only if this Mac runs `lofty-crm-sync` (i.e. is PRIMARY) |
-| `~/.config/omniroute/.env` | `OMNIROUTE_API_KEY`, `OPENROUTER_API_KEY`, `NVIDIA_API_KEY`, `BYTEZ_API_KEY` | Only if you install the `claude-auto` failover here |
+| `~/.config/omniroute/.env` | `OMNIROUTE_API_KEY`, `OPENROUTER_API_KEY`, `NVIDIA_API_KEY`, `BYTEZ_API_KEY` | Only if you install the OmniRoute **free-provider failover** here. `claude-auto` itself does **not** need this file to hold the lease: with no `.env` the route simply stays `subscription` |
 | `~/.config/higgsfield/.env` | `HF_API_KEY_ID`, `HF_API_KEY_SECRET` | Optional; media tooling only |
 | macOS Keychain | everything else | As needed |
 
@@ -152,8 +157,7 @@ frontmatter will not load on this machine — run the `skills-refresh` audit rat
 
 Install `claude-runner` and copy the task set from Mac #1. The `runnerStatus` doc stamped
 2026-09-22T04:05:04Z lists **59** tasks and the toolkit snapshot counts **60** — reconcile against
-the runner on Mac #1, not against either document. Before enabling anything, give this Mac its own
-lease id and add the LEASE CHECK block from `REMOTE-ACCESS.md` to the top of every task prompt.
+the runner on Mac #1, not against either document. **Do not enable the schedule yet.**
 
 ```bash
 runnerctl status
@@ -161,18 +165,71 @@ scutil --get ComputerName
 ```
 
 **Expect:** `runnerctl status` lists the tasks; the computer name is **different** from Mac #1's. Two
-machines with the same lease id defeats the whole mechanism.
+machines with the same lease id defeats the whole mechanism, and the id is derived from that name unless
+you write `~/.config/claude-runner/id` yourself.
+
+### 11b. The lease — one script and one word (this is the whole of it)
+
+Nothing goes into the 59 task prompts. Install the launcher, declare the role, prove it.
+
+```bash
+# from the repo clone
+cp integrations/omniroute-failover/claude-auto.sh ~/.local/bin/claude-auto
+cp integrations/omniroute-failover/probe.sh       ~/.local/bin/probe.sh
+chmod +x ~/.local/bin/claude-auto ~/.local/bin/probe.sh
+
+mkdir -p ~/.config/claude-runner
+printf 'standby\n' > ~/.config/claude-runner/role     # 'primary' ONLY on the Mac that runs the tasks today
+
+claude-auto --status
+claude-auto --lease-check
+```
+
+(`./MAC-SETUP.sh --only omniroute` does the two copies for you; the role file is yours to write.)
+
+**Expect:** `--status` prints `lease_role=standby` and `lease_cached=none`. `--lease-check` prints
+`verdict=FOREIGN holder=<Mac #1's id>` and exits **0** — that is the standby working.
+**If it prints `verdict=INCONCLUSIVE`**, the check could not reach the store: `claude` is not logged in on
+this Mac, or the artifact-DB tool is not named `ArtifactData` in this CLI build (override with
+`CLAUDE_RUNNER_LEASE_TOOLS`). Do not enable the schedule until it is conclusive — a standby that cannot
+prove anything defers every task, which is safe but useless.
+**If it prints `verdict=ACQUIRED` while Mac #1 is awake and running tasks**, Mac #1 is not holding the
+lease — go and run `claude-auto --lease-check` there first. That is the run that creates the document.
+
+Then point the runner's task wrapper at `~/.local/bin/claude-auto` and make sure **every task passes
+`--task <its name>`**: an invocation with no `--task` is not lease-gated, by design (that is what keeps
+interactive Vanessa Live working on this Mac — see step 12b). Never put `--no-lease` in a task definition.
 
 ### 12. Prove the standby actually stands by
 
 Run any one task by hand on Mac #2 while Mac #1 is awake.
 
-**Expect:** it prints `standby: lease held by <Mac #1's id>` and exits 0 **having written nothing**.
-**If it does the work instead**, the LEASE CHECK is missing from that task's prompt — fix it before
-enabling the schedule, or both Macs will double-write `ciLog`, `isaLine` and every feed document.
+```bash
+claude-auto --task r10-automation-health -p 'say hi'; echo "exit $?"
+```
 
-To make this Mac PRIMARY later, use the one-command promotion in `REMOTE-ACCESS.md`. Do not simply
-disable the other runner — the lease is what stops the double write, not the schedule.
+**Expect:** stderr says `standby: lease held by <Mac #1's id>`, and `exit 75` — the runner's "retry later",
+having written nothing. (The prompt-level block in `REMOTE-ACCESS.md` exits 0 instead; in the launcher it is
+75 because that is the code `claude-runner` already understands, and the code the PII gate already uses.)
+**If it does the work instead**, this Mac thinks it holds the lease — re-run `claude-auto --lease-check`
+here and on Mac #1 before enabling the schedule, or both Macs will double-write `ciLog`, `isaLine` and
+every feed document.
+
+### 12b. Prove Vanessa still works here
+
+```bash
+claude-auto -p 'name the file that answers "what runs when, and did it run"'
+```
+
+**Expect:** it answers — `always-on/README.md`. An invocation with **no `--task`** is deliberately not
+lease-gated: a human is present, it is not one of the 59 scheduled writers, and level (ii) of this runbook
+depends on it. The residual is honest: a human at this Mac can still write documents by hand. Only the
+scheduled tasks are held back.
+
+To make this Mac PRIMARY later, use the one-command promotion in `REMOTE-ACCESS.md` and flip **both** role
+files (`primary` here, `standby` there) — the role flip is what makes the switch land on the next task
+instead of within the 30-minute decision cache. Do not simply disable the other runner: the lease is what
+stops the double write, not the schedule.
 
 ---
 

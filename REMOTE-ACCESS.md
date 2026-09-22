@@ -41,7 +41,7 @@ Both are private claude.ai artifacts, so any device on Steven's login opens them
 |---|---|---|
 | **(i) Read the dashboards** | The claude.ai login. Nothing else | The sync badge reads **"Synced across devices"**, and the **Devices** card in Toolkit & Remote Access (panel 38) lists both Macs |
 | **(ii) Drive Vanessa** | Claude Code installed and `/login`-ed · a clone of this repo · the MCP servers the work needs (15 configured on Mac #1) · the `~/.config/**/.env` files, by variable name only | `claude mcp list` shows them connected; one routing-table question opens exactly one leaf file |
-| **(iii) Run the scheduled tasks** | Everything in (ii), plus `claude-runner` with the 59 tasks — **and the lease below, so it stays STANDBY** | `runnerctl status` lists the tasks; a manual run exits quietly with `lease held by <other Mac>` |
+| **(iii) Run the scheduled tasks** | Everything in (ii), plus `claude-runner` with the 59 tasks, the `claude-auto` launcher, and **one line in `~/.config/claude-runner/role`** — see the lease below | `runnerctl status` lists the tasks; a manual run exits **75** with `standby: lease held by <other Mac>` and writes nothing |
 
 Step by step: `docs/SECOND-MAC-SETUP.md`.
 
@@ -49,7 +49,18 @@ Step by step: `docs/SECOND-MAC-SETUP.md`.
 
 Two Macs running the same 59 tasks would double-write the same documents: duplicate `ciLog` rows, `isaLine` messages sent twice, churn on `sectionEdits` (already at version 3104). Make it a lease, not a convention. **PRIMARY** = the Mac that has the tasks today; **STANDBY** = the second Mac, tasks installed, identical, lease-blocked.
 
-Lease document: `taskLease` in the Command Deck store (`1624daae-d683-405a-971d-c5828dce0f8d`), `{v:{holder, hostname, acquiredAt, expiresAt}}`. `holder` is a short stable id per machine; `hostname` is `scutil --get ComputerName`, for humans. TTL **90 minutes**, renewed by whichever task runs next — every 5 minutes on an awake primary. **The document does not exist yet**; the first task to run this check creates it. Put this at the top of every task prompt, before any work:
+Lease document: `taskLease` in the Command Deck store (`1624daae-d683-405a-971d-c5828dce0f8d`), `{v:{holder, hostname, acquiredAt, expiresAt}}`. `holder` is a short stable id per machine; `hostname` is `scutil --get ComputerName`, for humans. TTL **90 minutes**. **The document does not exist yet** — re-read from the store 2026-09-22 — and the first real run on a Mac creates it; never seed it from the cloud.
+
+**Where the check actually runs, since 2026-09-22: in the launcher, not in 59 prompts.** This file used to say "put this at the top of every task prompt". That was correct and it was never going to happen — editing 59 live task prompts is a HALT an agent cannot perform and a chore that does not finish, so Mac #2 stayed off. `integrations/omniroute-failover/claude-auto.sh` is already the one launcher in front of every `claude-runner` task: it already takes `--task NAME`, already decides whether a task may run, and already defers with exit 75. The same five steps — same document, same TTL, same `if_version` pin, same step-4 re-read — now run there, once, for every task. **Steven's whole remaining job per Mac is one line in a file:**
+
+```bash
+mkdir -p ~/.config/claude-runner && printf 'primary\n' > ~/.config/claude-runner/role   # 'standby' on Mac #2
+claude-auto --lease-check                                                               # prove it, on each Mac
+```
+
+Absent or unreadable, the role reads as **standby** — the safe direction for a freshly imaged Mac. The role decides one thing only: what happens when the check itself cannot complete. **Primary fails OPEN** (a blip must never stop all the automation; the 90-minute TTL exists so it can work through one), **standby fails CLOSED** (a standby that guesses is the double-write this prevents). A live foreign lease defers on *both* roles. The decision is cached for 30 minutes, so the real check costs about 48 `claude -p` turns a day rather than one per task invocation (733 of those a day across the 59 crons). Mechanism, precedence against the PII gate, and the executed tests: `integrations/omniroute-failover/README.md` → *The task lease*.
+
+**The block below stays the fallback** for any writer that does **not** go through `claude-auto` — a cloud routine, a hand-run Claude Code session, a future task runner. Paste it at the top of that writer's prompt, before any work:
 
 ```
 LEASE CHECK — first, and do nothing else if it fails.  MY_ID = "<this Mac's id>"  # different on each Mac
@@ -65,7 +76,7 @@ LEASE CHECK — first, and do nothing else if it fails.  MY_ID = "<this Mac's id
 5. Only now do the task's real work.
 ```
 
-The `if_version` pin is what makes this a lease and not a hope: a write pinned to a version that has already moved is refused and writes nothing; step 4 covers the one case a pin cannot. **Promote the standby — one command,** pasted into Claude Code on the Mac taking over:
+The `if_version` pin is what makes this a lease and not a hope: a write pinned to a version that has already moved is refused and writes nothing; step 4 covers the one case a pin cannot. The launcher's gate is the same five steps and preserves both semantics. **Promote the standby — one command,** pasted into Claude Code on the Mac taking over (unchanged, and it still works on its own):
 
 ```
 Take the task lease: ArtifactData set state/taskLease on artifact 1624daae-d683-405a-971d-c5828dce0f8d to
@@ -74,6 +85,15 @@ with no if_version, then read it back and show me the holder.
 ```
 
 The old primary's next run reads a lease it does not hold and exits quietly. Nothing to turn off, nothing double-writes in between; hand back by running the same line on the other Mac.
+
+With the launcher gate in play, add one line on each machine so the change lands on the next task instead of within the 30-minute cache window — flipping the role file busts the cache immediately:
+
+```bash
+printf 'primary\n' > ~/.config/claude-runner/role    # on the Mac taking over
+printf 'standby\n' > ~/.config/claude-runner/role    # on the Mac handing over
+```
+
+Skip it and both Macs still converge, but for up to 30 minutes the old primary can keep running on a cached decision — a bounded overlap, not a silent one: `claude-auto --status` shows the cached verdict and its age on both machines.
 
 ## What should move to the cloud now, and what cannot
 
