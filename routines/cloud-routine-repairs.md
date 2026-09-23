@@ -305,6 +305,10 @@ Fired as a proving run at **2026-09-23T02:53:50Z** (session `cse_01Fijfb9HdEVnjf
 `realEstateBrief` document, and `ciLog` was unchanged at version 223 — so the run never executed
 even its first instruction. Its sibling, fired nine seconds earlier, finished in five minutes.
 
+**Final observation, 2026-09-23 03:14:29Z — still `PENDING` at 20 m 39 s**, still no `finished_at`,
+still no `realEstateBrief`. Set that against the 19–58 second norm for every other routine in its
+class: this is not a slow run, and it is the last state I observed before handing over.
+
 Splitting the verdict, because the two halves have different answers:
 
 - **The content defect is fixed.** The routine no longer queries a CRM Steven retired on 2026-09-22.
