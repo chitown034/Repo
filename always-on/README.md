@@ -7,6 +7,13 @@ on the Mac (headless, pre-approved tools, **59** tasks — counted from the live
 > [`routines/mac-task-repairs.md`](../routines/mac-task-repairs.md)** — one section each, with the
 > corrected prompt or command already written and the check that proves it worked. This page says
 > *what is wrong*; that one says *what to paste*. **Item 1 has a deadline: 2026-09-23 12:20 UTC.**
+>
+> **The cloud routines are a separate file, and they are already repaired:**
+> [`routines/cloud-routine-repairs.md`](../routines/cloud-routine-repairs.md). A cloud routine
+> created by an agent can be edited by an agent, so nothing in that file is waiting on Steven —
+> it records what was changed on 2026-09-23 and the document or fired run that proves each one.
+> The exception is the seven `http_api` routines, which only Steven can touch; they are listed
+> there with a link each.
 
 **Status source:** the `runnerStatus` doc, `syncedAt 2026-09-22T07:06:12Z`. Crons are Mac local (PT).
 "Last end" is the last completion the runner recorded — **not** proof that today's slot ran.
@@ -84,15 +91,16 @@ or `syncedAt` is older than its own cadence). See `OPTIMIZATION.md`.
 
 The cloud-write probe (`docs/CLOUD-WRITE-ARCHITECTURE.md`) settled that an unattended cloud routine
 can write an artifact database. These run without a laptop and are proven by the documents they
-leave, never by their run status — three writers and one read-only watchdog:
+leave, never by their run status — **five writers and one read-only watchdog**:
 
-| Routine | Schedule (UTC) | Writes | Verified 2026-09-22 13:32 UTC |
+| Routine | Schedule (UTC) | Writes | Verified — 2026-09-22 13:32 UTC unless the row says otherwise |
 | --- | --- | --- | --- |
 | Weekly ecosystem backup — cloud writer | Sun 11:00 | `backups/<date>-*`, `backupStatus`, `ciLog` | **working** — ran 09:35Z; `backupStatus.lastBackup 2026-09-22`, `verified: true`, `consecutiveFailures: 0`, 170 + 13 docs; two `weekly-ecosystem-backup — ok` rows in `ciLog` |
 | Command Deck ↔ ISA Portal — Pipeline Sync (live, writes) | 04/10/16/22 daily | `reClients`, `pipeline`, `isaGradingScores`, `isaKpiSopActuals`, `isaScorecard` on both stores; `ciLog` | **working** — ran 10:09Z; `reClients` and `pipeline` carry 2 rows each and three `pipeline-sync — ok` rows are in `ciLog`. Note `isaScorecard` is `[]` on both sides — equal, so the sync is honest, but there is nothing in it yet |
 | ISA line — reply check & escalation ladder | weekdays 14:30 | `isaLadder`, at most one `isaLine` message and one `twinQueue` item per streak, `ciLog` | **working, bad stamp** — ran 12:59Z; `isaLadder.rung: "halted"`, packet `tw_isa_seat_20260922`, two `isa-ladder — halted` rows in `ciLog`. But `isaLadder.updatedAt` reads `2026-09-22T14:35:00Z` — **an hour in the future** at audit time. The proof-of-life field is wrong; fix it to the real write time |
 | Backup verification watchdog | Sun 17:30 | nothing — read-only by design | **not yet due** — created 2026-09-22, no run recorded, first firing Sun 2026-09-27 17:35Z. Unproven, not failing. Its spec's "expected first result" (`lastBackup 2026-09-14`, "if it returns CURRENT the watchdog is wrong") is now stale — the Sep 22 backup is real, so CURRENT will be the correct verdict |
-| Feed freshness watchdog | daily 16:12 | `feedFreshness`, one `ciLog` row | **unproven** — created 2026-09-22, cron `12 16 * * *`, **no run recorded** and no `feedFreshness` document in `state` yet (173-doc listing, 14:20 UTC). First firing 2026-09-22T16:12Z. It exists because `r9-feed-freshness-sweep` never ran and five feeds rotted unnoticed. It is not working until that run leaves a document — check for `feedFreshness` after 16:12Z, not the routine's status |
+| Feed freshness watchdog | daily 16:12 | `feedFreshness`, one `ciLog` row | **working — proven twice, re-verified 2026-09-23 03:00 UTC.** The earlier reading on this page — no run recorded and no `feedFreshness` document — was true when written and is now false. A run fired 2026-09-23T00:18:51Z and SUCCEEDED in **7 m 04 s**, writing `feedFreshness` v1 and a correctly-shaped `ciLog` row. A second, manual proving run at 02:53:41Z rewrote it (now **v3**, `checkedAt 2026-09-23T02:59:00Z`, `{v:{…}}`), and its `note` correctly diffs against the previous run rather than repeating it. Current verdict: 26 feeds — 19 fresh, 1 late, 4 stale, 2 unknown, 0 missing, no future-dated stamps; **worst is `openrouterFeeds`**, frozen since 2026-09-13 while its own task keeps reporting `ok`. Its 2026-09-22 FAILED run was a dropped run, not a prompt fault — the prompt has never been edited (`created_at` == `updated_at`). See `routines/cloud-routine-repairs.md` §1 |
+| Strava wrapper guard | daily 12:47 | `stravaWrapGuard`, and `ciLog` only if it repaired something | **not yet due** — created 2026-09-22T23:27Z, cron `47 12 * * *`, first firing **2026-09-23T12:47Z**. No run recorded and no `stravaWrapGuard` document, which is the correct state for a routine whose first slot has not arrived (checked 02:47 UTC, ~10 h early). It re-wraps `stravaSnapshot` if `strava-daily-sync` writes it bare again at 12:20Z. Check after 12:47Z — if Steven pasted the §1 prompt in time, expect `foundBare:false` / `action:"none-needed"` and no `ciLog` row |
 
 The old web-created "Pipeline Sync" routine (`trig_018BSAYiYzvtyaUkpAY4SnqE`) reports success and
 writes nothing; an agent cannot disable it. It fired again at 13:08Z today and reported SUCCEEDED.
@@ -112,7 +120,7 @@ These are the ones that pass their own status check and fail that test.
 | `strava-daily-sync` | `20 5 * * *` PT (= 12:20 UTC) | `stravaSnapshot` as `{v:…}` | wrote it **bare** at 12:32 UTC today, no `v` wrapper — repaired by hand the same afternoon | **corrupting** — see below |
 | Old "Pipeline Sync" (`trig_018BS…`) | 01/07/13/19 UTC | nothing (research-only prompt) | green row, no document ever moved | **lying** — only Steven can disable it. Disable retried and refused again 2026-09-22 (`created_via http_api`); fired 13:08:44Z, SUCCEEDED, moved nothing. Third confirmation |
 
-### Nine routines that are not running at all — one cause, not nine
+### Nine routines that were not running — one cause, not nine, and the free test has now passed
 
 Separate from the table above, which is about routines that run and write nothing. These nine never
 reach their prompt. Four `http_api` FAILED in **5.5–6.0 s**, three `meta_mcp` FAILED in
@@ -123,6 +131,20 @@ within two hours of each other. Everything that fired on 2026-09-22 succeeded an
 to 8 m 47 s, so the platform is healthy now. **Do not rewrite nine prompts** — the next natural
 firing is the free test. Full timing table, the two genuine latent defects, and the four links only
 Steven can use: `routines/mac-task-repairs.md` §7.
+
+> **Resolved 2026-09-23 by R1 — the free test ran, and the diagnosis held.** `Project Risk Review`
+> fired on its own Tuesday slot at 2026-09-22T18:07:22Z and **SUCCEEDED**, and the feed-freshness
+> watchdog went FAILED → SUCCEEDED on a prompt that has never been edited. Both confirm the failures
+> never reached a prompt. Two of the `meta_mcp` routines were nonetheless **disabled** — not for
+> failing, but because `Books Reconciliation Reminder` and `Ops Issue Review` are stock templates
+> reading a `/home/claude/vault` that does not exist, and are report-only so even a perfect run
+> leaves nothing. `Real Estate Weekly Brief` was **rewritten**: it was querying Follow Up Boss, which
+> Steven retired on 2026-09-22, and it now uses only the Calendar and Gmail connectors it actually
+> carries and leaves a `realEstateBrief` document plus a `ciLog` trace. The seven `http_api` ones are
+> still Steven's alone and still untouched. **One correction to §7 of that file:** its conclusion that
+> an agent-created routine "stores no MCP connectors" is not true of this batch — connectors are
+> inherited from the session that created the routine, and `Real Estate Weekly Brief` has eleven.
+> Full write-up, per routine, with what proves each: **`routines/cloud-routine-repairs.md`**.
 
 ### The `stravaSnapshot` writer — P1, open
 
