@@ -416,8 +416,11 @@ action. https://claude.ai/code/routines/trig_018BSAYiYzvtyaUkpAY4SnqE
 The brief says "17 of 53 enabled routines are not completing". The live listing gives **57 routines,
 53 enabled**, and of those 53 **16** are not in a SUCCEEDED state: 9 FAILED, 5 NEVER_RUN, 2 ABANDONED.
 The third ABANDONED routine (`Command Deck — Steve twin`) is **disabled**, so it is not one of the 53.
-After this pass, the enabled not-SUCCEEDED count is **14**, and two of those are ex-failures now
-carrying proving runs.
+After this pass **51 are enabled** and **14** of those are not SUCCEEDED — verified live at
+2026-09-23 03:10 UTC: 7 FAILED (all `http_api`, all Steven's), 5 NEVER_RUN (all confirmed not-yet-due),
+1 ABANDONED (`Rent, Buy, or Wait`, repaired, proof due 2026-09-28) and 1 PENDING (`Real Estate Weekly
+Brief`, the hung proving run). **Only one row in that 14 is a routine this pass left in a state it
+cannot explain**, and it is named in §4.
 
 ## Related
 
