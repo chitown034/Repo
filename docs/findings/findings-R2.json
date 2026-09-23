@@ -1,0 +1,3278 @@
+[
+ {
+  "id": "F-P4-03",
+  "source": "findings-P4.json",
+  "severity": "high",
+  "verdict": "fixed-now",
+  "evidence": "CONNECTIONS.md line 16 read \"install with `pip install .`\". P4 measured standalone install exits: homes 1, showingtime 1, showami 1 (they pin cli-anything-browser, not on PyPI); browser/lofty/skyslope/zipforms/zoho 0.",
+  "changed": "Line now reads \"browser first, then the seven, into one venv\" and names why the three DOMShell sites fail alone. Commit 9ad758c.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-P4-08",
+  "source": "findings-P4.json",
+  "severity": "medium",
+  "verdict": "fixed-now",
+  "evidence": "Stale headline counts. Live: 175 documents in `state` (not 161); `runnerStatus` lists 59 tasks (not 60); 57 routines / 53 enabled (not 50/46). live `state` listing + document reads, 2026-09-23 03:10 UTC (reads only, no DB write)",
+  "changed": "projects/command-deck.md and wiki/dashboard-ops/index.md re-derived from the live store and stamped with the read time; the 59-vs-60 question is answered in favour of the document. The 50/46 figure remains inside two dated briefs, which keep their historical content. Commit a225dd6.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-R2-01",
+  "source": "raised by this pass",
+  "severity": "High",
+  "verdict": "fixed-now",
+  "evidence": "README.md \u2014 the repository front door \u2014 still carried \"Writes happen on the Mac \u2026 an unattended cloud routine cannot reliably write the dashboard's database; both park on an approval nobody is there to give.\" That rule was disproved on 2026-09-22 and corrected in the deck, the wiki and the registers; README.md was missed, so the repo contradicted wiki/dashboard-ops/index.md at the entrance.",
+  "changed": "Replaced with what the evidence supports \u2014 cloudWriteProbe (envelope updatedAt 2026-09-22T09:05:56Z) and four live cloud writers, including feedFreshness written 2026-09-23T00:50Z \u2014 and with the limit that does survive: an agent-created routine carries no connectors. Commit 9ad758c.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-R2-02",
+  "source": "raised by this pass",
+  "severity": "Medium",
+  "verdict": "fixed-now",
+  "evidence": "integrations/mac-task-specs.md:73 refused the cloud Zoho writer because \"an unattended cloud run's artifact-DB write parks on a permission prompt \u2014 confirmed three times\". The conclusion is right and the reason is false.",
+  "changed": "Reason replaced with the one that holds: an agent-created routine carries no connectors, so a cloud run cannot reach Zoho through Composio at all. Commit bc91f0b.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-R2-03",
+  "source": "raised by this pass",
+  "severity": "Medium",
+  "verdict": "fixed-now",
+  "evidence": "docs/CAIO-DISRUPTION-BRIEF.md CAIO-01 proposed re-testing unattended cloud writes after Claude Code 2.1.277 and sat on the page as an open recommendation. The test was run on 2026-09-22 and passed.",
+  "changed": "Dated OUTCOME block appended under CAIO-01; the original proposal text is untouched. It also records the part of the expected value that did NOT materialise \u2014 the ~10 connector-bound Mac feed tasks do not become redundant. Commit bc91f0b.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-R2-04",
+  "source": "raised by this pass",
+  "severity": "Medium",
+  "verdict": "fixed-now",
+  "evidence": "projects/command-deck.md \u2014 the file CLAUDE.md routes every \"status of the deck\" question to \u2014 carried the same disproved cloud-write claim, a 161-document count from the 09-22 08:10 UTC export, \"loftyLeads (new \u2014 not yet written)\", and r17-trading-day-log listed as failing when it now reads ok.",
+  "changed": "Re-derived from the live store and stamped: 175 documents, loftyLeads and zohoSync exist with honest blocked bodies, zohoLeads/zohoDeals still absent, r17 moved to a \"closed since this list was written\" block, and the four stale documents named. Commit a225dd6.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-R2-05",
+  "source": "raised by this pass",
+  "severity": "Medium",
+  "verdict": "fixed-now",
+  "evidence": "recall-cache.md's staleness table had no row at all for the failure mode that actually bit this cycle \u2014 a task reporting ok over a document that has not moved \u2014 and its never-completed example (brain-learn-daily, last end 2026-09-15) had recovered on 2026-09-22.",
+  "changed": "Example replaced with brain-weekly-verify (last end 2026-09-14 on a Sunday cron) and a new alert row added for the silent no-write success, citing openrouterFeeds. Commit c1812bc.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-R2-06",
+  "source": "raised by this pass",
+  "severity": "Medium",
+  "verdict": "fixed-now",
+  "evidence": "memory.md was empty while the same four or five corrections were being re-discovered by successive engineers \u2014 three reported defects already fixed under them, and two candidate findings in this round were themselves wrong in exactly the ways an earlier memory line would have prevented.",
+  "changed": "Seven dated lines appended: the cloud-write reversal, the envelope-vs-body timestamp trap, 18 recipes vs 20 verified flags, the Graphify dual licence, the scope of the lead-board decision, \"task ok is not document written\", and the live 59/175 counts. Commit c1812bc.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-R2-07",
+  "source": "raised by this pass",
+  "severity": "Low",
+  "verdict": "fixed-now",
+  "evidence": "docs/INTEGRATOR-TODO.md left three completed items unticked (auditFindings / stressTestReport / scaleOpportunityLog / weeklyBrief seeded, the ciLog cycle entry, the cloud-write probe result), which makes the remaining list look larger than it is.",
+  "changed": "Ticked against the live store with the evidence named beside each; the dmaicProjects re-point re-confirmed STILL OPEN (d3 still says \"pulled from FUB/Zoho\", zero Lofty mentions) and the E10 allow-list item narrowed to one task. Commit 42b8ee1.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-V2-23",
+  "source": "findings-V2.json",
+  "severity": "info",
+  "verdict": "fixed-now",
+  "evidence": "integrations/CONNECTIONS.md:42 and OPTIMIZATION.md both asserted Orca v1.4.203 \"Installed on the Mac\". No Mac is reachable from here and no repo artefact attests to it.",
+  "changed": "Both lines now read \"reported installed \u2014 unverified from the cloud\", pointing at ./mac-verify.sh. The claim is marked, not deleted. Commit 9ad758c, bc91f0b.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-E1-13",
+  "source": "findings-E1.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E1-14",
+  "source": "findings-E1.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E1-20",
+  "source": "findings-E1.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E11A-02",
+  "source": "findings-E11a.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E11A-06",
+  "source": "findings-E11a.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E12-04",
+  "source": "findings-E12.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E12-05",
+  "source": "findings-E12.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E12-15",
+  "source": "findings-E12.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E12-21",
+  "source": "findings-E12.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E12-22",
+  "source": "findings-E12.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E2-03",
+  "source": "findings-E2.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "r4-quantvue-sync still reads `refused` (`runnerStatus` v12, its own stamp 2026-09-23 02:10 UTC, last end 2026-09-22T01:19:43) and `strategySnapshot` is stale at ~165 h (`feedFreshness` v1, its own stamp 2026-09-23 00:50 UTC).",
+  "changed": "Nothing. NEEDS-STEVEN items 8 and 9.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-E2-09",
+  "source": "findings-E2.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E2-11",
+  "source": "findings-E2.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E3-06",
+  "source": "findings-E3.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E3-12",
+  "source": "findings-E3.json",
+  "severity": "P3",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E4a-02",
+  "source": "findings-E4a.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E4a-04",
+  "source": "findings-E4a.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E4a-12",
+  "source": "findings-E4a.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E4a-13",
+  "source": "findings-E4a.json",
+  "severity": "P3",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E4b-07",
+  "source": "findings-E4b.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E4b-14",
+  "source": "findings-E4b.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E4b-18",
+  "source": "findings-E4b.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E4b-19",
+  "source": "findings-E4b.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E5-02",
+  "source": "findings-E5.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E5-08",
+  "source": "findings-E5.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E5-11",
+  "source": "findings-E5.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E5-12",
+  "source": "findings-E5.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E6-07",
+  "source": "findings-E6.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E6-09",
+  "source": "findings-E6.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E6-13",
+  "source": "findings-E6.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E6-14",
+  "source": "findings-E6.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E6-21",
+  "source": "findings-E6.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Row is marked halt by its own author: Mac install needs a Claude Code session on the Mac (Steven)",
+  "changed": "Nothing \u2014 carried to docs/NEEDS-STEVEN-R2.append.md if it was not already on the one list.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E6-27",
+  "source": "findings-E6.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "ops-knowledge-graph is still among the 18 never-run tasks (`runnerStatus` v12, its own stamp 2026-09-23 02:10 UTC) and `knowledgeGraph` has not moved off its 2026-09-13 build \u2014 `feedFreshness` v1, its own stamp 2026-09-23 00:50 UTC marks it stale at ~216 h.",
+  "changed": "docs/INTEGRATOR-TODO.md now records that steve-twin-sweep recovered and ops-knowledge-graph did not, so the allow-list item is about one task. Commit 42b8ee1.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-E6-30",
+  "source": "findings-E6.json",
+  "severity": "P3",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E7-03",
+  "source": "findings-E7.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E7-11",
+  "source": "findings-E7.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E7-12",
+  "source": "findings-E7.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-01",
+  "source": "findings-E8.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-02",
+  "source": "findings-E8.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-05",
+  "source": "findings-E8.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-06",
+  "source": "findings-E8.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-08",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-21",
+  "source": "findings-E8.json",
+  "severity": "P3",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-29",
+  "source": "findings-E8.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-39",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-43",
+  "source": "findings-E8.json",
+  "severity": "P3",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-44",
+  "source": "findings-E8.json",
+  "severity": "P3",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-52",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-54",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Row is marked halt by its own author: Installing skills on the Mac requires Steven to run the install prompt.",
+  "changed": "Nothing \u2014 carried to docs/NEEDS-STEVEN-R2.append.md if it was not already on the one list.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-58",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-59",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-60",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-64",
+  "source": "findings-E8.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-65",
+  "source": "findings-E8.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-72",
+  "source": "findings-E8.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR1-02",
+  "source": "findings-FR1.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR1-06",
+  "source": "findings-FR1.json",
+  "severity": "P3",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR1-07",
+  "source": "findings-FR1.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR1-11",
+  "source": "findings-FR1.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR2-15",
+  "source": "findings-FR2.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR2-18",
+  "source": "findings-FR2.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR3-11",
+  "source": "findings-FR3.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR3-12",
+  "source": "findings-FR3.json",
+  "severity": "P3",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR4-02",
+  "source": "findings-FR4.json",
+  "severity": "P3",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR4-10",
+  "source": "findings-FR4.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR5a-01",
+  "source": "findings-FR5a.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR5a-02",
+  "source": "findings-FR5a.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR5a-03",
+  "source": "findings-FR5a.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR5a-04",
+  "source": "findings-FR5a.json",
+  "severity": "P3",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR5a-05",
+  "source": "findings-FR5a.json",
+  "severity": "P3",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR5a-09",
+  "source": "findings-FR5a.json",
+  "severity": "P3",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR5a-10",
+  "source": "findings-FR5a.json",
+  "severity": "P3",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR5a-11",
+  "source": "findings-FR5a.json",
+  "severity": "P3",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR5a-12",
+  "source": "findings-FR5a.json",
+  "severity": "P3",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR5a-15",
+  "source": "findings-FR5a.json",
+  "severity": "P3",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR5a-16",
+  "source": "findings-FR5a.json",
+  "severity": "P3",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR5a-17",
+  "source": "findings-FR5a.json",
+  "severity": "P3",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR5b-01",
+  "source": "findings-FR5b.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR5b-05",
+  "source": "findings-FR5b.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR5b-06",
+  "source": "findings-FR5b.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR5b-11",
+  "source": "findings-FR5b.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-H1-01",
+  "source": "findings-H1.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-H1-08",
+  "source": "findings-H1.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-H1-10",
+  "source": "findings-H1.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-H1-11",
+  "source": "findings-H1.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-H2b-02",
+  "source": "findings-H2b.json",
+  "severity": "info",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-H2b-07",
+  "source": "findings-H2b.json",
+  "severity": "info",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-H2b-13",
+  "source": "findings-H2b.json",
+  "severity": "medium",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-H3-12",
+  "source": "findings-H3.json",
+  "severity": "medium",
+  "verdict": "halt",
+  "evidence": "Row is marked halt by its own author: True",
+  "changed": "Nothing \u2014 carried to docs/NEEDS-STEVEN-R2.append.md if it was not already on the one list.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-H3-22",
+  "source": "findings-H3.json",
+  "severity": "medium",
+  "verdict": "halt",
+  "evidence": "Row is marked halt by its own author: True",
+  "changed": "Nothing \u2014 carried to docs/NEEDS-STEVEN-R2.append.md if it was not already on the one list.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-H3-23",
+  "source": "findings-H3.json",
+  "severity": "medium",
+  "verdict": "halt",
+  "evidence": "Row is marked halt by its own author: True",
+  "changed": "Nothing \u2014 carried to docs/NEEDS-STEVEN-R2.append.md if it was not already on the one list.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-H3b-25",
+  "source": "findings-H3b.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Row is marked halt by its own author: True",
+  "changed": "Nothing \u2014 carried to docs/NEEDS-STEVEN-R2.append.md if it was not already on the one list.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-INT-03",
+  "source": "findings-INT.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-INT-05",
+  "source": "findings-INT.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-L1-01",
+  "source": "findings-L1.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-L1-04",
+  "source": "findings-L1.json",
+  "severity": "medium",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-L1-05",
+  "source": "findings-L1.json",
+  "severity": "medium",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-L1-08",
+  "source": "findings-L1.json",
+  "severity": "low",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-L2-03",
+  "source": "findings-L2.json",
+  "severity": "medium",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-L2-08",
+  "source": "findings-L2.json",
+  "severity": "low",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-L3-02",
+  "source": "findings-L3.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-L3-04",
+  "source": "findings-L3.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-L3-05",
+  "source": "findings-L3.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-L3-06",
+  "source": "findings-L3.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-L3-07",
+  "source": "findings-L3.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-L3-12",
+  "source": "findings-L3.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-M1-05",
+  "source": "findings-M1.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-M1-06",
+  "source": "findings-M1.json",
+  "severity": "medium",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-M3-03",
+  "source": "findings-M3.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-M3-09",
+  "source": "findings-M3.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-M3-10",
+  "source": "findings-M3.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-M3-11",
+  "source": "findings-M3.json",
+  "severity": "medium",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-M4-12",
+  "source": "findings-M4.json",
+  "severity": "medium",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-M4-24",
+  "source": "findings-M4.json",
+  "severity": "medium",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-M5-01",
+  "source": "findings-M5.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-M5-05",
+  "source": "findings-M5.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-M5-07",
+  "source": "findings-M5.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "CONFIRMED STILL OPEN, and the confirmation is subtle: `isaLadder`'s body reads updatedAt 2026-09-22T14:30:00Z, exactly the cron slot (`30 14 * * 2-6`), while the run fired at 14:33:39Z and the envelope updatedAt is 14:35:53Z. The proof-of-life field is the slot, not the write.",
+  "changed": "Nothing. NEEDS-STEVEN item 12 stands; evidence sharpened in docs/NEEDS-STEVEN-R2.append.md.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-M5-08",
+  "source": "findings-M5.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-M6-15",
+  "source": "findings-M6.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P1-03",
+  "source": "findings-P1.json",
+  "severity": "Medium",
+  "verdict": "halt",
+  "evidence": "Row is marked halt by its own author: Yes \u2014 the token's value is a credential. The installer creates no skeleton for it and never touches it.",
+  "changed": "Nothing \u2014 carried to docs/NEEDS-STEVEN-R2.append.md if it was not already on the one list.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P1-06",
+  "source": "findings-P1.json",
+  "severity": "Medium",
+  "verdict": "halt",
+  "evidence": "Row is marked halt by its own author: Yes if any of that history is ever moved \u2014 client PII entering the vector index or knowledge graph is a HALT row.",
+  "changed": "Nothing \u2014 carried to docs/NEEDS-STEVEN-R2.append.md if it was not already on the one list.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P1-12",
+  "source": "findings-P1.json",
+  "severity": "Low",
+  "verdict": "halt",
+  "evidence": "Row is marked halt by its own author: Yes for the values and for the profile toggle \u2014 a credential and an account permission change. The installer only ever writes names.",
+  "changed": "Nothing \u2014 carried to docs/NEEDS-STEVEN-R2.append.md if it was not already on the one list.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P2-09",
+  "source": "findings-P2.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Row is marked halt by its own author: True",
+  "changed": "Nothing \u2014 carried to docs/NEEDS-STEVEN-R2.append.md if it was not already on the one list.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P2-10",
+  "source": "findings-P2.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Row is marked halt by its own author: True",
+  "changed": "Nothing \u2014 carried to docs/NEEDS-STEVEN-R2.append.md if it was not already on the one list.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P3-01",
+  "source": "findings-P3.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P3-02",
+  "source": "findings-P3.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P3-05",
+  "source": "findings-P3.json",
+  "severity": "medium",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P4-09",
+  "source": "findings-P4.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Row is marked halt by its own author: True",
+  "changed": "Nothing \u2014 carried to docs/NEEDS-STEVEN-R2.append.md if it was not already on the one list.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P4-19",
+  "source": "findings-P4.json",
+  "severity": "medium",
+  "verdict": "halt",
+  "evidence": "Row is marked halt by its own author: True",
+  "changed": "Nothing \u2014 carried to docs/NEEDS-STEVEN-R2.append.md if it was not already on the one list.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P4-20",
+  "source": "findings-P4.json",
+  "severity": "medium",
+  "verdict": "halt",
+  "evidence": "CONFIRMED STILL OPEN. Both Pipeline Syncs are enabled and both report SUCCEEDED: trig_018BSAYiYzvtyaUkpAY4SnqE (http_api, `0 1,7,13,19`, last 2026-09-23T01:07) and trig_01M5zR1Po44gnHvTwA9ogZaB (meta_mcp, `0 4,10,16,22`, last 2026-09-22T22:08). live routine listing, 2026-09-23 03:05 UTC",
+  "changed": "Nothing. One click from Steven; NEEDS-STEVEN item 7.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-P5-04",
+  "source": "findings-P5.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P5-05",
+  "source": "findings-P5.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P5-10",
+  "source": "findings-P5.json",
+  "severity": "info",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P6-02",
+  "source": "findings-P6.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Drive is still a 0-file store: `knowledgeFabric` (own stamp 2026-09-23 02:10 UTC) lists \"Drive folder, 0 files\" beside five real stores.",
+  "changed": "wiki/dashboard-ops/index.md now says so explicitly and names it a false green. The wire-or-drop decision is Steven's \u2014 NEEDS-STEVEN item 15. Commit a225dd6.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-P7-10",
+  "source": "findings-P7.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Row is marked halt by its own author: Enabling the second Mac's schedule depends on a check that has never run against the real CLI, the real login or the real store. The failure direction is safe on both roles, but it is Steven's call to",
+  "changed": "Nothing \u2014 carried to docs/NEEDS-STEVEN-R2.append.md if it was not already on the one list.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P8-04",
+  "source": "findings-P8.json",
+  "severity": "Medium",
+  "verdict": "halt",
+  "evidence": "Row is marked halt by its own author: Yes \u2014 the token's value is a credential and the real fix is an upstream change. One action for Steven: decide whether to accept the same-user `ps` exposure on a single-user Mac, or hold the harness un",
+  "changed": "Nothing \u2014 carried to docs/NEEDS-STEVEN-R2.append.md if it was not already on the one list.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P8-07",
+  "source": "findings-P8.json",
+  "severity": "Medium",
+  "verdict": "halt",
+  "evidence": "Row is marked halt by its own author: Yes if any of that history is ever moved \u2014 client PII entering the vector index or the knowledge graph is a HALT row in CLAUDE.md. One action for Steven: confirm the eight ~/.cli-anything-*/ paths are",
+  "changed": "Nothing \u2014 carried to docs/NEEDS-STEVEN-R2.append.md if it was not already on the one list.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P8-09",
+  "source": "findings-P8.json",
+  "severity": "High",
+  "verdict": "halt",
+  "evidence": "Row is marked halt by its own author: Yes for the gating decision itself. One action for Steven: decide whether homes.com/ShowingTime/Showami may run before the ECC review completes, given that they are now launcher-gated rather than poli",
+  "changed": "Nothing \u2014 carried to docs/NEEDS-STEVEN-R2.append.md if it was not already on the one list.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-Q3-10",
+  "source": "findings-Q3.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Steven's own financial detail in the deck's page source. Not client data, but explicitly outside the scope of the 2026-09-23 decision.",
+  "changed": "Nothing. His call, carried to docs/NEEDS-STEVEN-R2.append.md.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-Q3-11",
+  "source": "findings-Q3.json",
+  "severity": "medium",
+  "verdict": "halt",
+  "evidence": "CONFIRMED STILL OPEN. ISA Portal `isaKpi` is version 1 and metrics[5] still reads \"ISA self-report vs FUB delta\" against the deck copy's \"vs CRM delta\"; the portal copy carries 9 FUB mentions. Read-only, 2026-09-23.",
+  "changed": "Nothing \u2014 both halves need an artifact-DB write, which this seat may not make.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-S1-05",
+  "source": "findings-S1.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-S1-06",
+  "source": "findings-S1.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-S1-07",
+  "source": "findings-S1.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-S1-08",
+  "source": "findings-S1.json",
+  "severity": "critical",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-S1-09",
+  "source": "findings-S1.json",
+  "severity": "critical",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-S1-10",
+  "source": "findings-S1.json",
+  "severity": "critical",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-S1-11",
+  "source": "findings-S1.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-S1-15",
+  "source": "findings-S1.json",
+  "severity": "medium",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-V1-01",
+  "source": "findings-V1.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-V1-02",
+  "source": "findings-V1.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-V1-03",
+  "source": "findings-V1.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-V1-07",
+  "source": "findings-V1.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-V1-10",
+  "source": "findings-V1.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-V2-05",
+  "source": "findings-V2.json",
+  "severity": "medium",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-V2-20",
+  "source": "findings-V2.json",
+  "severity": "medium",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-W2-01",
+  "source": "findings-W2.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-W2-02",
+  "source": "findings-W2.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-W2-03",
+  "source": "findings-W2.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-W2-04",
+  "source": "findings-W2.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-W2-05",
+  "source": "findings-W2.json",
+  "severity": "P1",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-W2-06",
+  "source": "findings-W2.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-W2-08",
+  "source": "findings-W2.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-W2-09",
+  "source": "findings-W2.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-W2-10",
+  "source": "findings-W2.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-W2-14",
+  "source": "findings-W2.json",
+  "severity": "P2",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-X2-05",
+  "source": "findings-X2.json",
+  "severity": "medium",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-X2-09",
+  "source": "findings-X2.json",
+  "severity": "high",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-X2-19",
+  "source": "findings-X2.json",
+  "severity": "medium",
+  "verdict": "halt",
+  "evidence": "Already collected on docs/NEEDS-STEVEN.md, which cites this id; re-checked 2026-09-23 and the blocker (a credential, an account change, a live Mac task or routine, or a decision) is unchanged.",
+  "changed": "Nothing \u2014 it is on the one list Steven works.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E1-16",
+  "source": "findings-E1.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E1-19",
+  "source": "findings-E1.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E11A-03",
+  "source": "findings-E11a.json",
+  "severity": "P1",
+  "verdict": "unfixable-here",
+  "evidence": "nightly-self-test is the single task still in error (`runnerStatus` v12, its own stamp 2026-09-23 02:10 UTC, last end 2026-09-22T01:44:37, cron `0 23 * * *`). The selfTest document still does not exist in `state`.",
+  "changed": "Nothing here \u2014 a Mac runner timeout.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-E11A-04",
+  "source": "findings-E11a.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E11A-05",
+  "source": "findings-E11a.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Partly overtaken: trustLevels v1 and scaleOpportunityLog v1 now exist. Still absent from `state`: selfTest and skillsAudit. improvementProposals exists but is an empty array. live `state` listing + document reads, 2026-09-23 03:10 UTC (reads only, no DB write)",
+  "changed": "Nothing here \u2014 the remaining half is renderer agreement in command-deck.html, which is not in this repo.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-E12-19",
+  "source": "findings-E12.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E12-20",
+  "source": "findings-E12.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E12-24",
+  "source": "findings-E12.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E12-25",
+  "source": "findings-E12.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E2-15",
+  "source": "findings-E2.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E2-16",
+  "source": "findings-E2.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E2-17",
+  "source": "findings-E2.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E2-18",
+  "source": "findings-E2.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E2-19",
+  "source": "findings-E2.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E3-13",
+  "source": "findings-E3.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E3-14",
+  "source": "findings-E3.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E3-15",
+  "source": "findings-E3.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E3-16",
+  "source": "findings-E3.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E3-17",
+  "source": "findings-E3.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E4a-10",
+  "source": "findings-E4a.json",
+  "severity": "P1",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E4a-11",
+  "source": "findings-E4a.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E4a-14",
+  "source": "findings-E4a.json",
+  "severity": "P1",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E4a-16",
+  "source": "findings-E4a.json",
+  "severity": "P1",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E4b-04",
+  "source": "findings-E4b.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E4b-12",
+  "source": "findings-E4b.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E4b-16",
+  "source": "findings-E4b.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E4b-17",
+  "source": "findings-E4b.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E4b-20",
+  "source": "findings-E4b.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E4b-21",
+  "source": "findings-E4b.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E5-15",
+  "source": "findings-E5.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E5-27",
+  "source": "findings-E5.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E6-04",
+  "source": "findings-E6.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E6-20",
+  "source": "findings-E6.json",
+  "severity": "P1",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E6-23",
+  "source": "findings-E6.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E7-01",
+  "source": "findings-E7.json",
+  "severity": "P1",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E7-02",
+  "source": "findings-E7.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E7-04",
+  "source": "findings-E7.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E7-05",
+  "source": "findings-E7.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E7-06",
+  "source": "findings-E7.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E7-07",
+  "source": "findings-E7.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E7-08",
+  "source": "findings-E7.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E7-09",
+  "source": "findings-E7.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E7-10",
+  "source": "findings-E7.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Re-read 2026-09-23: routed to another owner by its own author and outside this seat's file ownership.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E7-14",
+  "source": "findings-E7.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-04",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-07",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-09",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-10",
+  "source": "findings-E8.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-11",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-12",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-14",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-15",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-16",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-17",
+  "source": "findings-E8.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-18",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-19",
+  "source": "findings-E8.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-20",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-22",
+  "source": "findings-E8.json",
+  "severity": "P1",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-23",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-25",
+  "source": "findings-E8.json",
+  "severity": "P1",
+  "verdict": "unfixable-here",
+  "evidence": "Same evidence as F-E11A-03: nightly-self-test still errors and no selfTest document exists.",
+  "changed": "Nothing here.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-E8-26",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-27",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-28",
+  "source": "findings-E8.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-30",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-31",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-32",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-33",
+  "source": "findings-E8.json",
+  "severity": "P1",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-34",
+  "source": "findings-E8.json",
+  "severity": "P1",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-35",
+  "source": "findings-E8.json",
+  "severity": "P1",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-36",
+  "source": "findings-E8.json",
+  "severity": "P1",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-37",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-38",
+  "source": "findings-E8.json",
+  "severity": "P1",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-40",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-41",
+  "source": "findings-E8.json",
+  "severity": "P1",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-42",
+  "source": "findings-E8.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-45",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-46",
+  "source": "findings-E8.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-47",
+  "source": "findings-E8.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-48",
+  "source": "findings-E8.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-49",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-50",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-51",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-53",
+  "source": "findings-E8.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-55",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-57",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-61",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-62",
+  "source": "findings-E8.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-63",
+  "source": "findings-E8.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-66",
+  "source": "findings-E8.json",
+  "severity": "P1",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-67",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-68",
+  "source": "findings-E8.json",
+  "severity": "P1",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-69",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-70",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-71",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-73",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-74",
+  "source": "findings-E8.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-75",
+  "source": "findings-E8.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-76",
+  "source": "findings-E8.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E8-77",
+  "source": "findings-E8.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR2-17",
+  "source": "findings-FR2.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR4-03",
+  "source": "findings-FR4.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR4-05",
+  "source": "findings-FR4.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR4-07",
+  "source": "findings-FR4.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR4-09",
+  "source": "findings-FR4.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR4-11",
+  "source": "findings-FR4.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR5b-04",
+  "source": "findings-FR5b.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-FR5b-14",
+  "source": "findings-FR5b.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-H1-03",
+  "source": "findings-H1.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Needs macOS: a Mac session, the runner, the keychain, a LaunchAgent or a signed-in browser. Nothing in a cloud sandbox can execute or verify it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-H1-04",
+  "source": "findings-H1.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Needs macOS: a Mac session, the runner, the keychain, a LaunchAgent or a signed-in browser. Nothing in a cloud sandbox can execute or verify it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-H1-05",
+  "source": "findings-H1.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Needs macOS: a Mac session, the runner, the keychain, a LaunchAgent or a signed-in browser. Nothing in a cloud sandbox can execute or verify it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-H1-06",
+  "source": "findings-H1.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Needs an upstream change (the vendored harness, an npm/PyPI package or DOMShell itself); patching locally would break the provenance claim.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-H1-07",
+  "source": "findings-H1.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Needs macOS: a Mac session, the runner, the keychain, a LaunchAgent or a signed-in browser. Nothing in a cloud sandbox can execute or verify it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-H3b-02",
+  "source": "findings-H3b.json",
+  "severity": "low",
+  "verdict": "unfixable-here",
+  "evidence": "Re-read 2026-09-23: routed to another owner by its own author and outside this seat's file ownership.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-L1-03",
+  "source": "findings-L1.json",
+  "severity": "high",
+  "verdict": "unfixable-here",
+  "evidence": "Re-read 2026-09-23: routed to another owner by its own author and outside this seat's file ownership.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-M1-10",
+  "source": "findings-M1.json",
+  "severity": "medium",
+  "verdict": "unfixable-here",
+  "evidence": "The two unowned lines are command-deck.html:5977 and :26199. command-deck.html is not in this repo (only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are) and the deck is on this seat's do-not-edit list.",
+  "changed": "The same disproved claim inside files this seat does own was fixed instead: README.md, projects/command-deck.md, integrations/mac-task-specs.md, docs/CAIO-DISRUPTION-BRIEF.md. Three .claude/skills files still carry it \u2014 handed back. Commits 9ad758c, a225dd6, bc91f0b.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-M6-07",
+  "source": "findings-M6.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Re-read 2026-09-23: routed to another owner by its own author and outside this seat's file ownership.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-M6-14",
+  "source": "findings-M6.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Re-read 2026-09-23: routed to another owner by its own author and outside this seat's file ownership.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P1-01",
+  "source": "findings-P1.json",
+  "severity": "High",
+  "verdict": "unfixable-here",
+  "evidence": "Needs an upstream change (the vendored harness, an npm/PyPI package or DOMShell itself); patching locally would break the provenance claim.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P1-04",
+  "source": "findings-P1.json",
+  "severity": "Medium",
+  "verdict": "unfixable-here",
+  "evidence": "Needs an upstream change (the vendored harness, an npm/PyPI package or DOMShell itself); patching locally would break the provenance claim.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P1-08",
+  "source": "findings-P1.json",
+  "severity": "High",
+  "verdict": "unfixable-here",
+  "evidence": "Needs an upstream change (the vendored harness, an npm/PyPI package or DOMShell itself); patching locally would break the provenance claim.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P1-11",
+  "source": "findings-P1.json",
+  "severity": "Low",
+  "verdict": "unfixable-here",
+  "evidence": "Needs macOS: a Mac session, the runner, the keychain, a LaunchAgent or a signed-in browser. Nothing in a cloud sandbox can execute or verify it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P2-11",
+  "source": "findings-P2.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Re-read 2026-09-23: routed to another owner by its own author and outside this seat's file ownership.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P2-15",
+  "source": "findings-P2.json",
+  "severity": "P2",
+  "verdict": "unfixable-here",
+  "evidence": "Re-read 2026-09-23: routed to another owner by its own author and outside this seat's file ownership.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P2-16",
+  "source": "findings-P2.json",
+  "severity": "P3",
+  "verdict": "unfixable-here",
+  "evidence": "Re-read 2026-09-23: routed to another owner by its own author and outside this seat's file ownership.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P4-14",
+  "source": "findings-P4.json",
+  "severity": "low",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P6-05",
+  "source": "findings-P6.json",
+  "severity": "medium",
+  "verdict": "unfixable-here",
+  "evidence": "Only `strix` has an optional-presence line (mac-verify.sh:155). Ponytail, Screenshot-to-Code, Claude Code Setup, prompts.chat and the Rachnog alternative have none.",
+  "changed": "Nothing here \u2014 mac-verify.sh is on this seat's do-not-edit list. Replacement lines handed back in docs/NEEDS-STEVEN-R2.append.md.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-P6-11",
+  "source": "findings-P6.json",
+  "severity": "medium",
+  "verdict": "unfixable-here",
+  "evidence": "Needs macOS: a Mac session, the runner, the keychain, a LaunchAgent or a signed-in browser. Nothing in a cloud sandbox can execute or verify it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P8-08",
+  "source": "findings-P8.json",
+  "severity": "Medium",
+  "verdict": "unfixable-here",
+  "evidence": "Needs an upstream change (the vendored harness, an npm/PyPI package or DOMShell itself); patching locally would break the provenance claim.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P8-10",
+  "source": "findings-P8.json",
+  "severity": "Low",
+  "verdict": "unfixable-here",
+  "evidence": "Needs macOS: a Mac session, the runner, the keychain, a LaunchAgent or a signed-in browser. Nothing in a cloud sandbox can execute or verify it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-R2-08",
+  "source": "raised by this pass",
+  "severity": "High",
+  "verdict": "unfixable-here",
+  "evidence": "NEW AND OPEN. `openrouterFeeds` has been frozen at 2026-09-13T22:52:21Z (~218 h) while its writer openrouter-feeds-refresh reports lastStatus ok, last end 2026-09-22T05:59:38 (`runnerStatus` v12, own stamp 2026-09-23 02:10 UTC). Found by the first feedFreshness sweep, 2026-09-23 00:50 UTC. This is the successor to F-E1-18 / F-E2-05: the task stopped erroring and started succeeding without writing, which is strictly harder to see.",
+  "changed": "Nothing here \u2014 the task prompt is on the Mac. Written into recall-cache.md as an alert class and into wiki/dashboard-ops/index.md as the standing trap, and raised in docs/OPEN-FINDINGS.md and docs/NEEDS-STEVEN-R2.append.md.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-R2-09",
+  "source": "raised by this pass",
+  "severity": "Medium",
+  "verdict": "unfixable-here",
+  "evidence": "NEW AND OPEN. Three skill definitions still carry the disproved cloud-write rule: .claude/skills/ai-ecosystem-backup/SKILL.md:9-10, .claude/skills/scale-growth-engine/SKILL.md:31 and .claude/skills/skills-refresh/SKILL.md:31. A skill that tells an agent a write is impossible will stop it attempting one that now works.",
+  "changed": "Nothing \u2014 .claude/skills is outside this seat's ownership. Exact replacement lines with content anchors are in docs/NEEDS-STEVEN-R2.append.md.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-R2-10",
+  "source": "raised by this pass",
+  "severity": "Medium",
+  "verdict": "unfixable-here",
+  "evidence": "NEW AND OPEN. always-on/README.md's Feed-freshness-watchdog row still reads \"**unproven** \u2014 created 2026-09-22 \u2026 no run recorded and no feedFreshness document in state yet\". Both halves are now false: the routine SUCCEEDED 2026-09-23T00:18:51Z and feedFreshness v1 exists. The earlier finding F-P4-06 wanted that line changed to FAILED, which would also be wrong.",
+  "changed": "Nothing \u2014 always-on/README.md is on this seat's do-not-edit list. Exact replacement line with a content anchor is in docs/NEEDS-STEVEN-R2.append.md.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-R2-12",
+  "source": "raised by this pass",
+  "severity": "Medium",
+  "verdict": "unfixable-here",
+  "evidence": "NEW AND OPEN. brain-weekly-verify \u2014 the Sunday review gate that this brain's own rules make responsible for promoting memory lines and triaging the Second Brain inbox \u2014 last completed 2026-09-14 on a `0 16 * * 0` cron, so the 2026-09-20 slot passed without it (`runnerStatus` v12, own stamp 2026-09-23 02:10 UTC). It is not in the never-run set and not in the error set, so no existing finding covers it.",
+  "changed": "Nothing here \u2014 a Mac runner task. Raised in docs/OPEN-FINDINGS.md and docs/NEEDS-STEVEN-R2.append.md.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-S1-02",
+  "source": "findings-S1.json",
+  "severity": "medium",
+  "verdict": "unfixable-here",
+  "evidence": "Re-read 2026-09-23: routed to another owner by its own author and outside this seat's file ownership.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-S1-12",
+  "source": "findings-S1.json",
+  "severity": "info",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-V2-04",
+  "source": "findings-V2.json",
+  "severity": "low",
+  "verdict": "unfixable-here",
+  "evidence": "Needs an upstream change (the vendored harness, an npm/PyPI package or DOMShell itself); patching locally would break the provenance claim.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-W1-10",
+  "source": "findings-W1.json",
+  "severity": "medium",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-W1-11",
+  "source": "findings-W1.json",
+  "severity": "low",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-W1-12",
+  "source": "findings-W1.json",
+  "severity": "low",
+  "verdict": "unfixable-here",
+  "evidence": "Scoped to command-deck.html or the published ISA Portal. command-deck.html is not in this repo \u2014 only dashboard/isa/isa-portal.html and dashboard/panel-orchestration.html are \u2014 and both dashboard files are on this seat's do-not-edit list.",
+  "changed": "Nothing. Owner: whoever holds the deck this cycle.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E1-18",
+  "source": "findings-E1.json",
+  "severity": "P1",
+  "verdict": "already-closed",
+  "evidence": "The specific claim \u2014 \"openrouter-feeds-refresh has been in error since 2026-09-17\" \u2014 is no longer true: `runnerStatus` v12, its own stamp 2026-09-23 02:10 UTC reads lastStatus ok, last end 2026-09-22T05:59:38. SUCCESSOR DEFECT, worse and now evidenced: `feedFreshness` v1, its own stamp 2026-09-23 00:50 UTC finds openrouterFeeds frozen at 2026-09-13 (~218 h) while its writer reports ok \u2014 a silent no-write success.",
+  "changed": "Nothing here (Mac task). The successor is raised in docs/OPEN-FINDINGS.md as a first-class open item and written into recall-cache.md as an alert class.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-E1-21",
+  "source": "findings-E1.json",
+  "severity": "P3",
+  "verdict": "already-closed",
+  "evidence": "The finding records its own fix as applied, and nothing in the 2026-09-23 repo or live-store re-check contradicts it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-E2-05",
+  "source": "findings-E2.json",
+  "severity": "P2",
+  "verdict": "already-closed",
+  "evidence": "Same evidence as F-E1-18: the task is ok, the feed is frozen. The error-state claim is closed; the silent no-write is the live defect.",
+  "changed": "Nothing here; raised in OPEN-FINDINGS.md.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-E4a-05",
+  "source": "findings-E4a.json",
+  "severity": "P2",
+  "verdict": "already-closed",
+  "evidence": "`zohoSync` now exists at version 1 with an honest body: checkedAt 2026-09-22T08:17:00Z, error \"HTTP 403 NO_PERMISSION \u2014 Crm_Implied_Api_Access\". live `state` listing + document reads, 2026-09-23 03:10 UTC (reads only, no DB write)",
+  "changed": "Nothing. The 403 itself is NEEDS-STEVEN item 5.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-E6-26",
+  "source": "findings-E6.json",
+  "severity": "P2",
+  "verdict": "already-closed",
+  "evidence": "brain-learn-daily reads lastStatus ok, last end 2026-09-22T01:18:38 (`runnerStatus` v12, its own stamp 2026-09-23 02:10 UTC). The finding said \"no run logged for six daily slots\".",
+  "changed": "recall-cache.md no longer uses it as the never-completed example; brain-weekly-verify (last end 2026-09-14 on a Sunday cron) replaces it. Commit c1812bc.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-E8-03",
+  "source": "findings-E8.json",
+  "severity": "P1",
+  "verdict": "already-closed",
+  "evidence": "Largely overtaken. `runnerStatus` v12, its own stamp 2026-09-23 02:10 UTC: 36 ok, 1 error (nightly-self-test), 3 refused (r4-quantvue-sync, lead-triage-daily, feeds-weekly), 18 never run, loggedIn true. The finding listed 11 in error, 1 refused, 4 limited.",
+  "changed": "wiki/dashboard-ops/index.md now carries the current tally with its stamp, plus the trap that \"task ok\" is not \"document written\". Commit a225dd6.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-E8-13",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "already-closed",
+  "evidence": "`scaleOpportunityLog` now exists at version 1 (8717 bytes). live `state` listing + document reads, 2026-09-23 03:10 UTC (reads only, no DB write)",
+  "changed": "Nothing.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-E8-24",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "already-closed",
+  "evidence": "`apptPrep` now exists at version 1 and holds a real meeting brief. The finding said the document \"has never existed in either store\". live `state` listing + document reads, 2026-09-23 03:10 UTC (reads only, no DB write)",
+  "changed": "Nothing.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-E8-56",
+  "source": "findings-E8.json",
+  "severity": "P2",
+  "verdict": "already-closed",
+  "evidence": "`scaleOpportunityLog` exists at v1. `loop-engineering-weekly` has still never run (18 never-run slots, `runnerStatus` v12, its own stamp 2026-09-23 02:10 UTC), so the Saturday half is carried in OPEN-FINDINGS.md.",
+  "changed": "Nothing.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-H3b-01",
+  "source": "findings-H3b.json",
+  "severity": "high",
+  "verdict": "already-closed",
+  "evidence": "The finding records its own fix as applied, and nothing in the 2026-09-23 repo or live-store re-check contradicts it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-H3b-23",
+  "source": "findings-H3b.json",
+  "severity": "info",
+  "verdict": "already-closed",
+  "evidence": "The finding records its own fix as applied, and nothing in the 2026-09-23 repo or live-store re-check contradicts it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-L2-02",
+  "source": "findings-L2.json",
+  "severity": "medium",
+  "verdict": "already-closed",
+  "evidence": "The finding records its own fix as applied, and nothing in the 2026-09-23 repo or live-store re-check contradicts it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-M2-10",
+  "source": "findings-M2.json",
+  "severity": "info",
+  "verdict": "already-closed",
+  "evidence": "The finding records its own fix as applied, and nothing in the 2026-09-23 repo or live-store re-check contradicts it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-M6-13",
+  "source": "findings-M6.json",
+  "severity": "P3",
+  "verdict": "already-closed",
+  "evidence": "The finding records its own fix as applied, and nothing in the 2026-09-23 repo or live-store re-check contradicts it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P1-07",
+  "source": "findings-P1.json",
+  "severity": "Low",
+  "verdict": "already-closed",
+  "evidence": "The finding records its own fix as applied, and nothing in the 2026-09-23 repo or live-store re-check contradicts it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P2-03",
+  "source": "findings-P2.json",
+  "severity": "P2",
+  "verdict": "already-closed",
+  "evidence": "The finding records its own fix as applied, and nothing in the 2026-09-23 repo or live-store re-check contradicts it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P2-04",
+  "source": "findings-P2.json",
+  "severity": "P2",
+  "verdict": "already-closed",
+  "evidence": "grep for \"Generation is the only interactive step\" and \"run /cli-anything for homes.com FIRST\" over MAC-SETUP.sh returns nothing. The sentence has been replaced.",
+  "changed": "Nothing.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-P2-06",
+  "source": "findings-P2.json",
+  "severity": "P3",
+  "verdict": "already-closed",
+  "evidence": "All six lines now use the word form: HOMES.md:137, SHOWAMI.md:147, SHOWINGTIME.md:148 and each package README:29 read `grep -qw act`. No \"appears nowhere\" prose survives in the harness tree.",
+  "changed": "Nothing.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-P2-07",
+  "source": "findings-P2.json",
+  "severity": "info",
+  "verdict": "already-closed",
+  "evidence": "Verification row; mac-verify.sh carries the word-match check.",
+  "changed": "Nothing.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-P2-08",
+  "source": "findings-P2.json",
+  "severity": "P2",
+  "verdict": "already-closed",
+  "evidence": "The finding records its own fix as applied, and nothing in the 2026-09-23 repo or live-store re-check contradicts it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P2-14",
+  "source": "findings-P2.json",
+  "severity": "P3",
+  "verdict": "already-closed",
+  "evidence": "The finding records its own fix as applied, and nothing in the 2026-09-23 repo or live-store re-check contradicts it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P4-01",
+  "source": "findings-P4.json",
+  "severity": "high",
+  "verdict": "already-closed",
+  "evidence": "Steven's dated decision is in context/decisions.md, heading '2026-09-23 \u2014 Full client names belong on the Command Deck lead board'. Scope: a name and a stage, that board only.",
+  "changed": "Nothing. Not reopened, not extended.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-P4-02",
+  "source": "findings-P4.json",
+  "severity": "high",
+  "verdict": "already-closed",
+  "evidence": "MAC-SETUP.sh:597 and :688 now state plainly that the browser ENGINE has `act click` / `act type` and that it is the DOMShell write surface. The \"REFUSED here\" line is scoped to site harnesses.",
+  "changed": "Nothing.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-P4-04",
+  "source": "findings-P4.json",
+  "severity": "info",
+  "verdict": "already-closed",
+  "evidence": "Self-closed mid-audit; the vendored tree and the installer step are committed.",
+  "changed": "Nothing.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-P4-05",
+  "source": "findings-P4.json",
+  "severity": "high",
+  "verdict": "already-closed",
+  "evidence": "Re-measured: 57 routines, 53 enabled, has_more false. Among the enabled: 37 SUCCEEDED, 9 FAILED, 2 ABANDONED, 5 never run. Two of the audit's failures have recovered \u2014 Project Risk Review SUCCEEDED 2026-09-22T18:07 and the Feed freshness watchdog SUCCEEDED 2026-09-23T00:18. live routine listing, 2026-09-23 03:05 UTC",
+  "changed": "Nothing to fix here; the current tally is in docs/OPEN-FINDINGS.md and the recovered \"free test\" is in docs/NEEDS-STEVEN-R2.append.md.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-P4-06",
+  "source": "findings-P4.json",
+  "severity": "high",
+  "verdict": "already-closed",
+  "evidence": "FINDING IS OVERTAKEN AND ITS FIX WOULD NOW BE WRONG. The Feed freshness watchdog last ran SUCCEEDED at 2026-09-23T00:18:51Z (live routine listing, 2026-09-23 03:05 UTC) and its document exists: feedFreshness v1, checkedAt 2026-09-23T00:50:00Z, 26 documents classified 18 fresh / 4 stale / 2 late / 2 unknown. Marking that line FAILED would now be false.",
+  "changed": "Nothing here. always-on/README.md is on this seat's do-not-edit list; the exact replacement line is in docs/NEEDS-STEVEN-R2.append.md.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-P4-07",
+  "source": "findings-P4.json",
+  "severity": "medium",
+  "verdict": "already-closed",
+  "evidence": "FINDING WAS WRONG. `ArtifactData get state/cloudWriteProbe` returns `{\"id\":\"cloudWriteProbe\",\"data\":{\"v\":{...}},\"version\":1,\"updatedAt\":\"2026-09-22T09:05:56.233291Z\"}`. The timestamp is on the envelope; an export of `v` alone does not show it. REMOTE-ACCESS.md:32 already cites that exact value.",
+  "changed": "Nothing to fix. The trap is now a dated line in memory.md.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-P4-10",
+  "source": "findings-P4.json",
+  "severity": "medium",
+  "verdict": "already-closed",
+  "evidence": "`backupStatus` now carries weeksKept:1 and the note \"still the only backup date on record\" beside status GREEN, so the document discloses the thing the finding said it concealed. live `state` listing + document reads, 2026-09-23 03:10 UTC (reads only, no DB write)",
+  "changed": "Nothing. Changing the status field itself is a DB write.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-P4-11",
+  "source": "findings-P4.json",
+  "severity": "medium",
+  "verdict": "already-closed",
+  "evidence": "Re-verified against the live listing: revenueScan, healthCoaching, zohoLeads and zohoDeals are all still absent from `state`. The sweep's attribution stands. live `state` listing + document reads, 2026-09-23 03:10 UTC (reads only, no DB write)",
+  "changed": "Nothing; already owned by the Integration and Efficiency Engineers.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-P4-12",
+  "source": "findings-P4.json",
+  "severity": "medium",
+  "verdict": "already-closed",
+  "evidence": "`isaKpi` on the Command Deck is at version 2. metrics[0].note now reads \"Measured against Follow Up Boss, which was the CRM for this window and was retired on 2026-09-22 in favour of Lofty\", and metrics[5] reads \"ISA self-report vs CRM delta\". A client name was also removed from metrics[2] on 2026-09-23. live `state` listing + document reads, 2026-09-23 03:10 UTC (reads only, no DB write)",
+  "changed": "Nothing. The ISA Portal copy is still v1 and still says \"vs FUB delta\" \u2014 that is F-Q3-11, which needs a DB write.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-P4-13",
+  "source": "findings-P4.json",
+  "severity": "low",
+  "verdict": "already-closed",
+  "evidence": "FINDING WAS WRONG, re-counted independently: homes 3, ShowingTime 4, Showami 4, SkySlope 4, zipForms 3 = 18 recipes; SkySlope and zipForms each carry a file-level `verified` key as well, giving 20 `verified:false` flags. The 18 in CONNECTIONS.md is right.",
+  "changed": "Nothing. Counted and recorded in memory.md.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-P6-03",
+  "source": "findings-P6.json",
+  "severity": "medium",
+  "verdict": "already-closed",
+  "evidence": "MAC-SETUP.sh:358 and mac-verify.sh:118 both now enumerate .claude/skills rather than listing nine names, with a comment citing F-P6-03. The directory holds 22 skills.",
+  "changed": "Nothing.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-P6-06",
+  "source": "findings-P6.json",
+  "severity": "low",
+  "verdict": "already-closed",
+  "evidence": "The finding records its own fix as applied, and nothing in the 2026-09-23 repo or live-store re-check contradicts it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P6-09",
+  "source": "findings-P6.json",
+  "severity": "info",
+  "verdict": "already-closed",
+  "evidence": "The finding records its own fix as applied, and nothing in the 2026-09-23 repo or live-store re-check contradicts it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P7-01",
+  "source": "findings-P7.json",
+  "severity": "high",
+  "verdict": "already-closed",
+  "evidence": "The finding records its own fix as applied, and nothing in the 2026-09-23 repo or live-store re-check contradicts it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P7-03",
+  "source": "findings-P7.json",
+  "severity": "high",
+  "verdict": "already-closed",
+  "evidence": "The finding records its own fix as applied, and nothing in the 2026-09-23 repo or live-store re-check contradicts it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P7-05",
+  "source": "findings-P7.json",
+  "severity": "high",
+  "verdict": "already-closed",
+  "evidence": "The finding records its own fix as applied, and nothing in the 2026-09-23 repo or live-store re-check contradicts it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P8-01",
+  "source": "findings-P8.json",
+  "severity": "High",
+  "verdict": "already-closed",
+  "evidence": "The finding records its own fix as applied, and nothing in the 2026-09-23 repo or live-store re-check contradicts it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-P8-05",
+  "source": "findings-P8.json",
+  "severity": "Medium",
+  "verdict": "already-closed",
+  "evidence": "The finding records its own fix as applied, and nothing in the 2026-09-23 repo or live-store re-check contradicts it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-Q3-12",
+  "source": "findings-Q3.json",
+  "severity": "low",
+  "verdict": "already-closed",
+  "evidence": "Self-declared false positives, recorded so they are not reopened.",
+  "changed": "Nothing.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-Q3-13",
+  "source": "findings-Q3.json",
+  "severity": "low",
+  "verdict": "already-closed",
+  "evidence": "Verification row, no defect.",
+  "changed": "Nothing.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-R2-11",
+  "source": "raised by this pass",
+  "severity": "Info",
+  "verdict": "already-closed",
+  "evidence": "NEEDS-STEVEN item 2 set a free test: \"Project Risk Review's 18:06Z firing today is the free test \u2014 if it dies again in under ~30 s the outage is live\". It did not die: Project Risk Review reports SUCCEEDED, fired 2026-09-22T18:07 (live routine listing, 2026-09-23 03:05 UTC). The nine-routine startup outage is not live.",
+  "changed": "Nothing. The answer is recorded in docs/NEEDS-STEVEN-R2.append.md so item 2 can be dropped rather than re-run; the nine routines that are still FAILED are listed separately, and seven of them are http_api-created.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-S1-17",
+  "source": "findings-S1.json",
+  "severity": "low",
+  "verdict": "already-closed",
+  "evidence": "CONNECTIONS.md standing rule 5 now carries the decision verbatim \u2014 one location per secret, keychain `cli-anything.<target>` or ~/.config/cli-anything/.env, and the ~/.config/showing-sync/.env path explicitly superseded, citing F-S1-17.",
+  "changed": "Nothing needed. The deck row that still dissents is in command-deck.html, which is not in this repo.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-V1-06",
+  "source": "findings-V1.json",
+  "severity": "medium",
+  "verdict": "already-closed",
+  "evidence": "The finding records its own fix as applied, and nothing in the 2026-09-23 repo or live-store re-check contradicts it.",
+  "changed": "Nothing.",
+  "triage": "triaged by rule"
+ },
+ {
+  "id": "F-V2-26",
+  "source": "findings-V2.json",
+  "severity": "high",
+  "verdict": "already-closed",
+  "evidence": "mac-verify.sh:189-200 now emits `ok` only for mode=subscription and `need` with the age and reason otherwise.",
+  "changed": "Nothing.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-V2-29",
+  "source": "findings-V2.json",
+  "severity": "low",
+  "verdict": "already-closed",
+  "evidence": "mac-verify.sh check_env_file now classifies placeholder values (changeme/xxx/TODO/<...>/your-*/\u2026) as `need` and never prints the value, with a comment citing F-V2-29.",
+  "changed": "Nothing.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-W2-11",
+  "source": "findings-W2.json",
+  "severity": "P3",
+  "verdict": "already-closed",
+  "evidence": "Same evidence as F-S1-17: CONNECTIONS.md rule 5 carries it.",
+  "changed": "Nothing.",
+  "triage": "verified individually"
+ }
+]

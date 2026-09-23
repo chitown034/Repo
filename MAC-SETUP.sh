@@ -237,10 +237,15 @@ uv_python() {
 while [ $# -gt 0 ]; do
   case "$1" in
     --dry-run) DRY_RUN=1 ;;
+    # `--only=` / `--skip=` with nothing after the = used to append a bare space. ONLY was then non-empty
+    # but matched no step, so every step was filtered out and the script printed a clean "WOULD INSTALL:
+    # none" and exited 0 — a typo that looks like a successful run. R3, 2026-09-23.
     --only) shift; ONLY="$ONLY ${1:?--only needs a step name}" ;;
-    --only=*) ONLY="$ONLY ${1#--only=}" ;;
+    --only=*) ONLY="$ONLY ${1#--only=}"
+              [ -n "${1#--only=}" ] || { printf -- '--only= needs a step name (see --list)\n' >&2; exit 2; } ;;
     --skip) shift; SKIP="$SKIP ${1:?--skip needs a step name}" ;;
-    --skip=*) SKIP="$SKIP ${1#--skip=}" ;;
+    --skip=*) SKIP="$SKIP ${1#--skip=}"
+              [ -n "${1#--skip=}" ] || { printf -- '--skip= needs a step name (see --list)\n' >&2; exit 2; } ;;
     --list) LIST=1 ;;
     -h|--help) usage; exit 0 ;;
     *) printf 'unknown argument: %s\n\n' "$1" >&2; usage >&2; exit 2 ;;
@@ -680,8 +685,8 @@ if should_run cli-anything-harnesses; then
         # are not eight symlinks. Both were asserted in the same breath before. Count them. R3, 2026-09-23.
         cah_built=0; cah_linked=0
         for p in $CAH_PKGS; do
-          [ -x "$CAH_DIR/.venv/bin/cli-anything-$p" ] && cah_built=$((cah_built + 1))
-          [ -L "$BINDIR/cli-anything-$p" ] && cah_linked=$((cah_linked + 1))
+          if [ -x "$CAH_DIR/.venv/bin/cli-anything-$p" ]; then cah_built=$((cah_built + 1)); fi
+          if [ -L "$BINDIR/cli-anything-$p" ]; then cah_linked=$((cah_linked + 1)); fi
         done
         if [ "$DRY_RUN" -eq 1 ]; then
           installed "eight harnesses (browser engine + homes, showingtime, showami, skyslope, zipforms, lofty, zoho) + symlinks in $BINDIR"
