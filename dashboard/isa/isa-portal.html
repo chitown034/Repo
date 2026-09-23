@@ -483,7 +483,7 @@
       <div class="table-wrap"><table>
         <thead><tr><th>What</th><th>By what</th><th>How often</th><th>Last time it actually ran</th></tr></thead>
         <tbody>
-          <tr><td><b>ISA line</b> — your messages to and from Steven, plus the read markers (<code>isaLine</code>, <code>isaLineRead</code>)</td><td><code>isa-comms-bridge-local</code>, a scheduled task on Steven's Mac. It reads both stores and merges the two copies by message id.</td><td>Hourly, 7:37 AM – 9:37 PM PT, and only while his Mac is awake with the desktop app open.</td><td><b>Last ok 2026-09-21 8:38 PM PT.</b> Both copies of the thread held the same 9 messages when checked on 2026-09-22 — this one genuinely works.</td></tr>
+          <tr><td><b>ISA line</b> — your messages to and from Steven, plus the read markers (<code>isaLine</code>, <code>isaLineRead</code>)</td><td><code>isa-comms-bridge-local</code>, a scheduled task on Steven's Mac. It reads both stores and merges the two copies by message id.</td><td>Hourly, 7:37 AM – 9:37 PM PT, and only while his Mac is awake with the desktop app open.</td><td><b>Last recorded ok 2026-09-22 12:56 AM PT</b>, per the <code>routineHealth</code> document on Steven’s deck. Both stores have since converged on a message stamped 2026-09-22 12:53 PM UTC, so it has run at least once after that — neither page records exactly when. Both copies of the thread held the same 10 messages when read on 2026-09-23. This one genuinely works.</td></tr>
         </tbody>
       </table></div>
       <p class="src-note" style="margin-top:10px;">That is the whole list. One task, one thread. The ISA line is therefore the <i>only</i> channel on this page that reaches Steven on its own — everything else needs a person to move it.</p>
@@ -496,9 +496,9 @@
         <thead><tr><th>Document</th><th>On this portal</th><th>On Command Deck</th><th>Status</th></tr></thead>
         <tbody id="isaDriftRows"></tbody>
       </table></div>
-      <p class="src-note" style="margin-top:10px;"><b>The "Pipeline Sync" cloud routine is a false green.</b> A routine named "Command Deck ↔ ISA Portal — Pipeline Sync" runs in the cloud four times a day and reports SUCCESS every time. It has never synced anything. An unattended cloud run cannot write an artifact database — the write parks on a permission prompt nobody is there to approve — so it reads, finds nothing it can do, and exits clean. Its green tick means "the routine finished", not "the pipeline crossed". The empty <code>pipeline</code> document and the missing <code>reClients</code> document on Steven's side are the proof.</p>
+      <p class="src-note" style="margin-top:10px;"><b>The "Pipeline Sync" cloud routine is a false green.</b> A routine named "Command Deck ↔ ISA Portal — Pipeline Sync" runs in the cloud four times a day and reports SUCCESS every time. It has never synced anything. An unattended cloud run cannot write an artifact database — the write parks on a permission prompt nobody is there to approve — so it reads, finds nothing it can do, and exits clean. Its green tick means "the routine finished", not "the pipeline crossed". The proof is what it has NOT done: <code>pipeline</code> and <code>reClients</code> match on both sides today only because they were put there by hand, and the documents this routine is named for — the ones it would have to write to earn its green tick — still carry no trace of it. Read the drift table above for the current state of each document rather than trusting the routine’s result.</p>
       <p class="src-note" style="margin-top:6px;"><b>The hourly cloud comms bridge is DISABLED.</b> The ISA line survives on the Mac task above and nothing else. If Steven's Mac is asleep, closed, or the task errors, your messages sit here marked "waiting for the bridge" and he never sees them. If it is urgent and the status has not turned green, call or text him — that is not belt-and-braces, it is the actual fallback.</p>
-      <p class="src-note" style="margin-top:6px;"><b>Everything else on this page is a hand-carried copy.</b> Real-estate clients, the mortgage pipeline, showings, the route planner, the checklists, the grading scores, the capacity audit, your Vanessa thread, and every reference seed (rates, market, loan programs, lender directory, program facts, builder incentives) live only in this portal's store. A change you make here is saved and shared across <i>your own</i> devices, and stops there.</p>
+      <p class="src-note" style="margin-top:6px;"><b>Everything else on this page is a hand-carried copy.</b> Showings, the route planner, the checklists, the grading scores, the capacity audit, your Vanessa thread, and every reference seed (rates, market, loan programs, lender directory, program facts, builder incentives) live only in this portal's store. The mortgage pipeline and the real-estate client list are a special case: copies of both now sit on Steven's deck as well, but <b>nothing keeps them in step</b> — they match today because someone carried them across, and the next edit on either side splits them again without warning. A change you make here is saved and shared across <i>your own</i> devices, and stops there.</p>
       <p class="src-note" style="margin-top:6px;"><b>Reference data is re-synced by hand, in a Claude session.</b> Rates and the market snapshot were re-baked from Command Deck's <code>ratesSnapshot</code> document on 2026-09-22; VA funding-fee tiers and conventional county limits were last re-synced 2026-09-11. There is no standing drift check — an earlier version of this page claimed a twice-daily one and nothing was running. Treat any figure here as a dated snapshot and check it against Command Deck before it reaches a client.</p>
       <p class="src-note" id="isaStateWarnings" hidden style="margin-top:10px;border:1px solid var(--negative);background:var(--negative-soft);color:var(--negative);border-radius:8px;padding:10px 12px;"></p>
     </div>
@@ -1684,7 +1684,7 @@
     if (LS_SHAPE_WARNINGS.length) {
       var sk = [];
       LS_SHAPE_WARNINGS.forEach(function (w) { if (sk.indexOf(w.key) === -1) sk.push(w.key); });
-      bits.push("Stored data in an unexpected shape: " + sk.join(", ") + ". It was kept, not dropped, but tell Steven \u2014 whatever writes it needs fixing.");
+      bits.push("Stored data in an unexpected shape: " + sk.join(", ") + ". Your saved document is untouched, but this page fell back to its built-in starting value for those, so what you see may not be what you entered. Tell Steven \u2014 whatever writes it needs fixing.");
     }
     el.hidden = !bits.length;
     el.textContent = bits.join(" \u00b7 ");
@@ -1708,7 +1708,18 @@
   function lsGetSeeded(key, defaultVal) {
     var raw; try { raw = localStorage.getItem(LS_PREFIX + key); } catch (e) { raw = null; }
     if (raw === null) { lsSetLocal(key, defaultVal); return defaultVal; }
-    try { return JSON.parse(raw); } catch (e) { return defaultVal; }
+    var v;
+    /* Corrupt JSON used to return the seed with NOTHING recorded - quieter than a merely
+       mis-shaped document, which is backwards. Say it. (Ported from Command Deck.) */
+    try { v = JSON.parse(raw); } catch (e) { lsShapeWarn(key, "valid JSON", "unparseable (" + raw.length + " chars)"); return defaultVal; }
+    /* Guard the SHAPE here, once, rather than at every call site. Handing a caller an object
+       where it asked for a list makes the CALLER throw - that is how one bad document blanks a
+       panel, or the whole page. If what was stored does not match the shape the caller asked
+       for, fall back to the seed and record the mismatch so it is reportable instead of silent. */
+    if (Array.isArray(defaultVal) && !Array.isArray(v)) { lsShapeWarn(key, "array", v); return defaultVal; }
+    if (defaultVal && typeof defaultVal === "object" && !Array.isArray(defaultVal) &&
+        (v === null || typeof v !== "object" || Array.isArray(v))) { lsShapeWarn(key, "object", v); return defaultVal; }
+    return v;
   }
   function $(id) { return document.getElementById(id); }
 
@@ -1965,32 +1976,44 @@
      computed at runtime: this page cannot see Command Deck's store, and saying otherwise is the
      exact dishonesty this table exists to kill. Re-measure it in a Claude session and update the
      constant; the stamp below is what it is current to. */
-  var DRIFT_CHECKED_AT = "2026-09-22";
+  var DRIFT_CHECKED_AT = "2026-09-23";
+  /* How long the hand-measured Command Deck column stays trustworthy before the table says so
+     itself. That column CANNOT refresh on its own: this page has no way to read the other store.
+     Before this it simply kept displaying whatever was last typed, and by 2026-09-23 the
+     2026-09-22 measurement was already wrong in four rows - pipeline and reClients had both
+     appeared on the deck, and the thread had grown from 9 messages to 10 - with nothing on the
+     page saying so. The column is dated now and ages out loud. */
+  var DRIFT_STALE_AFTER_DAYS = 3;
   var DRIFT_ROWS = [
     ["<code>isaLine</code> + <code>isaLineRead</code><div class=\"src-note\">Your thread with Steven</div>",
-     "9 messages", "The same 9 messages, byte for byte",
-     "green", "In sync — carried by isa-comms-bridge-local"],
+     function () { return driftLocalCount("isaLine", "message"); },
+     "The same 10 messages, byte for byte",
+     "green", "In sync \u2014 carried by isa-comms-bridge-local"],
     ["<code>pipeline</code><div class=\"src-note\">Mortgage deals you track here</div>",
      function () { return driftLocalSummary("pipeline", "deal"); },
-     "Empty. The document is an empty list and has not changed since 2026-09-12",
-     "red", "NOT synced — Steven's deck shows no mortgage pipeline at all"],
+     "The same 2 deals, byte for byte",
+     "amber", "Matching today \u2014 but no task carries it; either side drifts the moment one is edited"],
     ["<code>reClients</code><div class=\"src-note\">Real-estate clients</div>",
      function () { return driftLocalSummary("reClients", "client"); },
-     "The document does not exist on his side at all",
-     "red", "NOT synced — it has never been created there"],
+     "The same 2 clients, byte for byte",
+     "amber", "Matching today \u2014 but no task carries it; either side drifts the moment one is edited"],
     ["<code>ratesSnapshot</code><div class=\"src-note\">Rates + market medians</div>",
-     "Re-baked by hand on 2026-09-22 from his copy (was 2026-09-13 2:35 PM PT)",
-     "2026-09-22 2:24 AM UTC, rewritten daily by the mortgage-rates-daily task on his Mac",
-     "amber", "Two separate copies. His is the fresh one and is authoritative"],
-    ["<code>isaDailySchedule</code> · <code>isaKpi</code><div class=\"src-note\">Your playbook and the measured KPI week</div>",
+     "Stamped 2026-09-22 2:24 AM UTC \u2014 re-baked by hand from his copy",
+     "Stamped 2026-09-22 8:30 PM UTC, rewritten daily by the mortgage-rates-daily task on his Mac",
+     "amber", "Two separate copies. His is about 18 hours fresher and is authoritative"],
+    ["<code>isaDailySchedule</code><div class=\"src-note\">Your daily playbook</div>",
      "Present", "Identical on both sides",
-     "green", "Matching — but copied by hand, not by any task"],
-    ["<code>isaGradingScores</code> · <code>isaKpiSopActuals</code><div class=\"src-note\">Your self-grades and KPI actuals</div>",
+     "green", "Matching \u2014 but copied by hand, not by any task"],
+    ["<code>isaKpi</code><div class=\"src-note\">The measured KPI week</div>",
+     "Week ending 2026-09-13, six metrics",
+     "Same week and the same six numbers, but the sixth is labelled differently: his reads \u201cvs CRM delta\u201d, this copy still reads \u201cvs FUB delta\u201d",
+     "amber", "Drifted \u2014 same numbers, stale CRM name on this side"],
+    ["<code>isaGradingScores</code> \u00b7 <code>isaKpiSopActuals</code><div class=\"src-note\">Your self-grades and KPI actuals</div>",
      "Whatever you have typed, saved on this device", "Neither document exists",
-     "red", "NOT synced — he cannot see your self-grades"],
-    ["<code>showingSchedule</code> · <code>showingRoute</code> · <code>showingSyncRequests</code>",
-     "Nothing saved yet", "Empty on his side too",
-     "amber", "No drift today only because both are empty — nothing carries them"]
+     "red", "NOT synced \u2014 he cannot see your self-grades"],
+    ["<code>showingSchedule</code> \u00b7 <code>showingRoute</code> \u00b7 <code>showingSyncRequests</code>",
+     "No document on this device", "All three exist on his side but are empty",
+     "amber", "No drift today only because both are empty \u2014 nothing carries them"]
   ];
   /* Client rows are never written into this file. The two cells that describe what is on THIS
      device are counted from the live document at render time and deliberately print no name and
@@ -2011,15 +2034,43 @@
       (stages.length ? " \u2014 " + stages.join(", ") : "") +
       '<div class="src-note">Counted from this device\u2019s own document as the table rendered. Names and amounts are withheld here on purpose.</div>';
   }
+  /* Same withholding rule, for a thread whose length is the whole point of the row. */
+  function driftLocalCount(key, noun) {
+    var v = lsGet(key, null);
+    if (v == null) return "No document on this device";
+    if (!Array.isArray(v)) return "Present, but not a list \u2014 shape unreadable";
+    return v.length + " " + noun + (v.length === 1 ? "" : "s") +
+      '<div class="src-note">Counted from this device\u2019s own document as the table rendered.</div>';
+  }
   function renderIsaDrift() {
     var tb = $("isaDriftRows"); if (!tb) return;
     tb.innerHTML = DRIFT_ROWS.map(function (r) {
       var mine = r[1];
       if (typeof mine === "function") { try { mine = mine(); } catch (eCell) { mine = "Could not read this device\u2019s document"; } }
       return "<tr><td>" + r[0] + "</td><td>" + mine + "</td><td>" + r[2] + '</td><td><span class="badge ' + r[3] + '">' + r[4] + "</span></td></tr>";
-    }).join("") +
-    '<tr><td colspan="4" class="src-note">Both databases read directly on ' + DRIFT_CHECKED_AT +
-    '. This is a hand-measured snapshot, not a live probe — no page can read the other page\'s store.</td></tr>';
+    }).join("") + driftFooterHtml();
+  }
+  /* The middle column is live. The right-hand column is a hand measurement that cannot refresh
+     itself, so it is the one that goes quietly wrong - it was four rows wrong within a single day.
+     Print its age every time, and once it is past DRIFT_STALE_AFTER_DAYS stop letting it read as
+     current. */
+  function driftFooterHtml() {
+    var age = isaStampAgeDays(DRIFT_CHECKED_AT);
+    var base = "Middle column: counted live from this device as the table rendered. " +
+      "Right-hand column: read by hand out of Steven\u2019s Command Deck store on " + DRIFT_CHECKED_AT +
+      " \u2014 no page can read the other page\u2019s store, so that column is only ever as current as that date.";
+    if (age === null || age <= DRIFT_STALE_AFTER_DAYS) {
+      // isaStampAgeDays anchors the stamp at local noon, so a stamp written today reads -1.
+      // isaStampRelative already collapses anything <= 0 to "today"; reuse it rather than
+      // inventing a second wording that would print "Measured -1 days ago".
+      return '<tr><td colspan="4" class="src-note">' + base +
+        (age === null ? "" : " Measured " + isaStampRelative(age) + ".") +
+        "</td></tr>";
+    }
+    return '<tr><td colspan="4" class="src-note" style="border:1px solid var(--negative);background:var(--negative-soft);color:var(--negative);">' +
+      "<b>The Command Deck column is " + age + " days old \u2014 treat it as unverified.</b> " + base +
+      " Documents on his side have changed inside a single day before, so do not quote this column to anyone until someone re-reads both stores and updates DRIFT_CHECKED_AT." +
+      "</td></tr>";
   }
   safeRun(renderIsaDrift, "renderIsaDrift");
   safeRun(function () { renderIsaStateWarnings(); }, "renderIsaStateWarnings");
@@ -2138,7 +2189,8 @@
         'Until it lands, work real-estate leads from Lofty itself, not from this page.');
       return;
     }
-    var status = String(d.status || "");
+    // A non-string status is a writer that has gone wrong, not a status this page can read.
+    var status = (typeof d.status === "string") ? d.status : (d.status == null ? "" : "unreadable");
     var src = d.source ? String(d.source) : "Lofty";
     var when = d.syncedAt ? String(d.syncedAt) : "";
     if (status === "not-configured") {
@@ -2152,8 +2204,27 @@
         ' Do not treat anything below as current \u2014 there is nothing below. Raise it with Steven on the ISA line.');
       return;
     }
+    if (status && status !== "ok") {
+      empty('<b>The <code>loftyLeads</code> document reports status \u201c' + chatEsc(status) + '\u201d,</b> which this card does not recognise.' +
+        (when ? " Last attempt " + chatEsc(when) + "." : "") + (d.error ? " Reported: " + chatEsc(String(d.error)) + "." : "") +
+        ' No counts are shown rather than guessing at it. Raise it with Steven on the ISA line.');
+      return;
+    }
     var totals = Array.isArray(d.stageTotals) ? d.stageTotals.filter(function (r) { return Array.isArray(r) && r.length >= 2; }) : [];
     var leads = Array.isArray(d.newLeads90d) ? d.newLeads90d.filter(function (r) { return r && typeof r === "object"; }) : [];
+    /* A document carrying neither stage totals nor a lead list has not brought back a sync,
+       whatever else is in it. Without this the card fell through to the success branch and
+       announced "Synced (no stamp on the document) - 0 contacts across 0 stages", which reads
+       as a completed sync that found nothing. Command Deck has always guarded this; this page
+       did not, and the two disagreed on the same document. */
+    if (!totals.length && !leads.length) {
+      empty('<b>No Lofty counts in this document.</b> The <code>loftyLeads</code> document on this portal carries neither stage totals nor a lead list' +
+        (when ? ", though it is stamped " + chatEsc(when) : "") +
+        ', so nothing here has been counted and this card will not report a sync it cannot see. ' +
+        'Lofty has been the real-estate CRM of record since ' + LOFTY_SINCE + '; the API key and one proving run of <code>lofty-crm-sync</code> are what is outstanding. ' +
+        'Until it lands, work real-estate leads from Lofty itself, not from this page.');
+      return;
+    }
     var sum = totals.reduce(function (a, r) { return a + (Number(r[1]) || 0); }, 0);
     var fr = d.firstResponse && typeof d.firstResponse === "object" ? d.firstResponse : null;
     var frTxt = "";
@@ -2189,7 +2260,21 @@
     // Seeded empty deliberately: a client name shipped inside published HTML is a disclosure,
     // not a placeholder. Add real clients through the UI - they live in the synced store, never here.
     var rows = lsGetSeeded("reClients", []);
-    var wrap = $("reClientRows"); wrap.innerHTML = "";
+    var wrap = $("reClientRows"); if (!wrap) return;
+    // A document can arrive in the wrong shape; .forEach on a string threw and left this card
+    // blank with the reason only in the page-level banner. Say it in the card instead.
+    if (!Array.isArray(rows)) {
+      lsShapeWarn("reClients", "array", rows);
+      wrap.innerHTML = '<p class="src-note">The <code>reClients</code> document is not a list, so this card cannot draw it. Your stored document is untouched; it needs to be rewritten as a list before clients show here again.</p>';
+      return;
+    }
+    wrap.innerHTML = "";
+    if (!rows.length) {
+      var noneRe = document.createElement("p");
+      noneRe.className = "src-note";
+      noneRe.textContent = "No real-estate clients yet. Add the first one below \u2014 this list is hand-maintained and nothing fills it automatically.";
+      wrap.appendChild(noneRe);
+    }
     rows.forEach(function (c, i) {
       var row = document.createElement("div");
       row.className = "row-line";
@@ -2218,7 +2303,19 @@
     // Seeded empty deliberately - see renderReClients. A name plus a loan amount plus a stage
     // is nonpublic personal information under GLBA and must never ship in the page body.
     var deals = lsGetSeeded("pipeline", []);
-    var wrap = $("pipelineRows"); wrap.innerHTML = "";
+    var wrap = $("pipelineRows"); if (!wrap) return;
+    if (!Array.isArray(deals)) {
+      lsShapeWarn("pipeline", "array", deals);
+      wrap.innerHTML = '<p class="src-note">The <code>pipeline</code> document is not a list, so this card cannot draw it. Your stored document is untouched; it needs to be rewritten as a list before deals show here again.</p>';
+      return;
+    }
+    wrap.innerHTML = "";
+    if (!deals.length) {
+      var noneP = document.createElement("p");
+      noneP.className = "src-note";
+      noneP.textContent = "No deals entered yet. Add one below \u2014 this list is hand-maintained and nothing fills it automatically.";
+      wrap.appendChild(noneP);
+    }
     deals.forEach(function (d, i) {
       var row = document.createElement("div");
       row.className = "row-line";
@@ -4226,11 +4323,30 @@
     var m = s.match(/(\d{4}-\d{2}-\d{2})/);
     return m ? m[1] : null;
   }
+  /* Today's date in Pacific time, so "today" means Steven's today rather than the viewer's UTC
+     midnight. Ported from Command Deck's execPtYmd. */
+  function isaPtYmd(t) {
+    try { var p = t.toLocaleDateString("en-CA", { timeZone: "America/Los_Angeles" }); if (/^\d{4}-\d{2}-\d{2}$/.test(p)) return p; } catch (e) {}
+    return t.getFullYear() + "-" + ("0" + (t.getMonth() + 1)).slice(-2) + "-" + ("0" + t.getDate()).slice(-2);
+  }
   function isaStampAgeDays(iso) {
     if (!iso) return null;
-    var t = new Date(iso + "T12:00:00");
-    if (isNaN(t.getTime())) return null;
-    return Math.floor((Date.now() - t.getTime()) / 86400000);
+    /* This used to anchor the stamp at LOCAL NOON and subtract milliseconds, which was wrong at
+       both ends of the day: a panel checked YESTERDAY still read "today" for any viewer whose
+       local clock was before noon (a UTC reader saw "Part-checked today" on a 2026-09-22 stamp
+       all through the morning of the 23rd), and a stamp written TODAY measured -1. Compare
+       calendar days against the Pacific date instead, the way Command Deck's execDaysOld already
+       does. Math.round, not floor: across a DST change two local midnights are 23 or 25 hours
+       apart and floor would report a day early. */
+    var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso));
+    if (!m) return null;
+    var then = new Date(+m[1], +m[2] - 1, +m[3]);
+    if (isNaN(then.getTime())) return null;
+    var pt = /^(\d{4})-(\d{2})-(\d{2})$/.exec(isaPtYmd(new Date()));
+    if (!pt) return null;
+    var now = new Date(+pt[1], +pt[2] - 1, +pt[3]);
+    var days = Math.round((now.getTime() - then.getTime()) / 86400000);
+    return days < 0 ? 0 : days;
   }
   function isaStampRelative(d) {
     if (d === null) return "";
@@ -4355,8 +4471,8 @@
      than it earned. Entries are only read for kind:"ref" panels; a panel the reader maintains
      ("you") or a document-fed one ("synced") gets its date from the data itself. */
   var ISA_PANEL_VERIFIED_AT = {
-    "panel-isa-syncstatus":    { at: "2026-09-22", scope: "full",
-      note: "Both artifact databases\u2019 state collections were read by hand, and the two rows that describe client documents are now counted from the live document as the table renders." },
+    "panel-isa-syncstatus":    { at: "2026-09-23", scope: "part",
+      note: "Re-sourced 2026-09-23: both artifact databases\u2019 state collections were read directly, and every row of the drift table was corrected against them \u2014 four rows had gone wrong in a single day. NOT re-sourced: the Mac-side facts this page cannot see from a browser \u2014 the bridge task\u2019s cadence, the cloud comms bridge being disabled, and the Pipeline Sync routine\u2019s behaviour. Those carry their own dates in the text. It was scope \u201cfull\u201d until 2026-09-23; that over-claimed, because a panel whose far-side column is a hand measurement cannot be fully re-sourced from this page." },
     "panel-isa-loanprograms":  { at: "2026-09-22", scope: "part",
       note: "Re-sourced today: the eight 2026 program-fact rows and five lender rows (Change Wholesale, Kings Mortgage, Liberty Reverse, Oval, Loan United). The other 56 lender rows and the 39 loan programs were counted, not re-sourced." },
     "panel-isa-easop":         { at: "2026-09-22", scope: "part",
@@ -4450,9 +4566,37 @@
     ["Route planner", "The route planner below builds the multi-stop Google Maps route.", ["green", "Live"], "Nothing."],
     ["Steven's Command Deck", "It does not. Showings stay in this portal's store — verified 2026-09-22 by reading both databases. Send him the plan on the ISA line, which is the one thing that crosses.", ["red", "Not synced"], "A Mac task that reads both stores and copies showingSchedule the way isa-comms-bridge-local copies isaLine. The cloud \u201cPipeline Sync\u201d routine cannot do it — an unattended cloud run cannot write an artifact database."]
   ];
-  function shState() { var s = lsGetSeeded("showingSchedule", null); return (s && Array.isArray(s.clients)) ? s : { clients: [], selected: null }; }
+  /* Guard the SHAPE once, here, rather than at the dozen call sites that reach into it.
+     `showingSchedule` and `showingSyncRequests` are documents: a half-written sync, an older
+     writer, or a hand edit can put a string or an object where a list belongs. `x.showings || []`
+     only defends against null/undefined - a TRUTHY non-array sails through it and then throws on
+     .filter/.map/.slice. These renders are called from a plain IIFE, not from safeRun, so that
+     throw was a TOP-LEVEL exception: it killed every render after it (measured 2026-09-23:
+     47 containers down to 42). Normalise on the way out instead. */
+  function shArr(v) { return Array.isArray(v) ? v : []; }
+  function shState() {
+    var s = lsGetSeeded("showingSchedule", null);
+    if (!s || typeof s !== "object" || Array.isArray(s) || !Array.isArray(s.clients)) {
+      if (s != null && !(s && Array.isArray(s.clients))) lsShapeWarn("showingSchedule", "an object with a clients array", s);
+      return { clients: [], selected: null };
+    }
+    s.clients = s.clients.filter(function (c) { return c && typeof c === "object" && !Array.isArray(c); });
+    s.clients.forEach(function (c) { c.showings = shArr(c.showings); });
+    return s;
+  }
   function shSave(s) { lsSet("showingSchedule", s); }
-  function shSyncReqs() { return lsGetSeeded("showingSyncRequests", []); }
+  function shSyncReqs() {
+    var v = lsGetSeeded("showingSyncRequests", []);
+    if (!Array.isArray(v)) { lsShapeWarn("showingSyncRequests", "array", v); return []; }
+    /* Every field the queue row prints comes out of the document, so normalise each one:
+       a missing `payload` threw on r.payload.addr, and a `targets` written as a string threw
+       on .join. Both were top-level, both cost the rest of the page. */
+    return v.filter(function (r) { return r && typeof r === "object" && !Array.isArray(r); }).map(function (r) {
+      r.targets = shArr(r.targets);
+      if (!r.payload || typeof r.payload !== "object" || Array.isArray(r.payload)) r.payload = {};
+      return r;
+    });
+  }
   function shId(p) { return p + "_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
   function shSelected(s) { return s.clients.filter(function (c) { return c.id === s.selected; })[0] || null; }
   function shParseTime(t) {
@@ -4727,7 +4871,4 @@
 })();
 </script>
 
-</body></html>
-</body></html>
-</body></html>
 </body></html>
