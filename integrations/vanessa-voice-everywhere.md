@@ -260,9 +260,10 @@ alternative on those channels is nothing at all, and it works only for Steven si
 
 **WhatsApp — no send path for media, and no channel at all yet (checked 2026-09-22).**
 
-- The channel itself is not live: `whatsapp-cli` (marcelrgberger) is **spec written 2026-09-22, Mac
-  install pending**, and needs a dedicated number, the desktop app logged in, Full Disk Access and
-  Accessibility. `normen/whatscli` was evaluated and rejected — by its own README it does no
+- The channel itself is not live: `whatsapp-cli` (marcelrgberger) is **spec written 2026-09-22
+  (transport half superseded by §5a on 2026-09-23), Mac install pending**, and needs **Steven's own
+  number** in a message-yourself thread (decided 2026-09-23 over a dedicated one —
+  `context/decisions.md`), the desktop app logged in, Full Disk Access and Accessibility. `normen/whatscli` was evaluated and rejected — by its own README it does no
   sending from the shell, and it emulates a linked device.
 - More to the point, **`whatsapp-cli` has no attachment verb even once installed.** Its verbs are
   `monitor`, `message get`, `message send`, `chat find`, `chat list`, `session status`, and

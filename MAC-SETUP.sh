@@ -461,7 +461,7 @@ if should_run whatsapp-cli; then
       fi
     else failed "whatsapp-cli install"; fi
   else failed "uv missing"; fi
-  needs_steven "A DEDICATED WhatsApp number linked in the WhatsApp desktop app — never Steven's client-facing one; Full Disk Access for the shell and the runner, Accessibility for System Events; then run the checks by hand and create vanessa-whatsapp-inbox DISABLED (F-FR5b-01, integrations/mac-task-specs.md §5)."
+  needs_steven "Your OWN WhatsApp number linked in the WhatsApp desktop app (decided 2026-09-23 over a dedicated one — context/decisions.md); AUDIT the existing Full Disk Access list before granting FDA to this shell and the runner, plus Accessibility for System Events; then run integrations/whatsapp-selfchat-setup.sh to settle the self-chat probe, and create vanessa-whatsapp-inbox DISABLED. Build mac-task-specs.md SECTION 5a, not 5 — 5 cannot run in a self-chat (F-FR5b-01)."
   say "      REFUSED here: 'claude plugins install whatsapp-cli' — it would give every session on the Mac WhatsApp"
 fi
 

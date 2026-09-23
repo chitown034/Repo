@@ -456,7 +456,7 @@ made. Shape: `docs/data/cliAnythingStatus.doc.json` (template). The task that fi
 
 **Why sends can fail while reads never do:** `message send` opens `whatsapp://send?…` in the WhatsApp desktop app and presses Return through System Events — it needs the Mac awake, a logged-in GUI session and Accessibility permission for the runner's shell. Reads are plain read-only SQLite (`mode=ro` in the source) and work headless with Full Disk Access. Voice notes (`message send-file` fed by `voice-reply-render`) are phase 2, unverified.
 
-**Run now once to prove it:** after `MAC-INSTALL-comms-data.md §1`, text the dedicated number from Steven's phone, run the task by hand, and expect one inbound and one outbound `channel:"whatsapp"` item in `agentInbox`. Create the task **disabled**; enable it only after that run exists.
+**Run now once to prove it:** **Superseded 2026-09-23 — Steven chose his OWN personal WhatsApp in a message-yourself thread; see `integrations/mac-task-specs.md` §5a and `context/decisions.md`.** Follow §5a's version of this step — message the **self-chat** from Steven's phone, run the task by hand, and expect one inbound and one outbound `channel:"whatsapp"` item in `agentInbox`. Create the task **disabled**; enable it only after that run exists.
 
 ---
 
@@ -474,7 +474,7 @@ made. Shape: `docs/data/cliAnythingStatus.doc.json` (template). The task that fi
    these tasks have no lead source and must report "not connected yet", not a number.
 4. Run each new task **once, manually**, and record the result. A task that "exists" has not run.
 5. Only after 7 consecutive correct runs does a task graduate L1 → L2.
-6. WhatsApp: add the `whatsappInboxState` watch row above; the task stays disabled until Steven's first manual run and the dedicated number exist.
+6. WhatsApp: add the `whatsappInboxState` watch row above; the task stays disabled until Steven's first manual run exists. **Build §5a, not §5** — he chose his own number in a message-yourself thread on 2026-09-23, and §5's `is_from_me:false` filter cannot run there at all. Run `integrations/whatsapp-selfchat-setup.sh "<his number>"` first; it settles §5a's one unmeasured assumption and prints the seed document.
 
 **Re-checked against live state 2026-09-23 (R3) and still true — no action:** the five task names below
 are absent from the 59 (`runnerStatus`); `cliAnythingStatus` has never been written (absent from a

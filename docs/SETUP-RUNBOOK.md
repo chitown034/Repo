@@ -267,20 +267,35 @@ The self-chat design assumes **every message in a note-to-self thread carries `i
 because there is no other party. That is reasoned from WhatsApp's data model, **not measured** — no
 self-chat has ever been read by this tooling, and it cannot be from a cloud session.
 
-Open WhatsApp on the phone, send two or three messages in your own thread, then:
+Open WhatsApp on the phone, send two or three messages in your own thread, then run **one
+command** — it does the whole probe, reads the answer for you, and prints the seed document with your
+real values already in it:
+
+```bash
+./integrations/whatsapp-selfchat-setup.sh "+1XXXXXXXXXX"     # your own number
+```
+
+It writes nothing, sends nothing and **never prints a message body, a contact name or any number but
+the one you pass** — it reports shapes and counts, so its output is safe to paste back here.
+
+It ends on one of three verdicts:
+- **"build §5a as written"** — `is_from_me` is true on every row and no field discriminates. The
+  `[V] ` marker is doing real work.
+- **"do NOT build §5a as written yet"** — it found a field with more than one distinct value, very
+  likely the two devices. **Send me the field name and the counts** (not the values): that beats a
+  text marker outright and §5a gets *simpler*.
+- **"report before building"** — what came back does not match the spec's assumption. Guessing here
+  costs messages on your personal number.
+
+If you would rather run it by hand, it is these three calls plus the reading:
 ```bash
 whatsapp-cli --json session status
-whatsapp-cli --json chat find "<your own number>"       # the self-chat's name/JID
+whatsapp-cli --json chat find "<your own number>"
 whatsapp-cli --json message get "<that chat>" --after 2026-09-01T00:00:00Z | head -40
 ```
-Read `is_from_me` on the rows:
-- **All `true`** → §5a is correct as written. Build it.
-- **Anything that distinguishes the two sides** — a `device_id`, a `from_device`, a differing
-  `sender` — → say so. That field is a better discriminator than a text marker, and §5a gets
-  *simpler*, not harder.
 
-**Check:** you have the self-chat's name/JID. It becomes both `chatName` and `allowFrom` in
-`whatsappInboxState`.
+**Check:** you have the self-chat's name/JID and a seed document. The name becomes both `chatName`
+and `allowFrom` in `whatsappInboxState`.
 
 ### C4b. Prove the round trip, screen unlocked (5 min)
 ```bash

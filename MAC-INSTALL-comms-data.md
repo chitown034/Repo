@@ -10,7 +10,7 @@ and nothing contacts a client without Steven. Read a section, do its steps, run 
 ## Summary
 | # | Tool | Install method | Sandbox verified? | Keys needed (names only) | Use for Steven |
 |---|---|---|---|---|---|
-| 1 | **WhatsApp → Vanessa: `marcelrgberger/whatsapp-cli`** (recommended) | `git clone` + `uv venv --python 3.12` + `uv pip install ./agent-harness`; CLI only, plugin not installed | **Yes** — installs, `--help` exit 0, honest JSON error off-macOS (Python 3.12). **SyntaxError on 3.11** | none — the WhatsApp desktop app's own login; macOS Full Disk Access + Accessibility | Third chat channel to Vanessa, **dedicated number only**. Task spec `integrations/mac-task-specs.md` §5 |
+| 1 | **WhatsApp → Vanessa: `marcelrgberger/whatsapp-cli`** (recommended) | `git clone` + `uv venv --python 3.12` + `uv pip install ./agent-harness`; CLI only, plugin not installed | **Yes** — installs, `--help` exit 0, honest JSON error off-macOS (Python 3.12). **SyntaxError on 3.11** | none — the WhatsApp desktop app's own login; macOS Full Disk Access + Accessibility | Third chat channel to Vanessa. **Superseded 2026-09-23: Steven's OWN number, message-yourself thread** — task spec `integrations/mac-task-specs.md` **§5a**, decision in `context/decisions.md` |
 | 1b | `normen/whatscli` (evaluated, **rejected**) | `brew install normen/tap/whatscli` or `go install github.com/normen/whatscli@latest` | **Yes** — `go install` exit 0, 30 MB binary built | none — QR-paired session file | None for automation: TUI only; its README: "No automation of messages, no sending of messages through shell commands" |
 | 2 | **OmniRoute failover (`claude-auto`)** | `npm install -g omniroute` + `integrations/omniroute-failover/` | **Partly** — 3.8.50 installs, `omniroute --version` ok; scripts `bash -n` only (no Mac, no login) | `OMNIROUTE_API_KEY` (loopback key) · `OPENROUTER_API_KEY`, `NVIDIA_API_KEY`, `BYTEZ_API_KEY` → OmniRoute's store | Non-client work keeps running when the subscription is limited; client work waits or runs on Jarvis |
 | 3a | **Scrapling 0.4.15** | `pip install "scrapling[fetchers]"` + `scrapling install` | **Yes** — install exit 0; offline parse example ran; live fetch blocked by the sandbox proxy (403) | none | Public builder-incentive pages, public listing counts — **after Alexandra's terms check** |
@@ -83,7 +83,7 @@ restricts the number for automated sending, only the dedicated line is lost. **(
 
 **"Reach Vanessa" row (added to the Command Deck copy and to `REMOTE-ACCESS.md`):** *WhatsApp — via
 `whatsapp-cli` reading the WhatsApp desktop app on this Mac; `vanessa-whatsapp-inbox` would poll every 10 min under
-claude-runner; dedicated number only, never a client-facing one → spec written 2026-09-22 · Mac install pending ·
+claude-runner; **superseded 2026-09-23 — his own number in a message-yourself thread** → spec written 2026-09-22 · Mac install pending ·
 not yet live.* Runtime harness on the edited deck: **0 exceptions, 0 safeRun failures, 337 containers rendered**;
 the two `missingIds` it lists (`vanessaMicBtn`, `steveMicBtn`) are identical on the pre-edit copy.
 
@@ -228,3 +228,39 @@ the identical `ensure_env_file` used by the `lofty` and `higgsfield` steps.
 - Do not point the runner at `claude-auto` before the PII canary passes twice. Do not put a key in any `.md`.
 - Do not enable a scraper against homes.com, SkySlope or zipForms without Alexandra's written terms check.
 - Do not run `media-inference-worker` with the committed credential. Do not install the WhatsApp plugin's skill.
+
+---
+
+## §1 SUPERSEDED IN PART — 2026-09-23: Steven's own number, not a dedicated one
+
+The install commands in §1 are unchanged and still correct. **The security recommendation in §1 is
+not.** Steven was shown three shapes on 2026-09-23 — a dedicated number he texts from his normal
+WhatsApp app (what §1 recommends), his personal WhatsApp in a message-yourself thread, and his
+personal WhatsApp read-only with replies on iMessage — and chose the second, after being told both
+costs. The decision and the reasoning are in `context/decisions.md`.
+
+**What that changes.**
+
+- **Elena's (1) "a dedicated WhatsApp number" and (3) "never client-facing" no longer describe the
+  build.** The number is his own. What survives intact is the rest of (3): the task answers one
+  allow-listed sender and logs everything else as ignored; no group chats; no `monitor auto-reply`;
+  no `export` into the vault, brain, vector index or knowledge graph.
+- **(2) "local only" and (5) the deck's honest status row are unchanged.**
+- **(4) blast radius changes, in both directions.** The *send* side gets safer, not riskier: every
+  outbound goes to his own note-to-self thread, and WhatsApp's automated-messaging enforcement
+  targets unsolicited outbound to other people. The *read* side is where the cost lands — Full Disk
+  Access is an OS grant, so `ChatStorage.sqlite`, his entire personal history in plaintext, is
+  readable by anything running as him on that Mac. He accepted this knowingly. Mitigations, his and
+  neither a blocker: audit the existing Full Disk Access list before adding to it, and FileVault on.
+- **The task spec is `integrations/mac-task-specs.md` §5a, not §5.** §5 keeps only rows with
+  `is_from_me:false`; in a self-chat every message is from him, so §5 as written cannot run there at
+  all. §5a inverts it and adds what that requires: a `[V] ` authorship marker, echo detection, a
+  strictly-monotonic cursor, a per-poll cap of 3 and a daily ceiling of 20 sends.
+- **Run `integrations/whatsapp-selfchat-setup.sh "<his number>"` before building anything.** §5a's
+  premise — that a self-chat's rows all carry `is_from_me: true` — is reasoned from WhatsApp's data
+  model and has never been measured. That script settles it, reports whether some field discriminates
+  better than a text marker, and prints the seed document. It writes nothing and prints no message
+  text.
+
+The "Reach Vanessa" row wording in §1 is likewise superseded; `REMOTE-ACCESS.md` carries the current
+one.
