@@ -36,23 +36,37 @@ Source of truth: the `runnerStatus` doc and the routine-health export, not the t
   agent-created routine carries **no connectors** (Zoho, Lofty, Gmail, Calendar, Strava, Notion run
   where the credentials live), and anything needing local files, the local model or the keychain.
   A cloud routine that "succeeded" may still have written nothing — judge it by the doc stamp.
-- **The Mac runner bounds everything L5.** `claude-runner` is headless with pre-approved tools, 60
-  tasks. If the Mac is asleep, nothing in `always-on/README.md` happens. That is the single biggest
-  availability risk in the brain.
+- **The Mac runner bounds everything L5.** `claude-runner` is headless with pre-approved tools, **59
+  tasks** — that is what `runnerStatus` itself lists (`v.tasks`, read at its 2026-09-23 02:10 UTC
+  stamp); the "60" some surfaces still carry has never been reconciled against the runner and the
+  document is the better authority. If the Mac is asleep, nothing in `always-on/README.md` happens.
+  That is the single biggest availability risk in the brain.
+- **"Task ok" is not "document written".** At the 2026-09-23 02:10 UTC `runnerStatus` the runner is
+  healthy on its face — 36 ok, 1 error (`nightly-self-test`), 3 refused (`r4-quantvue-sync`,
+  `lead-triage-daily`, `feeds-weekly`), 18 weekly/monthly slots never run — but the first
+  `feedFreshness` sweep (2026-09-23 00:50 UTC) found `openrouterFeeds` frozen since 2026-09-13 while
+  its writer `openrouter-feeds-refresh` reports `ok`. A silent no-write success is the failure this
+  wiki page exists to make visible: check the doc stamp, never the task status.
 - **Lofty is the real-estate system of record** (since 2026-09-22) and is **not connected yet** —
   Composio has no Lofty toolkit and Steven's API key is not installed. No CRM lead number on the
   deck is live. Show "not connected yet"; never carry an old CRM's figure under a Lofty label.
 - **Zoho is API-blocked** pending a permission only Steven can grant. Deck Zoho data is the Sep 14 paste.
 - **You.com is retired.** No surface may call it. Research = Claude subscription + Perplexity.
-- **Knowledge fabric counts** (`fabric-deck-sync`, stamp 2026-09-22 04:05 UTC): Second Brain 68 rows ·
-  vault 831 notes · Jarvis 1,760 documents · graph 750 nodes / 1,104 edges · Ruflo 238 entries ·
-  Drive folder 0 files. That task's own last completion ended in **error** at 2026-09-21 19:58 PT.
+- **Knowledge fabric counts** (`knowledgeFabric`, its own stamp 2026-09-23 02:10 UTC): Second Brain 71
+  rows · vault 832 notes · Jarvis 1,761 documents · graph 750 nodes / 1,104 edges · Ruflo 238 entries ·
+  **Drive folder 0 files**. `fabric-deck-sync` has recovered — last completion ok 2026-09-22 17:08,
+  and it was running again at the 02:10 stamp — so the earlier "ended in error" note is spent. Two
+  counts on that row are still not what they look like: the **graph** figure is the 2026-09-13 build
+  (`knowledgeGraph` has not moved since; `ops-knowledge-graph` has never run), and **Drive is a store
+  nothing can reach** — 0 files on every sample, no credential, no connector. A 0-file store rendered
+  as a live store is a false green; the decision to wire it or drop it from the count is Steven's
+  (`integrations/google-drive-brain.md`).
 
 ## Pages (to be written)
 
 | Page | One-line summary |
 |---|---|
-| `db-docs.md` | What each `state` doc means and who writes it — **174 documents** at the 2026-09-23 count (this page long said 161) |
+| `db-docs.md` | What each `state` doc means and who writes it — **175 documents** at the 2026-09-23 03:10 UTC read (174 earlier the same day; this page long said 161) |
 | `panel-map.md` | Panel id → what it shows → which docs feed it |
 | `task-catalog.md` | Each Mac task: cron, what it writes, current status |
 | `routine-catalog.md` | Each cloud routine: schedule, and what it can and cannot write |
