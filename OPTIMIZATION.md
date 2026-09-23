@@ -44,9 +44,11 @@ all along (it is the record); **Drive never was.** Two tasks claim to read a Dri
 fabric tile has counted **0 files** in it every time it has been sampled — a store on the deck that
 nothing can reach. Decide it, do not leave it: `integrations/google-drive-brain.md`.
 
-**Orca's honest status:** the standalone computer-use app **is installed** on the Mac. It is **not**
-integrated with Claude Code, and the parallel-worktree IDE integration is **not** done. As an
-executor it is a proposal, vetted by the CTO Innovator — see `wiki/ai-team/index.md`.
+**Orca's honest status:** the standalone computer-use app is **reported installed** on the Mac —
+that claim has never been verified from anywhere but the Mac itself, so confirm it with
+`./mac-verify.sh` before any surface calls it live (F-V2-23). It is **not** integrated with Claude
+Code, and the parallel-worktree IDE integration is **not** done. As an executor it is a proposal,
+vetted by the CTO Innovator — see `wiki/ai-team/index.md`.
 
 ## Token-cost table — which store answers which question class
 

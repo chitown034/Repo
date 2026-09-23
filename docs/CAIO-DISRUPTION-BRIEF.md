@@ -103,6 +103,14 @@ Format: **Verdict · action** — expected value — risk — evidence — **→
 - **Risk:** the doc's no-prompt conditions (artifact not shared-with-latest-version; page holds no grant beyond the page) may still exclude the deck; a false positive would mask the parked prompts again. Test one low-stakes doc (e.g. `weatherSnapshot`) for 3 runs before touching anything else.
 - **Evidence:** Claude Code changelog 2.1.277, 2026-09-18 (primary); Routines doc, fetched 2026-09-22 (primary); BRIEF §2 "parks on a permission prompt (confirmed three times)".
 - **→ CTO Innovator feasibility:** fit high · integration cost S (one routine, one doc) · security risk low (read/write of Steven's own doc) · real — a shipped changelog line, but its scope ("save data to editable artifacts") vs the deck's `db` capability is unverified.
+- **OUTCOME, added 2026-09-23 (the proposal above is left as written):** the pilot was run and it
+  **succeeded**. A probe routine fired unattended at 2026-09-22 09:05:56Z and left `cloudWriteProbe`
+  in the deck's store; four cloud writers have run on it since (weekly backup, live Pipeline Sync,
+  ISA escalation ladder, feed freshness watchdog — `feedFreshness` written 2026-09-23 00:50Z). The
+  "research-only by design" premise in *Affects* above no longer holds. What did **not** change is
+  the connector limit: an agent-created routine carries no connectors, so the ~10 Mac feed tasks
+  that need Zoho, Lofty, Gmail, Calendar, Strava or Notion do **not** become redundant. Write-up:
+  `docs/CLOUD-WRITE-ARCHITECTURE.md`.
 
 ### CAIO-02 · ADOPT · replace — Zoho via Zoho's own MCP servers / official Claude "Zoho CRM" connector, Composio as fallback
 - **Affects:** zoho-crm-sync (cloud, 4×/day), zohoSync/zohoLeads/zohoDeals docs, Composio dependency.

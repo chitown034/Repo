@@ -69,10 +69,13 @@ the deck must say "awaiting first Lofty sync — bridge installed, API key + fir
 > the merged array, and write `zohoLeads`, `zohoDeals` and `zohoSync` in the exact §4 shapes. Reply
 > in one line: status, leads, deals, total amount, any unmapped stage names.
 
-**Cloud variant, honestly:** a cloud routine can re-test Zoho on the same cadence, but an unattended
-cloud run's artifact-DB write **parks on a permission prompt** — confirmed three times. So the cloud
-routine is a re-test-and-report only; **the Mac task is the writer.** Do not schedule the cloud
-routine and then describe the board as self-updating from the cloud.
+**Cloud variant, honestly:** a cloud routine can re-test Zoho on the same cadence, but it still must
+not be the writer — and the reason changed on 2026-09-22. The old reason given here, that an
+unattended cloud write "parks on a permission prompt", is **disproved** (`cloudWriteProbe`,
+`docs/CLOUD-WRITE-ARCHITECTURE.md`). The reason that survives is narrower and decisive for this
+task: an **agent-created routine carries no connectors**, so a cloud run cannot reach Zoho through
+Composio at all. So the cloud routine is a re-test-and-report only; **the Mac task is the writer.**
+Do not schedule the cloud routine and then describe the board as self-updating from the cloud.
 
 **Run now once to prove it:** run manually the moment Steven enables Zoho CRM API Access. Expect
 `zohoSync.status === "ok"` and a `zohoLeads.counts` that matches the Zoho kanban column counts.
