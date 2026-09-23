@@ -1350,6 +1350,15 @@
   "triage": "verified individually"
  },
  {
+  "id": "F-R2-13",
+  "source": "raised by this pass",
+  "severity": "High",
+  "verdict": "halt",
+  "triage": "verified individually",
+  "evidence": "NEW ROW, PII, THIRD SURFACE OF THE SAME CLASS \u2014 flagged separately rather than folded into a count. The redaction X2 performed on 2026-09-22 reached the repo and NOT the published store. Verified 2026-09-23: docs/MASTER-FINDINGS.md and docs/data/auditFindings.json are clean (zero loan amounts, zero client initial+surname patterns \u2014 the only two initial+surname matches in the twin are a homebuilder's name, not a person). But the LIVE `auditFindings` document in the Command Deck's store is at version 3, 288,849 bytes, syncedAt 2026-09-22, and still carries TWO client identifiers in initial+surname form each paired with a loan amount and a pipeline stage, inside finding descriptions. That document was seeded into the store for the deck to render (docs/INTEGRATOR-TODO.md), so it is readable by anyone who can open the artifact and it travels into every published version and every weekly backup. docs/findings/findings-E12.json carries the same two rows. No name, surname, initial or amount has been written into any file by this pass.",
+  "changed": "Nothing \u2014 de-identifying a live store document is an artifact-DB write, and purging a dated audit record is Steven's decision. This is the substance of docs/NEEDS-STEVEN.md item 26, but item 26 says 'the audit corpus', which reads as files; the point that needs saying is that one of them is a document the published dashboard renders. Carried to docs/NEEDS-STEVEN-R2.append.md as a correction to item 26."
+ },
+ {
   "id": "F-S1-05",
   "source": "findings-S1.json",
   "severity": "high",
@@ -2781,15 +2790,6 @@
   "triage": "verified individually"
  },
  {
-  "id": "F-R2-10",
-  "source": "raised by this pass",
-  "severity": "Medium",
-  "verdict": "unfixable-here",
-  "evidence": "NEW AND OPEN. always-on/README.md's Feed-freshness-watchdog row still reads \"**unproven** \u2014 created 2026-09-22 \u2026 no run recorded and no feedFreshness document in state yet\". Both halves are now false: the routine SUCCEEDED 2026-09-23T00:18:51Z and feedFreshness v1 exists. The earlier finding F-P4-06 wanted that line changed to FAILED, which would also be wrong.",
-  "changed": "Nothing \u2014 always-on/README.md is on this seat's do-not-edit list. Exact replacement line with a content anchor is in docs/NEEDS-STEVEN-R2.append.md.",
-  "triage": "verified individually"
- },
- {
   "id": "F-R2-12",
   "source": "raised by this pass",
   "severity": "Medium",
@@ -3219,6 +3219,15 @@
   "verdict": "already-closed",
   "evidence": "Verification row, no defect.",
   "changed": "Nothing.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-R2-10",
+  "source": "raised by this pass",
+  "severity": "Medium",
+  "verdict": "already-closed",
+  "evidence": "Raised by this pass and CLOSED BY ANOTHER SEAT while it was being written. always-on/README.md now reads \"working \u2014 proven twice, re-verified 2026-09-23 03:00 UTC\" for the Feed freshness watchdog, records the 2026-09-23T00:18:51Z SUCCEEDED run, feedFreshness v1 and a manual proving run that took it to v3, and independently names openrouterFeeds as the worst offender. Commit 39a7344.",
+  "changed": "Nothing needed from this seat. The hand-back line in docs/NEEDS-STEVEN-R2.append.md is withdrawn.",
   "triage": "verified individually"
  },
  {
