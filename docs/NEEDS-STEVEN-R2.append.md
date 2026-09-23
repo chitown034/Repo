@@ -164,22 +164,13 @@ artifact DB"** near the top of the file.
 > impossible will stop it attempting one that now works, and the agent will report the refusal as a
 > fact about the system.
 
-### H4. `mac-verify.sh` — five advisory tools have an installer line and no presence check
+### H4. *(withdrawn)* `mac-verify.sh` optional-tool presence checks
 
-*Anchor:* the existing Strix line, **`if have strix; then ok "strix (optional)"`**
-
-*Add, in the same shape, immediately after it,* one line per advisory-only tool so `--only <name>` and
-the checker agree about reality:
-
-```sh
-for _t in ponytail screenshot-to-code claude-code-setup prompts-chat; do
-  if have "$_t"; then ok "$_t (optional)" "$(ver "$_t" --version)"
-  else info "$_t (optional)" "not installed — advisory only"; fi
-done
-```
-
-No installer should be added for the four policy or value holds — that is Steven's decision, not a
-script's. This only makes the absence *visible*.
+Closed by another seat at commit `1f399c3` while this file was being written. `mac-verify.sh` now
+carries a full optional-tool presence block — a plugin helper for the held tools plus explicit rows
+for `agent-reach`, `laya` and `screenshot-to-code` beside the existing `strix` row — and cites
+`docs/INSTALL-COVERAGE.md`'s Spec-only and Blocked-on-Steven tables. No installer was added for the
+four policy or value holds, which is the right call. Nothing owed.
 
 ### H5. *(withdrawn)* `always-on/README.md` feed-freshness row
 

@@ -19,15 +19,15 @@ Read this next to `docs/NEEDS-STEVEN-R2.append.md`, which carries the correction
 
 | Verdict | Rows | What it means |
 |---|---:|---|
-| `already-closed` | 48 | Recorded open. Was not open. |
+| `already-closed` | 49 | Recorded open. Was not open. |
 | `fixed-now` | 10 | Fixed in this pass, each proved by re-reading the file or the live source. |
 | `halt` | 169 | Steven's — a credential, an account change, a live task or routine, a decision, or a licensed call. |
-| `unfixable-here` | 138 | Needs macOS, a signed-in browser, an upstream change, or the published deck HTML, which is not in this repo. |
+| `unfixable-here` | 137 | Needs macOS, a signed-in browser, an upstream change, or the published deck HTML, which is not in this repo. |
 | **Total triaged** | **365** | Out of 787 recorded findings across 46 files. |
 
-**48 of 365 were bookkeeping, not breakage** — about one in eight of the "remaining" surface had
+**49 of 365 were bookkeeping, not breakage** — about one in eight of the "remaining" surface had
 already been dealt with and nobody went back to the finding. The concentration is worth knowing:
-**10 of the 48 are in a single file**, `findings-P4.json`, written on the last night of the
+**10 of the 49 are in a single file**, `findings-P4.json`, written on the last night of the
 engagement, and six more are in `findings-P2.json`. Late audits re-report what earlier ones fixed.
 
 The 169 halts are not 169 problems. **144 of them are already collected on `docs/NEEDS-STEVEN.md`** —
@@ -140,12 +140,12 @@ reproduced anywhere in this pass's output.*
 28. **Three skill files still carry the disproved cloud-write rule** — `ai-ecosystem-backup`,
     `scale-growth-engine`, `skills-refresh`. A skill that tells an agent a write is impossible will
     stop it attempting one that now works, and the agent will report the refusal as a fact.
-29. **`mac-verify.sh` has no presence check for five advisory-only tools**, so `--only <name>` and the
-    checker disagree about reality.
-
-Both are hand-backs in `docs/NEEDS-STEVEN-R2.append.md` §2, with content anchors rather than line
-numbers. A third hand-back was withdrawn: another seat closed `always-on/README.md`'s feed-freshness
-row at commit `39a7344` while this page was being written.
+That is the whole of §3 — one hand-back, in `docs/NEEDS-STEVEN-R2.append.md` §2, with content anchors
+rather than line numbers. **Two others were withdrawn while this page was being written**, both
+closed by other seats: `always-on/README.md`'s feed-freshness row at commit `39a7344`, and
+`mac-verify.sh`'s missing optional-tool presence checks at commit `1f399c3`. Three seats are working
+this tree at once and the residue moves under you — which is the same effect, at four hours' range,
+that put 49 already-closed rows on this page.
 
 ---
 
@@ -166,7 +166,7 @@ row at commit `39a7344` while this page was being written.
 
 ## 5. Nobody yet — no reachable owner can close it today
 
-35. **Everything scoped to `command-deck.html` — 109 of the 138 `unfixable-here` rows.** The deck is a
+35. **Everything scoped to `command-deck.html` — 109 of the 137 `unfixable-here` rows.** The deck is a
     published artifact and **is not in this repository**; only `dashboard/isa/isa-portal.html` and
     `dashboard/panel-orchestration.html` are. Panel copy, renderer bugs, seed re-bakes, stamp wiring,
     the `\uXXXX` literals, the retired-CRM residue in page source — all of it needs whoever holds the
@@ -225,6 +225,8 @@ Said plainly, because an unverified claim on this page would be the same defect 
   `runnerStatus` *says*, which is itself a document written by the thing being audited.
 - **`command-deck.html`.** Not in this repository, so no line, renderer or panel claim about it was
   re-checked; the 109 deck-scoped rows are triaged by scope, not re-proved.
+- **Anything another seat changes after 2026-09-23 03:10 UTC.** Two rows on this page closed under it
+  while it was being written. Treat the counts as a reading at that time, not a standing total.
 - **Whether a "successful" cloud routine did anything useful.** The listing gives status, not output.
   `Project Risk Review` SUCCEEDED, which answers the question item 2 asked; it does not prove the run
   was worth anything.

@@ -2736,15 +2736,6 @@
   "triage": "triaged by rule"
  },
  {
-  "id": "F-P6-05",
-  "source": "findings-P6.json",
-  "severity": "medium",
-  "verdict": "unfixable-here",
-  "evidence": "Only `strix` has an optional-presence line (mac-verify.sh:155). Ponytail, Screenshot-to-Code, Claude Code Setup, prompts.chat and the Rachnog alternative have none.",
-  "changed": "Nothing here \u2014 mac-verify.sh is on this seat's do-not-edit list. Replacement lines handed back in docs/NEEDS-STEVEN-R2.append.md.",
-  "triage": "verified individually"
- },
- {
   "id": "F-P6-11",
   "source": "findings-P6.json",
   "severity": "medium",
@@ -3138,6 +3129,15 @@
   "verdict": "already-closed",
   "evidence": "MAC-SETUP.sh:358 and mac-verify.sh:118 both now enumerate .claude/skills rather than listing nine names, with a comment citing F-P6-03. The directory holds 22 skills.",
   "changed": "Nothing.",
+  "triage": "verified individually"
+ },
+ {
+  "id": "F-P6-05",
+  "source": "findings-P6.json",
+  "severity": "medium",
+  "verdict": "already-closed",
+  "evidence": "CLOSED BY ANOTHER SEAT while this pass ran (commit 1f399c3). mac-verify.sh now carries a full optional-tool presence block at lines 364-404 \u2014 a plugin helper for the held tools plus explicit rows for agent-reach, laya and screenshot-to-code \u2014 alongside the pre-existing strix row, and it cites docs/INSTALL-COVERAGE.md's Spec-only and Blocked-on-Steven tables. No installer was added for the policy and value holds, which is the right call.",
+  "changed": "Nothing. The hand-back drafted for it in docs/NEEDS-STEVEN-R2.append.md is withdrawn.",
   "triage": "verified individually"
  },
  {
