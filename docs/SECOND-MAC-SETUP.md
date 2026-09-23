@@ -185,7 +185,13 @@ claude-auto --status
 claude-auto --lease-check
 ```
 
-(`./MAC-SETUP.sh --only omniroute` does the two copies for you; the role file is yours to write.)
+(`./MAC-SETUP.sh --only omniroute` does the two copies for you. **Corrected 2026-09-23 (R3):** it now
+writes the role file too, as `standby`, and it **never overwrites one that already exists** — so on this
+Mac #2 the block above is what the installer would have done anyway, and on Mac #1 an existing `primary`
+is safe from a re-run. What is still yours is the *promotion*: on the Mac that runs the tasks, change
+that word to `primary`, or every `--task` run there defers with exit 75. Re-run of the installer on a
+Mac whose role file is absent silently makes it a standby — which is the safe direction, and the reason
+the file is written at all.)
 
 **Expect:** `--status` prints `lease_role=standby` and `lease_cached=none`. `--lease-check` prints
 `verdict=FOREIGN holder=<Mac #1's id>` and exits **0** — that is the standby working.

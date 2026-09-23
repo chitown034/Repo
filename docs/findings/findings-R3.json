@@ -124,5 +124,14 @@
     "evidence": "Every command in this engagement ran on Linux 6.18 with bash 5.2.21, shellcheck 0.9.0, against simulated HOME directories. The non-Darwin guard had to be overridden with VANESSA_SETUP_ALLOW_NON_DARWIN=1 for every real-path test, which is the script correctly saying so.",
     "fix": "None. Recorded per claim rather than as a blanket disclaimer, so the first real run on the Mac can be read as the test it is. The single highest-value thing that first run proves is bash 3.2 compatibility, because it is the one class of failure nothing here could have caught.",
     "halt": false
+  },
+  {
+    "id": "F-R3-15",
+    "severity": "low",
+    "area": "docs/SECOND-MAC-SETUP.md — 'the role file is yours to write', after the lease gate moved into the installer",
+    "finding": "The second-Mac runbook told Steven the installer does the two launcher copies and that ~/.config/claude-runner/role is his to write. Since the lease gate was placed in the installer, the omniroute step writes that file itself, as `standby`, and deliberately never overwrites an existing one. The stale sentence is wrong in the direction that matters: on Mac #1 it invites the reading that no role file exists unless he makes one, when in fact a first `./MAC-SETUP.sh` on that Mac has already written `standby` — and a standby Mac #1 defers every scheduled task with exit 75 while looking installed and healthy.",
+    "evidence": "MAC-SETUP.sh omniroute step: writes $HOME/.config/claude-runner/role containing `standby` when absent, and reports `already present … already says <role>` when present — both paths executed twice against a simulated HOME on Linux 2026-09-23, second run rewrote nothing. mac-verify.sh reports `NEED claude-runner role — claude-auto treats this Mac as STANDBY` when the file is missing and `ok claude-runner role standby` when it is there, so the verifier cannot distinguish a deliberate standby from an un-promoted primary either.",
+    "fix": "APPLIED. The parenthetical now says the installer writes it as standby, never overwrites an existing one, and that what remains Steven's is the promotion to `primary` on the Mac that runs the tasks. Also flagged in docs/NEEDS-STEVEN-R3.append.md R3-2, since the same promotion step is what makes Phase A's omniroute rows clear.",
+    "halt": false
   }
 ]
