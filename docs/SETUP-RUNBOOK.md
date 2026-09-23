@@ -464,19 +464,56 @@ consumer; an item without them behaves exactly as today.
 **Check:** text Vanessa from the phone. One poll later (≤10 min) her actual voice comes back as a
 voice note on the same thread — and the text reply still arrives first.
 
-### G2. The limit on Discord and WhatsApp — read before relying on it
+### G2. Where she can and cannot speak — tested 2026-09-23, and the count went up
 Steven asked that Vanessa speak when she replies **across all communication platforms**. Measured,
 not assumed:
 
-| Channel | Text reply | Her voice | Why |
+| Channel | Text reply | Her voice | Evidence |
 |---|---|---|---|
 | **Dashboard** | yes | **yes, today** | The page plays her own rendered audio with the face moving. |
-| **iMessage** | yes | **yes, after G1** | Inkbox accepts MP3/WAV up to 10 MiB. Staging proven 2026-09-22 without sending anything. |
-| **Discord** | yes | **no native path** | The only Discord send tool available has no attachment parameter. |
-| **WhatsApp** | yes | **no native path** | `message send` opens `whatsapp://send?phone=…&text=…` — no parameter an MP3 can travel in. |
+| **iMessage** | yes | **yes, after G1** | Inkbox accepts MP3/WAV up to 10 MiB; a 27-second clip is 1.03% of the cap. Staging proven 2026-09-22 without sending. |
+| **Email** | yes | **yes, after G3 — new** | `inkbox_email_attachment_upload` was handed real clip bytes as `audio/mpeg` and **accepted them**, 2026-09-23. `inkbox_email_send`/`_reply` both take `attachments`. |
+| **Discord** | yes | **never** | `DISCORDBOT_CREATE_MESSAGE` has no file or attachment parameter of any kind. |
+| **WhatsApp** | yes | **never** | `message send` is `whatsapp://send?phone=…&text=…`. There is no parameter an MP3 can occupy. |
+| **SMS** | — | — | No channel at all: `phone.assigned: false`, `sms_available: false`. |
 
-On Discord and WhatsApp she replies in text. A link-based workaround — hosting the clip and sending a
-URL those two channels *can* carry — is being tested; if it lands it arrives as an amendment here.
+**Discord and WhatsApp are "never", not "not yet".** On both, the send mechanism itself has nowhere to
+put a file. That is not a quota, a permission or a missing credential.
+
+**The link workaround was tested and is a no for a shared channel.** The artifact asset store
+**refuses audio outright** — its accepted list has no mp3, m4a, wav or ogg on it — and what it returns
+for an accepted type is a **relative path** (`/_blob/<id>`), not a URL anything could carry. A clip
+*can* be carried inside a private artifact page, and that page's URL is genuinely private: two
+unauthenticated fetchers were refused (a bare `curl` got HTTP 403, and Inkbox's own public-URL fetch
+mode returned `url_fetch_failed`). So it is a tappable link **that only opens in a browser already
+signed in to your account** — the Claude app, or Safari with a live session. Signed out, you get a
+sign-in wall instead of the clip. Useless for Discord-with-other-people; workable for you alone.
+
+*Not proven:* that a signed-in browser actually plays it. The bytes were verified present, correct
+and private; no browser was available, so no playback was ever observed.
+
+### G3. Decide whether you want a `vanessa-email-inbox` task
+This is the gate on the only **new** speaking channel, and it is the top of R4's list.
+
+Email has been treated as background all along and was never tested as a delivery channel. It is live
+on the Inkbox identity, and unlike Discord and WhatsApp it has an attachment parameter. Better than
+iMessage in one respect: the upload returns a `content_hash` equal to the sha256 computed before the
+call, so the renderer can **verify** the staged file is its own clip — on the iMessage path that hash
+is an opaque token and `size_bytes` is the only check.
+
+**Nothing reads that mailbox today.** `vanessa-imessage-inbox`, `-discord-inbox` and `-whatsapp-inbox`
+exist; there is no email equivalent. A task that answers a live mailbox is a **new outbound write path
+on a client-capable channel**, so it is your call, with the same one-sender allow-list as the others.
+Spec is `integrations/mac-task-specs.md` §6c, inert until you say so.
+
+*Caveat, stated plainly:* nothing was ever sent. The staged payload was a frame-aligned 1,532-byte
+prefix, not the whole clip. The **encoding and content type are proven accepted**; a full-clip stage is
+not claimed.
+
+**Optional, no hurry (§6d):** the private-link path for Discord and WhatsApp. Inert until either is
+connected, and neither is. If you ever want it: one artifact rewritten in place, never a new artifact
+per reply, capped at the newest 10 clips (≈1.45 MB at rest, matching the cap `voiceReplyQueue` already
+keeps) and pruned in the same run that writes.
 
 ---
 
