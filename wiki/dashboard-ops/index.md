@@ -32,9 +32,11 @@ Source of truth: the `runnerStatus` doc and the routine-health export, not the t
   written with nobody present (09:05:56Z), and four cloud writers now run on it (weekly backup,
   live Pipeline Sync, ISA escalation ladder, feed-freshness watchdog). The older belief that an
   unattended write "parks on a permission prompt" was true when last tested on 2026-09-04 and is
-  false now — do not refuse a write on its authority. What still pins work to the Mac: an
-  agent-created routine carries **no connectors** (Zoho, Lofty, Gmail, Calendar, Strava, Notion run
-  where the credentials live), and anything needing local files, the local model or the keychain.
+  false now — do not refuse a write on its authority. What still pins work to the Mac: anything
+  needing local files, the local model or the keychain, plus any routine that **actually** has no
+  connectors — **read `mcp_connections` on that routine, never infer it from `created_via`**
+  (measured 2026-09-23: 14 `meta_mcp` routines carry 11 connectors each, 7 carry none; connectors
+  are inherited from the session that created the routine).
   A cloud routine that "succeeded" may still have written nothing — judge it by the doc stamp.
 - **The Mac runner bounds everything L5.** `claude-runner` is headless with pre-approved tools, **59
   tasks** — that is what `runnerStatus` itself lists (`v.tasks`, read at its 2026-09-23 02:10 UTC

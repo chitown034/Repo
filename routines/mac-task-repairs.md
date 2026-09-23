@@ -547,7 +547,7 @@ instrument for a routine that is not executing, has no connectors, or has nothin
 | Routine | What is wrong | Right instrument |
 |---|---|---|
 | Rent, Buy, or Wait | Prompt is sound; the run was **dropped**, and it leaves only a chat report so a dropped run is invisible | **Prompt update** — add a durable trace (below) |
-| Real Estate Weekly Brief | Agent-created routines carry **no connectors**; its whole body is Follow Up Boss + Calendar + Gmail. Also targets a superseded CRM | **Steven decides** — recreate in the web UI once Lofty is connected, or retire |
+| Real Estate Weekly Brief | Targets a superseded CRM — its whole body is Follow Up Boss + Calendar + Gmail. **Not a connector problem:** this row used to read "agent-created routines carry no connectors", which is false — read live 2026-09-23 it holds **11 connectors including Gmail and Calendar**. Connectors are inherited from the creating session; check `mcp_connections`, never `created_via` | **Prompt rewrite in place** — FUB calls out, Calendar and Gmail kept. No recreate needed, and Steven never had to decide this one |
 | Ops Issue Review | Stock template reading `/home/claude/vault`, `Ops/Issues/`; report-only, leaves no document | **Disable** pending Steven's call |
 | Project Risk Review | Same template family, reads `Projects/`; report-only | **Disable** pending Steven's call |
 | Books Reconciliation Reminder | Same family, reads `Finance/Books/`; **no ledger or finance document exists** in the 173-doc store | **Disable** — nothing to reconcile |

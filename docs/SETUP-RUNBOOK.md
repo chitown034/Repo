@@ -13,7 +13,7 @@ E. G and H depend on nothing. **Do H1 today** (it is on a clock).
 
 ---
 
-## Before you start — two things you should know
+## Before you start — four things you should know
 
 **1. The Command Deck's own page source carries your financial detail.** `cdStateSeed` and
 `PROPERTIES_DEFAULT` hold **3 street addresses with loan balance, lender and rate; 20 membership
@@ -27,7 +27,24 @@ renders it but the source does not carry it. Your call.
 **Command Deck lead board only** — a name and a stage, nothing else — so the portal has no exemption
 and this sits outside it. Purge, or extend the decision in writing.
 
-**3. Do not run the OmniRoute step.** Its PII gate fails open, and two paths would strand the Mac on
+**3. A third surface, found 2026-09-23 and verified twice.** The **live `auditFindings` document in
+the Command Deck's store** (version 3, 288,849 bytes, `syncedAt 2026-09-22`) pairs **two client
+identifiers with loan amounts and stages** — and the deck renders it. X2's 2026-09-22 redaction
+reached `docs/MASTER-FINDINGS.md` and `docs/data/auditFindings.json`, both of which are clean; it
+never reached the published store. Exactly two rows differ: **`F-E12-11` and `F-E12-12`**, each
+carrying a name-shaped token its redacted twin row does not, and each twin row already carrying the
+redaction marker.
+
+`docs/NEEDS-STEVEN.md` item 26 covers this, but it says "the audit corpus", which reads as *files* —
+so the live document has been sitting under a closed-sounding item. **This is the one thing on this
+page I would do first.**
+
+The fix is one surgical write per row — replacing the two live rows with their already-redacted twin
+versions, leaving the other 283 rows untouched. The source rows survive in
+`docs/findings/findings-E12.json`, so nothing is lost. **I have not run it:** it changes what a
+published artifact shows, which is on the HALT list. Say the word and it is one call.
+
+**4. Do not run the OmniRoute step.** Its PII gate fails open, and two paths would strand the Mac on
 free providers with no alarm. Use `--skip omniroute`, keep the runner on plain `claude`, and do not
 paste the four provider key values until the widened canary passes with the security steward
 (`integrations/omniroute-failover/README.md`).
@@ -36,24 +53,54 @@ paste the four provider key values until the widened canary passes with the secu
 
 ## A — Get the Mac to a known state
 
-### A1. Run the installer (~30 min)
+### A1. Look before you install — this whole block changes nothing (~15 min)
 ```bash
 cd ~/path/to/Repo
 
-./MAC-SETUP.sh --list                 # the step names, and what it refuses outright
-./MAC-SETUP.sh --dry-run              # prints every command, installs nothing — read it
-./MAC-SETUP.sh --only codeburn        # one cheap step: proves the script itself runs
-./MAC-SETUP.sh --skip omniroute       # the default set, minus the one step that is not safe yet
-./mac-verify.sh                       # the checker
+./MAC-SETUP.sh --list                        # the 25 step names, and what it refuses outright
+./MAC-SETUP.sh --dry-run                     # every command it would run — read it
+./MAC-SETUP.sh --dry-run --only codeburn     # step selection, proved without installing
+./MAC-SETUP.sh --dry-run --skip omniroute    # exactly what A2 will do
+./mac-verify.sh                              # the "before" picture
 ```
-**Check:** `mac-verify.sh` ends with no red rows, and `MAC-SETUP.sh` prints its own NEEDS-STEVEN list
-(Homebrew, plugin installs, LaunchAgents, key values, `~/.local/bin` on PATH). That printed list is
-the rest of this runbook.
+`--dry-run` installs nothing and writes no log of its own. `mac-verify.sh` here is a baseline, not a
+pass/fail — almost everything is expected to be absent.
 
-`--dry-run` writes no log of its own; the real run logs to
-`~/Library/Logs/vanessa-setup/<date>.log`.
+*Corrected 2026-09-23.* An earlier version of this step had lines 3 and 4 **without** `--dry-run`.
+That was wrong: `./MAC-SETUP.sh --skip omniroute` is not a flag demonstration, it is the entire
+install — 43 commands, two git clones, four virtualenvs, a global npm install, a Playwright Chromium
+download, and a `claude plugin install` into the live Claude Code user scope. And
+`--only codeburn` needs node, so on a Mac without Homebrew it exits 1 at `FAILED npm missing`
+before any prerequisite step has run.
 
-### A2. Telemetry off before the first `cli-hub` command, and PATH (2 min)
+### A2. Now run it for real (~30 min)
+```bash
+./MAC-SETUP.sh --skip omniroute       # the default set, minus the one step that is not safe yet
+./mac-verify.sh
+```
+**Expect `mac-verify.sh` to exit 1 with exactly these four rows, and do not read them as breakage:**
+```
+FAIL  omniroute           not installed
+FAIL  claude-auto         not in ~/.local/bin
+FAIL  probe.sh            not in ~/.local/bin
+NEED  claude-runner role  no ~/.config/claude-runner/role — claude-auto treats this Mac as STANDBY
+```
+`omniroute` is the only step that installs `claude-auto`, `probe.sh` and the role file, so skipping it
+produces all four. They are correct output, and they clear when the OmniRoute canary passes and that
+step is allowed to run.
+
+**Check:** every other row is green, and `MAC-SETUP.sh` prints its own NEEDS-STEVEN list (Homebrew,
+LaunchAgents, key values, `~/.local/bin` on PATH). That printed list is the rest of this runbook. The
+real run logs to `~/Library/Logs/vanessa-setup/<date>.log`.
+
+> **One thing to decide before you run it.** A plain `./MAC-SETUP.sh` runs
+> `claude plugin install cli-anything@cli-anything` **unattended, into your live Claude Code user
+> scope** — every session on that Mac gains it. The same script *refuses* `claude-code-setup` and
+> `ponytail` for exactly that reason and never argues the exception. It may well be the right
+> exception; it has just never been stated. Either accept it knowingly, or gate it behind
+> `--only cli-anything` the way `strix` and `higgsfield` already are.
+
+### A3. Telemetry off before the first `cli-hub` command, and PATH (2 min)
 CLI-Hub's analytics are **opt-out**. They fire on install, uninstall, launch and every call, and
 report this Mac's **hostname**.
 ```bash
@@ -67,24 +114,39 @@ does not reach a launchd job.
 **Check:** `echo $CLI_HUB_NO_ANALYTICS` prints `1` in a brand-new Terminal window; `which cli-hub`
 resolves.
 
-### A3. Runner LaunchAgent + write allow-list (10 min)
+### A4. Runner LaunchAgent + write allow-list (10 min)
 Without the LaunchAgent, scheduled tasks only fire while the desktop app is open — which is why
-several "enabled" tasks have never run. Separately, `steve-twin-sweep` and `ops-knowledge-graph` are
-being *refused* writes to `~/Shearrill-Vault`; they are not broken, they are denied.
+several "enabled" tasks have never run.
+
+Separately, the write allow-list on `~/Shearrill-Vault`. **This is now one task, not two**
+(re-checked 2026-09-23): `steve-twin-sweep` is no longer refused. Only `ops-knowledge-graph` is, and
+it has still never run.
 
 **Check:** a task with a slot in the next ten minutes leaves a **document** behind. A green status row
 is not proof.
 
-### A4. `taskLease` before Mac #2's runner is enabled (15 min) — do not skip
+### A5. `taskLease` before Mac #2's runner is enabled (15 min) — do not skip
 Nothing currently stops two Macs running the same 59 tasks and double-writing `ciLog`, `isaLine` and
 every feed.
 - Create the `taskLease` document.
 - Add the **LEASE CHECK** block from `REMOTE-ACCESS.md` to the top of every task prompt.
 - Bring Mac #2 up as **STANDBY** (`docs/SECOND-MAC-SETUP.md` steps 11–12).
-- Reconcile the task count against the runner on Mac #1 — the register says **59**; an older deck row
-  said 60.
 
-**Check:** `claude-auto --lease-check` on Mac #2 reports STANDBY and declines to run.
+> **The role file is the trap, and it is stale in the expensive direction.** `SECOND-MAC-SETUP.md`
+> says the role file is yours to write. It is not any more — **the installer writes it as `standby`**
+> and never overwrites an existing one. So the by-hand step is the **promotion of Mac #1 to
+> `primary`**, not the creation of the file.
+>
+> Get that wrong and **Mac #1 defers every scheduled task with exit 75 while looking installed and
+> perfectly healthy** — and neither script can tell a deliberate standby from an un-promoted primary,
+> so nothing will tell you. Set `~/.config/claude-runner/role` to `primary` on Mac #1 and leave Mac #2
+> at `standby`.
+
+The task count is **settled: 59.** `runnerStatus` is the authority and was re-read on 2026-09-23; the
+60 on the older deck row was wrong and is corrected. Nothing to reconcile.
+
+**Check:** `claude-auto --lease-check` on Mac #1 reports it holds the lease and runs; on Mac #2 it
+reports STANDBY and declines. If **both** say STANDBY, Mac #1 was never promoted.
 
 ---
 
@@ -421,9 +483,14 @@ URL those two channels *can* carry — is being tested; if it lands it arrives a
 ## H — One click or one paste
 
 ### H1. `strava-daily-sync` — **before 12:20 UTC / 05:20 PT today**
-The task writes `stravaSnapshot` without the `{v:…}` wrapper and will overwrite today's hand repair on
-its next run. The prompt lives only on the Mac. **Paste** `routines/mac-task-repairs.md` §1 over the
+The task writes `stravaSnapshot` without the `{v:…}` wrapper and will overwrite the hand repair on its
+next run. The prompt lives only on the Mac. **Paste** `routines/mac-task-repairs.md` §1 over the
 task's prompt, then after the 12:20 run ask a Mac session the one-line check in §1.
+
+*Re-checked 2026-09-23:* `stravaSnapshot` is **still correctly wrapped at v9** — the overwrite has not
+happened yet. A cloud **Strava wrapper guard** now stands behind the Mac task as a backstop, but it
+has **never run**; its first firing is today at **12:47 UTC**, which is *after* the 12:20 slot it is
+meant to catch. Treat the guard as untested and do the paste.
 
 ### H2. Disable the old "Pipeline Sync" cloud routine — one click (1 min)
 It reports SUCCEEDED four times a day and syncs nothing; its own prompt is research-only. Created
@@ -454,6 +521,27 @@ is a brief that says so, and the card has a banner built for exactly that.
 dead for an entire audit. **Paste** the diagnostic sequence in `routines/mac-task-repairs.md` §2. The
 fix is `date -u`.
 
+### H6. Three more found 2026-09-23 — same failure shape as H4
+All three are the output-not-execution failure: a green row over a document that has not moved.
+
+- **`openrouterFeeds` has been frozen since 2026-09-13** while its writer keeps reporting `ok`. The
+  worst current instance of the pattern.
+- **`brain-weekly-verify` has not run since 2026-09-14**, so the **2026-09-20 gate passed silently**.
+  It is in neither the error set nor the never-run set, which is exactly why no finding caught it —
+  it looks healthy from every angle except the document's own date.
+- **The eight `~/.cli-anything-*/history` paths have no backup or encryption home.** They will hold
+  whatever the browser harnesses read once Phase D runs, so decide where they live *before* D4, not
+  after.
+
+### Not urgent after all — the cloud-routine outage
+`docs/NEEDS-STEVEN.md` item 2 asked you to watch Project Risk Review's 18:06Z firing as a free test of
+whether a live startup outage was killing cloud routines. **It ran: SUCCEEDED, fired 2026-09-22T18:07.**
+The outage is not live, and the four web-UI routines it pointed at are not urgent.
+
+Nine routines are still FAILED and stable since 09-20 — but **two of them are agent-created**
+(`meta_mcp`: Ops Issue Review, Books Reconciliation Reminder), so those two are not yours at all. The
+real ask is smaller than item 2 made it sound.
+
 ---
 
 ## I — Decisions nobody else can make
@@ -472,19 +560,45 @@ fix is `date -u`.
   not an empty folder. Wire it read-only (`integrations/google-drive-brain.md`) or drop the line.
 - **Re-enable the cloud ISA bridge and the Steve twin.** Both were disabled on a belief disproved by
   measurement on 2026-09-22. `trig_01VpcvVPTrbdfvdbXn1mD7hB` (bridge) and
-  `trig_0174717mnSfAk1LtQQVJhH7r` (twin). The twin's Gmail step needs a connector and agent-created
-  routines carry none, so that one wants recreating in the web UI.
+  `trig_0174717mnSfAk1LtQQVJhH7r` (twin). **Both just need enabling — neither needs recreating.**
+  Read live on 2026-09-23: the bridge is `http_api` with **11 connectors**, the twin is `http_api`
+  with **9**, and the twin's list already includes **Gmail**. An earlier version of this line said the
+  twin needed rebuilding in the web UI because its Gmail step had no connector. That was wrong, and it
+  rested on a rule that is itself wrong — see below.
 - **Retired-CRM residue.** 392 lines / 716 mentions across 33 dated audit records under `docs/`, plus
   the saved-state keys in both dashboards, the skill folder on the Mac, the legacy calendar name
   inside Google, and lead rows that may persist in deck backups and the artifact DB. *My read: purge
   the live surfaces, leave the dated records alone — rewriting a dated audit record is its own kind of
   lie.*
+- **Weekly backup.** The cloud writer took a verified backup on 2026-09-22 and `backupStatus` reads
+  GREEN — but beside that GREEN it reads **`weeksKept: 1`**. One week of history is not a backup
+  rotation, whatever colour the card is. Decide that the cloud schedule and root replace the "Sunday
+  00:00 local, Documents/AI-Ecosystem-Backups" spec, disable `r6-weekly-backup` (which has still
+  never run), and say what the real retention should be.
 - **Mentor naming** — the deck says Kevin, the installed skill says Cole. Pick one.
 - **Licence renewal dates** — only Steven can confirm them from the source documents. Writing them
   from a second store would be a guess on a licensing surface, so nothing has been written.
 - **Cloud egress** — every freshness pass on 2026-09-22/23 ran blind (lender, agency, weather and news
   domains blocked). Allow-list a handful of primary domains for cloud sessions, or keep those
   refreshes on the Mac tasks.
+
+---
+
+## One rule that was wrong everywhere, corrected 2026-09-23
+
+Four files in this brain — and an earlier version of this runbook — stated that **"an agent-created
+routine carries no connectors"**, and used it to escalate work to Steven that did not need him.
+
+**It is false as a blanket rule.** `list_triggers` returns `mcp_connections` per routine. Read live
+across all 57 on 2026-09-23: **14 `meta_mcp` routines carry 11 connectors each** (Gmail and Google
+Calendar among them) and **7 carry none**. Connectors are inherited from the session that created the
+routine; `created_via` implies nothing either way.
+
+**The rule is: read `mcp_connections` on the routine in front of you.** Corrected in
+`wiki/dashboard-ops/index.md`, `docs/CLOUD-WRITE-ARCHITECTURE.md`, `routines/mac-task-repairs.md`
+§7(b) and three skill files. The visible consequence: `Real Estate Weekly Brief` was escalated to
+Steven as a recreate-in-the-web-UI decision on this false premise, and it has had Gmail and Calendar
+the whole time.
 
 ---
 

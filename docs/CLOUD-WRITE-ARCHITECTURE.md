@@ -54,9 +54,15 @@ Consequences worth acting on, in order:
 
 ## What does not change
 
-Connectors. A routine created by an agent stores no MCP connectors, so anything
-needing Zoho, Lofty, Gmail or GitHub credentials still has to run where those
-credentials live. The write path is open; the credential path is not. Keep
+Connectors — but **not** by the rule stated here until 2026-09-23. "A routine
+created by an agent stores no MCP connectors" is false as a blanket claim:
+`list_triggers` returns `mcp_connections` per routine, and read live across all
+57, fourteen `meta_mcp` routines carry **11 connectors each** (Gmail and Google
+Calendar among them) while seven carry none. Connectors are inherited from the
+session that created the routine; `created_via` does not imply them either way.
+So the rule is: **read `mcp_connections` on the routine in front of you.** A
+routine that genuinely has none still has to run where the credentials live —
+the write path is open, that credential path is not. Keep
 CRM syncs on the Mac until a routine created in the web interface, which can
 carry connectors, is set up for them.
 
