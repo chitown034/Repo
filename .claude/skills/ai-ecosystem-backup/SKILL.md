@@ -6,8 +6,10 @@ description: "Weekly full backup of Steven's AI ecosystem (v2): both artifact st
 # ai-ecosystem-backup v2 — Sunday full backup, verified
 
 Seat: execution — **Claude Sonnet 5** under Derek (CTO). Escalations go to Vanessa
-(Claude Fable 5.1). Runs on the **Mac runner only**: a cloud routine cannot write the artifact DB
-unattended (the write parks on a permission prompt, confirmed three times).
+(Claude Fable 5.1). Runs on the **Mac runner only** — not because a cloud routine cannot write the
+artifact DB (that was disproved by measurement on 2026-09-22; see
+`docs/CLOUD-WRITE-ARCHITECTURE.md`), but because a backup reads local files and the Mac keychain, and
+an agent-created routine carries no connectors.
 
 ## Trigger
 - **Every Sunday 00:00 local (America/Los_Angeles)** — Steven's spec.

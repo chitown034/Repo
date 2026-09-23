@@ -28,8 +28,9 @@ the Capability Engineer (Opus 5); Vanessa (Claude Fable 5.1) chairs the cycle th
 `read_db`, `db_op:"get"`, `collection:"state"`, `doc_id`; `write_db`, `db_op:"set"` (not `update`),
 `data:{v:<whole doc>}`. Read before write; append, never clobber. **Every doc is `{v:<value>}` — no exceptions:** send
 `data:{v:<whole doc>}`, never the bare value. A top level that is not a single `v` key is a bug to
-fix, not a shape to copy. From a cloud routine the write parks on a permission prompt — report in the
-run output and leave the write to the Mac.
+fix, not a shape to copy. From a cloud routine the write now succeeds (proven 2026-09-22), but an
+agent-created routine carries no connectors — so report in the run output and leave the write to the
+Mac.
 
 ## Procedure
 1. **Enumerate** every `SKILL.md` on disk with its root, path, mtime and size. Count them. This
