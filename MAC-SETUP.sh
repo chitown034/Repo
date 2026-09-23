@@ -357,7 +357,9 @@ if should_run vendored-skills; then
   skill_n=0
   # Enumerated, not listed (F-P6-03, 2026-09-22). This was a hard-coded nine while the repo held 22,
   # so 13 skills were checked by nothing and a newly added one would be silently unverified forever.
-  for s in $(ls "$REPO_DIR/.claude/skills" 2>/dev/null | sort); do
+  for skill_dir in "$REPO_DIR"/.claude/skills/*/; do
+    [ -d "$skill_dir" ] || continue
+    s=${skill_dir%/}; s=${s##*/}
     skill_n=$((skill_n + 1))
     if [ -f "$REPO_DIR/.claude/skills/$s/SKILL.md" ]; then :; else missing="$missing $s"; fi
   done
@@ -474,7 +476,15 @@ EOF
       if run mkdir -p "$BINDIR" && run cp "$src" "$dst" && run chmod +x "$dst"; then installed "$dst"; else failed "copy $f"; fi
     fi
   done
-  needs_steven "OmniRoute dashboard password + API key value, 'omniroute providers add … --credential-env' for each free provider, the probe LaunchAgent (com.stevenshearrill.omniroute-probe, StartInterval 900), re-pointing the vanessa launcher and the runner wrapper at claude-auto, and the PII canary with the security steward — all of it is F-FR5b-05/06 and stays yours."
+  # --- the task lease: this Mac's role. One word, and it is the whole of what makes a second Mac safe (P7).
+  # Never overwrite an existing role file: on Mac #1 that would silently demote the machine that runs the tasks.
+  RUNNER_CFG="$HOME/.config/claude-runner"
+  if [ -f "$RUNNER_CFG/role" ]; then
+    skipped "$RUNNER_CFG/role already says $(sed -e 's/#.*//' -e 's/[[:space:]]//g' "$RUNNER_CFG/role" | grep -v '^$' | head -1)"
+  elif run mkdir -p "$RUNNER_CFG" && run_sh "printf '# claude-runner role for this Mac: primary (runs the 59 tasks) or standby (lease-blocked).\n# See REMOTE-ACCESS.md -> Primary / standby. Absent or unreadable reads as standby.\nstandby\n' > '$RUNNER_CFG/role'"; then
+    installed "$RUNNER_CFG/role (standby — change it to primary on the Mac that runs the tasks)"
+  else failed "could not write $RUNNER_CFG/role"; fi
+  needs_steven "OmniRoute dashboard password + API key value, 'omniroute providers add … --credential-env' for each free provider, the probe LaunchAgent (com.stevenshearrill.omniroute-probe, StartInterval 900), re-pointing the vanessa launcher and the runner wrapper at claude-auto, and the PII canary with the security steward — all of it is F-FR5b-05/06 and stays yours. Also: set ~/.config/claude-runner/role to primary on the Mac that runs the tasks (it is written as standby), then run 'claude-auto --lease-check' on BOTH Macs before enabling the schedule — F-P7-10."
   say "      this script installs no LaunchAgent and re-points no launcher: that would be editing a live task"
 fi
 
@@ -595,8 +605,9 @@ if should_run cli-anything-harnesses; then
   # cli-anything-browser>=1.0.0, which is NOT on PyPI, and they import cli_anything.browser.core at
   # module level. Without that clone `pip install .` said "No matching distribution found", and with
   # --no-deps their --help exited 1 and pytest aborted at collection. The browser harness is now
-  # vendored at integrations/cli-anything-harnesses/browser/agent-harness (Apache-2.0, unmodified,
-  # provenance in its VENDORED.md), so all eight install and test from this checkout alone.
+  # vendored at integrations/cli-anything-harnesses/browser/agent-harness (Apache-2.0; ONE file carries a
+  # local security patch — see its VENDORED.md and browser/patches/), so all eight install and test from
+  # this checkout alone.
   CAH_SRC="$REPO_DIR/integrations/cli-anything-harnesses"
   CAH_DIR="$HOME/Applications/cli-anything-harnesses"
   CAH_PY="$CAH_DIR/.venv/bin/python"
@@ -649,6 +660,15 @@ if should_run cli-anything-harnesses; then
           run ln -sf "$CAH_DIR/.venv/bin/cli-anything-$p" "$BINDIR/cli-anything-$p" || true
         done
         installed "eight harnesses (browser engine + homes, showingtime, showami, skyslope, zipforms, lofty, zoho) + symlinks in $BINDIR"
+        # F-P1-02: the harness spawns `npx -p @apireno/domshell domshell-proxy` with no version pin, and
+        # is_available() makes a SECOND unpinned npx call on every invocation. Pre-install the
+        # lockfile-pinned copy so runtime/bin/npx answers both locally instead of hitting the registry.
+        # `npm ci`, not `npm install`: every tarball is checked against the hash recorded in this repo.
+        if have npm; then
+          run "$CAH_SRC/browser/runtime/posture.sh" install || failed "DOMShell pin install — see $LOG_FILE"
+        else
+          needs_steven "Node.js/npm is not installed, so @apireno/domshell could not be pinned. Until it is, the browser harness fetches an unpinned copy from the npm registry on first use (F-P1-02). Install Node.js, then run integrations/cli-anything-harnesses/browser/runtime/posture.sh install."
+        fi
       else failed "uv pip install of the eight harnesses — see $LOG_FILE"; fi
     else failed "uv missing — run this script's uv step first"; fi
   fi
@@ -666,7 +686,12 @@ ZOHOENV
   needs_steven "Zoho stays blocked on the profile toggle, not on a credential: Setup -> Security Control -> Profiles -> Developer Permissions -> enable 'Zoho CRM API Access'. That is an account permission change — a HALT row. The harness is GET-only and reports the 403 honestly rather than inventing pipeline data."
   say "      the seven site harnesses have NO act verb — that is the read-only guarantee, and mac-verify.sh re-checks it by word match"
   say "      the browser ENGINE does have 'act click' / 'act type'. It is the DOMShell write surface; never point it at a client-facing system by hand"
-  say "      recommended in the harness env: CLI_ANYTHING_BROWSER_BLOCK_PRIVATE=true — SSRF blocking is OFF by default and is read at import time (P1 review, F-P1-05)"
+  say "      START THE BROWSER HARNESS THROUGH integrations/cli-anything-harnesses/browser/runtime/run-browser-harness.sh"
+  say "      — it sets CLI_ANYTHING_BROWSER_BLOCK_PRIVATE=true BEFORE the interpreter starts (security.py:22 reads it at"
+  say "        import time, so exporting it afterwards does nothing), puts the pinned-npx shim on PATH, and creates the"
+  say "        history directory 0700. Started any other way the harness runs with UPSTREAM defaults: SSRF off, npx"
+  say "        unpinned, history 0755/0644. Prove it any time: browser/runtime/posture.sh check"
+  needs_steven "Put these three in your shell profile AND in every runner task env that drives the browser harness, so a hand-typed command gets the same posture as the launcher: CLI_ANYTHING_BROWSER_BLOCK_PRIVATE=true ; CLI_ANYTHING_DOMSHELL_PIN_DIR=\$HOME/Applications/cli-anything-harnesses/domshell-pin ; PATH=\"<repo>/integrations/cli-anything-harnesses/browser/runtime/bin:\$PATH\""
 fi
 if should_run lofty-keyfile; then
   header lofty-keyfile "Lofty CRM — the key file the API path has always needed (F-S1-11)"

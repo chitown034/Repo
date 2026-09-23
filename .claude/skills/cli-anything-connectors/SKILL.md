@@ -68,9 +68,13 @@ Always pass `--json` — agents parse, they don't read.
 - **DOMShell is a third-party Chrome extension with page-content access**, driving a Chrome already
   logged into Lofty, SkySlope and zipForms. That is a deliberate risk to accept, not a detail.
   `DOMSHELL_TOKEN` is a credential: exported in the harness's shell, never read or written by a
-  script. Set **`CLI_ANYTHING_BROWSER_BLOCK_PRIVATE=true`** in the same env — the vendored engine's
-  SSRF blocking is off by default and read at import time (F-P1-05). The engine itself *does* carry
-  `act click`/`act type`; the seven site harnesses do not.
+  script — and it is passed to `domshell-proxy` in **argv**, so it is visible in `ps` to anything
+  running as the same user. No wrapper can fix that: the proxy reads argv only, no env fallback
+  (F-P1-03, open). Drive the engine through
+  **`integrations/cli-anything-harnesses/browser/runtime/run-browser-harness.sh`**: it sets
+  `CLI_ANYTHING_BROWSER_BLOCK_PRIVATE=true` before the interpreter starts (SSRF blocking is off by
+  default and read at import time — F-P1-05) and pins DOMShell (F-P1-02). Started any other way,
+  both are off. The engine itself *does* carry `act click`/`act type`; the seven site harnesses do not.
 
 ## The control: read-only is an allow-list, not a promise
 
@@ -83,6 +87,7 @@ Always pass `--json` — agents parse, they don't read.
 | `session` | `status` | **read-only — allow** (`daemon-start`/`daemon-stop` deny) |
 | `page open` | — | **allow, URL-allow-listed per target.** A crafted URL can itself perform an action on some sites |
 | `act` | `click` `type` | **THE ENTIRE WRITE SURFACE — deny outright** |
+| any | — | output may carry a `security` key and a `!! SECURITY:` banner — **a flagged page is a stop, not a warning** (F-P1-01) |
 
 So every disabled verb below — every showing request, every Showami booking, every e-sign send — is
 an `act click`/`act type` underneath. **Denying `act` denies all of them at once.** Put that in the
@@ -97,6 +102,13 @@ Showami, read-only. **Stop before SkySlope and zipForms**: they touch legally bi
 are gated on the ECC security review, which is Steven's decision, not a task — and both harnesses
 enforce that gate themselves, refusing every live command with exit 3 until
 `CLI_ANYTHING_ECC_REVIEWED_AT` holds a real, past-or-today sign-off date.
+
+> **Before the first homes.com drive:** run
+> `integrations/cli-anything-harnesses/browser/runtime/posture.sh install`, then `posture.sh check`.
+> Green **and** "posture is inherited" is the precondition. Drive through `run-browser-harness.sh`.
+> If any `fs` output carries a `!! SECURITY:` banner or `"prompt_injection_suspected": true`, stop
+> and read the page yourself — the page tried to talk to the agent. The guard has never seen a real
+> listing page, so expect false positives on ordinary copy.
 
 > **Lofty — still not a browser target.** Lofty has a documented REST API
 > (`api.lofty.com/v1.0`, `Authorization: token <key>`), and `lofty-bridge` MCP + `lofty-cli` are

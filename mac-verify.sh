@@ -119,7 +119,9 @@ sect "vendored skills (they ship with the repo — nothing to install)"
 # holding 22, so 13 skills were verified by nothing and any skill added later would join them
 # silently. skill_seen guards the other direction — an empty directory must not read as a pass.
 skill_seen=0
-for s in $(ls "$REPO_DIR/.claude/skills" 2>/dev/null | sort); do
+for skill_dir in "$REPO_DIR"/.claude/skills/*/; do
+  [ -d "$skill_dir" ] || continue          # no match leaves the glob literal; skip it (also SC2012: no ls parsing)
+  s=${skill_dir%/}; s=${s##*/}
   skill_seen=$((skill_seen + 1))
   f="$REPO_DIR/.claude/skills/$s/SKILL.md"
   if [ ! -f "$f" ]; then bad "skill $s" "SKILL.md missing"; continue; fi
@@ -204,6 +206,42 @@ if [ -f "$OMNI_STATE/probe-failures" ]; then
   [ "${pf:-0}" -gt 0 ] && info "omniroute probe" "$pf consecutive inconclusive probe(s) so far (escalates at 4)"
 fi
 
+# The task lease (P7): the role file is the entire per-machine configuration, so a missing or unreadable one
+# is a NEED, not an info — on a Mac whose lease check cannot complete it silently means "run nothing".
+RUNNER_CFG="$HOME/.config/claude-runner"
+if [ -r "$RUNNER_CFG/role" ]; then
+  crole=$(sed -e 's/#.*//' -e 's/[[:space:]]//g' "$RUNNER_CFG/role" 2>/dev/null | grep -v '^$' | head -1 | tr '[:upper:]' '[:lower:]')
+  cmode=$(filemode "$RUNNER_CFG/role")
+  case "$crole" in
+    primary|standby)
+      case "${cmode#?}" in
+        *[2367]*) need "claude-runner role" "$crole, but $RUNNER_CFG/role is group/world-writable (mode $cmode) — claude-auto ignores it and treats this Mac as standby" ;;
+        *) ok "claude-runner role" "$crole" ;;
+      esac ;;
+    '') need "claude-runner role" "$RUNNER_CFG/role is empty — claude-auto reads that as standby and every --task run defers" ;;
+    *)  need "claude-runner role" "$RUNNER_CFG/role says '$(printf '%s' "$crole" | tr -dc 'a-z0-9._-' | cut -c1-20)', not primary or standby — claude-auto reads that as standby" ;;
+  esac
+else
+  need "claude-runner role" "no $RUNNER_CFG/role — claude-auto treats this Mac as STANDBY, so every --task run defers (exit 75). One line fixes it: see REMOTE-ACCESS.md -> Primary / standby"
+fi
+if [ -r "$OMNI_STATE/lease.env" ]; then
+  lverd=$(sed -n 's/^verdict=//p' "$OMNI_STATE/lease.env" | tail -1 | tr -dc 'A-Za-z')
+  lhold=$(sed -n 's/^holder=//p'  "$OMNI_STATE/lease.env" | tail -1 | tr -dc 'A-Za-z0-9._-' | cut -c1-40)
+  lwhen=$(sed -n 's/^checked_at=//p' "$OMNI_STATE/lease.env" | tail -1 | tr -dc '0-9')
+  lage='unknown age'; [ -n "$lwhen" ] && lage="$(( ($(date +%s) - lwhen) / 60 ))m ago"
+  case "$lverd" in
+    HELD|ACQUIRED) ok   "claude-runner lease" "$lverd by ${lhold:-?}, checked $lage" ;;
+    FOREIGN|RACE)  info "claude-runner lease" "$lverd — held by ${lhold:-another Mac}, checked $lage. Correct for a standby" ;;
+    *)             need "claude-runner lease" "last check was inconclusive ($lage) — run 'claude-auto --lease-check' and read what it says about the tool name and the login" ;;
+  esac
+else info "claude-runner lease" "no state/lease.env yet — no --task run has gone through claude-auto"; fi
+# A task definition that carries --no-lease has opted out of the whole mechanism. That is never right.
+if have runnerctl; then
+  if runnerctl list 2>/dev/null | grep -q -- '--no-lease'; then
+    bad "claude-runner lease" "a task definition contains --no-lease — it bypasses the lease gate and can double-write. Remove it."
+  fi
+fi
+
 if [ -x "$SCRAPERS_PY" ]; then
   if "$SCRAPERS_PY" -c 'from scrapling.fetchers import Fetcher' >/dev/null 2>&1; then
     ok "scrapling" "$("$SCRAPERS_PY" -c 'import scrapling;print(scrapling.__version__)' 2>/dev/null) — Fetcher imports"
@@ -282,6 +320,20 @@ harness_check() { # harness_check <name> <act-is-expected: yes|no>
 }
 harness_check browser yes
 for _s in homes showingtime showami skyslope zipforms lofty zoho; do harness_check "$_s" no; done
+
+# Browser harness security posture (P8). Proves controls by RUNNING them — refusing a real private
+# address, resolving the pinned package with the registry unreachable, flagging a real payload on a
+# real read path — not by grepping for a setting. Non-zero if any control is not in force.
+CAH_POSTURE="$REPO_DIR/integrations/cli-anything-harnesses/browser/runtime/posture.sh"
+if [ -x "$CAH_POSTURE" ]; then
+  if CLI_ANYTHING_PY="$CAH_VENV/bin/python" "$CAH_POSTURE" check >/dev/null 2>&1; then
+    ok "cli-anything-browser posture" "SSRF blocking, pinned DOMShell, injection guard, 0700 history — all in force"
+  else
+    bad "cli-anything-browser posture" "posture.sh check failed — run it directly to see which control is off"
+  fi
+else
+  info "cli-anything-browser posture" "posture.sh not found — the browser harness is on upstream defaults"
+fi
 # PEP 420: the eight share one cli_anything/ namespace. An __init__.py directly under it hides the others.
 if [ -x "$CAH_VENV/bin/python" ]; then
   _sp=$("$CAH_VENV/bin/python" -c 'import sysconfig;print(sysconfig.get_paths()["purelib"])' 2>/dev/null)

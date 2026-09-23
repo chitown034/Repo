@@ -249,8 +249,20 @@ it needs the site on screen.
 **Where Steven's involvement actually begins:**
 1. `./MAC-SETUP.sh` — hub, plugin, the vendored browser harness and the seven packages, all
    automatic, `CLI_HUB_NO_ANALYTICS=1` set. **Not his.** (`--only cli-anything-harnesses` for just
-   the eight.) `DOMSHELL_TOKEN` is his — it is a credential the script never touches — and
-   `CLI_ANYTHING_BROWSER_BLOCK_PRIVATE=true` belongs in the same env (F-P1-05).
+   the eight.) `DOMSHELL_TOKEN` is his — it is a credential the script never touches, and it reaches
+   `domshell-proxy` in **argv**, visible in `ps` to anything running as the same user; the proxy has
+   no env fallback, so no wrapper can move it (F-P1-03, open).
+
+   **Env block for any task that drives the browser harness:**
+   ```
+   CLI_ANYTHING_BROWSER_BLOCK_PRIVATE=true
+   CLI_ANYTHING_DOMSHELL_PIN_DIR=$HOME/Applications/cli-anything-harnesses/domshell-pin
+   PATH=<repo>/integrations/cli-anything-harnesses/browser/runtime/bin:$PATH
+   ```
+   Command is `<repo>/integrations/cli-anything-harnesses/browser/runtime/run-browser-harness.sh …`,
+   **never `cli-anything-browser` directly.** The SSRF flag is read at import time, so a task that
+   execs the binary directly gets blocking OFF — along with an unpinned `npx` fetch and a
+   world-readable command history.
 2. Chrome plus the DOMShell extension, and signing in to the target by hand. **His, unavoidable**
    (the harnesses cannot sign in: signing in needs `act type`, which does not exist — F-H1-08).
 3. `--discover` once per recipe, then edit `~/.config/cli-anything/<site>-paths.json` until the
