@@ -169,3 +169,27 @@ deck's CI log and the loop log; this file starts here on purpose.
   modified-file notices did not arise **at the time of vendoring**. If any file is later patched,
   §4(b) applies and `VENDORED.md` must stop claiming the tree is unmodified.
 - **Owner.** Build Engineer. **Status.** Active. Upstream commit `34f5195`, fetched 2026-09-22.
+
+## 2026-09-23 — Full client names belong on the Command Deck lead board
+
+- **Decision.** The Command Deck's Zoho lead board shows **full first and last names**. Steven's
+  explicit call, made after being shown the alternatives (label form `J. Whitfield`, first name plus
+  last initial, or full names) and the tradeoff. He chose full names, and chose to **recover the 15
+  rows removed earlier the same day** rather than re-enter them, with Zoho filling in from here.
+- **What this overrules, and how far.** `wiki/clients/index.md` says *"Use a label, not a full legal
+  name"* and the HALT list guards client PII. That default stands everywhere else — the ISA Portal,
+  the vector index, the knowledge graph, any research call, any prompt that leaves the machine, any
+  report. It is overruled for **this one board**, on the reasoning that the artifact is private, the
+  clients are his, and the call is his to make. A future session must not "fix" this back.
+- **What it does NOT license.** A name and a stage is the whole of what was agreed. No address, loan
+  amount, rate, credit detail, account number or document identifier goes on this board. Aggregates
+  remain the rule for every other surface.
+- **What Steven accepted with it.** Names travel into every published artifact version and into the
+  weekly deck backups under `Documents/AI-Ecosystem-Backups/`. They cannot be removed from a version
+  already published — an agent can delete a whole artifact but not one version of it. If the link is
+  ever shared, the names go with it. The earlier record of the removal stays dated and intact.
+- **Why the board now states its own age.** The seed is a fixed 2026-09-14 paste and does not expire
+  on its own, so an unsynced board could read as today's pipeline. The card now says outright that
+  the rows are the page's seed, frozen at that date, replaced outright rather than merged when a
+  `zohoLeads` document first appears.
+- **Owner.** Steven. **Status.** Active, live in Command Deck v151.
