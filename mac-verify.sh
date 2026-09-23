@@ -270,8 +270,11 @@ if have cli-hub; then
     *) need "  cli-hub telemetry" "CLI_HUB_NO_ANALYTICS is NOT set here — its analytics are opt-OUT and report this machine's hostname (F-S1-05). Put it in your shell profile AND the runner task env" ;;
   esac
 else info "cli-hub" "not installed — MAC-SETUP.sh --only cli-anything"; fi
-if [ -x "$CA_BROWSER" ]; then ok "cli-anything-browser" "built"
-else info "cli-anything-browser" "not built at $CA_BROWSER (DOMShell harness — every web target runs on it)"; fi
+# Labelled "(clone)" on purpose: this is the ~/Applications/CLI-Anything build from the upstream clone,
+# NOT the repo-vendored harness of the same name checked in the next section. Both rows used to read
+# "cli-anything-browser", one info and one FAIL, and the pair reads as a contradiction.
+if [ -x "$CA_BROWSER" ]; then ok "cli-anything-browser (clone)" "built"
+else info "cli-anything-browser (clone)" "not built at $CA_BROWSER (upstream clone build; the repo-vendored one is checked below)"; fi
 if have claude; then
   if claude plugin list 2>/dev/null | grep -q 'cli-anything'; then ok "  cli-anything plugin" "installed"
   else info "  cli-anything plugin" "not installed — MAC-SETUP.sh --only cli-anything installs it non-interactively"; fi
@@ -325,14 +328,18 @@ for _s in homes showingtime showami skyslope zipforms lofty zoho; do harness_che
 # address, resolving the pinned package with the registry unreachable, flagging a real payload on a
 # real read path — not by grepping for a setting. Non-zero if any control is not in force.
 CAH_POSTURE="$REPO_DIR/integrations/cli-anything-harnesses/browser/runtime/posture.sh"
-if [ -x "$CAH_POSTURE" ]; then
-  if CLI_ANYTHING_PY="$CAH_VENV/bin/python" "$CAH_POSTURE" check >/dev/null 2>&1; then
-    ok "cli-anything-browser posture" "SSRF blocking, pinned DOMShell, injection guard, 0700 history — all in force"
-  else
-    bad "cli-anything-browser posture" "posture.sh check failed — run it directly to see which control is off"
-  fi
-else
+if [ ! -x "$CAH_POSTURE" ]; then
   info "cli-anything-browser posture" "posture.sh not found — the browser harness is on upstream defaults"
+elif [ ! -x "$CAH_VENV/bin/python" ]; then
+  # R3: posture.sh ships with the repo, so the old code ran `check` on a Mac where the harness had never
+  # been installed and printed "FAIL … which control is off". Nothing was off; nothing was there. The eight
+  # rows above already say the harness is missing, and a security FAIL that fires on a clean machine is the
+  # row Steven learns to skip. Only run the proof once there is something to prove it against.
+  info "cli-anything-browser posture" "harness venv not built yet — nothing to prove (MAC-SETUP.sh --only cli-anything-harnesses)"
+elif CLI_ANYTHING_PY="$CAH_VENV/bin/python" "$CAH_POSTURE" check >/dev/null 2>&1; then
+  ok "cli-anything-browser posture" "SSRF blocking, pinned DOMShell, injection guard, 0700 history — all in force"
+else
+  bad "cli-anything-browser posture" "posture.sh check failed — run it directly to see which control is off"
 fi
 # PEP 420: the eight share one cli_anything/ namespace. An __init__.py directly under it hides the others.
 if [ -x "$CAH_VENV/bin/python" ]; then
@@ -347,6 +354,59 @@ if [ -x "$CAH_VENV/bin/python" ]; then
     fi
   fi
 fi
+
+# --------------------------------------------------------------------------- advisory-only tools
+# F-P6-05 (closed 2026-09-23, R3). MAC-SETUP.sh never installs any of these: advisory()/plugin_advisory()
+# print the command and stop, because each is held on POLICY, VALUE or SPEND — never because a script
+# could not do it. Nothing here is required, so **absent is the expected answer and is reported as info**.
+# Nothing in this section can ever be bad/need: a verifier that cries wolf over a tool Steven deliberately
+# declined stops being read on the day something real breaks. Which tools, and why each is held:
+# docs/INSTALL-COVERAGE.md, the "Spec-only" and "Blocked-on-Steven" tables. Together with `strix (optional)`
+# in the FR5a section, this covers every step MAC-SETUP.sh reports but does not install.
+#
+# The probe differs per tool and each row says which was used — three are Claude Code PLUGINS (so `have`
+# would be the wrong question and would read "absent" forever), one is a CLI on PATH, one is the venv the
+# runbook names, one is a bare `git clone` with no destination in the command at all.
+sect "advisory-only tools (MAC-SETUP.sh prints the command; it never installs these)"
+CC_PLUGINS=''
+have claude && CC_PLUGINS=$(claude plugin list 2>/dev/null || true)
+plugin_optional() { # plugin_optional <step name> <grep -i pattern> <why it is held>
+  if ! have claude; then info "$1 (optional)" "cannot tell — claude CLI not on PATH, and this is a plugin"; return; fi
+  if printf '%s\n' "$CC_PLUGINS" | grep -qi -- "$2"; then ok "$1 (optional)" "plugin present in claude plugin list"
+  else info "$1 (optional)" "not installed — advisory only, held on $3"; fi
+}
+plugin_optional claude-code-setup 'claude-code-setup' 'policy (lands in the live user scope; its output is hooks/settings edits)'
+plugin_optional ponytail         'ponytail'          'policy (Node hooks fire on every prompt of every session)'
+plugin_optional prompts-chat     'prompts.chat'      'value (no business skill inside)'
+
+if have agent-reach; then
+  arv=$(ver agent-reach --version)
+  ok "agent-reach (optional)" "${arv:-installed (no --version output)}"
+else info "agent-reach (optional)" "not installed — advisory only; needs the dedicated-Chrome-profile decision first"; fi
+
+# The runbook's command is `uv venv --python 3.12 ~/laya-venv && uv pip install … laya`, so ~/laya-venv is
+# the location to look at. An import is the only honest proof: the venv can exist with nothing in it.
+LAYA_PY="$HOME/laya-venv/bin/python"
+if [ -x "$LAYA_PY" ]; then
+  lv=$("$LAYA_PY" -c 'import laya;print(getattr(laya,"__version__","present"))' 2>/dev/null)
+  if [ -n "$lv" ]; then ok "laya (optional)" "$lv in $HOME/laya-venv"
+  else info "laya (optional)" "$HOME/laya-venv exists but 'import laya' fails — advisory only, nothing depends on it"; fi
+else info "laya (optional)" "not installed — advisory only; FR5a's verdict is 'not now' (no $HOME/laya-venv)"; fi
+
+# MAC-INSTALL-tooling.md §5 gives `git clone https://github.com/abi/screenshot-to-code` with NO destination,
+# so there is no canonical path. These three are guesses and the info line says so rather than implying a
+# clone elsewhere does not exist.
+s2c=''
+for d in "$HOME/screenshot-to-code" "$HOME/Applications/screenshot-to-code" "$HOME/Projects/screenshot-to-code"; do
+  [ -d "$d/.git" ] && s2c="$d"
+done
+if [ -n "$s2c" ]; then ok "screenshot-to-code (optional)" "clone at $s2c"
+else info "screenshot-to-code (optional)" "no clone in $HOME, $HOME/Applications or $HOME/Projects — advisory only; the runbook names no fixed location, so a clone elsewhere reads as absent here"; fi
+
+# higgsfield has no binary at all — it is an HTTPS API plus a key file. Presence == the key file exists;
+# its NAMES are checked in the next section, which only fires when the file is there.
+if [ -f "$HOME/.config/higgsfield/.env" ]; then ok "higgsfield (optional)" "key file present — names checked below"
+else info "higgsfield (optional)" "no $HOME/.config/higgsfield/.env — advisory only; FR5b's verdict is 'no use today' (paid account)"; fi
 
 # --------------------------------------------------------------------------- credentials (names only)
 sect "key files — names only, never a value"
