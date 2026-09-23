@@ -2,6 +2,10 @@
 
 Applied after all branches merge, before the splice and republish.
 
+**Status re-checked 2026-09-23 03:10 UTC against the live store and `runnerStatus` (reads only).**
+Boxes ticked below were ticked on that evidence, and the evidence is named beside each one. The
+unticked ones were re-confirmed still open on the same pass — none of them is stale bookkeeping.
+
 ## From E3 (wealth)
 - [ ] Base lines ~14006–14007, `SOD_ITEMS` in panel-easop (E4b's region): the two real-estate CRM
       items — the start-of-day CRM step and the CRM phone step — must read **Lofty**. Verify E4b
@@ -22,13 +26,22 @@ Applied after all branches merge, before the splice and republish.
       Decide: add a row to the Toolkit panel, or leave it to the weekly brief.
 
 ## From E10 (second brain)
-- [ ] The Mac runner's allow-list blocks writes to `~/Shearrill-Vault`, so `ops-knowledge-graph` and
-      `steve-twin-sweep` cannot populate the brain even once they are scheduled. Needs Steven to widen
-      the task allow-list. Carry as a finding.
+- [ ] **Half closed, 2026-09-23.** `steve-twin-sweep` is no longer refused — `runnerStatus` reads
+      `ok`, last end 2026-09-22 13:10. `ops-knowledge-graph` has **still never run**, and
+      `knowledgeGraph` has not moved off its 2026-09-13 build (`feedFreshness` marks it stale at
+      ~216 h). So the allow-list question is now about one task, not two, and it still needs Steven
+      to widen it on the Mac — `docs/NEEDS-STEVEN.md` item 42.
 
 ## Mine
 - [ ] Fix the triple `</body></html>` at end of file (handled by the splice script).
-- [ ] Re-point the `dmaicProjects` live document's speed-to-lead note to Lofty.
-- [ ] Write the cycle entry into `ciLog`.
-- [ ] Seed `auditFindings`, `stressTestReport`, `scaleOpportunityLog`, `weeklyBrief` into the live store.
-- [ ] Check the cloud write probe result and record it as F-INT-08's test result.
+- [ ] **Still open.** Re-point the `dmaicProjects` live document's speed-to-lead note to Lofty.
+      Re-read 2026-09-23: `dmaicProjects` d3 still says *"pulled from FUB/Zoho"* — one mention of
+      the retired CRM, zero mentions of Lofty. This needs an artifact-DB write, which no read-only
+      pass may make.
+- [x] Write the cycle entry into `ciLog`. `ciLog` is at version 221, 26 rows.
+- [x] Seed `auditFindings`, `stressTestReport`, `scaleOpportunityLog`, `weeklyBrief` into the live
+      store. All four exist: `auditFindings` v3, `stressTestReport` v6, `scaleOpportunityLog` v1,
+      `weeklyBrief` v1 (`state` listing, 2026-09-23 03:10 UTC).
+- [x] Check the cloud write probe result and record it as F-INT-08's test result. `cloudWriteProbe`
+      exists at version 1, envelope `updatedAt 2026-09-22T09:05:56Z`, body
+      `result: "write succeeded unattended"`; written up in `docs/CLOUD-WRITE-ARCHITECTURE.md`.
