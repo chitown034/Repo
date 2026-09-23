@@ -1,0 +1,495 @@
+# SETUP-RUNBOOK — what only Steven can do
+
+**Written 2026-09-23.** The browsable version, with tick-boxes that sync across your devices, is the
+artifact **https://claude.ai/artifact/CGVZVfanFrRFb374HB22Le**. This file is the same runbook as text,
+so the commands are on the Mac after a `git pull` without needing a browser.
+
+Everything here is on this list for exactly one reason: it needs a **credential**, an **account
+change**, a **physical Mac**, or a **licensed decision**. Those are the four things a cloud session
+cannot do — by design, not by limitation.
+
+**Ordering.** A, B and C are independent of each other. D depends on A. E depends on D. F depends on
+E. G and H depend on nothing. **Do H1 today** (it is on a clock).
+
+---
+
+## Before you start — two things you should know
+
+**1. The Command Deck's own page source carries your financial detail.** `cdStateSeed` and
+`PROPERTIES_DEFAULT` hold **3 street addresses with loan balance, lender and rate; 20 membership
+account numbers; 17 balances; 5 liabilities with APRs**. All of it is yours, not a client's — which is
+why no rule stopped it — but it is in a published artifact, so anyone the link is ever shared with
+reads it. **Not changed.** It can move to the artifact's private database, where the page still
+renders it but the source does not carry it. Your call.
+
+**2. The ISA Portal's live store documents still hold client surnames with loan amounts.** The
+`pipeline` and `reClients` documents render on every load. The 2026-09-23 name decision covered the
+**Command Deck lead board only** — a name and a stage, nothing else — so the portal has no exemption
+and this sits outside it. Purge, or extend the decision in writing.
+
+**3. Do not run the OmniRoute step.** Its PII gate fails open, and two paths would strand the Mac on
+free providers with no alarm. Use `--skip omniroute`, keep the runner on plain `claude`, and do not
+paste the four provider key values until the widened canary passes with the security steward
+(`integrations/omniroute-failover/README.md`).
+
+---
+
+## A — Get the Mac to a known state
+
+### A1. Run the installer (~30 min)
+```bash
+cd ~/path/to/Repo
+
+./MAC-SETUP.sh --list                 # the step names, and what it refuses outright
+./MAC-SETUP.sh --dry-run              # prints every command, installs nothing — read it
+./MAC-SETUP.sh --only codeburn        # one cheap step: proves the script itself runs
+./MAC-SETUP.sh --skip omniroute       # the default set, minus the one step that is not safe yet
+./mac-verify.sh                       # the checker
+```
+**Check:** `mac-verify.sh` ends with no red rows, and `MAC-SETUP.sh` prints its own NEEDS-STEVEN list
+(Homebrew, plugin installs, LaunchAgents, key values, `~/.local/bin` on PATH). That printed list is
+the rest of this runbook.
+
+`--dry-run` writes no log of its own; the real run logs to
+`~/Library/Logs/vanessa-setup/<date>.log`.
+
+### A2. Telemetry off before the first `cli-hub` command, and PATH (2 min)
+CLI-Hub's analytics are **opt-out**. They fire on install, uninstall, launch and every call, and
+report this Mac's **hostname**.
+```bash
+echo 'export CLI_HUB_NO_ANALYTICS=1' >> ~/.zprofile
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zprofile
+exec zsh -l
+```
+Add the same `CLI_HUB_NO_ANALYTICS=1` to the cli-anything runner task's environment — a shell profile
+does not reach a launchd job.
+
+**Check:** `echo $CLI_HUB_NO_ANALYTICS` prints `1` in a brand-new Terminal window; `which cli-hub`
+resolves.
+
+### A3. Runner LaunchAgent + write allow-list (10 min)
+Without the LaunchAgent, scheduled tasks only fire while the desktop app is open — which is why
+several "enabled" tasks have never run. Separately, `steve-twin-sweep` and `ops-knowledge-graph` are
+being *refused* writes to `~/Shearrill-Vault`; they are not broken, they are denied.
+
+**Check:** a task with a slot in the next ten minutes leaves a **document** behind. A green status row
+is not proof.
+
+### A4. `taskLease` before Mac #2's runner is enabled (15 min) — do not skip
+Nothing currently stops two Macs running the same 59 tasks and double-writing `ciLog`, `isaLine` and
+every feed.
+- Create the `taskLease` document.
+- Add the **LEASE CHECK** block from `REMOTE-ACCESS.md` to the top of every task prompt.
+- Bring Mac #2 up as **STANDBY** (`docs/SECOND-MAC-SETUP.md` steps 11–12).
+- Reconcile the task count against the runner on Mac #1 — the register says **59**; an older deck row
+  said 60.
+
+**Check:** `claude-auto --lease-check` on Mac #2 reports STANDBY and declines to run.
+
+---
+
+## B — The two credentials that unblock the most
+
+### B1. Composio first (10 min) — before B2
+Composio disclosed an incident on 2026-05-21. Re-authorising Zoho onto un-rotated credentials would
+hand the new permission to the old grant.
+- **Rotate** the Composio credentials and re-authorise.
+- **Delete** the retired real-estate CRM connection (still ACTIVE with a rejected key) and revoke its
+  key.
+
+### B2. Zoho CRM — one checkbox (5 min) · account change, yours only
+Every Zoho call has returned **HTTP 403 `NO_PERMISSION` / `Crm_Implied_Api_Access`** for a week, so
+the mortgage board has been showing the 2026-09-14 paste the whole time. No credential fixes this.
+```
+Zoho CRM → Setup → Security Control → Profiles
+  → the connected user's profile
+  → Developer Permissions
+  → enable "Zoho CRM API Access"
+```
+Then re-authorise the Composio connection **once** so the new permission is picked up, and from the
+Mac:
+```bash
+cli-anything-zoho selftest --json
+```
+**Check:** `selftest` stops reporting `status:"blocked"` / `httpCode:403` and returns rows. Exit code
+**4** means the toggle did not take — the harness never retries into that 403, by design.
+
+The OAuth refresh grant is a POST and this harness is GET-only by construction, so it cannot mint its
+own token. `integrations/cli-anything-harnesses/zoho/tools/mint-access-token.sh` (outside the pip
+package) does that from `~/.config/zoho/.env` and prints the one-hour token to stdout — it never
+writes a file and never prints the secret.
+
+### B3. Lofty API key (5 min)
+No real-estate lead number exists anywhere until this key does. It gates `lofty-crm-sync`, the first
+live run of `cli-anything-lofty`, and the four prompts in B4.
+
+Get it from **Lofty → Settings → Integrations → API**. Open the file in an editor rather than echoing
+it — a key on a command line lands in shell history.
+```bash
+nano ~/.config/lofty/.env        # MAC-SETUP.sh already created it, chmod 600
+# add exactly one line:   LOFTY_API_KEY=<paste>
+
+chmod 600 ~/.config/lofty/.env
+cli-anything-lofty --json me     # read-only probe
+```
+Then run `lofty-crm-sync` once by hand. `lofty-bridge` stays the primary path — `cli-anything-lofty`
+is the same API and the same key file, not a second source of truth.
+
+### B4. Point four Mac task prompts at Lofty (15 min) — after B3
+The repo's mirrors already say Lofty. The **live** prompts on the Mac still name the retired CRM, and
+only Steven can read or edit them: `lead-triage-daily`, `r2-lead-response-watchdog`,
+`r11-isa-kpi-compile`, `showing-sync`. Replacement text:
+`docs/inventory/mac-task-descriptions.md`.
+
+---
+
+## C — Finish WhatsApp
+
+### C1. Decide the number first — security gate
+There is no separate session token in this design. The linked desktop app **is** full account access,
+and `ChatStorage.sqlite` is the entire message history in plaintext SQLite, readable by any process on
+that Mac with Full Disk Access.
+- Use a **dedicated number** — a second SIM/eSIM or a prepaid line. Never the client-facing WhatsApp.
+- If the personal account is already linked on that Mac, put the second WhatsApp in a **dedicated
+  macOS user profile** and let the task read that profile's container.
+- Blast radius if WhatsApp ever restricts the number for automated sending: the dedicated line, and
+  nothing else.
+
+### C2. Install `whatsapp-cli` — from the clone, never from PyPI (10 min)
+```bash
+brew install uv
+git clone https://github.com/marcelrgberger/whatsapp-cli ~/Applications/whatsapp-cli
+uv venv --python 3.12 ~/Applications/whatsapp-cli/.venv
+uv pip install --python ~/Applications/whatsapp-cli/.venv/bin/python \
+  ~/Applications/whatsapp-cli/agent-harness
+ln -sf ~/Applications/whatsapp-cli/.venv/bin/whatsapp-cli ~/.local/bin/whatsapp-cli
+```
+**Two traps, both real.**
+1. `pip install whatsapp-cli` installs **somebody else's package** — an unrelated project at 0.1.3.
+   The command above installs from the clone's `agent-harness` directory. Never "simplify" it.
+2. The code needs Python **3.12**. The README's "3.10+" is wrong — on 3.11 it dies with
+   `SyntaxError: f-string expression part cannot include a backslash` (`whatsapp_cli.py:1232`).
+
+**Do not** run `claude plugins install whatsapp-cli` in the business profile: the plugin adds a
+`/whatsapp` skill that lets *any* Claude Code session on that Mac read and send WhatsApp. The task
+needs only the CLI.
+
+### C3. macOS permissions and the link (10 min)
+- **Full Disk Access** — for the shell that runs it: Terminal *and* the runner's launchd context.
+  Reads work headless.
+- **Accessibility** — for `osascript` / System Events. Sends need a GUI session: Mac awake, logged in.
+- Link the dedicated number in **WhatsApp Desktop** and leave it logged in.
+
+### C4. Prove it end to end, screen unlocked (5 min)
+```bash
+whatsapp-cli --json session status
+whatsapp-cli --json chat list --limit 3
+whatsapp-cli --json chat find <your own number>      # the JID you need next
+whatsapp-cli message send "<that chat>" "test from Vanessa"
+```
+**Check:** the test message arrives on the phone. Keep the JID from `chat find` — it becomes
+`allowFrom` in `whatsappInboxState`.
+
+### C5. Create `vanessa-whatsapp-inbox` **disabled**, run once by hand (10 min)
+Spec: `integrations/mac-task-specs.md` §5. Polls every 10 minutes under claude-runner once enabled.
+- One allow-listed sender — **Steven**. Everything else logged as ignored.
+- **No group chats. No `monitor auto-reply`** — it shells out to `claude -p` on its own, outside the
+  handler and outside the HALT list.
+- **No `export`** into the vault, the brain, the vector index or the knowledge graph.
+
+**Check:** the deck's "Reach Vanessa" row can only stop saying *"spec written · Mac install pending ·
+not yet live"* once a real manual run exists.
+
+---
+
+## D — CLI-Anything, the browser targets
+
+The install is scripted. **The path maps are the work.** All 18 browser recipes ship
+`verified: false` and **no site has ever been reached** from the build sandbox, so nothing they return
+may drive a decision before a spot-check against the screen.
+
+### D1. Install the eight harnesses — browser first, one command (10 min)
+```bash
+export CLI_HUB_NO_ANALYTICS=1                        # already in ~/.zprofile from A2
+pip install cli-anything-hub                         # 0.4.1
+claude plugin marketplace add HKUDS/CLI-Anything
+claude plugin install cli-anything@cli-anything
+./MAC-SETUP.sh --only cli-anything-harnesses         # all eight, browser first, one uv command
+
+cli-hub list && cli-anything-homes --help            # self-test: both exit 0
+```
+**Why browser first, same command:** the five web packages pin `cli-anything-browser>=1.0.0` and
+import it at module level — and that package is **not on PyPI**; it is vendored in this repo. Resolve
+them separately and uv goes to PyPI for a package that is not there, and the venv then fails at
+`--help` rather than at call time.
+
+### D2. Chrome, DOMShell, and an accepted risk (15 min)
+DOMShell is a third-party Chrome extension with page-content access, driving a Chrome already logged
+into the CRM, the transaction file system and the forms library. A deliberate risk to accept in
+writing, not a detail.
+- Install the DOMShell Chrome extension.
+- **Sign in to every target by hand.** The harnesses cannot sign in; MFA/SSO is a HALT, not a puzzle —
+  and ShowingTime is MLS-SSO'd in CRMLS.
+- Export `DOMSHELL_TOKEN` in the harness shell. It is a credential the scripts never touch.
+
+**Open finding, unfixable by any wrapper:** `DOMSHELL_TOKEN` is passed to `domshell-proxy` in **argv**,
+so it is visible in `ps` to anything running as the same user. The proxy reads argv only — no env
+fallback (F-P1-03).
+
+### D3. Posture, and drive through the launcher — never bare (5 min)
+```bash
+integrations/cli-anything-harnesses/browser/runtime/posture.sh install
+integrations/cli-anything-harnesses/browser/runtime/posture.sh check
+```
+Green **and** "posture is inherited" is the precondition. Then run every recipe through
+`browser/runtime/run-browser-harness.sh`: it sets `CLI_ANYTHING_BROWSER_BLOCK_PRIVATE=true` *before
+the interpreter starts* (SSRF blocking is off by default and read at import time) and pins DOMShell.
+Started any other way, **both are off**.
+
+Read-only means the verb is **absent** from the built harness, not switched off in config. Check it
+with a **word** match — a substring match false-trips on `my-listing-activity`, `redact`, `contact`,
+`interactive` and `exact`:
+```bash
+cli-anything-homes --help | grep -qw act && echo "FAIL: write verb present" || echo "ok: read-only"
+```
+
+### D4. homes.com first — 3 recipes, public data, lowest blast radius (45 min)
+```bash
+cli-anything-homes paths init      # copies the packaged map to ~/.config/cli-anything/homes-paths.json
+
+# for EACH of: search-listings · saved-searches · listing-detail
+cli-anything-homes --json recipe search-listings --discover --text
+#   → find the container that holds the rows in the dumped tree
+#   → edit ~/.config/cli-anything/homes-paths.json:  root, rows.prefix, fields.<f>.prefix / regex
+cli-anything-homes --json recipe search-listings          # until the rows match the screen
+```
+Resolution order: `$CLI_ANYTHING_HOMES_PATHS` → `~/.config/cli-anything/homes-paths.json` → the
+packaged default.
+
+| Exit | Means | What to do |
+|---|---|---|
+| `3` | `path_map_error` — configured `root` missing | Run `--discover`. Do not guess values. |
+| `4` | `url_rejected` | The URL is not on the allow-list for that target. |
+| auth `unknown` | Signed in, but the page shows none of `auth.logged_in_markers` | `--discover --text`, find text only a signed-in page shows, add it to your copy. |
+
+**Stop, do not continue** if any `fs` output carries a `!! SECURITY:` banner or
+`"prompt_injection_suspected": true` — read the page yourself; the page tried to talk to the agent.
+The guard has never seen a real listing page, so expect false positives on ordinary copy.
+
+**The gate that makes it trustworthy:** its numbers must match the UI. Silent scrape drift is the
+failure that poisons decisions — a wrong number is worse than no number.
+
+### D5. ShowingTime — 4 recipes (45 min)
+`todays-showings` · `showing-status` · `feedback-inbox` · `my-listing-activity`. Same loop as D4.
+
+ShowingTime+ is Zillow-owned and SSO'd through the MLS in many markets, CRMLS included. If the sign-in
+wants MFA or a CAPTCHA, that is a **HALT** — stop, do not work around it.
+
+There is no individual-agent API here: ShowingTime's documented APIs are MLS- and broker-licensed
+*listing data* feeds, not appointments. Treat "no agent API" as the working assumption and the browser
+path as the design.
+
+### D6. Showami — 4 recipes (45 min)
+`my-requests` · `request-status` · `assistant-feedback` · `posted-price`.
+
+**One credential location, no exceptions.** All five web logins live in
+`~/.config/cli-anything/.env` — **Showami included**. The `~/.config/showing-sync/.env` path the
+deck's old row still shows is **superseded**; nothing creates or reads it.
+
+| Target | Keychain service | or `.env` variables |
+|---|---|---|
+| homes.com | `cli-anything.homes` | `HOMES_USER` / `HOMES_PASS` |
+| ShowingTime | `cli-anything.showingtime` | `SHOWINGTIME_USER` / `SHOWINGTIME_PASS` |
+| Showami | `cli-anything.showami` | `SHOWAMI_USER` / `SHOWAMI_PASS` |
+| SkySlope | `cli-anything.skyslope` | `SKYSLOPE_USER` / `SKYSLOPE_PASS` |
+| zipForms | `cli-anything.zipforms` | `ZIPFORMS_USER` / `ZIPFORMS_PASS` |
+
+If a harness ever asks for a password typed into a prompt, that harness is wrong. `SHOWAMI_API_KEY` is
+reserved and unused — add it only if the account is ever granted Showami API automation.
+
+---
+
+## E — The ECC gate: SkySlope and zipForms
+
+### E1. Hold the review, then record the real date (1 h) · licensed risk
+Both harnesses enforce this themselves — exit **3**, `connState: disabled-by-policy`, on every live
+command until `CLI_ANYTHING_ECC_REVIEWED_AT` holds a real, past-or-today date. The deck's connector
+card clamps them for the same reason.
+
+The review answers three questions per harness: **what it can reach**, **what it stores**, **what a
+prompt-injected page could make it do**.
+```bash
+export CLI_ANYTHING_ECC_REVIEWED_AT=YYYY-MM-DD   # in the runner's env — the real date
+```
+Record the same date as `eccReviewedAt` in `cliAnythingStatus`. **Do not set the date to make a
+command run.** Alexandra's terms-and-robots.txt check for homes.com, SkySlope and zipForms belongs in
+the same sitting.
+
+### E2. SkySlope — 4 recipes, after the date exists (45 min)
+`transactions` · `transaction-detail` · `document-index` · `checklist-status`.
+
+`document-index` **lists** documents. It does not download them. A download lands client PII on disk —
+allowed only into a path Steven names, and **never** into the vector index or the knowledge graph.
+
+### E3. zipForms / Lone Wolf — 3 recipes (30 min)
+`form-index` · `form-detail` · `packet-index`.
+
+### E4. What stays off, and why one deny covers all of it
+Every outward verb is an `act click` or `act type` underneath. **Denying `act` denies all of them at
+once.** Put that in the task's Bash allow-list as literal permitted argv prefixes; do not ask a
+wrapper to behave.
+
+| Verb, if it existed | How far the damage goes |
+|---|---|
+| ShowingTime `showing confirm` | **Commits a seller to letting people into their home at a time.** Worst single verb here for a listing client. |
+| ShowingTime `showing request` | Sends an appointment request to a listing agent and, through them, a seller. A stranger acts on it. |
+| ShowingTime `feedback submit` | Writes an opinion **attributed to Steven** into a record the listing agent and seller read. Can read as representation advice. |
+| Showami `showing post` | **Hires a licensed person and charges the card.** Money plus a third party at a stranger's door. Irreversible once accepted. |
+| SkySlope `esign send` | Signature request to a client or co-op agent. Licensed act, legally binding, unrecallable once opened. |
+| SkySlope `checklist item complete` | Falsely marks a compliance item done — the failure nobody notices until an audit. |
+| zipForms `packet send` | Delivers a contract packet to a client or the other side. |
+| zipForms `form fill` | Writes contract terms. A wrong price or date in a draft that is later sent is a real-money error. |
+| Lofty `text send` / `email send` | Outbound consumer messaging. TCPA/consent exposure, and it reaches a client. |
+
+Each needs **written approval for that one verb on that one target** — one verb at a time, never a
+blanket unlock.
+
+---
+
+## F — Tell the dashboard the truth
+
+### F1. Run the `cli-anything-status` task once by hand (10 min)
+The card currently says *"nothing has ever checked any of these on your Mac"* — which is true. Any
+document carrying a `checkedAt` claims this Mac was inspected at that time, and no cloud session can
+make that true. That is why this step is Steven's.
+
+Paste-ready task: `routines/mac-task-repairs.md` §9. Shape, field by field:
+`docs/data/cliAnythingStatus.doc.json`.
+
+A wrapper that has never run is `"planned"` / `"not-installed"`. Never `"enabled"` or
+`"read-only-live"` without a real `lastRun`; never either for SkySlope or zipForms without an
+`eccReviewedAt`. `readOnly:false` is an error, not a state.
+
+**List verb *groups*, never recipe names.** The card tests every `verbsEnabled` string against a
+write-verb pattern and turns the whole card red on one match — Showami's `my-requests`,
+`request-status` and `posted-price` all match it innocently (F-P2-15).
+
+---
+
+## G — Vanessa speaks when she writes
+
+`voiceReplyQueue` is written by the Command Deck page **and by nothing else**. So away from the Mac,
+she answers in text, silently. The renderer is healthy — `voice-reply-render` runs every 10 minutes,
+`lastStatus ok` — it has simply had nothing to render since 2026-09-12, because the only writer is a
+browser tab.
+
+### G1. Paste the two prompt amendments (10 min)
+Text: `integrations/vanessa-voice-everywhere.md`. Two tasks change:
+- **`vanessa-imessage-inbox`** — after it replies in text (unchanged, and always first), it appends
+  `{id, who, text, ts, channel, deliver, replyTo}` to `voiceReplyQueue`.
+- **`voice-reply-render`** — after it writes `voiceReplyStatus[id].status = "ready"`, if the item
+  carries `deliver` it sends the audio back on that channel.
+
+Nothing about the deck's playback changes. The queue gains three optional fields and a second
+consumer; an item without them behaves exactly as today.
+
+**Two measured facts that will break the first run:**
+1. **Strip the data URI first.** The store holds the audio as `"data:audio/mpeg;base64,…"`. Staged as
+   stored it is rejected; the same bytes are accepted as plain base64 and refused with the prefix.
+2. Stage with `purpose: "imessage"`, `content_type: "audio/mpeg"`, then send with the
+   `conversation_id` from `replyTo` and the returned `{handle, content_hash}`.
+
+**Check:** text Vanessa from the phone. One poll later (≤10 min) her actual voice comes back as a
+voice note on the same thread — and the text reply still arrives first.
+
+### G2. The limit on Discord and WhatsApp — read before relying on it
+Steven asked that Vanessa speak when she replies **across all communication platforms**. Measured,
+not assumed:
+
+| Channel | Text reply | Her voice | Why |
+|---|---|---|---|
+| **Dashboard** | yes | **yes, today** | The page plays her own rendered audio with the face moving. |
+| **iMessage** | yes | **yes, after G1** | Inkbox accepts MP3/WAV up to 10 MiB. Staging proven 2026-09-22 without sending anything. |
+| **Discord** | yes | **no native path** | The only Discord send tool available has no attachment parameter. |
+| **WhatsApp** | yes | **no native path** | `message send` opens `whatsapp://send?phone=…&text=…` — no parameter an MP3 can travel in. |
+
+On Discord and WhatsApp she replies in text. A link-based workaround — hosting the clip and sending a
+URL those two channels *can* carry — is being tested; if it lands it arrives as an amendment here.
+
+---
+
+## H — One click or one paste
+
+### H1. `strava-daily-sync` — **before 12:20 UTC / 05:20 PT today**
+The task writes `stravaSnapshot` without the `{v:…}` wrapper and will overwrite today's hand repair on
+its next run. The prompt lives only on the Mac. **Paste** `routines/mac-task-repairs.md` §1 over the
+task's prompt, then after the 12:20 run ask a Mac session the one-line check in §1.
+
+### H2. Disable the old "Pipeline Sync" cloud routine — one click (1 min)
+It reports SUCCEEDED four times a day and syncs nothing; its own prompt is research-only. Created
+through the web UI, so every agent attempt to disable it was refused — three times.
+**Click disable** at https://claude.ai/code/routines/trig_018BSAYiYzvtyaUkpAY4SnqE
+
+### H3. Strategy-cycle routine (3 min)
+`trig_011CXFHCT3hou6uaCfb5rWkC` succeeds every weekday and has no write step, so `strategySnapshot`
+has been frozen since 2026-09-16. Web-UI-created, so only Steven can edit it. **Paste**
+`routines/mac-task-repairs.md` §5 over its prompt. Leave `r4-quantvue-sync` disabled until one writer
+is chosen.
+
+### H4. Press **Run now** on the two weekly tasks that have never run (15 min)
+`revenue-scan-weekly` and `health-coaching-weekly` are registered, enabled, and show `lastEnd: null`.
+Their documents have never existed — the last Degraded row on the stress sweep. Both were already
+registered at the 2026-09-16 sync, so the 09-20 slots passed with nothing run: **waiting for 09-27
+will not fix it.**
+
+Open the desktop app's **Scheduled** section, press **Run now** on each, and **approve every tool as
+it asks** — approvals from a Claude session do not transfer, and a scheduled run cannot ask anyone.
+Then paste `routines/mac-task-repairs.md` §10 and §11 onto the two prompts.
+
+Run health coaching first even though Apple Health is down: with the ingest dead, the correct result
+is a brief that says so, and the card has a banner built for exactly that.
+
+### H5. Fix the runner's seven-hour clock lie (10 min)
+`runnerStatus` stamps write Pacific wall-clock time with a `Z` on the end. That made a live Mac look
+dead for an entire audit. **Paste** the diagnostic sequence in `routines/mac-task-repairs.md` §2. The
+fix is `date -u`.
+
+---
+
+## I — Decisions nobody else can make
+
+- **ISA seat — by Fri 2026-09-25.** Nine messages on the line, all Steven's, zero ISA-authored ever.
+  **Send** the outreach draft in `docs/ISA-SEAT-DECISION.md`, **pick** a course of action (the packet
+  recommends 1, today), **retime or switch off** `r3-eod-rollup` which posts the nudge as Steven.
+- **Apple Health — Branch A or B.** `r8-apple-health-snapshot` reports ok twice a day and writes
+  nothing (ingest daemon died 2026-09-13). Branch A (recommended): retire r8 and
+  `health-full-analysis`, use the phone. Branch B: restart the daemon.
+  `routines/mac-task-repairs.md` §3. Then the first phone run (open Claude on the iPhone, say "update
+  my health stats", grant the Apple Health read and Notion write once), then create and enable
+  `health-notion-sync` (`integrations/mac-task-specs.md` §3).
+- **Google Drive.** Never wired: no connector, no key, no row — while two Mac tasks claim to read a
+  Drive "Second Brain" folder and the fabric tile counts it at 0 files. That zero is a false green,
+  not an empty folder. Wire it read-only (`integrations/google-drive-brain.md`) or drop the line.
+- **Re-enable the cloud ISA bridge and the Steve twin.** Both were disabled on a belief disproved by
+  measurement on 2026-09-22. `trig_01VpcvVPTrbdfvdbXn1mD7hB` (bridge) and
+  `trig_0174717mnSfAk1LtQQVJhH7r` (twin). The twin's Gmail step needs a connector and agent-created
+  routines carry none, so that one wants recreating in the web UI.
+- **Retired-CRM residue.** 392 lines / 716 mentions across 33 dated audit records under `docs/`, plus
+  the saved-state keys in both dashboards, the skill folder on the Mac, the legacy calendar name
+  inside Google, and lead rows that may persist in deck backups and the artifact DB. *My read: purge
+  the live surfaces, leave the dated records alone — rewriting a dated audit record is its own kind of
+  lie.*
+- **Mentor naming** — the deck says Kevin, the installed skill says Cole. Pick one.
+- **Licence renewal dates** — only Steven can confirm them from the source documents. Writing them
+  from a second store would be a guess on a licensing surface, so nothing has been written.
+- **Cloud egress** — every freshness pass on 2026-09-22/23 ran blind (lender, agency, weather and news
+  domains blocked). Allow-list a handful of primary domains for cloud sessions, or keep those
+  refreshes on the Mac tasks.
+
+---
+
+Sources, each carrying its own date: `MAC-INSTALL-comms-data.md` ·
+`.claude/skills/cli-anything-connectors/SKILL.md` · `integrations/vanessa-voice-everywhere.md` ·
+`docs/NEEDS-STEVEN.md` · `integrations/CONNECTIONS.md` ·
+`integrations/cli-anything-harnesses/*/agent-harness/`. Nothing here is stamped with today's date
+unless it was checked today.
