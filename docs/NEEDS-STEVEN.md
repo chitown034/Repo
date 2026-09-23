@@ -95,3 +95,44 @@ integrator.
 - The ISA Portal sync false green: the live Pipeline Sync routine now writes and verifies both stores · F-E12-10, F-E12-11, F-E12-12 (the old routine still needs your click — item 7).
 - `stravaSnapshot`: repaired to `{v:…}` at version 9 · F-FR2-14 — it holds only until item 1 is done.
 - The client rows and the retired vendor's card are out of both dashboards' page source · F-L1-01, F-L2-01, F-FR3-11 (the repo's mirror copy of the portal is still the old file; the integrator replaces it — F-X2-02).
+
+## Vanessa's voice off the dashboard — added 2026-09-22 by P5 (append-only block)
+
+The iMessage half of `integrations/vanessa-voice-everywhere.md` was verified on 2026-09-22 without
+sending anything: Inkbox accepts the encoding Seed Audio actually produces, and a 27-second clip is
+**1 %** of the 10 MiB attachment cap. Nothing on the Mac was changed. These four lines are what is
+left, and each one is yours.
+
+45. **Paste the two prompt amendments** — `integrations/mac-task-specs.md` §6a into
+    `vanessa-imessage-inbox` and §6b into `voice-reply-render` on the Mac. This is the whole change;
+    everything below is a caveat on it. Before you paste §6b, read the one trap that is now proven:
+    the store holds the audio as a **data URI** (`data:audio/mpeg;base64,…`), and `inkbox_media_stage`
+    **rejects** that — verbatim `invalid_base64: … Remove the data URI prefix; supply only the
+    base64-encoded file bytes.` The renderer must pass only what is after the comma. Two more
+    measured facts for the same step: a staged handle **expires in about 45 minutes**, so stage and
+    send inside one run; and `content_hash` is an opaque token, not a checksum you can recompute —
+    the field to check against the file is `size_bytes` · F-P5-01, F-P5-02, F-P5-03.
+46. **Discord voice — decide, or leave it off.** There is **no media send path in this system**:
+    Inkbox exposes no Discord tool, Composio's only Discord send tool (`DISCORDBOT_CREATE_MESSAGE`)
+    has no file or attachment parameter at all, and its toolkit is not connected. Making it possible
+    means a Discord **bot token** with SEND_MESSAGES and ATTACH_FILES and a new `multipart/form-data`
+    upload path — a credential and a new outbound write, so it needs you. Recommended: leave
+    `deliver: "discord"` unimplemented; she already answers there in text · F-P5-04.
+47. **WhatsApp voice — recommended answer is no.** Beyond the channel not being live (item 40),
+    `whatsapp-cli` has **no attachment verb even once installed** — it sends by opening
+    `whatsapp://send?phone=…&text=…` and pressing Return, and that URL carries a phone number and a
+    text string and nothing else. Voice there would need GUI automation attaching a file in the
+    desktop app: a new outward verb on a client-capable app, fragile, and a HALT on two rules.
+    Recommended: keep WhatsApp text-only · F-P5-05.
+48. **Inkbox identity is named `jasmine`, not Vanessa** — the connected identity is the agent handle
+    `jasmine` at `jasmine@inkboxmail.com`, and the iMessage connect command is `connect @jasmine`.
+    Cosmetic for delivery, but it is the name a recipient sees, and nothing in the repo said so.
+    Related: **`phone.assigned` is false and `sms_available` is false**, so SMS is not a fallback if
+    an iMessage attachment ever fails — the fallback is the text reply, which already happens.
+    **Decide** whether the identity gets renamed; renaming it is an account change · F-P5-09.
+
+*Still unverified after this pass, and only a real run can close it:* whether `inkbox_imessage_send`
+accepts an audio handle **with no text**, whether the `conversation_id` the inbox replied on is the
+same identifier the send call wants, and whether the **full** 108 KB clip stages (the prefix did;
+the arithmetic says yes with 97x to spare). All three are answered by doing item 45 and texting her
+one question · F-P5-01, F-P5-10.
