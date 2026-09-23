@@ -1,23 +1,19 @@
 {
-  "at": "2026-09-22T09:16:20.804Z",
+  "at": "2026-09-23T00:10:33.586Z",
   "deck": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/deck/command-deck.html",
-  "store": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/db/state",
+  "store": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/all/state",
   "lsPrefix": "commandDeck.",
-  "docs": 161,
-  "docsRestored": 160,
-  "sizeBytes": 884081,
+  "docs": 173,
+  "docsRestored": 173,
+  "sizeBytes": 1248711,
   "parseFailures": [],
-  "missingV": [
-    "stravaSnapshot"
-  ],
+  "missingV": [],
   "outputWatchDocs": 28,
   "outputWatchDocsMissingFromExport": [
-    "loftyLeads",
-    "zohoSync",
     "revenueScan",
     "healthCoaching"
   ],
-  "containersRendered": 341,
+  "containersRendered": 344,
   "containersRenderedIds": [
     "accountRows",
     "advisorRows",
@@ -54,6 +50,7 @@
     "calUpcomingList",
     "checklistGroups",
     "ciLogRows",
+    "cliConnRows",
     "communityRankRows",
     "communityRankSource",
     "coreStructureRows",
@@ -65,6 +62,7 @@
     "dealsFeedRows",
     "defenseDisruptorRows",
     "defenseUpdatesList",
+    "devRosterRows",
     "dividendRows",
     "dmaicPhaseBar",
     "dmaicPhaseLegend",
@@ -120,8 +118,6 @@
     "foPhaseAccordion",
     "foReviewRows",
     "freshRows",
-    "fubNewLeadRows",
-    "fubStageStats",
     "funderDirectoryRows",
     "grantPipelineRows",
     "hacksAccordion",
@@ -158,6 +154,8 @@
     "isaPbBlocks",
     "isaPbDays",
     "isaPbToday",
+    "isaPbTracker",
+    "isaPbVip",
     "isaScRows",
     "jamesChatThread",
     "kaizenDoneCol",
@@ -220,6 +218,7 @@
     "orNote",
     "orchBriefBody",
     "orchCpiRows",
+    "orchFindFilter",
     "orchFindRows",
     "orchRoadmap",
     "orchScaleRows",
@@ -364,20 +363,20 @@
   "containersLostVsSeedOnly": [],
   "containersGainedVsSeedOnly": [
     "hfReqStatus",
-    "marketUpdateLiveList_murrieta-ca",
     "newsLocalList_san-diego-ca",
     "newsLocalList_temecula-ca",
+    "orchFindFilter",
     "sbL5Status",
     "sessionReadSrc"
   ],
   "exceptions": [],
   "safeRunFailures": [],
   "shapeMismatch": [],
-  "durationMs": 1377,
+  "durationMs": 1199,
   "verdict": "PASS WITH EXCEPTIONS",
   "notes": [
-    "1 document(s) carry no `v` wrapper (stravaSnapshot). applyRemoteSnapshot rejects any doc without `v` (`if (!data || typeof data !== \"object\" || !(\"v\" in data)) return;`), so these are UNRESTORABLE by the page's own sync path — restored count is 160 of 161.",
-    "4 OUTPUT_WATCH document(s) do not exist in the export at all: loftyLeads, zohoSync, revenueScan, healthCoaching — the owning task has never written them, so a restore cannot bring them back.",
-    "restore is verified by execution, not by file count: the deck was run against the restored store and 341 container ids received innerHTML with 0 exceptions and 0 safeRun failures."
+    "every document carries a `v` wrapper",
+    "2 OUTPUT_WATCH document(s) do not exist in the export at all: revenueScan, healthCoaching — the owning task has never written them, so a restore cannot bring them back.",
+    "restore is verified by execution, not by file count: the deck was run against the restored store and 344 container ids received innerHTML with 0 exceptions and 0 safeRun failures."
   ]
 }

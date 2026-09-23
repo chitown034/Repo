@@ -1,4702 +1,626 @@
 {
-  "generatedAt": "2026-09-22T09:46:19.463Z",
-  "engineer": "E7 — Stress Test Engineer",
-  "cycle": "Loop Cycle 6 · 2026-09-22",
-  "baselineLabel": "Baseline 2026-09-12 · verified 2026-09-22",
-  "deck": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/deck/command-deck.html",
-  "deckSha256": "bbd64191b5de095812e9a424578be697cd613fea7fb029120c499f7e22ca145d",
-  "deckLines": 27127,
-  "deckProvenance": "git master commit 5fbe844 (the published build 2026-09-15 02:19 PT), pinned to tests/baseline-5fbe844.html so every line number in this report stays valid while seven engineers edit their worktrees",
-  "harness": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/tests/runtime-harness.js",
-  "node": "v22.22.2",
-  "summary": {
-    "total": 62,
-    "pass": 55,
-    "degraded": 7,
-    "fail": 0
-  },
-  "rows": [
-    {
-      "capability": "Whole page — published seed, no synced docs",
-      "testType": "Functional",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "335 container ids received innerHTML; 979 ms; 0 exceptions"
+  "v": {
+    "syncedAt": "2026-09-23T00:10:34.837Z",
+    "ranAt": "2026-09-23T00:10:34.837Z",
+    "by": "X1 — Reliability Engineer (stress sweep re-run)",
+    "cycle": "Loop Cycle 6 · 2026-09-22",
+    "deck": "command-deck.html",
+    "deckSha256": "5a42bb1221381a64c19b884b341fdfacda1d319cf623c066ac799b22e348f0d2",
+    "deckProvenance": "git master @ 6b5806e plus uncommitted edits to command-deck.html in deck/",
+    "store": "all/state (173 documents)",
+    "harness": "tests/runtime-harness.js (pure-Node DOM shim, no jsdom)",
+    "summary": {
+      "total": 55,
+      "pass": 54,
+      "degraded": 1,
+      "fail": 0
     },
-    {
-      "capability": "Element wiring — $() targets that do not exist in the document",
-      "testType": "Regression",
-      "result": "Degraded",
-      "weakness": "6 ids are looked up but never exist: vanessaVoiceToggle, steveVoiceToggle, vanessaMicBtn, steveMicBtn, isaPbTracker, isaPbVip. Every call site is null-guarded so nothing throws — the features simply never wire up (voice toggles, both mic buttons, the ISA power-block tracker + VIP tiles).",
-      "engineer": "Capability Engineer",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Escalated",
-      "evidence": "voice toggles html:23626 · presenceAttachMic('vanessaMicBtn'…) html:23631 · presenceAttachMic('steveMicBtn'…) html:23632 · renderIsaPlaybook trackEl/vipEl html:25039"
-    },
-    {
-      "capability": "Travel panel — 'N showing' count on first paint",
-      "testType": "Regression",
-      "result": "Degraded",
-      "weakness": "renderTravelPage reads $('travelVisibleCount') one line BEFORE renderTravelFilters() creates that span, so the count is empty on the first paint and only fills on a later re-render.",
-      "engineer": "Reliability Engineer",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Open",
-      "evidence": "html:17776 reads the id, html:17778 calls renderTravelFilters() which emits it (html:17719)"
-    },
-    {
-      "capability": "Automation health board (routineHealth)",
-      "testType": "Volume",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "payload 1093 KB · page 2016 ms (+1037 ms vs baseline) · 335 containers · largest single innerHTML write 815 KB into #autoHealthBody"
-    },
-    {
-      "capability": "Task board (kanbanCards)",
-      "testType": "Volume",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "payload 237 KB · page 1337 ms (+358 ms vs baseline) · 335 containers · largest single innerHTML write 61 KB into #eliteTaxStrategyRows"
-    },
-    {
-      "capability": "ISA direct line (isaLine)",
-      "testType": "Volume",
-      "result": "Degraded",
-      "weakness": "slowest render renderNotifications (final pass) 638 ms · one innerHTML write of 5.11 MB into #isaLineThread — no display cap on this list",
-      "engineer": "Efficiency Engineer",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Monitoring",
-      "evidence": "payload 2539 KB · page 5426 ms (+4447 ms vs baseline) · 335 containers · largest single innerHTML write 5237 KB into #isaLineThread"
-    },
-    {
-      "capability": "Live research feeds (liveFeeds)",
-      "testType": "Volume",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "payload 1270 KB · page 1532 ms (+553 ms vs baseline) · 338 containers · largest single innerHTML write 61 KB into #eliteTaxStrategyRows"
-    },
-    {
-      "capability": "Whole page under all four volume payloads at once",
-      "testType": "Volume",
-      "result": "Degraded",
-      "weakness": "page time 7260 ms vs 979 ms baseline (7.4x); 5.02 MB of documents against the ~5 MB localStorage budget a browser gives one origin (1.00x — at the cap, so the next document written is the one that fails), and nothing on the page measures its own storage footprint",
-      "engineer": "Efficiency Engineer",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Monitoring",
-      "evidence": "slowest: renderNotifications (final pass) 834ms, renderExecBrief (final pass) 386ms, renderNotifications 139ms"
-    },
-    {
-      "capability": "Document `weatherSnapshot` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `liveFeeds` (malformed input)",
-      "testType": "Edge",
-      "result": "Degraded",
-      "weakness": "1 of 7 malformed shapes (wrong-typed fields) reach a renderer and throw: renderNews @html:22332; renderOrFeeds @html:22332. safeRun catches each one, so the page stays up but those panels render empty with no on-page reason.",
-      "engineer": "Reliability Engineer",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Open",
-      "evidence": "null:guarded []:guarded {}:ok \"string\":guarded wrong-typed fields:throw row is a number:guarded truncated JSON:guarded"
-    },
-    {
-      "capability": "Document `calendarSnapshot` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `stravaSnapshot` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `strategySnapshot` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `leadTriage` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:guarded"
-    },
-    {
-      "capability": "Document `loftyLeads` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "Not an edge failure — all 7 malformed shapes were handled. Separate observation: this document is not in the 161-document export at all, so the deck reads it but no task has ever written it.",
-      "engineer": "Integration Engineer",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Escalated",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `zohoSync` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "Not an edge failure — all 7 malformed shapes were handled. Separate observation: this document is not in the 161-document export at all, so the deck reads it but no task has ever written it.",
-      "engineer": "Integration Engineer",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Escalated",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `twinBrief` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:guarded"
-    },
-    {
-      "capability": "Document `twinLog` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `vanessaBrief` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `vanessaRuns` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `revenueScan` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "Not an edge failure — all 7 malformed shapes were handled. Separate observation: this document is not in the 161-document export at all, so the deck reads it but no task has ever written it.",
-      "engineer": "Integration Engineer",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Escalated",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `improvementProposals` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:guarded []:ok {}:guarded \"string\":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `loopLog` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `cpiCycles` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:guarded []:ok {}:guarded \"string\":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:guarded"
-    },
-    {
-      "capability": "Document `routineHealth` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `backupStatus` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `ratesSnapshot` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `isaScorecard` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:guarded []:ok {}:guarded \"string\":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `appleHealth` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `healthAnalysis` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `healthCoaching` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "Not an edge failure — all 7 malformed shapes were handled. Separate observation: this document is not in the 161-document export at all, so the deck reads it but no task has ever written it.",
-      "engineer": "Integration Engineer",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Escalated",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `toolkitSnapshot` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `knowledgeFabric` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `aiTeamRoster` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `runnerStatus` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `marketingQueue` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:guarded []:ok {}:guarded \"string\":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:guarded"
-    },
-    {
-      "capability": "Document `zohoLeads` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "Not an edge failure — all 7 malformed shapes were handled. Separate observation: this document is not in the 161-document export at all, so the deck reads it but no task has ever written it.",
-      "engineer": "Integration Engineer",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Escalated",
-      "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
-    },
-    {
-      "capability": "Document `twinQueue` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:guarded []:ok {}:guarded \"string\":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:guarded"
-    },
-    {
-      "capability": "Document `vanessaRecommendations` (malformed input)",
-      "testType": "Edge",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "null:guarded []:ok {}:guarded \"string\":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:guarded"
-    },
-    {
-      "capability": "Claude capability handshake (initSync / claudeUse)",
-      "testType": "FailureInjection",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "page ran to completion · 335 containers · 1 shape warnings · 1 console warnings"
-    },
-    {
-      "capability": "Claude capability handshake — rejected promise",
-      "testType": "FailureInjection",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "page ran to completion · 335 containers · 0 shape warnings · 0 console warnings"
-    },
-    {
-      "capability": "Local persistence — write path",
-      "testType": "FailureInjection",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "page ran to completion · 335 containers · 0 shape warnings · 439 console warnings"
-    },
-    {
-      "capability": "Local persistence — read path",
-      "testType": "FailureInjection",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "page ran to completion · 335 containers · 0 shape warnings · 0 console warnings"
-    },
-    {
-      "capability": "Local persistence — quota exhausted part-way through hydration",
-      "testType": "FailureInjection",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "page ran to completion · 335 containers · 0 shape warnings · 2 console warnings"
-    },
-    {
-      "capability": "Local persistence — 5 MB browser quota with the real store",
-      "testType": "FailureInjection",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "page ran to completion · 341 containers · 0 shape warnings · 0 console warnings"
-    },
-    {
-      "capability": "Published seed hydration (hydrateFromSeed)",
-      "testType": "FailureInjection",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "page ran to completion · 335 containers · 0 shape warnings · 0 console warnings"
-    },
-    {
-      "capability": "Cross-device merge — 200-change burst (applyRemoteSnapshot) [db-connected]",
-      "testType": "Concurrency",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "200 doc changes applied in 10 ms, no throw; 163 keys in localStorage afterwards"
-    },
-    {
-      "capability": "Merge idempotence — identical burst replayed [db-connected]",
-      "testType": "Concurrency",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "changed(first)=true changed(replay)=false · 0 of 163 stored keys differ after an identical replay · 160 distinct doc ids in a 200-change burst"
-    },
-    {
-      "capability": "ISA line conflict merge (isaLineMergeArrays) [db-connected]",
-      "testType": "Concurrency",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "Reliability Engineer",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "isaLineMergeArrays take() at html:24534; doc held 8 messages, burst added 80 with an id and 2 without; 90 stored afterwards vs 90 if nothing were lost; ISA_LINE_MAX=300 cap at html:24524"
-    },
-    {
-      "capability": "Cross-device merge — 200-change burst (applyRemoteSnapshot) [local-only]",
-      "testType": "Concurrency",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "200 doc changes applied in 8 ms, no throw; 163 keys in localStorage afterwards"
-    },
-    {
-      "capability": "Merge idempotence — identical burst replayed [local-only]",
-      "testType": "Concurrency",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "changed(first)=true changed(replay)=false · 0 of 163 stored keys differ after an identical replay · 160 distinct doc ids in a 200-change burst"
-    },
-    {
-      "capability": "ISA line conflict merge (isaLineMergeArrays) [local-only]",
-      "testType": "Concurrency",
-      "result": "Degraded",
-      "weakness": "40 ID'd message(s) never reached the document (49 stored vs 90 expected) — NOT the merge's doing: the isaLine branch calls syncKeyToDb, which with no db capability queues a pendingDbWrites entry, and the very next guard (`!dbReady && pendingDbWrites[key]`, html:6881) then discards every later isaLine change in the session · 1 of 2 message(s) WITHOUT an `id` were discarded by the merge — on a two-way channel with a person that is lost correspondence, not a rounding error",
-      "engineer": "Reliability Engineer",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Open",
-      "evidence": "isaLineMergeArrays take() at html:24534; doc held 8 messages, burst added 80 with an id and 2 without; 49 stored afterwards vs 90 if nothing were lost; ISA_LINE_MAX=300 cap at html:24524"
-    },
-    {
-      "capability": "Restore all 161 exported documents and run the page",
-      "testType": "BackupRecovery",
-      "result": "Degraded",
-      "weakness": "4 watched documents were never written by their task and therefore cannot be restored: loftyLeads, zohoSync, revenueScan, healthCoaching",
-      "engineer": "Integration Engineer",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Escalated",
-      "evidence": "161/161 restored · 863 KB · 341 containers rendered · 0 exceptions"
-    },
-    {
-      "capability": "OUTPUT_WATCH freshness board after a full restore",
-      "testType": "BackupRecovery",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "all 28 OUTPUT_WATCH docs are read by outputWatchRows(); autoHealthBody rendered=true"
-    },
-    {
-      "capability": "Backup bundle backup/2026-09-22 (sha256 manifest)",
-      "testType": "BackupRecovery",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "161 docs + the deck, 4.87 MB, every file re-hashed after write and matched"
-    },
-    {
-      "capability": "Runtime gate — wt-e1-daily/command-deck.html",
-      "testType": "Regression",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "sha256 f85a73c2bffe · 318 containers · 1136 ms · point-in-time snapshot taken during the cycle, files were still being edited"
-    },
-    {
-      "capability": "Runtime gate — wt-e2-markets/command-deck.html",
-      "testType": "Regression",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "sha256 8f3afaa288a1 · 320 containers · 1039 ms · point-in-time snapshot taken during the cycle, files were still being edited"
-    },
-    {
-      "capability": "Runtime gate — wt-e3-wealth/command-deck.html",
-      "testType": "Regression",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "sha256 4cf3891cadf0 · 318 containers · 1085 ms · point-in-time snapshot taken during the cycle, files were still being edited"
-    },
-    {
-      "capability": "Runtime gate — wt-e4a-crm/command-deck.html",
-      "testType": "Regression",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "sha256 2bd714512600 · 322 containers · 1053 ms · point-in-time snapshot taken during the cycle, files were still being edited"
-    },
-    {
-      "capability": "Runtime gate — wt-e4b-realestate/command-deck.html",
-      "testType": "Regression",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "sha256 2d4b60a0b40e · 319 containers · 1020 ms · point-in-time snapshot taken during the cycle, files were still being edited"
-    },
-    {
-      "capability": "Runtime gate — wt-e5-life/command-deck.html",
-      "testType": "Regression",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "sha256 c91460ff4de0 · 319 containers · 1008 ms · point-in-time snapshot taken during the cycle, files were still being edited"
-    },
-    {
-      "capability": "Runtime gate — wt-e6-aiteam/command-deck.html",
-      "testType": "Regression",
-      "result": "Pass",
-      "weakness": "",
-      "engineer": "",
-      "fixApplied": "",
-      "retest": "Pending",
-      "status": "Resolved",
-      "evidence": "sha256 cabb1bafe36a · 318 containers · 958 ms · point-in-time snapshot taken during the cycle, files were still being edited"
-    }
-  ],
-  "detail": {
-    "deckSha256": "bbd64191b5de095812e9a424578be697cd613fea7fb029120c499f7e22ca145d",
-    "deckLines": 27127,
-    "baseline": {
-      "ok": true,
-      "durationMs": 979,
-      "containers": 335,
-      "scriptStartLine": 6937,
-      "scriptLines": 20190,
-      "largestInnerHtmlWrites": [
-        {
-          "id": "eliteTaxStrategyRows",
-          "writes": 1,
-          "lastBytes": 62222,
-          "totalBytes": 62222
-        },
-        {
-          "id": "coreStructureRows",
-          "writes": 1,
-          "lastBytes": 55609,
-          "totalBytes": 55609
-        },
-        {
-          "id": "orgChartTree",
-          "writes": 1,
-          "lastBytes": 53117,
-          "totalBytes": 53117
-        },
-        {
-          "id": "aiTeamRosterRows",
-          "writes": 1,
-          "lastBytes": 52405,
-          "totalBytes": 52405
-        },
-        {
-          "id": "hfReportsBody",
-          "writes": 1,
-          "lastBytes": 29361,
-          "totalBytes": 29361
-        },
-        {
-          "id": "aiOrgTree",
-          "writes": 1,
-          "lastBytes": 28133,
-          "totalBytes": 28133
-        },
-        {
-          "id": "institutionRows",
-          "writes": 1,
-          "lastBytes": 26493,
-          "totalBytes": 26493
-        },
-        {
-          "id": "notifList",
-          "writes": 3,
-          "lastBytes": 23111,
-          "totalBytes": 69333
-        },
-        {
-          "id": "riskRegisterRows",
-          "writes": 1,
-          "lastBytes": 20918,
-          "totalBytes": 20918
-        },
-        {
-          "id": "freshRows",
-          "writes": 1,
-          "lastBytes": 18674,
-          "totalBytes": 18674
-        },
-        {
-          "id": "oppRadarList",
-          "writes": 1,
-          "lastBytes": 17851,
-          "totalBytes": 17851
-        },
-        {
-          "id": "namedDealsRows",
-          "writes": 1,
-          "lastBytes": 16837,
-          "totalBytes": 16837
-        }
-      ],
-      "totalInnerHtmlBytes": 1258311,
-      "containersRendered": [
-        "accountRows",
-        "advisorRows",
-        "affluentEmpireRows",
-        "ahGrid",
-        "aiModelRows",
-        "aiNewsList",
-        "aiOrgFlows",
-        "aiOrgTools",
-        "aiOrgTree",
-        "aiTeamRosterRows",
-        "aiToolingList",
-        "aiTrainingRows",
-        "allocBar",
-        "allocLegend",
-        "annualTodoAccordion",
-        "apexChatThread",
-        "apptRows",
-        "assetAllocBar",
-        "assetAllocLegend",
-        "assetItemRows",
-        "augustaRows",
-        "autoHealthBody",
-        "backupStatusBody",
-        "bearsDetail",
-        "bearsLiveNews",
-        "bearsStandingsRows",
-        "biohackRows",
-        "brandLicensingRows",
-        "builderIncentiveLiveList",
-        "builderIncentiveRows",
-        "caTaxLeverRows",
-        "caioList",
-        "calUpcomingList",
-        "checklistGroups",
-        "ciLogRows",
-        "communityRankRows",
-        "communityRankSource",
-        "coreStructureRows",
-        "councilHistory",
-        "councilOutside",
-        "cpiRows",
-        "cpiStatRow",
-        "deadlineRows",
-        "dealsFeedRows",
-        "defenseDisruptorRows",
-        "defenseUpdatesList",
-        "dividendRows",
-        "dmaicPhaseBar",
-        "dmaicPhaseLegend",
-        "dmaicRows",
-        "downtimeRows",
-        "dreamFeatureList",
-        "dreamPropertyRows",
-        "econodayLiveList",
-        "econodayRows",
-        "educationRows",
-        "elitCarRentalList",
-        "elitCardOffersRows",
-        "elitCreditBurnRows",
-        "elitExpiringList",
-        "elitHotelCasinoList",
-        "elitLocalDealsList",
-        "elitMilVetList",
-        "elitRiskAlertsList",
-        "elitScanLiveList",
-        "elitShoppingStackRows",
-        "elitStatusMatchRows",
-        "elitSubTrackerRows",
-        "elitTopActionsRows",
-        "elitTransferBonusList",
-        "eliteAffluentLiveList",
-        "eliteTaxStrategyRows",
-        "entityRows",
-        "eodList",
-        "estateRows",
-        "execExceptionList",
-        "execStatRow",
-        "feasibilityRows",
-        "fedBrowserRows",
-        "fedFootprintRows",
-        "fedGrade",
-        "fedLadderRows",
-        "fedLocality",
-        "fedStep",
-        "fedYears",
-        "feoStrategyRows",
-        "fersCompare",
-        "fersGrade",
-        "fersGsRows",
-        "fersLocality",
-        "fersRetGrade",
-        "fersRetLocality",
-        "fersRetStep",
-        "fersStep",
-        "fersTableLocality",
-        "fersVaRating",
-        "fersVaRows",
-        "foActionList",
-        "foPhaseAccordion",
-        "foReviewRows",
-        "freshRows",
-        "fubNewLeadRows",
-        "fubStageStats",
-        "funderDirectoryRows",
-        "grantPipelineRows",
-        "hacksAccordion",
-        "hcBody",
-        "healthMetricRows",
-        "hfMemoBody",
-        "hfMemoTags",
-        "hfReportsBody",
-        "hfSourcesBody",
-        "hfVerificationBody",
-        "hlChartWrap",
-        "hlCompare",
-        "hlDaily",
-        "hlFlags",
-        "hlMetric",
-        "hlRecords",
-        "hlStats",
-        "hlWorkouts",
-        "hvmAccordion",
-        "hvmRoadmapAccordion",
-        "improveRows",
-        "inboxRows",
-        "incentBody",
-        "incentFilters",
-        "incomeMixBar",
-        "incomeMixLegend",
-        "incomeStreamGroups",
-        "institutionRows",
-        "isaGradingRows",
-        "isaKpiDocBlock",
-        "isaKpiSopRows",
-        "isaLineThread",
-        "isaPbBlocks",
-        "isaPbDays",
-        "isaPbToday",
-        "isaScRows",
-        "jamesChatThread",
-        "kaizenDoneCol",
-        "kaizenIdeaCol",
-        "kaizenProgressCol",
-        "kanbanBoard",
-        "kanbanOwnerFilter",
-        "kanbanWeek",
-        "kevinChatThread",
-        "kpiRows",
-        "lbList",
-        "lenderDirectoryRows",
-        "liabRiskBar",
-        "liabRiskLegend",
-        "liabilityRows",
-        "licenseRows",
-        "licenseTrackerRows",
-        "loanProgramGroups",
-        "loanUnitedNicheList",
-        "loftyNewLeadRows",
-        "loftyStageStats",
-        "ltBody",
-        "ltStats",
-        "lumenRows",
-        "marketUpdateCards",
-        "marketUpdateLiveList_san-diego-ca",
-        "marketUpdateLiveList_temecula-ca",
-        "marketingRows",
-        "melloRoosRows",
-        "melloRoosSource",
-        "membershipAssocRows",
-        "membershipRows",
-        "milFamOfficeSteps",
-        "militaryDiscountRows",
-        "mktHonestyNote",
-        "mktMoversList",
-        "mktSectorList",
-        "mktTileRow",
-        "mortgageRateRows",
-        "myCardRows",
-        "namedDealsRows",
-        "namedTaxCaseRows",
-        "newsGlobalList",
-        "newsLocalCards",
-        "nextMovesDecisions",
-        "ningStateRows",
-        "notifList",
-        "nqGuideList",
-        "nutritionRows",
-        "onThisDayBirthdayList",
-        "onThisDayHistoryList",
-        "onboardGroups",
-        "openDecisionsList",
-        "oppRadarList",
-        "oppRadarLiveList",
-        "orMeter",
-        "orNote",
-        "orchBriefBody",
-        "orchCpiRows",
-        "orchFindRows",
-        "orchRoadmap",
-        "orchScaleRows",
-        "orchStressRows",
-        "orchTemplateBtns",
-        "orchTiles",
-        "orchTrustRows",
-        "orgChartTree",
-        "otBadges",
-        "otCmdList",
-        "otTape",
-        "pageCrumb",
-        "pageTabs",
-        "partnerRows",
-        "peMovesRows",
-        "pedefenseLiveList",
-        "peptideRows",
-        "pipelineRows",
-        "plaidBridgeStatus",
-        "planDecisions",
-        "prenupCaseRows",
-        "priorityActionsList",
-        "priorityList",
-        "programFactsRows",
-        "programStatusStrip",
-        "propertyRows",
-        "pstTaxContext",
-        "pstTaxQuickEstimate",
-        "ptoBridgeRows",
-        "ptoSummaryRows",
-        "ptoYearSelect",
-        "qetPaymentRows",
-        "quickTaskList",
-        "qvStrategyAccordion",
-        "reClientRows",
-        "recommendationsLog",
-        "recruitRows",
-        "recruitSummary",
-        "refLinkRows",
-        "refiRows",
-        "reminderList",
-        "reviewRows",
-        "riskMonitorNote",
-        "riskRegisterRows",
-        "rosterRows",
-        "runnerRows",
-        "scheduleRows",
-        "secLabel",
-        "selfCheckResults",
-        "selfCheckStats",
-        "sellerCreditRows",
-        "shClients",
-        "shIntegrationRows",
-        "shShowings",
-        "shSyncRows",
-        "sixLeversSliders",
-        "sodList",
-        "sportsFranchiseRows",
-        "srStops",
-        "stackRows",
-        "steveChatThread",
-        "steveVoiceBar",
-        "steveVoiceDiag",
-        "stlBody",
-        "stlRows",
-        "strategyFlagsNote",
-        "strategyRows",
-        "strategyTipsList",
-        "stravaActivityRows",
-        "stravaSyncNote",
-        "subsRows",
-        "subsTotals",
-        "sundayReviewList",
-        "supplementRows",
-        "swotGrid",
-        "taxBracketRows",
-        "taxCalendarRows",
-        "taxCategoryGroups",
-        "taxProjectorRows",
-        "tcRows",
-        "teamMatrixRows",
-        "techStackRows",
-        "tenAheadList",
-        "tkFabric",
-        "tkList",
-        "tkMcpList",
-        "tkTaskList",
-        "tkTiles",
-        "tkToolRows",
-        "tocList",
-        "todoGroups",
-        "topDividendRows",
-        "topEtfsRows",
-        "topFundsRows",
-        "topHeadlinesList",
-        "topPerformersLiveList",
-        "topStocksRows",
-        "trackedCalendarRows",
-        "tradingLoginRows",
-        "travelFilterCats",
-        "travelFilterOpts",
-        "travelLaRows",
-        "travelMenifeeRows",
-        "travelMurrietaRows",
-        "travelOcRows",
-        "travelPechangaRows",
-        "travelRiversideRows",
-        "travelSanDiegoRows",
-        "travelTemeculaRows",
-        "travelVegasRows",
-        "twinBriefBox",
-        "twinQueueRows",
-        "uwpGroups",
-        "vanessaChatThread",
-        "vanessaRecRows",
-        "vanessaResearchList",
-        "vanessaVoiceBar",
-        "vanessaVoiceDiag",
-        "vistaPeerRows",
-        "weatherCards",
-        "webinarRows",
-        "webinarTotals",
-        "wellnessMetricGroups",
-        "wheelSliders",
-        "workoutRows",
-        "worldClockBar",
-        "wxcity-ChicagoIL",
-        "wxcity-LasVegasNV",
-        "wxcity-LosAngelesCA",
-        "wxcity-NewBraunfelsTX",
-        "wxcity-SanDiegoCA",
-        "wxcity-TemeculaCA",
-        "wxcity-WashingtonDC",
-        "zhBoard",
-        "zhDealsRows",
-        "zhDealsStats",
-        "zhFilterGroups",
-        "zhNewStage"
-      ],
-      "safeRunFailures": [],
-      "exceptions": [],
-      "missingIds": [
-        {
-          "id": "travelVisibleCount",
-          "lookups": 1
-        },
-        {
-          "id": "vanessaVoiceToggle",
-          "lookups": 1
-        },
-        {
-          "id": "steveVoiceToggle",
-          "lookups": 1
-        },
-        {
-          "id": "vanessaMicBtn",
-          "lookups": 1
-        },
-        {
-          "id": "steveMicBtn",
-          "lookups": 1
-        },
-        {
-          "id": "isaPbTracker",
-          "lookups": 1
-        },
-        {
-          "id": "isaPbVip",
-          "lookups": 1
-        }
-      ],
-      "slowestRenders": [
-        {
-          "name": "renderPanelStamps",
-          "ms": 42
-        },
-        {
-          "name": "renderKanban",
-          "ms": 23
-        },
-        {
-          "name": "renderWeather",
-          "ms": 19
-        },
-        {
-          "name": "renderTechStack",
-          "ms": 16
-        },
-        {
-          "name": "renderDreamProperties",
-          "ms": 16
-        },
-        {
-          "name": "renderDreamFeatures",
-          "ms": 15
-        },
-        {
-          "name": "renderKaizen",
-          "ms": 14
-        },
-        {
-          "name": "renderExecBrief",
-          "ms": 10
-        },
-        {
-          "name": "numberSections",
-          "ms": 9
-        },
-        {
-          "name": "renderAccounts",
-          "ms": 9
-        },
-        {
-          "name": "renderNotifications (final pass)",
-          "ms": 9
-        },
-        {
-          "name": "renderTodoList",
-          "ms": 8
-        },
-        {
-          "name": "renderEliteAffluentPage",
-          "ms": 8
-        },
-        {
-          "name": "renderNotifications",
-          "ms": 8
-        },
-        {
-          "name": "renderExecBrief (final pass)",
-          "ms": 8
-        }
-      ],
-      "stats": {
-        "getElementByIdHits": 1426,
-        "innerHtmlWriteSites": 1236,
-        "timersScheduled": 94,
-        "timersRun": 84,
-        "reloadsRequested": 0,
-        "consoleWarnings": 0,
-        "consoleErrors": 0,
-        "saveFailureWarnings": 0,
-        "clipboardWrites": 0,
-        "localStorageKeys": 110,
-        "claudeCapabilitiesRequested": []
-      },
-      "shapeMismatch": []
-    },
-    "volume": [
+    "note": "Re-run after eleven merges. Four rows in the previous sweep were red by construction rather than by measurement and now measure the thing they claim: the element-wiring row (fixed six-id sentence, stale line numbers, travelVisibleCount hidden by a filter), the travel-count row (result: \"Degraded\" with no measurement), the [local-only] concurrency mode (called applyRemoteSnapshot in a state the page cannot reach; replaced by the reachable connecting-race, which found a real loss) and the Drift section (re-ran long-merged worktrees and reported master's fixes as their regressions). The store is the 14:37 export (173 docs), not the 08:09 one.",
+    "rows": [
       {
-        "case": "routineHealth · 5,000 routine rows",
-        "key": "routineHealth",
-        "payloadBytes": 1119703,
-        "durationMs": 2016,
-        "deltaVsBaselineMs": 1037,
-        "verdict": "Pass",
-        "slowestRenders": [
-          {
-            "name": "renderPanelStamps",
-            "ms": 79
-          },
-          {
-            "name": "renderNotifications (final pass)",
-            "ms": 37
-          },
-          {
-            "name": "renderNotifications",
-            "ms": 35
-          },
-          {
-            "name": "renderDreamFeatures",
-            "ms": 32
-          },
-          {
-            "name": "renderDreamProperties",
-            "ms": 29
-          }
-        ],
-        "safeRunFailures": [],
-        "exceptions": [],
-        "containers": 335,
-        "shapeMismatch": [],
-        "largestInnerHtmlWrites": [
-          {
-            "id": "autoHealthBody",
-            "writes": 1,
-            "lastBytes": 834468,
-            "totalBytes": 834468
-          },
-          {
-            "id": "eliteTaxStrategyRows",
-            "writes": 1,
-            "lastBytes": 62222,
-            "totalBytes": 62222
-          },
-          {
-            "id": "coreStructureRows",
-            "writes": 1,
-            "lastBytes": 55609,
-            "totalBytes": 55609
-          },
-          {
-            "id": "orgChartTree",
-            "writes": 1,
-            "lastBytes": 53117,
-            "totalBytes": 53117
-          },
-          {
-            "id": "aiTeamRosterRows",
-            "writes": 1,
-            "lastBytes": 52405,
-            "totalBytes": 52405
-          },
-          {
-            "id": "hfReportsBody",
-            "writes": 1,
-            "lastBytes": 29361,
-            "totalBytes": 29361
-          }
-        ],
-        "totalInnerHtmlBytes": 2087183
+        "capability": "Whole page — published seed, no synced docs",
+        "testType": "Functional",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "338 container ids received innerHTML; 944 ms; 0 exceptions"
       },
       {
-        "case": "kanbanCards · 2,000 cards",
-        "key": "kanbanCards",
-        "payloadBytes": 242450,
-        "durationMs": 1337,
-        "deltaVsBaselineMs": 358,
-        "verdict": "Pass",
-        "slowestRenders": [
-          {
-            "name": "renderKanban",
-            "ms": 119
-          },
-          {
-            "name": "renderPanelStamps",
-            "ms": 61
-          },
-          {
-            "name": "renderKaizen",
-            "ms": 22
-          },
-          {
-            "name": "renderTechStack",
-            "ms": 22
-          },
-          {
-            "name": "renderDreamProperties",
-            "ms": 22
-          }
-        ],
-        "safeRunFailures": [],
-        "exceptions": [],
-        "containers": 335,
-        "shapeMismatch": [],
-        "largestInnerHtmlWrites": [
-          {
-            "id": "eliteTaxStrategyRows",
-            "writes": 1,
-            "lastBytes": 62222,
-            "totalBytes": 62222
-          },
-          {
-            "id": "coreStructureRows",
-            "writes": 1,
-            "lastBytes": 55609,
-            "totalBytes": 55609
-          },
-          {
-            "id": "orgChartTree",
-            "writes": 1,
-            "lastBytes": 53117,
-            "totalBytes": 53117
-          },
-          {
-            "id": "aiTeamRosterRows",
-            "writes": 1,
-            "lastBytes": 52405,
-            "totalBytes": 52405
-          },
-          {
-            "id": "hfReportsBody",
-            "writes": 1,
-            "lastBytes": 29361,
-            "totalBytes": 29361
-          },
-          {
-            "id": "aiOrgTree",
-            "writes": 1,
-            "lastBytes": 28133,
-            "totalBytes": 28133
-          }
-        ],
-        "totalInnerHtmlBytes": 1269369
+        "capability": "Element wiring — $() targets that do not exist in the document",
+        "testType": "Regression",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "1429 getElementById calls · 0 distinct id(s) missed"
       },
       {
-        "case": "isaLine · 10,000 messages",
-        "key": "isaLine",
-        "payloadBytes": 2600281,
-        "durationMs": 5426,
-        "deltaVsBaselineMs": 4447,
-        "verdict": "Pass",
-        "slowestRenders": [
-          {
-            "name": "renderNotifications (final pass)",
-            "ms": 638
-          },
-          {
-            "name": "renderExecBrief (final pass)",
-            "ms": 335
-          },
-          {
-            "name": "renderPanelStamps",
-            "ms": 54
-          },
-          {
-            "name": "renderNotifications",
-            "ms": 51
-          },
-          {
-            "name": "renderExecBrief",
-            "ms": 43
-          }
-        ],
-        "safeRunFailures": [],
-        "exceptions": [],
-        "containers": 335,
-        "shapeMismatch": [],
-        "largestInnerHtmlWrites": [
-          {
-            "id": "isaLineThread",
-            "writes": 1,
-            "lastBytes": 5362720,
-            "totalBytes": 5362720
-          },
-          {
-            "id": "notifList",
-            "writes": 3,
-            "lastBytes": 1888227,
-            "totalBytes": 3799514
-          },
-          {
-            "id": "execExceptionList",
-            "writes": 3,
-            "lastBytes": 811724,
-            "totalBytes": 1636445
-          },
-          {
-            "id": "eliteTaxStrategyRows",
-            "writes": 1,
-            "lastBytes": 62222,
-            "totalBytes": 62222
-          },
-          {
-            "id": "coreStructureRows",
-            "writes": 1,
-            "lastBytes": 55609,
-            "totalBytes": 55609
-          },
-          {
-            "id": "orgChartTree",
-            "writes": 1,
-            "lastBytes": 53117,
-            "totalBytes": 53117
-          }
-        ],
-        "totalInnerHtmlBytes": 11948542
+        "capability": "Travel panel — 'N shown' count on first paint",
+        "testType": "Regression",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "#travelVisibleCount after the first render: \"113 shown\""
       },
       {
-        "case": "liveFeeds · 50 feeds x 200 citations",
-        "key": "liveFeeds",
-        "payloadBytes": 1300518,
-        "durationMs": 1532,
-        "deltaVsBaselineMs": 553,
-        "verdict": "Pass",
-        "slowestRenders": [
-          {
-            "name": "renderPanelStamps",
-            "ms": 65
-          },
-          {
-            "name": "renderNotifications (final pass)",
-            "ms": 61
-          },
-          {
-            "name": "renderNotifications",
-            "ms": 56
-          },
-          {
-            "name": "renderExecBrief (final pass)",
-            "ms": 55
-          },
-          {
-            "name": "renderDataFreshness",
-            "ms": 52
-          }
-        ],
-        "safeRunFailures": [],
-        "exceptions": [],
-        "containers": 338,
-        "shapeMismatch": [],
-        "largestInnerHtmlWrites": [
-          {
-            "id": "eliteTaxStrategyRows",
-            "writes": 1,
-            "lastBytes": 62222,
-            "totalBytes": 62222
-          },
-          {
-            "id": "coreStructureRows",
-            "writes": 1,
-            "lastBytes": 55609,
-            "totalBytes": 55609
-          },
-          {
-            "id": "orgChartTree",
-            "writes": 1,
-            "lastBytes": 53117,
-            "totalBytes": 53117
-          },
-          {
-            "id": "aiTeamRosterRows",
-            "writes": 1,
-            "lastBytes": 52405,
-            "totalBytes": 52405
-          },
-          {
-            "id": "hfReportsBody",
-            "writes": 1,
-            "lastBytes": 29361,
-            "totalBytes": 29361
-          },
-          {
-            "id": "aiOrgTree",
-            "writes": 1,
-            "lastBytes": 28133,
-            "totalBytes": 28133
-          }
-        ],
-        "totalInnerHtmlBytes": 1303468
-      }
-    ],
-    "volumeCombined": {
-      "payloadBytes": 5262952,
-      "durationMs": 7260,
-      "verdict": "Pass",
-      "slowestRenders": [
-        {
-          "name": "renderNotifications (final pass)",
-          "ms": 834
-        },
-        {
-          "name": "renderExecBrief (final pass)",
-          "ms": 386
-        },
-        {
-          "name": "renderNotifications",
-          "ms": 139
-        },
-        {
-          "name": "renderPanelStamps",
-          "ms": 127
-        },
-        {
-          "name": "renderKanban",
-          "ms": 115
-        },
-        {
-          "name": "renderExecBrief",
-          "ms": 102
-        },
-        {
-          "name": "renderDataFreshness",
-          "ms": 71
-        },
-        {
-          "name": "renderNews",
-          "ms": 43
-        }
-      ],
-      "safeRunFailures": [],
-      "exceptions": []
-    },
-    "edge": [
-      {
-        "doc": "weatherSnapshot",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Automation health board (routineHealth)",
+        "testType": "Volume",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "payload 1093 KB · page 2080 ms (+1136 ms vs baseline) · 338 containers · largest single innerHTML write 815 KB into #autoHealthBody"
       },
       {
-        "doc": "liveFeeds",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "liveFeeds expected object, got null"
-            ],
-            "shapeMismatchCount": 14,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "liveFeeds expected object, got array"
-            ],
-            "shapeMismatchCount": 14,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "liveFeeds expected object, got string"
-            ],
-            "shapeMismatchCount": 14,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [
-              {
-                "fn": "renderNews",
-                "error": "(d.citations || []).filter is not a function",
-                "htmlLine": 22332,
-                "at": "at orPaintFeed (command-deck.html:22332:37) | at orRenderFeedInto (command-deck.html:22303:5)"
-              },
-              {
-                "fn": "renderOrFeeds",
-                "error": "(d.citations || []).filter is not a function",
-                "htmlLine": 22332,
-                "at": "at orPaintFeed (command-deck.html:22332:37) | at command-deck.html:22317:7"
-              }
-            ],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 325,
-            "containersLost": [
-              "bearsLiveNews",
-              "builderIncentiveLiveList",
-              "defenseUpdatesList",
-              "econodayLiveList",
-              "elitScanLiveList",
-              "eliteAffluentLiveList",
-              "oppRadarLiveList",
-              "pedefenseLiveList",
-              "topHeadlinesList",
-              "topPerformersLiveList"
-            ]
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "liveFeeds expected object, got array"
-            ],
-            "shapeMismatchCount": 14,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "liveFeeds expected valid JSON, got string"
-            ],
-            "shapeMismatchCount": 14,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Task board (kanbanCards)",
+        "testType": "Volume",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "payload 237 KB · page 1344 ms (+400 ms vs baseline) · 338 containers · largest single innerHTML write 61 KB into #eliteTaxStrategyRows"
       },
       {
-        "doc": "calendarSnapshot",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "ISA direct line (isaLine)",
+        "testType": "Volume",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "payload 2539 KB · page 1583 ms (+639 ms vs baseline) · 338 containers · largest single innerHTML write 157 KB into #isaLineThread"
       },
       {
-        "doc": "stravaSnapshot",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Live research feeds (liveFeeds)",
+        "testType": "Volume",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "payload 1268 KB · page 1454 ms (+510 ms vs baseline) · 341 containers · largest single innerHTML write 61 KB into #eliteTaxStrategyRows"
       },
       {
-        "doc": "strategySnapshot",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Whole page under all four volume payloads at once",
+        "testType": "Volume",
+        "result": "Pass",
+        "weakness": "page time 3594 ms vs 944 ms baseline (3.8x); 5.02 MB of documents against the ~5 MB localStorage budget a browser gives one origin (1.00x — at the cap, so the next document written is the one that fails), and nothing on the page measures its own storage footprint",
+        "engineer": "Efficiency Engineer",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Monitoring",
+        "evidence": "slowest: renderNotifications (final pass) 226ms, renderPanelStamps 132ms, renderNotifications 128ms"
       },
       {
-        "doc": "leadTriage",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "leadTriage expected valid JSON, got string"
-            ],
-            "shapeMismatchCount": 7,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `weatherSnapshot` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "doc": "loftyLeads",
-        "inExport": false,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `liveFeeds` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:guarded []:guarded {}:ok \"string\":guarded wrong-typed fields:guarded row is a number:guarded truncated JSON:guarded"
       },
       {
-        "doc": "zohoSync",
-        "inExport": false,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `calendarSnapshot` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "doc": "twinBrief",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "twinBrief expected valid JSON, got string"
-            ],
-            "shapeMismatchCount": 1,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `stravaSnapshot` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "doc": "twinLog",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `strategySnapshot` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "doc": "vanessaBrief",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `leadTriage` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:guarded"
       },
       {
-        "doc": "vanessaRuns",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `loftyLeads` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "doc": "revenueScan",
-        "inExport": false,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `zohoSync` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "doc": "improvementProposals",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "improvementProposals expected array, got null"
-            ],
-            "shapeMismatchCount": 7,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "improvementProposals expected array, got object"
-            ],
-            "shapeMismatchCount": 7,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "improvementProposals expected array, got string"
-            ],
-            "shapeMismatchCount": 7,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "improvementProposals expected array, got object"
-            ],
-            "shapeMismatchCount": 7,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `twinBrief` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:guarded"
       },
       {
-        "doc": "loopLog",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `twinLog` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "doc": "cpiCycles",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "cpiCycles expected array, got null"
-            ],
-            "shapeMismatchCount": 1,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "cpiCycles expected array, got object"
-            ],
-            "shapeMismatchCount": 1,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "cpiCycles expected array, got string"
-            ],
-            "shapeMismatchCount": 1,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "cpiCycles expected array, got object"
-            ],
-            "shapeMismatchCount": 1,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "cpiCycles expected valid JSON, got string"
-            ],
-            "shapeMismatchCount": 1,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `vanessaBrief` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "doc": "routineHealth",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `vanessaRuns` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "doc": "backupStatus",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `revenueScan` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "Not an edge failure — all 7 malformed shapes were handled. Separate observation: this document is not in the 173-document export at all, so the deck reads it but no task has ever written it.",
+        "engineer": "Integration Engineer",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Escalated",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "doc": "ratesSnapshot",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 336,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `improvementProposals` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:guarded []:ok {}:guarded \"string\":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:ok"
       },
       {
-        "doc": "isaScorecard",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "isaScorecard expected array, got null"
-            ],
-            "shapeMismatchCount": 7,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "isaScorecard expected array, got object"
-            ],
-            "shapeMismatchCount": 7,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "isaScorecard expected array, got string"
-            ],
-            "shapeMismatchCount": 7,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "isaScorecard expected array, got object"
-            ],
-            "shapeMismatchCount": 7,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `loopLog` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "doc": "appleHealth",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `cpiCycles` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:guarded []:ok {}:guarded \"string\":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:guarded"
       },
       {
-        "doc": "healthAnalysis",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `routineHealth` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "doc": "healthCoaching",
-        "inExport": false,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `backupStatus` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "doc": "toolkitSnapshot",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `ratesSnapshot` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "doc": "knowledgeFabric",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `isaScorecard` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:guarded []:ok {}:guarded \"string\":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:ok"
       },
       {
-        "doc": "aiTeamRoster",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `appleHealth` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "doc": "runnerStatus",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 336,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `healthAnalysis` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "doc": "marketingQueue",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "marketingQueue expected array, got null"
-            ],
-            "shapeMismatchCount": 2,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "marketingQueue expected array, got object"
-            ],
-            "shapeMismatchCount": 2,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "marketingQueue expected array, got string"
-            ],
-            "shapeMismatchCount": 2,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "marketingQueue expected array, got object"
-            ],
-            "shapeMismatchCount": 2,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "marketingQueue expected valid JSON, got string"
-            ],
-            "shapeMismatchCount": 2,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `healthCoaching` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "Not an edge failure — all 7 malformed shapes were handled. Separate observation: this document is not in the 173-document export at all, so the deck reads it but no task has ever written it.",
+        "engineer": "Integration Engineer",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Escalated",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "doc": "zohoLeads",
-        "inExport": false,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `toolkitSnapshot` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "doc": "twinQueue",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "twinQueue expected array, got null"
-            ],
-            "shapeMismatchCount": 7,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "twinQueue expected array, got object"
-            ],
-            "shapeMismatchCount": 7,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "twinQueue expected array, got string"
-            ],
-            "shapeMismatchCount": 7,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "twinQueue expected array, got object"
-            ],
-            "shapeMismatchCount": 7,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "twinQueue expected valid JSON, got string"
-            ],
-            "shapeMismatchCount": 7,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
+        "capability": "Document `knowledgeFabric` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "doc": "vanessaRecommendations",
-        "inExport": true,
-        "variants": [
-          {
-            "variant": "null",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "vanessaRecommendations expected array, got null"
-            ],
-            "shapeMismatchCount": 1,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "[]",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "{}",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "vanessaRecommendations expected array, got object"
-            ],
-            "shapeMismatchCount": 1,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "\"string\"",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "vanessaRecommendations expected array, got string"
-            ],
-            "shapeMismatchCount": 1,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "wrong-typed fields",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "vanessaRecommendations expected array, got object"
-            ],
-            "shapeMismatchCount": 1,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "row is a number",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [],
-            "shapeMismatchCount": 0,
-            "containers": 335,
-            "containersLost": []
-          },
-          {
-            "variant": "truncated JSON",
-            "completed": true,
-            "throws": [],
-            "exceptions": [],
-            "shapeMismatch": [
-              "vanessaRecommendations expected valid JSON, got string"
-            ],
-            "shapeMismatchCount": 1,
-            "containers": 335,
-            "containersLost": []
-          }
-        ]
-      }
-    ],
-    "failureInjection": [
-      {
-        "case": "window.claude present, use() throws",
-        "verdict": "Pass",
-        "durationMs": 1078,
-        "exceptions": [],
-        "safeRunFailures": [],
-        "honest": {
-          "lsUnavailableFlag": false,
-          "shapeMismatchReported": 1,
-          "consoleWarnings": 1,
-          "containers": 335,
-          "containersLost": []
-        }
+        "capability": "Document `aiTeamRoster` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "case": "window.claude present, use() rejects",
-        "verdict": "Pass",
-        "durationMs": 1038,
-        "exceptions": [],
-        "safeRunFailures": [],
-        "honest": {
-          "lsUnavailableFlag": false,
-          "shapeMismatchReported": 0,
-          "consoleWarnings": 0,
-          "containers": 335,
-          "containersLost": []
-        }
+        "capability": "Document `runnerStatus` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "case": "localStorage.setItem throws (quota)",
-        "verdict": "Pass",
-        "durationMs": 1034,
-        "exceptions": [],
-        "safeRunFailures": [],
-        "honest": {
-          "lsUnavailableFlag": false,
-          "shapeMismatchReported": 0,
-          "consoleWarnings": 439,
-          "containers": 335,
-          "containersLost": []
-        }
+        "capability": "Document `marketingQueue` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:guarded []:ok {}:guarded \"string\":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:guarded"
       },
       {
-        "case": "localStorage.getItem throws (disabled)",
-        "verdict": "Pass",
-        "durationMs": 1096,
-        "exceptions": [],
-        "safeRunFailures": [],
-        "honest": {
-          "lsUnavailableFlag": true,
-          "shapeMismatchReported": 0,
-          "consoleWarnings": 0,
-          "containers": 335,
-          "containersLost": []
-        }
+        "capability": "Document `zohoLeads` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "Not an edge failure — all 7 malformed shapes were handled. Separate observation: this document is not in the 173-document export at all, so the deck reads it but no task has ever written it.",
+        "engineer": "Integration Engineer",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Escalated",
+        "evidence": "null:ok []:ok {}:ok \"string\":ok wrong-typed fields:ok row is a number:ok truncated JSON:ok"
       },
       {
-        "case": "localStorage 100 KB quota (writes fail part-way)",
-        "verdict": "Pass",
-        "durationMs": 1001,
-        "exceptions": [],
-        "safeRunFailures": [],
-        "honest": {
-          "lsUnavailableFlag": false,
-          "shapeMismatchReported": 0,
-          "consoleWarnings": 2,
-          "containers": 335,
-          "containersLost": []
-        }
+        "capability": "Document `twinQueue` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:guarded []:ok {}:guarded \"string\":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:guarded"
       },
       {
-        "case": "localStorage 5 MB quota + all 161 live docs",
-        "verdict": "Pass",
-        "durationMs": 1251,
-        "exceptions": [],
-        "safeRunFailures": [],
-        "honest": {
-          "lsUnavailableFlag": false,
-          "shapeMismatchReported": 0,
-          "consoleWarnings": 0,
-          "containers": 341,
-          "containersLost": []
-        }
+        "capability": "Document `vanessaRecommendations` (malformed input)",
+        "testType": "Edge",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "null:guarded []:ok {}:guarded \"string\":guarded wrong-typed fields:guarded row is a number:ok truncated JSON:guarded"
       },
       {
-        "case": "cdStateSeed block removed",
-        "verdict": "Pass",
-        "durationMs": 1047,
-        "exceptions": [],
-        "safeRunFailures": [],
-        "honest": {
-          "lsUnavailableFlag": false,
-          "shapeMismatchReported": 0,
-          "consoleWarnings": 0,
-          "containers": 335,
-          "containersLost": []
-        }
-      }
-    ],
-    "concurrency": {
-      "db-connected": {
-        "applyRemoteSnapshotExposed": true,
-        "burstSize": 200,
-        "firstApplyMs": 10,
-        "replayApplyMs": 6,
-        "changedFirst": true,
-        "changedOnReplay": false,
-        "errors": [],
-        "keysAfterFirst": 163,
-        "keysAfterReplay": 163,
-        "keysThatChangedOnReplay": [],
-        "isaAlreadyInDoc": 8,
-        "isaBurstWithId": 80,
-        "isaBurstWithoutId": 2,
-        "isaMessagesStored": 90,
-        "isaMessagesWithoutIdSurvived": 2,
-        "isaMessagesWithoutIdDropped": 0,
-        "isaExpectedIfNothingLost": 90,
-        "isaIdsLost": [],
-        "isaOrderIndependent": true,
-        "reloadsRequested": 0,
-        "mode": "db-connected"
-      },
-      "local-only": {
-        "applyRemoteSnapshotExposed": true,
-        "burstSize": 200,
-        "firstApplyMs": 8,
-        "replayApplyMs": 5,
-        "changedFirst": true,
-        "changedOnReplay": false,
-        "errors": [],
-        "keysAfterFirst": 163,
-        "keysAfterReplay": 163,
-        "keysThatChangedOnReplay": [],
-        "isaAlreadyInDoc": 8,
-        "isaBurstWithId": 80,
-        "isaBurstWithoutId": 2,
-        "isaMessagesStored": 49,
-        "isaMessagesWithoutIdSurvived": 1,
-        "isaMessagesWithoutIdDropped": 1,
-        "isaExpectedIfNothingLost": 90,
-        "isaIdsLost": [
-          "conc-b-0",
-          "conc-b-1",
-          "conc-b-2",
-          "conc-b-3",
-          "conc-b-4",
-          "conc-b-5",
-          "conc-b-6",
-          "conc-b-7",
-          "conc-b-8",
-          "conc-b-9",
-          "conc-b-10",
-          "conc-b-11",
-          "conc-b-12",
-          "conc-b-13",
-          "conc-b-14",
-          "conc-b-15",
-          "conc-b-16",
-          "conc-b-17",
-          "conc-b-18",
-          "conc-b-19",
-          "conc-b-20",
-          "conc-b-21",
-          "conc-b-22",
-          "conc-b-23",
-          "conc-b-24",
-          "conc-b-25",
-          "conc-b-26",
-          "conc-b-27",
-          "conc-b-28",
-          "conc-b-29",
-          "conc-b-30",
-          "conc-b-31",
-          "conc-b-32",
-          "conc-b-33",
-          "conc-b-34",
-          "conc-b-35",
-          "conc-b-36",
-          "conc-b-37",
-          "conc-b-38",
-          "conc-b-39"
-        ],
-        "isaOrderIndependent": true,
-        "reloadsRequested": 0,
-        "mode": "local-only"
-      }
-    },
-    "restoreTest": {
-      "at": "2026-09-22T09:46:11.526Z",
-      "deck": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/deck/command-deck.html",
-      "store": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/db/state",
-      "lsPrefix": "commandDeck.",
-      "docs": 161,
-      "docsRestored": 161,
-      "sizeBytes": 884081,
-      "parseFailures": [],
-      "missingV": [
-        "stravaSnapshot"
-      ],
-      "outputWatchDocs": 28,
-      "outputWatchDocsMissingFromExport": [
-        "loftyLeads",
-        "zohoSync",
-        "revenueScan",
-        "healthCoaching"
-      ],
-      "containersRendered": 341,
-      "containersRenderedIds": [
-        "accountRows",
-        "advisorRows",
-        "affluentEmpireRows",
-        "ahGrid",
-        "aiModelRows",
-        "aiNewsList",
-        "aiOrgFlows",
-        "aiOrgTools",
-        "aiOrgTree",
-        "aiTeamRosterRows",
-        "aiToolingList",
-        "aiTrainingRows",
-        "allocBar",
-        "allocLegend",
-        "annualTodoAccordion",
-        "apexChatThread",
-        "apptRows",
-        "assetAllocBar",
-        "assetAllocLegend",
-        "assetItemRows",
-        "augustaRows",
-        "autoHealthBody",
-        "backupStatusBody",
-        "bearsDetail",
-        "bearsLiveNews",
-        "bearsStandingsRows",
-        "biohackRows",
-        "brandLicensingRows",
-        "builderIncentiveLiveList",
-        "builderIncentiveRows",
-        "caTaxLeverRows",
-        "caioList",
-        "calUpcomingList",
-        "checklistGroups",
-        "ciLogRows",
-        "communityRankRows",
-        "communityRankSource",
-        "coreStructureRows",
-        "councilHistory",
-        "councilOutside",
-        "cpiRows",
-        "cpiStatRow",
-        "deadlineRows",
-        "dealsFeedRows",
-        "defenseDisruptorRows",
-        "defenseUpdatesList",
-        "dividendRows",
-        "dmaicPhaseBar",
-        "dmaicPhaseLegend",
-        "dmaicRows",
-        "downtimeRows",
-        "dreamFeatureList",
-        "dreamPropertyRows",
-        "econodayLiveList",
-        "econodayRows",
-        "educationRows",
-        "elitCarRentalList",
-        "elitCardOffersRows",
-        "elitCreditBurnRows",
-        "elitExpiringList",
-        "elitHotelCasinoList",
-        "elitLocalDealsList",
-        "elitMilVetList",
-        "elitRiskAlertsList",
-        "elitScanLiveList",
-        "elitShoppingStackRows",
-        "elitStatusMatchRows",
-        "elitSubTrackerRows",
-        "elitTopActionsRows",
-        "elitTransferBonusList",
-        "eliteAffluentLiveList",
-        "eliteTaxStrategyRows",
-        "entityRows",
-        "eodList",
-        "estateRows",
-        "execExceptionList",
-        "execStatRow",
-        "feasibilityRows",
-        "fedBrowserRows",
-        "fedFootprintRows",
-        "fedGrade",
-        "fedLadderRows",
-        "fedLocality",
-        "fedStep",
-        "fedYears",
-        "feoStrategyRows",
-        "fersCompare",
-        "fersGrade",
-        "fersGsRows",
-        "fersLocality",
-        "fersRetGrade",
-        "fersRetLocality",
-        "fersRetStep",
-        "fersStep",
-        "fersTableLocality",
-        "fersVaRating",
-        "fersVaRows",
-        "foActionList",
-        "foPhaseAccordion",
-        "foReviewRows",
-        "freshRows",
-        "fubNewLeadRows",
-        "fubStageStats",
-        "funderDirectoryRows",
-        "grantPipelineRows",
-        "hacksAccordion",
-        "hcBody",
-        "healthMetricRows",
-        "hfMemoBody",
-        "hfMemoTags",
-        "hfReportsBody",
-        "hfReqStatus",
-        "hfSourcesBody",
-        "hfVerificationBody",
-        "hlChartWrap",
-        "hlCompare",
-        "hlDaily",
-        "hlFlags",
-        "hlMetric",
-        "hlRecords",
-        "hlStats",
-        "hlWorkouts",
-        "hvmAccordion",
-        "hvmRoadmapAccordion",
-        "improveRows",
-        "inboxRows",
-        "incentBody",
-        "incentFilters",
-        "incomeMixBar",
-        "incomeMixLegend",
-        "incomeStreamGroups",
-        "institutionRows",
-        "isaGradingRows",
-        "isaKpiDocBlock",
-        "isaKpiSopRows",
-        "isaLineThread",
-        "isaPbBlocks",
-        "isaPbDays",
-        "isaPbToday",
-        "isaScRows",
-        "jamesChatThread",
-        "kaizenDoneCol",
-        "kaizenIdeaCol",
-        "kaizenProgressCol",
-        "kanbanBoard",
-        "kanbanOwnerFilter",
-        "kanbanWeek",
-        "kevinChatThread",
-        "kpiRows",
-        "lbList",
-        "lenderDirectoryRows",
-        "liabRiskBar",
-        "liabRiskLegend",
-        "liabilityRows",
-        "licenseRows",
-        "licenseTrackerRows",
-        "loanProgramGroups",
-        "loanUnitedNicheList",
-        "loftyNewLeadRows",
-        "loftyStageStats",
-        "ltBody",
-        "ltStats",
-        "lumenRows",
-        "marketUpdateCards",
-        "marketUpdateLiveList_murrieta-ca",
-        "marketUpdateLiveList_san-diego-ca",
-        "marketUpdateLiveList_temecula-ca",
-        "marketingRows",
-        "melloRoosRows",
-        "melloRoosSource",
-        "membershipAssocRows",
-        "membershipRows",
-        "milFamOfficeSteps",
-        "militaryDiscountRows",
-        "mktHonestyNote",
-        "mktMoversList",
-        "mktSectorList",
-        "mktTileRow",
-        "mortgageRateRows",
-        "myCardRows",
-        "namedDealsRows",
-        "namedTaxCaseRows",
-        "newsGlobalList",
-        "newsLocalCards",
-        "newsLocalList_san-diego-ca",
-        "newsLocalList_temecula-ca",
-        "nextMovesDecisions",
-        "ningStateRows",
-        "notifList",
-        "nqGuideList",
-        "nutritionRows",
-        "onThisDayBirthdayList",
-        "onThisDayHistoryList",
-        "onboardGroups",
-        "openDecisionsList",
-        "oppRadarList",
-        "oppRadarLiveList",
-        "orMeter",
-        "orNote",
-        "orchBriefBody",
-        "orchCpiRows",
-        "orchFindRows",
-        "orchRoadmap",
-        "orchScaleRows",
-        "orchStressRows",
-        "orchTemplateBtns",
-        "orchTiles",
-        "orchTrustRows",
-        "orgChartTree",
-        "otBadges",
-        "otCmdList",
-        "otTape",
-        "pageCrumb",
-        "pageTabs",
-        "partnerRows",
-        "peMovesRows",
-        "pedefenseLiveList",
-        "peptideRows",
-        "pipelineRows",
-        "plaidBridgeStatus",
-        "planDecisions",
-        "prenupCaseRows",
-        "priorityActionsList",
-        "priorityList",
-        "programFactsRows",
-        "programStatusStrip",
-        "propertyRows",
-        "pstTaxContext",
-        "pstTaxQuickEstimate",
-        "ptoBridgeRows",
-        "ptoSummaryRows",
-        "ptoYearSelect",
-        "qetPaymentRows",
-        "quickTaskList",
-        "qvStrategyAccordion",
-        "reClientRows",
-        "recommendationsLog",
-        "recruitRows",
-        "recruitSummary",
-        "refLinkRows",
-        "refiRows",
-        "reminderList",
-        "reviewRows",
-        "riskMonitorNote",
-        "riskRegisterRows",
-        "rosterRows",
-        "runnerRows",
-        "sbL5Status",
-        "scheduleRows",
-        "secLabel",
-        "selfCheckResults",
-        "selfCheckStats",
-        "sellerCreditRows",
-        "sessionReadSrc",
-        "shClients",
-        "shIntegrationRows",
-        "shShowings",
-        "shSyncRows",
-        "sixLeversSliders",
-        "sodList",
-        "sportsFranchiseRows",
-        "srStops",
-        "stackRows",
-        "steveChatThread",
-        "steveVoiceBar",
-        "steveVoiceDiag",
-        "stlBody",
-        "stlRows",
-        "strategyFlagsNote",
-        "strategyRows",
-        "strategyTipsList",
-        "stravaActivityRows",
-        "stravaSyncNote",
-        "subsRows",
-        "subsTotals",
-        "sundayReviewList",
-        "supplementRows",
-        "swotGrid",
-        "taxBracketRows",
-        "taxCalendarRows",
-        "taxCategoryGroups",
-        "taxProjectorRows",
-        "tcRows",
-        "teamMatrixRows",
-        "techStackRows",
-        "tenAheadList",
-        "tkFabric",
-        "tkList",
-        "tkMcpList",
-        "tkTaskList",
-        "tkTiles",
-        "tkToolRows",
-        "tocList",
-        "todoGroups",
-        "topDividendRows",
-        "topEtfsRows",
-        "topFundsRows",
-        "topHeadlinesList",
-        "topPerformersLiveList",
-        "topStocksRows",
-        "trackedCalendarRows",
-        "tradingLoginRows",
-        "travelFilterCats",
-        "travelFilterOpts",
-        "travelLaRows",
-        "travelMenifeeRows",
-        "travelMurrietaRows",
-        "travelOcRows",
-        "travelPechangaRows",
-        "travelRiversideRows",
-        "travelSanDiegoRows",
-        "travelTemeculaRows",
-        "travelVegasRows",
-        "twinBriefBox",
-        "twinQueueRows",
-        "uwpGroups",
-        "vanessaChatThread",
-        "vanessaRecRows",
-        "vanessaResearchList",
-        "vanessaVoiceBar",
-        "vanessaVoiceDiag",
-        "vistaPeerRows",
-        "weatherCards",
-        "webinarRows",
-        "webinarTotals",
-        "wellnessMetricGroups",
-        "wheelSliders",
-        "workoutRows",
-        "worldClockBar",
-        "wxcity-ChicagoIL",
-        "wxcity-LasVegasNV",
-        "wxcity-LosAngelesCA",
-        "wxcity-NewBraunfelsTX",
-        "wxcity-SanDiegoCA",
-        "wxcity-TemeculaCA",
-        "wxcity-WashingtonDC",
-        "zhBoard",
-        "zhDealsRows",
-        "zhDealsStats",
-        "zhFilterGroups",
-        "zhNewStage"
-      ],
-      "containersLostVsSeedOnly": [],
-      "containersGainedVsSeedOnly": [
-        "hfReqStatus",
-        "marketUpdateLiveList_murrieta-ca",
-        "newsLocalList_san-diego-ca",
-        "newsLocalList_temecula-ca",
-        "sbL5Status",
-        "sessionReadSrc"
-      ],
-      "exceptions": [],
-      "safeRunFailures": [],
-      "shapeMismatch": [],
-      "durationMs": 1299,
-      "verdict": "PASS WITH EXCEPTIONS",
-      "notes": [
-        "1 document(s) carry no `v` wrapper (stravaSnapshot). applyRemoteSnapshot now adopts such a document as {v: <doc>} after a shape warning instead of skipping it, so all 161 of 161 restore. The writing task still needs fixing — a document that only survives because the reader is forgiving is one bad deploy from being lost.",
-        "4 OUTPUT_WATCH document(s) do not exist in the export at all: loftyLeads, zohoSync, revenueScan, healthCoaching — the owning task has never written them, so a restore cannot bring them back.",
-        "restore is verified by execution, not by file count: the deck was run against the restored store and 341 container ids received innerHTML with 0 exceptions and 0 safeRun failures."
-      ]
-    },
-    "backupBundle": {
-      "dir": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/backup/2026-09-22",
-      "docCount": 161,
-      "fileCount": 162,
-      "totalBytes": 5103490,
-      "docBytes": 884081,
-      "missingV": [
-        "stravaSnapshot"
-      ],
-      "parseFailures": [],
-      "verifyFailures": [],
-      "manifest": "/tmp/claude-0/-home-user-Repo/b13c2454-73f6-56a0-bac6-c201ba53a4a7/scratchpad/backup/2026-09-22/manifest.json"
-    },
-    "drift": [
-      {
-        "label": "deck/command-deck.html (working tree)",
-        "sha256": "bbd64191b5de095812e9a424578be697cd613fea7fb029120c499f7e22ca145d",
-        "identicalToBaseline": true
+        "capability": "Claude capability handshake (initSync / claudeUse)",
+        "testType": "FailureInjection",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "page ran to completion · 338 containers · 1 shape warnings · 1 console warnings"
       },
       {
-        "label": "wt-e1-daily/command-deck.html",
-        "sha256": "f85a73c2bffe0eb60adffee459ddf946174e537c15882e9a2b5a6fe895e5dc64",
-        "verdict": "Pass",
-        "completed": true,
-        "durationMs": 1136,
-        "containers": 318,
-        "containersVsBaseline": -17,
-        "exceptions": [],
-        "newSafeRunFailures": [],
-        "newMissingIds": [],
-        "shapeMismatch": []
+        "capability": "Claude capability handshake — rejected promise",
+        "testType": "FailureInjection",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "page ran to completion · 338 containers · 0 shape warnings · 0 console warnings"
       },
       {
-        "label": "wt-e2-markets/command-deck.html",
-        "sha256": "8f3afaa288a1d2bccd1d17e211c829b5130f35131f6eba7310524d962d32d824",
-        "verdict": "Pass",
-        "completed": true,
-        "durationMs": 1039,
-        "containers": 320,
-        "containersVsBaseline": -15,
-        "exceptions": [],
-        "newSafeRunFailures": [],
-        "newMissingIds": [],
-        "shapeMismatch": []
+        "capability": "Local persistence — write path",
+        "testType": "FailureInjection",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "page ran to completion · 338 containers · 0 shape warnings · 441 console warnings"
       },
       {
-        "label": "wt-e3-wealth/command-deck.html",
-        "sha256": "4cf3891cadf065c38018795b0f8298fae98138bff8a336252f7b1ccc379e5315",
-        "verdict": "Pass",
-        "completed": true,
-        "durationMs": 1085,
-        "containers": 318,
-        "containersVsBaseline": -17,
-        "exceptions": [],
-        "newSafeRunFailures": [],
-        "newMissingIds": [],
-        "shapeMismatch": []
+        "capability": "Local persistence — read path",
+        "testType": "FailureInjection",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "page ran to completion · 338 containers · 0 shape warnings · 0 console warnings"
       },
       {
-        "label": "wt-e4a-crm/command-deck.html",
-        "sha256": "2bd71451260017209f57b7c11b0e3b54d9f66f791104d0f07a7602714652badf",
-        "verdict": "Pass",
-        "completed": true,
-        "durationMs": 1053,
-        "containers": 322,
-        "containersVsBaseline": -13,
-        "exceptions": [],
-        "newSafeRunFailures": [],
-        "newMissingIds": [],
-        "shapeMismatch": []
+        "capability": "Local persistence — quota exhausted part-way through hydration",
+        "testType": "FailureInjection",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "page ran to completion · 338 containers · 0 shape warnings · 2 console warnings"
       },
       {
-        "label": "wt-e4b-realestate/command-deck.html",
-        "sha256": "2d4b60a0b40e8f0c1b210c937bad958d05144e0a9a637a99ca2a5dcc6ae406ca",
-        "verdict": "Pass",
-        "completed": true,
-        "durationMs": 1020,
-        "containers": 319,
-        "containersVsBaseline": -16,
-        "exceptions": [],
-        "newSafeRunFailures": [],
-        "newMissingIds": [],
-        "shapeMismatch": []
+        "capability": "Local persistence — 5 MB browser quota with the real store",
+        "testType": "FailureInjection",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "page ran to completion · 344 containers · 0 shape warnings · 0 console warnings"
       },
       {
-        "label": "wt-e5-life/command-deck.html",
-        "sha256": "c91460ff4de063897dead56577854b0f74b6dfe194089d29327c03e7a0cb1e2e",
-        "verdict": "Pass",
-        "completed": true,
-        "durationMs": 1008,
-        "containers": 319,
-        "containersVsBaseline": -16,
-        "exceptions": [],
-        "newSafeRunFailures": [],
-        "newMissingIds": [],
-        "shapeMismatch": []
+        "capability": "Published seed hydration (hydrateFromSeed)",
+        "testType": "FailureInjection",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "page ran to completion · 338 containers · 0 shape warnings · 0 console warnings"
       },
       {
-        "label": "wt-e6-aiteam/command-deck.html",
-        "sha256": "cabb1bafe36a6f2e9d52b7e81a4809a9496bd31d64dbd9d12526cc243e590361",
-        "verdict": "Pass",
-        "completed": true,
-        "durationMs": 958,
-        "containers": 318,
-        "containersVsBaseline": -17,
-        "exceptions": [],
-        "newSafeRunFailures": [],
-        "newMissingIds": [],
-        "shapeMismatch": []
+        "capability": "Cross-device merge — 200-change burst (applyRemoteSnapshot) [db-connected]",
+        "testType": "Concurrency",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "200 doc changes applied in 12 ms, no throw; 176 keys in localStorage afterwards"
+      },
+      {
+        "capability": "Merge idempotence — identical burst replayed [db-connected]",
+        "testType": "Concurrency",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "changed(first)=true changed(replay)=false · 0 of 176 stored keys differ after an identical replay · 172 distinct doc ids in a 200-change burst"
+      },
+      {
+        "capability": "ISA line conflict merge (isaLineMergeArrays) [db-connected]",
+        "testType": "Concurrency",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "Reliability Engineer",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "isaLineMergeArrays take() at html:24534; doc held 10 messages, burst added 80 with an id and 2 without; 92 stored afterwards vs 92 if nothing were lost; ISA_LINE_MAX=300 cap at html:24524"
+      },
+      {
+        "capability": "ISA line — message typed while the sync was still connecting, then the first snapshot [pending-write]",
+        "testType": "Concurrency",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "doc held 10 messages · this device afterwards 12 (mine=true, theirs=true) · shared doc after the flush 12 (mine=true, theirs=true)"
+      },
+      {
+        "capability": "Restore all 173 exported documents and run the page",
+        "testType": "BackupRecovery",
+        "result": "Degraded",
+        "weakness": "2 watched documents were never written by their task and therefore cannot be restored: revenueScan, healthCoaching",
+        "engineer": "Integration Engineer",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Escalated",
+        "evidence": "173/173 restored · 1219 KB · 344 containers rendered · 0 exceptions"
+      },
+      {
+        "capability": "OUTPUT_WATCH freshness board after a full restore",
+        "testType": "BackupRecovery",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "all 28 OUTPUT_WATCH docs are read by outputWatchRows(); autoHealthBody rendered=true"
+      },
+      {
+        "capability": "Backup bundle backup/2026-09-22 (sha256 manifest)",
+        "testType": "BackupRecovery",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "173 docs + the deck, 5.33 MB, every file re-hashed after write and matched"
+      },
+      {
+        "capability": "Runtime gate — published build 5fbe844 → deck under test",
+        "testType": "Regression",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "sha256 1a9e203b1a08 · 318 containers · 898 ms · deck under test is +20 containers vs the published build · dead ids fixed since: travelVisibleCount, vanessaVoiceToggle, steveVoiceToggle, vanessaMicBtn, steveMicBtn, isaPbTracker, isaPbVip"
+      },
+      {
+        "capability": "Runtime gate — isa/isa-portal.html (ISA Portal master, absolute)",
+        "testType": "Regression",
+        "result": "Pass",
+        "weakness": "",
+        "engineer": "",
+        "fixApplied": "",
+        "retest": "Pending",
+        "status": "Resolved",
+        "evidence": "sha256 9345e65968db · 47 containers · 114 ms"
       }
     ]
   }
