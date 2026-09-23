@@ -12,10 +12,10 @@ Steven. Each section says what the routine does now and the document or run that
 
 | # | Routine | What was wrong | What was done | Proven? |
 |---|---|---|---|---|
-| 1 | Feed freshness watchdog | Nothing in the prompt — a transient run failure | Nothing; re-fired it | **Yes** — `feedFreshness` exists |
+| 1 | Feed freshness watchdog | Nothing in the prompt — a transient run failure | Nothing; re-fired it | **Yes** — `feedFreshness` v3, written 02:59:00Z |
 | 2 | Books Reconciliation Reminder | Stock template, no ledger anywhere to read | **Disabled** | Yes — `enabled:false` |
 | 3 | Ops Issue Review | Stock template, vault path does not exist | **Disabled** | Yes — `enabled:false` |
-| 4 | Real Estate Weekly Brief | Queried a CRM retired 2026-09-22; left no trace | **Prompt rewritten**, fired | Run fired 02:53:50Z |
+| 4 | Real Estate Weekly Brief | Queried a CRM retired 2026-09-22; **and it hangs** | **Prompt rewritten**; hang reproduced | **No** — proving run hung, see §4 |
 | 5 | Rent, Buy, or Wait refresh | Run was dropped mid-flight; prompt is sound | Nothing — fix already applied | **No** — due 2026-09-28 |
 
 ---
@@ -81,8 +81,47 @@ and Wednesday crons all fired on Friday 2026-09-18 within two hours; the two ABA
 on a natural slot or a manual fire since 2026-09-22 has succeeded.
 
 **So `ROUTINE_RUN_FAILURE_REASON_UNSPECIFIED` here means "the run never reached the prompt".** For
-three of the five that makes the red row a non-event. For the other two it hid a real defect that
-only shows once the run *does* start — which is what items 2, 3 and 4 fix.
+three of the five that makes the red row a non-event.
+
+### Correction, 03:10 UTC — it is two causes, not one, and I proved the second one myself
+
+The paragraph above was written before my own proving runs came back, and one of them contradicts it.
+**I fired both the feed watchdog and Real Estate Weekly Brief within nine seconds of each other.** The
+watchdog succeeded in 5 m 05 s and wrote two documents. **Real Estate Weekly Brief hung** — still
+`PENDING` with no `finished_at` fourteen minutes later, having written nothing at all, not even the
+`ciLog` "started" row its prompt makes the very first instruction.
+
+So the honest split is:
+
+- **Cause A — a platform transient, now cleared.** `Ops Issue Review`, `Books Reconciliation` and the
+  feed watchdog. Proven cleared by both controls above.
+- **Cause B — a hang specific to two routines.** `Real Estate Weekly Brief` and `Rent, Buy, or Wait`
+  are **the only two routines on this entire account that have ever produced a run with no
+  `finished_at`**, and Real Estate has now done it twice, the second time on demand.
+
+**Connector count is not the cause, and I checked before saying so.** Every other `meta_mcp` routine
+carrying the same eleven connectors finishes fast:
+
+| Routine | Last run | Duration |
+|---|---|---|
+| Morning Brief | SUCCEEDED | 19 s |
+| Content Calendar Review | SUCCEEDED | 22 s |
+| Project Risk Review | SUCCEEDED | 24 s |
+| Account Health Check | SUCCEEDED | 33 s |
+| Metrics Digest | SUCCEEDED | 39 s |
+| Social Calendar Planning | SUCCEEDED | 44 s |
+| Command Deck Brief | SUCCEEDED | 58 s |
+| **Real Estate Weekly Brief** | **PENDING / ABANDONED** | **never finishes** |
+| **Rent, Buy, or Wait** | **ABANDONED** | **never finishes** |
+
+Everything that works in this set is a 19–58 second job. The two that hang are the two heaviest
+prompts in it — a multi-source gather, and a full dashboard refresh-and-republish. That is a
+correlation and a good lead, **not a proven cause**, and I am not claiming more than that.
+
+**What it costs my own fix:** the durable `ciLog` trace I added to Real Estate Weekly Brief does not
+help against this failure, because the run never reaches instruction one. A trace can only make a
+*dropped* run visible; it cannot make a run that never started visible. Saying so is the point of
+writing it down.
 
 ---
 
@@ -116,9 +155,16 @@ succeeds on its first run and never again is still broken.
 
 ### The check
 
-`feedFreshness` should now be at **version 2 or higher** with a `checkedAt` later than
-`2026-09-23T00:50:00Z`, and its `note` should compare against the previous run rather than repeating
-it. Next natural firing **2026-09-23T16:12Z**.
+**Done, and it passed.** The run SUCCEEDED at `02:58:46Z` (5 m 05 s). `feedFreshness` is now
+**version 3**, `checkedAt 2026-09-23T02:59:00Z`, `by: "feed-freshness-watchdog (cloud, manual proving
+run)"`, top level exactly `{v:…}`, 26 documents classified — 19 fresh, 1 late, 4 stale, 2 unknown,
+0 missing, no future-dated stamps, worst still `openrouterFeeds`. Its `note` correctly diffs against
+the previous run ("every one of the 26 tracked documents is byte-identical to the prior read"),
+which is what the prompt demands and what proves it is not just replaying a template. One
+correctly-shaped `ciLog` row was appended; `ciLog` still has **zero** malformed rows out of 28.
+
+**This routine is proven: two successful runs, two documents, a real diff between them.** Next
+natural firing **2026-09-23T16:12Z**.
 
 ---
 
@@ -251,13 +297,38 @@ recreate, so `created_at` is still `2026-09-07T07:49:35Z` and the run history su
 
 ### The check
 
-Fired as a proving run at **2026-09-23T02:53:50Z** (session `cse_01Fijfb9HdEVnjfY5RyJVDpC`). Proof is
-three things landing together: a `real-estate-weekly-brief — started` row and a matching `— ok` (or
-`— failed`) row in `ciLog` dated 2026-09-23, and a `realEstateBrief` document whose `ranAt` is inside
-that window. A start row alone means the run was dropped again — and this time that is *visible*,
-which is the point.
+Fired as a proving run at **2026-09-23T02:53:50Z** (session `cse_01Fijfb9HdEVnjfY5RyJVDpC`).
 
-Next natural firing **2026-09-28T16:37Z**.
+### The proving run hung — so this is NOT fixed, and here is exactly where it stands
+
+**Result: `PENDING`, no `finished_at`, nothing written.** Fourteen minutes after firing there was no
+`realEstateBrief` document, and `ciLog` was unchanged at version 223 — so the run never executed
+even its first instruction. Its sibling, fired nine seconds earlier, finished in five minutes.
+
+Splitting the verdict, because the two halves have different answers:
+
+- **The content defect is fixed.** The routine no longer queries a CRM Steven retired on 2026-09-22.
+  That was real, it was wrong every Monday, and it is gone. This holds regardless of the hang.
+- **The execution defect is not fixed, and it was not mine to begin with** — the routine hung
+  identically on 2026-09-21 under the old prompt. What changed is that it is now **reproducible on
+  demand**, which is worth more than an intermittent mystery.
+
+**I left it enabled, deliberately.** Three reasons: the rewrite is an improvement whether or not the
+hang recurs; seven sibling routines with identical connectors run fine, so this is not a class-wide
+fault to retreat from; and **this routine has never once been observed on a true natural slot** — its
+cron is Monday 16:30, and both observed runs were a catch-up (2026-09-21 15:08) and a manual fire.
+2026-09-28T16:37Z will be the first, and natural slots have behaved differently from catch-up runs
+everywhere else in this audit. Disabling a brief Steven wants, on two runs neither of which was a
+scheduled one, would be over-correction.
+
+**The check, and it is a real fork.** After 2026-09-28T16:37Z:
+
+- `realEstateBrief` exists and `ciLog` has both rows → fixed, and the hang was catch-up-only.
+- `ciLog` has a `started` row and no finish row → it reached the prompt and died mid-run. The trace
+  did its job; the fault is inside the gather.
+- **Nothing in `ciLog` at all** → it hung again before instruction one, exactly as on 2026-09-23.
+  That is three hangs out of three, and at that point the honest action is to disable it and hand
+  Steven a recreate-in-the-web-UI decision, because no prompt edit can fix a run that never starts.
 
 ---
 
