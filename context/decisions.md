@@ -193,3 +193,43 @@ deck's CI log and the loop log; this file starts here on purpose.
   the rows are the page's seed, frozen at that date, replaced outright rather than merged when a
   `zohoLeads` document first appears.
 - **Owner.** Steven. **Status.** Active, live in Command Deck v151.
+
+## 2026-09-23 — Vanessa reaches Steven on his personal WhatsApp, not a dedicated number
+
+**Decision.** Steven links **his own personal WhatsApp**, and reaches Vanessa in his own
+**"Message Yourself"** thread. The dedicated-number design written on 2026-09-22 is superseded.
+
+**Offered and declined, with the reasons given at the time.** He was shown three shapes: a dedicated
+number he texts from his normal WhatsApp app (recommended); his personal WhatsApp in a note-to-self
+thread; and his personal WhatsApp read-only with replies on iMessage. He chose the second after being
+told both costs below. This entry exists so the trade-off is not relitigated as a finding.
+
+**Cost 1 — Full Disk Access is an OS grant, not a per-chat one.** `ChatStorage.sqlite` is his entire
+personal WhatsApp history in plaintext SQLite. Once Terminal and the runner's launchd context hold
+FDA, anything running as him on that Mac can read all of it. The task's `--chat` scoping is enforced
+inside the tool and does not narrow what the OS opened. If clients ever message him on WhatsApp, that
+history includes client PII — a compliance surface for an MLO, not only a privacy one. Mitigations,
+both his and neither a blocker: audit what already holds FDA before granting it to two more things,
+and FileVault on.
+
+**Cost 2 — §5 could not run in a self-chat at all.** It kept only rows with `is_from_me: false`; in a
+note-to-self thread every message is from him, so the filter dropped everything. Inverting it makes
+Vanessa's own replies indistinguishable from his messages, which is a reply loop on his personal
+number. `integrations/mac-task-specs.md` §5a is the amendment: a `[V] ` authorship marker, echo
+detection against the last 20 outbound texts, a strictly-monotonic `lastSeenPk`, a per-poll cap of 3
+and a daily ceiling of 20 sends that stops and reports on iMessage rather than WhatsApp.
+
+**What is NOT changed by this decision.** The HALT list, one allow-listed sender, no group chats, no
+`monitor auto-reply`, no `export` into the vault, brain, vector index or knowledge graph, and the task
+created disabled until one manual run exists.
+
+**Unmeasured, and named as such.** That a self-chat's rows all carry `is_from_me: true` is reasoned
+from WhatsApp's data model, not observed — no self-chat has ever been read by this tooling and it
+cannot be from a cloud session. §5a opens with the one-command probe that settles it; if a field
+distinguishes the two sides, that field replaces the text marker and the design gets simpler.
+
+**Send-side risk is close to nil in this shape** and is recorded so it is not overstated later: every
+outbound goes to his own note-to-self thread, and WhatsApp's automated-messaging enforcement targets
+unsolicited outbound to other people.
+
+- **Owner.** Steven. **Status.** Active, spec written 2026-09-23, nothing installed or run.

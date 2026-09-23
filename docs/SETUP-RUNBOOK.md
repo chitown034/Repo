@@ -207,15 +207,28 @@ only Steven can read or edit them: `lead-triage-daily`, `r2-lead-response-watchd
 
 ## C — Finish WhatsApp
 
-### C1. Decide the number first — security gate
-There is no separate session token in this design. The linked desktop app **is** full account access,
-and `ChatStorage.sqlite` is the entire message history in plaintext SQLite, readable by any process on
-that Mac with Full Disk Access.
-- Use a **dedicated number** — a second SIM/eSIM or a prepaid line. Never the client-facing WhatsApp.
-- If the personal account is already linked on that Mac, put the second WhatsApp in a **dedicated
-  macOS user profile** and let the task read that profile's container.
-- Blast radius if WhatsApp ever restricts the number for automated sending: the dedicated line, and
-  nothing else.
+### C1. DECIDED 2026-09-23 — personal WhatsApp, message-yourself
+Steven chose to link **his own personal WhatsApp** rather than a dedicated number, after being told
+what it costs. He reaches Vanessa in his own **"Message Yourself"** thread: he types there, she
+answers there. The amended task spec is `integrations/mac-task-specs.md` **§5a**, which supersedes
+§5's transport half.
+
+**What he accepted, recorded so it is not rediscovered as a finding.** Reading a self-chat needs
+**Full Disk Access** — an OS-level grant, not a per-chat one. `ChatStorage.sqlite` is his entire
+personal WhatsApp history in plaintext SQLite, and once Terminal and the runner's launchd context
+hold FDA, anything running as him on that Mac can read all of it. The `--chat` scoping is enforced
+*inside the tool*; it does not narrow what the OS opened.
+
+Two things reduce it, neither a blocker:
+- **Audit what already holds Full Disk Access** before granting it to two more things
+  (System Settings → Privacy & Security → Full Disk Access). The OSINT tooling F-E8-61 flagged is the
+  specific worry.
+- **FileVault on**, so the history is not readable from the disk at rest.
+
+**Send-side risk is close to nil here**, which is worth saying because it is the fear this design
+usually attracts: every outbound goes to his own note-to-self thread. WhatsApp's automated-messaging
+enforcement targets unsolicited outbound *to other people*. Nothing in this design ever messages
+anyone but him.
 
 ### C2. Install `whatsapp-cli` — from the clone, never from PyPI (10 min)
 ```bash
@@ -237,30 +250,92 @@ ln -sf ~/Applications/whatsapp-cli/.venv/bin/whatsapp-cli ~/.local/bin/whatsapp-
 needs only the CLI.
 
 ### C3. macOS permissions and the link (10 min)
-- **Full Disk Access** — for the shell that runs it: Terminal *and* the runner's launchd context.
-  Reads work headless.
-- **Accessibility** — for `osascript` / System Events. Sends need a GUI session: Mac awake, logged in.
-- Link the dedicated number in **WhatsApp Desktop** and leave it logged in.
+**Audit before you grant.** Open System Settings → Privacy & Security → **Full Disk Access** and read
+the list that is already there. You are about to add two more entries to a permission that hands the
+holder your entire WhatsApp history in plaintext, so it is worth thirty seconds knowing who else
+already has it. Turn off anything you do not recognise or no longer use.
 
-### C4. Prove it end to end, screen unlocked (5 min)
+Then:
+- **Full Disk Access** — for the shell that runs it: Terminal *and* the runner's launchd context.
+  Reads work headless. This is the grant that exposes `ChatStorage.sqlite`.
+- **Accessibility** — for `osascript` / System Events. Sends need a GUI session: Mac awake, logged in.
+- Link **your own number** in WhatsApp Desktop and leave it logged in.
+- **FileVault on**, if it is not already, so the history is not readable from the disk at rest.
+
+### C4. Settle the one assumption everything else rests on (5 min) — do this first
+The self-chat design assumes **every message in a note-to-self thread carries `is_from_me: true`**,
+because there is no other party. That is reasoned from WhatsApp's data model, **not measured** — no
+self-chat has ever been read by this tooling, and it cannot be from a cloud session.
+
+Open WhatsApp on the phone, send two or three messages in your own thread, then:
 ```bash
 whatsapp-cli --json session status
-whatsapp-cli --json chat list --limit 3
-whatsapp-cli --json chat find <your own number>      # the JID you need next
-whatsapp-cli message send "<that chat>" "test from Vanessa"
+whatsapp-cli --json chat find "<your own number>"       # the self-chat's name/JID
+whatsapp-cli --json message get "<that chat>" --after 2026-09-01T00:00:00Z | head -40
 ```
-**Check:** the test message arrives on the phone. Keep the JID from `chat find` — it becomes
-`allowFrom` in `whatsappInboxState`.
+Read `is_from_me` on the rows:
+- **All `true`** → §5a is correct as written. Build it.
+- **Anything that distinguishes the two sides** — a `device_id`, a `from_device`, a differing
+  `sender` — → say so. That field is a better discriminator than a text marker, and §5a gets
+  *simpler*, not harder.
 
-### C5. Create `vanessa-whatsapp-inbox` **disabled**, run once by hand (10 min)
-Spec: `integrations/mac-task-specs.md` §5. Polls every 10 minutes under claude-runner once enabled.
-- One allow-listed sender — **Steven**. Everything else logged as ignored.
+**Check:** you have the self-chat's name/JID. It becomes both `chatName` and `allowFrom` in
+`whatsappInboxState`.
+
+### C4b. Prove the round trip, screen unlocked (5 min)
+```bash
+whatsapp-cli message send "<that chat>" "[V] test from Vanessa"
+```
+**Check:** it arrives in your own WhatsApp thread on the phone, with the `[V] ` marker visible.
+
+That marker is not decoration. In a self-chat, Vanessa's replies and your messages are
+indistinguishable — same sender, same `is_from_me`, same thread — so the marker is how the task knows
+which is which, and the reason it will not sit answering its own replies. **Cost, stated plainly: if
+you ever type a message starting with `[V] `, it is ignored.**
+
+### C5. Seed `whatsappInboxState`, then create the task **disabled** (10 min)
+Spec: `integrations/mac-task-specs.md` **§5a** — the self-chat amendment, not §5. The paste-ready
+prompt is in §5a. Polls every 10 minutes under claude-runner once enabled.
+
+Seed the state document first, or the task has no cursor and no breaker:
+```json
+{"v": {
+  "chatName": "<the self-chat name from C4>",
+  "allowFrom": "<your own JID from C4>",
+  "selfChat": true,
+  "lastSeenTime": "<now, ISO-8601 UTC>",
+  "lastSeenPk": <the newest pk you saw in C4>,
+  "pending": [],
+  "recentOutbound": [],
+  "sentToday": {"date": "2026-09-23", "count": 0}
+}}
+```
+
+Unchanged from §5 and not negotiable:
+- One allow-listed sender — **you**. Everything else logged as ignored.
 - **No group chats. No `monitor auto-reply`** — it shells out to `claude -p` on its own, outside the
   handler and outside the HALT list.
 - **No `export`** into the vault, the brain, the vector index or the knowledge graph.
+- The HALT list applies exactly as on iMessage.
 
-**Check:** the deck's "Reach Vanessa" row can only stop saying *"spec written · Mac install pending ·
-not yet live"* once a real manual run exists.
+**The three things that keep a self-chat from looping**, because this is the part that can actually
+cost you something:
+1. **Per-poll cap of 3.** A runaway answers 3 messages per 10 minutes, not an unbounded burst.
+2. **Daily ceiling of 20 sends.** At 20 it stops for the day and tells you *on iMessage*, not on
+   WhatsApp. Twenty is roughly twice a heavy day of real use — **if you ever see that message, read
+   it as a bug, not a busy day.**
+3. **`lastSeenPk` is monotonic** and is advanced past Vanessa's own sends immediately after she
+   sends, so her outbound is behind the cursor before the next poll starts.
+
+Each is independent of the `[V] ` marker. Two would have to fail together before a loop reaches your
+phone more than three times.
+
+**Check:** run it by hand once with one message waiting. Expect exactly one inbound and one outbound
+`channel:"whatsapp"` item in `agentInbox`, `sentToday.count` at 1, and `lastSeenPk` advanced past your
+own message *and* past Vanessa's reply. Then enable it.
+
+The deck's "Reach Vanessa" row can only stop saying *"spec written · Mac install pending · not yet
+live"* once that run exists.
 
 ---
 

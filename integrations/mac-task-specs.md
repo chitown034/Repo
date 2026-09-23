@@ -489,6 +489,200 @@ Mac, since nothing in this repo has ever run on one.
 
 ---
 
+## 5a. `vanessa-whatsapp-inbox` — SELF-CHAT MODE (Steven's decision, 2026-09-23)
+
+**Supersedes the transport half of §5. Everything else in §5 — the handler, the HALT list, the
+`agentInbox` shapes, the route gate, the model seat — is unchanged.**
+
+Steven chose to link **his own personal WhatsApp** rather than a dedicated number, after being told
+what it costs. He reaches Vanessa in his **own "Message Yourself" thread**: he types there, she
+answers there. This file is the amendment that makes that work, because §5 as written **cannot** run
+in a self-chat — and the reason it cannot is also the reason this mode needs a circuit breaker.
+
+### The two things that change, and why
+
+**1. `is_from_me` stops discriminating.** §5 keeps only rows with `is_from_me: false`. In a
+note-to-self thread there is no other party — *every* message is from Steven, so that filter drops
+all of them and Vanessa never answers. The filter must invert.
+
+**2. Which means Vanessa's own replies look exactly like Steven's messages.** She sends as him, into
+the same thread, and they come back on the next poll carrying `is_from_me: true` and
+`sender == allowFrom` just like his. Left alone, she answers her own reply, then answers that, and
+the only thing that stops it is a WhatsApp rate limit on **his personal number**.
+
+So this mode is not "§5 with a flag flipped". It is §5 with the sender check replaced by an
+**authorship marker**, plus a breaker that bounds the damage if the marker ever fails.
+
+### Before anything depends on it — settle the assumption (Steven, one command)
+
+The `is_from_me`-is-always-true claim is reasoned from WhatsApp's data model, **not measured** — no
+self-chat has ever been read by this tooling, and it cannot be from a cloud session. Settle it first:
+
+```bash
+whatsapp-cli --json chat find "<your own number>"      # the self-chat's name/JID
+whatsapp-cli --json message get "<that chat>" --after 2026-09-01T00:00:00Z | head -40
+```
+
+Read `is_from_me` on the rows. **All `true`** → this amendment is correct, build it. **Anything that
+distinguishes the two sides** (a `device_id`, a `from_device`, a differing `sender`) → say so; that
+field is a better discriminator than a text marker and this amendment gets simpler, not harder.
+
+### The marker
+
+Every outbound Vanessa sends in this thread begins with, exactly:
+
+```
+[V] 
+```
+
+A three-character ASCII sentinel and one space. Chosen because it survives WhatsApp's own text
+handling, is visible to Steven so he can see at a glance which side wrote what, and is not something
+he would type by accident. **If Steven types a message starting with `[V] `, it is ignored** — that
+is the documented cost of the marker, and it is why the marker is not a lone word like "Vanessa".
+
+### Reads — replaces §5's Reads row
+
+`whatsappInboxState` gains three fields:
+
+```
+{v:{
+  chatName,                      // the self-chat, from `chat find`
+  allowFrom,                     // Steven's own JID — still checked, still not sufficient alone
+  selfChat: true,                // this mode is on; absent or false means §5 applies unchanged
+  lastSeenTime, lastSeenPk,      // unchanged
+  pending: [{id,text,attempts}], // unchanged
+  recentOutbound: [<last 20 outbound texts, newest first>],   // NEW — echo detection
+  sentToday: {date:"YYYY-MM-DD", count:<int>}                 // NEW — the circuit breaker
+}}
+```
+
+Run `monitor since <lastSeenTime> --chat "<chatName>"` as before, then keep a row **only if all five
+hold**:
+
+1. `sender == allowFrom` — unchanged from §5, and still first.
+2. `is_from_me == true` — **inverted** from §5. In a self-chat this is what Steven's messages look like.
+3. `pk > lastSeenPk` — strictly greater. Never `>=`, or the last message is reprocessed every poll.
+4. `text` does **not** start with `[V] `.
+5. `text` does not exactly match any entry in `recentOutbound`.
+
+Anything failing 4 or 5 is logged as `ignored — own reply` and **never** answered. Anything failing 1
+is logged as `ignored — not allow-listed`, as in §5.
+
+### The circuit breaker — three layers, and the point of each
+
+A marker is a *correctness* control. These are *blast-radius* controls, and they exist because layer
+one is new code that has never run against a real thread.
+
+**Layer 1 — per-poll cap.** Answer at most **3** kept messages in one poll. If more arrived, answer
+the **newest 3** and log the rest as `skipped — per-poll cap`. A runaway loop then costs 3 messages
+per 10 minutes, not an unbounded burst.
+
+**Layer 2 — daily send ceiling.** Before every send, increment `sentToday`. Roll it over when
+`date` is not today. **At 20, stop sending for the rest of the day**, write
+`agentInbox.channels.whatsapp = "send ceiling reached — see whatsappInboxState.sentToday"`, and tell
+Steven **on iMessage**, not on WhatsApp. Twenty is roughly twice a heavy day of real use and far
+below anything WhatsApp would act on, so if the ceiling is ever hit the correct reading is **a bug,
+not a busy day**.
+
+**Layer 3 — advance the cursor before the next read, including over Vanessa's own sends.** After
+sending, re-read the thread's newest `pk` and set `lastSeenPk` to it, so her own outbound is already
+behind the cursor when the next poll starts. The marker should catch it anyway; this is the belt to
+its braces. `lastSeenPk` is **monotonic** — never write a value lower than the stored one, whatever
+the read returns.
+
+Each layer is independent. Two would have to fail together before a loop reaches Steven's phone more
+than three times.
+
+### Sends — replaces §5's send line
+
+```
+whatsapp-cli message send "<chatName>" "[V] <text>"
+```
+
+Parts of at most 1,500 characters as in §5, and **the marker leads every part**, not just the first —
+a continuation that arrives without it is indistinguishable from a new message from Steven. Append
+each part's exact sent text to `recentOutbound` (keep 20, newest first) **before** the next send, so
+echo detection cannot miss a part that lands out of order.
+
+Failure handling is §5's, unchanged: a non-zero exit (no GUI session, screen locked) keeps the reply
+in `pending` as `status:"draft — send pending"`, retries on the next three polls, then marks it
+`failed` and tells Steven on iMessage.
+
+### Paste-ready prompt — replaces §5's Prompt in full
+
+> Self-test first: `whatsapp-cli --json session status`. On any error, write
+> `agentInbox.channels.whatsapp = "error — <verbatim>"` and stop.
+>
+> Read `whatsappInboxState`. If `selfChat` is not `true`, stop and report that this prompt is the
+> self-chat prompt but the state document is not in self-chat mode — do not guess which is right.
+>
+> Roll `sentToday` over if its `date` is not today's. **If `sentToday.count >= 20`, send nothing for
+> the rest of the day**: write `agentInbox.channels.whatsapp = "send ceiling reached — see
+> whatsappInboxState.sentToday"`, tell Steven on iMessage (not on WhatsApp), and stop. A ceiling hit
+> is a bug, not a busy day.
+>
+> Run `whatsapp-cli --json monitor since <lastSeenTime> --chat "<chatName>"`. Keep a row only if ALL
+> of: `sender == allowFrom`; `is_from_me == true`; `pk > lastSeenPk` (strictly); `text` does not start
+> with `[V] `; and `text` does not exactly match any entry in `recentOutbound`. Log a row failing the
+> last two as `ignored — own reply` and one failing the first as `ignored — not allow-listed`. Never
+> reply to either.
+>
+> **Answer at most the newest 3 kept messages**; log any others as `skipped — per-poll cap`.
+>
+> For each, do exactly what `vanessa-imessage-inbox` does with an iMessage from Steven: answer as
+> Vanessa with the AI team; a HALT-list item (licensed decision, client send, credential, money)
+> becomes a Needs-Steven packet, not an attempt; queue what you cannot answer to `vanessaResearch`.
+>
+> Reply with `whatsapp-cli message send "<chatName>" "[V] <text>"` in parts of at most 1,500
+> characters, **the `[V] ` marker leading every part**. Before each send, append that part's exact
+> sent text to `recentOutbound` (keep the newest 20) and increment `sentToday.count`. If a send exits
+> non-zero, keep the reply in `pending` as `status:"draft — send pending"`, retry on the next three
+> polls, then mark it `failed` and tell Steven on iMessage.
+>
+> After sending, re-read the thread's newest `pk` and set `lastSeenPk` to it so your own outbound is
+> behind the cursor. `lastSeenPk` is **monotonic — never write a value lower than the stored one.**
+> Advance `lastSeenTime` the same way. Write `agentInbox` (merge, newest 200) and
+> `whatsappInboxState`. Reply in one line: read, answered, pending, ignored, skipped, sentToday.
+
+### What this mode does not change
+
+- **The HALT list.** A licensed decision, a client send, a credential or anything that spends money
+  is a Needs-Steven packet, exactly as in §5.
+- **No group chats. No `monitor auto-reply`** — it shells out to `claude -p` on its own and bypasses
+  the handler, the HALT list and the log.
+- **No `export`** into the vault, the brain, the vector index or the knowledge graph.
+- **The task is created disabled** and enabled only after one successful manual run.
+
+### The cost Steven accepted, recorded here so it is not rediscovered as a finding
+
+Reading a self-chat needs **Full Disk Access**, which is an OS-level grant, not a per-chat one.
+`ChatStorage.sqlite` is his **entire personal WhatsApp history in plaintext SQLite**, and once
+Terminal and the runner's launchd context hold FDA, anything running as him on that Mac can read all
+of it. The `--chat` scoping above is enforced *inside the tool*; it does not narrow what the OS
+opened. If clients ever message him on WhatsApp, that history includes client PII — a compliance
+surface for an MLO, not only a privacy one.
+
+He was told this before choosing, and chose it. **It is not a finding and not an open item.** Two
+things that reduce it, both his to do and neither a blocker:
+
+- **Audit what else already holds Full Disk Access** on that Mac before granting it to two more
+  things (System Settings → Privacy & Security → Full Disk Access). The OSINT tooling F-E8-61 flagged
+  is the specific worry.
+- **FileVault on**, so the history is not readable from the disk at rest.
+
+**Send-side risk is close to nil in this mode**, and that is worth stating because it is the fear
+this design usually attracts: every outbound goes to his own note-to-self thread. WhatsApp's
+automated-messaging enforcement targets unsolicited outbound *to other people*. Nothing here ever
+messages anyone but himself.
+
+---
+
+*Written 2026-09-23 after Steven chose "personal WhatsApp, message-yourself" over a dedicated number.
+Nothing in this file has run. The `is_from_me` assumption is reasoned, not measured — the probe at the
+top of this section is the first thing to do, and it may simplify everything below it.*
+
+---
+
 ## 6. `voice-reply-render` + `vanessa-imessage-inbox` — AMENDMENTS so Vanessa speaks off the dashboard
 
 Both tasks already exist, are installed, and run `*/10 * * * *` with `lastStatus ok`. Neither is
