@@ -8,9 +8,25 @@ an account change, or a decision. The corrected prompts and the checks that prov
 written; each line names the file. Everything else from today is either done or queued to the
 integrator.
 
-## Disclosure — read this one first
+## Disclosure — DECIDED 2026-09-23, kept here as the record
 
-0. 🔴 **15 named client leads were published in the Command Deck and are still in its version
+0. ✅ **RESOLVED BY STEVEN, 2026-09-23 — the 15 client names stay on the lead board, in full.**
+   Asked to choose between label form (`J. Whitfield`), first-name-plus-last-initial and full names,
+   he chose **full names**, and chose to recover exactly the 15 rows removed earlier that day rather
+   than re-enter them, with Zoho filling in from here. Live in **Command Deck v151**; the artifact is
+   private (`readable by only you`, confirmed at publish). Recorded as a dated entry in
+   `context/decisions.md`, which also scopes it: a **name and a stage** is the whole of what was
+   agreed — no address, loan amount, rate, credit detail, account number or document identifier joins
+   them, and the label rule still governs every other surface, the ISA Portal included.
+   **Nothing here needs doing.** Two consequences he accepted, recorded so they are not a surprise
+   later: the names travel into every published artifact version and into the weekly deck backups
+   under `Documents/AI-Ecosystem-Backups/`, and a version already published cannot be unpublished —
+   an agent can delete a whole artifact but not one version of it. If the link is ever shared, the
+   names go with it. The original finding, and the reasoning for the removal, are below, unchanged.
+
+   <details><summary>The original disclosure, as written 2026-09-23 before the decision</summary>
+
+   🔴 **15 named client leads were published in the Command Deck and are still in its version
    history.** Each was a real first+last name with a stage and two timestamps, pasted from the Zoho
    kanban on 2026-09-14 and baked into the page's own source as `ZH_SEED`. Because no `zohoLeads`
    document exists, the board fell back to that seed, so the names rendered for anyone who could
@@ -28,6 +44,8 @@ integrator.
    decide whether those are purged; (c) decide whether anyone outside you has ever had access to the
    artifact link, which determines whether this was an exposure or only a latent one.
    · F-P4-01.
+
+   </details>
 
 ## Clocked — in deadline order
 
