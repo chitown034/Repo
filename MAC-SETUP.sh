@@ -443,8 +443,17 @@ if should_run whatsapp-cli; then
       else ok=0; failed "CPython 3.12 unavailable — whatsapp-cli is a SyntaxError on 3.11 (f-string backslash, whatsapp_cli.py:1232). Not installing a broken build."; fi
     fi
     if [ "$ok" -eq 1 ]; then
-      run mkdir -p "$BINDIR" && run ln -sf "$WA_DIR/.venv/bin/whatsapp-cli" "$BINDIR/whatsapp-cli" || true
-      installed "whatsapp-cli (Python 3.12 venv) + symlink in $BINDIR"
+      # Was `run mkdir -p … && run ln -sf … || true` (SC2015). The warning's literal case is harmless
+      # here — C is `true` — but the line was wrong for a second reason the warning does not name: it
+      # then reported "+ symlink in $BINDIR" whether or not the symlink existed. Two independent
+      # best-effort commands, then say what actually landed. R3, 2026-09-23.
+      run mkdir -p "$BINDIR" || true
+      run ln -sf "$WA_DIR/.venv/bin/whatsapp-cli" "$BINDIR/whatsapp-cli" || true
+      if [ "$DRY_RUN" -eq 1 ] || [ -L "$BINDIR/whatsapp-cli" ]; then
+        installed "whatsapp-cli (Python 3.12 venv) + symlink in $BINDIR"
+      else
+        installed "whatsapp-cli (Python 3.12 venv) — built, but $BINDIR/whatsapp-cli was NOT created; call it by its full path until that is fixed"
+      fi
     else failed "whatsapp-cli install"; fi
   else failed "uv missing"; fi
   needs_steven "A DEDICATED WhatsApp number linked in the WhatsApp desktop app — never Steven's client-facing one; Full Disk Access for the shell and the runner, Accessibility for System Events; then run the checks by hand and create vanessa-whatsapp-inbox DISABLED (F-FR5b-01, integrations/mac-task-specs.md §5)."
@@ -546,9 +555,17 @@ if should_run cli-anything; then
   # the first cli-hub command so nothing in this run leaks it.
   export CLI_HUB_NO_ANALYTICS=1
   CA_DIR="$HOME/Applications/CLI-Anything"
-  if have cli-hub; then skipped "cli-hub $(ver cli-hub --version)"
+  # uv_tool_present, not `have`: pipx's shim lands in $BINDIR, which is not always on PATH.
+  if uv_tool_present cli-hub; then skipped "cli-hub $(ver cli-hub --version)"
   elif have pipx || [ "$DRY_RUN" -eq 1 ]; then
-    if run pipx install cli-anything-hub; then installed "cli-anything-hub (cli-hub) 0.4.1 verified"
+    # The old message read "cli-anything-hub (cli-hub) 0.4.1 verified" on a run that checked neither the
+    # version nor that anything had landed — 0.4.1 was verified in a cloud sandbox on 2026-09-22, not
+    # here. Report what THIS run can see, the way codeburn/omniroute/headroom already do. R3, 2026-09-23.
+    if run pipx install cli-anything-hub && { [ "$DRY_RUN" -eq 1 ] || uv_tool_present cli-hub; }; then
+      # `|| true` inside the substitution: a bare assignment takes the substitution's status, so with
+      # `set -e` a missing cli-hub (the dry-run case) would abort the script here.
+      _chv=$(ver cli-hub --version || true)
+      installed "cli-anything-hub (cli-hub)${_chv:+ $_chv}"
     else failed "pipx install cli-anything-hub"; fi
   else failed "pipx missing"; fi
   # Verified non-interactive 2026-09-22, both exit 0. 'marketplace add' is idempotent and may exit
@@ -659,7 +676,20 @@ if should_run cli-anything-harnesses; then
         for p in $CAH_PKGS; do
           run ln -sf "$CAH_DIR/.venv/bin/cli-anything-$p" "$BINDIR/cli-anything-$p" || true
         done
-        installed "eight harnesses (browser engine + homes, showingtime, showami, skyslope, zipforms, lofty, zoho) + symlinks in $BINDIR"
+        # A successful `uv pip install` is not eight working console scripts, and eight `ln -sf … || true`
+        # are not eight symlinks. Both were asserted in the same breath before. Count them. R3, 2026-09-23.
+        cah_built=0; cah_linked=0
+        for p in $CAH_PKGS; do
+          [ -x "$CAH_DIR/.venv/bin/cli-anything-$p" ] && cah_built=$((cah_built + 1))
+          [ -L "$BINDIR/cli-anything-$p" ] && cah_linked=$((cah_linked + 1))
+        done
+        if [ "$DRY_RUN" -eq 1 ]; then
+          installed "eight harnesses (browser engine + homes, showingtime, showami, skyslope, zipforms, lofty, zoho) + symlinks in $BINDIR"
+        elif [ "$cah_built" -eq 8 ]; then
+          installed "eight harnesses (browser engine + homes, showingtime, showami, skyslope, zipforms, lofty, zoho); $cah_linked/8 symlinked into $BINDIR"
+        else
+          failed "uv pip install reported success but only $cah_built/8 console scripts exist in $CAH_DIR/.venv/bin — do not treat the harnesses as installed; see $LOG_FILE"
+        fi
         # F-P1-02: the harness spawns `npx -p @apireno/domshell domshell-proxy` with no version pin, and
         # is_available() makes a SECOND unpinned npx call on every invocation. Pre-install the
         # lockfile-pinned copy so runtime/bin/npx answers both locally instead of hitting the registry.
