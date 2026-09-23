@@ -4,9 +4,47 @@
 **59** tasks at the 2026-09-23 count — the live runnerStatus doc, syncedAt 2026-09-22T20:10:15Z, holds 59; "60" was stale). Cron is **Mac local / Pacific**, as the runner stores it; UTC is given for anyone
 reading from the cloud. September 2026 is PDT = UTC−7.
 
+> **Re-read 2026-09-23 (R3).** The **count is still 59** and every one of the five task names below is
+> still absent from it, so the specs are still specs. The `syncedAt` quoted above has moved on, though:
+> the live document now stamps `2026-09-23T02:10:00Z` (version 12), and its `updatedAt` is
+> `2026-09-22T19:05:47`. Quote the count, not that stamp — it advances on every sync.
+> `docs/inventory/mac-runner-status.md` is an older copy of the same document (`syncedAt`
+> `2026-09-22T04:05:04Z`); where the two differ, the live one wins. On everything checked here they
+> agree: identical 59 names, identical crons, the same 18 tasks with `lastEnd: null`.
+
 Slot hygiene: `brain-deck-sync` occupies `:20` of every hour 07–22, `r2-lead-response-watchdog`
 holds `:10` and `:40` of 07–19, `lead-triage-daily` holds 11:33 weekdays, `showing-sync` holds
 08:15/12:15/16:15. The minutes below avoid all of them.
+
+> **Correction 2026-09-23 (R3) — that four-task list is not the whole of what holds a minute, and the
+> proposed slots were checked only against it.** Re-derived by expanding every one of the 59 live crons
+> (`runnerStatus`, read 2026-09-23, `syncedAt` `2026-09-23T02:10:00Z`) and intersecting minute **and**
+> hour. The four rows above are correct and nothing below collides with them. But four more recurring
+> tasks hold minutes this list never mentioned — `fabric-deck-sync` `:05` of the odd hours 07–21,
+> `r13-appointment-prep` `:50` of the even hours 06–18, `openterminal-remote-queue` `:45` of 06–21,
+> `local-bridge-queue` `:25` of 06–21, `vanessa-research-queue` `:30` of 07–21, `isa-comms-bridge-local`
+> `:37` of 07–21 — and three of the five specs below land on one:
+>
+> | Spec | Proposed (PT) | Lands on | Which slots |
+> |---|---|---|---|
+> | §1 `lofty-crm-sync` | `5 7,13,19 * * *` | `fabric-deck-sync` (`5 7-21/2 * * *`) | **all three** — 07:05, 13:05, 19:05 |
+> | §2 `zoho-crm-sync` | `50 6,11,16,21 * * *` | `r13-appointment-prep` (`50 6-19/2 * * *`) | 06:50 and 16:50 (11:50, 21:50 are clear) |
+> | §3 `health-notion-sync` | `45 7,21 * * *` | `openterminal-remote-queue` (`45 6-21 * * *`) | **both** — 07:45 and 21:45 |
+> | §4 follow-on `cli-anything-validate` | `30 8 * * 0` | `vanessa-research-queue` (`30 7-21 * * *`) | Sunday 08:30 |
+> | §5 `vanessa-whatsapp-inbox` | `4-59/10 * * * *` | nothing | **clear — the §5 claim re-verified and holds** |
+>
+> The `*/5` and `*/10` pollers (`vanessa-discord-inbox`, `vanessa-imessage-inbox`, `voice-reply-render`)
+> overlap almost everything by construction and are not counted as collisions here.
+>
+> **Whether this matters is Steven's call, and it is not a blocker.** The runner's own document carries
+> `running` and `waiting` arrays, so a second task due on the same minute queues rather than fails —
+> that is read off the document's shape, not from runner source or a live observation, and it has not
+> been tested. What *is* wrong is the sentence above promising the minutes avoid the occupants, and the
+> Registration checklist's step 1 telling whoever registers them to "confirm no minute collides with an
+> existing task": follow step 1 tonight and you will find three collisions and no guidance. Clear
+> alternatives, if you want them: §1 → `7 7,13,19`, §2 → `52 6,11,16,21`, §3 → `47 7,21`,
+> §4 follow-on → `32 8 * * 0`. Each moves 2 minutes, leaves every UTC line and every freshness
+> calculation below unchanged, and lands on a minute no live task holds.
 
 Every task ends by writing its honest status doc. **A task that cannot reach its system writes the
 failure and stops — it never writes a number it did not receive.**
@@ -68,6 +106,20 @@ the deck must say "awaiting first Lofty sync — bridge installed, API key + fir
 > lead marked `local:true` that Zoho did not return with `local:true` intact, recompute `counts` over
 > the merged array, and write `zohoLeads`, `zohoDeals` and `zohoSync` in the exact §4 shapes. Reply
 > in one line: status, leads, deals, total amount, any unmapped stage names.
+
+> **Correction 2026-09-23 (R3) — there is no Sep 14 paste left to leave alone.** The prompt above tells
+> the task to preserve `zohoLeads` and `zohoDeals`. Both are **absent from the live store**: a full
+> listing of collection `state` on 2026-09-23 returned **175 documents** and neither is among them
+> (`zohoSync` *is*, version 1, still `status:"blocked"` with the 403 of 2026-09-22T08:17Z). So on a 403
+> the instruction is a no-op — harmless, and still the right instinct — but on the first 200 the task
+> is **creating** those two documents, not merging into them, and "carry forward every existing lead
+> marked `local:true`" will find nothing to carry. Whoever runs it the day the profile toggle lands
+> should expect a fresh board, and should not read an empty carry-forward as a merge that went wrong.
+> Same footing, checked the same way: `loftySyncLog`, `zohoSyncLog`, `healthSyncLog`, `cliAnythingLog`
+> and `whatsappInboxState` are all absent too — correct, since no task has ever run to append a line.
+> Present and matching their specs: `loftyLeads` (v1, error state), `healthNotionSync`
+> (v2, `status:"awaiting-first-phone-run"`, one of the six legal values), `appleHealth`, `leadTriage`,
+> `leadResponse`, `isaKpi`, `agentInbox`, `voiceReplyQueue`, `voiceReplyStatus`.
 
 **Cloud variant, honestly:** a cloud routine can re-test Zoho on the same cadence, but it still must
 not be the writer — and the reason changed on 2026-09-22. The old reason given here, that an
@@ -409,7 +461,10 @@ made. Shape: `docs/data/cliAnythingStatus.doc.json` (template). The task that fi
 ---
 
 ## Registration checklist (whoever adds these to the runner)
-1. Add each task with the cron above; confirm no minute collides with an existing task.
+1. Add each task with the cron above; confirm no minute collides with an existing task. **Read the
+   2026-09-23 correction at the top of this file before you do — three of the five crons as written
+   collide with a live task, and the two-minute alternatives there are already checked clear.** This
+   step is the reason the collision matters: done honestly, it stops you.
 2. Add `OUTPUT_WATCH` rows: `{doc:"loftyLeads", label:"Lofty CRM import", task:"lofty-crm-sync", hrs:14}`,
    `{doc:"zohoSync", label:"Zoho CRM sync", task:"zoho-crm-sync", hrs:14}` and
    `{doc:"healthNotionSync", label:"Apple Health via Notion", task:"health-notion-sync", hrs:16}`.
@@ -420,6 +475,17 @@ made. Shape: `docs/data/cliAnythingStatus.doc.json` (template). The task that fi
 4. Run each new task **once, manually**, and record the result. A task that "exists" has not run.
 5. Only after 7 consecutive correct runs does a task graduate L1 → L2.
 6. WhatsApp: add the `whatsappInboxState` watch row above; the task stays disabled until Steven's first manual run and the dedicated number exist.
+
+**Re-checked against live state 2026-09-23 (R3) and still true — no action:** the five task names below
+are absent from the 59 (`runnerStatus`); `cliAnythingStatus` has never been written (absent from a
+175-document listing of collection `state`, so §4's deck line stands); `voiceReplyQueue` still holds
+exactly **one** item, `id: teststeve01`, `ts: 2026-09-12T22:01:44Z`, so §6's "one test item since
+2026-09-12" is literally accurate a week on; `voice-reply-render` and `vanessa-imessage-inbox` are both
+live at `*/10 * * * *` with `lastStatus: "ok"` as §6 says; the four slot-hygiene occupants and every UTC
+conversion in §§1–4 re-derived correct (PDT = UTC−7, including the two that cross midnight); §1's 14 h
+and §3's 16 h freshness thresholds both clear their widest run gap (12 h and 14 h) with margin. What was
+**not** re-checked here: any prompt text — those live only on Steven's Mac — and anything needing a live
+Mac, since nothing in this repo has ever run on one.
 
 ---
 

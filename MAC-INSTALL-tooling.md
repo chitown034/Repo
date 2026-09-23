@@ -117,7 +117,10 @@ kept verbatim, and neither is a router leaf — expect that check to list them.
   byte-identical). **Do not** install the whole plugin (`agent-skills@addy-agent-skills`, sandbox-verified
   0.6.10): it ships an `interview-me` that collides by name with the brain's own `interview-me`.
 - **Note:** `../../references/*.md` links inside two vendored files point at upstream (header says so).
-- **Keys:** none. **Check:** `skills-refresh` next Sunday lists nine new skills as installed-but-not-on-the-deck.
+- **Keys:** none. **Check:** `skills-refresh` next Sunday lists the **nine skills FR5a vendored this
+  engagement** (the six above plus find-skills, apple-design, karpathy-coding-principles) as
+  installed-but-not-on-the-deck. Nine is that set, not the repo total: `.claude/skills/` holds **22**, and
+  both scripts now enumerate the directory rather than the nine (F-P6-03).
 
 ## 7. Find Skills (vercel-labs) · 8. Apple Design (emilkowalski) — vendored, MIT
 - **7:** `.claude/skills/find-skills/SKILL.md` — how to search skills.sh / `npx skills find` before building.
@@ -248,14 +251,17 @@ software. Nothing to install. Registered in `references/index.md`; consult it wh
   it wants checkpoints nobody downloaded. That one failure is not a defect; the other seven are the proof.
 - **Keys:** none for the public checkpoints; `HF_TOKEN` only to push a fine-tune or if the Hub rate-limits.
 - **Check:** `~/laya-venv/bin/python -c "import laya; print(laya.__version__)"` → `0.3.6`.
-  Nothing in `MAC-SETUP.sh` installs this and nothing in `mac-verify.sh` checks it — it is an advisory step
-  (`MAC-SETUP.sh --only laya` prints the command, it does not run it). That is deliberate given the verdict
-  below; the commands above are what to paste the day the verdict changes.
+  Nothing in `MAC-SETUP.sh` installs this — it is an advisory step (`MAC-SETUP.sh --only laya` prints the
+  command, it does not run it), and that is deliberate given the verdict below; the commands above are what
+  to paste the day the verdict changes. **Corrected 2026-09-23 (R3, F-P6-05):** `mac-verify.sh` now *does*
+  report on it, in its `advisory-only tools` section — it runs the import above against `~/laya-venv` and
+  prints `laya (optional)`. Absent is `info`, never a failure: nothing depends on it.
 - **Security:** runs locally; checkpoints are safetensors (no pickle execution). Never upload a fine-tuning set
   containing client PII to Kaggle or the Hub — that is PII leaving the local model (HALT).
 
 ## Order of operations on the Mac
-1. Pull the repo — the nine vendored skills load with it; run `skills-refresh` once so the deck's toolkit
-   table learns about them. 2. CodeBurn (baseline the spend). 3. Graphify + fix the README gaps in §2.
+1. Pull the repo — all **22** vendored skills in `.claude/skills/` load with it (nine of them added by
+   FR5a this engagement); run `skills-refresh` once so the deck's toolkit table learns about them.
+   `./mac-verify.sh` checks the frontmatter of every one of the 22, not a hard-coded nine (F-P6-03). 2. CodeBurn (baseline the spend). 3. Graphify + fix the README gaps in §2.
 4. Claude Code Setup, one read-only pass. 5. Headroom on one report seat, measured against step 2.
 6. Everything else only on a named need. Never Strix, Agent Reach or any plugin without the Needs-Steven packet.
