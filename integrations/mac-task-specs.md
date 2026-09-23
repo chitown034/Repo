@@ -559,8 +559,94 @@ has held one test item since 2026-09-12 for exactly this reason.
 > `deliver` values other than `"imessage"` are not implemented. Record
 > `delivered: {channel: <value>, ok: false, error: "channel not implemented"}` and move on.
 
+### 6c. Append to `voice-reply-render` — the email path (NEW 2026-09-23, R4)
+
+**Read this before pasting.** Email is the second channel on which Vanessa can genuinely speak, and
+the staging call was proven on 2026-09-23: `inkbox_email_attachment_upload` accepted real clip bytes
+as `audio/mpeg` and returned a handle. **But nothing writes an email queue item today, because there
+is no email inbox task** — `vanessa-imessage-inbox`, `vanessa-discord-inbox` and
+`vanessa-whatsapp-inbox` exist; there is no `vanessa-email-inbox`, and nothing in the repo reads the
+`jasmine@inkboxmail.com` mailbox. So pasting this block is safe and correct and changes nothing
+until that task exists. Creating it is Steven's call — see `docs/NEEDS-STEVEN-R4.append.md`.
+
+> **If `deliver` is `"email"`:** the reply is answered in text first, exactly as on every other
+> channel, and the clip is attached to that reply. Do this only after `voiceReplyStatus.items[<id>]
+> .status = "ready"`, and only for a thread Steven himself is on — the same allow-list rule as
+> iMessage, and never a client, a group or an unknown address.
+>
+> 1. **Concatenate the parts into ONE clip**, as for iMessage. One attachment per reply.
+> 2. Stage it: `inkbox_email_attachment_upload` with `filename: "vanessa-reply.mp3"` and
+>    `source: {kind: "base64", content_type: "audio/mpeg", data: <standard base64 of the MP3 bytes>}`.
+>    Same base64 rules as §6b — **no data-URI prefix**, no URL-safe alphabet, `=` padding present.
+>    Inline base64 is bounded by "the whole MCP request must stay under 1 MiB"; a 27-second clip is
+>    about 141 KiB of base64, so a reply at the spec's 700-character ceiling is nowhere near it.
+> 3. **Verify the staged file, which you CAN do on this channel.** The response is
+>    `{media_handle, filename, content_hash, content_type, size_bytes, expires_at}`, and unlike the
+>    iMessage path `content_hash` here is a **real SHA-256 of the file bytes** — measured, not
+>    assumed. Check `content_hash` against your own sha256 of the clip AND `size_bytes` against your
+>    byte count. If either differs, the staged file is not your clip: record the error and do not
+>    send. The handle is short-lived (`expires_at` comes back the same run) — **stage and send in
+>    one run**, never across polls.
+> 4. Send it: `inkbox_email_reply` with the item's `replyTo` as `message_id`, the original sender in
+>    `approved_recipients.to`, `reply_all: false`, your text body, and
+>    `attachments: [{media_handle, filename, content_hash, content_type}]` — all four fields copied
+>    verbatim from the staging response. Never `reply_all` and never a `cc` or `bcc` you were not
+>    given.
+> 5. Record the outcome exactly as §6b does:
+>    `voiceReplyStatus.items[<id>].delivered = {channel: "email", at: "<actual UTC now>", ok: <bool>, error: "<verbatim, or null>"}`.
+>
+> Same failure rules as §6b: never silent, never fatal, never more than one retry, and `status`
+> stays `"ready"` so the dashboard can still play the clip.
+
+### 6d. Append to `voice-reply-render` — the link path for Discord and WhatsApp (NEW 2026-09-23, R4)
+
+**Read this before pasting, because it is easy to oversell.** This does **not** make Vanessa speak
+on Discord or WhatsApp. Neither channel can carry an audio file and neither ever will — that is
+settled in `vanessa-voice-everywhere.md` and nothing found on 2026-09-23 changed it. What this does
+is give a text reply on those channels a URL that Steven can tap to hear her. **The URL is private:
+it opens only in a browser already signed in to Steven's own account** — two unauthenticated
+fetchers were refused on 2026-09-23 — so it is useful to Steven and useless to anyone else, which
+is correct, because Steven is the only permitted recipient. Neither channel is connected today, so
+this block is inert until one of them is. Paste §6c first.
+
+> **If `deliver` is `"discord"` or `"whatsapp"`:** do not attempt to send audio. There is no media
+> send path on either channel. Instead publish the clip where a link can reach it, and let the inbox
+> task put that link in its text reply.
+>
+> 1. **Concatenate the parts into ONE clip**, as for iMessage.
+> 2. Write it to the relay artifact `https://claude.ai/artifact/EJnetbUCFscnDsDWFdp9Ti`, collection
+>    `clip`, document `<the queue item id>`, as
+>    `data:{v:{id, who, ts, durationSec, bytes, contentType:"audio/mpeg", text, audio}}` where
+>    `audio` is **standard base64 with no data-URI prefix** — same rule as every other channel.
+>    Pin the write with `if_version` when you are overwriting a document you read.
+> 3. Write the pointer: `clip/newest` = `{v:{id: "<the same id>", ts: "<actual UTC now>"}}`.
+> 4. **Prune in the same run.** List the `clip` collection and delete every clip document except the
+>    newest 10, leaving `clip/newest` alone. Ten matches the cap `voiceReplyQueue` already keeps, so
+>    a clip lives exactly as long as the queue item that made it. At about 145 KB a document that is
+>    ~1.45 MB at rest. Do not create a new artifact per reply — one artifact, written often.
+> 5. Record the outcome, and put the link in it so the inbox task can read it back:
+>    `voiceReplyStatus.items[<id>].delivered = {channel: <value>, at: "<actual UTC now>", ok: <bool>,
+>    link: "https://claude.ai/artifact/EJnetbUCFscnDsDWFdp9Ti#<the queue item id>", error: "<verbatim, or null>"}`.
+>
+> The inbox task appends that `link` to its text reply, in Steven's own words, e.g. `Heard version:
+> <link>`. It must say nothing that implies she spoke on the channel, and it must never send the
+> link to anyone but Steven.
+>
+> **What is not proven and must not be claimed:** that a signed-in browser plays the page. The bytes
+> were verified present, byte-identical and private on 2026-09-23; no browser was available, so page
+> load and playback were never observed. The first real tap is what settles it.
+
 ### What proves it worked
 
 Text Vanessa something that takes more than a sentence. Within ~20 minutes: a text reply, then her
 voice on the same thread. If only the text arrives, read `state/voiceReplyStatus` — `status` says
 whether it rendered, `delivered.ok` says whether it sent, and `delivered.error` says which failed.
+
+For §6c, the same test by email once an email inbox task exists: a written reply, with
+`vanessa-reply.mp3` attached. `delivered.channel` reads `"email"`, and a `content_hash` mismatch is
+the one failure that is the renderer's own fault rather than the channel's — it means the staged
+file was not the clip, and the send was correctly refused.
+
+For §6d there is nothing to hear. The proof is that `delivered.link` is present and that tapping it
+in a signed-in browser plays the clip. If it asks for a sign-in instead, that is the design working,
+not a fault — the link is private, and nobody but Steven can open it.

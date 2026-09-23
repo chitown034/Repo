@@ -18,7 +18,7 @@ attachment**, so it is a second channel where Vanessa can actually speak. Nothin
 |---|---|---|---|
 | **Command Deck** | **Speaks.** The page writes `voiceReplyQueue`, `voice-reply-render` renders, the deck plays her own audio with the face moving. | Unchanged. Every other channel is additive to this one. | — |
 | **iMessage** | Answers in **text, silently**. | **Her actual voice**, as a voice note on the same thread, ~1 poll after the text. §6a + §6b. | — Nothing. `inkbox_media_stage` accepts this exact encoder and the clip is 1.03 % of the 10 MiB cap. |
-| **Email** | Answers in text. Active identity, verified sending domain. | **Her actual voice**, as an MP3 attached to the reply. §6d. | — Nothing. `inkbox_email_attachment_upload` accepted `audio/mpeg` and returned a handle on 2026-09-23. |
+| **Email** | Answers in text. Active identity, verified sending domain. | **Her actual voice**, as an MP3 attached to the reply. §6c. | — Nothing. `inkbox_email_attachment_upload` accepted `audio/mpeg` and returned a handle on 2026-09-23. |
 | **Discord** | Nothing — the channel is not connected. | **Text, plus a link Steven can tap.** Not audio. | **Native audio.** `DISCORDBOT_CREATE_MESSAGE` is the only send tool available and has no file, attachment or audio parameter. Nothing in this system can attach a file to a Discord message. |
 | **WhatsApp** | Nothing — not installed. | **Text, plus a link Steven can tap**, once the channel exists at all. Not audio. | **Native audio.** `message send` is `whatsapp://send?phone=…&text=…` driven through System Events. That URL carries a phone number and a text string. There is no parameter an MP3 can travel in. |
 | **SMS** | Unavailable. | Unavailable. | **The whole channel.** `phone.assigned: false` and `sms_available: false` — the `jasmine` identity has no number. Not a fallback for anything. |
@@ -233,9 +233,9 @@ implemented and must not be implemented by guessing**; `voice-reply-render` reco
 already what §6b says and is the correct behaviour until one of the two paragraphs below is closed.
 
 **Amended 2026-09-23 (R4).** Two changes to that paragraph and nothing else in this section.
-`deliver: "email"` joins `"imessage"` as a channel that carries **real audio**, specified in §6d.
+`deliver: "email"` joins `"imessage"` as a channel that carries **real audio**, specified in §6c.
 `deliver: "discord"` and `deliver: "whatsapp"` remain **not implemented as audio and never will
-be** — the two findings below were re-read and stand exactly as written. §6c adds an optional
+be** — the two findings below were re-read and stand exactly as written. §6d adds an optional
 **link** for them: the renderer writes the clip to the relay artifact and the inbox task puts a URL
 in its text reply. That is a different thing from speaking, it is worth having only because the
 alternative on those channels is nothing at all, and it works only for Steven signed in.
@@ -391,14 +391,15 @@ deleting an artifact is Steven's call.
 
 1. Paste the prompt amendments in `integrations/mac-task-specs.md` §6 into `voice-reply-render`
    and `vanessa-imessage-inbox` on the Mac — §6a and §6b are the iMessage path and are the whole
-   of the original design; §6c (link) and §6d (email) are new and optional, in that order of
-   priority: **§6d before §6c**, because email gives real voice and the link does not.
+   of the original design and come first. **§6c (email) is the one to paste next** — it is the only
+   other amendment that makes her actually speak. **§6d (link) is last and optional**; it buys
+   Discord and WhatsApp a tappable URL and nothing more, and neither channel is connected today.
 2. Text Vanessa something that takes more than a sentence to answer.
 3. Within ~20 minutes: a text reply, then her voice on the same thread.
-4. For email (§6d), send her an email that takes more than a sentence to answer, and expect the
+4. For email (§6c), send her an email that takes more than a sentence to answer, and expect the
    same shape: a written reply, with `vanessa-reply.mp3` attached.
 5. Nothing to do for Discord or WhatsApp. Neither channel is connected, and neither will ever carry
-   her voice. If they are connected later, §6c gives them a link and nothing more.
+   her voice. If they are connected later, §6d gives them a link and nothing more.
 
 If the text arrives and the voice does not, read `voiceReplyStatus` — `status` says whether it
 rendered, `delivered` says whether it sent, and `error` says which of the two failed.
