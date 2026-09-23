@@ -43,7 +43,8 @@ instead of a store sweep, and most questions in a working day are repeats.
 | Signal | Threshold |
 |---|---|
 | A deck doc older than twice its task's cadence | Alert |
-| A task with **no completion recorded** for longer than its cadence | Alert — e.g. `brain-learn-daily`, last end 2026-09-15 on a daily cron |
+| A task with **no completion recorded** for longer than its cadence | Alert — e.g. `brain-weekly-verify`, last end 2026-09-14 on a Sunday cron, so the 09-20 gate never ran (`runnerStatus`, 2026-09-23 02:10 UTC) |
+| A task that reports **ok** while the document it owns has not moved | Alert — the silent no-write success, and the one this table used to miss. `openrouter-feeds-refresh` read `ok` on 2026-09-22 while `openrouterFeeds` had been frozen since 2026-09-13 (`feedFreshness`, 2026-09-23 00:50 UTC). Judge the doc stamp, never the task status |
 | A vector index whose `builtAt` predates its source's stamp | Alert — the confident-and-wrong failure mode |
 | A store the fabric count says is at **0** | Alert — e.g. the Drive folder, 0 files |
 
