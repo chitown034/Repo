@@ -1,0 +1,128 @@
+[
+  {
+    "id": "F-R1-01",
+    "severity": "high",
+    "area": "Cloud routines — the five FAILED/ABANDONED meta_mcp routines, root cause",
+    "finding": "All five failures share one cause and it is not in any prompt: the run never reached the prompt. ROUTINE_RUN_FAILURE_REASON_UNSPECIFIED is all the platform returns, so the cause had to be established from run timing and from two controls. The failures cluster on catch-up firings rather than natural cron slots. Rewriting five prompts would have fixed none of them.",
+    "evidence": "Ops Issue Review FAILED 2026-09-18T20:08:23Z->20:08:32Z (9.8s). Books Reconciliation FAILED 2026-09-18T22:01:29Z->22:01:39Z (9.2s). Both have Monday/Wednesday crons yet fired on a Friday, within two hours of each other. Rent-Buy-Wait ABANDONED 2026-09-21T15:08:09Z and Real Estate Weekly Brief ABANDONED 2026-09-21T15:08:42Z — 33 seconds apart, neither with a finished_at, though their crons are Monday 17:30 and 16:30. CONTROL 1: Project Risk Review, the same stock template with the same 11 connectors and the same claude-sonnet-5 model, fired on its own natural Tuesday slot 2026-09-22T18:07:22Z and SUCCEEDED in 24s. CONTROL 2: the feed-freshness watchdog has created_at == updated_at == 2026-09-22T14:36:17.549076Z, proving its prompt was never edited, and the same unchanged text went from FAILED (2026-09-22 16:12Z slot, per the commissioning brief) to SUCCEEDED (2026-09-23T00:18:51Z->00:25:56Z, 7m04s, two documents written).",
+    "fix": "No prompt change addresses this. Let natural slots fire and watch, or fire manually and watch — both were done here. Every run on a natural slot or a manual fire since 2026-09-22 has succeeded, so the transient has cleared. Recorded in routines/cloud-routine-repairs.md.",
+    "halt": false
+  },
+  {
+    "id": "F-R1-02",
+    "severity": "high",
+    "area": "wiki/dashboard-ops/index.md:36 and docs/CLOUD-WRITE-ARCHITECTURE.md:57 — the connector rule",
+    "finding": "The repo states as a blanket rule that 'a routine created by an agent stores no MCP connectors'. That is false as stated. A routine inherits the connectors of the session that created it. Agent-created routines on this account fall into two groups with opposite connector states, and the distinction is what decides whether a Gmail/Calendar/CRM prompt can work at all.",
+    "evidence": "list_triggers returns mcp_connections per routine, read live 2026-09-23 02:47Z across all 57 routines. The meta_mcp routines created by this ecosystem's CLI agents on 2026-09-22 (feed watchdog, Strava wrap guard, Pipeline Sync live, ISA ladder, ecosystem backup, backup verification watchdog, Weekly Loop + Self-Test) carry mcp_connections: [] — zero. The older meta_mcp batch (Real Estate Weekly Brief, Rent-Buy-Wait, Books Reconciliation, Ops Issue Review, Project Risk Review, Financial Summary, SEO Content Gap Audit, Morning Brief, Metrics Digest) each carry 11: Canva, Slack, You_com, Strava, Eromify, Notion, Claude_Code_Remote, Gmail, Context7, Google_Calendar, Composio. Steven's http_api routines carry 8-11.",
+    "fix": "Both files need the qualifier: connectors are inherited from the creating session, so a meta_mcp routine may or may not have them — check mcp_connections in list_triggers rather than assuming. Neither file is in R1's ownership (routines/**, always-on/README.md), so neither was edited. The correction is written up in full in routines/cloud-routine-repairs.md under 'The hypothesis I was given, and where it is wrong'.",
+    "halt": false
+  },
+  {
+    "id": "F-R1-03",
+    "severity": "high",
+    "area": "routines/mac-task-repairs.md §7(b) — the Real Estate Weekly Brief conclusion",
+    "finding": "The predecessor analysis concluded that Real Estate Weekly Brief 'cannot work as an agent-created routine, at all' because agent-created routines carry no connectors, and that this was 'a decision for Steven, not a prompt fix'. The premise does not hold for that routine: it has Gmail and Google Calendar attached right now. Two of its three sources were always available. Only the CRM was genuinely gone, and that is a prompt fix an agent can make.",
+    "evidence": "trig_01CjaMXrbMga1jPdJzUnwLUo, created_via meta_mcp, mcp_connections lists 11 connectors including Gmail (e8b12657-dc5c-43d7-85cb-9eff0a219e75) and Google_Calendar (f0a81c8e-d0b4-4139-97b8-460ea0a49b33), read live 2026-09-23 02:47Z.",
+    "fix": "Prompt rewritten in place (see F-R1-04) rather than escalated to Steven. mac-task-repairs.md is not R1's file and was not edited; the correction is recorded in routines/cloud-routine-repairs.md, which that file's §7 should eventually point at.",
+    "halt": false
+  },
+  {
+    "id": "F-R1-04",
+    "severity": "high",
+    "area": "Real Estate Weekly Brief (trig_01CjaMXrbMga1jPdJzUnwLUo) — queried a CRM retired the day before",
+    "finding": "Beyond the dropped run, the prompt carried two real defects: it queried Follow Up Boss, which Steven retired as the real-estate system of record on 2026-09-22, and it was report-only so a dropped run left no trace at all. It would have reported a retired system's appointments as this week's plan.",
+    "evidence": "The prior prompt called FOLLOW_UP_BOSS_LIST_APPOINTMENTS with userId=720 and FOLLOW_UP_BOSS_LIST_SMART_LISTS, and named five smart lists to clear. context/decisions.md (2026-09-22 entry) records Lofty as the system of record replacing Follow Up Boss, with no Composio Lofty toolkit and the API key not installed. The prompt's only output was 'a concise Monday Real Estate Brief as your final chat message'.",
+    "fix": "Prompt replaced in place with update_trigger at 2026-09-23T02:53:29.671Z — not delete-and-recreate, so created_at 2026-09-07 and the run history survive. Both Follow Up Boss calls removed with a stated reason so they are not restored by a later reader; the CRM section is now a fixed 'not connected' sentence and substituting a Follow Up Boss figure under a Lofty label is explicitly forbidden; Calendar and Gmail kept read-only; a ciLog start/finish row pair plus a realEstateBrief document added so a dropped run is visible; a no-invention rule and a no-PII rule (counts and source health only in the database, detail to Steven in chat) added. Fired as a proving run 2026-09-23T02:53:50Z, session cse_01Fijfb9HdEVnjfY5RyJVDpC.",
+    "halt": false
+  },
+  {
+    "id": "F-R1-05",
+    "severity": "medium",
+    "area": "Books Reconciliation Reminder (trig_01ETFd8biiJjDxqL12qVJVqc) — disabled",
+    "finding": "A stock 'AI Bookkeeper' template aimed at a business that is not Steven's. It reads /home/claude/vault and Finance/Books/ and checks whether _memory/Business.md still says 'onboarding not yet completed'. None of that exists. It is report-only, so even a flawless run leaves no document. Its designed-for outcome — asking a human to paste in records — is addressed to an empty chat on an unattended weekly schedule.",
+    "evidence": "A full listing of collection state on 2026-09-23 02:50Z returned 175 documents. None is a ledger, book, journal or reconciliation; the nearest are the inc-* income scalars, liabilities and accounts, none of which can be reconciled against a statement. The prompt ends 'Present your findings as your reply.'",
+    "fix": "Disabled at 2026-09-23T02:52:40.778Z via update_trigger and renamed to 'Books Reconciliation Reminder (DISABLED 2026-09-23 — no ledger exists to reconcile)' so the reason travels with the routine. Reversible: prompt and run history untouched, not deleted. It did not fire at its next slot 2026-09-23T18:00:37Z.",
+    "halt": false
+  },
+  {
+    "id": "F-R1-06",
+    "severity": "medium",
+    "area": "Ops Issue Review (trig_01JFtUymy9TXef3765urgZ36) — disabled",
+    "finding": "Same stock template family. Reads /home/claude/vault, Ops/Issues/ and Ops/Processes/, checks the same onboarding string, and is report-only. The work it describes is already carried by four live deck surfaces, so repurposing it rather than retiring it would duplicate what already renders.",
+    "evidence": "The 175-document store has no opsIssues document and no Ops/ anything. auditFindings (288KB), kanbanCards, twinQueue, riskMonitor and stressTestReport already cover operational issues and risk. Its sibling Project Risk Review, on the identical template, ran successfully for 24 seconds on 2026-09-22 and left no document — the best available picture of what a successful run of this template produces.",
+    "fix": "Disabled at 2026-09-23T02:52:45.308Z and renamed to 'Ops Issue Review (DISABLED 2026-09-23 — stock template, vault path does not exist)'. Reversible; prompt and history intact. It will not fire on 2026-09-28T18:07Z.",
+    "halt": false
+  },
+  {
+    "id": "F-R1-07",
+    "severity": "medium",
+    "area": "Project Risk Review (trig_01YHGFTYdWdVG5nFKCjmcd9M) — green, hollow, deliberately not touched",
+    "finding": "The third member of the stock template family is still enabled and firing weekly. It is green, but green in exactly the way this audit exists to distrust: it succeeded in 24 seconds and left no document, reading Projects/ in the same non-existent vault. It deserves the same disable as F-R1-05 and F-R1-06.",
+    "evidence": "last_run SUCCEEDED, fired 2026-09-22T18:07:22.836Z, finished 18:07:46.801Z — 24 seconds. Its prompt reads '/home/claude/vault ... read every note in Projects/ ... Present the risk review as your reply.' No document in the 175-doc store corresponds to it. Next firing 2026-09-29T18:07Z.",
+    "fix": "NOT APPLIED. It was outside the five routines assigned to R1 and it is not failing, and the brief was explicit about not manufacturing fixes. Steven's or the next engineer's call — the action is one update_trigger with enabled:false, identical to the two applied here.",
+    "halt": false
+  },
+  {
+    "id": "F-R1-08",
+    "severity": "low",
+    "area": "Financial Summary (trig_01CAk1pekAM5AXRiwUxxdnru) and SEO Content Gap Audit (trig_01FjDLMrJBa1dKEh7Nv7JJ4h) — never run, and hollow when they do",
+    "finding": "Both are correctly NEVER_RUN — not broken, simply not due. Both are also the same stock template as F-R1-05/06 and will produce a hollow first run on 2026-10-01. Both additionally try to save a Markdown file into a cloud sandbox that evaporates when the run ends, so even their intended output would not survive.",
+    "evidence": "Financial Summary cron '0 16 1 * *', created 2026-09-06, next_run_at 2026-10-01T16:00:57Z — the first 1st-of-month after creation, so never having run is correct. SEO Content Gap Audit cron '0 17 1 * *', created 2026-09-06, next_run_at 2026-10-01T17:06:14Z. Both have created_at == updated_at, so neither has ever been edited. Financial Summary saves to Finance/Analysis/summary-<date>.md; SEO saves to SEO/Audits/Audit-<date>.md. Neither path exists.",
+    "fix": "NOT APPLIED — neither has failed, and the brief said to confirm per routine rather than manufacture a fix. Recommendation: disable both before 2026-10-01, same one-call action and same reasoning as F-R1-05.",
+    "halt": false
+  },
+  {
+    "id": "F-R1-09",
+    "severity": "medium",
+    "area": "Command Deck — Weekly Loop Engineering + Self-Test (trig_01W1KHiBfVXZ5Xwd1aCFJM72) — a disproven premise in a live prompt",
+    "finding": "Correctly NEVER_RUN (created 2026-09-22, first Saturday slot 2026-09-26). But its prompt asserts as established architecture that 'An unattended cloud run CANNOT be relied on to WRITE this artifact's database or to publish the page; both park on an approval nobody can give', and makes itself research-and-report-only on that basis. That premise is now false, and the routine is weaker than it needs to be because of it.",
+    "evidence": "The cloudWriteProbe document in state records 'write succeeded unattended', and five cloud routines have since written this store with no laptop involved: the ecosystem backup (backupStatus, ciLog), Pipeline Sync live (reClients, pipeline, ciLog), the ISA ladder (isaLadder, ciLog), and the feed-freshness watchdog (feedFreshness v1 at 2026-09-23T00:24:12Z plus a ciLog row). docs/CLOUD-WRITE-ARCHITECTURE.md records the probe that settled it.",
+    "fix": "NOT APPLIED — it has not failed and is not one of the five assigned. When it is revised, the write prohibition should be lifted and it should leave a loopLog or selfTest document rather than a chat-only report. Noted in routines/cloud-routine-repairs.md.",
+    "halt": false
+  },
+  {
+    "id": "F-R1-10",
+    "severity": "info",
+    "area": "Command Deck — Strava wrapper guard (trig_01Nqu4xFXLqtTB2oSdGXEi4X) — not yet due, not broken",
+    "finding": "The commissioning brief asked whether this routine 'actually ran and wrote stravaWrapGuard', on the assumption that its first fire at 12:47Z had already passed. It had not. At the time of checking the routine was roughly ten hours short of its first firing, and both its missing run record and its missing document are the correct state for a routine that has never been due.",
+    "evidence": "Current time at check 2026-09-23T02:47:56Z. trig_01Nqu4xFXLqtTB2oSdGXEi4X cron '47 12 * * *', created 2026-09-22T23:27:24.400833Z, next_run_at 2026-09-23T12:47:00Z. No last_run field and no last_fired_at at all. ArtifactData get on state/stravaWrapGuard returned 'No document'.",
+    "fix": "Nothing to fix. Check after 2026-09-23T12:47Z: stravaWrapGuard should exist carrying lastRun, foundBare, action and activityCount. Note its behaviour depends on whether Steven pasted the mac-task-repairs.md §1 prompt into strava-daily-sync before that task's own 12:20Z run — if he did, the guard should record foundBare:false and action 'none-needed'.",
+    "halt": false
+  },
+  {
+    "id": "F-R1-11",
+    "severity": "info",
+    "area": "Command Deck — Backup verification watchdog (trig_01PhgrwpwaQ9vLvFxQPrPJ6W) — not yet due, and unprovable by design",
+    "finding": "Correctly NEVER_RUN: created 2026-09-22, first Sunday slot 2026-09-27T17:35Z. Worth recording separately that this routine is read-only by explicit design — its own prompt instructs it to write nothing — so it can never be judged by the documents it leaves, only by its run status. That is a deliberate exception to the register's central rule and should not be mistaken later for another silent writer.",
+    "evidence": "cron '30 17 * * 0', next_run_at 2026-09-27T17:35:38Z, no last_run. Prompt step 4: 'Do not attempt the backup yourself, do not write any document, and do not publish the artifact.' That prohibition rests on the same premise corrected in F-R1-09.",
+    "fix": "Nothing to fix now. When it is next revised, either let it write a small verdict document or accept explicitly in always-on/README.md that this one row is judged by status.",
+    "halt": false
+  },
+  {
+    "id": "F-R1-12",
+    "severity": "medium",
+    "area": "The seven http_api routines — Steven's alone, no agent action possible",
+    "finding": "Seven enabled routines created through the web interface are FAILED, all last fired in the 2026-09-18 to 2026-09-20 window — the same transient as F-R1-01. No agent can edit, fire or disable them. None was touched. The cheapest correct action is to let the next firing happen and look, because the platform has been healthy since 2026-09-22 and every natural-slot run since has succeeded.",
+    "evidence": "trig_01V6QrF6yENWiccduk94ubbs (Vanessa orchestrated ops review, next 2026-09-25T23:02Z); trig_013ocJfEDdmSAgDPVaiCzMZY (Weekly Loop Engineering QA, 2026-09-27T16:05Z); trig_01Lb3aYRQZSLsAkcnDpZ8zEL (Next Big Moves, 2026-09-27T15:06Z); trig_01HfL39UYunpMm56NSJuh8LK (Elite Affluent Tracker, 2026-09-27T16:08Z); trig_013vYCzVa3vbHZ8BZZy6UBpX (weekly improvement loop, 2026-09-27T16:05Z); trig_019NdM12eTVDHWy89Ch2sNtU (weekly opportunity audit, 2026-09-27T17:04Z); trig_016qKE1TdRjzkpb2Yby8yWBX (weekly self-improvement loop, 2026-09-27T15:07Z). All created_via http_api.",
+    "fix": "For Steven, in order: (1) let 2026-09-25 and 2026-09-27 pass and check each row — a free test; (2) anything still failing is then live and reproducible, which is a better bug report than a guess; (3) anything that succeeds needs its output checked, because three carry RESEARCH-ONLY / FINAL MESSAGE ONLY instructions alongside a write step and will report success having moved nothing — treatment in routines/mac-task-repairs.md §5. Links in routines/cloud-routine-repairs.md.",
+    "halt": true
+  },
+  {
+    "id": "F-R1-13",
+    "severity": "medium",
+    "area": "Weekly dashboard refresh — Rent, Buy, or Wait (trig_01EBvRQ4Rv63EgrLihjNxwiG) — repaired earlier, deliberately left unproven",
+    "finding": "Its ABANDONED run was the same dropped catch-up event as Real Estate Weekly Brief, 33 seconds earlier. The prompt is sound and the durable-trace amendment prescribed in mac-task-repairs.md §7 had already been applied before this pass, so no edit was needed or made. It was deliberately NOT fired, and is therefore repaired-but-untested rather than fixed.",
+    "evidence": "updated_at 2026-09-22T14:53:07.190Z; the live prompt read 2026-09-23 02:47Z ends with the rent-buy-wait started/ok ciLog pair and the {v:<array>} reminder verbatim. Firing it would run the rent-buy-dashboard-refresh skill end to end and republish the live published artifact 592d487c-703f-418f-939e-14ff6f2353b2 — forbidden by R1's brief — and would run the weekly tier a week early against live rate and price sources.",
+    "fix": "No change. Proof is due at its next natural firing 2026-09-28T17:36Z: ciLog should carry a 'rent-buy-wait — started' row and a 'rent-buy-wait — ok' row with the same date. A start row alone means it was dropped again, which is now visible. Nothing in ciLog at all means the run never reached the prompt, and the response then is to fire it manually and watch, not to rewrite it.",
+    "halt": true
+  },
+  {
+    "id": "F-R1-14",
+    "severity": "info",
+    "area": "always-on/README.md and the commissioning brief — counts and document claims that have gone stale",
+    "finding": "Two register statements were true when written and are false now. always-on/README.md said the feed-freshness watchdog had 'no run recorded' and 'no feedFreshness document in state yet (173-doc listing)' and told readers to check for that document; it exists. The brief's count of '17 of 53 enabled routines not completing' does not match the live listing.",
+    "evidence": "feedFreshness exists at version 1, server updatedAt 2026-09-23T00:24:12.228Z. Live listing 2026-09-23 02:47Z: 57 routines, 53 enabled, of which 16 are not SUCCEEDED — 9 FAILED, 5 NEVER_RUN, 2 ABANDONED. The third ABANDONED routine (Command Deck — Steve twin) is disabled and so is not one of the 53. The store now holds 175 documents, not 173 or 172.",
+    "fix": "always-on/README.md corrected in this pass — the feed-freshness row now records the proven run, the document and its contents, and the Strava wrapper guard row records its true not-yet-due state. The brief's count is corrected in routines/cloud-routine-repairs.md; after this pass the enabled not-SUCCEEDED count is 14.",
+    "halt": false
+  }
+]
