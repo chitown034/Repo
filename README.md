@@ -50,7 +50,14 @@ passes on that file because the syntax is valid. Only executing it catches the f
 got fresher. "The task ran" is not the measure, and a green badge over a document nobody wrote is the
 failure this whole system is built to prevent.
 
-**Writes happen on the Mac.** An unattended cloud routine cannot reliably write the dashboard's
-database or republish the page; both park on an approval nobody is there to give. Cloud routines
-research, test and report. The Mac's `claude-runner` tasks write. Any design that forgets this
-produces a routine that looks scheduled and has never once done its job.
+**A cloud routine can write; what it cannot do is carry a connector.** The old rule here said an
+unattended cloud routine "parks on an approval nobody is there to give". That was true when it was
+last tested on 2026-09-04 and is false now: a probe routine fired with nobody present at
+**2026-09-22 09:05:56Z** and left the `cloudWriteProbe` document behind, and four cloud writers have
+since run on it — the weekly backup, the live Pipeline Sync, the ISA escalation ladder and the feed
+freshness watchdog, whose `feedFreshness` document was written at 2026-09-23T00:50Z. Do not refuse a
+cloud write on the old rule's authority. What still pins work to the Mac is different and narrower:
+an agent-created routine carries **no connectors** (Zoho, Lofty, Gmail, Calendar, Strava, Notion run
+where the credentials live), and anything needing local files, the local model or the keychain.
+Write-up: `docs/CLOUD-WRITE-ARCHITECTURE.md`; the standing version of this rule lives in
+`wiki/dashboard-ops/index.md`.
