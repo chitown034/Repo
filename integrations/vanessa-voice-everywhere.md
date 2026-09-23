@@ -1,11 +1,32 @@
 # Vanessa speaks on every channel, not only at the dashboard
 
 **Written 2026-09-22.** Owner: Integration Engineer (under CTO Innovator).
-Status: **spec written; the Mac side is still not changed.** Steven pastes two prompt amendments.
+Status: **spec written; the Mac side is still not changed.** Steven pastes the prompt amendments.
 **Verified 2026-09-22 (P5):** the iMessage half of this design was measured against the live store
 and against Inkbox without sending anything — see *Measured on 2026-09-22* below. The encoder's
 output is accepted by `inkbox_media_stage` and is ~1 % of the attachment cap. Discord and WhatsApp
-were specified and both came back **no send path** — see the last section.
+were specified and both came back **no send path**.
+**Extended 2026-09-23 (R4):** the link workaround was tested and the answer is nuanced — the
+artifact **asset store cannot hold audio at all**, and what it hands back is not a link anyway;
+the clip has to ride inside an artifact **page**, whose URL is **private to Steven**. And the
+channel nobody had checked turned out to be the best result of the day: **email takes an audio
+attachment**, so it is a second channel where Vanessa can actually speak. Nothing was sent.
+
+## Per-channel: what she does today, what she does after Steven's steps, what she cannot do
+
+| Channel | Today | After Steven's steps | Genuinely impossible, and why |
+|---|---|---|---|
+| **Command Deck** | **Speaks.** The page writes `voiceReplyQueue`, `voice-reply-render` renders, the deck plays her own audio with the face moving. | Unchanged. Every other channel is additive to this one. | — |
+| **iMessage** | Answers in **text, silently**. | **Her actual voice**, as a voice note on the same thread, ~1 poll after the text. §6a + §6b. | — Nothing. `inkbox_media_stage` accepts this exact encoder and the clip is 1.03 % of the 10 MiB cap. |
+| **Email** | Answers in text. Active identity, verified sending domain. | **Her actual voice**, as an MP3 attached to the reply. §6d. | — Nothing. `inkbox_email_attachment_upload` accepted `audio/mpeg` and returned a handle on 2026-09-23. |
+| **Discord** | Nothing — the channel is not connected. | **Text, plus a link Steven can tap.** Not audio. | **Native audio.** `DISCORDBOT_CREATE_MESSAGE` is the only send tool available and has no file, attachment or audio parameter. Nothing in this system can attach a file to a Discord message. |
+| **WhatsApp** | Nothing — not installed. | **Text, plus a link Steven can tap**, once the channel exists at all. Not audio. | **Native audio.** `message send` is `whatsapp://send?phone=…&text=…` driven through System Events. That URL carries a phone number and a text string. There is no parameter an MP3 can travel in. |
+| **SMS** | Unavailable. | Unavailable. | **The whole channel.** `phone.assigned: false` and `sms_available: false` — the `jasmine` identity has no number. Not a fallback for anything. |
+
+Two things that table is saying, said plainly. **Vanessa speaks on two channels, not four** — iMessage and
+email — and on both it is a real audio file, her own rendered voice. **On Discord and WhatsApp she will
+never speak**, because neither has any way to carry an audio file; the best available there is a written
+reply with a link, and that link only opens for Steven, signed in (see *The link path* below).
 
 ## The gap, stated exactly
 
@@ -57,9 +78,9 @@ consumer; an item without them behaves exactly as today.
 
 ```js
 { id, who, text, ts,                     // unchanged, still required
-  channel:  "deck" | "imessage" | "discord" | "whatsapp",   // default "deck"
-  deliver:  null | "imessage" | "discord" | "whatsapp",     // null = render only, deck plays it
-  replyTo:  "<conversation_id or thread id>" | null }       // where the audio goes back
+  channel:  "deck" | "imessage" | "email" | "discord" | "whatsapp",   // default "deck"
+  deliver:  null | "imessage" | "email" | "discord" | "whatsapp",     // null = render only, deck plays it
+  replyTo:  "<conversation_id, message_id or thread id>" | null }     // where the audio goes back
 ```
 
 An item with `deliver: null` is exactly today's behaviour. `channel` is for the deck's status card
@@ -171,9 +192,27 @@ text on the same thread, which is what already happens.
   text**, has not been tested — testing it means sending, which is a HALT. The first real run
   answers it.
 - Whether the full 108,284-byte payload stages (see above). Arithmetic says yes with 97x to spare;
-  it has not been executed.
+  it has not been executed. **Narrowed 2026-09-23:** the reason is now known precisely and it is
+  not a tool limit. `inkbox_media_stage`'s `data` accepts up to 27,962,034 characters and the
+  binding constraint is "the whole MCP request must stay under 1 MiB"; the clip's base64 is
+  ~141 KiB, inside both. P5's failure was **that session's own output path**, not the tool.
+  `voice-reply-render` on the Mac holds the bytes locally and never retypes them, so it does not
+  have that limit. Still unexecuted, still not claimed.
 - Whether `replyTo` — the `conversation_id` the inbox task replied on — is the same identifier
   `inkbox_imessage_send` wants. The two tasks have never been run against each other.
+- **(R4)** Whether a sent email arrives with a playable attachment. Staging is proven; sending is a
+  HALT. Same for whether a full-clip email attachment stages — the tested payload was a 1,532-byte
+  prefix.
+- **(R4)** Whether a signed-in browser actually plays the relay page. No browser was available, so
+  the bytes were proven present, correct and private, and nothing beyond that.
+- **(R4)** Whether a `#<queue id>` fragment reaches the relay page as `location.hash`. The page
+  contract says a plain anchor does; it was not watched happen, which is why the page falls back to
+  `clip/newest` and then to its built-in clip.
+
+Ruled out on 2026-09-23, so nobody spends a session on it again: `inkbox_media_stage`'s
+`source_type: "url"` looks like a way to hand Inkbox a hosted clip instead of inlining base64. It
+is not. That mode requires a URL "publicly reachable without credentials", and artifact URLs are
+not — proven by the fetch that failed. Inline base64 stays the only staging route.
 
 The first run tells you the rest: `voiceReplyStatus.items[<id>].delivered.ok`, and whether a voice
 note appears on the thread.
@@ -192,6 +231,14 @@ specified in `mac-task-specs.md` §6b. `deliver: "discord"` and `deliver: "whats
 implemented and must not be implemented by guessing**; `voice-reply-render` records
 `delivered: {channel: <value>, ok: false, error: "channel not implemented"}` and moves on, which is
 already what §6b says and is the correct behaviour until one of the two paragraphs below is closed.
+
+**Amended 2026-09-23 (R4).** Two changes to that paragraph and nothing else in this section.
+`deliver: "email"` joins `"imessage"` as a channel that carries **real audio**, specified in §6d.
+`deliver: "discord"` and `deliver: "whatsapp"` remain **not implemented as audio and never will
+be** — the two findings below were re-read and stand exactly as written. §6c adds an optional
+**link** for them: the renderer writes the clip to the relay artifact and the inbox task puts a URL
+in its text reply. That is a different thing from speaking, it is worth having only because the
+alternative on those channels is nothing at all, and it works only for Steven signed in.
 
 **Discord — no media send path (checked 2026-09-22).**
 
@@ -228,12 +275,130 @@ already what §6b says and is the correct behaviour until one of the two paragra
   and the client-facing-system rules, and fragile besides. The better answer is to leave WhatsApp
   text-only: Steven already gets the answer in text there, and voice is additive by design.
 
+## Email — the channel nobody checked, and it speaks (measured 2026-09-23)
+
+Email was in front of us the whole time. P5 recorded "Email is active" as background and moved on.
+It is the only other channel on the Inkbox identity, it is the one Steven already gets written
+answers on, and — unlike Discord and WhatsApp — **it has an attachment parameter.**
+
+`inkbox_email_attachment_upload` was called with real bytes out of the clip, `content_type:
+"audio/mpeg"`, and it accepted them:
+
+```
+{"media_handle":"fc00c3c3-94e6-49a1-b7d0-c15d6d499e50","filename":"vanessa-reply.mp3",
+ "content_hash":"b858ecbe0a03cfd7138e4e6c11cd46cc47b75dc33c94d6ce69c98bf0528cb3bb",
+ "content_type":"audio/mpeg","size_bytes":1532,"expires_at":"2026-09-23T03:53:29Z"}
+```
+
+`size_bytes` equals the bytes sent. Nothing was sent — `inkbox_email_send` and
+`inkbox_email_reply` were never called; the upload call copies and validates into staging *for a
+later send*, which is the same kind of read-only step `inkbox_media_stage` is on the iMessage side.
+
+Three details that matter for the implementation:
+
+- **`content_hash` here is a real SHA-256 of the file bytes.** It matched the digest computed
+  locally before the call, exactly. This is the opposite of the iMessage path, where P5 established
+  that `inkbox_media_stage`'s `content_hash` matches no common digest and is an opaque token. So on
+  email the renderer **can** verify the staged file is its own clip; on iMessage it still cannot,
+  and `size_bytes` remains the only check there.
+- **The send shape is fully determined.** `inkbox_email_reply` wants `message_id`,
+  `approved_recipients` and `attachments: [{media_handle, filename, content_hash, content_type}]` —
+  and all four attachment fields are returned by the upload call. Nothing has to be guessed.
+- **Inline base64 is capped by "the whole MCP request must stay under 1 MiB."** The full clip's
+  base64 is ~141 KiB, well inside. A `url` source would allow 25 MiB but demands a *public* HTTPS
+  URL, which nothing in this system has (see below).
+
+What is **not** proven: a full-clip stage (the payload was a frame-aligned 1,532-byte prefix, for
+the same retyping reason P5 hit), and that a sent email arrives with a playable attachment —
+sending is a HALT and the first real run answers it.
+
+## The link path — tested 2026-09-23, and it is not what it looked like
+
+The idea was sound: if audio cannot be attached, a text reply can carry a URL to a clip that plays
+in a browser, and every channel carries text. It was tested against the artifact asset store. **The
+asset store cannot do this job**, for two independent reasons, either of which alone is fatal.
+
+**1. The asset store accepts no audio type at all.** Uploading the real decoded MP3 was refused
+outright:
+
+```
+unsupported asset type ".mp3": publish with `asset: true` takes png, jpg, jpeg, gif, webp, svg,
+mp4, webm, pdf, woff2, woff, ttf, otf, csv, md, markdown, json, txt, ts, css, js, mjs, cjs.
+```
+
+No mp3, no m4a, no wav, no ogg. Remuxing into an accepted container was **not** attempted and must
+not be assumed to work: there is no `ffmpeg` in the cloud container, and whether a browser would
+play a hand-built audio-only MP4 could not be tested from here.
+
+**2. What the store hands back is not a link.** A 22-byte probe file with an accepted type uploaded
+fine and returned the path `/_blob/<id>` — *relative*, with no scheme and no host, meaningful only
+"in every view of the artifact". There is nothing there to paste into a message.
+
+So any link must be **the artifact page URL**, with the clip carried inside the page. That part
+works, and was executed: the full 108,284 bytes were embedded as base64 in a page and published
+privately. The built page is 158,484 bytes — **0.94 % of the 16 MiB page cap** — and the embedded
+base64 decodes back to sha256 `747f8f5b…4be0d62`, byte-identical to the clip in the store, so
+nothing is re-encoded. The page decodes it to a same-origin `blob:` URL, falls back to a `data:`
+URI, and says so in its own status line if both fail. The test page is
+`https://claude.ai/artifact/EJnetbUCFscnDsDWFdp9Ti` — newly created for this, private, and no
+existing artifact was touched.
+
+**Who can open it — the decisive question, and it was established, not assumed.** Four lines agree:
+
+- Every publish of the page reported **"readable by only you"** and "only its owner and the people
+  the owner has given access can open the link."
+- A page declaring a capability is **organization-internal and never public** — the platform's own
+  rule, not an inference.
+- An **unauthenticated fetch** carrying no artifact credential was refused for both the page URL and
+  the `/_blob/` path: HTTP **403**, a Cloudflare interstitial, no artifact content.
+- Strongest, because it is a genuinely unrelated third-party server: `inkbox_media_stage` with
+  `source_type: "url"` — a mode whose schema **requires** a URL "publicly reachable without
+  credentials" — was pointed at the page and came back **`url_fetch_failed: URL media could not be
+  fetched safely`**. Inkbox cannot see it.
+
+**A link therefore plays for Steven and for nobody else.** For this design that is correct: the only
+permitted recipient of a voice reply is Steven. But two consequences must be said out loud rather
+than discovered later:
+
+- **It only opens in a browser already signed in to that account.** On the phone that means the
+  Claude app, or Safari with a live session. A signed-out tap gets a sign-in wall, not the clip.
+- **It is not "Vanessa speaking on Discord."** It is a written reply with something to tap. Anyone
+  describing it as voice-on-Discord is overselling it.
+
+**Not proven:** that a signed-in browser plays the page. No browser was available in this session,
+so only the presence, integrity and privacy of the bytes were verified — never a page load and
+never audio coming out.
+
+**The per-reply write path, and retention.** The renderer does **not** need to learn to republish a
+web page. A clip document of 144,825 bytes — the full base64 in one field — was written to the
+relay artifact's database and read back **byte-identical**, and read back identical again at the
+access level of an ordinary viewer rather than the owner. That is the same kind of operation
+`voice-reply-render` already performs every ten minutes on the Command Deck store, against a
+different artifact. Scheme: `clip/<queue id>` holds the clip, `clip/newest` holds `{v:{id, ts}}`.
+The page resolves a `#<queue id>` fragment first so an old text keeps playing *its* clip, and falls
+back to `clip/newest`, and below that to the clip built into the page — so it plays something at
+every level of failure. (That the fragment reaches the page is documented but was not watched
+happen; the fallbacks exist because of that.)
+
+Retention is capped by design, not by a cleanup job: **keep the newest 10 clip documents and prune
+the rest in the same run**, matching the cap `voiceReplyQueue` already uses, so a clip lives exactly
+as long as the queue item that made it. About 145 KB per document, ~1.45 MB at rest, against a
+reported ceiling of 5,000 documents. One artifact, written often — never a new artifact per reply,
+which would leave an unbounded gallery of private pages that no agent is permitted to prune, because
+deleting an artifact is Steven's call.
+
 ## What Steven does
 
-1. Paste the two prompt amendments in `integrations/mac-task-specs.md` §6 into
-   `voice-reply-render` and `vanessa-imessage-inbox` on the Mac.
+1. Paste the prompt amendments in `integrations/mac-task-specs.md` §6 into `voice-reply-render`
+   and `vanessa-imessage-inbox` on the Mac — §6a and §6b are the iMessage path and are the whole
+   of the original design; §6c (link) and §6d (email) are new and optional, in that order of
+   priority: **§6d before §6c**, because email gives real voice and the link does not.
 2. Text Vanessa something that takes more than a sentence to answer.
 3. Within ~20 minutes: a text reply, then her voice on the same thread.
+4. For email (§6d), send her an email that takes more than a sentence to answer, and expect the
+   same shape: a written reply, with `vanessa-reply.mp3` attached.
+5. Nothing to do for Discord or WhatsApp. Neither channel is connected, and neither will ever carry
+   her voice. If they are connected later, §6c gives them a link and nothing more.
 
 If the text arrives and the voice does not, read `voiceReplyStatus` — `status` says whether it
 rendered, `delivered` says whether it sent, and `error` says which of the two failed.
