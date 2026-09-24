@@ -125,28 +125,38 @@ it has still never run.
 **Check:** a task with a slot in the next ten minutes leaves a **document** behind. A green status row
 is not proof.
 
-### A5. `taskLease` before Mac #2's runner is enabled (15 min) — do not skip
-Nothing currently stops two Macs running the same 59 tasks and double-writing `ciLog`, `isaLine` and
-every feed.
-- Create the `taskLease` document.
-- Add the **LEASE CHECK** block from `REMOTE-ACCESS.md` to the top of every task prompt.
-- Bring Mac #2 up as **STANDBY** (`docs/SECOND-MAC-SETUP.md` steps 11–12).
+### A5. `taskLease` before the second Mac's runner is enabled (15 min) — do not skip
+*Corrected 2026-09-24 (R6):* this step used to mean bringing up a second Mac as a permanent STANDBY, with a
+manual "promotion" of the first Mac to PRIMARY as the real by-hand step. That is no longer the design —
+Steven asked for **"both of my MacBooks... equally have control"**, so both Macs now run the **same** role,
+`peer`, with **sticky leadership** (whichever Mac most recently held the lease keeps working through a blip
+of its own; there is no permanently-favoured machine). Nothing currently stops two Macs running the same 59
+tasks and double-writing `ciLog`, `isaLine` and every feed if this step is skipped.
+- Create the `taskLease` document — the first real lease check, on either Mac, does this; never seed it from the cloud.
+- Add the **LEASE CHECK** block from `REMOTE-ACCESS.md` to the top of every task prompt — **or**, since
+  2026-09-22, just install `claude-auto` (the launcher every task already goes through) and skip this.
+- Bring **both** Macs up as **`peer`**, both schedules enabled, and prove a real failover
+  (`docs/SECOND-MAC-SETUP.md` steps 11–13).
 
-> **The role file is the trap, and it is stale in the expensive direction.** `SECOND-MAC-SETUP.md`
-> says the role file is yours to write. It is not any more — **the installer writes it as `standby`**
-> and never overwrites an existing one. So the by-hand step is the **promotion of Mac #1 to
-> `primary`**, not the creation of the file.
->
-> Get that wrong and **Mac #1 defers every scheduled task with exit 75 while looking installed and
-> perfectly healthy** — and neither script can tell a deliberate standby from an un-promoted primary,
-> so nothing will tell you. Set `~/.config/claude-runner/role` to `primary` on Mac #1 and leave Mac #2
-> at `standby`.
+> **The role file is no longer the trap it was — read this if you set up a Mac before 2026-09-24.**
+> `SECOND-MAC-SETUP.md` says the role file is yours to write. It still is, and the installer still never
+> overwrites an existing one — but it now writes **`peer`** on a fresh Mac, not `standby`, and there is no
+> "promotion" step left to forget. **The one thing still worth checking by hand:** a role file written
+> *before* R6 still says `primary` or `standby` and will keep meaning exactly that (both are kept working,
+> as legacy values) until you change it. One line does it, on either Mac, any time:
+> `printf 'peer\n' > ~/.config/claude-runner/role`. Get that wrong and a Mac silently keeps running the
+> *old* asymmetric rule instead of the sticky one — not a double-write, just the wrong failure mode if that
+> particular Mac ever goes down.
 
 The task count is **settled: 59.** `runnerStatus` is the authority and was re-read on 2026-09-23; the
 60 on the older deck row was wrong and is corrected. Nothing to reconcile.
 
-**Check:** `claude-auto --lease-check` on Mac #1 reports it holds the lease and runs; on Mac #2 it
-reports STANDBY and declines. If **both** say STANDBY, Mac #1 was never promoted.
+**Check:** `claude-auto --lease-check` on whichever Mac checks first reports `ACQUIRED` and runs; on the
+other Mac it reports `FOREIGN holder=<the first Mac's id>` and defers — that is correct, not a failure.
+Then, on the Mac that does **not** hold it, `claude-auto --take-lease` and confirm the *other* Mac's next
+check now says `FOREIGN` pointing back — that is the actual proof, not just that both installed cleanly.
+If **both** say `FOREIGN` pointing at each other, or **neither** ever says `ACQUIRED`, the document has not
+settled — re-run `--lease-check` on each after a few seconds before assuming something is broken.
 
 ---
 
