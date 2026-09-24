@@ -96,7 +96,7 @@ integrator.
 35. **Run the installer** — `./MAC-SETUP.sh --dry-run` and read it, then `./MAC-SETUP.sh --only codeburn` as the cheap first step, then `./MAC-SETUP.sh`, then `./mac-verify.sh`; neither script has ever run on macOS · then work the NEEDS-STEVEN list the installer prints (Homebrew, `graphify install`, `headroom wrap`, plugin installs, LaunchAgents, key values, `~/.local/bin` on PATH) · F-M3-01, F-M3-05, F-M3-10, F-M3-13, F-V1-10.
 36. **Do NOT enable the OmniRoute failover yet** — its PII gate fails open (argument order, no `--task`, renamed client tasks) and two paths strand the Mac on free providers with no alarm; a rewrite is in the working tree, uncommitted, awaiting its findings file · **skip** the installer's `omniroute` step, do not replace the existing `claude-auto`, keep the runner on plain `claude`, and do not paste the four OmniRoute key values until the widened canary (`integrations/omniroute-failover/README.md`, "PII canary") passes with the security steward · F-V2-07…18, F-V2-20, F-FR5b-05, F-FR5b-06, F-M3-03, F-M3-09, F-E8-60, F-X2-19, F-X2-20.
 37. **`taskLease` before Mac #2's runner is enabled** — nothing stops two Macs running the same 59 tasks and double-writing `ciLog`, `isaLine` and every feed · **create** the `taskLease` document and add the LEASE CHECK block from `REMOTE-ACCESS.md` to the top of every task prompt (Mac #2 as STANDBY, per `docs/SECOND-MAC-SETUP.md` steps 11–12); reconcile the 59-vs-60 task count against the runner on Mac #1 · F-M1-05, F-M1-09, F-M1-06.
-38. **CLI-Anything** — the hub, plugin and the vendored browser harness are now a scripted step (item 35), and **seven** pre-built read-only packages exist — homes.com, ShowingTime, Showami, SkySlope, zipForms, Lofty, Zoho (`integrations/cli-anything-harnesses/`) · **nothing is generated any more**; `/cli-anything` is only for a target we do not have · your steps: install the DOMShell Chrome extension and **sign in by hand** (never through the tool; the harnesses cannot sign in, MFA/SSO is a HALT, and ShowingTime is MLS-SSO'd), **accept in writing** that DOMShell can see everything those signed-in sessions can, let `./MAC-SETUP.sh --only cli-anything-harnesses` install all eight into `~/Applications/cli-anything-harnesses/.venv` (browser first, one command), export `DOMSHELL_TOKEN` (a credential the script never touches) and `CLI_ANYTHING_BROWSER_BLOCK_PRIVATE=true` in the harness env, then run `--discover` once per recipe and edit your `paths.json` until the values match the screen — **all 18 browser recipes ship `verified: false` and no site has ever been reached**, so nothing they return may drive a decision before that spot-check; every outward verb (request, confirm, cancel, feedback, post, e-sign, send, fill) stays off until you approve it in writing, one verb at a time; then run the new `cli-anything-status` task once by hand (`routines/mac-task-repairs.md` §9) — the deck's connector card has never been told anything and only a Mac run may tell it · F-S1-06, F-S1-07, F-S1-08, F-S1-09, F-S1-15, F-S1-18, F-H1-01, F-H1-02, F-H1-08, F-H1-10, F-H1-11, F-H2b-03, F-H2b-13, F-M3-11, F-E4a-12, F-E8-58.
+38. **CLI-Anything** — the hub, plugin and the vendored browser harness are now a scripted step (item 35), and **seven** pre-built read-only packages exist — homes.com, ShowingTime, Showami, SkySlope, zipForms, Lofty, Zoho (`integrations/cli-anything-harnesses/`) · **nothing is generated any more**; `/cli-anything` is only for a target we do not have · your steps: install the DOMShell Chrome extension and **sign in by hand** (never through the tool; the harnesses cannot sign in, MFA/SSO is a HALT, and ShowingTime is MLS-SSO'd), **accept in writing** that DOMShell can see everything those signed-in sessions can, let `./MAC-SETUP.sh --only cli-anything-harnesses` install all eight into `~/Applications/cli-anything-harnesses/.venv` (browser first, one command), export `DOMSHELL_TOKEN` (a credential the script never touches) and `CLI_ANYTHING_BROWSER_BLOCK_PRIVATE=true` in the harness env, then run `--discover` once per recipe and edit your `paths.json` until the values match the screen — **all 18 browser recipes ship `verified: false` and no site has ever been reached**, so nothing they return may drive a decision before that spot-check; every outward verb (request, confirm, cancel, feedback, post, e-sign, send, fill) stays off until you approve it in writing, one verb at a time; then run the new `cli-anything-status` task once by hand (`routines/mac-task-repairs.md` §9) — the deck's connector card has never been told anything and only a Mac run may tell it · F-S1-06, F-S1-07, F-S1-08, F-S1-09, F-S1-12, F-S1-15, F-S1-18, F-H1-01, F-H1-02, F-H1-08, F-H1-10, F-H1-11, F-H2b-03, F-H2b-13, F-M3-11, F-E4a-12, F-E8-58.
 39. **ECC security review sign-off date** — SkySlope and zipForms are the two connectors that touch legally binding documents, and both harnesses refuse **every** live command (exit 3, `connState: disabled-by-policy`) until the review has a date; the deck's connector card clamps them to `disabled-by-policy` for the same reason · the review is Elena's lens but the sign-off is yours, and it is a licensed-risk decision · **hold** the ECC review (what each harness can reach, what it stores, what a prompt-injected page could make it do), then `export CLI_ANYTHING_ECC_REVIEWED_AT=YYYY-MM-DD` in the runner's env with that real date and record the same date as `eccReviewedAt` in `cliAnythingStatus`; do not set it to make a command run · F-S1-10, F-H2b-13, F-FR5b-11, F-M3-11.
 40. **WhatsApp channel to Vanessa** — spec written (whatsapp-cli reading the WhatsApp desktop app) · **DECIDED 2026-09-23: his own number in a message-yourself thread, not a dedicated one** (`context/decisions.md`; the Full Disk Access cost was stated and accepted). Build **§5a**, not §5 — §5's `is_from_me:false` filter cannot run in a self-chat. Link it in WhatsApp desktop on the Mac, **audit the existing Full Disk Access list before adding to it**, grant FDA + Accessibility, run `integrations/whatsapp-selfchat-setup.sh "<your number>"` (settles §5a's one unmeasured assumption and prints the seed doc), then run the task once by hand · F-FR5b-01.
 41. **Re-verify from the Mac what the cloud could not open** — the CRMLS active-listing counts (F-FR1-02), the ETF screen (F-FR1-06), TradingView 3.4.1 (F-FR1-07), a 30-second look at Navy Federal's rate page to settle whether the deck's "Sep 20" or the portal's "Sep 22" is right (F-FR1-09, F-FR3-03, F-X2-06), the Meritage promotion page the deck and portal describe differently (F-FR1-04, F-FR3-02, F-X2-07), and the NWS alerts for DC and New Braunfels (F-FR4-02).
@@ -136,7 +136,10 @@ left, and each one is yours.
     has no file or attachment parameter at all, and its toolkit is not connected. Making it possible
     means a Discord **bot token** with SEND_MESSAGES and ATTACH_FILES and a new `multipart/form-data`
     upload path — a credential and a new outbound write, so it needs you. Recommended: leave
-    `deliver: "discord"` unimplemented; she already answers there in text · F-P5-04.
+    `deliver: "discord"` unimplemented · F-P5-04. *Corrected 2026-09-24:* this line used to say "she
+    already answers there in text" — she does not. `agentInbox` (stamp 2026-09-22) still reads
+    "awaiting bot token" with no channel id, so Discord carries nothing in either direction until
+    the same token exists; the deck's "Reach Vanessa via" table now says so too (R5, F-E8-11).
 47. **WhatsApp voice — recommended answer is no.** Beyond the channel not being live (item 40),
     `whatsapp-cli` has **no attachment verb even once installed** — it sends by opening
     `whatsapp://send?phone=…&text=…` and pressing Return, and that URL carries a phone number and a
@@ -155,3 +158,31 @@ accepts an audio handle **with no text**, whether the `conversation_id` the inbo
 same identifier the send call wants, and whether the **full** 108 KB clip stages (the prefix did;
 the arithmetic says yes with 97x to spare). All three are answered by doing item 45 and texting her
 one question · F-P5-01, F-P5-10.
+
+## Proposals waiting on a yes or no — added 2026-09-24 by R5 (append-only block)
+
+R5 re-checked all 108 dashboard findings nobody had owned against the live build. These twenty are not
+defects in either page: each is a new automation, a change to a routine on the claude.ai account, or a
+security or consent call. Nothing is broken while they wait.
+
+49. **Cloud-routine cleanup** — disable the stock templates that read a vault the cloud does not have
+    (the same call as item 16), re-scope each routine's connector grant to what its prompt actually uses,
+    move Rent-Buy-Wait to a Monday Mac task, and add push/email notifications to the research routines
+    (only the web UI can set them on routines made there) · F-E8-30, F-E8-31, F-E8-32, F-E8-73.
+50. **New watchdogs** — a Monday 08:00 PT backup-silence check; a daily failed-document watchdog (and a
+    fix to `vanessa-significant-alerts`); a 5-minute Lofty new-lead watchdog once `loftyLeads` exists
+    (after item 6); 14-day licence, registration and membership expiry texts · F-E8-35, F-E8-36,
+    F-E8-41, F-E8-45.
+51. **Mac task changes** — gate `showing-sync` on a non-empty queue; an "approve <id>" / "reject <id>"
+    parser on the iMessage inbox; a Sunday 16:00 `secondBrain` inbox triage; point
+    `r17-trading-day-log` at the sheet `r4-quantvue-sync` already reads instead of asking you; one
+    morning-brief writer with a cloud fallback if it has not written by 06:45 PT · F-E8-46, F-E8-47,
+    F-E8-50, F-E8-49, F-E8-40.
+52. **ISA ops layer** — acknowledgement, monitoring, alerting, QA and a scorecard for the seat; the
+    ad-compliance reviewer plus a sent-text log on ISA drafts; a Lofty webhook pilot into the bridge,
+    security review first · F-E8-68, F-E8-71, F-E8-75.
+53. **Security and consent** — a separate macOS user for the OSINT toolset, with the security steward's
+    sign-off; per-meeting recording consent before any transcript-to-CRM-note pipeline · F-E8-61, F-E8-76.
+54. **Two confirmations** — does the `apex-trader` skill now stay installed in the desktop app (if yes,
+    Vanessa's skill can drop its fallback copy of the Apex persona); do you want a monthly grant-research
+    routine feeding the nonprofit pipeline · F-E2-18, F-E8-48.

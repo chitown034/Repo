@@ -375,7 +375,7 @@
 <div class="wrap">
   <section class="hero">
     <h1 class="hero-greet">Pipeline Access</h1>
-    <p class="hero-sub">This is a scoped view for the Executive Assistant / ISA — real estate and mortgage pipeline only. Everything you enter here (pipeline stages, deals, notes) syncs live across any device <i>you</i> open this page on — and stops there. It does not reach Command Deck: that is a separate published page with its own database, and no page can read another page's store. Shared reference data (rates, loan programs, lender directory, market intelligence) is copied across by hand in a Claude session, not on a schedule. The one exception is the <a href="#isaLineCard">ISA line</a> at the top of the AI Team panel: a real two-way channel with Steven, carried by an hourly task on his Mac. If Steven needs to see a number, put it on the line — <a href="#panel-isa-syncstatus">Sync status</a> has the measured detail.</p>
+    <p class="hero-sub">This is a scoped view for the Executive Assistant / ISA — real estate and mortgage pipeline only. Everything you enter here syncs live across any device <i>you</i> open this page on. Two things also reach Steven's Command Deck on a schedule: the <a href="#isaLineCard">ISA line</a> at the top of the AI Team panel — a real two-way channel with Steven, carried by an hourly task on his Mac — and your client list, mortgage pipeline, daily scorecard and self-grades, which a cloud routine copies both ways four times a day. Everything else stays on this page: Command Deck is a separate published page with its own database, and no page can read another page's store. Shared reference data (rates, loan programs, lender directory, market intelligence) is copied across by hand in a Claude session, not on a schedule. If Steven needs to see a number, put it on the line — <a href="#panel-isa-syncstatus">Sync status</a> has the measured detail.</p>
   </section>
 
   <section class="panel" id="panel-isa-aiteam">
@@ -411,7 +411,7 @@
     </div>
     <div class="card" style="margin-bottom:16px;">
       <div>
-        <div><p class="card-title">Chat with Vanessa</p><div class="chat-persona-tags"><span class="badge gold">Chief of Staff · EA · COO</span><span class="badge green">Live</span><span class="badge gray">Routes to 7 specialists</span><span class="badge gray">Private to this portal</span></div><p class="card-sub">Steven's Chief of Staff / EA / COO — reachable here so you (the ISA) can loop her in directly instead of relaying through Steven. She answers herself, or checks with Marcus (CFO), Sofia (CMO), Derek (CTO), or Alexandra (Compliance) when a question needs a specialist, and says so in her reply.</p><p class="src-note" style="margin-top:2px;">This is its own live conversation, separate from Steven's own Vanessa chat on Command Deck — each dashboard is a separate published page with its own database, and no page can read another page's store (same reason the pipeline data above never reaches Command Deck at all — see Sync status). That's actually the right design here, not a gap: your conversation with Vanessa and Steven's stay private to each of you rather than being merged into one shared thread. Anything Steven should actually see goes on the <a href="#isaLineCard">ISA line</a> above instead — that thread is shared with his Command Deck and carried across by the comms bridge.</p></div>
+        <div><p class="card-title">Chat with Vanessa</p><div class="chat-persona-tags"><span class="badge gold">Chief of Staff · EA · COO</span><span class="badge green">Live</span><span class="badge gray">Routes to 7 specialists</span><span class="badge gray">Private to this portal</span></div><p class="card-sub">Steven's Chief of Staff / EA / COO — reachable here so you (the ISA) can loop her in directly instead of relaying through Steven. She answers herself, or checks with Marcus (CFO), Sofia (CMO), Derek (CTO), or Alexandra (Compliance) when a question needs a specialist, and says so in her reply.</p><p class="src-note" style="margin-top:2px;">This is its own live conversation, separate from Steven's own Vanessa chat on Command Deck — each dashboard is a separate published page with its own database, and no page can read another page's store (a scheduled task has to copy anything that crosses, and none copies this chat — see Sync status). That's actually the right design here, not a gap: your conversation with Vanessa and Steven's stay private to each of you rather than being merged into one shared thread. Anything Steven should actually see goes on the <a href="#isaLineCard">ISA line</a> above instead — that thread is shared with his Command Deck and carried across by the comms bridge.</p></div>
       </div>
       <div class="chat" id="isaVanessaChatBox">
         <div class="chat-bar"><span class="chat-bar-dot" id="isaVanessaChatDot"></span><span class="chat-bar-name">Vanessa</span><span class="chat-bar-role">Chief of Staff · 7 specialists on call · your own private thread</span><div class="chat-bar-right"><button type="button" class="ghost" id="isaVanessaClearBtn" title="Clear this thread on this portal">Clear</button></div></div>
@@ -474,8 +474,8 @@
     <div class="panel-head"><span class="panel-tag">PANEL&nbsp;03</span><h2 class="panel-title">Sync status</h2></div>
     <div class="card" style="border-left:4px solid var(--gold);">
       <p class="card-title">How this page and Steven's Command Deck actually connect</p>
-      <p class="card-sub" style="margin-top:0;">Start here, because the short version is not what the old copy on this page said. <b>ISA Portal and Command Deck are two separate published pages, each with its own database. Neither page can read the other's store — there is no browser-side link between them at all.</b> Anything that crosses does so because a task on Steven's Mac reads both stores and copies documents between them. Exactly one such task is running today, and it carries exactly one thing: the ISA line.</p>
-      <p class="src-note" style="margin-top:8px;"><b>Verified 2026-09-22 by reading both databases directly.</b> Not inferred from a status badge.</p>
+      <p class="card-sub" style="margin-top:0;">Start here, because the short version is not what the old copy on this page said. <b>ISA Portal and Command Deck are two separate published pages, each with its own database. Neither page can read the other's store — there is no browser-side link between them at all.</b> Anything that crosses does so because a scheduled task reads both stores and copies documents between them. Two such tasks run today: one on Steven's Mac carries the ISA line, and one in the cloud carries your client list, mortgage pipeline, daily scorecard and self-grades.</p>
+      <p class="src-note" style="margin-top:8px;"><b>Verified 2026-09-22 by reading both databases directly.</b> Not inferred from a status badge. <b>Corrected 2026-09-24:</b> this card used to say the ISA line was the only thing that crossed. It left out the Pipeline Sync (live) cloud routine, whose own entries in Steven's continuous-improvement log show it running four times a day.</p>
     </div>
 
     <div class="card" style="margin-top:16px;">
@@ -484,9 +484,10 @@
         <thead><tr><th>What</th><th>By what</th><th>How often</th><th>Last time it actually ran</th></tr></thead>
         <tbody>
           <tr><td><b>ISA line</b> — your messages to and from Steven, plus the read markers (<code>isaLine</code>, <code>isaLineRead</code>)</td><td><code>isa-comms-bridge-local</code>, a scheduled task on Steven's Mac. It reads both stores and merges the two copies by message id.</td><td>Hourly, 7:37 AM – 9:37 PM PT, and only while his Mac is awake with the desktop app open.</td><td><b>Last recorded ok 2026-09-22 12:56 AM PT</b>, per the <code>routineHealth</code> document on Steven’s deck. Both stores have since converged on a message stamped 2026-09-22 12:53 PM UTC, so it has run at least once after that — neither page records exactly when. Both copies of the thread held the same 10 messages when read on 2026-09-23. This one genuinely works.</td></tr>
+          <tr><td><b>Client list, mortgage pipeline, daily scorecard and self-grades</b> (<code>reClients</code>, <code>pipeline</code>, <code>isaScorecard</code>, <code>isaGradingScores</code>, <code>isaKpiSopActuals</code>)</td><td>The <b>Pipeline Sync (live)</b> cloud routine. It reads both stores and copies changes in both directions. It does not need Steven's Mac to be awake.</td><td>Four times a day — 04:00, 10:00, 16:00 and 22:00 UTC (9 PM, 3 AM, 9 AM and 3 PM Pacific while daylight time lasts).</td><td><b>Last logged ok 2026-09-24</b> (twice that day), per its own entries on Steven's deck: client list and pipeline identical on both sides, scorecard empty on both, no self-grades entered on either side yet.</td></tr>
         </tbody>
       </table></div>
-      <p class="src-note" style="margin-top:10px;">That is the whole list. One task, one thread. The ISA line is therefore the <i>only</i> channel on this page that reaches Steven on its own — everything else needs a person to move it.</p>
+      <p class="src-note" style="margin-top:10px;">That is the whole list: two tasks. The ISA line is still the only thing that reaches Steven as a <i>message</i> — the Pipeline Sync puts your numbers on his deck but alerts nobody. Anything that needs his attention goes on the line. Everything not in this table needs a person to move it.</p>
     </div>
 
     <div class="card" style="margin-top:16px;border-left:4px solid var(--negative);">
@@ -496,9 +497,9 @@
         <thead><tr><th>Document</th><th>On this portal</th><th>On Command Deck</th><th>Status</th></tr></thead>
         <tbody id="isaDriftRows"></tbody>
       </table></div>
-      <p class="src-note" style="margin-top:10px;"><b>The "Pipeline Sync" cloud routine is a false green.</b> A routine named "Command Deck ↔ ISA Portal — Pipeline Sync" runs in the cloud four times a day and reports SUCCESS every time. It has never synced anything. An unattended cloud run cannot write an artifact database — the write parks on a permission prompt nobody is there to approve — so it reads, finds nothing it can do, and exits clean. Its green tick means "the routine finished", not "the pipeline crossed". The proof is what it has NOT done: <code>pipeline</code> and <code>reClients</code> match on both sides today only because they were put there by hand, and the documents this routine is named for — the ones it would have to write to earn its green tick — still carry no trace of it. Read the drift table above for the current state of each document rather than trusting the routine’s result.</p>
+      <p class="src-note" style="margin-top:10px;"><b>Two cloud routines carry the name "Pipeline Sync" — only one of them works.</b> The old one, "Command Deck ↔ ISA Portal — Pipeline Sync" (01:00, 07:00, 13:00 and 19:00 UTC), reports SUCCESS every time and has never synced anything: its own instructions tell it to compare two empty seed blocks and change nothing. Its green tick means "the routine finished", not "the pipeline crossed", and only Steven can switch it off. The working one is <b>Pipeline Sync (live)</b>, in the table above. Read the drift table for the current state of each document rather than trusting either routine's result.</p>
       <p class="src-note" style="margin-top:6px;"><b>The hourly cloud comms bridge is DISABLED.</b> The ISA line survives on the Mac task above and nothing else. If Steven's Mac is asleep, closed, or the task errors, your messages sit here marked "waiting for the bridge" and he never sees them. If it is urgent and the status has not turned green, call or text him — that is not belt-and-braces, it is the actual fallback.</p>
-      <p class="src-note" style="margin-top:6px;"><b>Everything else on this page is a hand-carried copy.</b> Showings, the route planner, the checklists, the grading scores, the capacity audit, your Vanessa thread, and every reference seed (rates, market, loan programs, lender directory, program facts, builder incentives) live only in this portal's store. The mortgage pipeline and the real-estate client list are a special case: copies of both now sit on Steven's deck as well, but <b>nothing keeps them in step</b> — they match today because someone carried them across, and the next edit on either side splits them again without warning. A change you make here is saved and shared across <i>your own</i> devices, and stops there.</p>
+      <p class="src-note" style="margin-top:6px;"><b>Everything else on this page is a hand-carried copy.</b> Showings, the route planner, the checklists, the capacity audit, your Vanessa thread, and every reference seed (rates, market, loan programs, lender directory, program facts, builder incentives) live only in this portal's store. A change you make to any of those is saved and shared across <i>your own</i> devices, and stops there.</p>
       <p class="src-note" style="margin-top:6px;"><b>Reference data is re-synced by hand, in a Claude session.</b> Rates and the market snapshot were re-baked from Command Deck's <code>ratesSnapshot</code> document on 2026-09-22; VA funding-fee tiers and conventional county limits were last re-synced 2026-09-11. There is no standing drift check — an earlier version of this page claimed a twice-daily one and nothing was running. Treat any figure here as a dated snapshot and check it against Command Deck before it reaches a client.</p>
       <p class="src-note" id="isaStateWarnings" hidden style="margin-top:10px;border:1px solid var(--negative);background:var(--negative-soft);color:var(--negative);border-radius:8px;padding:10px 12px;"></p>
     </div>
@@ -541,7 +542,7 @@
     <div class="card" style="margin-bottom:16px;">
       <p class="card-title">Mortgage — Zoho CRM <span class="badge red">API blocked</span></p>
       <p class="card-sub" style="margin-top:0;"><b>Zoho CRM is still the system of record for mortgage</b> — that has not changed. What has changed is that nobody can read it from here. The Composio connection is ACTIVE, but every CRM call returns <code>HTTP 403 NO_PERMISSION: Crm_Implied_Api_Access</code> (re-verified 2026-09-22 08:17 UTC on both the leads and the deals endpoint). <b>There is no live Zoho data anywhere on this portal</b>, and there has not been since before Sep 14 — anything you see attributed to Zoho is a hand-entered figure. The mortgage pipeline table below is the manual track, and it is what you should work from.</p>
-      <p class="src-note" style="margin-top:6px;"><b>Only Steven can fix it:</b> Zoho CRM → Setup → Security Control → Profiles → the connected user's profile → enable "Zoho CRM API Access". A cloud routine re-tests the permission every few hours and records the result, but be clear about what that does and does not do: cloud routines cannot write an artifact database (an unattended run's write parks on a permission prompt), so even a successful re-test does not populate a board here. When the permission lands, Steven's Zoho sync task fills the boards on <i>his</i> Command Deck; this portal would still need a hand re-sync. If a borrower question depends on live Zoho data, it goes to Steven — do not guess from this page.</p>
+      <p class="src-note" style="margin-top:6px;"><b>Only Steven can fix it:</b> Zoho CRM → Setup → Security Control → Profiles → the connected user's profile → enable "Zoho CRM API Access". A cloud routine re-tests the permission every few hours and records the result, but be clear about what that does and does not do: even a successful re-test does not populate a board here, because the writer that would fill a Zoho board runs on Steven's Mac and writes to Command Deck's store, which this page cannot read. When the permission lands, Steven's Zoho sync task fills the boards on <i>his</i> Command Deck; this portal would still need a hand re-sync. If a borrower question depends on live Zoho data, it goes to Steven — do not guess from this page.</p>
     </div>
   </section>
 
@@ -567,7 +568,7 @@
     <div class="panel-head"><span class="panel-tag">PANEL&nbsp;07</span><h2 class="panel-title">Showings — Schedule by Client</h2><span class="panel-note">Mirrored with Command Deck · ShowingTime · Showami · route planner</span></div>
     <div class="card" style="margin-bottom:16px;border-left:4px solid var(--gold);">
       <p class="card-title">How this works from your seat</p>
-      <p class="card-sub" style="margin:0;">This schedule lives in this portal's own store. <b>It does not cross to Steven's Command Deck</b> — verified 2026-09-22; the only thing any bridge carries between the two pages is the ISA line. An earlier version of this card said changes crossed both ways on the hour; they never did. Post anything he needs to see on the <a href="#isaLineCard">ISA line</a>. You own the coordination: request the showing in ShowingTime, book the Showami showing agent, confirm access with the listing agent, send the buyer the confirmation, then mark the row <b>Confirmed</b>. Confirmed rows can be queued for sync — the queue is worked by the <code>showing-sync</code> task on Steven's Mac, which logs them on the calendar and hands back anything it cannot do. Nothing on this page contacts a client or a listing agent by itself. Keep names to a first name and last initial; phone numbers and emails live in the CRM, never here.</p>
+      <p class="card-sub" style="margin:0;">This schedule lives in this portal's own store. <b>It does not cross to Steven's Command Deck</b> — verified 2026-09-22; no task copies showings between the two pages. An earlier version of this card said changes crossed both ways on the hour; they never did. Post anything he needs to see on the <a href="#isaLineCard">ISA line</a>. You own the coordination: request the showing in ShowingTime, book the Showami showing agent, confirm access with the listing agent, send the buyer the confirmation, then mark the row <b>Confirmed</b>. Confirmed rows can be queued for sync — the queue is worked by the <code>showing-sync</code> task on Steven's Mac, which logs them on the calendar and hands back anything it cannot do. Nothing on this page contacts a client or a listing agent by itself. Keep names to a first name and last initial; phone numbers and emails live in the CRM, never here.</p>
     </div>
 
     <div class="card" style="margin-bottom:16px;">
@@ -609,7 +610,7 @@
       <div class="card-title-row">
         <div>
           <p class="card-title">Showing route planner</p>
-          <p class="card-sub" style="margin-bottom:6px;">Enter the day's showings in order, then open the whole run as one multi-stop Google Maps route. Hand it to a <b>Showami</b> showing assistant or run the coordination yourself. Saves and syncs across devices and to Steven's deck. Google Maps takes up to 9 stops between start and finish.</p>
+          <p class="card-sub" style="margin-bottom:6px;">Enter the day's showings in order, then open the whole run as one multi-stop Google Maps route. Hand it to a <b>Showami</b> showing assistant or run the coordination yourself. Saves and syncs across your devices; it does not reach Steven's deck — send it on the ISA line. Google Maps takes up to 9 stops between start and finish.</p>
         </div>
         <span class="badge gold">Windshield time → 0</span>
       </div>
@@ -890,7 +891,7 @@
     </div>
     <div class="card">
       <div class="card-title-row">
-        <div><p class="card-title">Lender directory</p><p class="card-sub">61 approved lenders by specialty/niche. 21 spot-checked against public sources Sep 2026 \u2014 17 confirmed accurate, 3 flagged (see \u26a0\ufe0f notes), 1 unverifiable. Most overlay specifics (credit/LTV cutoffs) live in broker-portal-only guideline sheets and can\u2019t be verified publicly \u2014 flagged rather than guessed.</p></div>
+        <div><p class="card-title">Lender directory</p><p class="card-sub">61 approved lenders by specialty/niche. 21 spot-checked against public sources Sep 2026 — 17 confirmed accurate, 3 flagged (see ⚠️ notes), 1 unverifiable. Most overlay specifics (credit/LTV cutoffs) live in broker-portal-only guideline sheets and can't be verified publicly — flagged rather than guessed.</p></div>
       </div>
       <input type="text" id="lenderFilterInput" placeholder="Filter by lender name or niche…" style="margin-bottom:10px;">
       <div class="table-wrap">
@@ -1282,8 +1283,8 @@
     </div>
     <div class="card" style="margin-top:16px;">
       <p class="card-title">Recruiting &amp; production incentives</p>
-      <p class="card-sub">Patriot Pacific / LPT Realty agent-recruiting structure — synced from Command Deck\u2019s Master Plan so the ISA is quoting the same terms to recruits.</p>
-      <p class="src-note">Stock awards: 120 shares per recruit\u2019s first deal (1.0x), 60 shares (0.5x BB). GCI cap thresholds run $50K \u2192 $100K \u2192 $150K \u2192 $300K, each unlocking a higher rev-share pool % and stock multiplier.</p>
+      <p class="card-sub">Patriot Pacific / LPT Realty agent-recruiting structure — synced from Command Deck's Master Plan so the ISA is quoting the same terms to recruits.</p>
+      <p class="src-note">Stock awards: 120 shares per recruit's first deal (1.0x), 60 shares (0.5x BB). GCI cap thresholds run $50K → $100K → $150K → $300K, each unlocking a higher rev-share pool % and stock multiplier.</p>
     </div>
   </section>
 
@@ -1992,11 +1993,11 @@
     ["<code>pipeline</code><div class=\"src-note\">Mortgage deals you track here</div>",
      function () { return driftLocalSummary("pipeline", "deal"); },
      "The same 2 deals, byte for byte",
-     "amber", "Matching today \u2014 but no task carries it; either side drifts the moment one is edited"],
+     "green", "In sync \u2014 carried both ways by the Pipeline Sync (live) routine, four times a day (its own log, 2026-09-24)"],
     ["<code>reClients</code><div class=\"src-note\">Real-estate clients</div>",
      function () { return driftLocalSummary("reClients", "client"); },
      "The same 2 clients, byte for byte",
-     "amber", "Matching today \u2014 but no task carries it; either side drifts the moment one is edited"],
+     "green", "In sync \u2014 carried both ways by the Pipeline Sync (live) routine, four times a day (its own log, 2026-09-24)"],
     ["<code>ratesSnapshot</code><div class=\"src-note\">Rates + market medians</div>",
      "Stamped 2026-09-22 2:24 AM UTC \u2014 re-baked by hand from his copy",
      "Stamped 2026-09-22 8:30 PM UTC, rewritten daily by the mortgage-rates-daily task on his Mac",
@@ -2009,8 +2010,8 @@
      "Same week and the same six numbers, but the sixth is labelled differently: his reads \u201cvs CRM delta\u201d, this copy still reads \u201cvs FUB delta\u201d",
      "amber", "Drifted \u2014 same numbers, stale CRM name on this side"],
     ["<code>isaGradingScores</code> \u00b7 <code>isaKpiSopActuals</code><div class=\"src-note\">Your self-grades and KPI actuals</div>",
-     "Whatever you have typed, saved on this device", "Neither document exists",
-     "red", "NOT synced \u2014 he cannot see your self-grades"],
+     "Whatever you have typed, saved on this device", "Neither document exists yet",
+     "gray", "Carried by the Pipeline Sync (live) routine once you enter them \u2014 none entered on either side as of 2026-09-24"],
     ["<code>showingSchedule</code> \u00b7 <code>showingRoute</code> \u00b7 <code>showingSyncRequests</code>",
      "No document on this device", "All three exist on his side but are empty",
      "amber", "No drift today only because both are empty \u2014 nothing carries them"]
@@ -2539,7 +2540,7 @@
     "Manufactured home OK",
     "Conventional below 620 FICO, but must be Approve/Eligible",
     "Uses highest credit score for VA IRRRL and FHA Streamline — no employment or AVM required",
-    "Licensed in 41 states",
+    "Licensed in 24 states/jurisdictions (verified 2026-09-22 against its own licenses page \u2014 the old \u201c41 states\u201d did not hold; confirm any other state on NMLS Consumer Access)",
     "24–48 hour turn times",
     "Average CTC in less than 15 days",
     "Spec conventional pricing below $275K loan amount"
@@ -4471,8 +4472,8 @@
      than it earned. Entries are only read for kind:"ref" panels; a panel the reader maintains
      ("you") or a document-fed one ("synced") gets its date from the data itself. */
   var ISA_PANEL_VERIFIED_AT = {
-    "panel-isa-syncstatus":    { at: "2026-09-23", scope: "part",
-      note: "Re-sourced 2026-09-23: both artifact databases\u2019 state collections were read directly, and every row of the drift table was corrected against them \u2014 four rows had gone wrong in a single day. NOT re-sourced: the Mac-side facts this page cannot see from a browser \u2014 the bridge task\u2019s cadence, the cloud comms bridge being disabled, and the Pipeline Sync routine\u2019s behaviour. Those carry their own dates in the text. It was scope \u201cfull\u201d until 2026-09-23; that over-claimed, because a panel whose far-side column is a hand measurement cannot be fully re-sourced from this page." },
+    "panel-isa-syncstatus":    { at: "2026-09-24", scope: "part",
+      note: "Corrected 2026-09-24 against the Pipeline Sync (live) routine\u2019s own log entries on Steven\u2019s deck: it carries reClients, pipeline, isaScorecard, isaGradingScores and isaKpiSopActuals four times a day, which this panel had been telling the ISA were not synced. The drift table\u2019s right-hand column is still the 2026-09-23 hand read. Re-sourced 2026-09-23: both artifact databases\u2019 state collections were read directly, and every row of the drift table was corrected against them \u2014 four rows had gone wrong in a single day. NOT re-sourced: the Mac-side facts this page cannot see from a browser \u2014 the bridge task\u2019s cadence, the cloud comms bridge being disabled, and the Pipeline Sync routine\u2019s behaviour. Those carry their own dates in the text. It was scope \u201cfull\u201d until 2026-09-23; that over-claimed, because a panel whose far-side column is a hand measurement cannot be fully re-sourced from this page." },
     "panel-isa-loanprograms":  { at: "2026-09-22", scope: "part",
       note: "Re-sourced today: the eight 2026 program-fact rows and five lender rows (Change Wholesale, Kings Mortgage, Liberty Reverse, Oval, Loan United). The other 56 lender rows and the 39 loan programs were counted, not re-sourced." },
     "panel-isa-easop":         { at: "2026-09-22", scope: "part",
@@ -4564,7 +4565,7 @@
     ["Lofty (CRM of record since 2026-09-22)", "Confirmed showings would be logged on the client's Lofty record by the sync task once it is wired to Lofty.", ["amber", "Wiring pending"], "The Mac has the lofty-bridge MCP server; the Lofty API key and the first proving run are still pending, so nothing is being logged to a CRM right now."],
     ["Google Calendar", "Every row has an Add-to-Calendar link (works now); the sync task also creates the event for confirmed showings.", ["green", "Live"], "Nothing — the link path works today."],
     ["Route planner", "The route planner below builds the multi-stop Google Maps route.", ["green", "Live"], "Nothing."],
-    ["Steven's Command Deck", "It does not. Showings stay in this portal's store — verified 2026-09-22 by reading both databases. Send him the plan on the ISA line, which is the one thing that crosses.", ["red", "Not synced"], "A Mac task that reads both stores and copies showingSchedule the way isa-comms-bridge-local copies isaLine. The cloud \u201cPipeline Sync\u201d routine cannot do it — an unattended cloud run cannot write an artifact database."]
+    ["Steven's Command Deck", "It does not. Showings stay in this portal's store — verified 2026-09-22 by reading both databases. Send him the plan on the ISA line, which is the one thing that crosses.", ["red", "Not synced"], "A Mac task that reads both stores and copies showingSchedule the way isa-comms-bridge-local copies isaLine. The cloud \u201cPipeline Sync\u201d routine hasn't done it — \u201ccan't write unattended\u201d stopped being true 2026-09-22, so that is not why."]
   ];
   /* Guard the SHAPE once, here, rather than at the dozen call sites that reach into it.
      `showingSchedule` and `showingSyncRequests` are documents: a half-written sync, an older

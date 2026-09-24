@@ -28,7 +28,7 @@ Trust levels: **L1** report-only · **L2** drafts for Steven's approval · **L3*
 | Gmail | connector + Composio | Working — `r12-inbox-triage` ok; drafts only, never sends. | Nothing. | L2 |
 | Strava | connector | Connected. The `stravaSnapshot` doc was repaired to `{v:…}` on 2026-09-22, but the Mac task `strava-daily-sync` (`20 5 * * *` PT = 12:20 UTC) still writes it **bare** and re-broke it at 12:32 UTC that day — it will keep overwriting the repair until its prompt is fixed on the Mac (P1, open). | Nothing — engineering fix. | L1 |
 | Slack | connector | Connected. Not load-bearing for any task. | Nothing. | L1 |
-| Inkbox | connector | Working — iMessage +1 650-484-9720 and Discord #vanessa; `vanessa-imessage-inbox` ok. | Nothing. | L2 |
+| Inkbox | connector | Working — iMessage +1 650-484-9720; `vanessa-imessage-inbox` ok. **Discord `#vanessa` is not live**: `agentInbox` (its own stamp 2026-09-22 13:44 UTC) says "awaiting bot token" and has no channel id — corrected 2026-09-24, this row used to call it working. **Steven ↔ Vanessa only, never clients:** the identity is Inkbox's (`jasmine`), not Steven's, so nothing a client could take as coming from a licensed originator goes out on it (F-E8-62). | Discord bot token (Steven). The allow-list's unused second number is his to trim on the Mac. | L2 |
 | Perplexity | Composio `perplexityai` + local `perplexity` MCP | Working — carries the research load since You.com retired. | Nothing. | L1 |
 | Context7 | connector | Connected. Docs lookup only. | Nothing. | L1 |
 | Canva | connector | **needs_reconnect.** | Reconnect it in claude.ai → Settings → Connectors if he still wants it; otherwise drop it. | n/a |

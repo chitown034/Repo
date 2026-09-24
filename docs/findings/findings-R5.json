@@ -1,0 +1,1050 @@
+[
+ {
+  "id": "F-E6-04",
+  "verdict": "already-fixed",
+  "evidence": "Vanessa's research-queue card reads 'hourly at :30 from 7:30 AM to 9:30 PM PT', matching CLAUDE.md. Grepped whole file for 6:20/12:20/5:20 — no hits. The doc's own note field is written by the task, outside command-deck.html.",
+  "change": "",
+  "commit": "",
+  "lane": "A-vanessa"
+ },
+ {
+  "id": "F-E7-04",
+  "verdict": "already-fixed",
+  "evidence": "renderIsaLine (html ~26354-26369) already slices to the newest ISA_LINE_MAX (300) messages and, when truncated, shows 'Showing the newest N of M messages' above the thread — exactly the prescribed fix.",
+  "change": "",
+  "commit": "",
+  "lane": "A-vanessa"
+ },
+ {
+  "id": "F-E7-05",
+  "verdict": "already-fixed",
+  "evidence": "isaLineMergeArrays's take() (html ~26251) no longer returns on !m.id; it derives a deterministic id (ts+from+text hash) and keeps the row. Used by both isaLineAppend and applyRemoteSnapshot's isaLine branch (html ~7524) — sync side is fixed too, no needs-G required.",
+  "change": "",
+  "commit": "",
+  "lane": "A-vanessa"
+ },
+ {
+  "id": "F-E7-07",
+  "verdict": "already-fixed",
+  "evidence": "Vanessa half: presenceAttachMic (~25001) no longer looks up vanessaMicBtn/steveMicBtn; vanessaVoiceToggle/steveVoiceToggle wiring also removed (~25299). 0 refs remain. aiteam half (isaPbTracker/isaPbVip): markup exists (~4368), renders content — verified read-only, not edited (lane E's).",
+  "change": "",
+  "commit": "",
+  "lane": "A-vanessa"
+ },
+ {
+  "id": "F-E8-11",
+  "verdict": "fixed",
+  "evidence": "Discord row said 'Live — post in #vanessa' while the agentInbox doc's channels.discord field says 'awaiting bot token — then composio link discordbot; channel reserved as #vanessa', discord_channel_id null.",
+  "change": "badge green 'Live — post in #vanessa; she replies...' + note 'last poll ... nothing new' -> badge gray 'Not live — bot token pending (Steven); channel reserved as #vanessa' + note 'nothing to relay until the token is installed'.",
+  "commit": "0246272",
+  "lane": "A-vanessa"
+ },
+ {
+  "id": "F-E8-15",
+  "verdict": "fixed",
+  "evidence": "Same underlying defect as F-E8-11 (Discord false-Live claim); the '8 executives + 4 mentors' wording it also flagged was already correct on this base (chat-persona-tags badge + preamble both say 8+4). One fix covers both findings.",
+  "change": "Same edit as F-E8-11.",
+  "commit": "0246272",
+  "lane": "A-vanessa"
+ },
+ {
+  "id": "F-E8-51",
+  "verdict": "already-closed",
+  "evidence": "Cross-team L1/L2/L3 trust-level proposal spanning the whole AI Team, not a page defect. Its own 'after' field assigns the deliverable to the integrator (trustLevels doc, Table 3 of E8-report.md) — nothing in command-deck.html to change.",
+  "change": "Write a trustLevels doc summarizing L1 (owns end-to-end)/L2 (drafts for approval)/L3 (report only) per agent, per E8-report.md Table 3.",
+  "commit": "",
+  "lane": "A-vanessa",
+  "laneVerdict": "needs-integrator",
+  "integrator": "trustLevels v1 exists in the store (keys cycle, loops, rule, syncedAt); nothing to write."
+ },
+ {
+  "id": "F-E8-62",
+  "verdict": "fixed",
+  "evidence": "Page-visible part already done: the Email row already reads '...Inkbox's identity, not Steven's: fine for his own team, wrong for clients.' Remaining asks are outside command-deck.html.",
+  "change": "Trim the unused second number from ~/.config/agent-inbox/allowlist.json; add a 'not for clients' identity rule to CONNECTIONS.md.",
+  "commit": "repo",
+  "lane": "A-vanessa",
+  "laneVerdict": "needs-integrator",
+  "integrator": "integrations/CONNECTIONS.md: Inkbox row now carries the Steven-and-Vanessa-only, never-clients rule, and no longer calls Discord working. Trimming the unused second number from the Mac allow-list stays with Steven."
+ },
+ {
+  "id": "F-FR5b-04",
+  "verdict": "already-fixed",
+  "evidence": "The flagged contradiction ('WhatsApp was removed from this list...') is gone; the paragraph already reads 'WhatsApp is back on this list as a spec, not a feed...'. Grepped for the old sentence — no hits anywhere in the file.",
+  "change": "",
+  "commit": "",
+  "lane": "A-vanessa"
+ },
+ {
+  "id": "F-FR5b-14",
+  "verdict": "already-fixed",
+  "evidence": "runtime-harness.js on the current base, empty store and full store both, report 'missing ids : 0'. vanessaMicBtn/steveMicBtn are no longer looked up anywhere (see F-E7-07).",
+  "change": "",
+  "commit": "",
+  "lane": "A-vanessa"
+ },
+ {
+  "id": "R5-A-01",
+  "verdict": "fixed",
+  "evidence": "New defect I introduced by fixing F-E8-11: the WhatsApp paragraph's closing line 'Discord remains the live third channel' became false once the Discord row was corrected to 'Not live'.",
+  "change": "'...Nothing is installed on the Mac today. Discord remains the live third channel.' -> '...Nothing is installed on the Mac today. Discord is reserved as the third channel, but read its row above — it isn't live yet either, pending its bot token.'",
+  "commit": "3bbf14f",
+  "lane": "A-vanessa"
+ },
+ {
+  "id": "F-E1-19",
+  "verdict": "already-fixed",
+  "evidence": "FRESH_FEEDERS['Top performers'] (panel-brief freshRows helper) already reads '(last completed 2026-09-15; it only runs while the Mac is awake)' — the honest cadence gap this finding wanted is already surfaced.",
+  "change": "none needed; deeper architecture proposal (cloud writes to an intermediate store / pin Mac wake window) is a scheduling decision outside command-deck.html",
+  "commit": "",
+  "lane": "B-brief-markets"
+ },
+ {
+  "id": "F-E2-16",
+  "verdict": "fixed",
+  "evidence": "(1) STRATEGY_SYNCED_AT already said 'missed four weekday cycles' and 'routineHealth marks it late', correcting the stale-ok claim. (2) FRESH_FEEDERS['Top performers'] still credited feeds-market-close alone; the real Sep-22 fill is a claude-code-session Perplexity search.",
+  "change": "old: '...writes topPerformersLiveList...after the US market close.' -> new: '...is scheduled to write topPerformersLiveList...after the US market close — but the entry on screen was written instead by a claude-code-session's Perplexity search, checked 2026-09-22.'",
+  "commit": "7067b38",
+  "lane": "B-brief-markets"
+ },
+ {
+  "id": "F-E2-17",
+  "verdict": "already-fixed",
+  "evidence": "grep -in 'you.com|you_com|youcom' across the whole file: every hit is outside panel-apex/quantvue/hedgefund/openterminal and their JS (connector table, panel-vanessa, property-tax cards, comments). No live you-* call site in my lane.",
+  "change": "none",
+  "commit": "",
+  "lane": "B-brief-markets"
+ },
+ {
+  "id": "F-E2-18",
+  "verdict": "needs-steven",
+  "evidence": "Apex card's hedged sentence ('exists but hasn't reliably stayed installed on Desktop') is a deliberate placeholder pending Steven confirming install reliability over time; this worktree has no ground truth to safely overwrite it with a plain 'installed' claim.",
+  "change": "if Steven confirms apex-trader now stays installed: old 'the dedicated apex-trader skill exists but hasn't reliably stayed installed on Desktop, so Vanessa's skill carries Apex's full persona as a guaranteed fallback' -> new drops the hedge, keeps the fallback framing",
+  "commit": "",
+  "lane": "B-brief-markets"
+ },
+ {
+  "id": "F-E2-19",
+  "verdict": "already-fixed",
+  "evidence": "stratCell() renders an em dash (never a stale figure) when strategySnapshot lacks simSize/pnl; strategySyncNote spells this out; stackRows is honestly stamped 'last hand read of the sheet, 2026-09-07'. Extending r4-quantvue-sync to read the missing columns is a Mac-task change, not page code.",
+  "change": "none in command-deck.html",
+  "commit": "",
+  "lane": "B-brief-markets"
+ },
+ {
+  "id": "F-E4b-04",
+  "verdict": "already-fixed",
+  "evidence": "OUTPUT_WATCH's ratesSnapshot row now reads task:'mortgage-rates-daily (r5-rates-market-refresh has never run)'; FRESH_FEEDERS['Local market snapshot'] now says r5 'has NEVER RUN under the runner'. Both already carry the corrected attribution this finding asked for.",
+  "change": "none needed; renderOutputWatch/autoHealthBody itself is panel-opsradar, outside my lane, but the text is already correct",
+  "commit": "",
+  "lane": "B-brief-markets"
+ },
+ {
+  "id": "F-E7-02",
+  "verdict": "already-fixed",
+  "evidence": "Both named call sites are safe: newsFromLiveFeed (line ~8423) has an explicit Array.isArray(f.citations) guard; orPaintFeed — the shared live-feed list helper — now normalizes a non-array citations field to [] (~line 22938) before its .filter() call. Neither can throw on a malformed shape.",
+  "change": "none for the two cited sites; I found and fixed a third, separate instance of the same pattern in renderSessionRead (panel-quantvue) — see R5-B-01",
+  "commit": "",
+  "lane": "B-brief-markets"
+ },
+ {
+  "id": "F-E8-04",
+  "verdict": "already-fixed",
+  "evidence": "panel-brief's Data-freshness card intro already states '46 of 50 cloud routines are enabled, 10 of them FAILED their last run (Sep 18–20) and 2 more were ABANDONED Sep 21' — matches this finding's core facts.",
+  "change": "none in command-deck.html; moving writing loops to the Mac runner is a routine-config action, not a page edit",
+  "commit": "",
+  "lane": "B-brief-markets"
+ },
+ {
+  "id": "F-E8-14",
+  "verdict": "already-fixed",
+  "evidence": "panel-brief Data-freshness card sub-copy already reads '46 of 50 cloud routines are enabled, 10 of them FAILED...2 more were ABANDONED Sep 21', replacing the old 'all 20 enabled...Sep 7' claim — matches this finding's proposed replacement almost verbatim.",
+  "change": "none needed",
+  "commit": "",
+  "lane": "B-brief-markets"
+ },
+ {
+  "id": "F-E8-27",
+  "verdict": "already-fixed",
+  "evidence": "renderRiskMonitor() (panel-quantvue Risk monitor card) reads the riskMonitor doc and reports r17-trading-day-log's real status ('last ran 2026-09-17 and errored'), honest counts of 'not recorded'/'awaiting entry' days, and tells Steven the two input boxes are hand-entered, not a log.",
+  "change": "none in command-deck.html",
+  "commit": "",
+  "lane": "B-brief-markets"
+ },
+ {
+  "id": "F-E8-30",
+  "verdict": "needs-steven",
+  "evidence": "Recommends disabling/re-pointing specific cloud routines (vault-template prompts, Real Estate Weekly Brief's FUB call) — a routine/trigger edit, which this round's rules forbid outright. No panel-brief text asserts a wrong fact to correct in the HTML.",
+  "change": "needs-integrator/Steven: disable Books Reconciliation Reminder, Ops Issue Review, Project Risk Review, Financial Summary, SEO Content Gap Audit (vault path doesn't exist in cloud sandbox) and retire Real Estate Weekly Brief (FUB userId=720)",
+  "commit": "",
+  "lane": "B-brief-markets"
+ },
+ {
+  "id": "F-E8-31",
+  "verdict": "needs-steven",
+  "evidence": "Trimming each cloud routine's connector grants (removing You_com/Canva, scoping Gmail/Composio) is an account-level Routine edit in claude.ai, not an HTML change; this round's rules forbid routine/trigger edits from a lane worktree.",
+  "change": "needs-integrator/Steven: re-scope each routine's connector grant per its actual prompt (see cloud-routines.json)",
+  "commit": "",
+  "lane": "B-brief-markets"
+ },
+ {
+  "id": "F-E8-32",
+  "verdict": "needs-steven",
+  "evidence": "Disabling/deleting the six named routines (Steve twin cloud, ISA comms bridge hourly, Weekly Review, Real Estate Weekly Brief, Rent-Buy-Wait weekly refresh, the vault-template three) is a Routine edit outside command-deck.html and outside this round's permitted writes.",
+  "change": "needs-integrator/Steven: disable or delete the six listed routines; move Rent-Buy-Wait to a Monday Mac task using the rent-buy-dashboard-refresh skill",
+  "commit": "",
+  "lane": "B-brief-markets"
+ },
+ {
+  "id": "F-E8-40",
+  "verdict": "needs-steven",
+  "evidence": "Consolidating the three overlapping brief producers (r1-morning-brief, vanessa-morning-brief-text, the two cloud brief routines) into one writer + fallback requires Mac-task and Routine changes outside command-deck.html.",
+  "change": "needs-integrator/Steven: keep one Mac writer (twinBrief) + cloud fallback via Routine notification when it hasn't written by 06:45 PT",
+  "commit": "",
+  "lane": "B-brief-markets"
+ },
+ {
+  "id": "F-E8-49",
+  "verdict": "needs-steven",
+  "evidence": "The page already reports r17-trading-day-log honestly (see F-E8-27). Making r17 compute daily-loss-limit drawdown automatically from the QuantVue sheet/CSV instead of asking a human is a Mac-task code change, outside command-deck.html.",
+  "change": "needs-integrator/Steven: point r17 at the same Google Sheet r4-quantvue-sync reads (or a Tradovate/TradeSyncer CSV export), ask Steven only when the source is missing",
+  "commit": "",
+  "lane": "B-brief-markets"
+ },
+ {
+  "id": "F-E8-73",
+  "verdict": "needs-steven",
+  "evidence": "Adding push/email notifications to specific research-only cloud routines (morning brief fallback, backup watchdog, connector watchdog, grant research) is a per-Routine trigger edit, outside command-deck.html and outside this round's permitted writes.",
+  "change": "needs-integrator/Steven: add notifications:{push,email} to the named research routines via create_trigger/update_trigger",
+  "commit": "",
+  "lane": "B-brief-markets"
+ },
+ {
+  "id": "F-FR4-03",
+  "verdict": "already-fixed",
+  "evidence": "WEATHER_SNAPSHOT (panel-brief) sources every city's high/low from one consistent line: source:'API Ninjas obs+fcst · NWS alerts (manual 9/22)' — matches this finding's recommended single-source approach; NWS is used for alerts only, not the range.",
+  "change": "none needed",
+  "commit": "",
+  "lane": "B-brief-markets"
+ },
+ {
+  "id": "F-FR4-05",
+  "verdict": "already-fixed",
+  "evidence": "NEWS_LOCAL seed (panel-news) matches this finding's own end-state exactly: Sep 22 rows present for Temecula(1) San Diego(1) Chicago(2) Las Vegas(4) DC(1) Riverside(2) Orange County(2); LA/Murrieta/Menifee/New Braunfels unchanged at their prior Sep 19-21 dates, as intended.",
+  "change": "none needed",
+  "commit": "",
+  "lane": "B-brief-markets"
+ },
+ {
+  "id": "F-FR4-07",
+  "verdict": "already-fixed",
+  "evidence": "MARKET_SNAPSHOT_DEFAULT.sectors/movers (panel-quantvue Market snapshot) already label each contested figure by outlet, e.g. 'XLC close per Strategitz', 'Yahoo's close ticker showed +17.16%, Reuters described the gain as over 12%', ''More than 9%' per CNBC'.",
+  "change": "none needed",
+  "commit": "",
+  "lane": "B-brief-markets"
+ },
+ {
+  "id": "F-FR4-11",
+  "verdict": "already-fixed",
+  "evidence": "NEWS_LOCAL still points some Menifee/San Diego rows at cross-town Patch digest URLs exactly as described (Menifee -> Oceanside/Camp Pendleton digest; San Diego 'Bluff collapse' -> Patch AM digest) with their original dates — matches this finding's own 'kept as-is, deliberately' recommendation.",
+  "change": "none needed; unchanged by design so the panel is never empty",
+  "commit": "",
+  "lane": "B-brief-markets"
+ },
+ {
+  "id": "R5-B-01",
+  "verdict": "fixed",
+  "evidence": "renderSessionRead (panel-quantvue Session-read card) filtered f.citations with '(f.citations||[]).filter(...)' — no Array.isArray guard, same crash class the edge sweep proved in F-E7-02 for renderNews/renderOrFeeds, but not covered by that fix.",
+  "change": "old: 'var cites = (f.citations || []).filter(...)' -> new: 'var cites = docRows(f.citations).filter(...)' (uses the existing docRows() document-boundary filter)",
+  "commit": "7067b38",
+  "lane": "B-brief-markets"
+ },
+ {
+  "id": "F-E8-22",
+  "verdict": "already-fixed",
+  "evidence": "File-wide grep: 'Follow Up Boss' = 0 hits, whole-word 'FUB' = 0 hits, 'FUB_' arrays = 0 hits. The 'fub' data key (kept per decision I5b) is already labelled 'CRM' in panel-showings; panel-appointments' calendar row now reads 'Legacy CRM calendar', not 'Follow Up Boss'.",
+  "change": "",
+  "commit": "",
+  "lane": "C-wealth"
+ },
+ {
+  "id": "F-E8-33",
+  "verdict": "already-fixed",
+  "evidence": "renderLoftyImport (panel-property) already implements the full honest-doc contract: not-configured/error/ok states, no invented counts, honest empty text. OUTPUT_WATCH already carries {doc:loftyLeads, label:'Lofty CRM import', task:lofty-crm-sync, hrs:14} exactly as the finding's 'after' asked.",
+  "change": "",
+  "commit": "",
+  "lane": "C-wealth"
+ },
+ {
+  "id": "F-E8-34",
+  "verdict": "already-fixed",
+  "evidence": "renderZohoStatus/renderZohoDeals (panel-property, ids only in this panel) drive the badge/table from zohoSync/zohoDeals docs honestly. OUTPUT_WATCH has the zohoSync row. dashboard-ops wiki (2026-09-23): cloud routines CAN now write unattended, so 'move to Mac runner' is itself stale.",
+  "change": "",
+  "commit": "",
+  "lane": "C-wealth"
+ },
+ {
+  "id": "F-E8-38",
+  "verdict": "already-fixed",
+  "evidence": "renderReClients/renderPipeline (panel-property) are already hand-maintained with honest empty states and array-guards; in-code comments record the fix ('used to fall back to two made-up borrowers... now says it is empty'). No 'Pipeline Sync' status text exists anywhere in the deck to mislead.",
+  "change": "",
+  "commit": "",
+  "lane": "C-wealth"
+ },
+ {
+  "id": "F-E8-66",
+  "verdict": "not-reproducible",
+  "evidence": "Searched the whole file for 'mortgage-pipeline-watchdog', 'SCALE-05', 'UNMONITORED', 'mortgage-desk-weekly', 'trid-timeline-checker' as a scheduled task — none exist. No code in or out of my lane renders a claim that this pipeline is monitored, so there is no misleading text to fix.",
+  "change": "",
+  "commit": "",
+  "lane": "C-wealth"
+ },
+ {
+  "id": "F-E2-15",
+  "verdict": "fixed",
+  "evidence": "Reproduced live: topPerformersSyncNote (my panel) is set correctly by renderTopPerformers, then overwritten by the shared OR_FEEDS renderer (lane B/G) with the live feed's own age/source. --dump-text under the full store confirmed the note read the live feed's text, not the Sep-7 tables' own stamp.",
+  "change": "Added #topPerformersLiveNote in panel-personalaccounts (bab8dc3, mine). OR_FEEDS row still needs repointing (lane B/G): old note:\"topPerformersSyncNote\" -> new note:\"topPerformersLiveNote\" in the topPerformersLiveList entry of OR_FEEDS.",
+  "commit": "46d40ae",
+  "lane": "C-wealth",
+  "laneVerdict": "needs-integrator",
+  "integrator": "Integrator 46d40ae: the OR_FEEDS entry for topPerformersLiveList now writes its age to the new topPerformersLiveNote, so the static tables keep their own stamp. Read back with --dump-text: both notes render their own text."
+ },
+ {
+  "id": "F-E4b-20",
+  "verdict": "already-fixed",
+  "evidence": "VA 30-yr refinance (Veterans United), VA 15-yr fixed and Jumbo 15-yr fixed (Navy Federal) rows in MORTGAGE_RATES already end with 'not carried by the daily feed' plus their own asOf/source, matching the finding's 'after' exactly. MORTGAGE_RATES_SYNCED_AT documents the hand-check.",
+  "change": "",
+  "commit": "",
+  "lane": "C-wealth"
+ },
+ {
+  "id": "F-E4b-21",
+  "verdict": "already-fixed",
+  "evidence": "This is a routing inventory, not a defect. Every listed location (4629/4744/4747/4983/4988/6411/7608/19759/20539/10369-433/13978-4160/15707/17821/18228/18841/24802-916) sits outside my current panel set. Spot-checked items (Follow Up Boss rename, FUB_ arrays) already resolved file-wide.",
+  "change": "",
+  "commit": "",
+  "lane": "C-wealth"
+ },
+ {
+  "id": "F-E8-55",
+  "verdict": "already-fixed",
+  "evidence": "AI_TEAM_TOOLBOX's Skills / CRM&Connectors rows (panel-aiteam, not my lane) already say 'fub-followups (legacy... still under its old directory name on the Mac — rename and port to Lofty)' / 'should be renamed with it' — an honest pending-status note, not a silent stale label.",
+  "change": "",
+  "commit": "",
+  "lane": "C-wealth"
+ },
+ {
+  "id": "F-E3-17",
+  "verdict": "fixed",
+  "evidence": "Same root cause as F-E2-15: the tables' honest note (real 2026-09-22 13:50 UTC stamp, 'Claude session research pass, no standing routine') is set correctly by renderTopPerformers but currently overwritten by the shared OR_FEEDS renderer. Not a 'no date' problem as filed; a clobbering problem.",
+  "change": "Same fix as F-E2-15: repoint OR_FEEDS's topPerformersLiveList.note from topPerformersSyncNote to the new #topPerformersLiveNote (added commit bab8dc3). OR_FEEDS is lane B/G territory, not mine to edit.",
+  "commit": "46d40ae",
+  "lane": "C-wealth",
+  "laneVerdict": "needs-integrator",
+  "integrator": "Same change as F-E2-15 (integrator 46d40ae)."
+ },
+ {
+  "id": "F-E4b-12",
+  "verdict": "already-fixed",
+  "evidence": "FRESH_FEEDERS['Builder incentives'] (lane G's self-check board, verified only, not edited) already reads: 'status: limited since 2026-09-17 — the recent fills came from Claude research sessions' — exactly the correction the finding asked for.",
+  "change": "",
+  "commit": "",
+  "lane": "C-wealth"
+ },
+ {
+  "id": "F-E4b-17",
+  "verdict": "already-fixed",
+  "evidence": "This finding is a recorded decision, not a defect. applyMarketsDoc (panel-property) already merges live ratesSnapshot over the seed with honest seedStamp fallback and appends Murrieta as a new market exactly as described. Seed correctly left untouched per rule.",
+  "change": "",
+  "commit": "",
+  "lane": "C-wealth"
+ },
+ {
+  "id": "F-E8-28",
+  "verdict": "already-fixed",
+  "evidence": "renderPlaidStatus (panel-personalaccounts, id plaidBridgeStatus) already shows a grey 'not configured' badge with an accurate explanation whenever no plaidBalances doc exists — no key can never show green. routineHealth/OUTPUT_WATCH gaps are a global board, outside my lane.",
+  "change": "",
+  "commit": "",
+  "lane": "C-wealth"
+ },
+ {
+  "id": "F-E8-48",
+  "verdict": "needs-steven",
+  "evidence": "grantPipeline rendering (panel-nonprofit) is already honest and hand-maintained, no fabricated amounts/deadlines. The ask is a brand-new monthly research routine — a Mac/cloud automation only Steven can commission, not a command-deck.html defect.",
+  "change": "",
+  "commit": "",
+  "lane": "C-wealth"
+ },
+ {
+  "id": "F-E8-76",
+  "verdict": "needs-steven",
+  "evidence": "No code anywhere claims or implements meeting recording; panel-appointments has no such feature to fix. This is a proposed new capability needing Steven's per-meeting recording-consent decision plus new Mac tooling (quill/whisper) before any dashboard surface applies.",
+  "change": "",
+  "commit": "",
+  "lane": "C-wealth"
+ },
+ {
+  "id": "R5-C-wealth-01",
+  "verdict": "fixed",
+  "evidence": "panel-property's 'Business growth scorecard' was headed 'the Six Levers' and the chart's aria-label matched, but SIX_LEVERS only has 5 entries and the card's own sub-text already says 'the average of all five' — a visible label/data mismatch found while sweeping the panel.",
+  "change": "old: 'Business growth scorecard — the Six Levers' and aria-label 'Six Levers scores, bar chart...' -> new: 'the Five Levers' / 'Five Levers scores, bar chart...'. No ids, variables or scoring logic touched.",
+  "commit": "bab8dc3",
+  "lane": "C-wealth"
+ },
+ {
+  "id": "F-E5-27",
+  "verdict": "already-fixed",
+  "evidence": "panel-wellness already discloses each named task's real status honestly: r8 daemon down since 2026-09-13 producing nothing, strava-daily-sync error since 2026-09-17, healthCoachingCard states its Sunday schedule without claiming a run happened. Matches the finding's desired honest-status framing.",
+  "change": "",
+  "commit": "",
+  "lane": "D-life"
+ },
+ {
+  "id": "F-E7-08",
+  "verdict": "already-fixed",
+  "evidence": "renderTravelPage() already calls renderTravelFilters() (which creates #travelVisibleCount) before reading and filling it, with a comment noting the required order. Verified via --dump-text under the full store: travelVisibleCount reads '113 shown', not empty.",
+  "change": "",
+  "commit": "",
+  "lane": "D-life"
+ },
+ {
+  "id": "F-E8-18",
+  "verdict": "fixed",
+  "evidence": "KANBAN_ROUTINES claimed 3x/day for vanessa-sweep/steve-twin-sweep/calendar-daily-sync; routineHealth doc + in-file cron comments show 1-2x (12:35pm/12:55pm/6:35+5:35pm). kr5 11:46->11:33, kr9 times wrong, kr11 10:20->10:45. kr23 already correct.",
+  "change": "kr2/kr3/kr5/kr8/kr9/kr11 text+time fields corrected, plus a stale 'three times a day' comment. Exact strings in commit 7e853b1.",
+  "commit": "7e853b1",
+  "lane": "D-life"
+ },
+ {
+  "id": "F-E8-19",
+  "verdict": "already-fixed",
+  "evidence": "Quoted phrases '15 recurring cloud routines...' and 'real automation already in place' no longer appear anywhere. Current text names the exact FAILED weeklies cited. pipeline/reClients claims did not reproduce against the current store (contents differ; not quoted, may hold client data).",
+  "change": "",
+  "commit": "",
+  "lane": "D-life"
+ },
+ {
+  "id": "F-E8-20",
+  "verdict": "fixed",
+  "evidence": "hlRender()'s no-snapshot branch still said 'The R8 sync writes one at 5:10 AM and 9:10 PM', contradicting the same panel's appleHealthCard text (daemon down since 2026-09-13, r8 writes nothing). Verified via --dump-text under empty store before and after.",
+  "change": "old: \"No Apple Health snapshot on this dashboard yet. The R8 sync writes one at 5:10 AM and 9:10 PM.\" -> new: honest daemon-down text pointing at the Notion phone path. Commit 187938b.",
+  "commit": "187938b",
+  "lane": "D-life"
+ },
+ {
+  "id": "F-E8-42",
+  "verdict": "not-reproducible",
+  "evidence": "Searched panel-tools (my lane, lines 4185-4284) and the entire file for inboxTriage / Slack-triage UI: zero occurrences anywhere. This is a backend Mac-task recommendation (add Slack to r12-inbox-triage) with no corresponding dashboard element to fix.",
+  "change": "",
+  "commit": "",
+  "lane": "D-life"
+ },
+ {
+  "id": "F-E8-53",
+  "verdict": "fixed",
+  "evidence": "panel-nextmoves' Replicate paragraph described the outbound voice agent as 'still open' with no explicit quarter verdict or named preconditions.",
+  "change": "Appended: 'Verdict: not this quarter — pending two preconditions: a measured speed-to-lead baseline (Speed-to-lead DMAIC still in Define) and the ISA seat filled (still in Task Board backlog).' Commit 58b22ad.",
+  "commit": "58b22ad",
+  "lane": "D-life"
+ },
+ {
+  "id": "F-E8-63",
+  "verdict": "not-reproducible",
+  "evidence": "panel-tools (my lane, 4185-4284) has no connector-status table at all. The described list (Canva/BlackRock/Health Data Avatar/MS365/PlayMCP) lives in panel-easop (~line 4531), outside my lane, and already labels Canva '(needs reconnect)' distinctly from the truly-not-connected items.",
+  "change": "",
+  "commit": "",
+  "lane": "D-life"
+ },
+ {
+  "id": "F-E8-74",
+  "verdict": "already-fixed",
+  "evidence": "appleHealthCard already gives an honest primary/secondary story: Notion path primary (spec written 09-22, first run pending), Health Auto Export daemon kept as optional second source — same goal, different route. 'health-export-mcp' isn't referenced anywhere in-file as an available connector.",
+  "change": "",
+  "commit": "",
+  "lane": "D-life"
+ },
+ {
+  "id": "F-FR2-17",
+  "verdict": "fixed",
+  "evidence": "panel-travel had 9 city tables; the seed comment at TRAVEL_SYNCED_AT said Chicago/New Braunfels had none. Added both as empty tables rendering the same honest empty-state row as every other city — no listings invented. Verified via --dump-text under full store.",
+  "change": "Added TRAVEL_CHICAGO=[]/TRAVEL_NEWBRAUNFELS=[], 2 TRAVEL_CITY_DEFS entries, 2 HTML cards, updated seed comment. Commit 5798d3d.",
+  "commit": "5798d3d",
+  "lane": "D-life"
+ },
+ {
+  "id": "F-FR4-09",
+  "verdict": "already-fixed",
+  "evidence": "Lane G's global self-check code (not mine) already reads add(\"AI news\", feedStampIso(\"aiNewsList\"), \"panel-pedefense\", 2) with a comment explaining the panel was corrected and the stamp source deliberately kept (aiNews.asOf has no parseable date). Both halves resolved in lane G's territory.",
+  "change": "",
+  "commit": "",
+  "lane": "D-life"
+ },
+ {
+  "id": "R5-D-life-01",
+  "verdict": "fixed",
+  "evidence": "wiki/dashboard-ops/index.md (my required leaf) states the routines list is 57 total / 53 enabled as of 2026-09-23, and that the long-standing '50 / 46' figure is stale. panel-nextmoves still showed 50/46 with a 2026-09-22 pulled-date.",
+  "change": "old: '50 cloud routines exist, 46 of them enabled (live listing pulled 2026-09-22 08:09 UTC)' -> new: '57 cloud routines exist, 53 of them enabled (recounted 2026-09-23; the \"50 / 46\" figure shown here previously was stale)'. Commit 58b22ad.",
+  "commit": "58b22ad",
+  "lane": "D-life"
+ },
+ {
+  "id": "R5-D-life-02",
+  "verdict": "fixed",
+  "evidence": "The full-store kanbanCards live doc carries a verbatim copy of the old KANBAN_ROUTINES values just fixed in the JS seed (kr2,kr3,kr5,kr8,kr9,kr11). lsGetSeeded() prefers the live doc over the JS default, so the dashboard keeps old times until the doc is rewritten. Engineers cannot write the store.",
+  "change": "kanbanCards doc entries kr2/kr3/kr5/kr8/kr9/kr11: apply the same old->new text/time pairs as commit 7e853b1 (e.g. kr2 time '5:35 AM · 12:35 · 5:35 PM' -> '12:35 PM') to the persisted doc, not just the seed.",
+  "commit": "store v130",
+  "lane": "D-life",
+  "laneVerdict": "needs-integrator",
+  "integrator": "Store kanbanCards v129 -> v130: only the text/time of kr2, kr3, kr5, kr8, kr9 and kr11, each rewritten only because the live value still equalled the old seed. Times checked against runnerStatus crons (synced 2026-09-23 02:10Z). Read back identical and {v}-shaped."
+ },
+ {
+  "id": "F-E4a-14",
+  "verdict": "already-fixed",
+  "evidence": "Zero 'Follow Up Boss' hits in panel-aiteam/masterplan. Only 2 'fub' mentions left in my lane (AI_TEAM_TOOLBOX Skills row, AI_TEAM_ORG CRM&Connectors row) - both dated legacy-skill-dir notes saying 'rename and port to Lofty', not a current-system claim. Lofty/Zoho named correctly throughout.",
+  "change": "",
+  "commit": "",
+  "lane": "E-aiteam"
+ },
+ {
+  "id": "F-E6-20",
+  "verdict": "already-fixed",
+  "evidence": "AI_TEAM_FLOWS Weekly/Monthly rows already read 'none of these has run under claude-runner yet' and list each Sep 18-20 cloud-routine failure by name; AI_TEAM_TOOLBOX Cloud routines row lists the same failed set. Matches finding's own 'after' exactly.",
+  "change": "",
+  "commit": "",
+  "lane": "E-aiteam"
+ },
+ {
+  "id": "F-E1-16",
+  "verdict": "already-fixed",
+  "evidence": "Grepped panel-aiteam(4543-4866)/masterplan(4867-5150)/orchestration(6735-6954) HTML and their exclusive script (AI_TEAM_ORG/TOOLBOX/FLOWS, orch renderers) for \\u[hex] and \\\\u[hex]: 0 hits either way. No literal-escape artifact remains in my lane.",
+  "change": "",
+  "commit": "",
+  "lane": "E-aiteam"
+ },
+ {
+  "id": "F-E11A-04",
+  "verdict": "already-fixed",
+  "evidence": "/home/user/Repo/routines/parallel-csuite-task-cycle.md exists and matches the recommendation exactly: vanessa-ops-review is the one Mac task of record, cloud twin report-only, caps 8/4 Perplexity, stall policy 2-retries then re-route then Needs-Steven.",
+  "change": "",
+  "commit": "",
+  "lane": "E-aiteam"
+ },
+ {
+  "id": "F-E3-13",
+  "verdict": "already-fixed",
+  "evidence": "Real defect is membershipAssocRows in panel-mind (not panel-masterplan as tagged - out of my lane either way). renderMembershipAssoc() already calls membershipExpiryNote(r[2]) per row, comment dated 'Found in the 2026-09-22 audit' - exactly the recommended fix.",
+  "change": "",
+  "commit": "",
+  "lane": "E-aiteam"
+ },
+ {
+  "id": "F-E6-23",
+  "verdict": "already-fixed",
+  "evidence": "panel-aiteam Orca card (line ~4853) and Agents toolbox row already frame it as 'proposal only... vetted by the CTO Innovator... and Elena' before any test queue. No 'brew install' or 'Not installed yet' text remains anywhere in the file.",
+  "change": "",
+  "commit": "",
+  "lane": "E-aiteam"
+ },
+ {
+  "id": "F-E8-10",
+  "verdict": "already-fixed",
+  "evidence": "AI_TEAM_TOOLBOX Agents row already prints '172 agent files... tier 1 - 17, tier 2 - 96, tier 3 - 59; models 1 Fable 5.1 . 93 Opus 5 . 78 Sonnet 5' plus lead counts - matches finding verbatim. No roster change needed, as the finding itself concluded.",
+  "change": "",
+  "commit": "",
+  "lane": "E-aiteam"
+ },
+ {
+  "id": "F-E8-17",
+  "verdict": "already-fixed",
+  "evidence": "Local Bridge card reads 15/172/60 live counts (matches toolkitSnapshot); Orca card fully reconciled (v1.4.203, standalone, not integrated); twin-queue copy already says cloud routine is 'disabled... abandoned 2026-09-09', not 'picks these up'.",
+  "change": "",
+  "commit": "",
+  "lane": "E-aiteam"
+ },
+ {
+  "id": "F-E8-77",
+  "verdict": "deferred",
+  "evidence": "panel-aiteam's own Local Bridge card already IS the recommended pattern: verb select + 'Queue it for the Mac' (lbRunBtn, lsSet into localBridgeQueue) with 'Copy the prompt' only as the run-the-queue-now fallback. Nothing to fix in my 3 panels.",
+  "change": "Out of my lane: panel-opsradar ~L6529 '⧉ Copy backup prompt' and panel-wellness ~L3561 'Copy: refresh from any Claude session' both copy-only, no queue path. Give each a queue-first button like lbRunBtn's; keep prompt-copy as fallback.",
+  "commit": "",
+  "lane": "E-aiteam",
+  "laneVerdict": "needs-integrator",
+  "integrator": "Queue-first buttons for the opsradar backup prompt and the wellness refresh need the Mac bridge to accept two new verbs first; a queued verb nothing on the Mac runs would be worse than the copy button. Next round, with the bridge change."
+ },
+ {
+  "id": "F-E8-07",
+  "verdict": "open",
+  "evidence": "Confirmed against dbfull/state (175 docs): no vanessaQueue document exists, and no code anywhere reads/writes key 'vanessaQueue' - only prose in kanbanCards (kr2/kr26-28, panel-kanban) describes it conceptually. Nothing in panel-aiteam renders it; there is no broken renderer in my lane to fix.",
+  "change": "Needs a new vanessaQueue doc (twinQueue shape) seeded from kanban rows kr26-28, plus a 'Queue it' UI - that UI's natural home is panel-vanessa (lane A's chat/queue surface), not panel-aiteam. Out of my 3 panels; also would need a store write, which this lane cannot perform.",
+  "commit": "",
+  "lane": "E-aiteam",
+  "laneVerdict": "needs-integrator",
+  "integrator": "No vanessaQueue document exists, yet vanessa-sweep is described as working it. Design gap for the next round: name the real queue (twinQueue or vanessaRecommendations) or build the document."
+ },
+ {
+  "id": "F-E8-26",
+  "verdict": "already-fixed",
+  "evidence": "Nudge was generated by Mac task r3-eod-rollup, outside command-deck.html - the dashboard only displays isaLine data. routines/isa-escalation-ladder.md (cloud routine, 2026-09-22) replaced it; live isaLadder doc confirms it works (rung halted at 3 misses, no further nudges).",
+  "change": "",
+  "commit": "",
+  "lane": "E-aiteam"
+ },
+ {
+  "id": "F-E8-37",
+  "verdict": "fixed",
+  "evidence": "Added renderIsaLadder(): new isaLadderNote element on the ISA line card shows the live isaLadder doc's rung (badge, severity color), miss count, its own note and updated stamp. Verified via runtime-harness --dump-text: renders the real halted/3-miss state honestly.",
+  "change": "",
+  "commit": "b1fc09a",
+  "lane": "E-aiteam"
+ },
+ {
+  "id": "F-E8-67",
+  "verdict": "fixed",
+  "evidence": "AI_TEAM_ORG + ORG_CHART reliability-engineer copy now names it incident commander for a broken connector/dead daemon/runner backlog, closing the 'nobody named' gap. Auto per-status=failed incident rows in routineHealth is a new backend routine - not built, out of HTML scope.",
+  "change": "old: [\"reliability-engineer\", \"root-cause fixes; scores output, not execution\"] -> new: adds '; incident commander for a broken connector, a dead daemon or a runner backlog'. ORG_CHART owns text similarly extended.",
+  "commit": "b1fc09a",
+  "lane": "E-aiteam"
+ },
+ {
+  "id": "F-E8-69",
+  "verdict": "fixed",
+  "evidence": "renderIsaLadder() shows isaLineRead.isa freshness on the ISA line card ('ISA last opened this line <date> (<age>)' or honest 'no record yet'). The daily 12:00 PT digest itself needs Steven's channel choice (Gmail draft vs Portal bell+email) - not built, needs-steven.",
+  "change": "",
+  "commit": "b1fc09a",
+  "lane": "E-aiteam"
+ },
+ {
+  "id": "R5-E-aiteam-01",
+  "verdict": "fixed",
+  "evidence": "AI_TEAM_TOOLBOX Cloud routines row said '50 routines, 46 enabled'. Required leaf wiki/dashboard-ops/index.md (2026-09-23) states this exact figure is stale and the true count is 57 total, 53 enabled. Updated with the dated citation, matching the sibling Mac-tasks row's own pattern.",
+  "change": "old: \"50 routines, 46 enabled.\" -> new: \"57 routines, 53 enabled (counted 2026-09-23; the long-carried “50 / 46” was stale).\"",
+  "commit": "98adba1",
+  "lane": "E-aiteam"
+ },
+ {
+  "id": "R5-E-aiteam-02",
+  "verdict": "declined",
+  "evidence": "My new renderIsaLadder() reads docs isaLineRead and isaLadder for panel-aiteam, but panelStampRegistry's panel-aiteam key list (F-W1-10's territory, not mine) does not include either, so the panel's freshness stamp won't reflect them.",
+  "change": "old: \"panel-aiteam\": { kind: \"you\", keys: [\"isaLine\", \"steveChat\", \"twinQueue\", \"twinBrief\", \"twinLog\", \"improvementProposals\", \"cfoLog\", \"cmoLog\", \"ctoLog\", \"complianceLog\", \"caioLog\", \"croLog\", \"cisoLog\", \"coachLog\"] } -> new: add \"isaLineRead\", \"isaLadder\" to that keys array.",
+  "commit": "",
+  "lane": "E-aiteam",
+  "laneVerdict": "needs-G",
+  "integrator": "panel-aiteam is a \"you\" stamp: it dates edits made on this page. isaLadder is written by a routine and isaLineRead is a read receipt; neither is an edit by Steven, so adding them would make the stamp claim edits he never made."
+ },
+ {
+  "id": "F-E3-14",
+  "verdict": "already-fixed",
+  "evidence": "SOD_ITEMS (~L15023) already reads 'Review Zoho CRM ... then Lofty for real estate' and 'Check inbound channels: Lofty, Zoho telephony/SMS ...'. File-wide check for \\bFUB\\b and 'Follow Up Boss' as static text: 0 hits.",
+  "change": "",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E3-15",
+  "verdict": "already-fixed",
+  "evidence": "DMAIC_DEFAULT d3 note (JS seed, ~L19599) and the cdStateSeed JSON (read-only, ~L6960) both already read '...pulled from Lofty (real estate) and Zoho (mortgage) ... Both are blocked today' - no FUB in either copy.",
+  "change": "",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E3-16",
+  "verdict": "already-fixed",
+  "evidence": "estateRows prints 'never verified' per blank row; estateAlerts() raises 'Beneficiaries have never been verified on this dashboard' (~L20745-20811). Matches the finding's own conclusion that no edit was needed.",
+  "change": "",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E4a-10",
+  "verdict": "already-fixed",
+  "evidence": "No FUB/Follow Up Boss text remains in panel-easop. renderLeadTriage renders lt.source dynamically (ltNote), never a hard-coded CRM name. Re-pointing the 4 Mac crons is an ops action, out of dashboard-code scope.",
+  "change": "",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E4a-11",
+  "verdict": "already-fixed",
+  "evidence": "panel-opsradar Speed-to-lead card-sub + renderSpeedToLead empty state already name Lofty. stlStats() returns a generic source:'watchdog' label and never surfaces the doc's raw source string, so 'Follow Up Boss via Composio' (live leadResponse.source) never renders.",
+  "change": "",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E4a-16",
+  "verdict": "already-fixed",
+  "evidence": "panel-easop crmConnectivity + isaKpiSopRows text already states Zoho is SOR/API-blocked and Lofty is real-estate SOR since 2026-09-22, making the gap visible. A zohoDeals table + zohoSync badge exist elsewhere in the deck. Watchdog build itself needs Steven's Zoho permission.",
+  "change": "",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E4b-16",
+  "verdict": "already-fixed",
+  "evidence": "Full-store harness dump confirms refiRows/partnerRows/tcRows/reviewRows/recruitRows/webinarRows (panel-practice) all render honest 'no X tracked yet' empty states, no undefined/NaN.",
+  "change": "",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E5-15",
+  "verdict": "already-fixed",
+  "evidence": "renderMarketing() (~L19811-19829) computes marketingSyncNote's newest-item date and marketingQueueCount live from marketingQueue's own rows/ts every render - not hand-typed figures.",
+  "change": "",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E8-09",
+  "verdict": "already-fixed",
+  "evidence": "tkFabric tile (~L9867) reads the live knowledgeFabric doc each render, confirmed via harness dump (71/832/1761/750/238/0). The '68 rows' mention elsewhere is explicit dated narrative text, not a live claim.",
+  "change": "",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E8-12",
+  "verdict": "already-fixed",
+  "evidence": "renderCpi() (panel-processexcellence cpiCycles/DMAIC/kaizen, ~L21057-21110) computes all stats live from the store each render, confirmed via harness dump. The v2 cpiOpportunityLog shape belongs to panel-orchestration, outside this lane.",
+  "change": "",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E8-16",
+  "verdict": "already-fixed",
+  "evidence": "No FUB/Follow Up Boss text anywhere in panel-easop (file-wide check: 0 hits). Weekly capacity audit row now reads 'Google Calendar x Zoho (mortgage) x Lofty (real estate, since 2026-09-22)'.",
+  "change": "",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E8-23",
+  "verdict": "fixed",
+  "evidence": "OUTPUT_WATCH mismatches confirmed against the store: cpiCycles has a hand-kept cycle-tracker shape, not cpi-daily-scan's log shape; isaScorecard was empty while isaKpi held r11's real output; twinBrief's own ranAt/'Midday sweep' content matches steve-twin-sweep, not r1-morning-brief.",
+  "change": "cpiCycles->cpiOpportunityLog (task cpi-daily-scan); isaScorecard->isaKpi (task r11-isa-kpi-compile); twinBrief task r1-morning-brief->steve-twin-sweep; added plaidBalances (r7-plaid-balances) and apptPrep (steve-twin-sweep) rows to OUTPUT_WATCH.",
+  "commit": "4afe53c",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E8-35",
+  "verdict": "needs-steven",
+  "evidence": "Proposes a new Monday cloud routine watching backupStatus. Creating routines/triggers is outside worktree scope (BRIEF SS4) and is a Mac/account action - no panel-opsradar rendering defect found.",
+  "change": "Needs Steven to approve/create the Monday 08:00 PT backup-silence routine described in the finding.",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E8-36",
+  "verdict": "needs-steven",
+  "evidence": "Proposes a new daily cloud routine plus a Mac twin alert watching 6 documents for failed/stale status. Routine/task creation is outside worktree scope - no rendering defect found.",
+  "change": "Needs Steven to approve/create the daily 13:30 UTC failed-doc watchdog and fix vanessa-significant-alerts.",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E8-41",
+  "verdict": "needs-steven",
+  "evidence": "Proposes a new 5-minute Lofty-poll watchdog plus auto-draft-to-ISA-bell. New Mac automation that also touches ISA client-text drafting near the licensed-conversation boundary; outside worktree scope.",
+  "change": "Needs Steven to approve/build the 5-minute watchdog once loftyLeads exists.",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E8-45",
+  "verdict": "needs-steven",
+  "evidence": "The 14-day text-alert task is a new Mac automation, outside dashboard scope. Note: panel-practice's license card actually reads doc 'licenses', not 'licenseTracker' - its rows render honestly (verified via harness).",
+  "change": "Needs Steven to approve/build a Mac task that texts 14-day expiry alerts from licenseTracker + licenses + memberships.",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E8-46",
+  "verdict": "needs-steven",
+  "evidence": "Making showing-sync fire only when showingSyncRequests is non-empty is Mac task-logic, not a command-deck.html edit.",
+  "change": "Needs Steven/automation-engineer to gate showing-sync's 3x-daily run on a non-empty queue.",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E8-47",
+  "verdict": "needs-steven",
+  "evidence": "Teaching vanessa-imessage-inbox to parse 'approve <id>'/'reject <id>' is a Mac automation build. marketingQueue itself already renders live (see F-E5-15).",
+  "change": "Needs Steven to approve building the approve/reject parser on the Mac inbox task.",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E8-50",
+  "verdict": "needs-steven",
+  "evidence": "Proposes a new Sunday secondBrain Inbox-triage automation on the Mac. No panel-toolkit rendering defect found; tkFabric already shows live counts.",
+  "change": "Needs Steven to approve/build the Sunday 16:00 Inbox-triage task.",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E8-57",
+  "verdict": "already-fixed",
+  "evidence": "This round's own gate (BRIEF SS2) already runs tests/runtime-harness.js (pure Node, no jsdom) as the fast path; jsdom dashboard-selftest remains the deep/weekly path - the two-tier split this finding asked for.",
+  "change": "",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E8-61",
+  "verdict": "needs-steven",
+  "evidence": "Isolating OSINT/uncensoring tools and their hooks/LaunchAgents onto a separate macOS profile is a Mac/account security action, outside command-deck.html; no dashboard rendering defect involved.",
+  "change": "Needs Steven + ecc-security-steward sign-off on a separate macOS user for the OSINT toolset.",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E8-68",
+  "verdict": "needs-steven",
+  "evidence": "The 'missing layers' (ISA ack detection, activity monitor, ISA-side alerting, QA gate, scorecard write path, hiring) are Mac/Portal/hiring actions. Scorecard write path specifically needs isa-portal.html, outside this file/lane.",
+  "change": "Needs Steven's decisions/builds; scorecard write path needs isa-portal.html work (lane H).",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E8-70",
+  "verdict": "already-fixed",
+  "evidence": "isaKpiDocBlock/isaKpiDocNote render the isaKpi doc's own metric label ('ISA self-report vs CRM delta') and note verbatim - the live doc no longer says 'FUB delta'. Portal-side write path and r11's read source are outside command-deck.html.",
+  "change": "",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E8-71",
+  "verdict": "needs-steven",
+  "evidence": "Adding an ad-compliance-reviewer gate before ISA drafts reach the bell, and a sent-text log from Lofty's timeline, are automation builds. No panel-marketing rendering defect found.",
+  "change": "Needs Steven to approve wiring ad-compliance-reviewer plus a sent-text log into the ISA draft flow.",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E8-75",
+  "verdict": "needs-steven",
+  "evidence": "A Lofty-webhook pilot into the apination-bridge inbox is a new Mac-side integration pending ecc-security-steward review - no dashboard change involved.",
+  "change": "Needs Steven plus a security review before any webhook is wired.",
+  "commit": "",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "R5-F-ops-re-01",
+  "verdict": "fixed",
+  "evidence": "New defect (panel-easop, P2): ltBody echoes leadTriage.note verbatim; the live doc's real failure note names 'Follow Up Boss'/followupboss.com with nothing marking it as a stale, pre-repoint attempt - a reader could take that as FUB being currently targeted.",
+  "change": "renderLeadTriage: when lt.note matches /follow up boss|followupboss|\\bfub\\b/i, append '(that attempt targeted the retired CRM - this task has not been re-pointed to Lofty yet.)' right after the escaped note.",
+  "commit": "4afe53c",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "R5-F-ops-re-02",
+  "verdict": "fixed",
+  "evidence": "New defect (panel-easop, P3): static placeholder id=onboardProgressNum said '0/18' while ONBOARD_PHASES totals 17 items (6+6+5); renderOnboardTracker() always overwrites it on load, so this was latent/cosmetic, not actually user-visible.",
+  "change": "0/18 -> 0/17 in the static <span id=\"onboardProgressNum\"> placeholder.",
+  "commit": "c7caf5a",
+  "lane": "F-ops-re"
+ },
+ {
+  "id": "F-E7-01",
+  "verdict": "already-fixed",
+  "evidence": "initSync (~7589) wraps window.claude.use(\"db\") (7602) in try/catch; catch sets 'Local only' and returns. Harness --inject '{\"claude\":\"throwing\"}': 338/338 containers, 0 exceptions, verdict PASS.",
+  "change": "",
+  "commit": "",
+  "lane": "G-global"
+ },
+ {
+  "id": "F-E7-06",
+  "verdict": "already-fixed",
+  "evidence": "lsSetLocal (6979) catch records LS_WRITE_FAILURES + console.warn; lsWriteFailureAlerts() wired into Ops Radar alerts list. Harness --inject '{\"setItemThrows\":true}': 338/338 containers, 0 exceptions, PASS.",
+  "change": "",
+  "commit": "",
+  "lane": "G-global"
+ },
+ {
+  "id": "F-E7-09",
+  "verdict": "already-fixed",
+  "evidence": "applyRemoteSnapshot's isaLine/isaLineRead branch (7534) merges and returns BEFORE the '!dbReady && pendingDbWrites' skip (7556), so merge keys are exempt. tests/isaline-proof.js: PROOF PASS, 0 lost, replay idempotent.",
+  "change": "",
+  "commit": "",
+  "lane": "G-global"
+ },
+ {
+  "id": "F-E7-14",
+  "verdict": "fixed",
+  "evidence": "recordSectionEdit called setTimeout(renderPanelStamps,400) with no args, so every debounced save re-walked and re-rendered all 40 panel stamps (measured slowest render on a clean load, 44-82ms).",
+  "change": "recordSectionEdit accumulates keys in PENDING_STAMP_KEYS, calls renderPanelStamps(keys). renderPanelStamps(onlyKeys) restricts the DOM walk to 'you'-kind panels whose registry keys include a changed key; no-arg callers (init, remote snapshot) keep the full sweep.",
+  "commit": "6d83a7c",
+  "lane": "G-global"
+ },
+ {
+  "id": "F-P4-14",
+  "verdict": "fixed",
+  "evidence": "renderSelfCheck gave every sev:'critical' issue the caption 'Blocks correct display or navigation.' incl. Freshness ones. Probed runSelfCheck() on full store: 8/8 current issues are area:'Freshness' (3 critical/5 warn).",
+  "change": "'<div class=\"er-sub\">'+(i.sev===\"critical\"?\"Blocks correct display or navigation.\":\"Worth fixing; not breaking anything right now.\") -> var subTxt=i.area===\"Freshness\"?\"Stale data — a feed is overdue for refresh; nothing is broken or blocked.\":(i.sev===\"critical\"?...:...); used in er-sub.",
+  "commit": "17cd9c0",
+  "lane": "G-global"
+ },
+ {
+  "id": "F-S1-12",
+  "verdict": "needs-steven",
+  "evidence": "Verified panel-showings' CLI-Anything card (renderCliConnectors) without editing it: !doc branch already explains the absence honestly ('No cliAnythingStatus document has ever been written...'); badge reads 'Not installed — never checked'. No needs-integrator row needed.",
+  "change": "",
+  "commit": "",
+  "lane": "G-global"
+ },
+ {
+  "id": "F-W1-10",
+  "verdict": "fixed",
+  "evidence": "panel-aiteam's keys already excluded vanessaChat/vanessaRecommendations (fixed earlier round). But panel-vanessa's own keys listed only \"vanessaChat\", though its markup also holds the vanessaRecRows/vanessaRecommendations card, so edits there went unstamped anywhere.",
+  "change": "\"panel-vanessa\": { kind: \"you\", keys: [\"vanessaChat\"] } -> { kind: \"you\", keys: [\"vanessaChat\", \"vanessaRecommendations\"] }",
+  "commit": "18827ca",
+  "lane": "G-global"
+ },
+ {
+  "id": "F-W1-11",
+  "verdict": "already-fixed",
+  "evidence": "panel-tools is kind:'ref' with no PANEL_VERIFIED_AT row (confirmed by diffing panel ids vs the map's 33 entries). renderPanelStamps' ref-branch falls to txt=\"Reference\" (dateless) when vAt is null — no fabricated date. Gap is already named in the map's own header comment.",
+  "change": "",
+  "commit": "",
+  "lane": "G-global"
+ },
+ {
+  "id": "F-W1-12",
+  "verdict": "fixed",
+  "evidence": "renderDataFreshness built rows as plain <a href=\"#panel-x\"> with no click handler and no hashchange listener anywhere in the deck, so a row naming a panel on a hidden (display:none) tab did nothing on click. 23 of 28 rows point off-tab.",
+  "change": "Added data-fresh-panel=\"'+r.panel+'\" to each row's anchor. After body.innerHTML: body.querySelectorAll('[data-fresh-panel]') click handler preventDefaults, reads target's data-page, calls switchPage(page) (deck's existing tab-switch fn), then scrollIntoView.",
+  "commit": "2769512",
+  "lane": "G-global"
+ },
+ {
+  "id": "F-E12-19",
+  "verdict": "already-fixed",
+  "evidence": "PROGRAM_FACTS_SYNCED_AT now reads '2026-09-22 13:00 UTC...' (not the stale 09-07). programFactsSyncNote renders the computed age via isaDaysSince() plus the prescribed 'No task or routine refreshes this table...' text verbatim. Confirmed via harness --dump-text; values unchanged.",
+  "change": "",
+  "commit": "",
+  "lane": "H-isa"
+ },
+ {
+  "id": "F-E12-20",
+  "verdict": "already-fixed",
+  "evidence": "Static card-sub on panel-isa-easop (KPI scorecard) already states the isaKpi document exists, matches Steven's copy, and this table does not read it, with an invitation to wire it in - matches the finding's prescribed after-text exactly.",
+  "change": "",
+  "commit": "",
+  "lane": "H-isa"
+ },
+ {
+  "id": "F-E12-24",
+  "verdict": "already-fixed",
+  "evidence": "queueResearch() writes the vanessaResearch doc (lsSet) AND relays via isaLineAppend; queuedResearchNote() reports which of the two succeeded ('written to...document' plus 'and posted on the ISA line' or 'could NOT be posted'). Verified in the function body.",
+  "change": "",
+  "commit": "",
+  "lane": "H-isa"
+ },
+ {
+  "id": "F-E12-25",
+  "verdict": "already-fixed",
+  "evidence": "Same 3 quickcheck.py fails reproduced; all confirmed non-issues: dup-id is the JS template string ' + id + ' x3; div-imbalance is a CSS comment quoting <div>/<span> as prose (scan stops at the first <script>); undefined-calls are English prose words. Harness clean PASS both stores.",
+  "change": "",
+  "commit": "",
+  "lane": "H-isa"
+ },
+ {
+  "id": "R5-H-isa-01",
+  "verdict": "not-reproducible",
+  "evidence": "'vs FUB delta' (~line 2009) is a dated data string (DRIFT_ROWS, DRIFT_CHECKED_AT=2026-09-23) in the drift table. Not FUB-as-current: flags a stale label on one doc's field, own note says 'stale CRM name on this side'. No 'delta'/'fub' text elsewhere; other fub refs read CRM/Lofty.",
+  "change": "none - investigated per brief, no defect found, left unchanged",
+  "commit": "",
+  "lane": "H-isa"
+ },
+ {
+  "id": "R5-H-isa-02",
+  "verdict": "fixed",
+  "evidence": "Static HTML (outside <script>, where JS \\uXXXX escapes go uninterpreted) literally rendered backslash-u text: panel-isa-loanprograms Lender-directory card-sub (em dash x2, warning emoji, apostrophe) and panel-isa-team Recruiting card (apostrophe x2, arrow x3). Found via full-DOM artifact sweep.",
+  "change": "Literal \\u2014 / \\u26a0\\ufe0f / \\u2019 / \\u2192 text -> actual characters, matching the file's dominant convention (200+ real em dashes/apostrophes/arrows and a native emoji elsewhere).",
+  "commit": "22df26c",
+  "lane": "H-isa"
+ },
+ {
+  "id": "R5-H-isa-03",
+  "verdict": "fixed",
+  "evidence": "3 spots asserted 'an unattended cloud run cannot write an artifact database / parks on a permission prompt' - contradicted by required leaf wiki/dashboard-ops/index.md's dated, proven correction (2026-09-22; live Pipeline Sync named as one of 4 cloud writers now proven to write unattended).",
+  "change": "panel-isa-syncstatus Pipeline-Sync note, panel-isa-crmimport Zoho note, SH_INTEGRATIONS Command-Deck row: removed the disproven mechanism claim; kept the still-true conclusions (no trace of a write here; Zoho's writer targets Command Deck's store).",
+  "commit": "76f31ae",
+  "lane": "H-isa"
+ },
+ {
+  "id": "R5-INT-01",
+  "lane": "integrator",
+  "verdict": "fixed",
+  "evidence": "Lane F moved twinBrief to steve-twin-sweep; the inventory says r1-morning-brief writes it and the stored doc is the midday sweep, so both do. The watch row now names both writers.",
+  "change": "",
+  "commit": "46d40ae"
+ },
+ {
+  "id": "R5-INT-02",
+  "lane": "integrator",
+  "verdict": "fixed",
+  "evidence": "Lane E's new ISA ladder note printed isaLadder.updatedAt as \"updated\"; that field is a schedule-slot stamp (Needs-Steven item 12), so it now reads \"slot ... (a schedule-slot stamp, not proof it ran)\".",
+  "change": "",
+  "commit": "46d40ae"
+ },
+ {
+  "id": "R5-INT-03",
+  "lane": "integrator",
+  "verdict": "fixed",
+  "evidence": "Lane D's new Chicago and New Braunfels tables said \"Nothing matches the current filter\" and promised a \"live pass\"; an empty city now says \"No listings researched for this city yet\", and the card text names the research pass.",
+  "change": "",
+  "commit": "fb2a3c5"
+ },
+ {
+  "id": "R5-INT-04",
+  "lane": "integrator",
+  "verdict": "fixed",
+  "evidence": "A code comment in the deck (present in the live base) used a real client's surname as its example of the label form. Placeholder instead; both page sources re-scanned against every client name in the store: 0 hits.",
+  "change": "",
+  "commit": "95b1a8c"
+ },
+ {
+  "id": "R5-INT-05",
+  "lane": "integrator",
+  "verdict": "fixed",
+  "evidence": "Repo: CONNECTIONS.md called Discord #vanessa working, and Needs-Steven item 46 said Vanessa \"already answers there in text\"; agentInbox says awaiting bot token. Both corrected.",
+  "change": "",
+  "commit": "repo"
+ },
+ {
+  "id": "R5-INT-06",
+  "lane": "integrator",
+  "verdict": "fixed",
+  "evidence": "Repo: Needs-Steven 2a (three web-UI routines, five lines, before Fri 4 PM PT), items 16 and 20(b) corrected, runbook step H7 (published runbook v8).",
+  "change": "",
+  "commit": "3e7235b"
+ },
+ {
+  "id": "R5-INT-07",
+  "lane": "integrator",
+  "verdict": "fixed",
+  "evidence": "ISA Portal told the ISA the ISA line was the only thing reaching Steven, and marked pipeline, reClients and self-grades \"not synced\". The Pipeline Sync (live) routine carries all five documents both ways 4x/day; its own ciLog rows show ok runs 2026-09-23 and twice 2026-09-24. Hero, Vanessa card, Sync status (intro, table, drift rows, two-routines note), showings and route-planner text corrected.",
+  "change": "",
+  "commit": "isa 6609754"
+ },
+ {
+  "id": "R5-INT-08",
+  "lane": "integrator",
+  "verdict": "fixed",
+  "evidence": "ISA Portal Loan United niche list said \"Licensed in 41 states\" while the same page's lender row, verified 2026-09-22 against the lender's own licenses page, says 24 states/jurisdictions. Aligned to the verified figure.",
+  "change": "",
+  "commit": "isa 6609754"
+ },
+ {
+  "id": "R5-INT-09",
+  "lane": "integrator",
+  "verdict": "fixed",
+  "evidence": "Deck store: stressTestReport v6 -> v7 (the R3 sweep, 56 Pass / 1 Degraded / 0 Fail of 57, header fields corrected from the stale cycle-6 text) and one ciLog row, one atomic pinned batch; both read back identical and {v}-shaped.",
+  "change": "",
+  "commit": "store"
+ }
+]
