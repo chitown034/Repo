@@ -726,7 +726,33 @@ has held one test item since 2026-09-12 for exactly this reason.
 > Never write any other key of `voiceReplyQueue`, and never remove an existing item other than by
 > the newest-10 trim.
 
-### 6b. Append to `voice-reply-render`
+### 6b. Append to `voice-reply-render` — REWRITTEN 2026-09-24 (the first version cannot work)
+
+> **Why this was rewritten.** The first 6b told the task to put the MP3's base64 straight into
+> `inkbox_media_stage`. Measured 2026-09-24 against the only real clip in the store
+> (`voiceReply_teststeve01_0`, 27 s, 108,284 bytes): that is **144,380 base64 characters and
+> 135,424 tokens**. No model emits that in one tool call, and at ~270K tokens per voice note it
+> would be unaffordable if one could. Both engineers who tested the staging path (P5, R4) stopped
+> at a 1,532-byte prefix for this reason and neither claimed a full clip — the first 6b was never
+> tested end to end, and it was put on Steven's runbook anyway. It is superseded in full.
+>
+> **The rule now: the model decides what to voice; a script moves the bytes.** The model never
+> sees the audio. `integrations/vanessa-voice-send.py` does the move with the Inkbox Python SDK
+> 0.7.7 (MIT), using calls read from the SDK's own source: `upload_imessage_media(content=bytes)`
+> returns an **Inkbox-hosted** `media_url`, and `send_imessage(conversation_id=, media_urls=[url])`
+> replies into the thread. Inkbox hosting the file itself is what makes this work: R4 found on
+> 2026-09-23 that Inkbox cannot fetch a private claude.ai URL, but it can fetch its own.
+> Tested 55/55 against the real SDK code path with a local stand-in server, on the real clip and on
+> a synthesized one (`integrations/tests/test_vanessa_voice_send.py`). **Never run against live
+> Inkbox** — inkbox.ai is egress-blocked from the cloud sandbox and there is no key there.
+
+**Prerequisites (Steven, once):** an Inkbox API key in `~/.inkbox/config` as `api_key = …`
+(`chmod 600`; the SDK reads that file because launchd jobs do not inherit shell variables), the SDK
+installed by `./MAC-SETUP.sh --only inkbox-voice`, and the Vanessa thread's conversation UUID in
+`~/.config/inkbox/voice-allow`, one per line. The script refuses to send anywhere not in that file,
+before any network call — a queue item is shared-store data, the allow file is local to the Mac.
+
+**Paste this, replacing the first 6b in full:**
 
 > **Deliver the audio when the queue item asks for it.** After you have written all
 > `voiceReply_<id>_<n>` parts and set `voiceReplyStatus.items[<id>].status = "ready"`, look at the
@@ -734,26 +760,39 @@ has held one test item since 2026-09-12 for exactly this reason.
 > today. That path is unchanged.
 >
 > If `deliver` is `"imessage"`:
-> 1. **Concatenate the parts into ONE clip.** A thread of six voice notes is worse than one; Steven
->    gets a single voice note per reply.
-> 2. Stage it: `inkbox_media_stage` with `source_type: "base64"`, `purpose: "imessage"`,
->    `content_type: "audio/mpeg"`, `data` = standard base64 of the MP3 bytes — no data-URI prefix,
->    no URL-safe alphabet, `=` padding present. The cap is 10 MiB; if the clip exceeds it, do not
->    truncate mid-sentence — record `error: "clip too large for imessage"` and stop.
-> 3. Send it: `inkbox_imessage_send` with the item's `replyTo` as `conversation_id`, Steven's number
->    as `recipient`, and `media: [{handle, content_hash}]` from the staging result. Send **no text**
->    with it — the text reply already went out ten minutes ago and repeating it is noise.
-> 4. Record the outcome on the status document, whether it worked or not:
->    `voiceReplyStatus.items[<id>].delivered = {channel: "imessage", at: "<actual UTC now>", ok: <bool>, error: "<verbatim, or null>"}`.
+> 1. **Save the parts to disk without reading them.** For each part, call the Artifact database
+>    `get` for `voiceReply_<id>_<n>` with `out_dir` = `~/.cache/vanessa-voice/<id>`. The tool writes
+>    the file; you only see its path. **Never put the audio field into any tool call yourself.**
+> 2. **Run the delivery script once:**
+>    `~/Applications/inkbox-voice/.venv/bin/python <repo>/integrations/vanessa-voice-send.py
+>    --conversation-id <replyTo> --parts "~/.cache/vanessa-voice/<id>/state/voiceReply_<id>_*.json"`
+> 3. **Read its one line of JSON** and record it on the status document, whether it worked or not:
+>    `voiceReplyStatus.items[<id>].delivered = {channel: "imessage", at: "<actual UTC now>",
+>    ok: <its ok>, bytes: <its bytes>, error: <its error, verbatim, or null>}`.
+> 4. Delete `~/.cache/vanessa-voice/<id>` whatever happened.
 >
-> Delivery failure is never silent and never fatal: set `ok:false` with the verbatim error, leave
-> `status: "ready"` alone so the dashboard can still play it, and carry on to the next item. Never
-> retry a send more than once — a duplicated voice note is worse than a missing one.
+> Its exit codes: 0 sent · 2 bad arguments · 3 bad or incomplete parts · 4 over the 10 MiB cap ·
+> 5 conversation not allow-listed · 6 Inkbox refused or failed · 7 SDK not installed. **Do not run
+> it twice for one item** — the script makes exactly one send attempt, and a duplicated voice note
+> is worse than a missing one. A 5 or a 7 is a setup problem: say so in `ciLog` in plain words.
 >
-> `deliver` values other than `"imessage"` are not implemented. Record
+> Delivery failure is never silent and never fatal: leave `status: "ready"` alone so the dashboard
+> can still play it, and carry on to the next item.
+>
+> `deliver` values other than `"imessage"` are not implemented here. Record
 > `delivered: {channel: <value>, ok: false, error: "channel not implemented"}` and move on.
 
 ### 6c. Append to `voice-reply-render` — the email path (NEW 2026-09-23, R4)
+
+> **DO NOT PASTE AS WRITTEN — same defect as the first 6b (found 2026-09-24).** Step 2 below puts
+> "standard base64 of the MP3 bytes" into `inkbox_email_attachment_upload`. It checks that against
+> the 1 MiB MCP request limit, which a 27-second clip does fit — but not against the model, which
+> would have to emit that base64 itself: **~135,000 tokens for one 27-second clip.** The staging proof
+> behind this section used a 1,532-byte prefix, which is why it looked fine. The fix is the 6b
+> pattern: `ArtifactData get` + `out_dir` to disk, then a script that uploads the bytes with the
+> Inkbox SDK so the model never touches them. Not built yet, because nothing reads the mailbox and
+> Steven has not decided he wants it (runbook G3). Build it when he does; until then this section is
+> a design record, not a paste.
 
 **Read this before pasting.** Email is the second channel on which Vanessa can genuinely speak, and
 the staging call was proven on 2026-09-23: `inkbox_email_attachment_upload` accepted real clip bytes

@@ -167,6 +167,32 @@ if [ -x "$WA_BIN" ]; then
   esac
 else bad "whatsapp-cli" "not built at $WA_BIN"; fi
 
+# Vanessa's iMessage voice (mac-task-specs §6b, rewritten 2026-09-24). Four independent facts, each its
+# own row, because each one alone stops a voice note and each has a different fix. The key file is
+# checked for the NAME only — its value is never read into a variable, echoed or compared.
+IV_PY="$HOME/Applications/inkbox-voice/.venv/bin/python"
+if [ -x "$IV_PY" ] && "$IV_PY" -c 'import inkbox' >/dev/null 2>&1; then
+  ok "inkbox SDK" "importable in $HOME/Applications/inkbox-voice/.venv"
+else need "inkbox SDK" "not installed — ./MAC-SETUP.sh --only inkbox-voice"; fi
+IB_CFG="$HOME/.inkbox/config"
+if [ -f "$IB_CFG" ] && grep -Eq '^[[:space:]]*api_key[[:space:]]*=[[:space:]]*[^[:space:]]' "$IB_CFG"; then
+  case "$(filemode "$IB_CFG")" in
+    600|400) ok "inkbox api_key" "set in ~/.inkbox/config (mode $(filemode "$IB_CFG"); value not read)" ;;
+    *) bad "inkbox api_key" "$HOME/.inkbox/config is mode $(filemode "$IB_CFG") — chmod 600 it; it holds a credential" ;;
+  esac
+else need "inkbox api_key" "no 'api_key = ...' line in ~/.inkbox/config — create a key in the Inkbox dashboard"; fi
+IV_ALLOW="$HOME/.config/inkbox/voice-allow"
+if [ -f "$IV_ALLOW" ] && grep -Eqi '^[[:space:]]*[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' "$IV_ALLOW"; then
+  ok "voice allow-list" "$(grep -Eci '^[[:space:]]*[0-9a-f]{8}-' "$IV_ALLOW") conversation(s) — the send script refuses every other thread"
+else need "voice allow-list" "no conversation UUID in ~/.config/inkbox/voice-allow — the send script will refuse to send anywhere"; fi
+if [ -f "$REPO_DIR/integrations/vanessa-voice-send.py" ]; then
+  if [ -x "$IV_PY" ] && "$IV_PY" "$REPO_DIR/integrations/tests/test_vanessa_voice_send.py" >/dev/null 2>&1; then
+    ok "voice send self-test" "55 checks passed against the SDK with a local stand-in server (no network, nothing sent)"
+  elif [ -x "$IV_PY" ]; then
+    bad "voice send self-test" "failed — run it directly: $IV_PY integrations/tests/test_vanessa_voice_send.py"
+  else info "voice send self-test" "skipped until the inkbox SDK is installed"; fi
+else bad "vanessa-voice-send.py" "missing from the repo checkout"; fi
+
 check_cmd "omniroute" omniroute --version
 for f in claude-auto probe.sh; do
   if [ -x "$BINDIR/$f" ]; then

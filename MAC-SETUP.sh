@@ -55,7 +55,7 @@ openalternative|openalternative.co/alternatives/ is a directory to read, not sof
 STEPS_PREREQ='homebrew uv pipx node python-toolchain'
 STEPS_BRAIN='vendored-skills'
 STEPS_FR5A='codeburn graphify claude-code-setup headroom'
-STEPS_FR5B='whatsapp-cli omniroute scrapers-venv scrapling scrapegraphai cli-anything cli-anything-harnesses lofty-keyfile'
+STEPS_FR5B='whatsapp-cli inkbox-voice omniroute scrapers-venv scrapling scrapegraphai cli-anything cli-anything-harnesses lofty-keyfile'
 STEPS_ONDEMAND='strix ponytail prompts-chat screenshot-to-code agent-reach laya higgsfield'
 ALL_STEPS="$STEPS_PREREQ $STEPS_BRAIN $STEPS_FR5A $STEPS_FR5B $STEPS_ONDEMAND"
 
@@ -64,6 +64,7 @@ LOG_DIR="$HOME/Library/Logs/vanessa-setup"
 LOG_FILE="$LOG_DIR/$(date +%Y-%m-%d).log"
 SCRAPERS_DIR="$HOME/Applications/scrapers"
 WA_DIR="$HOME/Applications/whatsapp-cli"
+IV_DIR="$HOME/Applications/inkbox-voice"   # Inkbox SDK for Vanessa's iMessage voice notes (2026-09-24)
 BINDIR="$HOME/.local/bin"
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 
@@ -431,6 +432,30 @@ if should_run headroom; then
 fi
 
 # --------------------------------------------------------------------------- FR5b
+if should_run inkbox-voice; then
+  header inkbox-voice "Inkbox SDK so Vanessa's iMessage replies can carry her voice (mac-task-specs §6b, 2026-09-24)"
+  # Why a venv and not the MCP: a 27 s clip is 135,424 tokens of base64, which no model can put into a
+  # tool call. integrations/vanessa-voice-send.py moves the bytes with this SDK so the model never sees
+  # them. Pinned: every call the script makes was read from 0.7.7's own source.
+  if [ -x "$IV_DIR/.venv/bin/python" ] && "$IV_DIR/.venv/bin/python" -c 'import inkbox' >/dev/null 2>&1; then
+    skipped "$IV_DIR/.venv already has the inkbox SDK"
+  elif have uv || [ "$DRY_RUN" -eq 1 ]; then
+    ok=1
+    if uv_python 12; then
+      run mkdir -p "$IV_DIR" || ok=0
+      run uv venv --python 3.12 "$IV_DIR/.venv" || ok=0
+      run uv pip install --python "$IV_DIR/.venv/bin/python" "inkbox==0.7.7" || ok=0
+    else ok=0; failed "CPython 3.12 unavailable — the inkbox SDK needs >=3.11; install it and re-run --only inkbox-voice"; fi
+    if [ "$ok" -eq 1 ]; then
+      run mkdir -p "$HOME/.config/inkbox" || true
+      if [ "$DRY_RUN" -eq 1 ] || "$IV_DIR/.venv/bin/python" -c 'import inkbox' >/dev/null 2>&1; then
+        installed "inkbox SDK 0.7.7 in $IV_DIR/.venv"
+      else failed "inkbox SDK did not import after install"; fi
+    else failed "inkbox-voice install"; fi
+  else failed "uv missing"; fi
+  needs_steven "Vanessa's iMessage voice: (1) create an Inkbox API key in the Inkbox dashboard and put it in ~/.inkbox/config as 'api_key = ...' then chmod 600 — the SDK reads that file because launchd jobs do not inherit shell variables; (2) put the Vanessa thread's conversation UUID in ~/.config/inkbox/voice-allow, one per line — the send script refuses every other thread; (3) run integrations/tests/test_vanessa_voice_send.py with $IV_DIR/.venv/bin/python; (4) paste mac-task-specs §6a and the REWRITTEN §6b. Do not paste the first §6b — it cannot work."
+fi
+
 if should_run whatsapp-cli; then
   header whatsapp-cli "third chat channel to Vanessa — CLI only, never the plugin (FR5b §1)"
   if [ -x "$WA_DIR/.venv/bin/whatsapp-cli" ]; then skipped "$WA_DIR/.venv/bin/whatsapp-cli already built"

@@ -197,13 +197,26 @@ cli-anything-lofty --json me     # read-only probe
 Then run `lofty-crm-sync` once by hand. `lofty-bridge` stays the primary path — `cli-anything-lofty`
 is the same API and the same key file, not a second source of truth.
 
-### B4. Point four Mac task prompts at Lofty (15 min) — after B3
-The repo's mirrors already say Lofty. The **live** prompts on the Mac still name the retired CRM, and
-only Steven can read or edit them: `lead-triage-daily`, `r2-lead-response-watchdog`,
-`r11-isa-kpi-compile`, `showing-sync`. Replacement text:
-`docs/inventory/mac-task-descriptions.md`.
+### B4. Point four Mac task prompts at Lofty — this one is texting you wrong instructions (15 min)
+**Moved up in importance on 2026-09-24.** Vanessa's morning iMessage on the 23rd told you to
+*"reconnect Follow Up Boss/Composio — leads unmonitored since 9/16."* You retired that CRM on the 22nd.
+She was not confused; she was faithfully reporting a document. The store's `leadResponse` was written
+at **02:43 UTC on the 24th** with `source: "Follow Up Boss via Composio"`, `status: "failed"`, and the
+reason *"composio proxy to /v1/people exited 137 (killed) — 8th consecutive occurrence."*
 
----
+So `r2-lead-response-watchdog` is **still calling the retired CRM every day**, failing, and every
+brief that reads its document tells you to fix the wrong thing. Two things keep it alive, and both
+are yours:
+
+- **The live prompt still names the old CRM.** The repo's mirrors already say Lofty; the prompt on
+  your Mac does not. Four prompts: `lead-triage-daily`, `r2-lead-response-watchdog`,
+  `r11-isa-kpi-compile`, `showing-sync`. Replacement text: `docs/inventory/mac-task-descriptions.md`.
+- **The old CRM's Composio connection is still ACTIVE** (B1) — which is why the watchdog gets far
+  enough to be killed instead of refused.
+
+Until both are done, read any "reconnect Follow Up Boss" line in a brief as *"the watchdog's prompt
+still points at the retired CRM"* — never as an instruction to reconnect it. Twenty-four live store
+documents still name the old CRM; most are chat history and should stay, which is decision I5.
 
 ## C — Finish WhatsApp
 
@@ -535,24 +548,60 @@ she answers in text, silently. The renderer is healthy — `voice-reply-render` 
 `lastStatus ok` — it has simply had nothing to render since 2026-09-12, because the only writer is a
 browser tab.
 
-### G1. Paste the two prompt amendments (10 min)
-Text: `integrations/vanessa-voice-everywhere.md`. Two tasks change:
-- **`vanessa-imessage-inbox`** — after it replies in text (unchanged, and always first), it appends
-  `{id, who, text, ts, channel, deliver, replyTo}` to `voiceReplyQueue`.
-- **`voice-reply-render`** — after it writes `voiceReplyStatus[id].status = "ready"`, if the item
-  carries `deliver` it sends the audio back on that channel.
+### G1. Make her speak on iMessage — CORRECTED 2026-09-24 (~25 min)
 
-Nothing about the deck's playback changes. The queue gains three optional fields and a second
-consumer; an item without them behaves exactly as today.
+> **The first version of this step was wrong, and it was my error.** It told you to paste §6a and §6b
+> and said a voice note would arrive ten minutes later. §6b could never have done that. It asked the
+> task to put the MP3's base64 straight into a tool call, and I measured the one real clip in the
+> store: **27 seconds of her voice is 135,424 tokens.** No model can emit that in one call, and it
+> would cost ~270K tokens per voice note if it could. Two engineers had stopped at a 1,532-byte
+> prefix for exactly this reason; I put it on your runbook without catching it. If you already
+> pasted the old §6b, replace it — it will fail on every voice note.
 
-**Two measured facts that will break the first run:**
-1. **Strip the data URI first.** The store holds the audio as `"data:audio/mpeg;base64,…"`. Staged as
-   stored it is rejected; the same bytes are accepted as plain base64 and refused with the prefix.
-2. Stage with `purpose: "imessage"`, `content_type: "audio/mpeg"`, then send with the
-   `conversation_id` from `replyTo` and the returned `{handle, content_hash}`.
+**The fix: the model decides what to voice, a script moves the bytes.** Inkbox publishes a Python
+SDK (MIT, 0.7.7), and its own docstring gives the path: `upload_imessage_media` takes raw bytes and
+returns an **Inkbox-hosted** URL, which `send_imessage` attaches by conversation id — so no phone
+number is ever handled, and the public-URL wall R4 hit on the 23rd does not apply. The script is
+`integrations/vanessa-voice-send.py`; it passed **55 of 55** checks against the real SDK code path,
+on the real clip and a synthesized one. It has never touched live Inkbox — that is your first run.
 
-**Check:** text Vanessa from the phone. One poll later (≤10 min) her actual voice comes back as a
-voice note on the same thread — and the text reply still arrives first.
+**1. Install the SDK** (skip if A2 already ran it):
+```bash
+./MAC-SETUP.sh --only inkbox-voice
+```
+
+**2. Create an Inkbox API key** — Inkbox dashboard → API keys. Put it in the file the SDK reads,
+because a launchd job does not inherit your shell's variables:
+```bash
+mkdir -p ~/.inkbox && nano ~/.inkbox/config      # one line:  api_key = <paste>
+chmod 600 ~/.inkbox/config
+```
+
+**3. Allow-list your Vanessa thread** — the script refuses to send to any conversation not in this
+file, before any network call. A queue item is shared-store data; this file is local to your Mac.
+```bash
+mkdir -p ~/.config/inkbox && nano ~/.config/inkbox/voice-allow   # one line: the conversation UUID
+```
+The UUID is your iMessage thread with Vanessa (+1 650-484-9720). It is in the chat where I handed
+you this step — it is deliberately not written into the repo.
+
+**4. Prove it before trusting it** — no network, nothing sent:
+```bash
+~/Applications/inkbox-voice/.venv/bin/python integrations/tests/test_vanessa_voice_send.py
+./mac-verify.sh      # four rows: inkbox SDK · inkbox api_key · voice allow-list · voice send self-test
+```
+
+**5. Paste §6a and the REWRITTEN §6b** from `integrations/mac-task-specs.md` — §6a onto
+`vanessa-imessage-inbox`, §6b onto `voice-reply-render`. §6b now saves the audio to disk with
+`out_dir` and runs the script; the model only ever reads its one line of JSON.
+
+**Check:** text Vanessa from your phone. Her text reply arrives first, as today. Within one render
+poll (≤10 min) her voice note lands on the same thread, and
+`voiceReplyStatus.items[<id>].delivered.ok` is `true`. If it is `false`, the `error` field carries the
+script's exit reason verbatim: **5** = allow-list, **6** = Inkbox said no, **7** = SDK missing.
+
+> §6c, the email version, has the same defect and is marked *do not paste*. It stays a design record
+> until you decide on G3.
 
 ### G2. Where she can and cannot speak — tested 2026-09-23, and the count went up
 Steven asked that Vanessa speak when she replies **across all communication platforms**. Measured,
@@ -561,8 +610,8 @@ not assumed:
 | Channel | Text reply | Her voice | Evidence |
 |---|---|---|---|
 | **Dashboard** | yes | **yes, today** | The page plays her own rendered audio with the face moving. |
-| **iMessage** | yes | **yes, after G1** | Inkbox accepts MP3/WAV up to 10 MiB; a 27-second clip is 1.03% of the cap. Staging proven 2026-09-22 without sending. |
-| **Email** | yes | **yes, after G3 — new** | `inkbox_email_attachment_upload` was handed real clip bytes as `audio/mpeg` and **accepted them**, 2026-09-23. `inkbox_email_send`/`_reply` both take `attachments`. |
+| **iMessage** | yes | **yes, after G1** | Delivery by `vanessa-voice-send.py` + the Inkbox SDK: 55/55 against the real SDK code path on the real 27 s clip, 2026-09-24. Not yet run against live Inkbox. |
+| **Email** | yes | **possible, after G3 — not built** | Inkbox accepts `audio/mpeg` attachments (staged 2026-09-23). But §6c as written has G1's old defect and needs the same script treatment before it can work. |
 | **Discord** | yes | **never** | `DISCORDBOT_CREATE_MESSAGE` has no file or attachment parameter of any kind. |
 | **WhatsApp** | yes | **never** | `message send` is `whatsapp://send?phone=…&text=…`. There is no parameter an MP3 can occupy. |
 | **SMS** | — | — | No channel at all: `phone.assigned: false`, `sms_available: false`. |

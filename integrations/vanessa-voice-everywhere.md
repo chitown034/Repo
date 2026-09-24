@@ -1,5 +1,17 @@
 # Vanessa speaks on every channel, not only at the dashboard
 
+> **CORRECTION 2026-09-24 — read before anything below.** The delivery design in *The three changes*
+> (change 2) and in `mac-task-specs.md` §6b as first written passed the MP3's base64 through the model
+> into `inkbox_media_stage`. That cannot work: the one real clip in the store is 27 s, 108,284 bytes,
+> **144,380 base64 characters and 135,424 tokens** — beyond what a model emits in one tool call, and
+> ~270K tokens per voice note if it could. The staging "proofs" below used a 1,532-byte prefix, which
+> is why this was not caught. **Superseded by:** the model decides what to voice; a script moves the
+> bytes. `integrations/vanessa-voice-send.py` uploads with the Inkbox SDK 0.7.7
+> (`upload_imessage_media` → an Inkbox-hosted URL → `send_imessage` by conversation id), is tested
+> 55/55 against the real SDK code path (`integrations/tests/test_vanessa_voice_send.py`), and is
+> wired in by the rewritten §6b. The measurements below about what Inkbox *accepts* — MP3, the 10 MiB
+> cap, the data-URI rejection — remain true and useful; the delivery mechanism they assumed does not.
+
 **Written 2026-09-22.** Owner: Integration Engineer (under CTO Innovator).
 Status: **spec written; the Mac side is still not changed.** Steven pastes the prompt amendments.
 **Verified 2026-09-22 (P5):** the iMessage half of this design was measured against the live store
