@@ -57,7 +57,8 @@ STEPS_BRAIN='vendored-skills'
 STEPS_FR5A='codeburn graphify claude-code-setup headroom'
 STEPS_FR5B='whatsapp-cli inkbox-voice omniroute scrapers-venv scrapling scrapegraphai cli-anything cli-anything-harnesses lofty-keyfile'
 STEPS_ONDEMAND='strix ponytail prompts-chat screenshot-to-code agent-reach laya higgsfield'
-ALL_STEPS="$STEPS_PREREQ $STEPS_BRAIN $STEPS_FR5A $STEPS_FR5B $STEPS_ONDEMAND"
+STEPS_MACSYNC='mac-sync'   # R6, 2026-09-24: the "same information" half of two equal Macs — appended, not folded into STEPS_FR5B
+ALL_STEPS="$STEPS_PREREQ $STEPS_BRAIN $STEPS_FR5A $STEPS_FR5B $STEPS_MACSYNC $STEPS_ONDEMAND"
 
 DRY_RUN=0; ONLY=''; SKIP=''; LIST=0
 LOG_DIR="$HOME/Library/Logs/vanessa-setup"
@@ -259,6 +260,7 @@ if [ "$LIST" -eq 1 ]; then
   printf 'brain         : %s\n' "$STEPS_BRAIN"
   printf 'FR5a tooling  : %s\n' "$STEPS_FR5A"
   printf 'FR5b comms    : %s\n' "$STEPS_FR5B"
+  printf 'mac-sync      : %s   (the same-information half of two equal Macs, R6 2026-09-24)\n' "$STEPS_MACSYNC"
   printf 'on named need : %s   (reported, not installed, unless named with --only)\n' "$STEPS_ONDEMAND"
   printf '\nREFUSED — never installed by this script:\n'
   printf '%s\n' "$REFUSED_LIST" | while IFS='|' read -r n r; do printf '  %-24s %s\n' "$n" "$r"; done
@@ -516,14 +518,17 @@ EOF
     fi
   done
   # --- the task lease: this Mac's role. One word, and it is the whole of what makes a second Mac safe (P7).
-  # Never overwrite an existing role file: on Mac #1 that would silently demote the machine that runs the tasks.
+  # Never overwrite an existing role file: that would silently change what a Mac already running tasks does.
+  # R6, 2026-09-24: writes `peer` now, not `standby` — both of Steven's Macs run the SAME word, symmetric,
+  # sticky leadership (no permanent primary). `primary`/`standby` keep working as legacy values for a role
+  # file this step finds already written; it only ever WRITES peer, never rewrites an existing choice.
   RUNNER_CFG="$HOME/.config/claude-runner"
   if [ -f "$RUNNER_CFG/role" ]; then
     skipped "$RUNNER_CFG/role already says $(sed -e 's/#.*//' -e 's/[[:space:]]//g' "$RUNNER_CFG/role" | grep -v '^$' | head -1)"
-  elif run mkdir -p "$RUNNER_CFG" && run_sh "printf '# claude-runner role for this Mac: primary (runs the 59 tasks) or standby (lease-blocked).\n# See REMOTE-ACCESS.md -> Primary / standby. Absent or unreadable reads as standby.\nstandby\n' > '$RUNNER_CFG/role'"; then
-    installed "$RUNNER_CFG/role (standby — change it to primary on the Mac that runs the tasks)"
+  elif run mkdir -p "$RUNNER_CFG" && run_sh "printf '# claude-runner role for this Mac: peer (both Macs; sticky leadership) — or the legacy primary/standby.\n# See REMOTE-ACCESS.md -> Primary / standby. Absent or unreadable reads as standby.\npeer\n' > '$RUNNER_CFG/role'"; then
+    installed "$RUNNER_CFG/role (peer — the same word belongs on both Macs; nothing to promote or flip)"
   else failed "could not write $RUNNER_CFG/role"; fi
-  needs_steven "OmniRoute dashboard password + API key value, 'omniroute providers add … --credential-env' for each free provider, the probe LaunchAgent (com.stevenshearrill.omniroute-probe, StartInterval 900), re-pointing the vanessa launcher and the runner wrapper at claude-auto, and the PII canary with the security steward — all of it is F-FR5b-05/06 and stays yours. Also: set ~/.config/claude-runner/role to primary on the Mac that runs the tasks (it is written as standby), then run 'claude-auto --lease-check' on BOTH Macs before enabling the schedule — F-P7-10."
+  needs_steven "OmniRoute dashboard password + API key value, 'omniroute providers add … --credential-env' for each free provider, the probe LaunchAgent (com.stevenshearrill.omniroute-probe, StartInterval 900), re-pointing the vanessa launcher and the runner wrapper at claude-auto, and the PII canary with the security steward — all of it is F-FR5b-05/06 and stays yours. Also: run 'claude-auto --lease-check' on BOTH Macs before enabling the schedule — F-P7-10. If an OLDER role file here still says primary or standby from before R6, one line changes it: printf 'peer\\n' > ~/.config/claude-runner/role (this script will not overwrite it for you, on purpose)."
   say "      this script installs no LaunchAgent and re-points no launcher: that would be editing a live task"
 fi
 
@@ -768,6 +773,25 @@ LOFTY_API_KEY|Lofty -> Settings -> Integrations -> API -> generate a key. This f
 LOFTYENV
   needs_steven "Generate the Lofty API key yourself (Lofty → Settings → Integrations → API), put the value in ~/.config/lofty/.env, then run lofty-crm-sync ONCE by hand and read what it wrote. Generating a credential is a HALT item — this script only made the empty file. Lofty stays on the REST API: do NOT build a CLI-Anything wrapper for it (F-S1-11)."
   say "      lofty-bridge MCP and lofty-cli are already installed on the Mac — the key is the only thing missing"
+fi
+
+if should_run mac-sync; then
+  header mac-sync "the 'same information' half of two equal Macs (R6, 2026-09-24)"
+  # mac-sync.sh runs FROM the repo checkout (it self-locates its repo root as its own parent directory's
+  # parent), unlike claude-auto.sh/probe.sh — it is never copied out to ~/.local/bin, because copying it
+  # would break that self-location and force an explicit MAC_SYNC_REPO_DIR override for no real benefit.
+  MS="$REPO_DIR/integrations/mac-sync/mac-sync.sh"
+  if [ ! -f "$MS" ]; then failed "$MS missing from this checkout"
+  elif [ -x "$MS" ]; then skipped "$MS already executable"
+  elif run chmod +x "$MS"; then installed "$MS made executable"
+  else failed "chmod +x $MS"; fi
+  run mkdir -p "$HOME/Library/Logs/mac-sync" || true
+  if [ "$DRY_RUN" -eq 1 ] || [ -d "$HOME/Library/Logs/mac-sync" ]; then
+    installed "$HOME/Library/Logs/mac-sync (log directory for the two LaunchAgent templates below)"
+  else failed "could not create $HOME/Library/Logs/mac-sync"; fi
+  needs_steven "Load the two LaunchAgent TEMPLATES (pull every 30 min, export --push once daily) — this script installs no LaunchAgent and starts no schedule, same as the omniroute step above; that is a live-schedule change, yours to make. Copy each of integrations/mac-sync/com.stevenshearrill.mac-sync-{pull,export}.plist to ~/Library/LaunchAgents/, replace __REPO_DIR__ and __HOME__ in the COPY, then launchctl load it. Full steps: integrations/mac-sync/README.md."
+  needs_steven "Decide how ~/Shearrill-Vault reaches the second Mac (iCloud Drive, paid Obsidian Sync, or git) — 'mac-sync.sh status' reports what it detects but does not choose for you, and one option costs money. Walkthrough: docs/SECOND-MAC-SETUP.md -> Your vault on both Macs."
+  say "      run it once by hand first: $MS status — a clean read proves the script works before any LaunchAgent depends on it"
 fi
 
 # --------------------------------------------------------------------------- on a named need only

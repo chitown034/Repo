@@ -232,23 +232,28 @@ if [ -f "$OMNI_STATE/probe-failures" ]; then
   [ "${pf:-0}" -gt 0 ] && info "omniroute probe" "$pf consecutive inconclusive probe(s) so far (escalates at 4)"
 fi
 
-# The task lease (P7): the role file is the entire per-machine configuration, so a missing or unreadable one
-# is a NEED, not an info — on a Mac whose lease check cannot complete it silently means "run nothing".
+# The task lease (P7; peer role R6 2026-09-24): the role file is the entire per-machine configuration, so a
+# missing or unreadable one is a NEED, not an info — on a Mac whose lease check cannot complete it silently
+# means "run nothing".
 RUNNER_CFG="$HOME/.config/claude-runner"
 if [ -r "$RUNNER_CFG/role" ]; then
   crole=$(sed -e 's/#.*//' -e 's/[[:space:]]//g' "$RUNNER_CFG/role" 2>/dev/null | grep -v '^$' | head -1 | tr '[:upper:]' '[:lower:]')
   cmode=$(filemode "$RUNNER_CFG/role")
   case "$crole" in
-    primary|standby)
+    peer|primary|standby)
       case "${cmode#?}" in
         *[2367]*) need "claude-runner role" "$crole, but $RUNNER_CFG/role is group/world-writable (mode $cmode) — claude-auto ignores it and treats this Mac as standby" ;;
-        *) ok "claude-runner role" "$crole" ;;
+        *)
+          case "$crole" in
+            peer) ok "claude-runner role" "peer" ;;
+            *)    ok "claude-runner role" "$crole (legacy — both Macs equal now runs 'peer'; REMOTE-ACCESS.md -> Primary / standby)" ;;
+          esac ;;
       esac ;;
     '') need "claude-runner role" "$RUNNER_CFG/role is empty — claude-auto reads that as standby and every --task run defers" ;;
-    *)  need "claude-runner role" "$RUNNER_CFG/role says '$(printf '%s' "$crole" | tr -dc 'a-z0-9._-' | cut -c1-20)', not primary or standby — claude-auto reads that as standby" ;;
+    *)  need "claude-runner role" "$RUNNER_CFG/role says '$(printf '%s' "$crole" | tr -dc 'a-z0-9._-' | cut -c1-20)', not peer/primary/standby — claude-auto reads that as standby" ;;
   esac
 else
-  need "claude-runner role" "no $RUNNER_CFG/role — claude-auto treats this Mac as STANDBY, so every --task run defers (exit 75). One line fixes it: see REMOTE-ACCESS.md -> Primary / standby"
+  need "claude-runner role" "no $RUNNER_CFG/role — claude-auto treats this Mac as STANDBY, so every --task run defers (exit 75). One line fixes it: see REMOTE-ACCESS.md -> Primary / standby (both Macs now use 'peer')"
 fi
 if [ -r "$OMNI_STATE/lease.env" ]; then
   lverd=$(sed -n 's/^verdict=//p' "$OMNI_STATE/lease.env" | tail -1 | tr -dc 'A-Za-z')
@@ -266,6 +271,47 @@ if have runnerctl; then
   if runnerctl list 2>/dev/null | grep -q -- '--no-lease'; then
     bad "claude-runner lease" "a task definition contains --no-lease — it bypasses the lease gate and can double-write. Remove it."
   fi
+fi
+
+# mac-sync (R6, 2026-09-24) — the "same information" half of two equal Macs. `status` is read-only by
+# design (integrations/mac-sync/README.md), so running it here is safe and avoids re-implementing its
+# vault/role/count detection a second time; this section only checks that the tool ITSELF is present and
+# that this Mac has ever exported, and surfaces status's own key lines rather than re-deriving them.
+MS="$REPO_DIR/integrations/mac-sync/mac-sync.sh"
+if [ -x "$MS" ]; then
+  ok "mac-sync.sh" "executable at $MS"
+  msout=$(HOME="$HOME" "$MS" status 2>&1); msrc=$?
+  if [ "$msrc" -eq 0 ] && [ -n "$msout" ]; then
+    ok "mac-sync status" "ran cleanly"
+    [ "$QUIET" -eq 1 ] || printf '%s\n' "$msout" | redact_line | sed 's/^/        /'
+  else
+    need "mac-sync status" "exited $msrc or printed nothing — run '$MS status' directly to see why"
+  fi
+  # Same derivation as machine_id() in mac-sync.sh / lease_my_id() in claude-auto.sh, duplicated
+  # deliberately (F-V2-15-style: every script here is a standalone file, none of them source another).
+  mid=''
+  if [ -f "$RUNNER_CFG/id" ] && [ ! -L "$RUNNER_CFG/id" ]; then
+    mid=$(sed -e 's/#.*//' -e 's/[[:space:]]//g' "$RUNNER_CFG/id" 2>/dev/null | grep -v '^$' | head -1)
+  fi
+  [ -n "$mid" ] || mid=$(scutil --get ComputerName 2>/dev/null || hostname 2>/dev/null || echo unknown-mac)
+  mid=$(printf '%s' "$mid" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9._-' '-' | cut -c1-40)
+  if [ -d "$REPO_DIR/mac-config/$mid" ]; then
+    ok "mac-sync export" "this Mac has exported to mac-config/$mid"
+  else
+    info "mac-sync export" "this Mac has never run '$MS export' — mac-config/$mid does not exist yet"
+  fi
+  if [ -d "$REPO_DIR/mac-config" ]; then
+    others=0
+    for d in "$REPO_DIR"/mac-config/*/; do
+      [ -d "$d" ] || continue
+      n=${d%/}; n=${n##*/}
+      [ "$n" = "$mid" ] || others=$((others + 1))
+    done
+    if [ "$others" -gt 0 ]; then ok "mac-sync diff" "$others other Mac('s) manifest(s) available to diff against"
+    else info "mac-sync diff" "no OTHER Mac has exported yet — nothing to diff against until one does"; fi
+  fi
+else
+  bad "mac-sync.sh" "not executable at $MS — MAC-SETUP.sh --only mac-sync fixes this"
 fi
 
 if [ -x "$SCRAPERS_PY" ]; then
@@ -511,6 +557,11 @@ EOF
   else need "launchd agents" "no com.stevenshearrill agents loaded"; fi
   if printf '%s' "$la" | grep -q 'omniroute-probe'; then ok "omniroute probe agent" "loaded"
   else need "omniroute probe agent" "com.stevenshearrill.omniroute-probe not loaded — the route cannot switch back on its own"; fi
+  # mac-sync (R6, 2026-09-24): two separate agents, one cadence each — see integrations/mac-sync/README.md
+  if printf '%s' "$la" | grep -q 'mac-sync-pull'; then ok "mac-sync-pull agent" "loaded"
+  else need "mac-sync-pull agent" "com.stevenshearrill.mac-sync-pull not loaded — this Mac will not pick up the other Mac's exports on its own. integrations/mac-sync/README.md -> LaunchAgent templates"; fi
+  if printf '%s' "$la" | grep -q 'mac-sync-export'; then ok "mac-sync-export agent" "loaded"
+  else need "mac-sync-export agent" "com.stevenshearrill.mac-sync-export not loaded — this Mac's own state never reaches the other Mac on its own. integrations/mac-sync/README.md -> LaunchAgent templates"; fi
 else info "launchctl" "not present — not a Mac"; fi
 
 if have runnerctl; then
