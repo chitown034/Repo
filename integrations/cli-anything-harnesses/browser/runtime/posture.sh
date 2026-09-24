@@ -31,10 +31,13 @@ set +a
 : "${CLI_ANYTHING_VENV:=$HOME/Applications/cli-anything-harnesses/.venv}"
 : "${CLI_ANYTHING_PY:=$CLI_ANYTHING_VENV/bin/python}"
 
-# The eight REPL history directories. Every harness REPL writes plaintext
+# The nine REPL history directories. Every harness REPL writes plaintext
 # command history under $HOME; browser commands carry URLs, and those URLs
 # carry MLS numbers, listing addresses and portal paths. Client data.
-HIST_DIRS="browser homes showingtime showami skyslope zipforms lofty zoho"
+# publicfeeds added R6, 2026-09-24 — its history is public-page URLs (Redfin,
+# lender rate pages, builder pages), not client data, but it gets the same
+# 0700/0600 treatment for consistency; nothing here treats it as sensitive.
+HIST_DIRS="browser homes showingtime showami skyslope zipforms lofty zoho publicfeeds"
 
 rc=0
 pass() { printf 'PASS  %s\n' "$*"; }

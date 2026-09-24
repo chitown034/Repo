@@ -1,0 +1,59 @@
+{
+  "_synthetic": "All values invented for tests. No real listing, lender quote, community, price, date or client. Not a claim about any real page.",
+  "url": "https://www.navyfederal.org/loans-cards/mortgage/mortgage-rates.html",
+  "tree": {
+    "name": "/",
+    "role": "document",
+    "children": [
+      {
+        "name": "main",
+        "role": "main",
+        "children": [
+          {
+            "name": "row_1",
+            "role": "row",
+            "children": [
+              {
+                "name": "heading_1",
+                "role": "heading",
+                "text": "VA 15-Year Fixed"
+              },
+              {
+                "name": "text_1",
+                "role": "text",
+                "text": "5.75% rate, 6.409% APR. Rates as of Sep 22, 2026."
+              }
+            ]
+          },
+          {
+            "name": "row_2",
+            "role": "row",
+            "children": [
+              {
+                "name": "heading_1",
+                "role": "heading",
+                "text": "Jumbo 15-Year Fixed"
+              },
+              {
+                "name": "text_1",
+                "role": "text",
+                "text": "6.50% rate, 6.740% APR. Rates as of Sep 22, 2026."
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "expect": {
+    "kind": "list",
+    "count": 2,
+    "auth_state": "not_required",
+    "row0": {
+      "program": "VA 15-Year Fixed",
+      "rate": "5.75",
+      "apr": "6.409",
+      "asOf": "Sep 22, 2026"
+    }
+  }
+}

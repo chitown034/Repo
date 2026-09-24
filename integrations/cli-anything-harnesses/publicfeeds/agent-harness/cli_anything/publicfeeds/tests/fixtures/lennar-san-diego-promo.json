@@ -1,0 +1,52 @@
+{
+  "_synthetic": "All values invented for tests. No real listing, lender quote, community, price, date or client. Not a claim about any real page.",
+  "url": "https://www.lennar.com/new-homes/california/san-diego/promo/sdglen_fss26",
+  "tree": {
+    "name": "/",
+    "role": "document",
+    "children": [
+      {
+        "name": "main",
+        "role": "main",
+        "children": [
+          {
+            "name": "heading_1",
+            "role": "heading",
+            "text": "Lennar San Diego Fall Sale"
+          },
+          {
+            "name": "text_1",
+            "role": "text",
+            "text": "Homes from $612,000"
+          },
+          {
+            "name": "text_2",
+            "role": "text",
+            "text": "A temporary buydown starts at 2.99% with 5.327% APR through Lennar Mortgage."
+          },
+          {
+            "name": "text_3",
+            "role": "text",
+            "text": "Contracts must be signed by 11/20/26."
+          },
+          {
+            "name": "paragraph_1",
+            "role": "paragraph",
+            "text": "A limited-time promotion across select San Diego County communities."
+          }
+        ]
+      }
+    ]
+  },
+  "expect": {
+    "kind": "record",
+    "auth_state": "not_required",
+    "record": {
+      "headline": "Lennar San Diego Fall Sale",
+      "priceFrom": "612,000",
+      "rate_terms": "5.327% APR through Lennar Mortgage.",
+      "expires": "Lennar Mortgage.",
+      "description": "A limited-time promotion across select San Diego County communities."
+    }
+  }
+}

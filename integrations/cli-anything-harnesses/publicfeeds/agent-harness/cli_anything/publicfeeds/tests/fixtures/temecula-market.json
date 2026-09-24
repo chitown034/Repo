@@ -1,0 +1,57 @@
+{
+  "_synthetic": "All values invented for tests. No real listing, lender quote, community, price, date or client. Not a claim about any real page.",
+  "url": "https://redfin.com/city/19701/CA/Temecula/housing-market",
+  "tree": {
+    "name": "/",
+    "role": "document",
+    "children": [
+      {
+        "name": "main",
+        "role": "main",
+        "children": [
+          {
+            "name": "text_1",
+            "role": "text",
+            "text": "Temecula Market Housing Market"
+          },
+          {
+            "name": "text_2",
+            "role": "text",
+            "text": "Median Sale Price $739,630"
+          },
+          {
+            "name": "text_3",
+            "role": "text",
+            "text": "37 Median Days on Market"
+          },
+          {
+            "name": "text_4",
+            "role": "text",
+            "text": "+2.0% YoY"
+          },
+          {
+            "name": "text_5",
+            "role": "text",
+            "text": "3.1 Months of Supply"
+          },
+          {
+            "name": "text_6",
+            "role": "text",
+            "text": "Data as of Jul 20, 2026"
+          }
+        ]
+      }
+    ]
+  },
+  "expect": {
+    "kind": "record",
+    "auth_state": "not_required",
+    "record": {
+      "medianPrice": "739,630",
+      "dom": "37",
+      "yoy": "+2.0%",
+      "monthsSupply": "3.1",
+      "asOf": "Jul 20, 2026"
+    }
+  }
+}

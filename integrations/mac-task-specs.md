@@ -883,3 +883,125 @@ file was not the clip, and the send was correctly refused.
 For §6d there is nothing to hear. The proof is that `delivered.link` is present and that tapping it
 in a signed-in browser plays the clip. If it asks for a sign-in instead, that is the design working,
 not a fault — the link is private, and nobody but Steven can open it.
+
+---
+
+## 7. `cli-anything-feeds` — NEW (R6, 2026-09-24)
+
+Steven's words: *"Use Anything CLI tool installed to assist in connecting the sites and feeds that
+aren't in Composio or have an API."* `integrations/CONNECTIONS.md`'s honest map names three still
+hand-carried or frozen: local market snapshots (Redfin), the two lender rate rows the daily FRED feed
+does not cover (Veterans United, Navy Federal), and builder incentives (`feeds-weekly`'s
+`builderIncentiveLiveList`, "limited" since 2026-09-17). `cli-anything-publicfeeds` — 8 read-only
+recipes across those three categories, each gated on its own terms-of-service review — is the
+harness; this task is what turns its raw output into the deck's own documents. See
+`integrations/cli-anything-harnesses/publicfeeds/PUBLICFEEDS.md` for the harness itself.
+
+| | |
+|---|---|
+| **Cron (PT)** | Mondays only, `50 5 * * 1` PT (`50 12 * * 1` UTC) — low-frequency on purpose (the terms-of-service question this whole package is gated on literally asks about "low-frequency, non-cached" access), and offset from the two other known Monday slots (`r5-rates-market-refresh` 5:05 AM, `mortgage-rates-daily` weekdays 6:38 AM) so it does not collide. **Re-check against the live 59-task `runnerStatus` list before enabling** — same registration step every task in this file already requires, called out because R3 found three real collisions here once (2026-09-23 correction, top of this file) |
+| **Model** | Sonnet 5 (it runs pre-built, already-tested recipes and maps their output into a fixed shape; it decides nothing) |
+| **Skill** | `cli-anything-connectors` |
+| **Tools** | `Bash`, allow-listed to exactly these argv prefixes — no `--discover`, no `--url`, no `fs`, no `page`: `cli-anything-publicfeeds --json recipes` · `cli-anything-publicfeeds --json gate status` · `cli-anything-publicfeeds --json recipe temecula-market` · `… recipe murrieta-market` · `… recipe san-diego-county-market` · `… recipe veterans-united-va-rates` · `… recipe navy-federal-rates` · `… recipe drhorton-menifee-spring-creek` · `… recipe lennar-san-diego-promo` · `… recipe richmond-american-sommers-bend` — plus `Artifact` `read_db` + `write_db`, collection `state` |
+| **Env** | `CLI_HUB_NO_ANALYTICS=1`. The three `CLI_ANYTHING_TOS_REVIEWED_<GROUP>` variables are **read, never set** by this task — they are Steven's, after Alexandra's review, exactly as `core/policy.py` requires |
+
+### What it reads, what it writes, and the exact mapping
+
+Reads `ratesSnapshot` and `liveFeeds` first (`read_db` get; either missing means treat as `{}` and
+build fresh) so a merge never drops what another task wrote — `rates[]`/`markets[]` entries this task
+has no fresh data for this run, and every `liveFeeds.feeds` key other than
+`builderIncentiveLiveList`, are carried forward untouched. This is the same contract
+`r5-rates-market-refresh` was already specified to have for the same document
+(`integrations/CONNECTIONS.md`, `mac-task-specs.md`'s freshness rows) — this task does not change it,
+it is the first thing that actually exercises it.
+
+| Recipe | Kind | Feeds into | Merge key |
+|---|---|---|---|
+| `temecula-market`, `murrieta-market`, `san-diego-county-market` | record | `ratesSnapshot.markets[]` | `name` (`"Temecula, CA"` / `"Murrieta, CA"` / `"San Diego, CA"`) |
+| `veterans-united-va-rates`, `navy-federal-rates` | list (rows) | `ratesSnapshot.rates[]` | `program` (the row's own program text) |
+| `drhorton-menifee-spring-creek`, `lennar-san-diego-promo`, `richmond-american-sommers-bend` | record | `liveFeeds.feeds.builderIncentiveLiveList` | n/a — the three combine into ONE `{text, citations, checkedAt, source}` object, matching the shape every other `liveFeeds` entry already uses |
+
+Per-recipe field -> document field:
+
+- **Markets**: `record.medianPrice` -> `medianPrice` (number, strip commas), `record.dom` -> `dom`
+  (number), `record.yoy` -> `yoy` (kept as the recipe's own string, e.g. `"+2.0%"` — the page's own
+  `applyMarketsDoc()` already strips the sign/percent itself), `record.monthsSupply` -> `monthsSupply`
+  (number), `record.asOf` -> `asOf` (string, verbatim). `source: "cli-anything:<recipe-name>"`.
+- **Rates**: one `rates[]` entry per row: `row.program` -> `program`, `row.rate` -> `rate` (number),
+  `row.asOf` -> `asOf` (string, verbatim). `source: "cli-anything:<recipe-name>"`. (The row's `apr` is
+  read but not carried — `ratesSnapshot.rates[]` has no `apr` field; `applyRatesDoc()` sets the seed
+  row's `apr` to `null` on any live row for exactly this reason, rule 2 in that function's own
+  comment: an APR computed against the old rate is wrong printed beside the new one.)
+- **Builder incentives**: for each of the three recipes that returned a record, one sentence built
+  from `record.headline`, `record.priceFrom`, `record.rate_terms` and `record.expires` (omit a field
+  that came back `null` — never print the literal string "null"), joined into `text` with one
+  citation per recipe: `{title: record.headline || <recipe name>, url: <the URL it actually opened,
+  from the recipe result's own "url" field>}`. `source: "cli-anything:builderpages"` (a combined
+  write; each citation's title still names the specific builder/community). `checkedAt`: this run's
+  actual UTC time.
+
+### The three rules that make this a merge, not a clobber
+
+1. **Run `gate status` first.** A recipe whose group is `disabled-by-policy` is skipped, not retried
+   and not logged as a failure — `connState: "disabled-by-policy"` from the gate check is the
+   expected, correct state until Steven records that group's terms-of-service date.
+2. **Run `recipes` next and only touch a recipe whose `verified` is `true`.** Every recipe in
+   `paths.json` ships `verified:false` (`PUBLICFEEDS.md`'s honest limit — no host has ever been
+   reached) and Steven flips it only after a live `--discover` + edit + spot-check against the page,
+   by hand, on the Mac. **This task must never be the thing that verifies a recipe** — it only
+   consumes ones Steven already has.
+3. **Never write a category with an empty result.** If a recipe's gate is closed, it is not verified,
+   or the call itself fails (auth_error, path_map_error, dependency_error — DOMShell not available is
+   the likely first-week case even once a recipe is verified), that category's document fields are
+   left exactly as read. If **every** recipe this run produced nothing, **write nothing at all** —
+   not even the timestamp — and say so in the log and the one-line report. An empty run is a fact
+   worth reporting, not a reason to touch the document (`CONNECTIONS.md` standing rule 2).
+
+### Prompt (paste-ready)
+
+> Self-test first: `cli-anything-publicfeeds --json gate status`. If the command itself fails (not
+> installed, no `--json` output), write nothing, log the failure to `cliAnythingLog`, and stop.
+>
+> Read `ratesSnapshot` and `liveFeeds` (`read_db` get; missing means `{}`). Run
+> `cli-anything-publicfeeds --json recipes` and keep only recipes whose `verified` is `true` **and**
+> whose `gateOpen` is `true` (that field is on each recipe's own listing row — no separate gate call
+> needed per recipe). For each kept recipe, run `cli-anything-publicfeeds --json recipe <name>` — no
+> other flag, ever; `--discover`, `--url`, `fs` and `page` are not in this task's allow-list because
+> nothing here should ever open a URL Steven did not already put in `paths.json` himself.
+>
+> Map each result exactly as the table above says. A `record`/`row` field that is `null` is omitted
+> from the write, never turned into a literal `"null"` string or a zero. Merge into the documents you
+> already read — `rates[]` and `markets[]` by their key, `liveFeeds.feeds.builderIncentiveLiveList` as
+> one combined object — carrying forward every entry and every other `liveFeeds.feeds` key this run
+> did not touch. Stamp every value your run actually produced with `source: "cli-anything:<recipe
+> name>"` (`"cli-anything:builderpages"` for the combined builder object) and this run's real UTC time.
+>
+> If nothing was kept in the second step, or every call this run failed, write nothing — not even a
+> stamp — and say so.
+>
+> Append one entry per recipe you actually called to `cliAnythingLog` (`{ts, task:"cli-anything-feeds",
+> wrapper:"publicfeeds", verb:"recipe <name>", mode:"domshell", argsRedacted:["--json","recipe","<name>"],
+> exitCode, rows, error}`, keep the newest 200) — no credential, no cookie, and there is no client
+> record to accidentally include (these are public pages). Reply in one line: which recipes ran, which
+> were skipped and why (policy gate closed / not verified / call failed), and which documents you wrote.
+
+### Run now once to prove it
+
+**Today, this task will find zero recipes with `verified:true` and `gateOpen:true`, and will
+correctly write nothing.** That is the expected first-week result, not a bug — it is the same honest
+"nothing has ever checked any of this" state `cli-anything-status` (next) reports for the whole
+connector card. It becomes useful exactly as fast as Steven runs `connect.sh`'s discover step, edits a
+`paths.json` copy, spot-checks a page, and sets that one recipe's `verified:true` — at that point the
+next Monday run should write exactly that one recipe's numbers and nothing else, which is the check to
+make: verify one recipe, run this task by hand, and confirm only that recipe's fields changed.
+
+### `cli-anything-status` (runbook F1) — confirmed already fully specified, no change needed here
+
+The brief for this round asked me to confirm the `cli-anything-status` task is fully specified and
+complete it if not. It is: name, cron, model, tools, env, the full paste-ready prompt and the check
+Steven runs afterward are all present in `routines/mac-task-repairs.md` §9, and the exact
+`cliAnythingStatus` document shape its connector card reads — every field, every clamp, the
+write-verb tripwire pattern — is in `docs/data/cliAnythingStatus.doc.json`. `routines/mac-task-repairs.md`
+is outside this round's file list, so nothing there needed touching; this section only adds the
+**second** task the connector card's ecosystem needs — one that writes the feeds themselves, not the
+status of the wrappers that read them.
