@@ -1,0 +1,59 @@
+{
+  "_synthetic": "All values invented for tests. No real listing, lender quote, community, price, date or client. Not a claim about any real page.",
+  "url": "https://www.veteransunited.com/va-loans/va-mortgage-rates/",
+  "tree": {
+    "name": "/",
+    "role": "document",
+    "children": [
+      {
+        "name": "main",
+        "role": "main",
+        "children": [
+          {
+            "name": "row_1",
+            "role": "row",
+            "children": [
+              {
+                "name": "heading_1",
+                "role": "heading",
+                "text": "VA 30-Year Fixed Refinance"
+              },
+              {
+                "name": "text_1",
+                "role": "text",
+                "text": "6.50% rate, 6.822% APR. Valid as of Sep 21st, 2026."
+              }
+            ]
+          },
+          {
+            "name": "row_2",
+            "role": "row",
+            "children": [
+              {
+                "name": "heading_1",
+                "role": "heading",
+                "text": "VA 30-Year Fixed Purchase"
+              },
+              {
+                "name": "text_1",
+                "role": "text",
+                "text": "6.25% rate, 6.510% APR. Valid as of Sep 21st, 2026."
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "expect": {
+    "kind": "list",
+    "count": 2,
+    "auth_state": "not_required",
+    "row0": {
+      "program": "VA 30-Year Fixed Refinance",
+      "rate": "6.50",
+      "apr": "6.822",
+      "asOf": "Sep 21st, 2026"
+    }
+  }
+}
