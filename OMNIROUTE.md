@@ -1,83 +1,93 @@
-# OmniRoute — auto-fallback for Claude Code
+# OmniRoute: auto-fallback for Claude Code
 
-This sets up [OmniRoute](https://github.com/diegosouzapw/OmniRoute), a local
-AI gateway, so Claude Code can transition automatically:
+[OmniRoute](https://github.com/diegosouzapw/OmniRoute) is a local AI gateway.
+With it, Claude Code:
 
-- **Primary:** your real Claude subscription.
-- **When its usage/tokens are exhausted:** automatically fail over to a free
-  fallback provider through OmniRoute.
-- **When your Claude tokens reset:** automatically switch back to the Claude
-  subscription.
+- uses **your Claude subscription** first,
+- **fails over to a free provider** when the subscription's usage runs out,
+- **switches back automatically** when your usage resets.
 
-The switching itself is not a script we run — it's OmniRoute's own
-**tier-cascade** + **circuit breaker** design. Claude Code always talks to
-OmniRoute; OmniRoute forwards each request to your Claude subscription while
-it's healthy, and to the fallback tier only while the subscription is
-rate-limited, then automatically resumes the subscription once its quota
-window resets (it tracks Claude's session/weekly reset countdowns). No
-Claude Code restart is needed — the decision happens per request, inside
-OmniRoute.
+No script watches your usage. Claude Code always talks to OmniRoute, and
+OmniRoute's `priority` combo (`subscription-fallback`) picks a provider for
+each request. Its circuit breaker skips the subscription while it's
+rate-limited and probes it again once it recovers. You never restart Claude
+Code for a switch.
 
-## Why this isn't fully automated
+## Setup across your computers
 
-Two of these steps need your live credentials and can't be scripted by an
-agent:
+Run OmniRoute **once** on an always-on machine (the "server"). Then point
+every computer's Claude Code at it. You do the Claude login once, on the
+server.
 
-1. **Connecting your actual Claude subscription** to OmniRoute is an OAuth
-   login — it has to happen in a browser, by you.
-2. **Auto-installing and continuously running a third-party gateway that all
-   your Claude Code traffic flows through** is a meaningful, persistent
-   change to this environment. Doing that unattended (e.g. via a
-   `SessionStart` hook that reinstalls and (re)launches it on every future
-   session) was blocked by this session's auto-mode permission classifier
-   ("Unauthorized Persistence") — which is the right call: routing your AI
-   traffic through a new always-on service is not something that should
-   happen silently. If you want that automated, say so explicitly and
-   approve the `.claude/hooks/session-start.sh` edit (or add a Bash
-   permission rule) and I'll wire it in.
+`scripts/omniroute/install.sh` handles both roles on macOS and Linux.
 
-## Manual setup (one time)
+**1. On the server machine** (needs Node.js 20 or later):
 
-1. **Install & start OmniRoute:**
+```bash
+bash scripts/omniroute/install.sh server
+# better fallback (recommended), using a free Google AI Studio key:
+GEMINI_API_KEY=... bash scripts/omniroute/install.sh server --gemini-key-env GEMINI_API_KEY
+```
 
-   ```bash
-   npm install --global omniroute
-   omniroute
-   ```
+This installs OmniRoute and turns on API-key protection, because other
+computers connect to it over your network. It then opens a browser for your
+Claude subscription login, adds the free fallback, creates the
+`subscription-fallback` combo and an API key for your other computers. At the
+end it prints the LAN URL and the exact client command. Allow inbound TCP
+20128 in the server's firewall.
 
-   Dashboard + API come up at `http://localhost:20128`.
+**2. On every other computer** (and on the server itself, if you code there):
 
-2. **Connect your Claude subscription** in the dashboard under `Providers`
-   (OAuth) — this becomes **Tier 1 / Subscription**.
+```bash
+bash scripts/omniroute/install.sh client --server http://<server-ip>:20128
+# single computer instead: bash scripts/omniroute/install.sh local
+```
 
-3. **Connect at least one free-tier provider** the same way — this is the
-   fallback tier used only while Tier 1 is exhausted.
+The script first checks that the server is reachable, that it accepts the key
+and that the combo exists. If any check fails, it changes nothing. If they
+pass, it backs up `~/.claude/settings.json` and merges in this block, keeping
+your other settings:
 
-4. **Create a combo** with the `priority` strategy, Claude subscription
-   listed first, the free provider second (e.g. name it
-   `subscription-fallback`). `priority` drains the first target before
-   moving to the next, and OmniRoute's circuit breaker automatically
-   re-probes and resumes Tier 1 once it recovers — this is what implements
-   "switch back when tokens reset."
+```jsonc
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "http://<server-ip>:20128",
+    "ANTHROPIC_AUTH_TOKEN": "<OmniRoute API key>",
+    "ANTHROPIC_MODEL": "subscription-fallback",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "subscription-fallback",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "subscription-fallback",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "subscription-fallback",
+    "CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY": "1"
+  }
+}
+```
 
-5. **Point Claude Code at it.** Claude Code reads these once at startup, so
-   add them to `.claude/settings.json` (or export them before launching
-   `claude`):
+The model id is the plain combo name. OmniRoute resolves combos by exact
+name, and `/v1/models` lists them that way. The `claude/combo/...` form only
+works if you enable `EXPOSE_CC_DISCOVERY_ALIASES`. Restart Claude Code after
+the script runs.
 
-   ```jsonc
-   {
-     "env": {
-       "ANTHROPIC_BASE_URL": "http://localhost:20128",
-       "ANTHROPIC_MODEL": "claude/combo/subscription-fallback",
-       "CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY": "1"
-     }
-   }
-   ```
+Other commands:
 
-   Restart Claude Code after saving. Until step 4 is done, don't add this
-   block — with no combo to route to, requests would just fail.
+- `status` shows server health, providers, the combo, and where this
+  computer's Claude Code points.
+- `uninstall-client` removes the block after making a backup, so Claude Code
+  talks to Anthropic directly again.
 
-Reference: OmniRoute's own
-[Claude Code Configuration guide](https://github.com/diegosouzapw/OmniRoute/blob/main/docs/guides/CLAUDE-CODE-CONFIGURATION.md)
-and [Resilience Guide](https://github.com/diegosouzapw/OmniRoute/blob/main/docs/architecture/RESILIENCE_GUIDE.md)
-(circuit breaker thresholds/reset behavior).
+## Caveats
+
+- **Pick a good fallback.** With no Gemini key, the fallback is AI Horde's
+  anonymous tier: no signup, but slow, and it **can't make tool calls**.
+  Claude Code depends on tool calls, so on that tier it's badly limited. Use
+  `--gemini-key-env` if you can.
+- **Start at login is not enabled.** The installer doesn't set it up. For
+  that, see `omniroute autostart --help` on Linux or the OmniRouteTray app on
+  macOS. Otherwise, re-run `server` after a reboot.
+- **No Windows installer yet.** Its planned scheduled-task auto-start was
+  blocked by the permission system. On Windows, install with
+  `npm install -g omniroute`, run `omniroute`, then add the JSON block above
+  to `%USERPROFILE%\.claude\settings.json` yourself.
+- **Run it on your computers.** Cloud Claude Code sessions can't reach your
+  computers, and their network policy blocks third-party AI hosts. To have
+  Claude run this on a computer, start `claude remote-control` in a terminal
+  on that machine, or use the Claude Desktop app.
