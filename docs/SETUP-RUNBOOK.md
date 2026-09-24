@@ -387,24 +387,49 @@ live"* once that run exists.
 
 ## D — CLI-Anything, the browser targets
 
-The install is scripted. **The path maps are the work.** All 18 browser recipes ship
+The install is scripted. **The path maps are the work.** All 26 browser recipes (18 across
+homes/ShowingTime/Showami/SkySlope/zipForms, plus 8 in `publicfeeds` — R6, 2026-09-24) ship
 `verified: false` and **no site has ever been reached** from the build sandbox, so nothing they return
 may drive a decision before a spot-check against the screen.
 
-### D1. Install the eight harnesses — browser first, one command (10 min)
+### D1. Install the nine harnesses — browser first, one command (10 min)
 ```bash
 export CLI_HUB_NO_ANALYTICS=1                        # already in ~/.zprofile from A2
 pip install cli-anything-hub                         # 0.4.1
 claude plugin marketplace add HKUDS/CLI-Anything
 claude plugin install cli-anything@cli-anything
-./MAC-SETUP.sh --only cli-anything-harnesses         # all eight, browser first, one uv command
+./MAC-SETUP.sh --only cli-anything-harnesses         # all nine, browser first, one uv command
 
 cli-hub list && cli-anything-homes --help            # self-test: both exit 0
 ```
-**Why browser first, same command:** the five web packages pin `cli-anything-browser>=1.0.0` and
-import it at module level — and that package is **not on PyPI**; it is vendored in this repo. Resolve
-them separately and uv goes to PyPI for a package that is not there, and the venv then fails at
-`--help` rather than at call time.
+Expect: `cli-hub list` prints the built-in registry (still no real-estate/CRM entries — that has not
+changed); `cli-anything-homes --help` exits 0 and its `Commands:` block names `recipe`, `recipes`,
+`paths`, `fs`, `page`, `session`, `repl` — never `act`.
+
+**Why browser first, same command:** the six web packages (five original plus `publicfeeds`) pin
+`cli-anything-browser>=1.0.0` and import it at module level — and that package is **not on PyPI**; it
+is vendored in this repo. Resolve them separately and uv goes to PyPI for a package that is not
+there, and the venv then fails at `--help` rather than at call time.
+
+### D1a. The one-command guided path (recommended) — R6, 2026-09-24
+
+Everything below through D6, plus the ECC/terms-of-service status F1 reports on, is walked by one
+idempotent script. It installs nothing D1 has not already covered, never signs in, and never stores
+or echoes a credential:
+
+```bash
+integrations/cli-anything-harnesses/connect.sh
+```
+
+Expect: five numbered sections — **1. Install** (skips if D1 already ran), **2. Posture check** (the
+same proof as D3, run for you), **3. `--discover`** for every recipe whose policy gate is open (the
+first time you run this, before D2's sign-ins and before any terms-of-service date is recorded, every
+line here reads `disabled-by-policy` or `discover failed — DOMSHELL_TOKEN is not set`, which is
+correct, not broken), **4. Sign-in and approvals still pending** — the exact list this phase and E
+cover by hand, restated so you do not have to re-read this whole document to find it, **5. the
+paste-ready `cli-anything-status` prompt**, restated from F1. Re-run it any time — it is read-only
+except for the one `MAC-SETUP.sh` call in section 1, which is itself idempotent. `--dry-run` prints
+every command it would run and touches nothing.
 
 ### D2. Chrome, DOMShell, and an accepted risk (15 min)
 DOMShell is a third-party Chrome extension with page-content access, driving a Chrome already logged
@@ -424,6 +449,11 @@ fallback (F-P1-03).
 integrations/cli-anything-harnesses/browser/runtime/posture.sh install
 integrations/cli-anything-harnesses/browser/runtime/posture.sh check
 ```
+Expect: `install` ends with "history directories created 0700 (files 0600) for: browser homes
+showingtime showami skyslope zipforms lofty zoho publicfeeds" (nine, R6 added the last one); `check`
+ends `PASS` on every line and, at the bottom, "posture is inherited" — not just individual `PASS`
+lines, both.
+
 Green **and** "posture is inherited" is the precondition. Then run every recipe through
 `browser/runtime/run-browser-harness.sh`: it sets `CLI_ANYTHING_BROWSER_BLOCK_PRIVATE=true` *before
 the interpreter starts* (SSRF blocking is off by default and read at import time) and pins DOMShell.
@@ -490,6 +520,54 @@ deck's old row still shows is **superseded**; nothing creates or reads it.
 If a harness ever asks for a password typed into a prompt, that harness is wrong. `SHOWAMI_API_KEY` is
 reserved and unused — add it only if the account is ever granted Showami API automation.
 
+### D7. `publicfeeds` — market, lender-rate and builder-incentive pages (R6, 2026-09-24)
+
+No sign-in for anything in this package — every page it reads is public. What gates it instead is
+**three independent terms-of-service reviews**, one per category, because the pages come from six
+unrelated companies and clearing one company's terms must never quietly open another's:
+
+```bash
+cli-anything-publicfeeds --json gate status
+```
+Expect: three entries, `marketpages` / `lenderrates` / `builderpages`, every one `disabled-by-policy`
+until its variable is set — this is the correct state today, not a fault to fix here.
+
+| Group | Env var | Covers |
+|---|---|---|
+| `marketpages` | `CLI_ANYTHING_TOS_REVIEWED_MARKETPAGES` | Redfin (`temecula-market`, `murrieta-market`, `san-diego-county-market`) |
+| `lenderrates` | `CLI_ANYTHING_TOS_REVIEWED_LENDERRATES` | Veterans United, Navy Federal (`veterans-united-va-rates`, `navy-federal-rates`) |
+| `builderpages` | `CLI_ANYTHING_TOS_REVIEWED_BUILDERPAGES` | D.R. Horton, Lennar, Richmond American (the three builder recipes) |
+
+Each row's exact question — what Alexandra drafts and Steven decides, never a date set "to make a
+command run" — is in `integrations/cli-anything-harnesses/publicfeeds/PUBLICFEEDS.md`. The
+`builderpages` question notes a real overlap worth resolving in the same sitting: `MAC-INSTALL-comms-data.md`
+§3 already scoped Scrapling/Scrapegraph-ai for the same builder pages, under a lane
+(`incentives-daily-scan`) that in practice writes a different document — pick one tool as the standard
+rather than clear terms for both against the same three sites.
+
+Once a group's date is recorded, `paths init` then `--discover` works exactly like D4:
+```bash
+cli-anything-publicfeeds paths init
+cli-anything-publicfeeds --json recipe temecula-market --discover --text
+#   -> find the container that holds the numbers in the dumped tree
+#   -> edit ~/.config/cli-anything/publicfeeds-paths.json: root, fields.<f>.regex
+cli-anything-publicfeeds --json recipe temecula-market          # until the values match the page
+```
+Expect: before the group's date is recorded, every one of these exits **3** with
+`"type": "policy_gate"` and a `fix` field naming the exact question — even `--discover` refuses,
+because nothing in this package should touch a live page before its terms question is answered.
+After the date is recorded and the map is corrected, exit 0 with the record/rows — the same
+`[path map UNVERIFIED until first live run]` banner D4 describes applies here too.
+
+Two of the eight default URLs are known to go stale on their own schedule, independent of anything
+above — `san-diego-county-market` points at a dated monthly Redfin blog post, and
+`lennar-san-diego-promo` at a seasonal campaign slug (`sdglen_fss26`). Re-point `--url` (or the
+`paths.json` copy's default) when either 404s or looks stale; this is expected upkeep, not a defect.
+
+`cli-anything-feeds` (`mac-task-specs.md` §7) is the task that turns a verified, gate-open recipe's
+output into the deck's `ratesSnapshot`/`liveFeeds` documents — nothing writes those automatically from
+this phase.
+
 ---
 
 ## E — The ECC gate: SkySlope and zipForms
@@ -547,15 +625,34 @@ document carrying a `checkedAt` claims this Mac was inspected at that time, and 
 make that true. That is why this step is Steven's.
 
 Paste-ready task: `routines/mac-task-repairs.md` §9. Shape, field by field:
-`docs/data/cliAnythingStatus.doc.json`.
+`docs/data/cliAnythingStatus.doc.json`. **Confirmed R6, 2026-09-24: that task spec and that shape file
+are both already complete** — name, cron, model, tools, env, the full prompt and the check to run
+afterward are all present; nothing needed finishing here.
+
+The fastest way to the paste line is `connect.sh`'s own step 5 (D1a) — it prints the exact prompt
+below, so this section and that script's output should never be allowed to drift apart:
+```bash
+integrations/cli-anything-harnesses/connect.sh
+```
+Expect: section "5. Once you have looked: write cliAnythingStatus", ending in the same paste-ready
+prompt this section names. Paste it into Claude Code on this Mac.
 
 A wrapper that has never run is `"planned"` / `"not-installed"`. Never `"enabled"` or
 `"read-only-live"` without a real `lastRun`; never either for SkySlope or zipForms without an
-`eccReviewedAt`. `readOnly:false` is an error, not a state.
+`eccReviewedAt`. `readOnly:false` is an error, not a state. **`publicfeeds` (R6, 2026-09-24) is one
+wrapper in this shape, not eight** — its `verbsEnabled` reports the read verbs the CLI actually
+exposes (`recipe`, `gate status`, `paths show/where/init`), and `eccReviewedAt` does not apply to it;
+its own three terms-of-service dates live in `cliAnythingLog`/`connect.sh`'s output instead, not in
+this document's shape (which SkySlope/zipForms already own that field name for).
 
 **List verb *groups*, never recipe names.** The card tests every `verbsEnabled` string against a
 write-verb pattern and turns the whole card red on one match — Showami's `my-requests`,
 `request-status` and `posted-price` all match it innocently (F-P2-15).
+
+Expect: after a clean run, the card reads *"The cliAnythingStatus document says CLI-Anything is NOT
+installed (checked \<time\>)"* if nothing is installed yet, or names what is, with a time matching
+when you ran it. A **red** card reading "WRITE VERB ENABLED" means the document put a recipe name or a
+real write verb in some wrapper's `verbsEnabled` — read the row it names before touching anything.
 
 ---
 
