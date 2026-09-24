@@ -16,6 +16,28 @@ SCRIPT="${MAC_SYNC_TESTS_SCRIPT:-$HERE/mac-sync.sh}"
 ROOT=$(mktemp -d "${TMPDIR:-/tmp}/mac-sync-tests.XXXXXX") || exit 2
 trap 'rm -rf "$ROOT"' EXIT INT TERM
 
+# Isolation guard. Corrected 2026-09-24: mac-sync.sh finds its repo from its OWN location, so calling the
+# real "$SCRIPT" without naming a repo ran a real `git pull --rebase --autostash` on the repo this file lives
+# in (it happened once, in the cloud copy, and was aborted). From here on every call inherits a repo path
+# that does not exist, so a call that forgets to name its temp repo is refused ("not a git repo") instead.
+# run_a / run_b unset it on purpose: they run the COPY inside a temp clone, whose own location is safe.
+export MAC_SYNC_REPO_DIR="$ROOT/guard-no-repo-here"
+
+# Snapshot the repo this file lives in (if any); section Z proves the run left it exactly as it was.
+HOST=''
+if git -C "$HERE/../.." rev-parse --is-inside-work-tree >/dev/null 2>&1; then HOST=$(cd "$HERE/../.." && pwd); fi
+host_state() {
+  [ -n "$HOST" ] || { echo none; return; }
+  _gd=$(git -C "$HOST" rev-parse --git-dir 2>/dev/null)
+  case "$_gd" in /*) ;; *) _gd="$HOST/$_gd" ;; esac
+  _mid=no; { [ -d "$_gd/rebase-merge" ] || [ -d "$_gd/rebase-apply" ] || [ -f "$_gd/MERGE_HEAD" ] || [ -f "$_gd/CHERRY_PICK_HEAD" ]; } && _mid=yes
+  printf 'head=%s reflog=%s stash=%s midop=%s' \
+    "$(git -C "$HOST" rev-parse HEAD 2>/dev/null)" \
+    "$(git -C "$HOST" reflog 2>/dev/null | wc -l | tr -d ' ')" \
+    "$(git -C "$HOST" stash list 2>/dev/null | wc -l | tr -d ' ')" "$_mid"
+}
+HOST_BEFORE=$(host_state)
+
 N_PASS=0; N_FAIL=0; FAILED=''
 pass() { N_PASS=$((N_PASS+1)); printf '  ok    %s\n' "$1"; }
 fail() { N_FAIL=$((N_FAIL+1)); printf '  FAIL  %s\n     -> %s\n' "$1" "$2"; FAILED="$FAILED
@@ -75,8 +97,8 @@ git clone -q "$ORIGIN" "$MACB" >/dev/null 2>&1
 HOMEA="$ROOT/homeA"; HOMEB="$ROOT/homeB"
 mkdir -p "$HOMEA/.config/claude-runner" "$HOMEB/.config/claude-runner"
 
-run_a() { ( cd "$MACA" && HOME="$HOMEA" PATH="$BIN:$PATH" bash integrations/mac-sync/mac-sync.sh "$@" >"$ROOT/out" 2>"$ROOT/err" ); RC=$?; OUT=$(cat "$ROOT/out"); ERR=$(cat "$ROOT/err"); [ "$VERBOSE" = 1 ] && printf '    $ [A] mac-sync %s -> rc=%s\n' "$*" "$RC"; return 0; }
-run_b() { ( cd "$MACB" && HOME="$HOMEB" PATH="$BIN:$PATH" bash integrations/mac-sync/mac-sync.sh "$@" >"$ROOT/out" 2>"$ROOT/err" ); RC=$?; OUT=$(cat "$ROOT/out"); ERR=$(cat "$ROOT/err"); [ "$VERBOSE" = 1 ] && printf '    $ [B] mac-sync %s -> rc=%s\n' "$*" "$RC"; return 0; }
+run_a() { ( cd "$MACA" && unset MAC_SYNC_REPO_DIR && HOME="$HOMEA" PATH="$BIN:$PATH" bash integrations/mac-sync/mac-sync.sh "$@" >"$ROOT/out" 2>"$ROOT/err" ); RC=$?; OUT=$(cat "$ROOT/out"); ERR=$(cat "$ROOT/err"); [ "$VERBOSE" = 1 ] && printf '    $ [A] mac-sync %s -> rc=%s\n' "$*" "$RC"; return 0; }
+run_b() { ( cd "$MACB" && unset MAC_SYNC_REPO_DIR && HOME="$HOMEB" PATH="$BIN:$PATH" bash integrations/mac-sync/mac-sync.sh "$@" >"$ROOT/out" 2>"$ROOT/err" ); RC=$?; OUT=$(cat "$ROOT/out"); ERR=$(cat "$ROOT/err"); [ "$VERBOSE" = 1 ] && printf '    $ [B] mac-sync %s -> rc=%s\n' "$*" "$RC"; return 0; }
 
 printf 'mac-sync-tests — executed tests\n  script : %s\n  sandbox: %s\n' "$SCRIPT" "$ROOT"
 
@@ -175,10 +197,14 @@ has  "C3 says why (a real conflict, not local edits)"     "$ERR" "real conflict"
 has  "C3 tells you the exact recovery commands"           "$ERR" "rebase --continue"
 ( cd "$MACB" && git rebase --abort >/dev/null 2>&1; git reset -q --hard origin/master )
 
-( cd "$ROOT" && git init -q not-a-repo )
-( cd "$ROOT/not-a-repo" && HOME="$HOMEA" PATH="$BIN:$PATH" bash "$SCRIPT" pull >"$ROOT/out" 2>"$ROOT/err" )
+# The real script with NO repo named inherits the isolation guard above and must refuse, not reach for the
+# repo it lives in. (This line used to run exactly that call unguarded — see the note at the top.)
+mkdir -p "$ROOT/cwd-only"
+( cd "$ROOT/cwd-only" && HOME="$HOMEA" PATH="$BIN:$PATH" bash "$SCRIPT" pull >"$ROOT/out" 2>"$ROOT/err" )
 RC=$?; ERR=$(cat "$ROOT/err")
-# not-a-repo IS a git repo (git init), so instead prove the "not a git repo at all" guard directly:
+eq   "C4a no repo named -> the guard refuses, exits 1"     "$RC" "1"
+has  "C4a names the guard path, not the real repo"         "$ERR" "guard-no-repo-here"
+
 mkdir -p "$ROOT/no-git-here"
 ( cd "$ROOT/no-git-here" && HOME="$HOMEA" PATH="$BIN:$PATH" MAC_SYNC_REPO_DIR="$ROOT/no-git-here" bash "$SCRIPT" pull >"$ROOT/out" 2>"$ROOT/err" )
 RC=$?; ERR=$(cat "$ROOT/err")
@@ -266,6 +292,14 @@ mkdir -p "$ROOT/nomanifest"
 RC=$?; ERR=$(cat "$ROOT/err")
 eq   "E7 no mac-config directory at all -> refuses, exits 1" "$RC" "1"
 has  "E7 says why"                                          "$ERR" "run 'export'"
+
+# ================================================================== Z. isolation
+sect "Z. isolation — the repo this file lives in"
+if [ -z "$HOST" ]; then
+  pass "Z1 not run from inside a git repo — nothing to protect"
+else
+  eq   "Z1 HEAD, reflog, stash and rebase/merge state unchanged" "$(host_state)" "$HOST_BEFORE"
+fi
 
 # ================================================================== summary
 printf '\n------------------------------------------------------------\n'
