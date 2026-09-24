@@ -483,7 +483,7 @@
       <div class="table-wrap"><table>
         <thead><tr><th>What</th><th>By what</th><th>How often</th><th>Last time it actually ran</th></tr></thead>
         <tbody>
-          <tr><td><b>ISA line</b> — your messages to and from Steven, plus the read markers (<code>isaLine</code>, <code>isaLineRead</code>)</td><td><code>isa-comms-bridge-local</code>, a scheduled task on Steven's Mac. It reads both stores and merges the two copies by message id.</td><td>Hourly, 7:37 AM – 9:37 PM PT, and only while his Mac is awake with the desktop app open.</td><td><b>Last recorded ok 2026-09-22 12:56 AM PT</b>, per the <code>routineHealth</code> document on Steven’s deck. Both stores have since converged on a message stamped 2026-09-22 12:53 PM UTC, so it has run at least once after that — neither page records exactly when. Both copies of the thread held the same 10 messages when read on 2026-09-23. This one genuinely works.</td></tr>
+          <tr><td><b>ISA line</b> — your messages to and from Steven, plus the read markers (<code>isaLine</code>, <code>isaLineRead</code>)</td><td><code>isa-comms-bridge-local</code>, a scheduled task on Steven's Mac. It reads both stores and merges the two copies by message id.</td><td>Hourly, 7:37 AM – 9:37 PM PT, and only while his Mac is awake with the desktop app open.</td><td><b>Last recorded ok 2026-09-22 9:38 PM PT</b>, per the <code>routineHealth</code> document on Steven’s deck — that run confirmed both stores already matched, 10 messages each. Both stores have since converged on a further message stamped 2026-09-23 5:46 AM UTC, so it has run again since then — neither page records exactly when. Read directly 2026-09-24: both copies of the thread now hold the same 11 messages, byte for byte. This one genuinely works.</td></tr>
           <tr><td><b>Client list, mortgage pipeline, daily scorecard and self-grades</b> (<code>reClients</code>, <code>pipeline</code>, <code>isaScorecard</code>, <code>isaGradingScores</code>, <code>isaKpiSopActuals</code>)</td><td>The <b>Pipeline Sync (live)</b> cloud routine. It reads both stores and copies changes in both directions. It does not need Steven's Mac to be awake.</td><td>Four times a day — 04:00, 10:00, 16:00 and 22:00 UTC (9 PM, 3 AM, 9 AM and 3 PM Pacific while daylight time lasts).</td><td><b>Last logged ok 2026-09-24</b> (twice that day), per its own entries on Steven's deck: client list and pipeline identical on both sides, scorecard empty on both, no self-grades entered on either side yet.</td></tr>
         </tbody>
       </table></div>
@@ -726,19 +726,19 @@
       <div id="pstAiTake" style="margin-top:14px;"></div>
       <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
         <p class="card-title" style="margin:0 0 4px;">Current listings — a queued request, not a live search</p>
-        <p class="card-sub" style="margin:0 0 10px;">This card used to pull live "newly listed" and "price reduced" results through the You.com connector. <b>You.com was retired on 2026-09-22</b> and nothing on this page searches the web any more. The button below does exactly what it says: it writes your criteria into this portal's <code>vanessaResearch</code> queue and posts it on the ISA line, which the bridge task on Steven's Mac carries to his Command Deck hourly (7:37 AM–9:37 PM PT). Vanessa answers it there and the answer comes back on the line. For inventory you need <i>right now</i>, use the CRMLS/IDX links at the top of this card — that is the licensed record anyway.</p>
+        <p class="card-sub" style="margin:0 0 10px;">This card used to pull live "newly listed" and "price reduced" results through the You.com connector. <b>Steven retired You.com on 2026-09-22</b> (the Claude subscription replaces it). Its connector still answers a check but holds 0 credits (re-checked 2026-09-24), so nothing on this page searches the web. The button below does exactly what it says: it writes your criteria into this portal's <code>vanessaResearch</code> queue and posts it on the ISA line, which the bridge task on Steven's Mac carries to his Command Deck hourly (7:37 AM–9:37 PM PT). Vanessa answers it there and the answer comes back on the line. For inventory you need <i>right now</i>, use the CRMLS/IDX links at the top of this card — that is the licensed record anyway.</p>
         <button type="button" id="pstQueueListingsBtn">Queue research (answered by Vanessa)</button>
         <p class="src-note" id="pstLiveNote" style="margin-top:8px;"></p>
       </div>
       <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
         <p class="card-title" style="margin:0 0 4px;">Similar / comparable properties</p>
-        <p class="card-sub" style="margin:0 0 10px;">Same story: the AI-directed comp search ran several live web queries through You.com, and that connector is retired. The briefing above is still generated here from the criteria you entered — only the web pull is gone. This queues the comp request (the exact criteria, a widened band, and neighbouring areas) for Vanessa, who has the research tools this page no longer has.</p>
+        <p class="card-sub" style="margin:0 0 10px;">Same story: the AI-directed comp search ran several live web queries through You.com, and that connector was retired on 2026-09-22 — it still answers a check but holds 0 credits (re-checked 2026-09-24), so it searches nothing. The briefing above is still generated here from the criteria you entered — only the web pull is gone. This queues the comp request (the exact criteria, a widened band, and neighbouring areas) for Vanessa, who has the research tools this page no longer has.</p>
         <button type="button" id="pstFindSimilarBtn">Queue a comparable-property search (answered by Vanessa)</button>
         <div id="pstSimilarResults" style="margin-top:14px;"></div>
       </div>
       <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
         <p class="card-title" style="margin:0 0 4px;">Property tax lookup — Riverside &amp; San Diego County</p>
-        <p class="card-sub" style="margin:0 0 6px;"><b>Changed 2026-09-22:</b> this lookup ran on the You.com connector, which is retired. It no longer searches anything. The button now queues the address (and APN, if you have it) for Vanessa and posts it on the ISA line; the estimate below it is still computed here from this dashboard's own community tax-rate reference, and the two county links still work and are the authoritative source.</p>
+        <p class="card-sub" style="margin:0 0 6px;"><b>Changed 2026-09-22, re-checked 2026-09-24:</b> this lookup ran on the You.com connector. You.com was retired that day; its connector still answers a check but holds 0 credits, so it searches nothing. The button queues the address (and APN, if you have it) for Vanessa and posts it on the ISA line; the estimate below it is still computed here from this dashboard's own community tax-rate reference, and the two county links still work and are the authoritative source.</p>
         <p class="card-sub" style="margin:0 0 10px;">Not Realist — Realist/Cotality sits behind a CRMLS/MLS login this page can't authenticate through. These are the actual taxing authorities' own public records instead, which is what Realist itself pulls from. Confirmed directly (2026-09-04, by driving the real county site in a browser): both county portals require a live session and a per-request security token their own JavaScript generates — even a same-origin request without a live browser session was rejected, so there's no URL or API path in from here, and "Search tax record" below can't submit that form for you. Instead it does the next best real thing: Claude searches the live web (by address and, if entered, APN) for whatever is publicly findable — prioritizing Zillow/Redfin/PropertyShark, which mirror the county's own assessed-value and tax-history data for most CA parcels — for the seller's current tax bill at today's assessed value and any Mello-Roos/CFD or special-assessment mentions, then combines that with this dashboard's own researched community tax-rate data and the list price you enter below to compute a rate and $ estimate for a buyer at that price. Not a guaranteed authoritative pull — always confirm on the county site link before quoting a client.</p>
         <div class="grid grid-2">
           <div><label class="field-label">Property address</label><input type="text" id="pstTaxAddress" placeholder="e.g. 123 Main St, Temecula, CA 92592"></div>
@@ -1430,18 +1430,18 @@
       <p class="card-title">Automation &amp; live-data connectivity — honest status</p>
       <p class="card-sub" style="margin-top:0;">On Playwright automation and API/MCP live-data pulls for the tools above.</p>
       <p class="src-note" style="margin-top:0;"><b>Browser automation:</b> Claude Code drives a controlled browser directly (navigate, click, fill forms, read pages) in any interactive session — functionally the same job Playwright would do, without a separate script to maintain. A standalone Playwright script is a real option too, but it's a separate engineering project (hosting, credentials, maintenance) rather than something built into this dashboard.</p>
-      <p class="src-note"><b>Connector status, verified 2026-09-22 — read this before you assume a number on this page is live:</b></p>
+      <p class="src-note"><b>Connector status, verified 2026-09-22, re-checked 2026-09-24 against that day's measured connection table:</b></p>
       <ul class="simple-list">
-        <li><b>Zoho CRM</b> — connected through Composio (account created 2026-09-21), but every CRM call returns <code>403 NO_PERMISSION: Crm_Implied_Api_Access</code>. Still the system of record for mortgage; simply not readable from here. Only Steven can fix it: Zoho CRM → Setup → Security Control → Profiles → enable "Zoho CRM API Access".</li>
-        <li><b>Lofty</b> — the real-estate CRM of record since 2026-09-22. Composio has no Lofty toolkit; the path is the <code>lofty-bridge</code> MCP server and <code>lofty-cli</code> already installed on Steven's Mac. The API key and the first proving run are outstanding, so no Lofty data has reached this portal yet.</li>
-        <li><b>You.com</b> — <b>RETIRED 2026-09-22</b>, replaced by the Claude subscription. Every in-page live web search on this portal ran on it and has been converted to a queued research request.</li>
-        <li><b>Working today:</b> Strava (official remote MCP server), Notion and Google Calendar (claude.ai connectors), Slack, Gmail, Inkbox.</li>
-        <li><b>Not connected:</b> Canva (needs reconnect), Microsoft 365, BlackRock Advisor Center, Health Data Avatar, PlayMCP.</li>
+        <li><b>Zoho CRM</b> — connected through Composio (account created 2026-09-21), but every CRM call returns <code>403 NO_PERMISSION: Crm_Implied_Api_Access</code> (re-checked 2026-09-24, same result). Still the system of record for mortgage; simply not readable from here. Only Steven can fix it: Zoho CRM → Setup → Security Control → Profiles → enable "Zoho CRM API Access".</li>
+        <li><b>Lofty</b> — the real-estate CRM of record since 2026-09-22, still <code>not-configured</code> as of 2026-09-24 (no API key installed yet). Composio has no Lofty toolkit; the path is the <code>lofty-bridge</code> MCP server and <code>lofty-cli</code> already installed on Steven's Mac. The API key and the first proving run are outstanding, so no Lofty data has reached this portal yet.</li>
+        <li><b>You.com</b> — retired 2026-09-22 (the Claude subscription replaces it). <b>Re-checked 2026-09-24: the connector still answers but holds 0 credits</b>, so paid search fails — funding it would be Steven's decision, since it spends money. Every in-page live web search on this portal stays a queued research request either way.</li>
+        <li><b>Working today:</b> Strava (official remote MCP server), Notion and Google Calendar (claude.ai connectors), Slack, Gmail, Inkbox, Canva (1 brand kit, re-checked 2026-09-24).</li>
+        <li><b>Not connected:</b> Microsoft 365, BlackRock Advisor Center, Health Data Avatar, PlayMCP.</li>
       </ul>
       <p class="src-note"><b>Likely connectable via Composio's 1,000+ toolkit catalog</b> (worth checking case-by-case, same pattern as Zoho/Strava): Zoom, LinkedIn, Google Ads, Meta Business Suite — mainstream SaaS platforms Composio tends to cover. It does <i>not</i> cover Lofty.</p>
       <p class="src-note"><b>Sites with no usable API at all</b> — homes.com, SkySlope, zipForms/Lone Wolf: the plan is CLI-Anything wrappers driving them through a browser automation path. Specified 2026-09-22; nothing is installed on the Mac yet.</p>
       <p class="src-note"><b>Typically NOT available through a generic connector platform</b> — these need a direct vendor API agreement/credentials from Steven, not something a third-party connector can supply: CRMLS Matrix, RPR, Realist/Cotality, ShowingTime, Dotloop, SkySlope, InfoSparks, Ticor Title, Arive. MLS and title/escrow systems in particular gate API access behind board membership or vendor contracts.</p>
-      <p class="src-note"><b>Net:</b> don't assume "API exists" for every row above — it's genuinely mixed, and one of the connections this card used to call proven (You.com) is now retired. The honest path is check-one-at-a-time, not a blanket connect-everything pass — and a connector being "connected" is not the same as it returning data, which Zoho proves daily.</p>
+      <p class="src-note"><b>Net:</b> don't assume "API exists" for every row above — it's genuinely mixed, and connections this card once called dead don't stay dead: Canva answers again, and You.com — retired — still answers but holds 0 credits. The honest path is check-one-at-a-time, in both directions, not a one-time pass in either — and a connector being "connected" is not the same as it returning data, which Zoho proves daily.</p>
     </div>
   </section>
 
@@ -1640,7 +1640,7 @@
   </section>
 
   <p class="src-note" id="isaRenderErrors" hidden style="border:1px solid var(--negative);background:var(--negative-soft);color:var(--negative);border-radius:8px;padding:10px 12px;margin-bottom:14px;"></p>
-  <footer class="deck-foot">ISA PORTAL · SCOPED ACCESS · REAL ESTATE &amp; MORTGAGE ONLY<br><span style="opacity:.75;">Build 2026-09-22 · You.com retired, Lofty is the real-estate CRM of record, sync status re-measured against both databases - if two sessions edit this page, the newer build wins; check this stamp before assuming your change is live.</span></footer>
+  <footer class="deck-foot">ISA PORTAL · SCOPED ACCESS · REAL ESTATE &amp; MORTGAGE ONLY<br><span style="opacity:.75;">Build 2026-09-22, connection wording re-checked 2026-09-24 · You.com retired (connector at 0 credits), Lofty is the real-estate CRM of record, sync status re-measured against both databases - if two sessions edit this page, the newer build wins; check this stamp before assuming your change is live.</span></footer>
 </div>
 
 <script>
@@ -1973,11 +1973,13 @@
   })();
 
   /* ================= CROSS-PAGE DRIFT — measured, not inferred =================
-     Read out of BOTH artifact databases on 2026-09-22 (collection "state"). Nothing here is
-     computed at runtime: this page cannot see Command Deck's store, and saying otherwise is the
-     exact dishonesty this table exists to kill. Re-measure it in a Claude session and update the
-     constant; the stamp below is what it is current to. */
-  var DRIFT_CHECKED_AT = "2026-09-23";
+     The near-side (this device) cells for isaLine/pipeline/reClients ARE computed at runtime,
+     from this page's own store — that much this page can see. The far-side (Command Deck)
+     column, and every other row, is a hand read out of BOTH artifact databases, most recently
+     2026-09-24 (collection "state"): this page cannot see Command Deck's store on its own, and
+     saying otherwise is the exact dishonesty this table exists to kill. Re-measure it in a
+     Claude session and update the constant; the stamp below is what it is current to. */
+  var DRIFT_CHECKED_AT = "2026-09-24";
   /* How long the hand-measured Command Deck column stays trustworthy before the table says so
      itself. That column CANNOT refresh on its own: this page has no way to read the other store.
      Before this it simply kept displaying whatever was last typed, and by 2026-09-23 the
@@ -1988,7 +1990,7 @@
   var DRIFT_ROWS = [
     ["<code>isaLine</code> + <code>isaLineRead</code><div class=\"src-note\">Your thread with Steven</div>",
      function () { return driftLocalCount("isaLine", "message"); },
-     "The same 10 messages, byte for byte",
+     "The same 11 messages, byte for byte",
      "green", "In sync \u2014 carried by isa-comms-bridge-local"],
     ["<code>pipeline</code><div class=\"src-note\">Mortgage deals you track here</div>",
      function () { return driftLocalSummary("pipeline", "deal"); },
@@ -2000,8 +2002,8 @@
      "green", "In sync \u2014 carried both ways by the Pipeline Sync (live) routine, four times a day (its own log, 2026-09-24)"],
     ["<code>ratesSnapshot</code><div class=\"src-note\">Rates + market medians</div>",
      "Stamped 2026-09-22 2:24 AM UTC \u2014 re-baked by hand from his copy",
-     "Stamped 2026-09-22 8:30 PM UTC, rewritten daily by the mortgage-rates-daily task on his Mac",
-     "amber", "Two separate copies. His is about 18 hours fresher and is authoritative"],
+     "Stamped 2026-09-23 8:39 PM UTC, rewritten daily by the mortgage-rates-daily task on his Mac",
+     "amber", "Two separate copies. His is about 42 hours fresher and is authoritative"],
     ["<code>isaDailySchedule</code><div class=\"src-note\">Your daily playbook</div>",
      "Present", "Identical on both sides",
      "green", "Matching \u2014 but copied by hand, not by any task"],
@@ -2076,16 +2078,17 @@
   safeRun(renderIsaDrift, "renderIsaDrift");
   safeRun(function () { renderIsaStateWarnings(); }, "renderIsaStateWarnings");
 
-  /* ================= RESEARCH QUEUE — replaces the retired You.com live search =================
-     You.com was retired on 2026-09-22 (Steven: the connection is replaced by the Claude
-     subscription). Every in-page live web search on this portal ran on it. Nothing on this page
-     searches the web any more, and a button that silently fails is worse than no button — so the
-     three search tools now QUEUE a request instead of pretending to run one.
+  /* ================= RESEARCH QUEUE — stands in while You.com can't pay for a search =================
+     You.com was retired 2026-09-22 (the Claude subscription replaces it); re-checked
+     2026-09-24 its connector still answers a read-only call but carries 0 credits, so every paid
+     search fails — funding it would be Steven's call (it spends money). Every in-page live web
+     search on this portal ran on You.com, and a button that silently fails is worse than no
+     button — so the three search tools still QUEUE a request instead of pretending to run one.
      A queued request is written to this portal's `vanessaResearch` document AND posted on the ISA
      line, because the line is the only thing that actually crosses to Steven's Command Deck (the
      isa-comms-bridge-local task on his Mac, hourly 7:37 AM–9:37 PM PT). Vanessa answers from
      there and the answer comes back on the line. */
-  var RESEARCH_QUEUE_NOTE = "Research requests raised from ISA Portal. You.com was retired 2026-09-22; this page performs no web search of its own. Each item is also posted on the ISA line, which the isa-comms-bridge-local task carries to Command Deck every hour between 7:37 AM and 9:37 PM PT. Vanessa answers there and writes the answer back onto the line.";
+  var RESEARCH_QUEUE_NOTE = "Research requests raised from ISA Portal. You.com was retired 2026-09-22 and its connector holds 0 credits (re-checked 2026-09-24), so this page performs no web search of its own. Each item is also posted on the ISA line, which the isa-comms-bridge-local task carries to Command Deck every hour between 7:37 AM and 9:37 PM PT. Vanessa answers there and writes the answer back onto the line.";
   function vanessaResearchDoc() {
     var v = lsGetSeeded("vanessaResearch", { items: [], note: RESEARCH_QUEUE_NOTE, updatedAt: null });
     if (!v || typeof v !== "object" || Array.isArray(v)) { lsShapeWarn("vanessaResearch", "object", v); v = { items: [], note: RESEARCH_QUEUE_NOTE, updatedAt: null }; }
@@ -2099,7 +2102,7 @@
       id: "isa-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 7),
       askedBy: "isa", askedAt: at, topic: topic, question: question,
       context: context || "", status: "queued", answer: null, answeredAt: null,
-      source: "ISA Portal (You.com retired 2026-09-22)"
+      source: "ISA Portal (You.com retired; connector at 0 credits, re-checked 2026-09-24)"
     };
     doc.items.push(item);
     if (doc.items.length > 100) doc.items = doc.items.slice(doc.items.length - 100);
@@ -2423,7 +2426,7 @@
     }).join("");
   }
   function renderMarketUpdates() {
-    $("marketUpdateSyncNote").textContent = "Synced " + MARKET_SYNCED_AT + " There is no live headline feed on this card: the You.com search it ran on was retired 2026-09-22. Medians, DOM and YoY come from the ratesSnapshot document the mortgage-rates-daily task writes on Steven's Mac (last write 2026-09-22 2:24 AM UTC) and were copied here by hand; active-listing counts and sale-to-list ratios are periodic manual pulls that document does not carry.";
+    $("marketUpdateSyncNote").textContent = "Synced " + MARKET_SYNCED_AT + " There is no live headline feed on this card: the You.com search it used to run on was retired 2026-09-22 (its connector holds 0 credits, re-checked 2026-09-24). Medians, DOM and YoY come from the ratesSnapshot document the mortgage-rates-daily task writes on Steven's Mac (last write 2026-09-22 2:24 AM UTC) and were copied here by hand; active-listing counts and sale-to-list ratios are periodic manual pulls that document does not carry.";
     var wrap = $("marketUpdateCards");
     wrap.innerHTML = "";
     Object.keys(MARKET_UPDATES).forEach(function (city) {
@@ -3165,7 +3168,7 @@
     { area: "San Diego County, CA", summary: "Re-researched 2026-09-22 from the builders' own pages. <b>Lennar</b> — San Diego “Labor Day Sale 2026” page (published Sep 11, updated Sep 20): promotional conventional fixed loan with a temporary 2-1 buydown, 2.99% year 1 / 3.99% year 2 / 4.99% for the balance of the term (5.327% APR), Lennar Mortgage required, purchase agreements 09/14/26–09/20/26 closing by 11/30/26 — the signing window closed on Sep 20 while the page was still up; Lennar's San Diego-area communities on its site are Cota Vera (Chula Vista), The Row (San Marcos), Junipers (San Diego 92129), North River Farms (Oceanside) and Creekside Crossing (Ramona). <b>D.R. Horton</b> — Tesoro Square (Escondido, page updated Sep 20) carries the same Southern California special rate as the Inland Empire: FHA 30-yr fixed 4.990% (5.843% APR) or conventional 5.500% (5.947% APR), DHI Mortgage required, contract on or after 07/27/26 and close by 10/30/26. <b>Richmond American</b> — its Los Angeles/San Diego offer page (updated Sep 19) says up to $35,000 promotional value toward closing costs, a permanent buydown with HomeAmerican Mortgage, or a 2% price discount, with no signing window shown in the extract. KB Home, Taylor Morrison, Meritage, Shea, Pardee/Tri Pointe, Toll Brothers and Brookfield — no current, dated San Diego County rate offer could be verified today. NewHomeSource's San Diego index line lists 66 builders / 131 communities / 430 homes (page not reachable from here). No September 2026 study of the builder-lender vs. market-rate gap was found: the Sep 2 pass's figures (Aug 2026 builder-affiliated ~5.23% vs ~6.60% non-builder; Lennar FY2025 incentives $62,700/home, 13.8% of revenue) were NOT re-verified 2026-09-22 and are kept only as that pass's context — the fresh comparable is Lennar's Q3 FY2026 ~12.0% incentive load (Sep 16). Against Optimal Blue's Sep 18 averages on this page (VA 6.751%, conforming 7.038%), the advertised 4.99–5.50% builder rates are a 1.5–2 point subsidy — real, but only through the builder's lender and only inside the posted window, so never repeat one to a client as a market rate.", source: "Lennar San Diego “Labor Day Sale 2026” promo page, updated Sep 20, 2026; D.R. Horton Tesoro Square and the other pages are listed in the code comment above", url: "https://www.lennar.com/new-homes/california/san-diego/promo/sdglen_fss26" }
   ];
   function renderBuilderIncentives() {
-    $("builderIncentiveSyncNote").textContent = "Snapshot researched " + BUILDER_INCENTIVE_SYNCED_AT + " — a dated manual snapshot, " + isaDaysSince(BUILDER_INCENTIVE_SYNCED_AT) + ". The live results that used to sit under it ran on the You.com connector, retired 2026-09-22. No task tracks builder buydowns: the incentives-daily-scan task on Steven's Mac writes an incentivePrograms document of down-payment-assistance, utility, tax and veteran programs for Temecula/SW Riverside and San Diego (last written 2026-09-22 02:22 UTC) — useful, but not builder incentives — and it lands in Command Deck's store, which this page cannot read. This card moves only when someone re-researches it in a Claude session: ask for a re-sync on the ISA line, or use the research queue in the Property Search panel.";
+    $("builderIncentiveSyncNote").textContent = "Snapshot researched " + BUILDER_INCENTIVE_SYNCED_AT + " — a dated manual snapshot, " + isaDaysSince(BUILDER_INCENTIVE_SYNCED_AT) + ". The live results that used to sit under it ran on the You.com connector, which was retired 2026-09-22 (its connector holds 0 credits, re-checked 2026-09-24). No task tracks builder buydowns: the incentives-daily-scan task on Steven's Mac writes an incentivePrograms document of down-payment-assistance, utility, tax and veteran programs for Temecula/SW Riverside and San Diego (last written 2026-09-22 02:22 UTC) — useful, but not builder incentives — and it lands in Command Deck's store, which this page cannot read. This card moves only when someone re-researches it in a Claude session: ask for a re-sync on the ISA line, or use the research queue in the Property Search panel.";
     var wrap = $("builderIncentiveRows");
     wrap.innerHTML = "";
     BUILDER_INCENTIVES.forEach(function (b, i) {
@@ -4097,8 +4100,13 @@
   }
   function isaLineMyReadKey() { return ISA_LINE_SIDE === "cd" ? "steven" : "isa"; }
   function isaLineUnread() {
-    var read = isaLineRead(), mine = read[isaLineMyReadKey()] || "", other = ISA_LINE_SIDE === "cd" ? "isa" : "cd";
-    return isaLineMsgs().filter(function (m) { return m.origin === other && (!mine || String(m.ts) > mine); });
+    var read = isaLineRead(), myKey = isaLineMyReadKey(), mine = read[myKey] || "", other = ISA_LINE_SIDE === "cd" ? "isa" : "cd";
+    /* origin alone isn't enough: a message that crossed from the other side can still be addressed
+       to someone other than me (e.g. an AI-team escalation "to": "steven" sitting in this same
+       document) - that is real, visible context in the thread below, but it is not mine to answer
+       and must not inflate MY unread/decision badge. Only count it here if it has no explicit
+       recipient (older messages) or the recipient is actually me. */
+    return isaLineMsgs().filter(function (m) { return m.origin === other && (!mine || String(m.ts) > mine) && (!m.to || m.to === myKey); });
   }
   function isaLineMarkRead() {
     if (!isaLineUnread().length) return;
@@ -4473,7 +4481,7 @@
      ("you") or a document-fed one ("synced") gets its date from the data itself. */
   var ISA_PANEL_VERIFIED_AT = {
     "panel-isa-syncstatus":    { at: "2026-09-24", scope: "part",
-      note: "Corrected 2026-09-24 against the Pipeline Sync (live) routine\u2019s own log entries on Steven\u2019s deck: it carries reClients, pipeline, isaScorecard, isaGradingScores and isaKpiSopActuals four times a day, which this panel had been telling the ISA were not synced. The drift table\u2019s right-hand column is still the 2026-09-23 hand read. Re-sourced 2026-09-23: both artifact databases\u2019 state collections were read directly, and every row of the drift table was corrected against them \u2014 four rows had gone wrong in a single day. NOT re-sourced: the Mac-side facts this page cannot see from a browser \u2014 the bridge task\u2019s cadence, the cloud comms bridge being disabled, and the Pipeline Sync routine\u2019s behaviour. Those carry their own dates in the text. It was scope \u201cfull\u201d until 2026-09-23; that over-claimed, because a panel whose far-side column is a hand measurement cannot be fully re-sourced from this page." },
+      note: "Corrected 2026-09-24 against the Pipeline Sync (live) routine\u2019s own log entries on Steven\u2019s deck: it carries reClients, pipeline, isaScorecard, isaGradingScores and isaKpiSopActuals four times a day, which this panel had been telling the ISA were not synced. The drift table was re-read again 2026-09-24 directly against both stores: isaLine had grown from 10 to 11 messages on both sides (still in sync), and the ratesSnapshot gap was actually \u224842 hours, not 18 \u2014 both rows corrected, DRIFT_CHECKED_AT now 2026-09-24. Re-sourced 2026-09-23: both artifact databases\u2019 state collections were read directly, and every row of the drift table was corrected against them \u2014 four rows had gone wrong in a single day. NOT re-sourced: the Mac-side facts this page cannot see from a browser \u2014 the bridge task\u2019s cadence, the cloud comms bridge being disabled, and the Pipeline Sync routine\u2019s behaviour. Those carry their own dates in the text. It was scope \u201cfull\u201d until 2026-09-23; that over-claimed, because a panel whose far-side column is a hand measurement cannot be fully re-sourced from this page." },
     "panel-isa-loanprograms":  { at: "2026-09-22", scope: "part",
       note: "Re-sourced today: the eight 2026 program-fact rows and five lender rows (Change Wholesale, Kings Mortgage, Liberty Reverse, Oval, Loan United). The other 56 lender rows and the 39 loan programs were counted, not re-sourced." },
     "panel-isa-easop":         { at: "2026-09-22", scope: "part",
