@@ -42,16 +42,24 @@ hasnt(){ case "$2" in *"$3"*) fail "$1" "'$3' WAS present in: $(printf '%s' "$2"
 # ------------------------------------------------------------------ the stub `claude`
 cat > "$BIN/claude" <<'STUB'
 #!/usr/bin/env bash
-# Stub `claude`. Two jobs:
+# Stub `claude`. Four jobs:
 #  (a) a lease check  — recognised by "Task-lease check" in the -p prompt. Implements REMOTE-ACCESS.md's five
-#      steps against $DB/taskLease (version= holder= hostname= acquiredAt= expiresAt=; absent file = no document).
+#      steps against $DB/taskLease (version= holder= hostname= acquiredAt= expiresAt=; absent file = no document),
+#      PLUS the step-6 heartbeat (R6, 2026-09-24): whenever the prompt asks for it, every exit through say()
+#      also writes $DB/macHeartbeat.<id> — a stand-in for the model's own extra tool call, using the same verdict
+#      line it is about to reply with, so a test can assert the heartbeat really was written on a conclusive check.
 #      STUB_RACE=pin    another Mac writes between step 1 and step 3 -> the pinned write is refused
 #      STUB_RACE=step4  our write lands, another Mac overwrites it -> the step-4 re-read sees a foreign holder
 #      STUB_LEASE=fail  exit 1 with an error envelope (the wording deliberately matches LIMIT_RE)
 #      STUB_LEASE=prose exit 0 with no verdict line at all
 #      STUB_LEASE=two   exit 0 with two different verdicts in one reply
 #      STUB_LEASE=hang  sleep past the timeout
-#  (b) anything else is a task run — recorded, then answered per STUB_MODE (ok|limit|prose).
+#  (b) a takeover     — recognised by "Task-lease TAKEOVER". Unconditional overwrite of $DB/taskLease, no
+#      if_version, always succeeds (there is nothing to refuse); replies LEASE TAKEN. STUB_LEASE=fail/hang apply.
+#  (c) a release       — recognised by "Task-lease RELEASE". RELEASE-NOOP (no document), RELEASE-NOTHOLDER (held
+#      by someone else), RELEASE-RACE (STUB_RACE=pin — another Mac moves the document between the read and the
+#      pinned write), or RELEASED. STUB_LEASE=fail/hang apply.
+#  (d) anything else is a task run — recorded, then answered per STUB_MODE (ok|limit|prose).
 set -u
 isonum() { printf '%s' "${1:-}" | tr -dc '0-9' | cut -c1-14; }
 prompt=''; want=0
@@ -80,7 +88,20 @@ case "$prompt" in
       v1=$(sed -n 's/^version=//p' "$doc"); h1=$(sed -n 's/^holder=//p' "$doc"); e1=$(sed -n 's/^expiresAt=//p' "$doc")
       existed=1
     else v1=''; h1=''; e1=''; existed=0; fi
-    say() { printf '{"type":"result","subtype":"success","is_error":false,"result":"%s"}\n' "$1"; exit 0; }
+    say() {
+      if printf '%s\n' "$prompt" | grep -q 'macHeartbeat'; then
+        _sv=$(printf '%s' "$1" | sed -n 's/^LEASE \([A-Z]*\).*/\1/p')
+        _sh=$(printf '%s' "$1" | sed -n 's/.*holder=\([^ ]*\).*/\1/p')
+        _se=$(printf '%s' "$1" | sed -n 's/.*expires=\([^ ]*\).*/\1/p')
+        # the real prompt already has $ROLE substituted into a literal "role":"..." fragment (step 6's
+        # template); read the SAME text back out rather than hardcoding a role here, so the stub proves what
+        # the launcher actually sent, not what the test expects
+        _srole=$(printf '%s\n' "$prompt" | sed -n 's/.*"role":"\([^"]*\)".*/\1/p' | head -1)
+        printf '{"v":{"machineId":"%s","hostname":"%s","role":"%s","checkedAt":"%s","verdict":"%s","leaseHolder":"%s","leaseExpiresAt":"%s","claudeAutoVersion":"stub","runner":{"tasks":null,"scheduleEnabled":null},"repo":{"branch":null,"head":null,"behind":null,"ahead":null,"checkedAt":"%s"}}}\n' \
+          "$myid" "$myhost" "${_srole:-unknown}" "$now" "$_sv" "$_sh" "$_se" "$now" > "$DB/macHeartbeat.$myid"
+      fi
+      printf '{"type":"result","subtype":"success","is_error":false,"result":"%s"}\n' "$1"; exit 0
+    }
     # step 2 — a live lease someone else holds
     if [ "$existed" = 1 ] && [ "$h1" != "$myid" ] && [ "$(isonum "$e1")" -gt "$(isonum "$now")" ]; then
       say "LEASE FOREIGN holder=$h1 expires=$e1"
@@ -99,6 +120,53 @@ case "$prompt" in
     if [ "$existed" = 1 ] && [ "$h1" = "$myid" ]; then say "LEASE HELD holder=$myid expires=$exp"; fi
     say "LEASE ACQUIRED holder=$myid expires=$exp"
     ;;
+  *"Task-lease TAKEOVER"*)
+    printf 'TAKEOVER\n' >> "$DB/invocations.lease"
+    case "${STUB_LEASE:-ok}" in
+      hang) sleep 120; exit 0 ;;
+      fail) echo '{"type":"result","subtype":"error_during_execution","is_error":true,"result":"API Error: Usage limit reached."}'; exit 1 ;;
+    esac
+    myid=$(printf '%s\n' "$prompt"   | sed -n 's/^MY_ID: //p'    | head -1)
+    myhost=$(printf '%s\n' "$prompt" | sed -n 's/^HOSTNAME: //p' | head -1)
+    now=$(printf '%s\n' "$prompt"    | sed -n 's/^NOW: //p'      | head -1)
+    exp=$(printf '%s\n' "$prompt"    | sed -n 's/^EXPIRES: //p'  | head -1)
+    doc="$DB/taskLease"
+    vnow=0; [ -f "$doc" ] && vnow=$(sed -n 's/^version=//p' "$doc")
+    # no if_version: always overwrites, whatever was there — that is the point of a takeover
+    printf 'version=%s\nholder=%s\nhostname=%s\nacquiredAt=%s\nexpiresAt=%s\n' "$(( ${vnow:-0} + 1 ))" "$myid" "$myhost" "$now" "$exp" > "$doc"
+    h2=$(sed -n 's/^holder=//p' "$doc")
+    if [ "$h2" = "$myid" ]; then
+      printf '{"type":"result","subtype":"success","is_error":false,"result":"LEASE TAKEN holder=%s expires=%s"}\n' "$myid" "$exp"
+    else
+      printf '{"type":"result","subtype":"success","is_error":false,"result":"LEASE TAKE-UNCERTAIN holder=%s expires=%s"}\n' "$h2" "$exp"
+    fi
+    exit 0 ;;
+  *"Task-lease RELEASE"*)
+    printf 'RELEASE\n' >> "$DB/invocations.lease"
+    case "${STUB_LEASE:-ok}" in
+      hang) sleep 120; exit 0 ;;
+      fail) echo '{"type":"result","subtype":"error_during_execution","is_error":true,"result":"API Error: Usage limit reached."}'; exit 1 ;;
+    esac
+    myid=$(printf '%s\n' "$prompt"   | sed -n 's/^MY_ID: //p'    | head -1)
+    myhost=$(printf '%s\n' "$prompt" | sed -n 's/^HOSTNAME: //p' | head -1)
+    now=$(printf '%s\n' "$prompt"    | sed -n 's/^NOW: //p'      | head -1)
+    doc="$DB/taskLease"
+    if [ ! -f "$doc" ]; then
+      echo '{"type":"result","subtype":"success","is_error":false,"result":"LEASE RELEASE-NOOP holder=- expires=-"}'; exit 0
+    fi
+    v1=$(sed -n 's/^version=//p' "$doc"); h1=$(sed -n 's/^holder=//p' "$doc"); e1=$(sed -n 's/^expiresAt=//p' "$doc")
+    if [ "$h1" != "$myid" ]; then
+      printf '{"type":"result","subtype":"success","is_error":false,"result":"LEASE RELEASE-NOTHOLDER holder=%s expires=%s"}\n' "$h1" "$e1"; exit 0
+    fi
+    # another Mac moves the document between our read and our pinned write
+    [ "${STUB_RACE:-}" = pin ] && { printf 'version=%s\nholder=other-mac\nhostname=Other\nacquiredAt=%s\nexpiresAt=%s\n' "$(( v1 + 1 ))" "$now" "$e1" > "$doc"; }
+    vnow=$(sed -n 's/^version=//p' "$doc")
+    if [ "$v1" != "$vnow" ]; then
+      echo '{"type":"result","subtype":"success","is_error":false,"result":"LEASE RELEASE-RACE holder=- expires=-"}'; exit 0
+    fi
+    printf 'version=%s\nholder=%s\nhostname=%s\nacquiredAt=%s\nexpiresAt=%s\n' "$(( vnow + 1 ))" "$myid" "$myhost" "$now" "$now" > "$doc"
+    printf '{"type":"result","subtype":"success","is_error":false,"result":"LEASE RELEASED holder=%s expires=%s"}\n' "$myid" "$now"
+    exit 0 ;;
 esac
 # (b) a task run
 { printf 'INVOKE args=[%s] BASE_URL=%s AUTH=%s MODEL=%s ROUTE=%s PII_OK=%s\n' "$*" \
@@ -116,13 +184,14 @@ chmod +x "$BIN/claude"
 reset() { # fresh state, fresh lease document, fresh counters. `set -f` is on, so never glob "$DB"/*.
   rm -rf "$STATE" "$DB"; mkdir -p "$DB" "$STATE"; chmod 700 "$STATE"
   : > "$DB/invocations.lease"; : > "$DB/invocations.task"
-  STUB_LEASE=''; STUB_RACE=''; STUB_MODE=''; CACHETTL=''; TMO=8; TMOBIN=''
+  STUB_LEASE=''; STUB_RACE=''; STUB_MODE=''; CACHETTL=''; TMO=8; TMOBIN=''; TTL=''
   rm -f "$OCFG/free-ok-tasks.txt" "$OCFG/pii-tasks.txt"
 }
 set_doc() { printf 'version=%s\nholder=%s\nhostname=%s\nacquiredAt=%s\nexpiresAt=%s\n' "$1" "$2" "$2-host" "$3" "$4" > "$DB/taskLease"; }
 iso_in() { date -u -d "@$(( $(date +%s) + $1 ))" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -r $(( $(date +%s) + $1 )) +%Y-%m-%dT%H:%M:%SZ; }
 role() { if [ "$1" = none ]; then rm -f "$RCFG/role"; else printf '# this Mac claude-runner role\n%s\n' "$1" > "$RCFG/role"; chmod 644 "$RCFG/role"; fi; }
 myid()  { printf 'test-mac-one\n' > "$RCFG/id"; }
+myid2() { printf 'test-mac-two\n' > "$RCFG/id"; }   # a second machine, for the "writes only its own document" heartbeat check
 nleases() { wc -l < "$DB/invocations.lease" | tr -d ' '; }
 ntasks()  { wc -l < "$DB/invocations.task"  | tr -d ' '; }
 LOGF() { cat "$STATE/claude-auto.log" 2>/dev/null || true; }
@@ -131,13 +200,13 @@ route_mode() { if [ -r "$STATE/mode" ]; then tr -dc 'a-z-' < "$STATE/mode"; else
 
 # Everything the stub and the launcher read is EXPORTED: a word produced by expansion is not an assignment,
 # so the ${x:+VAR=val} form would be parsed as a command name. Empty means "the default" everywhere (`${x:-…}`).
-STUB_LEASE=''; STUB_RACE=''; STUB_MODE=''; CACHETTL=''; TMO=8; TMOBIN=''
+STUB_LEASE=''; STUB_RACE=''; STUB_MODE=''; CACHETTL=''; TMO=8; TMOBIN=''; TTL=''
 export DB HOME PATH STUB_LEASE STUB_RACE STUB_MODE
 export OMNIROUTE_CFG="$OCFG" CLAUDE_RUNNER_CFG="$RCFG"
 run() { # -> RC, OUT, ERR
   HOME="$FAKEHOME" PATH="$BIN:$PATH" \
   CLAUDE_RUNNER_LEASE_TIMEOUT="$TMO" CLAUDE_RUNNER_LEASE_CACHE_TTL="$CACHETTL" \
-  CLAUDE_RUNNER_LEASE_TIMEOUT_BIN="$TMOBIN" \
+  CLAUDE_RUNNER_LEASE_TIMEOUT_BIN="$TMOBIN" CLAUDE_RUNNER_LEASE_TTL="$TTL" \
   STUB_LEASE="$STUB_LEASE" STUB_RACE="$STUB_RACE" STUB_MODE="$STUB_MODE" \
   bash "$AUTO" "$@" >"$ROOT/out" 2>"$ROOT/err"; RC=$?
   OUT=$(cat "$ROOT/out"); ERR=$(cat "$ROOT/err")
@@ -427,6 +496,167 @@ eq   "E12 lease.env is 600"                              "$(stat -c '%a' "$STATE
 reset; myid; role primary
 run --task r10-automation-health -p hello
 hasnt "E13 no lease lock is left behind"                 "$(ls "$STATE")" "lease.lock"
+
+# ================================================================== F. peer role (R6, 2026-09-24)
+# "Legacy roles unchanged" is proved by sections B-E above passing UNMODIFIED against this same script —
+# every assertion in them still names primary/standby and still holds. This section is peer-only.
+sect "F. peer role — sticky leadership, no permanent primary"
+
+reset; myid; role peer; CACHETTL=1
+run --task r10-automation-health -p hello
+eq   "F1 peer, no document yet -> acquires and runs"     "$RC" "0"
+sleep 2; STUB_LEASE=fail
+run --task r10-automation-health -p hello
+eq   "F1 peer sticky fail-open: was HELD/ACQUIRED last check, not yet expired -> runs" "$RC" "0"
+has  "F1 log says PEER fails OPEN, sticky"               "$(LOGF)" "PEER fails OPEN (sticky"
+eq   "F1 the task ran both times"                        "$(ntasks)" "2"
+has  "F1 the cache still remembers the verdict (not blanked, unlike primary)" "$(cat "$STATE/lease.env")" "verdict=ACQUIRED"
+has  "F1 and the holder"                                 "$(cat "$STATE/lease.env")" "holder=test-mac-one"
+STUB_LEASE=''; CACHETTL=''
+
+reset; myid; role peer; STUB_LEASE=fail
+run --task r10-automation-health -p hello
+eq   "F2 peer with NO lease history + failing check -> defers (never assumes leadership)" "$RC" "75"
+has  "F2 log says PEER fails CLOSED"                     "$(LOGF)" "PEER fails CLOSED"
+eq   "F2 the task never ran"                             "$(ntasks)" "0"
+STUB_LEASE=''
+
+reset; myid; role peer; CACHETTL=1
+set_doc 7 mac-number-one "$(iso_in -60)" "$(iso_in 5000)"
+run --task r10-automation-health -p hello
+eq   "F3 peer sees a live foreign lease -> defers (conclusive, role never overrides it)" "$RC" "75"
+sleep 2; STUB_LEASE=fail
+run --task r10-automation-health -p hello
+eq   "F3 peer sticky fail-closed: last real check was FOREIGN, not us -> defers" "$RC" "75"
+has  "F3 log says PEER fails CLOSED"                     "$(LOGF)" "PEER fails CLOSED"
+eq   "F3 the task never ran"                             "$(ntasks)" "0"
+STUB_LEASE=''; CACHETTL=''
+
+reset; myid; role peer; TTL=2; CACHETTL=1
+run --task r10-automation-health -p hello
+eq   "F4 peer acquires with a short lease (test TTL)"    "$RC" "0"
+sleep 4
+STUB_LEASE=fail
+run --task r10-automation-health -p hello
+eq   "F4 sticky lapses once the remembered lease itself has expired -> defers" "$RC" "75"
+has  "F4 log says PEER fails CLOSED"                     "$(LOGF)" "PEER fails CLOSED"
+STUB_LEASE=''; CACHETTL=''; TTL=''
+
+reset; myid; role peer; STUB_RACE=pin; set_doc 4 test-mac-one "$(iso_in -600)" "$(iso_in 3000)"
+run --task r10-automation-health -p hello
+eq   "F5 peer, if_version race (pinned write refused) -> 75, same as legacy" "$RC" "75"
+has  "F5 verdict RACE"                                   "$(LOGF)" "RACE"
+STUB_RACE=''
+
+reset; myid; role primary; STUB_LEASE=fail
+run --task r10-automation-health -p hello
+eq   "F6 legacy PRIMARY unaffected by the peer addition: still fails OPEN" "$RC" "0"
+has  "F6 unchanged wording"                              "$(LOGF)" "PRIMARY fails OPEN"
+STUB_LEASE=''
+reset; myid; role standby; STUB_LEASE=fail
+run --task r10-automation-health -p hello
+eq   "F6 legacy STANDBY unaffected by the peer addition: still fails CLOSED" "$RC" "75"
+has  "F6 unchanged wording"                              "$(LOGF)" "STANDBY fails CLOSED"
+STUB_LEASE=''
+
+# ================================================================== G. explicit control — take / release
+sect "G. --take-lease / --release-lease — explicit control from either Mac"
+
+reset; myid; role peer
+run --take-lease
+eq   "G1 take-lease with no prior document -> exits 0"   "$RC" "0"
+has  "G1 prints one clear line"                          "$OUT" "TOOK the lease"
+eq   "G1 the document now names this Mac"                "$(sed -n 's/^holder=//p' "$DB/taskLease")" "test-mac-one"
+
+reset; myid; role peer; set_doc 9 mac-number-one "$(iso_in -60)" "$(iso_in 5000)"
+run --take-lease
+eq   "G2 take-lease overrides even a LIVE foreign lease — no if_version" "$RC" "0"
+eq   "G2 holder is now this Mac"                         "$(sed -n 's/^holder=//p' "$DB/taskLease")" "test-mac-one"
+eq   "G2 version bumped (unconditional write)"           "$(sed -n 's/^version=//p' "$DB/taskLease")" "10"
+
+reset; myid; role peer
+run --task r10-automation-health -p hello
+if [ -f "$STATE/lease.env" ]; then pass "G3 setup: decision cache exists before take-lease"
+else fail "G3 setup" "no lease.env"; fi
+run --take-lease
+hasnt "G3 take-lease busts the local decision cache"     "$(ls "$STATE" 2>/dev/null)" "lease.env"
+
+reset; myid; role peer
+run --take-lease
+run --release-lease
+eq   "G4 release-lease when holding it -> exits 0"       "$RC" "0"
+has  "G4 prints one clear line"                          "$OUT" "RELEASED the lease"
+eq   "G4 expiresAt now equals acquiredAt — handed back immediately" \
+     "$(sed -n 's/^expiresAt=//p' "$DB/taskLease")" "$(sed -n 's/^acquiredAt=//p' "$DB/taskLease")"
+
+reset; myid; role peer; set_doc 3 mac-number-one "$(iso_in -60)" "$(iso_in 5000)"
+run --release-lease
+eq   "G5 release-lease when ANOTHER Mac holds it -> exits 1, refuses" "$RC" "1"
+has  "G5 says why"                                       "$ERR" "does not hold the lease"
+eq   "G5 nothing changed (still version 3)"              "$(sed -n 's/^version=//p' "$DB/taskLease")" "3"
+
+reset; myid; role peer
+run --release-lease
+eq   "G6 release-lease with no document at all -> exits 0, no-op" "$RC" "0"
+has  "G6 says so"                                        "$OUT" "nothing to release"
+
+reset; myid; role peer
+run --take-lease
+STUB_RACE=pin
+run --release-lease
+eq   "G7 release-lease raced by another Mac's write -> exits 1" "$RC" "1"
+has  "G7 says so"                                        "$ERR" "changed underneath"
+STUB_RACE=''
+
+reset; myid; role peer
+run --take-lease
+run --task r10-automation-health -p hello
+run --release-lease
+hasnt "G8 release-lease busts the local decision cache too" "$(ls "$STATE" 2>/dev/null)" "lease.env"
+
+reset; myid; role standby
+run --take-lease
+eq   "G9 explicit control is role-independent: take-lease works from legacy standby too" "$RC" "0"
+
+# ================================================================== H. the per-Mac heartbeat
+sect "H. per-Mac heartbeat — written best-effort in the same turn as a conclusive check"
+
+reset; myid; role peer
+run --task r10-automation-health -p hello
+if [ -f "$DB/macHeartbeat.test-mac-one" ]; then pass "H1 heartbeat document written for this machine"
+else fail "H1 heartbeat document written for this machine" "no $DB/macHeartbeat.test-mac-one"; fi
+hbjson=$(cat "$DB/macHeartbeat.test-mac-one" 2>/dev/null)
+has  "H1 carries this machine's id"                      "$hbjson" '"machineId":"test-mac-one"'
+has  "H1 carries the role"                               "$hbjson" '"role":"peer"'
+has  "H1 carries the verdict"                             "$hbjson" '"verdict":"ACQUIRED"'
+has  "H1 carries a claudeAutoVersion"                     "$hbjson" '"claudeAutoVersion"'
+has  "H1 taskLease's own shape is untouched — still {v:{holder,hostname,acquiredAt,expiresAt}}" \
+     "$(cat "$DB/taskLease")" "holder="
+has  "H1 unknown runner/repo fields are JSON null, never guessed" "$hbjson" '"tasks":null'
+has  "H1 and repo fields too (no CLAUDE_RUNNER_REPO_DIR set)"     "$hbjson" '"branch":null'
+
+reset; myid; role primary; STUB_LEASE=fail
+run --task r10-automation-health -p hello
+if [ -f "$DB/macHeartbeat.test-mac-one" ]; then fail "H2 no heartbeat on an inconclusive check" "one was written anyway"
+else pass "H2 no heartbeat on an inconclusive check (best-effort fires only on a conclusive one)"; fi
+eq  "H2 the task still ran regardless — the heartbeat never gates anything" "$(ntasks)" "1"
+STUB_LEASE=''
+
+reset; myid; role standby; set_doc 7 mac-number-one "$(iso_in -60)" "$(iso_in 5000)"
+run --task r10-automation-health -p hello
+has  "H3 heartbeat written even when the verdict is FOREIGN (still conclusive)" \
+     "$(cat "$DB/macHeartbeat.test-mac-one" 2>/dev/null)" '"verdict":"FOREIGN"'
+
+reset; myid; role peer
+run --task r10-automation-health -p hello            # test-mac-one acquires; live lease now exists in $DB (the shared cloud store)
+rm -rf "$STATE"; mkdir -p "$STATE"; chmod 700 "$STATE"   # switch to "the other Mac": its OWN local cache, same shared $DB
+myid2; role peer
+run --task r10-automation-health -p hello            # test-mac-two sees it live -> FOREIGN
+has  "H4 mac-one's heartbeat still names mac-one (each Mac writes only its own doc)" \
+     "$(cat "$DB/macHeartbeat.test-mac-one" 2>/dev/null)" '"machineId":"test-mac-one"'
+has  "H4 mac-two's heartbeat names mac-two"           "$(cat "$DB/macHeartbeat.test-mac-two" 2>/dev/null)" '"machineId":"test-mac-two"'
+has  "H4 mac-two's heartbeat reports the FOREIGN verdict it actually saw" \
+     "$(cat "$DB/macHeartbeat.test-mac-two" 2>/dev/null)" '"verdict":"FOREIGN"'
 
 # ================================================================== summary
 printf '\n------------------------------------------------------------\n'

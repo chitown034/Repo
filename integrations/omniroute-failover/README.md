@@ -11,6 +11,13 @@ lease* below. It moves `REMOTE-ACCESS.md`'s 59-prompt LEASE CHECK into this one 
 script becomes the whole of what makes a second Mac safe. It is an **additional** gate in front of the PII
 gate and changes nothing about it.
 
+**Extended 2026-09-24 by R6** for Steven's *"ensure both of my MacBooks can access the same information and
+equally have control"*: a symmetric `peer` role with **sticky leadership** (no permanent primary), explicit
+`--take-lease`/`--release-lease` control from either Mac, and a per-Mac heartbeat document — see *The task
+lease* below. `primary`/`standby` keep working exactly as before, as legacy values; a live foreign lease still
+defers on every role, unchanged. The "same information" half of the ask is a new tool,
+`integrations/mac-sync/mac-sync.sh`, documented on its own.
+
 **Hardened 2026-09-22 by H3 (Security Engineer)** after the verification pass (`docs/findings/findings-V2.json`
 F-V2-07..18) executed the first draft and proved its PII gate failed open. Every change below is sandbox-tested
 against a stub `claude`; the exact before/after runs are in `docs/findings/findings-H3.json`.
@@ -21,15 +28,16 @@ runs out and then switches back to subscription model when subscription refreshe
 ## Files
 | File | Role |
 |---|---|
-| `claude-auto.sh` | Launcher. Decides the route per invocation, publishes the mode, gates client-data work — **closed by default** — and holds the **PRIMARY/STANDBY task lease** (below). Drop-in for `claude`: `claude-auto [--task NAME] [--pii\|--no-pii] [--force …] [--lease\|--no-lease\|--lease-check] [--] <claude args>`; the options are recognised in any position before `--` |
-| `lease-tests.sh` | The executed test harness for the lease gate, plus a regression pass over the PII gate and the limit detection. Drives `claude-auto.sh` against a stub `claude` that implements the five lease steps against a fake document, `if_version` pin included. `./lease-tests.sh` — 102 assertions, no Mac, no login, no network |
+| `claude-auto.sh` | Launcher. Decides the route per invocation, publishes the mode, gates client-data work — **closed by default** — and holds the **task lease** (below): `peer` by default, `primary`/`standby` kept as legacy roles. Drop-in for `claude`: `claude-auto [--task NAME] [--pii\|--no-pii] [--force …] [--lease\|--no-lease\|--lease-check\|--take-lease\|--release-lease] [--] <claude args>`; the options are recognised in any position before `--` |
+| `lease-tests.sh` | The executed test harness for the lease gate, plus a regression pass over the PII gate and the limit detection. Drives `claude-auto.sh` against a stub `claude` that implements the five lease steps (plus the step-6 heartbeat, and the take/release protocols) against a fake document, `if_version` pin included. `./lease-tests.sh` — 158 assertions, no Mac, no login, no network |
 | `probe.sh` | Every 15 min: if the route is not `subscription`, probes the subscription with one 1-turn, no-tool call and restores it. Four inconclusive probes in a row → `state/NEEDS-STEVEN` + fall back to plain `claude` |
 | `~/.config/omniroute/.env` | On the Mac only, `chmod 600`. Holds `OMNIROUTE_API_KEY` (the key OmniRoute's dashboard issues for its own loopback endpoint). **Never a provider key, never committed** |
 | `~/.config/omniroute/free-ok-tasks.txt` | Optional. Task-name glob patterns **permitted on a free provider**, one per line, `#` comments. Adds to `DEFAULT_FREE_OK_TASKS` in the launcher. A name goes in here only with the security steward's sign-off |
 | `~/.config/omniroute/pii-tasks.txt` | Optional. Client-data glob patterns, one per line. Adds to `DEFAULT_PII_TASKS`. A match here wins over the allow-list and over `--no-pii` |
-| `~/.config/claude-runner/role` | **One word: `primary` or `standby`.** Absent or unreadable = `standby`. This is the entire per-machine configuration the second Mac needs |
+| `~/.config/claude-runner/role` | **One word: `peer` (both of Steven's Macs, R6 2026-09-24), or the legacy `primary`/`standby`.** Absent or unreadable = `standby`. This is the entire per-machine configuration a Mac needs |
 | `~/.config/claude-runner/id` | Optional. A short stable lease id for this machine; absent, it is derived from the computer name |
-| `~/.config/omniroute/state/` (mode 700) | `mode` (one word), `route.env` (parsed, never sourced), `claude-auto.log`, `probe.log`, `limit-samples.log` (exit status + hash per detected limit, never task output), `probe-failures` (consecutive inconclusive probes), `NEEDS-STEVEN` (escalation marker — its presence is a `NEED` in `mac-verify.sh`), `lease.env` (the cached lease decision, parsed never sourced), `lease.lock` (transient) |
+| `CLAUDE_RUNNER_REPO_DIR` (optional env var) | This Mac's brain-repo checkout path, for the heartbeat's `repo.*` fields only (below). The installed launcher has no other way to know it — a plain clone, or symlinked into the vault (`MAC-INSTALL.md` §0) |
+| `~/.config/omniroute/state/` (mode 700) | `mode` (one word), `route.env` (parsed, never sourced), `claude-auto.log`, `probe.log`, `limit-samples.log` (exit status + hash per detected limit, never task output), `probe-failures` (consecutive inconclusive probes), `NEEDS-STEVEN` (escalation marker — its presence is a `NEED` in `mac-verify.sh`), `lease.env` (the cached lease decision, parsed never sourced — carries the verdict/holder/expires **forward** across a run of inconclusive checks on `peer`, unlike `primary`/`standby`), `lease.lock` (transient) |
 
 ## How it works
 ```
@@ -131,7 +139,7 @@ Two layers, on purpose: this launcher-level gate, plus the existing client-data 
 and which the canary below tests. The launcher sees task names, not prompt text: an allow-listed task whose
 prompt drags in a client file is the hook's job. Neither replaces the HALT list in `CLAUDE.md`.
 
-## The task lease — one writer across two Macs (P7, 2026-09-22)
+## The task lease — one writer across two Macs (P7, 2026-09-22; peer role R6, 2026-09-24)
 
 Two Macs running the same 59 `claude-runner` tasks double-write the same artifact documents: duplicate
 `ciLog` rows, `isaLine` messages sent twice, churn on `sectionEdits`. `REMOTE-ACCESS.md` specifies the cure
@@ -149,7 +157,7 @@ documented in `REMOTE-ACCESS.md` as the fallback for any writer that does **not*
 ### What it reads and writes
 | Thing | Where | Notes |
 |---|---|---|
-| Role | `~/.config/claude-runner/role` | First non-comment line, case-insensitive: `primary` or `standby`. **Absent, unreadable, not owned by this user, group/world-writable, or holding anything else → `standby`** — the safe direction for a freshly imaged Mac. `# comments` and blank lines are allowed |
+| Role | `~/.config/claude-runner/role` | First non-comment line, case-insensitive: `peer` (what both of Steven's Macs run), or the legacy `primary`/`standby`. **Absent, unreadable, not owned by this user, group/world-writable, or holding anything else → `standby`** — the safe direction for a freshly imaged Mac. `# comments` and blank lines are allowed |
 | Holder id | `~/.config/claude-runner/id` (optional) | A short stable id per machine. Absent → derived from `scutil --get ComputerName`, else `hostname`, lower-cased and reduced to `[a-z0-9._-]`, 40 chars. **Two Macs with the same id defeats the mechanism** — `SECOND-MAC-SETUP.md` §11 checks the names differ |
 | Lease | `state/taskLease` on artifact `1624daae-d683-405a-971d-c5828dce0f8d` | `{v:{holder, hostname, acquiredAt, expiresAt}}`, TTL **90 min**. Shape fixed by `REMOTE-ACCESS.md`; Steven's promotion command writes the same document. **The document does not exist yet** (re-read from the store 2026-09-22) — the first real run on a Mac creates it |
 | Decision cache | `~/.config/omniroute/state/lease.env` (mode 600) | `decision= verdict= role= checked_at= expires_iso= holder= fails=`. Parsed with `sed` and validated, **never sourced**; a file that is not plain, owner-only and owned by this user is discarded, not trusted (same rule as `route.env`, F-V2-18) |
@@ -172,12 +180,12 @@ verdicts, a `HELD` that names a different machine, a non-zero exit, a timeout) i
 The role decides exactly one thing: **what to do when the check itself cannot complete.** It never overrides
 a conclusive answer.
 
-| | PRIMARY | STANDBY (and unset/unreadable) |
-|---|---|---|
-| `HELD` / `ACQUIRED` | run | run — it is the writer now |
-| `FOREIGN` (a live lease someone else holds) | **exit 75** | **exit 75** |
-| `RACE` (the pinned write was refused, or the step-4 re-read shows another holder) | **exit 75**, nothing written | **exit 75**, nothing written |
-| check inconclusive — network down, `claude` not logged in, a timeout | **runs the task. FAILS OPEN.** | **exit 75. FAILS CLOSED.** |
+| | PRIMARY | STANDBY (and unset/unreadable) | PEER |
+|---|---|---|---|
+| `HELD` / `ACQUIRED` | run | run — it is the writer now | run — it is the writer now |
+| `FOREIGN` (a live lease someone else holds) | **exit 75** | **exit 75** | **exit 75** |
+| `RACE` (the pinned write was refused, or the step-4 re-read shows another holder) | **exit 75**, nothing written | **exit 75**, nothing written | **exit 75**, nothing written |
+| check inconclusive — network down, `claude` not logged in, a timeout | **runs the task. FAILS OPEN.** | **exit 75. FAILS CLOSED.** | **sticky — see below** |
 
 **Why open on the primary:** a blip must never silently stop all of Steven's automation. The lease has a
 90-minute TTL precisely so the machine that holds it can work through one. The cost of being wrong is a
@@ -185,7 +193,73 @@ double-write window; the cost of being right-but-down is every feed going stale,
 on one sleeping laptop in the first place.
 **Why closed on the standby:** a standby that cannot *prove* it should take over and guesses is exactly the
 double-write this exists to prevent. A "primary" row that ignored a live foreign lease would make the whole
-mechanism pointless, which is why `FOREIGN` defers on both roles.
+mechanism pointless, which is why `FOREIGN` defers on **every** role, peer included.
+
+### Peer — sticky leadership, no permanent primary (R6, 2026-09-24)
+`peer` is symmetric: both Macs run it, and there is no machine that is structurally "more allowed" to work
+than the other. What decides who runs, moment to moment, is the lease document itself — whichever Mac's last
+conclusive check said `HELD`/`ACQUIRED` for it. The only place role still matters is the inconclusive case,
+and there it is **sticky, not open-by-default and not closed-by-default**:
+
+> A peer fails OPEN on an inconclusive check only if **this same Mac** was the conclusive holder (`HELD` or
+> `ACQUIRED`, naming this machine) at **its own last real check**, and the `expiresAt` from that check has
+> **not yet passed**. Otherwise it fails CLOSED — same as standby.
+
+That memory lives in the decision cache (`state/lease.env`) and, for `peer` only, is **carried forward rather
+than blanked** across a run of inconclusive checks — a string of blips does not erase who was holding the
+lease, but the memory still lapses on its own the moment the remembered `expiresAt` passes, without needing a
+new check to notice. `primary`/`standby` are unaffected: their inconclusive writes still blank `holder`/
+`expires` exactly as before this addition, because their answer never depended on those fields.
+
+The practical effect: whichever Mac is currently the writer keeps working through a blip on *that* Mac, for
+up to the lease's own 90-minute TTL, exactly like a primary would — but the *other* Mac, which was never the
+holder, still fails closed on a blip of its own, exactly like a standby would. Leadership follows the lease,
+not a file Steven has to remember to flip back. There is deliberately no "peer that is always allowed to run
+no matter what" — that would just be primary wearing a different name.
+
+### Explicit control — `--take-lease` / `--release-lease` (R6, 2026-09-24)
+Either Mac, any time, no waiting on a check:
+- **`claude-auto --take-lease`** — an immediate, unconditional takeover. Writes `state/taskLease` with **no**
+  `if_version` (whatever is there, however live, is overwritten), reads it back to confirm the holder is now
+  this machine, and busts this Mac's local decision cache so the very next task re-checks for real instead of
+  serving a stale cached defer. One `claude -p` turn. Prints exactly one line:
+  `claude-auto: TOOK the lease — holder=… expires=…`.
+- **`claude-auto --release-lease`** — hand back now. Reads the document; if this Mac is **not** the current
+  holder it refuses and changes nothing (`cannot release — this Mac does not hold the lease`); otherwise it
+  sets `expiresAt` to *now*, pinned with `if_version`, and busts the cache the same way. One `claude -p` turn.
+  Prints exactly one line: `claude-auto: RELEASED the lease — it is free as of …`.
+
+This replaces hand-pasting the "Promote the standby" prompt from `REMOTE-ACCESS.md` for a `peer` Mac — that
+prompt still works (it is the same unconditional-write shape `--take-lease` now automates), and is still the
+right tool for a writer that does not go through `claude-auto` at all.
+
+### The per-Mac heartbeat (R6, 2026-09-24)
+Every **conclusive** lease check (`HELD`/`ACQUIRED`/`FOREIGN`/`RACE`) also writes this Mac's own
+`state/macHeartbeat.<machineId>` document, in the **same** `claude -p` turn as the check itself — step 6 of
+the prompt in *How the check runs* above, after the model has already decided its one-line answer. It is
+strictly best effort: the instruction tells the model to ignore any error from that call and never let it
+change the line it was already going to print, so a failed heartbeat write can never turn a `run` into a
+`defer` or vice versa. A check that is itself inconclusive writes no heartbeat at all — there is no turn to
+attach it to.
+
+Shape, fixed for the deck engineer to build against (times ISO-8601 Z; a value this Mac cannot determine is
+JSON `null`, never guessed):
+```json
+{"v":{"machineId":"…","hostname":"…","role":"…","checkedAt":"…","verdict":"…","leaseHolder":"…",
+      "leaseExpiresAt":"…","claudeAutoVersion":"…",
+      "runner":{"tasks":…,"scheduleEnabled":null},
+      "repo":{"branch":…,"head":…,"behind":…,"ahead":…,"checkedAt":"…"}}}
+```
+`machineId`/`hostname`/`role`/`checkedAt`/`verdict`/`leaseHolder`/`leaseExpiresAt`/`claudeAutoVersion` are
+filled by the shell before the turn starts — cheap, and no LLM guesswork involved. `runner.tasks` is a count
+from `runnerctl list`, present only when `runnerctl` is on this Mac's `PATH`. `runner.scheduleEnabled` is
+always `null` from this launcher: no documented signal exists to tell "paused" from "running" short of parsing
+`runnerctl status` prose, which this file declines to guess at (`mac-sync.sh status`, below, is where a human
+glance at that belongs instead). `repo.*` is populated only when `CLAUDE_RUNNER_REPO_DIR` is set to a real
+checkout — the installed launcher (`~/.local/bin/claude-auto`) otherwise has no way to know where Steven put
+his clone, since `MAC-INSTALL.md` §0 deliberately allows either a plain clone or a vault symlink. `taskLease`
+itself is untouched: still exactly `{v:{holder, hostname, acquiredAt, expiresAt}}`, never seeded or reshaped
+by this. **A Mac writes only its own heartbeat document** — the id in the path is this machine's, always.
 
 ### Precedence against the existing gates
 ```
@@ -219,11 +293,12 @@ The decision is therefore cached for `LEASE_CACHE_TTL`, **1800 s (30 minutes)**,
 `1440 / 30 = 48 a day` however many tasks fire — measured at exactly `ceil(elapsed / TTL)` on a compressed
 clock, independent of invocation count. 30 minutes also gives **three renewals inside every 90-minute lease**,
 so a primary survives two missed windows before its lease can lapse.
-The cache is invalidated early, never late, by three rules:
-- **the role file changed** — flipping `primary`↔`standby` takes effect on the very next task, at no cost;
+The cache is invalidated early, never late, by four rules:
+- **the role file changed** — flipping `primary`↔`standby`↔`peer` takes effect on the very next task, at no cost;
 - **a cached `FOREIGN` never outlives the lease it saw** — the moment that lease's `expiresAt` passes, the
-  standby re-checks and takes over rather than waiting the cache out;
-- **an untrusted `lease.env`** is discarded.
+  standby (or a non-holding peer) re-checks and takes over rather than waiting the cache out;
+- **an untrusted `lease.env`** is discarded;
+- **`--take-lease` and `--release-lease` bust the cache explicitly**, on top of the writes they make.
 An *inconclusive* check backs off 5 → 10 → 20 → 30 min (`fails=` in the cache) so a sustained outage cannot
 turn into hundreds of retried checks, while a single blip recovers within five minutes.
 
@@ -236,27 +311,39 @@ invocation anyway; `--no-lease` skips the gate and is logged as a `WARN` with th
 for a deliberate one-off or recovery, **never in a task definition**.
 
 ### Diagnostics and knobs
-`claude-auto --status` adds `lease_role=`, `lease_role_src=`, `lease_id=` and the cached decision with its
-age. It spends nothing and takes no lease. `claude-auto --lease-check` forces one real check, prints
-`verdict=… holder=… expires=… decision=…`, exits **0** when conclusive and **1** when not — and when it is
-inconclusive it says what a task on this role *would* do and which tool name to check. Run it on each Mac
-before enabling the runner. Environment overrides, none of them required:
+`claude-auto --status` adds `lease_role=`, `lease_role_src=`, `lease_id=`, `claude_auto_version=` and the
+cached decision with its age. It spends nothing and takes no lease. `claude-auto --lease-check` forces one
+real check, prints `verdict=… holder=… expires=… decision=…`, exits **0** when conclusive and **1** when not —
+and when it is inconclusive it says what a task on this role *would* do (for `peer`, the same sticky rule
+above, evaluated against the cache as it stood just before the forced check). Run it on each Mac before
+enabling the runner. Environment overrides, none of them required:
 `CLAUDE_RUNNER_CFG`, `CLAUDE_RUNNER_LEASE_ARTIFACT`, `CLAUDE_RUNNER_LEASE_TTL` (fixed at 90 min by spec),
 `CLAUDE_RUNNER_LEASE_CACHE_TTL`, `CLAUDE_RUNNER_LEASE_FAIL_TTL`, `CLAUDE_RUNNER_LEASE_TIMEOUT`,
-`CLAUDE_RUNNER_LEASE_MODEL`, `CLAUDE_RUNNER_LEASE_TOOLS`, `CLAUDE_RUNNER_LEASE_TIMEOUT_BIN`.
+`CLAUDE_RUNNER_LEASE_MODEL`, `CLAUDE_RUNNER_LEASE_TOOLS`, `CLAUDE_RUNNER_LEASE_TIMEOUT_BIN`,
+`CLAUDE_RUNNER_REPO_DIR` (heartbeat `repo.*` only), `CLAUDE_AUTO_VERSION_OVERRIDE`.
 
-### Lease canary (run on the Mac, with the probe LaunchAgent loaded or not — it does not matter here)
-1. `claude-auto --status` → `lease_role=` is what you expect on *this* machine, `lease_cached=none`.
-2. `claude-auto --lease-check` on **Mac #1** → `verdict=ACQUIRED decision=run`. This is the run that
-   **creates** `state/taskLease`; it must be a Mac that does it, never the cloud.
-3. `claude-auto --lease-check` on **Mac #2** → `verdict=FOREIGN holder=<Mac #1>`, exit 0.
-4. Mac #2: `claude-auto --task r10-automation-health -p 'say hi'` → **exit 75**, stderr
-   `standby: lease held by <Mac #1's id>`, and nothing written.
-5. Mac #2: `claude-auto -p 'say hi'` (no `--task`) → **runs**. Vanessa Live is not lease-gated.
-6. Mac #1: run any two tasks back to back → the second logs `cached HELD`, and `state/lease.env` shows one
-   `checked_at`. If it says `ACQUIRED` twice, the cache is not being written — check `state/` is mode 700.
-7. Promote Mac #2 with the one command in `REMOTE-ACCESS.md`, then flip **both** role files. Mac #2's next
-   task runs; Mac #1's next task exits 75. Hand back by doing the same in reverse.
+### Lease canary — peer (the shape both of Steven's Macs actually run, R6 2026-09-24)
+1. Both Macs: `~/.config/claude-runner/role` says `peer` (the installer writes this on a fresh Mac — see
+   `MAC-SETUP.sh`). `claude-auto --status` on each → `lease_role=peer`, `lease_cached=none` before the first check.
+2. **Mac A**: `claude-auto --lease-check` → `verdict=ACQUIRED decision=run`. This is the run that **creates**
+   `state/taskLease`; it must be a Mac that does it, never the cloud.
+3. **Mac B**: `claude-auto --lease-check` → `verdict=FOREIGN holder=<Mac A's id>`, exit 0.
+4. **Mac B**: `claude-auto --task r10-automation-health -p 'say hi'` → **exit 75**, stderr
+   `standby: lease held by <Mac A's id>`, and nothing written — `peer` behaves exactly like a standby whenever
+   the answer is conclusive.
+5. **Mac B**: `claude-auto -p 'say hi'` (no `--task`) → **runs**. Vanessa Live is not lease-gated on any role.
+6. **Mac B**: `claude-auto --take-lease` → `TOOK the lease`, prints the new holder/expires. **Mac A**'s next
+   `--task` run now exits 75; **Mac B**'s next `--task` run now runs. No role file was touched — the lease
+   itself moved.
+7. **Mac B**: `claude-auto --release-lease` → `RELEASED the lease`. **Mac A**'s next `--lease-check` now sees
+   `ACQUIRED` again (the document is free) rather than a foreign holder.
+8. Read each Mac's `macHeartbeat.<its id>` document from the store (`mac-sync.sh status` gives a one-screen
+   version of the same read) and confirm both are recent, and each names the right `machineId`.
+9. Both Macs: `mac-sync.sh status` and `mac-sync.sh diff` — see `integrations/mac-sync/README.md`.
+
+**Legacy canary (unchanged, primary/standby):** the same shape still works with `primary`/`standby` in place
+of `peer` and the one-command promotion in `REMOTE-ACCESS.md` in place of `--take-lease` — proved by
+`lease-tests.sh` sections B-E, which run unmodified against the current script and still pass.
 
 ## State-file hygiene
 `state/` is created mode 700 and every file in it 600 (`umask 077`). `route.env` is a data file: the six
