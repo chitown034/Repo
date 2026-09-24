@@ -233,3 +233,28 @@ outbound goes to his own note-to-self thread, and WhatsApp's automated-messaging
 unsolicited outbound to other people.
 
 - **Owner.** Steven. **Status.** Active, spec written 2026-09-23, nothing installed or run.
+
+## 2026-09-24 — CRM roles restated; Follow Up Boss removed from everything; GoHighLevel added
+
+**Decision (Steven, 2026-09-24).** *"Lofty CRM replaced it as my primary CRM for real estate. Zoho is
+my primary CRM for mortgages."* — and remove Follow Up Boss "from all routines, and everything". Also:
+connect GoHighLevel.
+
+| System | Role | State at 2026-09-24 |
+|---|---|---|
+| **Lofty** | Primary CRM, **real estate** (since 2026-09-22) | Not connected. No Composio toolkit exists for it; the path is `LOFTY_API_KEY` in `~/.config/lofty/.env` on the Mac (runbook B3). |
+| **Zoho CRM** (+ Arive) | Primary CRM, **mortgage** | Composio connection ACTIVE, but every CRM call still returns **403 NO_PERMISSION** (re-tested 2026-09-24). Steven reports having an API key; the key is not the blocker — the profile's "Zoho CRM API Access" permission is, and it refuses every key and token for that user until switched on (runbook B2). |
+| **GoHighLevel** | Role **not yet stated** | Composio `highlevel` connection initiated 2026-09-24 (`highlevel_lairy-apios`), waiting on Steven's sign-in. Read-only use only until he says what it is for and approves any write verb. |
+| **Follow Up Boss** | **Retired** 2026-09-22 | Composio connection **removed** 2026-09-24. Account and data untouched on its side. |
+
+**Never blended.** Real-estate figures come from Lofty and mortgage figures from Zoho; a number from
+one is never reported under the other's label, and a number from the retired CRM is never carried
+forward under either.
+
+**What "everything" was taken to mean** — every place the old CRM is *configuration* (a routine prompt,
+a connection, a role description, a system-of-record entry), not every place it is *history*. Chat logs,
+dated measurements and dated audit records say what was true at the time; rewriting them would falsify
+the record of the change. The full split, and the three web-UI routine edits only Steven can make, are in
+`routines/fub-removal-2026-09-24.md`.
+
+- **Owner.** Steven. **Status.** Active.

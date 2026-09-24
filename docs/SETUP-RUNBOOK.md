@@ -156,10 +156,16 @@ reports STANDBY and declines. If **both** say STANDBY, Mac #1 was never promoted
 Composio disclosed an incident on 2026-05-21. Re-authorising Zoho onto un-rotated credentials would
 hand the new permission to the old grant.
 - **Rotate** the Composio credentials and re-authorise.
-- **Delete** the retired real-estate CRM connection (still ACTIVE with a rejected key) and revoke its
-  key.
+- ~~Delete the retired real-estate CRM connection~~ — **done 2026-09-24**: removed from Composio at
+  your instruction. Still yours: revoke its API key on the Follow Up Boss side, if the account still
+  exists.
 
 ### B2. Zoho CRM — one checkbox (5 min) · account change, yours only
+> **You have an API key — good, but it is not what's blocking Zoho.** Re-tested 2026-09-24: still
+> **403 `NO_PERMISSION`**. That refusal comes from a permission on your Zoho *user profile*, and it
+> rejects every key and token for that user until the switch below is on. Flip the switch first; a key
+> only matters after that.
+
 Every Zoho call has returned **HTTP 403 `NO_PERMISSION` / `Crm_Implied_Api_Access`** for a week, so
 the mortgage board has been showing the 2026-09-14 paste the whole time. No credential fixes this.
 ```
@@ -217,6 +223,18 @@ are yours:
 Until both are done, read any "reconnect Follow Up Boss" line in a brief as *"the watchdog's prompt
 still points at the retired CRM"* — never as an instruction to reconnect it. Twenty-four live store
 documents still name the old CRM; most are chat history and should stay, which is decision I5.
+
+### B5. GoHighLevel — sign in, and say what it is for (5 min)
+Composio has a GoHighLevel toolkit, and a connection was opened for you on 2026-09-24
+(`highlevel_lairy-apios`). Sign in through the link I gave you in chat; a Composio sign-in link
+expires after ten minutes, so if it has, ask for a fresh one — it takes one call.
+
+Then **say what GoHighLevel is for.** Lofty is real estate and Zoho is mortgage, never blended; GHL has
+no stated role yet, so nothing reads from it until it has one, and nothing writes to it — no SMS, no
+campaigns, no contact edits — until you approve that verb in writing. Its consent screen may ask for
+broad scopes; the connection's scopes are not the safety model, the task rules are.
+
+---
 
 ## C — Finish WhatsApp
 
@@ -734,7 +752,12 @@ real ask is smaller than item 2 made it sound.
 - **Google Drive.** Never wired: no connector, no key, no row — while two Mac tasks claim to read a
   Drive "Second Brain" folder and the fabric tile counts it at 0 files. That zero is a false green,
   not an empty folder. Wire it read-only (`integrations/google-drive-brain.md`) or drop the line.
-- **Re-enable the cloud ISA bridge and the Steve twin.** Both were disabled on a belief disproved by
+- **Re-enable the cloud ISA bridge and the Steve twin — but edit the twin first.** Its prompt still
+  calls the retired CRM your real-estate system and reads it through Composio. Three exact
+  find-and-replace lines are in `routines/fub-removal-2026-09-24.md` §3; make them, then enable.
+  Same file, §1 and §2: two more web-UI routines (the Friday ops review, the weekly loop) need a
+  one-line edit each.
+- *(original entry)* **Re-enable the cloud ISA bridge and the Steve twin.** Both were disabled on a belief disproved by
   measurement on 2026-09-22. `trig_01VpcvVPTrbdfvdbXn1mD7hB` (bridge) and
   `trig_0174717mnSfAk1LtQQVJhH7r` (twin). **Both just need enabling — neither needs recreating.**
   Read live on 2026-09-23: the bridge is `http_api` with **11 connectors**, the twin is `http_api`
