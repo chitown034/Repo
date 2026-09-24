@@ -306,20 +306,23 @@ if have claude; then
   else info "  cli-anything plugin" "not installed — MAC-SETUP.sh --only cli-anything installs it non-interactively"; fi
 fi
 
-# --------------------------------------------------------------------------- the eight repo harnesses
-# P1, 2026-09-22. Nothing checked these until now. For each of the eight: is it there, does --help exit 0,
-# and does the help name an `act` verb?
+# --------------------------------------------------------------------------- the nine repo harnesses
+# P1, 2026-09-22; publicfeeds added R6, 2026-09-24. For each of the nine: is it there, does --help
+# exit 0, and does the help name an `act` verb?
 #
-# WORD match, never substring. Measured 2026-09-22 against all eight real --help outputs: `grep -q act`
-# matches "interactive" in all seven site harnesses, plus "action" in skyslope/zipforms and
-# "redact"/"redacted" in lofty/zoho — it would report a write surface on seven harnesses that have
-# none. (Recipe names like showingtime's my-listing-activity are the same trap one level down.)
-# `grep -qw act` is the check; it matches none of those and does match a real `act` command group.
+# WORD match, never substring. Measured 2026-09-22 against all eight real --help outputs (and
+# 2026-09-24 against publicfeeds's): `grep -q act` matches "interactive" in the site harnesses, plus
+# "action" in skyslope/zipforms and "redact"/"redacted" in lofty/zoho — it would report a write
+# surface on harnesses that have none. (Recipe names like showingtime's my-listing-activity are the
+# same trap one level down; publicfeeds's own CLI docstring tripped on the bare word "act" until it
+# was reworded — F-R6-01.) `grep -qw act` is the check; it matches none of those and does match a
+# real `act` command group.
 #
-# The seven SITE harnesses must have no act verb: that is the read-only guarantee, so act there is a FAIL.
-# The browser ENGINE genuinely ships `act click` / `act type` — that is DOMShell's write surface and the
-# reason the engine exists. It is reported by name every run rather than passed silently or failed forever.
-sect "cli-anything harnesses (eight — browser engine + seven read-only site CLIs)"
+# The eight SITE harnesses must have no act verb: that is the read-only guarantee, so act there is a
+# FAIL. The browser ENGINE genuinely ships `act click` / `act type` — that is DOMShell's write surface
+# and the reason the engine exists. It is reported by name every run rather than passed silently or
+# failed forever.
+sect "cli-anything harnesses (nine — browser engine + eight read-only site CLIs)"
 CAH_VENV="$HOME/Applications/cli-anything-harnesses/.venv"
 harness_check() { # harness_check <name> <act-is-expected: yes|no>
   _h="cli-anything-$1"; _expect_act=$2
@@ -348,7 +351,31 @@ harness_check() { # harness_check <name> <act-is-expected: yes|no>
   fi
 }
 harness_check browser yes
-for _s in homes showingtime showami skyslope zipforms lofty zoho; do harness_check "$_s" no; done
+for _s in homes showingtime showami skyslope zipforms lofty zoho publicfeeds; do harness_check "$_s" no; done
+
+# publicfeeds (R6, 2026-09-24): market/lender/builder-incentive read recipes, each of its three
+# policy groups gated independently on its own CLI_ANYTHING_TOS_REVIEWED_<GROUP> — same mechanism
+# SkySlope/zipForms use for CLI_ANYTHING_ECC_REVIEWED_AT, so this reads that state the same way.
+PF_BIN=$(command -v cli-anything-publicfeeds 2>/dev/null || true)
+[ -n "$PF_BIN" ] || { [ -x "$CAH_VENV/bin/cli-anything-publicfeeds" ] && PF_BIN="$CAH_VENV/bin/cli-anything-publicfeeds"; }
+if [ -n "$PF_BIN" ]; then
+  for _g in marketpages:CLI_ANYTHING_TOS_REVIEWED_MARKETPAGES lenderrates:CLI_ANYTHING_TOS_REVIEWED_LENDERRATES builderpages:CLI_ANYTHING_TOS_REVIEWED_BUILDERPAGES; do
+    _gname=${_g%%:*}; _gvar=${_g##*:}
+    _gval=$(eval "printf '%s' \"\${${_gvar}:-}\"")
+    if [ -n "$_gval" ]; then
+      info "  publicfeeds/$_gname" "$_gvar=$_gval — terms-of-service review recorded (not re-validated here; see PUBLICFEEDS.md for the question that date answers)"
+    else
+      info "  publicfeeds/$_gname" "disabled-by-policy — $_gvar not set. Expected until Alexandra's terms/robots.txt review for this group is answered"
+    fi
+  done
+fi
+
+# connect.sh (R6, 2026-09-24): the one-command guided path through install -> posture -> discover ->
+# what's-left-for-Steven -> the cliAnythingStatus paste line. Presence/executability only — running
+# it is Steven's, same as everything else in this section.
+CAH_CONNECT="$REPO_DIR/integrations/cli-anything-harnesses/connect.sh"
+if [ -x "$CAH_CONNECT" ]; then ok "cli-anything connect.sh" "present and executable"
+else bad "cli-anything connect.sh" "missing or not executable at $CAH_CONNECT"; fi
 
 # Browser harness security posture (P8). Proves controls by RUNNING them — refusing a real private
 # address, resolving the pinned package with the registry unreachable, flagging a real payload on a

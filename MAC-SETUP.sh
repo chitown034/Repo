@@ -645,7 +645,7 @@ CAENV
 fi
 
 if should_run cli-anything-harnesses; then
-  header cli-anything-harnesses "the eight harnesses vendored in THIS repo — browser engine + seven read-only site CLIs"
+  header cli-anything-harnesses "the nine harnesses vendored in THIS repo — browser engine + eight read-only site CLIs"
   # Why this step exists (P1, 2026-09-22). The cli-anything step above clones HKUDS/CLI-Anything and
   # builds its browser harness into ~/Applications/CLI-Anything/.venv. That worked, but it made the
   # repo's own packages depend on a clone: homes, showingtime and showami declare
@@ -658,10 +658,16 @@ if should_run cli-anything-harnesses; then
   CAH_SRC="$REPO_DIR/integrations/cli-anything-harnesses"
   CAH_DIR="$HOME/Applications/cli-anything-harnesses"
   CAH_PY="$CAH_DIR/.venv/bin/python"
-  # browser MUST stay first. The seven site packages are installed in the SAME uv command so the
+  # browser MUST stay first. The eight site packages are installed in the SAME uv command so the
   # local browser distribution satisfies their cli-anything-browser>=1.0.0 pin inside one resolution;
   # installing homes on its own sends uv to PyPI for a package that is not there, and it fails.
-  CAH_PKGS='browser homes showingtime showami skyslope zipforms lofty zoho'
+  # publicfeeds added R6, 2026-09-24: 8 read-only recipes (market pages, lender-rate pages, builder
+  # incentive pages) for the sites CONNECTIONS.md flags as having no Composio toolkit and no API and
+  # no no-key public endpoint. Every recipe in it is ALSO gated behind its own
+  # CLI_ANYTHING_TOS_REVIEWED_<GROUP> terms-of-service review (see publicfeeds/PUBLICFEEDS.md) — the
+  # same disabled-by-policy pattern SkySlope/zipForms use for the ECC review, generalised to three
+  # independent groups so clearing one never quietly opens another.
+  CAH_PKGS='browser homes showingtime showami skyslope zipforms lofty zoho publicfeeds'
 
   cah_missing=''
   for p in $CAH_PKGS; do
@@ -684,7 +690,7 @@ if should_run cli-anything-harnesses; then
       [ -x "$CAH_DIR/.venv/bin/cli-anything-$p" ] || cah_have_all=0
     done
     if [ "$cah_have_all" -eq 1 ]; then
-      skipped "all eight harnesses already built in $CAH_DIR/.venv"
+      skipped "all nine harnesses already built in $CAH_DIR/.venv"
     elif have uv || [ "$DRY_RUN" -eq 1 ]; then
       cah_ok=1
       run mkdir -p "$CAH_DIR" || cah_ok=0
@@ -699,26 +705,27 @@ if should_run cli-anything-harnesses; then
           "$CAH_SRC/skyslope/agent-harness" \
           "$CAH_SRC/zipforms/agent-harness" \
           "$CAH_SRC/lofty/agent-harness" \
-          "$CAH_SRC/zoho/agent-harness" || cah_ok=0
+          "$CAH_SRC/zoho/agent-harness" \
+          "$CAH_SRC/publicfeeds/agent-harness" || cah_ok=0
       fi
       if [ "$cah_ok" -eq 1 ]; then
         run mkdir -p "$BINDIR" || true
         for p in $CAH_PKGS; do
           run ln -sf "$CAH_DIR/.venv/bin/cli-anything-$p" "$BINDIR/cli-anything-$p" || true
         done
-        # A successful `uv pip install` is not eight working console scripts, and eight `ln -sf … || true`
-        # are not eight symlinks. Both were asserted in the same breath before. Count them. R3, 2026-09-23.
+        # A successful `uv pip install` is not nine working console scripts, and nine `ln -sf … || true`
+        # are not nine symlinks. Both were asserted in the same breath before. Count them. R3, 2026-09-23.
         cah_built=0; cah_linked=0
         for p in $CAH_PKGS; do
           if [ -x "$CAH_DIR/.venv/bin/cli-anything-$p" ]; then cah_built=$((cah_built + 1)); fi
           if [ -L "$BINDIR/cli-anything-$p" ]; then cah_linked=$((cah_linked + 1)); fi
         done
         if [ "$DRY_RUN" -eq 1 ]; then
-          installed "eight harnesses (browser engine + homes, showingtime, showami, skyslope, zipforms, lofty, zoho) + symlinks in $BINDIR"
-        elif [ "$cah_built" -eq 8 ]; then
-          installed "eight harnesses (browser engine + homes, showingtime, showami, skyslope, zipforms, lofty, zoho); $cah_linked/8 symlinked into $BINDIR"
+          installed "nine harnesses (browser engine + homes, showingtime, showami, skyslope, zipforms, lofty, zoho, publicfeeds) + symlinks in $BINDIR"
+        elif [ "$cah_built" -eq 9 ]; then
+          installed "nine harnesses (browser engine + homes, showingtime, showami, skyslope, zipforms, lofty, zoho, publicfeeds); $cah_linked/9 symlinked into $BINDIR"
         else
-          failed "uv pip install reported success but only $cah_built/8 console scripts exist in $CAH_DIR/.venv/bin — do not treat the harnesses as installed; see $LOG_FILE"
+          failed "uv pip install reported success but only $cah_built/9 console scripts exist in $CAH_DIR/.venv/bin — do not treat the harnesses as installed; see $LOG_FILE"
         fi
         # F-P1-02: the harness spawns `npx -p @apireno/domshell domshell-proxy` with no version pin, and
         # is_available() makes a SECOND unpinned npx call on every invocation. Pre-install the
@@ -752,6 +759,16 @@ ZOHOENV
   say "        history directory 0700. Started any other way the harness runs with UPSTREAM defaults: SSRF off, npx"
   say "        unpinned, history 0755/0644. Prove it any time: browser/runtime/posture.sh check"
   needs_steven "Put these three in your shell profile AND in every runner task env that drives the browser harness, so a hand-typed command gets the same posture as the launcher: CLI_ANYTHING_BROWSER_BLOCK_PRIVATE=true ; CLI_ANYTHING_DOMSHELL_PIN_DIR=\$HOME/Applications/cli-anything-harnesses/domshell-pin ; PATH=\"<repo>/integrations/cli-anything-harnesses/browser/runtime/bin:\$PATH\""
+  # R6, 2026-09-24: everything above this line is scriptable and just ran. Everything after it —
+  # the DOMShell extension, signing in by hand, --discover per recipe, the ECC date, the three
+  # publicfeeds terms-of-service dates — is Steven's, in order, and connect.sh is the one command
+  # that walks it: idempotent, never signs in, never stores or echoes a credential.
+  say ""
+  say "      Next: integrations/cli-anything-harnesses/connect.sh — installs anything still missing"
+  say "      (safe to re-run), runs the posture check, runs --discover for every gate-open target,"
+  say "      and prints exactly who still needs to sign in, which approvals are pending (the ECC"
+  say "      date for SkySlope/zipForms; the three publicfeeds terms-of-service dates), and the"
+  say "      paste-ready line that writes cliAnythingStatus (mac-task-specs.md §4 / routines/mac-task-repairs.md §9)."
 fi
 if should_run lofty-keyfile; then
   header lofty-keyfile "Lofty CRM — the key file the API path has always needed (F-S1-11)"
