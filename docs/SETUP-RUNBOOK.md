@@ -727,6 +727,25 @@ All three are the output-not-execution failure: a green row over a document that
   whatever the browser harnesses read once Phase D runs, so decide where they live *before* D4, not
   after.
 
+### H7. Five lines in three routines — **before Fri 2026-09-25, 4 PM PT** (5 min)
+These three were made in the claude.ai web UI, and the platform refuses every agent edit to them
+(*"Agents can only update routines they created"*, 2026-09-24). Each still names the retired CRM.
+The **Friday ops review** is the one on the clock: at 4 PM it tells the whole C-suite that real estate
+runs on the old system. Open each link, find the **old** text, replace it with the **new**, save. Every
+old string was checked against the live prompt and occurs exactly once; the full table is in
+`routines/fub-removal-2026-09-24.md`.
+
+| Routine | Old | New |
+|---|---|---|
+| [Ops review](https://claude.ai/code/routines/trig_01V6QrF6yENWiccduk94ubbs) | `Follow Up Boss for real estate.` | `Lofty for real estate.` |
+| [Weekly loop](https://claude.ai/code/routines/trig_016qKE1TdRjzkpb2Yby8yWBX) | `FUB import data (both dashboards)` | `Lofty import data (both dashboards)` |
+| [Steve twin](https://claude.ai/code/routines/trig_0174717mnSfAk1LtQQVJhH7r) (disabled) | `Follow Up Boss = real estate.` | `Lofty = real estate.` |
+| Steve twin | `pushed to Calendar / Follow Up Boss / Showami` | `pushed to Calendar / Lofty / Showami` |
+| Steve twin | `Composio (Follow Up Boss / Zoho CRM), Notion` | `Composio (Zoho CRM), Notion` |
+
+Leave the twin's `fub` field in its showings shape alone — it is a stored data key, not the CRM's
+name (decision I5b). Check: search each prompt for "Follow Up Boss" and "FUB" — zero hits except that key.
+
 ### Not urgent after all — the cloud-routine outage
 `docs/NEEDS-STEVEN.md` item 2 asked you to watch Project Risk Review's 18:06Z firing as a free test of
 whether a live startup outage was killing cloud routines. **It ran: SUCCEEDED, fired 2026-09-22T18:07.**
@@ -755,8 +774,8 @@ real ask is smaller than item 2 made it sound.
 - **Re-enable the cloud ISA bridge and the Steve twin — but edit the twin first.** Its prompt still
   calls the retired CRM your real-estate system and reads it through Composio. Three exact
   find-and-replace lines are in `routines/fub-removal-2026-09-24.md` §3; make them, then enable.
-  Same file, §1 and §2: two more web-UI routines (the Friday ops review, the weekly loop) need a
-  one-line edit each.
+  The Friday ops review and the weekly loop need one line each — that is step **H7**, and it is
+  clocked.
 - *(original entry)* **Re-enable the cloud ISA bridge and the Steve twin.** Both were disabled on a belief disproved by
   measurement on 2026-09-22. `trig_01VpcvVPTrbdfvdbXn1mD7hB` (bridge) and
   `trig_0174717mnSfAk1LtQQVJhH7r` (twin). **Both just need enabling — neither needs recreating.**
