@@ -35,6 +35,12 @@ rather than the full document.
 |---|---|---|---|
 | openalternative.co/alternatives/ | A public directory of open-source alternatives to commercial software (Steven's description; site egress-blocked from the cloud on 2026-09-22, not yet read) | Live site, unverified | When a paid SaaS comes up for renewal, or CTO Innovator wants a self-hosted option. Nothing to install. |
 
+## Research notes (internal)
+
+| Source | What it is | How current | Why you would open it |
+|---|---|---|---|
+| `references/memory-projects.md` | Read of four open-source memory/knowledge projects (Karpathy's LLM-wiki gist, qmd, gbrain, Graphify) against this repo's five levels — steal/skip calls, not a library | Written 2026-09-27, one-time research pass | Before extending `vector-index/`, `knowledge-graph/` or the `brain/` retrieval engine's ingest/lint verbs — see what's already proven elsewhere first |
+
 ## Registering a source
 
 One row, four facts: **what it is · where it lives · how current · why you would open it.** If you
