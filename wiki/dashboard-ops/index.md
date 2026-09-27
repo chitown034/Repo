@@ -64,11 +64,15 @@ Source of truth: the `runnerStatus` doc and the routine-health export, not the t
   as a live store is a false green; the decision to wire it or drop it from the count is Steven's
   (`integrations/google-drive-brain.md`).
 
-## Pages (to be written)
+## Pages
+
+**Status: written.** Each page describes categories and the operating rules, not a row-by-row live
+table — a row-by-row table would drift the same day it was written. Ask the named doc for a current
+count, per the "one rule" above.
 
 | Page | One-line summary |
 |---|---|
-| `db-docs.md` | What each `state` doc means and who writes it — **175 documents** at the 2026-09-23 03:10 UTC read (174 earlier the same day; this page long said 161) |
-| `panel-map.md` | Panel id → what it shows → which docs feed it |
-| `task-catalog.md` | Each Mac task: cron, what it writes, current status |
-| `routine-catalog.md` | Each cloud routine: schedule, and what it can and cannot write |
+| `db-docs.md` | What the `state` collection's documents mean, the `{v:...}` shape rule, and which docs are known to carry a not-really-live body |
+| `panel-map.md` | The deck's fifteen tabs and panels, and which docs feed the ones relevant to this repo's wikis |
+| `task-catalog.md` | The Mac task rhythm under `claude-runner`, and how to read a task's status honestly |
+| `routine-catalog.md` | Cloud routine categories, the disproved "can't write unattended" rule, and the connector-inheritance gotcha |

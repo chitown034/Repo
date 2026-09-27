@@ -3,6 +3,18 @@
 Who owns what, which model a seat runs on, what it may decide on its own. Use this to route a
 question to a seat. For project status use `projects/ai-team.md`; this page is the routing layer.
 
+**Status: written.** The routing table below sends a question to the right seat; the four pages
+hold the actual detail once you know which seat or layer you need.
+
+## Pages
+
+| Page | One-line summary |
+|---|---|
+| `org-chart.md` | The full seat map: Steven → Vanessa/Steve/ISA → 8 executives with named reports and ruflo benches |
+| `model-tiering-dispatch.md` | Which model each layer runs on, ≤8-parallel/≤4-Perplexity dispatch rules, trust levels, the ECC gate |
+| `tool-integration-status.md` | Connectors, MCP bridges, tasks/routines/skills status — plus honest Orca/Laya/77skills proposal status |
+| `mentors-and-benches.md` | Maxwell, Apex, James, Kevin, the Kevin/Cole naming drift, and what a "bench" row actually counts |
+
 ## Routing by lane
 
 | Ask about | Seat | Model tier |
