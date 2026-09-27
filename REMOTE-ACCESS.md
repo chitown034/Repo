@@ -25,6 +25,24 @@ row says what it can actually do: "connected" and "can write" are not the same t
 - **"Run this while I sleep"** → a **cloud routine** if it needs only the web and the artifact DB; a
   `claude-runner` task on the PRIMARY Mac if it needs a local file, a local model, DuckDB, a logged-in desktop app, the Keychain, or an MCP connector.
 
+## Using the brain remotely
+
+From the phone or claude.ai, through a **Vanessa Live / Remote Control** session on a Mac: ask
+naturally. That session runs `bin/brain recall "<the question>"` first — it is the cheapest level in
+the recall order (`CLAUDE.md`) and answers most questions from the router without opening a second
+file — then escalates per the recall order (memory + wiki index → research queue → `jarvis_obsidian` →
+five-store sweep) only if `recall` comes back `file:null` or its evidence is not enough.
+
+`bin/brain remember "<fact>" [--topic X]` works the same way from anywhere: it writes to whichever
+Mac's clone the session is running on, and that Mac's next `scripts/brain-sync.sh` run — daily, or
+sooner by hand — carries it to the other Mac by ordinary `git pull --rebase --autostash`. There is no
+separate remote-memory path; it is the same brain, one commit later.
+
+**Cloud sessions** (`claude.ai/code`, no Mac involved) can also clone this repo directly and run
+`bin/brain` from the checkout — recall and remember both work there exactly as on a Mac, since the CLI
+is repo-root-relative. What a cloud session cannot do is reach a Mac-local credential, a local model, or
+Jarvis — sensitive/client answers still stay on a Mac (see "Honest limits" below).
+
 ## The correction — cloud routines CAN write the artifact DB
 
 This file used to say, under "Honest limits": *"Cloud routines cannot write to the artifact DB

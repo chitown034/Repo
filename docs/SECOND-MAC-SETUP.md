@@ -144,6 +144,39 @@ reason — see `integrations/mac-sync/README.md`.
 **Needs Steven:** pick one of the three ways above — this runbook installs nothing for the vault on its
 own, on purpose; it is a data-location decision, not a script's to make.
 
+### 6c. Brain on this Mac
+
+One script gets the deterministic retrieval engine (`brain/`, CLI `bin/brain`) working here the same
+way it works on the other Mac. It is separate from, and does not replace, step 7 below.
+
+```bash
+cd ~/Projects/second-brain      # or wherever you cloned it, step 6
+bash scripts/brain-sync.sh      # pulls the repo, reindexes, links bin/brain and skills
+brain doctor                    # non-zero means the INDEX is stale or a routed path is missing
+brain recall "who owns automation health"
+```
+
+**Expect:** `brain doctor` exits 0; `brain recall` prints a file, a section, and evidence (or says
+plainly "not in the brain" — that is a correct answer too, never a crash). If `bin/brain` does not
+exist in your checkout yet, `brain-sync.sh` says so and skips those steps gracefully — it is being
+built alongside this runbook, not before it. Re-run `scripts/brain-sync.sh` any time (by hand or on a
+schedule, see `always-on/README.md` → `brain-maintenance`): it is idempotent and never overwrites a
+skill directory you have hand-edited — it tells you the exact command to replace it yourself instead.
+
+Then turn on auto-memory (step 7, right below) so this session's own recall gets written back.
+
+**Optional — Laya, a local classifier for the router:**
+```bash
+pip install "laya[mcp]"
+export BRAIN_ROUTER=laya
+```
+This only changes how a query gets routed to a leaf file (`integrations/laya/laya_route.py`); nothing
+about the recall order in `CLAUDE.md` changes, and it is entirely optional on either Mac.
+
+**Both Macs get the same brain through git — nothing else needs to sync it.** Notion (the Second Brain
+database — the record) and the Google Drive "Second Brain" folder are shared cloud sources both Macs
+already read the same way; they are not, and do not need to be, synced by git.
+
 ### 7. Turn on auto-memory
 
 In Claude Code from the project root: `/memory on`.

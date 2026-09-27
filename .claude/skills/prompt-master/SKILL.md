@@ -24,6 +24,11 @@ the cycle. Run this seat on **Claude Opus 5** — it is a judgment call, not a r
   `cpiOpportunityLog`, `stressTestReport`, `selfTest`, `isaKpi`, `twinQueue` (needs-steven items).
 - **Evaluator scores** when present: `agent-evaluator` (tier 2, under Nadia) scores output on
   accuracy, completeness, clarity, actionability, conciseness.
+- `bin/brain bench [--write]` (repo-root-relative CLI) — measures tokens/time/correctness for the
+  brain's recall path against a fixed question set, writing `docs/reports/BRAIN-BENCH.md` with
+  `--write`. Use it to measure any diff that touches how a seat recalls or is fed context, before
+  proposing it. If `bin/brain` is not in this checkout yet, say so and mark the diff's measurement
+  `"pending — bin/brain bench not yet available"` rather than fabricating a number.
 
 ## Data access
 `Artifact` tool against `https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d`:
@@ -44,8 +49,11 @@ Sep 2026) — from a cloud routine, print the proposals in the run output and le
 3. **Diagnose** each real prompt fault to one of: missing constraint, missing output shape, wrong
    altitude (too vague / too prescriptive), missing escalation rule, missing honesty rule, stale fact
    baked into the prompt.
-4. **Write at most five diffs**, ranked by measured cost. Each diff carries a ≤10-line excerpt of the
-   current text, the proposed replacement, the evidence, the expected effect, how it will be
+4. **Bench, then write at most five diffs**, ranked by measured cost. For any diff that touches how a
+   seat recalls, is routed, or is fed context, run `bin/brain bench` first — current prompt vs.
+   proposed — and attach its tokens-per-answer and correctness numbers as part of the evidence; a diff
+   in that category with no bench comparison is not submitted. Each diff carries a ≤10-line excerpt of
+   the current text, the proposed replacement, the evidence, the expected effect, how it will be
    measured next cycle, the risk, and the rollback. A diff without a named measurement is not a diff.
 5. **Submit to the human gate.** Append to `improvementProposals` with `status:"Proposed"`. The gate
    is `weekly-self-update` (Mac runner slot Fri 11:10 PM PT, cron `10 23 * * 5`, **never run** as of
@@ -70,6 +78,8 @@ Return block to `loop-engineering` for the cycle entry:
 - At most five proposals per cycle. If more are found, keep the top five and list the rest as
   `deferred` in the return block.
 - Never propose a prompt change whose evidence is a single run, or whose evidence is an outage.
+- Never propose a recall/context-shaped diff without a `bin/brain bench` comparison when the tool is
+  available; when it is not yet built, say so plainly rather than skipping the requirement quietly.
 - Never propose loosening a guardrail, an escalation rule, or an honesty rule to raise throughput.
 - Quote at most 10 lines of any prompt; never paste a whole prompt into the deck.
 - No secrets in a proposal: no keys, tokens, phone numbers, account numbers, or client names.
@@ -107,4 +117,6 @@ last error 2026-09-15), so keep it cheap.
    `prompt`. Any other result is a Fail.
 4. Cycle-idempotence: with a stub `loopLog` whose newest entry already has `promptReview`, assert the
    skill refuses to produce a second review.
+5. Bench gate: feed one recall-shaped candidate diff with no bench numbers attached; assert it is not
+   submitted (or is marked `"pending — bin/brain bench not yet available"`, never silently dropped).
 Report `{id:"selftest:prompt-master", category:"Functional", result, detail}` into `selfTest`.

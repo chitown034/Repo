@@ -25,6 +25,9 @@ Capability, Integration, Stress Test) does the work; report seats run on Sonnet 
 `improvementProposals`, `auditFindings`, `twinQueue`, `aiTeamRoster`, `toolkitSnapshot`, plus the
 sub-skills this cycle calls: `prompt-master`, `continuous-process-improvement`,
 `scale-growth-engine`, `stress-test-sweep`, `skills-refresh`, and Nadia's disruption brief.
+`docs/reports/BRAIN-BENCH.md` (written by `bin/brain bench --write`, the `brain-maintenance` Mac task's
+weekly slot) — the brain's own tracked metric, folded into this cycle's baseline. If `bin/brain` is not
+yet in this checkout, or the report has never been written, record it as `never run` and move on.
 
 ## Data access
 `Artifact` tool against `https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d`:
@@ -43,26 +46,36 @@ An item with no Goal/Loop/Routine is not improved this cycle; it gets one writte
 1. **Baseline.** Read the inputs. Build the cycle's fact sheet: what ran, what failed, what produced
    nothing, what never ran. Honest labels only: "never run under the runner", "last ok <date>",
    "failed <date>: <reason>".
-2. **Hold out.** Freeze an **untouched holdout set** before any change: ~20% of the items under test
+2. **Brain bench.** Pull three numbers from `docs/reports/BRAIN-BENCH.md` (or run `bin/brain bench
+   --write` first if this cycle needs a fresh one and `bin/brain` exists): **tokens per answered
+   question**, **correctness %**, and the **"not in brain" rate** (the share of bench questions that
+   came back `file:null`). Track all three in `loopLog[].brainBench`, cycle over cycle, next to the
+   loop's own four metrics in `OPTIMIZATION.md`.
+   **Stop condition** — do not promote any change that touches the recall path (a prompt-master diff,
+   a router edit, a skill's recall wiring) this cycle if any of: tokens-per-answer rose for 2
+   consecutive cycles, correctness % fell versus the previous cycle's holdout, or the "not in brain"
+   rate exceeds 20%. Log it as `halted` with the reason, and route a triage item to `prompt-master` or
+   `skills-refresh` instead of promoting.
+3. **Hold out.** Freeze an **untouched holdout set** before any change: ~20% of the items under test
    (named in the cycle entry), selected for coverage, not convenience. Nothing in the holdout is
    edited, tuned or fixed this cycle. It exists to detect improvements that only move the items you
    were looking at.
-3. **Propose.** Collect candidate changes from the sub-skills (prompt diffs, CPI implants, ADR items,
+4. **Propose.** Collect candidate changes from the sub-skills (prompt diffs, CPI implants, ADR items,
    stress-test fixes, skill drift). Each proposal: target, change, hypothesis, measurement, risk,
    rollback.
-4. **Test in isolation.** `sandbox-qa` runs each proposal in a sandbox against fixtures — never
+5. **Test in isolation.** `sandbox-qa` runs each proposal in a sandbox against fixtures — never
    against live client, ISA or production data.
-5. **Compare.** Before/after on the named metric, plus the holdout. Promote only when the target
+6. **Compare.** Before/after on the named metric, plus the holdout. Promote only when the target
    improved **and** the holdout did not regress. A change that improves the target and degrades the
-   holdout is rejected and logged as such.
-6. **Promote or reject.** Promoted changes are applied by the owning engineer at trust **L1** and
+   holdout is rejected and logged as such. A recall-path change also obeys step 2's stop condition.
+7. **Promote or reject.** Promoted changes are applied by the owning engineer at trust **L1** and
    enter the graduation ladder. Rejected changes are logged with the reason so the next cycle does
    not re-propose them blind.
-7. **Self-heal, then triage.** A break with a known, reversible fix (a stale stamp, a wrong task
+8. **Self-heal, then triage.** A break with a known, reversible fix (a stale stamp, a wrong task
    name, a missing container guard) is healed and counted in `healed`. Anything else — an unknown
    cause, a credential failure, a pre-existing failing test — goes to the **Triage inbox**
    (`loopLog[].triage`) with the exact symptom and where it was seen. Never heal by deleting.
-8. **Write the cycle entry, the weekly report and the brief.**
+9. **Write the cycle entry, the weekly report and the brief.**
 
 ## Trust graduation (L1 → L2 → L3)
 - **L1 — report only.** Output is read by a human before anything acts on it.
@@ -91,6 +104,8 @@ a silent pass.
  "triage":["<symptom + where seen>"],"needsSteven":["<one line each>"],
  "findings":["<F-id or one line>"],
  "trustLevels":{"<capability>":"L1|L2|L3 + streak note"},
+ "brainBench":{"tokensPerAnswer":0,"correctnessPct":0,"notInBrainPct":0,
+   "stopTriggered":false,"stopReason":"<one line, or null>","source":"docs/reports/BRAIN-BENCH.md|never run"},
  "report":"<where the weekly report lives>","vaultNote":"40-Decisions/<date> loop cycle <n>.md",
  "holdout":["<item>"],"kind":"full|verification-only"}]}
 ```
@@ -107,6 +122,7 @@ a silent pass.
 Baseline: <what ran / failed / never ran, with dates>
 Holdout: <items frozen this cycle>
 Proposed <n> · Tested <n> · Promoted <n> · Rejected <n> · Healed <n> · Halted <n>
+## Brain bench     (tokens/answer · correctness % · not-in-brain % · stop condition tripped?)
 ## Promoted        (change · metric before → after · holdout effect · trust level)
 ## Rejected        (change · why · do not re-propose unless <condition>)
 ## Healed          (what broke · fix · how it was verified)
@@ -162,4 +178,8 @@ Offline, ≤60 s, no sub-agents.
    the verbatim standing halt lines and a `twinQueue` packet in memory.
 5. Suite registry: assert every category above has at least one registered test id, and that each
    registered test declares a time budget ≤60 s.
+6. Brain-bench stop condition: feed a fixture with `notInBrainPct:25` and assert a recall-path
+   proposal is refused promotion with `stopTriggered:true`; feed one with all three numbers within
+   bounds and assert it is not blocked on this ground. Assert `brainBench.source:"never run"` is a
+   Pass (not a Fail) when no report exists yet.
 Report `{id:"selftest:loop-engineering", category:"Regression", result, detail}` into `selfTest`.

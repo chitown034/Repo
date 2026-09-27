@@ -22,6 +22,13 @@ the Capability Engineer (Opus 5); Vanessa (Claude Fable 5.1) chairs the cycle th
   `v.skills[]` is not proof a skill is missing; confirm on disk before calling anything missing.
 - The deck's AI Team toolkit table (`AI_TEAM_TOOLBOX` rows) — what the dashboard advertises.
 - `runnerStatus` / the task list — which tasks name which skill.
+- `bin/brain doctor` (repo-root-relative CLI, if present in this checkout) — non-zero means the INDEX
+  is stale or a routed path is missing.
+- `scripts/brain-sync.sh --dry-run` — the same script that links repo skills into `~/.claude/skills/`
+  on a schedule; run it here read-only to see, this run, what it would link, what is already linked,
+  and what it would refuse to touch (a real, hand-edited directory that differs).
+- `.claude/skills-staged/` — third-party skill packs `integrations/skill-packs/import_pack.py` stages
+  here; never live until Steven reviews and moves one himself.
 
 ## Data access
 `Artifact` tool against `https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d`:
@@ -56,8 +63,21 @@ connector for what you need — report in the run output and leave the write to 
    `vanessa-orchestrator`, `loop-engineering`, `scale-growth-engine`. `skills-refresh` exists as the
    Sunday **task**, and as this repo skill; check whether the repo skills have been installed on the
    Mac yet before reporting them as live.
-7. **Report.** Write `skillsAudit`, print the summary, and open a Needs-Steven packet only for
-   advertised-but-absent rows (the dashboard is claiming a capability that does not exist).
+7. **Brain checks** (new, R7 2026-09-27):
+   - **INDEX drift** — run `bin/brain doctor` if `bin/brain` exists in this checkout; record its exit
+     and its own message verbatim. If `bin/brain` is not present yet, record `ranAt:null` and say why
+     rather than reporting `ok`.
+   - **Skills linked vs. repo** — run `scripts/brain-sync.sh --dry-run` and fold its summary line
+     (`linked=`/`already-ok=`/`conflicts=`) into the report; a nonzero `conflicts` count on this Mac is
+     the same "advertised-but-absent" kind of finding, just for a skill directory instead of a deck row
+     — a hand-edited copy this Mac is actually running instead of the repo's version.
+   - **Staged-but-unreviewed packs** — list every directory under `.claude/skills-staged/`. Every one
+     found is `reviewed:false` by definition (this skill never marks one reviewed, never imports one,
+     never moves one into `.claude/skills/`); report the count and names only.
+8. **Report.** Write `skillsAudit`, print the summary, and open a Needs-Steven packet only for
+   advertised-but-absent rows (the dashboard is claiming a capability that does not exist) or a
+   nonzero skills-link `conflicts` count (a Mac silently running a hand-edited skill instead of the
+   repo's).
 
 ## Outputs (exact shapes)
 `skillsAudit` (new doc — the dashboard's skills card reads `v.counts` and `v.drift`):
@@ -68,7 +88,11 @@ connector for what you need — report in the run output and leave the write to 
  "rows":[{"name":"","path":"","root":"user|synced|plugin","frontmatterOk":true,
           "issues":[],"inDeckTable":true,"usedByTasks":[],"status":"ok|invalid|dead-path|duplicate"}],
  "drift":[{"kind":"advertisedNotInstalled|installedNotListed|taskOrphan|nameMismatch",
-           "name":"","detail":"","priority":"P1|P2|P3"}]}}
+           "name":"","detail":"","priority":"P1|P2|P3"}],
+ "brainDoctor":{"ranAt":"<ISO>|null","ok":true,"detail":"<verbatim message, or why it did not run>"},
+ "skillsLinkDrift":{"linked":0,"alreadyOk":0,
+   "conflicts":[{"name":"","kind":"real-dir-differs|symlink-elsewhere","detail":""}]},
+ "stagedPacks":[{"name":"","reviewed":false}]}}
 ```
 Findings for the loop cycle use the standard finding row (`category:"Skill"`,
 `status:"New|Broken|Missing|Recommended|Stale"`, `owner:"Capability Engineer"`).
@@ -80,6 +104,9 @@ Findings for the loop cycle use the standard finding row (`category:"Skill"`,
 - Never read a skill's contents beyond frontmatter, referenced paths and headings — no bulk copying
   of skill bodies into the deck or the report.
 - Never report a skill as missing on the strength of `toolkitSnapshot.skills[]` alone (400 of 1,400).
+- Never import, move, or mark reviewed anything in `.claude/skills-staged/` — list it, nothing else.
+- `brain-sync.sh --dry-run` is read-only by its own `--dry-run` contract; never run it without that
+  flag from this skill, and never let this skill's own run resolve a conflict it reports.
 - No secrets: if a skill embeds a key or token, record `issues:["secret-in-file"]` with the path and
   line number only — never the value — and raise it to Elena (CISO) as P1.
 - Counts in the report are what you counted this run; do not carry forward last week's numbers.
@@ -99,7 +126,8 @@ priority:"p1"|"p2", status:"needs-steven", task:"<one line>", note:"<what, where
 ## Logging
 - `skillsAudit` — one full document per run (replaced each run; it is a snapshot, not a log).
 - `ciLog` — append `{date:"<YYYY-MM-DD>", text:"skills-refresh: <n> skills audited, <n> invalid,
-  <n> advertised-but-absent"}` only when drift was found, so the deck's change log stays meaningful.
+  <n> advertised-but-absent, <n> skill-link conflicts, <n> staged packs unreviewed"}` only when drift
+  was found, so the deck's change log stays meaningful.
 - Needs-Steven packets → `twinQueue` as above.
 
 ## Self-test (`selftest:skills-refresh`, nightly suite, Functional)
@@ -111,4 +139,7 @@ last error 2026-09-15).
 3. Self-audit: run the validator over this file; `name: skills-refresh` must match its directory.
 4. Output shape: build a `skillsAudit` document in memory and assert every key above exists and
    `counts` are integers. Do not write it to the deck.
+5. Brain-check wiring: assert the shape carries `brainDoctor`, `skillsLinkDrift` and `stagedPacks`
+   keys even when `bin/brain` is absent (`brainDoctor.ranAt:null` is a Pass, not a Fail) — and that a
+   fixture "conflict" from a stubbed `brain-sync.sh --dry-run` line lands in `skillsLinkDrift.conflicts`.
 Report `{id:"selftest:skills-refresh", category:"Functional", result, detail}` into `selfTest`.
