@@ -177,3 +177,17 @@ correctly, and `laya_route.py`'s own routing/threshold/PII-override logic is cor
 **Not proven, and not claimed:** Laya's real classification accuracy, its real 33 ms latency, or
 that anything here runs on the Mac. That proof needs a Mac session where `huggingface.co` is
 reachable — `install.sh` is written to make that the only remaining step.
+
+## `route` field (R12-OMNI, 2026-09-28)
+
+Every decision now also carries `route`: `subscription` (top/executive/worker tier — plain `claude`,
+direct, never through OmniRoute), `research` (OmniRoute's `research` combo → Perplexity, capped at 4
+per wave), or `local` (OmniRoute's `local` combo → Bonsai 27B on the Mac, fail-closed, no cloud
+fallback ever). The mapping lives in `integrations/omniroute/route-map.json`, not in this script —
+`laya_route.py --route-map <path>` overrides it, and a missing file degrades to
+`subscription`/`local` only (never crashes; see `load_route_map`/`route_for`). **The one invariant
+tested explicitly:** `pii_gate` firing forces `route=local` regardless of `tier` — re-run against
+the same 2-of-20 client-shaped rows above (id 8, id 19: both `tier=orchestrator`, both now print
+`route=local`) plus the full tier×pii_gate matrix, in `integrations/tests/test_laya_route.py`
+(`python3 integrations/tests/test_laya_route.py` — 19 assertions, no network, no model weights).
+Full design: `integrations/omniroute/README.md`.
