@@ -296,3 +296,11 @@ the record of the change. The full split, and the three web-UI routine edits onl
   feeds went stale. Writing on schedule is the only way the feeds stay current without a manual pass.
 - **Owner.** Derek (automation health). **Status.** Decided 2026-09-28; the conversions are being applied —
   `routines/` records each one when it is.
+
+## 2026-09-28 — Update (same day): the feed-writer conversion is blocked on the platform, not on the prompts
+
+- The ten writer prompts are built and reviewed (`routines/feed-writers-2026-09-28/`), but none is live: agents
+  cannot edit routines made in the web UI, and routines an agent creates had no database tool when tested
+  (07:38 and 07:41 UTC — nothing written; both test routines deleted). Steven tests one pasted prompt first
+  (`docs/NEEDS-STEVEN.md` item 73); if a web-UI routine cannot write either, the Mac runner stays the only
+  scheduled writer. **Owner.** Steven (paste + test), Derek (follow-up).

@@ -1,0 +1,83 @@
+WRITE MODE (2026-09-28, Steven approved) — supersedes the RESEARCH-ONLY framing below only
+================================================================================================
+Steven's decision, 2026-09-28: "Make them update the dashboard." This routine used to research
+every day and end with a JSON final message that nobody applied. It now WRITES its findings
+directly into the Command Deck's live database with the ArtifactData tool, using the WRITE STEP
+section near the end of this prompt (which replaces the old "output your findings as your final
+message" step). Everything else below — "never invent a builder name, incentive amount, or URL",
+and the ban on calling Edit, Write, Bash-writing any file, or Artifact with action "publish" —
+still applies exactly as written; those calls still hang this unattended sandbox.
+
+TWO CHANGES from the old version of this routine:
+  - The output shape below is NOT the shape the old prompt described (a full replacement
+    `BUILDER_INCENTIVES` array, area/summary/source/url). That array is baked into the page's HTML,
+    hand-researched, and is not this routine's job. What this card actually reads live is
+    `liveFeeds.feeds.builderIncentiveLiveList` — a single supplementary research-note entry that
+    sits underneath the hand-maintained table, not a replacement for it.
+  - Command Deck ONLY. The old prompt said "this same JSON applies to BOTH artifacts" (Command
+    Deck and ISA Portal); that is dropped — ISA Portal has no equivalent live-feed slot for this,
+    and Steven's 2026-09-28 mapping only routes this data to Command Deck's `liveFeeds`. Do not
+    write anything to the ISA Portal artifact from this routine.
+================================================================================================
+
+You are refreshing the "Builder incentives & rate buydowns" live-scan note on a published Claude
+Artifact called "Command Deck" — a personal dashboard for a user named Steven, a mortgage broker
+and Realtor/broker associate working the Temecula/Murrieta and San Diego, CA markets. The artifact
+is https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d (artifact id
+1624daae-d683-405a-971d-c5828dce0f8d, database collection "state", document `liveFeeds`, key
+`builderIncentiveLiveList` under its `feeds` object).
+
+IMPORTANT ARCHITECTURE NOTE: This routine runs in a fresh, unattended cloud sandbox every time it
+fires, with no human present to approve permission prompts. Editing or Bash-writing a local file
+the Artifact tool downloads WILL trigger an unanswerable "sensitive file" permission prompt and
+hang the run forever. Do NOT call Edit, Write, or Bash with any write/copy/redirect operation at
+any point in this run. Do NOT call Artifact with action "publish". You do not need to call Artifact
+"read" at all in this version — read the live document with ArtifactData instead (see STEP 1).
+
+STEP 1 — Read current state
+Use the ArtifactData tool. If it is not already in your tool list, load it first with ToolSearch
+using the query `select:ArtifactData`.
+Read `liveFeeds` (artifact 1624daae-d683-405a-971d-c5828dce0f8d, collection "state"). Note its
+`version` — you need it for the WRITE STEP. Look at `feeds.builderIncentiveLiveList` — its `text`
+is what was already reported, so you don't just repeat the same finding. `liveFeeds` is a large
+shared document with many OTHER feeds' keys in it — you are reading the whole thing but will only
+ever change your own key; see WRITE STEP rule 4.
+
+STEP 2 — Research current data
+Check today's real date first (don't guess). Run WebSearch queries like "new home builder
+incentives Temecula Murrieta [current month year]", "builder rate buydown San Diego new
+construction [current month year]", "[Lennar, KB Home, D.R. Horton, Richmond American, Woodside
+Homes, Meritage Homes, Tri Pointe] Temecula Murrieta incentive". Prefer SPECIFIC named
+communities/builders with SPECIFIC incentive terms (rate buydown %, credit amount, close-by date);
+if only general market-trend reporting exists, say so honestly rather than inventing specifics.
+Only use real, checkable sources.
+
+## WRITE STEP — replaces the old "output your findings as your final message" step (WRITE MODE, 2026-09-28)
+
+Use the ArtifactData tool (same one you loaded in STEP 1).
+
+1. You already read `liveFeeds` in STEP 1 and have its `version`.
+2. Build the replacement `feeds.builderIncentiveLiveList` entry in EXACTLY the same shape as the
+   one you read: `{checkedAt: "<ISO 8601 UTC>", citations: [{title, url}, ... 3 to 5 real sources],
+   model: "cloud-routine", source: "WebSearch", text: "<2-4 sentence summary of what's confirmed
+   live or newly changed this run, naming the builder/community and the specific terms — same
+   tone/length as the entry you read in STEP 1>"}`.
+3. Write with `update`, NOT `set`. `update` is a deep merge — measured on this database on
+   2026-09-28: it changes only the nested key you send and leaves every other key in the
+   document exactly as it was. Send exactly this, pinned by the `version` you read in STEP 1:
+   ArtifactData action "update", collection "state", doc_id "liveFeeds", if_version <that version>,
+   data: {v: {feeds: {builderIncentiveLiveList: {checkedAt, citations, model, source, text}}}}
+   (all five fields of your entry, nothing else). On a version conflict, re-read `liveFeeds`
+   and retry the same update once with the new version.
+4. Never `set` the `liveFeeds` document and never send any key but `feeds.builderIncentiveLiveList` — not another
+   feed's key, not the document's top-level `updatedAt` or `via`. This is a shared document;
+   other routines' keys and its own provenance fields are not yours to touch.
+5. `citations` must be real source URLs from STEP 2, at least 3. If research fails or sources are
+   too thin to trust, write NOTHING this run: an old document is better than an empty or guessed
+   one.
+6. Set `model` to "cloud-routine" — never a model name — and `checkedAt` to the actual UTC time you
+   write, in ISO 8601. `source` is "WebSearch".
+7. Never touch any other document, and never write to the ISA Portal artifact from this routine.
+   Never call Edit, Write, or Bash with any write/copy/redirect operation. Never call Artifact with
+   action "publish". Never send a message to anyone.
+8. End your turn with a one-line summary: what the note now says, and the document's new version.

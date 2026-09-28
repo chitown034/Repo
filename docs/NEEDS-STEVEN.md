@@ -276,3 +276,12 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
     on 2026-09-23 7:05 PM PT is its **status report and the dashboard syncs** (`fabric-deck-sync`,
     `brain-deck-sync` erroring), and the account's usage limits then blocked its runs Sep 24–28. The
     steps in 63 still apply: `runnerctl status` → `runnerctl logs fabric-deck-sync` → `runnerctl restart`.
+73. **Feed writers — test one, then paste the rest** (your "make them update the dashboard" decision). The
+    platform will not let an agent edit routines made in the web UI, and routines an agent creates cannot reach
+    the dashboard's database today (tested 07:38 and 07:41 UTC; nothing written; both deleted). Follow
+    `routines/feed-writers-2026-09-28/README.md`: paste `01-weather-news.prompt.txt` into *Command Deck — weather
+    & news refresh*, **Run now**, and check the weather card reads today. If it does, paste the other nine and
+    switch off the three duplicates it names. If it does not, the Mac runner (items 63/72) is the writer path.
+74. **Cloud environment network** — the environment's network policy denies `fred.stlouisfed.org`,
+    `www.freddiemac.com` and `www.redfin.com`, the primary sources for the rates card. To allow them: the cloud
+    environment menu in a session's title bar → Edit → Network access → add those hosts (or a broader level).

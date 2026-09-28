@@ -1,0 +1,89 @@
+WRITE MODE (2026-09-28, Steven approved) — supersedes the RESEARCH-ONLY framing below only
+================================================================================================
+Steven's decision, 2026-09-28: "Make them update the dashboard." This routine used to research
+every day and end with a JSON final message that nobody applied. It now WRITES its findings
+directly into the Command Deck's live database with the ArtifactData tool, using the WRITE STEP
+section near the end of this prompt (which replaces the old "output your findings as your final
+message" step). Everything else below — the research method, the sources, "never invent a fact,
+figure or URL", and the ban on calling Edit, Write, Bash-writing any file, or Artifact with action
+"publish" — still applies exactly as written; those calls still hang this unattended sandbox. The
+only thing that changes is where the result goes: into the two documents this card actually reads,
+not into a chat message a human has to copy by hand.
+
+Two changes from the old version of this routine, both because the live documents this routine
+feeds cover more places than the research steps below used to:
+  - Weather now covers 7 cities, not 6 — New Braunfels, TX is added (7th).
+  - News-local now covers 10 cities, not 6 — Murrieta CA, Riverside CA, Orange County CA and
+    New Braunfels TX are added (4 more, for 10 total). Do not add Menifee, CA — it is not one of
+    the 10 cities the live document currently tracks; adding an 11th city here would silently
+    change the document's shape.
+  - The Chicago Bears tracker (record/standing/next game/NFC North table) is DROPPED from this
+    routine. Those fields are baked into the page's HTML with no live document backing them — a
+    written bearsData/bearsNfcNorthStandings document would have nowhere to land. Bears NEWS
+    (bearsLiveNews, a different, existing liveFeeds key) is already owned by a different task; do
+    not touch it here.
+================================================================================================
+
+You are refreshing two sections of a published Claude Artifact called "Command Deck" — a personal
+dashboard for a user named Steven. The artifact is https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d
+(artifact id 1624daae-d683-405a-971d-c5828dce0f8d, database collection "state").
+
+IMPORTANT ARCHITECTURE NOTE: This routine runs in a fresh, unattended cloud sandbox every time it
+fires, with no human present to approve permission prompts. Editing or Bash-writing a local file
+the Artifact tool downloads WILL trigger an unanswerable "sensitive file" permission prompt and
+hang the run forever. Do NOT call Edit, Write, or Bash with any write/copy/redirect operation at
+any point in this run. Do NOT call Artifact with action "publish". You do not need to call Artifact
+"read" at all in this version — read the live documents with ArtifactData instead (see STEP 1).
+
+STEP 1 — Read current state
+Use the ArtifactData tool. If it is not already in your tool list, load it first with ToolSearch
+using the query `select:ArtifactData`.
+Read `weatherSnapshot` and `newsSnapshot` (artifact 1624daae-d683-405a-971d-c5828dce0f8d, collection
+"state"). Note each document's `version` — you need both for the WRITE STEP. Look at the existing
+`cities` array (weather) and `global`/`local` object (news) so you know the exact field names and
+city-label spelling already in use ("Temecula, CA", not "Temecula CA") and can avoid quietly
+reshaping either document.
+
+STEP 2 — Research current data
+Check today's real date first (don't guess).
+
+Weather — for these 7 cities, in this exact order, get current temp (°F), condition, today's
+forecast high/low (°F), feels-like temp, and any active weather alert (name + valid window) if one
+exists, via WebSearch against a reliable named source (AccuWeather, NWS, or equally reliable):
+Temecula CA, San Diego CA, Los Angeles CA, Chicago IL, Las Vegas NV, Washington DC, New Braunfels TX.
+Never invent a number — only report what you actually find.
+
+News — 3 to 5 world/national headlines (title, source, url, date) from a reputable wire source
+(NPR/AP/Reuters or similar). Then local headlines (title, source, url, date; up to 10 per city,
+fewer is fine if that is genuinely all there is — never pad with invented or duplicate items) for
+these 10 cities: Temecula CA, San Diego CA, Los Angeles CA, Chicago IL, Las Vegas NV, Washington DC,
+Murrieta CA, Riverside CA, Orange County CA, New Braunfels TX. Never invent a headline, source, or
+URL — only report what you actually find via search, with the real article URL for each.
+
+## WRITE STEP — replaces the old "output your findings as your final message" step (WRITE MODE, 2026-09-28)
+
+Use the ArtifactData tool (same one you loaded in STEP 1).
+
+1. You already read `weatherSnapshot` and `newsSnapshot` in STEP 1 and have their `version`s.
+2. Build each replacement in EXACTLY the same shape as what you read:
+   `weatherSnapshot` → `{v: {cities: [{city, temp, condition, high, low, feelsLike, alert, source, url}, ... one per city, in the order of STEP 2, each `city` spelled exactly as in the document you read in STEP 1 ("Temecula, CA", "New Braunfels, TX"); temp/high/low/feelsLike are numbers (°F); alert is "" when there is none], syncedAt: "<ISO 8601 UTC>", via: "cloud routine Command Deck — weather & news refresh"}}`
+   `newsSnapshot` → `{v: {global: [{title, source, url, date}, ...3 to 5], local: {"Temecula, CA": [...], "San Diego, CA": [...], "Los Angeles, CA": [...], "Chicago, IL": [...], "Las Vegas, NV": [...], "Washington, DC": [...], "Murrieta, CA": [...], "Riverside, CA": [...], "Orange County, CA": [...], "New Braunfels, TX": [...]}, syncedAt: "<ISO 8601 UTC>", via: "cloud routine Command Deck — weather & news refresh"}}`
+   Every document in this store is `{v: <value>}` — no exceptions. Send `data: {v: {...}}`, never
+   the bare value.
+3. Write each with `set`, pinned by the `if_version` you read in STEP 1. On a version conflict for
+   either document, re-read just that one document and retry its write once.
+4. Every weather row and every news item carries a real source URL. If ONE city's research
+   fails: for weather, leave that city OUT of `cities` this run (never re-send an old temperature
+   under a new `syncedAt`); for news, carry that city's previous items forward unchanged (each item
+   keeps its own `date`, so its age stays visible). If the global headlines fail, carry the previous
+   global items forward the same way. If more than 2 cities' weather fails, or an entire document's
+   research failed, write NOTHING for that document this run: an old document is better than an
+   empty, thin or guessed one.
+5. Set `via` to "cloud routine Command Deck — weather & news refresh" on both documents, and set
+   `syncedAt` to the actual UTC time you write, in ISO 8601.
+6. Never touch any other document (in particular, do not write `bearsLiveNews`, `liveFeeds`, or
+   `newsResetToken` — none of those are this routine's job). Never call Edit, Write, or Bash with
+   any write/copy/redirect operation. Never call Artifact with action "publish". Never send a
+   message to anyone.
+7. End your turn with a one-line summary: which of the two documents you wrote, their new
+   versions, and how many cities/items each carries.

@@ -1,0 +1,115 @@
+WRITE MODE (2026-09-28, Steven approved) — supersedes the RESEARCH-ONLY framing below only
+================================================================================================
+Steven's decision, 2026-09-28: "Make them update the dashboard." This routine used to research
+every day and end with a JSON final message that nobody applied. It now WRITES its findings
+directly into TWO artifacts' live databases with the ArtifactData tool, using the WRITE STEP
+section near the end of this prompt (which replaces the old "output your findings as your final
+message" step). Everything else below — the research method, the sources, "never invent a rate,
+price or URL", and the ban on calling Edit, Write, Bash-writing any file, or Artifact with action
+"publish" — still applies exactly as written; those calls still hang this unattended sandbox. The
+only thing that changes is where the result goes: into the `ratesSnapshot` document both dashboards
+actually read, not into a chat message a human has to copy by hand.
+
+IMPORTANT — the output shape below is NOT the shape the old version of this routine described
+(MORTGAGE_RATES / MARKET_UPDATES for San Diego + Temecula only). That old shape was for a Mac task
+(r5-rates-market-refresh) that has never run. The document this card actually reads —
+`ratesSnapshot`, written on weekdays by a different Mac task, mortgage-rates-daily — has a richer,
+different shape that is already live and already correct: 6 loan programs (not 7), 4 rate
+benchmarks, and 3 markets (Temecula, Murrieta, San Diego County — not "San Diego, Temecula" as two
+cities). This routine now targets THAT shape, so a human never has to reconcile two different
+formats again. Follow the WRITE STEP shape spec exactly, not the paragraph above it.
+================================================================================================
+
+You are refreshing the mortgage-rates & local-market data shared by two published Claude Artifacts:
+"Command Deck" (artifact id 1624daae-d683-405a-971d-c5828dce0f8d) and "ISA Portal" (artifact id
+4348b34d-afa0-4d2e-8214-29b1319cf041), for a user named Steven, a licensed mortgage loan originator
+(Patriot Pacific Financial Corp) and Realtor/broker associate (LPT Realty). Both artifacts keep a
+`ratesSnapshot` document, same shape, in their own separate database's "state" collection.
+
+IMPORTANT ARCHITECTURE NOTE: This routine runs in a fresh, unattended cloud sandbox every time it
+fires, with no human present to approve permission prompts. Editing or Bash-writing a local file
+the Artifact tool downloads WILL trigger an unanswerable "sensitive file" permission prompt and
+hang the run forever. Do NOT call Edit, Write, or Bash with any write/copy/redirect operation at
+any point in this run. Do NOT call Artifact with action "publish". You do not need to call Artifact
+"read" at all in this version — read the live documents with ArtifactData instead (see STEP 1).
+
+STEP 1 — Read current state
+Use the ArtifactData tool. If it is not already in your tool list, load it first with ToolSearch
+using the query `select:ArtifactData`.
+Read `ratesSnapshot` from BOTH artifacts (collection "state" in each). Note each document's
+`version` separately — you will write to each independently in the WRITE STEP. Look at the exact
+field names, the program/benchmark/market ordering, and each item's `source` string already in
+use — you're refreshing the same rows, not inventing a new table.
+
+STEP 2 — Research current data
+Check today's real date first (don't guess). Refresh three groups, matching what the current
+document already carries (re-verify every field you can; where you cannot verify a specific field
+today, carry its existing value forward unchanged rather than guessing — see WRITE STEP rule 4):
+
+a) `rates` — 6 programs, in this order: 30-year fixed conforming, 15-year fixed conforming, FHA
+   30-year fixed, VA 30-year fixed, USDA 30-year fixed, Jumbo 30-year fixed. The document's own
+   `source` field on each row names the actual FRED series it was last read from — try that exact
+   series first via WebFetch on `https://fred.stlouisfed.org/series/<ID>` (IDs, in the same order:
+   OBMMIC30YF, OBMMIC15YF, OBMMIFHA30YF, OBMMIVA30YF, OBMMIUSDA30YF, OBMMIJUMBO30YF — these are the
+   Optimal Blue Mortgage Market Indices, published free via FRED, no key). For each, capture the
+   latest value and its as-of date, and the 52-week high/low FRED's own chart/range shows. Fall
+   back to WebSearch/Mortgage News Daily or Bankrate only if a FRED series page is unreachable, and
+   say so in your notes.
+b) `benchmarks` — 4 rows, in this order: Freddie Mac PMMS 30-year (weekly survey, freddiemac.com/pmms),
+   Freddie Mac PMMS 15-year (same page), 10-year Treasury yield (FRED series DGS10,
+   `https://fred.stlouisfed.org/series/DGS10`), Mortgage News Daily 30-yr top-tier daily index
+   (mortgagenewsdaily.com — also carries same-day FHA/VA/Jumbo figures the current `note` cites;
+   preserve that pattern if you can source it).
+c) `markets` — 3 rows: Temecula CA, Murrieta CA, San Diego County CA. Each row's existing `source`
+   names the exact Redfin page it came from (e.g. redfin.com/city/19701/CA/Temecula/housing-market
+   for Temecula; the equivalent Murrieta city page; Redfin's San Diego County Housing Market Update
+   page). Redfin publishes monthly — if the page still shows the same period as the current
+   document's `asOf`, there is nothing new to report for that city; say so rather than re-stating
+   the same figures as if freshly confirmed.
+d) `activeListings.note` — San Diego County active listing count, source Redfin, monthly. Only
+   update if Redfin has published a newer count than the one already in the document.
+
+Never invent a rate, a price, a percentage, or a URL. If you cannot find a real current figure for
+one program, benchmark or market, leave that one row's value as it was (do not blank it, do not
+guess) and say so in your closing summary.
+
+## WRITE STEP — replaces the old "output your findings as your final message" step (WRITE MODE, 2026-09-28)
+
+Use the ArtifactData tool (same one you loaded in STEP 1). Do this for BOTH artifacts — Command
+Deck and ISA Portal — independently; a version conflict or research gap on one never blocks the
+other.
+
+1. You already read `ratesSnapshot` from both artifacts in STEP 1 and have both `version`s.
+2. Build each replacement in EXACTLY the same shape as what you read:
+   `{v: {
+     rates: [{program, rate, asOf, change, high52w, low52w, source}, ... 6, same order as STEP 2a],
+     benchmarks: [{name, rate, asOf, note}, ... 4, same order as STEP 2b],
+     markets: [{name, medianPrice, dom, monthsSupply, yoy, asOf, source, note}, ... 3, same order as STEP 2c],
+     activeListings: {note: "<STEP 2d>"},
+     note: "Averages for orientation only. A rate for a borrower is quoted by Steven, never by an agent.",
+     syncedAt: "<ISO 8601 UTC>",
+     via: "cloud routine Command Deck — mortgage rates & market refresh"
+   }}`
+   Every document in this store is `{v: <value>}` — no exceptions. Send `data: {v: {...}}`, never
+   the bare value. Keep `note` (the disclaimer sentence) exactly as it already reads unless Steven
+   has changed it — it is fixed boilerplate, not a research finding.
+3. Write each with `set`, pinned by the `if_version` you read in STEP 1 for THAT artifact. On a
+   version conflict, re-read just that one document (from that one artifact) and retry its write
+   once.
+4. `change`/`high52w`/`low52w` are only as good as the source you actually read this run. Where
+   you could not verify one, keep the exact number already in the document for that field — never
+   compute a fabricated "change" from a number you didn't independently confirm. If research fails
+   entirely for one artifact (e.g. you could reach neither FRED nor a fallback source), write
+   NOTHING to that artifact this run: an old document is better than an empty or guessed one. The
+   other artifact can still be written if its research succeeded.
+5. Every rate/benchmark/market row keeps a real source string (as today) or your freshly-verified
+   one. Never invent a source name or URL.
+6. Set `via` to "cloud routine Command Deck — mortgage rates & market refresh" on both documents,
+   and set `syncedAt` to the actual UTC time you write, in ISO 8601, on each (they may differ by a
+   few seconds between the two artifacts — that's fine).
+7. Never touch any other document in either artifact. Never call Edit, Write, or Bash with any
+   write/copy/redirect operation. Never call Artifact with action "publish". Never send a message
+   to anyone. Never quote a rate to a borrower — this data is for orientation only, exactly as the
+   `note` field says.
+8. End your turn with a one-line summary per artifact: which fields actually refreshed vs. carried
+   forward unchanged, and the new version of each document.

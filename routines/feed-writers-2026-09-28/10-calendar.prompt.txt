@@ -1,0 +1,112 @@
+WRITE MODE (2026-09-28, Steven approved) — this routine now WRITES the dashboard
+================================================================================================
+Steven's decision, 2026-09-28: "Make them update the dashboard." This routine used to end with a
+report nobody applied, and its recent runs reported "blocked" when `list_calendars` returned a
+reconnect-permissions error. It now pulls Steven's calendars and WRITES the result into the
+Command Deck's live database with the ArtifactData tool. If the calendar connector still errors,
+it stops and writes nothing (WRITE STEP rule 5) — the dashboard then keeps its last good copy,
+whose own `syncedAt` shows its age.
+================================================================================================
+
+You are refreshing the "Upcoming" calendar card on a published Claude Artifact called "Command
+Deck" — a personal dashboard for a user named Steven. The artifact is
+https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d (artifact id
+1624daae-d683-405a-971d-c5828dce0f8d, database collection "state", document `calendarSnapshot`).
+
+IMPORTANT ARCHITECTURE NOTE: This routine runs in a fresh, unattended cloud sandbox every time it
+fires, with no human present to approve permission prompts. Editing or Bash-writing a local file
+the Artifact tool downloads WILL trigger an unanswerable "sensitive file" permission prompt and
+hang the run forever. Do NOT call Edit, Write, or Bash with any write/copy/redirect operation at
+any point in this run. Do NOT call Artifact with action "publish". You do not need to call Artifact
+"read" at all — read the live document with ArtifactData instead (see STEP 1).
+
+STEP 1 — Read current state
+Use the ArtifactData tool. If it is not already in your tool list, load it first with ToolSearch
+using the query `select:ArtifactData`.
+Read `calendarSnapshot` (artifact 1624daae-d683-405a-971d-c5828dce0f8d, collection "state"). Note
+its `version` — you need it for the WRITE STEP. Study its exact shape and field names (below) and
+its `syncedAt` formatting (Pacific local time WITH its numeric UTC offset, e.g.
+"2026-09-23T17:37:56-07:00" — not a "Z" UTC stamp like most other documents in this store; match
+that same local-offset convention, since Steven reads this card in Pacific time).
+
+STEP 2 — Pull real calendar data
+Call list_calendars (Google Calendar MCP tool). If it errors with a permissions/reconnect message,
+STOP — do not write anything, and end your turn saying plainly that the connector is not
+authorized (see WRITE STEP rule 5). Otherwise, match what `list_calendars` returns against these
+tracked calendars (name, calendar id, and short label to use in `cal`/the calendars-lists below —
+this table is the dashboard's own record of Steven's calendars, current as of 2026-09-24 (the
+legacy CRM calendar's label is "Legacy CRM" — never the retired CRM's product name); use it,
+but if `list_calendars` shows a calendar not on this list, or one on this list has disappeared,
+note that honestly rather than silently dropping or inventing a row):
+
+| Short label      | Calendar name (as Google shows it)        | Calendar id                                                                  |
+|-------------------|--------------------------------------------|-------------------------------------------------------------------------------|
+| Work              | Patriot Pacific (work)                      | <calendar id — copy from the old prompt>                                                 |
+| Personal          | Personal Gmail                              | <calendar id — copy from the old prompt>                                                    |
+| SPACE             | SPACE                                        | <calendar id — copy from the old prompt>            |
+| Legacy CRM        | Legacy CRM calendar (appointments & tasks)  | <calendar id — copy from the old prompt> |
+| USC               | USC coursework (Canvas)                     | <calendar id — copy from the old prompt>                   |
+| USC               | USC — <calendar id — copy from the old prompt>                      | <calendar id — copy from the old prompt>                                                              |
+| Facebook          | Facebook appointments                       | <calendar id — copy from the old prompt>                          |
+| Holidays          | US holidays                                 | en.usa#<calendar id — copy from the old prompt>                                    |
+
+For EACH calendar that `list_calendars` actually returns, call list_events for the next 7 days
+from today (today 00:00 local through the same local time 7 days out — today's real date, checked,
+not assumed). For each calendar, classify it:
+- Errors (not found, deleted, permission denied) → goes in `calendarsUnavailable`, formatted
+  `"<short label> (<calendar id>) — error: <the exact error text>"`.
+- Returns events but only free/busy (no event titles readable — Google shares no title with this
+  connection) → also goes in `calendarsUnavailable`, formatted `"<short label> (<calendar id>) —
+  free/busy access only, event titles not readable"`.
+- Returns zero events in the window, full access → goes in `calendarsEmpty`, just `"<short
+  label>"`.
+- Returns one or more events → goes in `calendarsRead`, just `"<short label>"`, and its events feed
+  the `events` array below.
+
+For each real event (title readable), build one row: `{title, cal: "<short label>", day, time,
+mins, where, who}`.
+  - `day`: "Today", "Tomorrow", or "<Dow> <Mon> <D>" (e.g. "Fri Sep 25") for anything later in the
+    window.
+  - `time`: the event's local start time formatted like "5:30 PM", or "All day" for an all-day
+    event.
+  - `mins`: the event's duration in minutes (0 for an all-day event).
+  - `where`: the event's location, or "" if none.
+  - `who`: the number of other attendees (not counting Steven himself), 0 if none or unknown.
+Never invent an event, a calendar name, or a date — only report what the tools actually returned.
+
+## WRITE STEP — write the result (WRITE MODE, 2026-09-28)
+
+Use the ArtifactData tool (same one you loaded in STEP 1).
+
+1. You already read `calendarSnapshot` in STEP 1 and have its `version`.
+2. Build the replacement in EXACTLY the same shape as what you read:
+   `{v: {
+     calendarsRead: ["<short label>", ...],
+     calendarsEmpty: ["<short label>", ...],
+     calendarsUnavailable: ["<short label> (<id>) — <reason>", ...],
+     events: [{title, cal, day, time, mins, where, who}, ... every event from STEP 2, sorted by
+       start time],
+     nextUp: "<time> — <title> (<cal>)" for the very next upcoming TIMED event (skip all-day
+       events when picking this one; empty string if there is none in the window),
+     todayCount: <number of events with day == "Today">,
+     tomorrowCount: <number of events with day == "Tomorrow">,
+     weekCount: <events.length>,
+     syncedAt: "<ISO 8601, Pacific local time WITH its numeric UTC offset — see STEP 1>",
+     via: "cloud routine Command Deck — calendar refresh"
+   }}`
+   Every document in this store is `{v: <value>}` — no exceptions. Send `data: {v: {...}}`, never
+   the bare value.
+3. Write it with `set`, pinned by the `if_version` you read in STEP 1. On a version conflict,
+   re-read and retry once.
+4. Never invent an event, a calendar, a date, or an attendee count. A calendar returning a genuine
+   zero events is a real, honest empty week for that calendar — write it as `calendarsEmpty`, not
+   as `calendarsUnavailable`.
+5. If `list_calendars` itself failed (the connector is not authorized, or errors before returning
+   anything), write NOTHING to this document this run — an old document is better than an empty or
+   guessed one. Say so plainly in your closing summary instead.
+6. Set `via` to "cloud routine Command Deck — calendar refresh" and `syncedAt` to the actual time
+   you write, per the format in STEP 1.
+7. Never touch any other document. Never call Edit, Write, or Bash with any write/copy/redirect
+   operation. Never call Artifact with action "publish". Never send a message to anyone.
+8. End your turn with a one-line summary: how many calendars were read/empty/unavailable, how many
+   events you wrote, and the document's new version (or, if you wrote nothing, why).

@@ -1,0 +1,103 @@
+WRITE MODE (2026-09-28, Steven approved) — supersedes the RESEARCH-ONLY framing below only
+================================================================================================
+Steven's decision, 2026-09-28: "Make them update the dashboard." This routine used to research
+every day and end with a JSON final message that nobody applied. It now WRITES its findings
+directly into the Command Deck's live database with the ArtifactData tool, using the WRITE STEP
+section near the end of this prompt (which replaces the old "output your findings as your final
+message" step). Everything else below — "never invent a deal, figure, or URL", and the ban on
+calling Edit, Write, Bash-writing any file, or Artifact with action "publish" — still applies
+exactly as written; those calls still hang this unattended sandbox.
+
+THREE CHANGES from the old version of this routine:
+  - The output shape below is NOT the shape the old prompt described (newPeMoves /
+    newDefenseUpdates keyed for the baked `PE_MOVES` and `DEFENSE_DISRUPTORS` HTML tables). Those
+    two tables are hand-researched and baked into the page — not this routine's job. What this
+    panel actually reads live is TWO small `liveFeeds` entries: `pedefenseLiveList` (private-equity
+    and defense-sector M&A activity) and `defenseUpdatesList`.
+  - `defenseUpdatesList` is NOT a "defense company disruptor" summary like the old prompt's
+    `newDefenseUpdates`. It is a running digest of the latest video uploads from one specific
+    YouTube channel, "Defense Updates" (@DefenseUpdates). STEP 2 below covers this as its own,
+    separate research task.
+  - The AI-tooling-notes step is DROPPED. It fed nowhere live (there is no `aiToolingLiveList`
+    document, and the baked `aiToolingList` on this page is a different, separately-maintained
+    section) — this routine no longer researches it.
+================================================================================================
+
+You are refreshing two small research notes on Panel 33 "Private Equity & Defense Innovation" of a
+published Claude Artifact called "Command Deck" — a personal dashboard for a user named Steven.
+The artifact is https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d (artifact id
+1624daae-d683-405a-971d-c5828dce0f8d, database collection "state", document `liveFeeds`, keys
+`pedefenseLiveList` and `defenseUpdatesList` under its `feeds` object).
+
+IMPORTANT ARCHITECTURE NOTE: This routine runs in a fresh, unattended cloud sandbox every time it
+fires, with no human present to approve permission prompts. Editing or Bash-writing a local file
+the Artifact tool downloads WILL trigger an unanswerable "sensitive file" permission prompt and
+hang the run forever. Do NOT call Edit, Write, or Bash with any write/copy/redirect operation at
+any point in this run. Do NOT call Artifact with action "publish". You do not need to call Artifact
+"read" at all in this version — read the live document with ArtifactData instead (see STEP 1).
+
+STEP 1 — Read current state
+Use the ArtifactData tool. If it is not already in your tool list, load it first with ToolSearch
+using the query `select:ArtifactData`.
+Read `liveFeeds` (artifact 1624daae-d683-405a-971d-c5828dce0f8d, collection "state"). Note its
+`version` — you need it for the WRITE STEP. Look at `feeds.pedefenseLiveList` and
+`feeds.defenseUpdatesList` — each `text` is what was already reported, so you don't just repeat
+the same finding. `liveFeeds` is a large shared document with many OTHER feeds' keys in it — you
+are reading the whole thing but will only ever change these two keys; see WRITE STEP rule 4.
+
+STEP 2 — Research current data
+Check today's real date first (don't guess).
+
+a) `pedefenseLiveList` — private-equity and defense-sector M&A activity. Run WebSearch queries like
+   "Vista Equity Partners Thoma Bravo Silver Lake Francisco Partners KKR Blackstone Carlyle deal
+   news [current month year]", "defense tech acquisition M&A [current month year]", "US M&A deal
+   digest defense [current week/month year]". Only include genuinely NEW named transactions (not
+   already covered in the STEP 1 text) with real, checkable sources — deal size, the two named
+   parties, and the date announced. Never invent a deal, a valuation, or a URL.
+
+b) `defenseUpdatesList` — the latest video uploads from the YouTube channel "Defense Updates"
+   (https://www.youtube.com/@DefenseUpdates, channel id UCKNCbBWiMiXBVXUmUuu_dsQ). WebSearch for
+   its most recent uploads (e.g. "Defense Updates youtube channel latest videos [current month
+   year]"), or WebFetch the channel's own videos page, to find its newest few real video titles,
+   publish dates, and URLs. Summarize what each covers in one short sentence, oldest of the batch
+   last. This is an independent commentary channel, not an official DoD source — say so in the
+   text (see the shape spec below), and never invent a video title, date, or URL.
+
+## WRITE STEP — replaces the old "output your findings as your final message" step (WRITE MODE, 2026-09-28)
+
+Use the ArtifactData tool (same one you loaded in STEP 1).
+
+1. You already read `liveFeeds` in STEP 1 and have its `version`.
+2. Build BOTH replacement entries in EXACTLY the same shape as the ones you read:
+   `feeds.pedefenseLiveList` → `{checkedAt: "<ISO 8601 UTC>", citations: [{title, url}, ... 3 to 5
+   real sources], model: "cloud-routine", source: "WebSearch", text: "<2-4 sentences on the newly
+   confirmed deal(s) from STEP 2a>"}`.
+   `feeds.defenseUpdatesList` → `{checkedAt: "<ISO 8601 UTC>", citations: [{title, url}, ... one
+   per video you found, newest first], model: "cloud-routine", source: "YouTube @DefenseUpdates
+   (channel UCKNCbBWiMiXBVXUmUuu_dsQ)", text: "<one sentence per video: title, publish date, and a
+   short description of what it covers, ending with: 'Independent analysis -- verify against a
+   primary source before acting on any figure.'>"}`.
+   Only write the entries you actually have new, sourced material for — if STEP 2a found nothing
+   genuinely new, leave `pedefenseLiveList` out of this write entirely (see rule 5); the same for
+   `defenseUpdatesList` if the channel has no new upload since the last run.
+3. Write with `update`, NOT `set`. `update` is a deep merge — measured on this database on
+   2026-09-28: it changes only the nested keys you send and leaves every other key in the
+   document exactly as it was. Send one update, pinned by the `version` you read in STEP 1:
+   ArtifactData action "update", collection "state", doc_id "liveFeeds", if_version <that version>,
+   data: {v: {feeds: {pedefenseLiveList: {...}, defenseUpdatesList: {...}}}}
+   — each entry with all five fields (checkedAt, citations, model, source, text), and only the
+   entries you have new, sourced material for (rule 2). On a version conflict, re-read
+   `liveFeeds` and retry the same update once with the new version.
+4. Never `set` the `liveFeeds` document and never send any key but `feeds.pedefenseLiveList` and
+   `feeds.defenseUpdatesList` — not another feed's key, not the document's top-level `updatedAt` or `via`.
+   This is a shared document; other routines' keys and its own provenance fields are not yours.
+5. Each entry's `citations` must be real source URLs from STEP 2, at least 3 for
+   `pedefenseLiveList` and one per video for `defenseUpdatesList`. If one side's research fails or
+   is too thin to trust, write ONLY the side that succeeded — never write an empty or guessed entry
+   for the other; an old entry is better than an empty one.
+6. Set `model` to "cloud-routine" on both entries — never a model name — and `checkedAt` to the
+   actual UTC time you write, in ISO 8601, on whichever entries you write.
+7. Never touch any other document. Never call Edit, Write, or Bash with any write/copy/redirect
+   operation. Never call Artifact with action "publish". Never send a message to anyone.
+8. End your turn with a one-line summary: which of the two entries you wrote (or why one/both were
+   skipped), and the document's new version.
