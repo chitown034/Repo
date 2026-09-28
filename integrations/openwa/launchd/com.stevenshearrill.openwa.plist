@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  OpenWA keepalive (R9, 2026-09-27). Not installed anywhere by this repo — Steven copies this file
+  himself (install.sh prints the exact command). Purpose: docker-compose's own `restart:
+  unless-stopped` policy brings the container back after a crash or a Docker Desktop restart, but
+  nothing re-issues `docker compose up -d` after a full macOS reboot until Docker Desktop itself has
+  finished starting. This job just re-asserts the desired state every 5 minutes; it is a no-op
+  (docker compose reports the service already up) the overwhelming majority of the time.
+
+  Every path below is a placeholder for the user running this — `~` does not expand inside a plist.
+  Replace __HOME__ with the real home directory (install.sh's printed command does this with sed)
+  before loading it, or just run: sed "s#__HOME__#$HOME#g" com.stevenshearrill.openwa.plist > \
+    ~/Library/LaunchAgents/com.stevenshearrill.openwa.plist
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.stevenshearrill.openwa</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-lc</string>
+        <string>PATH="/usr/local/bin:/opt/homebrew/bin:__HOME__/.docker/bin:$PATH" docker compose -f __HOME__/Applications/openwa/docker-compose.yml up -d --no-deps openwa-api</string>
+    </array>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <!-- The no-deps flag keeps the docker-socket-proxy sidecar from starting (see install.sh). PATH covers the
+         three places Docker Desktop puts its CLI (/usr/local/bin, Homebrew, ~/.docker/bin). -->
+    <!-- Reconciliation, not a restart-on-crash loop: docker-compose's own restart policy already
+         handles that. This just re-asserts "up" periodically in case Docker Desktop was still
+         starting when RunAtLoad fired. -->
+    <key>StartInterval</key>
+    <integer>300</integer>
+
+    <key>StandardOutPath</key>
+    <string>__HOME__/Library/Logs/openwa-keepalive.log</string>
+    <key>StandardErrorPath</key>
+    <string>__HOME__/Library/Logs/openwa-keepalive.log</string>
+
+    <!-- Never runs as root, never elevates. Docker Desktop must already be running under this same
+         user session — this job does not start Docker Desktop itself. -->
+</dict>
+</plist>
