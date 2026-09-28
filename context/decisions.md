@@ -319,3 +319,19 @@ the record of the change. The full split, and the three web-UI routine edits onl
   always maps to `local`.
 - **Not decided — HALT.** A top tier behind OmniRoute would need a pay-per-token key (money): NEEDS-STEVEN 77.
 - **Owner.** Derek (automation), Elena (the PII gate). **Status.** Built 2026-09-28; nothing installed on the Mac.
+
+## 2026-09-28 — WhatsApp: Vanessa answers through a local bridge, not n8n or a runner task
+
+- **Request (Steven, verbatim).** *"also connect whats app to my phone now"*.
+- **Decision.** `integrations/openwa/vanessa-bridge.py`, run by a LaunchAgent on the Mac that runs OpenWA.
+  It polls the self-chat every 20 s with Vanessa's chat-fenced key. The read costs nothing, and Claude
+  runs only for a new message (`claude -p --agent vanessa-orchestrator` from the Repo, read-only tools).
+  It replies in the same chat with the §5a rules: `[V] ` marker, echo hashes, 3 per poll, 20 a day.
+  n8n and the 10-minute runner task were both rejected: n8n adds Node 24, a webhook secret and a UI wizard
+  for no gain, and a runner task would call a model 144 times a day to find nothing new.
+- **Why not in the cloud.** The cloud sandbox's egress proxy blocks the WebSocket connection WhatsApp
+  needs, and a cloud container is ephemeral. The link must live on the Mac.
+- **Privacy.** Message ids (which embed the phone number) and Vanessa's replies are stored only as
+  hashes. The log holds no message text. Messages reach Claude on stdin, not the command line.
+- **Owner.** Derek (automation), Elena (the fence). **Status.** Built and tested in the sandbox
+  2026-09-28; Steven links the phone (NEEDS-STEVEN 78).

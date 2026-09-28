@@ -494,6 +494,14 @@ Mac, since nothing in this repo has ever run on one.
 **Supersedes the transport half of §5. Everything else in §5 — the handler, the HALT list, the
 `agentInbox` shapes, the route gate, the model seat — is unchanged.**
 
+> **Built 2026-09-28 on OpenWA instead of `whatsapp-cli`:** `integrations/openwa/vanessa-bridge.py`
+> (LaunchAgent via `install-bridge.sh`). The rules below — the `[V] ` marker, echo detection, 3 per poll,
+> 20 a day, a monotonic cursor — are implemented there. Three things changed with the transport: reads go
+> through OpenWA with Vanessa's chat-fenced key, so there is no Full Disk Access and no desktop-DB read;
+> sends need no GUI session; and the bridge polls every 20 s without a model call, starting Claude only
+> for a new message instead of a runner task every 10 minutes. It keeps state as hashes on the Mac, not
+> in a `whatsappInboxState` doc. Tests: `integrations/openwa/tests/test_vanessa_bridge.py`.
+
 Steven chose to link **his own personal WhatsApp** rather than a dedicated number, after being told
 what it costs. He reaches Vanessa in his **own "Message Yourself" thread**: he types there, she
 answers there. This file is the amendment that makes that work, because §5 as written **cannot** run

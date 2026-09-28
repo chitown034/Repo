@@ -14,7 +14,8 @@
 #                 installed in ~/laya-venv and registered with Claude Code as the MCP server "laya".
 #   3. WhatsApp — Docker Desktop, then integrations/openwa/setup-phone.sh: OpenWA installed on this
 #                 Mac only, a QR code to scan with your phone, and Vanessa's key fenced to your
-#                 "Message Yourself" chat.
+#                 "Message Yourself" chat; then integrations/openwa/install-bridge.sh, so Vanessa
+#                 answers you there (added 2026-09-28).
 set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -88,6 +89,7 @@ if [ "$SKIP_WA" = 0 ]; then
     docker info >/dev/null 2>&1 || fail "Docker Desktop did not finish starting — open it, wait for 'Engine running', then run: bash integrations/install-orca-whatsapp-laya.sh --skip-orca --skip-laya"
   fi
   bash "$HERE/openwa/setup-phone.sh" ${PASS_ARGS[@]+"${PASS_ARGS[@]}"}
+  bash "$HERE/openwa/install-bridge.sh"
 fi
 
 step "Done"

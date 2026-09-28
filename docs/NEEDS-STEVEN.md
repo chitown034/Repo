@@ -299,3 +299,11 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
     (code.claude.com/docs/en/legal-and-compliance → "Authentication and credential use") keep subscription
     sign-in for Claude Code and Anthropic's own apps, so the subscription never goes through a gateway. The only
     way would be a pay-per-token API key — that spends money, so it is yours to decide. Default: no.
+78. **WhatsApp → Vanessa, end to end** (supersedes 40 and 66; your "connect WhatsApp to my phone now",
+    2026-09-28). The reply bridge now exists and is tested (18 tests). On the Mac, in Terminal, from your
+    Repo folder: `git pull && bash integrations/install-orca-whatsapp-laya.sh --skip-orca --skip-laya`.
+    It installs Docker Desktop if missing (you accept its terms once) and builds OpenWA (10–15 min the first
+    time). Then it opens a QR code: iPhone → WhatsApp → Settings → Linked Devices → Link a Device → scan it.
+    If you aren't at the Mac screen, add `--code` and type the 8 characters under "Link with phone number
+    instead". Last, it installs the bridge. Test it by sending yourself "Vanessa, are you there?" in Message
+    Yourself; she answers there, starting with [V]. To undo: `bash integrations/openwa/install-bridge.sh --uninstall`.

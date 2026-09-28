@@ -47,6 +47,15 @@ You'll see a `[V] Vanessa is linked…` message in your self-chat. Prefer typing
 `bash integrations/openwa/setup-phone.sh --code` and enter the 8 characters under **Link with phone number
 instead**.
 
+Then one more command, so Vanessa answers you there (Step 8):
+
+```bash
+bash integrations/openwa/install-bridge.sh
+```
+
+`bash integrations/install-orca-whatsapp-laya.sh --skip-orca --skip-laya` runs both, and installs Docker
+Desktop first if it is missing.
+
 Steps 3–6 below are the same thing done by hand.
 
 ## Step 1 — Docker Desktop (skip it if `docker info` already works)
@@ -160,15 +169,35 @@ launchctl load ~/Library/LaunchAgents/com.stevenshearrill.openwa.plist
 Docker Desktop must itself start at login: **Docker Desktop → Settings → General → Start Docker Desktop
 when you sign in**.
 
-## What is not done yet
+## Step 8 — Vanessa answers you there (the bridge)
 
-WhatsApp is linked, but **Vanessa does not answer there yet.** The bridge comes next:
-- OpenWA's webhook for your self-chat;
-- local n8n;
-- Vanessa's inbox;
-- her reply back through her key.
+```bash
+bash integrations/openwa/install-bridge.sh
+```
 
-That is being built and tested now. It will arrive as one more `git pull` and one more script.
+It checks that your phone is linked, stores two settings in the Keychain (your session id and self-chat
+id, never in a file), runs a self-test that sends nothing, and installs a LaunchAgent that keeps
+`vanessa-bridge.py` running. Then send yourself **"Vanessa, are you there?"** in **Message Yourself**.
+Her answer arrives in the same chat within a minute or two, starting with `[V]`.
+
+How it works: every 20 seconds the bridge reads the newest messages of your self-chat with Vanessa's
+fenced key. That read costs nothing, and Claude runs only when you have written something. For each new
+message it runs Claude Code on this Mac as Vanessa (`claude -p --agent vanessa-orchestrator`) from your
+Repo, so the brain's `CLAUDE.md` and HALT list apply. From WhatsApp she can read and research but not run
+commands or change files. Her answer goes back into the same chat, every part starting with `[V]`.
+
+The rules (`integrations/mac-task-specs.md` §5a):
+- **Your messages only.** Anything starting with `[V]` is hers and is never answered. If you type `[V]`
+  yourself, she ignores that message.
+- **At most 3 answers per check, 20 messages a day.** The 20th is a notice that she is pausing until
+  tomorrow. Hitting the limit means a loop, not a busy day.
+- **Nothing old.** The first check only marks what is already in the chat. A message more than 12 hours
+  old when the Mac first sees it is not answered.
+- **Nothing kept.** The state file keeps only hashes, and the log keeps no message text, number or key.
+- Voice notes and photos get a one-line "please type it" answer.
+
+The n8n workflow in `integrations/n8n/` is **not needed** for this. The bridge reads OpenWA directly, so
+there is no webhook, no n8n and no extra port.
 
 ## Troubleshooting
 
@@ -178,9 +207,12 @@ That is being built and tested now. It will arrive as one more `git pull` and on
 | "port is already allocated" | Something else uses 2785. Set `API_PORT=2786` in `~/Applications/openwa/.env`, re-run `install.sh`, and use 2786 everywhere above |
 | QR keeps expiring | Use the dashboard; it refreshes the code for you |
 | Linked, then logged out by itself | WhatsApp → Linked Devices shows why. Re-link. If it repeats, stop and tell Vanessa, because repeated forced logouts can come before a restriction |
+| Vanessa doesn't answer | `python3 integrations/openwa/vanessa-bridge.py --check --claude "$(command -v claude)"` (sends nothing), then `tail -5 ~/Library/Logs/vanessa-whatsapp-bridge.log` |
+| "couldn't answer … usage limit" | Your Claude plan's usage limit was hit. She retries 3 times, 5 minutes apart. Ask again after the limit resets |
 
 ## How to undo all of it
 
+0. `bash integrations/openwa/install-bridge.sh --uninstall` stops Vanessa answering (removes the bridge only).
 1. WhatsApp → **Linked Devices** → tap the OpenWA device → **Log out**.
 2. `launchctl unload ~/Library/LaunchAgents/com.stevenshearrill.openwa.plist` and delete that file.
 3. `cd ~/Applications/openwa && docker compose down -v`. The `-v` also deletes its stored data.

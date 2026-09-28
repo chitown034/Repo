@@ -167,7 +167,7 @@ if q.startswith("data:image"):
   unset ADMIN OP
   say ""
   say "Done. WhatsApp is linked to OpenWA on this Mac, and Vanessa's key is fenced to your self-chat."
-  say "Vanessa does not answer there yet — the bridge from OpenWA to her inbox is the next step."
+  say "Next, so Vanessa answers you there: bash integrations/openwa/install-bridge.sh"
 }
 
 main "$@"

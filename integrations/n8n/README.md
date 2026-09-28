@@ -10,7 +10,8 @@ system.
 
 **What this is:** an n8n instance for the two things nothing else already owns —
 
-1. `workflows/openwa-selfchat-to-vanessa.json` — OpenWA's self-chat webhook → filter to
+1. *(Optional since 2026-09-28 — `integrations/openwa/vanessa-bridge.py` reads OpenWA directly and needs
+   no n8n.)* `workflows/openwa-selfchat-to-vanessa.json` — OpenWA's self-chat webhook → filter to
    Steven's own chat → append to a local queue file. It never replies and never calls a
    client-facing endpoint; the Vanessa inbox logic itself stays in the existing Claude-side Mac
    task (`integrations/mac-task-specs.md` §5a), coordinated with lane C1.
