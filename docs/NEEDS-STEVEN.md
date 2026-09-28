@@ -317,3 +317,10 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
     run stopped at startup with "You've hit your session limit · resets 6am (UTC)". Your weekly allowance is
     also at its warning level and resets around Sun Oct 4, 1 PM PT. The biggest cut only you can make:
     switch off the 10 old research-only routines in item 73. They produce nothing now that the writers exist.
+81. **Decision — let the Command Deck read your Google Calendar live?** The dashboard already has code
+    (Daily Ops "upcoming" list) that reads your calendar through your own Google Calendar connector each
+    time you open it; the OpenTerminal market tape does the same in the desktop app. It has never worked,
+    because the page was never granted connector access. Turning that on was refused by this session's
+    safety check (it adds a way for the page to call your connectors, including a local server on your
+    Mac), so it is yours to decide. If you say yes, it will be Google Calendar `list_events` only (read-only),
+    and the dashboard will ask you once to allow it. Until then the calendar list shows the last synced copy.
