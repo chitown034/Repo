@@ -14,7 +14,7 @@ Trust levels: **L1** report-only · **L2** drafts for Steven's approval · **L3*
 | **Lofty** (real-estate CRM) | `lofty-bridge` MCP (read-only) + `lofty-cli` on the Mac; REST `api.lofty.com/v1.0`, `Authorization: token <key>` | Bridge and CLI installed (status RUN, MCP server `lofty` connected). **API key presence unverified from the cloud — no successful pull yet.** Composio has no Lofty toolkit. | **In Lofty → Settings → Integrations → API, generate an API key and put it in `~/.config/lofty/.env` on the Mac as `LOFTY_API_KEY=…`, then run `lofty-crm-sync` once.** | L1 → L2 after 7 clean runs |
 | **Zoho CRM** (mortgage system of record — Steven, restated 2026-09-24) | Composio toolkit `zoho`, account `zoho_talite-spike` | Connection **ACTIVE**, but every CRM call returns **HTTP 403 NO_PERMISSION** — reproduced 2026-09-22 08:17 UTC and **re-tested 2026-09-24**, twice — the second at 15:56 UTC (`ZOHO_GET_ZOHO_RECORDS`, Leads, one record, one non-PII field): still 403. Steven reports having an API key; **the key is not the blocker** — the profile permission refuses every key and token for that user until it is switched on. | **In Zoho CRM → Setup → Security Control → Profiles → the connected user's profile → Developer Permissions, enable "Zoho CRM API Access".** Then re-authorise the Composio connection once. | L1 → L2 once unblocked |
 | **CLI-Anything** (homes.com, ShowingTime, Showami, SkySlope, zipForms — plus Lofty and Zoho REST) | `cli-anything-hub` + Claude Code plugin; `cli-anything-browser` (**vendored in this repo**, not on PyPI — F-H1-02) driving DOMShell for the sites with no API; REST for Lofty and Zoho | **Not installed on the Mac** — and no longer generated: **eight read-only harness packages are pre-built** in `integrations/cli-anything-harnesses/` (a ninth, `publicfeeds`, added R6 2026-09-24 — see the dedicated section below) and install **browser first, then the eight, into one venv** — not `pip install .` per package: the six DOMShell packages (homes, ShowingTime, Showami, plus `publicfeeds`) pin `cli-anything-browser>=1.0.0`, which is not on PyPI, so installing one of them on its own exits 1 (built and unit-tested offline 2026-09-22, F-H2b-01…13; standalone-install measurement F-P4-03). Hub and plugin are one scripted step (`MAC-SETUP.sh --only cli-anything`); the vendored browser engine and all eight site packages are another (`--only cli-anything-harnesses`, one `uv pip install` into `~/Applications/cli-anything-harnesses/.venv`, browser first, symlinked into `~/.local/bin`); the earlier claim that the install is interactive was wrong (F-S1-18), and so is the claim that each wrapper must be generated one per site (F-H1-10). **Nothing is verified:** all 26 browser recipes ship `verified: false`, no site has ever been reached, and not one of the eight has ever made a live call (F-H1-01, F-H2b-13). SkySlope and zipForms refuse every live command, exit 3, until `CLI_ANYTHING_ECC_REVIEWED_AT` holds a real sign-off date; `publicfeeds`'s three groups refuse the same way behind their own three `CLI_ANYTHING_TOS_REVIEWED_<GROUP>` gates. Hub registry has no CRM or real-estate entries (README checked 2026-09-22; `clianything.cc` egress-blocked). | **Run `./MAC-SETUP.sh` — hub, plugin, the vendored browser harness and the eight packages all install non-interactively — put `export CLI_HUB_NO_ANALYTICS=1` in your shell profile **and** the runner task's env (the script only covers its own run), install the DOMShell Chrome extension and sign in by hand, then run `integrations/cli-anything-harnesses/connect.sh` for the guided next steps (posture check, `--discover` per open gate, what's still pending). There is nothing to generate.** | L1, read-only |
-| **Apple Health** | New: Claude iOS → Notion "Health Log" → `health-notion-sync` → `appleHealth` doc. Old: Health Auto Export → daemon :8765 → DuckDB → `apple-health` MCP | Old pipeline **down** — daemon not responding, doc 9 days stale (`last_received 2026-09-13 14:30:40`), `r8-apple-health-snapshot` errors since 2026-09-17. New path: **spec written, first phone run pending.** | **Open Claude on your iPhone, say "update my health stats in Notion", and approve the Apple Health read + Notion write prompts once.** | L2 |
+| **Apple Health** | New: Claude iOS → Notion "Health Log" → `health-notion-sync` → `appleHealth` doc. Old: Health Auto Export → daemon :8765 → DuckDB → `apple-health` MCP | Old pipeline **down** — daemon not responding, doc 9 days stale (`last_received 2026-09-13 14:30:40`), `r8-apple-health-snapshot` errors since 2026-09-17. New path: **spec written, first phone run pending.** | **Open Claude on your iPhone, say "update my health stats in Notion", and approve the Apple Health read + Notion write prompts once.** | L2 n8n evaluated for the Notion→doc leg 2026-09-28, not chosen — last hop is a Claude-only write_db call; see routing row 10. |
 
 ## Everything else
 
@@ -118,3 +118,183 @@ gate-open recipe's output into `ratesSnapshot`/`liveFeeds`: `integrations/mac-ta
 - `.claude/skills/apple-health-notion/SKILL.md` · `.claude/skills/cli-anything-connectors/SKILL.md`
 - `integrations/apple-health-dashboard.md` · `integrations/mac-task-specs.md`
 - `integrations/cli-anything-harnesses/publicfeeds/PUBLICFEEDS.md` · `integrations/cli-anything-harnesses/connect.sh` (R6, 2026-09-24)
+
+## CLI-Anything vs. Composio vs. n8n vs. Pabbly — ten-system routing, R9 (2026-09-28)
+
+## C2-fabric routing table — ten systems, one path each
+
+**Written 2026-09-27, lane C2-fabric, round R9.** Read-only research only: vendor documentation and
+public reference sites. No credential was requested, received or stored. Every vendor domain below
+(zoho.com, api.lofty.com, showami.com, showingtime.com, homes.com/press.homes.com, crmls.org,
+apidocs.lwolf.com, skyslope.com, dotloop.com/dotloop.github.io) returned `EGRESS_BLOCKED` or DNS
+failure on a direct fetch from this sandbox — the same restriction earlier rounds hit on
+redfin.com/veteransunited.com/navyfederal.org/lennar.com. Every URL below was therefore read as a
+**WebSearch-returned excerpt that names and quotes that page**, not a direct fetch; each row says so.
+Zero Perplexity calls used (budget left for the other two lanes). No CRMLS terms interpretation is
+made here — that is lane C3's HALT row (Alexandra drafts, Steven decides); this table only records
+what the API surface is.
+
+**Row 10 (Apple Health) added 2026-09-28**, per Steven's verbatim direction that round naming it
+alongside the original nine. It is not vendor research — Apple Health has no vendor API surface this
+repo calls (see row 10) — it is a one-owner-per-data-flow decision about the pipeline
+`.claude/skills/apple-health-notion/SKILL.md` and `integrations/CONNECTIONS.md` already document, so
+it draws on those two files rather than a new WebSearch or Perplexity call.
+
+### Headline finding
+
+**Zero of the ten systems get n8n as their chosen path.** Zoho already has one owner in this
+ecosystem (Composio — active connection, blocked only by a profile permission, not by API absence).
+The other seven vendor systems either already have a CLI-Anything harness built and gated (Lofty,
+Showami, ShowingTime, homes.com, SkySlope, zipForms) or are getting one this round from lane C3
+(dotloop), or have no automated path pending Steven's own licensing decision (CRMLS). Apple Health
+(row 10) is not a vendor at all — its existing owner is the `health-notion-sync` Mac task, for reasons
+row 10 gives. Adding n8n or Pabbly beside any of these would be a second path to the same data, which
+brief §0 names Zoho itself as the example to avoid. n8n's real job this round is the two bridge
+categories the brief asks for regardless of this table's outcome — the OpenWA→Vanessa relay and
+scheduled CLI-Anything harness runs — built in `integrations/n8n/` (see its README), not a new
+connector for any row below.
+
+---
+
+### 1. Zoho CRM
+
+| | |
+|---|---|
+| Public API | **Yes.** Zoho CRM REST API (v8), OAuth2. Evidence: n8n's own node documentation names and links it — [Zoho CRM \| Nodes \| n8n Docs](https://docs.n8n.io/integrations/builtin/app-nodes/n8n-nodes-base.zohocrm) (read via WebSearch excerpt; `zoho.com` itself is `EGRESS_BLOCKED` from this sandbox). Already corroborated inside this repo: the `zoho` Composio toolkit and `integrations/cli-anything-harnesses/zoho/` both call this same API today. |
+| Pabbly built-in app | **Yes.** "Zoho CRM Integrations FREE — Connect with 1000+ Apps" at pabbly.com/connect/integrations/zoho-crm/: 8 triggers (incl. webhook-based Create/Update/Delete Module Entry) and 55 actions; also listed as "Pabbly Connect for Zoho CRM" on Zoho's own marketplace. |
+| n8n node | **Yes.** `n8n-nodes-base.zohoCrm` — https://docs.n8n.io/integrations/builtin/app-nodes/n8n-nodes-base.zohocrm |
+| CLI-Anything harness | **Yes.** `integrations/cli-anything-harnesses/zoho/` (REST harness, `tools/mint-access-token.sh`) — already built. |
+| **Chosen path** | **Composio `zoho` toolkit — unchanged.** It is the ecosystem's existing one owner (`zoho-crm-sync` skill, `zohoSync`/`zohoLeads`/`zohoDeals` docs, connection **ACTIVE**). Building the n8n node or a Pabbly workflow here is exactly the "Zoho through Composio, n8n *and* Pabbly" drift brief §0 warns against. |
+| **Steven's one step** | Unchanged from `integrations/CONNECTIONS.md`: in Zoho CRM → Setup → Security Control → Profiles → the connected user's profile → Developer Permissions, enable **"Zoho CRM API Access"**, then re-authorize the Composio connection once. Not duplicated as a new NEEDS-STEVEN row — it is already open. |
+
+### 2. Lofty (real-estate CRM)
+
+| | |
+|---|---|
+| Public API | **Yes.** Lofty Developer API, REST, 94 endpoints, OAuth2 or API key. Evidence: [Lofty Developer API](https://api.lofty.com/) and [Lofty API — OAuth 2.0](https://help.lofty.com/hc/en-us/articles/4405826620571-Lofty-API-OAuth-2-0) (read via WebSearch excerpt; `api.lofty.com` is `EGRESS_BLOCKED` from this sandbox). |
+| Pabbly built-in app | **Yes.** "Lofty Integrations FREE — Connect with 1000+ Apps" at pabbly.com/connect/integrations/lofty/. |
+| n8n node | **No** dedicated node found in n8n's published integrations list or community forum — a generic HTTP Request node + credential would be needed if this were chosen. |
+| CLI-Anything harness | **Yes.** `integrations/cli-anything-harnesses/lofty/` (REST harness) — already built and already the ecosystem's chosen path (`lofty-bridge` MCP + `lofty-cli`, `lofty-crm-sync` skill, L1→L2 trust track). |
+| **Chosen path** | **CLI-Anything (`lofty-bridge`/`lofty-cli`) — unchanged.** Same one-owner reasoning as Zoho: it already has a working, tested-shape path; Pabbly's built-in app is a genuine alternative but adopting it now would run two paths into `loftyLeads`. |
+| **Steven's one step** | Unchanged from `integrations/CONNECTIONS.md`: generate an API key in Lofty → Settings → Integrations → API, put it in `~/.config/lofty/.env` as `LOFTY_API_KEY=…`, run `lofty-crm-sync` once. |
+
+### 3. Showami
+
+| | |
+|---|---|
+| Public API | **Partial, not self-serve.** Showami has "moved out of Beta" on APIs for agent-roster sync, feedback requests and rental requests, but it is described as a **CRM/back-office integration** ("connects a CRM or back office system to Showami via API") — no public developer portal or self-serve credential flow was found. Evidence: [Automated Showings — Showami](https://blog.showami.com/automate-showings/) (via WebSearch excerpt; `showami.com` is `EGRESS_BLOCKED` here). |
+| Pabbly built-in app | **No evidence found** (searched pabbly.com). |
+| n8n node | **No evidence found.** |
+| CLI-Anything harness | **Yes.** `integrations/cli-anything-harnesses/showami/` (browser/DOMShell harness) — already built, `verified: false`, never called live. |
+| **Chosen path** | **CLI-Anything (browser/DOMShell, existing).** The only documented API is a partner/back-office integration Steven is not enrolled in; his own logged-in browser session, automated read-only, is the practical path already built. |
+| **Steven's one step** | Install the DOMShell Chrome extension and sign in by hand, then run `integrations/cli-anything-harnesses/connect.sh` for the guided posture check — unchanged from the existing CLI-Anything row. If he later wants the roster/feedback API, that means contacting Showami as a connected back-office vendor — a business step, out of scope this round. |
+
+### 4. ShowingTime
+
+| | |
+|---|---|
+| Public API | **No self-serve public API for an individual agent's own showings/feedback.** ShowingTime+'s "Bridge" product is a RESO-certified **MLS data-distribution** feed (built for MLSs, not individual agents); a ShowingTime Postman workspace exists but no public endpoint reference page was reachable. Evidence: [MLS Listing Data Feeds RESO Web API \| ShowingTime+](https://showingtime.com/solutions/data-distribution) and the [ShowingTime Postman workspace listing](https://www.postman.com/showingtime) (via WebSearch excerpt; `showingtime.com` is `EGRESS_BLOCKED` here). |
+| Pabbly built-in app | **No evidence found.** |
+| n8n node | **No evidence found.** |
+| CLI-Anything harness | **Yes.** `integrations/cli-anything-harnesses/showingtime/` (browser/DOMShell harness) — already built. |
+| **Chosen path** | **CLI-Anything (browser/DOMShell, existing).** Same reasoning as Showami — the only real API on offer is an MLS-side feed, not something an individual agent account can call. |
+| **Steven's one step** | Same DOMShell sign-in + `connect.sh` posture check as the row above. |
+
+### 5. homes.com
+
+| | |
+|---|---|
+| Public API | **No public self-serve developer API.** CoStar/Homes.com runs "Homes.com Connect," a partner API through which **CRM vendors** receive lead/contact data — confirmed as not a published, documented, self-serve program for an individual agent (no OpenAPI/OData/webhooks/SDK/Postman collection/auth scheme found). Evidence: [Homes.com Launches API to Streamline Real Estate Communication](https://press.homes.com/homes-com-launches-api-to-streamline-real-estate-communication/) (via WebSearch excerpt; `homes.com`/`press.homes.com` are `EGRESS_BLOCKED` here). |
+| Pabbly built-in app | **No evidence found.** |
+| n8n node | **No evidence found.** |
+| CLI-Anything harness | **Yes.** `integrations/cli-anything-harnesses/homes/` (browser/DOMShell harness) — already built. |
+| **Chosen path** | **CLI-Anything (browser/DOMShell, existing).** The real API is a CRM-partner feed Steven's own account cannot call directly. |
+| **Steven's one step** | Same DOMShell sign-in + `connect.sh` posture check. |
+
+### 6. CRMLS
+
+| | |
+|---|---|
+| Public API | **Yes, but a licensed contractual MLS feed, not a public/self-serve API.** CRMLS promotes the RESO Web API as its main IDX/data feed; access requires a **data-licensing agreement**, typically at the Broker Participant level (agents subscribe under a broker), with CRMLS issuing the Web API URL/client id/secret directly (`licensing@crmls.org` to start, `api@crmls.org` for the API account). Evidence: [IDX Resources – CRMLS](https://go.crmls.org/idx-resources/) and [CRMLS Development Docs — Start](https://devdocs.crmls.org/start/) (via WebSearch excerpt; `crmls.org` is `EGRESS_BLOCKED` here). |
+| Pabbly built-in app | Not checked further — moot given the row below. |
+| n8n node | **No evidence found**; n8n has no MLS/RESO-specific node. |
+| CLI-Anything harness | **No, and none should be built.** Per lane C3's mandate this round, a scraper is not an approved substitute for a licensed MLS feed until the terms question is answered. |
+| **Chosen path** | **None today — halt.** This mirrors lane C3's halt row; this lane does not re-interpret CRMLS's terms (that is Alexandra's draft, Steven's decision, per the HALT list). |
+| **Steven's one step** | Decide, with Alexandra's draft, whether to pursue the licensed RESO Web API path; if yes, apply as the Broker Participant via `licensing@crmls.org` / `api@crmls.org`. See C3's halt row for the compliance text itself — not duplicated here. |
+
+### 7. zipForms (Lone Wolf Transactions — zipForm Edition)
+
+| | |
+|---|---|
+| Public API | **Yes, but licensed/partner-gated.** A documented REST API exists (Shared Key + Context Id/External Id auth) but is, in the vendor's own words, "made available on a licensed basis to third-party **application partners**" — not self-serve for an individual broker. Evidence: [ZipForm API documentation](https://apidocs.lwolf.com/doc/zipform-api) (via WebSearch excerpt; `apidocs.lwolf.com` is `EGRESS_BLOCKED` here). |
+| Pabbly built-in app | **No evidence found.** |
+| n8n node | **No evidence found.** |
+| CLI-Anything harness | **Yes.** `integrations/cli-anything-harnesses/zipforms/` (browser/DOMShell harness) — already built, gated behind `CLI_ANYTHING_ECC_REVIEWED_AT` (exits 3 until a real sign-off date is set). |
+| **Chosen path** | **CLI-Anything (browser/DOMShell, existing).** Lone Wolf's real API needs a partner agreement Steven does not hold; the existing, already-gated harness is the practical path. |
+| **Steven's one step** | Complete the ECC review already gating this harness (set `CLI_ANYTHING_ECC_REVIEWED_AT` to a real sign-off date) — unchanged, no new gate added. Pursuing Lone Wolf's partner API is a separate business step, out of scope this round. |
+
+### 8. SkySlope
+
+| | |
+|---|---|
+| Public API | **Yes, but partner-gated.** A Partnership/Forms API (OAuth2 + PKCE) and an Offers API (OAuth2 client-credentials) exist with public reference docs, but "obtaining OAuth client credentials is partner/brokerage-gated" through an Order Form; some endpoints are marked partner-only in the published reference. Evidence: [SkySlope Partnership API Reference](https://forms.skyslope.com/partner/api/docs) and [API License Terms of Use](https://skyslope.com/api-license-terms-of-use/) (via WebSearch excerpt; `skyslope.com` is `EGRESS_BLOCKED` here). |
+| Pabbly built-in app | **No evidence found.** |
+| n8n node | **No evidence found.** |
+| CLI-Anything harness | **Yes.** `integrations/cli-anything-harnesses/skyslope/` (browser/DOMShell harness) — already built, same `CLI_ANYTHING_ECC_REVIEWED_AT` gate as zipForms. |
+| **Chosen path** | **CLI-Anything (browser/DOMShell, existing).** Same reasoning as zipForms. |
+| **Steven's one step** | Same ECC review sign-off as zipForms. |
+
+### 9. dotloop
+
+| | |
+|---|---|
+| Public API | **Yes — genuinely self-serve, the cleanest of the nine.** Public API v2, OAuth2 (3-legged/authorization-code), base `https://api-gateway.dotloop.com/public/v2`; register at `info.dotloop.com/developers` for a client id/secret; 100 requests/min per client per user. Evidence: [Dotloop Platform — Developer Guide, Public API v2](https://dotloop.github.io/public-api/) (via WebSearch excerpt; `dotloop.github.io`/`dotloop.com` did not resolve/were blocked from this sandbox). |
+| Pabbly built-in app | **No evidence found** (searched pabbly.com directly; dotloop's own integration list names Zapier, not Pabbly). |
+| n8n node | **No — confirmed absent.** An open n8n community feature request, ["Dotloop Node"](https://community.n8n.io/t/dotloop-node/296278), asks for one; it does not exist yet. |
+| CLI-Anything harness | **Not yet in this repo as of this read** — `integrations/cli-anything-harnesses/` holds `browser, homes, lofty, publicfeeds, showami, showingtime, skyslope, zipforms, zoho` only. Lane C3 is building a new read-only dotloop harness this round per the brief. |
+| **Chosen path** | **CLI-Anything — a new REST+OAuth harness (lane C3), in the same structure as the others.** dotloop is the one system here with a clean, documented, individually-provisionable OAuth API, so a real REST harness (not browser automation) is the right structure — and keeping it inside CLI-Anything, not n8n or Pabbly, keeps one owner even though neither of those tools already claims it. |
+| **Steven's one step** | Register an app at `info.dotloop.com/developers`, complete the OAuth authorize/token consent once, and store the resulting client id/secret/refresh token the way the new harness's own `.env` names them (same `~/.config/cli-anything/.env`-or-keychain convention as the other five browser harnesses, per `CONNECTIONS.md` standing rule 5). |
+
+### 10. Apple Health
+
+Not a vendor-API row like 1–9 — Steven named it in the same 2026-09-28 list, so it gets the same
+treatment: does it have a public API, is there a Pabbly/n8n path, what already exists, one chosen
+owner, one Steven step. The path is already built and documented in
+`.claude/skills/apple-health-notion/SKILL.md` and `integrations/CONNECTIONS.md` (row "Apple Health",
+read 2026-09-28); this row's job is to decide whether n8n should take over the Notion→document leg,
+per this round's brief, and record why not.
+
+| | |
+|---|---|
+| Public API | **Not applicable in the vendor sense.** Apple Health data reaches this ecosystem through the Claude iOS app's own built-in Health-read permission (Apple's on-device HealthKit, granted phone-side) — there is no vendor REST/OAuth endpoint this repo's automations call. Evidence: `.claude/skills/apple-health-notion/SKILL.md` §Inputs (this repo, read directly — not egress-blocked, so no WebSearch/Perplexity needed for this row). |
+| Pabbly built-in app | **N/A.** Nothing here is a third-party SaaS account Pabbly could hold OAuth for; the one real network leg (Notion) already has an owner (below), and Notion itself is a connector, not a system in this table. |
+| n8n node | **Exists but not chosen.** n8n ships a first-party Notion node that could poll the "Health Log" database (id `bc71c45aac934a4f8aeddc54345136ef`) on a schedule — technically buildable. There is no n8n node or webhook for the read leg: that step happens entirely inside the Claude iOS app's own HealthKit permission, off any network n8n can reach. |
+| CLI-Anything harness | **No, and none should be built.** CLI-Anything drives logged-in browser sessions for vendors with no API; Apple Health's only data source is the phone's own HealthKit permission, which a Mac-side DOMShell harness cannot reach. |
+| **Chosen path** | **Unchanged — one owner, the existing Mac task, both legs.** Claude iOS → Notion "Health Log" (Stage A, phone) → the `health-notion-sync` Mac task (Stage B) → the `appleHealth` Command Deck doc. n8n does **not** take the Notion→document leg, for two independent reasons, either sufficient alone: **(1) the last hop is unreachable to n8n.** Stage B ends in a Command Deck `write_db` **set** call on doc `appleHealth` — an Anthropic-side Claude Code artifact-store write, not a REST endpoint; n8n's HTTP/Execute-Command/Notion nodes have no credential or API surface that reaches it. This is the identical boundary `integrations/n8n/workflows/cli-anything-scheduled-feeds.json`'s own header note draws this same round for the CLI-Anything feeds ("turning that output into the dashboard's docs is `read_db`/`write_db` work... not something an n8n... node can reach"). **(2) the merge logic is already built, tested and non-trivial**, and moving even half of it (an n8n node that polls Notion and hands off) would still make Notion a two-reader table for no gain. SKILL.md's Stage B keeps every pre-existing `daily` day / `sleep` night / `workout` id that Notion's own last-90-days read doesn't supply, preserves 5 daemon-only metric keys plus `records`/`sources`, compares `latest_at` as parsed timestamps rather than strings, and enforces the `{v:…}` wrapper the store requires — reimplementing any of that in an n8n Code node would be a second, drifting copy of logic that already exists once, exactly the "Zoho through Composio, n8n *and* Pabbly" duplication brief §0 warns against. One owner covers both legs today; n8n adds a path, not a capability. |
+| **Steven's one step** | Already documented, unchanged, and not a new NEEDS-STEVEN item: on the iPhone, open Claude, say "Update my health stats in Notion," and approve the Apple Health read + Notion write prompts once (`.claude/skills/apple-health-notion/SKILL.md`, "The block Steven reads once"). The Mac task then runs on its own twice-daily schedule. |
+
+---
+
+### Summary table
+
+| # | System | Public API | Pabbly built-in | n8n node | CLI-Anything harness exists | Chosen path | Steven's one step (short) |
+|---|---|---|---|---|---|---|---|
+| 1 | Zoho CRM | Yes (OAuth2 REST v8) | Yes | Yes | Yes (REST) | **Composio `zoho`** (unchanged) | Enable Zoho CRM API Access on the profile |
+| 2 | Lofty | Yes (REST, OAuth2/key) | Yes | No | Yes (REST) | **CLI-Anything `lofty`** (unchanged) | Generate Lofty API key → `~/.config/lofty/.env` |
+| 3 | Showami | Partial, partner-only | No evidence | No evidence | Yes (browser) | **CLI-Anything `showami`** (unchanged) | DOMShell sign-in + `connect.sh` |
+| 4 | ShowingTime | No (MLS-side feed only) | No evidence | No evidence | Yes (browser) | **CLI-Anything `showingtime`** (unchanged) | DOMShell sign-in + `connect.sh` |
+| 5 | homes.com | No (CRM-partner feed only) | No evidence | No evidence | Yes (browser) | **CLI-Anything `homes`** (unchanged) | DOMShell sign-in + `connect.sh` |
+| 6 | CRMLS | Yes, licensed MLS feed only | n/a | No evidence | **No — none built** | **Halt** (C3's row) | Decide RESO Web API application w/ Alexandra |
+| 7 | zipForms | Yes, partner-licensed only | No evidence | No evidence | Yes (browser) | **CLI-Anything `zipforms`** (unchanged) | ECC review sign-off |
+| 8 | SkySlope | Yes, partner-gated | No evidence | No evidence | Yes (browser) | **CLI-Anything `skyslope`** (unchanged) | ECC review sign-off |
+| 9 | dotloop | Yes, self-serve OAuth2 | No evidence | No (confirmed absent) | Not yet — C3 building it | **CLI-Anything `dotloop`** (new, C3) | Register OAuth app at dotloop, consent once |
+| 10 | Apple Health | N/A — phone HealthKit permission, not a vendor API | N/A | Exists (Notion node) but not chosen — last hop is a Claude-only `write_db` call | No (phone-only source) | **Mac task `health-notion-sync`** (unchanged, both legs) | Say "Update my health stats in Notion" on iPhone once |
+
+**For the integrator:** this table is written to be merged into `integrations/CONNECTIONS.md` as a new
+section ("CLI-Anything vs. Composio vs. n8n vs. Pabbly — the ten-system routing decision, R9"); none
+of its "Steven's one step" rows are new NEEDS-STEVEN items beyond what `CONNECTIONS.md` and lane C3's
+handback already carry, except CRMLS and dotloop, which lane C3's own handback should carry (this
+lane only records the API-surface facts feeding those two decisions). Row 10 (Apple Health) is also
+not a new NEEDS-STEVEN item — its one step is the same phone step `CONNECTIONS.md`'s existing "Apple
+Health" row and the `apple-health-notion` skill already carry; this row only adds the n8n-ownership
+decision the brief asked for.
