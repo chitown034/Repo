@@ -38,7 +38,7 @@
     "local": {
       "omniroute_combo_name": "local",
       "provider_count": 1,
-      "fallback": "none by construction — a single-target combo, so OmniRoute itself has nothing else to fall back to (see integrations/omniroute/README.md §How the local combo fails closed)",
+      "fallback": "none by construction — a single-target combo; proven only against a stand-in gateway, so the local route stays OFF (OMNIROUTE_LOCAL_MODEL unset) until README §Prove it on the Mac passes",
       "provider_id_placeholder": "set by setup-local-llm.sh / configure-omniroute.sh at install time — not a fixed value in this file"
     },
     "research": {

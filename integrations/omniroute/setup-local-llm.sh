@@ -51,6 +51,7 @@ PORT="${BONSAI_PORT:-8080}"
 HOST="127.0.0.1"
 REPO_URL="https://github.com/PrismML-Eng/Bonsai-demo.git"
 PROVIDER_ID="${BONSAI_OMNIROUTE_PROVIDER_ID:-bonsai-local}"
+HF_BLOCKED=0
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -107,16 +108,20 @@ fi
 
 # --- idempotency: already served? -------------------------------------------------------------
 if port_listening_on "$HOST" "$PORT"; then
-  log "something is already answering on http://$HOST:$PORT — treating Bonsai as already served."
+  if ! curl -fsS --max-time 3 "http://$HOST:$PORT/v1/models" 2>/dev/null | grep -qi 'bonsai'; then
+    log "something else is already using http://$HOST:$PORT (its /v1/models does not list Bonsai) —"
+    log "  stop it or re-run with --port N. Nothing changed."
+    exit 1
+  fi
+  log "Bonsai is already answering on http://$HOST:$PORT — nothing to install."
   log "OMNIROUTE_LOCAL_MODEL=$PROVIDER_ID/bonsai-2-27b   # confirm the exact model string: curl -s http://$HOST:$PORT/v1/models"
   exit 0
 fi
 
 if ! check_can_reach_hf; then
-  log "DEFERRED (not a failure of this script): Hugging Face is blocked from this sandbox (403), matching"
-  log "  the finding in integrations/laya/README.md's Sandbox proof section. This is expected here and"
-  log "  the brief says not to fight it. The steps below are printed/dry-run only until this runs on a"
-  log "  Mac with real network access. See \$S/r12/handback-OMNI.json, row needs-steven: run this script."
+  log "DEFERRED: Hugging Face (where Bonsai's weights live) is not reachable from this machine. Check the"
+  log "  network, then re-run. The steps below are shown as a plan only — nothing is installed."
+  HF_BLOCKED=1
   if [ "$DRY_RUN" != 1 ]; then
     log "(showing the plan anyway, as --dry-run would, since nothing further here can actually run)"
   fi
@@ -164,6 +169,8 @@ if [ "$DRY_RUN" != 1 ]; then
       log "REFUSING: $PORT also answers on $lan_ip, not loopback-only. Fix the server's --host flag"
       log "  (llama.cpp's own default is 127.0.0.1; something here is overriding it) before using this"
       log "  as OmniRoute's local provider — client data must never reach a LAN-reachable port."
+      srv_pids=$(lsof -ti "tcp:$PORT" -sTCP:LISTEN 2>/dev/null || true)
+      [ -n "$srv_pids" ] && kill $srv_pids 2>/dev/null && log "  stopped the server this script started (pid $srv_pids)."
       exit 1
     fi
     log "confirmed loopback-only: $PORT answers on 127.0.0.1, not on ${lan_ip:-<no LAN interface found>}."
@@ -174,6 +181,11 @@ if [ "$DRY_RUN" != 1 ]; then
 fi
 
 echo
+if [ "$DRY_RUN" = 1 ]; then
+  log "PLAN ONLY — nothing was installed, downloaded or started."
+  [ "$HF_BLOCKED" = 1 ] && exit 75
+  exit 0
+fi
 log "Bonsai 27B is ready to register with OmniRoute as a local provider (configure-omniroute.sh does this):"
 log "  base URL:  http://$HOST:$PORT/v1   (no credential — it is local)"
 log "  provider id to use: $PROVIDER_ID"

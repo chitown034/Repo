@@ -2,7 +2,7 @@
 
 **Written 2026-09-28 · design + scripts, proved against stubs in this sandbox · not yet installed on the
 Mac.** Owner: Integration Engineer. Answers Steven's request, verbatim: *"configure omni route Setup orca /
-Local LLM and token optimization Omniroute / PrismML's Bonsai 27B: with Perplexity and Fable 5.1 md"*.
+Local LLM and token optimization Omniroute / PrismML's Bonsai 27B: with Perplexity and [top-tier model] md"* (md: masterminds).
 
 **This extends `integrations/omniroute-failover/` — it does not replace or duplicate it.** That directory
 already owns the subscription↔free-fallback switch, the PII gate, and the two-Mac task lease; read it first.
@@ -51,7 +51,7 @@ model behind the same seat — that requires a **pay-per-token Anthropic API key
 never OAuth. An API key spends money per the account's own billing. Per `CLAUDE.md`'s HALT list ("Anything
 irreversible, or anything that spends money" / "Anything needing a credential, an API permission or an
 account change"), that is a **HALT**, not a config change this round makes — see the `needs-steven` row in
-`$S/r12/handback-OMNI.json`.
+the integrator's sandbox notes (kept outside the repo).
 
 ## The `local` combo — how it fails closed, never open
 
@@ -70,11 +70,24 @@ Three independent layers, each fails toward "nothing runs," never toward "runs s
    not run, full stop. It never "escalates" to free-fallback or subscription — those routes are for
    non-client data by construction.
 
-**Proved against stubs, this sandbox, 2026-09-28** — see `$S/r12/work-omni/proof/` and §3 of the hand-back:
+**Proved against stubs, this sandbox, 2026-09-28** — see the integrator's sandbox notes (kept outside the repo) and §3 of the hand-back:
 (a) a request to a registered `local` combo reaches a stub Bonsai server; (b) killing that stub, the same
 request fails — the gateway stub returns an upstream error and *never* attempts a second target, confirming
 the single-target-combo shape holds; independently, pointing `claude-auto.sh` at a dead gateway confirms its
 own `exit 75`/no-fallback path is unchanged. Real OmniRoute did not run in this sandbox (§Honest status).
+
+### Prove it on the Mac before any client-data task uses `local`
+
+Until this passes on the Mac, **leave `OMNIROUTE_LOCAL_MODEL` unset** — client-data tasks then defer
+(`exit 75`), exactly as they do today. Layer 1 above was proven only against a stand-in gateway; real
+OmniRoute also advertises quota-aware auto-fallback, and whether any global fallback setting can reach past a
+single-target combo is unverified. The proof, on the Mac, with **non-client** test text only:
+
+1. `integrations/omniroute/setup-local-llm.sh`, then `integrations/omniroute/configure-omniroute.sh`.
+2. Send one test request to the `local` combo — it must answer (Bonsai is up).
+3. Stop the Bonsai server, send the same request again — it must **fail**, and OmniRoute's request log must
+   show **no other provider** tried.
+4. Only then add `OMNIROUTE_LOCAL_MODEL=local` to `~/.config/omniroute/.env`. `docs/NEEDS-STEVEN.md` item 75.
 
 ## Token optimization — what is and is not touched
 
@@ -131,7 +144,7 @@ found**, and no link to RTK's own upstream repo was found either, in the time th
   the comment and default naming around `OMNIROUTE_LOCAL_MODEL` (§What `claude-auto.sh` changed).
 - Never edits `CLAUDE.md`, `OPTIMIZATION.md`, `MAC-SETUP.sh`, `docs/NEEDS-STEVEN.md`, or
   `context/decisions.md` directly — those are the integrator's; exact row text is in
-  `$S/r12/handback-OMNI.json`.
+  the integrator's sandbox notes (kept outside the repo).
 
 ## What `claude-auto.sh` changed
 

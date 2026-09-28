@@ -116,7 +116,9 @@ ensure_combo() { # name model-target -- create with one target, or PUT to fix it
     200|201) log "combo '$_name' created -> [$_target]." ;;
     409)
       log "combo '$_name' already exists — updating its targets to match (single target, no fallback member)."
-      _curl PUT "/api/combos/$_name" "$body" >/dev/null ;;
+      _curl PUT "/api/combos/$_name" "$body" >/dev/null; HTTP_CODE=$(read_code)
+      case "$HTTP_CODE" in 200|201|204) ;; 000) [ "$DRY_RUN" = 1 ] || { log "no response updating combo '$_name'"; return 1; } ;;
+        *) log "unexpected response updating combo '$_name': http=$HTTP_CODE"; return 1 ;; esac ;;
     000)
       if [ "$DRY_RUN" = 1 ]; then log "  (dry-run: not sent)"; else log "no response from OmniRoute at $OMNI_BASE — is it running?"; return 1; fi ;;
     *)       log "unexpected response creating combo '$_name': http=$HTTP_CODE body=$out"; return 1 ;;
@@ -128,7 +130,8 @@ set_compression() { # combo-name mode
   body="{\"compressionMode\":\"$(json_str "$_mode")\"}"
   out=$(_curl PUT "/api/combos/$_name" "$body"); HTTP_CODE=$(read_code)
   case "$HTTP_CODE" in
-    200|201|000) log "combo '$_name' compressionMode -> $_mode." ;;
+    200|201|204) log "combo '$_name' compressionMode -> $_mode." ;;
+    000) if [ "$DRY_RUN" = 1 ]; then log "  (dry-run: compressionMode not sent)"; else log "no response setting compressionMode on '$_name'"; return 1; fi ;;
     *) log "unexpected response setting compressionMode on '$_name': http=$HTTP_CODE body=$out"; return 1 ;;
   esac
 }
@@ -154,8 +157,12 @@ log "  or a raw provider/model string identically (docs/routing/AUTO-COMBO.md's 
 # ---- Perplexity provider + research combo --------------------------------------------------------
 log "== Perplexity provider + research combo =="
 if [ "$SET_PPLX_KEY" = 1 ] && [ "$DRY_RUN" != 1 ]; then
+  case "$OMNI_BASE" in
+    http://127.0.0.1:*|http://localhost:*) ;;
+    *) log "REFUSING --set-perplexity-key: $OMNI_BASE is not loopback — a key only ever goes to OmniRoute on this Mac."; exit 64 ;;
+  esac
   printf 'Paste the Perplexity API key (input hidden, never logged, never written to a file): '
-  stty -echo 2>/dev/null; IFS= read -r pplx_key; stty echo 2>/dev/null; printf '\n'
+  IFS= read -r -s pplx_key; printf '\n'
   if command -v omniroute >/dev/null 2>&1; then
     printf '%s' "$pplx_key" | omniroute providers add perplexity --credential-stdin >/dev/null 2>&1
     rc=$?
