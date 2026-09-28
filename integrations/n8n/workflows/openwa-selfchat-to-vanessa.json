@@ -1,0 +1,68 @@
+{
+  "name": "OpenWA self-chat -> Vanessa queue",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## OpenWA self-chat bridge -- READ THIS FIRST\n\n**What this workflow does, and no more:** receives OpenWA's `message.received` webhook,\nkeeps only events on Steven's own self-chat, and appends one JSON line per kept event to a\nlocal queue file. It never replies, never calls OpenWA's send-message endpoint, and never\ntouches any client-facing system -- this is plumbing, not the answer.\n\n**Why it stops there:** answering as Vanessa needs the AI team, the HALT list, and the §5a\nmarker / circuit-breaker state (`integrations/mac-task-specs.md` §5a) -- all of that runs in\nthe existing Claude-side inbox task, not in n8n. This workflow's only job is to get a\nvalidated inbound event from OpenWA's webhook onto local disk reliably; the Mac task\n(coordinated with lane C1) reads the queue file and does the rest, unchanged from §5a except\nfor which tool polls/pushes the raw message.\n\n**Auth:** the Webhook node requires a Header Auth credential (`X-Webhook-Token`) that does\nNOT ship with this file -- n8n credentials are never exported. Create one named exactly\n`OpenWA webhook token` with header name `X-Webhook-Token` and the SAME value as\n`OPENWA_WEBHOOK_TOKEN` in `integrations/n8n/.env`, then also set that value as the `secret`\nfield when C1 registers this session's webhook on the OpenWA side (`POST\n/api/sessions/{id}/webhooks`, see OpenWA's README \"Setup Webhook\"). Until that credential is\nassigned, executing this workflow fails cleanly with a credentials-not-set error -- verified\nin R9's sandbox test log.\n\n**Before this queue file means anything:** `OPENWA_SELF_CHAT_ID` in the Code node below must\nbe set to the real self-chat `chatId` OpenWA reports for Steven's own number (lane C1 gets\nthis from the session once linked, the same way §5a's `chat find` step got it for\nwhatsapp-cli). Left as the placeholder, every event is filtered out -- safe by default, not\nsilently wrong.",
+        "height": 460,
+        "width": 480
+      },
+      "id": "b6f2f2b0-0001-4a1a-9c1a-000000000001",
+      "name": "Read me first",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-420, -80]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "openwa-selfchat-inbound",
+        "authentication": "headerAuth",
+        "responseMode": "onReceived",
+        "responseData": "{\"received\":true}",
+        "options": {}
+      },
+      "id": "b6f2f2b0-0001-4a1a-9c1a-000000000002",
+      "name": "OpenWA Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-40, 40],
+      "webhookId": "openwa-selfchat-inbound",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "PLACEHOLDER_NOT_A_REAL_CREDENTIAL",
+          "name": "OpenWA webhook token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "language": "javaScript",
+        "jsCode": "// Filter to Steven's own self-chat, then append one JSON line to a local queue file.\n// Requires NODE_FUNCTION_ALLOW_BUILTIN=fs,path,os on the n8n instance (see docker-compose.yml\n// / install.sh) -- n8n's Code node blocks Node builtins by default; this is a deliberate,\n// reviewed opt-in for exactly this file write, nothing else.\nconst OPENWA_SELF_CHAT_ID = 'REPLACE_WITH_REAL_SELF_CHAT_ID'; // set once C1 resolves it\n\nconst body = $json.body || {};\nconst data = body.data || {};\nconst result = { filtered: true, reason: null, chatId: data.chatId || null };\n\nif (body.event !== 'message.received') {\n  result.reason = 'not a message.received event';\n  return { json: result };\n}\nif (OPENWA_SELF_CHAT_ID === 'REPLACE_WITH_REAL_SELF_CHAT_ID' || data.chatId !== OPENWA_SELF_CHAT_ID) {\n  result.reason = 'chatId is not the configured self-chat (or self-chat id not yet set)';\n  return { json: result };\n}\nif (data.fromMe !== true) {\n  // Self-chat mode inverts the discriminator, same as mac-task-specs.md #5a: every real\n  // message in a note-to-self thread carries fromMe true.\n  result.reason = 'fromMe is not true';\n  return { json: result };\n}\n\nconst fs = require('fs');\nconst path = require('path');\nconst os = require('os');\nconst dir = path.join(os.homedir(), '.n8n-bridges');\nfs.mkdirSync(dir, { recursive: true, mode: 0o700 });\nconst record = {\n  receivedAt: new Date().toISOString(),\n  sessionId: body.sessionId || null,\n  chatId: data.chatId || null,\n  messageId: data.id || null,\n  fromMe: data.fromMe === true,\n  body: typeof data.body === 'string' ? data.body : null\n};\nconst file = path.join(dir, 'openwa-selfchat-inbound.jsonl');\nfs.appendFileSync(file, JSON.stringify(record) + '\\n', { mode: 0o600 });\n\nresult.filtered = false;\nresult.queuedTo = file;\nreturn { json: result };\n"
+      },
+      "id": "b6f2f2b0-0001-4a1a-9c1a-000000000003",
+      "name": "Filter self-chat + queue",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 40]
+    }
+  ],
+  "connections": {
+    "OpenWA Webhook": {
+      "main": [
+        [
+          {
+            "node": "Filter self-chat + queue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
