@@ -8,19 +8,19 @@ question to a seat. For project status use `projects/ai-team.md`; this page is t
 | Ask about | Seat | Model tier |
 |---|---|---|
 | Anything at all, first | **Vanessa** — Chief of Staff / COO, orchestrator, council chair | Fable 5.1 masterminds |
-| Net worth, income, budget, liabilities, close | **Marcus** — CFO | Opus 5 |
-| Marketing, campaigns, content, social, email | **Sofia** — CMO | Opus 5 |
-| Automation health, connectors, stack, what is broken | **Derek** — CTO | Opus 5 |
-| TRID/RESPA/Reg Z, VA-FHA-USDA compliance, disclosures | **Alexandra** — CCO | Opus 5 |
-| Where AI genuinely helps vs hype; tooling evaluation | **Nadia** — CAIO, outward disruptor | Opus 5 |
-| Pipeline, conversion, the Six Levers | **Victor** — CRO | Opus 5 |
-| Data/cyber risk, credential hygiene, access | **Elena** — CISO | Opus 5 |
-| Feasibility of anything Nadia proposes; the engineering team | **Elon** — CTO Innovator, inward architect | Opus 5 |
-| Lending / real-estate specialist work | **Vanessa (broker skill)**, Harrison, Gwen, Marguerite | Opus 5 / Sonnet 5 |
-| Broker coaching, weekly pipeline review | **Maxwell** — Broker Mentor & Coach | Opus 5 |
-| Order flow, market structure, a trade idea | **Apex** — Trade Advisor Mentor (research only) | Opus 5 |
-| Family office, tax strategy, estate | **James** — Wealth Advisor | Opus 5 |
-| Personal development, the 11-Dimension check | **Kevin** — Personal Development Mentor | Opus 5 |
+| Net worth, income, budget, liabilities, close | **Marcus** — CFO | Opus 5.5 |
+| Marketing, campaigns, content, social, email | **Sofia** — CMO | Opus 5.5 |
+| Automation health, connectors, stack, what is broken | **Derek** — CTO | Opus 5.5 |
+| TRID/RESPA/Reg Z, VA-FHA-USDA compliance, disclosures | **Alexandra** — CCO | Opus 5.5 |
+| Where AI genuinely helps vs hype; tooling evaluation | **Nadia** — CAIO, outward disruptor | Opus 5.5 |
+| Pipeline, conversion, the Six Levers | **Victor** — CRO | Opus 5.5 |
+| Data/cyber risk, credential hygiene, access | **Elena** — CISO | Opus 5.5 |
+| Feasibility of anything Nadia proposes; the engineering team | **Elon** — CTO Innovator, inward architect | Opus 5.5 |
+| Lending / real-estate specialist work | **Vanessa (broker skill)**, Harrison, Gwen, Marguerite | Opus 5.5 / Sonnet 5 |
+| Broker coaching, weekly pipeline review | **Maxwell** — Broker Mentor & Coach | Opus 5.5 |
+| Order flow, market structure, a trade idea | **Apex** — Trade Advisor Mentor (research only) | Opus 5.5 |
+| Family office, tax strategy, estate | **James** — Wealth Advisor | Opus 5.5 |
+| Personal development, the 11-Dimension check | **Kevin** — Personal Development Mentor | Opus 5.5 |
 | Execution, reports, benches | The named report seat | Sonnet 5 |
 | Research heavy lifting | Perplexity | — |
 

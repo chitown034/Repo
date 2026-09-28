@@ -307,3 +307,13 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
     If you aren't at the Mac screen, add `--code` and type the 8 characters under "Link with phone number
     instead". Last, it installs the bridge. Test it by sending yourself "Vanessa, are you there?" in Message
     Yourself; she answers there, starting with [V]. To undo: `bash integrations/openwa/install-bridge.sh --uninstall`.
+79. **Opus 5.5 on the Mac — one check** (your "in the AI team replace Opus 5 with opus 5.5", 2026-09-28).
+    The repo, the dashboard and the brain now say Opus 5.5. On the Mac, Claude Code 2.1.280 and newer
+    already runs every `model: opus` agent on Opus 5.5 (it is the CLI's default Opus). What stays on Opus 5
+    is anything naming `claude-opus-5` outright; your Mac Claude session reports that id. Run
+    `bash integrations/ai-team/opus-5-5-on-mac.sh` (shows, changes nothing), then `--apply` (with a backup),
+    then `--verify` (one tiny request). In your own sessions, type `/model` once and pick Opus 5.5.
+80. **31 of your 69 routines failed overnight — cause found: your plan's 5-hour usage limit.** Every failed
+    run stopped at startup with "You've hit your session limit · resets 6am (UTC)". Your weekly allowance is
+    also at its warning level and resets around Sun Oct 4, 1 PM PT. The biggest cut only you can make:
+    switch off the 10 old research-only routines in item 73. They produce nothing now that the writers exist.

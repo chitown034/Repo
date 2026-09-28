@@ -57,12 +57,12 @@ Never serve a cached answer past its TTL without saying its age. Rules: `recall-
 - Escalating a level costs roughly 5–10x the previous one. Say out loud when you escalate and why.
 - State the age of every fact you report. "As of <the doc's own stamp>", never today's date by default.
 
-## Model tiering (Steven's decision, 2026-09-22)
+## Model tiering (Steven's decisions, 2026-09-22; executives to Opus 5.5 on 2026-09-28)
 
 | Seat | Model |
 |---|---|
 | Vanessa — orchestration, council chair, final synthesis | Claude Fable 5.1 masterminds |
-| Executives (Marcus, Sofia, Derek, Alexandra, Nadia, Victor, Elena, Elon) | Claude Opus 5 |
+| Executives (Marcus, Sofia, Derek, Alexandra, Nadia, Victor, Elena, Elon) | Claude Opus 5.5 |
 | Reports, benches, execution and report-only seats | Claude Sonnet 5 |
 | Research heavy lifting | Perplexity (Composio `perplexityai`, or the local perplexity MCP) |
 | Local tier — client-data (PII-gated) requests only, never a cloud fallback | Bonsai 27B via OmniRoute's `local` combo, on the Mac only — off until proven there (`integrations/omniroute/README.md`) |

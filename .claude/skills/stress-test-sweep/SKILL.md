@@ -5,7 +5,7 @@ description: "Structured stress sweep of the Command Deck and the automation lay
 
 # stress-test-sweep — find the break, route it, re-test it
 
-Seat: `stress-test-engineer` (tier 1, Opus 5) under Elon, the CTO Innovator. Vanessa (Claude Fable
+Seat: `stress-test-engineer` (tier 1, Opus 5.5) under Elon, the CTO Innovator. Vanessa (Claude Fable
 5.1) chairs the cycle that consumes the report. Fixes are made by other engineers — **this skill does
 not fix the thing it broke.**
 

@@ -23,7 +23,7 @@ registered self-test must be offline, dispatch no sub-agents, and finish in ≤6
 
 ## Models
 Vanessa chairs on **Claude Fable 5.1**; Elon (CTO Innovator), `sandbox-qa`, `stress-test-engineer`
-and the prompt review run on **Claude Opus 5**; report/compile seats on **Claude Sonnet 5**;
+and the prompt review run on **Claude Opus 5.5**; report/compile seats on **Claude Sonnet 5**;
 research on **Perplexity** (≤4 per wave). Sub-agent fan-out ≤8.
 
 ## Tools

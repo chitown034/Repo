@@ -6,7 +6,7 @@ description: "Weekly audit of every installed skill against the Command Deck's A
 # skills-refresh — installed skills vs. what the deck claims
 
 Seat: report seat — run on **Claude Sonnet 5**. Findings that need a judgment call are handed up to
-the Capability Engineer (Opus 5); Vanessa (Claude Fable 5.1) chairs the cycle that consumes them.
+the Capability Engineer (Opus 5.5); Vanessa (Claude Fable 5.1) chairs the cycle that consumes them.
 
 ## Trigger
 - Mac task `skills-refresh-weekly`, cron `0 7 * * 0` = **Sunday 7:00 AM PT**. Status as of

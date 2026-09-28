@@ -335,3 +335,19 @@ the record of the change. The full split, and the three web-UI routine edits onl
   hashes. The log holds no message text. Messages reach Claude on stdin, not the command line.
 - **Owner.** Derek (automation), Elena (the fence). **Status.** Built and tested in the sandbox
   2026-09-28; Steven links the phone (NEEDS-STEVEN 78).
+
+## 2026-09-28 — Executives (and every seat on Opus 5) move to Claude Opus 5.5
+
+- **Request (Steven, verbatim).** *"in the AI team replace Opus 5 with opus 5.5"*.
+- **Decision.** The executive/judgment tier is Claude Opus 5.5 (`claude-opus-5-5`: same 1M context as
+  Opus 5, $4/$20 per million tokens vs $5/$25). Updated in `CLAUDE.md`, `wiki/ai-team/index.md`, eight
+  skills, the routine docs, the Command Deck and the live `secondBrain` doc. Findings, reports and briefs
+  keep "Opus 5" because they record what was true when they were written.
+- **On the Mac.** Claude Code 2.1.280 made Opus 5.5 the default for the `opus` alias, which almost every
+  agent file uses, so those seats moved with the CLI update. Only explicit `claude-opus-5` pins remain;
+  `integrations/ai-team/opus-5-5-on-mac.sh` finds and switches them (NEEDS-STEVEN 79). Deliberately NOT
+  done: setting `ANTHROPIC_DEFAULT_OPUS_MODEL` in settings.json, because Claude Code applies settings env
+  over the shell's and would break OmniRoute's free-route remap.
+- **API behaviour to remember** (only if code calls the API directly; nothing in this repo does today):
+  Opus 5.5 cannot disable thinking, its effort default is `medium` (Opus 5's was `high`), and forced
+  `tool_choice` returns a 400.

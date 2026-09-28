@@ -5,7 +5,7 @@ description: "The weekly self-improvement cycle (v2): every agent, skill and rou
 
 # loop-engineering v2 — propose → test → compare → promote/reject → log
 
-Seat: Vanessa (Claude Fable 5.1) chairs; Elon, the CTO Innovator (Opus 5), runs the gate;
+Seat: Vanessa (Claude Fable 5.1) chairs; Elon, the CTO Innovator (Opus 5.5), runs the gate;
 `sandbox-qa` runs the isolated test-and-compare; the Engineering Team (Reliability, Efficiency,
 Capability, Integration, Stress Test) does the work; report seats run on Sonnet 5.
 

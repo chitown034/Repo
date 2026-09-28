@@ -24,7 +24,7 @@ Nov 1 2026 PDT→PST change; the UTC column does.
 | Layer | Model |
 |---|---|
 | Vanessa — orchestration, council chair, final synthesis | Claude Fable 5.1 (masterminds) |
-| Executive seats — Victor, Sofia, Marcus, Derek, Alexandra, Elena, Nadia, Elon | Claude Opus 5 |
+| Executive seats — Victor, Sofia, Marcus, Derek, Alexandra, Elena, Nadia, Elon | Claude Opus 5.5 |
 | Reports / benches (tier 2–3) | Claude Sonnet 5 |
 | Research wave | Perplexity (Composio `perplexityai` or the local `perplexity` MCP), ≤4 per wave |
 

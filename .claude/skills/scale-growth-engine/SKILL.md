@@ -5,7 +5,7 @@ description: "Weekly ADR pass — Automate, Delegate, Replicate — that finds w
 
 # scale-growth-engine — Automate · Delegate · Replicate (weekly)
 
-Seat: judgment — **Claude Opus 5**, chaired by Vanessa (Claude Fable 5.1). Research inputs come from
+Seat: judgment — **Claude Opus 5.5**, chaired by Vanessa (Claude Fable 5.1). Research inputs come from
 the Perplexity bench (≤4 per wave). Distinct from `continuous-process-improvement`: CPI removes waste
 from what exists; this skill asks what breaks at 5x and what Steven should stop doing at all.
 

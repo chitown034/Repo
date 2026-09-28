@@ -260,7 +260,7 @@ described on the deck as "runs on schedule, writes nothing since 2026-09-17 — 
 | | |
 |---|---|
 | **Cron (PT)** | none — **on demand.** The install half is a `MAC-SETUP.sh` step; this task covers the path-map half (`--discover` + edit, per recipe). Create it disabled; delete it after the maps are verified |
-| **Model** | Opus 5 (judgment: it installs software and reviews security) |
+| **Model** | Opus 5.5 (judgment: it installs software and reviews security) |
 | **Skill** | `cli-anything-connectors` |
 | **Tools** | `Bash` (`pip install cli-anything-hub`, `cli-hub …`, `cli-anything-browser …`, `cli-anything-<target> --json …`) · Claude Code plugin commands (new targets only) · `Artifact` `write_db` for `cliAnythingStatus` |
 | **Env** | `CLI_HUB_NO_ANALYTICS=1` in the runner's shell profile, set **before the first command** |

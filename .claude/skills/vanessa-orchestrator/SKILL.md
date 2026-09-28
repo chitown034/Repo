@@ -13,7 +13,7 @@ the separate `vanessa-broker` skill — this one is the orchestration layer.
 | Layer | Model | Who |
 |---|---|---|
 | Orchestration, council chair, final synthesis | **Claude Fable 5.1** (masterminds) | Vanessa |
-| Executive / judgment seats | **Claude Opus 5** | Victor (CRO), Sofia (CMO), Marcus (CFO), Derek (CTO), Alexandra (CCO), Elena (CISO), Nadia (CAIO), Elon (CTO Innovator) |
+| Executive / judgment seats | **Claude Opus 5.5** | Victor (CRO), Sofia (CMO), Marcus (CFO), Derek (CTO), Alexandra (CCO), Elena (CISO), Nadia (CAIO), Elon (CTO Innovator) |
 | Execution / report seats, benches | **Claude Sonnet 5** | tier-2/3 reports (bookkeeper, automation-engineer, buyer-matching-engine, …) |
 | Research heavy lifting | **Perplexity** (Composio `perplexityai` or the local `perplexity` MCP) | research waves |
 
@@ -129,7 +129,7 @@ error 2026-09-15).
    given 9 research tasks, assert at most 4 Perplexity calls in the wave.
 3. Stall policy: with a stub seat that always returns empty, assert exactly 2 retries, then one
    re-route, then one `twinQueue` packet built in memory (not written) with all packet keys present.
-4. Model routing: assert Vanessa→Fable 5.1, an executive seat→Opus 5, a tier-2 report→Sonnet 5,
+4. Model routing: assert Vanessa→Fable 5.1, an executive seat→Opus 5.5, a tier-2 report→Sonnet 5,
    a research task→Perplexity.
 5. Output shapes: build one `vanessaRuns` entry and one four-COA `vanessaRecommendations` entry in
    memory; assert `coas.length === 4` and `recommendedIndex` is in range. Write nothing.

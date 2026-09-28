@@ -6,7 +6,7 @@ description: "The CPI engine (v2): a cheap daily OBSERVE/IDENTIFY scan and a wee
 # continuous-process-improvement v2 — OBSERVE → IDENTIFY → RECOMMEND → IMPLANT → MEASURE
 
 Seat: daily scan is an execution seat — **Claude Sonnet 5**, no sub-agents. The weekly deep pass is a
-judgment seat — **Claude Opus 5** — chaired by Vanessa (Claude Fable 5.1); IMPLANT work is done by
+judgment seat — **Claude Opus 5.5** — chaired by Vanessa (Claude Fable 5.1); IMPLANT work is done by
 the AI Agent Engineering Team under Elon (CTO Innovator).
 
 ## Trigger

@@ -6,7 +6,7 @@ description: "Once per loop cycle, reviews the orchestrator's and the executives
 # prompt-master — prompt review against measured outcomes
 
 Seat: reports to the CTO Innovator (Elon) inside the weekly loop; Vanessa (Claude Fable 5.1) chairs
-the cycle. Run this seat on **Claude Opus 5** — it is a judgment call, not a report.
+the cycle. Run this seat on **Claude Opus 5.5** — it is a judgment call, not a report.
 
 ## Trigger
 - Once per loop cycle, called by `loop-engineering` (Mac task `loop-engineering-weekly`,
