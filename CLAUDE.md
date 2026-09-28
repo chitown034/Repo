@@ -3,6 +3,11 @@
 Read this file in full. Read nothing else until the routing table sends you there.
 This file routes; it holds no knowledge. Everything below is a rule, not a fact.
 
+**Index first, files second.** Before opening any leaf, run `bin/brain recall "<question>"` — plain
+code, no model call, returns one section (~200 tokens) or "not in the brain". Open the routed leaf only
+if that is not enough. Every file has one line in `INDEX.md`. Save a durable fact with
+`bin/brain remember "<fact>"` — it writes the memory and its index line in one step.
+
 Principal: Steven Shearrill — Broker Associate (LPT Realty) · MLO, Patriot Pacific Financial
 (NMLS 1921615) · retired Navy Chief. Bio in `context/about-me.md`.
 On the Mac this router's job is done by the vanessa-orchestrator system prompt + roster-tiers.json.
@@ -25,6 +30,7 @@ On the Mac this router's job is done by the vanessa-orchestrator system prompt +
 | "How do these connect" — entities, relationships | `knowledge-graph/README.md` | vector index |
 | What runs when, and whether it actually ran | `always-on/README.md` | projects |
 | Reaching Steven, or running something live/remote | `REMOTE-ACCESS.md` | always-on |
+| Setting up or syncing the brain on a Mac | `docs/SECOND-MAC-SETUP.md` (§ 6c) → `scripts/brain-sync.sh` | always-on |
 | Cost or freshness of a recall | `recall-cache.md`, then `OPTIMIZATION.md` | — |
 | A live number (rate, balance, lead count, health stat) | The Command Deck snapshot already in context, or the named DB doc | any wiki page |
 
@@ -33,7 +39,7 @@ If nothing fits, say "not in the brain" and offer to queue research. Do not fill
 
 ## Recall order — stop at the first level that answers
 
-1. `recall_brain` + the live deck snapshot already loaded.
+1. `bin/brain recall` (Claude Code / Codex) · `recall_brain` + the live deck snapshot (dashboard chat).
 2. `memory.md` + the wiki **index line**. Open the page only if the index line is not enough.
 3. `recall_research` / `request_research` — Perplexity, capped, async. Queued requests are answered by
    the `vanessa-research-queue` Mac task, hourly at :30, 7:30 AM–9:30 PM PT.

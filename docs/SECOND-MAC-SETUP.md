@@ -144,7 +144,7 @@ reason — see `integrations/mac-sync/README.md`.
 **Needs Steven:** pick one of the three ways above — this runbook installs nothing for the vault on its
 own, on purpose; it is a data-location decision, not a script's to make.
 
-### 6c. Brain on this Mac
+### 6c. Brain on this Mac — set up and sync the second brain on every Mac
 
 One script gets the deterministic retrieval engine (`brain/`, CLI `bin/brain`) working here the same
 way it works on the other Mac. It is separate from, and does not replace, step 7 below.
