@@ -1,0 +1,51 @@
+{
+  "_meta": {
+    "purpose": "Maps Laya's tier / pii_gate output (integrations/laya/laya_route.py) to a concrete route.",
+    "mirrors": "CLAUDE.md's model-tiering table and integrations/omniroute/README.md's routing map, 2026-09-28.",
+    "rule": "Change CLAUDE.md's tiering table first, then integrations/omniroute/README.md, then this file to match. Never the other way.",
+    "invariant": "pii_gate=true always overrides tier, with no exception. A client-shaped request never reaches the research or subscription routes, whatever tier Laya also guessed.",
+    "note": "Route/tier NAMES only, never model names, per CLAUDE.md's naming rule — this file and laya_route.py's output are things Steven (or a log) can grep."
+  },
+  "pii_gate": {
+    "true": {
+      "route": "local",
+      "via": "omniroute:local-combo",
+      "seat_tier": "local tier",
+      "omniroute": true,
+      "fails_closed": true,
+      "note": "Overrides tier unconditionally, whatever brain_route/tier said. No cloud fallback, ever: if the local combo can't be reached, the request DEFERS (claude-auto.sh exit 75) — it never reroutes to subscription, free-fallback or the research combo. See integrations/omniroute/README.md #hard-rules."
+    }
+  },
+  "tier": {
+    "orchestrator": {
+      "route": "subscription", "via": "direct", "seat_tier": "top tier",
+      "omniroute": false, "note": "Vanessa only — orchestration/council chair/final synthesis. Plain `claude`, OAuth, no proxy env. Never through OmniRoute (see integrations/omniroute/README.md #hard-rules)."
+    },
+    "executive": {
+      "route": "subscription", "via": "direct", "seat_tier": "executive tier",
+      "omniroute": false, "note": "A C-suite lane owns this outright. Plain `claude`, OAuth, no proxy env. Never through OmniRoute."
+    },
+    "worker": {
+      "route": "subscription", "via": "direct", "seat_tier": "worker tier",
+      "omniroute": false, "note": "Report/bench/execution-only seat. Plain `claude`, OAuth, no proxy env. Never through OmniRoute."
+    },
+    "research": {
+      "route": "research", "via": "omniroute:research-combo", "seat_tier": "n/a — Perplexity is a product, not a Claude tier",
+      "omniroute": true, "cap_per_wave": 4, "note": "Research heavy lifting, per CLAUDE.md sub-agent dispatch cap (≤4 Perplexity per wave). Deferred (never called) by this repo's own tooling — Perplexity calls happen only when an agent with that allowance actually runs one."
+    }
+  },
+  "combos": {
+    "local": {
+      "omniroute_combo_name": "local",
+      "provider_count": 1,
+      "fallback": "none by construction — a single-target combo; proven only against a stand-in gateway, so the local route stays OFF (OMNIROUTE_LOCAL_MODEL unset) until README §Prove it on the Mac passes",
+      "provider_id_placeholder": "set by setup-local-llm.sh / configure-omniroute.sh at install time — not a fixed value in this file"
+    },
+    "research": {
+      "omniroute_combo_name": "research",
+      "provider_count": 1,
+      "provider_id": "perplexity",
+      "cap_per_wave": 4
+    }
+  }
+}

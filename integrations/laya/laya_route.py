@@ -45,6 +45,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 DEFAULT_QUESTIONS = HERE / "router-questions.json"
+DEFAULT_ROUTE_MAP = HERE.parent / "omniroute" / "route-map.json"
 
 STOPWORDS = {
     "a", "an", "and", "are", "as", "at", "be", "by", "does", "do", "for",
@@ -64,6 +65,29 @@ def load_questions(path: Path) -> dict:
     leaves = data.get("leaves", {})
     laya_questions = {k: v for k, v in data.items() if k not in ("_meta", "leaves")}
     return laya_questions, leaves
+
+
+def load_route_map(path: Path) -> dict | None:
+    """integrations/omniroute/route-map.json — tier/pii_gate -> route. Optional: an older
+    checkout or a stripped-down deployment may not carry integrations/omniroute/ at all, so a
+    missing file degrades to route=None (printed as 'route=? (no route-map.json)') rather than
+    crashing laya_route.py, which must keep working as the zero-token System-1 hop either way."""
+    try:
+        return json.loads(path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def route_for(tier_choice: str, pii_fired: bool, route_map: dict | None) -> str:
+    """route-map.json's own invariant, enforced here too (not just documented): pii_gate firing
+    always wins, whatever tier said. Any lookup miss (missing file, unknown tier, malformed map)
+    falls back to 'subscription' — the one route that is never OmniRoute and never spends anything
+    beyond the seat Steven already pays for, i.e. the safe direction when this mapping can't answer."""
+    if not route_map:
+        return "local" if pii_fired else "subscription"
+    if pii_fired:
+        return route_map.get("pii_gate", {}).get("true", {}).get("route", "local")
+    return route_map.get("tier", {}).get(tier_choice, {}).get("route", "subscription")
 
 
 # --------------------------------------------------------------------------
@@ -163,7 +187,7 @@ def get_engine(requested: str):
 
 
 def decide(state: str, questions: dict, leaves: dict, predict_fn, threshold: float,
-           pii_threshold: float) -> dict:
+           pii_threshold: float, route_map: dict | None = None) -> dict:
     t0 = time.monotonic()
     result = predict_fn(state, questions)
     latency_ms = (time.monotonic() - t0) * 1000.0
@@ -193,6 +217,9 @@ def decide(state: str, questions: dict, leaves: dict, predict_fn, threshold: flo
         route_class = br_choice
         shown_state = state
 
+    tier_choice = answers["tier"]["choice"]
+    route = route_for(tier_choice, pii_fired, route_map)
+
     return {
         "decision": decision,
         "route_class": route_class,
@@ -201,7 +228,8 @@ def decide(state: str, questions: dict, leaves: dict, predict_fn, threshold: flo
         "pii_gate": round(pii_true, 4),
         "pii_fired": pii_fired,
         "lane": answers["lane"]["choice"],
-        "tier": answers["tier"]["choice"],
+        "tier": tier_choice,
+        "route": route,
         "urgency": answers["urgency"]["label"],
         "latency_ms": round(latency_ms, 2),
         "state_shown": shown_state,
@@ -212,6 +240,9 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("text", nargs="*", help="the request text (omit with --batch)")
     ap.add_argument("--questions", type=Path, default=DEFAULT_QUESTIONS)
+    ap.add_argument("--route-map", type=Path, default=DEFAULT_ROUTE_MAP,
+                     help="tier/pii_gate -> route, see integrations/omniroute/README.md "
+                          "(default: integrations/omniroute/route-map.json next to this repo's laya/)")
     ap.add_argument("--engine", choices=["auto", "real", "stub"], default="auto")
     ap.add_argument("--threshold", type=float, default=0.60,
                      help="brain_route confidence floor; below this, ESCALATE (default 0.60, "
@@ -223,10 +254,15 @@ def main() -> int:
     args = ap.parse_args()
 
     questions, leaves = load_questions(args.questions)
+    route_map = load_route_map(args.route_map)
+    if route_map is None:
+        print(f"[laya_route] no route-map.json at {args.route_map} — 'route' falls back to "
+              f"subscription/local only, per-tier routes unavailable. See integrations/omniroute/README.md.",
+              file=sys.stderr)
     predict_fn, engine_name = get_engine(args.engine)
 
     def run_one(state: str, rid: str = "-") -> dict:
-        d = decide(state, questions, leaves, predict_fn, args.threshold, args.pii_threshold)
+        d = decide(state, questions, leaves, predict_fn, args.threshold, args.pii_threshold, route_map)
         d["id"] = rid
         d["engine"] = engine_name
         return d
@@ -253,7 +289,7 @@ def main() -> int:
                       f"< threshold; full recall order runs instead. ({r['latency_ms']} ms, {r['engine']})")
             else:
                 print(f"{head} class={r['route_class']} -> {r['leaf']} | lane={r['lane']} "
-                      f"tier={r['tier']} urgency={r['urgency']} pii_gate={r['pii_gate']}"
+                      f"tier={r['tier']} route={r['route']} urgency={r['urgency']} pii_gate={r['pii_gate']}"
                       f"{' (FIRED)' if r['pii_fired'] else ''} ({r['latency_ms']} ms, {r['engine']})")
 
     if args.batch:

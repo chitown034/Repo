@@ -8,8 +8,11 @@
 #   (b) the caller passes an explicit --no-pii,
 # and NEVER when the task name matches a client-data pattern (DEFAULT_PII_TASKS + ~/.config/omniroute/pii-tasks.txt),
 # which wins over both. Everything else — no --task, an unknown task, a renamed client task — is deferred (exit 75,
-# the runner retries after the reset) or, when OMNIROUTE_LOCAL_MODEL names the local Jarvis model inside OmniRoute,
-# pinned to that local model. Mode is published for every task to read.
+# the runner retries after the reset) or, when OMNIROUTE_LOCAL_MODEL names the local-tier model registered with
+# OmniRoute's `local` combo (integrations/omniroute/README.md; Bonsai 27B, Steven's decision 2026-09-28 — this is
+# NOT `Jarvis`/OpenJarvis, the separate local vault-index-and-voice system OPTIMIZATION.md documents), pinned to
+# that local model, with no cloud fallback if it can't be reached (route_omni()'s own healthz check exits 75).
+# Mode is published for every task to read.
 # Spec: integrations/omniroute-failover/README.md · written 2026-09-22 · NOT yet installed on the Mac.
 # Usage: claude-auto [--task NAME] [--pii|--no-pii] [--force subscription|free|local] [--status]
 #                    [--lease|--no-lease|--lease-check|--take-lease|--release-lease] [--] <claude args…>
@@ -81,7 +84,9 @@ SAMPLES="$STATE/limit-samples.log" # one line per detected limit: exit status, m
 MARKER="$STATE/NEEDS-STEVEN"       # visible escalation written when switch-back cannot be proven (F-V2-11)
 OMNI_BASE="${OMNIROUTE_BASE:-http://127.0.0.1:20128}"
 FREE_MODEL="${OMNIROUTE_FREE_MODEL:-auto/coding:free}"   # OmniRoute auto-combo, free tier only (docs/routing/AUTO-COMBO.md)
-LOCAL_MODEL="${OMNIROUTE_LOCAL_MODEL:-}"                  # e.g. ollama-local/llama3.1:8b once that provider exists in OmniRoute; empty = no local route
+LOCAL_MODEL="${OMNIROUTE_LOCAL_MODEL:-}"                  # the OmniRoute `local` combo name (e.g. "local") once
+                                                           # configure-omniroute.sh has registered it — Bonsai 27B,
+                                                           # integrations/omniroute/README.md; empty = no local route
 PROBE_MAX_AGE="${OMNIROUTE_PROBE_MAX_AGE:-1500}"          # seconds of stale state before the launcher re-probes on its own
 PROBE_FORCE_AGE="${OMNIROUTE_PROBE_FORCE_AGE:-21600}"     # re-probe at least this often (6 h) even while reset_at is in the future (F-V2-12)
 RESET_MAX_AHEAD="${OMNIROUTE_RESET_MAX_AHEAD:-172800}"    # a parsed reset epoch more than 48 h out is a parse failure, not a wait (F-V2-12)
