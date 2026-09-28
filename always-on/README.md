@@ -49,6 +49,17 @@ on the Mac (headless, pre-approved tools, **59** tasks — counted from the live
 | `loop-engineering-weekly` | `30 4 * * 6` — Saturday 4:30 AM | The full cycle: nine parallel audit passes, Nadia's disruption brief, the CTO Innovator's feasibility gate, the CPI and Scale logs | — | **never run under the runner** |
 | `nightly-self-test` | `0 23 * * *` — 11:00 PM daily | Functional + integration check across every skill, task, agent and connector; self-heals routine breakage | 2026-09-15 23:32 | **error — timeout, exit 124**; no `selfTest` doc exists in `state`, so it has left no output to check against |
 
+## Proposed additions to the loop — NOT scheduled, 2026-09-28
+
+Three lines this round is handing to the integrator/Steven, not installing. **None of these run
+anywhere yet.** Say so plainly until one of them has a `runnerStatus` line of its own.
+
+| Task (proposed) | Cron (PT), proposed | Would do | Status |
+|---|---|---|---|
+| `prompt-master` step, inside `loop-engineering-weekly` | `30 4 * * 6` — same Saturday 4:30 AM slot, not a new cron | Once per loop cycle, reviews the orchestrator's and executives' system prompts against that cycle's measured outcomes (runs, failures, rework, escalations) and proposes at most 5 prompt diffs through the weekly-self-update human gate — never edits a live prompt itself. Per `.claude/skills/prompt-master/SKILL.md` | **PROPOSED — not scheduled.** `loop-engineering-weekly` itself has never run under the runner (above), so a step inside it has nothing to run inside yet |
+| `interview-me` (weekly, one topic) | `0 8 * * 0` — Sunday 8:00 AM, proposed to land ahead of the 4:00 PM review gate | Prompts Steven for one week's "Grill Me" topic; the resulting vault note and knowledge-graph entity stubs are exactly the kind of learned item `brain-weekly-verify` holds for Sunday review before anything promotes — this is the **main deliberate feed** for L4, named but not scheduled in `knowledge-graph/README.md` | **PROPOSED — not scheduled.** `interview-me` is in `.claude/skills/` (enabled for any session here) but has no cron anywhere, and `MAC-SETUP.sh` does not install it as a task (see `docs/NEEDS-STEVEN.md` hand-back row) |
+| Laya router weekly accuracy check | `0 5 * * 6` — Saturday 5:00 AM, proposed to land after `loop-engineering-weekly`'s 4:30 AM start | Runs `integrations/laya/laya_route.py --engine real --batch integrations/laya/sample-requests.jsonl` — the same 20-request, 16-class holdout this round proved the harness against in `--engine stub` (see `integrations/laya/README.md`) — scores each `brain_route` decision against the row's own `expected_class`, and writes accuracy + latency into whatever doc `loop-engineering-weekly` reads for "tokens per answer" (`OPTIMIZATION.md`) | **PROPOSED — not scheduled, and cannot run for real yet: `--engine real` needs a Hugging Face checkpoint this sandbox cannot reach** (`integrations/laya/README.md`). The holdout file exists now so this check has something to run against the day it is installed |
+
 ## Tasks the brain depends on
 
 | Task | Cron (PT) | Why the brain cares | Status |
