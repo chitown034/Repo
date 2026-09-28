@@ -7,9 +7,11 @@
 #   integrations/cli-anything-harnesses/connect.sh --dry-run  # print every command, change nothing
 #
 # What it does, in order, and nothing else:
-#   1. Installs anything still missing — browser first, then the eight site packages, into the
+#   1. Installs anything still missing — browser first, then the nine site packages, into the
 #      ONE venv — by calling ./MAC-SETUP.sh --only cli-anything --only cli-anything-harnesses,
-#      exactly the way the repo already does it. Skipped if all nine console scripts exist.
+#      exactly the way the repo already does it. Skipped if all ten console scripts exist.
+#      dotloop added R9, 2026-09-27: a REST harness (OAuth2), same shape as lofty/zoho, no
+#      DOMShell dependency — see dotloop/agent-harness/DOTLOOP.md.
 #   2. Runs the posture check (browser/runtime/posture.sh check) — proves SSRF blocking, the
 #      pinned DOMShell, the injection guard and 0700 history are actually in force, not just
 #      configured.
@@ -49,7 +51,7 @@ section() { say ""; say "== $* =="; }
 have() { command -v "$1" >/dev/null 2>&1; }
 
 # Every package this repo vendors, plus which console script proves it is installed.
-CAH_PKGS="browser homes showingtime showami skyslope zipforms lofty zoho publicfeeds"
+CAH_PKGS="browser homes showingtime showami skyslope zipforms lofty zoho dotloop publicfeeds"
 
 # --------------------------------------------------------------------- 1. install if missing
 section "1. Install"
@@ -61,7 +63,7 @@ for p in $CAH_PKGS; do
 done
 if [ "$need_install" -eq 1 ]; then
   say "One or more harnesses are missing from $CAH_BIN — running the same steps MAC-SETUP.sh"
-  say "already scripts: hub + plugin, then the vendored browser engine and all eight site CLIs"
+  say "already scripts: hub + plugin, then the vendored browser engine and all nine site CLIs"
   say "in one venv, browser first."
   if [ "$DRY_RUN" -eq 1 ]; then
     say "  (dry run) $REPO_DIR/MAC-SETUP.sh --only cli-anything --only cli-anything-harnesses"
@@ -71,7 +73,7 @@ if [ "$need_install" -eq 1 ]; then
     say "  MAC-SETUP.sh not found or not executable at $REPO_DIR — run it yourself, then re-run this script."
   fi
 else
-  say "All nine harnesses already present in $CAH_BIN — nothing to install. (Safe to re-run any time.)"
+  say "All ten harnesses already present in $CAH_BIN — nothing to install. (Safe to re-run any time.)"
 fi
 export PATH="$CAH_BIN:$LOCAL_BIN:$PATH"
 
@@ -142,7 +144,7 @@ except Exception:
   fi
 done
 
-for p in lofty zoho; do
+for p in lofty zoho dotloop; do
   bin="cli-anything-$p"
   if have "$bin"; then
     say "  $p: REST, not DOMShell — no --discover; see its own --help for the read verbs (config check / selftest)"
@@ -191,7 +193,7 @@ say ""
 say "  Paste this into Claude Code on this Mac (full prompt: routines/mac-task-repairs.md §9):"
 say "    Use the cli-anything-connectors skill. Follow routines/mac-task-repairs.md section 9"
 say "    exactly: inspect what is ACTUALLY installed and gate-open on this Mac right now"
-say "    (cli-hub --version; claude plugin list; which of the nine console scripts exist in"
+say "    (cli-hub --version; claude plugin list; which of the ten console scripts exist in"
 say "    $CAH_BIN; each package's --help verb groups, word-matched for 'act'; gate status for"
 say "    skyslope, zipforms and publicfeeds's three groups) and write cliAnythingStatus from"
 say "    what you observe this run — never a value you did not just see, and never a recipe"
