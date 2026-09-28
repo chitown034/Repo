@@ -282,3 +282,17 @@ the record of the change. The full split, and the three web-UI routine edits onl
   are one Needs-Steven row in `docs/NEEDS-STEVEN.md`. Nothing here is live.
 - **Owner.** Steven (install decision pending). **Status.** Proposed — repository-side package built
   and proven in sandbox 2026-09-28; not installed, not connected, not running anywhere.
+
+## 2026-09-28 — Research-only feed routines become dashboard writers; at most 3 engineers at once
+
+- **Decision (Steven, via the chat's question card).** *"Make them update the dashboard"*: each cloud routine
+  that researches a dashboard feed must end by writing its document to the Command Deck's database (collection
+  `state`), the same way the 12 routines that already write do. Duplicates of a converted routine are disabled,
+  not deleted. The old prompts are kept, so any conversion can be undone.
+- **Decision (Steven).** *"At most 3 at a time"*: no more than three engineer sub-agents run at once, because
+  engineers, routines, Mac tasks and Steven share one usage allowance, and 34 of 66 routines failed when it ran
+  out (Sep 24–28).
+- **Why.** 19 enabled feed routines (~22.7 runs a day) produced research nobody applied, while the dashboard's
+  feeds went stale. Writing on schedule is the only way the feeds stay current without a manual pass.
+- **Owner.** Derek (automation health). **Status.** Decided 2026-09-28; the conversions are being applied —
+  `routines/` records each one when it is.
