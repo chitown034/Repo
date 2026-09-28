@@ -297,13 +297,13 @@ the record of the change. The full split, and the three web-UI routine edits onl
 - **Owner.** Derek (automation health). **Status.** Decided 2026-09-28; the conversions are being applied —
   `routines/` records each one when it is.
 
-## 2026-09-28 — Update (same day): the feed-writer conversion is blocked on the platform, not on the prompts
+## 2026-09-28 — Update (same day): feed writers recreated as new routines; the old ones are Steven's to switch off
 
-- The ten writer prompts are built and reviewed (`routines/feed-writers-2026-09-28/`), but none is live: agents
-  cannot edit routines made in the web UI, and routines an agent creates had no database tool when tested
-  (07:38 and 07:41 UTC — nothing written; both test routines deleted). Steven tests one pasted prompt first
-  (`docs/NEEDS-STEVEN.md` item 73); if a web-UI routine cannot write either, the Mac runner stays the only
-  scheduled writer. **Owner.** Steven (paste + test), Derek (follow-up).
+- Agents cannot edit routines made in the web UI, so the writers were recreated as agent-owned routines
+  (`routines/feed-writers-2026-09-28/README.md`). An earlier note here said agent-created routines could not
+  write — **wrong**: the first writer wrote at 07:43 UTC, five minutes after its session looked idle.
+- Rates waits on the network allowance (NEEDS-STEVEN 74); Strava and calendar go into Steven's own routines,
+  which carry their connectors. **Owner.** Steven (switch-off), Derek (follow-up).
 
 ## 2026-09-28 — OmniRoute routes the research and local tiers; the subscription stays direct
 
