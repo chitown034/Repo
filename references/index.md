@@ -35,6 +35,16 @@ rather than the full document.
 |---|---|---|---|
 | openalternative.co/alternatives/ | A public directory of open-source alternatives to commercial software (Steven's description; site egress-blocked from the cloud on 2026-09-22, not yet read) | Live site, unverified | When a paid SaaS comes up for renewal, or CTO Innovator wants a self-hosted option. Nothing to install. |
 
+## Tools and candidates (2026-09-28)
+
+Same four facts as any other row here — **no content copied, pointers only.**
+
+| Source | What it is | How current | Why you would open it |
+|---|---|---|---|
+| **Laya** | `integrations/laya/` in this repo (the built package); upstream `github.com/NandhaKishorM/laya` (Apache-2.0, Convai Innovations), docs at `nandhakishorm.github.io/laya`, model `convaiinnovations/laya` on Hugging Face | 0.3.21, cloned `$S/r11/laya` 2026-09-28; **installed and proven in the R11 sandbox only — not on the Mac.** Hugging Face is blocked from this sandbox; see `integrations/laya/README.md` | Before changing `router-questions.json` or `laya_route.py`, or before running `integrations/laya/install.sh` on the Mac |
+| **Orca** | `github.com/stablyai/orca` (MIT) — "the AI Orchestrator": runs Claude Code and Codex side by side in worktrees, with an iOS/Android **mobile companion** to monitor and steer agents | Mac reports **v1.4.203 — unverified from the cloud** (F-V2-23; confirm with `./mac-verify.sh`) | Before wiring the mobile companion as the phone view for parallel sub-agents — see `OPTIMIZATION.md`'s dispatch layer and `REMOTE-ACCESS.md` |
+| **77 Skills** (77skills.ai) | 77 business-principle skills as Markdown, packaged for Claude Code; **one-time purchase, no subscription** | **Candidate only, 2026-09-28.** `77skills.ai` is egress-blocked from this sandbox — not read, contents unverified | Only after Steven decides to buy it (**HALT: spends money**); then `skills-refresh` plus an ECC security review, before anything from it is enabled |
+
 ## Registering a source
 
 One row, four facts: **what it is · where it lives · how current · why you would open it.** If you
