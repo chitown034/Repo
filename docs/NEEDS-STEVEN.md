@@ -267,3 +267,7 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
     spends money, so only you can decide · **decide** buy or don't; if you buy it, it goes through
     `skills-refresh` and an ECC security review before anything from it is enabled — do not enable
     any of its skills straight off the download · R11.
+71. **CRMLS automated access** — every source found points to one path: the RESO Web API through a
+    CRMLS data-licensing agreement; no scraper was built · a licensing/compliance call only you can
+    make · read `integrations/cli-anything-harnesses/CRMLS-HALT.md` (Alexandra's draft) and decide
+    whether to apply as Broker Participant (licensing@crmls.org) · R9-C3-cli-brain-04.
