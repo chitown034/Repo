@@ -219,3 +219,31 @@ Measured 2026-09-24 between 15:50 and 16:05 UTC with read-only calls. Nothing wa
 62. **VA disability compensation rates** — reference material, hand-verified 2026-09-07, and nothing
     refreshes it (`integrations/CONNECTIONS.md`). The published rates change every year with the
     cost-of-living adjustment. **Decide:** a once-a-year refresh task, or keep it manual.
+
+## Freshness, usage and WhatsApp — added 2026-09-28 by the integrator (append-only block)
+
+Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live stores and the routine list.
+
+63. **The Mac runner is still silent — now 4+ days.** Its last task ended 2026-09-23 7:05 PM PT, in
+    the middle of `fabric-deck-sync` (which, like `brain-deck-sync` and `nightly-self-test`, had
+    errored before; `lead-triage-daily` was refused). It writes weather, news, rates and the calendar,
+    so those have not changed since Sep 23. On the Mac: `runnerctl status`, then
+    `runnerctl logs fabric-deck-sync`, then `runnerctl restart`, and keep the Mac awake while it runs
+    (System Settings → Energy). Supersedes the "14 hours stale" wording of item 58.
+64. **The account's weekly usage allowance is at its warning level**, reset 2026-10-04 20:00 UTC. The
+    weekly and 5-hour limits stopped 34 of 66 cloud routines on their last run (6-second failures,
+    Sep 24 evening → Sep 27 20:00 UTC, and 21:50 → 01:00 UTC); running out again stops every routine,
+    every Mac task and your own Claude use until Oct 4. Decide the engineering pace — the four R9
+    feature engineers were paused 2026-09-28 ~02:05 UTC with their work committed or saved.
+65. **Proposal — the cloud feed routines research but never write.** Weather & news, rates, calendar,
+    Econoday, Strava and news-daily all run in "RESEARCH-ONLY MODE" and end with JSON that nobody
+    applies; since 2026-09-22 a cloud routine *can* write the database (`cloudWriteProbe`). Rewriting
+    them as cloud writers would stop the feeds depending on the Mac being awake. Editing a live
+    routine is yours to approve (HALT list).
+66. **WhatsApp (OpenWA)** — run `integrations/openwa/README.md` on the Mac: Docker Desktop,
+    `install.sh`, `provision-keys.sh`, then scan the QR (Linked Devices). Only you can scan it. OpenWA's
+    maintainers advise a dedicated number; your 2026-09-23 choice (personal number, self-chat) stands
+    unless you change it.
+67. **Two dates in your own data passed yesterday (Sep 27)** — the 2022 Toyota Sienna registration
+    (`licenseTracker`) and USC PJMT 530 Week 4 (`uscDeadlines`). If both are done, update the two rows
+    so the dashboard stops carrying them. Week 8's final assessment is due Oct 19.
