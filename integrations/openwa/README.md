@@ -25,6 +25,30 @@ there. She has no access to any other chat, and she never messages anyone else.
 - your iPhone;
 - about 30 minutes. The first build takes 10–15 of them.
 
+## The fast way — one command (after Steps 1 and 2)
+
+Once Docker Desktop is running and you have pulled the Repo:
+
+```bash
+bash integrations/openwa/setup-phone.sh
+```
+
+It does Steps 3 to 6 for you, and it is safe to run again if anything stops it halfway:
+1. installs and starts OpenWA;
+2. stores the admin key in your Keychain;
+3. creates the `steven-selfchat` session;
+4. **opens a QR code in your browser that refreshes itself**. Scan it with WhatsApp → Settings → Linked
+   Devices → Link a Device;
+5. reads your own number from the linked phone, so you never type it;
+6. creates Vanessa's key, fenced to your "Message Yourself" chat;
+7. finishes with five PASS lines proving the fence.
+
+You'll see a `[V] Vanessa is linked…` message in your self-chat. Prefer typing a code to scanning? Run
+`bash integrations/openwa/setup-phone.sh --code` and enter the 8 characters under **Link with phone number
+instead**.
+
+Steps 3–6 below are the same thing done by hand.
+
 ## Step 1 — Docker Desktop (skip it if `docker info` already works)
 
 1. Download **Docker Desktop for Mac (Apple silicon)** from docker.com, drag it to Applications, and open

@@ -13,7 +13,13 @@
 # It asks you, interactively, for the self-chat WhatsApp id (e.g. `<your number>@c.us` — the same
 # id WhatsApp uses for your own "Message Yourself" thread). That value lives only in this shell's
 # memory for the one API call that needs it. It is never written to a file, this repo, or a log.
+#
+# Modes (setup-phone.sh uses the two halves separately, so your number never has to be typed):
+#   provision-keys.sh               both halves; asks for the self-chat id
+#   provision-keys.sh admin         only step 1-2: the admin key into the keychain
+#   provision-keys.sh operator ID   only step 3: Vanessa's key, scoped to chat ID (e.g. 1XXXXXXXXXX@c.us)
 set -euo pipefail
+MODE="${1:-both}"; ARG_CHAT_ID="${2:-}"
 
 INSTALL_DIR="${OPENWA_INSTALL_DIR:-$HOME/Applications/openwa}"
 API="http://127.0.0.1:2785/api"
@@ -28,6 +34,7 @@ command -v docker >/dev/null 2>&1 || fail "docker not found"
 command -v python3 >/dev/null 2>&1 || fail "python3 not found — run: xcode-select --install"
 curl -fsS "$API/health" >/dev/null 2>&1 || fail "OpenWA is not answering on 127.0.0.1:2785 — is the container up? (docker compose ps)"
 
+if [ "$MODE" = "both" ] || [ "$MODE" = "admin" ]; then
 say "== reading the admin key from the running container's data volume (never off a log line)"
 ADMIN_KEY="$(docker compose -f "$INSTALL_DIR/docker-compose.yml" exec -T openwa-api cat /app/data/.api-key 2>/dev/null | tr -d '[:space:]')"
 [ -n "$ADMIN_KEY" ] || fail "could not read /app/data/.api-key from the container — check 'docker compose logs openwa-api'"
@@ -39,12 +46,22 @@ else
   say "== admin key stored in keychain item '$KEYCHAIN_ADMIN_ITEM'"
 fi
 
+fi
+[ "$MODE" = "admin" ] && exit 0
+
+ADMIN_KEY="${ADMIN_KEY:-$(security find-generic-password -a "$USER" -s "$KEYCHAIN_ADMIN_ITEM" -w 2>/dev/null || true)}"
+[ -n "$ADMIN_KEY" ] || fail "no admin key in the keychain — run: provision-keys.sh admin"
+
+if [ -n "$ARG_CHAT_ID" ]; then
+  SELF_CHAT_ID="$ARG_CHAT_ID"
+else
 say ""
 say "Vanessa answers ONLY in your own WhatsApp self-chat ('Message Yourself'). Give me that chat's"
 say "WhatsApp id so the operator key can be scoped to it and nothing else — e.g. <your number>@c.us"
 say "with country code, no plus sign, no spaces. This is typed here only; it is never written to a"
 say "file, never logged, never leaves this shell."
 read -r -p "Self-chat WhatsApp id: " SELF_CHAT_ID
+fi
 [ -n "$SELF_CHAT_ID" ] || fail "no id given — re-run when you have it"
 
 say "== creating a chat-scoped operator key (allowedChats=[\"$SELF_CHAT_ID\"])"
