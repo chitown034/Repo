@@ -168,6 +168,8 @@ rule in `knowledge-graph/README.md`. Neither = it holds no corpus at all.
 | **Ruflo** | **L4** — knowledge graph (weekly summary; also an L3 server) | Context (a summary *of* Connections) | Before traversing Graphify directly — try the summary first | 238 entries |
 | **ECC** | Not a recall level — a **gate** on the dispatch path | Neither | Every change, not a question | Reviews standards/test/observability/accessibility/security/dependency/agent-safety; under Derek |
 | **Orca** | Not a recall level — a **dispatch-path surface** (parallel agents, phone view) | Neither | Never for recall; only to watch/steer sub-agents | Reported v1.4.203, unverified from here; proposal only, vetted by the CTO Innovator |
+| **OmniRoute** | Not a recall level — the **local dispatch gateway** for the research and local tiers | Neither | Never for recall; routes a research-tier or PII-fired request to its combo (`integrations/omniroute/README.md`) | Scripts built 2026-09-28, proved against stand-ins only; not configured on the Mac |
+| **Bonsai 27B** | Not a recall level — the **local tier's model**, behind OmniRoute's `local` combo | Context (a client-data request's local-only answer) | A PII-fired request only — never anything else, never a cloud fallback | Apache-2.0 (PrismML); not installed; the local route stays off until the Mac proof passes (NEEDS-STEVEN 75) |
 
 ## Token rules — the zero-token hop first
 

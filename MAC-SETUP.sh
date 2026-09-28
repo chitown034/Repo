@@ -55,7 +55,7 @@ openalternative|openalternative.co/alternatives/ is a directory to read, not sof
 STEPS_PREREQ='homebrew uv pipx node python-toolchain'
 STEPS_BRAIN='vendored-skills'
 STEPS_FR5A='codeburn graphify claude-code-setup headroom'
-STEPS_FR5B='whatsapp-cli inkbox-voice omniroute scrapers-venv scrapling scrapegraphai cli-anything cli-anything-harnesses lofty-keyfile'
+STEPS_FR5B='whatsapp-cli inkbox-voice omniroute local-llm scrapers-venv scrapling scrapegraphai cli-anything cli-anything-harnesses lofty-keyfile'
 STEPS_ONDEMAND='strix ponytail prompts-chat screenshot-to-code agent-reach laya higgsfield'
 STEPS_MACSYNC='mac-sync'   # R6, 2026-09-24: the "same information" half of two equal Macs — appended, not folded into STEPS_FR5B
 ALL_STEPS="$STEPS_PREREQ $STEPS_BRAIN $STEPS_FR5A $STEPS_FR5B $STEPS_MACSYNC $STEPS_ONDEMAND"
@@ -530,6 +530,13 @@ EOF
   else failed "could not write $RUNNER_CFG/role"; fi
   needs_steven "OmniRoute dashboard password + API key value, 'omniroute providers add … --credential-env' for each free provider, the probe LaunchAgent (com.stevenshearrill.omniroute-probe, StartInterval 900), re-pointing the vanessa launcher and the runner wrapper at claude-auto, and the PII canary with the security steward — all of it is F-FR5b-05/06 and stays yours. Also: run 'claude-auto --lease-check' on BOTH Macs before enabling the schedule — F-P7-10. If an OLDER role file here still says primary or standby from before R6, one line changes it: printf 'peer\\n' > ~/.config/claude-runner/role (this script will not overwrite it for you, on purpose)."
   say "      this script installs no LaunchAgent and re-points no launcher: that would be editing a live task"
+fi
+
+if should_run local-llm; then
+  header local-llm "Bonsai 27B, the local tier behind OmniRoute's local combo (R12, 2026-09-28) — plan only here"
+  say "      prints the plan only: the real run downloads 6-10 GB and needs your Hugging Face token (BONSAI_TOKEN)"
+  run bash "$REPO_DIR/integrations/omniroute/setup-local-llm.sh" --dry-run || true
+  needs_steven "Bonsai 27B: export BONSAI_TOKEN in your own shell, run integrations/omniroute/setup-local-llm.sh (no --dry-run), then integrations/omniroute/configure-omniroute.sh; client-data tasks stay OFF the local route until the Mac proof in integrations/omniroute/README.md passes (NEEDS-STEVEN 75)"
 fi
 
 if { should_run scrapling || should_run scrapegraphai || should_run scrapers-venv; } && ! in_list scrapers-venv "$SKIP"; then

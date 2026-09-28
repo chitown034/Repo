@@ -304,3 +304,18 @@ the record of the change. The full split, and the three web-UI routine edits onl
   (07:38 and 07:41 UTC — nothing written; both test routines deleted). Steven tests one pasted prompt first
   (`docs/NEEDS-STEVEN.md` item 73); if a web-UI routine cannot write either, the Mac runner stays the only
   scheduled writer. **Owner.** Steven (paste + test), Derek (follow-up).
+
+## 2026-09-28 — OmniRoute routes the research and local tiers; the subscription stays direct
+
+- **Request (Steven, verbatim, model name elided).** *"configure omni route Setup orca / Local LLM and token
+  optimization Omniroute / PrismML's Bonsai 27B: with Perplexity and [top-tier model] md"*.
+- **Decision.** The top, executive and worker tiers run on the subscription, direct — never through OmniRoute.
+  Anthropic's terms (code.claude.com/docs/en/legal-and-compliance → "Authentication and credential use", read
+  2026-09-28) keep subscription sign-in for Claude Code and Anthropic's own apps. Perplexity does research
+  through OmniRoute's `research` combo (≤4 per wave). Client-data (PII-gated) requests get one home: Bonsai 27B
+  behind a single-target `local` combo, on the Mac, never a cloud fallback — and that route stays off until a
+  real test on the Mac proves it fails closed (`integrations/omniroute/README.md`, NEEDS-STEVEN 75).
+- **Laya** now prints a `route` with its decision (`integrations/omniroute/route-map.json`); a PII decision
+  always maps to `local`.
+- **Not decided — HALT.** A top tier behind OmniRoute would need a pay-per-token key (money): NEEDS-STEVEN 77.
+- **Owner.** Derek (automation), Elena (the PII gate). **Status.** Built 2026-09-28; nothing installed on the Mac.

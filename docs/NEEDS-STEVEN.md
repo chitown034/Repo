@@ -285,3 +285,17 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
 74. **Cloud environment network** — the environment's network policy denies `fred.stlouisfed.org`,
     `www.freddiemac.com` and `www.redfin.com`, the primary sources for the rates card. To allow them: the cloud
     environment menu in a session's title bar → Edit → Network access → add those hosts (or a broader level).
+75. **Bonsai 27B — the local tier (client data stays on the Mac)** — built and proved against stand-ins
+    (`integrations/omniroute/`); nothing downloaded yet. On the Mac: export `BONSAI_TOKEN` (your Hugging Face
+    token) in your own shell → `integrations/omniroute/setup-local-llm.sh` (it prints the 5.9 GB / ~9.5 GB
+    sizes first) → `integrations/omniroute/configure-omniroute.sh`. Then run the four-step proof in
+    `integrations/omniroute/README.md` ("Prove it on the Mac"): with Bonsai stopped, a request to the `local`
+    combo must FAIL and OmniRoute must try no other provider. Only then add `OMNIROUTE_LOCAL_MODEL=local` to
+    `~/.config/omniroute/.env`. Until then client-data tasks defer, as today.
+76. **Perplexity key into OmniRoute** — the `research` combo exists without a key, by design. Paste the key
+    yourself: `http://127.0.0.1:20128` → Providers → Add Provider → Perplexity → Credential → Save → Test, or
+    `integrations/omniroute/configure-omniroute.sh --set-perplexity-key` (hidden prompt, loopback only).
+77. **Decision — should the top tier ever route through OmniRoute?** Not built. Anthropic's terms
+    (code.claude.com/docs/en/legal-and-compliance → "Authentication and credential use") keep subscription
+    sign-in for Claude Code and Anthropic's own apps, so the subscription never goes through a gateway. The only
+    way would be a pay-per-token API key — that spends money, so it is yours to decide. Default: no.

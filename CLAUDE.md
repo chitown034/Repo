@@ -65,6 +65,7 @@ Never serve a cached answer past its TTL without saying its age. Rules: `recall-
 | Executives (Marcus, Sofia, Derek, Alexandra, Nadia, Victor, Elena, Elon) | Claude Opus 5 |
 | Reports, benches, execution and report-only seats | Claude Sonnet 5 |
 | Research heavy lifting | Perplexity (Composio `perplexityai`, or the local perplexity MCP) |
+| Local tier — client-data (PII-gated) requests only, never a cloud fallback | Bonsai 27B via OmniRoute's `local` combo, on the Mac only — off until proven there (`integrations/omniroute/README.md`) |
 
 ## Sub-agent dispatch
 
