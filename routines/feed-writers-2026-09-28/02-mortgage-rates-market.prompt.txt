@@ -87,7 +87,7 @@ other.
      markets: [{name, medianPrice, dom, monthsSupply, yoy, asOf, source, note}, ... 3, same order as STEP 2c],
      activeListings: {note: "<STEP 2d>"},
      note: "Averages for orientation only. A rate for a borrower is quoted by Steven, never by an agent.",
-     syncedAt: "<ISO 8601 UTC>",
+     syncedAt: "<output of `date -u +%Y-%m-%dT%H:%M:%SZ` — see CLOCK below>",
      via: "cloud routine Command Deck — mortgage rates & market refresh"
    }}`
    Every document in this store is `{v: <value>}` — no exceptions. Send `data: {v: {...}}`, never
@@ -107,6 +107,11 @@ other.
 6. Set `via` to "cloud routine Command Deck — mortgage rates & market refresh" on both documents,
    and set `syncedAt` to the actual UTC time you write, in ISO 8601, on each (they may differ by a
    few seconds between the two artifacts — that's fine).
+   CLOCK (added 2026-09-28 after the first runs): never type, estimate or round a time yourself —
+   the first runs guessed and stamped times hours off, some of them in the future. Right before
+   each write, run exactly `date -u +%Y-%m-%dT%H:%M:%SZ` with the Bash tool and copy its output
+   unchanged into `syncedAt`. That command only reads the clock, so it is allowed; every Bash
+   write/copy/redirect stays banned.
 7. Never touch any other document in either artifact. Never call Edit, Write, or Bash with any
    write/copy/redirect operation. Never call Artifact with action "publish". Never send a message
    to anyone. Never quote a rate to a borrower — this data is for orientation only, exactly as the

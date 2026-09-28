@@ -65,7 +65,7 @@ Use the ArtifactData tool (same one you loaded in STEP 1).
 1. You already read `stravaSnapshot` in STEP 1 and have its `version`.
 2. Build the replacement in EXACTLY the same shape as what you read:
    `{v: {activities: [[date, activity, distance, movingTime, notes], ... up to 10, newest first],
-   syncedAt: "<ISO 8601 UTC>", via: "cloud routine Command Deck — Strava activity refresh"}}`
+   syncedAt: "<output of `date -u +%Y-%m-%dT%H:%M:%SZ` — see CLOCK below>", via: "cloud routine Command Deck — Strava activity refresh"}}`
    Every document in this store is `{v: <value>}` — no exceptions. Send `data: {v: {...}}`, never
    the bare value. `activities` is an array of ARRAYS (positional rows), never an array of objects
    — a blanket object shape here is silently discarded by the page's own row filter.
@@ -76,6 +76,11 @@ Use the ArtifactData tool (same one you loaded in STEP 1).
 5. Set `via` to "cloud routine Command Deck — Strava activity refresh" and set `syncedAt` to the
    actual UTC time you write, in ISO 8601 (the page also accepts a bare "YYYY-MM-DD"; prefer full
    ISO 8601 since that's what STEP 1 found in the live document already).
+   CLOCK (added 2026-09-28 after the first runs): never type, estimate or round a time yourself —
+   the first runs guessed and stamped times hours off, some of them in the future. Right before
+   each write, run exactly `date -u +%Y-%m-%dT%H:%M:%SZ` with the Bash tool and copy its output
+   unchanged into `syncedAt`. That command only reads the clock, so it is allowed; every Bash
+   write/copy/redirect stays banned.
 6. Never touch any other document. Never call Edit, Write, or Bash with any write/copy/redirect
    operation. Never call Artifact with action "publish". Never send a message to anyone.
 7. End your turn with a one-line summary: how many activities you wrote and the document's new

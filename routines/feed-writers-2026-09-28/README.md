@@ -52,3 +52,18 @@ do that. **Status, corrected the same morning (08:20 UTC):**
 - FRED, Freddie Mac and Redfin are blocked by the cloud environment's network policy, so the rates writer falls
   back to web search until those domains are allowed (`docs/NEEDS-STEVEN.md` item 74).
 - The old prompts, unchanged, are the undo record (kept in the integrator's scratch copy of all 66 routines).
+
+## First-run check (14:30 UTC, 2026-09-28)
+
+- All six daily writers finished and wrote real, sourced entries. Two things were wrong:
+- **Guessed times.** No prompt told the model how to read the clock, so it made one up: news said 03:59 UTC
+  for a 13:57 write, and three `liveFeeds` entries were stamped hours in the future (16:30, 18:00, 21:00 for
+  writes at 12:45, 12:57 and 13:54). Top Performers was 6 minutes ahead. The five stamps were corrected to each
+  run's finish time (`liveFeeds` v33, `newsSnapshot` v16; nothing else changed). Every prompt now says: run
+  `date -u +%Y-%m-%dT%H:%M:%SZ` (the calendar prompt: Pacific time with its offset) right before the write and
+  copy the output. The writers run in auto mode, where that read-only command is allowed.
+- **No weather.** The writer has no weather connector and the network policy blocks every weather site
+  (api.open-meteo.com, api.weather.gov, wttr.in and accuweather.com all refused, 403). It correctly wrote no
+  weather instead of guessing. Its prompt now tries Open-Meteo first (one call for all 7 cities) and NWS for
+  alerts. That starts working as soon as `api.open-meteo.com` and `api.weather.gov` are allowed
+  (`docs/NEEDS-STEVEN.md` item 74). Until then, weather keeps its last reading and shows its age.

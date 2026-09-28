@@ -57,7 +57,7 @@ Use the ArtifactData tool (same one you loaded in STEP 1).
 
 1. You already read `liveFeeds` in STEP 1 and have its `version`.
 2. Build the replacement `feeds.topPerformersLiveList` entry in EXACTLY the same shape as the one
-   you read: `{checkedAt: "<ISO 8601 UTC>", citations: [{title, url}, ... 3 to 5 real sources],
+   you read: `{checkedAt: "<output of `date -u +%Y-%m-%dT%H:%M:%SZ` — see CLOCK below>", citations: [{title, url}, ... 3 to 5 real sources],
    model: "cloud-routine", source: "WebSearch", text: "<2-4 sentence market-close recap: date,
    index moves, standout movers with a one-line why, any sector color — same tone/length as the
    entry you read in STEP 1>"}`.
@@ -76,6 +76,11 @@ Use the ArtifactData tool (same one you loaded in STEP 1).
    better than an empty or guessed one.
 6. Set `model` to "cloud-routine" — never a model name — and `checkedAt` to the actual UTC time you
    write, in ISO 8601. `source` is "WebSearch".
+   CLOCK (added 2026-09-28 after the first runs): never type, estimate or round a time yourself —
+   the first runs guessed and stamped times hours off, some of them in the future. Right before
+   each write, run exactly `date -u +%Y-%m-%dT%H:%M:%SZ` with the Bash tool and copy its output
+   unchanged into `checkedAt`. That command only reads the clock, so it is allowed; every Bash
+   write/copy/redirect stays banned.
 7. Never touch any other document. Never call Edit, Write, or Bash with any write/copy/redirect
    operation. Never call Artifact with action "publish". Never send a message to anyone.
 8. End your turn with a one-line summary: the close you reported, and the document's new version.

@@ -33,9 +33,33 @@ STEP 2 — Research current data
 Check today's real date first (don't guess).
 
 Weather — for these 7 cities, in this exact order: Temecula CA, San Diego CA, Los Angeles CA,
-Chicago IL, Las Vegas NV, Washington DC, New Braunfels TX. If AccuWeather connector tools are in your
-tool list, use them (current conditions + daily forecast; the location key is the number at the end of
-each city's `url` in the document you read). Otherwise use WebSearch against AccuWeather or NWS.
+Chicago IL, Las Vegas NV, Washington DC, New Braunfels TX.
+FIRST try Open-Meteo (free, no key). Added 2026-09-28: the first run wrote no weather — this
+sandbox has no weather connector and blocks the weather sites. One read-only Bash call covers all 7
+cities, in order:
+  curl -sS --max-time 25 "https://api.open-meteo.com/v1/forecast?latitude=33.4936,32.7157,34.0522,41.8781,36.1699,38.9072,29.7030&longitude=-117.1484,-117.1611,-118.2437,-87.6298,-115.1398,-77.0369,-98.1245&current=temperature_2m,apparent_temperature,weather_code&daily=temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&timezone=auto&forecast_days=2"
+  It returns a JSON array of 7 objects in that same order. For each city: `temp` =
+  current.temperature_2m, `feelsLike` = current.apparent_temperature, `high` =
+  daily.temperature_2m_max[0] (today), `low` = daily.temperature_2m_min[1] (tomorrow's minimum,
+  i.e. tonight's low), each rounded to a whole number. `condition` from current.weather_code:
+  0 Clear · 1 Mainly clear · 2 Partly cloudy · 3 Overcast · 45/48 Fog · 51/53/55 Drizzle ·
+  56/57 Freezing drizzle · 61 Light rain · 63 Rain · 65 Heavy rain · 66/67 Freezing rain ·
+  71 Light snow · 73 Snow · 75 Heavy snow · 77 Snow grains · 80 Light showers · 81 Showers ·
+  82 Heavy showers · 85/86 Snow showers · 95 Thunderstorm · 96/99 Thunderstorm with hail.
+  current.time is the city's local time; with the object's utc_offset_seconds it must be within
+  2 hours of the UTC time the CLOCK command gives (WRITE STEP, rule 5). `source` = "Open-Meteo (current +
+  forecast)"; `url` = that city's own request: the same URL with only its one latitude and one
+  longitude.
+  Alerts, one read-only call per city:
+  curl -sS --max-time 20 -H "User-Agent: CommandDeck weather writer" "https://api.weather.gov/alerts/active?point=<lat>,<lon>"
+  `alert` = the first feature's properties.event plus " (NWS), until " and its properties.ends
+  (or expires when ends is null) in the city's local time, e.g. "Heat Advisory (NWS), until 8 PM
+  Tue Sep 29"; "" when `features` is empty. If api.weather.gov does not answer, write "" and say
+  "alerts not checked" in your final summary.
+  If the Open-Meteo call fails (a 403 means the environment's network policy does not allow
+  api.open-meteo.com yet), fall back: AccuWeather connector tools if they are in your tool list
+(current conditions + daily forecast; the location key is the number at the end of each city's
+`url` in the document you read), otherwise WebSearch against AccuWeather or NWS.
 - `temp`/`feelsLike`/`condition` are the CURRENT observation: take them only from a source stamped
   within the last 2 hours of now in that city's local time (at night temperatures are low — a daytime
   high or yesterday's reading is NOT current). No current observation for a city → leave that city OUT.
@@ -58,8 +82,8 @@ Use the ArtifactData tool (same one you loaded in STEP 1).
 
 1. You already read `weatherSnapshot` and `newsSnapshot` in STEP 1 and have their `version`s.
 2. Build each replacement in EXACTLY the same shape as what you read:
-   `weatherSnapshot` → `{v: {cities: [{city, temp, condition, high, low, feelsLike, alert, source, url}, ... one per city, in the order of STEP 2, each `city` spelled exactly as in the document you read in STEP 1 ("Temecula, CA", "New Braunfels, TX"); temp/high/low/feelsLike are numbers (°F); alert is "" when there is none], syncedAt: "<ISO 8601 UTC, e.g. 2026-09-28T13:52:00Z>", via: "cloud routine Command Deck — weather & news (writer)"}}`
-   `newsSnapshot` → `{v: {global: [{title, source, url, date}, ...3 to 5], local: {"Temecula, CA": [...], "San Diego, CA": [...], "Los Angeles, CA": [...], "Chicago, IL": [...], "Las Vegas, NV": [...], "Washington, DC": [...], "Murrieta, CA": [...], "Riverside, CA": [...], "Orange County, CA": [...], "New Braunfels, TX": [...]}, syncedAt: "<ISO 8601 UTC, e.g. 2026-09-28T13:52:00Z>", via: "cloud routine Command Deck — weather & news (writer)"}}`
+   `weatherSnapshot` → `{v: {cities: [{city, temp, condition, high, low, feelsLike, alert, source, url}, ... one per city, in the order of STEP 2, each `city` spelled exactly as in the document you read in STEP 1 ("Temecula, CA", "New Braunfels, TX"); temp/high/low/feelsLike are numbers (°F); alert is "" when there is none], syncedAt: "<output of `date -u +%Y-%m-%dT%H:%M:%SZ` — see CLOCK below>", via: "cloud routine Command Deck — weather & news (writer)"}}`
+   `newsSnapshot` → `{v: {global: [{title, source, url, date}, ...3 to 5], local: {"Temecula, CA": [...], "San Diego, CA": [...], "Los Angeles, CA": [...], "Chicago, IL": [...], "Las Vegas, NV": [...], "Washington, DC": [...], "Murrieta, CA": [...], "Riverside, CA": [...], "Orange County, CA": [...], "New Braunfels, TX": [...]}, syncedAt: "<output of `date -u +%Y-%m-%dT%H:%M:%SZ` — see CLOCK below>", via: "cloud routine Command Deck — weather & news (writer)"}}`
    Every document in this store is `{v: <value>}` — no exceptions. Send `data: {v: {...}}`, never
    the bare value.
 3. Write each with `set`, pinned by the `if_version` you read in STEP 1. On a version conflict for
@@ -73,6 +97,11 @@ Use the ArtifactData tool (same one you loaded in STEP 1).
    empty, thin or guessed one.
 5. Set `via` to "cloud routine Command Deck — weather & news (writer)" on both documents, and set
    `syncedAt` to the actual UTC time you write, in ISO 8601.
+   CLOCK (added 2026-09-28 after the first runs): never type, estimate or round a time yourself —
+   the first runs guessed and stamped times hours off, some of them in the future. Right before
+   each write, run exactly `date -u +%Y-%m-%dT%H:%M:%SZ` with the Bash tool and copy its output
+   unchanged into `syncedAt`. That command only reads the clock, so it is allowed; every Bash
+   write/copy/redirect stays banned.
 6. Never touch any other document (in particular, do not write `bearsLiveNews`, `liveFeeds`, or
    `newsResetToken` — none of those are this routine's job). Never call Edit, Write, or Bash with
    any write/copy/redirect operation. Never call Artifact with action "publish". Never send a

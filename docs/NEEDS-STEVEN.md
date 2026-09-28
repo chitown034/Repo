@@ -283,8 +283,11 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
     `routines/feed-writers-2026-09-28/README.md`, and paste the Strava and calendar prompts into your own two
     routines (they carry the connectors). Until you switch them off, both sets run.
 74. **Cloud environment network** — the environment's network policy denies `fred.stlouisfed.org`,
-    `www.freddiemac.com` and `www.redfin.com`, the primary sources for the rates card. To allow them: the cloud
-    environment menu in a session's title bar → Edit → Network access → add those hosts (or a broader level).
+    `www.freddiemac.com` and `www.redfin.com`, the primary sources for the rates card, and (found 2026-09-28,
+    14:30 UTC) `api.open-meteo.com` and `api.weather.gov`, the weather writer's sources. The writer has no weather
+    connector, so until those two are allowed the weather card cannot refresh on its own and keeps its last reading.
+    To allow all five: the cloud environment menu in a session's title bar → Edit → Network access → add those
+    hosts (or a broader level). The writer's prompt already uses them; nothing else changes.
 75. **Bonsai 27B — the local tier (client data stays on the Mac)** — built and proved against stand-ins
     (`integrations/omniroute/`); nothing downloaded yet. On the Mac: export `BONSAI_TOKEN` (your Hugging Face
     token) in your own shell → `integrations/omniroute/setup-local-llm.sh` (it prints the 5.9 GB / ~9.5 GB

@@ -91,7 +91,7 @@ Use the ArtifactData tool (same one you loaded in STEP 1).
      todayCount: <number of events with day == "Today">,
      tomorrowCount: <number of events with day == "Tomorrow">,
      weekCount: <events.length>,
-     syncedAt: "<ISO 8601, Pacific local time WITH its numeric UTC offset — see STEP 1>",
+     syncedAt: "<output of `TZ=America/Los_Angeles date +%Y-%m-%dT%H:%M:%S%:z` — see CLOCK below>",
      via: "cloud routine Command Deck — calendar refresh"
    }}`
    Every document in this store is `{v: <value>}` — no exceptions. Send `data: {v: {...}}`, never
@@ -106,6 +106,11 @@ Use the ArtifactData tool (same one you loaded in STEP 1).
    guessed one. Say so plainly in your closing summary instead.
 6. Set `via` to "cloud routine Command Deck — calendar refresh" and `syncedAt` to the actual time
    you write, per the format in STEP 1.
+   CLOCK (added 2026-09-28 after the first runs): never type, estimate or round a time yourself —
+   the first runs guessed and stamped times hours off, some of them in the future. Right before
+   each write, run exactly `TZ=America/Los_Angeles date +%Y-%m-%dT%H:%M:%S%:z` with the Bash tool and copy its output
+   unchanged into `syncedAt`. That command only reads the clock, so it is allowed; every Bash
+   write/copy/redirect stays banned.
 7. Never touch any other document. Never call Edit, Write, or Bash with any write/copy/redirect
    operation. Never call Artifact with action "publish". Never send a message to anyone.
 8. End your turn with a one-line summary: how many calendars were read/empty/unavailable, how many

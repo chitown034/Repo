@@ -56,7 +56,7 @@ Use the ArtifactData tool (same one you loaded in STEP 1).
 
 1. You already read `liveFeeds` in STEP 1 and have its `version`.
 2. Build the replacement `feeds.econodayLiveList` entry in EXACTLY the same shape as the one you
-   read: `{checkedAt: "<ISO 8601 UTC>", citations: [{title, url}, ... 3 to 6 real sources], model:
+   read: `{checkedAt: "<output of `date -u +%Y-%m-%dT%H:%M:%SZ` — see CLOCK below>", citations: [{title, url}, ... 3 to 6 real sources], model:
    "cloud-routine", source: "WebSearch", text: "<2-5 sentence plain-language summary of what's
    most relevant right now — what already happened this week, what's coming, and any FOMC/Fed
    context, in the same tone/length as the note you read in STEP 1>"}`.
@@ -75,6 +75,11 @@ Use the ArtifactData tool (same one you loaded in STEP 1).
    one.
 6. Set `model` to "cloud-routine" — never a model name — and `checkedAt` to the actual UTC time you
    write, in ISO 8601. `source` is "WebSearch".
+   CLOCK (added 2026-09-28 after the first runs): never type, estimate or round a time yourself —
+   the first runs guessed and stamped times hours off, some of them in the future. Right before
+   each write, run exactly `date -u +%Y-%m-%dT%H:%M:%SZ` with the Bash tool and copy its output
+   unchanged into `checkedAt`. That command only reads the clock, so it is allowed; every Bash
+   write/copy/redirect stays banned.
 7. Never touch any other document. Never call Edit, Write, or Bash with any write/copy/redirect
    operation. Never call Artifact with action "publish". Never send a message to anyone.
 8. End your turn with a one-line summary: what the note now says, and the document's new version.

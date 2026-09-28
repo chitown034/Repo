@@ -69,10 +69,10 @@ Use the ArtifactData tool (same one you loaded in STEP 1).
 
 1. You already read `liveFeeds` in STEP 1 and have its `version`.
 2. Build BOTH replacement entries in EXACTLY the same shape as the ones you read:
-   `feeds.pedefenseLiveList` → `{checkedAt: "<ISO 8601 UTC>", citations: [{title, url}, ... 3 to 5
+   `feeds.pedefenseLiveList` → `{checkedAt: "<output of `date -u +%Y-%m-%dT%H:%M:%SZ` — see CLOCK below>", citations: [{title, url}, ... 3 to 5
    real sources], model: "cloud-routine", source: "WebSearch", text: "<2-4 sentences on the newly
    confirmed deal(s) from STEP 2a>"}`.
-   `feeds.defenseUpdatesList` → `{checkedAt: "<ISO 8601 UTC>", citations: [{title, url}, ... one
+   `feeds.defenseUpdatesList` → `{checkedAt: "<output of `date -u +%Y-%m-%dT%H:%M:%SZ` — see CLOCK below>", citations: [{title, url}, ... one
    per video you found, newest first], model: "cloud-routine", source: "YouTube @DefenseUpdates
    (channel UCKNCbBWiMiXBVXUmUuu_dsQ)", text: "<one sentence per video: title, publish date, and a
    short description of what it covers, ending with: 'Independent analysis -- verify against a
@@ -97,6 +97,11 @@ Use the ArtifactData tool (same one you loaded in STEP 1).
    for the other; an old entry is better than an empty one.
 6. Set `model` to "cloud-routine" on both entries — never a model name — and `checkedAt` to the
    actual UTC time you write, in ISO 8601, on whichever entries you write.
+   CLOCK (added 2026-09-28 after the first runs): never type, estimate or round a time yourself —
+   the first runs guessed and stamped times hours off, some of them in the future. Right before
+   each write, run exactly `date -u +%Y-%m-%dT%H:%M:%SZ` with the Bash tool and copy its output
+   unchanged into `checkedAt`. That command only reads the clock, so it is allowed; every Bash
+   write/copy/redirect stays banned.
 7. Never touch any other document. Never call Edit, Write, or Bash with any write/copy/redirect
    operation. Never call Artifact with action "publish". Never send a message to anyone.
 8. End your turn with a one-line summary: which of the two entries you wrote (or why one/both were
