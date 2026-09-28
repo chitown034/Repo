@@ -271,3 +271,8 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
     CRMLS data-licensing agreement; no scraper was built · a licensing/compliance call only you can
     make · read `integrations/cli-anything-harnesses/CRMLS-HALT.md` (Alexandra's draft) and decide
     whether to apply as Broker Participant (licensing@crmls.org) · R9-C3-cli-brain-04.
+72. **Correction to item 63 (same day)** — the Mac runner is **not** dead. Vanessa's brief went out on
+    iMessage at 01:19 UTC on 2026-09-28, nineteen minutes after the usage limit reset. What stopped
+    on 2026-09-23 7:05 PM PT is its **status report and the dashboard syncs** (`fabric-deck-sync`,
+    `brain-deck-sync` erroring), and the account's usage limits then blocked its runs Sep 24–28. The
+    steps in 63 still apply: `runnerctl status` → `runnerctl logs fabric-deck-sync` → `runnerctl restart`.
