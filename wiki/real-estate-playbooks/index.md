@@ -6,16 +6,16 @@ Associate with LPT Realty (Space RE), Temecula / SW Riverside and San Diego.
 **Status: stub.** Pages below are the intended shape. The real source today is the four digitised
 playbooks registered in `references/index.md` and the deck's own playbook cards.
 
-## Pages (to be written, one summary line each)
+## Pages (stubs — pointers to the playbook/deck, not process content; see below)
 
 | Page | One-line summary |
 |---|---|
-| `buyer-process.md` | Discovery → matching → showing → offer → EMD → contingencies → close |
-| `listing-process.md` | Intake → pricing → prep → launch → offer management → close |
-| `transaction-stages.md` | Stage definitions and the deadline that defines each one |
-| `showing-operations.md` | Itinerary building, Showami bookings, feedback capture |
-| `referral-reciprocity.md` | Realtor reciprocal referrals and LPT revenue share |
-| `military-relocation.md` | PCS timing, orders, tour length, the rent/buy/wait gate |
+| [`buyer-process.md`](buyer-process.md) | Discovery → matching → showing → offer → EMD → contingencies → close |
+| [`listing-process.md`](listing-process.md) | Intake → pricing → prep → launch → offer management → close |
+| [`transaction-stages.md`](transaction-stages.md) | Stage definitions and the deadline that defines each one |
+| [`showing-operations.md`](showing-operations.md) | Itinerary building, Showami bookings, feedback capture |
+| [`referral-reciprocity.md`](referral-reciprocity.md) | Realtor reciprocal referrals and LPT revenue share |
+| [`military-relocation.md`](military-relocation.md) | PCS timing, orders, tour length, the rent/buy/wait gate |
 
 ## Standing facts worth keeping here
 

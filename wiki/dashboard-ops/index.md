@@ -64,11 +64,12 @@ Source of truth: the `runnerStatus` doc and the routine-health export, not the t
   as a live store is a false green; the decision to wire it or drop it from the count is Steven's
   (`integrations/google-drive-brain.md`).
 
-## Pages (to be written)
+## Pages
 
 | Page | One-line summary |
 |---|---|
-| `db-docs.md` | What each `state` doc means and who writes it — **175 documents** at the 2026-09-23 03:10 UTC read (174 earlier the same day; this page long said 161) |
-| `panel-map.md` | Panel id → what it shows → which docs feed it |
-| `task-catalog.md` | Each Mac task: cron, what it writes, current status |
-| `routine-catalog.md` | Each cloud routine: schedule, and what it can and cannot write |
+| [`db-docs.md`](db-docs.md) | What each `state` doc means and who writes it — **175 documents** at the 2026-09-23 03:10 UTC read (174 earlier the same day; this page long said 161) |
+| [`panel-map.md`](panel-map.md) | Panel id → what it shows → which docs feed it |
+| [`task-catalog.md`](task-catalog.md) | Each Mac task: cron, what it writes, current status |
+| [`routine-catalog.md`](routine-catalog.md) | Each cloud routine: schedule, and what it can and cannot write |
+| [`connections.md`](connections.md) | Is a connector, CRM or integration actually working — links to `integrations/CONNECTIONS.md` |

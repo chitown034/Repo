@@ -7,16 +7,16 @@ MLO with Patriot Pacific Financial (NMLS 1921615), personally licensed CA/NV/AZ/
 guideline question from this file — route to the deck's program cards or the playbooks in
 `references/index.md`, and say which you used.
 
-## Pages (to be written, one summary line each)
+## Pages (stubs — pointers to the playbook/deck, not guideline content; see below)
 
 | Page | One-line summary |
 |---|---|
-| `va-eligibility.md` | Entitlement, COE, restoration, second-tier use, funding-fee exemptions |
-| `va-affordability.md` | BAH-based affordability, residual income, DTI treatment, duty-proximity |
-| `program-selection.md` | The decision tree across the 39 loan programs the deck tracks |
-| `fha-usda.md` | FHA and USDA specifics where they beat VA for a given borrower |
-| `disclosure-timing.md` | TRID / RESPA / Reg Z timing gates — Alexandra's lane |
-| `lender-directory-notes.md` | How the 61 lenders differ in practice (overlays, turn times) |
+| [`va-eligibility.md`](va-eligibility.md) | Entitlement, COE, restoration, second-tier use, funding-fee exemptions |
+| [`va-affordability.md`](va-affordability.md) | BAH-based affordability, residual income, DTI treatment, duty-proximity |
+| [`program-selection.md`](program-selection.md) | The decision tree across the 39 loan programs the deck tracks |
+| [`fha-usda.md`](fha-usda.md) | FHA and USDA specifics where they beat VA for a given borrower |
+| [`disclosure-timing.md`](disclosure-timing.md) | TRID / RESPA / Reg Z timing gates — Alexandra's lane |
+| [`lender-directory-notes.md`](lender-directory-notes.md) | How the 61 lenders differ in practice (overlays, turn times) |
 
 ## What belongs here
 
