@@ -1,10 +1,11 @@
 # Laya — router/gate hint for the brain
 
-**Status (2026-09-28): installed on one Mac, hint not enabled.** Laya 0.3.21 is in
-`~/Applications/laya-venv` on the Mac that ran the install. Loaded fresh on every call it answered
-in ~2.8 s warm — over the brain's 2 s hint budget, so a per-call hint would always be ignored. The
-fix is the resident server below; the HTTP path of `laya_route.py` is tested against a stand-in
-server, not yet against the real one.
+**Status (2026-09-28): installed on one Mac, measured, deliberately NOT enabled.** Laya 0.3.21 is in
+`~/Applications/laya-venv`. Loaded per call it took ~2.8 s; the resident server below answers in
+**0.10 s** on the Metal GPU. But on the 20-question bench `BRAIN_ROUTER=laya` **added 4.4% tokens
+with no accuracy gain**, so the hint stays off and no LaunchAgent is installed. Re-measure with
+`BRAIN_ROUTER=laya bin/brain bench` if the question mix changes; the ingest gate (`--gate`) is
+untested and is the more likely place Laya earns its keep.
 
 ## What Laya is
 
