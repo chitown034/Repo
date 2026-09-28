@@ -13,6 +13,7 @@ row says what it can actually do: "connected" and "can write" are not the same t
 | **Discord `#vanessa`** | Via the local bot + Inkbox. `vanessa-discord-inbox` every 5 min | Reads and replies |
 | **WhatsApp** | **Steven's own number** in the WhatsApp desktop app on the Mac, read by `whatsapp-cli` in his **Message Yourself** thread; `vanessa-whatsapp-inbox` every 10 min. **Spec only — §5a written 2026-09-23, install pending, not live.** Decided 2026-09-23 over a dedicated number, with the Full Disk Access cost accepted (`context/decisions.md`) | Will read and reply once installed; needs that Mac unlocked and a GUI session to send |
 | **Cloud routines** | `claude.ai/code/routines` — **57 total, 53 enabled** (counted 2026-09-23) | **Yes, unattended — proven 2026-09-22** (below). No MCP connectors when an agent creates the routine |
+| **Orca mobile companion** (added 2026-09-28, **unverified — not installed**) | `stablyai/orca`'s iOS/Android app: watches and steers the Claude Code / Codex sub-agents Orca runs side by side in worktrees on a Mac | Steers/interrupts the agents Orca is running, on that Mac's authority — **not proven from here; see below for what Steven does** |
 | **Local Bridge queue** | `localBridgeQueue` doc → `local-bridge-queue` task (hourly :25, 6 AM–9 PM PT) → `~/Applications/local-bridge/run.sh` | **Read-only verbs**, enforced by an allow-list |
 | **Research queue** | `vanessaResearch` doc → `vanessa-research-queue` (hourly :30, 7:30 AM–9:30 PM PT) | Writes answers back to the doc |
 | **Push / text** | `vanessa-significant-alerts` (11 AM, 3 PM, 7 PM PT) and the morning text | Outbound only |
@@ -24,6 +25,29 @@ row says what it can actually do: "connected" and "can write" are not the same t
 - **"Do something on a Mac"** → **Vanessa Live.** The only path with real write access to files.
 - **"Run this while I sleep"** → a **cloud routine** if it needs only the web and the artifact DB; a
   `claude-runner` task on the PRIMARY Mac if it needs a local file, a local model, DuckDB, a logged-in desktop app, the Keychain, or an MCP connector.
+- **"Watch or steer several sub-agents at once, from my phone"** → the **Orca mobile companion**,
+  once installed — see below. Until then, use Vanessa Live or the Command Deck to check on them.
+
+## Orca mobile companion — unverified until Steven installs it
+
+`integrations/CONNECTIONS.md` already carries Orca as **reported installed on the Mac, unverified
+from the cloud** (F-V2-23). What is new here is the **mobile companion**: `stablyai/orca` (MIT)
+describes itself as "the AI Orchestrator" — it runs Claude Code and Codex side by side in worktrees,
+with an iOS and Android app to monitor and steer those agents. That would make it the natural phone
+surface for the `≤8` parallel sub-agents Vanessa dispatches (`OPTIMIZATION.md`'s dispatch layer) —
+**if** it is actually installed and paired, which nothing from this sandbox can confirm.
+
+**What Steven does, to turn this from a proposal into a live path:**
+1. Confirm Orca itself is really installed and current on the Mac — `./mac-verify.sh` (F-V2-23 is
+   still open; the Mac's reported v1.4.203 has never been confirmed from anywhere but the Mac).
+2. Install the iOS or Android Orca app from the project's own release channel
+   (`github.com/stablyai/orca` — see `references/index.md`), and pair it to that Mac.
+3. Confirm from the app that it actually sees a running Claude Code / Codex worktree session before
+   anyone calls this path "connected" anywhere in this repo.
+
+Until step 3 is done and reported, this path stays a proposal — same standing as the rest of Orca's
+row in `integrations/CONNECTIONS.md` — vetted by the CTO Innovator, nothing executed on its own
+authority.
 
 ## The correction — cloud routines CAN write the artifact DB
 
