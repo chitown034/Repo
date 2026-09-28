@@ -47,6 +47,18 @@ else
     echo "Node.js/npm is required (n8n needs Node >= 24). Install it, then re-run." >&2
     exit 1
   fi
+  # A present-but-too-old Node/npm passes the check above and then fails opaquely: n8n's
+  # expression engine (isolated-vm) ships prebuilt native addons only for Node >=24's ABI, so
+  # an older Node crashes at startup with an "IsolatePool"/"vm expression engine" error that
+  # does not name Node as the cause -- reproduced in R9's sandbox test, see README.md "Tested
+  # here". Fail clearly here instead.
+  NODE_MAJOR="$(node -p 'process.versions.node.split(".")[0]' 2>/dev/null || echo 0)"
+  if [ "${NODE_MAJOR:-0}" -lt 24 ] 2>/dev/null; then
+    echo "Node $(node -v 2>/dev/null) found, but n8n needs Node >= 24 -- its expression engine" >&2
+    echo "(isolated-vm) has no native build for older Node versions and fails to start. Install" >&2
+    echo "or switch to Node 24+ (e.g. via nvm: nvm install 24 && nvm use 24), then re-run." >&2
+    exit 1
+  fi
   if ! command -v n8n >/dev/null 2>&1; then
     echo "Installing n8n globally (npm install -g n8n) -- one-time, may take a few minutes."
     npm install -g n8n
