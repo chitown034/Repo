@@ -113,6 +113,7 @@
   .add-row-btn { margin-top: 4px; }
   .src-note { font-size: 11.5px; color: var(--text-faint); margin-top: 2px; }
   .grid { display: grid; gap: 16px; }
+  .grid > * { min-width: 0; } /* a table/long token inside a card can force a grid track past its panel edge otherwise */
   .grid-2 { grid-template-columns: repeat(2, 1fr); }
   .grid-3 { grid-template-columns: repeat(3, 1fr); }
   @media (max-width: 860px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
@@ -147,6 +148,14 @@
 
   /* ================= PERFORMANCE: defer offscreen layout/paint ================= */
   .panel { content-visibility: auto; contain-intrinsic-size: 0 900px; }
+  /* Long unbroken tokens (tool names, doc keys) ran past the panel edge at 390 px, where the panel's paint
+     containment cut them off (R8-V8-isa-05). */
+  code { overflow-wrap: anywhere; }
+
+  /* An in-page "#id" jump (native or scrollIntoView) otherwise lands its target
+     flush under the sticky .deck-head; 360px clears the tallest measured header
+     (phone, world-clock bar + section slider shown, ~325px) with room to spare. */
+  .panel, .card { scroll-margin-top: 360px; }
 
   /* ================= INLINE EDITABLE REFERENCE CONTENT ================= */
   .editable-field { border-radius: 4px; outline: none; transition: background 0.15s, box-shadow 0.15s; cursor: text; }
@@ -376,6 +385,7 @@
   <section class="hero">
     <h1 class="hero-greet">Pipeline Access</h1>
     <p class="hero-sub">This is a scoped view for the Executive Assistant / ISA — real estate and mortgage pipeline only. Everything you enter here syncs live across any device <i>you</i> open this page on. Two things also reach Steven's Command Deck on a schedule: the <a href="#isaLineCard">ISA line</a> at the top of the AI Team panel — a real two-way channel with Steven, carried by an hourly task on his Mac — and your client list, mortgage pipeline, daily scorecard and self-grades, which a cloud routine copies both ways four times a day. Everything else stays on this page: Command Deck is a separate published page with its own database, and no page can read another page's store. Shared reference data (rates, loan programs, lender directory, market intelligence) is copied across by hand in a Claude session, not on a schedule. If Steven needs to see a number, put it on the line — <a href="#panel-isa-syncstatus">Sync status</a> has the measured detail.</p>
+    <p class="hero-sub" id="heroStartHere" style="margin-top:10px;"></p>
   </section>
 
   <section class="panel" id="panel-isa-aiteam">
@@ -517,7 +527,7 @@
         <div><p class="card-title">Real estate — Lofty</p><p class="card-sub">Lofty (formerly Chime) is the real-estate CRM of record since 2026-09-22. This card reads the <code>loftyLeads</code> document; first name + stage only, never phone, email or loan detail.</p></div>
       </div>
       <p class="src-note" id="loftySyncNote" style="margin-bottom:10px;"></p>
-      <div class="stat-row" id="loftyStageStats" style="grid-template-columns: repeat(4,1fr); margin-bottom:14px;"></div>
+      <div class="stat-row" id="loftyStageStats" style="margin-bottom:14px;"></div>
       <details class="check-group" id="loftyNewLeadsBlock">
         <summary><span style="flex:1;">New leads, last 90 days</span><span class="progress-num" id="loftyNewCount">0</span></summary>
         <div class="check-body">
@@ -549,7 +559,10 @@
   <section class="panel" id="panel-isa-reclients">
     <div class="panel-head"><span class="panel-tag">PANEL&nbsp;05</span><h2 class="panel-title">Real Estate Clients</h2></div>
     <div class="card">
-      <p class="card-sub" style="margin-top:0;">Update the stage as each client moves through the process — the service-standard note below each row shows what's expected at that stage.</p>
+      <div class="card-title-row">
+        <p class="card-sub" style="margin:0;">Update the stage as each client moves through the process — the service-standard note below each row shows what's expected at that stage.</p>
+        <span class="badge" id="reClientBadge">—</span>
+      </div>
       <div id="reClientRows"></div>
       <button class="add-row-btn" id="addReClientBtn">+ Add client</button>
     </div>
@@ -558,7 +571,10 @@
   <section class="panel" id="panel-isa-pipeline">
     <div class="panel-head"><span class="panel-tag">PANEL&nbsp;06</span><h2 class="panel-title">Mortgage Pipeline</h2></div>
     <div class="card">
-      <p class="card-sub" style="margin-top:0;">Deals in progress — editable.</p>
+      <div class="card-title-row">
+        <p class="card-sub" style="margin:0;">Deals in progress — editable.</p>
+        <span class="badge" id="pipelineBadge">—</span>
+      </div>
       <div id="pipelineRows"></div>
       <button class="add-row-btn" id="addPipelineBtn">+ Add deal</button>
     </div>
@@ -701,7 +717,7 @@
     <div class="panel-head"><span class="panel-tag">PANEL&nbsp;09</span><h2 class="panel-title">Property Search Strategy Tool</h2></div>
     <div class="card">
       <p class="card-sub" style="margin-top:0;">Structures a client's wants/must-haves into a search-expansion strategy, AND pulls real current listings via live search (new listings + price reductions) with an AI read on fit against the criteria. For licensed real-time inventory, use Steven's own CRMLS/IDX search directly — the three links below are his actual MLS access, not a public consumer feed:</p>
-      <div class="stat-row" style="grid-template-columns:repeat(4,1fr); margin-bottom:14px;">
+      <div class="stat-row" style="margin-bottom:14px;">
         <div class="stat"><a href="https://www.crmls.org/servlet/lDisplayListings?LA=EN" target="_blank" rel="noopener" class="stat-label" style="display:block;">General public search</a></div>
         <div class="stat"><a href="https://www.crmls.org/servlet/lDisplayListings?AGENT=SWSHEASTE&LA=EN" target="_blank" rel="noopener" class="stat-label" style="display:block;">Steven's agent listings</a></div>
         <div class="stat"><a href="https://www.crmls.org/servlet/lDisplayListings?OFFICE=SWLPTRI&LA=EN" target="_blank" rel="noopener" class="stat-label" style="display:block;">LPT Realty office listings</a></div>
@@ -1587,7 +1603,7 @@
           <li>Budget: $5,250 (Mo 1) → $7,100 (Mo 2) → $10,500 (Mo 3); Target CPA $35 → Target ROAS</li>
           <li>Weekly Monday optimization + monthly A/B tests + always-on compliance (NMLS ID, EHO, 25-mo CFPB archive)</li>
         </ul>
-        <div class="stat-row" style="grid-template-columns:repeat(4,1fr); margin-top:12px;">
+        <div class="stat-row" style="margin-top:12px;">
           <div class="stat"><div class="stat-label">CTR target</div><div class="stat-value" style="font-size:16px;">&gt;5%</div></div>
           <div class="stat"><div class="stat-label">Cost / registration</div><div class="stat-value" style="font-size:16px;">$25–45</div></div>
           <div class="stat"><div class="stat-label">Blended CPA</div><div class="stat-value" style="font-size:16px;">&lt;$1,200</div></div>
@@ -1599,7 +1615,7 @@
     <details class="check-group">
       <summary>Family office &amp; CPA partnership channel</summary>
       <div class="check-body">
-        <div class="stat-row" style="grid-template-columns:repeat(4,1fr);">
+        <div class="stat-row">
           <div class="stat"><div class="stat-label">San Diego</div><div class="stat-value" style="font-size:16px;">15 firms</div></div>
           <div class="stat"><div class="stat-label">LA / OC</div><div class="stat-value" style="font-size:16px;">20 firms</div></div>
           <div class="stat"><div class="stat-label">Temecula / IE</div><div class="stat-value" style="font-size:16px;">5 firms</div></div>
@@ -2297,6 +2313,7 @@
       wrap.appendChild(row);
       var hint = document.createElement("div"); hint.innerHTML = stageHintHtml(c.stage, RE_STAGE_PLAYBOOK); wrap.appendChild(hint);
     });
+    if ($("reClientBadge")) $("reClientBadge").textContent = rows.length + (rows.length === 1 ? " client" : " clients");
   }
   $("addReClientBtn").addEventListener("click", function () {
     var rows = lsGetSeeded("reClients", []); rows.push({ name: "", type: "", stage: RE_STAGES[0] });
@@ -2339,6 +2356,7 @@
       wrap.appendChild(row);
       var hint = document.createElement("div"); hint.innerHTML = stageHintHtml(d.stage, MLO_STAGE_PLAYBOOK); wrap.appendChild(hint);
     });
+    if ($("pipelineBadge")) $("pipelineBadge").textContent = deals.length + (deals.length === 1 ? " deal" : " deals");
   }
   $("addPipelineBtn").addEventListener("click", function () {
     var deals = lsGetSeeded("pipeline", []); deals.push({ client: "New client", amount: 0, stage: MLO_STAGES[0] });
@@ -2437,7 +2455,7 @@
       div.style.borderBottom = "1px solid var(--border)";
       div.innerHTML =
         '<p class="card-title" style="font-size:15px;">' + city + "</p>" +
-        '<div class="stat-row" style="grid-template-columns:repeat(3,1fr); margin-top:8px;">' +
+        '<div class="stat-row" style="margin-top:8px;">' +
         '<div class="stat"><div class="stat-label">Median price</div><div class="stat-value" style="font-size:15px;">' + fmtMoney(m.medianPrice) + "</div></div>" +
         '<div class="stat"><div class="stat-label">YoY change</div><div class="stat-value" style="font-size:15px;">' + (m.priceChangeYoy >= 0 ? "+" : "") + m.priceChangeYoy + "%</div></div>" +
         '<div class="stat"><div class="stat-label">Median DOM</div><div class="stat-value" style="font-size:15px;">' + m.daysOnMarket + "d</div></div>" +
@@ -3393,7 +3411,7 @@
       return;
     }
     var estTax = fmtMoney(price * basis.pct / 100);
-    el.innerHTML = '<div class="stat-row" style="grid-template-columns:repeat(3,1fr);">' +
+    el.innerHTML = '<div class="stat-row">' +
       '<div class="stat"><div class="stat-label">Community-reference rate</div><div class="stat-value">' + basis.pct.toFixed(3).replace(/0+$/, "").replace(/\.$/, "") + '%</div></div>' +
       '<div class="stat"><div class="stat-label">Est. annual tax @ ' + fmtMoney(price) + '</div><div class="stat-value">' + estTax + '</div></div>' +
       '<div class="stat"><div class="stat-label">Mello-Roos / CFD</div><div class="stat-value"><span class="badge ' + basis.mr.cls + '">' + basis.mr.label + '</span></div></div>' +
@@ -3768,6 +3786,11 @@
     }, { passive: true });
   })();
 
+  // In-page "#id" links land under the sticky .deck-head without help; the
+  // native jump (unintercepted, so it stays reliable through content-visibility's
+  // placeholder-vs-real-size gap on a target many panels down) already reads each
+  // target's scroll-margin-top below, which is the actual header-clearance fix.
+
   function applySectionCollapse(label, collapsed) {
     label.classList.toggle("collapsed", collapsed);
     var n = label.nextElementSibling;
@@ -3862,6 +3885,19 @@
   }
   safeRun(renderIsaPlaybook, "renderIsaPlaybook");
   setInterval(function () { try { renderIsaPlaybook(); } catch (e) {} }, 60000);
+
+  // "Start here" line for a brand-new ISA - built entirely from this portal's own
+  // SOP data (the Start-of-day sequence and the playbook's first shift block),
+  // never a separate invented onboarding script.
+  function renderHeroStartHere() {
+    var el = $("heroStartHere");
+    if (!el) return;
+    var first = (isaPlaybookDoc().blocks || [])[0];
+    var html = "<b>New to this shift?</b> Start with the <a href=\"#panel-isa-easop\">Start-of-day sequence</a> (Panel 13) — first line: “" + chatEsc(SOD_ITEMS[0]) + "”.";
+    if (first) html += " Then the shift's first time block in <a href=\"#panel-isa-playbook\">Your Week — Daily Playbook</a> (Panel 2): <b>" + chatEsc(first.label) + "</b>, " + chatEsc(first.time) + " Pacific — " + chatEsc(first.what);
+    el.innerHTML = html;
+  }
+  safeRun(renderHeroStartHere, "renderHeroStartHere");
 
   var ISA_COA_INSTRUCTION = " You operate at an elite, top-1%-of-the-field caliber — the rigor and creativity of someone trained at a top program (MIT/Harvard/Yale/USC/Chicago Booth-caliber) — and you think like an innovative disruptor in your domain, not a by-the-book operator. When you give a substantive recommendation (not a quick factual answer), structure it as exactly 4 Courses of Action, labeled COA 1 through COA 4, ordered from most conservative to most disruptive — each one sentence on what it is, one sentence on the key tradeoff/risk — then say which one you'd pick and why. Anything beyond drafting or analysis needs Steven's explicit go-ahead before anyone actually carries it out — say so plainly rather than implying it's already done.";
   var ISA_VANESSA_SPECIALISTS = {
@@ -4318,7 +4354,13 @@
       if (prioSel && chip.getAttribute("data-prio")) prioSel.value = chip.getAttribute("data-prio");
       input.value = chip.getAttribute("data-prompt") || chip.textContent; input.focus();
     });
-    var pill = $("isaLineUnreadPill"); if (pill) pill.addEventListener("click", function () { var c = $("isaLineCard"); if (c && c.scrollIntoView) c.scrollIntoView({ behavior: "smooth", block: "start" }); });
+    var pill = $("isaLineUnreadPill"); if (pill) pill.addEventListener("click", function () {
+      var c = $("isaLineCard"); if (!c) return;
+      var hd = document.querySelector(".deck-head");
+      var off = (hd ? hd.getBoundingClientRect().height : 0) + 12;
+      var y = c.getBoundingClientRect().top + window.pageYOffset - off;
+      window.scrollTo({ top: y < 0 ? 0 : y, behavior: "smooth" });
+    });
     renderIsaLine();
   })();
 
@@ -4414,7 +4456,10 @@
         var reduce = false;
         try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
         st.suppressUntil = Date.now() + 900;
-        el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+        var hd = document.querySelector(".deck-head");
+        var off = (hd ? hd.getBoundingClientRect().height : 0) + 12;
+        var y = el.getBoundingClientRect().top + window.pageYOffset - off;
+        window.scrollTo({ top: y < 0 ? 0 : y, behavior: reduce ? "auto" : "smooth" });
       }
     }
   }
