@@ -5,6 +5,10 @@ agents that do not read `CLAUDE.md`. If the two ever disagree, `CLAUDE.md` wins 
 
 ## Read order on every task
 
+0. **`integrations/laya/`** — the zero-token first hop, if installed. Confident → it names the leaf,
+   lane and tier directly; go straight to step 3 below with that leaf. Below its own confidence
+   threshold → ESCALATE and start at step 1 as normal. Same rule as `CLAUDE.md`: never a licensed
+   decision, never past its own confidence.
 1. `CLAUDE.md` — the routing table, recall order, token rules, model tiering, HALT list.
 2. **`memory.md`** — Claude Code's auto-memory file. Codex does not get it automatically; read it
    explicitly. It is the record of what earlier sessions learned. Treat it as facts about this

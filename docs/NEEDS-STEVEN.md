@@ -247,3 +247,23 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
 67. **Two dates in your own data passed yesterday (Sep 27)** — the 2022 Toyota Sienna registration
     (`licenseTracker`) and USC PJMT 530 Week 4 (`uscDeadlines`). If both are done, update the two rows
     so the dashboard stops carrying them. Week 8's final assessment is due Oct 19.
+
+## The brain, Laya, Orca and 77 Skills — added 2026-09-28 by R11 (append-only block)
+
+68. **Laya install decision** — the zero-token System-1 router (`integrations/laya/`) is built and
+    proven installable in this round's sandbox; Hugging Face (needed for the one-time model
+    checkpoint) was blocked there, so it has never actually run · a network/install action only you
+    can take on your Mac · **decide** whether to install it, and if yes, **run**
+    `integrations/laya/install.sh` on the Mac, then register it —
+    `claude mcp add laya --env LAYA_DEVICE=cpu -- ~/laya-venv/bin/laya-mcp-server` — and confirm with
+    `claude mcp list` before anything calls it connected · R11.
+69. **Orca mobile companion** — proposed as the phone view for watching/steering parallel
+    sub-agents (`REMOTE-ACCESS.md`); unverified whether Orca itself is even current on the Mac
+    (F-V2-23, still open) · an install + pairing action only you can take · **run** `./mac-verify.sh`
+    first, then if Orca needs updating, install/update it, then install the iOS or Android app from
+    `github.com/stablyai/orca` and pair it to that Mac · R11.
+70. **77 Skills purchase decision** — 77skills.ai, a one-time-purchase set of 77 business-principle
+    skills as Markdown; egress-blocked from every sandbox so far, never read, contents unverified ·
+    spends money, so only you can decide · **decide** buy or don't; if you buy it, it goes through
+    `skills-refresh` and an ECC security review before anything from it is enabled — do not enable
+    any of its skills straight off the download · R11.

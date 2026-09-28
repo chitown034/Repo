@@ -258,3 +258,27 @@ the record of the change. The full split, and the three web-UI routine edits onl
 `routines/fub-removal-2026-09-24.md`.
 
 - **Owner.** Steven. **Status.** Active.
+
+## 2026-09-28 — Laya becomes the zero-token System-1 hop, not a fine-tuning candidate
+
+- **Decision.** Laya (`laya` 0.3.21, Apache-2.0, Convai Innovations) is adopted as the always-on
+  first hop in front of Vanessa's recall order — a local, zero-token classifier that answers
+  CLAUDE.md's own router questions (which leaf, which lane, which tier, client PII or not, how
+  urgent) in about 33 ms once its checkpoint is cached, and escalates below its own confidence
+  threshold. This supersedes the 2026-09-22 evaluation recorded in `MAC-INSTALL-tooling.md` §17
+  ("not now — local PII-safe triage classifier only after fine-tuning"): the verdict here is
+  narrower and different, and does not need fine-tuning to be useful as a router.
+- **What was actually proven, and what was not.** `integrations/laya/` (package, install script,
+  the five typed questions, the routing script) was built and its install was proven in the R11
+  sandbox: `laya[mcp]==0.3.21` installs cleanly from PyPI and imports correctly. Hugging Face —
+  needed for the one-time checkpoint download `--predict`/`Router()` requires — was blocked from
+  that sandbox (403 Forbidden at the egress proxy, confirmed several ways; see
+  `integrations/laya/README.md`). So the routing/threshold/PII-override logic was proven against a
+  deterministic offline stub instead, on a 20-request, 16-class holdout
+  (`integrations/laya/sample-requests.jsonl`) — that is a proof of the harness, not of Laya's real
+  accuracy, and neither this entry nor any other file should read it as one.
+- **What this does NOT authorize.** Installing Laya on the Mac, registering its MCP server, or
+  running the weekly accuracy check proposed in `always-on/README.md` — all three need Steven, and
+  are one Needs-Steven row in `docs/NEEDS-STEVEN.md`. Nothing here is live.
+- **Owner.** Steven (install decision pending). **Status.** Proposed — repository-side package built
+  and proven in sandbox 2026-09-28; not installed, not connected, not running anywhere.

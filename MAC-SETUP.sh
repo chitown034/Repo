@@ -376,7 +376,7 @@ if should_run vendored-skills; then
   if [ "$skill_n" -eq 0 ]; then failed "no skills found in $REPO_DIR/.claude/skills (empty or missing — pull the repo again)"
   elif [ -z "$missing" ]; then skipped "all $skill_n vendored skills present — they load with the repo, nothing to install"
   else failed "vendored skills missing a SKILL.md:$missing (pull the repo again)"; fi
-  needs_steven "Run skills-refresh once in Claude Code so the deck's toolkit table learns about them (FR5a order of operations, step 1). Installing a skill globally is a live-prompt edit — not this script's job."
+  needs_steven "Run skills-refresh once in Claude Code so the deck's toolkit table learns about them (FR5a order of operations, step 1). Installing a skill globally is a live-prompt edit — not this script's job. R11: prompt-master and loop-engineering are vendored here the same way (this loop already counts all vendored skills, and both have a SKILL.md) but were never named individually before now — skills-refresh's own run is what puts all four, plus interview-me, on the deck's toolkit table together."
 fi
 
 # --------------------------------------------------------------------------- FR5a, in its order
@@ -894,10 +894,11 @@ if should_run agent-reach; then
 fi
 
 if should_run laya; then
-  header laya "local encoder classifier (FR5a §17)"
-  advisory "FR5a's verdict is 'not now': it needs fine-tuning on ~30k labelled questions and GPUs, and Claude-driven triage already works." \
-    "uv venv --python 3.12 ~/laya-venv && uv pip install --python ~/laya-venv/bin/python laya"
+  header laya "zero-token System-1 router (R11) — was FR5a §17's 'not now', now the front hop in the recall table"
+  advisory "R11's verdict: the always-on first hop in front of Vanessa, not a fine-tuning candidate. Needs Hugging Face reachable on THIS Mac for the one-time checkpoint download; proven in the cloud sandbox against PyPI only — Hugging Face was blocked there. integrations/laya/README.md has the exact evidence, both ways." \
+    "integrations/laya/install.sh   # uv venv ~/laya-venv, laya[mcp]==0.3.21, then the checkpoint download"
   say "      the npm package named laya is an unrelated game engine — do not npm install it"
+  say "      after install.sh succeeds: claude mcp add laya --env LAYA_DEVICE=cpu -- ~/laya-venv/bin/laya-mcp-server"
 fi
 
 # --------------------------------------------------------------------------- summary

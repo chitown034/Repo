@@ -56,18 +56,20 @@ fi
 if [ "$SKIP_LAYA" = 0 ]; then
   step "2/3  Laya (local router)"
   command -v uv >/dev/null 2>&1 || brew install uv
-  [ -x "$LAYA_VENV/bin/python" ] || uv venv --python 3.12 "$LAYA_VENV"
-  uv pip install --python "$LAYA_VENV/bin/python" "laya[mcp]==$LAYA_VERSION"
-  say "Warming Laya up (downloads its model once, a few hundred MB; later calls are instant):"
-  "$LAYA_VENV/bin/laya" "Setup check: is the local router working?" --preset triage || fail "Laya installed but its first run failed — send Vanessa the lines above"
+  if [ -x "$LAYA_VENV/bin/laya" ]; then
+    say "Laya is already installed in $LAYA_VENV."
+  else
+    # The canonical package (R11): venv, laya[mcp]==$LAYA_VERSION, then the one-time model download.
+    bash "$HERE/laya/install.sh"
+  fi
   if command -v claude >/dev/null 2>&1; then
     if claude mcp list 2>/dev/null | grep -q '^laya'; then
       say "Claude Code already has the 'laya' MCP server."
     else
-      claude mcp add -s user laya -- "$LAYA_VENV/bin/laya-mcp-server" && say "Registered 'laya' with Claude Code (all projects)."
+      claude mcp add -s user laya --env LAYA_DEVICE=cpu -- "$LAYA_VENV/bin/laya-mcp-server" && say "Registered 'laya' with Claude Code (all projects)."
     fi
   else
-    say "Claude Code's 'claude' command was not found, so Laya was not registered as an MCP server. Later: claude mcp add -s user laya -- $LAYA_VENV/bin/laya-mcp-server"
+    say "Claude Code's 'claude' command was not found, so Laya was not registered. Later: claude mcp add -s user laya --env LAYA_DEVICE=cpu -- $LAYA_VENV/bin/laya-mcp-server"
   fi
   say "Laya runs only on this Mac. Nothing it reads leaves the computer."
 fi
