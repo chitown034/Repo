@@ -1,0 +1,93 @@
+{
+  "_meta": {
+    "purpose": "Typed question sets for laya_route.py, Laya's zero-token System-1 hop in front of Vanessa.",
+    "mirrors": "CLAUDE.md's routing table and model-tiering table, row for row, 2026-09-28.",
+    "rule": "Change CLAUDE.md's routing table first, then this file to match. Never the other way.",
+    "note": "Tiers only, never model names, per CLAUDE.md and this repo's rule."
+  },
+  "brain_route": {
+    "type": "choice",
+    "instructions": "Which router row in CLAUDE.md answers this request? Pick the class the question belongs to, not the answer itself.",
+    "criteria": {
+      "about_me": "Who Steven is, licences, states, credentials",
+      "decisions": "\"Why is it this way\", a past call, a standing rule",
+      "project_status": "Status of a named project (command-deck, isa-portal, ai-team, nonprofit, usc-pjmt-530)",
+      "mortgage_programs": "Loan program, guideline, VA mechanics, eligibility",
+      "re_playbooks": "Listing, buyer, transaction or showing process",
+      "ai_team": "Who on the AI team owns X, seat/model/trust level",
+      "dashboard_ops": "A deck panel, DB doc, Mac task or cloud routine",
+      "client": "A specific client, by name or clear implication",
+      "references": "A source document, playbook PDF, external system",
+      "memory": "Something learned in an earlier session",
+      "vector_index": "A high-volume corpus: transcripts, disclosure libraries, rule sets",
+      "knowledge_graph": "\"How do these connect\" — entities, relationships",
+      "always_on": "What runs when, and whether it actually ran",
+      "remote_access": "Reaching Steven, or running something live/remote",
+      "recall_cost": "Cost or freshness of a recall itself, not the fact it would return",
+      "live_number": "A live number: rate, balance, lead count, health stat"
+    }
+  },
+  "leaves": {
+    "about_me": "context/about-me.md",
+    "decisions": "context/decisions.md — find the dated entry, read that entry only",
+    "project_status": "projects/<name>.md",
+    "mortgage_programs": "wiki/mortgage-programs/index.md → one named page",
+    "re_playbooks": "wiki/real-estate-playbooks/index.md → one named page",
+    "ai_team": "wiki/ai-team/index.md",
+    "dashboard_ops": "wiki/dashboard-ops/index.md",
+    "client": "wiki/clients/<client>.md — FULL CONTEXT, local vault only, never leaves the Mac",
+    "references": "references/index.md",
+    "memory": "memory.md",
+    "vector_index": "vector-index/README.md",
+    "knowledge_graph": "knowledge-graph/README.md",
+    "always_on": "always-on/README.md",
+    "remote_access": "REMOTE-ACCESS.md",
+    "recall_cost": "recall-cache.md, then OPTIMIZATION.md",
+    "live_number": "the Command Deck snapshot already in context, or the named DB doc"
+  },
+  "lane": {
+    "type": "choice",
+    "instructions": "Which seat on the AI team owns this request, per wiki/ai-team/index.md's routing-by-lane table?",
+    "criteria": {
+      "vanessa": "Anything at all, first — Chief of Staff/COO, orchestrator, council chair",
+      "marcus_cfo": "Net worth, income, budget, liabilities, close",
+      "sofia_cmo": "Marketing, campaigns, content, social, email",
+      "derek_cto": "Automation health, connectors, stack, what is broken",
+      "alexandra_cco": "TRID/RESPA/Reg Z, VA-FHA-USDA compliance, disclosures",
+      "nadia_caio": "Where AI genuinely helps vs hype, tooling evaluation",
+      "victor_cro": "Pipeline, conversion, the Six Levers",
+      "elena_ciso": "Data/cyber risk, credential hygiene, access",
+      "elon_cto_innovator": "Feasibility of anything Nadia proposes; the engineering team",
+      "broker_specialists": "Lending / real-estate specialist work — Vanessa broker skill, Harrison, Gwen, Marguerite",
+      "maxwell_broker_mentor": "Broker coaching, weekly pipeline review",
+      "apex_trade_advisor": "Order flow, market structure, a trade idea (research only)",
+      "james_wealth_advisor": "Family office, tax strategy, estate",
+      "kevin_personal_dev": "Personal development, the 11-Dimension check",
+      "report_seat": "Execution, reports, benches — the named report seat",
+      "research_perplexity": "Research heavy lifting"
+    }
+  },
+  "tier": {
+    "type": "choice",
+    "instructions": "Which model tier (never a model name) should carry this, per CLAUDE.md's model-tiering table?",
+    "criteria": {
+      "orchestrator": "Whole-request planning, council chair, final synthesis across lanes — Vanessa only",
+      "executive": "A C-suite lane owns this outright: Marcus, Sofia, Derek, Alexandra, Nadia, Victor, Elena or Elon",
+      "worker": "A report, bench or execution-only seat does this; no cross-lane judgment needed",
+      "research": "This needs external research; Perplexity does the digging, capped at 4 per wave"
+    }
+  },
+  "pii_gate": {
+    "type": "noul",
+    "instructions": "Does this request name, describe, or clearly imply one specific client — identity, contact detail, loan/transaction number, income, credit or health data?",
+    "criteria": {
+      "false": "No client is named or implied — a program, process, seat, task or aggregate question",
+      "true": "A specific client, borrower or their file is named or clearly implied"
+    }
+  },
+  "urgency": {
+    "type": "score",
+    "instructions": "How urgent is this request?",
+    "criteria": ["not urgent — routine question, no deadline", "soon — needed today or this week", "blocking — Steven or a client is waiting right now"]
+  }
+}
