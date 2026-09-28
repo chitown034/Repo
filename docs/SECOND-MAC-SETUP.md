@@ -153,11 +153,12 @@ way it works on the other Mac. It is separate from, and does not replace, step 7
 cd ~/Projects/second-brain      # or wherever you cloned it, step 6
 bash scripts/brain-sync.sh      # pulls the repo, reindexes, links bin/brain and skills
 brain doctor                    # non-zero means the INDEX is stale or a routed path is missing
-brain recall "who owns automation health"
+brain recall "what model does Vanessa run on"
 ```
 
-**Expect:** `brain doctor` exits 0; `brain recall` prints a file, a section, and evidence (or says
-plainly "not in the brain" — that is a correct answer too, never a crash). If `bin/brain` does not
+**Expect:** `brain doctor` exits 0; `brain recall` prints a file, a section, and evidence — here the
+model-tiering entry in `context/decisions.md` (or it says plainly "not in the brain", which is a
+correct answer too, never a crash). If `bin/brain` does not
 exist in your checkout yet, `brain-sync.sh` says so and skips those steps gracefully — it is being
 built alongside this runbook, not before it. Re-run `scripts/brain-sync.sh` any time (by hand or on a
 schedule, see `always-on/README.md` → `brain-maintenance`): it is idempotent and never overwrites a

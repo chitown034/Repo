@@ -21,18 +21,29 @@ Two independent modes, never combined in one call:
       decides a HALT item (PII, credentials, anything CLAUDE.md's HALT list already covers)
       on its own.
 
-If `laya` cannot be imported (not installed — the honest status as of 2026-09-27), this prints
-a JSON error to stdout and exits 3. The brain engine's contract: ANY non-zero exit means
-"ignore the hint," so a missing install degrades to the deterministic path alone, never a crash.
+Where the model runs: first the resident local server started by `laya-serve.sh` (a POST to
+`$LAYA_URL/v1/systemone`, default http://127.0.0.1:8770 — the model stays loaded, so an answer
+takes milliseconds); if no server answers, Laya is loaded in-process (seconds per call, too slow
+for the brain's 2 s budget, but still correct). The HTTP path needs only the standard library, so
+the system `python3` can run this script even when Laya lives in its own virtualenv.
 
-No network calls, no client text leaves the machine — Laya is a local model. This script itself
-makes no HTTP requests either way.
+If neither path works, this prints a JSON error to stdout and exits 3. The brain engine's
+contract: ANY non-zero exit means "ignore the hint," so a missing install degrades to the
+deterministic path alone, never a crash.
+
+No client text leaves the machine: the only network call is to localhost.
 """
 from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
+import urllib.error
+import urllib.request
+
+LAYA_URL = os.environ.get("LAYA_URL", "http://127.0.0.1:8770").rstrip("/")
+HTTP_TIMEOUT = float(os.environ.get("LAYA_HTTP_TIMEOUT", "1.5"))
 
 # Any failure importing or running Laya is treated the same way by the brain engine: exit
 # non-zero means "ignore the hint." Exit code 3 specifically flags "laya unavailable" so a
@@ -80,15 +91,34 @@ GATE_KIND_CRITERIA = {
 }
 
 
-def _build_router():
-    """Import and construct a Laya Router, or raise ImportError/RuntimeError."""
-    from laya import Router  # local import: keeps --help and argument errors laya-free
+class ServerUnavailable(Exception):
+    """No resident Laya server answered at LAYA_URL."""
 
-    return Router()
+
+def _predict_http(state, questions) -> dict:
+    body = json.dumps({"state": state, "questions": questions}).encode("utf-8")
+    req = urllib.request.Request(LAYA_URL + "/v1/systemone", data=body,
+                                 headers={"Content-Type": "application/json"}, method="POST")
+    key = os.environ.get("LAYA_API_KEY")
+    if key:
+        req.add_header("Authorization", "Bearer " + key)
+    try:
+        with urllib.request.urlopen(req, timeout=HTTP_TIMEOUT) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except (urllib.error.URLError, ConnectionError, TimeoutError, OSError) as exc:
+        raise ServerUnavailable(str(exc)) from exc
+
+
+def _predict(state, questions) -> dict:
+    """The resident server if one is running, otherwise Laya in-process."""
+    try:
+        return _predict_http(state, questions)
+    except ServerUnavailable:
+        from laya import Router  # local import: keeps --help and argument errors laya-free
+        return Router().predict(state, questions)
 
 
 def _route(question: str) -> dict:
-    router = _build_router()
     questions = {
         "route": {
             "type": "choice",
@@ -98,7 +128,7 @@ def _route(question: str) -> dict:
             "criteria": ROUTE_CRITERIA,
         }
     }
-    result = router.predict({"question": question}, questions)
+    result = _predict({"question": question}, questions)
     answer = result["answers"]["route"]
     return {
         "route": answer["choice"],
@@ -107,7 +137,6 @@ def _route(question: str) -> dict:
 
 
 def _gate(text: str) -> dict:
-    router = _build_router()
     questions = {
         "kind": {
             "type": "choice",
@@ -123,7 +152,7 @@ def _gate(text: str) -> dict:
             ),
         },
     }
-    result = router.predict({"text": text}, questions)
+    result = _predict({"text": text}, questions)
     kind = result["answers"]["kind"]["choice"]
     sensitive = float(result["answers"]["sensitive"]["noul"])
     ingest = (kind == "context") and (sensitive < SENSITIVE_BLOCK_THRESHOLD)

@@ -16,6 +16,7 @@ GROUPS = [
     ["nonprofit", "501c3", "charity", "foundation"],
     # people / seats
     ["seat", "agent", "persona", "role"],
+    ["own", "owner", "ownership", "responsible", "accountable"],
     ["model", "tier", "tiering"],
     ["parallel", "concurrent", "concurrently", "simultaneous"],
     ["subagent", "sub-agent", "sub-agents", "subagents"],

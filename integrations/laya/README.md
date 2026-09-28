@@ -1,9 +1,10 @@
-# Laya — proposed router/gate hint (NOT installed on the Mac)
+# Laya — router/gate hint for the brain
 
-**Status: proposed, not installed.** No Mac is reachable from this cloud session and there is no
-GPU or large-egress budget here to download a checkpoint, so this integration ships as an
-importable, syntax-clean script and this doc only. `python3 -m py_compile
-integrations/laya/laya_route.py` passes; it has never been run against a real Laya install.
+**Status (2026-09-28): installed on one Mac, hint not enabled.** Laya 0.3.21 is in
+`~/Applications/laya-venv` on the Mac that ran the install. Loaded fresh on every call it answered
+in ~2.8 s warm — over the brain's 2 s hint budget, so a per-call hint would always be ignored. The
+fix is the resident server below; the HTTP path of `laya_route.py` is tested against a stand-in
+server, not yet against the real one.
 
 ## What Laya is
 
@@ -65,18 +66,27 @@ simpler path for a one-shot hint and needs nothing registered with Claude Code a
 registration above is for a future session that wants Laya as an interactive tool rather than a
 one-shot script.
 
-## Enabling it for the brain
+## Enabling it for the brain — keep the model resident
 
-Not wired into `brain/` yet — the engine currently treats any absent hint (Laya not installed) as
-"ignore it," which is the honest state today. When Laya is installed on the Mac:
+`brain recall` asks `laya_route.py` for a hint only when `BRAIN_ROUTER=laya`, and ignores any answer
+slower than 2 s. Loading Laya per call is too slow, so run it as a local server once and let the
+script call it over HTTP (localhost only, standard library only — the system `python3` works even
+though Laya lives in its own virtualenv):
 
 ```bash
-export BRAIN_ROUTER=laya
+~/Applications/laya-venv/bin/python -m pip install "laya[serve]"   # adds the HTTP server
+bash integrations/laya/laya-serve.sh &                            # 127.0.0.1:8770, English checkpoint
+python3 integrations/laya/laya_route.py --json "who owns automation health"   # should be well under 1 s now
+export BRAIN_ROUTER=laya                                          # then add to your shell profile if it is
 ```
 
-is the flag `brain/`'s engine should check (per the parallel `brain/` build) before shelling out
-to `integrations/laya/laya_route.py --json "<question>"` for a route hint, or `--gate "<text>"`
-before an ingest write.
+`LAYA_URL` (default `http://127.0.0.1:8770`) and `LAYA_HTTP_TIMEOUT` (default 1.5 s) override the
+endpoint. With no server running, the script falls back to loading Laya in-process, and if that is
+impossible too it exits 3 — the brain treats both as "no hint" and stays fully deterministic.
+
+To keep the server running across restarts, a LaunchAgent that runs `laya-serve.sh` at login is the
+usual route. It is a background job on the Mac, so it is Steven's call and is not installed by any
+script here.
 
 ## HALT caveats
 

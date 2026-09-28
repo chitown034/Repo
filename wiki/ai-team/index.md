@@ -17,7 +17,7 @@ hold the actual detail once you know which seat or layer you need.
 
 ## Routing by lane
 
-| Ask about | Seat | Model tier |
+| Owns (ask about) | Seat | Model tier |
 |---|---|---|
 | Anything at all, first | **Vanessa** — Chief of Staff / COO, orchestrator, council chair | Fable 5.1 masterminds |
 | Net worth, income, budget, liabilities, close | **Marcus** — CFO | Opus 5 |
