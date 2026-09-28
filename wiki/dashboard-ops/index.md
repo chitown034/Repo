@@ -63,6 +63,10 @@ Source of truth: the `runnerStatus` doc and the routine-health export, not the t
   nothing can reach** — 0 files on every sample, no credential, no connector. A 0-file store rendered
   as a live store is a false green; the decision to wire it or drop it from the count is Steven's
   (`integrations/google-drive-brain.md`).
+- **Every dashboard Steven uses is one click from the Command Deck's top bar** — the **Dashboards**
+  button beside Pages (2026-09-28, deck v161): 25 dashboards in 7 groups, plus Fishbowl, Insight Global
+  and ClearanceJobs. A new dashboard goes there (static links in `#dashMenu`), not into a new panel; two
+  names that share one link are one entry.
 
 ## Pages
 
