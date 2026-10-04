@@ -1,0 +1,21 @@
+{
+  "name": "mortgage-lead-crm",
+  "version": "1.0.0",
+  "description": "AI-assisted CRM for mortgage leads: scoring, daily call list, pipeline, automated follow-up, campaigns and landing pages.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env --no-warnings=ExperimentalWarning src/server.js",
+    "dev": "node --env-file-if-exists=.env --no-warnings=ExperimentalWarning --watch src/server.js",
+    "seed": "node --env-file-if-exists=.env --no-warnings=ExperimentalWarning src/seed.js",
+    "test": "node --no-warnings=ExperimentalWarning --test test/*.test.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.131.0",
+    "express": "^5.2.1",
+    "nodemailer": "^10.0.14"
+  }
+}
