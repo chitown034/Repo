@@ -6,6 +6,13 @@ if [ "${CLAUDE_CODE_REMOTE:-}" != "true" ]; then
   exit 0
 fi
 
+# Install the plugins declared in .claude/settings.json. Remote sessions don't
+# auto-install project plugins, so do it here; failures shouldn't block startup.
+claude plugin marketplace add openai/codex-plugin-cc >/dev/null 2>&1 || true
+claude plugin marketplace add oso95/scroll-world >/dev/null 2>&1 || true
+claude plugin install codex@openai-codex --scope project >/dev/null 2>&1 || true
+claude plugin install scroll-world@scroll-world --scope project >/dev/null 2>&1 || true
+
 ORCA_SRC="/root/.orca-src"
 ORCA_REPO="https://github.com/stablyai/orca"
 

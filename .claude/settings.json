@@ -1,15 +1,4 @@
 {
-  "extraKnownMarketplaces": {
-    "openai-codex": {
-      "source": {
-        "source": "github",
-        "repo": "openai/codex-plugin-cc"
-      }
-    }
-  },
-  "enabledPlugins": {
-    "codex@openai-codex": true
-  },
   "hooks": {
     "SessionStart": [
       {
@@ -21,5 +10,23 @@
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "codex@openai-codex": true,
+    "scroll-world@scroll-world": true
+  },
+  "extraKnownMarketplaces": {
+    "openai-codex": {
+      "source": {
+        "source": "github",
+        "repo": "openai/codex-plugin-cc"
+      }
+    },
+    "scroll-world": {
+      "source": {
+        "source": "github",
+        "repo": "oso95/scroll-world"
+      }
+    }
   }
 }
