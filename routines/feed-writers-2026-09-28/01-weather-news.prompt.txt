@@ -29,6 +29,16 @@ Read `weatherSnapshot` and `newsSnapshot` (artifact 1624daae-d683-405a-971d-c582
 city-label spelling already in use ("Temecula, CA", not "Temecula CA") and can avoid quietly
 reshaping either document.
 
+FALLBACK GUARD (added 2026-10-05, to stop paying twice for the same refresh)
+Steven's Mac runs its own `weather-news-refresh` task at 8:05 AM and 8:05 PM Pacific, and it writes
+both documents. This routine is now the backup for when the Mac misses a run. Right after STEP 1,
+run `date -u +%Y-%m-%dT%H:%M:%SZ` with Bash and compare that time with each document's `syncedAt`.
+A `syncedAt` is either ISO UTC ("2026-10-05T13:53:40Z") or the Mac's local form
+("2026-10-05 08:05 AM PDT"; PDT is UTC-7, PST is UTC-8). A document synced less than 6 hours ago, or
+up to 1 hour in the future, is FRESH: do not research it and do not write it. If both are fresh, stop
+now — no research, no writes — and end with one line: "both fresh (weather <age>, news <age>) —
+skipped". Otherwise research and write only the stale document(s).
+
 STEP 2 — Research current data
 Check today's real date first (don't guess).
 

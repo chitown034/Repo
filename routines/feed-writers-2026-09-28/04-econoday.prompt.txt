@@ -40,6 +40,13 @@ was already reported, so you don't just repeat the same note. `liveFeeds` is a l
 document with many OTHER feeds' keys in it (news, AI news, market movers, and several more) — you
 are reading the whole thing but will only ever change your own key; see WRITE STEP rule 4.
 
+FALLBACK GUARD (added 2026-10-05, to stop paying twice for the same note)
+Steven's Mac task `openrouter-feeds-refresh` writes `feeds.econodayLiveList` every morning around
+6 AM Pacific. This routine is now the backup for when the Mac misses a day. Right after STEP 1, run
+`date -u +%Y-%m-%dT%H:%M:%SZ` with Bash. If `feeds.econodayLiveList.checkedAt` is less than 12 hours old,
+or up to 1 hour in the future, it is FRESH: stop now — no research, no write — and end with one
+line: "fresh (<age>) — skipped". Otherwise continue.
+
 STEP 2 — Research current data
 Check today's real date first (don't guess). Run WebSearch queries like "economic calendar this
 week CPI jobs report PCE PMI", "Econoday economic calendar today's events", "FOMC meeting schedule

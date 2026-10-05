@@ -44,6 +44,13 @@ what was already reported, so you don't repeat it. `liveFeeds` is a large shared
 OTHER feeds' keys in it — you are reading the whole thing but will only ever change your own key;
 see WRITE STEP rule 4.
 
+FALLBACK GUARD (added 2026-10-05, to stop paying twice for the same note)
+A task on Steven's Mac also refreshes `feeds.eliteAffluentLiveList` (it was written at 04:30 UTC on
+2026-10-05). This weekly routine is now the backup for when the Mac misses. Right after STEP 1, run
+`date -u +%Y-%m-%dT%H:%M:%SZ` with Bash. If `feeds.eliteAffluentLiveList.checkedAt` is less than 72 hours old,
+or up to 1 hour in the future, it is FRESH: stop now — no research, no write — and end with one
+line: "fresh (<age>) — skipped". Otherwise continue.
+
 STEP 2 — Research current, real developments
 Check today's real date first (don't guess). Look for ONE genuinely new, well-documented,
 checkable development from any of these angles, in priority order:

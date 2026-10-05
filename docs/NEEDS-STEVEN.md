@@ -282,6 +282,18 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
     or switch off your own routines, so: switch **off** the ten research-only/duplicate routines listed in
     `routines/feed-writers-2026-09-28/README.md`, and paste the Strava and calendar prompts into your own two
     routines (they carry the connectors). Until you switch them off, both sets run.
+    **Still on as of 2026-10-05** (all ten ran today and wrote nothing). An agent cannot switch them off
+    ("Agents can only update routines they created"), so it is yours — one toggle each, direct links:
+    [weather & news refresh](https://claude.ai/code/routines/trig_01LC6fUbVyaEF1nEFdGcQjU8) (5×/day) ·
+    [Pipeline Sync, research-only](https://claude.ai/code/routines/trig_018BSAYiYzvtyaUkpAY4SnqE) (4×/day; keep
+    "Pipeline Sync (live, writes)") · [Weather daily refresh](https://claude.ai/code/routines/trig_01N2UuFmRj8VNpzke8Epdm4m) ·
+    [News daily refresh](https://claude.ai/code/routines/trig_01NYWycyhzZGWtNfeavLGsuU) ·
+    [Econoday calendar refresh](https://claude.ai/code/routines/trig_013eacow5AcXCf346rB2ev6s) ·
+    [top performers refresh](https://claude.ai/code/routines/trig_01XHhoPZpoxGcm2pcLD5DmQR) ·
+    [builder incentives refresh](https://claude.ai/code/routines/trig_01WkiZztThKWuATUCRwYP9fo) ·
+    [PE & Defense Innovation daily refresh](https://claude.ai/code/routines/trig_01KBb8qABK9HJXL5CuYQNWkR) ·
+    [Elite Rewards-Optimization Scan](https://claude.ai/code/routines/trig_01MoxrJsdS5ZZ7Yru21uLnJC) ·
+    [Elite Affluent Tracker weekly refresh](https://claude.ai/code/routines/trig_01HfL39UYunpMm56NSJuh8LK).
 74. **Cloud environment network** — the environment's network policy denies `fred.stlouisfed.org`,
     `www.freddiemac.com` and `www.redfin.com`, the primary sources for the rates card, and (found 2026-09-28,
     14:30 UTC) `api.open-meteo.com` and `api.weather.gov`, the weather writer's sources. The writer has no weather
@@ -320,6 +332,14 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
     run stopped at startup with "You've hit your session limit · resets 6am (UTC)". Your weekly allowance is
     also at its warning level and resets around Sun Oct 4, 1 PM PT. The biggest cut only you can make:
     switch off the 10 old research-only routines in item 73. They produce nothing now that the writers exist.
+    **Week of 2026-09-28 → 10-04:** the weekly allowance ran out on **Oct 1 (~15:00 UTC)**, three days early.
+    From then until the reset (Sun Oct 4, 20:00 UTC) **33 cloud routines** and **10 Mac tasks** stopped at
+    startup ("You've hit your weekly limit"), including twelve monthly ones that will not run again until
+    November unless re-run. On **Oct 5 at 12:44 UTC the allowance was already back at its warning level**,
+    16 hours into the new week. Cuts made from the cloud (2026-10-05): the weather & news and Econoday
+    writers, and the weekly Elite Affluent writer, now run only as a backup when the Mac missed its own
+    run (each checks the document's age first and stops in seconds if it is fresh). The ten research-only
+    routines in item 73 remain the biggest cut, and only you can make it.
 81. **Decision — let the Command Deck read your Google Calendar live?** The dashboard already has code
     (Daily Ops "upcoming" list) that reads your calendar through your own Google Calendar connector each
     time you open it; the OpenTerminal market tape does the same in the desktop app. It has never worked,

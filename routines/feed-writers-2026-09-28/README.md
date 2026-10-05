@@ -67,3 +67,23 @@ do that. **Status, corrected the same morning (08:20 UTC):**
   weather instead of guessing. Its prompt now tries Open-Meteo first (one call for all 7 cities) and NWS for
   alerts. That starts working as soon as `api.open-meteo.com` and `api.weather.gov` are allowed
   (`docs/NEEDS-STEVEN.md` item 74). Until then, weather keeps its last reading and shows its age.
+
+## The Mac does it first; the cloud is the backup (2026-10-05)
+
+A week of stamps showed the Mac runner is alive and writes some of the same documents: its
+`weather-news-refresh` task writes `weatherSnapshot` and `newsSnapshot` at 8:05 AM and 8:05 PM Pacific
+(weather from wttr.in, which the Mac can reach). Its `openrouter-feeds-refresh` task writes
+`econodayLiveList` around 6 AM Pacific, and a Mac task writes `eliteAffluentLiveList` overnight. The
+cloud writers for those three were paying again for work already on the page, and the allowance ran
+out three days early that week (`docs/NEEDS-STEVEN.md` item 80). So:
+
+| Writer | Now runs (UTC) | Skips without researching when |
+|---|---|---|
+| weather & news | 04:35, 16:35 (after the Mac's 03:05 / 15:05 PDT runs) | a document is under 6 h old (each document checked on its own) |
+| Econoday note | 14:40 (after the Mac's ~13:00) | `econodayLiveList` is under 12 h old |
+| Elite Affluent note (weekly) | Sun 15:51 | `eliteAffluentLiveList` is under 72 h old |
+
+A stamp up to 1 hour in the future also counts as fresh: the Mac's tasks still round their times
+(today's `econodayLiveList` reads 13:10:00Z for a write that ended 12:59:37Z). The other four writers
+(top performers, builder incentives, PE & Defense, Elite Rewards scan) are the only writers of their
+entries and run unchanged.
