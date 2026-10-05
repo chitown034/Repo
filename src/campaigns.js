@@ -52,7 +52,7 @@ export function previewAudience(aud, user = null) {
   return { count, sample };
 }
 
-function mergeVars(contact, settings) {
+export function mergeVars(contact, settings = getSettings()) {
   const owner = contact.owner_id ? db.prepare('SELECT name FROM users WHERE id = ?').get(contact.owner_id) : null;
   return {
     first_name: contact.first_name || 'there',

@@ -17,6 +17,9 @@ An AI-assisted CRM for loan officers and mortgage teams. It takes the database y
 | **Smart campaigns** | Email and SMS from one builder, with merge fields and AI-drafted copy. Audience filters: stage, lead type, loan type, score, tags, rate gap, days since last touch. Triggers: manual, new lead, stage entered, score crosses a threshold, reply, rate drop, gone quiet, loan anniversary, landing-page form. Tracks opens, clicks, replies, and conversions (an application within 30 days counts as a conversion). |
 | **Landing pages** | Branded lead-capture pages at `/p/your-slug`, with TCPA consent text, NMLS footer, a honeypot, and rate limiting. Each submission becomes a scored, routed contact and gets an immediate first-touch draft. |
 | **Monthly Intelligence Report** | Built automatically on the 1st of each month: who moved up, who went quiet, pipeline flow, funded volume, campaign results, lead sources, and who to focus on next. Includes an AI-written briefing when Claude is configured. |
+| **Voicemail drops** | Save pre-recorded voicemails (an audio file, or a script read aloud with merge fields). Drop one from a contact's Call tab or to many contacts at once. Twilio's answering-machine detection waits for the beep and leaves your message. If a person answers instead, they're connected straight to the loan officer's phone. Drops are blocked during quiet hours and for opted-out or Do Not Contact contacts. |
+| **Direct sync** | **Google Contacts:** connect with Google (read-only) for a daily incremental sync of your phone and Gmail contacts, imported as Sphere. **Follow Up Boss:** paste an API key to import everyone with stages and tags, re-synced daily. **Inbound lead webhook:** `POST /hooks/lead` with an API key accepts leads from Zapier, Make, Zillow, Realtor.com, your website, or any CRM. Field names are matched automatically, and every lead is scored, routed, and gets a speed-to-lead draft. Synced records are matched by the source system's id, then email or phone, so re-syncing never duplicates. |
+| **Property enrichment** | Addresses are standardized through the free US Census geocoder, which also adds county and coordinates. With an ATTOM key, each contact also gets an automated home value with its range, beds/baths/sqft/year built, last sale, and the recorded first mortgage (amount, date, lender). Data refreshes every 90 days and again whenever the address changes. Enrichment only fills blanks and never overwrites numbers you entered. Equity in the Ready Score uses the current estimated value. |
 | **Your data stays yours** | Export every contact to CSV at any time. |
 
 ### Compliance guardrails built in
@@ -51,6 +54,11 @@ Copy `.env.example` to `.env` and fill in what you need. Each provider is option
 - **Claude (AI assistant):** set `ANTHROPIC_API_KEY`. Messages, reply analysis, campaign copy, and report briefings then come from Claude (`claude-opus-5-5` by default; override with `CLAUDE_MODEL`). Without a key, the assistant falls back to built-in templates and keyword rules.
 - **Twilio (texting and click-to-call):** set `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, and `TWILIO_FROM_NUMBER`. Then point the number's *A message comes in* webhook to `https://YOUR_APP_URL/webhooks/twilio/sms`. Click-to-call rings your phone first (add your mobile under Team), then connects you to the contact from the business number.
 - **Email:** set any SMTP provider in `SMTP_*`.
+- **Google Contacts:** in Google Cloud Console, enable the *People API* and create an OAuth client of type *Web application*. Add `https://YOUR_APP_URL/integrations/google/callback` as an authorized redirect URI. Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`, then click **Connect Google** in Settings.
+- **Follow Up Boss:** no server setup needed. Paste your API key (FUB → Admin → API) in Settings.
+- **Inbound webhook:** Settings shows your URL and key, plus a **Copy example** button with a ready-to-run `curl`. Send the key in an `X-API-Key` header (or `?key=`). Add `?source=Zillow` to label where leads came from.
+- **Property data:** set `ATTOM_API_KEY` for home values and mortgage records. Address standardization works without a key.
+- **Voicemail drops:** these use the same Twilio credentials. Add each loan officer's mobile under Team so live answers can be connected. Prerecorded calls to cell phones generally require prior express written consent, so only drop to contacts who gave it.
 - **`APP_URL`:** set this to your public URL so tracking links, unsubscribe links, and webhook signatures work.
 
 ## Day-to-day
@@ -72,12 +80,15 @@ src/
   assistant.js    AI follow-up: scan, drafts, approvals, inbound handling, handoff, takeover
   ai.js           Claude integration (structured outputs) with template fallback
   messaging.js    SMS/email/call providers, opt-outs, quiet-hours outbox
+  voicemail.js    Voicemail drop library, answering-machine detection TwiML, outcomes
+  integrations.js Google Contacts (OAuth + People API), Follow Up Boss, inbound lead webhook
+  enrichment.js   Census address standardization + ATTOM home value / mortgage records
   campaigns.js    Audience builder, triggers, enrollment, attribution
   reports.js      Monthly Intelligence Report
   automation.js   Event wiring + background scheduler
   csv.js, util.js, auth.js, events.js, seed.js
 public/           Single-page web app (no build step)
-test/             End-to-end API tests (npm test)
+test/             End-to-end API tests (npm test); outside services are mocked
 ```
 
 ## Tests
@@ -86,4 +97,4 @@ test/             End-to-end API tests (npm test)
 npm test
 ```
 
-The tests cover setup and auth, normalization and dedupe, CSV import, STOP handling, warm handoff with fact learning, the draft → approval → outbox → send path, landing-page capture with the honeypot, campaign targeting and open/click tracking (including the open-redirect guard), signed unsubscribe links, role-based visibility, round-robin routing, funded → past-client conversion, reports, and export.
+The tests cover setup and auth, normalization and dedupe, CSV import, STOP handling, warm handoff with fact learning, the draft → approval → outbox → send path, landing-page capture with the honeypot, campaign targeting and open/click tracking (including the open-redirect guard), signed unsubscribe links, role-based visibility, round-robin routing, funded → past-client conversion, reports, and export. They also cover the newer features: property enrichment (Census and ATTOM responses, fill-blanks-only, AVM-based equity, re-enrich when the address changes), voicemail drops (library validation, opt-out blocking, the machine vs. person call flows, forged-webhook rejection), the inbound webhook (key check, nested fields, dedupe, key rotation), Google sync (signed OAuth state, token exchange, incremental sync tokens, dedupe), Follow Up Boss import (rejected keys, pagination, stage mapping, re-sync without duplicates), and a check that secrets never reach the browser.

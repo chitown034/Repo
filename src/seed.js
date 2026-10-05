@@ -39,7 +39,7 @@ const person = (i) => {
   const first = FIRST[i % FIRST.length];
   const last = LAST[(i * 7) % LAST.length];
   const [city, state, zip] = rand(CITIES);
-  return { first_name: first, last_name: last, email: `${first}.${last}${i}@example.com`.toLowerCase(), phone: `(951) 555-${String(1000 + i).slice(-4)}`, city, state, zip };
+  return { address: `${100 + i * 7} ${rand(['Oak', 'Maple', 'Vista', 'Ridge', 'Canyon'])} ${rand(['St', 'Ave', 'Dr', 'Ct'])}`, first_name: first, last_name: last, email: `${first}.${last}${i}@example.com`.toLowerCase(), phone: `(951) 555-${String(1000 + i).slice(-4)}`, city, state, zip };
 };
 
 // Past clients - the refinance goldmine. Mix of 2023-2024 high-rate loans and 2020-2021 low-rate loans.
@@ -121,6 +121,17 @@ if (!db.prepare('SELECT COUNT(*) n FROM campaigns').get().n) {
   camp.run('Rate drop alert - past clients', 'both', 'Rates have moved, {{first_name}}', "Hi {{first_name}},\n\nRates have shifted since you closed on your loan, and for some of my clients that's opened up a real chance to lower their payment.\n\nWant me to run a no-pressure comparison for you? Just reply to this email.\n\n{{lo_name}}\n{{company}}", 'Hi {{first_name}}, {{lo_name}} here. Rates have moved since your loan closed - want me to run a quick comparison for you?', JSON.stringify({ lead_types: ['past_client', 'refinance'] }), 'rate_drop', JSON.stringify({ gap: 0.75 }), 'active');
   camp.run('Loan anniversary check-in', 'email', 'Happy home-iversary, {{first_name}}!', "Hi {{first_name}},\n\nIt's been another year since we closed on your home - congratulations! I like to do a quick annual mortgage review with my clients to make sure your loan still fits your goals.\n\nReply and let me know a good time to chat.\n\n{{lo_name}}", '', JSON.stringify({ lead_types: ['past_client'] }), 'loan_anniversary', '{}', 'active');
   camp.run('New buyer welcome', 'sms', '', '', "Hi {{first_name}}, it's {{lo_name}} with {{company}}. Thanks for reaching out! Are you already looking at homes or still figuring out your budget?", JSON.stringify({ lead_types: ['purchase'] }), 'new_lead', '{}', 'draft');
+}
+
+if (!db.prepare('SELECT COUNT(*) n FROM voicemail_drops').get().n) {
+  db.prepare('INSERT INTO voicemail_drops (name, script) VALUES (?, ?)').run(
+    'Rate review - past clients',
+    "Hi {{first_name}}, it's {{lo_name}} with {{company}}. Rates have moved since your loan closed, and I wanted to see if a quick no-pressure review makes sense for you. Give me a call or text back when you have a minute. Talk soon!",
+  );
+  db.prepare('INSERT INTO voicemail_drops (name, script) VALUES (?, ?)').run(
+    'New lead - first touch',
+    "Hi {{first_name}}, this is {{lo_name}} with {{company}}. Thanks for reaching out about a home loan! I'd love to learn a little about what you're looking for. Call or text me back at this number anytime.",
+  );
 }
 
 const r = rescoreAll();

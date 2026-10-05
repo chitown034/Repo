@@ -40,9 +40,11 @@ export function computeScore(contact, settings, engagement = {}) {
     }
 
     // Equity: cash-out, HELOC, or dropping mortgage insurance.
-    if (contact.property_value && contact.loan_amount) {
-      const ltv = contact.loan_amount / contact.property_value;
-      const equity = contact.property_value - contact.loan_amount;
+    // Prefer today's automated valuation over a value entered at closing.
+    const value = contact.avm_value || contact.property_value;
+    if (value && contact.loan_amount) {
+      const ltv = contact.loan_amount / value;
+      const equity = value - contact.loan_amount;
       if (ltv <= 0.6) add(12, `~${Math.round((1 - ltv) * 100)}% equity ($${Math.round(equity / 1000)}k) - cash-out / HELOC candidate`);
       else if (ltv <= 0.8) add(7, `LTV ${Math.round(ltv * 100)}% - enough equity to restructure`);
       if (/fha/i.test(contact.loan_type || '') && ltv <= 0.8) add(10, 'FHA loan under 80% LTV - can refi out of MIP');

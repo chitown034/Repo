@@ -198,6 +198,53 @@ CREATE TABLE IF NOT EXISTS reports (
 );
 `);
 
+// Additive migrations for databases created by earlier versions.
+const contactCols = new Set(db.prepare('PRAGMA table_info(contacts)').all().map((c) => c.name));
+for (const [col, type] of [
+  ['county', 'TEXT'], ['lat', 'REAL'], ['lng', 'REAL'], ['address_verified', 'INTEGER DEFAULT 0'],
+  ['avm_value', 'REAL'], ['avm_low', 'REAL'], ['avm_high', 'REAL'], ['avm_date', 'TEXT'],
+  ['last_sale_date', 'TEXT'], ['last_sale_price', 'REAL'], ['year_built', 'INTEGER'], ['sqft', 'INTEGER'],
+  ['beds', 'REAL'], ['baths', 'REAL'], ['lender_name', 'TEXT'], ['enriched_at', 'TEXT'], ['enrich_error', 'TEXT'],
+  ['external_source', 'TEXT'], ['external_id', 'TEXT'],
+]) {
+  if (!contactCols.has(col)) db.exec(`ALTER TABLE contacts ADD COLUMN ${col} ${type}`);
+}
+db.exec(`
+CREATE INDEX IF NOT EXISTS idx_contacts_external ON contacts(external_source, external_id);
+
+CREATE TABLE IF NOT EXISTS voicemail_drops (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  script TEXT,
+  audio_url TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS voicemail_calls (
+  id INTEGER PRIMARY KEY,
+  contact_id INTEGER NOT NULL REFERENCES contacts(id) ON DELETE CASCADE,
+  drop_id INTEGER REFERENCES voicemail_drops(id) ON DELETE SET NULL,
+  user_id INTEGER,
+  call_sid TEXT,
+  status TEXT NOT NULL DEFAULT 'queued',
+  answered_by TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT
+);
+
+CREATE TABLE IF NOT EXISTS sync_runs (
+  id INTEGER PRIMARY KEY,
+  source TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'running',
+  created INTEGER DEFAULT 0,
+  merged INTEGER DEFAULT 0,
+  skipped INTEGER DEFAULT 0,
+  error TEXT,
+  started_at TEXT NOT NULL DEFAULT (datetime('now')),
+  finished_at TEXT
+);
+`);
+
 export const STAGES = [
   { key: 'new', label: 'New Lead' },
   { key: 'contacted', label: 'Contacted' },
@@ -236,6 +283,10 @@ const DEFAULT_SETTINGS = {
   speed_to_lead_minutes: '5',
   auto_stage_rules: '1',
   last_market_rate_30yr: '',
+  auto_enrich: '1',
+  google_sync_enabled: '1',
+  fub_sync_enabled: '1',
+  inbound_api_key: '',
 };
 
 for (const [key, value] of Object.entries(DEFAULT_SETTINGS)) {
@@ -258,7 +309,15 @@ export function setSetting(key, value) {
   );
 }
 
-export const SETTING_KEYS = Object.keys(DEFAULT_SETTINGS);
+export const SETTING_KEYS = Object.keys(DEFAULT_SETTINGS).filter((k) => k !== 'inbound_api_key');
+
+const SECRET_SETTINGS = ['app_secret', 'google_tokens', 'google_sync_token', 'fub_api_key', 'inbound_api_key'];
+/** Settings safe to send to the browser. */
+export function publicSettings() {
+  const s = getSettings();
+  for (const k of SECRET_SETTINGS) delete s[k];
+  return s;
+}
 
 export function tx(fn) {
   db.exec('BEGIN');

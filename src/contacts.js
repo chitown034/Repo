@@ -132,6 +132,10 @@ export function updateContact(id, patch, { userId = null, silent = false } = {})
       ...cols.map((c) => data[c]),
       id,
     );
+    if (['address', 'city', 'state', 'zip'].some((k) => k in data && String(data[k] ?? '') !== String(before[k] ?? ''))) {
+      // New address: let the enrichment queue look it up again.
+      db.prepare('UPDATE contacts SET enriched_at = NULL, enrich_error = NULL, address_verified = 0 WHERE id = ?').run(id);
+    }
   }
   if (patch.stage && patch.stage !== before.stage) changeStage(id, patch.stage, { userId, reason: silent ? 'import' : 'manual' });
   if (data.owner_id && data.owner_id !== before.owner_id) {

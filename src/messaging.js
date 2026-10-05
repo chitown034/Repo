@@ -35,7 +35,7 @@ export function providerStatus() {
   };
 }
 
-async function twilio(pathname, params) {
+export async function twilio(pathname, params) {
   const sid = process.env.TWILIO_ACCOUNT_SID;
   const auth = Buffer.from(`${sid}:${process.env.TWILIO_AUTH_TOKEN}`).toString('base64');
   const res = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${sid}/${pathname}`, {

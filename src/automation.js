@@ -6,11 +6,14 @@ import { processOutbox } from './messaging.js';
 import { rescoreAll } from './scoring.js';
 import { buildMonthlyReport, previousPeriod } from './reports.js';
 import { localMinutes } from './util.js';
+import { enrichContact, enrichPending } from './enrichment.js';
+import { syncGoogle, syncFollowUpBoss, googleStatus } from './integrations.js';
 
 /** Wire behavioral automation to core events. */
 export function registerAutomation() {
   bus.on('contact.created', async ({ contact }) => {
     fireTrigger('new_lead', contact);
+    if (getSetting('auto_enrich') === '1' && contact.address) await enrichContact(contact.id).catch((e) => console.error('[enrich]', e.message));
   });
 
   bus.on('form.submitted', async ({ contact, landingPageId }) => {
@@ -73,6 +76,12 @@ export function startScheduler() {
       if (tick % 15 === 0) {
         await guarded('triggers', () => runScheduledTriggers());
         await guarded('assistant scan', () => scanForOutreach());
+        await guarded('enrichment', () => enrichPending());
+      }
+      if (tick % 60 === 0) {
+        const stale = (iso) => !iso || Date.now() - new Date(iso).getTime() > 24 * 3600_000;
+        if (s.google_sync_enabled === '1' && googleStatus().connected && stale(s.google_last_sync)) await guarded('google sync', () => syncGoogle());
+        if (s.fub_sync_enabled === '1' && s.fub_api_key && stale(s.fub_last_sync)) await guarded('follow up boss sync', () => syncFollowUpBoss());
       }
       const today = new Date().toLocaleDateString('en-CA', { timeZone: s.timezone });
       const mins = localMinutes(s.timezone);

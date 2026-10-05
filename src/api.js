@@ -1,5 +1,5 @@
 import express from 'express';
-import { db, getSettings, setSetting, SETTING_KEYS, STAGES, STAGE_KEYS, json, tx } from './db.js';
+import { db, getSettings, publicSettings, setSetting, SETTING_KEYS, STAGES, STAGE_KEYS, json, tx } from './db.js';
 import { hashPassword, verifyPassword, createSession, destroySession, sessionCookie, requireUser, requireRole, canSeeAll, contactScope, publicUser } from './auth.js';
 import { upsertContact, updateContact, changeStage, getContact, logActivity, serializeContact, CONTACT_FIELDS } from './contacts.js';
 import { parseCSV, autoMap, toCSV } from './csv.js';
@@ -10,6 +10,9 @@ import { TRIGGERS, previewAudience, launchCampaign, campaignStats } from './camp
 import { generateCampaignCopy, aiEnabled } from './ai.js';
 import { buildMonthlyReport, previousPeriod } from './reports.js';
 import { emit } from './events.js';
+import { enrichContact, enrichmentStatus } from './enrichment.js';
+import { listDrops, saveDrop, deleteDrop, dropVoicemail, dropMany } from './voicemail.js';
+import { googleAuthUrl, googleStatus, googleDisconnect, syncGoogle, fubStatus, syncFollowUpBoss, inboundKey, lastRuns } from './integrations.js';
 
 export const api = express.Router();
 const wrap = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
@@ -61,8 +64,7 @@ api.use(requireUser);
 api.get('/me', (req, res) => res.json({ user: req.user }));
 
 api.get('/meta', (req, res) => {
-  const s = getSettings();
-  delete s.app_secret;
+  const s = publicSettings();
   res.json({
     user: req.user,
     stages: STAGES,
@@ -657,9 +659,7 @@ api.patch('/users/:id', (req, res) => {
 /* ------------------------------- Settings ------------------------------- */
 
 api.get('/settings', requireRole('owner', 'admin'), (_req, res) => {
-  const s = getSettings();
-  delete s.app_secret;
-  res.json({ settings: s, providers: providerStatus() });
+  res.json({ settings: publicSettings(), providers: providerStatus() });
 });
 
 api.patch('/settings', requireRole('owner', 'admin'), (req, res) => {
@@ -676,7 +676,108 @@ api.patch('/settings', requireRole('owner', 'admin'), (req, res) => {
   }
   if ('market_rate_30yr' in changed) setSetting('last_market_rate_30yr', before.market_rate_30yr);
   if (Object.keys(changed).length) emit('settings.changed', { changed, userId: req.user.id });
-  res.json({ settings: getSettings(), changed: Object.keys(changed) });
+  res.json({ settings: publicSettings(), changed: Object.keys(changed) });
 });
 
 api.post('/rescore', requireRole('owner', 'admin'), (_req, res) => res.json(rescoreAll()));
+
+/* ----------------------------- Enrichment ------------------------------- */
+
+api.post('/contacts/:id/enrich', wrap(async (req, res) => {
+  const c = loadContact(req, res);
+  if (!c) return;
+  const r = await enrichContact(c.id, { force: true });
+  res.json({ ...r, contact: serializeContact(getContact(c.id)) });
+}));
+
+/* ---------------------------- Voicemail drops --------------------------- */
+
+const blocked = (res, err) => {
+  if (err instanceof SendBlocked) return res.status(400).json({ error: err.message });
+  throw err;
+};
+
+api.get('/voicemail-drops', (_req, res) => res.json(listDrops()));
+
+api.post('/voicemail-drops', (req, res) => {
+  try {
+    res.status(201).json({ id: saveDrop(req.body) });
+  } catch (err) { blocked(res, err); }
+});
+
+api.patch('/voicemail-drops/:id', (req, res) => {
+  try {
+    res.json({ id: saveDrop({ ...req.body, id: Number(req.params.id) }) });
+  } catch (err) { blocked(res, err); }
+});
+
+api.delete('/voicemail-drops/:id', requireRole('owner', 'admin'), (req, res) => {
+  deleteDrop(Number(req.params.id));
+  res.json({ ok: true });
+});
+
+api.post('/contacts/:id/voicemail', wrap(async (req, res) => {
+  const c = loadContact(req, res);
+  if (!c) return;
+  try {
+    res.json(await dropVoicemail(c.id, Number(req.body.drop_id), req.user));
+  } catch (err) { blocked(res, err); }
+}));
+
+api.post('/voicemail/bulk', wrap(async (req, res) => {
+  const ids = (req.body.ids || []).map(Number).filter((id) => {
+    const c = getContact(id);
+    return c && (canSeeAll(req.user) || c.owner_id === req.user.id);
+  });
+  res.json(await dropMany(ids, Number(req.body.drop_id), req.user));
+}));
+
+/* ----------------------------- Integrations ----------------------------- */
+
+api.get('/integrations', requireRole('owner', 'admin'), (_req, res) => {
+  res.json({
+    google: googleStatus(),
+    followupboss: fubStatus(),
+    inbound: { url: `${APP_URL}/hooks/lead`, key: inboundKey() },
+    enrichment: enrichmentStatus(),
+    runs: lastRuns(),
+  });
+});
+
+api.post('/integrations/google/connect', requireRole('owner', 'admin'), (req, res) => {
+  try {
+    res.json({ url: googleAuthUrl(req.user.id) });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+api.post('/integrations/google/sync', requireRole('owner', 'admin'), wrap(async (_req, res) => {
+  try {
+    res.json(await syncGoogle());
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+}));
+
+api.post('/integrations/google/disconnect', requireRole('owner', 'admin'), (_req, res) => {
+  googleDisconnect();
+  res.json({ ok: true });
+});
+
+api.post('/integrations/followupboss', requireRole('owner', 'admin'), wrap(async (req, res) => {
+  const key = String(req.body.api_key || '').trim();
+  if (req.body.disconnect) {
+    setSetting('fub_api_key', '');
+    return res.json({ ok: true });
+  }
+  try {
+    const summary = await syncFollowUpBoss(key || undefined);
+    if (key) setSetting('fub_api_key', key);
+    res.json(summary);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+}));
+
+api.post('/integrations/inbound/rotate', requireRole('owner', 'admin'), (_req, res) => res.json({ key: inboundKey({ rotate: true }) }));

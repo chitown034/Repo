@@ -1,4 +1,5 @@
 import express from 'express';
+import crypto from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { db, getSettings, json } from './db.js';
@@ -10,6 +11,8 @@ import { signId, verifyTwilioSignature } from './messaging.js';
 import { registerAutomation, startScheduler } from './automation.js';
 import { rescoreContact } from './scoring.js';
 import { emit } from './events.js';
+import { voicemailTwiml, voicemailStatus } from './voicemail.js';
+import { googleCallback, receiveLead, inboundKey } from './integrations.js';
 import { escapeHtml, normalizePhone, normalizeEmail } from './util.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -182,6 +185,49 @@ app.post('/webhooks/twilio/status', (req, res) => {
     if (act) logActivity(act.contact_id, { type: 'system', body: `Text was not delivered (${req.body.ErrorCode || req.body.MessageStatus})` });
   }
   res.sendStatus(204);
+});
+
+app.post('/webhooks/twilio/vm/:id/:sig', (req, res) => {
+  const id = Number(req.params.id);
+  if (signId('vm', id) !== req.params.sig || !verifyTwilioSignature(req)) return res.status(403).send('Bad signature');
+  res.type('text/xml').send(voicemailTwiml(id, req.body.AnsweredBy));
+});
+
+app.post('/webhooks/twilio/vm-status/:id/:sig', (req, res) => {
+  const id = Number(req.params.id);
+  if (signId('vm', id) !== req.params.sig || !verifyTwilioSignature(req)) return res.status(403).send('Bad signature');
+  voicemailStatus(id, req.body);
+  res.sendStatus(204);
+});
+
+/* ---------------------------- Integrations ---------------------------- */
+
+app.get('/integrations/google/callback', async (req, res) => {
+  try {
+    if (req.query.error) throw new Error(String(req.query.error));
+    await googleCallback(String(req.query.code || ''), String(req.query.state || ''));
+    res.redirect(302, '/#/settings?google=connected');
+  } catch (err) {
+    res.redirect(302, `/#/settings?google_error=${encodeURIComponent(err.message)}`);
+  }
+});
+
+/** Inbound lead webhook for Zapier, Make, websites, and other CRMs. Auth: X-API-Key header or ?key= */
+const hookLog = new Map();
+app.post('/hooks/lead', (req, res) => {
+  const key = req.headers['x-api-key'] || req.query.key;
+  const expected = inboundKey();
+  if (!key || String(key).length !== expected.length || !crypto.timingSafeEqual(Buffer.from(String(key)), Buffer.from(expected))) {
+    return res.status(401).json({ error: 'Invalid API key' });
+  }
+  const recent = (hookLog.get(req.ip) || []).filter((t) => Date.now() - t < 60_000);
+  if (recent.length >= 120) return res.status(429).json({ error: 'Slow down' });
+  hookLog.set(req.ip, [...recent, Date.now()]);
+  try {
+    res.status(201).json(receiveLead(req.body || {}, req.query.source ? String(req.query.source) : null));
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 });
 
 /* --------------------------------- SPA ---------------------------------- */

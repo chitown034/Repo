@@ -4,7 +4,7 @@ export const views = {};
 
 const LEAD_TYPES = { purchase: 'Purchase', refinance: 'Refinance', heloc: 'HELOC / Cash-out', past_client: 'Past client', sphere: 'Sphere / referral partner' };
 const leadTypeOptions = (sel) => Object.entries(LEAD_TYPES).map(([k, v]) => `<option value="${k}" ${k === sel ? 'selected' : ''}>${v}</option>`).join('');
-const ACT_ICON = { sms: '💬', email: '✉️', call: '📞', note: '📝', stage_change: '➡️', score_change: '📈', ai: '✨', system: '⚙️', form: '🧲', campaign: '📣', task: '✅' };
+const ACT_ICON = { sms: '💬', email: '✉️', call: '📞', note: '📝', stage_change: '➡️', score_change: '📈', ai: '✨', system: '⚙️', form: '🧲', campaign: '📣', task: '✅', voicemail: '📼' };
 
 /* ---------------------------------- Auth ----------------------------------- */
 
@@ -122,7 +122,7 @@ views.contacts = async (main, { query }) => {
     <div class="row" id="bulk" hidden style="margin-bottom:10px"><strong id="selcount"></strong>
       <select id="bulk-stage"><option value="">Move to stage…</option>${stageOptions('')}</select>
       ${isAdmin() ? `<select id="bulk-assign"><option value="">Assign to…</option>${userOptions('')}</select>` : ''}
-      <button id="bulk-tag" class="sm">Add tag</button><button id="bulk-pause" class="sm">Pause assistant</button><button id="bulk-resume" class="sm">Resume assistant</button>
+      <button id="bulk-tag" class="sm">Add tag</button><button id="bulk-pause" class="sm">Pause assistant</button><button id="bulk-resume" class="sm">Resume assistant</button><button id="bulk-vm" class="sm">📼 Drop voicemail</button>
       ${isAdmin() ? '<button id="bulk-del" class="sm danger">Delete</button>' : ''}</div>
     <div class="card flush"><div class="table-wrap" id="tbl"></div></div>`;
 
@@ -162,6 +162,24 @@ views.contacts = async (main, { query }) => {
   main.querySelector('#bulk-assign')?.addEventListener('change', (e) => e.target.value && bulk('assign', e.target.value));
   main.querySelector('#bulk-tag').onclick = () => { const tag = prompt('Tag to add:'); if (tag) bulk('tag', tag.trim()); };
   main.querySelector('#bulk-pause').onclick = () => bulk('pause_ai', 1);
+  main.querySelector('#bulk-vm').onclick = async () => {
+    const drops = await api('/voicemail-drops');
+    if (!drops.length) return toast('Create a voicemail in Settings first', true);
+    modal(`<h2>Drop a voicemail to ${selected.size} contacts</h2>
+      <label class="f">Voicemail<select id="d">${drops.map((dr) => `<option value="${dr.id}">${esc(dr.name)}</option>`).join('')}</select></label>
+      <p class="small muted">Contacts who opted out, are marked Do Not Contact, or have no valid phone are skipped. Drops don't run during quiet hours. Prerecorded calls to cell phones generally require prior express written consent - only use this for contacts who gave it.</p>
+      <div class="actions"><button data-close>Cancel</button><button class="primary" id="go">Drop voicemails</button></div>`, {
+      onMount: (m, close) => (m.querySelector('#go').onclick = async () => {
+        m.querySelector('#go').disabled = true;
+        const r = await act(() => api('/voicemail/bulk', { method: 'POST', body: { ids: [...selected], drop_id: Number(m.querySelector('#d').value) } }));
+        close();
+        toast(`${r.queued} voicemail${r.queued === 1 ? '' : 's'} sent${r.skipped.length ? ` · ${r.skipped.length} skipped (${r.skipped[0].reason})` : ''}`);
+        selected.clear();
+        syncBulk();
+        load();
+      }),
+    });
+  };
   main.querySelector('#bulk-resume').onclick = () => bulk('pause_ai', 0);
   main.querySelector('#bulk-del')?.addEventListener('click', () => confirm(`Delete ${selected.size} contacts permanently?`) && bulk('delete'));
   main.querySelector('#add').onclick = () => contactForm(null, (c) => (location.hash = `#/contacts/${c.id}`));
@@ -265,7 +283,7 @@ function sparkline(history) {
 
 function activityItem(a) {
   const isMsg = ['sms', 'email'].includes(a.type);
-  const label = { sms: 'Text', email: 'Email', call: 'Call', note: 'Note', stage_change: 'Stage', score_change: 'Score', ai: state.meta.settings.assistant_name, system: 'System', form: 'Form', campaign: 'Campaign', task: 'Task' }[a.type] || a.type;
+  const label = { sms: 'Text', email: 'Email', call: 'Call', note: 'Note', stage_change: 'Stage', score_change: 'Score', ai: state.meta.settings.assistant_name, system: 'System', form: 'Form', campaign: 'Campaign', task: 'Task', voicemail: 'Voicemail' }[a.type] || a.type;
   const who = a.direction === 'in' ? 'from contact' : a.user_name ? `by ${a.user_name}` : a.meta?.source === 'ai' ? `by ${state.meta.settings.assistant_name}` : a.meta?.source === 'campaign' ? 'campaign' : '';
   const extra = [a.meta?.outcome && a.meta.outcome.replace(/_/g, ' '), a.meta?.simulated && 'simulated - no provider configured'].filter(Boolean).join(' · ');
   return `<li class="${a.direction || ''} ${isMsg ? 'msg' : ''}"><div class="ic">${ACT_ICON[a.type] || '•'}</div><div>
@@ -320,6 +338,7 @@ views.contact = async (main, { id }) => {
         ${[['Loan type', c.loan_type], ['Property value', money(c.property_value)], ['Balance', money(c.loan_amount)], ['LTV', ltv != null ? `${ltv}%` : ''], ['Rate', c.current_rate ? `${c.current_rate}% ${gap > 0 ? `<span class="badge ${gap >= 0.75 ? 'green' : 'amber'}">+${gap} vs market</span>` : ''}` : ''], ['Funded', c.loan_close_date], ['Timeline', c.purchase_timeline], ['Credit', c.credit_band], ['Pre-approved', c.preapproved ? 'Yes' : ''], ['Veteran', c.is_veteran ? 'Yes' : ''], ['First-time buyer', c.first_time_buyer ? 'Yes' : '']]
           .filter(([, v]) => v).map(([k, v]) => `<span class="muted">${k}</span><span>${k === 'Rate' ? v : esc(v)}</span>`).join('') || '<span class="muted">No loan details yet</span>'}
       </div></div>
+      ${propertyCard(c)}
       <div class="card"><h2>Tasks</h2><ul class="list">${d.tasks.map(taskRow).join('') || '<li class="muted small">No tasks</li>'}</ul></div>
       ${d.campaigns.length ? `<div class="card"><h2>Campaigns</h2><ul class="list small">${d.campaigns.map((cs) => `<li>${esc(cs.name)} <span class="badge gray">${esc(cs.channel)}</span> <span class="muted">${esc(cs.status)}${cs.opened_at ? ' · opened' : ''}${cs.clicked_at ? ' · clicked' : ''}${cs.replied_at ? ' · replied' : ''}</span></li>`).join('')}</ul></div>` : ''}
       ${isAdmin() ? '<button class="danger sm" id="del" style="justify-self:start">Delete contact</button>' : ''}
@@ -349,7 +368,8 @@ views.contact = async (main, { id }) => {
     main.querySelectorAll('#ctabs button').forEach((b) => b.classList.toggle('on', b.dataset.ch === ch));
     if (ch === 'sms') composer.innerHTML = `<textarea id="body" rows="3" placeholder="Text ${esc(c.first_name || '')}…" ${c.opted_out_sms ? 'disabled' : ''}></textarea><div class="row" style="margin-top:8px"><span class="small muted" id="cnt">0 / 160</span><span class="spacer"></span><button class="primary" id="send" ${c.opted_out_sms || !c.phone_norm ? 'disabled' : ''}>Send text</button></div>${c.opted_out_sms ? '<p class="small" style="color:var(--hot)">This contact replied STOP. Texting is blocked.</p>' : ''}`;
     else if (ch === 'email') composer.innerHTML = `<input id="subject" placeholder="Subject"><textarea id="body" rows="5" placeholder="Write your email…" style="margin-top:8px"></textarea><div class="row" style="margin-top:8px"><span class="small muted">Signature, NMLS, and unsubscribe link are added automatically.</span><span class="spacer"></span><button class="primary" id="send" ${c.opted_out_email || !c.email_norm ? 'disabled' : ''}>Send email</button></div>`;
-    else if (ch === 'call') composer.innerHTML = `<div class="row"><button class="primary" id="dial">📞 Call ${esc(phoneFmt(c.phone_norm) || '')}</button><button id="logcall">Log a call</button><span class="small muted">${state.meta.providers.voice === 'twilio' ? 'Click-to-call rings your phone, then connects from your business number.' : 'Calling uses your device. Connect Twilio in Settings for click-to-call from your business line.'}</span></div>`;
+    else if (ch === 'call') composer.innerHTML = `<div class="row"><button class="primary" id="dial">📞 Call ${esc(phoneFmt(c.phone_norm) || '')}</button><button id="logcall">Log a call</button><span class="small muted">${state.meta.providers.voice === 'twilio' ? 'Click-to-call rings your phone, then connects from your business number.' : 'Calling uses your device. Connect Twilio in Settings for click-to-call from your business line.'}</span></div>
+      <div class="row" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--line)"><strong class="small">📼 Voicemail drop</strong><select id="vm-drop" style="width:auto;min-width:200px"><option value="">Loading…</option></select><button id="vm-send" ${c.dnc || c.opted_out_sms || !c.phone_norm ? 'disabled' : ''}>Drop voicemail</button><span class="small muted">Leaves your recorded message if voicemail answers; connects to you if a person picks up.</span></div>`;
     else if (ch === 'note') composer.innerHTML = `<textarea id="body" rows="3" placeholder="Add a note…"></textarea><div class="row" style="margin-top:8px"><span class="spacer"></span><button class="primary" id="save-note">Save note</button></div>`;
     else if (ch === 'inbound') composer.innerHTML = `<p class="small muted" style="margin-top:0">Got a reply on another device? Log it here and ${esc(s.assistant_name)} will read it, learn from it, and draft the next step (or hand off to you if they're warm).</p><div class="row"><select id="ich" style="width:auto"><option value="sms">Text</option><option value="email">Email</option></select></div><textarea id="body" rows="3" placeholder="Paste what they said…" style="margin-top:8px"></textarea><div class="row" style="margin-top:8px"><span class="spacer"></span><button class="primary" id="log-in">Log reply</button></div>`;
     else if (ch === 'task') composer.innerHTML = `<div class="form-grid"><label class="f wide">Task<input id="ttitle" placeholder="e.g. Send pre-approval letter"></label><label class="f">Due<input id="tdue" type="datetime-local"></label>${isAdmin() ? `<label class="f">Assign to<select id="tuser">${userOptions(c.owner_id || state.user.id)}</select></label>` : ''}</div><div class="row" style="margin-top:8px"><span class="spacer"></span><button class="primary" id="add-task">Add task</button></div>`;
@@ -369,6 +389,18 @@ views.contact = async (main, { id }) => {
       setTimeout(() => logCallModal(Number(id), reload), 800);
     });
     composer.querySelector('#logcall')?.addEventListener('click', () => logCallModal(Number(id), reload));
+    const vmSel = composer.querySelector('#vm-drop');
+    if (vmSel) {
+      api('/voicemail-drops').then((drops) => {
+        vmSel.innerHTML = drops.length ? drops.map((dr) => `<option value="${dr.id}">${esc(dr.name)}</option>`).join('') : '<option value="">No voicemails yet - add one in Settings</option>';
+        if (!drops.length) composer.querySelector('#vm-send').disabled = true;
+      });
+      composer.querySelector('#vm-send').onclick = async () => {
+        const r = await act(() => api(`/contacts/${id}/voicemail`, { method: 'POST', body: { drop_id: Number(vmSel.value) } }));
+        toast(r.simulated ? 'Logged (simulated - connect Twilio to place real calls)' : 'Calling - the voicemail will be left automatically');
+        reload();
+      };
+    }
     composer.querySelector('#save-note')?.addEventListener('click', async () => { await act(() => api(`/contacts/${id}/notes`, { method: 'POST', body: { body: body.value } }), 'Note saved'); reload(); });
     composer.querySelector('#log-in')?.addEventListener('click', async (e) => {
       e.target.disabled = true;
@@ -757,7 +789,7 @@ views.team = async (main) => {
 
 /* -------------------------------- Settings --------------------------------- */
 
-views.settings = async (main) => {
+views.settings = async (main, { query = {} } = {}) => {
   const { settings: s, providers: p } = await api('/settings');
   const field = (k, label, attrs = '') => `<label class="f">${label}<input name="${k}" value="${esc(s[k] ?? '')}" ${attrs}></label>`;
   const status = (v, ok) => `<span class="badge ${v === ok || (Array.isArray(ok) && ok.includes(v)) ? 'green' : 'amber'}">${esc(v)}</span>`;
@@ -773,6 +805,7 @@ views.settings = async (main) => {
       ${field('market_rate_30yr', '30-yr market rate (%)', 'type="number" step="0.001"')}${field('market_rate_15yr', '15-yr market rate (%)', 'type="number" step="0.001"')}
       ${field('daily_call_list_size', 'Daily call list size', 'type="number" min="5" max="200"')}${field('dormant_days', 'Going cold after (days)', 'type="number"')}
       <label class="f row" style="font-weight:500"><input type="checkbox" name="auto_stage_rules" ${s.auto_stage_rules === '1' ? 'checked' : ''}> Automated stage transitions</label>
+      <label class="f row" style="font-weight:500"><input type="checkbox" name="auto_enrich" ${s.auto_enrich === '1' ? 'checked' : ''}> Auto-enrich property data</label>
     </div><p class="small muted">Automated transitions: replies and connected calls move New/Nurture → Contacted; "not interested" moves to Nurture; Funded converts a lead to a past client and starts tracking their loan.</p></div>
     <div class="card"><h2>Assistant</h2><div class="form-grid">
       ${field('assistant_name', 'Assistant name')}
@@ -789,13 +822,125 @@ views.settings = async (main) => {
         <span>AI</span><span>${status(p.ai, 'claude')} ${p.ai === 'claude' ? '' : '<code>ANTHROPIC_API_KEY</code>'}</span>
         <span>Inbound texts</span><span>Point your Twilio number's messaging webhook to <code>${esc(state.meta.app_url)}/webhooks/twilio/sms</code></span>
       </div></div>
-  </form>`;
+  </form>
+  <div class="grid" style="margin-top:16px">
+    <div class="card" id="sync"><h2>Data sync & lead intake</h2><div class="muted small">Loading…</div></div>
+    <div class="card" id="vm"><h2>📼 Voicemail drops</h2><div class="muted small">Loading…</div></div>
+  </div>`;
+  if (query.google === 'connected') toast('Google Contacts connected - syncing now');
+  if (query.google_error) toast(`Google: ${query.google_error}`, true);
+  renderSync(main.querySelector('#sync'), s, query.google === 'connected');
+  renderVoicemails(main.querySelector('#vm'));
   main.querySelector('#save').onclick = async () => {
     const body = formData(main.querySelector('#f'));
     body.auto_stage_rules = body.auto_stage_rules ? '1' : '0';
+    body.auto_enrich = body.auto_enrich ? '1' : '0';
     const r = await act(() => api('/settings', { method: 'PATCH', body }), (x) => (x.changed.length ? `Saved ${x.changed.length} change(s)${x.changed.includes('market_rate_30yr') ? ' - database rescored' : ''}` : 'No changes'));
     await refreshMeta();
     if (r.changed.includes('company_name')) document.querySelector('#app').innerHTML = '';
     route();
   };
 };
+
+/* ------------------------- Property data (contact) ------------------------- */
+
+function propertyCard(c) {
+  const rows = [
+    ['Est. value', c.avm_value ? `${money(c.avm_value)}${c.avm_low && c.avm_high ? ` <span class="muted">(${money(c.avm_low)}-${money(c.avm_high)})</span>` : ''}` : ''],
+    ['Value as of', esc(c.avm_date || '')],
+    ['Equity (est.)', c.avm_value && c.loan_amount ? `${money(c.avm_value - c.loan_amount)} <span class="muted">· ${Math.round((1 - c.loan_amount / c.avm_value) * 100)}%</span>` : ''],
+    ['County', esc(c.county || '')],
+    ['Home', esc([c.beds && `${c.beds} bd`, c.baths && `${c.baths} ba`, c.sqft && `${Number(c.sqft).toLocaleString()} sqft`, c.year_built && `built ${c.year_built}`].filter(Boolean).join(' · '))],
+    ['Last sale', c.last_sale_date ? `${esc(c.last_sale_date)}${c.last_sale_price ? ` · ${money(c.last_sale_price)}` : ''}` : ''],
+    ['Recorded lender', esc(c.lender_name || '')],
+  ].filter(([, v]) => v);
+  return `<div class="card"><div class="card-head"><h2>🏡 Property</h2>${c.address_verified ? '<span class="badge green" title="Standardized by the US Census geocoder">verified address</span>' : ''}<span class="spacer"></span><button class="sm" id="enrich" ${c.address ? '' : 'disabled title="Add a street address first"'}>Refresh</button></div>
+    ${rows.length ? `<div class="small" style="display:grid;grid-template-columns:auto 1fr;gap:4px 12px">${rows.map(([k, v]) => `<span class="muted">${k}</span><span>${v}</span>`).join('')}</div>` : `<div class="small muted">${c.address ? 'No property data yet.' : 'Add a street address to pull property data.'}</div>`}
+    ${c.enrich_error ? `<div class="small" style="color:var(--warm);margin-top:6px">⚠ ${esc(c.enrich_error)}</div>` : ''}
+    ${c.enriched_at ? `<div class="small muted" style="margin-top:6px">Updated ${when(c.enriched_at)}</div>` : ''}</div>`;
+}
+
+document.addEventListener('click', async (e) => {
+  if (e.target?.id !== 'enrich') return;
+  const id = location.hash.match(/contacts\/(\d+)/)?.[1];
+  if (!id) return;
+  e.target.disabled = true;
+  e.target.textContent = 'Looking up…';
+  try {
+    const r = await act(() => api(`/contacts/${id}/enrich`, { method: 'POST' }));
+    toast(r.updated.length ? `Updated: ${r.updated.join(', ')}` : r.error || 'No new property data');
+  } finally {
+    route();
+  }
+});
+
+/* ---------------------------- Settings: sync ------------------------------- */
+
+async function renderSync(el, s, autoSyncGoogle) {
+  const i = await api('/integrations');
+  const run = (src) => i.runs.find((r) => r.source === src);
+  const runLine = (r) => (r ? `<span class="muted">Last sync ${when(r.finished_at || r.started_at)}: ${r.status === 'failed' ? `<span style="color:var(--hot)">failed - ${esc(r.error)}</span>` : `${r.created} new, ${r.merged} updated${r.skipped ? `, ${r.skipped} skipped` : ''}`}</span>` : '');
+  const sample = `curl -X POST '${i.inbound.url}?source=Zillow' \\\n  -H 'X-API-Key: ${i.inbound.key}' \\\n  -H 'Content-Type: application/json' \\\n  -d '{"first_name":"Pat","last_name":"Lee","email":"pat@example.com","phone":"9515550100","timeline":"1-3 months","message":"Looking in Temecula"}'`;
+  el.innerHTML = `<h2>Data sync & lead intake</h2>
+  <div class="grid g3">
+    <div><h3>Google Contacts</h3>
+      ${!i.google.configured ? '<p class="small muted">Set <code>GOOGLE_CLIENT_ID</code> and <code>GOOGLE_CLIENT_SECRET</code> on the server (README has the 5-minute setup).</p>'
+        : i.google.connected ? `<p class="small">Connected${i.google.account ? ` as <strong>${esc(i.google.account)}</strong>` : ''}. Syncs daily; new and changed contacts merge into the CRM as Sphere.</p>
+          <div class="row"><button class="sm primary" id="g-sync">Sync now</button><button class="sm" id="g-off">Disconnect</button></div>`
+        : '<p class="small">Pull your phone and Gmail contacts into the CRM (read-only).</p><button class="sm primary" id="g-on">Connect Google</button>'}
+      <div class="small" style="margin-top:6px">${runLine(run('google'))}</div></div>
+    <div><h3>Follow Up Boss</h3>
+      ${i.followupboss.connected ? `<p class="small">Connected. Syncs daily. People are matched by FUB id, email, or phone, so re-syncing never duplicates.</p><div class="row"><button class="sm primary" id="fub-sync">Sync now</button><button class="sm" id="fub-off">Disconnect</button></div>`
+        : `<p class="small">Paste your API key (FUB → Admin → API) to import everyone, with stages and tags.</p><div class="row"><input id="fub-key" type="password" placeholder="API key" style="flex:1;min-width:140px"><button class="sm primary" id="fub-on">Connect & import</button></div>`}
+      <div class="small" style="margin-top:6px">${runLine(run('followupboss'))}</div></div>
+    <div><h3>Inbound lead webhook</h3>
+      <p class="small">Send leads from Zapier, Make, Zillow, Realtor.com, your website, or any CRM. Field names are matched automatically. Each lead is scored, routed, and gets a speed-to-lead draft.</p>
+      <div class="small"><code style="word-break:break-all">${esc(i.inbound.url)}</code></div>
+      <div class="row small" style="margin-top:6px">Key: <code id="ikey" style="word-break:break-all">${esc(i.inbound.key)}</code><button class="sm" id="i-copy">Copy example</button><button class="sm" id="i-rot">Rotate key</button></div></div>
+  </div>
+  <h3 style="margin-top:16px">Property data</h3>
+  <p class="small">Addresses are standardized with the free US Census geocoder (adds county and map coordinates). ${i.enrichment.property_data === 'attom' ? '<span class="badge green">ATTOM connected</span> Home values, property facts, last sale, and recorded mortgages are pulled automatically and refreshed every 90 days. Equity in the Ready Score uses the current estimated value.' : 'Add <code>ATTOM_API_KEY</code> on the server to also pull automated home values (AVM), property facts, last sale, and recorded mortgages. These feed equity in the Ready Score.'}</p>`;
+  el.querySelector('#g-on')?.addEventListener('click', async () => { const r = await act(() => api('/integrations/google/connect', { method: 'POST' })); location.href = r.url; });
+  const doSync = async (path, btn) => {
+    if (btn) { btn.disabled = true; btn.textContent = 'Syncing…'; }
+    await act(() => api(path, { method: 'POST' }), (r) => `Sync done: ${r.created} new, ${r.merged} updated`).catch(() => {});
+    renderSync(el, s);
+  };
+  el.querySelector('#g-sync')?.addEventListener('click', (e) => doSync('/integrations/google/sync', e.target));
+  el.querySelector('#g-off')?.addEventListener('click', async () => { if (confirm('Disconnect Google Contacts? Contacts already imported stay in the CRM.')) { await act(() => api('/integrations/google/disconnect', { method: 'POST' }), 'Disconnected'); renderSync(el, s); } });
+  el.querySelector('#fub-on')?.addEventListener('click', async (e) => {
+    e.target.disabled = true;
+    e.target.textContent = 'Importing…';
+    await act(() => api('/integrations/followupboss', { method: 'POST', body: { api_key: el.querySelector('#fub-key').value } }), (r) => `Imported: ${r.created} new, ${r.merged} updated`).catch(() => {});
+    renderSync(el, s);
+  });
+  el.querySelector('#fub-sync')?.addEventListener('click', (e) => doSync('/integrations/followupboss', e.target));
+  el.querySelector('#fub-off')?.addEventListener('click', async () => { await act(() => api('/integrations/followupboss', { method: 'POST', body: { disconnect: true } }), 'Disconnected'); renderSync(el, s); });
+  el.querySelector('#i-copy').onclick = () => navigator.clipboard.writeText(sample).then(() => toast('Example request copied'));
+  el.querySelector('#i-rot').onclick = async () => { if (confirm('Rotate the key? Anything using the old key will stop sending leads.')) { await act(() => api('/integrations/inbound/rotate', { method: 'POST' }), 'New key created'); renderSync(el, s); } };
+  if (autoSyncGoogle && i.google.connected) doSync('/integrations/google/sync', el.querySelector('#g-sync'));
+}
+
+/* ------------------------- Settings: voicemail drops ------------------------ */
+
+async function renderVoicemails(el) {
+  const drops = await api('/voicemail-drops');
+  el.innerHTML = `<div class="card-head"><h2>📼 Voicemail drops</h2><span class="spacer"></span><button class="sm primary" id="vm-add">+ New voicemail</button></div>
+    <p class="small muted">Drop a pre-recorded voicemail from a contact's Call tab or to many contacts at once from the Contacts list. If a person answers instead, they're connected to the loan officer's phone. Use a recording (an https link to an MP3/WAV) or a script read in a natural voice. Merge fields work in scripts: <code>{{first_name}}</code> <code>{{lo_name}}</code> <code>{{company}}</code> <code>{{phone}}</code>.</p>
+    ${drops.length ? `<ul class="list">${drops.map((d) => `<li class="row" style="flex-wrap:nowrap"><div style="flex:1;min-width:0"><strong>${esc(d.name)}</strong><div class="small muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${d.audio_url ? `🎧 ${esc(d.audio_url)}` : `🗣 ${esc(d.script)}`}</div></div><button class="sm" data-vm-edit="${d.id}">Edit</button>${isAdmin() ? `<button class="sm danger" data-vm-del="${d.id}">Delete</button>` : ''}</li>`).join('')}</ul>` : '<div class="muted small">No voicemails yet.</div>'}`;
+  const edit = (d) => modal(`<h2>${d ? 'Edit voicemail' : 'New voicemail'}</h2><div class="form-grid">
+      <label class="f wide">Name<input id="n" value="${esc(d?.name || '')}" placeholder="e.g. Rate drop - past clients"></label>
+      <label class="f wide">Script (read aloud)<textarea id="sc" rows="4" placeholder="Hi {{first_name}}, it's {{lo_name}} with {{company}}. Rates have moved since your loan closed and I wanted to see if a quick review makes sense. Call or text me back at {{phone}}. Talk soon!">${esc(d?.script || '')}</textarea></label>
+      <label class="f wide">…or recording URL (overrides script)<input id="au" value="${esc(d?.audio_url || '')}" placeholder="https://…/voicemail.mp3"></label>
+    </div><div class="actions"><button data-close>Cancel</button><button class="primary" id="s">Save</button></div>`, {
+    onMount: (m, close) => (m.querySelector('#s').onclick = async () => {
+      const body = { name: m.querySelector('#n').value, script: m.querySelector('#sc').value, audio_url: m.querySelector('#au').value };
+      await act(() => (d ? api(`/voicemail-drops/${d.id}`, { method: 'PATCH', body }) : api('/voicemail-drops', { method: 'POST', body })), 'Saved');
+      close();
+      renderVoicemails(el);
+    }),
+  });
+  el.querySelector('#vm-add').onclick = () => edit(null);
+  el.querySelectorAll('[data-vm-edit]').forEach((b) => (b.onclick = () => edit(drops.find((d) => d.id === Number(b.dataset.vmEdit)))));
+  el.querySelectorAll('[data-vm-del]').forEach((b) => (b.onclick = async () => { if (confirm('Delete this voicemail?')) { await act(() => api(`/voicemail-drops/${b.dataset.vmDel}`, { method: 'DELETE' }), 'Deleted'); renderVoicemails(el); } }));
+}
