@@ -420,3 +420,16 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
     each weekday at 21:20 UTC. The 13 monthly routines that died in the Oct 1–2 usage lockout are re-run one at a
     time after the Oct 11 reset by a scheduled cloud check-in (plan: `routines/fixes-2026-10-05/README.md` §3),
     unless you say otherwise.
+96. **Status after your 20:04–20:12 UTC actions (2026-10-05)** — **Done:** the seven switch-offs (calendar
+    refresh, mortgage rates & market refresh, Trading strategy performance daily, Opportunity Radar, On This Day,
+    Real Estate Weekly Brief, Project Risk Review — verified in the routine list at 20:10 UTC), and the three
+    `claude-opus-5` routines now run Opus 5.5 (item 85, 20:11 UTC, your word). **Scheduled:** the cloud ISA bridge
+    and the Steve twin (item 17). Agents cannot switch on routines you created, so a check-in at Sun Oct 11
+    20:10 UTC confirms the usage reset and pings your phone with both links. The twin already carries its Gmail
+    connector (item 17's caveat is outdated) and drafts only, never sends. **Still open from the R12 block:** the
+    Strava paste (87), the weekly Rent/Buy/Wait approval after the reset (88; it now runs Opus 5.5), the USC edit and
+    dates (89), items 90–94, and the Mac paste-in (86). **Closed or overtaken, no action:** 1, 2, 7, 8, 10, 12, 16,
+    43, 58, 63, 64, 65, 73, 76 (Perplexity is gone), 80, 82, 85; item 36 was overtaken by the allow-list rewrite of
+    the failover gate (the Mac reports `claude-fallback` running with its client-data guard; the Mac paste-in report
+    confirms). Item 37 stays open: no `taskLease` document existed in the 18:05 UTC data, so create it before a
+    second Mac runs tasks.
