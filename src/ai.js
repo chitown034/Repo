@@ -2,19 +2,19 @@ import Anthropic from '@anthropic-ai/sdk';
 import { getSettings, json } from './db.js';
 import { fullName, daysSince } from './util.js';
 
-const MODEL = process.env.CLAUDE_MODEL || 'claude-opus-5-5';
+export const MODEL = process.env.CLAUDE_MODEL || 'claude-opus-5-5';
 let client = null;
 
 export function aiEnabled() {
   return Boolean(process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_AUTH_TOKEN);
 }
 
-function getClient() {
+export function getClient() {
   if (!client) client = new Anthropic();
   return client;
 }
 
-const COMPLIANCE_RULES = `Mortgage compliance rules you must follow in every message:
+export const COMPLIANCE_RULES = `Mortgage compliance rules you must follow in every message:
 - Never quote a specific interest rate, APR, monthly payment, closing cost, or loan term. Those are "triggering terms" under Reg Z. Say things like "rates have moved" or "it may be worth running the numbers" instead.
 - Never promise approval, guarantee savings, or say someone "qualifies" for anything.
 - Never mention or infer race, religion, national origin, sex, familial status, disability, or any other protected characteristic.
@@ -55,7 +55,7 @@ function contactBrief(contact, activities = []) {
   return `${lines.join('\n')}${convo.length ? `\n\nRecent history (oldest first):\n${convo.join('\n')}` : '\n\nNo prior conversation.'}`;
 }
 
-async function structured(prompt, schema, settings, effort = 'medium') {
+export async function structured(prompt, schema, settings, effort = 'medium') {
   const response = await getClient().beta.messages.create({
     model: MODEL,
     max_tokens: 16000,

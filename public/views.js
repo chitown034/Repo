@@ -4,7 +4,7 @@ export const views = {};
 
 const LEAD_TYPES = { purchase: 'Purchase', refinance: 'Refinance', heloc: 'HELOC / Cash-out', past_client: 'Past client', sphere: 'Sphere / referral partner' };
 const leadTypeOptions = (sel) => Object.entries(LEAD_TYPES).map(([k, v]) => `<option value="${k}" ${k === sel ? 'selected' : ''}>${v}</option>`).join('');
-const ACT_ICON = { sms: '💬', email: '✉️', call: '📞', note: '📝', stage_change: '➡️', score_change: '📈', ai: '✨', system: '⚙️', form: '🧲', campaign: '📣', task: '✅', voicemail: '📼' };
+const ACT_ICON = { sms: '💬', email: '✉️', call: '📞', note: '📝', stage_change: '➡️', score_change: '📈', ai: '✨', system: '⚙️', form: '🧲', campaign: '📣', task: '✅', voicemail: '📼', workflow: '🔁' };
 
 /* ---------------------------------- Auth ----------------------------------- */
 
@@ -73,7 +73,7 @@ views.today = async (main) => {
   main.querySelectorAll('[data-log]').forEach((b) => (b.onclick = () => logCallModal(Number(b.dataset.log), () => views.today(main))));
 };
 
-function taskRow(t) {
+export function taskRow(t) {
   const overdue = t.due_at && new Date(t.due_at.replace(' ', 'T') + (t.due_at.length <= 16 ? '' : 'Z')) < new Date();
   return `<li class="row" style="flex-wrap:nowrap;align-items:flex-start"><input type="checkbox" data-task="${t.id}" ${t.done ? 'checked' : ''} style="margin-top:3px">
     <div style="flex:1;min-width:0"><div ${t.kind === 'handoff' ? 'style="font-weight:700"' : ''}>${esc(t.title)}</div>
@@ -122,7 +122,7 @@ views.contacts = async (main, { query }) => {
     <div class="row" id="bulk" hidden style="margin-bottom:10px"><strong id="selcount"></strong>
       <select id="bulk-stage"><option value="">Move to stage…</option>${stageOptions('')}</select>
       ${isAdmin() ? `<select id="bulk-assign"><option value="">Assign to…</option>${userOptions('')}</select>` : ''}
-      <button id="bulk-tag" class="sm">Add tag</button><button id="bulk-pause" class="sm">Pause assistant</button><button id="bulk-resume" class="sm">Resume assistant</button><button id="bulk-vm" class="sm">📼 Drop voicemail</button>
+      <button id="bulk-tag" class="sm">Add tag</button><button id="bulk-pause" class="sm">Pause assistant</button><button id="bulk-resume" class="sm">Resume assistant</button><button id="bulk-vm" class="sm">📼 Drop voicemail</button><button id="bulk-wf" class="sm">🔁 Add to workflow</button>
       ${isAdmin() ? '<button id="bulk-del" class="sm danger">Delete</button>' : ''}</div>
     <div class="card flush"><div class="table-wrap" id="tbl"></div></div>`;
 
@@ -162,6 +162,21 @@ views.contacts = async (main, { query }) => {
   main.querySelector('#bulk-assign')?.addEventListener('change', (e) => e.target.value && bulk('assign', e.target.value));
   main.querySelector('#bulk-tag').onclick = () => { const tag = prompt('Tag to add:'); if (tag) bulk('tag', tag.trim()); };
   main.querySelector('#bulk-pause').onclick = () => bulk('pause_ai', 1);
+  main.querySelector('#bulk-wf').onclick = async () => {
+    const wfs = (await api('/workflows')).filter((w) => w.status !== 'draft' || isAdmin());
+    if (!wfs.length) return toast('Create a workflow first', true);
+    modal(`<h2>Add ${selected.size} contacts to a workflow</h2><label class="f">Workflow<select id="w">${wfs.map((w) => `<option value="${w.id}">${esc(w.name)} (${esc(w.status)})</option>`).join('')}</select></label>
+      <p class="small muted">Contacts already in the workflow are skipped. Opt-outs and Do Not Contact are always respected by every step.</p>
+      <div class="actions"><button data-close>Cancel</button><button class="primary" id="go">Enroll</button></div>`, {
+      onMount: (m, close) => (m.querySelector('#go').onclick = async () => {
+        const r = await act(() => api(`/workflows/${m.querySelector('#w').value}/enroll`, { method: 'POST', body: { contact_ids: [...selected] } }));
+        close();
+        toast(`Enrolled ${r.enrolled}${r.skipped ? ` · ${r.skipped} skipped` : ''}`);
+        selected.clear();
+        syncBulk();
+      }),
+    });
+  };
   main.querySelector('#bulk-vm').onclick = async () => {
     const drops = await api('/voicemail-drops');
     if (!drops.length) return toast('Create a voicemail in Settings first', true);
@@ -199,6 +214,8 @@ function contactFields(c = {}) {
     <label class="f">Source<input name="source" value="${v('source')}" placeholder="Zillow, referral…"></label>
     ${isAdmin() ? `<label class="f">Owner<select name="owner_id"><option value="">Auto-route</option>${userOptions(c.owner_id)}</select></label>` : ''}
     <label class="f">Tags<input name="tags" value="${esc((c.tags || []).join?.(', ') ?? c.tags ?? '')}" placeholder="comma, separated"></label>
+    <label class="f">Referral partner<select name="partner_id"><option value="">None</option>${(state.meta.partners || []).map((p) => `<option value="${p.id}" ${Number(c.partner_id) === p.id ? 'selected' : ''}>${esc(p.name)}${p.company ? ` (${esc(p.company)})` : ''}</option>`).join('')}</select></label>
+    <label class="f">Birthday<input name="birthday" type="date" value="${v('birthday')}"></label>
     <label class="f">Address<input name="address" value="${v('address')}"></label>
     <label class="f">City<input name="city" value="${v('city')}"></label>
     <label class="f">State<input name="state" value="${v('state')}" maxlength="2"></label>
@@ -283,7 +300,7 @@ function sparkline(history) {
 
 function activityItem(a) {
   const isMsg = ['sms', 'email'].includes(a.type);
-  const label = { sms: 'Text', email: 'Email', call: 'Call', note: 'Note', stage_change: 'Stage', score_change: 'Score', ai: state.meta.settings.assistant_name, system: 'System', form: 'Form', campaign: 'Campaign', task: 'Task', voicemail: 'Voicemail' }[a.type] || a.type;
+  const label = { sms: 'Text', email: 'Email', call: 'Call', note: 'Note', stage_change: 'Stage', score_change: 'Score', ai: state.meta.settings.assistant_name, system: 'System', form: 'Form', campaign: 'Campaign', task: 'Task', voicemail: 'Voicemail', workflow: 'Workflow' }[a.type] || a.type;
   const who = a.direction === 'in' ? 'from contact' : a.user_name ? `by ${a.user_name}` : a.meta?.source === 'ai' ? `by ${state.meta.settings.assistant_name}` : a.meta?.source === 'campaign' ? 'campaign' : '';
   const extra = [a.meta?.outcome && a.meta.outcome.replace(/_/g, ' '), a.meta?.simulated && 'simulated - no provider configured'].filter(Boolean).join(' · ');
   return `<li class="${a.direction || ''} ${isMsg ? 'msg' : ''}"><div class="ic">${ACT_ICON[a.type] || '•'}</div><div>
@@ -690,6 +707,9 @@ views.page = async (main, { id }) => {
     <label class="f">Button text<input name="cta" value="${esc(p.cta || '')}"></label>
     <label class="f">Thank-you message<input name="thank_you" value="${esc(p.thank_you || '')}"></label>
     <label class="f row" style="font-weight:500"><input type="checkbox" name="active" ${p.active ? 'checked' : ''}> Live</label>
+    <label class="f">Co-branded with partner<select name="partner_id"><option value="">None</option>${(state.meta.partners || []).map((x) => `<option value="${x.id}" ${Number(p.partner_id) === x.id ? 'selected' : ''}>${esc(x.name)}</option>`).join('')}</select></label>
+    <label class="f row" style="font-weight:500"><input type="checkbox" name="show_calculator" ${p.show_calculator ? 'checked' : ''}> Payment calculator</label>
+    ${!isNew ? `<div class="f"><span class="small" style="font-weight:600">QR code (open houses, flyers)</span><div class="row" style="margin-top:4px"><img src="/api/landing-pages/${p.id}/qr.svg" alt="QR code for this page" width="72" height="72" style="background:#fff;border-radius:6px"><a class="btn sm" href="/api/landing-pages/${p.id}/qr.svg" download="${esc(p.slug)}-qr.svg">Download</a></div></div>` : ''}
     <div class="wide"><h3>Form fields</h3><div class="row">${LP_FIELDS.map(([k, l]) => `<label class="row small" style="gap:4px;margin-right:10px"><input type="checkbox" data-field="${k}" ${p.fields.includes(k) ? 'checked' : ''}> ${l}</label>`).join('')}</div></div>
   </form><p class="small muted">Every submission becomes a contact (deduped), is scored, routed to a loan officer, triggers any "form submitted" or "new lead" campaigns, and gets an immediate first-touch draft from ${esc(state.meta.settings.assistant_name)}. The page includes TCPA consent language and your NMLS info from Settings.</p>
   <div class="actions"><button class="primary" id="save">Save</button></div></div>`;
@@ -804,6 +824,7 @@ views.settings = async (main, { query = {} } = {}) => {
     <div class="card"><h2>Market & scoring</h2><p class="small muted">Ready Scores compare every contact's rate to the market rate. Changing it rescores the database instantly and fires rate-drop campaigns.</p><div class="form-grid">
       ${field('market_rate_30yr', '30-yr market rate (%)', 'type="number" step="0.001"')}${field('market_rate_15yr', '15-yr market rate (%)', 'type="number" step="0.001"')}
       ${field('daily_call_list_size', 'Daily call list size', 'type="number" min="5" max="200"')}${field('dormant_days', 'Going cold after (days)', 'type="number"')}
+      ${field('comp_bps', 'Your compensation (bps of loan amount)', 'type="number" min="0" step="1"')}${field('review_url', 'Review link (Google, Zillow…)', 'placeholder="https://g.page/r/…"')}
       <label class="f row" style="font-weight:500"><input type="checkbox" name="auto_stage_rules" ${s.auto_stage_rules === '1' ? 'checked' : ''}> Automated stage transitions</label>
       <label class="f row" style="font-weight:500"><input type="checkbox" name="auto_enrich" ${s.auto_enrich === '1' ? 'checked' : ''}> Auto-enrich property data</label>
     </div><p class="small muted">Automated transitions: replies and connected calls move New/Nurture → Contacted; "not interested" moves to Nurture; Funded converts a lead to a past client and starts tracking their loan.</p></div>
@@ -824,12 +845,12 @@ views.settings = async (main, { query = {} } = {}) => {
       </div></div>
   </form>
   <div class="grid" style="margin-top:16px">
-    <div class="card" id="sync"><h2>Data sync & lead intake</h2><div class="muted small">Loading…</div></div>
+    <div class="card callout">🔌 Google Contacts, Follow Up Boss, the inbound lead webhook, outbound webhooks, the REST API, Slack, and the calendar feed now live under <a href="#/hub">Integrations</a>.</div>
     <div class="card" id="vm"><h2>📼 Voicemail drops</h2><div class="muted small">Loading…</div></div>
   </div>`;
   if (query.google === 'connected') toast('Google Contacts connected - syncing now');
   if (query.google_error) toast(`Google: ${query.google_error}`, true);
-  renderSync(main.querySelector('#sync'), s, query.google === 'connected');
+  if (query.google) location.hash = `#/hub?${new URLSearchParams(query)}`;
   renderVoicemails(main.querySelector('#vm'));
   main.querySelector('#save').onclick = async () => {
     const body = formData(main.querySelector('#f'));
@@ -876,7 +897,7 @@ document.addEventListener('click', async (e) => {
 
 /* ---------------------------- Settings: sync ------------------------------- */
 
-async function renderSync(el, s, autoSyncGoogle) {
+export async function renderSync(el, s, autoSyncGoogle) {
   const i = await api('/integrations');
   const run = (src) => i.runs.find((r) => r.source === src);
   const runLine = (r) => (r ? `<span class="muted">Last sync ${when(r.finished_at || r.started_at)}: ${r.status === 'failed' ? `<span style="color:var(--hot)">failed - ${esc(r.error)}</span>` : `${r.created} new, ${r.merged} updated${r.skipped ? `, ${r.skipped} skipped` : ''}`}</span>` : '');

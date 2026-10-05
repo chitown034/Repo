@@ -224,3 +224,14 @@ export function isOptOut(text) {
 export function isOptIn(text) {
   return START_WORDS.test(text || '');
 }
+
+/** Internal notification email (to the loan officer, a partner, etc.). Simulated when SMTP isn't configured. */
+export async function sendInternalEmail(to, subject, text) {
+  if (!to) return { skipped: true };
+  if (providerStatus().email !== 'smtp') {
+    console.log(`[email:simulated] to=${to} subject=${subject}`);
+    return { simulated: true };
+  }
+  await mailer().sendMail({ from: process.env.SMTP_FROM || process.env.SMTP_USER, to, subject, text });
+  return { simulated: false };
+}

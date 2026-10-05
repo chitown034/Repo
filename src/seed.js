@@ -6,6 +6,7 @@ import { db, setSetting } from './db.js';
 import { hashPassword } from './auth.js';
 import { upsertContact, logActivity, changeStage } from './contacts.js';
 import { rescoreAll } from './scoring.js';
+import { installRecipe } from './workflows.js';
 
 const FIRST = ['James', 'Maria', 'Robert', 'Linda', 'Michael', 'Jennifer', 'David', 'Patricia', 'Daniel', 'Elizabeth', 'Carlos', 'Aisha', 'Kevin', 'Sarah', 'Thomas', 'Nicole', 'Brian', 'Jessica', 'Marcus', 'Emily', 'Anthony', 'Ashley', 'Ryan', 'Amanda', 'Jason', 'Megan', 'Eric', 'Rachel', 'Steven', 'Lauren'];
 const LAST = ['Johnson', 'Garcia', 'Smith', 'Martinez', 'Brown', 'Nguyen', 'Davis', 'Lopez', 'Wilson', 'Anderson', 'Thomas', 'Taylor', 'Moore', 'Jackson', 'Lee', 'Harris', 'Clark', 'Lewis', 'Walker', 'Hall'];
@@ -132,6 +133,61 @@ if (!db.prepare('SELECT COUNT(*) n FROM voicemail_drops').get().n) {
     'New lead - first touch',
     "Hi {{first_name}}, this is {{lo_name}} with {{company}}. Thanks for reaching out about a home loan! I'd love to learn a little about what you're looking for. Call or text me back at this number anytime.",
   );
+}
+
+// Referral partners, with some contacts credited to them.
+if (!db.prepare('SELECT COUNT(*) n FROM partners').get().n) {
+  const ins = db.prepare('INSERT INTO partners (name, company, type, email, phone) VALUES (?, ?, ?, ?, ?)');
+  const partners = [
+    ins.run('Dana Whitfield', 'Coastal Realty Group', 'realtor', 'dana@example.com', '(951) 555-2001').lastInsertRowid,
+    ins.run('Marco Ruiz', 'Summit Home Partners', 'realtor', 'marco@example.com', '(951) 555-2002').lastInsertRowid,
+    ins.run('Priya Shah', 'Vista Ridge Builders', 'builder', 'priya@example.com', '(951) 555-2003').lastInsertRowid,
+  ];
+  const purchase = db.prepare(`SELECT id FROM contacts WHERE lead_type = 'purchase' ORDER BY id`).all();
+  purchase.forEach((c, i) => { if (i % 3 !== 2) db.prepare('UPDATE contacts SET partner_id = ? WHERE id = ?').run(partners[i % partners.length], c.id); });
+}
+
+// A few loans funded in the last 60 days so analytics has revenue to show.
+for (const c of db.prepare(`SELECT id FROM contacts WHERE stage IN ('clear_to_close','underwriting') LIMIT 3`).all()) {
+  db.prepare('UPDATE contacts SET loan_amount = COALESCE(loan_amount, ?) WHERE id = ?').run(Math.round(between(420, 780)) * 1000, c.id);
+  changeStage(c.id, 'funded', { reason: 'seed' });
+  db.prepare(`UPDATE activities SET created_at = ? WHERE contact_id = ? AND type = 'stage_change' AND json_extract(meta,'$.to') = 'funded'`).run(tsAgo(between(3, 50)), c.id);
+}
+for (const c of db.prepare(`SELECT id FROM contacts WHERE stage IN ('application','processing','underwriting','clear_to_close') AND loan_amount IS NULL`).all()) {
+  db.prepare('UPDATE contacts SET loan_amount = ? WHERE id = ?').run(Math.round(between(380, 820)) * 1000, c.id);
+}
+
+// Outreach activity by the team over the last 30 days.
+const users = db.prepare('SELECT id FROM users').all().map((u) => u.id);
+const recent = db.prepare(`SELECT id FROM contacts ORDER BY RANDOM() LIMIT 40`).all();
+for (const { id } of recent) {
+  const uid = rand(users);
+  const type = rand(['call', 'call', 'sms', 'email']);
+  const at = tsAgo(between(0, 30));
+  db.prepare(`INSERT INTO activities (contact_id, user_id, type, direction, body, meta, created_at) VALUES (?, ?, ?, 'out', ?, ?, ?)`).run(id, uid, type, type === 'call' ? 'Checked in on plans.' : 'Following up!', JSON.stringify(type === 'call' ? { outcome: rand(['connected', 'no_answer', 'left_voicemail', 'appointment_set']) } : {}), at);
+  if (Math.random() < 0.35) db.prepare(`INSERT INTO activities (contact_id, type, direction, body, created_at) VALUES (?, 'sms', 'in', ?, ?)`).run(id, rand(['Thanks! Talk soon.', 'Can we chat next week?', 'Sounds good.']), at);
+}
+
+// Lead spend for ROI.
+const month = new Date().toISOString().slice(0, 7);
+for (const [src, amt] of [['Zillow', 1200], ['Facebook ad', 650], ['Open house', 150], ['Website', 99]]) {
+  db.prepare('INSERT OR IGNORE INTO lead_source_spend (source, month, amount) VALUES (?, ?, ?)').run(src, month, amt);
+}
+
+// Workflows: install the core recipes (active) so the automation engine is visible.
+if (!db.prepare('SELECT COUNT(*) n FROM workflows').get().n) {
+  for (const key of ['speed_to_lead', 'partner_updates', 'rate_drop', 'annual_review', 'doc_chase', 'handoff_escalation']) {
+    db.prepare(`UPDATE workflows SET status = 'active' WHERE id = ?`).run(installRecipe(key));
+  }
+  installRecipe('long_nurture');
+  installRecipe('post_close');
+}
+
+// Content Studio examples.
+if (!db.prepare('SELECT COUNT(*) n FROM content_items').get().n) {
+  const ci = db.prepare('INSERT INTO content_items (kind, platform, title, body, status, scheduled_at) VALUES (?, ?, ?, ?, ?, ?)');
+  ci.run('social_post', 'facebook', '3 down payment myths', "Think you need 20% down to buy a home? You might not! 🏡\n\nMyth #1: You need 20% down.\nMyth #2: First-time buyer programs are only for low incomes.\nMyth #3: Pre-approval hurts your credit for months.\n\nWant the real numbers for your situation? Send me a message.\n\n#homebuying #firsttimehomebuyer #mortgage", 'scheduled', tsAgo(-2));
+  ci.run('newsletter', 'email', 'Your spring market update', 'Subject: Your spring market update\n\nHi {{first_name}},\n\nSpring is here and the market is moving. Here is what it means for you...\n\n{{lo_name}}', 'draft', null);
 }
 
 const r = rescoreAll();

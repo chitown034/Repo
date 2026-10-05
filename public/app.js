@@ -1,4 +1,5 @@
 import { views } from './views.js';
+import './views-pro.js';
 
 /* ------------------------------- Core helpers ------------------------------- */
 
@@ -109,13 +110,23 @@ const NAV = [
   ['', '☀️', 'Today'],
   ['contacts', '👥', 'Contacts'],
   ['pipeline', '📊', 'Pipeline'],
-  ['assistant', '✨', 'Assistant', 'drafts'],
+  ['partners', '🤝', 'Partners'],
   ['tasks', '✅', 'Tasks'],
+  ['-', '', 'AI & Automation'],
+  ['copilot', '🧠', 'Copilot'],
+  ['assistant', '✨', 'Assistant', 'drafts'],
+  ['workflows', '🔁', 'Workflows'],
+  ['-', '', 'Marketing'],
   ['campaigns', '📣', 'Campaigns'],
+  ['studio', '🎨', 'Content Studio'],
   ['pages', '🧲', 'Landing Pages'],
-  ['reports', '📈', 'Reports'],
+  ['-', '', 'Insights'],
+  ['analytics', '📈', 'Analytics'],
+  ['reports', '🗓️', 'Monthly Report'],
 ];
 const ADMIN_NAV = [
+  ['-', '', 'Admin'],
+  ['hub', '🔌', 'Integrations'],
   ['team', '🧑‍🤝‍🧑', 'Team'],
   ['settings', '⚙️', 'Settings'],
 ];
@@ -130,13 +141,13 @@ async function shell(active) {
   const app = document.getElementById('app');
   if (!app.querySelector('.shell')) {
     app.innerHTML = `<div class="mobile-bar"><button class="ghost" id="menu" style="color:#fff">☰</button><strong>${esc(state.meta.settings.company_name)}</strong></div>
-<div class="shell"><nav class="side-nav" id="nav"></nav><main id="main"></main></div>`;
+<div class="shell"><nav class="side-nav" id="nav"></nav><main id="main"></main></div><a href="#/copilot" class="fab" title="Ask Copilot" aria-label="Ask Copilot">🧠</a>`;
     app.querySelector('#menu').onclick = () => app.querySelector('#nav').classList.toggle('open');
   }
   const nav = app.querySelector('#nav');
   const items = [...NAV, ...(isAdmin() ? ADMIN_NAV : [])];
   nav.innerHTML = `<div class="brand"><span class="logo">🏠</span>${esc(state.meta.settings.company_name)}</div>
-${items.map(([k, ic, label, badge]) => `<a href="#/${k}" class="${k === active ? 'active' : ''}"><span>${ic}</span>${label}${badge ? `<span class="badge" id="badge-${badge}" hidden></span>` : ''}</a>`).join('')}
+${items.map(([k, ic, label, badge]) => (k === '-' ? `<div class="nav-group">${label}</div>` : `<a href="#/${k}" class="${k === active ? 'active' : ''}"><span>${ic}</span>${label}${badge ? `<span class="badge" id="badge-${badge}" hidden></span>` : ''}</a>`)).join('')}
 <div class="sep"></div><div class="who">${esc(state.user.name)} · ${esc(state.user.role)}<br><a href="#" id="logout" style="color:var(--nav-ink)">Sign out</a></div>`;
   nav.querySelector('#logout').onclick = async (e) => {
     e.preventDefault();
@@ -172,7 +183,11 @@ export async function route() {
     }
   }
   const key = parts[0] || '';
-  const viewName = { '': 'today', contacts: parts[1] ? 'contact' : 'contacts', pipeline: 'pipeline', assistant: 'assistant', tasks: 'tasks', campaigns: parts[1] ? 'campaign' : 'campaigns', pages: parts[1] ? 'page' : 'pages', reports: 'reports', team: 'team', settings: 'settings' }[key];
+  const viewName = {
+    '': 'today', contacts: parts[1] ? 'contact' : 'contacts', pipeline: 'pipeline', assistant: 'assistant', tasks: 'tasks',
+    campaigns: parts[1] ? 'campaign' : 'campaigns', pages: parts[1] ? 'page' : 'pages', reports: 'reports', team: 'team', settings: 'settings',
+    analytics: 'analytics', workflows: parts[1] ? 'workflow' : 'workflows', partners: parts[1] ? 'partner' : 'partners', copilot: 'copilot', studio: 'studio', hub: 'hub',
+  }[key];
   const main = await shell(key);
   if (!viewName) { main.innerHTML = '<div class="empty">Page not found</div>'; return; }
   main.innerHTML = '<div class="empty">Loading…</div>';

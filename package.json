@@ -16,6 +16,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.131.0",
     "express": "^5.2.1",
-    "nodemailer": "^10.0.14"
+    "nodemailer": "^10.0.14",
+    "qrcode": "^1.5.4"
   }
 }

@@ -7,6 +7,9 @@ import { rescoreAll } from './scoring.js';
 import { buildMonthlyReport, previousPeriod } from './reports.js';
 import { localMinutes } from './util.js';
 import { enrichContact, enrichPending } from './enrichment.js';
+import { processRuns, runTimeTriggers } from './workflows.js';
+import { processDeliveries } from './hooks.js';
+import { publishDueContent } from './agents.js';
 import { syncGoogle, syncFollowUpBoss, googleStatus } from './integrations.js';
 
 /** Wire behavioral automation to core events. */
@@ -73,10 +76,14 @@ export function startScheduler() {
     try {
       const s = getSettings();
       await guarded('outbox', () => processOutbox());
+      await guarded('workflows', () => processRuns());
+      await guarded('webhooks', () => processDeliveries());
+      await guarded('content', () => publishDueContent());
       if (tick % 15 === 0) {
         await guarded('triggers', () => runScheduledTriggers());
         await guarded('assistant scan', () => scanForOutreach());
         await guarded('enrichment', () => enrichPending());
+        await guarded('workflow time triggers', () => runTimeTriggers());
       }
       if (tick % 60 === 0) {
         const stale = (iso) => !iso || Date.now() - new Date(iso).getTime() > 24 * 3600_000;

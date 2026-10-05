@@ -7,9 +7,9 @@ export const CONTACT_FIELDS = [
   'first_name', 'last_name', 'email', 'phone', 'address', 'city', 'state', 'zip', 'source', 'stage', 'owner_id',
   'lead_type', 'loan_type', 'loan_purpose', 'credit_band', 'property_value', 'loan_amount', 'current_rate',
   'loan_close_date', 'purchase_timeline', 'preapproved', 'is_veteran', 'first_time_buyer', 'annual_income', 'tags',
-  'opted_out_sms', 'opted_out_email', 'dnc', 'ai_paused',
+  'opted_out_sms', 'opted_out_email', 'dnc', 'ai_paused', 'partner_id', 'birthday',
 ];
-const NUMERIC = new Set(['property_value', 'loan_amount', 'current_rate', 'annual_income', 'owner_id']);
+const NUMERIC = new Set(['property_value', 'loan_amount', 'current_rate', 'annual_income', 'owner_id', 'partner_id']);
 const BOOLEAN = new Set(['preapproved', 'is_veteran', 'first_time_buyer', 'opted_out_sms', 'opted_out_email', 'dnc', 'ai_paused']);
 
 /** Clean + enrich a raw record: normalize phone/email, fix casing, coerce numbers, derive fields. */
@@ -22,7 +22,7 @@ export function cleanContact(raw) {
     if (typeof v === 'string') v = v.trim();
     if (NUMERIC.has(f)) v = toNumber(v);
     else if (BOOLEAN.has(f)) v = v === true || /^(1|true|yes|y|x)$/i.test(String(v)) ? 1 : 0;
-    else if (f === 'loan_close_date') v = toDateISO(v);
+    else if (f === 'loan_close_date' || f === 'birthday') v = toDateISO(v);
     else if (f === 'first_name' || f === 'last_name' || f === 'city') v = titleCase(v) || null;
     else if (f === 'state') v = v ? String(v).toUpperCase().slice(0, 2) : null;
     else if (f === 'stage') v = STAGE_KEYS.includes(v) ? v : 'new';
@@ -138,6 +138,11 @@ export function updateContact(id, patch, { userId = null, silent = false } = {})
     }
   }
   if (patch.stage && patch.stage !== before.stage) changeStage(id, patch.stage, { userId, reason: silent ? 'import' : 'manual' });
+  if ('tags' in data) {
+    const had = new Set((before.tags || '').split(',').map((t) => t.trim()).filter(Boolean));
+    const added = String(data.tags || '').split(',').map((t) => t.trim()).filter((t) => t && !had.has(t));
+    if (added.length) emit('tag.added', { contact: getContact(id), tags: added, userId });
+  }
   if (data.owner_id && data.owner_id !== before.owner_id) {
     const owner = db.prepare('SELECT name FROM users WHERE id = ?').get(data.owner_id);
     logActivity(id, { type: 'system', body: `Assigned to ${owner?.name || 'user #' + data.owner_id}`, userId });

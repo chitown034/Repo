@@ -7,12 +7,15 @@ import { authenticate } from './auth.js';
 import { api } from './api.js';
 import { upsertContact, logActivity, getContact } from './contacts.js';
 import { handleInbound } from './assistant.js';
-import { signId, verifyTwilioSignature } from './messaging.js';
+import { signId, verifyTwilioSignature, APP_URL } from './messaging.js';
 import { registerAutomation, startScheduler } from './automation.js';
 import { rescoreContact } from './scoring.js';
 import { emit } from './events.js';
 import { voicemailTwiml, voicemailStatus } from './voicemail.js';
 import { googleCallback, receiveLead, inboundKey } from './integrations.js';
+import { publicApi, calendarIcs } from './publicapi.js';
+import { registerWorkflows } from './workflows.js';
+import { registerHooks } from './hooks.js';
 import { escapeHtml, normalizePhone, normalizeEmail } from './util.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -29,6 +32,13 @@ app.use((_req, res, next) => {
 app.use(authenticate);
 
 app.use('/api', api);
+app.use('/v1', publicApi);
+
+app.get('/calendar/:uid/:sig.ics', (req, res) => {
+  const uid = Number(req.params.uid);
+  if (signId('cal', uid) !== req.params.sig) return res.status(404).send('Not found');
+  res.type('text/calendar').send(calendarIcs(uid, APP_URL));
+});
 
 /* --------------------------- Public landing pages --------------------------- */
 
@@ -48,6 +58,24 @@ const FIELD_LABELS = {
   first_time_buyer: ["I'm a first-time home buyer", 'checkbox', false],
   message: ['Anything we should know?', 'textarea', false],
 };
+
+/** Client-side payment estimator. The visitor enters every number, so the page never advertises specific terms. */
+function calculatorHtml(color) {
+  return `<section class="calc" style="max-width:980px;margin:0 auto 24px;padding:0 16px"><div style="background:#fff;border-radius:14px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.08)">
+<h2 style="margin-top:0">Estimate your monthly payment</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px">
+<label>Home price<input id="cp" inputmode="decimal" placeholder="650000"></label>
+<label>Down payment<input id="cd" inputmode="decimal" placeholder="65000"></label>
+<label>Interest rate (%)<input id="cr" inputmode="decimal" placeholder="Enter a rate"></label>
+<label>Term (years)<select id="ct"><option>30</option><option>20</option><option>15</option></select></label>
+<label>Taxes + insurance / mo<input id="cx" inputmode="decimal" placeholder="600"></label></div>
+<p style="font-size:28px;font-weight:800;margin:16px 0 4px;color:${color}" id="cout">-</p>
+<p style="font-size:12px;color:#6b7280;margin:0">Estimate only, based on the numbers you enter. Not an offer to lend or a commitment; actual rates, payments, and terms depend on your credit, property, and loan program.</p></div></section>
+<script>(function(){var $=function(i){return document.getElementById(i)};function n(i){return parseFloat(($(i).value||'').replace(/[$,%\\s]/g,''))||0}
+function calc(){var P=n('cp')-n('cd'),r=n('cr')/1200,m=Number($('ct').value)*12;if(P<=0||r<=0){$('cout').textContent='-';return}
+var pi=P*r/(1-Math.pow(1+r,-m));$('cout').textContent='$'+Math.round(pi+n('cx')).toLocaleString()+' / month'}
+['cp','cd','cr','ct','cx'].forEach(function(i){$(i).addEventListener('input',calc)})})();</script>`;
+}
 
 function landingHtml(page, settings, { submitted = false, error = null } = {}) {
   const color = /^#[0-9a-f]{3,8}$/i.test(settings.brand_color) ? settings.brand_color : '#0e7490';
@@ -85,7 +113,7 @@ ${submitted
 <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
 <button type="submit">${escapeHtml(page.cta || 'Get Started')}</button>
 <p class="consent">By submitting, you agree that ${escapeHtml(settings.company_name)} may contact you by call, text, or email at the number and address provided, including with automated technology. Consent is not a condition of any purchase. Msg &amp; data rates may apply. Reply STOP to opt out.</p></form>`}
-</div><footer>${escapeHtml(settings.company_name)}${nmls ? ` · ${escapeHtml(nmls)}` : ''} · Equal Housing Opportunity</footer></body></html>`;
+</div>${page.show_calculator ? calculatorHtml(color) : ''}<footer>${escapeHtml(settings.company_name)}${nmls ? ` · ${escapeHtml(nmls)}` : ''} · Equal Housing Opportunity</footer></body></html>`;
 }
 
 app.get('/p/:slug', (req, res) => {
@@ -113,6 +141,7 @@ app.post('/p/:slug', (req, res) => {
   }
   raw.lead_type = page.lead_type || 'purchase';
   raw.tags = [page.tags, `lp:${page.slug}`].filter(Boolean).join(',');
+  if (page.partner_id) raw.partner_id = page.partner_id;
   const { contact, created } = upsertContact(raw, { source: `landing:${page.slug}`, emitEvents: true });
   // A returning contact who re-submits gets their consent refreshed.
   db.prepare('UPDATE contacts SET landing_page_id = COALESCE(landing_page_id, ?), opted_out_sms = 0, opted_out_email = 0 WHERE id = ?').run(page.id, contact.id);
@@ -240,6 +269,8 @@ app.use((err, _req, res, _next) => {
 });
 
 registerAutomation();
+registerWorkflows();
+registerHooks();
 
 const PORT = Number(process.env.PORT) || 3000;
 if (process.env.NODE_ENV !== 'test') {

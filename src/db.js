@@ -205,10 +205,13 @@ for (const [col, type] of [
   ['avm_value', 'REAL'], ['avm_low', 'REAL'], ['avm_high', 'REAL'], ['avm_date', 'TEXT'],
   ['last_sale_date', 'TEXT'], ['last_sale_price', 'REAL'], ['year_built', 'INTEGER'], ['sqft', 'INTEGER'],
   ['beds', 'REAL'], ['baths', 'REAL'], ['lender_name', 'TEXT'], ['enriched_at', 'TEXT'], ['enrich_error', 'TEXT'],
-  ['external_source', 'TEXT'], ['external_id', 'TEXT'],
+  ['external_source', 'TEXT'], ['external_id', 'TEXT'], ['partner_id', 'INTEGER'], ['birthday', 'TEXT'],
 ]) {
   if (!contactCols.has(col)) db.exec(`ALTER TABLE contacts ADD COLUMN ${col} ${type}`);
 }
+const lpCols = new Set(db.prepare('PRAGMA table_info(landing_pages)').all().map((c) => c.name));
+if (!lpCols.has('partner_id')) db.exec('ALTER TABLE landing_pages ADD COLUMN partner_id INTEGER');
+if (!lpCols.has('show_calculator')) db.exec('ALTER TABLE landing_pages ADD COLUMN show_calculator INTEGER DEFAULT 0');
 db.exec(`
 CREATE INDEX IF NOT EXISTS idx_contacts_external ON contacts(external_source, external_id);
 
@@ -230,6 +233,115 @@ CREATE TABLE IF NOT EXISTS voicemail_calls (
   answered_by TEXT,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT
+);
+
+CREATE TABLE IF NOT EXISTS workflows (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  description TEXT,
+  trigger TEXT NOT NULL DEFAULT 'manual',
+  trigger_config TEXT DEFAULT '{}',
+  steps TEXT NOT NULL DEFAULT '[]',
+  exit_on_reply INTEGER DEFAULT 0,
+  exit_stages TEXT DEFAULT '[]',
+  allow_reentry INTEGER DEFAULT 0,
+  status TEXT NOT NULL DEFAULT 'draft',
+  recipe TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT
+);
+
+CREATE TABLE IF NOT EXISTS workflow_runs (
+  id INTEGER PRIMARY KEY,
+  workflow_id INTEGER NOT NULL REFERENCES workflows(id) ON DELETE CASCADE,
+  contact_id INTEGER NOT NULL REFERENCES contacts(id) ON DELETE CASCADE,
+  status TEXT NOT NULL DEFAULT 'active',
+  path TEXT NOT NULL DEFAULT '[0]',
+  next_run_at TEXT NOT NULL DEFAULT (datetime('now')),
+  log TEXT NOT NULL DEFAULT '[]',
+  exit_reason TEXT,
+  started_at TEXT NOT NULL DEFAULT (datetime('now')),
+  finished_at TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_runs_due ON workflow_runs(status, next_run_at);
+CREATE INDEX IF NOT EXISTS idx_runs_contact ON workflow_runs(contact_id, workflow_id);
+
+CREATE TABLE IF NOT EXISTS partners (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  company TEXT,
+  type TEXT DEFAULT 'realtor',
+  email TEXT,
+  phone TEXT,
+  notes TEXT,
+  send_updates INTEGER DEFAULT 1,
+  active INTEGER DEFAULT 1,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS lead_source_spend (
+  id INTEGER PRIMARY KEY,
+  source TEXT NOT NULL,
+  month TEXT NOT NULL,
+  amount REAL NOT NULL DEFAULT 0,
+  UNIQUE(source, month)
+);
+
+CREATE TABLE IF NOT EXISTS content_items (
+  id INTEGER PRIMARY KEY,
+  kind TEXT NOT NULL,
+  platform TEXT,
+  title TEXT,
+  body TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'draft',
+  scheduled_at TEXT,
+  published_at TEXT,
+  created_by INTEGER,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS webhooks (
+  id INTEGER PRIMARY KEY,
+  url TEXT NOT NULL,
+  events TEXT NOT NULL DEFAULT '[]',
+  secret TEXT NOT NULL,
+  active INTEGER DEFAULT 1,
+  description TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS webhook_deliveries (
+  id INTEGER PRIMARY KEY,
+  webhook_id INTEGER NOT NULL REFERENCES webhooks(id) ON DELETE CASCADE,
+  event TEXT NOT NULL,
+  payload TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending',
+  attempts INTEGER DEFAULT 0,
+  response_code INTEGER,
+  error TEXT,
+  next_attempt_at TEXT NOT NULL DEFAULT (datetime('now')),
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_deliveries_due ON webhook_deliveries(status, next_attempt_at);
+
+CREATE TABLE IF NOT EXISTS api_keys (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  prefix TEXT NOT NULL,
+  key_hash TEXT NOT NULL UNIQUE,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  last_used_at TEXT,
+  revoked INTEGER DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS copilot_threads (
+  id INTEGER PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  title TEXT,
+  messages TEXT NOT NULL DEFAULT '[]',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
 CREATE TABLE IF NOT EXISTS sync_runs (
@@ -287,6 +399,10 @@ const DEFAULT_SETTINGS = {
   google_sync_enabled: '1',
   fub_sync_enabled: '1',
   inbound_api_key: '',
+  comp_bps: '100',
+  review_url: '',
+  slack_webhook_url: '',
+  slack_events: 'contact.handoff,contact.created,loan.funded',
 };
 
 for (const [key, value] of Object.entries(DEFAULT_SETTINGS)) {
@@ -311,7 +427,7 @@ export function setSetting(key, value) {
 
 export const SETTING_KEYS = Object.keys(DEFAULT_SETTINGS).filter((k) => k !== 'inbound_api_key');
 
-const SECRET_SETTINGS = ['app_secret', 'google_tokens', 'google_sync_token', 'fub_api_key', 'inbound_api_key'];
+const SECRET_SETTINGS = ['slack_webhook_url', 'app_secret', 'google_tokens', 'google_sync_token', 'fub_api_key', 'inbound_api_key'];
 /** Settings safe to send to the browser. */
 export function publicSettings() {
   const s = getSettings();

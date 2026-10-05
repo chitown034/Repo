@@ -5,13 +5,20 @@ import { upsertContact, updateContact, changeStage, getContact, logActivity, ser
 import { parseCSV, autoMap, toCSV } from './csv.js';
 import { rescoreAll, rescoreContact } from './scoring.js';
 import { proposeOutreach, approveDraft, rejectDraft, scanForOutreach, handleInbound, sendManual } from './assistant.js';
-import { startCall, providerStatus, SendBlocked, APP_URL } from './messaging.js';
+import { startCall, providerStatus, SendBlocked, APP_URL, signId } from './messaging.js';
 import { TRIGGERS, previewAudience, launchCampaign, campaignStats } from './campaigns.js';
 import { generateCampaignCopy, aiEnabled } from './ai.js';
 import { buildMonthlyReport, previousPeriod } from './reports.js';
 import { emit } from './events.js';
 import { enrichContact, enrichmentStatus } from './enrichment.js';
 import { listDrops, saveDrop, deleteDrop, dropVoicemail, dropMany } from './voicemail.js';
+import QRCode from 'qrcode';
+import { performance } from './metrics.js';
+import { WF_TRIGGERS, STEP_TYPES, CONDITION_FIELDS, RECIPES, installRecipe, enroll, workflowStats, validateSteps, exitRuns } from './workflows.js';
+import { WEBHOOK_EVENTS, slackNotify, processDeliveries, webhookStats, assertPublicUrl } from './hooks.js';
+import { nextBestActions, coachBriefing, generateContent, CONTENT_KINDS, publishContent, copilotTurn, listThreads, getThread, findOpportunities } from './agents.js';
+import { createApiKey, listApiKeys, revokeApiKey } from './publicapi.js';
+import { token } from './util.js';
 import { googleAuthUrl, googleStatus, googleDisconnect, syncGoogle, fubStatus, syncFollowUpBoss, inboundKey, lastRuns } from './integrations.js';
 
 export const api = express.Router();
@@ -73,6 +80,8 @@ api.get('/meta', (req, res) => {
     providers: providerStatus(),
     app_url: APP_URL,
     users: db.prepare('SELECT id, name, role, active FROM users ORDER BY name').all(),
+    partners: db.prepare('SELECT id, name, company FROM partners WHERE active = 1 ORDER BY name').all(),
+    ai: aiEnabled(),
   });
 });
 
@@ -540,12 +549,14 @@ api.post('/campaigns/generate', wrap(async (req, res) => {
 
 /* ---------------------------- Landing pages ----------------------------- */
 
-const LP_FIELDS = ['slug', 'title', 'headline', 'subheadline', 'body', 'cta', 'lead_type', 'fields', 'tags', 'thank_you', 'active'];
+const LP_FIELDS = ['slug', 'title', 'headline', 'subheadline', 'body', 'cta', 'lead_type', 'fields', 'tags', 'thank_you', 'active', 'partner_id', 'show_calculator'];
 function lpRow(body) {
   const out = {};
   for (const f of LP_FIELDS) if (body[f] !== undefined) out[f] = f === 'fields' && typeof body[f] !== 'string' ? JSON.stringify(body[f]) : body[f];
   if (out.slug !== undefined) out.slug = String(out.slug).toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-|-$/g, '');
   if (out.active !== undefined) out.active = out.active ? 1 : 0;
+  if (out.show_calculator !== undefined) out.show_calculator = out.show_calculator ? 1 : 0;
+  if (out.partner_id !== undefined) out.partner_id = Number(out.partner_id) || null;
   return out;
 }
 const serializeLP = (p) => ({ ...p, fields: json(p.fields, []), url: `${APP_URL}/p/${p.slug}` });
@@ -781,3 +792,322 @@ api.post('/integrations/followupboss', requireRole('owner', 'admin'), wrap(async
 }));
 
 api.post('/integrations/inbound/rotate', requireRole('owner', 'admin'), (_req, res) => res.json({ key: inboundKey({ rotate: true }) }));
+
+/* ------------------------------- Analytics ------------------------------ */
+
+api.get('/analytics', (req, res) => {
+  const days = Math.min(730, Math.max(1, Number(req.query.days) || 30));
+  const ownerId = canSeeAll(req.user) ? Number(req.query.owner_id) || null : req.user.id;
+  res.json(performance({ days, ownerId }));
+});
+
+api.get('/lead-spend', (_req, res) => res.json(db.prepare('SELECT * FROM lead_source_spend ORDER BY month DESC, source').all()));
+
+api.post('/lead-spend', requireRole('owner', 'admin'), (req, res) => {
+  const { source, month, amount } = req.body || {};
+  if (!source || !/^\d{4}-\d{2}$/.test(month || '')) return res.status(400).json({ error: 'Source and month (YYYY-MM) are required' });
+  db.prepare('INSERT INTO lead_source_spend (source, month, amount) VALUES (?, ?, ?) ON CONFLICT(source, month) DO UPDATE SET amount = excluded.amount').run(String(source).trim(), month, Number(amount) || 0);
+  res.json({ ok: true });
+});
+
+api.delete('/lead-spend/:id', requireRole('owner', 'admin'), (req, res) => {
+  db.prepare('DELETE FROM lead_source_spend WHERE id = ?').run(Number(req.params.id));
+  res.json({ ok: true });
+});
+
+/* ------------------------------- Workflows ------------------------------ */
+
+const serializeWf = (w) => ({ ...w, trigger_config: json(w.trigger_config, {}), steps: json(w.steps, []), exit_stages: json(w.exit_stages, []), stats: workflowStats(w.id) });
+
+api.get('/workflows/meta', (_req, res) => res.json({ triggers: WF_TRIGGERS, steps: STEP_TYPES, conditions: CONDITION_FIELDS, recipes: RECIPES.map(({ key, name, description, trigger }) => ({ key, name, description, trigger })) }));
+
+api.get('/workflows', (_req, res) => res.json(db.prepare('SELECT * FROM workflows ORDER BY id DESC').all().map(serializeWf)));
+
+api.get('/workflows/:id', (req, res) => {
+  const w = db.prepare('SELECT * FROM workflows WHERE id = ?').get(Number(req.params.id));
+  if (!w) return res.status(404).json({ error: 'Workflow not found' });
+  const runs = db.prepare(`SELECT r.id, r.contact_id, r.status, r.next_run_at, r.exit_reason, r.started_at, r.finished_at, r.log, c.first_name, c.last_name FROM workflow_runs r JOIN contacts c ON c.id = r.contact_id WHERE r.workflow_id = ? ORDER BY r.id DESC LIMIT 100`).all(w.id)
+    .map((r) => ({ ...r, log: json(r.log, []).slice(-5) }));
+  res.json({ ...serializeWf(w), runs });
+});
+
+function wfRow(body) {
+  const out = {};
+  if (body.name !== undefined) out.name = String(body.name).trim();
+  if (body.description !== undefined) out.description = body.description;
+  if (body.trigger !== undefined) {
+    if (!WF_TRIGGERS[body.trigger]) throw new Error('Unknown trigger');
+    out.trigger = body.trigger;
+  }
+  if (body.trigger_config !== undefined) out.trigger_config = JSON.stringify(body.trigger_config || {});
+  if (body.steps !== undefined) {
+    validateSteps(body.steps);
+    out.steps = JSON.stringify(body.steps);
+  }
+  if (body.exit_on_reply !== undefined) out.exit_on_reply = body.exit_on_reply ? 1 : 0;
+  if (body.allow_reentry !== undefined) out.allow_reentry = body.allow_reentry ? 1 : 0;
+  if (body.exit_stages !== undefined) out.exit_stages = JSON.stringify((body.exit_stages || []).filter((x) => STAGE_KEYS.includes(x)));
+  return out;
+}
+
+api.post('/workflows', requireRole('owner', 'admin'), (req, res) => {
+  try {
+    if (req.body.recipe) return res.status(201).json(serializeWf(db.prepare('SELECT * FROM workflows WHERE id = ?').get(installRecipe(req.body.recipe))));
+    const row = wfRow(req.body);
+    if (!row.name) return res.status(400).json({ error: 'Workflow name is required' });
+    const cols = Object.keys(row);
+    const id = db.prepare(`INSERT INTO workflows (${cols.join(',')}) VALUES (${cols.map(() => '?').join(',')})`).run(...cols.map((c) => row[c])).lastInsertRowid;
+    res.status(201).json(serializeWf(db.prepare('SELECT * FROM workflows WHERE id = ?').get(Number(id))));
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+api.patch('/workflows/:id', requireRole('owner', 'admin'), (req, res) => {
+  try {
+    const row = wfRow(req.body);
+    if (req.body.status !== undefined) {
+      if (!['draft', 'active', 'paused'].includes(req.body.status)) throw new Error('Invalid status');
+      row.status = req.body.status;
+    }
+    const cols = Object.keys(row);
+    if (cols.length) db.prepare(`UPDATE workflows SET ${cols.map((c) => `${c} = ?`).join(', ')}, updated_at = datetime('now') WHERE id = ?`).run(...cols.map((c) => row[c]), Number(req.params.id));
+    res.json(serializeWf(db.prepare('SELECT * FROM workflows WHERE id = ?').get(Number(req.params.id))));
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+api.delete('/workflows/:id', requireRole('owner', 'admin'), (req, res) => {
+  db.prepare('DELETE FROM workflows WHERE id = ?').run(Number(req.params.id));
+  res.json({ ok: true });
+});
+
+api.post('/workflows/:id/enroll', (req, res) => {
+  const ids = (req.body.contact_ids || [req.body.contact_id]).map(Number).filter(Boolean);
+  let enrolled = 0;
+  for (const id of ids) {
+    const c = getContact(id);
+    if (!c || (!canSeeAll(req.user) && c.owner_id !== req.user.id)) continue;
+    if (enroll(Number(req.params.id), id, { reason: `manual by ${req.user.name}`, force: true })) enrolled++;
+  }
+  res.json({ enrolled, skipped: ids.length - enrolled });
+});
+
+api.post('/workflow-runs/:id/stop', (req, res) => {
+  const r = db.prepare('SELECT * FROM workflow_runs WHERE id = ?').get(Number(req.params.id));
+  if (!r) return res.status(404).json({ error: 'Run not found' });
+  const c = getContact(r.contact_id);
+  if (!canSeeAll(req.user) && c?.owner_id !== req.user.id) return res.status(404).json({ error: 'Run not found' });
+  exitRuns(r.contact_id, `stopped by ${req.user.name}`, (x) => x.id === r.id);
+  res.json({ ok: true });
+});
+
+api.get('/contacts/:id/workflows', (req, res) => {
+  const c = loadContact(req, res);
+  if (!c) return;
+  res.json(db.prepare(`SELECT r.id, r.status, r.started_at, r.next_run_at, r.exit_reason, w.id workflow_id, w.name FROM workflow_runs r JOIN workflows w ON w.id = r.workflow_id WHERE r.contact_id = ? ORDER BY r.id DESC LIMIT 20`).all(c.id));
+});
+
+/* ------------------------------- Partners ------------------------------- */
+
+const PARTNER_FIELDS = ['name', 'company', 'type', 'email', 'phone', 'notes', 'send_updates', 'active'];
+api.get('/partners', (_req, res) => {
+  res.json(db.prepare(`SELECT p.*, COUNT(c.id) referrals, SUM(c.stage IN ('application','processing','underwriting','clear_to_close')) in_process,
+      SUM(c.stage = 'funded') funded, COALESCE(SUM(CASE WHEN c.stage = 'funded' THEN c.loan_amount END),0) volume, MAX(c.created_at) last_referral
+    FROM partners p LEFT JOIN contacts c ON c.partner_id = p.id GROUP BY p.id ORDER BY p.active DESC, referrals DESC, p.name`).all());
+});
+
+api.get('/partners/:id', (req, res) => {
+  const p = db.prepare('SELECT * FROM partners WHERE id = ?').get(Number(req.params.id));
+  if (!p) return res.status(404).json({ error: 'Partner not found' });
+  const scope = contactScope(req.user);
+  const clients = db.prepare(`SELECT c.* FROM contacts c WHERE c.partner_id = ? AND ${scope.sql} ORDER BY c.created_at DESC`).all(p.id, ...scope.params).map(serializeContact);
+  res.json({ ...p, clients });
+});
+
+api.post('/partners', (req, res) => {
+  if (!req.body.name?.trim()) return res.status(400).json({ error: 'Partner name is required' });
+  const cols = PARTNER_FIELDS.filter((f) => req.body[f] !== undefined);
+  const id = db.prepare(`INSERT INTO partners (${cols.join(',')}) VALUES (${cols.map(() => '?').join(',')})`).run(...cols.map((c) => (['send_updates', 'active'].includes(c) ? (req.body[c] ? 1 : 0) : req.body[c]))).lastInsertRowid;
+  res.status(201).json({ id: Number(id) });
+});
+
+api.patch('/partners/:id', (req, res) => {
+  const cols = PARTNER_FIELDS.filter((f) => req.body[f] !== undefined);
+  if (cols.length) db.prepare(`UPDATE partners SET ${cols.map((c) => `${c} = ?`).join(', ')} WHERE id = ?`).run(...cols.map((c) => (['send_updates', 'active'].includes(c) ? (req.body[c] ? 1 : 0) : req.body[c])), Number(req.params.id));
+  res.json({ ok: true });
+});
+
+api.delete('/partners/:id', requireRole('owner', 'admin'), (req, res) => {
+  db.prepare('UPDATE contacts SET partner_id = NULL WHERE partner_id = ?').run(Number(req.params.id));
+  db.prepare('DELETE FROM partners WHERE id = ?').run(Number(req.params.id));
+  res.json({ ok: true });
+});
+
+/* ----------------------------- AI agents ------------------------------- */
+
+api.get('/coach', wrap(async (req, res) => {
+  res.json({ actions: nextBestActions(req.user), briefing: await coachBriefing(req.user, { refresh: false }).catch(() => null), ai: aiEnabled() });
+}));
+
+api.post('/coach/briefing', wrap(async (req, res) => {
+  if (!aiEnabled()) return res.status(400).json({ error: 'Set ANTHROPIC_API_KEY to enable AI briefings' });
+  res.json({ briefing: await coachBriefing(req.user, { refresh: true }) });
+}));
+
+api.get('/opportunities/:kind', (req, res) => {
+  try {
+    res.json(findOpportunities(req.user, req.params.kind, Math.min(100, Number(req.query.limit) || 25)));
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+api.get('/copilot/threads', (req, res) => res.json(listThreads(req.user)));
+api.get('/copilot/threads/:id', (req, res) => {
+  const t = getThread(req.user, req.params.id);
+  if (!t) return res.status(404).json({ error: 'Conversation not found' });
+  res.json(t);
+});
+api.delete('/copilot/threads/:id', (req, res) => {
+  db.prepare('DELETE FROM copilot_threads WHERE id = ? AND user_id = ?').run(Number(req.params.id), req.user.id);
+  res.json({ ok: true });
+});
+api.post('/copilot', wrap(async (req, res) => {
+  try {
+    res.json(await copilotTurn(req.user, { threadId: req.body.thread_id, text: req.body.text }));
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+}));
+
+/* --------------------------- Content Studio ---------------------------- */
+
+api.get('/content/meta', (_req, res) => res.json({ kinds: CONTENT_KINDS, ai: aiEnabled() }));
+api.get('/content', (_req, res) => res.json(db.prepare('SELECT * FROM content_items ORDER BY COALESCE(scheduled_at, created_at) DESC LIMIT 300').all()));
+
+api.post('/content/generate', wrap(async (req, res) => {
+  try {
+    res.json(await generateContent(req.body || {}));
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+}));
+
+const CONTENT_STATUS = ['draft', 'scheduled', 'published'];
+api.post('/content', (req, res) => {
+  const { kind, platform, title, body, scheduled_at } = req.body || {};
+  if (!CONTENT_KINDS[kind] || !body?.trim()) return res.status(400).json({ error: 'Content type and body are required' });
+  const status = scheduled_at ? 'scheduled' : 'draft';
+  const id = db.prepare('INSERT INTO content_items (kind, platform, title, body, status, scheduled_at, created_by) VALUES (?, ?, ?, ?, ?, ?, ?)').run(kind, platform || null, title || null, body, status, scheduled_at ? String(scheduled_at).replace('T', ' ').slice(0, 19) : null, req.user.id).lastInsertRowid;
+  res.status(201).json(db.prepare('SELECT * FROM content_items WHERE id = ?').get(Number(id)));
+});
+
+api.patch('/content/:id', (req, res) => {
+  const item = db.prepare('SELECT * FROM content_items WHERE id = ?').get(Number(req.params.id));
+  if (!item) return res.status(404).json({ error: 'Content not found' });
+  const sets = [];
+  const vals = [];
+  for (const f of ['title', 'body', 'platform']) if (req.body[f] !== undefined) { sets.push(`${f} = ?`); vals.push(req.body[f]); }
+  if (req.body.scheduled_at !== undefined) {
+    sets.push('scheduled_at = ?', 'status = ?');
+    vals.push(req.body.scheduled_at ? String(req.body.scheduled_at).replace('T', ' ').slice(0, 19) : null, req.body.scheduled_at ? 'scheduled' : 'draft');
+  }
+  if (sets.length) db.prepare(`UPDATE content_items SET ${sets.join(', ')} WHERE id = ?`).run(...vals, item.id);
+  if (req.body.publish) publishContent(item.id);
+  res.json(db.prepare('SELECT * FROM content_items WHERE id = ?').get(item.id));
+});
+
+api.delete('/content/:id', (req, res) => {
+  db.prepare('DELETE FROM content_items WHERE id = ?').run(Number(req.params.id));
+  res.json({ ok: true });
+});
+
+api.post('/content/:id/to-campaign', requireRole('owner', 'admin'), (req, res) => {
+  const item = db.prepare('SELECT * FROM content_items WHERE id = ?').get(Number(req.params.id));
+  if (!item) return res.status(404).json({ error: 'Content not found' });
+  let subject = item.title || 'News from {{company}}';
+  let body = item.body;
+  const m = /^Subject:\s*(.+)\n+/i.exec(body);
+  if (m) { subject = m[1].trim(); body = body.slice(m[0].length); }
+  const id = db.prepare(`INSERT INTO campaigns (name, channel, subject, email_body, audience, trigger) VALUES (?, 'email', ?, ?, '{}', 'manual')`).run(`Newsletter: ${(item.title || subject).slice(0, 60)}`, subject, body).lastInsertRowid;
+  res.status(201).json({ campaign_id: Number(id) });
+});
+
+/* --------------------------- Integrations hub --------------------------- */
+
+api.get('/landing-pages/:id/qr.svg', wrap(async (req, res) => {
+  const p = db.prepare('SELECT slug FROM landing_pages WHERE id = ?').get(Number(req.params.id));
+  if (!p) return res.status(404).send('Not found');
+  res.type('image/svg+xml').send(await QRCode.toString(`${APP_URL}/p/${p.slug}?utm_source=qr`, { type: 'svg', margin: 1, width: 512 }));
+}));
+
+api.get('/hub', requireRole('owner', 'admin'), (req, res) => {
+  const stats = webhookStats();
+  res.json({
+    events: WEBHOOK_EVENTS,
+    webhooks: db.prepare('SELECT id, url, events, active, description, created_at FROM webhooks ORDER BY id DESC').all().map((w) => ({ ...w, events: json(w.events, []), stats: stats.find((x) => x.webhook_id === w.id) || {} })),
+    deliveries: db.prepare('SELECT d.id, d.webhook_id, d.event, d.status, d.attempts, d.response_code, d.error, d.created_at FROM webhook_deliveries d ORDER BY d.id DESC LIMIT 25').all(),
+    api_keys: listApiKeys(),
+    api_base: `${APP_URL}/v1`,
+    slack: { connected: Boolean(getSettings().slack_webhook_url), events: String(getSettings().slack_events || '').split(',').filter(Boolean) },
+    calendar_url: `${APP_URL}/calendar/${req.user.id}/${signId('cal', req.user.id)}.ics`,
+  });
+});
+
+api.get('/calendar-url', (req, res) => res.json({ url: `${APP_URL}/calendar/${req.user.id}/${signId('cal', req.user.id)}.ics` }));
+
+api.post('/hub/webhooks', requireRole('owner', 'admin'), (req, res) => {
+  try {
+    assertPublicUrl(req.body.url);
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+  const events = (req.body.events || []).filter((e) => e === '*' || WEBHOOK_EVENTS[e]);
+  if (!events.length) return res.status(400).json({ error: 'Pick at least one event' });
+  const secret = token(24);
+  const id = db.prepare('INSERT INTO webhooks (url, events, secret, description) VALUES (?, ?, ?, ?)').run(req.body.url, JSON.stringify(events), secret, req.body.description || null).lastInsertRowid;
+  res.status(201).json({ id: Number(id), secret });
+});
+
+api.patch('/hub/webhooks/:id', requireRole('owner', 'admin'), (req, res) => {
+  if (req.body.active !== undefined) db.prepare('UPDATE webhooks SET active = ? WHERE id = ?').run(req.body.active ? 1 : 0, Number(req.params.id));
+  if (req.body.events) db.prepare('UPDATE webhooks SET events = ? WHERE id = ?').run(JSON.stringify(req.body.events.filter((e) => e === '*' || WEBHOOK_EVENTS[e])), Number(req.params.id));
+  res.json({ ok: true });
+});
+
+api.delete('/hub/webhooks/:id', requireRole('owner', 'admin'), (req, res) => {
+  db.prepare('DELETE FROM webhooks WHERE id = ?').run(Number(req.params.id));
+  res.json({ ok: true });
+});
+
+api.post('/hub/webhooks/:id/test', requireRole('owner', 'admin'), wrap(async (req, res) => {
+  const w = db.prepare('SELECT * FROM webhooks WHERE id = ?').get(Number(req.params.id));
+  if (!w) return res.status(404).json({ error: 'Webhook not found' });
+  const id = db.prepare('INSERT INTO webhook_deliveries (webhook_id, event, payload) VALUES (?, ?, ?)').run(w.id, 'test.ping', JSON.stringify({ event: 'test.ping', created_at: new Date().toISOString(), data: { message: 'Hello from your CRM' } })).lastInsertRowid;
+  await processDeliveries();
+  res.json(db.prepare('SELECT status, response_code, error FROM webhook_deliveries WHERE id = ?').get(Number(id)));
+}));
+
+api.post('/hub/api-keys', requireRole('owner', 'admin'), (req, res) => res.status(201).json(createApiKey(req.user.id, req.body.name)));
+api.delete('/hub/api-keys/:id', requireRole('owner', 'admin'), (req, res) => {
+  revokeApiKey(Number(req.params.id));
+  res.json({ ok: true });
+});
+
+api.post('/hub/slack', requireRole('owner', 'admin'), wrap(async (req, res) => {
+  const url = String(req.body.url ?? '').trim();
+  if (req.body.events) setSetting('slack_events', req.body.events.filter((e) => WEBHOOK_EVENTS[e]).join(','));
+  if (req.body.url !== undefined) {
+    if (url) {
+      try {
+        await slackNotify(':white_check_mark: Your CRM is connected to Slack.', url);
+      } catch (err) {
+        return res.status(400).json({ error: err.message });
+      }
+    }
+    setSetting('slack_webhook_url', url);
+  }
+  res.json({ ok: true });
+}));
