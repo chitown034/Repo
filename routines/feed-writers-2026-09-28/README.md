@@ -30,12 +30,15 @@ do that. **Status, corrected the same morning (08:20 UTC):**
 3. **Rates** (`02-mortgage-rates-market.prompt.txt`) waits until FRED, Freddie Mac and Redfin are allowed in
    the cloud environment (`docs/NEEDS-STEVEN.md` item 74) — without them it can only carry old numbers forward.
 
+Keys and schedules below are current as of 2026-10-05. That day the cloud writers became the primary,
+Claude-only writers again; `../feed-writers-2026-10-05/README.md` has the whole set.
+
 | Writer created 2026-09-28 (agent-owned) | Writes | Schedule (UTC) |
 |---|---|---|
-| Command Deck — weather & news (writer) | `weatherSnapshot`, `newsSnapshot` | 00:52, 13:52, 19:52 |
-| Command Deck — Econoday note (writer) | `liveFeeds.feeds.econodayLiveList` | 12:44 |
+| Command Deck — weather & news (writer) | `newsSnapshot`; the city and housing-market lists in `liveFeeds` (morning run — the 3 market lists also copied to the ISA Portal); `weatherSnapshot` only when stale and Open-Meteo answers | 01:35, 13:35 |
+| Command Deck — Econoday note (writer) | `liveFeeds.feeds.econodayLiveList` | 12:35 |
 | Command Deck — top performers note (writer) | `liveFeeds.feeds.topPerformersLiveList` | 13:26 |
-| Command Deck — builder incentives note (writer) | `liveFeeds.feeds.builderIncentiveLiveList` | 13:53 |
+| Command Deck — builder incentives note (writer) | `liveFeeds.feeds.builderIncentiveLiveList`, then the same entry in the ISA Portal's `liveFeeds` | 13:53 |
 | Command Deck — PE & Defense notes (writer) | `liveFeeds.feeds.pedefenseLiveList`, `defenseUpdatesList` | 13:47 |
 | Command Deck — Elite Rewards scan note (writer) | `liveFeeds.feeds.elitScanLiveList` | 12:56 |
 | Command Deck — Elite Affluent note (writer, weekly) | `liveFeeds.feeds.eliteAffluentLiveList` | Sun 15:51 |
@@ -69,6 +72,11 @@ do that. **Status, corrected the same morning (08:20 UTC):**
   (`docs/NEEDS-STEVEN.md` item 74). Until then, weather keeps its last reading and shows its age.
 
 ## The Mac does it first; the cloud is the backup (2026-10-05)
+
+> **Superseded later the same day.** Steven's *"remove everything running on Perplexity and replace with
+> Claude subscription"* made the cloud writers primary again, and the Mac's duplicate feed tasks are the
+> ones being paused (`../feed-writers-2026-10-05/README.md`, `integrations/mac-claude-only.md`). This
+> section stays as the record of the backup-mode design and its measured cost.
 
 A week of stamps showed the Mac runner is alive and writes some of the same documents: its
 `weather-news-refresh` task writes `weatherSnapshot` and `newsSnapshot` at 8:05 AM and 8:05 PM Pacific

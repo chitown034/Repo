@@ -10,7 +10,7 @@
 2. **Never graphed.** No client becomes a node or an edge in `knowledge-graph/`. See the
    never-graph-a-secret rule in `knowledge-graph/README.md`.
 3. **Local only.** Sensitive client data is answered by the **local model (Jarvis)**. It does not go
-   to a cloud research call, a Perplexity query, a Notion row, or any store that syncs off the Mac.
+   to a cloud research call, a web-search query, a Notion row, or any store that syncs off the Mac.
 4. **Never in a prompt that leaves the machine.** Not in a copy-prompt button, not in a routine
    prompt, not in a report.
 5. **No client page is committed to this repo.** This directory ships with this index and nothing

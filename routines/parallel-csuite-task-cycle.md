@@ -26,14 +26,15 @@ Nov 1 2026 PDT→PST change; the UTC column does.
 | Vanessa — orchestration, council chair, final synthesis | Claude Fable 5.1 (masterminds) |
 | Executive seats — Victor, Sofia, Marcus, Derek, Alexandra, Elena, Nadia, Elon | Claude Opus 5.5 |
 | Reports / benches (tier 2–3) | Claude Sonnet 5 |
-| Research wave | Perplexity (Composio `perplexityai` or the local `perplexity` MCP), ≤4 per wave |
+| Research wave | Claude web research — Sonnet 5 with WebSearch/WebFetch on Steven's Claude subscription (Perplexity removed 2026-10-05), ≤4 per wave |
 
-Caps: **≤8 sub-agents in flight, ≤4 Perplexity calls per wave.**
+Caps: **≤8 sub-agents in flight, ≤4 web-research sub-agents per wave.**
 
 ## Tools
 - `Artifact` `read_db` / `write_db` against `1624daae-d683-405a-971d-c5828dce0f8d`, collection `state`.
 - Sub-agent dispatch (the Mac agent roster: 172 agents, tiers/leads in `aiTeamRoster`).
-- Perplexity MCP (research wave). Calendar/Gmail/Notion/Slack connectors read-only in this cycle.
+- `WebSearch` / `WebFetch` (research wave, on Steven's Claude subscription). Calendar/Gmail/Notion/Slack
+  connectors read-only in this cycle.
 - No outbound messaging tool is enabled for this routine — drafts only.
 
 ## Prompt text (paste verbatim into the task)
@@ -47,7 +48,7 @@ Run the Parallel C-Suite Task Cycle using the vanessa-orchestrator skill. You ar
    loopLog, kanbanCards, leadTriage, leadResponse, isaKpi, calendarSnapshot.
 3. Decompose into independently answerable tasks. Each task: owner seat, model tier, named input
    docs, output shape, done-condition, time box.
-4. Dispatch in waves of at most 8, at most 4 Perplexity research calls per wave.
+4. Dispatch in waves of at most 8, at most 4 web-research sub-agents per wave.
 5. Stall policy: two retries, then re-route to the next-best seat, then a Needs-Steven packet.
    Never fabricate a seat's answer; never drop a task silently.
 6. Resolve conflicts on the facts: a live doc with a stamp beats recollection. Alexandra
@@ -65,7 +66,8 @@ Honest status rules: a task that exists is not a task that runs. Say "never run 
 "last ok <date>", "failed <date>: <reason>". Lofty is the real-estate system of record (since
 2026-09-22) and is **not connected yet** — no real-estate lead number is live, so say "not connected
 yet"; Zoho is connected but every CRM call returns 403 Crm_Implied_Api_Access; You.com is retired;
-there are no OpenRouter or Plaid keys. Never send anything to a client, partner or the ISA.
+Perplexity was removed 2026-10-05 (research runs on Claude WebSearch); there are no OpenRouter or
+Plaid keys. Never send anything to a client, partner or the ISA.
 ```
 
 ## Success condition
@@ -75,7 +77,7 @@ A run is a **success** only when all of these hold:
 2. Every dispatched task ended in one of: answered-and-QA'd, re-routed-and-answered, or a
    `twinQueue` Needs-Steven packet. Zero silent drops.
 3. Every number in the synthesis carries a source and a stamp.
-4. Caps were respected (≤8 concurrent, ≤4 Perplexity per wave).
+4. Caps were respected (≤8 concurrent, ≤4 web-research sub-agents per wave).
 5. The synthesis appears in the run output, not only in the DB.
 
 **Failure** is any of: no `vanessaRuns` entry, a task with no outcome, an unsourced number, a

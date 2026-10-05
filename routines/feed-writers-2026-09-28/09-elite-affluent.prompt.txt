@@ -1,4 +1,8 @@
 WRITE MODE (2026-09-28, Steven approved) — supersedes the RESEARCH-ONLY framing below only
+CLAUDE-ONLY (2026-10-05, Steven: "remove everything running on Perplexity and replace with Claude
+subscription"): research with Claude's own WebSearch only — never Perplexity, OpenRouter, You.com or
+any paid search API. This routine is now the PRIMARY writer of its note (the Mac task that also
+wrote it through Perplexity is being paused).
 ================================================================================================
 Steven's decision, 2026-09-28: "Make them update the dashboard." This routine used to research
 weekly and end with a JSON final message that nobody applied. It now WRITES its single most useful
@@ -43,13 +47,6 @@ Read `liveFeeds` (artifact 1624daae-d683-405a-971d-c5828dce0f8d, collection "sta
 what was already reported, so you don't repeat it. `liveFeeds` is a large shared document with many
 OTHER feeds' keys in it — you are reading the whole thing but will only ever change your own key;
 see WRITE STEP rule 4.
-
-FALLBACK GUARD (added 2026-10-05, to stop paying twice for the same note)
-A task on Steven's Mac also refreshes `feeds.eliteAffluentLiveList` (it was written at 04:30 UTC on
-2026-10-05). This weekly routine is now the backup for when the Mac misses. Right after STEP 1, run
-`date -u +%Y-%m-%dT%H:%M:%SZ` with Bash. If `feeds.eliteAffluentLiveList.checkedAt` is less than 72 hours old,
-or up to 1 hour in the future, it is FRESH: stop now — no research, no write — and end with one
-line: "fresh (<age>) — skipped". Otherwise continue.
 
 STEP 2 — Research current, real developments
 Check today's real date first (don't guess). Look for ONE genuinely new, well-documented,

@@ -1,9 +1,9 @@
 {
   "_meta": {
     "purpose": "Maps Laya's tier / pii_gate output (integrations/laya/laya_route.py) to a concrete route.",
-    "mirrors": "CLAUDE.md's model-tiering table and integrations/omniroute/README.md's routing map, 2026-09-28.",
+    "mirrors": "CLAUDE.md's model-tiering table and integrations/omniroute/README.md's routing map, 2026-09-28; research tier moved to the subscription route 2026-10-05 (Perplexity removed).",
     "rule": "Change CLAUDE.md's tiering table first, then integrations/omniroute/README.md, then this file to match. Never the other way.",
-    "invariant": "pii_gate=true always overrides tier, with no exception. A client-shaped request never reaches the research or subscription routes, whatever tier Laya also guessed.",
+    "invariant": "pii_gate=true always overrides tier, with no exception. A client-shaped request never reaches the subscription route (research included), whatever tier Laya also guessed.",
     "note": "Route/tier NAMES only, never model names, per CLAUDE.md's naming rule — this file and laya_route.py's output are things Steven (or a log) can grep."
   },
   "pii_gate": {
@@ -13,7 +13,7 @@
       "seat_tier": "local tier",
       "omniroute": true,
       "fails_closed": true,
-      "note": "Overrides tier unconditionally, whatever brain_route/tier said. No cloud fallback, ever: if the local combo can't be reached, the request DEFERS (claude-auto.sh exit 75) — it never reroutes to subscription, free-fallback or the research combo. See integrations/omniroute/README.md #hard-rules."
+      "note": "Overrides tier unconditionally, whatever brain_route/tier said. No cloud fallback, ever: if the local combo can't be reached, the request DEFERS (claude-auto.sh exit 75) — it never reroutes to subscription (research included) or free-fallback. See integrations/omniroute/README.md #hard-rules."
     }
   },
   "tier": {
@@ -30,8 +30,8 @@
       "omniroute": false, "note": "Report/bench/execution-only seat. Plain `claude`, OAuth, no proxy env. Never through OmniRoute."
     },
     "research": {
-      "route": "research", "via": "omniroute:research-combo", "seat_tier": "n/a — Perplexity is a product, not a Claude tier",
-      "omniroute": true, "cap_per_wave": 4, "note": "Research heavy lifting, per CLAUDE.md sub-agent dispatch cap (≤4 Perplexity per wave). Deferred (never called) by this repo's own tooling — Perplexity calls happen only when an agent with that allowance actually runs one."
+      "route": "subscription", "via": "direct", "seat_tier": "research tier — the worker tier's model with WebSearch/WebFetch",
+      "omniroute": false, "cap_per_wave": 4, "note": "Research heavy lifting — Claude web research on Steven's Claude subscription (Perplexity removed 2026-10-05). Plain `claude`, OAuth, no proxy env. Never through OmniRoute. ≤4 web-research sub-agents per wave (CLAUDE.md sub-agent dispatch cap), enforced by the agent that dispatches them, not by this file."
     }
   },
   "combos": {
@@ -42,10 +42,8 @@
       "provider_id_placeholder": "set by setup-local-llm.sh / configure-omniroute.sh at install time — not a fixed value in this file"
     },
     "research": {
-      "omniroute_combo_name": "research",
-      "provider_count": 1,
-      "provider_id": "perplexity",
-      "cap_per_wave": 4
+      "removed": "2026-10-05",
+      "note": "Perplexity removed (Steven). Research is subscription traffic now, and the subscription never goes through OmniRoute (README #hard-rules), so there is no research combo and no research provider. configure-omniroute.sh no longer creates either."
     }
   }
 }

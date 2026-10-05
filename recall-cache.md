@@ -22,7 +22,7 @@ instead of a store sweep, and most questions in a working day are repeats.
 | Volatile — deck `state` docs, rates, calendar, weather, leads, runner status | **4 h** | A sync runs at least twice a day; four hours is the longest a number can be wrong without anyone noticing |
 | Stable — Obsidian vault, Graphify graph, Ruflo summaries | **24 h** | Rebuilt daily at most; the graph's last build was 2026-09-13 |
 | Repo files — wiki, context, projects, references | Until the file changes | They change by commit, not by clock |
-| Research answers (level 3, Perplexity) | **24 h**, and always cited | A cited answer can be re-checked; an uncited one cannot |
+| Research answers (level 3, Claude web research) | **24 h**, and always cited | A cited answer can be re-checked; an uncited one cannot |
 | Client / full-context pages | **Not cached** | They are read whole, on the Mac, each time |
 
 ## The rules

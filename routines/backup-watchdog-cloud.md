@@ -27,7 +27,7 @@ that date `30 17 * * 0` is Sun 9:30 AM PT — adjust to `30 18 * * 0` to hold 10
 Avoid `0 16 * * 0`: three existing Sunday routines already fire there and all failed on 2026-09-20.
 
 ## Model
-**Claude Sonnet 5** — a read-and-report seat. No sub-agents, no research, no Perplexity.
+**Claude Sonnet 5** — a read-and-report seat. No sub-agents, no research, no web search.
 
 ## Tools
 - `Artifact` `read_db`, `db_op:"get"`, `collection:"state"`, `doc_id:"backupStatus"` (read only).

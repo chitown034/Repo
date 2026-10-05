@@ -14,10 +14,11 @@ TWO CHANGES from the old version of this routine:
     hand-researched, and is not this routine's job. What this card actually reads live is
     `liveFeeds.feeds.builderIncentiveLiveList` — a single supplementary research-note entry that
     sits underneath the hand-maintained table, not a replacement for it.
-  - Command Deck ONLY. The old prompt said "this same JSON applies to BOTH artifacts" (Command
-    Deck and ISA Portal); that is dropped — ISA Portal has no equivalent live-feed slot for this,
-    and Steven's 2026-09-28 mapping only routes this data to Command Deck's `liveFeeds`. Do not
-    write anything to the ISA Portal artifact from this routine.
+  - Command Deck first, then an exact copy to the ISA Portal. (Until 2026-10-05 this said
+    "Command Deck ONLY", because the ISA Portal had no live-feed slot. It has one now — Steven,
+    2026-10-05: "ensure ISA portal also is update and mirrors command deck and only uses Claude
+    subscription for feeds". The copy is the MIRROR STEP at the end of this prompt; nothing else
+    in the ISA Portal is yours to touch.)
 ================================================================================================
 
 You are refreshing the "Builder incentives & rate buydowns" live-scan note on a published Claude
@@ -82,7 +83,24 @@ Use the ArtifactData tool (same one you loaded in STEP 1).
    each write, run exactly `date -u +%Y-%m-%dT%H:%M:%SZ` with the Bash tool and copy its output
    unchanged into `checkedAt`. That command only reads the clock, so it is allowed; every Bash
    write/copy/redirect stays banned.
-7. Never touch any other document, and never write to the ISA Portal artifact from this routine.
+7. Never touch any other document. The only ISA Portal write allowed is the MIRROR STEP below.
    Never call Edit, Write, or Bash with any write/copy/redirect operation. Never call Artifact with
    action "publish". Never send a message to anyone.
-8. End your turn with a one-line summary: what the note now says, and the document's new version.
+8. Run the MIRROR STEP, then end your turn with a one-line summary: what the note now says, the
+   Command Deck document's new version, and the ISA Portal copy's new version (or why it was skipped).
+
+## MIRROR STEP — exact copy to the ISA Portal (added 2026-10-05)
+
+Run it only if your Command Deck update above succeeded this run. If you wrote nothing this run
+(rule 5), skip it too: the ISA copy already holds the last entry you wrote.
+1. Read the ISA Portal's copy: ArtifactData action "get", url
+   https://claude.ai/code/artifact/4348b34d-afa0-4d2e-8214-29b1319cf041, collection "state", doc_id
+   "liveFeeds". Note its `version`. If the document does not exist, do NOT create it — skip the
+   mirror and put "ISA mirror skipped: liveFeeds missing" in your summary.
+2. ArtifactData action "update", same url, collection "state", doc_id "liveFeeds", if_version <that
+   version>, data: {v: {feeds: {builderIncentiveLiveList: <the IDENTICAL entry you just wrote to the
+   Command Deck — same checkedAt, citations, model, source and text>}}}. Do not re-run the clock or
+   reword anything: both pages show the same note with the same stamp. On a version conflict,
+   re-read the ISA copy and retry once.
+3. Never `set` it, never send any other key, never write any other ISA Portal document. If the
+   mirror fails, say so in your summary; the Command Deck write stands — never undo it.

@@ -16,7 +16,7 @@ them into **one recall path in** and **one dispatch path out**.
                         └───────────────────────────────────────────┘
                                         ▲ cache (4 h / 24 h)
 
-  work ──► Vanessa ──► decompose ──► ≤8 sub-agents in parallel (≤4 Perplexity per wave)
+  work ──► Vanessa ──► decompose ──► ≤8 sub-agents in parallel (≤4 web-research sub-agents per wave)
                           │              │
                           │              └─► each gets the router + ONE leaf file
                           └─► ECC gate (Derek) ──► consolidate ──► one answer ──► Steven
@@ -53,8 +53,9 @@ model:
 - **Sub-agents per agent** run the **executive** tier (a named C-suite lane owns its piece
   outright) or the **worker** tier (a report, bench or execution-only seat; no cross-lane
   judgment needed) — **one sub-agent per agent, ≤8 in parallel.**
-- **Research** is its own tier: Perplexity, **capped at ≤4 per wave**, regardless of how many of
-  the ≤8 sub-agents would otherwise want it.
+- **Research** is its own tier: Claude web research (WebSearch/WebFetch on Steven's Claude
+  subscription; Perplexity removed 2026-10-05), **capped at ≤4 web-research sub-agents per wave**,
+  regardless of how many of the ≤8 sub-agents would otherwise want it.
 - **Orca is the parallel-agent surface and the phone view — not a lane, not a recall level, and
   not an executor of its own decisions.** `stablyai/orca` runs Claude Code and Codex side by side
   in worktrees; its iOS/Android mobile companion is the natural place to watch and steer the ≤8
@@ -107,7 +108,7 @@ replaces them with measured values; until it has, treat them as ordering, not ar
 | "Who owns this / what did we decide?" | `wiki/ai-team`, `context/decisions.md` | 2 | **1–2x** | One leaf file, and it is authoritative by construction |
 | "How does this program work?" | Wiki index line → one page | 2 | **2x** | The index line answers most of these outright |
 | "Find the clause / the passage" | `vector-index/` via Jarvis + Graphify embeddings | 3 | **8x** | Chunk + rerank is the only affordable way through ~1,700 pages |
-| "What's the current state of the market/tool X?" | `request_research` → Perplexity, async | 3 | **10x+** | Leaves the machine; capped, queued, cited, ≤4 per wave |
+| "What's the current state of the market/tool X?" | `request_research` → Claude web research (WebSearch/WebFetch), async | 3 | **10x+** | Leaves the machine; capped, queued, cited, ≤4 per wave |
 | "How do these connect?" | Graphify, then the Ruflo weekly summary | 4 | **5x** | Traversal is cheap; the summary is cheaper — try the summary first |
 | "Everything you know about X" | Five-store recall via `run.sh recall` | 5 | **25x+** | Last resort. Log why levels 1–4 failed — that log is the best optimisation input there is |
 | Anything about a specific client | Jarvis, locally, full context | local | **3x** | Not a cost decision. It is the only place it is allowed to happen |
@@ -168,7 +169,7 @@ rule in `knowledge-graph/README.md`. Neither = it holds no corpus at all.
 | **Ruflo** | **L4** — knowledge graph (weekly summary; also an L3 server) | Context (a summary *of* Connections) | Before traversing Graphify directly — try the summary first | 238 entries |
 | **ECC** | Not a recall level — a **gate** on the dispatch path | Neither | Every change, not a question | Reviews standards/test/observability/accessibility/security/dependency/agent-safety; under Derek |
 | **Orca** | Not a recall level — a **dispatch-path surface** (parallel agents, phone view) | Neither | Never for recall; only to watch/steer sub-agents | Reported v1.4.203, unverified from here; proposal only, vetted by the CTO Innovator |
-| **OmniRoute** | Not a recall level — the **local dispatch gateway** for the research and local tiers | Neither | Never for recall; routes a research-tier or PII-fired request to its combo (`integrations/omniroute/README.md`) | Scripts built 2026-09-28, proved against stand-ins only; not configured on the Mac |
+| **OmniRoute** | Not a recall level — the **local dispatch gateway** for the local tier (the research tier left it 2026-10-05: Perplexity removed, research runs on the subscription, direct) | Neither | Never for recall; routes a PII-fired request to its `local` combo (`integrations/omniroute/README.md`) | Scripts built 2026-09-28, proved against stand-ins only; not configured on the Mac |
 | **Bonsai 27B** | Not a recall level — the **local tier's model**, behind OmniRoute's `local` combo | Context (a client-data request's local-only answer) | A PII-fired request only — never anything else, never a cloud fallback | Apache-2.0 (PrismML); not installed; the local route stays off until the Mac proof passes (NEEDS-STEVEN 75) |
 
 ## Token rules — the zero-token hop first

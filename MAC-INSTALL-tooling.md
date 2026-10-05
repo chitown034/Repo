@@ -170,8 +170,8 @@ kept verbatim, and neither is a router leaf — expect that check to list them.
   profile** (or a burner account) — never Steven's brokerage-branded logins; cookies stay in `~/.agent-reach/`,
   never in a prompt, skill or the repo; read only — posting from licensed accounts is Alexandra's lane;
   automated access can get an account suspended; never feed it client data. **Its skill's frontmatter says
-  "MUST USE" for any research request — that would hijack the router's research path (Perplexity queue), so
-  do not install the skill; call the CLIs from Sofia's seat explicitly.**
+  "MUST USE" for any research request — that would hijack the router's research path (the Claude web-research
+  queue), so do not install the skill; call the CLIs from Sofia's seat explicitly.**
 
 ## 12. prompts.chat — plugin 1.0.0 / npm 0.1.1, MIT code + CC0 prompts
 - **What / why:** open prompt library with a TUI (`npx prompts.chat`), an MCP server (`npx -y prompts.chat mcp`
@@ -210,8 +210,9 @@ software. Nothing to install. Registered in `references/index.md`; consult it wh
 - **What:** hosted/self-hostable MCP server exposing 500+ pay-per-call tools (search, crypto/DeFi data, paid
   reports, utilities) settled in USDC over x402/MPP or by card; `claude mcp add agent402 -- npx -y agent402-mcp`;
   `FREE_MODE=true npm start` to self-host without payments.
-- **Verdict: no clear use.** Steven already has Perplexity, WebSearch and Composio for search and data; the
-  paid door is an agent-initiated crypto wallet (HALT list, first line), and the catalogue is DeFi-heavy.
+- **Verdict: no clear use.** Steven already has Claude WebSearch/WebFetch (his subscription) and Composio for
+  search and data; the paid door is an agent-initiated crypto wallet (HALT list, first line), and the catalogue
+  is DeFi-heavy.
 - **Keys (paid only):** `WALLET_ADDRESS`, `CDP_FACILITATOR_*`, `STRIPE_SECRET_KEY`, `AGENT402_CREDITS_KEY`.
   Sandbox: registry metadata only; not run (it would connect to agent402.tools).
 

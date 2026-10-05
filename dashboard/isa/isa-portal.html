@@ -112,6 +112,9 @@
   @media (max-width: 640px) { .row-line { grid-template-columns: 1fr; } }
   .add-row-btn { margin-top: 4px; }
   .src-note { font-size: 11.5px; color: var(--text-faint); margin-top: 2px; }
+  .link-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .link-list a { font-size: 13px; text-decoration: none; }
+  .link-list a:hover { text-decoration: underline; }
   .grid { display: grid; gap: 16px; }
   .grid > * { min-width: 0; } /* a table/long token inside a card can force a grid track past its panel edge otherwise */
   .grid-2 { grid-template-columns: repeat(2, 1fr); }
@@ -346,7 +349,83 @@
   @media (max-width: 640px) { .row-line.rl-2, .row-line.rl-3, .row-line.rl-4 { grid-template-columns: 1fr; } }
   /* Arm-then-confirm gate, mirrored from Command Deck. A destructive or outward
      control turns red and restates what it will do; only the second click acts. */
+  .mb-faint { color: var(--text-faint); font-size: 11.5px; }
   .armed, button.armed { border-color: var(--negative) !important; color: var(--negative) !important; background: var(--negative-soft, rgba(220,80,70,0.12)) !important; }
+</style>
+<style id="apple-refine">
+/* == APPLE-REFINE v1 == */
+:root{--r-card:16px;--r-ctl:999px;--e-out:cubic-bezier(.22,.61,.36,1);--t-fast:.16s;--t-med:.22s;
+--sh-1:0 .5px 1px rgba(35,26,10,.04),0 2px 6px -2px rgba(35,26,10,.06),0 14px 32px -20px rgba(35,26,10,.18);
+--sh-2:0 1px 2px rgba(35,26,10,.05),0 6px 14px -6px rgba(35,26,10,.10),0 22px 44px -22px rgba(35,26,10,.26);
+--hair:color-mix(in srgb,var(--border) 72%,transparent)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+--sh-1:0 .5px 1px rgba(0,0,0,.4),0 2px 6px -2px rgba(0,0,0,.35),0 14px 32px -20px rgba(0,0,0,.6);
+--sh-2:0 1px 2px rgba(0,0,0,.45),0 6px 14px -6px rgba(0,0,0,.4),0 22px 44px -22px rgba(0,0,0,.7)}}
+:root[data-theme="dark"]{
+--sh-1:0 .5px 1px rgba(0,0,0,.4),0 2px 6px -2px rgba(0,0,0,.35),0 14px 32px -20px rgba(0,0,0,.6);
+--sh-2:0 1px 2px rgba(0,0,0,.45),0 6px 14px -6px rgba(0,0,0,.4),0 22px 44px -22px rgba(0,0,0,.7)}
+
+/* type: calmer rhythm, optical sizing where the face supports it */
+body{font-optical-sizing:auto;text-rendering:optimizeLegibility;line-height:1.55}
+.hero-greet{letter-spacing:-.005em;line-height:.96}
+.panel-title{line-height:1.04;letter-spacing:.008em}
+.card-title{font-size:15px;line-height:1.35;letter-spacing:-.011em;margin-bottom:6px}
+.card-sub{font-size:13px;line-height:1.55}
+h3.section-label{margin:28px 0 12px;letter-spacing:.09em}
+.stat-value,.head-nw-value,td.num{font-variant-numeric:tabular-nums}
+
+/* frosted sticky header */
+.deck-head{background:color-mix(in srgb,var(--bg) 78%,transparent);
+-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+border-bottom-color:var(--hair);box-shadow:0 1px 0 var(--hair)}
+
+/* cards: one radius, layered shadow, 1px lift without layout shift */
+.card{border-radius:var(--r-card);padding:20px;box-shadow:var(--sh-1);border-color:var(--hair);
+transition:transform var(--t-med) var(--e-out),box-shadow var(--t-med) var(--e-out),border-color var(--t-med) var(--e-out)}
+.card:hover{box-shadow:var(--sh-2)}
+@media (hover:hover) and (pointer:fine){.card:hover{transform:translateY(-1px)}}
+.stat{border-radius:14px;box-shadow:var(--sh-1)}
+.callout{border-radius:14px}
+
+/* segmented control for page tabs */
+.page-tabs{gap:2px;padding:4px;margin-bottom:10px;border-radius:14px;background:var(--surface-2);border:1px solid var(--hair)}
+.page-tab{border-color:transparent;background:transparent;color:var(--text-dim);padding:7px 14px;border-radius:10px;letter-spacing:.05em}
+.page-tab:hover{background:color-mix(in srgb,var(--surface) 60%,transparent);border-color:transparent;color:var(--text)}
+.page-tab.active{background:var(--surface);color:var(--accent);border-color:var(--hair);box-shadow:0 1px 2px rgba(0,0,0,.08),0 3px 8px -4px rgba(0,0,0,.18)}
+.pages-btn{border-radius:var(--r-ctl);padding:8px 14px;transition:background var(--t-fast) var(--e-out),color var(--t-fast) var(--e-out),box-shadow var(--t-fast) var(--e-out)}
+.pages-btn:hover{box-shadow:0 4px 12px -8px color-mix(in srgb,var(--accent) 70%,transparent)}
+.pages-menu.open{border-radius:16px;box-shadow:var(--sh-2)}
+
+/* pill buttons (generic + primary; classed widgets keep their own shape) */
+button:not([class]),button.primary{border-radius:var(--r-ctl);padding:8px 16px;letter-spacing:-.003em}
+button{transition-duration:var(--t-fast);transition-timing-function:var(--e-out)}
+
+/* focus: crisp two-layer ring */
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{
+outline:2px solid var(--accent);outline-offset:2px;box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 18%,transparent)}
+
+/* tables: hairlines, no zebra, sticky header inside the scroller */
+.table-wrap{border-radius:12px;-webkit-overflow-scrolling:touch}
+.table-wrap thead th{position:sticky;top:0;z-index:1;background:var(--surface)}
+th{border-bottom-color:var(--border);padding:8px 12px}
+td{border-bottom-color:var(--hair);padding:10px 12px;font-variant-numeric:tabular-nums}
+tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparent)}
+
+@media (min-width:900px){.panel:not(.panel-pinned){margin-top:64px}}
+
+/* phone: 16px gutters, no sideways scroll, 44px targets */
+@media (max-width:640px){
+.wrap{padding-left:16px;padding-right:16px}
+.deck-head-inner{padding:12px 16px}
+.page-nav{padding:8px 16px 0}
+.crumb{padding:0 16px 8px}
+.pages-menu{left:16px;max-width:calc(100vw - 32px)}
+.card{padding:16px;border-radius:14px}
+.page-tab,.pages-btn,button:not([class]),button.primary{min-height:44px}
+.page-tab{display:inline-flex;align-items:center}
+.panel-title{font-size:23px}
+}
+@media (prefers-reduced-motion:reduce){.card:hover{transform:none}}
 </style>
 
 <script type="application/json" id="cdStateSeed">{}</script>
@@ -384,7 +463,7 @@
 <div class="wrap">
   <section class="hero">
     <h1 class="hero-greet">Pipeline Access</h1>
-    <p class="hero-sub">This is a scoped view for the Executive Assistant / ISA — real estate and mortgage pipeline only. Everything you enter here syncs live across any device <i>you</i> open this page on. Two things also reach Steven's Command Deck on a schedule: the <a href="#isaLineCard">ISA line</a> at the top of the AI Team panel — a real two-way channel with Steven, carried by an hourly task on his Mac — and your client list, mortgage pipeline, daily scorecard and self-grades, which a cloud routine copies both ways four times a day. Everything else stays on this page: Command Deck is a separate published page with its own database, and no page can read another page's store. Shared reference data (rates, loan programs, lender directory, market intelligence) is copied across by hand in a Claude session, not on a schedule. If Steven needs to see a number, put it on the line — <a href="#panel-isa-syncstatus">Sync status</a> has the measured detail.</p>
+    <p class="hero-sub">This is a scoped view for the Executive Assistant / ISA — real estate and mortgage pipeline only. Everything you enter here syncs live across any device <i>you</i> open this page on. Two things also reach Steven's Command Deck on a schedule: the <a href="#isaLineCard">ISA line</a> at the top of the AI Team panel — a real two-way channel with Steven, carried by an hourly task on his Mac — and your client list, mortgage pipeline, daily scorecard and self-grades, which a cloud routine copies both ways four times a day. Everything else stays on this page: Command Deck is a separate published page with its own database, and no page can read another page's store. Rates and the market snapshot now arrive on a schedule too — since 2026-10-04 the tasks that write Steven’s rates document write this page’s copy as well, and the rate table reads it live. Since 2026-10-05 the builder-incentive and housing-market notes arrive the same way: the Claude routines that write them on his deck copy each one here. The loan programs, lender directory and other reference data are still copied across by hand in a Claude session. If Steven needs to see a number, put it on the line — <a href="#panel-isa-syncstatus">Sync status</a> has the measured detail.</p>
     <p class="hero-sub" id="heroStartHere" style="margin-top:10px;"></p>
   </section>
 
@@ -484,8 +563,8 @@
     <div class="panel-head"><span class="panel-tag">PANEL&nbsp;03</span><h2 class="panel-title">Sync status</h2></div>
     <div class="card" style="border-left:4px solid var(--gold);">
       <p class="card-title">How this page and Steven's Command Deck actually connect</p>
-      <p class="card-sub" style="margin-top:0;">Start here, because the short version is not what the old copy on this page said. <b>ISA Portal and Command Deck are two separate published pages, each with its own database. Neither page can read the other's store — there is no browser-side link between them at all.</b> Anything that crosses does so because a scheduled task reads both stores and copies documents between them. Two such tasks run today: one on Steven's Mac carries the ISA line, and one in the cloud carries your client list, mortgage pipeline, daily scorecard and self-grades.</p>
-      <p class="src-note" style="margin-top:8px;"><b>Verified 2026-09-22 by reading both databases directly.</b> Not inferred from a status badge. <b>Corrected 2026-09-24:</b> this card used to say the ISA line was the only thing that crossed. It left out the Pipeline Sync (live) cloud routine, whose own entries in Steven's continuous-improvement log show it running four times a day.</p>
+      <p class="card-sub" style="margin-top:0;">Start here, because the short version is not what the old copy on this page said. <b>ISA Portal and Command Deck are two separate published pages, each with its own database. Neither page can read the other's store — there is no browser-side link between them at all.</b> Anything that crosses does so because a scheduled task writes it into both stores. Four such paths run today: a task on Steven's Mac carries the ISA line; a cloud routine carries your client list, mortgage pipeline, daily scorecard and self-grades; the rates tasks write both pages' rates and market figures; and two Claude routines copy their builder-incentive and housing-market notes here.</p>
+      <p class="src-note" style="margin-top:8px;"><b>Re-verified 2026-10-05 by reading both databases directly</b> (first verified 2026-09-22): the ISA line (14 messages), client list, pipeline, scorecard, daily playbook, KPI week, rates and the four mirrored live notes are identical in both stores. Not inferred from a status badge. <b>Corrected 2026-09-24:</b> this card used to say the ISA line was the only thing that crossed. It left out the Pipeline Sync (live) cloud routine, whose own entries in Steven's continuous-improvement log show it running four times a day.</p>
     </div>
 
     <div class="card" style="margin-top:16px;">
@@ -493,24 +572,26 @@
       <div class="table-wrap"><table>
         <thead><tr><th>What</th><th>By what</th><th>How often</th><th>Last time it actually ran</th></tr></thead>
         <tbody>
-          <tr><td><b>ISA line</b> — your messages to and from Steven, plus the read markers (<code>isaLine</code>, <code>isaLineRead</code>)</td><td><code>isa-comms-bridge-local</code>, a scheduled task on Steven's Mac. It reads both stores and merges the two copies by message id.</td><td>Hourly, 7:37 AM – 9:37 PM PT, and only while his Mac is awake with the desktop app open.</td><td><b>Last recorded ok 2026-09-22 9:38 PM PT</b>, per the <code>routineHealth</code> document on Steven’s deck — that run confirmed both stores already matched, 10 messages each. Both stores have since converged on a further message stamped 2026-09-23 5:46 AM UTC, so it has run again since then — neither page records exactly when. Read directly 2026-09-24: both copies of the thread now hold the same 11 messages, byte for byte. This one genuinely works.</td></tr>
-          <tr><td><b>Client list, mortgage pipeline, daily scorecard and self-grades</b> (<code>reClients</code>, <code>pipeline</code>, <code>isaScorecard</code>, <code>isaGradingScores</code>, <code>isaKpiSopActuals</code>)</td><td>The <b>Pipeline Sync (live)</b> cloud routine. It reads both stores and copies changes in both directions. It does not need Steven's Mac to be awake.</td><td>Four times a day — 04:00, 10:00, 16:00 and 22:00 UTC (9 PM, 3 AM, 9 AM and 3 PM Pacific while daylight time lasts).</td><td><b>Last logged ok 2026-09-24</b> (twice that day), per its own entries on Steven's deck: client list and pipeline identical on both sides, scorecard empty on both, no self-grades entered on either side yet.</td></tr>
+          <tr><td><b>ISA line</b> — your messages to and from Steven, plus the read markers (<code>isaLine</code>, <code>isaLineRead</code>)</td><td><code>isa-comms-bridge-local</code>, a scheduled task on Steven's Mac. It reads both stores and merges the two copies by message id.</td><td>Hourly, 7:37 AM – 9:37 PM PT, and only while his Mac is awake with the desktop app open.</td><td><b>Last recorded ok 2026-10-05 8:38 AM PT</b>, per the <code>runnerStatus</code> document on Steven’s deck, which lists each Mac task’s last run. Read directly 2026-10-05: both copies of the thread hold the same 14 messages, byte for byte. This one genuinely works.</td></tr>
+          <tr><td><b>Rates and the local market snapshot</b> (<code>ratesSnapshot</code>)</td><td>The <code>mortgage-rates-daily</code> task (Optimal Blue loan-type rates, Freddie Mac PMMS and the 10-year Treasury via FRED, weekdays) and the weekly <code>r5-rates-market-refresh</code> task (Redfin market figures), both on Steven’s Mac. Each writes both dashboards, and each owns its own fields so neither overwrites the other.</td><td>Weekdays 6:38 AM and 1:38 PM PT for rates; Mondays for the market figures — while his Mac is awake.</td><td><b>Both stores identical as read 2026-10-05</b> — rates written 2026-10-05 13:39 UTC, market figures 12:07 UTC. Before 2026-10-04 the portal’s copy sat at mid-September rates because no task wrote it.</td></tr>
+          <tr><td><b>Client list, mortgage pipeline, daily scorecard and self-grades</b> (<code>reClients</code>, <code>pipeline</code>, <code>isaScorecard</code>, <code>isaGradingScores</code>, <code>isaKpiSopActuals</code>)</td><td>The <b>Pipeline Sync (live)</b> cloud routine. It reads both stores and copies changes in both directions. It does not need Steven's Mac to be awake.</td><td>Four times a day — 04:00, 10:00, 16:00 and 22:00 UTC (9 PM, 3 AM, 9 AM and 3 PM Pacific while daylight time lasts).</td><td><b>Last run ok 2026-10-05 16:09 UTC</b>, per the routine list: client list and pipeline identical on both sides as read 2026-10-05, scorecard empty on both, no self-grades entered on either side yet.</td></tr>
+          <tr><td><b>Builder-incentive and housing-market notes</b> (<code>liveFeeds</code> — the builder note and the San Diego, Temecula and Murrieta market notes)</td><td>Two Claude cloud routines on Steven’s Claude subscription, <i>builder incentives note</i> and <i>weather &amp; news</i>. Each writes its note to Steven’s deck, then copies the same entry here, byte for byte. Web search only — no Perplexity, no paid search API. They do not need his Mac to be awake.</td><td>Daily: the market notes on the 6:35 AM PT news run, the builder note at 6:53 AM PT (13:35 and 13:53 UTC while daylight time lasts).</td><td><b>Started 2026-10-05.</b> Each note on the Mortgage Rates &amp; Local Market panel prints the time it was checked — that stamp is the last run, and a note past its budget says so.</td></tr>
         </tbody>
       </table></div>
-      <p class="src-note" style="margin-top:10px;">That is the whole list: two tasks. The ISA line is still the only thing that reaches Steven as a <i>message</i> — the Pipeline Sync puts your numbers on his deck but alerts nobody. Anything that needs his attention goes on the line. Everything not in this table needs a person to move it.</p>
+      <p class="src-note" style="margin-top:10px;">That is the whole list: four paths. The Pipeline Sync routine’s schedule was re-read 2026-10-05 from the routine list (04:00, 10:00, 16:00 and 22:00 UTC), and the copies it carries were identical that day. The ISA line is still the only thing that reaches Steven as a <i>message</i> — the Pipeline Sync puts your numbers on his deck but alerts nobody. Anything that needs his attention goes on the line. Everything not in this table needs a person to move it.</p>
     </div>
 
     <div class="card" style="margin-top:16px;border-left:4px solid var(--negative);">
-      <p class="card-title">What is NOT synced — including two things that look like they are</p>
-      <p class="card-sub" style="margin-top:0;">Measured on 2026-09-22 by reading both stores. These are real gaps, not a caching delay.</p>
+      <p class="card-title">What is NOT synced — and what only looks like it is</p>
+      <p class="card-sub" style="margin-top:0;">First measured 2026-09-22, re-measured 2026-10-05 by reading both stores. These are real gaps, not a caching delay.</p>
       <div class="table-wrap"><table>
         <thead><tr><th>Document</th><th>On this portal</th><th>On Command Deck</th><th>Status</th></tr></thead>
         <tbody id="isaDriftRows"></tbody>
       </table></div>
-      <p class="src-note" style="margin-top:10px;"><b>Two cloud routines carry the name "Pipeline Sync" — only one of them works.</b> The old one, "Command Deck ↔ ISA Portal — Pipeline Sync" (01:00, 07:00, 13:00 and 19:00 UTC), reports SUCCESS every time and has never synced anything: its own instructions tell it to compare two empty seed blocks and change nothing. Its green tick means "the routine finished", not "the pipeline crossed", and only Steven can switch it off. The working one is <b>Pipeline Sync (live)</b>, in the table above. Read the drift table for the current state of each document rather than trusting either routine's result.</p>
+      <p class="src-note" style="margin-top:10px;"><b>Only one cloud routine called "Pipeline Sync" runs now.</b> The old "Command Deck ↔ ISA Portal — Pipeline Sync", which reported SUCCESS every time while syncing nothing, no longer runs — it is not in the enabled routine list, re-read 2026-10-05. The working one is <b>Pipeline Sync (live)</b>, in the table above. Read the drift table for the current state of each document rather than trusting any routine’s green tick.</p>
       <p class="src-note" style="margin-top:6px;"><b>The hourly cloud comms bridge is DISABLED.</b> The ISA line survives on the Mac task above and nothing else. If Steven's Mac is asleep, closed, or the task errors, your messages sit here marked "waiting for the bridge" and he never sees them. If it is urgent and the status has not turned green, call or text him — that is not belt-and-braces, it is the actual fallback.</p>
-      <p class="src-note" style="margin-top:6px;"><b>Everything else on this page is a hand-carried copy.</b> Showings, the route planner, the checklists, the capacity audit, your Vanessa thread, and every reference seed (rates, market, loan programs, lender directory, program facts, builder incentives) live only in this portal's store. A change you make to any of those is saved and shared across <i>your own</i> devices, and stops there.</p>
-      <p class="src-note" style="margin-top:6px;"><b>Reference data is re-synced by hand, in a Claude session.</b> Rates and the market snapshot were re-baked from Command Deck's <code>ratesSnapshot</code> document on 2026-09-22; VA funding-fee tiers and conventional county limits were last re-synced 2026-09-11. There is no standing drift check — an earlier version of this page claimed a twice-daily one and nothing was running. Treat any figure here as a dated snapshot and check it against Command Deck before it reaches a client.</p>
+      <p class="src-note" style="margin-top:6px;"><b>Everything else on this page is a hand-carried copy.</b> Showings, the route planner, the checklists, the capacity audit, your Vanessa thread, and every reference seed (loan programs, lender directory, program facts, the hand-researched builder write-ups) live only in this portal's store. A change you make to any of those is saved and shared across <i>your own</i> devices, and stops there.</p>
+      <p class="src-note" style="margin-top:6px;"><b>Reference data is re-synced by hand, in a Claude session</b> — except rates and the market snapshot, which the rates tasks now write here directly (since 2026-10-04) and this page renders live from its own store, and the builder-incentive and housing-market notes, which the Claude routines copy here (since 2026-10-05). The program-facts table was last re-checked 2026-09-22, with its VA and FHA rows reconfirmed 2026-09-28. A cloud routine compares the two pages’ baked reference data twice a day (02:00 and 14:00 UTC), but it reports only in its own run log — nothing on either page records its result. Treat any figure here as a dated snapshot and check it against Command Deck before it reaches a client.</p>
       <p class="src-note" id="isaStateWarnings" hidden style="margin-top:10px;border:1px solid var(--negative);background:var(--negative-soft);color:var(--negative);border-radius:8px;padding:10px 12px;"></p>
     </div>
 
@@ -688,6 +769,7 @@
         <div><p class="card-title">Builder incentives &amp; rate buydowns</p><p class="card-sub" id="builderIncentiveSyncNote">—</p></div>
       </div>
       <div id="builderIncentiveRows"></div>
+      <ul class="link-list" id="builderIncentiveLiveList" style="margin-top:10px;"></ul>
     </div>
     <div class="card" style="margin-bottom:16px;">
       <p class="card-title">Lower-tax-zone reference — Mello-Roos / CFD guide</p>
@@ -788,6 +870,21 @@
         <a href="https://claude.ai/code/artifact/592d487c-703f-418f-939e-14ff6f2353b2" target="_blank" rel="noopener" style="flex:none;"><button type="button" class="primary">Open the analysis ↗</button></a>
       </div>
       <p class="src-note">Never quote a rate, payment, or eligibility outcome from the tool to a borrower as a commitment — its figures are a scenario basis, and the actual number is always Steven's to give. The page is shared to anyone with the link, so it's safe to forward.</p>
+    </div>
+    <div class="card" id="milBaseCard" style="margin-bottom:16px;border-left:4px solid var(--gold);">
+      <div class="card-title-row"><div><p class="card-title">Military Base Installation Guide</p><p class="card-sub" style="margin:0;">Southern California installations: branch, location, the DoD BAH Military Housing Area (look the rate up live in the DTMO calculator by that code — no dollar figure is stored here), where families buy, the housing office, and agent notes. Every fact carries its source and the date it was checked; a blank means not verified. Mirrored from Command Deck.</p></div><span class="badge gray" id="milBaseBadge">—</span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:end;margin:10px 0;">
+        <div><label class="field-label" for="milBaseSearch">Search</label><input type="text" id="milBaseSearch" placeholder="Base, city, branch, MHA code" aria-label="Search installations"></div>
+        <div><label class="field-label" for="milBaseBranch">Branch</label><select id="milBaseBranch" aria-label="Filter by branch"><option value="">All branches</option></select></div>
+      </div>
+      <p class="src-note" id="milBaseLinks"></p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Installation</th><th>Location &amp; gate</th><th>BAH housing area</th><th>Where families buy</th><th>Housing office</th><th>Agent notes</th><th>Source</th></tr></thead>
+          <tbody id="milBaseRows"></tbody>
+        </table>
+      </div>
+      <p class="src-note" id="milBaseSource" style="margin-top:8px;"></p>
     </div>
     <div class="card" style="margin-bottom:16px;">
       <div class="card-title-row">
@@ -1323,7 +1420,7 @@
     </div>
     <div class="card" style="margin-top:16px;">
       <div class="card-title-row">
-        <div><p class="card-title">ISA KPI scorecard — real estate &amp; mortgage</p><p class="card-sub">Pulled directly from the VA/ISA SOP, Section 16 — filtered to the real estate &amp; mortgage / ISA-execution rows. <b>Zoho CRM is the system of record for mortgage</b> (still true — but its API is returning 403 NO_PERMISSION, so no live Zoho figure can be read from this page); <b>Lofty is the system of record for real estate</b> since 2026-09-22. Per SOP Section 4.1. Actuals in the table are what you enter here — they are not pulled from either CRM. One thing worth knowing: a measured <code>isaKpi</code> document (week ending 2026-09-13, written by Steven's weekly KPI task and carried onto both stores) does exist and matches on his deck and this portal, but this table does not read it — its numbers are on the ISA line message of Sep 13. Ask for it to be wired in if you want the measured week beside the targets.</p></div>
+        <div><p class="card-title">ISA KPI scorecard — real estate &amp; mortgage</p><p class="card-sub">Pulled directly from the VA/ISA SOP, Section 16 — filtered to the real estate &amp; mortgage / ISA-execution rows. <b>Zoho CRM is the system of record for mortgage</b> (still true — but its API is returning 403 NO_PERMISSION, so no live Zoho figure can be read from this page); <b>Lofty is the system of record for real estate</b> since 2026-09-22. Per SOP Section 4.1. Actuals in the table are what you enter here — they are not pulled from either CRM. One thing worth knowing: a measured <code>isaKpi</code> document (written weekly by Steven's KPI task and carried onto both stores — identical on both as of 2026-10-05) does exist, but this table does not read it — its numbers are posted on the ISA line each week. Ask for it to be wired in if you want the measured week beside the targets.</p></div>
       </div>
       <div class="table-wrap">
         <table>
@@ -1451,11 +1548,12 @@
         <li><b>Zoho CRM</b> — connected through Composio (account created 2026-09-21), but every CRM call returns <code>403 NO_PERMISSION: Crm_Implied_Api_Access</code> (re-checked 2026-09-24, same result). Still the system of record for mortgage; simply not readable from here. Only Steven can fix it: Zoho CRM → Setup → Security Control → Profiles → enable "Zoho CRM API Access".</li>
         <li><b>Lofty</b> — the real-estate CRM of record since 2026-09-22, still <code>not-configured</code> as of 2026-09-24 (no API key installed yet). Composio has no Lofty toolkit; the path is the <code>lofty-bridge</code> MCP server and <code>lofty-cli</code> already installed on Steven's Mac. The API key and the first proving run are outstanding, so no Lofty data has reached this portal yet.</li>
         <li><b>You.com</b> — retired 2026-09-22 (the Claude subscription replaces it). <b>Re-checked 2026-09-24: the connector still answers but holds 0 credits</b>, so paid search fails — funding it would be Steven's decision, since it spends money. Every in-page live web search on this portal stays a queued research request either way.</li>
+        <li><b>Research and live notes — Claude only</b> (Steven, 2026-10-05): the builder-incentive and housing-market notes on this page are written by Claude cloud routines on Steven's Claude subscription (web search; no Perplexity, no paid search API) and copied here right after they update the Command Deck.</li>
         <li><b>Working today:</b> Strava (official remote MCP server), Notion and Google Calendar (claude.ai connectors), Slack, Gmail, Inkbox, Canva (1 brand kit, re-checked 2026-09-24).</li>
         <li><b>Not connected:</b> Microsoft 365, BlackRock Advisor Center, Health Data Avatar, PlayMCP.</li>
       </ul>
       <p class="src-note"><b>Likely connectable via Composio's 1,000+ toolkit catalog</b> (worth checking case-by-case, same pattern as Zoho/Strava): Zoom, LinkedIn, Google Ads, Meta Business Suite — mainstream SaaS platforms Composio tends to cover. It does <i>not</i> cover Lofty.</p>
-      <p class="src-note"><b>Sites with no usable API at all</b> — homes.com, SkySlope, zipForms/Lone Wolf: the plan is CLI-Anything wrappers driving them through a browser automation path. Specified 2026-09-22; nothing is installed on the Mac yet.</p>
+      <p class="src-note"><b>Sites with no usable API at all</b> — homes.com, SkySlope, zipForms/Lone Wolf: read-only CLI-Anything wrappers for these sites were installed on Steven's Mac 2026-10-04. They read nothing until he connects the DOMShell browser extension and signs in to each site — so nothing on this page comes from them yet.</p>
       <p class="src-note"><b>Typically NOT available through a generic connector platform</b> — these need a direct vendor API agreement/credentials from Steven, not something a third-party connector can supply: CRMLS Matrix, RPR, Realist/Cotality, ShowingTime, Dotloop, SkySlope, InfoSparks, Ticor Title, Arive. MLS and title/escrow systems in particular gate API access behind board membership or vendor contracts.</p>
       <p class="src-note"><b>Net:</b> don't assume "API exists" for every row above — it's genuinely mixed, and connections this card once called dead don't stay dead: Canva answers again, and You.com — retired — still answers but holds 0 credits. The honest path is check-one-at-a-time, in both directions, not a one-time pass in either — and a connector being "connected" is not the same as it returning data, which Zoho proves daily.</p>
     </div>
@@ -1656,7 +1754,7 @@
   </section>
 
   <p class="src-note" id="isaRenderErrors" hidden style="border:1px solid var(--negative);background:var(--negative-soft);color:var(--negative);border-radius:8px;padding:10px 12px;margin-bottom:14px;"></p>
-  <footer class="deck-foot">ISA PORTAL · SCOPED ACCESS · REAL ESTATE &amp; MORTGAGE ONLY<br><span style="opacity:.75;">Build 2026-09-22, connection wording re-checked 2026-09-24 · You.com retired (connector at 0 credits), Lofty is the real-estate CRM of record, sync status re-measured against both databases - if two sessions edit this page, the newer build wins; check this stamp before assuming your change is live.</span></footer>
+  <footer class="deck-foot">ISA PORTAL · SCOPED ACCESS · REAL ESTATE &amp; MORTGAGE ONLY<br><span style="opacity:.75;">Build 2026-10-05 — builder-incentive and housing-market notes mirror the Command Deck's (Claude routines on Steven's subscription; no Perplexity), drift re-measured against both stores. Earlier: build 2026-10-04 — rates and market cards read the shared ratesSnapshot live, Military Base Installation Guide added (Panel 10); build 2026-09-22, connection wording re-checked 2026-09-24 · You.com retired (connector at 0 credits), Lofty is the real-estate CRM of record, sync status re-measured against both databases - if two sessions edit this page, the newer build wins; check this stamp before assuming your change is live.</span></footer>
 </div>
 
 <script>
@@ -1948,7 +2046,10 @@
       }
       if (remoteJson !== localJson) {
         var wrote = lsSetLocal(key, data.v);
-        if (wrote && key !== "sectionEdits") changed = true;   // stamps re-render on their own; never worth a reload
+        /* liveFeeds (2026-10-05) only feeds the dated notes on the Markets panel: redraw them in place
+           rather than reload the whole page under someone mid-call. */
+        if (wrote && key === "liveFeeds") { safeRun(renderIsaLiveFeeds, "renderIsaLiveFeeds"); }
+        else if (wrote && key !== "sectionEdits") changed = true;   // stamps re-render on their own; never worth a reload
       }
     });
     return changed;
@@ -1997,10 +2098,10 @@
      The near-side (this device) cells for isaLine/pipeline/reClients ARE computed at runtime,
      from this page's own store — that much this page can see. The far-side (Command Deck)
      column, and every other row, is a hand read out of BOTH artifact databases, most recently
-     2026-09-24 (collection "state"): this page cannot see Command Deck's store on its own, and
+     2026-10-05 (collection "state"): this page cannot see Command Deck's store on its own, and
      saying otherwise is the exact dishonesty this table exists to kill. Re-measure it in a
      Claude session and update the constant; the stamp below is what it is current to. */
-  var DRIFT_CHECKED_AT = "2026-09-24";
+  var DRIFT_CHECKED_AT = "2026-10-05";
   /* How long the hand-measured Command Deck column stays trustworthy before the table says so
      itself. That column CANNOT refresh on its own: this page has no way to read the other store.
      Before this it simply kept displaying whatever was last typed, and by 2026-09-23 the
@@ -2011,33 +2112,37 @@
   var DRIFT_ROWS = [
     ["<code>isaLine</code> + <code>isaLineRead</code><div class=\"src-note\">Your thread with Steven</div>",
      function () { return driftLocalCount("isaLine", "message"); },
-     "The same 11 messages, byte for byte",
+     "The same 14 messages, byte for byte",
      "green", "In sync \u2014 carried by isa-comms-bridge-local"],
     ["<code>pipeline</code><div class=\"src-note\">Mortgage deals you track here</div>",
      function () { return driftLocalSummary("pipeline", "deal"); },
      "The same 2 deals, byte for byte",
-     "green", "In sync \u2014 carried both ways by the Pipeline Sync (live) routine, four times a day (its own log, 2026-09-24)"],
+     "green", "In sync \u2014 identical in both stores as read 2026-10-05"],
     ["<code>reClients</code><div class=\"src-note\">Real-estate clients</div>",
      function () { return driftLocalSummary("reClients", "client"); },
      "The same 2 clients, byte for byte",
-     "green", "In sync \u2014 carried both ways by the Pipeline Sync (live) routine, four times a day (its own log, 2026-09-24)"],
+     "green", "In sync \u2014 identical in both stores as read 2026-10-05"],
     ["<code>ratesSnapshot</code><div class=\"src-note\">Rates + market medians</div>",
-     "Stamped 2026-09-22 2:24 AM UTC \u2014 re-baked by hand from his copy",
-     "Stamped 2026-09-23 8:39 PM UTC, rewritten daily by the mortgage-rates-daily task on his Mac",
-     "amber", "Two separate copies. His is about 42 hours fresher and is authoritative"],
+     "Same document as his \u2014 rendered live by the rate table on this page",
+     "Identical, byte for byte, as read 2026-10-05",
+     "green", "In sync \u2014 the rates tasks now write both dashboards (since 2026-10-04)"],
     ["<code>isaDailySchedule</code><div class=\"src-note\">Your daily playbook</div>",
      "Present", "Identical on both sides",
      "green", "Matching \u2014 but copied by hand, not by any task"],
     ["<code>isaKpi</code><div class=\"src-note\">The measured KPI week</div>",
-     "Week ending 2026-09-13, six metrics",
-     "Same week and the same six numbers, but the sixth is labelled differently: his reads \u201cvs CRM delta\u201d, this copy still reads \u201cvs FUB delta\u201d",
-     "amber", "Drifted \u2014 same numbers, stale CRM name on this side"],
+     "Present \u2014 the latest measured week",
+     "Identical, byte for byte, as read 2026-10-05",
+     "green", "In sync \u2014 re-copied 2026-10-04 (the stale CRM label is gone)"],
     ["<code>isaGradingScores</code> \u00b7 <code>isaKpiSopActuals</code><div class=\"src-note\">Your self-grades and KPI actuals</div>",
      "Whatever you have typed, saved on this device", "Neither document exists yet",
-     "gray", "Carried by the Pipeline Sync (live) routine once you enter them \u2014 none entered on either side as of 2026-09-24"],
+     "gray", "Carried by the Pipeline Sync (live) routine once you enter them \u2014 none entered on either side as of 2026-10-05"],
     ["<code>showingSchedule</code> \u00b7 <code>showingRoute</code> \u00b7 <code>showingSyncRequests</code>",
-     "No document on this device", "All three exist on his side but are empty",
-     "amber", "No drift today only because both are empty \u2014 nothing carries them"]
+     "No document on this device", "All three exist on his side but are empty (re-read 2026-10-05)",
+     "amber", "No drift today only because both are empty \u2014 nothing carries them"],
+    ["<code>liveFeeds</code><div class=\"src-note\">Builder-incentive + housing-market notes</div>",
+     function () { return driftLiveFeedsLocal(); },
+     "The same four notes, byte for byte, as read 2026-10-05 (his copy also holds feeds this page does not show)",
+     "green", "Mirrored \u2014 the Claude builder-incentives and news routines copy each note here right after writing his (since 2026-10-05)"]
   ];
   /* Client rows are never written into this file. The two cells that describe what is on THIS
      device are counted from the live document at render time and deliberately print no name and
@@ -2059,6 +2164,13 @@
       '<div class="src-note">Counted from this device\u2019s own document as the table rendered. Names and amounts are withheld here on purpose.</div>';
   }
   /* Same withholding rule, for a thread whose length is the whole point of the row. */
+  function driftLiveFeedsLocal() {
+    var feeds = isaLiveFeedsDoc().feeds, keys = Object.keys(feeds), newest = "";
+    if (!keys.length) return "No document on this device";
+    keys.forEach(function (k) { var c = feeds[k] && feeds[k].checkedAt; if (c && String(c) > newest) newest = String(c); });
+    return keys.length + " note" + (keys.length === 1 ? "" : "s") + (newest ? " \u2014 newest checked " + chatEsc(newest.slice(0, 16).replace("T", " ")) + " UTC" : "") +
+      '<div class="src-note">Counted from this device\u2019s own document as the table rendered.</div>';
+  }
   function driftLocalCount(key, noun) {
     var v = lsGet(key, null);
     if (v == null) return "No document on this device";
@@ -2441,19 +2553,123 @@
     return d <= 0 ? "refreshed today" : d === 1 ? "1 day old" : d + " days old";
   }
   function mortRowId(r, i) { return "mortrate-" + i; }
+  /* 2026-10-04: the table used to render only the baked MORTGAGE_RATES array below (Sep 18 figures) even
+     though the ratesSnapshot document in this page's own store is written by the rates tasks. Read the
+     document first; fall back to the baked snapshot only when the document is absent or malformed. */
+  function ratesDocV() {
+    var d = lsGet("ratesSnapshot", null);
+    return (d && typeof d === "object" && !Array.isArray(d) && Array.isArray(d.rates) && d.rates.length) ? d : null;
+  }
+  function ratesStampIso() { var d = ratesDocV(); return d && d.syncedAt ? String(d.syncedAt) : MORTGAGE_RATES_SYNCED_AT; }
+  function renderMortgageRatesFromDoc(d) {
+    var hand = MORTGAGE_RATES.filter(function (r) { return /NOT in the daily snapshot/.test(r.source); });
+    var rows = d.rates.map(function (r) {
+      var id = /\(([A-Z0-9]+)\)/.exec(String(r.source || ""));
+      return { type: String(r.program || ""), term: "", rate: Number(r.rate), apr: null,
+        source: String(r.source || "") + (r.asOf ? " \u00b7 " + r.asOf : "") + (typeof r.change === "number" ? " \u00b7 " + (r.change >= 0 ? "+" : "") + r.change.toFixed(3) + " vs prior day" : ""),
+        url: id ? "https://fred.stlouisfed.org/series/" + id[1] : "" };
+    }).concat((Array.isArray(d.benchmarks) ? d.benchmarks : []).map(function (b) {
+      return { type: "Benchmark", term: String(b.name || ""), rate: Number(b.rate), apr: null, source: (b.asOf ? String(b.asOf) : "") + (b.note ? " \u00b7 " + b.note : ""), url: "" };
+    })).concat(hand);
+    $("mortgageRatesSyncNote").textContent = "Live from the shared ratesSnapshot document, last written " + String(d.syncedAt || "(no stamp)") + " (" + isaDaysSince(d.syncedAt) + ") by the mortgage-rates-daily task on Steven's Mac \u2014 Optimal Blue lock-rate indices, Freddie Mac PMMS and the 10-year Treasury via FRED, written to his dashboard and this one each weekday. Rows marked \"NOT in the daily snapshot\" are lender-page figures verified by hand, each with its own date. Averages for orientation only \u2014 never state a rate to a borrower yourself.";
+    $("mortgageRateRows").innerHTML = rows.map(function (r, i) {
+      var rate = isFinite(r.rate) ? r.rate.toFixed(3).replace(/0+$/, "").replace(/\.$/, "") + "%" : "\u2014";
+      var src = safeUrl(r.url) ? '<a href="' + chatEsc(safeUrl(r.url)) + '" target="_blank" rel="noopener" class="src-note">' + chatEsc(r.source) + "</a>" : '<span class="src-note">' + chatEsc(r.source) + "</span>";
+      return '<tr id="' + mortRowId(r, i) + '"><td>' + chatEsc(r.type) + "</td><td>" + chatEsc(r.term) + '</td><td class="num mrate-cell">' + rate + '</td><td class="num">' + (r.apr ? chatEsc(r.apr) + "%" : "\u2014") + "</td><td>" + src + "</td></tr>";
+    }).join("");
+  }
   function renderMortgageRates() {
+    var doc = ratesDocV();
+    if (doc) { renderMortgageRatesFromDoc(doc); return; }
     $("mortgageRatesSyncNote").textContent = "Snapshot synced " + MORTGAGE_RATES_SYNCED_AT + " (" + isaDaysSince(MORTGAGE_RATES_SYNCED_AT) + ") - a dated, sourced snapshot copied across by hand, not a live feed. Nothing on this page refreshes it; the daily task that writes the source document runs on Steven's Mac and writes to HIS store, which this page cannot read. Rows marked \"NOT in the daily snapshot\" are lender-page figures verified by hand, each carrying its own source date. APR shows \"-\" wherever the source publishes a rate and no APR - an APR from a different pull does not belong beside it. Verify against a current lender quote before it reaches a borrower, and never state a rate to one yourself.";
     $("mortgageRateRows").innerHTML = MORTGAGE_RATES.map(function (r, i) {
       return "<tr id=\"" + mortRowId(r, i) + "\"><td>" + r.type + "</td><td>" + r.term + '</td><td class="num mrate-cell">' + r.rate.toFixed(3).replace(/0+$/, "").replace(/\.$/, "") + '%</td><td class="num">' +
         (r.apr ? r.apr + "%" : "—") + '</td><td><a href="' + chatEsc(safeUrl(r.url)) + '" target="_blank" rel="noopener" class="src-note">' + chatEsc(r.source) + "</a></td></tr>";
     }).join("");
   }
+  function marketsFromDoc() {
+    var d = ratesDocV(); if (!d || !Array.isArray(d.markets) || !d.markets.length) return null;
+    var out = {};
+    d.markets.forEach(function (m) {
+      if (!m || typeof m !== "object" || !m.name) return;
+      var baked = MARKET_UPDATES[m.name] || {};
+      var yoy = parseFloat(String(m.yoy == null ? "" : m.yoy).replace(/[^0-9.+-]/g, ""));
+      out[String(m.name)] = {
+        medianPrice: typeof m.medianPrice === "number" ? m.medianPrice : null, priceChangeYoy: isFinite(yoy) ? yoy : null,
+        daysOnMarket: typeof m.dom === "number" ? m.dom : null, saleToListRatio: null, soldAboveList: null,
+        note: chatEsc((m.note ? m.note + " " : "") + "Period " + (m.asOf || "not stated") + (m.monthsSupply != null ? " \u00b7 months of supply " + m.monthsSupply : "") + " \u2014 from the shared ratesSnapshot document (r5-rates-market-refresh, weekly)."),
+        source: chatEsc(m.source || "source not stated"), url: chatEsc(safeUrl(baked.url || "")),
+        activeListings: baked.activeListings, activeListingsAsOf: baked.activeListingsAsOf, activeListingsScope: baked.activeListingsScope,
+        activeListingsSource: baked.activeListingsSource, activeListingsUrl: baked.activeListingsUrl
+      };
+    });
+    return Object.keys(out).length ? out : null;
+  }
+  /* ================= LIVE NOTES MIRRORED FROM THE COMMAND DECK (2026-10-05) =================
+     Steven, 2026-10-05: "ensure ISA portal also is update and mirrors command deck and only uses
+     Claude subscription for feeds". The builder-incentive note and the three housing-market notes
+     the Command Deck shows are written by Claude cloud routines on Steven's Claude subscription
+     (web search only: no Perplexity, no paid search API). Right after writing the Command Deck,
+     each routine copies the same entry, byte for byte, into THIS page's own `liveFeeds` document,
+     because no page can read the other page's store. Each note carries its own checkedAt, and a
+     note past its budget says so instead of passing for current. */
+  var ISA_LIVE_FEED_BUDGET_HRS = { builder: 192, market: 30 };   // the deck's 192 h; the news routine writes markets daily
+  var ISA_MARKET_FEED_SLUG = { "San Diego County, CA": "san-diego-ca" };   // the deck calls this card "San Diego, CA"
+  function isaMarketFeedSlug(city) {
+    city = String(city == null ? "" : city);
+    if (Object.prototype.hasOwnProperty.call(ISA_MARKET_FEED_SLUG, city)) return ISA_MARKET_FEED_SLUG[city];
+    return city.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  }
+  function isaLiveFeedsDoc() {
+    var doc = lsGet("liveFeeds", null);
+    if (doc && typeof doc === "object" && !Array.isArray(doc) && doc.feeds && typeof doc.feeds === "object" && !Array.isArray(doc.feeds)) return doc;
+    if (doc != null) { try { lsShapeWarn("liveFeeds", "an object with a feeds object", doc); } catch (e) {} }
+    return { feeds: {} };
+  }
+  function isaFeedStamp(t) {
+    var h = (Date.now() - t) / 3600000;
+    var ago = h < 1 ? Math.max(1, Math.round(h * 60)) + " min ago" : h < 48 ? Math.round(h) + " h ago" : Math.round(h / 24) + " days ago";
+    var when;
+    try { when = new Date(t).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: "America/Los_Angeles" }) + " PT"; }
+    catch (e) { when = new Date(t).toISOString().slice(0, 16).replace("T", " ") + " UTC"; }
+    return when + " (" + ago + ")";
+  }
+  function isaPaintFeed(el, d, budgetHrs, writer) {
+    if (!el) return;
+    if (d && d.citations != null && !Array.isArray(d.citations)) {
+      try { lsShapeWarn("liveFeeds", "an array of citations", d.citations); } catch (e) {}
+      d = { checkedAt: d.checkedAt, text: d.text, citations: [] };
+    }
+    if (!d || typeof d !== "object" || (!d.text && !(d.citations || []).length)) {
+      el.innerHTML = '<li><div class="src-note">No live note has reached this device yet. The ' + chatEsc(writer) + " copies it here right after it updates the Command Deck.</div></li>";
+      return;
+    }
+    var t = new Date(d.checkedAt).getTime();
+    var stale = !isNaN(t) && (Date.now() - t) / 3600000 > budgetHrs;
+    var cites = (d.citations || []).filter(function (c) { return c && safeUrl(c.url); }).slice(0, 5);
+    el.innerHTML =
+      (stale ? '<li><div class="src-note" style="color:var(--warning);"><b>Older than this note should be.</b> Treat every figure, offer and date in it as unconfirmed until it refreshes.</div></li>' : "") +
+      (d.text ? '<li><div class="src-note" style="color:var(--text-dim);">' + chatEsc(String(d.text).slice(0, 700)) + "</div></li>" : "") +
+      cites.map(function (c) { return '<li><a href="' + escAttr(safeUrl(c.url)) + '" target="_blank" rel="noopener">' + chatEsc(c.title || c.url) + " \u2192</a></li>"; }).join("") +
+      '<li><div class="src-note">Checked ' + chatEsc(isNaN(t) ? "at an unknown time" : isaFeedStamp(t)) + " by the " + chatEsc(writer) + " on Steven\u2019s Claude subscription \u2014 the same note the Command Deck shows." + (stale ? " OVERDUE." : "") + "</div></li>";
+  }
+  function renderIsaLiveFeeds() {
+    var feeds = isaLiveFeedsDoc().feeds;
+    isaPaintFeed($("builderIncentiveLiveList"), feeds.builderIncentiveLiveList, ISA_LIVE_FEED_BUDGET_HRS.builder, "Claude builder-incentives routine");
+    var lists = document.querySelectorAll('ul[id^="marketUpdateLiveList_"]');
+    for (var i = 0; i < lists.length; i++) {
+      isaPaintFeed(lists[i], feeds[lists[i].id], ISA_LIVE_FEED_BUDGET_HRS.market, "Claude news routine");
+    }
+  }
+  setInterval(function () { safeRun(renderIsaLiveFeeds, "renderIsaLiveFeeds"); }, 600000);   // keeps the "h ago" honest on an open tab
   function renderMarketUpdates() {
-    $("marketUpdateSyncNote").textContent = "Synced " + MARKET_SYNCED_AT + " There is no live headline feed on this card: the You.com search it used to run on was retired 2026-09-22 (its connector holds 0 credits, re-checked 2026-09-24). Medians, DOM and YoY come from the ratesSnapshot document the mortgage-rates-daily task writes on Steven's Mac (last write 2026-09-22 2:24 AM UTC, still its latest as of this re-check) and were copied here by hand — except Murrieta, re-sourced directly from Redfin 2026-09-28; active-listing counts and sale-to-list ratios are periodic manual pulls that document does not carry.";
+    $("marketUpdateSyncNote").textContent = "Synced " + MARKET_SYNCED_AT + " These medians, DOM and YoY are the baked snapshot \u2014 the shared ratesSnapshot document has no market rows on this device yet. The dated note under each city is written each morning by the Claude news routine on Steven's Claude subscription and copied here from the Command Deck.";
     var wrap = $("marketUpdateCards");
     wrap.innerHTML = "";
-    Object.keys(MARKET_UPDATES).forEach(function (city) {
-      var m = MARKET_UPDATES[city];
+    var MKT = marketsFromDoc() || MARKET_UPDATES;
+    if (MKT !== MARKET_UPDATES) { var dd = ratesDocV(); $("marketUpdateSyncNote").textContent = "Live from the shared ratesSnapshot document (market figures by the weekly r5-rates-market-refresh task, last written " + String((dd && (dd.marketsSyncedAt || dd.syncedAt)) || "(no stamp)") + "). Active-listing counts are still the older manual IDX pull, dated in place. Redfin publishes on roughly a one-month lag, so the medians trail the current month. The dated note under each city is written each morning by the Claude news routine on Steven's Claude subscription and copied here from the Command Deck."; }
+    Object.keys(MKT).forEach(function (city) {
+      var m = MKT[city];
       var div = document.createElement("div");
       div.style.marginBottom = "14px";
       div.style.paddingBottom = "14px";
@@ -2461,19 +2677,21 @@
       div.innerHTML =
         '<p class="card-title" style="font-size:15px;">' + city + "</p>" +
         '<div class="stat-row" style="margin-top:8px;">' +
-        '<div class="stat"><div class="stat-label">Median price</div><div class="stat-value" style="font-size:15px;">' + fmtMoney(m.medianPrice) + "</div></div>" +
-        '<div class="stat"><div class="stat-label">YoY change</div><div class="stat-value" style="font-size:15px;">' + (m.priceChangeYoy >= 0 ? "+" : "") + m.priceChangeYoy + "%</div></div>" +
-        '<div class="stat"><div class="stat-label">Median DOM</div><div class="stat-value" style="font-size:15px;">' + m.daysOnMarket + "d</div></div>" +
+        '<div class="stat"><div class="stat-label">Median price</div><div class="stat-value" style="font-size:15px;">' + (typeof m.medianPrice === "number" ? fmtMoney(m.medianPrice) : "\u2014") + "</div></div>" +
+        '<div class="stat"><div class="stat-label">YoY change</div><div class="stat-value" style="font-size:15px;">' + (typeof m.priceChangeYoy === "number" ? (m.priceChangeYoy >= 0 ? "+" : "") + m.priceChangeYoy + "%" : "\u2014") + "</div></div>" +
+        '<div class="stat"><div class="stat-label">Median DOM</div><div class="stat-value" style="font-size:15px;">' + (typeof m.daysOnMarket === "number" ? m.daysOnMarket + "d" : "\u2014") + "</div></div>" +
         "</div>" +
         (m.activeListings ? '<div class="stat-row" style="grid-template-columns:1fr; margin-top:8px;"><div class="stat"><div class="stat-label">Active listings right now (IDX)</div><div class="stat-value" style="font-size:15px;">' + m.activeListings.toLocaleString("en-US") + '</div><div class="src-note">' + m.activeListingsScope + ' · ' + m.activeListingsSource + ' · as of ' + m.activeListingsAsOf + '</div></div></div>' : "") +
         (typeof m.saleToListRatio === "number" ? '<p class="src-note" style="margin-top:8px;">Sale-to-list ' + m.saleToListRatio + "%" + (m.soldAboveList ? " · " + m.soldAboveList + "% sold above list" : "") + "</p>" : '<p class="src-note" style="margin-top:8px;">Sale-to-list: not published for this market in the source used.</p>') +
         '<p class="src-note">' + m.note + "</p>" +
         '<div style="margin-top:6px;"><a href="' + m.url + '" target="_blank" rel="noopener" class="src-note">' + m.source + " →</a>" +
-        (m.activeListingsUrl ? ' &nbsp;·&nbsp; <a href="' + m.activeListingsUrl + '" target="_blank" rel="noopener" class="src-note">Search live inventory (CRMLS) →</a>' : "") + "</div>";
+        (m.activeListingsUrl ? ' &nbsp;·&nbsp; <a href="' + m.activeListingsUrl + '" target="_blank" rel="noopener" class="src-note">Search live inventory (CRMLS) →</a>' : "") + "</div>" +
+        '<ul class="link-list" id="marketUpdateLiveList_' + isaMarketFeedSlug(city) + '" style="margin-top:8px;"></ul>';
       wrap.appendChild(div);
     });
     var last = wrap.lastElementChild;
     if (last) { last.style.marginBottom = "0"; last.style.paddingBottom = "0"; last.style.borderBottom = "none"; }
+    safeRun(renderIsaLiveFeeds, "renderIsaLiveFeeds");
   }
   safeRun(renderMortgageRates, "renderMortgageRates");
   safeRun(renderMarketUpdates, "renderMarketUpdates");
@@ -2850,6 +3068,10 @@
   var TECH_STACK = [
     ["Zoho CRM", "https://zoho.com/crm", "4.1, 4.4, 4.5"],
     ["Lofty (formerly Chime) — real-estate CRM of record since 2026-09-22", "https://lofty.com", "4.1, 4.4"],
+    ["VA LEAD Command CRM \u2014 Steven's VA lead dashboard (opens only if he has shared it with you)", "https://claude.ai/artifact/BVqHSxv2WYcZzqAsz3r4Sm", "Lead management"],
+    ["LPT Realty Agent Attraction \u2014 Steven's agent recruiting page (opens only if he has shared it with you)", "https://claude.ai/artifact/BwmELnvH8Dhg4wTKKDpo7c", "Recruiting"],
+    ["Social Growth Platform \u2014 Steven's social content planner (opens only if he has shared it with you)", "https://claude.ai/artifact/7AnYk44dedpeaSfYgS1g6R", "Social media"],
+    ["Social Growth Platform Pro \u2014 approved-post queue (opens only if he has shared it with you)", "https://claude.ai/artifact/2WCsXTQWR81yGvCGxKia4d", "Social media"],
     ["Arive", "https://arive.com", "4.1, 4.5"],
     ["Otter.ai", "https://otter.ai", "4.2"],
     ["Slack", "https://slack.com", "4.3"],
@@ -3184,16 +3406,18 @@
      Richmond American Inland Empire https://www.richmondamerican.com/campaigns/1807/ (Sep 2) and Los Angeles /campaigns/2401/ (Sep 19);
      Meritage SoCal http://cloud.e.meritagehomes.com/great-rate-socal (Aug 31, but its fine print is the Oct 2024 event);
      NAHB/Wells Fargo HMI Sep 2026 https://www.nahb.org/news-and-economics/press-releases/2026/09/builder-sentiment-falls-on-higher-interest-rates-and-costs;
-     Lennar Q3 FY2026 results (Sep 16) https://investors.lennar.com/press-releases/2026/09-16-2026-213038087. */
-  var BUILDER_INCENTIVE_SYNCED_AT = "2026-09-22 13:05 UTC — WebSearch + Perplexity (sonar-pro, domain-filtered to the builders' own sites); no builder page could be fetched directly from this session";
+     Lennar Q3 FY2026 results (Sep 16) https://investors.lennar.com/press-releases/2026/09-16-2026-213038087.
+     2026-10-05: Perplexity, one of the tools that pass used, has been removed (Steven). The live note under
+     these write-ups is written by the Claude builder-incentives routine and copied here from the Command Deck. */
+  var BUILDER_INCENTIVE_SYNCED_AT = "2026-09-22 13:05 UTC — a one-off web-research pass over the builders' own pages (search-indexed copies; no builder page could be opened directly from that session)";
   var BUILDER_INCENTIVES = [
     { area: "Temecula / Murrieta / Menifee / Winchester, CA", summary: "Re-researched 2026-09-22 from the builders' own pages. What is actually advertised right now: <b>D.R. Horton</b> — Southern California “Special Interest Rate on certain D.R. Horton homes”: FHA 30-yr fixed 4.990% (5.843% APR, 3.5% down) or conventional 30-yr fixed 5.500% (5.947% APR, 5% down), DHI Mortgage required, “must contract on or after 07/27/26 and close by 10/30/26”, funds limited — shown on Spring Creek (Menifee, page updated Sep 18), Juniper at Canterwood (Winchester, Sep 21), Sycamore at Canterwood (Winchester, Aug 23) and La Ventana (Winchester, Sep 17). <b>Lennar</b> — Inland Empire “Fall Super Savings 2026”: promotional FHA fixed 3.990% (4.748% APR) or promotional fixed 4.250% (4.501% APR) through Lennar Mortgage, but only for purchase agreements signed 09/14/26–09/20/26 closing by 10/31/26 — that window closed on Sep 20 and the next one had not posted on the Sep 18 page snapshot; Lennar's active Menifee community is Legado (low $500,000s), Quartz Trail shows no homes available. <b>Richmond American</b> — the Inland Empire offer page (updated Sep 2) showed a 5.508% APR permanent-buydown offer for agreements signed Sep 1–15, 2026 (expired; the spring version was “up to $60,000 promotional value” toward closing costs, a permanent buydown with HomeAmerican Mortgage, or a 2% price discount). <b>Meritage</b> — its “up to $20K to lower your rate + appliances &amp; blinds” SoCal page is still online, but its fine print is the Oct 1–20, 2024 event; no current Meritage offer for this submarket could be verified (Winchester alone has ~20–25 actively selling neighborhoods across 8 builders including Meritage, per a Sept 2026 local guide). <b>KB Home</b> and <b>Taylor Morrison</b> — no current SW-Riverside rate offer found (KB reports Q3 earnings today, Sep 22). NewHomeSource's Temecula “hot deals” index line still reads 8 builders / 30 communities, but the page itself could not be reached from this session, so that count is unverified. Context: the NAHB/Wells Fargo HMI for September 2026 fell to 32 (lowest in a year) with 66% of builders using incentives and 38% cutting prices (average cut 6%); Lennar's Q3 FY2026 results (Sep 16) put incentives at ~12.0% of a $372,000 average sales price. Pattern to brief clients on: sub-5% to 5.5% FHA/conventional promotional rates through the builder's own lender, sold in one-to-two-week signing windows with a hard closing date — ask the sales office for the current window before a client tours, and compare against the Optimal Blue averages on this page (VA 6.751%, conforming 7.038% as of Sep 18) before calling it a deal.", source: "D.R. Horton Spring Creek (Menifee) page, updated Sep 18, 2026 — the current SoCal special-rate offer; other pages listed in the code comment above", url: "https://www.drhorton.com/california/inland-empire/menifee/spring-creek" },
     { area: "San Diego County, CA", summary: "Re-researched 2026-09-22 from the builders' own pages. <b>Lennar</b> — San Diego “Labor Day Sale 2026” page (published Sep 11, updated Sep 20): promotional conventional fixed loan with a temporary 2-1 buydown, 2.99% year 1 / 3.99% year 2 / 4.99% for the balance of the term (5.327% APR), Lennar Mortgage required, purchase agreements 09/14/26–09/20/26 closing by 11/30/26 — the signing window closed on Sep 20 while the page was still up; Lennar's San Diego-area communities on its site are Cota Vera (Chula Vista), The Row (San Marcos), Junipers (San Diego 92129), North River Farms (Oceanside) and Creekside Crossing (Ramona). <b>D.R. Horton</b> — Tesoro Square (Escondido, page updated Sep 20) carries the same Southern California special rate as the Inland Empire: FHA 30-yr fixed 4.990% (5.843% APR) or conventional 5.500% (5.947% APR), DHI Mortgage required, contract on or after 07/27/26 and close by 10/30/26. <b>Richmond American</b> — its Los Angeles/San Diego offer page (updated Sep 19) says up to $35,000 promotional value toward closing costs, a permanent buydown with HomeAmerican Mortgage, or a 2% price discount, with no signing window shown in the extract. KB Home, Taylor Morrison, Meritage, Shea, Pardee/Tri Pointe, Toll Brothers and Brookfield — no current, dated San Diego County rate offer could be verified today. NewHomeSource's San Diego index line lists 66 builders / 131 communities / 430 homes (page not reachable from here). No September 2026 study of the builder-lender vs. market-rate gap was found: the Sep 2 pass's figures (Aug 2026 builder-affiliated ~5.23% vs ~6.60% non-builder; Lennar FY2025 incentives $62,700/home, 13.8% of revenue) were NOT re-verified 2026-09-22 and are kept only as that pass's context — the fresh comparable is Lennar's Q3 FY2026 ~12.0% incentive load (Sep 16). Against Optimal Blue's Sep 18 averages on this page (VA 6.751%, conforming 7.038%), the advertised 4.99–5.50% builder rates are a 1.5–2 point subsidy — real, but only through the builder's lender and only inside the posted window, so never repeat one to a client as a market rate.", source: "Lennar San Diego “Labor Day Sale 2026” promo page, updated Sep 20, 2026; D.R. Horton Tesoro Square and the other pages are listed in the code comment above", url: "https://www.lennar.com/new-homes/california/san-diego/promo/sdglen_fss26" }
   ];
   function renderBuilderIncentives() {
-    $("builderIncentiveSyncNote").textContent = "Snapshot researched " + BUILDER_INCENTIVE_SYNCED_AT + " — a dated manual snapshot, " + isaDaysSince(BUILDER_INCENTIVE_SYNCED_AT) + ". The live results that used to sit under it ran on the You.com connector, which was retired 2026-09-22 (its connector holds 0 credits, re-checked 2026-09-24). No task tracks builder buydowns: the incentives-daily-scan task on Steven's Mac writes an incentivePrograms document of down-payment-assistance, utility, tax and veteran programs for Temecula/SW Riverside and San Diego (last written 2026-09-22 02:22 UTC) — useful, but not builder incentives — and it lands in Command Deck's store, which this page cannot read. This card moves only when someone re-researches it in a Claude session: ask for a re-sync on the ISA line, or use the research queue in the Property Search panel.";
+    $("builderIncentiveSyncNote").textContent = "Two hand-researched area write-ups plus a live note that refreshes daily \u2014 each carries its own date below.";
     var wrap = $("builderIncentiveRows");
-    wrap.innerHTML = "";
+    wrap.innerHTML = '<p class="src-note" style="margin:0 0 8px;">The two area write-ups below are a hand snapshot researched ' + chatEsc(BUILDER_INCENTIVE_SYNCED_AT) + " (" + isaDaysSince(BUILDER_INCENTIVE_SYNCED_AT) + ") and do not refresh. Signing windows in them may have closed since; confirm the buydown, the window and the closing date with the sales office before anything reaches a client. The dated note underneath them is the part that refreshes.</p>";
     BUILDER_INCENTIVES.forEach(function (b, i) {
       var div = document.createElement("div");
       div.style.padding = "10px 0";
@@ -3203,8 +3427,49 @@
         '<div style="margin-top:6px;"><a href="' + b.url + '" target="_blank" rel="noopener" class="src-note">' + b.source + " →</a></div>";
       wrap.appendChild(div);
     });
+    safeRun(renderIsaLiveFeeds, "renderIsaLiveFeeds");
   }
   safeRun(renderBuilderIncentives, "renderBuilderIncentives");
+
+  /* ================= MILITARY BASE INSTALLATION GUIDE (mirrored from Command Deck v164) ================= */
+  var MIL_BASES = {"checkedAt": "2026-10-04", "sourceTool": "WebSearch + WebFetch (Perplexity out of credit). travel.dod.mil and several .mil pages blocked automated fetches; facts come from installations.militaryonesource.mil and the cited pages.", "links": {"bahCalculator": "https://www.travel.dod.mil/Allowances/Basic-Allowance-for-Housing/BAH-Rate-Lookup/", "vaHomeLoans": "https://www.va.gov/housing-assistance/home-loans/", "militaryInstallations": "https://installations.militaryonesource.mil/"}, "bases": [{"id": "mcb-camp-pendleton", "name": "Marine Corps Base Camp Pendleton", "branch": "USMC", "location": "Camp Pendleton (Oceanside area), San Diego County", "gate": "Visitor Center Bldg 20255T; Pass & ID Bldg 23194 (admin address: Bldg 1795, W. Barnett Cir, 92055)", "mhaCode": "CA024", "mhaName": "Camp Pendleton, CA", "mhaNote": null, "markets": ["Oceanside", "Fallbrook"], "driveToTemecula": null, "housingUrl": "https://www.pendleton.marines.mil/Family/Family-Housing/", "housingPartner": "Liberty Military Housing", "notes": ["Tenants: I MEF, 1st Marine Division, 1st MLG, elements of 3rd MAW. ~6,880 housing units; waits 1\u201316 months; about two-thirds of families live off base.", "Gates: Main, San Luis Rey, Las Pulgas, San Onofre, DeLuz (Housing), Del Mar, Cristianitos, Fallbrook (NWS). Which gate Temecula commuters use is not verified."], "sources": ["https://installations.militaryonesource.mil/military-installation/camp-pendleton/housing/housing", "https://www.pendletonhousing.com/gates"], "checked": "2026-10-04"}, {"id": "mcas-camp-pendleton", "name": "Marine Corps Air Station Camp Pendleton", "branch": "USMC", "location": "Camp Pendleton, San Diego County", "gate": "MAG-39, Bldg 23215, Camp Pendleton, CA 92055 (unit mailing address)", "mhaCode": "CA024", "mhaName": "Camp Pendleton, CA", "mhaNote": null, "markets": [], "driveToTemecula": null, "housingUrl": "https://www.pendleton.marines.mil/Family/Family-Housing/", "housingPartner": "Liberty Military Housing (shares MCB housing)", "notes": ["Home of Marine Aircraft Group 39 (3rd MAW), Area 23 north of Vandegrift Rd."], "sources": ["https://www.3rdmaw.marines.mil/Units/MAG-39/"], "checked": "2026-10-04"}, {"id": "mcas-miramar", "name": "Marine Corps Air Station Miramar", "branch": "USMC", "location": "San Diego, San Diego County", "gate": "6200 Miramar Way, San Diego, CA 92145", "mhaCode": "CA038", "mhaName": "San Diego, CA", "mhaNote": "matched by city name \u2014 confirm by ZIP at DTMO", "markets": [], "driveToTemecula": null, "housingUrl": "https://www.livelmh.com/installations/ca/san-diego/miramar-mcas/", "housingPartner": "Liberty Military Housing", "notes": ["Home of 3rd Marine Aircraft Wing (F/A-18, F-35B/C, KC-130, MV-22, CH-53E). Main and East Gates open 24/7.", "Families live throughout San Diego and Riverside counties; Navy San Diego Housing Service Center also handles Miramar."], "sources": ["https://installations.militaryonesource.mil/military-installation/marine-corps-air-station-miramar", "https://installations.militaryonesource.mil/military-installation/naval-base-san-diego/housing/housing"], "checked": "2026-10-04"}, {"id": "naval-base-san-diego", "name": "Naval Base San Diego (32nd Street)", "branch": "Navy", "location": "San Diego, San Diego County", "gate": "3455 Senn Rd, Bldg 72, San Diego, CA 92136 (admin address)", "mhaCode": "CA038", "mhaName": "San Diego, CA", "mhaNote": "matched by city name \u2014 confirm by ZIP at DTMO", "markets": [], "driveToTemecula": null, "housingUrl": "https://sandiego.navylifesw.com", "housingPartner": "Liberty Military Housing", "notes": ["Navy Housing Service Center: 2625 LeHardy St, Bldg 3544, 619-556-8443. The regional welcome center assigns all San Diego-area military families, including Miramar and MCRD.", "Military OneSource still says 'Lincoln BP Management'; Lincoln became Liberty in Oct 2021."], "sources": ["https://installations.militaryonesource.mil/military-installation/naval-base-san-diego", "https://www.militarytimes.com/pay-benefits/2021/10/22/50000-military-families-in-38-privatized-housing-communities-see-new-ownership/"], "checked": "2026-10-04"}, {"id": "naval-base-coronado", "name": "Naval Base Coronado (NAS North Island, NAB Coronado, OLF Imperial Beach and others)", "branch": "Navy", "location": "Coronado / Imperial Beach, San Diego County", "gate": "3rd St & Alameda Blvd, Coronado, CA 92118", "mhaCode": "CA038", "mhaName": "San Diego, CA", "mhaNote": "matched by city name \u2014 confirm by ZIP at DTMO", "markets": [], "driveToTemecula": null, "housingUrl": "https://ffr.cnic.navy.mil/Navy-Housing/Housing-By-Region/Southwest/NAVBASE-San-Diego/", "housingPartner": "Liberty Military Housing", "notes": ["Nine installations: NASNI, NAB, NOLF Imperial Beach, NALF San Clemente Island, SSTC-South, NTS Otay Mesa, Camp Michael Monsoor, Camp Morena.", "About 9,000 government homes at 30 San Diego-area sites; waits 0\u201324 months by location."], "sources": ["https://installations.militaryonesource.mil/military-installation/naval-base-coronado", "https://installations.militaryonesource.mil/military-installation/naval-base-coronado/housing/housing"], "checked": "2026-10-04"}, {"id": "naval-base-point-loma", "name": "Naval Base Point Loma (incl. Submarine Base)", "branch": "Navy", "location": "San Diego, San Diego County", "gate": "140 Sylvester Rd, San Diego, CA 92106", "mhaCode": "CA038", "mhaName": "San Diego, CA", "mhaNote": "matched by city name \u2014 confirm by ZIP at DTMO", "markets": [], "driveToTemecula": null, "housingUrl": "https://www.navylifesw.com/sandiego/housing/", "housingPartner": "Liberty Military Housing", "notes": ["Point Loma Peninsula (Sub Base), Harbor Drive Annex, Old Town Complex (NAVWAR HQ)."], "sources": ["https://installations.militaryonesource.mil/military-installation/naval-base-point-loma", "https://www.sandag.org/-/media/SANDAG/Documents/PDF/meetings-and-events/working-groups/military/naval-base-point-loma-briefing-book.pdf"], "checked": "2026-10-04"}, {"id": "mcrd-san-diego", "name": "Marine Corps Recruit Depot San Diego", "branch": "USMC", "location": "San Diego, San Diego County", "gate": "1600 Iwo Jima Ave, Bldg 1, San Diego, CA 92140", "mhaCode": "CA038", "mhaName": "San Diego, CA", "mhaNote": "matched by city name \u2014 confirm by ZIP at DTMO", "markets": [], "driveToTemecula": null, "housingUrl": "https://www.mcrdsd.marines.mil/Permanent-Personnel-TAD/Checking-In/Military-Housing-Office/", "housingPartner": "Liberty Military Housing (via Navy San Diego regional housing)", "notes": ["Recruit training for Marines west of the Mississippi; Drill Instructor School and the only Recruiters School."], "sources": ["https://installations.militaryonesource.mil/military-installation/mcrd-san-diego"], "checked": "2026-10-04"}, {"id": "uscg-sector-san-diego", "name": "Coast Guard Sector San Diego", "branch": "Coast Guard", "location": "San Diego, San Diego County", "gate": "2710 N. Harbor Dr, San Diego, CA 92101", "mhaCode": "CA038", "mhaName": "San Diego, CA", "mhaNote": "matched by city name \u2014 confirm by ZIP at DTMO", "markets": [], "driveToTemecula": null, "housingUrl": null, "housingPartner": "Housing office", "notes": ["Local Housing Officer (619) 278-7218 per a 2018 USCG list \u2014 may be stale."], "sources": ["https://www.pacificarea.uscg.mil/Our-Organization/Southwest-District/District-Units/Sector-San-Diego/Sector-San-Diego/Contact-Us/"], "checked": "2026-10-04"}, {"id": "nws-seal-beach-det-fallbrook", "name": "Naval Weapons Station Seal Beach Detachment Fallbrook", "branch": "Navy", "location": "Fallbrook, San Diego County", "gate": "700 Ammunition Rd, Bldg 315, Fallbrook, CA 92028", "mhaCode": null, "mhaName": null, "mhaNote": null, "markets": [], "driveToTemecula": null, "housingUrl": null, "housingPartner": "Housing office", "notes": ["Ordnance storage and loading for the Pacific fleet; borders the east side of Camp Pendleton. Housing runs through NWS Seal Beach."], "sources": ["https://installations.militaryonesource.mil/military-installation/naval-weapons-station-seal-beach"], "checked": "2026-10-04"}, {"id": "march-arb", "name": "March Air Reserve Base", "branch": "Air Force Reserve", "location": "Moreno Valley / Riverside, Riverside County", "gate": "Bldg 625, Riverside Dr, March ARB, CA 92518 (452nd AMW Public Affairs)", "mhaCode": "CA041", "mhaName": "Riverside, CA", "mhaNote": "matched by city name \u2014 confirm by ZIP at DTMO", "markets": ["Moreno Valley", "Riverside", "Perris", "Menifee", "Temecula"], "driveToTemecula": null, "housingUrl": "https://installations.militaryonesource.mil/military-installation/march-arb/housing/housing", "housingPartner": "Housing office", "notes": ["No government housing on base. Host: 452nd Air Mobility Wing; also HQ 4th Air Force, ANG units, Army and Navy/Marine reserve centers.", "Reserve base: many members are part-time, which affects the paperwork for VA eligibility \u2014 confirm on the COE."], "sources": ["https://installations.militaryonesource.mil/military-installation/march-arb", "https://installations.militaryonesource.mil/military-installation/march-arb/housing/housing"], "checked": "2026-10-04"}, {"id": "mcagcc-twentynine-palms", "name": "Marine Corps Air Ground Combat Center Twentynine Palms", "branch": "USMC", "location": "Twentynine Palms, San Bernardino County", "gate": "MCAGCC, Twentynine Palms, CA 92278", "mhaCode": "CA032", "mhaName": "Twenty Nine Palms MCB, CA", "mhaNote": null, "markets": ["Twentynine Palms", "Joshua Tree", "Yucca Valley"], "driveToTemecula": null, "housingUrl": "https://www.29palms.marines.mil/Family-Housing/", "housingPartner": "Liberty Military Housing", "notes": ["2,210 family homes and apartments; family housing wait 30 days\u201312 months."], "sources": ["https://installations.militaryonesource.mil/military-installation/twentynine-palms-mcagcc/housing/housing"], "checked": "2026-10-04"}, {"id": "fort-irwin-ntc", "name": "Fort Irwin / National Training Center", "branch": "Army", "location": "Fort Irwin, San Bernardino County", "gate": "Reception Campus, Bldg 109 Langford Lake Rd, Fort Irwin, CA 92310", "mhaCode": "CA028", "mhaName": "Barstow/Fort Irwin, CA", "mhaNote": null, "markets": [], "driveToTemecula": null, "housingUrl": "https://www.housing.army.mil/AH/ByInstallation/Default.aspx?baseId=76", "housingPartner": "Michaels Management Services (The Villages at Fort Irwin)", "notes": ["Tenants: 11th ACR, NTC Operations Group. Landmark Inn is the only hotel within 35 miles."], "sources": ["https://installations.militaryonesource.mil/military-installation/fort-irwin", "https://www.army.mil/article/288302"], "checked": "2026-10-04"}, {"id": "mclb-barstow", "name": "Marine Corps Logistics Base Barstow", "branch": "USMC", "location": "Barstow, San Bernardino County", "gate": "7th St & Wake Ave, Bldg 15, Barstow, CA 92311", "mhaCode": "CA028", "mhaName": "Barstow/Fort Irwin, CA", "mhaNote": null, "markets": [], "driveToTemecula": null, "housingUrl": "https://installations.militaryonesource.mil/military-installation/mclb-barstow/housing/housing", "housingPartner": "Housing office", "notes": ["Family Housing Office Bldg 363, 760-577-6872; 74 government quarters."], "sources": ["https://installations.militaryonesource.mil/military-installation/mclb-barstow"], "checked": "2026-10-04"}, {"id": "edwards-afb", "name": "Edwards Air Force Base", "branch": "Air Force", "location": "Edwards, Kern County", "gate": "90 Farrell Dr, Bldg 5620, Edwards AFB, CA 93524", "mhaCode": "CA457", "mhaName": "Edwards AFB/Palmdale, CA", "mhaNote": null, "markets": [], "driveToTemecula": null, "housingUrl": "https://www.housing.af.mil/Home/Installations/Edwards-AFB/", "housingPartner": "Mayroad", "notes": ["Host: 412th Test Wing. 741 privatized homes."], "sources": ["https://installations.militaryonesource.mil/military-installation/edwards-afb/housing/housing"], "checked": "2026-10-04"}, {"id": "naws-china-lake", "name": "Naval Air Weapons Station China Lake", "branch": "Navy", "location": "China Lake / Ridgecrest, Kern County", "gate": "1 Administration Circle, China Lake, CA 93555", "mhaCode": "CA021", "mhaName": "China Lake, CA", "mhaNote": null, "markets": ["Ridgecrest"], "driveToTemecula": null, "housingUrl": "https://ffr.cnic.navy.mil/Navy-Housing/Housing-By-Region/Southwest/NAWS-China-Lake/", "housingPartner": "Liberty Military Housing", "notes": ["Tenant: Naval Air Warfare Center Weapons Division. 192 single-family homes on station."], "sources": ["https://installations.militaryonesource.mil/military-installation/naval-air-weapons-station-china-lake"], "checked": "2026-10-04"}, {"id": "naval-base-ventura-county", "name": "Naval Base Ventura County (Point Mugu / Port Hueneme)", "branch": "Navy", "location": "Point Mugu / Port Hueneme, Ventura County", "gate": "311 Main Rd, Bldg 1, Point Mugu, CA 93042", "mhaCode": "CA025", "mhaName": "Ventura, CA", "mhaNote": "matched by city name \u2014 confirm by ZIP at DTMO", "markets": ["Port Hueneme", "Oxnard", "Camarillo", "Ventura"], "driveToTemecula": null, "housingUrl": "https://www.navylifesw.com/ventura/housing", "housingPartner": "Liberty Military Housing", "notes": ["Point Mugu: E-2 squadrons, VR-55, VX-30. Port Hueneme: 30th NCR, Seabee battalions, NAVFAC EXWC.", "Military OneSource prints the Port Hueneme housing zip as 94043; the correct zip is 93043."], "sources": ["https://installations.militaryonesource.mil/military-installation/naval-base-ventura-county-point-mugu-port-hueneme"], "checked": "2026-10-04"}, {"id": "los-angeles-afb", "name": "Los Angeles Air Force Base (Space Force)", "branch": "Space Force", "location": "El Segundo, Los Angeles County", "gate": "483 N. Aviation Blvd, El Segundo, CA 90245", "mhaCode": null, "mhaName": null, "mhaNote": null, "markets": ["San Pedro"], "driveToTemecula": null, "housingUrl": "https://installations.militaryonesource.mil/military-installation/los-angeles-afb/housing/housing", "housingPartner": "Tierra Vista Communities (Fort MacArthur)", "notes": ["HQ Space Systems Command. Family housing is about 20 mi south at Fort MacArthur, San Pedro."], "sources": ["https://installations.militaryonesource.mil/military-installation/los-angeles-afb"], "checked": "2026-10-04"}, {"id": "vandenberg-sfb", "name": "Vandenberg Space Force Base", "branch": "Space Force", "location": "Lompoc area, Santa Barbara County", "gate": "6 California Blvd, Vandenberg SFB, CA 93437 (Visitor Center)", "mhaCode": "CA026", "mhaName": "Vandenberg SFB, CA", "mhaNote": null, "markets": [], "driveToTemecula": null, "housingUrl": "https://www.housing.af.mil/Home/Installations/Vandenberg-SFB/", "housingPartner": "Balfour Beatty Communities (single source)", "notes": ["Host: Space Launch Delta 30. Military Housing Office 602 Juniper St, 805-606-3434."], "sources": ["https://installations.militaryonesource.mil/military-installation/vandenberg-afb"], "checked": "2026-10-04"}, {"id": "nws-seal-beach", "name": "Naval Weapons Station Seal Beach", "branch": "Navy", "location": "Seal Beach, Orange County", "gate": "800 Seal Beach Blvd, Seal Beach, CA 90740", "mhaCode": null, "mhaName": null, "mhaNote": null, "markets": [], "driveToTemecula": null, "housingUrl": "https://sealbeach.navylifesw.com/programs/7ad0fde8-9f09-43ed-81da-397d878a2736", "housingPartner": "Liberty Military Housing (Sea Breeze Village)", "notes": ["Primary West Coast Navy ordnance station; detachments at Fallbrook and Norco. 186 family units."], "sources": ["https://installations.militaryonesource.mil/military-installation/naval-weapons-station-seal-beach"], "checked": "2026-10-04"}, {"id": "naf-el-centro", "name": "Naval Air Facility El Centro", "branch": "Navy", "location": "El Centro, Imperial County", "gate": "Bennett Rd, El Centro, CA 92243", "mhaCode": "CA420", "mhaName": "El Centro, CA", "mhaNote": null, "markets": [], "driveToTemecula": null, "housingUrl": "https://ffr.cnic.navy.mil/Navy-Housing/Housing-By-Region/Southwest/NAF-El-Centro/", "housingPartner": "Housing office", "notes": ["Navy Housing Service Center Bldg 401, 760-339-2920; 172 on-base units. Supports naval aviation squadrons and target ranges."], "sources": ["https://installations.militaryonesource.mil/military-installation/naval-air-facility-el-centro"], "checked": "2026-10-04"}]};
+  function renderMilBases() {
+    var D = MIL_BASES, bases = (D && D.bases) || [];
+    var e = escAttr;
+    function link(u, t) { return /^https:\/\//.test(u || "") ? '<a href="' + e(u) + '" target="_blank" rel="noopener">' + e(t) + ' \u2192</a>' : '<span class="mb-faint">not verified</span>'; }
+    function txt(v) { return v == null || v === "" ? '<span class="mb-faint">not verified</span>' : e(v); }
+    var L = D.links || {};
+    $("milBaseLinks").innerHTML = [link(L.bahCalculator, "DTMO BAH calculator"), link(L.vaHomeLoans, "VA home loans / COE"), link(L.militaryInstallations, "MilitaryINSTALLATIONS")].join(" \u00b7 ");
+    var sel = $("milBaseBranch");
+    if (sel.options.length < 2) {
+      bases.map(function (b) { return b.branch || ""; }).filter(function (v, i, a) { return v && a.indexOf(v) === i; }).sort()
+        .forEach(function (v) { var o = document.createElement("option"); o.value = v; o.textContent = v; sel.appendChild(o); });
+    }
+    function draw() {
+      var q = ($("milBaseSearch").value || "").toLowerCase(), br = sel.value;
+      var rows = bases.filter(function (b) { if (br && b.branch !== br) return false; return !q || JSON.stringify(b).toLowerCase().indexOf(q) >= 0; });
+      $("milBaseRows").innerHTML = rows.map(function (b) {
+        var mha = b.mhaCode ? '<b>' + e(b.mhaCode) + '</b>' + (b.mhaName ? '<br>' + e(b.mhaName) : '') + (b.mhaNote ? '<br><span class="mb-faint">' + e(b.mhaNote) + '</span>' : '') : '<span class="mb-faint">not verified \u2014 look up by ZIP at DTMO</span>';
+        var mk = (b.markets || []).map(e).join(", ");
+        var notes = (b.notes || []).map(e).join("<br>");
+        var srcs = (b.sources || []).filter(function (u) { return /^https:\/\//.test(u || ""); }).map(function (u, i) { return '<a href="' + e(u) + '" target="_blank" rel="noopener">[' + (i + 1) + ']</a>'; }).join(" ");
+        return "<tr><td><b>" + e(b.name || "") + "</b><br><span class=\"badge gray\">" + e(b.branch || "") + "</span></td>" +
+          "<td>" + txt(b.location) + (b.gate ? "<br><span class=\"mb-faint\">" + e(b.gate) + "</span>" : "") + "</td>" +
+          "<td>" + mha + "</td>" +
+          "<td>" + (mk || txt(null)) + "</td>" +
+          "<td>" + link(b.housingUrl, b.housingPartner || "Housing office") + "</td>" +
+          "<td>" + (notes || "") + "</td>" +
+          "<td>" + (srcs || txt(null)) + (b.checked ? "<br><span class=\"mb-faint\">" + e(b.checked) + "</span>" : "") + "</td></tr>";
+      }).join("") || '<tr><td colspan="7" class="src-note">No installation matches that filter.</td></tr>';
+      $("milBaseBadge").textContent = rows.length + " of " + bases.length;
+    }
+    $("milBaseSearch").oninput = draw;
+    sel.onchange = draw;
+    draw();
+    $("milBaseSource").textContent = "Checked " + (D.checkedAt || "date unknown") + " via " + (D.sourceTool || "unknown source") +
+      ". BAH rates change every January 1 \u2014 always price a client from the live DTMO calculator, never from this table. Drive times are not shown because none could be verified.";
+  }
+  safeRun(renderMilBases, "renderMilBases");
 
   /* ================= MELLO-ROOS / TAX ZONE GUIDE ================= */
   var MELLO_ROOS_GUIDE = [
@@ -4530,8 +4795,8 @@
      than it earned. Entries are only read for kind:"ref" panels; a panel the reader maintains
      ("you") or a document-fed one ("synced") gets its date from the data itself. */
   var ISA_PANEL_VERIFIED_AT = {
-    "panel-isa-syncstatus":    { at: "2026-09-24", scope: "part",
-      note: "Corrected 2026-09-24 against the Pipeline Sync (live) routine\u2019s own log entries on Steven\u2019s deck: it carries reClients, pipeline, isaScorecard, isaGradingScores and isaKpiSopActuals four times a day, which this panel had been telling the ISA were not synced. The drift table was re-read again 2026-09-24 directly against both stores: isaLine had grown from 10 to 11 messages on both sides (still in sync), and the ratesSnapshot gap was actually \u224842 hours, not 18 \u2014 both rows corrected, DRIFT_CHECKED_AT now 2026-09-24. Re-sourced 2026-09-23: both artifact databases\u2019 state collections were read directly, and every row of the drift table was corrected against them \u2014 four rows had gone wrong in a single day. NOT re-sourced: the Mac-side facts this page cannot see from a browser \u2014 the bridge task\u2019s cadence, the cloud comms bridge being disabled, and the Pipeline Sync routine\u2019s behaviour. Those carry their own dates in the text. It was scope \u201cfull\u201d until 2026-09-23; that over-claimed, because a panel whose far-side column is a hand measurement cannot be fully re-sourced from this page." },
+    "panel-isa-syncstatus":    { at: "2026-10-05", scope: "part",
+      note: "Re-measured 2026-10-05 against both stores: every shared document identical (the ISA line is now 14 messages), and the builder-incentive and housing-market notes are now copied here by the Claude routines; the routine list was re-read the same day (Pipeline Sync (live) last ran ok 16:09 UTC; the old Pipeline Sync no longer runs). Re-measured 2026-10-04: ratesSnapshot now written to both dashboards by the rates tasks. Corrected 2026-09-24 against the Pipeline Sync (live) routine\u2019s own log entries on Steven\u2019s deck: it carries reClients, pipeline, isaScorecard, isaGradingScores and isaKpiSopActuals four times a day, which this panel had been telling the ISA were not synced. The drift table was re-read again 2026-09-24 directly against both stores: isaLine had grown from 10 to 11 messages on both sides (still in sync), and the ratesSnapshot gap was actually \u224842 hours, not 18 \u2014 both rows corrected, DRIFT_CHECKED_AT now 2026-09-24. Re-sourced 2026-09-23: both artifact databases\u2019 state collections were read directly, and every row of the drift table was corrected against them \u2014 four rows had gone wrong in a single day. NOT re-sourced: the Mac-side facts this page cannot see from a browser \u2014 the bridge task\u2019s cadence, the cloud comms bridge being disabled, and the Pipeline Sync routine\u2019s behaviour. Those carry their own dates in the text. It was scope \u201cfull\u201d until 2026-09-23; that over-claimed, because a panel whose far-side column is a hand measurement cannot be fully re-sourced from this page." },
     "panel-isa-loanprograms":  { at: "2026-09-22", scope: "part",
       note: "Re-sourced today: the eight 2026 program-fact rows and five lender rows (Change Wholesale, Kings Mortgage, Liberty Reverse, Oval, Loan United). The other 56 lender rows and the 39 loan programs were counted, not re-sourced." },
     "panel-isa-easop":         { at: "2026-09-22", scope: "part",
@@ -4543,11 +4808,11 @@
     "panel-isa-team":          { at: "2026-09-22", scope: "review" }
   };
   function isaPanelStampRegistry() {
-    var mortgageRatesIso = typeof MORTGAGE_RATES_SYNCED_AT === "string" ? MORTGAGE_RATES_SYNCED_AT : null;
+    var mortgageRatesIso = typeof ratesStampIso === "function" ? ratesStampIso() : (typeof MORTGAGE_RATES_SYNCED_AT === "string" ? MORTGAGE_RATES_SYNCED_AT : null);
     return {
       "panel-isa-aiteam":        { kind: "you",  keys: ["isaLine", "isaVanessaChat"] },
       "panel-isa-playbook":      { kind: "ref",  note: "ISA daily playbook — theme days, hourly blocks, weekly targets; edited through /isa-daily-playbook, shown on Command Deck too." },
-      "panel-isa-syncstatus":    { kind: "ref",  note: "Sync map, verified 2026-09-22 by reading both stores. No drift check runs on its own — the table is updated by hand when someone re-checks." },
+      "panel-isa-syncstatus":    { kind: "ref",  note: "Sync map, re-verified 2026-10-05 by reading both stores. The drift table is updated by hand when someone re-checks; the twice-daily drift-check routine reports only in its own run log." },
       "panel-isa-crmimport":     { kind: "ref",  note: "CRM import tool — timestamped per import you run, not a standing feed." },
       "panel-isa-reclients":     { kind: "you",  keys: ["reClients"] },
       "panel-isa-pipeline":      { kind: "you",  keys: ["pipeline"] },
@@ -4937,6 +5202,12 @@
     if (!pt) return;
     var today = new Date(+pt[1], +pt[2] - 1, +pt[3]);
     var days = Math.round((close.getTime() - today.getTime()) / 86400000);
+    /* 2026-10-05: past the close, the static lead-in ("is the active window") contradicted the
+       countdown beside it. Restate the whole line instead of only the countdown. */
+    if (days < 0 && el.parentNode && el.parentNode.tagName === "B") {
+      el.parentNode.textContent = "The Q3 2026 window (TX, VA, NC) closed on 2026-09-30 \u2014 anything not filed by then rolled into the Q4 window (Oct\u2013Dec) with FL, GA, WA, which is the active window now.";
+      return;
+    }
     el.textContent = days > 1 ? "as of today, " + days + " days are left before it closes on 2026-09-30"
                     : days === 1 ? "as of today, 1 day is left before it closes on 2026-09-30"
                     : days === 0 ? "it closes today, 2026-09-30"

@@ -12,6 +12,13 @@ does not repeat it.
 (`stravaSnapshot`, once; `marketingQueue`, still) is a defect, not a second valid shape — see
 `always-on/README.md`.
 
+## `liveFeeds` on both pages (2026-10-05)
+
+| Doc | Means | Written by |
+|---|---|---|
+| `liveFeeds` (Command Deck) | `{v: {feeds: {<list id>: {checkedAt, citations, model, source, text}}}}` — one entry per live note on the deck, keyed by the list element's id | The Claude writer routines, each with a pinned `update` of its own keys only (`routines/feed-writers-2026-10-05/README.md`) |
+| `liveFeeds` (ISA Portal) | The same shape, holding only `builderIncentiveLiveList` and the three `marketUpdateLiveList_<slug>` entries | The builder-incentives writer and the morning weather & news run, which copy their deck entries here byte for byte; created 2026-10-05 |
+
 ## Docs this round's reading actually surfaced, with what each one is (2026-09-28)
 
 | Doc | Means | Written by |

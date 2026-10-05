@@ -64,7 +64,7 @@ anywhere yet.** Say so plainly until one of them has a `runnerStatus` line of it
 
 | Task | Cron (PT) | Why the brain cares | Status |
 |---|---|---|---|
-| `vanessa-research-queue` | `30 7-21 * * *` — hourly :30 | Answers queued research (recall level 3) with Perplexity + the AI team | **unproven** — runner says ok 2026-09-21 20:31, but `vanessaResearch.updatedAt` is 2026-09-12. A no-work run writes nothing, so silence here is not failure — and not proof either |
+| `vanessa-research-queue` | `30 7-21 * * *` — hourly :30 | Answers queued research (recall level 3) with Claude WebSearch + the AI team (Perplexity removed 2026-10-05; the task's own Mac prompt switches to Claude-only research with Steven's 2026-10-05 Mac paste — `integrations/mac-claude-only.md`) | **unproven** — runner says ok 2026-09-21 20:31, but `vanessaResearch.updatedAt` is 2026-09-12. A no-work run writes nothing, so silence here is not failure — and not proof either |
 | `local-bridge-queue` | `25 6-21 * * *` — hourly :25 | Runs queued read-only verbs through the local bridge allow-list | **unproven** — runner says ok 2026-09-21 20:25, `localBridgeQueue.updatedAt` is 2026-09-12. Queue-driven: an empty queue writes nothing |
 | `toolkit-deck-sync` | `15 6 * * *` — 6:15 AM | Rebuilds `toolkitSnapshot` (tools, agents, skills, tasks, MCP servers) | **working** — `toolkitSnapshot.syncedAt 2026-09-22T13:15:45Z`, its 06:15 PT slot to the second. The `limited`/2026-09-16 record is the stale log, not the task |
 | `skills-refresh-weekly` | `0 7 * * 0` — Sunday 7:00 AM | Audits every SKILL.md for bad frontmatter and dead paths | **never run** |

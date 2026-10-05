@@ -1,37 +1,35 @@
 #!/usr/bin/env bash
-# configure-omniroute.sh — registers the local Bonsai provider, the `local` and `research` combos,
-# and their compression settings, against a running OmniRoute (integrations/omniroute/README.md).
+# configure-omniroute.sh — registers the local Bonsai provider and the `local` combo, with its
+# compression setting, against a running OmniRoute (integrations/omniroute/README.md).
 # Idempotent: create-or-update, safe to re-run. Never touches the Claude subscription/OAuth path.
+# The Perplexity provider and the `research` combo were removed 2026-10-05 (Steven): research runs
+# on the Claude subscription, direct, and the subscription never goes through OmniRoute.
 #
 # Surface used (researched 2026-09-28 from OmniRoute's GitHub wiki/docs — NOT executed against a
 # real install in this sandbox; see integrations/omniroute/README.md #Honest-status):
-#   CLI (preferred when `omniroute` is on PATH):
-#     omniroute providers add <id> --credential-env NAME       (cloud providers — Perplexity)
+#   CLI (documented; not called by this script since 2026-10-05):
+#     omniroute providers add <id> --credential-env NAME       (cloud providers — none registered
+#                                                                 here since 2026-10-05)
 #     omniroute providers add <id> --base-url URL               (local providers — best-effort flag
 #                                                                 name; unconfirmed, see below)
-#   REST (fallback, and what this script actually drives its own stub proof with — every shape below
+#   REST (what this script drives, and what its own stub proof used — every shape below
 #     IS confirmed from docs/routing/AUTO-COMBO.md and docs/compression/COMPRESSION_GUIDE.md, fetched
 #     2026-09-28):
 #     POST http://$HOST:$PORT/api/providers        {"id","baseUrl"[,"credentialEnv"]}
 #     POST http://$HOST:$PORT/api/combos            {"name","strategy":"priority","targets":[{"model"}]}
 #     PUT  http://$HOST:$PORT/api/combos/{name}      {"compressionMode": Default|Off|Lite|Standard|Aggressive|Ultra}
 #   No CLI flag for a local provider's base URL was found documented anywhere reachable in this
-#   sandbox (only the dashboard flow was, per Provider-Reference) — this script therefore prefers
-#   the REST form for the LOCAL provider specifically, and tries the CLI first only for Perplexity
-#   (whose --credential-env shape the existing omniroute-failover/README.md already ran for real
-#   against omniroute 3.8.50 on 2026-09-22). If your installed OmniRoute's REST paths differ, this
+#   sandbox (only the dashboard flow was, per Provider-Reference) — this script therefore uses the
+#   REST form for the LOCAL provider (it tried the CLI first only for the Perplexity key, removed
+#   2026-10-05). If your installed OmniRoute's REST paths differ, this
 #   script's HTTP calls are isolated in the *_api() functions below — point them at the real paths
 #   and nothing else here needs to change.
 #
 # Usage: configure-omniroute.sh [--dry-run] [--local-base-url URL] [--local-provider-id ID]
-#                                [--set-perplexity-key] [--omni-base URL]
-# Keys: NEVER reads, prints, echoes, or writes a provider key value to any file this repo tracks.
-#   Default: prints the exact dashboard click path for Steven to paste the Perplexity key himself.
-#   --set-perplexity-key: prompts with `read -r -s` (not echoed to the terminal), and hands the value
-#   straight to `omniroute providers add perplexity --credential-stdin` (OmniRoute's own encrypted
-#   store) if the CLI is present, or a single REST call if not — either way the value lives only in
-#   one shell variable, unset immediately after use, never logged (set +x throughout), never written
-#   to disk by this script.
+#                                [--omni-base URL]
+# Keys: none. The only provider registered here is the loopback Bonsai server, which has no
+#   credential, so this script reads, prints, echoes and writes no key. (--set-perplexity-key was
+#   removed 2026-10-05; passing it now exits 64 with a message.)
 # macOS, bash 3.2-safe (no associative arrays, no ${var,,}, no mapfile). No secrets in this file.
 set -u
 umask 077
@@ -41,12 +39,7 @@ OMNI_BASE="${OMNIROUTE_BASE:-http://127.0.0.1:20128}"
 LOCAL_PROVIDER_ID="${BONSAI_OMNIROUTE_PROVIDER_ID:-bonsai-local}"
 LOCAL_BASE_URL="${BONSAI_LOCAL_BASE_URL:-http://127.0.0.1:8080/v1}"
 LOCAL_MODEL_NAME="${BONSAI_MODEL_NAME:-bonsai-2-27b}"
-PERPLEXITY_MODEL="${PERPLEXITY_MODEL:-perplexity/sonar}"   # NOT independently verified against OmniRoute's
-                                                             # provider catalog this round — confirm once a
-                                                             # real key is added: `omniroute providers test-all`
-RESEARCH_COMPRESSION_MODE="${RESEARCH_COMPRESSION_MODE:-Standard}"
 LOCAL_COMPRESSION_MODE="${LOCAL_COMPRESSION_MODE:-Standard}"
-SET_PPLX_KEY=0
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -54,8 +47,10 @@ while [ $# -gt 0 ]; do
     --local-base-url) shift; LOCAL_BASE_URL="${1:-}" ;;
     --local-provider-id) shift; LOCAL_PROVIDER_ID="${1:-}" ;;
     --omni-base) shift; OMNI_BASE="${1:-}" ;;
-    --set-perplexity-key) SET_PPLX_KEY=1 ;;
-    -h|--help) sed -n '2,30p' "$0"; exit 0 ;;
+    --set-perplexity-key)
+      echo "configure-omniroute.sh: --set-perplexity-key was removed 2026-10-05 — Perplexity is gone and research runs on the Claude subscription; there is no key to set." >&2
+      exit 64 ;;
+    -h|--help) sed -n '2,33p' "$0"; exit 0 ;;
     *) echo "configure-omniroute.sh: unknown argument '$1'" >&2; exit 64 ;;
   esac
   shift
@@ -154,37 +149,12 @@ log "OMNIROUTE_LOCAL_MODEL=local   # claude-auto.sh's OMNIROUTE_LOCAL_MODEL shou
 log "  since route_omni() sets it straight into ANTHROPIC_MODEL and OmniRoute resolves a combo name"
 log "  or a raw provider/model string identically (docs/routing/AUTO-COMBO.md's resolution order)."
 
-# ---- Perplexity provider + research combo --------------------------------------------------------
-log "== Perplexity provider + research combo =="
-if [ "$SET_PPLX_KEY" = 1 ] && [ "$DRY_RUN" != 1 ]; then
-  case "$OMNI_BASE" in
-    http://127.0.0.1:*|http://localhost:*) ;;
-    *) log "REFUSING --set-perplexity-key: $OMNI_BASE is not loopback — a key only ever goes to OmniRoute on this Mac."; exit 64 ;;
-  esac
-  printf 'Paste the Perplexity API key (input hidden, never logged, never written to a file): '
-  IFS= read -r -s pplx_key; printf '\n'
-  if command -v omniroute >/dev/null 2>&1; then
-    printf '%s' "$pplx_key" | omniroute providers add perplexity --credential-stdin >/dev/null 2>&1
-    rc=$?
-  else
-    body="{\"id\":\"perplexity\",\"credential\":\"$(json_str "$pplx_key")\"}"
-    _curl POST /api/providers "$body" >/dev/null; HTTP_CODE=$(read_code)
-    rc=0; [ "$HTTP_CODE" = 200 ] || [ "$HTTP_CODE" = 201 ] || [ "$HTTP_CODE" = 409 ] || rc=1
-  fi
-  unset pplx_key
-  if [ $rc -eq 0 ]; then
-    log "Perplexity credential handed to OmniRoute's own store."
-  else
-    log "Perplexity credential submission failed (rc=$rc) — nothing was logged either way."
-  fi
-else
-  log "Perplexity key: not set by this script (pass --set-perplexity-key to do it interactively, hidden input)."
-  log "  Dashboard click path instead: open $OMNI_BASE -> Providers -> Add Provider -> search 'Perplexity'"
-  log "  -> paste the API key in the Credential field -> Save -> Test. (Steven does this himself.)"
-  log "  The research combo below is still created/updated now — it will simply fail Test until that key exists."
-fi
-ensure_combo "research" "$PERPLEXITY_MODEL" || exit 1
-set_compression "research" "$RESEARCH_COMPRESSION_MODE" || exit 1
+# ---- research: no provider, no combo (removed 2026-10-05) ---------------------------------------
+# Perplexity was removed (Steven, 2026-10-05). Research runs on the Claude subscription, direct, and
+# the subscription never goes through OmniRoute (README #hard-rules), so there is nothing to register.
+log "== research: nothing to configure — Perplexity removed 2026-10-05; research runs on the Claude subscription, direct =="
+log "  If an earlier run created a 'research' combo or a 'perplexity' provider here, neither is used any more;"
+log "  remove them from OmniRoute's dashboard ($OMNI_BASE) when convenient."
 
 echo
 log "Done. Verify before trusting: 'omniroute providers test-all' or GET $OMNI_BASE/api/providers,"

@@ -24,12 +24,14 @@ registered self-test must be offline, dispatch no sub-agents, and finish in ≤6
 ## Models
 Vanessa chairs on **Claude Fable 5.1**; Elon (CTO Innovator), `sandbox-qa`, `stress-test-engineer`
 and the prompt review run on **Claude Opus 5.5**; report/compile seats on **Claude Sonnet 5**;
-research on **Perplexity** (≤4 per wave). Sub-agent fan-out ≤8.
+research on **Claude web research** — Sonnet 5 with WebSearch/WebFetch on Steven's Claude subscription
+(Perplexity removed 2026-10-05), ≤4 web-research sub-agents per wave. Sub-agent fan-out ≤8.
 
 ## Tools
 - `Artifact` `read_db` / `write_db` against `1624daae-d683-405a-971d-c5828dce0f8d`, collection `state`.
 - The runtime harness (pure-Node DOM shim) for `stress-test-sweep`; filesystem for the vault report.
-- Perplexity MCP for the disruption inputs. No messaging tools: this routine never sends.
+- `WebSearch` / `WebFetch` (Claude, on Steven's subscription) for the disruption inputs. No messaging
+  tools: this routine never sends.
 
 ## Prompt text (paste verbatim into the task)
 ```

@@ -1,0 +1,54 @@
+CLAUDE-ONLY WRITER (created 2026-10-05) — Steven: "remove everything running on Perplexity and replace with Claude subscription"
+================================================================================================
+This routine runs on Steven's Claude subscription and reads the weather through his AccuWeather
+connector (a Claude connector). It never uses Perplexity, OpenRouter, You.com or any paid search API.
+It WRITES the Command Deck's weather card with the ArtifactData tool. "Never invent a number."
+================================================================================================
+
+You are refreshing the weather card of a published Claude Artifact called "Command Deck" — a personal
+dashboard for a user named Steven. The artifact is https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d
+(artifact id 1624daae-d683-405a-971d-c5828dce0f8d, database collection "state", document `weatherSnapshot`).
+
+IMPORTANT ARCHITECTURE NOTE: This routine runs in a fresh, unattended cloud sandbox every time it
+fires, with no human present to approve permission prompts. Editing or Bash-writing a local file
+the Artifact tool downloads WILL trigger an unanswerable "sensitive file" permission prompt and
+hang the run forever. Do NOT call Edit, Write, or Bash with any write/copy/redirect operation at
+any point in this run. Do NOT call Artifact with action "publish". Read and write the live
+document with ArtifactData only.
+
+STEP 1 — Read current state
+Load ArtifactData with ToolSearch (`select:ArtifactData`) if it is not in your tool list. Read
+`weatherSnapshot` (collection "state"). Note its `version`. It holds `{v: {cities: [...], syncedAt,
+via}}`; each city row is `{city, temp, condition, high, low, feelsLike, alert, source, url}`. The
+AccuWeather location key of each city is the number at the end of its `url`
+(e.g. https://www.accuweather.com/en/us/temecula/92590/current-weather/337272 → 337272).
+The 7 cities, in this order: Temecula, CA (337272) · San Diego, CA (347628) · Los Angeles, CA (347625) ·
+Chicago, IL (348308) · Las Vegas, NV (329506) · Washington, DC (327659) · New Braunfels, TX (335925).
+If a row's url carries a different key, use the key from the url.
+
+STEP 2 — Read the weather (AccuWeather connector)
+If no AccuWeather tools are in your tool list (names contain "AccuWeather"), load them with
+ToolSearch query "AccuWeather". If they still are not available, write NOTHING and end with one
+line: "AccuWeather connector not available — nothing written".
+For each city call the current-conditions tool (widgets-current-claude, unit "imperial") and the
+daily-forecast tool (widgets-daily-claude, unit "imperial"):
+- `temp` = currentConditions.temperatureValue; `feelsLike` = currentConditions.realFeelValue;
+  `condition` = currentConditions.phrase (e.g. "Mostly cloudy").
+- `high` = dailyForecast[0].day.temperature (today); `low` = dailyForecast[0].night.temperature (tonight).
+- `alert` = the active government alert(s) from the current-conditions result: the alert name plus
+  " (NWS), " plus its window as "<start> – <end>" in local time, e.g.
+  "Coastal Flood Advisory (NWS), 5 AM Mon Sep 28 – 5 PM Wed Sep 30"; join two alerts with " + ".
+  "" when the alerts list is empty.
+- `source` = "AccuWeather (current conditions + today's forecast)"; `url` = the row's existing url.
+If one city's calls fail, leave that city OUT this run. If more than 2 cities fail, write NOTHING.
+
+WRITE STEP
+1. Right before writing, run exactly `date -u +%Y-%m-%dT%H:%M:%SZ` with the Bash tool (read-only;
+   allowed) and copy its output unchanged into `syncedAt`. Never type or estimate a time yourself.
+2. ArtifactData action "set", collection "state", doc_id "weatherSnapshot", if_version <the version
+   from STEP 1>, data: {v: {cities: [...rows in the STEP 1 order...], syncedAt: "<clock output>",
+   via: "cloud routine Command Deck — weather (writer, AccuWeather)"}}. Every document in this store
+   is `{v: <value>}`. On a version conflict, re-read once and retry once.
+3. Never touch any other document. Never call Edit, Write, or Bash with any write/copy/redirect
+   operation. Never call Artifact with action "publish". Never send a message to anyone.
+4. End with one line: the new version and the cities written.

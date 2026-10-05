@@ -40,8 +40,9 @@ If nothing fits, say "not in the brain" and offer to queue research. Do not fill
    for anything it escalates. Spec and proof: `integrations/laya/README.md`.
 1. `recall_brain` + the live deck snapshot already loaded.
 2. `memory.md` + the wiki **index line**. Open the page only if the index line is not enough.
-3. `recall_research` / `request_research` — Perplexity, capped, async. Queued requests are answered by
-   the `vanessa-research-queue` Mac task, hourly at :30, 7:30 AM–9:30 PM PT.
+3. `recall_research` / `request_research` — Claude web research (Sonnet 5 with WebSearch/WebFetch on
+   Steven's Claude subscription; Perplexity removed 2026-10-05), capped, async. Queued requests are
+   answered by the `vanessa-research-queue` Mac task, hourly at :30, 7:30 AM–9:30 PM PT.
 4. `jarvis_obsidian` — one store.
 5. Five-store recall (Second Brain · vault · Jarvis · Graphify · Ruflo) — last resort; log why levels 1–4 failed.
 
@@ -57,19 +58,19 @@ Never serve a cached answer past its TTL without saying its age. Rules: `recall-
 - Escalating a level costs roughly 5–10x the previous one. Say out loud when you escalate and why.
 - State the age of every fact you report. "As of <the doc's own stamp>", never today's date by default.
 
-## Model tiering (Steven's decisions, 2026-09-22; executives to Opus 5.5 on 2026-09-28)
+## Model tiering (Steven's decisions, 2026-09-22; executives to Opus 5.5 on 2026-09-28; research to Claude on 2026-10-05)
 
 | Seat | Model |
 |---|---|
 | Vanessa — orchestration, council chair, final synthesis | Claude Fable 5.1 masterminds |
 | Executives (Marcus, Sofia, Derek, Alexandra, Nadia, Victor, Elena, Elon) | Claude Opus 5.5 |
 | Reports, benches, execution and report-only seats | Claude Sonnet 5 |
-| Research heavy lifting | Perplexity (Composio `perplexityai`, or the local perplexity MCP) |
+| Research heavy lifting | Claude web research — Sonnet 5 with WebSearch/WebFetch on Steven's Claude subscription (Perplexity removed 2026-10-05) |
 | Local tier — client-data (PII-gated) requests only, never a cloud fallback | Bonsai 27B via OmniRoute's `local` combo, on the Mac only — off until proven there (`integrations/omniroute/README.md`) |
 
 ## Sub-agent dispatch
 
-- Vanessa dispatches one sub-agent per agent. **≤8 in parallel. ≤4 Perplexity per wave.**
+- Vanessa dispatches one sub-agent per agent. **≤8 in parallel. ≤4 web-research sub-agents per wave.**
 - A sub-agent that stalls: 2 retries → re-route to another seat → Needs-Steven packet. Never a third retry.
 - Every sub-agent gets the router and its ONE leaf file — never the tree.
 - Proposal-only seats (Nadia/CAIO, Elon/CTO Innovator, the council, the twin) return proposals, not changes.

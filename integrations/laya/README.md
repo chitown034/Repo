@@ -58,8 +58,8 @@ of, so this gate does not wait on `brain_route`'s own confidence to protect it.
 - **Never writes to a live system.** It reads a request and prints a decision. Nothing else.
 - **Never overrides Vanessa above its own uncertainty.** Below `--threshold` it says `ESCALATE`
   and gets out of the way — it does not guess to avoid admitting low confidence.
-- **Never calls Perplexity or any cloud model itself.** Research-tier requests are *routed*
-  toward research; Laya does not perform research.
+- **Never calls a cloud model or a web search itself.** Research-tier requests are *routed*
+  toward research (Claude web research on Steven's subscription); Laya does not perform research.
 - **Is never "running" by virtue of existing in this repo.** A package in `integrations/laya/` is
   not a Mac task, an MCP registration, or a proof — see the Needs-Steven row this round hands to
   the integrator.
@@ -181,10 +181,11 @@ reachable — `install.sh` is written to make that the only remaining step.
 ## `route` field (R12-OMNI, 2026-09-28)
 
 Every decision now also carries `route`: `subscription` (top/executive/worker tier — plain `claude`,
-direct, never through OmniRoute), `research` (OmniRoute's `research` combo → Perplexity, capped at 4
-per wave), or `local` (OmniRoute's `local` combo → Bonsai 27B on the Mac, fail-closed, no cloud
-fallback ever). The mapping lives in `integrations/omniroute/route-map.json`, not in this script —
-`laya_route.py --route-map <path>` overrides it, and a missing file degrades to
+direct, never through OmniRoute; since 2026-10-05 the research tier too — Claude web research on
+Steven's subscription, capped at 4 web-research sub-agents per wave; Perplexity removed and OmniRoute's
+`research` combo withdrawn), or `local` (OmniRoute's `local` combo → Bonsai 27B on the Mac,
+fail-closed, no cloud fallback ever). The mapping lives in `integrations/omniroute/route-map.json`,
+not in this script — `laya_route.py --route-map <path>` overrides it, and a missing file degrades to
 `subscription`/`local` only (never crashes; see `load_route_map`/`route_for`). **The one invariant
 tested explicitly:** `pii_gate` firing forces `route=local` regardless of `tier` — re-run against
 the same 2-of-20 client-shaped rows above (id 8, id 19: both `tier=orchestrator`, both now print

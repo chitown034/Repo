@@ -310,6 +310,7 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
 76. **Perplexity key into OmniRoute** — the `research` combo exists without a key, by design. Paste the key
     yourself: `http://127.0.0.1:20128` → Providers → Add Provider → Perplexity → Credential → Save → Test, or
     `integrations/omniroute/configure-omniroute.sh --set-perplexity-key` (hidden prompt, loopback only).
+    **Withdrawn 2026-10-05** — Steven removed Perplexity; research runs on the Claude subscription. No key needed.
 77. **Decision — should the top tier ever route through OmniRoute?** Not built. Anthropic's terms
     (code.claude.com/docs/en/legal-and-compliance → "Authentication and credential use") keep subscription
     sign-in for Claude Code and Anthropic's own apps, so the subscription never goes through a gateway. The only
@@ -347,3 +348,26 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
     safety check (it adds a way for the page to call your connectors, including a local server on your
     Mac), so it is yours to decide. If you say yes, it will be Google Calendar `list_events` only (read-only),
     and the dashboard will ask you once to allow it. Until then the calendar list shows the last synced copy.
+
+## Claude-only feeds — added 2026-10-05 by the integrator (append-only block)
+
+82. **Done by you, 2026-10-05: the ten old routines are off** (item 73). None of the ten is in the enabled
+    routine list as re-read 2026-10-05 17:44 UTC; the replacement writers are all running.
+83. **Your one step: make the Mac Claude-only** — paste the prompt in `integrations/mac-claude-only.md`
+    into a Claude Code session on the Mac, in the Repo folder, after `git pull`. It pauses the three Mac
+    feed tasks the cloud writers replaced (`openrouter-feeds-refresh`, `feeds-weekly`,
+    `feeds-market-close`), trims `weather-news-refresh` to weather only, switches the runner's research to
+    Claude WebSearch, points `vanessa-research-queue` at Claude, and removes the `perplexity` MCP server.
+    Until then those Mac tasks still try Perplexity first, get its 401, fall back to Claude — and now
+    repeat work the cloud writers already did, which spends the same weekly allowance twice.
+84. **Correction to item 80 (same day)** — the "backup only" mode it describes for the weather & news,
+    Econoday and Elite Affluent writers was reversed a few hours later by your *"remove everything running
+    on Perplexity and replace with Claude subscription"*. The cloud writers are primary again
+    (`routines/feed-writers-2026-10-05/README.md`); the Mac's duplicates are what item 83 pauses. Weather
+    stays on the Mac (wttr.in) until item 74's weather hosts are allowed, or until you make one routine in
+    the claude.ai routines UI with the AccuWeather connector and paste
+    `routines/feed-writers-2026-10-05/13-weather-accuweather.prompt.txt` into it.
+85. **Optional — three routines still name Opus 5** (`claude-opus-5`, read from the routine list
+    2026-10-05): *Monthly state market refresh — Rent, Buy, or Wait*, *Muster Point — monthly benefits
+    refresh*, *Weekly dashboard refresh — Rent, Buy, or Wait*. They are not Command Deck routines and your
+    Opus 5.5 instruction was for the AI team, so they were left alone. Say so and they move to Opus 5.5.

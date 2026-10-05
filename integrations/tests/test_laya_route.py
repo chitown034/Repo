@@ -1,5 +1,6 @@
 """Test for integrations/laya/laya_route.py's `route` field (R12-OMNI) — the tier/pii_gate -> route
-wiring added when OmniRoute/Bonsai were wired in as the local and research routes.
+wiring added when OmniRoute/Bonsai were wired in as the local and research routes. The research tier
+moved to the subscription route on 2026-10-05 (Perplexity removed; research is Claude web research, direct).
 
     python3 integrations/tests/test_laya_route.py
 
@@ -48,7 +49,8 @@ def main() -> int:
     for tier in subscription_tiers:
         check(f"tier={tier} pii=0 -> subscription", route_for(tier, False, route_map), "subscription")
         check(f"tier={tier} pii=1 -> local (override)", route_for(tier, True, route_map), "local")
-    check("tier=research pii=0 -> research", route_for("research", False, route_map), "research")
+    check("tier=research pii=0 -> subscription (Claude web research, direct; Perplexity removed 2026-10-05)",
+          route_for("research", False, route_map), "subscription")
     check("tier=research pii=1 -> local (override, the case that matters most)",
           route_for("research", True, route_map), "local")
     check("unknown tier, pii=0 -> subscription (safe default on drift)",

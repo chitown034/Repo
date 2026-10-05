@@ -1,4 +1,4 @@
-# OmniRoute as the brain's model router — local tier (Bonsai 27B) and research tier (Perplexity)
+# OmniRoute as the brain's model router — local tier (Bonsai 27B); research left it 2026-10-05
 
 **Written 2026-09-28 · design + scripts, proved against stubs in this sandbox · not yet installed on the
 Mac.** Owner: Integration Engineer. Answers Steven's request, verbatim: *"configure omni route Setup orca /
@@ -10,6 +10,12 @@ This directory adds the two routes it left as placeholders: a **local** route (`
 placeholder there today) and a **research** route, and documents token optimization honestly. Nothing here
 changes `omniroute-failover`'s subscription or free-fallback behavior.
 
+**Updated 2026-10-05 — the research route is withdrawn.** Steven removed Perplexity (`context/decisions.md`,
+2026-10-05). Research is now Claude web research — Sonnet 5 with WebSearch/WebFetch on Steven's Claude
+subscription — and, like every other Claude tier, it runs direct and never through OmniRoute (§Hard rule).
+The Perplexity provider and the `research` combo are gone from `configure-omniroute.sh` and `route-map.json`;
+this directory now owns the `local` route only.
+
 ## The routing map — one table
 
 | Laya tier (`router-questions.json`) | Route | Path | Ever through OmniRoute? |
@@ -17,7 +23,7 @@ changes `omniroute-failover`'s subscription or free-fallback behavior.
 | `orchestrator` — Vanessa, council chair, final synthesis | **subscription** | plain `claude`, OAuth, no proxy env (`omniroute-failover/claude-auto.sh`, unchanged) | **Never.** See §Hard rule below |
 | `executive` — a C-suite lane owns it outright | **subscription** | same as above | **Never** |
 | `worker` — report/bench/execution-only seat | **subscription** | same as above | **Never** |
-| `research` — research heavy lifting | **research** | OmniRoute `research` combo → **Perplexity**, capped at **≤4 per wave** (`CLAUDE.md` sub-agent dispatch cap) | Yes — this is what OmniRoute is for here |
+| `research` — research heavy lifting | **subscription** | Claude web research — Sonnet 5 with WebSearch/WebFetch on Steven's Claude subscription (Perplexity removed 2026-10-05); plain `claude`, same as above; **≤4 web-research sub-agents per wave** (`CLAUDE.md` sub-agent dispatch cap) | **Never** — the `research` combo was withdrawn 2026-10-05 |
 | `pii_gate` fires — **overrides every tier above, unconditionally** | **local** | OmniRoute `local` combo → **Bonsai 27B**, served on the Mac's own loopback, no cloud fallback, **ever** | Yes — the only cloud-shaped hop is `127.0.0.1`, i.e. none |
 | (unchanged, not this directory's concern) | **free-fallback** | OmniRoute free combo, subscription-limited only, PII gate closed by default | Yes — see `omniroute-failover/README.md` |
 
@@ -93,17 +99,18 @@ single-target combo is unverified. The proof, on the Mac, with **non-client** te
 
 | Traffic | Compressed? | How |
 |---|---|---|
-| `research` combo (Perplexity) | Yes, if configured | OmniRoute's RTK→Caveman pipeline runs on anything proxied through `:20128` before it reaches the upstream provider (`docs/compression/COMPRESSION_GUIDE.md`: "runs proactively before requests hit upstream providers") |
-| `local` combo (Bonsai) | Yes, if configured | Same pipeline, same gateway — it is Steven's own loopback traffic either way, so compressing it only saves *Bonsai's* context window, not any metered cost |
+| `local` combo (Bonsai) | Yes, if configured | OmniRoute's RTK→Caveman pipeline runs on anything proxied through `:20128` before it reaches the upstream provider (`docs/compression/COMPRESSION_GUIDE.md`: "runs proactively before requests hit upstream providers") — it is Steven's own loopback traffic either way, so compressing it only saves *Bonsai's* context window, not any metered cost |
+| `research` combo | **Withdrawn 2026-10-05** | Perplexity removed; research is `subscription` traffic now (last row) |
 | free-fallback combo | Yes, unchanged | Already OmniRoute's default behavior per `omniroute-failover/` |
-| **`subscription` route (top/executive/worker tier)** | **No.** | **This traffic never touches OmniRoute at all** (§Hard rule) — nothing in this repo compresses it today |
+| **`subscription` route (top/executive/worker/research tier)** | **No.** | **This traffic never touches OmniRoute at all** (§Hard rule) — nothing in this repo compresses it today |
 
 **Per-route control, real OmniRoute** (`docs/compression/COMPRESSION_GUIDE.md`, read 2026-09-28): a global
 default at `PUT /api/settings/compression` (`{"defaultMode":"stacked", ...}`), a per-combo override via
 `PUT /api/combos/{id}` (`compressionMode`: `Default`/`Off`/`Lite`/`Standard`/`Aggressive`/`Ultra`), and a
 per-request `x-omniroute-compression` header (`off` / `default` / `engine:rtk` / a named compression combo),
-echoed back in the `X-OmniRoute-Compression` response header. `configure-omniroute.sh` sets the `research`
-and `local` combos' `compressionMode` explicitly (§Files below); it never touches `defaultMode` globally.
+echoed back in the `X-OmniRoute-Compression` response header. `configure-omniroute.sh` sets the `local`
+combo's `compressionMode` explicitly (§Files below; the `research` combo was withdrawn 2026-10-05); it never
+touches `defaultMode` globally.
 
 **Proved, this sandbox:** a stub gateway implementing that same header contract measurably shrinks forwarded
 bytes on 5 non-PII sample prompts with compression on vs `x-omniroute-compression: off` — numbers in the
@@ -125,7 +132,7 @@ found**, and no link to RTK's own upstream repo was found either, in the time th
 |---|---|---|
 | `route-map.json` | Laya `tier`/`pii_gate` → `route`. Read by `laya_route.py --route-map` (default path) | **Built, tested** — `integrations/tests/test_laya_route.py`, 19/19 |
 | `setup-local-llm.sh` | macOS, bash 3.2-safe, idempotent, `--dry-run`. Installs Bonsai 27B's runtime, downloads the model, serves it on loopback, prints the `OMNIROUTE_LOCAL_MODEL` value to use | **Built. Proved against a stub only** — real install needs a Mac (§Honest status) |
-| `configure-omniroute.sh` | Idempotent, `--dry-run`. Registers the local provider, the `local` and `research` combos, and their `compressionMode`, via OmniRoute's REST API on `:20128` | **Built. Proved against a stub gateway only** — real OmniRoute did not run in this sandbox (§Honest status) |
+| `configure-omniroute.sh` | Idempotent, `--dry-run`. Registers the local provider, the `local` combo and its `compressionMode`, via OmniRoute's REST API on `:20128` (the Perplexity provider and `research` combo were removed 2026-10-05) | **Built. Proved against a stub gateway only** — real OmniRoute did not run in this sandbox (§Honest status) |
 | `orca.md` | How Orca launches agents, and how to route an Orca-launched agent through these gates | **Researched, partially verified** — see the file; no live Orca session to test against |
 | `route-map.json`, `laya_route.py` change | see `integrations/laya/README.md` §`route` field | **Built, tested** |
 
@@ -133,13 +140,13 @@ found**, and no link to RTK's own upstream repo was found either, in the time th
 
 - Never puts the Claude subscription (OAuth) behind OmniRoute, at any tier. See §Hard rule.
 - Never lets the `local` combo fall back to a cloud provider. See §The `local` combo.
-- Never reads, prints, or stores the Perplexity API key — Steven pastes it into OmniRoute's dashboard
-  (`configure-omniroute.sh` prints the exact click path) or the script relays a value read with `read -r -s`
-  straight to OmniRoute's own encrypted store, once, never echoed, never written to a file this repo tracks.
-- Never calls Perplexity. This round configures the `research` combo; it does not use it — `CLAUDE.md`'s
-  ≤4-per-wave cap is enforced by whatever agent later dispatches into it, not by this directory.
-- Never exceeds `CLAUDE.md`'s sub-agent caps (≤8 parallel, ≤4 Perplexity/wave) — this directory does not
-  dispatch agents at all, it only wires the route they'd use.
+- Never reads, prints, or stores a provider key — the one provider it registers, the loopback Bonsai server,
+  has none. (The Perplexity key path, `--set-perplexity-key`, was removed 2026-10-05.)
+- Never routes research. Since 2026-10-05 research is Claude web research on the subscription, direct —
+  `CLAUDE.md`'s ≤4 web-research sub-agents per wave cap is enforced by whatever agent dispatches them, not
+  by this directory.
+- Never exceeds `CLAUDE.md`'s sub-agent caps (≤8 parallel, ≤4 web-research sub-agents per wave) — this
+  directory does not dispatch agents at all, it only wires the route they'd use.
 - Never edits `omniroute-failover/claude-auto.sh`'s lease gate, PII gate, or probe/switch-back logic — only
   the comment and default naming around `OMNIROUTE_LOCAL_MODEL` (§What `claude-auto.sh` changed).
 - Never edits `CLAUDE.md`, `OPTIMIZATION.md`, `MAC-SETUP.sh`, `docs/NEEDS-STEVEN.md`, or

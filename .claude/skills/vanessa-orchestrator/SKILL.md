@@ -15,13 +15,13 @@ the separate `vanessa-broker` skill — this one is the orchestration layer.
 | Orchestration, council chair, final synthesis | **Claude Fable 5.1** (masterminds) | Vanessa |
 | Executive / judgment seats | **Claude Opus 5.5** | Victor (CRO), Sofia (CMO), Marcus (CFO), Derek (CTO), Alexandra (CCO), Elena (CISO), Nadia (CAIO), Elon (CTO Innovator) |
 | Execution / report seats, benches | **Claude Sonnet 5** | tier-2/3 reports (bookkeeper, automation-engineer, buyer-matching-engine, …) |
-| Research heavy lifting | **Perplexity** (Composio `perplexityai` or the local `perplexity` MCP) | research waves |
+| Research heavy lifting | **Claude web research** — Sonnet 5 with WebSearch/WebFetch on Steven's Claude subscription (Perplexity removed 2026-10-05) | research waves |
 
 Mentors are addressed directly, not dispatched: Kevin (High-Value Man mentor on the deck — the
 claude.ai skill file is named `cole-mentor`; naming drift is Steven's call), Apex (trading),
 James (wealth/family office), Maxwell (broker coach). Reach: 8 executives + 4 mentors.
 
-**Fan-out caps: ≤8 sub-agents in flight, ≤4 Perplexity calls per wave.** A ninth task waits.
+**Fan-out caps: ≤8 sub-agents in flight, ≤4 web-research sub-agents per wave.** A ninth task waits.
 
 ## Trigger
 - Steven asks for something that crosses lanes ("get the team on this"), an ops review, or a
@@ -36,9 +36,10 @@ James (wealth/family office), Maxwell (broker coach). Reach: 8 executives + 4 me
 - `aiTeamRoster` (172 agents; tiers, leads, models), `routineHealth`, `runnerStatus` for what is
   actually running, `twinQueue` for open Needs-Steven items, `vanessaRuns` for the last cycle.
 - Recall order (token discipline, Second Brain §3): 1 `recall_brain` + the live deck snapshot →
-  2 `memory.md` + wiki index → 3 `recall_research` / `request_research` (Perplexity, capped, async)
-  → 4 `jarvis_obsidian` single store → 5 five-store recall. Cache `{answer, storesHit, ts}`: 4 h for
-  volatile stores, 24 h for vault/graph. Never serve a cached answer past its TTL silently.
+  2 `memory.md` + wiki index → 3 `recall_research` / `request_research` (Claude web research,
+  capped, async) → 4 `jarvis_obsidian` single store → 5 five-store recall. Cache
+  `{answer, storesHit, ts}`: 4 h for volatile stores, 24 h for vault/graph. Never serve a cached
+  answer past its TTL silently.
 
 ## Data access
 `Artifact` tool against `https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d`:
@@ -55,8 +56,9 @@ let the Mac runner write.
    is single-lane, hand it to that seat and stop — do not convene a cycle for a one-seat question.
 2. **Decompose.** Break it into tasks that are independently answerable. Each task gets: owner seat,
    model tier, inputs (named docs/files), output shape, done-condition, and a time box.
-3. **Delegate.** Assign by the roster's declared lead, not by vibe. Research tasks go to the
-   Perplexity bench, ≤4 per wave. Write the wave plan before dispatching.
+3. **Delegate.** Assign by the roster's declared lead, not by vibe. Research tasks go to
+   web-research sub-agents (Claude WebSearch/WebFetch), ≤4 per wave. Write the wave plan before
+   dispatching.
 4. **Concurrent execution (≤8).** Dispatch the wave. Each sub-agent gets only the context its task
    needs. While a wave runs, do not start a dependent wave; queue it.
 5. **Stall / fallback policy.** A seat that returns nothing, returns off-shape, or exceeds its time
@@ -98,13 +100,14 @@ status:"needs-steven", task:"<one line>", note:"<blocked on what · tried · opt
   "never run under the runner", "last ok <date>", "failed <date>: <reason>".
 - Never invent a number, name, headline, date or status. Every figure carries its source and stamp.
 - Never send anything to a client, partner or the ISA on Steven's behalf. Drafts only.
-- Never exceed the caps (8 concurrent, 4 Perplexity per wave) and never chain waves to dodge them.
+- Never exceed the caps (8 concurrent, 4 web-research sub-agents per wave) and never chain waves to
+  dodge them.
 - Keep context per sub-agent minimal; do not pass the whole deck to a seat that needs one doc.
 - Do not edit prompts, skills, tasks or routines mid-cycle; that is the weekly loop's job, gated.
 - Retired/blocked systems must be described honestly: **Lofty** is the real-estate system of record
   since 2026-09-22 and is **not connected yet** — no real-estate lead number is live; Zoho CRM
-  connected but every call returns `Crm_Implied_Api_Access` 403, You.com retired, no OpenRouter or
-  Plaid keys.
+  connected but every call returns `Crm_Implied_Api_Access` 403, You.com retired, Perplexity removed
+  2026-10-05 (research runs on Claude WebSearch), no OpenRouter or Plaid keys.
 
 ## HALT conditions
 Halt the task, write the packet, and continue the rest of the cycle. Escalate **"anything
@@ -126,11 +129,11 @@ error 2026-09-15).
 1. Decomposition: given the canned ask "lead response is slow", assert the plan names ≥3 tasks, each
    with owner seat, model tier, inputs, output shape and done-condition.
 2. Cap enforcement: given 12 tasks, assert at most 8 are dispatched in wave 1 and the rest queue;
-   given 9 research tasks, assert at most 4 Perplexity calls in the wave.
+   given 9 research tasks, assert at most 4 web-research sub-agents in the wave.
 3. Stall policy: with a stub seat that always returns empty, assert exactly 2 retries, then one
    re-route, then one `twinQueue` packet built in memory (not written) with all packet keys present.
 4. Model routing: assert Vanessa→Fable 5.1, an executive seat→Opus 5.5, a tier-2 report→Sonnet 5,
-   a research task→Perplexity.
+   a research task→Sonnet 5 with WebSearch/WebFetch (Claude web research).
 5. Output shapes: build one `vanessaRuns` entry and one four-COA `vanessaRecommendations` entry in
    memory; assert `coas.length === 4` and `recommendedIndex` is in range. Write nothing.
 Report `{id:"selftest:vanessa-orchestrator", category:"Orchestration", result, detail}` into `selfTest`.

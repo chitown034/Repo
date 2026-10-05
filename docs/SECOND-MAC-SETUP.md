@@ -152,15 +152,16 @@ In Claude Code from the project root: `/memory on`.
 ### 8. MCP servers — install what this Mac will actually use
 
 The first Mac has **15 connected** (`toolkitSnapshot`, 2026-09-22 13:15 UTC): `filesystem`, `fetch`,
-`memory`, `git`, `perplexity`, `notion-brain`, `openrouter`, `openterminal`, `lofty`, `tradingview`,
-`apination`, `apple-health`, `apple-health-xml`, `health-export`, `plugin:ruflo-core:ruflo`.
+`memory`, `git`, `perplexity` (Perplexity removed 2026-10-05), `notion-brain`, `openrouter`,
+`openterminal`, `lofty`, `tradingview`, `apination`, `apple-health`, `apple-health-xml`,
+`health-export`, `plugin:ruflo-core:ruflo`.
 
 You do **not** need all of them on a second Mac. Take them in three groups:
 
 | Group | Servers | Install here too? |
 |---|---|---|
 | **Needed for any real work** | `filesystem`, `fetch`, `git`, `memory` | **Yes** |
-| **Needed to answer like Vanessa** | `perplexity` (research), `notion-brain` (Second Brain), `plugin:ruflo-core:ruflo` (recall) | **Yes** |
+| **Needed to answer like Vanessa** | `notion-brain` (Second Brain), `plugin:ruflo-core:ruflo` (recall). Research needs no server: it is Claude Code's built-in WebSearch/WebFetch on Steven's Claude subscription — do not install `perplexity` (removed 2026-10-05) | **Yes** |
 | **Tied to the first Mac's data or hardware** | `lofty`, `apple-health`, `apple-health-xml`, `health-export`, `openterminal`, `tradingview`, `apination`, `openrouter` | Only if this Mac will read those same local daemons, local files or a machine-local key. **Equal control does not mean identical hardware** — a Mac without the Apple Watch nearby still cannot be the one reading Health data, whatever its lease role says |
 
 `plugin:ruflo-core:ruflo` arrives with the `ruflo-core` plugin, not as a standalone server. For the wider tooling set, `./MAC-SETUP.sh --dry-run` then `./mac-verify.sh` cover it.

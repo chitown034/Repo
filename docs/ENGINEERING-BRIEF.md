@@ -93,12 +93,12 @@ ORCA: the Mac has "Orca Computer Use" v1.4.203 (Stably AI, com.stablyai.orca) in
   parallel-worktree IDE. Reconcile honestly (installed: the computer-use app; the IDE integration is not done).
 MODEL TIERING (Steven 2026-09-22): Claude Fable 5.1 masterminds — Vanessa (orchestration, council chair, final synthesis);
   Claude Opus 5 for executive/judgment seats; Claude Sonnet 5 for execution/report seats; Perplexity (Composio perplexityai
-  or the local perplexity MCP) does research heavy lifting. Vanessa dispatches sub-agents per agent, ≤8 parallel, ≤4 Perplexity per wave.
+  or the local perplexity MCP) does research heavy lifting. Vanessa dispatches sub-agents per agent, ≤8 parallel, ≤4 Perplexity per wave (Perplexity removed 2026-10-05).
 MENTOR NAMING: the deck's mentor is "Kevin" (panel-kevin, kevinChat); the claude.ai Desktop skill is `cole-mentor` ("Cole"). Keep
   Kevin on the deck; record the drift as a finding for Steven (rename the skill or the seat — his call).
 YOU.COM — RETIRED (Steven 2026-09-22: "you.com connection is replaced by the Claude subscription connection"; its free tier returned
   "limit exceeded" at 08:40 UTC today). Research now runs ONLY on the Claude subscription: WebSearch/WebFetch inside scheduled tasks (Mac runner)
-  and cloud routines, and Perplexity for deep research. RULE FOR EVERY ENGINEER: any in-page code path or copy that calls or credits You.com
+  and cloud routines, and Perplexity for deep research (Perplexity removed 2026-10-05). RULE FOR EVERY ENGINEER: any in-page code path or copy that calls or credits You.com
   (weather overlay, property search strategy live listings, similar-property search, tax-record search, on-this-day, "live You.com pull", the
   `you-*` tool names, "13 interactive You.com call sites") becomes one of: (a) a queued research request written to the `vanessaResearch` doc
   (answered hourly 7:30–21:30 PT by the vanessa-research-queue task) with the button relabelled "Queue research (answered by Vanessa)", or
@@ -121,7 +121,7 @@ YOU.COM — RETIRED (Steven 2026-09-22: "you.com connection is replaced by the C
   sensitive items wait for Steven) · fabric-deck-sync; runs under claude-runner; loop-engineering-weekly + nightly-self-test keep it
   self-improving; bounded by the Mac being awake.
 - Recall order (token discipline): 1 recall_brain + live deck snapshot (already loaded) → 2 memory.md + wiki index → 3 recall_research /
-  request_research (Perplexity, capped, async) → 4 jarvis_obsidian single-store → 5 five-store recall. Cache {answer, storesHit, ts}:
+  request_research (Perplexity, capped, async) (Perplexity removed 2026-10-05) → 4 jarvis_obsidian single-store → 5 five-store recall. Cache {answer, storesHit, ts}:
   4 h for volatile stores, 24 h for vault/graph; never serve past TTL silently.
 - Remote/live access: Vanessa Live (Claude Code session on the Mac with Remote Control → claude.ai or the phone app), Command Deck on any
   device, iMessage +1 650-484-9720 and Discord #vanessa via Inkbox/bot, claude.ai/code routines (cloud), Local Bridge queue (read-only verbs).

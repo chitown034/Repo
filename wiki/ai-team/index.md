@@ -22,7 +22,7 @@ question to a seat. For project status use `projects/ai-team.md`; this page is t
 | Family office, tax strategy, estate | **James** — Wealth Advisor | Opus 5.5 |
 | Personal development, the 11-Dimension check | **Kevin** — Personal Development Mentor | Opus 5.5 |
 | Execution, reports, benches | The named report seat | Sonnet 5 |
-| Research heavy lifting | Perplexity | — |
+| Research heavy lifting | **Claude web research** — WebSearch/WebFetch on Steven's Claude subscription (Perplexity removed 2026-10-05) | Sonnet 5 |
 
 **Kevin is the deck's name for the mentor seat.** The claude.ai Desktop skill for the same role is
 `cole-mentor` ("Cole"). The drift is recorded in `context/decisions.md` and is Steven's to resolve.
@@ -31,8 +31,8 @@ Do not silently rename either side.
 ## Delegation rules
 
 - Vanessa routes; the seat answers; Vanessa consolidates into **one** answer.
-- **≤8 sub-agents in parallel. ≤4 Perplexity per wave.** A stall gets 2 retries, then a re-route,
-  then a Needs-Steven packet.
+- **≤8 sub-agents in parallel. ≤4 web-research sub-agents per wave.** A stall gets 2 retries, then a
+  re-route, then a Needs-Steven packet.
 - **Proposal-only seats:** Nadia (weekly Disruption Brief — replace / upgrade / adopt), Elon
   (feasibility gate on every Nadia item), the LLM Council, the digital twin, the hedge-fund
   committee. They produce proposals, never changes.

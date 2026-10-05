@@ -1,7 +1,7 @@
 {
   "_meta": {
     "purpose": "Typed question sets for laya_route.py, Laya's zero-token System-1 hop in front of Vanessa.",
-    "mirrors": "CLAUDE.md's routing table and model-tiering table, row for row, 2026-09-28.",
+    "mirrors": "CLAUDE.md's routing table and model-tiering table, row for row, 2026-09-28; research rows updated 2026-10-05 (Perplexity removed).",
     "rule": "Change CLAUDE.md's routing table first, then this file to match. Never the other way.",
     "note": "Tiers only, never model names, per CLAUDE.md and this repo's rule."
   },
@@ -64,7 +64,7 @@
       "james_wealth_advisor": "Family office, tax strategy, estate",
       "kevin_personal_dev": "Personal development, the 11-Dimension check",
       "report_seat": "Execution, reports, benches — the named report seat",
-      "research_perplexity": "Research heavy lifting"
+      "web_research": "Research heavy lifting"
     }
   },
   "tier": {
@@ -74,7 +74,7 @@
       "orchestrator": "Whole-request planning, council chair, final synthesis across lanes — Vanessa only",
       "executive": "A C-suite lane owns this outright: Marcus, Sofia, Derek, Alexandra, Nadia, Victor, Elena or Elon",
       "worker": "A report, bench or execution-only seat does this; no cross-lane judgment needed",
-      "research": "This needs external research; Perplexity does the digging, capped at 4 per wave"
+      "research": "This needs external research; Claude web research (WebSearch/WebFetch) does the digging, capped at 4 web-research sub-agents per wave"
     }
   },
   "pii_gate": {

@@ -351,3 +351,50 @@ the record of the change. The full split, and the three web-UI routine edits onl
 - **API behaviour to remember** (only if code calls the API directly; nothing in this repo does today):
   Opus 5.5 cannot disable thinking, its effort default is `medium` (Opus 5's was `high`), and forced
   `tool_choice` returns a 400.
+
+## 2026-10-05 — Perplexity removed; all research and feeds run on the Claude subscription
+
+- **Request (Steven, verbatim).** *"remove everything running on Perplexity and replace with Claude
+  subscription"*.
+- **Decision.** Nothing runs on Perplexity. Research heavy lifting is **Claude web research — Sonnet 5
+  with WebSearch/WebFetch on Steven's Claude subscription**, capped at **≤4 web-research sub-agents per
+  wave** (≤8 in parallel, unchanged). Recall level 3 (`recall_research` / `request_research`) and the
+  `vanessa-research-queue` Mac task answer with Claude WebSearch. The dashboard feeds are written by
+  Claude cloud routines — agent-created, running on the subscription
+  (`routines/feed-writers-2026-09-28/README.md`, `routines/feed-writers-2026-10-05/`). The Composio
+  `perplexityai` connection and the Mac's `perplexity` MCP are no longer used.
+- **OmniRoute.** Its `research` combo and Perplexity provider are withdrawn. The research tier routes
+  `subscription`, direct, like every other Claude tier — the subscription never goes through OmniRoute
+  (`integrations/omniroute/README.md` §Hard rule). OmniRoute keeps the `local` route only.
+  NEEDS-STEVEN 76 (the Perplexity key) is withdrawn.
+- **Reverses, in part.** The research row of `2026-09-22 — Model tiering`; "plus Perplexity for deep
+  research" in `2026-09-22 — You.com is retired`; the research half of `2026-09-28 — OmniRoute routes
+  the research and local tiers; the subscription stays direct`. Those entries stay as written.
+- **Why.** Perplexity is out of credit — in the week to 2026-10-05 every Mac task that called it logged
+  `Perplexity 401 insufficient_quota` and fell back to Claude WebSearch — and Steven wants one
+  subscription, not two.
+- **What still needs the Mac.** One prompt Steven pastes into his Mac Claude session
+  (`integrations/mac-claude-only.md`). It pauses the Mac's Perplexity feed tasks, switches the runner's
+  research provider to Claude only, and removes the Mac's `perplexity` MCP server. Until then those
+  tasks try Perplexity first, get the 401 and fall back to WebSearch.
+- **Owner.** Steven (the Mac paste), Derek (automation). **Status.** Active — repository side done
+  2026-10-05; the Mac side waits on the paste.
+
+## 2026-10-05 — The ISA Portal mirrors the deck's Claude-written notes
+
+- **Request (Steven, verbatim).** *"ensure ISA portal also is update and mirrors command deck and only
+  uses Claude subscription for feeds"*.
+- **Decision.** The two writers whose notes the ISA Portal shows copy them there themselves: the
+  builder-incentives writer and the morning run of weather & news write their Command Deck entries, then
+  send the identical entries (same `checkedAt`) to the ISA Portal's own `liveFeeds` document with a pinned
+  `update`. The ISA page (v39) renders them under the builder and market cards, with sources, checked
+  time and an overdue warning, and redraws in place when a copy lands. Rates and market figures already
+  reached both pages through `ratesSnapshot` (since 2026-10-04).
+- **Why the writers, not a separate mirror routine or Pipeline Sync.** No page can read another page's
+  store, so something has to copy. A mirror routine would cost one more session a day on an allowance
+  that ran out early the week before. Pipeline Sync carries client data both ways, and a feed step in it
+  would put that routine at risk for a non-client feature. Each writer already holds the entry it just
+  wrote, so the copy costs it two calls and keeps both pages on the same stamp.
+- **Owner.** Derek (automation). **Status.** Active 2026-10-05 — ISA `liveFeeds` created with that day's
+  four notes. The prompts are `routines/feed-writers-2026-09-28/01-weather-news.prompt.txt` and
+  `06-builder-incentives.prompt.txt`, MIRROR STEP.
