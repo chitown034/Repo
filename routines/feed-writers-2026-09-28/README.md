@@ -87,3 +87,7 @@ A stamp up to 1 hour in the future also counts as fresh: the Mac's tasks still r
 (today's `econodayLiveList` reads 13:10:00Z for a write that ended 12:59:37Z). The other four writers
 (top performers, builder incentives, PE & Defense, Elite Rewards scan) are the only writers of their
 entries and run unchanged.
+
+Verified 2026-10-05 16:35 UTC: the first backup-mode run of weather & news found both documents fresh
+(the Mac wrote them at 15:05 UTC) and stopped after 11 seconds — $0.12 of usage against $2.09 for the
+last full run, with both documents left untouched (`newsSnapshot` v20, `weatherSnapshot` v29).
