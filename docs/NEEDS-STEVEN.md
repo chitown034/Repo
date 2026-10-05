@@ -373,3 +373,50 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
     2026-10-05): *Monthly state market refresh — Rent, Buy, or Wait*, *Muster Point — monthly benefits
     refresh*, *Weekly dashboard refresh — Rent, Buy, or Wait*. They are not Command Deck routines and your
     Opus 5.5 instruction was for the AI team, so they were left alone. Say so and they move to Opus 5.5.
+
+## Stale, broken, not connected — the R12 sweep, added 2026-10-05 by the integrator (append-only block)
+
+86. **Your one Mac paste: fix everything Mac-side** — `integrations/mac-fix-all-2026-10-05.md`, pasted into a
+    Claude Code session on the Mac, in the Repo folder, after `git pull` (about two hours; your hands for about 30
+    minutes; every change waits for your yes). Section 1 is item 83. It repairs the five refused tasks where it
+    safely can, stops the end-of-day roll-up calling the retired CRM, verifies Orca (your Mac's own snapshot says
+    1.4.220, updated Oct 4) and walks the phone pairing, rebuilds the knowledge graph behind a secrets screen,
+    checks Opus 5.5, and reads (never installs) WhatsApp/OpenWA, CLI-Anything, Laya and Bonsai. Paste its final
+    report block back into a cloud session.
+87. **Routine switch-offs and one paste** — each has a direct link in `routines/fixes-2026-10-05/README.md` §1.
+    Switch off *Calendar refresh*, *Mortgage rates & market refresh* and *Trading strategy performance daily*
+    (the Mac already writes those documents; these copies only print JSON), plus *Opportunity Radar research* and
+    *On This Day & Birthdays* (cloud writers cover both). Paste `routines/feed-writers-2026-09-28/03-strava.prompt.txt`
+    into *Strava activity refresh* and keep it on: the Mac's `strava-daily-sync` wrote an empty activity list today
+    (the Mac paste-in §2.5 reads why); then pause one of the two so they never overwrite each other. Together these
+    are about 50 runs a week that change no dashboard.
+88. **Two runs waiting on you** — *Real Estate Weekly Brief* is hung for the third time: Stop it and switch it off
+    (item 16's rule). *Weekly dashboard refresh — Rent, Buy, or Wait* is waiting to republish the public page on
+    Opus 5: do not approve it before Sun Oct 11, 20:00 UTC (the usage reset). Also switch off *Project Risk Review*
+    (item 16).
+89. **USC** — edit the R19 study planner's prompt: `courseSchedule` → `uscSchedule` (the document it names does not
+    exist). And give the **Weeks 5–7 due dates** from Canvas, or the Canvas iCal URL (item 31). No task fills them
+    and nothing will guess them.
+90. **Your data, flagged on the deck, not changed** — the Sienna registration expired 09-27; Clear, Lincoln and the
+    AZ CCW have no date on file; TX/VA/NC licences are unrecorded and 10 of 11 `licenses` rows have no due date, so
+    their alerts never fire; the Q3 licensing push is overdue; Enterprise Plus lapsed 2026-02-28; the tax row
+    "529 deduction (state return)": California has no 529 deduction, so ask your CPA which state it means; the
+    work shift reads 8:00–3:30 in Work and 0800–1600 in the Master Plan; the Booth CAIO target reads Mar 2027 on the
+    Kanban and Sep 2027 in the stored plan; the MGM status match ended Sep 30 (your Vegas trip is Oct 14–20); the
+    Amex Platinum Lufthansa-lounge change has a single source, so confirm it in the Amex app.
+91. **NMLS renewal date — compliance, your call** — the deck carried two date sets. It now shows **Fri Dec 4**
+    (2026 provider notices, read from search summaries because the pages were blocked), flagged "confirm in NMLS";
+    the renewal window opens Nov 1. Alexandra drafts, you decide.
+92. **Health log** — 24 of the 31 rows in your health metrics log are test-run leftovers with impossible dates. The
+    Health panel now flags them: click "Remove those 24 rows", then click again to confirm. Then say "Update my
+    health stats in Notion" on the iPhone once (the Notion log has 0 rows so far).
+93. **Connectors** (claude.ai → Settings → Connectors) — reconnect Eromify, EVRoutes and Turo; finish or remove
+    BlackRock Advisor Center, Health Data Avatar, Microsoft 365, PlayMCP and Similarweb.
+94. **Reviews waiting** — 4 marketing drafts in the queue; the Unilever funder row on the nonprofit page is
+    unverified.
+95. **Resolved today, nothing to do** — the cloud backup works again: GREEN at 2026-10-05 19:12 UTC, 182 + 15
+    documents verified, 2 weekly copies kept (the routine now moves its export through files). Items 1, 10 and 43
+    are done (checked against the 18:05 UTC data). The index tiles now refresh from the cloud market-close writer
+    each weekday at 21:20 UTC. The 13 monthly routines that died in the Oct 1–2 usage lockout are re-run one at a
+    time after the Oct 11 reset by a scheduled cloud check-in (plan: `routines/fixes-2026-10-05/README.md` §3),
+    unless you say otherwise.

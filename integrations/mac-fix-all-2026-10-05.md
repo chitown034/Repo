@@ -241,6 +241,10 @@ Never delete a task, never touch a client-facing system, never edit anything thi
     Report yes or no per task, with its cron from runnerctl list. They need the Lofty key before they can be
     pointed at Lofty (NEEDS-STEVEN 23). A task that keeps calling a dead endpoint spends allowance on every
     run: say how often each runs and leave any pause to Steven.
+    Also read-only: strava-daily-sync writes stravaSnapshot, which held activities: [] at 12:22 UTC on 2026-10-05
+    although the Strava connector shows a Sep 12 activity inside a 30-day window. Read its prompt and the tail of
+    its last log and report why (window, connector or filter). If Steven moves Strava to the cloud routine
+    (routines/fixes-2026-10-05/README.md, item 1), propose pausing this task so the two never overwrite each other.
 
 2.6 Decisions. Present ONE numbered list of every proposed change from 2.0-2.5: what, why, the exact before and
     after, and what proves it worked. Apply only what Steven approves. Verify each one (runnerctl list shows
@@ -249,7 +253,8 @@ Never delete a task, never touch a client-facing system, never edit anything thi
 
 ==== SECTION 3 - ORCA (Stably AI, github.com/stablyai/orca): verify, update if behind, pair the phone
 
-Context: the Mac's toolkit reported "Orca Computer Use v1.4.203, bundle com.stablyai.orca" on 2026-09-16, never
+Context: the Mac's toolkit reported "Orca Computer Use v1.4.203, bundle com.stablyai.orca" on 2026-09-16, and its
+2026-10-05 13:16 UTC snapshot lists "Orca 1.4.220 (updated 2026-10-04, notarized)" at /Applications/Orca.app; never
 confirmed from anywhere but this Mac (F-V2-23). Orca runs Claude Code and Codex agents side by side in
 worktrees and has an iOS/Android companion app that pairs to the desktop app. It only runs agents Steven
 starts in it; it does not change how Vanessa or the runner work, and it is not a recall store. Do not run any
@@ -392,6 +397,16 @@ interactive graph.html and a plain-language GRAPH_REPORT.md.
 
 For each item print one state line and, if it is not live, the exact command Steven would run later. Do NOT
 run those commands.
+Start from this Mac's own inventory, not the repo's assumptions. Its toolkit snapshot (2026-10-05 13:16 UTC)
+lists as installed: OpenWA 0.24.0 NATIVE at ~/Applications/repos/OpenWA (no Docker; 127.0.0.1:2785; key file in
+~/.config/openwa), WhatsApp CLI at ~/Applications/whatsapp-cli (2026-10-04), the CLI-Anything plugin and the
+read-only harnesses at ~/Applications/cli-anything-harnesses (2026-10-04), Laya 0.3.27 in ~/Applications/laya-venv
+(MCP server not registered), Bonsai 27B at ~/Applications/bonsai-27b on 127.0.0.1:8093 (standalone, not in the
+free fallback; it fabricated a VA fee in testing, so it stays off client work until the proof passes), OmniRoute
+at ~/Applications/OmniRoute (health: GET /healthz or /api/health), Graphify at ~/Applications/repos/graphify, and a
+Setup Assistant at ~/Applications/setup-assistant that takes keys with hidden input into their 600 files. Where a
+check below names a different path (~/laya-venv, ~/Applications/openwa, Docker, Keychain items), check both and
+report which exists. Say "installed per the snapshot, confirmed" or "snapshot says installed, not found".
 6.1 WhatsApp / OpenWA (NEEDS-STEVEN 78). Checks: docker info >/dev/null 2>&1 (is Docker Desktop running?);
     ls -d ~/Applications/openwa; curl -s http://127.0.0.1:2785/api/health (expect {"status":"ok",...});
     security find-generic-password -a "$USER" -s openwa-admin-key >/dev/null 2>&1, and the same with
@@ -418,7 +433,7 @@ run those commands.
     2026-09-24), so nothing they return may drive a decision yet. Do not run any recipe, discover or write verb
     now.
 6.3 Laya (NEEDS-STEVEN 68). Checks: ls -d ~/laya-venv; if it exists, ~/laya-venv/bin/python -I -c "import laya;
-    print(laya.__version__)" (the repo pins 0.3.21); claude mcp list | grep -i laya; ls -d ~/.cache/huggingface
+    print(laya.__version__)" (the repo pins 0.3.21; the Mac's snapshot lists 0.3.27 in ~/Applications/laya-venv, so check that path too); claude mcp list | grep -i laya; ls -d ~/.cache/huggingface
     (checkpoints downloaded?); curl -sS -o /dev/null -w '%{http_code}\n' https://huggingface.co (can this Mac
     reach the place the one-time model download comes from? It was blocked in the cloud sandbox).
     Later, his decision and his yes: bash integrations/laya/install.sh, then claude mcp add laya --env

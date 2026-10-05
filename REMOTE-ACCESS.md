@@ -41,7 +41,8 @@ surface for the `≤8` parallel sub-agents Vanessa dispatches (`OPTIMIZATION.md`
 1. Confirm Orca itself is really installed and current on the Mac — Section 3 of the Mac paste-in
    `integrations/mac-fix-all-2026-10-05.md` reads the installed app, compares it with the latest
    release and updates it on Steven's yes. (`./mac-verify.sh` has no Orca check — corrected
-   2026-10-05.) F-V2-23 is still open; the Mac's reported v1.4.203 has never been confirmed from
+   2026-10-05.) F-V2-23 is still open; the Mac's own snapshot (2026-10-05 13:16 UTC) reports v1.4.220, updated 2026-10-04 (it read v1.4.203 on
+   2026-09-16), and that has never been confirmed from
    anywhere but the Mac.
 2. Install the iOS or Android Orca app from the project's own release channel
    (`github.com/stablyai/orca` — see `references/index.md`), and pair it to that Mac.

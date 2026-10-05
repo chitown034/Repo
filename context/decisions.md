@@ -398,3 +398,21 @@ the record of the change. The full split, and the three web-UI routine edits onl
 - **Owner.** Derek (automation). **Status.** Active 2026-10-05 — ISA `liveFeeds` created with that day's
   four notes. The prompts are `routines/feed-writers-2026-09-28/01-weather-news.prompt.txt` and
   `06-builder-incentives.prompt.txt`, MIRROR STEP.
+
+## 2026-10-05 — The cloud backup stages its export through files
+
+- **Request (Steven, verbatim).** *"look for everything thoriughout the dashboard that is stale, not working ,
+  not connected and have engineers fix them"*.
+- **Decision.** The weekly cloud backup (Sundays 11:00 UTC) exports both databases with `ArtifactData list …
+  out_dir` into a staging folder in its own sandbox, builds the backup documents with a standard-library
+  helper embedded in its prompt, writes them with `set … file_path`, reads them back the same way and verifies
+  every document, then deletes the staging folder. The copies still live only in the Command Deck's `backups`
+  collection. A failed run deletes nothing; `docCount` always describes the last good backup, and
+  `liveDocCount` and a date-derived `consecutiveFailures` were added.
+- **Why.** The old prompt held all 182 documents in the conversation while a hard rule forbade writing them
+  to a file, so the Oct 5 18:14 UTC run stopped RED ("too large to export without local files"), and the last
+  good backup was 2026-09-22. Moving the bytes through files also keeps client data out of the model's context.
+  The client-data rule now names the staging folder as the only place the data may touch outside the databases.
+- **Owner.** Derek (automation). **Status.** Active — re-run on demand 2026-10-05 19:09 UTC and verified GREEN
+  at 19:12 UTC (182 + 15 documents, 6 + 1 parts, 2 weekly copies kept). Prompt:
+  `routines/fixes-2026-10-05/backup.prompt.txt`; the backup watchdog reads the new shape.

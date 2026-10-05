@@ -71,7 +71,7 @@ model:
 | **Ruflo** (238 entries) | Research-and-memory bench; weekly graph summaries so the graph can be recalled without traversal | Primary storage |
 | **RAG** (`vector-index/`) | Finding a passage in a high-volume corpus | Anything that must be read whole |
 | **ECC** (under Derek) | A **gate** on every change: standards, test, observability, accessibility, security, dependency, agent-safety | Recall. It stores nothing |
-| **Orca Computer Use** (v1.4.203, Stably AI) | Computer-use / browser execution where there is no API | Recall, and anything unattended and irreversible |
+| **Orca Computer Use** (v1.4.220 per the Mac's 2026-10-05 snapshot, Stably AI) | Computer-use / browser execution where there is no API | Recall, and anything unattended and irreversible |
 | **Notion** (Second Brain DB, 68–70 rows) | **The record.** What survives a session, synced by `brain-deck-sync`; also hosts the Health Log | Asking it a question directly. It is the destination, not the index |
 | **Google Drive** ("Second Brain" folder) | **Nothing yet — not wired.** Intended as a read-only *source* that feeds Jarvis and the vault | Everything, today. See below |
 | **Laya** (`integrations/laya/`, added 2026-09-28) | The **zero-token first hop**, in front of Vanessa and every other row in this table — see above | Anything past routing: a licensed decision, research, writing to anything, or trusting its own guess below its confidence threshold |
@@ -92,7 +92,7 @@ vetted by the CTO Innovator — see `wiki/ai-team/index.md`.
 **Corrected 2026-09-28:** the GitHub project `stablyai/orca` (MIT) describes itself as "the AI
 Orchestrator" — it runs Claude Code and Codex side by side in worktrees, with an iOS and Android
 **mobile companion** to monitor and steer agents, not only a computer-use app. The Mac's reported
-v1.4.203 is still unverified from here (same F-V2-23 caveat). Both descriptions can be true of one
+v1.4.220 (its 2026-10-05 snapshot; it read v1.4.203 on 09-16) is still unverified from here (same F-V2-23 caveat). Both descriptions can be true of one
 project with several capabilities; what changes today is the row above: Orca's most useful role for
 this brain is the **parallel-agent surface and the phone view** for the ≤8 sub-agents Vanessa
 dispatches, named in "The dispatch layer" above — still a proposal, still vetted by the CTO
@@ -169,7 +169,7 @@ rule in `knowledge-graph/README.md`. Neither = it holds no corpus at all.
 | **Graphify** | **L4** — knowledge graph (embeddings also serve L3) | Connections (+ Context in its L3 embeddings) | A "how do these connect" question | 750 nodes / 1,104 edges, built 2026-09-13; `ops-knowledge-graph` has **never run** |
 | **Ruflo** | **L4** — knowledge graph (weekly summary; also an L3 server) | Context (a summary *of* Connections) | Before traversing Graphify directly — try the summary first | 238 entries |
 | **ECC** | Not a recall level — a **gate** on the dispatch path | Neither | Every change, not a question | Reviews standards/test/observability/accessibility/security/dependency/agent-safety; under Derek |
-| **Orca** | Not a recall level — a **dispatch-path surface** (parallel agents, phone view) | Neither | Never for recall; only to watch/steer sub-agents | Reported v1.4.203, unverified from here; proposal only, vetted by the CTO Innovator |
+| **Orca** | Not a recall level — a **dispatch-path surface** (parallel agents, phone view) | Neither | Never for recall; only to watch/steer sub-agents | Reported v1.4.220 (Mac snapshot 2026-10-05), unverified from here; proposal only, vetted by the CTO Innovator |
 | **OmniRoute** | Not a recall level — the **local dispatch gateway** for the local tier (the research tier left it 2026-10-05: Perplexity removed, research runs on the subscription, direct) | Neither | Never for recall; routes a PII-fired request to its `local` combo (`integrations/omniroute/README.md`) | Scripts built 2026-09-28, proved against stand-ins only; not configured on the Mac |
 | **Bonsai 27B** | Not a recall level — the **local tier's model**, behind OmniRoute's `local` combo | Context (a client-data request's local-only answer) | A PII-fired request only — never anything else, never a cloud fallback | Apache-2.0 (PrismML); not installed; the local route stays off until the Mac proof passes (NEEDS-STEVEN 75) |
 

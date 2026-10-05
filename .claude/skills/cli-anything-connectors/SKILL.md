@@ -261,7 +261,7 @@ Append `{ts, task:"cli-anything", wrapper, verb, mode, argsRedacted, exitCode, r
 Never log a credential, a session cookie or a full client record.
 
 ## Alternative executor
-The Mac has **Orca Computer Use** v1.4.203 (Stably AI, `com.stablyai.orca`) — standalone browser
+The Mac has **Orca** v1.4.220 per its 2026-10-05 toolkit snapshot (Stably AI, `com.stablyai.orca`) — standalone browser
 automation, **not integrated with Claude Code**. It may beat DOMShell on a stubborn portal, but it
 has no equivalent of the `act` allow-list, so the read-only guarantee would have to be rebuilt from
 scratch. A CTO-Innovator proposal, not a shipped path — do not describe it as connected.

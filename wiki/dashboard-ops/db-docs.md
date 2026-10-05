@@ -26,7 +26,8 @@ does not repeat it.
 | `runnerStatus` | Per-task last-end/last-status for all 59 Mac tasks under `claude-runner` | The runner itself, on every task completion |
 | `knowledgeFabric` | Store counts: Second Brain rows, vault notes, Jarvis docs, graph nodes/edges, Ruflo entries, Drive files | `fabric-deck-sync`, every 2 h at :05, 7 AM–9 PM PT |
 | `secondBrain` | Every Second Brain row copied out of Notion | `brain-deck-sync`, hourly :20, 7 AM–10 PM PT |
-| `backupStatus` | Last backup date, verified flag, doc counts | The cloud weekly-backup writer, Sun 11:00 UTC |
+| `backupStatus` | Last backup date, verified flag, doc counts | The cloud weekly-backup writer, Sun 11:00 UTC (stages its export through files since 2026-10-05; `liveDocCount`, `consecutiveFailures`) |
+| `marketSnapshot` | Index tiles (Dow, S&P 500, Nasdaq), fallback movers/sectors, `asOf` naming the session | The cloud market-close writer, weekdays 21:20 UTC (since 2026-10-05; the Mac's `feeds-market-close` before) |
 | `taskLease` | Which Mac holds the one-writer lease, and until when | Either Mac's `claude-auto`, on a lease check/take/release |
 | `cloudWriteProbe` | Proof that a cloud routine can write the DB unattended | A one-shot probe routine, fired 2026-09-22 |
 | `feedFreshness` | Per-feed fresh/late/stale/unknown/missing verdict, 26 feeds | The feed-freshness watchdog, daily 16:12 UTC |
