@@ -1,3 +1,5 @@
+> **Superset:** `integrations/mac-fix-all-2026-10-05.md` runs this exact paste-in as its Section 1 and then fixes the rest of the Mac side (runner repairs, Orca, knowledge graph, Opus 5.5, readiness) — paste that one instead, and use this file alone only if you want the Claude-only switch by itself.
+
 # Mac: remove Perplexity, run everything on the Claude subscription (2026-10-05)
 
 Steven, 2026-10-05: *"remove everything running on Perplexity and replace with Claude subscription"* and

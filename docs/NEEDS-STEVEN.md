@@ -259,9 +259,10 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
     `claude mcp list` before anything calls it connected · R11.
 69. **Orca mobile companion** — proposed as the phone view for watching/steering parallel
     sub-agents (`REMOTE-ACCESS.md`); unverified whether Orca itself is even current on the Mac
-    (F-V2-23, still open) · an install + pairing action only you can take · **run** `./mac-verify.sh`
-    first, then if Orca needs updating, install/update it, then install the iOS or Android app from
-    `github.com/stablyai/orca` and pair it to that Mac · R11.
+    (F-V2-23, still open) · an install + pairing action only you can take · **run** Section 3 of
+    `integrations/mac-fix-all-2026-10-05.md` (item 86): it reads the installed version, compares it with
+    the latest release, updates on your yes and walks the phone pairing step by step
+    (`./mac-verify.sh` has no Orca check — corrected 2026-10-05) · R11.
 70. **77 Skills purchase decision** — 77skills.ai, a one-time-purchase set of 77 business-principle
     skills as Markdown; egress-blocked from every sandbox so far, never read, contents unverified ·
     spends money, so only you can decide · **decide** buy or don't; if you buy it, it goes through
@@ -353,8 +354,9 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
 
 82. **Done by you, 2026-10-05: the ten old routines are off** (item 73). None of the ten is in the enabled
     routine list as re-read 2026-10-05 17:44 UTC; the replacement writers are all running.
-83. **Your one step: make the Mac Claude-only** — paste the prompt in `integrations/mac-claude-only.md`
-    into a Claude Code session on the Mac, in the Repo folder, after `git pull`. It pauses the three Mac
+83. **Your one step: make the Mac Claude-only** — now Section 1 of the one Mac paste-in
+    `integrations/mac-fix-all-2026-10-05.md` (item 86; `integrations/mac-claude-only.md` alone still
+    works) — paste it into a Claude Code session on the Mac, in the Repo folder, after `git pull`. It pauses the three Mac
     feed tasks the cloud writers replaced (`openrouter-feeds-refresh`, `feeds-weekly`,
     `feeds-market-close`), trims `weather-news-refresh` to weather only, switches the runner's research to
     Claude WebSearch, points `vanessa-research-queue` at Claude, and removes the `perplexity` MCP server.

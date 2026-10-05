@@ -84,7 +84,8 @@ nothing can reach. Decide it, do not leave it: `integrations/google-drive-brain.
 
 **Orca's honest status:** the standalone computer-use app is **reported installed** on the Mac —
 that claim has never been verified from anywhere but the Mac itself, so confirm it with
-`./mac-verify.sh` before any surface calls it live (F-V2-23). It is **not** integrated with Claude
+Section 3 of `integrations/mac-fix-all-2026-10-05.md` before any surface calls it live (F-V2-23;
+`./mac-verify.sh` has no Orca check — corrected 2026-10-05). It is **not** integrated with Claude
 Code, and the parallel-worktree IDE integration is **not** done. As an executor it is a proposal,
 vetted by the CTO Innovator — see `wiki/ai-team/index.md`.
 

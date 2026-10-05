@@ -38,8 +38,11 @@ surface for the `≤8` parallel sub-agents Vanessa dispatches (`OPTIMIZATION.md`
 **if** it is actually installed and paired, which nothing from this sandbox can confirm.
 
 **What Steven does, to turn this from a proposal into a live path:**
-1. Confirm Orca itself is really installed and current on the Mac — `./mac-verify.sh` (F-V2-23 is
-   still open; the Mac's reported v1.4.203 has never been confirmed from anywhere but the Mac).
+1. Confirm Orca itself is really installed and current on the Mac — Section 3 of the Mac paste-in
+   `integrations/mac-fix-all-2026-10-05.md` reads the installed app, compares it with the latest
+   release and updates it on Steven's yes. (`./mac-verify.sh` has no Orca check — corrected
+   2026-10-05.) F-V2-23 is still open; the Mac's reported v1.4.203 has never been confirmed from
+   anywhere but the Mac.
 2. Install the iOS or Android Orca app from the project's own release channel
    (`github.com/stablyai/orca` — see `references/index.md`), and pair it to that Mac.
 3. Confirm from the app that it actually sees a running Claude Code / Codex worktree session before
@@ -48,6 +51,13 @@ surface for the `≤8` parallel sub-agents Vanessa dispatches (`OPTIMIZATION.md`
 Until step 3 is done and reported, this path stays a proposal — same standing as the rest of Orca's
 row in `integrations/CONNECTIONS.md` — vetted by the CTO Innovator, nothing executed on its own
 authority.
+
+**Cloud side (measured 2026-10-05):** every cloud Claude Code session builds the Orca CLI from
+`stablyai/orca` main through `.claude/hooks/session-start.sh` (v1.4.214 that day — a source-tree
+version, not a release). In the cloud `orca status` reports no app and no runtime, as expected. The
+CLI can attach a session to a remote Orca runtime with `orca environment add --pairing-code …`; that
+would let cloud sessions reach the agents on Steven's Mac, so it is his call (Elena reviews first)
+and it has not been done.
 
 ## The correction — cloud routines CAN write the artifact DB
 
