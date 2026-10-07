@@ -24,9 +24,9 @@ question to a seat. For project status use `projects/ai-team.md`; this page is t
 | Execution, reports, benches | The named report seat | Sonnet 5 |
 | Research heavy lifting | **Claude web research** — WebSearch/WebFetch on Steven's Claude subscription (Perplexity removed 2026-10-05) | Sonnet 5 |
 
-**Kevin is the deck's name for the mentor seat.** The claude.ai Desktop skill for the same role is
-`cole-mentor` ("Cole"). The drift is recorded in `context/decisions.md` and is Steven's to resolve.
-Do not silently rename either side.
+**Kevin is the mentor seat's name everywhere** (Steven, 2026-10-07: "replace Cole with Kevin throughout"). The
+skill is `kevin-mentor` (`.claude/skills/kevin-mentor/`, and `integrations/claude-desktop/kevin-mentor.zip` for
+Claude Desktop); it writes to the deck's `kevinChat` thread. The old `cole-mentor` Desktop skill is retired.
 
 ## Delegation rules
 

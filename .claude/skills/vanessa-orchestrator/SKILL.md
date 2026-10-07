@@ -17,8 +17,8 @@ the separate `vanessa-broker` skill — this one is the orchestration layer.
 | Execution / report seats, benches | **Claude Sonnet 5** | tier-2/3 reports (bookkeeper, automation-engineer, buyer-matching-engine, …) |
 | Research heavy lifting | **Claude web research** — Sonnet 5 with WebSearch/WebFetch on Steven's Claude subscription (Perplexity removed 2026-10-05) | research waves |
 
-Mentors are addressed directly, not dispatched: Kevin (High-Value Man mentor on the deck — the
-claude.ai skill file is named `cole-mentor`; naming drift is Steven's call), Apex (trading),
+Mentors are addressed directly, not dispatched: Kevin (Standards mentor — skill
+`kevin-mentor`, one name everywhere since 2026-10-07), Apex (trading),
 James (wealth/family office), Maxwell (broker coach). Reach: 8 executives + 4 mentors.
 
 **Fan-out caps: ≤8 sub-agents in flight, ≤4 web-research sub-agents per wave.** A ninth task waits.

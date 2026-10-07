@@ -13,7 +13,7 @@ roster dump to answer a "who owns X" question.
 - **Executives:** Marcus (CFO) · Sofia (CMO) · Derek (CTO) · Alexandra (CCO) · Nadia (CAIO) ·
   Victor (CRO) · Elena (CISO) · Elon (CTO Innovator).
 - **Mentors:** Maxwell (broker coach) · Apex (trade advisor) · James (wealth / family office) ·
-  **Kevin** (personal development — the deck's name; the Desktop skill is `cole-mentor`, drift open).
+  **Kevin** (personal development — one name everywhere since 2026-10-07; skill `kevin-mentor`).
 - **Human:** ISA / EA, Mon–Fri 12–4 PM PT.
 
 Lead agents by fan-out: cro-victor 27 · vanessa-orchestrator 22 · cmo-sofia 15 · cco-alexandra 12 ·

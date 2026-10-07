@@ -900,7 +900,8 @@ real ask is smaller than item 2 made it sound.
   rotation, whatever colour the card is. Decide that the cloud schedule and root replace the "Sunday
   00:00 local, Documents/AI-Ecosystem-Backups" spec, disable `r6-weekly-backup` (which has still
   never run), and say what the real retention should be.
-- **Mentor naming** — the deck says Kevin, the installed skill says Cole. Pick one.
+- **Mentor naming** — decided 2026-10-07: Kevin everywhere (skill `kevin-mentor`; upload
+  `integrations/claude-desktop/kevin-mentor.zip` to Claude Desktop and delete the old `cole-mentor`).
 - **Licence renewal dates** — only Steven can confirm them from the source documents. Writing them
   from a second store would be a guess on a licensing surface, so nothing has been written.
 - **Cloud egress** — every freshness pass on 2026-09-22/23 ran blind (lender, agency, weather and news
