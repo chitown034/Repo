@@ -11,9 +11,9 @@ hold the actual detail once you know which seat or layer you need.
 | Page | One-line summary |
 |---|---|
 | `org-chart.md` | The full seat map: Steven → Vanessa/Steve/ISA → 8 executives with named reports and ruflo benches |
-| `model-tiering-dispatch.md` | Which model each layer runs on, ≤8-parallel/≤4-Perplexity dispatch rules, trust levels, the ECC gate |
+| `model-tiering-dispatch.md` | Which model each layer runs on, ≤8-parallel/≤4-web-research dispatch rules, trust levels, the ECC gate |
 | `tool-integration-status.md` | Connectors, MCP bridges, tasks/routines/skills status — plus honest Orca/Laya/77skills proposal status |
-| `mentors-and-benches.md` | Maxwell, Apex, James, Kevin, the Kevin/Cole naming drift, and what a "bench" row actually counts |
+| `mentors-and-benches.md` | Maxwell, Apex, James, Kevin, Kevin (name settled 2026-10-07), and what a "bench" row actually counts |
 
 ## Routing by lane
 

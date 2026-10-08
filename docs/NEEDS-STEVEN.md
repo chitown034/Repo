@@ -463,3 +463,10 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
     25 days stale (step 5). Root cause of most failures is the daily run-out of the usage allowance; steps 1–2
     are the fix within Steven's control.
 
+100. **2026-10-08 11 AM PT — the full list, connections included.** `docs/STEVEN-STEPS.md` and the Action Desk now carry
+    24 steps in order, with every connection still to be made: Zoho (re-tested 403), Composio Google Drive /
+    GoHighLevel / Discord bot (all still "initiated"), the Discord bot token, Eromify / EVRoutes / PlayMCP, WhatsApp
+    via OpenWA, the CLI-Anything site sign-ins, Apple Health, the cloud network allow-list, and the optional ones
+    (Plaid, OpenRouter, publicfeeds ToS, OmniRoute, Orca phone). New today: the Second Brain engine was found
+    unmerged on a side branch and is merged (step 9 installs it on the Mac).
+

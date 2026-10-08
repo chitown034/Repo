@@ -53,7 +53,7 @@ Source of truth: the `runnerStatus` doc and the routine-health export, not the t
   Composio has no Lofty toolkit and Steven's API key is not installed. No CRM lead number on the
   deck is live. Show "not connected yet"; never carry an old CRM's figure under a Lofty label.
 - **Zoho is API-blocked** pending a permission only Steven can grant. Deck Zoho data is the Sep 14 paste.
-- **You.com is retired.** No surface may call it. Research = Claude subscription + Perplexity.
+- **You.com is retired.** No surface may call it. Research = Claude subscription (WebSearch/WebFetch); Perplexity removed 2026-10-05.
 - **Knowledge fabric counts** (`knowledgeFabric`, its own stamp 2026-09-23 02:10 UTC): Second Brain 71
   rows · vault 832 notes · Jarvis 1,761 documents · graph 750 nodes / 1,104 edges · Ruflo 238 entries ·
   **Drive folder 0 files**. `fabric-deck-sync` has recovered — last completion ok 2026-09-22 17:08,

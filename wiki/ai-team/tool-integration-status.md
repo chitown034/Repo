@@ -4,15 +4,15 @@ What is actually connected, installed, or merely proposed — read this before a
 
 ## Connectors (claude.ai)
 
-**Connected + enabled:** Gmail (read + drafts) · Google Calendar (read) · Notion · Slack (Patriot Pacific workspace, read-only) · Strava · Context7 · Inkbox (iMessage, email, Discord relay) · Perplexity · Google Docs/Sheets/Tasks · GitHub · YouTube · Discord · Magica (media).
+**Connected + enabled:** Gmail (read + drafts) · Google Calendar (read) · Notion · Slack (Patriot Pacific workspace, read-only) · Strava · Context7 · Inkbox (iMessage, email, Discord relay) · Google Docs/Sheets/Tasks · GitHub · YouTube · Discord · Magica (media).
 **API-blocked, connection active:** Composio → Zoho CRM — every call returns 403 `NO_PERMISSION` until Steven enables "Zoho CRM API Access" on the connected profile.
-**Mac only, key pending:** Lofty — `lofty-bridge` MCP + `lofty-cli`, no Composio toolkit, API key and first sync pending.
+**Mac only, live:** Lofty — `lofty-bridge` MCP + `lofty-cli`, no Composio toolkit; key in place and syncing since 2026-10-07 (54 leads). Speed to lead is not measurable yet: the bridge's lead list carries no lead id (`integrations/mac-fix-isa-kpi-2026-10-08.md`).
 **Retired:** You.com (replaced by the Claude subscription's own search). **Never completed:** GoHighLevel.
 **Not connected:** Canva (needs reconnect) · BlackRock Advisor Center · Health Data Avatar · Microsoft 365 · PlayMCP.
 
 ## Local MCP / bridges (Mac)
 
-TradingView · Apple Health (+ apple-health-xml, health-export — the ingest daemon has gone unresponsive for stretches; check `runnerStatus` for current state) · Lofty (read-only) · notion-brain · Perplexity · OpenTerminal · OpenRouter (no API key) · ruflo (claude-flow) · API Nation · filesystem · fetch · memory · git. Plus the Plaid bridge (no keys) and Magica.
+TradingView · Apple Health (+ apple-health-xml, health-export — the ingest daemon has gone unresponsive for stretches; check `runnerStatus` for current state) · Lofty (read-only) · notion-brain · OpenTerminal · OpenRouter (no API key) · ruflo (claude-flow) · API Nation · filesystem · fetch · memory · git. Plus the Plaid bridge (no keys) and Magica.
 
 ## Mac scheduled tasks and cloud routines
 
@@ -41,3 +41,5 @@ Three skills Steven asked for exist as `SKILL.md` files in this repo's `.claude/
 - `wiki/dashboard-ops/task-catalog.md` / `routine-catalog.md` — live status detail for the tasks and routines mentioned here.
 
 Source: Command Deck, "Connectors / Local MCP / Mac tasks / Cloud routines / Skills / Agents" toolbox card (`AI_TEAM_TOOLBOX`) for the connector/bridge/task/routine sections. The Orca/Laya/77skills/repo-skills statuses are Steven's own stated facts about tools outside the deck's current toolbox card, recorded here for the first time — not yet cross-checked against the deck itself.
+
+*Updated 2026-10-08: Perplexity removed (2026-10-05); Lofty live; browser-use and OpenDesign proven in the cloud, Mac install pending (`integrations/browser-use/`, `integrations/open-design/`).*

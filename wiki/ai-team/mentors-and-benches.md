@@ -9,7 +9,7 @@ The four mentor seats (on call through Vanessa, not inside the executive dispatc
 - **James** — Wealth Advisor / Family Office. Entity structure, income routing, deduction/deferral, asset protection, estate, governance — avoidance never evasion; licensed professionals implement the actual filings.
 - **Kevin** — Personal Development Mentor. The 11-Dimension Wealth scorecard (Financial · Physical · Mental · Time · Social · Emotional · Relational · Purpose · Discipline · Image · Legacy), scored 1–10, with no single strength allowed to excuse a neglected dimension. Cadence: daily 5-minute check-in, weekly two-dimension spot-check, monthly full scorecard, quarterly vision recalibration. Escalation rule: any dimension scoring under 4 twice running suspends work on the other ten until it recovers.
 
-**Naming drift, open and Steven's to resolve:** the deck's own name for this seat is **Kevin**; the Claude Desktop skill for the identical role is named `cole-mentor` ("Cole"). Do not silently rename either side — flag the drift if it comes up rather than picking one name as correct.
+**Name settled 2026-10-07:** Steven chose **Kevin** everywhere ("replace Cole with Kevin throughout"). The skill is `kevin-mentor`; it writes the deck's `kevinChat` thread. The old `cole-mentor` Desktop skill is retired once Steven uploads `integrations/claude-desktop/kevin-mentor.zip`.
 
 ## What a "bench" means
 
