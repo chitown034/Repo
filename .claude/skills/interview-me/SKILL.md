@@ -19,6 +19,10 @@ Seat: runs under Vanessa (Claude Fable 5.1 chairs). The interview itself is a ju
 - Existing context, read-only, for de-duplication: `wiki/<topic>/index.md`, `references/`,
   vault `60-Knowledge/`, and the deck doc `secondBrain` (Notion mirror, synced by `brain-deck-sync`).
 - `knowledge-graph/schema.md` — the entity types and relationship vocabulary. Use those types only.
+- `bin/brain` (repo-root-relative CLI) — `bin/brain remember "<fact>" --topic <topic> --source
+  interview-me` is how a durable fact reaches the brain. If `bin/brain` is not in this checkout yet,
+  skip that call and say so in the run's summary; the vault note and entity stubs below still get
+  written either way.
 
 ## Data access
 Deck reads/writes go through the `Artifact` tool against the Command Deck artifact
@@ -34,8 +38,9 @@ value; a top level that is not a single `v` key is a bug to fix, not a shape to 
    confirm or correct the scope. Do not start until he does.
 2. **Prior art.** Skim the inputs above for what is already captured. Say what already exists so the
    interview does not re-ask it. Never present prior art as his answer.
-3. **Grill, one question at a time.** Five rounds, never a multi-question dump, never a leading
-   question that supplies the answer:
+3. **Grill, one question at a time.** At least **3 questions answered** before anything is built or
+   filed — Steven's guide requires this floor; five rounds is the normal shape, never a multi-question
+   dump, never a leading question that supplies the answer:
    - R1 Frame — what this is, when it applies, who is involved.
    - R2 Mechanics — the actual steps, in order, with the tool or form used at each one.
    - R3 Numbers — thresholds, timings, costs, ratios; every number gets a unit and a source.
@@ -44,12 +49,23 @@ value; a top level that is not a single `v` key is a bug to fix, not a shape to 
    Close each round by reflecting his answer back in ≤3 lines and asking "what did I get wrong?".
 4. **Push once, then move on.** If an answer is vague, ask one sharpening question ("give me the last
    real example"). If it is still vague, record it as `openQuestion` and move on. Do not nag.
-5. **Extract.** Turn the transcript into: the note body (below), entity stubs, and open questions.
+5. **Extract.** Turn the transcript into: the note body (below), entity stubs, and open questions. Do
+   not reach this step with fewer than 3 questions answered (step 3) — go back and ask more first.
 6. **Classify sensitivity** per row: `public` (programs, process), `internal` (his numbers, partners),
    `sensitive` (client-identifiable detail, credentials, account or license numbers, anything about a
    named borrower). Sensitivity is per-fact, not per-note.
 7. **File.** Write the note and entity stubs. Sensitive notes go to `60-Knowledge/_review/` and wait
-   for the Sunday gate. Log the run. Tell Steven exactly what was written and what is held.
+   for the Sunday gate. Then, per durable `public`/`internal` fact — context, not connections:
+   - **A standalone fact** (a number, a rule, a "why we do it this way") → `bin/brain remember
+     "<fact>" --topic <topic> --source interview-me`. Skip anything that is churn rather than durable
+     context — an email thread, a one-off scheduling detail, a transcript fragment with no lasting
+     value.
+   - **A relationship** (who reports to whom, who owns what, what connects to what) → the entity stub
+     + `edges` in `knowledge-graph/`, per its README — never duplicated into `bin/brain remember` too.
+   - **Anything sensitive** → neither. It stays in `60-Knowledge/_review/` for the Sunday gate only;
+     never call `bin/brain remember` on a sensitive row, and never rely on the CLI's own secret/PII
+     refusal as the only gate — this skill's own classification (step 6) is the first one.
+   Log the run. Tell Steven exactly what was written, what was remembered, and what is held.
 
 ## Outputs (exact shapes)
 **Vault note** — `60-Knowledge/<YYYY-MM-DD>-<topic-slug>.md`, or `60-Knowledge/_review/` when any row
@@ -89,10 +105,14 @@ A node marked `sensitivity: sensitive` never reaches the graph build (schema rul
 the `_review/` note until the Sunday gate clears it.
 
 **Deck log** — `interviewLog`, `{v:[{ts, topic, rounds, questionsAsked, notePath, entities:[<type>.<slug>],
-sensitive:bool, heldForReview:bool, openQuestions:n}]}`, newest last, keep the most recent 200.
+rememberedFacts:n, sensitive:bool, heldForReview:bool, openQuestions:n}]}`, newest last, keep the most
+recent 200.
 
 ## Guardrails
 - Never answer for Steven. An unanswered question is `openQuestion`, never a filled blank.
+- Never file or start extracting before at least 3 questions have been asked and answered.
+- `bin/brain remember` gets standalone durable context only — never a relationship (that is the
+  knowledge graph's job) and never a sensitive fact (that is the Sunday gate's job).
 - Never write to Notion. `brain-deck-sync` and `brain-learn-daily` own the Notion path; this skill
   writes files and one deck log doc. A note reaches Notion only after the Sunday gate, by those tasks.
 - Never graph a secret: no credentials, API keys, account numbers, SSNs, DOBs, loan numbers, or a

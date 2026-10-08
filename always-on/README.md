@@ -41,6 +41,7 @@ on the Mac (headless, pre-approved tools, **59** tasks — counted from the live
 | `brain-weekly-verify` | `0 16 * * 0` — **Sunday 4:00 PM** | The **review gate**: what the brain learned this week (Notion Inbox rows) plus the sensitive items held back; re-indexes the vault | 2026-09-14 02:34 | **ok** |
 | `fabric-deck-sync` | `5 7-21/2 * * *` — every 2 h at :05, 7 AM–9 PM | Counts every store (Second Brain rows, vault notes, Jarvis docs, graph nodes, Ruflo entries) into the deck's knowledge-fabric tiles | 2026-09-21 19:58 | **working, logged `error`** — `knowledgeFabric.syncedAt 2026-09-22T04:05:04Z` matches the 21:05 PT slot exactly. It wrote, then the runner recorded an error |
 | `ops-knowledge-graph` | `45 5 * * 0` — Sunday 5:45 AM | Graphs the dashboard export, playbooks, decisions and agent roster into the vault | — | **never run** — confirmed by output: `knowledgeGraph.syncedAt` is still 2026-09-13, through two Sundays |
+| `brain-maintenance` | daily `0 6 * * *`; weekly check `30 15 * * 0` — Sun 3:30 PM, **before** `brain-weekly-verify`'s 4:00 PM gate | **Daily:** `scripts/brain-sync.sh --quiet` — pulls the repo, `bin/brain reindex`/`doctor`, keeps `bin/brain` on PATH and this Mac's skills linked. **Weekly (Sun 3:30 PM):** `bin/brain doctor` + `bin/brain bench --write` (writes/refreshes `docs/reports/BRAIN-BENCH.md`), and flags any regression (tokens-per-answer up, correctness down, "not in brain" rate up) for the 4:00 PM gate to carry. **Also weekly:** scans `memory.md` for lines older than 90 days and **flags** them as stale/duplicate candidates in a proposal list — it never deletes or edits `memory.md` itself | — | **new — never run**. Install via `scripts/brain-sync.sh` (this file); the weekly half needs `bin/brain`, which is being built separately (`brain/` is not in this checkout yet — see the note in `CLAUDE.md`'s routing table once it lands) |
 
 ## The self-improvement pair
 
@@ -78,6 +79,14 @@ brain asserts. It presents: what was learned this week, and **what was held back
 flagged sensitive**. Steven approves or rejects. Nothing sensitive moves to Notion, to the wiki, or
 into the graph without passing through it. If the gate has not run, learnings **queue** — they do not
 promote themselves.
+
+**`brain-maintenance`'s weekly pass feeds this same gate, on the same self-cleaning-with-a-human-gate
+rule.** It runs *before* `brain-weekly-verify` (3:30 PM vs. 4:00 PM) so its findings — the doctor/bench
+regressions and the memory.md staleness list — are already sitting there when the 4:00 PM review opens.
+"The brain cleans itself" here means it **proposes**, never that it acts: a `memory.md` line older than
+90 days is flagged as a dedupe/stale candidate in a list Steven reads at the Sunday review — it is never
+edited, reordered or removed by the task itself. Nothing in the brain auto-ingests and nothing in it
+auto-deletes; every promotion and every removal is Steven's decision, made at this gate.
 
 ## The uptime bound — say it out loud
 

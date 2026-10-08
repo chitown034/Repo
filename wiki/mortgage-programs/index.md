@@ -3,20 +3,21 @@
 Loan programs, guidelines, VA mechanics, eligibility, disclosure timing. Steven's lending side:
 MLO with Patriot Pacific Financial (NMLS 1921615), personally licensed CA/NV/AZ/FL/IL.
 
-**Status: stub.** The pages below are the intended shape, not written content. Do not answer a
-guideline question from this file — route to the deck's program cards or the playbooks in
-`references/index.md`, and say which you used.
+**Status: written**, sourced from the Command Deck's loan-program cards, VA scenario
+checklists, and compliance quick-reference card. Guideline specifics move faster than this wiki —
+each page cites its deck card; verify against the current wholesale/agency guide before quoting a
+borrower.
 
-## Pages (stubs — pointers to the playbook/deck, not guideline content; see below)
+## Pages
 
 | Page | One-line summary |
 |---|---|
-| [`va-eligibility.md`](va-eligibility.md) | Entitlement, COE, restoration, second-tier use, funding-fee exemptions |
-| [`va-affordability.md`](va-affordability.md) | BAH-based affordability, residual income, DTI treatment, duty-proximity |
-| [`program-selection.md`](program-selection.md) | The decision tree across the 39 loan programs the deck tracks |
-| [`fha-usda.md`](fha-usda.md) | FHA and USDA specifics where they beat VA for a given borrower |
-| [`disclosure-timing.md`](disclosure-timing.md) | TRID / RESPA / Reg Z timing gates — Alexandra's lane |
-| [`lender-directory-notes.md`](lender-directory-notes.md) | How the 61 lenders differ in practice (overlays, turn times) |
+| `va-eligibility.md` | COE mechanics, entitlement tiers, funding-fee tiers/exemptions, restoration, second-tier (two-VA-loan) use |
+| `va-affordability.md` | The Six-Step Pre-Approval Analysis, residual income vs. DTI, BAH/BAS 125% gross-up, family size |
+| `program-selection.md` | Decision tree across the deck's loan-program categories, starting from dual-AUS conforming |
+| `fha-usda.md` | FHA (500-FICO floor, 6% concession cap) and USDA (map-first, guarantee fee) — where each beats VA |
+| `disclosure-timing.md` | TRID/RESPA/Reg Z clocks, tolerance buckets, anti-steering, CA disclosure clock, VA Tidewater — Alexandra's lane |
+| `lender-directory-notes.md` | Lender directory grouped by what each lender is actually good for, plus live verification flags |
 
 ## What belongs here
 

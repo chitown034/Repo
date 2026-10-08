@@ -53,12 +53,7 @@ Source of truth: the `runnerStatus` doc and the routine-health export, not the t
   Composio has no Lofty toolkit and Steven's API key is not installed. No CRM lead number on the
   deck is live. Show "not connected yet"; never carry an old CRM's figure under a Lofty label.
 - **Zoho is API-blocked** pending a permission only Steven can grant. Deck Zoho data is the Sep 14 paste.
-- **You.com is retired, and Perplexity was removed 2026-10-05.** No surface may call either. Research =
-  Claude web research — Sonnet 5 with WebSearch/WebFetch on Steven's Claude subscription. The dashboard
-  feeds are written by Claude cloud routines on the same subscription
-  (`routines/feed-writers-2026-09-28/README.md`, `routines/feed-writers-2026-10-05/`). The ISA Portal
-  shows the same builder-incentive and housing-market notes: the two writers copy each note into its own
-  `liveFeeds` document right after writing the deck (since 2026-10-05, ISA v39).
+- **You.com is retired.** No surface may call it. Research = Claude subscription + Perplexity.
 - **Knowledge fabric counts** (`knowledgeFabric`, its own stamp 2026-09-23 02:10 UTC): Second Brain 71
   rows · vault 832 notes · Jarvis 1,761 documents · graph 750 nodes / 1,104 edges · Ruflo 238 entries ·
   **Drive folder 0 files**. `fabric-deck-sync` has recovered — last completion ok 2026-09-22 17:08,
@@ -68,17 +63,17 @@ Source of truth: the `runnerStatus` doc and the routine-health export, not the t
   nothing can reach** — 0 files on every sample, no credential, no connector. A 0-file store rendered
   as a live store is a false green; the decision to wire it or drop it from the count is Steven's
   (`integrations/google-drive-brain.md`).
-- **Every dashboard Steven uses is one click from the Command Deck's top bar** — the **Dashboards**
-  button beside Pages (2026-09-28, deck v161): 25 dashboards in 7 groups, plus Fishbowl, Insight Global
-  and ClearanceJobs. A new dashboard goes there (static links in `#dashMenu`), not into a new panel; two
-  names that share one link are one entry.
 
 ## Pages
 
+**Status: written.** Each page describes categories and the operating rules, not a row-by-row live
+table — a row-by-row table would drift the same day it was written. Ask the named doc for a current
+count, per the "one rule" above.
+
 | Page | One-line summary |
 |---|---|
-| [`db-docs.md`](db-docs.md) | What each `state` doc means and who writes it — **175 documents** at the 2026-09-23 03:10 UTC read (174 earlier the same day; this page long said 161) |
-| [`panel-map.md`](panel-map.md) | Panel id → what it shows → which docs feed it |
-| [`task-catalog.md`](task-catalog.md) | Each Mac task: cron, what it writes, current status |
-| [`routine-catalog.md`](routine-catalog.md) | Each cloud routine: schedule, and what it can and cannot write |
-| [`connections.md`](connections.md) | Is a connector, CRM or integration actually working — links to `integrations/CONNECTIONS.md` |
+| `db-docs.md` | What the `state` collection's documents mean, the `{v:...}` shape rule, and which docs are known to carry a not-really-live body |
+| `panel-map.md` | The deck's fifteen tabs and panels, and which docs feed the ones relevant to this repo's wikis |
+| `task-catalog.md` | The Mac task rhythm under `claude-runner`, and how to read a task's status honestly |
+| `routine-catalog.md` | Cloud routine categories, the disproved "can't write unattended" rule, and the connector-inheritance gotcha |
+| `connections.md` | Is a connector, CRM or integration actually working — links to `integrations/CONNECTIONS.md` |

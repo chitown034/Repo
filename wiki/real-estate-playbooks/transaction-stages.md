@@ -1,17 +1,48 @@
 # Transaction stages
 
-Stage definitions and the deadline that defines each one. **Status: stub, 2026-09-28.**
+Stage definitions on both sides of a deal — the real-estate closing checklist and the parallel mortgage-file stage table — with the deadline that actually defines each stage, computed from the contract date rather than a template default.
 
-Primary source: **The Ultimate Realtor Playbook** (602 pages, `references/index.md`) for the stage
-definitions themselves.
+## The six-phase Transaction Coordinator checklist
 
-## What is verified in this repository
+Day offsets below are counted from the contract acceptance date (day 0), per the SOP:
 
-- **Earnest money is a deadline, not a detail** — the standing fact this topic's index already
-  states; any stage list that omits EMD is wrong. See `wiki/real-estate-playbooks/index.md`.
-- The **live** stage tracking for mortgage deals is Zoho's kanban — `zoho-crm-sync`
-  (`.claude/skills/zoho-crm-sync/SKILL.md`) writes `zohoLeads` as a **14-stage kanban**. That is a
-  different system from this playbook's stages (mortgage pipeline vs. real-estate transaction), and
-  the two should not be conflated in an answer.
-- Real-estate pipeline stage totals are `loftyLeads`/`pipeline`, not this wiki page — see
-  `wiki/dashboard-ops/db-docs.md`. This page is the process definition; those docs are the live count.
+| Phase | Day (from acceptance) |
+|---|---|
+| File setup — open escrow, **earnest money deposit (EMD) receipted** | 3 |
+| California disclosures delivered (TDS/SPQ/NHD/Lead Paint/HOA/AVID/SBSA) | 7 |
+| Inspection / due-diligence window closes | 17 |
+| Contingency removal | 21 |
+| Appraisal & loan conditions (VA: Tidewater/NOV inside this window) | 25 |
+| Clear to close → closing & funding | 30 |
+
+**The EMD line is not a formality — it is the earliest hard deadline in the file, and a missed EMD deadline can put the buyer in default.** Confirm delivery and receipt inside the *contract's own* deadline, not the SOP's generic day-3 target, whenever the actual RPA states something different. Every date on this table should be recomputed from the real contract, never assumed from the template.
+
+## Real-estate stage-by-stage ownership
+
+See `wiki/real-estate-playbooks/buyer-process.md` for the full buyer-side table (Lead → Consult scheduled → Pre-approved → Active search → Offer written → Under contract → Escrow/inspection → Clear to close → Closed → Post-close follow-up) and `listing-process.md` for the seller-side consultation-to-close flow. Both funnel into the six-phase checklist above once a file goes under contract.
+
+## The parallel mortgage-file stage table
+
+| Stage | Owner | Action |
+|---|---|---|
+| Lead | ISA | Same-day response; secure application link within 1 hour |
+| Application taken | Loan Processor | Order credit + AUS same day; disclosures out within 3 business days (TRID) |
+| Processing | Loan Processor | Collect conditions checklist; weekly status call/text to client + agent |
+| Underwriting | Steven + Loan Processor | Submit a complete file; flag any condition risk before UW asks |
+| Conditional approval | Loan Processor | Same-day condition clearing; confirm appraisal ordered/received |
+| Clear to close | Steven | Confirm CD 3-day rule; personally call the client to review numbers before signing; verify wire instructions verbally |
+| Funded | ISA | Congratulations call + closing gift; request a review |
+| Post-close follow-up | ISA | Rate-watch alert for a future refi; annual mortgage review outreach |
+
+This table runs in parallel with the real-estate table above whenever the same file has both a listing/purchase side and a Steven-originated loan — the two clocks (TRID's LE/CD timing and the CA disclosure/EMD timing) do not share a start date and must both be tracked.
+
+## Wire fraud protocol
+
+All wiring instructions, on either table, are confirmed by an **outbound phone call to a known number** — never trusted from an email.
+
+## See also
+
+- `wiki/mortgage-programs/disclosure-timing.md` — the regulatory TRID/RESPA clock behind the mortgage-side rows.
+- `wiki/real-estate-playbooks/buyer-process.md` / `listing-process.md` — the consultation flow that feeds into this table.
+
+Source: Command Deck, "Real estate transaction — lead to close" card (6-phase TC SOP) and the stage-based service playbook data (RE_STAGE_PLAYBOOK / MLO_STAGE_PLAYBOOK), from The Ultimate Realtor Playbook and The Ultimate Mortgage Broker SOP.

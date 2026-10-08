@@ -3,19 +3,20 @@
 Listing, buyer, transaction and showing process. Steven's brokerage side: CA Broker acting as Broker
 Associate with LPT Realty (Space RE), Temecula / SW Riverside and San Diego.
 
-**Status: stub.** Pages below are the intended shape. The real source today is the four digitised
-playbooks registered in `references/index.md` and the deck's own playbook cards.
+**Status: written**, sourced from the deck's own playbook cards (lead-to-close SOP, stage tables,
+showing panel, org chart). The four digitised playbooks registered in `references/index.md` remain
+the deeper primary source when a page here doesn't answer fully.
 
-## Pages (stubs — pointers to the playbook/deck, not process content; see below)
+## Pages
 
 | Page | One-line summary |
 |---|---|
-| [`buyer-process.md`](buyer-process.md) | Discovery → matching → showing → offer → EMD → contingencies → close |
-| [`listing-process.md`](listing-process.md) | Intake → pricing → prep → launch → offer management → close |
-| [`transaction-stages.md`](transaction-stages.md) | Stage definitions and the deadline that defines each one |
-| [`showing-operations.md`](showing-operations.md) | Itinerary building, Showami bookings, feedback capture |
-| [`referral-reciprocity.md`](referral-reciprocity.md) | Realtor reciprocal referrals and LPT revenue share |
-| [`military-relocation.md`](military-relocation.md) | PCS timing, orders, tour length, the rent/buy/wait gate |
+| `buyer-process.md` | Lead intake (LPMAMA, First-10-Days Sprint) → consultation → matching → showing → offer → EMD → close, stage by stage |
+| `listing-process.md` | Intake → CMA pricing → pre-listing package → launch → offer management → post-close, stage by stage |
+| `transaction-stages.md` | The six-phase TC checklist's day-count deadlines (EMD day 3 through closing day 30) and the parallel mortgage-stage table |
+| `showing-operations.md` | Itinerary/route planning, ShowingTime vs. Showami, why an automation never contacts a client directly |
+| `referral-reciprocity.md` | The referral-partner ledger, reciprocity scoring, RESPA §8, and LPT recruiting/revenue share |
+| `military-relocation.md` | PCS-driven transactions, the VA house-hack mechanism, the dual-licensed referral opportunity — with an open gap flagged on rent/buy/wait mechanics |
 
 ## Standing facts worth keeping here
 
