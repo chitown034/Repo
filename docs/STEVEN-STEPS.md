@@ -43,8 +43,8 @@ research on Claude only; Gmail, Google Calendar, Notion, Strava, Slack, Canva an
    - Open the paste-in: https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mac-fix-isa-kpi-2026-10-08.md
 10. **Opus 5.5 on the Mac.**
    `bash integrations/ai-team/opus-5-5-on-mac.sh --apply && bash integrations/ai-team/opus-5-5-on-mac.sh --verify`
-11. **Install browser-use and OpenDesign.** Each ends with "Self-test passed."
-   `bash integrations/browser-use/install-mac.sh && bash integrations/open-design/install-mac.sh`
+11. **Install browser-use, OpenDesign and API Anything.** browser-use reads web pages in a logged-out Chrome; OpenDesign is a design workspace; API Anything (new) lets Claude call a website like an API. Each ends with a self-test line.
+   `bash integrations/browser-use/install-mac.sh && bash integrations/open-design/install-mac.sh && bash integrations/api-anything/install-mac.sh`
 12. **Kevin in Claude Desktop.** Claude Desktop → skills settings → upload integrations/claude-desktop/kevin-mentor.zip, then delete the old cole-mentor skill.
    - Show the file: https://github.com/chitown034/Repo/tree/claude/stoic-cori-pvn3f8/integrations/claude-desktop
 13. **WhatsApp → Vanessa (OpenWA connection).** Links your phone to OpenWA on the Mac (QR code, or add --code for an 8-character code), then installs the reply bridge. Test: text yourself "Vanessa, are you there?"
