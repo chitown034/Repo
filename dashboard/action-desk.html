@@ -49,140 +49,130 @@ footer{margin-top:28px;color:var(--muted);font-size:.85rem}
 
 <div class="wrap">
   <h1>Steven's Action Desk</h1>
-  <p class="lede">Every step that needs you, with buttons that open the right tab. Tick a box when you finish; ticks are saved in this browser. Then tell Claude "done 3" (or "skip 3") so the dashboard catches up.</p>
-  <div class="bar"><div class="meter" aria-hidden="true"><i id="fill"></i></div><span class="count" id="count">0 of 16 done</span></div>
+  <p class="lede">Everything still waiting on you, in the order to do it. Top items fix the most. Each button opens the right place; tick the box when done (saved in this browser), then tell Claude "done 3" so the dashboards catch up. Checked 2026-10-08, 10:30 AM PT.</p>
+  <div class="bar"><div class="meter" aria-hidden="true"><i id="fill"></i></div><span class="count" id="count">0 of 14 done</span></div>
 
-  <h2>Reply to Claude</h2>
-  <p class="where">One minute, from your phone</p>
+  <p class="note"><b>Already done, nothing to do:</b> Lofty API key (Lofty syncs 54 leads), ISA bridge and AI twin switched on, research on Claude only. <b>Why things keep failing:</b> the Claude usage allowance runs out early each day (yesterday from about 5:20 AM PT, today from about 7 AM PT), and then routines and Mac tasks stop. Steps 1 and 2 cut the waste.</p>
+
+  <h2>1 · Stop the waste</h2>
+  <p class="where">Phone or computer · 5 minutes · biggest effect</p>
 
   <div class="step" data-id="1"><div class="n">1</div><div class="body">
-    <p class="t">Say "yes USC" to add Weeks 5–7 to your study list</p>
-    <ul class="mini">
-      <li>Week 6 mini-paper (Statistical Process Control, 1–2 pages) and participation: <b>Sun Oct 11, 11:59 PM PT</b></li>
-      <li>Week 7 discussion Wed Oct 14 · participation Sun Oct 18 · final assessment Mon Oct 19</li>
-    </ul>
-    <div class="acts"><a class="btn" href="https://usc-online.instructure.com/courses/8352" target="_blank" rel="noopener">Open Canvas course</a>
-      <label class="tick"><input type="checkbox" id="s1">Done</label></div></div></div>
-
-  <div class="step" data-id="2"><div class="n">2</div><div class="body">
-    <p class="t">If Week 4 (due Sep 27) is finished, say "Week 4 done"</p>
-    <div class="acts"><label class="tick"><input type="checkbox" id="s2">Done</label></div></div></div>
-
-  <h2>Routines</h2>
-  <p class="where">Five minutes. Each button opens the routine; turn its switch off.</p>
-
-  <div class="step" data-id="3"><div class="n">3</div><div class="body">
     <p class="t">Switch off five research-only routines</p>
-    <p class="d">The usage limit ran out again Oct 6–7 (42 of 53 routines failed on it). Nothing on the dashboard reads these five.</p>
+    <p class="d">Nothing on the dashboard reads them. Open each and turn its switch off. Keep any you want and tell Claude which.</p>
     <div class="acts">
       <a class="btn" href="https://claude.ai/code/routines/trig_015Fm6K3R7yvyHv3SkPGXHwL" target="_blank" rel="noopener">Strava activity refresh</a>
       <a class="btn" href="https://claude.ai/code/routines/trig_015MZSefaw573ciFQSvoWDmZ" target="_blank" rel="noopener">Daily deals &amp; hacks</a>
       <a class="btn" href="https://claude.ai/code/routines/trig_01Qgz9ZEvt2KYFqfAte8zVRi" target="_blank" rel="noopener">Travel weekly</a>
       <a class="btn" href="https://claude.ai/code/routines/trig_01Lb3aYRQZSLsAkcnDpZ8zEL" target="_blank" rel="noopener">Next Big Moves weekly</a>
       <a class="btn" href="https://claude.ai/code/routines/trig_01PahyyhhmNzze1o1ujcGno2" target="_blank" rel="noopener">Deck ↔ ISA drift check</a>
+      <label class="tick"><input type="checkbox" id="s1">Done</label></div></div></div>
+
+  <div class="step" data-id="2"><div class="n">2</div><div class="body">
+    <p class="t">Mac: pause the three feed tasks the cloud already does</p>
+    <p class="d">They still run every day next to the cloud writers, use the same allowance, and one wrote a date in the future. Open Claude Code on the Mac and paste this:</p>
+    <div class="acts"><code>Pause (do not delete) the runner tasks openrouter-feeds-refresh, feeds-weekly and feeds-market-close, then show me runnerctl list.</code>
+      <button class="btn" data-copy="Pause (do not delete) the runner tasks openrouter-feeds-refresh, feeds-weekly and feeds-market-close, then show me runnerctl list.">Copy</button>
+      <label class="tick"><input type="checkbox" id="s2">Done</label></div></div></div>
+
+  <h2>2 · One reply to Claude</h2>
+  <p class="where">2 minutes · copy, fill the blanks, send in this chat</p>
+
+  <div class="step" data-id="3"><div class="n">3</div><div class="body">
+    <p class="t">Answer five quick questions in one message</p>
+    <ul class="mini">
+      <li>Add USC Weeks 5–7 to your study list? (Week 6 paper + participation due <b>Sun Oct 11, 11:59 PM PT</b>; final assessment Mon Oct 19)</li>
+      <li>Is Week 4 (due Sep 27) done?</li>
+      <li>Is the five-state licensing line (CA, NV, AZ, FL, IL) current?</li>
+      <li>LPT Realty's own California DRE brokerage number and exact entity name?</li>
+      <li>Weekly Rent/Buy/Wait refresh: keep running, or switch off?</li>
+    </ul>
+    <div class="acts"><code>USC: yes · Week 4: done · 5 states: current · LPT DRE: ______ (entity name: ______) · Rent/Buy/Wait: keep</code>
+      <button class="btn" data-copy="USC: yes · Week 4: done · 5 states: current · LPT DRE: ______ (entity name: ______) · Rent/Buy/Wait: keep">Copy</button>
       <label class="tick"><input type="checkbox" id="s3">Done</label></div></div></div>
 
   <div class="step" data-id="4"><div class="n">4</div><div class="body">
-    <p class="t">ISA bridge and AI twin: already on</p>
-    <p class="d"><span class="ok">Nothing to do.</span> Both showed as switched on in the routine list read Oct 7, 2:06 PM PT. Open them only if you want to check.</p>
-    <div class="acts">
-      <a class="btn" href="https://claude.ai/code/routines/trig_01J9xuWgAuUCHATtpLivDkgp" target="_blank" rel="noopener">ISA bridge</a>
-      <a class="btn" href="https://claude.ai/code/routines/trig_01JbMx3a3KA6cJv2zMdBAE6k" target="_blank" rel="noopener">AI twin</a>
+    <p class="t">Approve or decline the two queued posts</p>
+    <p class="d">Command Deck → Marketing panel → open each draft and its compliance review → set its stage to Approved or Declined. Do this after step 3, because both drafts wait on the licence facts.</p>
+    <div class="acts"><a class="btn" href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Open Command Deck</a>
       <label class="tick"><input type="checkbox" id="s4">Done</label></div></div></div>
 
-  <h2>On the Mac</h2>
-  <p class="where">About 30 minutes. Open Terminal, go to your Repo folder, copy each command, paste, press Return.</p>
+  <h2>3 · iPhone</h2>
+  <p class="where">2 minutes</p>
 
   <div class="step" data-id="5"><div class="n">5</div><div class="body">
-    <p class="t">Get the latest files, then do the Mac clean-up paste-in</p>
-    <p class="note">Your Mac's feed tasks are still running next to the cloud ones, and one wrote a date in the future. Section 1 of the paste-in pauses them.</p>
-    <div class="acts"><code>git pull</code><button class="btn" data-copy="git pull">Copy</button>
-      <a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mac-fix-all-2026-10-05.md" target="_blank" rel="noopener">Open the paste-in</a>
-      <label class="tick"><input type="checkbox" id="s5">Done</label></div></div></div>
+    <p class="t">Restart your health numbers</p>
+    <p class="d">The Apple Health tiles are 25 days old. Open the Claude app on your iPhone, say <b>"update my health stats in Notion"</b>, and allow the Apple Health read and the Notion write once.</p>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s5">Done</label></div></div></div>
+
+  <h2>4 · On the Mac, one sitting</h2>
+  <p class="where">About 45 minutes · Terminal, in your Repo folder · do them in this order</p>
 
   <div class="step" data-id="6"><div class="n">6</div><div class="body">
-    <p class="t">Install browser-use (Claude reads web pages in a logged-out Chrome)</p>
-    <p class="d">Worked when it says "Self-test passed."</p>
-    <div class="acts"><code>bash integrations/browser-use/install-mac.sh</code><button class="btn" data-copy="bash integrations/browser-use/install-mac.sh">Copy</button>
+    <p class="t">Get the latest files</p>
+    <div class="acts"><code>git pull &amp;&amp; ./MAC-SETUP.sh --only cli-anything-harnesses</code>
+      <button class="btn" data-copy="git pull &amp;&amp; ./MAC-SETUP.sh --only cli-anything-harnesses">Copy</button>
       <label class="tick"><input type="checkbox" id="s6">Done</label></div></div></div>
 
   <div class="step" data-id="7"><div class="n">7</div><div class="body">
-    <p class="t">Install OpenDesign (design workspace that uses Claude Code)</p>
-    <p class="d">Worked when it says "Self-test passed." First time you open it: click Don't share, pick Claude Code.</p>
-    <div class="acts"><code>bash integrations/open-design/install-mac.sh</code><button class="btn" data-copy="bash integrations/open-design/install-mac.sh">Copy</button>
+    <p class="t">Mac repair paste-in</p>
+    <p class="d">Fixes the morning-brief error and the refused weekly backup, and checks Orca, notes and the knowledge graph. Paste the block from this file into Claude Code; it asks before changing anything. Paste its report back here.</p>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mac-fix-all-2026-10-05.md" target="_blank" rel="noopener">Open the paste-in</a>
       <label class="tick"><input type="checkbox" id="s7">Done</label></div></div></div>
 
   <div class="step" data-id="8"><div class="n">8</div><div class="body">
-    <p class="t">Move the Mac to Opus 5.5</p>
-    <div class="acts"><code>bash integrations/ai-team/opus-5-5-on-mac.sh --apply &amp;&amp; bash integrations/ai-team/opus-5-5-on-mac.sh --verify</code>
-      <button class="btn" data-copy="bash integrations/ai-team/opus-5-5-on-mac.sh --apply &amp;&amp; bash integrations/ai-team/opus-5-5-on-mac.sh --verify">Copy</button>
+    <p class="t">ISA KPI paste-in (makes speed to lead real)</p>
+    <p class="d">Lofty works but never returns a lead id, so first-response time has never been measured. Paste this block into Claude Code; paste its report back here.</p>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mac-fix-isa-kpi-2026-10-08.md" target="_blank" rel="noopener">Open the paste-in</a>
       <label class="tick"><input type="checkbox" id="s8">Done</label></div></div></div>
 
   <div class="step" data-id="9"><div class="n">9</div><div class="body">
-    <p class="t">Kevin in Claude Desktop</p>
-    <p class="d">In Claude Desktop's skills settings, upload <code>kevin-mentor.zip</code> from your Repo folder (<code>integrations/claude-desktop/</code>), then delete the old cole-mentor skill. Test: "Kevin, are you there?"</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/tree/claude/stoic-cori-pvn3f8/integrations/claude-desktop" target="_blank" rel="noopener">Show the file</a>
+    <p class="t">Opus 5.5 on the Mac</p>
+    <div class="acts"><code>bash integrations/ai-team/opus-5-5-on-mac.sh --apply &amp;&amp; bash integrations/ai-team/opus-5-5-on-mac.sh --verify</code>
+      <button class="btn" data-copy="bash integrations/ai-team/opus-5-5-on-mac.sh --apply &amp;&amp; bash integrations/ai-team/opus-5-5-on-mac.sh --verify">Copy</button>
       <label class="tick"><input type="checkbox" id="s9">Done</label></div></div></div>
 
-  <h2>Sign-ins only you can do</h2>
-  <p class="where">About 10 minutes</p>
-
   <div class="step" data-id="10"><div class="n">10</div><div class="body">
-    <p class="t">Fix two connectors</p>
-    <p class="d">Eromify needs you to sign in again. EVRoutes failed to connect. Reconnect both, or remove them if you don't use them.</p>
-    <div class="acts"><a class="btn" href="https://claude.ai/settings/connectors" target="_blank" rel="noopener">Open Connectors</a>
+    <p class="t">Install the two new tools</p>
+    <p class="d">browser-use (Claude reads web pages in a logged-out Chrome) and OpenDesign (design workspace). Each should end with "Self-test passed."</p>
+    <div class="acts"><code>bash integrations/browser-use/install-mac.sh &amp;&amp; bash integrations/open-design/install-mac.sh</code>
+      <button class="btn" data-copy="bash integrations/browser-use/install-mac.sh &amp;&amp; bash integrations/open-design/install-mac.sh">Copy</button>
       <label class="tick"><input type="checkbox" id="s10">Done</label></div></div></div>
 
   <div class="step" data-id="11"><div class="n">11</div><div class="body">
-    <p class="t">Zoho: tick one permission</p>
-    <p class="d">Setup → Security Control → Profiles → your profile → Developer Permissions → tick "Zoho CRM API Access".</p>
-    <div class="acts"><a class="btn" href="https://crm.zoho.com/" target="_blank" rel="noopener">Open Zoho CRM</a>
+    <p class="t">Kevin in Claude Desktop</p>
+    <p class="d">Claude Desktop → skills settings → upload <code>integrations/claude-desktop/kevin-mentor.zip</code>, then delete the old cole-mentor skill. Test: "Kevin, are you there?"</p>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/tree/claude/stoic-cori-pvn3f8/integrations/claude-desktop" target="_blank" rel="noopener">Show the file</a>
       <label class="tick"><input type="checkbox" id="s11">Done</label></div></div></div>
 
+  <h2>5 · Sign-ins only you can do</h2>
+  <p class="where">About 10 minutes</p>
+
   <div class="step" data-id="12"><div class="n">12</div><div class="body">
-    <p class="t">Lofty: make an API key</p>
-    <p class="d">Settings → Integrations → API → generate a key. On the Mac, put it in <code>~/.config/lofty/.env</code> as <code>LOFTY_API_KEY=yourkey</code>.</p>
-    <div class="acts"><a class="btn" href="https://lofty.com/" target="_blank" rel="noopener">Open Lofty</a>
+    <p class="t">Zoho: tick one permission, then reconnect</p>
+    <p class="d">Zoho CRM → Setup → Security Control → Profiles → your profile → Developer Permissions → tick "Zoho CRM API Access". Then tell Claude, and it sends you a fresh Composio reconnect link.</p>
+    <div class="acts"><a class="btn" href="https://crm.zoho.com/" target="_blank" rel="noopener">Open Zoho CRM</a>
       <label class="tick"><input type="checkbox" id="s12">Done</label></div></div></div>
 
   <div class="step" data-id="13"><div class="n">13</div><div class="body">
-    <p class="t">Optional: let the cloud reach the rates websites</p>
+    <p class="t">Fix two connectors</p>
+    <p class="d">Eromify needs you to sign in again; EVRoutes fails to connect. Reconnect both, or remove them if you don't use them.</p>
+    <div class="acts"><a class="btn" href="https://claude.ai/settings/connectors" target="_blank" rel="noopener">Open Connectors</a>
+      <label class="tick"><input type="checkbox" id="s13">Done</label></div></div></div>
+
+  <div class="step" data-id="14"><div class="n">14</div><div class="body">
+    <p class="t">Optional: let the cloud read the rate websites</p>
     <p class="d">In a Claude Code cloud session: title bar → environment → Edit → Network access. Add these (and <code>codebuff.com</code> only if you want freebuff):</p>
     <div class="acts"><code>fred.stlouisfed.org www.freddiemac.com www.redfin.com</code>
       <button class="btn" data-copy="fred.stlouisfed.org&#10;www.freddiemac.com&#10;www.redfin.com">Copy</button>
-      <a class="btn" href="https://claude.ai/code" target="_blank" rel="noopener">Open Claude Code</a>
-      <label class="tick"><input type="checkbox" id="s13">Done</label></div></div></div>
-
-  <h2>ISA KPI and content</h2>
-  <p class="where">Added 2026-10-08</p>
-
-  <div class="step" data-id="14"><div class="n">14</div><div class="body">
-    <p class="t">Mac: make the ISA speed-to-lead number real</p>
-    <p class="d">Lofty is connected but never returns a lead id, so first-response time has never been measured. Run <code>git pull</code> and <code>./MAC-SETUP.sh --only cli-anything-harnesses</code>, then paste the block in this file into Claude Code on the Mac. Paste its report back to Claude here.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mac-fix-isa-kpi-2026-10-08.md" target="_blank" rel="noopener">Open the paste-in</a>
       <label class="tick"><input type="checkbox" id="s14">Done</label></div></div></div>
 
-  <div class="step" data-id="15"><div class="n">15</div><div class="body">
-    <p class="t">Approve or decline the two queued posts</p>
-    <p class="d">Open the Marketing panel on the Command Deck, read each draft and its compliance review, then set its stage to Approved or Declined.</p>
-    <div class="acts"><a class="btn" href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Open Command Deck</a>
-      <label class="tick"><input type="checkbox" id="s15">Done</label></div></div></div>
-
-  <div class="step" data-id="16"><div class="n">16</div><div class="body">
-    <p class="t">Two facts only you can confirm before anything publishes</p>
-    <ul class="mini">
-      <li>Is the five-state licensing line (CA, NV, AZ, FL, IL) current for Patriot Pacific and for your own MLO licences?</li>
-      <li>What is LPT Realty's own California DRE brokerage number (and its exact entity name)? Compliance will not let the real estate line go out without it.</li>
-    </ul>
-    <p class="d">Reply with the answers and I will put them in the drafts and the compliance notes.</p>
-    <div class="acts"><label class="tick"><input type="checkbox" id="s16">Done</label></div></div></div>
-
-  <footer>Built 2026-10-07 for Steven. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Full detail: <code>docs/STEVEN-STEPS.md</code>.</footer>
+  <footer>Rebuilt 2026-10-08 10:30 AM PT from the live routine list, the Mac runner status and both dashboard databases. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Full detail: <code>docs/STEVEN-STEPS.md</code>.</footer>
 </div>
 
 <script>
 (function(){
-  var KEY="actionDesk.v1", state={};
+  var KEY="actionDesk.v2", state={};
   try{ state=JSON.parse(localStorage.getItem(KEY)||"{}")||{}; }catch(e){ state={}; }
   var boxes=document.querySelectorAll('label.tick input');
   function paint(){

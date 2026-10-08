@@ -456,3 +456,10 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
     two waiting drafts, confirm the five-state licensing line, and supply LPT Realty's own CA DRE number — the
     compliance reviewer will not clear the real-estate line without it. **Not fixable from here:** the cloud
     ISA line, Pipeline Sync and twin routines fail on the weekly usage cap (resets 2026-10-11 20:00 UTC).
+
+99. **2026-10-08 10:30 AM PT — one ordered list.** `docs/STEVEN-STEPS.md` and the Action Desk page were rebuilt
+    from live state into 14 steps in order. Closed since item 97: Lofty key (lofty-crm-sync ok, 54 leads), ISA
+    bridge and twin on. New: the three Mac feed tasks the cloud replaced are still running (step 2); Apple Health
+    25 days stale (step 5). Root cause of most failures is the daily run-out of the usage allowance; steps 1–2
+    are the fix within Steven's control.
+

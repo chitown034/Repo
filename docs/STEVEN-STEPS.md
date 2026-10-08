@@ -1,64 +1,45 @@
-# Steven's steps — everything only you can do (2026-10-08)
+# Steven's steps — everything still waiting on you, in order (2026-10-08 10:30 AM PT)
 
-Everything the cloud could do is done. What is left needs your hands, your accounts or your yes. Work top to
-bottom; each step says where, how long, and how you know it worked. Details live in `docs/NEEDS-STEVEN.md`.
+Same list as the Action Desk page (https://claude.ai/artifact/9S8G2ZhhqP1iUsPZrPsmRn), which has a button for
+every step. Rebuilt from the live routine list, the Mac runner status and both dashboard databases.
 
-## A. Today — USC (1 minute)
+**Already done — nothing to do:** Lofty API key (Lofty syncs 54 leads), ISA bridge and AI twin switched on,
+research on Claude only. **Why things keep failing:** the Claude usage allowance runs out early each day
+(Oct 7 from about 5:20 AM PT, Oct 8 from about 7 AM PT); after that, routines and Mac tasks stop. Steps 1–2 cut
+the waste. The weekly allowance resets Sun Oct 11, 1 PM PT.
 
-1. **Say "yes, add the USC dates"** and they go into your study list on the Command Deck. Adding them is a write
-   to your own data, so it waits for your OK. From your Canvas calendar (read 2026-10-08 01:50 UTC):
-   - Week 5 — discussion Wed Sep 30 · assignment (Designing for Innovation mini-paper) and participation Sun Oct 4
-   - Week 6 — discussion Wed Oct 7 · **assignment (Statistical Process Control mini-paper, 1–2 pages) and
-     participation due Sun Oct 11, 11:59 PM PT**
-   - Week 7 — discussion Wed Oct 14 · participation Sun Oct 18 (no assignment listed)
-   - Week 8 — final assessment Mon Oct 19 · live class every Wednesday 5:30–7:00 PM PT (Zoom)
-2. Week 4 (Sep 27) is still an open row — if it is done, tell me and I mark it done.
+## 1 · Stop the waste (5 min, phone or computer)
+1. **Switch off five research-only routines** — Strava activity refresh, daily deals & hacks, Travel weekly,
+   Next Big Moves weekly, Deck ↔ ISA drift check. Nothing on the dashboard reads them.
+2. **Mac: pause three duplicate feed tasks.** In Claude Code on the Mac paste: *"Pause (do not delete) the runner
+   tasks openrouter-feeds-refresh, feeds-weekly and feeds-market-close, then show me runnerctl list."* They still
+   run next to the cloud writers (all three ran on Oct 7–8) and one wrote a future timestamp.
 
-## B. claude.ai routines (5 minutes, phone or computer) — claude.ai/code/routines
+## 2 · One reply to Claude (2 min)
+3. **Answer in one message:** add USC Weeks 5–7 (yes/no; Week 6 paper due Sun Oct 11, 11:59 PM PT) · is Week 4
+   done · is the five-state line (CA, NV, AZ, FL, IL) current · LPT Realty's CA DRE brokerage number and entity
+   name · keep or switch off the weekly Rent/Buy/Wait refresh.
+4. **Approve or decline the two queued posts** (Command Deck → Marketing). After step 3 — both wait on the
+   licence facts.
 
-3. **Switch off five research-only routines** (recommended; the usage limit ran out again Oct 6–7 — 42 of 53
-   routines' last runs failed on it, read 2026-10-07 21:06 UTC). Their output is not written anywhere the deck
-   reads, or another writer already covers it:
-   Strava activity refresh · daily deals & hacks refresh · Travel & Experiences weekly refresh ·
-   Next Big Moves weekly review · Command Deck ↔ ISA Portal drift check.
-   *Worked when:* each shows "off". Keep any you want — say which and I adjust the plan.
-4. **Sun Oct 11 after 1 PM PT** your phone gets a reminder: switch on the cloud ISA bridge and the Steve twin
-   (your decision of Oct 5; agents cannot switch on routines you created), and say yes or no to the weekly
-   Rent/Buy/Wait run.
+## 3 · iPhone (2 min)
+5. **Health numbers:** Claude app → "update my health stats in Notion" → allow the Apple Health read and the
+   Notion write once. The tiles are 25 days old.
 
-## C. On the Mac (one sitting, about 30 minutes) — Terminal, in your Repo folder
+## 4 · On the Mac, one sitting (~45 min, Terminal in the Repo folder)
+6. `git pull && ./MAC-SETUP.sh --only cli-anything-harnesses`
+7. **Mac repair paste-in** — `integrations/mac-fix-all-2026-10-05.md` (morning-brief error, refused weekly
+   backup, Orca/notes/graph checks). Paste its report back.
+8. **ISA KPI paste-in** — `integrations/mac-fix-isa-kpi-2026-10-08.md` (speed to lead). Paste its report back.
+9. `bash integrations/ai-team/opus-5-5-on-mac.sh --apply && bash integrations/ai-team/opus-5-5-on-mac.sh --verify`
+10. `bash integrations/browser-use/install-mac.sh && bash integrations/open-design/install-mac.sh`
+11. **Claude Desktop:** upload `integrations/claude-desktop/kevin-mentor.zip`, delete the old cole-mentor skill.
 
-5. `git pull`, then paste `integrations/mac-fix-all-2026-10-05.md` as it says. **Important:** your Mac's feed
-   tasks are still running alongside the cloud writers, and one wrote a timestamp in the future
-   (2026-10-08 04:30 UTC, written about 20:30 UTC Oct 7). Step 1.1 of the paste-in pauses them.
-6. `bash integrations/browser-use/install-mac.sh` — Claude Code gets a hidden, logged-out Chrome to read web
-   pages. *Worked when:* it prints "Self-test passed".
-7. `bash integrations/open-design/install-mac.sh` — OpenDesign, a design workspace that uses Claude Code.
-   *Worked when:* "Self-test passed". Start it later with `... install-mac.sh start`; on first load choose
-   **Don't share** and pick **Claude Code**.
-8. **Claude Desktop:** in its skills settings upload `integrations/claude-desktop/kevin-mentor.zip`, then remove
-   the old `cole-mentor` skill. *Worked when:* "Kevin, are you there?" gets Kevin.
-9. `bash integrations/ai-team/opus-5-5-on-mac.sh --apply` then `--verify` (Opus 5.5 on the Mac).
+## 5 · Sign-ins only you can do (~10 min)
+12. **Zoho:** Setup → Security Control → Profiles → your profile → Developer Permissions → tick "Zoho CRM API
+    Access"; then ask Claude for a fresh Composio reconnect link.
+13. **Connectors** (claude.ai → Settings → Connectors): sign in to Eromify again; reconnect or remove EVRoutes.
+14. **Optional:** cloud environment → Network access → add `fred.stlouisfed.org`, `www.freddiemac.com`,
+    `www.redfin.com` (and `codebuff.com` only if you want freebuff).
 
-## D. Sign-ins and settings only you can change
-
-10. **Connectors** (claude.ai → Settings → Connectors): Eromify needs you to sign in again; EVRoutes failed to
-    connect (2026-10-07) — reconnect or remove both.
-11. **Zoho CRM:** Setup → Security Control → Profiles → your profile → Developer Permissions → tick
-    "Zoho CRM API Access". **Lofty:** Settings → Integrations → API → generate a key, put it in
-    `~/.config/lofty/.env` on the Mac as `LOFTY_API_KEY=…`.
-12. **Cloud environment network** (session title bar → environment → Edit → Network access): add
-    `fred.stlouisfed.org`, `www.freddiemac.com`, `www.redfin.com` (rates card sources). Only if you want
-    freebuff (installed in another session): also add `codebuff.com` — it downloads its program from there.
-
-## E. ISA KPI and content (added 2026-10-08)
-
-13. **Mac:** `git pull`, `./MAC-SETUP.sh --only cli-anything-harnesses`, then paste the block in
-    `integrations/mac-fix-isa-kpi-2026-10-08.md` into Claude Code and bring its report back here. This is what
-    finally measures the ISA's speed to lead.
-14. **Deck, Marketing panel:** read the two queued drafts and set each to Approved or Declined.
-15. **Reply with two facts:** whether the five-state licensing line (CA, NV, AZ, FL, IL) is current, and LPT
-    Realty's own California DRE brokerage number and exact entity name.
-
-That is the whole list. Reply with the step number when one is done, or "skip N", and I keep the dashboard in
-step with it.
+Reply "done N" (or "skip N") after each step and Claude keeps the dashboards in step.
