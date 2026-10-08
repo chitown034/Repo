@@ -433,3 +433,12 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
     the failover gate (the Mac reports `claude-fallback` running with its client-data guard; the Mac paste-in report
     confirms). Item 37 stays open: no `taskLease` document existed in the 18:05 UTC data, so create it before a
     second Mac runs tasks.
+
+97. **2026-10-08 — one simple list: `docs/STEVEN-STEPS.md`** (12 steps, in order). New since item 96: Kevin is the
+    mentor's name everywhere (deck v175; upload `integrations/claude-desktop/kevin-mentor.zip` to Claude Desktop);
+    browser-use and OpenDesign are proven in the cloud and wait for one Mac command each
+    (`integrations/browser-use/`, `integrations/open-design/`); the usage limit ran out again Oct 6–7 (42 of 53
+    enabled routines' last runs failed on it, read 2026-10-07 21:06 UTC) — five research-only routines are
+    recommended off; USC Weeks 5–7 dates are ready and wait for your yes; the Mac feed tasks still duplicate the
+    cloud writers (one wrote a future timestamp) until the paste-in pauses them; Eromify and EVRoutes connectors
+    need attention.

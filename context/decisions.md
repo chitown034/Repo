@@ -416,3 +416,17 @@ the record of the change. The full split, and the three web-UI routine edits onl
 - **Owner.** Derek (automation). **Status.** Active — re-run on demand 2026-10-05 19:09 UTC and verified GREEN
   at 19:12 UTC (182 + 15 documents, 6 + 1 parts, 2 weekly copies kept). Prompt:
   `routines/fixes-2026-10-05/backup.prompt.txt`; the backup watchdog reads the new shape.
+
+## 2026-10-07 — Kevin everywhere; browser-use and OpenDesign added, both fenced
+
+- **Request (Steven, verbatim).** *"replace Cole with Kevin throughout entire dashboard"*; *"install
+  https://github.com/browser-use/browser-use.git"*; *"also install. https://github.com/nexu-io/open-design.git"*.
+- **Decision.** The mentor seat is Kevin in the deck, the repo and the `kevin-mentor` skill (writes the deck's
+  `kevinChat`). browser-use is wired to Claude Code only through a separate, hidden, logged-out Chrome
+  (`agent-chrome.sh`, 127.0.0.1:9333) — upstream's own skill, which drives the everyday logged-in Chrome, is not
+  installed. OpenDesign is built from source at a pinned commit, so upstream's analytics never send; its paid
+  plans stay unused.
+- **Why.** Both tools put page content in front of a cloud model; the HALT list forbids client PII leaving the
+  local model, logins by agents, and spending money. A logged-out browser and a source build keep both inside it.
+- **Owner.** Derek (automation); risk owner Elena (CISO). **Status.** Proven in the cloud sandbox; Mac install is
+  `docs/STEVEN-STEPS.md` steps 6–8.
