@@ -22,6 +22,25 @@ _ID_RE = re.compile(r"^[A-Za-z0-9_-]{1,64}$")
 
 Getter = Callable[[str, Optional[dict]], object]
 
+# Lofty lead ids are 64-bit integers (Lofty developer docs, as summarised by a web search on
+# 2026-10-08; the docs host is blocked from the cloud sandbox, so confirm on the Mac). JSON read
+# by a JavaScript consumer (the lofty-bridge MCP, a deck) silently rounds anything above 2**53,
+# so every such integer leaves this harness as a string.
+_JS_SAFE_MAX = 2 ** 53
+
+
+def safe_ids(obj):
+    """Recursively turn integers a JavaScript number cannot hold exactly into strings."""
+    if isinstance(obj, bool):
+        return obj
+    if isinstance(obj, int):
+        return str(obj) if abs(obj) > _JS_SAFE_MAX else obj
+    if isinstance(obj, dict):
+        return {k: safe_ids(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [safe_ids(v) for v in obj]
+    return obj
+
 
 def check_id(lead_id: str) -> str:
     if not lead_id or not _ID_RE.match(lead_id):
@@ -61,7 +80,7 @@ def whoami(get: Getter) -> dict:
 def list_leads(get: Getter, page: int = 1, page_size: int = DEFAULT_PAGE_SIZE,
                extra: Optional[dict] = None) -> dict:
     params = {PAGINATION["page"]: page, PAGINATION["size"]: page_size, **(extra or {})}
-    body = get("leads", params)
+    body = safe_ids(get("leads", params))
     rows = extract_rows(body)
     return {"recipe": "leads list", "page": page, "pageSize": page_size, "params": params,
             "count": len(rows), "rows": rows, **_shape(body), "raw": body,
@@ -70,17 +89,27 @@ def list_leads(get: Getter, page: int = 1, page_size: int = DEFAULT_PAGE_SIZE,
 
 def get_lead(get: Getter, lead_id: str) -> dict:
     lead_id = check_id(lead_id)
-    body = get(f"leads/{lead_id}", None)
+    body = safe_ids(get(f"leads/{lead_id}", None))
     return {"recipe": "lead get", "id": lead_id, "lead": body, **_shape(body), "raw": body}
 
 
-def timeline(get: Getter, lead_id: str, extra: Optional[dict] = None) -> dict:
+def timeline(get: Getter, lead_id: str, extra: Optional[dict] = None, version: str = "v1") -> dict:
+    """``v1``: GET /v1.0/leads/{id}/activities — a lead's SITE activity (property views, favourites,
+    searches). ``v2``: GET /v2.0/leads/{id}/activities — the unified timeline that also carries
+    calls, texts, emails and agent-logged contact; that is the one first-response needs.
+    (Per Lofty's developer docs as summarised on 2026-10-08; field names inside rows are not
+    confirmed — run with --raw on one lead before computing anything from them.)"""
     lead_id = check_id(lead_id)
-    body = get(f"leads/{lead_id}/activities", extra or None)
+    if version not in ("v1", "v2"):
+        raise ValueError("version must be v1 or v2")
+    path = f"leads/{lead_id}/activities" if version == "v1" else f"v2.0/leads/{lead_id}/activities"
+    body = safe_ids(get(path, extra or None))
     rows = extract_rows(body)
-    return {"recipe": "activity timeline", "id": lead_id, "count": len(rows), "rows": rows,
+    return {"recipe": "activity timeline" if version == "v1" else "unified activity timeline (v2)",
+            "id": lead_id, "count": len(rows), "rows": rows,
             **_shape(body), "raw": body,
-            "note": "Contact made outside Lofty is invisible here: an empty timeline reads 'no contact logged', not 'no contact happened'."}
+            "note": "Contact made outside Lofty is invisible here: an empty timeline reads 'no contact logged', not 'no contact happened'."
+                    + (" v1 is site activity only — it never shows a call, text or email." if version == "v1" else "")}
 
 
 def stage_of(row: dict, field: Optional[str] = None) -> str:

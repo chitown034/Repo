@@ -17,7 +17,7 @@ talks to the ISA — no other seat contacts her directly.
   flowing; say both.
 - `r11-isa-kpi-compile` (Sun 04:40 PT) has **never run under the runner**. It must turn **Lofty**
   events into KPI actuals; **Lofty is not connected yet** — see `context/decisions.md`.
-- The `isaKpi` doc carries real KPI actuals stamped **2026-09-13**. Render or cite it with that date.
+- The `isaKpi` doc holds **no measured actuals**: since 2026-10-08 every metric reads "not measured yet" with its real reason (the older 2026-09-13 actuals were overwritten by failure text on 2026-10-04). Speed to lead waits on the Mac probe in `integrations/mac-fix-isa-kpi-2026-10-08.md`.
 
 ## Where the live data lives
 

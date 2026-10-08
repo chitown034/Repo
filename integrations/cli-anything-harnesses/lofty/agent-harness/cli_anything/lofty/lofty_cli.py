@@ -203,11 +203,12 @@ def leads_stage_totals(page_size, max_pages, stage_field, params):
 
 @leads.command("timeline")
 @click.argument("lead_id")
+@click.option("--v2", "v2", is_flag=True, help="Unified v2.0 timeline (calls, texts, emails) instead of v1.0 site activity")
 @click.option("--param", "params", multiple=True, help="Extra query parameter key=value (repeatable)")
 @handle_error
-def leads_timeline(lead_id, params):
-    """GET /v1.0/leads/{id}/activities — a lead's activity timeline."""
-    result = leads_mod.timeline(_getter(), lead_id, _parse_params(params))
+def leads_timeline(lead_id, v2, params):
+    """GET /v1.0/leads/{id}/activities (site activity), or with --v2 GET /v2.0/leads/{id}/activities."""
+    result = leads_mod.timeline(_getter(), lead_id, _parse_params(params), "v2" if v2 else "v1")
     output(result, f"{result['count']} activities for lead {lead_id}")
 
 

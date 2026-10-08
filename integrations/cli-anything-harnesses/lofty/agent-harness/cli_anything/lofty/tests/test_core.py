@@ -244,6 +244,25 @@ class TestRecipes:
         leads.get_lead(get, "L-1")
         assert calls == ["leads/L-1/activities", "leads/L-1"]
 
+    def test_v2_timeline_path_and_big_ids_leave_as_strings(self):
+        calls = []
+        def get(path, params):
+            calls.append(path); return {"leads": [{"id": 9007199254740993, "small": 12}]}
+        out = leads.timeline(get, "123456789012345678", version="v2")
+        assert calls == ["v2.0/leads/123456789012345678/activities"]
+        assert out["recipe"].startswith("unified")
+        assert leads.list_leads(get)["rows"] == [{"id": "9007199254740993", "small": 12}]
+        assert leads.safe_ids({"a": [2 ** 60, True, 5]}) == {"a": ["1152921504606846976", True, 5]}
+        with pytest.raises(ValueError):
+            leads.timeline(get, "L-1", version="v3")
+
+    def test_version_segment_goes_to_that_api_version_on_the_same_host(self):
+        cfg = backend.Config(api_key="k", base_url="https://api.lofty.com/v1.0", source="t")
+        assert backend._url(cfg, "leads") == "https://api.lofty.com/v1.0/leads"
+        assert backend._url(cfg, "v2.0/leads/5/activities") == "https://api.lofty.com/v2.0/leads/5/activities"
+        fake = backend.Config(api_key="k", base_url="http://127.0.0.1:9", source="t")
+        assert backend._url(fake, "v2.0/x") == "http://127.0.0.1:9/v2.0/x"
+
     def test_bad_ids_refused_before_any_request(self):
         def get(path, params):
             raise AssertionError("must not be called")

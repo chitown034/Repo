@@ -50,7 +50,7 @@ footer{margin-top:28px;color:var(--muted);font-size:.85rem}
 <div class="wrap">
   <h1>Steven's Action Desk</h1>
   <p class="lede">Every step that needs you, with buttons that open the right tab. Tick a box when you finish; ticks are saved in this browser. Then tell Claude "done 3" (or "skip 3") so the dashboard catches up.</p>
-  <div class="bar"><div class="meter" aria-hidden="true"><i id="fill"></i></div><span class="count" id="count">0 of 13 done</span></div>
+  <div class="bar"><div class="meter" aria-hidden="true"><i id="fill"></i></div><span class="count" id="count">0 of 16 done</span></div>
 
   <h2>Reply to Claude</h2>
   <p class="where">One minute, from your phone</p>
@@ -152,6 +152,30 @@ footer{margin-top:28px;color:var(--muted);font-size:.85rem}
       <button class="btn" data-copy="fred.stlouisfed.org&#10;www.freddiemac.com&#10;www.redfin.com">Copy</button>
       <a class="btn" href="https://claude.ai/code" target="_blank" rel="noopener">Open Claude Code</a>
       <label class="tick"><input type="checkbox" id="s13">Done</label></div></div></div>
+
+  <h2>ISA KPI and content</h2>
+  <p class="where">Added 2026-10-08</p>
+
+  <div class="step" data-id="14"><div class="n">14</div><div class="body">
+    <p class="t">Mac: make the ISA speed-to-lead number real</p>
+    <p class="d">Lofty is connected but never returns a lead id, so first-response time has never been measured. Run <code>git pull</code> and <code>./MAC-SETUP.sh --only cli-anything-harnesses</code>, then paste the block in this file into Claude Code on the Mac. Paste its report back to Claude here.</p>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mac-fix-isa-kpi-2026-10-08.md" target="_blank" rel="noopener">Open the paste-in</a>
+      <label class="tick"><input type="checkbox" id="s14">Done</label></div></div></div>
+
+  <div class="step" data-id="15"><div class="n">15</div><div class="body">
+    <p class="t">Approve or decline the two queued posts</p>
+    <p class="d">Open the Marketing panel on the Command Deck, read each draft and its compliance review, then set its stage to Approved or Declined.</p>
+    <div class="acts"><a class="btn" href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Open Command Deck</a>
+      <label class="tick"><input type="checkbox" id="s15">Done</label></div></div></div>
+
+  <div class="step" data-id="16"><div class="n">16</div><div class="body">
+    <p class="t">Two facts only you can confirm before anything publishes</p>
+    <ul class="mini">
+      <li>Is the five-state licensing line (CA, NV, AZ, FL, IL) current for Patriot Pacific and for your own MLO licences?</li>
+      <li>What is LPT Realty's own California DRE brokerage number (and its exact entity name)? Compliance will not let the real estate line go out without it.</li>
+    </ul>
+    <p class="d">Reply with the answers and I will put them in the drafts and the compliance notes.</p>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s16">Done</label></div></div></div>
 
   <footer>Built 2026-10-07 for Steven. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Full detail: <code>docs/STEVEN-STEPS.md</code>.</footer>
 </div>

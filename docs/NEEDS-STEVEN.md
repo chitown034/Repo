@@ -442,3 +442,17 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
     recommended off; USC Weeks 5–7 dates are ready and wait for your yes; the Mac feed tasks still duplicate the
     cloud writers (one wrote a future timestamp) until the paste-in pauses them; Eromify and EVRoutes connectors
     need attention.
+
+98. **2026-10-08 — ISA KPI and content pipeline.** **ISA KPI:** Lofty works (54 leads, `lofty-crm-sync` ok) but its
+    lead list carries no lead id, so first-response time — speed to lead — has never been measured. Per Lofty's
+    docs (web-search summary; docs host blocked from the cloud): ids are 64-bit integers and the v1.0 activity
+    endpoint is site activity only, while calls/texts/emails are in v2.0. Fixed in the repo: the Lofty harness
+    (`leads timeline --v2`, ids as strings, 39 tests pass), the `lofty-crm-sync` skill, and the stale `isaKpi`
+    text on both dashboards (now "not measured yet" with the real reasons). **Yours:** run
+    `integrations/mac-fix-isa-kpi-2026-10-08.md` on the Mac and paste its report back (it also repoints
+    `r11-isa-kpi-compile`, last refused 2026-10-04). **Content pipeline:** `r14-content-pipeline` works — it queued
+    `content-2026-10-08-veteran-equity` at 05:50 PT. The deck had no way to approve a draft, so a stage menu now
+    offers Approved / Declined, and its stale "no draft since 09-23" note is gone. **Yours:** approve or decline the
+    two waiting drafts, confirm the five-state licensing line, and supply LPT Realty's own CA DRE number — the
+    compliance reviewer will not clear the real-estate line without it. **Not fixable from here:** the cloud
+    ISA line, Pipeline Sync and twin routines fail on the weekly usage cap (resets 2026-10-11 20:00 UTC).

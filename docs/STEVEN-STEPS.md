@@ -51,5 +51,14 @@ bottom; each step says where, how long, and how you know it worked. Details live
     `fred.stlouisfed.org`, `www.freddiemac.com`, `www.redfin.com` (rates card sources). Only if you want
     freebuff (installed in another session): also add `codebuff.com` — it downloads its program from there.
 
+## E. ISA KPI and content (added 2026-10-08)
+
+13. **Mac:** `git pull`, `./MAC-SETUP.sh --only cli-anything-harnesses`, then paste the block in
+    `integrations/mac-fix-isa-kpi-2026-10-08.md` into Claude Code and bring its report back here. This is what
+    finally measures the ISA's speed to lead.
+14. **Deck, Marketing panel:** read the two queued drafts and set each to Approved or Declined.
+15. **Reply with two facts:** whether the five-state licensing line (CA, NV, AZ, FL, IL) is current, and LPT
+    Realty's own California DRE brokerage number and exact entity name.
+
 That is the whole list. Reply with the step number when one is done, or "skip N", and I keep the dashboard in
 step with it.

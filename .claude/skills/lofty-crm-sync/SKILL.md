@@ -16,8 +16,25 @@ proves it, every Lofty number on the deck is "awaiting first sync", not "live".
 API facts used here (confirmed 2026-09-22 via developer.lofty.com / api.lofty.com/docs):
 Lofty Open API, base `https://api.lofty.com`, two auth methods — API key (`Authorization: token
 <apiKey>`) and OAuth 2.0 (Bearer, vendors approved on the Developer Platform). `GET /v1.0/me`
-confirms a key works; `GET /v1.0/leads` lists leads; `GET /v1.0/leads/{id}/activities` returns a
-lead's activity timeline. Some endpoints (e.g. published listings) are OAuth-only.
+confirms a key works; `GET /v1.0/leads` lists leads. Some endpoints (e.g. published listings) are OAuth-only.
+
+**Two facts that decide whether first-response can be measured at all (2026-10-08).** Both come from
+Lofty's developer docs as summarised by a web search; the docs host is blocked from the cloud sandbox, so
+the Mac must confirm them with the probe below before any number is computed from them.
+- `GET /v1.0/leads/{id}/activities` is a lead's **site** activity (property views, favourites, searches).
+  It never shows a call, text or email. First contact lives in `GET /v2.0/leads/{id}/activities`, the
+  unified timeline of calls, texts, emails and agent-logged communication.
+- Lead ids are **64-bit integers**. Keep them as strings end to end: a JavaScript consumer rounds anything
+  above 2^53 and every later call then asks for a lead that does not exist. A lead list with no id on its
+  rows (what `lofty_list_leads` returned on 2026-10-07 and 08: "no lead id field", sample 0) cannot be
+  followed into a timeline.
+
+**Probe (read-only, one lead, no contact fields printed by default):**
+`lofty-cli --json --raw leads list --page-size 3`, then
+`lofty-cli --json --raw leads timeline <id> --v2`. Write what you see — the id field's name, the
+timestamp field on a lead and on an activity, and the field and values that say call / text / email and
+inbound / outbound — into the **Verified field map** at the bottom of this file. Compute nothing from a
+field that is not in that map.
 
 ## Inputs
 - **Mac path (preferred):** MCP server `lofty` (lofty-bridge), read-only. Key read from
@@ -55,8 +72,11 @@ lead's activity timeline. Some endpoints (e.g. published listings) are OAuth-onl
    - On anything but 200: write the `loftyLeads` doc with that status, an empty `stageTotals`,
      `newLeads90d: []`, `firstResponse:{medianMin:null,over5:null,sample:0}`, and **stop**.
 2. Pull stage totals (`GET /v1.0/leads`, paginate, group by stage). Pull leads created in the last
-   90 days. For each of those leads pull `/v1.0/leads/{id}/activities` (rate-limit friendly: batch,
-   stop at 200 leads, and say in the note if you truncated).
+   90 days. For each of those leads pull the **v2.0** timeline `/v2.0/leads/{id}/activities` (not v1.0:
+   that is site activity) using the id exactly as the REST list returned it, as a string (rate-limit
+   friendly: batch, stop at 200 leads, and say in the note if you truncated). If the MCP list has no id
+   field, take the lead rows from `lofty-cli --json leads list` instead and say so in the note. If the
+   Verified field map below is empty, run the probe, fill it in, and only then compute.
 3. Compute `firstResponse`. If fewer than 5 leads have a measurable timeline, still write the
    numbers but set the note to "sample too small (n=<k>) — raw value only", matching how `isaKpi`
    already phrases small samples.
@@ -126,3 +146,10 @@ doc `loftySyncLog` (`read_db` get → missing means `[]` → `write_db` **set**)
 ## The one line Steven has to do
 **In Lofty go to Settings → Integrations → API, generate an API key, and put it in
 `~/.config/lofty/.env` on the Mac as `LOFTY_API_KEY=…` — then run `lofty-crm-sync` once to prove it.**
+
+## Verified field map
+*Empty until the probe has run on the Mac (2026-10-08).* Fill in, with the date and the lead count seen:
+- lead id field: ___ (string) · lead created-at field: ___
+- activity time field: ___ · activity kind field: ___ and the values meaning call / text / email: ___
+- direction field: ___ and the values meaning outbound / inbound: ___
+- "first response" = earliest activity with an outbound call, text or email after the lead's created-at.

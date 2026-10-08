@@ -18,6 +18,7 @@ printed, logged or echoed inside an error message.
 from __future__ import annotations
 
 import os
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Mapping, Optional
@@ -144,10 +145,19 @@ def config_status(env: Optional[Mapping[str, str]] = None) -> dict:
     }
 
 
+def _url(cfg: Config, path: str) -> str:
+    """``path`` is relative to the configured base (v1.0). A path that starts with an API
+    version segment, e.g. ``v2.0/leads/{id}/activities``, goes to that version on the same host."""
+    p = path.lstrip("/")
+    if re.match(r"^v\d+(\.\d+)?/", p) and cfg.base_url.endswith("/v1.0"):
+        return f"{cfg.base_url[:-len('/v1.0')]}/{p}"
+    return f"{cfg.base_url}/{p}"
+
+
 def get(cfg: Config, path: str, params: Optional[dict] = None):
     """One GET. Returns the decoded JSON body or raises a ``LoftyError``.
     Never retries — a 429 is reported, not looped into."""
-    url = f"{cfg.base_url}/{path.lstrip('/')}"
+    url = _url(cfg, path)
     headers = {
         "Authorization": f"token {cfg.api_key}",
         "Accept": "application/json",
