@@ -1,0 +1,186 @@
+<title>Steven's Action Desk</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap">
+<style>
+/* Layout: one narrow column of numbered steps (the order is real), grouped by where you do them; each row = open buttons + tick box. */
+:root{
+  --bg:#f3f5f8; --card:#ffffff; --fg:#17202b; --muted:#5b6676; --line:#d9dee6;
+  --accent:#1f4e8c; --accent-fg:#ffffff; --done:#2f7d4f; --warn:#a4570f; --code:#eef1f5;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f141b; --card:#18202b; --fg:#e7ecf2; --muted:#9aa6b6; --line:#2a3544;
+  --accent:#7fb0f0; --accent-fg:#0f141b; --done:#6cc591; --warn:#e3a35e; --code:#202a37; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --card:#18202b; --fg:#e7ecf2; --muted:#9aa6b6; --line:#2a3544;
+  --accent:#7fb0f0; --accent-fg:#0f141b; --done:#6cc591; --warn:#e3a35e; --code:#202a37; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:16px/1.5 var(--body)}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:24px 48px}
+h1{font:700 2.2rem/1.1 var(--display);letter-spacing:.01em;margin:0 0 6px;text-wrap:balance}
+.lede{color:var(--muted);margin:0 0 14px;max-width:62ch}
+.bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.meter{flex:1;min-width:160px;height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--done);transition:width .3s}
+.count{font:600 .95rem var(--body);font-variant-numeric:tabular-nums;color:var(--muted)}
+h2{font:600 1.25rem var(--display);letter-spacing:.06em;text-transform:uppercase;margin:28px 0 4px;color:var(--accent)}
+.where{color:var(--muted);font-size:.92rem;margin:0 0 10px}
+.step{display:grid;grid-template-columns:auto 1fr;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px;margin-bottom:10px}
+.step.done{opacity:.6}
+.step.done .t{text-decoration:line-through}
+.n{font:700 1.5rem/1 var(--display);color:var(--muted);font-variant-numeric:tabular-nums;width:1.6em;text-align:center}
+.body{min-width:0}
+.t{font-weight:600;margin:0 0 4px}
+.d{margin:0 0 10px;color:var(--muted);font-size:.95rem}
+.acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+a.btn,button.btn{display:inline-block;font:600 .9rem var(--body);padding:7px 12px;border-radius:6px;text-decoration:none;cursor:pointer;border:1px solid var(--accent)}
+a.btn{background:var(--accent);color:var(--accent-fg)}
+button.btn{background:transparent;color:var(--accent)}
+a.btn:focus-visible,button.btn:focus-visible,input:focus-visible{outline:3px solid var(--warn);outline-offset:2px}
+label.tick{display:inline-flex;gap:6px;align-items:center;font-size:.9rem;color:var(--muted);margin-left:auto;cursor:pointer}
+label.tick input{width:18px;height:18px;accent-color:var(--done)}
+code{font:.85rem var(--mono);background:var(--code);padding:2px 6px;border-radius:4px;overflow-wrap:anywhere}
+.note{border-left:3px solid var(--warn);padding:2px 0 2px 10px;margin:0 0 10px;font-size:.93rem}
+.ok{color:var(--done);font-weight:600}
+ul.mini{margin:0 0 10px;padding-left:18px;font-size:.95rem}
+footer{margin-top:28px;color:var(--muted);font-size:.85rem}
+@media (prefers-reduced-motion:reduce){.meter i{transition:none}}
+</style>
+
+<div class="wrap">
+  <h1>Steven's Action Desk</h1>
+  <p class="lede">Every step that needs you, with buttons that open the right tab. Tick a box when you finish; ticks are saved in this browser. Then tell Claude "done 3" (or "skip 3") so the dashboard catches up.</p>
+  <div class="bar"><div class="meter" aria-hidden="true"><i id="fill"></i></div><span class="count" id="count">0 of 13 done</span></div>
+
+  <h2>Reply to Claude</h2>
+  <p class="where">One minute, from your phone</p>
+
+  <div class="step" data-id="1"><div class="n">1</div><div class="body">
+    <p class="t">Say "yes USC" to add Weeks 5–7 to your study list</p>
+    <ul class="mini">
+      <li>Week 6 mini-paper (Statistical Process Control, 1–2 pages) and participation: <b>Sun Oct 11, 11:59 PM PT</b></li>
+      <li>Week 7 discussion Wed Oct 14 · participation Sun Oct 18 · final assessment Mon Oct 19</li>
+    </ul>
+    <div class="acts"><a class="btn" href="https://usc-online.instructure.com/courses/8352" target="_blank" rel="noopener">Open Canvas course</a>
+      <label class="tick"><input type="checkbox" id="s1">Done</label></div></div></div>
+
+  <div class="step" data-id="2"><div class="n">2</div><div class="body">
+    <p class="t">If Week 4 (due Sep 27) is finished, say "Week 4 done"</p>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s2">Done</label></div></div></div>
+
+  <h2>Routines</h2>
+  <p class="where">Five minutes. Each button opens the routine; turn its switch off.</p>
+
+  <div class="step" data-id="3"><div class="n">3</div><div class="body">
+    <p class="t">Switch off five research-only routines</p>
+    <p class="d">The usage limit ran out again Oct 6–7 (42 of 53 routines failed on it). Nothing on the dashboard reads these five.</p>
+    <div class="acts">
+      <a class="btn" href="https://claude.ai/code/routines/trig_015Fm6K3R7yvyHv3SkPGXHwL" target="_blank" rel="noopener">Strava activity refresh</a>
+      <a class="btn" href="https://claude.ai/code/routines/trig_015MZSefaw573ciFQSvoWDmZ" target="_blank" rel="noopener">Daily deals &amp; hacks</a>
+      <a class="btn" href="https://claude.ai/code/routines/trig_01Qgz9ZEvt2KYFqfAte8zVRi" target="_blank" rel="noopener">Travel weekly</a>
+      <a class="btn" href="https://claude.ai/code/routines/trig_01Lb3aYRQZSLsAkcnDpZ8zEL" target="_blank" rel="noopener">Next Big Moves weekly</a>
+      <a class="btn" href="https://claude.ai/code/routines/trig_01PahyyhhmNzze1o1ujcGno2" target="_blank" rel="noopener">Deck ↔ ISA drift check</a>
+      <label class="tick"><input type="checkbox" id="s3">Done</label></div></div></div>
+
+  <div class="step" data-id="4"><div class="n">4</div><div class="body">
+    <p class="t">ISA bridge and AI twin: already on</p>
+    <p class="d"><span class="ok">Nothing to do.</span> Both showed as switched on in the routine list read Oct 7, 2:06 PM PT. Open them only if you want to check.</p>
+    <div class="acts">
+      <a class="btn" href="https://claude.ai/code/routines/trig_01J9xuWgAuUCHATtpLivDkgp" target="_blank" rel="noopener">ISA bridge</a>
+      <a class="btn" href="https://claude.ai/code/routines/trig_01JbMx3a3KA6cJv2zMdBAE6k" target="_blank" rel="noopener">AI twin</a>
+      <label class="tick"><input type="checkbox" id="s4">Done</label></div></div></div>
+
+  <h2>On the Mac</h2>
+  <p class="where">About 30 minutes. Open Terminal, go to your Repo folder, copy each command, paste, press Return.</p>
+
+  <div class="step" data-id="5"><div class="n">5</div><div class="body">
+    <p class="t">Get the latest files, then do the Mac clean-up paste-in</p>
+    <p class="note">Your Mac's feed tasks are still running next to the cloud ones, and one wrote a date in the future. Section 1 of the paste-in pauses them.</p>
+    <div class="acts"><code>git pull</code><button class="btn" data-copy="git pull">Copy</button>
+      <a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mac-fix-all-2026-10-05.md" target="_blank" rel="noopener">Open the paste-in</a>
+      <label class="tick"><input type="checkbox" id="s5">Done</label></div></div></div>
+
+  <div class="step" data-id="6"><div class="n">6</div><div class="body">
+    <p class="t">Install browser-use (Claude reads web pages in a logged-out Chrome)</p>
+    <p class="d">Worked when it says "Self-test passed."</p>
+    <div class="acts"><code>bash integrations/browser-use/install-mac.sh</code><button class="btn" data-copy="bash integrations/browser-use/install-mac.sh">Copy</button>
+      <label class="tick"><input type="checkbox" id="s6">Done</label></div></div></div>
+
+  <div class="step" data-id="7"><div class="n">7</div><div class="body">
+    <p class="t">Install OpenDesign (design workspace that uses Claude Code)</p>
+    <p class="d">Worked when it says "Self-test passed." First time you open it: click Don't share, pick Claude Code.</p>
+    <div class="acts"><code>bash integrations/open-design/install-mac.sh</code><button class="btn" data-copy="bash integrations/open-design/install-mac.sh">Copy</button>
+      <label class="tick"><input type="checkbox" id="s7">Done</label></div></div></div>
+
+  <div class="step" data-id="8"><div class="n">8</div><div class="body">
+    <p class="t">Move the Mac to Opus 5.5</p>
+    <div class="acts"><code>bash integrations/ai-team/opus-5-5-on-mac.sh --apply &amp;&amp; bash integrations/ai-team/opus-5-5-on-mac.sh --verify</code>
+      <button class="btn" data-copy="bash integrations/ai-team/opus-5-5-on-mac.sh --apply &amp;&amp; bash integrations/ai-team/opus-5-5-on-mac.sh --verify">Copy</button>
+      <label class="tick"><input type="checkbox" id="s8">Done</label></div></div></div>
+
+  <div class="step" data-id="9"><div class="n">9</div><div class="body">
+    <p class="t">Kevin in Claude Desktop</p>
+    <p class="d">In Claude Desktop's skills settings, upload <code>kevin-mentor.zip</code> from your Repo folder (<code>integrations/claude-desktop/</code>), then delete the old cole-mentor skill. Test: "Kevin, are you there?"</p>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/tree/claude/stoic-cori-pvn3f8/integrations/claude-desktop" target="_blank" rel="noopener">Show the file</a>
+      <label class="tick"><input type="checkbox" id="s9">Done</label></div></div></div>
+
+  <h2>Sign-ins only you can do</h2>
+  <p class="where">About 10 minutes</p>
+
+  <div class="step" data-id="10"><div class="n">10</div><div class="body">
+    <p class="t">Fix two connectors</p>
+    <p class="d">Eromify needs you to sign in again. EVRoutes failed to connect. Reconnect both, or remove them if you don't use them.</p>
+    <div class="acts"><a class="btn" href="https://claude.ai/settings/connectors" target="_blank" rel="noopener">Open Connectors</a>
+      <label class="tick"><input type="checkbox" id="s10">Done</label></div></div></div>
+
+  <div class="step" data-id="11"><div class="n">11</div><div class="body">
+    <p class="t">Zoho: tick one permission</p>
+    <p class="d">Setup → Security Control → Profiles → your profile → Developer Permissions → tick "Zoho CRM API Access".</p>
+    <div class="acts"><a class="btn" href="https://crm.zoho.com/" target="_blank" rel="noopener">Open Zoho CRM</a>
+      <label class="tick"><input type="checkbox" id="s11">Done</label></div></div></div>
+
+  <div class="step" data-id="12"><div class="n">12</div><div class="body">
+    <p class="t">Lofty: make an API key</p>
+    <p class="d">Settings → Integrations → API → generate a key. On the Mac, put it in <code>~/.config/lofty/.env</code> as <code>LOFTY_API_KEY=yourkey</code>.</p>
+    <div class="acts"><a class="btn" href="https://lofty.com/" target="_blank" rel="noopener">Open Lofty</a>
+      <label class="tick"><input type="checkbox" id="s12">Done</label></div></div></div>
+
+  <div class="step" data-id="13"><div class="n">13</div><div class="body">
+    <p class="t">Optional: let the cloud reach the rates websites</p>
+    <p class="d">In a Claude Code cloud session: title bar → environment → Edit → Network access. Add these (and <code>codebuff.com</code> only if you want freebuff):</p>
+    <div class="acts"><code>fred.stlouisfed.org www.freddiemac.com www.redfin.com</code>
+      <button class="btn" data-copy="fred.stlouisfed.org&#10;www.freddiemac.com&#10;www.redfin.com">Copy</button>
+      <a class="btn" href="https://claude.ai/code" target="_blank" rel="noopener">Open Claude Code</a>
+      <label class="tick"><input type="checkbox" id="s13">Done</label></div></div></div>
+
+  <footer>Built 2026-10-07 for Steven. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Full detail: <code>docs/STEVEN-STEPS.md</code>.</footer>
+</div>
+
+<script>
+(function(){
+  var KEY="actionDesk.v1", state={};
+  try{ state=JSON.parse(localStorage.getItem(KEY)||"{}")||{}; }catch(e){ state={}; }
+  var boxes=document.querySelectorAll('label.tick input');
+  function paint(){
+    var n=0;
+    boxes.forEach(function(b){ var step=b.closest('.step'); step.classList.toggle('done',b.checked); if(b.checked)n++; });
+    document.getElementById('count').textContent=n+" of "+boxes.length+" done";
+    document.getElementById('fill').style.width=(100*n/boxes.length)+"%";
+  }
+  boxes.forEach(function(b){
+    b.checked=!!state[b.id];
+    b.addEventListener('change',function(){ state[b.id]=b.checked; try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){} paint(); });
+  });
+  document.querySelectorAll('button[data-copy]').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var text=btn.getAttribute('data-copy'), orig=btn.textContent;
+      function shown(msg){ btn.textContent=msg; setTimeout(function(){btn.textContent=orig;},1600); }
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(function(){shown("Copied");},function(){ selectCode(btn); shown("Select + copy"); });
+      } else { selectCode(btn); shown("Select + copy"); }
+    });
+  });
+  function selectCode(btn){ var c=btn.parentNode.querySelector('code'); if(!c)return; var r=document.createRange(); r.selectNodeContents(c); var s=getSelection(); s.removeAllRanges(); s.addRange(r); }
+  paint();
+})();
+</script>
