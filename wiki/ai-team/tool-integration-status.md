@@ -20,7 +20,7 @@ Both run under their own status doctrine — see `wiki/dashboard-ops/task-catalo
 
 ## Orca — proposed, not integrated
 
-**Orca Computer Use v1.4.203 (Stably AI) is installed on the Mac as a standalone computer-use app, NOT integrated with Claude Code.** The separate `stablyai/orca` parallel-worktree IDE is **not installed**. This is a **proposal only**: an "Anything/Orca computer-use executor" seat under Elon, for sites without an API, vetted by the CTO Innovator (and Elena, for security) before it becomes real. Do not report Orca as a working executor seat, and do not confuse the installed standalone app with the unbuilt IDE integration.
+**Orca Computer Use v1.4.220 (Stably AI; Mac toolkit snapshot 2026-10-05, v1.4.203 on 09-16) is reported installed on the Mac as a standalone computer-use app — unverified from the cloud — NOT integrated with Claude Code.** The separate `stablyai/orca` parallel-worktree IDE is **not installed**. This is a **proposal only**: an "Anything/Orca computer-use executor" seat under Elon, for sites without an API, vetted by the CTO Innovator (and Elena, for security) before it becomes real. Do not report Orca as a working executor seat, and do not confuse the installed standalone app with the unbuilt IDE integration.
 
 ## Laya — proposed, not installed
 

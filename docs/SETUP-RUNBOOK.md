@@ -875,7 +875,9 @@ real ask is smaller than item 2 made it sound.
   `routines/mac-task-repairs.md` §3. Then the first phone run (open Claude on the iPhone, say "update
   my health stats", grant the Apple Health read and Notion write once), then create and enable
   `health-notion-sync` (`integrations/mac-task-specs.md` §3).
-- **Google Drive.** Never wired: no connector, no key, no row — while two Mac tasks claim to read a
+- **Google Drive.** **Update 2026-10-09: done** — connected read-only through the claude.ai connector
+  (one file, a 69-row Notion export); you approved indexing it on 2026-10-09
+  (`references/google-drive.md`). Nothing left for you here. *Was (2026-09-22):* Never wired: no connector, no key, no row — while two Mac tasks claim to read a
   Drive "Second Brain" folder and the fabric tile counts it at 0 files. That zero is a false green,
   not an empty folder. Wire it read-only (`integrations/google-drive-brain.md`) or drop the line.
 - **Re-enable the cloud ISA bridge and the Steve twin — but edit the twin first.** Its prompt still

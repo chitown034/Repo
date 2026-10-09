@@ -19,7 +19,7 @@ Ask the doc, never the page source, for a current number.
 | Calendar (next 7 days) | `calendarSnapshot` |
 | Mortgage rates | `ratesSnapshot` |
 | Markets, strategies | `marketSnapshot`, `strategySnapshot`, `openTerminalSnapshot` |
-| Real-estate CRM leads | `loftyLeads` (exists at v1 and carries an honest *blocked* body — no sync has run, the API key is not installed; never read a lead number off it), `leadTriage`, `leadResponse` |
+| Real-estate CRM leads | `loftyLeads` (written by lofty-crm-sync since 2026-10-07 — 54 leads, stage totals; firstResponse not computable until the lead id is resolved), `leadTriage`, `leadResponse` |
 | Mortgage CRM | `zohoSync` (exists at v1, body is the 403 `NO_PERMISSION` block); `zohoLeads` and `zohoDeals` **do not exist** — the Deals module has never been read |
 | Health | `appleHealth` (last real ingest 2026-09-13), `healthAnalysis` |
 | Knowledge stores | `knowledgeFabric`, `secondBrain`, `toolkitSnapshot` |
@@ -55,7 +55,7 @@ doc whose top level is not a single `v` key is a **writer bug to fix**, not a sh
 - Still broken on the runner at the 2026-09-23 02:10 UTC `runnerStatus`: `nightly-self-test`
   (error), and `r4-quantvue-sync`, `lead-triage-daily`, `feeds-weekly` (refused). 18 weekly/monthly
   slots have still never run.
-- The Orca card says "Not installed yet". The stack reports "Orca Computer Use" v1.4.203 (Stably AI)
+- The Orca card says "Not installed yet". The stack reports "Orca Computer Use" v1.4.220 (Mac snapshot 2026-10-05; v1.4.203 on 09-16) (Stably AI)
   installed on the Mac as a standalone computer-use app, with the IDE/worktree integration **not**
   done — but that install has never been verified from anywhere but the Mac (`./mac-verify.sh`).
 - **Closed since this list was written:** `r17-trading-day-log` is no longer failing (`ok`,

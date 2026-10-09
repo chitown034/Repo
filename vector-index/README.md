@@ -50,13 +50,13 @@ if the marker is missing and the file is in `wiki/clients/`, the path rule wins.
 
 ## Who serves it today — honest
 
-| Component | Role | Status 2026-09-22 |
+| Component | Role | Status 2026-09-23 |
 |---|---|---|
-| Jarvis (OpenJarvis `memory.db`) | Local index and on-device voice | **1,760 documents** indexed |
+| Jarvis (OpenJarvis `memory.db`) | Local index and on-device voice | **1,761 documents** (knowledgeFabric 2026-09-23 02:10 UTC; unverified from the cloud) |
 | Graphify embeddings | Embeddings alongside the graph in `vault/60-Knowledge` | Graph built 2026-09-13 |
 | Ruflo | Research-and-memory bench; weekly graph summaries | **238 entries** |
 
-Counts are from the `knowledgeFabric` doc, stamp 2026-09-22 04:05 UTC. **There is no separate
+Counts are from the `knowledgeFabric` doc, stamp 2026-09-23 02:10 UTC. **There is no separate
 production vector service in this repo** — this directory is the specification and the rules; the
 serving is done by the three components above, on the Mac. Do not describe it as more than that.
 

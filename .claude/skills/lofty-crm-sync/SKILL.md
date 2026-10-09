@@ -9,9 +9,9 @@ Status today (verified 2026-09-22): **Lofty is Steven's real-estate system of re
 2026-09-22, and the only real-estate CRM this skill may name. Composio has **no Lofty toolkit**
 (searched — there is none). The Mac has two paths:
 `lofty-bridge` (local read-only MCP over Lofty's REST API, status RUN, `claude mcp` shows server
-`lofty` connected) and `lofty-cli` (npm `@loftyai/lofty-cli`, status RUN). **Whether the API key is
-actually present in `~/.config/lofty/.env` has not been verified from the cloud.** Until a run
-proves it, every Lofty number on the deck is "awaiting first sync", not "live".
+`lofty` connected) and `lofty-cli` (npm `@loftyai/lofty-cli`, status RUN). The key is in place:
+lofty-crm-sync has run ok since 2026-10-07 (54 leads). Lead figures are live; speed to lead is not,
+until the lead id is resolved (see below).
 
 API facts used here (confirmed 2026-09-22 via developer.lofty.com / api.lofty.com/docs):
 Lofty Open API, base `https://api.lofty.com`, two auth methods — API key (`Authorization: token

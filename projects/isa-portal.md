@@ -15,8 +15,9 @@ talks to the ISA — no other seat contacts her directly.
   from 24 h because overnight runs moved no messages.
 - **The ISA has posted nothing since 2026-09-16.** The bridge running is not the same as traffic
   flowing; say both.
-- `r11-isa-kpi-compile` (Sun 04:40 PT) has **never run under the runner**. It must turn **Lofty**
-  events into KPI actuals; **Lofty is not connected yet** — see `context/decisions.md`.
+- `r11-isa-kpi-compile` (Sun 04:40 PT) last ran 2026-10-04 and was refused. It must turn **Lofty**
+  events into KPI actuals; **Lofty is live since 2026-10-07** (54 leads), but its lead list carries no
+  lead id, so speed to lead is not measurable yet — see `integrations/mac-fix-isa-kpi-2026-10-08.md`.
 - The `isaKpi` doc holds **no measured actuals**: since 2026-10-08 every metric reads "not measured yet" with its real reason (the older 2026-09-13 actuals were overwritten by failure text on 2026-10-04). Speed to lead waits on the Mac probe in `integrations/mac-fix-isa-kpi-2026-10-08.md`.
 
 ## Where the live data lives

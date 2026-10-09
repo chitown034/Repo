@@ -49,6 +49,8 @@ def _parser() -> argparse.ArgumentParser:
     st.add_argument("--days", type=int, default=21)
     rl = sub.add_parser("related", help="pages sharing the most distinctive keywords with a page or a question")
     rl.add_argument("target", nargs="+")
+    gr = sub.add_parser("graph", help="the whole brain as nodes, links and dates (JSON) for any visualiser")
+    gr.add_argument("--out", help="write to this file instead of stdout")
     sub.add_parser("loop", help="reindex, doctor, bench, gaps, orgcheck; write docs/reports/BRAIN-LOOP.md; exit 1 on regression")
     sub.add_parser("mcp", help="serve recall/remember/pack/gaps over stdio MCP for any MCP client")
     return p
@@ -136,6 +138,10 @@ def main(argv: list[str] | None = None) -> int:
         for x in rows:
             print(f"  {x['file']}  ({x.get('why') or 'shares: ' + x['shared']})")
         return 0
+
+    if args.cmd == "graph":
+        from . import graph
+        return graph.main(root, args.out)
 
     if args.cmd == "loop":
         ok, text = loop.run_loop(root)

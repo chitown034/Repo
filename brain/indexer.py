@@ -51,6 +51,7 @@ EXCLUDE_PREFIXES = ("docs/findings/", "docs/data/", "docs/reports/", ".claude/",
 # Authority prior. CLAUDE.md's routed leaves are authoritative by construction;
 # runbooks and audit records are dated evidence of what was true once.
 PRIOR_RULES = [
+    ("references/drive-second-brain-notes.md", 0.55),  # a dated copy of Notion rows: never outranks a current leaf
     ("docs/inventory/", 0.7),
     ("docs/", 0.8),
     ("routines/", 0.85),

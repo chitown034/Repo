@@ -1,8 +1,8 @@
 # Project — AI Team
 
 **What.** The org of AI seats that runs behind Vanessa: on the Mac, **172 agents** (tier 1: 17,
-tier 2: 96, tier 3: 59), **60 scheduled tasks**, **15 MCP servers** (`toolkitSnapshot`, synced
-2026-09-16 00:52 UTC). Full seat-by-seat detail is in `wiki/ai-team/index.md` — do not read the
+tier 2: 96, tier 3: 59), **15 MCP servers** (`toolkitSnapshot`, synced 2026-09-16 00:52 UTC);
+**59 scheduled tasks** (`runnerStatus` 2026-09-23 02:10 UTC). Full seat-by-seat detail is in `wiki/ai-team/index.md` — do not read the
 roster dump to answer a "who owns X" question.
 
 ## The shape

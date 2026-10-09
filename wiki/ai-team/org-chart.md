@@ -9,7 +9,7 @@ Steven (Principal)
 ├─ Steve — digital twin, Tier-1 work
 ├─ Vanessa — Chief of Staff / COO / orchestrator, council chair
 │   ├─ Jarvis — on-device voice + local index (verify: integrations/jarvis/jarvis-setup.sh; voice = Vanessa's recorded Magica set)
-│   ├─ Laya — zero-token on-device first hop that routes every request (integrations/laya/)
+│   ├─ Laya — zero-token on-device first hop (proposed; Mac install unverified, routing logic proven on the stub only — integrations/laya/)
 │   ├─ Knowledge fabric — Second Brain · vault · Jarvis · Graphify · Ruflo, one recall (+ Notion record, Google Drive mirror read-only)
 │   ├─ Brain loop — self-check that finds unanswered questions and drift (`bin/brain loop`)
 │   └─ Juliet — Escalation & Service Recovery

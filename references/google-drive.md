@@ -1,4 +1,4 @@
-# Google Drive — what the brain can reach (catalogue, not content)
+# Google Drive — what the brain can reach (catalogue + screened notes)
 
 As of 2026-10-09. Read-only, through the claude.ai Google Drive connector on Steven's own sign-in.
 Full spec and rules: `integrations/google-drive-brain.md`.
@@ -14,8 +14,11 @@ The Second Brain folder: https://drive.google.com/drive/folders/1oi_c-wJ59J6KEcN
 1. `bin/brain recall` first — Drive is never level 1.
 2. The Notion Second Brain database is the record; this Drive file is a copy of it. Ask Notion for the
    live row; use Drive only if Notion is unreachable, and say its age.
-3. The file's content is **not** in the brain's index. A cloud session can open it through the
-   connector when a question needs it, read-only, and must not copy client details out of it.
+3. **Indexed, screened (Steven approved 2026-10-09):** `references/drive-second-brain-notes.md` holds 53 of
+   the 69 rows. 13 rows tagged `personal` and 3 with client wording were left out; long numbers outside
+   links are masked. Rebuild after a new export: read the file through the connector, then
+   `python3 -I integrations/google-drive/redact_export.py <saved export> references/drive-second-brain-notes.md`
+   and `bin/brain reindex`. The screen prints counts only.
 
 ## Rules
 

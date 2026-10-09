@@ -1,6 +1,6 @@
 # memory.md — auto-memory scaffold
 
-**Empty on purpose.** This file is the Claude Code auto-memory store for the Second Brain project.
+**Auto-memory store** for the Second Brain project — 47 dated entries as of 2026-10-09, near the 100-line cap.
 It fills itself as sessions run. Do not seed it with facts that belong in the wiki, in
 `context/decisions.md`, or in a live DB doc.
 
@@ -43,7 +43,7 @@ One dated line each, newest at the bottom:
 
 ## Entries
 
-<!-- 2026-09-22 — scaffold created; no entries yet. Append below this line. -->
+<!-- 2026-09-22 — scaffold created. Append below this line. -->
 
 - 2026-09-23 — A cloud routine **can** write the artifact DB unattended. The old "it parks on a permission prompt" rule was true when last tested 2026-09-04 and is false since 2026-09-22; `cloudWriteProbe` settles it and four cloud writers run on it. Do not refuse a write on the old rule.
 - 2026-09-23 — `cloudWriteProbe` **does** carry a write time: `updatedAt` sits on the document envelope, not inside `v`. A finding that says it has no timestamp has read only the body. Same trap for every doc: `get` shows the envelope, an export of `v` does not.

@@ -49,9 +49,10 @@ Source of truth: the `runnerStatus` doc and the routine-health export, not the t
   `feedFreshness` sweep (2026-09-23 00:50 UTC) found `openrouterFeeds` frozen since 2026-09-13 while
   its writer `openrouter-feeds-refresh` reports `ok`. A silent no-write success is the failure this
   wiki page exists to make visible: check the doc stamp, never the task status.
-- **Lofty is the real-estate system of record** (since 2026-09-22) and is **not connected yet** —
-  Composio has no Lofty toolkit and Steven's API key is not installed. No CRM lead number on the
-  deck is live. Show "not connected yet"; never carry an old CRM's figure under a Lofty label.
+- **Lofty is the real-estate system of record** (since 2026-09-22) and is **live since 2026-10-07**
+  (lofty-bridge + lofty-cli on the Mac, key in place, 54 leads syncing; no Composio toolkit). Speed to
+  lead is **not measurable yet** — the lead list returns no lead id
+  (`integrations/mac-fix-isa-kpi-2026-10-08.md`). Never carry an old CRM's figure under a Lofty label.
 - **Zoho is API-blocked** pending a permission only Steven can grant. Deck Zoho data is the Sep 14 paste.
 - **You.com is retired.** No surface may call it. Research = Claude subscription (WebSearch/WebFetch); Perplexity removed 2026-10-05.
 - **Knowledge fabric counts** (`knowledgeFabric`, its own stamp 2026-09-23 02:10 UTC): Second Brain 71
@@ -59,10 +60,10 @@ Source of truth: the `runnerStatus` doc and the routine-health export, not the t
   **Drive folder 0 files** (deck count; on 2026-10-09 the claude.ai connector found 1 file there — see `references/google-drive.md`). `fabric-deck-sync` has recovered — last completion ok 2026-09-22 17:08,
   and it was running again at the 02:10 stamp — so the earlier "ended in error" note is spent. Two
   counts on that row are still not what they look like: the **graph** figure is the 2026-09-13 build
-  (`knowledgeGraph` has not moved since; `ops-knowledge-graph` has never run), and **Drive is a store
-  nothing can reach** — 0 files on every sample, no credential, no connector. A 0-file store rendered
-  as a live store is a false green; the decision to wire it or drop it from the count is Steven's
-  (`integrations/google-drive-brain.md`).
+  (`knowledgeGraph` has not moved since; `ops-knowledge-graph` has never run), and the **Drive**
+  figure is the Mac's count (0), while the claude.ai connector (cloud sessions, read-only) finds 1
+  file — the 69-row Notion export, synced 2026-09-22. Steven approved indexing it on 2026-10-09; see
+  `references/google-drive.md`.
 
 ## Pages
 

@@ -154,7 +154,7 @@ re-litigating whether something was done; read the table below for what was deci
 | **`tashfeenahmed/freellmapi`** | **evaluated and DECLINED** — a second aggregator, not a key source. The verdict existed but was unfindable; now in `--list` and FR5b §6 | FR5b §6 |
 | **`cheahjs/free-llm-api-resources`** | **repo is gone — HTTP 404, re-verified.** Wanted only as a catalogue; covered by OmniRoute's `FREE_TIERS.md` and `freellmapi.co/models` | FR5b §6 |
 | openalternative.co | reference only, nothing to install | FR5a §13 |
-| **"…with Notion + Drive"** | Notion wired. **Google Drive NEVER ADDRESSED** — no connector, no key, no client; two tasks claim to read it and the fabric tile counts **0 files**. Spec written, decision owed | `integrations/google-drive-brain.md` |
+| **"…with Notion + Drive"** | Notion wired. **Update 2026-10-09: Google Drive connected read-only through the claude.ai connector** — 1 file (69-row Notion export, 2026-09-22); Steven approved indexing it 2026-10-09; the Mac's fabric tile still counts 0 (`references/google-drive.md`). *Was (2026-09-22):* **Google Drive NEVER ADDRESSED** — no connector, no key, no client; two tasks claim to read it and the fabric tile counts **0 files**. Spec written, decision owed | `references/google-drive.md`; `integrations/google-drive-brain.md` |
 | `vphone-cli` · `Agent402` · `whatscli` · the media-inference worker · the Agent-Reach *skill* · the WhatsApp *plugin* · the addyosmani *plugin* | **REFUSED**, each with its reason, enforced by a runtime guard | `MAC-SETUP.sh --list` |
 
 ## What NOT to do
