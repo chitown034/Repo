@@ -1,0 +1,1686 @@
+{
+  "brief": "CAIO Disruption Scan & Disruptive Recommendation Brief",
+  "cycle": "Loop Cycle 6",
+  "date": "2026-09-22",
+  "label": "Baseline 2026-09-12 · verified 2026-09-22",
+  "author": "Nadia (CAIO) via E9",
+  "reportsTo": "Steven cc Vanessa; every item → CTO Innovator (Elon) feasibility",
+  "proposalOnly": true,
+  "trustLevel": "L1",
+  "verification": {
+    "method": "WebSearch (US-only) + WebFetch of primary pages where reachable; egress-blocked domains fall back to dated search snippets and are marked 'snippet'; 'unverified' marks claims with no dated source.",
+    "primaryFetched": [
+      "code.claude.com (changelog, routines, desktop-scheduled-tasks, artifacts, claude-projects)",
+      "blog.modelcontextprotocol.io/posts/2026-07-28",
+      "github.com/stablyai/orca/releases",
+      "github.com/HKUDS/CLI-Anything",
+      "github.com/ruvnet/ruflo/releases",
+      "github.com/open-jarvis/OpenJarvis",
+      "github.com/inkbox-ai/inkbox"
+    ],
+    "egressBlocked": [
+      "anthropic.com",
+      "openai.com / deploymentsafety.openai.com",
+      "x.ai",
+      "ai.google.dev",
+      "wikipedia.org",
+      "composio.dev",
+      "openrouter.ai",
+      "notion.com",
+      "claude.com",
+      "zoho.com",
+      "zillow.com",
+      "rismedia.com",
+      "housingwire.com",
+      "realestatenews.com",
+      "siliconangle.com",
+      "macrumors.com",
+      "magica.com",
+      "api.lofty.com / developer.lofty.com",
+      "onorca.dev",
+      "skillstore.io",
+      "the-decoder.com",
+      "veteransunited.com"
+    ],
+    "contradictionsNoted": [
+      "'Llama 4.5 (June 2026)' and 'Llama 4 405B open weights on 2026-08-12' appear only on low-quality sites and contradict each other — treated as unverified; Meta's verified 2026 releases are Muse Spark (2026-04-08, closed) and Muse Glimmer 30B (2026-08-10, Apache-2.0).",
+      "Deck aiNews (Sep 7) calls SAM 'Google open-sources'; the google/sam repo states it is not an officially supported Google product.",
+      "Cause of the Follow Up Boss 'Invalid API Key' failures since 2026-09-16 is not explained by any published deprecation — unverified."
+    ]
+  },
+  "disruptionScan": {
+    "models": [
+      {
+        "model": "Claude Fable 5.1 / Mythos 5.1",
+        "date": "2026-09-01",
+        "facts": "GA; $10/$50 per M; cache-read cut 75% to $0.25/M; Mythos trusted-access only; OSWorld 2.0 77.9% partial / 41.7% strict (Opus 5 75.4/39.6)",
+        "evidence": [
+          {
+            "source": "9to5Mac (snippet)",
+            "url": "https://9to5mac.com/2026/09/01/anthropic-upgrades-claude-with-new-fable-5-1-model-details-here/",
+            "date": "2026-09-01"
+          },
+          {
+            "source": "MacRumors (snippet)",
+            "url": "https://www.macrumors.com/2026/09/01/anthropic-claude-fable-5-1/",
+            "date": "2026-09-01"
+          },
+          {
+            "source": "Vellum — Fable 5.1 & Mythos 5.1 benchmarks explained (snippet; exact date unverified)",
+            "url": "https://www.vellum.ai/blog/claude-fable-5-1-mythos-5-1-benchmarks-explained",
+            "date": "2026-09 (unverified day)"
+          }
+        ]
+      },
+      {
+        "model": "Claude Opus 5",
+        "date": "2026-07-24",
+        "facts": "$5/$25 per M; effort toggle; default on Max; near Fable 5 at half price",
+        "evidence": [
+          {
+            "source": "Axios (snippet)",
+            "url": "https://www.axios.com/2026/07/24/anthropic-releases-new-model-opus-5",
+            "date": "2026-07-24"
+          },
+          {
+            "source": "Fortune (snippet)",
+            "url": "https://fortune.com/2026/07/24/anthropic-debuts-claude-opus-5-with-feature-that-lets-users-toggle-between-cost-and-capability/",
+            "date": "2026-07-24"
+          }
+        ]
+      },
+      {
+        "model": "Claude Sonnet 5",
+        "date": "2026-06-30",
+        "facts": "$2/$10 per M; most agentic Sonnet; ~Opus 4.8 level; intro pricing permanent 2026-08-10 (snippet, unverified)",
+        "evidence": [
+          {
+            "source": "MacRumors (snippet)",
+            "url": "https://www.macrumors.com/2026/06/30/anthropic-claude-sonnet-5/",
+            "date": "2026-06-30"
+          },
+          {
+            "source": "Simon Willison (snippet)",
+            "url": "https://simonwillison.net/2026/Jun/30/claude-sonnet-5/",
+            "date": "2026-06-30"
+          }
+        ]
+      },
+      {
+        "model": "OpenAI GPT-6 Astra",
+        "date": "2026-09-03",
+        "facts": "approved users Sep 3, GA Sep 4; ~1.05M context, 128K output (secondary); critical cyber tier gated; follows July 2026 unsanctioned-cyberattack incident",
+        "evidence": [
+          {
+            "source": "CNBC — OpenAI announces rollout of GPT-6 Astra (snippet)",
+            "url": "https://www.cnbc.com/2026/09/03/open-ai-astra-gpt-6-cyber.html",
+            "date": "2026-09-03"
+          },
+          {
+            "source": "Al Jazeera (snippet)",
+            "url": "https://www.aljazeera.com/economy/2026/9/4/openai-unveils-gpt-6-astra-amid-rising-scrutiny-and-safety",
+            "date": "2026-09-04"
+          }
+        ]
+      },
+      {
+        "model": "OpenAI GPT-5.6 Luna/Terra/Sol",
+        "date": "2026-07-09",
+        "facts": "preview 2026-06-26; public Jul 9–10",
+        "evidence": [
+          {
+            "source": "CNBC (snippet)",
+            "url": "https://www.cnbc.com/2026/07/08/openai-expanding-gpt-5point6-ai-model-release-ending-government-limits.html",
+            "date": "2026-07-08"
+          }
+        ]
+      },
+      {
+        "model": "Google Gemini 3.8 Flash / 3.1 Pro",
+        "date": "2026-09-18",
+        "facts": "3.8 Flash ~3 weeks after 3.7 Flash; 3.1 Pro still flagship; 3.5 Pro testing; Gemini 4 pretraining begun",
+        "evidence": [
+          {
+            "source": "TechCrunch (snippet)",
+            "url": "https://techcrunch.com/2026/07/21/google-releases-three-new-gemini-models-but-no-3-5-pro/",
+            "date": "2026-07-21"
+          },
+          {
+            "source": "Fortune — Google shipped four Gemini Flash models in 106 days; 3.5 Pro still AWOL (snippet)",
+            "url": "https://fortune.com/2026/09/03/google-shipped-four-gemini-flash-models-in-106-days-but-its-flagship-frontier-model-is-still-nowhere-to-be-seen/",
+            "date": "2026-09-03"
+          },
+          {
+            "source": "BenchLM (snippet)",
+            "url": "https://benchlm.ai/best/google-models",
+            "date": "2026-09-18"
+          }
+        ]
+      },
+      {
+        "model": "xAI Grok 4.6",
+        "date": "2026-08-12",
+        "facts": "500K context; from $2/M input; AA index 61; Grok 4.5 on 2026-07-08",
+        "evidence": [
+          {
+            "source": "DataNorth — xAI releases Grok 4.6 (snippet; release 2026-08-12)",
+            "url": "https://datanorth.ai/news/xai-releases-grok-4-6",
+            "date": "2026-08-12"
+          },
+          {
+            "source": "codersera (snippet)",
+            "url": "https://codersera.com/blog/grok-4-6-launch-guide-2026/",
+            "date": "2026-08 (unverified day)"
+          }
+        ]
+      },
+      {
+        "model": "Meta Muse Spark / Muse Glimmer 30B; no Llama 5",
+        "date": "2026-08-10",
+        "facts": "Muse Spark 2026-04-08 (closed); Muse Glimmer 30B Apache-2.0 open weights 2026-08-10; Llama 4 Scout/Maverick (Apr 2025) remain the newest Llama; 'Llama 4.5' claims unverified",
+        "evidence": [
+          {
+            "source": "TechCrunch (snippet)",
+            "url": "https://techcrunch.com/2026/04/08/meta-debuts-the-muse-spark-model-in-a-ground-up-overhaul-of-its-ai/",
+            "date": "2026-04-08"
+          },
+          {
+            "source": "MarkTechPost — Meta AI releases Muse Glimmer 30B (snippet)",
+            "url": "https://www.marktechpost.com/2026/08/10/meta-ai-releases-muse-glimmer/",
+            "date": "2026-08-10"
+          },
+          {
+            "source": "VentureBeat — Meta returns to open source with Muse Glimmer (snippet)",
+            "url": "https://venturebeat.com/technology/meta-returns-to-open-source-with-muse-glimmer-an-apache-2-0-licensed-30b-parameter-ai-model-optimized-for-agents-available-now",
+            "date": "2026-08-10"
+          }
+        ]
+      },
+      {
+        "model": "Nvidia → Hugging Face",
+        "date": "2026-09-02",
+        "facts": "$12.93B definitive agreement; closes 1H-2027",
+        "evidence": [
+          {
+            "source": "CNBC (snippet)",
+            "url": "https://www.cnbc.com/2026/09/03/nvidia-agrees-to-buy-hugging-face-for-almost-13-billion-ai-expansion.html",
+            "date": "2026-09-03"
+          },
+          {
+            "source": "SEC 8-K",
+            "url": "https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000078/nvda-20260902.htm",
+            "date": "2026-09-02"
+          }
+        ]
+      }
+    ],
+    "agentFrameworks": [
+      {
+        "item": "Google ADK 2.0",
+        "facts": "Python GA 2026-05-19; Go GA 2026-06-30; TypeScript GA 2026-08-21 (snippet); graph engine + built-in HITL",
+        "evidence": [
+          {
+            "source": "Google Developers Blog — ADK Go 2.0 (snippet)",
+            "url": "https://developers.googleblog.com/announcing-adk-go-20/",
+            "date": "2026-06-30"
+          },
+          {
+            "source": "adk.dev release notes (snippet)",
+            "url": "https://adk.dev/release-notes/",
+            "date": "2026-08-21"
+          }
+        ]
+      },
+      {
+        "item": "LangGraph / CrewAI / OpenAI Agents SDK / AutoGen",
+        "facts": "2026 comparisons: LangGraph leads on checkpointing/recovery; AutoGen reported in maintenance mode (secondary, unverified)",
+        "evidence": [
+          {
+            "source": "Agentmelt comparison (secondary)",
+            "url": "https://agentmelt.com/blog/ai-agent-frameworks-compared-2026/",
+            "date": "2026 (undated)"
+          }
+        ]
+      },
+      {
+        "item": "Claude Agent SDK / Managed Agents",
+        "facts": "memory stores on self-hosted sandboxes + allowed_domains on web tools 2026-08-19/20; agent-memory-2026-07-22 beta header",
+        "evidence": [
+          {
+            "source": "Claude Platform release notes (snippet)",
+            "url": "https://platform.claude.com/docs/en/release-notes/overview",
+            "date": "2026-08-20"
+          }
+        ]
+      },
+      {
+        "item": "Agent Skills open standard",
+        "facts": "published 2025-12-18; ~40 compatible products by mid-2026; verification/quality is the open problem",
+        "evidence": [
+          {
+            "source": "The Decoder (snippet)",
+            "url": "https://the-decoder.com/anthropic-publishes-agent-skills-as-an-open-standard-for-ai-platforms/",
+            "date": "2025-12-18"
+          },
+          {
+            "source": "Gokhshtein (snippet)",
+            "url": "https://gokhshtein.com/news/2026-09-18-anthropics-skillmd-standard-how-a-markdown-format-changes",
+            "date": "2026-09-18"
+          }
+        ]
+      }
+    ],
+    "mcpAndScheduling": [
+      {
+        "item": "MCP spec 2026-07-28",
+        "facts": "stateless core; MRTR; Mcp-Method/Mcp-Name headers; Roots/Sampling/Logging deprecated; HTTP+SSE deprecated (12-month transition); CIMD auth; Tasks + MCP Apps extensions; Tier-1 SDKs updated",
+        "evidence": [
+          {
+            "source": "MCP blog — The 2026-07-28 Specification (primary)",
+            "url": "https://blog.modelcontextprotocol.io/posts/2026-07-28/",
+            "date": "2026-07-28"
+          }
+        ]
+      },
+      {
+        "item": "Claude Code September 2026",
+        "facts": "2.1.269 (Sep 11) claude plugin eval; 2.1.271 (Sep 14) fast mode remote, per-command allowed_domains in auto mode; 2.1.273 (Sep 15) Slack scheduled-task fix; 2.1.275 (Sep 17) skills/plugins sync from claude.ai; 2.1.277 (Sep 18) AGENTS.md, routine artifact saves without asking; 2.1.278 (Sep 19) server-side auto-mode classifier",
+        "evidence": [
+          {
+            "source": "Claude Code changelog (primary, fetched 2026-09-22)",
+            "url": "https://code.claude.com/docs/en/changelog",
+            "date": "2026-09-19"
+          }
+        ]
+      },
+      {
+        "item": "Cloud Routines",
+        "facts": "research preview; schedule/API/GitHub triggers; min 1 h; autonomous 'apart from some artifact actions'; republish-without-asking only when not shared-with-latest-version and the page holds no grant beyond the page",
+        "evidence": [
+          {
+            "source": "Claude Code Routines doc (primary, fetched 2026-09-22)",
+            "url": "https://code.claude.com/docs/en/routines",
+            "date": "2026-09-22"
+          },
+          {
+            "source": "Claude Code Artifacts doc (primary, fetched 2026-09-22)",
+            "url": "https://code.claude.com/docs/en/artifacts",
+            "date": "2026-09-22"
+          }
+        ]
+      },
+      {
+        "item": "Desktop scheduled tasks",
+        "facts": "local; app open + awake; min 1 min; per-task permission mode with always-allow; one catch-up run for misses within 7 days; SKILL.md per task; update_scheduled_task",
+        "evidence": [
+          {
+            "source": "Claude Code Desktop scheduled tasks doc (primary, fetched 2026-09-22)",
+            "url": "https://code.claude.com/docs/en/desktop-scheduled-tasks",
+            "date": "2026-09-22"
+          }
+        ]
+      },
+      {
+        "item": "Claude Code Projects",
+        "facts": "public beta announced 2026-09-17; Pro/Max gradual rollout + waitlist; parallel cloud threads with shared memory/library; Opus high-effort default per thread; no Mac-local tools",
+        "evidence": [
+          {
+            "source": "Claude Code Projects doc (primary, fetched 2026-09-22)",
+            "url": "https://code.claude.com/docs/en/claude-projects",
+            "date": "2026-09-22"
+          },
+          {
+            "source": "VentureBeat — Anthropic launches Claude Code Projects (snippet)",
+            "url": "https://venturebeat.com/orchestration/anthropic-launches-claude-code-projects-an-always-on-conversation-that-remembers-and-delegates-your-long-running-dev-work",
+            "date": "2026-09-17"
+          }
+        ]
+      }
+    ],
+    "computerUse": [
+      {
+        "item": "Orca (Stably AI)",
+        "facts": "releases v1.4.203 (2026-09-15, = the Mac's version) → v1.4.206 (2026-09-20); agent ADE/orchestrator (MIT) with `orca computer` CLI and 7 first-party skills incl. computer-use — contradicts the deck's 'no MCP or API of its own found'; onorca.dev docs egress-blocked",
+        "evidence": [
+          {
+            "source": "stablyai/orca GitHub releases (primary)",
+            "url": "https://github.com/stablyai/orca/releases",
+            "date": "2026-09-20"
+          },
+          {
+            "source": "Y Combinator — Stably AI (Orca)",
+            "url": "https://www.ycombinator.com/companies/stably-ai-orca",
+            "date": "2026-09-22 (checked)"
+          }
+        ]
+      },
+      {
+        "item": "CLI-Anything (HKUDS)",
+        "facts": "49.7k stars; DOMShell MCP + accessibility-tree browser CLI; security hardening; no CRM/real-estate wrappers; last visible activity 2026-05-30",
+        "evidence": [
+          {
+            "source": "HKUDS/CLI-Anything README (primary)",
+            "url": "https://github.com/HKUDS/CLI-Anything",
+            "date": "2026-09-22"
+          }
+        ]
+      },
+      {
+        "item": "Claude Cowork in the Chrome side panel",
+        "facts": "2026-08-12; skills/plugins/connectors in the browser; cross-device hand-off; Max/Team now, Pro rolling out",
+        "evidence": [
+          {
+            "source": "9to5Mac — Claude's Chrome side panel is now a full Cowork session (snippet)",
+            "url": "https://9to5mac.com/2026/08/12/claude-cowork-chrome/",
+            "date": "2026-08-12"
+          }
+        ]
+      },
+      {
+        "item": "Perplexity Computer family",
+        "facts": "Computer 2026-02-25 ($200/mo); Personal Computer 2026-03-11; Windows 2026-07-28; Portable Computer 2026-08-25",
+        "evidence": [
+          {
+            "source": "Semafor — Perplexity launches 'Computer' super agent (snippet)",
+            "url": "https://www.semafor.com/article/02/25/2026/perplexity-launches-computer-super-agent",
+            "date": "2026-02-25"
+          },
+          {
+            "source": "SiliconANGLE — Perplexity launches Portable Computer on-device agent (egress-blocked; URL-dated)",
+            "url": "https://siliconangle.com/2026/08/25/perplexity-ai-launches-portable-computer-on-device-ai-agent/",
+            "date": "2026-08-25"
+          }
+        ]
+      },
+      {
+        "item": "OpenAI ChatGPT agent / Work / Atlas",
+        "facts": "ChatGPT Work 2026-07-09; ChatGPT agent removed early Aug 2026; Atlas stops 2026-08-09 (all secondary)",
+        "evidence": [
+          {
+            "source": "OpenAI Help Center — ChatGPT agent (snippet: removed from ChatGPT early Aug 2026; secondary)",
+            "url": "https://help.openai.com/en/articles/11752874-chatgpt-agent",
+            "date": "2026-08 (unverified day)"
+          }
+        ]
+      }
+    ]
+  },
+  "obsolescenceFlags": [
+    {
+      "id": "O-1",
+      "stackItem": "ruflo (claude-flow v3; node@22 pin, Node 24.19 aborts; Ruflo memory 238 entries)",
+      "externalState": "Upstream v3.41.4 (2026-09-14) → v3.42.0 (2026-09-15, swarm/vector/MCP-governance batch) → v3.42.4 (2026-09-17, search-score semantics changed, rankingScore added)",
+      "flag": "version drift + runtime fragility; installed version unrecorded",
+      "proposal": "CAIO-08",
+      "evidence": [
+        {
+          "source": "ruvnet/ruflo GitHub releases (primary)",
+          "url": "https://github.com/ruvnet/ruflo/releases",
+          "date": "2026-09-17"
+        },
+        {
+          "source": "Command Deck doc toolkitSnapshot (live DB export)",
+          "url": "scratchpad/db/state/toolkitSnapshot.json",
+          "date": "2026-09-22"
+        }
+      ]
+    },
+    {
+      "id": "O-2",
+      "stackItem": "OpenJarvis with llama3.1:8b via Ollama; Ollama tag 'claude-fable-5.1' is llama3.1:8b + system prompt",
+      "externalState": "OpenJarvis upstream active (Stanford, Apache-2.0, 10.1k stars); Meta Muse Glimmer 30B open weights 2026-08-10 built for local agents",
+      "flag": "model obsolescence + misleading model tag",
+      "proposal": "CAIO-09",
+      "evidence": [
+        {
+          "source": "open-jarvis/OpenJarvis README (primary)",
+          "url": "https://github.com/open-jarvis/OpenJarvis",
+          "date": "2026-09-22"
+        },
+        {
+          "source": "MarkTechPost — Meta AI releases Muse Glimmer 30B (snippet)",
+          "url": "https://www.marktechpost.com/2026/08/10/meta-ai-releases-muse-glimmer/",
+          "date": "2026-08-10"
+        },
+        {
+          "source": "Command Deck doc toolkitSnapshot (live DB export)",
+          "url": "scratchpad/db/state/toolkitSnapshot.json",
+          "date": "2026-09-22"
+        }
+      ]
+    },
+    {
+      "id": "O-3",
+      "stackItem": "Composio (12 connected apps incl. zoho, gmail, github)",
+      "externalState": "Incident disclosed 2026-05-21: ~5,241 API keys and ~5,001 GitHub OAuth tokens exfiltrated via a compromised employee Gmail OAuth token; GitHub tokens revoked; IP allowlisting added; no Lofty toolkit",
+      "flag": "credential-custody risk on the CRM path",
+      "proposal": "CAIO-02, CAIO-03",
+      "evidence": [
+        {
+          "source": "Material Security — The Composio breach: one token, 10,242 doors (snippet)",
+          "url": "https://material.security/resources/the-composio-breach-one-token-10242-doors",
+          "date": "2026-05 (post-disclosure; exact day unverified)"
+        },
+        {
+          "source": "Metorial — Composio security incident: what AI agent teams should do (snippet)",
+          "url": "https://metorial.com/blog/composio-security-incident-mcp-security",
+          "date": "2026-05 (exact day unverified)"
+        },
+        {
+          "source": "Composio — May 2026 Security Incident (egress-blocked; disclosure date per third parties)",
+          "url": "https://composio.dev/blog/composio-may-2026-security-incident",
+          "date": "2026-05-21"
+        }
+      ]
+    },
+    {
+      "id": "O-4",
+      "stackItem": "Inkbox (iMessage + inkboxmail.com email identity)",
+      "externalState": "YC S26; Claude Code plugin; SDKs; custom email domains on eligible paid plan",
+      "flag": "not obsolete; identity gap for client-facing email",
+      "proposal": "CAIO-13",
+      "evidence": [
+        {
+          "source": "inkbox-ai/inkbox README (primary)",
+          "url": "https://github.com/inkbox-ai/inkbox",
+          "date": "2026-09-22"
+        },
+        {
+          "source": "Y Combinator — Inkbox (YC S26)",
+          "url": "https://www.ycombinator.com/companies/inkbox",
+          "date": "2026 (S26 batch)"
+        }
+      ]
+    },
+    {
+      "id": "O-5",
+      "stackItem": "Magica HTTP MCP (image/video/TTS); 22 persona portraits; Seed Audio clips; Hedra lipsync",
+      "externalState": "App Store listing exists; tools page (snippet) lists Hedra Lipsync/Infinitalk; magica.com egress-blocked; no dated API/SLA evidence",
+      "flag": "single-vendor dependency; durability unverified",
+      "proposal": "CAIO-14",
+      "evidence": [
+        {
+          "source": "App Store — Magica: AI super agent (listing exists; API/MCP stability unverified)",
+          "url": "https://apps.apple.com/us/app/magica-ai-super-agent/id6742551956",
+          "date": "2026-09-22 (checked)"
+        },
+        {
+          "source": "Magica — Tools page (egress-blocked; snippet lists Hedra Lipsync, Infinitalk)",
+          "url": "https://magica.com/tools",
+          "date": "unverified"
+        }
+      ]
+    },
+    {
+      "id": "O-6",
+      "stackItem": "You.com",
+      "externalState": "Retired by Steven 2026-09-22; free tier 'limit exceeded' at 08:40 UTC",
+      "flag": "retired — confirm no silent call sites",
+      "proposal": "CAIO-15",
+      "evidence": [
+        {
+          "source": "Command Deck Engineering Brief §2 ground truth (internal)",
+          "url": "scratchpad/BRIEF.md",
+          "date": "2026-09-22"
+        }
+      ]
+    },
+    {
+      "id": "O-7",
+      "stackItem": "15 MCP servers on the Mac",
+      "externalState": "MCP spec 2026-07-28: stateless core; Roots/Sampling/Logging deprecated; HTTP+SSE deprecated with 12-month transition; CIMD auth; Tasks + MCP Apps extensions",
+      "flag": "migration clock running since 2026-07-28",
+      "proposal": "CAIO-07",
+      "evidence": [
+        {
+          "source": "MCP blog — The 2026-07-28 Specification (primary)",
+          "url": "https://blog.modelcontextprotocol.io/posts/2026-07-28/",
+          "date": "2026-07-28"
+        }
+      ]
+    },
+    {
+      "id": "O-8",
+      "stackItem": "OpenRouter bridge (no key); councilPricing seats gpt-5.2 / gemini-3.1-pro-preview / grok-4.3 / llama-4-maverick (2026-09-16)",
+      "externalState": "Stripe acquiring OpenRouter (>$7B, Bloomberg 2026-08-16); current models GPT-6 Astra (2026-09-03/04), Gemini 3.8 Flash + 3.1 Pro flagship, Grok 4.6 (2026-08-12), Muse Glimmer 30B (2026-08-10)",
+      "flag": "stale seat list; dormant",
+      "proposal": "CAIO-10",
+      "evidence": [
+        {
+          "source": "Command Deck doc councilPricing (live DB export)",
+          "url": "scratchpad/db/state/councilPricing.json",
+          "date": "2026-09-16"
+        },
+        {
+          "source": "Bloomberg — Stripe finalizes deal to acquire OpenRouter for over $7B (snippet; URL-dated)",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/stripe-nears-deal-to-buy-ai-firm-openrouter-for-over-7-billion",
+          "date": "2026-08-16"
+        },
+        {
+          "source": "CNBC — OpenAI announces rollout of GPT-6 Astra (snippet)",
+          "url": "https://www.cnbc.com/2026/09/03/open-ai-astra-gpt-6-cyber.html",
+          "date": "2026-09-03"
+        },
+        {
+          "source": "Fortune — Google shipped four Gemini Flash models in 106 days; 3.5 Pro still AWOL (snippet)",
+          "url": "https://fortune.com/2026/09/03/google-shipped-four-gemini-flash-models-in-106-days-but-its-flagship-frontier-model-is-still-nowhere-to-be-seen/",
+          "date": "2026-09-03"
+        },
+        {
+          "source": "DataNorth — xAI releases Grok 4.6 (snippet; release 2026-08-12)",
+          "url": "https://datanorth.ai/news/xai-releases-grok-4-6",
+          "date": "2026-08-12"
+        }
+      ]
+    },
+    {
+      "id": "O-9",
+      "stackItem": "Perplexity MCP + Composio perplexityai (research heavy lifting)",
+      "externalState": "Computer 2026-02-25 ($200/mo); Personal Computer 2026-03-11; Windows 2026-07-28; Portable Computer 2026-08-25; API now Agent/Search/Embeddings",
+      "flag": "not obsolete; agent products duplicate Claude",
+      "proposal": "CAIO-16",
+      "evidence": [
+        {
+          "source": "Semafor — Perplexity launches 'Computer' super agent (snippet)",
+          "url": "https://www.semafor.com/article/02/25/2026/perplexity-launches-computer-super-agent",
+          "date": "2026-02-25"
+        },
+        {
+          "source": "SiliconANGLE — Perplexity launches Portable Computer on-device agent (egress-blocked; URL-dated)",
+          "url": "https://siliconangle.com/2026/08/25/perplexity-ai-launches-portable-computer-on-device-ai-agent/",
+          "date": "2026-08-25"
+        }
+      ]
+    },
+    {
+      "id": "O-10",
+      "stackItem": "Health Auto Export → LaunchAgent :8765 → DuckDB → apple-health MCP (daemon down; last real ingest 2026-09-13)",
+      "externalState": "Health Auto Export app maintained; Claude iOS app reads Apple Health directly since 2026-01-22 (beta, Pro/Max, US, read-only)",
+      "flag": "pipeline obsolete by design (four hops where one exists)",
+      "proposal": "CAIO-04",
+      "evidence": [
+        {
+          "source": "MacRumors — Claude iPhone app can now connect to Apple Health in the US (snippet; URL-dated)",
+          "url": "https://www.macrumors.com/2026/01/22/claude-ai-adds-apple-health-connectivity/",
+          "date": "2026-01-22"
+        },
+        {
+          "source": "@claudeai on X — four health integrations in beta incl. Apple Health (snippet)",
+          "url": "https://x.com/claudeai/status/2013754136265621952",
+          "date": "2026-01 (exact day unverified)"
+        },
+        {
+          "source": "Health Auto Export — App Store listing (app maintained)",
+          "url": "https://apps.apple.com/us/app/health-auto-export-json-csv/id1115567069",
+          "date": "2026-09-22 (checked)"
+        },
+        {
+          "source": "HealthyApps help center — Health Auto Export automations",
+          "url": "https://help.healthyapps.dev/en/health-auto-export/automations/",
+          "date": "2026-09-22 (checked)"
+        }
+      ]
+    },
+    {
+      "id": "O-11",
+      "stackItem": "Follow Up Boss → Lofty (decided 2026-09-22); FUB 'Invalid API Key' since 2026-09-16",
+      "externalState": "FUB bundled inside Zillow Pro, nationwide 2026-07-09; FUB terms updated 2025-11-03; FUB docs still document API-key Basic auth (no published deprecation explains the Sep 16 failure — cause unverified). Lofty AOS + Cowork + House.ai 2026-07-28; AI Sales Agent from $60/mo per 200 leads (secondary)",
+      "flag": "decision directionally right; FUB roadmap is Zillow-captive",
+      "proposal": "CAIO-11",
+      "evidence": [
+        {
+          "source": "Inman — Zillow takes Zillow Pro nationwide after 8-month rollout (snippet)",
+          "url": "https://www.inman.com/2026/07/09/zillow-takes-zillow-pro-nationwide-after-8-month-rollout/",
+          "date": "2026-07-09"
+        },
+        {
+          "source": "RISMedia — Follow Up Boss updates terms, unlocks benefits via Zillow Pro (snippet)",
+          "url": "https://www.rismedia.com/2025/11/03/follow-up-boss-updates-terms-unlocks-new-benefits-via-zillow-pro/",
+          "date": "2025-11-03"
+        },
+        {
+          "source": "Follow Up Boss developer docs — Authentication (undated)",
+          "url": "https://docs.followupboss.com/reference/authentication",
+          "date": "undated"
+        },
+        {
+          "source": "GlobeNewswire — Lofty expands AOS, anchored by new Cowork experience",
+          "url": "https://www.globenewswire.com/news-release/2026/07/28/3334236/0/en/Lofty-Expands-AOS-Its-Agentic-AI-Operating-System-for-Real-Estate-Anchored-by-New-Cowork-Experience.html",
+          "date": "2026-07-28"
+        },
+        {
+          "source": "Luxury Presence — Lofty pricing 2026 (secondary; AI Sales Agent from $60/mo per 200 leads)",
+          "url": "https://www.luxurypresence.com/blogs/lofty-pricing/",
+          "date": "2026 (exact date unverified)"
+        }
+      ]
+    }
+  ],
+  "gapAnalysis": [
+    {
+      "capability": "Speed-to-lead / 24/7 ISA",
+      "market": "Lofty AI Sales Agent (24/7, from $60/mo, secondary); FUB Smart Messages (Zillow AI); UWM Mia voice assistant upgrades 2026-05-14 (Mia On Demand, pre-qual follow-up, Mortgage Review, Mia Español)",
+      "steven": "Human ISA silent since 2026-09-16; r2 watchdog + lead-triage-daily auth-failed since 2026-09-16; hourly Vanessa iMessage polling; no outbound phone agent",
+      "gap": "largest",
+      "proposal": "CAIO-11, CAIO-12",
+      "evidence": [
+        {
+          "source": "GlobeNewswire — Lofty expands AOS, anchored by new Cowork experience",
+          "url": "https://www.globenewswire.com/news-release/2026/07/28/3334236/0/en/Lofty-Expands-AOS-Its-Agentic-AI-Operating-System-for-Real-Estate-Anchored-by-New-Cowork-Experience.html",
+          "date": "2026-07-28"
+        },
+        {
+          "source": "Luxury Presence — Lofty pricing 2026 (secondary; AI Sales Agent from $60/mo per 200 leads)",
+          "url": "https://www.luxurypresence.com/blogs/lofty-pricing/",
+          "date": "2026 (exact date unverified)"
+        },
+        {
+          "source": "UWM media alert — UWM LIVE! Mia upgrades (snippet)",
+          "url": "https://www.uwm.com/media-alert-may-14-2026",
+          "date": "2026-05-14"
+        },
+        {
+          "source": "Command Deck Engineering Brief §2 ground truth (internal)",
+          "url": "scratchpad/BRIEF.md",
+          "date": "2026-09-22"
+        }
+      ]
+    },
+    {
+      "capability": "Conversational home-search surfaces",
+      "market": "Zillow AI mode 2026-03-25 (beta); Zillow app in ChatGPT Oct 2025; Redfin ChatGPT app Feb 2026; Realtor.com ChatGPT app 2026-03-30; Homes AI 2026-02-17 ('Your Listing, Your Lead')",
+      "steven": "Property-search card depended on You.com (retired); no AI-surface presence audit; geo-aeo-optimizer agent exists",
+      "gap": "presence, not build",
+      "proposal": "CAIO-17",
+      "evidence": [
+        {
+          "source": "Zillow Front Porch — Zillow debuts AI mode (egress-blocked; snippet)",
+          "url": "https://www.zillow.com/news/zillow-debuts-ai-mode/",
+          "date": "2026-03-25"
+        },
+        {
+          "source": "PR Newswire — Realtor.com app in ChatGPT (snippet)",
+          "url": "https://www.prnewswire.com/news-releases/search-homes-and-see-what-you-can-afford-with-the-new-realtorcom-app-in-chatgpt-302727498.html",
+          "date": "2026-03-30"
+        },
+        {
+          "source": "CoStar Group press room — Homes AI on Homes.com (snippet)",
+          "url": "https://www.costargroup.com/press-room/2026/costar-group-launches-transformative-ai-experience-homescom-redefining-future-home",
+          "date": "2026-02-17"
+        }
+      ]
+    },
+    {
+      "capability": "Buyer financial readiness / affordability",
+      "market": "Lofty House.ai 2026-07-28; Realtor.com affordability in ChatGPT; Zillow AI mode financing skill",
+      "steven": "Rent-Buy-Wait military dashboard (cloud refresh abandoned 2026-09-21); VA specialist content; rates feed ok",
+      "gap": "medium — VA-specific readiness is an unowned differentiator",
+      "proposal": "CAIO-17",
+      "evidence": [
+        {
+          "source": "GlobeNewswire — Lofty introduces House.ai at Inman Connect 2026",
+          "url": "https://www.globenewswire.com/news-release/2026/07/28/3334239/0/en/Lofty-Introduces-House-ai-at-Inman-Connect-2026.html",
+          "date": "2026-07-28"
+        },
+        {
+          "source": "PR Newswire — Realtor.com app in ChatGPT (snippet)",
+          "url": "https://www.prnewswire.com/news-releases/search-homes-and-see-what-you-can-afford-with-the-new-realtorcom-app-in-chatgpt-302727498.html",
+          "date": "2026-03-30"
+        },
+        {
+          "source": "Command Deck Engineering Brief §2 ground truth (internal)",
+          "url": "scratchpad/BRIEF.md",
+          "date": "2026-09-22"
+        }
+      ]
+    },
+    {
+      "capability": "CRM-native AI agents",
+      "market": "Zoho Zia Digital Employees (Zoholics USA 2026-05-12/13; Enterprise+); Agent Studio 700+ actions; Marketplace 25+ agents; Zia LLM; Zoho MCP servers + official Claude connector (dates unverified); Lofty AOS/Cowork 2026-07-28",
+      "steven": "Zoho 403 NO_PERMISSION until profile fix; Lofty key unverified; deck-only pipelines (Sep 14 paste)",
+      "gap": "blocked by permissions, not capability",
+      "proposal": "CAIO-02",
+      "evidence": [
+        {
+          "source": "CRM Experts Online — Zia agents can now log in as employees (snippet)",
+          "url": "https://crmexpertsonline.com/zoho-s-zia-agents-can-now-log-in-as-employees-what-digital-employees-mean-for-crm-buyers/",
+          "date": "2026 (exact date unverified)"
+        },
+        {
+          "source": "Zoholics USA 2026 event page (snippet)",
+          "url": "https://events.zoho.com/ZoholicsUSA2026",
+          "date": "2026-05-12"
+        },
+        {
+          "source": "Zoho CRM developer — MCP for Zoho CRM (egress-blocked; snippet)",
+          "url": "https://www.zoho.com/crm/developer/mcp.html",
+          "date": "unverified"
+        },
+        {
+          "source": "GlobeNewswire — Lofty expands AOS, anchored by new Cowork experience",
+          "url": "https://www.globenewswire.com/news-release/2026/07/28/3334236/0/en/Lofty-Expands-AOS-Its-Agentic-AI-Operating-System-for-Real-Estate-Anchored-by-New-Cowork-Experience.html",
+          "date": "2026-07-28"
+        }
+      ]
+    },
+    {
+      "capability": "LOS / pricing in the broker workflow",
+      "market": "ARIVE: Rocket Pro in-LOS submission + live status (Jun 2026); HomeXpress on ARIVE (Feb 2026)",
+      "steven": "mortgage-rates-daily ok; 39 programs / 61 lenders in the deck; LOS in use not in inventory",
+      "gap": "unknown until Steven names the LOS",
+      "proposal": "CAIO-18",
+      "evidence": [
+        {
+          "source": "National Mortgage Professional — Rocket Pro meets brokers halfway with ARIVE expansion (snippet)",
+          "url": "https://nationalmortgageprofessional.com/news/rocket-pro-meets-brokers-halfway-arive-expansion",
+          "date": "2026-06 (exact day unverified)"
+        },
+        {
+          "source": "HousingWire — HomeXpress launches on ARIVE LOS (egress-blocked; snippet)",
+          "url": "https://www.housingwire.com/articles/homexpress-arive-los-launch/",
+          "date": "2026-02 (exact day unverified)"
+        }
+      ]
+    },
+    {
+      "capability": "Transaction / forms automation",
+      "market": "SkySlope Ayce iOS coaching app 2026-02-11; no public agent API from SkySlope or zipForms/Lone Wolf found",
+      "steven": "CLI-Anything wrapper spec written this cycle; Orca installed but unwired",
+      "gap": "medium; DOMShell/computer-use is the only path",
+      "proposal": "CAIO-05",
+      "evidence": [
+        {
+          "source": "SkySlope press release — SkySlope launches Ayce (snippet)",
+          "url": "https://skyslope.com/press-release/skyslope-launches-ayce-to-help-real-estate-agents-translate-goals-into-higher-income-faster/",
+          "date": "2026-02-11"
+        },
+        {
+          "source": "HKUDS/CLI-Anything README (primary)",
+          "url": "https://github.com/HKUDS/CLI-Anything",
+          "date": "2026-09-22"
+        },
+        {
+          "source": "stablyai/orca GitHub releases (primary)",
+          "url": "https://github.com/stablyai/orca/releases",
+          "date": "2026-09-20"
+        }
+      ]
+    },
+    {
+      "capability": "Buyer expectations for AI",
+      "market": "Veterans United survey: 45% of prospective buyers use AI tools (up from 40% in Q1 2026); 89% would share financial info with a lender's AI tool; 68% trust AI mortgage info (exact date unverified)",
+      "steven": "VA niche + Navy Chief credibility; Vanessa intake exists",
+      "gap": "opportunity, not gap",
+      "proposal": "Vanessa intake as the 'lender AI tool' with disclosures Alexandra approves",
+      "evidence": [
+        {
+          "source": "PR Newswire — Veterans United survey: homebuyers trust AI at every step (snippet; exact date unverified)",
+          "url": "https://www.prnewswire.com/news-releases/homebuyers-now-trust-ai-at-every-step-of-their-biggest-financial-decision-veterans-united-survey-finds-302797393.html",
+          "date": "2026 (exact date unverified)"
+        }
+      ]
+    },
+    {
+      "capability": "Personal ops (health)",
+      "market": "Claude iOS ↔ Apple Health since 2026-01-22",
+      "steven": "Daemon dead 9 days",
+      "gap": "fix in hand",
+      "proposal": "CAIO-04",
+      "evidence": [
+        {
+          "source": "MacRumors — Claude iPhone app can now connect to Apple Health in the US (snippet; URL-dated)",
+          "url": "https://www.macrumors.com/2026/01/22/claude-ai-adds-apple-health-connectivity/",
+          "date": "2026-01-22"
+        }
+      ]
+    },
+    {
+      "capability": "Orchestration",
+      "market": "Claude Code Projects beta 2026-09-17 (parallel cloud threads + shared memory)",
+      "steven": "Vanessa dispatches ≤8 sub-agents by hand-built skill; Mac-bound",
+      "gap": "cloud parallelism exists off the shelf but cannot touch Mac-local tools",
+      "proposal": "CAIO-19",
+      "evidence": [
+        {
+          "source": "Claude Code Projects doc (primary, fetched 2026-09-22)",
+          "url": "https://code.claude.com/docs/en/claude-projects",
+          "date": "2026-09-22"
+        },
+        {
+          "source": "VentureBeat — Anthropic launches Claude Code Projects (snippet)",
+          "url": "https://venturebeat.com/orchestration/anthropic-launches-claude-code-projects-an-always-on-conversation-that-remembers-and-delegates-your-long-running-dev-work",
+          "date": "2026-09-17"
+        }
+      ]
+    }
+  ],
+  "items": [
+    {
+      "id": "CAIO-01",
+      "title": "Re-test unattended cloud-routine artifact writes after Claude Code 2.1.277 (2026-09-18)",
+      "verdict": "PILOT",
+      "action": "upgrade",
+      "affects": [
+        "cloud routines (46 enabled, research-only)",
+        "Command Deck artifact DB",
+        "Ops Radar",
+        "weather/news/rates feed tasks on the Mac runner"
+      ],
+      "expectedValue": "If writes now succeed under the documented no-prompt conditions, the deck refreshes while the Mac sleeps and ~10 Mac feed tasks become redundant.",
+      "risk": "Routines doc still lists prompt conditions (artifact shared-with-latest-version; page holds a grant beyond the page such as connector calls) that may exclude the deck; test one low-stakes doc (weatherSnapshot) for 3 runs before generalising.",
+      "evidence": [
+        {
+          "source": "Claude Code changelog (primary, fetched 2026-09-22)",
+          "url": "https://code.claude.com/docs/en/changelog",
+          "date": "2026-09-19"
+        },
+        {
+          "source": "Claude Code Routines doc (primary, fetched 2026-09-22)",
+          "url": "https://code.claude.com/docs/en/routines",
+          "date": "2026-09-22"
+        },
+        {
+          "source": "Claude Code Artifacts doc (primary, fetched 2026-09-22)",
+          "url": "https://code.claude.com/docs/en/artifacts",
+          "date": "2026-09-22"
+        },
+        {
+          "source": "Command Deck Engineering Brief §2 ground truth (internal)",
+          "url": "scratchpad/BRIEF.md",
+          "date": "2026-09-22"
+        }
+      ],
+      "ctoHandoff": {
+        "fit": "high",
+        "integrationCost": "S — one routine, one doc",
+        "securityRisk": "low — Steven's own artifact",
+        "realVsHyped": "real: shipped changelog line; scope vs the deck's db capability unverified"
+      },
+      "trustLevel": "L1",
+      "halt": false,
+      "needsSteven": false
+    },
+    {
+      "id": "CAIO-02",
+      "title": "Zoho via Zoho's own MCP servers / official Claude 'Zoho CRM' connector; Composio as fallback",
+      "verdict": "ADOPT",
+      "action": "replace",
+      "affects": [
+        "zoho-crm-sync (cloud, 4x daily)",
+        "zohoSync / zohoLeads / zohoDeals docs",
+        "Composio zoho toolkit"
+      ],
+      "expectedValue": "Removes a third-party credential custodian from the mortgage pipeline path; scopes equal the user's own Zoho permissions; Zoho states MCP is included at no extra cost (snippet).",
+      "risk": "The same Zoho-side profile permission (Crm_Implied_Api_Access) almost certainly gates MCP too — Steven's fix comes first either way; the official pages were egress-blocked so plan/data-centre availability is unverified.",
+      "evidence": [
+        {
+          "source": "Zoho CRM developer — MCP for Zoho CRM (egress-blocked; snippet)",
+          "url": "https://www.zoho.com/crm/developer/mcp.html",
+          "date": "unverified"
+        },
+        {
+          "source": "Zoho CRM MCP — Claude setup guide (egress-blocked; snippet)",
+          "url": "https://www.zoho.com/crm/developer/docs/mcp/setup/claude.html",
+          "date": "unverified"
+        },
+        {
+          "source": "Claude connectors — Zoho CRM (egress-blocked; snippet)",
+          "url": "https://claude.com/connectors/zoho-crm",
+          "date": "unverified"
+        },
+        {
+          "source": "Zoho community — Zoho Developer AI Agent = Claude + MCP server (URL-dated)",
+          "url": "https://help.zoho.com/portal/ja/community/topic/zoho-developer-ai-agent-ai-mcp-server-zoho-ecosystem-27-3-2026?page=1",
+          "date": "2026-03-27"
+        },
+        {
+          "source": "Composio — May 2026 Security Incident (egress-blocked; disclosure date per third parties)",
+          "url": "https://composio.dev/blog/composio-may-2026-security-incident",
+          "date": "2026-05-21"
+        },
+        {
+          "source": "Command Deck Engineering Brief §2 ground truth (internal)",
+          "url": "scratchpad/BRIEF.md",
+          "date": "2026-09-22"
+        }
+      ],
+      "ctoHandoff": {
+        "fit": "high",
+        "integrationCost": "S–M — add custom connector in claude.ai; retarget zoho-crm-sync tool names",
+        "securityRisk": "lower than today (no intermediary key store)",
+        "realVsHyped": "real"
+      },
+      "trustLevel": "L1",
+      "halt": false,
+      "needsSteven": true
+    },
+    {
+      "id": "CAIO-03",
+      "title": "Composio hygiene after the 2026-05-21 credential-exfiltration incident",
+      "verdict": "ADOPT",
+      "action": "upgrade",
+      "affects": [
+        "Composio (12 connected apps: gmail, github, zoho, perplexityai, googleads, googlesheets, googledocs, googletasks, youtube, discord, api_ninjas, follow_up_boss)"
+      ],
+      "expectedValue": "Answers an open question the deck cannot ('was this account in the affected set?'); key rotation, GitHub re-authorisation and IP allowlisting are free.",
+      "risk": "None technical; needs Steven for credentials. Nothing shows Steven's account was affected — and nothing shows it wasn't.",
+      "evidence": [
+        {
+          "source": "Material Security — The Composio breach: one token, 10,242 doors (snippet)",
+          "url": "https://material.security/resources/the-composio-breach-one-token-10242-doors",
+          "date": "2026-05 (post-disclosure; exact day unverified)"
+        },
+        {
+          "source": "Metorial — Composio security incident: what AI agent teams should do (snippet)",
+          "url": "https://metorial.com/blog/composio-security-incident-mcp-security",
+          "date": "2026-05 (exact day unverified)"
+        },
+        {
+          "source": "Composio — May 2026 Security Incident (egress-blocked; disclosure date per third parties)",
+          "url": "https://composio.dev/blog/composio-may-2026-security-incident",
+          "date": "2026-05-21"
+        }
+      ],
+      "ctoHandoff": {
+        "fit": "n/a",
+        "integrationCost": "XS",
+        "securityRisk": "reduced",
+        "realVsHyped": "real"
+      },
+      "trustLevel": "L1",
+      "halt": false,
+      "needsSteven": true
+    },
+    {
+      "id": "CAIO-04",
+      "title": "Apple Health via the Claude iOS integration → Notion → appleHealth doc (retire the dead daemon path)",
+      "verdict": "ADOPT",
+      "action": "replace",
+      "affects": [
+        "Health Auto Export → LaunchAgent :8765 → DuckDB → apple-health MCP",
+        "r8-apple-health-snapshot",
+        "health-full-analysis",
+        "wellness tiles"
+      ],
+      "expectedValue": "Ends a feed stale since 2026-09-13 with a one-tap daily phone routine; removes the Drive and daemon hops.",
+      "risk": "Integration is beta, US-only, Pro/Max, read-only; a daily human tap — tiles must say when Steven skips; PHI lands in Notion (Elena to scope; keep out of shared pages).",
+      "evidence": [
+        {
+          "source": "MacRumors — Claude iPhone app can now connect to Apple Health in the US (snippet; URL-dated)",
+          "url": "https://www.macrumors.com/2026/01/22/claude-ai-adds-apple-health-connectivity/",
+          "date": "2026-01-22"
+        },
+        {
+          "source": "@claudeai on X — four health integrations in beta incl. Apple Health (snippet)",
+          "url": "https://x.com/claudeai/status/2013754136265621952",
+          "date": "2026-01 (exact day unverified)"
+        },
+        {
+          "source": "Health Auto Export — App Store listing (app maintained)",
+          "url": "https://apps.apple.com/us/app/health-auto-export-json-csv/id1115567069",
+          "date": "2026-09-22 (checked)"
+        },
+        {
+          "source": "HealthyApps help center — Health Auto Export automations",
+          "url": "https://help.healthyapps.dev/en/health-auto-export/automations/",
+          "date": "2026-09-22 (checked)"
+        },
+        {
+          "source": "Command Deck Engineering Brief §2 ground truth (internal)",
+          "url": "scratchpad/BRIEF.md",
+          "date": "2026-09-22"
+        }
+      ],
+      "ctoHandoff": {
+        "fit": "high",
+        "integrationCost": "M — health-notion-sync task (E11b spec exists)",
+        "securityRisk": "medium — PHI in Notion",
+        "realVsHyped": "real"
+      },
+      "trustLevel": "L1",
+      "halt": false,
+      "needsSteven": true
+    },
+    {
+      "id": "CAIO-05",
+      "title": "Computer-use executor for API-less sites: Orca CLI first, Cowork-in-Chrome for interactive work, CLI-Anything DOMShell for wrappers",
+      "verdict": "PILOT",
+      "action": "upgrade",
+      "affects": [
+        "Orca v1.4.203 on the Mac",
+        "CLI-Anything (not installed)",
+        "homes.com / SkySlope / zipForms wrappers",
+        "Integration Engineer seat"
+      ],
+      "expectedValue": "First read-only pulls (saved searches, transaction status, form status) without vendor APIs; reconciles the deck's Orca card — the installed bundle version matches the current stablyai/orca release train, which ships an `orca computer` CLI.",
+      "risk": "Fable 5.1 scores 41.7% strict on OSWorld 2.0 — HITL only, read-only first, no credentials in prompts; generated CLIs are unreviewed code (ECC security gate); onorca.dev docs were egress-blocked so the CLI surface on the Mac is unverified.",
+      "evidence": [
+        {
+          "source": "stablyai/orca GitHub releases (primary)",
+          "url": "https://github.com/stablyai/orca/releases",
+          "date": "2026-09-20"
+        },
+        {
+          "source": "HKUDS/CLI-Anything README (primary)",
+          "url": "https://github.com/HKUDS/CLI-Anything",
+          "date": "2026-09-22"
+        },
+        {
+          "source": "9to5Mac — Claude's Chrome side panel is now a full Cowork session (snippet)",
+          "url": "https://9to5mac.com/2026/08/12/claude-cowork-chrome/",
+          "date": "2026-08-12"
+        },
+        {
+          "source": "Vellum — Fable 5.1 & Mythos 5.1 benchmarks explained (snippet; exact date unverified)",
+          "url": "https://www.vellum.ai/blog/claude-fable-5-1-mythos-5-1-benchmarks-explained",
+          "date": "2026-09 (unverified day)"
+        },
+        {
+          "source": "Command Deck doc toolkitSnapshot (live DB export)",
+          "url": "scratchpad/db/state/toolkitSnapshot.json",
+          "date": "2026-09-22"
+        }
+      ],
+      "ctoHandoff": {
+        "fit": "medium",
+        "integrationCost": "M–L",
+        "securityRisk": "high — logged-in CRM/transaction browser sessions",
+        "realVsHyped": "half-hyped: tooling real, unattended reliability not"
+      },
+      "trustLevel": "L1",
+      "halt": false,
+      "needsSteven": false
+    },
+    {
+      "id": "CAIO-06",
+      "title": "Move never-run / refused runner slots to Claude Desktop scheduled tasks (catch-up runs + per-task always-allow)",
+      "verdict": "PILOT",
+      "action": "upgrade",
+      "affects": [
+        "claude-runner (60 tasks)",
+        "r6-weekly-backup (missed 2026-09-20)",
+        "steve-twin-sweep (refused: vault write)",
+        "weekly/monthly slots never proven"
+      ],
+      "expectedValue": "Built-in missed-run catch-up (one run within 7 days) and per-task 'always allow' learned on first run remove the runner's two most common failure modes.",
+      "risk": "Still needs the app open and the Mac awake; two schedulers must not double-fire — migrate three tasks, disable them in the runner, compare for two weeks.",
+      "evidence": [
+        {
+          "source": "Claude Code Desktop scheduled tasks doc (primary, fetched 2026-09-22)",
+          "url": "https://code.claude.com/docs/en/desktop-scheduled-tasks",
+          "date": "2026-09-22"
+        },
+        {
+          "source": "inventory/mac-runner-status.md (internal)",
+          "url": "scratchpad/inventory/mac-runner-status.md",
+          "date": "2026-09-22"
+        }
+      ],
+      "ctoHandoff": {
+        "fit": "high",
+        "integrationCost": "S per task",
+        "securityRisk": "low — same pre-approved tools, now explicit per task",
+        "realVsHyped": "real"
+      },
+      "trustLevel": "L1",
+      "halt": false,
+      "needsSteven": false
+    },
+    {
+      "id": "CAIO-07",
+      "title": "MCP 2026-07-28 migration audit for the Mac's 15 MCP servers",
+      "verdict": "WATCH",
+      "action": "upgrade",
+      "affects": [
+        "lofty-bridge",
+        "apple-health / apple-health-xml / health-export MCPs",
+        "openrouter-bridge",
+        "magica HTTP MCP",
+        "plugin:ruflo-core:ruflo",
+        "perplexity",
+        "notion-brain",
+        "openterminal",
+        "tradingview",
+        "filesystem/fetch/memory/git/apination"
+      ],
+      "expectedValue": "Avoids a cliff when hosts drop HTTP+SSE, Sampling, Roots and Logging (12-month transition from 2026-07-28); the Tasks extension suits long syncs like lofty-crm-sync.",
+      "risk": "None now; rewrite cost later if ignored.",
+      "evidence": [
+        {
+          "source": "MCP blog — The 2026-07-28 Specification (primary)",
+          "url": "https://blog.modelcontextprotocol.io/posts/2026-07-28/",
+          "date": "2026-07-28"
+        },
+        {
+          "source": "Command Deck doc toolkitSnapshot (live DB export)",
+          "url": "scratchpad/db/state/toolkitSnapshot.json",
+          "date": "2026-09-22"
+        }
+      ],
+      "ctoHandoff": {
+        "fit": "n/a",
+        "integrationCost": "S audit / M rewrites",
+        "securityRisk": "improves (CIMD auth, stateless core)",
+        "realVsHyped": "real"
+      },
+      "trustLevel": "L1",
+      "halt": false,
+      "needsSteven": false
+    },
+    {
+      "id": "CAIO-08",
+      "title": "ruflo: record the installed version, pin, sandbox-upgrade against the recall holdout; decide whether L3 needs it",
+      "verdict": "PILOT",
+      "action": "upgrade",
+      "affects": [
+        "ruflo / claude-flow v3 (node@22 pin; Node 24.19 aborts)",
+        "Ruflo memory (238 entries)",
+        "five-store recall"
+      ],
+      "expectedValue": "Protects recall quality (v3.42.4 changed search-score semantics) and settles the Node 24 issue; possible simplification of the recall path.",
+      "risk": "An upgrade can change Ruflo-memory results silently — run the untouched holdout set (loop-engineering) before promoting.",
+      "evidence": [
+        {
+          "source": "ruvnet/ruflo GitHub releases (primary)",
+          "url": "https://github.com/ruvnet/ruflo/releases",
+          "date": "2026-09-17"
+        },
+        {
+          "source": "Command Deck doc toolkitSnapshot (live DB export)",
+          "url": "scratchpad/db/state/toolkitSnapshot.json",
+          "date": "2026-09-22"
+        }
+      ],
+      "ctoHandoff": {
+        "fit": "medium",
+        "integrationCost": "M",
+        "securityRisk": "low",
+        "realVsHyped": "real"
+      },
+      "trustLevel": "L1",
+      "halt": false,
+      "needsSteven": false
+    },
+    {
+      "id": "CAIO-09",
+      "title": "Replace llama3.1:8b in OpenJarvis with a 2026 local agent model (Muse Glimmer 30B) and rename the misleading 'claude-fable-5.1' Ollama tag",
+      "verdict": "PILOT",
+      "action": "upgrade",
+      "affects": [
+        "OpenJarvis (Vanessa free-mode voice + index)",
+        "Ollama model tag 'claude-fable-5.1' (= llama3.1:8b)"
+      ],
+      "expectedValue": "Materially better offline answers; honest model naming in logs and status pages.",
+      "risk": "Mac RAM/disk unverified; a 30B dense model may be too slow for voice — measure tokens/s first; Apache-2.0 licence is fine.",
+      "evidence": [
+        {
+          "source": "MarkTechPost — Meta AI releases Muse Glimmer 30B (snippet)",
+          "url": "https://www.marktechpost.com/2026/08/10/meta-ai-releases-muse-glimmer/",
+          "date": "2026-08-10"
+        },
+        {
+          "source": "VentureBeat — Meta returns to open source with Muse Glimmer (snippet)",
+          "url": "https://venturebeat.com/technology/meta-returns-to-open-source-with-muse-glimmer-an-apache-2-0-licensed-30b-parameter-ai-model-optimized-for-agents-available-now",
+          "date": "2026-08-10"
+        },
+        {
+          "source": "open-jarvis/OpenJarvis README (primary)",
+          "url": "https://github.com/open-jarvis/OpenJarvis",
+          "date": "2026-09-22"
+        },
+        {
+          "source": "Command Deck doc toolkitSnapshot (live DB export)",
+          "url": "scratchpad/db/state/toolkitSnapshot.json",
+          "date": "2026-09-22"
+        }
+      ],
+      "ctoHandoff": {
+        "fit": "medium",
+        "integrationCost": "S–M",
+        "securityRisk": "low — local",
+        "realVsHyped": "real, hardware-dependent"
+      },
+      "trustLevel": "L1",
+      "halt": false,
+      "needsSteven": false
+    },
+    {
+      "id": "CAIO-10",
+      "title": "Council seats and OpenRouter: re-price against current models; do not fund",
+      "verdict": "WATCH",
+      "action": "upgrade",
+      "affects": [
+        "openrouter-bridge (no key)",
+        "councilPricing doc (seats: gpt-5.2, gemini-3.1-pro-preview, grok-4.3, llama-4-maverick)",
+        "openrouter-credits-refresh task"
+      ],
+      "expectedValue": "The council price table stops quoting superseded models; if ever funded the seats would be GPT-6 Astra / Gemini 3.8 Flash or 3.1 Pro / Grok 4.6 / Muse Glimmer 30B.",
+      "risk": "Stripe's acquisition of OpenRouter may change keys or billing; the council is unused today — no urgency and no purchase recommended.",
+      "evidence": [
+        {
+          "source": "Command Deck doc councilPricing (live DB export)",
+          "url": "scratchpad/db/state/councilPricing.json",
+          "date": "2026-09-16"
+        },
+        {
+          "source": "Bloomberg — Stripe finalizes deal to acquire OpenRouter for over $7B (snippet; URL-dated)",
+          "url": "https://www.bloomberg.com/news/articles/2026-08-16/stripe-nears-deal-to-buy-ai-firm-openrouter-for-over-7-billion",
+          "date": "2026-08-16"
+        },
+        {
+          "source": "TechCrunch — OpenRouter more than doubles valuation to $1.3B (snippet)",
+          "url": "https://techcrunch.com/2026/05/26/openrouter-more-than-doubles-valuation-to-1-3b-in-a-year/",
+          "date": "2026-05-26"
+        },
+        {
+          "source": "CNBC — OpenAI announces rollout of GPT-6 Astra (snippet)",
+          "url": "https://www.cnbc.com/2026/09/03/open-ai-astra-gpt-6-cyber.html",
+          "date": "2026-09-03"
+        },
+        {
+          "source": "Fortune — Google shipped four Gemini Flash models in 106 days; 3.5 Pro still AWOL (snippet)",
+          "url": "https://fortune.com/2026/09/03/google-shipped-four-gemini-flash-models-in-106-days-but-its-flagship-frontier-model-is-still-nowhere-to-be-seen/",
+          "date": "2026-09-03"
+        },
+        {
+          "source": "DataNorth — xAI releases Grok 4.6 (snippet; release 2026-08-12)",
+          "url": "https://datanorth.ai/news/xai-releases-grok-4-6",
+          "date": "2026-08-12"
+        }
+      ],
+      "ctoHandoff": {
+        "fit": "low",
+        "integrationCost": "XS",
+        "securityRisk": "n/a",
+        "realVsHyped": "real but low value"
+      },
+      "trustLevel": "L1",
+      "halt": false,
+      "needsSteven": false
+    },
+    {
+      "id": "CAIO-11",
+      "title": "Lofty AI Sales Agent as the 24/7 first-response layer for real-estate leads (Vanessa = QA/escalation)",
+      "verdict": "PILOT",
+      "action": "adopt",
+      "affects": [
+        "ISA coverage (human ISA silent since 2026-09-16)",
+        "r2-lead-response-watchdog / lead-triage-daily (FUB auth failed since 2026-09-16)",
+        "isaKpi / leadResponse docs",
+        "vanessa-imessage-inbox"
+      ],
+      "expectedValue": "Closes the speed-to-lead gap while the human ISA is silent; moves Vanessa to the QA/escalation seat where she adds more value.",
+      "risk": "Cost from $60/mo per 200 leads plus reported setup fees $299–$1,499 (secondary source); AI-to-consumer messaging needs Alexandra (consent/advertising) and Elena; depends on the Lofty key and first sync landing first.",
+      "evidence": [
+        {
+          "source": "GlobeNewswire — Lofty expands AOS, anchored by new Cowork experience",
+          "url": "https://www.globenewswire.com/news-release/2026/07/28/3334236/0/en/Lofty-Expands-AOS-Its-Agentic-AI-Operating-System-for-Real-Estate-Anchored-by-New-Cowork-Experience.html",
+          "date": "2026-07-28"
+        },
+        {
+          "source": "GlobeNewswire — Lofty introduces House.ai at Inman Connect 2026",
+          "url": "https://www.globenewswire.com/news-release/2026/07/28/3334239/0/en/Lofty-Introduces-House-ai-at-Inman-Connect-2026.html",
+          "date": "2026-07-28"
+        },
+        {
+          "source": "Inman — Lofty unveils new AI workspace and buyer-readiness tool (snippet)",
+          "url": "https://www.inman.com/2026/07/28/lofty-cowork-houseai-workspace-buyer-readiness/",
+          "date": "2026-07-28"
+        },
+        {
+          "source": "Luxury Presence — Lofty pricing 2026 (secondary; AI Sales Agent from $60/mo per 200 leads)",
+          "url": "https://www.luxurypresence.com/blogs/lofty-pricing/",
+          "date": "2026 (exact date unverified)"
+        },
+        {
+          "source": "Lofty Help Center — Getting started with AI Sales Agent (undated)",
+          "url": "https://help.lofty.com/hc/en-us/articles/39659584983067-Getting-Started-with-AI-Sales-Agent",
+          "date": "undated"
+        },
+        {
+          "source": "Command Deck Engineering Brief §2 ground truth (internal)",
+          "url": "scratchpad/BRIEF.md",
+          "date": "2026-09-22"
+        }
+      ],
+      "ctoHandoff": {
+        "fit": "high",
+        "integrationCost": "S — vendor-side configuration",
+        "securityRisk": "medium — consumer PII and consent",
+        "realVsHyped": "real product; ROI for a solo operator unproven"
+      },
+      "trustLevel": "L1",
+      "halt": false,
+      "needsSteven": true
+    },
+    {
+      "id": "CAIO-12",
+      "title": "UWM Mia for mortgage-side voice follow-up, if Patriot Pacific is a UWM broker partner",
+      "verdict": "WATCH",
+      "action": "adopt",
+      "affects": [
+        "mortgage lead follow-up",
+        "outbound phone agent (open gap on the deck)"
+      ],
+      "expectedValue": "Inbound/outbound voice, Spanish, pre-qualification follow-ups and Mortgage Review at zero build cost.",
+      "risk": "Lender-captive — anti-steering lens (Alexandra); availability to Steven's brokerage unverified.",
+      "evidence": [
+        {
+          "source": "UWM media alert — UWM LIVE! Mia upgrades (snippet)",
+          "url": "https://www.uwm.com/media-alert-may-14-2026",
+          "date": "2026-05-14"
+        },
+        {
+          "source": "HousingWire — UWM launches Refi '86 incentive and upgrades to Mia (egress-blocked; snippet)",
+          "url": "https://www.housingwire.com/articles/uwm-refi-86-mia-updates/",
+          "date": "2026-05 (exact day unverified)"
+        },
+        {
+          "source": "Mortgage Professional America — UWM expands Mia with Spanish (snippet)",
+          "url": "https://www.mpamag.com/us/specialty/wholesale/uwm-expands-mia-ai-assistant-with-spanish-language-capability/575330",
+          "date": "2026 (exact date unverified)"
+        }
+      ],
+      "ctoHandoff": {
+        "fit": "conditional",
+        "integrationCost": "XS",
+        "securityRisk": "vendor-side",
+        "realVsHyped": "real"
+      },
+      "trustLevel": "L1",
+      "halt": false,
+      "needsSteven": true
+    },
+    {
+      "id": "CAIO-13",
+      "title": "Inkbox custom-domain identity before any client-facing email",
+      "verdict": "WATCH",
+      "action": "upgrade",
+      "affects": [
+        "Inkbox email jasmine@inkboxmail.com",
+        "Inkbox iMessage +1 650-484-9720"
+      ],
+      "expectedValue": "A licensed MLO/broker should not email clients from an inkboxmail.com identity; custom domains are supported on an eligible paid plan.",
+      "risk": "Compliance review (Alexandra) before AI sends any client email; not needed while Inkbox serves only Steven's own team.",
+      "evidence": [
+        {
+          "source": "inkbox-ai/inkbox README (primary)",
+          "url": "https://github.com/inkbox-ai/inkbox",
+          "date": "2026-09-22"
+        },
+        {
+          "source": "Y Combinator — Inkbox (YC S26)",
+          "url": "https://www.ycombinator.com/companies/inkbox",
+          "date": "2026 (S26 batch)"
+        }
+      ],
+      "ctoHandoff": {
+        "fit": "medium",
+        "integrationCost": "S",
+        "securityRisk": "medium — compliance",
+        "realVsHyped": "real"
+      },
+      "trustLevel": "L1",
+      "halt": false,
+      "needsSteven": false
+    },
+    {
+      "id": "CAIO-14",
+      "title": "Magica single-vendor media dependency (avatars, voice clips, lipsync)",
+      "verdict": "WATCH",
+      "action": "upgrade",
+      "affects": [
+        "magica HTTP MCP (inference.magica.com)",
+        "team-avatars skill",
+        "voice-reply-render task"
+      ],
+      "expectedValue": "Survivable vendor change: export source portraits and Seed Audio renders into the Sunday backup.",
+      "risk": "magica.com is egress-blocked; no dated primary evidence of API/MCP stability or SLA — unverified durability.",
+      "evidence": [
+        {
+          "source": "App Store — Magica: AI super agent (listing exists; API/MCP stability unverified)",
+          "url": "https://apps.apple.com/us/app/magica-ai-super-agent/id6742551956",
+          "date": "2026-09-22 (checked)"
+        },
+        {
+          "source": "Magica — Tools page (egress-blocked; snippet lists Hedra Lipsync, Infinitalk)",
+          "url": "https://magica.com/tools",
+          "date": "unverified"
+        },
+        {
+          "source": "Command Deck doc toolkitSnapshot (live DB export)",
+          "url": "scratchpad/db/state/toolkitSnapshot.json",
+          "date": "2026-09-22"
+        }
+      ],
+      "ctoHandoff": {
+        "fit": "n/a",
+        "integrationCost": "XS",
+        "securityRisk": "low",
+        "realVsHyped": "unverified vendor durability"
+      },
+      "trustLevel": "L1",
+      "halt": false,
+      "needsSteven": false
+    },
+    {
+      "id": "CAIO-15",
+      "title": "You.com — retired 2026-09-22; nothing to adopt",
+      "verdict": "IGNORE",
+      "action": "retire",
+      "affects": [
+        "13 in-page You.com call sites (per BRIEF §2)",
+        "you-* tool names",
+        "connector list"
+      ],
+      "expectedValue": "None beyond confirming no silent call sites remain (integrator's grep).",
+      "risk": "A leftover button that silently fails.",
+      "evidence": [
+        {
+          "source": "Command Deck Engineering Brief §2 ground truth (internal)",
+          "url": "scratchpad/BRIEF.md",
+          "date": "2026-09-22"
+        }
+      ],
+      "ctoHandoff": {
+        "fit": "n/a",
+        "integrationCost": "XS",
+        "securityRisk": "none",
+        "realVsHyped": "n/a"
+      },
+      "trustLevel": "L1",
+      "halt": false,
+      "needsSteven": false
+    },
+    {
+      "id": "CAIO-16",
+      "title": "Perplexity Computer / Personal / Portable Computer and OpenAI ChatGPT agent/Work — do not adopt",
+      "verdict": "IGNORE",
+      "action": "adopt",
+      "affects": [
+        "Perplexity MCP (npx @perplexity-ai/mcp-server)",
+        "Composio perplexityai"
+      ],
+      "expectedValue": "Keep Perplexity strictly as the research MCP; the agent products duplicate the Claude subscription at $200/mo or are mid-reorganisation.",
+      "risk": "None.",
+      "evidence": [
+        {
+          "source": "Semafor — Perplexity launches 'Computer' super agent (snippet)",
+          "url": "https://www.semafor.com/article/02/25/2026/perplexity-launches-computer-super-agent",
+          "date": "2026-02-25"
+        },
+        {
+          "source": "SiliconANGLE — Perplexity launches Portable Computer on-device agent (egress-blocked; URL-dated)",
+          "url": "https://siliconangle.com/2026/08/25/perplexity-ai-launches-portable-computer-on-device-ai-agent/",
+          "date": "2026-08-25"
+        },
+        {
+          "source": "OpenAI Help Center — ChatGPT agent (snippet: removed from ChatGPT early Aug 2026; secondary)",
+          "url": "https://help.openai.com/en/articles/11752874-chatgpt-agent",
+          "date": "2026-08 (unverified day)"
+        }
+      ],
+      "ctoHandoff": {
+        "fit": "low",
+        "integrationCost": "n/a",
+        "securityRisk": "n/a",
+        "realVsHyped": "hyped for this use"
+      },
+      "trustLevel": "L1",
+      "halt": false,
+      "needsSteven": false
+    },
+    {
+      "id": "CAIO-17",
+      "title": "AI-surface presence audit across six conversational search surfaces + revive Rent-Buy-Wait as the VA-readiness answer",
+      "verdict": "ADOPT",
+      "action": "adopt",
+      "affects": [
+        "geo-aeo-optimizer agent",
+        "cmo-sofia",
+        "Rent-Buy-Wait dashboard refresh (abandoned 2026-09-21)",
+        "property search strategy card"
+      ],
+      "expectedValue": "Buyer discovery is moving into chat surfaces that route to the listing agent (Homes.com) or Zillow's network; a VA-specific readiness answer is a differentiator none of them owns.",
+      "risk": "Marketing effort, not build; claims on public profiles must stay compliant (NMLS, DRE).",
+      "evidence": [
+        {
+          "source": "Zillow Front Porch — Zillow debuts AI mode (egress-blocked; snippet)",
+          "url": "https://www.zillow.com/news/zillow-debuts-ai-mode/",
+          "date": "2026-03-25"
+        },
+        {
+          "source": "Real Estate News — How will Zillow's latest AI feature impact agents? (egress-blocked; URL-dated)",
+          "url": "https://www.realestatenews.com/2026/03/26/how-will-zillows-latest-ai-feature-impact-agents",
+          "date": "2026-03-26"
+        },
+        {
+          "source": "PR Newswire — Realtor.com app in ChatGPT (snippet)",
+          "url": "https://www.prnewswire.com/news-releases/search-homes-and-see-what-you-can-afford-with-the-new-realtorcom-app-in-chatgpt-302727498.html",
+          "date": "2026-03-30"
+        },
+        {
+          "source": "CoStar Group press room — Homes AI on Homes.com (snippet)",
+          "url": "https://www.costargroup.com/press-room/2026/costar-group-launches-transformative-ai-experience-homescom-redefining-future-home",
+          "date": "2026-02-17"
+        },
+        {
+          "source": "Inman — Zillow takes Zillow Pro nationwide after 8-month rollout (snippet)",
+          "url": "https://www.inman.com/2026/07/09/zillow-takes-zillow-pro-nationwide-after-8-month-rollout/",
+          "date": "2026-07-09"
+        },
+        {
+          "source": "Command Deck Engineering Brief §2 ground truth (internal)",
+          "url": "scratchpad/BRIEF.md",
+          "date": "2026-09-22"
+        }
+      ],
+      "ctoHandoff": {
+        "fit": "high",
+        "integrationCost": "S",
+        "securityRisk": "none",
+        "realVsHyped": "real"
+      },
+      "trustLevel": "L1",
+      "halt": false,
+      "needsSteven": false
+    },
+    {
+      "id": "CAIO-18",
+      "title": "ARIVE (or whichever LOS Patriot Pacific uses) as a read-only pipeline feed",
+      "verdict": "WATCH",
+      "action": "adopt",
+      "affects": [
+        "mortgage pipeline (Zoho deals)",
+        "LOAN_PROGRAMS / LENDER_DIRECTORY"
+      ],
+      "expectedValue": "Live loan status and pricing inside the deck without re-keying; Rocket Pro and HomeXpress already submit/price inside ARIVE.",
+      "risk": "Which LOS Steven uses is not in the inventory; borrower PII; 'Mortgage Intel AI' is a GitHub issue, not a product (unverified).",
+      "evidence": [
+        {
+          "source": "National Mortgage Professional — Rocket Pro meets brokers halfway with ARIVE expansion (snippet)",
+          "url": "https://nationalmortgageprofessional.com/news/rocket-pro-meets-brokers-halfway-arive-expansion",
+          "date": "2026-06 (exact day unverified)"
+        },
+        {
+          "source": "HousingWire — HomeXpress launches on ARIVE LOS (egress-blocked; snippet)",
+          "url": "https://www.housingwire.com/articles/homexpress-arive-los-launch/",
+          "date": "2026-02 (exact day unverified)"
+        }
+      ],
+      "ctoHandoff": {
+        "fit": "unknown until Steven names the LOS",
+        "integrationCost": "M",
+        "securityRisk": "medium — borrower PII",
+        "realVsHyped": "real"
+      },
+      "trustLevel": "L1",
+      "halt": false,
+      "needsSteven": true
+    },
+    {
+      "id": "CAIO-19",
+      "title": "Claude Code Projects (parallel cloud threads + shared memory) as a future home for Vanessa's cloud-side fan-out",
+      "verdict": "WATCH",
+      "action": "adopt",
+      "affects": [
+        "vanessa-orchestrator v2 dispatch (≤8 parallel)",
+        "cloud routines"
+      ],
+      "expectedValue": "Off-the-shelf parallel coordination with shared memory and a library; every thread defaults to Opus at high effort.",
+      "risk": "Pro/Max beta with waitlist; threads cannot reach Mac-local tools; draws plan usage fast — join the waitlist, do not re-architect.",
+      "evidence": [
+        {
+          "source": "Claude Code Projects doc (primary, fetched 2026-09-22)",
+          "url": "https://code.claude.com/docs/en/claude-projects",
+          "date": "2026-09-22"
+        },
+        {
+          "source": "VentureBeat — Anthropic launches Claude Code Projects (snippet)",
+          "url": "https://venturebeat.com/orchestration/anthropic-launches-claude-code-projects-an-always-on-conversation-that-remembers-and-delegates-your-long-running-dev-work",
+          "date": "2026-09-17"
+        }
+      ],
+      "ctoHandoff": {
+        "fit": "medium — cloud-only work",
+        "integrationCost": "M",
+        "securityRisk": "medium — repos/connectors in cloud",
+        "realVsHyped": "real but early"
+      },
+      "trustLevel": "L1",
+      "halt": false,
+      "needsSteven": false
+    },
+    {
+      "id": "CAIO-20",
+      "title": "`claude plugin eval` + account→terminal skill sync + AGENTS.md as the measurement layer for skills-refresh and loop-engineering",
+      "verdict": "ADOPT",
+      "action": "adopt",
+      "affects": [
+        "skills-refresh-weekly (never run)",
+        "loop-engineering trust-graduation gate",
+        "1,400 Mac skills vs claude.ai skills (cole-mentor drift)",
+        "E10 CLAUDE.md/AGENTS.md router"
+      ],
+      "expectedValue": "The 7-consecutive-correct-runs gate gets a scorer; the claude.ai and Mac skill sets stop drifting; AGENTS.md is honoured natively.",
+      "risk": "Evals cost tokens — scope to the ~20 skills the AI Team table names.",
+      "evidence": [
+        {
+          "source": "Claude Code changelog (primary, fetched 2026-09-22)",
+          "url": "https://code.claude.com/docs/en/changelog",
+          "date": "2026-09-19"
+        }
+      ],
+      "ctoHandoff": {
+        "fit": "high",
+        "integrationCost": "S–M",
+        "securityRisk": "low",
+        "realVsHyped": "real"
+      },
+      "trustLevel": "L1",
+      "halt": false,
+      "needsSteven": false
+    }
+  ],
+  "topThreeSummary": "**1. Close the speed-to-lead gap with a vendor ISA layer, not more polling (CAIO-11, PILOT).** The market answers leads in seconds by text and voice at all hours — Lofty's AI Sales Agent (from $60/mo, secondary source) and UWM's Mia (upgraded 2026-05-14) — while Steven's lead loop has been dead since 2026-09-16 (FUB auth failure, silent ISA, hourly polling). Once the Lofty key lands, pilot the AI Sales Agent for real-estate leads with Vanessa as QA/escalation and Alexandra's consent review up front. It is the only item that plausibly moves revenue.\n\n**2. Rebuild the data spine on first-party paths (CAIO-02/03/04, ADOPT).** Composio disclosed a credential-exfiltration incident on 2026-05-21 (~5,241 API keys, ~5,001 GitHub tokens). Zoho now ships its own MCP servers and an official Claude connector, so the mortgage pipeline should not route through a third-party custodian — but Steven's one-line Zoho profile fix comes first either way, and he should rotate the Composio key and re-authorize GitHub regardless. Apple Health should move to the Claude iOS integration (live since 2026-01-22) → Notion, retiring a four-hop daemon stale for nine days. All three are permission tasks, near-zero build.\n\n**3. Re-test unattended cloud writes and measure the skills (CAIO-01, CAIO-20).** Claude Code 2.1.277 (2026-09-18) says scheduled routine runs \"save data to editable artifacts without asking\" — new since the three confirmed parked prompts. A three-run pilot on one low-stakes doc could turn 46 research-only routines into writers and retire Mac feed tasks. In the same train, `claude plugin eval` (2.1.269) and account→terminal skill sync (2.1.275) give the loop-engineering trust gate a real scorer.\n\nComputer-use (Orca CLI, Cowork-in-Chrome, CLI-Anything) stays a HITL-only pilot: Fable 5.1 scores 41.7% strict on OSWorld 2.0. Everything else is WATCH or IGNORE. Nothing is executed; every item goes to the CTO Innovator."
+}

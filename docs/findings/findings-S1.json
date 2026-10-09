@@ -1,0 +1,182 @@
+[
+  {
+    "id": "F-S1-01",
+    "severity": "medium",
+    "area": "integration-research/showingtime",
+    "finding": "ShowingTime (ShowingTime+, Zillow Group) exposes no appointment API an individual broker associate can obtain. The documented APIs under the brand are Bridge Interactive / Bridge Listing Output, RESO Web API listing-DATA feeds licensed to MLSs and brokers under multi-party agreements. Appointment integrations (RPR, SentriLock) are described at MLS/association contract level: 'MLSs and Associations who are currently contracted with ShowingTime are able to utilize integration features.' No endpoint, base URL, auth scheme or developer documentation for agent-level showing scheduling could be found.",
+    "evidence": "WebSearch 2026-09-22, two queries. showingtime.com/solutions/data-distribution (RESO Web API, MLS data distribution); showingtimemls.uservoice.com integrations knowledgebase; zillowgroup.com/developers/mls-broker-data. Primary pages could not be fetched (see F-S1-03). Matches the pre-existing claim in the deck's SH_INTEGRATIONS table and in the skill's prior text.",
+    "fix": "Design the ShowingTime wrapper as a CLI-Anything DOMShell browser harness against Steven's own logged-in session, read-only. Stated as 'no agent-level API found', not as 'no API exists'. Written into .claude/skills/cli-anything-connectors/SKILL.md and into the deck card's ShowingTime row.",
+    "halt": false
+  },
+  {
+    "id": "F-S1-02",
+    "severity": "medium",
+    "area": "integration-research/showami",
+    "finding": "Showami does have an API, marketed as 'API Automation' within its Brokerage and Enterprise solutions: roster sync plus a 'Create Showing(s)' endpoint that submits showing requests from a CRM or back-office system. It is not presented as a self-serve developer API for a solo agent. The ONLY endpoint findable anywhere reachable is a WRITE endpoint. No public developer documentation, base URL, authentication scheme, or any named READ endpoint (list my requests, get status, get feedback) could be located.",
+    "evidence": "WebSearch 2026-09-22, two queries, returning blog.showami.com/automated-showings-how-to-automate-showing-requests-with-showamis-api/ and showami.com/brokerage-solution + www.showami.com/enterprise-solution. All four hosts are egress-blocked (F-S1-03), so this rests on search-result summaries, not primary pages.",
+    "fix": "Do not assume an API. Spec the Showami wrapper as DOMShell read-only against the logged-in session. If Steven's account is ever granted API automation, the only endpoint it is known to carry is the one verb that must stay disabled (post a showing = spend money + hire a person). SHOWAMI_API_KEY is reserved in the skill by name only and left unused.",
+    "halt": false
+  },
+  {
+    "id": "F-S1-03",
+    "severity": "medium",
+    "area": "research-evidence-quality",
+    "finding": "Every primary source for both services is egress-blocked from this sandbox: showami.com, www.showami.com, blog.showami.com, support.showami.com, showingtime.com and showingtimemls.uservoice.com all returned EGRESS_BLOCKED. Findings F-S1-01 and F-S1-02 therefore rest on search-engine summaries, not on pages I read. This is the same class of dead end already recorded in memory.md for clianything.cc.",
+    "evidence": "WebFetch attempts 2026-09-22: 4 distinct hosts, all EGRESS_BLOCKED by the network egress proxy.",
+    "fix": "State the evidence limit rather than asserting certainty; both the skill and the report say 'could not determine from primary sources'. Worth one line in memory.md alongside the clianything.cc entry so the next agent does not spend calls on it. I did not edit memory.md (not my assigned region).",
+    "halt": false
+  },
+  {
+    "id": "F-S1-04",
+    "severity": "medium",
+    "area": "command-deck/panel-showings",
+    "finding": "The pre-existing SH_INTEGRATIONS table in panel-showings asserts of Showami: 'A Showami brokerage account with API access (their API left beta in 2025).' I could not verify that the API left beta in 2025, or in any year. It is a dated factual claim rendered on a live surface with no source and no stamp.",
+    "evidence": "command-deck.html, SH_INTEGRATIONS row 2 (Showami), unchanged by me. Search results confirm an API exists but say nothing about a beta exit date.",
+    "fix": "Either source the claim or soften it to 'Showami markets API automation as part of its brokerage/enterprise solution; availability for a solo account is unconfirmed'. I deliberately did not edit it: I cannot prove the replacement is more true than the original, and the brief told me not to remove existing working content. Flagged for whoever can ask Showami directly.",
+    "halt": false
+  },
+  {
+    "id": "F-S1-05",
+    "severity": "high",
+    "area": "security/cli-anything-install",
+    "finding": "CLI-Hub's telemetry is opt-OUT. cli_hub/analytics.py ships a PostHog project token and fires on install, uninstall, launch and every 'cli-hub call'. The payload carries the machine's hostname, the CLI name, the hub version, and which agent tool is running (it sniffs CLAUDE_CODE, CODEX, CURSOR_SESSION and a dozen others). On the Mac that holds client files and CRM credentials, the hostname of that machine leaving by default is not acceptable.",
+    "evidence": "Source read in the cloned repo, 2026-09-22, during the sandbox install of cli-anything-hub 0.4.1.",
+    "fix": "CLI_HUB_NO_ANALYTICS=1 set in the runner's shell profile BEFORE the first cli-hub command, not typed once per session. Added as an explicit Env row in mac-task-specs.md section 4, as the first line of the install block in SKILL.md, and as a visible note on the deck card.",
+    "halt": true
+  },
+  {
+    "id": "F-S1-06",
+    "severity": "high",
+    "area": "security/domshell",
+    "finding": "The read path for all five web targets is DOMShell, a third-party Chrome extension with page-content access, driving a Chrome session already logged into Lofty, SkySlope and zipForms. That extension can see everything those sessions can see, including client PII and transaction documents. 'Read-only' constrains what the wrapper does; it does not constrain what the extension can reach.",
+    "evidence": "cli-anything-browser built from browser/agent-harness/ and exercised in the sandbox 2026-09-22; DOMShell is installed from the Chrome Web Store and maps Chrome's accessibility tree to a virtual filesystem.",
+    "fix": "Named explicitly in the skill's security section, in mac-task-specs.md section 4, and on the deck card — as a risk for Steven to accept deliberately, not as a footnote. It is part of what the ECC security review has to weigh before SkySlope and zipForms are built at all.",
+    "halt": true
+  },
+  {
+    "id": "F-S1-07",
+    "severity": "high",
+    "area": "integrations/cli-anything",
+    "finding": "CLI-Anything is not installed on Steven's Mac and cannot be installed from a cloud session. It was installed and exercised once in a throwaway cloud sandbox (cli-anything-hub 0.4.1 from PyPI; cli-anything-browser built from browser/agent-harness/), which proves the toolchain works and changes nothing on his machine. The registry cannot help either: of 83 wrapper directories in the repo, none is a real-estate, CRM, Lofty, ShowingTime, Showami, zipForms, SkySlope or homes.com entry, and clianything.cc is egress-blocked so cli-hub search cannot be run. Every wrapper Steven needs must be GENERATED on his Mac; none is downloadable.",
+    "evidence": "Sandbox install 2026-09-22; repo wrapper-directory listing; integrations/CONNECTIONS.md line 16 ('Not installed. Spec written this cycle.'), verified 2026-09-22.",
+    "fix": "The deliverable is a specification plus a dashboard surface that reports the real state, not a connection. The deck card's default with no document is 'not-installed', and it distinguishes the sandbox proof from the Mac's state in so many words.",
+    "halt": true
+  },
+  {
+    "id": "F-S1-08",
+    "severity": "critical",
+    "area": "safety/showingtime",
+    "finding": "Every outward ShowingTime verb writes to a client-facing system, which is on CLAUDE.md's HALT list. showing request sends an appointment request to a listing agent and through them a seller; showing confirm commits a seller to letting people into their home at a stated time; showing cancel strands a buyer or a paid showing agent at a door; showing reschedule is cancel plus request against two parties at once; feedback submit writes an opinion attributed to Steven into a record the listing agent and seller read, which can read as representation advice.",
+    "evidence": "Blast-radius table in .claude/skills/cli-anything-connectors/SKILL.md. Not implemented anywhere.",
+    "fix": "Specified and NOT built. On the browser path every one of these is an 'act click'/'act type' underneath, and the task's Bash allow-list denies 'act' outright, so the denial is mechanical rather than a request to behave. Each verb needs Steven's written approval for that one verb on that one target before it exists.",
+    "halt": true
+  },
+  {
+    "id": "F-S1-09",
+    "severity": "critical",
+    "area": "safety/showami",
+    "finding": "Posting a Showami request hires a licensed person and charges Steven's card — the first line of the HALT list (spends money) and a third party dispatched to a stranger's door, twice over. bid accept/assign makes the same commitment one click later; showing cancel can still incur a cancellation fee; message send messages the assigned showing agent; roster sync changes who is authorised to spend on the account.",
+    "evidence": "Blast-radius table in SKILL.md. Not implemented anywhere.",
+    "fix": "Specified and NOT built; same 'act' denial as F-S1-08. The existing manual Open Showami / Copy Showami request buttons in the route card are deliberately left in place — copy-paste keeps a human between Steven and a booking, and it is the only path that functions today.",
+    "halt": true
+  },
+  {
+    "id": "F-S1-10",
+    "severity": "critical",
+    "area": "safety/skyslope-zipforms",
+    "finding": "SkySlope and zipForms touch legally binding documents. esign send is a signature request to a client or co-op agent — a licensed act, unrecallable once opened; packet send delivers a contract packet to the other side; form fill writes contract terms where a wrong price or date becomes a real-money error; checklist item complete falsely marks a compliance item done, the failure nobody notices until an audit. mac-task-specs.md section 4 already said to stop before these pending an ECC security review; Steven listing them in the widened request does not change that ordering.",
+    "evidence": "Blast-radius table in SKILL.md; the pre-existing stop-before rule in mac-task-specs.md section 4.",
+    "fix": "Both are steps 4 and 5 in the build order, gated on an ECC security review WITH A SIGN-OFF DATE. The deck card enforces this rather than just describing it: a status document claiming read-only-live for either target without an eccReviewedAt date is clamped back to disabled-by-policy and the row says 'Document claimed more than it evidenced — held back'. Verified in harness STATE 3.",
+    "halt": true
+  },
+  {
+    "id": "F-S1-11",
+    "severity": "high",
+    "area": "integrations/lofty",
+    "finding": "Building a CLI-Anything browser wrapper for Lofty would be strictly worse than what already exists. Lofty has a documented REST API (api.lofty.com/v1.0, Authorization: token <key>) and lofty-bridge MCP plus lofty-cli are already installed and connected on the Mac. A browser wrapper would be more fragile, break on any UI change, and need a logged-in session instead of a key. The real blocker is not tooling: LOFTY_API_KEY is not in ~/.config/lofty/.env, so no pull has ever succeeded.",
+    "evidence": "integrations/CONNECTIONS.md line 14, verified 2026-09-22: 'Bridge and CLI installed (status RUN, MCP server lofty connected). API key presence unverified from the cloud — no successful pull yet.'",
+    "fix": "The skill carries an explicit blockquote: the API stays the recommendation, and a CLI-Anything wrapper is a fallback only for something the API is demonstrably shown not to expose — nothing is known to be missing yet. Lofty is listed in the build order as 'not a CLI-Anything target'. Its deck row reads installed-untested (NOT read-only-live: no pull has ever succeeded, so 'live' is a claim the evidence does not support, and NOT not-installed, which would be wrong because the bridge and CLI are installed).",
+    "halt": true
+  },
+  {
+    "id": "F-S1-12",
+    "severity": "info",
+    "area": "command-deck/document-shape",
+    "finding": "The cliAnythingStatus document does not exist in the artifact store. A read of artifact 1624daae-d683-405a-971d-c5828dce0f8d, collection state, doc_id cliAnythingStatus returned 'No document'. Nothing has ever written it.",
+    "evidence": "ArtifactData get, 2026-09-22. The deck HTML contained zero references to cliAnythingStatus before this change.",
+    "fix": "Designed for its absence, and extended the shape already specified in the skill rather than inventing a parallel document: added connState (the deck's five-value vocabulary), verbsEnabled, verbsDisabled, lastCheckedAt, eccReviewedAt and action to each wrapper entry, keeping the existing checkedAt/installed/hubVersion/wrappers/name/target/mode/status/readOnly/lastRun/error/note fields untouched. I did not write the document — writing to the artifact DB is out of scope for this task.",
+    "halt": false
+  },
+  {
+    "id": "F-S1-13",
+    "severity": "high",
+    "area": "command-deck/robustness",
+    "finding": "A status card driven by a scheduled-task document is exactly the shape that caused the 2026-09-03 regression the db IIFE comment records, where one bad document blanked the whole dashboard. A card whose rows come FROM the document can also silently show nothing, which on a safety surface reads as 'all clear'.",
+    "evidence": "The db IIFE render-isolation comment in command-deck.html and the 2026-09-11 note about a document that threw 'items.filter is not a function' and took out every later panel including the freshness board.",
+    "fix": "The page owns the row list; the document owns only the state. Six rows are baked into CC_TARGETS, so a missing, string, array, null, truncated or wrong-typed document can change what a row SAYS but can never remove a row, empty the table or invent a seventh target. Reads go through lsGet (which swallows a throwing localStorage) and the renderer is registered through safeRun. Eight malformed shapes tested: string, array, null, wrong-typed fields, junk rows inside the wrappers array, unparseable truncated JSON, getItem+setItem throwing, and an outward verb enabled. All PASS, 0 exceptions, 0 safeRun failures, 0 shape warnings, 340 containers.",
+    "halt": false
+  },
+  {
+    "id": "F-S1-14",
+    "severity": "high",
+    "area": "command-deck/tripwire",
+    "finding": "Nothing on the deck would have noticed if something on the Mac quietly enabled an outward verb on one of these wrappers. A status card that only reports connection state cannot tell the difference between a safe connector and an unsafe one.",
+    "evidence": "Designed and tested this pass; no prior surface existed.",
+    "fix": "Any verb in verbsEnabled matching an outward pattern (including 'act', which IS the write surface on the browser path) forces that row's state to error, turns the row badge and the card badge red, and replaces the headline with 'STOP. The status document reports an outward verb as enabled ...'. readOnly:false does the same. Verified: injecting verbsEnabled ['fs cat','act click','showing post'] produced badge [badge red] 'Write verb enabled — review now' and ccState-showami 'error'.",
+    "halt": false
+  },
+  {
+    "id": "F-S1-15",
+    "severity": "medium",
+    "area": "safety/authentication",
+    "finding": "ShowingTime is reached through MLS single sign-on in many markets, CRMLS included, and MFA is common on SkySlope and zipForms. A browser harness that meets a second factor will either stall or be tempted to automate around it.",
+    "evidence": "CRMLS lists ShowingTime as an MLS-provided solution; the skill's pre-existing guardrail already said MFA/SSO is a HALT.",
+    "fix": "Kept and made specific: 'MFA/SSO is a HALT, not a puzzle. ShowingTime is MLS-SSO'd in many markets (CRMLS included).' The step-2/3 install prompt tells Steven to stop and say so rather than work around it.",
+    "halt": true
+  },
+  {
+    "id": "F-S1-16",
+    "severity": "low",
+    "area": "repo-convention",
+    "finding": ".claude/skills/cli-anything-connectors/SKILL.md is 207 lines, over the repo's ~200-line skill convention. Most skills run 110-165; the largest comparable domain skill, apple-health-notion, is 205.",
+    "evidence": "wc -l across .claude/skills/*/SKILL.md.",
+    "fix": "Accepted and declared rather than fixed by cutting. The scope doubled from three targets to six, and the brief required each disabled write verb to carry its blast radius so the approval decision is informed rather than blind — that table alone is 23 rows. I trimmed the Alternative-executor section to claw back a line; further cuts would have to remove either a target or a blast radius, and neither is the right trade.",
+    "halt": false
+  },
+  {
+    "id": "F-S1-17",
+    "severity": "low",
+    "area": "credential-location/consistency",
+    "finding": "Two different credential locations are now named for Showami. The pre-existing SH_INTEGRATIONS row in panel-showings says 'Put the key in ~/.config/showing-sync/.env'; the skill standardises browser-harness credentials on the macOS keychain or ~/.config/cli-anything/.env. Two locations for the same secret is how a secret ends up in the wrong one.",
+    "evidence": "command-deck.html SH_INTEGRATIONS (unchanged) vs the credentials section of .claude/skills/cli-anything-connectors/SKILL.md.",
+    "fix": "Reconcile on one location before either path is built. I did not change the existing deck row: it belongs to the showing-sync task's own design, not to the CLI-Anything path, and editing it would change behaviour another owner may depend on. No secret exists in either location today, so this is cheap to fix now and expensive later.",
+    "halt": false
+  },
+  {
+    "id": "F-S1-18",
+    "severity": "high",
+    "area": "docs/accuracy",
+    "finding": "The claim that the CLI-Anything install is interactive was wrong, and it is the single sentence that kept the whole install manual. `claude plugin marketplace add HKUDS/CLI-Anything` and `claude plugin install cli-anything@cli-anything` both run non-interactively from the CLI and exit 0. So pip install cli-anything-hub, both plugin commands and the browser-harness build are all script-installable. Only generation (`/cli-anything`) is genuinely interactive, because it needs the target site open in front of it.",
+    "evidence": "Measured 2026-09-22 in a throwaway HOME: 'Successfully added marketplace: cli-anything (declared in user settings)' and 'Successfully installed plugin: cli-anything@cli-anything (scope: user)'. The plugin ships exactly five commands: /cli-anything, :list, :refine, :test, :validate.",
+    "fix": "integrations/mac-task-specs.md section 4 retitled 'install is SCRIPTABLE, only generation is Steven's', the false paragraph replaced with the correction and the measured transcript, and the four-step sequence written out. SKILL.md's install section rewritten the same way. The deck card's homes.com action now reads 'Run ./MAC-SETUP.sh ...' instead of a list of commands to type.",
+    "halt": false
+  },
+  {
+    "id": "F-S1-19",
+    "severity": "medium",
+    "area": "docs/accuracy",
+    "finding": "integrations/CONNECTIONS.md line 16 still carries the superseded instruction as Steven's one-line action for CLI-Anything: 'On the Mac in Claude Code run /plugin marketplace add HKUDS/CLI-Anything then /plugin install cli-anything (and pip install cli-anything-hub), then say \"generate the homes.com wrapper\".' Per F-S1-18 that install half is now a script step.",
+    "evidence": "integrations/CONNECTIONS.md line 16, 'The four that need Steven today' table, baseline 2026-09-12 / verified 2026-09-22.",
+    "fix": "Replace that cell with: 'Run ./MAC-SETUP.sh (hub, plugin and browser harness install non-interactively), install the DOMShell Chrome extension and sign in, then say \"generate the homes.com wrapper\" — generation is the only interactive step.' I did not edit CONNECTIONS.md: it is outside my three assigned deliverables and another engineer is removing Follow Up Boss references from this repo in the same cycle. Handed to the coordinator with the exact replacement text.",
+    "halt": false
+  },
+  {
+    "id": "F-S1-20",
+    "severity": "medium",
+    "area": "mac-setup",
+    "finding": "MAC-SETUP.sh has no CLI-Anything step, so the now-scriptable install has nowhere to live and stays manual by default.",
+    "evidence": "MAC-SETUP.sh step groups: STEPS_PREREQ / STEPS_BRAIN / STEPS_FR5A / STEPS_FR5B / STEPS_ONDEMAND — no cli-anything entry.",
+    "fix": "Exact block supplied in the hand-back, written to the file's own idiom (should_run / header / have / run / run_sh / installed / skipped / failed / needs_steven), adding 'cli-anything' to STEPS_FR5B. I did not edit MAC-SETUP.sh: it is not in my worktree, it is another engineer's file with a REFUSED list enforced in code, and they tested it line by line. The coordinator applies it.",
+    "halt": false
+  }
+]

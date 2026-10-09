@@ -1,0 +1,119 @@
+[
+  {
+    "id": "F-M3-01",
+    "severity": "info",
+    "area": "Build/Release — MAC-SETUP.sh",
+    "finding": "The two hand-written runbooks (MAC-INSTALL-tooling.md / FR5a, MAC-INSTALL-comms-data.md / FR5b) now have one executable form: MAC-SETUP.sh, an idempotent installer grouped in FR5a's own order of operations (prerequisites, then the brain's vendored skills, then CodeBurn, Graphify, Claude Code Setup, Headroom, then the FR5b comms/data tools, then the on-a-named-need set). 20 named steps, --only / --skip / --list / --dry-run, bash 3.2 dialect, set -euo pipefail.",
+    "evidence": "bash -n clean; shellcheck 0.11.0.1 clean on both scripts; `./MAC-SETUP.sh --dry-run` ran end to end in the sandbox and printed every command; a real run under HOME=/tmp/m3-home installed headroom-ai 0.38.0, whatsapp-cli 1.0.0 on CPython 3.12.11, scrapling 0.4.15 with working fetchers, the scrapers venv, the omniroute .env skeleton and both failover scripts, exit 0; a second identical run reported INSTALLED: none.",
+    "fix": "Steven runs `./MAC-SETUP.sh --dry-run` first, reads it, then `./MAC-SETUP.sh`. Linked from MAC-INSTALL.md §9.",
+    "halt": false
+  },
+  {
+    "id": "F-M3-02",
+    "severity": "high",
+    "area": "Safety — refused installs",
+    "finding": "Seven items are refused by name with a one-line reason at the top of MAC-SETUP.sh, and a runtime guard aborts the whole script (exit 3) if any command it is about to run matches one — so a later edit cannot quietly re-add them. Refused: vphone-cli (SIP/AMFI relaxation on the Mac that holds the keychain and client files), Agent402 (pay-per-call wallet, spends money by design), the whole addyosmani/agent-skills plugin (its interview-me collides with the brain's own skill; the six wanted skills are vendored individually), framepipe-dev/media-inference-worker (a live-looking third-party credential is committed in its repo), the Agent-Reach skill (its 'MUST USE for any research' frontmatter would hijack the router's research path), the whatsapp-cli Claude plugin (would give every session on the Mac WhatsApp), normen/whatscli (no automation, emulates a WhatsApp Web device).",
+    "evidence": "`--only vphone-cli` exits 2 with the reason and does nothing. A tampered copy of the script with `run git clone https://github.com/framepipe-dev/media-inference-worker` injected into the codeburn step aborted at exit 3 naming the item and the reason, in --dry-run, before printing the command. mac-verify.sh separately reports FAIL if any refused item is found present on the machine.",
+    "fix": "None needed. Anyone wanting one of these removes it from REFUSED_LIST and REFUSED_GUARDS deliberately, with Steven.",
+    "halt": false
+  },
+  {
+    "id": "F-M3-03",
+    "severity": "high",
+    "area": "Safety — credentials",
+    "finding": "The installer never prompts for, echoes, logs or stores a secret value. Where a tool needs a key it creates ~/.config/<tool>/.env under umask 077, chmod 600, containing the variable NAMES with empty values and a comment per name saying where Steven gets it. An .env that already exists is never rewritten (it may already hold values) — only its mode is corrected. Which names are still unset is reported at the end by NAME only, using `grep -q` so no value can reach stdout or the log.",
+    "evidence": "Real run created /tmp/m3-home/.config/omniroute/.env, mode 600, holding exactly OMNIROUTE_API_KEY=, OPENROUTER_API_KEY=, NVIDIA_API_KEY=, BYTEZ_API_KEY= with hint comments and no values. Second run: 'exists — left untouched, mode set to 600'. mac-verify.sh reports the same four names as 'no value yet' without reading them.",
+    "fix": "Steven fills the four values by hand, then `omniroute providers add <id> --credential-env <NAME>` per FR5b. No value ever enters this repo, a prompt, or a task.",
+    "halt": true
+  },
+  {
+    "id": "F-M3-04",
+    "severity": "medium",
+    "area": "Correctness — Python version gates",
+    "finding": "Every version gate FR5a/FR5b found is enforced by pinning the interpreter rather than by hoping: whatsapp-cli and the scrapers venv are built with `uv venv --python 3.12` (whatsapp-cli is a SyntaxError on 3.11 despite its README's '3.10+'; scrapegraphai on 3.11 resolves the import-broken 1.76.0), strix with `uv tool install --python 3.12` (pip on 3.11 refuses it), headroom with `--python 3.13`. Scrapling is installed only as `scrapling[fetchers]` and the step then imports `scrapling.fetchers.Fetcher`; if that import fails the step FAILS with the curl_cffi reason instead of reporting a working install. scrapegraphai resolving to a 1.x version is treated as a failure, not a success.",
+    "evidence": "Real run: whatsapp-cli venv is CPython 3.12.11 and `whatsapp-cli --help` exits 0; the scrapers venv is 3.12, `from scrapling.fetchers import Fetcher` succeeds on scrapling 0.4.15, and `uv pip install scrapegraphai` into that 3.12 venv resolved 2.2.4 — exactly FR5b's recorded result. The rejection branches (scrapegraphai 1.x, a 3.11 venv, a bare scrapling without curl_cffi) were not triggered in the sandbox; they are reasoned from FR5b's results, not executed.",
+    "fix": "None. If a gate ever fires on the Mac the step fails loudly with its reason and the rest of the run continues.",
+    "halt": false
+  },
+  {
+    "id": "F-M3-05",
+    "severity": "high",
+    "area": "Testing honesty — what has never been executed",
+    "finding": "Neither script has ever run on macOS. Never executed anywhere: every `brew install` line (no Homebrew in the sandbox); `pipx install graphifyy` (no pipx); `uv tool install strix-agent`; `scrapling install` and `playwright install chromium` (the browser-download sub-steps); the whole non-Darwin guard's negative branch on a real Mac; the graphify/ponytail/plugin advisory text is print-only so it cannot fail. In mac-verify.sh, never executed: the launchctl block, the runnerctl block, the BSD `stat -f` branch of filemode(), the Darwin branch of the platform line, and the `--version` calls for tools the sandbox could not install (graphify, strix). MAC-SETUP.sh's own bash-3.2 dialect is asserted by a static scan, not by running under bash 3.2 — the sandbox only has bash 5.2.21.",
+    "evidence": "`playwright install chromium` DID run for real and failed (the sandbox proxy blocks the browser download); the step correctly reported FAILED and the script exited 1, so the failure path is exercised. Static scan for bash-4-only constructs (declare -A, mapfile/readarray, ${x^^}/${x,,}, &>>, ;;&, local -n, wait -n, =~, arrays, ${x:off:len}) returns zero hits in executable lines of both files; the only matches are the words inside the header comment. shellcheck -s bash is clean on both. Everything else above is untested by inspection, not by assertion.",
+    "fix": "Steven runs `./MAC-SETUP.sh --dry-run` on the Mac and reads it before the first real run, then runs it once with `--only` on a single cheap step (codeburn) before the full pass. Report anything that behaves differently and this file gets a second row.",
+    "halt": false
+  },
+  {
+    "id": "F-M3-06",
+    "severity": "high",
+    "area": "Bug found and fixed during testing",
+    "finding": "The first version of run()/run_sh() captured the command's exit status with `_rc=$?` after an `if cmd; then ... fi`. That reads the *if statement's* status, which is 0 on the else branch, so every failure returned 0 and was reported as INSTALLED. The sandbox run surfaced it: `npm install -g codeburn` failed with SELF_SIGNED_CERT_IN_CHAIN and the script printed 'INSTALLED codeburn'. Fixed to `_rc=0; \"$@\" ... || _rc=$?`, and the two npm steps plus headroom, graphify and strix now additionally verify the binary is actually present before claiming success.",
+    "evidence": "Log line '2026-09-22T13:36:43 RUN npm install -g codeburn / npm error code SELF_SIGNED_CERT_IN_CHAIN / EXIT 0'. After the fix, with the proxy CA supplied, the same step installed codeburn 0.9.25 and omniroute 3.8.50 for real and reported 'already present' on the re-run.",
+    "fix": "Fixed in MAC-SETUP.sh. The TLS failure itself was a sandbox artifact (the agent proxy), not something Steven's Mac will see.",
+    "halt": false
+  },
+  {
+    "id": "F-M3-07",
+    "severity": "medium",
+    "area": "Bug found and fixed during testing — mac-verify.sh",
+    "finding": "The file-mode check originally tried BSD `stat -f '%OLp'` first with a GNU `stat -c '%a'` fallback. On Linux `stat -f` means 'file SYSTEM status' and SUCCEEDS, so the fallback never fired and a filesystem report was printed where a permission mode belonged. Now GNU-first with an octal-digits validation, then BSD. Also fixed: a `while read` loop over launchctl output inside a pipeline ran in a subshell, so its FAIL counts could never reach the exit code — rewritten as a heredoc loop.",
+    "evidence": "Before: 'FAIL omniroute/.env mode   File: \"/...env\" ID: 493ea71b... Blocks: Total: 66053021'. After: 'ok omniroute/.env mode 600'.",
+    "fix": "Fixed. The BSD branch is still the untested one on the Mac (F-M3-05).",
+    "halt": false
+  },
+  {
+    "id": "F-M3-08",
+    "severity": "medium",
+    "area": "OmniRoute failover — install shape",
+    "finding": "FR5b's README says to copy claude-auto.sh and probe.sh to ~/.local/bin, but then drives the launcher as the command `claude-auto` while the probe LaunchAgent plist names `$HOME/.local/bin/probe.sh`. A verbatim copy of both would leave `claude-auto.sh`, which nothing calls. MAC-SETUP.sh resolves it explicitly: claude-auto.sh -> ~/.local/bin/claude-auto, probe.sh -> ~/.local/bin/probe.sh (the name the plist expects).",
+    "evidence": "integrations/omniroute-failover/README.md 'Install on the Mac' steps 3 and 4. Real run produced ~/.local/bin/claude-auto and ~/.local/bin/probe.sh, both byte-identical to the repo copies (cmp) and executable.",
+    "fix": "FR5b may want to state the two target names in its README step 3.",
+    "halt": false
+  },
+  {
+    "id": "F-M3-09",
+    "severity": "high",
+    "area": "HALT — the Mac already runs an older claude-auto",
+    "finding": "The inventory records an existing claude-auto on the Mac with an unverified client-data guard hook (F-E8-60), and FR5b's design replaces it rather than running beside it. MAC-SETUP.sh will not do that replacement: if ~/.local/bin/claude-auto exists and differs from the repo copy, it is left untouched and reported as NEEDS-STEVEN with 'diff it and replace it yourself'. Overwriting a live launcher that every runner task and the vanessa front door go through is a live-task edit.",
+    "evidence": "The step's cmp branch; not exercised in the sandbox (no pre-existing claude-auto there) — this is one of the untested branches in F-M3-05.",
+    "fix": "Steven diffs the two, replaces the old launcher himself, then runs the PII canary with the security steward before the runner is pointed at it.",
+    "halt": true
+  },
+  {
+    "id": "F-M3-10",
+    "severity": "high",
+    "area": "HALT — what the script will never do",
+    "finding": "Reported as NEEDS-STEVEN and never performed: installing Homebrew (the script refuses to pipe a network installer into a shell); `graphify install --platform claude` (it appends to ~/.claude/CLAUDE.md — a live-prompt edit); `headroom wrap claude` / `headroom mcp install`; any /plugin install (Claude Code Setup, Ponytail, prompts.chat); installing a skill globally; the omniroute probe LaunchAgent and re-pointing the vanessa launcher or the runner wrapper; creating or enabling vanessa-whatsapp-inbox; granting Full Disk Access or Accessibility; linking a WhatsApp number; any provider key value; Docker Desktop; Strix (install only on an explicit --only, never a run); and every target decision for Strix or a scraper.",
+    "evidence": "The --dry-run transcript lists 16 NEEDS-STEVEN items across the default run. No launchctl, no `claude plugin`, no `claude mcp add`, no task write and no artifact DB call appears anywhere in either script (grep).",
+    "fix": "Steven works the NEEDS-STEVEN list the installer prints, in order, then re-runs mac-verify.sh.",
+    "halt": true
+  },
+  {
+    "id": "F-M3-11",
+    "severity": "medium",
+    "area": "HALT — legal gate before any scraper runs",
+    "finding": "MAC-SETUP.sh installs scrapling and scrapegraphai but points them at nothing. Both steps print the standing gate: Alexandra's written terms + robots.txt check on every target before a wrapper is enabled, homes.com / SkySlope / zipForms named (F-FR5b-11), public pages only, never a login-walled page, never a client record. The installer has no target list and creates no scraping task.",
+    "evidence": "The two step bodies; the NEEDS-STEVEN lines in the dry-run transcript.",
+    "fix": "Compliance interpretation is Alexandra's draft and Steven's decision — unchanged by this work.",
+    "halt": true
+  },
+  {
+    "id": "F-M3-12",
+    "severity": "medium",
+    "area": "mac-verify.sh — scope and exit semantics",
+    "finding": "Read-only checker: prerequisites and their versions, the nine vendored skills, every tool MAC-SETUP.sh installs with its version, the whatsapp-cli and scrapers venv interpreter versions, the scrapling fetchers import and the scrapegraphai major version, each .env's existence and mode plus which NAMES are unset (never a value), `claude mcp list` (and a FAIL if the refused agent402 server is registered), launchd agents matching com.stevenshearrill with each one's last exit status, runnerctl status/list including whether vanessa-whatsapp-inbox exists, and a check that every refused item is absent. Exit 0 only when there is no FAIL and no NEEDS row; otherwise 1 with a per-item report. It creates, edits or deletes nothing of its own; the only footprint is the caches its read-only callees keep (uv's interpreter cache, Claude Code's ~/.claude.json and ~/.claude/).",
+    "evidence": "Run against a mostly-empty throwaway HOME: 17 ok, 5 FAIL, 6 NEEDS, exit 1, with each item named. A checksum of that HOME excluding those two tools' own caches is identical before and after the run.",
+    "fix": "Run it after every MAC-SETUP.sh pass and any time something looks wrong.",
+    "halt": false
+  },
+  {
+    "id": "F-M3-13",
+    "severity": "low",
+    "area": "PATH — npm globals and ~/.local/bin",
+    "finding": "FR5b's LaunchAgent plist puts $HOME/.npm-global/bin on PATH, i.e. this Mac uses a custom npm prefix; uv tool and pipx shims land in ~/.local/bin. Both are commonly absent from a non-login shell's PATH, which made presence checks re-install tools that were already there. Both scripts now look in ~/.local/bin and `npm root -g` before concluding a tool is missing, and mac-verify.sh reports 'installed but not on PATH' as NEEDS-STEVEN rather than as a broken install. Neither script edits a shell rc file to fix PATH — that is Steven's dotfile.",
+    "evidence": "First sandbox re-run re-ran `npm install -g codeburn` because the npm-global bin was not on PATH; after the fix the second run of the same steps reported 'already present codeburn 0.9.25 / omniroute 3.8.50'.",
+    "fix": "Steven adds ~/.local/bin to ~/.zprofile himself if the installer reports it missing.",
+    "halt": false
+  }
+]

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Vanessa's WhatsApp bridge (2026-09-28). A template: install-bridge.sh fills every __PLACEHOLDER__
+  with this Mac's real paths and loads it. Do not load this file as it stands.
+
+  KeepAlive restarts the bridge if it ever exits; RunAtLoad starts it at login. The bridge itself polls
+  OpenWA on 127.0.0.1 every 20 seconds and only starts Claude when Steven has written something.
+  WorkingDirectory is Steven's Repo so the brain's CLAUDE.md router loads for every answer.
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.stevenshearrill.vanessa-whatsapp-bridge</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>__PYTHON__</string>
+        <string>__BRIDGE__</string>
+        <string>--loop</string>
+        <string>--repo</string>
+        <string>__REPO__</string>
+        <string>--claude</string>
+        <string>__CLAUDE__</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>__REPO__</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>__PATH__</string>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>ThrottleInterval</key>
+    <integer>30</integer>
+
+    <key>StandardOutPath</key>
+    <string>__HOME__/Library/Logs/vanessa-whatsapp-bridge.out.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>__HOME__/Library/Logs/vanessa-whatsapp-bridge.out.log</string>
+</dict>
+</plist>

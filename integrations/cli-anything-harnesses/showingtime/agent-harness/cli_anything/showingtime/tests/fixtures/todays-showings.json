@@ -1,0 +1,148 @@
+{
+  "_synthetic": "All values invented for tests. No real person, listing or client.",
+  "url": "https://app.showingtime.com/appointments",
+  "tree": {
+    "name": "/",
+    "role": "document",
+    "children": [
+      {
+        "name": "navigation_1",
+        "role": "navigation",
+        "children": [
+          {
+            "name": "link_1",
+            "role": "link",
+            "text": "Home"
+          },
+          {
+            "name": "link_2",
+            "role": "link",
+            "text": "My Account"
+          },
+          {
+            "name": "link_3",
+            "role": "link",
+            "text": "Sign Out"
+          }
+        ]
+      },
+      {
+        "name": "main",
+        "role": "main",
+        "children": [
+          {
+            "name": "heading_1",
+            "role": "heading",
+            "text": "Today's Appointments"
+          },
+          {
+            "name": "listitem_1",
+            "role": "listitem",
+            "children": [
+              {
+                "name": "text_1",
+                "role": "text",
+                "text": "10:00 AM - 10:30 AM"
+              },
+              {
+                "name": "link_1",
+                "role": "link",
+                "text": "4127 Sample Grove Ct, Exampleton, CA 90000"
+              },
+              {
+                "name": "text_2",
+                "role": "text",
+                "text": "Showing \u00b7 Confirmed"
+              },
+              {
+                "name": "text_3",
+                "role": "text",
+                "text": "Showing Agent: Avery Fixture (Placeholder Realty)"
+              },
+              {
+                "name": "text_4",
+                "role": "text",
+                "text": "Listing Side"
+              }
+            ]
+          },
+          {
+            "name": "listitem_2",
+            "role": "listitem",
+            "children": [
+              {
+                "name": "text_1",
+                "role": "text",
+                "text": "1:15 PM - 1:45 PM"
+              },
+              {
+                "name": "link_1",
+                "role": "link",
+                "text": "88 Mock Meadow Ln, Exampleton, CA 90000"
+              },
+              {
+                "name": "text_2",
+                "role": "text",
+                "text": "Showing \u00b7 Pending"
+              },
+              {
+                "name": "text_3",
+                "role": "text",
+                "text": "Showing Agent: Jordan Synthetic (Example Homes Group)"
+              },
+              {
+                "name": "text_4",
+                "role": "text",
+                "text": "Buyer Side"
+              }
+            ]
+          },
+          {
+            "name": "listitem_3",
+            "role": "listitem",
+            "children": [
+              {
+                "name": "text_1",
+                "role": "text",
+                "text": "4:00 PM - 4:30 PM"
+              },
+              {
+                "name": "link_1",
+                "role": "link",
+                "text": "9015 Test Pattern Dr, Fictionville, CA 90001"
+              },
+              {
+                "name": "text_2",
+                "role": "text",
+                "text": "Inspection \u00b7 Cancelled"
+              },
+              {
+                "name": "text_3",
+                "role": "text",
+                "text": "Showing Agent: Riley Fixture (Sample Brokerage)"
+              },
+              {
+                "name": "text_4",
+                "role": "text",
+                "text": "Listing Side"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "expect": {
+    "kind": "list",
+    "count": 3,
+    "auth_state": "logged_in",
+    "row0": {
+      "time": "10:00 AM - 10:30 AM",
+      "address_contains": "Sample Grove",
+      "status": "Confirmed",
+      "appointment_type": "Showing",
+      "showing_agent_contains": "Avery Fixture",
+      "side": "Listing"
+    }
+  }
+}

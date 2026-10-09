@@ -1,0 +1,110 @@
+[
+  {
+    "id": "F-P6-01",
+    "severity": "info",
+    "area": "docs/INSTALL-COVERAGE.md — the headline result of auditing the list as a list",
+    "finding": "NOTHING on Steven's ~28-item install list is Mentioned-only. The category the audit existed to find is empty. Every item has either a numbered runbook section with real commands (MAC-INSTALL-tooling.md §1-§17, MAC-INSTALL-comms-data.md §1-§6), a real MAC-SETUP.sh step, an entry in REFUSED_LIST with a reason and a runtime guard, or an entry in DECLINED_LIST with a reason. This is a negative finding and it is the most important one: the prior engineers' work holds up when checked item by item against upstream. The real gaps are narrower and are recorded in F-P6-02 through F-P6-08.",
+    "evidence": "31-row matrix in docs/INSTALL-COVERAGE.md built 2026-09-22: 6 Dead, 6 Spec-only, 1 unverified, 5 Blocked-on-Steven, 9 Installable, 4 Working, 0 Mentioned-only. Every upstream probed this session by git ls-remote (anonymous) plus pypi.org/registry.npmjs.org JSON; MAC-SETUP.sh step list and mac-verify.sh check labels enumerated from the files themselves.",
+    "fix": "No action. Recorded so that the next person asking 'did anyone actually check the list?' gets a dated answer with its method attached instead of re-running the whole audit.",
+    "halt": false
+  },
+  {
+    "id": "F-P6-02",
+    "severity": "high",
+    "area": "integrations/google-drive-brain.md + the knowledge-fabric deck tile + brain-learn-daily / openjarvis task descriptions",
+    "finding": "The Google Drive half of the second-brain unification is Spec-only, but it is ADVERTISED AS LIVE in three places. The knowledge-fabric tile counts a 'Drive folder' store that reads 0 files on every sample; brain-learn-daily's description says it 'distills his personal Google Drive Second Brain folder'; openjarvis's says it 'indexes the Obsidian vault + redacted Drive brain folder'. No Drive credential, connector or client exists for any of them to use, and the redaction step those descriptions promise has never been built. Every other component Steven named in that request (Orca/Jarvis/Ruflo, Notion, Graphify, Obsidian, RAG, ECC) is real. This is the one place on the whole list where something reads as done, is not, and is actively reported green.",
+    "evidence": "integrations/google-drive-brain.md (written by V1, 2026-09-22) states NEVER ADDRESSED and tabulates the three false claims. Confirmed independently 2026-09-22: grep for 'google.?drive' across the repo returns 7 files, none of which is a connector, client or credential path; MAC-SETUP.sh has no gdrive step and creates no ~/.config/gdrive/.env; mac-verify.sh has no Drive check. recall-cache.md already lists 'a store the fabric count says is at 0 — e.g. the Drive folder' as an ALERT condition, so the alarm has been firing into a void.",
+    "fix": "Steven owes ONE decision, and both answers are cheap. (a) Wire it via path A in google-drive-brain.md: Google Drive for Desktop already mounts the folder at ~/Library/CloudStorage/GoogleDrive-<account>/…, so point the existing indexer at that path — no API, no OAuth, no new egress surface. Or (b) drop Drive from the fabric tile's store count and strike the Drive clause from both task descriptions. Do not leave it as-is: a 0-file store rendered as a live store is a false green on the deck.",
+    "halt": true
+  },
+  {
+    "id": "F-P6-03",
+    "severity": "medium",
+    "area": "mac-verify.sh:118-120 and MAC-SETUP.sh:357-359 — the hard-coded nine-skill list",
+    "finding": "Both scripts validate exactly nine vendored skills by name. .claude/skills/ holds 22. The thirteen unchecked ones include apple-health-notion and cli-anything-connectors, which are both directly on Steven's install list, plus zoho-crm-sync, lofty-crm-sync and vanessa-orchestrator. A skill whose frontmatter breaks does not load, and for these thirteen nothing would say so: mac-verify.sh would still exit 0. The list is hard-coded rather than derived from the directory, so every skill added since has silently landed outside the safety net.",
+    "evidence": "Ran mac-verify.sh's own frontmatter logic (name == directory, description non-empty, relative links resolve) against all 22 skills on 2026-09-22: ALL 22 PASS today, so nothing is broken right now — this is a coverage gap, not a live breakage. Unchecked: ai-ecosystem-backup, apple-health-notion, cli-anything-connectors, continuous-process-improvement, interview-me, lofty-crm-sync, loop-engineering, prompt-master, scale-growth-engine, skills-refresh, stress-test-sweep, vanessa-orchestrator, zoho-crm-sync.",
+    "fix": "One line in each file. mac-verify.sh:118-120 — replace the three-line `for s in code-review-and-quality … karpathy-coding-principles; do` with `for s in $(ls \"$REPO_DIR/.claude/skills\" 2>/dev/null | sort); do`. MAC-SETUP.sh:357-359 — same substitution, and reword the header at :355 and the message at :362 from 'the nine skills' / 'all nine vendored skills present' to a counted phrasing. NOT APPLIED BY P6: both files are owned by another engineer this session and are read-only here.",
+    "halt": false
+  },
+  {
+    "id": "F-P6-04",
+    "severity": "medium",
+    "area": "MAC-INSTALL-comms-data.md §1 — PyPI name collision for whatsapp-cli",
+    "finding": "`pip install whatsapp-cli` installs yausername/whatsapp-cli 0.1.3 ('CLI for whatsapp', MIT), an unrelated project — not marcelrgberger/whatsapp-cli 1.0.0, which is the one the WhatsApp channel depends on and which is not published to PyPI at all. This is the same class of trap as the Agent Reach one already documented in MAC-INSTALL-tooling.md §11, and it had never been written down. The installer itself is SAFE — MAC-SETUP.sh:435 installs from the clone's agent-harness directory, never by PyPI name — so nothing is currently broken; the risk is a future 'simplification' of a clone-plus-build into a one-line pip install.",
+    "evidence": "pypi.org/pypi/whatsapp-cli/json on 2026-09-22: version 0.1.3, author 'yausername', home_page https://github.com/yausername/whatsapp-cli. marcelrgberger/whatsapp-cli resolves live via git ls-remote but publishes no PyPI distribution under that name. MAC-SETUP.sh:429 clones the repo and :435 runs `uv pip install --python \"$WA_DIR/.venv/bin/python\" \"$WA_DIR/agent-harness\"` — a path, not a name.",
+    "fix": "CLOSED by P6: a **Trap** paragraph added to MAC-INSTALL-comms-data.md §1 immediately above the install block, matching the wording pattern §11 already uses for Agent Reach, and stating explicitly that the install must never be reduced to `pip install whatsapp-cli`.",
+    "halt": false
+  },
+  {
+    "id": "F-P6-05",
+    "severity": "medium",
+    "area": "Six Spec-only items — a runbook, but no installer and no checker",
+    "finding": "Ponytail, Screenshot-to-Code, Claude Code Setup, prompts.chat, the Rachnog Apple-Health alternative and (until this session) Laya each have a full runbook section with verified commands, but MAC-SETUP.sh only PRINTS their command via advisory()/plugin_advisory() and mac-verify.sh has no check for any of them. 'Documented' is not 'installed', and for these six there is also no way to answer 'did it land?' afterwards. Four of the six are held deliberately and correctly — Ponytail and Claude Code Setup on policy (live user-scope / live-dispatch edits, HALT-class), prompts.chat on value, Screenshot-to-Code on spend — so the absence of an installer is the intended state. The absence of any post-install check is not intended; it is simply missing.",
+    "evidence": "MAC-SETUP.sh advisory-only steps, current file (sha256 c708137a12a6…, 792 lines, read 2026-09-22 ~23:30): claude-code-setup :403-404, ponytail :737-738, prompts-chat :747-748, screenshot-to-code :753-754, agent-reach :760-761, laya :767-768. mac-verify.sh check labels enumerated in full — none of these six appears; the only optional-tool check present is `strix (optional)`.",
+    "fix": "No installer should be added for the four policy/value holds — that is Steven's decision, not a script's. What is worth adding is a cheap presence line per tool in mac-verify.sh's optional section, in the shape it already uses for Strix: `if have <cmd>; then ok \"<tool> (optional)\" \"$(ver <cmd> --version)\"; else info \"<tool> (optional)\" \"not installed — advisory only\"; fi`. That way `--only <name>` and the checker agree about reality. NOT APPLIED BY P6 (mac-verify.sh is read-only here).",
+    "halt": false
+  },
+  {
+    "id": "F-P6-06",
+    "severity": "low",
+    "area": "MAC-INSTALL-tooling.md §17 — Laya, re-proven in a fresh empty virtualenv",
+    "finding": "Laya's runbook recorded a 0.3.5 install and an `import laya` from an earlier session's warm prefix. Re-proven today from a genuinely empty venv: PyPI now serves 0.3.6, the install succeeds on CPython 3.11 (the runbook and MAC-SETUP.sh:768 both pin 3.12 — conservative, not required), and the upstream test suite is NOT a pytest suite: `pytest tests/` aborts with INTERNALERROR because every test file calls sys.exit() at module level. Run as plain scripts, 7 of 8 pass. The one failure is test_local_e2e.py, which wants model checkpoints nobody downloaded — expected, not a defect. The business verdict ('not now' — needs ~30k labelled questions and GPUs) is unchanged and was not revisited.",
+    "evidence": "Fresh venv 2026-09-22: `pip list` before install showed only pip 24.0 and setuptools 79.0.1. `pip install --no-cache-dir laya` exit 0 → laya 0.3.6, torch 2.14.0+cu130, transformers 5.17.0 on Python 3.11.15; `import laya` → 0.3.6. Scripts: test_criteria 34 passed, test_decision_model ok, test_download ok, test_email 11 passed, test_packaging ok, test_router ok, test_shortlist 81 passed, test_local_e2e rc=1 FileNotFoundError on '~/laya_models/laya-multilingual'. Upstream github.com/NandhaKishorM/laya is live with an Apache-2.0 LICENSE file. Disk measured 18G → 12G → 18G; venv and clone deleted.",
+    "fix": "CLOSED by P6: MAC-INSTALL-tooling.md §17 rewritten with the proven commands, the fresh-venv record, the 3.11-works note, the pytest gotcha, the per-script results and an explicit statement that nothing installs or checks it. Summary-table row 17 updated to 0.3.6. No MAC-SETUP.sh change proposed — advisory is the correct state for a 'not now' verdict.",
+    "halt": false
+  },
+  {
+    "id": "F-P6-07",
+    "severity": "low",
+    "area": "MAC-INSTALL-tooling.md §2 — Graphify version and licence drift",
+    "finding": "The runbook records graphifyy 0.9.65 and 'MIT (pyproject)'. PyPI today serves 0.9.66, and PyPI's own metadata for that release declares the licence as Apache-2.0, not MIT. Neither blocks the install — MAC-SETUP.sh:385 installs by name and takes whatever is current — but the repo now states a licence for an L4 store component that the package index contradicts, and Graphify is the one third-party tool whose output (graph.json, obsidian/) is meant to hold brain content.",
+    "evidence": "pypi.org/pypi/graphifyy/json on 2026-09-22: version 0.9.66, info.license 'Apache-2.0'. MAC-INSTALL-tooling.md §2 heading reads 'PyPI `graphifyy` 0.9.65 (CLI/skill still named `graphify`), MIT (pyproject)'. Both claims were correct when written; only the package moved.",
+    "fix": "At the next touch of MAC-INSTALL-tooling.md §2, change the heading to 0.9.66 and reconcile the licence — read the installed distribution's own METADATA on the Mac after `pipx install graphifyy` rather than trusting either source, since pyproject and PyPI disagree. Not corrected blind by P6: the honest answer needs the artifact, and asserting one of two conflicting sources would just move the error.",
+    "halt": false
+  },
+  {
+    "id": "F-P6-08",
+    "severity": "info",
+    "area": "Upstream reachability — the one genuinely dead URL, and the 403 trap that hides it",
+    "finding": "Exactly one upstream on Steven's list is gone: github.com/cheahjs/free-llm-api-resources returns HTTP 404. This confirms, by two independent methods and for the third time, what MAC-INSTALL-comms-data.md and F-V1-05 already recorded. Critically, NO installer line anywhere points at it — it was wanted only as a catalogue, MAC-SETUP.sh:52 carries it in DECLINED_LIST with the reason, and the need is covered by OmniRoute's FREE_TIERS.md plus freellmapi.co/models. There is no silent 6am failure waiting on this list. Every other named repo (21 of 22, plus zqxwce/homebrew-tap) resolves live. METHOD WARNING for whoever audits next: github.com HTML returns 403 for EVERY repo through this session's egress proxy, and api.github.com returns 403 too, so neither can distinguish 'gone' from 'blocked' — only git ls-remote (anonymous) and WebFetch could.",
+    "evidence": "2026-09-22, two methods: WebFetch github.com/cheahjs/free-llm-api-resources → 'The server returned HTTP 404 Not Found'; `git ls-remote https://github.com/cheahjs/free-llm-api-resources` → 'fatal: could not read Username for https://github.com' (GitHub's 404-for-anonymous signature). Contrast: all of normen/whatscli, marcelrgberger/whatsapp-cli, HKUDS/CLI-Anything, Lakr233/vphone-cli, MikeyPetrillo/Agent402, NandhaKishorM/laya, multica-ai/andrej-karpathy-skills, forrestchang/andrej-karpathy-skills, tashfeenahmed/freellmapi, framepipe-dev/media-inference-worker, Rachnog/alex-honchar-claude-for-life, abi/screenshot-to-code, Panniantong/agent-reach, DietrichGebert/ponytail, addyosmani/agent-skills, vercel-labs/skills, emilkowalski/skills, f/prompts.chat, anthropics/claude-plugins-official, usestrix/strix and zqxwce/homebrew-tap returned real refs. A plain curl of any of those GitHub HTML pages returned 403.",
+    "fix": "No action on the dead repo — it is already declined, already replaced, and nothing installs it. Record the method warning: a future coverage pass must not read a 403 from github.com as evidence of anything.",
+    "halt": false
+  },
+  {
+    "id": "F-P6-09",
+    "severity": "info",
+    "area": "Three install lines and two refusals checked against upstream source rather than assumed",
+    "finding": "Four claims in the runbooks that could only have been verified by reading the actual upstream were checked, and all four hold. (a) vphone-cli: MAC-INSTALL-tooling.md §15 gives `brew install zqxwce/tap/vphone-cli` while Steven's URL is Lakr233/vphone-cli — the different owner is NOT a defect, it is the repo's own README line 27, and zqxwce/homebrew-tap resolves live. (b) whatscli's rejection rests on its README saying it cannot be automated — README line 26 reads exactly 'No automation of messages, no sending of messages through shell commands'. (c) cli-anything-browser really is absent from PyPI, which is why the browser harness is vendored. (d) Agent402 is AGPL-3.0 at the server, matching §16. Two licence claims are weaker than stated: multica-ai/andrej-karpathy-skills and normen/whatscli both declare MIT in a README '## License' section but ship NO LICENSE file, and Rachnog/alex-honchar-claude-for-life has no licence of any kind.",
+    "evidence": "Shallow clones 2026-09-22, deleted after reading: Lakr233/vphone-cli README.md:27 `brew install zqxwce/tap/vphone-cli`, LICENSE = MIT; normen/whatscli README.md:26 and :121, no LICENSE file; multica-ai/andrej-karpathy-skills README.md:169-171 '## License / MIT', no LICENSE file anywhere in the tree; MikeyPetrillo/Agent402 LICENSE = GNU AFFERO GPL v3; NandhaKishorM/laya LICENSE = Apache 2.0. pypi.org/pypi/cli-anything-browser/json → HTTP 404 {\"message\":\"Not Found\"}, corroborating F-H1-02.",
+    "fix": "No correction needed to the install lines — they are upstream-accurate. Worth knowing before any redistribution that the Karpathy skill's MIT is a README declaration rather than a licence file, and that the Rachnog repo has no licence at all (MAC-INSTALL-comms-data.md §5 already says 'ask before copying a schema', which is the right instruction).",
+    "halt": false
+  },
+  {
+    "id": "F-P6-10",
+    "severity": "low",
+    "area": "MAC-INSTALL.md §8 — a coverage claim the runbooks do not actually meet",
+    "finding": "MAC-INSTALL.md §8 says 'Every third-party tool Steven asked about — Headroom, Graphify, CodeBurn, Strix, Agent Reach, the plugins and the nine vendored skills — has its own verified runbook: MAC-INSTALL-tooling.md.' Three items on Steven's list have no section in either MAC-INSTALL runbook: CLI-Anything (its runbook is the cli-anything-connectors skill plus integrations/mac-task-specs.md §4), the second-brain unification (integrations/google-drive-brain.md), and the Apple Health sync itself as opposed to the Rachnog alternative (the apple-health-notion skill plus integrations/apple-health-dashboard.md). Each IS documented, just not where §8 sends the reader. A person following §8 to find out how CLI-Anything installs finds nothing and may conclude it was never done.",
+    "evidence": "grep for 'cli.?anything' across MAC-INSTALL-tooling.md and MAC-INSTALL-comms-data.md returns no section heading; the 17 sections of the tooling runbook and the 6 of the comms runbook were enumerated against Steven's list on 2026-09-22. MAC-INSTALL.md §10's reconciliation table does carry a CLI-Anything row pointing at S1 and mac-task-specs.md §4, so the information exists one hop away.",
+    "fix": "CLOSED by P6 at the index level: MAC-INSTALL.md §8 now names the three items whose runbook lives elsewhere and points at each, and §10 gains a pointer to docs/INSTALL-COVERAGE.md as the list-level view. The runbook sections themselves were not moved — the skill is the right home for CLI-Anything.",
+    "halt": false
+  },
+  {
+    "id": "F-P6-11",
+    "severity": "medium",
+    "area": "Coverage of the whole list against the Mac — nothing here has ever executed on the target",
+    "finding": "Nine items are classified Installable, meaning a real installer line points at a live upstream. Not one of them has run on Steven's Mac. Every sandbox verification behind them — including the one this session added for Laya — was performed on Linux in a throwaway prefix, against a different CPU architecture, a different Python build channel and, for anything touching macOS APIs (whatsapp-cli's ChatStorage.sqlite read, the System Events send path, launchd, Full Disk Access), a platform where the code path cannot even be reached. The first real run of MAC-SETUP.sh is still the first real test of the entire list, and mac-verify.sh has correspondingly never produced a meaningful result.",
+    "evidence": "MAC-SETUP.sh header comment line 23: 'Not executed on a Mac by its author'. mac-verify.sh prints 'not macOS — the launchd, permission and WhatsApp checks cannot mean anything here' when uname is not Darwin. docs/findings/findings-M3.json enumerates line by line what is untested. P6's own Laya proof ran on Linux x86_64 CPython 3.11.15 and pulled CUDA wheels a Mac would never see (a Mac gets the CPU/MPS torch build).",
+    "fix": "On the Mac, in this order: `./MAC-SETUP.sh --dry-run` and read it in full; then `./MAC-SETUP.sh --only codeburn` to baseline the spend; then the rest without --only; then `./mac-verify.sh` and treat its first output as the real inventory. Expect failures — that is the point of the first run. Do not update any deck row to 'live' until mac-verify.sh has actually exited 0 for that tool.",
+    "halt": false
+  },
+  {
+    "id": "F-P6-12",
+    "severity": "info",
+    "area": "Audit method — MAC-SETUP.sh and mac-verify.sh changed during this audit",
+    "finding": "Both installer files were being edited by another engineer while this coverage pass ran. An early read of MAC-SETUP.sh showed STEPS_FR5B without a cli-anything-harnesses step and no reference to integrations/cli-anything-harnesses; a later read of the same file showed the step present at :586 and installing all eight in-repo packages in one uv command, with matching harness_check coverage at mac-verify.sh:280. A finding that the seven site harnesses were committed but never installed was drafted and then discarded as false. Every line number cited by P6 is therefore pinned to a specific file state and will drift.",
+    "evidence": "MAC-SETUP.sh sha256 c708137a12a6… 792 lines and mac-verify.sh sha256 c5aeea5a0a52… 413 lines, both read 2026-09-22 ~23:30; `git status --short` showed both as modified-not-committed throughout. The harnesses step did not exist in the first read of the same path earlier in the session.",
+    "fix": "When reading docs/INSTALL-COVERAGE.md later, re-resolve line numbers against the then-current files; the claims are durable, the coordinates are not. More generally: a coverage audit run concurrently with edits to the audited files must re-read before publishing, not trust its first pass.",
+    "halt": false
+  }
+]

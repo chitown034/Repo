@@ -1,0 +1,86 @@
+{
+  "_synthetic": "All values invented for tests. No real person, listing or client.",
+  "url": "https://www.homes.com/property/4127-sample-grove-ct-exampleton-ca-90000/id-000000000/",
+  "tree": {
+    "name": "/",
+    "role": "document",
+    "children": [
+      {
+        "name": "navigation_1",
+        "role": "navigation",
+        "children": [
+          {
+            "name": "link_1",
+            "role": "link",
+            "text": "Home"
+          },
+          {
+            "name": "link_2",
+            "role": "link",
+            "text": "Sign In"
+          },
+          {
+            "name": "link_3",
+            "role": "link",
+            "text": "Create Account"
+          }
+        ]
+      },
+      {
+        "name": "main",
+        "role": "main",
+        "children": [
+          {
+            "name": "heading_1",
+            "role": "heading",
+            "text": "4127 Sample Grove Ct, Exampleton, CA 90000"
+          },
+          {
+            "name": "text_1",
+            "role": "text",
+            "text": "$749,000"
+          },
+          {
+            "name": "text_2",
+            "role": "text",
+            "text": "3 bd \u00b7 2 ba \u00b7 1,850 sq ft \u00b7 For Sale"
+          },
+          {
+            "name": "region_1",
+            "role": "region",
+            "children": [
+              {
+                "name": "paragraph_1",
+                "role": "paragraph",
+                "text": "A completely invented single-story home used only as a test fixture. Nothing about it is real."
+              },
+              {
+                "name": "text_1",
+                "role": "text",
+                "text": "MLS # SYN-000001 \u00b7 12 days on market"
+              },
+              {
+                "name": "text_2",
+                "role": "text",
+                "text": "Listed by Avery Fixture, Placeholder Realty"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "expect": {
+    "kind": "record",
+    "auth_state": "not_required",
+    "record": {
+      "address_contains": "Sample Grove",
+      "price": "$749,000",
+      "beds": "3",
+      "mls_id": "SYN-000001",
+      "days_on_market": "12",
+      "listed_by_contains": "Avery Fixture",
+      "description_contains": "invented"
+    }
+  }
+}

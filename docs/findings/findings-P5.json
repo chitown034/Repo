@@ -1,0 +1,92 @@
+[
+ {
+  "id": "F-P5-01",
+  "severity": "high",
+  "area": "integrations/vanessa-voice-everywhere.md — the MP3 round trip through inkbox_media_stage",
+  "finding": "SETTLED, and the answer is yes. Inkbox accepts the encoding Seed Audio actually produces. inkbox_media_stage was called with real bytes taken out of the live clip (source_type base64, purpose imessage, content_type audio/mpeg) and returned {\"handle\":\"bcd3d4ca-bd57-48eb-a6a2-b2aa5673e5ff\",\"content_hash\":\"10a90267d0ec932d16beaee03d89c571ea5775addeed304b87530831dcb1889d\",\"content_type\":\"audio/mpeg\",\"size_bytes\":12284,\"expires_at\":\"2026-09-23T00:18:35Z\"}. size_bytes came back equal to the bytes sent, so the file arrived intact. Nothing was sent — inkbox_imessage_send was never called. HONEST LIMIT: the payload staged was a frame-aligned 12,284-byte / 3.02 s prefix of the clip (and a 956-byte slice for the prefix test), byte-identical encoder output in the same ID3v2.4 container with the same MPEG-2 Layer III frames and the same MIME type, but not the whole 108,284 bytes. The tool takes bytes inline as base64 and the 144,380-character string could not be reproduced faithfully through this session's output path, so a stage of the complete clip has NOT been executed and is not claimed.",
+  "evidence": "voiceReply_teststeve01_0 read from state on the Command Deck artifact 1624daae-d683-405a-971d-c5828dce0f8d (doc version 1, updatedAt 2026-09-12T22:01:52Z). Two inkbox_media_stage calls on 2026-09-22, both accepted; response quoted verbatim above.",
+  "fix": "Replaced the 'Whether Inkbox accepts the renderer's exact MP3 encoding' bullet in integrations/vanessa-voice-everywhere.md with a 'Measured on 2026-09-22' section carrying the verbatim response, and moved the un-staged full payload into 'What is still unverified'.",
+  "halt": false
+ },
+ {
+  "id": "F-P5-02",
+  "severity": "high",
+  "area": "voice-reply-render — the data URI the store actually holds vs what inkbox_media_stage accepts",
+  "finding": "The single most likely way a first run breaks, and it is now proven rather than assumed. The store does not hold bare base64: voiceReply_<id>_<n>.audio is a DATA URI, 'data:audio/mpeg;base64,...' (144,403 characters in the live clip). inkbox_media_stage rejects that outright. Single-variable test on 2026-09-22: the same 956 bytes were accepted as plain base64 (size_bytes 956) and refused with the prefix attached, verbatim 'invalid_base64: Invalid source.data base64. Remove the data URI prefix; supply only the base64-encoded file bytes.' A renderer that passes the stored field through unchanged fails every time, with an error that names base64 rather than the prefix as the problem.",
+  "evidence": "Two inkbox_media_stage calls differing only in the 23-character prefix: success {size_bytes:956} vs error invalid_base64 (invocation b2a595b5-d4ec-4c68-92f8-9b78084e3fd4). The stored shape was read from voiceReply_teststeve01_0: audio is a str of 144,403 chars beginning 'data:audio/mpeg;base64,'.",
+  "fix": "mac-task-specs.md §6b already says 'no data-URI prefix' — that line is now backed by a measurement instead of a reading of the schema. Added the trap, the verbatim error and the two other staging facts (handles expire in ~45 minutes; content_hash is an opaque token, size_bytes is the field to verify against) to the iMessage bullets in integrations/vanessa-voice-everywhere.md. No Mac prompt was edited.",
+  "halt": false
+ },
+ {
+  "id": "F-P5-03",
+  "severity": "medium",
+  "area": "The 10 MiB attachment limit vs what a real reply actually weighs",
+  "finding": "SETTLED, and the limit is nowhere near binding. The one real Seed Audio clip in the store decodes to 108,284 bytes (105.7 KiB) for 27.00 s of speech: ID3v2.4 tag of 188 bytes (TSSE Lavf63.1.101 plus a TXXX:AIGC label frame) then 1,125 MPEG-2 Layer III frames, 24 kHz, mono, 32.0 kbps average, no trailing bytes. That is 1.03 % of the 10,485,760-byte imessage cap — about 97x headroom. At 4,010 bytes per second of speech the cap is not reached until roughly 43 minutes of audio. The clip spoke 279 characters in 27.00 s, so the spec's own 700-character ceiling lands near 67 s, about 270 KB, 2.6 % of the cap. 'clip too large for imessage' should therefore be treated as a bug if it is ever recorded, not as an expected outcome. Also settled by the same read: a ~27 s reply is ONE part (of:1, part:0, voiceReplyStatus.parts:1), so the multi-part concatenation path may be rarer than the spec assumes.",
+  "evidence": "Local decode and MPEG frame walk of voiceReply_teststeve01_0.audio; durationSec 26.93 in the document, 27.00 s by frame count. Cap from the inkbox_media_stage schema: 600,000 bytes for sms, 10 MiB for imessage.",
+  "fix": "Recorded as measurement in integrations/vanessa-voice-everywhere.md, replacing the 'likely yes at ~30 s a piece, but it has never been measured' bullet.",
+  "halt": false
+ },
+ {
+  "id": "F-P5-04",
+  "severity": "high",
+  "area": "Discord voice delivery — deliver: \"discord\"",
+  "finding": "NO MEDIA SEND PATH EXISTS IN THIS SYSTEM. Three separate checks, all negative. (1) Inkbox exposes no Discord tool at all, and inkbox_channel_status_get reports only email, phone, iMessage and calling — so integrations/CONNECTIONS.md describing the Inkbox row as carrying 'iMessage +1 650-484-9720 and Discord #vanessa' is not supported by the Inkbox tool surface. (2) Composio's only Discord message-sending tool is DISCORDBOT_CREATE_MESSAGE, whose schema takes content, embeds, sticker_ids, components, allowed_mentions and message_reference and has NO file, attachment or audio parameter; DISCORDBOT_UPDATE_MESSAGE's attachments array only keeps or edits metadata on attachments that already exist. The discordbot toolkit also reports has_active_connection:false. (3) REMOTE-ACCESS.md routes Discord through a local bot on the Mac, which a cloud session cannot reach or test, so nothing about its file capability was assumed. The correct behaviour stays what mac-task-specs.md §6b already says: record delivered:{channel:'discord', ok:false, error:'channel not implemented'} and move on.",
+  "evidence": "inkbox_channel_status_get 2026-09-22: {agent_handle:'jasmine', email assigned, phone.assigned:false, imessage.enabled:true, calling_available:true, sms_available:false} — no discord key. COMPOSIO_SEARCH_TOOLS (search_strategy tool_search) for 'send a message with an audio file attachment to a discord channel' and 'upload a file or attachment to a discord channel' returned DISCORDBOT_CREATE_MESSAGE as the only primary tool for both, with the full input schema quoted above, and toolkit_connection_statuses has_active_connection:false.",
+  "fix": "Specified in integrations/vanessa-voice-everywhere.md under 'Discord and WhatsApp — specified, and the answer is no send path', including what WOULD make it possible: Discord's own POST /channels/{channel_id}/messages as multipart/form-data with a files[0] part and a payload_json part, under a bot token holding SEND_MESSAGES and ATTACH_FILES on that channel. Nothing was built, connected or attempted.",
+  "halt": true
+ },
+ {
+  "id": "F-P5-05",
+  "severity": "high",
+  "area": "WhatsApp voice delivery — deliver: \"whatsapp\"",
+  "finding": "NO SEND PATH FOR MEDIA, AND NO CHANNEL AT ALL YET. Two independent reasons. (1) The channel is not live: whatsapp-cli (marcelrgberger) is spec written 2026-09-22, Mac install pending, and needs a dedicated number, the desktop app logged in, Full Disk Access and Accessibility; normen/whatscli was evaluated and rejected because it does no sending from the shell and emulates a linked device. (2) The decisive one, which the repo had not drawn out: whatsapp-cli HAS NO ATTACHMENT VERB EVEN ONCE INSTALLED. Its verbs are monitor, message get, message send, chat find, chat list and session status, and message send is implemented by opening whatsapp://send?phone=...&text=... in the desktop app and pressing Return through System Events. That URL scheme carries a phone number and a text string and nothing else — there is no parameter in which an MP3 could travel. So installing the channel would give Vanessa WhatsApp text and still not give her WhatsApp voice.",
+  "evidence": "MAC-INSTALL-comms-data.md §1 (both clients cloned and read in full 2026-09-22) lists the verb set and the whatsapp://send mechanism verbatim; integrations/CONNECTIONS.md marks the row 'Spec written 2026-09-22 · Mac install pending · not yet live'. No new install or call was made in this session.",
+  "fix": "Specified in integrations/vanessa-voice-everywhere.md with the recommendation to leave WhatsApp text-only: Steven already gets the answer in text there and voice is additive by design. What WOULD make it possible is named — a GUI automation step attaching a file in the desktop app — together with why it is a HALT and fragile.",
+  "halt": true
+ },
+ {
+  "id": "F-P5-06",
+  "severity": "high",
+  "area": "Command Deck — window.cdVoiceChannelSummary() is called by nothing",
+  "finding": "The deck has a per-channel voice summary and renders it nowhere. cdVoiceChannelSummary is defined and assigned to window, and grep over the whole 4.3 MB page returns exactly two hits: the definition and the window assignment. No panel, no card and no diagnostic strip reads it, so a number that was written to tell the truth about off-dashboard voice tells it to nobody. Meanwhile the one voice line the page DOES render promises the full reply 'plays when it arrives' — true only at the dashboard, and silent about the fact that on iMessage she has always answered in text.",
+  "evidence": "grep -n 'cdVoiceChannelSummary|voiceChannelSummary' over the deck: lines 25132 (definition) and 25156 (window assignment) only. Runtime harness baseline against the live voice documents dumped #vanessaVoiceDiag and #steveVoiceDiag and neither said anything about delivery.",
+  "fix": "Wired it. voiceChannelLine() turns the summary into one sentence and voiceDiagHtml() now renders it into both voice-diag strips, as a span carrying the class vd-offdash so it can be read back by selector. Against the live state it now reads: 'deck 1 queued, 1 rendered (last 2026-09-12) — no item has ever asked to be delivered off the dashboard, so nothing has been sent on any channel; the only writer of the queue is this page'. Changed in the scratchpad deck only; /home/user/Repo was not touched and nothing was published.",
+  "halt": false
+ },
+ {
+  "id": "F-P5-07",
+  "severity": "high",
+  "area": "Command Deck — voiceChannelSummary counted a dormant channel as a broken one",
+  "finding": "Three separate honesty defects in the summary itself, all reachable from today's live state. (1) delivered:0 was ambiguous. Every item in the queue has no deliver field, so delivery was never requested — but the row said delivered:0 beside rendered:1, which reads as a delivery that was attempted and failed. There was no field that could tell 'nobody asked' from 'asked and it never arrived'. (2) The failure sentinel disagreed with the rest of the page: voiceRenderBar treats status 'failed' as the render failure, and voiceChannelSummary counted only status 'error', so a failed render was neither rendered nor failed here and vanished from the summary entirely. mac-task-specs.md §6b never names the failure value, so the renderer could legitimately write either. (3) failed double-counted: an item whose render failed AND whose send failed incremented the same counter twice, so failed could exceed queued.",
+  "evidence": "Live state read 2026-09-22: voiceReplyQueue holds one item, id teststeve01, dated 2026-09-12T22:01:44Z, with no channel and no deliver key; voiceReplyStatus.items.teststeve01 is {parts:1, renderedAt:2026-09-12T22:01:44Z, status:'ready'} with no delivered key. Both docs are at version 1 and have not been written since 2026-09-12.",
+  "fix": "Added deliverRequested and deliveryFailed to each row, made the render tally accept both 'failed' and 'error', and gave sends their own counter so one item can no longer count twice. Verified with the runtime harness against four stores — the live state, a successful imessage delivery, a failed send, and a render failure written with the 'failed' sentinel the old code ignored — all four PASS with 0 exceptions and 0 safeRun failures, each producing a different and correct sentence.",
+  "halt": false
+ },
+ {
+  "id": "F-P5-08",
+  "severity": "medium",
+  "area": "integrations/vanessa-voice-everywhere.md — the speakDiag row in the evidence table was stale",
+  "finding": "The spec's evidence table dated speakDiag 2026-09-16 with 'newest event clip-playing / prime'. Re-read on 2026-09-22 the document is at version 225 and every one of its 24 events is dated 2026-09-22, the newest at 18:03:41Z. More useful than the date: all ten clip-playing / clip-done pairs carry the detail \"Hi Steven, it's Vanessa. If you can hear\", which is the banked opener clip — NOT the queued reply. So the deck has been playing its bank today while the one rendered reply from 2026-09-12 sat unplayed. That strengthens the spec's case rather than weakening it: the voice machinery is in daily use, and the queue is what is dormant.",
+  "evidence": "state/speakDiag read 2026-09-22, version 225; 24 events, first 02:32:56.634Z and last 18:03:41.229Z, all on 2026-09-22; stages counted 10 clip-playing, 10 clip-done, 4 prime. Queue item text is a 279-character answer about the research queue, which matches none of them.",
+  "fix": "Evidence table row corrected in integrations/vanessa-voice-everywhere.md with the re-read date, the document version and what the events actually are.",
+  "halt": false
+ },
+ {
+  "id": "F-P5-09",
+  "severity": "medium",
+  "area": "Inkbox identity — SMS is not a fallback, and the identity is not named Vanessa",
+  "finding": "Two facts worth having before the first run. (1) phone.assigned is false and sms_available is false: there is no Inkbox phone number on this identity, so the sms purpose — and its much smaller 600,000-byte cap — is not available as a fallback if an iMessage attachment ever fails. The fallback is the text reply on the same thread, which already happens. (2) The connected Inkbox identity is the agent handle 'jasmine' with the address jasmine@inkboxmail.com, and the iMessage connect command is 'connect @jasmine' — not Vanessa. Nothing in the repo says so, and anyone reading REMOTE-ACCESS.md would expect the persona name. It is cosmetic for delivery but it is the name a recipient sees.",
+  "evidence": "inkbox_channel_status_get and inkbox_imessage_onboarding_get, both 2026-09-22: {agent_handle:'jasmine', email:{assigned:true,status:'active'}, phone:{assigned:false,number:null}, imessage:{enabled:true,dedicated_number:null,awaiting_inbound:[]}, calling_available:true, sms_available:false} and {connect_command:'connect @jasmine', ready:true}.",
+  "fix": "Recorded in the 'Channel readiness' paragraph of integrations/vanessa-voice-everywhere.md. No identity was changed — inkbox_identity_update was not called; renaming an agent identity is Steven's.",
+  "halt": false
+ },
+ {
+  "id": "F-P5-10",
+  "severity": "info",
+  "area": "Testing honesty — what was and was not executed",
+  "finding": "EXECUTED in this session: four reads of the live artifact store (voiceReplyQueue, voiceReplyStatus, voiceReply_teststeve01_0, speakDiag), all read-only; a local decode and MPEG frame walk of the clip; inkbox_channel_status_get and inkbox_imessage_onboarding_get; THREE inkbox_media_stage calls (12,284-byte prefix accepted, 956-byte slice accepted, the same 956 bytes with a data-URI prefix rejected); COMPOSIO_SEARCH_TOOLS twice for the Discord file question; and five runtime-harness runs against the deck (one baseline, four post-change stores), every one PASS with 0 exceptions and 0 safeRun failures. NOT EXECUTED, by me or anyone: inkbox_imessage_send — no message of any kind was sent on any channel; a stage of the full 108,284-byte clip; any WhatsApp or Discord call; any write to the artifact DB; any edit to a Mac task, a live system prompt or a published artifact; any publish of the deck. The deck edit lives in the scratchpad working copy only.",
+  "evidence": "Session transcript. The harness is invoked as 'node runtime-harness.js <html> --store <dir>' — note for the caller that its first argument is positional, not --file.",
+  "fix": "No fix — this is the disclosure.",
+  "halt": false
+ }
+]

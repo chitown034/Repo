@@ -1,0 +1,92 @@
+[
+  {
+    "id": "F-M2-01",
+    "severity": "high",
+    "area": "command-deck.html — PANEL_VERIFIED_AT (line ~21303) + the cfg.kind===\"ref\" branch of renderPanelStamps()",
+    "finding": "The map was a bare date per panel for all 33 panels and the renderer turned every one into a badge reading \"Verified <relative>\" with the tooltip \"Reference material, last verified end to end on 2026-09-22\". No engineer claimed a verified panel. The 2026-09-22 audit READ each panel and resolved its stamp; it did not re-source each panel's facts, so the badge asserted work nobody did.",
+    "evidence": "FR1-report.md, 'Verified today (end to end)': 'No whole panel qualifies: panel-property, panel-quantvue and panel-hedgefund all contain cards outside this assignment'. FR2-report.md: 'Verified panels (fully re-verified end to end today): none. ... please do not stamp a whole panel \"Verified 2026-09-22\" from it.' FR3-report.md, 'Verified panels': 'None end-to-end — I re-verified constants and cards, not whole panels, and will not claim otherwise.'",
+    "fix": "Rewrote PANEL_VERIFIED_AT to the STAMP-SCHEMA.md {at, scope, note} shape and the renderer to the three-way form copied from isaPanelStampRegistry() in isa/isa-portal.html. Result across the 33 entries: 0 full, 12 part, 21 review. Every 'part' note names the cards that were re-sourced AND what was left on an older date. 'review' gets no colour class (only st-fresh/st-live/st-stale/st-warn/st-you exist); 'part' under 30 days gets st-fresh.",
+    "halt": false
+  },
+  {
+    "id": "F-M2-02",
+    "severity": "high",
+    "area": "command-deck.html — panelStampRegistry() vs PANEL_VERIFIED_AT",
+    "finding": "PANEL_VERIFIED_AT is read ONLY by the cfg.kind===\"ref\" branch, and only three of the deck's 39 panels are kind:\"ref\" — panel-hedgefund, panel-tools and panel-tax. panel-tools has no map entry. So exactly TWO of the 33 entries (panel-hedgefund, panel-tax) ever reach a viewer's screen; the other 31 are inert. The honesty fix therefore lands on two badges, and 31 panels carry no verification badge at all — they show a 'You · …', 'Live · …' or 'Synced …' stamp taken from the data rather than from any human check.",
+    "evidence": "grep of command-deck.html: PANEL_VERIFIED_AT appears at its definition and at exactly one read site inside the ref branch. panelStampRegistry() marks only panel-hedgefund, panel-tools and panel-tax as kind:\"ref\". Runtime probe (harness, console.warn inside the renderer) printed exactly three ref-branch rows: panel-hedgefund 'Part-checked today', panel-tax 'Reviewed today', panel-tools 'Reference'.",
+    "fix": "Reported, not changed. Making the other 31 entries visible means changing each panel's kind in panelStampRegistry(), which changes what the badge means for user-maintained and document-fed panels — out of my region and a design call for the integrator/Steven. The map is now correct whichever way that call goes.",
+    "halt": false
+  },
+  {
+    "id": "F-M2-03",
+    "severity": "medium",
+    "area": "command-deck.html — renderPanelStamps() selector vs <section class=\"panel panel-pinned\" id=\"panel-vanessa\"> (line 1334)",
+    "finding": "renderPanelStamps() walks document.querySelectorAll(\".panel[data-page]\"). The panel-vanessa section is pinned and carries no data-page attribute, so it is never visited and can never receive a stamp — yet it has held a PANEL_VERIFIED_AT entry claiming 'Verified 2026-09-22'.",
+    "evidence": "Line 1334 reads '<section class=\"panel panel-pinned\" id=\"panel-vanessa\">' with no data-page; every other panel section carries data-page. renderPanelStamps() selector is '.panel[data-page]'.",
+    "fix": "Entry kept and set to scope 'review' (true for what the audit did), and the map's header comment now states that an entry for a non-ref panel is inert. Adding data-page to panel-vanessa would change layout/paging behaviour and is out of my region.",
+    "halt": false
+  },
+  {
+    "id": "F-M2-04",
+    "severity": "medium",
+    "area": "command-deck.html — panel-toolkit (section at line 6612)",
+    "finding": "panel-toolkit has a PANEL_VERIFIED_AT entry but NO entry in panelStampRegistry(), so it falls to the '!cfg' branch and renders a dash badge with class st-you. st-you is the colour reserved for sections the reader maintains by hand, which the AI-team toolkit panel is not — the badge miscategorises the panel as well as ignoring the map.",
+    "evidence": "panelStampRegistry() returns 38 keys; the file has 39 panel sections. Diffing the two sets leaves panel-toolkit as the only section with no cfg. The renderer's first branch is 'if (!cfg) { cls += \" st-you\"; txt = \"—\"; }'.",
+    "fix": "Reported, not changed — adding a registry entry decides what kind of thing the toolkit panel is, which is the integrator's call, and the map entry (now 'review') is already correct for whatever kind is chosen.",
+    "halt": false
+  },
+  {
+    "id": "F-M2-05",
+    "severity": "medium",
+    "area": "command-deck.html renderPanelStamps() ref branch — and the identical code in isa/isa-portal.html isaPanelStampRegistry()'s renderer",
+    "finding": "The schema's published renderer reads 'var vAt = vCfg ? vCfg.at : null'. If an entry is left as a bare date string from the old map, '.at' resolves to String.prototype.at — a real method since ES2022 — which is truthy. The badge then rendered 'Reviewed ' (empty relative) with the tooltip 'Read and stamp-resolved on function at() { [native code] };…' instead of falling back to the dateless 'Reference' badge. It does not throw, so nothing catches it.",
+    "evidence": "Injected '\"panel-tax\": \"2026-09-22\"' (bare string) into a copy and ran the harness with a probe in the renderer: STAMPROW|panel-tax|panel-stamp|Reviewed |Read and stamp-resolved on function at() { [native code] }; …",
+    "fix": "Fixed on the deck: 'var vAt = (vCfg && typeof vCfg.at === \"string\") ? vCfg.at : null'. Behaviour is byte-identical for every well-formed entry; only malformed entries change, and they now fall back to 'Reference'. Re-tested: bare string → Reference, object with no at → Reference, object with at but no scope → 'Reviewed 1mo ago' with no colour class. THE SAME BUG IS STILL LIVE IN isa/isa-portal.html — I was scoped to command-deck.html only and did not touch it. Integrator should apply the same one-line guard there so the two artifacts stay identical.",
+    "halt": false
+  },
+  {
+    "id": "F-M2-06",
+    "severity": "medium",
+    "area": "command-deck.html — panel-aiteam, card 'Automation & live-data connectivity — honest status', <p id=\"crmConnectivity\"> (line 4527)",
+    "finding": "The card sub read 'Verified 2026-09-22. Every line below is a checked fact, not a plan. Baseline 2026-09-12 · verified 2026-09-22.' Its own list contradicts it: the Lofty line says 'Whether that key is actually present cannot be verified from the cloud — a Local Bridge mcp/toolbox lofty request is queued', and the CLI-Anything line says 'Spec written this cycle; nothing has been installed on the Mac'. Only two items carry a 2026-09-22 check (the Zoho 403 at 08:17 UTC, the CLI-Anything hub README); the Composio catalog, the connected/not-connected list and the 'typically not available' assessment carry no date at all.",
+    "evidence": "Same card, lines 4530 and 4533 of command-deck.html, quoted above. The blanket 'Every line below is a checked fact' is falsified by two of its own eight bullets.",
+    "fix": "Rewritten to: 'Baseline 2026-09-12 · re-checked 2026-09-22, in part. What was actually re-checked on 2026-09-22 is named in the line that carries it — the Zoho 403 at 08:17 UTC and the CLI-Anything hub README. The rest is carried from the 2026-09-12 baseline, and the lines that could not be checked from a cloud session say so in their own words: whether the Lofty API key is on the Mac is unconfirmed, and nothing has been installed there. Status, not a plan — but not a fresh end-to-end check either.' No list item was altered.",
+    "halt": false
+  },
+  {
+    "id": "F-M2-07",
+    "severity": "low",
+    "area": "command-deck.html — execSyncRegistry() panel attributions (lines ~21571 and ~21578)",
+    "finding": "Two freshness-board rows name the wrong panel, so the board's jump-to-panel link lands somewhere the feed is not. add(\"Top performers\", TOP_PERFORMERS_SYNCED_AT, \"panel-quantvue\") — but topStocksRows / topEtfsRows / topDividendRows / topFundsRows and topPerformersSyncNote are all inside panel-personalaccounts (lines 3194–3229). add(\"Bears tracker\", BEARS_SYNCED_AT, \"panel-brief\") — but bearsSyncNote is inside panel-news (line 1558).",
+    "evidence": "Section-boundary scan of command-deck.html: panel-personalaccounts spans lines 3090–3265 and contains all four top-performer tbodies; panel-news spans 1515–1575 and contains the Chicago Bears card; panel-quantvue spans 1609–1979 and panel-brief 1406–1512, neither of which contains them.",
+    "fix": "Reported, not changed — the ledger belongs to the freshness engineers' region, not the stamp map. I used the true section boundaries (not the ledger) when deciding which panel each re-sourced card sits in, so the scopes in PANEL_VERIFIED_AT are unaffected: the Top performers work counts toward panel-personalaccounts and the Bears work toward panel-news.",
+    "halt": false
+  },
+  {
+    "id": "F-M2-08",
+    "severity": "low",
+    "area": "command-deck.html — PANEL_VERIFIED_AT coverage",
+    "finding": "Seven of the 39 panel sections have no PANEL_VERIFIED_AT entry: panel-james, panel-pto, panel-work, panel-tools, panel-kanban, panel-pedefense and panel-dreamempire. One of them, panel-pedefense, was demonstrably re-sourced today (PE_MOVES and DEFENSE_DISRUPTORS: four rows added, two updated) and would qualify as 'part' on the evidence.",
+    "evidence": "FR2-report.md constants table, PEDEFENSE_SYNCED_AT row: 'Added AEVEX–BlackSea (≤$650M, closing Sep), NP Aerospace–Iten (closed Sep 10), Lockheed JATM production deal, Crunchbase $14.6B YTD stat; updated Medallia … and Anduril …'. peMovesRows (line 5778) and defenseDisruptorRows (line 5799) are both inside panel-pedefense (5757–5833).",
+    "fix": "Not added. The brief scoped me to the 33 existing entries, and all seven of these panels are kind 'you'/'live'/'synced' or absent from the registry, so an entry would be inert today (see F-M2-02). Flagged for the integrator to add if panel kinds change.",
+    "halt": false
+  },
+  {
+    "id": "F-M2-09",
+    "severity": "info",
+    "area": "command-deck.html — over-claim sweep (strings asserting verification or freshness)",
+    "finding": "Swept for 'verified', 'end to end', 'as of', 'live', 'up to date', 'current', 'checked', 'All N fresh' and every one of the 98 occurrences of 2026-09-22. Two over-claims found and fixed (F-M2-01, F-M2-06). Everything else checked out: the per-row Live/Seed badges on mortgage rates and market cards already distinguish a refreshed row from the baked seed; the freshness card's 'Scheduler verified Sep 22, 2026' names exactly what was counted (46 of 50 routines enabled, 10 FAILED, 2 ABANDONED); the sessionReadSrc 'checked 2026-09-22' correctly describes reading the topPerformersLiveList feed, not the market; 'as of 2026-09-22' statements about Plaid keys, the subscriptions document, the Apple Health pipeline and the empty chat threads are all statements of absence that the audit did check. 'up to date' and 'All … fresh' returned zero hits.",
+    "evidence": "Greps recorded in the run: 'up to date|up-to-date' 0 hits; '[Aa]ll .{0,20}fresh' 0 hits; per-row provenance at line 9085 ('var prov = r.live ? badge green Live : badge gray Seed') and line 9131; line 1430 freshness card copy; line 10725 'No Plaid API keys are on file … checked 2026-09-22'.",
+    "fix": "Two fixed, the rest left alone as correct. Two borderline items left deliberately: CI_LOG_DEFAULT's dated 2026-09-07 entries say 'Verified end to end: the first message (Steven → ISA) was carried into the ISA Portal's store' and 'verified by hand today against va.gov'. Both are narrow, specific claims inside a changelog whose entries carry their own date, so 'today' reads as the entry's date; neither asserts anything about the present. FR2 independently re-confirmed the VA.gov figures on 2026-09-22, so the second is also still true.",
+    "halt": false
+  },
+  {
+    "id": "F-M2-10",
+    "severity": "info",
+    "area": "command-deck.html — tests",
+    "finding": "Harness clean after the change, with containers unchanged at 337 as required, and the renderer degrades correctly on malformed map entries.",
+    "evidence": "node tests/runtime-harness.js wt-m2-stamps/command-deck.html → verdict PASS · top level ran to completion · 0 exceptions · 0 safeRun failures · 0 shape warnings · 337 containers · missing ids 2 [vanessaMicBtn, steveMicBtn] (same as baseline, outside this region). node --check on the extracted inline script: OK. Malformed-injection run (bare string, object with no at, object with at but no scope): top level completed, 0 exceptions, 0 safeRun failures, 0 shape warnings, 337 containers; badges read Reference / Reference / 'Reviewed 1mo ago'. git diff --stat: 1 file, 81 insertions, 9 deletions, three hunks — line 4527 (crmConnectivity wording), line 21301 (the map), lines 21420/21423 (the renderer).",
+    "halt": false,
+    "fix": "No fix needed — this row records the test result. Container count was required to stay at 337 and did; the two missing ids are the pre-existing baseline pair and are outside this region."
+  }
+]

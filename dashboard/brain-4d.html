@@ -1,0 +1,406 @@
+<title>Brain 4D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: a full-bleed 3D field (the brain) with three glass instruments docked to its edges —
+   readout top-left, inspector right (bottom sheet on phones), time scrubber along the bottom. */
+:root {
+  color-scheme: dark;
+  --void: #0a0c13;
+  --void-2: #121624;
+  --ink: #e7eaf3;
+  --muted: #8f97ad;
+  --line: rgba(160, 175, 215, 0.16);
+  --glass: rgba(16, 20, 34, 0.78);
+  --now: #f3b94d;
+  --cool: #7fc8ff;
+  --good: #6fd39b;
+  --warn: #f3b94d;
+  --bad: #ff7a7a;
+  --f-display: "Syne", "Avenir Next", "Segoe UI", sans-serif;
+  --f-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-data: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --gutter: 16px;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; overflow: hidden; background: var(--void); color: var(--ink); font: 14px/1.45 var(--f-body); }
+#field { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
+#field.drag { cursor: grabbing; } #field.point { cursor: pointer; }
+.glass { background: var(--glass); border: 1px solid var(--line); border-radius: 16px; backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
+.sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--now); outline-offset: 2px; }
+
+#readout { position: fixed; top: calc(env(safe-area-inset-top, 0px) + var(--gutter)); left: var(--gutter); width: min(360px, calc(100vw - 2 * var(--gutter))); padding: 14px 16px 12px; z-index: 3; display: grid; gap: 10px; }
+#readout h1 { margin: 0; font: 700 26px/1 var(--f-display); letter-spacing: .01em; text-wrap: balance; }
+#readout h1 span { color: var(--now); }
+#readout .sub { margin: 0; color: var(--muted); font-size: 12.5px; }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.stat { padding: 6px 8px; border: 1px solid var(--line); border-radius: 10px; min-width: 0; }
+.stat b { display: block; font: 500 16px/1.2 var(--f-data); overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.stat i { font-style: normal; font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.stat.good b { color: var(--good); } .stat.warn b { color: var(--warn); } .stat.bad b { color: var(--bad); }
+#q { width: 100%; height: 40px; border-radius: 10px; border: 1px solid var(--line); background: var(--void-2); padding: 0 12px; }
+#q::placeholder { color: var(--muted); }
+#chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; min-height: 30px; padding: 3px 10px 3px 8px; border-radius: 999px; border: 1px solid var(--line); background: transparent; font-size: 12px; cursor: pointer; }
+.chip i { width: 9px; height: 9px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); }
+.chip[aria-pressed="false"] { opacity: .38; }
+#chipsWrap summary { cursor: pointer; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); list-style: none; min-height: 28px; display: flex; align-items: center; }
+#chipsWrap summary::after { content: "+"; margin-left: auto; } #chipsWrap[open] summary::after { content: "–"; }
+
+#inspector { position: fixed; top: calc(env(safe-area-inset-top, 0px) + var(--gutter)); right: var(--gutter); width: min(380px, calc(100vw - 2 * var(--gutter))); max-height: calc(100% - 150px); overflow: auto; padding: 18px 18px 16px; z-index: 4; }
+#inspector[hidden] { display: none !important; }
+#inspector .kind { display: flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+#inspector .kind i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px var(--c); }
+#inspector h2 { margin: 10px 32px 8px 0; font: 600 21px/1.2 var(--f-display); text-wrap: balance; overflow-wrap: anywhere; }
+#inspector p { margin: 0 0 12px; color: #c9cfdd; }
+#inspector dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0 0 12px; font-size: 12.5px; }
+#inspector dt { color: var(--muted); } #inspector dd { margin: 0; font-family: var(--f-data); font-size: 12px; overflow-wrap: anywhere; }
+#inspector h3 { margin: 4px 0 6px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+#rel { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 4px; }
+#rel button { width: 100%; text-align: left; border: 1px solid var(--line); background: transparent; border-radius: 8px; padding: 6px 8px; cursor: pointer; font-size: 12.5px; display: flex; gap: 8px; align-items: center; }
+#rel button:hover { border-color: rgba(200, 210, 240, .4); }
+#rel i { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { min-height: 36px; padding: 6px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--void-2); cursor: pointer; text-decoration: none; font-size: 12.5px; display: inline-flex; align-items: center; }
+.btn.primary { border-color: rgba(243, 185, 77, .55); color: var(--now); }
+#close { position: absolute; top: 8px; right: 8px; width: 40px; height: 40px; border: 0; background: none; font-size: 22px; color: var(--muted); cursor: pointer; }
+#copied { font-size: 12px; color: var(--good); min-height: 1em; margin-top: 6px; }
+
+#time { position: fixed; left: var(--gutter); right: var(--gutter); bottom: calc(env(safe-area-inset-bottom, 0px) + var(--gutter)); z-index: 3; padding: 10px 14px 12px; display: grid; grid-template-columns: auto 1fr auto; gap: 6px 14px; align-items: center; }
+#play { width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(243, 185, 77, .55); background: transparent; color: var(--now); cursor: pointer; display: grid; place-items: center; }
+#play svg { width: 16px; height: 16px; fill: currentColor; }
+#spark { width: 100%; height: 34px; display: block; }
+#when { font: 500 13px/1.2 var(--f-data); text-align: right; font-variant-numeric: tabular-nums; min-width: 92px; }
+#when small { display: block; color: var(--muted); font: 400 10.5px/1.3 var(--f-body); letter-spacing: .1em; text-transform: uppercase; }
+#t { grid-column: 2; width: 100%; accent-color: var(--now); margin: 0; }
+#tl { grid-column: 2; display: flex; justify-content: space-between; font: 10.5px var(--f-data); color: var(--muted); }
+#hint { position: fixed; right: var(--gutter); bottom: calc(env(safe-area-inset-bottom, 0px) + 112px); z-index: 2; padding: 8px 12px; font-size: 12px; color: var(--muted); }
+@media (max-width: 720px) {
+  #readout { padding: 10px 12px; gap: 8px; } #readout h1 { font-size: 21px; } .sub { display: none; }
+  #chipsWrap:not([open]) #chips { display: none; }
+  #inspector { top: auto; bottom: 0; right: 0; left: 0; width: 100%; max-height: 58%; border-radius: 18px 18px 0 0; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); }
+  #hint { display: none; }
+  #time { grid-template-columns: auto 1fr; } #when { grid-column: 1 / -1; text-align: left; display: flex; gap: 8px; align-items: baseline; } #t, #tl { grid-column: 1 / -1; } #spark { grid-column: 2; }
+}
+@media (prefers-reduced-motion: reduce) { #inspector { transition: none; } }
+</style>
+
+<canvas id="field" aria-label="A rotating 3D map of the second brain. A searchable list follows."></canvas>
+
+<section id="readout" class="glass" aria-label="Brain readout">
+  <h1>Brain <span>4D</span></h1>
+  <p class="sub">Every page of Steven's second brain in space, with time as the fourth dimension. Drag to turn, scroll or pinch to zoom, tap a point to open it.</p>
+  <div class="stats" id="stats"></div>
+  <label class="sr" for="q">Find a page</label>
+  <input id="q" type="search" placeholder="Find a page — VA, Lofty, Jarvis…" autocomplete="off" spellcheck="false" list="names">
+  <datalist id="names"></datalist>
+  <details id="chipsWrap" open><summary>Regions</summary><div id="chips"></div></details>
+</section>
+
+<aside id="inspector" class="glass" hidden aria-labelledby="iTitle">
+  <button id="close" aria-label="Close">×</button>
+  <div class="kind" id="iKind"><i></i><span></span></div>
+  <h2 id="iTitle"></h2>
+  <p id="iDesc"></p>
+  <dl id="iMeta"></dl>
+  <h3>Connected to</h3>
+  <ul id="rel"></ul>
+  <div class="actions">
+    <button class="btn primary" id="copyRecall">Copy the recall command</button>
+    <a class="btn" id="open" target="_blank" rel="noopener">Open the page</a>
+  </div>
+  <div id="copied" role="status" aria-live="polite"></div>
+  <pre class="sr" id="copyText"></pre>
+</aside>
+
+<div id="hint" class="glass">Drag to turn · scroll to zoom · drag the timeline to travel</div>
+
+<section id="time" class="glass" aria-label="Timeline">
+  <button id="play" aria-label="Play the brain growing"><svg viewBox="0 0 16 16" id="playIcon"><path d="M4 2l10 6-10 6z"/></svg></button>
+  <canvas id="spark" aria-hidden="true"></canvas>
+  <div id="when"><small>Showing</small><span id="whenTxt"></span></div>
+  <input id="t" type="range" min="0" max="1" step="1" aria-label="Date shown">
+  <div id="tl"><span id="t0"></span><span id="t1"></span></div>
+</section>
+
+<nav class="sr" aria-label="All pages"><ul id="srList"></ul></nav>
+
+<script>
+"use strict";
+const G = {"generated":"2026-10-09","files":109,"sections":988,"nodes":[{"id":"CLAUDE.md","t":"Second Brain — L1 Router","d":"Read this file in full. Read nothing else until the routing table sends you there.","g":"router","gl":"Router","lv":1,"s":7,"a":"2026-09-22","z":"2026-10-05"},{"id":"AGENTS.md","t":"AGENTS.md — Codex and other non-Claude agents","d":"Same brain, same rules. CLAUDE.md is the router and is authoritative; this file is its mirror for agents that do not…","g":"router","gl":"Router","lv":1,"s":5,"a":null,"z":null},{"id":"README.md","t":"Command Deck — AI ecosystem, second brain, and loop engineering","d":"This repository is the source of truth for Steven Shearrill's AI operation: the second brain that every agent reads…","g":"router","gl":"Router","lv":1,"s":4,"a":"2026-09-04","z":"2026-09-22"},{"id":"memory.md","t":"memory.md — auto-memory scaffold","d":"Auto-memory store for the Second Brain project — 47 dated entries as of 2026-10-09, near the 100-line cap.","g":"memory","gl":"Memory","lv":2,"s":6,"a":"2026-09-04","z":"2026-10-09"},{"id":"recall-cache.md","t":"Recall cache — TTL rules","d":"The cache is the cheapest part of the brain.","g":"router","gl":"Router","lv":1,"s":5,"a":"2026-09-13","z":"2026-09-23"},{"id":"OPTIMIZATION.md","t":"OPTIMIZATION — one recall path, one dispatch path","d":"Seven components sit under Vanessa. The failure mode is obvious and expensive: seven components become seven places to…","g":"router","gl":"Router","lv":1,"s":9,"a":"2026-09-13","z":"2026-10-09"},{"id":"REMOTE-ACCESS.md","t":"Remote access — every live path","d":"How Steven reaches the brain, and how the brain reaches him, from anywhere, on either Mac.","g":"other","gl":"Other","lv":2,"s":11,"a":"2026-09-04","z":"2026-10-05"},{"id":"MAC-INSTALL.md","t":"MAC-INSTALL — laying this tree onto the Mac","d":"Goal: the same brain on the Mac, where the vault, Jarvis, Graphify, Ruflo and claude-runner live.","g":"other","gl":"Other","lv":2,"s":13,"a":"2026-09-15","z":"2026-10-09"},{"id":"MAC-INSTALL-tooling.md","t":"MAC-INSTALL-tooling — the tools Steven asked about, verified where the sandbox allowed","d":"Companion to MAC-INSTALL.md. Nothing here is required for the brain.","g":"other","gl":"Other","lv":2,"s":19,"a":"2026-09-22","z":"2026-09-23"},{"id":"MAC-INSTALL-comms-data.md","t":"MAC-INSTALL — communications, data & model-routing tools (FR5b)","d":"Written 2026-09-22 in the cloud sandbox.","g":"other","gl":"Other","lv":2,"s":11,"a":"2026-08-26","z":"2026-09-23"},{"id":"context/about-me.md","t":"About Steven — L1 context","d":"One page. Facts only, all of them drawn from the Command Deck's own bio cards.","g":"context","gl":"Who & why","lv":2,"s":7,"a":"2026-10-09","z":"2026-10-09"},{"id":"context/decisions.md","t":"Decisions — append-only, dated","d":"One entry per decision. Append, never edit and never delete.","g":"context","gl":"Who & why","lv":2,"s":24,"a":"2026-06-30","z":"2026-10-07"},{"id":"projects/ai-team.md","t":"Project — AI Team","d":"The org of AI seats that runs behind Vanessa: on the Mac, 172 agents (tier 1: 17, tier 2: 96, tier 3: 59), 15 MCP…","g":"projects","gl":"Projects","lv":2,"s":4,"a":"2026-09-08","z":"2026-10-07"},{"id":"projects/command-deck.md","t":"Project — Command Deck","d":"Steven's single-file personal/business dashboard, published as a claude.ai artifact. ~4 MB, ~25.6k lines, one HTML…","g":"projects","gl":"Projects","lv":2,"s":4,"a":"2026-09-13","z":"2026-10-07"},{"id":"projects/isa-portal.md","t":"Project — ISA Portal","d":"A second published artifact, separate from the Command Deck: the working surface for the human ISA / EA and for the…","g":"projects","gl":"Projects","lv":2,"s":5,"a":"2026-09-13","z":"2026-10-08"},{"id":"projects/nonprofit.md","t":"Project — Active Duty Veteran & Hometown Hero Homeowners Club, Inc.","d":"Steven's 501(c)(3). Mission: getting active-duty, veteran and hometown-hero families into homes.","g":"projects","gl":"Projects","lv":2,"s":6,"a":"2026-09-21","z":"2026-09-22"},{"id":"projects/usc-pjmt-530.md","t":"Project — USC, PJMT 530","d":"Steven's current course in the USC MS Project Management program.","g":"projects","gl":"Projects","lv":2,"s":4,"a":"2026-08-28","z":"2026-09-27"},{"id":"wiki/ai-team/index.md","t":"Wiki — AI team","d":"Who owns what, which model a seat runs on, what it may decide on its own.","g":"aiteam","gl":"AI team","lv":2,"s":5,"a":"2026-10-05","z":"2026-10-07"},{"id":"wiki/ai-team/mentors-and-benches.md","t":"Mentors and benches","d":"The four mentor seats (on call through Vanessa, not inside the executive dispatch chain) and what a \"ruflo bench\"…","g":"aiteam","gl":"AI team","lv":2,"s":5,"a":"2026-10-07","z":"2026-10-07"},{"id":"wiki/ai-team/model-tiering-dispatch.md","t":"Model tiering and dispatch","d":"Which model each seat runs on, and the rules that bound how many run at once — Steven's decision, recorded 2026-09-22.","g":"aiteam","gl":"AI team","lv":2,"s":7,"a":"2026-09-16","z":"2026-10-05"},{"id":"wiki/ai-team/org-chart.md","t":"AI Team org chart","d":"The full seat map behind Vanessa: Steven at the top, then Steve (digital twin) / Vanessa (Chief of Staff) / the human…","g":"aiteam","gl":"AI team","lv":2,"s":6,"a":"2026-09-16","z":"2026-10-09"},{"id":"wiki/ai-team/tool-integration-status.md","t":"Tool & integration status","d":"What is actually connected, installed, or merely proposed — read this before assuming a seat can do something because…","g":"aiteam","gl":"AI team","lv":2,"s":12,"a":"2026-10-05","z":"2026-10-09"},{"id":"wiki/clients/index.md","t":"Wiki — Clients — FULL CONTEXT","d":"Every page in this directory is FULL CONTEXT.","g":"ops","gl":"Dashboard ops","lv":2,"s":5,"a":null,"z":null},{"id":"wiki/dashboard-ops/connections.md","t":"Is a connector, CRM or integration actually working","d":"Is a connector, CRM or integration actually working right now, and what does Steven still need to do about it.","g":"ops","gl":"Dashboard ops","lv":2,"s":1,"a":"2026-09-28","z":"2026-09-28"},{"id":"wiki/dashboard-ops/db-docs.md","t":"What each state doc means and who writes it","d":"What each state doc means and who writes it.","g":"ops","gl":"Dashboard ops","lv":2,"s":3,"a":"2026-09-22","z":"2026-10-05"},{"id":"wiki/dashboard-ops/index.md","t":"Wiki — Dashboard ops","d":"How the Command Deck, its documents and its automations actually behave.","g":"ops","gl":"Dashboard ops","lv":2,"s":5,"a":"2026-09-04","z":"2026-10-09"},{"id":"wiki/dashboard-ops/panel-map.md","t":"Panel map","d":"The Command Deck's fifteen tabs, what each one shows, and which documents feed it — use this to find where a live…","g":"ops","gl":"Dashboard ops","lv":2,"s":6,"a":null,"z":null},{"id":"wiki/dashboard-ops/routine-catalog.md","t":"Routine catalog","d":"The cloud routines (claude.ai/code routines) — what they can and cannot write, and the specific belief about them that…","g":"ops","gl":"Dashboard ops","lv":2,"s":7,"a":null,"z":null},{"id":"wiki/dashboard-ops/task-catalog.md","t":"Task catalog","d":"The Mac's scheduled tasks under claude-runner — headless, pre-approved tools — and how to read whether one actually…","g":"ops","gl":"Dashboard ops","lv":2,"s":7,"a":null,"z":null},{"id":"wiki/index.md","t":"Wiki — L2 index","d":"Five topics. The index line is the product.","g":"ops","gl":"Dashboard ops","lv":2,"s":5,"a":null,"z":null},{"id":"wiki/mortgage-programs/disclosure-timing.md","t":"Disclosure timing — TRID, RESPA, Reg Z","d":"The TRID/RESPA/Reg Z timing gates that govern every mortgage file, plus the parallel California real-estate disclosure…","g":"mortgage","gl":"Mortgage wiki","lv":2,"s":8,"a":null,"z":null},{"id":"wiki/mortgage-programs/fha-usda.md","t":"FHA and USDA","d":"Where FHA and USDA beat VA for a given borrower, and the specific mechanics that make each one work.","g":"mortgage","gl":"Mortgage wiki","lv":2,"s":5,"a":null,"z":null},{"id":"wiki/mortgage-programs/index.md","t":"Wiki — Mortgage programs","d":"Loan programs, guidelines, VA mechanics, eligibility, disclosure timing.","g":"mortgage","gl":"Mortgage wiki","lv":2,"s":5,"a":null,"z":null},{"id":"wiki/mortgage-programs/lender-directory-notes.md","t":"Lender directory notes","d":"How the deck's lender directory groups in practice — by what each lender actually does well — plus the verification…","g":"mortgage","gl":"Mortgage wiki","lv":2,"s":8,"a":null,"z":null},{"id":"wiki/mortgage-programs/program-selection.md","t":"Program selection","d":"The decision tree across the deck's loan-program cards, grouped by category, so a scenario routes to the right program…","g":"mortgage","gl":"Mortgage wiki","lv":2,"s":6,"a":null,"z":null},{"id":"wiki/mortgage-programs/va-affordability.md","t":"VA affordability","d":"How a VA file actually qualifies on residual income rather than DTI alone: the Six-Step Pre-Approval Analysis, BAH/BAS…","g":"mortgage","gl":"Mortgage wiki","lv":2,"s":6,"a":null,"z":null},{"id":"wiki/mortgage-programs/va-eligibility.md","t":"VA eligibility","d":"VA entitlement, COE mechanics, restoration, second-tier (two-VA-loan) use, and funding-fee tiers and exemptions — the…","g":"mortgage","gl":"Mortgage wiki","lv":2,"s":6,"a":null,"z":null},{"id":"wiki/real-estate-playbooks/buyer-process.md","t":"Buyer process","d":"The buyer-side path from lead intake through matching, showings, offer, earnest money, contingencies, and close — the…","g":"realestate","gl":"Real-estate wiki","lv":2,"s":7,"a":null,"z":null},{"id":"wiki/real-estate-playbooks/index.md","t":"Wiki — Real estate playbooks","d":"Listing, buyer, transaction and showing process.","g":"realestate","gl":"Real-estate wiki","lv":2,"s":4,"a":null,"z":null},{"id":"wiki/real-estate-playbooks/listing-process.md","t":"Listing process","d":"The seller-side path from intake through pricing, prep, launch, offer management, and close — Marguerite's (Listing…","g":"realestate","gl":"Real-estate wiki","lv":2,"s":8,"a":null,"z":null},{"id":"wiki/real-estate-playbooks/military-relocation.md","t":"Military relocation","d":"PCS-driven transactions: the ownership-versus-rent question, base-area intelligence, and the dual-licensed referral…","g":"realestate","gl":"Real-estate wiki","lv":2,"s":6,"a":null,"z":null},{"id":"wiki/real-estate-playbooks/referral-reciprocity.md","t":"Referral & reciprocity","d":"How realtor reciprocal referrals, the referral-partner ledger, and LPT's recruiting/revenue-share pipeline actually…","g":"realestate","gl":"Real-estate wiki","lv":2,"s":7,"a":null,"z":null},{"id":"wiki/real-estate-playbooks/showing-operations.md","t":"Showing operations","d":"How a showing actually gets booked: itinerary building, the ShowingTime-vs-Showami choice, and feedback capture — plus…","g":"realestate","gl":"Real-estate wiki","lv":2,"s":7,"a":"2026-09-22","z":"2026-09-22"},{"id":"wiki/real-estate-playbooks/transaction-stages.md","t":"Transaction stages","d":"Stage definitions on both sides of a deal — the real-estate closing checklist and the parallel mortgage-file stage…","g":"realestate","gl":"Real-estate wiki","lv":2,"s":6,"a":null,"z":null},{"id":"references/drive-second-brain-notes.md","t":"Drive Second Brain notes (screened)","d":"Steven's Notion Second Brain rows as exported to Google Drive, synced 2026-09-22.","g":"sources","gl":"Sources","lv":2,"s":54,"a":"2026-06-12","z":"2026-09-22"},{"id":"references/google-drive.md","t":"Google Drive — what the brain can reach (catalogue + screened notes)","d":"As of 2026-10-09. Read-only, through the claude.ai Google Drive connector on Steven's own sign-in.","g":"sources","gl":"Sources","lv":2,"s":3,"a":"2026-09-22","z":"2026-10-09"},{"id":"references/index.md","t":"References — the register of source documents","d":"This is a register, not a library. It records what a source is, where it lives and how current it is.","g":"sources","gl":"Sources","lv":2,"s":8,"a":"2026-08-28","z":"2026-10-05"},{"id":"references/memory-projects.md","t":"Memory projects — what's proven, what to steal, what to skip","d":"Principle 2 of Steven's guide: stand on proven shoulders before inventing a mechanism this repo already needs.","g":"sources","gl":"Sources","lv":2,"s":6,"a":null,"z":null},{"id":"memory/ai-team.md","t":"Memory — ai-team","d":"Dated facts about ai-team, one line each, appended by bin/brain remember --topic ai-team.","g":"memory","gl":"Memory","lv":2,"s":2,"a":"2026-10-09","z":"2026-10-09"},{"id":"knowledge-graph/README.md","t":"L4 — Knowledge graph","d":"The graph answers \"how do these connect\".","g":"graph","gl":"Knowledge graph","lv":4,"s":6,"a":"2026-09-13","z":"2026-09-22"},{"id":"knowledge-graph/schema.md","t":"Knowledge graph — schema","d":"Small, closed vocabularies. A graph with an open vocabulary is a graph nobody can query.","g":"graph","gl":"Knowledge graph","lv":4,"s":5,"a":"2026-09-22","z":"2026-09-22"},{"id":"vector-index/README.md","t":"L3 — Semantic search","d":"Semantic search is for high-volume corpora only.","g":"vector","gl":"Vector search","lv":3,"s":7,"a":"2026-09-13","z":"2026-09-23"},{"id":"always-on/README.md","t":"L5 — Always-on","d":"What keeps the brain current while nobody is watching.","g":"alwayson","gl":"Always-on","lv":5,"s":13,"a":"2026-09-12","z":"2026-10-08"},{"id":"routines/backup-watchdog-cloud.md","t":"Routine spec — Backup Watchdog (cloud)","d":"A cheap cloud routine that answers one question: is Steven's backup actually current?","g":"alwayson","gl":"Always-on","lv":5,"s":8,"a":"2026-09-14","z":"2026-09-22"},{"id":"routines/cloud-routine-repairs.md","t":"Cloud routine repairs — what was changed, and what proves it","d":"Written 2026-09-23 by R1 (Reliability). Every routine state quoted here was read live from list_triggers at 2026-09-23…","g":"alwayson","gl":"Always-on","lv":5,"s":34,"a":"2026-09-06","z":"2026-10-01"},{"id":"routines/fub-removal-2026-09-24.md","t":"Follow Up Boss removed — what was done, and the three edits only Steven can make","d":"Steven: \"remove FUB aka Follow Up Boss from all routines, and everything.","g":"alwayson","gl":"Always-on","lv":5,"s":9,"a":"2026-09-13","z":"2026-09-24"},{"id":"routines/isa-escalation-ladder.md","t":"ISA line — reply check & escalation ladder (cloud)","d":"trig_01J9xuWgAuUCHATtpLivDkgp · cron 30 14 * * 2-6 (weekdays 7:30 AM PT) · created 2026-09-22 · needs no connectors","g":"alwayson","gl":"Always-on","lv":5,"s":6,"a":"2026-09-13","z":"2026-09-22"},{"id":"routines/mac-task-repairs.md","t":"Mac task & cloud routine repairs — paste-ready","d":"Written 2026-09-22 by W2 (Reliability). Every document state quoted here was read live from the Command Deck store…","g":"alwayson","gl":"Always-on","lv":5,"s":48,"a":"2026-09-12","z":"2026-10-01"},{"id":"routines/parallel-csuite-task-cycle.md","t":"Routine spec — Parallel C-Suite Task Cycle","d":"Drives the vanessa-orchestrator skill: intake → decompose → delegate → concurrent execution (≤8) → conflict resolution…","g":"alwayson","gl":"Always-on","lv":5,"s":8,"a":"2026-09-18","z":"2026-10-05"},{"id":"routines/pipeline-sync-live.md","t":"Command Deck ↔ ISA Portal — Pipeline Sync (live, writes)","d":"trig_01M5zR1Po44gnHvTwA9ogZaB · cron 0 4,10,16,22 * * * (UTC) · created 2026-09-22 · needs no connectors, because…","g":"alwayson","gl":"Always-on","lv":5,"s":4,"a":"2026-09-22","z":"2026-09-22"},{"id":"routines/strava-wrap-guard.md","t":"Command Deck — Strava wrapper guard — cloud routine","d":"Created 2026-09-22 23:27 UTC by the orchestrator, as a stopgap.","g":"alwayson","gl":"Always-on","lv":5,"s":6,"a":"2026-09-22","z":"2026-09-22"},{"id":"routines/weekly-loop.md","t":"Routine spec — Weekly Loop (loop-engineering v2)","d":"Drives the loop-engineering skill and the sub-skills it calls: prompt-master, continuous-process-improvement…","g":"alwayson","gl":"Always-on","lv":5,"s":9,"a":"2026-09-15","z":"2026-10-05"},{"id":"docs/CAIO-DISRUPTION-BRIEF.md","t":"CAIO Disruption Scan & Disruptive Recommendation Brief — Week of 2026-09-22","d":"Nadia (CAIO, outward disruptor) · run by E9 · Baseline 2026-09-12 · verified 2026-09-22 Reports to: Steven · cc…","g":"loop","gl":"Loop & findings","lv":5,"s":29,"a":"2026-01-22","z":"2026-09-28"},{"id":"docs/CLOUD-WRITE-ARCHITECTURE.md","t":"Cloud routines can write the artifact database","d":"Settled 2026-09-22 by measurement. Finding F-INT-08.","g":"loop","gl":"Loop & findings","lv":5,"s":6,"a":"2026-09-04","z":"2026-09-23"},{"id":"docs/ENGINEERING-BRIEF.md","t":"COMMAND DECK — ENGINEERING BRIEF (Cycle 6, executed 2026-09-22)","d":"You are one engineer on a parallel team refreshing Steven Shearrill's \"Command Deck\" — a single-file (4 MB, ~25.6k…","g":"loop","gl":"Loop & findings","lv":5,"s":21,"a":"2026-06-30","z":"2026-10-05"},{"id":"docs/INSTALL-COVERAGE.md","t":"INSTALL-COVERAGE — every tool Steven asked for, as a list, checked as a list","d":"Built 2026-09-22 by P6 (Install Coverage).","g":"loop","gl":"Loop & findings","lv":5,"s":11,"a":"2026-09-22","z":"2026-10-09"},{"id":"docs/INTEGRATOR-TODO.md","t":"Integrator pass — items routed to me by the engineers","d":"Applied after all branches merge, before the splice and republish.","g":"loop","gl":"Loop & findings","lv":5,"s":5,"a":"2026-09-13","z":"2026-09-23"},{"id":"docs/ISA-SEAT-DECISION.md","t":"ISA seat — decision packet (2026-09-22)","d":"Nothing below is a staffing decision made by an agent.","g":"loop","gl":"Loop & findings","lv":5,"s":6,"a":"2026-09-07","z":"2026-09-25"},{"id":"docs/MASTER-FINDINGS.md","t":"Master Findings Table — Cycle 6","d":"2026-09-12 04:47 UTC · Audited and remediated: 2026-09-22 · Findings: 285 (cycle 6) + 313 (2026-09-22 engineering…","g":"loop","gl":"Loop & findings","lv":5,"s":13,"a":"2026-05-21","z":"2026-10-02"},{"id":"docs/NEEDS-STEVEN-R1.append.md","t":"Needs Steven — R1 append (cloud routines, 2026-09-23 ~03:05 UTC)","d":"From the R1 reliability pass over the failing cloud routines.","g":"loop","gl":"Loop & findings","lv":5,"s":5,"a":"2026-09-18","z":"2026-09-27"},{"id":"docs/NEEDS-STEVEN-R2.append.md","t":"Needs Steven — R2 append (2026-09-23)","d":"Written by the Findings Closer after re-verifying every recorded-open finding against the repo as it stands, the live…","g":"loop","gl":"Loop & findings","lv":5,"s":11,"a":"2026-09-13","z":"2026-09-23"},{"id":"docs/NEEDS-STEVEN-R3.append.md","t":"NEEDS-STEVEN — R3 append (Mac Platform Engineer, 2026-09-23)","d":"Append to docs/NEEDS-STEVEN.md. Three items.","g":"loop","gl":"Loop & findings","lv":5,"s":5,"a":"2026-09-14","z":"2026-10-02"},{"id":"docs/NEEDS-STEVEN-R4.append.md","t":"NEEDS-STEVEN — R4 append (Voice Channel Engineer, 2026-09-23)","d":"Append to docs/NEEDS-STEVEN.md. Three items.","g":"loop","gl":"Loop & findings","lv":5,"s":4,"a":"2026-09-23","z":"2026-09-23"},{"id":"docs/NEEDS-STEVEN.md","t":"Needs Steven — the one list (2026-09-22)","d":"Written 2026-09-22 ~15:15 UTC by X2 from all 610 findings (cycle 6 plus today's engineering pass; the full table is…","g":"loop","gl":"Loop & findings","lv":5,"s":15,"a":"2026-02-28","z":"2026-10-09"},{"id":"docs/OPEN-FINDINGS.md","t":"Open findings — the real remaining surface","d":"Produced 2026-09-23 by the Findings Closer.","g":"loop","gl":"Loop & findings","lv":5,"s":14,"a":"2026-09-13","z":"2026-09-30"},{"id":"docs/ROUTINE-SCHEDULE-FIX.md","t":"Cloud routine schedule — the collision fix","d":"2026-09-22 · Owner: Reliability Engineer · Finding: F-INT-02 (P1, effort S)","g":"loop","gl":"Loop & findings","lv":5,"s":5,"a":"2026-09-17","z":"2026-09-22"},{"id":"docs/SECOND-MAC-SETUP.md","t":"Both Macs — setup runbook","d":"Corrected 2026-09-24 (R6): this file used to bring a second Mac up as a permanent, lease-blocked standby — install…","g":"loop","gl":"Loop & findings","lv":5,"s":20,"a":"2026-09-22","z":"2026-10-05"},{"id":"docs/SETUP-RUNBOOK.md","t":"SETUP-RUNBOOK — what only Steven can do","d":"The browsable version, with tick-boxes that sync across your devices, is the artifact…","g":"loop","gl":"Loop & findings","lv":5,"s":46,"a":"2026-05-21","z":"2026-10-09"},{"id":"docs/STEVEN-STEPS.md","t":"Steven's steps — everything still waiting on you, in order (2026-10-09)","d":"Same list as the Action Desk page (https://claude.ai/artifact/9S8G2ZhhqP1iUsPZrPsmRn), which has a button per step.","g":"loop","gl":"Loop & findings","lv":5,"s":8,"a":"2026-10-09","z":"2026-10-09"},{"id":"docs/STRESS-TEST-REPORT.md","t":"Command Deck — Stress Test Report","d":"E7 — Stress Test Engineer · Cycle: Loop Cycle 6 · 2026-09-22 · Run: 2026-09-22T09:46:19.463Z Baseline 2026-09-12 ·…","g":"loop","gl":"Loop & findings","lv":5,"s":12,"a":"2026-09-03","z":"2026-09-22"},{"id":"docs/inventory/agent-roster.md","t":"AI agent roster on the Mac (aiTeamRoster doc, generatedAt 2026-09-16T00:52:37+00:00, count","d":"AI agent roster on the Mac (aiTeamRoster doc, generatedAt 2026-09-16T00:52:37+00:00, count 172)","g":"loop","gl":"Loop & findings","lv":5,"s":1,"a":null,"z":null},{"id":"docs/inventory/cloud-routines.md","t":"Cloud routines (claude.ai/code/routines) — live listing pulled 2026-09-22 08:09 UTC","d":"Cloud routines (claude.ai/code/routines) — live listing pulled 2026-09-22 08:09 UTC","g":"loop","gl":"Loop & findings","lv":5,"s":1,"a":"2026-08-29","z":"2026-09-22"},{"id":"docs/inventory/db-docs.md","t":"Live artifact DB — collection state (161 docs exported 2026-09-22 ~08:10 UTC to scratchpad","d":"Live artifact DB — collection state (161 docs exported 2026-09-22 ~08:10 UTC to scratchpad/db/state/.json)","g":"loop","gl":"Loop & findings","lv":5,"s":1,"a":"2026-09-20","z":"2026-09-30"},{"id":"docs/inventory/mac-runner-status.md","t":"Mac claude-runner task status (runnerStatus doc, syncedAt 2026-09-22T04:05:04Z, loggedIn=T","d":"Mac claude-runner task status (runnerStatus doc, syncedAt 2026-09-22T04:05:04Z, loggedIn=True, running=['fabric-deck-sync'], waiting=[])","g":"loop","gl":"Loop & findings","lv":5,"s":1,"a":null,"z":null},{"id":"docs/inventory/mac-task-descriptions.md","t":"Mac scheduled task descriptions (toolkitSnapshot doc, syncedAt 2026-09-16T00:52:24Z; count","d":"access-audit-monthly — First business morning of the month: Elena's access-auditor reviews who and what can read or…","g":"loop","gl":"Loop & findings","lv":5,"s":3,"a":"2026-09-08","z":"2026-09-13"},{"id":"docs/inventory/routine-health.md","t":"routineHealth doc (written by r10-automation-health, syncedAt 2026-09-22T00:57:57-07:00) —","d":"routineHealth doc (written by r10-automation-health, syncedAt 2026-09-22T00:57:57-07:00) — counts {\"failed\": 8, \"late\": 3, \"neverRun\": 13, \"ok\": 6, \"producedNothing\": 2, \"stale\": 0","g":"loop","gl":"Loop & findings","lv":5,"s":1,"a":"2026-09-10","z":"2026-09-17"},{"id":"integrations/CONNECT-PLAN-2026-10-09.md","t":"Connect plan — every system Steven named on 2026-10-09 (what is real, what he does, what a","d":"Steven, 2026-10-09: connect Zoho and Lofty (he has API keys for both), Showami, ShowingTime, homes.com, CRMLS…","g":"integrations","gl":"Integrations","lv":2,"s":7,"a":"2026-09-22","z":"2026-10-09"},{"id":"integrations/CONNECTIONS.md","t":"CONNECTIONS — every integration, its real status, and the one thing Steven must do","d":"Baseline 2026-09-12 · verified 2026-09-22.","g":"integrations","gl":"Integrations","lv":2,"s":20,"a":"2026-09-07","z":"2026-10-09"},{"id":"integrations/api-anything/README.md","t":"API Anything — teach Claude a website once, then call it like an API (added 2026-10-08)","d":"Steven, 2026-10-08: \"Install https://github.com/goodnight000/api-anything.git\".","g":"integrations","gl":"Integrations","lv":2,"s":3,"a":"2026-10-08","z":"2026-10-08"},{"id":"integrations/apple-health-dashboard.md","t":"Apple Health → Claude iOS → Notion → Command Deck","d":"Baseline 2026-09-12 · verified 2026-09-22.","g":"integrations","gl":"Integrations","lv":2,"s":13,"a":"2026-06-30","z":"2026-09-22"},{"id":"integrations/browser-use/README.md","t":"browser-use — Claude Code drives a browser (added 2026-10-07)","d":"Steven, 2026-10-07: \"install https://github.com/browser-use/browser-use.git\".","g":"integrations","gl":"Integrations","lv":2,"s":3,"a":"2026-10-07","z":"2026-10-07"},{"id":"integrations/google-drive-brain.md","t":"Google Drive → the second brain","d":"UPDATE 2026-10-09 — connected, read-only, pointer level.","g":"integrations","gl":"Integrations","lv":2,"s":6,"a":"2026-09-15","z":"2026-10-09"},{"id":"integrations/jarvis/README.md","t":"Jarvis, Laya and Vanessa's voice — set up and verified on the Mac","d":"Jarvis (OpenJarvis memory.db), the real Laya model and Vanessa's recorded voice all live on the Mac.","g":"integrations","gl":"Integrations","lv":2,"s":5,"a":"2026-10-09","z":"2026-10-09"},{"id":"integrations/laya/README.md","t":"Laya — the zero-token System-1 hop in front of Vanessa","d":"Status 2026-09-28: package proven installable and its routing logic proven correct in this sandbox.","g":"integrations","gl":"Integrations","lv":2,"s":9,"a":"2026-09-22","z":"2026-10-05"},{"id":"integrations/mac-brain-2026-10-08.md","t":"Mac: install the Second Brain engine — one paste (2026-10-08)","d":"The brain engine (bin/brain, INDEX.md, scripts/brain-sync.sh, the written wiki pages) was built on a side branch on…","g":"integrations","gl":"Integrations","lv":2,"s":1,"a":"2026-09-13","z":"2026-10-08"},{"id":"integrations/mac-claude-only.md","t":"Mac: remove Perplexity, run everything on the Claude subscription (2026-10-05)","d":"Steven, 2026-10-05: \"remove everything running on Perplexity and replace with Claude subscription\" and \"ensure entire…","g":"integrations","gl":"Integrations","lv":2,"s":4,"a":"2026-10-04","z":"2026-10-05"},{"id":"integrations/mac-everything-2026-10-09.md","t":"Mac: everything pending, in one paste (2026-10-09)","d":"Steven, 2026-10-09: \"make the combined paste\".","g":"integrations","gl":"Integrations","lv":2,"s":2,"a":"2026-10-08","z":"2026-10-09"},{"id":"integrations/mac-fix-all-2026-10-05.md","t":"Mac: fix everything stale, broken or unconnected — one paste (2026-10-05)","d":"Steven, 2026-10-05: \"look for everything throughout the dashboard that is stale, not working, not connected and have…","g":"integrations","gl":"Integrations","lv":2,"s":8,"a":"2026-09-12","z":"2026-10-05"},{"id":"integrations/mac-fix-isa-kpi-2026-10-08.md","t":"Mac: make the ISA KPI numbers real, and keep the content pipeline honest — one paste (2026","d":"Steven, 2026-10-08: \"fix anything not working to include ISA kpi and content pipeline automations\".","g":"integrations","gl":"Integrations","lv":2,"s":2,"a":"2026-10-04","z":"2026-10-08"},{"id":"integrations/mac-sync/README.md","t":"mac-sync — the \"same information\" half of two equal Macs","d":"Steven, verbatim: \"Ensure both of my MacBooks can access the same information and equally have control of this…","g":"integrations","gl":"Integrations","lv":2,"s":10,"a":"2026-09-24","z":"2026-09-24"},{"id":"integrations/mac-task-specs.md","t":"Mac runner task specs — the five new integration tasks","d":"Baseline 2026-09-12 · verified 2026-09-22.","g":"integrations","gl":"Integrations","lv":2,"s":30,"a":"2026-09-06","z":"2026-09-28"},{"id":"integrations/n8n/README.md","t":"n8n — Steven's Mac, loopback only","d":"a connector for Zoho, Lofty, Showami, ShowingTime, homes.com, CRMLS, zipForms, SkySlope or dotloop.","g":"integrations","gl":"Integrations","lv":2,"s":3,"a":"2026-09-28","z":"2026-09-28"},{"id":"integrations/omniroute-failover/README.md","t":"OmniRoute failover — subscription first, free providers only while limited, never with cli","d":"Written 2026-09-22 · design + scripts · not yet installed on the Mac.","g":"integrations","gl":"Integrations","lv":2,"s":26,"a":"2026-09-03","z":"2026-10-09"},{"id":"integrations/omniroute/README.md","t":"OmniRoute as the brain's model router — local tier (Bonsai 27B); research left it 2026-10-","d":"Written 2026-09-28 · design + scripts, proved against stubs in this sandbox · not yet installed on the Mac.","g":"integrations","gl":"Integrations","lv":2,"s":10,"a":"2026-09-28","z":"2026-10-09"},{"id":"integrations/open-design/README.md","t":"OpenDesign — design workspace driven by Claude Code (added 2026-10-08)","d":"Steven, 2026-10-08: \"also install https://github.com/nexu-io/open-design.git\".","g":"integrations","gl":"Integrations","lv":2,"s":3,"a":"2026-10-08","z":"2026-10-08"},{"id":"integrations/openwa/README.md","t":"WhatsApp for Vanessa — OpenWA setup walkthrough","d":"This is the step-by-step for Steven's Mac.","g":"integrations","gl":"Integrations","lv":2,"s":13,"a":"2026-09-23","z":"2026-09-28"},{"id":"integrations/remote-control/README.md","t":"Remote Control agent (both Macs)","d":"1. What it does: keeps one claude remote-control server running on the Mac (under caffeinate -i, restarted if it…","g":"integrations","gl":"Integrations","lv":2,"s":6,"a":null,"z":null},{"id":"integrations/skill-packs/README.md","t":"Skill-pack imports (77skills.ai and similar)","d":"77skills.ai sells a $77 pack of 77 business-skill SKILL.md folders.","g":"integrations","gl":"Integrations","lv":2,"s":5,"a":null,"z":null},{"id":"integrations/vanessa-voice-everywhere.md","t":"Vanessa speaks on every channel, not only at the dashboard","d":"CORRECTION 2026-09-24 — read before anything below.","g":"integrations","gl":"Integrations","lv":2,"s":12,"a":"2026-09-12","z":"2026-09-24"},{"id":"store:vanessa","t":"Vanessa","d":"Chief of Staff — every recall answers through her","g":"store","gl":"Live stores","lv":0,"s":0,"a":null,"z":null},{"id":"store:notion","t":"Notion Second Brain","d":"The record (database)","g":"store","gl":"Live stores","lv":0,"s":0,"a":null,"z":null},{"id":"store:drive","t":"Google Drive","d":"Read-only mirror of the Notion rows","g":"store","gl":"Live stores","lv":0,"s":0,"a":null,"z":null},{"id":"store:jarvis","t":"Jarvis","d":"On-device index + voice (Mac)","g":"store","gl":"Live stores","lv":0,"s":0,"a":null,"z":null},{"id":"store:laya","t":"Laya","d":"Zero-token first hop that routes requests","g":"store","gl":"Live stores","lv":0,"s":0,"a":null,"z":null},{"id":"store:vault","t":"Obsidian vault","d":"Visual layer, Jarvis's source","g":"store","gl":"Live stores","lv":0,"s":0,"a":null,"z":null},{"id":"store:graphify","t":"Graphify","d":"Knowledge graph build","g":"store","gl":"Live stores","lv":0,"s":0,"a":null,"z":null},{"id":"store:ruflo","t":"Ruflo","d":"Research and memory bench","g":"store","gl":"Live stores","lv":0,"s":0,"a":null,"z":null},{"id":"store:omniroute","t":"OmniRoute","d":"Failover when Claude runs out","g":"store","gl":"Live stores","lv":0,"s":0,"a":null,"z":null},{"id":"store:deck","t":"Command Deck","d":"The live dashboard","g":"store","gl":"Live stores","lv":0,"s":0,"a":null,"z":null}],"links":[{"s":"CLAUDE.md","t":"OPTIMIZATION.md","w":1.55},{"s":"CLAUDE.md","t":"wiki/index.md","w":1.04},{"s":"CLAUDE.md","t":"AGENTS.md","w":0.89},{"s":"AGENTS.md","t":"README.md","w":0.75},{"s":"AGENTS.md","t":"memory/ai-team.md","w":0.58},{"s":"README.md","t":"wiki/dashboard-ops/routine-catalog.md","w":1.09},{"s":"README.md","t":"OPTIMIZATION.md","w":0.78},{"s":"memory.md","t":"wiki/dashboard-ops/db-docs.md","w":1.17},{"s":"memory.md","t":"docs/NEEDS-STEVEN.md","w":0.95},{"s":"memory.md","t":"integrations/mac-claude-only.md","w":0.56},{"s":"recall-cache.md","t":"OPTIMIZATION.md","w":0.7},{"s":"recall-cache.md","t":"docs/inventory/db-docs.md","w":0.56},{"s":"recall-cache.md","t":"memory.md","w":0.56},{"s":"OPTIMIZATION.md","t":"wiki/ai-team/model-tiering-dispatch.md","w":1.32},{"s":"REMOTE-ACCESS.md","t":"docs/SECOND-MAC-SETUP.md","w":1.71},{"s":"REMOTE-ACCESS.md","t":"integrations/omniroute-failover/README.md","w":1.62},{"s":"REMOTE-ACCESS.md","t":"integrations/remote-control/README.md","w":0.46},{"s":"MAC-INSTALL.md","t":"docs/INSTALL-COVERAGE.md","w":1.11},{"s":"MAC-INSTALL.md","t":"docs/NEEDS-STEVEN-R3.append.md","w":1.0},{"s":"MAC-INSTALL.md","t":"projects/usc-pjmt-530.md","w":0.5},{"s":"MAC-INSTALL-tooling.md","t":"MAC-INSTALL-comms-data.md","w":0.83},{"s":"MAC-INSTALL-tooling.md","t":"docs/NEEDS-STEVEN-R3.append.md","w":0.58},{"s":"MAC-INSTALL-tooling.md","t":"integrations/omniroute/README.md","w":0.5},{"s":"MAC-INSTALL-comms-data.md","t":"docs/SETUP-RUNBOOK.md","w":1.03},{"s":"MAC-INSTALL-comms-data.md","t":"integrations/omniroute-failover/README.md","w":0.7},{"s":"context/about-me.md","t":"projects/nonprofit.md","w":1.33},{"s":"context/about-me.md","t":"projects/usc-pjmt-530.md","w":1.0},{"s":"context/about-me.md","t":"integrations/CONNECT-PLAN-2026-10-09.md","w":0.5},{"s":"context/decisions.md","t":"integrations/mac-claude-only.md","w":0.72},{"s":"context/decisions.md","t":"docs/MASTER-FINDINGS.md","w":0.69},{"s":"context/decisions.md","t":"projects/command-deck.md","w":0.69},{"s":"projects/ai-team.md","t":"docs/inventory/agent-roster.md","w":2.0},{"s":"projects/ai-team.md","t":"wiki/ai-team/index.md","w":0.94},{"s":"projects/ai-team.md","t":"wiki/ai-team/model-tiering-dispatch.md","w":0.67},{"s":"projects/command-deck.md","t":"wiki/dashboard-ops/index.md","w":0.89},{"s":"projects/command-deck.md","t":"docs/NEEDS-STEVEN-R2.append.md","w":0.73},{"s":"projects/isa-portal.md","t":"docs/ISA-SEAT-DECISION.md","w":0.87},{"s":"projects/isa-portal.md","t":"docs/MASTER-FINDINGS.md","w":0.72},{"s":"projects/isa-portal.md","t":"always-on/README.md","w":0.72},{"s":"projects/nonprofit.md","t":"wiki/mortgage-programs/va-affordability.md","w":0.83},{"s":"projects/nonprofit.md","t":"routines/pipeline-sync-live.md","w":0.5},{"s":"projects/usc-pjmt-530.md","t":"docs/STRESS-TEST-REPORT.md","w":0.5},{"s":"wiki/ai-team/index.md","t":"wiki/ai-team/mentors-and-benches.md","w":1.42},{"s":"wiki/ai-team/index.md","t":"wiki/ai-team/model-tiering-dispatch.md","w":1.33},{"s":"wiki/ai-team/mentors-and-benches.md","t":"wiki/ai-team/org-chart.md","w":1.5},{"s":"wiki/ai-team/mentors-and-benches.md","t":"wiki/dashboard-ops/panel-map.md","w":0.75},{"s":"wiki/ai-team/org-chart.md","t":"memory/ai-team.md","w":0.92},{"s":"wiki/ai-team/org-chart.md","t":"wiki/ai-team/model-tiering-dispatch.md","w":0.67},{"s":"wiki/ai-team/tool-integration-status.md","t":"docs/STEVEN-STEPS.md","w":1.17},{"s":"wiki/ai-team/tool-integration-status.md","t":"integrations/remote-control/README.md","w":1.0},{"s":"wiki/ai-team/tool-integration-status.md","t":"integrations/skill-packs/README.md","w":0.61},{"s":"wiki/clients/index.md","t":"wiki/index.md","w":1.28},{"s":"wiki/clients/index.md","t":"knowledge-graph/schema.md","w":0.7},{"s":"wiki/clients/index.md","t":"knowledge-graph/README.md","w":0.53},{"s":"wiki/dashboard-ops/connections.md","t":"wiki/dashboard-ops/routine-catalog.md","w":0.58},{"s":"wiki/dashboard-ops/connections.md","t":"memory.md","w":0.5},{"s":"wiki/dashboard-ops/connections.md","t":"docs/OPEN-FINDINGS.md","w":0.45},{"s":"wiki/dashboard-ops/db-docs.md","t":"docs/NEEDS-STEVEN.md","w":1.01},{"s":"wiki/dashboard-ops/db-docs.md","t":"context/decisions.md","w":0.56},{"s":"wiki/dashboard-ops/index.md","t":"wiki/dashboard-ops/task-catalog.md","w":0.89},{"s":"wiki/dashboard-ops/index.md","t":"docs/OPEN-FINDINGS.md","w":0.63},{"s":"wiki/dashboard-ops/panel-map.md","t":"projects/command-deck.md","w":0.62},{"s":"wiki/dashboard-ops/panel-map.md","t":"wiki/dashboard-ops/task-catalog.md","w":0.5},{"s":"wiki/dashboard-ops/routine-catalog.md","t":"wiki/dashboard-ops/task-catalog.md","w":1.14},{"s":"wiki/dashboard-ops/routine-catalog.md","t":"docs/CLOUD-WRITE-ARCHITECTURE.md","w":0.76},{"s":"wiki/dashboard-ops/task-catalog.md","t":"projects/isa-portal.md","w":0.5},{"s":"wiki/index.md","t":"vector-index/README.md","w":0.81},{"s":"wiki/mortgage-programs/disclosure-timing.md","t":"wiki/mortgage-programs/index.md","w":1.14},{"s":"wiki/mortgage-programs/disclosure-timing.md","t":"wiki/real-estate-playbooks/buyer-process.md","w":0.88},{"s":"wiki/mortgage-programs/disclosure-timing.md","t":"wiki/real-estate-playbooks/referral-reciprocity.md","w":0.75},{"s":"wiki/mortgage-programs/fha-usda.md","t":"wiki/mortgage-programs/program-selection.md","w":1.64},{"s":"wiki/mortgage-programs/fha-usda.md","t":"wiki/mortgage-programs/index.md","w":0.89},{"s":"wiki/mortgage-programs/fha-usda.md","t":"wiki/mortgage-programs/lender-directory-notes.md","w":0.67},{"s":"wiki/mortgage-programs/index.md","t":"wiki/mortgage-programs/program-selection.md","w":1.23},{"s":"wiki/mortgage-programs/lender-directory-notes.md","t":"wiki/mortgage-programs/program-selection.md","w":1.0},{"s":"wiki/mortgage-programs/lender-directory-notes.md","t":"wiki/mortgage-programs/index.md","w":0.75},{"s":"wiki/mortgage-programs/va-affordability.md","t":"wiki/real-estate-playbooks/military-relocation.md","w":1.14},{"s":"wiki/mortgage-programs/va-affordability.md","t":"wiki/mortgage-programs/fha-usda.md","w":0.64},{"s":"wiki/mortgage-programs/va-eligibility.md","t":"wiki/mortgage-programs/program-selection.md","w":0.81},{"s":"wiki/mortgage-programs/va-eligibility.md","t":"wiki/mortgage-programs/disclosure-timing.md","w":0.64},{"s":"wiki/mortgage-programs/va-eligibility.md","t":"wiki/mortgage-programs/fha-usda.md","w":0.64},{"s":"wiki/real-estate-playbooks/buyer-process.md","t":"wiki/real-estate-playbooks/index.md","w":1.79},{"s":"wiki/real-estate-playbooks/buyer-process.md","t":"wiki/real-estate-playbooks/transaction-stages.md","w":1.46},{"s":"wiki/real-estate-playbooks/buyer-process.md","t":"wiki/real-estate-playbooks/listing-process.md","w":1.29},{"s":"wiki/real-estate-playbooks/index.md","t":"wiki/real-estate-playbooks/transaction-stages.md","w":1.96},{"s":"wiki/real-estate-playbooks/index.md","t":"wiki/real-estate-playbooks/referral-reciprocity.md","w":0.83},{"s":"wiki/real-estate-playbooks/listing-process.md","t":"wiki/real-estate-playbooks/index.md","w":0.79},{"s":"wiki/real-estate-playbooks/listing-process.md","t":"wiki/ai-team/org-chart.md","w":0.67},{"s":"wiki/real-estate-playbooks/military-relocation.md","t":"wiki/mortgage-programs/va-eligibility.md","w":0.64},{"s":"wiki/real-estate-playbooks/military-relocation.md","t":"context/about-me.md","w":0.5},{"s":"wiki/real-estate-playbooks/referral-reciprocity.md","t":"wiki/real-estate-playbooks/military-relocation.md","w":0.33},{"s":"wiki/real-estate-playbooks/showing-operations.md","t":"references/drive-second-brain-notes.md","w":0.7},{"s":"wiki/real-estate-playbooks/showing-operations.md","t":"wiki/real-estate-playbooks/index.md","w":0.7},{"s":"wiki/real-estate-playbooks/showing-operations.md","t":"integrations/CONNECT-PLAN-2026-10-09.md","w":0.5},{"s":"wiki/real-estate-playbooks/transaction-stages.md","t":"wiki/real-estate-playbooks/listing-process.md","w":0.54},{"s":"references/drive-second-brain-notes.md","t":"README.md","w":0.5},{"s":"references/drive-second-brain-notes.md","t":"docs/NEEDS-STEVEN-R4.append.md","w":0.5},{"s":"references/google-drive.md","t":"integrations/google-drive-brain.md","w":1.64},{"s":"references/google-drive.md","t":"integrations/mac-sync/README.md","w":0.5},{"s":"references/google-drive.md","t":"MAC-INSTALL.md","w":0.41},{"s":"references/index.md","t":"OPTIMIZATION.md","w":0.52},{"s":"references/index.md","t":"AGENTS.md","w":0.5},{"s":"references/index.md","t":"integrations/mac-fix-isa-kpi-2026-10-08.md","w":0.5},{"s":"references/memory-projects.md","t":"CLAUDE.md","w":0.58},{"s":"references/memory-projects.md","t":"MAC-INSTALL-tooling.md","w":0.5},{"s":"references/memory-projects.md","t":"knowledge-graph/README.md","w":0.45},{"s":"memory/ai-team.md","t":"integrations/jarvis/README.md","w":1.08},{"s":"memory/ai-team.md","t":"wiki/ai-team/mentors-and-benches.md","w":0.58},{"s":"knowledge-graph/README.md","t":"knowledge-graph/schema.md","w":0.9},{"s":"knowledge-graph/README.md","t":"wiki/index.md","w":0.67},{"s":"knowledge-graph/schema.md","t":"context/decisions.md","w":0.5},{"s":"vector-index/README.md","t":"wiki/mortgage-programs/index.md","w":0.5},{"s":"vector-index/README.md","t":"README.md","w":0.33},{"s":"always-on/README.md","t":"routines/cloud-routine-repairs.md","w":1.11},{"s":"always-on/README.md","t":"routines/mac-task-repairs.md","w":0.75},{"s":"routines/backup-watchdog-cloud.md","t":"docs/ROUTINE-SCHEDULE-FIX.md","w":1.06},{"s":"routines/backup-watchdog-cloud.md","t":"routines/cloud-routine-repairs.md","w":0.56},{"s":"routines/backup-watchdog-cloud.md","t":"docs/inventory/db-docs.md","w":0.5},{"s":"routines/cloud-routine-repairs.md","t":"docs/NEEDS-STEVEN-R1.append.md","w":1.48},{"s":"routines/cloud-routine-repairs.md","t":"docs/inventory/cloud-routines.md","w":0.64},{"s":"routines/fub-removal-2026-09-24.md","t":"docs/ENGINEERING-BRIEF.md","w":1.03},{"s":"routines/fub-removal-2026-09-24.md","t":"context/decisions.md","w":0.53},{"s":"routines/fub-removal-2026-09-24.md","t":"integrations/CONNECTIONS.md","w":0.37},{"s":"routines/isa-escalation-ladder.md","t":"docs/ISA-SEAT-DECISION.md","w":1.45},{"s":"routines/isa-escalation-ladder.md","t":"integrations/mac-task-specs.md","w":0.67},{"s":"routines/isa-escalation-ladder.md","t":"docs/NEEDS-STEVEN-R3.append.md","w":0.5},{"s":"routines/mac-task-repairs.md","t":"routines/pipeline-sync-live.md","w":0.56},{"s":"routines/mac-task-repairs.md","t":"routines/strava-wrap-guard.md","w":0.56},{"s":"routines/parallel-csuite-task-cycle.md","t":"docs/inventory/routine-health.md","w":0.7},{"s":"routines/parallel-csuite-task-cycle.md","t":"routines/weekly-loop.md","w":0.7},{"s":"routines/parallel-csuite-task-cycle.md","t":"CLAUDE.md","w":0.62},{"s":"routines/pipeline-sync-live.md","t":"docs/CLOUD-WRITE-ARCHITECTURE.md","w":1.06},{"s":"routines/pipeline-sync-live.md","t":"docs/NEEDS-STEVEN-R1.append.md","w":0.51},{"s":"routines/strava-wrap-guard.md","t":"always-on/README.md","w":0.56},{"s":"routines/strava-wrap-guard.md","t":"projects/command-deck.md","w":0.5},{"s":"routines/weekly-loop.md","t":"docs/INTEGRATOR-TODO.md","w":0.5},{"s":"routines/weekly-loop.md","t":"docs/inventory/routine-health.md","w":0.5},{"s":"docs/CAIO-DISRUPTION-BRIEF.md","t":"docs/inventory/cloud-routines.md","w":0.89},{"s":"docs/CAIO-DISRUPTION-BRIEF.md","t":"projects/ai-team.md","w":0.5},{"s":"docs/CAIO-DISRUPTION-BRIEF.md","t":"wiki/mortgage-programs/program-selection.md","w":0.5},{"s":"docs/CLOUD-WRITE-ARCHITECTURE.md","t":"README.md","w":0.51},{"s":"docs/ENGINEERING-BRIEF.md","t":"docs/INTEGRATOR-TODO.md","w":0.58},{"s":"docs/ENGINEERING-BRIEF.md","t":"integrations/CONNECTIONS.md","w":0.57},{"s":"docs/INSTALL-COVERAGE.md","t":"docs/NEEDS-STEVEN-R3.append.md","w":1.0},{"s":"docs/INSTALL-COVERAGE.md","t":"integrations/jarvis/README.md","w":0.67},{"s":"docs/INTEGRATOR-TODO.md","t":"projects/command-deck.md","w":0.45},{"s":"docs/ISA-SEAT-DECISION.md","t":"wiki/real-estate-playbooks/index.md","w":0.66},{"s":"docs/MASTER-FINDINGS.md","t":"docs/STRESS-TEST-REPORT.md","w":0.83},{"s":"docs/NEEDS-STEVEN-R1.append.md","t":"docs/NEEDS-STEVEN-R2.append.md","w":0.78},{"s":"docs/NEEDS-STEVEN-R1.append.md","t":"docs/CLOUD-WRITE-ARCHITECTURE.md","w":0.51},{"s":"docs/NEEDS-STEVEN-R2.append.md","t":"docs/OPEN-FINDINGS.md","w":1.34},{"s":"docs/NEEDS-STEVEN-R3.append.md","t":"docs/NEEDS-STEVEN.md","w":0.62},{"s":"docs/NEEDS-STEVEN-R4.append.md","t":"integrations/vanessa-voice-everywhere.md","w":2.67},{"s":"docs/NEEDS-STEVEN-R4.append.md","t":"integrations/mac-task-specs.md","w":1.57},{"s":"docs/NEEDS-STEVEN-R4.append.md","t":"integrations/jarvis/README.md","w":0.7},{"s":"docs/NEEDS-STEVEN.md","t":"docs/NEEDS-STEVEN-R2.append.md","w":0.67},{"s":"docs/OPEN-FINDINGS.md","t":"projects/command-deck.md","w":0.63},{"s":"docs/ROUTINE-SCHEDULE-FIX.md","t":"always-on/README.md","w":0.58},{"s":"docs/ROUTINE-SCHEDULE-FIX.md","t":"routines/weekly-loop.md","w":0.44},{"s":"docs/SECOND-MAC-SETUP.md","t":"integrations/mac-sync/README.md","w":1.17},{"s":"docs/SECOND-MAC-SETUP.md","t":"integrations/omniroute-failover/README.md","w":1.12},{"s":"docs/SETUP-RUNBOOK.md","t":"integrations/mac-task-specs.md","w":1.2},{"s":"docs/SETUP-RUNBOOK.md","t":"integrations/CONNECTIONS.md","w":0.75},{"s":"docs/STEVEN-STEPS.md","t":"integrations/remote-control/README.md","w":0.79},{"s":"docs/STEVEN-STEPS.md","t":"integrations/omniroute/README.md","w":0.5},{"s":"docs/STRESS-TEST-REPORT.md","t":"routines/mac-task-repairs.md","w":0.5},{"s":"docs/inventory/agent-roster.md","t":"wiki/ai-team/index.md","w":0.5},{"s":"docs/inventory/agent-roster.md","t":"wiki/ai-team/model-tiering-dispatch.md","w":0.5},{"s":"docs/inventory/cloud-routines.md","t":"docs/inventory/mac-runner-status.md","w":0.61},{"s":"docs/inventory/db-docs.md","t":"wiki/dashboard-ops/index.md","w":0.61},{"s":"docs/inventory/mac-runner-status.md","t":"docs/inventory/routine-health.md","w":1.61},{"s":"docs/inventory/mac-runner-status.md","t":"wiki/dashboard-ops/index.md","w":0.44},{"s":"docs/inventory/mac-task-descriptions.md","t":"integrations/apple-health-dashboard.md","w":0.53},{"s":"docs/inventory/mac-task-descriptions.md","t":"integrations/mac-task-specs.md","w":0.5},{"s":"docs/inventory/mac-task-descriptions.md","t":"MAC-INSTALL.md","w":0.44},{"s":"docs/inventory/routine-health.md","t":"routines/isa-escalation-ladder.md","w":0.5},{"s":"integrations/CONNECT-PLAN-2026-10-09.md","t":"integrations/CONNECTIONS.md","w":0.83},{"s":"integrations/CONNECT-PLAN-2026-10-09.md","t":"MAC-INSTALL-comms-data.md","w":0.62},{"s":"integrations/CONNECTIONS.md","t":"integrations/n8n/README.md","w":0.7},{"s":"integrations/api-anything/README.md","t":"integrations/browser-use/README.md","w":1.08},{"s":"integrations/api-anything/README.md","t":"integrations/mac-everything-2026-10-09.md","w":0.5},{"s":"integrations/api-anything/README.md","t":"integrations/open-design/README.md","w":0.42},{"s":"integrations/apple-health-dashboard.md","t":"docs/ENGINEERING-BRIEF.md","w":0.53},{"s":"integrations/apple-health-dashboard.md","t":"routines/mac-task-repairs.md","w":0.53},{"s":"integrations/browser-use/README.md","t":"integrations/open-design/README.md","w":0.83},{"s":"integrations/browser-use/README.md","t":"integrations/CONNECTIONS.md","w":0.5},{"s":"integrations/google-drive-brain.md","t":"docs/SETUP-RUNBOOK.md","w":0.5},{"s":"integrations/google-drive-brain.md","t":"recall-cache.md","w":0.5},{"s":"integrations/jarvis/README.md","t":"integrations/mac-task-specs.md","w":0.7},{"s":"integrations/laya/README.md","t":"integrations/mac-brain-2026-10-08.md","w":0.8},{"s":"integrations/laya/README.md","t":"CLAUDE.md","w":0.68},{"s":"integrations/laya/README.md","t":"MAC-INSTALL-comms-data.md","w":0.5},{"s":"integrations/mac-brain-2026-10-08.md","t":"integrations/jarvis/README.md","w":0.51},{"s":"integrations/mac-brain-2026-10-08.md","t":"integrations/remote-control/README.md","w":0.5},{"s":"integrations/mac-claude-only.md","t":"integrations/omniroute/README.md","w":0.7},{"s":"integrations/mac-claude-only.md","t":"integrations/mac-everything-2026-10-09.md","w":0.67},{"s":"integrations/mac-everything-2026-10-09.md","t":"integrations/mac-fix-all-2026-10-05.md","w":1.1},{"s":"integrations/mac-everything-2026-10-09.md","t":"integrations/mac-sync/README.md","w":0.92},{"s":"integrations/mac-fix-all-2026-10-05.md","t":"integrations/remote-control/README.md","w":0.83},{"s":"integrations/mac-fix-all-2026-10-05.md","t":"integrations/mac-fix-isa-kpi-2026-10-08.md","w":0.83},{"s":"integrations/mac-fix-isa-kpi-2026-10-08.md","t":"projects/isa-portal.md","w":0.7},{"s":"integrations/mac-task-specs.md","t":"integrations/vanessa-voice-everywhere.md","w":2.25},{"s":"integrations/n8n/README.md","t":"integrations/openwa/README.md","w":0.5},{"s":"integrations/n8n/README.md","t":"integrations/google-drive-brain.md","w":0.33},{"s":"integrations/omniroute-failover/README.md","t":"integrations/omniroute/README.md","w":1.03},{"s":"integrations/open-design/README.md","t":"docs/INSTALL-COVERAGE.md","w":0.58},{"s":"integrations/open-design/README.md","t":"integrations/apple-health-dashboard.md","w":0.5},{"s":"integrations/openwa/README.md","t":"integrations/mac-task-specs.md","w":0.73},{"s":"integrations/openwa/README.md","t":"integrations/remote-control/README.md","w":0.7},{"s":"integrations/openwa/README.md","t":"MAC-INSTALL-comms-data.md","w":0.62},{"s":"integrations/skill-packs/README.md","t":"integrations/vanessa-voice-everywhere.md","w":0.17},{"s":"integrations/skill-packs/README.md","t":"wiki/clients/index.md","w":0.17},{"s":"integrations/vanessa-voice-everywhere.md","t":"docs/SETUP-RUNBOOK.md","w":0.58},{"s":"store:vanessa","t":"CLAUDE.md","w":1.0,"k":"store"},{"s":"store:vanessa","t":"AGENTS.md","w":1.0,"k":"store"},{"s":"store:vanessa","t":"projects/ai-team.md","w":1.0,"k":"store"},{"s":"store:notion","t":"references/index.md","w":1.0,"k":"store"},{"s":"store:notion","t":"always-on/README.md","w":1.0,"k":"store"},{"s":"store:drive","t":"references/google-drive.md","w":1.0,"k":"store"},{"s":"store:drive","t":"references/drive-second-brain-notes.md","w":1.0,"k":"store"},{"s":"store:drive","t":"integrations/google-drive-brain.md","w":1.0,"k":"store"},{"s":"store:jarvis","t":"integrations/jarvis/README.md","w":1.0,"k":"store"},{"s":"store:jarvis","t":"vector-index/README.md","w":1.0,"k":"store"},{"s":"store:laya","t":"integrations/laya/README.md","w":1.0,"k":"store"},{"s":"store:laya","t":"CLAUDE.md","w":1.0,"k":"store"},{"s":"store:vault","t":"OPTIMIZATION.md","w":1.0,"k":"store"},{"s":"store:vault","t":"MAC-INSTALL.md","w":1.0,"k":"store"},{"s":"store:graphify","t":"knowledge-graph/README.md","w":1.0,"k":"store"},{"s":"store:ruflo","t":"wiki/ai-team/mentors-and-benches.md","w":1.0,"k":"store"},{"s":"store:omniroute","t":"integrations/omniroute/README.md","w":1.0,"k":"store"},{"s":"store:omniroute","t":"integrations/omniroute-failover/README.md","w":1.0,"k":"store"},{"s":"store:deck","t":"projects/command-deck.md","w":1.0,"k":"store"},{"s":"store:deck","t":"wiki/dashboard-ops/index.md","w":1.0,"k":"store"},{"s":"store:vanessa","t":"store:notion","w":1.0,"k":"store"},{"s":"store:vanessa","t":"store:drive","w":1.0,"k":"store"},{"s":"store:vanessa","t":"store:jarvis","w":1.0,"k":"store"},{"s":"store:vanessa","t":"store:laya","w":1.0,"k":"store"},{"s":"store:vanessa","t":"store:vault","w":1.0,"k":"store"},{"s":"store:vanessa","t":"store:graphify","w":1.0,"k":"store"},{"s":"store:vanessa","t":"store:ruflo","w":1.0,"k":"store"},{"s":"store:vanessa","t":"store:omniroute","w":1.0,"k":"store"},{"s":"store:vanessa","t":"store:deck","w":1.0,"k":"store"}]};
+const LOOP = {"bench_correct": 16, "bench_total": 18, "org_covered": 21, "org_total": 21, "jarvis": "unverified", "ts": "2026-10-09T18:27:45Z"};
+const REPO = "https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/";
+const HUE = { store:"#f3b94d", router:"#ffffff", context:"#ffd6a5", memory:"#f7a8d8", projects:"#c3a6ff", mortgage:"#7fc8ff", realestate:"#5fe0c8", aiteam:"#ff9e7a", ops:"#9fb4ff", vector:"#b6f09c", graph:"#e2c1ff", alwayson:"#ffcf70", sources:"#9ee6ff", integrations:"#7d9cff", loop:"#a7adbf", other:"#8f97ad" };
+const DAY = 864e5;
+const $ = id => document.getElementById(id);
+const field = $("field"), ctx = field.getContext("2d");
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// ---------- data shaping
+const nodes = G.nodes.map((n, i) => ({ ...n, i, c: HUE[n.g] || HUE.other, deg: 0 }));
+const byId = new Map(nodes.map(n => [n.id, n]));
+const links = G.links.filter(l => byId.has(l.s) && byId.has(l.t)).map(l => ({ a: byId.get(l.s), b: byId.get(l.t), w: l.w, store: l.k === "store" }));
+links.forEach(l => { l.a.deg++; l.b.deg++; });
+const adj = new Map(nodes.map(n => [n, []]));
+links.forEach(l => { adj.get(l.a).push(l.b); adj.get(l.b).push(l.a); });
+const groups = [...new Map(nodes.map(n => [n.g, n.gl])).entries()];
+
+const D0 = Date.parse("2026-09-08"), D1 = Date.parse(G.generated);
+const nDays = Math.round((D1 - D0) / DAY);
+nodes.forEach(n => {
+  const a = n.a ? Date.parse(n.a) : D0, z = n.z ? Date.parse(n.z) : D0;
+  n.born = Math.max(0, Math.round((a - D0) / DAY));
+  n.last = Math.max(0, Math.round((z - D0) / DAY));
+  if (n.g === "store") n.born = 0;
+});
+
+// ---------- 3D placement: two hemispheres, regions as lobes, recall level as depth
+function hash(s) { let h = 2166136261; for (const ch of s) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return (h >>> 0) / 4294967295; }
+const lobes = groups.filter(([g]) => g !== "store").map(([g]) => g);
+const golden = Math.PI * (3 - Math.sqrt(5));
+const ORB = innerWidth > 720 ? 1.6 : 1.3;
+const anchor = {};
+lobes.forEach((g, k) => {
+  const y = 1 - (k + .5) / lobes.length * 2, r = Math.sqrt(1 - y * y), th = k * golden;
+  anchor[g] = [Math.cos(th) * r, y * .82, Math.sin(th) * r];
+});
+nodes.forEach(n => {
+  const h1 = hash(n.id), h2 = hash(n.id + "#"), h3 = hash("#" + n.id);
+  if (n.id === "store:vanessa") { n.p = [0, 0, 0]; return; }
+  if (n.g === "store") {
+    const k = nodes.filter(m => m.g === "store").indexOf(n), th = k / 9 * Math.PI * 2;
+    n.p = [Math.cos(th) * ORB, (h1 - .5) * .5, Math.sin(th) * ORB]; n.orbit = th; return;
+  }
+  const A = anchor[n.g] || [0, 0, 0];
+  let v = [A[0] + (h1 - .5) * .62, A[1] + (h2 - .5) * .52, A[2] + (h3 - .5) * .62];
+  const len = Math.hypot(...v) || 1, rad = n.lv === 1 ? .38 : .78 + (n.lv - 2) * .05;
+  v = v.map(x => x / len * rad);
+  v[0] += Math.sign(v[0] || 1) * .14;           // the fissure between hemispheres
+  n.p = [v[0] * 1.22, v[1] * .92, v[2] * 1.02];  // a brain is wider than it is tall
+});
+
+// ---------- view state
+let rotY = -.6, rotX = .28, zoom = 1, auto = !reduce, sel = null, hover = null, query = "";
+const hidden = new Set();
+let day = nDays, playing = false;
+let W = 0, H = 0, DPR = 1;
+function resize() {
+  DPR = Math.min(2, window.devicePixelRatio || 1);
+  W = field.clientWidth; H = field.clientHeight;
+  field.width = W * DPR; field.height = H * DPR;
+  drawSpark();
+}
+addEventListener("resize", resize);
+
+function project(p) {
+  const cy = Math.cos(rotY), sy = Math.sin(rotY), cx = Math.cos(rotX), sx = Math.sin(rotX);
+  let x = p[0] * cy - p[2] * sy, z = p[0] * sy + p[2] * cy, y = p[1];
+  const y2 = y * cx - z * sx; z = y * sx + z * cx;
+  const S = Math.min(W > 720 ? Math.max(W - 800, W * .5) : W, H) * (W > 720 ? .36 : .30) * zoom, cam = 4.2, k = cam / (cam - z);
+  const offX = W > 720 ? (Math.min(392, W * .3) - (sel ? Math.min(396, W * .3) : 0)) / 2 : 0, offY = W > 720 ? -H * .04 : H * .02;
+  return { x: W / 2 + offX + x * S * k, y: H / 2 + offY - y2 * S * k, z, k };
+}
+
+function visible(n) { return n.born <= day && !hidden.has(n.g); }
+function matches(n) { return !query || (n.t + " " + n.id).toLowerCase().includes(query); }
+function freshness(n) { const age = day - n.last; return age < 0 ? 0 : Math.max(0, 1 - age / 21); }
+
+// ---------- render
+let tick = 0;
+const pulses = [];
+function frame() {
+  tick++;
+  if (auto && !drag) rotY += .0016;
+  nodes.forEach(n => { if (n.orbit !== undefined) { n.orbit += reduce ? 0 : .0009; n.p[0] = Math.cos(n.orbit) * ORB; n.p[2] = Math.sin(n.orbit) * ORB; } });
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  const bg = ctx.createRadialGradient(W * .48, H * .44, 10, W * .48, H * .44, Math.max(W, H) * .75);
+  bg.addColorStop(0, "#151a2c"); bg.addColorStop(1, "#0a0c13");
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+  nodes.forEach(n => { n.s2 = project(n.p); });
+  const focus = sel || hover;
+  const near = focus ? new Set([focus, ...adj.get(focus)]) : null;
+
+  // links
+  links.forEach(l => {
+    if (!visible(l.a) || !visible(l.b)) return;
+    const on = near && near.has(l.a) && near.has(l.b) && (l.a === focus || l.b === focus);
+    const depth = (l.a.s2.z + l.b.s2.z) / 2;
+    let al = (l.store ? .16 : .09) + depth * .05;
+    if (near) al = on ? .75 : .03;
+    if (query) al = matches(l.a) || matches(l.b) ? .3 : .02;
+    ctx.strokeStyle = on ? l.a.c : `rgba(150,170,220,${Math.max(.015, al)})`;
+    ctx.globalAlpha = on ? .8 : 1;
+    ctx.lineWidth = on ? 1.4 : .7;
+    ctx.beginPath(); ctx.moveTo(l.a.s2.x, l.a.s2.y); ctx.lineTo(l.b.s2.x, l.b.s2.y); ctx.stroke();
+    ctx.globalAlpha = 1;
+  });
+
+  // signal pulses travel along links, more of them where pages are fresh
+  if (!reduce && tick % 6 === 0) {
+    const cand = links.filter(l => visible(l.a) && visible(l.b));
+    if (cand.length) { const l = cand[(Math.random() * cand.length) | 0]; if (Math.random() < .35 + freshness(l.a) * .6) pulses.push({ l, t: 0, dir: Math.random() < .5 }); }
+  }
+  for (let i = pulses.length - 1; i >= 0; i--) {
+    const P = pulses[i]; P.t += .018;
+    if (P.t >= 1 || !visible(P.l.a) || !visible(P.l.b)) { pulses.splice(i, 1); continue; }
+    const A = P.dir ? P.l.a.s2 : P.l.b.s2, B = P.dir ? P.l.b.s2 : P.l.a.s2;
+    const x = A.x + (B.x - A.x) * P.t, y = A.y + (B.y - A.y) * P.t;
+    ctx.fillStyle = "rgba(243,185,77,.85)"; ctx.beginPath(); ctx.arc(x, y, 1.6, 0, 7); ctx.fill();
+  }
+
+  // nodes, back to front
+  const order = nodes.filter(visible).sort((a, b) => a.s2.z - b.s2.z);
+  order.forEach(n => {
+    const s = n.s2, fr = freshness(n);
+    let r = (n.g === "store" ? 6.5 : 2.4 + Math.min(5, Math.sqrt(n.s + n.deg) * .9)) * s.k * Math.min(1.4, zoom ** .5);
+    if (n.id === "store:vanessa") r *= 1.6;
+    let al = .55 + (s.z + 1.2) * .22;
+    if (near) al = near.has(n) ? 1 : .12;
+    if (query) al = matches(n) ? 1 : .08;
+    al = Math.max(.06, Math.min(1, al));
+    const glow = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, r * (3.2 + fr * 2.5));
+    glow.addColorStop(0, hexA(n.c, .55 * al)); glow.addColorStop(1, hexA(n.c, 0));
+    ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(s.x, s.y, r * (3.2 + fr * 2.5), 0, 7); ctx.fill();
+    ctx.fillStyle = hexA(n.c, al); ctx.beginPath(); ctx.arc(s.x, s.y, r, 0, 7); ctx.fill();
+    if (fr > .6 && !reduce) {   // touched in the last week of the date shown: a ring that breathes
+      ctx.strokeStyle = hexA("#f3b94d", (fr - .5) * al * (.6 + .4 * Math.sin(tick / 14 + n.i)));
+      ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(s.x, s.y, r + 4, 0, 7); ctx.stroke();
+    }
+    if (n === focus) { ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(s.x, s.y, r + 6, 0, 7); ctx.stroke(); }
+    const label = n.g === "store" || n === focus || (near && near.has(n)) || (query && matches(n));
+    if (label && al > .3) {
+      ctx.font = `${n.g === "store" ? 600 : 500} ${n.g === "store" ? 12.5 : 11.5}px Figtree, system-ui, sans-serif`;
+      ctx.fillStyle = n.g === "store" ? "#f6e3b8" : "#e7eaf3"; ctx.globalAlpha = al;
+      ctx.fillText(short(n.t), s.x + r + 6, s.y + 4); ctx.globalAlpha = 1;
+    }
+  });
+  requestAnimationFrame(frame);
+}
+function short(t) { return t.length > 38 ? t.slice(0, 36) + "…" : t; }
+function hexA(h, a) { const v = parseInt(h.slice(1), 16); return `rgba(${v >> 16},${(v >> 8) & 255},${v & 255},${a})`; }
+
+// ---------- interaction
+let drag = null, moved = 0, pinch = null;
+field.addEventListener("pointerdown", e => { drag = { x: e.clientX, y: e.clientY, id: e.pointerId }; moved = 0; field.setPointerCapture(e.pointerId); field.classList.add("drag"); });
+field.addEventListener("pointermove", e => {
+  if (drag && drag.id === e.pointerId) {
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y; moved += Math.abs(dx) + Math.abs(dy);
+    rotY += dx * .006; rotX = Math.max(-1.2, Math.min(1.2, rotX + dy * .006)); drag.x = e.clientX; drag.y = e.clientY; auto = false;
+  } else { hover = pick(e.clientX, e.clientY); field.classList.toggle("point", !!hover); }
+});
+field.addEventListener("pointerup", e => { field.classList.remove("drag"); if (moved < 6) choose(pick(e.clientX, e.clientY)); drag = null; });
+field.addEventListener("pointercancel", () => { drag = null; field.classList.remove("drag"); });
+field.addEventListener("wheel", e => { e.preventDefault(); zoom = Math.max(.5, Math.min(3.2, zoom * (e.deltaY < 0 ? 1.1 : .91))); }, { passive: false });
+field.addEventListener("touchmove", e => {
+  if (e.touches.length === 2) { const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); if (pinch) zoom = Math.max(.5, Math.min(3.2, zoom * d / pinch)); pinch = d; }
+}, { passive: true });
+field.addEventListener("touchend", () => { pinch = null; });
+addEventListener("keydown", e => {
+  if (e.target.tagName === "INPUT") return;
+  if (e.key === "ArrowLeft") rotY -= .12; else if (e.key === "ArrowRight") rotY += .12;
+  else if (e.key === "ArrowUp") rotX -= .1; else if (e.key === "ArrowDown") rotX += .1;
+  else if (e.key === "+" || e.key === "=") zoom = Math.min(3.2, zoom * 1.12); else if (e.key === "-") zoom = Math.max(.5, zoom / 1.12);
+  else if (e.key === "Escape") choose(null); else return;
+  auto = false;
+});
+function pick(x, y) {
+  let best = null, bd = 18;
+  nodes.forEach(n => { if (!visible(n) || !n.s2) return; const d = Math.hypot(n.s2.x - x, n.s2.y - y); if (d < bd + (n.g === "store" ? 6 : 0)) { bd = d; best = n; } });
+  return best;
+}
+
+function fmt(d) { return new Date(D0 + d * DAY).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }); }
+function choose(n) {
+  sel = n; const box = $("inspector");
+  if (!n) { box.hidden = true; return; }
+  box.hidden = false; box.style.setProperty("--c", n.c);
+  $("iKind").style.setProperty("--c", n.c);
+  $("iKind").querySelector("span").textContent = n.g === "store" ? "Live store" : `${n.gl} · recall level ${n.lv}`;
+  $("iTitle").textContent = n.t;
+  $("iDesc").textContent = n.d || "No one-line description in the index yet.";
+  const meta = n.g === "store" ? [["Kind", "Outside the repo — the brain points at it"]] : [
+    ["File", n.id], ["Sections", String(n.s)], ["First dated", n.a || "no date stamp"], ["Last dated", n.z || "no date stamp"],
+    ["Age", n.z ? `${Math.round((D1 - Date.parse(n.z)) / DAY)} days on ${G.generated}` : "—"]];
+  $("iMeta").replaceChildren(...meta.flatMap(([k, v]) => { const dt = document.createElement("dt"), dd = document.createElement("dd"); dt.textContent = k; dd.textContent = v; return [dt, dd]; }));
+  const rel = $("rel"); rel.replaceChildren();
+  adj.get(n).slice().sort((a, b) => b.deg - a.deg).slice(0, 8).forEach(m => {
+    const li = document.createElement("li"), b = document.createElement("button");
+    b.innerHTML = "<i></i>"; b.querySelector("i").style.setProperty("--c", m.c); b.append(m.t);
+    b.addEventListener("click", () => choose(m)); li.append(b); rel.append(li);
+  });
+  if (!rel.children.length) rel.innerHTML = "<li style='color:var(--muted);font-size:12.5px'>No links at this date.</li>";
+  const open = $("open");
+  if (n.g === "store") open.hidden = true; else { open.hidden = false; open.href = REPO + n.id; }
+  $("copyText").textContent = `bin/brain recall "${n.t.replace(/"/g, "'")}"`;
+  $("copied").textContent = "";
+}
+$("close").addEventListener("click", () => choose(null));
+$("copyRecall").addEventListener("click", () => {
+  const txt = $("copyText").textContent;
+  navigator.clipboard.writeText(txt).then(() => { $("copied").textContent = "Copied: " + txt; })
+    .catch(() => { const r = document.createRange(); r.selectNodeContents($("copyText")); getSelection().removeAllRanges(); getSelection().addRange(r); $("copied").textContent = "Selected. Press Cmd+C to copy: " + txt; });
+});
+
+// search
+$("names").replaceChildren(...nodes.map(n => { const o = document.createElement("option"); o.value = n.t; return o; }));
+$("q").addEventListener("input", e => {
+  query = e.target.value.trim().toLowerCase();
+  const exact = nodes.find(n => n.t.toLowerCase() === query);
+  if (exact) { if (exact.born > day) setDay(nDays); choose(exact); }
+});
+
+// region chips
+$("chips").replaceChildren(...groups.map(([g, label]) => {
+  const b = document.createElement("button"); b.className = "chip"; b.setAttribute("aria-pressed", "true");
+  b.style.setProperty("--c", HUE[g] || HUE.other);
+  const count = nodes.filter(n => n.g === g).length;
+  b.innerHTML = "<i></i>"; b.append(`${label} ${count}`);
+  b.addEventListener("click", () => { const on = hidden.has(g); on ? hidden.delete(g) : hidden.add(g); b.setAttribute("aria-pressed", String(on)); });
+  return b;
+}));
+try { if (innerWidth <= 720) $("chipsWrap").open = false; } catch (_) {}
+
+// stats (from the brain's own loop report)
+function stat(label, value, cls) { const d = document.createElement("div"); d.className = "stat " + (cls || ""); d.innerHTML = "<b></b><i></i>"; d.querySelector("b").textContent = value; d.querySelector("i").textContent = label; return d; }
+$("stats").replaceChildren(
+  stat("pages", String(G.files)), stat("sections", String(G.sections)), stat("links", String(links.length)),
+  stat("test Qs right", `${LOOP.bench_correct}/${LOOP.bench_total}`, LOOP.bench_correct >= LOOP.bench_total - 2 ? "good" : "warn"),
+  stat("org seats found", `${LOOP.org_covered}/${LOOP.org_total}`, LOOP.org_covered === LOOP.org_total ? "good" : "warn"),
+  stat("Jarvis", LOOP.jarvis === "unverified" ? "not yet" : LOOP.jarvis, LOOP.jarvis === "ok" ? "good" : "warn"));
+
+// ---------- the fourth dimension
+const perDay = new Array(nDays + 1).fill(0);
+nodes.forEach(n => { if (n.z && n.last <= nDays) perDay[n.last]++; });
+const T = $("t"); T.max = String(nDays); T.value = String(nDays);
+$("t0").textContent = fmt(0); $("t1").textContent = fmt(nDays) + " (today)";
+function setDay(d) { day = Math.max(0, Math.min(nDays, d)); T.value = String(day); $("whenTxt").textContent = fmt(day); drawSpark(); }
+T.addEventListener("input", () => { setPlay(false); setDay(+T.value); });
+function drawSpark() {
+  const c = $("spark"), w = c.clientWidth, h = c.clientHeight; if (!w) return;
+  c.width = w * DPR; c.height = h * DPR; const x = c.getContext("2d"); x.setTransform(DPR, 0, 0, DPR, 0, 0); x.clearRect(0, 0, w, h);
+  const max = Math.max(1, ...perDay), bw = w / (nDays + 1);
+  x.strokeStyle = "rgba(160,175,215,.14)"; x.beginPath(); x.moveTo(0, h - .5); x.lineTo(w, h - .5); x.stroke();
+  perDay.forEach((v, i) => {
+    const bh = Math.max(v ? 2 : 0, (v / max) * (h - 4));
+    x.fillStyle = i <= day ? (i > day - 7 ? "#f3b94d" : "rgba(127,200,255,.7)") : "rgba(143,151,173,.25)";
+    x.fillRect(i * bw + .5, h - bh, Math.max(1, bw - 1), bh);
+  });
+  x.fillStyle = "#e7eaf3"; x.fillRect(Math.min(w - 2, (day + .5) * bw), 0, 1.5, h);
+}
+let playTimer = null;
+function setPlay(on) {
+  playing = on; $("play").setAttribute("aria-label", on ? "Pause" : "Play the brain growing");
+  $("playIcon").innerHTML = on ? '<path d="M3 2h4v12H3zM9 2h4v12H9z"/>' : '<path d="M4 2l10 6-10 6z"/>';
+  clearInterval(playTimer);
+  if (on) { if (day >= nDays) setDay(0); playTimer = setInterval(() => { if (day >= nDays) { setPlay(false); return; } setDay(day + 1); }, reduce ? 400 : 260); }
+}
+$("play").addEventListener("click", () => setPlay(!playing));
+
+// screen-reader list
+$("srList").replaceChildren(...nodes.map(n => { const li = document.createElement("li"), b = document.createElement("button"); b.textContent = `${n.t} (${n.gl})`; b.addEventListener("click", () => choose(n)); li.append(b); return li; }));
+
+resize(); setDay(nDays); requestAnimationFrame(frame);
+</script>

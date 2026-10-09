@@ -1,0 +1,52 @@
+{
+  "_synthetic": "All values invented for tests. No real listing, lender quote, community, price, date or client. Not a claim about any real page.",
+  "url": "https://www.drhorton.com/california/inland-empire/menifee/spring-creek",
+  "tree": {
+    "name": "/",
+    "role": "document",
+    "children": [
+      {
+        "name": "main",
+        "role": "main",
+        "children": [
+          {
+            "name": "heading_1",
+            "role": "heading",
+            "text": "Spring Creek — New Homes in Menifee, CA"
+          },
+          {
+            "name": "text_1",
+            "role": "text",
+            "text": "Homes from $482,990"
+          },
+          {
+            "name": "text_2",
+            "role": "text",
+            "text": "Buyers get 4.99% with 5.62% APR through DHI Mortgage on select homesites."
+          },
+          {
+            "name": "text_3",
+            "role": "text",
+            "text": "Offer expires 10/31/26."
+          },
+          {
+            "name": "paragraph_1",
+            "role": "paragraph",
+            "text": "A single-family community in Menifee with a special financing program on select move-in-ready homes."
+          }
+        ]
+      }
+    ]
+  },
+  "expect": {
+    "kind": "record",
+    "auth_state": "not_required",
+    "record": {
+      "headline": "Spring Creek — New Homes in Menifee, CA",
+      "priceFrom": "482,990",
+      "rate_terms": "5.62% APR through DHI Mortgage on select homesites.",
+      "expires": "DHI Mortgage on sele",
+      "description": "A single-family community in Menifee with a special financing program on select move-in-ready homes."
+    }
+  }
+}

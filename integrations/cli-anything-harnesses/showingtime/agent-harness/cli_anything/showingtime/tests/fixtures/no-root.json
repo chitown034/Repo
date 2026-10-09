@@ -1,0 +1,45 @@
+{
+  "_synthetic": "All values invented for tests. No real person, listing or client.",
+  "url": "https://app.showingtime.com/appointments",
+  "tree": {
+    "name": "/",
+    "role": "document",
+    "children": [
+      {
+        "name": "navigation_1",
+        "role": "navigation",
+        "children": [
+          {
+            "name": "link_1",
+            "role": "link",
+            "text": "Home"
+          },
+          {
+            "name": "link_2",
+            "role": "link",
+            "text": "My Account"
+          },
+          {
+            "name": "link_3",
+            "role": "link",
+            "text": "Sign Out"
+          }
+        ]
+      },
+      {
+        "name": "region_1",
+        "role": "region",
+        "children": [
+          {
+            "name": "text_1",
+            "role": "text",
+            "text": "A page whose structure the map does not describe"
+          }
+        ]
+      }
+    ]
+  },
+  "expect": {
+    "path_map_error": true
+  }
+}

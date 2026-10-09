@@ -1,0 +1,25 @@
+{
+  "v": [
+    {
+      "date": "2026-09-13",
+      "evidence": "isaLine message cd-r11-20260913172400 (2026-09-13T17:24:00-07:00): \"Your weekly self-report (isaScorecard) is empty so I couldn't compare it to FUB.\" Same message also notes 0 calls/texts logged in FUB for the week's one new lead and 0 appointments logged — the scorecard is meant to be the ISA's own input feeding that comparison.",
+      "id": "cpi-20260913-01",
+      "opportunity": "ISA's weekly self-report (isaScorecard) is coming up empty, blocking the automated weekly KPI comparison against FUB",
+      "status": "Proposed"
+    },
+    {
+      "date": "2026-09-14",
+      "evidence": "isaLine messages cd-r3-20260913053530 (2026-09-13T05:35:30Z) and cd-r3-20260915022515 (2026-09-15T02:25:15Z) carry near-identical text (\"EOD summary not in yet — send it here when you get a minute: wins, appointments set, hot leads, risks, anything you need from me.\") sent roughly two days apart, with no ISA reply logged between them and no change in wording or escalation on the second send.",
+      "id": "cpi-20260914-01",
+      "opportunity": "The automated 'EOD summary not in yet' nudge to the ISA line repeats verbatim with no check for a reply and no escalation when ignored",
+      "status": "Proposed"
+    },
+    {
+      "date": "2026-09-22",
+      "evidence": "twinLog entry ts 2026-09-22T02:24:35Z, tier 3: \"needs-steven — FUB/Composio API key rejected, blocking lead triage; decision packet in twinQueue\". isaLine has carried no ISA-authored message since 2026-09-16T02:47:52Z (only repeated automated nudges before that), consistent with the connection break going unnoticed until it surfaced as a twinQueue decision item rather than an immediate alert.",
+      "id": "cpi-20260922-01",
+      "opportunity": "FUB/Composio connection broke (API key rejected) and sat undetected until it blocked daily lead-triage automation, surfacing only as a twinQueue decision item rather than an immediate alert",
+      "status": "Proposed"
+    }
+  ]
+}

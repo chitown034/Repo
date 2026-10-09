@@ -1,0 +1,254 @@
+[
+  {
+    "id": "F-M4-01",
+    "severity": "high",
+    "area": "panel-vanessa (COMMAND) line 1358 - Reach Vanessa via table",
+    "finding": "The src-note under the Reach/channels table said 'WhatsApp was removed from this list ... Discord replaces it as the third channel', directly contradicting the WhatsApp row FR5b added to the table immediately above it (badge: spec written 2026-09-22 / Mac install pending / not yet live). Logged by FR5b as F-FR5b-04.",
+    "evidence": "FR5b's row read from their worktree: `git -C .../deck` + wt-fr5b-comms working tree line 1353, 'WhatsApp ... via whatsapp-cli (marcelrgberger) reading the WhatsApp desktop app on this Mac'. The prose is the stale side: it was written when the row was deleted, and was never revisited when the row came back.",
+    "fix": "Rewrote the prose to match the row: WhatsApp is a spec, not a feed; personal WhatsApp still has no supported API and the Business Cloud API still needs a Meta Business account, verification and a separate number (both unchanged and kept); the chosen route drives the WhatsApp desktop app through marcelrgberger/whatsapp-cli, CLI only, plugin skill deliberately not installed; normen/whatscli evaluated and rejected, quoting its README ('No automation of messages, no sending of messages through shell commands') and the fact that its main.go parses no flags; preconditions named (desktop app on a dedicated number, never client-facing; macOS Full Disk Access and Accessibility; a GUI session for sends); nothing installed on the Mac today; Discord remains the live third channel. The row itself was NOT added - it arrives with the FR5b merge.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-02",
+    "severity": "medium",
+    "area": "panel-openterminal (MARKETS) line 2236 - 'Why the terminal itself is not embedded here' callout",
+    "finding": "Cited 'the same wall that blocks inbound WhatsApp' as an example of the artifact CSP/sandbox barrier. Two things wrong: the sandbox was never what blocked WhatsApp (no supported API was), and once whatsapp-cli lands, inbound WhatsApp arrives by exactly the Mac-relay path that iMessage and Discord already use and that the Reach table shows as Live.",
+    "evidence": "Contradicts the Reach table (lines 1349-1355 plus FR5b's incoming WhatsApp row): iMessage and Discord are relayed by Mac poll tasks writing this deck's store, and are green. The CSP claim itself is true and is corroborated elsewhere (line 5814, the OpenRouter meter cannot call openrouter.ai from the page).",
+    "fix": "Kept the CSP/127.0.0.1 explanation and the non-Claude Council seats, swapped the WhatsApp example for the OpenRouter meter, and added an explicit sentence that inbound WhatsApp is NOT an instance of this wall - it would arrive through a Mac relay, and its row is a spec waiting on a Mac install.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-03",
+    "severity": "medium",
+    "area": "panel-personalaccounts (WEALTH) line 3252 - Plaid refresh steps",
+    "finding": "'Cloud routines cannot do this step (their database writes park on a permission prompt).' The conclusion is right, the stated reason is now false.",
+    "evidence": "docs/CLOUD-WRITE-ARCHITECTURE.md - cloudWriteProbe wrote document version 1 unattended at 2026-09-22T09:05:56Z, no prompt. The real reason a routine cannot do the Plaid step is stated two paragraphs up on line 3247: the plaid-bridge service and its keys are local to the Mac.",
+    "fix": "Kept the conclusion, replaced the reason with the credential/local-service one and noted explicitly that the database write is not the obstacle.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-04",
+    "severity": "high",
+    "area": "panel-wellness (HEALTH) line 3833 - Strava/Fitbod card",
+    "finding": "'the twice-daily cloud routine ... is research-only - its dashboard write parks on a permission prompt.' False as of 2026-09-22, and it converts a real routine failure into an accepted limitation.",
+    "evidence": "docs/CLOUD-WRITE-ARCHITECTURE.md (cloudWriteProbe, 2026-09-22T09:05:56Z). The observable fact - the routine reports SUCCEEDED while the card's figures do not move - is unchanged and is kept.",
+    "fix": "Rewrote to: the routine reports success while writing nothing here; the old permission-prompt explanation was disproved on 2026-09-22; this is now an unexplained routine failure to chase, not a platform limit.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-05",
+    "severity": "high",
+    "area": "panel-aiteam line 4625 - ISA line / comms bridge 'Honest status'",
+    "finding": "'the hourly cloud routine ... is disabled - an unattended cloud run's database write parks on a permission prompt (confirmed three times)'. The belief that justified disabling it has been disproved.",
+    "evidence": "docs/CLOUD-WRITE-ARCHITECTURE.md names this case directly: 'The ISA comms bridge can run in the cloud. The hourly cloud bridge was disabled precisely because it was thought unable to write. That reasoning no longer holds.'",
+    "fix": "Kept the fact (disabled, last run 2026-09-09) and rewrote the justification: it was switched off on a belief that was disproved on 2026-09-22, so re-enabling it is an open action rather than a dead end.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-06",
+    "severity": "high",
+    "area": "panel-aiteam line 4627 - ISA bridge bullet list",
+    "finding": "'Re-enable it only if the platform starts honoring an unattended write approval' - the platform already does, so this instruction now steers work away from a path that works, onto the Mac task and its 7:37 AM-9:37 PM window.",
+    "evidence": "docs/CLOUD-WRITE-ARCHITECTURE.md, consequence 1 and 3: feeder tasks no longer need a laptop awake; the ISA bridge specifically can move to the cloud.",
+    "fix": "Kept the dated history of why it was disabled, added that the block was disproved on 2026-09-22 with no prompt at all, and changed the guidance to: re-enabling it is now the recommended move, because it would carry the line outside the Mac window and while the Mac is asleep.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-07",
+    "severity": "medium",
+    "area": "panel-aiteam line 4701 - Steve twin card",
+    "finding": "'The cloud routine Command Deck - Steve twin is disabled: its last run was abandoned 2026-09-09 on the unattended-write permission prompt' - true as dated history, but left standing it reads as a permanent block.",
+    "evidence": "docs/CLOUD-WRITE-ARCHITECTURE.md; the same doc's 'What does not change' section keeps the connector caveat, which matters here because the twin's Gmail-draft step needs a connector.",
+    "fix": "Left the dated history untouched and appended: that prompt is no longer the blocker (proved 2026-09-22), so the routine can be re-enabled; its Gmail step still needs a connector the routine itself has to carry.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-08",
+    "severity": "medium",
+    "area": "panel-aiteam line 4742 - 'Remote / live access to the same brain' list",
+    "finding": "Described claude.ai/code routines as '(cloud, research-only by design)'.",
+    "evidence": "docs/CLOUD-WRITE-ARCHITECTURE.md retires 'research-only by design'; the surviving limit is connectors, not writes.",
+    "fix": "Changed to '(cloud; since 2026-09-22 they are known to write this deck's store unattended, but they carry no connectors)'.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-09",
+    "severity": "high",
+    "area": "panel-nextmoves line 5977 - '50 cloud routines exist' paragraph",
+    "finding": "'A further constraint applies to all of them: a cloud routine is research-only by design - an unattended run's write to this dashboard parks on a permission prompt (confirmed three times)'. This is the single most load-bearing statement of the false belief on the page: it excuses every routine that reports SUCCEEDED without changing anything.",
+    "evidence": "docs/CLOUD-WRITE-ARCHITECTURE.md, including the output-not-execution consequence ('A cloud routine that succeeded but left its document untouched is now a failure, not an accepted limitation').",
+    "fix": "Kept the true half (judge a routine by whether its document moved, not by its status), removed the 'research-only by design' framing, recorded that the permission-prompt explanation was disproved on 2026-09-22, and stated that 'succeeded but wrote nothing' is now a defect to fix.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-10",
+    "severity": "medium",
+    "area": "panel-marketing line 6333 - video content queue card",
+    "finding": "'(routines can't modify the dashboard unattended, and no video-editing capability exists in this toolset)'. The first clause is false; the second is true.",
+    "evidence": "docs/CLOUD-WRITE-ARCHITECTURE.md.",
+    "fix": "Kept the video-editing limit, and recast the queue half as a build item rather than a limit, noting that an unattended routine writing this dashboard has been known to work since 2026-09-22.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-11",
+    "severity": "high",
+    "area": "panel-orchestration line 6745 - architecture rules list",
+    "finding": "'Writes happen on the Mac. An unattended cloud routine cannot reliably write this page's database or republish the page; both park on an approval nobody is there to give.' This is the rule other panels cite, and it is the one actively steering work onto a Mac that does not need to be there.",
+    "evidence": "docs/CLOUD-WRITE-ARCHITECTURE.md ('The Mac-only-writer constraint is lifted. It was the single largest structural limitation in this ecosystem, and it was wrong.'). Note the probe covered the artifact DB write only - republish was not re-tested.",
+    "fix": "Rewrote to 'Writes no longer have to happen on the Mac', stated the probe result, named what still pins work to the Mac (connectors - a routine created by an agent carries none, so Zoho/Lofty/Gmail/GitHub work runs where the credentials live - plus anything touching the local filesystem), and explicitly marked republish-the-page as UNPROVEN rather than claiming it works.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-12",
+    "severity": "medium",
+    "area": "panel-marketing JS - source comment lines 19418-19419 and the rendered marketingSyncNote at line 19434",
+    "finding": "Comment: 'Both are cloud routines, so neither can write this dashboard unattended'. Rendered copy: 'They are research-only: a cloud run cannot write this dashboard unattended, so nothing they produce lands in the queue by itself.'",
+    "evidence": "docs/CLOUD-WRITE-ARCHITECTURE.md. The observable fact (nothing has landed in the queue) is unchanged.",
+    "fix": "Both now say the routines have landed nothing in the queue, that an unattended cloud write is known to work since 2026-09-22, and that a routine succeeding without moving a document is a defect rather than a platform limit. The comment was changed alongside the copy it justifies so the two do not disagree.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-13",
+    "severity": "medium",
+    "area": "freshness board 'who writes this' map, line 20799 - 'AI Hedge Fund memo'",
+    "finding": "'It was previously a cloud routine, and cloud routines cannot write this dashboard's store unattended, so that path is not a confirmed source either.' This contradicts the deck itself, not just the new finding: panel-hedgefund line 2035 says the routine's Sep 13 run died on blocked network egress to Yahoo Finance / stooq / sec.gov / apple.com / macrotrends, and its Sep 21 run logged SUCCEEDED while producing no memo.",
+    "evidence": "Intra-file contradiction with line 2035, plus docs/CLOUD-WRITE-ARCHITECTURE.md.",
+    "fix": "Re-pointed the explanation at the real cause recorded on line 2035 (blocked egress; SUCCEEDED with no memo) and stated that the database write is not the obstacle.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-14",
+    "severity": "low",
+    "area": "execSyncRegistry source comment, line 21536 (weather/news feed registry)",
+    "finding": "'Cloud routines were ruled out - their db writes park on a permission prompt (see CI log).' Not rendered, but it is the reasoning a future engineer inherits for these feeds.",
+    "evidence": "docs/CLOUD-WRITE-ARCHITECTURE.md.",
+    "fix": "Comment now records that the ruling-out rested on a belief disproved 2026-09-22, and that a cloud writer is an option for these feeds again. No code changed.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-15",
+    "severity": "high",
+    "area": "panel-aiteam shared toolbox table (AI_TEAM_TOOLBOX, 'Cloud routines' row, now line 25923)",
+    "finding": "'50 routines, 46 enabled - research-only by design: an unattended run's artifact-DB write parks on a permission prompt (confirmed three times).' This row is the roster's canonical statement of the rule.",
+    "evidence": "docs/CLOUD-WRITE-ARCHITECTURE.md.",
+    "fix": "Row now states that an unattended run CAN write this deck's artifact database (probe, 2026-09-22), that the 'research-only by design' rule is retired, and that what an agent-created routine still lacks is connectors - so Zoho/Lofty/Gmail/GitHub work stays on the Mac. The per-routine Disabled / Failed / Abandoned / Succeeded lists were left untouched.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-16",
+    "severity": "medium",
+    "area": "panel-aiteam roster - Derek (CTO) tool chips, now line 25905",
+    "finding": "Derek's tool list claimed 'CLI-Anything (installed on the Mac; wrappers pending)'. Three other places in the same file say the opposite.",
+    "evidence": "Line 4533: 'Spec written this cycle; nothing has been installed on the Mac - that has to happen in a session on the machine.' Line 25978 (CRM & Connectors): 'spec written 2026-09-22, Mac install pending'. Line 25923 skills list: 'Mac install pending'. Three to one, and the three carry the dated detail, so 'installed' is the stale side.",
+    "fix": "Changed the chip to 'CLI-Anything (spec written 2026-09-22; not installed on the Mac yet, wrappers pending)'.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-17",
+    "severity": "medium",
+    "area": "EA/ISA start-of-day checklist (SOD_ITEMS), line 14759",
+    "finding": "Live checklist copy told the ISA to review 'Zoho CRM ... then FUB for real estate'. Follow Up Boss was retired 2026-09-22 and its Composio credentials have been failing authentication since 2026-09-16.",
+    "evidence": "Lines 2258, 4531, 6512 and the rest of the Lofty pass; the checklist is forward-looking instruction, not a dated history constant. Checked renderFlatChecklist (line 15876): tick state is keyed by array index, so changing the text does not lose a tick.",
+    "fix": "'then Lofty for real estate'.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-18",
+    "severity": "medium",
+    "area": "EA/ISA start-of-day checklist (SOD_ITEMS), line 14760",
+    "finding": "'Check inbound channels: FUB Phone, Zoho telephony/SMS, ...' - same retired system.",
+    "evidence": "As F-M4-17.",
+    "fix": "Replaced 'FUB Phone' with 'Lofty'. Deliberately did not name a Lofty phone/dialer product feature, because nothing in this file or the engagement establishes one.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-19",
+    "severity": "medium",
+    "area": "EA/ISA 90-day onboarding, Days 1-30 (ONBOARD_PHASES), line 14972",
+    "finding": "'Audit Zoho CRM and FUB, calendars, active loans, ...' - instructs a future hire to audit a retired CRM.",
+    "evidence": "As F-M4-17.",
+    "fix": "'Audit Zoho CRM and Lofty, ...'.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-20",
+    "severity": "medium",
+    "area": "panel-wellness (HEALTH) line 3567 - Apple Health card title",
+    "finding": "Title read 'Apple Health - every category, fed by Health Auto Export' while the card's own first paragraph (line 3569) says 'This pipeline is down as of 2026-09-22' and the next (3571) describes the Notion replacement route. The title asserted a live feed from a dead daemon.",
+    "evidence": "Lines 3569 and 3571 in the same card; the healthNotionCard added directly above it at 3546.",
+    "fix": "Title now reads 'Apple Health - every category (Health Auto Export chain, down since 2026-09-13)'. Element id appleHealthCard untouched.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-21",
+    "severity": "medium",
+    "area": "panel-wellness (HEALTH) line 3689 - Health metrics log card",
+    "finding": "'...to pull weight, resting HR, sleep hours and steps for the last 14 days from the Mac's Health Auto Export database'. The button does not read the Mac at all.",
+    "evidence": "ahFillHealthLog (line 24997) calls ahSnapshot() - it reads the appleHealth document already on the deck. The claim is wrong today and would be wrong again once the Notion path fills that document.",
+    "fix": "Now says it pulls out of the appleHealth snapshot the deck already holds, makes no live read of its own, and that you get whatever last filled that snapshot - the Health Auto Export chain up to 2026-09-13, or the Notion phone path once it runs.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-22",
+    "severity": "medium",
+    "area": "health coaching freshness banner, renderHealthCoaching fallback, line 16100",
+    "finding": "The stale-data nudge read 'no new export since. Open Health Auto Export on your iPhone to resume.' - it sends Steven to the dead path, and contradicts the broken-pipeline nudge one line above it which correctly says 'This is not your phone.'",
+    "evidence": "Line 3569 (ingest daemon on :8765 not responding, last real ingest 2026-09-13) and 3571 / 3562 (the Notion phone path is the replacement: open Claude on the iPhone and say 'update my health stats').",
+    "fix": "Fallback now points at the Notion phone path. Only the default string changed; fr.nudge from the document still wins, and the broken-watcher branch at 16099 was left alone because it is still accurate for the ingest watcher.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-23",
+    "severity": "low",
+    "area": "renderAiNews, line 22224 (now 22225)",
+    "finding": "A leftover You.com-era string, 'Connecting to live search for today's AI news', assigned and then immediately overwritten on the next line by the truthful 'this page makes no live calls of its own'. Never seen by a user, but it is a false claim sitting in the source next to its own correction.",
+    "evidence": "wireLiveAiNews at 22227-22231 overwrites it synchronously; You.com retired 2026-09-22 and the in-page search connector was removed 2026-09-11 (lines 4535, 25019).",
+    "fix": "Changed to 'Reading the stored AI-news feed...'. No logic changed.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-24",
+    "severity": "medium",
+    "area": "LEFT ALONE - STRATEGY_SYNCED_AT constant, line 8263 (panel-quantvue data)",
+    "finding": "The constant's string value ends '...The cloud routine \"Trading strategy performance daily 3pm PST sync\" reports SUCCEEDED Sep 21 but an unattended cloud run cannot write to this deck's database, so it changed nothing.' That reason is false as of 2026-09-22.",
+    "evidence": "docs/CLOUD-WRITE-ARCHITECTURE.md. The observable part (strategySnapshot has not moved since 2026-09-16 03:26 UTC, 3 weekday cycles missed) is correct.",
+    "fix": "NOT CHANGED. My brief forbids changing any *_SYNCED_AT constant value, and several stamps are parse-sensitive. Needs the owner of that constant to rewrite the parenthetical to: routine reports SUCCEEDED but strategySnapshot has not moved, which is now an unexplained failure rather than a platform limit.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-25",
+    "severity": "medium",
+    "area": "LEFT ALONE - panel-toolkit line 6643",
+    "finding": "'claude.ai/code routines (cloud, research-only by design)' - the same stale claim I fixed at line 4742, in the twin sentence inside panel-toolkit.",
+    "evidence": "docs/CLOUD-WRITE-ARCHITECTURE.md; identical wording to line 4742.",
+    "fix": "NOT CHANGED - panel-toolkit is M1's. Hand to M1: apply the same wording used at line 4742.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-26",
+    "severity": "low",
+    "area": "LEFT ALONE - CI_LOG_DEFAULT entries, lines 19105-19115, and the same narrative inside the cdStateSeed JSON at line 6957",
+    "finding": "Several dated kaizen-log entries record the now-disproved belief ('cloud routines cannot do it anyway'; 'An unattended cloud sandbox has nobody to approve that, so the run hangs. Third confirmation.').",
+    "evidence": "They are dated 2026-09-07 through 2026-09-11 and are a log of what was found and believed on those dates. Rewriting them would falsify the record, and the cdStateSeed copy is seeded document data, not prose.",
+    "fix": "NOT CHANGED, deliberately. If the log should carry the correction, it belongs as a NEW dated 2026-09-22 entry written by whoever owns the CI log - not as an edit to the old ones.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-27",
+    "severity": "medium",
+    "area": "FLAGGED, NOT CHANGED - panel-aiteam line 4529 (Zoho connector bullet)",
+    "finding": "'A cloud routine re-tests every few hours and writes the zohoSync document; the moment the permission lands, zohoLeads and zohoDeals fill on their own.' Not a contradiction after my fixes (the write half is now fine), but the read half may be wrong for a different reason.",
+    "evidence": "docs/CLOUD-WRITE-ARCHITECTURE.md, 'What does not change': a routine created by an agent stores no MCP connectors, so anything needing Zoho credentials has to run where they live; only a routine created in the web interface carries connectors. Whether this particular routine was created in the web interface cannot be determined from this file.",
+    "fix": "NOT CHANGED - I cannot tell which side is true. Derek / the integration lane should confirm how that routine was created. If it was agent-created, it cannot reach Zoho and the card's promise that the board 'goes green without anyone pasting anything' is false. The rest of the Zoho copy in the file is already correct: the block is a profile permission (HTTP 403 NO_PERMISSION Crm_Implied_Api_Access), Steven-only, Zoho-side - not a missing credential. I found no place still blaming a missing key or an expired token.",
+    "halt": false
+  },
+  {
+    "id": "F-M4-28",
+    "severity": "low",
+    "area": "FLAGGED, NOT CHANGED - renderHealthCoaching broken-pipeline nudge, line 16099",
+    "finding": "'The ingest watcher on this Mac has stopped - nothing new will arrive until it is running again.' Accurate for the Health Auto Export chain today, but it becomes false once the Notion phone path fills appleHealth, which bypasses the watcher entirely.",
+    "evidence": "Lines 3562 and 3571 describe the Notion route; line 3569 confirms the watcher is down. Whether healthCoaching.freshness.pipeline will still be written as 'broken' once the Notion path runs cannot be determined from this file.",
+    "fix": "NOT CHANGED. Re-check after the first phone run lands.",
+    "halt": false
+  }
+]

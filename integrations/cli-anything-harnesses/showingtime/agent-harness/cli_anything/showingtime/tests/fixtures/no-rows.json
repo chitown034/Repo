@@ -1,0 +1,52 @@
+{
+  "_synthetic": "All values invented for tests. No real person, listing or client.",
+  "url": "https://app.showingtime.com/appointments",
+  "tree": {
+    "name": "/",
+    "role": "document",
+    "children": [
+      {
+        "name": "navigation_1",
+        "role": "navigation",
+        "children": [
+          {
+            "name": "link_1",
+            "role": "link",
+            "text": "Home"
+          },
+          {
+            "name": "link_2",
+            "role": "link",
+            "text": "My Account"
+          },
+          {
+            "name": "link_3",
+            "role": "link",
+            "text": "Sign Out"
+          }
+        ]
+      },
+      {
+        "name": "main",
+        "role": "main",
+        "children": [
+          {
+            "name": "heading_1",
+            "role": "heading",
+            "text": "Nothing scheduled"
+          },
+          {
+            "name": "text_1",
+            "role": "text",
+            "text": "There is nothing to show here yet."
+          }
+        ]
+      }
+    ]
+  },
+  "expect": {
+    "empty": true,
+    "count": 0,
+    "warning_contains": "none matched rows selector"
+  }
+}

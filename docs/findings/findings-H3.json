@@ -1,0 +1,227 @@
+[
+  {
+    "id": "F-H3-01",
+    "severity": "high",
+    "area": "omniroute failover — F-V2-08",
+    "finding": "The PII gate failed OPEN: with no --task and no --pii the launcher routed the invocation to the free provider. It now fails CLOSED. While the route is anything but subscription, an invocation reaches a free provider only when its --task name is on the free-OK allow-list or it carries an explicit --no-pii; everything else — no task, an unknown task, an interactive session — is deferred (exit 75) or pinned to the local model.",
+    "evidence": "Harness: stub `claude`, throwaway HOME, subscription genuinely limited (stub returns the limit JSON), a live stand-in /healthz on 127.0.0.1:20999 so the gate is actually reached (with the port dead both versions defer on 'OmniRoute unhealthy' before the gate, which is why the first battery was inconclusive). BEFORE `claude-auto --force free -p hello`: exit=1, log 'route=free-fallback model=auto/coding:free task=? pii=0 headless=1', stub saw 'ARGS=-p hello | BASE_URL=http://127.0.0.1:20999 | AUTH_TOKEN=set | MODEL=auto/coding:free | ROUTE=free-fallback | PII_OK=0'. AFTER: exit=75, stderr 'not cleared for a free provider — no --task and no --no-pii: fail closed', log 'defer task=none pii=1 (no --task and no --no-pii: fail closed)', the stub saw nothing. Same for the interactive shape `--force free --remote-control Vanessa --agent vanessa-orchestrator`: before it opened the session on the free route (headless=0), after exit=75.",
+    "fix": "DONE. claude-auto.sh: is_pii=1 is the default; the classification block (`is_pii=1; why=...`) only lowers it for an allow-listed task or an explicit --no-pii that no client-data pattern objects to. The reason is printed on stderr and logged as `task=… pii=… (why)` on every route decision.",
+    "halt": false
+  },
+  {
+    "id": "F-H3-02",
+    "severity": "high",
+    "area": "omniroute failover — F-V2-07",
+    "finding": "Option parsing broke at the first non-option argument, so `-p hello --task lofty-crm-sync` never saw the task name and routed a client task to the free provider — and passed `--task lofty-crm-sync` on to claude as its own arguments. All options are now recognised in any position before `--`; every other argument goes to claude untouched in its original order.",
+    "evidence": "BEFORE `claude-auto --force free -p hello --task lofty-crm-sync`: exit=1, log 'task=? pii=0', stub saw 'ARGS=-p hello --task lofty-crm-sync | BASE_URL=http://127.0.0.1:20999 | ROUTE=free-fallback | PII_OK=0'. AFTER: exit=75, log 'defer task=lofty-crm-sync pii=1 (task matches client-data pattern 'lofty-*')' — byte-identical outcome to the `--task`-first ordering. `--task=NAME` also works (log 'task allow-listed by 'mortgage-rates-daily''). F-V2-16 in passing: `claude-auto --task` → 'claude-auto: --task needs a value' + usage, exit 64 (was a raw '$2: unbound variable', exit 1).",
+    "fix": "DONE. claude-auto.sh option loop: --task/--task=/--force/--force=/--pii/--no-pii/--status collected wherever they appear, CARGS carries the rest, `--` ends option parsing; a task name is charset-checked ([A-Za-z0-9_.-]).",
+    "halt": false
+  },
+  {
+    "id": "F-H3-03",
+    "severity": "high",
+    "area": "omniroute failover — F-V2-09",
+    "finding": "PII matching was exact-name against a hard-coded list, so any renamed or new client task fell through to the free provider. Replaced with an ALLOW-LIST of tasks permitted on free providers (glob patterns, DEFAULT_FREE_OK_TASKS + ~/.config/omniroute/free-ok-tasks.txt) plus a pattern DENY-LIST (DEFAULT_PII_TASKS + pii-tasks.txt) that wins over the allow-list and over --no-pii. Chosen because a deny-list fails open on every name nobody has classified yet, while an allow-list fails closed; the deny-list stays as belt-and-braces so a client task can never be allow-listed by mistake.",
+    "evidence": "BEFORE, OmniRoute answering: `--task lofty-crm-sync-v2`, `--task some-brand-new-task`, `--task nightly-borrower-export` and `--task lofty-crm-sync --no-pii` all reached the stub on the free route ('ROUTE=free-fallback | PII_OK=0'). AFTER: exit=75 each, with the reason — \"matches client-data pattern 'lofty-*'\", \"task not on the free-OK allow-list: fail closed\", \"matches client-data pattern '*borrower*'\", \"matches client-data pattern 'lofty-*' (--no-pii refused)\". free-ok-tasks.txt with `brain-deck-sync` and `feeds-*`: `--task brain-deck-sync` and `--task feeds-hourly` routed free ('task allow-listed by 'feeds-*''), `--task feeds-crm-export` still deferred ('matches client-data pattern '*crm*''). Every name in the old exact list is covered by a pattern (lofty-*, zoho-*, isa-*, lead-*, r12-inbox-*, r13-appointment-*, showing-*, steve-twin-*, r11-isa-* via *-isa-*, vanessa-imessage/discord/whatsapp-*, health-*).",
+    "fix": "DONE. claude-auto.sh DEFAULT_FREE_OK_TASKS (11 names whose inputs are public or system data per their doc names: weather/news/rates/market feeds/model feeds/incentives/skills/feed freshness/runner health/toolkit) and DEFAULT_PII_TASKS (41 patterns). `set -f` so the patterns are never expanded against the cwd. Pattern files: comments and blanks stripped, charset-checked.",
+    "halt": false
+  },
+  {
+    "id": "F-H3-04",
+    "severity": "high",
+    "area": "omniroute failover — F-V2-10",
+    "finding": "The usage-limit regex read the task's whole stdout+stderr and its `[^0-9]429[^0-9]`, `resets? (at|in)` and `limit (has been )?reached` branches matched ordinary mortgage prose, flipping a healthy subscription onto a free model whenever a run also failed. Now (1) the regex only ever sees the ERROR ENVELOPE — in JSON mode the result/error/message/subtype fields of the {\"type\":\"result\"} object; in text mode stderr plus the last three stdout lines, and only when the exit code is non-zero — and (2) the vocabulary is anchored: taken from the strings inside the Claude Code 2.1.278 binary (`usage limit`, `you've hit your … limit`, `rate_limit_error`, `rate limited`), with 429 only next to API Error/HTTP/status/code or 'Too Many Requests', and no bare resets/limit-reached branches.",
+    "evidence": "Unit test of LIMIT_RE, before → after: 'Loan amount $429,000 on the subject property' MATCH → no; 'Comp at 429, Elm Street' MATCH → no; 'HTTP 200 OK, 429 ms elapsed' MATCH → no; 'Property tax resets at the start of the fiscal year' MATCH → no; 'The escrow limit has been reached for this account' MATCH → no; 'Index 429 of 5000 rows processed' MATCH → no. Non-limits stay unmatched in both: 'API Error: 401 Invalid API key · Please run /login', 'Fast mode overloaded…', 'API Error: 529 overloaded_error'. Real shapes all MATCH after: 'Claude AI usage limit reached|<epoch>', \"You've hit your limit · resets 3pm\", 'You’ve hit your weekly limit' (curly apostrophe), 'Usage limit reached · continuing automatically', 'API Error: 429 {…rate_limit_error…}', '\"error\": {\"type\": \"rate_limit_error\"…}', 'the request was rate limited' (missed before), \"You're out of extra usage\", 'HTTP 429 Too Many Requests'. End-to-end on the subscription path: a task exiting 1 with the six prose lines in its output — BEFORE 'LIMIT detected … -> mode=free-fallback', exit 75; AFTER 'run failed task=weather-news-refresh rc=1 — not a usage limit, route unchanged', exit 1, mode stays subscription. A real limit still switches: JSON legacy form → 'branch=usage-limit', text form → 'branch=hit-your-limit', 429 body on stderr → 'branch=rate_limit-token', each exit 75 and mode=free-fallback; the 401 login-expiry does not switch.",
+    "fix": "DONE. claude-auto.sh LIMIT_RE, envelope(), limit_branch(); probe.sh carries the identical LIMIT_RE and envelope_text() (checked equal in the test). README 'The detection signal' rewritten to match.",
+    "halt": false
+  },
+  {
+    "id": "F-H3-05",
+    "severity": "high",
+    "area": "omniroute failover — F-V2-11",
+    "finding": "A probe that failed for any reason other than a limit match kept the free-fallback mode forever, and the launcher swallowed its own re-probe with `|| true`. Now the probe counts consecutive inconclusive runs in state/probe-failures; at OMNIROUTE_PROBE_MAX_FAIL (default 4 = one hour) it writes state/NEEDS-STEVEN (what failed, what to check), falls the route back to plain `claude` (mode=subscription — the one route that cannot leak, and a still-limited subscription simply re-flips on the next headless run), logs ESCALATED and exits 1. Any conclusive probe resets the counter and clears the marker. The launcher logs the exit status of its self-probe, and writes the marker if probe.sh is missing next to it (F-V2-17).",
+    "evidence": "BEFORE: five probe.sh runs with a `claude` stub exiting 2 → each 'probe inconclusive (rc=2) — mode kept: free-fallback', mode free-fallback after all five, no counter, no marker; launcher log in the same state showed only the defer line — nothing about the failed probe. AFTER: '1/4', '2/4', '3/4', then at the 4th 'ESCALATED: 4 consecutive inconclusive probes (rc=2) — mode=subscription (fail back to plain claude), marker written at …/state/NEEDS-STEVEN', probe-failures reset to 0, exit 1; the 5th run exits 0 (subscription mode). Marker text: 'probe.sh: 4 consecutive inconclusive probes (last rc=2) — switch-back cannot be proven, so the route fell back to plain claude … Check that claude is on the LaunchAgent PATH, that its -p flags still exist, and that it is logged in … Delete this file once fixed.' Launcher with the same broken stub: log 'self-probe rc=1 (state was >1500s old)'. Launcher copied without probe.sh: log 'ERROR probe.sh not found or not executable at …/alone/probe.sh' and marker 'claude-auto: probe.sh missing at … — switch-back is impossible until it is installed next to claude-auto'. Legitimate switch-back unchanged: free-fallback + healthy stub → 'RESTORED: subscription usable again', route.env mode=subscription; still-limited → 'still limited: mode=free-fallback reset_at=… branch=usage-limit'. mac-verify.sh reports the marker as NEED (F-H3-16).",
+    "fix": "DONE. probe.sh: FAILS counter, fail_count(), escalation block, marker clearing on RESTORED; claude-auto.sh: symlink-resolved probe path, `prc=$?` logged, write_marker on a missing probe.",
+    "halt": false
+  },
+  {
+    "id": "F-H3-06",
+    "severity": "medium",
+    "area": "omniroute failover — F-V2-12",
+    "finding": "A reset epoch parsed from a limit message was stored verbatim; a far-future value silenced the probe forever. Now the epoch is taken only from the CLI's own `limit reached|<10 digits>` shape (anchored with `[|]`, so a pipe-delimited table cell no longer parses) and clamped to now−1h..now+48h (OMNIROUTE_RESET_MAX_AHEAD); anything outside is a parse failure → 0 → the probe polls. The clamp is applied again when route.env is read, so a bad value already on disk is neutralised too, and the probe re-probes at least every 6 h (OMNIROUTE_PROBE_FORCE_AGE) regardless of reset_at.",
+    "evidence": "BEFORE: route.env seeded with reset_at=4102444800, LaunchAgent-style `probe.sh` (no --now) → log 'waiting: mode=free-fallback reset_at=4102444800', exit 0, no probe, mode stays free-fallback; a limit message carrying |4102444800 → route.env reset_at=4102444800. AFTER: same seed → 'WARN reset_at=4102444800 in …/route.env is outside the sane window — treated as 0 (probe now)' then 'RESTORED: subscription usable again'; the limit message → 'reset epoch 4102444800 is outside now-1h..now+172800s — treated as unknown (0)', route.env reset_at=0; a sane epoch 30 min out is kept (reset_at=1790092100). Note the CLI itself carries the string 'the usage limit now resets more than 24 hours out, so this task will not resume on its own' — a real reset can be days out; a clamped value costs nothing because a limited probe fails fast.",
+    "fix": "DONE. parse_reset_epoch() and the read_route() clamp in both scripts; PROBE_FORCE_AGE in probe.sh (wait branch) and claude-auto.sh (stale test).",
+    "halt": false
+  },
+  {
+    "id": "F-H3-07",
+    "severity": "medium",
+    "area": "omniroute failover — F-V2-15",
+    "finding": "The .env mode check used BSD-first `stat -f %Lp || stat -c %a`; on Linux `stat -f` succeeds with a filesystem report, so the whole free-route path exited 78 on any Linux host. Replaced with mac-verify.sh's filemode() (GNU first, validated as octal, BSD fallback) and a fileowner() twin used by the route.env trust check.",
+    "evidence": "Raw pre-fix script on this Linux host, .env genuinely -rw-------, OmniRoute answering: exit=78, stderr 'must be chmod 600 (is   File: \"…/.env\"  ID: … Type: ext2/ext3 Block size: 4096 …'. AFTER: the same invocation passes the check and the allow-listed task reaches the stub on the free route; with the file deliberately chmod 644: exit=78, 'must be chmod 600 (is 644)'. (For the other before/after batteries the pre-fix script ran behind a `stat` shim that fails `stat -f`, the only way to get it past this bug to its gate; the after runs used the real GNU stat.) README's 'stat -f … macOS forms with GNU fallbacks' claim corrected.",
+    "fix": "DONE. claude-auto.sh filemode()/fileowner() (same shape as mac-verify.sh:47-55), used in load_omni_key() and route_file_trusted(); probe.sh carries the same two functions.",
+    "halt": false
+  },
+  {
+    "id": "F-H3-08",
+    "severity": "medium",
+    "area": "omniroute failover — F-V2-13",
+    "finding": "redact() only caught `(sk|key|token|Bearer)[-_ ]…`, so NAME=value, name: value, JSON \"api_key\":\"value\", x-api-key: value, CLI `--api-key value` and quoted values passed through. claude-auto.sh no longer has a redact() at all because it no longer writes any output text to disk (F-H3-09). probe.sh's redact() (its 200-byte inconclusive-probe sample) and a new redact_line() in mac-verify.sh (everything echoed from another tool's listing) now apply four ordered rules: identifier containing key/token/secret/pass/auth/cred + = or : (+ optional Bearer/Basic/Token scheme word) + value, in single or double quotes or bare; the same words + whitespace/dash + an 8+ char run (the CLI-flag form); bare sk-/Bearer/ghp_/xox tokens; any 32+ char opaque run. Case-insensitive via bracket classes because BSD sed has no I flag.",
+    "evidence": "Ten obvious fake placeholders of the form FAKE-PLACEHOLDER-00NN in the shapes NAME=v, 'Invalid token: v', {\"api_key\":\"v\"}, 'x-api-key: v', NAME=sk-ant-v, 'Authorization: Bearer v', 'password = v', \"client_secret\": \"v\", '--api-key v - ✓ Connected', export NAME='v'. BEFORE (probe.sh:16 one-liner): 6 of 8 survived. AFTER: 0 of 10 survive through probe.sh redact and 0 of 10 through mac-verify redact_line; a harmless line ('usage limit reached|1790000000 rc=1 … API Error: 429 rate_limit_error') passes untouched. Two of my own first-draft rules leaked in testing and were fixed before hand-back: the Bearer scheme word was being consumed as the value, and a single-quoted value was skipped.",
+    "fix": "DONE. probe.sh redact(); mac-verify.sh redact_line(); the two are kept textually in step (comment in each).",
+    "halt": false
+  },
+  {
+    "id": "F-H3-09",
+    "severity": "medium",
+    "area": "omniroute failover — F-V2-14",
+    "finding": "limit-samples.log appended up to 300 bytes of the failing task's own stdout+stderr — the tasks most likely to fail being the client-data ones — into a world-readable file in a default-umask directory. Now: `umask 077` in both scripts, state/ chmod 700, every file 600; on a detected limit the launcher records timestamp, task, exit status, pii flag, which regex branch fired, byte count and the sha256 of the envelope — never the text; the file is capped at 500 lines (the run logs at 5000). The probe's inconclusive samples keep a redacted 200-byte head because the probe's prompt is fixed text.",
+    "evidence": "BEFORE, real limit on the subscription path: limit-samples.log line '… task=weather-news-refresh rc=1 sample={\"type\":\"result\",\"subtype\":\"error_during_execution\",\"is_error\":true,\"result\":\"Claude AI usage limit reached|…\",…}' (the whole output), state dir drwxr-xr-x, limit-samples.log and route.env -rw-r--r--. AFTER: '… task=weather-news-refresh rc=1 pii=0 branch=usage-limit bytes=86 sha256=9c7f465443bad8f88fad2f9f684dff4b19a52360f09ace859f49662c83a27757', state dir drwx------, both files -rw-------. Probe inconclusive line: '… probe rc=2 inconclusive=1/4 bytes=33 sha256=… sample=error: unknown option --max-turns'.",
+    "fix": "DONE. claude-auto.sh record_sample()/hash256()/rotate(), umask 077 + chmod 700; probe.sh the same plus redact() on its own sample. The README's original 'tighten LIMIT_RE from the samples' purpose is now served by the branch label, not by stored text.",
+    "halt": false
+  },
+  {
+    "id": "F-H3-10",
+    "severity": "medium",
+    "area": "omniroute failover — F-V2-18",
+    "finding": "route.env was SOURCED on every invocation from a default-umask directory whose mode was never checked. It is now a data file: the six keys are read with sed and validated (mode must be one of three words, numbers must be digits, reason charset-limited, omni_ok 0/1), never sourced; a route.env that is not a plain file owned by the user with mode 600/400 has its content discarded and is rewritten as mode=subscription (rather than merely skipped, which would have re-trusted the planted content once the mode was fixed).",
+    "evidence": "Injection, route.env containing `mode=subscription; touch /tmp/h3-test/PWNED-<run>` at mode 600: BEFORE the PWNED file was created (the line executed) and the run went on normally; AFTER no PWNED file, and the launcher refused with \"unknown mode 'subscription_ touch …' in …/route.env\" exit 78 (the sanitiser turns `;` into `_`). World-writable route.env (666) saying free-fallback, OmniRoute answering: BEFORE trusted → task ran on the free route ('ROUTE=free-fallback | PII_OK=0'); AFTER 'WARN …/route.env is not a plain owner-only file (mode 666, owner 0) — content discarded, route reset to subscription', route.env recreated -rw------- with reason='untrusted-route-file-reset', the stub saw ROUTE=subscription, and a second run found nothing planted.",
+    "fix": "DONE. route_get()/route_num()/route_file_trusted()/read_route() in both scripts; write_route unchanged apart from the wider sanitiser set.",
+    "halt": false
+  },
+  {
+    "id": "F-H3-11",
+    "severity": "low",
+    "area": "omniroute failover — F-V2-16, F-V2-17",
+    "finding": "Fixed in passing while rewriting the option loop and the self-probe block: `--task`/`--force` as the last argument now produce the script's own usage message (exit 64) instead of a `set -u` crash; the probe is located through a symlink-resolving loop (bash 3.2 has no `readlink -f`) and its absence is logged and marked instead of being indistinguishable from an inconclusive probe.",
+    "evidence": "`claude-auto --task` → 'claude-auto: --task needs a value' + usage line, exit 64 (before: 'line 38: $2: unbound variable', exit 1). Launcher in a directory without probe.sh: log 'ERROR probe.sh not found or not executable at …' + NEEDS-STEVEN marker (before: `>/dev/null 2>&1 || true`, nothing).",
+    "fix": "DONE. claude-auto.sh usage_err(), option loop guards, `self=$0` readlink loop.",
+    "halt": false
+  },
+  {
+    "id": "F-H3-12",
+    "severity": "medium",
+    "area": "unsupported claims — F-V2-20",
+    "finding": "The README's PII canary only exercised the one ordering that already passed. It now has 11 steps: client task with options first; the same with --task AFTER the claude arguments; no --task; a renamed client task; an unclassified task; --no-pii on a client task (deny-list must win); an interactive session with no task — all seven must exit 75 with zero requests at :20128; an allow-listed task and a --no-pii session must come from OmniRoute; an allow-listed task whose PROMPT drags in the canary file is the existing guard hook's test (the launcher sees names, not prompt text); then --force subscription. It also says to unload the probe LaunchAgent for the duration, because a healthy probe would restore the subscription mid-canary.",
+    "evidence": "README.md 'PII canary' section; each step was run in the sandbox harness with the expected result (F-H3-01..03 evidence, plus the canary-scenario run on a healthy stub: steps 2 and 3 exit 75, step 8 and 9 reach the stub with 'BASE_URL=http://127.0.0.1:20999 | ROUTE=free-fallback | PII_OK=0', step 11 restores 'ROUTE=subscription | PII_OK=1').",
+    "fix": "DONE in the README. The acceptance run itself is on the Mac, with the security steward, and records into docs/MASTER-FINDINGS.md under F-E8-60 — Steven's, not mine.",
+    "halt": true
+  },
+  {
+    "id": "F-H3-13",
+    "severity": "medium",
+    "area": "unsupported claims — F-V2-21",
+    "finding": "integrations/CONNECTIONS.md:45 claimed 'Client-data tasks defer (exit 75) while on free providers' next to 'syntax-checked, not executed'. Reworded to what is now true and how it was established.",
+    "evidence": "CONNECTIONS.md:45 now reads: 'Scripts executed in the sandbox (H3, 2026-09-22) against a stub `claude`, a dead `:20128` and a live stand-in `/healthz`, not on the Mac. The PII gate now fails closed: while on free providers every invocation defers (exit 75) unless its `--task` name is on the free-OK allow-list or it carries an explicit `--no-pii`, in any argument order; client-data name patterns (…) win over both. F-V2-07/08/09/10/11/12/13/14/15/18 fixed; the switch-back probe escalates to `state/NEEDS-STEVEN` after four inconclusive runs instead of stranding.' The rest of the row (HALT items, trust level L1) is untouched.",
+    "fix": "DONE.",
+    "halt": false
+  },
+  {
+    "id": "F-H3-14",
+    "severity": "high",
+    "area": "mac-verify.sh — F-V2-24",
+    "finding": "The vendored-skills check only tested that SKILL.md existed. It now parses each skill's frontmatter (the block between the two --- fences, via awk), requires name == directory name and a non-empty description (block scalars handled), and resolves every relative ](link) in the body; each failure is a FAIL for that skill, and the nine become nine lines.",
+    "evidence": "Fake repo with security-and-hardening/SKILL.md replaced by V2's broken version (`name: TOTALLY-WRONG-NAME`, unterminated flow sequence) and a dead link appended to find-skills/SKILL.md. BEFORE: 'ok    vendored skills            all nine present'. AFTER: \"FAIL  skill security-and-hardening frontmatter name 'TOTALLY-WRONG-NAME' is not the directory name — the loader rejects it\", 'FAIL  skill find-skills          dead relative link(s): ../../references/does-not-exist.md', and for the seven intact skills 'ok    skill <name>  loads: name matches, description NNN chars, links resolve' (237–425 chars, matching V2's PyYAML measurement). Backticked paths are not resolved (ambiguous with commands) — only ](…) links; stated here so nobody assumes more.",
+    "fix": "DONE. mac-verify.sh skills block. Read-only: it only reads the nine files.",
+    "halt": false
+  },
+  {
+    "id": "F-H3-15",
+    "severity": "high",
+    "area": "mac-verify.sh — F-V2-25",
+    "finding": "An installed claude-auto or probe.sh that differed from the repo copy was reported ok with an advisory. It is now NEED (lands in the summary, blocks exit 0); a missing repo copy is FAIL.",
+    "evidence": "Fake HOME with a two-line 'echo TAMPERED' at ~/.local/bin/claude-auto. BEFORE: 'ok    claude-auto                installed (differs from the repo copy — diff it before trusting it)'. AFTER: 'NEED  claude-auto                installed copy DIFFERS from the repo copy — diff it, then reinstall from the repo before trusting the gate', listed under NEEDS STEVEN, exit 1.",
+    "fix": "DONE. mac-verify.sh omniroute block.",
+    "halt": false
+  },
+  {
+    "id": "F-H3-16",
+    "severity": "high",
+    "area": "mac-verify.sh — F-V2-26",
+    "finding": "A route mode other than subscription was reported ok. It is now NEED with the age computed from route.env's since= (parsed with sed, never sourced) and the recorded reason; the NEEDS-STEVEN escalation marker is a NEED of its own and a non-zero probe-failures counter is reported as info.",
+    "evidence": "State seeded to free-fallback with since 3h07m ago and a marker. BEFORE: 'ok    omniroute route mode       free-fallback'. AFTER: 'NEED  omniroute route mode       free-fallback for 3h7m (reason: limit-detected task=weather-news-refresh) — the probe has not restored the subscription' and 'NEED  omniroute probe            ESCALATED — 2026-09-22T14:00:00Z probe.sh: 4 consecutive inconclusive probes (last rc=2)  switch-back cannot be proven'.",
+    "fix": "DONE. mac-verify.sh OMNI_STATE block.",
+    "halt": false
+  },
+  {
+    "id": "F-H3-17",
+    "severity": "medium",
+    "area": "mac-verify.sh — F-V2-27",
+    "finding": "check_cmd reported ok with a blank version for a binary that failed to run. It now tests the exit status and the output: non-zero → FAIL 'exited N', empty → FAIL 'printed nothing'.",
+    "evidence": "Stubs on PATH: graphify exits 1, codeburn exits 0 printing nothing, headroom prints a version. BEFORE: 'ok    codeburn' and 'ok    graphify' with empty version fields. AFTER: \"FAIL  graphify                   on PATH at …/bin/graphify but 'graphify --version' exited 1\", \"FAIL  codeburn                   on PATH at …/bin/codeburn but 'codeburn --version' printed nothing\", 'ok    headroom                   headroom 0.38.0'.",
+    "fix": "DONE. mac-verify.sh check_cmd().",
+    "halt": false
+  },
+  {
+    "id": "F-H3-18",
+    "severity": "medium",
+    "area": "mac-verify.sh — F-V2-28",
+    "finding": "The MCP check merged stderr, ignored the exit status and counted lines. It now reads stdout only and tests the exit status (a failure re-reads stderr with a second, identical read-only call and reports its first line, redacted), treats 'No MCP servers configured' as NEED, counts server lines (`name: …`) rather than lines, flags servers marked ✗/Failed to connect as NEED, and pipes the printed listing through redact_line(). That last part closed a gap V2 did not list: the old script printed a server's full command line, so an inline `--api-key VALUE` would have reached the report.",
+    "evidence": "Stub `claude mcp list` in three cases. Empty state — BEFORE 'ok    claude mcp list            1 line(s) returned'; AFTER 'NEED  claude mcp list            no MCP servers configured for this user — the brain's local servers are not registered'. Exit 1 with 'Error: config unreadable' on stderr — AFTER 'FAIL  claude mcp list            exited 1 — Error: config unreadable'. Three servers, one failing, one with `--api-key FAKE-PLACEHOLDER-MCP-0001` on its command line — AFTER 'ok    claude mcp list            3 server(s) listed', 'NEED  MCP servers failing        1 server(s) not connected — see the listing', listing line 'perplexity: node /x/server.js --api-key [REDACTED] - ✓ Connected'; grep of the report for MCP-0001: 0 (my first redact_line printed it — fixed before hand-back). The agent402 refusal check is kept.",
+    "fix": "DONE. mac-verify.sh MCP block + redact_line().",
+    "halt": false
+  },
+  {
+    "id": "F-H3-19",
+    "severity": "low",
+    "area": "mac-verify.sh — F-V2-29",
+    "finding": "A placeholder credential passed as set. The value is now read into a variable, lower-cased, classified by shape (changeme/change-me, xxx…, todo/tbd/fixme, <…>, your-…/your_…, …-here/…_here, placeholder/example/dummy/sample, none/null/n/a, replace…, …paste…, …, $…) and reported as NEED 'placeholder value — replace it with the real key (value not shown)'; then the variables are cleared. Nothing prints the value.",
+    "evidence": "Seeded ~/.config/omniroute/.env with OMNIROUTE_API_KEY= (empty), OPENROUTER_API_KEY=<a fake but real-looking value>, NVIDIA_API_KEY=changeme, BYTEZ_API_KEY=<paste your key here>, and lofty/.env with LOFTY_API_KEY=your-api-key-here. BEFORE: 'ok      NVIDIA_API_KEY           set', 'ok      BYTEZ_API_KEY            set', 'ok      LOFTY_API_KEY            set'. AFTER: NEED 'placeholder value — replace it with the real key (value not shown)' for all three, 'NEED    OMNIROUTE_API_KEY        no value yet', 'ok      OPENROUTER_API_KEY       set'. Grep of every report (four runs) for the seeded strings changeme / LOOKS-REAL / 'paste your key' / your-api-key-here: 0 each — the never-print-a-value guarantee still holds.",
+    "fix": "DONE. mac-verify.sh check_env_file().",
+    "halt": false
+  },
+  {
+    "id": "F-H3-20",
+    "severity": "info",
+    "area": "verification method",
+    "finding": "How this was proven, and what was not. Harness under /tmp/h3-test (deleted afterwards): a stub `claude` that records the routing environment it receives (BASE_URL / AUTH_TOKEN set? / MODEL / VANESSA_ROUTE_MODE / VANESSA_PII_OK) and answers per STUB_MODE (healthy JSON, limit JSON with an epoch, limit text, 429 body on stderr, 401 login expiry, broken flag exit 2, arbitrary output with an exit code); a throwaway HOME per test group; port 20128 dead; a python http.server on 127.0.0.1:20999 serving /healthz as the live OmniRoute stand-in; the pre-fix scripts taken from git HEAD; a `stat` shim for the pre-fix runs only (F-H3-07). Lint: bash -n clean on all three scripts; shellcheck 0.11.0 (shellcheck-py in a throwaway venv, deleted) clean at default and `-S style` severity — the only directives are three explicit `disable` comments with reasons (SC2034 for route keys parsed for --status, SC2254/SC2086 for the deliberate glob-pattern matching under `set -f`); a grep for bash-4 constructs (declare -A, mapfile/readarray, ${x^^}/${x,,}, |&, ;;&) finds nothing.",
+    "evidence": "NOT verified, and stated so the Mac run does not assume it: (1) nothing ran on macOS — the BSD sed/grep/awk/stat/tr/head behaviours were chosen from POSIX-portable forms (`sed -E`, bracket-class case folding, `[|]` instead of `\\|`, `stat -f %OLp` fallback, no `readlink -f`) but executed only on GNU userland; (2) the exact wording `claude -p` prints on the Mac for a usage limit — LIMIT_RE is built from the strings in the 2.1.278 binary, and limit-samples.log records which branch fired on each real hit; (3) the real `claude` was never invoked (it would spend the sandbox's credentials), so the probe command's flags are as V2 verified them on 2.1.278, not re-verified here.",
+    "fix": "None needed; recorded so the next engineer knows the boundary of the evidence.",
+    "halt": false
+  },
+  {
+    "id": "F-H3-21",
+    "severity": "medium",
+    "area": "omniroute failover — new, found while testing",
+    "finding": "`--force free|local` wrote probed_at=0, so the launcher's very next invocation self-probed the state (older than PROBE_MAX_AGE) and, whenever the subscription was healthy, restored `subscription` before the forced route was ever used. This was pre-existing (claude-auto.sh:61 in the first draft) and would have made the README's own step 5 and the entire PII canary misleading on a healthy subscription: steps expected to exit 75 would have exited 0 on the subscription route. Fixed: --force stamps probed_at=now, so a forced mode holds for a probe interval; the README tells the canary runner to unload the probe LaunchAgent for the duration.",
+    "evidence": "First gate battery with a healthy stub: every `--force free …` run, before and after, logged 'self-probe rc=0' and executed on 'ROUTE=subscription | PII_OK=1' — the gate was never reached. After the change, the canary scenario on a healthy stub with OmniRoute answering: `--force free -p hello --task lofty-crm-sync` exit 75 (deferred by the gate), `--force free --task weather-news-refresh -p hello --output-format json` and `--force free -p hello --no-pii` reached the stub with 'BASE_URL=http://127.0.0.1:20999 | ROUTE=free-fallback | PII_OK=0', `--force subscription` restored 'ROUTE=subscription | PII_OK=1'.",
+    "fix": "DONE. claude-auto.sh --force branch; README step 5 note and canary preamble.",
+    "halt": false
+  },
+  {
+    "id": "F-H3-22",
+    "severity": "medium",
+    "area": "policy decisions that are Steven's",
+    "finding": "The default free-OK allow-list is my classification from the task names and the docs they write (weatherSnapshot, newsSnapshot, ratesSnapshot, feedFreshness, routineHealth, the toolkit inventory, the vendored skills, model-catalogue feeds, incentives). Deliberately left OFF it, deferred while limited: brain-deck-sync and fabric-deck-sync (they read the brain, which holds wiki/clients), nightly-self-test (reads DB docs), r6-weekly-backup and ai-ecosystem-backup (a backup's model context can hold anything), vanessa-research-queue (Steven's questions may carry client context), openrouter-credits-refresh and r7-plaid-balances (account data), every trading task, and everything health/CRM/ISA/inbox/calendar. Two wiring facts the fix depends on: every runner task must pass `--task <its name>` (a nameless task is deferred while limited), and the `vanessa` launcher must NOT pass --no-pii.",
+    "evidence": "claude-auto.sh DEFAULT_FREE_OK_TASKS / DEFAULT_PII_TASKS; README 'PII policy'. The runner wrapper and the vanessa launcher live on the Mac (docs/inventory/mac-task-descriptions.md:207 shows the launcher shape `claude-auto --remote-control 'Vanessa' --agent vanessa-orchestrator`) and MAC-SETUP.sh is not mine to edit.",
+    "fix": "Steven, with Elena: ratify or trim the 11-name allow-list before the runner is pointed at claude-auto; add any further name to ~/.config/omniroute/free-ok-tasks.txt only after reading what the task reads. Wire `--task <name>` into the runner's task wrapper (the caller said they would wire MAC-SETUP.sh changes themselves).",
+    "halt": true
+  },
+  {
+    "id": "F-H3-23",
+    "severity": "medium",
+    "area": "F-E8-60 remains open",
+    "finding": "The launcher gates on task NAMES. It cannot see prompt text, so an allow-listed task whose prompt drags in a client file is only stopped by the second layer — the existing client-data guard hook whose coverage F-E8-60 says was never verified. Canary step 10 is the first test of that hook. Until the full canary passes on the Mac with the steward, the runner must stay on plain `claude` (README step 6, MAC-INSTALL-comms-data.md:221 already say so).",
+    "evidence": "README 'PII canary' step 10; the launcher's log line 'route=free-fallback … pii=0 (task allow-listed by …)' is the point at which the hook is the only remaining control.",
+    "fix": "Needs Steven + security steward: run the canary on the Mac; if step 10 fails, either fix the hook or remove prompt-file access from allow-listed tasks before enabling the runner on claude-auto.",
+    "halt": true
+  },
+  {
+    "id": "F-H3-24",
+    "severity": "low",
+    "area": "deliberately not changed",
+    "finding": "(1) claude-auto.sh and probe.sh duplicate their helper functions (filemode, fileowner, hash256, rotate, route_*, envelope, limit_branch, parse_reset_epoch) instead of sharing a lib file: the install contract (README step 3, MAC-SETUP.sh:461-471) copies exactly those two files, and MAC-SETUP.sh is off-limits to me; a comment in each says to keep them in step. (2) On escalation the probe falls the route back to `subscription` rather than only raising the packet: subscription is the one route that cannot leak, and a still-limited subscription is re-detected by the next headless run, so the worst case is an hour-long cycle with the marker in place — never a silent strand. (3) An untrusted route.env is reset to subscription, not treated as an error: refusing to run would hand anyone who can chmod the file a denial-of-service lever, while the reset can only ever pick the safe route. (4) probe.sh keeps a redacted 200-byte sample of an inconclusive probe (its prompt is fixed text) because that sample is what tells Steven why the probe is broken; claude-auto.sh keeps no text at all. (5) `--no-pii` overrides the fail-closed default but never the deny-list — an operator can clear a session, not a client task. (6) Nothing outside integrations/omniroute-failover/, mac-verify.sh, integrations/CONNECTIONS.md:45 and this file was touched; MAC-SETUP.sh, the dashboards, MAC-INSTALL-comms-data.md and docs/MASTER-FINDINGS.md were not edited even where they describe the old behaviour (MAC-INSTALL-comms-data.md:103 still shows step 5 without --no-pii — it will need the same one-line update when the caller wires the install).",
+    "evidence": "git status: only the five files listed are modified; docs/findings/findings-H1.json and integrations/cli-anything-harnesses/ appeared during this session from another engineer and were not touched.",
+    "fix": "For the caller: MAC-INSTALL-comms-data.md:103's post-install check should gain `--no-pii` (or an allow-listed --task) to match README step 5, and MAC-SETUP.sh's needs_steven text could mention free-ok-tasks.txt — both outside my file list.",
+    "halt": false
+  },
+  {
+    "id": "F-H3-25",
+    "severity": "info",
+    "area": "what is still genuinely right (F-V2-19 re-checked after the rewrite)",
+    "finding": "The three things V2 confirmed correct survived the rewrite: the subscription credential never reaches the proxy, the switch-back success condition is unchanged, and the probe is free while the subscription is healthy.",
+    "evidence": "Stub records on every run: on the subscription route 'BASE_URL=unset | AUTH_TOKEN=' (unset), on the free route 'BASE_URL=http://127.0.0.1:20999 | AUTH_TOKEN=set' (OmniRoute's key from .env, never the subscription's — ANTHROPIC_API_KEY and CLAUDE_CODE_OAUTH_TOKEN are unset before exec); every self-probe line shows the probe called with 'BASE_URL=unset' (env -u strips the proxy variables). probe.sh still tests `\"is_error\": ?false` for RESTORED and exits 0 at once in subscription mode (the 5th escalation-test run).",
+    "fix": "None needed.",
+    "halt": false
+  }
+]

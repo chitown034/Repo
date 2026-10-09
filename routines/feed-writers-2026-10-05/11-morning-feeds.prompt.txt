@@ -1,0 +1,68 @@
+CLAUDE-ONLY WRITER (created 2026-10-05) — Steven: "remove everything running on Perplexity and replace with Claude subscription"
+================================================================================================
+This routine runs on Steven's Claude subscription. It researches with Claude's own WebSearch tool
+only — never Perplexity, OpenRouter, You.com or any other paid search API — and WRITES its findings
+into the Command Deck's live database with the ArtifactData tool. It replaces the Mac task
+`openrouter-feeds-refresh`, which tried Perplexity first. "Never invent a fact, figure, date or URL."
+================================================================================================
+
+You are refreshing six short "live" notes on a published Claude Artifact called "Command Deck" — a
+personal dashboard for a user named Steven: a VA-focused mortgage loan officer and real-estate broker
+associate (LPT Realty) in Temecula, California, retired Navy Chief, who runs a veterans nonprofit and
+follows AI tooling and PE/defense tech. The artifact is
+https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d (artifact id
+1624daae-d683-405a-971d-c5828dce0f8d, database collection "state", document `liveFeeds`, keys under
+its `feeds` object).
+
+IMPORTANT ARCHITECTURE NOTE: This routine runs in a fresh, unattended cloud sandbox every time it
+fires, with no human present to approve permission prompts. Editing or Bash-writing a local file
+the Artifact tool downloads WILL trigger an unanswerable "sensitive file" permission prompt and
+hang the run forever. Do NOT call Edit, Write, or Bash with any write/copy/redirect operation at
+any point in this run. Do NOT call Artifact with action "publish". Read and write the live document
+with ArtifactData only. WebFetch is blocked by this sandbox's network policy — use WebSearch.
+
+STEP 1 — Read current state and pick this run's keys
+Load ArtifactData with ToolSearch (`select:ArtifactData`) if it is not in your tool list. Read
+`liveFeeds` (collection "state") and note its `version`. It is a large shared document with many
+OTHER feeds' keys — you will only ever change the keys listed below. Read each of your keys' current
+`text` so you do not just repeat it.
+Run `date -u +%Y-%m-%dT%H:%M:%SZ` with Bash (read-only; allowed) to learn the real date and time.
+- If the UTC hour is 08–19 (the MORNING run): refresh all six keys below.
+- Otherwise (the EVENING run): refresh only `oppRadarLiveList` and `topHeadlinesList`.
+
+STEP 2 — Research (WebSearch only)
+1. `topHeadlinesList` — "Top headlines": the 4–6 most important breaking or major U.S. and world
+   stories of roughly the last 12 hours. One clause per story.
+2. `aiNewsList` — "AI news — what's new & hot today": new models, hardware, plugins, skills, repos and
+   MCP servers across the industry (not just Claude Code) from the last 24–48 hours.
+3. `onThisDayHistoryList` — "On this day": 6–8 notable events that happened on today's month and day
+   in past years, written "YYYY: event." and sorted by year.
+4. `onThisDayBirthdayList` — "Born today": 6–10 notable people born on today's month and day, written
+   "Name, who they are (year)", plus any real national day or observance for today.
+5. `bearsLiveNews` — Chicago Bears: the latest result and record, the next game (opponent, date and
+   kickoff time CT), and key injuries or roster moves.
+6. `oppRadarLiveList` — "Opportunity Radar": 2–4 real, sourced opportunities tied to Steven's work —
+   VA/mortgage lending (rate moves, VA or FHFA program changes), Temecula/Southern California real
+   estate, veterans-nonprofit grants or programs, AI tooling for a solo mortgage/real-estate practice,
+   PE/defense-tech awareness. Each names the real program, tool or trend, says why it fits, and is
+   dated. Market-average rates only, with source and date — never a rate quote or an eligibility call.
+Prefer items from the last 24–48 hours (except history and birthdays). Use reputable sources with
+real article URLs (AP, Reuters, NPR, BBC, CNBC, official sites, team and league sites, Wikipedia for
+dates). Never invent a headline, number, name, date or URL. If a key's research turns up fewer than
+2 real sources, leave that key OUT of the write — the old entry stays, its age stays visible.
+
+WRITE STEP
+1. Each entry has exactly this shape: `{checkedAt, citations: [{title, url}, ... 2 to 5 real sources],
+   model: "cloud-routine", source: "WebSearch", text: "<2-5 plain sentences, under 700 characters>"}`.
+   `model` is always "cloud-routine" — never a model or vendor name.
+2. Right before writing, run exactly `date -u +%Y-%m-%dT%H:%M:%SZ` with Bash and copy its output
+   unchanged into every entry's `checkedAt`. Never type or estimate a time yourself.
+3. Write ONCE with `update` (a deep merge: it changes only the keys you send), pinned by the version
+   from STEP 1: ArtifactData action "update", collection "state", doc_id "liveFeeds",
+   if_version <that version>, data: {v: {feeds: {<key>: {checkedAt, citations, model, source, text},
+   ... only this run's researched keys}}}. On a version conflict, re-read `liveFeeds` and retry the
+   same update once with the new version.
+4. Never `set` liveFeeds, never send any other key, never touch any other document. Never call Edit,
+   Write, or Bash with any write/copy/redirect operation. Never call Artifact with action "publish".
+   Never send a message to anyone.
+5. End with one line: MORNING or EVENING run, the keys written, and the document's new version.

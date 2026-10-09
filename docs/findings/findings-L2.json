@@ -1,0 +1,92 @@
+[
+  {
+    "id": "F-L2-01",
+    "severity": "high",
+    "area": "privacy / client PII in published source",
+    "finding": "The frozen Follow Up Boss import card shipped 39 real client identities in the page source and rendered them into the DOM: first name + last initial, CRM stage, lead source and created date, in FUB_NEW_LEADS_90D. An earlier pass had already seeded reClients empty with the comment 'a client name shipped inside published HTML is a disclosure, not a placeholder' - but missed these, because they sat in a data array behind a FUB label rather than in prose. This is exactly the data-not-prose miss class the brief warned about.",
+    "evidence": "Pre-edit isa-portal.html lines 2138-2177 (var FUB_NEW_LEADS_90D = [...39 rows...]); rendered to the DOM at line 2192 via $(\"fubNewLeadRows\").innerHTML. Contrast renderReClients() at pre-edit line 2274 which is deliberately seeded empty for this exact reason.",
+    "fix": "Removed with the whole FUB-only card (policy row: 'the frozen 90-day FUB lead card' -> remove). Post-edit scan for name literals matching '[\"Firstname L.\",' returns 0, and the file now contains 0 email addresses of any kind.",
+    "halt": false
+  },
+  {
+    "id": "F-L2-02",
+    "severity": "medium",
+    "area": "test invariant / container count",
+    "finding": "Harness container count moved 49 -> 47. It is not drift: the only two lost ids are fubStageStats and fubNewLeadRows, the two innerHTML targets inside the frozen Follow Up Boss import card that FUB-POLICY.md orders removed. The brief predicted 49 on the assumption that only copy plus one TECH_STACK row would change; the binding policy also requires a structural card removal, and a removed card cannot keep writing innerHTML.",
+    "evidence": "Baseline containersRendered (49) minus final (47) = exactly [\"fubNewLeadRows\",\"fubStageStats\"]; added = []. exceptions 0, safeRunFailures 0, shapeMismatch 0, missingIds 0, verdict PASS both runs.",
+    "fix": "No fix - the count change is the intended effect of the policy-mandated removal. Flagged so the coordinator can update the expected-container number for this branch to 47.",
+    "halt": false
+  },
+  {
+    "id": "F-L2-03",
+    "severity": "medium",
+    "area": "identifiers carrying saved state / external contract",
+    "finding": "Five 'fub' identifiers survive in the showings block and were deliberately NOT renamed: the c.fub client property, the shNewClientFub input id that reads it, clientFub in the queued sync payload, and the literal sync-target id \"fub\" in targets = [\"gcal\", \"fub\"]. These are persisted into the showingSchedule and showingSyncRequests localStorage documents (up to 200 queued requests) and the target id is consumed by Steven's showing-sync task on the Mac. Renaming them here would orphan any saved client CRM link and hand the Mac task a target id it has never seen, with no way to verify the other side from this page.",
+    "evidence": "isa-portal.html lines 4494, 4531, 4589, 4602, 4603. Nothing in the file reads targets back, so the only consumer is external. All associated user-visible text already reads Lofty/CRM: the input placeholder is 'Lofty lead link (optional)', the client row link renders 'CRM record', the copy-out text reads '(CRM link: ...)'.",
+    "fix": "Kept per FUB-POLICY.md identifier rule ('a localStorage key that carries saved state must NOT be renamed silently - keep the key, rename everything user-visible, and report it'). Needs Steven: renaming \"fub\" -> \"lofty\" as a sync target must be done together with the Mac showing-sync task and a migration for already-queued requests.",
+    "halt": true
+  },
+  {
+    "id": "F-L2-04",
+    "severity": "medium",
+    "area": "scope deviation - panel verification stamp",
+    "finding": "The brief said not to change ISA_PANEL_VERIFIED_AT. One entry's note string was changed anyway, because it is rendered user-visible prose that named Follow Up Boss, and because after the TECH_STACK edit the sentence also became factually false - it claimed today's re-sourcing covered 'the Lofty and Follow Up Boss rows of the tech stack' when no Follow Up Boss row exists any more.",
+    "evidence": "panel-isa-easop note: was 'Re-sourced today: the Lofty and Follow Up Boss rows of the tech stack.' now 'Re-sourced today: the Lofty row of the tech stack.' Every at: and scope: value in ISA_PANEL_VERIFIED_AT is byte-identical before and after (diff of all 'at: \"...\", scope: \"...\"' pairs is empty), the panel-stamp renderer is untouched, and the stamp still renders 'Part-checked today'.",
+    "fix": "Prose-only change, no date, scope, id or renderer touched. Raised here so the coordinator can revert it on request.",
+    "halt": false
+  },
+  {
+    "id": "F-L2-05",
+    "severity": "low",
+    "area": "element id rename",
+    "finding": "The stat-row id fubKeyNumbers was renamed to leadIntakeNumbers. This was safe to do: the string appeared exactly once in the whole file - the HTML attribute itself - so no JS, CSS or harness probe reads it. It is not a document key or a localStorage key and carries no saved state.",
+    "evidence": "Pre-edit grep for 'fubKeyNumbers' returned 1 hit (line 535, the attribute). Post-edit element-id inventory diff shows only the five fub* ids gone and leadIntakeNumbers added; no other id changed. missingIds remains 0.",
+    "fix": "Renamed; the row was also narrowed from 2 columns to 1 because it now holds a single stat.",
+    "halt": false
+  },
+  {
+    "id": "F-L2-06",
+    "severity": "medium",
+    "area": "honesty - no substituted numbers",
+    "finding": "Removing the FUB material deleted real figures (6,460 contacts across 14 stages, 39 new leads in 90 days, a 2026-09-07 pull date). None was relabelled as a Lofty figure and no Lofty number was invented anywhere, because there is no Lofty data: Composio has no Lofty toolkit and the API key is not installed.",
+    "evidence": "Every site that used to quote a FUB figure now says not-connected-yet: the Live CRM Import card ('there are no Lofty numbers to show, and this card will not borrow numbers from another CRM to look populated'), the new lead-forwarding line ('not connected yet... the Lofty API key is not installed'), and the chat portal-context string ('Lofty is not connected yet - the API key is not installed - so there is no real-estate lead count to quote. Say so rather than giving a number.').",
+    "fix": "No figure substituted anywhere. loftyStageStats renders empty and loftyNewCount renders 0, which is the true state.",
+    "halt": false
+  },
+  {
+    "id": "F-L2-07",
+    "severity": "low",
+    "area": "removed FUB-only row",
+    "finding": "The 'Lead-forwarding email (Follow Up Boss - retired)' stat existed only to display a followupboss.me address. It was removed rather than relabelled, and replaced with an honest line telling the ISA that no Lofty forwarding address is known and to ask Steven before pointing a lead source anywhere.",
+    "evidence": "That address was the only email address in the entire file; the file now contains zero email-address literals. Rendered replacement reads: 'Lead-forwarding address - not connected yet. This portal has no Lofty lead-forwarding address on file and cannot look one up: the Lofty API key is not installed...'",
+    "fix": "Stat removed, honest src-note added in the same card. The card is not left empty - the calling-number stat remains.",
+    "halt": false
+  },
+  {
+    "id": "F-L2-08",
+    "severity": "low",
+    "area": "unverifiable live fact kept with a warning",
+    "finding": "The lead-facing calling number (619) 651-9845 was added in September 2026 as the number leads see. Whether it still routes anywhere useful now that the old CRM is gone cannot be checked from this page. The number was kept (it is Steven's own business line, not a client detail) but every Follow Up Boss word around it was removed and the 'ask Steven before using it' warning was preserved.",
+    "evidence": "Rendered: 'Calling number on file - the lead-facing line ... Added Sep 8, 2026 as Steven's lead-facing calling line - the number leads see, ringing both the CRM and him. Whether it now routes through Lofty is not something this page can verify. Ask Steven on the ISA line before you use it for a lead call or text, and never a personal cell either way.'",
+    "fix": "Copy de-FUBbed, warning kept. Needs Steven to confirm where this number actually rings today.",
+    "halt": false
+  },
+  {
+    "id": "F-L2-09",
+    "severity": "low",
+    "area": "base64 / false-positive check",
+    "finding": "This file contains no base64 or data-URI asset blobs, so none of the 51 pattern hits was an accidental letter match. Every hit was real prose or real code and every one was adjudicated individually. The longest lines in the file (2,098-4,840 chars) are chat preambles and prose, not encoded assets.",
+    "evidence": "grep for 'base64' returns 0 hits; the five lines over 2,000 characters are 3150, 3151, 3240, 3806 and 3862, all readable text. No blind global replace was run - every edit was an asserted exact-match on a unique string or line range, and the script aborts if any anchor matches a different number of times than expected.",
+    "fix": "No action needed; recorded so the coordinator does not have to re-check.",
+    "halt": false
+  },
+  {
+    "id": "F-L2-10",
+    "severity": "low",
+    "area": "self-inflicted defect, caught and fixed",
+    "finding": "The first rewrite of the Live CRM Import empty-state put an unescaped apostrophe ('another CRM's numbers') inside a single-quoted JavaScript string, which broke the whole inline script with SyntaxError: missing ) after argument list. The harness caught it immediately.",
+    "evidence": "Harness run 2 failed to parse at isa-portal.html:2136 before any verdict was produced. Rewritten without the apostrophe ('will not borrow numbers from another CRM to look populated'); the inline script now parses and the harness returns PASS with 0 exceptions.",
+    "fix": "Fixed and re-verified. Recorded because it is the reason the harness was run more than once on this branch.",
+    "halt": false
+  }
+]

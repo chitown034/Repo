@@ -1,0 +1,270 @@
+<title>Steven's Action Desk</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap">
+<style>
+/* Layout: one narrow column of numbered steps (the order is real), grouped by where you do them; each row = open buttons + tick box. */
+:root{
+  --bg:#f3f5f8; --card:#ffffff; --fg:#17202b; --muted:#5b6676; --line:#d9dee6;
+  --accent:#1f4e8c; --accent-fg:#ffffff; --done:#2f7d4f; --warn:#a4570f; --code:#eef1f5;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f141b; --card:#18202b; --fg:#e7ecf2; --muted:#9aa6b6; --line:#2a3544;
+  --accent:#7fb0f0; --accent-fg:#0f141b; --done:#6cc591; --warn:#e3a35e; --code:#202a37; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --card:#18202b; --fg:#e7ecf2; --muted:#9aa6b6; --line:#2a3544;
+  --accent:#7fb0f0; --accent-fg:#0f141b; --done:#6cc591; --warn:#e3a35e; --code:#202a37; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:16px/1.5 var(--body)}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:24px 48px}
+h1{font:700 2.2rem/1.1 var(--display);letter-spacing:.01em;margin:0 0 6px;text-wrap:balance}
+.lede{color:var(--muted);margin:0 0 14px;max-width:62ch}
+.bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.meter{flex:1;min-width:160px;height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--done);transition:width .3s}
+.count{font:600 .95rem var(--body);font-variant-numeric:tabular-nums;color:var(--muted)}
+h2{font:600 1.25rem var(--display);letter-spacing:.06em;text-transform:uppercase;margin:28px 0 4px;color:var(--accent)}
+.where{color:var(--muted);font-size:.92rem;margin:0 0 10px}
+.step{display:grid;grid-template-columns:auto 1fr;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px;margin-bottom:10px}
+.step.done{opacity:.6}
+.step.done .t{text-decoration:line-through}
+.n{font:700 1.5rem/1 var(--display);color:var(--muted);font-variant-numeric:tabular-nums;width:1.6em;text-align:center}
+.body{min-width:0}
+.t{font-weight:600;margin:0 0 4px}
+.d{margin:0 0 10px;color:var(--muted);font-size:.95rem}
+.acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+a.btn,button.btn{display:inline-block;font:600 .9rem var(--body);padding:7px 12px;border-radius:6px;text-decoration:none;cursor:pointer;border:1px solid var(--accent)}
+a.btn{background:var(--accent);color:var(--accent-fg)}
+button.btn{background:transparent;color:var(--accent)}
+a.btn:focus-visible,button.btn:focus-visible,input:focus-visible{outline:3px solid var(--warn);outline-offset:2px}
+label.tick{display:inline-flex;gap:6px;align-items:center;font-size:.9rem;color:var(--muted);margin-left:auto;cursor:pointer}
+label.tick input{width:18px;height:18px;accent-color:var(--done)}
+code{font:.85rem var(--mono);background:var(--code);padding:2px 6px;border-radius:4px;overflow-wrap:anywhere}
+.note{border-left:3px solid var(--warn);padding:2px 0 2px 10px;margin:0 0 10px;font-size:.93rem}
+.ok{color:var(--done);font-weight:600}
+ul.mini{margin:0 0 10px;padding-left:18px;font-size:.95rem}
+footer{margin-top:28px;color:var(--muted);font-size:.85rem}
+@media (prefers-reduced-motion:reduce){.meter i{transition:none}}
+</style>
+
+<div class="wrap">
+  <h1>Steven's Action Desk</h1>
+  <p class="lede">Everything still waiting on you — including every connection that still has to be made — in the order to do it. Each button opens the right place; tick the box when done (saved in this browser), then tell Claude "done 7" so the dashboards catch up. Checked 2026-10-08, 11 AM PT.</p>
+  <div class="bar"><div class="meter" aria-hidden="true"><i id="fill"></i></div><span class="count" id="count">0 of 23 done</span></div>
+  <p class="note"><b>Already done, nothing to do:</b> Lofty API key (54 leads syncing); the 14 routines that failed on the usage limit were re-run and succeeded; the dashboards read 21 of 25 feeds fresh; both dashboards were updated with the cycle-11 fixes (96 in all) and the Command Deck has a Remote Control card, org chart nodes for it and for context.dev (connected), and the AI Replica Studio plan; the one-command Mac script, the three-tier failover (OpenRouter cap $25) and the connection plan are built and tested; your USC answers and personal DRE are saved. <b>Why things kept failing:</b> the Claude usage allowance; the first step cuts the waste.</p>
+
+  <h2>1 · Phone · 5 minutes</h2>
+  <p class="where">Do these first; nothing else depends on them</p>
+
+  <div class="step" data-id="1"><div class="n">1</div><div class="body">
+    <p class="t">Switch off the duplicate weekly loops (they burned the usage allowance)</p>
+    <p class="d">Claude already cut your routines from about 199 to 139 runs a week and moved three daily ones to the cheaper model (Oct 9). These three you created yourself, so only you can switch them off: each reads the whole dashboard every Sunday and repeats Saturday&#x27;s loop. Open each link and turn the switch off. The last one is optional.</p>
+    <div class="acts"><a class="btn" href="https://claude.ai/code/routines/trig_013ocJfEDdmSAgDPVaiCzMZY" target="_blank" rel="noopener">Weekly Loop Engineering QA</a>
+      <a class="btn" href="https://claude.ai/code/routines/trig_013vYCzVa3vbHZ8BZZy6UBpX" target="_blank" rel="noopener">Weekly improvement loop</a>
+      <a class="btn" href="https://claude.ai/code/routines/trig_016qKE1TdRjzkpb2Yby8yWBX" target="_blank" rel="noopener">Weekly self-improvement loop</a>
+      <a class="btn" href="https://claude.ai/code/routines/trig_019NdM12eTVDHWy89Ch2sNtU" target="_blank" rel="noopener">Weekly opportunity audit (optional)</a>
+      <label class="tick"><input type="checkbox" id="s1">Done</label></div></div></div>
+
+  <div class="step" data-id="2"><div class="n">2</div><div class="body">
+    <p class="t">Restart your health numbers (Apple Health)</p>
+    <p class="d">The tiles are about 25 days old. Open the Claude app on your iPhone, say &quot;update my health stats in Notion&quot;, and allow the Apple Health read and the Notion write once.</p>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s2">Done</label></div></div></div>
+
+  <h2>2 · One reply to Claude · 2 minutes</h2>
+  <p class="where">Copy, fill the blanks, send in this chat</p>
+
+  <div class="step" data-id="3"><div class="n">3</div><div class="body">
+    <p class="t">Answer the open questions in one message</p>
+    <p class="d">Your personal DRE #01988316 is saved. Still needed: LPT Realty&#x27;s own California DRE brokerage number and exact entity name (the two queued posts and the CRMLS application wait on them), and what kind of Zoho key you have (a Client ID + Client Secret from the Zoho API Console, or something else; never paste the key itself). Put &#x27;no&#x27; for Plaid unless you want it. (Google Drive is done: Claude connected it read-only on 2026-10-09.)</p>
+    <div class="acts"><a class="btn" href="https://www.dre.ca.gov/" target="_blank" rel="noopener">California DRE</a>
+      <code>LPT DRE: ______ (entity name: ______) · Zoho: client id+secret / other: ______ · Plaid: no</code><button class="btn" data-copy="LPT DRE: ______ (entity name: ______) · Zoho: client id+secret / other: ______ · Plaid: no">Copy</button>
+      <label class="tick"><input type="checkbox" id="s3">Done</label></div></div></div>
+
+  <div class="step" data-id="4"><div class="n">4</div><div class="body">
+    <p class="t">Approve or decline the two queued posts</p>
+    <p class="d">After the reply above: Command Deck → Marketing panel → open each draft and its compliance review → set its stage to Approved or Declined.</p>
+    <div class="acts"><a class="btn" href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Open Command Deck</a>
+      <label class="tick"><input type="checkbox" id="s4">Done</label></div></div></div>
+
+  <h2>3 · Mac, one sitting · about 45 minutes</h2>
+  <p class="where">Terminal first; then one command does the rest and asks before every change</p>
+
+  <div class="step" data-id="5"><div class="n">5</div><div class="body">
+    <p class="t">Open Terminal and find your Repo folder</p>
+    <p class="d">No web link can open Terminal on your Mac. Press Command + Space, type Terminal, press Return. Copy and run the line below; it prints the path of the folder that holds MAC-SETUP.sh (that is your Repo folder). If it prints nothing, run: git clone https://github.com/chitown034/Repo.git. Then type cd and a space, drag that folder from Finder into the window, press Return.</p>
+    <div class="acts"><code>find ~ -maxdepth 5 -name MAC-SETUP.sh -not -path &#x27;*/node_modules/*&#x27; 2&gt;/dev/null</code><button class="btn" data-copy="find ~ -maxdepth 5 -name MAC-SETUP.sh -not -path &#x27;*/node_modules/*&#x27; 2&gt;/dev/null">Copy</button>
+      <label class="tick"><input type="checkbox" id="s5">Done</label></div></div></div>
+
+  <div class="step" data-id="6"><div class="n">6</div><div class="body">
+    <p class="t">Switch to the branch that holds today&#x27;s files</p>
+    <p class="d">The new scripts are on the branch claude/stoic-cori-pvn3f8, not the repo&#x27;s default branch, so a plain git pull misses them. If it complains about changes you made, stop and tell Claude; do not discard them. The last line should print the file name.</p>
+    <div class="acts"><code>git fetch origin &amp;&amp; git checkout claude/stoic-cori-pvn3f8 &amp;&amp; git pull &amp;&amp; ls mac-bootstrap.sh</code><button class="btn" data-copy="git fetch origin &amp;&amp; git checkout claude/stoic-cori-pvn3f8 &amp;&amp; git pull &amp;&amp; ls mac-bootstrap.sh">Copy</button>
+      <label class="tick"><input type="checkbox" id="s6">Done</label></div></div></div>
+
+  <div class="step" data-id="7"><div class="n">7</div><div class="body">
+    <p class="t">Preview, then run the one command</p>
+    <p class="d">mac-bootstrap.sh replaces the old seven pastes: harness update, pausing the three duplicate Mac feed tasks, Opus 5.5, browser-use / OpenDesign / API Anything, WhatsApp (iPhone next to you for the QR code), the Second Brain, and the connection check. It asks yes/no before every change and Enter means no. Run the first line to see everything it would do, then the second. When it finishes, paste the MAC COMBINED REPORT block into this chat.</p>
+    <div class="acts"><code>./mac-bootstrap.sh --dry-run
+./mac-bootstrap.sh --also zoho,lofty,connections --with-claude</code><button class="btn" data-copy="./mac-bootstrap.sh --dry-run
+./mac-bootstrap.sh --also zoho,lofty,connections --with-claude">Copy</button>
+      <label class="tick"><input type="checkbox" id="s7">Done</label></div></div></div>
+
+  <div class="step" data-id="8"><div class="n">8</div><div class="body">
+    <p class="t">Fix the OmniRoute failover so it kicks in when Claude runs out</p>
+    <p class="d">OmniRoute itself is running, but the switch-over scripts were never installed, so nothing changes when you hit the limit. First the read-only check, which prints PASS / WARN / FAIL with the fix for each gap; then the installer, which asks yes/no before every change. Paste the doctor output back (it prints no secrets). Sessions you start yourself stay on Claude by design; to deliberately continue on the free route with no client data, type claude-auto --interactive-free.</p>
+    <div class="acts"><code>claude-auto --doctor
+bash integrations/omniroute-failover/install-failover.sh --dry-run
+bash integrations/omniroute-failover/install-failover.sh
+claude-auto --doctor</code><button class="btn" data-copy="claude-auto --doctor
+bash integrations/omniroute-failover/install-failover.sh --dry-run
+bash integrations/omniroute-failover/install-failover.sh
+claude-auto --doctor">Copy</button>
+      <label class="tick"><input type="checkbox" id="s8">Done</label></div></div></div>
+
+  <div class="step" data-id="9"><div class="n">9</div><div class="body">
+    <p class="t">Turn on remote control for Claude on each Mac (this computer first)</p>
+    <p class="d">Run the first line once by hand: answer y to Enable Remote Control, accept the folder trust, then press Ctrl+C. Then the second line installs a LaunchAgent that keeps it running (asks first). The third line prints one report line: paste it into the Remote Control card on the Command Deck (Toolkit tab). Repeat on the other Mac. In Claude Desktop type /remote-control in the Code tab, or turn on Settings &gt; Claude Code &gt; Connect new sessions to Remote Control, and that session joins the same list at claude.ai/code and on your phone.</p>
+    <div class="acts"><a class="btn" href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Open Command Deck</a>
+      <a class="btn" href="https://claude.ai/code" target="_blank" rel="noopener">Open the sessions list</a>
+      <code>claude remote-control
+bash integrations/remote-control/rc-agent.sh install
+bash integrations/remote-control/rc-agent.sh report</code><button class="btn" data-copy="claude remote-control
+bash integrations/remote-control/rc-agent.sh install
+bash integrations/remote-control/rc-agent.sh report">Copy</button>
+      <label class="tick"><input type="checkbox" id="s9">Done</label></div></div></div>
+
+  <div class="step" data-id="10"><div class="n">10</div><div class="body">
+    <p class="t">Pair Orca between the two Macs (and the phone)</p>
+    <p class="d">On Mac 1 run serve and keep that window open (it prints a pairing link). On Mac 2 run pair and paste the link at the hidden prompt, then do the reverse so each Mac can reach the other. A pairing link is a secret equal to control of that Mac&#x27;s agents: pair only on your home network or your own private network, never paste a link into chat, the dashboard or the repo. Desktop control is never granted. Then run report and paste its line into the same card.</p>
+    <div class="acts"><code>bash integrations/remote-control/orca-remote.sh serve
+bash integrations/remote-control/orca-remote.sh pair
+bash integrations/remote-control/orca-remote.sh report</code><button class="btn" data-copy="bash integrations/remote-control/orca-remote.sh serve
+bash integrations/remote-control/orca-remote.sh pair
+bash integrations/remote-control/orca-remote.sh report">Copy</button>
+      <label class="tick"><input type="checkbox" id="s10">Done</label></div></div></div>
+
+  <div class="step" data-id="11"><div class="n">11</div><div class="body">
+    <p class="t">Turn on Claude Mods (one command)</p>
+    <p class="d">Five mods are built, checked and ready: a status line showing which AI route you are on, a Proceed/Cancel guard before any send, share or payment, /remember to save a rule into the brain, Blast Radius, and /replay to review Claude&#x27;s edits. Run this in Terminal from your Repo folder, type y once, then open a new Claude Code session. To turn them all off later: add --off.</p>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mods/RECOMMENDATIONS.md" target="_blank" rel="noopener">What each mod does</a>
+      <code>git pull &amp;&amp; bash integrations/mods/install-mods.sh</code><button class="btn" data-copy="git pull &amp;&amp; bash integrations/mods/install-mods.sh">Copy</button>
+      <label class="tick"><input type="checkbox" id="s11">Done</label></div></div></div>
+
+  <div class="step" data-id="12"><div class="n">12</div><div class="body">
+    <p class="t">Type your keys into the files (never into chat)</p>
+    <p class="d">The command above creates empty ~/.config/zoho/.env and ~/.config/lofty/.env with only the variable NAMES. Open each with the line below, type the value after each equals sign, save. Zoho needs five: ZOHO_ACCOUNTS_URL, ZOHO_API_URL, ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET, ZOHO_REFRESH_TOKEN (the two URLs depend on your Zoho data centre: .com, .eu, .in...). If TextEdit shows a formatting bar choose Format → Make Plain Text before saving. Lofty&#x27;s key is already working.</p>
+    <div class="acts"><code>open -e ~/.config/zoho/.env</code><button class="btn" data-copy="open -e ~/.config/zoho/.env">Copy</button>
+      <label class="tick"><input type="checkbox" id="s12">Done</label></div></div></div>
+
+  <div class="step" data-id="13"><div class="n">13</div><div class="body">
+    <p class="t">Pause the Discord poller until a bot token exists</p>
+    <p class="d">vanessa-discord-inbox runs every 5 minutes with no token, about 288 runs a day. Pause (do not delete) it: run the line below on the Mac.</p>
+    <div class="acts"><code>runnerctl pause vanessa-discord-inbox &amp;&amp; runnerctl list</code><button class="btn" data-copy="runnerctl pause vanessa-discord-inbox &amp;&amp; runnerctl list">Copy</button>
+      <label class="tick"><input type="checkbox" id="s13">Done</label></div></div></div>
+
+  <div class="step" data-id="14"><div class="n">14</div><div class="body">
+    <p class="t">Sign in by hand to ShowingTime, Showami and homes.com</p>
+    <p class="d">The connection check in the bootstrap tells you which of them needs a sign-in. Sign in once in the agent Chrome it opens. Agents never type your passwords. SkySlope and zipForms stay locked until compliance signs off.</p>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s14">Done</label></div></div></div>
+
+  <h2>4 · Accounts and settings · about 30 minutes</h2>
+  <p class="where">Sign-ins and permission ticks only you can do; say &quot;done N&quot; after each</p>
+
+  <div class="step" data-id="15"><div class="n">15</div><div class="body">
+    <p class="t">Zoho: tick the API permission</p>
+    <p class="d">This is why Zoho returns 403, not a missing key. Zoho CRM → Setup → Security Control → Profiles → your profile → Developer Permissions → tick &quot;Zoho CRM API Access&quot;. If your key is a Client ID + Secret, also create a Self Client in the Zoho API Console with scopes ZohoCRM.modules.ALL,ZohoCRM.settings.READ and generate the refresh token. Then say &quot;Zoho done&quot;.</p>
+    <div class="acts"><a class="btn" href="https://crm.zoho.com/" target="_blank" rel="noopener">Open Zoho CRM</a>
+      <a class="btn" href="https://api-console.zoho.com/" target="_blank" rel="noopener">Zoho API Console</a>
+      <label class="tick"><input type="checkbox" id="s15">Done</label></div></div></div>
+
+  <div class="step" data-id="16"><div class="n">16</div><div class="body">
+    <p class="t">Composio sign-ins: GoHighLevel, Discord bot</p>
+    <p class="d">Google Drive no longer needs this: Claude reached your Drive Second Brain folder through the claude.ai connector. These two still read &quot;initiated, no account&quot;. The links expire 10 minutes after they are made, so say &quot;Composio links&quot; when you sit down, then sign in to each. For GoHighLevel, also say what it is for.</p>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s16">Done</label></div></div></div>
+
+  <div class="step" data-id="17"><div class="n">17</div><div class="body">
+    <p class="t">claude.ai connectors and Claude Desktop</p>
+    <p class="d">Strava and Eromify need you to sign in again (Strava is why the training tiles stopped). EVRoutes fails to connect (error 402) and PlayMCP never finished: reconnect them or remove them. In Claude Desktop → skills settings, upload integrations/claude-desktop/kevin-mentor.zip and delete the old cole-mentor skill.</p>
+    <div class="acts"><a class="btn" href="https://claude.ai/settings/connectors" target="_blank" rel="noopener">Open Connectors</a>
+      <label class="tick"><input type="checkbox" id="s17">Done</label></div></div></div>
+
+  <div class="step" data-id="18"><div class="n">18</div><div class="body">
+    <p class="t">Cloud network access for the rate websites</p>
+    <p class="d">In a Claude Code cloud session: title bar → environment → Edit → Network access. Add these:</p>
+    <div class="acts"><code>fred.stlouisfed.org www.freddiemac.com www.redfin.com</code><button class="btn" data-copy="fred.stlouisfed.org www.freddiemac.com www.redfin.com">Copy</button>
+      <label class="tick"><input type="checkbox" id="s18">Done</label></div></div></div>
+
+  <h2>5 · Applications and emails · 15 minutes</h2>
+  <p class="where">Drafts are in integrations/CONNECT-PLAN-2026-10-09.md section 6; nothing has been sent</p>
+
+  <div class="step" data-id="19"><div class="n">19</div><div class="body">
+    <p class="t">Send three short messages</p>
+    <p class="d">(1) Ticor: ask your Ticor Title Sales Executive or Customer Service whether an API or bulk export of Ticor Property Data exists and on what terms. (2) CRMLS: your broker (LPT) applies for the RESO Web API data licence at licensing@crmls.org; there will be no scraper. (3) Dotloop: apply for developer / partner access at info.dotloop.com/developers. Each is your signature, so Claude only drafted them.</p>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/CONNECT-PLAN-2026-10-09.md" target="_blank" rel="noopener">Open the drafts</a>
+      <a class="btn" href="https://ticorpropertydata.com/" target="_blank" rel="noopener">Ticor Property Data</a>
+      <label class="tick"><input type="checkbox" id="s19">Done</label></div></div></div>
+
+  <div class="step" data-id="20"><div class="n">20</div><div class="body">
+    <p class="t">Optional: switch on the free-then-paid failover</p>
+    <p class="d">Claude subscription first; when it runs out, OmniRoute free models take over at once; OpenRouter is the paid third tier, capped at $25 a month, and stays off until you do this. Create an OpenRouter key yourself, set the key&#x27;s own credit limit to $25, load no more than $25, then follow the Three-tier failover steps. It returns to Claude by itself when the allowance resets.</p>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/omniroute-failover/README.md" target="_blank" rel="noopener">Open the steps</a>
+      <a class="btn" href="https://openrouter.ai/" target="_blank" rel="noopener">OpenRouter</a>
+      <label class="tick"><input type="checkbox" id="s20">Done</label></div></div></div>
+
+  <h2>6 · Decisions · one reply</h2>
+  <p class="where">Each defaults to no; nothing is spent without your yes</p>
+
+  <div class="step" data-id="21"><div class="n">21</div><div class="body">
+    <p class="t">Decide the AI Steve video replica (plan is ready)</p>
+    <p class="d">context.dev is connected. The weekly real-estate and loan-officer video plan is in integrations/ai-replica-studio/PLAN.md. To start Claude needs five answers: (1) which avatar provider, or none yet (HeyGen works through Composio but is paid and not connected; the CAM page was not applied to and its price is not published); (2) built-in voice or a cloned voice on your own ElevenLabs account; (3) platforms and cadence (assumed one of each a week to Facebook, Instagram, LinkedIn, YouTube); (4) LPT Realty&#x27;s brokerage DRE number and name plus your personal NMLS ID for the disclosure line; (5) whether the three social timers run as a routine or through Buffer. You record your own consent and samples; nothing posts without your approval each week.</p>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/ai-replica-studio/PLAN.md" target="_blank" rel="noopener">Read the plan</a>
+      <code>replica: provider ______ · voice ______ · cadence 1+1/week · LPT DRE ______ · NMLS ID ______ · timers routine/Buffer</code><button class="btn" data-copy="replica: provider ______ · voice ______ · cadence 1+1/week · LPT DRE ______ · NMLS ID ______ · timers routine/Buffer">Copy</button>
+      <label class="tick"><input type="checkbox" id="s21">Done</label></div></div></div>
+
+  <div class="step" data-id="22"><div class="n">22</div><div class="body">
+    <p class="t">Reply &#x27;defaults&#x27; or change any line</p>
+    <p class="d">Google Drive: done, connected read-only (one file; Claude holds its catalogue, not its contents, until you say the notes can be indexed). Plaid: no (keys may cost). Terms-of-service reviews for Redfin market pages, lender rate pages and builder pages: Alexandra drafts, you decide each. SkySlope and zipForms: stay locked until compliance signs off. APInation: tell Claude what you want it to do before any paid use. Orca phone app: your call.</p>
+    <div class="acts"><code>defaults: Drive notes indexed yes/no ___ · Plaid no · ToS reviews later · SkySlope/zipForms locked · APInation: ______</code><button class="btn" data-copy="defaults: Drive notes indexed yes/no ___ · Plaid no · ToS reviews later · SkySlope/zipForms locked · APInation: ______">Copy</button>
+      <label class="tick"><input type="checkbox" id="s22">Done</label></div></div></div>
+
+  <h2>7 · Verify the brain, Jarvis, Laya and Vanessa&#x27;s voice · 3 minutes</h2>
+  <p class="where">Last, once the Mac steps above are done; nothing is changed except two local files</p>
+
+  <div class="step" data-id="23"><div class="n">23</div><div class="body">
+    <p class="t">Check Jarvis, Laya and Vanessa&#x27;s voice on your Mac</p>
+    <p class="d">One command checks Jarvis&#x27;s memory, the real Laya model, the vault, Vanessa&#x27;s recorded voice clips and the brain, and says the one thing to fix for each. It changes only a voice-profile copy in ~/.config/jarvis. Then the brain&#x27;s own self-check runs. Paste the last lines back and Claude updates the dashboards.</p>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/jarvis/README.md" target="_blank" rel="noopener">What it checks</a>
+      <code>cd ~/Projects/Repo 2&gt;/dev/null || cd &quot;$(dirname &quot;$(find ~ -maxdepth 5 -name mac-bootstrap.sh 2&gt;/dev/null | head -1)&quot;)&quot;; git pull &amp;&amp; bash integrations/jarvis/jarvis-setup.sh --apply; bin/brain loop | head -20</code><button class="btn" data-copy="cd ~/Projects/Repo 2&gt;/dev/null || cd &quot;$(dirname &quot;$(find ~ -maxdepth 5 -name mac-bootstrap.sh 2&gt;/dev/null | head -1)&quot;)&quot;; git pull &amp;&amp; bash integrations/jarvis/jarvis-setup.sh --apply; bin/brain loop | head -20">Copy</button>
+      <label class="tick"><input type="checkbox" id="s23">Done</label></div></div></div>
+
+  <footer>Rebuilt 2026-10-09 (afternoon) from the live routine list, the Mac runner status, both dashboard databases and a Composio connection check. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Same list as text: <code>docs/STEVEN-STEPS.md</code>.</footer>
+</div>
+
+<script>
+(function(){
+  var KEY="actionDesk.v7", state={};
+  try{ state=JSON.parse(localStorage.getItem(KEY)||"{}")||{}; }catch(e){ state={}; }
+  var boxes=document.querySelectorAll('label.tick input');
+  function paint(){
+    var n=0;
+    boxes.forEach(function(b){ var step=b.closest('.step'); step.classList.toggle('done',b.checked); if(b.checked)n++; });
+    document.getElementById('count').textContent=n+" of "+boxes.length+" done";
+    document.getElementById('fill').style.width=(100*n/boxes.length)+"%";
+  }
+  boxes.forEach(function(b){
+    b.checked=!!state[b.id];
+    b.addEventListener('change',function(){ state[b.id]=b.checked; try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){} paint(); });
+  });
+  document.querySelectorAll('button[data-copy]').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var text=btn.getAttribute('data-copy'), orig=btn.textContent;
+      function shown(msg){ btn.textContent=msg; setTimeout(function(){btn.textContent=orig;},1600); }
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(function(){shown("Copied");},function(){ selectCode(btn); shown("Select + copy"); });
+      } else { selectCode(btn); shown("Select + copy"); }
+    });
+  });
+  function selectCode(btn){ var c=btn.parentNode.querySelector('code'); if(!c)return; var r=document.createRange(); r.selectNodeContents(c); var s=getSelection(); s.removeAllRanges(); s.addRange(r); }
+  paint();
+})();
+</script>

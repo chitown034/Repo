@@ -1,0 +1,34 @@
+# The brain checks itself: tests, doctor, and the loop (bench, org chart, gaps, stale pages).
+# Plain Python, no model calls, no secrets -- costs no Claude allowance. Fails on a regression.
+name: brain-loop
+on:
+  push:
+    paths: ["**.md", "brain/**", "CLAUDE.md", ".github/workflows/brain-loop.yml"]
+  schedule:
+    - cron: "17 10 * * 1"   # Mondays 10:17 UTC (3:17 AM PT)
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  loop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Unit tests
+        run: python3 -m unittest discover -s brain/tests
+      - name: Doctor (index matches the tree, routed paths exist)
+        run: bin/brain doctor
+      - name: Loop (bench, org chart, gaps, stale pages vs the last committed run)
+        run: bin/brain loop | tee loop.txt
+      - name: Stale pages
+        if: always()
+        run: bin/brain stale
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: brain-loop-report
+          path: docs/reports/BRAIN-LOOP.md

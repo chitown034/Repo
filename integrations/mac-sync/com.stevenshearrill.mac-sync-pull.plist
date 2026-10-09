@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  com.stevenshearrill.mac-sync-pull.plist — TEMPLATE (R6, 2026-09-24). Runs `mac-sync.sh pull` every 30
+  minutes so this Mac's checkout never drifts far from the other Mac's exports. Read-only against the
+  remote's history until it lands: refuses (does not force, does not discard anything) on a real conflict —
+  see integrations/mac-sync/README.md.
+
+  BEFORE loading this file, on THIS Mac:
+    1. mkdir -p ~/Library/Logs/mac-sync ~/Library/LaunchAgents
+    2. cp integrations/mac-sync/com.stevenshearrill.mac-sync-pull.plist \
+         ~/Library/LaunchAgents/com.stevenshearrill.mac-sync-pull.plist
+    3. Edit the COPY (never the repo's own template) and replace every __REPO_DIR__ (two places — this
+       Mac's actual checkout path, e.g. /Users/steven/Projects/second-brain, NOT a vault-symlinked path
+       that could move) and every __HOME__ (three places — your actual $HOME, e.g. /Users/steven):
+       sed -i '' "s#__REPO_DIR__#$(pwd)#g; s#__HOME__#$HOME#g" ~/Library/LaunchAgents/com.stevenshearrill.mac-sync-pull.plist
+    4. launchctl load ~/Library/LaunchAgents/com.stevenshearrill.mac-sync-pull.plist
+
+  Expect: within 30 minutes, ~/Library/Logs/mac-sync/pull.log has a line starting "mac-sync pull:".
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.stevenshearrill.mac-sync-pull</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>__REPO_DIR__/integrations/mac-sync/mac-sync.sh</string>
+    <string>pull</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>__REPO_DIR__</string>
+  <key>StartInterval</key>
+  <integer>1800</integer>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>__HOME__/Library/Logs/mac-sync/pull.log</string>
+  <key>StandardErrorPath</key>
+  <string>__HOME__/Library/Logs/mac-sync/pull.log</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>__HOME__/.npm-global/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+    <key>HOME</key>
+    <string>__HOME__</string>
+  </dict>
+</dict>
+</plist>

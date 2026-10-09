@@ -1,0 +1,138 @@
+{
+  "agent": "W1",
+  "branch": "w1-stamps",
+  "file": "command-deck.html",
+  "date": "2026-09-22",
+  "scope": "Panel-stamp wiring: PANEL_VERIFIED_AT coverage, panelStampRegistry(), renderPanelStamps(), and the execSyncRegistry() freshness board's panel references.",
+  "harness": {
+    "command": "node tests/runtime-harness.js wt-w1-stamps/command-deck.html",
+    "before": { "verdict": "PASS", "exceptions": 0, "safeRunFailures": 0, "shapeWarnings": 0, "containers": 338 },
+    "after":  { "verdict": "PASS", "exceptions": 0, "safeRunFailures": 0, "shapeWarnings": 0, "containers": 338 },
+    "branchPointHeld": true,
+    "note": "Container count unchanged at 338. The two panels whose stamps changed are written with textContent, not innerHTML, so neither adds a container id. Verified by diffing the full --dump-text list of all 40 .panel-stamp elements: exactly 2 of 40 lines differ, both intended."
+  },
+  "diffStat": { "insertions": 70, "deletions": 7, "hunks": 6, "factsChanged": 0, "syncedAtValuesChanged": 0, "panelsRenumbered": 0, "idsRenamed": 0 },
+  "rows": [
+    {
+      "id": "F-W1-01",
+      "severity": "medium",
+      "area": "PANEL_VERIFIED_AT / panelStampRegistry()",
+      "finding": "PANEL_VERIFIED_AT carries 33 entries in a {at, scope, note} schema but is read ONLY by the cfg.kind === 'ref' branch of renderPanelStamps(). Exactly three panels are kind:'ref' (panel-hedgefund, panel-tools, panel-tax) and only two of those have a row here, so 31 of 33 entries drive no badge while reading as authoritative. Premise CONFIRMED. Conclusion: the current design is CORRECT and neither proposed fix should be applied.",
+      "evidence": "Cross-reference of 40 panel sections vs 38 registry entries vs 33 map entries. Live map consumers: panel-hedgefund -> 'Part-checked today' (st-fresh); panel-tax -> 'Reviewed today'. Every other panel's baseline stamp is data-derived and unaffected by the map, e.g. panel-quantvue '[st-warn] Seed · 6d ago', panel-marketing '[st-fresh] Seed · yesterday', panel-brief 'Published seed · today'.",
+      "fix": "NO DATA CHANGE. Neither candidate fix is right. (a) Widening: converting a 'you'/'live'/'synced' panel to 'ref' would swap a self-correcting, data-derived date for a hand-typed one AND destroy its staleness colour, because scope:'review' is deliberately given no colour class — panel-quantvue's amber 'Seed · 6d ago' would become a flat, never-ageing 'Reviewed today'. That is the precise failure the stamp system exists to prevent. (b) Pruning: the 31 inert entries are the audit record of the 2026-09-22 freshness pass; their 'part' notes state per panel which cards were re-sourced and which were knowingly left older. Deleting them destroys evidence. Applied fix: replaced the 3-line trailing comment (which buried 'an entry here for one of those is inert' after 33 authoritative-looking rows, reading as an oversight) with an explicit contract stating the rule, both anti-patterns by name, and the reason each is a regression.",
+      "halt": false
+    },
+    {
+      "id": "F-W1-02",
+      "severity": "high",
+      "area": "renderPanelStamps() selector",
+      "finding": "panel-vanessa could never render a stamp: renderPanelStamps() selects '.panel[data-page]' and that section is '<section class=\"panel panel-pinned\" id=\"panel-vanessa\">' with no data-page. ROOT CAUSE is the selector, NOT the missing attribute. data-page is the page partition switchPage() hides and shows; its absence is exactly what keeps panel-vanessa pinned and visible on all 15 tabs, as its own panel-note states ('Pinned to the top of every tab').",
+      "evidence": "switchPage() (L7891) only ever touches '.panel[data-page]', so a panel without one is never hidden. Adding data-page would have hidden the panel on 14 of 15 tabs and enrolled it in PANEL_NAV, buildToc, the section slider and panel counts. Baseline dump: '#panel-vanessa .panel-stamp ** NO SUCH ELEMENT **'. Selector safety verified: '.panel' matches exactly 40 elements (39 '<section class=\"panel\">' + 1 '<section class=\"panel panel-pinned\">') and nothing else; all 40 carry the .panel-head the renderer requires.",
+      "fix": "Changed the one selector in renderPanelStamps() from '.panel[data-page]' to '.panel'. The other seven '.panel[data-page]' call sites are genuinely page-partition logic and were left untouched. After: '#panel-vanessa .panel-stamp [panel-stamp] \"Not edited yet\"'.",
+      "halt": false
+    },
+    {
+      "id": "F-W1-03",
+      "severity": "high",
+      "area": "panelStampRegistry() — panel-vanessa",
+      "finding": "panel-vanessa had no panelStampRegistry() entry, so once the selector was corrected it would have fallen to the !cfg branch and rendered the same misleading badge as panel-toolkit. Two of the 40 panels were unregistered: panel-vanessa and panel-toolkit.",
+      "evidence": "38 registry entries vs 40 panel sections. panel-vanessa's data is the shared thread in the 'vanessaChat' document (lsGetSeeded('vanessaChat', []) at L23012; markup #vanessaChatBox at L1365 inside panel-vanessa), structurally identical to panel-apex/apexChat, panel-james/jamesChat, panel-kevin/kevinChat.",
+      "fix": "Added \"panel-vanessa\": { kind: \"you\", keys: [\"vanessaChat\"] }. Proven wired to the correct key by injecting sectionEdits {vanessaChat: 2026-09-20, apexChat: 2026-09-21}: panel-vanessa rendered '[st-you] You · 2d ago' and panel-apex '[st-you] You · yesterday' — independent, not cross-reading; panel-james (untouched key) stayed 'Not edited yet'.",
+      "halt": false
+    },
+    {
+      "id": "F-W1-04",
+      "severity": "high",
+      "area": "panelStampRegistry() — panel-toolkit",
+      "finding": "panel-toolkit was the one section with no registry entry, so it fell to the !cfg branch and rendered a dash badge coloured st-you — the colour reserved for sections Steven maintains by hand. panel-toolkit is not hand-maintained: it is fed by Mac scheduled tasks (toolkitSnapshot via toolkit-deck-sync, plus the runner, inbox and device-roster cards). Premise CONFIRMED.",
+      "evidence": "Baseline dump: '#panel-toolkit .panel-stamp [panel-stamp st-you] \"—\"'. renderToolkitInventory() at L9867 reads lsGet('toolkitSnapshot') and prints 'Synced <syncedAt> from the Mac's tool index' into #tkInvStamp.",
+      "fix": "Gave it a registry entry rather than only patching the fallback, because the 2026-09-22 audit had ALREADY recorded {at:'2026-09-22', scope:'review'} for panel-toolkit in PANEL_VERIFIED_AT — the entry existed and simply was not connected, so this asserts no new fact. Chose kind:'ref' over 'synced'/'live': the panel is predominantly a directory of links and copyable commands (like panel-tools, also 'ref'), there is no TOOLKIT_SYNCED_AT constant and no 'Toolkit inventory' label in LIVE_FEED_ISO, and its several live cards each print their own document stamp, so no single feed stands for the panel and 'synced' would have to pick one arbitrarily. After: '#panel-toolkit .panel-stamp [panel-stamp] \"Reviewed today\"' — accurate, and no borrowed colour.",
+      "halt": false
+    },
+    {
+      "id": "F-W1-05",
+      "severity": "medium",
+      "area": "renderPanelStamps() !cfg fallback",
+      "finding": "The unregistered-panel fallback did 'cls += \" st-you\"; txt = \"—\"', borrowing the hand-maintained colour for any panel missing a registry entry, and telling the next engineer nothing about why. Latent for every panel added in future.",
+      "evidence": "Reproduced on a throwaway copy with panel-toolkit's new entry removed: before the fallback fix it rendered '[panel-stamp st-you] \"—\"'.",
+      "fix": "Fixed BOTH the registry entry (F-W1-04) and the fallback, because they are independent defects: the entry fixes panel-toolkit, the fallback fixes the next panel added without one. Dropped st-you (no colour class at all — an unregistered panel has earned none) and replaced the dash with 'Unregistered' plus a title naming panelStampRegistry() as the place to fix it. Verified on the same throwaway copy: '[panel-stamp] \"Unregistered\"', while genuinely hand-maintained panel-kanban still correctly reads '[st-you] You · today'. st-you is now exclusive to hand-maintained sections.",
+      "halt": false
+    },
+    {
+      "id": "F-W1-06",
+      "severity": "medium",
+      "area": "execSyncRegistry() freshness board",
+      "finding": "add(\"Top performers\", TOP_PERFORMERS_SYNCED_AT, \"panel-quantvue\") — but all four top-performer tables live in panel-personalaccounts. The board's jump link landed on the wrong panel, on a different tab. CONFIRMED.",
+      "evidence": "#topPerformersSyncNote is at L3177, inside panel-personalaccounts (L3073-3249), not panel-quantvue (L1610-1982). The OR_FEEDS registry pairs list 'topPerformersLiveList' with note 'topPerformersSyncNote'. Located by line range, not by name.",
+      "fix": "Changed the panel argument to \"panel-personalaccounts\". Stamp source (TOP_PERFORMERS_SYNCED_AT) unchanged.",
+      "halt": false
+    },
+    {
+      "id": "F-W1-07",
+      "severity": "medium",
+      "area": "execSyncRegistry() freshness board",
+      "finding": "add(\"Bears tracker\", BEARS_SYNCED_AT, \"panel-brief\") — but the Chicago Bears card is inside panel-news. CONFIRMED.",
+      "evidence": "#bearsSyncNote is at L1559, inside panel-news (L1516-1578), not panel-brief (L1407-1515). OR_FEEDS pairs 'bearsLiveNews' with note 'bearsSyncNote'.",
+      "fix": "Changed the panel argument to \"panel-news\". Stamp source (BEARS_SYNCED_AT) unchanged.",
+      "halt": false
+    },
+    {
+      "id": "F-W1-08",
+      "severity": "medium",
+      "area": "execSyncRegistry() freshness board",
+      "finding": "add(\"AI news\", feedStampIso(\"aiNewsList\"), \"panel-tools\", 2) — the panel is wrong (the card is in panel-pedefense). The reported second half of this bug — that the STAMP SOURCE is also wrong and should read the refreshed aiNews document — is NOT supported by the code or the store, and was deliberately not applied.",
+      "evidence": "PANEL: #aiNewsList (L5804) and #aiNewsHonestyNote (L5805) are inside panel-pedefense (L5753-5831), not panel-tools (L4185-4284). STAMP SOURCE: renderOrFeeds() repaints #aiNewsList from liveFeeds whenever that feed carries text or citations, so feedStampIso('aiNewsList') is the timestamp of what is actually on screen; the live store has liveFeeds.feeds.aiNewsList.checkedAt = '2026-09-20T20:33:06Z', a real ISO instant from the daily feed task. The aiNews document is NOT a usable substitute: db/state/aiNews.json has keys ['asOf','items'] and no syncedAt, and its asOf is prose — 'Sourced Sep 7, 2026 — ...' — with no YYYY-MM-DD, so execIsoOf() returns null for it. Switching the source would have degraded a healthy row to a red 'No date on record' line AND made it 13 days older than the feed it describes.",
+      "fix": "Changed the panel argument to \"panel-pedefense\" only. Left feedStampIso(\"aiNewsList\") and the threshold of 2 exactly as they were, and recorded the reasoning in a comment so the next engineer does not 'fix' it back.",
+      "halt": false
+    },
+    {
+      "id": "F-W1-09",
+      "severity": "info",
+      "area": "execSyncRegistry() freshness board — full sweep",
+      "finding": "Swept all 28 board rows by resolving each row's DOM render target to the <section class=\"panel\" id=\"...\"> line range that contains it. Exactly three rows were wrong — the three already reported (F-W1-06/07/08). NO ADDITIONAL wrong-panel rows exist.",
+      "evidence": "Verified correct by line range: Weather->panel-brief, News->panel-news, On This Day->panel-brief (#onThisDaySyncNote), QuantVue strategy->panel-quantvue (#strategySyncNote), Econoday->panel-quantvue, Mortgage rates->panel-property (#mortgageRatesSyncNote), Local market->panel-property (#marketUpdateSyncNote), Loan program facts->panel-property, Lofty CRM import->panel-property (#loftyCrmCard L2465), Builder incentives->panel-property, Strava->panel-wellness, Google Calendar->panel-appointments (#calSyncNote L3354), Apple Health->panel-wellness, Plaid->panel-personalaccounts, Elite rewards->panel-loyalty, Incentives & programs->panel-loyalty (#incentSyncNote), PE & Defense->panel-pedefense, Elite Affluent->panel-eliteaffluent, Opportunity Radar->panel-nextmoves, Next Big Moves COAs->panel-nextmoves, Marketing->panel-marketing, TradingView->panel-hedgefund (#tvIntegration L2051), AI Hedge Fund memo->panel-hedgefund (#hfMemo L2008), VA comp->panel-income, ISA line bridge->panel-aiteam. Separately confirmed all 23 distinct panel ids referenced across the board and the exec-exception jump targets resolve to real sections.",
+      "fix": "None needed beyond F-W1-06/07/08.",
+      "halt": false
+    },
+    {
+      "id": "F-W1-10",
+      "severity": "medium",
+      "area": "panelStampRegistry() — panel-aiteam (NOT FIXED, reported)",
+      "finding": "panel-aiteam's registry keys include 'vanessaChat' and 'vanessaRecommendations', but NEITHER card is in that panel any more — both live in panel-vanessa. panel-aiteam can therefore take its 'You last edited' date from an edit made in a different panel. This is the same move that left panel-vanessa unregistered (F-W1-03): the markup was relocated to the pinned panel and the registry keys were never moved with it.",
+      "evidence": "sed over panel-aiteam's full range (L4543-4866) returns ZERO 'vanessa*' element ids. #vanessaChatBox is at L1365 and #vanessaRecRows at L1401, both inside panel-vanessa (L1334-1406). panel-aiteam says so itself at L4829: 'Vanessa's chat, her reach table, and her recommendations now sit at the very top of the dashboard... <a href=\"#panel-vanessa\">Jump to Vanessa</a>'.",
+      "fix": "NOT APPLIED — deliberately out of scope. Removing those two keys changes panel-aiteam's stamp behaviour, and panel-aiteam is not one of the four assigned bugs nor a board row. Recommended for a follow-up: drop 'vanessaChat' and 'vanessaRecommendations' from panel-aiteam's keys, leaving its 16 other keys intact. Low risk (both panels currently read 'Not edited yet' in the harness), but it is a visible-behaviour change on an unassigned panel and should be someone's explicit call.",
+      "halt": false
+    },
+    {
+      "id": "F-W1-11",
+      "severity": "low",
+      "area": "PANEL_VERIFIED_AT coverage gap (NOT FIXED, by design)",
+      "finding": "panel-tools is kind:'ref' — so it DOES read PANEL_VERIFIED_AT — but has no row in the map. It therefore renders the dateless 'Reference' badge, which is exactly the over-claim the map's own header comment says the map was created to eliminate: it hides how long it has been since anyone checked the content.",
+      "evidence": "Baseline and after dump both: '#panel-tools .panel-stamp [panel-stamp] \"Reference\"'. panel-tools is one of only three kind:'ref' panels and the only one with no map entry.",
+      "fix": "NOT APPLIED, deliberately. Adding an entry means asserting a verification date, which is a FACT — and I did not review panel-tools' content, so any date I wrote would be fabricated. Copying 2026-09-22 from its neighbours would be precisely the over-claim the map exists to prevent. Recorded as a named known gap in the map's header comment for the next freshness audit, which must supply a real date from someone who actually checked it.",
+      "halt": false
+    },
+    {
+      "id": "F-W1-12",
+      "severity": "low",
+      "area": "Freshness board jump links (PRE-EXISTING, NOT FIXED)",
+      "finding": "The board renders its jump links as plain anchors, '<a href=\"#\" + r.panel + \">', and the deck has no hashchange / anchor-interception handler anywhere. A row naming a panel on another tab therefore anchors to an element that switchPage() has set to display:none, so the jump silently does nothing. The board itself sits in panel-brief on the Daily Ops tab, so 23 of its 28 rows point off-tab.",
+      "evidence": "grep for hashchange | location.hash | gotoPanel | jumpToPanel | revealPanel returns no hits. Row renderer at L21147. Tab arithmetic: 28 rows, 5 same-tab (daily), 23 cross-tab.",
+      "fix": "NOT APPLIED — out of scope and pre-existing, affecting ~23 rows independently of my change. Note this does not argue against F-W1-06/07/08: pointing a link at the panel that actually contains the card is correct regardless, and cross-tab rows were already the overwhelming norm. Recommended follow-up: intercept clicks on the board's panel anchors, call switchPage(panel.dataset.page) first, then scroll — which would also make the pre-existing 23 work.",
+      "halt": false
+    }
+  ],
+  "haltItems": [],
+  "rulesObserved": {
+    "noPanelsRenumbered": true,
+    "noIdsRenamed": true,
+    "noSyncedAtValuesChanged": true,
+    "noPanelContentAltered": true,
+    "noSecretsOrCredentialsOrClientNamesWritten": true,
+    "noMoneySpentNoCredentialsNoAccountChanges": true,
+    "noRoutineCreateUpdateFireDelete": true,
+    "noArtifactDbWrites": true,
+    "artifactDbReadsOnly": "Read the exported deck store under scratchpad/db/state (aiNews.json, liveFeeds.json, sectionEdits.json) read-only, to settle the AI-news stamp-source question.",
+    "notCommitted": true
+  }
+}

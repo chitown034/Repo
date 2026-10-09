@@ -1,0 +1,8 @@
+{
+  "name": "halt-guard",
+  "version": "0.1.0",
+  "description": "Proceed/Cancel before sends, shares, payments and force pushes (HALT list), when someone is at the keyboard.",
+  "author": {
+    "name": "Steven Shearrill"
+  }
+}

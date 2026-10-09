@@ -1,0 +1,57 @@
+{
+  "_synthetic": "All values invented for tests. No real listing, lender quote, community, price, date or client. Not a claim about any real page.",
+  "url": "https://www.redfin.com/city/12866/CA/Murrieta/housing-market",
+  "tree": {
+    "name": "/",
+    "role": "document",
+    "children": [
+      {
+        "name": "main",
+        "role": "main",
+        "children": [
+          {
+            "name": "text_1",
+            "role": "text",
+            "text": "Murrieta Market Housing Market"
+          },
+          {
+            "name": "text_2",
+            "role": "text",
+            "text": "Median Sale Price $659,670"
+          },
+          {
+            "name": "text_3",
+            "role": "text",
+            "text": "44 Median Days on Market"
+          },
+          {
+            "name": "text_4",
+            "role": "text",
+            "text": "-3.7% YoY"
+          },
+          {
+            "name": "text_5",
+            "role": "text",
+            "text": "2.6 Months of Supply"
+          },
+          {
+            "name": "text_6",
+            "role": "text",
+            "text": "Data as of Jul 20, 2026"
+          }
+        ]
+      }
+    ]
+  },
+  "expect": {
+    "kind": "record",
+    "auth_state": "not_required",
+    "record": {
+      "medianPrice": "659,670",
+      "dom": "44",
+      "yoy": "-3.7%",
+      "monthsSupply": "2.6",
+      "asOf": "Jul 20, 2026"
+    }
+  }
+}

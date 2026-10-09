@@ -1,0 +1,56 @@
+[
+  {
+    "id": "F-P3-01",
+    "severity": "high",
+    "area": "automation / Mac task revenue-scan-weekly",
+    "finding": "The Command Deck watches `revenueScan` and names `revenue-scan-weekly` as its owner. The task is registered and ENABLED on the runner but has never run, and the document has never existed — which is the whole of the stress sweep's last Degraded row, because a document that was never written cannot be restored. Root cause is two-part: (a) the task has never fired, and (b) nothing in the repo, in `toolkitSnapshot` or on the deck tells it to write a document, name it, shape it, or wrap it in `{v:…}`. The full prompt lives only on Steven's Mac and could not be read from this cloud session, so (b) is inferred from the absence of any contract anywhere else plus the two identical writer defects already recorded in this file (F-W2-01 bare top level, F-W2-05 no write step at all); it is not read off the live prompt.",
+    "evidence": "Live ArtifactData get on state/revenueScan, 2026-09-22 (artifact 1624daae-d683-405a-971d-c5828dce0f8d): 'No document \"revenueScan\" in collection \"state\"'; a full list of the collection returns 174 documents and does not include it. Live runnerStatus (syncedAt 2026-09-22T20:10:15Z): {\"cron\":\"40 5 * * 0\",\"enabled\":true,\"lastEnd\":null,\"lastStatus\":null,\"nextSlot\":\"2026-09-27T05:40:00\"}. command-deck.html:20239 is the only reference to the document in the page. Executed, not read: runtime-harness --dump-text renders the board's first row as 'Revenue scan revenueScan revenue-scan-weekly Never produced output' and the board summary as '14 current · 10 stale · 4 never produced output'.",
+    "fix": "Case (a) — the owning task exists and its prompt is incomplete. Paste-ready amendment written as routines/mac-task-repairs.md §10: the document contract (ranAt/weekOf/source/by/counts/opportunities/dataGaps/needsSteven), the `{v:…}` wrapper with a correct and an incorrect example, a rule that a scan finding nothing still writes an honest empty result, a read-back check and a ciLog row. Two content rules are pinned in the amendment: no client identifiers (record id only — the store belongs to a published artifact), and no rate or APR figures (licensed activity, a Reg Z triggering term, already in the refinance-hunter seat prompt). HALT on Steven: only he can run the task or edit its prompt — NEEDS-STEVEN item 43.",
+    "halt": true
+  },
+  {
+    "id": "F-P3-02",
+    "severity": "high",
+    "area": "automation / Mac task health-coaching-weekly",
+    "finding": "Same failure shape as F-P3-01 for `healthCoaching`: registered, enabled, never run, document never written. Two aggravating factors specific to this one. Its inputs are dead — appleHealth covers only through 2026-09-12 (ingest daemon down since 09-13), health-full-analysis is in error, r8-apple-health-snapshot reports ok while writing nothing — so on the obvious reading of its prompt the task will write nothing even once it does run. That is the wrong behaviour: renderHealthCoaching has a dedicated red banner and an 'ingest stopped' badge built for a brief that reports its own pipeline as broken, so the designed outcome is an honest document, not silence.",
+    "evidence": "Live ArtifactData get on state/healthCoaching, 2026-09-22: 'No document \"healthCoaching\" in collection \"state\"'. Live runnerStatus (syncedAt 2026-09-22T20:10:15Z): {\"cron\":\"30 6 * * 0\",\"enabled\":true,\"lastEnd\":null,\"lastStatus\":null,\"nextSlot\":\"2026-09-27T06:30:00\"}. command-deck.html:20249 (watch row), :16367-16400 (renderHealthCoaching), :3617 (healthCoachingCard in panel-wellness). Executed, not read: with the document absent the harness renders hcBody as 'No coaching brief yet. Set your goals below; the first brief runs Sunday 6:30 AM from the Mac (task health-coaching-weekly), or ask Vanessa for one now.' and hcBadge grey 'no brief yet'; with a document written to the contract it renders the full brief, hcBadge red 'ingest stopped' and the hc-broken banner.",
+    "fix": "Case (a). Paste-ready amendment written as routines/mac-task-repairs.md §11, pinning the renderer's exact contract (headline required, generatedAt, weekOf, goalsStatus, askSteven, freshness{pipeline,watcher,stale,dataThrough,lastIngestAt,nudge}, brief{movement,meaning,recommendations,question}, goalProgress, training, meals, flags, dataGaps, by) and an explicit instruction to write the broken-pipeline brief rather than nothing while the ingest is down. HALT on Steven: NEEDS-STEVEN item 43; coupled to item 14 (the Apple Health branch decision).",
+    "halt": true
+  },
+  {
+    "id": "F-P3-03",
+    "severity": "medium",
+    "area": "audit correctness / F-E8-39",
+    "finding": "F-E8-39 tells the next loop cycle that the 20 never-run weekly tasks have not yet had a first slot — 'Their first slots fall 2026-09-25 to 2026-10-01'. For the Sunday tasks that is wrong, and it is why nobody has chased these two: both were already registered at the 2026-09-16T00:52:24Z toolkit sync, so the Sunday 2026-09-20 slots (05:40 and 06:30 PT) passed with the tasks enabled and nothing ran. At least one slot has already been missed, so 'wait for 09-27' is not a plan; a supervised first run is required. The deck's own board states the mechanism: a scheduled run cannot answer a permission prompt and approvals from a Claude session do not transfer, and tasks only run while the desktop app is open (NEEDS-STEVEN item 42's missing LaunchAgent).",
+    "evidence": "docs/inventory/mac-task-descriptions.md header: toolkitSnapshot syncedAt 2026-09-16T00:52:24Z, and both tasks are in its 60-task list. 2026-09-20 was a Sunday. Live runnerStatus 2026-09-22T20:10:15Z still shows lastEnd null and lastStatus null for both. Output-watch footer text in command-deck.html:20309.",
+    "fix": "Recorded here and reflected in NEEDS-STEVEN item 43; F-E8-39 is not edited (it belongs to the Reliability Engineer and its wider claim about Sat/Mon/Fri tasks was not re-checked in this pass).",
+    "halt": false
+  },
+  {
+    "id": "F-P3-04",
+    "severity": "medium",
+    "area": "Command Deck / renderHealthCoaching",
+    "finding": "renderHealthCoaching carried one unguarded .join(): `chatEsc((c.by || []).join(\", \"))`. Every other array in that function is guarded with Array.isArray. A `by` arriving as an object or a string — the exact mutation the stress sweep's 'wrong-typed fields' case produces — threw a TypeError inside the renderer; safeRun caught it, so the page stayed up and the card rendered EMPTY with no on-page reason. The defect has never fired for one reason only: the document has never existed. It would have fired on the first real write, i.e. the moment F-P3-02 is fixed.",
+    "evidence": "Found by execution, not by reading: running the sweep against a scratchpad fixture store containing a healthCoaching document turned the 'Document healthCoaching (malformed input)' row from Pass to 'Degraded — 1 of 7 malformed shapes (wrong-typed fields) reach a renderer and throw: renderHealthCoaching @html:16399'. stress-sweep.js:169-183 flipTypes turns an array into an object. After the one-line guard the same fixture run reports that row as Pass and the sweep as 55 Pass · 0 Degraded · 0 Fail.",
+    "fix": "Fixed in the deck source at command-deck.html:16399 — `(c.by || [])` became `(Array.isArray(c.by) ? c.by : [])`. One line, no other change. The edit is in the scratchpad deck source only; it is not published and the deck is not committed to this repo. Regression check against the live store after the edit: 344 containers, 0 exceptions, 0 safeRun failures, 0 shape warnings, verdict PASS — identical to before.",
+    "halt": false
+  },
+  {
+    "id": "F-P3-05",
+    "severity": "medium",
+    "area": "stress sweep / BackupRecovery row",
+    "finding": "The sweep's last Degraded row cannot honestly be cleared from a cloud session. It is Degraded precisely because owMissingFromExport is non-empty (stress-sweep.js:796-803), and the only honest way to empty it is for the two owning tasks to run and write their documents. Writing a placeholder document to the store to turn the row green was considered and rejected: it is the dishonesty this session exists to correct, and it would also have masked F-P3-04.",
+    "evidence": "Before (live store, 174 docs): '54 Pass · 1 Degraded · 0 Fail'; row — 'Restore all 173 exported documents and run the page | BackupRecovery | Degraded | 2 watched documents were never written by their task and therefore cannot be restored: revenueScan, healthCoaching'. After the page fix, same live store, re-run: unchanged at '54 Pass · 1 Degraded · 0 Fail' with the identical row text — correct, because the documents still do not exist. Against a scratchpad fixture store with both documents written to the specified contract: 'Restore all 176 exported documents and run the page | BackupRecovery | Pass', board summary '16 current · 10 stale · 2 never produced output', sweep total 55 Pass · 0 Degraded · 0 Fail.",
+    "fix": "No change to stress-sweep.js and no write to the live store. The fixture proves by execution that the two document contracts in routines/mac-task-repairs.md §10 and §11 are what the deck accepts, so the row turns Pass on the first real run and not before. Closing this row is Steven's Run now (NEEDS-STEVEN item 43), not an engineer's edit.",
+    "halt": true
+  },
+  {
+    "id": "F-P3-06",
+    "severity": "low",
+    "area": "Command Deck / OUTPUT_WATCH design",
+    "finding": "Option (c) — stop watching these documents, or render an explicit 'never populated' state — was considered for both and rejected on evidence. The board already renders exactly that state, in red, and the health coaching card already renders an honest empty state naming its own task and schedule; neither is a silent blank. And watched-but-not-rendered is an intentional pattern here, not a dead panel: vanessaRuns and vanessaBrief are read by nothing on the page either, exist in the store and are written by their owners. Dropping revenueScan from OUTPUT_WATCH would hide a dead automation, which is the opposite of the fix. Separately, improvementProposals and isaScorecard are both {v:[]} in the store and so also read as 'never produced output' — they exist and are therefore restorable, which is why they are not in the Degraded row.",
+    "evidence": "command-deck.html:20301 renders '<span class=\"badge red\">Never produced output</span>'; :20309 gives Steven the Run now instruction. Executed: the first board row reads 'Revenue scan revenueScan revenue-scan-weekly Never produced output'; hcBody reads the empty-state sentence naming health-coaching-weekly and Sunday 6:30 AM. grep of the page: revenueScan 1 reference, vanessaRuns 1, vanessaBrief 1. Store: improvementProposals and isaScorecard are both {\"v\": []}.",
+    "fix": "No page change. Recorded so the next pass does not re-open it.",
+    "halt": false
+  }
+]

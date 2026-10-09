@@ -1,0 +1,92 @@
+[
+  {
+    "id": "F-L1-01",
+    "severity": "high",
+    "area": "Live CRM import / Lending & Real Estate",
+    "finding": "A frozen 90-day Follow Up Boss lead card was still rendered inside the Lofty card: a collapsed <details id=\"loftyLegacyFub\"> holding stage totals (6,460 contacts) and 39 named lead rows from a 2026-09-07 pull, plus the copy 'Follow Up Boss numbers are kept below as retired history'. Those numbers are one CRM's and cannot honestly be relabelled as another's.",
+    "evidence": "wt-l1-fub/command-deck.html branch point lines 2487-2504 (HTML) and 10901-10976 (JS: FUB_SYNC_AT, FUB_STAGE_TOTALS, FUB_NEW_LEADS_90D, renderFubImport, safeRun).",
+    "fix": "Removed the whole card and its JS. The Lofty card above it already carries the honest empty state: 'Awaiting the first Lofty sync ... No Lofty lead has been imported, so this card shows no counts rather than a guess - there is no real-estate lead data on this page to show.' No figure was substituted. Container count 338 -> 336 (fubStageStats, fubNewLeadRows were the only removed ids that received innerHTML).",
+    "halt": false
+  },
+  {
+    "id": "F-L1-02",
+    "severity": "medium",
+    "area": "Data handling / PII",
+    "finding": "Removing the frozen lead card also removed 39 client name records (first name + last initial), their lead stage, lead source and creation date from the deck's HTML. That is client PII that was sitting in a published artifact.",
+    "evidence": "Branch-point lines 10917-10955, e.g. ['Patrick S.', 'Spoke with Customer', 3, 'Zillow Preferred', '2026-09-04'].",
+    "fix": "Gone with the card. Flagging it because it is a privacy improvement Steven should know about, and because the same 39 rows may still exist in deck backups and in the artifact DB. Steven's call whether to purge those too.",
+    "halt": false
+  },
+  {
+    "id": "F-L1-03",
+    "severity": "high",
+    "area": "Automation narratives (lead triage / lead response / ISA KPI / showings)",
+    "finding": "Four task narratives were written around the dead Follow Up Boss credential ('logged Invalid API Key since 2026-09-16', 'has to be re-pointed'), which both names the retired CRM and describes the wrong next action.",
+    "evidence": "Branch-point lines 4407, 6513, 19977, 26488 (plus 4532, 18337).",
+    "fix": "Rewritten around what must happen now: each task must read Lofty through the Mac's lofty-bridge, which needs Steven's Lofty API key at ~/.config/lofty/.env as LOFTY_API_KEY. The dead credential is not narrated. No key value was written anywhere - only the path and the variable name, which were already on the page.",
+    "halt": false
+  },
+  {
+    "id": "F-L1-04",
+    "severity": "medium",
+    "area": "Identifiers - saved state, deliberately NOT renamed",
+    "finding": "The showings feature stores a per-client CRM link on the property name 'fub' inside the persisted 'showingSchedule' store, mirrors it as 'clientFub' into 'showingSyncRequests', and uses the string id \"fub\" as a showing-sync target. Both stores go through lsSet(), which writes localStorage AND syncKeyToDb(), and the queue rows are read by the showing-sync Mac task.",
+    "evidence": "Post-edit lines 26414, 26420, 26475, 26512, 26570, 26583, 26584; persistence at lines 6948/6998/26434-26435 (lsGet / lsSet / shState / shSave).",
+    "fix": "Kept the keys. Renaming them would orphan every saved client CRM link and break the showing-sync task's target contract. Everything user-visible around them was fixed instead: the target label already reads 'CRM (not writing - Lofty re-point pending)', the input at line 4301 is labelled 'Lofty lead link', and the code comment now records WHY the id is frozen. Needs Steven's word plus a coordinated task change to rename properly.",
+    "halt": true
+  },
+  {
+    "id": "F-L1-05",
+    "severity": "medium",
+    "area": "AI Team toolkit / CRM & Connectors lane",
+    "finding": "The deck names a Mac skill directory 'fub-followups'. That is the real on-disk name of an installed skill, and the deck's job in that table is to report what is actually installed - skills-refresh audits the table against the machine.",
+    "evidence": "Post-edit lines 26027 and 26082.",
+    "fix": "Kept the directory name, removed the 'Follow Up Boss template library' expansion. It now reads 'fub-followups (legacy follow-up template library still under its old directory name on the Mac - rename and port to Lofty)'. Renaming the directory is a change on Steven's Mac, outside this file and outside my authority.",
+    "halt": true
+  },
+  {
+    "id": "F-L1-06",
+    "severity": "low",
+    "area": "Continuous-improvement log (dated audit record)",
+    "finding": "One CI log entry dated 2026-09-07 records a live Follow Up Boss pull ('stage counts, 39 contacts created in 90 days') as part of that day's freshness sweep. It is a dated record of what was done at the time.",
+    "evidence": "Post-edit line 19141, inside CI_LOG_DEFAULT.",
+    "fix": "Left in place per the FUB-POLICY ruling on dated audit records - rewriting it would falsify an audit trail. It IS rendered on the deck, so Steven will still see the words 'Follow Up Boss' there. Offer to purge it on his word.",
+    "halt": false
+  },
+  {
+    "id": "F-L1-07",
+    "severity": "low",
+    "area": "ISA KPI scorecard - provenance of a dated figure",
+    "finding": "The isaKpi source note asserted the figures were 'the last Follow Up Boss figures, not Lofty figures'. The figures are real and their provenance is real, but the note named the retired CRM.",
+    "evidence": "Branch-point line 14984 -> post-edit line 14897.",
+    "fix": "Re-worded to 'These figures predate Lofty becoming the real-estate system of record on 2026-09-22 - they are not Lofty figures, and nothing has measured the ISA since.' Keeps the honest warning that they are not Lofty data without naming the old CRM and without relabelling anything. Judgment call: this is a dated figure, not a dated audit record, so the policy's 'live prose' rule applied.",
+    "halt": false
+  },
+  {
+    "id": "F-L1-08",
+    "severity": "low",
+    "area": "Google Calendar directory",
+    "finding": "A tracked Google calendar was named after the CRM that created it: 'Follow Up Boss (appointments & tasks)'.",
+    "evidence": "Branch-point line 16692 -> post-edit line 16605.",
+    "fix": "Relabelled 'Legacy CRM calendar (appointments & tasks)' with the note 'a legacy calendar created by the real-estate CRM that Lofty replaced on 2026-09-22; it returned no events on the last sync'. The calendar's actual Google id is unchanged - it is the real address the link resolves to. Renaming the calendar in Google itself is an account change and was not attempted.",
+    "halt": true
+  },
+  {
+    "id": "F-L1-09",
+    "severity": "info",
+    "area": "Embedded assets",
+    "finding": "The brief named three base64 blob lines (845, 1366, 4643). There are in fact 22 base64 payloads across 12 lines that contain 'fub'/'FUB' by chance - lines 24004-24022 are the Vanessa/Steve avatar video and audio blobs. A global search-and-replace would have silently corrupted 1.6 MB of media.",
+    "evidence": "34 of the 47 remaining regex matches live inside those 22 payloads.",
+    "fix": "No blind replace was run. Every edit was an asserted exact-string match. All 22 payloads verified byte-identical after the edit: combined sha256 faa6a45edbdae457bdc949e248541c1c667193e66d73420733306a6b61e6d240, 1,716,832 bytes, unchanged.",
+    "halt": false
+  },
+  {
+    "id": "F-L1-10",
+    "severity": "info",
+    "area": "Verification",
+    "finding": "Harness, base64 integrity and re-grep all clean.",
+    "evidence": "runtime-harness: PASS, 0 exceptions, 0 safeRun failures, 0 shape warnings, 336 containers (338 at branch point), missing ids 2 (vanessaMicBtn, steveMicBtn - unchanged). Lofty card exercised on all three branches (no doc / status ok / status not-configured) - PASS each time. 6/6 harness self-tests pass. 46 prose edits + 2 block removals, all asserted.",
+    "fix": "No follow-up needed. 47 regex matches remain: 34 in base64, 13 accounted for individually (1 dated CI-log entry, 2 fub-followups skill-name mentions, 10 saved-state identifiers).",
+    "halt": false
+  }
+]

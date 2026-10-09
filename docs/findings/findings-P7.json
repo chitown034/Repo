@@ -1,0 +1,102 @@
+[
+  {
+    "id": "F-P7-01",
+    "severity": "high",
+    "area": "both Macs — the blocker, removed",
+    "finding": "REMOTE-ACCESS.md's PRIMARY/STANDBY lease was specified as a five-step LEASE CHECK block to be pasted at the top of every one of the 59 claude-runner task prompts. That is a HALT an agent cannot perform (editing live task definitions) and a chore that realistically never finishes, so Mac #2 stayed off and the documented 'both Macs' capability stayed blocked. The lease check now runs inside integrations/omniroute-failover/claude-auto.sh — the launcher that already wraps every claude invocation for claude-runner, already takes --task NAME, already decides whether a task may run, and already defers by exiting 75. Same document, same 90-minute TTL, same if_version pin, same step-4 re-read; one file instead of 59 prompts. MAC-SETUP.sh already installs that file, so installing one script plus writing one word into ~/.config/claude-runner/role is now the whole of what makes a second Mac safe.",
+    "evidence": "claude-auto.sh gained 335 lines and CHANGED only three pre-existing lines — the two usage strings and `TASK=\"\"; PII=\"\"; FORCE=\"\"; SHOW=0; CARGS=()` (extended with LEASE_GATE/LEASE_CHECK). `diff -u` against the pre-change file shows no other removal: the PII gate, the limit detection, the route parser and the probe hand-off are byte-identical. 102 executed assertions in integrations/omniroute-failover/lease-tests.sh, all passing, against a stub `claude` that implements the five lease steps against a fake document rather than returning a canned verdict.",
+    "fix": "DONE. claude-auto.sh: header block (the asymmetry and the precedence argument), the LEASE_* configuration, twelve new helpers, the gate itself between the --status block and the headless detection, and three new flags (--lease, --no-lease, --lease-check). README.md gained 'The task lease — one writer across two Macs' with the mechanism, the precedence order, the asymmetry, the exact paths, the cache TTL, the call rate and a 7-step lease canary. REMOTE-ACCESS.md and docs/SECOND-MAC-SETUP.md say the 59-prompt route is no longer the path and KEEP the block documented as the fallback for writers that do not go through the launcher.",
+    "halt": false
+  },
+  {
+    "id": "F-P7-02",
+    "severity": "high",
+    "area": "the design decision — fail asymmetrically",
+    "finding": "The role in ~/.config/claude-runner/role decides exactly ONE thing: what happens when the lease check itself cannot complete. It never overrides a conclusive answer. Conclusive HELD/ACQUIRED runs on either role; conclusive FOREIGN or RACE defers on either role (a 'primary' that ignored a live foreign lease would make the whole mechanism pointless). Inconclusive — network down, claude not logged in, a timeout, a reply with no verdict — runs on PRIMARY (fails OPEN, because a blip must never silently stop all of Steven's automation and the 90-minute TTL exists so the holder can work through one) and defers with exit 75 on STANDBY (fails CLOSED, because a standby that cannot prove it should take over and guesses is exactly the double-write this prevents). An absent, unreadable, foreign-owned, group/world-writable or junk role file reads as STANDBY.",
+    "evidence": "Executed. B7: role=primary + a stub exiting 1 -> exit 0, the task ran, log 'PRIMARY fails OPEN'. B8: the same stub with role=standby -> exit 75, the task never ran, log 'STANDBY fails CLOSED'. B9: no role file at all + the same stub -> exit 75, log 'no role file at …'. B10: no role file + a healthy check -> exit 0 (an unset role is not a block, only a fail direction). B11: a role file saying `primary` at mode 666 -> exit 75, log 'group- or world-writable'. B12: `PRIMARY` upper-case -> honoured. B15/B16: a stub that sleeps past the timeout -> standby defers, primary runs, on both the timeout(1) path and the built-in watchdog. B17: role=primary facing a LIVE foreign lease -> exit 75 and the task never ran.",
+    "fix": "DONE, and stated in the file's header comment with the reasoning, in the style of the comments already there.",
+    "halt": false
+  },
+  {
+    "id": "F-P7-03",
+    "severity": "high",
+    "area": "lease semantics — the if_version pin and the step-4 re-read are preserved",
+    "finding": "The launcher runs REMOTE-ACCESS.md's five steps unchanged in intent: read state/taskLease and remember its version; a live lease held by someone else means stop and write nothing; otherwise write {v:{holder,hostname,acquiredAt,expiresAt}} pinned with if_version (omitted only when the document was absent); a refused pinned write means the other Mac moved first, so stop; re-read and stop if the holder is not us. The verdict vocabulary is HELD / ACQUIRED / FOREIGN / RACE, and only exactly one of them in the CLI's own result field is conclusive.",
+    "evidence": "Executed against a stub that maintains a real versioned document. B1: no document -> ACQUIRED, the document is created holding this Mac. B2: the document already held by us at version 4 -> HELD and version 5 (renewed, so the 90-minute TTL rolls forward). B3: a live lease held by mac-number-one -> exit 75 and the document is STILL at version 7, nothing written. B4: the same foreign document with expiresAt in the past -> ACQUIRED, holder taken over. B5: STUB_RACE=pin moves the document between our read and our write -> the pinned write is refused, exit 75, and the other Mac's write stands (holder=other-mac). B6: STUB_RACE=step4 lets our write land and then another Mac overwrites it -> the step-4 re-read catches it, exit 75, the task never ran. B13/B14: a reply with no verdict, and a reply with two contradictory verdicts, are both inconclusive rather than guessed at.",
+    "fix": "No change needed; recorded because the document's shape and these two semantics were named non-negotiable and this is the evidence they survived the move.",
+    "halt": false
+  },
+  {
+    "id": "F-P7-04",
+    "severity": "high",
+    "area": "precedence against the PII gate — deliberate, and it matters",
+    "finding": "Order: argument validation (exit 64) -> --force/route/self-probe -> --status and --lease-check diagnostics -> THE LEASE GATE (exit 75) -> route dispatch, OmniRoute health, .env mode check, THE PII GATE (exit 75/78) -> run. The lease gate sits in front of the PII gate, never inside it. They compose as AND, both fail towards exit 75, and the lease path sets no variable the PII gate reads, so a lease allow leaves the PII decision byte-identical. Lease first for three reasons: 'may this Mac work at all' is strictly broader than 'which provider may see this data'; a lease deferral must not depend on route state (a standby defers identically on the subscription route, where the PII gate is never consulted); and reversed it would leak a takeover — a client task on a limited subscription defers at the PII gate, so a busy primary whose route went free would stop renewing its lease, it would lapse after 90 minutes, and the standby would take over while the primary was merely waiting for a reset.",
+    "evidence": "Executed. The lease gate is reached only after the --status early exit (D4: --status with a live foreign lease exits 0 and runs zero lease checks — a diagnostic spends nothing and takes no lease) and before the headless detection, load_omni_key and route_omni. E10: an illegal --task still exits 64 with zero lease checks, so validation is still first. E1-E7: with the lease held, every PII-gate behaviour is unchanged — F-V2-07 (options after the claude args), F-V2-08 (no --task), F-V2-09 (lofty-crm-sync-v2), F-H3b-01 (Lofty-CRM-Refresh against a broad allow-list entry, still caught by the deny-list not the allow-list), the deny-list beating --no-pii with '(--no-pii refused)' in the log, and an allow-listed task still reaching the free provider with MODEL=auto/coding:free and VANESSA_PII_OK=0.",
+    "fix": "DONE, and written out in both the file header and README.md so the next engineer does not reorder it by accident.",
+    "halt": false
+  },
+  {
+    "id": "F-P7-05",
+    "severity": "high",
+    "area": "nothing that already worked was weakened",
+    "finding": "The PII gate (F-V2-07/08/09/10/11/12/13/14/15/18, F-H3b-01) and the usage-limit detection are untouched. In particular the lease check's own output is NEVER matched against LIMIT_RE: only a real task run may move the route. That is the F-V2-10 rule applied to the new code path — a lease check that fails with 'Usage limit reached' must not flip 59 tasks onto free providers.",
+    "evidence": "Executed. B7: a lease check whose error envelope literally reads 'API Error: Usage limit reached. Invalid API key - please run /login' leaves state/mode at subscription. E8: a HEALTHY task run whose output is 'Loan amount $429,000; the escrow limit has been reached for this account' still leaves the route at subscription and exits 0. E9: a genuine limit envelope still flips the route to free-fallback, still exits 75, and still records branch=usage-limit in limit-samples.log with no task text. E11: a route.env carrying EVIL=$(touch …/PWNED) still does not execute and is still reset to subscription. E12: state/ is 700 and the new lease.env is 600. E13: no lease.lock is left behind. C5: a lease.env chmodded to 666 is discarded and re-checked, logged as 'not a plain owner-only file' — the same rule route.env gets. B18: the lease check runs with ANTHROPIC_BASE_URL / _AUTH_TOKEN / _API_KEY stripped by env -u even when they are set in the caller's environment, so it can never reach OmniRoute.",
+    "fix": "No change to any of it. The three lines the patch edits are two usage strings and the option-variable initialiser.",
+    "halt": false
+  },
+  {
+    "id": "F-P7-06",
+    "severity": "medium",
+    "area": "cost control — measured, not estimated",
+    "finding": "A claude -p per task invocation would be unaffordable. The 59 enabled crons in docs/inventory/mac-runner-status.md fire 733 task invocations a day (vanessa-discord-inbox at */5 is 288 of them, voice-reply-render and vanessa-imessage-inbox 144 each). The decision is cached in ~/.config/omniroute/state/lease.env for CLAUDE_RUNNER_LEASE_CACHE_TTL = 1800 s (30 min), which bounds real checks at 1440/30 = 48 a day however many tasks fire — a 15x reduction — and gives three renewals inside every 90-minute lease, so a primary survives two missed windows before its lease can lapse. An inconclusive check backs off 5 -> 10 -> 20 -> 30 min via a fails= counter, so a sustained outage cannot become hundreds of retried checks while a single blip still recovers within five minutes. A mkdir lock means 59 tasks firing in the same minute pay for one check, not 59.",
+    "evidence": "Derived: a cron expander over the 59 enabled rows of mac-runner-status.md totals 733.2 invocations/day. Measured on a compressed clock (TTL scaled 1800 s -> 2 s, same ratio): 165 task invocations in 20 s produced exactly 11 real lease checks = ceil(20/2), i.e. the rate is wall-time/TTL and independent of invocation count; ratio 1 check per 15 invocations. Executed: C1 four task invocations, ONE lease check, all four tasks ran, the later three logging 'cached ACQUIRED'. C2 an expired cache re-checks. C6 two concurrent invocations against a slow check produce ONE lease check.",
+    "fix": "DONE. Tunable with CLAUDE_RUNNER_LEASE_CACHE_TTL / _FAIL_TTL; the 90-minute lease TTL itself is fixed by REMOTE-ACCESS.md and is not a knob.",
+    "halt": false
+  },
+  {
+    "id": "F-P7-07",
+    "severity": "medium",
+    "area": "cache invalidation — early, never late",
+    "finding": "A cached decision is wrong in two directions and both are handled. A cached FOREIGN never outlives the lease it observed: the moment that lease's expiresAt passes, the standby re-checks rather than waiting the cache out, so takeover is prompt. A change to the role file invalidates the cache immediately (the role is stored in the cache and compared), so flipping primary<->standby during a promotion lands on the very next task at no cost. An untrusted lease.env is discarded. A checked_at in the future is rejected.",
+    "evidence": "Executed. C3: a standby facing a foreign lease expiring in 4 s defers, then 6 s later re-checks (2 lease checks, not 1) and takes over — exit 0. C4: a primary with a warm cache, its role file flipped to standby and a foreign lease planted, re-checks on the very next invocation and stands down with exit 75. C5: chmod 666 on lease.env forces a re-check and logs the reason. ISO timestamps are compared as 14-digit integers (iso_num), not as locale-collated strings.",
+    "fix": "DONE. The residual is stated in README.md and REMOTE-ACCESS.md: if Steven runs the promotion command WITHOUT flipping the two role files, the old primary can keep running on a cached decision for up to 30 minutes. Bounded and visible (claude-auto --status prints the cached verdict and its age), not silent. Flipping the role files removes it entirely, which is why both documents now say to do both.",
+    "halt": false
+  },
+  {
+    "id": "F-P7-08",
+    "severity": "medium",
+    "area": "scope — what is deliberately NOT gated",
+    "finding": "An invocation with no --task is not lease-gated. It is not one of the 59 scheduled writers: it is interactive Vanessa Live or a one-off, with a human present — the same reasoning the Command Deck uses for its own write path. Without this, installing the launcher on Mac #2 would break level (ii) of docs/SECOND-MAC-SETUP.md, which explicitly requires Mac #2 to drive Vanessa while standing by at level (iii). The residual is real and stated: a human at the standby can still write documents by hand. --lease gates a no-task invocation anyway; --no-lease skips the gate and is logged as a WARN with the task name and the user — for a deliberate one-off or recovery, never in a task definition.",
+    "evidence": "Executed. D1: role=standby with a live foreign lease, `claude-auto -p hello` runs, and ZERO lease checks are performed (it is not merely allowed, it costs nothing). D2: `--lease -p hello` in the same world defers with exit 75. D3: `--no-lease --task r10-automation-health` runs and logs 'WARN lease gate SKIPPED by --no-lease task=r10-automation-health by <user> — manual use only, never in a task definition'.",
+    "fix": "DONE and documented in README.md ('Scope — what is not gated, on purpose') and in SECOND-MAC-SETUP.md step 12b, which makes it a check Steven runs rather than an assumption. A suggested mac-verify.sh line that FAILs if any runner task definition contains --no-lease is in the hand-off, since mac-verify.sh is another engineer's file this week.",
+    "halt": false
+  },
+  {
+    "id": "F-P7-09",
+    "severity": "medium",
+    "area": "two real bugs found by EXECUTING, not by reading",
+    "finding": "(1) lease_field() piped grep/sed output straight into `tr -c 'A-Za-z0-9_.:-' '_'`, and tr -c maps the trailing NEWLINE too — so every holder came back as 'test-mac-one_' and never matched this machine's id. Every conclusive HELD/ACQUIRED was therefore downgraded to inconclusive, which on a standby means the automation silently never runs. The existing route_get() avoids this only because it feeds tr from `printf '%s'`. Fixed with a `tr -d '\\n'` before the charset filter, with the reason in the comment. (2) The lock-waiter accepted another process's answer only if its checked_at was at or after the waiter's own start second, so two invocations one second apart both fell through to the role default instead of sharing the answer. Fixed by remembering the cache's checked_at before the lock and accepting anything strictly newer.",
+    "evidence": "(1) surfaced as 20 failing assertions on the first full run, including 'B4 standby, EXPIRED foreign lease -> acquires, runs :: expected 0, got 75' and the log line 'lease check answered ACQUIRED but holder=test-mac-one_ is not test-mac-one'. Both pass after the fix. (2) surfaced when the concurrency case (C6) was added: it now reports one lease check for two concurrent invocations. Neither bug is visible by reading the code, which is the point of the harness.",
+    "fix": "DONE, both. Recorded because a reviewer reading the diff would see nothing wrong with either line.",
+    "halt": false
+  },
+  {
+    "id": "F-P7-10",
+    "severity": "high",
+    "area": "HALT / what a cloud sandbox cannot prove",
+    "finding": "Four things this work cannot close. (1) THE TOOL NAME. The check invokes `claude -p … --allowedTools ArtifactData`. Nothing here can confirm that is the artifact-DB tool's name in the CLI build on Steven's Mac, or that --allowedTools admits it in headless mode. If it is wrong the check is permanently inconclusive — which on a PRIMARY means everything runs as before, and on a STANDBY means everything defers. CLAUDE_RUNNER_LEASE_TOOLS overrides it without editing the script, `claude-auto --lease-check` prints the name it used and says a task on this role would RUN or DEFER, and SECOND-MAC-SETUP.md step 11b makes that the gate before the schedule is enabled. (2) WHETHER A MODEL RELIABLY FOLLOWS THE FIVE STEPS. The prompt is tight, the timestamps are computed by the shell so the model is never asked what time it is, and any ambiguity is inconclusive rather than guessed — but a real model has not run it. (3) NOTHING WAS INSTALLED OR RUN ON A MAC: no LaunchAgent, no real claude login, no runner re-pointing, no macOS (all testing was Linux/GNU, so the BSD halves of filemode/fileowner/filemtime/iso_at were exercised only as fallbacks, and scutil does not exist here so the hostname path fell through to `hostname`). (4) THE LIVE DOCUMENT WAS NOT CREATED. state/taskLease was READ from the Command Deck store on 2026-09-22 to confirm it is absent — 'No document \"taskLease\" in collection \"state\"' — and deliberately not written: it must be created by the first real run on a Mac, per the brief.",
+    "evidence": "The read is the only artifact-DB call this engagement made, and it was a get. No write, no install, no credential, no spend.",
+    "fix": "Steven: (a) run `claude-auto --lease-check` on Mac #1 and confirm verdict=ACQUIRED — that run creates the document; (b) run it on Mac #2 and confirm verdict=FOREIGN; (c) if either says INCONCLUSIVE, fix the tool name via CLAUDE_RUNNER_LEASE_TOOLS or the login before enabling the schedule; (d) run the 7-step lease canary in the failover README on both Macs and record it alongside F-E8-60.",
+    "halt": true,
+    "haltReason": "Enabling the second Mac's schedule depends on a check that has never run against the real CLI, the real login or the real store. The failure direction is safe on both roles, but it is Steven's call to make after --lease-check is conclusive on each machine — and the taskLease document must be created by a Mac, not seeded from the cloud."
+  },
+  {
+    "id": "F-P7-11",
+    "severity": "info",
+    "area": "deliberately not done",
+    "finding": "(1) MAC-SETUP.sh, mac-verify.sh, integrations/CONNECTIONS.md, integrations/mac-task-specs.md, docs/NEEDS-STEVEN.md, integrations/cli-anything-harnesses/** and MAC-INSTALL*.md are other engineers' files this week and were not touched; the exact lines and insertion points for MAC-SETUP.sh and mac-verify.sh are in the hand-off report instead. (2) The 59 task prompts were not edited — that is the entire point of the change. (3) The prompt-level LEASE CHECK block is KEPT in REMOTE-ACCESS.md rather than deleted: a cloud routine or a hand-run session does not pass through claude-auto and still needs it. (4) Steven's one-command promotion is unchanged; the role-file flip is an addition that makes it immediate, not a replacement. (5) claude-auto.sh and probe.sh still duplicate their helpers instead of sharing a lib — same reason H3 and H3b gave, the install contract copies exactly two files. The lease gate adds filemtime/iso_at/iso_num to claude-auto only, since probe.sh has no use for them.",
+    "evidence": "git status shows five files changed: claude-auto.sh, lease-tests.sh (new), the failover README, REMOTE-ACCESS.md and docs/SECOND-MAC-SETUP.md, plus this findings file.",
+    "fix": "No action. Recorded so the next engineer does not re-litigate them.",
+    "halt": false
+  }
+]

@@ -1,0 +1,120 @@
+{
+  "_synthetic": "All values invented for tests. No real person, listing or client.",
+  "url": "https://showami.com/showings",
+  "tree": {
+    "name": "/",
+    "role": "document",
+    "children": [
+      {
+        "name": "navigation_1",
+        "role": "navigation",
+        "children": [
+          {
+            "name": "link_1",
+            "role": "link",
+            "text": "Home"
+          },
+          {
+            "name": "link_2",
+            "role": "link",
+            "text": "My Account"
+          },
+          {
+            "name": "link_3",
+            "role": "link",
+            "text": "Sign Out"
+          }
+        ]
+      },
+      {
+        "name": "main",
+        "role": "main",
+        "children": [
+          {
+            "name": "listitem_1",
+            "role": "listitem",
+            "children": [
+              {
+                "name": "text_1",
+                "role": "text",
+                "text": "Request #100001"
+              },
+              {
+                "name": "link_1",
+                "role": "link",
+                "text": "4127 Sample Grove Ct, Exampleton, CA 90000"
+              },
+              {
+                "name": "text_2",
+                "role": "text",
+                "text": "Sep 24, 2026 at 2:00 PM"
+              },
+              {
+                "name": "text_3",
+                "role": "text",
+                "text": "Buyer Showing \u00b7 Accepted"
+              },
+              {
+                "name": "text_4",
+                "role": "text",
+                "text": "Showing Assistant: Avery Fixture"
+              },
+              {
+                "name": "text_5",
+                "role": "text",
+                "text": "$55.00"
+              }
+            ]
+          },
+          {
+            "name": "listitem_2",
+            "role": "listitem",
+            "children": [
+              {
+                "name": "text_1",
+                "role": "text",
+                "text": "Request #100002"
+              },
+              {
+                "name": "link_1",
+                "role": "link",
+                "text": "88 Mock Meadow Ln, Exampleton, CA 90000"
+              },
+              {
+                "name": "text_2",
+                "role": "text",
+                "text": "Sep 25, 2026 at 11:30 AM"
+              },
+              {
+                "name": "text_3",
+                "role": "text",
+                "text": "Buyer Showing \u00b7 Open"
+              },
+              {
+                "name": "text_4",
+                "role": "text",
+                "text": "Showing Assistant: Unassigned"
+              },
+              {
+                "name": "text_5",
+                "role": "text",
+                "text": "$50.00"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "expect": {
+    "kind": "list",
+    "count": 1,
+    "match": "100002",
+    "auth_state": "logged_in",
+    "row0": {
+      "request_id": "100002",
+      "status": "Open",
+      "showing_assistant": "Unassigned"
+    }
+  }
+}

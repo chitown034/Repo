@@ -1,0 +1,26 @@
+{
+  "_synthetic": "All values invented for tests. No real person, listing or client.",
+  "url": "https://showami.com/showings",
+  "tree": {
+    "name": "/",
+    "role": "document",
+    "children": [
+      {
+        "name": "main",
+        "role": "main",
+        "children": [
+          {
+            "name": "text_1",
+            "role": "text",
+            "text": "Loading\u2026"
+          }
+        ]
+      }
+    ]
+  },
+  "expect": {
+    "auth_error": true,
+    "state": "logged_out"
+  },
+  "landed_url": "https://showami.com/users/sign_in"
+}
