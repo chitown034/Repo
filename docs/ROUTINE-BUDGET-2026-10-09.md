@@ -41,3 +41,13 @@ Switch off three duplicate Sunday loops; each reads the whole 4.5 MB deck, and S
 
 Optional, his call (a model change is his decision): move the daily Opus routines — AI twin autopilot, Attraction
 Command Center, RoleCompass — to Sonnet. They follow fixed checklists; that is about 19 Opus runs a week.
+
+## Model change — Steven approved ("yes, Sonnet", 2026-10-09)
+
+AI twin autopilot, Attraction Command Center daily run and RoleCompass daily job hunt moved from `claude-opus-5-5`
+to `claude-sonnet-5-5`. Schedules and prompts unchanged. Opus runs a week: about 28 → 9 (only the Gridiron Codex
+sports routines, the monthly refreshes and the weekly Rent/Buy/Wait refresh stay on Opus). To undo, set the model
+back to `claude-opus-5-5` on each routine.
+
+Found while doing this, not changed: the Attraction Command Center prompt gives Patriot Pacific's NMLS as 1952360,
+while the brain and the deck use 1921615 (company). Ads must carry the right NMLS ID; Steven confirms which is right.
