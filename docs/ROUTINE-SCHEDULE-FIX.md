@@ -62,7 +62,7 @@ platform only lets an agent edit routines it created itself. These still collide
 Open each at `claude.ai/code/routines`, change the schedule or the enabled switch, and Sunday stops
 being a traffic jam. Nothing else about them needs to change.
 
-## The rule this establishes
+## The rule this establishes: how many cloud routines may fire in the same UTC hour
 
 No more than two cloud routines per UTC hour, and nothing heavy on Friday evening or Sunday
 afternoon, which is where this account's weekly quota runs thinnest. The weekly loop checks this
