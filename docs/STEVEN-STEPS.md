@@ -1,65 +1,64 @@
 # Steven's steps — everything still waiting on you, in order (2026-10-09)
 
 Same list as the Action Desk page (https://claude.ai/artifact/9S8G2ZhhqP1iUsPZrPsmRn), which has a button per step.
-Includes every connection that still has to be made. Already done: Lofty key (54 leads syncing), ISA bridge and twin on,
+Includes every connection that still has to be made. Already done: Lofty key (54 leads syncing), 14 failed routines re-run, both dashboards updated (cycle 11), one-command Mac script, failover with a $25 OpenRouter cap, connection plan; your USC answers and personal DRE are saved.
 research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox iMessage are connected; the five research-only routines are already off.
 
-## 1 · Stop the waste (Phone or computer · 3 minutes · every failed run on 2026-10-08 was the usage limit)
+## 1 · Phone · 5 minutes (Do these first; nothing else depends on them)
 
-1. **Switch off three duplicate weekly self-improvement loops.** You have four weekly loop routines; three run within one hour every Sunday and all failed on the usage limit. Keep "Weekly Loop Engineering + Self-Test (Cycle report)" on Saturday; open these three and turn the switch off (Claude cannot change routines made through the API).
+1. **Switch off the duplicate weekly loops (they burned the usage allowance).** Every routine that failed on Oct 8 hit the usage limit, and these overlap each other every Sunday. Keep "Weekly Loop Engineering + Self-Test" (Saturday). Open each link and turn the switch off. The last one is optional: switch it off only if you don't read its output.
    - Weekly Loop Engineering QA: https://claude.ai/code/routines/trig_013ocJfEDdmSAgDPVaiCzMZY
    - Weekly improvement loop: https://claude.ai/code/routines/trig_013vYCzVa3vbHZ8BZZy6UBpX
    - Weekly self-improvement loop: https://claude.ai/code/routines/trig_016qKE1TdRjzkpb2Yby8yWBX
+   - Weekly opportunity audit (optional): https://claude.ai/code/routines/trig_019NdM12eTVDHWy89Ch2sNtU
+2. **Restart your health numbers (Apple Health).** The tiles are about 25 days old. Open the Claude app on your iPhone, say "update my health stats in Notion", and allow the Apple Health read and the Notion write once.
 
-## 2 · One reply to Claude (1 minute · send in this chat)
+## 2 · One reply to Claude · 2 minutes (Copy, fill the blanks, send in this chat)
 
-2. **LPT Realty's brokerage DRE number and exact entity name.** Your personal DRE #01988316 is saved. The two queued posts still need LPT Realty's own California DRE brokerage number and its exact entity name (on your LPT license certificate or the DRE site's license lookup).
-   `LPT DRE: ______ (entity name: ______)`
+3. **Answer the open questions in one message.** Your personal DRE #01988316 is saved. Still needed: LPT Realty's own California DRE brokerage number and exact entity name (the two queued posts and the CRMLS application wait on them), and what kind of Zoho key you have (a Client ID + Client Secret from the Zoho API Console, or something else; never paste the key itself). Put 'no' for Plaid and Drive unless you want them.
+   `LPT DRE: ______ (entity name: ______) · Zoho: client id+secret / other: ______ · Plaid: no · Drive: drop`
    - California DRE: https://www.dre.ca.gov/
-3. **Approve or decline the two queued posts.** After the step above: Command Deck → Marketing panel → open each draft and its compliance review → set its stage to Approved or Declined.
+4. **Approve or decline the two queued posts.** After the reply above: Command Deck → Marketing panel → open each draft and its compliance review → set its stage to Approved or Declined.
    - Open Command Deck: https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d
 
-## 3 · iPhone (2 minutes)
+## 3 · Mac, one sitting · about 45 minutes (Terminal first; then one command does the rest and asks before every change)
 
-4. **Restart your health numbers (Apple Health connection).** The tiles are weeks old. Open the Claude app on your iPhone, say "update my health stats in Notion", and allow the Apple Health read and the Notion write once.
-
-## 4 · On the Mac, one sitting (About an hour · do these in order)
-
-5. **Open Terminal and find your Repo folder.** No web link can open Terminal on your Mac, so: press Command + Space, type Terminal, press Return. To find the folder, copy and run the first line below; it prints the path of the folder that holds MAC-SETUP.sh (that folder is your Repo folder). If it prints nothing, the repo is not on this Mac yet: run the git clone line instead. Then type cd and a space, drag that folder from Finder into the Terminal window, press Return.
+5. **Open Terminal and find your Repo folder.** No web link can open Terminal on your Mac. Press Command + Space, type Terminal, press Return. Copy and run the line below; it prints the path of the folder that holds MAC-SETUP.sh (that is your Repo folder). If it prints nothing, run: git clone https://github.com/chitown034/Repo.git. Then type cd and a space, drag that folder from Finder into the window, press Return.
    `find ~ -maxdepth 5 -name MAC-SETUP.sh -not -path '*/node_modules/*' 2>/dev/null`
-6. **Switch the folder to the branch that holds the new files.** Today's scripts and pastes live on the branch claude/stoic-cori-pvn3f8, not on the repo's default branch, so a plain git pull would say Already up to date and miss them. Run this inside the Repo folder. If it complains about changes you made, stop and tell Claude; do not discard them. The last line should print the file name.
-   `git fetch origin && git checkout claude/stoic-cori-pvn3f8 && git pull && ls integrations/mac-everything-2026-10-09.md`
-7. **Start Claude Code in that folder.**
-   `claude`
-8. **Paste the combined Mac setup (one paste, seven parts).** Covers the harness reinstall, pausing the three duplicate Mac feed tasks, Opus 5.5, WhatsApp (QR code — iPhone next to you), the Second Brain engine, API Anything with FRED and Freddie Mac, and the ISA KPI fix. It asks you before changing any skill, MCP server or task. Open the file, copy everything between the two PASTE lines, paste it into Claude Code, answer its questions, then paste the MAC COMBINED REPORT block back here.
-   - Open the combined paste: https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mac-everything-2026-10-09.md
-9. **Install browser-use and OpenDesign.** Back in Terminal (type /exit to leave Claude Code first). Each ends with a self-test line.
-   `bash integrations/browser-use/install-mac.sh && bash integrations/open-design/install-mac.sh`
-10. **Mac repair paste-in.** Fixes the morning-brief error and the refused weekly backup; checks Orca, notes and the graph. Paste its report back.
-   - Open the paste-in: https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mac-fix-all-2026-10-05.md
-11. **Kevin in Claude Desktop.** Claude Desktop → skills settings → upload integrations/claude-desktop/kevin-mentor.zip, then delete the old cole-mentor skill.
-   - Show the file: https://github.com/chitown034/Repo/tree/claude/stoic-cori-pvn3f8/integrations/claude-desktop
-12. **Real-estate sites (CLI-Anything: homes.com, ShowingTime, Showami, SkySlope, zipForms).** Install the DOMShell Chrome extension and sign in to each site by hand, then run the guided check. Read-only; SkySlope and zipForms stay locked until compliance signs off.
-   `bash integrations/cli-anything-harnesses/connect.sh`
+6. **Switch to the branch that holds today's files.** The new scripts are on the branch claude/stoic-cori-pvn3f8, not the repo's default branch, so a plain git pull misses them. If it complains about changes you made, stop and tell Claude; do not discard them. The last line should print the file name.
+   `git fetch origin && git checkout claude/stoic-cori-pvn3f8 && git pull && ls mac-bootstrap.sh`
+7. **Preview, then run the one command.** mac-bootstrap.sh replaces the old seven pastes: harness update, pausing the three duplicate Mac feed tasks, Opus 5.5, browser-use / OpenDesign / API Anything, WhatsApp (iPhone next to you for the QR code), the Second Brain, and the connection check. It asks yes/no before every change and Enter means no. Run the first line to see everything it would do, then the second. When it finishes, paste the MAC COMBINED REPORT block into this chat.
+   `./mac-bootstrap.sh --dry-run
+./mac-bootstrap.sh --also zoho,lofty,connections --with-claude`
+8. **Type your keys into the files (never into chat).** The command above creates empty ~/.config/zoho/.env and ~/.config/lofty/.env with only the variable NAMES. Open each with the line below, type the value after each equals sign, save. Zoho needs five: ZOHO_ACCOUNTS_URL, ZOHO_API_URL, ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET, ZOHO_REFRESH_TOKEN (the two URLs depend on your Zoho data centre: .com, .eu, .in...). If TextEdit shows a formatting bar choose Format → Make Plain Text before saving. Lofty's key is already working.
+   `open -e ~/.config/zoho/.env`
+9. **Pause the Discord poller until a bot token exists.** vanessa-discord-inbox runs every 5 minutes with no token, about 288 runs a day. Pause (do not delete) it: run the line below on the Mac.
+   `runnerctl pause vanessa-discord-inbox && runnerctl list`
+10. **Sign in by hand to ShowingTime, Showami and homes.com.** The connection check in the bootstrap tells you which of them needs a sign-in. Sign in once in the agent Chrome it opens. Agents never type your passwords. SkySlope and zipForms stay locked until compliance signs off.
 
-## 5 · Account connections only you can sign in to (About 20 minutes · reply to Claude after each one)
+## 4 · Accounts and settings · about 30 minutes (Sign-ins and permission ticks only you can do; say "done N" after each)
 
-13. **Zoho CRM API access.** Re-tested 2026-10-08: still 403. Zoho CRM → Setup → Security Control → Profiles → your profile → Developer Permissions → tick "Zoho CRM API Access". Then say "Zoho done" and Claude sends a fresh Composio reconnect link.
+11. **Zoho: tick the API permission.** This is why Zoho returns 403, not a missing key. Zoho CRM → Setup → Security Control → Profiles → your profile → Developer Permissions → tick "Zoho CRM API Access". If your key is a Client ID + Secret, also create a Self Client in the Zoho API Console with scopes ZohoCRM.modules.ALL,ZohoCRM.settings.READ and generate the refresh token. Then say "Zoho done".
    - Open Zoho CRM: https://crm.zoho.com/
-14. **Composio sign-ins: Google Drive, GoHighLevel, Discord bot.** All three still read "initiated, no account" (checked 2026-10-08). Links expire 10 minutes after they are made, so say "Composio links" when you sit down and sign in to each. For GoHighLevel, also say what it is for.
-15. **Discord bot token for #vanessa.** Vanessa's Discord inbox finds no token. Create a bot in the Discord Developer Portal, invite it to your server, and put its token where the Discord bot sign-in above asks for it.
-   - Discord Developer Portal: https://discord.com/developers/applications
-16. **claude.ai connectors.** Strava and Eromify need you to sign in again (Strava is why the training tiles stopped); EVRoutes fails to connect (error 402); PlayMCP never finished connecting. Reconnect each, or remove it if you don't use it.
+   - Zoho API Console: https://api-console.zoho.com/
+12. **Composio sign-ins: Google Drive, GoHighLevel, Discord bot.** All three still read "initiated, no account". The links expire 10 minutes after they are made, so say "Composio links" when you sit down, then sign in to each. For GoHighLevel, also say what it is for.
+13. **claude.ai connectors and Claude Desktop.** Strava and Eromify need you to sign in again (Strava is why the training tiles stopped). EVRoutes fails to connect (error 402) and PlayMCP never finished: reconnect them or remove them. In Claude Desktop → skills settings, upload integrations/claude-desktop/kevin-mentor.zip and delete the old cole-mentor skill.
    - Open Connectors: https://claude.ai/settings/connectors
-17. **Cloud network access (rate websites).** In a Claude Code cloud session: title bar → environment → Edit → Network access. Add these (and codebuff.com only if you want freebuff):
+14. **Cloud network access for the rate websites.** In a Claude Code cloud session: title bar → environment → Edit → Network access. Add these:
    `fred.stlouisfed.org www.freddiemac.com www.redfin.com`
 
-## 6 · Decisions on optional connections (Reply yes or no to each · nothing is spent without your yes)
+## 5 · Applications and emails · 15 minutes (Drafts are in integrations/CONNECT-PLAN-2026-10-09.md section 6; nothing has been sent)
 
-18. **Google Drive: wire it or drop it.** If yes, the Drive sign-in above makes it a real store of the brain; if no, Drive comes off the brain's counts so the deck stops implying a feed.
-19. **Plaid (bank balances).** No keys, so balances on the deck are typed by hand. Plaid keys may carry a cost: yes = you add keys; no = keep manual balances.
-20. **OpenRouter (outside AI models for the council).** Connected with no key, so those seats are unused. A key spends money per call; default is no.
-21. **Three publicfeeds terms-of-service reviews.** Redfin market pages, lender rate pages (Veterans United, Navy Federal), builder pages (D.R. Horton, Lennar, Richmond American). Alexandra drafts, you decide each. A yes also lets API Anything connect that group (step 12).
-22. **OmniRoute failover and Orca phone app.** OmniRoute switches to free providers when Claude is rate-limited (needs its own key); Orca's phone app watches the sub-agents. Both optional — yes or no.
+15. **Send three short messages.** (1) Ticor: ask your Ticor Title Sales Executive or Customer Service whether an API or bulk export of Ticor Property Data exists and on what terms. (2) CRMLS: your broker (LPT) applies for the RESO Web API data licence at licensing@crmls.org; there will be no scraper. (3) Dotloop: apply for developer / partner access at info.dotloop.com/developers. Each is your signature, so Claude only drafted them.
+   - Open the drafts: https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/CONNECT-PLAN-2026-10-09.md
+   - Ticor Property Data: https://ticorpropertydata.com/
+16. **Optional: switch on the free-then-paid failover.** Claude subscription first; when it runs out, OmniRoute free models take over at once; OpenRouter is the paid third tier, capped at $25 a month, and stays off until you do this. Create an OpenRouter key yourself, set the key's own credit limit to $25, load no more than $25, then follow the Three-tier failover steps. It returns to Claude by itself when the allowance resets.
+   - Open the steps: https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/omniroute-failover/README.md
+   - OpenRouter: https://openrouter.ai/
+
+## 6 · Decisions · one reply (Each defaults to no; nothing is spent without your yes)
+
+17. **Reply 'defaults' or change any line.** Google Drive: drop it from the brain's counts (or wire it after the Composio sign-in). Plaid: no (keys may cost). Terms-of-service reviews for Redfin market pages, lender rate pages and builder pages: Alexandra drafts, you decide each. SkySlope and zipForms: stay locked until compliance signs off. APInation: tell Claude what you want it to do before any paid use. Orca phone app: your call.
+   `defaults: Drive drop · Plaid no · ToS reviews later · SkySlope/zipForms locked · APInation: ______`
 
 Reply "done N" (or "skip N") after each step and Claude keeps the dashboards in step.

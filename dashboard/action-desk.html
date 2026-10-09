@@ -50,160 +50,141 @@ footer{margin-top:28px;color:var(--muted);font-size:.85rem}
 <div class="wrap">
   <h1>Steven's Action Desk</h1>
   <p class="lede">Everything still waiting on you — including every connection that still has to be made — in the order to do it. Each button opens the right place; tick the box when done (saved in this browser), then tell Claude "done 7" so the dashboards catch up. Checked 2026-10-08, 11 AM PT.</p>
-  <div class="bar"><div class="meter" aria-hidden="true"><i id="fill"></i></div><span class="count" id="count">0 of 22 done</span></div>
-  <p class="note"><b>Already done, nothing to do:</b> Lofty API key (54 leads syncing), ISA bridge and AI twin on, research on Claude only, Gmail, Google Calendar, Notion, Slack, Canva, Inkbox iMessage connected; the five research-only routines are already off; USC Weeks 5–7, Week 4, five states and Rent/Buy/Wait answered. <b>Why things keep failing:</b> every routine that failed on 2026-10-08 hit the Claude usage limit (weekly reset Sun Oct 11, 1 PM PT); step 1 and the Mac paste cut the waste.</p>
+  <div class="bar"><div class="meter" aria-hidden="true"><i id="fill"></i></div><span class="count" id="count">0 of 17 done</span></div>
+  <p class="note"><b>Already done, nothing to do:</b> Lofty API key (54 leads syncing); the 14 routines that failed on the usage limit were re-run and succeeded; the dashboards read 21 of 25 feeds fresh; both dashboards were updated with the cycle-11 fixes (96 in all); the one-command Mac script, the three-tier failover (OpenRouter cap $25) and the connection plan are built and tested; your USC answers and personal DRE are saved. <b>Why things kept failing:</b> the Claude usage allowance; the first step cuts the waste.</p>
 
-  <h2>1 · Stop the waste</h2>
-  <p class="where">Phone or computer · 3 minutes · every failed run on 2026-10-08 was the usage limit</p>
+  <h2>1 · Phone · 5 minutes</h2>
+  <p class="where">Do these first; nothing else depends on them</p>
 
   <div class="step" data-id="1"><div class="n">1</div><div class="body">
-    <p class="t">Switch off three duplicate weekly self-improvement loops</p>
-    <p class="d">You have four weekly loop routines; three run within one hour every Sunday and all failed on the usage limit. Keep &quot;Weekly Loop Engineering + Self-Test (Cycle report)&quot; on Saturday; open these three and turn the switch off (Claude cannot change routines made through the API).</p>
+    <p class="t">Switch off the duplicate weekly loops (they burned the usage allowance)</p>
+    <p class="d">Every routine that failed on Oct 8 hit the usage limit, and these overlap each other every Sunday. Keep &quot;Weekly Loop Engineering + Self-Test&quot; (Saturday). Open each link and turn the switch off. The last one is optional: switch it off only if you don&#x27;t read its output.</p>
     <div class="acts"><a class="btn" href="https://claude.ai/code/routines/trig_013ocJfEDdmSAgDPVaiCzMZY" target="_blank" rel="noopener">Weekly Loop Engineering QA</a>
       <a class="btn" href="https://claude.ai/code/routines/trig_013vYCzVa3vbHZ8BZZy6UBpX" target="_blank" rel="noopener">Weekly improvement loop</a>
       <a class="btn" href="https://claude.ai/code/routines/trig_016qKE1TdRjzkpb2Yby8yWBX" target="_blank" rel="noopener">Weekly self-improvement loop</a>
+      <a class="btn" href="https://claude.ai/code/routines/trig_019NdM12eTVDHWy89Ch2sNtU" target="_blank" rel="noopener">Weekly opportunity audit (optional)</a>
       <label class="tick"><input type="checkbox" id="s1">Done</label></div></div></div>
 
-  <h2>2 · One reply to Claude</h2>
-  <p class="where">1 minute · send in this chat</p>
-
   <div class="step" data-id="2"><div class="n">2</div><div class="body">
-    <p class="t">LPT Realty&#x27;s brokerage DRE number and exact entity name</p>
-    <p class="d">Your personal DRE #01988316 is saved. The two queued posts still need LPT Realty&#x27;s own California DRE brokerage number and its exact entity name (on your LPT license certificate or the DRE site&#x27;s license lookup).</p>
-    <div class="acts"><a class="btn" href="https://www.dre.ca.gov/" target="_blank" rel="noopener">California DRE</a>
-      <code>LPT DRE: ______ (entity name: ______)</code><button class="btn" data-copy="LPT DRE: ______ (entity name: ______)">Copy</button>
-      <label class="tick"><input type="checkbox" id="s2">Done</label></div></div></div>
+    <p class="t">Restart your health numbers (Apple Health)</p>
+    <p class="d">The tiles are about 25 days old. Open the Claude app on your iPhone, say &quot;update my health stats in Notion&quot;, and allow the Apple Health read and the Notion write once.</p>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s2">Done</label></div></div></div>
+
+  <h2>2 · One reply to Claude · 2 minutes</h2>
+  <p class="where">Copy, fill the blanks, send in this chat</p>
 
   <div class="step" data-id="3"><div class="n">3</div><div class="body">
-    <p class="t">Approve or decline the two queued posts</p>
-    <p class="d">After the step above: Command Deck → Marketing panel → open each draft and its compliance review → set its stage to Approved or Declined.</p>
-    <div class="acts"><a class="btn" href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Open Command Deck</a>
+    <p class="t">Answer the open questions in one message</p>
+    <p class="d">Your personal DRE #01988316 is saved. Still needed: LPT Realty&#x27;s own California DRE brokerage number and exact entity name (the two queued posts and the CRMLS application wait on them), and what kind of Zoho key you have (a Client ID + Client Secret from the Zoho API Console, or something else; never paste the key itself). Put &#x27;no&#x27; for Plaid and Drive unless you want them.</p>
+    <div class="acts"><a class="btn" href="https://www.dre.ca.gov/" target="_blank" rel="noopener">California DRE</a>
+      <code>LPT DRE: ______ (entity name: ______) · Zoho: client id+secret / other: ______ · Plaid: no · Drive: drop</code><button class="btn" data-copy="LPT DRE: ______ (entity name: ______) · Zoho: client id+secret / other: ______ · Plaid: no · Drive: drop">Copy</button>
       <label class="tick"><input type="checkbox" id="s3">Done</label></div></div></div>
 
-  <h2>3 · iPhone</h2>
-  <p class="where">2 minutes</p>
-
   <div class="step" data-id="4"><div class="n">4</div><div class="body">
-    <p class="t">Restart your health numbers (Apple Health connection)</p>
-    <p class="d">The tiles are weeks old. Open the Claude app on your iPhone, say &quot;update my health stats in Notion&quot;, and allow the Apple Health read and the Notion write once.</p>
-    <div class="acts"><label class="tick"><input type="checkbox" id="s4">Done</label></div></div></div>
+    <p class="t">Approve or decline the two queued posts</p>
+    <p class="d">After the reply above: Command Deck → Marketing panel → open each draft and its compliance review → set its stage to Approved or Declined.</p>
+    <div class="acts"><a class="btn" href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Open Command Deck</a>
+      <label class="tick"><input type="checkbox" id="s4">Done</label></div></div></div>
 
-  <h2>4 · On the Mac, one sitting</h2>
-  <p class="where">About an hour · do these in order</p>
+  <h2>3 · Mac, one sitting · about 45 minutes</h2>
+  <p class="where">Terminal first; then one command does the rest and asks before every change</p>
 
   <div class="step" data-id="5"><div class="n">5</div><div class="body">
     <p class="t">Open Terminal and find your Repo folder</p>
-    <p class="d">No web link can open Terminal on your Mac, so: press Command + Space, type Terminal, press Return. To find the folder, copy and run the first line below; it prints the path of the folder that holds MAC-SETUP.sh (that folder is your Repo folder). If it prints nothing, the repo is not on this Mac yet: run the git clone line instead. Then type cd and a space, drag that folder from Finder into the Terminal window, press Return.</p>
+    <p class="d">No web link can open Terminal on your Mac. Press Command + Space, type Terminal, press Return. Copy and run the line below; it prints the path of the folder that holds MAC-SETUP.sh (that is your Repo folder). If it prints nothing, run: git clone https://github.com/chitown034/Repo.git. Then type cd and a space, drag that folder from Finder into the window, press Return.</p>
     <div class="acts"><code>find ~ -maxdepth 5 -name MAC-SETUP.sh -not -path &#x27;*/node_modules/*&#x27; 2&gt;/dev/null</code><button class="btn" data-copy="find ~ -maxdepth 5 -name MAC-SETUP.sh -not -path &#x27;*/node_modules/*&#x27; 2&gt;/dev/null">Copy</button>
       <label class="tick"><input type="checkbox" id="s5">Done</label></div></div></div>
 
   <div class="step" data-id="6"><div class="n">6</div><div class="body">
-    <p class="t">Switch the folder to the branch that holds the new files</p>
-    <p class="d">Today&#x27;s scripts and pastes live on the branch claude/stoic-cori-pvn3f8, not on the repo&#x27;s default branch, so a plain git pull would say Already up to date and miss them. Run this inside the Repo folder. If it complains about changes you made, stop and tell Claude; do not discard them. The last line should print the file name.</p>
-    <div class="acts"><code>git fetch origin &amp;&amp; git checkout claude/stoic-cori-pvn3f8 &amp;&amp; git pull &amp;&amp; ls integrations/mac-everything-2026-10-09.md</code><button class="btn" data-copy="git fetch origin &amp;&amp; git checkout claude/stoic-cori-pvn3f8 &amp;&amp; git pull &amp;&amp; ls integrations/mac-everything-2026-10-09.md">Copy</button>
+    <p class="t">Switch to the branch that holds today&#x27;s files</p>
+    <p class="d">The new scripts are on the branch claude/stoic-cori-pvn3f8, not the repo&#x27;s default branch, so a plain git pull misses them. If it complains about changes you made, stop and tell Claude; do not discard them. The last line should print the file name.</p>
+    <div class="acts"><code>git fetch origin &amp;&amp; git checkout claude/stoic-cori-pvn3f8 &amp;&amp; git pull &amp;&amp; ls mac-bootstrap.sh</code><button class="btn" data-copy="git fetch origin &amp;&amp; git checkout claude/stoic-cori-pvn3f8 &amp;&amp; git pull &amp;&amp; ls mac-bootstrap.sh">Copy</button>
       <label class="tick"><input type="checkbox" id="s6">Done</label></div></div></div>
 
   <div class="step" data-id="7"><div class="n">7</div><div class="body">
-    <p class="t">Start Claude Code in that folder</p>
-    <div class="acts"><code>claude</code><button class="btn" data-copy="claude">Copy</button>
+    <p class="t">Preview, then run the one command</p>
+    <p class="d">mac-bootstrap.sh replaces the old seven pastes: harness update, pausing the three duplicate Mac feed tasks, Opus 5.5, browser-use / OpenDesign / API Anything, WhatsApp (iPhone next to you for the QR code), the Second Brain, and the connection check. It asks yes/no before every change and Enter means no. Run the first line to see everything it would do, then the second. When it finishes, paste the MAC COMBINED REPORT block into this chat.</p>
+    <div class="acts"><code>./mac-bootstrap.sh --dry-run
+./mac-bootstrap.sh --also zoho,lofty,connections --with-claude</code><button class="btn" data-copy="./mac-bootstrap.sh --dry-run
+./mac-bootstrap.sh --also zoho,lofty,connections --with-claude">Copy</button>
       <label class="tick"><input type="checkbox" id="s7">Done</label></div></div></div>
 
   <div class="step" data-id="8"><div class="n">8</div><div class="body">
-    <p class="t">Paste the combined Mac setup (one paste, seven parts)</p>
-    <p class="d">Covers the harness reinstall, pausing the three duplicate Mac feed tasks, Opus 5.5, WhatsApp (QR code — iPhone next to you), the Second Brain engine, API Anything with FRED and Freddie Mac, and the ISA KPI fix. It asks you before changing any skill, MCP server or task. Open the file, copy everything between the two PASTE lines, paste it into Claude Code, answer its questions, then paste the MAC COMBINED REPORT block back here.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mac-everything-2026-10-09.md" target="_blank" rel="noopener">Open the combined paste</a>
+    <p class="t">Type your keys into the files (never into chat)</p>
+    <p class="d">The command above creates empty ~/.config/zoho/.env and ~/.config/lofty/.env with only the variable NAMES. Open each with the line below, type the value after each equals sign, save. Zoho needs five: ZOHO_ACCOUNTS_URL, ZOHO_API_URL, ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET, ZOHO_REFRESH_TOKEN (the two URLs depend on your Zoho data centre: .com, .eu, .in...). If TextEdit shows a formatting bar choose Format → Make Plain Text before saving. Lofty&#x27;s key is already working.</p>
+    <div class="acts"><code>open -e ~/.config/zoho/.env</code><button class="btn" data-copy="open -e ~/.config/zoho/.env">Copy</button>
       <label class="tick"><input type="checkbox" id="s8">Done</label></div></div></div>
 
   <div class="step" data-id="9"><div class="n">9</div><div class="body">
-    <p class="t">Install browser-use and OpenDesign</p>
-    <p class="d">Back in Terminal (type /exit to leave Claude Code first). Each ends with a self-test line.</p>
-    <div class="acts"><code>bash integrations/browser-use/install-mac.sh &amp;&amp; bash integrations/open-design/install-mac.sh</code><button class="btn" data-copy="bash integrations/browser-use/install-mac.sh &amp;&amp; bash integrations/open-design/install-mac.sh">Copy</button>
+    <p class="t">Pause the Discord poller until a bot token exists</p>
+    <p class="d">vanessa-discord-inbox runs every 5 minutes with no token, about 288 runs a day. Pause (do not delete) it: run the line below on the Mac.</p>
+    <div class="acts"><code>runnerctl pause vanessa-discord-inbox &amp;&amp; runnerctl list</code><button class="btn" data-copy="runnerctl pause vanessa-discord-inbox &amp;&amp; runnerctl list">Copy</button>
       <label class="tick"><input type="checkbox" id="s9">Done</label></div></div></div>
 
   <div class="step" data-id="10"><div class="n">10</div><div class="body">
-    <p class="t">Mac repair paste-in</p>
-    <p class="d">Fixes the morning-brief error and the refused weekly backup; checks Orca, notes and the graph. Paste its report back.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mac-fix-all-2026-10-05.md" target="_blank" rel="noopener">Open the paste-in</a>
-      <label class="tick"><input type="checkbox" id="s10">Done</label></div></div></div>
+    <p class="t">Sign in by hand to ShowingTime, Showami and homes.com</p>
+    <p class="d">The connection check in the bootstrap tells you which of them needs a sign-in. Sign in once in the agent Chrome it opens. Agents never type your passwords. SkySlope and zipForms stay locked until compliance signs off.</p>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s10">Done</label></div></div></div>
+
+  <h2>4 · Accounts and settings · about 30 minutes</h2>
+  <p class="where">Sign-ins and permission ticks only you can do; say &quot;done N&quot; after each</p>
 
   <div class="step" data-id="11"><div class="n">11</div><div class="body">
-    <p class="t">Kevin in Claude Desktop</p>
-    <p class="d">Claude Desktop → skills settings → upload integrations/claude-desktop/kevin-mentor.zip, then delete the old cole-mentor skill.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/tree/claude/stoic-cori-pvn3f8/integrations/claude-desktop" target="_blank" rel="noopener">Show the file</a>
+    <p class="t">Zoho: tick the API permission</p>
+    <p class="d">This is why Zoho returns 403, not a missing key. Zoho CRM → Setup → Security Control → Profiles → your profile → Developer Permissions → tick &quot;Zoho CRM API Access&quot;. If your key is a Client ID + Secret, also create a Self Client in the Zoho API Console with scopes ZohoCRM.modules.ALL,ZohoCRM.settings.READ and generate the refresh token. Then say &quot;Zoho done&quot;.</p>
+    <div class="acts"><a class="btn" href="https://crm.zoho.com/" target="_blank" rel="noopener">Open Zoho CRM</a>
+      <a class="btn" href="https://api-console.zoho.com/" target="_blank" rel="noopener">Zoho API Console</a>
       <label class="tick"><input type="checkbox" id="s11">Done</label></div></div></div>
 
   <div class="step" data-id="12"><div class="n">12</div><div class="body">
-    <p class="t">Real-estate sites (CLI-Anything: homes.com, ShowingTime, Showami, SkySlope, zipForms)</p>
-    <p class="d">Install the DOMShell Chrome extension and sign in to each site by hand, then run the guided check. Read-only; SkySlope and zipForms stay locked until compliance signs off.</p>
-    <div class="acts"><code>bash integrations/cli-anything-harnesses/connect.sh</code><button class="btn" data-copy="bash integrations/cli-anything-harnesses/connect.sh">Copy</button>
-      <label class="tick"><input type="checkbox" id="s12">Done</label></div></div></div>
-
-  <h2>5 · Account connections only you can sign in to</h2>
-  <p class="where">About 20 minutes · reply to Claude after each one</p>
+    <p class="t">Composio sign-ins: Google Drive, GoHighLevel, Discord bot</p>
+    <p class="d">All three still read &quot;initiated, no account&quot;. The links expire 10 minutes after they are made, so say &quot;Composio links&quot; when you sit down, then sign in to each. For GoHighLevel, also say what it is for.</p>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s12">Done</label></div></div></div>
 
   <div class="step" data-id="13"><div class="n">13</div><div class="body">
-    <p class="t">Zoho CRM API access</p>
-    <p class="d">Re-tested 2026-10-08: still 403. Zoho CRM → Setup → Security Control → Profiles → your profile → Developer Permissions → tick &quot;Zoho CRM API Access&quot;. Then say &quot;Zoho done&quot; and Claude sends a fresh Composio reconnect link.</p>
-    <div class="acts"><a class="btn" href="https://crm.zoho.com/" target="_blank" rel="noopener">Open Zoho CRM</a>
+    <p class="t">claude.ai connectors and Claude Desktop</p>
+    <p class="d">Strava and Eromify need you to sign in again (Strava is why the training tiles stopped). EVRoutes fails to connect (error 402) and PlayMCP never finished: reconnect them or remove them. In Claude Desktop → skills settings, upload integrations/claude-desktop/kevin-mentor.zip and delete the old cole-mentor skill.</p>
+    <div class="acts"><a class="btn" href="https://claude.ai/settings/connectors" target="_blank" rel="noopener">Open Connectors</a>
       <label class="tick"><input type="checkbox" id="s13">Done</label></div></div></div>
 
   <div class="step" data-id="14"><div class="n">14</div><div class="body">
-    <p class="t">Composio sign-ins: Google Drive, GoHighLevel, Discord bot</p>
-    <p class="d">All three still read &quot;initiated, no account&quot; (checked 2026-10-08). Links expire 10 minutes after they are made, so say &quot;Composio links&quot; when you sit down and sign in to each. For GoHighLevel, also say what it is for.</p>
-    <div class="acts"><label class="tick"><input type="checkbox" id="s14">Done</label></div></div></div>
+    <p class="t">Cloud network access for the rate websites</p>
+    <p class="d">In a Claude Code cloud session: title bar → environment → Edit → Network access. Add these:</p>
+    <div class="acts"><code>fred.stlouisfed.org www.freddiemac.com www.redfin.com</code><button class="btn" data-copy="fred.stlouisfed.org www.freddiemac.com www.redfin.com">Copy</button>
+      <label class="tick"><input type="checkbox" id="s14">Done</label></div></div></div>
+
+  <h2>5 · Applications and emails · 15 minutes</h2>
+  <p class="where">Drafts are in integrations/CONNECT-PLAN-2026-10-09.md section 6; nothing has been sent</p>
 
   <div class="step" data-id="15"><div class="n">15</div><div class="body">
-    <p class="t">Discord bot token for #vanessa</p>
-    <p class="d">Vanessa&#x27;s Discord inbox finds no token. Create a bot in the Discord Developer Portal, invite it to your server, and put its token where the Discord bot sign-in above asks for it.</p>
-    <div class="acts"><a class="btn" href="https://discord.com/developers/applications" target="_blank" rel="noopener">Discord Developer Portal</a>
+    <p class="t">Send three short messages</p>
+    <p class="d">(1) Ticor: ask your Ticor Title Sales Executive or Customer Service whether an API or bulk export of Ticor Property Data exists and on what terms. (2) CRMLS: your broker (LPT) applies for the RESO Web API data licence at licensing@crmls.org; there will be no scraper. (3) Dotloop: apply for developer / partner access at info.dotloop.com/developers. Each is your signature, so Claude only drafted them.</p>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/CONNECT-PLAN-2026-10-09.md" target="_blank" rel="noopener">Open the drafts</a>
+      <a class="btn" href="https://ticorpropertydata.com/" target="_blank" rel="noopener">Ticor Property Data</a>
       <label class="tick"><input type="checkbox" id="s15">Done</label></div></div></div>
 
   <div class="step" data-id="16"><div class="n">16</div><div class="body">
-    <p class="t">claude.ai connectors</p>
-    <p class="d">Strava and Eromify need you to sign in again (Strava is why the training tiles stopped); EVRoutes fails to connect (error 402); PlayMCP never finished connecting. Reconnect each, or remove it if you don&#x27;t use it.</p>
-    <div class="acts"><a class="btn" href="https://claude.ai/settings/connectors" target="_blank" rel="noopener">Open Connectors</a>
+    <p class="t">Optional: switch on the free-then-paid failover</p>
+    <p class="d">Claude subscription first; when it runs out, OmniRoute free models take over at once; OpenRouter is the paid third tier, capped at $25 a month, and stays off until you do this. Create an OpenRouter key yourself, set the key&#x27;s own credit limit to $25, load no more than $25, then follow the Three-tier failover steps. It returns to Claude by itself when the allowance resets.</p>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/omniroute-failover/README.md" target="_blank" rel="noopener">Open the steps</a>
+      <a class="btn" href="https://openrouter.ai/" target="_blank" rel="noopener">OpenRouter</a>
       <label class="tick"><input type="checkbox" id="s16">Done</label></div></div></div>
 
+  <h2>6 · Decisions · one reply</h2>
+  <p class="where">Each defaults to no; nothing is spent without your yes</p>
+
   <div class="step" data-id="17"><div class="n">17</div><div class="body">
-    <p class="t">Cloud network access (rate websites)</p>
-    <p class="d">In a Claude Code cloud session: title bar → environment → Edit → Network access. Add these (and codebuff.com only if you want freebuff):</p>
-    <div class="acts"><code>fred.stlouisfed.org www.freddiemac.com www.redfin.com</code><button class="btn" data-copy="fred.stlouisfed.org www.freddiemac.com www.redfin.com">Copy</button>
+    <p class="t">Reply &#x27;defaults&#x27; or change any line</p>
+    <p class="d">Google Drive: drop it from the brain&#x27;s counts (or wire it after the Composio sign-in). Plaid: no (keys may cost). Terms-of-service reviews for Redfin market pages, lender rate pages and builder pages: Alexandra drafts, you decide each. SkySlope and zipForms: stay locked until compliance signs off. APInation: tell Claude what you want it to do before any paid use. Orca phone app: your call.</p>
+    <div class="acts"><code>defaults: Drive drop · Plaid no · ToS reviews later · SkySlope/zipForms locked · APInation: ______</code><button class="btn" data-copy="defaults: Drive drop · Plaid no · ToS reviews later · SkySlope/zipForms locked · APInation: ______">Copy</button>
       <label class="tick"><input type="checkbox" id="s17">Done</label></div></div></div>
 
-  <h2>6 · Decisions on optional connections</h2>
-  <p class="where">Reply yes or no to each · nothing is spent without your yes</p>
-
-  <div class="step" data-id="18"><div class="n">18</div><div class="body">
-    <p class="t">Google Drive: wire it or drop it</p>
-    <p class="d">If yes, the Drive sign-in above makes it a real store of the brain; if no, Drive comes off the brain&#x27;s counts so the deck stops implying a feed.</p>
-    <div class="acts"><label class="tick"><input type="checkbox" id="s18">Done</label></div></div></div>
-
-  <div class="step" data-id="19"><div class="n">19</div><div class="body">
-    <p class="t">Plaid (bank balances)</p>
-    <p class="d">No keys, so balances on the deck are typed by hand. Plaid keys may carry a cost: yes = you add keys; no = keep manual balances.</p>
-    <div class="acts"><label class="tick"><input type="checkbox" id="s19">Done</label></div></div></div>
-
-  <div class="step" data-id="20"><div class="n">20</div><div class="body">
-    <p class="t">OpenRouter (outside AI models for the council)</p>
-    <p class="d">Connected with no key, so those seats are unused. A key spends money per call; default is no.</p>
-    <div class="acts"><label class="tick"><input type="checkbox" id="s20">Done</label></div></div></div>
-
-  <div class="step" data-id="21"><div class="n">21</div><div class="body">
-    <p class="t">Three publicfeeds terms-of-service reviews</p>
-    <p class="d">Redfin market pages, lender rate pages (Veterans United, Navy Federal), builder pages (D.R. Horton, Lennar, Richmond American). Alexandra drafts, you decide each. A yes also lets API Anything connect that group (step 12).</p>
-    <div class="acts"><label class="tick"><input type="checkbox" id="s21">Done</label></div></div></div>
-
-  <div class="step" data-id="22"><div class="n">22</div><div class="body">
-    <p class="t">OmniRoute failover and Orca phone app</p>
-    <p class="d">OmniRoute switches to free providers when Claude is rate-limited (needs its own key); Orca&#x27;s phone app watches the sub-agents. Both optional — yes or no.</p>
-    <div class="acts"><label class="tick"><input type="checkbox" id="s22">Done</label></div></div></div>
-
-  <footer>Rebuilt 2026-10-09 from the live routine list, the Mac runner status, both dashboard databases and a Composio connection check. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Same list as text: <code>docs/STEVEN-STEPS.md</code>.</footer>
+  <footer>Rebuilt 2026-10-09 (afternoon) from the live routine list, the Mac runner status, both dashboard databases and a Composio connection check. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Same list as text: <code>docs/STEVEN-STEPS.md</code>.</footer>
 </div>
 
 <script>
 (function(){
-  var KEY="actionDesk.v4", state={};
+  var KEY="actionDesk.v5", state={};
   try{ state=JSON.parse(localStorage.getItem(KEY)||"{}")||{}; }catch(e){ state={}; }
   var boxes=document.querySelectorAll('label.tick input');
   function paint(){

@@ -430,6 +430,11 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
 
 <script type="application/json" id="cdStateSeed">{}</script>
 
+<style id="qa-ux">
+@media (max-width:640px),(max-height:1000px){.deck-head{position:relative}}
+@media (max-width:640px){.world-clock-bar{flex-wrap:nowrap;overflow-x:auto}button.ghost,.add-row-btn,.chat-chip{min-height:44px;min-width:44px}}
+.head-nw-value,.badge.gold,.chat-coa{color:color-mix(in srgb,var(--gold) 70%,var(--text))}
+</style>
 <div class="deck-head">
   <div class="deck-head-inner">
     <div class="brand">
@@ -637,13 +642,13 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
       <div class="stat-row" id="leadIntakeNumbers" style="grid-template-columns:repeat(1,1fr);margin-bottom:0;">
         <div class="stat" style="border-left:3px solid var(--warning);"><div class="stat-label">Calling number on file — the lead-facing line</div><div class="stat-value" style="font-size:20px;"><a href="tel:+16196519845" style="text-decoration:none;color:inherit;">(619) 651-9845</a></div><div class="src-note">Added Sep 8, 2026 as Steven's lead-facing calling line — the number leads see, ringing both the CRM and him. Whether it now routes through Lofty is <b>not something this page can verify</b>. Ask Steven on the ISA line before you use it for a lead call or text, and never a personal cell either way.</div></div>
       </div>
-      <p class="src-note" style="margin-top:10px;"><b>Lead-forwarding address — not connected yet.</b> This portal has no Lofty lead-forwarding address on file and cannot look one up: the Lofty API key is not installed. Ask Steven on the ISA line before you point any new lead source at an inbox, and do not reuse an older forwarding address.</p>
+      <p class="src-note" style="margin-top:10px;"><b>Lead-forwarding address — not connected yet.</b> This portal has no Lofty lead-forwarding address on file and cannot look one up, and Steven has not confirmed one since the CRM change (NEEDS-STEVEN 22). Ask Steven on the ISA line before you point any new lead source at an inbox, and do not reuse an older forwarding address.</p>
     </div>
 
     <div class="card" style="margin-bottom:16px;">
       <p class="card-title">Mortgage — Zoho CRM <span class="badge red">API blocked</span></p>
       <p class="card-sub" style="margin-top:0;"><b>Zoho CRM is still the system of record for mortgage</b> — that has not changed. What has changed is that nobody can read it from here. The Composio connection is ACTIVE, but every CRM call returns <code>HTTP 403 NO_PERMISSION: Crm_Implied_Api_Access</code> (re-verified 2026-09-22 08:17 UTC on both the leads and the deals endpoint). <b>There is no live Zoho data anywhere on this portal</b>, and there has not been since before Sep 14 — anything you see attributed to Zoho is a hand-entered figure. The mortgage pipeline table below is the manual track, and it is what you should work from.</p>
-      <p class="src-note" style="margin-top:6px;"><b>Only Steven can fix it:</b> Zoho CRM → Setup → Security Control → Profiles → the connected user's profile → enable "Zoho CRM API Access". A cloud routine re-tests the permission every few hours and records the result, but be clear about what that does and does not do: even a successful re-test does not populate a board here, because the writer that would fill a Zoho board runs on Steven's Mac and writes to Command Deck's store, which this page cannot read. When the permission lands, Steven's Zoho sync task fills the boards on <i>his</i> Command Deck; this portal would still need a hand re-sync. If a borrower question depends on live Zoho data, it goes to Steven — do not guess from this page.</p>
+      <p class="src-note" style="margin-top:6px;"><b>Only Steven can fix it:</b> Zoho CRM → Setup → Security Control → Profiles → the connected user's profile → enable "Zoho CRM API Access". No scheduled job re-tests the permission today — it was last re-tested by hand on 2026-10-08 and still returned 403 — and be clear about what a successful re-test would and would not do: it would not populate a board here, because the writer that would fill a Zoho board runs on Steven's Mac and writes to Command Deck's store, which this page cannot read. When the permission lands, Steven's Zoho sync task fills the boards on <i>his</i> Command Deck; this portal would still need a hand re-sync. If a borrower question depends on live Zoho data, it goes to Steven — do not guess from this page.</p>
     </div>
   </section>
 
@@ -1355,7 +1360,7 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
       </details>
     </div>    <div class="card" style="margin-bottom:16px;">
       <p class="card-title" data-editable-id="sop-title-relead">Real estate transaction — lead to close</p>
-      <p class="card-sub" style="margin-top:0;">CRM pipeline (Lofty since 2026-09-22): Lead → Hot Prospect → Nurture → Active → Pending → Closed. Confirm the stage names in Lofty before relying on them — these are carried over from the previous CRM, not read from Lofty, and the first Lofty sync has not run.</p>
+      <p class="card-sub" style="margin-top:0;">CRM pipeline (Lofty since 2026-09-22): Lead → Hot Prospect → Nurture → Active → Pending → Closed. Confirm the stage names in Lofty before relying on them — these are carried over from the previous CRM, not read from Lofty: Lofty's first sync (2026-10-07) returned all 54 leads in one stage, "New Leads", so the stage names cannot be confirmed from it yet.</p>
       <ol class="simple-list">
         <li><b>Lead intake</b> — auto-text within 60 sec, call within 5 min, LPMAMA qualification.</li>
         <li><b>First-10-Days Sprint</b> — Day 0/1/2/3/5/7/10 sequence, then A/B/C tiered long-game nurture.</li>
@@ -1430,7 +1435,7 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
     </div>
     <div class="card" style="margin-top:16px;">
       <div class="card-title-row">
-        <div><p class="card-title">ISA KPI scorecard — real estate &amp; mortgage</p><p class="card-sub">Pulled directly from the VA/ISA SOP, Section 16 — filtered to the real estate &amp; mortgage / ISA-execution rows. <b>Zoho CRM is the system of record for mortgage</b> (still true — but its API is returning 403 NO_PERMISSION, so no live Zoho figure can be read from this page); <b>Lofty is the system of record for real estate</b> since 2026-09-22. Per SOP Section 4.1. Actuals in the table are what you enter here — they are not pulled from either CRM. One thing worth knowing: a measured <code>isaKpi</code> document (written weekly by Steven's KPI task and carried onto both stores — identical on both as of 2026-10-05) does exist, but this table does not read it — its numbers are posted on the ISA line each week. Ask for it to be wired in if you want the measured week beside the targets.</p></div>
+        <div><p class="card-title">ISA KPI scorecard — real estate &amp; mortgage</p><p class="card-sub">Pulled directly from the VA/ISA SOP, Section 16 — filtered to the real estate &amp; mortgage / ISA-execution rows. <b>Zoho CRM is the system of record for mortgage</b> (still true — but its API is returning 403 NO_PERMISSION, so no live Zoho figure can be read from this page); <b>Lofty is the system of record for real estate</b> since 2026-09-22. Per SOP Section 4.1. Actuals in the table are what you enter here — they are not pulled from either CRM. One thing worth knowing: an <code>isaKpi</code> document exists on both stores (identical on both as of 2026-10-09), but it holds no measured week yet — every metric reads "not measured yet" (the Lofty lead list carries no lead id, and the weekly KPI task was refused on 2026-10-04) — and this table does not read it either way. Ask for it to be wired in once a measured week exists.</p></div>
       </div>
       <div class="table-wrap">
         <table>
@@ -1497,7 +1502,7 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
         <table>
           <thead><tr><th>Step</th><th>Method</th><th>Output</th></tr></thead>
           <tbody>
-            <tr><td>Pull Steven's calendar, past 7 days</td><td>Google Calendar × Zoho (mortgage, API blocked) × Lofty (real estate, first sync pending)</td><td>Raw hours by category</td></tr>
+            <tr><td>Pull Steven's calendar, past 7 days</td><td>Google Calendar × Zoho (mortgage, API blocked) × Lofty (real estate, read-only sync since 2026-10-07)</td><td>Raw hours by category</td></tr>
             <tr><td>Classify each block</td><td>Licensed/face-to-face vs. administrative/delegable</td><td>Two-bucket hour total</td></tr>
             <tr><td>Calculate %</td><td>Licensed hours ÷ total hours</td><td>% vs. 80% target</td></tr>
             <tr><td>Identify leakage</td><td>Admin tasks that should've been intercepted at Layer 2/3</td><td>Leakage list</td></tr>
@@ -1560,7 +1565,7 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
         <li><b>You.com</b> — retired 2026-09-22 (the Claude subscription replaces it). <b>Re-checked 2026-09-24: the connector still answers but holds 0 credits</b>, so paid search fails — funding it would be Steven's decision, since it spends money. Every in-page live web search on this portal stays a queued research request either way.</li>
         <li><b>Research and live notes — Claude only</b> (Steven, 2026-10-05): the builder-incentive and housing-market notes on this page are written by Claude cloud routines on Steven's Claude subscription (web search; no Perplexity, no paid search API) and copied here right after they update the Command Deck.</li>
         <li><b>Working today:</b> Notion and Google Calendar (claude.ai connectors), Slack, Gmail, Inkbox, Canva (1 brand kit, re-checked 2026-09-24). <b>Strava</b> needs Steven to sign in again (2026-10-09).</li>
-        <li><b>Not connected:</b> Microsoft 365, BlackRock Advisor Center, Health Data Avatar, PlayMCP, and Similarweb — connect started, never finished (claude.ai connector list, 2026-10-05 18:12 UTC). <b>Needs reconnect (Steven):</b> Eromify, EVRoutes, Turo, Strava (2026-10-09).</li>
+        <li><b>Not connected:</b> Microsoft 365, BlackRock Advisor Center, Health Data Avatar, PlayMCP, and Similarweb — connect started, never finished (claude.ai connector list, 2026-10-05 18:12 UTC). <b>Needs Steven (2026-10-09):</b> Strava and Eromify need a fresh sign-in; EVRoutes fails to connect (error 402).</li><li><b>Tracked connections, status as of 2026-10-09</b> Only what the live documents and Mac snapshot show; nothing below is claimed connected beyond its own badge.</li><li><b>Zoho CRM</b> <span class="badge amber">connected, API blocked</span> Composio connection active; every call 403 NO_PERMISSION (re-tested 2026-10-08). The API key is not the blocker: Steven ticks &ldquo;Zoho CRM API Access&rdquo; on the profile (STEVEN-STEPS step 12).</li><li><b>Lofty</b> <span class="badge green">connected, read-only</span> Key in place; 54 leads read since 2026-10-07; no lead id, no write path.</li><li><b>Showami</b> <span class="badge red">sign-in needed</span> CLI-Anything browser wrapper installed 2026-10-04, never reached the site; no self-serve API (partner only). Needs Steven&rsquo;s DOMShell sign-in (Steven&rsquo;s list).</li><li><b>ShowingTime</b> <span class="badge red">sign-in needed</span> Same: wrapper installed, never reached; its API is MLS-side only, so a browser sign-in is the only path.</li><li><b>homes.com</b> <span class="badge red">sign-in needed</span> Same: wrapper installed, never reached; no self-serve API (CRM-partner feed only).</li><li><b>CRMLS (crmls.org)</b> <span class="badge gray">cannot be connected yet</span> Licensed RESO Web API through the broker participant agreement; no harness exists by design. Alexandra drafts, Steven decides (docs/NEEDS-STEVEN item 71).</li><li><b>zipForms</b> <span class="badge red">sign-in needed</span> Wrapper installed; disabled by policy until Steven records the ECC review date.</li><li><b>SkySlope</b> <span class="badge red">sign-in needed</span> Same as zipForms: disabled by policy until the ECC sign-off.</li><li><b>Dotloop</b> <span class="badge gray">not started</span> Self-serve OAuth API exists; a harness folder is in the repo but nothing has been registered or signed in (no app credentials).</li><li><b>Ticor Property Data (ticorpropertydata.com)</b> <span class="badge gray">not started</span> No record in any repo source or live document: no key, tool or test. Whether it has an API is unknown.</li><li><b>OmniRoute</b> <span class="badge amber">installed, failover not enabled</span> Running on the Mac with an older claude-auto; the stricter failover needs its own key and Steven&rsquo;s yes.</li><li><b>FreeAPI (freellmapi)</b> <span class="badge gray">listed, not running</span> On the Mac&rsquo;s tool list with no run status; no key, nothing routes through it.</li><li><b>OpenRouter</b> <span class="badge amber">key needed</span> MCP connected but no API key, so its council seats are unused.</li><li><b>APInation</b> <span class="badge green">connected (local MCP)</span> Listed connected in the Mac&rsquo;s 2026-10-08 toolkit snapshot; no data from it is shown on this portal.</li><li><b>Composio</b> <span class="badge amber">connected, 3 sign-ins open</span> Works as transport; Google Drive, GoHighLevel and the Discord bot read &ldquo;initiated, no account&rdquo;.</li><li><b>CLI-Anything</b> <span class="badge amber">installed, unverified</span> Wrappers installed 2026-10-04; no site reached, each needs a sign-in; seen from the Mac&rsquo;s own snapshot only.</li><li><b>API Anything</b> <span class="badge amber">Mac install pending</span> Proven in the cloud 2026-10-08; one command to install on the Mac; read-only, never on client-data sites.</li>
       </ul>
       <p class="src-note"><b>Likely connectable via Composio's 1,000+ toolkit catalog</b> (worth checking case-by-case, same pattern as Zoho/Strava): LinkedIn, Google Ads, Meta Business Suite — mainstream SaaS platforms Composio tends to cover (Zoom is already a connected claude.ai connector, per the 2026-10-05 connector list). It does <i>not</i> cover Lofty.</p>
       <p class="src-note"><b>Sites with no usable API at all</b> — homes.com, SkySlope, zipForms/Lone Wolf: read-only CLI-Anything wrappers for these sites were installed on Steven's Mac 2026-10-04. They read nothing until he connects the DOMShell browser extension and signs in to each site — so nothing on this page comes from them yet. <b>API Anything</b> (added 2026-10-08, Mac install pending) can turn public pages such as homes.com search into fast read-only lookups once Steven approves their terms of use; it is never used for SkySlope, zipForms, ShowingTime or Showami, which hold client records.</p>
@@ -1771,6 +1776,7 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
 (function () {
   "use strict";
   var LS_PREFIX = "isaPortal.";
+  try { document.documentElement.setAttribute("lang", "en"); } catch (eQ) {}
   /* An empty catch here meant a full or blocked browser store looked EXACTLY like a successful
      save: the panel re-rendered from the in-memory value, the sync pill still read normally, and
      what the ISA typed was gone on reload with nothing said. Record every failure, return whether
@@ -2006,6 +2012,7 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
       setSyncStatus("Synced across devices", "on");
     }).catch(function (err) {
       if (err && err.code === "revoked") { setSyncStatus("Read-only — changes stay on this device", "off"); }
+      else if (err && (err.code === "invalid_argument" || err.code === "quota_exceeded")) { setSyncStatus("Not saved to the shared store: " + key + " (" + err.code + ") \u2014 kept on this device only", "warn"); }
       else { pendingDbWrites[key] = value; setSyncStatus("Sync failed — will retry", "warn"); }
     });
   }
@@ -2081,6 +2088,9 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
       dbApi = api;
       dbApi.collection(DB_COLLECTION).onSnapshot(function (snap) {
         if (!dbReady) {
+          // An empty snapshot that is only the local cache (metadata.fromCache) is not "the database is empty":
+          // seeding from it would write every local key (seed values included) over the live documents.
+          if (snap.empty && snap.metadata && snap.metadata.fromCache) { return; }
           if (snap.empty) { seedDbFromLocalState(); } else { applyRemoteSnapshot(snap); }
           dbReady = true;
           flushPendingDbWrites();
@@ -2108,10 +2118,10 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
      The near-side (this device) cells for isaLine/pipeline/reClients ARE computed at runtime,
      from this page's own store — that much this page can see. The far-side (Command Deck)
      column, and every other row, is a hand read out of BOTH artifact databases, most recently
-     2026-10-05 (collection "state"): this page cannot see Command Deck's store on its own, and
+     2026-10-09 (collection "state"): this page cannot see Command Deck's store on its own, and
      saying otherwise is the exact dishonesty this table exists to kill. Re-measure it in a
      Claude session and update the constant; the stamp below is what it is current to. */
-  var DRIFT_CHECKED_AT = "2026-10-05";
+  var DRIFT_CHECKED_AT = "2026-10-09";
   /* How long the hand-measured Command Deck column stays trustworthy before the table says so
      itself. That column CANNOT refresh on its own: this page has no way to read the other store.
      Before this it simply kept displaying whatever was last typed, and by 2026-09-23 the
@@ -2122,36 +2132,36 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
   var DRIFT_ROWS = [
     ["<code>isaLine</code> + <code>isaLineRead</code><div class=\"src-note\">Your thread with Steven</div>",
      function () { return driftLocalCount("isaLine", "message"); },
-     "The same 14 messages, byte for byte",
+     "The same 19 messages, byte for byte, as read 2026-10-09",
      "green", "In sync \u2014 carried by isa-comms-bridge-local"],
     ["<code>pipeline</code><div class=\"src-note\">Mortgage deals you track here</div>",
      function () { return driftLocalSummary("pipeline", "deal"); },
      "The same 2 deals, byte for byte",
-     "green", "In sync \u2014 identical in both stores as read 2026-10-05"],
+     "green", "In sync \u2014 identical in both stores as read 2026-10-09"],
     ["<code>reClients</code><div class=\"src-note\">Real-estate clients</div>",
      function () { return driftLocalSummary("reClients", "client"); },
      "The same 2 clients, byte for byte",
-     "green", "In sync \u2014 identical in both stores as read 2026-10-05"],
+     "green", "In sync \u2014 identical in both stores as read 2026-10-09"],
     ["<code>ratesSnapshot</code><div class=\"src-note\">Rates + market medians</div>",
      "Same document as his \u2014 rendered live by the rate table on this page",
-     "Identical, byte for byte, as read 2026-10-05",
+     "Identical, byte for byte, as read 2026-10-09 (synced 2026-10-08 20:45 UTC)",
      "green", "In sync \u2014 the rates tasks now write both dashboards (since 2026-10-04)"],
     ["<code>isaDailySchedule</code><div class=\"src-note\">Your daily playbook</div>",
-     "Present", "Identical on both sides",
+     "Present", "Identical on both sides, as read 2026-10-09",
      "green", "Matching \u2014 but copied by hand, not by any task"],
-    ["<code>isaKpi</code><div class=\"src-note\">The measured KPI week</div>",
-     "Present \u2014 the latest measured week",
-     "Identical, byte for byte, as read 2026-10-05",
-     "green", "In sync \u2014 re-copied 2026-10-04 (the stale CRM label is gone)"],
+    ["<code>isaKpi</code><div class=\"src-note\">The KPI week</div>",
+     "Present \u2014 holds no measured week yet",
+     "Identical, byte for byte, as read 2026-10-09",
+     "green", "In sync \u2014 both carry the 2026-10-08 text correction; copied by hand, no task carries it"],
     ["<code>isaGradingScores</code> \u00b7 <code>isaKpiSopActuals</code><div class=\"src-note\">Your self-grades and KPI actuals</div>",
      "Whatever you have typed, saved on this device", "Neither document exists yet",
-     "gray", "Carried by the Pipeline Sync (live) routine once you enter them \u2014 none entered on either side as of 2026-10-05"],
+     "gray", "Carried by the Pipeline Sync (live) routine once you enter them \u2014 none entered on either side as of 2026-10-09"],
     ["<code>showingSchedule</code> \u00b7 <code>showingRoute</code> \u00b7 <code>showingSyncRequests</code>",
-     "No document on this device", "All three exist on his side but are empty (re-read 2026-10-05)",
+     "No document on this device", "All three exist on his side but are empty (re-read 2026-10-09)",
      "amber", "No drift today only because both are empty \u2014 nothing carries them"],
     ["<code>liveFeeds</code><div class=\"src-note\">Builder-incentive + housing-market notes</div>",
      function () { return driftLiveFeedsLocal(); },
-     "The same four notes, byte for byte, as read 2026-10-05 (his copy also holds feeds this page does not show)",
+     "The same four notes, byte for byte, as read 2026-10-09 (his copy also holds feeds this page does not show)",
      "green", "Mirrored \u2014 the Claude builder-incentives and news routines copy each note here right after writing his (since 2026-10-05)"]
   ];
   /* Client rows are never written into this file. The two cells that describe what is on THIS
@@ -2300,7 +2310,7 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
     var hasCustom = currentValue && opts.indexOf(currentValue) === -1;
     if (hasCustom) opts = [currentValue].concat(opts);
     return '<select data-f="' + dataF + '">' + opts.map(function (s) {
-      return '<option value="' + escAttr(s) + '"' + (s === currentValue ? " selected" : "") + ">" + s + "</option>";
+      return '<option value="' + escAttr(s) + '"' + (s === currentValue ? " selected" : "") + ">" + chatEsc(s) + "</option>";
     }).join("") + "</select>";
   }
   /* ================= LIVE CRM IMPORT — LOFTY (REAL ESTATE) =================
@@ -2331,8 +2341,8 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
       if (block) block.hidden = true;
     }
     if (!d) {
-      empty('<b>Awaiting first Lofty sync.</b> No <code>loftyLeads</code> document has been written to this portal yet, so there are no Lofty numbers to show, and this card will not borrow numbers from another CRM to look populated. ' +
-        'Where it stands: Lofty has been the real-estate CRM of record since ' + LOFTY_SINCE + '; his Mac already has the <code>lofty-bridge</code> MCP server and the <code>lofty-cli</code> tool installed, and the API key plus one proving run are what is outstanding. ' +
+      empty('<b>No Lofty numbers on this portal.</b> No <code>loftyLeads</code> document has been copied to this portal, so there is nothing to show, and this card will not borrow numbers from another CRM to look populated. ' +
+        'Where it stands: Lofty has been the real-estate CRM of record since ' + LOFTY_SINCE + '; it is connected and syncing on Steven\'s Mac (read-only, 54 leads read 2026-10-08), but nothing copies that document to this portal. ' +
         'Until it lands, work real-estate leads from Lofty itself, not from this page.');
       return;
     }
@@ -2685,7 +2695,7 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
       div.style.paddingBottom = "14px";
       div.style.borderBottom = "1px solid var(--border)";
       div.innerHTML =
-        '<p class="card-title" style="font-size:15px;">' + city + "</p>" +
+        '<p class="card-title" style="font-size:15px;">' + chatEsc(city) + "</p>" +
         '<div class="stat-row" style="margin-top:8px;">' +
         '<div class="stat"><div class="stat-label">Median price</div><div class="stat-value" style="font-size:15px;">' + (typeof m.medianPrice === "number" ? fmtMoney(m.medianPrice) : "\u2014") + "</div></div>" +
         '<div class="stat"><div class="stat-label">YoY change</div><div class="stat-value" style="font-size:15px;">' + (typeof m.priceChangeYoy === "number" ? (m.priceChangeYoy >= 0 ? "+" : "") + m.priceChangeYoy + "%" : "\u2014") + "</div></div>" +
@@ -3996,7 +4006,7 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
         if (!txt || txt.length > 90) return;
         if (!el.id) el.id = slugifyToc(txt, i);
         TOC_TARGETS.push(el);
-        out += '<button type="button" class="toc-item toc-section" data-toc-idx="' + (TOC_TARGETS.length - 1) + '">' + txt + "</button>";
+        out += '<button type="button" class="toc-item toc-section" data-toc-idx="' + (TOC_TARGETS.length - 1) + '">' + chatEsc(txt) + "</button>";
         i++;
       });
     });
@@ -4195,7 +4205,7 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
   var ISA_VANESSA_PREAMBLE = "You are Vanessa, Chief of Staff / Executive Assistant / COO for Steven Shearrill (mortgage loan officer, Patriot Pacific Financial Corp; Realtor/Broker Associate, LPT Realty / SPACE Real Estate Team; serving military/veteran and hometown-hero communities in San Diego/Temecula/Southwest Riverside County). Trained on Steven's real EA/ISA SOP: dual-CRM, never blended — Zoho CRM (with the ARIVE wholesale LOS) is the system of record for mortgage; and Lofty (formerly Chime) has been the system of record for real estate since 2026-09-22. Two current facts you must not paper over: Zoho's CRM API is returning 403 NO_PERMISSION (Crm_Implied_Api_Access) so nobody can read live Zoho data from the ISA Portal or the Command Deck — only Steven can fix that in Zoho's profile settings; and the first Lofty sync has not run yet, so there are no live real-estate lead counts either. If a question needs a live CRM number, say plainly that it cannot be read right now. Non-negotiables: 5-minute lead response during coverage hours, every active lead has a documented next step, zero avoidable missed deadlines. You never independently quote a rate/APR/payment, determine eligibility or underwriting outcome, negotiate a real-estate offer/price/contingency, or interpret a contract. You are talking here with Steven's real, human Executive Assistant / ISA on ISA Portal, not with Steven directly — she may ask about pipeline status, deal notes, or anything else in her scope, or relay something to or from Steven. Answer yourself when it's straightforward, or use the consult_specialist tool for anything centrally about finances (cfo/Marcus), marketing (cmo/Sofia), systems/automation (cto/Derek), compliance (compliance/Alexandra), AI strategy (caio/Nadia), revenue/pipeline (cro/Victor), or security/data risk (ciso/Elena) — and when you do, say plainly in your final answer which specialist(s) you checked with." + ISA_COA_INSTRUCTION + " Never fabricate a specific number, rate, or fact — say when something isn't available from here.";
   function isaVanessaChatHistory() { return lsGetSeeded("isaVanessaChat", []); }
   /* ================= AI AGENT ENGAGEMENT: chat renderer (mirrors Command Deck) ================= */
-  function chatEsc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  function chatEsc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
   function chatFmtTs(ts) { try { return new Date(ts).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }); } catch (e) { return ""; } }
   function chatFmtBody(text) {
     var s = chatEsc(text);
@@ -4537,8 +4547,8 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
   var ISA_STEVE_PREAMBLE = "You are Steve, Steven Shearrill's digital twin, talking on the ISA line with Steven's real, human Executive Assistant / ISA (not with Steven). You reason AS Steven and speak in the first person, in his voice: a retired Navy Chief, decisive, warm, direct, who runs a mortgage business (Patriot Pacific Financial Corp, ARIVE + Zoho CRM as the mortgage system of record) and a real-estate practice (LPT Realty / SPACE team, Lofty as the real-estate system of record since 2026-09-22) serving military, veteran and hometown-hero families in San Diego / Temecula / Southwest Riverside County. Non-negotiables you enforce: 5-minute lead response in coverage hours, every active lead has a documented next step, zero avoidable missed deadlines, bad news by phone first. YOU MAY: answer routine process questions, prioritize her day, give direction within the SOP, draft client-facing text she sends under her own name, and settle small calls Steven would obviously settle the same way. YOU MAY NOT: quote or commit a rate, APR, payment, or eligibility outcome; approve spending; sign or commit Steven to anything with a client; or make licensed-activity decisions — for those, say plainly that Steven himself has to make the call. Keep replies under 150 words unless she asked for a draft. END EVERY REPLY with a final line that is exactly 'NEEDS STEVEN: no' or 'NEEDS STEVEN: yes — <one line telling Steven what to decide>'.";
   function isaPortalSnapshot() {
     var parts = [];
-    try { var deals = lsGetSeeded("pipeline", []); if (deals.length) parts.push("Mortgage pipeline (" + deals.length + "): " + deals.map(function (d) { return d.client + " " + (d.amount ? "$" + Math.round(d.amount).toLocaleString("en-US") : "") + " — " + d.stage; }).join("; ") + "."); } catch (e) {}
-    try { var cl = lsGetSeeded("reClients", []); if (cl.length) parts.push("Real-estate clients (" + cl.length + "): " + cl.map(function (c) { return c.name + " (" + c.type + ") — " + c.stage; }).join("; ") + "."); } catch (e) {}
+    try { var deals = lsGetSeeded("pipeline", []); if (deals.length) parts.push("Mortgage pipeline (" + deals.length + "): " + (function (rows) { var o = {}; rows.forEach(function (r) { var k = String((r && r.stage) || "unstaged"); o[k] = (o[k] || 0) + 1; }); return Object.keys(o).map(function (k) { return k + " " + o[k]; }).join(", "); })(deals) + "."); } catch (e) {}
+    try { var cl = lsGetSeeded("reClients", []); if (cl.length) parts.push("Real-estate clients (" + cl.length + "): " + (function (rows) { var o = {}; rows.forEach(function (r) { var k = String((r && r.stage) || "unstaged"); o[k] = (o[k] || 0) + 1; }); return Object.keys(o).map(function (k) { return k + " " + o[k]; }).join(", "); })(cl) + ". (Client names and loan amounts are not sent to this assistant.)"); } catch (e) {}
     try {
       var lf = loftyDoc();
       if (lf && lf.status !== "not-configured" && lf.status !== "error" && Array.isArray(lf.newLeads90d)) {
@@ -4895,7 +4905,7 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
   var SH_INTEGRATIONS = [
     ["ShowingTime", "Request the showing in the ShowingTime app / MLS listing; the row's Request button opens ShowingTime and copies the request text.", ["amber", "App + you today"], "ShowingTime's API is partner-level (brokerage / MLS agreement, not self-serve). Until LPT or CRMLS grants it, ShowingTime rows always sync as a manual request."],
     ["Showami", "Book a licensed showing agent; the row's Book button opens Showami and copies a complete request.", ["amber", "Web + you today · API queue ready"], "A Showami brokerage account with API access. Once Steven adds the key, the sync task posts requests itself."],
-    ["Lofty (CRM of record since 2026-09-22)", "Confirmed showings would be logged on the client's Lofty record by the sync task once it is wired to Lofty.", ["amber", "Wiring pending"], "The Mac has the lofty-bridge MCP server; the Lofty API key and the first proving run are still pending, so nothing is being logged to a CRM right now."],
+    ["Lofty (CRM of record since 2026-09-22)", "Confirmed showings would be logged on the client's Lofty record by the sync task once it is wired to Lofty.", ["amber", "No write path yet"], "Lofty is connected and syncing on Steven's Mac (read-only, since 2026-10-07), but no write path to Lofty exists yet, so nothing is being logged to a CRM right now."],
     ["Google Calendar", "Every row has an Add-to-Calendar link (works now); the sync task also creates the event for confirmed showings.", ["green", "Live"], "Nothing — the link path works today."],
     ["Route planner", "The route planner below builds the multi-stop Google Maps route.", ["green", "Live"], "Nothing."],
     ["Steven's Command Deck", "It does not. Showings stay in this portal's store — verified 2026-09-22 by reading both databases. Send him the plan on the ISA line, which is the one thing that crosses.", ["red", "Not synced"], "A Mac task that reads both stores and copies showingSchedule the way isa-comms-bridge-local copies isaLine. The cloud \u201cPipeline Sync\u201d routine hasn't done it — \u201ccan't write unattended\u201d stopped being true 2026-09-22, so that is not why."]
