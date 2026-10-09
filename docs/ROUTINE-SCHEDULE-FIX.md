@@ -39,7 +39,7 @@ Two routines were created to own work nothing reliably did:
 
 | Routine | Schedule | What it does |
 |---|---|---|
-| Weekly Loop Engineering + Self-Test | Sun 5:54 PM PT (Mon 00:54 UTC; moved by Steven 2026-10-09, was Sat 13:00 UTC) | The Phase 7 cycle: output-not-execution scoring, stale sweep, six self-test categories, CPI and scale proposals, trust gates, halt flags, and the weekly brief. |
+| Weekly Loop Engineering + Self-Test | Sun 1:05 PM PT (moved by Steven 2026-10-09, was Sat 13:00 UTC) | The Phase 7 cycle: output-not-execution scoring, stale sweep, six self-test categories, CPI and scale proposals, trust gates, halt flags, and the weekly brief. |
 | Backup verification watchdog | Sun 17:30 UTC · 10:30 AM PT | Reads `backupStatus`, counts the live store for comparison, and escalates when the backup is missing, late or unverified. Makes silence impossible. Placed after the backup window and clear of the 16:00 UTC slot where three routines failed on 2026-09-20. |
 
 A one-shot probe was also fired to re-test, on today's platform, whether an unattended cloud routine

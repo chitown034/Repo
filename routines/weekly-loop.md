@@ -1,6 +1,6 @@
 # Routine spec — Weekly Loop (loop-engineering v2)
 
-**Cloud loop routine moved 2026-10-09 (Steven): Sundays 5:54 PM PT** (`CRON_TZ=America/Los_Angeles 54 17 * * 0`, trigger `trig_01W1KHiBfVXZ5Xwd1aCFJM72`) — after the Sunday 20:00 UTC allowance reset, so it no longer fails on the usage limit.
+**Cloud loop routine moved 2026-10-09 (Steven): Sundays 1:05 PM Pacific** (`CRON_TZ=America/Los_Angeles 5 13 * * 0`, trigger `trig_01W1KHiBfVXZ5Xwd1aCFJM72`) — five minutes after the Sunday 20:00 UTC allowance reset while Daylight Time lasts (after Nov 1 the reset is noon PST, an hour earlier).
 
 **Scout added 2026-10-09** — `integrations/scout/scout.py` (step 2b) scans the internet each week for new
 repos, skills, MCP servers, upgrades, CLIs and free tools; the free GitHub `scout` workflow runs it Friday night.

@@ -4,7 +4,7 @@
 name: scout
 on:
   schedule:
-    - cron: "23 6 * * 6"    # Saturdays 06:23 UTC (Fri 11:23 PM PT), a day ahead of the Sunday 5:54 PM PT loop routine
+    - cron: "23 6 * * 6"    # Saturdays 06:23 UTC (Fri 11:23 PM PT), a day ahead of the Sunday 1:05 PM PT loop routine
   workflow_dispatch: {}
 permissions:
   contents: read
