@@ -7,6 +7,10 @@ not what a settings page claims.
 Trust levels: **L1** report-only · **L2** drafts for Steven's approval · **L3** owns end-to-end ·
 **n/a** not an agent path.
 
+**2026-10-09 addition:** Zoho, Lofty, Showami, ShowingTime, homes.com, CRMLS, zipForms, SkySlope, Dotloop, Ticor Property Data,
+OmniRoute, FreeAPI, OpenRouter, APInation, Composio, CLI-Anything and API Anything are planned system by system, with the
+real path, what Steven does and what agents do, in `integrations/CONNECT-PLAN-2026-10-09.md`. APInation is unidentified.
+
 ## The four that need Steven today
 
 | System | Path | Status today | **What Steven must do (one line)** | Trust |
