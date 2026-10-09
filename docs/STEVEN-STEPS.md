@@ -45,31 +45,33 @@ research on Claude only; Gmail, Google Calendar, Notion, Strava, Slack, Canva an
    `bash integrations/ai-team/opus-5-5-on-mac.sh --apply && bash integrations/ai-team/opus-5-5-on-mac.sh --verify`
 11. **Install browser-use, OpenDesign and API Anything.** browser-use reads web pages in a logged-out Chrome; OpenDesign is a design workspace; API Anything (new) lets Claude call a website like an API. Each ends with a self-test line.
    `bash integrations/browser-use/install-mac.sh && bash integrations/open-design/install-mac.sh && bash integrations/api-anything/install-mac.sh`
-12. **Kevin in Claude Desktop.** Claude Desktop → skills settings → upload integrations/claude-desktop/kevin-mentor.zip, then delete the old cole-mentor skill.
+12. **Connect sites with API Anything (paste-in).** After the install above: connects FRED and Freddie Mac rate data now; lists Redfin, lender, builder and homes.com pages and waits for your yes per group; never touches ShowingTime, Showami, SkySlope or zipForms (client data). Paste its end lines back.
+   - Open the paste-in: https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/api-anything/mac-connect-sites-2026-10-09.md
+13. **Kevin in Claude Desktop.** Claude Desktop → skills settings → upload integrations/claude-desktop/kevin-mentor.zip, then delete the old cole-mentor skill.
    - Show the file: https://github.com/chitown034/Repo/tree/claude/stoic-cori-pvn3f8/integrations/claude-desktop
-13. **WhatsApp → Vanessa (OpenWA connection).** Links your phone to OpenWA on the Mac (QR code, or add --code for an 8-character code), then installs the reply bridge. Test: text yourself "Vanessa, are you there?"
+14. **WhatsApp → Vanessa (OpenWA connection).** Links your phone to OpenWA on the Mac (QR code, or add --code for an 8-character code), then installs the reply bridge. Test: text yourself "Vanessa, are you there?"
    `bash integrations/install-orca-whatsapp-laya.sh --skip-orca --skip-laya`
-14. **Real-estate sites (CLI-Anything: homes.com, ShowingTime, Showami, SkySlope, zipForms).** Install the DOMShell Chrome extension and sign in to each site by hand, then run the guided check. Read-only; SkySlope and zipForms stay locked until compliance signs off.
+15. **Real-estate sites (CLI-Anything: homes.com, ShowingTime, Showami, SkySlope, zipForms).** Install the DOMShell Chrome extension and sign in to each site by hand, then run the guided check. Read-only; SkySlope and zipForms stay locked until compliance signs off.
    `bash integrations/cli-anything-harnesses/connect.sh`
 
 ## 5 · Account connections only you can sign in to (About 20 minutes · reply to Claude after each one)
 
-15. **Zoho CRM API access.** Re-tested 2026-10-08: still 403. Zoho CRM → Setup → Security Control → Profiles → your profile → Developer Permissions → tick "Zoho CRM API Access". Then say "Zoho done" and Claude sends a fresh Composio reconnect link.
+16. **Zoho CRM API access.** Re-tested 2026-10-08: still 403. Zoho CRM → Setup → Security Control → Profiles → your profile → Developer Permissions → tick "Zoho CRM API Access". Then say "Zoho done" and Claude sends a fresh Composio reconnect link.
    - Open Zoho CRM: https://crm.zoho.com/
-16. **Composio sign-ins: Google Drive, GoHighLevel, Discord bot.** All three still read "initiated, no account" (checked 2026-10-08). Links expire 10 minutes after they are made, so say "Composio links" when you sit down and sign in to each. For GoHighLevel, also say what it is for.
-17. **Discord bot token for #vanessa.** Vanessa's Discord inbox finds no token. Create a bot in the Discord Developer Portal, invite it to your server, and put its token where the Discord bot sign-in above asks for it.
+17. **Composio sign-ins: Google Drive, GoHighLevel, Discord bot.** All three still read "initiated, no account" (checked 2026-10-08). Links expire 10 minutes after they are made, so say "Composio links" when you sit down and sign in to each. For GoHighLevel, also say what it is for.
+18. **Discord bot token for #vanessa.** Vanessa's Discord inbox finds no token. Create a bot in the Discord Developer Portal, invite it to your server, and put its token where the Discord bot sign-in above asks for it.
    - Discord Developer Portal: https://discord.com/developers/applications
-18. **claude.ai connectors.** Eromify needs you to sign in again; EVRoutes fails to connect; PlayMCP never finished connecting. Reconnect each, or remove it if you don't use it.
+19. **claude.ai connectors.** Eromify needs you to sign in again; EVRoutes fails to connect; PlayMCP never finished connecting. Reconnect each, or remove it if you don't use it.
    - Open Connectors: https://claude.ai/settings/connectors
-19. **Cloud network access (rate websites).** In a Claude Code cloud session: title bar → environment → Edit → Network access. Add these (and codebuff.com only if you want freebuff):
+20. **Cloud network access (rate websites).** In a Claude Code cloud session: title bar → environment → Edit → Network access. Add these (and codebuff.com only if you want freebuff):
    `fred.stlouisfed.org www.freddiemac.com www.redfin.com`
 
 ## 6 · Decisions on optional connections (Reply yes or no to each · nothing is spent without your yes)
 
-20. **Google Drive: wire it or drop it.** If yes, the Drive sign-in above makes it a real store of the brain; if no, Drive comes off the brain's counts so the deck stops implying a feed.
-21. **Plaid (bank balances).** No keys, so balances on the deck are typed by hand. Plaid keys may carry a cost: yes = you add keys; no = keep manual balances.
-22. **OpenRouter (outside AI models for the council).** Connected with no key, so those seats are unused. A key spends money per call; default is no.
-23. **Three publicfeeds terms-of-service reviews.** Redfin market pages, lender rate pages (Veterans United, Navy Federal), builder pages (D.R. Horton, Lennar, Richmond American). Alexandra drafts, you decide each.
-24. **OmniRoute failover and Orca phone app.** OmniRoute switches to free providers when Claude is rate-limited (needs its own key); Orca's phone app watches the sub-agents. Both optional — yes or no.
+21. **Google Drive: wire it or drop it.** If yes, the Drive sign-in above makes it a real store of the brain; if no, Drive comes off the brain's counts so the deck stops implying a feed.
+22. **Plaid (bank balances).** No keys, so balances on the deck are typed by hand. Plaid keys may carry a cost: yes = you add keys; no = keep manual balances.
+23. **OpenRouter (outside AI models for the council).** Connected with no key, so those seats are unused. A key spends money per call; default is no.
+24. **Three publicfeeds terms-of-service reviews.** Redfin market pages, lender rate pages (Veterans United, Navy Federal), builder pages (D.R. Horton, Lennar, Richmond American). Alexandra drafts, you decide each. A yes also lets API Anything connect that group (step 12).
+25. **OmniRoute failover and Orca phone app.** OmniRoute switches to free providers when Claude is rate-limited (needs its own key); Orca's phone app watches the sub-agents. Both optional — yes or no.
 
 Reply "done N" (or "skip N") after each step and Claude keeps the dashboards in step.

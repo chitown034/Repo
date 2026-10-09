@@ -43,3 +43,7 @@ Three skills Steven asked for exist as `SKILL.md` files in this repo's `.claude/
 Source: Command Deck, "Connectors / Local MCP / Mac tasks / Cloud routines / Skills / Agents" toolbox card (`AI_TEAM_TOOLBOX`) for the connector/bridge/task/routine sections. The Orca/Laya/77skills/repo-skills statuses are Steven's own stated facts about tools outside the deck's current toolbox card, recorded here for the first time — not yet cross-checked against the deck itself.
 
 *Updated 2026-10-08: Perplexity removed (2026-10-05); Lofty live; browser-use and OpenDesign proven in the cloud, Mac install pending (`integrations/browser-use/`, `integrations/open-design/`).*
+
+## API Anything — websites as read-only APIs
+
+**API Anything** (added 2026-10-08, `integrations/api-anything/`): turns a website into read-only operations Claude calls over plain HTTP (MCP server `api-anything`: list_sites, list_operations, call_operation, login). Proven in the cloud; Mac install is one command. Site connections run on the Mac (`integrations/api-anything/mac-connect-sites-2026-10-09.md`): FRED and Freddie Mac PMMS now; Redfin, lender, builder and homes.com pages only after Steven's terms-of-service yes per group; never ShowingTime, Showami, SkySlope or zipForms (client data). Owner Derek; risk owner Elena.

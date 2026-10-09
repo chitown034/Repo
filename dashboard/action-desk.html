@@ -50,7 +50,7 @@ footer{margin-top:28px;color:var(--muted);font-size:.85rem}
 <div class="wrap">
   <h1>Steven's Action Desk</h1>
   <p class="lede">Everything still waiting on you — including every connection that still has to be made — in the order to do it. Each button opens the right place; tick the box when done (saved in this browser), then tell Claude "done 7" so the dashboards catch up. Checked 2026-10-08, 11 AM PT.</p>
-  <div class="bar"><div class="meter" aria-hidden="true"><i id="fill"></i></div><span class="count" id="count">0 of 24 done</span></div>
+  <div class="bar"><div class="meter" aria-hidden="true"><i id="fill"></i></div><span class="count" id="count">0 of 25 done</span></div>
   <p class="note"><b>Already done, nothing to do:</b> Lofty API key (54 leads syncing), ISA bridge and AI twin on, research on Claude only, Gmail, Google Calendar, Notion, Strava, Slack, Canva, Inkbox iMessage connected. <b>Why things keep failing:</b> the Claude usage allowance runs out early each day; steps 1 and 2 cut the waste.</p>
 
   <h2>1 · Stop the waste</h2>
@@ -133,82 +133,88 @@ footer{margin-top:28px;color:var(--muted);font-size:.85rem}
       <label class="tick"><input type="checkbox" id="s11">Done</label></div></div></div>
 
   <div class="step" data-id="12"><div class="n">12</div><div class="body">
-    <p class="t">Kevin in Claude Desktop</p>
-    <p class="d">Claude Desktop → skills settings → upload integrations/claude-desktop/kevin-mentor.zip, then delete the old cole-mentor skill.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/tree/claude/stoic-cori-pvn3f8/integrations/claude-desktop" target="_blank" rel="noopener">Show the file</a>
+    <p class="t">Connect sites with API Anything (paste-in)</p>
+    <p class="d">After the install above: connects FRED and Freddie Mac rate data now; lists Redfin, lender, builder and homes.com pages and waits for your yes per group; never touches ShowingTime, Showami, SkySlope or zipForms (client data). Paste its end lines back.</p>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/api-anything/mac-connect-sites-2026-10-09.md" target="_blank" rel="noopener">Open the paste-in</a>
       <label class="tick"><input type="checkbox" id="s12">Done</label></div></div></div>
 
   <div class="step" data-id="13"><div class="n">13</div><div class="body">
-    <p class="t">WhatsApp → Vanessa (OpenWA connection)</p>
-    <p class="d">Links your phone to OpenWA on the Mac (QR code, or add --code for an 8-character code), then installs the reply bridge. Test: text yourself &quot;Vanessa, are you there?&quot;</p>
-    <div class="acts"><code>bash integrations/install-orca-whatsapp-laya.sh --skip-orca --skip-laya</code><button class="btn" data-copy="bash integrations/install-orca-whatsapp-laya.sh --skip-orca --skip-laya">Copy</button>
+    <p class="t">Kevin in Claude Desktop</p>
+    <p class="d">Claude Desktop → skills settings → upload integrations/claude-desktop/kevin-mentor.zip, then delete the old cole-mentor skill.</p>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/tree/claude/stoic-cori-pvn3f8/integrations/claude-desktop" target="_blank" rel="noopener">Show the file</a>
       <label class="tick"><input type="checkbox" id="s13">Done</label></div></div></div>
 
   <div class="step" data-id="14"><div class="n">14</div><div class="body">
+    <p class="t">WhatsApp → Vanessa (OpenWA connection)</p>
+    <p class="d">Links your phone to OpenWA on the Mac (QR code, or add --code for an 8-character code), then installs the reply bridge. Test: text yourself &quot;Vanessa, are you there?&quot;</p>
+    <div class="acts"><code>bash integrations/install-orca-whatsapp-laya.sh --skip-orca --skip-laya</code><button class="btn" data-copy="bash integrations/install-orca-whatsapp-laya.sh --skip-orca --skip-laya">Copy</button>
+      <label class="tick"><input type="checkbox" id="s14">Done</label></div></div></div>
+
+  <div class="step" data-id="15"><div class="n">15</div><div class="body">
     <p class="t">Real-estate sites (CLI-Anything: homes.com, ShowingTime, Showami, SkySlope, zipForms)</p>
     <p class="d">Install the DOMShell Chrome extension and sign in to each site by hand, then run the guided check. Read-only; SkySlope and zipForms stay locked until compliance signs off.</p>
     <div class="acts"><code>bash integrations/cli-anything-harnesses/connect.sh</code><button class="btn" data-copy="bash integrations/cli-anything-harnesses/connect.sh">Copy</button>
-      <label class="tick"><input type="checkbox" id="s14">Done</label></div></div></div>
+      <label class="tick"><input type="checkbox" id="s15">Done</label></div></div></div>
 
   <h2>5 · Account connections only you can sign in to</h2>
   <p class="where">About 20 minutes · reply to Claude after each one</p>
 
-  <div class="step" data-id="15"><div class="n">15</div><div class="body">
+  <div class="step" data-id="16"><div class="n">16</div><div class="body">
     <p class="t">Zoho CRM API access</p>
     <p class="d">Re-tested 2026-10-08: still 403. Zoho CRM → Setup → Security Control → Profiles → your profile → Developer Permissions → tick &quot;Zoho CRM API Access&quot;. Then say &quot;Zoho done&quot; and Claude sends a fresh Composio reconnect link.</p>
     <div class="acts"><a class="btn" href="https://crm.zoho.com/" target="_blank" rel="noopener">Open Zoho CRM</a>
-      <label class="tick"><input type="checkbox" id="s15">Done</label></div></div></div>
-
-  <div class="step" data-id="16"><div class="n">16</div><div class="body">
-    <p class="t">Composio sign-ins: Google Drive, GoHighLevel, Discord bot</p>
-    <p class="d">All three still read &quot;initiated, no account&quot; (checked 2026-10-08). Links expire 10 minutes after they are made, so say &quot;Composio links&quot; when you sit down and sign in to each. For GoHighLevel, also say what it is for.</p>
-    <div class="acts"><label class="tick"><input type="checkbox" id="s16">Done</label></div></div></div>
+      <label class="tick"><input type="checkbox" id="s16">Done</label></div></div></div>
 
   <div class="step" data-id="17"><div class="n">17</div><div class="body">
+    <p class="t">Composio sign-ins: Google Drive, GoHighLevel, Discord bot</p>
+    <p class="d">All three still read &quot;initiated, no account&quot; (checked 2026-10-08). Links expire 10 minutes after they are made, so say &quot;Composio links&quot; when you sit down and sign in to each. For GoHighLevel, also say what it is for.</p>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s17">Done</label></div></div></div>
+
+  <div class="step" data-id="18"><div class="n">18</div><div class="body">
     <p class="t">Discord bot token for #vanessa</p>
     <p class="d">Vanessa&#x27;s Discord inbox finds no token. Create a bot in the Discord Developer Portal, invite it to your server, and put its token where the Discord bot sign-in above asks for it.</p>
     <div class="acts"><a class="btn" href="https://discord.com/developers/applications" target="_blank" rel="noopener">Discord Developer Portal</a>
-      <label class="tick"><input type="checkbox" id="s17">Done</label></div></div></div>
-
-  <div class="step" data-id="18"><div class="n">18</div><div class="body">
-    <p class="t">claude.ai connectors</p>
-    <p class="d">Eromify needs you to sign in again; EVRoutes fails to connect; PlayMCP never finished connecting. Reconnect each, or remove it if you don&#x27;t use it.</p>
-    <div class="acts"><a class="btn" href="https://claude.ai/settings/connectors" target="_blank" rel="noopener">Open Connectors</a>
       <label class="tick"><input type="checkbox" id="s18">Done</label></div></div></div>
 
   <div class="step" data-id="19"><div class="n">19</div><div class="body">
+    <p class="t">claude.ai connectors</p>
+    <p class="d">Eromify needs you to sign in again; EVRoutes fails to connect; PlayMCP never finished connecting. Reconnect each, or remove it if you don&#x27;t use it.</p>
+    <div class="acts"><a class="btn" href="https://claude.ai/settings/connectors" target="_blank" rel="noopener">Open Connectors</a>
+      <label class="tick"><input type="checkbox" id="s19">Done</label></div></div></div>
+
+  <div class="step" data-id="20"><div class="n">20</div><div class="body">
     <p class="t">Cloud network access (rate websites)</p>
     <p class="d">In a Claude Code cloud session: title bar → environment → Edit → Network access. Add these (and codebuff.com only if you want freebuff):</p>
     <div class="acts"><code>fred.stlouisfed.org www.freddiemac.com www.redfin.com</code><button class="btn" data-copy="fred.stlouisfed.org www.freddiemac.com www.redfin.com">Copy</button>
-      <label class="tick"><input type="checkbox" id="s19">Done</label></div></div></div>
+      <label class="tick"><input type="checkbox" id="s20">Done</label></div></div></div>
 
   <h2>6 · Decisions on optional connections</h2>
   <p class="where">Reply yes or no to each · nothing is spent without your yes</p>
 
-  <div class="step" data-id="20"><div class="n">20</div><div class="body">
+  <div class="step" data-id="21"><div class="n">21</div><div class="body">
     <p class="t">Google Drive: wire it or drop it</p>
     <p class="d">If yes, the Drive sign-in above makes it a real store of the brain; if no, Drive comes off the brain&#x27;s counts so the deck stops implying a feed.</p>
-    <div class="acts"><label class="tick"><input type="checkbox" id="s20">Done</label></div></div></div>
-
-  <div class="step" data-id="21"><div class="n">21</div><div class="body">
-    <p class="t">Plaid (bank balances)</p>
-    <p class="d">No keys, so balances on the deck are typed by hand. Plaid keys may carry a cost: yes = you add keys; no = keep manual balances.</p>
     <div class="acts"><label class="tick"><input type="checkbox" id="s21">Done</label></div></div></div>
 
   <div class="step" data-id="22"><div class="n">22</div><div class="body">
-    <p class="t">OpenRouter (outside AI models for the council)</p>
-    <p class="d">Connected with no key, so those seats are unused. A key spends money per call; default is no.</p>
+    <p class="t">Plaid (bank balances)</p>
+    <p class="d">No keys, so balances on the deck are typed by hand. Plaid keys may carry a cost: yes = you add keys; no = keep manual balances.</p>
     <div class="acts"><label class="tick"><input type="checkbox" id="s22">Done</label></div></div></div>
 
   <div class="step" data-id="23"><div class="n">23</div><div class="body">
-    <p class="t">Three publicfeeds terms-of-service reviews</p>
-    <p class="d">Redfin market pages, lender rate pages (Veterans United, Navy Federal), builder pages (D.R. Horton, Lennar, Richmond American). Alexandra drafts, you decide each.</p>
+    <p class="t">OpenRouter (outside AI models for the council)</p>
+    <p class="d">Connected with no key, so those seats are unused. A key spends money per call; default is no.</p>
     <div class="acts"><label class="tick"><input type="checkbox" id="s23">Done</label></div></div></div>
 
   <div class="step" data-id="24"><div class="n">24</div><div class="body">
+    <p class="t">Three publicfeeds terms-of-service reviews</p>
+    <p class="d">Redfin market pages, lender rate pages (Veterans United, Navy Federal), builder pages (D.R. Horton, Lennar, Richmond American). Alexandra drafts, you decide each. A yes also lets API Anything connect that group (step 12).</p>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s24">Done</label></div></div></div>
+
+  <div class="step" data-id="25"><div class="n">25</div><div class="body">
     <p class="t">OmniRoute failover and Orca phone app</p>
     <p class="d">OmniRoute switches to free providers when Claude is rate-limited (needs its own key); Orca&#x27;s phone app watches the sub-agents. Both optional — yes or no.</p>
-    <div class="acts"><label class="tick"><input type="checkbox" id="s24">Done</label></div></div></div>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s25">Done</label></div></div></div>
 
   <footer>Rebuilt 2026-10-08 from the live routine list, the Mac runner status, both dashboard databases and a Composio connection check. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Same list as text: <code>docs/STEVEN-STEPS.md</code>.</footer>
 </div>
