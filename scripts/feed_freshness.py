@@ -24,7 +24,7 @@ CADENCE = {
     "knowledgeGraph": 24 * 8, "healthNotionSync": 30, "isaLadder": 30, "twinBrief": 30, "vanessaBrief": 30,
     "marketSnapshot": None,
 }
-STAMP_KEYS = ("syncedAt", "checkedAt", "updatedAt", "generatedAt", "lastSyncAt", "writtenAt", "asOfIso", "ts", "at")
+STAMP_KEYS = ("syncedAt", "checkedAt", "updatedAt", "ranAt", "generatedAt", "lastSyncAt", "writtenAt", "asOfIso", "ts", "at")
 
 
 def parse(s):

@@ -6,7 +6,7 @@ research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox
 
 ## 1 · Phone · 5 minutes (Do these first; nothing else depends on them)
 
-1. **Switch off the duplicate weekly loops (they burned the usage allowance).** Every routine that failed on Oct 8 hit the usage limit, and these overlap each other every Sunday. Keep "Weekly Loop Engineering + Self-Test" (Saturday). Open each link and turn the switch off. The last one is optional: switch it off only if you don't read its output.
+1. **Switch off the duplicate weekly loops (they burned the usage allowance).** Claude already cut your routines from about 199 to 139 runs a week and moved three daily ones to the cheaper model (Oct 9). These three you created yourself, so only you can switch them off: each reads the whole dashboard every Sunday and repeats Saturday's loop. Open each link and turn the switch off. The last one is optional.
    - Weekly Loop Engineering QA: https://claude.ai/code/routines/trig_013ocJfEDdmSAgDPVaiCzMZY
    - Weekly improvement loop: https://claude.ai/code/routines/trig_013vYCzVa3vbHZ8BZZy6UBpX
    - Weekly self-improvement loop: https://claude.ai/code/routines/trig_016qKE1TdRjzkpb2Yby8yWBX

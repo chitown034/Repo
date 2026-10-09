@@ -51,3 +51,14 @@ back to `claude-opus-5-5` on each routine.
 
 Found while doing this, not changed: the Attraction Command Center prompt gives Patriot Pacific's NMLS as 1952360,
 while the brain and the deck use 1921615 (company). Ads must carry the right NMLS ID; Steven confirms which is right.
+
+## Follow-ups (2026-10-09, later)
+
+- Allowance: `seven_day`, status `allowed_warning`, resets 2026-10-11 20:00 UTC. Cloud routines will keep failing on the
+  limit until then; nothing to fire before it.
+- The post-reset reminder no longer asks Steven to switch the hourly ISA comms bridge back on (it would add ~168 runs a
+  week; Pipeline Sync replaced it). It now only nudges about the three duplicate Sunday loops, and only if still on.
+- The missed-monthly re-run check-in now fires four per wake and re-arms daily (two wakes, not four), with no repo reading.
+- `scripts/feed_freshness.py` reads `ranAt`: 19 fresh · 2 late · 3 stale (waiting on Steven) · 1 waiting · 0 unknown.
+- Biggest single user of the allowance is long working conversations on Opus (this one). New work starts best in a
+  fresh session.
