@@ -5,7 +5,11 @@ It adds nothing new: each part points at a file already in the repo. **Nothing h
 
 ## Before you paste (Terminal, Repo folder)
 
-    git pull
+Find the Repo folder: `find ~ -maxdepth 5 -name MAC-SETUP.sh -not -path '*/node_modules/*' 2>/dev/null` prints the path of
+the file; its folder is the Repo folder (if nothing prints, run `git clone https://github.com/chitown034/Repo.git`).
+The new files are on the branch `claude/stoic-cori-pvn3f8`, not the repo's default branch, so a bare `git pull` can miss them:
+
+    git fetch origin && git checkout claude/stoic-cori-pvn3f8 && git pull
 
 Then open Claude Code in the Repo folder on the Mac and paste everything between the two lines.
 
