@@ -50,178 +50,154 @@ footer{margin-top:28px;color:var(--muted);font-size:.85rem}
 <div class="wrap">
   <h1>Steven's Action Desk</h1>
   <p class="lede">Everything still waiting on you — including every connection that still has to be made — in the order to do it. Each button opens the right place; tick the box when done (saved in this browser), then tell Claude "done 7" so the dashboards catch up. Checked 2026-10-08, 11 AM PT.</p>
-  <div class="bar"><div class="meter" aria-hidden="true"><i id="fill"></i></div><span class="count" id="count">0 of 25 done</span></div>
-  <p class="note"><b>Already done, nothing to do:</b> Lofty API key (54 leads syncing), ISA bridge and AI twin on, research on Claude only, Gmail, Google Calendar, Notion, Strava, Slack, Canva, Inkbox iMessage connected. <b>Why things keep failing:</b> the Claude usage allowance runs out early each day; steps 1 and 2 cut the waste.</p>
+  <div class="bar"><div class="meter" aria-hidden="true"><i id="fill"></i></div><span class="count" id="count">0 of 21 done</span></div>
+  <p class="note"><b>Already done, nothing to do:</b> Lofty API key (54 leads syncing), ISA bridge and AI twin on, research on Claude only, Gmail, Google Calendar, Notion, Slack, Canva, Inkbox iMessage connected; the five research-only routines are already off; USC Weeks 5–7, Week 4, five states and Rent/Buy/Wait answered. <b>Why things keep failing:</b> every routine that failed on 2026-10-08 hit the Claude usage limit (weekly reset Sun Oct 11, 1 PM PT); step 1 and the Mac paste cut the waste.</p>
 
   <h2>1 · Stop the waste</h2>
-  <p class="where">Phone or computer · 5 minutes · biggest effect</p>
+  <p class="where">Phone or computer · 3 minutes · every failed run on 2026-10-08 was the usage limit</p>
 
   <div class="step" data-id="1"><div class="n">1</div><div class="body">
-    <p class="t">Switch off five research-only routines</p>
-    <p class="d">Nothing on the dashboard reads them, and they burn the daily usage allowance. Open each, turn the switch off. Keep any you want and tell Claude which.</p>
-    <div class="acts"><a class="btn" href="https://claude.ai/code/routines/trig_015Fm6K3R7yvyHv3SkPGXHwL" target="_blank" rel="noopener">Strava activity refresh</a>
-      <a class="btn" href="https://claude.ai/code/routines/trig_015MZSefaw573ciFQSvoWDmZ" target="_blank" rel="noopener">Daily deals &amp; hacks</a>
-      <a class="btn" href="https://claude.ai/code/routines/trig_01Qgz9ZEvt2KYFqfAte8zVRi" target="_blank" rel="noopener">Travel weekly</a>
-      <a class="btn" href="https://claude.ai/code/routines/trig_01Lb3aYRQZSLsAkcnDpZ8zEL" target="_blank" rel="noopener">Next Big Moves weekly</a>
-      <a class="btn" href="https://claude.ai/code/routines/trig_01PahyyhhmNzze1o1ujcGno2" target="_blank" rel="noopener">Deck ↔ ISA drift check</a>
+    <p class="t">Switch off three duplicate weekly self-improvement loops</p>
+    <p class="d">You have four weekly loop routines; three run within one hour every Sunday and all failed on the usage limit. Keep &quot;Weekly Loop Engineering + Self-Test (Cycle report)&quot; on Saturday; open these three and turn the switch off (Claude cannot change routines made through the API).</p>
+    <div class="acts"><a class="btn" href="https://claude.ai/code/routines/trig_013ocJfEDdmSAgDPVaiCzMZY" target="_blank" rel="noopener">Weekly Loop Engineering QA</a>
+      <a class="btn" href="https://claude.ai/code/routines/trig_013vYCzVa3vbHZ8BZZy6UBpX" target="_blank" rel="noopener">Weekly improvement loop</a>
+      <a class="btn" href="https://claude.ai/code/routines/trig_016qKE1TdRjzkpb2Yby8yWBX" target="_blank" rel="noopener">Weekly self-improvement loop</a>
       <label class="tick"><input type="checkbox" id="s1">Done</label></div></div></div>
 
+  <h2>2 · One reply to Claude</h2>
+  <p class="where">1 minute · send in this chat</p>
+
   <div class="step" data-id="2"><div class="n">2</div><div class="body">
-    <p class="t">Mac: pause the three feed tasks the cloud already does</p>
-    <p class="d">They still run every day next to the cloud writers and use the same allowance. Paste this into Claude Code on the Mac:</p>
-    <div class="acts"><code>Pause (do not delete) the runner tasks openrouter-feeds-refresh, feeds-weekly and feeds-market-close, then show me runnerctl list.</code><button class="btn" data-copy="Pause (do not delete) the runner tasks openrouter-feeds-refresh, feeds-weekly and feeds-market-close, then show me runnerctl list.">Copy</button>
+    <p class="t">LPT Realty&#x27;s brokerage DRE number and exact entity name</p>
+    <p class="d">Your personal DRE #01988316 is saved. The two queued posts still need LPT Realty&#x27;s own California DRE brokerage number and its exact entity name (on your LPT license certificate or the DRE site&#x27;s license lookup).</p>
+    <div class="acts"><a class="btn" href="https://www.dre.ca.gov/" target="_blank" rel="noopener">California DRE</a>
+      <code>LPT DRE: ______ (entity name: ______)</code><button class="btn" data-copy="LPT DRE: ______ (entity name: ______)">Copy</button>
       <label class="tick"><input type="checkbox" id="s2">Done</label></div></div></div>
 
-  <h2>2 · One reply to Claude</h2>
-  <p class="where">2 minutes · copy, fill the blanks, send in this chat</p>
-
   <div class="step" data-id="3"><div class="n">3</div><div class="body">
-    <p class="t">Answer five quick questions in one message</p>
-    <ul class="mini"><li>Add USC Weeks 5–7 to your study list? (Week 6 paper + participation due Sun Oct 11, 11:59 PM PT; final assessment Mon Oct 19)</li><li>Is Week 4 (due Sep 27) done?</li><li>Is the five-state licensing line (CA, NV, AZ, FL, IL) current?</li><li>LPT Realty&#x27;s own California DRE brokerage number and exact entity name?</li><li>Weekly Rent/Buy/Wait refresh: keep running, or switch off?</li></ul>
-    <div class="acts"><code>USC: yes · Week 4: done · 5 states: current · LPT DRE: ______ (entity name: ______) · Rent/Buy/Wait: keep</code><button class="btn" data-copy="USC: yes · Week 4: done · 5 states: current · LPT DRE: ______ (entity name: ______) · Rent/Buy/Wait: keep">Copy</button>
-      <label class="tick"><input type="checkbox" id="s3">Done</label></div></div></div>
-
-  <div class="step" data-id="4"><div class="n">4</div><div class="body">
     <p class="t">Approve or decline the two queued posts</p>
-    <p class="d">Command Deck → Marketing panel → open each draft and its compliance review → set its stage to Approved or Declined. After step 3: both wait on the licence facts.</p>
+    <p class="d">After the step above: Command Deck → Marketing panel → open each draft and its compliance review → set its stage to Approved or Declined.</p>
     <div class="acts"><a class="btn" href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Open Command Deck</a>
-      <label class="tick"><input type="checkbox" id="s4">Done</label></div></div></div>
+      <label class="tick"><input type="checkbox" id="s3">Done</label></div></div></div>
 
   <h2>3 · iPhone</h2>
   <p class="where">2 minutes</p>
 
-  <div class="step" data-id="5"><div class="n">5</div><div class="body">
+  <div class="step" data-id="4"><div class="n">4</div><div class="body">
     <p class="t">Restart your health numbers (Apple Health connection)</p>
-    <p class="d">The tiles are 25 days old. Open the Claude app on your iPhone, say &quot;update my health stats in Notion&quot;, and allow the Apple Health read and the Notion write once.</p>
-    <div class="acts"><label class="tick"><input type="checkbox" id="s5">Done</label></div></div></div>
+    <p class="d">The tiles are weeks old. Open the Claude app on your iPhone, say &quot;update my health stats in Notion&quot;, and allow the Apple Health read and the Notion write once.</p>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s4">Done</label></div></div></div>
 
   <h2>4 · On the Mac, one sitting</h2>
-  <p class="where">About an hour · Terminal, in your Repo folder · in this order</p>
+  <p class="where">About an hour · do these in order</p>
+
+  <div class="step" data-id="5"><div class="n">5</div><div class="body">
+    <p class="t">Open Terminal and go to your Repo folder</p>
+    <p class="d">There is no web link that can open Terminal on your Mac, so: press Command + Space, type Terminal, press Return. Type cd and a space, drag your Repo folder from Finder into the window, press Return. Then copy and run:</p>
+    <div class="acts"><code>git pull &amp;&amp; ls MAC-SETUP.sh integrations/mac-everything-2026-10-09.md</code><button class="btn" data-copy="git pull &amp;&amp; ls MAC-SETUP.sh integrations/mac-everything-2026-10-09.md">Copy</button>
+      <label class="tick"><input type="checkbox" id="s5">Done</label></div></div></div>
 
   <div class="step" data-id="6"><div class="n">6</div><div class="body">
-    <p class="t">Get the latest files and harnesses</p>
-    <div class="acts"><code>git pull &amp;&amp; ./MAC-SETUP.sh --only cli-anything-harnesses</code><button class="btn" data-copy="git pull &amp;&amp; ./MAC-SETUP.sh --only cli-anything-harnesses">Copy</button>
+    <p class="t">Start Claude Code in that folder</p>
+    <div class="acts"><code>claude</code><button class="btn" data-copy="claude">Copy</button>
       <label class="tick"><input type="checkbox" id="s6">Done</label></div></div></div>
 
   <div class="step" data-id="7"><div class="n">7</div><div class="body">
-    <p class="t">Mac repair paste-in</p>
-    <p class="d">Fixes the morning-brief error and the refused weekly backup; checks Orca, notes and the graph. Paste its report back.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mac-fix-all-2026-10-05.md" target="_blank" rel="noopener">Open the paste-in</a>
+    <p class="t">Paste the combined Mac setup (one paste, seven parts)</p>
+    <p class="d">Covers the harness reinstall, pausing the three duplicate Mac feed tasks, Opus 5.5, WhatsApp (QR code — iPhone next to you), the Second Brain engine, API Anything with FRED and Freddie Mac, and the ISA KPI fix. It asks you before changing any skill, MCP server or task. Open the file, copy everything between the two PASTE lines, paste it into Claude Code, answer its questions, then paste the MAC COMBINED REPORT block back here.</p>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mac-everything-2026-10-09.md" target="_blank" rel="noopener">Open the combined paste</a>
       <label class="tick"><input type="checkbox" id="s7">Done</label></div></div></div>
 
   <div class="step" data-id="8"><div class="n">8</div><div class="body">
-    <p class="t">Second Brain install paste-in (new)</p>
-    <p class="d">Installs the brain engine (bin/brain), registers Laya with Claude Code, adds the brain-maintenance task and rebuilds the knowledge graph. Paste its last line back.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mac-brain-2026-10-08.md" target="_blank" rel="noopener">Open the paste-in</a>
+    <p class="t">Install browser-use and OpenDesign</p>
+    <p class="d">Back in Terminal (type /exit to leave Claude Code first). Each ends with a self-test line.</p>
+    <div class="acts"><code>bash integrations/browser-use/install-mac.sh &amp;&amp; bash integrations/open-design/install-mac.sh</code><button class="btn" data-copy="bash integrations/browser-use/install-mac.sh &amp;&amp; bash integrations/open-design/install-mac.sh">Copy</button>
       <label class="tick"><input type="checkbox" id="s8">Done</label></div></div></div>
 
   <div class="step" data-id="9"><div class="n">9</div><div class="body">
-    <p class="t">ISA KPI paste-in (Lofty speed to lead)</p>
-    <p class="d">Lofty syncs, but its lead list returns no lead id, so first-response time has never been measured. Paste its report back.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mac-fix-isa-kpi-2026-10-08.md" target="_blank" rel="noopener">Open the paste-in</a>
+    <p class="t">Mac repair paste-in</p>
+    <p class="d">Fixes the morning-brief error and the refused weekly backup; checks Orca, notes and the graph. Paste its report back.</p>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mac-fix-all-2026-10-05.md" target="_blank" rel="noopener">Open the paste-in</a>
       <label class="tick"><input type="checkbox" id="s9">Done</label></div></div></div>
 
   <div class="step" data-id="10"><div class="n">10</div><div class="body">
-    <p class="t">Opus 5.5 on the Mac</p>
-    <div class="acts"><code>bash integrations/ai-team/opus-5-5-on-mac.sh --apply &amp;&amp; bash integrations/ai-team/opus-5-5-on-mac.sh --verify</code><button class="btn" data-copy="bash integrations/ai-team/opus-5-5-on-mac.sh --apply &amp;&amp; bash integrations/ai-team/opus-5-5-on-mac.sh --verify">Copy</button>
-      <label class="tick"><input type="checkbox" id="s10">Done</label></div></div></div>
-
-  <div class="step" data-id="11"><div class="n">11</div><div class="body">
-    <p class="t">Install browser-use, OpenDesign and API Anything</p>
-    <p class="d">browser-use reads web pages in a logged-out Chrome; OpenDesign is a design workspace; API Anything (new) lets Claude call a website like an API. Each ends with a self-test line.</p>
-    <div class="acts"><code>bash integrations/browser-use/install-mac.sh &amp;&amp; bash integrations/open-design/install-mac.sh &amp;&amp; bash integrations/api-anything/install-mac.sh</code><button class="btn" data-copy="bash integrations/browser-use/install-mac.sh &amp;&amp; bash integrations/open-design/install-mac.sh &amp;&amp; bash integrations/api-anything/install-mac.sh">Copy</button>
-      <label class="tick"><input type="checkbox" id="s11">Done</label></div></div></div>
-
-  <div class="step" data-id="12"><div class="n">12</div><div class="body">
-    <p class="t">Connect sites with API Anything (paste-in)</p>
-    <p class="d">After the install above: connects FRED and Freddie Mac rate data now; lists Redfin, lender, builder and homes.com pages and waits for your yes per group; never touches ShowingTime, Showami, SkySlope or zipForms (client data). Paste its end lines back.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/api-anything/mac-connect-sites-2026-10-09.md" target="_blank" rel="noopener">Open the paste-in</a>
-      <label class="tick"><input type="checkbox" id="s12">Done</label></div></div></div>
-
-  <div class="step" data-id="13"><div class="n">13</div><div class="body">
     <p class="t">Kevin in Claude Desktop</p>
     <p class="d">Claude Desktop → skills settings → upload integrations/claude-desktop/kevin-mentor.zip, then delete the old cole-mentor skill.</p>
     <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/tree/claude/stoic-cori-pvn3f8/integrations/claude-desktop" target="_blank" rel="noopener">Show the file</a>
-      <label class="tick"><input type="checkbox" id="s13">Done</label></div></div></div>
+      <label class="tick"><input type="checkbox" id="s10">Done</label></div></div></div>
 
-  <div class="step" data-id="14"><div class="n">14</div><div class="body">
-    <p class="t">WhatsApp → Vanessa (OpenWA connection)</p>
-    <p class="d">Links your phone to OpenWA on the Mac (QR code, or add --code for an 8-character code), then installs the reply bridge. Test: text yourself &quot;Vanessa, are you there?&quot;</p>
-    <div class="acts"><code>bash integrations/install-orca-whatsapp-laya.sh --skip-orca --skip-laya</code><button class="btn" data-copy="bash integrations/install-orca-whatsapp-laya.sh --skip-orca --skip-laya">Copy</button>
-      <label class="tick"><input type="checkbox" id="s14">Done</label></div></div></div>
-
-  <div class="step" data-id="15"><div class="n">15</div><div class="body">
+  <div class="step" data-id="11"><div class="n">11</div><div class="body">
     <p class="t">Real-estate sites (CLI-Anything: homes.com, ShowingTime, Showami, SkySlope, zipForms)</p>
     <p class="d">Install the DOMShell Chrome extension and sign in to each site by hand, then run the guided check. Read-only; SkySlope and zipForms stay locked until compliance signs off.</p>
     <div class="acts"><code>bash integrations/cli-anything-harnesses/connect.sh</code><button class="btn" data-copy="bash integrations/cli-anything-harnesses/connect.sh">Copy</button>
-      <label class="tick"><input type="checkbox" id="s15">Done</label></div></div></div>
+      <label class="tick"><input type="checkbox" id="s11">Done</label></div></div></div>
 
   <h2>5 · Account connections only you can sign in to</h2>
   <p class="where">About 20 minutes · reply to Claude after each one</p>
 
-  <div class="step" data-id="16"><div class="n">16</div><div class="body">
+  <div class="step" data-id="12"><div class="n">12</div><div class="body">
     <p class="t">Zoho CRM API access</p>
     <p class="d">Re-tested 2026-10-08: still 403. Zoho CRM → Setup → Security Control → Profiles → your profile → Developer Permissions → tick &quot;Zoho CRM API Access&quot;. Then say &quot;Zoho done&quot; and Claude sends a fresh Composio reconnect link.</p>
     <div class="acts"><a class="btn" href="https://crm.zoho.com/" target="_blank" rel="noopener">Open Zoho CRM</a>
-      <label class="tick"><input type="checkbox" id="s16">Done</label></div></div></div>
+      <label class="tick"><input type="checkbox" id="s12">Done</label></div></div></div>
 
-  <div class="step" data-id="17"><div class="n">17</div><div class="body">
+  <div class="step" data-id="13"><div class="n">13</div><div class="body">
     <p class="t">Composio sign-ins: Google Drive, GoHighLevel, Discord bot</p>
     <p class="d">All three still read &quot;initiated, no account&quot; (checked 2026-10-08). Links expire 10 minutes after they are made, so say &quot;Composio links&quot; when you sit down and sign in to each. For GoHighLevel, also say what it is for.</p>
-    <div class="acts"><label class="tick"><input type="checkbox" id="s17">Done</label></div></div></div>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s13">Done</label></div></div></div>
 
-  <div class="step" data-id="18"><div class="n">18</div><div class="body">
+  <div class="step" data-id="14"><div class="n">14</div><div class="body">
     <p class="t">Discord bot token for #vanessa</p>
     <p class="d">Vanessa&#x27;s Discord inbox finds no token. Create a bot in the Discord Developer Portal, invite it to your server, and put its token where the Discord bot sign-in above asks for it.</p>
     <div class="acts"><a class="btn" href="https://discord.com/developers/applications" target="_blank" rel="noopener">Discord Developer Portal</a>
-      <label class="tick"><input type="checkbox" id="s18">Done</label></div></div></div>
+      <label class="tick"><input type="checkbox" id="s14">Done</label></div></div></div>
 
-  <div class="step" data-id="19"><div class="n">19</div><div class="body">
+  <div class="step" data-id="15"><div class="n">15</div><div class="body">
     <p class="t">claude.ai connectors</p>
-    <p class="d">Eromify needs you to sign in again; EVRoutes fails to connect; PlayMCP never finished connecting. Reconnect each, or remove it if you don&#x27;t use it.</p>
+    <p class="d">Strava and Eromify need you to sign in again (Strava is why the training tiles stopped); EVRoutes fails to connect (error 402); PlayMCP never finished connecting. Reconnect each, or remove it if you don&#x27;t use it.</p>
     <div class="acts"><a class="btn" href="https://claude.ai/settings/connectors" target="_blank" rel="noopener">Open Connectors</a>
-      <label class="tick"><input type="checkbox" id="s19">Done</label></div></div></div>
+      <label class="tick"><input type="checkbox" id="s15">Done</label></div></div></div>
 
-  <div class="step" data-id="20"><div class="n">20</div><div class="body">
+  <div class="step" data-id="16"><div class="n">16</div><div class="body">
     <p class="t">Cloud network access (rate websites)</p>
     <p class="d">In a Claude Code cloud session: title bar → environment → Edit → Network access. Add these (and codebuff.com only if you want freebuff):</p>
     <div class="acts"><code>fred.stlouisfed.org www.freddiemac.com www.redfin.com</code><button class="btn" data-copy="fred.stlouisfed.org www.freddiemac.com www.redfin.com">Copy</button>
-      <label class="tick"><input type="checkbox" id="s20">Done</label></div></div></div>
+      <label class="tick"><input type="checkbox" id="s16">Done</label></div></div></div>
 
   <h2>6 · Decisions on optional connections</h2>
   <p class="where">Reply yes or no to each · nothing is spent without your yes</p>
 
-  <div class="step" data-id="21"><div class="n">21</div><div class="body">
+  <div class="step" data-id="17"><div class="n">17</div><div class="body">
     <p class="t">Google Drive: wire it or drop it</p>
     <p class="d">If yes, the Drive sign-in above makes it a real store of the brain; if no, Drive comes off the brain&#x27;s counts so the deck stops implying a feed.</p>
-    <div class="acts"><label class="tick"><input type="checkbox" id="s21">Done</label></div></div></div>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s17">Done</label></div></div></div>
 
-  <div class="step" data-id="22"><div class="n">22</div><div class="body">
+  <div class="step" data-id="18"><div class="n">18</div><div class="body">
     <p class="t">Plaid (bank balances)</p>
     <p class="d">No keys, so balances on the deck are typed by hand. Plaid keys may carry a cost: yes = you add keys; no = keep manual balances.</p>
-    <div class="acts"><label class="tick"><input type="checkbox" id="s22">Done</label></div></div></div>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s18">Done</label></div></div></div>
 
-  <div class="step" data-id="23"><div class="n">23</div><div class="body">
+  <div class="step" data-id="19"><div class="n">19</div><div class="body">
     <p class="t">OpenRouter (outside AI models for the council)</p>
     <p class="d">Connected with no key, so those seats are unused. A key spends money per call; default is no.</p>
-    <div class="acts"><label class="tick"><input type="checkbox" id="s23">Done</label></div></div></div>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s19">Done</label></div></div></div>
 
-  <div class="step" data-id="24"><div class="n">24</div><div class="body">
+  <div class="step" data-id="20"><div class="n">20</div><div class="body">
     <p class="t">Three publicfeeds terms-of-service reviews</p>
     <p class="d">Redfin market pages, lender rate pages (Veterans United, Navy Federal), builder pages (D.R. Horton, Lennar, Richmond American). Alexandra drafts, you decide each. A yes also lets API Anything connect that group (step 12).</p>
-    <div class="acts"><label class="tick"><input type="checkbox" id="s24">Done</label></div></div></div>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s20">Done</label></div></div></div>
 
-  <div class="step" data-id="25"><div class="n">25</div><div class="body">
+  <div class="step" data-id="21"><div class="n">21</div><div class="body">
     <p class="t">OmniRoute failover and Orca phone app</p>
     <p class="d">OmniRoute switches to free providers when Claude is rate-limited (needs its own key); Orca&#x27;s phone app watches the sub-agents. Both optional — yes or no.</p>
-    <div class="acts"><label class="tick"><input type="checkbox" id="s25">Done</label></div></div></div>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s21">Done</label></div></div></div>
 
-  <footer>Rebuilt 2026-10-08 from the live routine list, the Mac runner status, both dashboard databases and a Composio connection check. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Same list as text: <code>docs/STEVEN-STEPS.md</code>.</footer>
+  <footer>Rebuilt 2026-10-09 from the live routine list, the Mac runner status, both dashboard databases and a Composio connection check. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Same list as text: <code>docs/STEVEN-STEPS.md</code>.</footer>
 </div>
 
 <script>
 (function(){
-  var KEY="actionDesk.v3", state={};
+  var KEY="actionDesk.v4", state={};
   try{ state=JSON.parse(localStorage.getItem(KEY)||"{}")||{}; }catch(e){ state={}; }
   var boxes=document.querySelectorAll('label.tick input');
   function paint(){
