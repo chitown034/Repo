@@ -45,8 +45,9 @@ bash integrations/remote-control/rc-agent.sh report`
    `bash integrations/remote-control/orca-remote.sh serve
 bash integrations/remote-control/orca-remote.sh pair
 bash integrations/remote-control/orca-remote.sh report`
-11. **Claude Mods (optional, one at a time).** Mods run on your Mac with your permissions and see every prompt. We recommend Blast Radius, Replay Theater and Cache Tax; the rest are skip or later. Read the table, then install only after your own go. Also tell Claude whether you want the three custom mods (route-beacon, halt-guard, brain-reflect) built; the permission system refused to build them without your decision.
-   - Read the recommendations: https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mods/RECOMMENDATIONS.md
+11. **Turn on Claude Mods (one command).** Five mods are built, checked and ready: a status line showing which AI route you are on, a Proceed/Cancel guard before any send, share or payment, /remember to save a rule into the brain, Blast Radius, and /replay to review Claude's edits. Run this in Terminal from your Repo folder, type y once, then open a new Claude Code session. To turn them all off later: add --off.
+   `git pull && bash integrations/mods/install-mods.sh`
+   - What each mod does: https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mods/RECOMMENDATIONS.md
 12. **Type your keys into the files (never into chat).** The command above creates empty ~/.config/zoho/.env and ~/.config/lofty/.env with only the variable NAMES. Open each with the line below, type the value after each equals sign, save. Zoho needs five: ZOHO_ACCOUNTS_URL, ZOHO_API_URL, ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET, ZOHO_REFRESH_TOKEN (the two URLs depend on your Zoho data centre: .com, .eu, .in...). If TextEdit shows a formatting bar choose Format → Make Plain Text before saving. Lofty's key is already working.
    `open -e ~/.config/zoho/.env`
 13. **Pause the Discord poller until a bot token exists.** vanessa-discord-inbox runs every 5 minutes with no token, about 288 runs a day. Pause (do not delete) it: run the line below on the Mac.
