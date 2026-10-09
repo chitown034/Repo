@@ -16,7 +16,7 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Sofia | marketing, campaign, content, social, post, email blast, newsletter, video, avatar, brand, ad, seo, instagram, facebook, linkedin, youtube | `wiki/real-estate-playbooks/` |
 | Derek | automation, connector, integration, routine, task, broken, stack, api, mcp, dashboard, deck, sync, runner, failover, mac, script | `wiki/dashboard-ops/` |
 | Alexandra | compliance, trid, respa, reg z, disclosure, fair housing, dre, nmls, license, advertising rule, anti-steering, le, cd | `wiki/mortgage-programs/` |
-| Nadia | ai strategy, tool, tooling, evaluate, adopt, disruption, new model, agent design, hype | `docs/CAIO-DISRUPTION-BRIEF.md` |
+| Nadia | ai strategy, tool, tooling, evaluate, adopt, disruption, new model, agent design, hype, scout, new repo, skill, mcp server, plugin | `docs/CAIO-DISRUPTION-BRIEF.md` |
 | Victor | pipeline, conversion, lead, leads, speed to lead, crm, lofty, zoho, funnel, referral, revenue, six levers, isa | `wiki/real-estate-playbooks/` |
 | Elena | security, credential, password, key, token, access, breach, privacy, pii, data risk, backup | `docs/` |
 | Elon | feasibility, architecture, build, engineer, prototype, integration cost, refactor, brain, second brain | `brain/README.md` |

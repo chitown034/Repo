@@ -222,6 +222,17 @@
     "wiki/real-estate-playbooks/transaction-stages.md"
    ],
    "router_leaf": "wiki/real-estate-playbooks/index.md"
+  },
+  {
+   "id": "q22",
+   "kind": "leaf",
+   "question": "Who is the Disruption Scout and what does that seat run?",
+   "expected_file": "wiki/ai-team/org-chart.md",
+   "expected_phrase": "runs the weekly internet scout",
+   "alt_files": [
+    "wiki/ai-team/tool-integration-status.md"
+   ],
+   "router_leaf": "wiki/ai-team/index.md"
   }
  ]
 }

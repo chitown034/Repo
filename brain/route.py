@@ -22,7 +22,8 @@ LANES = "wiki/ai-team/index.md"
 SELFTEST = "brain/bench/routes.json"
 MAX_PARALLEL = 8
 MAX_RESEARCH = 4
-RESEARCH_WORDS = ("research", "latest", "compare", "market", "trend", "news", "what's new", "best", "options")
+RESEARCH_WORDS = ("research", "latest", "compare", "market", "trend", "news", "what's new", "best", "options", "scout",
+                  "internet", "github", "new tools", "new repos")
 DEFAULT_TIER = "Sonnet 5"
 
 

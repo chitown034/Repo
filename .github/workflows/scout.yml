@@ -1,0 +1,32 @@
+# The weekly scout: what is new on GitHub, the MCP registry, npm and Hacker News that could upgrade Claude Desktop and
+# the Command Deck. Plain Python, no model call, no secrets beyond the built-in read-only GITHUB_TOKEN -- costs no Claude
+# allowance. Runs Friday night so the Saturday loop-engineering cycle reads a fresh report. Proposal only: installs nothing.
+name: scout
+on:
+  schedule:
+    - cron: "23 6 * * 6"    # Saturdays 06:23 UTC (Fri 11:23 PM PT), before the Sat 13:00 UTC loop routine
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  scout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Tests (offline)
+        run: python3 integrations/scout/test_scout.py
+      - name: Scout the last 7 days
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 integrations/scout/scout.py --days 7
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: scout-report
+          path: |
+            docs/reports/SCOUT.md
+            docs/reports/SCOUT.json

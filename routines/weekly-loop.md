@@ -1,5 +1,8 @@
 # Routine spec — Weekly Loop (loop-engineering v2)
 
+**Scout added 2026-10-09** — `integrations/scout/scout.py` (step 2b) scans the internet each week for new
+repos, skills, MCP servers, upgrades, CLIs and free tools; the free GitHub `scout` workflow runs it Friday night.
+
 Drives the `loop-engineering` skill and the sub-skills it calls: `prompt-master`,
 `continuous-process-improvement`, `scale-growth-engine`, `stress-test-sweep`, `skills-refresh`, plus
 Nadia's disruption brief and Elon's feasibility gate.
@@ -43,6 +46,9 @@ Run the weekly loop with the loop-engineering skill. Continue the cycle numberin
    twinQueue, toolkitSnapshot. Write the fact sheet: what ran, what failed, what produced nothing,
    what never ran - with dates.
 2. Freeze the holdout: name ~20% of the items under test. Nothing in it is touched this cycle.
+2b. Scout: run `python3 integrations/scout/scout.py --days 7`; Nadia grades the top 10 and every NEW
+   business-lane item in docs/reports/SCOUT.md (ADOPT/PILOT/WATCH/IGNORE, dated sources), Elon gates
+   feasibility and security; survivors go to improvementProposals. Never install, connect or pay.
 3. Collect proposals: prompt-master (<=5 prompt diffs, HITL gate), continuous-process-improvement
    (weekly deep pass), scale-growth-engine (ADR pass), stress-test-sweep (weekly sweep),
    skills-refresh (drift). Each proposal: target, change, hypothesis, measurement, risk, rollback.

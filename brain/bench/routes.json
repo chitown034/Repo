@@ -1,12 +1,97 @@
-{"cases": [
- {"request": "Draft a Facebook post about VA loans for veterans in Temecula", "lead": "Sofia", "must_include": ["Alexandra", "Harrison", "Vanessa"], "halt": false},
- {"request": "Post the VA loan video to Instagram and email the client list", "lead": "Sofia", "must_include": ["Alexandra"], "halt": true},
- {"request": "Why is the Zoho sync broken and the lead pipeline empty?", "lead": "Victor", "must_include": ["Derek", "ECC"], "halt": false},
- {"request": "Give the borrower a rate quote on a 30-year FHA refinance", "lead": "Harrison", "must_include": ["Alexandra"], "halt": true},
- {"request": "What is my net worth and monthly budget?", "lead": "Marcus", "must_include": ["Vanessa"], "halt": false},
- {"request": "Evaluate whether we should adopt a new AI tool for transcripts", "lead": "Nadia", "must_include": ["Elon"], "halt": false},
- {"request": "Prepare the buyer for Saturday's showing and the offer timeline", "lead": "Gwen", "must_include": ["Carmen", "Alexandra"], "halt": false},
- {"request": "Rotate the Lofty API key and check who has access", "lead": "Elena", "must_include": ["Derek"], "halt": true},
- {"request": "Research the latest Temecula market trends for a listing presentation", "lead": "Marguerite", "must_include": ["Claude web research"], "halt": false},
- {"request": "Pay for the OpenRouter upgrade plan", "lead": "Vanessa", "must_include": ["Marcus"], "halt": true}
-]}
+{
+ "cases": [
+  {
+   "request": "Draft a Facebook post about VA loans for veterans in Temecula",
+   "lead": "Sofia",
+   "must_include": [
+    "Alexandra",
+    "Harrison",
+    "Vanessa"
+   ],
+   "halt": false
+  },
+  {
+   "request": "Post the VA loan video to Instagram and email the client list",
+   "lead": "Sofia",
+   "must_include": [
+    "Alexandra"
+   ],
+   "halt": true
+  },
+  {
+   "request": "Why is the Zoho sync broken and the lead pipeline empty?",
+   "lead": "Victor",
+   "must_include": [
+    "Derek",
+    "ECC"
+   ],
+   "halt": false
+  },
+  {
+   "request": "Give the borrower a rate quote on a 30-year FHA refinance",
+   "lead": "Harrison",
+   "must_include": [
+    "Alexandra"
+   ],
+   "halt": true
+  },
+  {
+   "request": "What is my net worth and monthly budget?",
+   "lead": "Marcus",
+   "must_include": [
+    "Vanessa"
+   ],
+   "halt": false
+  },
+  {
+   "request": "Evaluate whether we should adopt a new AI tool for transcripts",
+   "lead": "Nadia",
+   "must_include": [
+    "Elon"
+   ],
+   "halt": false
+  },
+  {
+   "request": "Prepare the buyer for Saturday's showing and the offer timeline",
+   "lead": "Gwen",
+   "must_include": [
+    "Carmen",
+    "Alexandra"
+   ],
+   "halt": false
+  },
+  {
+   "request": "Rotate the Lofty API key and check who has access",
+   "lead": "Elena",
+   "must_include": [
+    "Derek"
+   ],
+   "halt": true
+  },
+  {
+   "request": "Research the latest Temecula market trends for a listing presentation",
+   "lead": "Marguerite",
+   "must_include": [
+    "Claude web research"
+   ],
+   "halt": false
+  },
+  {
+   "request": "Pay for the OpenRouter upgrade plan",
+   "lead": "Vanessa",
+   "must_include": [
+    "Marcus"
+   ],
+   "halt": true
+  },
+  {
+   "request": "Scout new MCP servers and Claude Code skills to evaluate and adopt this week",
+   "lead": "Nadia",
+   "must_include": [
+    "Elon",
+    "Claude web research"
+   ],
+   "halt": false
+  }
+ ]
+}

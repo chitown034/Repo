@@ -24,7 +24,8 @@ Capability, Integration, Stress Test) does the work; report seats run on Sonnet 
 `selfTest`, `stressTestReport`, `cpiOpportunityLog`/`cpiCycles`, `scaleOpportunityLog`,
 `improvementProposals`, `auditFindings`, `twinQueue`, `aiTeamRoster`, `toolkitSnapshot`, plus the
 sub-skills this cycle calls: `prompt-master`, `continuous-process-improvement`,
-`scale-growth-engine`, `stress-test-sweep`, `skills-refresh`, and Nadia's disruption brief.
+`scale-growth-engine`, `stress-test-sweep`, `skills-refresh`, and Nadia's disruption brief, fed by the weekly
+scout report `docs/reports/SCOUT.md` (`integrations/scout/scout.py`).
 `docs/reports/BRAIN-BENCH.md` (written by `bin/brain bench --write`, the `brain-maintenance` Mac task's
 weekly slot) — the brain's own tracked metric, folded into this cycle's baseline. If `bin/brain` is not
 yet in this checkout, or the report has never been written, record it as `never run` and move on.
@@ -56,6 +57,15 @@ An item with no Goal/Loop/Routine is not improved this cycle; it gets one writte
    consecutive cycles, correctness % fell versus the previous cycle's holdout, or the "not in brain"
    rate exceeds 20%. Log it as `halted` with the reason, and route a triage item to `prompt-master` or
    `skills-refresh` instead of promoting.
+2b. **Scout the internet (Nadia's Disruption Scout, Elon gates).** Run `python3 integrations/scout/scout.py --days 7`
+   (or read the `scout-report` artifact the free GitHub `scout` workflow made Friday night). It scans GitHub (new and
+   rising repos: MCP servers, Claude Code plugins/skills/hooks, agent CLIs, memory, real-estate/mortgage/CRM APIs),
+   releases of tools already in the stack, the official MCP registry, npm and Hacker News, and writes
+   `docs/reports/SCOUT.md` with each candidate scored, marked NEW, and tagged with its owner seat. Nadia opens the top
+   10 plus every NEW business-lane item (WebFetch, dated sources only) and grades ADOPT / PILOT / WATCH / IGNORE; Elon
+   gates each ADOPT/PILOT for fit, integration cost and security (Elena for anything asking for credentials or client
+   data). Survivors become `improvementProposals` items and test candidates for step 4 — at trust L1, proposal only.
+   Installing, connecting an account or paying for anything is a HALT for Steven.
 3. **Hold out.** Freeze an **untouched holdout set** before any change: ~20% of the items under test
    (named in the cycle entry), selected for coverage, not convenience. Nothing in the holdout is
    edited, tuned or fixed this cycle. It exists to detect improvements that only move the items you
