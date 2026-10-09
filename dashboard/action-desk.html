@@ -50,8 +50,8 @@ footer{margin-top:28px;color:var(--muted);font-size:.85rem}
 <div class="wrap">
   <h1>Steven's Action Desk</h1>
   <p class="lede">Everything still waiting on you — including every connection that still has to be made — in the order to do it. Each button opens the right place; tick the box when done (saved in this browser), then tell Claude "done 7" so the dashboards catch up. Checked 2026-10-08, 11 AM PT.</p>
-  <div class="bar"><div class="meter" aria-hidden="true"><i id="fill"></i></div><span class="count" id="count">0 of 21 done</span></div>
-  <p class="note"><b>Already done, nothing to do:</b> Lofty API key (54 leads syncing); the 14 routines that failed on the usage limit were re-run and succeeded; the dashboards read 21 of 25 feeds fresh; both dashboards were updated with the cycle-11 fixes (96 in all) and the Command Deck has a Remote Control card and org chart node; the one-command Mac script, the three-tier failover (OpenRouter cap $25) and the connection plan are built and tested; your USC answers and personal DRE are saved. <b>Why things kept failing:</b> the Claude usage allowance; the first step cuts the waste.</p>
+  <div class="bar"><div class="meter" aria-hidden="true"><i id="fill"></i></div><span class="count" id="count">0 of 22 done</span></div>
+  <p class="note"><b>Already done, nothing to do:</b> Lofty API key (54 leads syncing); the 14 routines that failed on the usage limit were re-run and succeeded; the dashboards read 21 of 25 feeds fresh; both dashboards were updated with the cycle-11 fixes (96 in all) and the Command Deck has a Remote Control card, org chart nodes for it and for context.dev (connected), and the AI Replica Studio plan; the one-command Mac script, the three-tier failover (OpenRouter cap $25) and the connection plan are built and tested; your USC answers and personal DRE are saved. <b>Why things kept failing:</b> the Claude usage allowance; the first step cuts the waste.</p>
 
   <h2>1 · Phone · 5 minutes</h2>
   <p class="where">Do these first; nothing else depends on them</p>
@@ -214,17 +214,24 @@ bash integrations/remote-control/orca-remote.sh report">Copy</button>
   <p class="where">Each defaults to no; nothing is spent without your yes</p>
 
   <div class="step" data-id="21"><div class="n">21</div><div class="body">
+    <p class="t">Decide the AI Steve video replica (plan is ready)</p>
+    <p class="d">context.dev is connected. The weekly real-estate and loan-officer video plan is in integrations/ai-replica-studio/PLAN.md. To start Claude needs five answers: (1) which avatar provider, or none yet (HeyGen works through Composio but is paid and not connected; the CAM page was not applied to and its price is not published); (2) built-in voice or a cloned voice on your own ElevenLabs account; (3) platforms and cadence (assumed one of each a week to Facebook, Instagram, LinkedIn, YouTube); (4) LPT Realty&#x27;s brokerage DRE number and name plus your personal NMLS ID for the disclosure line; (5) whether the three social timers run as a routine or through Buffer. You record your own consent and samples; nothing posts without your approval each week.</p>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/ai-replica-studio/PLAN.md" target="_blank" rel="noopener">Read the plan</a>
+      <code>replica: provider ______ · voice ______ · cadence 1+1/week · LPT DRE ______ · NMLS ID ______ · timers routine/Buffer</code><button class="btn" data-copy="replica: provider ______ · voice ______ · cadence 1+1/week · LPT DRE ______ · NMLS ID ______ · timers routine/Buffer">Copy</button>
+      <label class="tick"><input type="checkbox" id="s21">Done</label></div></div></div>
+
+  <div class="step" data-id="22"><div class="n">22</div><div class="body">
     <p class="t">Reply &#x27;defaults&#x27; or change any line</p>
     <p class="d">Google Drive: drop it from the brain&#x27;s counts (or wire it after the Composio sign-in). Plaid: no (keys may cost). Terms-of-service reviews for Redfin market pages, lender rate pages and builder pages: Alexandra drafts, you decide each. SkySlope and zipForms: stay locked until compliance signs off. APInation: tell Claude what you want it to do before any paid use. Orca phone app: your call.</p>
     <div class="acts"><code>defaults: Drive drop · Plaid no · ToS reviews later · SkySlope/zipForms locked · APInation: ______</code><button class="btn" data-copy="defaults: Drive drop · Plaid no · ToS reviews later · SkySlope/zipForms locked · APInation: ______">Copy</button>
-      <label class="tick"><input type="checkbox" id="s21">Done</label></div></div></div>
+      <label class="tick"><input type="checkbox" id="s22">Done</label></div></div></div>
 
   <footer>Rebuilt 2026-10-09 (afternoon) from the live routine list, the Mac runner status, both dashboard databases and a Composio connection check. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Same list as text: <code>docs/STEVEN-STEPS.md</code>.</footer>
 </div>
 
 <script>
 (function(){
-  var KEY="actionDesk.v6", state={};
+  var KEY="actionDesk.v7", state={};
   try{ state=JSON.parse(localStorage.getItem(KEY)||"{}")||{}; }catch(e){ state={}; }
   var boxes=document.querySelectorAll('label.tick input');
   function paint(){

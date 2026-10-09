@@ -13,6 +13,8 @@ real path, what Steven does and what agents do, in `integrations/CONNECT-PLAN-20
 
 **Remote control (2026-10-09):** two Macs, Claude sessions via `claude remote-control` and Orca via `orca serve` pairing; scripts in `integrations/remote-control/`, card on the Command Deck Toolkit tab. Nothing has run on a Mac yet.
 
+**context.dev (2026-10-09):** connected through Composio (brand/web data, 1,000 free credits, search proved). **AI Replica Studio:** plan only, `integrations/ai-replica-studio/PLAN.md`; Facebook, Instagram, LinkedIn and YouTube are already connected through Composio, the avatar provider is not chosen.
+
 ## The four that need Steven today
 
 | System | Path | Status today | **What Steven must do (one line)** | Trust |
