@@ -11,6 +11,8 @@ Trust levels: **L1** report-only · **L2** drafts for Steven's approval · **L3*
 OmniRoute, FreeAPI, OpenRouter, APInation, Composio, CLI-Anything and API Anything are planned system by system, with the
 real path, what Steven does and what agents do, in `integrations/CONNECT-PLAN-2026-10-09.md`. APInation is unidentified.
 
+**Remote control (2026-10-09):** two Macs, Claude sessions via `claude remote-control` and Orca via `orca serve` pairing; scripts in `integrations/remote-control/`, card on the Command Deck Toolkit tab. Nothing has run on a Mac yet.
+
 ## The four that need Steven today
 
 | System | Path | Status today | **What Steven must do (one line)** | Trust |

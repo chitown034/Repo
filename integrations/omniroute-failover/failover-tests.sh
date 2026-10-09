@@ -21,6 +21,7 @@ N_PASS=0; N_FAIL=0
 pass() { N_PASS=$((N_PASS+1)); printf '  ok    %s\n' "$1"; }
 fail() { N_FAIL=$((N_FAIL+1)); printf '  FAIL  %s\n     -> %s\n' "$1" "$2"; }
 sect() { printf '\n== %s\n' "$*"; }
+okc()  { _d="$1"; shift; if "$@"; then pass "$_d"; else fail "$_d" "check failed: $*"; fi; }
 eq()   { if [ "$2" = "$3" ]; then pass "$1 ($2)"; else fail "$1" "expected '$3', got '$2'"; fi; }
 has()  { case "$2" in *"$3"*) pass "$1" ;; *) fail "$1" "'$3' not found in: $(printf '%s' "$2" | tr '\n' '|' | cut -c1-300)" ;; esac; }
 hasnt(){ case "$2" in *"$3"*) fail "$1" "'$3' WAS present in: $(printf '%s' "$2" | tr '\n' '|' | cut -c1-300)" ;; *) pass "$1" ;; esac; }
@@ -31,7 +32,7 @@ cat > "$BIN/claude" <<'STUB'
 # Records what the launcher handed it (never the token's value), then answers per STUB_MODE: ok | limit | exhaust
 auth=unset; [ -n "${ANTHROPIC_AUTH_TOKEN:-}" ] && { auth=other; [ "$ANTHROPIC_AUTH_TOKEN" = "$TEST_OR_KEY" ] && auth=or-key; }
 api=unset; [ "${ANTHROPIC_API_KEY+x}" = x ] && { api=set; [ -z "$ANTHROPIC_API_KEY" ] && api=empty; }
-printf 'BASE=%s AUTH=%s APIKEY=%s MODEL=%s OAUTH=%s ROUTE=%s\n' "${ANTHROPIC_BASE_URL:-unset}" "$auth" "$api" "${ANTHROPIC_MODEL:-unset}" "${CLAUDE_CODE_OAUTH_TOKEN:+set}" "${VANESSA_ROUTE_MODE:-unset}" >> "$STUBROOT/calls.log"
+printf 'BASE=%s AUTH=%s APIKEY=%s MODEL=%s OAUTH=%s ROUTE=%s IFREE=%s ARGS=%s\n' "${ANTHROPIC_BASE_URL:-unset}" "$auth" "$api" "${ANTHROPIC_MODEL:-unset}" "${CLAUDE_CODE_OAUTH_TOKEN:+set}" "${VANESSA_ROUTE_MODE:-unset}" "${VANESSA_INTERACTIVE_FREE:-}" "$*" >> "$STUBROOT/calls.log"
 case "${STUB_MODE:-ok}" in
   limit)   echo '{"type":"result","subtype":"error","is_error":true,"result":"Claude AI usage limit reached"}'; exit 1 ;;
   exhaust) echo '{"type":"result","subtype":"error","is_error":true,"result":"All providers exhausted for combo auto/coding:free"}'; exit 1 ;;
@@ -44,7 +45,8 @@ cat > "$BIN/curl" <<'STUB'
 url=''; for a in "$@"; do case "$a" in http*) url="$a" ;; esac; done
 printf '%s\n' "$url" >> "$STUBROOT/curl.log"
 case "$url" in
-  */healthz) [ -f "$STUBROOT/omni_up" ] && { echo ok; exit 0; }; exit 7 ;;
+  */healthz) [ -f "$STUBROOT/omni_up" ] && [ ! -f "$STUBROOT/no_healthz" ] && { echo ok; exit 0; }; exit 7 ;;
+  */api/health) [ -f "$STUBROOT/omni_up" ] && { echo ok; exit 0; }; exit 7 ;;
   */v1/key)  cat >/dev/null; [ -f "$STUBROOT/keyjson" ] && { cat "$STUBROOT/keyjson"; exit 0; }; exit 22 ;;
 esac
 exit 22
@@ -54,7 +56,7 @@ export PATH="$BIN:$PATH"
 
 # ------------------------------------------------------------------ helpers
 fresh() { # wipe all state; write the omniroute key file; omni up
-  rm -rf "$HOME/.config" "$ROOT/calls.log" "$ROOT/curl.log" "$ROOT/keyjson"
+  rm -rf "$HOME/.config" "$HOME/.local" "$HOME/Library" "$HOME/Applications" "$ROOT/no_healthz" "$ROOT/launchctl.log" "$ROOT/calls.log" "$ROOT/curl.log" "$ROOT/keyjson"
   mkdir -p "$OCFG" && printf 'OMNIROUTE_API_KEY=not-a-real-omni-key\n' > "$OCFG/.env" && chmod 600 "$OCFG/.env"
   : > "$ROOT/omni_up"; : > "$ROOT/calls.log"; : > "$ROOT/curl.log"
   unset STUB_MODE OMNIROUTE_FREE_RETRY OMNIROUTE_FREE_FAIL_N OPENROUTER_HEADROOM_USD
@@ -274,6 +276,213 @@ fresh; set_route free-fallback; t3_on 25; omni_down
 run --task "$OKTASK" -p 'hi' --model sonnet
 has "T3 rewrites nothing it should not: model is set via env" "$(lastcall)" "MODEL=anthropic/"
 hasnt "the OmniRoute key never goes to OpenRouter" "$(cat "$ROOT/calls.log")" "not-a-real-omni-key"
+
+
+# ================================================================== 9. /api/health is accepted as well as /healthz
+sect "OmniRoute that only serves /api/health still counts as healthy (a likely real-world blocker)"
+fresh; set_route free-fallback; : > "$ROOT/no_healthz"
+run --task "$OKTASK" -p 'hi'
+eq "runs on tier 2" "$RC" 0; has "tier 2" "$(lastcall)" "BASE=http://127.0.0.1:20128"
+
+# ================================================================== 10. --doctor
+sect "--doctor"
+XBIN="$ROOT/xbin"; mkdir -p "$XBIN"
+cat > "$XBIN/omniroute" <<'STUB'
+#!/usr/bin/env bash
+case "$1" in --version) echo "omniroute ${STUB_OMNI_VER:-3.8.50}" ;; providers) [ "${STUB_PROVIDERS:-yes}" = yes ] && printf 'ID  STATUS\nnvidia connected\nopenrouter-free connected\n' ;; esac
+exit 0
+STUB
+cat > "$XBIN/launchctl" <<'STUB'
+#!/usr/bin/env bash
+case "$1" in list) [ -f "$STUBROOT/agent_loaded" ] && printf '123\t0\tcom.stevenshearrill.omniroute-probe\n' ;; load) printf 'load %s\n' "$*" >> "$STUBROOT/launchctl.log"; : > "$STUBROOT/agent_loaded" ;; esac
+exit 0
+STUB
+cat > "$XBIN/runnerctl" <<'STUB'
+#!/usr/bin/env bash
+cat "$STUBROOT/runnerlist" 2>/dev/null
+STUB
+chmod +x "$XBIN/omniroute" "$XBIN/launchctl" "$XBIN/runnerctl"
+good_world() { # a Mac where every precondition holds
+  fresh; rm -f "$ROOT/agent_loaded" "$ROOT/runnerlist"
+  mkdir -p "$HOME/.local/bin" "$HOME/Library/LaunchAgents" "$STATE" "$HOME/.config/claude-runner"
+  cp "$AUTO" "$HOME/.local/bin/claude-auto"; cp "$PROBE" "$HOME/.local/bin/probe.sh"; chmod +x "$HOME/.local/bin/claude-auto" "$HOME/.local/bin/probe.sh"
+  printf 'OMNIROUTE_API_KEY=%s\n' "$DOC_SECRET" > "$OCFG/.env"; chmod 600 "$OCFG/.env"
+  echo '<plist/>' > "$HOME/Library/LaunchAgents/com.stevenshearrill.omniroute-probe.plist"; : > "$ROOT/agent_loaded"
+  printf 'peer\n' > "$HOME/.config/claude-runner/role"; chmod 600 "$HOME/.config/claude-runner/role"
+  set_route subscription
+  printf '2026-10-09T10:00:00Z task=x rc=1 pii=0 branch=usage-limit bytes=10 sha256=ab\n' > "$STATE/limit-samples.log"
+  printf 'weather-news-refresh  claude-auto --task weather-news-refresh -p x\nr10-automation-health  claude-auto --task r10-automation-health -p y\n' > "$ROOT/runnerlist"
+  PATH_SAVE="$PATH"
+}
+doctor() { PATH="$HOME/.local/bin:$XBIN:$PATH_SAVE" "$AUTO" --doctor > "$ROOT/doc" 2>&1; RC=$?; }
+DOC_SECRET="doctor-secret-VALUE-must-not-print-123"
+good_world
+find "$HOME" -type f -exec cksum {} + 2>/dev/null | sort > "$ROOT/before"; : > "$ROOT/calls.log"
+doctor
+eq "healthy Mac: exit 0" "$RC" 0
+has "summary line" "$(cat "$ROOT/doc")" "0 FAIL"
+hasnt "no FAIL lines" "$(cat "$ROOT/doc")" "FAIL  "
+hasnt "key value never printed" "$(cat "$ROOT/doc")" "$DOC_SECRET"
+find "$HOME" -type f -exec cksum {} + 2>/dev/null | sort > "$ROOT/after"
+eq "doctor is read-only (no file created, changed or removed)" "$(cmp -s "$ROOT/before" "$ROOT/after" && echo same || echo changed)" same
+eq "doctor never called claude" "$(calls)" 0
+for want in "/healthz" "omniroute 3.8.50" "mode 600" "OMNIROUTE_API_KEY is set" "providers list printed" "matches" "probe.sh sits next" "LaunchAgent is loaded" "lease role: peer" "state/mode=subscription" "limit detection" "use claude-auto"; do has "PASS line: $want" "$(cat "$ROOT/doc")" "$want"; done
+has "shows claude / claude-auto paths" "$(cat "$ROOT/doc")" "claude-auto ->"
+
+good_world; omni_down; doctor
+eq "OmniRoute down: exit 1" "$RC" 1; has "FAIL names it with a fix" "$(cat "$ROOT/doc")" "FAIL  OmniRoute does not answer"
+good_world; : > "$ROOT/no_healthz"; doctor
+has "only /api/health: PASS" "$(cat "$ROOT/doc")" "/api/health"; eq "exit 0" "$RC" 0
+good_world; chmod 644 "$OCFG/.env"; doctor
+has "env mode 644 FAIL + chmod fix" "$(cat "$ROOT/doc")" "chmod 600"; eq "exit 1" "$RC" 1
+good_world; printf 'OMNIROUTE_API_KEY=\n' > "$OCFG/.env"; chmod 600 "$OCFG/.env"; doctor
+has "empty key FAIL" "$(cat "$ROOT/doc")" "FAIL  OMNIROUTE_API_KEY is empty"
+good_world; rm -f "$OCFG/.env"; doctor
+has "missing env FAIL" "$(cat "$ROOT/doc")" "is missing"
+good_world; STUB_PROVIDERS=no doctor
+has "no providers FAIL" "$(cat "$ROOT/doc")" "lists no providers"
+good_world; STUB_OMNI_VER=3.7.1 doctor
+has "old omniroute FAIL" "$(cat "$ROOT/doc")" "older than 3.8.50"
+good_world; echo '# drift' >> "$HOME/.local/bin/claude-auto"; doctor
+has "stale installed launcher FAIL" "$(cat "$ROOT/doc")" "differs from"
+good_world; rm -f "$HOME/.local/bin/probe.sh"; doctor
+has "missing probe FAIL" "$(cat "$ROOT/doc")" "probe.sh is not installed"
+good_world; rm -f "$HOME/.local/bin/claude-auto"; doctor
+has "missing claude-auto FAIL" "$(cat "$ROOT/doc")" "claude-auto is not installed"
+good_world; rm -f "$ROOT/agent_loaded"; doctor
+has "agent not loaded FAIL + load fix" "$(cat "$ROOT/doc")" "launchctl load -w"
+good_world; rm -f "$HOME/Library/LaunchAgents/com.stevenshearrill.omniroute-probe.plist"; doctor
+has "no plist FAIL" "$(cat "$ROOT/doc")" "plist missing"
+good_world; rm -f "$HOME/.config/claude-runner/role"; doctor
+has "no role file WARN" "$(cat "$ROOT/doc")" "WARN  lease role defaults to standby"; eq "WARN alone exits 0" "$RC" 0
+good_world; mkdir -p "$HOME/Applications/claude-fallback"; printf '#!/bin/sh\nexit 0\n' > "$HOME/Applications/claude-fallback/claude-auto"; chmod +x "$HOME/Applications/claude-fallback/claude-auto"
+PATH="$HOME/Applications/claude-fallback:$HOME/.local/bin:$XBIN:$PATH_SAVE" "$AUTO" --doctor > "$ROOT/doc" 2>&1; RC=$?
+has "older claude-auto shadowing the new one FAIL" "$(cat "$ROOT/doc")" "older one shadows"
+has "old launcher flagged as the one that runs" "$(cat "$ROOT/doc")" "OLD launcher"
+eq "exit 1" "$RC" 1
+good_world; mkdir -p "$HOME/Applications/claude-fallback"; echo "export PATH=\$HOME/Applications/claude-fallback:\$PATH" > "$HOME/.zshrc"; doctor
+has "old launcher referenced from .zshrc" "$(cat "$ROOT/doc")" ".zshrc"
+good_world; printf 'weather  claude -p x\nother  claude-auto -p y\n' > "$ROOT/runnerlist"; doctor
+has "tasks without --task WARN" "$(cat "$ROOT/doc")" "only 0 pass --task"
+good_world; printf 'a  claude -p x\n' > "$ROOT/runnerlist"; doctor
+has "no task uses claude-auto WARN" "$(cat "$ROOT/doc")" "none of 1 runnerctl lines mention claude-auto"
+good_world; : > "$STATE/limit-samples.log"; doctor
+has "no limit ever detected WARN" "$(cat "$ROOT/doc")" "no limit has ever been detected"
+good_world; set_route free-fallback; touch -d '2 days ago' "$STATE/mode"; doctor
+has "stale non-subscription mode WARN" "$(cat "$ROOT/doc")" "WARN  state/mode=free-fallback"
+good_world; printf '%s task=weather-news-refresh route=free-fallback\n' "2026-10-09T10:00:00Z" > "$STATE/claude-auto.log"; doctor
+has "log tail shown" "$(cat "$ROOT/doc")" "| 2026-10-09T10:00:00Z task=weather-news-refresh"
+
+# ================================================================== 11. installer
+sect "install-failover.sh (stubs, temp HOME)"
+INST="$HERE/install-failover.sh"
+run_inst() { # answers-string args… ; stdin = one answer per line
+  _ans="$1"; shift
+  printf '%b' "$_ans" | PATH="$XBIN:$PATH_SAVE" "$INST" "$@" > "$ROOT/inst.out" 2>&1; RC=$?
+}
+files_hash() { find "$HOME" -type f -exec cksum {} + 2>/dev/null | sort | cksum; }
+good_world; rm -rf "$HOME/.local" "$HOME/Library" "$HOME/.config/claude-runner" "$OCFG"; : > "$ROOT/calls.log"
+before=$(files_hash); run_inst '' --dry-run
+eq "dry-run changes nothing" "$(files_hash)" "$before"
+has "dry-run says what it would ask" "$(cat "$ROOT/inst.out")" "would ask: Install"
+has "dry-run still runs the doctor" "$(cat "$ROOT/inst.out")" "claude-auto --doctor"
+run_inst ''
+eq "EOF on stdin = all N: nothing created" "$(files_hash)" "$before"
+run_inst 'n\nn\nn\nn\nn\nn\n'
+eq "explicit n everywhere: nothing created" "$(files_hash)" "$before"
+run_inst 'banana\n\nno\nN\nx\nx\n'
+eq "anything but y/yes is no" "$(files_hash)" "$before"
+run_inst 'y\ny\ny\ny\ny\ny\n'
+okc "claude-auto installed, executable" test -x "$HOME/.local/bin/claude-auto"
+okc "claude-auto is the repo copy" cmp -s "$AUTO" "$HOME/.local/bin/claude-auto"
+okc "probe.sh is the repo copy, next to claude-auto" cmp -s "$PROBE" "$HOME/.local/bin/probe.sh"
+eq "role file says peer" "$(tr -d '\n' < "$HOME/.config/claude-runner/role")" peer
+eq ".env holds the key NAME only (empty)" "$(cat "$OCFG/.env")" "OMNIROUTE_API_KEY="
+eq ".env is chmod 600" "$(stat -c %a "$OCFG/.env")" 600
+has "plist has the label" "$(cat "$HOME/Library/LaunchAgents/com.stevenshearrill.omniroute-probe.plist")" "<string>com.stevenshearrill.omniroute-probe</string>"
+has "plist runs probe.sh every 900 s" "$(cat "$HOME/Library/LaunchAgents/com.stevenshearrill.omniroute-probe.plist")" "<integer>900</integer>"
+has "plist points at the installed probe.sh" "$(cat "$HOME/Library/LaunchAgents/com.stevenshearrill.omniroute-probe.plist")" "$HOME/.local/bin/probe.sh"
+has "launchctl load called" "$(cat "$ROOT/launchctl.log" 2>/dev/null)" "load -w"
+has "tells Steven to paste the key himself" "$(cat "$ROOT/inst.out")" "YOU paste the key"
+has "prints the runner-task lines instead of editing them" "$(cat "$ROOT/inst.out")" "claude-auto --task <that-task's-own-name>"
+has "ends with the doctor" "$(cat "$ROOT/inst.out")" "doctor:"
+eq "never touched claude or any Claude config" "$(calls)" 0
+eq "no ~/.claude created" "$([ -e "$HOME/.claude" ] && echo yes || echo no)" no
+hasnt "installer never prints a key value" "$(cat "$ROOT/inst.out")" "$DOC_SECRET"
+printf 'OMNIROUTE_API_KEY=pasted-by-steven\n' > "$OCFG/.env"; h1=$(cksum < "$OCFG/.env")
+run_inst 'n\nn\nn\nn\n'
+eq "re-run leaves an existing .env alone" "$(cksum < "$OCFG/.env")" "$h1"
+hasnt "re-run does not re-ask to copy identical files" "$(cat "$ROOT/inst.out")" "Install $HOME/.local/bin/claude-auto"
+echo '# local edit' >> "$HOME/.local/bin/claude-auto"
+run_inst 'y\nn\nn\nn\n'
+okc "differing install replaced on yes" cmp -s "$AUTO" "$HOME/.local/bin/claude-auto"
+eq "old copy kept as .bak" "$(find "$HOME/.local/bin" -name 'claude-auto.bak*' | wc -l | tr -d ' ')" 1
+chmod 644 "$OCFG/.env"; run_inst 'n\nn\nn\ny\n' 
+eq "offers chmod 600 for a loose .env (asked once)" "$(grep -c 'the launcher refuses any other mode' "$ROOT/inst.out")" 1
+
+# ================================================================== 12. --interactive-free (human-present opt-in)
+sect "--interactive-free: explicit, tty-only, banner, guard hook, PII-refused, default off"
+need_script=$(command -v script || true)
+if [ -z "$need_script" ]; then fail "script(1) is needed to give the tests a pty" "install util-linux/bsdutils"; else
+ipty() { # typed-answer args… : run claude-auto under a pty, answer typed on its stdin
+  _t="$1"; shift
+  printf '%s\n' "$_t" | script -qec "$AUTO --no-lease $*" "$ROOT/typescript" >/dev/null 2>&1; RC=$?
+}
+fresh; set_route subscription; export CLAUDE_CODE_OAUTH_TOKEN=oauth-not-real
+run --interactive-free
+eq "no tty: refused (77)" "$RC" 77; eq "no claude call" "$(calls)" 0
+ipty FREE --interactive-free
+eq "typed FREE under a pty: starts (rc 0)" "$RC" 0
+has "launched on OmniRoute" "$(lastcall)" "BASE=http://127.0.0.1:20128"
+has "free combo model" "$(lastcall)" "MODEL=auto/coding:free"
+has "interactive marker exported" "$(lastcall)" "IFREE=1"
+has "client-data guard settings passed" "$(lastcall)" "--settings $STATE/interactive-free-settings.json"
+has "subscription token not passed" "$(lastcall)" "OAUTH= "
+has "banner shown" "$(cat "$ROOT/typescript")" "FREE ROUTE - no client data, nothing from CRM/ISA/loan files"
+eq "route state untouched (still subscription)" "$(modeof)" subscription
+SJ="$STATE/interactive-free-settings.json"
+eq "settings file is owner-only" "$(stat -c %a "$SJ")" 600
+has "settings: UserPromptSubmit hook" "$(cat "$SJ")" "UserPromptSubmit"
+has "settings: PreToolUse hook" "$(cat "$SJ")" "PreToolUse"
+has "settings: hook runs claude-auto --guard-hook" "$(cat "$SJ")" "--guard-hook"
+okc "settings file is valid JSON" python3 -c "import json,sys;json.load(open(sys.argv[1]))" "$SJ"
+fresh; set_route subscription
+ipty no --interactive-free
+eq "anything but FREE cancels (rc 1)" "$RC" 1; eq "no claude call" "$(calls)" 0
+ipty "" --interactive-free
+eq "empty answer cancels" "$RC" 1; eq "no claude call" "$(calls)" 0
+for t in lofty-crm-sync Lofty-CRM-Refresh isa-daily-report r12-inbox-triage client-followup; do
+  ipty FREE --interactive-free --task "$t"
+  eq "PII task '$t' refused (77), FREE typed" "$RC" 77; eq "'$t': no claude call" "$(calls)" 0
+done
+ipty FREE --interactive-free --pii
+eq "--pii refused" "$RC" 77
+ipty FREE --interactive-free -p hi
+eq "headless refused (64)" "$RC" 64
+mkdir -p "$ROOT/wiki/clients/jane"; (cd "$ROOT/wiki/clients/jane" && printf 'FREE\n' | script -qec "$AUTO --no-lease --interactive-free" "$ROOT/typescript" >/dev/null 2>&1); RC=$?
+eq "client-looking cwd refused (77)" "$RC" 77; eq "no claude call" "$(calls)" 0
+omni_down; ipty FREE --interactive-free
+eq "OmniRoute down: exit 75, nothing started" "$RC" 75; eq "no claude call" "$(calls)" 0; omni_up
+ipty FREE --interactive-free --task "$OKTASK"
+eq "a non-client task name is allowed" "$RC" 0
+fresh; set_route free-fallback
+printf '' | script -qec "$AUTO --no-lease" "$ROOT/typescript" >/dev/null 2>&1; RC=$?
+eq "DEFAULT OFF: plain interactive on the free route is still deferred" "$RC" 75; eq "no claude call" "$(calls)" 0
+unset CLAUDE_CODE_OAUTH_TOKEN
+fi
+
+sect "the guard hook itself"
+fresh; set_route free-fallback
+g() { printf '%s' "$1" | "$AUTO" --guard-hook >/dev/null 2>"$ROOT/gerr"; RC=$?; }
+g '{"prompt":"summarize wiki/clients/jane-sample.md"}'; eq "client wiki path blocked" "$RC" 2
+g '{"prompt":"ssn is 123-45-6789"}'; eq "SSN shape blocked" "$RC" 2
+g '{"tool_name":"Bash","tool_input":{"command":"cat ~/.config/omniroute/.env"}}'; eq "credential file read blocked" "$RC" 2
+g '{"tool_name":"Read","tool_input":{"file_path":"/x/lofty-export.csv"}}'; eq "CRM export blocked" "$RC" 2
+g '{"prompt":"what is the weather in San Diego","cwd":"/Users/s/clients/x","transcript_path":"/u/crm/t.jsonl"}'; eq "benign prompt passes; cwd/transcript_path are not scanned" "$RC" 0
+g ''; eq "empty input fails closed" "$RC" 2
+g '{"prompt":"ssn 123-45-6789"}'
+hasnt "log never holds the blocked content" "$(cat "$STATE/claude-auto.log")" "123-45-6789"
+has "log records that it blocked" "$(cat "$STATE/claude-auto.log")" "guard-hook: BLOCKED"
 
 printf '\n------------------------------------------------------------\npass %s   FAIL %s\n' "$N_PASS" "$N_FAIL"
 [ "$N_FAIL" -eq 0 ]

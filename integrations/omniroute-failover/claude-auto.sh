@@ -142,7 +142,7 @@ DEFAULT_PII_TASKS="lofty-* zoho-* *crm* isa-* *-isa-* lead-* *-lead-* r12-inbox-
 log()  { printf '%s %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*" >> "$LOG"; }
 now()  { date +%s; }
 write_marker() { printf '%s %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*" >> "$MARKER"; }
-usage_err() { echo "claude-auto: $*" >&2; echo "usage: claude-auto [--task NAME] [--pii|--no-pii] [--force subscription|free|local] [--status] [--lease|--no-lease|--lease-check|--take-lease|--release-lease] [--] <claude args…>" >&2; exit 64; }
+usage_err() { echo "claude-auto: $*" >&2; echo "usage: claude-auto [--task NAME] [--pii|--no-pii] [--force subscription|free|local] [--status|--doctor|--interactive-free] [--lease|--no-lease|--lease-check|--take-lease|--release-lease] [--] <claude args…>" >&2; exit 64; }
 
 # GNU stat first and validated: on Linux `stat -f` means "file SYSTEM status" and succeeds with the wrong output,
 # so a BSD-first fallback prints a filesystem report as a file mode (F-V2-15). Same shape as mac-verify.sh.
@@ -257,7 +257,7 @@ ff_read() { FF_N=0; FF_AT=0; [ -f "$FREE_FAILS" ] || return 0
 ff_note() { ff_read; FF_N=$((FF_N + 1)); printf '%s %s\n' "$FF_N" "$(now)" > "$FREE_FAILS"; }
 ff_ok()   { rm -f "$FREE_FAILS"; }
 free_exhausted() { ff_read; [ "$FF_N" -ge "$FREE_FAIL_N" ] && [ $(( $(now) - FF_AT )) -lt "$FREE_RETRY" ]; }  # exhausted AND not yet due for a retry
-omni_live() { curl -fsS --max-time 5 "$OMNI_BASE/healthz" >/dev/null 2>&1; }
+omni_live() { curl -fsS --max-time 5 "$OMNI_BASE/healthz" >/dev/null 2>&1 || curl -fsS --max-time 5 "$OMNI_BASE/api/health" >/dev/null 2>&1; }   # either spelling counts as healthy
 
 # ---------------------------------------------------------------- the task lease (P7): one writer across two Macs
 filemtime() { # GNU first and validated, then BSD — same reason as filemode (F-V2-15)
@@ -641,8 +641,157 @@ lease_gate() {
   esac
 }
 
+# ---------------------------------------------------------------- --doctor, --guard-hook, --interactive-free (2026-10-09)
+self_real() { # this script's real path (symlinks followed), for the install check and the hook command
+  _s="$0"; while [ -L "$_s" ]; do _t=$(readlink "$_s"); case "$_t" in /*) _s="$_t" ;; *) _s="$(dirname "$_s")/$_t" ;; esac; done
+  printf '%s/%s' "$(cd "$(dirname "$_s")" && pwd)" "$(basename "$_s")"
+}
+ver_ge() { awk -v a="$1" -v b="$2" 'BEGIN{n=split(a,x,".");split(b,y,".");for(i=1;i<=3;i++){if(x[i]+0>y[i]+0)exit 0;if(x[i]+0<y[i]+0)exit 1}exit 0}'; }
+d_pass() { D_P=$((D_P + 1)); printf 'PASS  %s\n' "$1"; }
+d_warn() { D_W=$((D_W + 1)); printf 'WARN  %s | fix: %s\n' "$1" "$2"; }
+d_fail() { D_F=$((D_F + 1)); printf 'FAIL  %s | fix: %s\n' "$1" "$2"; }
+d_info() { printf 'INFO  %s\n' "$1"; }
+doctor() { # READ-ONLY. One line per precondition; nothing is written, no claude call, no secret value is ever printed.
+  D_P=0; D_W=0; D_F=0
+  _inst="${CLAUDE_AUTO_INSTALL_DIR:-$HOME/.local/bin}"; _self=$(self_real); _sdir=$(dirname "$_self")
+  _agent="$HOME/Library/LaunchAgents/com.stevenshearrill.omniroute-probe.plist"
+  printf 'claude-auto --doctor  (read-only, version %s)\n' "$CLAUDE_AUTO_VERSION"
+  # 1. OmniRoute answering
+  if curl -fsS --max-time 5 "$OMNI_BASE/healthz" >/dev/null 2>&1; then d_pass "OmniRoute answers /healthz at $OMNI_BASE"
+  elif curl -fsS --max-time 5 "$OMNI_BASE/api/health" >/dev/null 2>&1; then d_pass "OmniRoute answers /api/health at $OMNI_BASE (/healthz is absent; the launcher and probe accept either)"
+  else d_fail "OmniRoute does not answer /healthz or /api/health at $OMNI_BASE — the free route defers (exit 75) while this is true" "start OmniRoute, then run: curl -fsS $OMNI_BASE/api/health"; fi
+  # 2. binary + version
+  if command -v omniroute >/dev/null 2>&1; then
+    _o=$(mktemp "${TMPDIR:-/tmp}/doctor.XXXXXX"); lease_run_timeout 15 "$_o" omniroute --version; _v=$(grep -oE '[0-9]+\.[0-9]+\.[0-9]+' "$_o" | head -1); rm -f "$_o"
+    if [ -z "$_v" ]; then d_warn "omniroute is installed but --version printed no x.y.z" "run: omniroute --version"
+    elif ver_ge "$_v" 3.8.50; then d_pass "omniroute $_v (>= 3.8.50)"
+    else d_fail "omniroute $_v is older than 3.8.50" "npm install -g omniroute@3.8.50"; fi
+  else d_warn "no omniroute binary on this PATH (the server may run from an app or another prefix)" "ok if the server is up; otherwise: npm install -g omniroute@3.8.50"; fi
+  # 3. key file: existence, mode, NAME set — never the value
+  _f="$CFG/.env"
+  if [ ! -f "$_f" ]; then d_fail "$_f is missing — free route exits 78 (no OMNIROUTE_API_KEY)" "run install-failover.sh, then paste the key (OmniRoute dashboard > API keys) after OMNIROUTE_API_KEY= yourself"
+  else
+    case "$(filemode "$_f")" in 600|400) d_pass "$_f mode $(filemode "$_f")" ;; *) d_fail "$_f mode is $(filemode "$_f"), the launcher refuses anything but 600" "chmod 600 $_f" ;; esac
+    if [ -n "$(grep -E '^OMNIROUTE_API_KEY=' "$_f" | tail -1 | cut -d= -f2- | tr -d "\"' ")" ]; then d_pass "OMNIROUTE_API_KEY is set in $_f (value not shown)"
+    else d_fail "OMNIROUTE_API_KEY is empty or absent in $_f" "edit $_f and put the key after OMNIROUTE_API_KEY= (you paste it; nothing else writes it)"; fi
+  fi
+  # 4. at least one provider configured
+  if command -v omniroute >/dev/null 2>&1; then
+    _o=$(mktemp "${TMPDIR:-/tmp}/doctor.XXXXXX"); lease_run_timeout 15 "$_o" omniroute providers list; _prc=$?; _pn=$(grep -c '[A-Za-z0-9]' "$_o" 2>/dev/null); rm -f "$_o"
+    if [ "$_prc" -ne 0 ]; then d_warn "'omniroute providers list' failed (rc=$_prc) — cannot tell whether any free provider is configured" "open $OMNI_BASE, Providers, and confirm at least one free provider shows connected (README: Free-key sources)"
+    elif [ "${_pn:-0}" -lt 1 ]; then d_fail "OmniRoute lists no providers — a limit would route to nothing" "omniroute providers add <id> --credential-env <NAME>  (README: Free-key sources)"
+    else d_pass "omniroute providers list printed $_pn line(s) (free vs paid not distinguished here)"; fi
+  else d_warn "provider list not checked (no omniroute CLI on PATH)" "open $OMNI_BASE, Providers, and confirm at least one free provider"; fi
+  # 5. launcher + probe installed next to each other, and identical to the source copy
+  _src=''; if [ "$_sdir" != "$_inst" ]; then _src="$_sdir"; elif [ -n "$CLAUDE_RUNNER_REPO_DIR" ] && [ -d "$CLAUDE_RUNNER_REPO_DIR/integrations/omniroute-failover" ]; then _src="$CLAUDE_RUNNER_REPO_DIR/integrations/omniroute-failover"; fi
+  for _pr in claude-auto:claude-auto.sh probe.sh:probe.sh; do
+    _n="${_pr%%:*}"; _s="${_pr#*:}"
+    if [ ! -x "$_inst/$_n" ]; then d_fail "$_inst/$_n is not installed (or not executable)" "run install-failover.sh (or: cp <repo>/integrations/omniroute-failover/$_s $_inst/$_n && chmod +x $_inst/$_n)"
+    elif [ -z "$_src" ]; then d_warn "$_inst/$_n present; no source copy to compare with" "export CLAUDE_RUNNER_REPO_DIR=<your brain checkout> or run doctor from the repo copy"
+    elif cmp -s "$_inst/$_n" "$_src/$_s"; then d_pass "$_inst/$_n matches $_src/$_s"
+    else d_fail "$_inst/$_n differs from $_src/$_s (stale install)" "run install-failover.sh"; fi
+  done
+  if [ -x "$_sdir/probe.sh" ]; then d_pass "probe.sh sits next to the running launcher ($_sdir)"; else d_fail "no probe.sh next to the running launcher ($_sdir) — it cannot re-probe on its own" "put probe.sh in $_sdir"; fi
+  # 6. PATH: which claude / which claude-auto, and the old launcher
+  _cp=$(command -v claude 2>/dev/null || true); _ap=$(command -v claude-auto 2>/dev/null || true); _old="$HOME/Applications/claude-fallback"
+  d_info "claude -> ${_cp:-NOT FOUND} ; claude-auto -> ${_ap:-NOT FOUND}"
+  if [ -z "$_ap" ]; then d_fail "claude-auto is not on PATH, so nothing can be calling it" "add to ~/.zshrc and the runner's PATH: export PATH=\"$_inst:\$PATH\""
+  elif [ "$(dirname "$_ap")" != "$_inst" ]; then d_fail "the claude-auto first on PATH is $_ap, not $_inst/claude-auto (an older one shadows the new)" "put $_inst before $(dirname "$_ap") in PATH, or remove $_ap"
+  else d_pass "claude-auto on PATH resolves to $_ap"; fi
+  case "$_cp$_ap" in *claude-fallback*) d_fail "the OLD launcher ($_old) is what runs: $_cp / $_ap" "remove it from PATH; run install-failover.sh; put $_inst first" ;; esac
+  if [ -d "$_old" ]; then
+    _refs=''; for _x in "$HOME/.zshrc" "$HOME/.zprofile" "$HOME/.zshenv" "$HOME/.bash_profile" "$HOME/.bashrc" "$HOME"/Library/LaunchAgents/*.plist; do
+      [ -f "$_x" ] && grep -qs 'claude-fallback' "$_x" && _refs="$_refs $_x"; done
+    if [ -n "$_refs" ]; then d_warn "old launcher dir $_old is still referenced by:$_refs" "replace those references with claude-auto (new), after the install passes"
+    else d_warn "old launcher dir $_old still exists (free_mode_guard.py lives there); no shell/LaunchAgent file references it" "leave it until the new install passes the PII canary, then archive it"; fi
+  fi
+  # 7. probe LaunchAgent
+  if [ ! -f "$_agent" ]; then d_fail "probe LaunchAgent plist missing: $_agent — nothing restores the subscription every 15 min" "run install-failover.sh"
+  elif command -v launchctl >/dev/null 2>&1; then
+    if launchctl list 2>/dev/null | grep -q 'com.stevenshearrill.omniroute-probe'; then d_pass "probe LaunchAgent is loaded"
+    else d_fail "probe LaunchAgent plist exists but is not loaded" "launchctl load -w $_agent"; fi
+  else d_warn "plist exists; launchctl not available here, cannot tell whether it is loaded" "on the Mac: launchctl list | grep omniroute-probe"; fi
+  # 8. role
+  read_role
+  if [ "$ROLE_WHY" = "$ROLEFILE" ]; then d_pass "lease role: $ROLE ($ROLEFILE)"
+  else d_warn "lease role defaults to standby ($ROLE_WHY): a --task run whose lease check cannot complete is deferred" "mkdir -p $RUNNER_CFG && printf 'peer\\n' > $RUNNER_CFG/role && chmod 600 $RUNNER_CFG/role"; fi
+  # 9. state/mode and its age
+  if [ -f "$MODEFILE" ]; then
+    _mv=$(tr -dc 'a-z-' < "$MODEFILE"); _age=$(( $(now) - $(filemtime "$MODEFILE") ))
+    if [ "$_mv" != subscription ] && [ "$_age" -gt "$PROBE_FORCE_AGE" ]; then d_warn "state/mode=$_mv and ${_age}s old (older than the ${PROBE_FORCE_AGE}s re-probe bound)" "run: $_inst/probe.sh --now ; check $STATE/probe.log"
+    else d_pass "state/mode=$_mv, ${_age}s old"; fi
+  else d_warn "no $MODEFILE yet: this launcher has never run on this Mac" "run: claude-auto --status"; fi
+  # 10. last log lines (the log never holds task output; trimmed anyway)
+  if [ -s "$LOG" ]; then d_info "last claude-auto.log lines:"; tail -n 5 "$LOG" | cut -c1-160 | sed 's/^/        | /'; else d_info "claude-auto.log is empty or absent"; fi
+  # 11. do runner tasks go through claude-auto --task?
+  if command -v runnerctl >/dev/null 2>&1; then
+    _rl=$(runnerctl list 2>/dev/null || true); _rn=$(printf '%s\n' "$_rl" | grep -c '[A-Za-z0-9]'); _ra=$(printf '%s\n' "$_rl" | grep -c 'claude-auto'); _rt=$(printf '%s\n' "$_rl" | grep -c -- '--task')
+    if [ "$_rn" -lt 1 ]; then d_warn "runnerctl list printed nothing readable" "run: runnerctl list"
+    elif [ "$_ra" -lt 1 ]; then d_warn "none of $_rn runnerctl lines mention claude-auto (list may not show commands)" "runnerctl show <task>; each task command must start: claude-auto --task <task-name> ..."
+    elif [ "$_rt" -lt "$_ra" ]; then d_warn "$_ra of $_rn runnerctl lines use claude-auto but only $_rt pass --task (unnamed tasks are deferred on the free route)" "change those to: claude-auto --task <task-name> -p ..."
+    else d_pass "$_ra of $_rn runnerctl lines use claude-auto; $_rt pass --task (list format unverified)"; fi
+  else d_warn "runnerctl not on PATH: cannot check whether tasks call claude-auto --task" "on the Mac: runnerctl list"; fi
+  # 12. has a limit ever been detected?
+  if [ -s "$SAMPLES" ]; then d_pass "$(wc -l < "$SAMPLES" | tr -d ' ') limit detection(s) recorded; last: $(tail -n 1 "$SAMPLES" | cut -d' ' -f1)"
+  else d_warn "no limit has ever been detected by this launcher (limit-samples.log empty) — detection is unproven on this Mac" "expected until the first real limit; confirm tasks run via claude-auto, not plain claude"; fi
+  d_info "interactive sessions are deferred on the free route by design; start one on purpose with: claude-auto --interactive-free"
+  if [ -f "$OR_ENABLED" ]; then d_info "tier 3 (OpenRouter) enabled file present; cap=$(or_env_get OPENROUTER_MONTHLY_CAP_USD 2>/dev/null)"; else d_info "tier 3 (OpenRouter) is off (no $OR_ENABLED)"; fi
+  printf 'doctor: %s PASS, %s WARN, %s FAIL\n' "$D_P" "$D_W" "$D_F"
+  [ "$D_F" -eq 0 ]
+}
+# The client-data guard for a --interactive-free session. Runs as a Claude Code hook (UserPromptSubmit + PreToolUse):
+# JSON on stdin, exit 2 = block. Looks at the prompt and tool input only (transcript_path/cwd stripped). Fails CLOSED.
+GUARD_RE='wiki/clients|/clients/|lofty|zoho|[^a-z]crm[^a-z]|(^|[^a-z])isa[-_/]|loan[-_ ]?(file|number|app)|borrower|form[-_ ]?1003|[^a-z]ssn|[0-9]{3}-[0-9]{2}-[0-9]{4}|\.config/(omniroute|openrouter|claude-runner)|\.env([^a-z]|$)|client[-_ ]?(data|file|record|name)|patriot.?pacific.{0,20}(file|client)'
+guard_hook() {
+  _gi=$(head -c 200000 2>/dev/null || true)
+  if [ -z "$_gi" ]; then log "guard-hook: empty input — blocked (fail closed)"; echo "claude-auto FREE ROUTE guard: could not read the hook input — blocked." >&2; exit 2; fi
+  _gt=$(printf '%s' "$_gi" | sed -E 's/"(transcript_path|cwd)": ?"[^"]*"//g' | tr '[:upper:]' '[:lower:]')
+  if printf '%s' "$_gt" | grep -qE "$GUARD_RE"; then
+    log "guard-hook: BLOCKED a prompt/tool call that looks like client data (content not logged)"
+    echo "claude-auto FREE ROUTE guard: blocked — this looks like client data (CRM/ISA/loan/SSN/credential path). This session is on a FREE provider. Re-run it on the subscription once it resets." >&2
+    exit 2
+  fi
+  exit 0
+}
+interactive_free() { # claude-args… — a human, typing this on purpose, in a terminal. Default off: nothing calls this by itself.
+  if [ "$headless" = 1 ]; then echo "claude-auto: --interactive-free is for a person at a terminal; headless runs use --task/--no-pii" >&2; exit 64; fi
+  if [ "$PII" = 1 ]; then echo "claude-auto: refused — --pii and --interactive-free cannot be combined" >&2; log "interactive-free REFUSED: --pii"; exit 77; fi
+  # shellcheck disable=SC2086  # one glob pattern per word on purpose; set -f is on
+  if [ -n "$TASK" ] && _h=$(match_list "$task_lc" $pii_list); then
+    echo "claude-auto: refused — task '$TASK' matches client-data pattern '$_h'" >&2; log "interactive-free REFUSED: task matches client-data pattern '$_h'"; exit 77
+  fi
+  _cwd=$(printf '%s' "$PWD" | tr '[:upper:]' '[:lower:]')
+  if printf '%s' "$_cwd" | grep -qE "$GUARD_RE"; then
+    echo "claude-auto: refused — the current directory looks like client data ($PWD). cd somewhere neutral first." >&2; log "interactive-free REFUSED: cwd looks like client data"; exit 77
+  fi
+  if ! { [ -t 0 ] && [ -t 1 ]; }; then echo "claude-auto: refused — --interactive-free needs a person at a terminal (stdin and stdout must be a tty)" >&2; log "interactive-free REFUSED: not a tty"; exit 77; fi
+  omni_live || { echo "claude-auto: OmniRoute not answering on $OMNI_BASE — nothing to start (exit 75)" >&2; log "interactive-free: OmniRoute down"; exit 75; }
+  load_omni_key || exit 78
+  _sr=$(self_real); case "$_sr" in *[!A-Za-z0-9_./\ -]*) echo "claude-auto: refused — path '$_sr' has characters the guard-hook command cannot carry safely" >&2; exit 77 ;; esac
+  _sf="$STATE/interactive-free-settings.json"
+  printf '{"hooks":{"UserPromptSubmit":[{"hooks":[{"type":"command","command":"\\"%s\\" --guard-hook"}]}],"PreToolUse":[{"matcher":"*","hooks":[{"type":"command","command":"\\"%s\\" --guard-hook"}]}]}}\n' "$_sr" "$_sr" > "$_sf"
+  {
+    echo "=================================================================="
+    echo " FREE ROUTE - no client data, nothing from CRM/ISA/loan files"
+    echo "=================================================================="
+    echo " This NEW session runs on FREE providers through OmniRoute ($OMNI_BASE),"
+    echo " not on your Claude subscription. Answers will differ in quality."
+    echo " A guard hook blocks prompts and tool calls that look like client data;"
+    echo " it is a net, not a promise - do not paste client information."
+    echo " Your running session is not changed. Close this one to go back."
+    [ "$mode" = subscription ] && echo " (claude-auto currently believes the subscription is usable.)"
+    echo "=================================================================="
+    printf ' Type FREE to continue (anything else cancels): '
+  } >&2
+  read -r _ans || _ans=''
+  if [ "$_ans" != FREE ]; then echo "claude-auto: cancelled" >&2; log "interactive-free cancelled by the user"; exit 1; fi
+  log "interactive-free STARTED task=${TASK:-none} guard=$_sf mode_was=$mode"
+  export VANESSA_INTERACTIVE_FREE=1
+  route_omni "$FREE_MODEL" free-fallback 0 --settings "$_sf" "$@"
+}
+
 # ---------------------------------------------------------------- options: all of them, wherever they are (F-V2-07)
-TASK=""; PII=""; FORCE=""; SHOW=0; CARGS=(); LEASE_GATE=auto; LEASE_CHECK=0; TAKE_LEASE=0; RELEASE_LEASE=0
+TASK=""; PII=""; FORCE=""; SHOW=0; DOCTOR=0; GUARD=0; IFREE=0; CARGS=(); LEASE_GATE=auto; LEASE_CHECK=0; TAKE_LEASE=0; RELEASE_LEASE=0
 while [ $# -gt 0 ]; do
   case "$1" in
     --task)    [ $# -ge 2 ] || usage_err "--task needs a value"; TASK="$2"; shift 2 ;;
@@ -652,6 +801,9 @@ while [ $# -gt 0 ]; do
     --pii)     PII=1; shift ;;
     --no-pii)  PII=0; shift ;;
     --status)  SHOW=1; shift ;;
+    --doctor)  DOCTOR=1; shift ;;               # read-only diagnosis of every precondition, one line each
+    --guard-hook) GUARD=1; shift ;;             # internal: the client-data guard hook of an --interactive-free session
+    --interactive-free) IFREE=1; shift ;;       # a person starts a NEW interactive session on the free route, on purpose
     --lease)   LEASE_GATE=on; shift ;;          # gate this invocation even without --task
     --no-lease) LEASE_GATE=off; shift ;;        # skip the lease gate — logged as a WARN; manual use only
     --lease-check) LEASE_CHECK=1; shift ;;      # force one real check now, print the verdict, run nothing
@@ -663,6 +815,8 @@ while [ $# -gt 0 ]; do
 done
 set -- ${CARGS[@]+"${CARGS[@]}"}
 case "$TASK" in *[!A-Za-z0-9_.-]*) usage_err "--task name may only contain A-Za-z0-9 _ . -" ;; esac
+if [ $GUARD = 1 ]; then guard_hook; fi
+if [ $DOCTOR = 1 ]; then doctor; exit $?; fi
 
 # ---------------------------------------------------------------- the gate: closed unless proven open (F-V2-08/09)
 list_file() { # patterns from a config file: comments and blanks stripped, charset-checked
@@ -871,7 +1025,7 @@ route_openrouter() { # claude-args… — runs claude as a CHILD (not exec) so t
 
 route_omni() { # model route-mode pii_ok claude-args…
   model="$1"; rmode="$2"; piiok="$3"; shift 3
-  curl -fsS --max-time 5 "$OMNI_BASE/healthz" >/dev/null 2>&1 || { log "omniroute /healthz failed task=${TASK:-none} pii=$is_pii ($why)"; echo "claude-auto: OmniRoute not answering on $OMNI_BASE — deferred (exit 75)" >&2; exit 75; }
+  omni_live || { log "omniroute /healthz failed task=${TASK:-none} pii=$is_pii ($why)"; echo "claude-auto: OmniRoute not answering on $OMNI_BASE — deferred (exit 75)" >&2; exit 75; }
   export ANTHROPIC_BASE_URL="$OMNI_BASE" ANTHROPIC_AUTH_TOKEN="$OMNIROUTE_API_KEY"
   export ANTHROPIC_MODEL="$model" ANTHROPIC_DEFAULT_OPUS_MODEL="$model" ANTHROPIC_DEFAULT_SONNET_MODEL="$model" \
          ANTHROPIC_DEFAULT_HAIKU_MODEL="$model" ANTHROPIC_DEFAULT_FABLE_MODEL="$model"
@@ -948,6 +1102,7 @@ run_free_and_watch() { # tier-2 headless run: count exhaustion-class failures in
   cat "$tmp.err" >&2; rm -f "$tmp" "$tmp.err"; exit "$rc"
 }
 
+if [ $IFREE = 1 ]; then interactive_free "$@"; fi
 rotate "$LOG" 5000
 case "$mode" in
   subscription)

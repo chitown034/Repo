@@ -123,7 +123,7 @@ if [ $NOW_FLAG = 0 ] && [ "$reset_at" -gt $((t + 60)) ] && [ $((t - probed_at)) 
 fi
 
 # 1. OmniRoute liveness — only matters while we depend on it; recorded so claude-auto can defer instead of failing
-if curl -fsS --max-time 5 "$OMNI_BASE/healthz" >/dev/null 2>&1; then omni=1; else omni=0; log "omniroute $OMNI_BASE/healthz DOWN"; fi
+if curl -fsS --max-time 5 "$OMNI_BASE/healthz" >/dev/null 2>&1 || curl -fsS --max-time 5 "$OMNI_BASE/api/health" >/dev/null 2>&1; then omni=1; else omni=0; log "omniroute $OMNI_BASE/healthz DOWN"; fi
 
 # 2. The subscription probe: one turn, no tools, no session file, proxy variables stripped so it cannot hit OmniRoute
 out=$(env -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_API_KEY \

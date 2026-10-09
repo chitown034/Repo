@@ -47,3 +47,11 @@ Source: Command Deck, "Connectors / Local MCP / Mac tasks / Cloud routines / Ski
 ## API Anything — websites as read-only APIs
 
 **API Anything** (added 2026-10-08, `integrations/api-anything/`): turns a website into read-only operations Claude calls over plain HTTP (MCP server `api-anything`: list_sites, list_operations, call_operation, login). Proven in the cloud; Mac install is one command. Site connections run on the Mac (`integrations/api-anything/mac-connect-sites-2026-10-09.md`): FRED and Freddie Mac PMMS now; Redfin, lender, builder and homes.com pages only after Steven's terms-of-service yes per group; never ShowingTime, Showami, SkySlope or zipForms (client data). Owner Derek; risk owner Elena.
+
+## Remote control — both Macs, Claude sessions and Orca (2026-10-09)
+
+Steven asked for remote control of his two Macs ("this computer" and the other) from his dashboard. Built, tested against stubs, **not yet run on a Mac**:
+- **Claude sessions:** `integrations/remote-control/rc-agent.sh` keeps one `claude remote-control` server running per Mac (LaunchAgent, asks first, no poller, needs the claude.ai subscription login; an API key or gateway blocks it). Claude Desktop sessions join the same list through `/remote-control` in its Code tab. Remote Control steers sessions; it does not click the Desktop window.
+- **Orca:** `integrations/remote-control/orca-remote.sh` wraps Orca's own `orca serve` / `orca environment add`. A pairing link is a secret equal to control of that Mac's agents: pair only over his own network, never store it, never grant desktop control.
+- **Dashboard:** the Command Deck Toolkit tab has a "Remote control" card. It cannot reach the Macs; it shows what Steven pastes from each Mac's `report` line, with its age, and refuses pairing links. Org chart: Derek's team has a "Remote Control" lane (Sam).
+- **Failover:** `claude-auto --doctor` and `install-failover.sh` (integrations/omniroute-failover) diagnose and fix why OmniRoute does not take over at the Claude limit.

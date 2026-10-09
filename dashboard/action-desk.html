@@ -50,8 +50,8 @@ footer{margin-top:28px;color:var(--muted);font-size:.85rem}
 <div class="wrap">
   <h1>Steven's Action Desk</h1>
   <p class="lede">Everything still waiting on you — including every connection that still has to be made — in the order to do it. Each button opens the right place; tick the box when done (saved in this browser), then tell Claude "done 7" so the dashboards catch up. Checked 2026-10-08, 11 AM PT.</p>
-  <div class="bar"><div class="meter" aria-hidden="true"><i id="fill"></i></div><span class="count" id="count">0 of 17 done</span></div>
-  <p class="note"><b>Already done, nothing to do:</b> Lofty API key (54 leads syncing); the 14 routines that failed on the usage limit were re-run and succeeded; the dashboards read 21 of 25 feeds fresh; both dashboards were updated with the cycle-11 fixes (96 in all); the one-command Mac script, the three-tier failover (OpenRouter cap $25) and the connection plan are built and tested; your USC answers and personal DRE are saved. <b>Why things kept failing:</b> the Claude usage allowance; the first step cuts the waste.</p>
+  <div class="bar"><div class="meter" aria-hidden="true"><i id="fill"></i></div><span class="count" id="count">0 of 21 done</span></div>
+  <p class="note"><b>Already done, nothing to do:</b> Lofty API key (54 leads syncing); the 14 routines that failed on the usage limit were re-run and succeeded; the dashboards read 21 of 25 feeds fresh; both dashboards were updated with the cycle-11 fixes (96 in all) and the Command Deck has a Remote Control card and org chart node; the one-command Mac script, the three-tier failover (OpenRouter cap $25) and the connection plan are built and tested; your USC answers and personal DRE are saved. <b>Why things kept failing:</b> the Claude usage allowance; the first step cuts the waste.</p>
 
   <h2>1 · Phone · 5 minutes</h2>
   <p class="where">Do these first; nothing else depends on them</p>
@@ -110,81 +110,121 @@ footer{margin-top:28px;color:var(--muted);font-size:.85rem}
       <label class="tick"><input type="checkbox" id="s7">Done</label></div></div></div>
 
   <div class="step" data-id="8"><div class="n">8</div><div class="body">
-    <p class="t">Type your keys into the files (never into chat)</p>
-    <p class="d">The command above creates empty ~/.config/zoho/.env and ~/.config/lofty/.env with only the variable NAMES. Open each with the line below, type the value after each equals sign, save. Zoho needs five: ZOHO_ACCOUNTS_URL, ZOHO_API_URL, ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET, ZOHO_REFRESH_TOKEN (the two URLs depend on your Zoho data centre: .com, .eu, .in...). If TextEdit shows a formatting bar choose Format → Make Plain Text before saving. Lofty&#x27;s key is already working.</p>
-    <div class="acts"><code>open -e ~/.config/zoho/.env</code><button class="btn" data-copy="open -e ~/.config/zoho/.env">Copy</button>
+    <p class="t">Fix the OmniRoute failover so it kicks in when Claude runs out</p>
+    <p class="d">OmniRoute itself is running, but the switch-over scripts were never installed, so nothing changes when you hit the limit. First the read-only check, which prints PASS / WARN / FAIL with the fix for each gap; then the installer, which asks yes/no before every change. Paste the doctor output back (it prints no secrets). Sessions you start yourself stay on Claude by design; to deliberately continue on the free route with no client data, type claude-auto --interactive-free.</p>
+    <div class="acts"><code>claude-auto --doctor
+bash integrations/omniroute-failover/install-failover.sh --dry-run
+bash integrations/omniroute-failover/install-failover.sh
+claude-auto --doctor</code><button class="btn" data-copy="claude-auto --doctor
+bash integrations/omniroute-failover/install-failover.sh --dry-run
+bash integrations/omniroute-failover/install-failover.sh
+claude-auto --doctor">Copy</button>
       <label class="tick"><input type="checkbox" id="s8">Done</label></div></div></div>
 
   <div class="step" data-id="9"><div class="n">9</div><div class="body">
-    <p class="t">Pause the Discord poller until a bot token exists</p>
-    <p class="d">vanessa-discord-inbox runs every 5 minutes with no token, about 288 runs a day. Pause (do not delete) it: run the line below on the Mac.</p>
-    <div class="acts"><code>runnerctl pause vanessa-discord-inbox &amp;&amp; runnerctl list</code><button class="btn" data-copy="runnerctl pause vanessa-discord-inbox &amp;&amp; runnerctl list">Copy</button>
+    <p class="t">Turn on remote control for Claude on each Mac (this computer first)</p>
+    <p class="d">Run the first line once by hand: answer y to Enable Remote Control, accept the folder trust, then press Ctrl+C. Then the second line installs a LaunchAgent that keeps it running (asks first). The third line prints one report line: paste it into the Remote Control card on the Command Deck (Toolkit tab). Repeat on the other Mac. In Claude Desktop type /remote-control in the Code tab, or turn on Settings &gt; Claude Code &gt; Connect new sessions to Remote Control, and that session joins the same list at claude.ai/code and on your phone.</p>
+    <div class="acts"><a class="btn" href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Open Command Deck</a>
+      <a class="btn" href="https://claude.ai/code" target="_blank" rel="noopener">Open the sessions list</a>
+      <code>claude remote-control
+bash integrations/remote-control/rc-agent.sh install
+bash integrations/remote-control/rc-agent.sh report</code><button class="btn" data-copy="claude remote-control
+bash integrations/remote-control/rc-agent.sh install
+bash integrations/remote-control/rc-agent.sh report">Copy</button>
       <label class="tick"><input type="checkbox" id="s9">Done</label></div></div></div>
 
   <div class="step" data-id="10"><div class="n">10</div><div class="body">
+    <p class="t">Pair Orca between the two Macs (and the phone)</p>
+    <p class="d">On Mac 1 run serve and keep that window open (it prints a pairing link). On Mac 2 run pair and paste the link at the hidden prompt, then do the reverse so each Mac can reach the other. A pairing link is a secret equal to control of that Mac&#x27;s agents: pair only on your home network or your own private network, never paste a link into chat, the dashboard or the repo. Desktop control is never granted. Then run report and paste its line into the same card.</p>
+    <div class="acts"><code>bash integrations/remote-control/orca-remote.sh serve
+bash integrations/remote-control/orca-remote.sh pair
+bash integrations/remote-control/orca-remote.sh report</code><button class="btn" data-copy="bash integrations/remote-control/orca-remote.sh serve
+bash integrations/remote-control/orca-remote.sh pair
+bash integrations/remote-control/orca-remote.sh report">Copy</button>
+      <label class="tick"><input type="checkbox" id="s10">Done</label></div></div></div>
+
+  <div class="step" data-id="11"><div class="n">11</div><div class="body">
+    <p class="t">Claude Mods (optional, one at a time)</p>
+    <p class="d">Mods run on your Mac with your permissions and see every prompt. We recommend Blast Radius, Replay Theater and Cache Tax; the rest are skip or later. Read the table, then install only after your own go. Also tell Claude whether you want the three custom mods (route-beacon, halt-guard, brain-reflect) built; the permission system refused to build them without your decision.</p>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mods/RECOMMENDATIONS.md" target="_blank" rel="noopener">Read the recommendations</a>
+      <label class="tick"><input type="checkbox" id="s11">Done</label></div></div></div>
+
+  <div class="step" data-id="12"><div class="n">12</div><div class="body">
+    <p class="t">Type your keys into the files (never into chat)</p>
+    <p class="d">The command above creates empty ~/.config/zoho/.env and ~/.config/lofty/.env with only the variable NAMES. Open each with the line below, type the value after each equals sign, save. Zoho needs five: ZOHO_ACCOUNTS_URL, ZOHO_API_URL, ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET, ZOHO_REFRESH_TOKEN (the two URLs depend on your Zoho data centre: .com, .eu, .in...). If TextEdit shows a formatting bar choose Format → Make Plain Text before saving. Lofty&#x27;s key is already working.</p>
+    <div class="acts"><code>open -e ~/.config/zoho/.env</code><button class="btn" data-copy="open -e ~/.config/zoho/.env">Copy</button>
+      <label class="tick"><input type="checkbox" id="s12">Done</label></div></div></div>
+
+  <div class="step" data-id="13"><div class="n">13</div><div class="body">
+    <p class="t">Pause the Discord poller until a bot token exists</p>
+    <p class="d">vanessa-discord-inbox runs every 5 minutes with no token, about 288 runs a day. Pause (do not delete) it: run the line below on the Mac.</p>
+    <div class="acts"><code>runnerctl pause vanessa-discord-inbox &amp;&amp; runnerctl list</code><button class="btn" data-copy="runnerctl pause vanessa-discord-inbox &amp;&amp; runnerctl list">Copy</button>
+      <label class="tick"><input type="checkbox" id="s13">Done</label></div></div></div>
+
+  <div class="step" data-id="14"><div class="n">14</div><div class="body">
     <p class="t">Sign in by hand to ShowingTime, Showami and homes.com</p>
     <p class="d">The connection check in the bootstrap tells you which of them needs a sign-in. Sign in once in the agent Chrome it opens. Agents never type your passwords. SkySlope and zipForms stay locked until compliance signs off.</p>
-    <div class="acts"><label class="tick"><input type="checkbox" id="s10">Done</label></div></div></div>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s14">Done</label></div></div></div>
 
   <h2>4 · Accounts and settings · about 30 minutes</h2>
   <p class="where">Sign-ins and permission ticks only you can do; say &quot;done N&quot; after each</p>
 
-  <div class="step" data-id="11"><div class="n">11</div><div class="body">
+  <div class="step" data-id="15"><div class="n">15</div><div class="body">
     <p class="t">Zoho: tick the API permission</p>
     <p class="d">This is why Zoho returns 403, not a missing key. Zoho CRM → Setup → Security Control → Profiles → your profile → Developer Permissions → tick &quot;Zoho CRM API Access&quot;. If your key is a Client ID + Secret, also create a Self Client in the Zoho API Console with scopes ZohoCRM.modules.ALL,ZohoCRM.settings.READ and generate the refresh token. Then say &quot;Zoho done&quot;.</p>
     <div class="acts"><a class="btn" href="https://crm.zoho.com/" target="_blank" rel="noopener">Open Zoho CRM</a>
       <a class="btn" href="https://api-console.zoho.com/" target="_blank" rel="noopener">Zoho API Console</a>
-      <label class="tick"><input type="checkbox" id="s11">Done</label></div></div></div>
+      <label class="tick"><input type="checkbox" id="s15">Done</label></div></div></div>
 
-  <div class="step" data-id="12"><div class="n">12</div><div class="body">
+  <div class="step" data-id="16"><div class="n">16</div><div class="body">
     <p class="t">Composio sign-ins: Google Drive, GoHighLevel, Discord bot</p>
     <p class="d">All three still read &quot;initiated, no account&quot;. The links expire 10 minutes after they are made, so say &quot;Composio links&quot; when you sit down, then sign in to each. For GoHighLevel, also say what it is for.</p>
-    <div class="acts"><label class="tick"><input type="checkbox" id="s12">Done</label></div></div></div>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s16">Done</label></div></div></div>
 
-  <div class="step" data-id="13"><div class="n">13</div><div class="body">
+  <div class="step" data-id="17"><div class="n">17</div><div class="body">
     <p class="t">claude.ai connectors and Claude Desktop</p>
     <p class="d">Strava and Eromify need you to sign in again (Strava is why the training tiles stopped). EVRoutes fails to connect (error 402) and PlayMCP never finished: reconnect them or remove them. In Claude Desktop → skills settings, upload integrations/claude-desktop/kevin-mentor.zip and delete the old cole-mentor skill.</p>
     <div class="acts"><a class="btn" href="https://claude.ai/settings/connectors" target="_blank" rel="noopener">Open Connectors</a>
-      <label class="tick"><input type="checkbox" id="s13">Done</label></div></div></div>
+      <label class="tick"><input type="checkbox" id="s17">Done</label></div></div></div>
 
-  <div class="step" data-id="14"><div class="n">14</div><div class="body">
+  <div class="step" data-id="18"><div class="n">18</div><div class="body">
     <p class="t">Cloud network access for the rate websites</p>
     <p class="d">In a Claude Code cloud session: title bar → environment → Edit → Network access. Add these:</p>
     <div class="acts"><code>fred.stlouisfed.org www.freddiemac.com www.redfin.com</code><button class="btn" data-copy="fred.stlouisfed.org www.freddiemac.com www.redfin.com">Copy</button>
-      <label class="tick"><input type="checkbox" id="s14">Done</label></div></div></div>
+      <label class="tick"><input type="checkbox" id="s18">Done</label></div></div></div>
 
   <h2>5 · Applications and emails · 15 minutes</h2>
   <p class="where">Drafts are in integrations/CONNECT-PLAN-2026-10-09.md section 6; nothing has been sent</p>
 
-  <div class="step" data-id="15"><div class="n">15</div><div class="body">
+  <div class="step" data-id="19"><div class="n">19</div><div class="body">
     <p class="t">Send three short messages</p>
     <p class="d">(1) Ticor: ask your Ticor Title Sales Executive or Customer Service whether an API or bulk export of Ticor Property Data exists and on what terms. (2) CRMLS: your broker (LPT) applies for the RESO Web API data licence at licensing@crmls.org; there will be no scraper. (3) Dotloop: apply for developer / partner access at info.dotloop.com/developers. Each is your signature, so Claude only drafted them.</p>
     <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/CONNECT-PLAN-2026-10-09.md" target="_blank" rel="noopener">Open the drafts</a>
       <a class="btn" href="https://ticorpropertydata.com/" target="_blank" rel="noopener">Ticor Property Data</a>
-      <label class="tick"><input type="checkbox" id="s15">Done</label></div></div></div>
+      <label class="tick"><input type="checkbox" id="s19">Done</label></div></div></div>
 
-  <div class="step" data-id="16"><div class="n">16</div><div class="body">
+  <div class="step" data-id="20"><div class="n">20</div><div class="body">
     <p class="t">Optional: switch on the free-then-paid failover</p>
     <p class="d">Claude subscription first; when it runs out, OmniRoute free models take over at once; OpenRouter is the paid third tier, capped at $25 a month, and stays off until you do this. Create an OpenRouter key yourself, set the key&#x27;s own credit limit to $25, load no more than $25, then follow the Three-tier failover steps. It returns to Claude by itself when the allowance resets.</p>
     <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/omniroute-failover/README.md" target="_blank" rel="noopener">Open the steps</a>
       <a class="btn" href="https://openrouter.ai/" target="_blank" rel="noopener">OpenRouter</a>
-      <label class="tick"><input type="checkbox" id="s16">Done</label></div></div></div>
+      <label class="tick"><input type="checkbox" id="s20">Done</label></div></div></div>
 
   <h2>6 · Decisions · one reply</h2>
   <p class="where">Each defaults to no; nothing is spent without your yes</p>
 
-  <div class="step" data-id="17"><div class="n">17</div><div class="body">
+  <div class="step" data-id="21"><div class="n">21</div><div class="body">
     <p class="t">Reply &#x27;defaults&#x27; or change any line</p>
     <p class="d">Google Drive: drop it from the brain&#x27;s counts (or wire it after the Composio sign-in). Plaid: no (keys may cost). Terms-of-service reviews for Redfin market pages, lender rate pages and builder pages: Alexandra drafts, you decide each. SkySlope and zipForms: stay locked until compliance signs off. APInation: tell Claude what you want it to do before any paid use. Orca phone app: your call.</p>
     <div class="acts"><code>defaults: Drive drop · Plaid no · ToS reviews later · SkySlope/zipForms locked · APInation: ______</code><button class="btn" data-copy="defaults: Drive drop · Plaid no · ToS reviews later · SkySlope/zipForms locked · APInation: ______">Copy</button>
-      <label class="tick"><input type="checkbox" id="s17">Done</label></div></div></div>
+      <label class="tick"><input type="checkbox" id="s21">Done</label></div></div></div>
 
   <footer>Rebuilt 2026-10-09 (afternoon) from the live routine list, the Mac runner status, both dashboard databases and a Composio connection check. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Same list as text: <code>docs/STEVEN-STEPS.md</code>.</footer>
 </div>
 
 <script>
 (function(){
-  var KEY="actionDesk.v5", state={};
+  var KEY="actionDesk.v6", state={};
   try{ state=JSON.parse(localStorage.getItem(KEY)||"{}")||{}; }catch(e){ state={}; }
   var boxes=document.querySelectorAll('label.tick input');
   function paint(){

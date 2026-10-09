@@ -30,7 +30,8 @@ runs out and then switches back to subscription model when subscription refreshe
 |---|---|
 | `claude-auto.sh` | Launcher. Decides the route per invocation, publishes the mode, gates client-data work — **closed by default** — and holds the **task lease** (below): `peer` by default, `primary`/`standby` kept as legacy roles. Drop-in for `claude`: `claude-auto [--task NAME] [--pii\|--no-pii] [--force …] [--lease\|--no-lease\|--lease-check\|--take-lease\|--release-lease] [--] <claude args>`; the options are recognised in any position before `--` |
 | `lease-tests.sh` | The executed test harness for the lease gate, plus a regression pass over the PII gate and the limit detection. Drives `claude-auto.sh` against a stub `claude` that implements the five lease steps (plus the step-6 heartbeat, and the take/release protocols) against a fake document, `if_version` pin included. `./lease-tests.sh` — 158 assertions, no Mac, no login, no network |
-| `failover-tests.sh` | Executed tests for the three-tier chain (stub `claude`, stub `curl`, temp `HOME`): 128 assertions, see *Three-tier failover* |
+| `failover-tests.sh` | Executed tests for the three-tier chain, `--doctor`, the installer and `--interactive-free` (stub `claude`/`curl`/`omniroute`/`launchctl`/`runnerctl`, temp `HOME`, a pty): 248 assertions |
+| `install-failover.sh` | Asks y/N per change (default N, `--dry-run`): installs both scripts, role file, empty key file, probe LaunchAgent; prints the runner-task lines; runs `--doctor` |
 | `probe.sh` | Every 15 min: if the route is not `subscription`, probes the subscription with one 1-turn, no-tool call and restores it. Four inconclusive probes in a row → `state/NEEDS-STEVEN` + fall back to plain `claude` |
 | `~/.config/omniroute/.env` | On the Mac only, `chmod 600`. Holds `OMNIROUTE_API_KEY` (the key OmniRoute's dashboard issues for its own loopback endpoint). **Never a provider key, never committed** |
 | `~/.config/omniroute/free-ok-tasks.txt` | Optional. Task-name glob patterns **permitted on a free provider**, one per line, `#` comments. Adds to `DEFAULT_FREE_OK_TASKS` in the launcher. A name goes in here only with the security steward's sign-off |
@@ -346,6 +347,58 @@ enabling the runner. Environment overrides, none of them required:
 of `peer` and the one-command promotion in `REMOTE-ACCESS.md` in place of `--take-lease` — proved by
 `lease-tests.sh` sections B-E, which run unmodified against the current script and still pass.
 
+## Why the free route may not "kick in" — doctor, installer, interactive opt-in (2026-10-09)
+
+Steven: "fix whatever is preventing OmniRoute from kicking in when I hit my Claude token limit." OmniRoute running
+on `:20128` is only one of the preconditions. The launcher is **design + scripts, not installed on the Mac**; the Mac
+still runs the older `claude-auto` / `free_mode_guard.py` under `~/Applications/claude-fallback`. The likely blockers,
+in the order `claude-auto --doctor` checks them:
+
+1. OmniRoute does not answer the health URL the launcher uses. It used `/healthz` only; it now accepts `/healthz` **or** `/api/health` (launcher, probe, tier selection), so an OmniRoute that serves only one of them no longer defers every free run with exit 75.
+2. `~/.config/omniroute/.env` missing, not `chmod 600`, or `OMNIROUTE_API_KEY=` empty (the launcher exits 78).
+3. No free provider configured in OmniRoute (the route would exist but go nowhere).
+4. `claude-auto` / `probe.sh` not installed next to each other in `~/.local/bin`, stale versus the repo, or an older `claude-auto` earlier in `PATH` (the old `~/Applications/claude-fallback` launcher still being the one that runs).
+5. The probe LaunchAgent not written or not loaded (nothing restores the subscription; stale modes).
+6. No role file (this Mac is `standby`: a `--task` run whose lease check cannot complete is deferred).
+7. Runner tasks still calling plain `claude`, or `claude-auto` without `--task <name>` (a limit is never *detected* for plain `claude`; an unnamed task is deferred on the free route by the PII gate).
+8. **The interactive session.** A running interactive session cannot be re-pointed, and a new one with no `--task` is deferred on the free route by design. That is what `--interactive-free` (below) is for.
+
+**`claude-auto --doctor`** — read-only (writes no file, calls no `claude`, prints no secret value). One line per check:
+`PASS`, `WARN` or `FAIL` with `| fix: <the exact line>`; exit 0 when there is no `FAIL`. It checks: OmniRoute health;
+`omniroute --version` (>= 3.8.50); `.env` exists, mode 600, key NAME set; `omniroute providers list` shows >= 1 provider;
+`claude-auto` + `probe.sh` installed side by side and identical to the source copy (set `CLAUDE_RUNNER_REPO_DIR`, or run
+the doctor from the repo copy); `which claude` / `which claude-auto` and whether the old `claude-fallback` launcher is on
+`PATH` or referenced from a shell profile or LaunchAgent; the probe LaunchAgent plist and whether `launchctl` has it
+loaded; the role file; `state/mode` and its age; the last 5 `claude-auto.log` lines (that log never holds task output; each is cut to 160 characters); whether `runnerctl list` lines use `claude-auto` and `--task`; whether any limit was ever recorded in `limit-samples.log`.
+
+**`install-failover.sh [--dry-run]`** — macOS bash 3.2 safe. Asks y/N before **each** change, default N (Enter, EOF or anything
+but y/yes = no). `--dry-run` asks and changes nothing. On a yes it: copies `claude-auto.sh` -> `~/.local/bin/claude-auto` and
+`probe.sh` -> `~/.local/bin/probe.sh` (an existing different copy is kept as `.bak.<time>`); writes `~/.config/claude-runner/role`
+= `peer`; creates an **empty** `~/.config/omniroute/.env` (`OMNIROUTE_API_KEY=`, `chmod 600`) and tells Steven to paste the
+value himself; writes the probe LaunchAgent plist (every 900 s) and `launchctl load -w` it. It never touches the Claude login or
+settings, never asks for or writes a key value, never edits `PATH`, a profile or a runner task (it prints the exact
+`claude-auto --task <name> -p ...` replacement for him to apply), and never removes the old launcher. It ends by running `--doctor`.
+
+**`claude-auto --interactive-free [claude args]`** — a person starts a **new** interactive session on the free route, on purpose.
+Default off: nothing calls it, and a plain `claude-auto` interactive session on the free route is still deferred.
+It starts only if **all** hold: stdin and stdout are a terminal; not headless (`-p`); no `--pii`; `--task`, if given, does not match
+the client-data patterns (`DEFAULT_PII_TASKS` + `pii-tasks.txt`, case-insensitive, same list the PII gate uses); the current
+directory does not look like client data (`wiki/clients`, CRM, ISA, loan, borrower ...); OmniRoute answers; the key loads.
+It then prints `FREE ROUTE - no client data, nothing from CRM/ISA/loan files`, and the session starts only if he types `FREE`.
+The session is launched with `--settings state/interactive-free-settings.json`, which registers **`claude-auto --guard-hook`**
+as a `UserPromptSubmit` and `PreToolUse` hook: it reads the hook JSON (prompt and tool input only), and exits 2 (block) when it sees
+a client-data pattern (client wiki paths, Lofty/Zoho/CRM/ISA names, loan-file/borrower words, SSN shapes, `.config/omniroute|openrouter|claude-runner`, `.env`), and also when it cannot read its input (fails closed). It logs that it
+blocked, never what. It is a net, not a proof (prompt text can still say anything not on its list) - the same stance as the
+launcher-level gate. Tier 3 (OpenRouter) is **not** offered to interactive sessions. The route state is not changed: when he closes the session
+the next `claude` is the subscription again. The existing `free_mode_guard.py` lives only on the Mac and its hook interface is not in this repo, so this guard is a new, self-contained one; chaining the old one in is a decision for the Mac.
+
+Tests: `./failover-tests.sh` covers all of the above (stub `claude`/`curl`/`omniroute`/`launchctl`/`runnerctl`, temp `HOME`, a pty via `script(1)` for the interactive cases).
+**Not verifiable without the Mac:** that `omniroute providers list` is the real command and prints a countable list; the
+`runnerctl list` output shape; that Claude Code's `--settings` flag merges the hook settings with Steven's own and that
+`UserPromptSubmit`/`PreToolUse` hooks exit-2 blocking behaves as assumed in his build; whether `launchctl load -w` is accepted
+by his macOS version (newer systems prefer `bootstrap`); what the old `claude-fallback` actually is and whether anything else
+(a Shortcut, an alias, a function) still calls it; and the real usage-limit wording at the Mac.
+
 ## Three-tier failover (2026-10-09) — subscription, then free, then a capped paid backup
 
 Steven's rule: free tokens the moment the Claude subscription is exhausted, back to the subscription when it
@@ -401,7 +454,7 @@ actually cannot be exceeded; the ledger is the early-warning in front of it. Ste
 
 **Behaviour to know.** A headless run on tier 2 that fails with the exhaustion class now exits **75** (like a detected subscription limit) so the runner retries on the next route; other failures keep their exit code. Interactive sessions cannot be re-pointed mid-run, and a tier-3 session is a **child process** of the launcher (not `exec`) so the ledger can be settled when it ends. `--status` prints the cap, the month's spend and the streak, never the key. Logs say `route=paid-backup`, counts, USD and the trigger reason — never task output or a key.
 
-**Verified here (sandbox 2026-10-09)** — `./failover-tests.sh` (128 assertions) and the untouched `./lease-tests.sh` (158) pass; `bash -n` and `/usr/bin/shellcheck` clean on all four scripts. Executed against a stub `claude`, a stub `curl` and a temp `HOME`: T1 default; limit → T2 on the next call; T2 down → T3 only with enabled file + cap; refusal with no enabled file, no/zero/non-numeric cap, `.env` not `chmod 600`, over cap, exactly-at-cap allowed, key endpoint nearly spent, garbled ledger, old-month ledger ignored; client-data tasks (renamed, unknown, no task, `--no-pii` override, `--pii`, interactive, `local-only`, `paid-backup` mode) never reach T2 or T3; exhaustion streak of 3 → T3, 2 → not; T3 → T2 on health and on retry; probe T3 → T2; probe restore to T1 from both modes; the key never appears in logs, status, output or a curl argument.
+**Verified here (sandbox 2026-10-09)** — `./failover-tests.sh` (248 assertions, including doctor/installer/interactive-free) and the untouched `./lease-tests.sh` (158) pass; `bash -n` and `/usr/bin/shellcheck` clean on all four scripts. Executed against a stub `claude`, a stub `curl` and a temp `HOME`: T1 default; limit → T2 on the next call; T2 down → T3 only with enabled file + cap; refusal with no enabled file, no/zero/non-numeric cap, `.env` not `chmod 600`, over cap, exactly-at-cap allowed, key endpoint nearly spent, garbled ledger, old-month ledger ignored; client-data tasks (renamed, unknown, no task, `--no-pii` override, `--pii`, interactive, `local-only`, `paid-backup` mode) never reach T2 or T3; exhaustion streak of 3 → T3, 2 → not; T3 → T2 on health and on retry; probe T3 → T2; probe restore to T1 from both modes; the key never appears in logs, status, output or a curl argument.
 
 **Read from OpenRouter's docs (via web search; the OpenRouter site itself was egress-blocked from the sandbox, so these are search-result excerpts of the official pages, not a direct read)**: Claude Code works against `https://openrouter.ai/api` with the OpenRouter key as `ANTHROPIC_AUTH_TOKEN` and `ANTHROPIC_API_KEY` set to an empty string (unset may fall back to Anthropic); a cached Anthropic login can conflict (`/logout`); `GET https://openrouter.ai/api/v1/key` with a Bearer header returns the key's `limit`, `limit_remaining`, `limit_reset`, `usage`, `usage_daily/weekly/monthly` (USD; `null` limit = unlimited); a 402 means the key limit or balance is spent. OpenRouter recommends Anthropic models for Claude Code and only guarantees the Anthropic first-party provider.
 
