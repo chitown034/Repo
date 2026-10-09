@@ -78,7 +78,7 @@ umask 077                                                 # every file this scri
 CFG="${OMNIROUTE_CFG:-$HOME/.config/omniroute}"
 STATE="$CFG/state"; mkdir -p "$STATE" && chmod 700 "$STATE"
 ROUTE="$STATE/route.env"          # mode= since= reset_at= reason= omni_ok= probed_at=  — PARSED, never sourced (F-V2-18)
-MODEFILE="$STATE/mode"            # one word for tasks to read: subscription | free-fallback | local-only
+MODEFILE="$STATE/mode"            # one word for tasks to read: subscription | free-fallback | paid-backup | local-only
 LOG="$STATE/claude-auto.log"
 SAMPLES="$STATE/limit-samples.log" # one line per detected limit: exit status, matched branch, size, sha256. Never task output (F-V2-14)
 MARKER="$STATE/NEEDS-STEVEN"       # visible escalation written when switch-back cannot be proven (F-V2-11)
@@ -90,6 +90,17 @@ LOCAL_MODEL="${OMNIROUTE_LOCAL_MODEL:-}"                  # the OmniRoute `local
 PROBE_MAX_AGE="${OMNIROUTE_PROBE_MAX_AGE:-1500}"          # seconds of stale state before the launcher re-probes on its own
 PROBE_FORCE_AGE="${OMNIROUTE_PROBE_FORCE_AGE:-21600}"     # re-probe at least this often (6 h) even while reset_at is in the future (F-V2-12)
 RESET_MAX_AHEAD="${OMNIROUTE_RESET_MAX_AHEAD:-172800}"    # a parsed reset epoch more than 48 h out is a parse failure, not a wait (F-V2-12)
+# --- tier 3: OpenRouter, PAID, hard-capped, OFF by default (2026-10-09). Names only; the key lives in $OR_ENV (chmod 600).
+OR_CFG="${OPENROUTER_CFG:-$HOME/.config/openrouter}"
+OR_ENABLED="$OR_CFG/enabled"                              # Steven creates this file by hand to switch tier 3 on; absent = tier 3 never used
+OR_ENV="$OR_CFG/.env"                                     # OPENROUTER_API_KEY=… and OPENROUTER_MONTHLY_CAP_USD=… (e.g. 25); optional OPENROUTER_MODEL=…
+OR_BASE="https://openrouter.ai/api"                       # fixed, not overridable: the key is only ever sent here
+OR_LEDGER="$STATE/openrouter-ledger.env"                  # month= spent_usd= updated_at= — USD spent this UTC month, never printed with the key
+FREE_FAILS="$STATE/free-fails"                            # "<consecutive exhaustion-class failures> <epoch of the last one>" on the free combo
+FREE_FAIL_N="${OMNIROUTE_FREE_FAIL_N:-3}"                 # this many exhaustion-class free-combo failures in a row -> tier 3 may take over
+FREE_RETRY="${OMNIROUTE_FREE_RETRY:-300}"                 # while tier 3 is covering for an exhausted combo, try the free combo again this often
+OR_HEADROOM="${OPENROUTER_HEADROOM_USD:-1}"               # worst-case USD one tier-3 invocation is assumed to cost; refuse when spent + this > cap
+case "$OR_HEADROOM" in ''|*[!0-9.]*) OR_HEADROOM=1 ;; esac
 # --- task lease (P7). The document's shape is fixed by REMOTE-ACCESS.md; these are locations and budgets only.
 RUNNER_CFG="${CLAUDE_RUNNER_CFG:-$HOME/.config/claude-runner}"     # the runner's config, NOT omniroute's
 ROLEFILE="$RUNNER_CFG/role"                                        # first non-comment line: primary | standby (absent = standby)
@@ -115,6 +126,9 @@ CLAUDE_RUNNER_REPO_DIR="${CLAUDE_RUNNER_REPO_DIR:-}"               # optional: t
 # "resets at|in" branch and no bare "limit reached": ordinary prose matches those. Matched case-insensitively,
 # and ONLY against the error envelope that envelope() extracts — never against a task's output.
 LIMIT_RE='usage limit|you.{0,3}ve hit your ([a-z]+ ){0,2}limit|(usage|rate|spend|weekly|session|monthly) limit (has been )?reached|out of (extra )?usage|rate_limit(_error)?|"error": ?"rate_limit"|rate limited|(api error|http|status|code)[ :="]*429([^0-9]|$)|429 too many requests'
+# What "the free combo is exhausted" looks like (tier 2 -> tier 3 trigger): OmniRoute's all-providers-exhausted wording, 429 and 5xx
+# in an HTTP/API-error context only. Matched against the error envelope of a FAILED free-route run, never against task output.
+FREE_EXH_RE='all (providers|accounts|models|combos?|targets)[^"]{0,40}(exhausted|unavailable|failed|rate.?limited)|no (healthy|available) (providers?|accounts?|targets?)|providers? exhausted|(api error|http|status|code)[ :="]*(429|5[0-9][0-9])([^0-9]|$)|429 too many requests|rate_limit|rate limited|service unavailable|bad gateway|gateway time-?out'
 
 # Free-OK allow-list: glob patterns of task names whose inputs are public or system data (weather, news, rates,
 # market and model feeds, incentives, the vendored skills, doc freshness, runner health, the toolkit inventory).
@@ -192,6 +206,58 @@ write_route() { # mode since reset_at reason omni_ok probed_at
   r=$(printf '%s' "$4" | tr -c 'A-Za-z0-9 _.:=/-' '_')
   printf 'mode=%s\nsince=%s\nreset_at=%s\nreason=%s\nomni_ok=%s\nprobed_at=%s\n' "$1" "$2" "$3" "'$r'" "$5" "$6" > "$ROUTE"
   printf '%s\n' "$1" > "$MODEFILE"; }
+
+# ---------------------------------------------------------------- tier 3: OpenRouter, paid, capped, off by default
+# Used ONLY when ALL hold: the subscription is limited (we are in this arm at all); the invocation is cleared for a
+# free provider (is_pii=0, mode is not local-only — the same gate as tier 2, evaluated before this code is reached);
+# tier 2 is down (healthz fails) or its free combo failed FREE_FAIL_N times in a row with the exhaustion class;
+# $OR_ENABLED exists; OPENROUTER_MONTHLY_CAP_USD > 0 in $OR_ENV; and ledger spent + OR_HEADROOM <= cap.
+# Nothing here prints the key or puts it on a command line (curl reads its header from stdin).
+or_env_get() { grep -E "^$1=" "$OR_ENV" 2>/dev/null | tail -1 | cut -d= -f2- | tr -d "\"' "; }
+fnum() { case "$1" in ''|*[!0-9.]*|*.*.*) return 1 ;; esac; return 0; }          # plain non-negative decimal
+fgt()  { awk -v a="$1" -v b="$2" 'BEGIN{exit !(a+0>b+0)}'; }                     # a > b
+fmax() { awk -v a="$1" -v b="$2" 'BEGIN{printf "%.4f", (a+0>b+0)?a:b}'; }
+fadd() { awk -v a="$1" -v b="$2" 'BEGIN{printf "%.4f", a+b}'; }
+or_ledger_read() { # sets L_SPENT (this UTC month). rc 1 = ledger present but untrusted/garbled -> caller must REFUSE, never reset
+  L_SPENT=0; [ -e "$OR_LEDGER" ] || return 0
+  route_file_trusted "$OR_LEDGER" || return 1
+  _lm=$(sed -n 's/^month=//p' "$OR_LEDGER" | tail -1); _ls=$(sed -n 's/^spent_usd=//p' "$OR_LEDGER" | tail -1)
+  fnum "$_ls" || return 1
+  [ "$_lm" = "$(date -u +%Y-%m)" ] && L_SPENT="$_ls"
+  return 0
+}
+or_ledger_write() { printf 'month=%s\nspent_usd=%s\nupdated_at=%s\n' "$(date -u +%Y-%m)" "$L_SPENT" "$(now)" > "$OR_LEDGER.tmp" && mv "$OR_LEDGER.tmp" "$OR_LEDGER"; }
+or_key_fetch() { # GET /api/v1/key -> KEY_USAGE (usage_monthly, USD) and KEY_REMAIN (limit_remaining, may be empty = unlimited). rc 1 = unreadable
+  KEY_USAGE=''; KEY_REMAIN=''
+  _b=$(printf 'header = "Authorization: Bearer %s"\n' "$T3_KEY" | curl -fsS --max-time 8 -K - "$OR_BASE/v1/key" 2>/dev/null) || return 1
+  KEY_USAGE=$(printf '%s' "$_b" | grep -oE '"usage_monthly": ?[0-9]+(\.[0-9]+)?' | head -1 | grep -oE '[0-9.]+$')
+  KEY_REMAIN=$(printf '%s' "$_b" | grep -oE '"limit_remaining": ?[0-9]+(\.[0-9]+)?' | head -1 | grep -oE '[0-9.]+$')
+  fnum "$KEY_USAGE"
+}
+t3_gate() { # rc 0 = tier 3 may be used now. Sets T3_KEY, T3_CAP, T3_WHY (a reason that never contains a value)
+  T3_WHY=''; T3_KEY=''; T3_CAP=0
+  { [ -f "$OR_ENABLED" ] && [ ! -L "$OR_ENABLED" ]; } || { T3_WHY="no $OR_ENABLED (tier 3 is off)"; return 1; }
+  [ -f "$OR_ENV" ] || { T3_WHY="no $OR_ENV"; return 1; }
+  case "$(filemode "$OR_ENV")" in 600|400) ;; *) T3_WHY="$OR_ENV is not chmod 600"; return 1 ;; esac
+  T3_KEY=$(or_env_get OPENROUTER_API_KEY); [ -n "$T3_KEY" ] || { T3_WHY="OPENROUTER_API_KEY not set"; return 1; }
+  T3_CAP=$(or_env_get OPENROUTER_MONTHLY_CAP_USD)
+  if ! fnum "$T3_CAP" || ! fgt "$T3_CAP" 0; then T3_WHY="OPENROUTER_MONTHLY_CAP_USD not set to a number > 0"; return 1; fi
+  or_ledger_read || { T3_WHY="spend ledger unreadable or untrusted — refusing rather than resetting it"; return 1; }
+  if or_key_fetch; then
+    L_SPENT=$(fmax "$L_SPENT" "$KEY_USAGE"); or_ledger_write
+    if fnum "$KEY_REMAIN" && fgt "$OR_HEADROOM" "$KEY_REMAIN"; then T3_WHY="the key's own credit limit has less than the per-run headroom left"; return 1; fi
+  fi
+  if fgt "$(fadd "$L_SPENT" "$OR_HEADROOM")" "$T3_CAP"; then T3_WHY="monthly cap: spent $L_SPENT + headroom $OR_HEADROOM > cap $T3_CAP"; return 1; fi
+  return 0
+}
+ff_read() { FF_N=0; FF_AT=0; [ -f "$FREE_FAILS" ] || return 0
+  read -r _n _a < "$FREE_FAILS" 2>/dev/null || true
+  case "${_n:-x}" in *[!0-9]*) _n=0 ;; esac; case "${_a:-x}" in *[!0-9]*) _a=0 ;; esac
+  FF_N=${_n:-0}; FF_AT=${_a:-0}; }
+ff_note() { ff_read; FF_N=$((FF_N + 1)); printf '%s %s\n' "$FF_N" "$(now)" > "$FREE_FAILS"; }
+ff_ok()   { rm -f "$FREE_FAILS"; }
+free_exhausted() { ff_read; [ "$FF_N" -ge "$FREE_FAIL_N" ] && [ $(( $(now) - FF_AT )) -lt "$FREE_RETRY" ]; }  # exhausted AND not yet due for a retry
+omni_live() { curl -fsS --max-time 5 "$OMNI_BASE/healthz" >/dev/null 2>&1; }
 
 # ---------------------------------------------------------------- the task lease (P7): one writer across two Macs
 filemtime() { # GNU first and validated, then BSD — same reason as filemode (F-V2-15)
@@ -658,6 +724,11 @@ if [ "$mode" != subscription ]; then
 fi
 if [ $SHOW = 1 ]; then
   cat "$ROUTE" 2>/dev/null || echo "mode=subscription"
+  # tier 3 (OpenRouter): config presence and the ledger only — never the key
+  if [ -f "$OR_ENABLED" ]; then echo "tier3_enabled_file=yes"; else echo "tier3_enabled_file=no"; fi
+  if [ -f "$OR_ENV" ]; then echo "tier3_cap_usd=$(or_env_get OPENROUTER_MONTHLY_CAP_USD)"; else echo "tier3_cap_usd="; fi
+  if or_ledger_read; then echo "tier3_spent_usd_this_month=$L_SPENT"; else echo "tier3_ledger=UNTRUSTED (tier 3 refuses)"; fi
+  ff_read; echo "free_combo_exhaustion_streak=$FF_N"
   [ -f "$STATE/probe-failures" ] && echo "probe_failures=$(tr -dc '0-9' < "$STATE/probe-failures")"
   read_role; printf 'lease_role=%s\nlease_role_src=%s\nlease_id=%s\nclaude_auto_version=%s\n' "$ROLE" "$ROLE_WHY" "$(lease_my_id)" "$CLAUDE_AUTO_VERSION"
   if [ -e "$LEASE_CACHE" ]; then read_lease_cache
@@ -782,6 +853,22 @@ load_omni_key() {
   [ -n "$OMNIROUTE_API_KEY" ] || { echo "claude-auto: OMNIROUTE_API_KEY not set in $f" >&2; return 1; }
 }
 
+route_openrouter() { # claude-args… — runs claude as a CHILD (not exec) so the ledger can be settled afterwards
+  _m=$(or_env_get OPENROUTER_MODEL); [ -n "$_m" ] || _m="anthropic/claude-sonnet-4.5"   # default NOT verified — see README "to verify on the Mac"
+  write_route paid-backup "${since:-$(now)}" "$reset_at" "tier3-openrouter task=${TASK:-none}" "$omni_ok" "$probed_at"
+  export ANTHROPIC_BASE_URL="$OR_BASE" ANTHROPIC_AUTH_TOKEN="$T3_KEY" ANTHROPIC_API_KEY=""   # blank, not unset, per OpenRouter's Claude Code guide
+  export ANTHROPIC_MODEL="$_m" ANTHROPIC_DEFAULT_OPUS_MODEL="$_m" ANTHROPIC_DEFAULT_SONNET_MODEL="$_m" \
+         ANTHROPIC_DEFAULT_HAIKU_MODEL="$_m" ANTHROPIC_DEFAULT_FABLE_MODEL="$_m"
+  unset CLAUDE_CODE_OAUTH_TOKEN                          # the subscription credential never reaches a third party
+  export VANESSA_ROUTE_MODE=paid-backup VANESSA_PII_OK=0
+  log "route=paid-backup task=${TASK:-none} pii=$is_pii headless=$headless spent=$L_SPENT cap=$T3_CAP why='$TRIG_WHY' ($why)"
+  claude "$@"; _rc=$?
+  or_ledger_read || L_SPENT="$T3_CAP"                    # an untrusted ledger after a run is charged as full: fail closed
+  if or_key_fetch; then L_SPENT=$(fmax "$L_SPENT" "$KEY_USAGE"); else L_SPENT=$(fadd "$L_SPENT" "$OR_HEADROOM"); fi
+  or_ledger_write; log "tier3 settled rc=$_rc spent=$L_SPENT cap=$T3_CAP"
+  exit "$_rc"
+}
+
 route_omni() { # model route-mode pii_ok claude-args…
   model="$1"; rmode="$2"; piiok="$3"; shift 3
   curl -fsS --max-time 5 "$OMNI_BASE/healthz" >/dev/null 2>&1 || { log "omniroute /healthz failed task=${TASK:-none} pii=$is_pii ($why)"; echo "claude-auto: OmniRoute not answering on $OMNI_BASE — deferred (exit 75)" >&2; exit 75; }
@@ -796,6 +883,7 @@ route_omni() { # model route-mode pii_ok claude-args…
     case "$a" in --model) args+=("$a"); skip=1 ;; --model=*) args+=("--model=$model") ;; *) args+=("$a") ;; esac
   done
   log "route=$rmode model=$model task=${TASK:-none} pii=$is_pii headless=$headless ($why)"
+  if [ "$rmode" = free-fallback ] && [ $headless = 1 ]; then run_free_and_watch ${args[@]+"${args[@]}"}; fi
   exec claude ${args[@]+"${args[@]}"}
 }
 
@@ -845,13 +933,48 @@ run_headless_and_watch() { # subscription path: run, mirror output, detect a usa
   cat "$tmp.err" >&2; rm -f "$tmp" "$tmp.err"; exit "$rc"
 }
 
+run_free_and_watch() { # tier-2 headless run: count exhaustion-class failures in a row so tier 3 can take over (exit 75 = retry on the new route)
+  tmp=$(mktemp "${TMPDIR:-/tmp}/claude-auto.XXXXXX")
+  claude "$@" 2>"$tmp.err" | tee "$tmp"; rc=${PIPESTATUS[0]}
+  if [ "$rc" -ne 0 ] || grep -qE '"is_error": ?true' "$tmp"; then
+    env_txt=$(envelope "$tmp" "$tmp.err" "$rc")
+    if printf '%s\n' "$env_txt" | grep -qiE "$FREE_EXH_RE"; then
+      ff_note; record_sample "$env_txt" "$rc"
+      log "free combo exhaustion-class failure task=${TASK:-none} rc=$rc consecutive=$FF_N of $FREE_FAIL_N; exit 75 so the runner retries"
+      cat "$tmp.err" >&2; rm -f "$tmp" "$tmp.err"; exit 75
+    fi
+    log "free-route run failed task=${TASK:-none} rc=$rc — not the exhaustion class"
+  else ff_ok; fi
+  cat "$tmp.err" >&2; rm -f "$tmp" "$tmp.err"; exit "$rc"
+}
+
 rotate "$LOG" 5000
 case "$mode" in
   subscription)
     unset ANTHROPIC_BASE_URL ANTHROPIC_AUTH_TOKEN           # never inherit a stale proxy setting
     export VANESSA_ROUTE_MODE=subscription VANESSA_PII_OK=1
     if [ $headless = 1 ]; then run_headless_and_watch "$@"; else exec claude "$@"; fi ;;
-  free-fallback|local-only)
+  free-fallback|local-only|paid-backup)
+    # Tier selection (non-client work only): tier 2 whenever OmniRoute is healthy and its free combo is not in a run of
+    # exhaustion failures; tier 3 only when tier 2 is down or exhausted AND t3_gate passes. Re-evaluated on EVERY
+    # invocation, so tier 3 never outlives the moment tier 2 is usable again (free combo re-tried every FREE_RETRY s).
+    TRIG_WHY=''
+    if [ $is_pii = 0 ] && [ "$mode" != local-only ]; then
+      if ! omni_live; then TRIG_WHY="omniroute healthz failed"
+      elif free_exhausted; then TRIG_WHY="free combo exhausted x$FF_N"; fi
+      if [ -n "$TRIG_WHY" ]; then
+        if t3_gate; then route_openrouter "$@"; fi
+        log "tier 3 refused task=${TASK:-none} ($TRIG_WHY): $T3_WHY"
+        [ "$mode" = paid-backup ] && write_route free-fallback "${since:-$(now)}" "$reset_at" "tier3-refused" "$omni_ok" "$probed_at"
+      else
+        omni_ok=1                                             # live health beats the probe's up-to-15-min-old flag
+      fi
+      if [ -z "$TRIG_WHY" ] && [ "$mode" = paid-backup ]; then
+        write_route free-fallback "${since:-$(now)}" "$reset_at" "tier2-healthy-again" 1 "$probed_at"; mode=free-fallback
+        log "tier 2 is usable again — mode paid-backup -> free-fallback"
+      fi
+    fi
+    [ "$mode" = paid-backup ] && mode=free-fallback           # a client-data invocation never sees tier 3 and treats the route as tier 2
     if [ "$omni_ok" != 1 ]; then log "defer task=${TASK:-none} pii=$is_pii: subscription limited and OmniRoute unhealthy"; echo "claude-auto: subscription limited and OmniRoute unhealthy — deferred (exit 75)" >&2; exit 75; fi
     load_omni_key || exit 78
     if [ $is_pii = 1 ] || [ "$mode" = local-only ]; then

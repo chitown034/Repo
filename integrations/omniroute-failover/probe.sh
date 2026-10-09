@@ -2,6 +2,7 @@
 # probe.sh — proves the Claude subscription is usable again and restores mode=subscription for claude-auto.sh.
 # Runs every 15 min from a LaunchAgent (plist in README.md). No LLM work except one 1-turn, no-tool probe,
 # which costs a handful of tokens when the subscription is fine and nothing when it is still limited.
+# Tier 3 (mode=paid-backup, OpenRouter): a restore to subscription clears it like any other mode; while still limited, a healthy OmniRoute moves paid-backup back to free-fallback.
 # Usage: probe.sh [--now] [--check]   --now: ignore reset_at and probe immediately · --check: probe even in subscription mode
 # Exit 0 = conclusive (restored, or still limited). Exit 1 = inconclusive; after OMNIROUTE_PROBE_MAX_FAIL of those in a
 # row it ESCALATES: writes state/NEEDS-STEVEN and falls the route back to plain `claude` (mode=subscription) so a broken
@@ -131,12 +132,13 @@ out=$(env -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_API_KEY \
 env_txt=$(printf '%s\n' "$out" | envelope_text)
 if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -qE '"is_error": ?false'; then
   write_route subscription "$t" 0 "probe-ok" "$omni" "$t"
-  printf '0\n' > "$FAILS"
+  printf '0\n' > "$FAILS"; rm -f "$STATE/free-fails"
   [ -f "$MARKER" ] && { rm -f "$MARKER"; log "NEEDS-STEVEN marker cleared: the probe is conclusive again"; }
   log "RESTORED: subscription usable again (was mode=$mode since=$since)"; exit 0
 elif [ "$rc" -ne 0 ] && printf '%s\n' "$env_txt" | grep -qiE "$LIMIT_RE"; then
   epoch=$(printf '%s\n' "$env_txt" | parse_reset_epoch)
   [ "$mode" = subscription ] && mode=free-fallback
+  [ "$mode" = paid-backup ] && [ "$omni" = 1 ] && { mode=free-fallback; log "OmniRoute healthy again — paid-backup -> free-fallback (tier 2 preferred over tier 3)"; }
   write_route "$mode" "${since:-$t}" "$epoch" "still-limited" "$omni" "$t"
   printf '0\n' > "$FAILS"
   log "still limited: mode=$mode reset_at=$epoch omni_ok=$omni branch=$(printf '%s' "$env_txt" | limit_branch)"; exit 0

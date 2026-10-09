@@ -30,6 +30,7 @@ runs out and then switches back to subscription model when subscription refreshe
 |---|---|
 | `claude-auto.sh` | Launcher. Decides the route per invocation, publishes the mode, gates client-data work — **closed by default** — and holds the **task lease** (below): `peer` by default, `primary`/`standby` kept as legacy roles. Drop-in for `claude`: `claude-auto [--task NAME] [--pii\|--no-pii] [--force …] [--lease\|--no-lease\|--lease-check\|--take-lease\|--release-lease] [--] <claude args>`; the options are recognised in any position before `--` |
 | `lease-tests.sh` | The executed test harness for the lease gate, plus a regression pass over the PII gate and the limit detection. Drives `claude-auto.sh` against a stub `claude` that implements the five lease steps (plus the step-6 heartbeat, and the take/release protocols) against a fake document, `if_version` pin included. `./lease-tests.sh` — 158 assertions, no Mac, no login, no network |
+| `failover-tests.sh` | Executed tests for the three-tier chain (stub `claude`, stub `curl`, temp `HOME`): 128 assertions, see *Three-tier failover* |
 | `probe.sh` | Every 15 min: if the route is not `subscription`, probes the subscription with one 1-turn, no-tool call and restores it. Four inconclusive probes in a row → `state/NEEDS-STEVEN` + fall back to plain `claude` |
 | `~/.config/omniroute/.env` | On the Mac only, `chmod 600`. Holds `OMNIROUTE_API_KEY` (the key OmniRoute's dashboard issues for its own loopback endpoint). **Never a provider key, never committed** |
 | `~/.config/omniroute/free-ok-tasks.txt` | Optional. Task-name glob patterns **permitted on a free provider**, one per line, `#` comments. Adds to `DEFAULT_FREE_OK_TASKS` in the launcher. A name goes in here only with the security steward's sign-off |
@@ -344,6 +345,75 @@ enabling the runner. Environment overrides, none of them required:
 **Legacy canary (unchanged, primary/standby):** the same shape still works with `primary`/`standby` in place
 of `peer` and the one-command promotion in `REMOTE-ACCESS.md` in place of `--take-lease` — proved by
 `lease-tests.sh` sections B-E, which run unmodified against the current script and still pass.
+
+## Three-tier failover (2026-10-09) — subscription, then free, then a capped paid backup
+
+Steven's rule: free tokens the moment the Claude subscription is exhausted, back to the subscription when it
+resets, and OpenRouter (paid) only as a **third** backup after Claude is out **and** OmniRoute has stopped
+working — with a spending cap. Tiers 1 and 2 are the machinery above, unchanged. Tier 3 is new, **off by default**.
+
+```
+                       every invocation (bash, per process; the route is fixed when claude starts)
+                                          |
+ client-data / unknown task / no --task ──┴──▶ NEVER tier 2 or 3: local model if configured, else exit 75
+                                          |   (the PII gate above, evaluated first; local-only mode never reaches tier 3)
+ T1  Claude subscription  ── plain `claude`, OAuth, no proxy env. NEVER through OmniRoute or OpenRouter
+        |  limit detected (exit 75 → runner retries)          ▲ probe.sh every 15 min: subscription usable → mode=subscription
+        ▼                                                      │   (also clears the exhaustion streak; the spend ledger stays)
+ T2  OmniRoute free combo ── 127.0.0.1:20128, auto/coding:free. FreeAPI-catalogue providers are added
+        |                    INSIDE OmniRoute (providers add …), not as a second router.      mode=free-fallback
+        |  OmniRoute /healthz fails   OR   free combo returns 429 / 5xx / all-providers-exhausted FREE_FAIL_N (3) times in a row
+        |  AND  ~/.config/openrouter/enabled exists  AND  OPENROUTER_MONTHLY_CAP_USD > 0  AND  ledger spent + headroom <= cap
+        ▼                                                      ▲ checked on EVERY invocation: healthz up and combo not in a streak
+ T3  OpenRouter (paid) ── https://openrouter.ai/api, key as ANTHROPIC_AUTH_TOKEN,     │  → back to T2 at once (mode=free-fallback).
+                          ANTHROPIC_API_KEY="" (blank, not unset).  mode=paid-backup   │  An exhausted-but-up combo is re-tried every
+                          Any condition above false → exit 75 (deferred), nothing sent │  FREE_RETRY (300 s) so T3 cannot stick.
+```
+
+**Where each file lives (names only; values never in the repo, a log, `--status` or a command line)**
+| File | Holds |
+|---|---|
+| `~/.config/openrouter/enabled` | Empty file. Its existence is Steven's switch for tier 3. Delete it to turn tier 3 off instantly |
+| `~/.config/openrouter/.env` (`chmod 600`) | `OPENROUTER_API_KEY=…`, `OPENROUTER_MONTHLY_CAP_USD=25` (example; unset or `0` = tier 3 never used), optional `OPENROUTER_MODEL=…` |
+| `~/.config/omniroute/state/openrouter-ledger.env` | `month=` (UTC) `spent_usd=` `updated_at=`. Owner-only. Unreadable, wrong owner or garbled = tier 3 **refuses** (it is never silently reset). A new UTC month starts at 0 |
+| `~/.config/omniroute/state/free-fails` | `<streak> <epoch of last>` — consecutive exhaustion-class failures of the free combo. Removed on the first free success and on a subscription restore |
+| `state/mode`, `route.env` | gain the value `paid-backup` (one word, same file as before) |
+
+**The two cap layers.** (1) *Local ledger.* Before a tier-3 run the launcher refuses when `spent + headroom > cap`
+(`OPENROUTER_HEADROOM_USD`, default 1.00 = the most one invocation is assumed to cost). After the run it settles:
+if OpenRouter's key endpoint can be read, `spent = max(ledger, usage_monthly)`; if not, `spent += headroom` (a
+deliberate over-estimate). The ledger can only be wrong on the safe side. It is a *launcher-level* cap: it cannot stop
+one runaway invocation from spending past the headroom, and it does not see use of the key from anywhere else except
+through `usage_monthly`. (2) *OpenRouter's own limit on the key plus a small prepaid balance* — this is the layer that
+actually cannot be exceeded; the ledger is the early-warning in front of it. Steven sets both.
+
+**Steps Steven performs (nothing here is done by an agent; each is an account, credential or spend action)**
+1. Create an OpenRouter account; create an **API key dedicated to this launcher** (name it e.g. `claude-auto-backup`).
+2. On that key, set its **credit limit to $25** (monthly reset if the dashboard offers one). Cap value is Steven's decision of 2026-10-09.
+3. Load **no more than $25** of prepaid credit — a small balance, so the account itself cannot be drained even if the key limit is misconfigured. Turn auto-top-up **off**.
+4. `mkdir -p ~/.config/openrouter && chmod 700 ~/.config/openrouter`, then create `~/.config/openrouter/.env` containing the two lines `OPENROUTER_API_KEY=<paste>` and `OPENROUTER_MONTHLY_CAP_USD=25`; `chmod 600` it. (Optional third line `OPENROUTER_MODEL=<an OpenRouter model id>`; the default in the script, `anthropic/claude-sonnet-4.5`, is **unverified** — pick a cheap id you have checked in the dashboard.)
+5. Deploy the patched `claude-auto.sh` and `probe.sh` per *Install on the Mac*; confirm `claude-auto --status` shows `tier3_enabled_file=no` and `tier3_cap_usd=25`.
+6. Only when ready to allow spending: `touch ~/.config/openrouter/enabled`. To stop: `rm` that file.
+7. First live check (costs a few cents): `claude-auto --force free --no-pii -p 'say hi'` with OmniRoute stopped and `enabled` present → the reply comes through OpenRouter (Activity page shows it), `claude-auto --status` shows a non-zero `tier3_spent_usd_this_month`. Restart OmniRoute → the next call goes to OmniRoute again. `claude-auto --force subscription` afterward.
+8. Add FreeAPI-catalogue providers to **OmniRoute** (`omniroute providers add … --credential-env …`, as in *Free-key sources*) — not as a second router. Do not add the Claude subscription to OmniRoute.
+
+**Hysteresis and how each hop reverses.** T1 comes back only through `probe.sh` (unchanged logic, plus it clears the streak). T2 beats T3 *per invocation*: the launcher checks OmniRoute's `/healthz` live before every non-client run, so the first call after OmniRoute is healthy goes to T2 and rewrites the mode to `free-fallback`; `probe.sh` does the same while still limited. If OmniRoute is up but the free combo is exhausted, T3 covers it and the combo is re-tried every `FREE_RETRY` seconds — one success clears the streak. Tier 3 therefore never stays on once either T1 or T2 is available, bounded by that retry interval.
+
+**Behaviour to know.** A headless run on tier 2 that fails with the exhaustion class now exits **75** (like a detected subscription limit) so the runner retries on the next route; other failures keep their exit code. Interactive sessions cannot be re-pointed mid-run, and a tier-3 session is a **child process** of the launcher (not `exec`) so the ledger can be settled when it ends. `--status` prints the cap, the month's spend and the streak, never the key. Logs say `route=paid-backup`, counts, USD and the trigger reason — never task output or a key.
+
+**Verified here (sandbox 2026-10-09)** — `./failover-tests.sh` (128 assertions) and the untouched `./lease-tests.sh` (158) pass; `bash -n` and `/usr/bin/shellcheck` clean on all four scripts. Executed against a stub `claude`, a stub `curl` and a temp `HOME`: T1 default; limit → T2 on the next call; T2 down → T3 only with enabled file + cap; refusal with no enabled file, no/zero/non-numeric cap, `.env` not `chmod 600`, over cap, exactly-at-cap allowed, key endpoint nearly spent, garbled ledger, old-month ledger ignored; client-data tasks (renamed, unknown, no task, `--no-pii` override, `--pii`, interactive, `local-only`, `paid-backup` mode) never reach T2 or T3; exhaustion streak of 3 → T3, 2 → not; T3 → T2 on health and on retry; probe T3 → T2; probe restore to T1 from both modes; the key never appears in logs, status, output or a curl argument.
+
+**Read from OpenRouter's docs (via web search; the OpenRouter site itself was egress-blocked from the sandbox, so these are search-result excerpts of the official pages, not a direct read)**: Claude Code works against `https://openrouter.ai/api` with the OpenRouter key as `ANTHROPIC_AUTH_TOKEN` and `ANTHROPIC_API_KEY` set to an empty string (unset may fall back to Anthropic); a cached Anthropic login can conflict (`/logout`); `GET https://openrouter.ai/api/v1/key` with a Bearer header returns the key's `limit`, `limit_remaining`, `limit_reset`, `usage`, `usage_daily/weekly/monthly` (USD; `null` limit = unlimited); a 402 means the key limit or balance is spent. OpenRouter recommends Anthropic models for Claude Code and only guarantees the Anthropic first-party provider.
+
+**Could not be verified without the Mac (or an OpenRouter account) — mark each "to verify on the Mac"**
+- That a real OpenRouter key works end to end with the installed Claude Code build, including whether the cached subscription login in the Mac's Claude Code conflicts with `ANTHROPIC_AUTH_TOKEN` (the same question already open for tier 2) and whether the launcher's child process needs the `/logout` workaround.
+- The default model id `anthropic/claude-sonnet-4.5`; and that `ANTHROPIC_DEFAULT_*_MODEL` carries an OpenRouter id correctly.
+- The exact dashboard steps and field names for the key credit limit and its reset period, and whether `usage_monthly` is present and in USD in the response today (the script falls back to the headroom estimate if it is missing).
+- That the key's limit stops spend at the cap (the layer the ledger relies on to backstop it), and whether OpenRouter deducts failed requests.
+- The exact text OmniRoute returns when every free provider is exhausted — `FREE_EXH_RE` covers 429/5xx and "all providers exhausted"-style wording but is built from OmniRoute's documented behaviour, not a recorded hit; tighten from `limit-samples.log` (`branch=`) after the first real one.
+- That the OmniRoute free combo, and OpenRouter, handle Claude Code's tool-use format well enough for the runner's prompts.
+- That `mac-verify.sh` (not in this folder) tolerates `mode=paid-backup`; check its allowed-mode list before deploying.
+- `launchd` environment for the probe is unchanged; nothing new there, but tier 3 reads `$HOME/.config/openrouter`, so the runner's `HOME` must be Steven's.
 
 ## State-file hygiene
 `state/` is created mode 700 and every file in it 600 (`umask 077`). `route.env` is a data file: the six

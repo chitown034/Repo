@@ -26,6 +26,7 @@ this directory now owns the `local` route only.
 | `research` — research heavy lifting | **subscription** | Claude web research — Sonnet 5 with WebSearch/WebFetch on Steven's Claude subscription (Perplexity removed 2026-10-05); plain `claude`, same as above; **≤4 web-research sub-agents per wave** (`CLAUDE.md` sub-agent dispatch cap) | **Never** — the `research` combo was withdrawn 2026-10-05 |
 | `pii_gate` fires — **overrides every tier above, unconditionally** | **local** | OmniRoute `local` combo → **Bonsai 27B**, served on the Mac's own loopback, no cloud fallback, **ever** | Yes — the only cloud-shaped hop is `127.0.0.1`, i.e. none |
 | (unchanged, not this directory's concern) | **free-fallback** | OmniRoute free combo, subscription-limited only, PII gate closed by default | Yes — see `omniroute-failover/README.md` |
+| (tier 3, 2026-10-09, OFF by default) | **paid-backup** | OpenRouter direct (never via OmniRoute), only after the subscription is limited **and** OmniRoute is down/exhausted; capped; same PII gate as free-fallback | No — see `omniroute-failover/README.md` §Three-tier failover |
 
 `integrations/laya/laya_route.py` prints this as a `route` field per request (R12-OMNI); the mapping itself
 lives in `route-map.json` in this directory, not hardcoded in the script. **The one invariant that matters

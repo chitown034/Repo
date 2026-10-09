@@ -41,6 +41,11 @@
       "fallback": "none by construction — a single-target combo; proven only against a stand-in gateway, so the local route stays OFF (OMNIROUTE_LOCAL_MODEL unset) until README §Prove it on the Mac passes",
       "provider_id_placeholder": "set by setup-local-llm.sh / configure-omniroute.sh at install time — not a fixed value in this file"
     },
+    "paid-backup": {
+      "route": "paid-backup", "via": "openrouter, direct (not through OmniRoute)", "omniroute": false,
+      "default": "OFF - needs ~/.config/openrouter/enabled AND OPENROUTER_MONTHLY_CAP_USD>0",
+      "note": "Tier 3 (2026-10-09): only when the subscription is limited AND OmniRoute is down or its free combo is exhausted N times in a row. Same PII gate as free-fallback (client data never goes there); local-only never. Local spend ledger plus a credit limit on the OpenRouter key. See omniroute-failover/README.md, Three-tier failover."
+    },
     "research": {
       "removed": "2026-10-05",
       "note": "Perplexity removed (Steven). Research is subscription traffic now, and the subscription never goes through OmniRoute (README #hard-rules), so there is no research combo and no research provider. configure-omniroute.sh no longer creates either."
