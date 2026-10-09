@@ -15,7 +15,7 @@ no balances, no membership numbers, no client names. Those live in the deck, beh
 
 | Capacity | Detail |
 |---|---|
-| Real estate | CA Real Estate **Broker**, acting as **Broker Associate with LPT Realty** (Space RE team) |
+| Real estate | CA Real Estate **Broker**, DRE **#01988316** (personal licence, given by Steven 2026-10-09), acting as **Broker Associate with LPT Realty** (Space RE team) |
 | Mortgage | **MLO**, personally licensed in **CA, NV, AZ, FL, IL** |
 | Mortgage entity | **Patriot Pacific Financial Corp**, NMLS **#1921615**, licensed in 43 states |
 | Public brand | thevaloanmastermind.com |

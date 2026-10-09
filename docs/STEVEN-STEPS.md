@@ -17,7 +17,7 @@ research on Claude only; Gmail, Google Calendar, Notion, Strava, Slack, Canva an
 
 ## 2 · One reply to Claude (2 minutes · copy, fill the blanks, send in this chat)
 
-3. **Answer five quick questions in one message.** *(2026-10-09: four answered — USC yes, Week 4 done, 5 states current, Rent/Buy/Wait keep. Still open: LPT's California DRE number and exact entity name.)*
+3. **Answer five quick questions in one message.** *(2026-10-09: four answered — USC yes, Week 4 done, 5 states current, Rent/Buy/Wait keep. Steven gave his personal DRE #01988316 (2026-10-09); still open: LPT brokerage DRE number and exact entity name.)*
    - Add USC Weeks 5–7 to your study list? (Week 6 paper + participation due Sun Oct 11, 11:59 PM PT; final assessment Mon Oct 19)
    - Is Week 4 (due Sep 27) done?
    - Is the five-state licensing line (CA, NV, AZ, FL, IL) current?
