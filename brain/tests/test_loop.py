@@ -113,6 +113,30 @@ class PackAndLoop(BrainCase, unittest.TestCase):
         self.assertIn("org coverage fell", text2)
 
 
+class StaleAndRelated(BrainCase, unittest.TestCase):
+    def setUp(self):
+        super().setUp()
+        (self.root / "wiki").mkdir(exist_ok=True)
+        (self.root / "wiki/old.md").write_text("# Old\n\nStatus: running, as of 2020-01-05.\n")
+        (self.root / "wiki/fresh.md").write_text("# Fresh\n\nStatus: running, as of 2026-10-01.\n")
+        (self.root / "wiki/history.md").write_text("# History\n\nWe moved on 2020-01-05.\n")
+        indexer.write(self.root)
+
+    def test_stale_flags_old_live_facts_only(self):
+        from datetime import date
+        rows = {r["file"] for r in loop.stale(self.root, days=21, today=date(2026, 10, 9))}
+        self.assertIn("wiki/old.md", rows)
+        self.assertNotIn("wiki/fresh.md", rows)
+        self.assertNotIn("wiki/history.md", rows)  # no live-sounding words
+
+    def test_related_by_path_excludes_itself(self):
+        rows = loop.related(self.root, "wiki/old.md")
+        self.assertNotIn("wiki/old.md", [r["file"] for r in rows])
+
+    def test_related_unknown_question(self):
+        self.assertEqual(loop.related(self.root, "zzzz qqqq xxxx"), [])
+
+
 class McpTests(BrainCase, unittest.TestCase):
     def setUp(self):
         super().setUp()
@@ -127,7 +151,7 @@ class McpTests(BrainCase, unittest.TestCase):
         r = mcp.handle(self.root, {"jsonrpc": "2.0", "id": 1, "method": "initialize"})
         self.assertEqual(r["result"]["serverInfo"]["name"], "second-brain")
         t = mcp.handle(self.root, {"jsonrpc": "2.0", "id": 2, "method": "tools/list"})
-        self.assertEqual({x["name"] for x in t["result"]["tools"]}, {"brain_recall", "brain_pack", "brain_gaps", "brain_remember"})
+        self.assertEqual({x["name"] for x in t["result"]["tools"]}, {"brain_recall", "brain_pack", "brain_gaps", "brain_stale", "brain_related", "brain_remember"})
 
     def test_notification_gets_no_reply(self):
         self.assertIsNone(mcp.handle(self.root, {"jsonrpc": "2.0", "method": "notifications/initialized"}))

@@ -257,9 +257,10 @@ def run_loop(root: Path, write: bool = True) -> tuple[bool, str]:
     bench = _bench_summary(root)
     gp = gaps(root)
     org = orgcheck(root)
+    st = stale(root)
     prev = last_run(root)
     cur = {"ts": _now(), "doctor": ok_doc, "bench_correct": bench["correct"], "bench_total": bench["answerable"],
-           "org_covered": org["covered"], "org_total": org["total"], "gaps": len(gp), "jarvis": org["jarvis"]["state"]}
+           "org_covered": org["covered"], "org_total": org["total"], "gaps": len(gp), "stale_pages": len(st), "jarvis": org["jarvis"]["state"]}
     regress = []
     if prev:
         if cur["bench_correct"] < prev.get("bench_correct", 0):
@@ -277,6 +278,8 @@ def run_loop(root: Path, write: bool = True) -> tuple[bool, str]:
             todo.append(f"org seat '{s['name']}' has no brain page — add a line to wiki/ai-team/")
     for g in gp[:5]:
         todo.append(f"asked {g['count']}x, {g['state']}: {' '.join(g['keywords'])} — {g['action']}")
+    for x in st[:5]:
+        todo.append(f"stale page: {x['file']} — newest date stamp {x['newest_stamp']} ({x['age_days']} days); re-check its live facts")
     if org["jarvis"]["state"] != "ok":
         todo.append(f"Jarvis is {org['jarvis']['state']} — {org['jarvis']['detail']}")
     lines = [
@@ -290,6 +293,7 @@ def run_loop(root: Path, write: bool = True) -> tuple[bool, str]:
         f"| org seats resolving | {cur['org_covered']}/{cur['org_total']} | "
         f"{str(prev.get('org_covered')) + '/' + str(prev.get('org_total')) if prev else '—'} |",
         f"| open gaps in the recall log | {cur['gaps']} | {prev.get('gaps', '—') if prev else '—'} |",
+        f"| pages with live-sounding facts older than 21 days | {cur['stale_pages']} | {prev.get('stale_pages', '—') if prev else '—'} |",
         f"| Jarvis | {cur['jarvis']} | {prev.get('jarvis', '—') if prev else '—'} |", "",
     ]
     lines.append("## Regressions" if regress else "## Regressions\n\nNone.")
@@ -304,3 +308,73 @@ def run_loop(root: Path, write: bool = True) -> tuple[bool, str]:
         with (root / HISTORY).open("a", encoding="utf-8") as fh:
             fh.write(json.dumps(cur) + "\n")
     return (not regress), text
+
+
+# ------------------------------------------------------------------ freshness and links
+
+DATE_RE = re.compile(r"\b(20\d\d)-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\b")
+VOLATILE = re.compile(r"\b(status|live|count|currently|today|as of|running|connected|installed)\b", re.I)
+STALE_SKIP = ("docs/reports/", "docs/findings/", "memory", "context/decisions.md", "INDEX.md", "brain/")
+
+
+def stale(root: Path, days: int = 21, today: date | None = None, limit: int = 20) -> list[dict]:
+    """Pages that state live-sounding facts but whose newest date stamp is older than `days`.
+    Dated logs (memory, decisions, reports) are records of their day and are skipped."""
+    today = today or date.today()
+    out = []
+    for f in indexer.load(root)["files"]:
+        p = f["path"]
+        if p.startswith(STALE_SKIP) or not p.endswith(".md"):
+            continue
+        try:
+            text = (root / p).read_text(encoding="utf-8")
+        except OSError:
+            continue
+        dates = []
+        for y, m, d in DATE_RE.findall(text):
+            try:
+                dt = date(int(y), int(m), int(d))
+            except ValueError:
+                continue
+            if dt <= today:
+                dates.append(dt)
+        if not dates or not VOLATILE.search(text):
+            continue
+        newest = max(dates)
+        age = (today - newest).days
+        if age > days:
+            out.append({"file": p, "newest_stamp": newest.isoformat(), "age_days": age})
+    out.sort(key=lambda x: -x["age_days"])
+    return out[:limit]
+
+
+def related(root: Path, target: str, limit: int = 5) -> list[dict]:
+    """Pages that share the most distinctive keywords with `target` (a path, or a question)."""
+    ix = indexer.load(root)
+    files = ix["files"]
+    by = {f["path"]: f for f in files}
+    if target in by:
+        base = set(by[target].get("keywords") or [])
+        skip = target
+    else:
+        res = recall_mod.recall(target, root=root, index=ix)
+        if not res["file"]:
+            return []
+        base, skip = set(by[res["file"]].get("keywords") or []), res["file"]
+        out0 = [{"file": skip, "shared": len(base), "why": "the page recall answers from"}]
+    df: dict[str, int] = {}
+    for f in files:
+        for k in f.get("keywords") or []:
+            df[k] = df.get(k, 0) + 1
+    scored = []
+    for f in files:
+        if f["path"] == skip:
+            continue
+        common = base & set(f.get("keywords") or [])
+        if not common:
+            continue
+        w = sum(1.0 / df[k] for k in common)
+        scored.append((w, f["path"], sorted(common, key=lambda k: df[k])[:5]))
+    scored.sort(key=lambda x: (-x[0], x[1]))
+    out = [{"file": p, "score": round(w, 3), "shared": ", ".join(c)} for w, p, c in scored[:limit]]
+    return (out0 + out) if target not in by else out

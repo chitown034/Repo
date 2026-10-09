@@ -1,10 +1,25 @@
-# Google Drive → the second brain — SPEC, nothing is installed
+# Google Drive → the second brain
+
+> **UPDATE 2026-10-09 — connected, read-only, pointer level.** The claude.ai **Google Drive connector**
+> (Steven's own Google sign-in, read-only search/read) now reaches the folder from cloud sessions, so
+> path C below exists without a new key. Found: the **Second Brain** folder
+> (`drive.google.com/drive/folders/1oi_c-wJ59J6KEcNnMOxzE3okYecsVkr3`, owner steven.shearrill@gmail.com)
+> holds **one file**, `_Second Brain index.md` (78 KB) — an export of the **Notion Second Brain
+> database, 69 rows, synced 2026-09-22** (17 days old on 2026-10-09). Notion stays the record; Drive is
+> a mirror of it. What the brain holds is the catalogue in `references/google-drive.md` (title, link,
+> size, age) — **not the file's content**: a personal-data screen of it was blocked by the safety
+> check, and rule 2 below (redaction before indexing) still applies. Next: Steven says whether the
+> export can be indexed whole (it is his own notes) or should stay a pointer; and whether the
+> Drive export should be refreshed (the Mac task that wrote it last ran 2026-09-22).
+
 
 **Written 2026-09-22 by V1 (Build/Release) as part of the install reconciliation. Status: NEVER
 ADDRESSED — this is the first document in the repo that treats Drive as a thing to build.**
 Owner on acceptance: Integration Engineer (under CTO Innovator). Security lens: Elena / ECC.
 
 ## Why this file exists
+
+*(The rest of this file is the 2026-09-22 spec, kept as written. Its "NEVER ADDRESSED" status is superseded by the update above.)*
 
 Steven asked for "Orca/Jarvis/Ruflo 2nd brain with **Notion + Drive**/Graphify/Obsidian/RAG/ECC as
 one self-improving Vanessa". Notion was wired — it is the record, `brain-deck-sync` fills it, the

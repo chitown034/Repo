@@ -1,7 +1,7 @@
 """``brain mcp`` -- the brain as a stdio MCP server (JSON-RPC 2.0, one message per line).
 
 One recall path for every platform that speaks MCP: Claude Code, Claude Desktop, Codex, Cursor.
-Tools: brain_recall, brain_pack, brain_gaps, brain_remember. No network, no model call.
+Tools: brain_recall, brain_pack, brain_gaps, brain_stale, brain_related, brain_remember. No network, no model call.
 Registering this server in a client is a change to that client's MCP config -- Steven approves
 it first (his standing rule); nothing here registers itself.
 """
@@ -21,6 +21,10 @@ TOOLS = [
      "inputSchema": {"type": "object", "properties": {"question": {"type": "string"}, "budget": {"type": "integer"}}, "required": ["question"]}},
     {"name": "brain_gaps", "description": "Questions asked of the brain and not answered, most-asked first.",
      "inputSchema": {"type": "object", "properties": {}}},
+    {"name": "brain_stale", "description": "Pages stating live facts whose newest date stamp is older than N days (default 21).",
+     "inputSchema": {"type": "object", "properties": {"days": {"type": "integer"}}}},
+    {"name": "brain_related", "description": "Pages most related to a page path or a question.",
+     "inputSchema": {"type": "object", "properties": {"target": {"type": "string"}}, "required": ["target"]}},
     {"name": "brain_remember", "description": "Store one durable fact. Refuses secrets, account numbers and client PII.",
      "inputSchema": {"type": "object", "properties": {"fact": {"type": "string"}}, "required": ["fact"]}},
 ]
@@ -35,6 +39,10 @@ def _call(root: Path, name: str, a: dict) -> str:
         return loop.format_pack(loop.pack(root, a["question"], budget_tokens=int(a.get("budget") or 900)))
     if name == "brain_gaps":
         return json.dumps(loop.gaps(root), indent=1) or "[]"
+    if name == "brain_stale":
+        return json.dumps(loop.stale(root, days=int(a.get("days") or 21)), indent=1)
+    if name == "brain_related":
+        return json.dumps(loop.related(root, a["target"]), indent=1)
     if name == "brain_remember":
         try:
             r = remember.remember(a["fact"], root=root)

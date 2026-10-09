@@ -56,7 +56,7 @@ Source of truth: the `runnerStatus` doc and the routine-health export, not the t
 - **You.com is retired.** No surface may call it. Research = Claude subscription (WebSearch/WebFetch); Perplexity removed 2026-10-05.
 - **Knowledge fabric counts** (`knowledgeFabric`, its own stamp 2026-09-23 02:10 UTC): Second Brain 71
   rows · vault 832 notes · Jarvis 1,761 documents · graph 750 nodes / 1,104 edges · Ruflo 238 entries ·
-  **Drive folder 0 files**. `fabric-deck-sync` has recovered — last completion ok 2026-09-22 17:08,
+  **Drive folder 0 files** (deck count; on 2026-10-09 the claude.ai connector found 1 file there — see `references/google-drive.md`). `fabric-deck-sync` has recovered — last completion ok 2026-09-22 17:08,
   and it was running again at the 02:10 stamp — so the earlier "ended in error" note is spent. Two
   counts on that row are still not what they look like: the **graph** figure is the 2026-09-13 build
   (`knowledgeGraph` has not moved since; `ops-knowledge-graph` has never run), and **Drive is a store

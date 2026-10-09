@@ -5,7 +5,7 @@
   reindex
   doctor
   bench [--write]
-  gaps | orgcheck | pack "<question>" | loop | mcp
+  gaps | orgcheck | stale | related | pack "<question>" | loop | mcp
 """
 
 from __future__ import annotations
@@ -45,6 +45,10 @@ def _parser() -> argparse.ArgumentParser:
     k = sub.add_parser("pack", help="best sections from several files under a token budget, as one paste")
     k.add_argument("question", nargs="+")
     k.add_argument("--budget", type=int, default=900, help="token budget (default 900)")
+    st = sub.add_parser("stale", help="pages stating live facts whose newest date stamp is older than N days")
+    st.add_argument("--days", type=int, default=21)
+    rl = sub.add_parser("related", help="pages sharing the most distinctive keywords with a page or a question")
+    rl.add_argument("target", nargs="+")
     sub.add_parser("loop", help="reindex, doctor, bench, gaps, orgcheck; write docs/reports/BRAIN-LOOP.md; exit 1 on regression")
     sub.add_parser("mcp", help="serve recall/remember/pack/gaps over stdio MCP for any MCP client")
     return p
@@ -116,6 +120,21 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.cmd == "pack":
         print(loop.format_pack(loop.pack(root, " ".join(args.question), budget_tokens=args.budget)))
+        return 0
+
+    if args.cmd == "stale":
+        rows = loop.stale(root, days=args.days)
+        print(f"{len(rows)} pages with live-sounding facts and no date stamp newer than {args.days} days" + (":" if rows else ""))
+        for x in rows:
+            print(f"  {x['age_days']:>4} d  {x['newest_stamp']}  {x['file']}")
+        return 0
+
+    if args.cmd == "related":
+        rows = loop.related(root, " ".join(args.target))
+        if not rows:
+            print("not in the brain")
+        for x in rows:
+            print(f"  {x['file']}  ({x.get('why') or 'shares: ' + x['shared']})")
         return 0
 
     if args.cmd == "loop":

@@ -73,7 +73,7 @@ model:
 | **ECC** (under Derek) | A **gate** on every change: standards, test, observability, accessibility, security, dependency, agent-safety | Recall. It stores nothing |
 | **Orca Computer Use** (v1.4.220 per the Mac's 2026-10-05 snapshot, Stably AI) | Computer-use / browser execution where there is no API | Recall, and anything unattended and irreversible |
 | **Notion** (Second Brain DB, 68–70 rows) | **The record.** What survives a session, synced by `brain-deck-sync`; also hosts the Health Log | Asking it a question directly. It is the destination, not the index |
-| **Google Drive** ("Second Brain" folder) | **Nothing yet — not wired.** Intended as a read-only *source* that feeds Jarvis and the vault | Everything, today. See below |
+| **Google Drive** ("Second Brain" folder) | **Update 2026-10-09:** reached read-only through the claude.ai Google Drive connector — the Second Brain folder holds 1 file, a 69-row Notion export synced 2026-09-22; catalogue in `references/google-drive.md`, content not indexed. Was: not wired. Intended as a read-only *source* that feeds Jarvis and the vault | Everything, today. See below |
 | **Laya** (`integrations/laya/`, added 2026-09-28) | The **zero-token first hop**, in front of Vanessa and every other row in this table — see above | Anything past routing: a licensed decision, research, writing to anything, or trusting its own guess below its confidence threshold |
 
 Steven asked for this to be "Notion **+ Drive**/Graphify/Obsidian/RAG/ECC as one self-improving
@@ -163,7 +163,7 @@ rule in `knowledge-graph/README.md`. Neither = it holds no corpus at all.
 | **`context/decisions.md`** | **L2** — wikis/auto-memory | Context | A "why is it this way" question, one dated entry only | 260 lines; one entry needs Steven's call on an in-place edit (`docs/NEEDS-STEVEN.md` #19) |
 | **Obsidian vault** | **L2** — wikis/auto-memory | Context | A human reads/writes it directly; source for L3/L4 builds | 831–832 notes, `knowledgeFabric` stamp 2026-09-23 |
 | **Notion (Second Brain DB)** | **L2** — wikis/auto-memory | Context | `brain-deck-sync` hourly :20, 7 AM–10 PM PT | Working, 68–71 rows |
-| **Google Drive** | **L2** — wikis/auto-memory (spec) | Context, once wired | Never — no connector exists | **0 files, not wired.** `integrations/google-drive-brain.md` |
+| **Google Drive** | **L2** — wikis/auto-memory (spec) | Context, once wired | Through the claude.ai connector, read-only, a pointer (2026-10-09) | **1 file (Notion export, 2026-09-22). Catalogue only.** `integrations/google-drive-brain.md` |
 | **RAG / vector index** | **L3** — semantic search | Context (chunked) | A high-volume corpus, only after the L2 index line fails | Spec + rules only; **no separate production service** — served by Jarvis/Graphify/Ruflo below. `vector-index/README.md` |
 | **Jarvis** (OpenJarvis `memory.db`) | **L3** — semantic search, and the separate **local** client lane | Context | An L3 lookup, or any client question (local only, never leaves the Mac) | 1,760–1,761 documents |
 | **Graphify** | **L4** — knowledge graph (embeddings also serve L3) | Connections (+ Context in its L3 embeddings) | A "how do these connect" question | 750 nodes / 1,104 edges, built 2026-09-13; `ops-knowledge-graph` has **never run** |

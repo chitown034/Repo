@@ -10,7 +10,8 @@ Steven (Principal)
 ├─ Vanessa — Chief of Staff / COO / orchestrator, council chair
 │   ├─ Jarvis — on-device voice + local index (verify: integrations/jarvis/jarvis-setup.sh; voice = Vanessa's recorded Magica set)
 │   ├─ Laya — zero-token on-device first hop that routes every request (integrations/laya/)
-│   ├─ Knowledge fabric — Second Brain · vault · Jarvis · Graphify · Ruflo, one recall
+│   ├─ Knowledge fabric — Second Brain · vault · Jarvis · Graphify · Ruflo, one recall (+ Notion record, Google Drive mirror read-only)
+│   ├─ Brain loop — self-check that finds unanswered questions and drift (`bin/brain loop`)
 │   └─ Juliet — Escalation & Service Recovery
 ├─ ISA / EA (human) — Mon–Fri 12–4 PM
 └─ Executives (report to Vanessa, ≤8 dispatched in parallel):
@@ -50,4 +51,4 @@ Nadia (CAIO) and Elon (CTO Innovator) never ship a change themselves — Nadia s
 - `wiki/ai-team/tool-integration-status.md` — connector, skill, and proposed-tool status by seat.
 - `wiki/ai-team/mentors-and-benches.md` — Maxwell, Apex, James, Kevin and what a "bench" actually is.
 
-Source: Command Deck, `ORG_CHART` / `AI_TEAM_ORG` data (AI Team panel), toolkit snapshot referenced 2026-09-16.
+Source: Command Deck, `ORG_CHART` / `AI_TEAM_ORG` data (AI Team panel), toolkit snapshot referenced 2026-09-16. Tree last updated 2026-10-09 (Laya, Brain loop, Google Drive mirror, Jarvis verify script). `bin/brain orgcheck` proves every seat above resolves to a brain page.
