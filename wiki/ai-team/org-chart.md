@@ -8,7 +8,8 @@ The full seat map behind Vanessa: Steven at the top, then Steve (digital twin) /
 Steven (Principal)
 ├─ Steve — digital twin, Tier-1 work
 ├─ Vanessa — Chief of Staff / COO / orchestrator, council chair
-│   ├─ Jarvis — on-device voice + local index
+│   ├─ Jarvis — on-device voice + local index (verify: integrations/jarvis/jarvis-setup.sh; voice = Vanessa's recorded Magica set)
+│   ├─ Laya — zero-token on-device first hop that routes every request (integrations/laya/)
 │   ├─ Knowledge fabric — Second Brain · vault · Jarvis · Graphify · Ruflo, one recall
 │   └─ Juliet — Escalation & Service Recovery
 ├─ ISA / EA (human) — Mon–Fri 12–4 PM

@@ -5,6 +5,7 @@
   reindex
   doctor
   bench [--write]
+  gaps | orgcheck | pack "<question>" | loop | mcp
 """
 
 from __future__ import annotations
@@ -14,7 +15,7 @@ import json
 import sys
 from pathlib import Path
 
-from . import bench, doctor, indexer, recall, remember
+from . import bench, doctor, indexer, loop, recall, remember
 
 CONTRACT = ["query", "keywords", "file", "section", "pointer_followed", "pointer_file", "evidence",
             "bytes_read", "est_tokens", "candidates_scored", "ms", "confidence"]
@@ -39,6 +40,13 @@ def _parser() -> argparse.ArgumentParser:
     sub.add_parser("doctor", help="non-zero exit if the index is stale or a routed path is missing")
     b = sub.add_parser("bench", help="brain vs default session vs router-only")
     b.add_argument("--write", action="store_true", help="write docs/reports/BRAIN-BENCH.md")
+    sub.add_parser("gaps", help="questions asked and not answered (from the local recall log), most-asked first")
+    sub.add_parser("orgcheck", help="does every org-chart seat resolve to a brain page; is Jarvis verified")
+    k = sub.add_parser("pack", help="best sections from several files under a token budget, as one paste")
+    k.add_argument("question", nargs="+")
+    k.add_argument("--budget", type=int, default=900, help="token budget (default 900)")
+    sub.add_parser("loop", help="reindex, doctor, bench, gaps, orgcheck; write docs/reports/BRAIN-LOOP.md; exit 1 on regression")
+    sub.add_parser("mcp", help="serve recall/remember/pack/gaps over stdio MCP for any MCP client")
     return p
 
 
@@ -48,6 +56,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.cmd == "recall":
         res = recall.recall(" ".join(args.question), root=root, top=args.top)
+        loop.log_recall(root, res)
         if args.json:
             out = {k: res[k] for k in CONTRACT}
             if args.top:
@@ -88,6 +97,35 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.cmd == "bench":
         return bench.main(root, write=args.write)
+
+    if args.cmd == "gaps":
+        g = loop.gaps(root)
+        if not g:
+            print("no gaps logged (the log fills as `bin/brain recall` is used; BRAIN_NOLOG=1 turns it off)")
+        for x in g:
+            print(f"{x['count']:>3}x  {x['state']:<16} {' '.join(x['keywords'])}")
+            if x.get("nearest"):
+                print(f"       nearest: {', '.join(x['nearest'])}")
+            print(f"       fix: {x['action']}")
+        return 0
+
+    if args.cmd == "orgcheck":
+        r = loop.orgcheck(root)
+        print(loop.format_orgcheck(r))
+        return 0 if r["covered"] == r["total"] else 1
+
+    if args.cmd == "pack":
+        print(loop.format_pack(loop.pack(root, " ".join(args.question), budget_tokens=args.budget)))
+        return 0
+
+    if args.cmd == "loop":
+        ok, text = loop.run_loop(root)
+        print(text)
+        return 0 if ok else 1
+
+    if args.cmd == "mcp":
+        from . import mcp
+        return mcp.serve(root)
     return 2
 
 

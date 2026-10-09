@@ -4,3 +4,4 @@ __pycache__/
 
 # Third-party skill packs (e.g. paid 77skills) are staged locally for review, never pushed.
 .claude/skills-staged/
+brain/state/

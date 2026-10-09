@@ -12,6 +12,11 @@ Plain Python 3.10+, standard library only, no model calls. Run from any director
 | `brain reindex` | Rebuilds `INDEX.md` and `brain/index.json` from the tree. |
 | `brain doctor` | Exits non-zero if the index is stale, a path `CLAUDE.md` routes to is missing, or an `INDEX.md` line points at a missing file. |
 | `brain bench [--write]` | Runs `brain/bench/questions.json` three ways and compares tokens, time and correctness; `--write` writes `docs/reports/BRAIN-BENCH.md`. |
+| `brain gaps` | What was asked and not answered, most-asked first, with the nearest files (from the local keyword-only recall log; `BRAIN_NOLOG=1` turns the log off). |
+| `brain orgcheck` | Does every seat in `wiki/ai-team/org-chart.md` resolve to a brain page; is Jarvis verified, stale or failing. Exits non-zero on a miss. |
+| `brain pack "<q>" [--budget N]` | Best section from several files under a token budget, as one paste for any platform. |
+| `brain loop` | reindex → doctor → bench → gaps → orgcheck → `docs/reports/BRAIN-LOOP.md`, compared with the last run in `brain/loop-history.jsonl`; exit 1 on a regression. |
+| `brain mcp` | The brain as a stdio MCP server (`brain_recall`, `brain_pack`, `brain_gaps`, `brain_remember`) for Claude Code, Claude Desktop, Codex, Cursor. Registering it in a client is Steven's approval, never automatic. |
 
 ## The ladder (`recall`)
 
