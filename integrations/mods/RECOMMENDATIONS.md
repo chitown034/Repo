@@ -42,6 +42,25 @@ Savvy Progress (inside Claude Code): `/plugin marketplace add johnnyvizz/claude-
 
 If a line fails, check that mod's README: mods are new and move fast.
 
+## Installed and turned on — 2026-10-09 (Steven: "install and turn on Claude mods")
+
+One command on each Mac, from the Repo folder: `bash integrations/mods/install-mods.sh` (asks once; `--dry-run` previews;
+`--off` turns everything off). Proven in the cloud against a throwaway home folder: the mod store added, all three of
+Steven's mods installed at user scope and listed **enabled**. Not yet run on a real Mac.
+
+| Mod | What you see | Source |
+|---|---|---|
+| **route-beacon** | Status line "Route: Claude subscription / OmniRoute free / OpenRouter paid / local"; a toast when it switches | `integrations/mods/route-beacon` (ours) |
+| **halt-guard** | Proceed/Cancel (Cancel first) before a send, share, calendar invite, payment, `curl -X POST` or force push; does nothing in unattended runs | `integrations/mods/halt-guard` (ours; patterns tested 19/19) |
+| **brain-reflect** | `/remember <rule>` saves it with `bin/brain remember`; refuses emails, phones, long numbers, dollar amounts | `integrations/mods/brain-reflect` (ours) |
+| **Blast Radius** | Lists what a risky `rm -rf` / force push would delete, Cancel default | Anthropic sample, pinned commit 569c5283d9a0, read 2026-10-09 |
+| **Replay Theater** | `/replay` steps through each edit Claude made | Anthropic sample, same pin |
+
+All five pass `claude plugin validate`. Cache Tax stays off: its repository held only a README on 2026-10-09, so there was
+no code to review.
+
+## Earlier note (superseded)
+
 ## Mods we wanted to build for you (NOT built — needs your decision)
 The permission system refused to let us author new mods in this session (reason given: it modifies how Claude itself
 behaves). Three small, no-network, local-only ones were designed; say the word and tell us how you want to allow it:

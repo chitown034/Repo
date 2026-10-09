@@ -1,0 +1,24 @@
+{
+  "name": "steven-mods",
+  "owner": {
+    "name": "Steven Shearrill"
+  },
+  "plugins": [
+    {
+      "name": "route-beacon",
+      "source": "./route-beacon",
+      "description": "Shows which AI route this session is on (Claude, OmniRoute free, OpenRouter paid, local) and toasts when it changes."
+    },
+    {
+      "name": "halt-guard",
+      "source": "./halt-guard",
+      "description": "Asks Proceed/Cancel before a send, a share, a payment or a force push while you are at the keyboard."
+    },
+    {
+      "name": "brain-reflect",
+      "source": "./brain-reflect",
+      "description": "/remember <rule> saves a standing rule into the second brain with bin/brain remember, never CLAUDE.md."
+    }
+  ],
+  "description": "Steven's own Claude Code mods: route beacon, HALT guard, brain reflect."
+}
