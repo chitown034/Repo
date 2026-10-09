@@ -151,7 +151,7 @@ class McpTests(BrainCase, unittest.TestCase):
         r = mcp.handle(self.root, {"jsonrpc": "2.0", "id": 1, "method": "initialize"})
         self.assertEqual(r["result"]["serverInfo"]["name"], "second-brain")
         t = mcp.handle(self.root, {"jsonrpc": "2.0", "id": 2, "method": "tools/list"})
-        self.assertEqual({x["name"] for x in t["result"]["tools"]}, {"brain_recall", "brain_pack", "brain_gaps", "brain_stale", "brain_related", "brain_remember"})
+        self.assertEqual({x["name"] for x in t["result"]["tools"]}, {"brain_recall", "brain_pack", "brain_gaps", "brain_stale", "brain_related", "brain_remember", "brain_route"})
 
     def test_notification_gets_no_reply(self):
         self.assertIsNone(mcp.handle(self.root, {"jsonrpc": "2.0", "method": "notifications/initialized"}))

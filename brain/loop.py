@@ -239,6 +239,22 @@ def _bench_summary(root: Path) -> dict:
     return {"answerable": len(answerable), "correct": ok, "misses": misses}
 
 
+def untested_pages(root: Path) -> list[str]:
+    """Wiki pages that no gold question expects an answer from -- the loop's growth list, newest first."""
+    from . import bench
+    qf = root / bench.QUESTIONS
+    items = json.loads(qf.read_text(encoding="utf-8")).get("questions", []) if qf.is_file() else []
+    tested = set()
+    for q in items:
+        if isinstance(q, dict):
+            tested.add(q.get("expected_file"))
+            tested.update(q.get("alt_files") or [])
+    pages = [f["path"] for f in indexer.load(root)["files"]
+             if f["path"].startswith("wiki/") and not f["path"].endswith("index.md") and f["path"] not in tested]
+    pages.sort(key=lambda p: -(root / p).stat().st_mtime if (root / p).exists() else 0)
+    return pages
+
+
 def last_run(root: Path) -> dict | None:
     p = root / HISTORY
     if not p.is_file():
@@ -258,13 +274,19 @@ def run_loop(root: Path, write: bool = True) -> tuple[bool, str]:
     gp = gaps(root)
     org = orgcheck(root)
     st = stale(root)
+    from . import route
+    rt = route.selftest(root)
+    unq = untested_pages(root)
     prev = last_run(root)
     cur = {"ts": _now(), "doctor": ok_doc, "bench_correct": bench["correct"], "bench_total": bench["answerable"],
-           "org_covered": org["covered"], "org_total": org["total"], "gaps": len(gp), "stale_pages": len(st), "jarvis": org["jarvis"]["state"]}
+           "org_covered": org["covered"], "org_total": org["total"], "gaps": len(gp), "stale_pages": len(st), "jarvis": org["jarvis"]["state"],
+           "route_correct": rt["correct"], "route_total": rt["total"], "untested_wiki_pages": len(unq)}
     regress = []
     if prev:
         if cur["bench_correct"] < prev.get("bench_correct", 0):
             regress.append(f"bench correct fell {prev['bench_correct']} -> {cur['bench_correct']}")
+        if cur["route_correct"] < prev.get("route_correct", 0):
+            regress.append(f"org routing self-test fell {prev['route_correct']} -> {cur['route_correct']}")
         if cur["org_covered"] < prev.get("org_covered", 0):
             regress.append(f"org coverage fell {prev['org_covered']} -> {cur['org_covered']}")
     if not ok_doc:
@@ -273,6 +295,8 @@ def run_loop(root: Path, write: bool = True) -> tuple[bool, str]:
     todo: list[str] = []
     for m in bench["misses"][:5]:
         todo.append(f"gold question no longer answered: {m}")
+    for m in rt["misses"][:5]:
+        todo.append(f"org routing case wrong: {m} — fix wiki/ai-team/cross-functional.md")
     for s in org["seats"]:
         if not s["covered"]:
             todo.append(f"org seat '{s['name']}' has no brain page — add a line to wiki/ai-team/")
@@ -280,6 +304,8 @@ def run_loop(root: Path, write: bool = True) -> tuple[bool, str]:
         todo.append(f"asked {g['count']}x, {g['state']}: {' '.join(g['keywords'])} — {g['action']}")
     for x in st[:5]:
         todo.append(f"stale page: {x['file']} — newest date stamp {x['newest_stamp']} ({x['age_days']} days); re-check its live facts")
+    for u in unq[:3]:
+        todo.append(f"no gold question tests {u} yet — add one to brain/bench/questions.json so the loop guards it")
     if org["jarvis"]["state"] != "ok":
         todo.append(f"Jarvis is {org['jarvis']['state']} — {org['jarvis']['detail']}")
     lines = [
@@ -292,6 +318,9 @@ def run_loop(root: Path, write: bool = True) -> tuple[bool, str]:
         f"{str(prev.get('bench_correct')) + '/' + str(prev.get('bench_total')) if prev else '—'} |",
         f"| org seats resolving | {cur['org_covered']}/{cur['org_total']} | "
         f"{str(prev.get('org_covered')) + '/' + str(prev.get('org_total')) if prev else '—'} |",
+        f"| org routing self-test (who leads, who joins, HALT) | {cur['route_correct']}/{cur['route_total']} | "
+        f"{str(prev.get('route_correct')) + '/' + str(prev.get('route_total')) if prev and 'route_total' in prev else '—'} |",
+        f"| wiki pages no gold question tests | {cur['untested_wiki_pages']} | {prev.get('untested_wiki_pages', '—') if prev else '—'} |",
         f"| open gaps in the recall log | {cur['gaps']} | {prev.get('gaps', '—') if prev else '—'} |",
         f"| pages with live-sounding facts older than 21 days | {cur['stale_pages']} | {prev.get('stale_pages', '—') if prev else '—'} |",
         f"| Jarvis | {cur['jarvis']} | {prev.get('jarvis', '—') if prev else '—'} |", "",

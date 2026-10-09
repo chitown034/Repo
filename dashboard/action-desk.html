@@ -97,8 +97,8 @@ footer{margin-top:28px;color:var(--muted);font-size:.85rem}
 
   <div class="step" data-id="6"><div class="n">6</div><div class="body">
     <p class="t">Switch to the branch that holds today&#x27;s files</p>
-    <p class="d">The new scripts are on the branch claude/stoic-cori-pvn3f8, not the repo&#x27;s default branch, so a plain git pull misses them. If it complains about changes you made, stop and tell Claude; do not discard them. The last line should print the file name.</p>
-    <div class="acts"><code>git fetch origin &amp;&amp; git checkout claude/stoic-cori-pvn3f8 &amp;&amp; git pull &amp;&amp; ls mac-bootstrap.sh</code><button class="btn" data-copy="git fetch origin &amp;&amp; git checkout claude/stoic-cori-pvn3f8 &amp;&amp; git pull &amp;&amp; ls mac-bootstrap.sh">Copy</button>
+    <p class="d">The new scripts are on the branch claude/gracious-newton-4hpfco, not the repo&#x27;s default branch, so a plain git pull misses them. If it complains about changes you made, stop and tell Claude; do not discard them. The last line should print the file name.</p>
+    <div class="acts"><code>git fetch origin &amp;&amp; git checkout claude/gracious-newton-4hpfco &amp;&amp; git pull &amp;&amp; ls mac-bootstrap.sh</code><button class="btn" data-copy="git fetch origin &amp;&amp; git checkout claude/gracious-newton-4hpfco &amp;&amp; git pull &amp;&amp; ls mac-bootstrap.sh">Copy</button>
       <label class="tick"><input type="checkbox" id="s6">Done</label></div></div></div>
 
   <div class="step" data-id="7"><div class="n">7</div><div class="body">
@@ -111,7 +111,7 @@ footer{margin-top:28px;color:var(--muted);font-size:.85rem}
 
   <div class="step" data-id="8"><div class="n">8</div><div class="body">
     <p class="t">Fix the OmniRoute failover so it kicks in when Claude runs out</p>
-    <p class="d">OmniRoute itself is running, but the switch-over scripts were never installed, so nothing changes when you hit the limit. First the read-only check, which prints PASS / WARN / FAIL with the fix for each gap; then the installer, which asks yes/no before every change. Paste the doctor output back (it prints no secrets). Sessions you start yourself stay on Claude by design; to deliberately continue on the free route with no client data, type claude-auto --interactive-free.</p>
+    <p class="d">OmniRoute itself is running, but the switch-over scripts were never installed, so nothing changes when you hit the limit. First the read-only check, which prints PASS / WARN / FAIL with the fix for each gap; then the installer, which asks yes/no before every change. Paste the doctor output back (it prints no secrets). The installer now also asks to turn on keep-going: start your sessions with claude-auto --keep-going, and when Claude runs out just type /exit and press Enter. The same conversation continues on OmniRoute's free models, then goes back to Claude once it resets. Client data never goes to the free route.</p>
     <div class="acts"><code>claude-auto --doctor
 bash integrations/omniroute-failover/install-failover.sh --dry-run
 bash integrations/omniroute-failover/install-failover.sh
@@ -146,7 +146,7 @@ bash integrations/remote-control/orca-remote.sh report">Copy</button>
   <div class="step" data-id="11"><div class="n">11</div><div class="body">
     <p class="t">Turn on Claude Mods (one command)</p>
     <p class="d">Five mods are built, checked and ready: a status line showing which AI route you are on, a Proceed/Cancel guard before any send, share or payment, /remember to save a rule into the brain, Blast Radius, and /replay to review Claude&#x27;s edits. Run this in Terminal from your Repo folder, type y once, then open a new Claude Code session. To turn them all off later: add --off.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mods/RECOMMENDATIONS.md" target="_blank" rel="noopener">What each mod does</a>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/mods/RECOMMENDATIONS.md" target="_blank" rel="noopener">What each mod does</a>
       <code>git pull &amp;&amp; bash integrations/mods/install-mods.sh</code><button class="btn" data-copy="git pull &amp;&amp; bash integrations/mods/install-mods.sh">Copy</button>
       <label class="tick"><input type="checkbox" id="s11">Done</label></div></div></div>
 
@@ -200,14 +200,14 @@ bash integrations/remote-control/orca-remote.sh report">Copy</button>
   <div class="step" data-id="19"><div class="n">19</div><div class="body">
     <p class="t">Send three short messages</p>
     <p class="d">(1) Ticor: ask your Ticor Title Sales Executive or Customer Service whether an API or bulk export of Ticor Property Data exists and on what terms. (2) CRMLS: your broker (LPT) applies for the RESO Web API data licence at licensing@crmls.org; there will be no scraper. (3) Dotloop: apply for developer / partner access at info.dotloop.com/developers. Each is your signature, so Claude only drafted them.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/CONNECT-PLAN-2026-10-09.md" target="_blank" rel="noopener">Open the drafts</a>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/CONNECT-PLAN-2026-10-09.md" target="_blank" rel="noopener">Open the drafts</a>
       <a class="btn" href="https://ticorpropertydata.com/" target="_blank" rel="noopener">Ticor Property Data</a>
       <label class="tick"><input type="checkbox" id="s19">Done</label></div></div></div>
 
   <div class="step" data-id="20"><div class="n">20</div><div class="body">
     <p class="t">Optional: switch on the free-then-paid failover</p>
     <p class="d">Claude subscription first; when it runs out, OmniRoute free models take over at once; OpenRouter is the paid third tier, capped at $25 a month, and stays off until you do this. Create an OpenRouter key yourself, set the key&#x27;s own credit limit to $25, load no more than $25, then follow the Three-tier failover steps. It returns to Claude by itself when the allowance resets.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/omniroute-failover/README.md" target="_blank" rel="noopener">Open the steps</a>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/omniroute-failover/README.md" target="_blank" rel="noopener">Open the steps</a>
       <a class="btn" href="https://openrouter.ai/" target="_blank" rel="noopener">OpenRouter</a>
       <label class="tick"><input type="checkbox" id="s20">Done</label></div></div></div>
 
@@ -217,7 +217,7 @@ bash integrations/remote-control/orca-remote.sh report">Copy</button>
   <div class="step" data-id="21"><div class="n">21</div><div class="body">
     <p class="t">Decide the AI Steve video replica (plan is ready)</p>
     <p class="d">context.dev is connected. The weekly real-estate and loan-officer video plan is in integrations/ai-replica-studio/PLAN.md. To start Claude needs five answers: (1) which avatar provider, or none yet (HeyGen works through Composio but is paid and not connected; the CAM page was not applied to and its price is not published); (2) built-in voice or a cloned voice on your own ElevenLabs account; (3) platforms and cadence (assumed one of each a week to Facebook, Instagram, LinkedIn, YouTube); (4) LPT Realty&#x27;s brokerage DRE number and name plus your personal NMLS ID for the disclosure line; (5) whether the three social timers run as a routine or through Buffer. You record your own consent and samples; nothing posts without your approval each week.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/ai-replica-studio/PLAN.md" target="_blank" rel="noopener">Read the plan</a>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/ai-replica-studio/PLAN.md" target="_blank" rel="noopener">Read the plan</a>
       <code>replica: provider ______ · voice ______ · cadence 1+1/week · LPT DRE ______ · NMLS ID ______ · timers routine/Buffer</code><button class="btn" data-copy="replica: provider ______ · voice ______ · cadence 1+1/week · LPT DRE ______ · NMLS ID ______ · timers routine/Buffer">Copy</button>
       <label class="tick"><input type="checkbox" id="s21">Done</label></div></div></div>
 
@@ -233,7 +233,7 @@ bash integrations/remote-control/orca-remote.sh report">Copy</button>
   <div class="step" data-id="23"><div class="n">23</div><div class="body">
     <p class="t">Check Jarvis, Laya and Vanessa&#x27;s voice on your Mac</p>
     <p class="d">One command checks Jarvis&#x27;s memory, the real Laya model, the vault, Vanessa&#x27;s recorded voice clips and the brain, and says the one thing to fix for each. It changes only a voice-profile copy in ~/.config/jarvis. Then the brain&#x27;s own self-check runs. Paste the last lines back and Claude updates the dashboards.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/jarvis/README.md" target="_blank" rel="noopener">What it checks</a>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/jarvis/README.md" target="_blank" rel="noopener">What it checks</a>
       <code>cd ~/Projects/Repo 2&gt;/dev/null || cd &quot;$(dirname &quot;$(find ~ -maxdepth 5 -name mac-bootstrap.sh 2&gt;/dev/null | head -1)&quot;)&quot;; git pull &amp;&amp; bash integrations/jarvis/jarvis-setup.sh --apply; bin/brain loop | head -20</code><button class="btn" data-copy="cd ~/Projects/Repo 2&gt;/dev/null || cd &quot;$(dirname &quot;$(find ~ -maxdepth 5 -name mac-bootstrap.sh 2&gt;/dev/null | head -1)&quot;)&quot;; git pull &amp;&amp; bash integrations/jarvis/jarvis-setup.sh --apply; bin/brain loop | head -20">Copy</button>
       <label class="tick"><input type="checkbox" id="s23">Done</label></div></div></div>
 

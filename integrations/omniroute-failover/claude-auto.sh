@@ -142,7 +142,7 @@ DEFAULT_PII_TASKS="lofty-* zoho-* *crm* isa-* *-isa-* lead-* *-lead-* r12-inbox-
 log()  { printf '%s %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*" >> "$LOG"; }
 now()  { date +%s; }
 write_marker() { printf '%s %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*" >> "$MARKER"; }
-usage_err() { echo "claude-auto: $*" >&2; echo "usage: claude-auto [--task NAME] [--pii|--no-pii] [--force subscription|free|local] [--status|--doctor|--interactive-free] [--lease|--no-lease|--lease-check|--take-lease|--release-lease] [--] <claude args…>" >&2; exit 64; }
+usage_err() { echo "claude-auto: $*" >&2; echo "usage: claude-auto [--task NAME] [--pii|--no-pii] [--force subscription|free|local] [--status|--doctor|--interactive-free|--keep-going] [--lease|--no-lease|--lease-check|--take-lease|--release-lease] [--] <claude args…>" >&2; exit 64; }
 
 # GNU stat first and validated: on Linux `stat -f` means "file SYSTEM status" and succeeds with the wrong output,
 # so a BSD-first fallback prints a filesystem report as a file mode (F-V2-15). Same shape as mac-verify.sh.
@@ -790,8 +790,67 @@ interactive_free() { # claude-args… — a human, typing this on purpose, in a 
   route_omni "$FREE_MODEL" free-fallback 0 --settings "$_sf" "$@"
 }
 
+# ---------------------------------------------------------------- --keep-going (2026-10-09): one command, no switching by hand
+# Steven: "when claude tokens are exhausted it switches over to omniroute to continue working until Claude tokens refreshes".
+# A running Claude session cannot be re-pointed, so this wraps it: each time a session closes (he types /exit after the limit
+# message, or it ends), one 1-turn probe decides the next leg — the subscription if it answers, OmniRoute's free combo if it
+# reports a usage limit — and the SAME conversation resumes with `claude --continue`. Back on the subscription the moment the
+# probe answers again. Opt-in: needs the file $CFG/auto-continue (install-failover.sh asks). Free legs carry the client-data
+# guard hook, and a conversation whose transcript looks like client data starts fresh on the free route instead of continuing.
+sub_probe() { # → 0 usable, 1 limited, 2 inconclusive. One turn, no tools, no session file, proxy stripped.
+  _po=$(env -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_API_KEY \
+        claude -p 'Reply with exactly: OK' --max-turns 1 --output-format json --no-session-persistence --disallowedTools '*' 2>&1); _prc=$?
+  if [ "$_prc" -eq 0 ] && printf '%s' "$_po" | grep -qE '"is_error": ?false'; then return 0; fi
+  if printf '%s' "$_po" | grep -qiE "$LIMIT_RE"; then return 1; fi
+  return 2
+}
+transcript_has_client_data() { # newest transcript of this folder's sessions, lower-cased, against the guard pattern
+  _pd="$HOME/.claude/projects/$(printf '%s' "$PWD" | sed 's#[/.]#-#g')"
+  _tf=$(find "$_pd" -maxdepth 1 -name '*.jsonl' -type f -exec ls -t {} + 2>/dev/null | head -1)   # find: globbing is off (set -f)
+  [ -n "$_tf" ] || return 1
+  tail -c 2000000 "$_tf" | tr '[:upper:]' '[:lower:]' | grep -qE "$GUARD_RE"
+}
+keep_going() { # claude-args…
+  if [ "$headless" = 1 ]; then echo "claude-auto: --keep-going is for a person at a terminal; headless runs already fail over with --task" >&2; exit 64; fi
+  if [ ! -f "$CFG/auto-continue" ]; then
+    echo "claude-auto: --keep-going is off. Turn it on once with:  touch $CFG/auto-continue   (or say yes in install-failover.sh)" >&2; exit 77
+  fi
+  if ! { [ -t 0 ] && [ -t 1 ]; }; then echo "claude-auto: --keep-going needs a terminal" >&2; exit 77; fi
+  _cwd=$(printf '%s' "$PWD" | tr '[:upper:]' '[:lower:]')
+  _first=1
+  while :; do
+    _cont=(); [ $_first = 0 ] && _cont=(--continue)
+    sub_probe; _p=$?
+    if [ $_p = 1 ]; then
+      write_route free-fallback "$(now)" 0 "keep-going probe: limit" 1 "$(now)"
+      if ! omni_live; then echo "claude-auto: Claude is at its limit and OmniRoute is not answering on $OMNI_BASE. Start OmniRoute, then press Enter (q quits)." >&2
+      elif ! load_omni_key; then echo "claude-auto: OmniRoute key missing (~/.config/omniroute/.env). Add it, then press Enter (q quits)." >&2
+      elif printf '%s' "$_cwd" | grep -qE "$GUARD_RE"; then echo "claude-auto: this folder looks like client data — client work waits for Claude to reset. cd elsewhere or press Enter later (q quits)." >&2
+      else
+        if [ ${#_cont[@]} -gt 0 ] && transcript_has_client_data; then
+          echo "claude-auto: the last conversation mentions client data, so the free route starts a NEW conversation instead of continuing it." >&2; _cont=()
+        fi
+        _sr=$(self_real); _sf="$STATE/interactive-free-settings.json"
+        printf '{"hooks":{"UserPromptSubmit":[{"hooks":[{"type":"command","command":"\\"%s\\" --guard-hook"}]}],"PreToolUse":[{"matcher":"*","hooks":[{"type":"command","command":"\\"%s\\" --guard-hook"}]}]}}\n' "$_sr" "$_sr" > "$_sf"
+        echo "== Claude is at its usage limit. Continuing on OmniRoute FREE models — no client data. Type /exit any time; I re-check Claude each time. ==" >&2
+        log "keep-going: leg on free-fallback (continue=${#_cont[@]})"
+        ( export VANESSA_INTERACTIVE_FREE=1; route_omni "$FREE_MODEL" free-fallback 0 --settings "$_sf" ${_cont[@]+"${_cont[@]}"} "$@" )
+      fi
+    else
+      [ $_p = 2 ] && log "keep-going: probe inconclusive — using the subscription"
+      [ "$mode" != subscription ] && [ $_p = 0 ] && { write_route subscription "$(now)" 0 "keep-going probe-ok" 1 "$(now)"; mode=subscription; echo "== Claude has reset. Back on your subscription. ==" >&2; }
+      log "keep-going: leg on subscription (continue=${#_cont[@]})"
+      ( unset ANTHROPIC_BASE_URL ANTHROPIC_AUTH_TOKEN; export VANESSA_ROUTE_MODE=subscription VANESSA_PII_OK=1; exec claude ${_cont[@]+"${_cont[@]}"} "$@" )
+    fi
+    _first=0
+    printf '\nSession closed. Enter = keep going (Claude if it has reset, OmniRoute if not) · q = quit: ' >&2
+    read -r _a || _a=q
+    case "$_a" in q|Q|quit|exit) exit 0 ;; esac
+  done
+}
+
 # ---------------------------------------------------------------- options: all of them, wherever they are (F-V2-07)
-TASK=""; PII=""; FORCE=""; SHOW=0; DOCTOR=0; GUARD=0; IFREE=0; CARGS=(); LEASE_GATE=auto; LEASE_CHECK=0; TAKE_LEASE=0; RELEASE_LEASE=0
+TASK=""; PII=""; FORCE=""; SHOW=0; DOCTOR=0; GUARD=0; IFREE=0; KEEPGO=0; CARGS=(); LEASE_GATE=auto; LEASE_CHECK=0; TAKE_LEASE=0; RELEASE_LEASE=0
 while [ $# -gt 0 ]; do
   case "$1" in
     --task)    [ $# -ge 2 ] || usage_err "--task needs a value"; TASK="$2"; shift 2 ;;
@@ -803,7 +862,8 @@ while [ $# -gt 0 ]; do
     --status)  SHOW=1; shift ;;
     --doctor)  DOCTOR=1; shift ;;               # read-only diagnosis of every precondition, one line each
     --guard-hook) GUARD=1; shift ;;             # internal: the client-data guard hook of an --interactive-free session
-    --interactive-free) IFREE=1; shift ;;       # a person starts a NEW interactive session on the free route, on purpose
+    --interactive-free) IFREE=1; shift ;;
+    --keep-going) KEEPGO=1; shift ;;            # interactive: Claude → OmniRoute free at the limit → Claude again, same conversation       # a person starts a NEW interactive session on the free route, on purpose
     --lease)   LEASE_GATE=on; shift ;;          # gate this invocation even without --task
     --no-lease) LEASE_GATE=off; shift ;;        # skip the lease gate — logged as a WARN; manual use only
     --lease-check) LEASE_CHECK=1; shift ;;      # force one real check now, print the verdict, run nothing
@@ -1103,6 +1163,7 @@ run_free_and_watch() { # tier-2 headless run: count exhaustion-class failures in
 }
 
 if [ $IFREE = 1 ]; then interactive_free "$@"; fi
+if [ $KEEPGO = 1 ]; then keep_going "$@"; fi
 rotate "$LOG" 5000
 case "$mode" in
   subscription)

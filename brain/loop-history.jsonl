@@ -6,3 +6,6 @@
 {"ts": "2026-10-09T19:05:18Z", "doctor": true, "bench_correct": 16, "bench_total": 18, "org_covered": 21, "org_total": 21, "gaps": 0, "stale_pages": 2, "jarvis": "unverified"}
 {"ts": "2026-10-09T19:05:30Z", "doctor": true, "bench_correct": 17, "bench_total": 18, "org_covered": 21, "org_total": 21, "gaps": 0, "stale_pages": 2, "jarvis": "unverified"}
 {"ts": "2026-10-09T19:05:41Z", "doctor": true, "bench_correct": 18, "bench_total": 18, "org_covered": 21, "org_total": 21, "gaps": 0, "stale_pages": 2, "jarvis": "unverified"}
+{"ts": "2026-10-09T19:26:12Z", "doctor": true, "bench_correct": 18, "bench_total": 18, "org_covered": 21, "org_total": 21, "gaps": 0, "stale_pages": 2, "jarvis": "unverified", "route_correct": 10, "route_total": 10, "untested_wiki_pages": 22}
+{"ts": "2026-10-09T19:26:44Z", "doctor": true, "bench_correct": 19, "bench_total": 19, "org_covered": 21, "org_total": 21, "gaps": 0, "stale_pages": 2, "jarvis": "unverified", "route_correct": 10, "route_total": 10, "untested_wiki_pages": 20}
+{"ts": "2026-10-09T19:32:21Z", "doctor": true, "bench_correct": 19, "bench_total": 19, "org_covered": 22, "org_total": 22, "gaps": 0, "stale_pages": 2, "jarvis": "unverified", "route_correct": 10, "route_total": 10, "untested_wiki_pages": 20}

@@ -2,7 +2,7 @@
 
 You are continuing work for Steven Shearrill (Broker Associate, LPT Realty · MLO, Patriot Pacific Financial · retired
 Navy Chief). He is not technical: do the work for him, keep what he must do to a few plain steps, and tell him exactly
-where to click or paste. Repo: chitown034/Repo, branch `claude/stoic-cori-pvn3f8`. Start by reading `CLAUDE.md`, then
+where to click or paste. Repo: chitown034/Repo, branch `claude/gracious-newton-4hpfco`. Start by reading `CLAUDE.md`, then
 run `bin/brain recall "<question>"` before opening any other file. Do not re-read the old chat; the brain holds it.
 
 **Where things stand (2026-10-09)**

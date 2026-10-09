@@ -15,8 +15,9 @@ Plain Python 3.10+, standard library only, no model calls. Run from any director
 | `brain gaps` | What was asked and not answered, most-asked first, with the nearest files (from the local keyword-only recall log; `BRAIN_NOLOG=1` turns the log off). |
 | `brain orgcheck` | Does every seat in `wiki/ai-team/org-chart.md` resolve to a brain page; is Jarvis verified, stale or failing. Exits non-zero on a miss. |
 | `brain pack "<q>" [--budget N]` | Best section from several files under a token budget, as one paste for any platform. |
-| `brain loop` | reindex → doctor → bench → gaps → orgcheck → `docs/reports/BRAIN-LOOP.md`, compared with the last run in `brain/loop-history.jsonl`; exit 1 on a regression. |
-| `brain mcp` | The brain as a stdio MCP server (`brain_recall`, `brain_pack`, `brain_gaps`, `brain_remember`) for Claude Code, Claude Desktop, Codex, Cursor. Registering it in a client is Steven's approval, never automatic. |
+| `brain route "<request>" [--json]` | The AI team's dispatch plan from the org chart: lead seat, seats that join, parallel waves (≤8, ≤4 web research), gates (Alexandra, ECC, Vanessa last), HALTs, and the brain section each seat starts from. Rules: `wiki/ai-team/cross-functional.md`. |
+| `brain loop` | reindex → doctor → bench → gaps → orgcheck → routing self-test (`brain/bench/routes.json`) → pages no gold question tests → `docs/reports/BRAIN-LOOP.md`, compared with the last run in `brain/loop-history.jsonl`; exit 1 on a regression. |
+| `brain mcp` | The brain as a stdio MCP server (`brain_recall`, `brain_pack`, `brain_gaps`, `brain_stale`, `brain_related`, `brain_route`, `brain_remember`) for Claude Code, Claude Desktop, Codex, Cursor. Registering it in a client is Steven's approval, never automatic. |
 
 ## The ladder (`recall`)
 

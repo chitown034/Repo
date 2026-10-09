@@ -25,12 +25,12 @@ research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox
 
 5. **Open Terminal and find your Repo folder.** No web link can open Terminal on your Mac. Press Command + Space, type Terminal, press Return. Copy and run the line below; it prints the path of the folder that holds MAC-SETUP.sh (that is your Repo folder). If it prints nothing, run: git clone https://github.com/chitown034/Repo.git. Then type cd and a space, drag that folder from Finder into the window, press Return.
    `find ~ -maxdepth 5 -name MAC-SETUP.sh -not -path '*/node_modules/*' 2>/dev/null`
-6. **Switch to the branch that holds today's files.** The new scripts are on the branch claude/stoic-cori-pvn3f8, not the repo's default branch, so a plain git pull misses them. If it complains about changes you made, stop and tell Claude; do not discard them. The last line should print the file name.
-   `git fetch origin && git checkout claude/stoic-cori-pvn3f8 && git pull && ls mac-bootstrap.sh`
+6. **Switch to the branch that holds today's files.** The new scripts are on the branch claude/gracious-newton-4hpfco, not the repo's default branch, so a plain git pull misses them. If it complains about changes you made, stop and tell Claude; do not discard them. The last line should print the file name.
+   `git fetch origin && git checkout claude/gracious-newton-4hpfco && git pull && ls mac-bootstrap.sh`
 7. **Preview, then run the one command.** mac-bootstrap.sh replaces the old seven pastes: harness update, pausing the three duplicate Mac feed tasks, Opus 5.5, browser-use / OpenDesign / API Anything, WhatsApp (iPhone next to you for the QR code), the Second Brain, and the connection check. It asks yes/no before every change and Enter means no. Run the first line to see everything it would do, then the second. When it finishes, paste the MAC COMBINED REPORT block into this chat.
    `./mac-bootstrap.sh --dry-run
 ./mac-bootstrap.sh --also zoho,lofty,connections --with-claude`
-8. **Fix the OmniRoute failover so it kicks in when Claude runs out.** OmniRoute itself is running, but the switch-over scripts were never installed, so nothing changes when you hit the limit. First the read-only check, which prints PASS / WARN / FAIL with the fix for each gap; then the installer, which asks yes/no before every change. Paste the doctor output back (it prints no secrets). Sessions you start yourself stay on Claude by design; to deliberately continue on the free route with no client data, type claude-auto --interactive-free.
+8. **Fix the OmniRoute failover so it kicks in when Claude runs out.** OmniRoute itself is running, but the switch-over scripts were never installed, so nothing changes when you hit the limit. First the read-only check, which prints PASS / WARN / FAIL with the fix for each gap; then the installer, which asks yes/no before every change. Paste the doctor output back (it prints no secrets). The installer now also asks to turn on keep-going: start your sessions with claude-auto --keep-going, and when Claude runs out just type /exit and press Enter. The same conversation continues on OmniRoute's free models, then goes back to Claude once it resets. Client data never goes to the free route.
    `claude-auto --doctor
 bash integrations/omniroute-failover/install-failover.sh --dry-run
 bash integrations/omniroute-failover/install-failover.sh
@@ -47,7 +47,7 @@ bash integrations/remote-control/orca-remote.sh pair
 bash integrations/remote-control/orca-remote.sh report`
 11. **Turn on Claude Mods (one command).** Five mods are built, checked and ready: a status line showing which AI route you are on, a Proceed/Cancel guard before any send, share or payment, /remember to save a rule into the brain, Blast Radius, and /replay to review Claude's edits. Run this in Terminal from your Repo folder, type y once, then open a new Claude Code session. To turn them all off later: add --off.
    `git pull && bash integrations/mods/install-mods.sh`
-   - What each mod does: https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mods/RECOMMENDATIONS.md
+   - What each mod does: https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/mods/RECOMMENDATIONS.md
 12. **Type your keys into the files (never into chat).** The command above creates empty ~/.config/zoho/.env and ~/.config/lofty/.env with only the variable NAMES. Open each with the line below, type the value after each equals sign, save. Zoho needs five: ZOHO_ACCOUNTS_URL, ZOHO_API_URL, ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET, ZOHO_REFRESH_TOKEN (the two URLs depend on your Zoho data centre: .com, .eu, .in...). If TextEdit shows a formatting bar choose Format → Make Plain Text before saving. Lofty's key is already working.
    `open -e ~/.config/zoho/.env`
 13. **Pause the Discord poller until a bot token exists.** vanessa-discord-inbox runs every 5 minutes with no token, about 288 runs a day. Pause (do not delete) it: run the line below on the Mac.
@@ -68,17 +68,17 @@ bash integrations/remote-control/orca-remote.sh report`
 ## 5 · Applications and emails · 15 minutes (Drafts are in integrations/CONNECT-PLAN-2026-10-09.md section 6; nothing has been sent)
 
 19. **Send three short messages.** (1) Ticor: ask your Ticor Title Sales Executive or Customer Service whether an API or bulk export of Ticor Property Data exists and on what terms. (2) CRMLS: your broker (LPT) applies for the RESO Web API data licence at licensing@crmls.org; there will be no scraper. (3) Dotloop: apply for developer / partner access at info.dotloop.com/developers. Each is your signature, so Claude only drafted them.
-   - Open the drafts: https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/CONNECT-PLAN-2026-10-09.md
+   - Open the drafts: https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/CONNECT-PLAN-2026-10-09.md
    - Ticor Property Data: https://ticorpropertydata.com/
 20. **Optional: switch on the free-then-paid failover.** Claude subscription first; when it runs out, OmniRoute free models take over at once; OpenRouter is the paid third tier, capped at $25 a month, and stays off until you do this. Create an OpenRouter key yourself, set the key's own credit limit to $25, load no more than $25, then follow the Three-tier failover steps. It returns to Claude by itself when the allowance resets.
-   - Open the steps: https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/omniroute-failover/README.md
+   - Open the steps: https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/omniroute-failover/README.md
    - OpenRouter: https://openrouter.ai/
 
 ## 6 · Decisions · one reply (Each defaults to no; nothing is spent without your yes)
 
 21. **Decide the AI Steve video replica (plan is ready).** context.dev is connected. The weekly real-estate and loan-officer video plan is in integrations/ai-replica-studio/PLAN.md. To start Claude needs five answers: (1) which avatar provider, or none yet (HeyGen works through Composio but is paid and not connected; the CAM page was not applied to and its price is not published); (2) built-in voice or a cloned voice on your own ElevenLabs account; (3) platforms and cadence (assumed one of each a week to Facebook, Instagram, LinkedIn, YouTube); (4) LPT Realty's brokerage DRE number and name plus your personal NMLS ID for the disclosure line; (5) whether the three social timers run as a routine or through Buffer. You record your own consent and samples; nothing posts without your approval each week.
    `replica: provider ______ · voice ______ · cadence 1+1/week · LPT DRE ______ · NMLS ID ______ · timers routine/Buffer`
-   - Read the plan: https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/ai-replica-studio/PLAN.md
+   - Read the plan: https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/ai-replica-studio/PLAN.md
 22. **Reply 'defaults' or change any line.** Google Drive: done, connected read-only (one file; Claude holds its catalogue, not its contents, until you say the notes can be indexed). Plaid: no (keys may cost). Terms-of-service reviews for Redfin market pages, lender rate pages and builder pages: Alexandra drafts, you decide each. SkySlope and zipForms: stay locked until compliance signs off. APInation: tell Claude what you want it to do before any paid use. Orca phone app: your call.
    `defaults: Drive notes indexed yes/no ___ · Plaid no · ToS reviews later · SkySlope/zipForms locked · APInation: ______`
 
@@ -86,6 +86,6 @@ bash integrations/remote-control/orca-remote.sh report`
 
 23. **Check Jarvis, Laya and Vanessa's voice on your Mac.** One command checks Jarvis's memory, the real Laya model, the vault, Vanessa's recorded voice clips and the brain, and says the one thing to fix for each. It changes only a voice-profile copy in ~/.config/jarvis. Then the brain's own self-check runs. Paste the last lines back and Claude updates the dashboards.
    `cd ~/Projects/Repo 2>/dev/null || cd "$(dirname "$(find ~ -maxdepth 5 -name mac-bootstrap.sh 2>/dev/null | head -1)")"; git pull && bash integrations/jarvis/jarvis-setup.sh --apply; bin/brain loop | head -20`
-   - What it checks: https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/jarvis/README.md
+   - What it checks: https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/jarvis/README.md
 
 Reply "done N" (or "skip N") after each step and Claude keeps the dashboards in step.

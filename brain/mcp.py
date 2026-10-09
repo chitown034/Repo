@@ -25,6 +25,8 @@ TOOLS = [
      "inputSchema": {"type": "object", "properties": {"days": {"type": "integer"}}}},
     {"name": "brain_related", "description": "Pages most related to a page path or a question.",
      "inputSchema": {"type": "object", "properties": {"target": {"type": "string"}}, "required": ["target"]}},
+    {"name": "brain_route", "description": "The AI team's dispatch plan for a request: lead seat, seats that join, parallel waves, gates and HALTs.",
+     "inputSchema": {"type": "object", "properties": {"request": {"type": "string"}}, "required": ["request"]}},
     {"name": "brain_remember", "description": "Store one durable fact. Refuses secrets, account numbers and client PII.",
      "inputSchema": {"type": "object", "properties": {"fact": {"type": "string"}}, "required": ["fact"]}},
 ]
@@ -43,6 +45,9 @@ def _call(root: Path, name: str, a: dict) -> str:
         return json.dumps(loop.stale(root, days=int(a.get("days") or 21)), indent=1)
     if name == "brain_related":
         return json.dumps(loop.related(root, a["target"]), indent=1)
+    if name == "brain_route":
+        from . import route
+        return route.format_plan(route.route(root, a["request"]))
     if name == "brain_remember":
         try:
             r = remember.remember(a["fact"], root=root)

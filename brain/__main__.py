@@ -5,7 +5,7 @@
   reindex
   doctor
   bench [--write]
-  gaps | orgcheck | stale | related | pack "<question>" | loop | mcp
+  gaps | orgcheck | stale | related | pack "<question>" | route "<request>" | loop | mcp
 """
 
 from __future__ import annotations
@@ -51,6 +51,9 @@ def _parser() -> argparse.ArgumentParser:
     rl.add_argument("target", nargs="+")
     gr = sub.add_parser("graph", help="the whole brain as nodes, links and dates (JSON) for any visualiser")
     gr.add_argument("--out", help="write to this file instead of stdout")
+    ro = sub.add_parser("route", help="org-chart dispatch plan: lead seat, joins, parallel waves, gates, HALTs")
+    ro.add_argument("request", nargs="+")
+    ro.add_argument("--json", action="store_true")
     sub.add_parser("loop", help="reindex, doctor, bench, gaps, orgcheck; write docs/reports/BRAIN-LOOP.md; exit 1 on regression")
     sub.add_parser("mcp", help="serve recall/remember/pack/gaps over stdio MCP for any MCP client")
     return p
@@ -142,6 +145,12 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "graph":
         from . import graph
         return graph.main(root, args.out)
+
+    if args.cmd == "route":
+        from . import route
+        plan = route.route(root, " ".join(args.request))
+        print(json.dumps(plan, ensure_ascii=False, indent=1) if args.json else route.format_plan(plan))
+        return 0
 
     if args.cmd == "loop":
         ok, text = loop.run_loop(root)

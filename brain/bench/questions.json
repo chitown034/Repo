@@ -1,216 +1,227 @@
 {
-  "about": "Gold set for `bin/brain bench`. Every answerable question was written by reading the file named in expected_file; expected_phrase is copied from it (a list means any one of those wordings of the same fact counts) (matched case-insensitively, with markdown ** and backticks stripped and whitespace collapsed). alt_files lists other files that state the same fact in the same words -- evidence from any of them counts. router_leaf is the ONE leaf a careful model would load from CLAUDE.md's routing table (null = no row fits, so the router-only path reads CLAUDE.md alone). kind: claude = a fact already in CLAUDE.md; leaf = in a routed leaf; buried = inside a doc the router does not name; hop = the obvious file only points at the answer; refusal = not in the brain.",
-  "questions": [
-    {
-      "id": "q01",
-      "kind": "claude",
-      "question": "Which model does Vanessa run on?",
-      "expected_file": "CLAUDE.md",
-      "expected_phrase": "Fable 5.1 masterminds",
-      "alt_files": [
-        "context/decisions.md",
-        "wiki/ai-team/index.md"
-      ],
-      "router_leaf": "wiki/ai-team/index.md"
-    },
-    {
-      "id": "q02",
-      "kind": "claude",
-      "question": "How many sub-agents can Vanessa dispatch in parallel?",
-      "expected_file": "CLAUDE.md",
-      "expected_phrase": "≤8",
-      "alt_files": [
-        "wiki/ai-team/index.md",
-        "context/decisions.md",
-        "OPTIMIZATION.md",
-        "routines/parallel-csuite-task-cycle.md"
-      ],
-      "router_leaf": "wiki/ai-team/index.md"
-    },
-    {
-      "id": "q03",
-      "kind": "claude",
-      "question": "What is the cache TTL for volatile stores like deck state docs and rates?",
-      "expected_file": "recall-cache.md",
-      "expected_phrase": "4 h",
-      "alt_files": [
-        "CLAUDE.md",
-        "OPTIMIZATION.md"
-      ],
-      "router_leaf": "recall-cache.md"
-    },
-    {
-      "id": "q04",
-      "kind": "leaf",
-      "question": "Which states is Steven personally licensed in as an MLO?",
-      "expected_file": "context/about-me.md",
-      "expected_phrase": "CA, NV, AZ, FL, IL",
-      "alt_files": [],
-      "router_leaf": "context/about-me.md"
-    },
-    {
-      "id": "q05",
-      "kind": "leaf",
-      "question": "What year did Steven retire from the Navy?",
-      "expected_file": "context/about-me.md",
-      "expected_phrase": "retired 2023",
-      "alt_files": [],
-      "router_leaf": "context/about-me.md"
-    },
-    {
-      "id": "q06",
-      "kind": "leaf",
-      "question": "How many weeks of backups are kept on the rolling schedule?",
-      "expected_file": "context/decisions.md",
-      "expected_phrase": "rolling 8 weeks",
-      "alt_files": [],
-      "router_leaf": "context/decisions.md"
-    },
-    {
-      "id": "q07",
-      "kind": "leaf",
-      "question": "What setting must Steven enable in Zoho to clear the 403 NO_PERMISSION error?",
-      "expected_file": "context/decisions.md",
-      "expected_phrase": "Zoho CRM API Access",
-      "alt_files": [
-        "docs/SETUP-RUNBOOK.md",
-        "docs/NEEDS-STEVEN.md",
-        "integrations/CONNECTIONS.md",
-        "docs/OPEN-FINDINGS.md"
-      ],
-      "router_leaf": "context/decisions.md"
-    },
-    {
-      "id": "q08",
-      "kind": "leaf",
-      "question": "How many families has the nonprofit housed so far?",
-      "expected_file": "projects/nonprofit.md",
-      "expected_phrase": "Families housed (cumulative) | 0",
-      "alt_files": [],
-      "router_leaf": "projects/nonprofit.md"
-    },
-    {
-      "id": "q09",
-      "kind": "leaf",
-      "question": "When is the PJMT 530 Week 8 final assessment due?",
-      "expected_file": "projects/usc-pjmt-530.md",
-      "expected_phrase": "2026-10-19",
-      "alt_files": [],
-      "router_leaf": "projects/usc-pjmt-530.md"
-    },
-    {
-      "id": "q10",
-      "kind": "leaf",
-      "question": "How many loan programs and lenders are drift-checked between the ISA Portal and the Command Deck?",
-      "expected_file": "projects/isa-portal.md",
-      "expected_phrase": "39 loan programs, 61 lenders",
-      "alt_files": [],
-      "router_leaf": "projects/isa-portal.md"
-    },
-    {
-      "id": "q11",
-      "kind": "leaf",
-      "question": "How many browser recipes are there across the five DOMShell harnesses?",
-      "expected_file": "memory.md",
-      "expected_phrase": "18 browser recipes",
-      "alt_files": [],
-      "router_leaf": "memory.md"
-    },
-    {
-      "id": "q12",
-      "kind": "leaf",
-      "question": "When does the brain-weekly-verify review gate run?",
-      "expected_file": "always-on/README.md",
-      "expected_phrase": [
-        "Sunday 4:00 PM",
-        "4:00 PM review"
-      ],
-      "alt_files": [],
-      "router_leaf": "always-on/README.md",
-      "note": "Either the schedule table row or the Sunday review gate section answers this; both state Sunday and 4:00 PM."
-    },
-    {
-      "id": "q13",
-      "kind": "leaf",
-      "question": "What is the TTL on the task lease that stops both Macs double-writing?",
-      "expected_file": "REMOTE-ACCESS.md",
-      "expected_phrase": [
-        "90 min",
-        "90-minute"
-      ],
-      "alt_files": [
-        "integrations/omniroute-failover/README.md",
-        "docs/SECOND-MAC-SETUP.md"
-      ],
-      "router_leaf": "REMOTE-ACCESS.md"
-    },
-    {
-      "id": "q14",
-      "kind": "leaf",
-      "question": "What chunk size should the vector index target?",
-      "expected_file": "vector-index/README.md",
-      "expected_phrase": "600–800 tokens per chunk",
-      "alt_files": [],
-      "router_leaf": "vector-index/README.md"
-    },
-    {
-      "id": "q15",
-      "kind": "hop",
-      "question": "Which knowledge-graph relation links a retired tool to the tool that replaced it?",
-      "expected_file": "knowledge-graph/schema.md",
-      "expected_phrase": "REPLACED_BY",
-      "alt_files": [],
-      "router_leaf": "knowledge-graph/README.md"
-    },
-    {
-      "id": "q16",
-      "kind": "buried",
-      "question": "How many cloud routines are allowed to fire in the same UTC hour?",
-      "expected_file": "docs/ROUTINE-SCHEDULE-FIX.md",
-      "expected_phrase": "No more than two cloud routines per UTC hour",
-      "alt_files": [],
-      "router_leaf": "wiki/dashboard-ops/index.md"
-    },
-    {
-      "id": "q17",
-      "kind": "buried",
-      "question": "What result did the unattended cloud write probe record?",
-      "expected_file": "docs/CLOUD-WRITE-ARCHITECTURE.md",
-      "expected_phrase": "write succeeded unattended",
-      "alt_files": [
-        "REMOTE-ACCESS.md",
-        "always-on/README.md",
-        "routines/mac-task-repairs.md",
-        "docs/INTEGRATOR-TODO.md"
-      ],
-      "router_leaf": "wiki/dashboard-ops/index.md"
-    },
-    {
-      "id": "q18",
-      "kind": "hop",
-      "question": "Which course of action does the ISA seat decision packet recommend first?",
-      "expected_file": "docs/ISA-SEAT-DECISION.md",
-      "expected_phrase": "COA 1 today",
-      "alt_files": [],
-      "router_leaf": "projects/isa-portal.md"
-    },
-    {
-      "id": "q19",
-      "kind": "refusal",
-      "question": "What is the name of Steven's dog?",
-      "expected_file": null,
-      "expected_phrase": null,
-      "alt_files": [],
-      "router_leaf": "context/about-me.md"
-    },
-    {
-      "id": "q20",
-      "kind": "refusal",
-      "question": "What is Steven's favorite restaurant in Temecula?",
-      "expected_file": null,
-      "expected_phrase": null,
-      "alt_files": [],
-      "router_leaf": "context/about-me.md"
-    }
-  ]
+ "about": "Gold set for `bin/brain bench`. Every answerable question was written by reading the file named in expected_file; expected_phrase is copied from it (a list means any one of those wordings of the same fact counts) (matched case-insensitively, with markdown ** and backticks stripped and whitespace collapsed). alt_files lists other files that state the same fact in the same words -- evidence from any of them counts. router_leaf is the ONE leaf a careful model would load from CLAUDE.md's routing table (null = no row fits, so the router-only path reads CLAUDE.md alone). kind: claude = a fact already in CLAUDE.md; leaf = in a routed leaf; buried = inside a doc the router does not name; hop = the obvious file only points at the answer; refusal = not in the brain.",
+ "questions": [
+  {
+   "id": "q01",
+   "kind": "claude",
+   "question": "Which model does Vanessa run on?",
+   "expected_file": "CLAUDE.md",
+   "expected_phrase": "Fable 5.1 masterminds",
+   "alt_files": [
+    "context/decisions.md",
+    "wiki/ai-team/index.md"
+   ],
+   "router_leaf": "wiki/ai-team/index.md"
+  },
+  {
+   "id": "q02",
+   "kind": "claude",
+   "question": "How many sub-agents can Vanessa dispatch in parallel?",
+   "expected_file": "CLAUDE.md",
+   "expected_phrase": "≤8",
+   "alt_files": [
+    "wiki/ai-team/index.md",
+    "context/decisions.md",
+    "OPTIMIZATION.md",
+    "routines/parallel-csuite-task-cycle.md"
+   ],
+   "router_leaf": "wiki/ai-team/index.md"
+  },
+  {
+   "id": "q03",
+   "kind": "claude",
+   "question": "What is the cache TTL for volatile stores like deck state docs and rates?",
+   "expected_file": "recall-cache.md",
+   "expected_phrase": "4 h",
+   "alt_files": [
+    "CLAUDE.md",
+    "OPTIMIZATION.md"
+   ],
+   "router_leaf": "recall-cache.md"
+  },
+  {
+   "id": "q04",
+   "kind": "leaf",
+   "question": "Which states is Steven personally licensed in as an MLO?",
+   "expected_file": "context/about-me.md",
+   "expected_phrase": "CA, NV, AZ, FL, IL",
+   "alt_files": [],
+   "router_leaf": "context/about-me.md"
+  },
+  {
+   "id": "q05",
+   "kind": "leaf",
+   "question": "What year did Steven retire from the Navy?",
+   "expected_file": "context/about-me.md",
+   "expected_phrase": "retired 2023",
+   "alt_files": [],
+   "router_leaf": "context/about-me.md"
+  },
+  {
+   "id": "q06",
+   "kind": "leaf",
+   "question": "How many weeks of backups are kept on the rolling schedule?",
+   "expected_file": "context/decisions.md",
+   "expected_phrase": "rolling 8 weeks",
+   "alt_files": [],
+   "router_leaf": "context/decisions.md"
+  },
+  {
+   "id": "q07",
+   "kind": "leaf",
+   "question": "What setting must Steven enable in Zoho to clear the 403 NO_PERMISSION error?",
+   "expected_file": "context/decisions.md",
+   "expected_phrase": "Zoho CRM API Access",
+   "alt_files": [
+    "docs/SETUP-RUNBOOK.md",
+    "docs/NEEDS-STEVEN.md",
+    "integrations/CONNECTIONS.md",
+    "docs/OPEN-FINDINGS.md"
+   ],
+   "router_leaf": "context/decisions.md"
+  },
+  {
+   "id": "q08",
+   "kind": "leaf",
+   "question": "How many families has the nonprofit housed so far?",
+   "expected_file": "projects/nonprofit.md",
+   "expected_phrase": "Families housed (cumulative) | 0",
+   "alt_files": [],
+   "router_leaf": "projects/nonprofit.md"
+  },
+  {
+   "id": "q09",
+   "kind": "leaf",
+   "question": "When is the PJMT 530 Week 8 final assessment due?",
+   "expected_file": "projects/usc-pjmt-530.md",
+   "expected_phrase": "2026-10-19",
+   "alt_files": [],
+   "router_leaf": "projects/usc-pjmt-530.md"
+  },
+  {
+   "id": "q10",
+   "kind": "leaf",
+   "question": "How many loan programs and lenders are drift-checked between the ISA Portal and the Command Deck?",
+   "expected_file": "projects/isa-portal.md",
+   "expected_phrase": "39 loan programs, 61 lenders",
+   "alt_files": [],
+   "router_leaf": "projects/isa-portal.md"
+  },
+  {
+   "id": "q11",
+   "kind": "leaf",
+   "question": "How many browser recipes are there across the five DOMShell harnesses?",
+   "expected_file": "memory.md",
+   "expected_phrase": "18 browser recipes",
+   "alt_files": [],
+   "router_leaf": "memory.md"
+  },
+  {
+   "id": "q12",
+   "kind": "leaf",
+   "question": "When does the brain-weekly-verify review gate run?",
+   "expected_file": "always-on/README.md",
+   "expected_phrase": [
+    "Sunday 4:00 PM",
+    "4:00 PM review"
+   ],
+   "alt_files": [],
+   "router_leaf": "always-on/README.md",
+   "note": "Either the schedule table row or the Sunday review gate section answers this; both state Sunday and 4:00 PM."
+  },
+  {
+   "id": "q13",
+   "kind": "leaf",
+   "question": "What is the TTL on the task lease that stops both Macs double-writing?",
+   "expected_file": "REMOTE-ACCESS.md",
+   "expected_phrase": [
+    "90 min",
+    "90-minute"
+   ],
+   "alt_files": [
+    "integrations/omniroute-failover/README.md",
+    "docs/SECOND-MAC-SETUP.md"
+   ],
+   "router_leaf": "REMOTE-ACCESS.md"
+  },
+  {
+   "id": "q14",
+   "kind": "leaf",
+   "question": "What chunk size should the vector index target?",
+   "expected_file": "vector-index/README.md",
+   "expected_phrase": "600–800 tokens per chunk",
+   "alt_files": [],
+   "router_leaf": "vector-index/README.md"
+  },
+  {
+   "id": "q15",
+   "kind": "hop",
+   "question": "Which knowledge-graph relation links a retired tool to the tool that replaced it?",
+   "expected_file": "knowledge-graph/schema.md",
+   "expected_phrase": "REPLACED_BY",
+   "alt_files": [],
+   "router_leaf": "knowledge-graph/README.md"
+  },
+  {
+   "id": "q16",
+   "kind": "buried",
+   "question": "How many cloud routines are allowed to fire in the same UTC hour?",
+   "expected_file": "docs/ROUTINE-SCHEDULE-FIX.md",
+   "expected_phrase": "No more than two cloud routines per UTC hour",
+   "alt_files": [],
+   "router_leaf": "wiki/dashboard-ops/index.md"
+  },
+  {
+   "id": "q17",
+   "kind": "buried",
+   "question": "What result did the unattended cloud write probe record?",
+   "expected_file": "docs/CLOUD-WRITE-ARCHITECTURE.md",
+   "expected_phrase": "write succeeded unattended",
+   "alt_files": [
+    "REMOTE-ACCESS.md",
+    "always-on/README.md",
+    "routines/mac-task-repairs.md",
+    "docs/INTEGRATOR-TODO.md"
+   ],
+   "router_leaf": "wiki/dashboard-ops/index.md"
+  },
+  {
+   "id": "q18",
+   "kind": "hop",
+   "question": "Which course of action does the ISA seat decision packet recommend first?",
+   "expected_file": "docs/ISA-SEAT-DECISION.md",
+   "expected_phrase": "COA 1 today",
+   "alt_files": [],
+   "router_leaf": "projects/isa-portal.md"
+  },
+  {
+   "id": "q19",
+   "kind": "refusal",
+   "question": "What is the name of Steven's dog?",
+   "expected_file": null,
+   "expected_phrase": null,
+   "alt_files": [],
+   "router_leaf": "context/about-me.md"
+  },
+  {
+   "id": "q20",
+   "kind": "refusal",
+   "question": "What is Steven's favorite restaurant in Temecula?",
+   "expected_file": null,
+   "expected_phrase": null,
+   "alt_files": [],
+   "router_leaf": "context/about-me.md"
+  },
+  {
+   "id": "q21",
+   "kind": "leaf",
+   "question": "Who owns a listing file after an accepted offer?",
+   "expected_file": "wiki/real-estate-playbooks/listing-process.md",
+   "expected_phrase": "hands off to the Transaction Coordinator",
+   "alt_files": [
+    "wiki/real-estate-playbooks/transaction-stages.md"
+   ],
+   "router_leaf": "wiki/real-estate-playbooks/index.md"
+  }
+ ]
 }

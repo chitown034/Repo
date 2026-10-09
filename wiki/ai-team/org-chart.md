@@ -11,13 +11,14 @@ Steven (Principal)
 │   ├─ Jarvis — on-device voice + local index (verify: integrations/jarvis/jarvis-setup.sh; voice = Vanessa's recorded Magica set)
 │   ├─ Laya — zero-token on-device first hop (proposed; Mac install unverified, routing logic proven on the stub only — integrations/laya/)
 │   ├─ Knowledge fabric — Second Brain · vault · Jarvis · Graphify · Ruflo, one recall (+ Notion record, Google Drive mirror read-only)
-│   ├─ Brain loop — self-check that finds unanswered questions and drift (`bin/brain loop`)
+│   ├─ Brain loop — self-check that finds unanswered questions, drift, wrong routing and untested pages (`bin/brain loop`)
+│   ├─ Dispatch planner — `bin/brain route`: lead seat, cross-functional joins, ≤8-wide parallel waves, gates, HALTs (rules: `wiki/ai-team/cross-functional.md`)
 │   └─ Juliet — Escalation & Service Recovery
 ├─ ISA / EA (human) — Mon–Fri 12–4 PM
 └─ Executives (report to Vanessa, ≤8 dispatched in parallel):
     ├─ Marcus (CFO) — Nathan, Bianca, Dov, Anita, Paloma, Grace, Alan, Hazel, Corinne + ruflo cost-analyst bench
     ├─ Sofia (CMO) — 14 named marketing reports + ruflo audio bench
-    ├─ Derek (CTO) — Sam, Naomi, Integration Engineer + 5 ECC officers + Ivan, Lena, Grace, Raj, Tomas
+    ├─ Derek (CTO) — Sam, Naomi, Integration Engineer (owns OmniRoute failover + `claude-auto --keep-going`) + 5 ECC officers + Ivan, Lena, Grace, Raj, Tomas
     │   + code-review / build-fix / code-quality / infrastructure benches (56 agents)
     ├─ Alexandra (CCO) — Lucia, Bennett, Fern, Clay, Odette, Gus, Imani, Roland, Diane, Walter, Denise, Howard
     ├─ Nadia (CAIO, proposal-only) — Leah, Disruption Scout, Yuki, Hana, Felix, Nora, Ezra + research bench
@@ -41,6 +42,15 @@ Steven (Principal)
 
 A bench row (e.g. "ruflo · 21 employees" under Derek's engineering bench) stands for a group of specialized ruflo agents invoked **by name** when needed — it is not a headcount to add to named seats without noting which is which. The deck's own renderer counts named seats and bench-standing-for-agents separately rather than blending them into one impressive total; this wiki does the same and does not restate either number as a fact to maintain — read the live count off the deck's AI Team panel.
 
+## How the seats work together
+
+Every request runs the same pattern, and `bin/brain route "<request>"` prints it: Vanessa picks the **lead** (the seat
+whose lane words match most), the **joins** come along by rule (client-facing → Alexandra; credentials/data → Elena;
+automation → Derek; money → Marcus; loan mechanics → Harrison; transactions → Carmen; new tools → Elon), all of them run
+**in parallel** (≤8 a wave, ≤4 web research), then the **gates** run in order — Alexandra's compliance review, the ECC
+review of any change, and Vanessa last, consolidating one answer. A HALT word (send, quote, pay, delete, credential,
+legal) lets the prep run but holds the final step for Steven. Rules: `wiki/ai-team/cross-functional.md`.
+
 ## Proposal-only seats
 
 Nadia (CAIO) and Elon (CTO Innovator) never ship a change themselves — Nadia scans outward and writes the weekly Disruption Brief (replace/upgrade/adopt, graded ADOPT/PILOT/WATCH/IGNORE); Elon vets every item for feasibility, integration cost and security risk before it can enter the test queue. Both report to Steven, cc Vanessa. The LLM Council and the digital twin are proposal-only in the same sense — see `wiki/ai-team/tool-integration-status.md` for what that means for Orca, Laya, and 77skills specifically.
@@ -51,4 +61,4 @@ Nadia (CAIO) and Elon (CTO Innovator) never ship a change themselves — Nadia s
 - `wiki/ai-team/tool-integration-status.md` — connector, skill, and proposed-tool status by seat.
 - `wiki/ai-team/mentors-and-benches.md` — Maxwell, Apex, James, Kevin and what a "bench" actually is.
 
-Source: Command Deck, `ORG_CHART` / `AI_TEAM_ORG` data (AI Team panel), toolkit snapshot referenced 2026-09-16. Tree last updated 2026-10-09 (Laya, Brain loop, Google Drive mirror, Jarvis verify script). `bin/brain orgcheck` proves every seat above resolves to a brain page.
+Source: Command Deck, `ORG_CHART` / `AI_TEAM_ORG` data (AI Team panel), toolkit snapshot referenced 2026-09-16. Tree last updated 2026-10-09 (Laya, Brain loop, Google Drive mirror, Jarvis verify script; dispatch planner and keep-going failover added the same day). `bin/brain orgcheck` proves every seat above resolves to a brain page.
