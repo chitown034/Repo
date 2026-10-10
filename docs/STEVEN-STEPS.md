@@ -48,6 +48,9 @@ bash integrations/remote-control/orca-remote.sh report`
 11. **Turn on Claude Mods (one command).** Five mods are built, checked and ready: a status line showing which AI route you are on, a Proceed/Cancel guard before any send, share or payment, /remember to save a rule into the brain, Blast Radius, and /replay to review Claude's edits. Run this in Terminal from your Repo folder, type y once, then open a new Claude Code session. To turn them all off later: add --off.
    `git pull && bash integrations/mods/install-mods.sh`
    - What each mod does: https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/mods/RECOMMENDATIONS.md
+11b. **Give Claude browser hands and a skill finder (5 minutes, new 2026-10-10).** Installs agent-browser and Playwright for Claude Code, copies the new skills, and ends with a self-test that types an address into a test page and clicks Search. It asks y/N before each step. Then copy the 3-line block it prints into Claude Desktop → Settings → Developer → Edit Config. Paste the last lines back here.
+   `bash integrations/browser-agents/install.sh --dry-run
+bash integrations/browser-agents/install.sh`
 12. **Type your keys into the files (never into chat).** The command above creates empty ~/.config/zoho/.env and ~/.config/lofty/.env with only the variable NAMES. Open each with the line below, type the value after each equals sign, save. Zoho needs five: ZOHO_ACCOUNTS_URL, ZOHO_API_URL, ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET, ZOHO_REFRESH_TOKEN (the two URLs depend on your Zoho data centre: .com, .eu, .in...). If TextEdit shows a formatting bar choose Format → Make Plain Text before saving. Lofty's key is already working.
    `open -e ~/.config/zoho/.env`
 13. **Pause the Discord poller until a bot token exists.** vanessa-discord-inbox runs every 5 minutes with no token, about 288 runs a day. Pause (do not delete) it: run the line below on the Mac.

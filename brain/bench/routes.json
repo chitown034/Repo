@@ -92,6 +92,24 @@
     "Claude web research"
    ],
    "halt": false
+  },
+  {
+   "request": "Open the ShowingTime website, log in and fill the showing request form for my buyer",
+   "lead": "Gwen",
+   "must_include": [
+    "Derek",
+    "Elena",
+    "Alexandra"
+   ],
+   "halt": false
+  },
+  {
+   "request": "Submit the form on the lender portal for me",
+   "lead": "Derek",
+   "must_include": [
+    "Elena"
+   ],
+   "halt": true
   }
  ]
 }

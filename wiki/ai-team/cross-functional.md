@@ -14,9 +14,9 @@ Words in the request pull in the seat. The seat with the most matching words lea
 |---|---|---|
 | Marcus | net worth, income, budget, liabilities, expense, cash, close, tax, profit, money, finance, revenue forecast, plaid, balance | `projects/` |
 | Sofia | marketing, campaign, content, social, post, email blast, newsletter, video, avatar, brand, ad, seo, instagram, facebook, linkedin, youtube | `wiki/real-estate-playbooks/` |
-| Derek | automation, connector, integration, routine, task, broken, stack, api, mcp, dashboard, deck, sync, runner, failover, mac, script | `wiki/dashboard-ops/` |
+| Derek | automation, connector, integration, routine, task, broken, stack, api, mcp, dashboard, deck, sync, runner, failover, mac, script, browser, website, playwright, agent-browser, portal | `wiki/dashboard-ops/` |
 | Alexandra | compliance, trid, respa, reg z, disclosure, fair housing, dre, nmls, license, advertising rule, anti-steering, le, cd | `wiki/mortgage-programs/` |
-| Nadia | ai strategy, tool, tooling, evaluate, adopt, disruption, new model, agent design, hype, scout, new repo, skill, mcp server, plugin | `docs/CAIO-DISRUPTION-BRIEF.md` |
+| Nadia | ai strategy, tool, tooling, evaluate, adopt, disruption, new model, agent design, hype, scout, new repo, skill, mcp server, plugin, find a skill | `docs/CAIO-DISRUPTION-BRIEF.md` |
 | Victor | pipeline, conversion, lead, leads, speed to lead, crm, lofty, zoho, funnel, referral, revenue, six levers, isa | `wiki/real-estate-playbooks/` |
 | Elena | security, credential, password, key, token, access, breach, privacy, pii, data risk, backup | `docs/` |
 | Elon | feasibility, architecture, build, engineer, prototype, integration cost, refactor, brain, second brain | `brain/README.md` |
@@ -35,6 +35,7 @@ When the request matches the words, the seat joins the plan even if it is not th
 | When the request touches | Also bring in | Why |
 |---|---|---|
 | client, borrower, buyer, seller, post, ad, email, marketing, disclosure, rate, video | Alexandra | Anything client-facing or advertised passes compliance before it leaves |
+| website, browser, browse, log in, login, portal, fill the form, scrape | Elena | Browsing as Steven can reach logged-in accounts and client data; the CISO sets what it may touch |
 | credential, key, token, api, connector, integration, access, pii, client data | Elena | Credentials and client data are the CISO's gate |
 | automation, connector, integration, routine, script, dashboard, deck, mcp | Derek | The CTO owns whether it runs and stays green |
 | tool, adopt, new model, ai strategy | Elon | Every Nadia proposal gets Elon's feasibility check |
@@ -58,7 +59,7 @@ run while the licensed or irreversible step waits for Steven.
 
 | When the request says | HALT because |
 |---|---|
-| send, email the client, text the client, post it, publish, schedule the post | A send to a client or a public post needs Steven's yes |
+| send, email the client, text the client, post it, publish, schedule the post, submit the form, place the order, book it | A send to a client or a public post needs Steven's yes |
 | quote, rate quote, lock, eligibility, approve the loan, pre-approve, sign, signature, negotiate | A licensed decision is Steven's |
 | pay, buy, purchase, subscribe, upgrade plan, spend | Spending money needs Steven's yes |
 | delete, wipe, drop, reset, force push | Irreversible |

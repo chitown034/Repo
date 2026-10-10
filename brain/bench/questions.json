@@ -233,6 +233,18 @@
     "wiki/ai-team/tool-integration-status.md"
    ],
    "router_leaf": "wiki/ai-team/index.md"
+  },
+  {
+   "id": "q23",
+   "kind": "leaf",
+   "question": "Which tools let Claude open websites, fill forms and click for Steven?",
+   "expected_file": "wiki/ai-team/tool-integration-status.md",
+   "expected_phrase": "Playwright MCP",
+   "alt_files": [
+    "integrations/browser-agents/README.md",
+    "wiki/ai-team/org-chart.md"
+   ],
+   "router_leaf": "wiki/ai-team/index.md"
   }
  ]
 }
