@@ -55,6 +55,11 @@ connector for what you need — report in the run output and leave the write to 
    - advertised-but-absent — a row in the AI Team toolkit table with no `SKILL.md` on disk;
    - installed-but-unlisted — a skill on disk that the table never mentions;
    - task-orphan — a scheduled task whose prompt names a skill that is not installed.
+5b. **Browser and skill-finder check (2026-10-10).** Confirm, do not assume: `agent-browser --version` = 0.39.0;
+   `claude mcp list` shows `playwright` (@playwright/mcp 0.0.83); `~/.claude/skills/` holds agent-browser, find-skills,
+   web-design-guidelines and writing-guidelines identical to the repo copies; `npx -y skills@1.7.2 --help` runs. Each
+   miss is a row with the one-line fix (`bash integrations/browser-agents/install.sh`). Also check upstream for newer
+   versions of the four vendored skills and the two pinned tools — a newer version is a proposal, never an auto-update.
 6. **Known gaps to confirm, not assume** (brief §2, 2026-09-22): present — `continuous-process-improvement`,
    `automation-audit`, `automation-audit-ops`, `ai-ecosystem-backup`, `deck-backup`, `fub-followups`
    (a legacy client-follow-up template library whose merge/send fields target the previous CRM —

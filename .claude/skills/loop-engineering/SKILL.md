@@ -66,6 +66,19 @@ An item with no Goal/Loop/Routine is not improved this cycle; it gets one writte
    gates each ADOPT/PILOT for fit, integration cost and security (Elena for anything asking for credentials or client
    data). Survivors become `improvementProposals` items and test candidates for step 4 — at trust L1, proposal only.
    Installing, connecting an account or paying for anything is a HALT for Steven.
+2c. **Use the new hands (2026-10-10).** Four skills feed the cycle; each is proposal-only and stops before any
+   submit/send/pay/sign, and a skill that is not installed on this machine is logged `not installed`, never faked:
+   - **`find-skills`** — for every open gap this cycle (a failed task, a triage item, a scout item with no owner, a
+     capability a seat lacked), run `npx -y skills@1.7.2 find <topic>` once. A hit becomes a proposal with its source
+     repo, licence and what it would touch; Elon checks fit, Elena checks reach, Steven approves `npx skills add`.
+   - **`agent-browser`** (or Playwright MCP) — **dogfood the live pages**: open the Command Deck and the ISA Portal,
+     take an accessibility snapshot of each tab, note what fails to render, is empty or is stale, and click through
+     read-only navigation only. Screenshots go in the weekly report. Never press a button that writes data.
+   - **`web-design-guidelines`** — review the deck and portal HTML (or this week's diff to them) against the Web
+     Interface Guidelines; each finding is a proposal with the exact line, tested in step 4 like any other change.
+   - **`writing-guidelines`** — before the brief goes to Steven, review the weekly report and brief (and any copy Sofia
+     queued) for plain, short, accurate prose. Fixes are applied to the report itself; they need no gate.
+   Log in `loopLog[].tools`: which of the four ran, findings each produced, and `not installed` where applicable.
 3. **Hold out.** Freeze an **untouched holdout set** before any change: ~20% of the items under test
    (named in the cycle entry), selected for coverage, not convenience. Nothing in the holdout is
    edited, tuned or fixed this cycle. It exists to detect improvements that only move the items you

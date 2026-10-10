@@ -51,6 +51,12 @@ Run the weekly loop with the loop-engineering skill. Continue the cycle numberin
 2b. Scout: run `python3 integrations/scout/scout.py --days 7`; Nadia grades the top 10 and every NEW
    business-lane item in docs/reports/SCOUT.md (ADOPT/PILOT/WATCH/IGNORE, dated sources), Elon gates
    feasibility and security; survivors go to improvementProposals. Never install, connect or pay.
+2c. New hands (2026-10-10), proposal-only, stop before any submit/send/pay/sign: find-skills
+   (`npx -y skills@1.7.2 find <topic>` once per open gap -> proposals for Elon/Elena/Steven);
+   agent-browser or Playwright MCP (dogfood the Command Deck and ISA Portal read-only: snapshot every
+   tab, list empty/stale/broken panels, screenshots into the report); web-design-guidelines (review
+   the deck/portal HTML -> proposals); writing-guidelines (tighten the weekly report and brief before
+   Steven reads it). Log which ran, or "not installed", in loopLog[].tools.
 3. Collect proposals: prompt-master (<=5 prompt diffs, HITL gate), continuous-process-improvement
    (weekly deep pass), scale-growth-engine (ADR pass), stress-test-sweep (weekly sweep),
    skills-refresh (drift). Each proposal: target, change, hypothesis, measurement, risk, rollback.

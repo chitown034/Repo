@@ -67,6 +67,7 @@ WATCH_RELEASES = [
     "anthropics/claude-code", "anthropics/anthropic-sdk-python", "anthropics/skills", "modelcontextprotocol/servers",
     "modelcontextprotocol/registry", "stablyai/orca", "ComposioHQ/composio", "microsoft/playwright-mcp",
     "browser-use/browser-use", "openai/codex", "ollama/ollama", "decolua/9router",
+    "vercel-labs/agent-browser", "vercel-labs/skills", "vercel-labs/agent-skills", "microsoft/playwright-mcp",
 ]
 NPM_QUERIES = ["keywords:mcp", "keywords:mcp-server", "keywords:claude-code", "claude skill", "keywords:modelcontextprotocol"]
 HN_QUERIES = ["Claude Code", "MCP server", "Claude", "AI agent CLI", "agent memory"]
