@@ -245,6 +245,42 @@
     "wiki/ai-team/org-chart.md"
    ],
    "router_leaf": "wiki/ai-team/index.md"
+  },
+  {
+   "id": "q24",
+   "kind": "leaf",
+   "question": "Which agent prepares property tax sheets for San Diego and Riverside County?",
+   "expected_file": "wiki/mortgage-programs/loan-task-agents.md",
+   "expected_phrase": "Property Tax Sheet",
+   "alt_files": [],
+   "router_leaf": "wiki/mortgage-programs/index.md"
+  },
+  {
+   "id": "q25",
+   "kind": "leaf",
+   "question": "How do I reach all of my computers remotely, including the Alienware?",
+   "expected_file": "wiki/ai-team/computer-hub.md",
+   "expected_phrase": "Claude Remote Control",
+   "alt_files": [],
+   "router_leaf": "wiki/ai-team/index.md"
+  },
+  {
+   "id": "q26",
+   "kind": "leaf",
+   "question": "Is the trading research desk allowed to place live orders?",
+   "expected_file": "integrations/trading-desk/README.md",
+   "expected_phrase": "paper",
+   "alt_files": [],
+   "router_leaf": "wiki/ai-team/index.md"
+  },
+  {
+   "id": "q27",
+   "kind": "leaf",
+   "question": "Why was skool-mcp not installed?",
+   "expected_file": "wiki/ai-team/third-party-packs.md",
+   "expected_phrase": "private API",
+   "alt_files": [],
+   "router_leaf": "wiki/ai-team/index.md"
   }
  ]
 }

@@ -45,6 +45,41 @@ code{font:.85rem var(--mono);background:var(--code);padding:2px 6px;border-radiu
 ul.mini{margin:0 0 10px;padding-left:18px;font-size:.95rem}
 footer{margin-top:28px;color:var(--muted);font-size:.85rem}
 @media (prefers-reduced-motion:reduce){.meter i{transition:none}}
+
+/* ================= WAVE 2 POLISH — motion and depth, additive only =================
+   Every rule is additive and guarded: reduced-motion turns it all off, nothing changes layout or colours, and
+   the reveal only starts once the script marks <html class="w2-js">, so a page without script is untouched. */
+:root { --w2-ease: cubic-bezier(0.22, 1, 0.36, 1); --w2-spring: cubic-bezier(0.34, 1.56, 0.64, 1); }
+.deck-head { backdrop-filter: saturate(180%) blur(18px); -webkit-backdrop-filter: saturate(180%) blur(18px); }
+/* page switch: a panel that goes from display:none to shown replays this once */
+@keyframes w2PanelIn { from { opacity: 0; transform: translateY(14px) scale(0.995); } to { opacity: 1; transform: none; } }
+.panel[data-page] { animation: w2PanelIn 0.55s var(--w2-ease) both; }
+/* scroll reveal for cards and tables inside the visible panel */
+.w2-js .card, .w2-js .stat, .w2-js .kanban-col, .w2-js .tk-tile { opacity: 0; transform: translateY(12px); transition: opacity 0.6s var(--w2-ease), transform 0.6s var(--w2-ease); }
+.w2-js .card.w2-in, .w2-js .stat.w2-in, .w2-js .kanban-col.w2-in, .w2-js .tk-tile.w2-in { opacity: 1; transform: none; }
+.card:hover { transform: translateY(-2px); }
+.card, button, .page-tab, .pill, .tv-chip, .kanban-card, .exec-row { transition: transform 0.28s var(--w2-spring), box-shadow 0.25s ease, border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease, opacity 0.2s ease; }
+button:active, .page-tab:active, .tv-chip:active, .pages-btn:active { transform: scale(0.96); }
+.page-tab.active { transform: translateY(-1px); box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--accent) 70%, transparent); }
+.nav-dock-btn { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.nav-dock-btn:hover { transform: translateY(-3px) scale(1.06); }
+.panel-head::after { transition: width 0.7s var(--w2-ease); }
+.panel:hover .panel-head::after { width: 96px; }
+.progress > i, .bar-fill, .match-bar-fill { transition: width 0.9s var(--w2-ease); }
+/* a thin reading-progress line under the header */
+#w2Progress { position: fixed; left: 0; top: 0; height: 2px; width: 100%; transform-origin: 0 50%; transform: scaleX(var(--w2p, 0)); background: linear-gradient(90deg, var(--accent), var(--gold)); z-index: 90; pointer-events: none; }
+/* soft pulse on live pills */
+@keyframes w2Pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--positive) 45%, transparent); } 60% { box-shadow: 0 0 0 7px transparent; } }
+.pill.on .dot { animation: w2Pulse 2.4s ease-out infinite; }
+/* focus ring that follows the Apple pattern: tight, high-contrast, animated in */
+:focus-visible { outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  .panel[data-page], .pill.on .dot { animation: none !important; }
+  .w2-js .card, .w2-js .stat, .w2-js .kanban-col, .w2-js .tk-tile { opacity: 1 !important; transform: none !important; transition: none !important; }
+  #w2Progress { display: none; }
+}
+@media print { .panel[data-page], .w2-js .card { animation: none !important; opacity: 1 !important; transform: none !important; } #w2Progress { display: none; } }
+
 </style>
 
 <div class="wrap">
@@ -237,7 +272,76 @@ bash integrations/remote-control/orca-remote.sh report">Copy</button>
       <code>cd ~/Projects/Repo 2&gt;/dev/null || cd &quot;$(dirname &quot;$(find ~ -maxdepth 5 -name mac-bootstrap.sh 2&gt;/dev/null | head -1)&quot;)&quot;; git pull &amp;&amp; bash integrations/jarvis/jarvis-setup.sh --apply; bin/brain loop | head -20</code><button class="btn" data-copy="cd ~/Projects/Repo 2&gt;/dev/null || cd &quot;$(dirname &quot;$(find ~ -maxdepth 5 -name mac-bootstrap.sh 2&gt;/dev/null | head -1)&quot;)&quot;; git pull &amp;&amp; bash integrations/jarvis/jarvis-setup.sh --apply; bin/brain loop | head -20">Copy</button>
       <label class="tick"><input type="checkbox" id="s23">Done</label></div></div></div>
 
-  <footer>Rebuilt 2026-10-09 (afternoon) from the live routine list, the Mac runner status, both dashboard databases and a Composio connection check. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Same list as text: <code>docs/STEVEN-STEPS.md</code>.</footer>
+  <h2>8 · New this round (2026-10-11) · about 45 minutes</h2>
+  <p class="where">Each one asks before it changes anything; the order is the order to do them</p>
+
+  <div class="step" data-id="24"><div class="n">24</div><div class="body">
+    <p class="t">Give Claude browser hands and a skill finder (Mac, 5 minutes)</p>
+    <p class="d">Installs agent-browser and Playwright for Claude Code and copies four skills. Ends with a self-test that types an address into a test page and clicks Search. It asks y/N before each change. Paste the last lines back to Claude.</p>
+    <div class="acts"><code>bash integrations/browser-agents/install.sh --dry-run
+bash integrations/browser-agents/install.sh</code><button class="btn" data-copy="bash integrations/browser-agents/install.sh --dry-run
+bash integrations/browser-agents/install.sh">Copy</button><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/browser-agents/README.md" target="_blank" rel="noopener">What it does</a>
+      <label class="tick"><input type="checkbox" id="s24">Done</label></div></div></div>
+
+  <div class="step" data-id="25"><div class="n">25</div><div class="body">
+    <p class="t">Install the content, video and research skill packs (Mac)</p>
+    <p class="d">Instagram, LinkedIn and YouTube drafting skills, vidIQ workflow skills, the /watch video reader, founder skills, yt-dlp, ffmpeg and Whisper. Each was read first; each asks y/N. Nothing posts or sends. Four items are held on purpose (Jev, Apify, Skool, Remotion): the registry says why.</p>
+    <div class="acts"><code>bash integrations/skill-packs/install-mac.sh --dry-run
+bash integrations/skill-packs/install-mac.sh</code><button class="btn" data-copy="bash integrations/skill-packs/install-mac.sh --dry-run
+bash integrations/skill-packs/install-mac.sh">Copy</button><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/skill-packs/REGISTRY-2026-10-11.md" target="_blank" rel="noopener">What I found in each repo</a>
+      <label class="tick"><input type="checkbox" id="s25">Done</label></div></div></div>
+
+  <div class="step" data-id="26"><div class="n">26</div><div class="body">
+    <p class="t">Set up the Alienware PC (Windows, 20 minutes)</p>
+    <p class="d">On the Alienware: press Start, type PowerShell, open it (not as administrator). Get the repo (git clone https://github.com/chitown034/Repo.git, then cd Repo and git checkout claude/gracious-newton-4hpfco). First run the read-only check, then the install; it asks y/N before each change. It sets up Orca, Laya, Bonsai 2 27B, and optionally Ollama, AnyDesk and Tailscale. It has never run on Windows, so send Claude any error word for word. Paste the one status line it prints into the Computer Hub card.</p>
+    <div class="acts"><code>Set-ExecutionPolicy RemoteSigned -Scope Process
+.\integrations\alienware\alienware-setup.ps1 -Action Doctor
+.\integrations\alienware\alienware-setup.ps1 -Action Install -DryRun
+.\integrations\alienware\alienware-setup.ps1 -Action Install</code><button class="btn" data-copy="Set-ExecutionPolicy RemoteSigned -Scope Process
+.\integrations\alienware\alienware-setup.ps1 -Action Doctor
+.\integrations\alienware\alienware-setup.ps1 -Action Install -DryRun
+.\integrations\alienware\alienware-setup.ps1 -Action Install">Copy</button><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/alienware/README.md" target="_blank" rel="noopener">Plain-English guide</a>
+      <label class="tick"><input type="checkbox" id="s26">Done</label></div></div></div>
+
+  <div class="step" data-id="27"><div class="n">27</div><div class="body">
+    <p class="t">AnyDesk on every computer and tablet</p>
+    <p class="d">Install AnyDesk on Mac 1, Mac 2, the Alienware, the tablet and the phone. Type each device&#x27;s AnyDesk ID (9 to 10 digits) into the Computer Hub card on the Command Deck (Toolkit &amp; Remote Access page). Set each unattended-access password yourself inside AnyDesk. <b>Never type a password into the dashboard or chat.</b></p>
+    <div class="acts"><a class="btn" href="https://anydesk.com/" target="_blank" rel="noopener">Download AnyDesk</a><a class="btn" href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Open Command Deck</a>
+      <label class="tick"><input type="checkbox" id="s27">Done</label></div></div></div>
+
+  <div class="step" data-id="28"><div class="n">28</div><div class="body">
+    <p class="t">Publish the new Command Deck panels</p>
+    <p class="d">Claude built and tested them (Computer Hub, Trading Research Desk, weekly events by city, new AI-team seats, smooth animations) but the permission checker blocked publishing to your live deck. Say &quot;publish the deck&quot; in the chat and approve the prompt, or add a permission rule for Artifact in settings. The same applies to the ISA Portal, Action Desk and 2nd Brain 4D motion updates.</p>
+    <div class="acts"><code>publish the deck</code><button class="btn" data-copy="publish the deck">Copy</button>
+      <label class="tick"><input type="checkbox" id="s28">Done</label></div></div></div>
+
+  <div class="step" data-id="29"><div class="n">29</div><div class="body">
+    <p class="t">Add the Ultimate Web Scraper connector (optional)</p>
+    <p class="d">claude.ai &rarr; Settings &rarr; Connectors &rarr; Add custom connector, and paste the address below. Claude could not reach that site from its sandbox, so what it costs and where scraped pages go is unverified: read its pricing and privacy pages first. Never use it on client information.</p>
+    <div class="acts"><a class="btn" href="https://claude.ai/settings/connectors" target="_blank" rel="noopener">Open Connectors</a><code>https://ultimatewebscraper.com/claudemcp</code><button class="btn" data-copy="https://ultimatewebscraper.com/claudemcp">Copy</button>
+      <label class="tick"><input type="checkbox" id="s29">Done</label></div></div></div>
+
+  <div class="step" data-id="30"><div class="n">30</div><div class="body">
+    <p class="t">Send the ARIVE API email (your signature)</p>
+    <p class="d">Claude drafted a 5-line email asking ARIVE about API access. Claude cannot verify what ARIVE offers or charges. The Zoho, SkySlope, Dotloop and Ticor steps are in the same file.</p>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/loan-stack/CONNECTIONS.md" target="_blank" rel="noopener">Open the drafts and the 8 steps</a>
+      <label class="tick"><input type="checkbox" id="s30">Done</label></div></div></div>
+
+  <div class="step" data-id="31"><div class="n">31</div><div class="body">
+    <p class="t">Decide the held tools (each defaults to no)</p>
+    <p class="d">Apify (account + spend), vidIQ connection (account), OpenRouter for Jev (key + spend), Remotion (company licence), Skool MCP (Claude recommends no: it uses your login on a private API). Reply: <b>defaults</b> or name any you want.</p>
+    <div class="acts"><code>held: Apify ___ · vidIQ ___ · Jev ___ · Remotion ___ · Skool no</code><button class="btn" data-copy="held: Apify ___ · vidIQ ___ · Jev ___ · Remotion ___ · Skool no">Copy</button>
+      <label class="tick"><input type="checkbox" id="s31">Done</label></div></div></div>
+
+  <div class="step" data-id="32"><div class="n">32</div><div class="body">
+    <p class="t">Run the first real events scan and give the trading desk real data (optional)</p>
+    <p class="d">The weekly events scout could reach none of its 36 sources from the cloud, so run it once on a Mac with internet. The trading research desk is paper-only and needs your own historical price file (CSV) to do real research; until then it only proves the plumbing.</p>
+    <div class="acts"><code>python3 integrations/events/events_scout.py
+cd integrations/trading-desk &amp;&amp; python3 -m desk selftest</code><button class="btn" data-copy="python3 integrations/events/events_scout.py
+cd integrations/trading-desk &amp;&amp; python3 -m desk selftest">Copy</button><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/trading-desk/README.md" target="_blank" rel="noopener">Trading desk guide</a>
+      <label class="tick"><input type="checkbox" id="s32">Done</label></div></div></div>
+
+  <footer>Updated 2026-10-11; first 23 steps rebuilt 2026-10-09 from the live routine list, the Mac runner status, both dashboard databases and a Composio connection check. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Same list as text: <code>docs/STEVEN-STEPS.md</code>.</footer>
 </div>
 
 <script>
@@ -267,4 +371,70 @@ bash integrations/remote-control/orca-remote.sh report">Copy</button>
   function selectCode(btn){ var c=btn.parentNode.querySelector('code'); if(!c)return; var r=document.createRange(); r.selectNodeContents(c); var s=getSelection(); s.removeAllRanges(); s.addRange(r); }
   paint();
 })();
+
+  /* ================= WAVE 2 POLISH — reveal, count-up, reading progress =================
+     Guarded end to end: no IntersectionObserver, no requestAnimationFrame, reduced motion or a pure-Node DOM shim
+     all leave the page exactly as it was. Nothing here touches data or any existing render function. */
+  (function w2Polish() {
+    try {
+      if (typeof document === "undefined" || !document.documentElement || typeof window === "undefined") return;
+      var reduce = false;
+      try { reduce = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); } catch (e0) {}
+      if (reduce || typeof IntersectionObserver === "undefined") return;
+      document.documentElement.className += " w2-js";
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          en.target.className += " w2-in";
+          io.unobserve(en.target);
+          w2Count(en.target);
+        });
+      }, { rootMargin: "0px 0px -6% 0px", threshold: 0.05 });
+      function w2Observe(root) {
+        var els = (root || document).querySelectorAll(".card, .stat, .kanban-col, .tk-tile");
+        Array.prototype.forEach.call(els, function (el) { if (el.className.indexOf("w2-seen") === -1) { el.className += " w2-seen"; io.observe(el); } });
+      }
+      /* count-up for plain numbers only; the real text is restored at the end and again if the node is re-rendered */
+      var NUM = /^(\$?)(\d{1,3}(?:,\d{3})*|\d+)(\.\d+)?(%?)$/;
+      function w2Count(card) {
+        if (!card.querySelectorAll) return;
+        Array.prototype.forEach.call(card.querySelectorAll(".stat-value, .es-num, .tk-tile b"), function (n) {
+          if (n.getAttribute("data-w2")) return;
+          var txt = (n.textContent || "").trim(), m = NUM.exec(txt);
+          if (!m || txt.length > 12) return;
+          n.setAttribute("data-w2", "1");
+          var target = parseFloat(txt.replace(/[$,%]/g, "")), dec = m[3] ? m[3].length - 1 : 0, t0 = null, dur = 700;
+          if (!isFinite(target) || target === 0) return;
+          function step(ts) {
+            if (t0 === null) t0 = ts;
+            var p = Math.min(1, (ts - t0) / dur), e = 1 - Math.pow(1 - p, 3), v = target * e;
+            if (p < 1 && n.textContent.trim() !== txt && n.getAttribute("data-w2") === "done") return;
+            n.textContent = p >= 1 ? txt : m[1] + (dec ? v.toFixed(dec) : Math.round(v).toLocaleString("en-US")) + m[4];
+            if (p < 1) requestAnimationFrame(step); else n.setAttribute("data-w2", "done");
+          }
+          if (typeof requestAnimationFrame === "function") requestAnimationFrame(step);
+        });
+      }
+      w2Observe(document);
+      /* new cards appear when pages switch or panels render later */
+      if (typeof MutationObserver !== "undefined") {
+        var pending = false;
+        new MutationObserver(function () {
+          if (pending) return; pending = true;
+          setTimeout(function () { pending = false; w2Observe(document); }, 120);
+        }).observe(document.body, { childList: true, subtree: true });
+      }
+      var bar = document.createElement("div"); bar.id = "w2Progress"; bar.setAttribute("aria-hidden", "true"); document.body.appendChild(bar);
+      var ticking = false;
+      window.addEventListener("scroll", function () {
+        if (ticking) return; ticking = true;
+        requestAnimationFrame(function () {
+          ticking = false;
+          var h = document.documentElement.scrollHeight - window.innerHeight;
+          bar.style.setProperty("--w2p", String(h > 0 ? Math.min(1, Math.max(0, window.scrollY / h)) : 0));
+        });
+      }, { passive: true });
+    } catch (e) { try { console.warn("[w2Polish] skipped: " + (e && e.message)); } catch (e2) {} }
+  })();
+
 </script>

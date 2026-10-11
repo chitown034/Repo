@@ -110,6 +110,52 @@
     "Elena"
    ],
    "halt": true
+  },
+  {
+   "request": "Run a property tax sheet for an address in Riverside County",
+   "lead": "Harrison",
+   "must_include": [
+    "Vanessa"
+   ],
+   "halt": false
+  },
+  {
+   "request": "Backtest a breakout strategy and paper trade it",
+   "lead": "Apex",
+   "must_include": [
+    "Vanessa"
+   ],
+   "halt": false
+  },
+  {
+   "request": "Place a live order on my trading account",
+   "lead": "Vanessa",
+   "must_include": [],
+   "halt": true
+  },
+  {
+   "request": "Reverse engineer how a vendor app exports loan files",
+   "lead": "Elena",
+   "must_include": [
+    "Alexandra"
+   ],
+   "halt": false
+  },
+  {
+   "request": "Find networking events in Temecula this week",
+   "lead": "Victor",
+   "must_include": [
+    "Vanessa"
+   ],
+   "halt": false
+  },
+  {
+   "request": "Connect to my Alienware over AnyDesk and Orca",
+   "lead": "Derek",
+   "must_include": [
+    "ECC"
+   ],
+   "halt": false
   }
  ]
 }

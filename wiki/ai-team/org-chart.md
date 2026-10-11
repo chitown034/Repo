@@ -13,6 +13,7 @@ Steven (Principal)
 │   ├─ Knowledge fabric — Second Brain · vault · Jarvis · Graphify · Ruflo, one recall (+ Notion record, Google Drive mirror read-only)
 │   ├─ Brain loop — self-check that finds unanswered questions, drift, wrong routing and untested pages (`bin/brain loop`)
 │   ├─ Browser hands + skill finder — `agent-browser`, Playwright MCP, `find-skills` (any seat asks Vanessa; Integration Engineer owns, Elena gates; stop before submit/send/pay) — `integrations/browser-agents/`
+│   ├─ Computer Hub — Claude Remote Control + Orca + AnyDesk on Mac 1, Mac 2, the Alienware PC, tablet and phone (`wiki/ai-team/computer-hub.md`)
 │   ├─ Weekly scout — `integrations/scout/scout.py` → `docs/reports/SCOUT.md`: new repos, skills, MCP servers, upgrades, CLIs, free tools (Disruption Scout → Nadia grades → Elon gates → Steven approves)
 │   ├─ Dispatch planner — `bin/brain route`: lead seat, cross-functional joins, ≤8-wide parallel waves, gates, HALTs (rules: `wiki/ai-team/cross-functional.md`)
 │   └─ Juliet — Escalation & Service Recovery
@@ -24,7 +25,7 @@ Steven (Principal)
     │   + code-review / build-fix / code-quality / infrastructure benches (56 agents)
     ├─ Alexandra (CCO) — Lucia, Bennett, Fern, Clay, Odette, Gus, Imani, Roland, Diane, Walter, Denise, Howard
     ├─ Nadia (CAIO, proposal-only) — Leah, Disruption Scout (runs `integrations/scout/scout.py` weekly), Yuki, Hana, Felix, Nora, Ezra + research bench
-    ├─ Victor (CRO) — Harrison, Gwen, Marguerite + 19 named reports + Carmen
+    ├─ Victor (CRO) — Harrison, Gwen, Marguerite + 19 named reports + Carmen + Tax Assessor Agent and Loan Pricing Prep Agent (prep only; `wiki/mortgage-programs/loan-task-agents.md`)
     ├─ Elena (CISO) — Omar, Renee, Ruth, Dev + ruflo security bench
     └─ Elon (CTO Innovator, proposal-only) — the AI Agent Engineering Team: stress-test, reliability,
        efficiency, capability, integration engineers + sandbox QA + chief automation strategist
@@ -62,6 +63,15 @@ and fill websites (`agent-browser` from Claude Code, Playwright MCP from Claude 
 showing slots; Sofia checks a post's landing page; Derek dogfoods the Command Deck; Nadia tries a new tool's demo. Every
 click that submits, sends, pays or signs stops for Steven. `bin/brain route` brings in Elena when a request touches a website.
 
+## Added 2026-10-11
+
+- **Trading Research Desk** (under Apex, paper mode only) — Idea, Builder, Backtester, Paper Trader and Memory agents plus a Risk Manager and a Regime Analyst; out-of-sample testing, fees and slippage, memory that never deletes a failure. `integrations/trading-desk/`.
+- **Tax Assessor Agent** and **Loan Pricing Prep Agent** (under Victor/Harrison) — public county records and scenario worksheets; never a quote or an eligibility decision.
+- **Reverse-engineering gate** (REA, under Elon with Elena and Alexandra) — owned or licensed software only.
+- **Events scout** — weekly events and networking by city for the Travel tab; networking leads go to Victor as proposals. `wiki/events-networking/index.md`.
+- **Computer Hub** and the **Alienware local-AI tier** (Laya, Bonsai 2 27B) — `wiki/ai-team/computer-hub.md`.
+- **Third-party skill packs** — Sofia's content skills, `/watch`, vidIQ and more, installed by Steven on the Mac. `wiki/ai-team/third-party-packs.md`.
+
 ## Proposal-only seats
 
 Nadia (CAIO) and Elon (CTO Innovator) never ship a change themselves — Nadia scans outward and writes the weekly Disruption Brief (replace/upgrade/adopt, graded ADOPT/PILOT/WATCH/IGNORE); Elon vets every item for feasibility, integration cost and security risk before it can enter the test queue. Both report to Steven, cc Vanessa. The LLM Council and the digital twin are proposal-only in the same sense — see `wiki/ai-team/tool-integration-status.md` for what that means for Orca, Laya, and 77skills specifically.
@@ -72,4 +82,4 @@ Nadia (CAIO) and Elon (CTO Innovator) never ship a change themselves — Nadia s
 - `wiki/ai-team/tool-integration-status.md` — connector, skill, and proposed-tool status by seat.
 - `wiki/ai-team/mentors-and-benches.md` — Maxwell, Apex, James, Kevin and what a "bench" actually is.
 
-Source: Command Deck, `ORG_CHART` / `AI_TEAM_ORG` data (AI Team panel), toolkit snapshot referenced 2026-09-16. Tree last updated 2026-10-09 (Laya, Brain loop, Google Drive mirror, Jarvis verify script; dispatch planner, keep-going failover and weekly scout added the same day; browser control + skill finder 2026-10-10). `bin/brain orgcheck` proves every seat above resolves to a brain page.
+Source: Command Deck, `ORG_CHART` / `AI_TEAM_ORG` data (AI Team panel), toolkit snapshot referenced 2026-09-16. Tree last updated 2026-10-09 (Laya, Brain loop, Google Drive mirror, Jarvis verify script; dispatch planner, keep-going failover and weekly scout added the same day; browser control + skill finder 2026-10-10; trading desk, loan-task agents, events scout, Computer Hub, third-party packs 2026-10-11). `bin/brain orgcheck` proves every seat above resolves to a brain page.

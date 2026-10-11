@@ -13,6 +13,8 @@ hold the actual detail once you know which seat or layer you need.
 | `org-chart.md` | The full seat map: Steven → Vanessa/Steve/ISA → 8 executives with named reports and ruflo benches |
 | `model-tiering-dispatch.md` | Which model each layer runs on, ≤8-parallel/≤4-web-research dispatch rules, trust levels, the ECC gate |
 | `tool-integration-status.md` | Connectors, MCP bridges, tasks/routines/skills status — plus honest Orca/Laya/77skills proposal status |
+| `computer-hub.md` | Mac 1, Mac 2, Alienware, tablet, phone: Claude Remote Control, Orca, AnyDesk, local AI |
+| `third-party-packs.md` | The 18 repos Steven asked for: installed, held or declined, and why |
 | `cross-functional.md` | Who leads, who joins, the parallel waves, the gates and the HALT words — the rules `bin/brain route` runs |
 | `mentors-and-benches.md` | Maxwell, Apex, James, Kevin, Kevin (name settled 2026-10-07), and what a "bench" row actually counts |
 

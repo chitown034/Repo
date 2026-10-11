@@ -1,0 +1,27 @@
+  <section class="panel" id="panel-computerhub" data-page="toolkit">
+    <div class="panel-head">
+      <span class="panel-tag">PANEL&nbsp;40</span>
+      <h2 class="panel-title">Computer Hub &mdash; every computer, one place</h2>
+      <span class="panel-note">2 Macs &middot; Alienware &middot; tablets &middot; phone</span>
+    </div>
+    <div class="card" style="margin-bottom:16px;">
+      <p class="card-title">How this works</p>
+      <p class="card-sub" style="margin-top:0;">Each device gets the same three doors. <b>Claude</b> &mdash; its Claude Code session shows up in your session list (Remote Control). <b>Orca</b> &mdash; all your AI agents on that machine, paired over your private network. <b>AnyDesk</b> &mdash; see and use the whole screen. Tick a step when it is done; the ring fills. Nothing here stores a password, key or pairing link: AnyDesk IDs and ticks live only in this browser.</p>
+      <div class="ch-legend"><span class="ch-dot ch-claude"></span>Claude <span class="ch-dot ch-orca"></span>Orca <span class="ch-dot ch-any"></span>AnyDesk <span class="ch-dot ch-local"></span>Local AI</div>
+    </div>
+    <div class="ch-grid" id="chGrid"></div>
+    <div class="card" style="margin-top:16px;">
+      <p class="card-title">Paste a status line (optional)</p>
+      <p class="card-sub" style="margin-top:0;">The install scripts print one line of status words (no secrets). Paste it here and the matching device card updates. A line that contains anything that looks like a key, password or link is refused.</p>
+      <div class="row-line rl-2"><input type="text" id="chPaste" placeholder='{"host":"ALIENWARE", ... }' aria-label="Status line from an install script"><button class="primary" id="chPasteBtn" type="button">Apply</button></div>
+      <p class="src-note" id="chPasteNote" role="status"></p>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <p class="card-title">Rules that never change</p>
+      <ul class="simple-list">
+        <li>A pairing link or an AnyDesk password is the same as the keys to that computer. Never paste one into chat, a note, this page or the repo.</li>
+        <li>Pair Orca only over your home network or Tailscale. Desktop control is never granted through Orca.</li>
+        <li>An agent can read, search and draft on any device. Sends, spending, signing and account changes still wait for you.</li>
+      </ul>
+    </div>
+  </section>

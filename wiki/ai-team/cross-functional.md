@@ -14,19 +14,19 @@ Words in the request pull in the seat. The seat with the most matching words lea
 |---|---|---|
 | Marcus | net worth, income, budget, liabilities, expense, cash, close, tax, profit, money, finance, revenue forecast, plaid, balance | `projects/` |
 | Sofia | marketing, campaign, content, social, post, email blast, newsletter, video, avatar, brand, ad, seo, instagram, facebook, linkedin, youtube | `wiki/real-estate-playbooks/` |
-| Derek | automation, connector, integration, routine, task, broken, stack, api, mcp, dashboard, deck, sync, runner, failover, mac, script, browser, website, playwright, agent-browser, portal | `wiki/dashboard-ops/` |
+| Derek | automation, connector, integration, routine, task, broken, stack, api, mcp, dashboard, deck, sync, runner, failover, mac, script, browser, website, playwright, agent-browser, portal, anydesk, orca, remote control, alienware, tailscale, bonsai, laya | `wiki/dashboard-ops/` |
 | Alexandra | compliance, trid, respa, reg z, disclosure, fair housing, dre, nmls, license, advertising rule, anti-steering, le, cd | `wiki/mortgage-programs/` |
 | Nadia | ai strategy, tool, tooling, evaluate, adopt, disruption, new model, agent design, hype, scout, new repo, skill, mcp server, plugin, find a skill | `docs/CAIO-DISRUPTION-BRIEF.md` |
-| Victor | pipeline, conversion, lead, leads, speed to lead, crm, lofty, zoho, funnel, referral, revenue, six levers, isa | `wiki/real-estate-playbooks/` |
-| Elena | security, credential, password, key, token, access, breach, privacy, pii, data risk, backup | `docs/` |
+| Victor | pipeline, conversion, lead, leads, speed to lead, crm, lofty, zoho, funnel, referral, revenue, six levers, isa, networking, networking event, chamber | `wiki/real-estate-playbooks/` |
+| Elena | security, credential, password, key, token, access, breach, privacy, pii, data risk, backup, reverse engineer, reverse engineering, pairing link | `docs/` |
 | Elon | feasibility, architecture, build, engineer, prototype, integration cost, refactor, brain, second brain | `brain/README.md` |
-| Harrison | loan, mortgage, va, fha, usda, irrrl, jumbo, non-qm, conventional, rate, refinance, pre-approval, dti, ltv | `wiki/mortgage-programs/` |
+| Harrison | loan, mortgage, va, fha, usda, irrrl, jumbo, non-qm, conventional, rate, refinance, pre-approval, dti, ltv, assessor, apn, property tax, piti, amortization, payment scenario, loan scenario, tax sheet | `wiki/mortgage-programs/` |
 | Gwen | buyer, showing, tour, offer, house hunt | `wiki/real-estate-playbooks/` |
 | Marguerite | listing, seller, list price, cma, staging | `wiki/real-estate-playbooks/` |
 | Maxwell | coaching, coach, weekly review, accountability | `wiki/ai-team/mentors-and-benches.md` |
-| Kevin | personal development, habit, 11-dimension, discipline, mindset | `wiki/ai-team/mentors-and-benches.md` |
+| Kevin | personal development, habit, 11-dimension, discipline, mindset, singles event, speed dating, social event | `wiki/ai-team/mentors-and-benches.md` |
 | James | family office, estate, trust, wealth plan, legacy | `wiki/ai-team/mentors-and-benches.md` |
-| Apex | trade, futures, nq, es, order flow, liquidity | `wiki/ai-team/mentors-and-benches.md` |
+| Apex | trade, futures, nq, es, order flow, liquidity, backtest, paper trade, trading research, research desk, strategy idea | `wiki/ai-team/mentors-and-benches.md` |
 
 ## Joins — a seat that must come along
 
@@ -39,6 +39,7 @@ When the request matches the words, the seat joins the plan even if it is not th
 | credential, key, token, api, connector, integration, access, pii, client data | Elena | Credentials and client data are the CISO's gate |
 | automation, connector, integration, routine, script, dashboard, deck, mcp | Derek | The CTO owns whether it runs and stays green |
 | tool, adopt, new model, ai strategy | Elon | Every Nadia proposal gets Elon's feasibility check |
+| reverse engineer, reverse engineering, decompile | Alexandra | Terms of service and licence limits decide whether it is allowed at all |
 | lead, pipeline, crm, referral | Victor | Revenue impact is measured by the CRO |
 | cost, spend, budget, subscription, price, paid, pay, upgrade, purchase | Marcus | Anything that spends money is costed by the CFO |
 | loan, mortgage, va, fha, rate, refinance | Harrison | Loan mechanics are prepared by the senior mortgage seat |
@@ -65,6 +66,7 @@ run while the licensed or irreversible step waits for Steven.
 | delete, wipe, drop, reset, force push | Irreversible |
 | api key, password, token, credential, permission, grant access | Credentials and account changes are Steven's |
 | legal, lawsuit, is it legal, compliant, violation | A legal or compliance call is Steven's (Alexandra drafts) |
+| rsvp, register for the event, buy tickets, place a live order, live trading | Registering, paying or any live order is Steven's yes (the trading desk is paper only) |
 | crm write, update the crm, calendar invite | Writing to a client-facing system needs Steven's yes |
 
 ## See also
