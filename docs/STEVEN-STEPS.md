@@ -99,7 +99,7 @@ Reply "done N" (or "skip N") after each step and Claude keeps the dashboards in 
 25. **Skill packs (Mac).** `bash integrations/skill-packs/install-mac.sh --dry-run` then without. Registry of what was read and what is held: `integrations/skill-packs/REGISTRY-2026-10-11.md`.
 26. **Alienware PC (Windows PowerShell).** `Set-ExecutionPolicy RemoteSigned -Scope Process`, then `.\integrations\alienware\alienware-setup.ps1 -Action Doctor`, then `-Action Install -DryRun`, then `-Action Install`. Never run on Windows yet: send any error word for word.
 27. **AnyDesk on every computer and tablet.** Type each AnyDesk ID (not the password) into the Computer Hub card on the Command Deck. Set unattended-access passwords yourself inside AnyDesk.
-28. **Publish the new Command Deck panels.** The permission checker blocked the publish. Say "publish the deck" and approve, or add a permission rule for Artifact. Same for ISA Portal, Action Desk and 2nd Brain 4D.
+28. **New Command Deck panels: published (2026-10-11).** Command Deck, Action Desk and 2nd Brain 4D are live. ISA Portal left alone (repo copy older than live); say "update the ISA portal" to add the animations.
 29. **Ultimate Web Scraper connector (optional).** claude.ai > Settings > Connectors > Add custom connector > `https://ultimatewebscraper.com/claudemcp`. Unverified (unreachable from the sandbox): read its pricing and privacy first; never client data.
 30. **ARIVE API email** and the Zoho / SkySlope / Dotloop / Ticor steps: `integrations/loan-stack/CONNECTIONS.md`.
 31. **Held tools (default no):** Apify, vidIQ connection, OpenRouter for Jev, Remotion licence; Skool MCP not recommended.
