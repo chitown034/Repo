@@ -41,5 +41,8 @@ fan-outs unless Steven asks.
 **First thing to do:** run `bin/brain loop`, read `docs/reports/BRAIN-LOOP.md`, and tell Steven in five lines what changed
 and the single next step.
 
+## Check everything in one command
+`bash scripts/setup-health.sh --quick` (add `--write` to save `docs/reports/SETUP-HEALTH.md`): 19 offline checks, all green at 2026-10-11. Also run weekly by the free GitHub `setup-health` workflow.
+
 ## Wave 2 (2026-10-11)
 Built and tested here (not run on Steven's Mac or Alienware): Computer Hub (Panel 40), Trading Research Desk (Panel 41, paper only), weekly events by city (Travel tab), 9 new AI-team org-chart nodes, motion layer; Alienware installer (never run on Windows); AnyDesk link tool; trading desk (85 tests); loan task agents (tax assessor, loan pricing prep, 14 tests); events scout (34 tests, 0 of 27 sources reachable from the cloud); reverse-engineering gate; third-party registry and Mac installer. **Blocked:** publishing the live Command Deck / ISA / Action Desk / 4D (permission checker, "Production Deploy"): Steven must say "publish the deck" and approve. The deck's panels re-apply with `python3 dashboard/wave2/splice-wave2.py <fresh read of the live deck>`; the gates are `dashboard/tests/quickcheck.py` (one known FAIL line) and `runtime-harness.js` (must PASS). The permission checker also blocked importing third-party skills into the repo: they install on the Mac through `install-mac.sh`.

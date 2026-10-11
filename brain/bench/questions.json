@@ -281,6 +281,17 @@
    "expected_phrase": "private API",
    "alt_files": [],
    "router_leaf": "wiki/ai-team/index.md"
+  },
+  {
+   "id": "q28",
+   "kind": "leaf",
+   "question": "Which seats can use the reverse-engineering gate and who must review it?",
+   "expected_file": "wiki/ai-team/capability-matrix.md",
+   "expected_phrase": "Owned or licensed software only",
+   "alt_files": [
+    ".claude/skills/reverse-engineering/SKILL.md"
+   ],
+   "router_leaf": "wiki/ai-team/index.md"
   }
  ]
 }

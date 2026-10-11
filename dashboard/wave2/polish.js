@@ -7,7 +7,7 @@
       var reduce = false;
       try { reduce = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); } catch (e0) {}
       if (reduce || typeof IntersectionObserver === "undefined") return;
-      document.documentElement.className += " w2-js";
+      var SEL = ".card, .stat, .kanban-col, .tk-tile";
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (en) {
           if (!en.isIntersecting) return;
@@ -16,11 +16,24 @@
           w2Count(en.target);
         });
       }, { rootMargin: "0px 0px -6% 0px", threshold: 0.05 });
-      function w2Observe(root) {
-        var els = (root || document).querySelectorAll(".card, .stat, .kanban-col, .tk-tile");
-        Array.prototype.forEach.call(els, function (el) { if (el.className.indexOf("w2-seen") === -1) { el.className += " w2-seen"; io.observe(el); } });
+      /* Above-the-fold items are marked visible BEFORE the hide rule exists, so nothing flickers and a page thumbnail
+         or a print never catches a faded card; only items below the fold wait for the scroll reveal. */
+      function w2Observe(root, initial) {
+        var els = []; if (!root || !root.querySelectorAll) return;
+        if (root.matches && root.matches(SEL)) els.push(root);
+        Array.prototype.forEach.call(root.querySelectorAll(SEL), function (el) { els.push(el); });
+        var vh = window.innerHeight || 800;
+        els.forEach(function (el) {
+          if (el.className.indexOf("w2-seen") !== -1) return;
+          el.className += " w2-seen";
+          if (initial && el.getBoundingClientRect().top < vh * 1.05) { el.className += " w2-in"; return; }
+          io.observe(el);
+        });
       }
-      /* count-up for plain numbers only; the real text is restored at the end and again if the node is re-rendered */
+      w2Observe(document, true);
+      document.documentElement.className += " w2-js";
+      window.addEventListener("beforeprint", function () { Array.prototype.forEach.call(document.querySelectorAll(SEL), function (el) { if (el.className.indexOf("w2-in") === -1) el.className += " w2-in"; }); });
+      /* count-up for plain numbers only; the real text is restored at the end */
       var NUM = /^(\$?)(\d{1,3}(?:,\d{3})*|\d+)(\.\d+)?(%?)$/;
       function w2Count(card) {
         if (!card.querySelectorAll) return;
@@ -41,13 +54,14 @@
           if (typeof requestAnimationFrame === "function") requestAnimationFrame(step);
         });
       }
-      w2Observe(document);
-      /* new cards appear when pages switch or panels render later */
+      /* New cards appear when pages switch or panels render later. Only the nodes that were ADDED are scanned (never the
+         whole document), and a ticking clock or any text-only change is ignored, so a 4.6 MB deck pays almost nothing. */
       if (typeof MutationObserver !== "undefined") {
-        var pending = false;
-        new MutationObserver(function () {
-          if (pending) return; pending = true;
-          setTimeout(function () { pending = false; w2Observe(document); }, 120);
+        var queue = [], pending = false;
+        new MutationObserver(function (recs) {
+          recs.forEach(function (r) { Array.prototype.forEach.call(r.addedNodes, function (n) { if (n.nodeType === 1 && queue.length < 300) queue.push(n); }); });
+          if (pending || !queue.length) return; pending = true;
+          setTimeout(function () { pending = false; var q = queue.splice(0, queue.length); q.forEach(function (n) { w2Observe(n, false); }); }, 150);
         }).observe(document.body, { childList: true, subtree: true });
       }
       var bar = document.createElement("div"); bar.id = "w2Progress"; bar.setAttribute("aria-hidden", "true"); document.body.appendChild(bar);

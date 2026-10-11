@@ -66,6 +66,7 @@ An item with no Goal/Loop/Routine is not improved this cycle; it gets one writte
    gates each ADOPT/PILOT for fit, integration cost and security (Elena for anything asking for credentials or client
    data). Survivors become `improvementProposals` items and test candidates for step 4 — at trust L1, proposal only.
    Installing, connecting an account or paying for anything is a HALT for Steven.
+2b2. **Setup health.** Run `bash scripts/setup-health.sh --quick` (offline, ~20 s; the free GitHub `setup-health` workflow runs the full set every Monday) and fold its PASS/FAIL table into the cycle's self-test. A red row is a finding with its last lines attached; green means the code holds together, not that anything runs on Steven's machines.
 2c. **Use the new hands (2026-10-10).** Four skills feed the cycle; each is proposal-only and stops before any
    submit/send/pay/sign, and a skill that is not installed on this machine is logged `not installed`, never faked:
    - **`find-skills`** — for every open gap this cycle (a failed task, a triage item, a scout item with no owner, a

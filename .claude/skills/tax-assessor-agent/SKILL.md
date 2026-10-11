@@ -1,6 +1,6 @@
 ---
 name: tax-assessor-agent
-description: "Property tax & assessor lookup agent (San Diego County and Riverside County). Reads only PUBLIC county records through the counties' own websites with the read-only browser tools and writes a one-page Property Tax Sheet (APN, assessed values, exemptions flag, tax-rate-area note, Prop 13 / supplemental explanation, an estimated annual tax FORMULA, special assessments flag, sources). Use when Steven asks for property tax on a San Diego or Riverside County address or APN, or when the loan-pricing-agent needs an estimated tax input."
+description: Property tax lookup for San Diego and Riverside County: reads PUBLIC assessor and tax-collector pages with read-only browser tools and writes a one-page Property Tax Sheet (APN, assessed values, exemptions to verify, Prop 13 note, estimate formula, sources). Use for property tax on an address or APN.
 ---
 
 # tax-assessor-agent — public county records → Property Tax Sheet

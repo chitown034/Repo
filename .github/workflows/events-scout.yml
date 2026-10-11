@@ -1,0 +1,30 @@
+# Weekly events & networking scan. GitHub runners have open internet, which the cloud sandbox did not (0 of 27 sources
+# reachable there). Plain Python, no secrets, no model calls. Read-only, polite (robots.txt, 1.5 s delay). The report is
+# an artifact; nothing is posted, registered or paid for. GitHub runs schedules only from the default branch.
+name: events-scout
+on:
+  schedule:
+    - cron: "37 6 * * 0"    # Sundays 06:37 UTC (Sat 11:37 PM PT), before Sunday's loop routine
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  scout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Tests (offline)
+        run: python3 -m unittest discover -s integrations/events/tests
+      - name: Scan the last 14 days
+        run: python3 integrations/events/events_scout.py --days 14
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: events-report
+          path: |
+            docs/reports/EVENTS.md
+            docs/reports/EVENTS.json
