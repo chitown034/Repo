@@ -840,7 +840,7 @@ keep_going() { # claude-args…
       [ $_p = 2 ] && log "keep-going: probe inconclusive — using the subscription"
       [ "$mode" != subscription ] && [ $_p = 0 ] && { write_route subscription "$(now)" 0 "keep-going probe-ok" 1 "$(now)"; mode=subscription; echo "== Claude has reset. Back on your subscription. ==" >&2; }
       log "keep-going: leg on subscription (continue=${#_cont[@]})"
-      ( unset ANTHROPIC_BASE_URL ANTHROPIC_AUTH_TOKEN; export VANESSA_ROUTE_MODE=subscription VANESSA_PII_OK=1; exec claude ${_cont[@]+"${_cont[@]}"} "$@" )
+      ( unset ANTHROPIC_BASE_URL ANTHROPIC_AUTH_TOKEN; exec env VANESSA_ROUTE_MODE=subscription VANESSA_PII_OK=1 claude ${_cont[@]+"${_cont[@]}"} "$@" )
     fi
     _first=0
     printf '\nSession closed. Enter = keep going (Claude if it has reset, OmniRoute if not) · q = quit: ' >&2

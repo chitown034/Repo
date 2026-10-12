@@ -64,7 +64,9 @@ if grep -nE "ArgumentList[^#]*grant-desktop" "$HERE/alienware-setup.ps1" >/dev/n
 # Linter + tests, when python3 is present.
 if command -v python3 >/dev/null 2>&1; then
   python3 "$HERE/lint-ps1.py" >/dev/null && pass "lint-ps1.py clean" || fail "lint-ps1.py reported findings"
-  (cd "$ANY" && python3 -m unittest -q test_anydesk_links 2>&1 | tail -3) | grep -q '^OK' && pass "anydesk unit tests" || fail "anydesk unit tests"
+  # Judge by the exit code, not by scraping the last lines: when stdout is a pipe (as in CI) the tests' printed tables are
+# flushed after unittest's own "OK", so "tail | grep ^OK" fails on a passing run.
+(cd "$ANY" && python3 -m unittest -q test_anydesk_links >/dev/null 2>&1) && pass "anydesk unit tests" || fail "anydesk unit tests"
 fi
 
 if [ "$FAILS" -gt 0 ]; then echo "RESULT: $FAILS failure(s)"; exit 1; fi
