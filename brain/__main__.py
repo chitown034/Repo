@@ -57,6 +57,7 @@ def _parser() -> argparse.ArgumentParser:
     os_ = sub.add_parser("os", help="agent OS: every agent via Laya lane + Jarvis recall + Orca launch command")
     os_.add_argument("action", choices=["list", "show", "run", "check", "write"])
     os_.add_argument("target", nargs="*")
+    os_.add_argument("--json", action="store_true")
     ak = sub.add_parser("ask", help="the front door: recall, auto-escalate to several sections when weak, owner seat, next step")
     ak.add_argument("question", nargs="+"); ak.add_argument("--json", action="store_true")
     sub.add_parser("tune", help="propose synonyms/pages for asked words the brain never matched (writes proposals, edits nothing)")
@@ -180,7 +181,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.action == "check":
             r = agentos.check(root); print(agentos.format_check(r)); return 0 if not r["unreachable"] and not r["manifest_stale"] else 1
         if args.action == "run":
-            print(agentos.plan_launch(root, t)); return 0
+            print(json.dumps(agentos.plan_launch_json(root, t), ensure_ascii=False, indent=1) if args.json else agentos.plan_launch(root, t)); return 0
         m = agentos.build(root)
         if args.action == "list":
             for a in m["agents"]:

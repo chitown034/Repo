@@ -38,3 +38,21 @@ class AgentOS(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class LaunchJson(unittest.TestCase):
+    def test_launch_json_shape_and_halt(self):
+        p = agentos.plan_launch_json(ROOT, "have Marcus review the budget and email the client")
+        self.assertEqual(p["lead"], "Marcus")
+        self.assertTrue(p["halts"])
+        cmds = [x["command"] for w in p["waves"] for x in w]
+        self.assertIn("claude --agent cfo-marcus", cmds)
+        self.assertLessEqual(max(len(w) for w in p["waves"]), p["max_parallel"])
+
+    def test_jarvis_verbs_file(self):
+        import json
+        d = json.loads((ROOT / "integrations/jarvis/agent-verbs.json").read_text(encoding="utf-8"))
+        self.assertGreaterEqual(len(d["verbs"]), 6)
+        for v in d["verbs"]:
+            self.assertTrue(v["run"].startswith(("bin/brain", "bash integrations/")))
+        self.assertIn("pair orca", d["never"])

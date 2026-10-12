@@ -113,6 +113,27 @@ def check(root: Path) -> dict:
             "named_seats_unresolved": unresolved, "skills_present": len(skills)}
 
 
+def plan_launch_json(root: Path, request: str) -> dict:
+    """The launch sheet as data: one entry per seat with the exact command, for orca-launch.sh and Jarvis."""
+    rules = route_mod.load_rules(root)
+    plan = route_mod.route(root, request, rules=rules, with_reads=False)
+    by_slug = {a["slug"] for a in build(root)["agents"]}
+    waves = []
+    for w in plan["waves"]:
+        row = []
+        for x in w:
+            alias = ALIASES.get(x["seat"]); slug = alias[0] if alias else None
+            if slug and slug in by_slug:
+                row.append({"seat": x["seat"], "kind": "agent", "command": f"claude --agent {slug}", "slug": slug})
+            elif slug:
+                row.append({"seat": x["seat"], "kind": "skill", "command": f"claude", "slug": slug, "first_message": f"/{slug} {request}"})
+            else:
+                row.append({"seat": x["seat"], "kind": "lead", "command": "", "slug": None})
+        waves.append(row)
+    return {"request": request, "lead": plan["lead"], "halts": [h["why"] for h in plan["halts"]],
+            "gates": [g["gate"] for g in plan["gates"]], "waves": waves, "max_parallel": route_mod.MAX_PARALLEL}
+
+
 def plan_launch(root: Path, request: str) -> str:
     """Laya hop -> Jarvis recall -> Orca launch sheet for the seats the dispatch planner picks."""
     rules = route_mod.load_rules(root)

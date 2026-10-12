@@ -1,6 +1,6 @@
 # Encyclopedia of the second brain
 
-Generated 2026-10-12 by `bin/brain encyclopedia` from `brain/index.json` — 125 pages, 246 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
+Generated 2026-10-12 by `bin/brain encyclopedia` from `brain/index.json` — 126 pages, 248 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
 
 Jump: [A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#g) · [I](#i) · [J](#j) · [K](#k) · [L](#l) · [M](#m) · [N](#n) · [O](#o) · [P](#p) · [R](#r) · [S](#s) · [T](#t) · [U](#u) · [V](#v) · [W](#w)
 
@@ -10,7 +10,7 @@ Jump: [A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#g) 
 One page. Facts only, all of them drawn from the Command Deck's own bio cards.  
 `context/about-me.md` · Who & why · newest date stamp 2026-10-09  
 Sections: Identity; Licensed capacities (two businesses, one operator); Specialty; Other standing commitments; How he works; What must never be written down here  
-Linked from: `integrations/apple-health-dashboard.md`, `wiki/ai-team/third-party-packs.md`  
+Linked from: `integrations/apple-health-dashboard.md`  
 See also: `projects/nonprofit.md`, `projects/usc-pjmt-530.md`, `wiki/real-estate-playbooks/military-relocation.md`
 
 ### Active Duty Veteran & Hometown Hero Homeowners Club, Inc.
@@ -23,15 +23,15 @@ See also: `integrations/anydesk/README.md`, `wiki/mortgage-programs/va-affordabi
 ### Agent OS — every agent through Laya, Jarvis and Orca
 How the org chart works as an operating system: Laya picks the lane, Jarvis recalls first, Orca runs the agents side…  
 `wiki/ai-team/agent-os.md` · AI team · newest date stamp 2026-10-12  
-Sections: The four steps for any request; The commands (plain code, no model call); Coverage and limits  
-See also: `integrations/agent-os/README.md`, `integrations/jarvis/README.md`, `wiki/ai-team/model-tiering-dispatch.md`
+Sections: The four steps for any request; The commands (plain code, no model call); Control from Orca and Jarvis (added 2026-10-12); Coverage and limits  
+Linked from: `memory/ai-team.md`  
+See also: `OPTIMIZATION.md`, `integrations/agent-os/README.md`, `integrations/jarvis/README.md`
 
 ### Agent OS — turn it on for Mac 1, Mac 2 and the Alienware
 Every roster agent (172) reachable through Laya (lane), Jarvis (recall) and Orca (launch), run as one operating system…  
 `integrations/agent-os/README.md` · Integrations · newest date stamp 2026-10-12  
 Sections: On each Mac (do this on Mac 1, then on Mac 2); Connect Orca and Laya (each Mac); On the Alienware PC; Use it (any of the three); What it will not do  
-Linked from: `docs/STEVEN-STEPS.md`, `wiki/ai-team/agent-os.md`  
-See also: `integrations/alienware/README.md`
+Linked from: `docs/PASTE-TO-CLAUDE-ON-MAC.md`, `docs/STEVEN-STEPS.md`, `integrations/alienware/README.md`, `wiki/ai-team/agent-os.md`  
 
 ### AGENTS.md — Codex and other non-Claude agents
 Same brain, same rules. CLAUDE.md is the router and is authoritative; this file is its mirror for agents that do not…  
@@ -64,28 +64,28 @@ See also: `wiki/ai-team/mentors-and-benches.md`, `wiki/ai-team/org-chart.md`
 The full seat map behind Vanessa: Steven at the top, then Steve (digital twin) / Vanessa (Chief of Staff) / the human…  
 `wiki/ai-team/org-chart.md` · AI team · newest date stamp 2026-10-11  
 Sections: The shape; The named seats worth knowing by name; What "bench" means; How the seats work together; What every seat can now do (2026-10-10); Added 2026-10-11; Proposal-only seats; See also  
-Linked from: `integrations/browser-agents/README.md`, `memory/ai-team.md`, `projects/ai-team.md`, `wiki/ai-team/capability-matrix.md`, `wiki/ai-team/cross-functional.md`, `wiki/ai-team/index.md`  
+Linked from: `integrations/browser-agents/README.md`, `projects/ai-team.md`, `wiki/ai-team/capability-matrix.md`, `wiki/ai-team/cross-functional.md`, `wiki/ai-team/index.md`, `wiki/ai-team/mentors-and-benches.md`  
 
 ### ai-team
 Dated facts about ai-team, one line each, appended by bin/brain remember --topic ai-team.  
 `memory/ai-team.md` · Memory · newest date stamp 2026-10-09  
 Sections: Entries  
 Linked from: `docs/ROUTINE-BUDGET-2026-10-09.md`  
-See also: `AGENTS.md`, `integrations/jarvis/README.md`, `wiki/ai-team/org-chart.md`
+See also: `AGENTS.md`, `integrations/jarvis/README.md`, `wiki/ai-team/agent-os.md`
 
 ### ALIENWARE setup (Windows)
 One PowerShell script, alienware-setup.ps1, that checks and installs the AI tools on the ALIENWARE gaming PC: Orca…  
 `integrations/alienware/README.md` · Integrations · newest date stamp undated  
 Sections: What it will and will not do; Step by step; The five parts; Orca on Windows (serve and pair); Opening Bonsai afterwards; Undo (roll back); What is verified, and what is not; Top risks  
-Linked from: `integrations/agent-os/README.md`, `integrations/mac-brain-2026-10-08.md`, `wiki/ai-team/computer-hub.md`  
-See also: `integrations/anydesk/README.md`
+Linked from: `docs/PASTE-TO-CLAUDE-ON-MAC.md`, `integrations/anydesk/README.md`, `integrations/mac-brain-2026-10-08.md`, `wiki/ai-team/computer-hub.md`  
+See also: `integrations/agent-os/README.md`
 
 ### AnyDesk links
 anydesk-links.py turns a local list of your devices (label + AnyDesk ID) into anydesk: deep links, a markdown table…  
 `integrations/anydesk/README.md` · Integrations · newest date stamp undated  
 Sections: Setup (one time); Use; What AnyDesk can and cannot do (stated plainly); Setting an unattended-access password (Steven does this himself); Dashboard use  
-Linked from: `integrations/alienware/README.md`, `projects/nonprofit.md`  
-See also: `integrations/laya/README.md`, `wiki/ai-team/computer-hub.md`
+Linked from: `projects/nonprofit.md`, `wiki/ai-team/computer-hub.md`  
+See also: `integrations/alienware/README.md`, `integrations/laya/README.md`
 
 ### API Anything — teach Claude a website once, then call it like an API (added 2026-10-08)
 Steven, 2026-10-08: "Install https://github.com/goodnight000/api-anything.git".  
@@ -228,10 +228,10 @@ See also: `docs/CLOUD-WRITE-ARCHITECTURE.md`, `docs/NEEDS-STEVEN-R1.append.md`, 
 
 ### Computer Hub — reaching every computer
 Written 2026-10-11. Steven's computers: Mac 1, Mac 2, the Alienware PC, plus a tablet and phone.  
-`wiki/ai-team/computer-hub.md` · AI team · newest date stamp 2026-10-11  
-Sections: Alienware PC (Windows) — local AI; Rules; See also  
-Linked from: `integrations/anydesk/README.md`, `wiki/ai-team/tool-integration-status.md`  
-See also: `docs/STEVEN-STEPS.md`, `integrations/alienware/README.md`, `integrations/remote-control/README.md`
+`wiki/ai-team/computer-hub.md` · AI team · newest date stamp 2026-10-12  
+Sections: Alienware PC (Windows) — local AI; Rules; See also; Remote access from anywhere — AnyDesk (added 2026-10-12)  
+Linked from: `integrations/remote-control/README.md`  
+See also: `docs/STEVEN-STEPS.md`, `integrations/alienware/README.md`, `integrations/anydesk/README.md`
 
 ### Connect plan — every system Steven named on 2026-10-09 (what is real, what he does, what a
 Steven, 2026-10-09: connect Zoho and Lofty (he has API keys for both), Showami, ShowingTime, homes.com, CRMLS…  
@@ -464,7 +464,7 @@ See also: `docs/inventory/routine-health.md`, `wiki/dashboard-ops/index.md`
 Baseline 2026-09-12 · verified 2026-09-22.  
 `integrations/mac-task-specs.md` · Integrations · newest date stamp 2026-09-28  
 Sections: 1. lofty-crm-sync — NEW; 2. zoho-crm-sync — NEW; 3. health-notion-sync — NEW; 4. cli-anything-install — install is SCRIPTABLE, and the seven wrappers are pre-built; 5. vanessa-whatsapp-inbox — NEW (spec 2026-09-22 · not installed · not live); Registration checklist (whoever adds these to the runner); 5a. vanessa-whatsapp-inbox — SELF-CHAT MODE (Steven's decision, 2026-09-23); 6. voice-reply-render + vanessa-imessage-inbox — AMENDMENTS so Vanessa speaks off the dashboard  
-Linked from: `docs/NEEDS-STEVEN-R4.append.md`, `docs/SETUP-RUNBOOK.md`, `integrations/jarvis/README.md`, `integrations/openwa/README.md`, `routines/isa-escalation-ladder.md`  
+Linked from: `docs/NEEDS-STEVEN-R4.append.md`, `docs/SETUP-RUNBOOK.md`, `docs/inventory/mac-task-descriptions.md`, `integrations/jarvis/README.md`, `integrations/openwa/README.md`, `routines/isa-escalation-ladder.md`  
 See also: `integrations/vanessa-voice-everywhere.md`
 
 ### Mac scheduled task descriptions (toolkitSnapshot doc, syncedAt 2026-09-16T00:52:24Z; count
@@ -472,7 +472,7 @@ access-audit-monthly — First business morning of the month: Elena's access-aud
 `docs/inventory/mac-task-descriptions.md` · Loop & findings · newest date stamp 2026-09-13  
 Sections: MCP servers on the Mac; Tools index (id · category · description)  
 Linked from: `REMOTE-ACCESS.md`  
-See also: `integrations/api-anything/README.md`, `integrations/apple-health-dashboard.md`, `wiki/ai-team/tool-integration-status.md`
+See also: `integrations/api-anything/README.md`, `integrations/apple-health-dashboard.md`, `integrations/mac-task-specs.md`
 
 ### Mac task & cloud routine repairs — paste-ready
 Written 2026-09-22 by W2 (Reliability). Every document state quoted here was read live from the Command Deck store…  
@@ -499,8 +499,8 @@ See also: `docs/INSTALL-COVERAGE.md`, `docs/NEEDS-STEVEN-R3.append.md`, `docs/SE
 Companion to MAC-INSTALL.md. Nothing here is required for the brain.  
 `MAC-INSTALL-tooling.md` · Other · newest date stamp 2026-09-23  
 Sections: Summary; 1. Headroom — headroom-ai 0.38.0, Apache-2.0; 2. Graphify — PyPI graphifyy 0.9.65 (CLI/skill still named graphify), MIT (pyproject); 3. CodeBurn — npm codeburn 0.9.25, MIT; 4. Ponytail — Claude Code plugin 4.10.0, MIT; 5. Screenshot to Code — web app, MIT; 6. Agent Skills (addyosmani) — 25 skills, MIT · 6 vendored; 7. Find Skills (vercel-labs) · 8. Apple Design (emilkowalski) — vendored, MIT  
-Linked from: `references/memory-projects.md`  
-See also: `MAC-INSTALL-comms-data.md`, `docs/NEEDS-STEVEN-R3.append.md`, `integrations/browser-agents/README.md`
+Linked from: `wiki/ai-team/third-party-packs.md`  
+See also: `MAC-INSTALL-comms-data.md`, `integrations/browser-agents/README.md`, `references/memory-projects.md`
 
 ### mac-sync — the "same information" half of two equal Macs
 Steven, verbatim: "Ensure both of my MacBooks can access the same information and equally have control of this…  
@@ -553,7 +553,8 @@ See also: `docs/STRESS-TEST-REPORT.md`
 Principle 2 of Steven's guide: stand on proven shoulders before inventing a mechanism this repo already needs.  
 `references/memory-projects.md` · Sources · newest date stamp undated  
 Sections: 1. Karpathy's LLM wiki (gist, plain markdown); 2. qmd — Tobi Lütke (github.com/tobi/qmd, cloned and read README.md directly, 1383 lines); 3. gbrain — Garry Tan (github.com/garrytan/gbrain, cloned and read README.md directly,; 4. Graphify — (github.com/safishamsi/graphify, cloned; resolves to the Graphify-Labs/graphify; One line per level  
-See also: `CLAUDE.md`, `MAC-INSTALL-tooling.md`, `knowledge-graph/README.md`
+Linked from: `MAC-INSTALL-tooling.md`  
+See also: `CLAUDE.md`, `knowledge-graph/README.md`
 
 ### memory.md — auto-memory scaffold
 Auto-memory store for the Second Brain project — 47 dated entries as of 2026-10-09, near the 100-line cap.  
@@ -580,7 +581,7 @@ See also: `wiki/mortgage-programs/va-eligibility.md`
 Which model each seat runs on, and the rules that bound how many run at once — Steven's decision, recorded 2026-09-22.  
 `wiki/ai-team/model-tiering-dispatch.md` · AI team · newest date stamp 2026-10-05  
 Sections: The tiering; Dispatch rules; Proposal-only seats; The engineering gate — ECC; Trust levels; See also  
-Linked from: `OPTIMIZATION.md`, `docs/inventory/agent-roster.md`, `wiki/ai-team/agent-os.md`  
+Linked from: `OPTIMIZATION.md`, `docs/inventory/agent-roster.md`  
 See also: `CLAUDE.md`, `wiki/ai-team/index.md`
 
 ### Mortgage programs
@@ -623,7 +624,7 @@ Linked from: `docs/NEEDS-STEVEN-R3.append.md`, `memory.md`, `wiki/dashboard-ops/
 Append to docs/NEEDS-STEVEN.md. Three items.  
 `docs/NEEDS-STEVEN-R3.append.md` · Loop & findings · newest date stamp 2026-10-02  
 Sections: R3-1 — ./MAC-SETUP.sh installs a Claude Code plugin into your live user scope, unasked; R3-2 — Phase A's fourth line is the whole install, and Phase A is expected to end in exit 1; R3-3 — The never-run Mac tasks: 15 of them already missed a slot. Do not wait for Sunday.; Not for you — two things fixed, recorded so nobody re-opens them  
-Linked from: `MAC-INSTALL-tooling.md`, `MAC-INSTALL.md`, `docs/INSTALL-COVERAGE.md`, `routines/isa-escalation-ladder.md`  
+Linked from: `MAC-INSTALL.md`, `docs/INSTALL-COVERAGE.md`, `routines/isa-escalation-ladder.md`  
 See also: `docs/NEEDS-STEVEN.md`
 
 ### NEEDS-STEVEN — R4 append (Voice Channel Engineer, 2026-09-23)
@@ -666,7 +667,7 @@ See also: `integrations/apple-health-dashboard.md`
 Seven components sit under Vanessa. The failure mode is obvious and expensive: seven components become seven places to…  
 `OPTIMIZATION.md` · Router · newest date stamp 2026-10-09  
 Sections: The two paths; The System-1 hop — before either path, 2026-09-28; The dispatch layer, named; What each component is for — and what it is NOT for; Token-cost table — which store answers which question class; Loop-engineering hooks — what the weekly loop measures for the brain; Five-level map — every component, one level, 2026-09-28; Token rules — the zero-token hop first  
-Linked from: `CLAUDE.md`, `README.md`, `recall-cache.md`, `references/index.md`  
+Linked from: `CLAUDE.md`, `README.md`, `recall-cache.md`, `references/index.md`, `wiki/ai-team/agent-os.md`  
 See also: `wiki/ai-team/model-tiering-dispatch.md`
 
 ## P
@@ -690,6 +691,12 @@ You are continuing work for Steven Shearrill (Broker Associate, LPT Realty · ML
 Sections: Check everything in one command; Wave 2 (2026-10-11)  
 Linked from: `integrations/trading-desk/README.md`  
 See also: `docs/OPEN-FINDINGS.md`, `docs/STEVEN-STEPS.md`, `integrations/openwa/README.md`
+
+### Paste this into the Claude app on each Mac (2026-10-12)
+Open Claude on the Mac, start a Claude Code session, paste:  
+`docs/PASTE-TO-CLAUDE-ON-MAC.md` · Loop & findings · newest date stamp 2026-10-12  
+Linked from: `wiki/ai-team/third-party-packs.md`  
+See also: `docs/STEVEN-STEPS.md`, `integrations/agent-os/README.md`, `integrations/alienware/README.md`
 
 ### Program selection
 The decision tree across the deck's loan-program cards, grouped by category, so a scenario routes to the right program…  
@@ -736,7 +743,8 @@ See also: `docs/SECOND-MAC-SETUP.md`, `docs/inventory/mac-task-descriptions.md`,
 1. What it does: keeps one claude remote-control server running on the Mac (under caffeinate -i, restarted if it…  
 `integrations/remote-control/README.md` · Integrations · newest date stamp undated  
 Sections: Security note; To verify on the Mac (not checkable from the cloud container); Orca security note; To verify on the Macs (Orca CLI help read in the cloud container, v1.4.214; not run against real Macs)  
-Linked from: `docs/STEVEN-STEPS.md`, `integrations/mac-brain-2026-10-08.md`, `wiki/ai-team/computer-hub.md`, `wiki/ai-team/tool-integration-status.md`  
+Linked from: `integrations/mac-brain-2026-10-08.md`, `wiki/ai-team/tool-integration-status.md`  
+See also: `docs/STEVEN-STEPS.md`, `wiki/ai-team/computer-hub.md`
 
 ### Routine budget — 2026-10-09
 Steven: "ensure all sections of the dashboards that require updates are on routines and nothing is stale and working…  
@@ -791,14 +799,15 @@ See also: `integrations/CONNECT-PLAN-2026-10-09.md`, `references/drive-second-br
 77skills.ai sells a $77 pack of 77 business-skill SKILL.md folders.  
 `integrations/skill-packs/README.md` · Integrations · newest date stamp undated  
 Sections: Status; The flow; Why not load all 77 at once; Self-test (not committed); Files  
-Linked from: `integrations/n8n/README.md`, `wiki/ai-team/third-party-packs.md`, `wiki/mortgage-programs/loan-task-agents.md`  
+Linked from: `integrations/n8n/README.md`, `wiki/mortgage-programs/loan-task-agents.md`  
+See also: `wiki/ai-team/third-party-packs.md`
 
 ### Steven's steps — everything still waiting on you, in order (2026-10-09)
 Same list as the Action Desk page (https://claude.ai/artifact/9S8G2ZhhqP1iUsPZrPsmRn), which has a button per step.  
-`docs/STEVEN-STEPS.md` · Loop & findings · newest date stamp 2026-10-11  
-Sections: 1 · Phone · 5 minutes (Do these first; nothing else depends on them); 2 · One reply to Claude · 2 minutes (Copy, fill the blanks, send in this chat); 3 · Mac, one sitting · about 45 minutes (Terminal first; then one command does the rest and asks before every change); 4 · Accounts and settings · about 30 minutes (Sign-ins and permission ticks only you can do; say "done N" after each); 5 · Applications and emails · 15 minutes (Drafts are in integrations/CONNECT-PLAN-2026-10-09.md section 6; nothing has been sent); 6 · Decisions · one reply (Each defaults to no; nothing is spent without your yes); 7 · Verify the brain, Jarvis, Laya and Vanessa's voice · 3 minutes (Last, once the Mac steps above are done; nothing is changed except two local files); 8 · New this round (2026-10-11) · about 45 minutes (same as steps 24-32 on the Action Desk; each asks before it changes anything)  
-Linked from: `docs/HANDOFF-NEW-CHAT.md`, `wiki/ai-team/computer-hub.md`, `wiki/ai-team/tool-integration-status.md`  
-See also: `integrations/agent-os/README.md`, `integrations/remote-control/README.md`
+`docs/STEVEN-STEPS.md` · Loop & findings · newest date stamp 2026-10-12  
+Sections: 1 · Phone · 5 minutes (Do these first; nothing else depends on them); Start here (2026-10-12) — three pastes, then a short "only you" list; 2 · One reply to Claude · 2 minutes (Copy, fill the blanks, send in this chat); 3 · Mac, one sitting · about 45 minutes (Terminal first; then one command does the rest and asks before every change); 4 · Accounts and settings · about 30 minutes (Sign-ins and permission ticks only you can do; say "done N" after each); 5 · Applications and emails · 15 minutes (Drafts are in integrations/CONNECT-PLAN-2026-10-09.md section 6; nothing has been sent); 6 · Decisions · one reply (Each defaults to no; nothing is spent without your yes); 7 · Verify the brain, Jarvis, Laya and Vanessa's voice · 3 minutes (Last, once the Mac steps above are done; nothing is changed except two local files)  
+Linked from: `docs/HANDOFF-NEW-CHAT.md`, `docs/PASTE-TO-CLAUDE-ON-MAC.md`, `integrations/remote-control/README.md`, `wiki/ai-team/computer-hub.md`, `wiki/ai-team/tool-integration-status.md`  
+See also: `integrations/agent-os/README.md`
 
 ## T
 
@@ -811,15 +820,17 @@ See also: `projects/isa-portal.md`
 
 ### Third-party skills and tools — what was installed, held or declined (2026-10-11)
 Steven asked for 18 repositories. Each was read before anything was installed; nothing was run from the cloud sandbox.  
-`wiki/ai-team/third-party-packs.md` · AI team · newest date stamp 2026-10-11  
-See also: `context/about-me.md`, `integrations/skill-packs/README.md`, `wiki/ai-team/tool-integration-status.md`
+`wiki/ai-team/third-party-packs.md` · AI team · newest date stamp 2026-10-12  
+Sections: The 16-item list (2026-10-12); The 32-item image (2026-10-12)  
+Linked from: `integrations/skill-packs/README.md`  
+See also: `MAC-INSTALL-tooling.md`, `docs/PASTE-TO-CLAUDE-ON-MAC.md`, `wiki/ai-team/tool-integration-status.md`
 
 ### Tool & integration status
 What is actually connected, installed, or merely proposed — read this before assuming a seat can do something because…  
 `wiki/ai-team/tool-integration-status.md` · AI team · newest date stamp 2026-10-11  
 Sections: Connectors (claude.ai); Local MCP / bridges (Mac); Mac scheduled tasks and cloud routines; Orca — proposed, not integrated; Laya — proposed, not installed; 77skills.ai — proposed, not purchased; Skills actually in the repo today; See also  
-Linked from: `docs/inventory/mac-task-descriptions.md`, `integrations/browser-agents/README.md`, `memory.md`, `wiki/ai-team/third-party-packs.md`  
-See also: `docs/STEVEN-STEPS.md`, `integrations/remote-control/README.md`, `wiki/ai-team/computer-hub.md`
+Linked from: `integrations/browser-agents/README.md`, `memory.md`, `wiki/ai-team/third-party-packs.md`  
+See also: `docs/STEVEN-STEPS.md`, `integrations/remote-control/README.md`
 
 ### Transaction stages
 Stage definitions on both sides of a deal — the real-estate closing checklist and the parallel mortgage-file stage…  

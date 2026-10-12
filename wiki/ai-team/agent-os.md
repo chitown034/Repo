@@ -21,6 +21,17 @@ agents side by side, and the dispatch planner (`bin/brain route`) holds the rule
 | `bin/brain os check` | exit 1 unless all roster agents are reachable and the manifest is current |
 | `bin/brain os write` | rewrite `integrations/agent-os/agents.json` (the loop does this every run) |
 
+## Control from Orca and Jarvis (added 2026-10-12)
+
+- **Orca:** `bash integrations/agent-os/orca-launch.sh "<request>"` opens one Claude Code session per seat the planner
+  picks (≤8), each in its own Terminal window inside the repo; Orca lists every running session, so once Orca is paired
+  they can be watched and steered from this Mac, the other Mac or the phone. `--dry-run` prints instead of opening.
+- **Jarvis:** `integrations/jarvis/agent-verbs.json` maps spoken verbs ("Jarvis, have Marcus …", "Jarvis, run the team
+  on …", "Jarvis, ask the brain …") to the same commands. The `never` list (send, pay, sign, pair Orca …) is enforced by
+  the HALT words in the planner, not by trusting the voice layer.
+- `bin/brain os run --json` is the data form both use.
+- Pairing Orca is the one step that cannot be scripted: the pairing link is generated on the Mac and is a secret.
+
 ## Coverage and limits
 
 - **172 of 172** roster agents resolve to a lane, a recall line and a launch command (`bin/brain loop` checks this weekly).
