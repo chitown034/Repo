@@ -24,6 +24,7 @@ run "trading desk selftest"           bash -c 'cd integrations/trading-desk && p
 run "events scout tests"              python3 -m unittest discover -s integrations/events/tests
 run "loan pricing tests"              python3 -m unittest discover -s .claude/skills/loan-pricing-agent/tests
 run "anydesk link tests"              bash -c 'cd integrations/anydesk && python3 -m unittest test_anydesk_links'
+run "n8n workflow library tests"      bash -c 'cd integrations/n8n/library && python3 -m unittest -q test_n8n_library'
 run "alienware script lint"           python3 integrations/alienware/lint-ps1.py integrations/alienware/alienware-setup.ps1
 run "alienware docs/secret checks"    bash integrations/alienware/test-alienware-docs.sh
 for f in integrations/skill-packs/install-mac.sh integrations/browser-agents/install.sh integrations/omniroute-failover/claude-auto.sh integrations/omniroute-failover/install-failover.sh; do

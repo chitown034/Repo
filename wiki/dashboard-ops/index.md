@@ -78,3 +78,5 @@ count, per the "one rule" above.
 | `task-catalog.md` | The Mac task rhythm under `claude-runner`, and how to read a task's status honestly |
 | `routine-catalog.md` | Cloud routine categories, the disproved "can't write unattended" rule, and the connector-inheritance gotcha |
 | `connections.md` | Is a connector, CRM or integration actually working — links to `integrations/CONNECTIONS.md` |
+
+- `integrations/n8n/WORKFLOW-LIBRARY.md` — 2,061 ready-made n8n workflows as a read-only catalog (`workflow-library.sh find/show/stage`); staged inactive only, client-facing writes are Steven's switch (2026-10-12).

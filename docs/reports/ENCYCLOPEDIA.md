@@ -1,6 +1,6 @@
 # Encyclopedia of the second brain
 
-Generated 2026-10-12 by `bin/brain encyclopedia` from `brain/index.json` — 126 pages, 248 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
+Generated 2026-10-12 by `bin/brain encyclopedia` from `brain/index.json` — 126 pages, 249 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
 
 Jump: [A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#g) · [I](#i) · [J](#j) · [K](#k) · [L](#l) · [M](#m) · [N](#n) · [O](#o) · [P](#p) · [R](#r) · [S](#s) · [T](#t) · [U](#u) · [V](#v) · [W](#w)
 
@@ -181,8 +181,8 @@ See also: `docs/inventory/mac-runner-status.md`, `routines/cloud-routine-repairs
 Settled 2026-09-22 by measurement. Finding F-INT-08.  
 `docs/CLOUD-WRITE-ARCHITECTURE.md` · Loop & findings · newest date stamp 2026-09-23  
 Sections: What was assumed; What was measured; What changes; What does not change; How to re-test  
-Linked from: `routines/pipeline-sync-live.md`, `wiki/dashboard-ops/routine-catalog.md`  
-See also: `projects/isa-portal.md`
+Linked from: `routines/pipeline-sync-live.md`  
+See also: `projects/isa-portal.md`, `wiki/dashboard-ops/routine-catalog.md`
 
 ### Command Deck
 Steven's single-file personal/business dashboard, published as a claude.ai artifact. ~4 MB, ~25.6k lines, one HTML…  
@@ -258,10 +258,10 @@ See also: `wiki/ai-team/index.md`, `wiki/ai-team/mentors-and-benches.md`, `wiki/
 
 ### Dashboard ops
 How the Command Deck, its documents and its automations actually behave.  
-`wiki/dashboard-ops/index.md` · Dashboard ops · newest date stamp 2026-10-09  
+`wiki/dashboard-ops/index.md` · Dashboard ops · newest date stamp 2026-10-12  
 Sections: The one rule; Where a status comes from; Standing facts (2026-09-22); Pages  
 Linked from: `docs/OPEN-FINDINGS.md`, `docs/inventory/db-docs.md`, `docs/inventory/mac-runner-status.md`  
-See also: `docs/NEEDS-STEVEN.md`, `projects/command-deck.md`, `wiki/dashboard-ops/task-catalog.md`
+See also: `projects/command-deck.md`, `wiki/dashboard-ops/routine-catalog.md`, `wiki/dashboard-ops/task-catalog.md`
 
 ### Decisions — append-only, dated
 One entry per decision. Append, never edit and never delete.  
@@ -611,14 +611,15 @@ See also: `docs/NEEDS-STEVEN-R2.append.md`
 Written by the Findings Closer after re-verifying every recorded-open finding against the repo as it stands, the live…  
 `docs/NEEDS-STEVEN-R2.append.md` · Loop & findings · newest date stamp 2026-09-23  
 Sections: 1. Corrections to items 0–48; 2. Hand-backs — exact replacements for files this seat may not edit; 3. What this pass did not touch  
-Linked from: `docs/NEEDS-STEVEN-R1.append.md`, `projects/command-deck.md`  
+Linked from: `docs/NEEDS-STEVEN-R1.append.md`, `docs/NEEDS-STEVEN.md`, `projects/command-deck.md`  
 See also: `docs/OPEN-FINDINGS.md`
 
 ### Needs Steven — the one list (2026-09-22)
 Written 2026-09-22 ~15:15 UTC by X2 from all 610 findings (cycle 6 plus today's engineering pass; the full table is…  
 `docs/NEEDS-STEVEN.md` · Loop & findings · newest date stamp 2026-10-11  
 Sections: Disclosure — DECIDED 2026-09-23, kept here as the record; Clocked — in deadline order; One click or one paste — highest value first; Decisions — one line each; Mac session work — only you have the Mac; Compliance — Alexandra drafts, you decide; Resolved today — nothing to do, so older messages that asked can be ignored; Vanessa's voice off the dashboard — added 2026-09-22 by P5 (append-only block)  
-Linked from: `docs/NEEDS-STEVEN-R3.append.md`, `memory.md`, `wiki/dashboard-ops/db-docs.md`, `wiki/dashboard-ops/index.md`  
+Linked from: `docs/NEEDS-STEVEN-R3.append.md`, `memory.md`, `wiki/dashboard-ops/db-docs.md`  
+See also: `docs/NEEDS-STEVEN-R2.append.md`
 
 ### NEEDS-STEVEN — R3 append (Mac Platform Engineer, 2026-09-23)
 Append to docs/NEEDS-STEVEN.md. Three items.  
@@ -757,8 +758,8 @@ See also: `docs/inventory/db-docs.md`, `memory/ai-team.md`
 The cloud routines (claude.ai/code routines) — what they can and cannot write, and the specific belief about them that…  
 `wiki/dashboard-ops/routine-catalog.md` · Dashboard ops · newest date stamp undated  
 Sections: What changed — read this before assuming a routine can't write; What still pins a routine to the Mac; Categories seen in practice; The one rule that matters most; Where the live table actually is; See also  
-Linked from: `README.md`, `wiki/dashboard-ops/connections.md`  
-See also: `docs/CLOUD-WRITE-ARCHITECTURE.md`, `wiki/dashboard-ops/task-catalog.md`
+Linked from: `README.md`, `docs/CLOUD-WRITE-ARCHITECTURE.md`, `wiki/dashboard-ops/connections.md`, `wiki/dashboard-ops/index.md`  
+See also: `wiki/dashboard-ops/task-catalog.md`
 
 ### routineHealth doc (written by r10-automation-health, syncedAt 2026-09-22T00:57:57-07:00) —
 routineHealth doc (written by r10-automation-health, syncedAt 2026-09-22T00:57:57-07:00) — counts {"failed": 8, "late": 3, "neverRun": 13, "ok": 6, "producedNothing": 2, "stale": 0  

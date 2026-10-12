@@ -56,3 +56,12 @@ class LaunchJson(unittest.TestCase):
         for v in d["verbs"]:
             self.assertTrue(v["run"].startswith(("bin/brain", "bash integrations/")))
         self.assertIn("pair orca", d["never"])
+
+
+class AgentFiles(unittest.TestCase):
+    def test_every_seat_has_a_file_with_matching_name(self):
+        from brain import agentfiles
+        r = agentfiles.check(ROOT)
+        self.assertEqual(r["present"], r["total"]); self.assertEqual(r["bad_frontmatter"], [])
+        t = (ROOT / "integrations/agent-os/agents/caio-nadia.md").read_text(encoding="utf-8")
+        self.assertIn("PROPOSAL-ONLY", t); self.assertIn("Needs-Steven", t); self.assertIn("model: opus", t)

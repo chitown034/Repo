@@ -32,6 +32,14 @@ agents side by side, and the dispatch planner (`bin/brain route`) holds the rule
 - `bin/brain os run --json` is the data form both use.
 - Pairing Orca is the one step that cannot be scripted: the pairing link is generated on the Mac and is a secret.
 
+## Agent files — the org chart as 172 launchable seats (added 2026-10-12)
+
+`bin/brain os agents --write` generates `integrations/agent-os/agents/<slug>.md` for every roster seat: Claude Code's
+frontmatter (name = slug, model opus/sonnet by tier) and a system prompt that states the seat's lane, tier, lead, starting brain
+page, gates and the HALT rules. `install-mac.sh --apply` links them into `~/.claude/agents` and never overwrites a file already
+there, so a prompt Steven tuned on the Mac wins. After that, `claude --agent <slug>` starts any seat on any machine and Orca
+lists it as a running session; `orca-launch.sh` opens the seats a request needs. Checked weekly: `bin/brain os agents`.
+
 ## Coverage and limits
 
 - **172 of 172** roster agents resolve to a lane, a recall line and a launch command (`bin/brain loop` checks this weekly).

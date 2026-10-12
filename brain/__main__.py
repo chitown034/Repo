@@ -55,9 +55,10 @@ def _parser() -> argparse.ArgumentParser:
     ro.add_argument("request", nargs="+")
     ro.add_argument("--json", action="store_true")
     os_ = sub.add_parser("os", help="agent OS: every agent via Laya lane + Jarvis recall + Orca launch command")
-    os_.add_argument("action", choices=["list", "show", "run", "check", "write"])
+    os_.add_argument("action", choices=["list", "show", "run", "check", "write", "agents"])
     os_.add_argument("target", nargs="*")
     os_.add_argument("--json", action="store_true")
+    os_.add_argument("--write", action="store_true", help="with `agents`: (re)generate integrations/agent-os/agents/*.md")
     ak = sub.add_parser("ask", help="the front door: recall, auto-escalate to several sections when weak, owner seat, next step")
     ak.add_argument("question", nargs="+"); ak.add_argument("--json", action="store_true")
     sub.add_parser("tune", help="propose synonyms/pages for asked words the brain never matched (writes proposals, edits nothing)")
@@ -178,6 +179,11 @@ def main(argv: list[str] | None = None) -> int:
         t = " ".join(args.target)
         if args.action == "write":
             print("wrote", agentos.write(root)); return 0
+        if args.action == "agents":
+            from . import agentfiles
+            if args.write:
+                n, out = agentfiles.write(root); print(f"wrote {n} agent files -> {out}"); return 0
+            r = agentfiles.check(root); print(f"agent files: {r['present']}/{r['total']} present, {len(r['bad_frontmatter'])} bad"); return 0 if not r["missing"] and not r["bad_frontmatter"] else 1
         if args.action == "check":
             r = agentos.check(root); print(agentos.format_check(r)); return 0 if not r["unreachable"] and not r["manifest_stale"] else 1
         if args.action == "run":

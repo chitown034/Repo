@@ -36,7 +36,13 @@ else
   bad "python3 older than 3.10 - the brain needs 3.10+ (brew install python)"
 fi
 
-echo "3. Agent files Claude Code can launch"
+echo "3. Agent files Claude Code can launch (one per org-chart seat; a file already in ~/.claude/agents is never overwritten)"
+if [ "$MODE" = "--apply" ] && [ -d "$REPO/integrations/agent-os/agents" ]; then
+  mkdir -p "$HOME/.claude/agents"; LINKED=0
+  for f in "$REPO"/integrations/agent-os/agents/*.md; do b="$(basename "$f")"; [ "$b" = "README.md" ] && continue
+    [ -e "$HOME/.claude/agents/$b" ] || { ln -s "$f" "$HOME/.claude/agents/$b" && LINKED=$((LINKED+1)); }; done
+  ok "linked $LINKED generated agent files into ~/.claude/agents (existing files kept)"
+fi
 AGDIR="${HOME}/.claude/agents"; TOTAL=0; HAVE=0; MISSING=""
 if [ -f "$REPO/integrations/agent-os/agents.json" ]; then
   for s in $(grep -o '"slug": "[^"]*"' "$REPO/integrations/agent-os/agents.json" | sed 's/"slug": "//; s/"$//'); do

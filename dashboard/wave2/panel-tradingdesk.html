@@ -35,6 +35,22 @@
         <ul class="simple-list" id="tdPlus"></ul>
       </div>
     </div>
+    <div class="card" style="margin-top:16px;border-left:4px solid var(--accent);" id="osCard"><!-- OPENSTOCK-CARD v1 -->
+      <div class="card-title-row"><p class="card-title" style="margin:0;">Market viewer &mdash; OpenStock (runs on your own computer)</p><span class="badge gray" id="osBadge">not checked</span></div>
+      <p class="card-sub" style="margin-top:6px;">An open-source stock viewer: watchlists, live-style charts, heatmap, company profiles and news, with your own login and your own local database. It is <b>a viewer, not a broker</b> &mdash; it cannot place a trade, and the paper desk above stays separate (it reads your own price files). Runs on that computer only (127.0.0.1); nothing is exposed to the internet.</p>
+      <div class="acts" style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;">
+        <a class="ch-btn ch-btn-go" id="osOpen" href="http://127.0.0.1:3000" target="_blank" rel="noopener">Open OpenStock</a>
+        <button type="button" class="ch-copy" id="osCheck">Is it running here?</button>
+        <button type="button" class="ch-copy" data-os-copy="bash integrations/openstock/openstock.sh install --apply">Copy install command</button>
+        <button type="button" class="ch-copy" data-os-copy="bash integrations/openstock/openstock.sh start">Copy start command</button>
+      </div>
+      <ol class="src-note" style="margin:6px 0 0;padding-left:20px;line-height:1.55;">
+        <li>One time, in Terminal on the computer: paste the install command (needs Docker Desktop and Node; it prints what is missing).</li>
+        <li>Get a <b>free</b> Finnhub key at finnhub.io/register and type it into <code>~/Applications/OpenStock/.env</code> after <code>NEXT_PUBLIC_FINNHUB_API_KEY=</code> &mdash; never into a chat.</li>
+        <li>Paste the start command, then click <b>Open OpenStock</b> and create your local account.</li>
+      </ol>
+      <p class="src-note" id="osNote" role="status" style="margin-top:8px;">Licence AGPL-3.0: fine for your own use; do not put it on the public internet. Weekly email, Gmail, AI and sentiment features are left off.</p>
+    </div>
     <div class="card" style="margin-top:16px;">
       <p class="card-title">Common mistakes the desk is built to catch</p>
       <div class="td-chips" id="tdMistakes"></div>
