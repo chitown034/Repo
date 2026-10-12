@@ -76,6 +76,7 @@ count, per the "one rule" above.
 | `db-docs.md` | What the `state` collection's documents mean, the `{v:...}` shape rule, and which docs are known to carry a not-really-live body |
 | `panel-map.md` | The deck's fifteen tabs and panels, and which docs feed the ones relevant to this repo's wikis |
 | `task-catalog.md` | The Mac task rhythm under `claude-runner`, and how to read a task's status honestly |
+| `freshness-routines.md` | Which routine refreshes each Command Deck block and how often (daily minimum since 2026-10-12), the sweep safety net, and what only the Mac can write |
 | `routine-catalog.md` | Cloud routine categories, the disproved "can't write unattended" rule, and the connector-inheritance gotcha |
 | `connections.md` | Is a connector, CRM or integration actually working — links to `integrations/CONNECTIONS.md` |
 
