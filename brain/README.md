@@ -50,3 +50,12 @@ bin/brain bench --write
 ```
 
 Current result: `docs/reports/BRAIN-BENCH.md`.
+
+## Added 2026-10-12 — the front door and self-tuning
+
+| Command | What it does |
+|---|---|
+| `bin/brain ask "<question>"` | The one command to use. Recall (level 1); if the answer is missing or weak it escalates by itself to several sections (level 2); if still nothing it says "queue research" (level 3). Every answer names the owning seat and any HALT. |
+| `bin/brain tune` | The brain proposes its own fixes: words people asked that it never matched, the nearest terms it does know, and the synonym or page to add. Writes `brain/state/tune-proposals.json`; edits nothing. Runs in every `bin/brain loop`. |
+| `bin/brain os run "<request>"` | Laya lane → Jarvis recall → one Orca launch line per agent (`wiki/ai-team/agent-os.md`). |
+| `bin/brain encyclopedia` | Rewrites `docs/reports/ENCYCLOPEDIA.md`, the living A–Z with backlinks. |

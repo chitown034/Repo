@@ -281,11 +281,13 @@ def run_loop(root: Path, write: bool = True) -> tuple[bool, str]:
     agentos.write(root)
     encyclopedia.write(root)
     agt = agentos.check(root)
+    from . import tune
+    tune_items = tune.proposals(root); tune.write(root)
     prev = last_run(root)
     cur = {"ts": _now(), "doctor": ok_doc, "bench_correct": bench["correct"], "bench_total": bench["answerable"],
            "org_covered": org["covered"], "org_total": org["total"], "gaps": len(gp), "stale_pages": len(st), "jarvis": org["jarvis"]["state"],
            "route_correct": rt["correct"], "route_total": rt["total"], "untested_wiki_pages": len(unq),
-           "agents_reachable": agt["reachable"], "agents_total": agt["total"]}
+           "agents_reachable": agt["reachable"], "agents_total": agt["total"], "tune_proposals": len(tune_items)}
     regress = []
     if prev:
         if cur["bench_correct"] < prev.get("bench_correct", 0):
@@ -307,6 +309,8 @@ def run_loop(root: Path, write: bool = True) -> tuple[bool, str]:
     for s in org["seats"]:
         if not s["covered"]:
             todo.append(f"org seat '{s['name']}' has no brain page — add a line to wiki/ai-team/")
+    for it in tune_items[:3]:
+        todo.append(f"tune proposal: '{it['asked']}' asked {it['times']}x never matched — {it['proposal']}")
     if agt["manifest_stale"]:
         todo.append("agent OS manifest is stale — run `bin/brain os write`")
     for g in gp[:5]:
@@ -331,6 +335,7 @@ def run_loop(root: Path, write: bool = True) -> tuple[bool, str]:
         f"{str(prev.get('route_correct')) + '/' + str(prev.get('route_total')) if prev and 'route_total' in prev else '—'} |",
         f"| agents reachable via Laya + Jarvis + Orca | {cur['agents_reachable']}/{cur['agents_total']} | "
         f"{str(prev.get('agents_reachable')) + '/' + str(prev.get('agents_total')) if prev and 'agents_total' in prev else '—'} |",
+        f"| self-tune proposals waiting for approval | {cur['tune_proposals']} | {prev.get('tune_proposals', '—') if prev else '—'} |",
         f"| wiki pages no gold question tests | {cur['untested_wiki_pages']} | {prev.get('untested_wiki_pages', '—') if prev else '—'} |",
         f"| open gaps in the recall log | {cur['gaps']} | {prev.get('gaps', '—') if prev else '—'} |",
         f"| pages with live-sounding facts older than 21 days | {cur['stale_pages']} | {prev.get('stale_pages', '—') if prev else '—'} |",

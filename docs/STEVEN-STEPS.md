@@ -6,6 +6,14 @@ research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox
 
 ## 1 · Phone · 5 minutes (Do these first; nothing else depends on them)
 
+## Start here (2026-10-12) — three pastes, then a short "only you" list
+
+- **A. Mac 1, then Mac 2:** Terminal → `cd ~/Repo && git fetch origin && git checkout claude/gracious-newton-4hpfco && git pull && bash go.sh` → answer `y`. Does every safe step (brain, Agent OS, Laya, Orca check, browser hands, skill packs, Jarvis, events scan, health report) and prints a report to paste back to Claude.
+- **B. Alienware:** PowerShell → `cd $HOME\Repo; git fetch origin; git checkout claude/gracious-newton-4hpfco; git pull; powershell -ExecutionPolicy Bypass -File go.ps1` → answer `y`.
+- **C. Only you:** pair Orca (link into the hidden prompt only), Zoho API tick, keys into `~/.config/*/.env`, sign in once to ShowingTime / Showami / homes.com / Strava, AnyDesk IDs into the Computer Hub card, phone health update + Orca app, one reply (LPT DRE, two posts, video replica, "defaults"), three short emails (Ticor, ARIVE, Zoho admin).
+
+The 34 numbered steps below remain as the detailed reference.
+
 1. **Switch off the duplicate weekly loops (they burned the usage allowance).** Claude already cut your routines from about 199 to 139 runs a week and moved three daily ones to the cheaper model (Oct 9). These three you created yourself, so only you can switch them off: each reads the whole dashboard every Sunday and repeats Saturday's loop. Open each link and turn the switch off. The last one is optional.
    - Weekly Loop Engineering QA: https://claude.ai/code/routines/trig_013ocJfEDdmSAgDPVaiCzMZY
    - Weekly improvement loop: https://claude.ai/code/routines/trig_013vYCzVa3vbHZ8BZZy6UBpX

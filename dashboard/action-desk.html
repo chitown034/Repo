@@ -88,6 +88,37 @@ button:active, .page-tab:active, .tv-chip:active, .pages-btn:active { transform:
   <div class="bar"><div class="meter" aria-hidden="true"><i id="fill"></i></div><span class="count" id="count">0 of 23 done</span></div>
   <p class="note"><b>Already done, nothing to do:</b> Lofty API key (54 leads syncing); the 14 routines that failed on the usage limit were re-run and succeeded; the dashboards read 21 of 25 feeds fresh; both dashboards were updated with the cycle-11 fixes (96 in all) and the Command Deck has a Remote Control card, org chart nodes for it and for context.dev (connected), and the AI Replica Studio plan; the one-command Mac script, the three-tier failover (OpenRouter cap $25) and the connection plan are built and tested; your USC answers and personal DRE are saved. <b>Why things kept failing:</b> the Claude usage allowance; the first step cuts the waste.</p>
 
+  <h2>Start here · three pastes, then a short list only you can do</h2>
+  <p class="d" style="margin:0 0 14px;">Everything below the line is still there for reference, but you no longer need to work through it one by one. Each paste asks you one question (type <b>y</b>, press Enter) and then does every safe step itself: it installs only into your own folder and never signs in, pairs, stores a key or spends. At the end it prints a report; copy that report and paste it to Claude.</p>
+
+  <div class="step" data-id="A"><div class="n">A</div><div class="body">
+    <p class="t">Mac 1, then Mac 2 · one paste each · about 20 minutes, mostly waiting</p>
+    <p class="d">Press Command + Space, type <b>Terminal</b>, press Enter. Click Copy below, paste into the Terminal window, press Enter, answer <b>y</b>. If it says the Repo folder is not there: <code>git clone https://github.com/chitown034/Repo.git ~/Repo</code> first, then paste the line again.</p>
+    <div class="acts"><code>cd ~/Repo &amp;&amp; git fetch origin &amp;&amp; git checkout claude/gracious-newton-4hpfco &amp;&amp; git pull &amp;&amp; bash go.sh</code><button class="btn" data-copy="cd ~/Repo &amp;&amp; git fetch origin &amp;&amp; git checkout claude/gracious-newton-4hpfco &amp;&amp; git pull &amp;&amp; bash go.sh">Copy</button>
+      <label class="tick"><input type="checkbox" id="sA1">Mac 1 done</label><label class="tick"><input type="checkbox" id="sA2">Mac 2 done</label></div></div></div>
+
+  <div class="step" data-id="B"><div class="n">B</div><div class="body">
+    <p class="t">Alienware PC · one paste · about 30 minutes (it downloads the local AI model)</p>
+    <p class="d">Click Start, type <b>PowerShell</b>, press Enter. Copy, paste, Enter, answer <b>y</b>. If the Repo folder is not there: <code>git clone https://github.com/chitown034/Repo.git $HOME\Repo</code> first (needs Git for Windows and Python 3.10+ installed).</p>
+    <div class="acts"><code>cd $HOME\Repo; git fetch origin; git checkout claude/gracious-newton-4hpfco; git pull; powershell -ExecutionPolicy Bypass -File go.ps1</code><button class="btn" data-copy="cd $HOME\Repo; git fetch origin; git checkout claude/gracious-newton-4hpfco; git pull; powershell -ExecutionPolicy Bypass -File go.ps1">Copy</button>
+      <label class="tick"><input type="checkbox" id="sB">Done</label></div></div></div>
+
+  <div class="step" data-id="C"><div class="n">C</div><div class="body">
+    <p class="t">Only you · sign-ins, secrets and decisions · one sitting, about 25 minutes</p>
+    <p class="d">A script must never do these. Each line says exactly where to click.</p>
+    <ol class="d" style="padding-left:20px;line-height:1.6;">
+      <li><b>Pair Orca</b> (after paste A on both Macs): on Mac 1 run <code>bash integrations/remote-control/orca-remote.sh serve --phone</code> and leave the window open; on Mac 2 run the same with <code>pair</code> and paste the link it shows into the hidden prompt. Never paste that link anywhere else.</li>
+      <li><b>Zoho:</b> Zoho CRM → Setup → Security Control → Profiles → your profile → tick <b>Zoho CRM API Access</b>. This is the whole 403 fix.</li>
+      <li><b>Keys into files, never into chat:</b> open <code>~/.config/zoho/.env</code> and <code>~/.config/lofty/.env</code> (paste A creates them empty) and type the client id/secret and the Lofty key.</li>
+      <li><b>Sign in once</b> on the Mac to ShowingTime, Showami and homes.com in the normal browser; in claude.ai → Settings → Connectors, sign in again to Strava (and Eromify if you still use it).</li>
+      <li><b>AnyDesk:</b> install it on each computer and tablet, then type each AnyDesk <i>ID</i> (never the password) into the Computer Hub card on the Command Deck.</li>
+      <li><b>Phone:</b> open the Claude app, say “update my health numbers” (Apple Health tiles), and install the Orca app for the phone view.</li>
+      <li><b>One reply to Claude</b> with: LPT Realty's brokerage DRE number and entity name; approve or decline the two queued posts (Command Deck → Marketing); the AI Steve video replica (yes/no); “defaults” for the rest.</li>
+      <li><b>Three short emails</b> (drafts in <code>integrations/loan-stack/CONNECTIONS.md</code>): Ticor (API or bulk export?), ARIVE (API access), your Zoho admin if the profile tick is greyed out.</li>
+    </ol>
+    <div class="acts"><label class="tick"><input type="checkbox" id="sC">Done</label></div></div></div>
+
+  <details style="margin:26px 0 8px;"><summary style="cursor:pointer;font-weight:600;padding:10px 0;">All 34 original steps, in detail (reference only)</summary>
   <h2>1 · Phone · 5 minutes</h2>
   <p class="where">Do these first; nothing else depends on them</p>
 
@@ -352,7 +383,9 @@ cd integrations/trading-desk &amp;&amp; python3 -m desk selftest">Copy</button><
     <div class="acts"><code>cd ~/Repo && bash integrations/agent-os/connect-orca-laya.sh --apply</code><button class="btn" data-copy="cd ~/Repo && bash integrations/agent-os/connect-orca-laya.sh --apply">Copy</button>
       <label class="tick"><input type="checkbox" id="s34">Done</label></div></div></div>
 
-  <footer>Updated 2026-10-11; first 23 steps rebuilt 2026-10-09 from the live routine list, the Mac runner status, both dashboard databases and a Composio connection check. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Same list as text: <code>docs/STEVEN-STEPS.md</code>.</footer>
+  </details>
+
+  <footer>Updated 2026-10-12 (start-here section); earlier 2026-10-11; first 23 steps rebuilt 2026-10-09 from the live routine list, the Mac runner status, both dashboard databases and a Composio connection check. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Same list as text: <code>docs/STEVEN-STEPS.md</code>.</footer>
 </div>
 
 <script>

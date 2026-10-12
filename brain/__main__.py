@@ -57,6 +57,9 @@ def _parser() -> argparse.ArgumentParser:
     os_ = sub.add_parser("os", help="agent OS: every agent via Laya lane + Jarvis recall + Orca launch command")
     os_.add_argument("action", choices=["list", "show", "run", "check", "write"])
     os_.add_argument("target", nargs="*")
+    ak = sub.add_parser("ask", help="the front door: recall, auto-escalate to several sections when weak, owner seat, next step")
+    ak.add_argument("question", nargs="+"); ak.add_argument("--json", action="store_true")
+    sub.add_parser("tune", help="propose synonyms/pages for asked words the brain never matched (writes proposals, edits nothing)")
     sub.add_parser("encyclopedia", help="rewrite docs/reports/ENCYCLOPEDIA.md: the living A-Z of every page with backlinks")
     sub.add_parser("loop", help="reindex, doctor, bench, gaps, orgcheck; write docs/reports/BRAIN-LOOP.md; exit 1 on regression")
     sub.add_parser("mcp", help="serve recall/remember/pack/gaps over stdio MCP for any MCP client")
@@ -155,6 +158,15 @@ def main(argv: list[str] | None = None) -> int:
         plan = route.route(root, " ".join(args.request))
         print(json.dumps(plan, ensure_ascii=False, indent=1) if args.json else route.format_plan(plan))
         return 0
+
+    if args.cmd == "ask":
+        from . import ask as ask_mod
+        a = ask_mod.ask(root, " ".join(args.question))
+        print(json.dumps(a, ensure_ascii=False, indent=1) if args.json else ask_mod.format_ask(a)); return 0
+
+    if args.cmd == "tune":
+        from . import tune
+        items = tune.proposals(root); tune.write(root); print(tune.format_proposals(items)); return 0
 
     if args.cmd == "encyclopedia":
         from . import encyclopedia

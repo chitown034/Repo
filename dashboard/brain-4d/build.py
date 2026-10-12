@@ -2,7 +2,8 @@
 """Build dashboard/brain-4d.html (Brain 6D) from the brain itself: `python3 dashboard/brain-4d/build.py`.
 Embeds `bin/brain graph`, the last `bin/brain loop` run, the seat lens table (wiki/ai-team/cross-functional.md,
 'Lane keywords', third column), agents-per-seat (integrations/agent-os/agents.json, laya.lane) and the
-A-Z encyclopedia (brain/index.json + backlinks from the graph links) into template.html. Rerun after reindex."""
+A-Z encyclopedia (brain/index.json + backlinks from the graph links) and the 'Ask the brain' term index (brain/index.json
+stemmed fields + df, synonyms, priors; lane keyword phrases from the same table's 2nd column) into template.html. Rerun after reindex."""
 import json
 import re
 import sys
@@ -11,19 +12,55 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-from brain import graph, loop  # noqa: E402
+from brain import graph, indexer, loop, text  # noqa: E402
 
 
 def seat_table(root):
-    """Seat -> 'starts from' prefixes, in table order, from the Lane keywords table (3rd column)."""
+    """Seat -> ('starts from' prefixes (3rd column), lane keyword phrases (2nd column)), in table order,
+    from the Lane keywords table."""
     text = (root / "wiki/ai-team/cross-functional.md").read_text(encoding="utf-8")
     sec = text.split("## Lane keywords", 1)[1].split("\n## ", 1)[0]
     rows = []
     for line in sec.splitlines():
         cells = [c.strip() for c in line.strip().strip("|").split("|")]
         if line.startswith("|") and len(cells) == 3 and cells[0] not in ("Seat",) and not set(cells[0]) <= set("-: "):
-            rows.append((cells[0], re.findall(r"`([^`]+)`", cells[2])))
+            words = [w.strip().lower() for w in cells[1].split(",") if w.strip()]
+            rows.append((cells[0], re.findall(r"`([^`]+)`", cells[2]), words))
     return rows
+
+
+ASK_FIELDS = ("keywords", "title_terms", "heading_terms", "desc_terms", "path_terms")
+ASK_IDENT = ("title_terms", "path_terms")      # terms that earn the title/path bonus in the browser
+
+
+def ask_index(root, idx, ids):
+    """Compact term index for the in-page 'Ask the brain' recall: one vocab, per-file postings as vocab
+    indices (the union of the already-stemmed index fields), ident = title/path term indices, df per term,
+    the synonym table (brain/text.py) and the authority priors (brain/indexer.py PRIOR_RULES)."""
+    files = [f for f in idx["files"] if f["path"] in ids]
+    df = {}
+    rows = []
+    for f in files:
+        terms = set()
+        for k in ASK_FIELDS:
+            terms.update(f.get(k, ()))
+        ident = set()
+        for k in ASK_IDENT:
+            ident.update(f.get(k, ()))
+        for t in terms:
+            df[t] = df.get(t, 0) + 1
+        rows.append((f["path"], terms, ident & terms))
+    vocab = sorted(df, key=lambda t: (-df[t], t))
+    vid = {t: i for i, t in enumerate(vocab)}
+    out_files = [{"p": p, "t": sorted(vid[t] for t in terms), "i": sorted(vid[t] for t in ident)} for p, terms, ident in rows]
+    syn = {}
+    for s, others in text.SYNONYMS.items():
+        if s in vid:
+            keep = sorted(vid[o] for o in others if o in vid)
+            if keep:
+                syn[vid[s]] = keep
+    return {"n": len(files), "v": vocab, "df": [df[t] for t in vocab], "f": out_files,
+            "syn": syn, "prior": [list(r) for r in indexer.PRIOR_RULES]}
 
 
 def agents_per_seat(root):
@@ -63,8 +100,9 @@ g = graph.build(ROOT)
 last = loop.last_run(ROOT) or {"bench_correct": 0, "bench_total": 0, "org_covered": 0, "org_total": 0, "jarvis": "unverified"}
 counts = agents_per_seat(ROOT)
 rows = seat_table(ROOT)
-seats = [{"n": "Vanessa", "a": counts.get("Vanessa", 0), "s": []}] + [{"n": n, "a": counts.get(n, 0), "s": s} for n, s in rows if n != "Vanessa"]
+seats = [{"n": "Vanessa", "a": counts.get("Vanessa", 0), "s": [], "k": []}] + [{"n": n, "a": counts.get(n, 0), "s": s, "k": k} for n, s, k in rows if n != "Vanessa"]
 enc = encyclopedia(ROOT, g)
+ask = ask_index(ROOT, json.loads((ROOT / "brain/index.json").read_text(encoding="utf-8")), {n["id"] for n in g["nodes"]})
 
 def j(o):
     return json.dumps(o, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
@@ -73,6 +111,9 @@ tpl = (ROOT / "dashboard/brain-4d/template.html").read_text(encoding="utf-8")
 out = tpl.replace("/*DATA*/null", j(g), 1)
 out = out.replace("/*LOOP*/null", json.dumps({k: last.get(k) for k in ("bench_correct", "bench_total", "org_covered", "org_total", "jarvis", "ts")}), 1)
 out = out.replace("/*SEATS*/null", j(seats), 1).replace("/*ENC*/null", j(enc), 1)
+ask_json = j(ask)
+out = out.replace("/*ASK*/null", ask_json, 1)
 out = out.replace("/*BUILD*/null", json.dumps(date.today().isoformat()), 1)
 (ROOT / "dashboard/brain-4d.html").write_text(out, encoding="utf-8")
-print(f"wrote dashboard/brain-4d.html: {len(g['nodes'])} nodes, {len(g['links'])} links, {len(seats)} seats, {len(enc)} encyclopedia entries, {len(out):,} bytes")
+print(f"wrote dashboard/brain-4d.html: {len(g['nodes'])} nodes, {len(g['links'])} links, {len(seats)} seats, {len(enc)} encyclopedia entries, "
+      f"ask index {len(ask['v'])} terms / {sum(len(f['t']) for f in ask['f'])} postings / {len(ask_json):,} bytes, {len(out):,} bytes")
