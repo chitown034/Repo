@@ -292,6 +292,15 @@
     ".claude/skills/reverse-engineering/SKILL.md"
    ],
    "router_leaf": "wiki/ai-team/index.md"
+  },
+  {
+   "id": "q29",
+   "kind": "leaf",
+   "question": "How do I run any AI agent through Laya, Jarvis and Orca?",
+   "expected_file": "wiki/ai-team/agent-os.md",
+   "expected_phrase": "claude --agent",
+   "alt_files": [],
+   "router_leaf": "wiki/ai-team/index.md"
   }
  ]
 }

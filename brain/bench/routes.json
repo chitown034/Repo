@@ -156,6 +156,14 @@
     "ECC"
    ],
    "halt": false
+  },
+  {
+   "request": "Run all my agents through Orca and Laya as an operating system",
+   "lead": "Derek",
+   "must_include": [
+    "ECC"
+   ],
+   "halt": false
   }
  ]
 }

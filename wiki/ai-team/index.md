@@ -16,6 +16,7 @@ hold the actual detail once you know which seat or layer you need.
 | `capability-matrix.md` | Which seat can reach which tool (browser, skill finder, scout, loan agents, trading desk, Computer Hub) |
 | `computer-hub.md` | Mac 1, Mac 2, Alienware, tablet, phone: Claude Remote Control, Orca, AnyDesk, local AI |
 | `third-party-packs.md` | The 18 repos Steven asked for: installed, held or declined, and why |
+| `agent-os.md` | Every agent through Laya (lane), Jarvis (recall) and Orca (launch): `bin/brain os`, 172/172 reachable |
 | `cross-functional.md` | Who leads, who joins, the parallel waves, the gates and the HALT words — the rules `bin/brain route` runs |
 | `mentors-and-benches.md` | Maxwell, Apex, James, Kevin, Kevin (name settled 2026-10-07), and what a "bench" row actually counts |
 

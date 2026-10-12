@@ -54,6 +54,10 @@ def _parser() -> argparse.ArgumentParser:
     ro = sub.add_parser("route", help="org-chart dispatch plan: lead seat, joins, parallel waves, gates, HALTs")
     ro.add_argument("request", nargs="+")
     ro.add_argument("--json", action="store_true")
+    os_ = sub.add_parser("os", help="agent OS: every agent via Laya lane + Jarvis recall + Orca launch command")
+    os_.add_argument("action", choices=["list", "show", "run", "check", "write"])
+    os_.add_argument("target", nargs="*")
+    sub.add_parser("encyclopedia", help="rewrite docs/reports/ENCYCLOPEDIA.md: the living A-Z of every page with backlinks")
     sub.add_parser("loop", help="reindex, doctor, bench, gaps, orgcheck; write docs/reports/BRAIN-LOOP.md; exit 1 on regression")
     sub.add_parser("mcp", help="serve recall/remember/pack/gaps over stdio MCP for any MCP client")
     return p
@@ -151,6 +155,30 @@ def main(argv: list[str] | None = None) -> int:
         plan = route.route(root, " ".join(args.request))
         print(json.dumps(plan, ensure_ascii=False, indent=1) if args.json else route.format_plan(plan))
         return 0
+
+    if args.cmd == "encyclopedia":
+        from . import encyclopedia
+        print("wrote", encyclopedia.write(root)); return 0
+
+    if args.cmd == "os":
+        from . import agentos
+        t = " ".join(args.target)
+        if args.action == "write":
+            print("wrote", agentos.write(root)); return 0
+        if args.action == "check":
+            r = agentos.check(root); print(agentos.format_check(r)); return 0 if not r["unreachable"] and not r["manifest_stale"] else 1
+        if args.action == "run":
+            print(agentos.plan_launch(root, t)); return 0
+        m = agentos.build(root)
+        if args.action == "list":
+            for a in m["agents"]:
+                if not t or t in (a["lead"] or "") or t in a["laya"]["lane"].lower() or t in a["slug"]:
+                    print(f"{a['slug']:<34} tier {a['tier']} {a['model']:<9} lane {a['laya']['lane']:<10} {a['orca']['command']}")
+            return 0
+        hit = [a for a in m["agents"] if a["slug"] == t]
+        if not hit:
+            print("not a roster slug; named seats:", ", ".join(m["named_seats"])); return 1
+        print(json.dumps(hit[0], ensure_ascii=False, indent=1)); return 0
 
     if args.cmd == "loop":
         ok, text = loop.run_loop(root)

@@ -15,6 +15,7 @@ Steven (Principal)
 │   ├─ Browser hands + skill finder — `agent-browser`, Playwright MCP, `find-skills` (any seat asks Vanessa; Integration Engineer owns, Elena gates; stop before submit/send/pay) — `integrations/browser-agents/`
 │   ├─ Computer Hub — Claude Remote Control + Orca + AnyDesk on Mac 1, Mac 2, the Alienware PC, tablet and phone (`wiki/ai-team/computer-hub.md`)
 │   ├─ Weekly scout — `integrations/scout/scout.py` → `docs/reports/SCOUT.md`: new repos, skills, MCP servers, upgrades, CLIs, free tools (Disruption Scout → Nadia grades → Elon gates → Steven approves)
+│   ├─ Agent OS — `bin/brain os`: all 172 roster agents reachable via Laya lane, Jarvis recall and an Orca launch command (`wiki/ai-team/agent-os.md`)
 │   ├─ Dispatch planner — `bin/brain route`: lead seat, cross-functional joins, ≤8-wide parallel waves, gates, HALTs (rules: `wiki/ai-team/cross-functional.md`)
 │   └─ Juliet — Escalation & Service Recovery
 ├─ ISA / EA (human) — Mon–Fri 12–4 PM

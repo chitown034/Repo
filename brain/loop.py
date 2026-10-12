@@ -277,10 +277,15 @@ def run_loop(root: Path, write: bool = True) -> tuple[bool, str]:
     from . import route
     rt = route.selftest(root)
     unq = untested_pages(root)
+    from . import agentos, encyclopedia
+    agentos.write(root)
+    encyclopedia.write(root)
+    agt = agentos.check(root)
     prev = last_run(root)
     cur = {"ts": _now(), "doctor": ok_doc, "bench_correct": bench["correct"], "bench_total": bench["answerable"],
            "org_covered": org["covered"], "org_total": org["total"], "gaps": len(gp), "stale_pages": len(st), "jarvis": org["jarvis"]["state"],
-           "route_correct": rt["correct"], "route_total": rt["total"], "untested_wiki_pages": len(unq)}
+           "route_correct": rt["correct"], "route_total": rt["total"], "untested_wiki_pages": len(unq),
+           "agents_reachable": agt["reachable"], "agents_total": agt["total"]}
     regress = []
     if prev:
         if cur["bench_correct"] < prev.get("bench_correct", 0):
@@ -289,6 +294,8 @@ def run_loop(root: Path, write: bool = True) -> tuple[bool, str]:
             regress.append(f"org routing self-test fell {prev['route_correct']} -> {cur['route_correct']}")
         if cur["org_covered"] < prev.get("org_covered", 0):
             regress.append(f"org coverage fell {prev['org_covered']} -> {cur['org_covered']}")
+    if agt["reachable"] < agt["total"]:
+        regress.append(f"agent OS: only {agt['reachable']}/{agt['total']} agents reachable via Laya+Jarvis+Orca")
     if not ok_doc:
         regress.append("doctor failed")
     # next actions, ranked
@@ -300,6 +307,8 @@ def run_loop(root: Path, write: bool = True) -> tuple[bool, str]:
     for s in org["seats"]:
         if not s["covered"]:
             todo.append(f"org seat '{s['name']}' has no brain page — add a line to wiki/ai-team/")
+    if agt["manifest_stale"]:
+        todo.append("agent OS manifest is stale — run `bin/brain os write`")
     for g in gp[:5]:
         todo.append(f"asked {g['count']}x, {g['state']}: {' '.join(g['keywords'])} — {g['action']}")
     for x in st[:5]:
@@ -320,6 +329,8 @@ def run_loop(root: Path, write: bool = True) -> tuple[bool, str]:
         f"{str(prev.get('org_covered')) + '/' + str(prev.get('org_total')) if prev else '—'} |",
         f"| org routing self-test (who leads, who joins, HALT) | {cur['route_correct']}/{cur['route_total']} | "
         f"{str(prev.get('route_correct')) + '/' + str(prev.get('route_total')) if prev and 'route_total' in prev else '—'} |",
+        f"| agents reachable via Laya + Jarvis + Orca | {cur['agents_reachable']}/{cur['agents_total']} | "
+        f"{str(prev.get('agents_reachable')) + '/' + str(prev.get('agents_total')) if prev and 'agents_total' in prev else '—'} |",
         f"| wiki pages no gold question tests | {cur['untested_wiki_pages']} | {prev.get('untested_wiki_pages', '—') if prev else '—'} |",
         f"| open gaps in the recall log | {cur['gaps']} | {prev.get('gaps', '—') if prev else '—'} |",
         f"| pages with live-sounding facts older than 21 days | {cur['stale_pages']} | {prev.get('stale_pages', '—') if prev else '—'} |",
