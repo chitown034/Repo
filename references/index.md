@@ -25,6 +25,7 @@ rather than the full document.
 | ISA Portal | The ISA-facing artifact | `projects/isa-portal.md` |
 | Obsidian vault | Visual layer + Jarvis's index source (`50-AI-Team`, `60-Knowledge`, `70-Briefs`) | `OPTIMIZATION.md` |
 | Notion Second Brain DB | **The record.** Synced by `brain-deck-sync` | `always-on/README.md` |
+| Company Brain Blueprint (AI Horizon flyer, Drive) | Files → vector → entity graph → cache → agents; mapped layer by layer to this brain, with the one-department build challenge answered | `references/company-brain-blueprint.md` |
 | Google Drive "Second Brain" folder | Read-only mirror of the Notion DB (1 file, synced 2026-09-22), reached through the claude.ai connector | `references/google-drive.md` |
 | Jarvis (OpenJarvis `memory.db`) | Local index + on-device voice; verify with `integrations/jarvis/jarvis-setup.sh` | `integrations/jarvis/README.md` |
 | Graphify | The knowledge graph in `vault/60-Knowledge` | `knowledge-graph/README.md` |

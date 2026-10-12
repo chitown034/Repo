@@ -301,6 +301,15 @@
    "expected_phrase": "claude --agent",
    "alt_files": [],
    "router_leaf": "wiki/ai-team/index.md"
+  },
+  {
+   "id": "q30",
+   "kind": "leaf",
+   "question": "How does the Company Brain Blueprint map onto my second brain and what is the gap?",
+   "expected_file": "references/company-brain-blueprint.md",
+   "expected_phrase": "vector",
+   "alt_files": [],
+   "router_leaf": "references/index.md"
   }
  ]
 }
