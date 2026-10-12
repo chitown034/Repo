@@ -1,4 +1,4 @@
-<title>Brain 4D</title>
+<title>Brain 6D</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -22,7 +22,10 @@
   --f-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
   --f-data: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --gutter: 16px;
+  --fresh: #6fd39b; --okc: #f3b94d; --stale: #ff7a7a; --undated: #8f97ad;
+  --hit: 32px;
 }
+@media (max-width: 720px), (pointer: coarse) { :root { --hit: 44px; } }
 * { box-sizing: border-box; }
 html, body { height: 100%; margin: 0; overflow: hidden; background: var(--void); color: var(--ink); font: 14px/1.45 var(--f-body); }
 #field { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
@@ -32,7 +35,7 @@ html, body { height: 100%; margin: 0; overflow: hidden; background: var(--void);
 button, input { font: inherit; color: inherit; }
 :focus-visible { outline: 2px solid var(--now); outline-offset: 2px; }
 
-#readout { position: fixed; top: calc(env(safe-area-inset-top, 0px) + var(--gutter)); left: var(--gutter); width: min(360px, calc(100vw - 2 * var(--gutter))); padding: 14px 16px 12px; z-index: 3; display: grid; gap: 10px; }
+#readout { max-height: calc(100% - 140px); overflow: auto; position: fixed; top: calc(env(safe-area-inset-top, 0px) + var(--gutter)); left: var(--gutter); width: min(360px, calc(100vw - 2 * var(--gutter))); padding: 14px 16px 12px; z-index: 3; display: grid; gap: 10px; }
 #readout h1 { margin: 0; font: 700 26px/1 var(--f-display); letter-spacing: .01em; text-wrap: balance; }
 #readout h1 span { color: var(--now); }
 #readout .sub { margin: 0; color: var(--muted); font-size: 12.5px; }
@@ -47,7 +50,27 @@ button, input { font: inherit; color: inherit; }
 .chip { display: inline-flex; align-items: center; gap: 6px; min-height: 30px; padding: 3px 10px 3px 8px; border-radius: 999px; border: 1px solid var(--line); background: transparent; font-size: 12px; cursor: pointer; }
 .chip i { width: 9px; height: 9px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); }
 .chip[aria-pressed="false"] { opacity: .38; }
-#chipsWrap summary { cursor: pointer; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); list-style: none; min-height: 28px; display: flex; align-items: center; }
+.chip { min-height: var(--hit); }
+.chip.on { border-color: rgba(243, 185, 77, .7); background: rgba(243, 185, 77, .12); }
+#seats .chip[aria-pressed="false"] { opacity: .85; }
+.chip small { color: var(--muted); font: 11px var(--f-data); }
+.tabs { display: flex; gap: 6px; }
+.tab { flex: 1; min-height: 44px; border-radius: 10px; border: 1px solid var(--line); background: transparent; cursor: pointer; font-weight: 600; }
+.tab[aria-selected="true"] { border-color: rgba(243, 185, 77, .6); color: var(--now); background: rgba(243, 185, 77, .1); }
+.lens h3 { margin: 0 0 6px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+.lens { display: grid; gap: 12px; padding-top: 8px; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 0 0 8px; padding: 0; list-style: none; font-size: 12px; }
+.legend li { display: flex; align-items: center; gap: 6px; min-height: 24px; }
+.legend i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); }
+.legend b { font: 500 12px var(--f-data); }
+.seatnote { margin: 8px 0 0; font-size: 12.5px; color: #c9cfdd; min-height: 1.4em; }
+.toggle { display: flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; font-size: 13px; }
+.toggle input { width: 22px; height: 22px; accent-color: var(--now); margin: 0; }
+#lensWrap > summary { cursor: pointer; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); list-style: none; min-height: 44px; display: flex; align-items: center; }
+#lensWrap > summary::after { content: "+"; margin-left: auto; } #lensWrap[open] > summary::after { content: "–"; }
+#chipsWrap summary, #seatWrap summary { cursor: pointer; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); list-style: none; min-height: var(--hit); display: flex; align-items: center; }
+#seatWrap summary::after { content: "+"; margin-left: auto; } #seatWrap[open] summary::after { content: "–"; }
+#chipsWrap { margin: 0; } #seatWrap { margin: 0; }
 #chipsWrap summary::after { content: "+"; margin-left: auto; } #chipsWrap[open] summary::after { content: "–"; }
 
 #inspector { position: fixed; top: calc(env(safe-area-inset-top, 0px) + var(--gutter)); right: var(--gutter); width: min(380px, calc(100vw - 2 * var(--gutter))); max-height: calc(100% - 150px); overflow: auto; padding: 18px 18px 16px; z-index: 4; }
@@ -78,27 +101,70 @@ button, input { font: inherit; color: inherit; }
 #t { grid-column: 2; width: 100%; accent-color: var(--now); margin: 0; }
 #tl { grid-column: 2; display: flex; justify-content: space-between; font: 10.5px var(--f-data); color: var(--muted); }
 #hint { position: fixed; right: var(--gutter); bottom: calc(env(safe-area-inset-bottom, 0px) + 112px); z-index: 2; padding: 8px 12px; font-size: 12px; color: var(--muted); }
+/* encyclopedia reading mode */
+#enc { position: fixed; z-index: 2; left: var(--gutter); right: var(--gutter); top: var(--rh, 150px); bottom: calc(env(safe-area-inset-bottom, 0px) + var(--gutter)); display: none; flex-direction: column; padding: 12px 14px 0; overflow: hidden; }
+body.enc #enc { display: flex; }
+body.enc #time, body.enc #hint, body.enc #inspector, body.enc #field, body.enc .maponly { display: none !important; }
+body.enc #readout { width: min(720px, calc(100vw - 2 * var(--gutter))); }
+body.enc #enc { max-width: 720px; }
+#az { display: flex; gap: 2px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: thin; flex: none; }
+#az button { flex: none; min-width: 44px; min-height: 44px; border-radius: 8px; border: 1px solid var(--line); background: transparent; cursor: pointer; font: 500 14px var(--f-data); }
+#az button:disabled { opacity: .28; cursor: default; }
+#encList { overflow: auto; flex: 1; padding-right: 4px; padding-bottom: 24px; overscroll-behavior: contain; }
+#encList h2 { margin: 18px 0 6px; font: 700 28px/1 var(--f-display); color: var(--now); scroll-margin-top: 4px; }
+#encList h2:focus { outline: 2px solid var(--now); outline-offset: 4px; }
+.entry { padding: 10px 0 12px; border-top: 1px solid var(--line); }
+.entry h3 { margin: 0 0 4px; font: 600 17px/1.25 var(--f-display); }
+.entry .go { all: unset; cursor: pointer; display: inline-block; min-height: 44px; line-height: 1.3; padding: 10px 0 0; text-wrap: balance; overflow-wrap: anywhere; }
+.entry .go:hover { text-decoration: underline; } .entry .go:focus-visible { outline: 2px solid var(--now); outline-offset: 2px; }
+.entry p { margin: 0 0 6px; color: #c9cfdd; }
+.entry .meta { font-size: 12px; color: var(--muted); margin: 0 0 6px; overflow-wrap: anywhere; }
+.entry .meta .fb { font-family: var(--f-data); }
+.backs { display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: center; font-size: 12px; color: var(--muted); }
+.backs button { min-height: 44px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); background: transparent; cursor: pointer; font-size: 12px; text-align: left; max-width: 100%; overflow-wrap: anywhere; }
+#encEmpty { padding: 24px 0; color: var(--muted); }
 @media (max-width: 720px) {
-  #readout { padding: 10px 12px; gap: 8px; } #readout h1 { font-size: 21px; } .sub { display: none; }
+  #readout { padding: 10px 12px; gap: 8px; max-height: 50%; } body.enc #readout { max-height: 46%; } #readout h1 { font-size: 21px; } .sub { display: none; }
   #chipsWrap:not([open]) #chips { display: none; }
   #inspector { top: auto; bottom: 0; right: 0; left: 0; width: 100%; max-height: 58%; border-radius: 18px 18px 0 0; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); }
   #hint { display: none; }
   #time { grid-template-columns: auto 1fr; } #when { grid-column: 1 / -1; text-align: left; display: flex; gap: 8px; align-items: baseline; } #t, #tl { grid-column: 1 / -1; } #spark { grid-column: 2; }
 }
-@media (prefers-reduced-motion: reduce) { #inspector { transition: none; } }
+@media (prefers-reduced-motion: reduce) { #inspector { transition: none; } * { scroll-behavior: auto !important; } }
 </style>
 
-<canvas id="field" aria-label="A rotating 3D map of the second brain. A searchable list follows."></canvas>
+<canvas id="field" aria-label="A rotating 3D map of the second brain. The Encyclopedia tab and the list at the end of the page give the same pages as text."></canvas>
 
 <section id="readout" class="glass" aria-label="Brain readout">
-  <h1>Brain <span>4D</span></h1>
-  <p class="sub">Every page of Steven's second brain in space, with time as the fourth dimension. Drag to turn, scroll or pinch to zoom, tap a point to open it.</p>
-  <div class="stats" id="stats"></div>
+  <h1>Brain <span>6D</span></h1>
+  <p class="sub maponly">Every page of Steven's second brain in space. Time is the fourth dimension, freshness the fifth, the org-chart seat the sixth. Drag to turn, scroll or pinch to zoom, tap a point to open it.</p>
+  <div class="tabs" role="tablist" aria-label="View">
+    <button class="tab" role="tab" id="tabMap" aria-selected="true" aria-controls="field" tabindex="0">Map</button>
+    <button class="tab" role="tab" id="tabEnc" aria-selected="false" aria-controls="enc" tabindex="-1">Encyclopedia</button>
+  </div>
+  <div class="stats maponly" id="stats"></div>
   <label class="sr" for="q">Find a page</label>
   <input id="q" type="search" placeholder="Find a page — VA, Lofty, Jarvis…" autocomplete="off" spellcheck="false" list="names">
   <datalist id="names"></datalist>
-  <details id="chipsWrap" open><summary>Regions</summary><div id="chips"></div></details>
+  <details id="lensWrap" class="maponly" open><summary>Lenses: freshness, seat, regions</summary>
+    <div class="lens">
+      <section aria-labelledby="fH">
+        <h3 id="fH">Freshness (dim 5)</h3>
+        <ul class="legend" id="legend"></ul>
+        <label class="toggle"><input type="checkbox" id="fOn" checked> Colour pages by freshness</label>
+        <label class="toggle"><input type="checkbox" id="staleOnly"> Show only stale</label>
+      </section>
+      <details id="seatWrap" open><summary>Seat lens (dim 6)</summary><div id="seats" role="group" aria-label="Choose an org-chart seat"></div><p class="seatnote" id="seatNote"></p></details>
+      <details id="chipsWrap" open><summary>Regions</summary><div id="chips"></div></details>
+    </div>
+  </details>
 </section>
+
+<section id="enc" class="glass" aria-label="Encyclopedia, A to Z">
+  <nav id="az" aria-label="Jump to letter"></nav>
+  <div id="encList" tabindex="-1"></div>
+</section>
+<div id="live" class="sr" role="status" aria-live="polite"></div>
 
 <aside id="inspector" class="glass" hidden aria-labelledby="iTitle">
   <button id="close" aria-label="Close">×</button>
@@ -132,6 +198,9 @@ button, input { font: inherit; color: inherit; }
 "use strict";
 const G = /*DATA*/null;
 const LOOP = /*LOOP*/null;
+const SEATS = /*SEATS*/null;   // seat -> {a: agents (agents.json laya.lane), s: "starts from" prefixes (cross-functional.md)}
+const ENC = /*ENC*/null;       // A-Z encyclopedia entries from brain/index.json + graph backlinks
+const BUILD = /*BUILD*/null;   // build date; freshness is measured against it
 const REPO = "https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/";
 const HUE = { store:"#f3b94d", router:"#ffffff", context:"#ffd6a5", memory:"#f7a8d8", projects:"#c3a6ff", mortgage:"#7fc8ff", realestate:"#5fe0c8", aiteam:"#ff9e7a", ops:"#9fb4ff", vector:"#b6f09c", graph:"#e2c1ff", alwayson:"#ffcf70", sources:"#9ee6ff", integrations:"#7d9cff", loop:"#a7adbf", other:"#8f97ad" };
 const DAY = 864e5;
@@ -156,6 +225,25 @@ nodes.forEach(n => {
   n.last = Math.max(0, Math.round((z - D0) / DAY));
   if (n.g === "store") n.born = 0;
 });
+
+// ---------- dim 5 (freshness) and dim 6 (seat) data
+const FRESH = { fresh: { c: "#6fd39b", l: "Fresh (7 days or less)" }, ok: { c: "#f3b94d", l: "OK (8 to 21 days)" }, stale: { c: "#ff7a7a", l: "Stale (over 21 days)" }, undated: { c: "#8f97ad", l: "Undated" } };
+const BD = Date.parse(BUILD);
+nodes.forEach(n => {
+  if (n.g === "store") { n.fb = null; return; }
+  n.age = n.z ? Math.max(0, Math.round((BD - Date.parse(n.z)) / DAY)) : null;
+  n.fb = n.age === null ? "undated" : n.age <= 7 ? "fresh" : n.age <= 21 ? "ok" : "stale";
+});
+const fCount = { fresh: 0, ok: 0, stale: 0, undated: 0 };
+nodes.forEach(n => { if (n.fb) fCount[n.fb]++; });
+const inStart = (n, pre) => n.g !== "store" && (n.id === pre || (pre.endsWith("/") && n.id.startsWith(pre)));
+SEATS.forEach(S => {
+  S.start = nodes.filter(n => S.s.some(p => inStart(n, p)));
+  S.set = new Set(S.start);
+  S.start.forEach(n => adj.get(n).forEach(m => { if (!S.set.has(m)) S.set.add(m); }));
+  S.startSet = new Set(S.start);
+});
+const seatsFor = n => SEATS.filter(S => S.startSet.has(n)).map(S => S.n);
 
 // ---------- 3D placement: two hemispheres, regions as lobes, recall level as depth
 function hash(s) { let h = 2166136261; for (const ch of s) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return (h >>> 0) / 4294967295; }
@@ -184,6 +272,7 @@ nodes.forEach(n => {
 
 // ---------- view state
 let rotY = -.6, rotX = .28, zoom = 1, auto = !reduce, sel = null, hover = null, query = "";
+let freshOn = true, staleOnly = false, seat = null, mode = "map", aim = null;
 const hidden = new Set();
 let day = nDays, playing = false;
 let W = 0, H = 0, DPR = 1;
@@ -206,13 +295,19 @@ function project(p) {
 
 function visible(n) { return n.born <= day && !hidden.has(n.g); }
 function matches(n) { return !query || (n.t + " " + n.id).toLowerCase().includes(query); }
+const col = n => (freshOn && n.fb) ? FRESH[n.fb].c : n.c;
+// true when a lens (search, stale-only, seat) says this page should recede
+function lensDim(n) { return (query && !matches(n)) || (staleOnly && n.fb !== "stale") || (seat && !seat.set.has(n)); }
+const anyLens = () => !!(query || staleOnly || seat);
 function freshness(n) { const age = day - n.last; return age < 0 ? 0 : Math.max(0, 1 - age / 21); }
 
 // ---------- render
 let tick = 0;
 const pulses = [];
 function frame() {
+  if (mode === "enc") { requestAnimationFrame(frame); return; }
   tick++;
+  if (aim) { let d = aim.y - rotY; d = Math.atan2(Math.sin(d), Math.cos(d)); if (Math.abs(d) < .004 && Math.abs(aim.x - rotX) < .004) aim = null; else { rotY += d * .12; rotX += (aim.x - rotX) * .12; } }
   if (auto && !drag) rotY += .0016;
   nodes.forEach(n => { if (n.orbit !== undefined) { n.orbit += reduce ? 0 : .0009; n.p[0] = Math.cos(n.orbit) * ORB; n.p[2] = Math.sin(n.orbit) * ORB; } });
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
@@ -230,8 +325,8 @@ function frame() {
     const depth = (l.a.s2.z + l.b.s2.z) / 2;
     let al = (l.store ? .16 : .09) + depth * .05;
     if (near) al = on ? .75 : .03;
-    if (query) al = matches(l.a) || matches(l.b) ? .3 : .02;
-    ctx.strokeStyle = on ? l.a.c : `rgba(150,170,220,${Math.max(.015, al)})`;
+    if (anyLens() && !on) al = !lensDim(l.a) && !lensDim(l.b) ? .3 : .02;
+    ctx.strokeStyle = on ? col(l.a) : `rgba(150,170,220,${Math.max(.015, al)})`;
     ctx.globalAlpha = on ? .8 : 1;
     ctx.lineWidth = on ? 1.4 : .7;
     ctx.beginPath(); ctx.moveTo(l.a.s2.x, l.a.s2.y); ctx.lineTo(l.b.s2.x, l.b.s2.y); ctx.stroke();
@@ -254,23 +349,24 @@ function frame() {
   // nodes, back to front
   const order = nodes.filter(visible).sort((a, b) => a.s2.z - b.s2.z);
   order.forEach(n => {
-    const s = n.s2, fr = freshness(n);
+    const s = n.s2, fr = freshness(n), nc = col(n), gm = freshOn && n.fb ? { fresh: 1.35, ok: 1, stale: .75, undated: .6 }[n.fb] : 1;
     let r = (n.g === "store" ? 6.5 : 2.4 + Math.min(5, Math.sqrt(n.s + n.deg) * .9)) * s.k * Math.min(1.4, zoom ** .5);
     if (n.id === "store:vanessa") r *= 1.6;
     let al = .55 + (s.z + 1.2) * .22;
     if (near) al = near.has(n) ? 1 : .12;
-    if (query) al = matches(n) ? 1 : .08;
+    if (anyLens()) { if (lensDim(n)) al = .08; else if (!near) al = 1; }
     al = Math.max(.06, Math.min(1, al));
-    const glow = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, r * (3.2 + fr * 2.5));
-    glow.addColorStop(0, hexA(n.c, .55 * al)); glow.addColorStop(1, hexA(n.c, 0));
-    ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(s.x, s.y, r * (3.2 + fr * 2.5), 0, 7); ctx.fill();
-    ctx.fillStyle = hexA(n.c, al); ctx.beginPath(); ctx.arc(s.x, s.y, r, 0, 7); ctx.fill();
+    const gr = r * (3.2 + fr * 2.5) * gm;
+    const glow = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, gr);
+    glow.addColorStop(0, hexA(nc, .55 * al * Math.min(1, gm))); glow.addColorStop(1, hexA(nc, 0));
+    ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(s.x, s.y, gr, 0, 7); ctx.fill();
+    ctx.fillStyle = hexA(nc, al); ctx.beginPath(); ctx.arc(s.x, s.y, r, 0, 7); ctx.fill();
     if (fr > .6 && !reduce) {   // touched in the last week of the date shown: a ring that breathes
       ctx.strokeStyle = hexA("#f3b94d", (fr - .5) * al * (.6 + .4 * Math.sin(tick / 14 + n.i)));
       ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(s.x, s.y, r + 4, 0, 7); ctx.stroke();
     }
     if (n === focus) { ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(s.x, s.y, r + 6, 0, 7); ctx.stroke(); }
-    const label = n.g === "store" || n === focus || (near && near.has(n)) || (query && matches(n));
+    const label = n.g === "store" || n === focus || (near && near.has(n)) || (query && matches(n)) || (seat && seat.start.length <= 16 && seat.startSet.has(n));
     if (label && al > .3) {
       ctx.font = `${n.g === "store" ? 600 : 500} ${n.g === "store" ? 12.5 : 11.5}px Figtree, system-ui, sans-serif`;
       ctx.fillStyle = n.g === "store" ? "#f6e3b8" : "#e7eaf3"; ctx.globalAlpha = al;
@@ -299,7 +395,7 @@ field.addEventListener("touchmove", e => {
 }, { passive: true });
 field.addEventListener("touchend", () => { pinch = null; });
 addEventListener("keydown", e => {
-  if (e.target.tagName === "INPUT") return;
+  if (e.target.tagName === "INPUT" || mode === "enc" || e.target.closest("[role=tablist]")) return;
   if (e.key === "ArrowLeft") rotY -= .12; else if (e.key === "ArrowRight") rotY += .12;
   else if (e.key === "ArrowUp") rotX -= .1; else if (e.key === "ArrowDown") rotX += .1;
   else if (e.key === "+" || e.key === "=") zoom = Math.min(3.2, zoom * 1.12); else if (e.key === "-") zoom = Math.max(.5, zoom / 1.12);
@@ -316,19 +412,21 @@ function fmt(d) { return new Date(D0 + d * DAY).toLocaleDateString("en-US", { mo
 function choose(n) {
   sel = n; const box = $("inspector");
   if (!n) { box.hidden = true; return; }
-  box.hidden = false; box.style.setProperty("--c", n.c);
-  $("iKind").style.setProperty("--c", n.c);
+  box.hidden = false; box.style.setProperty("--c", col(n));
+  $("iKind").style.setProperty("--c", col(n));
   $("iKind").querySelector("span").textContent = n.g === "store" ? "Live store" : `${n.gl} · recall level ${n.lv}`;
   $("iTitle").textContent = n.t;
   $("iDesc").textContent = n.d || "No one-line description in the index yet.";
   const meta = n.g === "store" ? [["Kind", "Outside the repo — the brain points at it"]] : [
     ["File", n.id], ["Sections", String(n.s)], ["First dated", n.a || "no date stamp"], ["Last dated", n.z || "no date stamp"],
-    ["Age", n.z ? `${Math.round((D1 - Date.parse(n.z)) / DAY)} days on ${G.generated}` : "—"]];
+    ["Age", n.z ? `${Math.round((D1 - Date.parse(n.z)) / DAY)} days on ${G.generated}` : "—"],
+    ["Freshness", n.fb === "undated" ? "undated (no date stamp)" : `${n.fb} (${n.age} days old on ${BUILD})`],
+    ["Seat starts here", seatsFor(n).join(", ") || "none"]];
   $("iMeta").replaceChildren(...meta.flatMap(([k, v]) => { const dt = document.createElement("dt"), dd = document.createElement("dd"); dt.textContent = k; dd.textContent = v; return [dt, dd]; }));
   const rel = $("rel"); rel.replaceChildren();
   adj.get(n).slice().sort((a, b) => b.deg - a.deg).slice(0, 8).forEach(m => {
     const li = document.createElement("li"), b = document.createElement("button");
-    b.innerHTML = "<i></i>"; b.querySelector("i").style.setProperty("--c", m.c); b.append(m.t);
+    b.innerHTML = "<i></i>"; b.querySelector("i").style.setProperty("--c", col(m)); b.append(m.t);
     b.addEventListener("click", () => choose(m)); li.append(b); rel.append(li);
   });
   if (!rel.children.length) rel.innerHTML = "<li style='color:var(--muted);font-size:12.5px'>No links at this date.</li>";
@@ -348,20 +446,21 @@ $("copyRecall").addEventListener("click", () => {
 $("names").replaceChildren(...nodes.map(n => { const o = document.createElement("option"); o.value = n.t; return o; }));
 $("q").addEventListener("input", e => {
   query = e.target.value.trim().toLowerCase();
+  renderEnc(); announceSoon();
   const exact = nodes.find(n => n.t.toLowerCase() === query);
-  if (exact) { if (exact.born > day) setDay(nDays); choose(exact); }
+  if (exact && mode === "map") { if (exact.born > day) setDay(nDays); choose(exact); }
 });
 
 // region chips
 $("chips").replaceChildren(...groups.map(([g, label]) => {
-  const b = document.createElement("button"); b.className = "chip"; b.setAttribute("aria-pressed", "true");
+  const b = document.createElement("button"); b.className = "chip"; b.setAttribute("aria-pressed", "true"); b.dataset.g = g;
   b.style.setProperty("--c", HUE[g] || HUE.other);
   const count = nodes.filter(n => n.g === g).length;
   b.innerHTML = "<i></i>"; b.append(`${label} ${count}`);
   b.addEventListener("click", () => { const on = hidden.has(g); on ? hidden.delete(g) : hidden.add(g); b.setAttribute("aria-pressed", String(on)); });
   return b;
 }));
-try { if (innerWidth <= 720) $("chipsWrap").open = false; } catch (_) {}
+try { if (innerWidth <= 720) { $("lensWrap").open = false; $("chipsWrap").open = false; $("seatWrap").open = true; } } catch (_) {}
 
 // stats (from the brain's own loop report)
 function stat(label, value, cls) { const d = document.createElement("div"); d.className = "stat " + (cls || ""); d.innerHTML = "<b></b><i></i>"; d.querySelector("b").textContent = value; d.querySelector("i").textContent = label; return d; }
@@ -370,6 +469,103 @@ $("stats").replaceChildren(
   stat("test Qs right", `${LOOP.bench_correct}/${LOOP.bench_total}`, LOOP.bench_correct >= LOOP.bench_total - 2 ? "good" : "warn"),
   stat("org seats found", `${LOOP.org_covered}/${LOOP.org_total}`, LOOP.org_covered === LOOP.org_total ? "good" : "warn"),
   stat("Jarvis", LOOP.jarvis === "unverified" ? "not yet" : LOOP.jarvis, LOOP.jarvis === "ok" ? "good" : "warn"));
+
+// ---------- dim 5: freshness legend and toggles
+$("legend").replaceChildren(...Object.entries(FRESH).map(([k, v]) => { const li = document.createElement("li"); li.innerHTML = "<i></i><span></span><b></b>"; li.querySelector("i").style.setProperty("--c", v.c); li.children[1].textContent = v.l; li.children[2].textContent = String(fCount[k]); return li; }));
+$("fOn").addEventListener("change", e => { freshOn = e.target.checked; if (sel) choose(sel); say(freshOn ? "Pages coloured by freshness." : "Pages coloured by region."); });
+$("staleOnly").addEventListener("change", e => { staleOnly = e.target.checked; say(staleOnly ? `Showing only the ${fCount.stale} stale pages; everything else is dimmed.` : "Showing all pages."); });
+
+// ---------- dim 6: seat lens
+$("seats").replaceChildren(...SEATS.map(S => {
+  const b = document.createElement("button"); b.className = "chip"; b.setAttribute("aria-pressed", "false"); b.dataset.seat = S.n;
+  b.append(S.n + " "); const sm = document.createElement("small"); sm.textContent = String(S.a); sm.setAttribute("aria-hidden", "true"); b.append(sm);
+  b.setAttribute("aria-label", `${S.n}, ${S.a} agents`);
+  b.addEventListener("click", () => setSeat(seat === S ? null : S));
+  return b;
+}));
+function setSeat(S) {
+  seat = S;
+  document.querySelectorAll("#seats .chip").forEach(b => { const on = !!S && b.dataset.seat === S.n; b.setAttribute("aria-pressed", String(on)); b.classList.toggle("on", on); });
+  const note = $("seatNote");
+  if (!S) { note.textContent = "Pick a seat to dim everything except where it starts from and the pages linked to those."; say("Seat lens off."); return; }
+  const linked = S.set.size - S.start.length;
+  note.textContent = S.s.length
+    ? `${S.n} · ${S.a} agent${S.a === 1 ? "" : "s"} · starts from ${S.s.join(", ")} · ${S.start.length} page${S.start.length === 1 ? "" : "s"} + ${linked} linked`
+    : `${S.n} · ${S.a} agents · no "starts from" row for this seat in cross-functional.md, so nothing is lit.`;
+  say(note.textContent);
+}
+setSeat(null);
+
+// ---------- live region
+let liveT = null;
+function say(msg) { $("live").textContent = ""; setTimeout(() => { $("live").textContent = msg; }, 30); }
+function announceSoon() { clearTimeout(liveT); liveT = setTimeout(() => { const n = mode === "enc" ? encShown : nodes.filter(m => matches(m)).length; say(query ? `${n} match${n === 1 ? "" : "es"} for ${query}` : "Search cleared."); }, 350); }
+
+// ---------- encyclopedia (A-Z reading mode)
+const encById = new Map(ENC.map(e => [e.id, e]));
+let encShown = ENC.length;
+const letterOf = t => { const c = t.replace(/^[^A-Za-z0-9]+/, "").charAt(0).toUpperCase(); return /[A-Z]/.test(c) ? c : "#"; };
+function renderEnc() {
+  const list = $("encList"), frag = document.createDocumentFragment(), have = new Set();
+  const q = query; encShown = 0;
+  let cur = "";
+  ENC.forEach(e => {
+    if (q && !(e.t + " " + e.id + " " + e.d + " " + e.h.join(" ")).toLowerCase().includes(q)) return;
+    const L = letterOf(e.t); encShown++;
+    if (L !== cur) { cur = L; have.add(L); const h = document.createElement("h2"); h.id = "L-" + (L === "#" ? "num" : L); h.tabIndex = -1; h.textContent = L; frag.append(h); }
+    const art = document.createElement("article"); art.className = "entry"; art.id = "e-" + e.id;
+    const h3 = document.createElement("h3"), go = document.createElement("button"); go.className = "go"; go.textContent = e.t;
+    go.setAttribute("aria-label", `${e.t}: show on the map`); go.addEventListener("click", () => focusNode(byId.get(e.id)));
+    h3.append(go); art.append(h3);
+    const p = document.createElement("p"); p.textContent = e.d || "No one-line description in the index yet."; art.append(p);
+    const n = byId.get(e.id), m = document.createElement("p"); m.className = "meta";
+    const fb = n && n.fb ? (n.fb === "undated" ? "undated" : `${n.fb}, ${n.age} days old`) : "";
+    m.innerHTML = "<span class='fb'></span><span class='hh'></span>"; m.children[0].textContent = e.id + (fb ? " · " + fb : "");
+    if (e.h.length) m.children[1].textContent = " · Sections: " + e.h.join(" · ");
+    art.append(m);
+    if (e.b.length) {
+      const bk = document.createElement("div"); bk.className = "backs"; bk.append("Linked pages:");
+      e.b.forEach(id => { const t = encById.get(id); if (!t) return; const b = document.createElement("button"); b.textContent = t.t; b.setAttribute("aria-label", `Go to ${t.t} in the encyclopedia`); b.addEventListener("click", () => jumpEntry(id)); bk.append(b); });
+      art.append(bk);
+    }
+    frag.append(art);
+  });
+  if (!encShown) { const d = document.createElement("p"); d.id = "encEmpty"; d.textContent = `No pages match "${q}".`; frag.append(d); }
+  list.replaceChildren(frag);
+  $("az").replaceChildren(...[..."ABCDEFGHIJKLMNOPQRSTUVWXYZ#"].map(L => {
+    const b = document.createElement("button"); b.textContent = L; b.disabled = !have.has(L); b.setAttribute("aria-label", L === "#" ? "Jump to numbers and symbols" : "Jump to " + L);
+    b.addEventListener("click", () => { const h = $("L-" + (L === "#" ? "num" : L)); if (h) { h.scrollIntoView({ block: "start", behavior: reduce ? "auto" : "smooth" }); h.focus({ preventScroll: true }); } });
+    return b;
+  }));
+}
+function jumpEntry(id) {
+  if (query) { $("q").value = ""; query = ""; renderEnc(); }
+  const el = $("e-" + id); if (!el) return;
+  el.scrollIntoView({ block: "start", behavior: reduce ? "auto" : "smooth" });
+  const g = el.querySelector(".go"); if (g) g.focus({ preventScroll: true });
+}
+function focusNode(n) {
+  if (!n) return;
+  setMode("map");
+  if (n.born > day) setDay(nDays);
+  if (hidden.has(n.g)) { hidden.delete(n.g); const c = [...document.querySelectorAll("#chips .chip")].find(b => b.dataset.g === n.g); if (c) c.setAttribute("aria-pressed", "true"); }
+  choose(n); auto = false;
+  const th = Math.atan2(n.p[0], n.p[2]), tx = -Math.max(-1, Math.min(1, n.p[1] * .6)) * .4;
+  if (reduce) { rotY = th; rotX = tx; } else aim = { y: th, x: tx };
+  say(`Showing ${n.t} on the map.`);
+}
+function setMode(m, focusTab) {
+  mode = m; document.body.classList.toggle("enc", m === "enc");
+  [["tabMap", "map"], ["tabEnc", "enc"]].forEach(([id, k]) => { const t = $(id); t.setAttribute("aria-selected", String(k === m)); t.tabIndex = k === m ? 0 : -1; if (focusTab && k === m) t.focus(); });
+  if (m === "enc") { choose(null); renderEnc(); sizeEnc(); say(`Encyclopedia, ${encShown} pages, A to Z.`); } else { resize(); }
+}
+function sizeEnc() { document.documentElement.style.setProperty("--rh", Math.ceil($("readout").getBoundingClientRect().bottom + 12) + "px"); }
+addEventListener("resize", () => { if (mode === "enc") sizeEnc(); });
+$("tabMap").addEventListener("click", () => setMode("map"));
+$("tabEnc").addEventListener("click", () => setMode("enc"));
+document.querySelector("[role=tablist]").addEventListener("keydown", e => {
+  if (e.key === "ArrowRight" || e.key === "ArrowLeft" || e.key === "Home" || e.key === "End") { e.preventDefault(); setMode(e.key === "ArrowLeft" || e.key === "Home" ? "map" : "enc", true); }
+});
 
 // ---------- the fourth dimension
 const perDay = new Array(nDays + 1).fill(0);
@@ -400,7 +596,7 @@ function setPlay(on) {
 $("play").addEventListener("click", () => setPlay(!playing));
 
 // screen-reader list
-$("srList").replaceChildren(...nodes.map(n => { const li = document.createElement("li"), b = document.createElement("button"); b.textContent = `${n.t} (${n.gl})`; b.addEventListener("click", () => choose(n)); li.append(b); return li; }));
+$("srList").replaceChildren(...nodes.map(n => { const li = document.createElement("li"), b = document.createElement("button"); b.textContent = `${n.t} (${n.gl}${n.fb ? ", " + n.fb : ""})`; b.addEventListener("click", () => choose(n)); li.append(b); return li; }));
 
 resize(); setDay(nDays); requestAnimationFrame(frame);
 </script>
