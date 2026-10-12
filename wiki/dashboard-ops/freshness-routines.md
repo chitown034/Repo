@@ -17,12 +17,21 @@ honest "cannot refresh from the cloud" stamp. Judge a block by the stamp on the 
 | Builder incentives note (+ ISA mirror) | Command Deck — builder incentives note (writer, **daily** since 2026-10-12, was Wednesdays) | 13:53 daily |
 | Elite Affluent note | Command Deck — Elite Affluent note (writer, **daily** since 2026-10-12, was Sundays) | 15:51 daily |
 | Market close (`marketSnapshot`, mkt movers/sectors) | Command Deck — market close (writer, Claude) | 21:20 Mon–Fri |
-| **Safety net: every stale doc/key >26 h, market-close catch-up, `feedFreshness` report** | Command Deck — daily freshness sweep (writer, Claude) — `trig_01Y1zZ3bmawgi4Mw2jNw9ZFM` | 03:40 and 15:40 daily |
+| **Safety net: every stale doc/key >26 h, market-close catch-up, ISA Portal mirror (4 liveFeeds keys + ratesSnapshot), `feedFreshness` report** | Command Deck — daily freshness sweep (writer, Claude) — `trig_01Y1zZ3bmawgi4Mw2jNw9ZFM` | 03:40 and 15:40 daily |
 
 The sweep was created from a cloud session that holds no connector grants, so it runs **without** the
 AccuWeather connector: its weather step skips itself and weather stays with the Mac task plus the
 weather & news writer. To give it AccuWeather, recreate it from the claude.ai routines UI with that
 connector attached (needs Steven; HALT: account change).
+
+## ISA Portal mirror (https://claude.ai/code/artifact/4348b34d-afa0-4d2e-8214-29b1319cf041)
+
+The ISA Portal reads the same live documents as the deck (`ratesSnapshot`, `liveFeeds`: builder note and
+the three housing-market lists) and bakes its own fallback rows. Writers that mirror: weather & news
+(morning run, market lists), builder incentives (its note), and the daily freshness sweep (all four keys
+plus `ratesSnapshot` whenever the deck's copy is newer). Baked seeds are mirrored by a session pass:
+`dashboard/wave2/refresh-stale-isa.py <isa> <deck> <ratesSnapshot.json> <date>` — last run 2026-10-12
+(ISA v44: VA/FHA/jumbo and Benchmark rate rows, three builder write-ups, program-facts and market stamps).
 
 ## Mac tasks (the cloud cannot write these)
 
