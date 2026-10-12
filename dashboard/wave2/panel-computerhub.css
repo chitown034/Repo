@@ -21,3 +21,12 @@
 .ch-btn { display: inline-block; text-align: center; font-weight: 600; font-size: 12.5px; padding: 8px 12px; border-radius: 9px; border: 1px solid var(--accent); color: var(--accent); text-decoration: none; background: var(--accent-soft); }
 .ch-btn:hover { background: var(--accent); color: var(--on-accent); } .ch-btn-go { background: var(--accent); color: var(--on-accent); }
 .ch-id { display: grid; grid-template-columns: 1fr auto; gap: 6px; align-items: center; } .ch-id .src-note { grid-column: 1 / -1; margin: 0; }
+/* AD-REMOTE v1 */
+.ch-remote { display: grid; gap: 8px; margin: 10px 0 6px; }
+.ch-remote-row { display: grid; grid-template-columns: 34px 1fr auto auto auto; gap: 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-2); }
+.ch-remote-row.is-ok { border-color: color-mix(in srgb, var(--positive) 45%, var(--border)); }
+.ch-remote-ic svg { width: 30px; height: 22px; color: var(--text-dim); display: block; }
+.ch-remote-name { font-weight: 600; } .ch-remote-id { font-family: var(--font-mono); font-size: 12.5px; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+.ch-remote-row .ch-btn { min-height: 36px; padding: 6px 14px; } .ch-remote-row .src-note { grid-column: 3 / -1; margin: 0; }
+.ch-remote-how summary { cursor: pointer; font-size: 12.5px; color: var(--text-dim); min-height: 36px; display: flex; align-items: center; } .ch-remote-how ol { margin: 6px 0 0; padding-left: 20px; font-size: 13px; line-height: 1.5; }
+@media (max-width: 640px) { .ch-remote-row { grid-template-columns: 30px 1fr auto; } .ch-remote-id { grid-column: 2; } .ch-remote-row .ch-copy { grid-column: 3; } }

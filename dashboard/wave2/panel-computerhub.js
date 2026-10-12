@@ -37,6 +37,26 @@
   var CH_STATUS_WORDS = { ok: 1, missing: 1, unverified: 1, "not-run": 1 };
   function chState() { var s = lsGet("computerHub", {}); return (s && typeof s === "object" && !Array.isArray(s)) ? s : {}; }
   function chSave(s) { lsSetLocal("computerHub", s); }
+  /* AD-REMOTE v1: AnyDesk IDs live in the shared store so every device sees them; ticks stay device-local. */
+  function chIds() { var o = lsGet("anydeskIds", {}); return (o && typeof o === "object" && !Array.isArray(o)) ? o : {}; }
+  function chSetId(dev, v) { var o = chIds(); if (v) o[dev] = v; else delete o[dev]; lsSet("anydeskIds", o); }
+  function renderRemoteAccess() {
+    var host = $("chRemote"), badge = $("chRemoteBadge"); if (!host) return;
+    var ids = chIds(), n = 0; host.innerHTML = "";
+    CH_DEVICES.forEach(function (dev) {
+      var id = ids[dev.id] || "", ok = !!(id && CH_ID_RE.test(id)); if (ok) n++;
+      var row = document.createElement("div"); row.className = "ch-remote-row" + (ok ? " is-ok" : "");
+      var ic = document.createElement("span"); ic.className = "ch-remote-ic"; ic.innerHTML = CH_ICON[dev.kind] || ""; row.appendChild(ic);
+      var nm = document.createElement("span"); nm.className = "ch-remote-name"; nm.textContent = dev.name; row.appendChild(nm);
+      var idt = document.createElement("span"); idt.className = "ch-remote-id"; idt.textContent = ok ? id.replace(/(\d{3})(?=\d)/g, "$1 ") : "no ID saved"; row.appendChild(idt);
+      if (ok) {
+        var a = document.createElement("a"); a.className = "ch-btn ch-btn-go"; a.href = "anydesk:" + id; a.textContent = "Connect"; a.title = "Opens AnyDesk on this device and dials " + dev.name; row.appendChild(a);
+        var c = document.createElement("button"); c.type = "button"; c.className = "ch-copy"; c.textContent = "Copy ID"; c.addEventListener("click", function () { chCopy(id, c); }); row.appendChild(c);
+      } else { var t = document.createElement("span"); t.className = "src-note"; t.textContent = "save the ID in the " + dev.name + " card below"; row.appendChild(t); }
+      host.appendChild(row);
+    });
+    if (badge) { badge.textContent = n ? n + " of " + CH_DEVICES.length + " reachable" : "no IDs yet"; badge.className = "badge " + (n ? "green" : "gray"); }
+  }
   function chDevState(s, id) { if (!s[id] || typeof s[id] !== "object") s[id] = { done: {}, anydesk: "", reported: {} }; if (!s[id].done) s[id].done = {}; if (!s[id].reported) s[id].reported = {}; return s[id]; }
   function chPct(dev, ds) { var n = 0; dev.steps.forEach(function (st) { if (ds.done[st[0]] || ds.reported[st[0]] === "ok") n++; }); return Math.round(100 * n / dev.steps.length); }
   function chCopy(text, btn) {
@@ -48,6 +68,8 @@
   function renderComputerHub() {
     var grid = $("chGrid"); if (!grid) return;
     var st = chState(); grid.innerHTML = "";
+    renderRemoteAccess();  /* AD-REMOTE v1 */
+    var chSharedIds = chIds();
     CH_DEVICES.forEach(function (dev) {
       var ds = chDevState(st, dev.id), pct = chPct(dev, ds);
       var card = document.createElement("div"); card.className = "card ch-card"; card.setAttribute("data-dev", dev.id);
@@ -73,17 +95,17 @@
       var act = document.createElement("div"); act.className = "ch-actions";
       var a1 = document.createElement("a"); a1.className = "ch-btn"; a1.href = "https://claude.ai/code"; a1.target = "_blank"; a1.rel = "noopener"; a1.textContent = "Open Claude sessions"; act.appendChild(a1);
       var idRow = document.createElement("div"); idRow.className = "ch-id";
-      var inp = document.createElement("input"); inp.type = "text"; inp.placeholder = "AnyDesk ID (9–10 digits) — no password"; inp.value = ds.anydesk || ""; inp.setAttribute("aria-label", dev.name + " AnyDesk ID"); inp.autocomplete = "off"; inp.spellcheck = false;
+      var inp = document.createElement("input"); inp.type = "text"; inp.placeholder = "AnyDesk ID (9–10 digits) — no password"; inp.value = chSharedIds[dev.id] || ds.anydesk || ""; inp.setAttribute("aria-label", dev.name + " AnyDesk ID"); inp.autocomplete = "off"; inp.spellcheck = false;
       var sv = document.createElement("button"); sv.type = "button"; sv.textContent = "Save ID";
       var msg = document.createElement("span"); msg.className = "src-note"; msg.setAttribute("role", "status");
       sv.addEventListener("click", function () {
         var v = inp.value.replace(/\s+/g, "").toLowerCase();
         if (v && !CH_ID_RE.test(v)) { msg.textContent = "That is not an AnyDesk ID (9–10 digits, or name@ad). A password must never go here."; return; }
-        var s2 = chState(), d2 = chDevState(s2, dev.id); d2.anydesk = v; if (v) d2.done.any = true; chSave(s2); renderComputerHub();
+        var s2 = chState(), d2 = chDevState(s2, dev.id); d2.anydesk = v; if (v) d2.done.any = true; chSave(s2); chSetId(dev.id, v); renderComputerHub();
       });
       idRow.appendChild(inp); idRow.appendChild(sv); idRow.appendChild(msg);
       act.appendChild(idRow);
-      if (ds.anydesk && CH_ID_RE.test(ds.anydesk)) {
+      if ((chSharedIds[dev.id] || ds.anydesk) && CH_ID_RE.test(chSharedIds[dev.id] || ds.anydesk)) { ds.anydesk = chSharedIds[dev.id] || ds.anydesk;
         var a2 = document.createElement("a"); a2.className = "ch-btn ch-btn-go"; a2.href = "anydesk:" + ds.anydesk; a2.textContent = "Connect with AnyDesk";
         a2.title = "Opens the AnyDesk app on this device; AnyDesk asks for the password itself"; act.appendChild(a2);
       }

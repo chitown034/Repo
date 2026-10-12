@@ -22,3 +22,7 @@ Bonsai 2 needs PrismML's llama.cpp fork; stock Ollama may not run it. The local 
 
 ## See also
 `wiki/ai-team/tool-integration-status.md`, `REMOTE-ACCESS.md`, `integrations/alienware/README.md`, `integrations/anydesk/README.md`.
+
+## Remote access from anywhere — AnyDesk (added 2026-10-12)
+
+Panel 40 opens with a "Remote access — every computer" card: one Connect button per computer, driven by the AnyDesk IDs saved in each device card. IDs are stored in the deck's shared store (`anydeskIds`) so the phone, tablet and both Macs see the same list; an ID is an address, never a secret. The password stays inside AnyDesk on the computer being reached (Settings → Security → unattended access, set on that machine). Source: `dashboard/wave2/splice-anydesk.py`; local tool `integrations/anydesk/anydesk-links.py`.
