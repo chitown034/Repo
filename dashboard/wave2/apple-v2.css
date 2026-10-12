@@ -128,7 +128,7 @@ input[type="text"],input[type="search"],input[type="number"],input[type="passwor
   .panel{margin-top:48px}
   .panel-head{margin-bottom:16px}
   .panel-title{font-size:26px}
-  .hero-greet{font-size:clamp(34px,10.5vw,44px)}
+  .hero-greet{font-size:clamp(32px,9vw,40px)}
   .card{padding:16px;border-radius:14px}
   .stat{padding:12px 14px;border-radius:14px}
   .stat-row{gap:12px}
