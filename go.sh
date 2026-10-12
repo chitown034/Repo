@@ -42,6 +42,7 @@ step "6 Skill packs" "" bash integrations/skill-packs/install-mac.sh
 step "7 Jarvis + Vanessa's voice" "Jarvis: run the Toolkit tab's Jarvis check, or ask Vanessa" bash integrations/jarvis/jarvis-setup.sh --apply
 step "8 Weekly events scan (first real run)" "" python3 integrations/events/events_scout.py
 step "9 Health report" "" bash scripts/setup-health.sh --write
+step "10 OpenMontage video studio (big download; keys are yours to type later)" "OpenMontage: paste any free key into ~/Applications/OpenMontage/.env" bash integrations/openmontage/openmontage.sh install --apply
 
 say ""; say "================ REPORT ================"
 [ -n "$PASS" ] && say "Done:$(printf "$PASS")"

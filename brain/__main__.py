@@ -38,6 +38,7 @@ def _parser() -> argparse.ArgumentParser:
 
     sub.add_parser("reindex", help="rebuild INDEX.md and brain/index.json from the tree")
     sub.add_parser("doctor", help="non-zero exit if the index is stale or a routed path is missing")
+    sub.add_parser("layout", help="the brain mapped onto references/backend-folder-structure.md; untested services fail")
     b = sub.add_parser("bench", help="brain vs default session vs router-only")
     b.add_argument("--write", action="store_true", help="write docs/reports/BRAIN-BENCH.md")
     sub.add_parser("gaps", help="questions asked and not answered (from the local recall log), most-asked first")
@@ -170,6 +171,11 @@ def main(argv: list[str] | None = None) -> int:
         a = ask_mod.ask(root, " ".join(args.question))
         print(json.dumps(a, ensure_ascii=False, indent=1) if args.json else ask_mod.format_ask(a)); return 0
 
+    if args.cmd == "layout":
+        from . import layout
+        r = layout.check(root)
+        print(layout.format_check(r))
+        return 0 if r["ok"] else 1
     if args.cmd == "tune":
         from . import tune
         items = tune.proposals(root); tune.write(root); print(tune.format_proposals(items)); return 0

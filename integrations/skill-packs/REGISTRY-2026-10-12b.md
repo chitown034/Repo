@@ -57,3 +57,8 @@ records only inside your own account).
 | kondo | reads LinkedIn through an extension LinkedIn's terms prohibit; $36–45/month Business plan required; needs your sign-in | you accept a LinkedIn account-restriction risk and the spend |
 | zapier | fine, but the MCP URL is generated inside your Zapier account — paste it to me and it goes in | — |
 | github-mcp on the Mac | `gh` already does it at zero cost; adding it needs a personal access token | — |
+
+## Added later on 2026-10-12
+| Item | What | Found | Decision | Owner |
+|---|---|---|---|---|
+| calesthio/OpenMontage `e45f5b1` | Agentic video production: 13 pipelines, 100+ tools, Remotion/FFmpeg render, AGPL-3.0, 163 MB | No telemetry, no install hooks, every key optional, offline Piper+FFmpeg path; needs FFmpeg + Node + Python on the Mac | **INSTALL on the Mac** via `integrations/openmontage/openmontage.sh` (`go.sh` step 10); paid render keys only by Steven's hand (HALT: money, credentials) | Sofia uses / Derek installs / Elena key rules |

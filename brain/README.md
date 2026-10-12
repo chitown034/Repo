@@ -10,6 +10,7 @@ Plain Python 3.10+, standard library only, no model calls. Run from any director
 | `brain recall "<question>" [--json] [--top N]` | The retrieval ladder below. Prints the evidence with `file § section`, bytes read, estimated tokens and time. `--top N` also lists the N best-scoring candidates. |
 | `brain remember "<fact>" [--topic X] [--source S]` | Appends one dated line to `memory.md` (or `memory/X.md`) and refreshes `INDEX.md` + `brain/index.json` in the same step. Refuses API keys, tokens, SSNs, card and account numbers, passwords, and third-party contact details. |
 | `brain reindex` | Rebuilds `INDEX.md` and `brain/index.json` from the tree. |
+| `brain layout` | The brain mapped onto `references/backend-folder-structure.md` (config, models, middlewares, controllers, services, routes, utils, tests); exits non-zero if a mapped path is missing or a service module has no test naming it. `doctor` carries the same row. |
 | `brain doctor` | Exits non-zero if the index is stale, a path `CLAUDE.md` routes to is missing, or an `INDEX.md` line points at a missing file. |
 | `brain bench [--write]` | Runs `brain/bench/questions.json` three ways and compares tokens, time and correctness; `--write` writes `docs/reports/BRAIN-BENCH.md`. |
 | `brain gaps` | What was asked and not answered, most-asked first, with the nearest files (from the local keyword-only recall log; `BRAIN_NOLOG=1` turns the log off). |

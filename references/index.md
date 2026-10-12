@@ -62,3 +62,10 @@ cannot write the last one in a clause, it does not need registering.
 - **Version and date everything.** "2026.1 edition" and "synced 2026-08-28" are part of the fact.
 - A source that nothing has opened in a quarter gets a note, not a deletion — knowing something is
   unused is itself useful to the weekly loop.
+
+## Engineering conventions
+
+| Source | What it decides |
+|---|---|
+| `backend-folder-structure.md` | The eight-layer backend layout (config, models, middlewares, controllers, services, routes, utils, tests) every service follows; `bin/brain layout` checks the brain against it |
+| `../integrations/openmontage/README.md` | OpenMontage, the agentic video studio installed on the Mac 2026-10-12 (skill `openmontage-video`) |

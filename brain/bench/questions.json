@@ -310,6 +310,24 @@
    "expected_phrase": "vector",
    "alt_files": [],
    "router_leaf": "references/index.md"
+  },
+  {
+   "id": "q31",
+   "kind": "leaf",
+   "question": "What does the middlewares folder do in the backend folder structure?",
+   "expected_file": "references/backend-folder-structure.md",
+   "expected_phrase": "before the controller",
+   "alt_files": [],
+   "router_leaf": "references/index.md"
+  },
+  {
+   "id": "q32",
+   "kind": "leaf",
+   "question": "Is OpenMontage installed and how do I make a video with it?",
+   "expected_file": "integrations/openmontage/README.md",
+   "expected_phrase": "INSTALL on the Mac",
+   "alt_files": [],
+   "router_leaf": "references/index.md"
   }
  ]
 }
