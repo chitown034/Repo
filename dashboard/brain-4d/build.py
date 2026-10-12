@@ -12,7 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-from brain import graph, indexer, loop, text  # noqa: E402
+from brain import graph, indexer, loop, stopwords, text  # noqa: E402
 
 
 def seat_table(root):
@@ -59,8 +59,8 @@ def ask_index(root, idx, ids):
             keep = sorted(vid[o] for o in others if o in vid)
             if keep:
                 syn[vid[s]] = keep
-    return {"n": len(files), "v": vocab, "df": [df[t] for t in vocab], "f": out_files,
-            "syn": syn, "prior": [list(r) for r in indexer.PRIOR_RULES]}
+    return {"n": len(files), "v": vocab, "df": [df[t] for t in vocab], "f": out_files, "syn": syn,
+            "prior": [list(r) for r in indexer.PRIOR_RULES], "stop": sorted(stopwords.STOPWORDS)}
 
 
 def agents_per_seat(root):
