@@ -52,13 +52,13 @@ button, input { font: inherit; color: inherit; }
 #ask h3 { margin: 0; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 500; display: flex; justify-content: space-between; gap: 8px; }
 #ask h3 span { letter-spacing: 0; text-transform: none; font-family: var(--f-data); }
 #hits { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
-.hit { width: 100%; min-height: var(--hit); text-align: left; border: 1px solid var(--line); background: transparent; border-radius: 10px; padding: 7px 10px; cursor: pointer; display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; align-items: center; }
+.hit { width: 100%; min-height: var(--hit); text-align: left; border: 1px solid var(--line); background: transparent; border-radius: 10px; padding: 6px 10px; cursor: pointer; display: grid; grid-template-columns: auto 1fr; gap: 1px 10px; align-items: center; }
 .hit:hover, .hit:focus-visible { border-color: rgba(200, 210, 240, .45); }
 .hit[aria-selected="true"] { border-color: rgba(243, 185, 77, .6); background: rgba(243, 185, 77, .08); }
-.hit b { font-weight: 600; font-size: 13px; overflow-wrap: anywhere; }
-.hit small { font: 11px var(--f-data); color: var(--muted); overflow-wrap: anywhere; }
-.hit .pct { font: 500 12px var(--f-data); color: var(--now); grid-row: 1 / 3; font-variant-numeric: tabular-nums; }
-.hit .bar { grid-column: 1; height: 4px; border-radius: 2px; background: rgba(160, 175, 215, .16); overflow: hidden; margin-top: 2px; }
+.hit b { grid-column: 2; font-weight: 600; font-size: 13px; overflow-wrap: anywhere; }
+.hit small { grid-column: 2; font: 11px var(--f-data); color: var(--muted); overflow-wrap: anywhere; }
+.hit .pct { grid-column: 1; grid-row: 1 / 3; font: 500 12px var(--f-data); color: var(--now); font-variant-numeric: tabular-nums; }
+.hit .bar { grid-column: 1 / -1; height: 4px; border-radius: 2px; background: rgba(160, 175, 215, .16); overflow: hidden; margin-top: 3px; }
 .hit .bar i { display: block; height: 100%; width: var(--w); background: var(--now); }
 #best { margin: 0; color: #c9cfdd; font-size: 12.5px; }
 #best .heads { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
@@ -475,10 +475,161 @@ $("copyRecall").addEventListener("click", () => {
     .catch(() => { const r = document.createRange(); r.selectNodeContents($("copyText")); getSelection().removeAllRanges(); getSelection().addRange(r); $("copied").textContent = "Selected. Press Cmd+C to copy: " + txt; });
 });
 
+// ---------- Ask the brain: level 1 of the recall order, in the browser. Ports brain/text.py stem() and
+// keywords() (same stopwords, embedded at build time) and the spirit of brain/recall.py score_file: idf per
+// matched term, title/path terms count double, synonyms at 0.4, a coverage multiplier and the authority prior.
+const STOP = new Set(ASK.stop);
+function stem(w) {
+  if (w.length <= 3 || /^\d+$/.test(w)) return w;
+  if (w.endsWith("'s")) w = w.slice(0, -2);
+  if (w.endsWith("ies") && w.length > 4) w = w.slice(0, -3) + "y";
+  else if (w.endsWith("sses")) w = w.slice(0, -2);
+  else if (w.endsWith("s") && !/(?:ss|us|is)$/.test(w) && w.length > 3) w = w.slice(0, -1);
+  let stripped = false;
+  if (w.endsWith("ing") && w.length > 5) { w = w.slice(0, -3); stripped = true; }
+  else if (w.endsWith("ed") && w.length > 4) { w = w.slice(0, -2); stripped = true; }
+  const L = w[w.length - 1];
+  if (stripped && w.length > 3 && L === w[w.length - 2] && !"lsz".includes(L) && /[a-z]/i.test(L)) w = w.slice(0, -1);
+  if (w.endsWith("e") && w.length > 3) w = w.slice(0, -1);
+  return w;
+}
+const WORD = /[a-z0-9]+(?:['_\-.][a-z0-9]+)*/g;
+const keepTok = t => !STOP.has(t) && t.length >= 2;
+function askKeywords(q) {            // question -> ordered, de-duplicated {surface, stem}, as brain/text.py keywords()
+  const seen = new Set(), out = [];
+  for (const m of q.toLowerCase().matchAll(WORD)) {
+    let raw = m[0]; if (raw.endsWith("'s")) raw = raw.slice(0, -2);
+    if (raw.split(/['_\-.]/).length > 1) { const c = stem(raw); if (!seen.has(c) && !STOP.has(raw)) { seen.add(c); out.push({ surface: raw, stem: c }); } continue; }
+    if (!keepTok(raw)) continue;
+    const s = stem(raw); if (seen.has(s)) continue; seen.add(s); out.push({ surface: raw, stem: s });
+  }
+  return out;
+}
+function askTokens(text) {           // text -> stems, compounds whole and in parts, as brain/text.py tokenize()
+  const out = [];
+  for (const m of text.toLowerCase().matchAll(WORD)) {
+    let raw = m[0]; if (raw.endsWith("'s")) raw = raw.slice(0, -2);
+    const parts = raw.split(/['_\-.]/);
+    if (parts.length > 1) { const c = stem(raw); if (!STOP.has(c) && c.length >= 3) out.push(c); parts.forEach(p => { if (keepTok(p)) out.push(stem(p)); }); }
+    else if (keepTok(raw)) out.push(stem(raw));
+  }
+  return out;
+}
+const vid = new Map(ASK.v.map((t, i) => [t, i]));
+const idfOf = i => Math.log(1 + (ASK.n - ASK.df[i] + 0.5) / (ASK.df[i] + 0.5));
+const IDF_MISSING = Math.log(1 + (ASK.n + 0.5) / 0.5);
+const BODY_W = 0.6;                  // a term only in the page body (its top terms by count) counts less than a keyword/heading/title term
+ASK.f.forEach(f => { f.set = new Set(f.t); f.iset = new Set(f.i); f.bset = new Set(f.b); });
+function prior(p) { for (const [pre, w] of ASK.prior) if (p.startsWith(pre)) return w; return 1; }
+function askRank(question) {
+  const groups = askKeywords(question).map(k => {
+    const id = vid.get(k.stem), g = { ...k, idf: id === undefined ? IDF_MISSING : idfOf(id), vars: [], terms: new Set() };
+    if (id !== undefined) { g.vars.push([id, 1]); (ASK.syn[id] || []).forEach(s => g.vars.push([s, 0.4])); }
+    g.vars.forEach(([id]) => g.terms.add(ASK.v[id]));
+    return g;
+  });
+  const total = groups.reduce((a, g) => a + g.idf, 0) || 1, ranked = [];
+  ASK.f.forEach(f => {
+    let score = 0, hit = 0; const matched = [];
+    groups.forEach(g => {
+      let got = false;
+      g.vars.forEach(([id, w]) => {
+        if (f.set.has(id)) { got = true; score += w * idfOf(id) * (f.iset.has(id) ? 2 : 1); }
+        else if (f.bset.has(id)) { got = true; score += w * idfOf(id) * BODY_W; }
+      });
+      if (got) { hit += g.idf; matched.push(g); }
+    });
+    if (!score) return;
+    const cov = hit / total;
+    ranked.push({ f, cov, matched, score: score * (0.2 + cov) ** 2 * prior(f.p) });
+  });
+  ranked.sort((a, b) => b.score - a.score || (a.f.p < b.f.p ? -1 : 1));
+  if (ranked.length) {                 // the CLI's confidence formula for the leader; runners-up scaled by their share of its score
+    const s1 = ranked[0].score, s2 = ranked[1] ? ranked[1].score : 0, c1 = Math.min(1, ranked[0].cov * (0.7 + 0.3 * (s1 - s2) / s1));
+    ranked.forEach(r => { r.conf = c1 * r.score / s1; });
+  }
+  return { groups, ranked, total };
+}
+function askOwner(question, groups) {   // lead seat from the Lane keywords table: most phrases matched wins, ties by table order, none -> Vanessa
+  const q = " " + question.toLowerCase().replace(/[^a-z0-9]+/g, " ") + " ", stems = new Set(groups.map(g => g.stem));
+  let best = null, bestN = 0, words = [];
+  SEATS.forEach(S => {
+    const got = (S.k || []).filter(ph => { const t = askTokens(ph); return t.length ? t.every(x => stems.has(x)) : q.includes(" " + ph + " "); });
+    if (got.length > bestN) { bestN = got.length; best = S; words = got; }
+  });
+  return { seat: best ? best.n : "Vanessa", words };
+}
+const askEl = $("ask"), hitsEl = $("hits");
+let askRes = null;
+function mk(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
+function askRender(question) {
+  const show = !!question;
+  askEl.classList.toggle("on", show);
+  hitsEl.textContent = ""; $("best").hidden = true; $("askNone").hidden = true; $("askCopied").textContent = "";
+  if (!show) { askRes = null; if (mode === "enc") sizeEnc(); return; }
+  const res = askRank(question); askRes = res;
+  const { groups, ranked } = res;
+  $("askTerms").textContent = groups.length ? groups.map(g => g.surface).join(" · ") : "no keywords";
+  $("askCmd").textContent = `bin/brain recall "${question.replace(/"/g, "'")}"`;
+  const own = askOwner(question, groups);
+  $("owner").textContent = ""; $("owner").append("Who owns this: "); $("owner").append(mk("b", "", own.seat));
+  $("owner").append(own.words.length ? ` (lane words: ${own.words.join(", ")})` : " (no lane word matched; the orchestrator routes it)");
+  const best = ranked[0], need = Math.min(2, groups.length);
+  if (!groups.length || !best || best.matched.length < 2 || best.cov < 0.5) {
+    const n = best ? best.matched.length : 0;
+    $("askNone").hidden = false;
+    $("askNone").textContent = !groups.length ? "No keywords in that question (only stopwords) — not in the brain. Add a noun."
+      : `not in the brain — queue research. ${n ? `Only ${n} term${n === 1 ? "" : "s"} matched (${best.matched.map(g => g.surface).join(", ")}) in ${best.f.p}` : "No term matched"}${need > n ? "; the brain needs at least two." : "."}`;
+    if (mode === "enc") sizeEnc();
+    return;
+  }
+  ranked.slice(0, 5).forEach((r, i) => {
+    const n = byId.get(r.f.p), li = mk("li"), b = mk("button", "hit"); li.setAttribute("role", "none");
+    b.type = "button"; b.setAttribute("role", "option"); b.setAttribute("aria-selected", String(i === 0)); b.tabIndex = i === 0 ? 0 : -1;
+    b.dataset.id = r.f.p; b.style.setProperty("--w", Math.round(r.conf * 100) + "%");
+    b.append(mk("b", "", n ? n.t : r.f.p), mk("span", "pct", Math.round(r.conf * 100) + "%"), mk("small", "", `${r.f.p} · ${r.matched.length}/${groups.length} terms`));
+    const bar = mk("div", "bar"); bar.setAttribute("aria-hidden", "true"); bar.append(mk("i")); b.append(bar);
+    b.setAttribute("aria-label", `${n ? n.t : r.f.p}, confidence ${Math.round(r.conf * 100)} percent, ${r.matched.length} of ${groups.length} terms, ${r.f.p}`);
+    b.addEventListener("click", () => askPick(r.f.p));
+    li.append(b); hitsEl.append(li);
+  });
+  const e = encById.get(best.f.p), terms = new Set(); best.matched.forEach(g => g.terms.forEach(t => terms.add(t)));
+  const heads = e ? e.h.filter(h => askTokens(h).some(t => terms.has(t))) : [];
+  const bp = $("best"); bp.hidden = false; bp.textContent = e && e.d ? e.d : "No one-line description in the index yet.";
+  bp.append(mk("span", "heads", heads.length ? "Matching sections: " + heads.join(" · ") : "No section heading holds these terms; the page's keywords do."));
+  if (mode === "enc") sizeEnc();
+}
+function askPick(id) {
+  const n = byId.get(id); if (!n) return;
+  hitsEl.querySelectorAll(".hit").forEach(b => { const on = b.dataset.id === id; b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1; });
+  focusNode(n);
+}
+hitsEl.addEventListener("keydown", e => {
+  const items = [...hitsEl.querySelectorAll(".hit")], i = items.indexOf(e.target); if (i < 0) return;
+  let j = null;
+  if (e.key === "ArrowDown") j = Math.min(items.length - 1, i + 1); else if (e.key === "ArrowUp") j = i - 1;
+  else if (e.key === "Home") j = 0; else if (e.key === "End") j = items.length - 1;
+  else if (e.key === "Escape") { e.preventDefault(); $("q").focus(); return; } else return;
+  e.preventDefault();
+  if (j < 0) { $("q").focus(); return; }
+  items.forEach((b, k) => { b.tabIndex = k === j ? 0 : -1; }); items[j].focus();
+});
+$("q").addEventListener("keydown", e => {
+  const first = hitsEl.querySelector(".hit");
+  if (e.key === "ArrowDown" && first) { e.preventDefault(); first.focus(); }
+  else if (e.key === "Enter" && first) { e.preventDefault(); askPick(first.dataset.id); }
+});
+$("askCopy").addEventListener("click", () => {
+  const txt = $("askCmd").textContent || `bin/brain recall "${$("q").value.trim().replace(/"/g, "'")}"`;
+  navigator.clipboard.writeText(txt).then(() => { $("askCopied").textContent = "Copied: " + txt; })
+    .catch(() => { const r = document.createRange(); r.selectNodeContents($("askCmd")); getSelection().removeAllRanges(); getSelection().addRange(r); $("askCopied").textContent = "Selected. Press Cmd+C to copy: " + txt; });
+});
+
 // search
 $("names").replaceChildren(...nodes.map(n => { const o = document.createElement("option"); o.value = n.t; return o; }));
 $("q").addEventListener("input", e => {
   query = e.target.value.trim().toLowerCase();
+  askRender(e.target.value.trim());
   renderEnc(); announceSoon();
   const exact = nodes.find(n => n.t.toLowerCase() === query);
   if (exact && mode === "map") { if (exact.born > day) setDay(nDays); choose(exact); }

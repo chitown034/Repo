@@ -31,14 +31,17 @@ def seat_table(root):
 
 ASK_FIELDS = ("keywords", "title_terms", "heading_terms", "desc_terms", "path_terms")
 ASK_IDENT = ("title_terms", "path_terms")      # terms that earn the title/path bonus in the browser
+ASK_BODY_TOP = 60                              # body terms per file (by summed section tf) beyond the fields above
+ASK_BUDGET = 120_000                           # bytes; over it, body-only terms that occur in one file are dropped
 
 
 def ask_index(root, idx, ids):
     """Compact term index for the in-page 'Ask the brain' recall: one vocab, per-file postings as vocab
-    indices (the union of the already-stemmed index fields), ident = title/path term indices, df per term,
-    the synonym table (brain/text.py) and the authority priors (brain/indexer.py PRIOR_RULES)."""
+    indices (the union of the already-stemmed index fields, plus the file's top body terms from its stored
+    section term counts, listed separately so the page can weight them lower), ident = title/path term
+    indices, df per term, the synonym table (brain/text.py) and the authority priors (brain/indexer.py)."""
     files = [f for f in idx["files"] if f["path"] in ids]
-    df = {}
+    vocab_in = idx["vocab"]
     rows = []
     for f in files:
         terms = set()
@@ -47,20 +50,41 @@ def ask_index(root, idx, ids):
         ident = set()
         for k in ASK_IDENT:
             ident.update(f.get(k, ()))
-        for t in terms:
-            df[t] = df.get(t, 0) + 1
-        rows.append((f["path"], terms, ident & terms))
-    vocab = sorted(df, key=lambda t: (-df[t], t))
-    vid = {t: i for i, t in enumerate(vocab)}
-    out_files = [{"p": p, "t": sorted(vid[t] for t in terms), "i": sorted(vid[t] for t in ident)} for p, terms, ident in rows]
-    syn = {}
-    for s, others in text.SYNONYMS.items():
-        if s in vid:
-            keep = sorted(vid[o] for o in others if o in vid)
-            if keep:
-                syn[vid[s]] = keep
-    return {"n": len(files), "v": vocab, "df": [df[t] for t in vocab], "f": out_files, "syn": syn,
-            "prior": [list(r) for r in indexer.PRIOR_RULES], "stop": sorted(stopwords.STOPWORDS)}
+        tf = {}
+        for _title, _line, _ntok, codes in f.get("sections", ()):
+            for c in codes:
+                t = vocab_in[c >> 2]
+                tf[t] = tf.get(t, 0) + (c & 3)
+        body = [t for t in sorted(tf, key=lambda t: (-tf[t], t)) if t not in terms][:ASK_BODY_TOP]
+        rows.append((f["path"], terms, ident & terms, set(body)))
+
+    def pack(rows):
+        df = {}
+        for _p, terms, _ident, body in rows:
+            for t in terms | body:
+                df[t] = df.get(t, 0) + 1
+        vocab = sorted(df, key=lambda t: (-df[t], t))
+        vid = {t: i for i, t in enumerate(vocab)}
+        out_files = [{"p": p, "t": sorted(vid[t] for t in terms), "i": sorted(vid[t] for t in ident), "b": sorted(vid[t] for t in body)}
+                     for p, terms, ident, body in rows]
+        return df, vocab, vid, out_files
+
+    def payload(rows):
+        df, vocab, vid, out_files = pack(rows)
+        syn = {}
+        for s, others in text.SYNONYMS.items():
+            if s in vid:
+                keep = sorted(vid[o] for o in others if o in vid)
+                if keep:
+                    syn[vid[s]] = keep
+        return df, {"n": len(files), "v": vocab, "df": [df[t] for t in vocab], "f": out_files, "syn": syn,
+                    "prior": [list(r) for r in indexer.PRIOR_RULES], "stop": sorted(stopwords.STOPWORDS)}
+
+    df, out = payload(rows)
+    if len(json.dumps(out, separators=(",", ":"), ensure_ascii=False)) > ASK_BUDGET:   # drop body-only terms seen in one file
+        rows = [(p, terms, ident, {t for t in body if df[t] > 1}) for p, terms, ident, body in rows]
+        _df, out = payload(rows)
+    return out
 
 
 def agents_per_seat(root):
