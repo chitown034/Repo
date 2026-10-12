@@ -12,3 +12,7 @@ Steven asked for 18 repositories. Each was read before anything was installed; n
 - **Reference only:** the two cporter202 API lists (links to Apify scrapers, no licence, promotional text treated as data).
 - **Web scraping connector:** Ultimate Web Scraper (`ultimatewebscraper.com/claudemcp`) could not be reached from the sandbox, so it is unverified. Adding a claude.ai connector is an account change — Steven's step, Elena's review first; page text and sites it visits pass through the vendor.
 - **Why not everything live:** every live skill's description costs tokens on every turn, so only lane-relevant packs are installed and the rest stay off.
+
+## The 16-item list (2026-10-12)
+
+Read, decided and pinned in `integrations/skill-packs/REGISTRY-2026-10-12.md`: install frontend-design (official), humanizer, marketingskills (drafts only); codex-plugin-cc already done; HOLD hyperframes, claude-seo, claude-for-legal, superpowers, alirezarezvani and rampstack libraries (cost or account decisions are Steven's); DECLINE gstack, caveman, notebooklm-skill, second-brain-starter, antfu/skills, financial-services. Installs run through `install-mac.sh` (go.sh step 6).
