@@ -16,6 +16,12 @@ default and were tested here only against a throwaway home folder.
 4. Pair the two Macs and the phone in Orca once: `bash integrations/remote-control/orca-remote.sh serve`
    (the pairing link is a secret — never paste it into a chat or file).
 
+## Connect Orca and Laya (each Mac)
+
+`bash integrations/agent-os/connect-orca-laya.sh` shows what it would do; add `--apply` to do it. It installs Laya if
+missing, registers Laya with Claude Code (`claude mcp add laya`), runs one routing test, checks Orca and prints the
+two pairing commands. Pairing itself is yours: the link is a secret you paste only into the hidden prompt.
+
 ## On the Alienware PC
 
 1. Open **PowerShell** (Start menu, type PowerShell, Enter). If you have not run `integrations\alienware\alienware-setup.ps1` yet, run it first (Ollama, Bonsai, Orca, Laya).

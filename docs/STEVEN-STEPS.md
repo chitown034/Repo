@@ -105,3 +105,4 @@ Reply "done N" (or "skip N") after each step and Claude keeps the dashboards in 
 31. **Held tools (default no):** Apify, vidIQ connection, OpenRouter for Jev, Remotion licence; Skool MCP not recommended.
 32. **First real events scan and real data for the trading desk (optional).**
 33. **Turn on the Agent OS on each computer.** Mac 1, Mac 2 and the Alienware, one paste each; steps in integrations/agent-os/README.md. Read-only by default; the warnings name what to install.
+34. **Connect Orca and Laya on each Mac.** `bash integrations/agent-os/connect-orca-laya.sh --apply` (preview first without --apply). Then pair Orca yourself with the two commands it prints.
