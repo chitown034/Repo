@@ -67,9 +67,9 @@ doctor|status)
   [ -d "$DIR/remotion-composer/node_modules/remotion" ] && say "  remotion: installed" || say "  remotion: missing (npm install)"
   for t in ffmpeg node; do command -v "$t" >/dev/null 2>&1 && say "  $t: $(command -v "$t")" || say "  $t: MISSING"; done
   if [ -f "$DIR/.env" ]; then
-    n=$(grep -c '^[A-Z_]*=.\+' "$DIR/.env" 2>/dev/null || echo 0); say "  .env: present, $n key(s) filled (values never printed)"
+    n=$(grep -c '^[A-Z_]*\(KEY\|TOKEN\|SECRET\)[A-Z_]*=.\+' "$DIR/.env" 2>/dev/null || echo 0); say "  .env: present, $n key(s) filled (values never printed)"
   else say "  .env: missing"; fi
-  [ -x "$DIR/.venv/bin/python" ] && (cd "$DIR" && "$DIR/.venv/bin/python" -c "from tools.tool_registry import registry; registry.discover(); e=registry.support_envelope(); print('  tools:', sum(len(v) if hasattr(v,'__len__') else 1 for v in e.values()) if isinstance(e,dict) else 'see registry')" 2>/dev/null || say "  tools: registry not importable yet")
+  [ -x "$DIR/.venv/bin/python" ] && (cd "$DIR" && "$DIR/.venv/bin/python" -c "from tools.tool_registry import registry; registry.discover(); e=registry.support_envelope(); print('  tools:', len(e), 'registered;', len(registry.provider_menu()), 'capability groups')" 2>/dev/null || say "  tools: registry not importable yet")
   ;;
 open)
   [ -d "$DIR" ] && (command -v open >/dev/null 2>&1 && open "$DIR" || say "$DIR") || say "not installed - run install --apply"
