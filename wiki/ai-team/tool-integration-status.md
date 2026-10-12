@@ -64,3 +64,12 @@ Steven asked for remote control of his two Macs ("this computer" and the other) 
 ## context.dev and the AI Replica Studio (2026-10-09)
 - **context.dev** (web scraping, brand intelligence, structured web data) is connected through Composio (account added 2026-10-09). A read-only brand search proved it that day; the free allowance showed 1,000 credits, 1 used. Owner: Sofia (marketing) for brand look-ups; Integration lane for the connection. Rule: public/brand data only, never client data.
 - **AI Replica Studio** is a *plan*, not a system yet: `integrations/ai-replica-studio/PLAN.md`. Weekly real-estate and loan-officer videos of Steven's avatar, scripts by the Marketing Agent, compliance read by Alexandra, Steven approves every video, scheduled posting through the connected Facebook / Instagram / LinkedIn / YouTube accounts. Avatar provider and voice are Steven's decisions; he records his own consent and samples.
+
+## Added 2026-10-12 (cloud-built, not yet run on a Mac)
+
+| Item | Status | Where |
+|---|---|---|
+| OpenStock market viewer (AGPL) | installer + Panel 41 card published (deck v190); loopback only; needs Steven's free Finnhub key | `integrations/openstock/` |
+| n8n workflow library (2,061, MIT) | read-only catalog + gated inactive staging; 1,013 with no unsafe flag; nothing activated | `integrations/n8n/WORKFLOW-LIBRARY.md` |
+| Agent files for Orca / Claude Code | 172 generated, linked by `install-mac.sh` (never overwrites); `claude --agent <seat>` on any machine | `integrations/agent-os/agents/` |
+| setup-health CI | green since run #19 (shellcheck + buffered-output fixes) | `.github/workflows/setup-health.yml` |

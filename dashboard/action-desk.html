@@ -117,6 +117,7 @@ button:active, .page-tab:active, .tv-chip:active, .pages-btn:active { transform:
       <li><b>AnyDesk:</b> install it on each computer and tablet, then type each AnyDesk <i>ID</i> (never the password) into the Computer Hub card on the Command Deck.</li>
       <li><b>Phone:</b> open the Claude app, say “update my health numbers” (Apple Health tiles), and install the Orca app for the phone view.</li>
       <li><b>One reply to Claude</b> with: LPT Realty's brokerage DRE number and entity name; approve or decline the two queued posts (Command Deck → Marketing); the AI Steve video replica (yes/no); “defaults” for the rest.</li>
+      <li><b>Free Finnhub key</b> (only if you want the OpenStock market viewer): finnhub.io/register, then type it into <code>~/Applications/OpenStock/.env</code>.</li>
       <li><b>Three short emails</b> (drafts in <code>integrations/loan-stack/CONNECTIONS.md</code>): Ticor (API or bulk export?), ARIVE (API access), your Zoho admin if the profile tick is greyed out.</li>
     </ol>
     <div class="acts"><label class="tick"><input type="checkbox" id="sC">Done</label></div></div></div>
@@ -385,6 +386,12 @@ cd integrations/trading-desk &amp;&amp; python3 -m desk selftest">Copy</button><
     <p class="d">Paste into Terminal on Mac 1, then Mac 2. It installs Laya if it is missing, connects it to Claude Code, runs one test and checks Orca. To preview without changing anything, leave off the last word. Then pair Orca yourself with the two commands it prints (the pairing link is a secret: paste it only into the hidden prompt, never in a chat). Not yet run on your Macs.</p>
     <div class="acts"><code>cd ~/Repo && bash integrations/agent-os/connect-orca-laya.sh --apply</code><button class="btn" data-copy="cd ~/Repo && bash integrations/agent-os/connect-orca-laya.sh --apply">Copy</button>
       <label class="tick"><input type="checkbox" id="s34">Done</label></div></div></div>
+
+  <div class="step" data-id="35"><div class="n">35</div><div class="body">
+    <p class="t">OpenStock market viewer on this Mac (optional)</p>
+    <p class="d">Paste into Terminal once. It needs Docker Desktop and Node and tells you if either is missing. Then get a <b>free</b> key at finnhub.io/register and type it into <code>~/Applications/OpenStock/.env</code> after <code>NEXT_PUBLIC_FINNHUB_API_KEY=</code>. The Trading Desk panel has the Open and Start buttons. It is a viewer, not a broker.</p>
+    <div class="acts"><code>bash integrations/openstock/openstock.sh install --apply</code><button class="btn" data-copy="bash integrations/openstock/openstock.sh install --apply">Copy</button>
+      <label class="tick"><input type="checkbox" id="s35">Done</label></div></div></div>
 
   </details>
 
