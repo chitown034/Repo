@@ -62,6 +62,10 @@ def _parser() -> argparse.ArgumentParser:
     ak = sub.add_parser("ask", help="the front door: recall, auto-escalate to several sections when weak, owner seat, next step")
     ak.add_argument("question", nargs="+"); ak.add_argument("--json", action="store_true")
     sub.add_parser("tune", help="propose synonyms/pages for asked words the brain never matched (writes proposals, edits nothing)")
+    ln = sub.add_parser("learn", help="self-promoting synonyms: try tune proposals against the gold set, show candidates/promoted")
+    ln.add_argument("action", nargs="?", default="status", choices=["status", "try"])
+    pg = sub.add_parser("passages", help="level 3: best passages inside the big documents (sparse-vector search, no model)")
+    pg.add_argument("question", nargs="+"); pg.add_argument("--top", type=int, default=3)
     sub.add_parser("encyclopedia", help="rewrite docs/reports/ENCYCLOPEDIA.md: the living A-Z of every page with backlinks")
     sub.add_parser("loop", help="reindex, doctor, bench, gaps, orgcheck; write docs/reports/BRAIN-LOOP.md; exit 1 on regression")
     sub.add_parser("mcp", help="serve recall/remember/pack/gaps over stdio MCP for any MCP client")
@@ -169,6 +173,16 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "tune":
         from . import tune
         items = tune.proposals(root); tune.write(root); print(tune.format_proposals(items)); return 0
+
+    if args.cmd == "learn":
+        from . import learn
+        if args.action == "try":
+            r = learn.try_proposals(root); print(f"baseline {r['baseline']} · tried {r['tried']} · kept as candidates: {r['kept'] or 'none'}")
+        print(learn.format_state(root)); return 0
+
+    if args.cmd == "passages":
+        from . import passages
+        print(passages.format_passages(passages.search(root, " ".join(args.question), top=args.top))); return 0
 
     if args.cmd == "encyclopedia":
         from . import encyclopedia

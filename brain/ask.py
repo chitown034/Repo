@@ -36,8 +36,17 @@ def ask(root: Path, question: str, budget_tokens: int = 900, log: bool = True) -
             out["est_tokens"] = pk.get("used", out["est_tokens"])
             out["next"] = f"escalated to level 2 (several sections) because level 1 was {'missing' if res['file'] is None else 'weak'}; read them in order"
         else:
-            out["level"] = 3
-            out["next"] = "not in the brain — queue research (level 3) or `bin/brain remember` the answer once known"
+            from . import passages
+            ps = passages.search(root, question)
+            if ps and ps[0]["coverage"] >= 0.5:
+                out["level"] = 3
+                out["sections"] = [{"file": p["file"], "section": "lines " + p["lines"]} for p in ps]
+                out["evidence"] = passages.format_passages(ps)
+                out["est_tokens"] = recall_mod.est_tokens(out["evidence"])
+                out["next"] = "escalated to level 3 (passages inside the big documents); verify against the file before relying on it"
+            else:
+                out["level"] = 4
+                out["next"] = "not in the brain — queue research (level 4) or `bin/brain remember` the answer once known"
     else:
         out["next"] = "answered at level 1 — one section, no escalation needed"
     return out
