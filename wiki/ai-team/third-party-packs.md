@@ -16,3 +16,7 @@ Steven asked for 18 repositories. Each was read before anything was installed; n
 ## The 16-item list (2026-10-12)
 
 Read, decided and pinned in `integrations/skill-packs/REGISTRY-2026-10-12.md`: install frontend-design (official), humanizer, marketingskills (drafts only); codex-plugin-cc already done; HOLD hyperframes, claude-seo, claude-for-legal, superpowers, alirezarezvani and rampstack libraries (cost or account decisions are Steven's); DECLINE gstack, caveman, notebooklm-skill, second-brain-starter, antfu/skills, financial-services. Installs run through `install-mac.sh` (go.sh step 6).
+
+## The 32-item image (2026-10-12)
+
+`integrations/skill-packs/REGISTRY-2026-10-12b.md`: 10 already yours (Slack, Notion, Context7, GitHub, Codex plugin, skill-creator, find-skills, karpathy, Playwright MCP, anthropics skills); 3 to install (same as the 16-list); HOLD wshobson/agents (cherry-pick), repomix (one-off), zapier, higgsfield; DECLINE oh-my-claudecode, vibe-kanban, claude-mem, firecrawl, github-mcp on the Mac, granola, kondo, perplexity.
