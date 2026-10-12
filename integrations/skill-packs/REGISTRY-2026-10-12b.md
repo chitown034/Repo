@@ -35,3 +35,25 @@ the Mac through `integrations/skill-packs/install-mac.sh` (`go.sh` step 6).
 **Net for the 32: 3 install (frontend-design, humanizer, marketingskills — already in the installer), 10 already yours, 7 hold, 12 declined.**
 Pattern across both lists today: the clean, cheap ones are prose-only skills; everything declined either runs hooks on every
 tool call, reads or rewrites your Claude credentials, sends client data to a third party, or is a second orchestrator.
+
+## "Add and install all" (Steven, 2026-10-12) — what that changed
+
+Every held item is now in `install-mac.sh` in its leanest safe form (one y/N each, run by `go.sh` step 6):
+hyperframes `core-skills` with telemetry switched off · claude-seo without the cockpit or any paid key · claude-for-legal
+`commercial-legal` + `privacy-legal` (own contracts and lead data only; Alexandra reviews) · `aeo` from the 388-skill library ·
+wshobson `security-scanning`, `tdd-workflows`, `debugging-toolkit` · superpowers as 3 copied skill folders (no session hook) ·
+rampstack as 5 copied folders · caveman as the single voice skill (no proxy, no hooks) · repomix CLI only · hosted MCPs
+higgsfield, firecrawl (keyless) and granola registered for Claude Code (sign-in in your browser on first use; each bills or
+records only inside your own account).
+
+**Not added even after "install all" — each needs its own explicit yes, because it breaks a rule in CLAUDE.md's HALT list:**
+| Item | The specific harm | What an explicit yes would mean |
+|---|---|---|
+| oh-my-claudecode | rewrites your Claude login token in the Keychain, edits global CLAUDE.md and settings, auto-approves commands, runs workers with permissions off | you accept a second orchestrator that can act without asking |
+| claude-mem | copies every file Claude reads (client files included) into a new database and vector index, and spends your subscription in the background on each tool call | you accept client PII in a vector index |
+| gstack | installer edits global settings (a Stop hook), sends code to OpenAI for "outside reviews" by default, wants to rewrite CLAUDE.md | you accept global settings edits and code egress |
+| vibe-kanban | product shut down 2026-04-10; binary download-and-run; PostHog + Sentry; writes ~/.claude.json | you accept an unmaintained tool with telemetry |
+| notebooklm-skill | archived; stealth-automates your Google account; stores session cookies in plain text; documents leave the machine | you accept a Google account-restriction risk |
+| kondo | reads LinkedIn through an extension LinkedIn's terms prohibit; $36–45/month Business plan required; needs your sign-in | you accept a LinkedIn account-restriction risk and the spend |
+| zapier | fine, but the MCP URL is generated inside your Zapier account — paste it to me and it goes in | — |
+| github-mcp on the Mac | `gh` already does it at zero cost; adding it needs a personal access token | — |
