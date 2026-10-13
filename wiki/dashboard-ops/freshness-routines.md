@@ -9,7 +9,8 @@ honest "cannot refresh from the cloud" stamp. Judge a block by the stamp on the 
 | Block (doc / key) | Routine | Schedule (UTC) |
 |---|---|---|
 | Global + local news (`newsSnapshot`), city lists, housing lists | Command Deck — weather & news (writer) | 01:35 and 13:35 daily |
-| Headlines, AI news, on-this-day, Bears news, opp radar (`liveFeeds`) | Command Deck — morning feeds (writer, Claude) | 12:20 daily |
+| Headlines, AI news, on-this-day, Bears news, opp radar (`liveFeeds`) | Command Deck — morning feeds (writer, Claude) | **13:05** daily (moved 2026-10-13 to land after the Mac's 12:50 UTC overwrite) |
+| Morning brief to the phone (push; reads `twinBrief`, calendar, weather, the six morning keys, market, rates) | Vanessa — morning brief to Steven's phone (cloud) — `trig_01Q9VPMwrKwNUW3kZL54rKgy` | 13:48 daily (6:48 AM PT) |
 | Econoday live note | Command Deck — Econoday note (writer) | 12:35 daily |
 | Elite rewards scan note | Command Deck — Elite Rewards scan note (writer, **daily** since 2026-10-12, was Mondays) | 12:56 daily |
 | Top performers / session read | Command Deck — top performers note (writer) | 13:26 Tue–Sat |
@@ -50,7 +51,15 @@ affluent curated tables, VA comp table, loan program facts, elite-rewards tables
 Last full pass: 2026-10-12 (`dashboard/wave2/refresh-stale.py` + `research-2026-10-12/`, deck v192).
 Ask for "refresh stale deck blocks" to run the next pass; the script refuses to run twice on one deck.
 
-## Known failure mode
+## Known failure modes
+
+**A Mac task overwrites `liveFeeds` wholesale (found 2026-10-13).** `openrouter-feeds-refresh` (5:50 AM PT),
+`feeds-weekly` (9:40 PM PT) and `feeds-market-close` (10:15 PM PT weekdays) `set` the whole document from a
+stale local copy with typed stamps, erasing the cloud writers' entries and pushing housing lists back days.
+They were to be paused on 2026-10-05 (`integrations/mac-fix-all-2026-10-05.md` 1.1) and were not. Until Steven
+pauses them, the sweep's CLOBBER GUARD refills what they erase and names them in `feedFreshness.note`, and
+the morning feeds routine runs after the 12:50 UTC slot. Record: `routines/cloud-routine-repairs.md`, 2026-10-13.
+
 
 Cloud runs fail with `USAGE_LIMIT_REACHED` when the subscription is capped (market close Oct 9,
 top performers Oct 10, Elite Affluent Oct 11, Gridiron game-day Oct 12). The sweep exists to backfill

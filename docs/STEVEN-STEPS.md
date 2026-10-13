@@ -6,6 +6,19 @@ research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox
 
 ## 1 · Phone · 5 minutes (Do these first; nothing else depends on them)
 
+## Start here (2026-10-13) — two things, 5 minutes
+
+- **Mac, Terminal, in the Repo folder — stop the three Mac feed tasks that keep erasing the deck's fresh news:**
+  `runnerctl pause openrouter-feeds-refresh && runnerctl pause feeds-weekly && runnerctl pause feeds-market-close && runnerctl list`
+  (the cloud routines already write those feeds; the Mac copies were supposed to be paused on Oct 5 and were not).
+- **Phone:** from tomorrow 6:48 AM a Vanessa push notification carries the morning brief (weather, needs-you,
+  calendar, headlines, on this day, birthdays, Bears, market, rates). The Mac's 6:40 AM iMessage says "ok" but you
+  did not receive it: open Messages → the +1 650-484-9720 / @jasmine thread; if nothing arrived today, in Terminal run
+  `runnerctl run vanessa-morning-brief-text` and paste what it prints to Claude. To let cloud routines text you too,
+  connect Inkbox once at https://claude.ai/customize/connectors.
+- **One click:** the USC study planner failed Sunday on the usage cap — press Run now at
+  https://claude.ai/code/routines/trig_01VkpVzzqPkGtXPS24E4JNKP.
+
 ## Start here (2026-10-12) — three pastes, then a short "only you" list
 
 - **A. Mac 1, then Mac 2:** Terminal → `cd ~/Repo && git fetch origin && git checkout claude/gracious-newton-4hpfco && git pull && bash go.sh` → answer `y`. Does every safe step (brain, Agent OS, Laya, Orca check, browser hands, skill packs, Jarvis, events scan, health report) and prints a report to paste back to Claude.

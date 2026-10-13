@@ -433,3 +433,55 @@ cannot explain**, and it is named in §4.
 - `docs/findings/findings-R1.json` — the findings behind this file.
 - `docs/CLOUD-WRITE-ARCHITECTURE.md` · `wiki/dashboard-ops/index.md` — both carry the blanket
   "agent-created routines store no connectors" rule that needs the qualifier. Neither is mine to edit.
+
+
+---
+
+## 2026-10-13 — The morning feeds vanished: a Mac task overwrote `liveFeeds`
+
+**Steven (2026-10-13):** *"the routine did not update news, birthdays, things that happened on this day,
+morning brief nor did Vanessa message me via iMessage with this info or sent a morning brief text."*
+
+**What actually happened (read live, 15:20–15:30 UTC).** The cloud routine *Command Deck — morning feeds*
+ran at 12:21 UTC and wrote all six keys (headlines, AI news, on-this-day, birthdays, Bears, opp radar)
+with stamp `2026-10-13T12:22:59Z`, taking `liveFeeds` to v93. At 12:50 UTC the Mac task
+`openrouter-feeds-refresh` (cron `50 5 * * *` PT, still **enabled** — `runnerStatus` shows it ran "ok" at
+06:08 PT) replaced the whole `liveFeeds` document with its own stale copy: the six keys fell back to
+Oct 12 content, the three housing-market lists fell back to Oct 8–9 (they had been Oct 12), and the
+document's top-level `updatedAt` read `2026-10-14T03:15Z`, a day in the future. The 03:40 freshness sweep
+had seen everything "fresh" because the stale copies were under 26 h old. `integrations/mac-fix-all-2026-10-05.md`
+step 1.1 told the Mac to pause `openrouter-feeds-refresh`, `feeds-weekly` and `feeds-market-close`;
+`runnerStatus` proves all three are still enabled, so the pause was never applied.
+
+**Done from the cloud (all proven by the documents):**
+1. `liveFeeds` restored to v101 with the routine's own 12:22:59Z entries (recovered from the run transcript,
+   written with `update`, pinned v100).
+2. *Command Deck — morning feeds* moved from 12:20 to **13:05 UTC** so it writes after the Mac task's 12:50 slot.
+3. *Command Deck — daily freshness sweep* (`trig_01Y1zZ3bmawgi4Mw2jNw9ZFM`) gained a **CLOBBER GUARD**
+   (a key whose stamp moved backwards, a round "typed" stamp, or a future `updatedAt` = clobbered → refilled,
+   named in `feedFreshness.note`) and a **DAILY-KEY RULE** (the six morning keys must carry today's date on
+   the 15:40 run). It also copies an ISA Portal entry back to the deck when the ISA copy is newer.
+4. New cloud routine **Vanessa — morning brief to Steven's phone** (`trig_01Q9VPMwrKwNUW3kZL54rKgy`, 6:48 AM PT
+   daily, fresh session, push on): reads `twinBrief`, calendar, Temecula weather, headlines, on-this-day,
+   birthdays, Bears, market/rates from the deck; one push notification under 200 characters; the full brief
+   is the run's final message. No connector, so no iMessage from the cloud — see "Only Steven" below.
+5. Re-fired: weekly ecosystem backup (failed Sun Oct 11 on the usage cap) and the VA avatar drafts.
+   R19 USC planner cannot be fired by an agent (web-created) — Steven presses Run now.
+
+**The iMessage half.** `runnerStatus` says `r1-morning-brief` wrote `twinBrief` at 05:34 PT (the deck's
+Morning brief card IS fresh, date 2026-10-13) and `vanessa-morning-brief-text` ended "ok" at 06:51 PT.
+The Mac believes it sent the text. Nothing in the cloud can see Inkbox's side (its connector is not
+authorised for this session), so whether `inkbox_imessage_send` delivered is still the open question from
+`docs/NEEDS-STEVEN.md` item 48 (identity `jasmine`, `connect @jasmine`). The push-notification routine above
+is the guaranteed path meanwhile.
+
+**Only Steven (Mac, Terminal, in the Repo folder):**
+```
+runnerctl pause openrouter-feeds-refresh
+runnerctl pause feeds-weekly
+runnerctl pause feeds-market-close
+runnerctl list
+```
+(or `./mac-bootstrap.sh`, which asks the same three pauses). Then, for the text: open Messages, find the
+thread with +1 650-484-9720 / `@jasmine`, and if there is no 6:51 AM message today run
+`runnerctl run vanessa-morning-brief-text` and watch the thread; paste what the runner prints.

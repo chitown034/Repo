@@ -452,3 +452,20 @@ the record of the change. The full split, and the three web-UI routine edits onl
   Alexandra's templates, Elena's PII yes).
 - **Owner.** Derek (automation), Elena (third-party processor), Alexandra (templates). **Status.** Built and
   tested in the sandbox 2026-10-13 (deck v194); Steven runs `go.sh` step 11 and signs in once.
+
+## 2026-10-13 — Morning brief reaches the phone by push; Mac feed tasks are paused, not trusted
+
+- **Request (Steven, verbatim).** *"the routine did not update news, birthdays things that happened on this day,
+  morning brief nor did Vanessa message me via iMessage with this info or sent a morning brief text. Fix everything
+  else not working too"*.
+- **Finding.** The cloud morning feeds routine did run and write; the Mac task `openrouter-feeds-refresh` overwrote
+  the whole `liveFeeds` document 28 minutes later with a stale copy (the Oct 5 pause of the three Mac feed tasks
+  was never applied). The Mac's morning text task reported "ok" but no text arrived; the cloud cannot see Inkbox.
+- **Decision.** (1) Cloud writers win: the morning feeds routine runs after the Mac slot (13:05 UTC) and the daily
+  freshness sweep treats a backwards or typed stamp as a clobber and refills it, naming the Mac task. (2) The
+  morning brief has a guaranteed cloud path: *Vanessa — morning brief to Steven's phone* (6:48 AM PT, push
+  notification, full brief in the run) composed only from deck documents. (3) The three Mac feed tasks are paused
+  by Steven's hand (`runnerctl pause …`), never deleted; iMessage stays the Mac's job until Inkbox is connected to
+  the cloud. Record: `routines/cloud-routine-repairs.md`.
+- **Owner.** Derek (automation), Vanessa (the brief). **Status.** Cloud side done and proven 2026-10-13; Mac pauses
+  and the iMessage check wait on Steven (`docs/STEVEN-STEPS.md`, Start here 2026-10-13).
