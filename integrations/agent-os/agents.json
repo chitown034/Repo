@@ -1,5 +1,5 @@
 {
- "count": 172,
+ "count": 173,
  "agents": [
   {
    "slug": "a11y-architect",
@@ -19,6 +19,13 @@
     "command": "claude --agent a11y-architect",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -45,6 +52,7 @@
     "command": "claude --agent access-auditor",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -70,6 +78,13 @@
     "command": "claude --agent ad-compliance-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -96,6 +111,7 @@
     "command": "claude --agent agent-evaluator",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -121,6 +137,7 @@
     "command": "claude --agent appraisal-manager",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -147,6 +164,13 @@
     "command": "claude --agent architect",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -173,6 +197,13 @@
     "command": "claude --agent automation-engineer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -199,6 +230,7 @@
     "command": "claude --agent bookkeeper",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -224,6 +256,7 @@
     "command": "claude --agent borrower-retention-agent",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -250,6 +283,7 @@
     "command": "claude --agent broker-coach-maxwell",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -275,6 +309,13 @@
     "command": "claude --agent build-error-resolver",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -301,6 +342,7 @@
     "command": "claude --agent buyer-matching-engine",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -327,6 +369,7 @@
     "command": "claude --agent buyers-agent-elite",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -353,6 +396,7 @@
     "command": "claude --agent ca-loan-processor",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -379,6 +423,7 @@
     "command": "claude --agent ca-transaction-coordinator",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -405,6 +450,7 @@
     "command": "claude --agent ca-underwriter",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -431,6 +477,7 @@
     "command": "claude --agent caio-nadia",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": true,
     "gates": [
@@ -456,6 +503,13 @@
     "command": "claude --agent capability-engineer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -481,6 +535,7 @@
     "command": "claude --agent cco-alexandra",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -507,6 +562,7 @@
     "command": "claude --agent cfo-marcus",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -532,6 +588,7 @@
     "command": "claude --agent chief-automation-strategist",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -557,6 +614,7 @@
     "command": "claude --agent chief-of-staff",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -582,6 +640,7 @@
     "command": "claude --agent ciso-elena",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -607,6 +666,7 @@
     "command": "claude --agent client-concierge",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -633,6 +693,7 @@
     "command": "claude --agent closing-coordinator",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -659,6 +720,7 @@
     "command": "claude --agent cmo-sofia",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -685,6 +747,13 @@
     "command": "claude --agent code-architect",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -711,6 +780,46 @@
     "command": "claude --agent code-explorer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "code-validator",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cto-derek",
+   "role": "Report under Derek (CTO): the code-validation gate — validates every code change a human or agent makes before it is called done: scripts/validate-code.sh, then",
+   "laya": {
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"code validator the code-validation gate — validates every\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent code-validator",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -737,6 +846,13 @@
     "command": "claude --agent code-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -762,6 +878,7 @@
     "command": "claude --agent code-simplifier",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -787,6 +904,7 @@
     "command": "claude --agent comment-analyzer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -812,6 +930,7 @@
     "command": "claude --agent commission-tracker",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -837,6 +956,7 @@
     "command": "claude --agent competitive-intelligence-analyst",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -863,6 +983,7 @@
     "command": "claude --agent content-writer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -889,6 +1010,7 @@
     "command": "claude --agent conversation-analyzer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -914,6 +1036,13 @@
     "command": "claude --agent cpp-build-resolver",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -940,6 +1069,13 @@
     "command": "claude --agent cpp-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -965,6 +1101,7 @@
     "command": "claude --agent credit-analyst",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -991,6 +1128,7 @@
     "command": "claude --agent cro-victor",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1017,6 +1155,13 @@
     "command": "claude --agent csharp-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1042,6 +1187,13 @@
     "command": "claude --agent cto-derek",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1068,6 +1220,13 @@
     "command": "claude --agent cto-innovator",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": true,
     "gates": [
@@ -1094,6 +1253,13 @@
     "command": "claude --agent dart-build-resolver",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1120,6 +1286,13 @@
     "command": "claude --agent data-steward",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1146,6 +1319,13 @@
     "command": "claude --agent database-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1171,6 +1351,7 @@
     "command": "claude --agent deal-desk-analyst",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1197,6 +1378,7 @@
     "command": "claude --agent disruption-scout",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": true,
     "gates": [
@@ -1222,6 +1404,13 @@
     "command": "claude --agent django-build-resolver",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1248,6 +1437,13 @@
     "command": "claude --agent django-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1273,6 +1469,7 @@
     "command": "claude --agent doc-updater",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1298,6 +1495,7 @@
     "command": "claude --agent docs-lookup",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1323,6 +1521,7 @@
     "command": "claude --agent document-intelligence-agent",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1349,6 +1548,13 @@
     "command": "claude --agent e2e-runner",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1375,6 +1581,13 @@
     "command": "claude --agent ecc-accessibility-lead",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1401,6 +1614,13 @@
     "command": "claude --agent ecc-agent-safety-officer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1426,6 +1646,13 @@
     "command": "claude --agent ecc-dependency-steward",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1451,6 +1678,13 @@
     "command": "claude --agent ecc-observability-lead",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1477,6 +1711,13 @@
     "command": "claude --agent ecc-security-steward",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1502,6 +1743,13 @@
     "command": "claude --agent ecc-standards-officer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1528,6 +1776,13 @@
     "command": "claude --agent ecc-test-architect",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1554,6 +1809,13 @@
     "command": "claude --agent efficiency-engineer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1579,6 +1841,7 @@
     "command": "claude --agent escalation-recovery-agent",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1604,6 +1867,13 @@
     "command": "claude --agent fastapi-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1630,6 +1900,7 @@
     "command": "claude --agent fitness-trainer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1655,6 +1926,13 @@
     "command": "claude --agent flutter-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1680,6 +1958,13 @@
     "command": "claude --agent fsharp-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1705,6 +1990,7 @@
     "command": "claude --agent fundamental-analyst",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1730,6 +2016,7 @@
     "command": "claude --agent gan-evaluator",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1755,6 +2042,7 @@
     "command": "claude --agent gan-generator",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1780,6 +2068,7 @@
     "command": "claude --agent gan-planner",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1805,6 +2094,7 @@
     "command": "claude --agent geo-aeo-optimizer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1831,6 +2121,13 @@
     "command": "claude --agent go-build-resolver",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1857,6 +2154,13 @@
     "command": "claude --agent go-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1882,6 +2186,7 @@
     "command": "claude --agent harmonyos-app-resolver",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1907,6 +2212,7 @@
     "command": "claude --agent harness-optimizer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1932,6 +2238,7 @@
     "command": "claude --agent health-coach-analyst",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1957,6 +2264,13 @@
     "command": "claude --agent healthcare-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -1983,6 +2297,13 @@
     "command": "claude --agent homelab-architect",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2008,6 +2329,7 @@
     "command": "claude --agent incentives-programs-scout",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2033,6 +2355,7 @@
     "command": "claude --agent inspection-repair-negotiator",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2059,6 +2382,13 @@
     "command": "claude --agent integration-engineer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2084,6 +2414,7 @@
     "command": "claude --agent investor-client-manager",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2110,6 +2441,13 @@
     "command": "claude --agent java-build-resolver",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2136,6 +2474,13 @@
     "command": "claude --agent java-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2161,6 +2506,13 @@
     "command": "claude --agent kotlin-build-resolver",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2187,6 +2539,13 @@
     "command": "claude --agent kotlin-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2212,6 +2571,7 @@
     "command": "claude --agent lead-triage-analyst",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2238,6 +2598,7 @@
     "command": "claude --agent listing-agent-elite",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2264,6 +2625,7 @@
     "command": "claude --agent loan-servicing-transfer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2290,6 +2652,7 @@
     "command": "claude --agent loop-operator",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2315,6 +2678,7 @@
     "command": "claude --agent lpt-recruiting-downline",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2341,6 +2705,7 @@
     "command": "claude --agent luxury-market-specialist",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2367,6 +2732,7 @@
     "command": "claude --agent market-scout",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2392,6 +2758,7 @@
     "command": "claude --agent marketing-agent",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2418,6 +2785,7 @@
     "command": "claude --agent mbs-market-intelligence",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2443,6 +2811,7 @@
     "command": "claude --agent meal-planner",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2468,6 +2837,7 @@
     "command": "claude --agent military-licensing-partnerships",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2494,6 +2864,7 @@
     "command": "claude --agent military-relocation-specialist",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2520,6 +2891,7 @@
     "command": "claude --agent mktg-affiliate-partnerships",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2546,6 +2918,7 @@
     "command": "claude --agent mktg-analytics-lead",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2572,6 +2945,7 @@
     "command": "claude --agent mktg-brand-strategist",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2598,6 +2972,7 @@
     "command": "claude --agent mktg-creative-designer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2624,6 +2999,7 @@
     "command": "claude --agent mktg-direct-mail-farming",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2650,6 +3026,7 @@
     "command": "claude --agent mktg-email-campaign-manager",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2676,6 +3053,7 @@
     "command": "claude --agent mktg-listing-marketing-specialist",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2702,6 +3080,7 @@
     "command": "claude --agent mktg-paid-ads-manager",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2728,6 +3107,7 @@
     "command": "claude --agent mktg-pr-media-relations",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2754,6 +3134,7 @@
     "command": "claude --agent mktg-reputation-manager",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2780,6 +3161,7 @@
     "command": "claude --agent mktg-social-media-manager",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2806,6 +3188,7 @@
     "command": "claude --agent mktg-video-producer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2832,6 +3215,13 @@
     "command": "claude --agent mle-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2858,6 +3248,7 @@
     "command": "claude --agent modelmatch-partner-network",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2884,6 +3275,7 @@
     "command": "claude --agent mortgage-analytics-lead",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2909,6 +3301,7 @@
     "command": "claude --agent mortgage-broker-elite",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2935,6 +3328,7 @@
     "command": "claude --agent mortgage-guideline-agent",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2961,6 +3355,7 @@
     "command": "claude --agent mortgage-intake-agent",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -2987,6 +3382,7 @@
     "command": "claude --agent mortgage-isa-ai",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3013,6 +3409,7 @@
     "command": "claude --agent mortgage-qa-auditor",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3039,6 +3436,13 @@
     "command": "claude --agent network-architect",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3064,6 +3468,13 @@
     "command": "claude --agent network-config-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3089,6 +3500,7 @@
     "command": "claude --agent network-troubleshooter",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3114,6 +3526,7 @@
     "command": "claude --agent new-construction-specialist",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3140,6 +3553,7 @@
     "command": "claude --agent news-analyst",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3165,6 +3579,7 @@
     "command": "claude --agent nonprofit-grant-writer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3191,6 +3606,7 @@
     "command": "claude --agent nonprofit-grants-lead",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3216,6 +3632,7 @@
     "command": "claude --agent opensource-forker",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3241,6 +3658,7 @@
     "command": "claude --agent opensource-packager",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3266,6 +3684,7 @@
     "command": "claude --agent opensource-sanitizer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3291,6 +3710,7 @@
     "command": "claude --agent performance-optimizer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3316,6 +3736,7 @@
     "command": "claude --agent phishing-triage",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3341,6 +3762,13 @@
     "command": "claude --agent php-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3367,6 +3795,13 @@
     "command": "claude --agent planner",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3393,6 +3828,7 @@
     "command": "claude --agent portfolio-manager",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3418,6 +3854,7 @@
     "command": "claude --agent pr-test-analyzer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3443,6 +3880,7 @@
     "command": "claude --agent predictive-lead-mining",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3469,6 +3907,7 @@
     "command": "claude --agent premium-lead-partnerships",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3495,6 +3934,13 @@
     "command": "claude --agent python-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3521,6 +3967,7 @@
     "command": "claude --agent pytorch-build-resolver",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3546,6 +3993,7 @@
     "command": "claude --agent quant-analyst",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3571,6 +4019,13 @@
     "command": "claude --agent rag-pipeline-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3597,6 +4052,7 @@
     "command": "claude --agent rate-pricing-optimizer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3623,6 +4079,7 @@
     "command": "claude --agent re-market-analytics",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3648,6 +4105,13 @@
     "command": "claude --agent react-build-resolver",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3674,6 +4138,13 @@
     "command": "claude --agent react-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3699,6 +4170,7 @@
     "command": "claude --agent realtor-reciprocity-agent",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3725,6 +4197,7 @@
     "command": "claude --agent refactor-cleaner",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3750,6 +4223,7 @@
     "command": "claude --agent refinance-hunter",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3776,6 +4250,13 @@
     "command": "claude --agent reliability-engineer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3801,6 +4282,7 @@
     "command": "claude --agent research-analyst",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3826,6 +4308,7 @@
     "command": "claude --agent risk-manager",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3851,6 +4334,13 @@
     "command": "claude --agent rust-build-resolver",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3877,6 +4367,13 @@
     "command": "claude --agent rust-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3902,6 +4399,13 @@
     "command": "claude --agent sandbox-qa",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3927,6 +4431,13 @@
     "command": "claude --agent security-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3952,6 +4463,7 @@
     "command": "claude --agent seo-specialist",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -3978,6 +4490,7 @@
     "command": "claude --agent showing-coordinator",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -4004,6 +4517,7 @@
     "command": "claude --agent silent-failure-hunter",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -4029,6 +4543,7 @@
     "command": "claude --agent spec-miner",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -4054,6 +4569,13 @@
     "command": "claude --agent stress-test-engineer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -4079,6 +4601,13 @@
     "command": "claude --agent swift-build-resolver",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -4105,6 +4634,13 @@
     "command": "claude --agent swift-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -4130,6 +4666,7 @@
     "command": "claude --agent tax-deadline-analyst",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -4155,6 +4692,7 @@
     "command": "claude --agent tdd-guide",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -4180,6 +4718,7 @@
     "command": "claude --agent technical-analyst",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -4205,6 +4744,7 @@
     "command": "claude --agent title-report-analyst",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -4231,6 +4771,7 @@
     "command": "claude --agent trid-timeline-checker",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -4257,6 +4798,7 @@
     "command": "claude --agent type-design-analyzer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -4282,6 +4824,13 @@
     "command": "claude --agent typescript-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -4307,6 +4856,7 @@
     "command": "claude --agent vanessa-orchestrator",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -4332,6 +4882,7 @@
     "command": "claude --agent vendor-network-manager",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -4358,6 +4909,13 @@
     "command": "claude --agent vue-reviewer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
@@ -4384,6 +4942,7 @@
     "command": "claude --agent webinar-producer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [

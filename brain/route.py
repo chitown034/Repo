@@ -99,7 +99,7 @@ def route(root: Path, request: str, rules: dict | None = None, with_reads: bool 
     workers = [s for s in seats if s not in gate_names or s == lead]
     gates = []
     for name, when, what in rules["gates"]:
-        on = name == "Vanessa" or name in seats or (name == "ECC" and ({"Derek", "Elon"} & set(seats)))
+        on = name == "Vanessa" or name in seats or (name in ("ECC", "Validation") and ({"Derek", "Elon"} & set(seats)))
         if on:
             gates.append({"gate": name, "does": what})
     waves: list[list[dict]] = []

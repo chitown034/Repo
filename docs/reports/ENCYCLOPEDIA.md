@@ -1,6 +1,6 @@
 # Encyclopedia of the second brain
 
-Generated 2026-10-12 by `bin/brain encyclopedia` from `brain/index.json` — 130 pages, 259 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
+Generated 2026-10-12 by `bin/brain encyclopedia` from `brain/index.json` — 131 pages, 259 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
 
 Jump: [A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#g) · [I](#i) · [J](#j) · [K](#k) · [L](#l) · [M](#m) · [N](#n) · [O](#o) · [P](#p) · [R](#r) · [S](#s) · [T](#t) · [U](#u) · [V](#v) · [W](#w)
 
@@ -24,7 +24,6 @@ See also: `integrations/anydesk/README.md`, `wiki/mortgage-programs/va-affordabi
 How the org chart works as an operating system: Laya picks the lane, Jarvis recalls first, Orca runs the agents side…  
 `wiki/ai-team/agent-os.md` · AI team · newest date stamp 2026-10-12  
 Sections: The four steps for any request; The commands (plain code, no model call); Control from Orca and Jarvis (added 2026-10-12); Agent files — the org chart as 172 launchable seats (added 2026-10-12); Coverage and limits  
-Linked from: `knowledge-graph/schema.md`  
 See also: `integrations/agent-os/README.md`, `integrations/jarvis/README.md`, `wiki/ai-team/capability-matrix.md`
 
 ### Agent OS — turn it on for Mac 1, Mac 2 and the Alienware
@@ -41,8 +40,8 @@ Linked from: `CLAUDE.md`, `memory/ai-team.md`, `wiki/clients/index.md`, `wiki/da
 See also: `README.md`, `knowledge-graph/schema.md`
 
 ### AI agent roster on the Mac (aiTeamRoster doc, generatedAt 2026-09-16T00:52:37+00:00, count
-AI agent roster on the Mac (aiTeamRoster doc, generatedAt 2026-09-16T00:52:37+00:00, count 172)  
-`docs/inventory/agent-roster.md` · Loop & findings · newest date stamp undated  
+AI agent roster on the Mac (aiTeamRoster doc, generatedAt 2026-09-16T00:52:37+00:00, count 173; code-validator added 2026-10-12)  
+`docs/inventory/agent-roster.md` · Loop & findings · newest date stamp 2026-10-12  
 Linked from: `projects/ai-team.md`  
 See also: `wiki/ai-team/index.md`, `wiki/ai-team/model-tiering-dispatch.md`
 
@@ -62,7 +61,7 @@ See also: `wiki/ai-team/mentors-and-benches.md`, `wiki/ai-team/model-tiering-dis
 
 ### AI Team org chart
 The full seat map behind Vanessa: Steven at the top, then Steve (digital twin) / Vanessa (Chief of Staff) / the human…  
-`wiki/ai-team/org-chart.md` · AI team · newest date stamp 2026-10-11  
+`wiki/ai-team/org-chart.md` · AI team · newest date stamp 2026-10-12  
 Sections: The shape; The named seats worth knowing by name; What "bench" means; How the seats work together; What every seat can now do (2026-10-10); Added 2026-10-11; Proposal-only seats; See also  
 Linked from: `integrations/browser-agents/README.md`, `projects/ai-team.md`, `wiki/ai-team/capability-matrix.md`, `wiki/ai-team/cross-functional.md`, `wiki/ai-team/mentors-and-benches.md`  
 See also: `wiki/ai-team/index.md`
@@ -108,7 +107,7 @@ See also: `context/about-me.md`, `routines/mac-task-repairs.md`
 Source: the "Backend folder structure & use" diagram Steven saved on 2026-10-12 (Instagram, @smart_coder_hacker; the…  
 `references/backend-folder-structure.md` · Sources · newest date stamp 2026-10-12  
 Sections: The eight layers (request flows top to bottom); How the second brain maps onto it (checked by bin/brain layout); Rules that follow from it  
-See also: `docs/inventory/mac-task-descriptions.md`, `integrations/openmontage/README.md`, `references/index.md`
+See also: `docs/inventory/mac-task-descriptions.md`, `integrations/openmontage/README.md`, `references/vibe-coding-learning.md`
 
 ### Backup Watchdog (cloud)
 A cheap cloud routine that answers one question: is Steven's backup actually current?  
@@ -127,7 +126,7 @@ See also: `integrations/mac-sync/README.md`, `integrations/omniroute-failover/RE
 Steven: "install vercel-labs/agent-skills, agenticskills.io/tools, vercel-labs/skills, vercel-labs/agent-browser and…  
 `integrations/browser-agents/README.md` · Integrations · newest date stamp 2026-10-10  
 Sections: What each one is, and what was done with it; Install on the Mac (Steven, ~5 minutes); Guardrails (CLAUDE.md HALT list — they win over any skill's own text); Verified here (cloud sandbox, 2026-10-10) / not verified  
-Linked from: `MAC-INSTALL-tooling.md`, `integrations/browser-use/README.md`  
+Linked from: `MAC-INSTALL-tooling.md`  
 See also: `wiki/ai-team/org-chart.md`, `wiki/ai-team/tool-integration-status.md`
 
 ### browser-use — Claude Code drives a browser (added 2026-10-07)
@@ -135,7 +134,7 @@ Steven, 2026-10-07: "install https://github.com/browser-use/browser-use.git".
 `integrations/browser-use/README.md` · Integrations · newest date stamp 2026-10-07  
 Sections: Steven: one command on the Mac; Rules for every agent that uses it  
 Linked from: `integrations/api-anything/README.md`  
-See also: `integrations/browser-agents/README.md`, `integrations/open-design/README.md`
+See also: `docs/STEVEN-STEPS.md`, `integrations/open-design/README.md`
 
 ### Buyer process
 The buyer-side path from lead intake through matching, showings, offer, earnest money, contingencies, and close — the…  
@@ -216,7 +215,7 @@ See also: `docs/INTEGRATOR-TODO.md`, `integrations/CONNECTIONS.md`
 As of 2026-10-12. Steven's rule (2026-10-12): every block refreshes at least once a day, more often where the data…  
 `wiki/dashboard-ops/freshness-routines.md` · Dashboard ops · newest date stamp 2026-10-12  
 Sections: Cloud routines (Claude subscription, WebSearch only, ArtifactData writes; never publish/Edit); ISA Portal mirror (https://claude.ai/code/artifact/4348b34d-afa0-4d2e-8214-29b1319cf041); Mac tasks (the cloud cannot write these); Baked seeds (HTML, refreshed by a session pass, not a routine); Known failure mode  
-See also: `docs/inventory/cloud-routines.md`, `integrations/n8n/README.md`, `memory.md`
+See also: `docs/inventory/cloud-routines.md`, `integrations/mac-claude-only.md`, `integrations/n8n/README.md`
 
 ### Command Deck — Strava wrapper guard — cloud routine
 Created 2026-09-22 23:27 UTC by the orchestrator, as a stopgap.  
@@ -309,7 +308,7 @@ See also: `README.md`, `docs/NEEDS-STEVEN-R4.append.md`
 Written 2026-10-11.  
 `wiki/events-networking/index.md` · Dashboard ops · newest date stamp 2026-10-11  
 Sections: How the weekly run works; City map; Reading the report; Rules; Sources  
-See also: `docs/INSTALL-COVERAGE.md`, `integrations/jarvis/README.md`, `routines/events-weekly.md`
+See also: `docs/INSTALL-COVERAGE.md`, `references/vibe-coding-learning.md`, `routines/events-weekly.md`
 
 ## F
 
@@ -389,7 +388,7 @@ See also: `wiki/real-estate-playbooks/index.md`
 Jarvis (OpenJarvis memory.db), the real Laya model and Vanessa's recorded voice all live on the Mac.  
 `integrations/jarvis/README.md` · Integrations · newest date stamp 2026-10-09  
 Sections: Run on the Mac (from the Repo folder); Laya; Vanessa's voice; What this never does  
-Linked from: `docs/NEEDS-STEVEN-R4.append.md`, `memory/ai-team.md`, `wiki/ai-team/agent-os.md`, `wiki/events-networking/index.md`  
+Linked from: `docs/NEEDS-STEVEN-R4.append.md`, `memory/ai-team.md`, `wiki/ai-team/agent-os.md`  
 See also: `integrations/mac-task-specs.md`
 
 ## K
@@ -398,8 +397,7 @@ See also: `integrations/mac-task-specs.md`
 Small, closed vocabularies. A graph with an open vocabulary is a graph nobody can query.  
 `knowledge-graph/schema.md` · Knowledge graph · newest date stamp 2026-09-22  
 Sections: Entity types; Relationship vocabulary; Node shape; Rules  
-Linked from: `AGENTS.md`, `knowledge-graph/README.md`, `wiki/clients/index.md`  
-See also: `wiki/ai-team/agent-os.md`
+Linked from: `AGENTS.md`, `knowledge-graph/README.md`, `references/vibe-coding-learning.md`, `wiki/clients/index.md`  
 
 ## L
 
@@ -551,14 +549,14 @@ See also: `integrations/alienware/README.md`
 Steven, 2026-10-08: "fix anything not working to include ISA kpi and content pipeline automations".  
 `integrations/mac-fix-isa-kpi-2026-10-08.md` · Integrations · newest date stamp 2026-10-08  
 Sections: After you paste the report back  
-Linked from: `integrations/mac-fix-all-2026-10-05.md`, `projects/isa-portal.md`, `references/index.md`  
+Linked from: `integrations/mac-fix-all-2026-10-05.md`, `projects/isa-portal.md`  
 See also: `integrations/trading-desk/README.md`
 
 ### Mac: remove Perplexity, run everything on the Claude subscription (2026-10-05)
 Steven, 2026-10-05: "remove everything running on Perplexity and replace with Claude subscription" and "ensure entire…  
 `integrations/mac-claude-only.md` · Integrations · newest date stamp 2026-10-05  
 Sections: The paste-in; What each step replaces  
-Linked from: `context/decisions.md`, `integrations/mac-fix-all-2026-10-05.md`, `routines/fub-removal-2026-09-24.md`  
+Linked from: `context/decisions.md`, `integrations/mac-fix-all-2026-10-05.md`, `routines/fub-removal-2026-09-24.md`, `wiki/dashboard-ops/freshness-routines.md`  
 See also: `integrations/mac-everything-2026-10-09.md`, `integrations/omniroute/README.md`
 
 ### Master Findings Table — Cycle 6
@@ -579,7 +577,7 @@ See also: `integrations/mac-brain-2026-10-08.md`, `references/index.md`
 Auto-memory store for the Second Brain project — 47 dated entries as of 2026-10-09, near the 100-line cap.  
 `memory.md` · Memory · newest date stamp 2026-10-12  
 Sections: Turning it on; What goes in; What does NOT go in; Hygiene; Entries; How many browser recipes across the five DOMShell harnesses  
-Linked from: `wiki/dashboard-ops/connections.md`, `wiki/dashboard-ops/freshness-routines.md`  
+Linked from: `wiki/dashboard-ops/connections.md`  
 See also: `context/decisions.md`, `docs/NEEDS-STEVEN.md`, `wiki/dashboard-ops/db-docs.md`
 
 ### Mentors and benches
@@ -748,8 +746,8 @@ See also: `CLAUDE.md`, `OPTIMIZATION.md`, `docs/inventory/db-docs.md`
 This is a register, not a library. It records what a source is, where it lives and how current it is.  
 `references/index.md` · Sources · newest date stamp 2026-10-12  
 Sections: Playbooks (digitised, 2026.1 editions, ~1,700 pages combined); Live systems (pointers, not stores); External directories (pointers only); Tools and candidates (2026-09-28); Research notes (internal); Registering a source; Rules; Engineering conventions  
-Linked from: `references/backend-folder-structure.md`, `references/memory-projects.md`  
-See also: `integrations/mac-fix-isa-kpi-2026-10-08.md`, `integrations/openmontage/README.md`, `wiki/dashboard-ops/db-docs.md`
+Linked from: `references/memory-projects.md`  
+See also: `integrations/openmontage/README.md`, `references/vibe-coding-learning.md`, `wiki/dashboard-ops/db-docs.md`
 
 ### Referral & reciprocity
 How realtor reciprocal referrals, the referral-partner ledger, and LPT's recruiting/revenue-share pipeline actually…  
@@ -831,7 +829,7 @@ See also: `wiki/ai-team/third-party-packs.md`
 Same list as the Action Desk page (https://claude.ai/artifact/9S8G2ZhhqP1iUsPZrPsmRn), which has a button per step.  
 `docs/STEVEN-STEPS.md` · Loop & findings · newest date stamp 2026-10-12  
 Sections: 1 · Phone · 5 minutes (Do these first; nothing else depends on them); Start here (2026-10-12) — three pastes, then a short "only you" list; 2 · One reply to Claude · 2 minutes (Copy, fill the blanks, send in this chat); 3 · Mac, one sitting · about 45 minutes (Terminal first; then one command does the rest and asks before every change); 4 · Accounts and settings · about 30 minutes (Sign-ins and permission ticks only you can do; say "done N" after each); 5 · Applications and emails · 15 minutes (Drafts are in integrations/CONNECT-PLAN-2026-10-09.md section 6; nothing has been sent); 6 · Decisions · one reply (Each defaults to no; nothing is spent without your yes); 7 · Verify the brain, Jarvis, Laya and Vanessa's voice · 3 minutes (Last, once the Mac steps above are done; nothing is changed except two local files)  
-Linked from: `docs/HANDOFF-NEW-CHAT.md`, `docs/PASTE-TO-CLAUDE-ON-MAC.md`, `integrations/remote-control/README.md`, `wiki/ai-team/computer-hub.md`, `wiki/ai-team/tool-integration-status.md`  
+Linked from: `docs/HANDOFF-NEW-CHAT.md`, `docs/PASTE-TO-CLAUDE-ON-MAC.md`, `integrations/browser-use/README.md`, `integrations/remote-control/README.md`, `wiki/ai-team/computer-hub.md`, `wiki/ai-team/tool-integration-status.md`  
 See also: `integrations/agent-os/README.md`
 
 ## T
@@ -894,6 +892,13 @@ CORRECTION 2026-09-24 — read before anything below.
 `integrations/vanessa-voice-everywhere.md` · Integrations · newest date stamp 2026-09-24  
 Sections: Per-channel: what she does today, what she does after Steven's steps, what she cannot do; The gap, stated exactly; The chain, after this change; The three changes; Rules this must not break; Measured on 2026-09-22 — what the encoder produces and what Inkbox does with it; What is still unverified, and how you would know; Discord and WhatsApp — specified, and the answer is no send path  
 Linked from: `docs/NEEDS-STEVEN-R4.append.md`, `docs/SETUP-RUNBOOK.md`, `integrations/mac-task-specs.md`  
+
+### Vibe-coding learning shelf — awesome-vibe-coding and Easy-Vibe (recorded 2026-10-12)
+Two reading resources Steven asked to install on 2026-10-12.  
+`references/vibe-coding-learning.md` · Sources · newest date stamp 2026-10-12  
+Sections: awesome-vibe-coding (awesome-vibe-coding/awesome-vibe-coding, CC0, commit 46d0f0d, 2026-08-13); Easy-Vibe (datawhalechina/easy-vibe, CC BY-NC-SA 4.0, commit 130e9b7, 2026-08-25); How the team uses them  
+Linked from: `references/backend-folder-structure.md`, `references/index.md`, `wiki/events-networking/index.md`  
+See also: `knowledge-graph/schema.md`
 
 ## W
 

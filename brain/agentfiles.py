@@ -34,6 +34,9 @@ def render(a: dict, lead_of: dict) -> str:
     desc = re.sub(r"\s+", " ", a["role"]).strip().rstrip(".")[:150]
     prop = "This seat is PROPOSAL-ONLY: return proposals, never changes." if a["guard"]["proposal_only"] else ""
     gates = " -> ".join(a["guard"]["gates"]) or "Vanessa"
+    tk = a.get("toolkit") or []
+    toolkit = ("Toolkit (code-validation gate, mandatory on any code change): " + "; ".join(tk) +
+               ". Code is not done until scripts/validate-code.sh passes AND the code-validator agent has reviewed the diff.") if tk else ""
     body = f"""---
 name: {_name(a['slug'])}
 description: {desc}. Lane {seat}, tier {a['tier']}, reports to {lead}.
@@ -43,6 +46,7 @@ You are **{a['slug']}** on Steven Shearrill's AI team (org chart: wiki/ai-team/o
 Role: {a['role'].strip()}
 Place: tier {a['tier']} · lane {seat} · reports to **{lead}** · model {a['model']} · dispatched by Vanessa in waves of at most 8.
 {prop}
+{toolkit}
 Start by reading `{start}` and nothing else until CLAUDE.md's routing table sends you elsewhere. Prefer `bin/brain ask "<question>"` over opening files.
 Your output goes through these gates, in order: {gates}. Say which brain page you used.
 

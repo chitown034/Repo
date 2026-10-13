@@ -51,6 +51,7 @@ When the request matches the words, the seat joins the plan even if it is not th
 |---|---|---|
 | Alexandra | Alexandra is in the plan | Compliance review of the drafted output; Steven decides |
 | ECC | Derek or Elon is in the plan | Standards, tests, security and agent-safety review of any change |
+| Validation | Derek or Elon is in the plan (any code change) | The code-validator agent: `scripts/validate-code.sh` then the VibeBreaker 20-pass adversarial review of the diff; code is not done until both pass (`.claude/skills/code-validation-gate`) |
 | Vanessa | always | Consolidates every seat into one answer for Steven |
 
 ## HALT words — stop and write a Needs-Steven packet

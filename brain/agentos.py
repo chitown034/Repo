@@ -40,6 +40,16 @@ SEAT_OF_LEAD = {"cfo-marcus": "Marcus", "cmo-sofia": "Sofia", "cto-derek": "Dere
                 "caio-nadia": "Nadia", "cro-victor": "Victor", "ciso-elena": "Elena", "cto-innovator": "Elon",
                 "vanessa-orchestrator": "Vanessa"}
 TIER_MODEL = {"1": "Opus 5.5", "2": None, "3": "Sonnet 5"}
+# Every engineering seat carries the code-validation gate (Steven, 2026-10-12): the deterministic checks, the
+# VibeBreaker 20-pass review by the code-validator agent, and the two learning shelves the reviews cite.
+ENGINEER_TOOLKIT = [".claude/skills/code-validation-gate", "scripts/validate-code.sh",
+                    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+                    "references/backend-folder-structure.md", "references/vibe-coding-learning.md"]
+ENGINEER_SLUG = re.compile(r"(-engineer|-reviewer|-architect|-validator|^ecc-|^cto-|-qa$|^e2e-|-tester$)")
+
+
+def is_engineer(slug: str, seat: str | None) -> bool:
+    return bool(ENGINEER_SLUG.search(slug)) or seat in ("Derek", "Elon")
 
 
 def load_roster(root: Path) -> list[dict]:
@@ -73,6 +83,7 @@ def entry(root: Path, a: dict, rules: dict) -> dict:
         "laya": {"lane": seat, "starts_from": rules["starts"].get(seat)},
         "jarvis": {"recall": f'bin/brain recall "{_keywords(a)}"', "local_only_for_client_data": True},
         "orca": {"command": f"claude --agent {a['slug']}", "worktree": "one Orca worktree per agent; <=8 live at once"},
+        "toolkit": ENGINEER_TOOLKIT if is_engineer(a["slug"], seat) else [],
         "guard": {"proposal_only": a["slug"] in PROPOSAL_ONLY,
                   "gates": [g for g in ("Alexandra" if seat in ("Alexandra", "Victor", "Sofia", "Harrison") else "",
                                         "ECC" if seat in ("Derek", "Elon") else "", "Vanessa") if g]},

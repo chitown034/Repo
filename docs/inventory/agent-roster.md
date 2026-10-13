@@ -1,4 +1,4 @@
-# AI agent roster on the Mac (aiTeamRoster doc, generatedAt 2026-09-16T00:52:37+00:00, count 172)
+# AI agent roster on the Mac (aiTeamRoster doc, generatedAt 2026-09-16T00:52:37+00:00, count 173; code-validator added 2026-10-12)
 
 | slug | tier | lead | model | role |
 |---|---|---|---|---|
@@ -30,6 +30,7 @@
 | cmo-sofia | 1 | vanessa-orchestrator | opus | Sofia, Chief Marketing Officer on Steven Shearrill's AI Team — brand voice, campaigns, content calendar, webinars (VA Loan Mastermind Live,  |
 | code-architect | 3 | — | opus | Designs feature architectures by analyzing existing codebase patterns and conventions, then providing implementation blueprints with concret |
 | code-explorer | 2 | cto-derek | sonnet | Deeply analyzes existing codebase features by tracing execution paths, mapping architecture layers, and documenting dependencies to inform n |
+| code-validator | 2 | cto-derek | opus | Report under Derek (CTO): the code-validation gate — validates every code change a human or agent makes before it is called done: scripts/validate-code.sh, then the VibeBreaker 20-pass adversarial review of the diff; reports evidence, never patches. |
 | code-reviewer | 3 | — | opus | Expert code review specialist. |
 | code-simplifier | 3 | — | sonnet | Simplifies and refines code for clarity, consistency, and maintainability while preserving behavior. |
 | comment-analyzer | 3 | — | opus | Analyze code comments for accuracy, completeness, maintainability, and comment rot risk. |

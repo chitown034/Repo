@@ -328,6 +328,18 @@
    "expected_phrase": "INSTALL on the Mac",
    "alt_files": [],
    "router_leaf": "references/index.md"
+  },
+  {
+   "id": "q33",
+   "kind": "leaf",
+   "question": "Who validates my code after I write it and with what protocol?",
+   "expected_file": ".claude/skills/code-validation-gate/SKILL.md",
+   "expected_phrase": "VibeBreaker",
+   "alt_files": [
+    "wiki/ai-team/cross-functional.md",
+    "references/index.md"
+   ],
+   "router_leaf": "wiki/ai-team/index.md"
   }
  ]
 }
