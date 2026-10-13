@@ -16,6 +16,7 @@ research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox
   did not receive it: open Messages → the +1 650-484-9720 / @jasmine thread; if nothing arrived today, in Terminal run
   `runnerctl run vanessa-morning-brief-text` and paste what it prints to Claude. To let cloud routines text you too,
   connect Inkbox once at https://claude.ai/customize/connectors.
+- **One click, weather every day:** open https://claude.ai/code/routines/trig_01Y1zZ3bmawgi4Mw2jNw9ZFM and add the AccuWeather connector to that routine (Claude cannot attach connectors to a routine on this plan). Until then weather is refreshed only when you ask Claude in a chat.
 - **One click:** the USC study planner failed Sunday on the usage cap — press Run now at
   https://claude.ai/code/routines/trig_01VkpVzzqPkGtXPS24E4JNKP.
 

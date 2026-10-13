@@ -478,3 +478,8 @@ Measured 2026-09-28 01:50–02:05 UTC from a read-only export of both live store
     thread and run `runnerctl run vanessa-morning-brief-text` if nothing came at 6:51 AM; connect Inkbox at
     https://claude.ai/customize/connectors if you want cloud routines to text you; press Run now on R19
     (trig_01VkpVzzqPkGtXPS24E4JNKP). Record: `routines/cloud-routine-repairs.md`, 2026-10-13.
+
+102. **2026-10-13 — weather on a schedule needs one click.** The daily freshness sweep cannot carry the AccuWeather
+    connector when an agent creates it. Open https://claude.ai/code/routines/trig_01Y1zZ3bmawgi4Mw2jNw9ZFM and add
+    AccuWeather; weather then refreshes at 03:40 and 15:40 UTC. Today's weather (7 cities, 8:31 AM PT) was written by
+    hand from a session. The 15:40 sweep itself died on the usage cap. Avatars now move for every reply (deck v195).

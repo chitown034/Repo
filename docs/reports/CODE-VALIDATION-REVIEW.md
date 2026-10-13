@@ -384,3 +384,129 @@ sentences in `integrations/mac-task-specs.md` §5c and `.claude/skills/whatsapp-
 per-message heredoc delimiter (`REPLY_<message id>`) and the rule that a reply may never contain that line. No
 code or test changed; `bash scripts/validate-code.sh` PASS (14 checks, 16 Kapso tests). Written by the session,
 not the validator, because the delta is prose.
+
+# VibeBreaker Review — 2026-10-13, round 5 (presence text-paced talk)
+
+change-set: acb685d0a4a595cc
+
+## Verdict
+
+`SURVIVED*` (gate verdict: **FIX FIRST**). There are no critical or high findings. One MEDIUM is confirmed, and it is in the behaviour Steven asked for. While a long reply's text talk is still running, the presence overrides "Thinking…" for the next question and then drops it to "Standing by" while that question is still in flight.
+
+## Scope
+
+- Change-set: acb685d0a4a595cc (`dashboard/wave2/splice-presence-texttalk.py`, new). `git status` also shows `docs/reports/CODE-VALIDATION.md`, which validate-code.sh generates.
+- Deterministic checks: `verdict: PASS (1 passed, 0 failed)` (py_compile only; no test exists for the splice).
+- Mode: DIFF. Passes run on the Python splice: 01, 04, 05, 19. Passes run on the inserted dashboard JS: 01, 04, 05, 17, 19. Pass 20 ran last.
+- Inspected in place in `/tmp/claude-0/deck-r7.html` (the applied copy, published as v195): the inserted block at 27124-27150, the hooks at 27070, 27394, 27481 and 27379, and the code it interacts with. That code is playRealClipEntry (26782), stopTalkingLoop/TALK_LOOP (26815), deliveryAnimStart/End (26836-26895), playFlaggedThen/playOpenerThen (26972), playTalkingLoop (26987), createPresence (27089), the chatSetThinking wrapper (27367), the steveSetSpeaking wrapper (27380), voiceReplyRequest, voiceStop (27479) and playVoiceReply, plus the Vanessa send path (25818-25918) and the specialist factory send path (26454-26510).
+- Evidence method: static trace, plus an in-memory node replay of the inserted block, extracted verbatim from the deck, against a stub presence (no files written). No browser run.
+- Material scope limitation: NO. The deck file is outside the change-set hash. Only the splice is hashed.
+
+## CONFIRMED
+
+### P05-F1 — MEDIUM — the text-talk interval overrides "thinking" for the next question, then its end timer sets "idle" while that request is still in flight
+- Location: dashboard/wave2/splice-presence-texttalk.py:45 (interval: `if (p.get() !== "speaking" && !presenceAudioLive(who)) p.set("speaking")`) and :46-52 (end timer `if (p.get() === "speaking") p.set("idle")`). These are deck-r7.html:27141-27148.
+- Trigger: Vanessa or Steve gives a reply longer than about 62 words. The talking loop is capped at 25 s (400 ms/word) and the text talk at 45 s (380 ms/word), so stopTalkingLoop clears TALK_LOOP while the text talk is still running. Steven sends a follow-up inside that window. A bank-clip reply (playRealClipFor) has no TALK_LOOP at all, so the window there is the whole text-talk duration after the clip ends.
+- Bad state: chatSetThinking(on) sets "thinking" (deck 25818 → wrapper 27367). Within 230 ms the interval sets it back to "speaking" and the face nods. When the old timer ends, the state goes to "idle"/"Standing by" while the request is still pending. Then chatSetThinking(off) does nothing because the state is no longer "thinking". Replayed with the extracted block: t=300 ms state=thinking → t=600 ms state=speaking → after the timer ends, state=idle with the request still in flight.
+- Fix proof: the interval re-asserts only from a state this talk owns, never from "thinking"/"listening". Alternatively, the send path (chatSetThinking on) calls presenceTextTalkStop(who). Test: start a text talk, set "thinking", then assert the state is still "thinking" after 600 ms and after the talk's end time.
+
+### P05-F2 — LOW — after an audio handler ends the turn, the interval puts the label back to "Speaking" but not the banner or Steve's avatar ring
+- Location: splice :45 (deck 27141), interacting with playRealClipEntry `done` (deck 26788-26797) and stopTalkingLoop (deck 26816-26828).
+- Trigger: a bank-clip reply whose clip is shorter than the text talk, or a reply over about 62 words whose talking loop hits the 25 s cap.
+- Bad state: the handler sets "idle", removes the banner and calls steveSetSpeaking(false). Within 230 ms the interval sets "speaking" again with no banner and no `speaking` class on steveAvatarWrap. The indicators disagree, and the state flaps idle→speaking, until the text-talk end restores consistency. The end timer then cleans up all three, so nothing stays stuck.
+- Fix proof: let the interval re-raise through the same path as the start (banner + steveSetSpeaking). Alternatively, end the text talk when an audio handler ends the turn. Test: in a headless run, end the clip and assert that `data-state`, `#vanessaSpeaking.on` and `#steveAvatarWrap.speaking` agree at every 230 ms sample.
+
+### P01-F1 — INFO — `sub1` cannot detect a duplicated anchor
+- Location: splice :19-23. `re.subn(..., count=1)` returns at most 1, so `n != 1` only catches a missing anchor and never a duplicate one.
+- Evidence: all five anchors occur exactly once in deck-r7.html today (grep -c = 1 each). Nothing is mis-spliced now. A future second copy of an anchor would patch the first copy silently.
+- Fix proof: count with `len(re.findall(pat, t))` before substituting, and abort when the count is not 1.
+
+### P17-F1 — INFO — `window.cdSpeak` ships to production and drives the real voice queue
+- Location: splice :69-70 (deck 27379).
+- Evidence: cdSpeak calls vanessaSpeak/steveSpeak → voiceReplyRequest → `lsSet("voiceReplyQueue")` → syncKeyToDb (deck 7856-7858). In the published deck, any caller of the hook (texttalk-test.mjs pointed at the live page, or a console) therefore queues a real voice-reply-render job on the Mac. Only same-origin script can reach it, and that script already has the same power, so there is no privilege gain. The deck already exposes window.cdVoiceOnDoc and similar hooks.
+- Decision for Steven: keep the hook, or gate it behind a test flag. Run the Playwright check only against a local copy.
+
+## UNVERIFIED
+
+- None.
+
+## REJECTED (pass 20)
+
+- Timer leak on a second reply: presenceTextTalk calls presenceTextTalkStop before it arms new timers (splice :38), and only one entry exists per `who`. Clean.
+- voiceStop ordering: presenceTextTalkStop runs before the idle reset (deck 27481). Placing it after `if (!id) return` is correct because the only re-raise risk is a live VOICE_PLAYING. Clean.
+- "Stuck in speaking on an empty reply" (stop old talk, then `words==0` return): this already happens without the change. With empty text, playOpenerThen → playFlaggedThen sets "speaking" and hands off to playTalkingLoop(""), which returns false, so nothing resets the state (deck 26972-26987). The splice adds nothing to that path. It is out of scope for this change-set, and a separate fix is worth considering.
+- Regex escaping: `js.replace("\\","\\\\")` protects `/\s+/` in the replacement, and the applied deck shows `/\s+/` intact (27135). Clean.
+- Idempotence: MARK is checked first (:15). The assert at :73 fails before the write at :74 if the KAPSO anchor is missing, so a partial write is impossible. Clean.
+
+## Coverage
+
+The splice script was read in full. In the inserted JS: presenceTextTalkStop, presenceAudioLive (typeof guards for the TDZ-free `var` globals) and presenceTextTalk (word count, clamp, banner and Steve ring). Also covered: both speak hooks wrapped in try/catch with speakRecord, the voiceStop hook, and the interactions with the bank clip, opener/ack/closer, talking loop, delivery animation, full voice-reply playback and the chatSetThinking wrapper.
+
+## Top missing tests (pass 19)
+
+1. Follow-up during a text talk: set "thinking" mid-talk, then assert it survives the interval and the end timer (P05-F1).
+2. Indicator agreement after a bank clip ends early: `data-state`, banner and Steve's ring agree (P05-F2).
+3. A second reply 1 s into the first: exactly one interval stays alive (count TEXT_TALK entries and nods per second).
+4. voiceStop during a text talk with VOICE_PLAYING set ends in "idle", and "speaking" is never re-raised afterwards.
+5. A splice unit test: run on a fixture with each anchor duplicated, missing and already-marked, and assert an abort with no file write.
+
+# VibeBreaker Re-validation — 2026-10-13, round 6 (presence text-paced talk, after round-5 fixes)
+
+change-set: 5610f4b4e5b4500b
+
+## Verdict
+
+**PASS** (`SURVIVED`). All three round-5 findings are confirmed fixed with concrete inputs, and nothing regressed. There are no new CONFIRMED findings. P17-F1 (`window.cdSpeak` in production) remains INFO and is Steven's call; it is unchanged by design.
+
+## Scope
+
+- Change-set 5610f4b4e5b4500b. `bash scripts/validate-code.sh` gave `verdict: PASS (2 passed, 0 failed)` (py_compile on the splice, plus brain doctor). Its file list also covers the doc edits in context/decisions.md, docs/NEEDS-STEVEN.md, docs/STEVEN-STEPS.md, memory.md, routines/cloud-routine-repairs.md and wiki/dashboard-ops/freshness-routines.md. Those are prose and were not reviewed in this narrow pass.
+- Code under review: `dashboard/wave2/splice-presence-texttalk.py` (86 lines, read in full). The applied copy is `/tmp/claude-0/deck-r7.html` (v196), lines 27124-27160. That block is byte-identical to the splice's `js` block. The presence state machine at createPresence (27089) has only four states: idle, listening, thinking and speaking.
+- Evidence:
+  - (a) A node replay of the `js` block, extracted verbatim from the splice, with a fake clock and a stub presence, banner and steveSetSpeaking. Eight scenarios.
+  - (b) The splice run against three fixture files in the scratchpad: a clean anchor set, a duplicated anchor and a missing anchor, plus a re-run on the clean fixture.
+  - (c) The caller's Playwright proof `texttalk-test.mjs`, re-run against deck-r7.html.
+  - No repo file was written except this report.
+
+## Round-5 findings — status
+
+### P05-F1 (MEDIUM) — FIXED
+- Location: splice :47-51. The interval reads `s`. If it is "thinking" or "listening", the interval calls presenceTextTalkStop, removes the banner, calls `steveSetSpeaking(false)` and returns. It never re-sets the state.
+- Proof:
+  - Vanessa, 100-word reply (38 s talk), `set("thinking")` at 0.8 s. At 1.4 s the state is `thinking`, the banner is off and 0 timers remain. After +40 s the state is still `thinking`, because the end timer was cleared and so cannot drop it to idle.
+  - Steve, `set("listening")` at 0.8 s. The state is `listening`, the banner is off, the ring is false and 0 timers remain.
+  - Edge case: "thinking" set 10 ms before the end timer fires, with no tick in between. The end timer only idles from "speaking", so the state stays `thinking` and the banner is off.
+  - Headless run: `vThink600:"thinking"`, `bannerThink:false`, 0 page errors.
+
+### P05-F2 (LOW) — FIXED
+- Location: splice :52-54. The re-raise now sets the state, the banner and Steve's ring together, and only when `!presenceAudioLive(who)`.
+- Proof:
+  - Steve mid-talk, with an audio handler simulated to end the turn (idle, banner off, ring off). After one tick: `speaking`, banner=true, ring=true. At the end: `idle`, banner=false, ring=false, 0 timers.
+  - With VOICE_PLAYING set and the state idle, there is no re-raise: the state stays `idle`.
+
+### P01-F1 (INFO) — FIXED
+- Location: splice :19-24. `len(re.findall(...))` must equal 1.
+- Proof on fixtures:
+  - Duplicated presenceWireInput anchor: `ABORT: anchor presenceWireInput anchor (matched 2, need exactly 1)`, exit 1, file unchanged.
+  - Missing voiceStop anchor: `matched 0`, exit 1, file unchanged.
+  - Clean fixture: `ok`, and each hook is inserted once with `/\s+/` intact.
+  - Re-run on the clean fixture: `ABORT: already applied`, exit 1.
+
+## Regression checks (pass 20 — all REJECTED as defects)
+
+- Timer leak: after a second reply 1 s into a first, exactly 2 timers are live (one interval and one end timeout), and the nod rate is 4/s, not doubled. Every scenario ends with 0 timers.
+- Yield, then a new reply: the talk yields to thinking, the state is reset to idle, and a new presenceTextTalk runs. The state is `speaking` with the banner on, and it ends `idle` with 0 timers.
+- voiceStop path: presenceTextTalkStop followed by idle. The state stays `idle` and 0 timers remain.
+- End timer while audio is live: the banner is left on for the audio handlers to clear (by design, splice :59). Not a defect.
+- Yield while a voice reply is still audible: the banner and ring go off while the state shows "thinking". The indicators agree with the state. Not a defect.
+- Idempotence: MARK is checked first (:15). Every sub1 aborts before the single write (:85). Confirmed on fixtures.
+
+## Observation (outside this change-set, not a finding)
+
+In the headless run, the deck's own opener→closer audio chain set Vanessa back to "speaking" about 2 s after the synthetic `set("thinking")` (`v2:"speaking"`). The text talk had already stopped at that point, so this behaviour is the existing audio pipeline, not the splice. Whether a real follow-up during an opener or closer clip should pre-empt the clip is a separate question for the presence/audio code.
+
+## Top missing tests (pass 19)
+
+1. Commit the fixture test for the splice (duplicate, missing, already-marked → abort, no write) next to the splice. Today it exists only as a validator scratch run.
+2. Commit the node fake-clock replay (thinking/listening yield, re-raise agreement, second-reply timer count) so the round-5 fixes are guarded by a test that does not depend on deck-r7.html.
+3. A real-send headless test: chatSetThinking(on) during a long reply's text talk, then chatSetThinking(off), and assert the state goes thinking → idle with no "speaking" in between from the text talk.

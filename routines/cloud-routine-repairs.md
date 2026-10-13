@@ -485,3 +485,30 @@ runnerctl list
 (or `./mac-bootstrap.sh`, which asks the same three pauses). Then, for the text: open Messages, find the
 thread with +1 650-484-9720 / `@jasmine`, and if there is no 6:51 AM message today run
 `runnerctl run vanessa-morning-brief-text` and watch the thread; paste what the runner prints.
+
+### 2026-10-13, later — weather, "everything as of today", and the talking avatars
+
+**Steven:** *"Weather also suppose to be updated daily with all news worldwide and if the local areas. Ensure everything is
+updated as today all sections of the dashboard"* and *"Vanessa and Steve are suppose to be animated and move as they
+speak in the chat"*.
+
+- **Weather.** `weatherSnapshot` was 24.6 h old (the Mac's 8:05 AM wttr.in task did not write today). Written from this
+  session with the AccuWeather connector: 7 cities, readings 8:31 AM PT, v43 (San Diego carries the NWS Coastal Flood
+  Advisory). The cloud cannot do this on a schedule yet: `create_trigger` with `connectors: ["AccuWeather"]` is refused
+  for this organisation ("the connectors parameter is not available"), so the sweep still skips weather. **Steven:**
+  open https://claude.ai/code/routines/trig_01Y1zZ3bmawgi4Mw2jNw9ZFM and add the AccuWeather connector to it; its STEP 2
+  then runs at 03:40 and 15:40 UTC on its own. Verified AccuWeather locationKeys for the prompt: Temecula 337272,
+  San Diego 2628159, Los Angeles 2626754, Chicago 2094443, Las Vegas 329506, Washington 2628378, New Braunfels 335925.
+- **News worldwide + local.** `newsSnapshot` (3-5 wire headlines + 10 cities) was written today at 13:36 UTC by
+  *Command Deck — weather & news (writer)* and is fresh; the 10 `newsLocalList_*` keys are refreshed on its morning run.
+- **Stamp audit (188 documents, 15:40 UTC).** 37 fresh (<24 h), 39 older than a day, 43 with no stamp (static tables).
+  The 15:40 freshness sweep **failed on the usage limit** (`USAGE_LIMIT_REACHED`), so the six morning keys stand on the
+  restored 12:22 entries; the 03:40 run is the next backstop. Of the stale 39, everything a cloud routine owns is on a
+  schedule; the rest are Mac tasks or weekly/monthly cadences (hfCommitteeMemo, weeklyBrief, zohoSync, knowledgeGraph,
+  openrouterFeeds (retired), healthInsight, the chat logs) — see `docs/inventory/mac-runner-status.md`.
+- **Avatars.** The deck entered the "speaking" state only while a recorded clip, a talking loop or a rendered voice
+  reply actually played. `speakDiag` shows the face video fails to load ("no supported source was found") and the
+  2-second opener ends at once, so a text reply left the portraits still. `dashboard/wave2/splice-presence-texttalk.py`
+  adds a text-paced talk (speaking + word-cadence nod for the reading time of the reply, idle after, audio handlers win
+  when audio is live) and a `window.cdSpeak` test hook. Headless check: both go speaking → nod → idle, 0 page errors.
+  Deck **v195**.

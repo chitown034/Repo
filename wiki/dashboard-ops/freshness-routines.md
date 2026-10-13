@@ -38,7 +38,7 @@ plus `ratesSnapshot` whenever the deck's copy is newer). Baked seeds are mirrore
 
 | Block | Mac task | Schedule (PT) |
 |---|---|---|
-| Weather (`weatherSnapshot`, wttr.in) | weather-news-refresh | 8:05 AM / 8:05 PM |
+| Weather (`weatherSnapshot`, wttr.in) | weather-news-refresh (did not write 2026-10-13; a session wrote v43 from AccuWeather) — the cloud sweep takes over once Steven adds the AccuWeather connector to it (NEEDS-STEVEN 102) | 8:05 AM / 8:05 PM |
 | Mortgage rates + market stats (`ratesSnapshot`) | mortgage-rates-daily | daily (last write 2026-10-12 13:39 UTC) |
 | Calendar (`calendarSnapshot`) | calendar-daily-sync | 6:35 AM / 5:35 PM |
 | QuantVue strategy (`strategySnapshot`) | r4-quantvue-sync | last write 2026-10-09 |

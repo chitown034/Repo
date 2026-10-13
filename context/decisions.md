@@ -469,3 +469,16 @@ the record of the change. The full split, and the three web-UI routine edits onl
   the cloud. Record: `routines/cloud-routine-repairs.md`.
 - **Owner.** Derek (automation), Vanessa (the brief). **Status.** Cloud side done and proven 2026-10-13; Mac pauses
   and the iMessage check wait on Steven (`docs/STEVEN-STEPS.md`, Start here 2026-10-13).
+
+## 2026-10-13 — The avatars move for every reply; weather is the sweep's job once it carries AccuWeather
+
+- **Request (Steven, verbatim).** *"Weather also suppose to be updated daily with all news worldwide and if the local
+  areas. Ensure everything is updater as today all sections of the dashboard"*; *"Vanessaand Steve are suppose to be
+  annimated and move as they speak in the chat"*.
+- **Decision.** (1) A reply animates the presence by its text (speaking state + word-cadence nod for the reading time),
+  audio or not; real audio keeps precedence (`dashboard/wave2/splice-presence-texttalk.py`, deck v195). (2) Weather is
+  owned by the daily freshness sweep's STEP 2 with AccuWeather; an agent cannot attach the connector on this plan, so
+  Steven adds it once in the routine's page. (3) World and local news stay with the weather & news writer (01:35/13:35
+  UTC); the sweep backstops them. Record: `routines/cloud-routine-repairs.md`.
+- **Owner.** Derek (automation), Harrison (deck UI). **Status.** Avatars proven headless 2026-10-13; weather written
+  by hand today (v43); the connector click waits on Steven.
