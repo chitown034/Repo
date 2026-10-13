@@ -73,3 +73,7 @@ Steven asked for remote control of his two Macs ("this computer" and the other) 
 | n8n workflow library (2,061, MIT) | read-only catalog + gated inactive staging; 1,013 with no unsafe flag; nothing activated | `integrations/n8n/WORKFLOW-LIBRARY.md` |
 | Agent files for Orca / Claude Code | 172 generated, linked by `install-mac.sh` (never overwrites); `claude --agent <seat>` on any machine | `integrations/agent-os/agents/` |
 | setup-health CI | green since run #19 (shellcheck + buffered-output fixes) | `.github/workflows/setup-health.yml` |
+
+## WhatsApp — Kapso (2026-10-13)
+
+Installed by `go.sh` step 11 (`integrations/kapso/install-mac.sh`): Kapso plugin + user-scope MCP `kapso` for every Claude Code session, Orca included. Status: **installed on the next go.sh run, sign-in needed** (Steven: `claude` → `/mcp` → kapso). Phase 1 = sandbox number + Steven's phone; Phase 2 (business number, clients) = Needs-Steven packet. Deck card "WhatsApp — Kapso" reads `whatsappKapso`, written by the `kapso-inbox-sync` task (spec §5b); replies live in any session or unattended by `vanessa-whatsapp-inbox` (§5c, Kapso mode: reads only Steven's number, sends only to it). Rules: `.claude/skills/whatsapp-kapso`.

@@ -43,6 +43,7 @@ step "7 Jarvis + Vanessa's voice" "Jarvis: run the Toolkit tab's Jarvis check, o
 step "8 Weekly events scan (first real run)" "" python3 integrations/events/events_scout.py
 step "9 Health report" "" bash scripts/setup-health.sh --write
 step "10 OpenMontage video studio (big download; keys are yours to type later)" "OpenMontage: paste any free key into ~/Applications/OpenMontage/.env" bash integrations/openmontage/openmontage.sh install --apply
+step "11 WhatsApp through Kapso (plugin + MCP for every Claude Code session)" "Kapso: run claude, type /mcp, pick kapso, sign in; then paste the project key into the Keychain item kapso" bash integrations/kapso/install-mac.sh install --apply
 
 say ""; say "================ REPORT ================"
 [ -n "$PASS" ] && say "Done:$(printf "$PASS")"

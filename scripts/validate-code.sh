@@ -70,10 +70,10 @@ quickcheck() { # dashboard HTML: the one pre-existing "functions called but neve
 say "code validation $(date -u +%Y-%m-%dT%H:%M:%SZ) - change-set $HASH"
 say "files:"
 while IFS= read -r f; do [ -n "$f" ] && say "  $f"; done <<< "$FILES"
-BRAIN=0; DOCTOR=0
+BRAIN=0; DOCTOR=0; KAPSO=0
 while IFS= read -r f; do
   [ -n "$f" ] || continue
-  case "$f" in brain/*.py) BRAIN=1;; esac
+  case "$f" in brain/*.py) BRAIN=1;; integrations/kapso/*.py) KAPSO=1;; esac
   [ -f "$f" ] || { say "  deleted: $f"; continue; }
   case "$f" in
     *.py) run "py_compile $f" python3 -m py_compile "$f"; case "$f" in brain/*) BRAIN=1;; esac ;;
@@ -92,6 +92,7 @@ while IFS= read -r f; do
        esac ;;
   esac
 done <<< "$FILES"
+[ "$KAPSO" = 1 ] && run "kapso unit tests" sh -c "cd integrations/kapso/tests && python3 -m unittest -q 2>&1 | tail -3 | grep -q '^OK'"
 [ "$BRAIN" = 1 ] && { DOCTOR=1; run "brain unit tests" sh -c "cd brain/tests && python3 -m unittest -q 2>&1 | tail -3 | grep -q '^OK'"; run "brain layout" bin/brain layout; }
 [ "$DOCTOR" = 1 ] && run "brain doctor" bin/brain doctor
 VERDICT=$([ "$FAIL" = 0 ] && echo PASS || echo FAIL)

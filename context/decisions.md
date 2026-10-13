@@ -196,6 +196,8 @@ deck's CI log and the loop log; this file starts here on purpose.
 
 ## 2026-09-23 — Vanessa reaches Steven on his personal WhatsApp, not a dedicated number
 
+**Superseded 2026-10-13 — WhatsApp now runs through Kapso (see the 2026-10-13 entry and `integrations/kapso/README.md`). Kept as history.**
+
 **Decision.** Steven links **his own personal WhatsApp**, and reaches Vanessa in his own
 **"Message Yourself"** thread. The dedicated-number design written on 2026-09-22 is superseded.
 
@@ -322,6 +324,8 @@ the record of the change. The full split, and the three web-UI routine edits onl
 
 ## 2026-09-28 — WhatsApp: Vanessa answers through a local bridge, not n8n or a runner task
 
+**Superseded 2026-10-13 — WhatsApp now runs through Kapso (see the 2026-10-13 entry and `integrations/kapso/README.md`). Kept as history.**
+
 - **Request (Steven, verbatim).** *"also connect whats app to my phone now"*.
 - **Decision.** `integrations/openwa/vanessa-bridge.py`, run by a LaunchAgent on the Mac that runs OpenWA.
   It polls the self-chat every 20 s with Vanessa's chat-fenced key. The read costs nothing, and Claude
@@ -430,3 +434,21 @@ the record of the change. The full split, and the three web-UI routine edits onl
   local model, logins by agents, and spending money. A logged-out browser and a source build keep both inside it.
 - **Owner.** Derek (automation); risk owner Elena (CISO). **Status.** Proven in the cloud sandbox; Mac install is
   `docs/STEVEN-STEPS.md` steps 6–8.
+
+## 2026-10-13 — Message Vanessa on WhatsApp through Kapso (personal WhatsApp and OpenWA bridge retired)
+
+- **Request (Steven, verbatim).** *"Install Kapso and configure so I can connect and communicate using Whats App on
+  Orca and my dashboard"*; *"Whats App enable me to communicate to Vanessa"*.
+- **Decision.** Vanessa talks WhatsApp through **Kapso** (hosted WhatsApp Business Cloud API: free sandbox number,
+  remote MCP `api.kapso.ai/mcp`, Claude Code plugin `gokapso/agent-plugins` at `a6cbfe9`, MIT). Phase 1: Steven
+  messages the sandbox number from his own phone; Vanessa answers live from any Claude Code session (Terminal or
+  Orca, `.claude/skills/whatsapp-kapso`) or unattended by the Mac task `vanessa-whatsapp-inbox` (§5c). The deck
+  card "WhatsApp — Kapso" shows masked numbers, contact labels and counts, never a body. The 2026-09-23 personal
+  WhatsApp self-chat and the 2026-09-28 OpenWA bridge (NEEDS-STEVEN 78) are retired: neither ever went live, and
+  the sandbox's egress blocked the WebSocket they needed.
+- **Fence.** Two Keychain items typed by Steven: `kapso` (API key) and `kapso-allow` (his own number). The reader
+  returns only that number's messages; the sender refuses any other recipient before any network call. A business
+  number, client messaging, templates and Pro ($25/mo) are a Needs-Steven packet (Meta verification, opt-in,
+  Alexandra's templates, Elena's PII yes).
+- **Owner.** Derek (automation), Elena (third-party processor), Alexandra (templates). **Status.** Built and
+  tested in the sandbox 2026-10-13 (deck v194); Steven runs `go.sh` step 11 and signs in once.
