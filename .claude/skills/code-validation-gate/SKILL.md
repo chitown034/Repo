@@ -15,8 +15,10 @@ Two halves, both required, in this order:
    `integrations/code-validation/vibebreaker/` (20 passes: injection, auth, secrets, failure paths, concurrency, leaks,
    N+1, complexity, memory, timeouts, idempotency, transactions, config, supply chain, logging, API and cross-module
    contracts, test gaps, then pass 20 disproves everything it can). Report: `docs/reports/CODE-VALIDATION-REVIEW.md`.
-3. Fix or answer every CONFIRMED finding, re-run step 1, then `bash scripts/validate-code.sh --mark` to record the
-   change-set hash in `.claude/state/validated.txt` (gitignored, per machine).
+3. Fix or answer every CONFIRMED finding, re-run step 1, then `bash scripts/validate-code.sh --mark`. The mark is refused
+   unless this exact change-set PASSED the checks and `docs/reports/CODE-VALIDATION-REVIEW.md` names its hash (the
+   validator copies the `change-set:` line from the checks' output), so nothing can be marked without a real review.
+   Marks live in `.claude/state/validated.txt` (gitignored, per machine). Tests: `bash scripts/tests/test-validate-code.sh`.
 
 **Enforcement.** `.claude/settings.json` runs `.claude/hooks/validate-on-stop.sh` as a Stop hook: when code files changed
 and this change-set is not marked, the stop is blocked once with the instruction above. It never loops (respects

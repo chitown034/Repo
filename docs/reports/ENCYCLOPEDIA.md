@@ -1,6 +1,6 @@
 # Encyclopedia of the second brain
 
-Generated 2026-10-12 by `bin/brain encyclopedia` from `brain/index.json` — 131 pages, 259 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
+Generated 2026-10-13 by `bin/brain encyclopedia` from `brain/index.json` — 131 pages, 259 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
 
 Jump: [A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#g) · [I](#i) · [J](#j) · [K](#k) · [L](#l) · [M](#m) · [N](#n) · [O](#o) · [P](#p) · [R](#r) · [S](#s) · [T](#t) · [U](#u) · [V](#v) · [W](#w)
 
@@ -23,8 +23,8 @@ See also: `integrations/anydesk/README.md`, `wiki/mortgage-programs/va-affordabi
 ### Agent OS — every agent through Laya, Jarvis and Orca
 How the org chart works as an operating system: Laya picks the lane, Jarvis recalls first, Orca runs the agents side…  
 `wiki/ai-team/agent-os.md` · AI team · newest date stamp 2026-10-12  
-Sections: The four steps for any request; The commands (plain code, no model call); Control from Orca and Jarvis (added 2026-10-12); Agent files — the org chart as 172 launchable seats (added 2026-10-12); Coverage and limits  
-See also: `integrations/agent-os/README.md`, `integrations/jarvis/README.md`, `wiki/ai-team/capability-matrix.md`
+Sections: The four steps for any request; The commands (plain code, no model call); Control from Orca and Jarvis (added 2026-10-12); Agent files — the org chart as 172 launchable seats (added 2026-10-12); Coverage and limits; Seats added after the Mac snapshot  
+See also: `integrations/agent-os/README.md`, `wiki/ai-team/capability-matrix.md`, `wiki/ai-team/model-tiering-dispatch.md`
 
 ### Agent OS — turn it on for Mac 1, Mac 2 and the Alienware
 Every roster agent (172) reachable through Laya (lane), Jarvis (recall) and Orca (launch), run as one operating system…  
@@ -215,7 +215,7 @@ See also: `docs/INTEGRATOR-TODO.md`, `integrations/CONNECTIONS.md`
 As of 2026-10-12. Steven's rule (2026-10-12): every block refreshes at least once a day, more often where the data…  
 `wiki/dashboard-ops/freshness-routines.md` · Dashboard ops · newest date stamp 2026-10-12  
 Sections: Cloud routines (Claude subscription, WebSearch only, ArtifactData writes; never publish/Edit); ISA Portal mirror (https://claude.ai/code/artifact/4348b34d-afa0-4d2e-8214-29b1319cf041); Mac tasks (the cloud cannot write these); Baked seeds (HTML, refreshed by a session pass, not a routine); Known failure mode  
-See also: `docs/inventory/cloud-routines.md`, `integrations/mac-claude-only.md`, `integrations/n8n/README.md`
+See also: `docs/inventory/cloud-routines.md`, `integrations/n8n/README.md`, `memory.md`
 
 ### Command Deck — Strava wrapper guard — cloud routine
 Created 2026-09-22 23:27 UTC by the orchestrator, as a stopgap.  
@@ -316,7 +316,7 @@ See also: `docs/INSTALL-COVERAGE.md`, `references/vibe-coding-learning.md`, `rou
 Where FHA and USDA beat VA for a given borrower, and the specific mechanics that make each one work.  
 `wiki/mortgage-programs/fha-usda.md` · Mortgage wiki · newest date stamp undated  
 Sections: FHA; USDA; When each beats VA; See also  
-Linked from: `wiki/mortgage-programs/va-affordability.md`  
+Linked from: `wiki/mortgage-programs/va-affordability.md`, `wiki/mortgage-programs/va-eligibility.md`  
 See also: `wiki/mortgage-programs/index.md`, `wiki/mortgage-programs/lender-directory-notes.md`, `wiki/mortgage-programs/program-selection.md`
 
 ### Follow Up Boss removed — what was done, and the three edits only Steven can make
@@ -388,7 +388,7 @@ See also: `wiki/real-estate-playbooks/index.md`
 Jarvis (OpenJarvis memory.db), the real Laya model and Vanessa's recorded voice all live on the Mac.  
 `integrations/jarvis/README.md` · Integrations · newest date stamp 2026-10-09  
 Sections: Run on the Mac (from the Repo folder); Laya; Vanessa's voice; What this never does  
-Linked from: `docs/NEEDS-STEVEN-R4.append.md`, `memory/ai-team.md`, `wiki/ai-team/agent-os.md`  
+Linked from: `docs/NEEDS-STEVEN-R4.append.md`, `memory/ai-team.md`  
 See also: `integrations/mac-task-specs.md`
 
 ## K
@@ -556,7 +556,7 @@ See also: `integrations/trading-desk/README.md`
 Steven, 2026-10-05: "remove everything running on Perplexity and replace with Claude subscription" and "ensure entire…  
 `integrations/mac-claude-only.md` · Integrations · newest date stamp 2026-10-05  
 Sections: The paste-in; What each step replaces  
-Linked from: `context/decisions.md`, `integrations/mac-fix-all-2026-10-05.md`, `routines/fub-removal-2026-09-24.md`, `wiki/dashboard-ops/freshness-routines.md`  
+Linked from: `context/decisions.md`, `integrations/mac-fix-all-2026-10-05.md`, `routines/fub-removal-2026-09-24.md`  
 See also: `integrations/mac-everything-2026-10-09.md`, `integrations/omniroute/README.md`
 
 ### Master Findings Table — Cycle 6
@@ -577,7 +577,7 @@ See also: `integrations/mac-brain-2026-10-08.md`, `references/index.md`
 Auto-memory store for the Second Brain project — 47 dated entries as of 2026-10-09, near the 100-line cap.  
 `memory.md` · Memory · newest date stamp 2026-10-12  
 Sections: Turning it on; What goes in; What does NOT go in; Hygiene; Entries; How many browser recipes across the five DOMShell harnesses  
-Linked from: `wiki/dashboard-ops/connections.md`  
+Linked from: `wiki/dashboard-ops/connections.md`, `wiki/dashboard-ops/freshness-routines.md`  
 See also: `context/decisions.md`, `docs/NEEDS-STEVEN.md`, `wiki/dashboard-ops/db-docs.md`
 
 ### Mentors and benches
@@ -591,14 +591,14 @@ See also: `wiki/ai-team/org-chart.md`
 PCS-driven transactions: the ownership-versus-rent question, base-area intelligence, and the dual-licensed referral…  
 `wiki/real-estate-playbooks/military-relocation.md` · Real-estate wiki · newest date stamp undated  
 Sections: The seat that owns this; The VA house-hack mechanism (why PCS and VA eligibility connect); The dual-licensed referral opportunity; Known gap — flag rather than guess; See also  
-Linked from: `context/about-me.md`, `wiki/mortgage-programs/va-affordability.md`, `wiki/mortgage-programs/va-eligibility.md`, `wiki/real-estate-playbooks/referral-reciprocity.md`  
+Linked from: `context/about-me.md`, `wiki/mortgage-programs/va-affordability.md`, `wiki/real-estate-playbooks/referral-reciprocity.md`  
+See also: `wiki/mortgage-programs/va-eligibility.md`
 
 ### Model tiering and dispatch
 Which model each seat runs on, and the rules that bound how many run at once — Steven's decision, recorded 2026-09-22.  
 `wiki/ai-team/model-tiering-dispatch.md` · AI team · newest date stamp 2026-10-05  
 Sections: The tiering; Dispatch rules; Proposal-only seats; The engineering gate — ECC; Trust levels; See also  
-Linked from: `OPTIMIZATION.md`, `docs/inventory/agent-roster.md`, `wiki/ai-team/index.md`  
-See also: `CLAUDE.md`
+Linked from: `OPTIMIZATION.md`, `docs/inventory/agent-roster.md`, `wiki/ai-team/agent-os.md`, `wiki/ai-team/index.md`  
 
 ### Mortgage programs
 Loan programs, guidelines, VA mechanics, eligibility, disclosure timing.  
@@ -795,7 +795,7 @@ See also: `routines/isa-escalation-ladder.md`, `routines/parallel-csuite-task-cy
 Read this file in full. Read nothing else until the routing table sends you there.  
 `CLAUDE.md` · Router · newest date stamp 2026-10-05  
 Sections: Routing table — load exactly ONE leaf, then answer; Recall order — stop at the first level that answers; Token rules; Model tiering (Steven's decisions, 2026-09-22; executives to Opus 5.5 on 2026-09-28; research to Claude on 2026-10-05); Sub-agent dispatch; HALT — stop, write a Needs-Steven packet, do not proceed  
-Linked from: `integrations/google-drive-brain.md`, `integrations/laya/README.md`, `recall-cache.md`, `routines/parallel-csuite-task-cycle.md`, `wiki/ai-team/model-tiering-dispatch.md`  
+Linked from: `integrations/google-drive-brain.md`, `integrations/laya/README.md`, `recall-cache.md`, `routines/parallel-csuite-task-cycle.md`  
 See also: `AGENTS.md`, `OPTIMIZATION.md`, `wiki/index.md`
 
 ### Self-Improving Trading Research Desk (PAPER MODE ONLY)
@@ -884,8 +884,8 @@ See also: `wiki/mortgage-programs/fha-usda.md`, `wiki/real-estate-playbooks/mili
 VA entitlement, COE mechanics, restoration, second-tier (two-VA-loan) use, and funding-fee tiers and exemptions — the…  
 `wiki/mortgage-programs/va-eligibility.md` · Mortgage wiki · newest date stamp undated  
 Sections: Pulling the Certificate of Eligibility; Funding fee tiers; Second-tier entitlement (two active VA loans); Restoration and assumption; See also  
-Linked from: `wiki/mortgage-programs/loan-task-agents.md`  
-See also: `wiki/mortgage-programs/program-selection.md`, `wiki/real-estate-playbooks/military-relocation.md`
+Linked from: `wiki/mortgage-programs/loan-task-agents.md`, `wiki/real-estate-playbooks/military-relocation.md`  
+See also: `wiki/mortgage-programs/fha-usda.md`, `wiki/mortgage-programs/program-selection.md`
 
 ### Vanessa speaks on every channel, not only at the dashboard
 CORRECTION 2026-09-24 — read before anything below.  

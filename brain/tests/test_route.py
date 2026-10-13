@@ -34,6 +34,12 @@ class RouteTests(unittest.TestCase):
         self.assertTrue(all(len(w) <= route.MAX_PARALLEL for w in p["waves"]))
         self.assertGreater(len(p["waves"]), 1)
 
+    def test_validation_gate_follows_engineering(self):
+        plan = route.route(REPO, "fix the bug in the dashboard refresh script and add a test")
+        self.assertIn("Validation", [g["gate"] for g in plan["gates"]])
+        plan2 = route.route(REPO, "write an Instagram caption about Temecula wine country")
+        self.assertNotIn("Validation", [g["gate"] for g in plan2["gates"]])
+
     def test_no_match_goes_to_vanessa(self):
         self.assertEqual(self.plan("hello there")["lead"], "Vanessa")
 

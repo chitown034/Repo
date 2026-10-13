@@ -23,7 +23,7 @@ Do this, in order:
    Karpathy principles skill (surgical changes).
 4. Pass 20: try to disprove every candidate. Only CONFIRMED findings with a trigger, bad state and location survive.
 5. Write `docs/reports/CODE-VALIDATION-REVIEW.md` using `integrations/code-validation/vibebreaker/templates/final-report.md`:
-   verdict (SHIP / FIX FIRST / NEEDS-CONTEXT), the confirmed findings ranked by severity, the coverage table of what you
+   the line `change-set: <hash>` copied from the validate-code.sh output (the --mark command refuses a change-set the review does not name), the verdict (SHIP / FIX FIRST / NEEDS-CONTEXT), the confirmed findings ranked by severity, the coverage table of what you
    inspected and found clean, and the top missing tests from pass 19.
 6. Reply to the caller in plain language: the verdict in one line, each confirmed finding in one or two sentences with
    the file and what would prove the fix, and what only Steven can decide. The caller applies fixes and runs

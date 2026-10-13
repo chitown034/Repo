@@ -50,3 +50,7 @@ lists it as a running session; `orca-launch.sh` opens the seats a request needs.
 - The living A–Z of every page, with backlinks, is `docs/reports/ENCYCLOPEDIA.md`, rewritten by `bin/brain encyclopedia` and every loop run.
 
 See also `computer-hub.md` (the machines), `cross-functional.md` (the rules the planner follows), `org-chart.md`.
+
+## Seats added after the Mac snapshot
+
+`code-validator` (2026-10-12) exists in `docs/inventory/agent-roster.md`, the Agent OS manifest, the agent files and the deck's live `aiTeamRoster` document (v15). The Mac's `roster-tiers.json` and `agent-lint/roster_snapshot.py` do not know it yet: add the seat there (tier 2, lead cto-derek, model opus) before the next snapshot runs, or that run will drop it from the deck's count.

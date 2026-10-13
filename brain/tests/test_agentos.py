@@ -65,3 +65,19 @@ class AgentFiles(unittest.TestCase):
         self.assertEqual(r["present"], r["total"]); self.assertEqual(r["bad_frontmatter"], [])
         t = (ROOT / "integrations/agent-os/agents/caio-nadia.md").read_text(encoding="utf-8")
         self.assertIn("PROPOSAL-ONLY", t); self.assertIn("Needs-Steven", t); self.assertIn("model: opus", t)
+
+    def test_engineer_toolkit(self):
+        from brain import agentos
+        self.assertTrue(agentos.is_engineer("cto-derek", "Derek"))
+        self.assertTrue(agentos.is_engineer("code-validator", "Derek"))
+        self.assertTrue(agentos.is_engineer("sandbox-qa", "Elon"))
+        self.assertTrue(agentos.is_engineer("anything", "Elon"))
+        self.assertFalse(agentos.is_engineer("cfo-marcus", "Marcus"))
+        m = agentos.build(REPO)
+        by = {a["slug"]: a for a in m["agents"]}
+        self.assertTrue(by["code-validator"]["toolkit"])
+        self.assertEqual(by["cfo-marcus"]["toolkit"], [])
+        from brain import agentfiles
+        self.assertNotIn("Toolkit", agentfiles.render(by["cfo-marcus"], {}))
+        self.assertIn("Toolkit", agentfiles.render(by["code-validator"], {}))
+

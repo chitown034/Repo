@@ -9,7 +9,7 @@ ROOT="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"; cd "$ROOT" |
 INPUT=$(cat 2>/dev/null || true)
 printf '%s' "$INPUT" | grep -q '"stop_hook_active": *true' && exit 0
 STATE=".claude/state"; mkdir -p "$STATE"
-CHANGED=$( { git diff --name-only HEAD -- ; git ls-files --others --exclude-standard; } 2>/dev/null | grep -E '\.(py|sh|js|mjs|ts|html|json)$|^go\.sh$' | grep -v '^\.claude/state/' | head -50)
+CHANGED=$( { git -c core.quotepath=off diff --no-renames --name-only HEAD -- ; git -c core.quotepath=off diff --no-renames --cached --name-only -- ; git -c core.quotepath=off ls-files --others --exclude-standard; } 2>/dev/null | grep -E '\.(py|sh|js|mjs|ts|html|json|ya?ml)$|^(bin|scripts|\.claude/hooks|\.github/workflows)/' | grep -Ev '^(\.claude/state/|brain/index\.json$|docs/reports/)' | head -50)
 [ -z "$CHANGED" ] && exit 0
 HASH=$(bash scripts/validate-code.sh --hash 2>/dev/null)
 [ -n "$HASH" ] && grep -q "^$HASH " "$STATE/validated.txt" 2>/dev/null && exit 0
