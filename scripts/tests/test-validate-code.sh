@@ -119,5 +119,18 @@ check "a broken extensionless script FAILS the checks" '[ "$rc" = 1 ]'
 check "the hook blocks on a broken extensionless script" 'echo "{}" | $H | grep -q "\"decision\": \"block\""'
 rm -f bin/tool
 
+# 17. the shebang sniff never fires on a word, only on a real #! line; CRLF shebangs fail; skipped YAML is SKIP not PASS
+printf '# python notes\n' > NOTES2.md; printf 'FROM python:3.12-slim\n' > Dockerfile; printf '#!/bin/bash # python launcher\necho ok\n' > bin/launch
+$V >/dev/null 2>&1; rc=$?
+check "a .md and a Dockerfile mentioning python PASS; a bash shebang with the word python gets bash -n" '[ "$rc" = 0 ] && grep -q "bash -n bin/launch" docs/reports/CODE-VALIDATION.md && ! grep -q "py_compile Dockerfile" docs/reports/CODE-VALIDATION.md'
+rm -f NOTES2.md Dockerfile bin/launch
+printf '#!/bin/bash\r\necho hi\r\n' > bin/crlf; $V >/dev/null 2>&1; rc=$?
+check "a CRLF shebang FAILS" '[ "$rc" = 1 ]'
+rm -f bin/crlf
+printf 'on: [push\n' > bad.yml; out=$(PYTHONPATH=/nonexistent python3 -c "import yaml" >/dev/null 2>&1 && echo has || echo none)
+$V > out.txt 2>&1; rc=$?
+if [ "$out" = has ]; then check "a broken .yml FAILS when PyYAML is installed" '[ "$rc" = 1 ]'; else check "a .yml is reported SKIP, not PASS, without PyYAML" 'grep -q "SKIP yaml bad.yml" out.txt && ! grep -q "PASS yaml" out.txt'; fi
+rm -f bad.yml out.txt
+
 echo "validate-code gate tests: $PASS passed, $FAIL failed"
 [ "$FAIL" = 0 ]

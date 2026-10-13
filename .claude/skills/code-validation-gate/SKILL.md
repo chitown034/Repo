@@ -31,3 +31,9 @@ team) carry this gate and the VibeBreaker pack in their toolkit line (`bin/brain
 
 **Never.** Never mark a change-set the validator has not read. Never skip a FAIL to get a clean stop. Never let the
 validator patch code: it reports, the author fixes.
+
+**Known lows (validator round 6, 2026-10-13, accepted as follow-ups).** Shebang sniffing reads the first 80 bytes and does not
+parse `env -S …`; an extensionless file outside `bin/`, `scripts/`, `.claude/hooks/` and `.github/workflows/` does not trigger the
+hook; the SKIP-yaml branch is untested where PyYAML is installed. None lets broken code through silently: the hook still asks
+for the agent review on every path it watches. Six validator rounds on the gate itself found 17 defects; the ledger is in
+`docs/reports/CODE-VALIDATION-REVIEW.md` (latest) and the gate's own tests.

@@ -81,16 +81,14 @@ while IFS= read -r f; do
     *.js|*.mjs) run "node --check $f" node --check "$f" ;;
     *.json) run "json $f" python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$f" ;;
     dashboard/*.html) run "quickcheck $f" quickcheck "$f" ;;
-    *.yml|*.yaml) run "yaml $f" python3 -c "import sys
-try:
-    import yaml
-except ImportError:
-    sys.exit(0)
-yaml.safe_load(open(sys.argv[1]))" "$f" ;;
+    *.yml|*.yaml) if python3 -c "import yaml" >/dev/null 2>&1; then run "yaml $f" python3 -c "import sys, yaml; yaml.safe_load(open(sys.argv[1]))" "$f"; else say "SKIP yaml $f (PyYAML not installed)"; fi ;;
     CLAUDE.md|memory.md|wiki/*|references/*|context/*|projects/*) DOCTOR=1 ;;
-    *) case "$(head -c 64 -- "$f" 2>/dev/null | head -1)" in
-         *python*) run "py_compile $f" python3 -m py_compile "$f" ;;
-         "#!/bin/bash"*|"#!/bin/sh"*|"#!/usr/bin/env bash"*|"#!/usr/bin/env sh"*) run "bash -n $f" bash -n "$f" ;;
+    *) # extensionless scripts: decide by the shebang line only, never by a word elsewhere on line 1
+       line1=$(head -c 80 -- "$f" 2>/dev/null | head -1)
+       case "$line1" in
+         "#!"*"$(printf '\r')") run "shebang has CRLF $f" sh -c 'echo "line 1 ends in \\r - the kernel cannot run this script"; exit 1' ;;
+         "#!"*/python*|"#!"*"env python"*) run "py_compile $f" python3 -m py_compile "$f" ;;
+         "#!"*/bash|"#!"*/bash" "*|"#!"*/sh|"#!"*/sh" "*|"#!"*"env bash"*|"#!"*"env sh"*) run "bash -n $f" bash -n "$f" ;;
        esac ;;
   esac
 done <<< "$FILES"

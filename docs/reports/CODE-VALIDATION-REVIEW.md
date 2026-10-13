@@ -1,30 +1,29 @@
 # VibeBreaker Final Report
 
-change-set: c28c07ba153d300a
+change-set: 5647434569eaeae4
 
 ## Verdict
 
 `SURVIVED*` (gate verdict: **SHIP**)
 
-The three round-4 findings are closed and reproduced as closed. No critical or high finding remains. Three LOW findings in the new shebang sniff and YAML check are confirmed. The first fails closed, and the other two are reporting gaps.
+All three round-5 LOW findings are closed, and the fixes behave as described when run. Nothing above LOW is confirmed. Three LOW findings remain, all in the shebang sniff's coverage. Each one either fails closed or leaves a file without a syntax check. None lets broken code through without the hook also asking for an agent review.
 
 ## Scope
 
-- Commit / branch: working tree vs HEAD, round 5 (since change-set cc3261e7c0f3fce9)
-- Mode: narrow re-review of the round-5 hunks
-- Stack: bash 3.2-safe shell, git 2.43.0, Python 3 with PyYAML 6.0.1 present here
-- Passes completed: 05, 19, 20
-- Inspected surfaces: the `g()` wrapper and `--no-renames` (scripts/validate-code.sh:25, 30-31, 43), the YAML branch (:84-89), the shebang sniff (:91-94), hook line 12 (.claude/hooks/validate-on-stop.sh), tests 14-16 (scripts/tests/test-validate-code.sh:104-119)
-- Excluded / unavailable context: everything else in the diff
+- Commit / branch: working tree vs HEAD 4caea92 (round 6, the last)
+- Mode: narrow re-review of the uncommitted hunks only
+- Stack: bash, git, Python 3 with PyYAML 6.0.1 present in this container
+- Passes completed: 05, 20
+- Inspected surfaces: the YAML branch (scripts/validate-code.sh:84), the extensionless shebang sniff (:86-92), test 17 (scripts/tests/test-validate-code.sh:122-132), hook file filter (.claude/hooks/validate-on-stop.sh:12) for the "silent vs. reviewed" question
+- Excluded / unavailable context: everything outside the diff; the SKIP-yaml path on a machine without PyYAML (not available here)
 - Material scope limitation: NO
 
-Deterministic checks: `verdict: PASS (14 passed, 0 failed)`, change-set `c28c07ba153d300a`.
-Gate tests: `validate-code gate tests: 26 passed, 0 failed`.
-All probes ran in a throwaway git repo in the session scratchpad, which was deleted afterwards.
+Deterministic checks: `verdict: PASS (4 passed, 0 failed)` for change-set 5647434569eaeae4.
+Gate tests: `validate-code gate tests: 29 passed, 0 failed`.
 
 ## Scoreboard
 
-- Passes executed: 3 / 20 (narrow round)
+- Passes executed: 2 / 20 (narrow round, as scoped)
 - Confirmed: 3
 - Critical: 0
 - High: 0
@@ -32,34 +31,47 @@ All probes ran in a throwaway git repo in the session scratchpad, which was dele
 - Low: 3
 - Info: 0
 - Unverified: 0
-- Rejected candidates: 4
+- Rejected candidates: 3
 - First critical pass: NONE
+
+## Shebang probe (exact copy of lines 87-92, run on sample first lines)
+
+| First line | Result |
+|---|---|
+| `#!/usr/bin/env python3` | py_compile (caught) |
+| `#!/usr/bin/python` | py_compile (caught) |
+| `#!/bin/bash -e` | bash -n (caught) |
+| `#! /bin/sh` (space) | bash -n (caught) |
+| `#!/usr/bin/env -S python3 -u` | **not checked** |
+| `#!/usr/bin/env -S bash -e` | **not checked** |
+| 93-byte `#!/opt/.../bin/python3` | **not checked** (interpreter is past byte 80) |
+| `#!/usr/bin/python3 -u` + CRLF | FAIL "shebang has CRLF" (caught) |
+| `#!/bin/bash` + CRLF | FAIL (caught) |
+| `#!/bin/bash # use env python` | py_compile on a bash file: a false FAIL, so it fails closed |
+| `#!/bin/zsh`, `#!/bin/dash` | not checked (outside the stated scope) |
+
+None of the misses lets broken code through silently in the gated directories. A file that is not checked gets no PASS line, but it does not count as a failure either, so the verdict reads PASS. The file is still listed under `files:`, though. The Stop hook also blocks for agent review on any changed path under `bin/` or `scripts/`, whatever its extension (validate-on-stop.sh:12). An extensionless file outside `bin/`, `scripts/`, `.claude/hooks/` and `.github/workflows/` does not trigger the hook at all. That gap existed before this change and is not part of this diff.
 
 ## CONFIRMED
 
-### P05-F1 (LOW, confidence HIGH): the sniff runs py_compile on any non-Python file whose first line contains "python"
-- Location: scripts/validate-code.sh:91-92
-- Trigger: a changed file that matches no earlier case arm, so not only extensionless files, and whose first line contains `python` anywhere, not only after `#!`. Also a bash script whose shebang line mentions python, because the `*python*` arm is tested before the bash arms.
-- Bad state: a false FAIL. Reproduced: `requirements.txt` starting with `python-dateutil==2.9.0`, `docs/notes.md` starting with `# python helpers`, a `Dockerfile` starting with `FROM python:3.12-slim`, and `bin/run` starting with `#!/bin/bash # python launcher` each gave `FAIL py_compile <file>`, `verdict: FAIL`. Because --mark needs a PASS, a correct change-set cannot be marked until the file's wording is changed. A binary holding NUL bytes also prints `warning: command substitution: ignored null byte` (line 91).
-- Existing controls checked: in the current tree the only tracked file that matches is `bin/brain`, which really is Python, so nothing fails today. The failure is closed and lets nothing through unchecked.
-- Remediation direction: anchor the arms on the shebang, for example `'#!'*python*` (or `#!*/python*|#!*env\ python*`). Put the bash arms first, or match on the interpreter token only.
-- Verification: test that an untracked `notes.md` whose first line is `# python notes` and a `Dockerfile` with `FROM python:3` both PASS, and that `#!/bin/bash # python` runs `bash -n`, not py_compile.
+### P05-L1 — LOW — the 80-byte window misses long shebangs
+- Location: scripts/validate-code.sh:87
+- Trigger: an extensionless script whose `#!` line is longer than 80 bytes, with the interpreter name after byte 80. Linux reads up to 256 bytes of a shebang.
+- Bad state: no case arm matches, so the file gets no syntax check and no SKIP line. The same applies to a CR after byte 80, which is cut off before the CRLF arm can see it.
+- Impact: the syntax check is skipped. In bin/ and scripts/ the hook still requires agent review.
+- Proof of fix: read the whole first line (`head -1` with no `-c 80`, or `-c 256`), and add a test with a 100-byte python shebang on broken code that expects rc=1.
 
-### P05-F2 (LOW, confidence HIGH): a CRLF shebang passes both checks but the script cannot run
-- Location: scripts/validate-code.sh:92-93
-- Trigger: an extensionless script saved with CRLF line endings, `#!/bin/bash\r\n...` or `#!/usr/bin/env python3\r\n...`.
-- Bad state: `PASS bash -n bin/crlf` and `PASS py_compile bin/crpy`, but running them gives `cannot execute: required file not found` and `/usr/bin/env: 'python3\r': No such file or directory`. The gate reports PASS on a script that cannot be executed.
-- Existing controls checked: none. `bash -n` and `py_compile` both accept CR in simple statements.
-- Remediation direction: FAIL any shebang line that ends in `\r`, for example `head -1 | grep -q $'\r'`.
-- Verification: test that `printf '#!/bin/bash\r\necho hi\r\n' > bin/x` makes the checks FAIL.
+### P05-L2 — LOW — `env -S` shebangs are not recognised
+- Location: scripts/validate-code.sh:90-91
+- Trigger: `#!/usr/bin/env -S python3 -u` or `#!/usr/bin/env -S bash -e`
+- Bad state: `"env python"` and `"env bash"` must be contiguous, so the file falls through with no check.
+- Proof of fix: patterns like `"#!"*env*python*` / `"#!"*env*" "bash*`, plus a test with broken code behind an `env -S` shebang that expects FAIL.
 
-### P05-F3 (LOW, confidence HIGH): with PyYAML missing, the skipped YAML check is reported as PASS
-- Location: scripts/validate-code.sh:84-89 (exit 0 on ImportError), counted by `run()` at :60
-- Trigger: a python3 without PyYAML, such as a stock macOS python3, and a broken `.github/workflows/*.yml`.
-- Bad state: the snippet exits 0, so `run` prints `PASS yaml <file>` and adds it to the PASS count, but no parse happened. Reproduced: with site-packages disabled (`python3 -S`), the snippet on `on: [push` returns rc=0. With PyYAML present, the same file gives `FAIL yaml w.yml`.
-- Existing controls checked: the design says "else skipped", but the report does not say that.
-- Remediation direction: print `SKIP yaml <file> (PyYAML not installed)` without counting it as a PASS, for example by testing `python3 -c 'import yaml'` once before the loop.
-- Verification: test that, when PyYAML cannot be imported, the report line for a .yml file is not `PASS`.
+### P19-L3 — LOW — test 17 never runs the SKIP-yaml branch where PyYAML is installed
+- Location: scripts/tests/test-validate-code.sh:130-131
+- Trigger: any machine with PyYAML, this container included (6.0.1).
+- Bad state: `PYTHONPATH=/nonexistent` adds a path and does not hide site-packages, so only the "FAILS when PyYAML is installed" branch runs. The `SKIP yaml` line at validate-code.sh:84 is never exercised here.
+- Proof of fix: run `$V` with an interpreter that cannot import yaml (for example a PATH shim `python3` that runs `python3 -I -S`, or `python3 -c 'import sys; sys.modules["yaml"]=None'` through a wrapper), and assert `SKIP yaml bad.yml`.
 
 ## UNVERIFIED
 
@@ -67,34 +79,30 @@ None.
 
 ## REJECTED
 
-- R1 empty extensionless file: no case arm matches, so no check runs and nothing crashes, which is the right result (`verdict: PASS (0 passed, 0 failed)`). See scripts/validate-code.sh:91.
-- R2 `#! /bin/bash` (space), `#!/usr/bin/env node` and zsh shebangs: no check runs. This is coverage that was never claimed, and the hook still asks for agent review because hook line 12 matches `^bin/` and `^scripts/`. Listed under missing tests.
-- R3 py_compile on an extensionless file writes `bin/__pycache__/`: `.gitignore:1` holds `__pycache__/`, and EXCLUDE drops it, so the hash does not move.
-- R4 `git ls-files --error-unmatch` and the per-file `diff` take names as arguments, not as listed output, so quotepath does not apply. The non-ASCII hash moved in the reproduction (01ba4719… to 44919c06…).
-
-## Round-4 findings, re-checked
-
-- P05-F1 (round 4) non-ASCII names: **closed**. In the scratch repo, editing tracked `café.py` moved the hash `01ba4719c80b6fe9` to `44919c065f973e0c`. Test 14 passes.
-- P05-F2 (round 4) rename-hidden deletion: **closed**. `rm a.py` beside a staged copy `b.py` moved the hash `1770179ff1a087b3` to `ba077bb7fe7aaa5d`. Test 15 passes.
-- P05-F3 (round 4) extensionless code: **closed**. A broken `bin/tool` (`#!/usr/bin/env python3`, `x=(`) makes the hook block with "deterministic checks FAIL". Test 16 passes.
+- R1 — the CRLF arm could misfire because `$(...)` strips the CR — rejected: command substitution strips only trailing newlines. The probe showed CRLF caught for both bash and python shebangs.
+- R2 — the CRLF `sh -c` could inject the filename — rejected: the `sh -c` string is a literal and `$f` is not passed to it (:89).
+- R3 — a SKIP line could raise the PASS count — rejected: `say` only prints, and `run` is not called (:84), so the PASS count is unchanged.
+- (Noted, fails closed, not a finding:) `#!/bin/bash # ... env python` is sent to py_compile and FAILs loudly.
 
 ## Coverage
 
-- Clean: the `g()` wrapper is used on every name-listing call (validate-code.sh:30-31, hook :12). `--no-renames` is on the name-only and per-file diffs (:30-31, :43). The YAML branch FAILs on a broken file when PyYAML is present. Hook line 12 triggers on `ya?ml` and on paths under `bin/`, `scripts/`, `.claude/hooks/` and `.github/workflows/`.
-- Tests 14-16 assert what they claim, and all 26 gate tests pass.
+- YAML branch :84: PASS/FAIL with PyYAML (test 17c ran here); the SKIP message is printed and not counted.
+- Shebang sniff :86-92: probed with the 11 first lines above. Words outside a `#!` line no longer trigger the sniff (test 17a: `.md` and `Dockerfile` mentioning python PASS, `bin/launch` gets bash -n).
+- CRLF arm :89: FAIL with a clear message (test 17b, and the probe).
+- Hook filter validate-on-stop.sh:12: confirms the "reviewed, not silent" answer for bin/ and scripts/.
 
 ## Top 10 missing tests
 
-1. A markdown or text file whose first line contains "python" PASSES. This would catch P05-F1.
-2. `#!/bin/bash # python` is checked with `bash -n`, not py_compile (P05-F1).
-3. A CRLF shebang script FAILS (P05-F2).
-4. When PyYAML cannot be imported, a .yml file is reported as SKIP, not PASS (P05-F3).
-5. A broken `.github/workflows/x.yml` FAILS and the hook blocks on it.
-6. An extensionless `#!/bin/sh` script with a syntax error FAILS.
-7. A non-ASCII name under `--since <ref>` is listed and hashed.
-8. A rename staged with `git mv` lists both old and new paths.
-9. An empty extensionless file under bin/ leaves the verdict at PASS.
-10. An extensionless file with an unknown shebang (`#!/usr/bin/env node`) still makes the hook block for review.
+1. A broken python script behind a shebang of more than 80 bytes in bin/ makes validate-code.sh exit 1.
+2. A broken script behind `#!/usr/bin/env -S python3 -u` exits 1.
+3. A broken script behind `#!/usr/bin/env -S bash -e` exits 1.
+4. Without PyYAML (real absence, not PYTHONPATH), `bad.yml` prints `SKIP yaml bad.yml` and no `PASS yaml`.
+5. A CR placed after byte 80 of a shebang is still reported as a CRLF failure.
+6. `#! /usr/bin/env python3` (space after `#!`) gets py_compile.
+7. `#!/bin/bash # env python` is routed to bash -n, not py_compile.
+8. An extensionless file that is not a script (plain text, no `#!`) produces no check line and the verdict stays PASS.
+9. An extensionless broken script outside bin/ and scripts/: document whether the hook should fire.
+10. `#!/bin/sh` with a bash-only construct: a decision is needed on bash -n versus `sh -n`.
 
 ## Share card
 
@@ -102,14 +110,14 @@ None.
 VIBE//BREAKER
 
 VERDICT: SURVIVED*
-PASSES: 3/20
+PASSES: 2/20 (narrow round 6)
 CRITICAL: 0
 HIGH: 0
-CONFIRMED: 3
+CONFIRMED: 3 (all LOW)
 UNVERIFIED: 0
 FIRST BREAK: NONE
 ```
 
 ## Release note
 
-This narrow round shows that the round-4 hash and trigger gaps are closed for the cases tested. It shows that the new shebang sniff fails closed on prose that mentions python, passes CRLF scripts that cannot run, and that a skipped YAML parse is reported as PASS. It does not cover the rest of the diff, and it does not cover shells or interpreters other than bash/sh and python.
+This round shows the following. The round-6 hunks pass syntax and shellcheck. The 29 gate tests pass. The shebang sniff catches the four common forms and CRLF, and it fails closed on the one misroute found. It does not show that every valid shebang form is syntax-checked: long and `env -S` shebangs are not. It also does not show the SKIP-yaml path running, because that path cannot run where PyYAML is installed.
