@@ -711,3 +711,129 @@ None.
 
 ## Top missing tests (pass 19)
 1. Commit the stub-`security` harness as `integrations/kapso/tests/test_install_keys.sh`. It should cover the cases above, including `USER` unset and an existing `kapso` item, and assert that no output line holds more than 4 consecutive digits.
+
+# VibeBreaker Review — 2026-10-14 (Las Vegas travel splice, deck v199)
+
+change-set: d751b99eebbf7442
+
+`bash scripts/validate-code.sh` at 2026-10-14T23:42:20Z reported "verdict: PASS (2 passed, 0 failed)" (py_compile dashboard/wave2/splice-travel-vegas.py, brain doctor). `--hash` returns d751b99eebbf7442. Files in the change-set: dashboard/wave2/splice-travel-vegas.py (new), context/decisions.md, memory.md. brain/index.json is regenerated and outside the hash. The spliced deck working copy was also reviewed: /tmp/claude-0/deck-r7.html against /tmp/claude-0/deck-r7.bak.html.
+
+## Verdict
+
+**FIX FIRST.** There are three LOW findings and nothing blocks the deck from loading. The Tim McGraw row stays on the page until Nov 23, which is 16 days after the run ends. Two record lines are also wrong: the "30 rows" count and a duplicated memory line.
+
+## Scope
+- Passes run: 01, 04, 05, 14, 17, 19, 20 (Python splice + dashboard data rows). 06/07/08/12/18 have no surface here: it is a one-shot, single-file text splice with no I/O beyond one file read and one write, no concurrency and no network.
+- Evidence harness: TRAVEL_VEGAS, TV_MONTHS and `travelEndDate` were extracted verbatim from the spliced deck and run in node over all 55 rows. The scratch file is in the session scratchpad and nothing in the repo or the deck was written.
+- `dashboard/tests/quickcheck.py /tmp/claude-0/deck-r7.html` reported 11 PASS and the 1 known FAIL ("functions called but never defined", a false positive on `$` amounts). This splice adds `$60`, `$162` and `$168` to that false-positive list.
+
+## CONFIRMED
+
+```yaml
+id: P04-F1
+pass: 04
+title: Cross-month Date "Oct 23 – Nov 7, 2026" resolves to Nov 23, not Nov 7
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: dashboard/wave2/splice-travel-vegas.py
+    line: 56
+  - path: /tmp/claude-0/deck-r7.html (function travelEndDate)
+    line: 20957-20990
+entry_or_trigger: panel render -> travelStatus(r[2]) (deck :21088) -> travelEndDate("Oct 23 – Nov 7, 2026")
+evidence: The range regex /(\d{1,2})\s*[–—-]\s*(\d{1,2})/ needs digits on both sides of the dash and does not match "23 – Nov 7". The code falls back to the largest day number (max(23, 7) = 23) with the last month name (nov). The node harness printed `25 "Oct 23 – Nov 7, 2026" Mon Nov 23 2026`.
+existing_controls_checked: Every other new Date string was run through the harness. 24 of them return null (evergreen). "Nov 19–21, 2026" returns Nov 21, as intended. The single dates return their own day. The only other cross-month string in the deck, "Sep 19–Oct 31, 2026" (:20734), resolves correctly, but only because 31 > 19.
+failure_scenario: From Nov 8 to Nov 23, 2026, the Tim McGraw Colosseum run shows as "upcoming" on the Las Vegas card although it has ended.
+impact: Steven sees a stale event for 16 days. This is informational only: no booking and no money involved.
+remediation_direction: Either give the row a Date string the parser reads correctly (only the end month and day, e.g. "Through Nov 7, 2026"; the Details already carry "2026-10-23 to 2026-11-07"), or teach travelEndDate the "Mon D – Mon D" form.
+verification: The node harness asserts travelEndDate(<new Tim McGraw Date>) is Nov 7 2026 23:59:59, while "Nov 19–21, 2026" still gives Nov 21 and "Sep 19–Oct 31, 2026" still gives Oct 31.
+needs_context: null
+```
+
+```yaml
+id: P14-F1
+pass: 14
+title: The splice adds 31 rows; the deck stamp and decisions.md say 30
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: dashboard/wave2/splice-travel-vegas.py
+    line: 31-61, 71
+  - path: context/decisions.md
+    line: 500
+entry_or_trigger: TRAVEL_SYNCED_AT note shown on the Travel panel; decisions record
+evidence: The rows literal holds 31 rows (:31-61), and decisions.md itself lists 5 Cirque + 7 nightclubs + 7 dayclubs + 5 shows + 7 dated events = 31. The pre-splice TRAVEL_VEGAS has 25 rows and the spliced one has 55 (25 - 1 + 31). The stamp (:71) and decisions.md (:500) say "30 rows".
+existing_controls_checked: diff of the deck copies (31 added row lines + 1 comment line, 1 row removed)
+failure_scenario: The visible sync note and the decision record misstate the change. A later reconciliation that counts rows against the record will not match.
+impact: Record accuracy only.
+remediation_direction: Change "30 rows" to "31 rows" in the script stamp, the deck copy and decisions.md.
+verification: `grep -c "31 rows" ` hits the stamp and decisions.md, and the harness row-count delta is 31.
+needs_context: null
+```
+
+```yaml
+id: P14-F2
+pass: 14
+title: memory.md gains two lines for the same fact, one with a doubled date
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: memory.md
+    line: 104-105
+entry_or_trigger: bin/brain recall over memory.md
+evidence: Line 104 "- 2026-10-14 — Deck v199: the Las Vegas travel card now lists ..." and line 105 "- 2026-10-14 — 2026-10-14 Deck v199: Las Vegas travel card lists ..." record the same event.
+existing_controls_checked: brain doctor PASS (it does not check for duplicates)
+failure_scenario: Recall can return either line. Line 105 carries a malformed doubled date stamp, and the file rule is "one dated line each".
+impact: Brain hygiene only.
+remediation_direction: Keep one line (104 is the complete one) and regenerate the index.
+verification: grep -c "Deck v199" memory.md == 1; brain doctor PASS.
+needs_context: null
+```
+
+## UNVERIFIED (NEEDS-CONTEXT, not defects)
+- The factual accuracy of the venue, schedule and date facts. They are WebSearch snippets, each row names its source, and verifying them is outside a code review.
+
+## REJECTED
+- P01-C1 — Curly “O” quotes break the JS string — The script holds literal U+201C/U+201D characters, not `\u` escapes (grep: the only backslashes in the file are at :64, :67 and :71). `new Function(block)` parses the spliced TRAVEL_VEGAS, and `node --check` passes on the inline script.
+- P01-C2 — `rows.replace("\\","\\\\")` corrupts re.sub output — rows contains no backslash, so the replace is a no-op. The doubling is also the correct escape for a re.sub replacement string, and the deck diff shows the rows byte-for-byte as written.
+- P04-C1 — The summary-row delete regex can eat an adjacent line — `[^\n]*\n` cannot cross a newline, the pattern is anchored on the exact 4-space prefix and title, and sub1 requires exactly one match. The diff removes exactly one line (bak :20888).
+- P04-C2 — The TRAVEL_SYNCED_AT prefix moves the leading date — the group `\1` re-emits "2026-10-12 — " first. The diff shows the stamp still starts with 2026-10-12.
+- P04-C3 — Re-run double-inserts — the MARK appears once in the spliced deck and the script aborts if MARK is present (:16-17).
+- P05-C1 — PII or secret in the rows — a scan of the TRAVEL_VEGAS block found 0 emails, 0 phone patterns and 0 key/token/secret/password strings. The rows hold only public venues and events.
+- P17-C1 — "Seasonal" dayclub rows stay visible after the season closes — this is the documented intent (decisions.md: the rows use "Seasonal" so the filter keeps them, and the Details say the season closes mid/late Oct). It is a design choice, not a defect.
+
+## Coverage (inspected, clean)
+- splice-travel-vegas.py: anchors (:64, :67, :70) are each guarded by sub1's findall==1; the second-run guard works; it does a single read and a single write; it has no network access and no secrets.
+- Deck diff: 39 lines, three hunks only (stamp, insert, one delete). No other region changed.
+- The 31 new rows have 4 fields each, and travelEndDate output was checked for every row. 24 are evergreen. The others are F1 Nov 21, Weezer Oct 23, Jonas Nov 28, TSO and Rife Dec 4, BSB Dec 26 (all correct) and Tim McGraw (P04-F1).
+- No duplicate of the pre-existing rows (indices 31-54 listed: Metallica, Eagles, LISA, NHL/NFL, NFR, NKOTB, Doja Cat, Mob Museum, AREA15, Absinthe, restaurants).
+- decisions.md entry: dated, verbatim request, owner/status present.
+
+## Top missing tests (pass 19)
+1. A node test over every TRAVEL_* Date string. It asserts that travelEndDate returns the end of the stated run for cross-month ranges ("Oct 23 – Nov 7, 2026" gives Nov 7, and "Sep 19–Oct 31, 2026" gives Oct 31).
+2. A splice dry-run test on a fixture deck that asserts rows added == the count written in the stamp, and that the summary-row deletion removes exactly one line.
+3. A brain doctor check that flags duplicate memory.md lines and doubled date prefixes ("- D — D ").
+
+# VibeBreaker Re-validation — 2026-10-14 (Las Vegas travel splice, narrow)
+
+change-set: f163efe15c89ca93
+
+`--hash` printed f163efe15c89ca93. The coordinator said this hash differs from 8e47e2ad1607ed3c only by one line added to context/decisions.md (the deck was republished as v200). `bash scripts/validate-code.sh` then reported "verdict: FAIL (1 passed, 1 failed)": py_compile PASS, brain doctor FAIL with "index: brain/index.json stale vs the tree … run `bin/brain reindex`". This section supersedes the review of d751b99eebbf7442 above. It re-runs passes 04, 14, 19 and 20 against the three fixes only.
+
+## Verdict
+
+**FIX FIRST.** All three code and record findings are closed. The one open item is the stale brain index (P00-F1), and the deterministic gate fails until the index is rebuilt. `bin/brain reindex` is expected to clear it, because brain/index.json is excluded from the change-set and the hash should not move. If validate-code.sh then PASSES on f163efe15c89ca93, this review is SHIP with no further findings.
+
+## Closed
+- P04-F1. The script's row at :56 and the deck copy both carry "Through Nov 7, 2026". In node, the deck's own travelEndDate returns Sat Nov 07 2026 23:59:59 for the live row. "Nov 19–21, 2026" still returns Nov 21, "Sep 19–Oct 31, 2026" still returns Oct 31, and "Nightly" still returns null. The deck has 0 hits for "Oct 23 – Nov 7, 2026".
+- P14-F1. "31 rows" now appears in the script stamp (:71), the deck stamp and context/decisions.md:500. The deck has 0 hits for "30 rows, WebSearch". TRAVEL_VEGAS still has 55 rows.
+- P14-F2. `grep -c "Deck v199" memory.md` = 1, and the doubled-date line is gone.
+
+## CONFIRMED
+- P00-F1 (CRITICAL by rule: a deterministic check fails). brain/index.json is stale against the tree after the decisions.md v200 line was added, and brain doctor fails. To clear it: run `bin/brain reindex`, then `bash scripts/validate-code.sh` should print "verdict: PASS" with change-set f163efe15c89ca93. The defect is a missing regeneration, not code.
+
+## Coverage
+- The deck diff against /tmp/claude-0/deck-r7.bak.html is still exactly 35 changed lines: the stamp, 32 inserted lines and 1 deleted line. No other region changed. Quickcheck shows only the known `$`-amount false-positive FAIL.

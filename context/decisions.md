@@ -493,3 +493,17 @@ the record of the change. The full split, and the three web-UI routine edits onl
   it. The Mind panel (data-page "career") opens with a "Job Command Center" card linking the RoleCompass dashboard and
   describing its 6:40 AM PT daily routine. `dashboard/wave2/splice-travel-palmsprings.py`, deck v197.
 - **Owner.** Harrison (deck UI); Sofia's events scout keeps the rows fresh. **Status.** Published 2026-10-14.
+
+## 2026-10-14 — Las Vegas card gets nightlife, production shows, each Cirque show and dated events
+
+- **Request (Steven, verbatim).** *"Add Day and night clubs in Vegas , shows , events , circus de solei under Vegas section of entertainment"*.
+- **Decision.** 31 rows added to the top of `TRAVEL_VEGAS` (deck v199, republished as v200 after validator fixes, `dashboard/wave2/splice-travel-vegas.py`): the
+  five Cirque du Soleil residents one per row ("O", Mystère, KÀ, Michael Jackson ONE, Mad Apple) replacing the old
+  "all 5 resident shows" summary row; seven nightclubs (XS, Omnia, Hakkasan, Zouk, LIV, Marquee, Drai's); seven dayclubs
+  (Encore Beach Club, Tao Beach, Marquee Dayclub, Palm Tree Beach Club, LIV Beach, Ayu, Liquid); Blue Man Group, Penn &
+  Teller, Jabbawockeez, David Copperfield and an unverified trio (Awakening, Atomic Saloon, Magic Mike Live); dated events
+  (F1 Grand Prix Nov 19-21, Tim McGraw Oct 23-Nov 7, Weezer Oct 23, Jonas Brothers Nov 28, TSO and Matt Rife Dec 4,
+  Backstreet Boys at Sphere Dec 26). Clubs and shows carry "Nightly"/"Seasonal" dates so the past-date filter keeps
+  them; dayclub rows say the season closes mid/late October. All rows are WebSearch snippets from 2026-10-14 and name
+  their source; nothing on the deck is a booking or a price quote.
+- **Owner.** Harrison (deck UI); Sofia's events scout keeps the rows fresh. **Status.** Published 2026-10-14.
