@@ -482,3 +482,14 @@ the record of the change. The full split, and the three web-UI routine edits onl
   UTC); the sweep backstops them. Record: `routines/cloud-routine-repairs.md`.
 - **Owner.** Derek (automation), Harrison (deck UI). **Status.** Avatars proven headless 2026-10-13; weather written
   by hand today (v43); the connector click waits on Steven.
+
+## 2026-10-14 — Palm Springs / Palm Desert joins the Travel panel; the Job Command Center sits in Career & Education
+
+- **Request (Steven, verbatim).** *"Add events local to the Palm Springs/Palm Desert to the travel and experiences
+  section. Add in the career and education section: https://claude.ai/artifact/FYb2UHsVZZB5bZcpU1B6eF Job Command Center"*.
+- **Decision.** A twelfth city card, "Palm Springs & Palm Desert (Coachella Valley)", with 29 sourced rows (Plaza Theatre,
+  McCallum Theatre, Acrisure Arena, Agua Caliente, Pride Nov 6-8, the Veterans Day parade Nov 11, the Indio Tamale
+  Festival Dec 5-6, WildLights, the Aerial Tramway), same shape as the other cities so the weekly travel refresh covers
+  it. The Mind panel (data-page "career") opens with a "Job Command Center" card linking the RoleCompass dashboard and
+  describing its 6:40 AM PT daily routine. `dashboard/wave2/splice-travel-palmsprings.py`, deck v197.
+- **Owner.** Harrison (deck UI); Sofia's events scout keeps the rows fresh. **Status.** Published 2026-10-14.

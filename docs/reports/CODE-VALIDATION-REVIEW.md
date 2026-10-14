@@ -510,3 +510,112 @@ In the headless run, the deck's own opener→closer audio chain set Vanessa back
 1. Commit the fixture test for the splice (duplicate, missing, already-marked → abort, no write) next to the splice. Today it exists only as a validator scratch run.
 2. Commit the node fake-clock replay (thinking/listening yield, re-raise agreement, second-reply timer count) so the round-5 fixes are guarded by a test that does not depend on deck-r7.html.
 3. A real-send headless test: chatSetThinking(on) during a long reply's text talk, then chatSetThinking(off), and assert the state goes thinking → idle with no "speaking" in between from the text talk.
+
+# VibeBreaker Review — 2026-10-14 (Palm Springs travel card + Job Command Center, deck v197)
+
+change-set: e2a4c0bbe958505e
+
+(The first deterministic run this session reported change-set 381edf9a1e04ac16 for the splice alone. memory.md and context/decisions.md then joined the working tree. The current hash is e2a4c0bbe958505e: `validate-code.sh` reports PASS (2 passed, 0 failed), covering py_compile and brain doctor.)
+
+## Verdict
+
+**FIX FIRST.** There is one MEDIUM finding. Six multi-day events carry only their start date, so the deck hides them as "passed" while they are still running. There are two LOW findings. The splice mechanics are clean: unique anchors, idempotent, a single atomic write, and no regression elsewhere.
+
+## Scope
+
+- Files: dashboard/wave2/splice-travel-palmsprings.py (new, untracked). The doc-only diffs (memory.md, context/decisions.md, brain/index.json) were read for claims and not reviewed as code.
+- Applied output: /tmp/claude-0/deck-r7.html. The deck's own travelEndDate / travelStatus / renderTravelPage (deck-r7 lines ~20923-21092) were read.
+- Passes: 01, 04, 05, 17, 19, 20.
+- Method: I rebuilt the pre-splice deck in memory by reversing the 7 edits in deck-r7. The script then ran in memory with `open` patched, and its output **reproduced deck-r7.html exactly** (4,695,322 chars). A second run gave `ABORT: already applied`. The deck's own travelEndDate ran in node on all 29 Date strings. The caller's headless ps-test.mjs re-ran with 29 rows, the card present, the link correct and 0 page errors.
+
+## CONFIRMED
+
+### P04-F1 (MEDIUM): multi-day events use the start date, so they are auto-hidden while still running
+- Location: splice :36 (Modernism Week, "Oct 15, 2026", runs to Oct 18), :38 (Randy Rainbow, "Oct 16", shows Oct 16-18), :42 (Firebirds, "Oct 23", home dates Oct 23/28/30), :49 (Pride, "Nov 6", festival Nov 6-8 with the parade Sun Nov 8), :56 (Acrisure Series, "Nov 21", runs Nov 21-26 with Gonzaga-MSU on Nov 26), :62 (Tamale Festival, Dec 5-6).
+- Trigger: the deck is opened on 2026-11-07 or 2026-11-08.
+- Bad state: travelEndDate("Nov 6, 2026") gives Nov 6 23:59, so travelStatus is "passed". The Pride row disappears on parade day unless "Show passed events" is on. The same happens to Modernism Week on Oct 16-18 and to the Acrisure Series on Nov 22-26.
+- Spec: every other city writes multi-day runs as ranges ("Oct 16–18, 2026", "Nov 21–22, 2026", "Dec 3–12, 2026"). The parser resolves a range to its last day. decisions.md (2026-10-14) itself says "Pride Nov 6-8" and "Tamale Festival Dec 5-6".
+- Fix proof: change the Date cells to "Oct 15–18, 2026", "Oct 16–18, 2026", "Oct 23–30, 2026" (or one row per game), "Nov 6–8, 2026", "Nov 21–26, 2026" and "Dec 5–6, 2026". Then assert in node that travelEndDate returns the last day for each.
+
+### P04-F2 (LOW): a time written as "N PM" with no minutes is read as a day of the month
+- Location: splice :48 ("Nov 5, 2026, 7 PM" resolves to **Nov 7**), :50 ("Nov 7, 2026, 8 AM" resolves to **Nov 8**), :62 ("Dec 5, 2026, 10 AM" resolves to **Dec 10**). In :52 ("Nov 13, 2026, 8 PM") the result is right only because 13 > 8.
+- Trigger: the deck is opened on 2026-11-06.
+- Bad state: the Rita Moreno row (Nov 5) still shows as upcoming with a "today" badge. Before the event, the "in Nd" countdown is 2 days long for that row and 5 days long for the Tamale row.
+- Cause: the deck's travelEndDate strips only `\d{1,2}:\d{2}\s*(am|pm)` and then takes the largest 1-31 number. This parser defect is **pre-existing**: existing rows "Dec 4, 2026, 7 PM" and "Nov 12, 2026, 7 PM" are mis-dated the same way. So the new rows "parse like existing rows", and both are wrong. This change adds three more instances.
+- Fix proof: drop the time from the Date cell, write "7:00 PM", or (deck-side, outside this splice) widen the strip to `\d{1,2}(:\d{2})?\s*(am|pm)`. The node replay should then give Nov 5, Nov 7 and Dec 6.
+
+### P05-F1 (LOW): the stamp now says every event row was re-researched on 2026-10-14
+- Location: splice :69. The prepend makes TRAVEL_SYNCED_AT start "2026-10-14 — …". renderTravelPage then prints "event, sports and entertainment rows were re-researched " + TRAVEL_SYNCED_AT.slice(0, 10), which gives **2026-10-14**. S.TRAVEL (deck ~24042) also feeds the freshness board.
+- Trigger: any page load.
+- Bad state: the panel note and the freshness board claim that every city's event rows were re-researched on 10-14. Only the 29 Palm Springs rows were. The others date from the 10-11 research pass and the 10-12 re-check.
+- Pass 20: the 2026-10-12 stamp used the same prepend pattern, so this is an established convention. It still makes a false freshness claim, so it is kept at LOW.
+- Fix proof: one of two options. Keep the date-leading stamp only for whole-panel refreshes and put the Palm Springs note after it. Or make the note's wording not depend on slice(0, 10).
+
+## UNVERIFIED (NEEDS-CONTEXT)
+- Job card :75-76 claims "daily 6:40 AM PT" and the routine name "RoleCompass daily job hunt (v4)". The repo has no routine record of either. Only decisions.md, written in this same change, repeats them. The scheduled-task list is needed to confirm.
+- Row facts (dates, venues, prices) come from WebSearch snippets and cannot be checked offline. The rows say so themselves.
+
+## REJECTED (pass 20)
+- Raw `&` in rows (:37, :55, :61): in HTML, an `&` followed by a space is not a character reference. 12 existing travel rows do the same, and the rows render correctly.
+- Quotes, `<` and `>`: there are none in the rows. All 29 rows parse in node as arrays of exactly 4 strings. The apostrophe in "Steven's" sits inside a Python triple-quoted string and HTML text, so it is safe.
+- Backslash and group references in re.sub replacements (:32, :67, :80): the inserted text has no backslashes, and `.replace("\\","\\\\")` is correct anyway.
+- Anchor uniqueness: on the pre-splice deck, each of the 6 sub1 patterns matched exactly once, and the KAPSO marker exists once. The city-defs anchor matches only when New Braunfels is the last entry, which it is.
+- Idempotence and atomicity: MARK is checked first (:13). Every sub1 aborts before the single write (:84). The re-run aborted with no write.
+- Regression: the replay reproduced deck-r7 exactly, so only the 7 intended edits exist. The other 11 city arrays and defs are unchanged. The Job card id is unique. Its link matches the existing pages-menu item "Job Machine — Ultimate Job Search Dashboard", so the card's "also in the pages menu" claim is true.
+- "Through Dec 30, 2026" and "Through May 27, 2027" parse to Dec 30 2026 and May 27 2027, the same as existing "Through …" rows.
+- Firebirds "home games": the text is in the Name column, not the Date column, so the row is not made evergreen. That is correct.
+
+## Coverage (clean on inspection)
+| Surface | Result |
+|---|---|
+| Anchors and abort behaviour (sub1, MARK, KAPSO marker) | clean |
+| Card HTML (travel card, Job card) | clean; well-formed, unique ids |
+| TRAVEL_PALMSPRINGS shape | clean; 29 rows × 4 strings |
+| TRAVEL_CITY_DEFS entry | clean |
+| Coverage-note edit | clean |
+| Date parsing | P04-F1, P04-F2 |
+| Sync stamp | P05-F1 |
+| Headless render | 29 rows, 0 page errors |
+
+## Top missing tests (pass 19)
+1. A node test that runs the deck's travelEndDate on every TRAVEL_* Date cell and asserts the intended last day. It would have caught F1 and F2, including the pre-existing "7 PM" rows.
+2. Commit the splice fixture test (duplicate anchor, missing anchor, already marked: abort with no write) next to the splice.
+3. A parser unit test for "N PM", "N:MM PM", "N:MMPM" and ranges with an en dash or a hyphen.
+
+# VibeBreaker Re-validation — 2026-10-14 (Palm Springs splice, round 2, deck v198)
+
+change-set: f3862aa2e09e6894
+
+`bash scripts/validate-code.sh` on 2026-10-14T15:55:21Z reports "verdict: PASS (2 passed, 0 failed)", covering py_compile and brain doctor. The change-set is splice-travel-palmsprings.py, memory.md and context/decisions.md. The previous round's change-set was e2a4c0bbe958505e (FIX FIRST).
+
+## Verdict
+
+**SHIP.** All three round-1 findings are fixed. No new findings.
+
+## Method
+- Rebuilt the pre-splice deck from /tmp/claude-0/deck-r7.html by reversing the edits one by one: the mark, the travel card, the 29 rows, the city def, the synced-at stamp, the parser line, the coverage note and the Job card. Each reversal matched exactly once.
+- Ran the script in memory with `open` patched (no write) on that rebuild. Its output **reproduced deck-r7.html exactly** (4,695,431 chars). A second run gave `ABORT: already applied` and left the text unchanged.
+- Ran the deck's own travelEndDate in node from deck-r7, old regex against new, on every row of all 12 TRAVEL_* city arrays (203 rows, 29 of them Palm Springs).
+
+## Round-1 findings, re-checked
+| Finding | Status | Evidence |
+|---|---|---|
+| P04-F1 MEDIUM, multi-day rows resolved to their start date (splice :36, :38, :42, :49, :56, :62) | FIXED | The rows now give Oct 18, Oct 18, Oct 30, Nov 8, Nov 26 and Dec 6. |
+| P04-F2 LOW, "N PM" read as a day of the month (:48, :50, :52) | FIXED | The rows are now "7:00 PM", "8:00 AM" and "8:00 PM", giving Nov 5, Nov 7 and Nov 13. Separately, deck step 4 (:72-73) widens the strip to `/\d{1,2}(:\d{2})?\s*(am|pm)\b/ig`. |
+| P05-F1 LOW, the stamp claimed every row was re-researched on 10-14 (:69) | FIXED | TRAVEL_SYNCED_AT starts "2026-10-12 — Palm Springs / Palm Desert card added 2026-10-14 …", so `.slice(0,10)` gives 2026-10-12. |
+
+## Regression replay (rows whose end date moved, old parser → new)
+- TRAVEL_TEMECULA "De Portola Wine Trail Harvest Celebration", "Nov 8, 2026, 10 AM": Nov 10 → **Nov 8** (a correction).
+- TRAVEL_TEMECULA "Santa's Electric Light Parade", "Dec 4, 2026, 7 PM": Dec 7 → **Dec 4** (a correction).
+- The other 201 rows have the same end date under both parsers. That includes every "N:MM PM", "N:MMPM", multi-date list ("Oct 2, 3, … 17, 2026, 8:00 PM" gives Oct 17) and "Oct 23 & 24, 2026, 8:00 PM" (gives Oct 24) row.
+- Edge probes: `\b` stops a false strip on words that start with "am" or "pm" ("10 Amphitheater" stays as it is). Ranges and comma lists are untouched.
+
+## Findings
+None CONFIRMED.
+
+## Carried forward (unchanged, NEEDS-CONTEXT, not a defect)
+- Job card :79-80 says "daily 6:40 AM PT" and names the routine "RoleCompass daily job hunt (v4)". There is still no routine record in the repo to confirm either.
+
+## Top missing tests (pass 19)
+1. Commit the node travelEndDate replay over every TRAVEL_* Date cell, with expected last days, as a deck test. Include the two corrected Temecula rows.
+2. Commit the splice fixture test (duplicate anchor, missing anchor, already marked: abort with no write).
