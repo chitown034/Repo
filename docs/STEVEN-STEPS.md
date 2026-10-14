@@ -6,6 +6,14 @@ research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox
 
 ## 1 · Phone · 5 minutes (Do these first; nothing else depends on them)
 
+## Start here (2026-10-14) — WhatsApp with Vanessa, two pastes on the Mac
+
+Kapso gave Vanessa **(202) 474-5223**. In Terminal, in the Repo folder (`git pull` first):
+1. `bash integrations/kapso/install-mac.sh install --apply` — installs the Kapso plugin and MCP for every Claude Code session.
+2. `bash integrations/kapso/install-mac.sh keys --allow 1<your 10-digit mobile>` — stores your number as the only one Vanessa answers, then asks for the Kapso project API key (hidden prompt; from app.kapso.ai → your project → API keys).
+3. Then `claude` → type `/mcp` → pick **kapso** → sign in once in the browser. Check with `bash integrations/kapso/install-mac.sh doctor`.
+4. Save (202) 474-5223 in your phone as *Vanessa (WhatsApp)* and send her a message. Answer it from any Claude Code or Orca session with "answer my WhatsApp"; the unattended 5-minute reply task is `integrations/mac-task-specs.md` §5c (register it on the runner when you want her replying on her own).
+
 ## Start here (2026-10-13) — two things, 5 minutes
 
 - **Mac, Terminal, in the Repo folder — stop the three Mac feed tasks that keep erasing the deck's fresh news:**

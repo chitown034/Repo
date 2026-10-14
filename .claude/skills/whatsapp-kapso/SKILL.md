@@ -15,6 +15,8 @@ Installed by `bash integrations/kapso/install-mac.sh install --apply` (`go.sh` s
    connected = Phase 2 (needs the Needs-Steven packet in the README to have been approved).
 
 ## Phase 1 — sandbox, Steven only
+Vanessa's number is **(202) 474-5223** (Kapso, assigned 2026-10-14). The only sender she answers is the Keychain
+item `kapso-allow` (Steven's mobile) — never typed into a prompt, a document or this repo.
 - Allowed: read the sandbox conversations; reply **to Steven's own number** on the thread he started; open the
   Kapso inbox UI (`kapso_inbox_open`) when asked.
 - Vanessa answers as Vanessa: the `vanessa-orchestrator` intake, the AI team, the HALT list, then the reply. Log

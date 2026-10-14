@@ -36,7 +36,11 @@ contact label, last-message time, direction and unread count. No message text re
 writes the deck itself: `kapso-fetch.py --json` prints the document and the task (or any Claude Code session asked
 to "update the WhatsApp card") writes it with ArtifactData.
 
-**Talking to Vanessa (Phase 1, the point of all this).** Steven messages the sandbox number from his own phone.
+**The number.** Kapso assigned **(202) 474-5223** on 2026-10-14 — save it in the phone as *Vanessa (WhatsApp)*. The
+allow-list (Keychain item `kapso-allow`) is Steven's own mobile, stored on the Mac by `install-mac.sh keys --allow
+<digits>`; it is never written in this repo, the deck or a routine.
+
+**Talking to Vanessa (Phase 1, the point of all this).** Steven messages (202) 474-5223 from his own phone.
 Two ways she answers:
 1. **Live, in a session** — any Claude Code session (Terminal or Orca) with the `kapso` MCP signed in: "read my
    WhatsApp" / "answer my WhatsApp" loads `.claude/skills/whatsapp-kapso` and she reads and replies on the thread.
@@ -46,10 +50,10 @@ Two ways she answers:
    and sends through `kapso-send.py`, which refuses before any network call to send to any number but that one.
    The allow-list is the HALT line in code: a client send is impossible through these scripts.
 
-**Keys (HALT: credentials).** Two Keychain items, both typed by Steven, never in chat, this repo or a routine
-prompt: `security add-generic-password -a "$USER" -s kapso -w` (the project API key) and
-`security add-generic-password -a "$USER" -s kapso-allow -w` (his own WhatsApp number, digits only, country code
-first).
+**Keys (HALT: credentials).** Two Keychain items, both set by Steven on the Mac with one paste:
+`bash integrations/kapso/install-mac.sh keys --allow <his 10-digit mobile>` stores `kapso-allow` (11 digits, country
+code first) and then prompts, hidden, for the project API key (`kapso`). The script prints at most 4 digits of
+either; neither value is ever in chat, this repo, the deck or a routine prompt.
 
 **Orca.** No pairing changes. Because the MCP is registered at user scope, `claude --agent <seat>` inside an Orca
 worktree sees the `kapso` tools; the skill `.claude/skills/whatsapp-kapso/SKILL.md` tells every seat the rules.

@@ -619,3 +619,95 @@ None CONFIRMED.
 ## Top missing tests (pass 19)
 1. Commit the node travelEndDate replay over every TRAVEL_* Date cell, with expected last days, as a deck test. Include the two corrected Temecula rows.
 2. Commit the splice fixture test (duplicate anchor, missing anchor, already marked: abort with no write).
+
+# VibeBreaker Review — 2026-10-14 (Kapso `install-mac.sh keys --allow`)
+
+change-set: fc3fe2698bea8c6e
+
+`bash scripts/validate-code.sh` at 2026-10-14T15:58:55Z reported "verdict: PASS (3 passed, 0 failed)" (bash -n, shellcheck, brain doctor). `--hash` returns fc3fe2698bea8c6e. The change-set contains integrations/kapso/install-mac.sh (the only code), README.md, the whatsapp-kapso SKILL.md, REMOTE-ACCESS.md, docs/STEVEN-STEPS.md and memory.md. Passes run (shell): 01, 04, 05, 11, 14, 19, 20.
+
+## Verdict
+
+**FIX FIRST.** One MEDIUM finding: the new subcommand prints the full allow-listed number on one path, which breaks its own "last 4 only" contract. The other two findings are LOW. `doctor` and `install` are unchanged. Exit codes are correct. The script is bash 3.2 clean.
+
+## Evidence
+- `shellcheck -S warning` (0.11.0) returned 0 with no output. bash -n passed. Kapso unit tests (`cd integrations/kapso/tests && python3 -m unittest -q`): 16 run, OK.
+- The diff touches only the header comment (:7-11), the new `keys)` case (:78-90) and the `*)` usage line (:92). The `install` (:39-58) and `doctor` (:59-77) bodies are byte-identical to HEAD.
+- The `keys` branch was exercised against a stub `security` on PATH that logs argv. All 12 cases behaved as follows:
+  - `2024745223` stores `12024745223` with `-U`, then the prompt runs. Exit 0.
+  - `"+1 (202) 474-5223"` stores `12024745223`. Exit 0.
+  - With an existing `kapso` item, it is kept and nothing prompts. Exit 0.
+  - A cancelled prompt exits 1. A failed `kapso-allow` write exits 1.
+  - 9 digits, no `--allow`, empty `$3` and unquoted `202 474 5223` all print usage and exit 2. An unknown subcommand prints usage and exits 2.
+- The key prompt `security add-generic-password -a "$USER" -s kapso -w` puts `-w` last with no value. Per security(1) that prompts, and the key is never placed in argv.
+- `-U` means "update item if it already exists". Without it, a re-run would fail with a duplicate-item error. That is correct for `kapso-allow` and correctly omitted for `kapso`, which is guarded by `find-generic-password` first.
+- `${ALLOW#"${ALLOW%????}"}` gives exactly the last 4 digits. Length is at least 10 by then, so it is safe.
+- No bash-4 constructs (`${v,,}`, `[[`, arrays, `declare -A`, `mapfile`). `set -u` is safe because `${3:-}` is used.
+- Consumers `kapso-fetch.py` :50/:176 and `kapso-send.py` :55 compare `digits(kapso-allow)` to the WhatsApp sender id. The stored `1XXXXXXXXXX` form matches that format.
+
+## CONFIRMED
+
+**P05-F1 MEDIUM: full number echoed (integrations/kapso/install-mac.sh:81)**
+- Trigger: `keys --allow` with a number that does not start with 1, e.g. `keys --allow "(619) 555-1234"`, the shape the README's `<digits>` invites.
+- Bad state: `say "  (added the US country code: $ALLOW)"` prints all 11 digits of Steven's mobile to the terminal, to its scrollback and to any Orca or Claude Code session transcript that ran it. The spec, and the line after it, promise only the last 4.
+- Fix proof: rerun the stub harness with a 10-digit input. The output must contain no run of more than 4 consecutive digits from the number (e.g. print `(added the US country code 1)`).
+
+**P04-F1 LOW: non-US or over-long input is silently corrupted (install-mac.sh:80-81)**
+- Trigger: an input of 11 or more digits that does not start with 1, e.g. `442071234567`, gets a `1` prepended and is stored as `1442071234567`. Any length at or above 10 is accepted (e.g. 16 digits).
+- Bad state: the allow-list holds a number that cannot match any sender, so Vanessa silently answers no one. This fails closed, so it is not a security issue, but it gives a false "set" confirmation.
+- Fix proof: accept only 10 digits (then prefix 1) or 11 digits starting with 1. Anything else exits 2. Harness cases 442071234567 and 1202474522377777 must exit 2.
+
+**P14-F1 LOW: stale header claim (install-mac.sh:17-18)**
+- The header still says "Nothing here signs in, sends a message or stores a key: … the API key goes into the macOS Keychain item "kapso" by Steven's own hand". `keys` now stores both Keychain items, prompted by this script.
+- Fix proof: reword the header to say the script stores the items only via the `keys` subcommand, typed by Steven.
+
+## UNVERIFIED (NEEDS-CONTEXT, not defects)
+- On-Mac runtime: whether the hidden `-w` prompt still reaches the user with stdout sent to /dev/null (:87). security(1) reads via the tty, so this is expected but not run here (no macOS). Proof: one run on the Mac.
+
+## REJECTED
+- "The number is on the command line (`-w "$ALLOW"`, visible in ps)." Rejected: the spec chose this, the value is not a secret, and the API key never goes through argv.
+- "`$3` misread given FLAG=$2." Rejected: verified that `$2` must be `--allow` and `$3` holds the digits. A missing or split value prints usage and exits 2.
+- "A 10-digit US number starting with 1 is not prefixed." Rejected: NANP area codes never start with 1.
+
+## Steven decides
+- The allow-list must be **his own mobile**, not Vanessa's (202) 474-5223. If he types Vanessa's number, she answers no one. STEVEN-STEPS step 2 says "your 10-digit mobile", which is correct.
+
+## Top missing tests (pass 19)
+1. Commit the stub-`security` harness as `integrations/kapso/tests/test_install_keys.sh`. Cover the 12 cases above and assert stdout never holds more than 4 digits of the number.
+2. A length or format table test: 10 digits, 11 starting with 1, 11 not starting with 1, 12+, and fewer than 10.
+3. A test asserting the API key never appears in argv: every stubbed `add-generic-password -s kapso` call must end with a bare `-w`.
+
+# VibeBreaker Re-validation — 2026-10-14 (Kapso `install-mac.sh keys`, narrow)
+
+change-set: 0a0d4a615902a9fc
+
+`bash scripts/validate-code.sh` at 2026-10-14T16:09:03Z reported "verdict: PASS (3 passed, 0 failed)" (bash -n, shellcheck, brain doctor). `--hash` returns 0a0d4a615902a9fc. This supersedes the review of fc3fe2698bea8c6e above. It is a narrow re-run of passes 04, 05, 14, 19 and 20 against the three fixes and the new `USER` default, on integrations/kapso/install-mac.sh only.
+
+## Verdict
+
+**SHIP.** All three earlier findings are closed. No new findings.
+
+## Evidence
+- A stub `security` on PATH logged argv, with `USER` unset (`env -u USER`). The script ran under `set -u` and resolved the account via `id -un`.
+  - `"(619) 555-1234"` stored `16195551234` with `-U`. Output: "(added the US country code 1)" and "...1234". Exit 0.
+  - `16195551234`, `1-619-555-1234` and `"+1 619 555 1234"` each stored `16195551234`. Exit 0.
+  - `442071234567` (12 digits), `26195551234` (11 digits, not starting with 1), `12345` and empty input each exited 2 with a count-only message. No `security` call was made.
+  - A missing `--allow` prints usage and exits 2.
+  - Re-run with the `kapso` item present (stub `find` returns 0): the key is kept, there is no prompt and no `add ... -s kapso` call. Exit 0.
+  - The key call is `add-generic-password -a <user> -s kapso -w`, with a bare `-w` and no value in argv.
+- In every case, the longest run of digits on stdout or stderr was 4.
+- `git diff HEAD` on the script touches only the header (:7-11, :17-18), `USER=` (:21), the `keys)` case (:79-95) and the usage line (:97). The `install` and `doctor` bodies are byte-identical. `install` preview still runs. Kapso unit tests: 16, OK.
+
+## Closed
+- P05-F1 MEDIUM :81, now :83. Prints only "(added the US country code 1)".
+- P04-F1 LOW :80-81, now :82-86. Accepts only 10 digits, or 11 starting with 1. Anything else exits 2.
+- P14-F1 LOW :17-18. The header now states that `keys` writes the two Keychain items and prints at most 4 digits.
+
+## CONFIRMED
+None.
+
+## UNVERIFIED (NEEDS-CONTEXT, not defects)
+- Carried forward: on a real Mac, does the hidden `-w` prompt reach the user with stdout sent to /dev/null (:92)? Proof: one run on the Mac.
+
+## Top missing tests (pass 19)
+1. Commit the stub-`security` harness as `integrations/kapso/tests/test_install_keys.sh`. It should cover the cases above, including `USER` unset and an existing `kapso` item, and assert that no output line holds more than 4 consecutive digits.

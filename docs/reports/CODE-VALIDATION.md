@@ -1,14 +1,18 @@
 # Code validation — last run
 
-Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `f3862aa2e09e6894`: **not yet**.
+Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `0a0d4a615902a9fc`: **not yet**.
 
 ```
-code validation 2026-10-14T15:57:23Z - change-set f3862aa2e09e6894
+code validation 2026-10-14T16:18:21Z - change-set 0a0d4a615902a9fc
 files:
-  context/decisions.md
-  dashboard/wave2/splice-travel-palmsprings.py
+  .claude/skills/whatsapp-kapso/SKILL.md
+  REMOTE-ACCESS.md
+  docs/STEVEN-STEPS.md
+  integrations/kapso/README.md
+  integrations/kapso/install-mac.sh
   memory.md
-PASS py_compile dashboard/wave2/splice-travel-palmsprings.py
+PASS bash -n integrations/kapso/install-mac.sh
+PASS shellcheck integrations/kapso/install-mac.sh
 PASS brain doctor
-verdict: PASS (2 passed, 0 failed)
+verdict: PASS (3 passed, 0 failed)
 ```

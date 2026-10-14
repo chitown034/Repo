@@ -4,15 +4,21 @@
 #   bash integrations/kapso/install-mac.sh install            shows what it would do (changes nothing)
 #   bash integrations/kapso/install-mac.sh install --apply    adds the plugin marketplace, installs the kapso plugin,
 #                                                             registers the MCP server at user scope
+#   bash integrations/kapso/install-mac.sh keys --allow 16195551234
+#                                                             stores YOUR WhatsApp number (digits, country code first) as the
+#                                                             only number Vanessa may answer (Keychain item kapso-allow), then
+#                                                             prompts for the Kapso project API key (Keychain item kapso; typed
+#                                                             at a hidden prompt, never echoed, never on the command line)
 #   bash integrations/kapso/install-mac.sh doctor            reports what is in place (nothing printed is secret)
 #   bash integrations/kapso/install-mac.sh doctor --json     prints ONLY the whatsappKapso document (clean JSON) for a
 #                                                             session or the kapso-inbox-sync task to write with
 #                                                             ArtifactData (nothing here writes the deck)
 #
-# Nothing here signs in, sends a message or stores a key: the sign-in is `claude` -> `/mcp` -> kapso (Steven), the
-# API key goes into the macOS Keychain item "kapso" by Steven's own hand. Reviewed 2026-10-13: gokapso/agent-plugins
+# Nothing here signs in or sends a message. `install` stores nothing; `keys` writes two Keychain items on this Mac
+# (kapso-allow = Steven's mobile, kapso = the API key typed at a hidden prompt) and prints at most 4 digits of either. Reviewed 2026-10-13: gokapso/agent-plugins
 # at a6cbfe9 (MIT) - three skills, reference docs, scripts that talk only to https://api.kapso.ai, no hooks.
 set -u
+USER="${USER:-$(id -un)}"
 HERE="$(cd "$(dirname "$0")" && pwd)"
 CMD="${1:-}"; FLAG="${2:-}"
 MCP_URL="https://api.kapso.ai/mcp"
@@ -70,6 +76,23 @@ doctor)
   fi
   say "  sign-in: run  claude  then  /mcp  and check kapso shows 'connected'"
   ;;
+keys)
+  ALLOW="$(printf '%s' "${3:-}" | tr -cd '0-9')"
+  if [ "$FLAG" != "--allow" ]; then say "usage: $0 keys --allow <your mobile: 10 digits, or 11 starting with 1>"; exit 2; fi
+  case "${#ALLOW}:$ALLOW" in
+    10:*) ALLOW="1$ALLOW"; say "  (added the US country code 1)";;
+    11:1*) ;;
+    *) say "  not a US mobile number: need 10 digits, or 11 starting with 1 (got ${#ALLOW} digits)"; exit 2;;
+  esac
+  if security add-generic-password -U -a "$USER" -s kapso-allow -w "$ALLOW" >/dev/null 2>&1; then say "  keychain: kapso-allow set - Vanessa answers only ...${ALLOW#"${ALLOW%????}"}"; else say "  keychain: could not write kapso-allow"; exit 1; fi
+  if security find-generic-password -a "$USER" -s kapso >/dev/null 2>&1; then
+    say "  keychain: 'kapso' key already present (keeping it; delete with: security delete-generic-password -a \"\$USER\" -s kapso)"
+  else
+    say "  Paste the Kapso project API key (from app.kapso.ai -> project -> API keys). It is typed hidden and stored only in the Keychain:"
+    if security add-generic-password -a "$USER" -s kapso -w >/dev/null; then say "  keychain: 'kapso' key stored"; else say "  keychain: key not stored (cancelled?)"; exit 1; fi
+  fi
+  say "  Now test it:  bash integrations/kapso/install-mac.sh doctor"
+  ;;
 *)
-  say "usage: $0 install [--apply] | doctor [--json]"; exit 2 ;;
+  say "usage: $0 install [--apply] | keys --allow <digits> | doctor [--json]"; exit 2 ;;
 esac
