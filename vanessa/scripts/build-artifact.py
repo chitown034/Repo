@@ -10,7 +10,7 @@ header.top{top:env(safe-area-inset-top,0px)}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 body{min-height:100%}
 """
-js=''.join('<script>\n'+(root/f).read_text().replace('</script','<\\/script')+'\n</script>\n' for f in ['data.js','engine.js','prompts.js','strategies.js','credit.js','va.js','ops.js','letters.js'])
+js=''.join('<script>\n'+(root/f).read_text().replace('</script','<\\/script')+'\n</script>\n' for f in ['data.js','engine.js','prompts.js','strategies.js','credit.js','va.js','ops.js','letters.js','pdf.js'])
 app=((root/'app.js').read_text()+'\n'+(root/'app2.js').read_text()).replace('</script','<\\/script')
 body=re.search(r'<body>(.*?)<script src',(root/'index.html').read_text(),re.S).group(1)
 out=f'''<title>VANESSA Command Dashboard</title>

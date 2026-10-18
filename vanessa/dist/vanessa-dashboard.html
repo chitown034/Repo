@@ -1878,6 +1878,39 @@ const DISPUTE_CATS=[...new Set(DISPUTE_LETTERS.map(l=>l.cat))];
 
 </script>
 <script>
+/* Minimal dependency-free PDF writer: US Letter, Times-Roman / Times-Bold (standard 14 fonts, WinAnsi), word-wrap, multi-page. */
+const PDF_W={" ":250,"!":333,'"':408,"#":500,"$":500,"%":833,"&":778,"'":333,"(":333,")":333,"*":500,"+":564,",":250,"-":333,".":250,"/":278,"0":500,"1":500,"2":500,"3":500,"4":500,"5":500,"6":500,"7":500,"8":500,"9":500,":":278,";":278,"<":564,"=":564,">":564,"?":444,"@":921,"A":722,"B":667,"C":667,"D":722,"E":611,"F":556,"G":722,"H":722,"I":333,"J":389,"K":722,"L":611,"M":889,"N":722,"O":722,"P":556,"Q":722,"R":667,"S":556,"T":611,"U":722,"V":722,"W":944,"X":722,"Y":722,"Z":611,"[":333,"\\":278,"]":333,"^":469,"_":500,"`":333,"a":444,"b":500,"c":444,"d":500,"e":444,"f":333,"g":500,"h":500,"i":278,"j":278,"k":500,"l":278,"m":778,"n":500,"o":500,"p":500,"q":500,"r":333,"s":389,"t":278,"u":500,"v":500,"w":722,"x":500,"y":500,"z":444,"{":480,"|":200,"}":480,"~":541,"—":1000,"–":500,"•":350,"§":500,"“":444,"”":444,"‘":333,"’":333,"…":1000,"é":444,"ñ":500};
+const PDF_WIN={"—":0x97,"–":0x96,"•":0x95,"§":0xA7,"“":0x93,"”":0x94,"‘":0x91,"’":0x92,"…":0x85,"é":0xE9,"ñ":0xF1,"°":0xB0};
+const pdfClean=s=>String(s).replace(/≥/g,">=").replace(/≤/g,"<=").replace(/×/g,"x").replace(/[✔✓]/g,"[x]").replace(/[✘✗]/g,"[ ]").replace(/[→]/g,"->").replace(/[☐]/g,"[ ]").replace(/[→]/g,"->");
+const pdfWidth=(s,size,bold)=>{let w=0;for(const ch of s)w+=(PDF_W[ch]??500);return w/1000*size*(bold?1.04:1)};
+function pdfEncode(s){let out="";for(const ch of s){const c=ch.charCodeAt(0);let b=c<128?c:(PDF_WIN[ch]??63);if(b===40||b===41||b===92)out+="\\"+String.fromCharCode(b);else if(b<32)out+=" ";else out+=String.fromCharCode(b);}return out;}
+function pdfBytes(paragraphs,{size=12,lead=15,margin=72}={}){
+  const W=612,H=792,maxW=W-margin*2; const pages=[]; let lines=[];
+  const push=(txt,bold,align,gapAfter)=>{ // wrap
+    const words=pdfClean(txt).split(/\s+/).filter(Boolean); if(!words.length){lines.push({t:"",bold,gap:gapAfter});return}
+    let cur="";for(const w of words){const t=cur?cur+" "+w:w;if(pdfWidth(t,size,bold)>maxW&&cur){lines.push({t:cur,bold,align});cur=w}else cur=t}
+    if(cur)lines.push({t:cur,bold,align,gap:gapAfter}); };
+  paragraphs.forEach(p=>push(p.t,!!(p.b||p.h),p.align,p.h?6:0));
+  const perPage=Math.floor((H-margin*2)/lead); for(let i=0;i<lines.length;i+=perPage)pages.push(lines.slice(i,i+perPage));
+  if(!pages.length)pages.push([]);
+  const objs=[]; const add=s=>{objs.push(s);return objs.length};
+  const fontR=add("<< /Type /Font /Subtype /Type1 /BaseFont /Times-Roman /Encoding /WinAnsiEncoding >>");
+  const fontB=add("<< /Type /Font /Subtype /Type1 /BaseFont /Times-Bold /Encoding /WinAnsiEncoding >>");
+  const pageIds=[]; const pagesId=objs.length+pages.length*2+1;
+  pages.forEach(pl=>{let y=H-margin, s="BT\n";
+    pl.forEach(l=>{ if(l.t){const f=l.bold?"/F2":"/F1";let x=margin;if(l.align==="right")x=W-margin-pdfWidth(l.t,size,l.bold);if(l.align==="center")x=(W-pdfWidth(l.t,size,l.bold))/2;s+=`${f} ${size} Tf 1 0 0 1 ${x.toFixed(1)} ${y.toFixed(1)} Tm (${pdfEncode(l.t)}) Tj\n`;} y-=lead+(l.gap||0); });
+    s+="ET"; const cid=add(`<< /Length ${s.length} >>\nstream\n${s}\nendstream`);
+    pageIds.push(add(`<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /Font << /F1 ${fontR} 0 R /F2 ${fontB} 0 R >> >> /Contents ${cid} 0 R >>`)); });
+  const pid=add(`<< /Type /Pages /Kids [${pageIds.map(i=>i+" 0 R").join(" ")}] /Count ${pageIds.length} >>`);
+  const cat=add(`<< /Type /Catalog /Pages ${pid} 0 R >>`);
+  let out="%PDF-1.4\n%\xE2\xE3\xCF\xD3\n"; const offs=[];
+  objs.forEach((o,i)=>{offs.push(out.length);out+=`${i+1} 0 obj\n${o}\nendobj\n`});
+  const xref=out.length; out+=`xref\n0 ${objs.length+1}\n0000000000 65535 f \n`+offs.map(o=>String(o).padStart(10,"0")+" 00000 n \n").join("")+`trailer\n<< /Size ${objs.length+1} /Root ${cat} 0 R >>\nstartxref\n${xref}\n%%EOF`;
+  const bytes=new Uint8Array(out.length); for(let i=0;i<out.length;i++)bytes[i]=out.charCodeAt(i)&255; return bytes;
+}
+
+</script>
+<script>
 /* VANESSA 3.0 command dashboard — vanilla JS, no build step. Demo data is simulated until Supabase/n8n are connected (Settings). */
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -2292,7 +2325,7 @@ function docxBytes(paragraphs){ // paragraphs: [{t, b?, h?, align?}]
   return makeZip([{name:"[Content_Types].xml",data:enc.encode(ct)},{name:"_rels/.rels",data:enc.encode(rels)},{name:"word/document.xml",data:enc.encode(doc)},{name:"word/_rels/document.xml.rels",data:enc.encode(drels)},{name:"word/styles.xml",data:enc.encode(styles)}]);
 }
 async function saveFile(filename,bytes){
-  const blob=new Blob([bytes],{type:filename.endsWith(".zip")?"application/zip":"application/vnd.openxmlformats-officedocument.wordprocessingml.document"});
+  const blob=new Blob([bytes],{type:filename.endsWith(".zip")?"application/zip":filename.endsWith(".pdf")?"application/pdf":"application/vnd.openxmlformats-officedocument.wordprocessingml.document"});
   try{ const dl=window.claude?.use?await window.claude.use("downloads"):null; if(dl){ await dl.save({filename,data:blob}); toast(`Saved ${filename}`); return; } }catch(e){ if(e&&e.code==="declined") return toast("Download cancelled"); toast("Save failed: "+(e.message||e.code||e)); return; }
   const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=filename; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000); toast(`Downloading ${filename}`);
 }
@@ -2371,29 +2404,54 @@ PAGE.credit={ html:()=>`
   $("#cbest").onclick=()=>{const budget=val("cbudget"),base=val("cbase");let plan={},spent=0,improved=true;while(improved){improved=false;const cur=simulate(base,tl,inq,plan).delta;let best=null;tl.forEach(t=>{if(plan[t.id])return;(ACTIONS[t.type]||[]).forEach(d=>{if(/close|removeAU|fixlate|delete|pfd|limit/.test(d.id))return;const c=d.cost(t);if(spent+c>budget)return;const g=simulate(base,tl,inq,{...plan,[t.id]:d.id}).delta-cur;if(g>0&&(!best||g/(c||1)>best.g/(best.c||1)))best={t,d,g,c}})});if(best){plan[best.t.id]=best.d.id;spent+=best.c;improved=true}}acts=plan;save();draw();toast(`Plan uses ${money(spent)} of ${money(budget)} (paydowns only — disputes/goodwill excluded)`)}; }};
 
 /* ======== LETTER DESK ======== */
+const SNIPPETS={
+ "Hardship reasons":["a temporary loss of income when my employer reduced hours from {{EVENT_DATE}}","a medical emergency in my household in {{EVENT_DATE}}","a Permanent Change of Station move in {{EVENT_DATE}}, during which my mail and autopay were interrupted","a deployment from {{EVENT_DATE}}, when I had limited access to banking","a divorce/separation finalized {{EVENT_DATE}} that changed my household income","an error by my bank that was later reversed (documentation enclosed)"],
+ "What changed":["I have since enrolled in automatic payments on every account.","My income has stabilized at $\{{AMOUNT}} per month and all accounts are current.","I have built ____ months of reserves and paid down my revolving balances.","I now work from a single primary bank account to avoid missed payments."],
+ "Military":["My current enlistment runs through {{EVENT_DATE}}; a statement of service is enclosed.","My BAH at the new duty station will be $\{{AMOUNT}} per the DoD BAH calculator.","I receive VA disability compensation of $\{{AMOUNT}} per month, which is non-taxable and permanent.","My spouse will occupy the property within 60 days of closing while I complete my deployment.","A specific power of attorney and alive-and-well letter are enclosed."],
+ "Dispute phrasing":["Please provide the name, address and telephone number of the furnisher you contacted.","If the item cannot be verified, delete it and send me an updated copy of my report.","I have enclosed documentation; a telephone or automated verification is not sufficient.","Please do not treat this dispute as frivolous — the enclosed records are specific to the item disputed."],
+ "Closing lines":["Thank you for your prompt attention to this matter.","I am available at {{PHONE}} or {{EMAIL}} should you need anything further.","Please respond in writing within 30 days as required."],
+};
+const TOKENS=LETTER_FIELDS.map(f=>f[0]).concat(["BUREAU"]);
+let letterEdits=store.get("letterEdits",{});
 PAGE.letters={ html:()=>`
 <div class="tabs" id="ltabs"><button data-t="dispute">Dispute letters (${DISPUTE_LETTERS.length})</button><button data-t="loe">Letters of explanation (${LOE_LETTERS.length})</button></div>
-<div class="grid g12" style="margin-top:14px"><div><div class="card"><h3>Borrower details <span class="sub">saved locally</span></h3><div class="form" style="grid-template-columns:1fr 1fr">${LETTER_FIELDS.map(([k,l])=>`<div class="${k==="DETAIL"?"wide":""}"><label>${l}</label>${k==="DETAIL"?`<textarea id="lf_${k}" rows="3">${esc(letterForm[k])}</textarea>`:`<input type="text" id="lf_${k}" value="${esc(letterForm[k])}">`}</div>`).join("")}</div></div>
- <div class="card"><h3>Library</h3><div class="row"><input type="text" id="lq" placeholder="Search…" style="max-width:200px"><select id="lcat" style="width:auto"></select></div><div id="llist" style="max-height:60vh;overflow:auto;margin-top:8px"></div></div></div>
- <div><div class="card"><h3 id="ltitle">Select a letter</h3><div id="lmeta"></div><div class="row" id="lctl" style="margin:8px 0"></div><pre class="code" id="lprev" style="max-height:none;background:var(--panel);border:1px solid var(--line);font-family:Georgia,serif;font-size:13px"></pre></div>
- <div class="card"><h3>Guardrails</h3><ul class="sm mut" style="margin:0 0 0 18px;padding:0"><li>Dispute only inaccurate, incomplete, unverifiable or obsolete items. Accurate negatives → goodwill (D31), pay-for-delete (D30) or time.</li><li>No CPNs, no new EIN for personal credit, no "dispute everything" — these are refused by every agent in this system.</li><li>Active disputes can block automated underwriting; during a loan, prefer rapid rescore with documentation.</li><li>${BUREAU_NOTE}</li><li>LOEs: one issue per letter, facts and dates, no blame, what changed, signed and dated.</li></ul></div></div></div>`,
- mount(){ let tab=store.get("ltab","dispute"), cur=null, bureau=store.get("lbureau","EFX");
+<div class="card" style="margin-top:14px"><div class="row"><div style="flex:2;min-width:260px"><label for="lsel">Template</label><select id="lsel"></select></div><div style="flex:1;min-width:160px"><label for="lq">Filter the list</label><input type="text" id="lq" placeholder="Search…"></div><div id="lbwrap" style="min-width:170px"><label for="lb">Bureau</label><select id="lb">${Object.entries(BUREAUS).map(([k,b])=>`<option value="${k}">${b.name.split(",")[0]}</option>`).join("")}</select></div></div>
+ <div id="lmeta" style="margin-top:8px"></div></div>
+<div class="grid g12"><div><div class="card"><h3>Borrower details <span class="sub">saved locally · flow into every token</span></h3><div class="form" style="grid-template-columns:1fr 1fr">${LETTER_FIELDS.map(([k,l])=>`<div class="${k==="DETAIL"?"wide":""}"><label>${l}</label>${k==="DETAIL"?`<textarea id="lf_${k}" rows="3">${esc(letterForm[k])}</textarea>`:`<input type="text" id="lf_${k}" value="${esc(letterForm[k])}">`}</div>`).join("")}</div></div>
+ <div class="card"><h3>Guardrails</h3><ul class="sm mut" style="margin:0 0 0 18px;padding:0"><li>Dispute only inaccurate, incomplete, unverifiable or obsolete items. Accurate negatives → goodwill (D31), pay-for-delete (D30) or time.</li><li>No CPNs, no new EIN for personal credit, no "dispute everything".</li><li>Active disputes can block automated underwriting; during a loan prefer a rapid rescore.</li><li>${BUREAU_NOTE}</li><li>LOEs: one issue per letter, facts and dates, no blame, what changed, signed and dated.</li></ul></div></div>
+ <div><div class="card"><h3>Tailor the body <span class="sub">plug-and-play: click a field to insert it at the cursor · edits save per template</span></h3>
+  <div class="row sm" id="ltoks" style="margin-bottom:6px"></div>
+  <div class="row" style="margin-bottom:6px"><select id="lsnipcat" style="width:auto">${Object.keys(SNIPPETS).map(k=>`<option>${k}</option>`).join("")}</select><select id="lsnip" style="flex:1;min-width:200px"></select><button class="btn ghost sm" id="lins">Insert phrase</button><span class="sp"></span><button class="btn ghost sm" id="lreset">Reset to original</button></div>
+  <textarea id="lbody" rows="12" style="font-family:Georgia,serif;font-size:13px;line-height:1.5"></textarea></div>
+  <div class="card"><h3 id="ltitle">Preview</h3><div class="row" id="lctl" style="margin:8px 0"></div><pre class="code" id="lprev" style="max-height:none;background:var(--panel);border:1px solid var(--line);font-family:Georgia,serif;font-size:13px;padding:36px 48px"></pre></div></div></div>`,
+ mount(){ let tab=store.get("ltab","dispute"), cur=null, bureau=store.get("lbureau","EFX"); $("#lb").value=bureau;
   const lib=()=>tab==="dispute"?DISPUTE_LETTERS:LOE_LETTERS, cats=()=>tab==="dispute"?DISPUTE_CATS:LOE_CATS;
-  const setTab=t=>{tab=t;store.set("ltab",t);$$("#ltabs button").forEach(b=>b.classList.toggle("on",b.dataset.t===t));$("#lcat").innerHTML=`<option value="">All categories</option>${cats().map(c=>`<option>${c}</option>`).join("")}`;cur=null;list();show()};
-  const list=()=>{const q=$("#lq").value.toLowerCase(),c=$("#lcat").value;$("#llist").innerHTML=lib().filter(l=>(!c||l.cat===c)&&(!q||JSON.stringify(l).toLowerCase().includes(q))).map(l=>`<div class="lead" data-l="${l.id}" style="cursor:pointer;${cur?.id===l.id?"outline:2px solid var(--acc)":""}"><b>${l.id}</b> ${esc(l.title)}<div class="mut sm">${esc(l.cat)}${l.to&&l.to!=="bureau"?" · to "+l.to:""}</div></div>`).join("");$$("#llist [data-l]").forEach(d=>d.onclick=()=>{cur=lib().find(l=>l.id===d.dataset.l);list();show()})};
+  const bodyOf=L=>letterEdits[L.id]??L.body;
+  const withBody=L=>({...L,body:bodyOf(L)});
+  const paras=(L,b)=>tab==="dispute"?disputeParagraphs(withBody(L),b||bureau,letterForm):loeParagraphs(withBody(L),letterForm);
+  const fillSel=()=>{const q=$("#lq").value.toLowerCase(); $("#lsel").innerHTML=`<option value="">— choose a ${tab==="dispute"?"dispute letter":"letter of explanation"} —</option>`+cats().map(c=>{const items=lib().filter(l=>l.cat===c&&(!q||JSON.stringify(l).toLowerCase().includes(q)));return items.length?`<optgroup label="${esc(c)}">${items.map(l=>`<option value="${l.id}" ${cur?.id===l.id?"selected":""}>${l.id} — ${esc(l.title)}${letterEdits[l.id]?" ✎":""}</option>`).join("")}</optgroup>`:""}).join("")};
+  const setTab=t=>{tab=t;store.set("ltab",t);$$("#ltabs button").forEach(b=>b.classList.toggle("on",b.dataset.t===t));cur=null;const last=store.get("lcur_"+t,null);if(last)cur=lib().find(l=>l.id===last)||null;fillSel();$("#lbwrap").style.display=t==="dispute"?"":"none";show()};
   const readForm=()=>{LETTER_FIELDS.forEach(([k])=>letterForm[k]=$("#lf_"+k).value);store.set("letterForm",letterForm)};
-  const paras=(L,b)=>tab==="dispute"?disputeParagraphs(L,b||bureau,letterForm):loeParagraphs(L,letterForm);
-  const show=()=>{if(!cur){$("#ltitle").textContent="Select a letter";$("#lmeta").innerHTML="";$("#lctl").innerHTML="";$("#lprev").textContent="";return}
-   $("#ltitle").textContent=`${cur.id} — ${cur.title}`;
-   $("#lmeta").innerHTML=tab==="dispute"?`<div class="sm"><b>When to use:</b> ${esc(cur.situation)}</div><div class="sm"><b>Legal basis:</b> ${esc(cur.basis)}</div>${cur.notUse?`<div class="tag warn" style="white-space:normal;display:block">Do not use: ${esc(cur.notUse)}</div>`:""}${cur.tips?`<div class="mut sm">Tip: ${esc(cur.tips)}</div>`:""}`:`<div class="sm"><b>When:</b> ${esc(cur.when)}</div><div class="sm"><b>What the underwriter needs:</b> ${esc(cur.uw)}</div>${cur.tip?`<div class="mut sm">Tip: ${esc(cur.tip)}</div>`:""}`;
-   $("#lctl").innerHTML=(tab==="dispute"&&cur.to==="bureau"?`<select id="lb" style="width:auto">${Object.entries(BUREAUS).map(([k,b])=>`<option value="${k}" ${k===bureau?"selected":""}>${b.name.split(",")[0]}</option>`).join("")}</select><button class="btn ghost sm" id="l3">Download all 3 bureaus (.zip)</button>`:"")+`<button class="btn sm" id="ldoc">Download .docx</button><button class="btn ghost sm" id="lcopy">Copy text</button><button class="btn ghost sm" id="lall">Download entire ${tab==="dispute"?"dispute":"LOE"} library (.zip)</button>`;
-   const P=paras(cur); $("#lprev").textContent=P.map(p=>p.t).join("\n");
-   $("#lb")&&($("#lb").onchange=e=>{bureau=e.target.value;store.set("lbureau",bureau);show()});
-   $("#ldoc").onclick=()=>saveFile(`${cur.id}-${slug(cur.title)}${tab==="dispute"&&cur.to==="bureau"?"-"+bureau:""}.docx`,docxBytes(paras(cur)));
-   $("#lcopy").onclick=()=>copy(P.map(p=>p.t).join("\n"));
-   $("#l3")&&($("#l3").onclick=()=>saveFile(`${cur.id}-${slug(cur.title)}-all-bureaus.zip`,makeZip(Object.keys(BUREAUS).map(b=>({name:`${cur.id}-${b}.docx`,data:docxBytes(paras(cur,b))})))));
-   $("#lall").onclick=()=>{const files=lib().flatMap(L=>tab==="dispute"&&L.to==="bureau"?Object.keys(BUREAUS).map(b=>({name:`${L.cat.replace(/[^a-z0-9]+/gi,"_")}/${L.id}-${slug(L.title)}-${b}.docx`,data:docxBytes(disputeParagraphs(L,b,letterForm))})):[{name:`${L.cat.replace(/[^a-z0-9]+/gi,"_")}/${L.id}-${slug(L.title)}.docx`,data:docxBytes(tab==="dispute"?disputeParagraphs(L,bureau,letterForm):loeParagraphs(L,letterForm))}]);saveFile(`VANESSA-${tab==="dispute"?"dispute-letters":"letters-of-explanation"}.zip`,makeZip(files));toast(`${files.length} Word files packaged`)};};
-  $$("#ltabs button").forEach(b=>b.onclick=()=>setTab(b.dataset.t)); ["lq","lcat"].forEach(i=>$("#"+i).oninput=list); $$("[id^=lf_]").forEach(e=>e.oninput=()=>{readForm();if(cur)show()}); setTab(tab); }};
+  const snips=()=>{$("#lsnip").innerHTML=SNIPPETS[$("#lsnipcat").value].map(s=>`<option>${esc(s)}</option>`).join("")}; snips(); $("#lsnipcat").onchange=snips;
+  const insertAt=(txt)=>{const ta=$("#lbody");const s=ta.selectionStart??ta.value.length,e=ta.selectionEnd??s;ta.value=ta.value.slice(0,s)+txt+ta.value.slice(e);ta.selectionStart=ta.selectionEnd=s+txt.length;ta.focus();ta.dispatchEvent(new Event("input"))};
+  $("#ltoks").innerHTML=`<span class="mut">Insert field:</span>`+TOKENS.map(t=>`<button class="btn ghost sm" data-tok="${t}">{{${t}}}</button>`).join(""); $$("[data-tok]").forEach(b=>b.onclick=()=>insertAt("{{"+b.dataset.tok+"}}"));
+  $("#lins").onclick=()=>insertAt(($("#lbody").value&&!/\n$/.test($("#lbody").value)?"\n\n":"")+$("#lsnip").value);
+  $("#lbody").oninput=()=>{if(!cur)return;const v=$("#lbody").value;if(v===cur.body)delete letterEdits[cur.id];else letterEdits[cur.id]=v;store.set("letterEdits",letterEdits);fillSel();preview()};
+  $("#lreset").onclick=()=>{if(!cur)return;delete letterEdits[cur.id];store.set("letterEdits",letterEdits);$("#lbody").value=cur.body;fillSel();preview();toast("Original template restored")};
+  const preview=()=>{if(!cur){$("#lprev").textContent="Choose a template from the dropdown above.";return}const P=paras(cur);$("#lprev").innerHTML=P.map(p=>p.b?`<b>${esc(p.t)}</b>`:esc(p.t)).join("\n")};
+  const show=()=>{ if(!cur){$("#ltitle").textContent="Preview";$("#lmeta").innerHTML=`<div class="mut sm">${lib().length} templates in ${cats().length} categories. Pick one, fill the borrower details, tailor the body, then download as Word or PDF.</div>`;$("#lctl").innerHTML="";$("#lbody").value="";preview();return}
+   store.set("lcur_"+tab,cur.id); $("#ltitle").textContent=`${cur.id} — ${cur.title}`; $("#lbody").value=bodyOf(cur);
+   $("#lmeta").innerHTML=tab==="dispute"?`<div class="sm"><b>When to use:</b> ${esc(cur.situation)}</div><div class="sm"><b>Legal basis:</b> ${esc(cur.basis)}</div>${cur.notUse?`<div class="tag warn" style="white-space:normal;display:block">Do not use: ${esc(cur.notUse)}</div>`:""}${cur.tips?`<div class="mut sm">Tip: ${esc(cur.tips)}</div>`:""}<div class="mut sm">Addressed to: ${cur.to==="bureau"?"credit bureau (select above)":cur.to}</div>`:`<div class="sm"><b>When:</b> ${esc(cur.when)}</div><div class="sm"><b>What the underwriter needs:</b> ${esc(cur.uw)}</div>${cur.tip?`<div class="mut sm">Tip: ${esc(cur.tip)}</div>`:""}`;
+   const base=`${cur.id}-${slug(cur.title)}${tab==="dispute"&&cur.to==="bureau"?"-"+bureau:""}`;
+   $("#lctl").innerHTML=`<button class="btn sm" id="ldoc">⬇ Word (.docx)</button><button class="btn sm" id="lpdf">⬇ PDF</button>${tab==="dispute"&&cur.to==="bureau"?`<button class="btn ghost sm" id="l3">All 3 bureaus (.zip: Word + PDF)</button>`:""}<button class="btn ghost sm" id="lcopy">Copy text</button><span class="sp"></span><button class="btn ghost sm" id="lall">Entire ${tab==="dispute"?"dispute":"LOE"} library (.zip)</button>`;
+   $("#ldoc").onclick=()=>saveFile(base+".docx",docxBytes(paras(cur)));
+   $("#lpdf").onclick=()=>saveFile(base+".pdf",pdfBytes(paras(cur)));
+   $("#lcopy").onclick=()=>copy(paras(cur).map(p=>p.t).join("\n"));
+   $("#l3")&&($("#l3").onclick=()=>saveFile(`${cur.id}-${slug(cur.title)}-all-bureaus.zip`,makeZip(Object.keys(BUREAUS).flatMap(b=>[{name:`${cur.id}-${b}.docx`,data:docxBytes(paras(cur,b))},{name:`${cur.id}-${b}.pdf`,data:pdfBytes(paras(cur,b))}]))));
+   $("#lall").onclick=()=>{const files=lib().flatMap(L=>{const dir=L.cat.replace(/[^a-z0-9]+/gi,"_");const nm=`${L.id}-${slug(L.title)}`;if(tab==="dispute"&&L.to==="bureau")return Object.keys(BUREAUS).flatMap(b=>{const P=disputeParagraphs(withBody(L),b,letterForm);return [{name:`${dir}/${nm}-${b}.docx`,data:docxBytes(P)},{name:`${dir}/${nm}-${b}.pdf`,data:pdfBytes(P)}]});const P=tab==="dispute"?disputeParagraphs(withBody(L),bureau,letterForm):loeParagraphs(withBody(L),letterForm);return [{name:`${dir}/${nm}.docx`,data:docxBytes(P)},{name:`${dir}/${nm}.pdf`,data:pdfBytes(P)}]});saveFile(`VANESSA-${tab==="dispute"?"dispute-letters":"letters-of-explanation"}.zip`,makeZip(files));toast(`${files.length} files packaged (Word + PDF)`)};
+   preview(); };
+  $$("#ltabs button").forEach(b=>b.onclick=()=>setTab(b.dataset.t)); $("#lq").oninput=fillSel; $("#lsel").onchange=()=>{cur=lib().find(l=>l.id===$("#lsel").value)||null;show()}; $("#lb").onchange=()=>{bureau=$("#lb").value;store.set("lbureau",bureau);show()};
+  $$("[id^=lf_]").forEach(e=>e.oninput=()=>{readForm();preview()}); setTab(tab); }};
 
 /* ======== VA TOOLKIT ======== */
 PAGE.va={ html:()=>`<div class="tabs" id="vtabs">${[["ff","Funding fee"],["ent","Entitlement"],["res","Residual income"],["irrrl","IRRRL tester"],["coe","Eligibility (COE)"],["bah","BAH vs mortgage"],["fees","Allowable fees"],["mpr","MPRs"],["docs","Document checklists"],["timeline","VA purchase timeline"]].map(([k,t])=>`<button data-t="${k}">${t}</button>`).join("")}</div><div id="vbody" style="margin-top:14px"></div>`,
