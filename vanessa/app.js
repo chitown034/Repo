@@ -32,7 +32,8 @@ function drawIn(svg){$$("path.draw",svg).forEach(p=>{const L=p.getTotalLength();
 /* ---------- navigation ---------- */
 const PAGES=[
  ["Operate",[["today","Today"],["market","Market Intel"],["report","Home Report"],["pipeline","Pipeline"],["refi","Refi Hunter"],["ops","Seminars · Referrals · Compliance"]]],
- ["Loan Intelligence",[["scenario","Scenario Builder"],["programs","Programs & Rules"],["lenders","Lender Directory"],["calc","Calculators"]]],
+ ["Loan Intelligence",[["scenario","Scenario Builder"],["va","VA Toolkit"],["strategies","Qualifying Strategies"],["credit","Credit Simulator"],["letters","Letter Desk"],["programs","Programs & Rules"],["lenders","Lender Directory"],["calc","Calculators"]]],
+ ["Growth & Ops",[["marketing","Marketing Plan"],["isa","EA / ISA Ops"],["zoho","Zoho CRM"]]],
  ["System",[["agents","AI Agents"],["workflows","Workflows"],["integrations","Integrations"],["prompts","Claude Build Prompts"],["settings","Settings"]]]];
 const TITLES=Object.fromEntries(PAGES.flatMap(s=>s[1]));
 function buildNav(){ $("#nav").innerHTML=PAGES.map(([sec,items])=>`<div class="sec">${sec}</div>`+items.map(([id,t])=>`<button data-p="${id}">${esc(t)}${id==="today"?`<span class="badge" id="apbadge"></span>`:""}</button>`).join("")).join("");
@@ -78,6 +79,7 @@ const PAGE={};
 
 PAGE.today={ html:()=>`
 <div class="grid g6" id="kpis">${KPIS.map((k,i)=>`<div class="card kpi" style="animation-delay:${i*60}ms"><div class="k">${k.k}</div><div class="v" data-v="${k.v}" data-f="${k.fmt}">0</div><div class="d">${k.d}</div></div>`).join("")}</div>
+<div class="card" style="margin-top:14px"><div class="row sm"><b>Quick tools:</b><a href="#va">VA funding fee</a><a href="#va" onclick="store.set('vtab','res')">Residual income</a><a href="#va" onclick="store.set('vtab','irrrl')">IRRRL tester</a><a href="#credit">Credit simulator</a><a href="#letters">Letter Desk</a><a href="#strategies">Strategies</a><a href="#calc">Calculators</a><a href="#zoho">Zoho sync</a></div></div>
 <div class="grid g21">
   <div class="card"><h3>Daily brief <span class="sub">includes MBS Highway Home Report signals</span></h3>
     <div class="row"><select id="bed"><option value="am">Morning 6:30am</option><option value="mid">Midday 12:00</option><option value="eod">EOD 5:30pm</option></select><span class="sp"></span><button class="btn ghost sm" id="bcopy">Copy</button><button class="btn sm" id="bsend">Send via n8n (W22)</button></div>
@@ -249,7 +251,7 @@ PAGE.programs={ html:()=>`
   <tr><td>FHFA 2027 limits</td><td>Not announced — expected late November <span class="tag warn">pending</span></td></tr></tbody></table></div>
  <div class="card"><h3>Seller credit quick reference</h3><div style="overflow:auto;max-height:340px"><table><thead><tr><th>Loan type</th><th>Max</th><th>Notes</th></tr></thead><tbody>${SELLER_CREDITS.map(r=>`<tr><td><b>${esc(r[0])}</b></td><td>${esc(r[1])}</td><td class="mut">${esc(r[2])}</td></tr>`).join("")}</tbody></table></div></div>
 </div>
-<div class="card"><h3>Outside-the-box qualifying strategies</h3><div class="grid g3" style="margin-top:0">${STRATEGIES.map(s=>`<div style="border:1px solid var(--line);border-radius:10px;padding:10px"><b>${esc(s.t)}</b><div class="mut sm">${esc(s.x)}</div></div>`).join("")}</div></div>`,
+<div class="card"><h3>Outside-the-box qualifying strategies</h3><p class="sm">${STRATEGIES2.length} strategies with cost, payment, qualifying and program effects, plus a side-by-side comparison — <a href="#strategies">open Qualifying Strategies →</a></p></div>`,
  mount(){ const draw=()=>{const c=$("#pcat").value,q=$("#psearch").value.toLowerCase(); const rows=PROGRAMS.filter(p=>(!c||p.cat===c)&&(!q||JSON.stringify(p).toLowerCase().includes(q)));
   $("#ptbl").innerHTML=`<thead><tr><th>Program</th><th>Min credit</th><th>Down</th><th>Max DTI</th><th>MI / funding fee</th><th>Best for</th></tr></thead><tbody>${rows.map(p=>`<tr><td><b>${esc(p.name)}</b><div><span class="tag ${p.cat==="ARM"?"warn":""}">${p.cat}</span><span class="tag">${esc(p.fixedArm)}</span></div></td><td>${esc(p.minFico)}</td><td>${esc(p.down)}</td><td>${esc(p.dti)}</td><td class="mut">${esc(p.mi)}</td><td>${esc(p.best)}</td></tr>`).join("")}</tbody>`}; ["pcat","psearch"].forEach(i=>$("#"+i).oninput=draw); draw(); }};
 
@@ -384,5 +386,4 @@ PAGE.settings={ html:()=>`<div class="grid g2"><div class="card"><h3>Connections
 function setTheme(t){document.documentElement.dataset.theme=t;store.set("theme",t)}
 const th=store.get("theme",null); if(th)setTheme(th);
 $("#theme").onclick=()=>setTheme((document.documentElement.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))==="dark"?"light":"dark");
-buildNav(); paintTicker(); clock(); setInterval(clock,30000); setInterval(tickMarket,4000);
-addEventListener("hashchange",route); route();
+function boot(){ buildNav(); paintTicker(); clock(); setInterval(clock,30000); setInterval(tickMarket,4000); addEventListener("hashchange",route); route(); }

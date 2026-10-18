@@ -19,4 +19,15 @@ chk('investor → DSCR',top({...base,occ:'investment',fico:'680-719',downPct:25}
 chk('jumbo San Diego 760 → Jumbo',top({...base,fico:'760+',downPct:20,price:1500000,area:'sandiego'}),'jumbo');
 chk('self-employed 660 15% → Bank Statement',top({...base,income:'selfemp',fico:'660-679',downPct:15,price:900000}),'bank');
 chk('foreign national → foreign program',top({...base,foreign:true,downPct:25,income:'foreign'}),'foreign');
-process.exit(fail?1:0);
+/* ---- VA toolkit + credit simulator golden checks (appended) ---- */
+vm.runInThisContext(['va.js','credit.js'].map(f=>fs.readFileSync(root+'/'+f,'utf8')).join('\n'));
+eq('VA fee first use <5% down',vaFundingFee(0,false,false),2.15,0);eq('VA fee subsequent <5%',vaFundingFee(0,true,false),3.30,0);eq('VA fee 5-9.99%',vaFundingFee(0.05,false,false),1.50,0);eq('VA fee 10%+',vaFundingFee(0.10,true,false),1.25,0);eq('VA fee exempt',vaFundingFee(0,true,true),0,0);eq('IRRRL fee',vaFundingFee(0,true,false,'irrrl'),0.5,0);
+const ent=vaEntitlement(650000,832750,80000,false);eq('partial entitlement remaining',ent.remaining,128187.5);eq('partial entitlement down',ent.down,34312.5);eq('full entitlement down',vaEntitlement(1500000,832750,0,true).down,0,0);
+const res=vaResidual({state:'NV',loan:450000,family:3,grossMonthly:7200,nonTaxableMonthly:2200,piti:2900,hoa:0,sqft:1800,otherDebts:500,childcare:0,childSupport:0,stateTaxRate:0});eq('residual table West fam3',res.req,990,0);eq('120% rule applied',res.reqAdj,1188,0);chk('residual pass',res.pass,true);
+chk('IRRRL fixed→fixed 0.875 drop passes',irrrlTest({daysSinceFirstDue:400,monthsSinceFirstPayment:13,paymentsMade:13,oldType:'fixed',newType:'fixed',oldRate:6.75,newRate:5.875,oldPI:2594,newPI:2366,closingCosts:5200,lates12:false,oldTerm:30,newTerm:30,occupiedBefore:true}).pass,true);
+chk('IRRRL 0.25 drop fails NTB',irrrlTest({daysSinceFirstDue:400,monthsSinceFirstPayment:13,paymentsMade:13,oldType:'fixed',newType:'fixed',oldRate:6.25,newRate:6.0,oldPI:2500,newPI:2460,closingCosts:5200,lates12:false,oldTerm:30,newTerm:30,occupiedBefore:true}).pass,false);
+chk('IRRRL unseasoned fails',irrrlTest({daysSinceFirstDue:150,monthsSinceFirstPayment:5,paymentsMade:5,oldType:'fixed',newType:'fixed',oldRate:7,newRate:6,oldPI:2600,newPI:2400,closingCosts:4000,lates12:false,oldTerm:30,newTerm:30,occupiedBefore:true}).pass,false);
+const sim=simulate(642,SAMPLE_TRADELINES,SAMPLE_INQUIRIES,{t1:'pay10',t2:'pay10'});chk('paydown raises score',sim.delta>0,true);
+const closeSim=simulate(642,SAMPLE_TRADELINES,SAMPLE_INQUIRIES,{t3:'close'});chk('closing a low-util card never helps',closeSim.delta<=0,true);
+chk('deleting old collection helps',simulate(642,SAMPLE_TRADELINES,SAMPLE_INQUIRIES,{t7:'delete'}).delta>0,true);
+console.log(fail?`\n${fail} FAILED`:'\nALL PASS');process.exit(fail?1:0);
