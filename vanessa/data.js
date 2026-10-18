@@ -1,0 +1,318 @@
+/* VANESSA 3.0 — static reference data. Program rules are from the blueprint's "Researched 2026-10-12" table;
+   DSCR / Non-QM / Jumbo / HELOC / ARM ranges are lender-typical, NOT fixed rules — verify against live investor overlays. */
+const RULES_AS_OF = "2026-10-12";
+const LIMITS = { baseline: 832750, ceiling: 1249125, sandiego: 1104000, fhaFloor: 541287, fhaCeiling: 1249125 };
+
+const PROGRAMS = [
+  { id:"va", name:"VA", cat:"Government", minFico:"Lender-set (typical ~620, some to 580)", down:"0%", dti:"No hard cap — residual income governs (ref. 41%)",
+    mi:"No MI ever. Funding fee 2026: 2.15% first use / 3.30% subsequent (<5% down); 1.50% at 5–9.99%; 1.25% at 10%+; 0.50% IRRRL. Waived for disability comp, Purple Heart, qualifying surviving spouses. MIP deduction restored for premiums paid on/after Jan 1, 2026 (itemizers; phase-out $100k–$110k AGI).",
+    best:"Eligible veteran / active duty / qualifying spouse — only $0-down, no-MI program at any credit tier", seller:"4% concessions + unlimited true closing costs", fixedArm:"Fixed" },
+  { id:"conv", name:"Conventional (Conforming)", cat:"Conforming", minFico:"620 typical (verify per lender)", down:"3% (HomeReady/Home Possible/FTHB) or 5% standard", dti:"Up to 45%; ~50% with strong compensating factors",
+    mi:"PMI above 80% LTV; auto-terminates at 78% of original value; request cancel at 80%.", best:"680+ credit, 3–20% down — usually lowest all-in cost for strong credit", seller:"2–9% LTV-tiered (≤75%: 9% · 75.01–90%: 6% · >90%: 3%; investment 2%)", fixedArm:"Fixed" },
+  { id:"fha", name:"FHA", cat:"Government", minFico:"580 for 3.5% down; 500–579 needs 10% down (most lenders overlay 620–640)", down:"3.5% (≥580) or 10% (500–579)", dti:"31/43 baseline → 40/50+ with compensating factors; up to ~56.9% strongest cases",
+    mi:"Upfront MIP 1.75% (financeable) + annual MIP 0.55% on most 2026 loans (0.15–0.75% by LTV/term). Life of loan if <10% down; 11 years if ≥10%.", best:"Lower score / thin down payment, no VA eligibility", seller:"6% toward closing costs & prepaids only", fixedArm:"Fixed" },
+  { id:"usda", name:"USDA Rural Development", cat:"Government", minFico:"No USDA floor; GUS typically 640+, manual 580–639", down:"0%", dti:"29/41 guideline; compensating factors at lender discretion",
+    mi:"Guarantee fee 1% upfront (financeable) + 0.35% annual for life of loan. FY2027 fee unconfirmed — FY2026 confirmed 1% / 0.35%.", best:"USDA-eligible rural/suburban-fringe property, income under 2026 cap ($122,800 for 1–4 members in most counties)", seller:"6% toward closing costs/prepaids", fixedArm:"Fixed" },
+  { id:"jumbo", name:"Jumbo", cat:"Jumbo", minFico:"700 typical; many 720+; 740+ above ~$1.5M", down:"10–20%+; 20%+ on $1.5M–$2.5M+", dti:"Generally ≤43%; 6–12 mo PITI reserves substitute for DTI flexibility",
+    mi:"Not standardized — larger down payment/reserves usually replace MI; verify per lender.", best:"High-income/HNW borrowers above the 2026 conforming ceiling — common CA/NV", seller:"Lender-specific, typically 2–9% LTV-tiered", fixedArm:"Fixed or ARM" },
+  { id:"dscr", name:"DSCR / Investor", cat:"Non-QM", minFico:"660–680 typical; some 620 with compensating factors", down:"20–25%; 25–30% if DSCR <1.0 or <680; some 15% at 740+/DSCR 1.25+", dti:"N/A — qualifies on property cash flow. Min DSCR typically 1.00; 1.25+ best pricing",
+    mi:"Not applicable — risk priced into rate.", best:"Investors who can't easily document personal income", seller:"Lender-specific (typically 2–6%)", fixedArm:"Fixed or ARM" },
+  { id:"bank", name:"Bank Statement / Non-QM", cat:"Non-QM", minFico:"620–680 working floor", down:"10–25%; 10% tier usually needs 680+ and a loan cap", dti:"No hard cap; most lenders self-impose ~45–50%",
+    mi:"Not required — higher rate substitutes. Often 6–12 mo PITIA reserves.", best:"Self-employed (2+ yrs) whose tax returns understate cash flow", seller:"Lender-specific (typically 2–6%)", fixedArm:"Fixed or ARM" },
+  { id:"heloc", name:"HELOC / Home Equity", cat:"Equity", minFico:"680+ typical; some to 600 with CLTV tradeoffs", down:"N/A — equity product (retain 15–20% equity)", dti:"Typically <43%",
+    mi:"Not applicable.", best:"Owners tapping equity for renovation, debt consolidation, or a 2nd-property down payment without touching a low first-mortgage rate", seller:"n/a", fixedArm:"Variable / fixed HELOAN" },
+  /* ---- 5/1 ARM family (added) ---- */
+  { id:"arm_conv", name:"Conventional 5/1 ARM", cat:"ARM", minFico:"640–680 typical (agency ARMs often price best at 700+)", down:"5% typical; 3% on some HomeReady ARMs — verify", dti:"Qualify at the greater of note rate or fully-indexed rate (investor-specific); ≤45% typical",
+    mi:"PMI above 80% LTV same as fixed. Typical caps 2/2/5 or 5/2/5 (initial/periodic/lifetime). New agency ARMs adjust off SOFR (a '5/6' resets every 6 months after year 5).", best:"Buyers likely to sell or refinance before year 5 who want a lower starting rate than 30-yr fixed", seller:"Same LTV tiers as conventional", fixedArm:"5/1 ARM" },
+  { id:"arm_fha", name:"FHA 5/1 ARM", cat:"ARM", minFico:"580 for 3.5% down (overlays 620+)", down:"3.5%", dti:"Same as FHA fixed; qualify per HUD ARM rules",
+    mi:"Same upfront + annual MIP as FHA. Hybrid ARM caps 1% annual / 5% lifetime above start rate.", best:"FHA borrower with a short expected hold or refi plan; tighter 1/5 caps limit payment shock", seller:"6% closing costs/prepaids", fixedArm:"5/1 ARM" },
+  { id:"arm_va", name:"VA 5/1 Hybrid ARM", cat:"ARM", minFico:"Lender-set (typical 620+)", down:"0%", dti:"Residual income governs",
+    mi:"Same VA funding fee as fixed; no MI. Hybrid ARM caps: 1% annual / 5% lifetime after initial period; confirm lender availability — fewer VA ARM investors than fixed.", best:"Veteran who expects to PCS/sell or refinance (IRRRL) inside 5 years — lowest starting payment at $0 down", seller:"4% concessions + unlimited true costs", fixedArm:"5/1 ARM" },
+  { id:"arm_jumbo", name:"Jumbo 5/1 ARM", cat:"ARM", minFico:"720+ typical", down:"10–20%+", dti:"≤43%; 12 mo reserves common",
+    mi:"No MI — down payment/reserves; caps commonly 2/2/5 or 5/2/5; many portfolio banks offer interest-only periods.", best:"Coastal CA/NV jumbo buyers with high income and a 5–7 year horizon — rate savings are largest on big balances", seller:"Lender-specific", fixedArm:"5/1 ARM" },
+  { id:"arm_nonqm", name:"Non-QM / DSCR 5/1 ARM", cat:"ARM", minFico:"660+ typical", down:"20–25%", dti:"DSCR calculated at fully-indexed or note rate — investor-specific",
+    mi:"No MI; adjustment indices vary (SOFR/Prime). Interest-only 5/1 options exist at some shops.", best:"Investors planning a refi or sale on a 3–5 year business plan", seller:"Lender-specific", fixedArm:"5/1 ARM" },
+  /* ---- other paths used by the scenario builder ---- */
+  { id:"reverse", name:"Reverse (HECM / Proprietary)", cat:"Reverse", minFico:"No minimum credit score; financial assessment applies", down:"Equity-based (62+)", dti:"Residual income / LESA instead of DTI", mi:"HECM MIP upfront + annual; proprietary jumbo reverses have no MIP.", best:"62+ homeowners eliminating a mortgage payment (or HECM-for-purchase)", seller:"n/a", fixedArm:"Fixed or ARM" },
+  { id:"bridge", name:"Bridge / Hard Money", cat:"Private", minFico:"Asset-based — score matters less", down:"Equity-based; 65–75% LTV typical", dti:"N/A", mi:"None — higher rate and points.", best:"Buy-before-you-sell, fix & flip, or short-term timing gaps", seller:"Rarely allowed", fixedArm:"Interest-only" },
+  { id:"foreign", name:"Foreign National / ITIN / DACA", cat:"Non-QM", minFico:"No US score ok (alt-credit) for FN/ITIN; DACA 620+", down:"25–30% typical", dti:"~45–50% or DSCR", mi:"None; priced into rate. DACA: confirm EAD not within 90 days of expiry at close.", best:"Borrowers without SSN/US credit or with ITIN/DACA", seller:"Lender-specific", fixedArm:"Fixed or ARM" },
+  { id:"asset", name:"Asset Utilization / Depletion", cat:"Non-QM", minFico:"660+ typical", down:"20%+", dti:"Assets ÷ term (e.g. 360 mo) counted as income", mi:"None.", best:"Asset-rich, income-light (retirees, trust beneficiaries)", seller:"Lender-specific", fixedArm:"Fixed or ARM" },
+];
+
+const SELLER_CREDITS = [
+  ["Conventional (Conforming/High Balance)","2–9%, LTV-tiered","≤75% LTV: 9% · 75.01–90%: 6% · >90%: 3% (primary/second). Investment property: 2% regardless of LTV."],
+  ["FHA / 203(k)","6%","Closing costs & prepaids only — never toward down payment or reserves."],
+  ["VA / Jumbo VA","4% concessions + unlimited costs","4% cap applies to true concessions (debt payoff, cash to vet); actual closing costs/prepaids/discount points are separately unlimited."],
+  ["USDA","6%","Closing costs/prepaids; guarantee fee may also be financed."],
+  ["CalHFA / CalVet / DPA-layered","Follows base first-mortgage program","DPA/silent second is separate from the seller-credit cap on the first."],
+  ["Jumbo (Conventional)","Lender-specific, typically 2–9% LTV-tiered","Many jumbo investors mirror conventional tiers — confirm overlay."],
+  ["Non-QM (BankStmt, DSCR, FN, ITIN, NIV)","Lender-specific, typically 2–6%","No agency rule — set by the individual investor."],
+  ["Hard Money / Fix N Flip / Bridge","Rarely allowed","Most private lenders don't permit seller credits — verify per deal."],
+];
+
+const STRATEGIES = [
+  { t:"Temporary 2-1 / 3-2-1 buydown funded by seller credit", tags:["credit","lowpay","fthb"], x:"Lowers payment in years 1–2/3 when budgets are tightest, without permanently buying down the rate." },
+  { t:"Layer CalHFA/county DPA silent second on FHA or conventional", tags:["lowdown","fthb"], x:"Check income/price limits and homebuyer education early — DPA approval can lag the first mortgage." },
+  { t:"Run Bank Statement AND DSCR side by side", tags:["selfemp","investor"], x:"Compare qualifying income and rate hit; 12-month statements can beat 24-month once the expense factor is negotiated with a CPA letter." },
+  { t:"VA: keep concessions outside the 4% bucket", tags:["vet"], x:"Seller-paid closing costs, prepaids and discount points are not counted in the 4% concession cap — structure those first." },
+  { t:"Jumbo VA instead of conventional jumbo + MI", tags:["vet","jumbo"], x:"Up to 89.99% LTV, no monthly MI, to ~$3M — big payment advantage on coastal price bands." },
+  { t:"Agent-paid buydown from the LISTING agent's commission", tags:["credit","lowpay"], x:"Use when the seller won't budge but the agent will, especially on slower listings." },
+  { t:"House-hack a 2–4 unit with projected rent", tags:["multi","fthb"], x:"FHA/VA allow a percentage of market rent from other units toward qualifying income." },
+  { t:"Asset depletion / utilization qualifying", tags:["retired","asset"], x:"Liquid assets ÷ term (e.g. 360 months) instead of a traditional income calc — LendSure, HomeXpress offer natively." },
+  { t:"Limited-review condo before Non-QM", tags:["condo"], x:"Some agency lenders will do Limited Review on a second-home/investment purchase under 75% LTV when the building fails warrantability." },
+  { t:"1-year tax-return exception for new self-employed", tags:["selfemp"], x:"Some AUS findings allow 1 year of self-employment with 2+ years in the same field before defaulting to Non-QM." },
+  { t:"Bridge loan against departing home's equity", tags:["bridge"], x:"Enables a non-contingent offer; pay off the bridge at the old-home closing." },
+  { t:"Physician loan: signed contract counts as income", tags:["physician"], x:"A signed future-employment contract starting within 60–90 days qualifies under most doctor programs — start the file early." },
+  { t:"Rapid rescore before quoting", tags:["credit_gap"], x:"A $50–150 rescore can clear a paid-down revolving balance fast enough to jump a full pricing tier." },
+  { t:"DACA: check EAD expiry vs closing date", tags:["daca"], x:"A lapse mid-process is the #1 DACA-file killer — renew first if within 90 days." },
+  { t:"Portfolio lender for non-warrantable condo / manufactured", tags:["condo","mfg"], x:"Advancial FCU, First National Bank of America can waive agency project-approval requirements." },
+  { t:"Fully-underwritten pre-approval in multi-offer markets", tags:["compete"], x:"A clean, short-contingency pre-approval often beats a slightly higher price." },
+  { t:"5/1 ARM when the hold is under 7 years", tags:["arm","shorthold","lowpay"], x:"Starting rate typically runs below the 30-yr fixed. Price the worst case: use the 5/1 ARM calculator to see payment at the lifetime cap before recommending." },
+  { t:"Plan the refi/exit before year 5 on any ARM", tags:["arm"], x:"For veterans, an IRRRL inside the fixed period can lock a fixed rate for 0.50% funding fee — set a rate-watch trigger in Market Intel." },
+];
+
+/* Lender directory — tags drive the scenario matcher. flag = verification warning from blueprint. */
+const L = (n,name,spec,tags,flag)=>({n,name,spec,tags:tags.split(" "),flag:flag||""});
+const LENDERS = [
+ L(1,"5th Street Capital","Non-QM — Jumbo, Bank Statement, DSCR, Foreign National","nonqm bank dscr jumbo foreign"),
+ L(2,"AAA Lendings","Agency Wholesale + Non-QM hybrid menu","agency conv fha va nonqm"),
+ L(3,"Acra Lending","Non-QM — Bank Statement, DSCR, Fix & Flip, Jumbo","nonqm bank dscr fnfl jumbo"),
+ L(4,"Advancial Federal Credit Union","Portfolio — Non-warrantable condos, asset depletion, jumbo","port condo asset jumbo"),
+ L(5,"AHA / HOPER (Attainable Housing Associates)","Down Payment Assistance & affordable housing programs","dpa fha conv"),
+ L(6,"Anchor Loans","Hard Money — Institutional fix & flip lender","hard fnfl bridge"),
+ L(7,"Angel Oak","Non-QM Pioneer — Bank Statement, 1099, DSCR, ATR-In-Full","nonqm bank dscr asset"),
+ L(8,"Brokers Advantage","Agency Wholesale broker portal","agency conv fha va"),
+ L(9,"CALVET","Niche/Govt — California Department of Veterans Affairs home loans","calvet va"),
+ L(10,"Champions Funding","Non-QM / CDFI — ITIN, DSCR, foreign national, community lending","nonqm itin dscr foreign"),
+ L(11,"Change Wholesale","Non-QM — Community Mortgage program, no-ratio","nonqm itin","⚠️ Lost Treasury CDFI designation per 2024 reporting — don't repeat the 'CDFI' label until confirmed with the lender."),
+ L(12,"Click N Close Mortgage","DPA / Bond programs, Conv & Govt with built-in down payment assistance","dpa conv fha va usda"),
+ L(13,"Commercial Capital Bidco","Commercial Real Estate lending","comm"),
+ L(14,"eLend","Agency Wholesale — Conv/Govt online channel","agency conv fha va usda"),
+ L(15,"Eleven Mortgage","Agency Wholesale — Conv & Govt","agency conv fha va"),
+ L(16,"Equity Prime Mortgage (EPM)","Agency Wholesale — full Conv/FHA/VA/USDA menu","agency conv fha va usda"),
+ L(17,"Finance of America Reverse (FAR)","Reverse Mortgage — HECM + HomeSafe proprietary jumbo reverse","reverse"),
+ L(18,"First National Bank of America (FNBA)","Non-QM / Portfolio — Alt-doc, ITIN, foreign national, no-MI","nonqm port itin foreign condo mfg"),
+ L(19,"Freedom Mortgage","Agency Wholesale — VA & FHA powerhouse","agency va fha conv"),
+ L(20,"Fund Loans","Non-QM — Bank Statement, DSCR, Jumbo Non-QM","nonqm bank dscr jumbo"),
+ L(21,"Giant Lending","Agency Wholesale — Conv & Govt","agency conv fha va"),
+ L(22,"HomeXpress Mortgage Corp","Non-QM — Bank Statement, DSCR, Asset Utilization","nonqm bank dscr asset"),
+ L(23,"JCAP Private Lending","Hard Money — Private money, bridge loans","hard bridge fnfl"),
+ L(24,"JMAC Lending","Agency Wholesale + Newport Non-QM series","agency conv fha va nonqm"),
+ L(25,"Kennedy Funding","Commercial — Bridge & hard-money commercial real estate","comm hard bridge"),
+ L(26,"Kiavi","DSCR / Investor — Fix & Flip, DSCR rental, bridge (tech-forward)","dscr fnfl bridge"),
+ L(27,"Kind Lending","Agency Wholesale — Conv & Govt","agency conv fha va"),
+ L(28,"Kings Mortgage Services","Agency Wholesale — Conv & Govt","agency conv fha va","⚠️ Public info shows a Visalia, CA operation with 5 CA branches — could not confirm a national wholesale TPO channel; verify directly."),
+ L(29,"LendSure","Non-QM — DSCR, Bank Statement, Foreign National, Asset Utilization","nonqm dscr bank foreign asset"),
+ L(30,"Liberty Reverse Mortgage","Reverse Mortgage — HECM specialist","reverse","⚠️ Parent Onity Group reportedly exiting reverse-mortgage origination — confirm still active before sending a client."),
+ L(31,"Longbridge Financial Reverse","Reverse Mortgage — HECM + Platinum proprietary reverse","reverse"),
+ L(32,"Mega Capital Funding","Agency Wholesale + Non-QM","agency conv fha va nonqm jumbo"),
+ L(33,"Mortgage Solutions Financial","Agency Wholesale — Conv/Govt with manual underwrite capability","agency conv fha va lowfico"),
+ L(34,"Mutual of Omaha Reverse","Reverse Mortgage — HECM + proprietary reverse","reverse"),
+ L(35,"NewFi Lending","Non-QM — Bank Statement, DSCR, foreign national","nonqm bank dscr foreign"),
+ L(36,"NewRez","Agency + Non-QM — Smart Series (SmartSelf, SmartEdge, SmartVest, SmartFunds)","agency conv fha va nonqm dscr bank jumbo"),
+ L(37,"NextRes (NewRez TPO)","Agency Wholesale + Smart Series Non-QM (broker channel)","agency conv fha va nonqm dscr bank"),
+ L(38,"Oaktree Funding","Non-QM — Bank Statement, DSCR, Foreign National","nonqm bank dscr foreign"),
+ L(39,"Orion Lending","Agency Wholesale + Non-QM","agency conv fha va nonqm"),
+ L(40,"Oval Mortgage","Agency Wholesale broker channel — Conv & Govt","agency conv fha va","⚠️ No public wholesale site, NMLS record, or press coverage found — do an NMLS Consumer Access lookup or call before using."),
+ L(41,"PB Financial Group","Hard Money — California private money & bridge","hard bridge fnfl"),
+ L(42,"Plaza Home Mortgage","Agency Wholesale — Conv/Govt + Renovation + Non-QM","agency conv fha va reno nonqm"),
+ L(43,"PRMG (Paramount Residential)","Agency Wholesale — full Conv/Govt + Non-QM","agency conv fha va usda nonqm"),
+ L(44,"Provident Bank","Portfolio Jumbo + Non-QM","port jumbo nonqm"),
+ L(45,"Quontic Bank","Non-QM — Bank Statement, ITIN, lite-doc (CDFI bank)","nonqm bank itin"),
+ L(46,"RCN Capital","DSCR / Investor — Fix & Flip, DSCR rental, new construction","dscr fnfl"),
+ L(47,"REMN (Real Estate Mortgage Network)","Agency Wholesale — Conv/FHA/VA + 203(k) Renovation specialist","agency conv fha va reno"),
+ L(48,"Spring EQ","HELOC / 2nd Lien specialist — HELOAN & HELOC","heloc"),
+ L(49,"Symmetry Lending","HELOC / 2nd Lien — Stand-alone & piggyback HELOCs","heloc"),
+ L(50,"TaliMar Financial","Hard Money — California fix & flip, bridge","hard fnfl bridge"),
+ L(51,"The Loan Store (TLS)","Agency Wholesale — Conv & Govt broker channel","agency conv fha va"),
+ L(52,"TMAC Reverse","Reverse Mortgage — HECM specialist","reverse"),
+ L(53,"TPO Go","Agency Wholesale broker portal — Conv/FHA/VA/USDA","agency conv fha va usda"),
+ L(54,"Triad Financial Services","Niche — Manufactured & mobile home loans","mfg"),
+ L(55,"Union Home Mortgage (UHM)","Agency Wholesale — full Conv & Govt menu","agency conv fha va usda"),
+ L(56,"United AG Lending","Niche — Agricultural & rural lending","ag usda"),
+ L(57,"United Wholesale Mortgage (UWM)","Agency Wholesale — #1 broker-channel lender (Conv/FHA/VA/Jumbo)","agency conv fha va jumbo"),
+ L(58,"Val-Chris Investments","Hard Money — California private money & bridge","hard bridge fnfl"),
+ L(59,"Velocity Mortgage Capital","DSCR / Investor — 1–4 unit investor + small balance commercial","dscr comm"),
+ L(60,"Windsor Mortgage","Agency Wholesale — Conv/Govt + manufactured homes","agency conv fha va mfg"),
+ L(61,"Loan United","Niche — FHA/VA down to 500 FICO, manual underwrite, no-FICO IRRRL/streamline, mfg. homes, 41 states","fha va lowfico mfg"),
+];
+
+/* Which lender tags serve each program id (used by the matcher) */
+const PROGRAM_LENDER_TAGS = {
+  va:["va","agency","calvet","lowfico"], conv:["conv","agency","dpa"], fha:["fha","lowfico","agency","dpa"], usda:["usda","ag","agency"],
+  jumbo:["jumbo","port"], dscr:["dscr"], bank:["bank","nonqm"], heloc:["heloc"], reverse:["reverse"], bridge:["bridge","hard"],
+  foreign:["foreign","itin"], asset:["asset"],
+  arm_conv:["agency","conv"], arm_fha:["agency","fha"], arm_va:["agency","va"], arm_jumbo:["jumbo","port"], arm_nonqm:["nonqm","dscr"],
+};
+
+/* ---- Market sample (Fri Oct 16 2026). Replace via Supabase v_home_report_signals when connected. ---- */
+const MARKET = {
+  asOf:"Fri Oct 16, 2026 · close edition (sample data)",
+  umbs:{ coupon:"UMBS 5.5", price:101.28, ticks:+12, lean:"neutral", conf:0.58 },
+  y2:3.91, y10:4.06, y30:4.62, y10chg:-4, pmms30:6.18, pmms15:5.43, vapar30:5.875,
+  intraday:[100.94,100.97,101.02,100.99,101.05,101.11,101.08,101.15,101.19,101.14,101.22,101.26,101.24,101.28],
+  support:101.02, resistance:101.34,
+  curve:{ labels:["1m","3m","6m","1y","2y","3y","5y","7y","10y","20y","30y"],
+          today:[4.18,4.12,4.02,3.96,3.91,3.91,3.97,4.02,4.06,4.38,4.62],
+          week:[4.20,4.15,4.06,4.01,3.97,3.98,4.04,4.09,4.10,4.42,4.66],
+          year:[4.55,4.38,4.22,4.01,3.74,3.70,3.75,3.84,3.98,4.42,4.50],
+          month:[4.19,4.14,4.05,3.99,3.94,3.95,4.01,4.06,4.12,4.43,4.67] },
+  spreadHist:[1.72,1.78,1.85,1.99,2.18,2.34,2.62,2.88,2.74,2.46,2.31,2.17,2.12],
+  stories:[
+    {step:"Data release",title:"Retail sales soft (8:30 ET)",body:"Headline retail sales missed consensus; control group flat. Consumer spending is the largest GDP driver."},
+    {step:"Market reaction",title:"Treasuries rally, 10-yr −4bp",body:"Traders pulled forward rate-cut odds; 10-yr yield fell to 4.06% and the bond-price/yield seesaw tilted toward price."},
+    {step:"MBS follow-through",title:"UMBS 5.5 +12 ticks",body:"Mortgage bonds followed, helped by light supply. Price pressed toward resistance near 101.34."},
+    {step:"Mortgage impact",title:"Par rates ~0.0625% better",body:"Lenders may reprice slightly better intraday. On a $400k VA loan that is roughly $16/month — a nudge, not a trend."},
+  ],
+  calendar:[
+    {t:"Mon 8:30 ET",e:"Empire State Mfg",imp:2},{t:"Tue 8:30 ET",e:"Retail Sales (Sep)",imp:4},{t:"Wed 2:00 ET",e:"FOMC Minutes",imp:3},
+    {t:"Thu 8:30 ET",e:"Jobless Claims",imp:2},{t:"Thu 9:15 PT",e:"Freddie PMMS",imp:2},{t:"Thu 10:00 ET",e:"10-yr TIPS Auction",imp:3},{t:"Fri 8:30 ET",e:"PCE Inflation",imp:5},
+  ],
+};
+
+/* MBS Highway Home Report — signal board (sample; mirrors mbsh_signals table) */
+const HOME_REPORT = {
+  edition:"Close", headline:"Bonds grind higher into the weekend; PCE is the next real test", lean:"neutral", conf:0.58,
+  signals:[
+    {kind:"trend",label:"UMBS 5.5 short-term trend",value:"Up 3 sessions",dir:"bullish",str:3,locks:false},
+    {kind:"resistance",label:"Resistance",value:"101.34 (tested twice)",dir:"bearish",str:4,locks:true},
+    {kind:"support",label:"Support",value:"101.02 (held Thu)",dir:"bullish",str:3,locks:true},
+    {kind:"momentum",label:"Stochastics",value:"Approaching overbought",dir:"bearish",str:2,locks:false},
+    {kind:"bollinger",label:"Bollinger bands",value:"Price near upper band",dir:"bearish",str:2,locks:false},
+    {kind:"calendar",label:"Fri 8:30 ET PCE",value:"High-impact — event risk",dir:"neutral",str:5,locks:true},
+    {kind:"auction",label:"10-yr TIPS auction Thu",value:"Watch tail / bid-to-cover",dir:"neutral",str:3,locks:false},
+    {kind:"fed",label:"Fed speakers",value:"Two hawkish-leaning this week",dir:"bearish",str:3,locks:true},
+    {kind:"alert",label:"Rate alert threshold",value:"UMBS ±25 ticks or 10y ±7bp",dir:"neutral",str:1,locks:false},
+    {kind:"commentary",label:"Desk commentary",value:"“Float-neutral into PCE; bias to lock if 101.02 breaks.”",dir:"neutral",str:2,locks:true},
+  ],
+};
+
+/* Dashboard operating data (sample) */
+const KPIS = [
+  {k:"VA class leads (30d)",v:186,fmt:"n",d:"+22%"},{k:"Show rate",v:48,fmt:"pct",d:"+3 pts"},{k:"Active partner agents",v:23,fmt:"n",d:"+4"},
+  {k:"Pipeline volume",v:6.8,fmt:"$m",d:"+$0.9M"},{k:"Refi opps in queue",v:41,fmt:"n",d:"+7"},{k:"Locks expiring <72h",v:2,fmt:"n",d:"watch"},
+];
+const APPROVALS = [
+  {id:1,type:"Refi letter",who:"Marcus T. — Escondido CA",agent:"Refi Hunter",note:"VA loan recorded 2023-08; est 6.75% → 5.875%; savings ≈ $214/mo",status:"PASS"},
+  {id:2,type:"Refi letter",who:"Dana R. — Las Vegas NV",agent:"Refi Hunter",note:"Rate is estimated (not stated) — letter omits specific rate per Reg Z",status:"FIX"},
+  {id:3,type:"Partner intro",who:"AZ agent K. Alvarez",agent:"Referral Desk",note:"Three-way intro text for buyer lead (Phoenix)",status:"PASS"},
+  {id:4,type:"Recruiting email",who:"Jen P. (NV) — readiness 84",agent:"LPT Recruiter",note:"“What you'd keep at LPT” calculator attached; labeled as estimate",status:"PASS"},
+  {id:5,type:"Consumer rate post",who:"Weekly market video script",agent:"Content Studio",note:"Uses Home Report close edition; includes NMLS + EHO",status:"PASS"},
+  {id:6,type:"Credit letter",who:"Get-Well plan — C. Nguyen",agent:"Credit Letter Writer",note:"Goodwill letter, accurate late; fact-only",status:"PASS"},
+];
+const TASKS = [
+  {t:"Call 4 hot leads (score ≥70) by 12:30",p:"high"},{t:"Approve 6 queued drafts",p:"high"},{t:"Lock extension decision — Reyes VA purchase (expires Mon)",p:"high"},
+  {t:"AZ partner SLA breach — 8 days no update",p:"med"},{t:"Prep Las Vegas VA class (42 registered)",p:"med"},{t:"Review Home Report weekend recap draft",p:"med"},
+  {t:"Renew CE credits reminder (NV)",p:"low"},{t:"Run 5/1 ARM comparison for jumbo prospect (Carlsbad)",p:"low"},
+];
+const PIPELINE = {
+  "New":[{n:"Torres, A.",p:"VA Purchase",v:"$520k",s:72},{n:"Kim, S.",p:"FHA Purchase",v:"$410k",s:58}],
+  "Contacted":[{n:"Bell, R.",p:"Conv 5/1 ARM",v:"$615k",s:66},{n:"Okafor, N.",p:"DSCR",v:"$480k",s:61}],
+  "Consult":[{n:"Reyes, J.",p:"VA Purchase",v:"$575k",s:88}],
+  "Pre-approved":[{n:"Walsh, T.",p:"Jumbo VA",v:"$1.45M",s:81},{n:"Singh, P.",p:"Conv",v:"$690k",s:77}],
+  "Contract":[{n:"Duarte, L.",p:"VA 5/1 ARM",v:"$498k",s:90}],
+  "Closed":[{n:"Harper, M.",p:"VA IRRRL",v:"$385k",s:95}],
+};
+const REFI = [
+  {n:"Marcus T.",city:"Escondido, CA",basis:"estimated",cur:6.75,tgt:5.875,sav:214,recoup:7,ntb:true,score:91},
+  {n:"Dana R.",city:"Las Vegas, NV",basis:"stated",cur:7.0,tgt:5.875,sav:241,recoup:6,ntb:true,score:94},
+  {n:"Elias V.",city:"Mesa, AZ",basis:"estimated",cur:6.5,tgt:5.875,sav:162,recoup:9,ntb:true,score:78},
+  {n:"Priya S.",city:"Naperville, IL",basis:"estimated",cur:6.25,tgt:5.875,sav:98,recoup:14,ntb:false,score:52},
+  {n:"Carl W.",city:"Tampa, FL",basis:"stated",cur:6.875,tgt:5.875,sav:226,recoup:7,ntb:true,score:89},
+];
+const AGENTS = [
+  {n:1,name:"Seminar Director",desc:"VA classes + webinars across CA, NV, IL, AZ, FL",on:true,last:"Scheduled promo T-3d for Las Vegas class"},
+  {n:2,name:"Realtor Prospector (ModelMatch)",desc:"Finds, scores and tiers partner agents",on:true,last:"Scored 38 new ModelMatch rows → 6 Tier A"},
+  {n:3,name:"Referral Desk",desc:"25% Realtor-to-Realtor referrals, SLA timers",on:true,last:"Nudged AZ partner (day 7)"},
+  {n:4,name:"LPT Recruiter",desc:"Downline builder — ethical, merit-based",on:true,last:"Flagged 2 agents with readiness signals"},
+  {n:5,name:"Title / VA Refi Hunter",desc:"Title reports → IRRRL opportunities (rate >6%)",on:true,last:"Re-scored 41 opps after par move"},
+  {n:6,name:"Market Intel (MBS Highway + Treasury)",desc:"Reads Home Report, explains moves, lock/float lean",on:true,last:"Close summary posted 2:30pm PT"},
+  {n:7,name:"Loan Tutor / Mentor",desc:"30-yr senior-UW mentor with RAG + quizzes",on:true,last:"Weak area: VA residual income"},
+  {n:8,name:"Loan Ops / Pipeline",desc:"ARIVE pipeline, locks, TRID clocks, conditions",on:true,last:"2 locks <72h flagged"},
+  {n:9,name:"Compliance Sentinel",desc:"PASS / FIX / BLOCK gate on every outbound draft",on:true,last:"Blocked 1 draft (rate quote w/o disclosures)"},
+  {n:10,name:"Content Studio",desc:"Flyers, posts, video scripts",on:true,last:"Drafted weekly 60-sec rate video"},
+  {n:11,name:"Chief of Staff",desc:"Morning Brief 6:30 · Midday 12:00 · EOD 5:30 PT",on:true,last:"Morning Brief sent 6:30am"},
+  {n:12,name:"Deal Structurer",desc:"Buydowns, concessions, debt payoff, cash-to-close",on:true,last:"Ran 2-1 buydown vs price cut"},
+  {n:13,name:"Credit Analyzer",desc:"Tri-merge red flags (credit_rules)",on:true,last:"9 critical flags found on 3 files"},
+  {n:14,name:"Score Simulator",desc:"What-if paydown / tradeline scenarios",on:true,last:"Optimized 4 paydowns for tier jump"},
+  {n:15,name:"Credit Letter Writer",desc:"Fact-only dispute / goodwill / LOE letters",on:true,last:"Drafted L7 goodwill letter"},
+  {n:16,name:"Get-Well Coach",desc:"Turns a 'no' into a dated plan",on:true,last:"Coaching block Tue 7:30pm"},
+  {n:17,name:"Rent/Buy & Debt Advisor (new)",desc:"Runs Supabase buy-vs-rent, debt-consolidation, 5/1 ARM calculators",on:true,last:"Saved 3 calc_runs"},
+  {n:18,name:"Home Report Analyst (new)",desc:"Parses MBS Highway Home Report → signals → brief + dashboard",on:true,last:"Parsed 10 signals from close edition"},
+];
+const ROUTES = [
+  [/seminar|webinar|event|class/i,"Seminar Director"],[/modelmatch|prospect|realtor|agent score/i,"Realtor Prospector"],[/referral|25%/i,"Referral Desk"],
+  [/lpt|recruit|downline/i,"LPT Recruiter"],[/refi|irrrl|title report|rate.*6/i,"Title / VA Refi Hunter"],[/home report|mbs|treasur|fed|rates?|market|lock|float/i,"Market Intel"],
+  [/how do i|guideline|scenario|explain|quiz/i,"Loan Tutor"],[/pipeline|condition|arive|trid/i,"Loan Ops"],[/allowed|compliance|disclos|respa/i,"Compliance Sentinel"],
+  [/post|flyer|video|script/i,"Content Studio"],[/credit|score|dispute|collection/i,"Credit Analyzer"],[/buydown|concession|closing cost|cash to close/i,"Deal Structurer"],
+  [/rent|buy vs|consolidat|debt|arm\b|5\/1/i,"Rent/Buy & Debt Advisor"],
+];
+
+/* Workflows: id, name, trigger, steps[], hitl (human approval), cat */
+const W = (id,name,trigger,steps,hitl,cat)=>({id,name,trigger,steps:steps.split(" › "),hitl,cat});
+const WORKFLOWS = [
+ W("W1","Event creation","New row in events","Create Zoom/Eventbrite › Landing page + QR codes › Canva flyer › Promo schedule › Partner invites",true,"Seminars"),
+ W("W2","Registration intake","Zoom/Eventbrite webhook","Upsert contact › Capture consent › Create FUB lead › Confirm email/SMS › Add reminder cadence",false,"Seminars"),
+ W("W3","Reminder cadence","Schedule","T-3d › T-1d › T-2h › T-10m email/SMS",false,"Seminars"),
+ W("W4","Post-event scoring","Zoom report available","Attendance + minutes + polls › lead_score › Route (Steven / partner / nurture)",false,"Seminars"),
+ W("W5","Consult booking","Calendly webhook","Prep packet › Lead summary › COE status › Credit questions › BAH by zip",false,"Seminars"),
+ W("W6","Out-of-market referral","lead.market not served","Referral Desk match › Partner accept (1 hr timer) › Agreement › Three-way intro",true,"Referrals"),
+ W("W7","Referral SLA monitor","Hourly","No update 7d → nudge › 14d → escalate › 2 breaches → pause",false,"Referrals"),
+ W("W8","Referral fee tracking","Status = under_contract/closed","Commission instruction to escrow › fee_due › Reconcile with LPT statement",true,"Referrals"),
+ W("W9","ModelMatch ingest","CSV in Drive / weekly","Normalize › Dedupe vs FUB › Score › Tier",false,"Prospecting"),
+ W("W10","Realtor outreach sequence","Agent tier A/B","7-touch sequence › Claude personalization › ISA call tasks",true,"Prospecting"),
+ W("W11","Partner nurture","Monthly","Market recap › Seminar invite › VA offer tips",false,"Prospecting"),
+ W("W12","LPT recruit signals","Weekly","Detect readiness › Recruit stage › Calculator draft › Call task",true,"Prospecting"),
+ W("W13","Recruit onboarding","Stage = signed","LPT onboarding checklist › Seminar-in-a-box kit › 30/60/90 tasks",false,"Prospecting"),
+ W("W14","Title doc ingest","New file in /RefiHunter/Inbox","OCR › Extract JSON › Upsert properties/liens",false,"Refi Hunter"),
+ W("W15","Refi scoring","After W14 / rate drop","Rate estimate › Savings calc › Eligibility (NTB, seasoning) › Score › Draft letter",true,"Refi Hunter"),
+ W("W16","Rate-drop re-run","VA par down ≥0.125%","Re-score queue + past clients › Alert Steven",false,"Refi Hunter"),
+ W("W17","Market daily","6:00am & 2:30pm PT","Pull Treasury/FRED › Parse MBS Highway email › Claude explain › Store market_daily › Animate",true,"Market"),
+ W("W18","Rate alert","MBS Highway alert email","Threshold check › SMS Steven › List floating borrowers",false,"Market"),
+ W("W19","Loan milestones","ARIVE status change","Borrower + realtor updates (approved templates) › Tasks",false,"Loan Ops"),
+ W("W20","TRID / lock watch","Daily","Disclosure clocks › Lock expirations <72h",false,"Loan Ops"),
+ W("W21","Guideline corpus refresh","Monthly","Fetch guides/circulars › Chunk › Embed › Changelog to Tutor",false,"Loan Ops"),
+ W("W22","Morning / Midday / EOD brief","Cron","Aggregate views › Claude summary › SMS/email/dashboard",false,"Chief of Staff"),
+ W("W23","Content pipeline","Weekly","Market script › Video/post drafts › Compliance › Schedule",true,"Content"),
+ W("W24","Compliance gate","Any outbound draft","Agent 9 review › PASS/FIX/BLOCK › approvals table",false,"Compliance"),
+ W("W25","Past-client annual review","Loan anniversary","Rate/equity check › Review invite › Referral ask",true,"Loan Ops"),
+ W("W26","Three-way warm handoff","QR scan","Mobile form › Personalized intro texts (attendee-sent)",false,"Referrals"),
+ W("W27","License / CE tracker","Monthly","DRE, NMLS state licenses, CE deadlines",false,"Compliance"),
+ W("W28","KPI scorecard","Friday","Compute KPIs › Dashboard + email",false,"Chief of Staff"),
+ /* ---- new: Home Report ---- */
+ W("HR1","Home Report ingest","MBS Highway Home Report email arrives (am / midday / close / weekly)","Gmail trigger › Label + dedupe by (date, edition) › Store raw_text › Parse sections",false,"Home Report"),
+ W("HR2","Signal extraction","HR1 complete","Claude extracts JSON signals (kind, label, value, direction, strength, affects_locks) › Validate vs schema › Insert mbsh_signals",false,"Home Report"),
+ W("HR3","Explain + lock/float lean","HR2 complete","Market Intel contract (§6.3) › lean + confidence › realtor talking points › consumer_safe_version",false,"Home Report"),
+ W("HR4","Compliance gate on consumer text","consumer_safe_version created","Agent 9 PASS/FIX/BLOCK › approvals row › Steven approves before any consumer send",true,"Home Report"),
+ W("HR5","Alert escalation","home_report_alert_level() ≠ normal","rate_alert → SMS Steven + floating/locked borrower list › watch → dashboard banner + brief line",false,"Home Report"),
+ W("HR6","Daily brief injection","W22 cron","v_daily_brief_market → MARKET line + top 3 lock-relevant signals into Morning Brief / Midday / EOD",false,"Home Report"),
+ W("HR7","Dashboard push","mbsh_home_reports insert","Supabase Realtime → Market Intel page animates new signals + payment slider baseline",false,"Home Report"),
+ /* ---- new: calculators ---- */
+ W("CALC1","Buy vs rent run","Dashboard / Claude Skill / Realtor request","Validate inputs › rpc run_calc('buy_vs_rent') › Save calc_runs › Chart + client one-pager (approved template)",true,"Calculators"),
+ W("CALC2","Debt consolidation run","Credit Suite finds high-rate revolving / Steven request","Pull tradelines › rpc run_calc('debt_consolidation') › Warnings (CLTV, term, secured-debt) › Deal Structurer review",true,"Calculators"),
+ W("CALC3","5/1 ARM vs fixed run","Scenario builder flags short hold","rpc run_calc('arm_vs_fixed') › Worst-case payment shock › Add to proposal with ARM disclosures",true,"Calculators"),
+];
+const INTEGRATIONS = [
+ {n:"Claude API",p:"All agents",c:"n8n Claude/HTTP node; prompt caching for guideline corpus",ok:true},
+ {n:"Claude Projects / Skills / Code",p:"Agent workspaces + builder",c:"Claude app",ok:true},
+ {n:"Supabase / Postgres",p:"System of record, auth, storage, vectors, calculators",c:"REST + RPC (run_calc)",ok:true,key:"supabase"},
+ {n:"n8n",p:"Workflow engine (W1–W28, HR1–7, CALC1–3)",c:"Self-hosted Docker; webhook base URL",ok:true,key:"n8n"},
+ {n:"MBS Highway",p:"Home Report, coupon prices, alerts",c:"Alert/Home Report emails → Gmail trigger (no login automation)",ok:true},
+ {n:"Treasury Fiscal Data / FRED",p:"Yield curve, DGS2/10/30, MORTGAGE30US",c:"Public CSV/XML + free API key",ok:true},
+ {n:"Freddie Mac PMMS",p:"Weekly 30/15 rates (Thu)",c:"Public",ok:true},
+ {n:"Follow Up Boss",p:"Realtor CRM, texting, calls",c:"API + webhooks",ok:true},
+ {n:"ARIVE",p:"LOS / POS / PPE, credit ordering",c:"Export / API per plan",ok:false},
+ {n:"ModelMatch",p:"Agent production data",c:"CSV drop folder (confirm API terms)",ok:true},
+ {n:"Gmail / Google Calendar / Drive",p:"Inbox triggers, scheduling, file drops",c:"MCP / OAuth",ok:true},
+ {n:"Zoom / Eventbrite / Calendly",p:"Seminars + consults",c:"Webhooks",ok:true},
+ {n:"Twilio",p:"SMS alerts + reminders (consent-gated)",c:"REST",ok:true},
+ {n:"Canva / HeyGen",p:"Flyers + weekly 60-sec video",c:"API",ok:false},
+ {n:"PropertyRadar / ATTOM / DataTree",p:"Title + lien data for Refi Hunter",c:"API / CSV",ok:false},
+ {n:"Dropbox Sign",p:"Referral agreements, borrower e-sign",c:"API",ok:false},
+];
+const OPS = {
+ Seminars:{cols:["Date","City","Topic","Registered","Partners","Status"],rows:[["Oct 22","Las Vegas, NV","VA Loan Mastermind — Buy","42","3","Promo live"],["Nov 5","Phoenix, AZ","VA Loan Webinar","27","2","Landing page"],["Nov 12","San Diego, CA","VA + 5/1 ARM Strategies","—","1","Draft"],["Dec 3","Tampa, FL","Hometown Heroes + VA","—","0","Planning"]]},
+ Referrals:{cols:["Buyer","Partner agent","State","Status","Days since update","SLA"],rows:[["Torres, A.","K. Alvarez","AZ","Showing","8","Breach"],["Kim, S.","R. Cho","NV","Under contract","2","OK"],["Bell, R.","M. Ortiz","FL","Accepted","4","OK"]]},
+ Downline:{cols:["Agent","State","Stage","Readiness","Next step"],rows:[["Jen P.","NV","Interested","84","Discovery call Tue"],["Marco D.","CA","Aware","61","Send newsletter"],["Alyssa K.","AZ","Call set","77","LPT overview"]]},
+ Compliance:{cols:["Item","Agent","Verdict","Reason"],rows:[["Rate quote post","Content Studio","BLOCK","Trigger terms without full disclosures"],["Refi letter — Dana R.","Refi Hunter","FIX","Estimated rate must not appear as stated"],["Weekly rate video","Content Studio","PASS","NMLS + EHO present"],["NV NMLS license","Monitor","DUE 60d","Renewal window opens"]]},
+};

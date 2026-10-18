@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VANESSA 3.0 — Command Dashboard</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%231e5eff'/%3E%3Ctext x='16' y='23' font-size='20' font-family='sans-serif' font-weight='800' text-anchor='middle' fill='white'%3EV%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head><body>
+<aside><div class="brand"><div class="logo">V</div><div>VANESSA 3.0<small>Realtor · Mortgage · Credit OS</small></div></div><nav id="nav"></nav></aside>
+<main>
+  <header class="top"><h1 id="title">Today</h1>
+    <div class="ticker" id="ticker" aria-live="off"></div>
+    <div class="live"><span class="dot"></span><span id="clock"></span></div>
+    <button class="btn ghost sm" id="theme" aria-label="Toggle theme">Theme</button>
+  </header>
+  <div id="view"></div>
+</main>
+<script src="data.js"></script><script src="engine.js"></script><script src="prompts.js"></script><script src="app.js"></script>
+</body></html>

@@ -1,0 +1,22 @@
+// Golden-value check: JS calculators must equal the Supabase SQL functions (see prompts P3–P5).
+const fs=require('fs'),vm=require('vm'),root=__dirname+'/..';
+vm.runInThisContext(fs.readFileSync(root+'/data.js','utf8')+fs.readFileSync(root+'/engine.js','utf8').replace('if(typeof module','if(false&&typeof module')+';globalThis.E={buyVsRent,debtConsolidation,armVsFixed,buydown,recommend}');
+let fail=0; const eq=(name,got,want,tol=0.01)=>{const ok=Math.abs(got-want)<=tol;if(!ok)fail++;console.log((ok?'PASS ':'FAIL ')+name,got,'expected',want)};
+const b=E.buyVsRent({price:600000,downPct:.10,rate:.065,termYears:30,taxRate:.0125,insurance:1800,hoa:0,maintPct:.01,appreciation:.035,rent:3200,rentGrowth:.035,rentersIns:200,invest:.06,closingPct:.03,sellPct:.06,horizon:10,marginal:0,itemize:false});
+eq('buy-vs-rent P&I',b.pi,3413.17);eq('buy-vs-rent breakeven year',b.breakeven,9,0);eq('buy-vs-rent advantage',b.adv,23428,1);eq('yr5 buyer NW',b.rows[4].buyer,164356,1);eq('yr5 renter NW',b.rows[4].renter,194426,1);
+const d=E.debtConsolidation({debts:[{name:'Visa',balance:12000,rate:.24,payment:360},{name:'Auto',balance:18000,rate:.09,payment:450}],mode:'heloan',newRate:.095,newTerm:10,closingPct:.03,firstBal:0,firstRate:0,firstPay:0,homeValue:500000,maxCltv:.8});
+eq('debt new payment',d.newPay,399.84);eq('debt cash-flow change',d.save,410.16);eq('debt break-even months',d.be,2.2,.05);eq('debt remaining interest',d.ci,11453,1);eq('debt new-loan interest',d.newInt,17081,1);
+const a=E.armVsFixed({loan:400000,fixedRate:.0675,armRate:.059,index:.04,margin:.0275,term:30,capInit:.02,capPer:.02,capLife:.05,fixedYrs:5,horizon:10});
+eq('ARM fixed pmt',a.fp,2594.39);eq('ARM initial pmt',a.ap,2372.55);eq('ARM balance at reset',a.balReset,371754,1);eq('ARM worst-case pmt',a.worstPay,3616.77);
+const t=E.buydown(400000,6.5,'2-1',30);eq('2-1 buydown yr1 saves',t.yrs[0].save,501.53,.05);eq('2-1 buydown yr2 saves',t.yrs[1].save,257.12,.05);eq('2-1 buydown cost % of loan',t.pct,2.3,.05);
+const top=(s)=>E.recommend(s).options[0].p.id;
+const base={fico:'720-759',income:'w2',occ:'primary',downPct:5,price:650000,area:'baseline',property:'sfr',dti:38,state:'CA'};
+const chk=(n,got,want)=>{const ok=got===want;if(!ok)fail++;console.log((ok?'PASS ':'FAIL ')+n,got,'expected',want)};
+chk('vet → VA',top({...base,vet:true}),'va');
+chk('vet + short hold → VA ARM on top',top({...base,vet:true,shortHold:true}),'arm_va');
+chk('no ARM unless triggered',E.recommend({...base,vet:true}).options.some(o=>o.p.cat==='ARM'),false);
+chk('investor → DSCR',top({...base,occ:'investment',fico:'680-719',downPct:25}),'dscr');
+chk('jumbo San Diego 760 → Jumbo',top({...base,fico:'760+',downPct:20,price:1500000,area:'sandiego'}),'jumbo');
+chk('self-employed 660 15% → Bank Statement',top({...base,income:'selfemp',fico:'660-679',downPct:15,price:900000}),'bank');
+chk('foreign national → foreign program',top({...base,foreign:true,downPct:25,income:'foreign'}),'foreign');
+process.exit(fail?1:0);
