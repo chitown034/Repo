@@ -35,4 +35,4 @@ PAGE.assist={html:()=>`<div class="card"><h3>Assistance &amp; Grants <span class
 /* corpus + quick entry points */
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();STATE_ASSIST.forEach(s=>s.dpa.forEach(d=>out.push({src:`DPA ${s.st} — ${s.hfa}`,t:d})));[["CA state",CA_ASSIST.state],["CA regional",CA_ASSIST.counties],["CA utilities",CA_ASSIST.utilities],["CA rent/mortgage",CA_ASSIST.rent]].forEach(([h,rows])=>rows.forEach(r=>out.push({src:`${h} — ${r[0]}`,t:`${r[1]} (${r[2]})`})));FED_ASSIST.forEach(r=>out.push({src:`Federal ${r[0]} — ${r[1]}`,t:`${r[2]} (${r[3]})`}));NPO_ASSIST.forEach(r=>out.push({src:`Nonprofit ${r[0]} — ${r[1]}`,t:`${r[2]} (${r[3]})`}));return out}}
 if(typeof AGENTS!=="undefined"&&!AGENTS.some(a=>/Grant Watcher/.test(a.name||"")))AGENTS.push({n:85,name:"Grant Watcher · Hazel's lane",desc:"Monitors HFA, county, city and utility program pages for funding openings, limit changes and new DPA; posts a weekly diff to Vanessa and the Assistance & Grants page; verifies on the official page before reporting.",on:true,last:"Dashboard seat (assistance-grant-watcher)",cd:false});
-boot();
+
