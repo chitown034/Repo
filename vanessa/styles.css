@@ -118,3 +118,13 @@ svg text{fill:var(--mut);font-size:11px}.axis{stroke:var(--line)}
 @keyframes chatIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}@keyframes chatPulse{0%,100%{opacity:1}50%{opacity:.45}}
 .v-dock{position:fixed;right:18px;bottom:18px;z-index:70;width:54px;height:54px;border-radius:50%;border:2px solid var(--acc);background:var(--panel);box-shadow:0 10px 28px -10px rgba(0,0,0,.5);cursor:pointer;padding:0;overflow:hidden;transition:transform .2s}.v-dock:hover{transform:translateY(-3px) scale(1.06)}.v-dock span{display:block;width:100%;height:100%;border-radius:50%;background-size:cover;background-position:center 18%}
 .presence-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 22%;border-radius:50%;opacity:0;transition:opacity .25s;pointer-events:none;background:#000}.presence-video.on{opacity:1}
+/* global search block */
+.gs{position:relative;flex:1;max-width:520px;margin:0 12px}
+.gs input{width:100%;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink,inherit);font-size:14px}
+.gs-panel{position:absolute;top:calc(100% + 6px);left:0;right:0;max-height:70vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.25);z-index:60;padding:6px}
+.gs-panel.hide{display:none}
+.gs-head{padding:6px 10px}
+.gs-group{font-size:11px;letter-spacing:.06em;text-transform:uppercase;opacity:.7;padding:8px 10px 2px}
+.gs-row{display:flex;flex-direction:column;gap:2px;padding:7px 10px;border-radius:8px;cursor:pointer;font-size:13px}
+.gs-row:hover,.gs-row.on{background:rgba(201,162,39,.14)}
+@media(max-width:760px){.gs{max-width:none;margin:6px 0;order:5;flex-basis:100%}}
