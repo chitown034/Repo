@@ -53,4 +53,4 @@ document.addEventListener("DOMContentLoaded",()=>{const hdr=document.querySelect
  document.addEventListener("keydown",e=>{if(e.key==="/"&&!/input|textarea|select/i.test(document.activeElement.tagName)){e.preventDefault();inp.focus();inp.select()}});
  document.addEventListener("click",e=>{if(!box.contains(e.target))panel.classList.add("hide")});
  addEventListener("hashchange",()=>panel.classList.add("hide"));});
-boot();
+
