@@ -313,3 +313,5 @@ lane only records the API-surface facts feeding those two decisions). Row 10 (Ap
 not a new NEEDS-STEVEN item — its one step is the same phone step `CONNECTIONS.md`'s existing "Apple
 Health" row and the `apple-health-notion` skill already carry; this row only adds the n8n-ownership
 decision the brief asked for.
+
+**Gondola (gondola.ai), 2026-10-19.** Asked to feed Travel and Rewards from it. It is a hotel-booking cash-back service (books direct with the hotel; its own site says it averages about 16% back across hotel points, card points and 3–7% Gondola Cash; promotional, unverified). No public feed or API was found, and the site is unreachable from the cloud (no egress). Nothing was wired; a card that shows its numbers would need Steven's own Gondola account or an export he pastes. Source: https://www.gondola.ai/what-is-gondola.
