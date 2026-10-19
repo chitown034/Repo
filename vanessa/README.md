@@ -57,3 +57,9 @@ Market numbers, Home Report signals, pipeline, approvals and refi queue are **sa
 - **VA Toolkit**: tough-file strategist tab; BAH 335 stations; **Calculators**: +debt payoff, amortization/extra pay, refi break-even, affordability+residual, PMI removal, loan comparison.
 - **ISA Portal** (`isa.js`): mirrored daily playbook, SOD/EOD, scorecard, KPIs, 18 VA checklists, SOP flows, team matrix, SoCal bases, Mello-Roos, business blueprint, tech stack.
 - **Marketing Toolkit** (`marketing2.js`): channels, calendar, 15 templates, ad compliance checklist, tools. New agents #19–33; workflows SQ/BD1/BD2/VT1/GL1/DP1/DP2/PI1/LK1/TT1.
+
+## v12 (2026-10-19)
+- Strategies 107 (`strategies2.js`), scenarios 40, dispute letters 52, LOEs 170, guideline sheets 41 (`guidelines3.js`: VA/FHA/conventional refinance deep dives, investment & second homes, hard money/bridge, lot & land, NADL/184, 203(h) disaster, buydowns, state programs CA/NV/AZ/IL/FL, ITIN, church/nonprofit).
+- Calculators 17 (+cash-to-close & seller-credit optimizer, points vs credit breakeven, HELOC vs cash-out blended rate, HECM principal limit, DSCR quick qualifier, VA entitlement).
+- Loan Process Map deep dive (`process2.js`): every stage with why, what done looks like, sub-steps (how/why/forms/timing/mistake), hand-off; 55-term glossary; Word export.
+- Ops Command page: Steven's daily checklist, setup gaps, lender scorecard, pricing/lock exception log, exports of all workflows/routines/sequences/agents (JSON) and an operations manual (Word). Quick links strip on Today.
