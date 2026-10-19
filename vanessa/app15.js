@@ -49,4 +49,4 @@ PAGE.arive={html:()=>`<div class="card"><h3>ARIVE Mastery <span class="sub">subm
 {const go=PAGES.find(p=>p[0]==="Growth & Ops");if(go&&!go[1].some(x=>x[0]==="arive"))go[1].splice(go[1].findIndex(x=>x[0]==="process")+1,0,["arive","ARIVE Mastery"])}
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();ARIVE_COURSE.forEach(m=>m.steps.forEach(s=>out.push({src:`ARIVE course — ${m.t}: ${s[0]}`,t:`${s[1]}. ${s[2]}`})));ARIVE_BY_PROGRAM.forEach(p=>out.push({src:`ARIVE by loan type — ${p.n}`,t:["setup","app","credit","aus","pricing","fees","docs","submit","close"].map(k=>`${k}: ${p[k]}`).join(" ")}));ARIVE_GLOSSARY.forEach(g=>out.push({src:`ARIVE glossary — ${g[0]}`,t:g[1]}));return out}}
 if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^ARIVE/,{hash:"arive",input:"ar_q",pre:()=>{store.set("artab","course");store.set("armod","")}}]);
-boot();
+
