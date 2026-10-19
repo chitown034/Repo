@@ -33,4 +33,4 @@ PAGE.offers={html:()=>`<div class="card"><h3>Offer Playbook <span class="sub">co
 {const li=PAGES.find(p=>p[0]==="Loan Intelligence");if(li&&!li[1].some(x=>x[0]==="offers"))li[1].splice(li[1].findIndex(x=>x[0]==="scripts")+1,0,["offers","Offer Playbook"])}
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();OFFER_OPTIONS.forEach(o=>out.push({src:`Offer option ${o.id} — ${o.n}`,t:`${o.when} ${o.how} VA: ${o.prog.va} FHA: ${o.prog.fha} Conv: ${o.prog.conv} RPA: ${o.rpa} Risk: ${o.risk}`}));CONCESSION_RULES.forEach(r=>out.push({src:`Concession rules — ${r[0]}`,t:`${r[1]} ${r[2]} (${r[3]})`}));return out}}
 if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^Offer option|^Concession rules/,{hash:"offers",input:"of_q",pre:()=>store.set("oftab","lib")}]);
-boot();
+
