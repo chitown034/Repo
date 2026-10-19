@@ -63,3 +63,4 @@ Market numbers, Home Report signals, pipeline, approvals and refi queue are **sa
 - Calculators 17 (+cash-to-close & seller-credit optimizer, points vs credit breakeven, HELOC vs cash-out blended rate, HECM principal limit, DSCR quick qualifier, VA entitlement).
 - Loan Process Map deep dive (`process2.js`): every stage with why, what done looks like, sub-steps (how/why/forms/timing/mistake), hand-off; 55-term glossary; Word export.
 - Ops Command page: Steven's daily checklist, setup gaps, lender scorecard, pricing/lock exception log, exports of all workflows/routines/sequences/agents (JSON) and an operations manual (Word). Quick links strip on Today.
+- v15: VA Toolkit → Q&A (500) tab: 501 questions with in-depth answers and references (`vaqa.js`), searchable by category, Word export, hand-off to the Coach. Vanessa & Steve persona chats (own recorded voices only).
