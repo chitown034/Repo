@@ -85,3 +85,111 @@ function parseBahFile(text,withDep){ const out={}; text.split(/\r?\n/).forEach(l
 function parseMhaNames(text){ const out={}; text.split(/\r?\n/).forEach(l=>{const m=l.trim().match(/^([A-Z]{2}\d{3})\s+(.+)$/); if(m) out[m[1]]=m[2].trim()}); return out }
 function parseZipMha(text){ const out={}; text.split(/\r?\n/).forEach(l=>{const m=l.trim().match(/^(\d{5})\s+([A-Z]{2}\d{3})/); if(m) out[m[1]]=m[2]}); return out }
 function mergeBah({w,wo,names,zips}){ const d=BAH_DATA||{}; const keys=new Set([...Object.keys(w||{}),...Object.keys(wo||{})]); keys.forEach(k=>{d[k]=d[k]||{w:[],wo:[]}; if(w&&w[k])d[k].w=w[k]; if(wo&&wo[k])d[k].wo=wo[k]; if(names&&names[k]){d[k].name=names[k].replace(/,\s*[A-Z]{2}$/,"");d[k].state=(names[k].match(/,\s*([A-Z]{2})$/)||[])[1]||k.slice(0,2)}}); if(zips){d.__zips=Object.assign(d.__zips||{},zips)} BAH_DATA=d; try{localStorage.setItem("vanessa.bah",JSON.stringify(d))}catch(e){} return Object.keys(d).filter(k=>k!=="__zips").length }
+/* ---- Expanded station list: every state/territory, major metros and installations (≈300). E-5 w/dep 2026 planning estimates.
+   Codes are best-known MHA codes where confident; otherwise a state+name key (shown as "~") until the DTMO file is imported. ---- */
+(function(){const add=[
+ // Alabama
+ ["AL008","Birmingham","AL","Recruiting · ANG",1800],["AL010","Mobile","AL","USCG Aviation Training Center",1700],["AL006","Dothan","AL","Near Fort Novosel",1450],
+ // Alaska
+ ["AK012","Kodiak","AK","USCG Base Kodiak",2200],["AK013","Juneau","AK","USCG Sector Juneau",2300],
+ // Arizona extra
+ ["AZ022","Flagstaff","AZ","Camp Navajo",2050],["AZ024","Prescott","AZ","ANG",1900],
+ // Arkansas
+ ["AR017","Fayetteville / NW Arkansas","AR","Recruiting",1600],["AR016","Fort Smith","AR","Fort Chaffee (Guard)",1350],["AR019","Pine Bluff","AR","Pine Bluff Arsenal",1300],
+ // California extra
+ ["CA015","Bakersfield","CA","Recruiting",1950],["CA020","Fresno","CA","Fresno ANG",2000],["CA035","Oakland / East Bay","CA","Coast Guard Island · Alameda",3950],["CA043","San Jose / Silicon Valley","CA","Moffett Field / NASA",4600],["CA050","Santa Barbara","CA","Recruiting",3700],["CA060","Stockton / Tracy","CA","DLA San Joaquin",2500],["CA063","Redding / Chico","CA","ANG",1900],["CA067","San Luis Obispo","CA","Camp SLO · Camp Roberts",3000],["CA074","Santa Rosa / Petaluma","CA","USCG Training Center Petaluma",3400],["CA080","Oxnard / Ventura","CA","NB Ventura County (Port Hueneme, Point Mugu)",3500],["CA090","Palm Springs / Coachella","CA","Recruiting",2300],["CA092","Temecula / SW Riverside","CA","Near Pendleton (commuting MHA)",2900],["CA094","Eureka / Humboldt","CA","USCG Humboldt Bay",1900],["CA096","Victorville / High Desert","CA","SCLA",2000],["CA098","Ridgecrest / China Lake","CA","NAWS China Lake",1900],["CA099","El Centro","CA","NAF El Centro",1700],
+ // Colorado extra
+ ["CO080","Pueblo","CO","Pueblo Chemical Depot",1650],["CO081","Fort Collins / Greeley","CO","Recruiting",2200],["CO082","Grand Junction","CO","Recruiting",1800],
+ // Connecticut extra
+ ["CT046","Hartford","CT","Bradley ANG",2100],
+ // Delaware
+ ["DE052","Dover","DE","Dover AFB",1900],["DE051","Wilmington","DE","Recruiting",2100],
+ // Florida extra
+ ["FL100","Tallahassee","FL","Recruiting",1800],["FL110","Gainesville","FL","Recruiting",1800],["FL112","Daytona Beach","FL","Recruiting",2000],["FL120","Melbourne / Palm Bay","FL","Patrick (adjacent)",2300],["FL125","Fort Lauderdale","FL","USCG · Recruiting",3300],["FL128","West Palm Beach","FL","Recruiting",3000],["FL140","Naples / Fort Myers","FL","Recruiting",2500],["FL145","Sarasota / Bradenton","FL","Recruiting",2400],["FL150","Lakeland","FL","Recruiting",2000],["FL155","Ocala","FL","Recruiting",1750],["FL160","Fort Pierce / Port St. Lucie","FL","Recruiting",2300],["FL165","Crestview / Niceville","FL","Duke Field · Eglin north",2000],
+ // Georgia extra
+ ["GA110","Atlanta","GA","Dobbins ARB · Fort Gillem",2400],["GA118","Savannah","GA","Hunter AAF",2100],["GA120","Macon","GA","Robins (adjacent)",1600],["GA124","Athens","GA","Navy Supply Corps (legacy)",1700],["GA126","Albany","GA","MCLB Albany",1450],
+ // Hawaii extra
+ ["HI016","Kaneohe / Windward Oahu","HI","MCB Hawaii",3900],["HI017","Kauai","HI","PMRF Barking Sands",3300],["HI018","Maui","HI","Recruiting",3700],["HI019","Hilo / Big Island","HI","Pohakuloa",2600],
+ // Idaho
+ ["ID120","Boise","ID","Gowen Field",2000],["ID121","Idaho Falls","ID","Recruiting",1700],["ID122","Coeur d'Alene","ID","Recruiting",1900],
+ // Illinois extra
+ ["IL064","Springfield","IL","ANG Capital",1500],["IL065","Peoria","IL","Peoria ANG",1500],["IL066","Champaign-Urbana","IL","Recruiting",1500],["IL067","Joliet / Will County","IL","Recruiting",2200],["IL068","Naperville / DuPage","IL","Recruiting",2400],["IL069","Waukegan / Lake County","IL","Great Lakes (adjacent)",2400],
+ // Indiana
+ ["IN126","Indianapolis","IN","Fort Benjamin Harrison (DFAS)",1750],["IN127","Fort Wayne","IN","ANG",1500],["IN128","Terre Haute","IN","Hulman Field ANG",1300],["IN129","Bloomington / Crane","IN","NSA Crane",1450],["IN130","Evansville","IN","Recruiting",1400],
+ // Iowa
+ ["IA131","Des Moines","IA","Des Moines ANG",1600],["IA132","Davenport / Quad Cities","IA","Rock Island (adjacent)",1600],["IA133","Sioux City","IA","185th ANG",1400],["IA134","Cedar Rapids / Iowa City","IA","Recruiting",1600],
+ // Kansas extra
+ ["KS136","Wichita","KS","McConnell AFB",1550],["KS137","Topeka","KS","Forbes Field ANG",1450],["KS138","Kansas City (KS side)","KS","Recruiting",1800],
+ // Kentucky extra
+ ["KY138","Louisville","KY","Recruiting · ANG",1700],["KY139","Lexington","KY","Blue Grass Army Depot (Richmond)",1650],
+ // Louisiana extra
+ ["LA141","New Orleans","LA","NAS JRB New Orleans · USCG",2100],["LA142","Baton Rouge","LA","Recruiting",1700],["LA143","Lafayette / Lake Charles","LA","Recruiting",1500],
+ // Maine
+ ["ME150","Portland","ME","USCG Sector Northern New England",2300],["ME151","Bangor","ME","Bangor ANG",1600],["ME152","Brunswick","ME","Former NAS (Reserve)",2000],["ME153","Kittery / Portsmouth","ME","Portsmouth Naval Shipyard",2500],
+ // Maryland extra
+ ["MD119","Baltimore","MD","Fort McHenry · USCG Yard",2600],["MD120","Aberdeen","MD","Aberdeen Proving Ground",2300],["MD121","Patuxent River / Lexington Park","MD","NAS Patuxent River",2500],["MD122","Frederick","MD","Fort Detrick",2500],["MD123","Bethesda / Rockville","MD","Walter Reed NMMC · NIH",3400],["MD124","Indian Head / Waldorf","MD","NSF Indian Head",2800],
+ // Massachusetts extra
+ ["MA123","Cape Cod","MA","JB Cape Cod (Otis) · USCG",2800],["MA124","Worcester","MA","Recruiting",2300],["MA125","Springfield / Westover","MA","Westover ARB",1900],["MA126","Natick","MA","Natick Soldier Systems",3200],
+ // Michigan
+ ["MI160","Detroit","MI","Selfridge ANGB · TACOM Warren",1900],["MI161","Grand Rapids","MI","Recruiting",1750],["MI162","Battle Creek","MI","DLA · ANG",1400],["MI163","Lansing","MI","Recruiting",1500],["MI164","Traverse City","MI","USCG Air Station",1700],["MI165","Sault Ste. Marie","MI","USCG",1300],["MI166","Alpena / Grayling","MI","Camp Grayling",1300],
+ // Minnesota
+ ["MN170","Minneapolis-St. Paul","MN","934th AW · Camp Ripley (north)",2100],["MN171","Duluth","MN","148th FW ANG",1500],["MN172","Rochester","MN","Recruiting",1700],
+ // Mississippi extra
+ ["MS181","Meridian","MS","NAS Meridian",1300],["MS182","Jackson","MS","Camp Shelby (south) · ANG",1500],["MS183","Hattiesburg","MS","Camp Shelby",1400],["MS184","Pascagoula","MS","Ingalls · NCBC",1600],
+ // Missouri extra
+ ["MO187","Kansas City","MO","Recruiting · Marine Corps Reserve",1800],["MO188","St. Louis","MO","Scott (adjacent) · NGA",1800],["MO189","Springfield","MO","Recruiting",1450],["MO190","Columbia / Jefferson City","MO","Recruiting",1450],
+ // Montana extra
+ ["MT191","Helena","MT","Fort Harrison (Guard)",1650],["MT192","Billings","MT","Recruiting",1600],["MT193","Missoula","MT","Recruiting",1700],
+ // Nebraska extra
+ ["NE205","Lincoln","NE","Lincoln ANG",1550],
+ // Nevada extra
+ ["NV220","Carson City","NV","Recruiting",2200],["NV221","Henderson / Boulder City","NV","Nellis (adjacent)",2250],
+ // New Hampshire
+ ["NH210","Portsmouth / Seacoast","NH","Portsmouth Naval Shipyard (ME) · Pease ANGB",2600],["NH211","Manchester / Nashua","NH","Recruiting",2400],
+ // New Jersey extra
+ ["NJ216","Newark / Northern NJ","NJ","Picatinny Arsenal (west) · USCG",3100],["NJ217","Atlantic City","NJ","177th FW ANG · FAA Tech Center",2200],["NJ218","Trenton","NJ","Recruiting",2500],["NJ219","Picatinny / Dover","NJ","Picatinny Arsenal",2900],["NJ220","Cape May","NJ","USCG Training Center Cape May",2300],["NJ221","Earle / Colts Neck","NJ","NWS Earle",2900],
+ // New Mexico extra
+ ["NM216","Santa Fe","NM","Recruiting",2000],["NM217","Los Alamos","NM","LANL",2100],
+ // New York extra
+ ["NY219","Long Island","NY","Recruiting · 106th RQW",3600],["NY220","Westchester / Hudson Valley","NY","Camp Smith · Stewart ANGB",3200],["NY221","Albany","NY","Watervliet Arsenal · Scotia",1900],["NY222","Syracuse","NY","Hancock Field ANGB",1600],["NY223","Rochester","NY","Recruiting",1600],["NY224","Buffalo / Niagara","NY","Niagara Falls ARS",1600],["NY225","Plattsburgh","NY","Former AFB",1500],["NY226","Binghamton","NY","Recruiting",1400],["NY227","Staten Island / Brooklyn","NY","Fort Hamilton · USCG",4500],
+ // North Carolina extra
+ ["NC151","Raleigh-Durham","NC","Recruiting",2200],["NC152","Charlotte","NC","Recruiting",2200],["NC154","Wilmington","NC","MOTSU Sunny Point",2100],["NC155","Elizabeth City","NC","USCG Base Elizabeth City",1700],["NC156","Greensboro / Winston-Salem","NC","Recruiting",1700],["NC157","Asheville","NC","Recruiting",2000],
+ // North Dakota extra
+ ["ND229","Fargo","ND","119th Wing ANG",1500],["ND230","Bismarck","ND","Recruiting",1500],
+ // Ohio extra
+ ["OH234","Columbus","OH","DLA Columbus · Rickenbacker ANGB",1850],["OH235","Cleveland","OH","USCG · Recruiting · DFAS",1700],["OH236","Cincinnati","OH","Recruiting",1800],["OH237","Toledo","OH","180th FW ANG",1500],["OH238","Youngstown","OH","Youngstown ARS",1350],["OH239","Akron / Canton","OH","Recruiting",1500],
+ // Oklahoma extra
+ ["OK241","Tulsa","OK","Tulsa ANG",1550],["OK242","Enid","OK","Vance AFB",1400],["OK243","Altus","OK","Altus AFB",1350],["OK244","McAlester","OK","McAlester AAP",1300],
+ // Oregon
+ ["OR250","Portland","OR","Portland ANGB · USCG",2500],["OR251","Salem / Eugene","OR","Recruiting",2100],["OR252","Klamath Falls","OR","Kingsley Field ANG",1700],["OR253","Astoria / Warrenton","OR","USCG Sector Columbia River",2000],["OR254","Bend / Medford","OR","Recruiting",2200],
+ // Pennsylvania
+ ["PA260","Philadelphia","PA","NSA Philadelphia · DLA · USCG",2500],["PA261","Pittsburgh","PA","911th AW ARS · Recruiting",1700],["PA262","Harrisburg / Carlisle","PA","Carlisle Barracks · Fort Indiantown Gap · DLA New Cumberland",1900],["PA263","Allentown / Lehigh Valley","PA","Recruiting",2000],["PA264","Scranton / Tobyhanna","PA","Tobyhanna Army Depot",1600],["PA265","Erie","PA","Recruiting",1400],["PA266","State College","PA","Recruiting",1600],["PA267","Johnstown","PA","Recruiting · ANG",1300],
+ // Rhode Island extra
+ ["RI272","Providence","RI","Quonset Point ANG",2500],
+ // South Carolina extra
+ ["SC286","Greenville / Spartanburg","SC","Recruiting",1800],["SC288","Myrtle Beach","SC","Former AFB",1800],["SC289","Hilton Head / Bluffton","SC","Parris Island (adjacent)",2300],
+ // South Dakota extra
+ ["SD292","Sioux Falls","SD","114th FW ANG",1500],
+ // Tennessee extra
+ ["TN298","Nashville","TN","Recruiting · ANG",2100],["TN299","Knoxville","TN","McGhee Tyson ANGB",1800],["TN300","Chattanooga","TN","Recruiting",1700],["TN301","Memphis","TN","NSA Mid-South (Millington)",1750],["TN302","Tullahoma","TN","Arnold AFB",1450],
+ // Texas extra
+ ["TX320","Houston","TX","Ellington Field JRB · USCG",2200],["TX321","Dallas","TX","Recruiting · Grand Prairie NAS JRB (Fort Worth)",2300],["TX322","Del Rio","TX","Laughlin AFB",1350],["TX323","Kingsville","TX","NAS Kingsville",1550],["TX324","Texarkana","TX","Red River Army Depot",1300],["TX325","Waco / Temple","TX","Recruiting",1600],["TX326","Lubbock","TX","Recruiting",1500],["TX327","Amarillo","TX","Pantex",1450],["TX328","Laredo / McAllen","TX","USCG · Recruiting",1500],["TX329","Galveston","TX","USCG Sector Houston-Galveston",1900],["TX330","Bryan / College Station","TX","Recruiting",1700],["TX331","Beaumont / Port Arthur","TX","Recruiting",1500],
+ // Utah extra
+ ["UT311","Salt Lake City","UT","Camp Williams · Tooele Army Depot",2250],["UT312","Provo / Orem","UT","Recruiting",2100],["UT313","St. George","UT","Recruiting",1900],
+ // Vermont
+ ["VT313","Burlington","VT","Burlington ANGB · Camp Johnson",2300],
+ // Virginia extra
+ ["VA312","Richmond","VA","Fort Gregg-Adams (Lee) · DSCR",2100],["VA313","Fort Gregg-Adams / Petersburg","VA","Fort Gregg-Adams",1850],["VA314","Fredericksburg / Dahlgren","VA","NSF Dahlgren · Quantico (adjacent)",2500],["VA316","Charlottesville","VA","NGIC · JAG School",2300],["VA319","Roanoke / Blacksburg","VA","Recruiting",1700],["VA320","Williamsburg / Yorktown","VA","NWS Yorktown · Camp Peary · Fort Eustis",2200],["VA321","Chesapeake / Suffolk","VA","Norfolk (adjacent) · NSA Northwest",2300],["VA322","Fort Walker / Bowling Green","VA","Fort Walker (A.P. Hill)",1900],
+ // Washington extra
+ ["WA330","Seattle","WA","USCG · Recruiting",3300],["WA332","Oak Harbor","WA","NAS Whidbey (town)",2600],["WA334","Yakima","WA","Yakima Training Center",1800],["WA336","Port Angeles","WA","USCG Air Station",1900],["WA337","Bellingham","WA","Recruiting",2400],["WA338","Olympia","WA","JBLM (adjacent) · Camp Murray",2500],["WA339","Tri-Cities","WA","Hanford",2000],
+ // West Virginia
+ ["WV340","Charleston","WV","130th AW ANG",1400],["WV341","Martinsburg","WV","167th AW ANG · USCG NMC",1800],["WV342","Morgantown","WV","Recruiting",1500],
+ // Wisconsin
+ ["WI345","Milwaukee","WI","128th ARW ANG · Recruiting",1800],["WI346","Madison","WI","Truax Field ANG",1900],["WI347","Fort McCoy / Sparta","WI","Fort McCoy",1400],["WI348","Green Bay","WI","Recruiting",1500],
+ // Wyoming extra
+ ["WY339","Casper","WY","Recruiting",1500],
+ // Territories
+ ["VI","U.S. Virgin Islands","VI","USCG · Guard",2400],["AS","American Samoa","AS","Army Reserve",1500],["MP","Northern Mariana Islands","MP","Guard",1700],["PR2","Puerto Rico — Ceiba / Roosevelt Roads (legacy)","PR","Guard",1700],
+];
+add.forEach(s=>{if(!STATIONS.some(x=>x[0]===s[0]))STATIONS.push(s)});
+})();

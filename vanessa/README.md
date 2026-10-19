@@ -46,3 +46,14 @@ Market numbers, Home Report signals, pipeline, approvals and refi queue are **sa
 - USDA FY2027 fee is unconfirmed; FHFA 2027 limits not yet announced.
 - The blueprint does not define the MBS Highway "Home Report" format; the signal schema here is an assumption — adjust `mbsh_signals.kind` to the real report once you see an export.
 - Consumer-facing output always routes through Compliance/approval; nothing here sends anything.
+
+## v10 — Loan intelligence expansion (2026-10-19)
+- **AI Loan Coach** (`coach`): underwriter/processor/broker mentor grounded in 28 guideline sheets (`guidelines.js`, `guidelines2.js`), 32 VA tough-file strategies, 138 LOEs; uses the artifact `sample` capability, falls back to local retrieval.
+- **Programs & Rules**: full guideline accordions for every loan type (conforming, affordable, high-balance, renovation, FHA/USDA/VA, HUD 184, jumbo, Non-QM, DSCR, foreign-national/ITIN, construction, manufactured, HELOC, reverse, DPA/CalVet, physician, commercial/SBA/ALF) + broker / non-delegated / delegated correspondent channels; 53 programs.
+- **Scenario Library** (`scenarios.js`): 30 challenging cases, top-4 courses of action with reasoning; **Script Library** (`scripts.js`): 30 talk tracks; **62 qualifying strategies** (`strategies2.js`, VA concession/buydown/correspondent-credit structures).
+- **Document Processor** (`docproc.js`): checklist by loan × borrower type, filename classification, readiness %, missing-docs email, income/asset calculators (W-2, LES, Schedule C, K-1, bank statements CSV, rental, deposits/reserves).
+- **Loan Process Map** (`process.js`): 11 stages step by step with tools/agents/automations/SLAs; **LO Toolkit**: 20 hard tasks → tools/agents, Kaizen improvement loop, top-1% OS; **Delegation Map** (`delegation.js`): 41 tasks by owner, Steven's Layer-1 list.
+- **Automation Center**: 24 routines (n8n cron + .ics export), 11 sequences / 60 touches (`sequences.js`) with enrollment; **Partner Targets**: best-leads playbooks + contact tracker with CSV import.
+- **VA Toolkit**: tough-file strategist tab; BAH 335 stations; **Calculators**: +debt payoff, amortization/extra pay, refi break-even, affordability+residual, PMI removal, loan comparison.
+- **ISA Portal** (`isa.js`): mirrored daily playbook, SOD/EOD, scorecard, KPIs, 18 VA checklists, SOP flows, team matrix, SoCal bases, Mello-Roos, business blueprint, tech stack.
+- **Marketing Toolkit** (`marketing2.js`): channels, calendar, 15 templates, ad compliance checklist, tools. New agents #19–33; workflows SQ/BD1/BD2/VT1/GL1/DP1/DP2/PI1/LK1/TT1.

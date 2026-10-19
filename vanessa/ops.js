@@ -71,3 +71,45 @@ serve(async (req) => {
   n8nNodes:["Webhook (POST /zoho-sync)","Zoho CRM node (OAuth2 credential — scopes above)","Function: dedupe + field map","Supabase node: upsert contacts/loans","IF: stage changed → Slack/SMS","Error workflow → audit_log"],
   checklist:["Reconnect Zoho in Composio (or create a Zoho API Console 'Server-based' client) with scopes: ZohoCRM.modules.ALL, ZohoCRM.settings.ALL, ZohoCRM.users.READ","Confirm the data center (US = zoho.com) — EU/IN accounts use different API hosts","Create custom fields in Leads/Deals: Veteran__c, Loan_Purpose__c, Consent_SMS__c, Arive_Loan_ID__c, Rate__c, Lock_Expiration__c, IRRRL_Bucket__c","Store client id/secret/refresh token in Supabase Vault (never in the dashboard)","Deploy supabase/functions/zoho-sync and set ZOHO_* secrets","Import n8n Z1–Z7 and point Zoho workflow rules at the n8n webhook","Run Z4 once and reconcile Arive drift before enabling Z3 writes"],
 };
+/* ---- Routines, schedules, new agents & workflows (automation center) ---- */
+const ROUTINES=[
+ ["05:45","daily","Market data pull","Treasury/FRED/PMMS + MBS Highway AM email parse (HR1–HR3)","0 45 5 * * 1-5","Market Intel","W17"],
+ ["06:30","daily","Morning Brief","Aggregate Zoho/Arive/approvals → SMS + email + dashboard (HR6)","0 30 6 * * 1-5","Chief of Staff","W22"],
+ ["06:45","daily","Approvals block (Steven, 15 min)","Credit letters, Get-Well plans, outreach drafts, consumer market text","—","Steven","W24"],
+ ["07:00","daily","Zoho ↔ Arive reconciliation","Stage/amount/date drift → ISA tasks","0 0 7 * * 1-5","Ops integrator agent","Z4"],
+ ["07:15","daily","Speed-to-lead report","5-min SLA attainment yesterday; unanswered leads","0 15 7 * * 1-5","ISA","A1"],
+ ["08:30 ET","daily","Data-release snapshot","CPI/PCE/jobs days: before/after UMBS & 10y; rate alert if thresholds hit","0 30 8 * * 1-5 (ET)","Market Intel","W18"],
+ ["09:00","daily","Pipeline stand-up (15 min)","Every file: owner + next date; conditions idle >48h escalated","—","Team","A18"],
+ ["hourly","daily","Sequence engine","Send due touches; pause on replies; create call tasks","0 0 * * * *","Outreach agent","SQ-*"],
+ ["hourly","daily","Referral SLA monitor","7/14-day partner update checks","0 0 * * * *","Referral Desk","W7"],
+ ["12:00","daily","Midday Pulse","Delta since AM; hot leads; approvals pending","0 0 12 * * 1-5","Chief of Staff","W22"],
+ ["14:30","daily","Market close summary","Close edition Home Report → signals → brief","0 30 14 * * 1-5","Market Intel","HR1–HR7"],
+ ["15:00 Fri","weekly","Friday status blast","Borrower + agent status on every active file (approved templates)","0 0 15 * * 5","Status bot","A15"],
+ ["17:30","daily","EOD Wrap","Wins, risks, tomorrow's top 3; every lead dispositioned","0 30 17 * * 1-5","Chief of Staff","W22"],
+ ["nightly","daily","Missing-doc chase","Portal checklist reminders until complete","0 0 19 * * *","Doc agent","A8"],
+ ["06:00 Mon","weekly","IRRRL bucket refresh","Re-score VA borrowers vs PMMS; buckets a/b/c","0 0 6 * * 1","Refi Hunter","Z5/W16"],
+ ["Mon","weekly","Capacity audit","Layer 1 time ≥ 80%; push tasks down a layer","—","EA/ISA","13.7"],
+ ["Mon","weekly","Partner research block","10 new targets per channel from the lead playbooks","—","ISA","P19"],
+ ["Fri","weekly","KPI scorecard","Pull-through, cycle time, cost/loan, NPS, reviews, SLA %","0 0 16 * * 5","Chief of Staff","W28"],
+ ["1st","monthly","Guideline corpus refresh","Circulars/MLs/Selling Guide updates → RAG + 'what changed' note","0 0 3 1 * *","Guideline librarian","W21"],
+ ["1st","monthly","Rules re-verify","program_rules, credit_rules, BAH/pay tables, limits","—","Loan Tutor","P1/P18"],
+ ["1st","monthly","Lender scorecard","Turn times, exceptions, declined-file rescues by lender","—","Loan Ops","—"],
+ ["15th","monthly","License/CE tracker","DRE, NMLS, state renewals, CE deadlines","0 0 9 15 * *","Compliance","W27"],
+ ["Qtr","quarterly","Advisor Briefing webinar + builder scorecard review","Reverse CE session; builder preferred-lender renewals","—","Steven","SQ-W/SQ-B"],
+ ["Jan","annual","BAH/pay/limits reload","DTMO files, DFAS pay table, FHFA/FHA limits, VA funding fee check","0 0 6 2 1 *","BAH data agent","P18"],
+];
+AGENTS.push(
+ {n:19,name:"Partner Prospector (Bizdev)",desc:"Researches targets from the lead playbooks, enriches, enrolls in sequences",on:true,last:"Added 10 NV builders to the tracker"},
+ {n:20,name:"Outreach Writer",desc:"Personalizes sequence touches per contact; routes to approvals",on:true,last:"Drafted 14 touches for SQ-B"},
+ {n:21,name:"VA Tough-File Strategist",desc:"Ranks the 32 strategies for a referred/declined VA file; drafts the compensating-factor narrative",on:true,last:"Rescued 1 file via residual income + seller debt payoff"},
+ {n:22,name:"Guideline Librarian",desc:"Maintains the guideline corpus, flags circular/ML changes, feeds the Loan Coach",on:true,last:"Logged 2 updates"},
+ {n:23,name:"BAH & Pay Data Agent",desc:"Loads DTMO/DFAS files annually; flags estimate vs official",on:true,last:"335 stations seeded; awaiting DTMO import"},
+ {n:24,name:"Loan Coach",desc:"Underwriter/processor/broker mentor Q&A grounded in the guideline corpus",on:true,last:"Answered 6 questions today"},
+);
+WORKFLOWS.push(
+ W("SQ","Sequence engine","Hourly cron / enrollment tag","Compute due touches › personalize (Outreach Writer) › Compliance gate › send via Zoho/Twilio or create call/LinkedIn task › log › pause on reply",true,"Prospecting"),
+ W("BD1","Lead research sprint","Mon 9:00 (ISA)","Pick channel › run playbook sources › capture contacts (verified) › import CSV to tracker › enroll",false,"Prospecting"),
+ W("BD2","Reply triage","Inbound email/SMS on a sequence","Classify › pause sequence › ISA task (5-min) › book or exit",false,"Prospecting"),
+ W("VT1","Tough-file rescue","AUS refer / lender decline on a VA file","Run toughRank › pick strategies › draft 26-6393 narrative + LOEs › route to no-overlay lender",true,"Loan Ops"),
+ W("GL1","Coach feedback loop","Coach answer rated 'wrong/outdated'","Librarian reviews › corpus update › re-test",false,"Loan Ops"),
+);
