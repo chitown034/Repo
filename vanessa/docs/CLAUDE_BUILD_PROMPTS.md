@@ -164,3 +164,25 @@ Build the Letter Desk from vanessa/letters.js: 36 dispute/validation/goodwill le
 Port vanessa/va.js to Supabase functions + program_rules rows: va_funding_fee (2026 tiers + exemptions), va_entitlement (full vs partial: 25% of county limit − used; down = 25% × price − remaining), va_residual (Pamphlet 26-7 Ch. 4 tables by region/family size, ≥/< $80k, +$80 per member >5, $0.14/sq ft maintenance, 120% rule when DTI >41%, taxes from actual LES withholding in production), irrrl_test (210 days + 6 payments, NTB by loan-type pair, 36-month recoupment, lates, term, occupancy), va_eligibility (service-length rules incl. Title 32 Guard), allowable/non-allowable fees with the 1% cap check on the CD, MPR checklist, document checklists per program, Nellis BAH table (replace planning estimates with the DoD BAH API/CSV). Add a VA purchase timeline tracker tied to loans.stage and a 210-day IRRRL watch trigger per funded VA loan (feeds W16/Z5).
 ```
 
+## Growth & Ops
+
+### P15 — Scale Engine — 1,000 closings/yr: capacity model, stage automations A1–A26, AI agents
+
+```text
+Build the operating system for 1,000 closings/yr from vanessa/scale.js. (1) capacity(target, preset) as a Supabase function + settings UI: closings/apps/leads per month and day, staffing by ratio (STAFF_RATIOS), payroll/marketing/tech, cost per loan, 24-month ramp. (2) Stage automations A1–A26 in n8n (LOAN_STAGES): triggers from Zoho/Arive status changes, SLAs per stage (5-min lead, 48h 1003, 5-day submit, 4h conditions out, CD 3 days), escalation when any task idles >48h. (3) AI agents (AI_AGENTS_SCALE): voice/SMS receptionist (Twilio + Claude + TidyCal, consent-gated, never quotes), doc classifier + income calculator (Claude vision → Arive; human review before UW), condition-clearing agent (parses approvals → tasks/LOE drafts), lock/float advisor (internal), compliance QC agent (pre-send review), Friday status bot, appraisal desk AI, annual review agent. Every agent outputs drafts/tools; consumer-facing content goes through approvals. (4) Daily/weekly/monthly operating rhythm dashboards: pull-through, cycle time by stage, cost per loan, SLA attainment, Layer-1 time share.
+```
+
+### P16 — 5-star service & loyalty system
+
+```text
+Implement SERVICE (vanessa/scale.js): the client journey as scheduled touches keyed to loan milestones (Day 0 welcome → weekly Friday 3pm status → appraisal call → approval/LOEs → CD review → closing gift → Day 7/30/90/365 → 210-day IRRRL watch → annual review). n8n: milestone triggers from Arive/Zoho, approved templates only, NPS at day 30 with branch (9–10 → Google review flow; ≤7 → Steven recovery call within 24h), loyalty tiers (Silver/Gold/Platinum) stored on the Zoho contact with benefits automation, service-recovery triggers (missed SLA, rate moved against a floater, appraisal short). KPIs: NPS, Google rating, days app→close, status on-time %, repeat+referral share, 5-min response rate. RESPA: rewards are for service/reviews, never for loan referrals.
+```
+
+## Credit Suite
+
+### P17 — Wealth & Debt module — net-worth simulator, payoff strategies, credit-repair plan
+
+```text
+Port vanessa/wealth.js: wealthSim (baseline 30-yr, extra principal, invest-the-difference, 15-yr, house-hack with 35% expense ratio, refi ladder) and payoffSim (avalanche, snowball, consolidation w/ fee, 0% transfer 18 mo + 3% fee, DMP at 8%, minimums) as Supabase functions with calc_runs logging; add a loan-readiness date (first month DTI ≤ 43% or VA residual pass). Credit repair plan generator: dated phases from REPAIR_PHASES merged with the simulator's best actions and Letter Desk templates; military variant adds active-duty alert + SCRA steps. Client-facing one-pagers through Compliance.
+```
+

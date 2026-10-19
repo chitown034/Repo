@@ -30,4 +30,11 @@ chk('IRRRL unseasoned fails',irrrlTest({daysSinceFirstDue:150,monthsSinceFirstPa
 const sim=simulate(642,SAMPLE_TRADELINES,SAMPLE_INQUIRIES,{t1:'pay10',t2:'pay10'});chk('paydown raises score',sim.delta>0,true);
 const closeSim=simulate(642,SAMPLE_TRADELINES,SAMPLE_INQUIRIES,{t3:'close'});chk('closing a low-util card never helps',closeSim.delta<=0,true);
 chk('deleting old collection helps',simulate(642,SAMPLE_TRADELINES,SAMPLE_INQUIRIES,{t7:'delete'}).delta>0,true);
+vm.runInThisContext(['wealth.js','scale.js'].map(f=>fs.readFileSync(root+'/'+f,'utf8')).join('\n'));
+const PD=[{name:'Visa',balance:8400,rate:.2399,payment:210,type:'revolving'},{name:'Auto',balance:14000,rate:.079,payment:420,type:'installment'}];
+const av=payoffSim(PD,400,'avalanche'),sn=payoffSim(PD,400,'snowball'),mn=payoffSim(PD,400,'minimum');
+chk('avalanche interest <= snowball',av.interest<=sn.interest,true);chk('extra payments beat minimums',av.months<mn.months,true);chk('avalanche pays Visa first',av.order[0],'Visa');
+const ws=wealthSim({price:500000,down:0,rate:.0625,years:10,appreciation:.035,invest:.07,startInvest:0,monthlyInvest:0,extra:300,rent:0,rentGrowth:0,refiMonth:24,refiRate:.055,refiCost:6000});
+chk('extra principal lowers balance',ws.extra[9].bal<ws.baseline[9].bal,true);chk('15-yr balance lower than 30-yr',ws.fifteen[9].bal<ws.baseline[9].bal,true);
+const cap=capacity(1000,SCALE_PRESETS.base);eq('1000/yr = 83.3/mo',cap.perMonth,83.33,.01);chk('leads > apps > closings',cap.leads>cap.apps&&cap.apps>cap.perMonth,true);
 console.log(fail?`\n${fail} FAILED`:'\nALL PASS');process.exit(fail?1:0);
