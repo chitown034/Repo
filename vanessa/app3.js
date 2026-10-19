@@ -59,4 +59,3 @@ PAGE.scale={ html:()=>`<div class="tabs" id="stabs">${[["cap","1,000-loan capaci
  };
   const tabs=$$("#stabs button");const show=k=>{store.set("stab",k);tabs.forEach(b=>b.classList.toggle("on",b.dataset.t===k));$("#sbody").innerHTML=T[k].html();T[k].mount()};tabs.forEach(b=>b.onclick=()=>show(b.dataset.t));show(store.get("stab","cap")); }};
 
-boot();

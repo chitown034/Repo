@@ -36,6 +36,8 @@ const PROGRAMS = [
   { id:"reverse", name:"Reverse (HECM / Proprietary)", cat:"Reverse", minFico:"No minimum credit score; financial assessment applies", down:"Equity-based (62+)", dti:"Residual income / LESA instead of DTI", mi:"HECM MIP upfront + annual; proprietary jumbo reverses have no MIP.", best:"62+ homeowners eliminating a mortgage payment (or HECM-for-purchase)", seller:"n/a", fixedArm:"Fixed or ARM" },
   { id:"bridge", name:"Bridge / Hard Money", cat:"Private", minFico:"Asset-based — score matters less", down:"Equity-based; 65–75% LTV typical", dti:"N/A", mi:"None — higher rate and points.", best:"Buy-before-you-sell, fix & flip, or short-term timing gaps", seller:"Rarely allowed", fixedArm:"Interest-only" },
   { id:"foreign", name:"Foreign National / ITIN / DACA", cat:"Non-QM", minFico:"No US score ok (alt-credit) for FN/ITIN; DACA 620+", down:"25–30% typical", dti:"~45–50% or DSCR", mi:"None; priced into rate. DACA: confirm EAD not within 90 days of expiry at close.", best:"Borrowers without SSN/US credit or with ITIN/DACA", seller:"Lender-specific", fixedArm:"Fixed or ARM" },
+  { id:"fndscr", name:"Foreign National DSCR (passport-only)", cat:"Non-QM", minFico:"No U.S. credit required — foreign credit report or 2–3 reference letters", down:"25–35%", dti:"DSCR ≥ 1.00 (1.15–1.25 best pricing) or no-ratio at lower LTV", mi:"None; priced into rate; prepayment penalties common. U.S. LLC vesting; 6–12 mo reserves in a U.S. account.", best:"Non-resident investors (Canada, Mexico, China/Taiwan, Korea, Brazil, Colombia, UK…) buying 1–4 unit rentals", seller:"Lender-specific (2–6%)", fixedArm:"Fixed or ARM / IO" },
+  { id:"alf", name:"Assisted Living Facility (commercial)", cat:"Commercial", minFico:"680+ guarantor typical (SBA); experience-driven", down:"10% (SBA 7a/504) · 15–25% (bank) · HUD 232 to 80–85% LTV", dti:"DSCR ≥ 1.25–1.35 on facility NOI", mi:"SBA guarantee fee 2–3.5%; HUD MIP 0.65%–1%.", best:"Owner-operators and investors acquiring/refinancing licensed ALFs, memory care, 6–10 bed board-and-care", seller:"n/a", fixedArm:"Fixed (HUD 35-yr) / 5–10 yr bank" },
   { id:"asset", name:"Asset Utilization / Depletion", cat:"Non-QM", minFico:"660+ typical", down:"20%+", dti:"Assets ÷ term (e.g. 360 mo) counted as income", mi:"None.", best:"Asset-rich, income-light (retirees, trust beneficiaries)", seller:"Lender-specific", fixedArm:"Fixed or ARM" },
 ];
 
@@ -141,7 +143,7 @@ const LENDERS = [
 const PROGRAM_LENDER_TAGS = {
   va:["va","agency","calvet","lowfico"], conv:["conv","agency","dpa"], fha:["fha","lowfico","agency","dpa"], usda:["usda","ag","agency"],
   jumbo:["jumbo","port"], dscr:["dscr"], bank:["bank","nonqm"], heloc:["heloc"], reverse:["reverse"], bridge:["bridge","hard"],
-  foreign:["foreign","itin"], asset:["asset"],
+  foreign:["foreign","itin"], asset:["asset"], fndscr:["foreign","dscr"], alf:["comm","hard","ag"],
   arm_conv:["agency","conv"], arm_fha:["agency","fha"], arm_va:["agency","va"], arm_jumbo:["jumbo","port"], arm_nonqm:["nonqm","dscr"],
 };
 

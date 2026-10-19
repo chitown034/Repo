@@ -33,7 +33,7 @@ function drawIn(svg){$$("path.draw",svg).forEach(p=>{const L=p.getTotalLength();
 const PAGES=[
  ["Operate",[["today","Today"],["market","Market Intel"],["report","Home Report"],["pipeline","Pipeline"],["refi","Refi Hunter"],["ops","Seminars · Referrals · Compliance"]]],
  ["Loan Intelligence",[["scenario","Scenario Builder"],["va","VA Toolkit"],["strategies","Qualifying Strategies"],["credit","Credit Simulator"],["letters","Letter Desk"],["programs","Programs & Rules"],["lenders","Lender Directory"],["calc","Calculators"]]],
- ["Growth & Ops",[["wealth","Wealth & Debt"],["scale","Scale Engine (1,000 loans)"],["marketing","Marketing Plan"],["isa","EA / ISA Ops"],["zoho","Zoho CRM"]]],
+ ["Growth & Ops",[["bizdev","Partner Targets"],["wealth","Wealth & Debt"],["scale","Scale Engine (1,000 loans)"],["marketing","Marketing Plan"],["isa","EA / ISA Ops"],["zoho","Zoho CRM"]]],
  ["System",[["agents","AI Agents"],["workflows","Workflows"],["integrations","Integrations"],["prompts","Claude Build Prompts"],["settings","Settings"]]]];
 const TITLES=Object.fromEntries(PAGES.flatMap(s=>s[1]));
 function buildNav(){ $("#nav").innerHTML=PAGES.map(([sec,items])=>`<div class="sec">${sec}</div>`+items.map(([id,t])=>`<button data-p="${id}">${esc(t)}${id==="today"?`<span class="badge" id="apbadge"></span>`:""}</button>`).join("")).join("");
