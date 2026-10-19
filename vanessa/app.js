@@ -9,7 +9,7 @@ const settings=Object.assign({sbUrl:"",sbKey:"",n8n:"",refiRate:6.0,alertTicks:2
 let approvals=store.get("approvals",APPROVALS.map(a=>({...a,decision:null})));
 let tasks=store.get("tasks",TASKS.map(t=>({...t,done:false})));
 let pipeline=store.get("pipeline",PIPELINE);
-let agents=store.get("agents",AGENTS.map(a=>({...a})));
+let agents=(()=>{const st=store.get("agents",[]);return AGENTS.map(a=>{const x=st.find(y=>y.n===a.n);return {...a,on:x?x.on:a.on}})})();
 let integ=store.get("integ",INTEGRATIONS.map(i=>({...i})));
 let market=JSON.parse(JSON.stringify(MARKET)), report=JSON.parse(JSON.stringify(HOME_REPORT));
 
@@ -31,7 +31,7 @@ function drawIn(svg){$$("path.draw",svg).forEach(p=>{const L=p.getTotalLength();
 
 /* ---------- navigation ---------- */
 const PAGES=[
- ["Operate",[["today","Today"],["market","Market Intel"],["report","Home Report"],["pipeline","Pipeline"],["refi","Refi Hunter"],["ops","Seminars · Referrals · Compliance"]]],
+ ["Operate",[["today","Today"],["vanessa","Vanessa — Chief of Staff"],["market","Market Intel"],["report","Home Report"],["pipeline","Pipeline"],["refi","Refi Hunter"],["ops","Seminars · Referrals · Compliance"]]],
  ["Loan Intelligence",[["scenario","Scenario Builder"],["va","VA Toolkit"],["strategies","Qualifying Strategies"],["credit","Credit Simulator"],["letters","Letter Desk"],["programs","Programs & Rules"],["coach","AI Loan Coach"],["lenders","Lender Directory"],["calc","Calculators"],["scenarios","Scenario Library"],["scripts","Script Library"],["docproc","Document Processor"]]],
  ["Growth & Ops",[["bizdev","Partner Targets"],["automation","Automation Center"],["process","Loan Process Map"],["toolkit","LO Toolkit & Improvement"],["delegation","Delegation Map (MLO-minimal)"],["opscmd","Ops Command"],["wealth","Wealth & Debt"],["scale","Scale Engine (1,000 loans)"],["marketing","Marketing Plan"],["mkttools","Marketing Toolkit"],["isa","EA / ISA Ops"],["isaportal","ISA Portal"],["zoho","Zoho CRM"]]],
  ["System",[["agents","AI Agents"],["workflows","Workflows"],["integrations","Integrations"],["prompts","Claude Build Prompts"],["settings","Settings"]]]];
