@@ -128,3 +128,4 @@ svg text{fill:var(--mut);font-size:11px}.axis{stroke:var(--line)}
 .gs-row{display:flex;flex-direction:column;gap:2px;padding:7px 10px;border-radius:8px;cursor:pointer;font-size:13px}
 .gs-row:hover,.gs-row.on{background:rgba(201,162,39,.14)}
 @media(max-width:760px){.gs{max-width:none;margin:6px 0;order:5;flex-basis:100%}}
+tr.qc-fail td{background:rgba(224,68,62,.08)}tr.qc-pass td{background:rgba(59,182,98,.06)}
