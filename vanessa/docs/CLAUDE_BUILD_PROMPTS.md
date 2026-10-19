@@ -186,3 +186,11 @@ Implement SERVICE (vanessa/scale.js): the client journey as scheduled touches ke
 Port vanessa/wealth.js: wealthSim (baseline 30-yr, extra principal, invest-the-difference, 15-yr, house-hack with 35% expense ratio, refi ladder) and payoffSim (avalanche, snowball, consolidation w/ fee, 0% transfer 18 mo + 3% fee, DMP at 8%, minimums) as Supabase functions with calc_runs logging; add a loan-readiness date (first month DTI ≤ 43% or VA residual pass). Credit repair plan generator: dated phases from REPAIR_PHASES merged with the simulator's best actions and Letter Desk templates; military variant adds active-duty alert + SCRA steps. Client-facing one-pagers through Compliance.
 ```
 
+## Loan Intelligence
+
+### P18 — BAH for every MHA + military pay & special pays (DTMO/DFAS importer)
+
+```text
+Replace the seeded BAH estimates in vanessa/bah.js with the official data. (1) Nightly n8n job (or Supabase edge function) downloads the DTMO rate files for the current year — bahw{yy}.txt, bahwo{yy}.txt, mhanames.txt, sorted_zipmha{yy}.txt — from travel.dod.mil, parses them with parseBahFile/parseMhaNames/parseZipMha, and upserts bah_rates(mha, year, grade, with_dep, rate), mha(mha, name, state), zip_mha(zip, mha). Keep prior years for rate-protection comparisons. (2) Basic pay: load the DFAS annual pay table into basic_pay(grade, yos, year); BAS into settings. (3) Expose /rest/v1/rpc/bah_lookup(zip|mha, grade, with_dep) and wire the VA Toolkit BAH/pay tabs to it (fallback to seeded estimates with a visible 'estimate' badge). (4) Special pays table (SPECIAL_PAYS) → program_rules with the qualifying treatment (counts / excluded / grossed-up) and the continuance documentation required; the income calculator must cite the rule. (5) Add CONUS COLA and OHA tables the same way. (6) Tests: parse a real DTMO file (~300 MHAs × 27 grades), ZIP→MHA for all Steven's markets, E-5 w/dep Nellis equals the DTMO calculator, and 'estimate' badge never appears when official data exists.
+```
+
