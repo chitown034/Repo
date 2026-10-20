@@ -119,3 +119,9 @@ Market numbers, Home Report signals, pipeline, approvals and refi queue are **sa
 
 ## v44 — Lender DTI Matrix
 - Loan Intelligence → Lender DTI Matrix: 61 lenders × 6 programs, agency baselines shown as gray placeholders, lender cells blank until entered with source/date (stale flag at 90 days), DTI fit finder, paste/import, AE request email, CSV export, public overlay examples. Lender caps are overlays in broker-only matrices — not fetchable here.
+
+## v45 — Market Intel Live (MBS Highway-style desk from public data)
+- live.js: relay-fed data layer (Yahoo delayed quotes/OHLC, official Treasury par curve, FRED series), normalizer, candlestick renderer with support/resistance + 20-period MA, rule-based economic calendar (+ 2026 FOMC dates, paste importer), factors-by-loan-type table
+- app33.js: Market Intel Live page (dashboard tiles, candles, curve, calendar with release scoring, factors, relay setup with Apps Script + Cloudflare Worker code, status log); wires live readings into the ticker, Market Intel page and Daily Rate Desk (auto-scores for fed/inflation/risk/growth); PB51–PB52 workflows
+- Honest limits: browsers cannot read Treasury/FRED/Yahoo directly, so a user-deployed relay is required; UMBS/TBA coupon prices and Econoday are licensed (proxies: ZN=F, MBB; calendar is rule-based unless pasted); the artifact viewer blocks outside calls — use the downloaded HTML
+- app23.js: rdAuto made reassignable so live auto-scores can extend it

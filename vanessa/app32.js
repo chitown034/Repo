@@ -25,4 +25,3 @@ mount(){const D=()=>store.get("dti_mx",{});const key=(n,p)=>n+"|"+p;
 {const l=PAGES.find(p=>p[0]==="Loan Intelligence");if(l&&!l[1].some(x=>x[0]==="dtimx")){const i=l[1].findIndex(x=>x[0]==="lenders");l[1].splice(i+1,0,["dtimx","Lender DTI Matrix"])}}
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();DM_PROGS.forEach(p=>out.push({src:`DTI baseline — ${p[1]}`,t:`Agency baseline max ${DM_BASE[p[0]][0]}%. ${DM_BASE[p[0]][1]} Lender caps are overlays — confirm in the lender matrix.`}));return out}}
 if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^DTI baseline — /,{hash:"dtimx"}]);
-boot();
