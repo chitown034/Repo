@@ -103,3 +103,6 @@ Market numbers, Home Report signals, pipeline, approvals and refi queue are **sa
 - Reports & Lists: list reports over any dashboard data (CSV/print/copy), home report from a property record, market report archive + weekly agent update
 - PB31–PB46: 16 new Pabbly workflows (Zoho, ARIVE milestones, title, tickets, weekly report)
 - Nothing connects to a vendor automatically; see the page's "Honest status" note.
+
+## v41 — My Tools launcher
+- Sidebar group "My Tools": Rent/Buy/Wait, Veterans Benefits (Muster Point), VA Lead CRM, Personal Branding & Marketing, Social Media Growth (Signal Deck), 2nd Brain (Brain 6D) — each with Open ↗ and an embed page. Separate pages keep their own data.

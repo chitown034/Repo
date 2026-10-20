@@ -92,4 +92,3 @@ mount(){const tabs=[
 {const o=PAGES.find(p=>p[0]==="Operate");if(o){[["loansync","Loan Sync Board"],["titledesk","Title & Property Desk"],["reports2","Reports & Lists"]].forEach((x,i)=>{if(!o[1].some(y=>y[0]===x[0]))o[1].splice(2+i,0,x)})}const g=PAGES.find(p=>p[0]==="Growth & Ops");if(g&&!g[1].some(x=>x[0]==="connect")){const i=g[1].findIndex(x=>x[0]==="hub");g[1].splice(i,0,["connect","Integration Center (Zoho · ARIVE)"])}}
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();CN_SYSTEMS.forEach(s=>out.push({src:`Integration — ${s.n}`,t:`${s.role}. ${s.how.map(h=>h[0]+": "+h[1]).join(" ")} Not verified: ${s.unknown}`}));CN_MILESTONES.forEach(m=>out.push({src:`Milestone — ${m[0]}`,t:`${m[1]} → Zoho ${m[2]} → ${m[3]}: ${m[4]}`}));return out}}
 if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^Integration — |^Milestone — /,{hash:"connect"}]);
-boot();
