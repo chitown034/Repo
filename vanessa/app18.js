@@ -29,4 +29,4 @@ PAGE.qc={html:()=>`<div class="card"><h3>Underwriter QC Auditor <span class="sub
 {const li=PAGES.find(p=>p[0]==="Loan Intelligence");if(li&&!li[1].some(x=>x[0]==="qc"))li[1].splice(li[1].findIndex(x=>x[0]==="uwadv")+1,0,["qc","QC Auditor"])}
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();Object.entries(QC_COMMON).forEach(([sec,items])=>items.forEach(it=>out.push({src:`QC check ${it[0]} — ${sec}`,t:`${it[1]} Evidence: ${it[2]} (${it[3]}) Severity ${it[4]}`})));Object.values(QC_PROGRAM).forEach(([sec,items])=>items.forEach(it=>out.push({src:`QC check ${it[0]} — ${sec}`,t:`${it[1]} Evidence: ${it[2]} (${it[3]}) Severity ${it[4]}`})));QC_RED_FLAGS.forEach(f=>out.push({src:"QC red flag",t:f}));return out}}
 if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^QC check|^QC red flag/,{hash:"qc"}]);
-boot();
+
