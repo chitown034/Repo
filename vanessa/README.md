@@ -106,3 +106,8 @@ Market numbers, Home Report signals, pipeline, approvals and refi queue are **sa
 
 ## v41 — My Tools launcher
 - Sidebar group "My Tools": Rent/Buy/Wait, Veterans Benefits (Muster Point), VA Lead CRM, Personal Branding & Marketing, Social Media Growth (Signal Deck), 2nd Brain (Brain 6D) — each with Open ↗ and an embed page. Separate pages keep their own data.
+
+## v42 — Equity/Refi/Reverse products, Referral Partner Playbooks, Annual Mortgage Review
+- Equity, Refi & Reverse (equity.js): HELOC, HELOAN, VA IRRRL / cash-out / Type I / other VA refi, conventional & FHA refi, HECM, HECM for purchase; compare table, FAQ, VA refi tester, HELOC-vs-HELOAN-vs-cash-out, refi/IRRRL break-even, HECM illustration, LTV tiers
+- Referral Partner Playbooks (refp.js): 8 partner types (realtors, CPAs, tax, wealth, family offices/private banks, estate attorneys, elder-law/senior, insurance), 90-day plan, templates, compliance, tracker, 200 organization targets in CA/IL/NV/FL/AZ (organizations only — no invented contacts)
+- Annual Mortgage Review: client profile analyzer (ranked opportunities, health score, summary), SOP & checklist, templates, review log with due list; PB47–PB49 workflows

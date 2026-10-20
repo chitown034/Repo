@@ -14,4 +14,3 @@ MYTOOLS.forEach(m=>{PAGE["mt_"+m.k]={html:()=>`<div class="card" style="border-l
 {const nav=PAGES.find(p=>p[0]==="My Tools");if(!nav)PAGES.push(["My Tools",[["mytools","All my tools"],...MYTOOLS.map(m=>["mt_"+m.k,m.n])]])}
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();MYTOOLS.forEach(m=>out.push({src:`My tool — ${m.n}`,t:`${m.t}: ${m.d} ${m.use} Link: ${m.u}`}));return out}}
 if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^My tool — /,{hash:"mytools"}]);
-boot();
