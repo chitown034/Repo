@@ -83,3 +83,10 @@ Market numbers, Home Report signals, pipeline, approvals and refi queue are **sa
 - Workflow Hub: 30 Pabbly Connect workflows (PB01–PB30), event bus → per-workflow webhook URL, dry-run, log, retry, local rules engine (R1–R9)
 - Speed-to-Lead cockpit, Handoff Board (ISA/EA/AI/LO lanes), 5-Star Service center, quick-capture button
 - Note: Pabbly sends are browser no-cors POSTs; use the downloaded HTML (artifact viewer may block outbound calls). Confirm delivery in Pabbly Task History.
+
+## v38 — Operations Manual, VA Fees & Elite Strategies, Video Library, Process Improvement, GCI Planner
+- Operations Manual: role × stage swimlane, 15 roles, 13 lifecycle stages, 16 loan types, 24 SOPs, 19 checkable checklists, ARIVE common path + per-loan-type setup
+- VA Fees: allowable vs non-allowable, compliant structures (no relabeling), fee checker vs the 1% flat charge, 31 elite approval strategies
+- Video Library: 44 topic searches, official sources, saved/embedded videos (no fabricated URLs)
+- Process Improvement: log with hours saved, daily update tracker, weekly self-engineering loop + prompt, gap register
+- GCI & Commission Planner: sides, split/cap/fees, loan comp bps, expenses, taxes, net goal solver, sensitivity/break-even
