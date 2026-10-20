@@ -7,6 +7,7 @@ function doGet(e){const out={ts:Date.now(),source:"apps-script",quotes:{},fred:{
   SYMS.forEach(s=>{try{out.quotes[s]=yahoo(s)}catch(err){out.errors.push(s+": "+err)}});
   FRED.forEach(id=>{try{out.fred[id]=fred(id)}catch(err){out.errors.push(id+": "+err)}});
   try{out.curve=treasury()}catch(err){out.errors.push("treasury: "+err)}
+  try{out.calendar=calendar()}catch(err){out.errors.push("calendar: "+err)}
   return ContentService.createTextOutput(JSON.stringify(out)).setMimeType(ContentService.MimeType.JSON)}
 function yahoo(sym){const u="https://query1.finance.yahoo.com/v8/finance/chart/"+encodeURIComponent(sym)+"?range=3mo&interval=1d&includePrePost=false";
   const d=JSON.parse(UrlFetchApp.fetch(u,{muteHttpExceptions:true,headers:{"User-Agent":"Mozilla/5.0"}}).getContentText()).chart.result[0];
@@ -21,7 +22,18 @@ function treasury(){const now=new Date();const ym=Utilities.formatDate(now,"Amer
   const entries=doc.getRootElement().getChildren("entry",ns);if(!entries.length)return null;const props=entries[entries.length-1].getChild("content",ns).getChild("properties",m);
   const map={"BC_1MONTH":"1 Mo","BC_2MONTH":"2 Mo","BC_3MONTH":"3 Mo","BC_4MONTH":"4 Mo","BC_6MONTH":"6 Mo","BC_1YEAR":"1 Yr","BC_2YEAR":"2 Yr","BC_3YEAR":"3 Yr","BC_5YEAR":"5 Yr","BC_7YEAR":"7 Yr","BC_10YEAR":"10 Yr","BC_20YEAR":"20 Yr","BC_30YEAR":"30 Yr"};
   const points={};Object.keys(map).forEach(k=>{const el=props.getChild(k,d);if(el&&el.getText())points[map[k]]=+el.getText()});
-  return{date:(props.getChild("NEW_DATE",d)||{getText:()=>""}).getText().slice(0,10),points:points}}`;
+  return{date:(props.getChild("NEW_DATE",d)||{getText:()=>""}).getText().slice(0,10),points:points}}
+
+// Free economic calendar: BLS release schedule (ICS) + TreasuryDirect upcoming auctions + optional FRED release dates (set Script property FRED_KEY to a free key).
+// UNTESTED from the build sandbox — run once and check the Errors line on the dashboard's Status tab.
+function calendar(){const out=[];const imp=n=>/employment situation|consumer price|cpi/i.test(n)?5:/producer price|ppi|jolts|real earnings|import/i.test(n)?3:2;
+  try{const ics=UrlFetchApp.fetch("https://www.bls.gov/schedule/news_release/bls.ics",{muteHttpExceptions:true}).getContentText();
+    ics.split("BEGIN:VEVENT").slice(1).forEach(b=>{const d=(b.match(/DTSTART[^:]*:(\d{8})/)||[])[1],s=(b.match(/SUMMARY:([^\r\n]+)/)||[])[1];if(!d||!s)return;const iso=d.slice(0,4)+"-"+d.slice(4,6)+"-"+d.slice(6,8);out.push({date:iso,n:s.trim(),src:"BLS",time:"8:30 ET",imp:imp(s),loans:"all",why:"Official BLS release"})})}catch(e){}
+  try{const j=JSON.parse(UrlFetchApp.fetch("https://www.treasurydirect.gov/TA_WS/securities/upcoming?format=json",{muteHttpExceptions:true}).getContentText());
+    j.filter(x=>/Note|Bond|Bill/.test(x.securityType||"")).forEach(x=>{const d=(x.auctionDate||"").slice(0,10);if(d)out.push({date:d,n:"Treasury auction: "+(x.securityTerm||"")+" "+(x.securityType||""),src:"Treasury",time:"1:00 ET",imp:/10-Year|30-Year|3-Year/.test(x.securityTerm||"")?3:2,loans:"all",why:"Weak demand pushes yields up"})})}catch(e){}
+  try{const key=PropertiesService.getScriptProperties().getProperty("FRED_KEY");if(key){const today=Utilities.formatDate(new Date(),"UTC","yyyy-MM-dd");const j=JSON.parse(UrlFetchApp.fetch("https://api.stlouisfed.org/fred/releases/dates?api_key="+key+"&file_type=json&realtime_start="+today+"&include_release_dates_with_no_data=true&limit=400&order_by=release_date&sort_order=asc",{muteHttpExceptions:true}).getContentText());
+    (j.release_dates||[]).forEach(r=>{if(r.date>=today&&/GDP|Gross Domestic|Personal Income|Retail|Producer|Consumer Price|Employment|Housing|New Residential|Existing|Job Openings|Industrial|Durable/i.test(r.release_name||""))out.push({date:r.date,n:r.release_name,src:"FRED",time:"",imp:3,loans:"all",why:"FRED release date"})})}}catch(e){}
+  return out}`;
 const LV_RELAY_CF=`// Cloudflare Worker relay (free tier). Paste into a new Worker, deploy, and use the worker URL in the dashboard.
 const SYMS=["^TNX","^FVX","^TYX","^IRX","ZN=F","ZB=F","ZF=F","MBB","^GSPC","^VIX","DX-Y.NYB","CL=F","GC=F"];
 const FRED=["DGS10","DGS2","DGS30","T10Y2Y","T10YIE","DFII10","MORTGAGE30US","MORTGAGE15US","DFF","DPRIME","SOFR","BAMLH0A0HYM2","DCOILWTICO","DTWEXBGS","VIXCLS"];
@@ -77,4 +89,3 @@ PB_WORKFLOWS.push(PB("PB51","Live rate read → team alert","rate.live_update","
 {const n=liveLast();if(n){try{liveApply(n)}catch(e){}}lvSchedule();if(liveCfg().url&&liveCfg().auto)setTimeout(()=>{if(!liveCfg().hours||liveMarketHours())liveFetch()},1500)}
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();RATE_FACTORS.forEach(f=>out.push({src:`Rate factor — ${f.f}`,t:`${f.dir}. `+Object.entries(f.loans).map(([k,v])=>v?`${k}: ${v}`:"").filter(Boolean).join(" ")}));CAL_RULES.forEach(r=>out.push({src:`Economic release — ${r.n}`,t:`${r.src} ${r.time}. ${r.why}`}));return out}}
 if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^Rate factor — /,{hash:"live",tab:["lvtab","factors"]}],[/^Economic release — /,{hash:"live",tab:["lvtab","cal"]}]);
-boot();

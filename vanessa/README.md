@@ -125,3 +125,8 @@ Market numbers, Home Report signals, pipeline, approvals and refi queue are **sa
 - app33.js: Market Intel Live page (dashboard tiles, candles, curve, calendar with release scoring, factors, relay setup with Apps Script + Cloudflare Worker code, status log); wires live readings into the ticker, Market Intel page and Daily Rate Desk (auto-scores for fed/inflation/risk/growth); PB51–PB52 workflows
 - Honest limits: browsers cannot read Treasury/FRED/Yahoo directly, so a user-deployed relay is required; UMBS/TBA coupon prices and Econoday are licensed (proxies: ZN=F, MBB; calendar is rule-based unless pasted); the artifact viewer blocks outside calls — use the downloaded HTML
 - app23.js: rdAuto made reassignable so live auto-scores can extend it
+
+## v46 — Guidelines Library & Free Data
+- library.js / app34.js: official sources for 19 guides (Fannie Selling/Servicing, Freddie Guide, Ginnie MBS Guide, VA Pamphlet 26-7 + circulars + 38 CFR 36, HUD 4000.1 + Mortgagee Letters, USDA HB-1-3555, FHFA, CFPB regs, NMLS, HECM, Sec. 184, DPA), 43-topic finder with site-restricted searches per agency, dated excerpt notebook, update watch, free data-feed catalog (24 feeds; 8 in the relay)
+- Relay code now also pulls free calendar sources (BLS ICS, TreasuryDirect upcoming auctions, optional FRED release dates) — untested from the sandbox
+- Not included by design: full text of the guides (owned by their publishers, thousands of pages, change constantly)
