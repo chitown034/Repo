@@ -53,7 +53,7 @@ function clock(){const d=new Date();$("#clock").textContent=d.toLocaleTimeString
 
 /* ---------- brief generator ---------- */
 function brief(edition){
-  const m=market,r=report,rt=MARKET.umbs.ticks,ry=MARKET.y10,rb=MARKET.y10chg,pend=approvals.filter(a=>!a.decision).length;
+  const m=market,r=report,rt=m.umbs.ticks,ry=m.y10,rb=m.y10chg,pend=approvals.filter(a=>!a.decision).length;
   const lockSig=r.signals.filter(s=>s.locks).sort((a,b)=>b.str-a.str).slice(0,3);
   const nxt=m.calendar.filter(e=>e.imp>=4)[0]||m.calendar[0];
   const head={am:"GOOD MORNING STEVEN",mid:"MIDDAY PULSE",eod:"EOD WRAP"}[edition];
