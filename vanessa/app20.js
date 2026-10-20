@@ -86,4 +86,5 @@ mount(){const rules=apRules();const share=()=>{const m=apMinutes(rules);vizGauge
 {const pages=PAGES;const op=pages.find(p=>p[0]==="Operate");if(op&&!op[1].some(x=>x[0]==="autopilot"))op[1].splice(1,0,["autopilot","Autopilot 80/20"]);const li=pages.find(p=>p[0]==="Loan Intelligence");if(li){if(!li[1].some(x=>x[0]==="exam"))li[1].splice(li[1].findIndex(x=>x[0]==="va")+1,0,["exam","VA Practice Exam"]);if(!li[1].some(x=>x[0]==="sims"))li[1].splice(li[1].findIndex(x=>x[0]==="calc")+1,0,["sims","Simulators"])}}
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();EXAM_BANK.forEach(q=>out.push({src:`Exam Q ch.${q.ch}`,t:`${q.q} Answer: ${q.o[q.a]}. ${q.e} (${q.c})`}));AP_RULES_DEFAULT.forEach(r=>out.push({src:`Autopilot rule — ${r.trigger}`,t:`Agent: ${r.agent}. ISA: ${r.isa}. Steven: ${r.steven}`}));return out}}
 if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^Exam Q/,{hash:"exam"}],[/^Autopilot rule/,{hash:"autopilot"}]);
+if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^DPR program/,{hash:"assist",tab:["astab","dpr"],input:"dp_q"}]);
 boot();
