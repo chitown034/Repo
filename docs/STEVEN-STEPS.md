@@ -5,15 +5,13 @@ The Action Desk now opens with step 0 (the Mac has been silent since Oct 13; Van
 Includes every connection that still has to be made. Already done: Lofty key (54 leads syncing), 14 failed routines re-run, both dashboards updated (cycle 11), Remote Control card built, one-command Mac script, failover with a $25 OpenRouter cap, connection plan; your USC answers and personal DRE are saved.
 research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox iMessage are connected; the five research-only routines are already off.
 
-## 1 · Your Mac has been silent since Oct 13 · 5 minutes (Do this before anything else: the morning iMessage text, Vanessa's voice note, Lofty, calendar, rates and the twin all run on the Mac, and none of them have reported for a week)
+## 1 · One paste reconnects this Mac · about 15 minutes (2026-10-20)
 
-1. **Wake the Mac and check the runner.** The dashboard's runner status was last written 2026-10-13 07:13 UTC. Wake the Mac (plug it in, open the lid, sign in), open Terminal (Command + Space, type Terminal, Return), run the line below and paste the last 15 lines to Claude. If it says the runner is stopped or logged out, run the second line and sign in when it asks; Claude never does this for you.
-   `runnerctl status
-runnerctl start`
-2. **Turn on Vanessa's morning voice note (one paste, one command).** Her morning TEXT already comes from the Mac task vanessa-morning-brief-text at 6:40 AM, and the Claude app push at 6:48 AM is the cloud backup. For the VOICE note in her own recorded voice: open the runner task vanessa-morning-brief-text, paste section 8 of mac-task-specs.md at the end of its prompt, save, then run the command below once with your Vanessa iMessage thread's conversation id (voice-setup.sh prints how to find it). From then on the voice note follows her text within about 10 minutes.
-   `bash integrations/voice-setup.sh <your Vanessa thread's conversation id>`
-   - Section 8 to paste: https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mac-task-specs.md#8-vanessa-morning-brief-text--amendment-the-morning-brief-also-arrives-in-her-voice-2026-10-20
-   - How the voice path works: https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/vanessa-voice-everywhere.md
+1. **Open Terminal and paste this one line, answer y.** Your Mac has been silent on the dashboard since 2026-10-13. The paste restarts the runner, installs Kapso (WhatsApp) and the Inkbox voice SDK, checks Jarvis and your key files, then asks for your mobile number and the Kapso key (Keychain only, hidden; Enter skips). It never signs in, pairs, sends or pays. Paste the REPORT it prints back to Claude.
+   `cd ~/Repo && git fetch origin && git checkout claude/stoic-cori-pvn3f8 && git pull && bash connect-all.sh`
+2. **The six things only you can do** (the paste prints them again): (1) Kapso sign-in: run `claude`, type `/mcp`, choose kapso, sign in; then message (202) 474-5223 from your phone. (2) Vanessa's voice on iMessage: `bash integrations/voice-setup.sh <your Vanessa thread id>`, then paste section 8 of integrations/mac-task-specs.md into the runner task vanessa-morning-brief-text. (3) claude.ai → Settings → Connectors → Inkbox: Reconnect (also EVRoutes, Turo). (4) Zoho CRM → Setup → Security Control → Profiles → your profile → Developer Permissions → tick "Zoho CRM API Access". (5) `bash integrations/cli-anything-harnesses/connect.sh` and sign in once to ShowingTime, Showami, homes.com. (6) Say "Composio links" to Claude for TikTok, GoHighLevel, Discord, HeyGen.
+   - Open Connectors: https://claude.ai/settings/connectors
+   - Open Zoho CRM: https://crm.zoho.com/
 
 ## 2 · Phone · 5 minutes (Then these; nothing else depends on them)
 

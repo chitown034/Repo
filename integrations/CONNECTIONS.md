@@ -315,3 +315,26 @@ Health" row and the `apple-health-notion` skill already carry; this row only add
 decision the brief asked for.
 
 **Gondola (gondola.ai), 2026-10-19.** Asked to feed Travel and Rewards from it. It is a hotel-booking cash-back service (books direct with the hotel; its own site says it averages about 16% back across hotel points, card points and 3–7% Gondola Cash; promotional, unverified). No public feed or API was found, and the site is unreachable from the cloud (no egress). Nothing was wired; a card that shows its numbers would need Steven's own Gondola account or an export he pastes. Source: https://www.gondola.ai/what-is-gondola.
+
+## Connection status — checked live 2026-10-20 (Steven: "what is not connected and fix those connections")
+
+Checked from the cloud session: claude.ai connectors (`ListConnectors`), Composio (`list` on ten toolkits), the deck's
+`runnerStatus` and `whatsappKapso`. One paste for everything a script may do: `connect-all.sh` on this branch.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| **Mac runner** (every Mac task) | **silent since 2026-10-13 07:13 UTC** | `connect-all.sh` step 2: `runnerctl status` / `restart`; a logged-out runner needs `runnerctl login` by Steven | paste + Steven |
+| **Inkbox** (Vanessa's iMessage, cloud) | `needs_reconnect` on claude.ai | Settings → Connectors → Inkbox → Reconnect | Steven |
+| Inkbox voice SDK (Mac) | installed by `MAC-SETUP.sh --only inkbox-voice` | `connect-all.sh` step 5, then `voice-setup.sh <conversation id>` | paste + Steven |
+| **Kapso WhatsApp** | number (202) 474-5223 assigned 2026-10-14; plugin, MCP and both Keychain keys pending | `connect-all.sh` steps 3–4 (brought onto this branch today from `claude/gracious-newton-4hpfco`); sign-in `claude` → `/mcp` → kapso | paste + Steven |
+| Zoho CRM (Composio) | account **active**; API calls 403 | tick "Zoho CRM API Access" on the Zoho profile | Steven |
+| Lofty | key file on the Mac; sync task dark with the runner | runner back → `lofty-crm-sync` resumes; step 7 checks the file has values | paste |
+| YouTube · Instagram · LinkedIn · Facebook (Composio) | **active** (Steven Shearrill channel / @stevenshearrillhomes / LinkedIn / Facebook) | — | — |
+| TikTok · GoHighLevel · Discord bot · HeyGen (Composio) | initiated, no account | "Composio links" when he sits down (links expire in 10 min); HeyGen = paid avatar provider, his decision | Steven |
+| Google Drive (Composio) | initiated — not needed | the claude.ai Google Drive connector is connected and read-only | — |
+| Strava · Gmail · Calendar · Drive · Notion · Slack · Canva · Zoom · Fieldy · WhisperAI · Context7 · Composio · Pabbly · AccuWeather · Expedia · Rome2Rio · Groupon · CarGurus · Vanguard · Uber Eats · You.com · Eromify | connected | — | — |
+| EVRoutes · Turo | `needs_reconnect` | Reconnect or remove | Steven |
+| BlackRock · Health Data Avatar · Microsoft 365 · PlayMCP · Similarweb · Higgsfield | never finished connecting | finish or remove — none is used by a routine | Steven |
+| ShowingTime · Showami · homes.com | sign-in pending | `integrations/cli-anything-harnesses/connect.sh` opens the agent Chrome once | Steven |
+| SkySlope · zipForms | locked until compliance sign-off | — | Alexandra → Steven |
+| CRMLS · dotloop · Ticor | applications/emails drafted, not sent | STEVEN-STEPS step 19 / 30 | Steven |
