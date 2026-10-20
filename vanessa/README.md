@@ -90,3 +90,8 @@ Market numbers, Home Report signals, pipeline, approvals and refi queue are **sa
 - Video Library: 44 topic searches, official sources, saved/embedded videos (no fabricated URLs)
 - Process Improvement: log with hours saved, daily update tracker, weekly self-engineering loop + prompt, gap register
 - GCI & Commission Planner: sides, split/cap/fees, loan comp bps, expenses, taxes, net goal solver, sensitivity/break-even
+
+## v39 — 40 more scenarios, Compliance Clock, Pabbly Setup Guide
+- Scenarios SC101–SC140 (scenarios3.js): lender-selection, overlay, credit-event, process and compliance situations (verify waiting periods/overlays before advising)
+- Compliance Clock (app27.js): LE/CD/rescission/lock/contract date math with business-day rules and federal holidays; timeline graphic; push deadlines to the Handoff Board
+- Pabbly Setup Guide: 7-step walkthrough with illustrations, 30 workflow blueprints with flow diagrams and field mapping, test lab, troubleshooting
