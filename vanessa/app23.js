@@ -52,4 +52,4 @@ rdApply();
 {const h0=PAGE.market.html;PAGE.market.html=()=>{const l=store.get("rd_last");return `<div class="card" style="border-left:4px solid var(--accent,#c9a227);margin-bottom:14px"><div class="row" style="flex-wrap:wrap"><div class="sp"><b>Daily Rate Desk</b> <span class="mut sm">${l?`last read ${esc(l.date)} · lean ${esc(l.lean.toUpperCase())}`:"no read saved yet — enter today's MBS Highway numbers"}</span><div class="sm">Weighted driver model, plain-language guide to everything that moves rates, rate builder, lock desk.</div></div><a class="btn sm" href="#ratedesk">Open the Rate Desk →</a></div></div>`+h0()}}
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();RD_EDU.forEach(e=>out.push({src:`Rate driver — ${e.n}`,t:`${e.plain} Direction: ${e.dir} Speed: ${e.speed}. Size: ${e.size}. Say: ${e.say}`}));RD_FAQ.forEach(q=>out.push({src:"Rate FAQ",t:`${q[0]} ${q[1]}`}));RD_DRIVERS.forEach(d=>out.push({src:`Rate driver weight — ${d.n}`,t:`Typical daily weight ${d.w}%. ${d.plain}`}));return out}}
 if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^Rate driver|^Rate FAQ/,{hash:"ratedesk",tab:["rdtab","learn"],input:"lr_q"}]);
-boot();
+
