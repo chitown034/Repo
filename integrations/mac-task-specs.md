@@ -460,6 +460,36 @@ made. Shape: `docs/data/cliAnythingStatus.doc.json` (template). The task that fi
 
 ---
 
+## 5b. `kapso-inbox-sync` — NEW (spec 2026-10-13 · not installed · supersedes §5/§5a, which were never live)
+
+| | |
+|---|---|
+| **Cron (PT)** | `4-59/10 * * * *` — the slot §5 reserved and never used; re-check against the live `runnerStatus` before registering |
+| **Model** | Sonnet 5 (a read-only sync; no answer is written here) |
+| **Tools** | `Bash` allow-listed to exactly `python3 integrations/kapso/kapso-fetch.py --json` · `ArtifactData` set on collection `state`, doc `whatsappKapso` (pin `if_version`) |
+| **Reads** | nothing from the deck; the API key comes from the Keychain item `kapso` inside the helper |
+| **Writes** | `whatsappKapso` `{v:{status, numbers:[{label, masked, kind, connected}], conversations:[{contact, lastAt, lastDirection, unread}], counts:{active, unread}, syncedAt, via}}` — masked numbers, contact labels and times only; **never a message body** |
+| **Freshness** | `OUTPUT_WATCH {doc:"whatsappKapso", label:"WhatsApp (Kapso)", task:"kapso-inbox-sync", hrs:1}` (already on the deck) |
+| **Answering** | Not this task. Replies happen in a Claude Code session (Orca or Terminal) with the `kapso` MCP and `.claude/skills/whatsapp-kapso`, or unattended by `vanessa-whatsapp-inbox` (§5c) |
+
+**Prompt**
+> Run `python3 integrations/kapso/kapso-fetch.py --json` with Bash. If it exits non-zero or prints a status starting with `error`, still write the document (the card must show the error) and stop. Otherwise ArtifactData `get` `whatsappKapso` (collection `state`) for its version, then `set` it with the printed JSON, pinned. Never print, log or store a phone number, key or message text. One line summary: status, numbers, active/unread counts, version.
+
+## 5c. `vanessa-whatsapp-inbox` — KAPSO MODE (spec 2026-10-13 · not installed · replaces §5/§5a for the same task name)
+
+| | |
+|---|---|
+| **Cron (PT)** | `2-59/5 * * * *` — 5-minute poll; re-check against the live `runnerStatus` before registering |
+| **Model** | Vanessa answers, so Fable 5.1 per the 2026-09-22 tiering; execution sub-steps on Sonnet 5 |
+| **Tools** | `Bash` allow-listed to exactly `python3 integrations/kapso/kapso-fetch.py --inbound --since <iso>` and `python3 integrations/kapso/kapso-send.py --text - --phone-number-id <the inbound message's phone_number_id>` with the reply on stdin (a quoted heredoc: `<<'REPLY'`) · `ArtifactData` get/set on collection `state`, docs `whatsappInboxState` and `agentInbox` (pin `if_version`) |
+| **Reads** | `whatsappInboxState.v.lastSeenAt` (ISO; empty on first run = the helper treats it as now, so nothing older than the first run is answered) |
+| **Writes** | `whatsappInboxState` `{v:{lastSeenAt, lastRunAt, answered, ignored}}`; `agentInbox` items `channel:"whatsapp"` in the iMessage shape — no number, body cut at 80 characters |
+| **Fence** | The helper returns only messages from the allow-listed number (Keychain `kapso-allow` = Steven's own); the sender refuses any other recipient before any network call. Phase 1 = Steven only, by construction |
+| **Ceiling** | 3 replies per poll, 20 per day; past that, one iMessage line to Steven, no WhatsApp send |
+
+**Prompt**
+> Read `whatsappInboxState`. Run `python3 integrations/kapso/kapso-fetch.py --inbound --since <lastSeenAt>` with Bash. If its status starts with `error`, write `agentInbox.channels.whatsapp = "<status>"` and stop. For each message (oldest first) do exactly what `vanessa-imessage-inbox` does with an iMessage from Steven: answer as Vanessa with the AI team under 1,500 characters; a HALT-list item (licensed decision, client send, credential, money) gets a one-line "that one needs you — packet on the deck" reply and a Needs-Steven packet, never the licensed answer; queue what you cannot answer to `vanessaResearch`. Send each reply with `python3 integrations/kapso/kapso-send.py --text - --phone-number-id <the message's phone_number_id> <<'REPLY'` … `REPLY` — the reply goes on stdin inside a single-quoted heredoc so a dollar sign, quote or backtick in it is text, never shell; use the delimiter `REPLY_<message id>` and never let a reply contain that line by itself (reword it if it does); the recipient is always the allow-listed number, so no `--to` is needed (omit the id only when the message has none; the script then uses the project's first connected number); a `refused` or `error` status is logged, never retried with a different number. Advance `lastSeenAt` to the newest message's `at`, write the docs, reply in one line: read, answered, ignored.
+
 ## Registration checklist (whoever adds these to the runner)
 1. Add each task with the cron above; confirm no minute collides with an existing task. **Read the
    2026-09-23 correction at the top of this file before you do — three of the five crons as written

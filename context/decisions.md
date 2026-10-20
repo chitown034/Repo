@@ -196,6 +196,8 @@ deck's CI log and the loop log; this file starts here on purpose.
 
 ## 2026-09-23 — Vanessa reaches Steven on his personal WhatsApp, not a dedicated number
 
+**Superseded 2026-10-13 — WhatsApp now runs through Kapso (see the 2026-10-13 entry and `integrations/kapso/README.md`). Kept as history.**
+
 **Decision.** Steven links **his own personal WhatsApp**, and reaches Vanessa in his own
 **"Message Yourself"** thread. The dedicated-number design written on 2026-09-22 is superseded.
 
@@ -321,6 +323,8 @@ the record of the change. The full split, and the three web-UI routine edits onl
 - **Owner.** Derek (automation), Elena (the PII gate). **Status.** Built 2026-09-28; nothing installed on the Mac.
 
 ## 2026-09-28 — WhatsApp: Vanessa answers through a local bridge, not n8n or a runner task
+
+**Superseded 2026-10-13 — WhatsApp now runs through Kapso (see the 2026-10-13 entry and `integrations/kapso/README.md`). Kept as history.**
 
 - **Request (Steven, verbatim).** *"also connect whats app to my phone now"*.
 - **Decision.** `integrations/openwa/vanessa-bridge.py`, run by a LaunchAgent on the Mac that runs OpenWA.
@@ -469,3 +473,90 @@ the record of the change. The full split, and the three web-UI routine edits onl
   tree costs nothing, so the register never goes stale and never burns the allowance.
 - **Owner.** Derek (automation). **Status.** 67 brain tests pass; 4D page rebuilt (285 nodes); deck org chart gets a
   "Toolkit register" node.
+## 2026-10-13 — Message Vanessa on WhatsApp through Kapso (personal WhatsApp and OpenWA bridge retired)
+
+- **Request (Steven, verbatim).** *"Install Kapso and configure so I can connect and communicate using Whats App on
+  Orca and my dashboard"*; *"Whats App enable me to communicate to Vanessa"*.
+- **Decision.** Vanessa talks WhatsApp through **Kapso** (hosted WhatsApp Business Cloud API: free sandbox number,
+  remote MCP `api.kapso.ai/mcp`, Claude Code plugin `gokapso/agent-plugins` at `a6cbfe9`, MIT). Phase 1: Steven
+  messages the sandbox number from his own phone; Vanessa answers live from any Claude Code session (Terminal or
+  Orca, `.claude/skills/whatsapp-kapso`) or unattended by the Mac task `vanessa-whatsapp-inbox` (§5c). The deck
+  card "WhatsApp — Kapso" shows masked numbers, contact labels and counts, never a body. The 2026-09-23 personal
+  WhatsApp self-chat and the 2026-09-28 OpenWA bridge (NEEDS-STEVEN 78) are retired: neither ever went live, and
+  the sandbox's egress blocked the WebSocket they needed.
+- **Fence.** Two Keychain items typed by Steven: `kapso` (API key) and `kapso-allow` (his own number). The reader
+  returns only that number's messages; the sender refuses any other recipient before any network call. A business
+  number, client messaging, templates and Pro ($25/mo) are a Needs-Steven packet (Meta verification, opt-in,
+  Alexandra's templates, Elena's PII yes).
+- **Owner.** Derek (automation), Elena (third-party processor), Alexandra (templates). **Status.** Built and
+  tested in the sandbox 2026-10-13 (deck v194); Steven runs `go.sh` step 11 and signs in once.
+
+## 2026-10-13 — Morning brief reaches the phone by push; Mac feed tasks are paused, not trusted
+
+- **Request (Steven, verbatim).** *"the routine did not update news, birthdays things that happened on this day,
+  morning brief nor did Vanessa message me via iMessage with this info or sent a morning brief text. Fix everything
+  else not working too"*.
+- **Finding.** The cloud morning feeds routine did run and write; the Mac task `openrouter-feeds-refresh` overwrote
+  the whole `liveFeeds` document 28 minutes later with a stale copy (the Oct 5 pause of the three Mac feed tasks
+  was never applied). The Mac's morning text task reported "ok" but no text arrived; the cloud cannot see Inkbox.
+- **Decision.** (1) Cloud writers win: the morning feeds routine runs after the Mac slot (13:05 UTC) and the daily
+  freshness sweep treats a backwards or typed stamp as a clobber and refills it, naming the Mac task. (2) The
+  morning brief has a guaranteed cloud path: *Vanessa — morning brief to Steven's phone* (6:48 AM PT, push
+  notification, full brief in the run) composed only from deck documents. (3) The three Mac feed tasks are paused
+  by Steven's hand (`runnerctl pause …`), never deleted; iMessage stays the Mac's job until Inkbox is connected to
+  the cloud. Record: `routines/cloud-routine-repairs.md`.
+- **Owner.** Derek (automation), Vanessa (the brief). **Status.** Cloud side done and proven 2026-10-13; Mac pauses
+  and the iMessage check wait on Steven (`docs/STEVEN-STEPS.md`, Start here 2026-10-13).
+
+## 2026-10-13 — The avatars move for every reply; weather is the sweep's job once it carries AccuWeather
+
+- **Request (Steven, verbatim).** *"Weather also suppose to be updated daily with all news worldwide and if the local
+  areas. Ensure everything is updater as today all sections of the dashboard"*; *"Vanessaand Steve are suppose to be
+  annimated and move as they speak in the chat"*.
+- **Decision.** (1) A reply animates the presence by its text (speaking state + word-cadence nod for the reading time),
+  audio or not; real audio keeps precedence (`dashboard/wave2/splice-presence-texttalk.py`, deck v195). (2) Weather is
+  owned by the daily freshness sweep's STEP 2 with AccuWeather; an agent cannot attach the connector on this plan, so
+  Steven adds it once in the routine's page. (3) World and local news stay with the weather & news writer (01:35/13:35
+  UTC); the sweep backstops them. Record: `routines/cloud-routine-repairs.md`.
+- **Owner.** Derek (automation), Harrison (deck UI). **Status.** Avatars proven headless 2026-10-13; weather written
+  by hand today (v43); the connector click waits on Steven.
+
+## 2026-10-14 — Palm Springs / Palm Desert joins the Travel panel; the Job Command Center sits in Career & Education
+
+- **Request (Steven, verbatim).** *"Add events local to the Palm Springs/Palm Desert to the travel and experiences
+  section. Add in the career and education section: https://claude.ai/artifact/FYb2UHsVZZB5bZcpU1B6eF Job Command Center"*.
+- **Decision.** A twelfth city card, "Palm Springs & Palm Desert (Coachella Valley)", with 29 sourced rows (Plaza Theatre,
+  McCallum Theatre, Acrisure Arena, Agua Caliente, Pride Nov 6-8, the Veterans Day parade Nov 11, the Indio Tamale
+  Festival Dec 5-6, WildLights, the Aerial Tramway), same shape as the other cities so the weekly travel refresh covers
+  it. The Mind panel (data-page "career") opens with a "Job Command Center" card linking the RoleCompass dashboard and
+  describing its 6:40 AM PT daily routine. `dashboard/wave2/splice-travel-palmsprings.py`, deck v197.
+- **Owner.** Harrison (deck UI); Sofia's events scout keeps the rows fresh. **Status.** Published 2026-10-14.
+
+## 2026-10-14 — Las Vegas card gets nightlife, production shows, each Cirque show and dated events
+
+- **Request (Steven, verbatim).** *"Add Day and night clubs in Vegas , shows , events , circus de solei under Vegas section of entertainment"*.
+- **Decision.** 31 rows added to the top of `TRAVEL_VEGAS` (deck v199, republished as v200 after validator fixes, `dashboard/wave2/splice-travel-vegas.py`): the
+  five Cirque du Soleil residents one per row ("O", Mystère, KÀ, Michael Jackson ONE, Mad Apple) replacing the old
+  "all 5 resident shows" summary row; seven nightclubs (XS, Omnia, Hakkasan, Zouk, LIV, Marquee, Drai's); seven dayclubs
+  (Encore Beach Club, Tao Beach, Marquee Dayclub, Palm Tree Beach Club, LIV Beach, Ayu, Liquid); Blue Man Group, Penn &
+  Teller, Jabbawockeez, David Copperfield and an unverified trio (Awakening, Atomic Saloon, Magic Mike Live); dated events
+  (F1 Grand Prix Nov 19-21, Tim McGraw Oct 23-Nov 7, Weezer Oct 23, Jonas Brothers Nov 28, TSO and Matt Rife Dec 4,
+  Backstreet Boys at Sphere Dec 26). Clubs and shows carry "Nightly"/"Seasonal" dates so the past-date filter keeps
+  them; dayclub rows say the season closes mid/late October. All rows are WebSearch snippets from 2026-10-14 and name
+  their source; nothing on the deck is a booking or a price quote.
+- **Owner.** Harrison (deck UI); Sofia's events scout keeps the rows fresh. **Status.** Published 2026-10-14.
+
+## 2026-10-20 (evening) — One branch: `claude/stoic-cori-pvn3f8` carries everything
+
+- **Request (Steven, verbatim).** *"Merge"* — after being told the repo had split into two branches worked by
+  different chats (`claude/stoic-cori-pvn3f8` and `claude/gracious-newton-4hpfco`, ~400 files apart).
+- **Decision.** `claude/gracious-newton-4hpfco` is merged into `claude/stoic-cori-pvn3f8`; the latter is now the
+  single branch every script, Action Desk button and doc points at (`go.sh`, `go.ps1`, `connect-all.sh`,
+  `STEVEN-STEPS.md`, `PASTE-TO-CLAUDE-ON-MAC.md`, the Kapso/agent-os/browser-agents guides). Nine conflicts
+  resolved: append-only files kept both sides (`decisions.md`, `memory.md`), the index was regenerated, the brain
+  README and the MCP tool test take the union (`brain_route` from theirs, `brain_toolkit`/`brain_owner` from
+  ours), the Action Desk and Brain 6D pages keep this branch's live-merged copies, `STEVEN-STEPS.md` is theirs with
+  the 2026-10-20 one-paste section first.
+- **Checks.** 97 brain tests pass (both suites), `bin/brain doctor` PASS, 135 files indexed, Kapso tests pass,
+  `go.sh` / `connect-all.sh` parse. The toolkit register now sees 32 skills.
+- **Owner.** Derek. **Status.** Pushed. The other branch is left as history and is not pushed to.

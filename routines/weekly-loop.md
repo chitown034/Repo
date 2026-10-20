@@ -1,5 +1,10 @@
 # Routine spec — Weekly Loop (loop-engineering v2)
 
+**Cloud loop routine moved 2026-10-09 (Steven): Sundays 1:05 PM Pacific** (`CRON_TZ=America/Los_Angeles 5 13 * * 0`, trigger `trig_01W1KHiBfVXZ5Xwd1aCFJM72`) — five minutes after the Sunday 20:00 UTC allowance reset while Daylight Time lasts (after Nov 1 the reset is noon PST, an hour earlier).
+
+**Scout added 2026-10-09** — `integrations/scout/scout.py` (step 2b) scans the internet each week for new
+repos, skills, MCP servers, upgrades, CLIs and free tools; the free GitHub `scout` workflow runs it Friday night.
+
 Drives the `loop-engineering` skill and the sub-skills it calls: `prompt-master`,
 `continuous-process-improvement`, `scale-growth-engine`, `stress-test-sweep`, `skills-refresh`, plus
 Nadia's disruption brief and Elon's feasibility gate.
@@ -43,6 +48,15 @@ Run the weekly loop with the loop-engineering skill. Continue the cycle numberin
    twinQueue, toolkitSnapshot. Write the fact sheet: what ran, what failed, what produced nothing,
    what never ran - with dates.
 2. Freeze the holdout: name ~20% of the items under test. Nothing in it is touched this cycle.
+2b. Scout: run `python3 integrations/scout/scout.py --days 7`; Nadia grades the top 10 and every NEW
+   business-lane item in docs/reports/SCOUT.md (ADOPT/PILOT/WATCH/IGNORE, dated sources), Elon gates
+   feasibility and security; survivors go to improvementProposals. Never install, connect or pay.
+2c. New hands (2026-10-10), proposal-only, stop before any submit/send/pay/sign: find-skills
+   (`npx -y skills@1.7.2 find <topic>` once per open gap -> proposals for Elon/Elena/Steven);
+   agent-browser or Playwright MCP (dogfood the Command Deck and ISA Portal read-only: snapshot every
+   tab, list empty/stale/broken panels, screenshots into the report); web-design-guidelines (review
+   the deck/portal HTML -> proposals); writing-guidelines (tighten the weekly report and brief before
+   Steven reads it). Log which ran, or "not installed", in loopLog[].tools.
 3. Collect proposals: prompt-master (<=5 prompt diffs, HITL gate), continuous-process-improvement
    (weekly deep pass), scale-growth-engine (ADR pass), stress-test-sweep (weekly sweep),
    skills-refresh (drift). Each proposal: target, change, hypothesis, measurement, risk, rollback.

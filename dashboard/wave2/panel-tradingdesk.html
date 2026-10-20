@@ -1,0 +1,59 @@
+  <section class="panel" id="panel-tradingdesk" data-page="markets">
+    <div class="panel-head">
+      <span class="panel-tag">PANEL&nbsp;41</span>
+      <h2 class="panel-title">Self-Improving Trading Research Desk</h2>
+      <span class="badge gold" style="align-self:center;">PAPER MODE ONLY</span>
+    </div>
+    <div class="card" style="margin-bottom:16px;border-left:4px solid var(--gold);">
+      <p class="card-title">What this is &mdash; and isn&rsquo;t</p>
+      <p class="card-sub" style="margin-top:0;">An AI research desk that proposes strategies, tests them, remembers every failure and improves its own research loop. <b>It is research, not guaranteed profit.</b> It never connects to a broker and never places an order. Apex keeps the mentor seat; this desk feeds Apex tested ideas, not tickets.</p>
+    </div>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title-row"><p class="card-title" style="margin:0;">The loop &mdash; tap any seat</p><button type="button" class="primary" id="tdReplay">&#9654; Replay one idea</button></div>
+      <div class="td-stage" id="tdStage">
+        <svg viewBox="0 0 860 300" class="td-svg" id="tdSvg" role="img" aria-label="Research loop: Idea, Builder, Backtester, gate, Paper Trader, Memory, back to Idea">
+          <defs><marker id="tdArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+          <g id="tdEdges" class="td-edges"></g>
+          <g id="tdNodes"></g>
+          <circle id="tdToken" class="td-token" r="9" cx="80" cy="120"></circle>
+        </svg>
+      </div>
+      <div class="td-detail" id="tdDetail" aria-live="polite"></div>
+    </div>
+    <div class="card" style="margin-bottom:16px;">
+      <p class="card-title">Scoreboard <span class="badge gray" id="tdBadge">no runs yet</span></p>
+      <p class="card-sub" style="margin-top:0;" id="tdSub">Filled from the desk&rsquo;s own report. Until a run exists, every tile says so &mdash; nothing here is a placeholder number.</p>
+      <div class="tk-tiles" id="tdTiles"></div>
+    </div>
+    <div class="grid grid-2">
+      <div class="card">
+        <p class="card-title">Fixed rules (nobody edits these after seeing a result)</p>
+        <ul class="simple-list" id="tdRules"></ul>
+      </div>
+      <div class="card">
+        <p class="card-title">Hedge-fund discipline built in</p>
+        <ul class="simple-list" id="tdPlus"></ul>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px;border-left:4px solid var(--accent);" id="osCard"><!-- OPENSTOCK-CARD v1 -->
+      <div class="card-title-row"><p class="card-title" style="margin:0;">Market viewer &mdash; OpenStock (runs on your own computer)</p><span class="badge gray" id="osBadge">not checked</span></div>
+      <p class="card-sub" style="margin-top:6px;">An open-source stock viewer: watchlists, live-style charts, heatmap, company profiles and news, with your own login and your own local database. It is <b>a viewer, not a broker</b> &mdash; it cannot place a trade, and the paper desk above stays separate (it reads your own price files). Runs on that computer only (127.0.0.1); nothing is exposed to the internet.</p>
+      <div class="acts" style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;">
+        <a class="ch-btn ch-btn-go" id="osOpen" href="http://127.0.0.1:3000" target="_blank" rel="noopener">Open OpenStock</a>
+        <button type="button" class="ch-copy" id="osCheck">Is it running here?</button>
+        <button type="button" class="ch-copy" data-os-copy="bash integrations/openstock/openstock.sh install --apply">Copy install command</button>
+        <button type="button" class="ch-copy" data-os-copy="bash integrations/openstock/openstock.sh start">Copy start command</button>
+      </div>
+      <ol class="src-note" style="margin:6px 0 0;padding-left:20px;line-height:1.55;">
+        <li>One time, in Terminal on the computer: paste the install command (needs Docker Desktop and Node; it prints what is missing).</li>
+        <li>Get a <b>free</b> Finnhub key at finnhub.io/register and type it into <code>~/Applications/OpenStock/.env</code> after <code>NEXT_PUBLIC_FINNHUB_API_KEY=</code> &mdash; never into a chat.</li>
+        <li>Paste the start command, then click <b>Open OpenStock</b> and create your local account.</li>
+      </ol>
+      <p class="src-note" id="osNote" role="status" style="margin-top:8px;">Licence AGPL-3.0: fine for your own use; do not put it on the public internet. Weekly email, Gmail, AI and sentiment features are left off.</p>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <p class="card-title">Common mistakes the desk is built to catch</p>
+      <div class="td-chips" id="tdMistakes"></div>
+      <p class="src-note" style="margin-top:12px;">Run it: <code>python3 -m desk selftest</code> from <code>integrations/trading-desk/</code> proves the plumbing on synthetic bars (it does not show an edge). Real research needs Steven&rsquo;s own historical CSV data. Nothing here is financial advice.</p>
+    </div>
+  </section>

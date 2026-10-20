@@ -94,6 +94,16 @@ elif [ -f "$PLIST" ]; then
   fi
 fi
 
+echo; echo "4b. Keep going automatically when Claude runs out (claude-auto --keep-going)"
+echo "  Your own Claude sessions: at the limit, type /exit once - the same conversation continues on OmniRoute's free"
+echo "  models, and the next session goes back to Claude as soon as it has reset. Client data never goes to the free route."
+if [ -f "$OCFG/auto-continue" ]; then echo "  already on ($OCFG/auto-continue exists)."
+elif ask "Turn it on (create the empty file $OCFG/auto-continue)?"; then
+  mkdir -p "$OCFG" && : > "$OCFG/auto-continue" && done_ "$OCFG/auto-continue"
+fi
+echo "  Start your sessions with:   claude-auto --keep-going"
+echo "  (optional) make it the default by adding this line to ~/.zshrc yourself:   alias claude='claude-auto --keep-going'"
+
 echo; echo "5. Runner tasks - NOT edited by this script. Apply these yourself:"
 cat <<EOT
   - In every runner task's command, replace the bare   claude -p ...
@@ -105,7 +115,7 @@ cat <<EOT
     (README, "PII canary") passes, remove every reference to it (the doctor lists them), then archive the folder.
   - Free providers: OmniRoute needs at least one (README, "Free-key sources"). Keys go in through its dashboard or
     'omniroute providers add <id> --credential-env <NAME>' - never through this script.
-  - When the interactive session hits the limit: open a terminal and type   claude-auto --interactive-free
+  - Your own sessions: start them with   claude-auto --keep-going   (switches to OmniRoute at the limit and back by itself)
 EOT
 
 echo; echo "6. Doctor (read-only)"

@@ -1,0 +1,5039 @@
+{
+ "count": 173,
+ "agents": [
+  {
+   "slug": "a11y-architect",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "ecc-accessibility-lead",
+   "role": "Accessibility Architect specializing in WCAG 2.2 compliance for Web and Native platforms.",
+   "laya": {
+    "lane": "Alexandra",
+    "starts_from": "wiki/mortgage-programs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"a11y architect Accessibility Architect specializing in WCAG 2.2\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent a11y-architect",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "access-auditor",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "ciso-elena",
+   "role": "Report under Elena (CISO): audits who and what can read or write each data store — dashboard db rules, connector grants, tokens in plaintext",
+   "laya": {
+    "lane": "Elena",
+    "starts_from": "docs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"access auditor audits who and what can read\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent access-auditor",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "ad-compliance-reviewer",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cco-alexandra",
+   "role": "Report under Alexandra (Compliance): reviews marketing copy, social posts, emails, ad text and webinar registration pages for mortgage/real-",
+   "laya": {
+    "lane": "Alexandra",
+    "starts_from": "wiki/mortgage-programs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"compliance reviewer reviews marketing copy, social posts, emails,\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent ad-compliance-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "agent-evaluator",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "caio-nadia",
+   "role": "Evaluates agent output against 5-axis quality rubric (accuracy, completeness, clarity, actionability, conciseness).",
+   "laya": {
+    "lane": "Nadia",
+    "starts_from": "docs/CAIO-DISRUPTION-BRIEF.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"agent evaluator Evaluates agent output against 5-axis quality\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent agent-evaluator",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "appraisal-manager",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cco-alexandra",
+   "role": "Report under Alexandra (Compliance): manages the appraisal — ordering expectations under AMC rules, preparing the comparable support package",
+   "laya": {
+    "lane": "Alexandra",
+    "starts_from": "wiki/mortgage-programs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"appraisal manager manages the appraisal — ordering expectations\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent appraisal-manager",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "architect",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cto-derek",
+   "role": "Software architecture specialist for system design, scalability, and technical decision-making.",
+   "laya": {
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"architect Software architecture specialist for system design,\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent architect",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "automation-engineer",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cto-derek",
+   "role": "Report under Derek (CTO): builds and repairs the automation layer — cloud routines (RemoteTrigger), desktop scheduled tasks, /loop prompts,",
+   "laya": {
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"automation engineer builds and repairs the automation layer\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent automation-engineer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "bookkeeper",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cfo-marcus",
+   "role": "Report under Marcus (CFO): categorizes transactions, drafts reconciliations, flags duplicates, subscriptions and anomalies, and prepares the",
+   "laya": {
+    "lane": "Marcus",
+    "starts_from": "projects/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"bookkeeper categorizes transactions, drafts reconciliations, flags duplicates,\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent bookkeeper",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "borrower-retention-agent",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): owns the relationship after funding — the post-close touch calendar, annual mortgage reviews, equity and PMI-remo",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"borrower retention agent owns the relationship after funding —\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent borrower-retention-agent",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "broker-coach-maxwell",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "vanessa-orchestrator",
+   "role": "Maxwell, Broker Mentor & Coach on Steven Shearrill's AI Team — a top-1%-in-the-nation California real estate broker, wholesale mortgage brok",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"broker coach maxwell Maxwell, Broker Mentor & Coach on\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent broker-coach-maxwell",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "build-error-resolver",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "Build and TypeScript error resolution specialist.",
+   "laya": {
+    "lane": "Elon",
+    "starts_from": "brain/README.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"build error resolver Build and TypeScript error resolution specialist.\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent build-error-resolver",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "buyer-matching-engine",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): runs the buyer side — the consultation that captures real criteria, the search strategy, property matching agains",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"buyer matching engine runs the buyer side — the\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent buyer-matching-engine",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "buyers-agent-elite",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): the buyer-side representation practitioner — preps Steven or his showing agent to walk into a consultation, a tou",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"buyers agent elite the buyer-side representation practitioner — preps\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent buyers-agent-elite",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "ca-loan-processor",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cco-alexandra",
+   "role": "Top-1%-caliber mortgage Loan Processor — runs the actual file assembly and condition-clearing, not the coaching conversation.",
+   "laya": {
+    "lane": "Alexandra",
+    "starts_from": "wiki/mortgage-programs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"loan processor Top-1%-caliber mortgage Loan Processor — runs\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent ca-loan-processor",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "ca-transaction-coordinator",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cro-victor",
+   "role": "Top-1%-caliber California real estate Transaction Coordinator — runs the operational file, not the coaching conversation.",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"transaction coordinator Top-1%-caliber California real estate Transaction Coordinator\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent ca-transaction-coordinator",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "ca-underwriter",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cco-alexandra",
+   "role": "Top-1%-caliber mortgage Underwriter's-eye analysis — reads a file the way DU/LPA and a manual underwriter actually would, and tells Steven e",
+   "laya": {
+    "lane": "Alexandra",
+    "starts_from": "wiki/mortgage-programs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"underwriter Top-1%-caliber mortgage Underwriter's-eye analysis — reads\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent ca-underwriter",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "caio-nadia",
+   "tier": "1",
+   "model": "Opus 5.5",
+   "lead": "vanessa-orchestrator",
+   "role": "Nadia, Chief AI Officer on Steven Shearrill's AI Team — separating where AI genuinely helps a mortgage / real-estate / trading / nonprofit o",
+   "laya": {
+    "lane": "Nadia",
+    "starts_from": "docs/CAIO-DISRUPTION-BRIEF.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"caio nadia Nadia, Chief AI Officer on Steven\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent caio-nadia",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": true,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "capability-engineer",
+   "tier": "1",
+   "model": "Opus 5.5",
+   "lead": "vanessa-orchestrator",
+   "role": "Reports to Elon, the CTO Innovator, on the AI Agent Engineering Team: extends what the agents and skills can actually DO once their core rel",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"capability engineer Reports to Elon, the CTO Innovator,\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent capability-engineer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "cco-alexandra",
+   "tier": "1",
+   "model": "Opus 5.5",
+   "lead": "vanessa-orchestrator",
+   "role": "Alexandra, Chief Compliance Officer on Steven Shearrill's AI Team — TRID (LE 3 business days, CD 3 business days), RESPA §8, Reg Z LO comp a",
+   "laya": {
+    "lane": "Alexandra",
+    "starts_from": "wiki/mortgage-programs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"cco alexandra Alexandra, Chief Compliance Officer on Steven\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent cco-alexandra",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "cfo-marcus",
+   "tier": "1",
+   "model": "Opus 5.5",
+   "lead": "vanessa-orchestrator",
+   "role": "Marcus, Chief Financial Officer on Steven Shearrill's AI Team — cash position, P&L, net worth, budget, liabilities, Road to a Million, deal",
+   "laya": {
+    "lane": "Marcus",
+    "starts_from": "projects/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"cfo marcus Marcus, Chief Financial Officer on Steven\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent cfo-marcus",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "chief-automation-strategist",
+   "tier": "1",
+   "model": "Opus 5.5",
+   "lead": "vanessa-orchestrator",
+   "role": "Steven Shearrill's Chief Automation Strategist and AI Agent Orchestration Architect.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"chief automation strategist Steven Shearrill's Chief Automation Strategist and\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent chief-automation-strategist",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "chief-of-staff",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "Personal communication chief of staff that triages email, Slack, LINE, and Messenger.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"chief staff Personal communication chief of staff that\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent chief-of-staff",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "ciso-elena",
+   "tier": "1",
+   "model": "Opus 5.5",
+   "lead": "vanessa-orchestrator",
+   "role": "Elena, Chief Information Security Officer on Steven Shearrill's AI Team — data and cyber risk sized for a solo operator handling client PII",
+   "laya": {
+    "lane": "Elena",
+    "starts_from": "docs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"ciso elena Elena, Chief Information Security Officer on\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent ciso-elena",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "client-concierge",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): runs the white-glove layer around a transaction — move coordination, utility and address-change checklists, home",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"client concierge runs the white-glove layer around a\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent client-concierge",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "closing-coordinator",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): runs the file from clear-to-close to funded — CD timing, final figures reconciliation, signing logistics includin",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"closing coordinator runs the file from clear-to-close to\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent closing-coordinator",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "cmo-sofia",
+   "tier": "1",
+   "model": "Opus 5.5",
+   "lead": "vanessa-orchestrator",
+   "role": "Sofia, Chief Marketing Officer on Steven Shearrill's AI Team — brand voice, campaigns, content calendar, webinars (VA Loan Mastermind Live,",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"cmo sofia Sofia, Chief Marketing Officer on Steven\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent cmo-sofia",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "code-architect",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Designs feature architectures by analyzing existing codebase patterns and conventions, then providing implementation blueprints with concret",
+   "laya": {
+    "lane": "Elon",
+    "starts_from": "brain/README.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"code architect Designs feature architectures by analyzing existing\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent code-architect",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "code-explorer",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cto-derek",
+   "role": "Deeply analyzes existing codebase features by tracing execution paths, mapping architecture layers, and documenting dependencies to inform n",
+   "laya": {
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"code explorer Deeply analyzes existing codebase features by\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent code-explorer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "code-validator",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cto-derek",
+   "role": "Report under Derek (CTO): the code-validation gate — validates every code change a human or agent makes before it is called done: scripts/validate-code.sh, then",
+   "laya": {
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"code validator the code-validation gate — validates every\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent code-validator",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "code-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Expert code review specialist.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"code reviewer Expert code review specialist.\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent code-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "code-simplifier",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "Simplifies and refines code for clarity, consistency, and maintainability while preserving behavior.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"code simplifier Simplifies and refines code for clarity,\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent code-simplifier",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "comment-analyzer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Analyze code comments for accuracy, completeness, maintainability, and comment rot risk.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"comment analyzer Analyze code comments for accuracy, completeness,\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent comment-analyzer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "commission-tracker",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cfo-marcus",
+   "role": "Report under Marcus (CFO): tracks every dollar Steven is owed — real-estate commissions through the LPT split and cap, MLO compensation, ref",
+   "laya": {
+    "lane": "Marcus",
+    "starts_from": "projects/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"commission tracker tracks every dollar Steven is owed\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent commission-tracker",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "competitive-intelligence-analyst",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): benchmarks Steven against the agents, brokerages and lenders actually competing for his buyers — MLS production s",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"competitive intelligence analyst benchmarks Steven against the agents, brokerages\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent competitive-intelligence-analyst",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "content-writer",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cmo-sofia",
+   "role": "Report under Sofia (CMO): writes finished posts, newsletters, follow-up sequences and listing one-pagers in Steven's brand voice for militar",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"content writer writes finished posts, newsletters, follow-up sequences\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent content-writer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "conversation-analyzer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Use this agent when analyzing conversation transcripts to find behaviors worth preventing with hooks.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"conversation analyzer Use this agent when analyzing conversation\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent conversation-analyzer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "cpp-build-resolver",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "C++ build, CMake, and compilation error resolution specialist.",
+   "laya": {
+    "lane": "Elon",
+    "starts_from": "brain/README.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"cpp build resolver C++ build, CMake, and compilation error\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent cpp-build-resolver",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "cpp-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Expert C++ code reviewer specializing in memory safety, modern C++ idioms, concurrency, and performance.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"cpp reviewer Expert C++ code reviewer specializing in\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent cpp-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "credit-analyst",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cco-alexandra",
+   "role": "Report under Alexandra (Compliance): reads a credit report for mortgage purposes — tradeline analysis, score-band strategy, rapid-rescore ca",
+   "laya": {
+    "lane": "Alexandra",
+    "starts_from": "wiki/mortgage-programs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"credit analyst reads a credit report for mortgage\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent credit-analyst",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "cro-victor",
+   "tier": "1",
+   "model": "Opus 5.5",
+   "lead": "vanessa-orchestrator",
+   "role": "Victor, Chief Revenue Officer on Steven Shearrill's AI Team — pipeline math, speed-to-lead, conversion, follow-up cadence, agent and ISA per",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"cro victor Victor, Chief Revenue Officer on Steven\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent cro-victor",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "csharp-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Expert C# code reviewer specializing in .NET conventions, async patterns, security, nullable reference types, and performance.",
+   "laya": {
+    "lane": "Elena",
+    "starts_from": "docs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"csharp reviewer Expert C# code reviewer specializing in\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent csharp-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "cto-derek",
+   "tier": "1",
+   "model": "Opus 5.5",
+   "lead": "vanessa-orchestrator",
+   "role": "Derek, Chief Technology Officer on Steven Shearrill's AI Team — automation health, cloud routines and desktop scheduled tasks, connectors (C",
+   "laya": {
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"cto derek Derek, Chief Technology Officer on Steven\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent cto-derek",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "cto-innovator",
+   "tier": "1",
+   "model": "Opus 5.5",
+   "lead": "vanessa-orchestrator",
+   "role": "Elon, the CTO Innovator on Steven Shearrill's AI Team — the inward architect and technical gatekeeper.",
+   "laya": {
+    "lane": "Elon",
+    "starts_from": "brain/README.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"cto innovator Elon, the CTO Innovator on Steven\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent cto-innovator",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": true,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "dart-build-resolver",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "Dart/Flutter build, analysis, and dependency error resolution specialist.",
+   "laya": {
+    "lane": "Elon",
+    "starts_from": "brain/README.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"dart build resolver Dart/Flutter build, analysis, and dependency error\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent dart-build-resolver",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "data-steward",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cto-derek",
+   "role": "Report under Derek (CTO): keeps the dashboards' data honest — feed freshness (which feeds are Due, what source refreshes each), drift betwee",
+   "laya": {
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"data steward keeps the dashboards' data honest —\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent data-steward",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "database-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "PostgreSQL database specialist for query optimization, schema design, security, and performance.",
+   "laya": {
+    "lane": "Elena",
+    "starts_from": "docs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"database reviewer PostgreSQL database specialist for query optimization,\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent database-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "deal-desk-analyst",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): prepares the negotiation memo for a real-estate offer or listing — comps context handed in, seller-credit room by",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"deal desk analyst prepares the negotiation memo for a\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent deal-desk-analyst",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "disruption-scout",
+   "tier": "1",
+   "model": "Opus 5.5",
+   "lead": "vanessa-orchestrator",
+   "role": "Reports to Nadia (CAIO): the outward scanning sub-agent that tracks the external AI landscape week by week — new models, agent frameworks, o",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"disruption scout Reports to Nadia (CAIO): the outward\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent disruption-scout",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": true,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "django-build-resolver",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "Django/Python build, migration, and dependency error resolution specialist.",
+   "laya": {
+    "lane": "Elon",
+    "starts_from": "brain/README.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"django build resolver Django/Python build, migration, and dependency error\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent django-build-resolver",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "django-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Expert Django code reviewer specializing in ORM correctness, DRF patterns, migration safety, security misconfigurations, and production-grad",
+   "laya": {
+    "lane": "Elena",
+    "starts_from": "docs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"django reviewer Expert Django code reviewer specializing in\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent django-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "doc-updater",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "Documentation and codemap specialist.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"doc updater Documentation and codemap specialist.\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent doc-updater",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "docs-lookup",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "caio-nadia",
+   "role": "When the user asks how to use a library, framework, or API or needs up-to-date code examples, use Context7 MCP to fetch current documentatio",
+   "laya": {
+    "lane": "Nadia",
+    "starts_from": "docs/CAIO-DISRUPTION-BRIEF.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"docs lookup When the user asks how to\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent docs-lookup",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "document-intelligence-agent",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cco-alexandra",
+   "role": "Report under Alexandra (Compliance): reads a loan file's documents — classifies, extracts the figures that matter, cross-checks them against",
+   "laya": {
+    "lane": "Alexandra",
+    "starts_from": "wiki/mortgage-programs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"document intelligence agent reads a loan file's documents —\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent document-intelligence-agent",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "e2e-runner",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "End-to-end testing specialist using Vercel Agent Browser (preferred) with Playwright fallback.",
+   "laya": {
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"e2e runner End-to-end testing specialist using Vercel Agent\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent e2e-runner",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "ecc-accessibility-lead",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cto-derek",
+   "role": "ECC AI employee reporting to Derek (CTO).",
+   "laya": {
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"ecc accessibility lead ECC AI employee reporting to Derek\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent ecc-accessibility-lead",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "ecc-agent-safety-officer",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "caio-nadia",
+   "role": "ECC AI employee reporting to Nadia (CAIO).",
+   "laya": {
+    "lane": "Nadia",
+    "starts_from": "docs/CAIO-DISRUPTION-BRIEF.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"ecc agent safety officer ECC AI employee reporting to Nadia\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent ecc-agent-safety-officer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "ecc-dependency-steward",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "ciso-elena",
+   "role": "ECC AI employee reporting to Elena (CISO).",
+   "laya": {
+    "lane": "Elena",
+    "starts_from": "docs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"ecc dependency steward ECC AI employee reporting to Elena\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent ecc-dependency-steward",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "ecc-observability-lead",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cto-derek",
+   "role": "ECC AI employee reporting to Derek (CTO).",
+   "laya": {
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"ecc observability lead ECC AI employee reporting to Derek\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent ecc-observability-lead",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "ecc-security-steward",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "ciso-elena",
+   "role": "ECC AI employee reporting to Elena (CISO).",
+   "laya": {
+    "lane": "Elena",
+    "starts_from": "docs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"ecc security steward ECC AI employee reporting to Elena\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent ecc-security-steward",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "ecc-standards-officer",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cto-derek",
+   "role": "Reports under Derek (CTO): the authority on the ECC engineering standards installed at ~/.claude/rules/ecc/.",
+   "laya": {
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"ecc standards officer Reports under Derek (CTO): the authority\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent ecc-standards-officer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "ecc-test-architect",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cto-derek",
+   "role": "ECC AI employee reporting to Derek (CTO).",
+   "laya": {
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"ecc test architect ECC AI employee reporting to Derek\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent ecc-test-architect",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "efficiency-engineer",
+   "tier": "1",
+   "model": "Opus 5.5",
+   "lead": "vanessa-orchestrator",
+   "role": "Reports to Elon, the CTO Innovator, on the AI Agent Engineering Team: re-engineers workflows, skills, routines and dashboard code for speed",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"efficiency engineer Reports to Elon, the CTO Innovator,\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent efficiency-engineer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "escalation-recovery-agent",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "vanessa-orchestrator",
+   "role": "Reports to Vanessa: handles the file that has gone wrong — a blown closing date, a denied loan, a failed appraisal, an angry client or partn",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"escalation recovery agent Reports to Vanessa: handles the file\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent escalation-recovery-agent",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "fastapi-reviewer",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cto-derek",
+   "role": "Reviews FastAPI applications for async correctness, dependency injection, Pydantic schemas, security, OpenAPI quality, testing, and producti",
+   "laya": {
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"fastapi reviewer Reviews FastAPI applications for async correctness,\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent fastapi-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "fitness-trainer",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "vanessa-orchestrator",
+   "role": "Strength and conditioning coach on Steven's Apple Health section — builds his progressive weekly training plan from his workout history, hea",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"fitness trainer Strength and conditioning coach on Steven's\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent fitness-trainer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "flutter-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Flutter and Dart code reviewer.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"flutter reviewer Flutter and Dart code reviewer.\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent flutter-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "fsharp-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Expert F# code reviewer specializing in functional idioms, type safety, pattern matching, computation expressions, and performance.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"fsharp reviewer Expert F# code reviewer specializing in\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent fsharp-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "fundamental-analyst",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "portfolio-manager",
+   "role": "Step 3 of the AI Hedge Fund Team research committee.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"fundamental analyst Step 3 of the AI Hedge\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent fundamental-analyst",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "gan-evaluator",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "GAN Harness — Evaluator agent.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"gan evaluator GAN Harness — Evaluator agent.\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent gan-evaluator",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "gan-generator",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "GAN Harness — Generator agent.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"gan generator GAN Harness — Generator agent.\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent gan-generator",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "gan-planner",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "GAN Harness — Planner agent.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"gan planner GAN Harness — Planner agent.\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent gan-planner",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "geo-aeo-optimizer",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cmo-sofia",
+   "role": "Report under Sofia (CMO): optimises Steven's visibility inside AI answers — ChatGPT, Claude, Perplexity, Google AI Overviews and AI Mode — t",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"geo aeo optimizer optimises Steven's visibility inside AI answers\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent geo-aeo-optimizer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "go-build-resolver",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "Go build, vet, and compilation error resolution specialist.",
+   "laya": {
+    "lane": "Elon",
+    "starts_from": "brain/README.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"build resolver Go build, vet, and compilation error\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent go-build-resolver",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "go-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Expert Go code reviewer specializing in idiomatic Go, concurrency patterns, error handling, and performance.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"reviewer Expert Go code reviewer specializing in\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent go-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "harmonyos-app-resolver",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "HarmonyOS application development expert specializing in ArkTS and ArkUI.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"harmonyos app resolver HarmonyOS application development expert specializing in\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent harmonyos-app-resolver",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "harness-optimizer",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "caio-nadia",
+   "role": "Analyze and improve the local agent harness configuration for reliability, cost, and throughput.",
+   "laya": {
+    "lane": "Nadia",
+    "starts_from": "docs/CAIO-DISRUPTION-BRIEF.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"harness optimizer Analyze and improve the local agent\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent harness-optimizer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "health-coach-analyst",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "vanessa-orchestrator",
+   "role": "Health coach and analyst on Steven's Apple Health section — reads his metrics, trends, workouts and sleep from the apple-health MCP and his",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"health coach analyst Health coach and analyst on Steven's\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent health-coach-analyst",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "healthcare-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Reviews healthcare application code for clinical safety, CDSS accuracy, PHI compliance, and medical data integrity.",
+   "laya": {
+    "lane": "Alexandra",
+    "starts_from": "wiki/mortgage-programs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"healthcare reviewer Reviews healthcare application code for clinical\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent healthcare-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "homelab-architect",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "Designs home and small-lab network plans from hardware inventory, goals, and operator experience level, with safe staged changes and rollbac",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"homelab architect Designs home and small-lab network plans\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent homelab-architect",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "incentives-programs-scout",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cfo-marcus",
+   "role": "Report under Marcus (CFO): finds and verifies incentives, rebates, grants, tax credits, down-payment assistance, veteran benefits and promot",
+   "laya": {
+    "lane": "Marcus",
+    "starts_from": "projects/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"incentives programs scout finds and verifies incentives, rebates, grants,\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent incentives-programs-scout",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "inspection-repair-negotiator",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): runs the inspection period — coordinating inspections, reading reports for what is material versus cosmetic, buil",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"inspection repair negotiator runs the inspection period — coordinating\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent inspection-repair-negotiator",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "integration-engineer",
+   "tier": "1",
+   "model": "Opus 5.5",
+   "lead": "vanessa-orchestrator",
+   "role": "Reports to Elon, the CTO Innovator, on the AI Agent Engineering Team: owns the stability of every plugin, connector, MCP server, bridge and",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"integration engineer Reports to Elon, the CTO Innovator,\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent integration-engineer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "investor-client-manager",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): serves investor clients — rental analysis with real cap rate, cash-on-cash and DSCR math, 1031 exchange timelines",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"investor client manager serves investor clients — rental analysis\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent investor-client-manager",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "java-build-resolver",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "Java/Maven/Gradle build, compilation, and dependency error resolution specialist.",
+   "laya": {
+    "lane": "Elon",
+    "starts_from": "brain/README.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"java build resolver Java/Maven/Gradle build, compilation, and dependency error\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent java-build-resolver",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "java-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Expert Java code reviewer for Spring Boot and Quarkus projects.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"java reviewer Expert Java code reviewer for Spring\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent java-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "kotlin-build-resolver",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "Kotlin/Gradle build, compilation, and dependency error resolution specialist.",
+   "laya": {
+    "lane": "Elon",
+    "starts_from": "brain/README.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"kotlin build resolver Kotlin/Gradle build, compilation, and dependency error\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent kotlin-build-resolver",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "kotlin-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Kotlin and Android/KMP code reviewer.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"kotlin reviewer Kotlin and Android/KMP code reviewer.\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent kotlin-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "lead-triage-analyst",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): triages Lofty leads — new leads since a given time, first-response gaps against the 5-minute SLA, missin",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"lead triage analyst triages Lofty leads — new leads\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent lead-triage-analyst",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "listing-agent-elite",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): the seller-side representation practitioner — preps Steven to win the listing appointment and then run the listin",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"listing agent elite the seller-side representation practitioner — preps\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent listing-agent-elite",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "loan-servicing-transfer",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cco-alexandra",
+   "role": "Report under Alexandra (Compliance): handles the post-funding period — servicing transfer notices and the 60-day grace period, first payment",
+   "laya": {
+    "lane": "Alexandra",
+    "starts_from": "wiki/mortgage-programs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"loan servicing transfer handles the post-funding period — servicing\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent loan-servicing-transfer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "loop-operator",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "caio-nadia",
+   "role": "Operate autonomous agent loops, monitor progress, and intervene safely when loops stall.",
+   "laya": {
+    "lane": "Nadia",
+    "starts_from": "docs/CAIO-DISRUPTION-BRIEF.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"loop operator Operate autonomous agent loops, monitor progress,\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent loop-operator",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "lpt-recruiting-downline",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): builds Steven's LPT Realty attraction and revenue-share organisation — recruiting pipeline, the value case for ag",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"lpt recruiting downline builds Steven's LPT Realty attraction and\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent lpt-recruiting-downline",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "luxury-market-specialist",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): handles the upper-tier property — pricing where comparables are thin, discreet and off-market marketing, jumbo an",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"luxury market specialist handles the upper-tier property — pricing\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent luxury-market-specialist",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "market-scout",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "portfolio-manager",
+   "role": "First stop on the AI Hedge Fund Team research committee.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"market scout First stop on the AI Hedge\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent market-scout",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "marketing-agent",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Marketing strategist and copywriter for campaign planning, audience research, positioning, copy creation, and content review.",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"marketing agent Marketing strategist and copywriter for campaign\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent marketing-agent",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "mbs-market-intelligence",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cfo-marcus",
+   "role": "Report under Marcus (CFO): tracks what actually moves mortgage rates — MBS coupon pricing, the 10-year, Fed policy and the economic calendar",
+   "laya": {
+    "lane": "Marcus",
+    "starts_from": "projects/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"mbs market intelligence tracks what actually moves mortgage rates\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent mbs-market-intelligence",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "meal-planner",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "vanessa-orchestrator",
+   "role": "Nutrition planner on Steven's Apple Health section — builds his weekly meal plan and grocery list from deck doc healthGoals and what his dat",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"meal planner Nutrition planner on Steven's Apple Health\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent meal-planner",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "military-licensing-partnerships",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cco-alexandra",
+   "role": "Report under Alexandra (Compliance): tracks NMLS licensing and CE across Steven's states, researches requirements for target military market",
+   "laya": {
+    "lane": "Alexandra",
+    "starts_from": "wiki/mortgage-programs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"military licensing partnerships tracks NMLS licensing and CE across\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent military-licensing-partnerships",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "military-relocation-specialist",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): owns the relocation client — PCS timelines and orders, BAH-versus-ownership analysis, base-area intelligence for",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"military relocation specialist owns the relocation client — PCS\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent military-relocation-specialist",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "mktg-affiliate-partnerships",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cmo-sofia",
+   "role": "Report under Sofia (CMO): hunts residual and affiliate income — products, tools, platforms and sponsorships Steven can credibly endorse to h",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"mktg affiliate partnerships hunts residual and affiliate income —\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent mktg-affiliate-partnerships",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "mktg-analytics-lead",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cmo-sofia",
+   "role": "Report under Sofia (CMO): measures what marketing actually produced — source attribution across Lofty and Zoho, cost per lead, cost",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"mktg analytics lead measures what marketing actually produced —\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent mktg-analytics-lead",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "mktg-brand-strategist",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cmo-sofia",
+   "role": "Report under Sofia (CMO): owns positioning, brand architecture and the message hierarchy across Steven's four brands — Patriot Pacific MLO,",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"mktg brand strategist owns positioning, brand architecture and the\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent mktg-brand-strategist",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "mktg-creative-designer",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cmo-sofia",
+   "role": "Report under Sofia (CMO): owns visual identity and creative direction across every asset — brand kit, templates, ad creative, listing collat",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"mktg creative designer owns visual identity and creative direction\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent mktg-creative-designer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "mktg-direct-mail-farming",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cmo-sofia",
+   "role": "Report under Sofia (CMO): runs geographic farming and direct mail — farm selection on turnover and absorption math, mail piece copy and cade",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"mktg direct mail farming runs geographic farming and direct mail\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent mktg-direct-mail-farming",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "mktg-email-campaign-manager",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cmo-sofia",
+   "role": "Report under Sofia (CMO): owns email and SMS lifecycle — nurture sequences, database reactivation, newsletters, post-close campaigns and eve",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"mktg email campaign manager owns email and SMS lifecycle —\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent mktg-email-campaign-manager",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "mktg-listing-marketing-specialist",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cmo-sofia",
+   "role": "Report under Sofia (CMO): builds the full marketing package for a listing or buyer campaign — MLS remarks, property one-pager, just-listed/j",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"mktg listing marketing specialist builds the full marketing package for\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent mktg-listing-marketing-specialist",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "mktg-paid-ads-manager",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cmo-sofia",
+   "role": "Report under Sofia (CMO): plans, drafts and analyses paid campaigns — Google Search/PMax, Meta, YouTube, LinkedIn — plus the nonprofit's Goo",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"mktg paid ads manager plans, drafts and analyses paid campaigns\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent mktg-paid-ads-manager",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "mktg-pr-media-relations",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cmo-sofia",
+   "role": "Report under Sofia (CMO): earns media — podcast guesting, local press, HARO/Qwoted-style source requests, award and ranking submissions, spe",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"mktg media relations earns media — podcast guesting, local\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent mktg-pr-media-relations",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "mktg-reputation-manager",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cmo-sofia",
+   "role": "Report under Sofia (CMO): runs reviews and reputation — Google Business Profile, Zillow, Experience.com, Facebook — the ask cadence at the r",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"mktg reputation manager runs reviews and reputation — Google\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent mktg-reputation-manager",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "mktg-social-media-manager",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cmo-sofia",
+   "role": "Report under Sofia (CMO): runs the platform-native social calendar (LinkedIn, Facebook, Instagram, YouTube, TikTok, Nextdoor) for military/v",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"mktg social media manager runs the platform-native social calendar (LinkedIn,\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent mktg-social-media-manager",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "mktg-video-producer",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cmo-sofia",
+   "role": "Report under Sofia (CMO): scripts and plans video — short-form (Reels/Shorts/TikTok), YouTube long-form, listing tours, client testimonials",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"mktg video producer scripts and plans video — short-form\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent mktg-video-producer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "mle-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Production machine-learning engineering reviewer for data contracts, feature pipelines, training reproducibility, offline/online evaluation,",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"mle reviewer Production machine-learning engineering reviewer for data\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent mle-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "modelmatch-partner-network",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): works the Model Match database (modelmatch.com) to find, rank and network with producing real estate agents — usi",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"modelmatch partner network works the Model Match database (modelmatch.com)\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent modelmatch-partner-network",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "mortgage-analytics-lead",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cfo-marcus",
+   "role": "Report under Marcus (CFO): the numbers behind the lending business — pipeline by stage with real pull-through, cycle time by milestone, lead",
+   "laya": {
+    "lane": "Marcus",
+    "starts_from": "projects/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"mortgage analytics lead the numbers behind the lending business\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent mortgage-analytics-lead",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "mortgage-broker-elite",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): the senior mortgage authority on Steven's AI Team — a top-1%, 30-year wholesale/retail broker and former underwri",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"mortgage broker elite the senior mortgage authority on Steven's\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent mortgage-broker-elite",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "mortgage-guideline-agent",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cco-alexandra",
+   "role": "Report under Alexandra (Compliance): answers 'does this scenario fit, and under which rule' with the actual citation — agency guidelines (Fa",
+   "laya": {
+    "lane": "Alexandra",
+    "starts_from": "wiki/mortgage-programs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"mortgage guideline agent answers 'does this scenario fit, and\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent mortgage-guideline-agent",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "mortgage-intake-agent",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): takes a qualified lead to a complete, submission-ready application — the structured intake interview, the documen",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"mortgage intake agent takes a qualified lead to a\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent mortgage-intake-agent",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "mortgage-isa-ai",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): owns the first five minutes — drafts the instant response, the qualification script, VA eligibility pre-screening",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"mortgage isa owns the first five minutes —\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent mortgage-isa-ai",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "mortgage-qa-auditor",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cco-alexandra",
+   "role": "Report under Alexandra (Compliance): pre- and post-close file audits — disclosure completeness and timing, fee tolerance and cures, signatur",
+   "laya": {
+    "lane": "Alexandra",
+    "starts_from": "wiki/mortgage-programs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"mortgage auditor pre- and post-close file audits —\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent mortgage-qa-auditor",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "network-architect",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "Designs enterprise or multi-site network architecture from requirements, using existing network skills for focused routing, validation, auto",
+   "laya": {
+    "lane": "Nadia",
+    "starts_from": "docs/CAIO-DISRUPTION-BRIEF.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"network architect Designs enterprise or multi-site network architecture\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent network-architect",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "network-config-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Reviews router and switch configurations for security, correctness, stale references, risky change-window commands, and missing operational",
+   "laya": {
+    "lane": "Elena",
+    "starts_from": "docs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"network config reviewer Reviews router and switch configurations for\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent network-config-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "network-troubleshooter",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "Diagnoses network connectivity, routing, DNS, interface, and policy symptoms with a read-only OSI-layer workflow and evidence-backed root ca",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"network troubleshooter Diagnoses network connectivity, routing, DNS, interface,\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent network-troubleshooter",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "new-construction-specialist",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): owns new-construction representation in Temecula, Murrieta, Menifee and Southwest Riverside County — builder ince",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"new construction specialist owns new-construction representation in Temecula, Murrieta,\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent new-construction-specialist",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "news-analyst",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "portfolio-manager",
+   "role": "Step 4 of the AI Hedge Fund Team research committee.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"news analyst Step 4 of the AI Hedge\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent news-analyst",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "nonprofit-grant-writer",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "nonprofit-grants-lead",
+   "role": "Reports under nonprofit-grants-lead (Marcus/CFO line): writes the actual grant applications for Steven's 501(c)(3) — needs statement, progra",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"nonprofit grant writer Reports under nonprofit-grants-lead (Marcus/CFO line): writes\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent nonprofit-grant-writer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "nonprofit-grants-lead",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cfo-marcus",
+   "role": "Reports under Marcus (CFO): runs the Active Duty Veteran & Hometown Hero Homeowners Club, Inc.",
+   "laya": {
+    "lane": "Marcus",
+    "starts_from": "projects/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"nonprofit grants lead Reports under Marcus (CFO): runs the\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent nonprofit-grants-lead",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "opensource-forker",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "Fork any project for open-sourcing.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"opensource forker Fork any project for open-sourcing.\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent opensource-forker",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "opensource-packager",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "Generate complete open-source packaging for a sanitized project.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"opensource packager Generate complete open-source packaging for a\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent opensource-packager",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "opensource-sanitizer",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "Verify an open-source fork is fully sanitized before release.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"opensource sanitizer Verify an open-source fork is fully\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent opensource-sanitizer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "performance-optimizer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Performance analysis and optimization specialist.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"performance optimizer Performance analysis and optimization specialist.\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent performance-optimizer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "phishing-triage",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "ciso-elena",
+   "role": "Report under Elena (CISO): triages a suspicious email, text or call — wire-instruction changes, closing-fund requests, 'urgent' lender/escro",
+   "laya": {
+    "lane": "Elena",
+    "starts_from": "docs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"phishing triage triages a suspicious email, text or\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent phishing-triage",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "php-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Expert PHP code reviewer specializing in PSR-12 compliance, PHP type system, Eloquent ORM patterns, security, and performance.",
+   "laya": {
+    "lane": "Alexandra",
+    "starts_from": "wiki/mortgage-programs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"php reviewer Expert PHP code reviewer specializing in\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent php-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "planner",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cto-derek",
+   "role": "Expert planning specialist for complex features and refactoring.",
+   "laya": {
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"planner Expert planning specialist for complex features\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent planner",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "portfolio-manager",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "vanessa-orchestrator",
+   "role": "Final step (7) of the AI Hedge Fund Team research committee.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"portfolio manager Final step (7) of the AI\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent portfolio-manager",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "pr-test-analyzer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Review pull request test coverage quality and completeness, with emphasis on behavioral coverage and real bug prevention.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"test analyzer Review pull request test coverage quality\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent pr-test-analyzer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "predictive-lead-mining",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): identifies likely future sellers from LAWFULLY available signals — public records (probate, trustee's deeds, tax",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"predictive lead mining identifies likely future sellers from LAWFULLY\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent predictive-lead-mining",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "premium-lead-partnerships",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): manages paid and referral lead sources — Zillow Flex, Opendoor, Realtor.com, OpenDoor/offerpad cash-offer alterna",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"premium lead partnerships manages paid and referral lead sources\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent premium-lead-partnerships",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "python-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Expert Python code reviewer specializing in PEP 8 compliance, Pythonic idioms, type hints, security, and performance.",
+   "laya": {
+    "lane": "Alexandra",
+    "starts_from": "wiki/mortgage-programs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"python reviewer Expert Python code reviewer specializing in\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent python-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "pytorch-build-resolver",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "PyTorch runtime, CUDA, and training error resolution specialist.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"pytorch build resolver PyTorch runtime, CUDA, and training error\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent pytorch-build-resolver",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "quant-analyst",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "portfolio-manager",
+   "role": "Step 5 of the AI Hedge Fund Team research committee.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"quant analyst Step 5 of the AI Hedge\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent quant-analyst",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "rag-pipeline-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Reviews RAG (Retrieval-Augmented Generation) pipelines for retrieval quality, chunking strategy, embedding choices, and evaluation coverage.",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"rag pipeline reviewer Reviews RAG (Retrieval-Augmented Generation) pipelines for\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent rag-pipeline-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "rate-pricing-optimizer",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): best-execution analysis across wholesale lenders — comparing rate sheets, LLPAs, lender credits and buydown struc",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"rate pricing optimizer best-execution analysis across wholesale lenders —\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent rate-pricing-optimizer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "re-market-analytics",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cfo-marcus",
+   "role": "Report under Marcus (CFO): produces the market intelligence behind pricing and listing presentations — absorption and months of inventory, m",
+   "laya": {
+    "lane": "Marcus",
+    "starts_from": "projects/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"market analytics produces the market intelligence behind pricing\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent re-market-analytics",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "react-build-resolver",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "Diagnose and fix React build failures across Vite, webpack, Next.js, CRA, Parcel, esbuild, and Bun.",
+   "laya": {
+    "lane": "Elon",
+    "starts_from": "brain/README.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"react build resolver Diagnose and fix React build failures\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent react-build-resolver",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "react-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Expert React/JSX code reviewer specializing in hook correctness, render performance, server/client component boundaries, accessibility, and",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"react reviewer Expert React/JSX code reviewer specializing in\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent react-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "realtor-reciprocity-agent",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): tracks referrals sent and received with each realtor partner, scores the reciprocity balance, flags partners owed",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"realtor reciprocity agent tracks referrals sent and received with\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent realtor-reciprocity-agent",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "refactor-cleaner",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "Dead code cleanup and consolidation specialist.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"refactor cleaner Dead code cleanup and consolidation specialist.\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent refactor-cleaner",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "refinance-hunter",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): scans the past-client database and pipeline for refinance opportunities — rate-and-term savings, PMI removal at 8",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"refinance hunter scans the past-client database and pipeline\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent refinance-hunter",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "reliability-engineer",
+   "tier": "1",
+   "model": "Opus 5.5",
+   "lead": "vanessa-orchestrator",
+   "role": "Reports to Elon, the CTO Innovator, on the AI Agent Engineering Team: owns uptime and error-rate reduction across the agents, skills, routin",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"reliability engineer Reports to Elon, the CTO Innovator,\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent reliability-engineer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "research-analyst",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "caio-nadia",
+   "role": "Report under Nadia (CAIO): multi-source research with graded sources (primary > official > reputable press > blogs), contradiction notes and",
+   "laya": {
+    "lane": "Nadia",
+    "starts_from": "docs/CAIO-DISRUPTION-BRIEF.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"research analyst multi-source research with graded sources (primary\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent research-analyst",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "risk-manager",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "portfolio-manager",
+   "role": "Step 6 of the AI Hedge Fund Team research committee — the devil's advocate.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"risk manager Step 6 of the AI Hedge\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent risk-manager",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "rust-build-resolver",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "Rust build, compilation, and dependency error resolution specialist.",
+   "laya": {
+    "lane": "Elon",
+    "starts_from": "brain/README.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"rust build resolver Rust build, compilation, and dependency error\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent rust-build-resolver",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "rust-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Expert Rust code reviewer specializing in ownership, lifetimes, error handling, unsafe usage, and idiomatic patterns.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"rust reviewer Expert Rust code reviewer specializing in\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent rust-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "sandbox-qa",
+   "tier": "1",
+   "model": "Opus 5.5",
+   "lead": "vanessa-orchestrator",
+   "role": "Reports to Elon, the CTO Innovator: runs the isolated test-and-compare step of the weekly self-improvement loop.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"sandbox Reports to Elon, the CTO Innovator:\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent sandbox-qa",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "security-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Security vulnerability detection and remediation specialist.",
+   "laya": {
+    "lane": "Elena",
+    "starts_from": "docs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"security reviewer Security vulnerability detection and remediation specialist.\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent security-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "seo-specialist",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "SEO specialist for technical SEO audits, on-page optimization, structured data, Core Web Vitals, and content/keyword mapping.",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"seo specialist SEO specialist for technical SEO audits,\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent seo-specialist",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "showing-coordinator",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): turns a client's showing plan from the Command Deck Showings tab (or a pasted list) into the complete coordinatio",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"showing coordinator turns a client's showing plan from\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent showing-coordinator",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "silent-failure-hunter",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Review code for silent failures, swallowed errors, bad fallbacks, and missing error propagation.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"silent failure hunter Review code for silent failures, swallowed\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent silent-failure-hunter",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "spec-miner",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "Extracts behavioral specs from existing codebases for OpenSpec.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"spec miner Extracts behavioral specs from existing codebases\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent spec-miner",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "stress-test-engineer",
+   "tier": "1",
+   "model": "Opus 5.5",
+   "lead": "vanessa-orchestrator",
+   "role": "Reports to Elon, the CTO Innovator, on the AI Agent Engineering Team: designs and runs structured load, edge-case, failure-injection, concur",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"stress test engineer Reports to Elon, the CTO Innovator,\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent stress-test-engineer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "swift-build-resolver",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "Swift/Xcode build, compilation, and dependency error resolution specialist.",
+   "laya": {
+    "lane": "Elon",
+    "starts_from": "brain/README.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"swift build resolver Swift/Xcode build, compilation, and dependency error\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent swift-build-resolver",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "swift-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Expert Swift code reviewer specializing in protocol-oriented design, value semantics, ARC memory management, Swift Concurrency, and idiomati",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"swift reviewer Expert Swift code reviewer specializing in\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent swift-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "tax-deadline-analyst",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cfo-marcus",
+   "role": "Report under Marcus (CFO): maintains the tax calendar (federal/CA estimated payments, entity filings, Statement of Information, BOI, 1099 se",
+   "laya": {
+    "lane": "Marcus",
+    "starts_from": "projects/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"tax deadline analyst maintains the tax calendar (federal/CA estimated\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent tax-deadline-analyst",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "tdd-guide",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": null,
+   "role": "Test-Driven Development specialist enforcing write-tests-first methodology.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"tdd guide Test-Driven Development specialist enforcing write-tests-first methodology.\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent tdd-guide",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "technical-analyst",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "portfolio-manager",
+   "role": "Step 2 of the AI Hedge Fund Team research committee.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"technical analyst Step 2 of the AI Hedge\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent technical-analyst",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "title-report-analyst",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cco-alexandra",
+   "role": "Report under Alexandra (Compliance): reads a preliminary title report or commitment and turns it into a plain-language issue list — vesting,",
+   "laya": {
+    "lane": "Alexandra",
+    "starts_from": "wiki/mortgage-programs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"title report analyst reads a preliminary title report or\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent title-report-analyst",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "trid-timeline-checker",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cco-alexandra",
+   "role": "Report under Alexandra (Compliance): checks a mortgage file's disclosure timeline — 6-piece application trigger, LE within 3 business days,",
+   "laya": {
+    "lane": "Alexandra",
+    "starts_from": "wiki/mortgage-programs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"trid timeline checker checks a mortgage file's disclosure timeline\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent trid-timeline-checker",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "type-design-analyzer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Analyze type design for encapsulation, invariant expression, usefulness, and enforcement.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"type design analyzer Analyze type design for encapsulation, invariant\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent type-design-analyzer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "typescript-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Expert TypeScript/JavaScript code reviewer specializing in type safety, async correctness, Node/web security, and idiomatic patterns.",
+   "laya": {
+    "lane": "Elena",
+    "starts_from": "docs/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"typescript reviewer Expert TypeScript/JavaScript code reviewer specializing in\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent typescript-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "vanessa-orchestrator",
+   "tier": "1",
+   "model": "fable",
+   "lead": null,
+   "role": "Vanessa as AI-agent ORCHESTRATOR for Steven Shearrill's AI Team.",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"vanessa orchestrator Vanessa as AI-agent ORCHESTRATOR for Steven\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent vanessa-orchestrator",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "vendor-network-manager",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO): maintains the vendor bench — inspectors, contractors, stagers, photographers, cleaners, movers, warranty and insu",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"vendor network manager maintains the vendor bench — inspectors,\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent vendor-network-manager",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "vue-reviewer",
+   "tier": "3",
+   "model": "Opus 5.5",
+   "lead": null,
+   "role": "Expert Vue.js code reviewer specializing in Composition API correctness, reactivity pitfalls, component architecture, template security, and",
+   "laya": {
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"vue reviewer Expert Vue.js code reviewer specializing in\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent vue-reviewer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "webinar-producer",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cmo-sofia",
+   "role": "Report under Sofia (CMO): produces webinar assets for the VA Loan Mastermind Live, Hometown Hero Home Buying and Retirement Equity Strategy",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"webinar producer produces webinar assets for the VA\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent webinar-producer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  }
+ ],
+ "named_seats": {
+  "Vanessa": {
+   "agent": "vanessa-orchestrator",
+   "via": "roster"
+  },
+  "Marcus": {
+   "agent": "cfo-marcus",
+   "via": "roster"
+  },
+  "Sofia": {
+   "agent": "cmo-sofia",
+   "via": "roster"
+  },
+  "Derek": {
+   "agent": "cto-derek",
+   "via": "roster"
+  },
+  "Alexandra": {
+   "agent": "cco-alexandra",
+   "via": "roster"
+  },
+  "Nadia": {
+   "agent": "caio-nadia",
+   "via": "roster"
+  },
+  "Victor": {
+   "agent": "cro-victor",
+   "via": "roster"
+  },
+  "Elena": {
+   "agent": "ciso-elena",
+   "via": "roster"
+  },
+  "Elon": {
+   "agent": "cto-innovator",
+   "via": "roster"
+  },
+  "Gwen": {
+   "agent": "buyers-agent-elite",
+   "via": "roster"
+  },
+  "Marguerite": {
+   "agent": "listing-agent-elite",
+   "via": "roster"
+  },
+  "Carmen": {
+   "agent": "ca-transaction-coordinator",
+   "via": "roster"
+  },
+  "Denise": {
+   "agent": "ca-loan-processor",
+   "via": "roster"
+  },
+  "Howard": {
+   "agent": "ca-underwriter",
+   "via": "roster"
+  },
+  "Maxwell": {
+   "agent": "broker-coach-maxwell",
+   "via": "roster"
+  },
+  "Kevin": {
+   "agent": "kevin-mentor",
+   "via": "skill"
+  },
+  "James": {
+   "agent": "james-wealth",
+   "via": "skill"
+  },
+  "Apex": {
+   "agent": "apex-trader",
+   "via": "skill"
+  },
+  "Harrison": {
+   "agent": "vanessa-broker",
+   "via": "skill"
+  }
+ },
+ "surfaces": {
+  "laya": "integrations/laya/",
+  "jarvis": "integrations/jarvis/",
+  "orca": "integrations/remote-control/orca-remote.sh",
+  "planner": "bin/brain route"
+ }
+}

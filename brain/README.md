@@ -10,16 +10,18 @@ Plain Python 3.10+, standard library only, no model calls. Run from any director
 | `brain recall "<question>" [--json] [--top N]` | The retrieval ladder below. Prints the evidence with `file § section`, bytes read, estimated tokens and time. `--top N` also lists the N best-scoring candidates. |
 | `brain remember "<fact>" [--topic X] [--source S]` | Appends one dated line to `memory.md` (or `memory/X.md`) and refreshes `INDEX.md` + `brain/index.json` in the same step. Refuses API keys, tokens, SSNs, card and account numbers, passwords, and third-party contact details. |
 | `brain reindex` | Rebuilds `INDEX.md` and `brain/index.json` from the tree. |
+| `brain layout` | The brain mapped onto `references/backend-folder-structure.md` (config, models, middlewares, controllers, services, routes, utils, tests); exits non-zero if a mapped path is missing or a service module has no test naming it. `doctor` carries the same row. |
 | `brain doctor` | Exits non-zero if the index is stale, a path `CLAUDE.md` routes to is missing, or an `INDEX.md` line points at a missing file. |
 | `brain bench [--write]` | Runs `brain/bench/questions.json` three ways and compares tokens, time and correctness; `--write` writes `docs/reports/BRAIN-BENCH.md`. |
 | `brain gaps` | What was asked and not answered, most-asked first, with the nearest files (from the local keyword-only recall log; `BRAIN_NOLOG=1` turns the log off). |
 | `brain orgcheck` | Does every seat in `wiki/ai-team/org-chart.md` resolve to a brain page; is Jarvis verified, stale or failing. Exits non-zero on a miss. |
 | `brain pack "<q>" [--budget N]` | Best section from several files under a token budget, as one paste for any platform. |
-| `brain loop` | reindex → doctor → bench → gaps → orgcheck → `docs/reports/BRAIN-LOOP.md`, compared with the last run in `brain/loop-history.jsonl`; exit 1 on a regression. |
+| `brain route "<request>" [--json]` | The AI team's dispatch plan from the org chart: lead seat, seats that join, parallel waves (≤8, ≤4 web research), gates (Alexandra, ECC, Vanessa last), HALTs, and the brain section each seat starts from. Rules: `wiki/ai-team/cross-functional.md`. |
+| `brain loop` | reindex → doctor → bench → gaps → orgcheck → routing self-test (`brain/bench/routes.json`) → pages no gold question tests → `docs/reports/BRAIN-LOOP.md`, compared with the last run in `brain/loop-history.jsonl`; exit 1 on a regression. |
 | `brain toolkit [--json] [--write]` | Zero-token register of the team's tools per org-chart seat: skills (`.claude/skills`), plugins (`integrations/mods`), connectors with their live status (`integrations/CONNECTIONS.md`), cloud routines (`docs/inventory/cloud-routines*.md`) and Mac tasks. `--write` regenerates `wiki/ai-team/toolkit.md`, the org chart's tool page. |
-| `python3 dashboard/brain-4d/add-toolkit.py <built page> <out>` | Adds the five toolkit lobes to an already-built brain page (the live "Brain 6D" page is built on branch `claude/gracious-newton-4hpfco`; this bridges the two without a branch merge). |
+| `python3 dashboard/brain-4d/add-toolkit.py <built page> <out>` | Adds the five toolkit lobes to an already-built brain page (the live "Brain 6D" page is built on branch `claude/stoic-cori-pvn3f8`; this bridges the two without a branch merge). |
 | `brain owner "<panel or system>"` | Who keeps a Command Deck panel alive (routine / Mac task / Vanessa / Steve / ISA-EA / Steven), by what mechanism, and what stays Steven's — from `docs/AUTOMATION-MAP-*.md`. |
-| `brain mcp` | The brain as a stdio MCP server (`brain_recall`, `brain_pack`, `brain_gaps`, `brain_remember`, `brain_toolkit`, `brain_owner`) for Claude Code, Claude Desktop, Codex, Cursor. Registering it in a client is Steven's approval, never automatic. |
+| `brain mcp` | The brain as a stdio MCP server (`brain_recall`, `brain_pack`, `brain_gaps`, `brain_stale`, `brain_related`, `brain_route`, `brain_remember`, `brain_toolkit`, `brain_owner`) for Claude Code, Claude Desktop, Codex, Cursor. Registering it in a client is Steven's approval, never automatic. |
 
 ## The ladder (`recall`)
 
@@ -52,3 +54,14 @@ bin/brain bench --write
 ```
 
 Current result: `docs/reports/BRAIN-BENCH.md`.
+
+## Added 2026-10-12 — the front door and self-tuning
+
+| Command | What it does |
+|---|---|
+| `bin/brain ask "<question>"` | The one command to use. Recall (level 1); if the answer is missing or weak it escalates by itself to several sections (level 2); if still nothing it says "queue research" (level 3). Every answer names the owning seat and any HALT. |
+| `bin/brain tune` | The brain proposes its own fixes: words people asked that it never matched, the nearest terms it does know, and the synonym or page to add. Writes `brain/state/tune-proposals.json`; edits nothing. Runs in every `bin/brain loop`. |
+| `bin/brain os run "<request>"` | Laya lane → Jarvis recall → one Orca launch line per agent (`wiki/ai-team/agent-os.md`). |
+| `bin/brain encyclopedia` | Rewrites `docs/reports/ENCYCLOPEDIA.md`, the living A–Z with backlinks. |
+| `bin/brain learn [try]` | Self-promoting fixes behind a gate: `try` tests each `tune` proposal against every gold question and keeps only the ones that help and hurt nothing, as candidates; every green `loop` run credits them; at 7 consecutive green runs a candidate is promoted, one regression demotes them all. State: `brain/synonyms-learned.json`; the hand-written `synonyms.py` is never touched. |
+| `bin/brain passages "<question>"` | Level 3 in plain code: passage search inside every document over 24 KB (sparse-vector scoring with the index's own stems and idf; no model, no server). `ask` escalates here before it says "queue research". `wiki/clients/**` and `decisions.md` are never chunked. |

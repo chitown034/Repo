@@ -30,7 +30,8 @@ from bisect import bisect_left
 from pathlib import Path
 
 from . import indexer
-from .text import SYNONYMS, keywords, norm_for_match, sections, tokenize
+from . import text as _text
+from .text import keywords, norm_for_match, sections, tokenize
 
 K1, B = 1.2, 0.75
 SYNONYM_WEIGHT = 0.4
@@ -89,7 +90,7 @@ class Query:
         self.groups = []
         for surface, stem in keywords(question):
             variants = []
-            for term, w in [(stem, 1.0)] + [(x, SYNONYM_WEIGHT) for x in sorted(SYNONYMS.get(stem, ()))]:
+            for term, w in [(stem, 1.0)] + [(x, SYNONYM_WEIGHT) for x in sorted(_text.SYNONYMS.get(stem, ()))]:
                 tid = vocab.get(term)
                 variants.append((term, w, tid, _idf(df[tid] if tid is not None else 0, self.n)))
             self.groups.append({"surface": surface, "stem": stem, "idf": variants[0][3],

@@ -399,6 +399,33 @@ Tests: `./failover-tests.sh` covers all of the above (stub `claude`/`curl`/`omni
 by his macOS version (newer systems prefer `bootstrap`); what the old `claude-fallback` actually is and whether anything else
 (a Shortcut, an alias, a function) still calls it; and the real usage-limit wording at the Mac.
 
+## Keep going automatically — `claude-auto --keep-going` (2026-10-09)
+
+Steven: *"when claude tokens are exhausted it switches over to omniroute to continue working until Claude tokens
+refreshes."* Headless runner tasks already did this (limit detected → exit 75 → retried on the free route; the probe
+switches back). Interactive sessions did not: a running session cannot be re-pointed, and `--interactive-free` had to be
+typed by hand. `--keep-going` closes that gap:
+
+```
+claude-auto --keep-going
+  └ loop: one 1-turn probe of the subscription
+          ├ answers        → Claude session on the subscription  (claude --continue after the first leg)
+          ├ usage limit    → same conversation on OmniRoute free (claude --continue, guard hook on)
+          │                  · OmniRoute down or no key → says so, waits for Enter
+          │                  · folder looks like client data → client work waits for Claude
+          │                  · last transcript mentions client data → a NEW conversation on free, never --continue
+          └ inconclusive   → the subscription (plain claude)
+        session closes (Steven types /exit after the limit message) → "Enter = keep going · q = quit" → loop
+```
+
+What Steven does when the limit hits: type `/exit`, press Enter. Nothing else. When Claude resets, the next `/exit` +
+Enter puts the conversation back on the subscription (the probe LaunchAgent also restores headless tasks).
+Opt-in: the empty file `~/.config/omniroute/auto-continue` (`install-failover.sh` step 4b asks). Off by default.
+Tests: `failover-tests.sh` § `--keep-going` (stubbed claude/curl, a pty): off-by-default, subscription leg, limit → free
+leg with the guard, reset → back with `--continue`, client-data transcript → fresh conversation, OmniRoute down → no session.
+**Not verifiable without the Mac:** that `claude --continue` resumes the conversation when the base URL changes between legs
+(it is a local transcript, so it should), and how much quality drops on the free combo.
+
 ## Three-tier failover (2026-10-09) — subscription, then free, then a capped paid backup
 
 Steven's rule: free tokens the moment the Claude subscription is exhausted, back to the subscription when it

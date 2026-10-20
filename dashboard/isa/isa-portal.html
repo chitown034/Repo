@@ -1,9 +1,11 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><!-- == STALE-REFRESH-ISA 2026-10-12 == -->
+</head><body>
 <meta charset="utf-8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <title>ISA Portal</title>
+<!-- refreshed 2026-10-11: motion layer + Freddie Mac PMMS rows -->
 
 <style>
   :root {
@@ -434,6 +436,41 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
 @media (max-width:640px),(max-height:1000px){.deck-head{position:relative}}
 @media (max-width:640px){.world-clock-bar{flex-wrap:nowrap;overflow-x:auto}button.ghost,.add-row-btn,.chat-chip{min-height:44px;min-width:44px}}
 .head-nw-value,.badge.gold,.chat-coa{color:color-mix(in srgb,var(--gold) 70%,var(--text))}
+
+/* ================= WAVE 2 POLISH — motion and depth, additive only =================
+   Every rule is additive and guarded: reduced-motion turns it all off, nothing changes layout or colours, and
+   the reveal only starts once the script marks <html class="w2-js">, so a page without script is untouched. */
+:root { --w2-ease: cubic-bezier(0.22, 1, 0.36, 1); --w2-spring: cubic-bezier(0.34, 1.56, 0.64, 1); }
+.deck-head { backdrop-filter: saturate(180%) blur(18px); -webkit-backdrop-filter: saturate(180%) blur(18px); }
+/* page switch: a panel that goes from display:none to shown replays this once */
+@keyframes w2PanelIn { from { opacity: 0; transform: translateY(14px) scale(0.995); } to { opacity: 1; transform: none; } }
+.panel[data-page] { animation: w2PanelIn 0.55s var(--w2-ease) both; }
+/* scroll reveal for cards and tables inside the visible panel */
+.w2-js .card, .w2-js .stat, .w2-js .kanban-col, .w2-js .tk-tile { opacity: 0; transform: translateY(12px); transition: opacity 0.6s var(--w2-ease), transform 0.6s var(--w2-ease); }
+.w2-js .card.w2-in, .w2-js .stat.w2-in, .w2-js .kanban-col.w2-in, .w2-js .tk-tile.w2-in { opacity: 1; transform: none; }
+.card:hover { transform: translateY(-2px); }
+.card, button, .page-tab, .pill, .tv-chip, .kanban-card, .exec-row { transition: transform 0.28s var(--w2-spring), box-shadow 0.25s ease, border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease, opacity 0.2s ease; }
+button:active, .page-tab:active, .tv-chip:active, .pages-btn:active { transform: scale(0.96); }
+.page-tab.active { transform: translateY(-1px); box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--accent) 70%, transparent); }
+.nav-dock-btn { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.nav-dock-btn:hover { transform: translateY(-3px) scale(1.06); }
+.panel-head::after { transition: width 0.7s var(--w2-ease); }
+.panel:hover .panel-head::after { width: 96px; }
+.progress > i, .bar-fill, .match-bar-fill { transition: width 0.9s var(--w2-ease); }
+/* a thin reading-progress line under the header */
+#w2Progress { position: fixed; left: 0; top: 0; height: 2px; width: 100%; transform-origin: 0 50%; transform: scaleX(var(--w2p, 0)); background: linear-gradient(90deg, var(--accent), var(--gold)); z-index: 90; pointer-events: none; }
+/* soft pulse on live pills */
+@keyframes w2Pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--positive) 45%, transparent); } 60% { box-shadow: 0 0 0 7px transparent; } }
+.pill.on .dot { animation: w2Pulse 2.4s ease-out infinite; }
+/* focus ring that follows the Apple pattern: tight, high-contrast, animated in */
+:focus-visible { outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  .panel[data-page], .pill.on .dot { animation: none !important; }
+  .w2-js .card, .w2-js .stat, .w2-js .kanban-col, .w2-js .tk-tile { opacity: 1 !important; transform: none !important; transition: none !important; }
+  #w2Progress { display: none; }
+}
+@media print { .panel[data-page], .w2-js .card { animation: none !important; opacity: 1 !important; transform: none !important; } #w2Progress { display: none; } }
+
 </style>
 <div class="deck-head">
   <div class="deck-head-inner">
@@ -1769,7 +1806,7 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
   </section>
 
   <p class="src-note" id="isaRenderErrors" hidden style="border:1px solid var(--negative);background:var(--negative-soft);color:var(--negative);border-radius:8px;padding:10px 12px;margin-bottom:14px;"></p>
-  <footer class="deck-foot">ISA PORTAL · SCOPED ACCESS · REAL ESTATE &amp; MORTGAGE ONLY<br><span style="opacity:.75;">Build 2026-10-05 — builder-incentive and housing-market notes mirror the Command Deck's (Claude routines on Steven's subscription; no Perplexity), drift re-measured against both stores. Earlier: build 2026-10-04 — rates and market cards read the shared ratesSnapshot live, Military Base Installation Guide added (Panel 10); build 2026-09-22, connection wording re-checked 2026-09-24 · You.com retired (connector at 0 credits), Lofty is the real-estate CRM of record, sync status re-measured against both databases - if two sessions edit this page, the newer build wins; check this stamp before assuming your change is live.</span></footer>
+  <footer class="deck-foot">ISA PORTAL · SCOPED ACCESS · REAL ESTATE &amp; MORTGAGE ONLY<br><span style="opacity:.75;">Build 2026-10-12 — rates, builder write-ups and program-facts stamps mirror the Command Deck's stale-info refresh of 2026-10-12; previously: Build 2026-10-05 — builder-incentive and housing-market notes mirror the Command Deck's (Claude routines on Steven's subscription; no Perplexity), drift re-measured against both stores. Earlier: build 2026-10-04 — rates and market cards read the shared ratesSnapshot live, Military Base Installation Guide added (Panel 10); build 2026-09-22, connection wording re-checked 2026-09-24 · You.com retired (connector at 0 credits), Lofty is the real-estate CRM of record, sync status re-measured against both databases - if two sessions edit this page, the newer build wins; check this stamp before assuming your change is live.</span></footer>
 </div>
 
 <script>
@@ -2522,26 +2559,28 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
      does NOT carry — VA 30-yr refinance, VA 15-yr fixed, Jumbo 15-yr fixed — were re-verified by
      hand on 2026-09-22 (Veterans United / Navy Federal, each dated in its own Source column; the old
      VA 15-yr figure turned out to be Navy Federal's Jan 8, 2026 sheet under a "verified Sep 2" label). */
-  var MORTGAGE_RATES_SYNCED_AT = "2026-09-28 — 6 of 9 rows still on Command Deck's 2026-09-22 02:24 UTC ratesSnapshot re-bake (Optimal Blue via FRED, rate week ending Sep 18, 2026 — that feed has not written a newer one since). The three rows that document does not carry — VA 30-yr refinance, VA 15-yr fixed, Jumbo 15-yr fixed — re-verified again 2026-09-28 from Veterans United's and Navy Federal's rates pages, read through WebSearch because this session cannot fetch lender pages directly (no Perplexity this round)";
+  var MORTGAGE_RATES_SYNCED_AT = "2026-10-12 — mirrored from the Command Deck: 2026-10-11 — added the Freddie Mac PMMS weekly rows (Oct 8, 2026: 30-yr 7.4%, 15-yr 6.73%; WebSearch snippet, not opened on freddiemac.com). Rows below are as previously baked: 2026-10-05 — 6 of 9 rows re-baked from the ratesSnapshot document (mortgage-rates-daily, syncedAt 2026-10-05T13:39:06Z; Optimal Blue via FRED, index date Oct 2, 2026). The three rows that feed does not carry were re-read 2026-10-05 from search-indexed copies of the lender pages: VA 30-yr refinance from Veterans United (6.875% / 7.192% APR at 1.75 points, page updated Oct 4), VA 15-yr fixed from Navy Federal (6.125% / 6.833% APR as low as, 0.500 points, effective Oct 4) and Jumbo 15-yr fixed from Navy Federal (6.750% / 6.992% APR as low as, Oct 5); each row carries its own asOf and source";
   var MORTGAGE_RATES = [
-    { type: "Conventional", term: "30-yr fixed", rate: 7.038, apr: null, source: "Optimal Blue via FRED (OBMMIC30YF) · Sep 18, 2026", url: "https://fred.stlouisfed.org/series/OBMMIC30YF" },
-    { type: "Conventional", term: "15-yr fixed", rate: 6.257, apr: null, source: "Optimal Blue via FRED (OBMMIC15YF) · Sep 18, 2026", url: "https://fred.stlouisfed.org/series/OBMMIC15YF" },
-    { type: "VA", term: "30-yr fixed", rate: 6.751, apr: null, source: "Optimal Blue via FRED (OBMMIVA30YF) · Sep 18, 2026", url: "https://fred.stlouisfed.org/series/OBMMIVA30YF" },
-    { type: "VA", term: "30-yr refinance", rate: 6.50, apr: 6.822, source: "Veterans United rates page — 30-yr fixed VA refinance, 720 score; rate re-confirmed unchanged at 6.500% (Sep 19, 2026 pull), page header now “valid as of Sep 27th, 09:02 AM CST” — re-verified 2026-09-28; the 6.822% APR at 1.875 pts was not independently re-pulled this pass; NOT in the daily snapshot", url: "https://www.veteransunited.com/va-loans/va-mortgage-rates/" },
-    { type: "VA", term: "15-yr fixed", rate: 6.00, apr: 6.706, source: "Navy Federal VA 15-yr fixed, $300K example, 6.000% / 6.706% APR (1.00% origination fee, waivable for +0.25% rate) — rates effective Sep 26, 2026, re-verified 2026-09-28 (was 5.750%/6.409% APR as of Sep 20); NOT in the daily snapshot", url: "https://www.navyfederal.org/loans-cards/mortgage/mortgage-rates.html" },
-    { type: "FHA", term: "30-yr fixed", rate: 6.799, apr: null, source: "Optimal Blue via FRED (OBMMIFHA30YF) · Sep 18, 2026", url: "https://fred.stlouisfed.org/series/OBMMIFHA30YF" },
-    { type: "USDA", term: "30-yr fixed", rate: 6.71, apr: null, source: "Optimal Blue via FRED (OBMMIUSDA30YF) · Sep 18, 2026", url: "https://fred.stlouisfed.org/series/OBMMIUSDA30YF" },
-    { type: "Jumbo", term: "30-yr fixed", rate: 7.032, apr: null, source: "Optimal Blue via FRED (OBMMIJUMBO30YF) · Sep 18, 2026", url: "https://fred.stlouisfed.org/series/OBMMIJUMBO30YF" },
-    { type: "Jumbo", term: "15-yr fixed", rate: 6.75, apr: 6.992, source: "Navy Federal Jumbo 15-yr fixed, $1M example, 720 FICO, 20% down, 6.750% / 6.992% APR (1.00% origination fee) — re-verified 2026-09-28 (was 6.500%/6.740% APR as of Sep 20); NOT in the daily snapshot", url: "https://www.navyfederal.org/loans-cards/mortgage/mortgage-rates.html" },
-    { type: "Benchmark", term: "PMMS 30-yr (weekly survey)", rate: 6.95, apr: null, source: "Freddie Mac PMMS · week of Sep 17, 2026 (52-wk 5.98–6.95)", url: "https://www.freddiemac.com/pmms" },
-    { type: "Benchmark", term: "PMMS 15-yr (weekly survey)", rate: 6.26, apr: null, source: "Freddie Mac PMMS · week of Sep 17, 2026 (52-wk 5.35–6.26)", url: "https://www.freddiemac.com/pmms" },
-    { type: "Benchmark", term: "10-yr Treasury yield", rate: 5.01, apr: null, source: "FRED (DGS10) · Sep 18, 2026 · 52-wk 3.97–5.01", url: "https://fred.stlouisfed.org/series/DGS10" },
-    { type: "Benchmark", term: "MND 30-yr top-tier (daily index)", rate: 7.19, apr: null, source: "Mortgage News Daily · Sep 21, 2026 — top-tier scenario, runs above lock-based averages by construction", url: "https://www.mortgagenewsdaily.com/mortgage-rates" }
+    { type: "Conventional", term: "30-yr fixed (Freddie Mac PMMS)", rate: 7.4, apr: null, source: "Freddie Mac PMMS via WebSearch — weekly average; the Optimal Blue rows below are daily lender-locked rates and read differently", asOf: "Oct 8, 2026", url: "https://www.freddiemac.com/pmms" },
+    { type: "Conventional", term: "15-yr fixed (Freddie Mac PMMS)", rate: 6.73, apr: null, source: "Freddie Mac PMMS via WebSearch — weekly average; the Optimal Blue rows below are daily lender-locked rates and read differently", asOf: "Oct 8, 2026", url: "https://www.freddiemac.com/pmms" },
+    { type: "Conventional", term: "30-yr fixed", rate: 7.379, apr: null, source: "Optimal Blue via FRED (OBMMIC30YF)", asOf: "Oct 2, 2026", url: "https://fred.stlouisfed.org/series/OBMMIC30YF" },
+    { type: "Conventional", term: "15-yr fixed", rate: 6.653, apr: null, source: "Optimal Blue via FRED (OBMMIC15YF)", asOf: "Oct 2, 2026", url: "https://fred.stlouisfed.org/series/OBMMIC15YF" },
+    { type: "VA", term: "30-yr fixed", rate: 7.043, apr: null, source: "Optimal Blue via FRED (OBMMIVA30YF)", asOf: "Oct 2, 2026", url: "https://fred.stlouisfed.org/series/OBMMIVA30YF" },
+    { type: "VA", term: "30-yr refinance", rate: 6.875, apr: 7.192, source: "Veterans United VA mortgage-rates page — 30-yr fixed VA refinance example, 6.875% / 7.192% APR at 1.7500 points ($5,162.50 on the page's example loan); the page's own header read “updated as of October 4th, 05:04 PM CST”. Read 2026-10-05 from the search-indexed copy of the page; the earlier read (Sep 27) was 6.500% / 6.822% APR at 1.875 points. The APR is only comparable to another APR quoted at the same points — 1.75 points is not a par quote. Not carried by the daily feed", asOf: "Oct 4, 2026", url: "https://www.veteransunited.com/va-loans/va-mortgage-rates/" },
+    { type: "VA", term: "15-yr fixed", rate: 6.125, apr: 6.833, source: "Navy Federal rate page — VA 15-yr fixed, 6.125% with 0.500 discount points, APR as low as 6.833%, effective October 4, 2026 (read 2026-10-05 from the search-indexed page; the earlier Sep 26 read was 6.000% / 6.706% APR with a 1.00% origination fee, so the fee structure differs) — not carried by the daily feed", asOf: "Oct 4, 2026", url: "https://www.navyfederal.org/loans-cards/mortgage/mortgage-rates.html" },
+    { type: "FHA", term: "30-yr fixed", rate: 7.093, apr: null, source: "Optimal Blue via FRED (OBMMIFHA30YF)", asOf: "Oct 2, 2026", url: "https://fred.stlouisfed.org/series/OBMMIFHA30YF" },
+    { type: "USDA", term: "30-yr fixed", rate: 7.041, apr: null, source: "Optimal Blue via FRED (OBMMIUSDA30YF)", asOf: "Oct 2, 2026", url: "https://fred.stlouisfed.org/series/OBMMIUSDA30YF" },
+    { type: "Jumbo", term: "30-yr fixed", rate: 7.496, apr: null, source: "Optimal Blue via FRED (OBMMIJUMBO30YF)", asOf: "Oct 2, 2026", url: "https://fred.stlouisfed.org/series/OBMMIJUMBO30YF" },
+    { type: "Jumbo", term: "15-yr fixed", rate: 6.75, apr: 6.992, source: "Navy Federal rate page — Jumbo 15-yr fixed, 6.750% with 0.500 discount points, APR as low as 6.992% (read 2026-10-05 from the search-indexed page; same rate and APR as the Sep 28 read, which described a 1.00% origination fee instead of points) — not carried by the daily feed", asOf: "Oct 5, 2026", url: "https://www.navyfederal.org/loans-cards/mortgage/mortgage-rates.html" },
+    { type: "Benchmark", term: "PMMS 30-yr (weekly survey)", rate: 7.4, apr: null, source: "Freddie Mac PMMS · Oct 8, 2026 (+0.12 from prior week) — re-baked 2026-10-12 from the ratesSnapshot document (mortgage-rates-daily, syncedAt 2026-10-12T13:39:09Z)", url: "https://www.freddiemac.com/pmms" },
+    { type: "Benchmark", term: "PMMS 15-yr (weekly survey)", rate: 6.73, apr: null, source: "Freddie Mac PMMS · Oct 8, 2026 (+0.13 from prior week) — re-baked 2026-10-12 from the ratesSnapshot document (mortgage-rates-daily, syncedAt 2026-10-12T13:39:09Z)", url: "https://www.freddiemac.com/pmms" },
+    { type: "Benchmark", term: "10-yr Treasury yield", rate: 5.22, apr: null, source: "FRED (DGS10) · Oct 8, 2026 (-0.06 from prior day) — re-baked 2026-10-12 from the ratesSnapshot document (mortgage-rates-daily, syncedAt 2026-10-12T13:39:09Z)", url: "https://fred.stlouisfed.org/series/DGS10" },
+    { type: "Benchmark", term: "MND 30-yr top-tier (daily index)", rate: 7.48, apr: null, source: "Mortgage News Daily · Oct 9, 2026 (-0.02 from prior day; same-day MND: FHA 7.15%, VA 7.17%, Jumbo 7.63%) — re-baked 2026-10-12 from the ratesSnapshot document (mortgage-rates-daily, syncedAt 2026-10-12T13:39:09Z)", url: "https://www.mortgagenewsdaily.com/mortgage-rates" },
   ];
   /* Re-baked 2026-09-22 from Command Deck's `ratesSnapshot` document (same stamp as the rate rows).
      Medians, DOM and YoY are the document's; Murrieta is new here. Active-listing counts and
      sale-to-list ratios are NOT in that document and stay the older manual pulls, dated in place. */
-  var MARKET_SYNCED_AT = "2026-09-22 02:24 UTC for the medians/DOM/YoY (Command Deck's ratesSnapshot, copied by hand); active-listing counts still the Sep 4 IDX pull and sale-to-list still the Redfin period shown per city.";
+  var MARKET_SYNCED_AT = "2026-10-12 — the ratesSnapshot document (mortgage-rates-daily) re-checked Redfin today (marketsSyncedAt 2026-10-12T12:05:58Z) and found no newer published period: Temecula Aug 2026, Murrieta Jul 2026, San Diego County Aug 2026; the page prefers that document over this seed. Previous seed note: 2026-09-22 02:24 UTC for the medians/DOM/YoY (Command Deck's ratesSnapshot, copied by hand); active-listing counts still the Sep 4 IDX pull and sale-to-list still the Redfin period shown per city.";
   var CRMLS_GENERAL_SEARCH = "https://www.crmls.org/servlet/lDisplayListings?LA=EN";
   var MARKET_UPDATES = {
     "San Diego County, CA": {
@@ -3309,7 +3348,7 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
   var FICO_BAND_MIN = { "lt500": 0, "500-579": 500, "580-619": 580, "620-679": 620, "680-739": 680, "740plus": 740 };
   var DOWN_BAND_MIN = { "0": 0, "1-4": 1, "5-19": 5, "20plus": 20 };
   var DTI_MAX = { "lt36": 36, "36-43": 43, "44-50": 50, "gt50": 65 };
-  var PROGRAM_FACTS_SYNCED_AT = "2026-09-22 13:00 UTC — every row re-checked (VA funding-fee tiers, ROAD to Housing Act, FHA 2026 limits and MIP, FHFA 2026 conforming limits incl. San Diego and Riverside, USDA FY2026 fees and income caps, jumbo/DSCR/non-QM/HELOC lender-typical ranges); agency pages could not be fetched directly from this session, so each row's source names the pages the WebSearch results quoted";
+  var PROGRAM_FACTS_SYNCED_AT = "2026-10-12 — re-verified via WebSearch: 2026 conforming baseline $832,750 / ceiling $1,249,125: confirmed (FHFA has NOT announced 2027 limits as of Oct 12, 2026 (expected late November)); FHA 2026 floor $541,287 / ceiling $1,249,125; annual MIP unchanged since ML 2023-05: confirmed (HUD No); VA funding fee first use 2.15% (<5% down), subsequent 3.3%, IRRRL 0.5%: confirmed (Schedule in effect since Apr 7, 2023; latest explicit 'unchanged' confirmation May 2026; no October 2026 VA notice found); USDA guarantee fee 1% upfront / 0.35% annual: unconfirmed for FY2027 (FY2026 confirmed; FY2027 (from Oct 1, 2026) reported unchanged by one third-party calculator only — no USDA RD notice located). Previous pass: 2026-09-22 13:00 UTC — every row re-checked (VA funding-fee tiers, ROAD to Housing Act, FHA 2026 limits and MIP, FHFA 2026 conforming limits incl. San Diego and Riverside, USDA FY2026 fees and income caps, jumbo/DSCR/non-QM/HELOC lender-typical ranges); agency pages could not be fetched directly from this session, so each row's source names the pages the WebSearch results quoted";
   var PROGRAM_FACTS = [
     { key: "va", match: ["va "], label: "VA", minFico: "Lender-set (no VA minimum; typical floor ~620, some to 580)", down: "0%", maxDti: "No hard cap — residual-income test governs, not DTI (guideline ref. 41%)", mi: "None ever. Funding fee instead (2026): 2.15% first use / 3.30% subsequent use with <5% down; 1.50% at 5–9.99% down; 1.25% at 10%+ down; IRRRL 0.50%; cash-out refinance 2.15% first use / 3.30% subsequent (waived for veterans receiving VA disability compensation, Purple Heart recipients on active duty, qualifying surviving spouses). Deductible again on Schedule A from tax year 2026 — the mortgage-insurance-premium deduction was made permanent by the One Big Beautiful Bill Act; itemizers only", bestFor: "Any eligible veteran/active-duty/qualifying spouse — the only $0-down, no-MI program at any credit tier", note: "Loan limits eliminated for full-entitlement borrowers since 2020 — still current in 2026. 21st Century ROAD to Housing Act (signed into law Jul 11, 2026): §601 adds a you-may-qualify-for-a-VA-loan notice to the Uniform Residential Loan Application (FHFA implementing order due within six months, i.e. by Jan 11, 2027) and §602 (VALID Act) makes FHA disclosures include a VA comparison — verified 2026-09-22, funding-fee tiers reconfirmed unchanged 2026-09-28", source: "VA.gov funding-fee page · VA News on the funding-fee deduction · Veterans United / VA Loan Network 2026 fee charts · Bipartisan Policy Center explainer + KFYR (Jul 11, 2026) on the ROAD to Housing Act — https://www.va.gov/housing-assistance/home-loans/funding-fee-and-closing-costs/ · https://news.va.gov/145096/borrowers-can-deduct-funding-fees/ · https://www.veteransunited.com/valoans/va-funding-fee/ · https://bipartisanpolicy.org/explainer/whats-in-the-21st-century-road-to-housing-act/ · https://www.kfyrtv.com/2026/07/11/bipartisan-va-home-loan-awareness-bill-becomes-law/ (verified 2026-09-22 via WebSearch)" },
     { key: "conventional", match: ["conforming", "conventional", "high balance"], label: "Conventional (Conforming)", minFico: "620 typical lender floor (Fannie DU risk-model changes reported loosening this — verify per-lender before quoting)", down: "3% (first-time/HomeReady/Home Possible) or 5% standard", maxDti: "Up to 45% standard, up to ~50% with strong compensating factors (reserves, high score, low LTV)", mi: "PMI required above 80% LTV; auto-terminates at 78% of original value (HPA); borrower can request cancellation at 80% LTV", bestFor: "680+ credit, 3–20% down — usually the lowest all-in cost for strong-credit borrowers", note: "2026 conforming limit: $832,750 baseline / $1,249,125 high-cost ceiling (FHFA, +3.26% YoY from $806,500). Your counties: San Diego $1,104,000 (intermediate tier — high-balance conforming from $832,751 to $1,104,000, jumbo above that), Riverside $832,750 (baseline — not a high-cost county) — verified 2026-09-22", source: "FHFA 2026 conforming-loan-limit release (Nov 25, 2025) · JVM Lending / Compass SD Housing Market / DiVita Home Finance 2026 California county tables — https://www.fhfa.gov/news/news-release/fhfa-announces-conforming-loan-limit-values-for-2026 · https://www.jvmlending.com/blog/california-conforming-loan-limits/ · https://sdhousingmarket.com/news/increased-conforming-loan-limits-san-diego-county-2026/ · https://mycahomeloan.com/2026-conforming-loan-limits-california/ (verified 2026-09-22 via WebSearch)" },
@@ -3429,15 +3468,16 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
      Lennar Q3 FY2026 results (Sep 16) https://investors.lennar.com/press-releases/2026/09-16-2026-213038087.
      2026-10-05: Perplexity, one of the tools that pass used, has been removed (Steven). The live note under
      these write-ups is written by the Claude builder-incentives routine and copied here from the Command Deck. */
-  var BUILDER_INCENTIVE_SYNCED_AT = "2026-09-22 13:05 UTC — a one-off web-research pass over the builders' own pages (search-indexed copies; no builder page could be opened directly from that session)";
+  var BUILDER_INCENTIVE_SYNCED_AT = "2026-10-12 — WebSearch only (Lennar, Tri Pointe, Richmond American and NewHomeSource pages are search-indexed copies; the builder sites themselves are blocked by this session's egress proxy). Every area write-up re-checked today; expired windows are named as expired rather than deleted.";
   var BUILDER_INCENTIVES = [
-    { area: "Temecula / Murrieta / Menifee / Winchester, CA", summary: "Re-researched 2026-09-22 from the builders' own pages. What is actually advertised right now: <b>D.R. Horton</b> — Southern California “Special Interest Rate on certain D.R. Horton homes”: FHA 30-yr fixed 4.990% (5.843% APR, 3.5% down) or conventional 30-yr fixed 5.500% (5.947% APR, 5% down), DHI Mortgage required, “must contract on or after 07/27/26 and close by 10/30/26”, funds limited — shown on Spring Creek (Menifee, page updated Sep 18), Juniper at Canterwood (Winchester, Sep 21), Sycamore at Canterwood (Winchester, Aug 23) and La Ventana (Winchester, Sep 17). <b>Lennar</b> — Inland Empire “Fall Super Savings 2026”: promotional FHA fixed 3.990% (4.748% APR) or promotional fixed 4.250% (4.501% APR) through Lennar Mortgage, but only for purchase agreements signed 09/14/26–09/20/26 closing by 10/31/26 — that window closed on Sep 20 and the next one had not posted on the Sep 18 page snapshot; Lennar's active Menifee community is Legado (low $500,000s), Quartz Trail shows no homes available. <b>Richmond American</b> — the Inland Empire offer page (updated Sep 2) showed a 5.508% APR permanent-buydown offer for agreements signed Sep 1–15, 2026 (expired; the spring version was “up to $60,000 promotional value” toward closing costs, a permanent buydown with HomeAmerican Mortgage, or a 2% price discount). <b>Meritage</b> — its “up to $20K to lower your rate + appliances &amp; blinds” SoCal page is still online, but its fine print is the Oct 1–20, 2024 event; no current Meritage offer for this submarket could be verified (Winchester alone has ~20–25 actively selling neighborhoods across 8 builders including Meritage, per a Sept 2026 local guide). <b>KB Home</b> and <b>Taylor Morrison</b> — no current SW-Riverside rate offer found (KB reports Q3 earnings today, Sep 22). NewHomeSource's Temecula “hot deals” index line still reads 8 builders / 30 communities, but the page itself could not be reached from this session, so that count is unverified. Context: the NAHB/Wells Fargo HMI for September 2026 fell to 32 (lowest in a year) with 66% of builders using incentives and 38% cutting prices (average cut 6%); Lennar's Q3 FY2026 results (Sep 16) put incentives at ~12.0% of a $372,000 average sales price. Pattern to brief clients on: sub-5% to 5.5% FHA/conventional promotional rates through the builder's own lender, sold in one-to-two-week signing windows with a hard closing date — ask the sales office for the current window before a client tours, and compare against the Optimal Blue averages on this page (VA 6.751%, conforming 7.038% as of Sep 18) before calling it a deal.", source: "D.R. Horton Spring Creek (Menifee) page, updated Sep 18, 2026 — the current SoCal special-rate offer; other pages listed in the code comment above", url: "https://www.drhorton.com/california/inland-empire/menifee/spring-creek" },
-    { area: "San Diego County, CA", summary: "Re-researched 2026-09-22 from the builders' own pages. <b>Lennar</b> — San Diego “Labor Day Sale 2026” page (published Sep 11, updated Sep 20): promotional conventional fixed loan with a temporary 2-1 buydown, 2.99% year 1 / 3.99% year 2 / 4.99% for the balance of the term (5.327% APR), Lennar Mortgage required, purchase agreements 09/14/26–09/20/26 closing by 11/30/26 — the signing window closed on Sep 20 while the page was still up; Lennar's San Diego-area communities on its site are Cota Vera (Chula Vista), The Row (San Marcos), Junipers (San Diego 92129), North River Farms (Oceanside) and Creekside Crossing (Ramona). <b>D.R. Horton</b> — Tesoro Square (Escondido, page updated Sep 20) carries the same Southern California special rate as the Inland Empire: FHA 30-yr fixed 4.990% (5.843% APR) or conventional 5.500% (5.947% APR), DHI Mortgage required, contract on or after 07/27/26 and close by 10/30/26. <b>Richmond American</b> — its Los Angeles/San Diego offer page (updated Sep 19) says up to $35,000 promotional value toward closing costs, a permanent buydown with HomeAmerican Mortgage, or a 2% price discount, with no signing window shown in the extract. KB Home, Taylor Morrison, Meritage, Shea, Pardee/Tri Pointe, Toll Brothers and Brookfield — no current, dated San Diego County rate offer could be verified today. NewHomeSource's San Diego index line lists 66 builders / 131 communities / 430 homes (page not reachable from here). No September 2026 study of the builder-lender vs. market-rate gap was found: the Sep 2 pass's figures (Aug 2026 builder-affiliated ~5.23% vs ~6.60% non-builder; Lennar FY2025 incentives $62,700/home, 13.8% of revenue) were NOT re-verified 2026-09-22 and are kept only as that pass's context — the fresh comparable is Lennar's Q3 FY2026 ~12.0% incentive load (Sep 16). Against Optimal Blue's Sep 18 averages on this page (VA 6.751%, conforming 7.038%), the advertised 4.99–5.50% builder rates are a 1.5–2 point subsidy — real, but only through the builder's lender and only inside the posted window, so never repeat one to a client as a market rate.", source: "Lennar San Diego “Labor Day Sale 2026” promo page, updated Sep 20, 2026; D.R. Horton Tesoro Square and the other pages are listed in the code comment above", url: "https://www.lennar.com/new-homes/california/san-diego/promo/sdglen_fss26" }
+    { area: "Temecula, CA", summary: "Re-checked 2026-10-12 (WebSearch only; builder sites are egress-blocked here). No builder promotion dated October 2026 for Temecula surfaced. Richmond American opened Crestview, Goldenview Estates and Sablewood at Sommers Bend on March 10, 2026 (PR Newswire); NewHomeSource community pages list Crestview from $794,902 and Goldenview from $1,649,000 with a generic 'up to $60K in Flex Funds' offer that is undated and unverified for October. Lennar's greater-Inland-Empire promos (next row) may or may not cover Temecula — confirm at the sales office.", source: "NewHomeSource / PR Newswire (Richmond American)", url: "https://www.newhomesource.com/community/ca/temecula/crestview-at-sommers-bend-by-richmond-american/212847" },
+    { area: "Murrieta / Menifee / Winchester, CA", summary: "Re-checked 2026-10-12. Lennar's Inland Empire Broker Loyalty Referral Program pays agents $10K/$14K/$18K (up to $42K) for 1st/2nd/3rd closings on select homes under purchase agreements signed 03/24/26-02/15/27 and funded by 02/28/27; a separate undated Lennar IE page advertises a promotional FHA fixed 4.375% (5.124% APR) or conventional 4.625% (4.873% APR) requiring Lennar Mortgage. Tri Pointe's Inland Empire & San Diego broker program pays up to 2.5% on select move-in-ready homes closing before 12/30/26 (new contracts, agent on first visit). KB Home's site-wide rate-buydown page carried an 8/31/26 signing deadline (lapsed); no D.R. Horton Menifee or Richmond American Winchester October offer was found.", source: "Lennar.com Inland Empire promo pages; TriPointeHomes.com", url: "https://www.lennar.com/new-homes/california/inland-empire/promo/inllen_broker_inventory" },
+    { area: "San Diego, CA", summary: "Re-checked 2026-10-12. Lennar San Diego's 'Hot Homes of the Week' realtor promo offered a 3% broker bonus when a client signed on a select greater-San Diego new home between 09/30/26 and 10/11/26 and closes by 11/30/26 — that window closed Oct 11; check for the next weekly refresh. Lennar's SD conventional temporary buydown (3.99% yr 1 / 4.99% thereafter, 5.381% APR, Lennar Mortgage required) had a 09/28/26-10/04/26 signing window and is expired. Tri Pointe's up-to-2.5% broker referral on move-in-ready homes closing before 12/30/26 also covers San Diego communities.", source: "Lennar.com San Diego promo pages; TriPointeHomes.com", url: "https://www.lennar.com/new-homes/california/san-diego/promo/sdglen_hotw_realtor" },
   ];
   function renderBuilderIncentives() {
-    $("builderIncentiveSyncNote").textContent = "Two hand-researched area write-ups plus a live note that refreshes daily \u2014 each carries its own date below.";
+    $("builderIncentiveSyncNote").textContent = "Three hand-researched area write-ups plus a live note that refreshes daily \u2014 each carries its own date below.";
     var wrap = $("builderIncentiveRows");
-    wrap.innerHTML = '<p class="src-note" style="margin:0 0 8px;">The two area write-ups below are a hand snapshot researched ' + chatEsc(BUILDER_INCENTIVE_SYNCED_AT) + " (" + isaDaysSince(BUILDER_INCENTIVE_SYNCED_AT) + ") and do not refresh. Signing windows in them may have closed since; confirm the buydown, the window and the closing date with the sales office before anything reaches a client. The dated note underneath them is the part that refreshes.</p>";
+    wrap.innerHTML = '<p class="src-note" style="margin:0 0 8px;">The three area write-ups below are a hand snapshot researched ' + chatEsc(BUILDER_INCENTIVE_SYNCED_AT) + " (" + isaDaysSince(BUILDER_INCENTIVE_SYNCED_AT) + ") and do not refresh. Signing windows in them may have closed since; confirm the buydown, the window and the closing date with the sales office before anything reaches a client. The dated note underneath them is the part that refreshes.</p>";
     BUILDER_INCENTIVES.forEach(function (b, i) {
       var div = document.createElement("div");
       div.style.padding = "10px 0";
@@ -5237,6 +5277,86 @@ tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 35%,transparen
   safeRun(renderIsaPanelStamps, "renderIsaPanelStamps");
 
 })();
+
+  /* ================= WAVE 2 POLISH — reveal, count-up, reading progress =================
+     Guarded end to end: no IntersectionObserver, no requestAnimationFrame, reduced motion or a pure-Node DOM shim
+     all leave the page exactly as it was. Nothing here touches data or any existing render function. */
+  (function w2Polish() {
+    try {
+      if (typeof document === "undefined" || !document.documentElement || typeof window === "undefined") return;
+      var reduce = false;
+      try { reduce = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); } catch (e0) {}
+      if (reduce || typeof IntersectionObserver === "undefined") return;
+      var SEL = ".card, .stat, .kanban-col, .tk-tile";
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          en.target.className += " w2-in";
+          io.unobserve(en.target);
+          w2Count(en.target);
+        });
+      }, { rootMargin: "0px 0px -6% 0px", threshold: 0.05 });
+      /* Above-the-fold items are marked visible BEFORE the hide rule exists, so nothing flickers and a page thumbnail
+         or a print never catches a faded card; only items below the fold wait for the scroll reveal. */
+      function w2Observe(root, initial) {
+        var els = []; if (!root || !root.querySelectorAll) return;
+        if (root.matches && root.matches(SEL)) els.push(root);
+        Array.prototype.forEach.call(root.querySelectorAll(SEL), function (el) { els.push(el); });
+        var vh = window.innerHeight || 800;
+        els.forEach(function (el) {
+          if (el.className.indexOf("w2-seen") !== -1) return;
+          el.className += " w2-seen";
+          if (initial && el.getBoundingClientRect().top < vh * 1.05) { el.className += " w2-in"; return; }
+          io.observe(el);
+        });
+      }
+      w2Observe(document, true);
+      document.documentElement.className += " w2-js";
+      window.addEventListener("beforeprint", function () { Array.prototype.forEach.call(document.querySelectorAll(SEL), function (el) { if (el.className.indexOf("w2-in") === -1) el.className += " w2-in"; }); });
+      /* count-up for plain numbers only; the real text is restored at the end */
+      var NUM = /^(\$?)(\d{1,3}(?:,\d{3})*|\d+)(\.\d+)?(%?)$/;
+      function w2Count(card) {
+        if (!card.querySelectorAll) return;
+        Array.prototype.forEach.call(card.querySelectorAll(".stat-value, .es-num, .tk-tile b"), function (n) {
+          if (n.getAttribute("data-w2")) return;
+          var txt = (n.textContent || "").trim(), m = NUM.exec(txt);
+          if (!m || txt.length > 12) return;
+          n.setAttribute("data-w2", "1");
+          var target = parseFloat(txt.replace(/[$,%]/g, "")), dec = m[3] ? m[3].length - 1 : 0, t0 = null, dur = 700;
+          if (!isFinite(target) || target === 0) return;
+          function step(ts) {
+            if (t0 === null) t0 = ts;
+            var p = Math.min(1, (ts - t0) / dur), e = 1 - Math.pow(1 - p, 3), v = target * e;
+            if (p < 1 && n.textContent.trim() !== txt && n.getAttribute("data-w2") === "done") return;
+            n.textContent = p >= 1 ? txt : m[1] + (dec ? v.toFixed(dec) : Math.round(v).toLocaleString("en-US")) + m[4];
+            if (p < 1) requestAnimationFrame(step); else n.setAttribute("data-w2", "done");
+          }
+          if (typeof requestAnimationFrame === "function") requestAnimationFrame(step);
+        });
+      }
+      /* New cards appear when pages switch or panels render later. Only the nodes that were ADDED are scanned (never the
+         whole document), and a ticking clock or any text-only change is ignored, so a 4.6 MB deck pays almost nothing. */
+      if (typeof MutationObserver !== "undefined") {
+        var queue = [], pending = false;
+        new MutationObserver(function (recs) {
+          recs.forEach(function (r) { Array.prototype.forEach.call(r.addedNodes, function (n) { if (n.nodeType === 1 && queue.length < 300) queue.push(n); }); });
+          if (pending || !queue.length) return; pending = true;
+          setTimeout(function () { pending = false; var q = queue.splice(0, queue.length); q.forEach(function (n) { w2Observe(n, false); }); }, 150);
+        }).observe(document.body, { childList: true, subtree: true });
+      }
+      var bar = document.createElement("div"); bar.id = "w2Progress"; bar.setAttribute("aria-hidden", "true"); document.body.appendChild(bar);
+      var ticking = false;
+      window.addEventListener("scroll", function () {
+        if (ticking) return; ticking = true;
+        requestAnimationFrame(function () {
+          ticking = false;
+          var h = document.documentElement.scrollHeight - window.innerHeight;
+          bar.style.setProperty("--w2p", String(h > 0 ? Math.min(1, Math.max(0, window.scrollY / h)) : 0));
+        });
+      }, { passive: true });
+    } catch (e) { try { console.warn("[w2Polish] skipped: " + (e && e.message)); } catch (e2) {} }
+  })();
+
 </script>
 
 </body></html>

@@ -261,16 +261,16 @@ footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);color:v
   <div class="step hero" data-id="A"><div class="n">A</div><div class="body">
     <p class="t">Mac 1, then Mac 2 · one paste each · about 20 minutes, mostly waiting</p>
     <p class="d">Press Command + Space, type <b>Terminal</b>, press Enter. Click Copy below, paste into the Terminal window, press Enter, answer <b>y</b>. If it says the Repo folder is not there: <code>git clone https://github.com/chitown034/Repo.git ~/Repo</code> first, then paste the line again.</p>
-    <div class="acts"><code>cd ~/Repo &amp;&amp; git fetch origin &amp;&amp; git checkout claude/gracious-newton-4hpfco &amp;&amp; git pull &amp;&amp; bash go.sh</code><button class="btn" data-copy="cd ~/Repo &amp;&amp; git fetch origin &amp;&amp; git checkout claude/gracious-newton-4hpfco &amp;&amp; git pull &amp;&amp; bash go.sh">Copy</button>
+    <div class="acts"><code>cd ~/Repo &amp;&amp; git fetch origin &amp;&amp; git checkout claude/stoic-cori-pvn3f8 &amp;&amp; git pull &amp;&amp; bash go.sh</code><button class="btn" data-copy="cd ~/Repo &amp;&amp; git fetch origin &amp;&amp; git checkout claude/stoic-cori-pvn3f8 &amp;&amp; git pull &amp;&amp; bash go.sh">Copy</button>
     </div>
     <p class="d alt"><b>Easier:</b> if the Claude app is on that Mac, open it, start a Claude Code session, and paste this prompt instead. Claude on that Mac then does the whole paste for you and reads the report back.</p>
-    <div class="acts"><code>Open the folder ~/Repo (clone https://github.com/chitown034/Repo.git there if it is missing), switch to branch claude/gracious-newton-4hpfco, pull, then run bash go.sh and answer y to its one question. It connects Laya, Orca and Jarvis and turns on the Agent OS as in wiki/ai-team/agent-os.md. Do not sign in to anything, do not pair Orca, do not store any key. When it finishes, show me the REPORT block and tell me in five plain lines what still needs me.</code><button class="btn" data-copy="Open the folder ~/Repo (clone https://github.com/chitown034/Repo.git there if it is missing), switch to branch claude/gracious-newton-4hpfco, pull, then run bash go.sh and answer y to its one question. It connects Laya, Orca and Jarvis and turns on the Agent OS as in wiki/ai-team/agent-os.md. Do not sign in to anything, do not pair Orca, do not store any key. When it finishes, show me the REPORT block and tell me in five plain lines what still needs me.">Copy prompt</button>
+    <div class="acts"><code>Open the folder ~/Repo (clone https://github.com/chitown034/Repo.git there if it is missing), switch to branch claude/stoic-cori-pvn3f8, pull, then run bash go.sh and answer y to its one question. It connects Laya, Orca and Jarvis and turns on the Agent OS as in wiki/ai-team/agent-os.md. Do not sign in to anything, do not pair Orca, do not store any key. When it finishes, show me the REPORT block and tell me in five plain lines what still needs me.</code><button class="btn" data-copy="Open the folder ~/Repo (clone https://github.com/chitown034/Repo.git there if it is missing), switch to branch claude/stoic-cori-pvn3f8, pull, then run bash go.sh and answer y to its one question. It connects Laya, Orca and Jarvis and turns on the Agent OS as in wiki/ai-team/agent-os.md. Do not sign in to anything, do not pair Orca, do not store any key. When it finishes, show me the REPORT block and tell me in five plain lines what still needs me.">Copy prompt</button>
       <label class="tick"><input type="checkbox" id="sA1">Mac 1 done</label><label class="tick"><input type="checkbox" id="sA2">Mac 2 done</label></div></div></div>
 
   <div class="step hero" data-id="B"><div class="n">B</div><div class="body">
     <p class="t">Alienware PC · one paste · about 30 minutes (it downloads the local AI model)</p>
     <p class="d">Click Start, type <b>PowerShell</b>, press Enter. Copy, paste, Enter, answer <b>y</b>. If the Repo folder is not there: <code>git clone https://github.com/chitown034/Repo.git $HOME\Repo</code> first (needs Git for Windows and Python 3.10+ installed).</p>
-    <div class="acts"><code>cd $HOME\Repo; git fetch origin; git checkout claude/gracious-newton-4hpfco; git pull; powershell -ExecutionPolicy Bypass -File go.ps1</code><button class="btn" data-copy="cd $HOME\Repo; git fetch origin; git checkout claude/gracious-newton-4hpfco; git pull; powershell -ExecutionPolicy Bypass -File go.ps1">Copy</button>
+    <div class="acts"><code>cd $HOME\Repo; git fetch origin; git checkout claude/stoic-cori-pvn3f8; git pull; powershell -ExecutionPolicy Bypass -File go.ps1</code><button class="btn" data-copy="cd $HOME\Repo; git fetch origin; git checkout claude/stoic-cori-pvn3f8; git pull; powershell -ExecutionPolicy Bypass -File go.ps1">Copy</button>
       <label class="tick"><input type="checkbox" id="sB">Done</label></div></div></div>
 
   <div class="step hero" data-id="C"><div class="n">C</div><div class="body">
@@ -340,8 +340,8 @@ footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);color:v
 
   <div class="step" data-id="6"><div class="n">6</div><div class="body">
     <p class="t">Switch to the branch that holds today&#x27;s files</p>
-    <p class="d">The new scripts are on the branch claude/gracious-newton-4hpfco, not the repo&#x27;s default branch, so a plain git pull misses them. If it complains about changes you made, stop and tell Claude; do not discard them. The last line should print the file name.</p>
-    <div class="acts"><code>git fetch origin &amp;&amp; git checkout claude/gracious-newton-4hpfco &amp;&amp; git pull &amp;&amp; ls mac-bootstrap.sh</code><button class="btn" data-copy="git fetch origin &amp;&amp; git checkout claude/gracious-newton-4hpfco &amp;&amp; git pull &amp;&amp; ls mac-bootstrap.sh">Copy</button>
+    <p class="d">The new scripts are on the branch claude/stoic-cori-pvn3f8, not the repo&#x27;s default branch, so a plain git pull misses them. If it complains about changes you made, stop and tell Claude; do not discard them. The last line should print the file name.</p>
+    <div class="acts"><code>git fetch origin &amp;&amp; git checkout claude/stoic-cori-pvn3f8 &amp;&amp; git pull &amp;&amp; ls mac-bootstrap.sh</code><button class="btn" data-copy="git fetch origin &amp;&amp; git checkout claude/stoic-cori-pvn3f8 &amp;&amp; git pull &amp;&amp; ls mac-bootstrap.sh">Copy</button>
       <label class="tick"><input type="checkbox" id="s6">Done</label></div></div></div>
 
   <div class="step" data-id="7"><div class="n">7</div><div class="body">
@@ -389,7 +389,7 @@ bash integrations/remote-control/orca-remote.sh report">Copy</button>
   <div class="step" data-id="11"><div class="n">11</div><div class="body">
     <p class="t">Turn on Claude Mods (one command)</p>
     <p class="d">Five mods are built, checked and ready: a status line showing which AI route you are on, a Proceed/Cancel guard before any send, share or payment, /remember to save a rule into the brain, Blast Radius, and /replay to review Claude&#x27;s edits. Run this in Terminal from your Repo folder, type y once, then open a new Claude Code session. To turn them all off later: add --off.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/mods/RECOMMENDATIONS.md" target="_blank" rel="noopener">What each mod does</a>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mods/RECOMMENDATIONS.md" target="_blank" rel="noopener">What each mod does</a>
       <code>git pull &amp;&amp; bash integrations/mods/install-mods.sh</code><button class="btn" data-copy="git pull &amp;&amp; bash integrations/mods/install-mods.sh">Copy</button>
       <label class="tick"><input type="checkbox" id="s11">Done</label></div></div></div>
 
@@ -445,14 +445,14 @@ bash integrations/remote-control/orca-remote.sh report">Copy</button>
   <div class="step" data-id="19"><div class="n">19</div><div class="body">
     <p class="t">Send three short messages</p>
     <p class="d">(1) Ticor: ask your Ticor Title Sales Executive or Customer Service whether an API or bulk export of Ticor Property Data exists and on what terms. (2) CRMLS: your broker (LPT) applies for the RESO Web API data licence at licensing@crmls.org; there will be no scraper. (3) Dotloop: apply for developer / partner access at info.dotloop.com/developers. Each is your signature, so Claude only drafted them.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/CONNECT-PLAN-2026-10-09.md" target="_blank" rel="noopener">Open the drafts</a>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/CONNECT-PLAN-2026-10-09.md" target="_blank" rel="noopener">Open the drafts</a>
       <a class="btn" href="https://ticorpropertydata.com/" target="_blank" rel="noopener">Ticor Property Data</a>
       <label class="tick"><input type="checkbox" id="s19">Done</label></div></div></div>
 
   <div class="step" data-id="20"><div class="n">20</div><div class="body">
     <p class="t">Optional: switch on the free-then-paid failover</p>
     <p class="d">Claude subscription first; when it runs out, OmniRoute free models take over at once; OpenRouter is the paid third tier, capped at $25 a month, and stays off until you do this. Create an OpenRouter key yourself, set the key&#x27;s own credit limit to $25, load no more than $25, then follow the Three-tier failover steps. It returns to Claude by itself when the allowance resets.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/omniroute-failover/README.md" target="_blank" rel="noopener">Open the steps</a>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/omniroute-failover/README.md" target="_blank" rel="noopener">Open the steps</a>
       <a class="btn" href="https://openrouter.ai/" target="_blank" rel="noopener">OpenRouter</a>
       <label class="tick"><input type="checkbox" id="s20">Done</label></div></div></div>
   </div>
@@ -463,7 +463,7 @@ bash integrations/remote-control/orca-remote.sh report">Copy</button>
   <div class="step" data-id="21"><div class="n">21</div><div class="body">
     <p class="t">Decide the AI Steve video replica (plan is ready)</p>
     <p class="d">context.dev is connected. The weekly real-estate and loan-officer video plan is in integrations/ai-replica-studio/PLAN.md. To start Claude needs five answers: (1) which avatar provider, or none yet (HeyGen works through Composio but is paid and not connected; the CAM page was not applied to and its price is not published); (2) built-in voice or a cloned voice on your own ElevenLabs account; (3) platforms and cadence (assumed one of each a week to Facebook, Instagram, LinkedIn, YouTube); (4) LPT Realty&#x27;s brokerage DRE number and name plus your personal NMLS ID for the disclosure line; (5) whether the three social timers run as a routine or through Buffer. You record your own consent and samples; nothing posts without your approval each week.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/ai-replica-studio/PLAN.md" target="_blank" rel="noopener">Read the plan</a>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/ai-replica-studio/PLAN.md" target="_blank" rel="noopener">Read the plan</a>
       <code>replica: provider ______ · voice ______ · cadence 1+1/week · LPT DRE ______ · NMLS ID ______ · timers routine/Buffer</code><button class="btn" data-copy="replica: provider ______ · voice ______ · cadence 1+1/week · LPT DRE ______ · NMLS ID ______ · timers routine/Buffer">Copy</button>
       <label class="tick"><input type="checkbox" id="s21">Done</label></div></div></div>
 
@@ -480,7 +480,7 @@ bash integrations/remote-control/orca-remote.sh report">Copy</button>
   <div class="step" data-id="23"><div class="n">23</div><div class="body">
     <p class="t">Check Jarvis, Laya and Vanessa&#x27;s voice on your Mac</p>
     <p class="d">One command checks Jarvis&#x27;s memory, the real Laya model, the vault, Vanessa&#x27;s recorded voice clips and the brain, and says the one thing to fix for each. It changes only a voice-profile copy in ~/.config/jarvis. Then the brain&#x27;s own self-check runs. Paste the last lines back and Claude updates the dashboards.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/jarvis/README.md" target="_blank" rel="noopener">What it checks</a>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/jarvis/README.md" target="_blank" rel="noopener">What it checks</a>
       <code>cd ~/Projects/Repo 2&gt;/dev/null || cd &quot;$(dirname &quot;$(find ~ -maxdepth 5 -name mac-bootstrap.sh 2&gt;/dev/null | head -1)&quot;)&quot;; git pull &amp;&amp; bash integrations/jarvis/jarvis-setup.sh --apply; bin/brain loop | head -20</code><button class="btn" data-copy="cd ~/Projects/Repo 2&gt;/dev/null || cd &quot;$(dirname &quot;$(find ~ -maxdepth 5 -name mac-bootstrap.sh 2&gt;/dev/null | head -1)&quot;)&quot;; git pull &amp;&amp; bash integrations/jarvis/jarvis-setup.sh --apply; bin/brain loop | head -20">Copy</button>
       <label class="tick"><input type="checkbox" id="s23">Done</label></div></div></div>
   </div>
@@ -493,7 +493,7 @@ bash integrations/remote-control/orca-remote.sh report">Copy</button>
     <p class="d">Installs agent-browser and Playwright for Claude Code and copies four skills. Ends with a self-test that types an address into a test page and clicks Search. It asks y/N before each change. Paste the last lines back to Claude.</p>
     <div class="acts"><code>bash integrations/browser-agents/install.sh --dry-run
 bash integrations/browser-agents/install.sh</code><button class="btn" data-copy="bash integrations/browser-agents/install.sh --dry-run
-bash integrations/browser-agents/install.sh">Copy</button><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/browser-agents/README.md" target="_blank" rel="noopener">What it does</a>
+bash integrations/browser-agents/install.sh">Copy</button><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/browser-agents/README.md" target="_blank" rel="noopener">What it does</a>
       <label class="tick"><input type="checkbox" id="s24">Done</label></div></div></div>
 
   <div class="step" data-id="25"><div class="n">25</div><div class="body">
@@ -501,19 +501,19 @@ bash integrations/browser-agents/install.sh">Copy</button><a class="btn" href="h
     <p class="d">Instagram, LinkedIn and YouTube drafting skills, vidIQ workflow skills, the /watch video reader, founder skills, yt-dlp, ffmpeg and Whisper. Each was read first; each asks y/N. Nothing posts or sends. Four items are held on purpose (Jev, Apify, Skool, Remotion): the registry says why.</p>
     <div class="acts"><code>bash integrations/skill-packs/install-mac.sh --dry-run
 bash integrations/skill-packs/install-mac.sh</code><button class="btn" data-copy="bash integrations/skill-packs/install-mac.sh --dry-run
-bash integrations/skill-packs/install-mac.sh">Copy</button><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/skill-packs/REGISTRY-2026-10-11.md" target="_blank" rel="noopener">What I found in each repo</a>
+bash integrations/skill-packs/install-mac.sh">Copy</button><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/skill-packs/REGISTRY-2026-10-11.md" target="_blank" rel="noopener">What I found in each repo</a>
       <label class="tick"><input type="checkbox" id="s25">Done</label></div></div></div>
 
   <div class="step" data-id="26"><div class="n">26</div><div class="body">
     <p class="t">Set up the Alienware PC (Windows, 20 minutes)</p>
-    <p class="d">On the Alienware: press Start, type PowerShell, open it (not as administrator). Get the repo (git clone https://github.com/chitown034/Repo.git, then cd Repo and git checkout claude/gracious-newton-4hpfco). First run the read-only check, then the install; it asks y/N before each change. It sets up Orca, Laya, Bonsai 2 27B, and optionally Ollama, AnyDesk and Tailscale. It has never run on Windows, so send Claude any error word for word. Paste the one status line it prints into the Computer Hub card.</p>
+    <p class="d">On the Alienware: press Start, type PowerShell, open it (not as administrator). Get the repo (git clone https://github.com/chitown034/Repo.git, then cd Repo and git checkout claude/stoic-cori-pvn3f8). First run the read-only check, then the install; it asks y/N before each change. It sets up Orca, Laya, Bonsai 2 27B, and optionally Ollama, AnyDesk and Tailscale. It has never run on Windows, so send Claude any error word for word. Paste the one status line it prints into the Computer Hub card.</p>
     <div class="acts"><code>Set-ExecutionPolicy RemoteSigned -Scope Process
 .\integrations\alienware\alienware-setup.ps1 -Action Doctor
 .\integrations\alienware\alienware-setup.ps1 -Action Install -DryRun
 .\integrations\alienware\alienware-setup.ps1 -Action Install</code><button class="btn" data-copy="Set-ExecutionPolicy RemoteSigned -Scope Process
 .\integrations\alienware\alienware-setup.ps1 -Action Doctor
 .\integrations\alienware\alienware-setup.ps1 -Action Install -DryRun
-.\integrations\alienware\alienware-setup.ps1 -Action Install">Copy</button><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/alienware/README.md" target="_blank" rel="noopener">Plain-English guide</a>
+.\integrations\alienware\alienware-setup.ps1 -Action Install">Copy</button><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/alienware/README.md" target="_blank" rel="noopener">Plain-English guide</a>
       <label class="tick"><input type="checkbox" id="s26">Done</label></div></div></div>
 
   <div class="step" data-id="27"><div class="n">27</div><div class="body">
@@ -536,7 +536,7 @@ bash integrations/skill-packs/install-mac.sh">Copy</button><a class="btn" href="
   <div class="step" data-id="30"><div class="n">30</div><div class="body">
     <p class="t">Send the ARIVE API email (your signature)</p>
     <p class="d">Claude drafted a 5-line email asking ARIVE about API access. Claude cannot verify what ARIVE offers or charges. The Zoho, SkySlope, Dotloop and Ticor steps are in the same file.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/loan-stack/CONNECTIONS.md" target="_blank" rel="noopener">Open the drafts and the 8 steps</a>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/loan-stack/CONNECTIONS.md" target="_blank" rel="noopener">Open the drafts and the 8 steps</a>
       <label class="tick"><input type="checkbox" id="s30">Done</label></div></div></div>
 
   <div class="step" data-id="31"><div class="n">31</div><div class="body">
@@ -550,13 +550,13 @@ bash integrations/skill-packs/install-mac.sh">Copy</button><a class="btn" href="
     <p class="d">The weekly events scout could reach none of its 36 sources from the cloud, so run it once on a Mac with internet. The trading research desk is paper-only and needs your own historical price file (CSV) to do real research; until then it only proves the plumbing.</p>
     <div class="acts"><code>python3 integrations/events/events_scout.py
 cd integrations/trading-desk &amp;&amp; python3 -m desk selftest</code><button class="btn" data-copy="python3 integrations/events/events_scout.py
-cd integrations/trading-desk &amp;&amp; python3 -m desk selftest">Copy</button><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/trading-desk/README.md" target="_blank" rel="noopener">Trading desk guide</a>
+cd integrations/trading-desk &amp;&amp; python3 -m desk selftest">Copy</button><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/trading-desk/README.md" target="_blank" rel="noopener">Trading desk guide</a>
       <label class="tick"><input type="checkbox" id="s32">Done</label></div></div></div>
 
   <div class="step" data-id="33"><div class="n">33</div><div class="body">
     <p class="t">Turn on the Agent OS on each computer (Mac 1, Mac 2, Alienware)</p>
     <p class="d">This lets all 172 agents run through Laya (picks the lane), Jarvis (recalls first) and Orca (runs them side by side). On each Mac: open Terminal, paste the line below, press Enter. It only checks and links two small files; each warning names the one thing to install. On the Alienware, open PowerShell and use the Windows line in the guide. Not yet run on any of your computers.</p>
-    <div class="acts"><code>cd ~/Repo &amp;&amp; git fetch origin &amp;&amp; git checkout claude/gracious-newton-4hpfco &amp;&amp; git pull &amp;&amp; bash integrations/agent-os/install-mac.sh --apply</code><button class="btn" data-copy="cd ~/Repo && git fetch origin && git checkout claude/gracious-newton-4hpfco && git pull && bash integrations/agent-os/install-mac.sh --apply">Copy</button><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/agent-os/README.md" target="_blank" rel="noopener">Guide (Mac + Windows)</a>
+    <div class="acts"><code>cd ~/Repo &amp;&amp; git fetch origin &amp;&amp; git checkout claude/stoic-cori-pvn3f8 &amp;&amp; git pull &amp;&amp; bash integrations/agent-os/install-mac.sh --apply</code><button class="btn" data-copy="cd ~/Repo && git fetch origin && git checkout claude/stoic-cori-pvn3f8 && git pull && bash integrations/agent-os/install-mac.sh --apply">Copy</button><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/agent-os/README.md" target="_blank" rel="noopener">Guide (Mac + Windows)</a>
       <label class="tick"><input type="checkbox" id="s33">Done</label></div></div></div>
 
   <div class="step" data-id="34"><div class="n">34</div><div class="body">

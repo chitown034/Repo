@@ -33,7 +33,9 @@ cat > "$BIN/claude" <<'STUB'
 auth=unset; [ -n "${ANTHROPIC_AUTH_TOKEN:-}" ] && { auth=other; [ "$ANTHROPIC_AUTH_TOKEN" = "$TEST_OR_KEY" ] && auth=or-key; }
 api=unset; [ "${ANTHROPIC_API_KEY+x}" = x ] && { api=set; [ -z "$ANTHROPIC_API_KEY" ] && api=empty; }
 printf 'BASE=%s AUTH=%s APIKEY=%s MODEL=%s OAUTH=%s ROUTE=%s IFREE=%s ARGS=%s\n' "${ANTHROPIC_BASE_URL:-unset}" "$auth" "$api" "${ANTHROPIC_MODEL:-unset}" "${CLAUDE_CODE_OAUTH_TOKEN:+set}" "${VANESSA_ROUTE_MODE:-unset}" "${VANESSA_INTERACTIVE_FREE:-}" "$*" >> "$STUBROOT/calls.log"
-case "${STUB_MODE:-ok}" in
+mode="${STUB_MODE:-ok}"
+if [ -s "$STUBROOT/stub_seq" ]; then mode=$(head -1 "$STUBROOT/stub_seq"); sed -i.bak 1d "$STUBROOT/stub_seq"; fi
+case "$mode" in
   limit)   echo '{"type":"result","subtype":"error","is_error":true,"result":"Claude AI usage limit reached"}'; exit 1 ;;
   exhaust) echo '{"type":"result","subtype":"error","is_error":true,"result":"All providers exhausted for combo auto/coding:free"}'; exit 1 ;;
   *)       echo '{"type":"result","subtype":"success","is_error":false,"result":"OK"}'; exit 0 ;;
@@ -56,7 +58,7 @@ export PATH="$BIN:$PATH"
 
 # ------------------------------------------------------------------ helpers
 fresh() { # wipe all state; write the omniroute key file; omni up
-  rm -rf "$HOME/.config" "$HOME/.local" "$HOME/Library" "$HOME/Applications" "$ROOT/no_healthz" "$ROOT/launchctl.log" "$ROOT/calls.log" "$ROOT/curl.log" "$ROOT/keyjson"
+  rm -rf "$ROOT/stub_seq" "$HOME/.claude" "$HOME/.config" "$HOME/.local" "$HOME/Library" "$HOME/Applications" "$ROOT/no_healthz" "$ROOT/launchctl.log" "$ROOT/calls.log" "$ROOT/curl.log" "$ROOT/keyjson"
   mkdir -p "$OCFG" && printf 'OMNIROUTE_API_KEY=not-a-real-omni-key\n' > "$OCFG/.env" && chmod 600 "$OCFG/.env"
   : > "$ROOT/omni_up"; : > "$ROOT/calls.log"; : > "$ROOT/curl.log"
   unset STUB_MODE OMNIROUTE_FREE_RETRY OMNIROUTE_FREE_FAIL_N OPENROUTER_HEADROOM_USD
@@ -468,6 +470,50 @@ eq "a non-client task name is allowed" "$RC" 0
 fresh; set_route free-fallback
 printf '' | script -qec "$AUTO --no-lease" "$ROOT/typescript" >/dev/null 2>&1; RC=$?
 eq "DEFAULT OFF: plain interactive on the free route is still deferred" "$RC" 75; eq "no claude call" "$(calls)" 0
+
+sect "--keep-going: Claude -> OmniRoute free at the limit -> Claude again, same conversation"
+kpty() { # typed-lines args… (lines separated by |)
+  _t="$1"; shift
+  printf '%s\n' "$_t" | tr '|' '\n' | script -qec "$AUTO --no-lease $*" "$ROOT/typescript" >/dev/null 2>&1; RC=$?
+}
+fresh; set_route subscription
+kpty q --keep-going
+eq "off until auto-continue exists (77)" "$RC" 77; eq "no claude call" "$(calls)" 0
+fresh; set_route subscription; : > "$OCFG/auto-continue"
+printf 'ok\nok\n' > "$ROOT/stub_seq"
+kpty q --keep-going
+eq "subscription usable: quits cleanly" "$RC" 0
+eq "probe + one session" "$(calls)" 2
+has "session on the subscription (no proxy)" "$(lastcall)" "BASE=unset"
+hasnt "first leg is not --continue" "$(lastcall)" "--continue"
+fresh; set_route subscription; : > "$OCFG/auto-continue"
+printf 'limit\nok\nok\nok\n' > "$ROOT/stub_seq"
+kpty "|q" --keep-going
+eq "limit then reset: rc 0" "$RC" 0
+L2=$(sed -n 2p "$ROOT/calls.log"); L4=$(sed -n 4p "$ROOT/calls.log")
+has "at the limit the session runs on OmniRoute" "$L2" "BASE=http://127.0.0.1:20128"
+has "free leg carries the guard hook" "$L2" "--settings $STATE/interactive-free-settings.json"
+has "after reset: back on the subscription" "$L4" "BASE=unset"
+has "after reset: same conversation (--continue)" "$L4" "--continue"
+fresh; set_route subscription; : > "$OCFG/auto-continue"
+printf 'ok\nok\nlimit\nok\n' > "$ROOT/stub_seq"
+kpty "|q" --keep-going
+L4=$(sed -n 4p "$ROOT/calls.log")
+has "limit mid-day: next leg on OmniRoute" "$L4" "BASE=http://127.0.0.1:20128"
+has "and it continues the same conversation" "$L4" "--continue"
+has "route recorded as free-fallback" "$(cat "$STATE/mode")" "free-fallback"
+fresh; set_route subscription; : > "$OCFG/auto-continue"
+PD="$HOME/.claude/projects/$(printf '%s' "$PWD" | sed 's#[/.]#-#g')"; mkdir -p "$PD"
+printf '{"message":"borrower file for the Lofty lead"}\n' > "$PD/s.jsonl"
+printf 'ok\nok\nlimit\nok\n' > "$ROOT/stub_seq"
+kpty "|q" --keep-going
+L4=$(sed -n 4p "$ROOT/calls.log")
+has "client-data transcript: still free route" "$L4" "BASE=http://127.0.0.1:20128"
+hasnt "but a NEW conversation, not --continue" "$L4" "--continue"
+fresh; set_route subscription; : > "$OCFG/auto-continue"; omni_down
+printf 'limit\nok\nok\n' > "$ROOT/stub_seq"
+kpty "q" --keep-going
+eq "limit + OmniRoute down: only the probe ran" "$(calls)" 1
 unset CLAUDE_CODE_OAUTH_TOKEN
 fi
 

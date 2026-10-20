@@ -14,7 +14,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from . import indexer
+from . import indexer, layout
 
 
 def routed_paths(root: Path) -> list[str]:
@@ -97,6 +97,13 @@ def run(root: Path | None = None) -> tuple[bool, list[str]]:
         report.append("FAIL links: INDEX.md lines point at missing files: " + ", ".join(dangling))
     else:
         report.append(f"ok   links: all {len(index_lines(root))} INDEX.md lines point at real files")
+
+    if (root / "brain" / "__main__.py").is_file():   # a fixture tree without the package is not a layout failure
+        lok, lrow = layout.doctor_row(root)
+        ok = ok and lok
+        report.append(lrow)
+    else:
+        report.append("skip layout: no brain/ package in this tree")
 
     report.append("doctor: " + ("PASS" if ok else "FAIL"))
     return ok, report

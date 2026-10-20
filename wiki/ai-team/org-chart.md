@@ -19,17 +19,23 @@ Steven (Principal)
 │   ├─ Jarvis — on-device voice + local index (verify: integrations/jarvis/jarvis-setup.sh; voice = Vanessa's recorded Magica set)
 │   ├─ Laya — zero-token on-device first hop (proposed; Mac install unverified, routing logic proven on the stub only — integrations/laya/)
 │   ├─ Knowledge fabric — Second Brain · vault · Jarvis · Graphify · Ruflo, one recall (+ Notion record, Google Drive mirror read-only)
-│   ├─ Brain loop — self-check that finds unanswered questions and drift (`bin/brain loop`)
+│   ├─ Brain loop — self-check that finds unanswered questions, drift, wrong routing and untested pages (`bin/brain loop`)
+│   ├─ Browser hands + skill finder — `agent-browser`, Playwright MCP, `find-skills` (any seat asks Vanessa; Integration Engineer owns, Elena gates; stop before submit/send/pay) — `integrations/browser-agents/`
+│   ├─ Computer Hub — Claude Remote Control + Orca + AnyDesk on Mac 1, Mac 2, the Alienware PC, tablet and phone (`wiki/ai-team/computer-hub.md`)
+│   ├─ Weekly scout — `integrations/scout/scout.py` → `docs/reports/SCOUT.md`: new repos, skills, MCP servers, upgrades, CLIs, free tools (Disruption Scout → Nadia grades → Elon gates → Steven approves)
+│   ├─ Agent OS — `bin/brain os`: all 172 roster agents reachable via Laya lane, Jarvis recall and an Orca launch command (`wiki/ai-team/agent-os.md`)
+│   ├─ Dispatch planner — `bin/brain route`: lead seat, cross-functional joins, ≤8-wide parallel waves, gates, HALTs (rules: `wiki/ai-team/cross-functional.md`)
 │   └─ Juliet — Escalation & Service Recovery
 ├─ ISA / EA (human) — Mon–Fri 12–4 PM; gets `cosBrief.isaInstructions` from the daily cycle for the noon huddle
 └─ Executives (report to Vanessa, ≤8 dispatched in parallel, formed into cross-functional squads by the daily cycle):
     ├─ Marcus (CFO) — Nathan, Bianca, Dov, Anita, Paloma, Grace, Alan, Hazel, Corinne + ruflo cost-analyst bench
     ├─ Sofia (CMO) — 14 named marketing reports + ruflo audio bench
-    ├─ Derek (CTO) — Sam, Naomi, Integration Engineer + 5 ECC officers + Ivan, Lena, Grace, Raj, Tomas
+    ├─ Derek (CTO) — Sam, Naomi, Integration Engineer (owns OmniRoute failover + `claude-auto --keep-going`, and the browser tools: agent-browser, Playwright MCP) + 5 ECC officers + Ivan, Lena, Grace, Raj, Tomas
+    │   + code-validator (the code-validation gate, 2026-10-12: validate-code.sh + VibeBreaker 20-pass review of every code change — a different agent than the author)
     │   + code-review / build-fix / code-quality / infrastructure benches (56 agents)
     ├─ Alexandra (CCO) — Lucia, Bennett, Fern, Clay, Odette, Gus, Imani, Roland, Diane, Walter, Denise, Howard
-    ├─ Nadia (CAIO, proposal-only) — Leah, Disruption Scout, Yuki, Hana, Felix, Nora, Ezra + research bench
-    ├─ Victor (CRO) — Harrison, Gwen, Marguerite + 19 named reports + Carmen
+    ├─ Nadia (CAIO, proposal-only) — Leah, Disruption Scout (runs `integrations/scout/scout.py` weekly), Yuki, Hana, Felix, Nora, Ezra + research bench
+    ├─ Victor (CRO) — Harrison, Gwen, Marguerite + 19 named reports + Carmen + Tax Assessor Agent and Loan Pricing Prep Agent (prep only; `wiki/mortgage-programs/loan-task-agents.md`)
     ├─ Elena (CISO) — Omar, Renee, Ruth, Dev + ruflo security bench
     └─ Elon (CTO Innovator, proposal-only) — the AI Agent Engineering Team: stress-test, reliability,
        efficiency, capability, integration engineers + sandbox QA + chief automation strategist
@@ -51,11 +57,38 @@ Steven (Principal)
 - **Lucia** (Guideline & Program Eligibility) — the seat that separates agency rule from investor overlay; see `wiki/mortgage-programs/program-selection.md`.
 - **Walter** (TRID Timeline Checker) — per-file LE/CD clocks; see `wiki/mortgage-programs/disclosure-timing.md`.
 - **Rosa** (Military & Corporate Relocation) — see `wiki/real-estate-playbooks/military-relocation.md`.
+- **Disruption Scout** (under Nadia) — runs the weekly internet scout (`integrations/scout/scout.py`): GitHub, the official MCP registry, npm, Hacker News and releases of tools already in the stack. Its shortlist feeds Nadia's weekly brief; Elon gates every ADOPT/PILOT; nothing installs without Steven. See `wiki/ai-team/tool-integration-status.md`.
 - **Wren** / **Garrett** — referral reciprocity and LPT recruiting; see `wiki/real-estate-playbooks/referral-reciprocity.md`.
 
 ## What "bench" means
 
 A bench row (e.g. "ruflo · 21 employees" under Derek's engineering bench) stands for a group of specialized ruflo agents invoked **by name** when needed — it is not a headcount to add to named seats without noting which is which. The deck's own renderer counts named seats and bench-standing-for-agents separately rather than blending them into one impressive total; this wiki does the same and does not restate either number as a fact to maintain — read the live count off the deck's AI Team panel.
+
+## How the seats work together
+
+Every request runs the same pattern, and `bin/brain route "<request>"` prints it: Vanessa picks the **lead** (the seat
+whose lane words match most), the **joins** come along by rule (client-facing → Alexandra; credentials/data → Elena;
+automation → Derek; money → Marcus; loan mechanics → Harrison; transactions → Carmen; new tools → Elon), all of them run
+**in parallel** (≤8 a wave, ≤4 web research), then the **gates** run in order — Alexandra's compliance review, the ECC
+review of any change, and Vanessa last, consolidating one answer. A HALT word (send, quote, pay, delete, credential,
+legal) lets the prep run but holds the final step for Steven. Rules: `wiki/ai-team/cross-functional.md`.
+
+## What every seat can now do (2026-10-10)
+
+Any seat can, through Vanessa: **find a skill** for the task (`find-skills`, `npx skills find`), **use a browser** to read
+and fill websites (`agent-browser` from Claude Code, Playwright MCP from Claude Desktop), and have UI or copy reviewed
+(`web-design-guidelines`, `writing-guidelines`). Examples: Victor reads a lead's public listing history; Gwen pulls
+showing slots; Sofia checks a post's landing page; Derek dogfoods the Command Deck; Nadia tries a new tool's demo. Every
+click that submits, sends, pays or signs stops for Steven. `bin/brain route` brings in Elena when a request touches a website.
+
+## Added 2026-10-11
+
+- **Trading Research Desk** (under Apex, paper mode only) — Idea, Builder, Backtester, Paper Trader and Memory agents plus a Risk Manager and a Regime Analyst; out-of-sample testing, fees and slippage, memory that never deletes a failure. `integrations/trading-desk/`.
+- **Tax Assessor Agent** and **Loan Pricing Prep Agent** (under Victor/Harrison) — public county records and scenario worksheets; never a quote or an eligibility decision.
+- **Reverse-engineering gate** (REA, under Elon with Elena and Alexandra) — owned or licensed software only.
+- **Events scout** — weekly events and networking by city for the Travel tab; networking leads go to Victor as proposals. `wiki/events-networking/index.md`.
+- **Computer Hub** and the **Alienware local-AI tier** (Laya, Bonsai 2 27B) — `wiki/ai-team/computer-hub.md`.
+- **Third-party skill packs** — Sofia's content skills, `/watch`, vidIQ and more, installed by Steven on the Mac. `wiki/ai-team/third-party-packs.md`.
 
 ## Proposal-only seats
 
@@ -67,4 +100,4 @@ Nadia (CAIO) and Elon (CTO Innovator) never ship a change themselves — Nadia s
 - `wiki/ai-team/tool-integration-status.md` — connector, skill, and proposed-tool status by seat.
 - `wiki/ai-team/mentors-and-benches.md` — Maxwell, Apex, James, Kevin and what a "bench" actually is.
 
-Source: Command Deck, `ORG_CHART` / `AI_TEAM_ORG` data (AI Team panel), toolkit snapshot referenced 2026-09-16. Tree last updated 2026-10-09 (Laya, Brain loop, Google Drive mirror, Jarvis verify script). `bin/brain orgcheck` proves every seat above resolves to a brain page.
+Source: Command Deck, `ORG_CHART` / `AI_TEAM_ORG` data (AI Team panel), toolkit snapshot referenced 2026-09-16. Tree last updated 2026-10-09 (Laya, Brain loop, Google Drive mirror, Jarvis verify script; dispatch planner, keep-going failover and weekly scout added the same day; browser control + skill finder 2026-10-10; trading desk, loan-task agents, events scout, Computer Hub, third-party packs 2026-10-11). `bin/brain orgcheck` proves every seat above resolves to a brain page.

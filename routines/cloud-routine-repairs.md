@@ -433,3 +433,82 @@ cannot explain**, and it is named in §4.
 - `docs/findings/findings-R1.json` — the findings behind this file.
 - `docs/CLOUD-WRITE-ARCHITECTURE.md` · `wiki/dashboard-ops/index.md` — both carry the blanket
   "agent-created routines store no connectors" rule that needs the qualifier. Neither is mine to edit.
+
+
+---
+
+## 2026-10-13 — The morning feeds vanished: a Mac task overwrote `liveFeeds`
+
+**Steven (2026-10-13):** *"the routine did not update news, birthdays, things that happened on this day,
+morning brief nor did Vanessa message me via iMessage with this info or sent a morning brief text."*
+
+**What actually happened (read live, 15:20–15:30 UTC).** The cloud routine *Command Deck — morning feeds*
+ran at 12:21 UTC and wrote all six keys (headlines, AI news, on-this-day, birthdays, Bears, opp radar)
+with stamp `2026-10-13T12:22:59Z`, taking `liveFeeds` to v93. At 12:50 UTC the Mac task
+`openrouter-feeds-refresh` (cron `50 5 * * *` PT, still **enabled** — `runnerStatus` shows it ran "ok" at
+06:08 PT) replaced the whole `liveFeeds` document with its own stale copy: the six keys fell back to
+Oct 12 content, the three housing-market lists fell back to Oct 8–9 (they had been Oct 12), and the
+document's top-level `updatedAt` read `2026-10-14T03:15Z`, a day in the future. The 03:40 freshness sweep
+had seen everything "fresh" because the stale copies were under 26 h old. `integrations/mac-fix-all-2026-10-05.md`
+step 1.1 told the Mac to pause `openrouter-feeds-refresh`, `feeds-weekly` and `feeds-market-close`;
+`runnerStatus` proves all three are still enabled, so the pause was never applied.
+
+**Done from the cloud (all proven by the documents):**
+1. `liveFeeds` restored to v101 with the routine's own 12:22:59Z entries (recovered from the run transcript,
+   written with `update`, pinned v100).
+2. *Command Deck — morning feeds* moved from 12:20 to **13:05 UTC** so it writes after the Mac task's 12:50 slot.
+3. *Command Deck — daily freshness sweep* (`trig_01Y1zZ3bmawgi4Mw2jNw9ZFM`) gained a **CLOBBER GUARD**
+   (a key whose stamp moved backwards, a round "typed" stamp, or a future `updatedAt` = clobbered → refilled,
+   named in `feedFreshness.note`) and a **DAILY-KEY RULE** (the six morning keys must carry today's date on
+   the 15:40 run). It also copies an ISA Portal entry back to the deck when the ISA copy is newer.
+4. New cloud routine **Vanessa — morning brief to Steven's phone** (`trig_01Q9VPMwrKwNUW3kZL54rKgy`, 6:48 AM PT
+   daily, fresh session, push on): reads `twinBrief`, calendar, Temecula weather, headlines, on-this-day,
+   birthdays, Bears, market/rates from the deck; one push notification under 200 characters; the full brief
+   is the run's final message. No connector, so no iMessage from the cloud — see "Only Steven" below.
+5. Re-fired: weekly ecosystem backup (failed Sun Oct 11 on the usage cap) and the VA avatar drafts.
+   R19 USC planner cannot be fired by an agent (web-created) — Steven presses Run now.
+
+**The iMessage half.** `runnerStatus` says `r1-morning-brief` wrote `twinBrief` at 05:34 PT (the deck's
+Morning brief card IS fresh, date 2026-10-13) and `vanessa-morning-brief-text` ended "ok" at 06:51 PT.
+The Mac believes it sent the text. Nothing in the cloud can see Inkbox's side (its connector is not
+authorised for this session), so whether `inkbox_imessage_send` delivered is still the open question from
+`docs/NEEDS-STEVEN.md` item 48 (identity `jasmine`, `connect @jasmine`). The push-notification routine above
+is the guaranteed path meanwhile.
+
+**Only Steven (Mac, Terminal, in the Repo folder):**
+```
+runnerctl pause openrouter-feeds-refresh
+runnerctl pause feeds-weekly
+runnerctl pause feeds-market-close
+runnerctl list
+```
+(or `./mac-bootstrap.sh`, which asks the same three pauses). Then, for the text: open Messages, find the
+thread with +1 650-484-9720 / `@jasmine`, and if there is no 6:51 AM message today run
+`runnerctl run vanessa-morning-brief-text` and watch the thread; paste what the runner prints.
+
+### 2026-10-13, later — weather, "everything as of today", and the talking avatars
+
+**Steven:** *"Weather also suppose to be updated daily with all news worldwide and if the local areas. Ensure everything is
+updated as today all sections of the dashboard"* and *"Vanessa and Steve are suppose to be animated and move as they
+speak in the chat"*.
+
+- **Weather.** `weatherSnapshot` was 24.6 h old (the Mac's 8:05 AM wttr.in task did not write today). Written from this
+  session with the AccuWeather connector: 7 cities, readings 8:31 AM PT, v43 (San Diego carries the NWS Coastal Flood
+  Advisory). The cloud cannot do this on a schedule yet: `create_trigger` with `connectors: ["AccuWeather"]` is refused
+  for this organisation ("the connectors parameter is not available"), so the sweep still skips weather. **Steven:**
+  open https://claude.ai/code/routines/trig_01Y1zZ3bmawgi4Mw2jNw9ZFM and add the AccuWeather connector to it; its STEP 2
+  then runs at 03:40 and 15:40 UTC on its own. Verified AccuWeather locationKeys for the prompt: Temecula 337272,
+  San Diego 2628159, Los Angeles 2626754, Chicago 2094443, Las Vegas 329506, Washington 2628378, New Braunfels 335925.
+- **News worldwide + local.** `newsSnapshot` (3-5 wire headlines + 10 cities) was written today at 13:36 UTC by
+  *Command Deck — weather & news (writer)* and is fresh; the 10 `newsLocalList_*` keys are refreshed on its morning run.
+- **Stamp audit (188 documents, 15:40 UTC).** 37 fresh (<24 h), 39 older than a day, 43 with no stamp (static tables).
+  The 15:40 freshness sweep **failed on the usage limit** (`USAGE_LIMIT_REACHED`), so the six morning keys stand on the
+  restored 12:22 entries; the 03:40 run is the next backstop. Of the stale 39, everything a cloud routine owns is on a
+  schedule; the rest are Mac tasks or weekly/monthly cadences (hfCommitteeMemo, weeklyBrief, zohoSync, knowledgeGraph,
+  openrouterFeeds (retired), healthInsight, the chat logs) — see `docs/inventory/mac-runner-status.md`.
+- **Avatars.** The deck entered the "speaking" state only while a recorded clip, a talking loop or a rendered voice
+  reply actually played. `speakDiag` shows the face video fails to load ("no supported source was found") and the
+  2-second opener ends at once, so a text reply left the portraits still. `dashboard/wave2/splice-presence-texttalk.py`
+  adds a text-paced talk (speaking + word-cadence nod for the reading time of the reply, idle after, audio handlers win
+  when audio is live) and a `window.cdSpeak` test hook. Headless check: both go speaking → nod → idle, 0 page errors.
+  Deck **v195**.

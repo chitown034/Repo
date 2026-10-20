@@ -1,0 +1,33 @@
+/* ================= WAVE 2 POLISH — motion and depth, additive only =================
+   Every rule is additive and guarded: reduced-motion turns it all off, nothing changes layout or colours, and
+   the reveal only starts once the script marks <html class="w2-js">, so a page without script is untouched. */
+:root { --w2-ease: cubic-bezier(0.22, 1, 0.36, 1); --w2-spring: cubic-bezier(0.34, 1.56, 0.64, 1); }
+.deck-head { backdrop-filter: saturate(180%) blur(18px); -webkit-backdrop-filter: saturate(180%) blur(18px); }
+/* page switch: a panel that goes from display:none to shown replays this once */
+@keyframes w2PanelIn { from { opacity: 0; transform: translateY(14px) scale(0.995); } to { opacity: 1; transform: none; } }
+.panel[data-page] { animation: w2PanelIn 0.55s var(--w2-ease) both; }
+/* scroll reveal for cards and tables inside the visible panel */
+.w2-js .card, .w2-js .stat, .w2-js .kanban-col, .w2-js .tk-tile { opacity: 0; transform: translateY(12px); transition: opacity 0.6s var(--w2-ease), transform 0.6s var(--w2-ease); }
+.w2-js .card.w2-in, .w2-js .stat.w2-in, .w2-js .kanban-col.w2-in, .w2-js .tk-tile.w2-in { opacity: 1; transform: none; }
+.card:hover { transform: translateY(-2px); }
+.card, button, .page-tab, .pill, .tv-chip, .kanban-card, .exec-row { transition: transform 0.28s var(--w2-spring), box-shadow 0.25s ease, border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease, opacity 0.2s ease; }
+button:active, .page-tab:active, .tv-chip:active, .pages-btn:active { transform: scale(0.96); }
+.page-tab.active { transform: translateY(-1px); box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--accent) 70%, transparent); }
+.nav-dock-btn { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.nav-dock-btn:hover { transform: translateY(-3px) scale(1.06); }
+.panel-head::after { transition: width 0.7s var(--w2-ease); }
+.panel:hover .panel-head::after { width: 96px; }
+.progress > i, .bar-fill, .match-bar-fill { transition: width 0.9s var(--w2-ease); }
+/* a thin reading-progress line under the header */
+#w2Progress { position: fixed; left: 0; top: 0; height: 2px; width: 100%; transform-origin: 0 50%; transform: scaleX(var(--w2p, 0)); background: linear-gradient(90deg, var(--accent), var(--gold)); z-index: 90; pointer-events: none; }
+/* soft pulse on live pills */
+@keyframes w2Pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--positive) 45%, transparent); } 60% { box-shadow: 0 0 0 7px transparent; } }
+.pill.on .dot { animation: w2Pulse 2.4s ease-out infinite; }
+/* focus ring that follows the Apple pattern: tight, high-contrast, animated in */
+:focus-visible { outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  .panel[data-page], .pill.on .dot { animation: none !important; }
+  .w2-js .card, .w2-js .stat, .w2-js .kanban-col, .w2-js .tk-tile { opacity: 1 !important; transform: none !important; transition: none !important; }
+  #w2Progress { display: none; }
+}
+@media print { .panel[data-page], .w2-js .card { animation: none !important; opacity: 1 !important; transform: none !important; } #w2Progress { display: none; } }

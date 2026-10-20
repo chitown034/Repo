@@ -25,6 +25,7 @@ rather than the full document.
 | ISA Portal | The ISA-facing artifact | `projects/isa-portal.md` |
 | Obsidian vault | Visual layer + Jarvis's index source (`50-AI-Team`, `60-Knowledge`, `70-Briefs`) | `OPTIMIZATION.md` |
 | Notion Second Brain DB | **The record.** Synced by `brain-deck-sync` | `always-on/README.md` |
+| Company Brain Blueprint (AI Horizon flyer, Drive) | Files → vector → entity graph → cache → agents; mapped layer by layer to this brain, with the one-department build challenge answered | `references/company-brain-blueprint.md` |
 | Google Drive "Second Brain" folder | Read-only mirror of the Notion DB (1 file, synced 2026-09-22), reached through the claude.ai connector | `references/google-drive.md` |
 | Jarvis (OpenJarvis `memory.db`) | Local index + on-device voice; verify with `integrations/jarvis/jarvis-setup.sh` | `integrations/jarvis/README.md` |
 | Graphify | The knowledge graph in `vault/60-Knowledge` | `knowledge-graph/README.md` |
@@ -61,3 +62,12 @@ cannot write the last one in a clause, it does not need registering.
 - **Version and date everything.** "2026.1 edition" and "synced 2026-08-28" are part of the fact.
 - A source that nothing has opened in a quarter gets a note, not a deletion — knowing something is
   unused is itself useful to the weekly loop.
+
+## Engineering conventions
+
+| Source | What it decides |
+|---|---|
+| `vibe-coding-learning.md` | awesome-vibe-coding (CC0 list + dictionary + skills shelf) and Easy-Vibe (CC BY-NC-SA four-stage curriculum), read online, cited by the engineers |
+| `../integrations/code-validation/vibebreaker/` | VibeBreaker 20-pass adversarial audit protocol (MIT, vendored 2026-10-12) — the code-validator agent's method |
+| `backend-folder-structure.md` | The eight-layer backend layout (config, models, middlewares, controllers, services, routes, utils, tests) every service follows; `bin/brain layout` checks the brain against it |
+| `../integrations/openmontage/README.md` | OpenMontage, the agentic video studio installed on the Mac 2026-10-12 (skill `openmontage-video`) |

@@ -186,3 +186,13 @@ unmodified (§Honest status).
 - **Orca: partially verified.** GitHub README, issues and PRs (not a single settings doc) — see `orca.md`.
 - **Anthropic's terms: verified against the primary `code.claude.com` page**, quoted in full above.
 - Nothing in this directory has run on Steven's Mac. Every "works" claim below is scoped to this sandbox.
+
+## Steven's PDF guide (Guilherme Paulino, "Claude Code that never stops", October 2026) — read 2026-10-13
+
+Its five steps are the same path this folder already implements: `npm install -g omniroute`, first start with
+`INITIAL_PASSWORD` (never the default `CHANGEME`), connect a free provider plus the Claude subscription in the
+dashboard at `:20128`, launch Claude Code through OmniRoute (the guide's `settings.json` env block is what
+`integrations/omniroute-failover/claude-auto.sh` sets per run — base URL without `/v1`, the OmniRoute key, model
+discovery on), and `curl :20128/v1/models` to prove it. Its safety box matches ours: own password, loopback only,
+guard the key, skip providers flagged "avoid", free limits move, keep client work on providers you trust (that is
+the PII gate in `claude-auto.sh`). `omniroute doctor` is the first thing to run when it misbehaves.

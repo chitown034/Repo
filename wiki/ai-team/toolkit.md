@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 24 skills · 3 plugins · 15 connectors (2 ok, 13 need attention) · 60 cloud routines · 60 Mac tasks
+toolkit: 32 skills · 3 plugins · 15 connectors (2 ok, 13 need attention) · 60 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -69,6 +69,10 @@ toolkit: 24 skills · 3 plugins · 15 connectors (2 ok, 13 need attention) · 60
 
 ## Alexandra — CCO — compliance
 
+**Skills**
+- `web-design-guidelines`: Review UI code for Web Interface Guidelines compliance. Use when asked to "review my UI", "check accessibility", "audit design", "review UX", or "check my site against best practices".
+- `writing-guidelines`: Review docs/prose for Writing Guidelines compliance. Use when asked to "review my docs", "check writing style", "audit prose", "review docs voice and tone", or "check this page against the writing handbook".
+
 **Connectors**
 - `SkySlope · zipForms` — *pending*: locked until compliance sign-off
 
@@ -88,6 +92,9 @@ toolkit: 24 skills · 3 plugins · 15 connectors (2 ok, 13 need attention) · 60
 
 ## Marcus — CFO — money
 
+**Skills**
+- `tax-assessor-agent`: Property tax lookup for San Diego and Riverside County: reads PUBLIC assessor and tax-collector pages with read-only browser tools and writes a one-page Property Tax Sheet (APN, assessed values, exemptions to verify, Pro
+
 **Cloud routines**
 - `Command Deck — Property Search & Tax-Data integrations health check (monthly)`: cron 0 15 1 * * · on · SUCCEEDED @ 2026-09-04T19:42
 
@@ -97,6 +104,9 @@ toolkit: 24 skills · 3 plugins · 15 connectors (2 ok, 13 need attention) · 60
 - `revenue-scan-weekly`: Sunday: runs the four opportunity agents in parallel — refinance hunter, realtor reciprocity, predictive seller intelligence and borrower re
 
 ## Sofia — CMO — marketing
+
+**Skills**
+- `openmontage-video`: Make a marketing, explainer or training video with OpenMontage on the Mac (~/Applications/OpenMontage) — Sofia's brief, Claude Code runs the pipeline, Steven approves every creative stop, nothing is posted. Use when Stev
 
 **Connectors**
 - `YouTube · Instagram · LinkedIn · Facebook (Composio)` — *ok*: active (Steven Shearrill channel / @stevenshearrillhomes / LinkedIn / Facebook)
@@ -151,14 +161,18 @@ toolkit: 24 skills · 3 plugins · 15 connectors (2 ok, 13 need attention) · 60
 ## Derek — CTO — automation & integrations
 
 **Skills**
+- `agent-browser`: Browser automation CLI (Chrome via accessibility snapshots). Use to open websites, read pages, fill forms, click, take screenshots and extract data, test web apps, or drive Electron apps. Stops before any submit, send, p
 - `ai-ecosystem-backup`: Weekly full backup of Steven's AI ecosystem (v2): both artifact stores, the redacted Claude Desktop configuration, the Master Findings Table and the latest Weekly Report, into Documents/AI-Ecosystem-Backups/YYYY-MM-DD, w
 - `apple-design`: Apple's approach to interface design and fluid, physical motion, translated for the web. Use when building or reviewing gesture-driven UI, spring animations, drag/swipe/sheet interactions, momentum and interruptible tran
 - `apple-health-notion`: Keep Steven's Command Deck Apple Health tiles alive through the phone instead of the dead Mac ingest daemon — Claude iOS reads Apple Health, writes a Notion Health Log row, and the health-notion-sync Mac task turns those
 - `code-review-and-quality`: Conducts multi-axis code review. Use before merging any change. Use when reviewing code written by yourself, another agent, or a human. Use when you need to assess code quality across multiple dimensions before it enters
+- `code-validation-gate`: The rule that code is not done until a different agent has validated it — deterministic checks (scripts/validate-code.sh) plus the VibeBreaker 20-pass adversarial review by the code-validator agent, recorded per change-s
 - `debugging-and-error-recovery`: Guides systematic root-cause debugging. Use when tests fail, builds break, something that worked yesterday broke, behavior doesn't match expectations, or you encounter any unexpected error. Use when you need to figure ou
 - `documentation-and-adrs`: Records decisions and documentation. Use when you need to document an architecture decision (ADR) or the reasoning behind a design choice, when changing public APIs, shipping features, or when you need to record context 
 - `git-workflow-and-versioning`: Structures git workflow practices. Use when making any code change. Use when committing, branching, resolving conflicts, splitting uncommitted work in a messy working tree into clean atomic commits, opening or reviewing 
 - `karpathy-coding-principles`: Andrej Karpathy's four behavioral guidelines for LLM coding — think before coding, simplicity first, surgical changes, goal-driven execution. Use when writing or editing any code, skill, task spec or Command Deck HTML in
+- `loan-pricing-agent`: Loan scenario and pricing PREP: builds the worksheet from facts Steven supplies, computes P&I, PITI, LTV and DTI with visible formulas, compares VA/FHA/conventional/jumbo/non-QM structures. Never quotes a rate, decides e
+- `reverse-engineering`: Reverse-engineering capability (REA) — gated. Describes morluto/rea (MIT, MCP server via npx rea-agents setup, 6.x) and the rules for when Steven's agents may use it and when not. Use when a seat proposes analysing a bin
 - `source-driven-development`: Grounds every implementation decision in official documentation. Use when you want to verify an approach against the official docs before implementing it, or when you want authoritative, source-cited code free from outda
 
 **Plugins (Claude Code mods)**

@@ -24,7 +24,8 @@ Capability, Integration, Stress Test) does the work; report seats run on Sonnet 
 `selfTest`, `stressTestReport`, `cpiOpportunityLog`/`cpiCycles`, `scaleOpportunityLog`,
 `improvementProposals`, `auditFindings`, `twinQueue`, `aiTeamRoster`, `toolkitSnapshot`, plus the
 sub-skills this cycle calls: `prompt-master`, `continuous-process-improvement`,
-`scale-growth-engine`, `stress-test-sweep`, `skills-refresh`, and Nadia's disruption brief.
+`scale-growth-engine`, `stress-test-sweep`, `skills-refresh`, and Nadia's disruption brief, fed by the weekly
+scout report `docs/reports/SCOUT.md` (`integrations/scout/scout.py`).
 `docs/reports/BRAIN-BENCH.md` (written by `bin/brain bench --write`, the `brain-maintenance` Mac task's
 weekly slot) — the brain's own tracked metric, folded into this cycle's baseline. If `bin/brain` is not
 yet in this checkout, or the report has never been written, record it as `never run` and move on.
@@ -56,6 +57,29 @@ An item with no Goal/Loop/Routine is not improved this cycle; it gets one writte
    consecutive cycles, correctness % fell versus the previous cycle's holdout, or the "not in brain"
    rate exceeds 20%. Log it as `halted` with the reason, and route a triage item to `prompt-master` or
    `skills-refresh` instead of promoting.
+2b. **Scout the internet (Nadia's Disruption Scout, Elon gates).** Run `python3 integrations/scout/scout.py --days 7`
+   (or read the `scout-report` artifact the free GitHub `scout` workflow made Friday night). It scans GitHub (new and
+   rising repos: MCP servers, Claude Code plugins/skills/hooks, agent CLIs, memory, real-estate/mortgage/CRM APIs),
+   releases of tools already in the stack, the official MCP registry, npm and Hacker News, and writes
+   `docs/reports/SCOUT.md` with each candidate scored, marked NEW, and tagged with its owner seat. Nadia opens the top
+   10 plus every NEW business-lane item (WebFetch, dated sources only) and grades ADOPT / PILOT / WATCH / IGNORE; Elon
+   gates each ADOPT/PILOT for fit, integration cost and security (Elena for anything asking for credentials or client
+   data). Survivors become `improvementProposals` items and test candidates for step 4 — at trust L1, proposal only.
+   Installing, connecting an account or paying for anything is a HALT for Steven.
+2b2. **Setup health.** Run `bash scripts/setup-health.sh --quick` (offline, ~20 s; the free GitHub `setup-health` workflow runs the full set every Monday) and fold its PASS/FAIL table into the cycle's self-test. A red row is a finding with its last lines attached; green means the code holds together, not that anything runs on Steven's machines.
+2c. **Use the new hands (2026-10-10).** Four skills feed the cycle; each is proposal-only and stops before any
+   submit/send/pay/sign, and a skill that is not installed on this machine is logged `not installed`, never faked:
+   - **`find-skills`** — for every open gap this cycle (a failed task, a triage item, a scout item with no owner, a
+     capability a seat lacked), run `npx -y skills@1.7.2 find <topic>` once. A hit becomes a proposal with its source
+     repo, licence and what it would touch; Elon checks fit, Elena checks reach, Steven approves `npx skills add`.
+   - **`agent-browser`** (or Playwright MCP) — **dogfood the live pages**: open the Command Deck and the ISA Portal,
+     take an accessibility snapshot of each tab, note what fails to render, is empty or is stale, and click through
+     read-only navigation only. Screenshots go in the weekly report. Never press a button that writes data.
+   - **`web-design-guidelines`** — review the deck and portal HTML (or this week's diff to them) against the Web
+     Interface Guidelines; each finding is a proposal with the exact line, tested in step 4 like any other change.
+   - **`writing-guidelines`** — before the brief goes to Steven, review the weekly report and brief (and any copy Sofia
+     queued) for plain, short, accurate prose. Fixes are applied to the report itself; they need no gate.
+   Log in `loopLog[].tools`: which of the four ran, findings each produced, and `not installed` where applicable.
 3. **Hold out.** Freeze an **untouched holdout set** before any change: ~20% of the items under test
    (named in the cycle entry), selected for coverage, not convenience. Nothing in the holdout is
    edited, tuned or fixed this cycle. It exists to detect improvements that only move the items you

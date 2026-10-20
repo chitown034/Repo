@@ -98,9 +98,23 @@ def keywords(question: str) -> list[tuple[str, str]]:
     return out
 
 
-def _build_synonyms() -> dict[str, set[str]]:
+LEARNED_DEFAULT = str(__import__("pathlib").Path(__file__).parent / "synonyms-learned.json")
+
+
+def learned_groups(path: str | None = None) -> list[list[str]]:
+    """Synonym groups the brain promoted (or is trialling) itself -- see brain/learn.py."""
+    import json, os
+    p = path or os.environ.get("BRAIN_LEARNED") or LEARNED_DEFAULT
+    try:
+        d = json.loads(open(p, encoding="utf-8").read())
+    except (OSError, ValueError):
+        return []
+    return [g["group"] for k in ("promoted", "candidates") for g in d.get(k, []) if isinstance(g, dict) and g.get("group")]
+
+
+def _build_synonyms(learned_path: str | None = None) -> dict[str, set[str]]:
     table: dict[str, set[str]] = {}
-    for group in GROUPS:
+    for group in list(GROUPS) + learned_groups(learned_path):
         stems = set()
         for w in group:
             toks = tokenize(w)
@@ -111,6 +125,12 @@ def _build_synonyms() -> dict[str, set[str]]:
 
 
 SYNONYMS = _build_synonyms()
+
+
+def reload_synonyms(learned_path: str | None = None) -> dict[str, set[str]]:
+    global SYNONYMS
+    SYNONYMS = _build_synonyms(learned_path)
+    return SYNONYMS
 
 
 def strip_md(s: str) -> str:
