@@ -40,4 +40,3 @@ mount(){const tabs=[
 {const g=PAGES.find(p=>p[0]==="Growth & Ops");if(g&&!g[1].some(x=>x[0]==="niches"))g[1].splice(2,0,["niches","6 Growth Niches"])}
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();NICHES.forEach(n=>out.push({src:`Niche — ${n.n}`,t:`${n.tag}. ${n.what} Ideal: ${n.ideal.join("; ")} Offer: ${n.offer} Plan: ${n.plan.join("; ")} Compliance: ${n.comp.join("; ")}`}));return out}}
 if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^Niche — /,{hash:"niches"}]);
-boot();

@@ -116,3 +116,6 @@ Market numbers, Home Report signals, pipeline, approvals and refi queue are **sa
 - Page "6 Growth Niches" (Growth & Ops): Second Liens, Reverse, Your Database, Concessions→Buydowns, Investors/Non-QM, Add a State — playbooks, scripts, KPIs, compliance
 - Where-to-find-contacts source lists for CA/IL/NV/FL/AZ (sources and search links, not named people) + CSV export
 - Database mining (segments from imported ARIVE/Zoho loans and saved reviews), buydown calculator (price cut vs permanent vs 2-1), add-a-state scoring planner + licensing checklist, niche tracker; PB50 workflow
+
+## v44 — Lender DTI Matrix
+- Loan Intelligence → Lender DTI Matrix: 61 lenders × 6 programs, agency baselines shown as gray placeholders, lender cells blank until entered with source/date (stale flag at 90 days), DTI fit finder, paste/import, AE request email, CSV export, public overlay examples. Lender caps are overlays in broker-only matrices — not fetchable here.
