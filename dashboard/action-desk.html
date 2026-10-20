@@ -1,61 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
 <title>Steven's Action Desk</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap">
+<meta name="description" content="Everything still waiting on Steven, in order: three pastes, a short list only he can do, and the 35 detailed steps for reference.">
 <style>
-/* Layout: one narrow column of numbered steps (the order is real), grouped by where you do them; each row = open buttons + tick box. */
+/* Action Desk — calm hierarchy, system type, one accent. Tokens first; every colour below is a token. */
 :root{
-  --bg:#f3f5f8; --card:#ffffff; --fg:#17202b; --muted:#5b6676; --line:#d9dee6;
-  --accent:#1f4e8c; --accent-fg:#ffffff; --done:#2f7d4f; --warn:#a4570f; --code:#eef1f5;
-  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
-  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
-  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --bg:#f5f5f7; --card:#ffffff; --card-2:#fafafa; --fg:#1d1d1f; --muted:#6e6e73; --faint:#86868b;
+  --line:rgba(0,0,0,.10); --line-strong:rgba(0,0,0,.16);
+  --accent:#0071e3; --accent-fg:#ffffff; --accent-tint:rgba(0,113,227,.10); --accent-tint-2:rgba(0,113,227,.16);
+  --done:#34c759; --done-fg:#ffffff; --warn:#b25000; --warn-tint:rgba(255,159,10,.12);
+  --code:#f0f0f3; --code-fg:#1d1d1f;
+  --glass:rgba(245,245,247,.72); --glass-edge:rgba(255,255,255,.55);
+  --shadow-1:0 1px 2px rgba(0,0,0,.04), 0 2px 8px rgba(0,0,0,.04);
+  --shadow-2:0 2px 6px rgba(0,0,0,.05), 0 12px 32px -12px rgba(0,0,0,.14);
+  --r-sm:10px; --r:14px; --r-lg:18px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Helvetica,Inter,Segoe UI,Roboto,system-ui,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+  --ease:cubic-bezier(.22,1,.36,1); --spring:cubic-bezier(.34,1.3,.64,1);
+  --t-fast:140ms; --t:260ms;
+  color-scheme:light;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0f141b; --card:#18202b; --fg:#e7ecf2; --muted:#9aa6b6; --line:#2a3544;
-  --accent:#7fb0f0; --accent-fg:#0f141b; --done:#6cc591; --warn:#e3a35e; --code:#202a37; color-scheme:dark}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#000000; --card:#1c1c1e; --card-2:#2c2c2e; --fg:#f5f5f7; --muted:#a1a1a6; --faint:#8e8e93;
+  --line:rgba(255,255,255,.12); --line-strong:rgba(255,255,255,.20);
+  --accent:#2997ff; --accent-fg:#ffffff; --accent-tint:rgba(41,151,255,.16); --accent-tint-2:rgba(41,151,255,.24);
+  --done:#30d158; --done-fg:#000000; --warn:#ffb340; --warn-tint:rgba(255,179,64,.12);
+  --code:#2c2c2e; --code-fg:#f5f5f7;
+  --glass:rgba(0,0,0,.62); --glass-edge:rgba(255,255,255,.08);
+  --shadow-1:0 1px 2px rgba(0,0,0,.4); --shadow-2:0 2px 8px rgba(0,0,0,.5), 0 16px 40px -16px rgba(0,0,0,.7);
+  color-scheme:dark;
+}}
 :root[data-theme="dark"]{
-  --bg:#0f141b; --card:#18202b; --fg:#e7ecf2; --muted:#9aa6b6; --line:#2a3544;
-  --accent:#7fb0f0; --accent-fg:#0f141b; --done:#6cc591; --warn:#e3a35e; --code:#202a37; color-scheme:dark}
-body{background:var(--bg);color:var(--fg);font:16px/1.5 var(--body)}
-.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:24px 48px}
-h1{font:700 2.2rem/1.1 var(--display);letter-spacing:.01em;margin:0 0 6px;text-wrap:balance}
-.lede{color:var(--muted);margin:0 0 14px;max-width:62ch}
-.bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
-.meter{flex:1;min-width:160px;height:8px;background:var(--line);border-radius:4px;overflow:hidden}
-.meter i{display:block;height:100%;width:0;background:var(--done);transition:width .3s}
-.count{font:600 .95rem var(--body);font-variant-numeric:tabular-nums;color:var(--muted)}
-h2{font:600 1.25rem var(--display);letter-spacing:.06em;text-transform:uppercase;margin:28px 0 4px;color:var(--accent)}
-.where{color:var(--muted);font-size:.92rem;margin:0 0 10px}
-.step{display:grid;grid-template-columns:auto 1fr;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px;margin-bottom:10px}
-.step.done{opacity:.6}
-.step.done .t{text-decoration:line-through}
-.n{font:700 1.5rem/1 var(--display);color:var(--muted);font-variant-numeric:tabular-nums;width:1.6em;text-align:center}
-.body{min-width:0}
-.t{font-weight:600;margin:0 0 4px}
-.d{margin:0 0 10px;color:var(--muted);font-size:.95rem}
+  --bg:#000000; --card:#1c1c1e; --card-2:#2c2c2e; --fg:#f5f5f7; --muted:#a1a1a6; --faint:#8e8e93;
+  --line:rgba(255,255,255,.12); --line-strong:rgba(255,255,255,.20);
+  --accent:#2997ff; --accent-fg:#ffffff; --accent-tint:rgba(41,151,255,.16); --accent-tint-2:rgba(41,151,255,.24);
+  --done:#30d158; --done-fg:#000000; --warn:#ffb340; --warn-tint:rgba(255,179,64,.12);
+  --code:#2c2c2e; --code-fg:#f5f5f7;
+  --glass:rgba(0,0,0,.62); --glass-edge:rgba(255,255,255,.08);
+  --shadow-1:0 1px 2px rgba(0,0,0,.4); --shadow-2:0 2px 8px rgba(0,0,0,.5), 0 16px 40px -16px rgba(0,0,0,.7);
+  color-scheme:dark;
+}
+
+/* ---- base ---- */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.47 var(--font);font-variant-numeric:tabular-nums;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+@media (min-width:700px){body{font-size:16px;line-height:1.5}}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+b,strong{font-weight:600}
+p{margin:0}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+
+/* ---- sticky frosted header ---- */
+.top{position:sticky;top:0;z-index:50;background:var(--glass);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--line)}
+.top-in{max-width:760px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px}
+.top-title{font-weight:600;font-size:15px;letter-spacing:-.01em}
+.count{font-size:15px;font-weight:500;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.meter{height:3px;background:var(--line);overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--done);border-radius:0 2px 2px 0;transition:width .6s var(--ease)}
+@media (prefers-reduced-transparency:reduce){.top{background:var(--bg);-webkit-backdrop-filter:none;backdrop-filter:none}}
+@media (prefers-contrast:more){.top{background:var(--bg);border-bottom-color:var(--line-strong)}}
+
+/* ---- page column ---- */
+.wrap{max-width:760px;margin:0 auto;padding:40px 16px 72px}
+@media (min-width:700px){.wrap{padding:64px 24px 96px}}
+
+/* ---- hero title + deck ---- */
+.hero-head{margin-bottom:28px}
+.eyebrow{color:var(--muted);font-size:15px;font-weight:500;letter-spacing:.01em;margin-bottom:2px}
+h1{font-size:clamp(2.25rem,7vw,3.25rem);line-height:1.06;letter-spacing:-.025em;font-weight:700;margin:0 0 14px;text-wrap:balance}
+.lede{color:var(--muted);font-size:17px;line-height:1.5;max-width:62ch;text-wrap:pretty}
+@media (min-width:700px){.lede{font-size:19px;line-height:1.45}}
+
+/* ---- callout ---- */
+.callout{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin:0 0 40px;
+  box-shadow:var(--shadow-1);position:relative}
+.callout::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;background:var(--done);border-radius:0 3px 3px 0}
+.callout .note{color:var(--muted);font-size:15px;line-height:1.5}
+.callout .note b{color:var(--fg)}
+
+/* ---- section headings ---- */
+.section-title{font-size:clamp(1.35rem,4.4vw,1.75rem);line-height:1.15;letter-spacing:-.02em;font-weight:700;margin:0 0 10px;text-wrap:balance}
+.intro{color:var(--muted);font-size:16px;margin-bottom:22px;max-width:64ch;text-wrap:pretty}
+.ref{margin-top:56px;padding-top:32px;border-top:1px solid var(--line)}
+.ref .section-title{margin-bottom:16px}
+
+/* ---- step card ---- */
+.step{display:grid;grid-template-columns:auto 1fr;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:16px;margin:0 0 12px;box-shadow:var(--shadow-1);transition:opacity var(--t) var(--ease),box-shadow var(--t) var(--ease),transform var(--t) var(--spring)}
+.step .body{min-width:0}
+.n{width:30px;height:30px;border-radius:50%;background:var(--code);color:var(--muted);font-weight:600;font-size:14px;
+  display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums;flex:none;margin-top:-1px}
+.t{font-weight:600;font-size:17px;line-height:1.3;letter-spacing:-.01em;margin:0 0 6px;text-wrap:pretty}
+.d{color:var(--muted);font-size:15px;line-height:1.5;margin:0 0 12px;text-wrap:pretty}
+.d:last-child{margin-bottom:0}
+.d.alt{margin-top:12px}
+.step.done{opacity:.55}
+.step.done .t{text-decoration:line-through;text-decoration-color:var(--faint)}
+.step.done .n{background:var(--done);color:var(--done-fg)}
+
+/* actions row */
 .acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-a.btn,button.btn{display:inline-block;font:600 .9rem var(--body);padding:7px 12px;border-radius:6px;text-decoration:none;cursor:pointer;border:1px solid var(--accent)}
-a.btn{background:var(--accent);color:var(--accent-fg)}
-button.btn{background:transparent;color:var(--accent)}
-a.btn:focus-visible,button.btn:focus-visible,input:focus-visible{outline:3px solid var(--warn);outline-offset:2px}
-label.tick{display:inline-flex;gap:6px;align-items:center;font-size:.9rem;color:var(--muted);margin-left:auto;cursor:pointer}
-label.tick input{width:18px;height:18px;accent-color:var(--done)}
-code{font:.85rem var(--mono);background:var(--code);padding:2px 6px;border-radius:4px;overflow-wrap:anywhere}
-.note{border-left:3px solid var(--warn);padding:2px 0 2px 10px;margin:0 0 10px;font-size:.93rem}
-.ok{color:var(--done);font-weight:600}
-ul.mini{margin:0 0 10px;padding-left:18px;font-size:.95rem}
-footer{margin-top:28px;color:var(--muted);font-size:.85rem}
-@media (prefers-reduced-motion:reduce){.meter i{transition:none}}
+.acts code{flex:1 1 100%;display:block;white-space:pre-wrap;overflow-wrap:anywhere;margin:0}
+code{font:14px/1.5 var(--mono);background:var(--code);color:var(--code-fg);padding:10px 12px;border-radius:var(--r-sm);
+  overflow-wrap:anywhere;border:1px solid var(--line)}
+.d code,.note code,li code,footer code{display:inline;padding:1px 6px;font-size:.92em;border:0;border-radius:6px;white-space:normal}
+
+/* buttons: 44px targets, one accent */
+a.btn,button.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 16px;border-radius:999px;
+  font:600 15px/1.2 var(--font);text-decoration:none;cursor:pointer;border:1px solid transparent;-webkit-tap-highlight-color:transparent;
+  transition:transform var(--t-fast) var(--spring),background-color var(--t-fast) ease,color var(--t-fast) ease,box-shadow var(--t-fast) ease;
+  user-select:none}
+a.btn{background:var(--accent-tint);color:var(--accent)}
+button.btn{background:var(--accent-tint);color:var(--accent)}
+a.btn:hover,button.btn:hover{background:var(--accent-tint-2);text-decoration:none}
+a.btn:active,button.btn:active{transform:scale(.96)}
+a.btn:focus-visible,button.btn:focus-visible{outline-offset:2px}
+
+/* tick box: a round, 44px-target checkbox */
+label.tick{display:inline-flex;gap:8px;align-items:center;min-height:44px;padding:0 6px 0 2px;font-size:15px;font-weight:500;color:var(--muted);
+  margin-left:auto;cursor:pointer;border-radius:999px;user-select:none;-webkit-tap-highlight-color:transparent}
+label.tick + label.tick{margin-left:0}
+label.tick input{appearance:none;-webkit-appearance:none;width:24px;height:24px;margin:0;border-radius:50%;border:1.5px solid var(--line-strong);
+  background:var(--card);flex:none;display:grid;place-content:center;cursor:pointer;
+  transition:background-color var(--t-fast) ease,border-color var(--t-fast) ease,transform var(--t-fast) var(--spring)}
+label.tick input::after{content:"";width:12px;height:12px;background:currentColor;color:var(--done-fg);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6.2l2.6 2.6L10 3.4' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6.2l2.6 2.6L10 3.4' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+  transform:scale(0);transition:transform var(--t-fast) var(--spring)}
+label.tick input:checked{background:var(--done);border-color:var(--done)}
+label.tick input:checked::after{transform:scale(1)}
+label.tick input:active{transform:scale(.9)}
+label.tick input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* ---- hero cards A, B, C ---- */
+.start .step.hero{grid-template-columns:1fr;gap:0;padding:22px 20px 18px;border-radius:var(--r-lg);box-shadow:var(--shadow-2);margin-bottom:16px;
+  border-color:var(--line)}
+.start .step.hero .n{width:44px;height:44px;border-radius:14px;background:var(--accent);color:var(--accent-fg);font-size:22px;font-weight:700;margin:0 0 14px}
+.start .step.hero.done .n{background:var(--done);color:var(--done-fg)}
+.start .step.hero .t{font-size:21px;line-height:1.25;letter-spacing:-.018em;margin-bottom:8px}
+.start .step.hero .d{font-size:16px}
+.start .step.hero .acts{margin-top:4px}
+.start .step.hero .acts code{font-size:14px;padding:12px 14px;background:var(--code)}
+.start .step.hero .acts button.btn{background:var(--accent);color:var(--accent-fg);padding-inline:20px;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.start .step.hero .acts button.btn:hover{filter:brightness(1.06)}
+.start .step.hero ol.only{padding-left:22px;margin:0 0 14px;color:var(--fg);font-size:15px;line-height:1.55}
+.start .step.hero ol.only li{margin-bottom:8px;padding-left:4px}
+.start .step.hero ol.only li::marker{color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums}
+.start .step.hero ol.only b{color:var(--fg)}
+@media (min-width:700px){
+  .start .step.hero{padding:28px 28px 22px}
+  .start .step.hero .t{font-size:23px}
+}
+.start .step.hero:hover{box-shadow:var(--shadow-2);transform:translateY(-1px)}
+
+/* ---- segmented control (jump list) ---- */
+.seg{margin:0 -16px 18px;padding:2px 16px 6px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.seg::-webkit-scrollbar{display:none}
+.seg-track{display:inline-flex;gap:2px;padding:3px;background:var(--code);border-radius:999px;border:1px solid var(--line)}
+.seg-btn{appearance:none;border:0;background:transparent;color:var(--muted);font:500 14px/1 var(--font);min-height:36px;padding:0 12px;border-radius:999px;
+  white-space:nowrap;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background-color var(--t-fast) ease,color var(--t-fast) ease,transform var(--t-fast) var(--spring);
+  -webkit-tap-highlight-color:transparent}
+.seg-btn .seg-n{font-variant-numeric:tabular-nums;font-weight:600;color:var(--faint)}
+.seg-btn:hover{color:var(--fg)}
+.seg-btn:active{transform:scale(.97)}
+.seg-btn.active{background:var(--card);color:var(--fg);box-shadow:var(--shadow-1)}
+.seg-btn.active .seg-n{color:var(--accent)}
+.seg-btn.complete .seg-n{color:var(--done)}
+@media (min-width:700px){.seg{margin:0 0 20px;padding-inline:0}}
+
+/* ---- collapsible groups ---- */
+.group{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);margin:0 0 12px;box-shadow:var(--shadow-1);overflow:hidden;
+  transition:box-shadow var(--t) var(--ease)}
+.group[open]{box-shadow:var(--shadow-2)}
+.group > summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto auto 1fr auto;align-items:center;gap:12px;padding:16px 18px;min-height:64px;
+  -webkit-tap-highlight-color:transparent;user-select:none;transition:background-color var(--t-fast) ease}
+.group > summary::-webkit-details-marker{display:none}
+.group > summary:hover{background:var(--card-2)}
+.g-chev{width:8px;height:8px;border-right:2px solid var(--faint);border-bottom:2px solid var(--faint);transform:rotate(-45deg);transition:transform var(--t) var(--spring);margin-left:2px;flex:none}
+.group[open] > .g-chev, .group[open] > summary .g-chev{transform:rotate(45deg) translate(-1px,-1px)}
+.g-num{width:30px;height:30px;border-radius:50%;background:var(--accent-tint);color:var(--accent);font-weight:600;font-size:14px;display:flex;align-items:center;justify-content:center;flex:none}
+.g-text{display:flex;flex-direction:column;gap:2px;min-width:0}
+.g-line{font-size:17px;line-height:1.25;letter-spacing:-.01em}
+.g-title{font-weight:600}
+.sep{color:var(--faint);font-weight:400}
+.g-line > .sep:first-child{display:none}
+.g-meta{color:var(--muted);font-size:14px}
+.g-where{color:var(--faint);font-size:14px;line-height:1.4;text-wrap:pretty}
+.g-count{color:var(--muted);font-size:14px;font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap;background:var(--code);padding:5px 10px;border-radius:999px}
+.g-count.complete{background:var(--done);color:var(--done-fg)}
+.g-body{padding:4px 12px 12px;border-top:1px solid var(--line);background:var(--bg)}
+.g-body .step{margin-top:12px;margin-bottom:0;box-shadow:none}
+.g-body .step:first-child{margin-top:12px}
+@media (min-width:700px){.g-body{padding:4px 16px 16px}}
+
+/* entry motion when a group opens (opacity only under reduced motion) */
+@keyframes gIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.group[open] .g-body{animation:gIn .32s var(--ease) both}
+
+/* ---- footer ---- */
+footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);color:var(--faint);font-size:14px;line-height:1.5;text-wrap:pretty}
+
+/* ---- motion & print ---- */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important}
+  .group[open] .g-body{animation:none}
+  .step.hero:hover{transform:none}
+}
+@media print{
+  .top,.seg{position:static;background:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .group{break-inside:avoid}
+  .group > .g-body{display:block}
+  .step,.group{box-shadow:none}
+}
+
 </style>
+</head>
+<body>
+<header class="top" id="top">
+  <div class="top-in">
+    <span class="top-title">Action Desk</span>
+    <span class="count" id="count">0 of 23 done</span>
+  </div>
+  <div class="meter" aria-hidden="true"><i id="fill"></i></div>
+</header>
 
-<div class="wrap">
-  <h1>Steven's Action Desk</h1>
-  <p class="lede">Everything still waiting on you — including every connection that still has to be made — in the order to do it. Each button opens the right place; tick the box when done (saved in this browser), then tell Claude "done 7" so the dashboards catch up. Checked 2026-10-08, 11 AM PT.</p>
-  <div class="bar"><div class="meter" aria-hidden="true"><i id="fill"></i></div><span class="count" id="count">0 of 23 done</span></div>
-  <p class="note"><b>Already done, nothing to do:</b> Lofty API key (54 leads syncing); the 14 routines that failed on the usage limit were re-run and succeeded; the dashboards read 21 of 25 feeds fresh; both dashboards were updated with the cycle-11 fixes (96 in all) and the Command Deck has a Remote Control card, org chart nodes for it and for context.dev (connected), and the AI Replica Studio plan; the one-command Mac script, the three-tier failover (OpenRouter cap $25) and the connection plan are built and tested; your USC answers and personal DRE are saved. <b>Why things kept failing:</b> the Claude usage allowance; the first step cuts the waste.</p>
+<main class="wrap">
+  <section class="hero-head">
+    <p class="eyebrow">Steven's</p>
+    <h1>Action Desk</h1>
+    <p class="lede">Everything still waiting on you — including every connection that still has to be made — in the order to do it. Each button opens the right place; tick the box when done (saved in this browser), then tell Claude "done 7" so the dashboards catch up. Updated 2026-10-20 (step 0: the Mac is silent; Vanessa’s voice note; the 80/20 daily cycle). Simplified 2026-10-12 (start with A, B, C); detail first checked 2026-10-08.</p>
+  </section>
 
-  <h2>1 · Phone · 5 minutes</h2>
-  <p class="where">Do these first; nothing else depends on them</p>
+  <aside class="callout" role="note">
+    <p class="note"><b>Already done, nothing to do:</b> Lofty API key (54 leads syncing); the 14 routines that failed on the usage limit were re-run and succeeded; the dashboards read 21 of 25 feeds fresh; both dashboards were updated with the cycle-11 fixes (96 in all) and the Command Deck has a Remote Control card, org chart nodes for it and for context.dev (connected), and the AI Replica Studio plan; the one-command Mac script, the three-tier failover (OpenRouter cap $25) and the connection plan are built and tested; your USC answers and personal DRE are saved. <b>Why things kept failing:</b> the Claude usage allowance; the first step cuts the waste.</p>
+  </aside>
 
+  <section class="start" aria-labelledby="start-title">
+    <h2 id="start-title" class="section-title">Start here · three pastes, then a short list only you can do</h2>
+    <p class="d intro">Everything below the line is still there for reference, but you no longer need to work through it one by one. Each paste asks you one question (type <b>y</b>, press Enter) and then does every safe step itself: it installs only into your own folder and never signs in, pairs, stores a key or spends. At the end it prints a report; copy that report and paste it to Claude.</p>
+
+  <div class="step hero" data-id="0"><div class="n">0</div><div class="body">
+    <p class="t">First · your Mac has been silent since Oct 13 · 5 minutes</p>
+    <p class="d">The dashboard's runner status was last written <b>2026-10-13 07:13 UTC</b>. Everything that runs on the Mac has been dark for a week: Vanessa's 6:40 AM iMessage text, her voice note, Lofty, calendar, rates, QuantVue, Steve's twin sweep, the research queue and the iMessage inbox. The cloud carried the feeds and the 6:48 AM Claude-app push in the meantime. Wake the Mac (power, lid, sign in), press Command + Space, type <b>Terminal</b>, press Enter, paste the line below and send Claude the last 15 lines. If it says stopped or logged out, run the second line and sign in when it asks; Claude never does that for you.</p>
+    <div class="acts"><code>runnerctl status</code><button class="btn" data-copy="runnerctl status">Copy</button><code>runnerctl start</code><button class="btn" data-copy="runnerctl start">Copy</button>
+      <label class="tick"><input type="checkbox" id="s0a">Runner is back</label></div>
+    <p class="d alt"><b>Then her morning voice note (one paste, one command).</b> Her morning text already comes from the Mac task <code>vanessa-morning-brief-text</code> at 6:40 AM. For the voice note in her own recorded voice: open that runner task, paste <b>section 8</b> of <code>integrations/mac-task-specs.md</code> at the end of its prompt, save, then run the line below once with your Vanessa iMessage thread's conversation id (the script says how to find it). From then on the voice note follows her text within about 10 minutes. New on 2026-10-20: the weekday <b>Chief-of-Staff daily cycle</b> (6:25 AM) now sorts everything into automation / AI team / ISA / you and leaves you at most 3 items; the 6:48 brief reads it.</p>
+    <div class="acts"><code>bash integrations/voice-setup.sh &lt;your Vanessa thread's conversation id&gt;</code><button class="btn" data-copy="bash integrations/voice-setup.sh <your Vanessa thread's conversation id>">Copy</button><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mac-task-specs.md" target="_blank" rel="noopener">Section 8 to paste</a><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/docs/AUTOMATION-MAP-2026-10-20.md" target="_blank" rel="noopener">The 80/20 map</a>
+      <label class="tick"><input type="checkbox" id="s0b">Voice note on</label></div></div></div>
+
+  <div class="step hero" data-id="A"><div class="n">A</div><div class="body">
+    <p class="t">Mac 1, then Mac 2 · one paste each · about 20 minutes, mostly waiting</p>
+    <p class="d">Press Command + Space, type <b>Terminal</b>, press Enter. Click Copy below, paste into the Terminal window, press Enter, answer <b>y</b>. If it says the Repo folder is not there: <code>git clone https://github.com/chitown034/Repo.git ~/Repo</code> first, then paste the line again.</p>
+    <div class="acts"><code>cd ~/Repo &amp;&amp; git fetch origin &amp;&amp; git checkout claude/gracious-newton-4hpfco &amp;&amp; git pull &amp;&amp; bash go.sh</code><button class="btn" data-copy="cd ~/Repo &amp;&amp; git fetch origin &amp;&amp; git checkout claude/gracious-newton-4hpfco &amp;&amp; git pull &amp;&amp; bash go.sh">Copy</button>
+    </div>
+    <p class="d alt"><b>Easier:</b> if the Claude app is on that Mac, open it, start a Claude Code session, and paste this prompt instead. Claude on that Mac then does the whole paste for you and reads the report back.</p>
+    <div class="acts"><code>Open the folder ~/Repo (clone https://github.com/chitown034/Repo.git there if it is missing), switch to branch claude/gracious-newton-4hpfco, pull, then run bash go.sh and answer y to its one question. It connects Laya, Orca and Jarvis and turns on the Agent OS as in wiki/ai-team/agent-os.md. Do not sign in to anything, do not pair Orca, do not store any key. When it finishes, show me the REPORT block and tell me in five plain lines what still needs me.</code><button class="btn" data-copy="Open the folder ~/Repo (clone https://github.com/chitown034/Repo.git there if it is missing), switch to branch claude/gracious-newton-4hpfco, pull, then run bash go.sh and answer y to its one question. It connects Laya, Orca and Jarvis and turns on the Agent OS as in wiki/ai-team/agent-os.md. Do not sign in to anything, do not pair Orca, do not store any key. When it finishes, show me the REPORT block and tell me in five plain lines what still needs me.">Copy prompt</button>
+      <label class="tick"><input type="checkbox" id="sA1">Mac 1 done</label><label class="tick"><input type="checkbox" id="sA2">Mac 2 done</label></div></div></div>
+
+  <div class="step hero" data-id="B"><div class="n">B</div><div class="body">
+    <p class="t">Alienware PC · one paste · about 30 minutes (it downloads the local AI model)</p>
+    <p class="d">Click Start, type <b>PowerShell</b>, press Enter. Copy, paste, Enter, answer <b>y</b>. If the Repo folder is not there: <code>git clone https://github.com/chitown034/Repo.git $HOME\Repo</code> first (needs Git for Windows and Python 3.10+ installed).</p>
+    <div class="acts"><code>cd $HOME\Repo; git fetch origin; git checkout claude/gracious-newton-4hpfco; git pull; powershell -ExecutionPolicy Bypass -File go.ps1</code><button class="btn" data-copy="cd $HOME\Repo; git fetch origin; git checkout claude/gracious-newton-4hpfco; git pull; powershell -ExecutionPolicy Bypass -File go.ps1">Copy</button>
+      <label class="tick"><input type="checkbox" id="sB">Done</label></div></div></div>
+
+  <div class="step hero" data-id="C"><div class="n">C</div><div class="body">
+    <p class="t">Only you · sign-ins, secrets and decisions · one sitting, about 25 minutes</p>
+    <p class="d">A script must never do these. Each line says exactly where to click.</p>
+    <ol class="d only">
+      <li><b>Pair Orca</b> (after paste A on both Macs): on Mac 1 run <code>bash integrations/remote-control/orca-remote.sh serve --phone</code> and leave the window open; on Mac 2 run the same with <code>pair</code> and paste the link it shows into the hidden prompt. Never paste that link anywhere else.</li>
+      <li><b>Zoho:</b> Zoho CRM → Setup → Security Control → Profiles → your profile → tick <b>Zoho CRM API Access</b>. This is the whole 403 fix.</li>
+      <li><b>Keys into files, never into chat:</b> open <code>~/.config/zoho/.env</code> and <code>~/.config/lofty/.env</code> (paste A creates them empty) and type the client id/secret and the Lofty key.</li>
+      <li><b>Sign in once</b> on the Mac to ShowingTime, Showami and homes.com in the normal browser; in claude.ai → Settings → Connectors, sign in again to Strava (and Eromify if you still use it).</li>
+      <li><b>AnyDesk:</b> install it on each computer and tablet, then type each AnyDesk <i>ID</i> (never the password) into the Computer Hub card on the Command Deck.</li>
+      <li><b>Phone:</b> open the Claude app, say “update my health numbers” (Apple Health tiles), and install the Orca app for the phone view.</li>
+      <li><b>One reply to Claude</b> with: LPT Realty's brokerage DRE number and entity name; approve or decline the two queued posts (Command Deck → Marketing); the AI Steve video replica (yes/no); “defaults” for the rest.</li>
+      <li><b>Free Finnhub key</b> (only if you want the OpenStock market viewer): finnhub.io/register, then type it into <code>~/Applications/OpenStock/.env</code>.</li>
+      <li><b>Three short emails</b> (drafts in <code>integrations/loan-stack/CONNECTIONS.md</code>): Ticor (API or bulk export?), ARIVE (API access), your Zoho admin if the profile tick is greyed out.</li>
+    </ol>
+    <div class="acts"><label class="tick"><input type="checkbox" id="sC">Done</label></div></div></div>
+  </section>
+
+  <section class="ref" aria-labelledby="ref-title">
+    <h2 id="ref-title" class="section-title">All 35 original steps, in detail (reference only)</h2>
+    <nav class="seg" aria-label="Jump to a section"><div class="seg-track"><button type="button" class="seg-btn" data-group="g1" aria-controls="g1"><span class="seg-n">1</span>Phone</button><button type="button" class="seg-btn" data-group="g2" aria-controls="g2"><span class="seg-n">2</span>Reply</button><button type="button" class="seg-btn" data-group="g3" aria-controls="g3"><span class="seg-n">3</span>Mac</button><button type="button" class="seg-btn" data-group="g4" aria-controls="g4"><span class="seg-n">4</span>Accounts</button><button type="button" class="seg-btn" data-group="g5" aria-controls="g5"><span class="seg-n">5</span>Emails</button><button type="button" class="seg-btn" data-group="g6" aria-controls="g6"><span class="seg-n">6</span>Decisions</button><button type="button" class="seg-btn" data-group="g7" aria-controls="g7"><span class="seg-n">7</span>Verify</button><button type="button" class="seg-btn" data-group="g8" aria-controls="g8"><span class="seg-n">8</span>New</button></div></nav>
+
+<details class="group" id="g1" data-steps="s1,s2">
+  <summary><span class="g-chev" aria-hidden="true"></span><span class="g-num">1</span><span class="g-text"><span class="g-line"><span class="sep" aria-hidden="true">·</span> <span class="g-title">Phone</span> <span class="g-meta"><span class="sep" aria-hidden="true">·</span> 5 minutes</span></span><span class="g-where">Do these first; nothing else depends on them</span></span><span class="g-count" data-count="g1">0 of 2</span></summary>
+  <div class="g-body">
   <div class="step" data-id="1"><div class="n">1</div><div class="body">
     <p class="t">Switch off the duplicate weekly loops (they burned the usage allowance)</p>
     <p class="d">Claude already cut your routines from about 199 to 139 runs a week and moved three daily ones to the cheaper model (Oct 9). These three you created yourself, so only you can switch them off: each reads the whole dashboard every Sunday and repeats Saturday&#x27;s loop. Open each link and turn the switch off. The last one is optional.</p>
@@ -69,10 +310,11 @@ footer{margin-top:28px;color:var(--muted);font-size:.85rem}
     <p class="t">Restart your health numbers (Apple Health)</p>
     <p class="d">The tiles are about 25 days old. Open the Claude app on your iPhone, say &quot;update my health stats in Notion&quot;, and allow the Apple Health read and the Notion write once.</p>
     <div class="acts"><label class="tick"><input type="checkbox" id="s2">Done</label></div></div></div>
-
-  <h2>2 · One reply to Claude · 2 minutes</h2>
-  <p class="where">Copy, fill the blanks, send in this chat</p>
-
+  </div>
+</details>
+<details class="group" id="g2" data-steps="s3,s4">
+  <summary><span class="g-chev" aria-hidden="true"></span><span class="g-num">2</span><span class="g-text"><span class="g-line"><span class="sep" aria-hidden="true">·</span> <span class="g-title">One reply to Claude</span> <span class="g-meta"><span class="sep" aria-hidden="true">·</span> 2 minutes</span></span><span class="g-where">Copy, fill the blanks, send in this chat</span></span><span class="g-count" data-count="g2">0 of 2</span></summary>
+  <div class="g-body">
   <div class="step" data-id="3"><div class="n">3</div><div class="body">
     <p class="t">Answer the open questions in one message</p>
     <p class="d">Your personal DRE #01988316 is saved. Still needed: LPT Realty&#x27;s own California DRE brokerage number and exact entity name (the two queued posts and the CRMLS application wait on them), and what kind of Zoho key you have (a Client ID + Client Secret from the Zoho API Console, or something else; never paste the key itself). Put &#x27;no&#x27; for Plaid unless you want it. (Google Drive is done: Claude connected it read-only on 2026-10-09.)</p>
@@ -85,10 +327,11 @@ footer{margin-top:28px;color:var(--muted);font-size:.85rem}
     <p class="d">After the reply above: Command Deck → Marketing panel → open each draft and its compliance review → set its stage to Approved or Declined.</p>
     <div class="acts"><a class="btn" href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Open Command Deck</a>
       <label class="tick"><input type="checkbox" id="s4">Done</label></div></div></div>
-
-  <h2>3 · Mac, one sitting · about 45 minutes</h2>
-  <p class="where">Terminal first; then one command does the rest and asks before every change</p>
-
+  </div>
+</details>
+<details class="group" id="g3" data-steps="s5,s6,s7,s8,s9,s10,s11,s12,s13,s14">
+  <summary><span class="g-chev" aria-hidden="true"></span><span class="g-num">3</span><span class="g-text"><span class="g-line"><span class="sep" aria-hidden="true">·</span> <span class="g-title">Mac, one sitting</span> <span class="g-meta"><span class="sep" aria-hidden="true">·</span> about 45 minutes</span></span><span class="g-where">Terminal first; then one command does the rest and asks before every change</span></span><span class="g-count" data-count="g3">0 of 10</span></summary>
+  <div class="g-body">
   <div class="step" data-id="5"><div class="n">5</div><div class="body">
     <p class="t">Open Terminal and find your Repo folder</p>
     <p class="d">No web link can open Terminal on your Mac. Press Command + Space, type Terminal, press Return. Copy and run the line below; it prints the path of the folder that holds MAC-SETUP.sh (that is your Repo folder). If it prints nothing, run: git clone https://github.com/chitown034/Repo.git. Then type cd and a space, drag that folder from Finder into the window, press Return.</p>
@@ -97,8 +340,8 @@ footer{margin-top:28px;color:var(--muted);font-size:.85rem}
 
   <div class="step" data-id="6"><div class="n">6</div><div class="body">
     <p class="t">Switch to the branch that holds today&#x27;s files</p>
-    <p class="d">The new scripts are on the branch claude/stoic-cori-pvn3f8, not the repo&#x27;s default branch, so a plain git pull misses them. If it complains about changes you made, stop and tell Claude; do not discard them. The last line should print the file name.</p>
-    <div class="acts"><code>git fetch origin &amp;&amp; git checkout claude/stoic-cori-pvn3f8 &amp;&amp; git pull &amp;&amp; ls mac-bootstrap.sh</code><button class="btn" data-copy="git fetch origin &amp;&amp; git checkout claude/stoic-cori-pvn3f8 &amp;&amp; git pull &amp;&amp; ls mac-bootstrap.sh">Copy</button>
+    <p class="d">The new scripts are on the branch claude/gracious-newton-4hpfco, not the repo&#x27;s default branch, so a plain git pull misses them. If it complains about changes you made, stop and tell Claude; do not discard them. The last line should print the file name.</p>
+    <div class="acts"><code>git fetch origin &amp;&amp; git checkout claude/gracious-newton-4hpfco &amp;&amp; git pull &amp;&amp; ls mac-bootstrap.sh</code><button class="btn" data-copy="git fetch origin &amp;&amp; git checkout claude/gracious-newton-4hpfco &amp;&amp; git pull &amp;&amp; ls mac-bootstrap.sh">Copy</button>
       <label class="tick"><input type="checkbox" id="s6">Done</label></div></div></div>
 
   <div class="step" data-id="7"><div class="n">7</div><div class="body">
@@ -111,7 +354,7 @@ footer{margin-top:28px;color:var(--muted);font-size:.85rem}
 
   <div class="step" data-id="8"><div class="n">8</div><div class="body">
     <p class="t">Fix the OmniRoute failover so it kicks in when Claude runs out</p>
-    <p class="d">OmniRoute itself is running, but the switch-over scripts were never installed, so nothing changes when you hit the limit. First the read-only check, which prints PASS / WARN / FAIL with the fix for each gap; then the installer, which asks yes/no before every change. Paste the doctor output back (it prints no secrets). Sessions you start yourself stay on Claude by design; to deliberately continue on the free route with no client data, type claude-auto --interactive-free.</p>
+    <p class="d">OmniRoute itself is running, but the switch-over scripts were never installed, so nothing changes when you hit the limit. First the read-only check, which prints PASS / WARN / FAIL with the fix for each gap; then the installer, which asks yes/no before every change. Paste the doctor output back (it prints no secrets). The installer now also asks to turn on keep-going: start your sessions with claude-auto --keep-going, and when Claude runs out just type /exit and press Enter. The same conversation continues on OmniRoute's free models, then goes back to Claude once it resets. Client data never goes to the free route.</p>
     <div class="acts"><code>claude-auto --doctor
 bash integrations/omniroute-failover/install-failover.sh --dry-run
 bash integrations/omniroute-failover/install-failover.sh
@@ -146,7 +389,7 @@ bash integrations/remote-control/orca-remote.sh report">Copy</button>
   <div class="step" data-id="11"><div class="n">11</div><div class="body">
     <p class="t">Turn on Claude Mods (one command)</p>
     <p class="d">Five mods are built, checked and ready: a status line showing which AI route you are on, a Proceed/Cancel guard before any send, share or payment, /remember to save a rule into the brain, Blast Radius, and /replay to review Claude&#x27;s edits. Run this in Terminal from your Repo folder, type y once, then open a new Claude Code session. To turn them all off later: add --off.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/mods/RECOMMENDATIONS.md" target="_blank" rel="noopener">What each mod does</a>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/mods/RECOMMENDATIONS.md" target="_blank" rel="noopener">What each mod does</a>
       <code>git pull &amp;&amp; bash integrations/mods/install-mods.sh</code><button class="btn" data-copy="git pull &amp;&amp; bash integrations/mods/install-mods.sh">Copy</button>
       <label class="tick"><input type="checkbox" id="s11">Done</label></div></div></div>
 
@@ -166,10 +409,11 @@ bash integrations/remote-control/orca-remote.sh report">Copy</button>
     <p class="t">Sign in by hand to ShowingTime, Showami and homes.com</p>
     <p class="d">The connection check in the bootstrap tells you which of them needs a sign-in. Sign in once in the agent Chrome it opens. Agents never type your passwords. SkySlope and zipForms stay locked until compliance signs off.</p>
     <div class="acts"><label class="tick"><input type="checkbox" id="s14">Done</label></div></div></div>
-
-  <h2>4 · Accounts and settings · about 30 minutes</h2>
-  <p class="where">Sign-ins and permission ticks only you can do; say &quot;done N&quot; after each</p>
-
+  </div>
+</details>
+<details class="group" id="g4" data-steps="s15,s16,s17,s18">
+  <summary><span class="g-chev" aria-hidden="true"></span><span class="g-num">4</span><span class="g-text"><span class="g-line"><span class="sep" aria-hidden="true">·</span> <span class="g-title">Accounts and settings</span> <span class="g-meta"><span class="sep" aria-hidden="true">·</span> about 30 minutes</span></span><span class="g-where">Sign-ins and permission ticks only you can do; say &quot;done N&quot; after each</span></span><span class="g-count" data-count="g4">0 of 4</span></summary>
+  <div class="g-body">
   <div class="step" data-id="15"><div class="n">15</div><div class="body">
     <p class="t">Zoho: tick the API permission</p>
     <p class="d">This is why Zoho returns 403, not a missing key. Zoho CRM → Setup → Security Control → Profiles → your profile → Developer Permissions → tick &quot;Zoho CRM API Access&quot;. If your key is a Client ID + Secret, also create a Self Client in the Zoho API Console with scopes ZohoCRM.modules.ALL,ZohoCRM.settings.READ and generate the refresh token. Then say &quot;Zoho done&quot;.</p>
@@ -193,31 +437,33 @@ bash integrations/remote-control/orca-remote.sh report">Copy</button>
     <p class="d">In a Claude Code cloud session: title bar → environment → Edit → Network access. Add these:</p>
     <div class="acts"><code>fred.stlouisfed.org www.freddiemac.com www.redfin.com</code><button class="btn" data-copy="fred.stlouisfed.org www.freddiemac.com www.redfin.com">Copy</button>
       <label class="tick"><input type="checkbox" id="s18">Done</label></div></div></div>
-
-  <h2>5 · Applications and emails · 15 minutes</h2>
-  <p class="where">Drafts are in integrations/CONNECT-PLAN-2026-10-09.md section 6; nothing has been sent</p>
-
+  </div>
+</details>
+<details class="group" id="g5" data-steps="s19,s20">
+  <summary><span class="g-chev" aria-hidden="true"></span><span class="g-num">5</span><span class="g-text"><span class="g-line"><span class="sep" aria-hidden="true">·</span> <span class="g-title">Applications and emails</span> <span class="g-meta"><span class="sep" aria-hidden="true">·</span> 15 minutes</span></span><span class="g-where">Drafts are in integrations/CONNECT-PLAN-2026-10-09.md section 6; nothing has been sent</span></span><span class="g-count" data-count="g5">0 of 2</span></summary>
+  <div class="g-body">
   <div class="step" data-id="19"><div class="n">19</div><div class="body">
     <p class="t">Send three short messages</p>
     <p class="d">(1) Ticor: ask your Ticor Title Sales Executive or Customer Service whether an API or bulk export of Ticor Property Data exists and on what terms. (2) CRMLS: your broker (LPT) applies for the RESO Web API data licence at licensing@crmls.org; there will be no scraper. (3) Dotloop: apply for developer / partner access at info.dotloop.com/developers. Each is your signature, so Claude only drafted them.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/CONNECT-PLAN-2026-10-09.md" target="_blank" rel="noopener">Open the drafts</a>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/CONNECT-PLAN-2026-10-09.md" target="_blank" rel="noopener">Open the drafts</a>
       <a class="btn" href="https://ticorpropertydata.com/" target="_blank" rel="noopener">Ticor Property Data</a>
       <label class="tick"><input type="checkbox" id="s19">Done</label></div></div></div>
 
   <div class="step" data-id="20"><div class="n">20</div><div class="body">
     <p class="t">Optional: switch on the free-then-paid failover</p>
     <p class="d">Claude subscription first; when it runs out, OmniRoute free models take over at once; OpenRouter is the paid third tier, capped at $25 a month, and stays off until you do this. Create an OpenRouter key yourself, set the key&#x27;s own credit limit to $25, load no more than $25, then follow the Three-tier failover steps. It returns to Claude by itself when the allowance resets.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/omniroute-failover/README.md" target="_blank" rel="noopener">Open the steps</a>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/omniroute-failover/README.md" target="_blank" rel="noopener">Open the steps</a>
       <a class="btn" href="https://openrouter.ai/" target="_blank" rel="noopener">OpenRouter</a>
       <label class="tick"><input type="checkbox" id="s20">Done</label></div></div></div>
-
-  <h2>6 · Decisions · one reply</h2>
-  <p class="where">Each defaults to no; nothing is spent without your yes</p>
-
+  </div>
+</details>
+<details class="group" id="g6" data-steps="s21,s22">
+  <summary><span class="g-chev" aria-hidden="true"></span><span class="g-num">6</span><span class="g-text"><span class="g-line"><span class="sep" aria-hidden="true">·</span> <span class="g-title">Decisions</span> <span class="g-meta"><span class="sep" aria-hidden="true">·</span> one reply</span></span><span class="g-where">Each defaults to no; nothing is spent without your yes</span></span><span class="g-count" data-count="g6">0 of 2</span></summary>
+  <div class="g-body">
   <div class="step" data-id="21"><div class="n">21</div><div class="body">
     <p class="t">Decide the AI Steve video replica (plan is ready)</p>
     <p class="d">context.dev is connected. The weekly real-estate and loan-officer video plan is in integrations/ai-replica-studio/PLAN.md. To start Claude needs five answers: (1) which avatar provider, or none yet (HeyGen works through Composio but is paid and not connected; the CAM page was not applied to and its price is not published); (2) built-in voice or a cloned voice on your own ElevenLabs account; (3) platforms and cadence (assumed one of each a week to Facebook, Instagram, LinkedIn, YouTube); (4) LPT Realty&#x27;s brokerage DRE number and name plus your personal NMLS ID for the disclosure line; (5) whether the three social timers run as a routine or through Buffer. You record your own consent and samples; nothing posts without your approval each week.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/ai-replica-studio/PLAN.md" target="_blank" rel="noopener">Read the plan</a>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/ai-replica-studio/PLAN.md" target="_blank" rel="noopener">Read the plan</a>
       <code>replica: provider ______ · voice ______ · cadence 1+1/week · LPT DRE ______ · NMLS ID ______ · timers routine/Buffer</code><button class="btn" data-copy="replica: provider ______ · voice ______ · cadence 1+1/week · LPT DRE ______ · NMLS ID ______ · timers routine/Buffer">Copy</button>
       <label class="tick"><input type="checkbox" id="s21">Done</label></div></div></div>
 
@@ -226,19 +472,112 @@ bash integrations/remote-control/orca-remote.sh report">Copy</button>
     <p class="d">Google Drive: done, connected read-only (one file; Claude holds its catalogue, not its contents, until you say the notes can be indexed). Plaid: no (keys may cost). Terms-of-service reviews for Redfin market pages, lender rate pages and builder pages: Alexandra drafts, you decide each. SkySlope and zipForms: stay locked until compliance signs off. APInation: tell Claude what you want it to do before any paid use. Orca phone app: your call.</p>
     <div class="acts"><code>defaults: Drive notes indexed yes/no ___ · Plaid no · ToS reviews later · SkySlope/zipForms locked · APInation: ______</code><button class="btn" data-copy="defaults: Drive notes indexed yes/no ___ · Plaid no · ToS reviews later · SkySlope/zipForms locked · APInation: ______">Copy</button>
       <label class="tick"><input type="checkbox" id="s22">Done</label></div></div></div>
-
-  <h2>7 · Verify the brain, Jarvis, Laya and Vanessa&#x27;s voice · 3 minutes</h2>
-  <p class="where">Last, once the Mac steps above are done; nothing is changed except two local files</p>
-
+  </div>
+</details>
+<details class="group" id="g7" data-steps="s23">
+  <summary><span class="g-chev" aria-hidden="true"></span><span class="g-num">7</span><span class="g-text"><span class="g-line"><span class="sep" aria-hidden="true">·</span> <span class="g-title">Verify the brain, Jarvis, Laya and Vanessa&#x27;s voice</span> <span class="g-meta"><span class="sep" aria-hidden="true">·</span> 3 minutes</span></span><span class="g-where">Last, once the Mac steps above are done; nothing is changed except two local files</span></span><span class="g-count" data-count="g7">0 of 1</span></summary>
+  <div class="g-body">
   <div class="step" data-id="23"><div class="n">23</div><div class="body">
     <p class="t">Check Jarvis, Laya and Vanessa&#x27;s voice on your Mac</p>
     <p class="d">One command checks Jarvis&#x27;s memory, the real Laya model, the vault, Vanessa&#x27;s recorded voice clips and the brain, and says the one thing to fix for each. It changes only a voice-profile copy in ~/.config/jarvis. Then the brain&#x27;s own self-check runs. Paste the last lines back and Claude updates the dashboards.</p>
-    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/jarvis/README.md" target="_blank" rel="noopener">What it checks</a>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/jarvis/README.md" target="_blank" rel="noopener">What it checks</a>
       <code>cd ~/Projects/Repo 2&gt;/dev/null || cd &quot;$(dirname &quot;$(find ~ -maxdepth 5 -name mac-bootstrap.sh 2&gt;/dev/null | head -1)&quot;)&quot;; git pull &amp;&amp; bash integrations/jarvis/jarvis-setup.sh --apply; bin/brain loop | head -20</code><button class="btn" data-copy="cd ~/Projects/Repo 2&gt;/dev/null || cd &quot;$(dirname &quot;$(find ~ -maxdepth 5 -name mac-bootstrap.sh 2&gt;/dev/null | head -1)&quot;)&quot;; git pull &amp;&amp; bash integrations/jarvis/jarvis-setup.sh --apply; bin/brain loop | head -20">Copy</button>
       <label class="tick"><input type="checkbox" id="s23">Done</label></div></div></div>
+  </div>
+</details>
+<details class="group" id="g8" data-steps="s24,s25,s26,s27,s28,s29,s30,s31,s32,s33,s34,s35">
+  <summary><span class="g-chev" aria-hidden="true"></span><span class="g-num">8</span><span class="g-text"><span class="g-line"><span class="sep" aria-hidden="true">·</span> <span class="g-title">New this round (2026-10-11)</span> <span class="g-meta"><span class="sep" aria-hidden="true">·</span> about 45 minutes</span></span><span class="g-where">Each one asks before it changes anything; the order is the order to do them</span></span><span class="g-count" data-count="g8">0 of 12</span></summary>
+  <div class="g-body">
+  <div class="step" data-id="24"><div class="n">24</div><div class="body">
+    <p class="t">Give Claude browser hands and a skill finder (Mac, 5 minutes)</p>
+    <p class="d">Installs agent-browser and Playwright for Claude Code and copies four skills. Ends with a self-test that types an address into a test page and clicks Search. It asks y/N before each change. Paste the last lines back to Claude.</p>
+    <div class="acts"><code>bash integrations/browser-agents/install.sh --dry-run
+bash integrations/browser-agents/install.sh</code><button class="btn" data-copy="bash integrations/browser-agents/install.sh --dry-run
+bash integrations/browser-agents/install.sh">Copy</button><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/browser-agents/README.md" target="_blank" rel="noopener">What it does</a>
+      <label class="tick"><input type="checkbox" id="s24">Done</label></div></div></div>
 
-  <footer>Rebuilt 2026-10-09 (afternoon) from the live routine list, the Mac runner status, both dashboard databases and a Composio connection check. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Same list as text: <code>docs/STEVEN-STEPS.md</code>.</footer>
-</div>
+  <div class="step" data-id="25"><div class="n">25</div><div class="body">
+    <p class="t">Install the content, video and research skill packs (Mac)</p>
+    <p class="d">Instagram, LinkedIn and YouTube drafting skills, vidIQ workflow skills, the /watch video reader, founder skills, yt-dlp, ffmpeg and Whisper. Each was read first; each asks y/N. Nothing posts or sends. Four items are held on purpose (Jev, Apify, Skool, Remotion): the registry says why.</p>
+    <div class="acts"><code>bash integrations/skill-packs/install-mac.sh --dry-run
+bash integrations/skill-packs/install-mac.sh</code><button class="btn" data-copy="bash integrations/skill-packs/install-mac.sh --dry-run
+bash integrations/skill-packs/install-mac.sh">Copy</button><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/skill-packs/REGISTRY-2026-10-11.md" target="_blank" rel="noopener">What I found in each repo</a>
+      <label class="tick"><input type="checkbox" id="s25">Done</label></div></div></div>
+
+  <div class="step" data-id="26"><div class="n">26</div><div class="body">
+    <p class="t">Set up the Alienware PC (Windows, 20 minutes)</p>
+    <p class="d">On the Alienware: press Start, type PowerShell, open it (not as administrator). Get the repo (git clone https://github.com/chitown034/Repo.git, then cd Repo and git checkout claude/gracious-newton-4hpfco). First run the read-only check, then the install; it asks y/N before each change. It sets up Orca, Laya, Bonsai 2 27B, and optionally Ollama, AnyDesk and Tailscale. It has never run on Windows, so send Claude any error word for word. Paste the one status line it prints into the Computer Hub card.</p>
+    <div class="acts"><code>Set-ExecutionPolicy RemoteSigned -Scope Process
+.\integrations\alienware\alienware-setup.ps1 -Action Doctor
+.\integrations\alienware\alienware-setup.ps1 -Action Install -DryRun
+.\integrations\alienware\alienware-setup.ps1 -Action Install</code><button class="btn" data-copy="Set-ExecutionPolicy RemoteSigned -Scope Process
+.\integrations\alienware\alienware-setup.ps1 -Action Doctor
+.\integrations\alienware\alienware-setup.ps1 -Action Install -DryRun
+.\integrations\alienware\alienware-setup.ps1 -Action Install">Copy</button><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/alienware/README.md" target="_blank" rel="noopener">Plain-English guide</a>
+      <label class="tick"><input type="checkbox" id="s26">Done</label></div></div></div>
+
+  <div class="step" data-id="27"><div class="n">27</div><div class="body">
+    <p class="t">AnyDesk on every computer and tablet</p>
+    <p class="d">Install AnyDesk on Mac 1, Mac 2, the Alienware, the tablet and the phone. Type each device&#x27;s AnyDesk ID (9 to 10 digits) into the Computer Hub card on the Command Deck (Toolkit &amp; Remote Access page). Set each unattended-access password yourself inside AnyDesk. <b>Never type a password into the dashboard or chat.</b></p>
+    <div class="acts"><a class="btn" href="https://anydesk.com/" target="_blank" rel="noopener">Download AnyDesk</a><a class="btn" href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Open Command Deck</a>
+      <label class="tick"><input type="checkbox" id="s27">Done</label></div></div></div>
+
+  <div class="step" data-id="28"><div class="n">28</div><div class="body">
+    <p class="t">New Command Deck panels: published</p>
+    <p class="d">Done on 2026-10-11. The Command Deck (Computer Hub, Trading Research Desk, weekly events by city, new AI-team seats, animations), this Action Desk and the 2nd Brain 4D are live. The ISA Portal was left as it is, because the copy Claude had was older than yours. Say &quot;update the ISA portal&quot; if you want the animations added there.</p>
+    <div class="acts"><label class="tick"><input type="checkbox" id="s28">Done</label></div></div></div>
+
+  <div class="step" data-id="29"><div class="n">29</div><div class="body">
+    <p class="t">Add the Ultimate Web Scraper connector (optional)</p>
+    <p class="d">claude.ai &rarr; Settings &rarr; Connectors &rarr; Add custom connector, and paste the address below. Claude could not reach that site from its sandbox, so what it costs and where scraped pages go is unverified: read its pricing and privacy pages first. Never use it on client information.</p>
+    <div class="acts"><a class="btn" href="https://claude.ai/settings/connectors" target="_blank" rel="noopener">Open Connectors</a><code>https://ultimatewebscraper.com/claudemcp</code><button class="btn" data-copy="https://ultimatewebscraper.com/claudemcp">Copy</button>
+      <label class="tick"><input type="checkbox" id="s29">Done</label></div></div></div>
+
+  <div class="step" data-id="30"><div class="n">30</div><div class="body">
+    <p class="t">Send the ARIVE API email (your signature)</p>
+    <p class="d">Claude drafted a 5-line email asking ARIVE about API access. Claude cannot verify what ARIVE offers or charges. The Zoho, SkySlope, Dotloop and Ticor steps are in the same file.</p>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/loan-stack/CONNECTIONS.md" target="_blank" rel="noopener">Open the drafts and the 8 steps</a>
+      <label class="tick"><input type="checkbox" id="s30">Done</label></div></div></div>
+
+  <div class="step" data-id="31"><div class="n">31</div><div class="body">
+    <p class="t">Decide the held tools (each defaults to no)</p>
+    <p class="d">Apify (account + spend), vidIQ connection (account), OpenRouter for Jev (key + spend), Remotion (company licence), Skool MCP (Claude recommends no: it uses your login on a private API). Reply: <b>defaults</b> or name any you want.</p>
+    <div class="acts"><code>held: Apify ___ · vidIQ ___ · Jev ___ · Remotion ___ · Skool no</code><button class="btn" data-copy="held: Apify ___ · vidIQ ___ · Jev ___ · Remotion ___ · Skool no">Copy</button>
+      <label class="tick"><input type="checkbox" id="s31">Done</label></div></div></div>
+
+  <div class="step" data-id="32"><div class="n">32</div><div class="body">
+    <p class="t">Run the first real events scan and give the trading desk real data (optional)</p>
+    <p class="d">The weekly events scout could reach none of its 36 sources from the cloud, so run it once on a Mac with internet. The trading research desk is paper-only and needs your own historical price file (CSV) to do real research; until then it only proves the plumbing.</p>
+    <div class="acts"><code>python3 integrations/events/events_scout.py
+cd integrations/trading-desk &amp;&amp; python3 -m desk selftest</code><button class="btn" data-copy="python3 integrations/events/events_scout.py
+cd integrations/trading-desk &amp;&amp; python3 -m desk selftest">Copy</button><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/trading-desk/README.md" target="_blank" rel="noopener">Trading desk guide</a>
+      <label class="tick"><input type="checkbox" id="s32">Done</label></div></div></div>
+
+  <div class="step" data-id="33"><div class="n">33</div><div class="body">
+    <p class="t">Turn on the Agent OS on each computer (Mac 1, Mac 2, Alienware)</p>
+    <p class="d">This lets all 172 agents run through Laya (picks the lane), Jarvis (recalls first) and Orca (runs them side by side). On each Mac: open Terminal, paste the line below, press Enter. It only checks and links two small files; each warning names the one thing to install. On the Alienware, open PowerShell and use the Windows line in the guide. Not yet run on any of your computers.</p>
+    <div class="acts"><code>cd ~/Repo &amp;&amp; git fetch origin &amp;&amp; git checkout claude/gracious-newton-4hpfco &amp;&amp; git pull &amp;&amp; bash integrations/agent-os/install-mac.sh --apply</code><button class="btn" data-copy="cd ~/Repo && git fetch origin && git checkout claude/gracious-newton-4hpfco && git pull && bash integrations/agent-os/install-mac.sh --apply">Copy</button><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/agent-os/README.md" target="_blank" rel="noopener">Guide (Mac + Windows)</a>
+      <label class="tick"><input type="checkbox" id="s33">Done</label></div></div></div>
+
+  <div class="step" data-id="34"><div class="n">34</div><div class="body">
+    <p class="t">Connect Orca and Laya on each Mac</p>
+    <p class="d">Paste into Terminal on Mac 1, then Mac 2. It installs Laya if it is missing, connects it to Claude Code, runs one test and checks Orca. To preview without changing anything, leave off the last word. Then pair Orca yourself with the two commands it prints (the pairing link is a secret: paste it only into the hidden prompt, never in a chat). Not yet run on your Macs.</p>
+    <div class="acts"><code>cd ~/Repo && bash integrations/agent-os/connect-orca-laya.sh --apply</code><button class="btn" data-copy="cd ~/Repo && bash integrations/agent-os/connect-orca-laya.sh --apply">Copy</button>
+      <label class="tick"><input type="checkbox" id="s34">Done</label></div></div></div>
+
+  <div class="step" data-id="35"><div class="n">35</div><div class="body">
+    <p class="t">OpenStock market viewer on this Mac (optional)</p>
+    <p class="d">Paste into Terminal once. It needs Docker Desktop and Node and tells you if either is missing. Then get a <b>free</b> key at finnhub.io/register and type it into <code>~/Applications/OpenStock/.env</code> after <code>NEXT_PUBLIC_FINNHUB_API_KEY=</code>. The Trading Desk panel has the Open and Start buttons. It is a viewer, not a broker.</p>
+    <div class="acts"><code>bash integrations/openstock/openstock.sh install --apply</code><button class="btn" data-copy="bash integrations/openstock/openstock.sh install --apply">Copy</button>
+      <label class="tick"><input type="checkbox" id="s35">Done</label></div></div></div>
+
+  
+  </div>
+</details>
+  </section>
+
+  <footer>Updated 2026-10-20 (step 0 and the 80/20 map); 2026-10-12 (start-here section); earlier 2026-10-11; first 23 steps rebuilt 2026-10-09 from the live routine list, the Mac runner status, both dashboard databases and a Composio connection check. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Same list as text: <code>docs/STEVEN-STEPS.md</code>.</footer>
+</main>
 
 <script>
 (function(){
@@ -267,4 +606,44 @@ bash integrations/remote-control/orca-remote.sh report">Copy</button>
   function selectCode(btn){ var c=btn.parentNode.querySelector('code'); if(!c)return; var r=document.createRange(); r.selectNodeContents(c); var s=getSelection(); s.removeAllRanges(); s.addRange(r); }
   paint();
 })();
+
+/* Section chrome: per-group "n of m" badges and the segmented jump list. Additive; the tick script above owns the data. */
+(function(){
+  try{
+    var groups=Array.prototype.slice.call(document.querySelectorAll('details.group'));
+    var segs=Array.prototype.slice.call(document.querySelectorAll('.seg-btn'));
+    function countGroups(){
+      groups.forEach(function(g){
+        var boxes=g.querySelectorAll('label.tick input'), n=0;
+        Array.prototype.forEach.call(boxes,function(b){ if(b.checked)n++; });
+        var badge=g.querySelector('[data-count]');
+        if(badge){ badge.textContent=n+" of "+boxes.length; badge.classList.toggle('complete',boxes.length>0&&n===boxes.length); }
+        var sb=document.querySelector('.seg-btn[data-group="'+g.id+'"]');
+        if(sb) sb.classList.toggle('complete',boxes.length>0&&n===boxes.length);
+      });
+    }
+    document.addEventListener('change',function(e){ if(e.target&&e.target.matches&&e.target.matches('label.tick input')) countGroups(); });
+    function setActive(id){ segs.forEach(function(b){ b.classList.toggle('active',b.getAttribute('data-group')===id); }); }
+    segs.forEach(function(b){
+      b.addEventListener('click',function(){
+        var id=b.getAttribute('data-group'), g=document.getElementById(id); if(!g)return;
+        if(!g.open) g.open=true;
+        setActive(id);
+        var top=g.getBoundingClientRect().top+window.pageYOffset-108;
+        var reduce=false; try{ reduce=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches); }catch(e0){}
+        window.scrollTo({top:top,behavior:reduce?'auto':'smooth'});
+        try{ b.scrollIntoView({block:'nearest',inline:'center',behavior:reduce?'auto':'smooth'}); }catch(e1){}
+      });
+    });
+    groups.forEach(function(g){ g.addEventListener('toggle',function(){ if(g.open) setActive(g.id); }); });
+    /* open the first group that still has work, so the reference list never reads as a wall of closed rows */
+    var first=null;
+    groups.forEach(function(g){ if(first)return; var any=false; Array.prototype.forEach.call(g.querySelectorAll('label.tick input'),function(b){ if(!b.checked)any=true; }); if(any)first=g; });
+    if(first){ first.open=true; setActive(first.id); } else if(groups[0]){ setActive(groups[0].id); }
+    countGroups();
+  }catch(e){ try{ console.warn('[action-desk chrome] skipped: '+(e&&e.message)); }catch(e2){} }
+})();
+
 </script>
+</body>
+</html>

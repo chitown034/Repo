@@ -7,14 +7,22 @@ The full seat map behind Vanessa: Steven at the top, then Steve (digital twin) /
 ```
 Steven (Principal)
 ├─ Steve — digital twin, Tier-1 work
-├─ Vanessa — Chief of Staff / COO / orchestrator, council chair
+├─ Vanessa — Chief of Staff / COO / orchestrator, council chair — the 80/20 rule (Steven, 2026-10-20):
+│   │   AI, automations, Steve, Vanessa and the ISA/EA handle 80%; Steven personally does only the 20% on the HALT list
+│   ├─ Daily Chief-of-Staff cycle — cloud routine, weekdays 6:25 AM PT: backlog → Automation / AI team / ISA-EA /
+│   │   Steven buckets → ≤8 cross-functional squads in parallel (lane leads below, Alexandra on any client/ad draft,
+│   │   Elena on anything that smells like fraud) → QA → `cosBrief` (≤3 Needs-Steven), `twinQueue`, `vanessaRuns`
+│   │   (docs/AUTOMATION-MAP-2026-10-20.md)
+│   ├─ Morning brief to Steven's phone — 6:40 AM iMessage text (Mac `vanessa-morning-brief-text`), 6:48 AM Claude-app
+│   │   push (cloud, reads `cosBrief`), then her recorded voice as a voice note on the same thread (Mac
+│   │   `voice-reply-render` → `vanessa-voice-send.py`; spec `integrations/mac-task-specs.md` §7)
 │   ├─ Jarvis — on-device voice + local index (verify: integrations/jarvis/jarvis-setup.sh; voice = Vanessa's recorded Magica set)
 │   ├─ Laya — zero-token on-device first hop (proposed; Mac install unverified, routing logic proven on the stub only — integrations/laya/)
 │   ├─ Knowledge fabric — Second Brain · vault · Jarvis · Graphify · Ruflo, one recall (+ Notion record, Google Drive mirror read-only)
 │   ├─ Brain loop — self-check that finds unanswered questions and drift (`bin/brain loop`)
 │   └─ Juliet — Escalation & Service Recovery
-├─ ISA / EA (human) — Mon–Fri 12–4 PM
-└─ Executives (report to Vanessa, ≤8 dispatched in parallel):
+├─ ISA / EA (human) — Mon–Fri 12–4 PM; gets `cosBrief.isaInstructions` from the daily cycle for the noon huddle
+└─ Executives (report to Vanessa, ≤8 dispatched in parallel, formed into cross-functional squads by the daily cycle):
     ├─ Marcus (CFO) — Nathan, Bianca, Dov, Anita, Paloma, Grace, Alan, Hazel, Corinne + ruflo cost-analyst bench
     ├─ Sofia (CMO) — 14 named marketing reports + ruflo audio bench
     ├─ Derek (CTO) — Sam, Naomi, Integration Engineer + 5 ECC officers + Ivan, Lena, Grace, Raj, Tomas

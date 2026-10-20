@@ -430,3 +430,27 @@ the record of the change. The full split, and the three web-UI routine edits onl
   local model, logins by agents, and spending money. A logged-out browser and a source build keep both inside it.
 - **Owner.** Derek (automation); risk owner Elena (CISO). **Status.** Proven in the cloud sandbox; Mac install is
   `docs/STEVEN-STEPS.md` steps 6–8.
+
+## 2026-10-20 — The 80/20 rule, Vanessa's daily Chief-of-Staff cycle, the morning brief in three channels
+
+- **Request (Steven, verbatim).** *"…AI, automation workflows, systems, tools, resources, AI twin Steve, Vanessa
+  and human ISA/EA are handling 80% of everything, leaving me to only do 20% of actions requiring me to
+  personally do… enable AI agents to work in parallel and be cross functional teams with Vanessa as the Chief
+  of Staff Orchestrator for everything. Also Vanessa is suppose to send me morning text and verbal imessages
+  with the daily morning brief."* Also: *"update org chart when done."*
+- **Decision.** One new cloud routine, not many: **Vanessa — Chief of Staff daily cycle** (weekdays 6:25 AM
+  PT, `trig_019whypw6EeNu2G8xxY5xE5N`) reads the backlog, sorts every open item into Automation / AI team /
+  ISA-EA / Steven, dispatches ≤8 cross-functional squads in parallel (Alexandra on any client or ad draft,
+  Elena on anything that smells like fraud, Nadia and Elon proposal-only), QA's the results and writes
+  `cosBrief` (≤3 Needs-Steven items, drafts, ISA instructions, the measured split), `twinQueue`,
+  `vanessaRuns`, `vanessaLog`. The 6:48 AM cloud morning brief reads `cosBrief` first. The iMessage text and
+  the voice note stay on the Mac (`vanessa-morning-brief-text` + `voice-reply-render`; amendment
+  `integrations/mac-task-specs.md` §8) because agent-created routines carry no connectors — the API refused
+  the `connectors` parameter for this organization. Map: `docs/AUTOMATION-MAP-2026-10-20.md`.
+- **Why.** Budget: +5 runs/week instead of a routine per panel; the Friday Weekly Ops Review (Steven's own
+  routine) and the Saturday loop stay as they are. The HALT list is the definition of Steven's 20%.
+- **Found.** `runnerStatus.syncedAt` = 2026-10-13 07:13 UTC: the Mac runner has been silent seven days, so
+  every Mac-owned document (iMessage text, voice, Lofty, calendar, rates, QuantVue, twin sweep) is stale.
+  Nothing in the cloud can wake it — Action Desk step 1.
+- **Owner.** Vanessa (cycle), Derek (automation health). **Status.** Routine live; first run 2026-10-21
+  13:25 UTC; voice amendment waits on Steven's paste.

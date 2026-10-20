@@ -1013,3 +1013,38 @@ write-verb tripwire pattern — is in `docs/data/cliAnythingStatus.doc.json`. `r
 is outside this round's file list, so nothing there needed touching; this section only adds the
 **second** task the connector card's ecosystem needs — one that writes the feeds themselves, not the
 status of the wrappers that read them.
+
+## 8. `vanessa-morning-brief-text` — AMENDMENT: the morning brief also arrives in her voice (2026-10-20)
+
+Steven, 2026-10-20: *"Vanessa is supposed to send me morning text and verbal iMessages with the daily morning
+brief."* The text half already exists (this task, 6:40 AM PT, Inkbox iMessage). The voice half needs only one
+paragraph here, because §6b's `voice-reply-render` already renders any queue item in her recorded Magica voice
+and `integrations/vanessa-voice-send.py` already delivers it to the allow-listed thread. Nothing new is
+installed; this task just queues one item after its text lands.
+
+Prerequisites (once): §6a and §6b pasted, `bash integrations/voice-setup.sh <conversation id>` run (it
+allow-lists the thread in `~/.config/inkbox/voice-allow`). The cloud morning brief (6:48 AM push) also now reads
+`cosBrief` and never sends an iMessage, so there is no duplicate.
+
+### Paste-ready — append to the END of the task prompt
+
+> **After the text brief is sent** (and only then — a text failure means queue nothing): write a spoken lead-in
+> in Vanessa's voice, **120–600 characters**, first person, warm and direct: the greeting with the day, the
+> Temecula weather in a few words, how many things need Steven and the single most important one (from
+> `cosBrief.needsSteven` if `cosBrief.date` is today, else `twinBrief.needsSteven`), the one-sentence focus,
+> and "the full brief is in your messages." Never a rate, an eligibility call, a client surname, an address,
+> a loan amount or anything on the HALT list — if the top item is one of those, say "one licensed decision is
+> waiting for you" and nothing more. Then read `voiceReplyQueue` (collection `state`, `{v:{items:[…]}}`; create
+> it as `{v:{items:[]}}` if missing), append
+> `{id:"vmb_<epoch-ms>", who:"Vanessa", text:"<lead-in>", ts:"<ISO now>", channel:"imessage",
+> deliver:"imessage", replyTo:"<the conversation id you just sent the text to>", kind:"morning-brief"}`,
+> keep only the newest 10 items, and write it back (read-modify-write, `data:{v:…}`). Record
+> `morningBriefStatus.voiceQueued = true` (merge; create the document if missing) and finish. If the queue
+> write fails, log it in `agentInbox.channels.imessage` and stop — the text already arrived; voice is additive.
+
+### What proves it worked
+
+`voiceReplyStatus.items["vmb_<…>"].status` = `ready` within one `voice-reply-render` poll (10 min), then
+`.delivered.ok = true`; a voice note from Vanessa follows her text on the thread. If the text arrived and no
+voice note did, `voiceReplyStatus…delivered.error` names the reason (5 thread not allow-listed · 6 Inkbox
+refused · 7 SDK missing — see `integrations/voice-setup.sh`).
