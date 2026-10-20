@@ -129,3 +129,16 @@ svg text{fill:var(--mut);font-size:11px}.axis{stroke:var(--line)}
 .gs-row:hover,.gs-row.on{background:rgba(201,162,39,.14)}
 @media(max-width:760px){.gs{max-width:none;margin:6px 0;order:5;flex-basis:100%}}
 tr.qc-fail td{background:rgba(224,68,62,.08)}tr.qc-pass td{background:rgba(59,182,98,.06)}
+/* viz library */
+.viz-gauge{display:inline-block;text-align:center}.viz-gl{font-size:12px;color:var(--mut);margin-top:-6px}.viz-ring{display:block}
+.viz-meter{position:relative;padding-top:14px}.viz-mz{display:flex;height:10px;border-radius:99px;overflow:hidden}.viz-mz span{display:block;height:100%}.viz-mn{position:absolute;top:4px;width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:10px solid var(--ink);transform:translateX(-7px);transition:left .9s cubic-bezier(.2,.8,.2,1)}
+.viz-funnel{display:flex;flex-direction:column;gap:6px}.viz-fr{display:grid;grid-template-columns:120px 1fr 110px;gap:8px;align-items:center;animation:rise .5s both}.viz-fl{font-size:12px;color:var(--mut);text-align:right}.viz-fb{height:18px;background:var(--line);border-radius:6px;overflow:hidden}.viz-fb i{display:block;height:100%;border-radius:6px;transition:width 1s cubic-bezier(.2,.8,.2,1)}.viz-fv{font-size:13px;white-space:nowrap}
+.viz-flow{display:flex;align-items:stretch;gap:0;overflow:auto;padding:6px 0}.viz-node{flex:1;min-width:92px;border:1px solid var(--line);border-top:3px solid var(--c);border-radius:10px;padding:8px;background:var(--panel);text-align:center;animation:rise .5s both}.viz-nb{font-weight:600;font-size:12px}.viz-nw{font-size:11px;color:var(--mut)}.viz-nn{font-size:18px;font-weight:700;margin-top:2px}
+.viz-link{width:34px;flex:none;position:relative;display:flex;align-items:center}.viz-link:before{content:"";position:absolute;left:0;right:0;top:50%;border-top:2px dashed var(--line)}.viz-link i{position:absolute;top:50%;left:0;width:8px;height:8px;border-radius:50%;background:var(--acc);transform:translateY(-50%);animation:vizdot 1.6s linear infinite}
+@keyframes vizdot{0%{left:0;opacity:0}15%{opacity:1}85%{opacity:1}100%{left:calc(100% - 8px);opacity:0}}
+.viz-share{display:flex;height:14px;border-radius:99px;overflow:hidden;background:var(--line)}.viz-share span{display:block;height:100%;transition:width 1s cubic-bezier(.2,.8,.2,1)}.viz-sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.viz-pop{animation:vizpop .5s ease}@keyframes vizpop{0%{transform:scale(1)}30%{transform:scale(1.02);box-shadow:0 0 0 4px rgba(201,162,39,.25)}100%{transform:scale(1)}}
+.ex-opt{display:block;padding:10px 12px;border:1px solid var(--line);border-radius:10px;margin:6px 0;cursor:pointer;transition:background .2s,border-color .2s}.ex-opt:hover{border-color:var(--acc)}.ex-opt.sel{border-color:var(--acc);background:var(--chip)}.ex-opt.ok{border-color:var(--good);background:rgba(18,128,92,.08)}.ex-opt.bad{border-color:var(--bad);background:rgba(198,40,40,.08)}
+.ex-timer{font-variant-numeric:tabular-nums;font-size:22px;font-weight:700}
+.ap-queue .row{padding:8px 0;border-bottom:1px solid var(--line)}.ap-who{font-size:11px;padding:2px 8px;border-radius:99px;background:var(--chip);color:var(--acc)}
+input[type=range]{width:100%;accent-color:var(--acc)}
