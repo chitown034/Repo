@@ -454,3 +454,18 @@ the record of the change. The full split, and the three web-UI routine edits onl
   Nothing in the cloud can wake it — Action Desk step 1.
 - **Owner.** Vanessa (cycle), Derek (automation health). **Status.** Routine live; first run 2026-10-21
   13:25 UTC; voice amendment waits on Steven's paste.
+
+## 2026-10-20 (later) — The brain learns the toolkit: skills, plugins, connectors, routines, Mac tasks per seat
+
+- **Request (Steven, verbatim).** *"Update 2nd brain improve add Intergration and more capabilities and update Ai org
+  chart skills plugins etc."* (the 2nd Brain 4D page).
+- **Decision.** Two new zero-token commands in `brain/toolkit.py`: `bin/brain toolkit [--write]` (the register of
+  every skill, plugin, connector with live status, cloud routine and Mac task, filed under the org-chart seat whose
+  lane claims it; `--write` regenerates `wiki/ai-team/toolkit.md`) and `bin/brain owner "<panel>"` (who keeps a
+  Command Deck panel alive, by what mechanism, what stays Steven's — from `docs/AUTOMATION-MAP-*.md`). Both are MCP
+  tools (`brain_toolkit`, `brain_owner`). `brain graph` adds the five as lobes, so the 3D brain shows them.
+  `docs/inventory/cloud-routines-2026-10.md` lists the October routines so the register sees them.
+- **Why.** The org chart named seats but not what each could use; connection status lived only in prose. Reading the
+  tree costs nothing, so the register never goes stale and never burns the allowance.
+- **Owner.** Derek (automation). **Status.** 67 brain tests pass; 4D page rebuilt (285 nodes); deck org chart gets a
+  "Toolkit register" node.

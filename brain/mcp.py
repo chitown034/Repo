@@ -12,7 +12,7 @@ import json
 import sys
 from pathlib import Path
 
-from . import loop, recall, remember
+from . import loop, recall, remember, toolkit
 
 TOOLS = [
     {"name": "brain_recall", "description": "Answer a question from the second brain: one section, with its source. Returns 'not in the brain' rather than guessing.",
@@ -27,6 +27,10 @@ TOOLS = [
      "inputSchema": {"type": "object", "properties": {"target": {"type": "string"}}, "required": ["target"]}},
     {"name": "brain_remember", "description": "Store one durable fact. Refuses secrets, account numbers and client PII.",
      "inputSchema": {"type": "object", "properties": {"fact": {"type": "string"}}, "required": ["fact"]}},
+    {"name": "brain_toolkit", "description": "The AI team's tools per seat: skills, plugins, connectors with live status, cloud routines, Mac tasks.",
+     "inputSchema": {"type": "object", "properties": {}}},
+    {"name": "brain_owner", "description": "Who keeps a Command Deck panel alive (routine / Mac task / Vanessa / ISA / Steven), by what mechanism, and what stays Steven's.",
+     "inputSchema": {"type": "object", "properties": {"query": {"type": "string"}}, "required": ["query"]}},
 ]
 
 
@@ -49,6 +53,10 @@ def _call(root: Path, name: str, a: dict) -> str:
         except remember.Refused as e:
             return f"REFUSED: the fact {e}. Nothing was written."
         return f"{'appended to' if r['added'] else 'already in'} {r['file']}"
+    if name == "brain_toolkit":
+        return toolkit.format_inventory(toolkit.inventory(root))
+    if name == "brain_owner":
+        return toolkit.format_owner(toolkit.owner(root, a["query"]), a["query"])
     raise KeyError(name)
 
 

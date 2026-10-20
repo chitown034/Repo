@@ -16,7 +16,9 @@ Plain Python 3.10+, standard library only, no model calls. Run from any director
 | `brain orgcheck` | Does every seat in `wiki/ai-team/org-chart.md` resolve to a brain page; is Jarvis verified, stale or failing. Exits non-zero on a miss. |
 | `brain pack "<q>" [--budget N]` | Best section from several files under a token budget, as one paste for any platform. |
 | `brain loop` | reindex → doctor → bench → gaps → orgcheck → `docs/reports/BRAIN-LOOP.md`, compared with the last run in `brain/loop-history.jsonl`; exit 1 on a regression. |
-| `brain mcp` | The brain as a stdio MCP server (`brain_recall`, `brain_pack`, `brain_gaps`, `brain_remember`) for Claude Code, Claude Desktop, Codex, Cursor. Registering it in a client is Steven's approval, never automatic. |
+| `brain toolkit [--json] [--write]` | Zero-token register of the team's tools per org-chart seat: skills (`.claude/skills`), plugins (`integrations/mods`), connectors with their live status (`integrations/CONNECTIONS.md`), cloud routines (`docs/inventory/cloud-routines*.md`) and Mac tasks. `--write` regenerates `wiki/ai-team/toolkit.md`, the org chart's tool page. |
+| `brain owner "<panel or system>"` | Who keeps a Command Deck panel alive (routine / Mac task / Vanessa / Steve / ISA-EA / Steven), by what mechanism, and what stays Steven's — from `docs/AUTOMATION-MAP-*.md`. |
+| `brain mcp` | The brain as a stdio MCP server (`brain_recall`, `brain_pack`, `brain_gaps`, `brain_remember`, `brain_toolkit`, `brain_owner`) for Claude Code, Claude Desktop, Codex, Cursor. Registering it in a client is Steven's approval, never automatic. |
 
 ## The ladder (`recall`)
 

@@ -52,6 +52,10 @@ def _parser() -> argparse.ArgumentParser:
     gr = sub.add_parser("graph", help="the whole brain as nodes, links and dates (JSON) for any visualiser")
     gr.add_argument("--out", help="write to this file instead of stdout")
     sub.add_parser("loop", help="reindex, doctor, bench, gaps, orgcheck; write docs/reports/BRAIN-LOOP.md; exit 1 on regression")
+    tk = sub.add_parser("toolkit", help="skills, plugins, connectors (with status), cloud routines and Mac tasks, per org-chart seat")
+    tk.add_argument("--json", action="store_true"); tk.add_argument("--write", action="store_true", help="write wiki/ai-team/toolkit.md")
+    ow = sub.add_parser("owner", help="who keeps a Command Deck panel alive, by what mechanism, and what stays Steven's")
+    ow.add_argument("query"); ow.add_argument("--json", action="store_true")
     sub.add_parser("mcp", help="serve recall/remember/pack/gaps over stdio MCP for any MCP client")
     return p
 
@@ -148,6 +152,18 @@ def main(argv: list[str] | None = None) -> int:
         print(text)
         return 0 if ok else 1
 
+    if args.cmd == "toolkit":
+        from . import toolkit
+        inv = toolkit.inventory(root)
+        if args.write:
+            print(f"wrote {toolkit.write_page(root, inv).relative_to(root)}")
+        print(json.dumps(inv, indent=1) if args.json else toolkit.format_inventory(inv))
+        return 0
+    if args.cmd == "owner":
+        from . import toolkit
+        r = toolkit.owner(root, args.query)
+        print(json.dumps(r, indent=1) if args.json else toolkit.format_owner(r, args.query))
+        return 0 if r else 1
     if args.cmd == "mcp":
         from . import mcp
         return mcp.serve(root)

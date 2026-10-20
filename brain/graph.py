@@ -13,7 +13,7 @@ import re
 from datetime import date
 from pathlib import Path
 
-from . import indexer
+from . import indexer, toolkit
 from .loop import DATE_RE
 
 GROUPS = [  # (prefix, group id, label, recall level)
@@ -104,6 +104,25 @@ def build(root: Path, links_per_node: int = 3, today: date | None = None) -> dic
                 links.append({"s": sid, "t": p, "w": 1.0, "k": "store"})
     for sid, *_ in STORES[1:]:
         links.append({"s": "store:vanessa", "t": sid, "w": 1.0, "k": "store"})
+    # the toolkit: skills, plugins, connectors, routines and Mac tasks as their own lobes (2026-10-20)
+    home = {"skill": "wiki/ai-team/toolkit.md", "plugin": "integrations/mods/RECOMMENDATIONS.md",
+            "connector": "integrations/CONNECTIONS.md", "routine": "always-on/README.md", "mactask": "wiki/dashboard-ops/task-catalog.md"}
+    labels = {"skill": "Skills", "plugin": "Plugins", "connector": "Connectors", "routine": "Cloud routines", "mactask": "Mac tasks"}
+    for it in toolkit.inventory(root)["items"]:
+        nid = f"{it['kind']}:{it['name']}"
+        if nid in ids:
+            continue
+        ids.add(nid)
+        d = it["desc"]
+        if it["kind"] == "connector":
+            d = f"[{it['state']}] {d}"
+        nodes.append({"id": nid, "t": it["name"][:90], "d": (f"{it['seat']} · " + d)[:180], "g": it["kind"], "gl": labels[it["kind"]],
+                      "lv": 1, "s": 0, "a": None, "z": None, "seat": it["seat"], "state": it.get("state")})
+        tgt = home[it["kind"]]
+        if tgt in ids:
+            links.append({"s": nid, "t": tgt, "w": 0.6, "k": "tool"})
+        if it["seat"] == "Vanessa":
+            links.append({"s": "store:vanessa", "t": nid, "w": 0.4, "k": "tool"})
     return {"generated": today.isoformat(), "files": len(files),
             "sections": sum(n["s"] for n in nodes), "nodes": nodes, "links": links}
 

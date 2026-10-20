@@ -10,6 +10,7 @@ hold the actual detail once you know which seat or layer you need.
 
 | Page | One-line summary |
 |---|---|
+| `toolkit.md` | **Generated** by `bin/brain toolkit --write`: every skill, plugin, connector (with live status), cloud routine and Mac task, grouped under the seat that owns it; who has no tool of their own. |
 | `org-chart.md` | The full seat map: Steven → Vanessa/Steve/ISA → 8 executives with named reports and ruflo benches |
 | `model-tiering-dispatch.md` | Which model each layer runs on, ≤8-parallel/≤4-web-research dispatch rules, trust levels, the ECC gate |
 | `tool-integration-status.md` | Connectors, MCP bridges, tasks/routines/skills status — plus honest Orca/Laya/77skills proposal status |
