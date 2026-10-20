@@ -128,4 +128,4 @@ if(typeof TR_TYPES!=="undefined")TR_TYPES.push("Defense relocation","DSCR invest
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();DEFENSE_LIST.forEach(d=>out.push({src:`Defense employer — ${d.name}`,t:`${d.region} ${d.city}. ${d.focus}. ${d.size}. ${d.signal}`}));DSCR_TARGETS.forEach(d=>out.push({src:`DSCR target — ${d.name}`,t:`${d.cat} ${d.state} ${d.scope}. ${d.why}. ${d.access}. Reach: ${d.role}`}));DEFENSE_PLAY.steps.forEach((s,i)=>out.push({src:`Defense relocation playbook step ${i+1}`,t:s}));DSCR_PLAY.how.forEach((s,i)=>out.push({src:`DSCR playbook step ${i+1}`,t:s}));return out}}
 if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^Defense employer|^Defense relocation/,{hash:"bizdev",tab:["bdtab","defense"],input:"df_q"}],[/^DSCR target|^DSCR playbook/,{hash:"bizdev",tab:["bdtab","dscr"],input:"di_q"}]);
 if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^DPR program/,{hash:"assist",tab:["astab","dpr"],input:"dp_q"}]);
-boot();
+
