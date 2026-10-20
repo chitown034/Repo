@@ -74,4 +74,3 @@ mount(){const tabs=[
 /* wiring */
 {const o=PAGES.find(p=>p[0]==="Operate");if(o&&!o[1].some(x=>x[0]==="timeline"))o[1].splice(4,0,["timeline","Compliance Clock (LE/CD)"]);const g=PAGES.find(p=>p[0]==="Growth & Ops");if(g&&!g[1].some(x=>x[0]==="pabbly")){const i=g[1].findIndex(x=>x[0]==="hub");g[1].splice(i+1,0,["pabbly","Pabbly Setup Guide"])}}
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();out.push({src:"Compliance clock — TRID timing",t:"LE due 3 business days after application; LE delivered 7 business days and received 4 business days before closing; CD received 3 business days before closing (mail presumed 3 business days); refinance rescission 3 business days; specific business days exclude Sundays and holidays."});return out}}
-boot();

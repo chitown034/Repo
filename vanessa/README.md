@@ -95,3 +95,11 @@ Market numbers, Home Report signals, pipeline, approvals and refi queue are **sa
 - Scenarios SC101–SC140 (scenarios3.js): lender-selection, overlay, credit-event, process and compliance situations (verify waiting periods/overlays before advising)
 - Compliance Clock (app27.js): LE/CD/rescission/lock/contract date math with business-day rules and federal holidays; timeline graphic; push deadlines to the Handoff Board
 - Pabbly Setup Guide: 7-step walkthrough with illustrations, 30 workflow blueprints with flow diagrams and field mapping, test lab, troubleshooting
+
+## v40 — Integration Center, Loan Sync Board, Title & Property Desk, Reports & Lists
+- Integration Center (conn.js, app28.js): Zoho CRM, ARIVE, Pabbly, MBS Highway, Pivo (unconfirmed), title, property — honest connection methods, field maps, milestone map, CSV importers with column mapping
+- Loan Sync Board: imported ARIVE pipeline, aging, lock/closing alerts, one-click milestones that fire Pabbly workflows
+- Title & Property Desk: title orders (checklist, aging and wire/binder warnings), property records, tickets → Handoff Board
+- Reports & Lists: list reports over any dashboard data (CSV/print/copy), home report from a property record, market report archive + weekly agent update
+- PB31–PB46: 16 new Pabbly workflows (Zoho, ARIVE milestones, title, tickets, weekly report)
+- Nothing connects to a vendor automatically; see the page's "Honest status" note.
