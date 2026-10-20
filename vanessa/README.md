@@ -111,3 +111,8 @@ Market numbers, Home Report signals, pipeline, approvals and refi queue are **sa
 - Equity, Refi & Reverse (equity.js): HELOC, HELOAN, VA IRRRL / cash-out / Type I / other VA refi, conventional & FHA refi, HECM, HECM for purchase; compare table, FAQ, VA refi tester, HELOC-vs-HELOAN-vs-cash-out, refi/IRRRL break-even, HECM illustration, LTV tiers
 - Referral Partner Playbooks (refp.js): 8 partner types (realtors, CPAs, tax, wealth, family offices/private banks, estate attorneys, elder-law/senior, insurance), 90-day plan, templates, compliance, tracker, 200 organization targets in CA/IL/NV/FL/AZ (organizations only — no invented contacts)
 - Annual Mortgage Review: client profile analyzer (ranked opportunities, health score, summary), SOP & checklist, templates, review log with due list; PB47–PB49 workflows
+
+## v43 — 6 Growth Niches
+- Page "6 Growth Niches" (Growth & Ops): Second Liens, Reverse, Your Database, Concessions→Buydowns, Investors/Non-QM, Add a State — playbooks, scripts, KPIs, compliance
+- Where-to-find-contacts source lists for CA/IL/NV/FL/AZ (sources and search links, not named people) + CSV export
+- Database mining (segments from imported ARIVE/Zoho loans and saved reviews), buydown calculator (price cut vs permanent vs 2-1), add-a-state scoring planner + licensing checklist, niche tracker; PB50 workflow
