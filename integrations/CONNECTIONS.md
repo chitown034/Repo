@@ -338,3 +338,11 @@ Checked from the cloud session: claude.ai connectors (`ListConnectors`), Composi
 | ShowingTime · Showami · homes.com | sign-in pending | `integrations/cli-anything-harnesses/connect.sh` opens the agent Chrome once | Steven |
 | SkySlope · zipForms | locked until compliance sign-off | — | Alexandra → Steven |
 | CRMLS · dotloop · Ticor | applications/emails drafted, not sent | STEVEN-STEPS step 19 / 30 | Steven |
+
+### Pabbly Connect — status 2026-10-20
+
+Custom app **"Kapso WhatsApp"** created in Steven's Pabbly account by the Integration Builder (private, unpublished):
+shell set (Communication → Phone & SMS, domain api.kapso.ai), auth = API key as the `X-API-Key` header, entered by
+Steven on Pabbly's own connection page. Triggers/actions are built only after he agrees the plan in
+`integrations/pabbly/WORKFLOWS.md` §A, and the login is proven with his key. The six built-in-app workflows (§B)
+are his clicks in Pabbly's editor; none exists yet.
