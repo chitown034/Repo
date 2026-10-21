@@ -91,8 +91,13 @@ keyfiles() {
 }
 step "7 Lofty and Zoho key files" "Keys: open -e ~/.config/zoho/.env (and lofty) and type the values after the = signs" keyfiles
 
-# 8. read-only health check
-step "8 Health check (read-only)" "" sh -c "./mac-verify.sh --quiet || true"
+# 8. Claude Mods: route beacon, HALT guard, /remember, connection beacon (/connections, /owner), /paste. Asks y once.
+mods_install() { bash integrations/mods/install-mods.sh </dev/tty; }
+step "8 Claude Mods (status line, HALT guard, /remember, /connections, /owner, /paste)" \
+  "Mods: bash integrations/mods/install-mods.sh  (needs Claude Code 2.1.287+: claude update)" mods_install
+
+# 9. read-only health check
+step "9 Health check (read-only)" "" sh -c "./mac-verify.sh --quiet || true"
 
 say ""; say "================ REPORT ================"
 [ -n "$PASS" ] && say "Done:$(printf "$PASS")"
@@ -110,6 +115,11 @@ say "     tick 'Zoho CRM API Access'. That is the whole 403 fix."
 say "  5. Sign in once in the agent Chrome to ShowingTime, Showami and homes.com:"
 say "     bash integrations/cli-anything-harnesses/connect.sh"
 say "  6. TikTok, GoHighLevel, Discord bot, HeyGen: say 'Composio links' to Claude when you sit down (links last 10 min)."
+say "  7. Pabbly: reply 'yes, build the Kapso app' to Claude, then build the six workflows in integrations/pabbly/WORKFLOWS.md"
+say "     (about 5 minutes each at connect.pabbly.com)."
+say ""
+say "From now on, in any Claude Code session in this folder: type /paste for this list, /connections for what is"
+say "not connected, /owner <panel> for who keeps a dashboard panel alive."
 [ -n "$NEEDS" ] && say "From the steps above:$(printf "$NEEDS")"
 say ""; say "Log: $LOG"
 say "Copy everything from REPORT down and paste it to Claude with: 'here is the connect report'."

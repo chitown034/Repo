@@ -70,3 +70,14 @@ behaves). Three small, no-network, local-only ones were designed; say the word a
    Proceed/Cancel (Cancel default); does nothing in unattended routines.
 3. **brain-reflect** — offers to save a standing rule into the brain with `bin/brain remember` (never CLAUDE.md), and refuses
    anything containing emails, phone numbers, long digit strings or dollar amounts.
+
+
+## Added 2026-10-21 — connection-beacon and paste-desk (Steven: "create mods and skills that would support and optimize my architecture")
+
+- **connection-beacon**: status line "Connections: N need you · M ok" from `bin/brain toolkit --json` (zero tokens,
+  refreshed every 10 minutes); `/connections` prints the needs-attention list with the fix and who; `/owner <panel>`
+  prints who keeps a Command Deck panel alive and what stays Steven's. Reads the tree only; never writes.
+- **paste-desk**: `/paste` prints the "Start here" section of `docs/STEVEN-STEPS.md` — the one Terminal line and the
+  short "only you" list — so the non-technical answer is one command away. Reads one file; never writes or runs.
+- Both validated with `claude plugin validate` on 2.1.305 and installed by `install-mods.sh` (five mods now).
+- Skills added the same day: `pabbly-workflows`, `connection-doctor`, `cos-daily-cycle`.

@@ -6,7 +6,7 @@
 #   bash integrations/mods/install-mods.sh --off      # turns them all off again
 #
 # Turns on:
-#   Steven's own (this folder, read on 2026-10-09):  route-beacon · halt-guard · brain-reflect
+#   Steven's own (this folder):  route-beacon · halt-guard · brain-reflect · connection-beacon · paste-desk (2026-10-21)
 #   Anthropic samples (claude-code-playground, pinned to commit 569c5283d9a0, read 2026-10-09): blast-radius · replay-theater
 # Left off on purpose: Cache Tax (its repo had no code to review on 2026-10-09), Savvy Progress, Reflect,
 # Terminal Browser, Skins, Filetree — see RECOMMENDATIONS.md.
@@ -48,7 +48,7 @@ PY
 }
 
 if [ "$MODE" = "--off" ]; then
-  for m in route-beacon halt-guard brain-reflect; do claude plugin uninstall "$m@steven-mods" >/dev/null 2>&1 && say "off: $m"; done
+  for m in route-beacon halt-guard brain-reflect connection-beacon paste-desk; do claude plugin uninstall "$m@steven-mods" >/dev/null 2>&1 && say "off: $m"; done
   set_dirs ""; say "off: blast-radius, replay-theater. Open a new session."; exit 0
 fi
 
@@ -58,13 +58,13 @@ if [ "$MODE" != "--dry-run" ]; then
 fi
 
 say ""; say "1/3  Check Steven's mods"
-for m in route-beacon halt-guard brain-reflect; do
+for m in route-beacon halt-guard brain-reflect connection-beacon paste-desk; do
   claude plugin validate "$HERE/$m" >/dev/null 2>&1 && say "  ok  $m" || fail "$m did not validate: claude plugin validate $HERE/$m"
 done
 
 say "2/3  Turn them on (mod store: $HERE)"
 run claude plugin marketplace add "$HERE"
-for m in route-beacon halt-guard brain-reflect; do run claude plugin install "$m@steven-mods"; done
+for m in route-beacon halt-guard brain-reflect connection-beacon paste-desk; do run claude plugin install "$m@steven-mods"; done
 
 say "3/3  Anthropic samples: blast-radius, replay-theater (pinned $PIN)"
 if [ ! -d "$SAMPLES/.git" ]; then

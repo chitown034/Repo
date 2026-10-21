@@ -6,11 +6,12 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 32 skills · 3 plugins · 15 connectors (2 ok, 13 need attention) · 60 cloud routines · 60 Mac tasks
+toolkit: 35 skills · 5 plugins · 15 connectors (2 ok, 13 need attention) · 60 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
 **Skills**
+- `cos-daily-cycle`: Vanessa's Chief-of-Staff daily cycle, run on demand in an attended session (the cloud routine runs it weekdays 6:25 AM PT): read the backlog, sort every item into Automation / AI team / ISA-EA / Steven, dispatch up to 8 
 - `find-skills`: Helps users discover and install agent skills when they ask questions like "how do I do X", "find a skill for X", "is there a skill that can...", or express interest in extending capabilities. This skill should be used w
 - `interview-me`: The relentless 'Grill Me' interview: pulls what only Steven knows about one named topic out of his head and files it as structured knowledge — a vault 60-Knowledge note plus knowledge-graph entity stubs, with sensitive i
 - `loop-engineering`: The weekly self-improvement cycle (v2): every agent, skill and routine gets a Goal, a Loop and a Routine; changes are proposed, tested against an untouched holdout, compared, then promoted or rejected and logged; trust g
@@ -126,6 +127,7 @@ toolkit: 32 skills · 3 plugins · 15 connectors (2 ok, 13 need attention) · 60
 **Skills**
 - `cli-anything-connectors`: Install CLI-Anything on the Mac and the seven pre-built, read-only agent-native CLI wrappers for the real-estate tools that have no usable API — homes.com, ShowingTime, Showami, SkySlope, zipForms/Lone Wolf — plus the Lo
 - `lofty-crm-sync`: Sync Lofty (formerly Chime), Steven's real-estate CRM since 2026-09-22, into the Command Deck — writes the loftyLeads doc (stage totals, 90-day new leads, speed-to-lead) and points the lead-triage / lead-response / ISA-K
+- `pabbly-workflows`: Build and run Pabbly Connect automations for Steven's operation: the six built-in-app workflows (Lofty, Zoho, Gmail, Google Calendar, Notion, Slack, Strava) he clicks together in Pabbly's editor, and the custom Kapso Wha
 - `zoho-crm-sync`: Sync Zoho CRM — Steven's system of record for the mortgage pipeline — into the Command Deck through Composio: writes zohoSync (connection health), zohoLeads (14-stage kanban) and zohoDeals. Self-tests first and reports t
 
 **Connectors**
@@ -167,6 +169,7 @@ toolkit: 32 skills · 3 plugins · 15 connectors (2 ok, 13 need attention) · 60
 - `apple-health-notion`: Keep Steven's Command Deck Apple Health tiles alive through the phone instead of the dead Mac ingest daemon — Claude iOS reads Apple Health, writes a Notion Health Log row, and the health-notion-sync Mac task turns those
 - `code-review-and-quality`: Conducts multi-axis code review. Use before merging any change. Use when reviewing code written by yourself, another agent, or a human. Use when you need to assess code quality across multiple dimensions before it enters
 - `code-validation-gate`: The rule that code is not done until a different agent has validated it — deterministic checks (scripts/validate-code.sh) plus the VibeBreaker 20-pass adversarial review by the code-validator agent, recorded per change-s
+- `connection-doctor`: Answer 'what is not connected?' and 'what do I paste?' without burning tokens: run bin/brain toolkit for every connector's live status and fix, bin/brain owner for who keeps a panel alive, then hand Steven the one Termin
 - `debugging-and-error-recovery`: Guides systematic root-cause debugging. Use when tests fail, builds break, something that worked yesterday broke, behavior doesn't match expectations, or you encounter any unexpected error. Use when you need to figure ou
 - `documentation-and-adrs`: Records decisions and documentation. Use when you need to document an architecture decision (ADR) or the reasoning behind a design choice, when changing public APIs, shipping features, or when you need to record context 
 - `git-workflow-and-versioning`: Structures git workflow practices. Use when making any code change. Use when committing, branching, resolving conflicts, splitting uncommitted work in a messy working tree into clean atomic commits, opening or reviewing 
@@ -177,7 +180,9 @@ toolkit: 32 skills · 3 plugins · 15 connectors (2 ok, 13 need attention) · 60
 
 **Plugins (Claude Code mods)**
 - `brain-reflect`: /remember saves a standing rule into the second brain (bin/brain remember), refusing contact details and numbers.
+- `connection-beacon`: Status line with how many connections need Steven; /connections lists them with the fix; /owner <panel> says who keeps a Command Deck panel alive.
 - `halt-guard`: Proceed/Cancel before sends, shares, payments and force pushes (HALT list), when someone is at the keyboard.
+- `paste-desk`: /paste shows the one Terminal line that reconnects this Mac and the short list only Steven can do, straight from docs/STEVEN-STEPS.md.
 - `route-beacon`: Shows which AI route this session is on and toasts when the failover switches.
 
 **Connectors**

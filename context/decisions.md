@@ -560,3 +560,17 @@ the record of the change. The full split, and the three web-UI routine edits onl
 - **Checks.** 97 brain tests pass (both suites), `bin/brain doctor` PASS, 135 files indexed, Kapso tests pass,
   `go.sh` / `connect-all.sh` parse. The toolkit register now sees 32 skills.
 - **Owner.** Derek. **Status.** Pushed. The other branch is left as history and is not pushed to.
+
+## 2026-10-21 — Mods and skills for the architecture; one paste covers the mods too
+
+- **Request (Steven, verbatim).** *"Create mods and skills that would support and optimize my architecture and
+  integrations to run more and workflows and connections with Claude and Pabbly and anything cli also fix anything not
+  working and simplify what's needed by me to simply insert in terminal to paste what you can't fix."*
+- **Decision.** Two mods (`connection-beacon`: status line + `/connections` + `/owner`; `paste-desk`: `/paste`) and
+  three skills (`pabbly-workflows`, `connection-doctor`, `cos-daily-cycle`), all zero-token where they can be —
+  they read `bin/brain toolkit`, `bin/brain owner` and `docs/STEVEN-STEPS.md`. `connect-all.sh` gains step 8
+  (install the mods) and names Pabbly in the "still yours" list. Cloud-fixable items were already fixed on 10-20;
+  what remains (runner, Inkbox reconnect, Kapso sign-in, Zoho tick, sign-ins, Composio links, the Pabbly yes) is
+  by nature Steven's and is the one paste plus the seven-line list.
+- **Owner.** Derek. **Status.** Mods validate on Claude Code 2.1.305; 97 brain tests pass; toolkit register
+  35 skills · 5 plugins.

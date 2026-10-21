@@ -13,6 +13,7 @@ research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox
 - **The six things only you can do** (the paste prints them again): (1) Kapso sign-in: run `claude`, type `/mcp`, choose kapso, sign in; then message (202) 474-5223 from your phone. (2) Vanessa's voice on iMessage: `bash integrations/voice-setup.sh <your Vanessa thread id>`, then paste section 8 of integrations/mac-task-specs.md into the runner task vanessa-morning-brief-text. (3) claude.ai → Settings → Connectors → Inkbox: Reconnect (also EVRoutes, Turo). (4) Zoho CRM → Setup → Security Control → Profiles → your profile → Developer Permissions → tick "Zoho CRM API Access". (5) `bash integrations/cli-anything-harnesses/connect.sh` and sign in once to ShowingTime, Showami, homes.com. (6) Say "Composio links" to Claude for TikTok, GoHighLevel, Discord, HeyGen.
    - Open Connectors: https://claude.ai/settings/connectors
    - Open Zoho CRM: https://crm.zoho.com/
+- **After the paste, in any Claude Code session in the Repo folder:** type `/paste` for this list, `/connections` for what is not connected and the fix, `/owner marketing` for who keeps a dashboard panel alive. (7) Pabbly: reply "yes, build the Kapso app", then build the six workflows in `integrations/pabbly/WORKFLOWS.md`.
 
 ## Start here (2026-10-14) — WhatsApp with Vanessa, two pastes on the Mac
 

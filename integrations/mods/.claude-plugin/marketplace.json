@@ -18,7 +18,17 @@
       "name": "brain-reflect",
       "source": "./brain-reflect",
       "description": "/remember <rule> saves a standing rule into the second brain with bin/brain remember, never CLAUDE.md."
+    },
+    {
+      "name": "connection-beacon",
+      "source": "./connection-beacon",
+      "description": "Status line with how many connections need you; /connections lists them with the fix; /owner <panel> says who keeps a Command Deck panel alive."
+    },
+    {
+      "name": "paste-desk",
+      "source": "./paste-desk",
+      "description": "/paste shows the one Terminal line that reconnects this Mac and the short list only you can do."
     }
   ],
-  "description": "Steven's own Claude Code mods: route beacon, HALT guard, brain reflect."
+  "description": "Steven's own Claude Code mods: route beacon, HALT guard, brain reflect, connection beacon, paste desk."
 }
