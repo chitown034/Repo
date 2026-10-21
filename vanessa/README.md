@@ -130,3 +130,7 @@ Market numbers, Home Report signals, pipeline, approvals and refi queue are **sa
 - library.js / app34.js: official sources for 19 guides (Fannie Selling/Servicing, Freddie Guide, Ginnie MBS Guide, VA Pamphlet 26-7 + circulars + 38 CFR 36, HUD 4000.1 + Mortgagee Letters, USDA HB-1-3555, FHFA, CFPB regs, NMLS, HECM, Sec. 184, DPA), 43-topic finder with site-restricted searches per agency, dated excerpt notebook, update watch, free data-feed catalog (24 feeds; 8 in the relay)
 - Relay code now also pulls free calendar sources (BLS ICS, TreasuryDirect upcoming auctions, optional FRED release dates) — untested from the sandbox
 - Not included by design: full text of the guides (owned by their publishers, thousands of pages, change constantly)
+
+## v47 — Complete-documents index + FRED key walkthrough
+- Library: "All documents" tab (58 official guides, handbooks, matrices, MI insurer guidelines, regs and state licensing laws; each with Official / Find PDF / Search-site links, CSV export); every guide card gets "Find full PDF"
+- Step-by-step free FRED API key walkthrough on Market Intel Live → Relay setup and Library → Free data feeds (key stored as an Apps Script property, never in the dashboard)
