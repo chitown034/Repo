@@ -574,3 +574,16 @@ the record of the change. The full split, and the three web-UI routine edits onl
   by nature Steven's and is the one paste plus the seven-line list.
 - **Owner.** Derek. **Status.** Mods validate on Claude Code 2.1.305; 97 brain tests pass; toolkit register
   35 skills · 5 plugins.
+
+## 2026-10-21 — 6D Brain rebuilt daily; the dashboard link renamed
+
+- **Request (Steven, verbatim).** *"rename the following link in the dashboard list from 2nd brain in 4D with a
+  timeline to 6D Brain … Also ensure the brain is live and constantly updating and timeline always updates daily and
+  ensure it is comprehensive."*
+- **Decision.** After the merge the full Brain 6D build (`dashboard/brain-4d/build.py`: graph with toolkit lobes,
+  seats, A–Z encyclopedia, ask index) runs on this branch; it is rebuilt and republished every day at 3:30 AM PT by
+  the scheduled task `trig_01MQ7HRYTh27b8uUM4BtnFXE` (fires into this session, which holds the repo and the
+  Artifact tool), after `bin/brain reindex`, `loop` and `toolkit --write`, so the build date, the timeline and the
+  loop report move daily. The GitHub `brain-loop` check now also runs daily (10:20 UTC) as the model-free backstop.
+  Command Deck v204: menu item "6D Brain — the brain in 3D: timeline, freshness, seats, encyclopedia".
+- **Owner.** Derek. **Status.** Page v7 published (320 nodes, 135 encyclopedia entries).
