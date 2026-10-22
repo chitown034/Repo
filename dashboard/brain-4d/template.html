@@ -676,6 +676,11 @@ function setSeat(S) {
   note.textContent = S.s.length
     ? `${S.n} · ${S.a} agent${S.a === 1 ? "" : "s"} · starts from ${S.s.join(", ")} · ${S.start.length} page${S.start.length === 1 ? "" : "s"} + ${linked} linked`
     : `${S.n} · ${S.a} agents · no "starts from" row for this seat in cross-functional.md, so nothing is lit.`;
+  const C = S.c;
+  if (C) {
+    const sk = C.sk.length ? `${C.sk.length} skill${C.sk.length === 1 ? "" : "s"} (${C.sk.slice(0, 4).join(", ")}${C.sk.length > 4 ? ", …" : ""})` : "no skill of its own";
+    note.textContent += ` — runs on ${C.m}${C.po ? ", proposal-only" : ""} · ${sk} · ${C.cn} connector${C.cn === 1 ? "" : "s"} (${C.cok} ok) · ${C.r} routine${C.r === 1 ? "" : "s"} · ${C.t} Mac task${C.t === 1 ? "" : "s"}${C.p.length ? " · pods: " + C.p.join(", ") : ""}.`;
+  }
   say(note.textContent);
 }
 setSeat(null);

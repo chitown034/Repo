@@ -257,9 +257,9 @@ def _pods(text: str) -> dict[str, list[str]]:
     return out
 
 
-def seat_cards(root: Path, inv: dict) -> str:
-    """One row per org-chart seat that owns a tool or leads a lane: model, roster agents in its lane, the tools it
-    owns by kind (named for skills and connectors), the pods it sits in. Zero tokens; rebuilt with the toolkit page."""
+def seat_card_rows(root: Path, inv: dict) -> list[dict]:
+    """One dict per org-chart seat that owns a tool or leads a lane: model, roster agents in its lane, the tools it
+    owns by kind, the pods it sits in. The org chart's table and the 6D Brain's seat lens both read this."""
     from . import agentos
     try:
         roster = json.loads((root / agentos.MANIFEST).read_text(encoding="utf-8"))["agents"]
@@ -274,8 +274,7 @@ def seat_cards(root: Path, inv: dict) -> str:
         pods = _pods((root / ORG_CHART).read_text(encoding="utf-8"))
     except OSError:
         pods = {}
-    L = ["| Seat | Role | Model | Agents in lane | Skills | Connectors | Routines · Mac tasks | Pods |",
-         "|---|---|---|---|---|---|---|---|"]
+    rows = []
     for seat, role, _w in SEATS:
         mine = [it for it in inv["items"] if it["seat"] == seat]
         if not mine and seat not in lane:
@@ -286,14 +285,28 @@ def seat_cards(root: Path, inv: dict) -> str:
             model = MODEL_WORD.get(m.strip().lower(), m)
         else:
             model = "persona skill (session model)" if kind == "skill" else "—"
-        if slug in agentos.PROPOSAL_ONLY:
-            role += " · proposal-only"
-        sk = ", ".join(f"`{it['name']}`" for it in mine if it["kind"] == "skill") or "—"
-        cn = [it for it in mine if it["kind"] == "connector"]
-        cons = ", ".join(f"{it['name']} ({it['state']})" for it in cn) or "—"
-        n = lambda k: sum(1 for it in mine if it["kind"] == k)  # noqa: E731
-        L.append(f"| **{seat}** | {role} | {model} | {lane.get(seat, 0)} | {sk} | {cons} | {n('routine')} · {n('mactask')} | "
-                 f"{', '.join(pods.get(seat, [])) or '—'} |")
+        rows.append({
+            "seat": seat, "role": role, "model": model, "lane": lane.get(seat, 0),
+            "proposal_only": slug in agentos.PROPOSAL_ONLY,
+            "skills": [it["name"] for it in mine if it["kind"] == "skill"],
+            "connectors": [[it["name"], it["state"]] for it in mine if it["kind"] == "connector"],
+            "routines": sum(1 for it in mine if it["kind"] == "routine"),
+            "mactasks": sum(1 for it in mine if it["kind"] == "mactask"),
+            "pods": pods.get(seat, []),
+        })
+    return rows
+
+
+def seat_cards(root: Path, inv: dict) -> str:
+    """The org chart's seat-cards table, rendered from seat_card_rows. Zero tokens; rebuilt with the toolkit page."""
+    L = ["| Seat | Role | Model | Agents in lane | Skills | Connectors | Routines · Mac tasks | Pods |",
+         "|---|---|---|---|---|---|---|---|"]
+    for r in seat_card_rows(root, inv):
+        role = r["role"] + (" · proposal-only" if r["proposal_only"] else "")
+        sk = ", ".join(f"`{n}`" for n in r["skills"]) or "—"
+        cons = ", ".join(f"{n} ({st})" for n, st in r["connectors"]) or "—"
+        L.append(f"| **{r['seat']}** | {role} | {r['model']} | {r['lane']} | {sk} | {cons} | {r['routines']} · {r['mactasks']} | "
+                 f"{', '.join(r['pods']) or '—'} |")
     return "\n".join(L)
 
 

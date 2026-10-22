@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """Carry nodes, links and colours that only exist on the live Brain 6D page into a fresh build.
 
-    python3 dashboard/brain-4d/merge-live.py <saved live page> dashboard/brain-4d.html
+    python3 dashboard/brain-4d/merge-live.py <saved live page> dashboard/brain-4d.html [--all]
 
 Another session can publish its own nodes (e.g. the VANESSA 3.0 "vanessa:*" lobe, 2026-10-22) between our
 rebuilds; a plain rebuild would drop them. This keeps the fresh build and adds back every live-only node, every
 live link whose two ends exist after the merge, and any colour key the build lacks. Plain code, no model call.
+--all also carries live-only nodes in the build's own families: use it when another session has published pages,
+skills or routines from a branch this checkout has not merged yet (2026-10-22: the Attraction Command Center lobe),
+so a rebuild here does not erase their work from the live page.
 """
 import json
 import re
@@ -28,7 +31,7 @@ def grab(page: str, name: str):
     return (json.loads(m.group(1)), m) if m else (None, None)
 
 
-def main(live_path: str, out_path: str) -> int:
+def main(live_path: str, out_path: str, keep_all: bool = False) -> int:
     live, mine = open(live_path, encoding="utf-8").read(), open(out_path, encoding="utf-8").read()
     lg, _ = grab(live, "G")
     mg, mm = grab(mine, "G")
@@ -36,7 +39,7 @@ def main(live_path: str, out_path: str) -> int:
         print("merge-live: could not find const G on one of the pages; nothing merged")
         return 1
     have = {n["id"] for n in mg["nodes"]}
-    added = [n for n in lg["nodes"] if n["id"] not in have and foreign(n["id"])]
+    added = [n for n in lg["nodes"] if n["id"] not in have and (keep_all or foreign(n["id"]))]
     mg["nodes"] += added
     have |= {n["id"] for n in added}
     seen = {(l["s"], l["t"]) for l in mg["links"]}
@@ -58,4 +61,5 @@ def main(live_path: str, out_path: str) -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv[1], sys.argv[2]) if len(sys.argv) == 3 else 2)
+    args = [a for a in sys.argv[1:] if a != "--all"]
+    sys.exit(main(args[0], args[1], "--all" in sys.argv[1:]) if len(args) == 2 else 2)

@@ -68,6 +68,17 @@ class SeatCardTests(unittest.TestCase):
         self.assertIn("Opus 5.5", row["Sofia"]); self.assertIn("Client Care", row["Sofia"])
         self.assertIn("`refi-watch`", row["Victor"])
 
+    def test_card_rows_feed_the_6d_seat_lens(self):
+        rows = {r["seat"]: r for r in toolkit.seat_card_rows(ROOT, toolkit.inventory(ROOT))}
+        self.assertEqual(rows["Vanessa"]["model"], "Fable 5.1")
+        self.assertTrue(rows["Nadia"]["proposal_only"]); self.assertFalse(rows["Victor"]["proposal_only"])
+        self.assertIn("refi-watch", rows["Victor"]["skills"])
+        for r in rows.values():
+            self.assertTrue(all(len(c) == 2 for c in r["connectors"]))
+            self.assertIsInstance(r["pods"], list)
+        page = (ROOT / "dashboard/brain-4d/template.html").read_text(encoding="utf-8")
+        self.assertIn("const C = S.c;", page)
+
     def test_write_cards_only_between_markers(self):
         import shutil
         import tempfile
