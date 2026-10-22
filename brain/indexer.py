@@ -46,6 +46,7 @@ INCLUDE_EXTRA_GLOBS = ["integrations/*/README.md"]
 # Never indexed, whatever the rules above say.
 EXCLUDE = {"INDEX.md", "docs/reports/BRAIN-BENCH.md"}
 EXCLUDE_PREFIXES = ("docs/findings/", "docs/data/", "docs/reports/", ".claude/",
+                    "projects/aeo-presence/",  # held marketing draft; unverified facts must not answer recall
                     "dashboard/", "brain/", "integrations/cli-anything-harnesses/")
 
 # Authority prior. CLAUDE.md's routed leaves are authoritative by construction;
