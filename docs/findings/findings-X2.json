@@ -1,0 +1,173 @@
+[
+  {
+    "id": "F-X2-01",
+    "severity": "high",
+    "area": "consolidation / audit corpus",
+    "finding": "Fifteen findings files (about 250 rows) in two schemas were never merged, so the master table and its data twin still showed cycle 6 only (285 rows) and contradicted their own appendix: eleven earlier rows had been fixed on the deck between 08:56 and 12:59 UTC (F-E7-01/02/04/05/06/08/10, F-E7-03, F-E8-29 at the document) and three halted rows demanded a 'Run now' on r6-weekly-backup that F-INT-07's cloud writer had already superseded.",
+    "evidence": "docs/MASTER-FINDINGS.md at 09:51 UTC vs deck commits b63ff97, edfa24a, 109d9d5 and the store export at 14:37 UTC (backupStatus lastBackup 2026-09-22).",
+    "fix": "Done in this pass: docs/MASTER-FINDINGS.md regenerated with the row updates and a dated 2026-09-22 section; docs/data/auditFindings.json regenerated to match; docs/NEEDS-STEVEN.md written.",
+    "halt": false
+  },
+  {
+    "id": "F-X2-02",
+    "severity": "high",
+    "area": "privacy / repo mirror of the ISA Portal",
+    "finding": "The brain repo's tracked copy of the portal, dashboard/isa/isa-portal.html, is the pre-fix file: it still ships the frozen 39-row lead card (FUB_NEW_LEADS_90D, 5 references), the drift-table client rows with names and loan amounts (line ~1954) and one vendor-domain email address. The fixed portal exists only in the scratchpad portal repo (master cf89bab: commits a22a346, ce74010 and the l2-fub merge) and, presumably, in the published artifact.",
+    "evidence": "grep on /home/user/Repo/dashboard/isa/isa-portal.html: FUB_NEW_LEADS_90D 5 hits, 1 email literal, names in DRIFT_ROWS; the same greps on scratchpad/isa/isa-portal.html: 0, 0, driftLocalSummary().",
+    "fix": "Integrator copies the portal master (cf89bab) over dashboard/isa/isa-portal.html and commits it; X2 did not edit it (outside the allowed files). Until then the git history carries client identifiers — Steven decides whether the earlier commits need rewriting.",
+    "halt": false
+  },
+  {
+    "id": "F-X2-03",
+    "severity": "high",
+    "area": "contradiction / runner status",
+    "finding": "F-M5-06 (13:32 UTC) concluded runnerStatus stopped being written at 04:05 UTC and understated the runner. F-W2-02 (14:05 UTC) read the store and found the document alive (v8, written ~14:06 UTC) with its writer stamp in Pacific time plus a Z, seven hours behind. Both are recorded; the register was rewritten to W2's reading (brain 2cb4ae6). F-M1-03 and F-M1-06 also leaned on the 04:05 reading ('r8 in error since 2026-09-17', feeds 'never run at all') and should be re-read against the live runnerStatus before anyone acts on them.",
+    "evidence": "findings-M5.json F-M5-06 vs findings-W2.json F-W2-02; always-on/README.md corrected block; 14:37 export runnerStatus syncedAt 2026-09-22T07:06:12Z.",
+    "fix": "F-M5-06 marked Superseded. The timestamp defect itself is F-W2-02 (Steven, runbook §2).",
+    "halt": false
+  },
+  {
+    "id": "F-X2-04",
+    "severity": "medium",
+    "area": "contradiction / r4-quantvue-sync and r8",
+    "finding": "F-M5-09 recorded r4-quantvue-sync as 'silent — no QuantVue document exists in state, nothing to check it against' and r8-apple-health-snapshot as running while writing nothing; F-W2-04 shows r4 writes strategySnapshot (mac-task-descriptions.md:40) and is 'refused' by the allow-list, and F-W2-03 shows r8 reports 'ok' twice a day (not 'error' as F-M1-03 had it).",
+    "evidence": "findings-M5.json F-M5-09; findings-W2.json F-W2-03/04; docs/inventory/mac-task-descriptions.md line 40.",
+    "fix": "F-M5-09 marked Superseded; the register table already carries W2's reading. Actions are F-W2-03 (decision) and F-W2-04 (paste), both Steven's.",
+    "halt": false
+  },
+  {
+    "id": "F-X2-05",
+    "severity": "medium",
+    "area": "contradiction / who may fix isaLadder.updatedAt",
+    "finding": "F-M5-07 says correcting the ISA ladder's stamp is a routine edit that is Steven's; F-W2-06 says the routine was created via meta_mcp so an agent may apply it without Steven. Neither applied it; the stamp still reads a slot time (2026-09-22T14:30:00Z in the 14:37 export).",
+    "evidence": "findings-M5.json F-M5-07 halt true; findings-W2.json F-W2-06 halt false; routines/mac-task-repairs.md §6.",
+    "fix": "Steven decides in one line: paste §6 himself, or authorise the coordinator to apply it (the engagement rule forbade routine edits to every engineer today).",
+    "halt": true
+  },
+  {
+    "id": "F-X2-06",
+    "severity": "medium",
+    "area": "contradiction / rate as-of dates on deck vs portal",
+    "finding": "FR1 and FR3 re-baked the same three hand-checked rates from the same lender pages through different channels. The deck now dates the Navy Federal VA 15-yr and jumbo 15-yr rows 'Sep 20, 2026' (F-FR1-09) while the portal dates identical figures 'Rates as of Sep 22, 2026 ET' (F-FR3-03). The VA 30-yr refinance APR gap (null vs 6.822%) was reconciled by deck c29b00f, but the as-of split remains and both artifacts claim to have read the page.",
+    "evidence": "deck master lines 9192/9196 asOf 'Sep 20, 2026'; portal master 'Rates as of Sep 22, 2026 ET' (2 hits); deck c29b00f body.",
+    "fix": "One 30-second look at navyfederal.org from the Mac (F-FR1-09's own recommendation) settles which date the page shows; then align the other artifact.",
+    "halt": false
+  },
+  {
+    "id": "F-X2-07",
+    "severity": "medium",
+    "area": "contradiction / Meritage builder incentive",
+    "finding": "The deck's builder-incentive copy (F-FR1-04) carries a current-looking Meritage offer (2.99% / 3.99% / 4.99%, 5.546% APR via MTH Mortgage, 'no window shown'); the portal's (F-FR3-02) says the Meritage SoCal page is the October 2024 event. Both passes read search-indexed copies because meritagehomes.com is egress-blocked, and neither could open the page.",
+    "evidence": "findings-FR1.json F-FR1-04; findings-FR3.json F-FR3-02; portal master contains 'Oct 2024' (1 hit) and 'Meritage' (3 hits).",
+    "fix": "Open the Meritage promotion page from the Mac on the next builder-incentive hand check and make the two artifacts agree; until then the ISA should not quote the Meritage rate.",
+    "halt": false
+  },
+  {
+    "id": "F-X2-08",
+    "severity": "low",
+    "area": "duplicate work / program facts",
+    "finding": "F-FR1-03 (deck) and F-FR3-01 (portal) re-verified the same eight PROGRAM_FACTS rows independently and added different clauses (the portal adds USDA county caps and the five Mortgagee Letters; both added IRRRL/OBBBA wording). The deck-portal drift check compares only the counts (39 programs / 61 lenders), so the two program-facts cards can now differ in text without anything noticing.",
+    "evidence": "findings-FR1.json F-FR1-03 after-text vs findings-FR3.json F-FR3-01 after-text; projects/isa-portal.md drift rule (counts only).",
+    "fix": "Make the deck the source of truth for PROGRAM_FACTS and have the portal copy it, or extend the drift check to a text hash of the two arrays.",
+    "halt": false
+  },
+  {
+    "id": "F-X2-09",
+    "severity": "high",
+    "area": "PII in the audit corpus",
+    "finding": "The master table and its data twin carried initial-plus-surname client identifiers with loan amounts and stages (F-E12-11, F-E12-12), and findings-L1.json quotes one lead's first name and initial as an example row. The cycle brief bars client names anywhere in the corpus.",
+    "evidence": "docs/MASTER-FINDINGS.md lines 146-147 (before this pass); docs/data/auditFindings.json lines 257/274; docs/findings/findings-E12.json lines ~197/216; docs/findings/findings-L1.json line 16.",
+    "fix": "Redacted in the regenerated docs/MASTER-FINDINGS.md and docs/data/auditFindings.json in this pass. Not edited: the source rows in findings-E12.json and findings-L1.json (dated records) and the live auditFindings document in the Command Deck store (seeded 09:51 UTC, 285 rows) — Steven or the coordinator decides whether to purge those and republish the doc.",
+    "halt": true
+  },
+  {
+    "id": "F-X2-10",
+    "severity": "medium",
+    "area": "unbacked claim / Zoho re-test routine",
+    "finding": "The deck (panel-aiteam Zoho bullet, F-M4-27), context/decisions.md and the engineering brief all say 'a cloud routine re-tests every few hours and writes zohoSync'. The 50-routine listing pulled 2026-09-22 08:09 UTC contains no such routine, W2's 14:20 UTC trigger read names none, and the zohoSync document in the 14:37 export was checked at 08:17:00Z — the audit session's own manual test — with no later check recorded.",
+    "evidence": "docs/inventory/cloud-routines.md (50 rows, none Zoho); scratchpad/all/state/zohoSync.json checkedAt 2026-09-22T08:17:00Z, status blocked; context/decisions.md Zoho entry 'A cloud routine re-tests every few hours'.",
+    "fix": "Derek's lane confirms whether the routine exists (it would have to be web-created to carry the Composio connector); if it does not, correct the deck bullet and decisions.md to 'no automatic re-test; the board fills after the next manual sync'.",
+    "halt": false
+  },
+  {
+    "id": "F-X2-11",
+    "severity": "low",
+    "area": "unrecorded DB write",
+    "finding": "F-M5-03 found marketingQueue carrying an orphaned top-level 'data' key at ~13:32 UTC and said the removal write was Steven's or the caller's. The 14:37 UTC store export shows the document with a single 'v' key — the orphan is gone — but no finding, commit or ciLog row says who wrote it.",
+    "evidence": "findings-M5.json F-M5-03; scratchpad/all/state/marketingQueue.json top-level keys ['v'].",
+    "fix": "Whoever made the write should add the row to ciLog ({date,text}); going forward every store write by a session leaves a ciLog row, as the cloud writers already do.",
+    "halt": false
+  },
+  {
+    "id": "F-X2-12",
+    "severity": "medium",
+    "area": "master table / superseded halts",
+    "finding": "Four halted rows asked Steven to press 'Run now' on r6-weekly-backup (F-E1-14, F-E11A-02, F-E7-12, F-E8-05) while F-INT-07 recorded the cloud backup writer taking a verified 2026-09-22 backup. The table was contradicting its own appendix.",
+    "evidence": "docs/MASTER-FINDINGS.md halted list (09:51 UTC) vs F-INT-07 Fixed; 14:37 export backupStatus lastBackup 2026-09-22 verified true.",
+    "fix": "Done: F-E1-14, F-E7-12, F-E8-05 marked Fixed (superseded) with the evidence; F-E11A-02 kept Escalated as the one remaining decision (cron/root, and whether r6 is disabled).",
+    "halt": false
+  },
+  {
+    "id": "F-X2-13",
+    "severity": "low",
+    "area": "stale cross-claim / F-E8-64",
+    "finding": "F-E8-64 explained the failed 'Vanessa orchestrated ops review' routine by 'its prompt calls write_db, which parks'. F-INT-08 disproved the premise and F-W2-07 measured the run dying 5.7 s after firing on 2026-09-18, a startup failure shared with eight other routines.",
+    "evidence": "findings-E8.json F-E8-64; findings-W2.json F-W2-07 timing table.",
+    "fix": "Done: F-E8-64 annotated; it stays Open as one of the four http_api routines only Steven can edit.",
+    "halt": false
+  },
+  {
+    "id": "F-X2-14",
+    "severity": "low",
+    "area": "stale cross-claim / F-M1-10 and F-M4-24/25",
+    "finding": "Engineers working parallel branches each reported the other's region unfixed: F-M1-10 left lines 5977 and the AI_TEAM_TOOLBOX row 'without an owner' (M4 fixed both: F-M4-09, F-M4-15); F-M4-24 reported the STRATEGY_SYNCED_AT parenthetical unfixed (FR2 had already rewritten it: F-FR2-16); F-M4-25 handed panel-toolkit line 6643 to M1 (M1 fixed it: F-M1-10). All three are resolved on the merged deck master.",
+    "evidence": "deck master ee42e30: 'research-only by design' only in the retiring sentence; line 8538 carries FR2's text; line 6643 carries M4's wording.",
+    "fix": "Done: rows cross-referenced and marked Fixed with the id of the fix.",
+    "halt": false
+  },
+  {
+    "id": "F-X2-15",
+    "severity": "medium",
+    "area": "evidence gap / published versions",
+    "finding": "The tree records the deck as 'published as v143' (deck 8136b9f, 12:46 UTC) and the portal as 'version 27' (F-E12 close), but nothing records a republish after the later merges (deck master ee42e30 at 14:54 UTC; portal master cf89bab at 14:02 UTC). Two indirect signs a republish happened: the artifact listing shows both artifacts updated 2026-09-22, and a deviceRoster document — written only by the merged deck's page code (F-M1-03, merged 13:48 UTC) — exists in the 14:37 UTC store export.",
+    "evidence": "Artifact list (Command Deck, ISA Portal: updated 2026-09-22); scratchpad/all/state/deviceRoster.json present; git log bodies of both scratchpad repos.",
+    "fix": "The integrator records the published version number in projects/command-deck.md and projects/isa-portal.md at every republish (the caller's 'deck v145 / portal v30' can be confirmed there); X2 could not verify those numbers from the tree.",
+    "halt": false
+  },
+  {
+    "id": "F-X2-16",
+    "severity": "low",
+    "area": "count check / dated FUB references",
+    "finding": "F-L3-04 listed per-file counts of retired-CRM references left in dated audit records; the coordinator cites 395. X2's recount at ~15:00 UTC with the widened pattern over docs/ (excluding today's sweep files, which describe the sweep itself) is 392 lines / 716 occurrences in 33 files; outside docs/ only the stale portal mirror (F-X2-02, 50 lines), two skill-folder identifiers and the repairs runbook remain.",
+    "evidence": "grep -r -c -i -E 'follow[ ._-]?up[ ._-]?boss|\\bFUB\\b|fub[A-Za-z_]|followupboss' over docs/ (per-file list in X2's hand-back).",
+    "fix": "None needed; the purge-or-leave decision is Steven's (NEEDS-STEVEN). If purged, regenerate the set together, never row by row (F-L3-04).",
+    "halt": false
+  },
+  {
+    "id": "F-X2-17",
+    "severity": "low",
+    "area": "process / unrecorded routine creation",
+    "finding": "Five cloud routines were created during the day (write probe, weekly backup writer, Pipeline Sync live, ISA escalation ladder, feed-freshness watchdog) and appear only in always-on/README.md, routines/*.md and CLOUD-WRITE-ARCHITECTURE.md; no findings file records their creation, owner or verification plan, so the findings corpus alone cannot account for the routine population (50 listed at 08:09 UTC; more now).",
+    "evidence": "docs/inventory/cloud-routines.md (50 rows); always-on/README.md cloud-writers table (trig_01JcPh3AM2z21Bsv34SvSkqM, trig_01M5zR1Po44gnHvTwA9ogZaB, trig_01J9xuWgAuUCHATtpLivDkgp, trig_01PhgrwpwaQ9vLvFxQPrPJ6W, feed-freshness watchdog).",
+    "fix": "Re-pull the routine listing into docs/inventory/cloud-routines.md and add one row per created routine to the next findings file (id, created_via, verified-by-output plan).",
+    "halt": false
+  },
+  {
+    "id": "F-X2-18",
+    "severity": "low",
+    "area": "disagreement / AI-news freshness stamp source",
+    "finding": "F-FR4-09 asked that the freshness board read the aiNews document's asOf instead of the liveFeeds stamp; F-W1-08 refused on evidence (the aiNews doc has no syncedAt and a prose asOf that execIsoOf() cannot parse, so the change would have turned a healthy row red and 13 days older). Recorded so FR4 does not re-open it.",
+    "evidence": "findings-FR4.json F-FR4-09; findings-W1.json F-W1-08; scratchpad/all/state/aiNews.json keys ['asOf','items'].",
+    "fix": "None; the panel half is fixed (deck aa00d3b). If the daily feed task ever writes a parseable syncedAt into aiNews, revisit.",
+    "halt": false
+  },
+  {
+    "id": "F-X2-19",
+    "severity": "medium",
+    "area": "OmniRoute failover / blocked install",
+    "finding": "Three deliverables tell Steven to install and use the OmniRoute failover (F-FR5b-05, F-FR5b-06, F-M3-03/09 and the MAC-SETUP.sh omniroute step) while F-V2-07..18, written later, prove its PII gate fails open by argument order, by default and by name matching, and that two paths strand the Mac on free providers permanently. The runbooks were not updated after V2.",
+    "evidence": "findings-V2.json F-V2-07..18 (executed reproductions); MAC-INSTALL-comms-data.md §2 and integrations/omniroute-failover/README.md unchanged after aa3b734; CONNECTIONS.md line 45 (F-V2-21).",
+    "fix": "Until F-V2-07..18 are fixed and the widened canary (F-V2-20) passes on the Mac: do not run MAC-SETUP.sh's omniroute step against the runner, do not replace the existing claude-auto, and keep the runner on plain claude. NEEDS-STEVEN says so in one line.",
+    "halt": false
+  }
+]

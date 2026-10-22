@@ -1,0 +1,10 @@
+{
+  "name": "cli-anything-browser-domshell-pin",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pinned DOMShell runtime for the vendored cli-anything-browser harness. See ../SECURITY-POSTURE.md (finding F-P1-02).",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@apireno/domshell": "2.0.10"
+  }
+}

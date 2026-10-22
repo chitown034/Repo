@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  com.stevenshearrill.mac-sync-export.plist — TEMPLATE (R6, 2026-09-24). Runs `mac-sync.sh export`, with
+  the push flag on, once a day at 03:00 local time: after most of the day's real installs/changes, before
+  the OTHER Mac's next `pull` (every 30 min) would see it. That push flag is deliberate here, and ONLY here
+  — a bare `mac-sync.sh export` run by hand never pushes on its own; see integrations/mac-sync/README.md.
+
+  A single launchd job cannot run on two different cadences, so this is a SECOND, separate LaunchAgent next
+  to com.stevenshearrill.mac-sync-pull.plist — not one job trying to do both.
+
+  BEFORE loading this file, on THIS Mac (same three substitutions as the pull template):
+    1. mkdir -p ~/Library/Logs/mac-sync ~/Library/LaunchAgents
+    2. cp integrations/mac-sync/com.stevenshearrill.mac-sync-export.plist \
+         ~/Library/LaunchAgents/com.stevenshearrill.mac-sync-export.plist
+    3. sed -i '' "s#__REPO_DIR__#$(pwd)#g; s#__HOME__#$HOME#g" ~/Library/LaunchAgents/com.stevenshearrill.mac-sync-export.plist
+       (run that from the repo root — __REPO_DIR__ becomes THIS Mac's real checkout path)
+    4. launchctl load ~/Library/LaunchAgents/com.stevenshearrill.mac-sync-export.plist
+
+  Expect: at the next 03:00 local (or right away — RunAtLoad is on, so loading it also fires one
+  immediately), ~/Library/Logs/mac-sync/export.log ends with either "pushed" or a line starting
+  "mac-sync export: push FAILED" (network/credential — check by hand, nothing was lost, it stays committed
+  locally and the next successful run or a manual 'git push' still carries it).
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.stevenshearrill.mac-sync-export</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>__REPO_DIR__/integrations/mac-sync/mac-sync.sh</string>
+    <string>export</string>
+    <string>--push</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>__REPO_DIR__</string>
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key>
+    <integer>3</integer>
+    <key>Minute</key>
+    <integer>0</integer>
+  </dict>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>__HOME__/Library/Logs/mac-sync/export.log</string>
+  <key>StandardErrorPath</key>
+  <string>__HOME__/Library/Logs/mac-sync/export.log</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>__HOME__/.npm-global/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+    <key>HOME</key>
+    <string>__HOME__</string>
+  </dict>
+</dict>
+</plist>

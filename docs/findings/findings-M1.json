@@ -1,0 +1,92 @@
+[
+  {
+    "id": "F-M1-01",
+    "severity": "high",
+    "area": "docs/remote-access",
+    "finding": "REMOTE-ACCESS.md asserted under 'Honest limits' that cloud routines cannot write the artifact DB unattended. That claim is false as of 2026-09-22 and is the stated reason ~50 feeds were pinned to one Mac.",
+    "evidence": "Read the Command Deck store directly (artifact 1624daae-d683-405a-971d-c5828dce0f8d, collection 'state'): doc 'cloudWriteProbe' exists at version 1, updatedAt 2026-09-22T09:05:56.233291Z, value {result: 'write succeeded unattended'}. Version 1 means a first write, not an overwrite. Corroborated by docs/CLOUD-WRITE-ARCHITECTURE.md and always-on/README.md.",
+    "fix": "REMOTE-ACCESS.md rewritten: the claim is corrected in a named section that says the old line was wrong, when it was last true (2026-09-04), what changed (Claude Code 2.1.277, 2026-09-18) and what still does not (an agent-created routine stores no MCP connectors).",
+    "halt": false
+  },
+  {
+    "id": "F-M1-02",
+    "severity": "high",
+    "area": "deck/sync",
+    "finding": "hlPrefs (health-lab metric, compare, day range, auto-interpret toggle) is a user preference but was written with lsSetLocal, so it never left the browser that set it. Confirmed absent from the live store: a 172-document listing of 'state' contains no hlPrefs doc.",
+    "evidence": "command-deck.html line 25068 (pre-change): hlSetPref used lsSetLocal. Four call sites (hlMetric change, hlCompare change, hl-range buttons, hlAutoToggle change). ArtifactData list of collection 'state' returned 172 docs, none named hlPrefs.",
+    "fix": "hlSetPref now uses lsSet. Nothing depends on hlPrefs being device-local: hlAutoMaybe's once-per-sync guard is hlAutoTried, which stays device-local, and no panel stamp reads hlPrefs. Added hlPrefs to NO_EDIT_STAMP_KEYS so a dropdown change does not also churn sectionEdits (already at version 3104).",
+    "halt": false
+  },
+  {
+    "id": "F-M1-03",
+    "severity": "medium",
+    "area": "deck/observability",
+    "finding": "The deck had no way to show which machines were attached or when the machine that feeds the Mac-written documents last did anything. A sleeping Mac was indistinguishable from a working one, which is how r8-apple-health-snapshot (error since 2026-09-17) and the QuantVue sync (silent since 2026-09-16) stayed invisible.",
+    "evidence": "No deviceId or deviceRoster document in the 172-doc listing of 'state'; no device-related element id anywhere in command-deck.html before this change.",
+    "fix": "Added a device roster: a random per-browser-profile deviceId kept device-local, a synced deviceRoster doc {v:{devices:{<id>:{label, platform, firstSeen, lastSeen, lastWrite, lastMacFed}}}} capped at 12 devices by least-recently-seen, and a card in panel-toolkit under 'Remote access to your Claude dashboard' with inline rename, relative last-seen, and an amber flag when a device has not written for 48h AND it is the last device to have written a Mac-fed document.",
+    "halt": false
+  },
+  {
+    "id": "F-M1-04",
+    "severity": "medium",
+    "area": "deck/sync",
+    "finding": "A synced document that every tab on every device touches becomes a write amplifier and, worse, a reload source: applyRemoteSnapshot counts any remote key change as 'changed' and reloads the page (throttled to once per 30s). An hourly roster write from Mac A would have reloaded Mac B every hour.",
+    "evidence": "command-deck.html applyRemoteSnapshot: 'if (key !== \"sectionEdits\") changed = true;' followed by location.reload() on the changed path. sectionEdits is at version 3104 and fersEngine at 2338 in the live store, so amplification on this page is measured, not hypothetical.",
+    "fix": "deviceRoster is excluded from the reload path alongside sectionEdits and re-renders its own card directly. Writes are throttled to one per device per hour, persisted in the document's own lastSeen stamp so the throttle survives reloads and extra tabs, re-entrancy guarded (lsSet -> syncKeyToDb -> devNoteWrite -> devTouch is a cycle), and suppressed for the first 2.5s of a page's life so a tab cannot clobber the other Mac's entry before the first remote snapshot lands.",
+    "halt": false
+  },
+  {
+    "id": "F-M1-05",
+    "severity": "high",
+    "area": "ops/scheduling",
+    "finding": "There is no mechanism preventing two Macs from running the same 59 claude-runner tasks at once. Both would write the same documents: duplicate ciLog rows, isaLine messages sent twice, and doubled feed writes.",
+    "evidence": "runnerStatus doc (syncedAt 2026-09-22T04:05:04Z) lists 59 tasks, all enabled, with no host field and no lease check in any task. No taskLease document exists in the 172-doc listing of 'state'.",
+    "fix": "REMOTE-ACCESS.md now specifies a PRIMARY/STANDBY lease: a taskLease doc {v:{holder, hostname, acquiredAt, expiresAt}} with a 90-minute TTL, a copyable five-step LEASE CHECK for the top of every task prompt that pins its write with if_version and re-reads to close the both-created-it-at-once race, and a one-command promotion for the standby. NOT IMPLEMENTED: creating the taskLease doc and editing the 59 live task prompts are Steven's, not an agent's.",
+    "halt": true
+  },
+  {
+    "id": "F-M1-06",
+    "severity": "medium",
+    "area": "ops/scheduling",
+    "finding": "Roughly a dozen feeds that only need the web and the artifact DB are still pinned to the Mac, and several have never run at all. They are the visible symptom of F-M1-01.",
+    "evidence": "runnerStatus 2026-09-22T04:05:04Z: openrouter-feeds-refresh error (last end 2026-09-17), feeds-weekly limited (2026-09-17), feeds-market-close last ok 2026-09-15, r5-rates-market-refresh and r9-feed-freshness-sweep have no lastEnd at all, r1-morning-brief error, r10-automation-health limited. always-on/README.md records the weekly backup already moved to a cloud writer and took the 2026-09-22 backup.",
+    "fix": "REMOTE-ACCESS.md now names which feeds should move and which cannot, grouped by the actual blocker (local file or daemon, vault files plus the local model, or a connector/Keychain credential). Moving them means creating or editing routines, which an agent may not do.",
+    "halt": true
+  },
+  {
+    "id": "F-M1-07",
+    "severity": "low",
+    "area": "deck/observability",
+    "finding": "A device's roster entry can only record a Mac-fed write that went through the page. A scheduled task writing straight to the artifact DB carries no device identity, so the 'feeds Mac documents' marker is a floor, not a census.",
+    "evidence": "Mac tasks write the store through Claude Code tool calls, not through the deck page; nothing in the write path carries a browser deviceId.",
+    "fix": "Documented in the code comment at DEV_MAC_FED_KEYS and in the card's own source note, so the marker is never read as authoritative. The honest cross-check remains the freshness board, which reads each document's own stamp.",
+    "halt": false
+  },
+  {
+    "id": "F-M1-08",
+    "severity": "low",
+    "area": "test/coverage",
+    "finding": "The runtime harness cannot exercise the roster's write path: DEV_SETTLE_MS is 2.5 s of real time and a full harness run finishes in about 1.2 s, so devTouch always returns early under test.",
+    "evidence": "tests/dom-shim.js uses the real Date.now() and schedules timers without a fake clock (win.setTimeout -> schedule(fn, ms)). Harness duration 1156 ms against a 2500 ms settle gate.",
+    "fix": "Added a 31-assertion unit test at scratchpad/m1-roster-unit.js that loads the roster block in a vm with stubbed lsGet/lsSet/$/safeRun and drives the throttle, the prune, the rename, the amber rule, the re-entrancy cycle and seven malformed-document shapes. All pass. The harness still covers the page-level guarantee (0 exceptions, 338 containers) under every malformed input.",
+    "halt": false
+  },
+  {
+    "id": "F-M1-09",
+    "severity": "low",
+    "area": "docs/second-mac",
+    "finding": "The task count for Mac #1's runner disagrees between two live documents, so a second-Mac setup copying 'the task set' has no single number to check against.",
+    "evidence": "runnerStatus (syncedAt 2026-09-22T04:05:04Z) carries 59 task entries; toolkitSnapshot (syncedAt 2026-09-22T13:15:45Z) reports counts.tasks = 60; always-on/README.md says 60.",
+    "fix": "docs/SECOND-MAC-SETUP.md names both numbers and says to reconcile against the runner on Mac #1 rather than against either document. Not resolved here: the discrepancy needs a look at the runner itself, which is on the Mac.",
+    "halt": false
+  },
+  {
+    "id": "F-M1-10",
+    "severity": "medium",
+    "area": "deck/content-integrity",
+    "finding": "The deck states the now-false 'cloud routines are research-only / an unattended write parks on a permission prompt' claim in four places. One is inside panel-toolkit and was mine to fix; two remain outside any assigned region.",
+    "evidence": "command-deck.html (branch m1-multimac): line 6643 in panel-toolkit (fixed here); line 4742 (M4's region, fixed on deck master, not on this branch); line 5977 in panel-nextmoves \u2014 'research-only by design \u2014 an unattended run's write to this dashboard parks on a permission prompt (confirmed three times)'; line 26199 in AI_TEAM_TOOLBOX, rendered into panel-aiteam \u2014 '50 routines, 46 enabled \u2014 research-only by design: an unattended run's artifact-DB write parks on a permission prompt (confirmed three times)'. Contradicted by cloudWriteProbe v1, updatedAt 2026-09-22T09:05:56Z.",
+    "fix": "Line 6643 now reads 'claude.ai/code routines (cloud; since 2026-09-22 known to write this deck's store unattended, but they carry no connectors)', matching M4's wording at 4742. Lines 5977 and 26199 are NOT fixed \u2014 outside panel-toolkit and outside my brief. They need an owner.",
+    "halt": false
+  }
+]

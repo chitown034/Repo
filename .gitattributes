@@ -1,0 +1,20 @@
+# Files the brain REBUILDS (cloud "6D Brain daily rebuild" and the Mac's own bin/brain runs both write them).
+# linguist-generated hides them from GitHub diffs and is the list scripts/repo-sync.sh reads: a local copy of
+# any of these is backed up and replaced by the committed one when the Mac syncs, so they never block a pull.
+# Add a path here only if a script regenerates it; hand-written files never belong on this list.
+INDEX.md                              linguist-generated=true
+brain/index.json                      linguist-generated=true
+brain/loop-history.jsonl              linguist-generated=true
+brain/synonyms-learned.json           linguist-generated=true
+dashboard/brain-4d.html               linguist-generated=true
+docs/reports/BRAIN-BENCH.md           linguist-generated=true
+docs/reports/BRAIN-LOOP.md            linguist-generated=true
+docs/reports/ENCYCLOPEDIA.md          linguist-generated=true
+docs/reports/SETUP-HEALTH.md          linguist-generated=true
+docs/reports/SCOUT.md                 linguist-generated=true
+docs/reports/SCOUT.json               linguist-generated=true
+docs/reports/EVENTS.md                linguist-generated=true
+docs/reports/EVENTS.json              linguist-generated=true
+integrations/agent-os/agents.json     linguist-generated=true
+integrations/agent-os/agents/*.md     linguist-generated=true
+wiki/ai-team/toolkit.md               linguist-generated=true

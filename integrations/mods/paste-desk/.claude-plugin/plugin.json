@@ -1,0 +1,6 @@
+{
+  "name": "paste-desk",
+  "version": "0.1.0",
+  "description": "/paste shows the one Terminal line that reconnects this Mac and the short list only Steven can do, straight from docs/STEVEN-STEPS.md.",
+  "author": { "name": "Steven Shearrill" }
+}

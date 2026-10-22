@@ -1,0 +1,35 @@
+# integrations/n8n/docker-compose.yml — n8n on loopback only, for Steven's Mac.
+# Mirrors integrations/openwa/'s own compose shape (see its README): a single service, a
+# named bind-mount for the data directory, and a HOST port bound to 127.0.0.1 only -- never
+# 0.0.0.0, so nothing off this Mac can reach the editor, the webhook endpoints, or the API.
+#
+# NOT exercised in this round's sandbox: the sandbox's Docker CLI has no daemon behind it
+# (`/var/run/docker.sock` does not exist here). The npm-global path in install.sh is what was
+# actually started and tested this round -- see integrations/n8n/README.md "Tested here".
+# This file is still shipped because Docker is the ecosystem's preferred shape (OpenWA itself
+# is docker-native) and its syntax was checked with `docker compose config` -- config-valid,
+# never run.
+
+services:
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    container_name: n8n-vanessa-bridge
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:${N8N_PORT:-5678}:5678'
+    environment:
+      - N8N_HOST=127.0.0.1
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=${WEBHOOK_URL:-http://127.0.0.1:5678/}
+      - GENERIC_TIMEZONE=${GENERIC_TIMEZONE:-America/Los_Angeles}
+      - N8N_DIAGNOSTICS_ENABLED=false
+      - N8N_PERSONALIZATION_ENABLED=false
+      - N8N_VERSION_NOTIFICATIONS_ENABLED=false
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY:?set in .env -- see .env.example}
+      - OPENWA_WEBHOOK_TOKEN=${OPENWA_WEBHOOK_TOKEN:?set in .env -- see .env.example}
+    volumes:
+      - ./data:/home/node/.n8n
+      - ./workflows:/home/node/workflows:ro
+    env_file:
+      - .env

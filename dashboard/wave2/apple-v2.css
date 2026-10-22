@@ -1,0 +1,151 @@
+/* == APPLE-V2 == large-title panels, segmented tabs, frosted chrome, calm capsules. Additive: overrides only.
+   Every colour is derived from the deck's own tokens (--accent/--surface/--surface-2/--border/--bg/--text) with
+   color-mix; shadows reuse APPLE-REFINE v1's --sh-1/--sh-2 (dark-aware) with the base --shadow as fallback.
+   Nothing here changes markup, ids, data or JS behaviour; the only script hook is the .av2-js / .av2-from-* classes. */
+:root{
+  --av2-ease:cubic-bezier(.2,.8,.2,1);
+  --av2-hair:color-mix(in srgb,var(--border) 70%,transparent);
+  --av2-hair-2:color-mix(in srgb,var(--border) 45%,transparent);
+  --av2-sh-1:var(--sh-1,var(--shadow));
+  --av2-sh-2:var(--sh-2,var(--shadow));
+  /* type ramp: display / title / body / caption / mono */
+  --av2-display:clamp(36px,5.2vw,56px);
+  --av2-title:clamp(28px,2.6vw,34px);
+  --av2-body:14px;
+  --av2-caption:12.5px;
+  --av2-micro:11px;
+}
+
+/* ---- type ramp + tabular numerals everywhere a number can live ---- */
+body{font-variant-numeric:lining-nums tabular-nums;font-optical-sizing:auto;-webkit-font-smoothing:antialiased}
+.hero-greet{font-size:var(--av2-display);letter-spacing:-.012em;line-height:.94}
+.hero-date{font-size:13px;letter-spacing:.02em;margin-top:10px}
+.card-title{font-size:15px;font-weight:600;letter-spacing:-.012em;line-height:1.3;margin-bottom:6px}
+.card-sub{font-size:13px;line-height:1.5;margin-bottom:16px}
+h3.section-label{font-size:var(--av2-micro);letter-spacing:.1em;margin:32px 0 12px}
+.stat-label{font-size:10.5px;letter-spacing:.09em}
+.stat-value{font-size:24px;font-weight:500;letter-spacing:-.01em;line-height:1.15;margin-top:6px}
+.stat-value,.head-nw-value,.clock,.hero-date,td,th,.badge,.pill,.panel-stamp,.es-num,.tk-tile b,.pm-n,.psr-num,.crumb,.num,[data-count]{font-variant-numeric:lining-nums tabular-nums}
+pre,code,kbd,.mono{font-variant-numeric:tabular-nums}
+
+/* ---- large-title panel header ---- */
+.panel{margin-top:56px;scroll-margin-top:96px}
+.panel-head{align-items:baseline;gap:8px 16px;padding-bottom:12px;margin-bottom:24px;border-bottom:1px solid var(--av2-hair)}
+.panel-head::after{width:56px;height:2px;bottom:-1px;border-radius:2px;background:var(--accent)}
+.panel-title{font-size:var(--av2-title);font-weight:800;letter-spacing:-.004em;line-height:1;text-wrap:balance}
+.panel-tag{font-size:var(--av2-micro);letter-spacing:.14em;font-weight:600}
+.panel-note{font-size:var(--av2-micro);letter-spacing:.02em}
+.panel-stamp{border-radius:999px;padding:3px 10px;font-size:10px;letter-spacing:.06em;border-color:var(--av2-hair);line-height:1.5}
+.panel-stamp.st-live{border-color:color-mix(in srgb,var(--positive) 35%,transparent)}
+.panel-stamp.st-you{border-color:color-mix(in srgb,var(--accent) 35%,transparent)}
+
+/* ---- frosted, translucent sticky header with a hairline ---- */
+.deck-head{background:color-mix(in srgb,var(--bg) 70%,transparent);
+  -webkit-backdrop-filter:saturate(180%) blur(24px);backdrop-filter:saturate(180%) blur(24px);
+  border-bottom:1px solid var(--av2-hair);
+  box-shadow:0 1px 0 var(--av2-hair-2),0 12px 32px -28px color-mix(in srgb,var(--text) 35%,transparent)}
+.page-nav{border-top:1px solid var(--av2-hair)}
+.crumb{letter-spacing:.03em}
+.world-clock-bar{border-color:var(--av2-hair)}
+
+/* ---- page tabs as a segmented control: pill track, selected thumb that slides in from the previous tab ---- */
+.page-tabs{position:relative;gap:4px;padding:4px;margin-bottom:8px;border-radius:14px;
+  background:color-mix(in srgb,var(--surface-2) 85%,transparent);border:1px solid var(--av2-hair)}
+.page-tab{position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;min-height:36px;
+  padding:0 14px;border-radius:10px;border:1px solid transparent;background:transparent;color:var(--text-dim);
+  letter-spacing:.06em;line-height:1;box-shadow:none;transform:none;
+  transition:color .18s var(--av2-ease),background-color .18s var(--av2-ease),transform .18s var(--av2-ease)}
+.page-tab::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--surface);
+  border:1px solid var(--av2-hair);box-shadow:var(--av2-sh-1);opacity:0;transform:scale(.9);
+  transition:opacity .2s var(--av2-ease),transform .3s var(--av2-ease)}
+.page-tab:hover{background:color-mix(in srgb,var(--surface) 55%,transparent);color:var(--text);border-color:transparent}
+.page-tab:active{transform:scale(.97)}
+.page-tab.active,.page-tab.active:hover{background:transparent;color:var(--accent);border-color:transparent;box-shadow:none;transform:none}
+.page-tab.active::before{opacity:1;transform:none}
+.page-tab.active:active{transform:scale(.97)}
+@keyframes av2FromLeft{from{transform:translateX(-55%) scaleX(.85);opacity:.5}to{transform:none;opacity:1}}
+@keyframes av2FromRight{from{transform:translateX(55%) scaleX(.85);opacity:.5}to{transform:none;opacity:1}}
+.av2-js .page-tab.active.av2-from-left::before{animation:av2FromLeft .36s var(--av2-ease) both}
+.av2-js .page-tab.active.av2-from-right::before{animation:av2FromRight .36s var(--av2-ease) both}
+.pages-btn{min-height:36px;border-radius:999px;padding:0 14px;display:inline-flex;align-items:center;border-color:color-mix(in srgb,var(--accent) 45%,transparent)}
+.pages-btn:active{transform:scale(.97)}
+.pages-menu.open{border-radius:16px;border:1px solid var(--av2-hair);box-shadow:var(--av2-sh-2);
+  background:color-mix(in srgb,var(--surface) 92%,transparent);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px)}
+.pm-item{border-radius:8px;min-height:32px}
+
+/* ---- cards: one radius, layered soft shadow, hairline border, 1px lift only for a pointer ---- */
+.card{border-radius:16px;padding:24px;border:1px solid var(--av2-hair);box-shadow:var(--av2-sh-1);
+  transition:transform .22s var(--av2-ease),box-shadow .22s var(--av2-ease),border-color .22s var(--av2-ease)}
+.card:hover{box-shadow:var(--av2-sh-2);transform:none}
+@media (hover:hover) and (pointer:fine){.card:hover{transform:translateY(-1px)}}
+.stat{border-radius:16px;padding:14px 16px;border-color:var(--av2-hair);box-shadow:var(--av2-sh-1)}
+.stat-row{gap:16px;margin-top:24px}
+.callout{border-radius:0 12px 12px 0;padding:16px}
+.kanban-card,.exec-row,.tk-tile{border-radius:12px;border-color:var(--av2-hair)}
+.kanban-card{box-shadow:var(--av2-sh-1)}
+.grid{gap:16px}
+
+/* ---- tables: hairlines, no zebra, sticky header row inside the scroller ---- */
+.table-wrap{border-radius:12px;-webkit-overflow-scrolling:touch}
+table{font-size:13px}
+th{padding:10px 12px;font-size:10.5px;letter-spacing:.08em;border-bottom:1px solid var(--border);background:var(--surface)}
+.table-wrap thead th{position:sticky;top:0;z-index:1}
+td{padding:12px;border-bottom:1px solid var(--av2-hair);line-height:1.45}
+tbody tr:nth-child(even) td,tbody tr:nth-child(odd) td{background:transparent}
+tbody tr:last-child td{border-bottom-color:transparent}
+tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 40%,transparent)}
+
+/* ---- buttons: one primary accent, quiet secondary, pressed scale, focus rings ---- */
+button:not([class]),button.primary,button.secondary,.add-row-btn{border-radius:10px;min-height:36px;padding:8px 16px;font-size:13px;letter-spacing:-.003em;line-height:1.2}
+button:not([class]),button.secondary,.add-row-btn{background:color-mix(in srgb,var(--surface-2) 70%,var(--surface));border:1px solid var(--av2-hair);color:var(--text);
+  box-shadow:0 1px 0 color-mix(in srgb,var(--surface) 70%,transparent) inset,0 1px 2px color-mix(in srgb,var(--text) 6%,transparent)}
+button:not([class]):hover,button.secondary:hover,.add-row-btn:hover{background:var(--surface);border-color:color-mix(in srgb,var(--accent) 45%,transparent);color:var(--accent);box-shadow:var(--av2-sh-1)}
+button.primary{background:var(--accent);border-color:transparent;color:var(--on-accent);
+  box-shadow:0 1px 0 color-mix(in srgb,var(--on-accent) 18%,transparent) inset,0 2px 8px -3px color-mix(in srgb,var(--accent) 60%,transparent)}
+button.primary:hover{opacity:1;background:color-mix(in srgb,var(--accent) 88%,var(--text));color:var(--on-accent)}
+button{transition:background-color .16s var(--av2-ease),border-color .16s var(--av2-ease),color .16s var(--av2-ease),box-shadow .16s var(--av2-ease),transform .12s var(--av2-ease)}
+button:not(.ghost):active{transform:scale(.97)}
+button.ghost{border-radius:8px}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{
+  outline:2px solid var(--accent);outline-offset:2px;box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 20%,transparent)}
+
+/* ---- badges and pills as calm capsules ---- */
+.badge{border-radius:999px;padding:3px 9px;font-size:10px;letter-spacing:.05em;line-height:1.5;border:1px solid transparent;white-space:nowrap}
+.badge.gray{border-color:var(--av2-hair)}
+.pill{padding:5px 11px;min-height:28px;font-size:var(--av2-micro);border-color:var(--av2-hair);background:color-mix(in srgb,var(--surface) 80%,transparent)}
+.pill.on,.pill.warn{border-color:transparent}
+.tv-chip,.steve-interest-chip{border-color:var(--av2-hair)}
+input[type="text"],input[type="search"],input[type="number"],input[type="password"],select,textarea{border-radius:10px}
+
+/* ---- phone: 16px gutters, no sideways scroll, 44px targets ---- */
+@media (max-width:640px){
+  html{overflow-x:clip}
+  .wrap{padding-left:16px;padding-right:16px}
+  .deck-head-inner{padding:12px 16px}
+  .page-nav{padding:8px 16px 0}
+  .crumb{padding:0 16px 8px}
+  .pages-menu{left:16px;max-width:calc(100vw - 32px)}
+  .panel{margin-top:48px}
+  .panel-head{margin-bottom:16px}
+  .panel-title{font-size:26px}
+  .hero-greet{font-size:clamp(32px,9vw,40px)}
+  .card{padding:16px;border-radius:14px}
+  .stat{padding:12px 14px;border-radius:14px}
+  .stat-row{gap:12px}
+  .page-tabs{border-radius:999px}
+  .page-tab,.pages-btn,button:not([class]),button.primary,button.secondary,.add-row-btn,.pm-item{min-height:44px}
+  .page-tab{border-radius:999px}
+  td{padding:10px}
+}
+
+/* ---- preferences: reduced motion, reduced transparency, more contrast ---- */
+@media (prefers-reduced-motion:reduce){
+  .page-tab,.page-tab::before,.card,.pages-btn,button{transition:none!important;animation:none!important}
+  .card:hover,.page-tab:active,button:not(.ghost):active,.pages-btn:active{transform:none!important}
+}
+@media (prefers-reduced-transparency:reduce){
+  .deck-head,.pages-menu.open{background:var(--bg);-webkit-backdrop-filter:none;backdrop-filter:none}
+  .pages-menu.open{background:var(--surface)}
+}
+@media (prefers-contrast:more){:root{--av2-hair:var(--border);--av2-hair-2:var(--border)}}
+@media print{.deck-head{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--bg)}.card,.stat{box-shadow:none}}

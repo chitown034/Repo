@@ -1,0 +1,187 @@
+You take the weekly backup of Steven's dashboard ecosystem. You WRITE. Run it to completion; do not report a plan.
+
+Artifacts to back up (each has its own separate database):
+- Command Deck: https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d
+- ISA Portal:   https://claude.ai/code/artifact/4348b34d-afa0-4d2e-8214-29b1319cf041
+
+Use the ArtifactData tool. If it is not in your tool list, load it first with ToolSearch, query `select:ArtifactData`.
+
+WHY THIS EXISTS: the Mac-side weekly backup task has never run. It missed 2026-09-20 and every Sunday before it, so this ecosystem had no verified automated backup at all. This routine runs in the cloud and does not care whether a laptop is open.
+
+## 1. Export
+The Command Deck's state is about 1.3 MB in roughly 180 documents. That is far too big to carry through this conversation (the run that tried to failed on 2026-10-05), so the data moves through files and a helper script and never through your context. This is the only step where this routine may write files; the rule is in HARD RULES.
+
+Setup. STAGE is an absolute path to a new folder `backup-staging` in your working directory (`mkdir -p` it; never inside a git checkout, and never under ~/.claude, which asks for a permission nobody can give). If you cannot create it there, use the scratchpad directory your environment lists. Shell variables do not survive between Bash calls, so write the real paths and dates into every command. Read the clock once, `date -u +%F` for <TODAY> and `date -u +%Y-%m-%dT%H:%M:%SZ` for <NOW>, and use those two strings for the whole run. Save the helper script at the end of this prompt to <STAGE>/backup.py with the Write tool.
+
+For each artifact, `list` its `state` collection with `out_dir` = <STAGE>/cd (ISA Portal: <STAGE>/isa) and `query.limit` 1000, and follow `next_cursor` until there is none. Every document is saved as <out_dir>/state/<doc_id>.json and the result lists each one with its bytes and version. The number of files in that folder is the export count and the only source of docCount; never take a count from an example or from an earlier run. Do not reshape, prune or prettify anything.
+
+If `out_dir` is refused, or a call sits waiting on a permission prompt, or python3 is missing, the export has failed: go to step 5 as a failure and say which. Do not try to read the database inline; it will not fit.
+
+## 2. Store
+Write the backup of each artifact into the Command Deck's `backups` collection (one document; the Command Deck needs numbered parts, see below):
+- doc_id: `<YYYY-MM-DD>-commanddeck` and `<YYYY-MM-DD>-isaportal`, using today's UTC date.
+- shape: `{"v": {"takenAt": "<ISO-8601>", "source": "<artifact url>", "docCount": <int>, "docs": {"<docId>": <the v value>, ...}}}`
+  `takenAt` is <NOW>, the real clock. `docCount` is the whole artifact's count, repeated in every part. A document that carries top-level keys besides `v` keeps them in an additional `extra` map (`{"<docId>": {...}}`), so nothing is dropped.
+
+Build the documents with the script, then write them:
+- `python3 <STAGE>/backup.py build commanddeck https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d <TODAY> <NOW> <STAGE>/cd/state <STAGE>/out-cd`
+- `python3 <STAGE>/backup.py build isaportal https://claude.ai/code/artifact/4348b34d-afa0-4d2e-8214-29b1319cf041 <TODAY> <NOW> <STAGE>/isa/state <STAGE>/out-isa`
+Each prints one line of JSON (docCount, parts, and every file with its doc_id and bytes). `"ok": false` means the run has failed; say what it printed. A document holds at most 256 KiB, so the Command Deck comes out as numbered parts (about six today) and the ISA Portal as one document.
+Then `list` the `backups` collection with `out_dir` = <STAGE>/before (`query.limit` 1000): the result gives the version of every document already there. For each file the script wrote, `set` it into `backups` with `doc_id` = the file name without `.json` and `file_path` = that file. A document that does not exist yet is created without `if_version`; one that already exists (an earlier attempt today) is replaced with `if_version` = its version from your latest listing. If a write is refused for size, rebuild that artifact with a smaller last argument (for example 120000) and write all its parts again. If `file_path` is refused, the run has failed.
+
+If a document is too large to write in one call, split it into numbered parts
+(`<date>-commanddeck-p1`, `-p2`, ...) and record `parts: <n>` and `partIndex` in
+each. Never silently drop a document to make it fit; a partial backup that
+claims to be whole is worse than a failed one. If a previous run today left more
+parts than this run needs, delete the leftover parts (pinned with the version from your latest listing) so no stale part survives.
+
+## 3. Verify — this is the part that matters
+Read each backup document you just wrote straight back: `list` the `backups` collection again with `out_dir` = <STAGE>/after (`query.limit` 1000), and `list` the Command Deck `state` collection once more with `out_dir` = <STAGE>/cd2 (`query.limit` 1000). Then run `python3 <STAGE>/backup.py verify commanddeck <TODAY> <STAGE>/cd/state <STAGE>/after/backups <STAGE>/cd2/state` and `python3 <STAGE>/backup.py verify isaportal <TODAY> <STAGE>/isa/state <STAGE>/after/backups`. Between them they confirm, from what the database now holds:
+- `docCount` equals the number of documents you actually exported, and
+- every document id you exported is present as a key in `docs`, and
+- at least three documents you pick at random have byte-identical values to the live ones.
+
+The script also compares every stored document with its export and flags a stale or leftover part. `"ok": true` from both runs is a pass; otherwise the failure is the `problems` list it printed.
+
+If any check fails, retry the whole backup ONCE (first delete <STAGE>/cd, cd2, isa, out-cd and out-isa so no file from the first attempt survives, and pin the rewrites with the versions from the `after` listing). If the retry also fails, the run has failed — say so plainly and do not write an "ok" log row.
+
+## 4. Retention — 8 weeks rolling
+Only when step 3 passed: a failed run deletes nothing, so the last good backup survives any streak of failures. Use the `after` listing from step 3 (never an inline `list`: it would pour every old backup into your context). Delete every document whose date prefix is more
+than 56 days older than today (the first ten characters of its id sort before `date -u -d '56 days ago' +%F`), pinning each delete with that document's version. Never delete this week's, and never delete more
+than 3 dates in one run; if more than 3 are due, delete the 3 oldest and say so. `weeksKept` is the number of distinct dates left in `backups` afterwards.
+
+## 5. Log every run, pass or fail — MIND THE SHAPE
+Append ONE entry to the Command Deck `ciLog` (collection `state`, shape `{"v": [...]}`, newest last, cap the array at 400 by dropping from the front).
+
+Every entry in that array MUST be exactly `{"date": "YYYY-MM-DD", "text": "<one paragraph>"}` and nothing else. The dashboard renders this log with `new Date(r.date + "T00:00:00")` and prints `r.text` directly, so an entry shaped any other way renders on Steven's screen as the literal words "Invalid Date undefined". Do not invent `ts`, `task`, `status` or `detail` fields. Put the task name and the outcome in the text, for example (every number here is a placeholder: use the counts you measured, and on a failure say what failed and the live counts you did get):
+
+`{"date": "<TODAY>", "text": "weekly-ecosystem-backup — ok. Command Deck: <n>/<n> state docs backed up across <p> parts; ISA Portal: <m>/<m>. Verified doc count, full id coverage and 3 random docs byte-identical to live. Pruned nothing (nothing older than 56 days)."}`
+
+Read `ciLog` first and pin the write with its `if_version`. Before you write, look at the entries already there and match their shape exactly.
+
+Then write `backupStatus` (collection `state`, Command Deck), shape
+`{"v": {"lastBackup": "<YYYY-MM-DD>", "verified": <bool>, "weeksKept": <int>, "docCount": {"commandDeck": <int>, "isaPortal": <int>}, "liveDocCount": {"commandDeck": <int|null>, "isaPortal": <int|null>}, "status": "GREEN" | "AMBER" | "RED", "note": "<one sentence>", "consecutiveFailures": <int>}}`.
+Read it first and pin with `if_version`.
+- `lastBackup`, `docCount` and `weeksKept` describe the newest backup that passed step 3. On success they are this run's (docCount = the documents you exported and verified). On a failure leave them exactly as you read them: they still describe the old backup. `liveDocCount` is what this run counted in the live databases (null for one it could not count); never a number from an example or from an earlier run. `verified` is true only if this run's step 3 passed. `status`: GREEN = passed first time; AMBER = passed only on the retry, or something non-fatal went wrong (for example the prune was capped); RED = this run failed.
+- `consecutiveFailures`: 0 on success. On a failure run `python3 <STAGE>/backup.py streak <the lastBackup you read> <TODAY> <the consecutiveFailures you read>` and write what it prints: it counts this failed run and also every Sunday since the last good backup on which no run happened at all (a run stopped by the usage limit never starts, so it never increments anything itself). If you cannot run it, count those Sundays yourself.
+
+## 6. Escalate after two consecutive failures
+If `consecutiveFailures` is 2 or more and `isaLine` holds no message whose id starts `bk-` that is newer than `lastBackup` (one message per streak), append a message to the Command Deck
+`isaLine` document (shape `{"v": [...]}`, append-only, newest last) with
+`{"id": "bk-<timestamp base36>", "ts": "<ISO-8601>", "origin": "cd", "from": "team", "to": "steven", "priority": "urgent", "text": "Weekly ecosystem backup has failed <consecutiveFailures> times in a row (last good backup <lastBackup>). <what failed>. There is no current verified backup."}`
+Read `isaLine` first, pin with `if_version`, and never rewrite an existing message. Note that `isaLine` genuinely uses `ts`, unlike `ciLog` — match each document's own existing shape rather than assuming one convention across the store.
+
+## 7. Clean up
+Whatever happened, delete what you staged: `rm -rf` <STAGE>/cd, <STAGE>/cd2, <STAGE>/isa, <STAGE>/out-cd, <STAGE>/out-isa, <STAGE>/before, <STAGE>/after and <STAGE>/backup.py.
+
+## HELPER SCRIPT — save it unchanged as <STAGE>/backup.py (Python 3, standard library only)
+```
+#!/usr/bin/env python3
+# build  <name> <url> <date> <takenAt> <exportdir> <outdir> [target]    verify <name> <date> <exportdir> <readbackdir> [<live2dir>]    streak <lastBackup|none> <today> <previous>
+import json, os, random, shutil, sys
+from datetime import date as D, timedelta
+
+HARD = 255000            # store limit is 256 KiB per document; stay under it
+def ser(o): return json.dumps(o, ensure_ascii=True, separators=(",", ":"))
+def canon(o): return json.dumps(o, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+def ids_in(d): return sorted(f[:-5] for f in os.listdir(d) if f.endswith(".json"))
+def load(p):
+    with open(p, encoding="utf-8") as f: return json.load(f)
+def die(msg):
+    print(json.dumps({"ok": False, "error": msg})); sys.exit(1)
+
+def build(name, url, day, taken, exp, out, target=200000):
+    ids = ids_in(exp)
+    if not ids: die("export folder holds no documents")
+    docs, extra = {}, {}
+    for i in ids:
+        b = load(os.path.join(exp, i + ".json"))
+        docs[i] = b.get("v") if isinstance(b, dict) else b
+        rest = {k: x for k, x in b.items() if k != "v"} if isinstance(b, dict) else {}
+        if rest: extra[i] = rest
+    size = {i: len(ser(docs[i])) + len(ser(i)) + 8 for i in ids}
+    bins = []                                   # first-fit decreasing; a document too big for a bin gets its own
+    for i in sorted(ids, key=lambda k: -size[k]):
+        for b in bins:
+            if b["n"] + size[i] <= target: b["ids"].append(i); b["n"] += size[i]; break
+        else: bins.append({"ids": [i], "n": size[i]})
+    n = len(bins)
+    shutil.rmtree(out, ignore_errors=True); os.makedirs(out)
+    files = []
+    for k, b in enumerate(bins, 1):
+        v = {"takenAt": taken, "source": url, "docCount": len(ids), "docs": {i: docs[i] for i in sorted(b["ids"])}}
+        if n > 1: v["parts"] = n; v["partIndex"] = k
+        ex = {i: extra[i] for i in b["ids"] if i in extra}
+        if ex: v["extra"] = ex
+        body = {"v": v}; s = ser(body)
+        if len(s) > HARD: die("part %d is %d bytes, over the single-document limit (largest member: %s)" % (k, len(s), max(b["ids"], key=lambda q: size[q])))
+        did = "%s-%s" % (day, name) + ("-p%d" % k if n > 1 else "")
+        with open(os.path.join(out, did + ".json"), "w") as f: f.write(s)
+        files.append({"doc_id": did, "bytes": len(s), "docs": len(b["ids"])})
+    print(json.dumps({"ok": True, "name": name, "docCount": len(ids), "parts": n, "totalBytes": sum(x["bytes"] for x in files), "files": files}))
+
+def verify(name, day, exp, rb, live2=None):
+    ids = ids_in(exp); problems = []
+    stem = "%s-%s" % (day, name)
+    mine = sorted(f[:-5] for f in os.listdir(rb) if f.endswith(".json") and (f[:-5] == stem or f[:-5].startswith(stem + "-p")))
+    single = stem in mine; parted = [m for m in mine if m != stem]
+    if single and parted: problems.append("both %s and numbered parts exist: a stale one survived" % stem)
+    want = [stem] if single and not parted else sorted(parted, key=lambda m: int(m.rsplit("-p", 1)[1]))
+    if not want: die("no stored backup document found for " + stem)
+    n = len(want); got, got_extra = {}, {}
+    for k, m in enumerate(want, 1):
+        v = load(os.path.join(rb, m + ".json")).get("v", {})
+        if v.get("docCount") != len(ids): problems.append("%s docCount %s != exported %d" % (m, v.get("docCount"), len(ids)))
+        if n > 1 and (v.get("parts") != n or v.get("partIndex") != k): problems.append("%s parts/partIndex wrong (%s/%s, expected %d/%d)" % (m, v.get("parts"), v.get("partIndex"), n, k))
+        for i, x in (v.get("docs") or {}).items():
+            if i in got: problems.append("document %s appears in two parts" % i)
+            got[i] = x
+        got_extra.update(v.get("extra") or {})
+    for i in sorted(set(ids) - set(got)): problems.append("exported document missing from the backup: " + i)
+    for i in sorted(set(got) - set(ids)): problems.append("backup holds a document that was not exported: " + i)
+    differ = []
+    for i in ids:
+        if i not in got: continue
+        b = load(os.path.join(exp, i + ".json"))
+        ev = b.get("v") if isinstance(b, dict) else b
+        er = {k: x for k, x in b.items() if k != "v"} if isinstance(b, dict) else {}
+        if canon(ev) != canon(got[i]) or canon(er) != canon(got_extra.get(i, {})): differ.append(i)
+    for i in differ: problems.append("stored copy differs from the export: " + i)
+    checked, live_count = [], None
+    if live2:
+        live_ids = ids_in(live2); live_count = len(live_ids)
+        pool = [i for i in ids if i in got and i in live_ids]
+        for i in random.sample(pool, min(3, len(pool))):
+            lv = load(os.path.join(live2, i + ".json")).get("v")
+            ok = canon(lv) == canon(got[i]); checked.append({"doc": i, "identical_to_live": ok})
+            if not ok: problems.append("stored copy differs from the live document: " + i)
+        if len(checked) < 3: problems.append("could not check 3 random documents against live")
+    print(json.dumps({"ok": not problems, "docCount": len(ids), "parts": n, "storedIds": len(got), "liveCountNow": live_count, "randomLiveChecks": checked, "problems": problems}))
+    sys.exit(0 if not problems else 1)
+
+def streak(last, today, prev):
+    prev = int(prev); t = D.fromisoformat(today)
+    try: l = D.fromisoformat(last)
+    except Exception: print(prev + 1); return
+    missed, d = 0, l + timedelta(days=1)
+    while d < t:
+        if d.weekday() == 6: missed += 1        # Sundays after lastBackup and before today
+        d += timedelta(days=1)
+    print(max(prev + 1, missed + 1))
+
+if __name__ == "__main__":
+    c, a = sys.argv[1], sys.argv[2:]
+    if c == "build": build(*a[:6], target=int(a[6]) if len(a) > 6 else 200000)
+    elif c == "verify": verify(*a)
+    elif c == "streak": streak(*a)
+    else: die("unknown command")
+```
+
+HARD RULES
+- Never write a document you did not read first, and pin every write with `if_version` (a document you are creating has nothing to read or pin).
+- Before writing to ANY existing document, read it and match the shape of what is already in it. A document written in a shape the page does not expect is not a small mistake: it renders as garbage or vanishes silently.
+- This data includes client names and loan amounts. It stays inside these artifact databases and the staging folder of step 1, which exists only to move the bytes between the two and is emptied in step 7. Never write it anywhere else: not a repository, not a folder outside STAGE, not a message, not any external service.
+- Never report a backup as verified unless step 3 actually passed.
+
+End with a JSON final message:
+{"commandDeckDocs": <int>, "isaPortalDocs": <int>, "verified": <bool>, "prunedDates": [...], "weeksKept": <int>, "status": "ok"|"failed", "consecutiveFailures": <int>, "errors": [...]}

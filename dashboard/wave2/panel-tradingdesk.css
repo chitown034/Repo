@@ -1,0 +1,17 @@
+/* ---- Trading Research Desk ---- */
+.td-stage { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; background: radial-gradient(circle at 20% 0%, var(--accent-soft), transparent 55%), var(--surface-2); padding: 6px; }
+.td-svg { width: 100%; min-width: 640px; height: auto; display: block; color: var(--text-faint); }
+.td-edge { fill: none; stroke: currentColor; stroke-width: 2; stroke-dasharray: 6 7; animation: tdFlow 1.6s linear infinite; }
+@keyframes tdFlow { to { stroke-dashoffset: -26; } }
+.td-node { cursor: pointer; outline: none; }
+.td-node rect { fill: var(--surface); stroke: var(--border); stroke-width: 1.5; transition: stroke 0.2s ease, filter 0.25s ease, transform 0.3s var(--w2-spring, ease); transform-box: fill-box; transform-origin: center; }
+.td-node:hover rect, .td-node:focus-visible rect { stroke: var(--accent); filter: drop-shadow(0 8px 14px rgba(0,0,0,0.16)); transform: translateY(-3px); }
+.td-node.is-on rect { stroke-width: 3; }
+.td-accent rect { stroke: var(--accent); } .td-gold rect { stroke: var(--gold); } .td-positive rect { stroke: var(--positive); } .td-negative rect { stroke: var(--negative); }
+.td-t1 { font-family: var(--font-display); font-weight: 700; font-size: 17px; text-transform: uppercase; fill: var(--text); letter-spacing: 0.01em; }
+.td-t2 { font-family: var(--font-mono); font-size: 10px; fill: var(--text-dim); }
+.td-token { fill: var(--gold); stroke: var(--surface); stroke-width: 3; transition: cx 0.9s var(--w2-ease, ease), cy 0.9s var(--w2-ease, ease); filter: drop-shadow(0 0 8px var(--gold)); }
+.td-detail { margin-top: 14px; } .td-dh { font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+.td-story { margin-top: 8px; padding: 8px 10px; border-left: 3px solid var(--gold); background: var(--accent-soft); border-radius: 0 8px 8px 0; font-size: 12.5px; animation: w2PanelIn 0.4s var(--w2-ease, ease) both; }
+.td-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+@media (prefers-reduced-motion: reduce) { .td-edge, .td-story { animation: none !important; } .td-token { transition: none; } }

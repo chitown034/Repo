@@ -1,0 +1,52 @@
+{
+  "_synthetic": "All values invented for tests. No real listing, lender quote, community, price, date or client. Not a claim about any real page.",
+  "url": "https://www.richmondamerican.com/",
+  "tree": {
+    "name": "/",
+    "role": "document",
+    "children": [
+      {
+        "name": "main",
+        "role": "main",
+        "children": [
+          {
+            "name": "heading_1",
+            "role": "heading",
+            "text": "Richmond American Homes"
+          },
+          {
+            "name": "text_1",
+            "role": "text",
+            "text": "Homes from $598,990"
+          },
+          {
+            "name": "text_2",
+            "role": "text",
+            "text": "Financing as low as 5.25% with 5.90% APR available through HomeAmerican Mortgage."
+          },
+          {
+            "name": "text_3",
+            "role": "text",
+            "text": "Offer ends 12/15/26."
+          },
+          {
+            "name": "paragraph_1",
+            "role": "paragraph",
+            "text": "Richmond American builds across multiple Southern California communities including Sommers Bend."
+          }
+        ]
+      }
+    ]
+  },
+  "expect": {
+    "kind": "record",
+    "auth_state": "not_required",
+    "record": {
+      "headline": "Richmond American Homes",
+      "priceFrom": "598,990",
+      "rate_terms": "5.90% APR available through HomeAmerican Mortgage.",
+      "expires": "HomeAmerican Mortgag",
+      "description": "Richmond American builds across multiple Southern California communities including Sommers Bend."
+    }
+  }
+}

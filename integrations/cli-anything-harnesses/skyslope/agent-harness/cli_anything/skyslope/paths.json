@@ -1,0 +1,45 @@
+{
+  "target": "SkySlope",
+  "verified": false,
+  "verified_note": "UNVERIFIED. Written 2026-09-22 without access to SkySlope (egress-blocked from the build sandbox). Every url, list_path, read_path and login marker is a best-effort guess. On the first live run: `cli-anything-skyslope discover --url https://app.skyslope.com/` and correct this file, then `paths validate`.",
+  "allowed_url_prefixes": ["https://app.skyslope.com/"],
+  "login_markers": ["Sign In", "Log In", "Forgot Password"],
+  "recipes": {
+    "transactions": {
+      "url": "https://app.skyslope.com/transactions",
+      "list_path": "/main",
+      "read_path": null,
+      "grep": null,
+      "auth_check_path": "/",
+      "verified": false,
+      "note": "One row per entry under the main landmark of the transactions list. Expect to narrow list_path to the table or list node after discover."
+    },
+    "transaction-detail": {
+      "url": "https://app.skyslope.com/transactions/{id}",
+      "list_path": "/main",
+      "read_path": "/main",
+      "grep": null,
+      "auth_check_path": "/",
+      "verified": false,
+      "note": "Summary page of one transaction: rows are the child nodes, text is the main landmark read in full."
+    },
+    "document-index": {
+      "url": "https://app.skyslope.com/transactions/{id}/documents",
+      "list_path": "/main",
+      "read_path": null,
+      "grep": null,
+      "auth_check_path": "/",
+      "verified": false,
+      "note": "Document NAMES only. This harness has no download verb; a download would land client PII on disk."
+    },
+    "checklist-status": {
+      "url": "https://app.skyslope.com/transactions/{id}/checklist",
+      "list_path": "/main",
+      "read_path": null,
+      "grep": "Incomplete",
+      "auth_check_path": "/",
+      "verified": false,
+      "note": "Rows are checklist items; matches are the ones DOMShell grep finds for the pattern (default 'Incomplete'). Tune the pattern to the real wording after discover."
+    }
+  }
+}

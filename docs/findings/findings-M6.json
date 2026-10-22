@@ -1,0 +1,146 @@
+[
+  {
+    "id": "F-M6-01",
+    "severity": "P1",
+    "area": "health-notion-sync / status doc naming",
+    "finding": "Both the Mac task spec and the apple-health-notion skill told the task to write a status doc named `appleHealthSync`. That document does not exist in the Command Deck DB, and it is not what the deck card reads. The live card `#healthNotionCard` / `renderHealthNotionStatus()` reads `healthNotionSync`. As written, the task would have created an orphan document every run while the card stayed frozen on its creation-time values forever.",
+    "evidence": "ArtifactData get state/appleHealthSync on artifact 1624daae-d683-405a-971d-c5828dce0f8d -> 'No document \"appleHealthSync\" in collection \"state\"'. ArtifactData get state/healthNotionSync -> exists, version 1, status 'awaiting-first-phone-run'.",
+    "fix": "Renamed the status doc to `healthNotionSync` in integrations/mac-task-specs.md §3 and in .claude/skills/apple-health-notion/SKILL.md, with the exact field list (rows, lastRowDate, lastSyncAt, status) the card renders. Zero references to `appleHealthSync` remain in the repo.",
+    "halt": false
+  },
+  {
+    "id": "F-M6-02",
+    "severity": "P1",
+    "area": "Notion Health Log schema / row key",
+    "finding": "The spec's property table named `Date` as the row key and did not list the `Day` property at all. The real database has both: `Day` is the Title property carrying `YYYY-MM-DD` and described in Notion as 'the row key'; `Date` is a separate Date property described as 'the calendar day this row covers'. A sync keyed on `Date` alone, or a phone-side write that leaves `Day` blank, produces rows with empty titles. The real database wins.",
+    "evidence": "notion-fetch bc71c45aac934a4f8aeddc54345136ef -> schema shows {\"Day\":{\"description\":\"YYYY-MM-DD, the row key\",\"type\":\"title\"}} and {\"Date\":{\"description\":\"the calendar day this row covers\",\"type\":\"date\"}}.",
+    "fix": "Added `Day` (Title, the row key) as the first row of the property table in both integrations/apple-health-dashboard.md and the skill, with `Date` documented as the sort/filter copy and the stated fallback if a title is blank. Stage A now says rows are keyed on the `Day` title.",
+    "halt": false
+  },
+  {
+    "id": "F-M6-03",
+    "severity": "P2",
+    "area": "Notion Health Log schema / missing property",
+    "finding": "The spec's table omitted the `Notes` rich-text property, which exists in the real database ('anything the phone flagged'). With `Day` and `Notes` both missing, the spec's table could not reconcile with the 23-property count that `healthNotionSync.properties` records — it listed 21 property slots.",
+    "evidence": "notion-fetch schema includes {\"Notes\":{\"description\":\"anything the phone flagged\",\"type\":\"text\"}}; full schema enumerates exactly 23 properties.",
+    "fix": "Added `Notes` to the property table in both files, explicitly marked not-mapped / never-parsed / never-analysed, so it cannot become a back door for medical interpretation. The table now lists all 23.",
+    "halt": false
+  },
+  {
+    "id": "F-M6-04",
+    "severity": "P3",
+    "area": "Notion Health Log schema / Source options",
+    "finding": "The spec described the `Source` select as having a single option `claude-ios`. The real select carries three: `claude-ios`, `health-auto-export`, `manual`. Minor, but a sync that filters rows on Source would have dropped the other two silently. Also: the spec printed the VO2 Max unit as 'mL/min·kg' where the database says 'mL/min/kg'.",
+    "evidence": "notion-fetch schema -> Source.options = [claude-ios (blue), health-auto-export (gray), manual (yellow)]; \"VO2 Max\".description = 'mL/min/kg, latest reading'.",
+    "fix": "Both corrected to match the real database in integrations/apple-health-dashboard.md and the skill. The sync does not filter on Source; it is recorded as provenance only.",
+    "halt": false
+  },
+  {
+    "id": "F-M6-05",
+    "severity": "P1",
+    "area": "appleHealth merge / undocumented keys",
+    "finding": "The live `appleHealth` document carries three top-level keys that neither the spec nor the skill documented: `dailyDays` (integer), `records` (object) and `sources` (array of {metric, source, n, first_at, last_at}). A writer that emits only the documented key set (metrics, daily, sleep, workouts, meta, syncedAt, via, read) with `write_db` set deletes all three on the first successful run, and nothing in the old spec would have caught it.",
+    "evidence": "ArtifactData get state/appleHealth (version 11) -> top-level keys under `v`: daily, dailyDays, meta, metrics, read, records, sleep, sources, syncedAt, via, workouts.",
+    "fix": "Documented all three in the spec's shapes list and in the skill's merge step: carry `records` forward untouched, append to `sources` rather than replacing it, and recompute `dailyDays` from the merged `daily`. Both appear in the §3 wrapper example so the writer cannot miss them.",
+    "halt": false
+  },
+  {
+    "id": "F-M6-06",
+    "severity": "P1",
+    "area": "appleHealth merge / daemon-only metric keys",
+    "finding": "The merge rule protected `daily` days, `sleep` nights and `workouts`, but not the metric keys themselves. Five of the eleven metric keys in the live doc can never be supplied by the Notion Health Log: headphone_audio_exposure, walking_asymmetry_percentage, walking_double_support_percentage, walking_speed, walking_step_length. Rebuilding `metrics` from Notion rows alone erases those five tiles permanently, with no way to recover them while the daemon is down.",
+    "evidence": "Live appleHealth metric keys (11): blood_oxygen_saturation, body_temperature, flights_climbed, headphone_audio_exposure, heart_rate_variability, step_count, walking_asymmetry_percentage, walking_double_support_percentage, walking_running_distance, walking_speed, walking_step_length. The Notion mapping supplies 12 keys, none of which are the five listed.",
+    "fix": "The merge rule in both files now names those five keys explicitly as must-survive, alongside the per-day / per-night / per-workout rules, and the §3 prompt repeats them inline so the runner sees them without opening the spec.",
+    "halt": false
+  },
+  {
+    "id": "F-M6-07",
+    "severity": "P2",
+    "area": "appleHealth merge / timestamp formats",
+    "finding": "The merge tie-break is 'the newer latest_at wins', but the doc's timestamps are not ISO: `latest_at`, `workouts[].start` and `workouts[].start_local` are 'YYYY-MM-DD HH:MM:SS' (space, no T, no Z), `earliest` is a bare date, `meta.last_received` carries microseconds, and only `syncedAt` is ISO-with-Z. A writer that emitted ISO `latest_at` values and compared raw strings would get the tie-break silently wrong once the two formats mixed.",
+    "evidence": "Live doc samples: latest_at '2026-09-10 16:10:00', earliest '2026-09-06', workouts[0].start '2026-08-30 20:24:15', meta.last_received '2026-09-13 14:30:40.789561', syncedAt '2026-09-13T23:15:59Z'.",
+    "fix": "Documented the exact per-field formats in both files with an explicit 'do not fix these into ISO' note, and changed the tie-break wording to compare latest_at as a parsed timestamp rather than as a string.",
+    "halt": false
+  },
+  {
+    "id": "F-M6-08",
+    "severity": "P3",
+    "area": "appleHealth / history range stated imprecisely",
+    "finding": "Both files described the history to be preserved as 'the Sep 6-13 daemon history'. The `daily` buckets actually run 2026-09-06 through 2026-09-12 (7 days); 2026-09-13 is the value of `meta.last_received`, not a day with daily buckets. An acceptance check written against 'Sep 6-13' would look for a day that was never there and could be read as a failed merge.",
+    "evidence": "Union of day keys across all `daily` metrics: 2026-09-06 .. 2026-09-12 (7 days); dailyDays = 7; meta.last_received = '2026-09-13 14:30:40.789561'.",
+    "fix": "Both files now say `daily` days 2026-09-06 -> 2026-09-12, with meta.last_received 2026-09-13 called out separately. The §3 acceptance check tests for the Sep 6-12 days specifically.",
+    "halt": false
+  },
+  {
+    "id": "F-M6-09",
+    "severity": "P2",
+    "area": "healthNotionSync / status vocabulary",
+    "finding": "The skill allowed four status values (ok, stale, not-configured, error). The deck card renders six: ok, stale, not-configured, error, awaiting-first-phone-run, not-created. The two missing values are exactly the two states the system is in or can reach today — the database exists but is empty (awaiting-first-phone-run, the current state) and the database having been deleted (not-created). Writing an out-of-set string yields an unrendered card.",
+    "evidence": "Live healthNotionSync doc carries status 'awaiting-first-phone-run', a value the skill's own enum did not permit.",
+    "fix": "Both files now carry the exact six-value set with a line for when each applies, and the skill's self-test asserts every status written is one of the six.",
+    "halt": false
+  },
+  {
+    "id": "F-M6-10",
+    "severity": "P2",
+    "area": "health-notion-sync / tool allow-list",
+    "finding": "The task's tool allow-list named three Notion read verbs but did not exclude the write verbs, and 'read-only' appeared only in prose. A runner with the Notion connector attached has the write verbs available unless the allow-list denies them; an error-recovery path could have created or edited pages in Steven's workspace.",
+    "evidence": "integrations/mac-task-specs.md §3 before this change: 'Tools | Notion connector (notion-query-data-sources, notion-fetch, notion-search) ...' with no exclusion clause.",
+    "fix": "§3 now names notion-create-pages, notion-update-page, notion-create-database, notion-update-data-source and notion-create-comment as explicitly not allow-listed, adds 'no Bash' to the deny list, scopes Artifact write_db to the three named docs, and the prompt itself restates that Notion is read-only. The skill separates Stage A (phone, writes) from Stage B (Mac task, read-only).",
+    "halt": false
+  },
+  {
+    "id": "F-M6-11",
+    "severity": "P3",
+    "area": "health-notion-sync / freshness watch",
+    "finding": "No OUTPUT_WATCH row existed for this task, so a silently dead sync would not have been flagged. The obvious threshold to copy from the neighbouring tasks (14 h) is exactly the task's own widest inter-run gap (07:45 -> 21:45 = 14 h), which would flap on every evening run.",
+    "evidence": "Registration checklist item 2 listed watch rows for loftyLeads and zohoSync only. Cron 45 7,21 * * * gives gaps of 14 h and 10 h.",
+    "fix": "Added {doc:'healthNotionSync', label:'Apple Health via Notion', task:'health-notion-sync', hrs:16} to §3 and to the registration checklist, with the 14 h / 16 h arithmetic shown so the next editor does not 'tidy' it back to 14.",
+    "halt": false
+  },
+  {
+    "id": "F-M6-12",
+    "severity": "P3",
+    "area": "deck / 'via' badge label",
+    "finding": "The spec's 'one known display nit' paragraph claimed notion-health-log would render as 'via Claude session' until someone added the label. The label has since been added, so the paragraph was stale documentation asserting a live defect that no longer exists.",
+    "evidence": "Engagement brief records the via badge now labelling notion-health-log and scheduled-sync properly; the deck HTML is a published artifact, not a file in this repo, and was not edited by me.",
+    "fix": "Paragraph rewritten to record that the labels were added on 2026-09-22 and that both values now render as themselves, keeping the standing rule that the doc key is not to be renamed to game the badge, and noting that any future `via` value needs its own label or falls back to 'Claude session'.",
+    "halt": false
+  },
+  {
+    "id": "F-M6-13",
+    "severity": "P3",
+    "area": "Command Deck DB / stravaSnapshot wrapper",
+    "finding": "Checked the reported bare-value bug in stravaSnapshot. As the document stands now it is correctly wrapped: top level is `v`, and `v` is an object with keys activities / syncedAt / via. The bug is not present in the current version; no repair is needed. The wrapper rule is still worth stating explicitly in the spec, which is now done.",
+    "evidence": "ArtifactData get state/stravaSnapshot (version 9) -> top-level keys ['v'], type of v = dict.",
+    "fix": "No change to the document (I make no DB writes). The `{v: ...}` wrapper is now stated explicitly, with a worked example, in both integrations/mac-task-specs.md §3 and the skill, citing the stravaSnapshot bare-value bug as the reason.",
+    "halt": false
+  },
+  {
+    "id": "F-M6-14",
+    "severity": "P2",
+    "area": "health-notion-sync / empty-read behaviour",
+    "finding": "The old spec branched only on connector failure vs success, so an empty Health Log (zero rows — the actual state today) fell through into the build-and-write path with no rows behind it. Nothing said what to write when Notion succeeds but has nothing to give, and nothing forbade re-stamping appleHealth with a copy of itself, which would refresh syncedAt and make stale data look current.",
+    "evidence": "Read-only rows query on data source af1ceecf-fd60-4d95-b0e9-61fa0f49c9c4 -> {\"results\":[],\"has_more\":false}. healthNotionSync.rows = 0.",
+    "fix": "Added an explicit zero-rows branch (status awaiting-first-phone-run, rows 0, lastRowDate null, stop, appleHealth untouched, empty is not an error) and a standing rule in both files: if Notion supplied no row the doc does not already have, write nothing to appleHealth — not even a re-stamped copy; only healthNotionSync moves. A day with no row is a gap, never backfilled, never carried forward, never stamped.",
+    "halt": false
+  },
+  {
+    "id": "F-M6-15",
+    "severity": "P2",
+    "area": "HALT / scope of this engagement",
+    "finding": "Three things this chain needs are outside what I may do, and none of them were done: the Mac task health-notion-sync is not created, scheduled or enabled; no document in the Command Deck DB was written or modified; and the first phone run needs Steven to grant the Apple Health read and Notion write permissions on his iPhone, which is an account/permission change. Until all three happen the deck must not describe Apple Health data as live.",
+    "evidence": "Engagement constraints: no routine create/update/fire/delete, no artifact DB writes, HALT on credential or account changes. My DB access this session was read-only (get on appleHealth, healthNotionSync, stravaSnapshot, appleHealthSync, healthSyncLog); my Notion access was read-only (fetch + rows query).",
+    "fix": "Everything is delivered as written spec plus skill, ready to install. The deck's honest line until the first run exists is 'Health Log created and empty — awaiting Steven's first phone run'. Registration steps and the prove-it run are in integrations/mac-task-specs.md §3 and the registration checklist.",
+    "halt": true
+  },
+  {
+    "id": "F-M6-16",
+    "severity": "P2",
+    "area": "documentation honesty / what is live",
+    "finding": "The spec's header said 'spec written, first phone run pending. Nothing below is live yet.' That is now wrong in both directions: the Notion database and the deck card are real, while the sync and the data are not. A single blanket sentence gave a reader no way to tell which half they were looking at.",
+    "evidence": "Verified live: database bc71c45aac934a4f8aeddc54345136ef with 23 properties and 0 rows; healthNotionSync doc at version 1. Verified not live: no health-notion-sync task, and appleHealth still at via 'scheduled-sync' / read 'daemon' with meta.last_received 2026-09-13.",
+    "fix": "Replaced the header with a seven-row 'What is live, precisely' table stating the state of each piece, closing on 'The database and the card are real; the sync and the data are not.' The 'Source, honestly' section was left byte-identical, including the statement that the Redfield article was never read.",
+    "halt": false
+  }
+]

@@ -1,0 +1,128 @@
+[
+  {
+    "id": "F-L3-01",
+    "severity": "P1",
+    "area": "Standing rules / prose",
+    "finding": "The brain carried a standing rule telling every surface to label legacy CRM numbers as having come from the retired vendor \"until 2026-09-22\" and to keep a collapsed history block on the deck. Steven's instruction of 2026-09-22 — remove the old CRM from everything and replace it with Lofty — overrides that rule.",
+    "evidence": "wiki/dashboard-ops/index.md:37-38; context/decisions.md:12-16; .claude/skills/lofty-crm-sync/SKILL.md:80-81,98-99; .claude/skills/vanessa-orchestrator/SKILL.md:104; routines/parallel-csuite-task-cycle.md:65; integrations/CONNECTIONS.md:23.",
+    "fix": "Rule removed in all five places and replaced with: Lofty is the real-estate system of record since 2026-09-22 and is not connected yet; surfaces show \"not connected yet\", never another system's figure under a Lofty label. No number was relabelled.",
+    "halt": false
+  },
+  {
+    "id": "F-L3-02",
+    "severity": "P2",
+    "area": "Identifier — Mac skill folder",
+    "finding": "`fub-followups` is the real folder name of a skill installed on Steven's Mac (a 393-template client follow-up library). The skills-refresh skill matches it on disk by that exact name, so renaming it in the repo would make the weekly skills audit report a false missing-skill.",
+    "evidence": "projects/ai-team.md:34; docs/inventory/mac-task-descriptions.md:127; .claude/skills/skills-refresh/SKILL.md:50; .claude/skills/lofty-crm-sync/SKILL.md:93.",
+    "fix": "Identifier kept in all four places; every descriptive clause around it rewritten to drop the vendor name and to say it needs porting to Lofty. Renaming the folder is a Mac-side action only Steven can take; the repo should be updated in the same pass if he does.",
+    "halt": true
+  },
+  {
+    "id": "F-L3-03",
+    "severity": "P2",
+    "area": "Identifier — dashboard element ids and seed constants",
+    "finding": "The live dashboards carry element ids and seed constants built on the old CRM name: `fubNewLeadRows`, `fubStageStats`, `fubNewCount`, `fubSyncNote`, `FUB_SYNC_AT`, `FUB_STAGE_TOTALS`, `FUB_NEW_LEADS_*`, `FUB_STAGE_TOTAL`, `FUB_RETIRED_AT`, `FUB_AUTH_FAILING_SINCE`, `clientFub`, `shNewClientFub`, `loftyLegacyFub`. Renaming a container id breaks the render harness's container count and any saved state keyed on it.",
+    "evidence": "Outside my scope: dashboard/isa/isa-portal.html (50 hits) and command-deck.html. Echoed inside my scope only in dated test snapshots: docs/data/restore-test.json:123-124; docs/data/stressTestReport.json:888-889,4330-4331.",
+    "fix": "Not renamed. These belong to the two dashboard engineers; the snapshots that echo them are dated records. Any rename must be done in the dashboard and the harness together, then the snapshots re-taken rather than edited.",
+    "halt": false
+  },
+  {
+    "id": "F-L3-04",
+    "severity": "P2",
+    "area": "Audit trail",
+    "finding": "The dated audit corpus — findings files, the master findings table and its DB twin, the engineers' cycle reports, the engineering brief, the CI/loop/opportunity logs, the routine and inventory snapshots, and the research brief's data twin — still names the retired CRM throughout. These are records of what was true and what was found at a stamped moment; rewriting them falsifies the audit trail and would desynchronise files that cross-reference the same finding ids.",
+    "evidence": "Left untouched, with per-file line lists, in the hand-back report. Totals: docs/MASTER-FINDINGS.md 79, docs/data/auditFindings.json 61, docs/reports/E4a-report.md 48, docs/findings/findings-E8.json 28, docs/ENGINEERING-BRIEF.md 25, docs/findings/findings-E4a.json 23, docs/findings/findings-E4b.json 16, docs/data/findings-E4b.json 16, docs/reports/E8-report.md 13, docs/data/caio-brief.json 12, plus 16 smaller files.",
+    "fix": "Left in place per the category ruling. Purging them is Steven's call; if he says purge, they should be deleted or re-generated as a set, not edited row by row, so the finding ids stay consistent across files.",
+    "halt": false
+  },
+  {
+    "id": "F-L3-05",
+    "severity": "P2",
+    "area": "Decision log",
+    "finding": "`context/decisions.md` declares itself append-only — \"Append, never edit and never delete. A reversal is a new entry that names the entry it reverses.\" Complying with Steven's instruction required rewriting the 2026-09-22 CRM entry in place, because a superseding entry would have left the vendor name in the file.",
+    "evidence": "context/decisions.md:3-4 (the rule) and the rewritten entry now headed \"## 2026-09-22 — Lofty is the real-estate CRM\".",
+    "fix": "Entry rewritten in place: same date, same owner, same status, decision restated around Lofty with an explicit \"no Lofty number is live\" clause and the key path `~/.config/lofty/.env` / `LOFTY_API_KEY`. Flagged here so Steven knows a dated decision entry was edited rather than superseded.",
+    "halt": false
+  },
+  {
+    "id": "F-L3-06",
+    "severity": "P1",
+    "area": "Repo mirrors vs. live Mac state",
+    "finding": "Three files under docs/inventory are stamped mirrors of live Mac documents: agent-roster.md (aiTeamRoster, generatedAt 2026-09-16), mac-task-descriptions.md (toolkitSnapshot, syncedAt 2026-09-16) and routine-health.md (routineHealth, syncedAt 2026-09-22). Their entries describe the prompts of live agents and scheduled tasks. The repo copies now say Lofty; the prompts on the Mac still name the old CRM until Steven edits them there.",
+    "evidence": "docs/inventory/agent-roster.md:91,104 (lead-triage-analyst, mktg-analytics-lead); docs/inventory/mac-task-descriptions.md:19,32,37,48 (lead-triage-daily, r11-isa-kpi-compile, r2-lead-response-watchdog, showing-sync); docs/inventory/routine-health.md:7,26,38.",
+    "fix": "Rewritten around Lofty with an explicit \"not connected yet — needs LOFTY_API_KEY in ~/.config/lofty/.env\" on every task entry, so the repo never claims a live Lofty feed. Editing the live prompts is a HALT: Steven applies them on the Mac, then the next snapshot re-syncs this repo.",
+    "halt": true
+  },
+  {
+    "id": "F-L3-07",
+    "severity": "P2",
+    "area": "Integrations / credential hygiene",
+    "finding": "Composio still carries the retired real-estate CRM connection, reported ACTIVE, with an API key that the vendor rejects. That is a dangling credential on the same transport that carries Zoho, Gmail and GitHub.",
+    "evidence": "integrations/CONNECTIONS.md (the dedicated row, now removed, and the Composio connected-apps list); pre-existing findings F-E4a-13 and F-E8-59 carry the same item.",
+    "fix": "The vendor's own row removed from CONNECTIONS.md and the slug dropped from the connected-apps list, replaced with \"plus one retired legacy-CRM connection Steven can delete at his convenience\" so the inventory stays accurate. Disconnecting it and revoking the key are account-level actions — HALT, Steven only.",
+    "halt": true
+  },
+  {
+    "id": "F-L3-08",
+    "severity": "P3",
+    "area": "Research citations",
+    "finding": "docs/CAIO-DISRUPTION-BRIEF.md was rewritten around Lofty, but its data twin docs/data/caio-brief.json still carries the vendor name inside external source titles and source URLs (a RISMedia article title, a vendor developer-docs URL). A citation's title and URL cannot be altered without falsifying the citation and breaking the link.",
+    "evidence": "docs/data/caio-brief.json:48,626-628,637-638,642-643,662,963,1308,1685. The key `caioBrief` is referenced only by docs/inventory/loopLog.json — no panel in this repo renders it.",
+    "fix": "Left untouched. If Steven wants it gone, the honest move is to drop those evidence rows entirely rather than rewrite the source titles; the brief's conclusions already stand without them.",
+    "halt": false
+  },
+  {
+    "id": "F-L3-09",
+    "severity": "P3",
+    "area": "False positive — do not touch",
+    "finding": "docs/inventory/cloud-routines.md line 31 contains the cloud trigger id `trig_01LC6fUbVyaEF1nEFdGcQjU8`, which matches the search pattern on the letters \"fUb\" by chance. It is the identity of a live routine (Command Deck weather & news refresh), not a CRM reference.",
+    "evidence": "docs/inventory/cloud-routines.md:31.",
+    "fix": "Not touched, and must never be. Same class as the base64 blobs in the deck: match on real prose only, never a blind global replace.",
+    "halt": false
+  },
+  {
+    "id": "F-L3-10",
+    "severity": "P2",
+    "area": "Search coverage",
+    "finding": "The assigned grep pattern `follow[ -]?up ?boss|\\bFUB\\b` does not match the fully hyphenated spelling `follow-up-boss`, because it allows a space but not a hyphen before \"boss\". One real hit was found only after widening the pattern, and it was a graph node id rather than prose.",
+    "evidence": "knowledge-graph/schema.md:54 (`to: tool.follow-up-boss`) — invisible to the assigned pattern. Widened pattern used for verification: `follow[ ._-]?up[ ._-]?boss|\\bFUB\\b|fub[A-Za-z_]|followupboss`.",
+    "fix": "Widened pattern used for the whole sweep and for the final account. Anyone re-checking this work should use the widened pattern, not the original.",
+    "halt": false
+  },
+  {
+    "id": "F-L3-11",
+    "severity": "P2",
+    "area": "Knowledge graph",
+    "finding": "The old CRM was never an entity type or a relationship in knowledge-graph/schema.md — it appeared only as an illustrative example on the REPLACED_BY row and as an example node id in the sample YAML. Nothing in this repo could be orphaned: knowledge-graph/entities/ holds only .gitkeep, and the live 750-node / 1,104-edge Graphify graph was built 2026-09-13 from the Obsidian vault, not from this repo.",
+    "evidence": "knowledge-graph/schema.md:33,54; knowledge-graph/entities/ contains only .gitkeep; knowledge-graph/README.md (\"the graph itself is not committed here\"; ops-knowledge-graph has never run under the runner).",
+    "fix": "REPLACED_BY kept as a general relation with a vendor-neutral definition; the sample node's example edge replaced with `edges: []` plus a note that REPLACED_BY is written on the retired tool's node. The old example also pointed the wrong way (successor REPLACED_BY predecessor); that is corrected. A `tool.follow-up-boss` node may still exist in the live Graphify graph on the Mac — outside this repo, and only a rebuild after Steven's vault edit will clear it.",
+    "halt": false
+  },
+  {
+    "id": "F-L3-12",
+    "severity": "P1",
+    "area": "ISA operations",
+    "finding": "An existing open finding records a calling number and a forwarding email address on the retired CRM's own domain that the human ISA is instructed to use on every lead call. Whether they were migrated to Lofty is unknown, and only Steven can answer. Removing the vendor's name from the brain does not migrate a phone line.",
+    "evidence": "Carried as F-E12-04 in docs/findings/findings-E12.json:60-76 and in docs/data/auditFindings.json:152,159 (values not repeated here). Also docs/reports/E12-isa-portal.md:129.",
+    "fix": "Not touched — it is a dated finding and the values are contact details. HALT: Steven confirms whether the line and the forwarding address moved to Lofty before any ISA-facing text is changed.",
+    "halt": true
+  },
+  {
+    "id": "F-L3-13",
+    "severity": "P2",
+    "area": "Mac task specs",
+    "finding": "The registration checklist told the integrator to re-point four tasks off the retired CRM and onto Lofty without stating that Lofty has no credential installed, so a task could be registered and then report an empty number as if it were a reading.",
+    "evidence": "integrations/mac-task-specs.md:264 (before); the lofty-crm-sync prompt at line 34 already forbade reporting another system's number as Lofty.",
+    "fix": "Checklist item rewritten: point the four tasks at Lofty as their lead source, state the key path `~/.config/lofty/.env` / `LOFTY_API_KEY`, and state that until the key is there the tasks have no lead source and must report \"not connected yet\", not a number.",
+    "halt": false
+  },
+  {
+    "id": "F-L3-14",
+    "severity": "P3",
+    "area": "Other engineers' files",
+    "finding": "The five files flagged as in-flight with another engineer — MAC-INSTALL.md, MAC-SETUP.sh, mac-verify.sh, REMOTE-ACCESS.md, docs/SECOND-MAC-SETUP.md — were checked with the widened pattern and are already clean. They already name Lofty and `LOFTY_API_KEY` in `~/.config/lofty/.env` correctly.",
+    "evidence": "Zero hits in all five under `follow[ ._-]?up[ ._-]?boss|\\bFUB\\b|fub[A-Za-z_]|followupboss`; MAC-INSTALL.md:118, REMOTE-ACCESS.md:82, docs/SECOND-MAC-SETUP.md:119 already carry the correct Lofty key path.",
+    "fix": "Nothing to hand over. Not edited.",
+    "halt": false
+  }
+]

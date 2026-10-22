@@ -1,0 +1,956 @@
+[
+ {
+  "id": "R10-A-01",
+  "where": "TAX CALENDAR 2026",
+  "verdict": "works",
+  "evidence": "TAX_CALENDAR_2026 (command-deck.html ~L14270) is a static full-year reference table (Jan 15 2026 - Jan 15 2027). renderTaxCalendar() computes daysUntil() from new Date() at render time; any row whose date has passed gets a gray 'passed' badge, 0.45 opacity, and never the amber act-now badge (L14322-14345). Card title/subtitle are neutral ('2026 tax calendar' / 'Sorted by date'), no 'upcoming' claim in static markup. 2026-02-02 (Form 941 Q4 2025) is the correct FTB-adjusted deadline (Jan 31, 2026 falls on a Saturday, rolls to Monday Feb 2).",
+  "change": "none — already rendered correctly at runtime",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-02",
+  "where": "TAX CALENDAR 2026",
+  "verdict": "works",
+  "evidence": "Same TAX_CALENDAR_2026 table/renderTaxCalendar() runtime-passed logic as R10-A-01 covers this row (2026-03-06, 65-day trust-distribution election deadline).",
+  "change": "none — already rendered correctly at runtime",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-03",
+  "where": "TAX CALENDAR 2026",
+  "verdict": "works",
+  "evidence": "Same table/logic as R10-A-01 (2026-03-16, Form 1120-S/1065 due). Passed rows render dimmed with a 'passed' badge, never as pending.",
+  "change": "none — already rendered correctly at runtime",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-04",
+  "where": "TAX CALENDAR 2026",
+  "verdict": "works",
+  "evidence": "Same table/logic as R10-A-01 (2026-04-15, Form 1040/1041/1120 + Q1 estimate + IRA/HSA deadline). Passed rows render dimmed with a 'passed' badge.",
+  "change": "none — already rendered correctly at runtime",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-05",
+  "where": "TAX CALENDAR 2026",
+  "verdict": "works",
+  "evidence": "Same table/logic as R10-A-01 (2026-04-30, Form 941 Q1 2026). Passed rows render dimmed with a 'passed' badge.",
+  "change": "none — already rendered correctly at runtime",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-06",
+  "where": "TAX STRATEGY MASTER WORKBOOK — 2026 (CA_TAX_LEVERS, command-deck.html)",
+  "verdict": "fixed",
+  "evidence": "CA's PTET election was extended (not sunsetting) and the June-15-prepayment consequence changed: SB 132, signed 2025-06-27, extended the elective PTE tax through tax year 2030 and replaced the old 'miss June 15 = disqualified' rule with a 12.5% cut to the allowable credit on any shortfall. The old row said 'due June 15, 2026 — missing it disqualifies the election', which is now wrong on both the date-pinning and the consequence.",
+  "change": "Reworded the PTET row to a recurring 'due June 15 each year' rule and corrected the miss-the-prepayment consequence to the SB 132 12.5% credit-shortfall cut (no longer disqualification), with the SB 132 signing date and TY2030 extension noted inline.",
+  "source": "https://www.ftb.ca.gov/about-ftb/newsroom/tax-news/flash/2026/05.html (FTB tax-news flash, PTE elective tax June 15 payment) corroborated by https://www.hcvt.com/alertarticle-changes-california-pass-through-entity-tax (HCVT CPA SALT alert on SB 132)",
+  "commit": "b989435"
+ },
+ {
+  "id": "R10-A-07",
+  "where": "TAX CALENDAR 2026",
+  "verdict": "works",
+  "evidence": "Same TAX_CALENDAR_2026 table/renderTaxCalendar() logic as R10-A-01 (2026-07-06, §174A R&D expensing election). Passed rows render dimmed with a 'passed' badge.",
+  "change": "none — already rendered correctly at runtime",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-08",
+  "where": "TAX CALENDAR 2026",
+  "verdict": "works",
+  "evidence": "Same table/logic as R10-A-01 (2026-07-31, Form 941 Q2 2026). Passed rows render dimmed with a 'passed' badge.",
+  "change": "none — already rendered correctly at runtime",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-09",
+  "where": "panel-property",
+  "verdict": "works",
+  "evidence": "Prose at command-deck.html L3055 is a dated, past-tense technical verification ('Confirmed directly (2026-09-04, by driving the real county site in a browser): both county portals require a live session and a per-request JS token...'), not a claim worded as upcoming/current. It also already states the You.com line correctly both halves: retired 2026-09-22 by decision, connector still answers at 0 credits (checked 2026-09-24) — matches the required wording exactly.",
+  "change": "none — correct dated history, You.com wording already compliant",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-10",
+  "where": "PROPERTY SEARCH STRATEGY TOOL",
+  "verdict": "works",
+  "evidence": "Code comment at command-deck.html L11878 documents how CRMLS_CITY_IDS (internal numeric city IDs for the apexidx search form) were reverse-engineered, dated 'confirmed 2026-09-04' — correct history of a stable technical mapping, not a future-tense claim.",
+  "change": "none — correct dated history",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-11",
+  "where": "TAX CALENDAR 2026",
+  "verdict": "works",
+  "evidence": "Same TAX_CALENDAR_2026 table/renderTaxCalendar() logic as R10-A-01 (2026-09-15, extended 1120-S/1065). Passed rows render dimmed with a 'passed' badge.",
+  "change": "none — already rendered correctly at runtime",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-12",
+  "where": "TAX CALENDAR 2026",
+  "verdict": "works",
+  "evidence": "Same table/logic as R10-A-01 (2026-09-15, defined-benefit plan funding deadline for 2025). Passed rows render dimmed with a 'passed' badge.",
+  "change": "none — already rendered correctly at runtime",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-14",
+  "where": "MORTGAGE RATES & LOCAL MARKET",
+  "verdict": "fixed",
+  "evidence": "MORTGAGE_RATES seed row for VA 15-yr fixed (not carried by the ratesSnapshot feed) was 8 days stale: 5.750%/6.409% APR as of Sep 20, 2026.",
+  "change": "Updated to Navy Federal current listing: 6.000%/6.706% APR, $300K example, 1.00% origination fee (waivable for +0.25% rate), effective Sep 26, 2026; asOf and re-verified date updated to match.",
+  "source": "Navy Federal mortgage-rates page (navyfederal.org/loans-cards/mortgage/mortgage-rates.html), read via search-indexed copy 2026-09-28 — navyfederal.org itself is blocked by this session's egress proxy",
+  "commit": "1b76272"
+ },
+ {
+  "id": "R10-A-15",
+  "where": "MORTGAGE RATES & LOCAL MARKET",
+  "verdict": "fixed",
+  "evidence": "MORTGAGE_RATES seed row for Jumbo 15-yr fixed (not carried by the ratesSnapshot feed) was 8 days stale: 6.500%/6.740% APR as of Sep 20, 2026.",
+  "change": "Updated to Navy Federal current listing: 6.750%/6.992% APR, $1M example, 720 FICO, 20% down, 1.00% origination fee; dropped the stale Sep-20 Bankrate aside since no fresh cross-check figure was obtained this pass.",
+  "source": "Navy Federal mortgage-rates page (navyfederal.org/loans-cards/mortgage/mortgage-rates.html), read via search-indexed copy 2026-09-28 — navyfederal.org itself is blocked by this session's egress proxy",
+  "commit": "0dd046f"
+ },
+ {
+  "id": "R10-A-16",
+  "where": "MORTGAGE RATES & LOCAL MARKET",
+  "verdict": "fixed",
+  "evidence": "MARKET_UPDATES Murrieta card was frozen on Redfin's 3-month-ending-July-2026 period ($659,670, -3.7% YoY), last re-checked 2026-09-20/22 and, per the live ratesSnapshot store, still showing July as of this round's snapshot.",
+  "change": "Re-sourced from Redfin's Murrieta city page, which now publishes a 3-month period ending August 2026: medianPrice 656565, priceChangeYoy -2.0. Noted daysOnMarket (44) is carried over from July and not reconfirmed. Note this static seed is overridden at render time by the live ratesSnapshot doc's own (still-July) markets entry until the FEEDS lane refreshes that store.",
+  "source": "https://www.redfin.com/city/12866/CA/Murrieta/housing-market — read via search-indexed copy 2026-09-28; redfin.com itself is blocked by this session's egress proxy",
+  "commit": "77ab28d"
+ },
+ {
+  "id": "R10-A-17",
+  "where": "BUILDER INCENTIVES & RATE BUYDOWNS",
+  "verdict": "fixed",
+  "evidence": "Two issues: (1) Lennar San Diego Labor Day Sale signing window (09/14-09/20/26) was already noted as passed on 2026-09-22 and remained the only cited figure, now 8+ days further stale; re-checked today, no successor Lennar promo page could be confirmed either (Lennar rotates differently-named, non-permalinked promo pages weekly). (2) 'KB Home reports Q3 after the close today, Sep 22' — literal stale-today wording, now describing a date a week in the past as if it were the present.",
+  "change": "Reworded the Lennar paragraph to state plainly the promo is expired and kept only as an illustrative example of Lennar's typical buydown shape. Replaced the 'today, Sep 22' line with KB Home's actual reported Q3 FY2026 results (Sep 22 release): built-to-order mix 74% of Q3 deliveries, incentives at closing minimal per management, ASP $473,000 in Q3 (9-month ASP -5% YoY to $462,900).",
+  "source": "KB Home Q3 FY2026 results, Nasdaq press release 2026-09-22: https://www.nasdaq.com/press-release/kb-home-reports-2026-third-quarter-results-2026-09-22 (also filed as an SEC 8-K, sec.gov/Archives/edgar/data/0000795266/) — read via search-indexed copies, re-checked 2026-09-28",
+  "commit": "9bc7d88"
+ },
+ {
+  "id": "R10-A-18",
+  "where": "MORTGAGE RATES & LOCAL MARKET",
+  "verdict": "fixed",
+  "evidence": "MORTGAGE_RATES seed row for VA 30-yr refinance (not carried by the ratesSnapshot feed) was stamped asOf Sep 21, 2026, 7 days stale.",
+  "change": "Re-confirmed the 720-score rate is unchanged at 6.500% (search-indexed pull dated Sep 19, 2026); Veterans United's own page header now stamps \"valid as of Sep 27th, 09:02 AM CST\". Updated asOf/re-verified date to Sep 27/28; noted the 6.822% APR at 1.875 points was not independently re-pulled this pass and is carried forward from the unchanged rate rather than invented.",
+  "source": "Veterans United VA mortgage-rates page (veteransunited.com/va-loans/va-mortgage-rates/), read via search-indexed copies 2026-09-28 — veteransunited.com itself is blocked by this session's egress proxy",
+  "commit": "ac7c86c"
+ },
+ {
+  "id": "R10-A-19",
+  "where": "panel-showings",
+  "verdict": "works",
+  "evidence": "Prose at command-deck.html L4436 is dated, past-tense technical documentation (CLI-Hub opt-out telemetry, DOMShell extension access) explicitly labeled 'both found by reading the source on 2026-09-22' — a stable code-level fact, not a claim worded as current/upcoming.",
+  "change": "none — correct dated history of a stable technical fact",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-20",
+  "where": "panel-easop",
+  "verdict": "works",
+  "evidence": "L4525: 'Lofty (real estate, since 2026-09-22)' is a correctly-past-tense statement of the CRM cutover date, not future wording.",
+  "change": "none — correct history",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-21",
+  "where": "panel-easop",
+  "verdict": "works",
+  "evidence": "L4570: 'Lofty is system of record for real estate as of 2026-09-22, which SOP Section 4.1 has not caught up with yet' — correct past-tense cutover date plus an honest, appropriately-hedged documentation-lag caveat. Could not locate a checked-in VA/ISA SOP document in /home/user/Repo to confirm Section 4.1 was since updated; per the not-reached/works rule, left as-is rather than guessing.",
+  "change": "none",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-22",
+  "where": "MORTGAGE RATES & LOCAL MARKET",
+  "verdict": "fixed",
+  "evidence": "Code comment at L9564-9573 said the 3 feed-uncarried rows (VA 30-yr refi, VA 15-yr, Jumbo 15-yr) were 're-checked by hand on 2026-09-22' — now 6 days stale relative to the fresh re-checks just performed (R10-A-14/15/18).",
+  "change": "Updated the comment to 're-checked by hand again on 2026-09-28 (R10-A)'.",
+  "source": "same sources as R10-A-14/15/18",
+  "commit": "4b53d10"
+ },
+ {
+  "id": "R10-A-23",
+  "where": "MORTGAGE RATES & LOCAL MARKET",
+  "verdict": "fixed",
+  "evidence": "MORTGAGE_RATES_SYNCED_AT string (L9574) summarized the 3 feed-uncarried rows as checked 2026-09-22 at their Sep 20/21 values — stale after R10-A-14/15/18 updated those rows.",
+  "change": "Rewrote the summary string to the 2026-09-28 re-check and the new values (VA 30-yr refi 6.500% unchanged/Sep 27, VA 15-yr 6.000%/6.706% APR/Sep 26, Jumbo 15-yr 6.750%/6.992% APR/Sep 28), and noted the ratesSnapshot feed itself has not written since Sep 22 (see runnerStatus) rather than re-stating a synced-at time the feed did not actually produce.",
+  "source": "same sources as R10-A-14/15/18",
+  "commit": "4b53d10"
+ },
+ {
+  "id": "R10-A-13",
+  "where": "SHOWINGS TAB — SCHEDULE BY CLIENT + SYNC QUEUE",
+  "verdict": "works",
+  "evidence": "L27609 claims 'No showing has been written to a CRM record since 2026-09-16' with a red 'Not connected—Lofty sync pending' badge. Checked against the freshest live-store export ($S/r10/live/state/loftyLeads.json): status is still 'not-configured', syncedAt 2026-09-22T08:45:00Z, no sync has ever written the document, and its own 'replaces.reason' field independently corroborates the FUB key rejecting calls since 2026-09-16. The claim is still true today.",
+  "change": "none — verified current against the live store, matches reality",
+  "source": "$S/r10/live/state/loftyLeads.json (live-store export taken 2026-09-28)",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-24",
+  "where": "LOAN SCENARIO BUILDER",
+  "verdict": "works",
+  "evidence": "VA program facts row (L10748, fact text only — not the scoring function): funding-fee tiers 2.15%/3.30% (<5% down), 1.50% (5-9.99%), 1.25% (10%+), 0.50% IRRRL re-confirmed unchanged via fresh search today. ROAD to Housing Act / FHFA implementing-order deadline (Jan 11, 2027) is correctly still in the future, not stale.",
+  "change": "Appended \"reconfirmed unchanged 2026-09-28\" to the source stamp. No numeric or scoring change (Loan Scenario Builder scoring untouched).",
+  "source": "military.com 2026 VA funding fee guide, freedommortgage.com VA funding fee charts (search-indexed 2026-09-28); va.gov itself unreachable from this session",
+  "commit": "fe2797f"
+ },
+ {
+  "id": "R10-A-25",
+  "where": "STRAVA — LIVE ACTIVITY (PHYSICAL DIMENSION)",
+  "verdict": "works",
+  "evidence": "L13032-13043 is a detailed, correctly past-tense engineering log entry (the F-E5-02 shape-bug fix, dated 2026-09-22 13:07 UTC) documenting a specific historical fix event, not a claim worded as current.",
+  "change": "none — correct history/log entry",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-26",
+  "where": "SHOWINGS TAB — SCHEDULE BY CLIENT + SYNC QUEUE",
+  "verdict": "works",
+  "evidence": "L27592-27598 code comment: 'Lofty has been the real-estate system of record since 2026-09-22, and that leg writes nothing until its API key is installed...' — same fact already verified current against the live loftyLeads store in R10-A-13 (still not-configured).",
+  "change": "none — correct history, matches live-store reality",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-29",
+  "where": "MORTGAGE RATES & LOCAL MARKET (HF_MEMO_SYNCED_AT)",
+  "verdict": "works",
+  "evidence": "L9564-9567: HF_MEMO_SYNCED_AT=\"2026-09-07\" is a deliberate last-known-good stamp with its own comment explaining why (the committee memo cannot be re-run from a cloud session). Cross-checked against the live store today: hfCommitteeMemo.json is still the Sep 7, 2026 AAPL memo; hfRequest.json confirms status:\"failed\", requestedAt 2026-09-11, completedAt 2026-09-13, exactly matching the comment. The old stamp is still the honest, accurate one.",
+  "change": "none — stamping today would be false (the rule against stamping today on unre-sourced content applies directly here; nothing newer exists to source)",
+  "source": "$S/r10/live/state/hfCommitteeMemo.json, $S/r10/live/state/hfRequest.json (live-store export taken 2026-09-28)",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-30",
+  "where": "COMMUNITY RANKING — SCHOOL DISTRICT & TAX LOAD",
+  "verdict": "works",
+  "evidence": "Riverside County Tax Collector link description notes 'the Assessor's own Special Assessments page was down as of Sep 7, 2026' — correctly past-tense, dated, self-limiting language about a peripheral link, not a claim of current status.",
+  "change": "none — correct dated history",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-27",
+  "where": "LOAN SCENARIO BUILDER",
+  "verdict": "works",
+  "evidence": "USDA program facts row (L10751, fact text only — not scoring): guarantee fee 1% upfront / 0.35% annual (effective Oct 1, 2025, still FY2026) and 2026 income limits $122,800 (1-4) / $162,100 (5-8) reconfirmed via fresh search today, unchanged.",
+  "change": "Appended \"reconfirmed unchanged 2026-09-28 (still FY2026; the next USDA fee notice would take effect Oct 1, 2026)\" to the source stamp. No numeric or scoring change.",
+  "source": "neighborsbank.com and usdaloans.com 2026 USDA income-limit pages (search-indexed 2026-09-28); rd.usda.gov itself not independently re-fetched (blocked)",
+  "commit": "03f83b3"
+ },
+ {
+  "id": "R10-A-28",
+  "where": "LOAN SCENARIO BUILDER",
+  "verdict": "works",
+  "evidence": "FHA program facts row (L10750, fact text only — not scoring): 2026 loan limits $541,287 floor / $1,249,125 ceiling (effective case numbers on/after Jan 1, 2026) reconfirmed via fresh search today against HUD press release No. 25-145, unchanged.",
+  "change": "Appended \"reconfirmed unchanged 2026-09-28\" to the source stamp. No numeric or scoring change.",
+  "source": "nationalmortgageprofessional.com and amerisave.com 2026 FHA loan-limit summaries of HUD press release No. 25-145 (search-indexed 2026-09-28); hud.gov itself not independently re-fetched (blocked)",
+  "commit": "437d44a"
+ },
+ {
+  "id": "R10-A-31",
+  "where": "ISA Portal — SECTION SLIDER (accessibility), ISA_PANEL_VERIFIED_AT.panel-isa-vamastermind",
+  "verdict": "fixed",
+  "evidence": "isa-portal.html L4535: note said 'Re-sourced today: the Q3 licensing deadline line (8 days left, closes 2026-09-30)' inside a registry entry stamped at:\"2026-09-22\". This note text is concatenated verbatim into the panel-stamp tooltip (renderIsaPanelStamps, ~L4571-4583), so a viewer today would read a self-contradictory 'today ... 8 days left' next to a dynamically-computed '6d ago' badge, and 8 days left is now wrong (2 days left).",
+  "change": "Reworded to \"Re-sourced 2026-09-22: the Q3 licensing deadline line (then 8 days left; the window closes 2026-09-30).\" — explicit historical date instead of 'today', and 'then' instead of a bare countdown, so it reads correctly at any future viewing time. The absolute close date (2026-09-30) is left as permanent historical fact.",
+  "source": "",
+  "commit": "3c770c4"
+ },
+ {
+  "id": "R10-A-32",
+  "where": "ISA Portal — LENDER DIRECTORY (Change Wholesale)",
+  "verdict": "works",
+  "evidence": "L2489 is a correctly-dated chronological history of Change Lending's CDFI certification (decertified Aug 2023 → restored by the Nov 15 2023 settlement → renewed Feb 7 2024), already honestly hedged: 'no 2026 Treasury list or determination was found — ask the AE for the current certificate.' Fresh search today found only the company's own site restating active certification, no independent 2026 Treasury list either — does not improve on the existing hedge.",
+  "change": "none — history is correct and the current-status caveat is already appropriately honest",
+  "source": "searched 2026-09-28 (thechangecompany.com self-reported posts only; no independent CDFI Fund 2026 list found, consistent with the existing note)",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-33",
+  "where": "ISA Portal — LOAN SCENARIO BUILDER (FHA facts)",
+  "verdict": "works",
+  "evidence": "FHA facts row (fact text, not scoring) duplicates the deck's FHA loan-limit/MIP facts (R10-A-28), verified 2026-09-22. Same figures ($541,287/$1,249,125, MIP ~0.55%) reconfirmed unchanged via the same fresh search used for R10-A-28.",
+  "change": "Appended \"reconfirmed unchanged 2026-09-28\" to note and source, mirroring the deck fix per the both-files rule. No scoring change.",
+  "source": "same as R10-A-28 (nationalmortgageprofessional.com, amerisave.com, search-indexed 2026-09-28)",
+  "commit": "e422743"
+ },
+ {
+  "id": "R10-A-34",
+  "where": "ISA Portal — ISA DAILY PLAYBOOK (theme days)",
+  "verdict": "works",
+  "evidence": "L758 mirrors the deck's R10-A-09 fact (county tax portals need a live session + JS-generated token, confirmed 2026-09-04) but routes the fallback through a live Claude web search instead of Vanessa's research queue — an intentional architecture difference for a page an ISA drives live, not a drift bug. Correct dated history either way.",
+  "change": "none — correct dated history, mechanism difference is by design",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-35",
+  "where": "ISA Portal — PROPERTY SEARCH STRATEGY TOOL",
+  "verdict": "works",
+  "evidence": "L3567 mirrors the deck's R10-A-10 stable technical fact (Riverside/San Diego treasurer portals need a live session + per-request token, verified 2026-09-04). Correct dated history.",
+  "change": "none — correct dated history",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-36",
+  "where": "ISA Portal — ISA DAILY PLAYBOOK (theme days)",
+  "verdict": "works",
+  "evidence": "L1326 says the isaKpi document is 'week ending 2026-09-13.' Checked against the live store: $S/r10/live/state/isaKpi.json still has weekEnding:\"2026-09-13\", syncedAt 2026-09-13T17:24:00-07:00 — the weekly KPI task has not produced a newer document, so the claim is still true today.",
+  "change": "none — verified current against the live store",
+  "source": "$S/r10/live/state/isaKpi.json (live-store export taken 2026-09-28)",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-37",
+  "where": "ISA Portal — MORTGAGE RATES & LOCAL MARKET",
+  "verdict": "fixed",
+  "evidence": "ISA's hand-copied MORTGAGE_RATES mirror of the 3 rows Command Deck's ratesSnapshot feed does not carry (VA 30-yr refi, VA 15-yr, Jumbo 15-yr) was stamped 're-verified 2026-09-22,' 6 days stale, and the summary var still said the rate week ending Sep 18 as if freshly baked.",
+  "change": "Applied the same re-check as the deck (R10-A-14/R10-A-15/R10-A-18): VA 30-yr refi unchanged at 6.500% (page now Sep 27); VA 15-yr updated 5.750%→6.000%/6.706% APR (Sep 26); Jumbo 15-yr updated 6.500%→6.750%/6.992% APR (Sep 28). Updated MORTGAGE_RATES_SYNCED_AT to 2026-09-28 and noted the ratesSnapshot feed itself has not produced a newer bake since Sep 22.",
+  "source": "same as R10-A-14/15/18 — Navy Federal and Veterans United rate pages, search-indexed 2026-09-28",
+  "commit": "815abf2"
+ },
+ {
+  "id": "R10-A-38a",
+  "where": "ISA Portal — ISA DAILY PLAYBOOK / panel-isa-syncstatus",
+  "verdict": "works",
+  "evidence": "L488-513 (items 8-11 of the queue) is a detailed, correctly-dated sync-status log (Verified 2026-09-22, Corrected 2026-09-24, Last recorded ok 2026-09-22 9:38 PM PT, Read directly 2026-09-24, Measured on 2026-09-22, Last logged ok 2026-09-24). Cross-checked isaLine.json in the live store: still exactly 11 messages, matching the '11 messages, byte for byte' claim — nothing has changed since, consistent with BRIEF-FRESH's own finding that the live stores stopped writing around 2026-09-24.",
+  "change": "none — correct, still-current dated status log; covers queue items 8, 9, 10, 11",
+  "source": "$S/r10/live/state/isaLine.json (live-store export taken 2026-09-28)",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-38b",
+  "where": "ISA Portal — ISA DAILY PLAYBOOK (daily scorecard card)",
+  "verdict": "fixed",
+  "evidence": "L1338: 'Added 2026-09-22. Until today the only way a scorecard could exist was Steven typing what you told him...' — the same ambiguous-'today' pattern as R10-A-31: read now, 'until today' sounds like the old manual-only system might still be current, when the self-serve form has existed for a week.",
+  "change": "Reworded to \"Added 2026-09-22, replacing the old system where the only way a scorecard could exist was Steven typing what you told him — this form writes it yourself.\" (covers queue item 12)",
+  "source": "",
+  "commit": "d11d58f"
+ },
+ {
+  "id": "R10-A-38",
+  "where": "ISA Portal — ISA DAILY PLAYBOOK (Q3 licensing window)",
+  "verdict": "fixed",
+  "evidence": "L1534: 'as of 2026-09-22 only 8 days are left before it closes on 2026-09-30' — a hardcoded countdown, now wrong (2 days left today, not 8). Flagged explicitly in BRIEF-FRESH.md as 2 days away and needing truthful wording.",
+  "change": "Wrapped the countdown portion in <span id=\"isaQ3DaysLeft\">, added renderIsaQ3Countdown() (registered via safeRun, same pattern as every other top-level render call on this page) that computes days-left at render time from Steven's Pacific date, with today/closed/rolled-to-Q4 states. Verified the date math in Node for Sep 28 (2 days), Sep 30 (closes today) and Oct 2 (closed, rolled to Q4).",
+  "source": "",
+  "commit": "d11d58f"
+ },
+ {
+  "id": "R10-A-39",
+  "where": "ISA Portal — CROSS-PAGE DRIFT (DRIFT_CHECKED_AT, items 14/19/20)",
+  "verdict": "works",
+  "evidence": "DRIFT_CHECKED_AT=\"2026-09-24\" with DRIFT_STALE_AFTER_DAYS=3 and a driftFooterHtml() that already renders a red ‘N days old — treat it as unverified’ warning once age exceeds 3 days (L2073-2094). Today the age is 4, so the page will already show that warning honestly — exactly the self-aware behavior this round wants. Re-measuring the actual cross-store drift (reading Command Deck's live store side-by-side with ISA's) is outside what this pass can respond for without deeper tooling, and the rule against stamping today on unre-sourced content applies directly.",
+  "change": "none — this is the intended, correct honesty machinery; covers queue items 14, 19, 20",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-40",
+  "where": "ISA Portal — MORTGAGE RATES & LOCAL MARKET (market updates)",
+  "verdict": "fixed",
+  "evidence": "marketUpdateSyncNote referenced the Command Deck ratesSnapshot last write (2026-09-22) as the source for medians/DOM/YoY, and ISA's own MARKET_UPDATES.Murrieta was still the stale July 2026 figure (same underlying issue as R10-A-16 in the deck).",
+  "change": "Mirrored R10-A-16 into ISA's MARKET_UPDATES (Murrieta July->August 2026, $656,565/-2.0% YoY) and updated the sync note to say Murrieta was re-sourced directly 2026-09-28 while the rest is still the Sep 22 ratesSnapshot copy.",
+  "source": "same as R10-A-16 — redfin.com/city/13040/CA/Murrieta/housing-market, search-indexed 2026-09-28",
+  "commit": "0c8c2e6"
+ },
+ {
+  "id": "R10-A-41",
+  "where": "ISA Portal — LOAN SCENARIO BUILDER (VA facts)",
+  "verdict": "works",
+  "evidence": "VA facts row duplicates the deck's VA funding-fee facts (R10-A-24), verified 2026-09-22, same figures reconfirmed via the same search.",
+  "change": "Appended \"funding-fee tiers reconfirmed unchanged 2026-09-28\" to the note, mirroring the deck. No scoring change.",
+  "source": "same as R10-A-24",
+  "commit": "b167198"
+ },
+ {
+  "id": "R10-A-42",
+  "where": "ISA Portal — SECTION SLIDER (accessibility)",
+  "verdict": "works",
+  "evidence": "L4545 panel-isa-syncstatus registry note (‘verified 2026-09-22 by reading both stores’) is concatenated, at render time, with the newer/fuller ISA_PANEL_VERIFIED_AT note (‘Corrected 2026-09-24 …’) into the same tooltip (renderIsaPanelStamps, L4571-4583) — a real viewer always sees both together, so the Sep 22 date is not misleading on its own; it's additional true context, not stale-in-isolation.",
+  "change": "none — both dates are accurate and both are shown together",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-A-43",
+  "where": "ISA Portal — SHOWINGS TAB (mirrored from Command Deck)",
+  "verdict": "works",
+  "evidence": "L4621 FAQ row: showings do not sync to Command Deck, verified 2026-09-22 by reading both databases. Consistent with every other Lofty/showing-sync check this pass (R10-A-13, R10-A-26): showing-sync is still not wired up as of the live-store snapshot taken today.",
+  "change": "none — correct, still-current dated status",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-B-01",
+  "where": "ELITE REWARDS-OPTIMIZATION SCAN",
+  "verdict": "fixed",
+  "evidence": "Row hardcoded \"8 days left at this scan\" from the Sep 22 scan (kind: hardcoded-days-left); today is Sep 28 so the real count is 2. Amex MR to Virgin Atlantic +40% transfer bonus reconfirmed live via WebSearch (AwardWallet, FrequentMiler, AwardTravelFinder), still runs through Sep 30, 2026.",
+  "change": "Added elitCountdown(endDateStr) helper using the existing daysUntil(); row now computes the day count from today at render time instead of a baked-in number; note updated to \"confirmed still active Sep 28\".",
+  "source": "https://awardtravelfinder.com/transfer-bonuses/amex-membership-rewards ; https://frequentmiler.com/get-a-40-bonus-when-transferring-amex-membership-rewards-to-virgin-atlantic/",
+  "commit": "04b5a4f"
+ },
+ {
+  "id": "R10-B-02",
+  "where": "ELITE REWARDS-OPTIMIZATION SCAN",
+  "verdict": "fixed",
+  "evidence": "Row said \"Through Sep 27, 2026 — 5 days left at this scan\" (kind: hardcoded-days-left); today is Sep 28, one day past the deadline. WebSearch (Award Travel Finder, AwardWallet, ThePointsGuy) confirms the Amex MR to Avios +30% bonus ended Sep 27, 2026 11:59pm MT and no replacement is live.",
+  "change": "Marked the ELIT_TOP_ACTIONS row and the matching ELIT_TRANSFER_BONUSES row EXPIRED Sep 27, 2026 (kept one scan per the file's own convention rather than deleted); updated ELIT_TRANSFER_NOTE from \"Five transfer bonuses are live\" to \"Four transfer bonuses remain live as of Sep 28\" so the summary does not contradict the row.",
+  "source": "https://awardtravelfinder.com/transfer-bonuses/amex-membership-rewards-to-british-airways-avios ; https://thepointsguy.com/deals/transfer-bonus-from-amex-to-avios/",
+  "commit": "ba588da"
+ },
+ {
+  "id": "R10-B-03",
+  "where": "ELITE REWARDS-OPTIMIZATION SCAN",
+  "verdict": "fixed",
+  "evidence": "Row hardcoded \"8 days left at this scan\" from the Sep 22 scan; real count today is 2. WebSearch (LoyaltyLobby, Upgraded Points, AwardWallet) confirms Chase UR to Aeroplan +20%/+30% bonus is unchanged, runs Aug 12-Sep 30, 2026, 11:59pm ET.",
+  "change": "Row now uses the elitCountdown() helper (added in commit 04b5a4f) to compute days left at render time; note updated to \"confirmed still active Sep 28\".",
+  "source": "https://upgradedpoints.com/news/chase-aeroplan-transfer-bonus/ ; https://loyaltylobby.com/2026/08/12/chase-ultimate-rewards-to-air-canada-aeroplan-up-to-30-conversion-bonus-august-12-september-30-2026/",
+  "commit": "8008aaf"
+ },
+ {
+  "id": "R10-B-04",
+  "where": "ELITE REWARDS-OPTIMIZATION SCAN",
+  "verdict": "fixed",
+  "evidence": "Row hardcoded \"8 days left\" from the Sep 22 scan; real count today is 2. WebSearch (MilesToMemories, AwardWallet, MilesTalk) confirms the MGM status-match challenge was extended and runs through Sep 30, 2026. Also found the \"Nothing expires inside the next 72 hours\" fallback text was now false: Virgin Atlantic, Aeroplan and this MGM match all end Sep 30, which is inside 72h of today.",
+  "change": "Row uses elitCountdown() (commit 04b5a4f). Populated ELIT_EXPIRING_72H with the 3 real Sep-30 deadlines (computed day counts) instead of the hardcoded empty array, and rewrote its empty-state fallback text so it cannot go stale again the same way.",
+  "source": "https://milestomemories.com/mgm-rewards-status-match-challenge/ ; https://awardwallet.com/hotels/mgm-status-match/",
+  "commit": "eb86003"
+ },
+ {
+  "id": "R10-B-05",
+  "where": "12. FERS DUAL-PENSION ENGINE (detailed build)",
+  "verdict": "works",
+  "evidence": "Flagged as past-date-in-future-wording (date 2025-12-01) but the text is correct: VA comp rates took effect Dec 1, 2025 and are unchanged until Dec 1, 2026. WebSearch (Veterans United, CCK Law, vetcalc.org) confirms the exact same figures still apply: 100% alone $3,938.58, 70% $1,808.45, 90% $2,362.30, 100% w/ spouse $4,158.17, SMC-K $139.87. va.gov itself is still egress-blocked from this sandbox (confirmed by a direct WebFetch attempt today).",
+  "change": "No value changed. Bumped VA_COMP_SYNCED_AT from 2026-09-22 to 2026-09-28 since it was actually re-sourced today, and refreshed the mirror-source list.",
+  "source": "https://www.veteransunited.com/network/military-disability-compensation-rate-tables/ ; https://cck-law.com/blog/2026-va-disability-compensation-rates-and-cost-of-living-adjustment-cola/",
+  "commit": "358ef07"
+ },
+ {
+  "id": "R10-B-06",
+  "where": "PANEL 33: PE and Defense Innovation (DEFENSE_DISRUPTORS - Anduril)",
+  "verdict": "fixed",
+  "evidence": "WebSearch confirms the $5B Series H / $61B valuation (May 13, 2026, Thrive/a16z) is still the most recent CLOSED round. A further round near $100B valuation has been reported in talks since Jul 24, 2026 (TechCrunch, Axios, GeekWire) but no source confirms it closed as of Sep 28, 2026.",
+  "change": "Kept the $61B figure (still accurate) and added a re-checked note about the reported-but-unclosed ~$100B talks so the row is not silently behind the news without inventing a closed number.",
+  "source": "https://www.bloomberg.com/news/articles/2026-05-13/anduril-valued-at-61-billion-in-round-led-by-thrive-andreessen ; https://techcrunch.com/2026/07/24/anduril-reportedly-in-talks-to-raise-funding-at-100b-valuation-more-than-3x-last-years-mark/",
+  "commit": "8a23ba5"
+ },
+ {
+  "id": "R10-B-07",
+  "where": "PANEL 33: PE and Defense Innovation (Medallia ownership transfer row)",
+  "verdict": "fixed",
+  "evidence": "WebSearch (Yahoo Finance, citybiz, Medallia press release) shows the Blackstone/Apollo/FS KKR recapitalization was only ANNOUNCED Jun 17, 2026; it actually closed/completed Aug 3, 2026. The row presented the Jun 17 announcement date as the date Thoma Bravo exited, which overstates how early the transfer actually completed.",
+  "change": "Reworded to \"announced Jun 17, 2026\" / \"actually closed Aug 3, 2026\" so the two dates aren't conflated; swapped the source link to Medallia's closing press release; updated the row's own date label to re-verified 2026-09-28.",
+  "source": "https://www.medallia.com/press-release/medallia-closes-150-million-capital-deal/ ; https://www.citybiz.co/article/883101/medallia-completes-recapitalization-secures-150-million-to-expand-enterprise-ai-strategy/",
+  "commit": "e762173"
+ },
+ {
+  "id": "R10-B-11",
+  "where": "PANEL 33: PE and Defense Innovation (Castelion Series C, two rows)",
+  "verdict": "fixed",
+  "evidence": "WebSearch (TechCrunch, Axios, Dealroom) confirms the Aug 20, 2026 round is $13B valuation but found the file stated it inconsistently: PE_MOVES said \"$1B Series C\" while DEFENSE_DISRUPTORS said \"$800M Series C\" for the same event. Actual structure: $800M equity + $250M revolving credit facility = $1.05B total.",
+  "change": "Both rows now read \"$1.05B Series C ($800M equity + $250M revolving credit) at $13B valuation\" so they agree; filled in the DEFENSE_DISRUPTORS row's empty source URL; re-verified no newer Castelion round since Aug 20.",
+  "source": "https://techcrunch.com/2026/08/20/castelion-hits-13b-valuation-to-mass-produce-hypersonic-missiles/ ; https://app.dealroom.co/news/note/castelion-raises-1-05b-series-c-at-13b-valuation-to-scale-hypersonic-missiles",
+  "commit": "6b683eb"
+ },
+ {
+  "id": "R10-B-10",
+  "where": "PANEL 33: PE and Defense Innovation (Hadrian funding row)",
+  "verdict": "works",
+  "evidence": "WebSearch (Bloomberg, CNBC, Axios, PR Newswire) confirms the $1.37B Series D at a ~$7.87B valuation, Aug 6 2026, led by WCM/Washington Harbour/Valor with a16z/Founders Fund/Apollo participating, is accurate and unchanged; no newer Hadrian round found as of Sep 28, 2026.",
+  "change": "No edit needed - figure and date already correct.",
+  "source": "https://www.cnbc.com/2026/08/06/hadrian-defense-tech-ai-manufacturing.html ; https://www.axios.com/2026/08/06/hadrian-series-d-defense-production",
+  "commit": "none - no change needed, file already correct as of 6b683eb"
+ },
+ {
+  "id": "R10-B-30",
+  "where": "PANEL 33: PE and Defense Innovation (AEVEX/BlackSea row + Opportunity Radar card)",
+  "verdict": "fixed",
+  "evidence": "kind=past-date-in-future-wording confirmed real: row said close was \"slated for September 2026\". WebSearch (BusinessWire, AEVEX IR, Dealroom) shows the deal actually CLOSED Sep 8, 2026 with final terms (~$250M cash + ~$350M stock + $50M earnout). Also found the duplicate Opportunity Radar card repeating the same stale \"slated\" wording plus a second stale claim (NP Aerospace/Iten Defense \"closing on Sep 10\"); WebSearch (Soldier Systems Daily, Dealroom, CompositesWorld) confirms that deal also closed on schedule Sep 10, 2026.",
+  "change": "PE_MOVES row updated to CLOSED Sep 8, 2026 with final deal terms and a BusinessWire source. Opportunity Radar card title/body reworded from future (\"slated\", \"closing\") to past (\"closed\") for both AEVEX/BlackSea and NP Aerospace/Iten Defense.",
+  "source": "https://www.businesswire.com/news/home/20260908188362/en/AEVEX-Completes-Acquisition-of-BlackSea-Technologies-Creating-One-of-the-Defense-Industrys-Most-Capable-MultiDomain-Autonomous-Systems-Providers ; https://soldiersystems.net/2026/09/16/iten-defense-officially-joins-np-aerospace-global-enterprise/",
+  "commit": "4ee2b57"
+ },
+ {
+  "id": "R10-B-22",
+  "where": "PANEL 33: PE and Defense Innovation (renderPeDefensePage sync note)",
+  "verdict": "works",
+  "evidence": "Text reads \"last SUCCEEDED 2026-09-21 14:07 UTC\" - a plain historical claim, not phrased as live/current. Cross-checked against the session's own global finding (BRIEF-FRESH.md #0): every cloud routine has been stopped by account usage limits since ~2026-09-23/24, and the local runner went silent 2026-09-23 19:05 PT, so nothing plausibly ran this routine successfully again after Sep 21. I have no tool that reads Claude.ai cloud-routine execution history directly to confirm further, and per the rules must not stamp today's date on a fact I did not actually re-source.",
+  "change": "No edit. The sentence already states a specific dated fact rather than claiming current/live status, and I could not find contrary evidence.",
+  "source": "n/a - verified by cross-reference against BRIEF-FRESH.md #0 (integrator's own measurement), not re-sourced externally",
+  "commit": "none - no change, verified only"
+ },
+ {
+  "id": "R10-B-08",
+  "where": "AI HEDGE FUND COMMITTEE - memo card + remote-run request",
+  "verdict": "works",
+  "evidence": "Flagged citation (Apple Q3 FY2026 results press release, Jul 30, 2026) is correct history inside a deliberately dated point-in-time research memo (ranAt 2026-09-07). Read the live-store export ($S/r10/live/state/hfCommitteeMemo.json, hfRequest.json) directly: hfCommitteeMemo is still the Sep 7 AAPL run; hfRequest's only later attempt (requested Sep 11) aborted Sep 13 on blocked network egress, no memo written. Nothing has changed since the Sep 22 pass reached the same conclusion.",
+  "change": "No content change to the memo (it correctly stands as dated history). Updated the HF_MEMO_SYNCED_AT code comment and the PANEL_VERIFIED_AT[\"panel-hedgefund\"] ledger entry to record today's re-check alongside Sep 22's, so the file's own verification log stays current.",
+  "source": "$S/r10/live/state/hfCommitteeMemo.json ; $S/r10/live/state/hfRequest.json (read-only live-store export taken today per BRIEF-FRESH.md)",
+  "commit": "6b960cd"
+ },
+ {
+  "id": "R10-B-09",
+  "where": "ELITE REWARDS-OPTIMIZATION SCAN (ELIT_TRANSFER_BONUSES note)",
+  "verdict": "works",
+  "evidence": "Text is a correction note about a past scan error (the Jul 31, 2026 Virgin Atlantic 30% offer expiry), correctly dated, not live-framed. The underlying current fact it leads into (Amex MR to Virgin Atlantic +40% Sep 1-30, 2026) was independently reconfirmed live via WebSearch while working item R10-B-01.",
+  "change": "No edit needed - correct history.",
+  "source": "Covered by R10-B-01's sources (https://awardtravelfinder.com/transfer-bonuses/amex-membership-rewards)",
+  "commit": "none - no change needed"
+ },
+ {
+  "id": "R10-B-12",
+  "where": "TRADING LOGINS TABLE / cdStateSeed (kanbanCards k6, and KANBAN_DEFAULT)",
+  "verdict": "fixed",
+  "evidence": "Kanban card k6 read \"USC PJMT 530 - Week 1\", due 2026-09-02, still sitting in the progress column. Cross-checked against uscDeadlines (both the live-store export and the file's own USC_DEADLINES_DEFAULT, which match): the course has since passed Week 2, 3 and 4 (last due date in the tracked list was Week 4 Assignment, Sep 27), with the next tracked item being the Week 8 Final Assessment, Oct 19. The card text and due date were never advanced as weeks passed.",
+  "change": "Reworded card text to the evergreen \"USC PJMT 530 - coursework\" (so it does not need a manual edit every week) and moved its due date to 2026-10-19, the next real tracked deadline, in both the cdStateSeed JSON blob and the KANBAN_DEFAULT JS array so the seed and fallback agree.",
+  "source": "$S/r10/live/state/uscDeadlines.json (live-store export, matches the file's own USC_DEADLINES_DEFAULT)",
+  "commit": "ff3d3ed"
+ },
+ {
+  "id": "R10-B-13",
+  "where": "USC: SCHEDULE + DEADLINES (USC_DEADLINES_DEFAULT)",
+  "verdict": "works",
+  "evidence": "PJMT 530 Week 1 Discussion (2026-09-02) is a real past deadline. renderDeadlines() computes daysLeft = daysUntil(r.due) at render time (not hardcoded) and already labels anything overdue past due in red (line ~13979-13981) rather than claiming it is upcoming, so a past date is not mis-shown as future. Cross-checked the row itself against the uscDeadlines live-store export taken today - identical, no drift.",
+  "change": "No edit - the badge is already computed at runtime from the stored date, which is the correct fix pattern (same one used for R10-B-01/03/04); the date itself is accurate history.",
+  "source": "$S/r10/live/state/uscDeadlines.json",
+  "commit": "none - no change needed"
+ },
+ {
+  "id": "R10-B-14",
+  "where": "USC: SCHEDULE + DEADLINES (USC_DEADLINES_DEFAULT)",
+  "verdict": "works",
+  "evidence": "PJMT 530 Week 1 Assignment & Participation (2026-09-06) is a real past deadline. renderDeadlines() computes daysLeft = daysUntil(r.due) at render time (not hardcoded) and already labels anything overdue past due in red (line ~13979-13981) rather than claiming it is upcoming, so a past date is not mis-shown as future. Cross-checked the row itself against the uscDeadlines live-store export taken today - identical, no drift.",
+  "change": "No edit - the badge is already computed at runtime from the stored date, which is the correct fix pattern (same one used for R10-B-01/03/04); the date itself is accurate history.",
+  "source": "$S/r10/live/state/uscDeadlines.json",
+  "commit": "none - no change needed"
+ },
+ {
+  "id": "R10-B-16",
+  "where": "USC: SCHEDULE + DEADLINES (USC_DEADLINES_DEFAULT)",
+  "verdict": "works",
+  "evidence": "PJMT 530 Week 2 Discussion (2026-09-09) is a real past deadline. renderDeadlines() computes daysLeft = daysUntil(r.due) at render time (not hardcoded) and already labels anything overdue past due in red (line ~13979-13981) rather than claiming it is upcoming, so a past date is not mis-shown as future. Cross-checked the row itself against the uscDeadlines live-store export taken today - identical, no drift.",
+  "change": "No edit - the badge is already computed at runtime from the stored date, which is the correct fix pattern (same one used for R10-B-01/03/04); the date itself is accurate history.",
+  "source": "$S/r10/live/state/uscDeadlines.json",
+  "commit": "none - no change needed"
+ },
+ {
+  "id": "R10-B-17",
+  "where": "USC: SCHEDULE + DEADLINES (USC_DEADLINES_DEFAULT)",
+  "verdict": "works",
+  "evidence": "PJMT 530 Week 2 Assignment & Participation (2026-09-13) is a real past deadline. renderDeadlines() computes daysLeft = daysUntil(r.due) at render time (not hardcoded) and already labels anything overdue past due in red (line ~13979-13981) rather than claiming it is upcoming, so a past date is not mis-shown as future. Cross-checked the row itself against the uscDeadlines live-store export taken today - identical, no drift.",
+  "change": "No edit - the badge is already computed at runtime from the stored date, which is the correct fix pattern (same one used for R10-B-01/03/04); the date itself is accurate history.",
+  "source": "$S/r10/live/state/uscDeadlines.json",
+  "commit": "none - no change needed"
+ },
+ {
+  "id": "R10-B-19",
+  "where": "USC: SCHEDULE + DEADLINES (USC_DEADLINES_DEFAULT)",
+  "verdict": "works",
+  "evidence": "PJMT 530 Week 3 Discussion (2026-09-16) is a real past deadline. renderDeadlines() computes daysLeft = daysUntil(r.due) at render time (not hardcoded) and already labels anything overdue past due in red (line ~13979-13981) rather than claiming it is upcoming, so a past date is not mis-shown as future. Cross-checked the row itself against the uscDeadlines live-store export taken today - identical, no drift.",
+  "change": "No edit - the badge is already computed at runtime from the stored date, which is the correct fix pattern (same one used for R10-B-01/03/04); the date itself is accurate history.",
+  "source": "$S/r10/live/state/uscDeadlines.json",
+  "commit": "none - no change needed"
+ },
+ {
+  "id": "R10-B-21",
+  "where": "USC: SCHEDULE + DEADLINES (USC_DEADLINES_DEFAULT)",
+  "verdict": "works",
+  "evidence": "PJMT 530 Week 3 Assignment & Participation (2026-09-20) is a real past deadline. renderDeadlines() computes daysLeft = daysUntil(r.due) at render time (not hardcoded) and already labels anything overdue past due in red (line ~13979-13981) rather than claiming it is upcoming, so a past date is not mis-shown as future. Cross-checked the row itself against the uscDeadlines live-store export taken today - identical, no drift.",
+  "change": "No edit - the badge is already computed at runtime from the stored date, which is the correct fix pattern (same one used for R10-B-01/03/04); the date itself is accurate history.",
+  "source": "$S/r10/live/state/uscDeadlines.json",
+  "commit": "none - no change needed"
+ },
+ {
+  "id": "R10-B-15",
+  "where": "PANEL_VERIFIED_AT[\"panel-nextmoves\"] note (queue mislabeled this FERS DUAL-PENSION ENGINE - it is actually the shared verification ledger, nearest heading above it in the file is FERS)",
+  "verdict": "works",
+  "evidence": "Text is a dated historical record (\"Re-sourced today\" = 2026-09-22) of what that day's pass checked in Next Big Moves/SWOT/risk register/Opportunity Radar. It remains a true record of that day's work; nothing in the sentence claims current/live status for today. Per BRIEF-FRESH.md Section 3, \"next moves\" and \"orchestration (SWOT, risk register)\" are explicitly C-daily lane territory, not B-markets, so re-verifying that content itself is out of scope here.",
+  "change": "No edit - correct, dated history; re-verifying the underlying SWOT/risk register/next-moves content belongs to the C-daily lane.",
+  "source": "n/a - textual/historical judgment call, cross-checked against BRIEF-FRESH.md lane assignments",
+  "commit": "none - no change needed, out of lane"
+ },
+ {
+  "id": "R10-B-18",
+  "where": "QUANTVUE: STRATEGY TABLES (STRATEGY_SYNCED_AT fallback text)",
+  "verdict": "fixed",
+  "evidence": "Text claimed data was \"still that Sep 16 document, not re-verified today\" and the sync task was stuck. Read the live-store export directly ($S/r10/live/state/strategySnapshot.json): syncedAt is actually 2026-09-23T06:25:56Z with 28 strategies (count still matches), i.e. a newer sync DID land after the Sep 22 diagnosis. The render code (line ~9014) already prefers the live doc's own syncedAt over this string whenever a live doc exists, so this is the offline/seed fallback only.",
+  "change": "Added a 2026-09-28 update noting the newer Sep 23 sync and that the \"stuck\" state has cleared, clarified that this string is fallback-only text, and kept the original diagnostic history (F-E12-10/F-INT-08 findings) for the record instead of deleting it.",
+  "source": "$S/r10/live/state/strategySnapshot.json (live-store export taken today)",
+  "commit": "fa2737f"
+ },
+ {
+  "id": "R10-B-20",
+  "where": "ECONOMIC CALENDAR - ECONODAY (sync note)",
+  "verdict": "fixed",
+  "evidence": "Sync note only referenced the Sep 22 hand re-check as current; by Sep 28, 7 rows that were consensus-only on Sep 22 had actual results out (Sep 22-25 releases). Could not independently re-verify whether the Mac task openrouter-feeds-refresh is still erroring since Sep 17 (no access to its run log this pass).",
+  "change": "Updated the sync note to point at the Sep 28 re-check and Sep 25 actuals coverage, and made explicit that the erroring-since-Sep-17 Mac-task claim was NOT re-verified today (left as previously reported) so nothing is stamped today without being re-sourced.",
+  "source": "See R10-B-27 for the row-level sources (BLS/BEA/Census/S&P Global/DOL/UMich)",
+  "commit": "4173b45"
+ },
+ {
+  "id": "R10-B-27",
+  "where": "ECONOMIC CALENDAR - ECONODAY (ECONODAY_EVENTS rows + header comment)",
+  "verdict": "fixed",
+  "evidence": "7 rows were still marked consensus-only / not yet out as of the Sep 22 13:07 UTC pass: Philly Fed Nonmanufacturing, Richmond Fed Manufacturing (both Sep 22), S&P flash PMIs (Sep 23), initial jobless claims wk/Sep19 and New Home Sales (both Sep 24), durable goods and UMich final sentiment (both Sep 25). All had released by today; WebSearch confirms actuals for every one, none contradicting the prior consensus.",
+  "change": "Replaced each row's consensus-only text with the released ACTUAL figures and swapped in primary/wire sources; updated the header comment and ECONODAY_SYNCED_AT to record the Sep 28 re-check alongside Sep 22's.",
+  "source": "https://www.philadelphiafed.org/surveys-and-data/regional-economic-analysis/nonmanufacturing-business-outlook-survey ; https://tradingeconomics.com/united-states/richmond-fed-manufacturing-index ; https://www.pmi.spglobal.com/Public/Home/PressRelease/04dad02019414e5ebc89ec6a04b300bd ; https://finance.yahoo.com/economy/articles/u-jobless-claims-fall-197-112500927.html ; https://www.census.gov/construction/nrs/current/index.html ; https://www.census.gov/manufacturing/m3/adv/current/index.html ; https://www.marketscreener.com/news/september-final-university-of-michigan-consumer-sentiment-48-1-vs-expected-47-5-preliminary-47-8-ce785adfde8bf320",
+  "commit": "4173b45"
+ },
+ {
+  "id": "R10-B-23",
+  "where": "MARKET SNAPSHOT (MARKET_SNAPSHOT_DEFAULT.sources, Yahoo Finance citation)",
+  "verdict": "fixed",
+  "evidence": "The snapshot was the Sep 21, 2026 close - 5 trading days old on Sep 28 (live-store marketSnapshot.json matches the file exactly, confirming this is genuinely what renders today, not just a stale fallback). Re-sourced Friday Sep 25, 2026 close from AP/WTOP, Yahoo Finance, TheStreet and CNBC.",
+  "change": "Replaced asOf, indices (level/prevClose/chgPts/chgPct for Dow/S&P/Nasdaq) and sources with verified Sep 25, 2026 close data; swapped in the correct Yahoo Finance URL for the new date.",
+  "source": "https://finance.yahoo.com/markets/live/stock-market-today-friday-september-25-dow-sp-500-nasdaq-081738529.html ; https://wtop.com/national/2026/09/how-major-us-stock-indexes-fared-friday-9-25-2026",
+  "commit": "88461e6"
+ },
+ {
+  "id": "R10-B-24",
+  "where": "MARKET SNAPSHOT (MARKET_SNAPSHOT_DEFAULT.sources, Strategitz sector-ETF citation)",
+  "verdict": "fixed",
+  "evidence": "Same Sep 21 staleness as R10-B-23; the Strategitz sector-ETF-close citation supported a sectors array I could not re-verify with a comparable primary source for Sep 25 today.",
+  "change": "Removed the stale Sep 21 sectors array/citation rather than leave 5-day-old sector percentages under a new Sep 25 headline; the render code's own empty-state message (\"any sector the pull did not carry is left off rather than guessed at\") already covers this honestly, so nothing was invented.",
+  "source": "n/a for sectors specifically (left blank per the never-invent rule); see R10-B-23 for the index-level sources",
+  "commit": "88461e6"
+ },
+ {
+  "id": "R10-B-25",
+  "where": "panel-quantvue Session Read card (static #sessionReadText / #sessionReadSrc)",
+  "verdict": "fixed",
+  "evidence": "renderSessionRead() (line ~9033) only overwrites this span when a live topPerformersLiveList doc is present AND non-empty; otherwise the static HTML placeholder renders verbatim. That placeholder said Monday Sep 21, 2026, checked 2026-09-22 - 7 days stale today. The live doc itself (checked via the live-store export) currently holds Sep 22 data, one day newer but also stale.",
+  "change": "Rewrote the static fallback text and source note to the Sep 25, 2026 close (same figures verified for R10-B-23/24), noted explicitly that it is fallback-only and gets replaced by the live feed when present, and updated the checked-date label to 2026-09-28.",
+  "source": "Same as R10-B-23 (AP/WTOP, Yahoo Finance, TheStreet, CNBC, Sep 25 2026 close)",
+  "commit": "b5914db"
+ },
+ {
+  "id": "R10-B-26",
+  "where": "lsSetLocal write-failure tracking (dev comment near LS_WRITE_FAILURES)",
+  "verdict": "works",
+  "evidence": "Pure code comment explaining why LS_WRITE_FAILURES exists - a dated record of when a bug (silent localStorage write failure) was found by a failure-injection test. The underlying fix (recording write failures so the bell/exception report can surface them) is still correct and still in the code; the date is accurate history, not a claim that could go stale.",
+  "change": "No edit needed.",
+  "source": "n/a - code-comment history, not a fact requiring an external source",
+  "commit": "none - no change needed"
+ },
+ {
+  "id": "R10-B-28",
+  "where": "ELITE REWARDS-OPTIMIZATION SCAN (header comment above ELIT_TOP_ACTIONS)",
+  "verdict": "fixed",
+  "evidence": "Header comment described only the 2026-09-22 FR2 pass. Today's R10-B pass genuinely re-verified 4 rows (R10-B-01/02/03/04) but not the rest of this large section (Amex Platinum/CSR credits, MGM/Caesars/National/Wyndham/Hyatt detail, hotel-casino promos, car rental, military rows).",
+  "change": "Added a scoped 2026-09-28 note listing exactly what was and was not re-checked today, and deliberately left ELIT_SCAN_SYNCED_AT at 2026-09-22 rather than bump it to today, since that value drives a \"last FULL scan\" badge and today was a partial check, not a full re-scan - bumping it would have overclaimed freshness for the untouched rows.",
+  "source": "n/a - this is a scope/bookkeeping fix documenting the session's own work, not an external fact",
+  "commit": "da0f8b8"
+ },
+ {
+  "id": "R10-B-29",
+  "where": "ELITE REWARDS-OPTIMIZATION SCAN (ELIT_MIL_VET row 1, Amex Platinum SCRA/MLA)",
+  "verdict": "fixed",
+  "evidence": "Row was explicitly labelled \"not re-verified 2026-09-22\" (a prior pass had already been honest about not checking it). WebSearch (militarymoneymanual.com, cardratings.com, Amex's own SCRA/MLA help page) today confirms the core claim but surfaces a real nuance the row was missing: MLA is automatic at application, while SCRA (for a card opened BEFORE active duty) is a separate path requiring a documented request, not automatic.",
+  "change": "Split the MLA/SCRA mechanics apart instead of treating them as one automatic waiver, kept the veterans/retirees-get-no-waiver line (still accurate), and changed the label from \"not re-verified\" to \"re-verified 2026-09-28\" since this one was actually re-sourced.",
+  "source": "https://militarymoneymanual.com/amex-platinum-military/ ; https://www.americanexpress.com/us/help-support/service-members-civil-relief/",
+  "commit": "b2399e1"
+ },
+ {
+  "id": "R10-C-00",
+  "where": "WAITING_ON_STEVEN (~line 14654)",
+  "verdict": "fixed",
+  "evidence": "List still had only the 7 items added 2026-09-24 (Composio sign-ins, You.com, Zoho, publicfeeds ToS, two-Mac setup, cli-anything-feeds slot, VA comp rates); missing the 2026-09-28 append-only block (items 63-67) entirely, and card-sub still said 'a 2026-09-24 snapshot'.",
+  "change": "Added 5 new entries (Mac runner silent 4+ days / runnerctl status,logs fabric-deck-sync,restart; weekly usage allowance warning, resets 2026-10-04 20:00 UTC; approval to make research-only feed routines writers; WhatsApp now one command bash integrations/openwa/setup-phone.sh; 2 dates lapsed Sep 27 - Sienna registration + USC PJMT 530 Week 4) ahead of the existing 7, newest-first. Updated WAITING_ON_STEVEN_ASOF 2026-09-24->2026-09-28 and the card-sub paragraph to name both dates. Left WAITING_ON_STEVEN_RUNBOOK, the object shape {label,fact,step} and renderWaitingOnSteven() untouched.",
+  "source": "docs/NEEDS-STEVEN.md items 55-67 (lines 190-249); integrations/openwa/README.md + setup-phone.sh (repo, confirmed present, dated 2026-09-28) for the one-command WhatsApp claim",
+  "commit": "b261c5b22a2287fd1427dd399b2d1e147e3fa8aa"
+ },
+ {
+  "id": "R10-C-01",
+  "where": "panel-wellness, Health metrics card-sub (~line 3742)",
+  "verdict": "works",
+  "evidence": "'last 14 days' is the import window size (relative to whenever the button is pressed, not a countdown to a fixed date); 'up to 2026-09-13' is a plain historical stamp, not phrased as a drifting 'X days ago' count. No hardcoded countdown present.",
+  "change": "none",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-C-02",
+  "where": "OPPORTUNITY RADAR, VA Partial Claim Program item (~line 19227)",
+  "verdict": "fixed",
+  "evidence": "found:2026-09-03, 25 days stale; VA Home Loan Reform Act / June 15 2026 launch / Nov 28 2026 servicer deadline claims needed a freshness check.",
+  "change": "Re-sourced today; all facts (Reform Act signed 2025-07-30, program launched 2026-06-15, servicer deadline 2026-11-28) confirmed still accurate. Appended a 'Re-verified 2026-09-28' sentence with rollout-progress color; left found date and url as the original discovery record.",
+  "source": "https://news.va.gov/press-room/va-launches-partial-claim-program-to-help-veterans-avoid-home-foreclosure/ ; https://nationalmortgageprofessional.com/news/servicers-begin-testing-systems-ahead-va-partial-claim-deadline ; https://www.congress.gov/bill/119th-congress/house-bill/1815",
+  "commit": "419685775b63007d55897f5bc6d59560b1506c3f"
+ },
+ {
+  "id": "R10-C-03",
+  "where": "CONTINUOUS IMPROVEMENT LOG, ciLog 2026-09-07 entry (~line 19986 and cdStateSeed ciLog)",
+  "verdict": "works",
+  "evidence": "'verified by hand today' sits inside a dated changelog entry ({date:\"2026-09-07\", text:...}) — 'today' is scoped to that entry's own date, same convention as decisions.md. The underlying fact (Dec 1, 2025 VA comp table, the 2026 table) is still the current table since Dec 1, 2026 hasn't happened yet.",
+  "change": "none — correct history, dated log entry left as authored",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-C-04",
+  "where": "PANEL 07 Task Board, kanbanCards/KANBAN_DEFAULT card k6 (cdStateSeed line 7132 + KANBAN_DEFAULT ~line 19680)",
+  "verdict": "fixed",
+  "evidence": "Card 'USC PJMT 530 — Week 1' due 2026-09-02 sat in the 'progress' column 26 days after its own due date; the board is seeded once from cdStateSeed and KANBAN_DEFAULT's due/text never backfill an existing card (kanbanEnsureRoutines only backfills owner/days/time), so this was genuinely stuck, not just display drift.",
+  "change": "Reworded to 'USC PJMT 530 coursework (Week 8 final assessment due Oct 19)' and rolled due 2026-09-02 -> 2026-10-19 in both the live cdStateSeed kanbanCards entry (the one Steven's board actually reads) and the KANBAN_DEFAULT fallback, matching the deck's own uscDeadlines list (Week 8 Final Assessment is the next dated milestone after Week 4, which NEEDS-STEVEN.md confirms came due 2026-09-27).",
+  "source": "internal cross-reference: this file's own uscDeadlines array (cdStateSeed) + docs/NEEDS-STEVEN.md item 67",
+  "commit": "12e63a4ea421a69dcd929c4abd189dece112b6a6"
+ },
+ {
+  "id": "R10-C-05",
+  "where": "SWOT MATRIX + RISK REGISTER, Multi-state NMLS licensing risk (~line 19075)",
+  "verdict": "fixed",
+  "evidence": "Already had a 'Corrected 2026-09-22' note, but 2 of its 3 numbers were wrong: Dec 5, 2026 is a Saturday not a Friday (verified by date math and by WebSearch), and the at-risk-to-miss date is Dec 12 (SMART date + the article's own 7-day provider-reporting lag), not Dec 11.",
+  "change": "Layered a 'Corrected 2026-09-22, re-verified 2026-09-28' note: Saturday Dec 5 (was 'Friday'), at-risk-to-miss Dec 12 (was Dec 11), final cutoff Dec 26 and Nov 1-Dec 31 window confirmed unchanged.",
+  "source": "WebSearch (NMLS 2026 CE deadlines, cross-checking globenewswire.com/news-release/2026/09/03/3356225 and several 2026 NMLS CE-deadline overviews; direct WebFetch of those domains was blocked by this sandbox's egress proxy, so verification is via WebSearch's synthesis of them) + date arithmetic (Jan 1 2026 = Thursday -> Dec 5 2026 = Saturday)",
+  "commit": "be3b69110dce73ce0322846f810789ed795cb5d6"
+ },
+ {
+  "id": "R10-C-06",
+  "where": "OPPORTUNITY RADAR, NMLS 2026 renewal item (~line 19179)",
+  "verdict": "fixed",
+  "evidence": "Same source/numbers as R10-C-05 (Friday Dec 5, at-risk Dec 11) — same two errors.",
+  "change": "Same fix applied here: Saturday Dec 5, at-risk-to-miss Dec 12; appended a 'Re-verified 2026-09-28' sentence. found date (2026-09-22) and url left as the original discovery record, matching the R10-C-02 convention.",
+  "source": "same as R10-C-05",
+  "commit": "575745e8964be6a4dd715d5af28f866e7a19d2ac"
+ },
+ {
+  "id": "R10-C-07",
+  "where": "DATA FRESHNESS BOARD, 'VA disability compensation rates' explanation (~line 21720)",
+  "verdict": "works",
+  "evidence": "Text says exactly what it is: reference material, no auto-refresh, 'Verified by hand 2026-09-07' — a correctly dated, honestly-labeled fact, not a future-worded claim. The underlying VA comp table doesn't change until the Dec 1, 2026 COLA update, so the Sep 7 verification is still current.",
+  "change": "none",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-C-08",
+  "where": "panel-wellness, appleHealthCard status paragraph (~line 3622)",
+  "verdict": "fixed",
+  "evidence": "'the last real ingest is 2026-09-13 — nine days ago' was correct arithmetic only as of the 2026-09-22 authoring date; read today (2026-09-28) it's actually 15 days and will keep drifting further every day it isn't touched — a hardcoded elapsed-day count, not a stable date.",
+  "change": "Removed the hardcoded 'nine days ago' and replaced it with a stable 'last verified down 2026-09-22' stamp plus a pointer to runnerctl status for the current state, instead of adding new live-computed JS for one sentence.",
+  "source": "",
+  "commit": "aa0e963a8512091d98ccae3c671b8fc348eef720"
+ },
+ {
+  "id": "R10-C-09",
+  "where": "panel-toolkit, Second Brain — Notion and Google Drive card (~line 6780)",
+  "verdict": "fixed",
+  "evidence": "'brain-weekly-verify ... last ok 2026-09-14' is still literally true (nothing has run since), but today's NEEDS-STEVEN.md (item 63, same-day primary source) confirms the Mac runner has been silent since 2026-09-23, so the Sep 20 AND Sep 27 Sunday slots are now both known-missed, not just Sep 20 as an older note elsewhere on this same panel implies.",
+  "change": "Appended '— still the last ok run: the Mac runner has been silent since 2026-09-23, so the Sep 20 and Sep 27 slots both went unlogged' to the existing stamp. Left the brain-deck-sync clause earlier in the same sentence untouched (out of this item's scope).",
+  "source": "docs/NEEDS-STEVEN.md item 63 (2026-09-28)",
+  "commit": "02776f8e2bb819bc5fb4ebf04fb50a60cdf183f8"
+ },
+ {
+  "id": "R10-C-10",
+  "where": "INIT, ZH_SEED (~line 16919)",
+  "verdict": "works",
+  "evidence": "ZH_SEED.syncedAt is an intentional fixed floor, not a freshness stamp — the code comment at zhDoc() explains it is 'a floor, not a cache: it does not age out on its own, so its 2026-09-14 date is stated on the board rather than implied,' and zhDoc() already replaces it outright the first time a real zohoLeads sync lands. Zoho API access is still blocked (NEEDS-STEVEN item 57, unchanged in the 2026-09-28 batch), so the seed is still the correct thing being shown.",
+  "change": "none — already correct, self-dating, and by design not supposed to drift",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-C-11",
+  "where": "INIT, renderZohoBoard() comment + note text (~line 16962)",
+  "verdict": "works",
+  "evidence": "Same mechanism as R10-C-10: the comment and the rendered note both correctly say 'Board as of 2026-09-14 — pasted by Steven' using d.syncedAt dynamically, exactly the self-labeling behavior the freshness rules ask for. Nothing hardcoded or drifting.",
+  "change": "none",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-C-12",
+  "where": "SWOT MATRIX + RISK REGISTER, weaknesses[4] weekly-backup item (~line 19003)",
+  "verdict": "fixed",
+  "evidence": "Said 'missed its 2026-09-20 slot' only (added 2026-09-22). The Mac runner has been silent since 2026-09-23 per today's NEEDS-STEVEN.md item 63, so the next Sunday slot (2026-09-27) was necessarily missed too and the item undercounted it.",
+  "change": "Reworded to 'has now missed both its 2026-09-20 and 2026-09-27 slots (the runner has been silent since 2026-09-23)'; kept 'Added 2026-09-22' and appended 'slot count updated 2026-09-28'.",
+  "source": "docs/NEEDS-STEVEN.md item 63 (2026-09-28)",
+  "commit": "6b51be27b5b4375cf6af6d403c0305d546a905cf"
+ },
+ {
+  "id": "R10-C-13",
+  "where": "panel-aiteam, Local Bridge card lbCountsStamp fallback (~line 4646)",
+  "verdict": "works",
+  "evidence": "renderLocalBridgeCounts() (~line 27407) already only overwrites lbMcpCount/lbAgentCount/lbTaskCount/lbCountsStamp when a real toolkitSnapshot is present; its own comment says the 2026-09-16 fallback numbers 'stay as they are' with no snapshot — by design, self-labeled, and not externally verifiable (private Mac infra, not a web fact).",
+  "change": "none",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-C-14",
+  "where": "panel-news, #topHeadlinesNote fallback text (~line 1570)",
+  "verdict": "works",
+  "evidence": "'in error since 2026-09-17' is a stable since-date (does not drift like an elapsed-day count), the sentence itself says the live stamp replaces this line once a feed lands, and current Mac-task status isn't independently checkable by this role's tools.",
+  "change": "none",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-C-15",
+  "where": "PANEL 01 ADD-ON: ON THIS DAY, renderOnThisDay() (~line 18908)",
+  "verdict": "works",
+  "evidence": "Already computed at runtime: covers today via new Date() and explicitly prints 'NOT <today>; this feed has not refreshed since' when the feed's own covered date differs from today — exactly the pattern these freshness rules ask for. The one hardcoded piece, 'in error since 2026-09-17', is a stable since-date, same reasoning as R10-C-14.",
+  "change": "none",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-C-16",
+  "where": "SWOT MATRIX + RISK REGISTER, renderNextMovesPage() sync note (~line 19146)",
+  "verdict": "fixed",
+  "evidence": "'Next scheduled attempt 2026-09-27' is a hardcoded literal in a function that re-renders live, so it kept reading as upcoming after the date passed; NEEDS-STEVEN.md item 64 places that exact Sunday (~16:09 UTC, per the routine's own weekly pattern) inside the 2026-09-24-evening→Sep-27-20:00-UTC usage-limit outage that stopped 34 of 66 cloud routines, so whether it ran is genuinely unverified, not confirmable via WebSearch.",
+  "change": "Reworded to mark the Sep 20 run as the 'last confirmed' failure, call the Sep 27 attempt unverified (with the outage reasoning inline), and roll 'next scheduled attempt' to 2026-10-04 (the next Sunday in the weekly pattern).",
+  "source": "docs/NEEDS-STEVEN.md item 64 (2026-09-28); weekly-cadence inference from the existing 2026-09-20/2026-09-27 dates in this same sentence",
+  "commit": "11857c7f2936fe62a27db6c83f3a724325ef68ae"
+ },
+ {
+  "id": "R10-C-17",
+  "where": "PART 9 TRACKERS, backup-status card, doc.lastBackup branch (~line 20977)",
+  "verdict": "fixed",
+  "evidence": "Same underlying fact as R10-C-12 (r6-weekly-backup never run under the runner), same undercount: said only 'missed its 2026-09-20 slot'. The badge/age above this line is already computed live via p9DaysSince(), but this sentence is a static literal.",
+  "change": "Updated to 'has now missed its 2026-09-20 and 2026-09-27 slots (the runner has been silent since 2026-09-23)', matching R10-C-12's wording. Left the parallel sentence in the doc-missing branch (~line 20963) untouched — not currently rendered (a backupStatus doc exists) and not named by this queue item.",
+  "source": "docs/NEEDS-STEVEN.md item 63 (2026-09-28)",
+  "commit": "dd9cafad395fba54a1c9c1cf43edd99d3faac2e4"
+ },
+ {
+  "id": "R10-C-18",
+  "where": "panel-vanessa, 'Reach Vanessa via' table, Local Bridge queue row (~line 1391)",
+  "verdict": "fixed",
+  "evidence": "Green 'Live' badge rested on a static 'last run ok 2026-09-21 8:25 PM PT' stamp for an hourly Mac task; the runner has been confirmed silent since 2026-09-23 (NEEDS-STEVEN item 63), so the hourly runs for the last several days did not happen and 'Live' overclaims current status.",
+  "change": "Downgraded badge green->amber, dropped the standalone 'Live' label, and reworded to 'Last run ok 2026-09-21 8:25 PM PT — unconfirmed since; the Mac runner has been silent since 2026-09-23'. Left the iMessage row's identical-pattern stamp untouched — not named by this queue item.",
+  "source": "docs/NEEDS-STEVEN.md item 63 (2026-09-28)",
+  "commit": "5cd854ca88083fd079d87a6565e9c0d02e9f35c5"
+ },
+ {
+  "id": "R10-C-19",
+  "where": "NEWS: GLOBAL + LOCAL SNAPSHOT, NEWS_LOCAL Temecula item (~line 8705)",
+  "verdict": "works",
+  "evidence": "NEWS_GLOBAL/NEWS_LOCAL/NEWS_SYNCED_AT are a self-dated seed that renderNews() and the live-doc merge logic (~line 8788-8798) overwrite outright the first time a live news doc lands; each headline already carries its own 'date' field and the sync note reads 'Synced <date> — written by the daily feed task'. Correct, self-labeled history, not a future-worded claim.",
+  "change": "none",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-C-20",
+  "where": "NEWS: GLOBAL + LOCAL SNAPSHOT, NEWS_LOCAL Orange County item (~line 8760)",
+  "verdict": "works",
+  "evidence": "Same seed array and mechanism as R10-C-19.",
+  "change": "none",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-C-21",
+  "where": "OPPORTUNITY RADAR, renderOpportunityRadar() sync note (~line 19316)",
+  "verdict": "fixed",
+  "evidence": "'last SUCCEEDED 2026-09-21 12:12 UTC' is a hardcoded literal for a DAILY cloud routine (distinct from the weekly routines) so it doesn't obviously fall under the Mac-runner silence, but NEEDS-STEVEN.md item 64 (2026-09-28) says the usage-limit outage stopped 34 of 66 cloud routines starting Sep 24 evening — whether this specific daily routine's runs since Sep 21 succeeded is not something WebSearch can confirm (private execution log).",
+  "change": "Reworded 'last SUCCEEDED' to 'last confirmed SUCCEEDED' and added that runs since Sep 24 aren't independently confirmed given the outage, pointing to the live list's own timestamp (which the sentence already says exists) as the real freshness signal.",
+  "source": "docs/NEEDS-STEVEN.md item 64 (2026-09-28)",
+  "commit": "e7132de282d120a408e12f156f21efb39c006fd8"
+ },
+ {
+  "id": "R10-C-22",
+  "where": "AI TEAM ORG CHART, Victor's tools list (~line 27187)",
+  "verdict": "fixed",
+  "evidence": "Said only 'ran 2026-09-21; no data — Lofty key pending'. Today's NEEDS-STEVEN.md item 63 names lead-triage-daily specifically as one of the tasks 'refused' when the runner was last active (2026-09-23), a materially different/worse status than 'ran with no data' that the org chart didn't reflect.",
+  "change": "Appended '; refused on its next attempt 2026-09-23, when the runner went silent'.",
+  "source": "docs/NEEDS-STEVEN.md item 63 (2026-09-28)",
+  "commit": "19351a765884f2c762a4b3c839ceebaee96667e8"
+ },
+ {
+  "id": "R10-C-23",
+  "where": "AI TEAM ORG CHART, Mac scheduled tasks summary (~line 27201)",
+  "verdict": "fixed",
+  "evidence": "The whole 'Running on schedule' category (weather-news-refresh, vanessa-sweep, showing-sync, lead-triage-daily, isa-comms-bridge-local, vanessa-research-queue, brain-deck-sync, local-bridge-queue, vanessa-imessage-inbox) was headed only 'last ok 2026-09-21', with no mention that none of them have a confirmed run since given the runner's 2026-09-23 silence.",
+  "change": "Header changed to 'last ok 2026-09-21; unconfirmed since — the runner has been silent since 2026-09-23'. Left the 'Never run under the runner' segment's 'r6-weekly-backup Sun 5:00 (missed Sep 20)' in the same string untouched — that fact is fixed at R10-C-12/R10-C-17 and wasn't part of this item's matched ctx.",
+  "source": "docs/NEEDS-STEVEN.md item 63 (2026-09-28)",
+  "commit": "7c60e31a84ed6b8b5fe71d0464ef32383de2a5c7"
+ },
+ {
+  "id": "R10-C-24",
+  "where": "CLI-Anything connectors, showing queue-sync confirmation note (~line 28014)",
+  "verdict": "fixed",
+  "evidence": "'the showing-sync task picks them up on its next run (...; last ok 2026-09-21)' implies an actively-cycling task; the runner has been silent since 2026-09-23 so there is no real 'next run' happening yet.",
+  "change": "Added ', unconfirmed since — the runner has been silent since 2026-09-23' after the last-ok stamp. Left 'The Calendar and ISA-line legs work today' untouched — read as a wiring/capability claim, not a same-minute-execution claim.",
+  "source": "docs/NEEDS-STEVEN.md item 63 (2026-09-28)",
+  "commit": "b898fdecd951e764b6228344b2e344e731cf4a44"
+ },
+ {
+  "id": "R10-C-25",
+  "where": "DATA FRESHNESS BOARD header note (~line 1477)",
+  "verdict": "fixed",
+  "evidence": "'Scheduler verified Sep 22, 2026: 46 of 50 cloud routines are enabled' is the exact stale figure this same file already calls out at panel-nextmoves (~line 6084): '57 cloud routines exist, 53 of them enabled (recounted 2026-09-23; the \\\"50 / 46\\\" figure shown here previously was stale)' — an internal, already-verified correction that simply hadn't been propagated to this row.",
+  "change": "Replaced 'Scheduler verified Sep 22, 2026: 46 of 50 cloud routines are enabled' with 'Scheduler recounted 2026-09-23: 57 cloud routines exist, 53 of them enabled (the \\\"50 / 46\\\" figure shown here previously was stale)'; left the FAILED(10)/ABANDONED(2) sub-counts unchanged since they already match the corrected total.",
+  "source": "internal cross-reference: this file's own panel-nextmoves note (~line 6084), recounted 2026-09-23",
+  "commit": "e38502f603bc2309fcb9b473c9f0bdcdba27076c"
+ },
+ {
+  "id": "R10-C-26",
+  "where": "panel-aiteam, Steve-twin card 'Honest status (Sep 22, 2026)' paragraph (~line 4789)",
+  "verdict": "works",
+  "evidence": "Self-scoped to 'Honest status (Sep 22, 2026)'; the specific matched clause ('an unattended cloud write was proved to work on 2026-09-22 — so the routine can be re-enabled') is a stable historical proof-date driving a still-valid, still-unactioned recommendation about a CLOUD routine (re-enabling doesn't depend on Mac-runner wake state), and the same fact is corroborated elsewhere in this file (panel-nextmoves, panel-vanessa).",
+  "change": "none",
+  "source": "",
+  "commit": ""
+ },
+ {
+  "id": "R10-C-27",
+  "where": "panel-aiteam, #improveNote (~line 4917)",
+  "verdict": "fixed",
+  "evidence": "'next slot 2026-09-25' is a past-tense-worded-as-future claim now 3 days stale; this is a weekly Friday routine with a 'never run' track record, and the runner's confirmed 2026-09-23 silence means the Sep 25 Friday slot was also necessarily missed.",
+  "change": "Reworded to 'missed its 2026-09-25 slot too — next scheduled 2026-10-02' (the next Friday), keeping 'never run under the runner' and the rest of the paragraph unchanged.",
+  "source": "docs/NEEDS-STEVEN.md item 63 (2026-09-28); weekly Friday cadence from the existing text",
+  "commit": "7211b6e419a11b56c183c60ac06dd1c19ba80e4e"
+ },
+ {
+  "id": "R10-C-28",
+  "where": "panel-masterplan, 'Inside the next 30 days' callout (~line 4986)",
+  "verdict": "fixed",
+  "evidence": "'Inside the next 30 days (as of Tue, Sep 22, 2026)' still listed the foot doctor appointment (Fri Sept 25) as upcoming, but that date is 3 days in the past (today is Mon Sep 28); the cdStateSeed appointments array confirms the date (2026-09-25).",
+  "change": "Moved the foot-doctor appointment from the 'next 30 days' clause into 'Already passed', and updated the as-of stamp to 'Mon, Sep 28, 2026'. Left the Q3 licensing window (still upcoming, closes Sept 30) and the panel-level 'Plan reviewed Tue, Sep 22, 2026' note untouched — only this callout was reviewed.",
+  "source": "internal cross-reference: this file's own cdStateSeed appointments array; date arithmetic",
+  "commit": "b46cf2c8129c5ed5a64c0f221d568bc27a9c2bd2"
+ },
+ {
+  "id": "R10-C-29",
+  "where": "panel-nextmoves, routine-health src-note (~line 6084)",
+  "verdict": "fixed",
+  "evidence": "This paragraph (recounted 2026-09-23) claims 'the daily ones are genuinely holding... all SUCCEEDED on schedule through Sep 21-22' and is the very source I used to fix R10-C-25, but it predates NEEDS-STEVEN.md item 64 (2026-09-28), which reports a separate, bigger usage-limit outage (Sep 24 evening → Sep 27 20:00 UTC, and 21:50–01:00 UTC) that stopped 34 of 66 cloud routines — a materially larger disruption than the '10 FAILED + 2 ABANDONED of 57' this paragraph describes.",
+  "change": "Appended an 'Update 2026-09-28' sentence naming the newer 34-of-66 outage and marking the 'daily research cadence works' claim unconfirmed until re-checked, without rewriting the detailed Sep 23 breakdown I don't have per-routine data to redo.",
+  "source": "docs/NEEDS-STEVEN.md item 64 (2026-09-28)",
+  "commit": "ff5521608a69122e14d001fec2f330ce22c324cc"
+ },
+ {
+  "id": "R10-C-30",
+  "where": "panel-toolkit, Connections & sign-ins list, You.com row (~line 6832)",
+  "verdict": "works",
+  "evidence": "'Retired 2026-09-22 by Steven's decision' is correct, dated history (same pattern as decisions.md entries); '0 credits (measured 2026-09-24)' is already labeled with its own verification date and is consistent with NEEDS-STEVEN item 56 and this session's own WAITING_ON_STEVEN card (R10-C-00). Nothing in the newer 2026-09-28 NEEDS-STEVEN batch contradicts it or says it was funded since.",
+  "change": "none",
+  "source": "",
+  "commit": ""
+ }
+]

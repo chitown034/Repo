@@ -1,0 +1,67 @@
+{
+  "_synthetic": "All values invented for tests. No real person, listing or client.",
+  "url": "https://showami.com/account",
+  "tree": {
+    "name": "/",
+    "role": "document",
+    "children": [
+      {
+        "name": "navigation_1",
+        "role": "navigation",
+        "children": [
+          {
+            "name": "link_1",
+            "role": "link",
+            "text": "Home"
+          },
+          {
+            "name": "link_2",
+            "role": "link",
+            "text": "My Account"
+          },
+          {
+            "name": "link_3",
+            "role": "link",
+            "text": "Sign Out"
+          }
+        ]
+      },
+      {
+        "name": "main",
+        "role": "main",
+        "children": [
+          {
+            "name": "heading_1",
+            "role": "heading",
+            "text": "Account Settings"
+          },
+          {
+            "name": "region_1",
+            "role": "region",
+            "children": [
+              {
+                "name": "text_1",
+                "role": "text",
+                "text": "Default Showing Fee: $55.00 per showing"
+              },
+              {
+                "name": "text_2",
+                "role": "text",
+                "text": "Updated: Sep 1, 2026"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "expect": {
+    "kind": "record",
+    "auth_state": "logged_in",
+    "record": {
+      "posted_price": "55.00",
+      "price_label_contains": "Showing Fee",
+      "updated": "Sep 1, 2026"
+    }
+  }
+}

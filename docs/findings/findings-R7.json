@@ -1,0 +1,1019 @@
+[
+ {
+  "id": "R7-A-vanessa-ai-01",
+  "lane": "A-vanessa-ai",
+  "panel": "panel-aiteam",
+  "verdict": "fixed",
+  "evidence": "orgChartBadge said '224 agents under Steven' (countSeats excludes principal) while aiRosterCount said '225 in total' (push() included principal row in tally) -- same ORG_CHART source, two disagreeing totals.",
+  "change": "renderAiTeamRoster: exclude r.kind==='principal' from staffRows/benchRows/benchAgents tally (was rows.length incl. principal). 225 -> 224; now matches orgChartBadge.",
+  "commit": "48495c5"
+ },
+ {
+  "id": "R7-A-vanessa-ai-02",
+  "lane": "A-vanessa-ai",
+  "panel": "panel-orchestration",
+  "verdict": "fixed",
+  "evidence": "orchScaleBadge said '12 logged' but orchScaleNote's 'Automate 5 . Delegate 2 . Replicate 3' summed to 10 -- byLens exact-match dropped rows with compound lens 'Automate + Delegate' and 'Automate (gated)'.",
+  "change": "renderOrchScale: added otherLens counter for non-exact-match lens values; note now appends 'N compound/other lenses' so 5+2+3+2=12 matches the badge.",
+  "commit": "be0ce7b"
+ },
+ {
+  "id": "R7-A-vanessa-ai-03",
+  "lane": "A-vanessa-ai",
+  "panel": "panel-aiteam / panel-kanban",
+  "verdict": "works",
+  "evidence": "F-E8-07: grepped whole file for vanessaQueue -- one hit only, a prose description in B-daily's KANBAN_ROUTINES (kr2, line ~19314), not in my lane. No doc/card/button anywhere reads or writes a vanessaQueue document.",
+  "change": "Verdict: page builds no vanessaQueue feature and makes no UI claim one exists (no card, no live doc, no reader). No fix needed. The one text mention is B-daily's, out of my lane to edit.",
+  "commit": ""
+ },
+ {
+  "id": "R7-A-vanessa-ai-04",
+  "lane": "A-vanessa-ai",
+  "panel": "panel-aiteam",
+  "verdict": "works",
+  "evidence": "isaLine (11 msgs) + isaLineRead rendered and hand-verified: isaLineWaiting()=3 (unrelayed cd-origin), isaLineWaitingHours()=256h from oldest (2026-09-13T17:24-07:00) to harness now (~Sep24 16:0x UTC) -- matches displayed '3 messages...256h'.",
+  "change": "No fix needed. isaLineUnreadPill correctly shows 0 unread: zero origin='isa' messages exist in the live doc (ISA has never posted), consistent with the doc's own team-authored note.",
+  "commit": ""
+ },
+ {
+  "id": "R7-A-vanessa-ai-05",
+  "lane": "A-vanessa-ai",
+  "panel": "panel-aiteam",
+  "verdict": "works",
+  "evidence": "renderIsaLadder output checked against live isaLadder.json verbatim: rung=halted, consecutiveMisses=4, note and updatedAt (2026-09-24T14:44:01Z) all match what's rendered. R5-E-aiteam-02 (panelStampRegistry missing isaLineRead/isaLadder keys) is G's fix, not mine.",
+  "change": "No fix needed in my lane.",
+  "commit": ""
+ },
+ {
+  "id": "R7-A-vanessa-ai-06",
+  "lane": "A-vanessa-ai",
+  "panel": "panel-vanessa / panel-aiteam",
+  "verdict": "works",
+  "evidence": "Checked chat failure paths (brief item). sendVanessaMessage handles: sample-null/not_granted, rate_limited/upstream_error/session_expired, abort+retry capped at CHAT_MAX_RETRY, partial-text-on-interrupt, outer claudeUse().catch. All wired to vanessaStatusNote.",
+  "change": "No fix needed. Steve's chat uses the shared createSimpleMentorChat factory (also used by 3 other personas outside my lane -- G-owned code); Steve's own wiring/config (opts) is complete and correct.",
+  "commit": ""
+ },
+ {
+  "id": "R7-A-vanessa-ai-07",
+  "lane": "A-vanessa-ai",
+  "panel": "panel-aiteam",
+  "verdict": "needs-steven",
+  "evidence": "twinQueue item tw_1790043875003 (status needs-steven, dated 2026-09-22) asks Steven to rotate the Follow Up Boss API credential in Composio. Stored data, correctly rendered as-is -- not a page bug.",
+  "change": "Per CONNECTIONS-2026-09-24.md, follow_up_boss was fully disconnected today at Steven's request (Lofty is now the RE CRM). Recommend Steven click 'Handled' on this packet -- rotating FUB's key is now moot.",
+  "commit": ""
+ },
+ {
+  "id": "R7-A-vanessa-ai-08",
+  "lane": "A-vanessa-ai",
+  "panel": "panel-vanessa / panel-aiteam",
+  "verdict": "fixed-by-G",
+  "evidence": "Lines ~1386, ~4747, ~26792, ~26805 all say 'You.com ... retired 2026-09-22'. CONNECTIONS-2026-09-24.md measured today: You.com connector is still connected, just 0 credits (unfunded), not retired/disconnected.",
+  "change": "Old (x4): 'You.com was retired 2026-09-22' / 'You.com is retired (2026-09-22)' / 'You.com retired 2026-09-22' / 'Retired: You.com (2026-09-22...)'. New: 'You.com: connected, unfunded (0 credits) -- no paid search runs; Claude subscription + Perplexity used instead.'",
+  "commit": "710730d (You.com wording then corrected by the integrator, 3623dc8)"
+ },
+ {
+  "id": "R7-A-vanessa-ai-09",
+  "lane": "A-vanessa-ai",
+  "panel": "panel-aiteam",
+  "verdict": "fixed-by-G",
+  "evidence": "Line ~26805 (AI_TEAM_TOOLBOX 'Connectors' row) says 'Inkbox (iMessage, email, Discord relay)'. CONNECTIONS-2026-09-24.md: Inkbox channel status is email+iMessage only (no phone#); Discord relay is the separate, not-yet-connected discordbot (needs Steven's bot token).",
+  "change": "Old: 'Inkbox (iMessage, email, Discord relay)'. New: 'Inkbox (iMessage, email)' -- drop Discord relay from Inkbox's parenthetical; it's already listed correctly elsewhere as the not-yet-connected Vanessa Discord bot.",
+  "commit": "710730d (You.com wording then corrected by the integrator, 3623dc8)"
+ },
+ {
+  "id": "R7-A-vanessa-ai-10",
+  "lane": "A-vanessa-ai",
+  "panel": "panel-aiteam",
+  "verdict": "fixed-by-G",
+  "evidence": "Line ~26805 says 'GoHighLevel (authorization never completed; dropped)'. CONNECTIONS-2026-09-24.md: highlevel is 'initiated, no account -- a fresh sign-in link was generated 2026-09-24; Steven must complete it', i.e. pending, not dropped/abandoned.",
+  "change": "Old: 'GoHighLevel (authorization never completed; dropped)'. New: 'GoHighLevel (not connected -- sign-in pending, Steven; a fresh link was generated 2026-09-24)'.",
+  "commit": "710730d (You.com wording then corrected by the integrator, 3623dc8)"
+ },
+ {
+  "id": "R7-A-vanessa-ai-11",
+  "lane": "A-vanessa-ai",
+  "panel": "panel-vanessa / panel-aiteam / panel-orchestration",
+  "verdict": "works",
+  "evidence": "Scripted link-integrity scan of all 3 panels' static HTML: every internal #jump target exists (isaLineCard, panel-vanessa); every external link (openrouter.ai/keys, claude.ai/code/routines, github.com/stablyai/orca) is https with target=_blank rel=noopener.",
+  "change": "No fix needed.",
+  "commit": ""
+ },
+ {
+  "id": "R7-A-vanessa-ai-12",
+  "lane": "A-vanessa-ai",
+  "panel": "panel-vanessa / panel-aiteam / panel-orchestration",
+  "verdict": "works",
+  "evidence": "Dumped all 141 element ids in my 3 panels against today's live store (176 docs) via runtime-harness --dump-text; grepped for undefined/NaN/[object Object]/null/Invalid Date/raw \\u escapes: 0 hits.",
+  "change": "No fix needed.",
+  "commit": ""
+ },
+ {
+  "id": "R7-A-vanessa-ai-13",
+  "lane": "A-vanessa-ai",
+  "panel": "panel-aiteam",
+  "verdict": "works",
+  "evidence": "Local Bridge 'Queue it for the Mac' button (lbRunBtn) traced by reading code: writes via lbEnqueue() to the real localBridgeQueue doc, consumed by the local-bridge-queue Mac task (hourly 6:25-9:25 PM PT, last run ok per AI_TEAM_TOOLBOX text). Not a false promise.",
+  "change": "No fix needed.",
+  "commit": ""
+ },
+ {
+  "id": "R7-A-vanessa-ai-14",
+  "lane": "A-vanessa-ai",
+  "panel": "panel-orchestration",
+  "verdict": "works",
+  "evidence": "orchStressBadge ('1 degraded', from row.result) vs orchStressNote ('6 still open', from row.status) looked contradictory at first read. Traced renderOrchStress: they read different fields by design -- a row can pass its retest yet stay non-Resolved pending a full observation window.",
+  "change": "No fix needed -- confirmed by design, not a bug. (orchTiles '56/57 passing' = 57 total - 1 degraded - 0 failing, internally consistent.)",
+  "commit": ""
+ },
+ {
+  "id": "R7-B-daily-01",
+  "lane": "B-daily",
+  "panel": "panel-tools",
+  "verdict": "works",
+  "evidence": "DAWIA link renders as li right after NAVWAR, padding-left:18px + arrow glyph, href=https://claude.ai/artifact/5Dw1E659qm2tFTYjTSVw6z, target=_blank rel=noopener. Confirmed via --dump-text on #panel-tools .link-list.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-B-daily-02",
+  "lane": "B-daily",
+  "panel": "panel-tools",
+  "verdict": "works",
+  "evidence": "Showing route planner: srAddStop/srOpenMaps/srCopyItin/srOpenShowami/srCopyShowami/srSendIsa/srQueueSteve all wired with addEventListener, save local state, and only append to the local isaLine/twin queue (no client-facing send). Traced by reading handler code.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-B-daily-03",
+  "lane": "B-daily",
+  "panel": "panel-appointments",
+  "verdict": "fixed-by-G",
+  "evidence": "card-sub says 'All 9 calendars on the Google account', TRACKED_CALENDARS has 9 rows, but CONNECTIONS-2026-09-24.md measured 8. Today's calendarSnapshot.calendarsUnavailable names the 'SPACE CA' calendar id (matches our SPACE—California row) 'could not be found or has been deleted.'",
+  "change": "old (~line 3363): 'All 9 calendars on the Google account.' + TRACKED_CALENDARS 9-row array (~17124) incl. SPACE—California. new: re-probe list_calendars; likely drop that row, say 8.",
+  "commit": "48896c1"
+ },
+ {
+  "id": "R7-B-daily-04",
+  "lane": "B-daily",
+  "panel": "panel-kanban",
+  "verdict": "fixed-by-G",
+  "evidence": "Same root cause as R7-B-daily-03: kr8 names 'the five business calendars'; shared FRESH_FEEDERS map (G-owned, ~line 21351) says the same phrase. Re-verify together with the calendar recount.",
+  "change": "old (kr8, ~line 19320): '...across the five business calendars...'. new: pending G's recount.",
+  "commit": "48896c1"
+ },
+ {
+  "id": "R7-B-daily-05",
+  "lane": "B-daily",
+  "panel": "panel-brief",
+  "verdict": "fixed-by-G",
+  "evidence": "execStatRow 'Stale feeds' (computeExecExceptions, shared w/ alert bell) = 4 today; freshBadge 'Stale' (renderDataFreshness) = 2. Former flags stale at d>threshold; board labels 'Stale' only at d>threshold*3. Comment ~21341 says they 'never disagree' — they do.",
+  "change": "Align staleness defs in computeExecExceptions (~22355) vs renderDataFreshness (~21388), or drop the 'never disagree' comment.",
+  "commit": "2e6d308"
+ },
+ {
+  "id": "R7-B-daily-06",
+  "lane": "B-daily",
+  "panel": "panel-news",
+  "verdict": "needs-steven",
+  "evidence": "live/state city.json (panel-news 'Other city' field) holds a pasted OneNote/doc URL fragment, not a city. Code renders it correctly (safely URL-encoded search link) — bad stored data, not a script bug. Only Steven knows the right value.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-B-daily-07",
+  "lane": "B-daily",
+  "panel": "panel-brief,panel-news,panel-appointments,panel-pto",
+  "verdict": "works",
+  "evidence": "Rendered vs live/state (176 docs) + empty store via --dump-text: no undefined/NaN/null/[object Object]/Invalid Date. Counts agree: Weather 7 cards, Local news 11, Bears 4 rows, PTO 10-yr totals 144/386/147/393 match callout. Empty store: honest fallback (e.g. 'Calendar not loaded').",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-B-daily-08",
+  "lane": "B-daily",
+  "panel": "panel-tools,panel-masterplan,panel-kanban",
+  "verdict": "works",
+  "evidence": "AI training 7 rows, kanban owner filter 5+6+9+7+13=40 matches 'Everyone 40', annualTodo 2/80 & todo 3/66 both self-computed from real docs. No FUB/'Follow Up Boss' label in my 7 panels (grep clean); Lofty/Zoho+ARIVE named correctly per CONNECTIONS file.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-B-daily-09",
+  "lane": "B-daily",
+  "panel": "panel-brief,panel-news,panel-appointments,panel-pto,panel-tools,panel-masterplan,panel-kanban",
+  "verdict": "works",
+  "evidence": "All external <a> in my 7 panels are https with target=_blank rel=noopener (script-checked). #panel-opsradar jump target exists. No orphaned interactive ids — every button/select/input has a wired handler (ref-count check across the file).",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-B-daily-10",
+  "lane": "B-daily",
+  "panel": "panel-kanban",
+  "verdict": "works",
+  "evidence": "kr2 'Work the vanessaQueue...(vanessa-sweep, weekdays 12:35 PM)' names a real routine: routineHealth.json confirms vanessa-sweep runs weekdays ~12:35pm, writes vanessaBrief ('ran cleanly...queue empty'). Cadence checks out. Relates to A's F-E8-07 but builds no UI queue; left as-is.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-C-markets-01",
+  "lane": "C-markets",
+  "panel": "panel-hedgefund",
+  "verdict": "fixed",
+  "evidence": "hfPastedData placeholder/aria-label said 'leave blank to let the team search the live web instead'. False: the in-page tool is literally named dashboard_market_data and its own description says 'no live quote feed here - use only what this returns' (deck docs + paste only).",
+  "change": "OLD (line ~2004): aria-label/placeholder=\"Leave blank to let the team search the live web instead\" NEW: \"Leave blank to run on this deck's own market documents only — this page has no live web access\"",
+  "commit": "7475e84"
+ },
+ {
+  "id": "R7-C-markets-02",
+  "lane": "C-markets",
+  "panel": "panel-quantvue",
+  "verdict": "fixed-by-G",
+  "evidence": "Shared orStampText() (~line 8405) formats an ISO instant via toLocaleTimeString with NO timeZone, unlike execTimeOf/nowEtStamp which pin America/Los_Angeles. Verified in node: 2026-09-13T22:47:04Z renders '10:47 PM' (this gate env is UTC) vs correct PT '3:47 PM'. Hits every *SyncNote deck-wide.",
+  "change": "OLD: hour:\"numeric\",minute:\"2-digit\" }); NEW: add timeZone:\"America/Los_Angeles\" to that same toLocaleTimeString options object (line ~8405; also consider the toLocaleDateString line just above it).",
+  "commit": "46c2bee"
+ },
+ {
+  "id": "R7-C-markets-03",
+  "lane": "C-markets",
+  "panel": "panel-apex",
+  "verdict": "fixed-by-G",
+  "evidence": "Same class of bug as R7-C-markets-02, second function: chatFmtTs() (~line 23434), used by every chat bubble timestamp deck-wide (Vanessa/Apex/James/Kevin/Steve). new Date(ts).toLocaleString(...) has no timeZone, so bubble times drift with the render host's local zone instead of Steven's Pacific.",
+  "change": "OLD: function chatFmtTs(ts){try{return new Date(ts).toLocaleString(\"en-US\",{month:\"short\",day:\"numeric\",hour:\"numeric\",minute:\"2-digit\"});}catch(e){return \"\";}} NEW: add timeZone:\"America/Los_Angeles\" to that options object.",
+  "commit": "46c2bee"
+ },
+ {
+  "id": "R7-C-markets-04",
+  "lane": "C-markets",
+  "panel": "panel-quantvue",
+  "verdict": "works",
+  "evidence": "marketSnapshot: mktAsOf renders data.asOf verbatim (own stamp 'Sep 21 close...manually refreshed Sep 22 13:10 UTC'), tiles/movers/sectors match the live doc, shape-guards fall back safely per key. No undefined/NaN.",
+  "change": "none",
+  "commit": ""
+ },
+ {
+  "id": "R7-C-markets-05",
+  "lane": "C-markets",
+  "panel": "panel-quantvue",
+  "verdict": "works",
+  "evidence": "strategySnapshot: strategySyncNote honestly reports r4-quantvue-sync syncedAt (2026-09-23T06:25:56Z, correctly shown as 2d ago via Pacific-calendar-day rule); 28 strategies + 9 flags render from the live doc, none invented.",
+  "change": "none",
+  "commit": ""
+ },
+ {
+  "id": "R7-C-markets-06",
+  "lane": "C-markets",
+  "panel": "panel-hedgefund",
+  "verdict": "works",
+  "evidence": "hfCommitteeMemo still correctly shown as the Sep 7, 2026 AAPL run (live doc ranAt unchanged); hfReqStatus honestly reports the Sep11-13 aborted remote run with no fabricated later memo. Matches live store exactly.",
+  "change": "none",
+  "commit": ""
+ },
+ {
+  "id": "R7-C-markets-07",
+  "lane": "C-markets",
+  "panel": "panel-openterminal",
+  "verdict": "works",
+  "evidence": "openTerminalSnapshot syncedAt 2026-09-13T22:47Z correctly badged red/stale ('11 days old'), otSnapNote/otBadges/VIX render from the live doc; the no-doc branch has an honest empty state. otCmdList queue history renders 4 real items, 0 pending.",
+  "change": "none",
+  "commit": ""
+ },
+ {
+  "id": "R7-C-markets-08",
+  "lane": "C-markets",
+  "panel": "panel-personalaccounts",
+  "verdict": "works",
+  "evidence": "Cross-checked math: live accounts.json (17 rows) sums to $2,145,280.24; + property total $1,175,000 = $3,320,280 = nwTotalAssets exactly. nwNetWorth = assets-liab is exact. Liquidity ratio 2% matches liquid/assets.",
+  "change": "none",
+  "commit": ""
+ },
+ {
+  "id": "R7-C-markets-09",
+  "lane": "C-markets",
+  "panel": "panel-apex",
+  "verdict": "works",
+  "evidence": "Traced renderTts() (TTS/IRC162, panel-apex) and renderReps() (REPS, panel-personalaccounts): weights/thresholds internally consistent with their own source notes, verdict text never fabricates a number before Steven enters one.",
+  "change": "none",
+  "commit": ""
+ },
+ {
+  "id": "R7-C-markets-10",
+  "lane": "C-markets",
+  "panel": "panel-tax",
+  "verdict": "works",
+  "evidence": "TAX_CATEGORIES counts (30+25+20+20+19+14+12+11+11+10+10+2+1+1) sum to exactly 186, matching the card title '186 federal & state strategies'. No header/body mismatch.",
+  "change": "none",
+  "commit": ""
+ },
+ {
+  "id": "R7-C-markets-11",
+  "lane": "C-markets",
+  "panel": "panel-apex,panel-quantvue,panel-hedgefund,panel-openterminal,panel-james,panel-tax,panel-personalaccounts",
+  "verdict": "works",
+  "evidence": "Scripted check of every <a href> inside my 7 panels: all are https or #, all carry target=\"_blank\" rel=\"noopener\". 0 violations. No href=\"#\" dead jump links, no onclick= attributes found.",
+  "change": "none",
+  "commit": ""
+ },
+ {
+  "id": "R7-C-markets-12",
+  "lane": "C-markets",
+  "panel": "panel-apex,panel-james",
+  "verdict": "works",
+  "evidence": "Apex/James chat cards use the shared createSimpleMentorChat() factory; traced btnElId/clearBtnId/chipsElId/inputElId/threadElId/dotElId/statusElId all match real ids in the HTML. Live-store dump shows real prior threads rendering correctly.",
+  "change": "none",
+  "commit": ""
+ },
+ {
+  "id": "R7-C-markets-13",
+  "lane": "C-markets",
+  "panel": "panel-personalaccounts,panel-openterminal",
+  "verdict": "works",
+  "evidence": "Grepped my panels for Canva/GoHighLevel/Zoho/Lofty/Discord/Composio/etc per the brief's list: only Plaid/Composio/Discord mentions found (Plaid bridge honesty note, an analogy re: Discord). None contradict CONNECTIONS-2026-09-24.md; none on G's known-wrong list. Not edited (not connection-status wording in scope).",
+  "change": "none",
+  "commit": ""
+ },
+ {
+  "id": "R7-C-markets-14",
+  "lane": "C-markets",
+  "panel": "panel-apex,panel-quantvue,panel-hedgefund,panel-openterminal,panel-james,panel-tax,panel-personalaccounts",
+  "verdict": "works",
+  "evidence": "--dump-text over every id in my 7 panels against $S/r7/live/state: no literal undefined/NaN/null/[object Object]/Invalid Date anywhere in rendered output. Harness: 0 exceptions, 0 safeRun fails, 0 missing ids, store 176/176 docs.",
+  "change": "none",
+  "commit": ""
+ },
+ {
+  "id": "R7-C-markets-NQ",
+  "lane": "C-markets",
+  "panel": "panel-apex",
+  "verdict": "fixed",
+  "evidence": "The request was genuine: Steven asked for it directly in the integrator's session on 2026-09-24. The engineer was right to refuse an unverifiable mid-task relay; the integrator applied it instead.",
+  "change": "Card #nqPlaybookCard added as the first card in panel-apex (top of Markets), linking the NQ Range Desk artifact.",
+  "commit": "7e335df"
+ },
+ {
+  "id": "R7-D-001",
+  "lane": "D-wealth-property",
+  "panel": "panel-income",
+  "verdict": "works",
+  "evidence": "INCOME_STREAMS defaults sum to $291,398.20. incTotalAnnual=$291,398, incGap=$708,602 (=$1M-total), incPct=29.1% all match. incomeMixLegend 43+4+20+33=100%.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-D-002",
+  "lane": "D-wealth-property",
+  "panel": "panel-familyoffice",
+  "verdict": "works",
+  "evidence": "Recomputed net worth from live accounts/properties/liabilities docs: 3,320,280.24 - 880,068.38 = 2,440,211.86, matches foNetWorth $2,440,212. propValue-propDebt=312,431.62 matches foRealEstateEquity $312,432. Uses shared renderGlobalNetWorth() (G-owned); correct, no needs-G.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-D-003",
+  "lane": "D-wealth-property",
+  "panel": "panel-assets",
+  "verdict": "works",
+  "evidence": "assetItems store doc (6 items) sums to $158,000 = assetItemTotal. assetAllocLegend Vehicle $68k + Alternative $75k + Personal $15k = same $158,000. assetItemRows dump-text was empty only because rows are <input> elements (value attr, no text node) - confirmed populated via innerHTML, not a bug.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-D-004",
+  "lane": "D-wealth-property",
+  "panel": "panel-loyalty",
+  "verdict": "works",
+  "evidence": "elitScorecardValue/Points/Credits render the static ELIT_SCORECARD stub exactly (0,0,0/10), consistent with rows stating spend isn't tracked. incentBadge '57 active' = 71 tracked - 14 closed per incentSyncNote. Top/Expiring counts are array.length, can't drift from rows.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-D-005",
+  "lane": "D-wealth-property",
+  "panel": "panel-property,panel-familyoffice,panel-income,panel-assets,panel-housekeeping,panel-loyalty,panel-nonprofit",
+  "verdict": "works",
+  "evidence": "Node probe rendered all 7 panels vs $S/r7/live/state, regex-scanned full textContent for undefined/NaN/null/[object Object]/Invalid Date/raw \\uXXXX. 0 hits. quickcheck + both harness runs PASS, 0 exceptions, 0 safeRun fails, 0 missing ids.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-D-006",
+  "lane": "D-wealth-property",
+  "panel": "panel-property,panel-familyoffice,panel-income,panel-assets,panel-housekeeping,panel-loyalty,panel-nonprofit",
+  "verdict": "works",
+  "evidence": "Probed every <a href> in all 7 panels: no empty hrefs, every #hash target id exists, every non-hash link is https with target=_blank + rel=noopener. 0 problems.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-D-007",
+  "lane": "D-wealth-property",
+  "panel": "panel-property,panel-familyoffice,panel-income,panel-assets,panel-housekeeping,panel-loyalty,panel-nonprofit",
+  "verdict": "works",
+  "evidence": "Simulated .click() on 29 controls across all 7 panels (add-row, resets, apply, Zoho filter/create/import/undo/detail-close, search buttons, incentShowClosed). All fired without throwing; re-scan afterward still clean.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-D-008",
+  "lane": "D-wealth-property",
+  "panel": "panel-property",
+  "verdict": "works",
+  "evidence": "loftyStateBadge='Key pending' matches CONNECTIONS' loftyLeads=not-configured. zhApiBadge='API blocked' cites the same 403 NO_PERMISSION - matches zohoSync=blocked. GoHighLevel note ~matches highlevel=initiated. No wrong claims found; nothing filed to needs-G.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-D-009",
+  "lane": "D-wealth-property",
+  "panel": "panel-property",
+  "verdict": "works",
+  "evidence": "renderMortgageRates/renderMarketUpdates: 'Live' badge only shows when the row's own live flag from ratesSnapshot is true, else 'Seed'; sync notes' hours-ago text is consistent with runnerStatus's 2026-09-24T02:06:46Z stamp. No overclaimed freshness.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-D-010",
+  "lane": "D-wealth-property",
+  "panel": "panel-property",
+  "verdict": "works",
+  "evidence": "Probe: clicking a lead card opens zhDetail (fields populate, .hidden flips false), Close closes it, ArrowRight keydown on a focused card moved its stage in the persisted zohoLeads doc (verified via localStorage readback). No client names used in testing evidence.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-D-011",
+  "lane": "D-wealth-property",
+  "panel": "panel-property",
+  "verdict": "needs-steven",
+  "evidence": "runScenario() ~line 10559: for any FICO>=620, FHA always outscores Conventional by +2 (occ-array-length bonus: FHA len1 -> +2, Conventional len3 -> +0; rest ties). Verified w/ 680-739 FICO/W2/primary: FHA ranks #1, vs this panel's own PROGRAM_FACTS text that Conventional suits 680+ credit best.",
+  "change": "score += (3 - t.occ.length) / score += (4 - t.income.length) have no offsetting cost/suitability signal -> needs Steven's call on how niche-fit should weigh against cost before any change to a client-guidance tool.",
+  "commit": ""
+ },
+ {
+  "id": "R7-D-012",
+  "lane": "D-wealth-property",
+  "panel": "panel-property",
+  "verdict": "works",
+  "evidence": "Re-tested w/ explicit values: veteran scenario surfaces VA+CalVet (tied score, stable-sort order); BK/FC scenario leads with 'BK & FC'; other scenarios return sensible results. Earlier 'no match' was a harness artifact - dom-shim doesn't init <select>.value from 'selected'.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-D-013",
+  "lane": "D-wealth-property",
+  "panel": "panel-property,panel-nonprofit,panel-housekeeping",
+  "verdict": "works",
+  "evidence": "Checked visually-empty cards vs live-store docs: loftyStageStats blank, no loftyLeads doc yet (note explains it); subsRows empty, subscriptions.json=[]; estateRows' 7 rows match estateReview's 7 unverified accounts; npFamilies/Grant/Hours=0 match their docs. Search outputs blank until run.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-D-014",
+  "lane": "D-wealth-property",
+  "panel": "panel-property",
+  "verdict": "works",
+  "evidence": "loanProgramGroups header counts and uwpProgressNum ('done/total') are computed as the length of the same array/loop that renders the rows beneath them, so a header-vs-rows mismatch is structurally impossible here.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-E-life-01",
+  "lane": "E-life",
+  "panel": "panel-wellness",
+  "verdict": "fixed",
+  "evidence": "healthMetrics doc holds fuzzed rows (date 0938-01-01, weight 938; other rows w/ negative weights). String-sort put one ahead of every real 2026 row, so hmLatestWeight rendered '938 lb' instead of the honest '—'.",
+  "change": "renderHealthMetrics(): added hmPlausible(r) (real YYYY-MM-DD, year 2015-2035), required in withWeight/withHR/withSleep/withSteps before a row counts toward Latest/Avg. Editable rows still show the bad entry as-is.",
+  "commit": "949997c"
+ },
+ {
+  "id": "R7-E-life-02",
+  "lane": "E-life",
+  "panel": "panel-wellness",
+  "verdict": "fixed",
+  "evidence": "healthNotionSync's own macTask field: 'spec written 2026-09-22; not created, not scheduled, not enabled'. The static card copy and hnSub both asserted the task already runs twice a day / reads rows, present tense.",
+  "change": "Static copy: '...turns those rows into the tiles below, twice a day...' -> '...is spec'd to ... but per its own record it is not yet created, scheduled or enabled...'. hnSub now branches on hn.rows for the 0-rows case.",
+  "commit": "949997c"
+ },
+ {
+  "id": "R7-E-life-03",
+  "lane": "E-life",
+  "panel": "panel-wellness",
+  "verdict": "works",
+  "evidence": "appleHealth.syncedAt / via / meta.last_received all match the card's 'down since 2026-09-13' claim; badges render it correctly. healthInsight.snapshotSyncedAt == appleHealth.syncedAt (no false 'newer sync' warning). healthAnalysis stamps honestly labelled by hlDailyHtml().",
+  "change": "none needed",
+  "commit": ""
+ },
+ {
+  "id": "R7-E-life-04",
+  "lane": "E-life",
+  "panel": "panel-wellness",
+  "verdict": "works",
+  "evidence": "F-E8-77 rule, 'Copy: refresh from any Claude session' button. mac-task-specs.md documents only 5-7 NEW task specs; 'local-bridge-queue' appears once, only in a cron-collision table (line 25), no spec section naming it as a localBridgeQueue consumer.",
+  "change": "No 'Queue it for the Mac' path added; button stays copy-only per the brief's rule (named file doesn't document that consumer).",
+  "commit": ""
+ },
+ {
+  "id": "R7-E-life-05",
+  "lane": "E-life",
+  "panel": "panel-mind",
+  "verdict": "fixed",
+  "evidence": "renderDeadlines(): Math.ceil((due@23:59:59-now)/86400000) yields -0 for anything overdue <24h, and '-0<0' is false in JS, so uscDeadlines row due 2026-09-23 (today=09-24) rendered '0d left' instead of 'past due'.",
+  "change": "Replaced the inline Math.ceil math with the existing daysUntil() helper (midnight-to-midnight, already used for the license tracker two cards down) - same pattern, no -0 edge case.",
+  "commit": "c74e6f2"
+ },
+ {
+  "id": "R7-E-life-06",
+  "lane": "E-life",
+  "panel": "panel-pedefense",
+  "verdict": "fixed",
+  "evidence": "Coverage note claimed '24 PE moves, 44 defense disruptors ... 64 real GitHub repos'. Actual: PE_MOVES=39 (+7 PE_FIRM_DIRECTORY), DEFENSE_DISRUPTORS=45, unique github.com links in AI_TOOLING_NOTES=63.",
+  "change": "'24 PE moves, 44 defense disruptors' -> '39 PE moves, 45 defense disruptors'; '64 real GitHub repos' -> '63 real GitHub repos'.",
+  "commit": "4a518ab"
+ },
+ {
+  "id": "R7-E-life-07",
+  "lane": "E-life",
+  "panel": "panel-eliteaffluent",
+  "verdict": "fixed",
+  "evidence": "Coverage note + Core Structures card title claimed '15 empires', '400-entry Core Structures Catalog', '~330' tax strategies. Actual: AFFLUENT_EMPIRES=19, CORE_STRUCTURES_400=417, ELITE_TAX_STRATEGIES=386. NAMED_DEALS_CATALOG=73 vs '~70' left as-is (normal ~ tolerance).",
+  "change": "'15 empires'->'19 empires'; '400-entry Core Structures Catalog'->'417-entry'; card title '400 named plays'->'417 named plays'; '~330 entries'->'~390 entries'.",
+  "commit": "4a518ab"
+ },
+ {
+  "id": "R7-E-life-08",
+  "lane": "E-life",
+  "panel": "panel-work",
+  "verdict": "works",
+  "evidence": "renderShift() is pure live-clock math (no store doc), safeRun-wrapped. dump-text against the live store: On Shift / clock / countdown / progress all correct, no undefined/NaN.",
+  "change": "none needed",
+  "commit": ""
+ },
+ {
+  "id": "R7-E-life-09",
+  "lane": "E-life",
+  "panel": "panel-kevin",
+  "verdict": "works",
+  "evidence": "Uses the shared createSimpleMentorChat factory (G-global, not edited) with kevinChat's own keys. dump-text shows a clean empty-state thread, no exceptions, kevinStatusNote empty (no stuck error).",
+  "change": "none needed",
+  "commit": ""
+ },
+ {
+  "id": "R7-E-life-10",
+  "lane": "E-life",
+  "panel": "panel-nextmoves,panel-travel,panel-dreamempire,panel-eliteaffluent,panel-pedefense",
+  "verdict": "works",
+  "evidence": "dump-text on every dynamic id in these panels vs the live store (oppRadarList, swotGrid, riskRegisterRows, feasibilityRows, 9 travel-city tables, dreamPropertyRows, elite/pedefense tables). Zero literal undefined/NaN/null/[object Object]/Invalid Date; staleness already honestly labelled.",
+  "change": "none needed",
+  "commit": ""
+ },
+ {
+  "id": "R7-E-life-11",
+  "lane": "E-life",
+  "panel": "panel-work",
+  "verdict": "fixed-by-G",
+  "evidence": "panelStampRegistry() line ~22036: panel-work is {kind:\"you\", keys:[\"e3rShifts\",\"e3rNotes\"]}. Neither key exists anywhere else in the file - panel-work has no stored doc at all, so the badge permanently reads 'Not edited yet'.",
+  "change": "OLD: \"panel-work\": { kind: \"you\", keys: [\"e3rShifts\", \"e3rNotes\"] }, NEW (suggested): \"panel-work\": { kind: \"ref\", note: \"Live shift clock, computed from the current time — nothing stored to date\" },",
+  "commit": "75b5716"
+ },
+ {
+  "id": "R7-E-life-12",
+  "lane": "E-life",
+  "panel": "panel-mind",
+  "verdict": "fixed-by-G",
+  "evidence": "panelStampRegistry() line ~22037: panel-mind is {kind:\"you\", keys:[\"uscDeadlines\",\"studyLog\"]}. 'studyLog' has zero other hits (phantom). panel-mind also writes uscSchedule + licenseTracker, real docs, neither tracked.",
+  "change": "OLD: \"panel-mind\": { kind: \"you\", keys: [\"uscDeadlines\", \"studyLog\"] }, NEW (suggested): \"panel-mind\": { kind: \"you\", keys: [\"uscDeadlines\", \"uscSchedule\", \"licenseTracker\"] },",
+  "commit": "75b5716"
+ },
+ {
+  "id": "R7-E-life-13",
+  "lane": "E-life",
+  "panel": "panel-wellness,panel-mind,panel-kevin,panel-pedefense,panel-eliteaffluent,panel-nextmoves,panel-dreamempire,panel-travel,panel-work",
+  "verdict": "works",
+  "evidence": "Grepped all 9 panels for Follow Up Boss/FUB/Canva/GoHighLevel/HighLevel/GHL - zero hits. All static <a href> are https, target=_blank, rel=noopener. No href=\"#missing-id\" links (only hnOpenDb's hidden placeholder #).",
+  "change": "none needed",
+  "commit": ""
+ },
+ {
+  "id": "R7-F-ops-re-01",
+  "lane": "F-ops-re",
+  "panel": "panel-easop",
+  "verdict": "fixed-by-G",
+  "evidence": "Line ~4535: 'Not connected: Canva (needs reconnect)'. CONNECTIONS-2026-09-24.md: Canva list-brand-kits answered (1 brand kit) -> connected today.",
+  "change": "OLD: 'Not connected:</b> Canva (needs reconnect), BlackRock...' NEW: drop Canva from the not-connected list (connection-status wording is G's per brief).",
+  "commit": "710730d"
+ },
+ {
+  "id": "R7-F-ops-re-02",
+  "lane": "F-ops-re",
+  "panel": "panel-processexcellence",
+  "verdict": "fixed",
+  "evidence": "dmaicProjects doc (today's store) row d3 note reads '...pulled from FUB/Zoho before this can move to Measure' with no marker that FUB is retired, unlike the fixed cdStateSeed/DMAIC_DEFAULT wording. Read alone it looked like FUB is still live.",
+  "change": "renderDmaic(): added dmaicNoteNamesOldCrm() regex guard; when a project note names FUB it now appends ' (that note names the retired CRM — Lofty is real estate, Zoho is mortgage, as of 2026-09-22.)' Note text itself is never rewritten.",
+  "commit": "c6ba5bc"
+ },
+ {
+  "id": "R7-F-ops-re-03",
+  "lane": "F-ops-re",
+  "panel": "panel-toolkit",
+  "verdict": "fixed",
+  "evidence": "toolkitSnapshot.tasks[].desc for lead-triage-daily, r11-isa-kpi-compile, r2-lead-response-watchdog and showing-sync all say 'Reads/Turns/Flags/creates ... Follow Up Boss ...' with no marker, rendered verbatim into tkTaskList.",
+  "change": "renderToolkitInventory(): added taskDescNamesOldCrm() regex guard on t.desc; matching rows now get ' (description predates the Lofty cutover — Lofty is real estate, Zoho is mortgage, as of 2026-09-22.)' appended. Desc text itself is never rewritten.",
+  "commit": "30fbf9e"
+ },
+ {
+  "id": "R7-F-ops-re-04",
+  "lane": "F-ops-re",
+  "panel": "panel-marketing",
+  "verdict": "works",
+  "evidence": "#vaCommandCenterCard: link is exactly https://claude.ai/artifact/KCPYQExsyvieJaETJ9pBGS, target=_blank rel=noopener present, static card renders with no script dependency. No fix needed.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-F-ops-re-05",
+  "lane": "F-ops-re",
+  "panel": "panel-toolkit",
+  "verdict": "works",
+  "evidence": "deviceRoster (today, 12 stored devices: 11 Mac-Safari + 1 Windows-Chrome) renders as '13 devices' badge (12 + this new harness device), grouped correctly. Probed devNameSaveBtn click: row instantly relabels 'this device' from 'Mac' to the typed name.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-F-ops-re-06",
+  "lane": "F-ops-re",
+  "panel": "panel-toolkit",
+  "verdict": "works",
+  "evidence": "taskLease and macHeartbeat.* do not exist in today's store (confirmed against CONNECTIONS.md). #macRunnersCard renders macRunnersRows empty, badge '—', note 'No Mac has reported yet. Both appear here once claude-auto --lease-check runs on each...' Honest, no fabricated Mac status.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-F-ops-re-07",
+  "lane": "F-ops-re",
+  "panel": "panel-opsradar",
+  "verdict": "works",
+  "evidence": "F-E8-77: grepped integrations/mac-task-specs.md for 'localBridgeQueue' -> 0 hits. Its 7 sections (lofty-crm-sync, zoho-crm-sync, health-notion-sync, cli-anything-install, vanessa-whatsapp-inbox x2, voice-reply-render amendments, cli-anything-feeds) document no task that reads localBridgeQueue.",
+  "change": "No change made. '⌘ Copy backup prompt' left as a manual copy-to-clipboard action; no 'Queue it for the Mac' path added, per the rule.",
+  "commit": ""
+ },
+ {
+  "id": "R7-F-ops-re-08",
+  "lane": "F-ops-re",
+  "panel": "panel-opsradar",
+  "verdict": "works",
+  "evidence": "runnerStatus.syncedAt = 2026-09-24T02:06:46Z (matches brief) renders via orStampText as 'Status synced Sep 24, 2:06 AM (14h ago)' on panel-toolkit's runner card. routineHealth card (renderAutomationHealth) prints 'Report written <doc's own chatFmtTs stamp>', never 'now'.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-F-ops-re-09",
+  "lane": "F-ops-re",
+  "panel": "panel-showings",
+  "verdict": "works",
+  "evidence": "Probed shAddClient click handler directly (node, dom-shim): typed a client name, dispatched click, shClientBadge -> '1 client', shClients innerHTML contains the new row. Handler works.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-F-ops-re-10",
+  "lane": "F-ops-re",
+  "panel": "all (F-ops-re lane)",
+  "verdict": "works",
+  "evidence": "Self-check card vs today's store: 119 checks passed, 957 links scanned. The only 2 critical + 1 warning rows are freshness items outside this lane (Apple Health, AI Hedge Fund memo, ISA line bridge). Nothing broken in this lane's 7 panels.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-F-ops-re-11",
+  "lane": "F-ops-re",
+  "panel": "panel-easop, panel-processexcellence, panel-marketing, panel-toolkit",
+  "verdict": "works",
+  "evidence": "Every external <a> in these 7 panels is https, and every one carries target=_blank rel=noopener. The one internal jump link (#panel-kanban, in panel-processexcellence) resolves to an existing id.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-F-ops-re-12",
+  "lane": "F-ops-re",
+  "panel": "panel-practice",
+  "verdict": "works",
+  "evidence": "licenses doc: 'Q3 2026 licensing push' due 2026-09-30, today 2026-09-24 -> 'in 6d' and 'licenseBadge: 1 within 60 days' both check out arithmetically. No stale/mismatched count.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-F-ops-re-13",
+  "lane": "F-ops-re",
+  "panel": "panel-toolkit",
+  "verdict": "works",
+  "evidence": "toolkitSnapshot tool 'fub-followups' (name+desc) names FUB, but describes a historical, inherited template library ('audit of the 393 inherited templates'), not a live read — unlike the 4 task descriptions fixed in R7-F-ops-re-03. Left as-is; not a currency claim.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-F-ops-re-14",
+  "lane": "F-ops-re",
+  "panel": "panel-easop",
+  "verdict": "works",
+  "evidence": "The rest of the 'Automation & live-data connectivity' block (Zoho 403 detail, Lofty key-pending, Composio catalog list) cross-checked line by line against CONNECTIONS-2026-09-24.md — all consistent, only the Canva line (R7-F-ops-re-01) is wrong.",
+  "change": "",
+  "commit": ""
+ },
+ {
+  "id": "R7-G-001",
+  "lane": "G-global",
+  "panel": "panel-easop (shared connection wording)",
+  "verdict": "fixed",
+  "evidence": "Line ~4535: Canva listed under Not connected (needs reconnect)",
+  "change": "moved Canva into Connected list; CONNECTIONS-2026-09-24.md: list-brand-kits answered, 1 brand kit",
+  "commit": "710730d"
+ },
+ {
+  "id": "R7-G-002",
+  "lane": "G-global",
+  "panel": "panel-aiteam (AI_TEAM_ORG data)",
+  "verdict": "fixed",
+  "evidence": "Line ~26789: Sofia tools 'Canva connector (needs reconnect)'",
+  "change": "'Canva connector (needs reconnect)' -> 'Canva connector'",
+  "commit": "710730d"
+ },
+ {
+  "id": "R7-G-003",
+  "lane": "G-global",
+  "panel": "panel-aiteam (AI_TEAM_TOOLBOX data)",
+  "verdict": "fixed",
+  "evidence": "Line ~26805: 'Not connected: Canva (needs reconnect)'",
+  "change": "moved Canva to Connected+enabled list with '(verified 2026-09-24, 1 brand kit)'",
+  "commit": "710730d"
+ },
+ {
+  "id": "R7-G-004",
+  "lane": "G-global",
+  "panel": "multiple (shared connection wording)",
+  "verdict": "fixed",
+  "evidence": "7 spots (lines ~1386,2983,2989,4535,4747,26792,26805) said 'You.com was retired 2026-09-22'",
+  "change": "'You.com...retired 2026-09-22' -> 'You.com...connected but unfunded (0 credits, checked 2026-09-24)'; CONNECTIONS: connected, balance 0 credits",
+  "commit": "710730d"
+ },
+ {
+  "id": "R7-G-005",
+  "lane": "G-global",
+  "panel": "panel-property + panel-aiteam + references table",
+  "verdict": "fixed",
+  "evidence": "3 spots (lines ~2258,15509,26805) said GoHighLevel Composio 'connection in progress/pending' or (26805) 'Retired...authorization never completed; dropped'",
+  "change": "-> 'not connected — sign-in link generated 2026-09-24, pending Steven'; CONNECTIONS: highlevel initiated, no account, fresh sign-in link generated 2026-09-24",
+  "commit": "710730d"
+ },
+ {
+  "id": "R7-G-006",
+  "lane": "G-global",
+  "panel": "panel-aiteam (AI_TEAM_TOOLBOX data)",
+  "verdict": "fixed",
+  "evidence": "Line ~26805: 'Inkbox (iMessage, email, Discord relay)' — Discord relay is a separate bot (line 1352: 'Not live — bot token pending'), not an Inkbox channel",
+  "change": "'Inkbox (iMessage, email, Discord relay)' -> 'Inkbox (iMessage, email)'; CONNECTIONS: Inkbox = email+iMessage yes, SMS/voice not available (no Discord mentioned)",
+  "commit": "710730d"
+ },
+ {
+  "id": "R7-G-007",
+  "lane": "G-global",
+  "panel": "connection-truth sweep (Zoho)",
+  "verdict": "works",
+  "evidence": "Checked ~112 Zoho hits for hardcoded 'connected' claims missing the API-block caveat; all found already say blocked/403/needs API access, matches CONNECTIONS",
+  "change": "none needed",
+  "commit": ""
+ },
+ {
+  "id": "R7-G-008",
+  "lane": "G-global",
+  "panel": "connection-truth sweep (Lofty)",
+  "verdict": "works",
+  "evidence": "Spot-checked Lofty 'connected' claims; all paired with 'pending'/'not-configured'/'key' caveats, matches CONNECTIONS not-configured status",
+  "change": "none needed",
+  "commit": ""
+ },
+ {
+  "id": "R7-G-009",
+  "lane": "G-global",
+  "panel": "connection-truth sweep (Google Drive)",
+  "verdict": "works",
+  "evidence": "'Drive was never wired' language (lines ~4580,6674,6739,26820,26821) describes a separate local-folder/no-API indexer path, distinct from the Composio googledrive toolkit; not contradicted by CONNECTIONS' googledrive row",
+  "change": "none needed",
+  "commit": ""
+ },
+ {
+  "id": "R7-G-010",
+  "lane": "G-global",
+  "panel": "connection-truth sweep (CLI-Anything, taskLease, FUB label)",
+  "verdict": "works",
+  "evidence": "CLI-Anything text already says not installed on Mac, spec-only; taskLease doc absence already handled honestly in macTaskLease()/render (panel-toolkit, F's lane, not edited); 'fub' data key stays code-only, all visible labels already read 'CRM record'",
+  "change": "none needed",
+  "commit": ""
+ },
+ {
+  "id": "R5-E-aiteam-02",
+  "lane": "G-global",
+  "panel": "panel-aiteam (panelStampRegistry, shared)",
+  "verdict": "fixed",
+  "evidence": "panel-aiteam keys=[isaLine,...] omitted isaLineRead and isaLadder; renderIsaLadder() (isaLadderNote id, inside panel-aiteam bounds 4547-4872) reads both via isaLineRead() and lsGet('isaLadder'). Registry's own rule (F-W1-10 comment): a panel's keys are the docs whose content is displayed in that panel",
+  "change": "keys: [\"isaLine\", \"steveChat\", ...] -> keys: [\"isaLine\", \"isaLineRead\", \"isaLadder\", \"steveChat\", ...]",
+  "commit": "3676712"
+ },
+ {
+  "id": "R7-G-011",
+  "lane": "G-global",
+  "panel": "global CSS (:root[data-theme=\"dark\"])",
+  "verdict": "fixed",
+  "evidence": "Explicit dark-theme selector was missing --field-border entirely, so a viewer with data-theme=dark but OS light mode fell back to the LIGHT --field-border value (#8A7A57) on a dark surface. Also found and dropped an accidental duplicate --field-border declaration in the prefers-color-scheme dark block",
+  "change": "added --field-border: #8A7554 to :root[data-theme=\"dark\"] (matches the prefers-color-scheme dark block); removed one duplicate line",
+  "commit": "10d4cc0"
+ },
+ {
+  "id": "R7-G-012",
+  "lane": "G-global",
+  "panel": "global chrome audit (bell, footprint warning, claude-throws/setItemThrows/empty-store paths)",
+  "verdict": "works",
+  "evidence": "Read lsSetLocal/lsGetSeeded/lsShapeWarn/initSync/lsFootprintAlerts/lsWriteFailureAlerts and the bell's computeAlerts(); all synchronous claude.use() throws and setItem throws are caught and surfaced (not swallowed), each documented as a fix from the 2026-09-22 failure-injection test. Built-in runSelfCheck() (957 links, 119 checks) confirms 0 nav/container/link defects live; only known real staleness (Apple Health 11d, AI Hedge Fund memo 17d) flagged. All 4 gates pass with 0 exceptions/safeRun fails throughout",
+  "change": "none needed",
+  "commit": ""
+ },
+ {
+  "id": "R7-G-013 (applied A-vanessa-ai-08/09/10, F-ops-re-01)",
+  "lane": "G-global",
+  "panel": "panel-vanessa/panel-aiteam",
+  "verdict": "already-fixed",
+  "evidence": "A-vanessa-ai's needs-G rows 08 (You.com retired x4), 09 (Inkbox Discord relay), 10 (GoHighLevel dropped) and F-ops-re-01 (Canva) all name the exact same spots already closed by my own connection-truth sweep (commit 710730d) before their rows were filed",
+  "change": "no further edit; verified their suggested OLD text no longer exists in the file",
+  "commit": "710730d"
+ },
+ {
+  "id": "R7-G-014 (applied B-daily-03)",
+  "lane": "G-global",
+  "panel": "panel-appointments",
+  "verdict": "fixed",
+  "evidence": "TRACKED_CALENDARS had 9 rows incl. 'SPACE — California'; calendarSnapshot.calendarsUnavailable (live store) names that exact calendar id 'could not be found or has been deleted'; CONNECTIONS measured 8 calendars today",
+  "change": "removed the SPACE — California row from TRACKED_CALENDARS; 'All 9 calendars' -> 'All 8 calendars' (card-sub + comment)",
+  "commit": "48896c1"
+ },
+ {
+  "id": "R7-G-015 (applied B-daily-04)",
+  "lane": "G-global",
+  "panel": "panel-kanban + FRESH_FEEDERS(shared)",
+  "verdict": "fixed",
+  "evidence": "Same root cause as B-daily-03: kr8 kanban card text and the shared FRESH_FEEDERS['Google Calendar'] note both said 'five business calendars' (Patriot Pacific, SPACE, SPACE-CA, Legacy CRM, Facebook = 5; SPACE-CA is the one that dropped off)",
+  "change": "'five business calendars' -> 'four business calendars' in kr8 text, the calendar-daily-sync comment, and FRESH_FEEDERS['Google Calendar']",
+  "commit": "48896c1"
+ },
+ {
+  "id": "R7-G-016 (applied B-daily-05)",
+  "lane": "G-global",
+  "panel": "panel-brief (computeExecExceptions vs renderDataFreshness, shared)",
+  "verdict": "fixed",
+  "evidence": "Confirmed: computeExecExceptions flags stale at d>1x threshold (EXEC_STALE_DAYS=3), renderDataFreshness's red 'Stale' dot only at d>3x threshold — a real, by-design 2-tier-vs-3-tier difference, not a bug in either count",
+  "change": "fixed the false 'never disagree' code comment to explain the two tiers; renamed Command Brief stat 'Stale feeds'->'Feeds overdue' with a title= tooltip so the two counts stop reading as the same metric",
+  "commit": "2e6d308"
+ },
+ {
+  "id": "R7-G-017 (applied C-markets-02/03)",
+  "lane": "G-global",
+  "panel": "panel-quantvue + panel-apex (orStampText/chatFmtTs, shared)",
+  "verdict": "fixed",
+  "evidence": "Both helpers used toLocaleTimeString/toLocaleString with no timeZone, so times rendered in the render host's local zone. Verified in node: 2026-09-13T22:47:04Z rendered 10:47 PM instead of the correct PT 3:47 PM",
+  "change": "added timeZone:\"America/Los_Angeles\" to orStampText()'s toLocaleDateString+toLocaleTimeString and to chatFmtTs()'s toLocaleString options",
+  "commit": "46c2bee"
+ },
+ {
+  "id": "R7-G-018 (applied E-life-11)",
+  "lane": "G-global",
+  "panel": "panel-work (panelStampRegistry, shared)",
+  "verdict": "fixed",
+  "evidence": "keys [e3rShifts, e3rNotes] were phantom — zero other hits in the file; panel-work is a pure clock (renderShift(), no stored doc)",
+  "change": "kind:\"you\",keys:[...] -> kind:\"ref\",note:\"Live shift clock, computed from the current time — nothing stored to date\"",
+  "commit": "75b5716"
+ },
+ {
+  "id": "R7-G-019 (applied E-life-12, plus one more found while fixing it)",
+  "lane": "G-global",
+  "panel": "panel-mind + panel-practice (panelStampRegistry, shared)",
+  "verdict": "fixed",
+  "evidence": "panel-mind's 'studyLog' key was phantom; the panel actually writes uscSchedule and licenseTracker (verified #licenseTrackerRows DOM sits inside panel-mind's own HTML bounds, 3953-4038). While fixing this, found panel-practice's registry entry ALSO claimed 'licenseTracker' — but panel-practice's own real key is the separate 'licenses' (different DOM, #licenseRows); the same key was double-claimed by two panels, against the registry's own one-owner-per-key rule",
+  "change": "panel-mind keys: [uscDeadlines,studyLog] -> [uscDeadlines,uscSchedule,licenseTracker]; panel-practice keys: dropped \"licenseTracker\", kept \"licenses\"",
+  "commit": "75b5716"
+ },
+ {
+  "id": "R7-H-isa-01",
+  "lane": "H-isa",
+  "panel": "panel-isa-pst, panel-isa-easop, panel-isa-mortgagerates, footer",
+  "verdict": "fixed",
+  "evidence": "10 spots claimed 'You.com was retired 2026-09-22' or listed 'Canva (needs reconnect)'. CONNECTIONS-2026-09-24.md: You.com connected (0 credits, unfunded); Canva connected (1 brand kit).",
+  "change": "'You.com was retired' -> 'connected but unfunded (0 credits), re-checked 2026-09-24'; moved Canva from Not-connected to Working-today. Kept queued-research behavior (still no live search either way).",
+  "commit": "7141899"
+ },
+ {
+  "id": "R7-H-isa-02",
+  "lane": "H-isa",
+  "panel": "panel-isa-syncstatus",
+  "verdict": "fixed",
+  "evidence": "Diffed live-isa/state vs live/state directly. isaLine.json is byte-identical both sides at 11 msgs (drift table said 10). ratesSnapshot deck syncedAt is 2026-09-23T20:39:18Z (table said Sep22 8:30pm, '18h fresher'; real gap from ISA-side Sep22 02:24:25Z is ~42h).",
+  "change": "DRIFT_CHECKED_AT ->2026-09-24; isaLine row 10->11 msgs; ratesSnapshot row deck stamp/gap corrected; 'What IS synced' ISA-line cell rewritten to routineHealth's real lastRun (9:38 PM PT not 12:56 AM) + 11-msg re-read. Other rows checked, matched, left as-is.",
+  "commit": "7763b1c"
+ },
+ {
+  "id": "R7-H-isa-03",
+  "lane": "H-isa",
+  "panel": "panel-isa-syncstatus",
+  "verdict": "fixed",
+  "evidence": "Panel-stamp tooltip said 'the drift table's right-hand column is still the 2026-09-23 hand read', which R7-H-isa-02 made false same day.",
+  "change": "Tooltip note now leads with the 2026-09-24 re-read (11 msgs both sides, ~42h ratesSnapshot gap) ahead of the older note.",
+  "commit": "b6ca8f5"
+ },
+ {
+  "id": "R7-H-isa-04",
+  "lane": "H-isa",
+  "panel": "panel-isa-aiteam",
+  "verdict": "fixed",
+  "evidence": "isaLineUnread() filtered only by origin (cd/isa), not recipient. isaLine.json has one seeded msg (team->steven, priority:decision, origin:cd) not addressed to the ISA. Badge read '7 unread . 1 decision', implying a decision was hers.",
+  "change": "isaLineUnread() now also requires (!m.to || m.to===myKey). Verified via --dump-text: badge now '6 unread' (0 decisions). Message still shows in the full thread for context; only her own unread/decision count no longer double-counts Steven's item.",
+  "commit": "5914d85"
+ },
+ {
+  "id": "R7-H-isa-05",
+  "lane": "H-isa",
+  "panel": "whole portal",
+  "verdict": "works",
+  "evidence": "Probe (work-H-isa/dump-full.js) runs the page via dom-shim like runtime-harness, reads full uncapped innerHTML of all 308 ided elements with/without the live-isa store, greps undefined/NaN/[object Object]/Invalid Date/raw \\uXXXX.",
+  "change": "0 hits either render. The 90 empty-innerHTML elements are all legitimate: inputs/checkboxes, className-driven status dots, pre-click result placeholders the harness can't trigger.",
+  "commit": ""
+ },
+ {
+  "id": "R7-H-isa-06",
+  "lane": "H-isa",
+  "panel": "whole portal",
+  "verdict": "works",
+  "evidence": "5 jump links resolve to real ids. 33 target=_blank all paired with rel=noopener. Every static href is https; dynamic hrefs go through safeUrl() (the one user-typed URL, a client's CRM link) or a fixed https base (shGcalUrl/buildCrmlsUrl) or static arrays (TECH_STACK's 49 urls, all https).",
+  "change": "none needed",
+  "commit": ""
+ },
+ {
+  "id": "R7-H-isa-07",
+  "lane": "H-isa",
+  "panel": "panel-isa-crmimport, panel-isa-easop",
+  "verdict": "works",
+  "evidence": "Lofty card/tech-stack row already say not-configured (no loftyLeads doc ever written here, matches CONNECTIONS.md). Zoho card already says blocked/403 NO_PERMISSION, matches CONNECTIONS.md + zohoSync.json.",
+  "change": "none needed",
+  "commit": ""
+ },
+ {
+  "id": "R7-H-isa-08",
+  "lane": "H-isa",
+  "panel": "whole portal",
+  "verdict": "works",
+  "evidence": "grep Follow Up Boss/FUB (word-boundary, case-insens.) as a current system: 0 hits. Sole 'FUB' left is the drift table honestly quoting isaKpi's own stale metric name, flagged amber/Drifted - store data, not mine to edit. fub id/data keys stay per rule; visible labels already read Lofty/CRM.",
+  "change": "none needed",
+  "commit": ""
+ },
+ {
+  "id": "R7-H-isa-09",
+  "lane": "H-isa",
+  "panel": "whole portal",
+  "verdict": "works",
+  "evidence": "ISA_VANESSA_PREAMBLE: 'talking with Steven's real, human ISA, not Steven'; 'never quote a rate/APR, determine eligibility, negotiate an offer'. Rates card: 'never state a rate yourself'. Showings buttons only copy text + open ShowingTime/Showami to paste - no auto-send found.",
+  "change": "none needed",
+  "commit": ""
+ },
+ {
+  "id": "R7-H-isa-10",
+  "lane": "H-isa",
+  "panel": "whole portal",
+  "verdict": "works",
+  "evidence": "isaPanelStampRegistry keys checked 1:1 against the 14 actual panel ids: no orphans, no gaps. LOAN_PROGRAMS (39 entries) matches both prose mentions.",
+  "change": "none needed",
+  "commit": ""
+ },
+ {
+  "id": "R7-H-isa-11",
+  "lane": "H-isa",
+  "panel": "whole portal",
+  "verdict": "works",
+  "evidence": "Engineer had no click simulation. The integrator's real-browser sweep (ui-browser.js, Chromium, live ISA store) clicked 111 of 111 controls with 0 errors at desktop and phone width, 2026-09-24.",
+  "change": "quickcheck.py's 3 FAILs (dup-id regex hitting \"' + id + '\" JS 3x, unbalanced-div regex hitting a CSS comment, documented undefined-fn false positive) are pre-existing, unchanged by my edits, not part of the H-isa gate.",
+  "commit": ""
+ },
+ {
+  "id": "R7-INT-01",
+  "lane": "integrator",
+  "panel": "deck + ISA (18 lines)",
+  "verdict": "fixed",
+  "evidence": "Lanes G and H replaced 'retired' with 'connected but unfunded', dropping Steven's 2026-09-22 decision; the ISA also said 'reconnected', 'Steven's subscription' and 'until Steven funds it' — none of which happened or was decided.",
+  "change": "Every You.com line now says both: retired 2026-09-22 by Steven's decision, and the connector still answers at 0 credits (measured 2026-09-24).",
+  "commit": "deck 3623dc8 · isa fb3b96b"
+ },
+ {
+  "id": "R7-INT-02",
+  "lane": "integrator",
+  "panel": "panel-apex",
+  "verdict": "fixed",
+  "evidence": "Steven, 2026-09-24: add the NQ trading playbook link at the top of Trading & Markets. Lane C declined the relayed request as unverifiable (correct caution); the integrator applied it.",
+  "change": "#nqPlaybookCard is the first card in panel-apex, linking the NQ Range Desk artifact.",
+  "commit": "7e335df"
+ }
+]

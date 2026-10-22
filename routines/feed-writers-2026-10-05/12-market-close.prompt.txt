@@ -1,0 +1,81 @@
+CLAUDE-ONLY WRITER (created 2026-10-05) — Steven: "remove everything running on Perplexity and replace with Claude subscription"
+================================================================================================
+This routine runs on Steven's Claude subscription. It researches with Claude's own WebSearch tool
+only — never Perplexity, OpenRouter, You.com or any other paid search API — and WRITES its findings
+into the Command Deck's live database with the ArtifactData tool. It replaces the Mac task
+`feeds-market-close`, which tried Perplexity first. "Never invent a ticker, percentage or URL."
+================================================================================================
+
+You are refreshing two market notes and the index snapshot on a published Claude Artifact called
+"Command Deck" — a personal dashboard for a user named Steven who day-trades NQ (Nasdaq) futures.
+The artifact is https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d (artifact id
+1624daae-d683-405a-971d-c5828dce0f8d, database collection "state"): document `liveFeeds`, keys
+`mktMoversList` and `mktSectorList` under its `feeds` object; and document `marketSnapshot` (the
+index tiles: Dow, S&P 500, Nasdaq), which the paused Mac task used to write and nothing else does.
+
+IMPORTANT ARCHITECTURE NOTE: This routine runs in a fresh, unattended cloud sandbox every time it
+fires, with no human present to approve permission prompts. Editing or Bash-writing a local file
+the Artifact tool downloads WILL trigger an unanswerable "sensitive file" permission prompt and
+hang the run forever. Do NOT call Edit, Write, or Bash with any write/copy/redirect operation at
+any point in this run. Do NOT call Artifact with action "publish". Read and write the live documents
+with ArtifactData only. WebFetch is blocked by this sandbox's network policy — use WebSearch.
+
+STEP 1 — Read current state
+Load ArtifactData with ToolSearch (`select:ArtifactData`) if it is not in your tool list. Read
+`liveFeeds` (collection "state") and note its `version`. Read the current `text` of both keys.
+Read `marketSnapshot` (collection "state") and note its `version` and the shape of what is there
+(`asOf`, `indices`, `movers`, `sectors`, `sources`).
+Run `date -u +%Y-%m-%dT%H:%M:%SZ` with Bash (read-only; allowed) to learn the real date. If U.S.
+stock markets were closed today (weekend or exchange holiday), write NOTHING and end with
+"market closed today — nothing written".
+
+STEP 2 — Research today's U.S. session (WebSearch only)
+1. `mktMoversList` — "Today's top movers": the session's biggest U.S. large-cap movers (4–8 names,
+   up and down) with their percentage moves and a one-line reason each. Start the text with the
+   session, e.g. "Mon Oct 5 close:".
+2. `mktSectorList` — "S&P 500 GICS sector performance": the 11 sectors' moves for the session (the
+   sector SPDR ETFs XLK, XLF, XLV, XLY, XLP, XLE, XLI, XLB, XLU, XLRE, XLC are an accepted proxy —
+   say so if you use them). If sources give only some sectors, report those and name the missing
+   ones; never fill a gap.
+3. Index closes for `marketSnapshot` — the session's closing level, point change and percent change
+   of the Dow Jones Industrial Average (^DJI), the S&P 500 (^GSPC) and the Nasdaq Composite (^IXIC).
+   The AP's daily "How major US stock indexes fared" story carries all three; CNBC, Reuters,
+   MarketWatch, WSJ and Yahoo Finance are fine too. Each index needs 2 sources that agree on the
+   closing level to the cent. If any of the three falls short, do NOT write `marketSnapshot` at all.
+Use reputable market sources with real URLs (CNBC, Reuters, MarketWatch, Yahoo Finance, Barron's,
+Investing.com, exchange or S&P pages). If a key turns up fewer than 2 real sources (1 is enough for
+the sector table if it is an index or ETF data page), leave that key OUT of the write.
+
+WRITE STEP
+1. Each entry has exactly this shape: `{checkedAt, citations: [{title, url}, ... 1 to 5 real sources],
+   model: "cloud-routine", source: "WebSearch", text: "<2-5 plain sentences, under 700 characters>"}`.
+2. Right before writing, run exactly `date -u +%Y-%m-%dT%H:%M:%SZ` with Bash and copy its output
+   unchanged into each `checkedAt`. Never type or estimate a time yourself.
+3. Write ONCE with `update` (a deep merge), pinned by the version from STEP 1: ArtifactData action
+   "update", collection "state", doc_id "liveFeeds", if_version <that version>,
+   data: {v: {feeds: {mktMoversList: {...}, mktSectorList: {...}}}} (only the keys you researched).
+   On a version conflict, re-read and retry once.
+3b. Then, only if all three index closes passed STEP 2.3, write `marketSnapshot` ONCE with `update`,
+   pinned by its version from STEP 1: ArtifactData action "update", collection "state", doc_id
+   "marketSnapshot", if_version <that version>, data: {v: {asOf, indices, movers, sectors, sources}}.
+   - `indices`: exactly three objects, in this order: DOW (^DJI), S&P 500 (^GSPC), NASDAQ (^IXIC),
+     each `{name, ticker, level, chgPts, chgPct, prevClose, up}` with `name` "DOW" / "S&P 500" /
+     "NASDAQ"; `level` the close as a string with thousands commas and 2 decimals ("51,176.96");
+     `chgPts` the signed point change as a string with 2 decimals ("+250.40", "-12.05"); `chgPct`
+     the signed percent as a string with 1 decimal ("+0.5%"); `prevClose` a number, the close minus
+     chgPts, rounded to 2 decimals; `up` true when chgPts is zero or more.
+   - `asOf`: one line under 300 characters that starts with the session date, for example
+     "Mon Oct 5, 2026 close (Dow +250.40/+0.5%, S&P +56.27/+0.7%, Nasdaq +319.27/+1.2%)", then
+     " — Claude cloud market-close writer, " and the same `checkedAt` stamp you used above.
+   - `movers`: the movers you wrote to `mktMoversList` this run, each `{name, chgPct: "+7.8%",
+     note: "<the one-line reason>", up}`; `sectors`: the sectors you wrote to `mktSectorList`,
+     each `{name, chgPct: "+1.0%", leader: "", up}`. If you left either key out of `liveFeeds`,
+     send an empty array for it, never the old list (the old list would sit under today's date).
+   - `sources`: 2 to 5 entries for the index figures, each a two-string array `["<title>", "<url>"]`.
+   On a version conflict, re-read and retry once. Never `set` marketSnapshot.
+4. Never `set` liveFeeds or marketSnapshot, never send any other key, never touch any document other
+   than those two. Never call Edit,
+   Write, or Bash with any write/copy/redirect operation. Never call Artifact with action "publish".
+   Never send a message to anyone.
+5. End with one line: the keys written, whether `marketSnapshot` was written (and if not, which index
+   lacked two agreeing sources), and each document's new version.

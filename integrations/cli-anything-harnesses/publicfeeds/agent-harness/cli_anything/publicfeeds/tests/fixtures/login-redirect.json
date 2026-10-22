@@ -1,0 +1,26 @@
+{
+  "_synthetic": "All values invented for tests. No real market, rate or client data.",
+  "url": "https://redfin.com/city/19701/CA/Temecula/housing-market",
+  "tree": {
+    "name": "/",
+    "role": "document",
+    "children": [
+      {
+        "name": "main",
+        "role": "main",
+        "children": [
+          {
+            "name": "text_1",
+            "role": "text",
+            "text": "Redirecting…"
+          }
+        ]
+      }
+    ]
+  },
+  "expect": {
+    "auth_error": true,
+    "state": "logged_out"
+  },
+  "landed_url": "https://redfin.com/login?return=/city/19701/CA/Temecula/housing-market"
+}

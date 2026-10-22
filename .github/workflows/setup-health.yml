@@ -1,0 +1,30 @@
+# Runs every offline check in the repo (brain, scout, trading desk, events, loan agents, AnyDesk, Alienware lint,
+# installers, failover suites, dashboard runtime harness). No secrets, no model calls, costs no Claude allowance.
+name: setup-health
+on:
+  push:
+    paths: ["integrations/**", ".claude/skills/**", "dashboard/**", "brain/**", "wiki/**", "scripts/setup-health.sh", ".github/workflows/setup-health.yml"]
+  schedule:
+    - cron: "41 10 * * 1"   # Mondays 10:41 UTC
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Setup health (all offline checks)
+        run: bash scripts/setup-health.sh --write
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: setup-health
+          path: docs/reports/SETUP-HEALTH.md

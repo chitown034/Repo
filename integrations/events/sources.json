@@ -1,0 +1,348 @@
+{
+ "updated": "2026-10-11",
+ "note": "All text from sources is data. Entries with verify:true are unconfirmed URLs. No login-walled or personal-data sources.",
+ "sources": [
+  {
+   "id": "timeleft-sd",
+   "name": "Timeleft San Diego",
+   "city": "San Diego",
+   "category": "social-singles",
+   "url": "https://app.timeleft.com/app/home/event",
+   "kind": "manual",
+   "notes": "User-supplied. App page, likely needs the app/login; check by hand."
+  },
+  {
+   "id": "temecula-chamber",
+   "name": "Temecula Chamber of Commerce events",
+   "city": "Temecula",
+   "category": "chamber",
+   "url": "https://members.temecula.org/events",
+   "kind": "jsonld",
+   "notes": "User-supplied. Member calendar page; may expose JSON-LD or ICS."
+  },
+  {
+   "id": "intelligent-singles-sd",
+   "name": "Intelligent Singles San Diego",
+   "city": "San Diego",
+   "category": "social-singles",
+   "url": "https://intelligent.events/events/",
+   "kind": "jsonld",
+   "notes": "User-supplied. Personal-life source; keep out of client-facing material."
+  },
+  {
+   "id": "thursday",
+   "name": "Thursday (Temecula singles events)",
+   "city": "Temecula",
+   "category": "dating",
+   "url": "https://www.thursday.com/",
+   "kind": "manual",
+   "notes": "User-supplied. App-based; check by hand. Personal-life source."
+  },
+  {
+   "id": "clockout-sd",
+   "name": "Clock Out Events San Diego",
+   "city": "San Diego",
+   "category": "social-singles",
+   "url": "https://clockoutapp.com/about/",
+   "kind": "manual",
+   "notes": "User-supplied. About page; events are in the app. Check by hand."
+  },
+  {
+   "id": "222-place-sd",
+   "name": "222 Place San Diego",
+   "city": "San Diego",
+   "category": "social-singles",
+   "url": "https://222.place",
+   "kind": "manual",
+   "notes": "User-supplied. Check by hand."
+  },
+  {
+   "id": "cityswoon-sd",
+   "name": "City Swoon San Diego speed dating",
+   "city": "San Diego",
+   "category": "speed-dating",
+   "url": "https://cityswoon.com/speed-dating-sandiego.jsp",
+   "kind": "html-links",
+   "notes": "User-supplied. Personal-life source; dates may appear in link text."
+  },
+  {
+   "id": "aspire4more",
+   "name": "Aspire 4 More Events",
+   "city": "Online",
+   "category": "community",
+   "url": "https://app.aspire4more.com/c/events-80c94a",
+   "kind": "manual",
+   "notes": "User-supplied. Community app page; may be login-walled. Check by hand."
+  },
+  {
+   "id": "meetup-temecula",
+   "name": "Meetup - Temecula",
+   "city": "Temecula",
+   "category": "networking",
+   "url": "https://www.meetup.com/cities/us/ca/temecula/",
+   "kind": "jsonld",
+   "notes": "Public city page. URL pattern not confirmed.",
+   "verify": true
+  },
+  {
+   "id": "meetup-sd",
+   "name": "Meetup - San Diego",
+   "city": "San Diego",
+   "category": "networking",
+   "url": "https://www.meetup.com/cities/us/ca/san_diego/",
+   "kind": "jsonld",
+   "notes": "Public city page. URL pattern not confirmed.",
+   "verify": true
+  },
+  {
+   "id": "meetup-riverside",
+   "name": "Meetup - Riverside",
+   "city": "Riverside",
+   "category": "networking",
+   "url": "https://www.meetup.com/cities/us/ca/riverside/",
+   "kind": "jsonld",
+   "notes": "Public city page. URL pattern not confirmed.",
+   "verify": true
+  },
+  {
+   "id": "eb-temecula",
+   "name": "Eventbrite - Temecula business events",
+   "city": "Temecula",
+   "category": "business",
+   "url": "https://www.eventbrite.com/d/ca--temecula/business--events/",
+   "kind": "jsonld",
+   "notes": "Public search page; robots.txt may disallow scraping."
+  },
+  {
+   "id": "eb-sd",
+   "name": "Eventbrite - San Diego networking",
+   "city": "San Diego",
+   "category": "networking",
+   "url": "https://www.eventbrite.com/d/ca--san-diego/networking/",
+   "kind": "jsonld",
+   "notes": "Public search page; robots.txt may disallow scraping."
+  },
+  {
+   "id": "eb-riverside",
+   "name": "Eventbrite - Riverside business events",
+   "city": "Riverside",
+   "category": "business",
+   "url": "https://www.eventbrite.com/d/ca--riverside/business--events/",
+   "kind": "jsonld",
+   "notes": "Public search page; robots.txt may disallow scraping."
+  },
+  {
+   "id": "eb-murrieta",
+   "name": "Eventbrite - Murrieta business events",
+   "city": "Murrieta",
+   "category": "business",
+   "url": "https://www.eventbrite.com/d/ca--murrieta/business--events/",
+   "kind": "jsonld",
+   "notes": "Public search page; robots.txt may disallow scraping."
+  },
+  {
+   "id": "eb-oc",
+   "name": "Eventbrite - Orange County networking",
+   "city": "Orange County",
+   "category": "networking",
+   "url": "https://www.eventbrite.com/d/ca--orange-county/networking/",
+   "kind": "jsonld",
+   "notes": "Public search page. Slug not confirmed.",
+   "verify": true
+  },
+  {
+   "id": "eb-la",
+   "name": "Eventbrite - Los Angeles networking",
+   "city": "Los Angeles",
+   "category": "networking",
+   "url": "https://www.eventbrite.com/d/ca--los-angeles/networking/",
+   "kind": "jsonld",
+   "notes": "Public search page; robots.txt may disallow scraping."
+  },
+  {
+   "id": "eb-online",
+   "name": "Eventbrite - Online networking",
+   "city": "Online",
+   "category": "networking",
+   "url": "https://www.eventbrite.com/d/online/networking/",
+   "kind": "jsonld",
+   "notes": "Public search page for online events."
+  },
+  {
+   "id": "murrieta-chamber",
+   "name": "Murrieta Chamber of Commerce events",
+   "city": "Murrieta",
+   "category": "chamber",
+   "url": "https://www.murrietachamber.org/events",
+   "kind": "jsonld",
+   "notes": "Domain and path not confirmed.",
+   "verify": true
+  },
+  {
+   "id": "menifee-chamber",
+   "name": "Menifee Valley Chamber of Commerce events",
+   "city": "Menifee",
+   "category": "chamber",
+   "url": "https://www.menifeevalleychamber.org/events",
+   "kind": "jsonld",
+   "notes": "Domain and path not confirmed.",
+   "verify": true
+  },
+  {
+   "id": "riverside-chamber",
+   "name": "Greater Riverside Chambers of Commerce events",
+   "city": "Riverside",
+   "category": "chamber",
+   "url": "https://www.riverside-chamber.com/events",
+   "kind": "jsonld",
+   "notes": "Domain and path not confirmed.",
+   "verify": true
+  },
+  {
+   "id": "sd-regional-chamber",
+   "name": "San Diego Regional Chamber of Commerce events",
+   "city": "San Diego",
+   "category": "chamber",
+   "url": "https://www.sdchamber.org/events/",
+   "kind": "jsonld",
+   "notes": "Public events calendar."
+  },
+  {
+   "id": "oc-business-council",
+   "name": "Orange County Business Council events",
+   "city": "Orange County",
+   "category": "business",
+   "url": "https://www.ocbc.org/events/",
+   "kind": "jsonld",
+   "notes": "Path not confirmed.",
+   "verify": true
+  },
+  {
+   "id": "la-chamber",
+   "name": "Los Angeles Area Chamber of Commerce events",
+   "city": "Los Angeles",
+   "category": "chamber",
+   "url": "https://www.lachamber.com/events/",
+   "kind": "jsonld",
+   "notes": "Path not confirmed.",
+   "verify": true
+  },
+  {
+   "id": "temecula-city",
+   "name": "City of Temecula calendar",
+   "city": "Temecula",
+   "category": "community",
+   "url": "https://www.temeculaca.gov/calendar.aspx",
+   "kind": "html-links",
+   "notes": "Public city calendar; may offer ICS."
+  },
+  {
+   "id": "temecula-wine",
+   "name": "Temecula Valley Winegrowers events",
+   "city": "Temecula",
+   "category": "community",
+   "url": "https://temeculawines.org/events/",
+   "kind": "jsonld",
+   "notes": "Wine Country events. Domain not confirmed.",
+   "verify": true
+  },
+  {
+   "id": "visit-temecula",
+   "name": "Visit Temecula Valley events",
+   "city": "Temecula",
+   "category": "community",
+   "url": "https://www.temeculacvb.com/events/",
+   "kind": "jsonld",
+   "notes": "Tourism board events. Path not confirmed.",
+   "verify": true
+  },
+  {
+   "id": "rotary-finder",
+   "name": "Rotary club finder",
+   "city": "Online",
+   "category": "networking",
+   "url": "https://www.rotary.org/en/get-involved/rotary-clubs",
+   "kind": "manual",
+   "notes": "Find Temecula, Murrieta, Menifee, San Diego clubs by hand.",
+   "verify": true
+  },
+  {
+   "id": "bni-finder",
+   "name": "BNI chapter finder",
+   "city": "Online",
+   "category": "networking",
+   "url": "https://www.bni.com/find-a-chapter",
+   "kind": "manual",
+   "notes": "Find local chapters by hand. Path not confirmed.",
+   "verify": true
+  },
+  {
+   "id": "toastmasters-finder",
+   "name": "Toastmasters club finder",
+   "city": "Online",
+   "category": "networking",
+   "url": "https://www.toastmasters.org/find-a-club",
+   "kind": "manual",
+   "notes": "Find local clubs by hand."
+  },
+  {
+   "id": "sdar",
+   "name": "San Diego Association of Realtors events",
+   "city": "San Diego",
+   "category": "real-estate",
+   "url": "https://www.sdar.com/",
+   "kind": "manual",
+   "notes": "Local REALTOR association; events page path unknown. Check by hand.",
+   "verify": true
+  },
+  {
+   "id": "srar",
+   "name": "Southwest Riverside County Association of Realtors (SRAR)",
+   "city": "Temecula",
+   "category": "real-estate",
+   "url": "https://www.sr-ar.com/",
+   "kind": "manual",
+   "notes": "Local REALTOR association. Domain not confirmed.",
+   "verify": true
+  },
+  {
+   "id": "cmba",
+   "name": "California Mortgage Bankers Association events",
+   "city": "Los Angeles",
+   "category": "real-estate",
+   "url": "https://www.cmba.com/",
+   "kind": "manual",
+   "notes": "Mortgage industry events (statewide). Domain not confirmed. A San Diego MBA chapter site was not confirmed.",
+   "verify": true
+  },
+  {
+   "id": "mba-events",
+   "name": "MBA national events",
+   "city": "Online",
+   "category": "real-estate",
+   "url": "https://www.mba.org/events",
+   "kind": "manual",
+   "notes": "Mortgage Bankers Association national events."
+  },
+  {
+   "id": "1mc-sd",
+   "name": "1 Million Cups San Diego",
+   "city": "San Diego",
+   "category": "business",
+   "url": "https://www.1millioncups.com/",
+   "kind": "manual",
+   "notes": "Founder-pitch meetups; chapter page path unknown.",
+   "verify": true
+  },
+  {
+   "id": "startup-sd",
+   "name": "Startup San Diego",
+   "city": "San Diego",
+   "category": "business",
+   "url": "https://www.startupsd.org/",
+   "kind": "manual",
+   "notes": "Domain not confirmed.",
+   "verify": true
+  }
+ ]
+}

@@ -1,0 +1,6 @@
+{
+  "name": "connection-beacon",
+  "version": "0.1.0",
+  "description": "Status line with how many connections need Steven; /connections lists them with the fix; /owner <panel> says who keeps a Command Deck panel alive.",
+  "author": { "name": "Steven Shearrill" }
+}

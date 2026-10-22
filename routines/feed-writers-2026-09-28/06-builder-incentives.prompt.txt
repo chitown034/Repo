@@ -1,0 +1,106 @@
+WRITE MODE (2026-09-28, Steven approved) — supersedes the RESEARCH-ONLY framing below only
+================================================================================================
+Steven's decision, 2026-09-28: "Make them update the dashboard." This routine used to research
+every day and end with a JSON final message that nobody applied. It now WRITES its findings
+directly into the Command Deck's live database with the ArtifactData tool, using the WRITE STEP
+section near the end of this prompt (which replaces the old "output your findings as your final
+message" step). Everything else below — "never invent a builder name, incentive amount, or URL",
+and the ban on calling Edit, Write, Bash-writing any file, or Artifact with action "publish" —
+still applies exactly as written; those calls still hang this unattended sandbox.
+
+TWO CHANGES from the old version of this routine:
+  - The output shape below is NOT the shape the old prompt described (a full replacement
+    `BUILDER_INCENTIVES` array, area/summary/source/url). That array is baked into the page's HTML,
+    hand-researched, and is not this routine's job. What this card actually reads live is
+    `liveFeeds.feeds.builderIncentiveLiveList` — a single supplementary research-note entry that
+    sits underneath the hand-maintained table, not a replacement for it.
+  - Command Deck first, then an exact copy to the ISA Portal. (Until 2026-10-05 this said
+    "Command Deck ONLY", because the ISA Portal had no live-feed slot. It has one now — Steven,
+    2026-10-05: "ensure ISA portal also is update and mirrors command deck and only uses Claude
+    subscription for feeds". The copy is the MIRROR STEP at the end of this prompt; nothing else
+    in the ISA Portal is yours to touch.)
+================================================================================================
+
+You are refreshing the "Builder incentives & rate buydowns" live-scan note on a published Claude
+Artifact called "Command Deck" — a personal dashboard for a user named Steven, a mortgage broker
+and Realtor/broker associate working the Temecula/Murrieta and San Diego, CA markets. The artifact
+is https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d (artifact id
+1624daae-d683-405a-971d-c5828dce0f8d, database collection "state", document `liveFeeds`, key
+`builderIncentiveLiveList` under its `feeds` object).
+
+IMPORTANT ARCHITECTURE NOTE: This routine runs in a fresh, unattended cloud sandbox every time it
+fires, with no human present to approve permission prompts. Editing or Bash-writing a local file
+the Artifact tool downloads WILL trigger an unanswerable "sensitive file" permission prompt and
+hang the run forever. Do NOT call Edit, Write, or Bash with any write/copy/redirect operation at
+any point in this run. Do NOT call Artifact with action "publish". You do not need to call Artifact
+"read" at all in this version — read the live document with ArtifactData instead (see STEP 1).
+
+STEP 1 — Read current state
+Use the ArtifactData tool. If it is not already in your tool list, load it first with ToolSearch
+using the query `select:ArtifactData`.
+Read `liveFeeds` (artifact 1624daae-d683-405a-971d-c5828dce0f8d, collection "state"). Note its
+`version` — you need it for the WRITE STEP. Look at `feeds.builderIncentiveLiveList` — its `text`
+is what was already reported, so you don't just repeat the same finding. `liveFeeds` is a large
+shared document with many OTHER feeds' keys in it — you are reading the whole thing but will only
+ever change your own key; see WRITE STEP rule 4.
+
+STEP 2 — Research current data
+Check today's real date first (don't guess). Run WebSearch queries like "new home builder
+incentives Temecula Murrieta [current month year]", "builder rate buydown San Diego new
+construction [current month year]", "[Lennar, KB Home, D.R. Horton, Richmond American, Woodside
+Homes, Meritage Homes, Tri Pointe] Temecula Murrieta incentive". Prefer SPECIFIC named
+communities/builders with SPECIFIC incentive terms (rate buydown %, credit amount, close-by date);
+if only general market-trend reporting exists, say so honestly rather than inventing specifics.
+Only use real, checkable sources.
+
+## WRITE STEP — replaces the old "output your findings as your final message" step (WRITE MODE, 2026-09-28)
+
+Use the ArtifactData tool (same one you loaded in STEP 1).
+
+1. You already read `liveFeeds` in STEP 1 and have its `version`.
+2. Build the replacement `feeds.builderIncentiveLiveList` entry in EXACTLY the same shape as the
+   one you read: `{checkedAt: "<output of `date -u +%Y-%m-%dT%H:%M:%SZ` — see CLOCK below>", citations: [{title, url}, ... 3 to 5 real sources],
+   model: "cloud-routine", source: "WebSearch", text: "<2-4 sentence summary of what's confirmed
+   live or newly changed this run, naming the builder/community and the specific terms — same
+   tone/length as the entry you read in STEP 1>"}`.
+3. Write with `update`, NOT `set`. `update` is a deep merge — measured on this database on
+   2026-09-28: it changes only the nested key you send and leaves every other key in the
+   document exactly as it was. Send exactly this, pinned by the `version` you read in STEP 1:
+   ArtifactData action "update", collection "state", doc_id "liveFeeds", if_version <that version>,
+   data: {v: {feeds: {builderIncentiveLiveList: {checkedAt, citations, model, source, text}}}}
+   (all five fields of your entry, nothing else). On a version conflict, re-read `liveFeeds`
+   and retry the same update once with the new version.
+4. Never `set` the `liveFeeds` document and never send any key but `feeds.builderIncentiveLiveList` — not another
+   feed's key, not the document's top-level `updatedAt` or `via`. This is a shared document;
+   other routines' keys and its own provenance fields are not yours to touch.
+5. `citations` must be real source URLs from STEP 2, at least 3. If research fails or sources are
+   too thin to trust, write NOTHING this run: an old document is better than an empty or guessed
+   one.
+6. Set `model` to "cloud-routine" — never a model name — and `checkedAt` to the actual UTC time you
+   write, in ISO 8601. `source` is "WebSearch".
+   CLOCK (added 2026-09-28 after the first runs): never type, estimate or round a time yourself —
+   the first runs guessed and stamped times hours off, some of them in the future. Right before
+   each write, run exactly `date -u +%Y-%m-%dT%H:%M:%SZ` with the Bash tool and copy its output
+   unchanged into `checkedAt`. That command only reads the clock, so it is allowed; every Bash
+   write/copy/redirect stays banned.
+7. Never touch any other document. The only ISA Portal write allowed is the MIRROR STEP below.
+   Never call Edit, Write, or Bash with any write/copy/redirect operation. Never call Artifact with
+   action "publish". Never send a message to anyone.
+8. Run the MIRROR STEP, then end your turn with a one-line summary: what the note now says, the
+   Command Deck document's new version, and the ISA Portal copy's new version (or why it was skipped).
+
+## MIRROR STEP — exact copy to the ISA Portal (added 2026-10-05)
+
+Run it only if your Command Deck update above succeeded this run. If you wrote nothing this run
+(rule 5), skip it too: the ISA copy already holds the last entry you wrote.
+1. Read the ISA Portal's copy: ArtifactData action "get", url
+   https://claude.ai/code/artifact/4348b34d-afa0-4d2e-8214-29b1319cf041, collection "state", doc_id
+   "liveFeeds". Note its `version`. If the document does not exist, do NOT create it — skip the
+   mirror and put "ISA mirror skipped: liveFeeds missing" in your summary.
+2. ArtifactData action "update", same url, collection "state", doc_id "liveFeeds", if_version <that
+   version>, data: {v: {feeds: {builderIncentiveLiveList: <the IDENTICAL entry you just wrote to the
+   Command Deck — same checkedAt, citations, model, source and text>}}}. Do not re-run the clock or
+   reword anything: both pages show the same note with the same stamp. On a version conflict,
+   re-read the ISA copy and retry once.
+3. Never `set` it, never send any other key, never write any other ISA Portal document. If the
+   mirror fails, say so in your summary; the Command Deck write stands — never undo it.

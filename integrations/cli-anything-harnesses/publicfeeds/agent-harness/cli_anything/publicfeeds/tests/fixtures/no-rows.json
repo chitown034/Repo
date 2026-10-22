@@ -1,0 +1,31 @@
+{
+  "_synthetic": "All values invented for tests. No real rate, lender or client.",
+  "url": "https://www.veteransunited.com/va-loans/va-mortgage-rates/",
+  "tree": {
+    "name": "/",
+    "role": "document",
+    "children": [
+      {
+        "name": "main",
+        "role": "main",
+        "children": [
+          {
+            "name": "heading_1",
+            "role": "heading",
+            "text": "Rates are temporarily unavailable"
+          },
+          {
+            "name": "text_1",
+            "role": "text",
+            "text": "Please check back later."
+          }
+        ]
+      }
+    ]
+  },
+  "expect": {
+    "empty": true,
+    "count": 0,
+    "warning_contains": "none matched rows selector"
+  }
+}

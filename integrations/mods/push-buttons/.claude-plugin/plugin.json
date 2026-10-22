@@ -1,0 +1,6 @@
+{
+  "name": "push-buttons",
+  "version": "0.1.0",
+  "description": "One-word slash commands (/cycle /inbox /meetings /sync /connect /tc /queue /today /help-buttons) that send the full, correct prompt for each workflow, HALT rules included.",
+  "author": { "name": "Steven Shearrill" }
+}

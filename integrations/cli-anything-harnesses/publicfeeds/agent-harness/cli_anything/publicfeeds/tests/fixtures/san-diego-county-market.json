@@ -1,0 +1,57 @@
+{
+  "_synthetic": "All values invented for tests. No real listing, lender quote, community, price, date or client. Not a claim about any real page.",
+  "url": "https://www.redfin.com/blog/san-diego-county-ca-housing-market-august-2026/",
+  "tree": {
+    "name": "/",
+    "role": "document",
+    "children": [
+      {
+        "name": "main",
+        "role": "main",
+        "children": [
+          {
+            "name": "text_1",
+            "role": "text",
+            "text": "San Diego County Market Housing Market"
+          },
+          {
+            "name": "text_2",
+            "role": "text",
+            "text": "Median Sale Price $961,781"
+          },
+          {
+            "name": "text_3",
+            "role": "text",
+            "text": "28 Median Days on Market"
+          },
+          {
+            "name": "text_4",
+            "role": "text",
+            "text": "+5.7% YoY"
+          },
+          {
+            "name": "text_5",
+            "role": "text",
+            "text": "3.0 Months of Supply"
+          },
+          {
+            "name": "text_6",
+            "role": "text",
+            "text": "Period ending Aug 31, 2026"
+          }
+        ]
+      }
+    ]
+  },
+  "expect": {
+    "kind": "record",
+    "auth_state": "not_required",
+    "record": {
+      "medianPrice": "961,781",
+      "dom": "28",
+      "yoy": "+5.7%",
+      "monthsSupply": "3.0",
+      "asOf": "Aug 31, 2026"
+    }
+  }
+}

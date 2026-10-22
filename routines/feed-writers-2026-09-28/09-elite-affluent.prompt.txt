@@ -1,0 +1,100 @@
+WRITE MODE (2026-09-28, Steven approved) — supersedes the RESEARCH-ONLY framing below only
+CLAUDE-ONLY (2026-10-05, Steven: "remove everything running on Perplexity and replace with Claude
+subscription"): research with Claude's own WebSearch only — never Perplexity, OpenRouter, You.com or
+any paid search API. This routine is now the PRIMARY writer of its note (the Mac task that also
+wrote it through Perplexity is being paused).
+================================================================================================
+Steven's decision, 2026-09-28: "Make them update the dashboard." This routine used to research
+weekly and end with a JSON final message that nobody applied. It now WRITES its single most useful
+finding directly into the Command Deck's live database with the ArtifactData tool, using the WRITE
+STEP section near the end of this prompt (which replaces the old "output your findings as your
+final message" step). Everything else below — the research scope, "never invent a valuation,
+holding, or IRC citation", and the ban on calling Edit, Write, Bash-writing any file, or Artifact
+with action "publish" — still applies exactly as written; those calls still hang this unattended
+sandbox.
+
+IMPORTANT — the output shape below is NOT the shape the old prompt described (updatedEmpires /
+newEmpires / newBrandLicensingFirms / newVistaPeerFirms / newTaxStrategies, one key per baked HTML
+table: `AFFLUENT_EMPIRES`, `BRAND_LICENSING_FIRMS`, `VISTA_PEER_FIRMS`, `ELITE_TAX_STRATEGIES`).
+Those four tables are hand-researched and baked into the page — not this routine's job. What this
+card actually reads live is `liveFeeds.feeds.eliteAffluentLiveList` — a single "Live scan" entry
+that sits above the hand-maintained tables, not a replacement for them. In practice this feed has
+broadened to cover wealth-industry news for affluent/family-office clients generally (a private
+bank's new offering, a luxury-asset business move) alongside new athlete/entertainer empire and PE
+peer-firm developments — match that same breadth in your research, and write ONE finding, not five
+arrays.
+================================================================================================
+
+You are refreshing the "Live scan" note under "Athlete & entertainer business empires" on Panel 34
+"Elite Affluent Tracker" of a published Claude Artifact called "Command Deck" — a personal
+dashboard for a user named Steven. The artifact is
+https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d (artifact id
+1624daae-d683-405a-971d-c5828dce0f8d, database collection "state", document `liveFeeds`, key
+`eliteAffluentLiveList` under its `feeds` object).
+
+IMPORTANT ARCHITECTURE NOTE: This routine runs in a fresh, unattended cloud sandbox every time it
+fires, with no human present to approve permission prompts. Editing or Bash-writing a local file
+the Artifact tool downloads WILL trigger an unanswerable "sensitive file" permission prompt and
+hang the run forever. Do NOT call Edit, Write, or Bash with any write/copy/redirect operation at
+any point in this run. Do NOT call Artifact with action "publish". You do not need to call Artifact
+"read" at all in this version — read the live document with ArtifactData instead (see STEP 1).
+
+STEP 1 — Read current state
+Use the ArtifactData tool. If it is not already in your tool list, load it first with ToolSearch
+using the query `select:ArtifactData`.
+Read `liveFeeds` (artifact 1624daae-d683-405a-971d-c5828dce0f8d, collection "state"). Note its
+`version` — you need it for the WRITE STEP. Look at `feeds.eliteAffluentLiveList` — its `text` is
+what was already reported, so you don't repeat it. `liveFeeds` is a large shared document with many
+OTHER feeds' keys in it — you are reading the whole thing but will only ever change your own key;
+see WRITE STEP rule 4.
+
+STEP 2 — Research current, real developments
+Check today's real date first (don't guess). Look for ONE genuinely new, well-documented,
+checkable development from any of these angles, in priority order:
+a) A material update to a tracked athlete/entertainer business empire's holdings or deal
+   structure (currently LeBron James, Shaquille O'Neal, Magic Johnson, Jay-Z & Beyoncé), or a new
+   real, disclosed empire not yet covered.
+b) News from a brand-licensing platform (Authentic Brands Group and peers: WHP Global, Marquee
+   Brands, Bluestar Alliance, Iconix, Xcel Brands, Lion Capital) or a Vista Equity Partners peer
+   firm.
+c) A new, real, IRC-cited tax/estate-planning strategy used by high-net-worth individuals — cite
+   the actual IRC section.
+d) Broader wealth-industry news relevant to affluent/family-office clients: a private bank's new
+   high-net-worth offering (e.g. HSBC, Citi Private Bank, JPMorgan Private Bank), or a notable
+   luxury-asset business move (private aviation, yachting, or similar).
+Only use real, checkable, named sources — never invent a valuation, holding, deal term, or IRC
+citation. If nothing genuinely new turned up this week, say so plainly rather than padding.
+
+## WRITE STEP — replaces the old "output your findings as your final message" step (WRITE MODE, 2026-09-28)
+
+Use the ArtifactData tool (same one you loaded in STEP 1).
+
+1. You already read `liveFeeds` in STEP 1 and have its `version`.
+2. Build the replacement `feeds.eliteAffluentLiveList` entry in EXACTLY the same shape as the one
+   you read: `{checkedAt: "<output of `date -u +%Y-%m-%dT%H:%M:%SZ` — see CLOCK below>", citations: [{title, url}, ... 2 to 4 real sources],
+   model: "cloud-routine", source: "WebSearch", text: "<2-4 sentences on the single best finding
+   from STEP 2, naming the date and the real source — same tone/length as the entry you read in
+   STEP 1>"}`.
+3. Write with `update`, NOT `set`. `update` is a deep merge — measured on this database on
+   2026-09-28: it changes only the nested key you send and leaves every other key in the
+   document exactly as it was. Send exactly this, pinned by the `version` you read in STEP 1:
+   ArtifactData action "update", collection "state", doc_id "liveFeeds", if_version <that version>,
+   data: {v: {feeds: {eliteAffluentLiveList: {checkedAt, citations, model, source, text}}}}
+   (all five fields of your entry, nothing else). On a version conflict, re-read `liveFeeds`
+   and retry the same update once with the new version.
+4. Never `set` the `liveFeeds` document and never send any key but `feeds.eliteAffluentLiveList` — not another
+   feed's key, not the document's top-level `updatedAt` or `via`. This is a shared document;
+   other routines' keys and its own provenance fields are not yours to touch.
+5. `citations` must be real source URLs from STEP 2, at least 2. If nothing genuinely new was
+   found, or sources are too thin to trust, write NOTHING this run: an old document is better than
+   an empty or guessed one.
+6. Set `model` to "cloud-routine" — never a model name — and `checkedAt` to the actual UTC time you
+   write, in ISO 8601. `source` is "WebSearch".
+   CLOCK (added 2026-09-28 after the first runs): never type, estimate or round a time yourself —
+   the first runs guessed and stamped times hours off, some of them in the future. Right before
+   each write, run exactly `date -u +%Y-%m-%dT%H:%M:%SZ` with the Bash tool and copy its output
+   unchanged into `checkedAt`. That command only reads the clock, so it is allowed; every Bash
+   write/copy/redirect stays banned.
+7. Never touch any other document. Never call Edit, Write, or Bash with any write/copy/redirect
+   operation. Never call Artifact with action "publish". Never send a message to anyone.
+8. End your turn with a one-line summary: the finding you wrote, and the document's new version.

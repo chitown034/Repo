@@ -1,0 +1,36 @@
+{
+  "target": "zipForms",
+  "verified": false,
+  "verified_note": "UNVERIFIED. Written 2026-09-22 without access to zipForms / Lone Wolf Transactions (egress-blocked from the build sandbox). Every url, list_path, read_path and login marker is a best-effort guess — including which host the account lives on (classic zipForm Plus vs Lone Wolf Transactions). On the first live run: sign in, note the real URL, run `cli-anything-zipforms discover --url <that url>` and correct this file, then `paths validate`.",
+  "allowed_url_prefixes": ["https://www.zipformplus.com/", "https://transactions.lwolf.com/"],
+  "login_markers": ["Sign In", "Log In", "Forgot Password"],
+  "recipes": {
+    "form-index": {
+      "url": "https://www.zipformplus.com/forms",
+      "list_path": "/main",
+      "read_path": null,
+      "grep": null,
+      "auth_check_path": "/",
+      "verified": false,
+      "note": "One row per entry under the main landmark of the forms list. Expect to narrow list_path to the table or list node after discover. If forms live inside a transaction, point the url at that transaction's forms tab."
+    },
+    "form-detail": {
+      "url": "https://www.zipformplus.com/forms/{id}",
+      "list_path": "/main",
+      "read_path": "/main",
+      "grep": null,
+      "auth_check_path": "/",
+      "verified": false,
+      "note": "Summary of one form as on-screen text: rows are child nodes, text is the main landmark read in full. Never fills a field; there is no type verb in this harness."
+    },
+    "packet-index": {
+      "url": "https://www.zipformplus.com/packets",
+      "list_path": "/main",
+      "read_path": null,
+      "grep": null,
+      "auth_check_path": "/",
+      "verified": false,
+      "note": "Packet NAMES only. This harness has no send verb; packet send delivers a contract to a client or the other side."
+    }
+  }
+}

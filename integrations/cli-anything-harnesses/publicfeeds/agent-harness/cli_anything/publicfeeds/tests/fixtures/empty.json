@@ -1,0 +1,18 @@
+{
+  "_synthetic": "All values invented for tests. No real rate, lender or client.",
+  "url": "https://www.veteransunited.com/va-loans/va-mortgage-rates/",
+  "tree": {
+    "name": "/",
+    "role": "document",
+    "children": [
+      {
+        "name": "main",
+        "role": "main"
+      }
+    ]
+  },
+  "expect": {
+    "empty": true,
+    "count": 0
+  }
+}

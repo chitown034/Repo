@@ -1,0 +1,45 @@
+[
+ {"id":"F-E11A-01","category":"Skill","panel":"panel-aiteam","system":"repo skills (.claude/skills)",
+  "description":"Nine orchestration skills written as repo skills this cycle: interview-me, prompt-master, skills-refresh, vanessa-orchestrator v2, ai-ecosystem-backup v2, continuous-process-improvement v2, scale-growth-engine, loop-engineering v2, stress-test-sweep. They exist as files in scratchpad/repo-out/.claude/skills/ only — none is installed on the Mac, so the deck must not describe them as running.",
+  "priority":"P2","effort":"M","status":"New","resolution":"Implemented","testResult":"Pending",
+  "before":"interview-me, prompt-master, vanessa-orchestrator, loop-engineering, scale-growth-engine absent from the Mac toolkit snapshot; skills-refresh existed only as a Sunday task",
+  "after":"SKILL.md written for all nine with trigger, inputs, procedure, doc shapes, guardrails, HALT, logging and a nightly self-test","dateResolved":"2026-09-22",
+  "owner":"Capability Engineer","trustLevel":"L1","halt":false,"haltReason":""},
+
+ {"id":"F-E11A-02","category":"Routine","panel":"panel-opsradar","system":"r6-weekly-backup / ai-ecosystem-backup",
+  "description":"Backup spec vs reality drift: Steven's spec is Sunday 00:00 local into Documents/AI-Ecosystem-Backups/YYYY-MM-DD with an 8-week rolling window; the Mac task r6-weekly-backup is cron 0 5 * * 0 (Sun 5:00 AM PT), has NEVER run under claude-runner (missed Sun 2026-09-20), the existing backups live in ~/AI-Ecosystem-Backups, and backupStatus.weeksKept is 3. The skill targets the spec and records the slot it actually ran in; the cron and root still need Steven.",
+  "priority":"P1","effort":"S","status":"Broken","resolution":"Escalated","testResult":"Fail",
+  "before":"last verified backup 2026-09-14 (7,931 docs, 109 MB, integrity pass, restore test 13/13 on 2026-09-15), weeksKept 3, task never run",
+  "after":"ai-ecosystem-backup v2 specifies the canonical root, 8-week prune, integrity check, single retry and two-failure escalation; cron re-point to 0 0 * * 0 and the root move are Steven's call","dateResolved":null,
+  "owner":"Steven","trustLevel":"n/a","halt":true,
+  "haltReason":"Changing the backup cron and moving the backup root are Steven's decisions; pruning or moving existing backup folders is irreversible."},
+
+ {"id":"F-E11A-03","category":"Routine","panel":"panel-aiteam","system":"nightly-self-test",
+  "description":"Every skill written this cycle registers a nightly self-test, but nightly-self-test itself is in error — timeout, exit 124, last end 2026-09-15 — and loopLog cycle 3 records that no selfTest doc has ever been confirmed written. Each self-test is therefore specified as offline, sub-agent-free and <=60 s, and the selfTest doc shape is defined in loop-engineering. Until the timeout is fixed, no self-test result exists.",
+  "priority":"P1","effort":"M","status":"Broken","resolution":"Open","testResult":"Fail",
+  "before":"nightly-self-test error (timeout) since 2026-09-15; no selfTest doc in the 161-doc export",
+  "after":"self-test suite categories, per-test budget and the selfTest doc shape specified; the timeout fix is a Reliability Engineer task","dateResolved":null,
+  "owner":"Reliability Engineer","trustLevel":"n/a","halt":false,"haltReason":""},
+
+ {"id":"F-E11A-04","category":"Orchestrator Agent","panel":"panel-aiteam","system":"vanessa-ops-review / cloud ops review",
+  "description":"The Parallel C-Suite Task Cycle has two competing homes: the Mac task vanessa-ops-review (Fri 10:35 PM PT, enabled, never run) and the cloud routine 'Vanessa orchestrated ops review' (Fri 23:00 UTC, FAILED 2026-09-18), which cannot write the artifact DB unattended. The routine spec re-points the existing Mac task and keeps the cloud twin report-only rather than creating a second Friday task.",
+  "priority":"P2","effort":"S","status":"Recommended","resolution":"Open","testResult":"Pending",
+  "before":"two Friday ops reviews, neither producing a vanessaRuns entry since 2026-09-11",
+  "after":"routines/parallel-csuite-task-cycle.md: one Mac task of record, caps 8 sub-agents / 4 Perplexity, stall policy 2 retries then re-route then Needs-Steven","dateResolved":null,
+  "owner":"CTO Innovator","trustLevel":"L1","halt":false,"haltReason":""},
+
+ {"id":"F-E11A-05","category":"Current State","panel":"panel-aiteam","system":"improvementProposals / trustLevels / selfTest / skillsAudit / scaleOpportunityLog",
+  "description":"Five documents these skills write have no proven shape in the live store: improvementProposals is an empty array (never written), and trustLevels, selfTest, skillsAudit and scaleOpportunityLog do not exist in the 161-doc export. Shapes were defined in the SKILL.md files (scaleOpportunityLog per brief section 7) and must match whatever the integrator renders on the deck before either side ships.",
+  "priority":"P2","effort":"S","status":"New","resolution":"Open","testResult":"Pending",
+  "before":"no shape of record for five docs the orchestration skills depend on",
+  "after":"shapes specified in the skills; integrator to confirm the render code agrees","dateResolved":null,
+  "owner":"Capability Engineer","trustLevel":"n/a","halt":false,"haltReason":""},
+
+ {"id":"F-E11A-06","category":"Skill","panel":"panel-aiteam","system":"fub-followups skill",
+  "description":"The Mac still carries the fub-followups skill (a Follow Up Boss template library) after Follow Up Boss was retired 2026-09-22 in favour of Lofty. skills-refresh flags it as needing a port to Lofty rather than reporting it healthy; deleting or pruning it is a destructive action and is a standing HALT.",
+  "priority":"P2","effort":"M","status":"Stale","resolution":"Open","testResult":"Pending",
+  "before":"fub-followups present in the toolkit snapshot, described as a live template library",
+  "after":"flagged for porting by skills-refresh; no prune performed","dateResolved":null,
+  "owner":"Steven","trustLevel":"n/a","halt":true,
+  "haltReason":"Pruning or replacing an installed skill is destructive (standing loop halt: 'skill prune — destructive')."}
+]

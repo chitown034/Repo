@@ -1,0 +1,1 @@
+Vendored from https://github.com/digitaldonusum/vibebreaker at commit 505c92c (2026-08-24), MIT. Prompts, protocol and templates only; the npx CLI is not needed (it only copies these files into .vibebreaker/).

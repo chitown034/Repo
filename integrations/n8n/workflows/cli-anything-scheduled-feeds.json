@@ -1,0 +1,106 @@
+{
+  "name": "CLI-Anything scheduled feeds (read-only)",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## CLI-Anything scheduled feeds -- READ THIS FIRST\n\n**What this workflow does, and no more:** on a schedule, runs one read-only recipe from each\nof the five browser-backed CLI-Anything harnesses that has no Mac task of its own yet (Lofty\nand Zoho already have `lofty-crm-sync` / `zoho-crm-sync`; CRMLS has no harness by design; see\n`$S/r9/C2-routing.md`). Each command's stdout+stderr is written to its own file under\n`~/.cli-anything-feeds/n8n-output/`. Nothing here calls a vendor's write endpoint, sends\nanything, or touches a client record.\n\n**Where this stops, on purpose:** turning that output into the dashboard's `ratesSnapshot` /\n`liveFeeds` docs is `read_db`/`write_db` work -- an Anthropic-side Claude Code tool call, not\nsomething an n8n Execute Command or HTTP node can reach. This workflow does NOT invent a\nsecond path into those docs. The existing `cli-anything-feeds` Mac task\n(`integrations/mac-task-specs.md` §7) is the one documented store-write path today, for the\n`publicfeeds` recipes; extending it (or a sibling task) to also read this workflow's output\nfiles is a `proposal` in this round's hand-back, not built here.\n\n**Every command below fails cleanly by design until Steven has:** installed the CLI-Anything\nhub + harnesses on the Mac (`MAC-SETUP.sh`), signed into the DOMShell Chrome extension for\nthat target, and (SkySlope/zipForms only) set `CLI_ANYTHING_ECC_REVIEWED_AT`. In this round's\ncloud sandbox none of the five console scripts exist on PATH at all (they are Mac-only\ntools) -- every Execute Command node below returns a nonzero exit / \"command not found\",\nwhich is the correct, honest failure for this environment. `continueOnFail` is set on each\nnode so one harness's absence never blocks the other four.",
+        "height": 480,
+        "width": 520
+      },
+      "id": "c7a3a3c1-0002-4b2b-9b2b-000000000001",
+      "name": "Read me first",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-460, -160]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 6 * * *"
+            }
+          ]
+        }
+      },
+      "id": "c7a3a3c1-0002-4b2b-9b2b-000000000002",
+      "name": "Daily 06:00 (Steven's local tz)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [-60, 60]
+    },
+    {
+      "parameters": {
+        "command": "mkdir -p ~/.cli-anything-feeds/n8n-output && cli-anything-homes saved-searches --json > ~/.cli-anything-feeds/n8n-output/homes-saved-searches.json 2>&1"
+      },
+      "id": "c7a3a3c1-0002-4b2b-9b2b-000000000003",
+      "name": "homes.com: saved-searches",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [240, -160],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "command": "mkdir -p ~/.cli-anything-feeds/n8n-output && cli-anything-showami my-requests --json > ~/.cli-anything-feeds/n8n-output/showami-my-requests.json 2>&1"
+      },
+      "id": "c7a3a3c1-0002-4b2b-9b2b-000000000004",
+      "name": "Showami: my-requests",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [240, -70],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "command": "mkdir -p ~/.cli-anything-feeds/n8n-output && cli-anything-showingtime todays-showings --json > ~/.cli-anything-feeds/n8n-output/showingtime-todays-showings.json 2>&1"
+      },
+      "id": "c7a3a3c1-0002-4b2b-9b2b-000000000005",
+      "name": "ShowingTime: todays-showings",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [240, 20],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "command": "mkdir -p ~/.cli-anything-feeds/n8n-output && cli-anything-skyslope transactions --json > ~/.cli-anything-feeds/n8n-output/skyslope-transactions.json 2>&1"
+      },
+      "id": "c7a3a3c1-0002-4b2b-9b2b-000000000006",
+      "name": "SkySlope: transactions",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [240, 110],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "command": "mkdir -p ~/.cli-anything-feeds/n8n-output && cli-anything-zipforms form-index --json > ~/.cli-anything-feeds/n8n-output/zipforms-form-index.json 2>&1"
+      },
+      "id": "c7a3a3c1-0002-4b2b-9b2b-000000000007",
+      "name": "zipForms: form-index",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [240, 200],
+      "continueOnFail": true
+    }
+  ],
+  "connections": {
+    "Daily 06:00 (Steven's local tz)": {
+      "main": [
+        [
+          { "node": "homes.com: saved-searches", "type": "main", "index": 0 },
+          { "node": "Showami: my-requests", "type": "main", "index": 0 },
+          { "node": "ShowingTime: todays-showings", "type": "main", "index": 0 },
+          { "node": "SkySlope: transactions", "type": "main", "index": 0 },
+          { "node": "zipForms: form-index", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

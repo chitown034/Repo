@@ -1,0 +1,90 @@
+{
+  "site": "showami",
+  "site_title": "Showami",
+  "_comment": "UNVERIFIED path map. Every recipe is a best-effort guess at Showami's requesting-agent dashboard, written without seeing it (the host is egress-blocked from the build sandbox). Run `cli-anything-showami recipe <name> --discover --json` on the Mac, fix root / rows.prefix / fields, and set verified:true only after the numbers match the page. Nothing here posts, accepts, cancels or messages — those verbs do not exist in this package.",
+  "hosts": ["showami.com"],
+  "auth": {
+    "logged_in_markers": ["Sign Out", "Sign out", "Log Out", "Log out", "My Account"],
+    "logged_out_markers": ["Sign In", "Sign in", "Log In", "Log in", "Create Account", "Sign Up"],
+    "login_url_fragments": ["/login", "/signin", "/sign-in", "/users/sign_in"]
+  },
+  "recipes": {
+    "my-requests": {
+      "kind": "list",
+      "description": "Showing requests Steven has posted, with status and assigned assistant (needs sign-in)",
+      "url": "https://showami.com/showings",
+      "url_required": false,
+      "requires_auth": true,
+      "requires_match": false,
+      "root": ["/main"],
+      "rows": {"prefix": ["listitem", "article", "row", "group"], "role": ["listitem", "article", "row"]},
+      "depth": 1,
+      "fields": {
+        "request_id":        {"regex": "#\\s*(\\d{3,})", "group": 1},
+        "address":           {"prefix": ["link", "heading"], "index": 0},
+        "when":              {"regex": "((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\\.? \\d{1,2}(?:, \\d{4})?(?:,?\\s*(?:at\\s*)?\\d{1,2}:\\d{2}\\s*[AaPp][Mm])?)"},
+        "status":            {"regex": "(Open|Posted|Pending|Accepted|Assigned|Confirmed|Completed|Cancelled|Canceled|Expired|Unfilled)"},
+        "showing_assistant": {"regex": "(?:Showing Assistant|Assistant|Accepted by)\\s*:?\\s*([^\\n]+)", "group": 1},
+        "price":             {"regex": "\\$\\s?\\d+(?:\\.\\d{2})?"},
+        "showing_type":      {"regex": "(Buyer Showing|Listing Showing|Inspection|Appraisal|Walk-?Through|Open House|Photo Shoot)"}
+      },
+      "verified": false
+    },
+    "request-status": {
+      "kind": "list",
+      "description": "Status of one showing request, picked by --match (address, id or assistant)",
+      "url": "https://showami.com/showings",
+      "url_required": false,
+      "requires_auth": true,
+      "requires_match": true,
+      "root": ["/main"],
+      "rows": {"prefix": ["listitem", "article", "row", "group"], "role": ["listitem", "article", "row"]},
+      "depth": 1,
+      "fields": {
+        "request_id":        {"regex": "#\\s*(\\d{3,})", "group": 1},
+        "address":           {"prefix": ["link", "heading"], "index": 0},
+        "when":              {"regex": "((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\\.? \\d{1,2}(?:, \\d{4})?(?:,?\\s*(?:at\\s*)?\\d{1,2}:\\d{2}\\s*[AaPp][Mm])?)"},
+        "status":            {"regex": "(Open|Posted|Pending|Accepted|Assigned|Confirmed|Completed|Cancelled|Canceled|Expired|Unfilled)"},
+        "showing_assistant": {"regex": "(?:Showing Assistant|Assistant|Accepted by)\\s*:?\\s*([^\\n]+)", "group": 1},
+        "price":             {"regex": "\\$\\s?\\d+(?:\\.\\d{2})?"}
+      },
+      "verified": false
+    },
+    "assistant-feedback": {
+      "kind": "list",
+      "description": "Feedback left by showing assistants on completed requests (needs sign-in)",
+      "url": "https://showami.com/feedback",
+      "url_required": false,
+      "requires_auth": true,
+      "requires_match": false,
+      "root": ["/main"],
+      "rows": {"prefix": ["listitem", "article", "row", "group"], "role": ["listitem", "article", "row"]},
+      "depth": 1,
+      "fields": {
+        "request_id":        {"regex": "#\\s*(\\d{3,})", "group": 1},
+        "address":           {"prefix": ["link", "heading"], "index": 0},
+        "showing_assistant": {"regex": "(?:Showing Assistant|Assistant|From)\\s*:?\\s*([^\\n]+)", "group": 1},
+        "rating":            {"regex": "(\\d(?:\\.\\d)?)\\s*(?:/\\s*5|stars?|★)", "group": 1},
+        "date":              {"regex": "(\\d{1,2}/\\d{1,2}/\\d{2,4}|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\\.? \\d{1,2}(?:, \\d{4})?)"},
+        "comment":           {"prefix": ["paragraph", "text"], "index": 0}
+      },
+      "verified": false
+    },
+    "posted-price": {
+      "kind": "record",
+      "description": "The showing fee Steven currently posts for assistants (account settings; needs sign-in)",
+      "url": "https://showami.com/account",
+      "url_required": false,
+      "requires_auth": true,
+      "requires_match": false,
+      "root": ["/main"],
+      "depth": 2,
+      "fields": {
+        "posted_price": {"regex": "\\$\\s?(\\d+(?:\\.\\d{2})?)", "group": 1},
+        "price_label":  {"regex": "((?:Default|Posted|Showing|Standard)\\s+(?:Price|Fee|Rate)[^\\n]{0,40})"},
+        "updated":      {"regex": "(?:Updated|Last changed|Effective)\\s*:?\\s*([^\\n]+)", "group": 1}
+      },
+      "verified": false
+    }
+  }
+}

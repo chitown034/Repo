@@ -1,0 +1,5 @@
+/* ---- Travel: weekly events ---- */
+.ev-sources { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 4px 18px; }
+.ev-city { grid-column: 1 / -1; font-family: var(--font-display); font-weight: 700; font-size: 17px; text-transform: uppercase; margin: 12px 0 2px; }
+.ev-src { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 13px; padding: 6px 8px; border-radius: 8px; cursor: pointer; }
+.ev-src:hover { background: var(--accent-soft); } .ev-src.is-done { opacity: 0.55; } .ev-src input { accent-color: var(--accent); }

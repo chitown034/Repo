@@ -1,0 +1,44 @@
+{
+  "name": "steven-mods",
+  "owner": {
+    "name": "Steven Shearrill"
+  },
+  "plugins": [
+    {
+      "name": "route-beacon",
+      "source": "./route-beacon",
+      "description": "Shows which AI route this session is on (Claude, OmniRoute free, OpenRouter paid, local) and toasts when it changes."
+    },
+    {
+      "name": "halt-guard",
+      "source": "./halt-guard",
+      "description": "Asks Proceed/Cancel before a send, a share, a payment or a force push while you are at the keyboard."
+    },
+    {
+      "name": "brain-reflect",
+      "source": "./brain-reflect",
+      "description": "/remember <rule> saves a standing rule into the second brain with bin/brain remember, never CLAUDE.md."
+    },
+    {
+      "name": "connection-beacon",
+      "source": "./connection-beacon",
+      "description": "Status line with how many connections need you; /connections lists them with the fix; /owner <panel> says who keeps a Command Deck panel alive."
+    },
+    {
+      "name": "paste-desk",
+      "source": "./paste-desk",
+      "description": "/paste shows the one Terminal line that reconnects this Mac and the short list only you can do."
+    },
+    {
+      "name": "push-buttons",
+      "source": "./push-buttons",
+      "description": "One-word slash commands (/cycle /inbox /meetings /sync /connect /tc /queue /today /help-buttons) that send the full, correct prompt for each workflow, HALT rules included."
+    },
+    {
+      "name": "ops-pulse",
+      "source": "./ops-pulse",
+      "description": "Read-only status line at session start: how far behind GitHub this Mac is, local edits, brain-loop age, connect-all today; a toast says /sync when behind."
+    }
+  ],
+  "description": "Steven's own Claude Code mods: route beacon, HALT guard, brain reflect, connection beacon, paste desk, push buttons, ops pulse."
+}

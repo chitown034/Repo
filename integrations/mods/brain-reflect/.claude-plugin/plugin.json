@@ -1,0 +1,8 @@
+{
+  "name": "brain-reflect",
+  "version": "0.1.0",
+  "description": "/remember saves a standing rule into the second brain (bin/brain remember), refusing contact details and numbers.",
+  "author": {
+    "name": "Steven Shearrill"
+  }
+}

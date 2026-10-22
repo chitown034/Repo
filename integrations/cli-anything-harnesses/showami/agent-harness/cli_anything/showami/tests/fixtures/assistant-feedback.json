@@ -1,0 +1,81 @@
+{
+  "_synthetic": "All values invented for tests. No real person, listing or client.",
+  "url": "https://showami.com/feedback",
+  "tree": {
+    "name": "/",
+    "role": "document",
+    "children": [
+      {
+        "name": "navigation_1",
+        "role": "navigation",
+        "children": [
+          {
+            "name": "link_1",
+            "role": "link",
+            "text": "Home"
+          },
+          {
+            "name": "link_2",
+            "role": "link",
+            "text": "My Account"
+          },
+          {
+            "name": "link_3",
+            "role": "link",
+            "text": "Sign Out"
+          }
+        ]
+      },
+      {
+        "name": "main",
+        "role": "main",
+        "children": [
+          {
+            "name": "heading_1",
+            "role": "heading",
+            "text": "Assistant Feedback"
+          },
+          {
+            "name": "listitem_1",
+            "role": "listitem",
+            "children": [
+              {
+                "name": "text_1",
+                "role": "text",
+                "text": "Request #100003 \u00b7 Sep 19, 2026"
+              },
+              {
+                "name": "link_1",
+                "role": "link",
+                "text": "9015 Test Pattern Dr, Fictionville, CA 90001"
+              },
+              {
+                "name": "text_2",
+                "role": "text",
+                "text": "Showing Assistant: Riley Fixture \u00b7 5 / 5 stars"
+              },
+              {
+                "name": "paragraph_1",
+                "role": "paragraph",
+                "text": "Inspector arrived on time; invented note for a test fixture."
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "expect": {
+    "kind": "list",
+    "count": 1,
+    "auth_state": "logged_in",
+    "row0": {
+      "request_id": "100003",
+      "address_contains": "Test Pattern",
+      "showing_assistant_contains": "Riley Fixture",
+      "rating": "5",
+      "date": "Sep 19, 2026",
+      "comment_contains": "on time"
+    }
+  }
+}

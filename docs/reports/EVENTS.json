@@ -1,0 +1,367 @@
+{
+ "generated": "2026-10-11",
+ "days": 14,
+ "events": [],
+ "sources": [
+  {
+   "id": "timeleft-sd",
+   "name": "Timeleft San Diego",
+   "city": "San Diego",
+   "url": "https://app.timeleft.com/app/home/event",
+   "status": "manual",
+   "detail": "listed only, never scraped",
+   "events": 0,
+   "verify": false
+  },
+  {
+   "id": "temecula-chamber",
+   "name": "Temecula Chamber of Commerce events",
+   "city": "Temecula",
+   "url": "https://members.temecula.org/events",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": false
+  },
+  {
+   "id": "intelligent-singles-sd",
+   "name": "Intelligent Singles San Diego",
+   "city": "San Diego",
+   "url": "https://intelligent.events/events/",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": false
+  },
+  {
+   "id": "thursday",
+   "name": "Thursday (Temecula singles events)",
+   "city": "Temecula",
+   "url": "https://www.thursday.com/",
+   "status": "manual",
+   "detail": "listed only, never scraped",
+   "events": 0,
+   "verify": false
+  },
+  {
+   "id": "clockout-sd",
+   "name": "Clock Out Events San Diego",
+   "city": "San Diego",
+   "url": "https://clockoutapp.com/about/",
+   "status": "manual",
+   "detail": "listed only, never scraped",
+   "events": 0,
+   "verify": false
+  },
+  {
+   "id": "222-place-sd",
+   "name": "222 Place San Diego",
+   "city": "San Diego",
+   "url": "https://222.place",
+   "status": "manual",
+   "detail": "listed only, never scraped",
+   "events": 0,
+   "verify": false
+  },
+  {
+   "id": "cityswoon-sd",
+   "name": "City Swoon San Diego speed dating",
+   "city": "San Diego",
+   "url": "https://cityswoon.com/speed-dating-sandiego.jsp",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": false
+  },
+  {
+   "id": "aspire4more",
+   "name": "Aspire 4 More Events",
+   "city": "Online",
+   "url": "https://app.aspire4more.com/c/events-80c94a",
+   "status": "manual",
+   "detail": "listed only, never scraped",
+   "events": 0,
+   "verify": false
+  },
+  {
+   "id": "meetup-temecula",
+   "name": "Meetup - Temecula",
+   "city": "Temecula",
+   "url": "https://www.meetup.com/cities/us/ca/temecula/",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": true
+  },
+  {
+   "id": "meetup-sd",
+   "name": "Meetup - San Diego",
+   "city": "San Diego",
+   "url": "https://www.meetup.com/cities/us/ca/san_diego/",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": true
+  },
+  {
+   "id": "meetup-riverside",
+   "name": "Meetup - Riverside",
+   "city": "Riverside",
+   "url": "https://www.meetup.com/cities/us/ca/riverside/",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": true
+  },
+  {
+   "id": "eb-temecula",
+   "name": "Eventbrite - Temecula business events",
+   "city": "Temecula",
+   "url": "https://www.eventbrite.com/d/ca--temecula/business--events/",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": false
+  },
+  {
+   "id": "eb-sd",
+   "name": "Eventbrite - San Diego networking",
+   "city": "San Diego",
+   "url": "https://www.eventbrite.com/d/ca--san-diego/networking/",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": false
+  },
+  {
+   "id": "eb-riverside",
+   "name": "Eventbrite - Riverside business events",
+   "city": "Riverside",
+   "url": "https://www.eventbrite.com/d/ca--riverside/business--events/",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": false
+  },
+  {
+   "id": "eb-murrieta",
+   "name": "Eventbrite - Murrieta business events",
+   "city": "Murrieta",
+   "url": "https://www.eventbrite.com/d/ca--murrieta/business--events/",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": false
+  },
+  {
+   "id": "eb-oc",
+   "name": "Eventbrite - Orange County networking",
+   "city": "Orange County",
+   "url": "https://www.eventbrite.com/d/ca--orange-county/networking/",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": true
+  },
+  {
+   "id": "eb-la",
+   "name": "Eventbrite - Los Angeles networking",
+   "city": "Los Angeles",
+   "url": "https://www.eventbrite.com/d/ca--los-angeles/networking/",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": false
+  },
+  {
+   "id": "eb-online",
+   "name": "Eventbrite - Online networking",
+   "city": "Online",
+   "url": "https://www.eventbrite.com/d/online/networking/",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": false
+  },
+  {
+   "id": "murrieta-chamber",
+   "name": "Murrieta Chamber of Commerce events",
+   "city": "Murrieta",
+   "url": "https://www.murrietachamber.org/events",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": true
+  },
+  {
+   "id": "menifee-chamber",
+   "name": "Menifee Valley Chamber of Commerce events",
+   "city": "Menifee",
+   "url": "https://www.menifeevalleychamber.org/events",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": true
+  },
+  {
+   "id": "riverside-chamber",
+   "name": "Greater Riverside Chambers of Commerce events",
+   "city": "Riverside",
+   "url": "https://www.riverside-chamber.com/events",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": true
+  },
+  {
+   "id": "sd-regional-chamber",
+   "name": "San Diego Regional Chamber of Commerce events",
+   "city": "San Diego",
+   "url": "https://www.sdchamber.org/events/",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": false
+  },
+  {
+   "id": "oc-business-council",
+   "name": "Orange County Business Council events",
+   "city": "Orange County",
+   "url": "https://www.ocbc.org/events/",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": true
+  },
+  {
+   "id": "la-chamber",
+   "name": "Los Angeles Area Chamber of Commerce events",
+   "city": "Los Angeles",
+   "url": "https://www.lachamber.com/events/",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": true
+  },
+  {
+   "id": "temecula-city",
+   "name": "City of Temecula calendar",
+   "city": "Temecula",
+   "url": "https://www.temeculaca.gov/calendar.aspx",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": false
+  },
+  {
+   "id": "temecula-wine",
+   "name": "Temecula Valley Winegrowers events",
+   "city": "Temecula",
+   "url": "https://temeculawines.org/events/",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": true
+  },
+  {
+   "id": "visit-temecula",
+   "name": "Visit Temecula Valley events",
+   "city": "Temecula",
+   "url": "https://www.temeculacvb.com/events/",
+   "status": "blocked",
+   "detail": "URLError: Tunnel connection failed: 403 Forbidden",
+   "events": 0,
+   "verify": true
+  },
+  {
+   "id": "rotary-finder",
+   "name": "Rotary club finder",
+   "city": "Online",
+   "url": "https://www.rotary.org/en/get-involved/rotary-clubs",
+   "status": "manual",
+   "detail": "listed only, never scraped",
+   "events": 0,
+   "verify": true
+  },
+  {
+   "id": "bni-finder",
+   "name": "BNI chapter finder",
+   "city": "Online",
+   "url": "https://www.bni.com/find-a-chapter",
+   "status": "manual",
+   "detail": "listed only, never scraped",
+   "events": 0,
+   "verify": true
+  },
+  {
+   "id": "toastmasters-finder",
+   "name": "Toastmasters club finder",
+   "city": "Online",
+   "url": "https://www.toastmasters.org/find-a-club",
+   "status": "manual",
+   "detail": "listed only, never scraped",
+   "events": 0,
+   "verify": false
+  },
+  {
+   "id": "sdar",
+   "name": "San Diego Association of Realtors events",
+   "city": "San Diego",
+   "url": "https://www.sdar.com/",
+   "status": "manual",
+   "detail": "listed only, never scraped",
+   "events": 0,
+   "verify": true
+  },
+  {
+   "id": "srar",
+   "name": "Southwest Riverside County Association of Realtors (SRAR)",
+   "city": "Temecula",
+   "url": "https://www.sr-ar.com/",
+   "status": "manual",
+   "detail": "listed only, never scraped",
+   "events": 0,
+   "verify": true
+  },
+  {
+   "id": "cmba",
+   "name": "California Mortgage Bankers Association events",
+   "city": "Los Angeles",
+   "url": "https://www.cmba.com/",
+   "status": "manual",
+   "detail": "listed only, never scraped",
+   "events": 0,
+   "verify": true
+  },
+  {
+   "id": "mba-events",
+   "name": "MBA national events",
+   "city": "Online",
+   "url": "https://www.mba.org/events",
+   "status": "manual",
+   "detail": "listed only, never scraped",
+   "events": 0,
+   "verify": false
+  },
+  {
+   "id": "1mc-sd",
+   "name": "1 Million Cups San Diego",
+   "city": "San Diego",
+   "url": "https://www.1millioncups.com/",
+   "status": "manual",
+   "detail": "listed only, never scraped",
+   "events": 0,
+   "verify": true
+  },
+  {
+   "id": "startup-sd",
+   "name": "Startup San Diego",
+   "city": "San Diego",
+   "url": "https://www.startupsd.org/",
+   "status": "manual",
+   "detail": "listed only, never scraped",
+   "events": 0,
+   "verify": true
+  }
+ ]
+}

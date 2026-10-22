@@ -1,0 +1,87 @@
+WRITE MODE (2026-09-28, Steven approved) — supersedes the RESEARCH-ONLY framing below only
+================================================================================================
+Steven's decision, 2026-09-28: "Make them update the dashboard." This routine used to pull real
+Strava data every day and end with a JSON final message that nobody applied. It now WRITES its
+findings directly into the Command Deck's live database with the ArtifactData tool, using the
+WRITE STEP section near the end of this prompt (which replaces the old "output your findings as
+your final message" step). Everything else below — pulling real data from the Strava connector,
+never inventing an activity, and the ban on calling Edit, Write, Bash-writing any file, or Artifact
+with action "publish" — still applies exactly as written; those calls still hang this unattended
+sandbox. The only thing that changes is where the result goes: into the document the panel
+actually reads, not into a chat message a human has to copy by hand.
+
+ONE FORMATTING CORRECTION vs. the old version of this routine: the old prompt said to format
+moving time as "Xm" under 60 minutes or "Xh Ym" at/above 60 minutes. The document actually live
+today does NOT use that convention — its rows read `["Sep 12", "Weight Training", "—", "4:05",
+"453 cal, 1 achievement"]`, i.e. moving time as "M:SS" (or "H:MM:SS" for anything an hour or
+longer), and the date as a short "Mon D" string, not ISO. STEP 1 has you read the live document
+first for exactly this reason — mirror ITS formatting, not the paragraph above; if the live
+document's convention ever visibly changes, follow what you actually see there over this note.
+================================================================================================
+
+You are refreshing the Strava live-activity section of a published Claude Artifact called
+"Command Deck" — a personal dashboard for a user named Steven. The artifact is
+https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d (artifact id
+1624daae-d683-405a-971d-c5828dce0f8d, database collection "state", document `stravaSnapshot`).
+
+IMPORTANT ARCHITECTURE NOTE: This routine runs in a fresh, unattended cloud sandbox every time it
+fires, with no human present to approve permission prompts. Editing or Bash-writing a local file
+the Artifact tool downloads WILL trigger an unanswerable "sensitive file" permission prompt and
+hang the run forever. Do NOT call Edit, Write, or Bash with any write/copy/redirect operation at
+any point in this run. Do NOT call Artifact with action "publish". You do not need to call Artifact
+"read" at all in this version — read the live document with ArtifactData instead (see STEP 1).
+
+STEP 1 — Read current state
+Use the ArtifactData tool. If it is not already in your tool list, load it first with ToolSearch
+using the query `select:ArtifactData`.
+Read `stravaSnapshot` (artifact 1624daae-d683-405a-971d-c5828dce0f8d, collection "state"). Note its
+`version` — you need it for the WRITE STEP. Look at the existing `activities` rows: each is a plain
+array `[date, activity, distance, movingTime, notes]` in that column order (not an object) — mirror
+the positions exactly, and copy its date/distance/time/notes formatting style for any new row you
+add, per the correction above.
+
+STEP 2 — Pull real, live Strava data
+Pull real, live data via the connected Strava MCP tools (do NOT invent data):
+- Call get_athlete_profile once to confirm the connection and get measurement_preference (this
+  athlete uses Imperial — miles, not km; convert meters to miles by dividing by 1609.34, format
+  like "1.69 mi" rounded to 2 decimals, and use "—" for distance when an activity has none, e.g. a
+  Workout/strength entry — same as the current document already does).
+- Call list_activities with range_start set to exactly 30 days before today (today's real date —
+  check it, don't assume) at 00:00:00 and range_end set to today at 23:59:59, first: 100, ordering
+  StartDateLocalDesc. Count how many activities came back.
+- If that 30-day call returns activities, build the recent-activities list from up to the 10
+  newest of those.
+- If that 30-day call returns ZERO activities, call list_activities again with no date range
+  (first: 10, ordering StartDateLocalDesc) to get the 10 most recent activities on file regardless
+  of age, so the document still shows real historical context.
+- For the notes/detail cell, use whatever short, real detail Strava returns for the activity
+  (calories, achievement count, and similar) in the same style as the current rows — never invent
+  a detail that isn't in the data returned.
+
+## WRITE STEP — replaces the old "output your findings as your final message" step (WRITE MODE, 2026-09-28)
+
+Use the ArtifactData tool (same one you loaded in STEP 1).
+
+1. You already read `stravaSnapshot` in STEP 1 and have its `version`.
+2. Build the replacement in EXACTLY the same shape as what you read:
+   `{v: {activities: [[date, activity, distance, movingTime, notes], ... up to 10, newest first],
+   syncedAt: "<output of `date -u +%Y-%m-%dT%H:%M:%SZ` — see CLOCK below>", via: "cloud routine Command Deck — Strava activity refresh"}}`
+   Every document in this store is `{v: <value>}` — no exceptions. Send `data: {v: {...}}`, never
+   the bare value. `activities` is an array of ARRAYS (positional rows), never an array of objects
+   — a blanket object shape here is silently discarded by the page's own row filter.
+3. Write it with `set`, pinned by the `if_version` you read in STEP 1. On a version conflict,
+   re-read and retry once.
+4. Never invent an activity, a date, a distance, or a time. If the Strava connector cannot be
+   reached at all this run, write NOTHING: an old document is better than an empty or guessed one.
+5. Set `via` to "cloud routine Command Deck — Strava activity refresh" and set `syncedAt` to the
+   actual UTC time you write, in ISO 8601 (the page also accepts a bare "YYYY-MM-DD"; prefer full
+   ISO 8601 since that's what STEP 1 found in the live document already).
+   CLOCK (added 2026-09-28 after the first runs): never type, estimate or round a time yourself —
+   the first runs guessed and stamped times hours off, some of them in the future. Right before
+   each write, run exactly `date -u +%Y-%m-%dT%H:%M:%SZ` with the Bash tool and copy its output
+   unchanged into `syncedAt`. That command only reads the clock, so it is allowed; every Bash
+   write/copy/redirect stays banned.
+6. Never touch any other document. Never call Edit, Write, or Bash with any write/copy/redirect
+   operation. Never call Artifact with action "publish". Never send a message to anyone.
+7. End your turn with a one-line summary: how many activities you wrote and the document's new
+   version.

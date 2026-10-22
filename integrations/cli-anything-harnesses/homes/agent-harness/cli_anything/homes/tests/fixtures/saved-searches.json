@@ -1,0 +1,94 @@
+{
+  "_synthetic": "All values invented for tests. No real person, listing or client.",
+  "url": "https://www.homes.com/account/saved-searches/",
+  "tree": {
+    "name": "/",
+    "role": "document",
+    "children": [
+      {
+        "name": "navigation_1",
+        "role": "navigation",
+        "children": [
+          {
+            "name": "link_1",
+            "role": "link",
+            "text": "Home"
+          },
+          {
+            "name": "link_2",
+            "role": "link",
+            "text": "My Account"
+          },
+          {
+            "name": "link_3",
+            "role": "link",
+            "text": "Sign Out"
+          }
+        ]
+      },
+      {
+        "name": "main",
+        "role": "main",
+        "children": [
+          {
+            "name": "heading_1",
+            "role": "heading",
+            "text": "Saved Searches"
+          },
+          {
+            "name": "listitem_1",
+            "role": "listitem",
+            "children": [
+              {
+                "name": "heading_1",
+                "role": "heading",
+                "text": "Exampleton 3+ bd under 800k"
+              },
+              {
+                "name": "text_1",
+                "role": "text",
+                "text": "3+ bd \u00b7 $500,000 - $800,000 \u00b7 Exampleton, CA"
+              },
+              {
+                "name": "text_2",
+                "role": "text",
+                "text": "Alerts: Daily \u00b7 4 new listings"
+              }
+            ]
+          },
+          {
+            "name": "listitem_2",
+            "role": "listitem",
+            "children": [
+              {
+                "name": "heading_1",
+                "role": "heading",
+                "text": "Fictionville condos"
+              },
+              {
+                "name": "text_1",
+                "role": "text",
+                "text": "2+ bd \u00b7 Condo \u00b7 Fictionville, CA"
+              },
+              {
+                "name": "text_2",
+                "role": "text",
+                "text": "Alerts: Weekly \u00b7 0 new listings"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "expect": {
+    "kind": "list",
+    "count": 2,
+    "auth_state": "logged_in",
+    "row0": {
+      "name": "Exampleton 3+ bd under 800k",
+      "frequency": "Daily",
+      "new_listings": "4"
+    }
+  }
+}

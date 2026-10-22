@@ -1,0 +1,9 @@
+{
+  "devices": [
+    { "label": "Mac 1",     "id": "000 000 000" },
+    { "label": "Mac 2",     "id": "000 000 001" },
+    { "label": "Alienware", "id": "000 000 002" },
+    { "label": "iPad",      "id": "000 000 003" },
+    { "label": "Phone",     "id": "000 000 004" }
+  ]
+}

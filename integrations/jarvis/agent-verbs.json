@@ -1,0 +1,14 @@
+{
+  "about": "Spoken verbs Jarvis maps to the Agent OS. Each pattern is matched against the spoken request (lower-case); {rest} is the remainder. Commands run from the repo root. Nothing here sends, books, pays or signs: every command stops at a HALT and prints a Needs-Steven line. Added 2026-10-12.",
+  "verbs": [
+    {"say": "jarvis, ask the brain {rest}",        "run": "bin/brain ask \"{rest}\"",                       "what": "level-1 recall, auto-escalate, owner seat"},
+    {"say": "jarvis, who owns {rest}",             "run": "bin/brain route \"{rest}\"",                     "what": "lead seat, joins, gates, HALTs"},
+    {"say": "jarvis, plan {rest}",                 "run": "bin/brain os run \"{rest}\"",                    "what": "the Laya -> Jarvis -> Orca launch sheet"},
+    {"say": "jarvis, run the team on {rest}",      "run": "bash integrations/agent-os/orca-launch.sh \"{rest}\"", "what": "opens one Claude Code session per seat (<=8); Orca lists them"},
+    {"say": "jarvis, have {seat} {rest}",          "run": "bash integrations/agent-os/orca-launch.sh \"{seat}: {rest}\"", "what": "one seat; {seat} is any name on the org chart (Marcus, Sofia, Derek, Alexandra, Nadia, Victor, Elena, Elon, Harrison, Gwen, Marguerite, Carmen, Maxwell, Kevin, James, Apex)"},
+    {"say": "jarvis, list agents for {seat}",      "run": "bin/brain os list {seat}",                       "what": "roster agents in that seat's lane"},
+    {"say": "jarvis, remember {rest}",             "run": "bin/brain remember \"{rest}\"",                  "what": "one dated fact into memory.md + the index (the secret guard refuses keys)"},
+    {"say": "jarvis, is the brain healthy",        "run": "bin/brain os check && bin/brain doctor",         "what": "172/172 agents reachable, index current"}
+  ],
+  "never": ["send", "email the client", "text the client", "post", "publish", "pay", "buy", "sign", "lock", "quote a rate", "pair orca", "paste a pairing link"]
+}

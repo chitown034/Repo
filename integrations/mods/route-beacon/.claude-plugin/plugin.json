@@ -1,0 +1,8 @@
+{
+  "name": "route-beacon",
+  "version": "0.1.0",
+  "description": "Shows which AI route this session is on and toasts when the failover switches.",
+  "author": {
+    "name": "Steven Shearrill"
+  }
+}

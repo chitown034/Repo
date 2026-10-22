@@ -1,0 +1,110 @@
+[
+  {
+    "id": "F-H1-01",
+    "severity": "P1",
+    "area": "integrations/cli-anything-harnesses/{homes,showingtime,showami} — path maps",
+    "finding": "All 11 recipes across the three packages ship with `verified: false`. Every root path, row selector, field regex, default URL and sign-in marker in the three paths.json files was written without seeing the site (homes.com, showingtime.com and showami.com are all egress-blocked from the build sandbox), and DOMShell's real `ls` line format is only loosely known upstream. The first live run of each recipe is expected to fail with exit 3 (path_map_error) or return rows with null fields until Steven runs `--discover` once per recipe and edits his paths.json copy. Nothing these harnesses return may drive a decision before that spot-check.",
+    "evidence": "pytest 2026-09-22 in /tmp/h1-venv: homes 67 passed / 8 skipped, showingtime 70 / 11, showami 70 / 11 — every skip is the live module (gated on CLI_ANYTHING_<SITE>_LIVE=1) or a per-site not-applicable case. test_every_recipe_is_unverified_until_live asserts the flag; `recipes --json` and every human-readable run print UNVERIFIED. TEST.md Part 3 in each package lists what has never run.",
+    "fix": "On the Mac, per recipe: `paths init`, `recipe <name> --discover --text --json`, edit ~/.config/cli-anything/<site>-paths.json (root, rows.prefix, fields), re-run until values match the UI, then set verified:true. Keep cliAnythingStatus at status:\"generated\" / connState:\"not-installed\" until a real lastRun exists.",
+    "halt": true
+  },
+  {
+    "id": "F-H1-02",
+    "severity": "P2",
+    "area": "setup.py install_requires (all three packages) / MAC-SETUP.sh cli-anything step",
+    "finding": "`cli-anything-browser` is not on PyPI (`pip index versions cli-anything-browser` → no matching distribution, 2026-09-22). The three packages declare it as a hard dependency, so `pip install .` succeeds only in an environment that already holds it — which is the venv MAC-SETUP.sh builds at ~/Applications/CLI-Anything/.venv. Installing anywhere else fails with 'No matching distribution found for cli-anything-browser'.",
+    "evidence": "pip-<site>.txt in TEST.md: 'Requirement already satisfied: cli-anything-browser>=1.0.0 … (1.0.0)' because the venv had it first; a clean venv without it would fail at resolution.",
+    "fix": "Install into the same venv, from the repo root: `uv pip install --python ~/Applications/CLI-Anything/.venv/bin/python ./integrations/cli-anything-harnesses/homes/agent-harness ./integrations/cli-anything-harnesses/showingtime/agent-harness ./integrations/cli-anything-harnesses/showami/agent-harness` then symlink the three console scripts into ~/.local/bin. Documented in every README. A future MAC-SETUP.sh step could do this after the browser harness build (not edited here — out of H1's scope).",
+    "halt": false
+  },
+  {
+    "id": "F-H1-03",
+    "severity": "P3",
+    "area": "upstream cli-anything-browser setup.py (pin mcp>=0.1.0,<1.0.0)",
+    "finding": "The browser harness pins the MCP SDK below 1.0, which pip resolves to mcp 0.9.1 (November 2024); PyPI's current line is 2.2.0. It installs and its harness works against DOMShell 2.0.10 (what `npx @apireno/domshell --version` returned in the sandbox on 2026-09-22), but the pin means the whole browser path depends on a pre-1.0 SDK that nobody is maintaining; if 0.9.1 is ever yanked, or DOMShell drops pre-1.0 clients, every site harness stops installing.",
+    "evidence": "/tmp/h1-venv pip list 2026-09-22: mcp 0.9.1, cli-anything-browser 1.0.0; `pip index versions mcp` → 2.2.0 … 1.0.0, 0.9.1.",
+    "fix": "Do not patch locally (the harness must stay the upstream package). File it upstream (HKUDS/CLI-Anything browser/agent-harness) and re-check the pin when MAC-SETUP.sh next clones. Record the installed mcp version in cliAnythingStatus.note.",
+    "halt": false
+  },
+  {
+    "id": "F-H1-04",
+    "severity": "P2",
+    "area": "connector spec validation item 1 (\"act appears nowhere in its help output\") / any future mac-verify.sh check",
+    "finding": "A substring check for `act` false-positives on these harnesses: the spec-named recipe `my-listing-activity`, and ordinary help words (`activity`, `contact`, `exact`), all contain it. The mechanical guarantee has to be token-level — and it is, in every package's test_act_absent_from_every_help_page — but a naive `--help | grep act` in a shell verifier would report a failure that is not there.",
+    "evidence": "cli-anything-showingtime recipe --help lists `my-listing-activity`; `grep -c act` on that output is 1, `grep -cw act` is 0. The Click tree has no command named act/click/type at any level (test_no_command_named_act_click_or_type) and the package source never references backend.click / type_text (test_source_never_references_write_backend).",
+    "fix": "Any shell-side check must use word match: `cli-anything-<site> --help | grep -qw act && fail`. The runner's Bash allow-list should be literal argv prefixes (`cli-anything-<site> --json recipe`, `… recipes`, `… fs`, `… page`, `… paths`, `… session status`) — there is no act verb to deny, but the prefix list still bounds what a prompt-injected agent can type.",
+    "halt": false
+  },
+  {
+    "id": "F-H1-05",
+    "severity": "P2",
+    "area": "upstream cli-anything-browser domshell_backend.is_available() vs _build_server_args()",
+    "finding": "The browser harness's availability check passes on npx + package presence alone; DOMSHELL_TOKEN is only checked when the first MCP call is built, so a missing token surfaces as a bare RuntimeError after the CLI has already claimed the backend is available. The three site harnesses now pre-check the token in _live_source() and return {type:\"dependency_error\"} with the exact fix, so Steven's first run without the token gets one clear message instead of a stack of them.",
+    "evidence": "Before the pre-check: `cli-anything-homes --json recipe search-listings` → {\"error\": \"DOMSHELL_TOKEN environment variable is required…\", \"type\": \"RuntimeError\"}. After: {\"error\": \"DOMSHELL_TOKEN is not set. Export the auth token DOMShell prints at startup…\", \"type\": \"dependency_error\"}, exit 1.",
+    "fix": "Nothing further in H1's packages. Upstream: move the token check into is_available(). Runner task env must carry DOMSHELL_TOKEN (and DOMSHELL_PORT if not 3001) — a value Steven sets on the Mac, never in a task definition or this repo.",
+    "halt": false
+  },
+  {
+    "id": "F-H1-06",
+    "severity": "P2",
+    "area": "cli_anything.browser.utils.security.sanitize_dom_text, applied to every field value by core/tree.py clean_text",
+    "finding": "The browser harness's prompt-injection guard replaces any text containing one of its patterns with a `[FLAGGED: Potential prompt injection] <first 200 chars>…` stub. Its pattern list includes the plain words `forget` and `disregard`, which real listing descriptions and showing feedback contain ('Don't forget the backyard'). Real data will therefore arrive partly stubbed. This is the correct trade for a tool that reads attacker-controlled DOM (the spec: treat every page as untrusted data), but a downstream consumer that expects a clean description will be surprised.",
+    "evidence": "_PROMPT_INJECTION_PATTERNS in cli_anything/browser/utils/security.py: 'ignore previous', 'forget', 'disregard', 'ignore all', 'system prompt', '<!--', '<script', plus four non-English phrases. clean_text() in each site's core/tree.py calls it on every cat() result.",
+    "fix": "Keep it. Document (done, in every README and SKILL.md) that values may be `[FLAGGED …]` stubs and must be reported, never followed. If the stubs prove too aggressive in live use, narrow the list upstream rather than bypass it here.",
+    "halt": false
+  },
+  {
+    "id": "F-H1-07",
+    "severity": "P3",
+    "area": "upstream cli-anything-browser lane handling (group_id=\"new\" per fresh Session)",
+    "finding": "Each one-shot CLI process starts a fresh browser Session, so DOMShell creates a new isolated lane — a Chrome tab group — per run. A recipe scheduled hourly leaves a new tab group in Steven's Chrome every hour; nothing in the harness closes them (closing would be a write to Chrome state, and the harness deliberately has no such verb). Within one recipe run all calls share the lane, so results are consistent; this is housekeeping, not correctness.",
+    "evidence": "domshell_backend._call_execute: `arguments[\"group_id\"] = \"new\"` whenever the session has no captured lane id; `Session()` is created per process in <site>_cli._live_source(). Documented in each README Troubleshooting.",
+    "fix": "Operationally: run recipes from one REPL session where one lane is reused, or close stale DOMShell tab groups periodically. Upstream: a `group_id` reuse option keyed on a stable name would fix it properly.",
+    "halt": false
+  },
+  {
+    "id": "F-H1-08",
+    "severity": "P1",
+    "area": "ShowingTime sign-in (MLS SSO / MFA) and every requires_auth recipe",
+    "finding": "The site harnesses cannot sign in — by design, because signing in needs `act type`, the write verb they do not have. Steven signs in by hand in the Chrome profile DOMShell drives. When that session expires, every requires_auth recipe returns exit 2 auth_error (fail closed) until he signs in again; ShowingTime in particular is MLS-SSO'd in many markets (CRMLS included) and the spec makes MFA/SSO a HALT. A scheduled runner will therefore see periodic auth_error runs that are not bugs.",
+    "evidence": "core/auth.py in each package: login-URL redirect → logged_out; no logged-in marker + logged-out marker → logged_out; neither → unknown; all three raise. Tests: test_engine_raises_on_login_wall, test_engine_raises_on_login_redirect, test_engine_fails_closed_when_unsure, test_cli_logged_out_is_exit_2_with_no_rows. The credential names the spec reserves (keychain cli-anything.<site>, HOMES_USER/… in ~/.config/cli-anything/.env) are documented but read by nothing.",
+    "fix": "Steven: sign in by hand before a run window; never provision MFA bypass. Runner: treat auth_error as 'needs Steven', log it, do not retry in a loop, and never mark the wrapper failed for it. Deck: an auth_error run is not a data point — clamp, do not render.",
+    "halt": true
+  },
+  {
+    "id": "F-H1-09",
+    "severity": "P3",
+    "area": "HARNESS.md testing rule (\"no graceful degradation\") vs test_full_e2e.py gate",
+    "finding": "HARNESS.md requires E2E tests to invoke the real software and fail, not skip, when it is missing. These packages' live tests skip unless CLI_ANYTHING_<SITE>_LIVE=1 is set, because an unattended `pytest` (CI, a Mac task, the plugin's :test) must never open Steven's logged-in portals as a side effect. With the gate set they do not degrade: missing DOMShell or a signed-out session is a failure. The plugin's /cli-anything:validate and :test have never been run on these hand-built packages and may flag the gate.",
+    "evidence": "test_full_e2e.py pytestmark skipif(not LIVE, …) in each package; TEST.md Part 3 records the live module at 0 runs.",
+    "fix": "Run `/cli-anything:validate` and `:test` on the Mac once installed; if the validator objects to the gate, keep the gate and record the objection — a read-only tool that touches live portals on an unattended test run is the wrong default.",
+    "halt": false
+  },
+  {
+    "id": "F-H1-10",
+    "severity": "P2",
+    "area": ".claude/skills/cli-anything-connectors/SKILL.md ('The one line Steven has to do'), MAC-SETUP.sh line 573 needs_steven text, integrations/CONNECTIONS.md row 16",
+    "finding": "All three still tell Steven that each wrapper must be generated interactively on the Mac with /cli-anything, one per site. That was true of the generator; it is no longer true of these three targets: pre-built packages exist for homes.com, ShowingTime and Showami, and `pip install` skips generation entirely. Steven's remaining job for these three is install → sign in → run → --discover once per recipe. The three files are outside H1's edit scope (the spec skill is being edited in parallel; MAC-SETUP.sh is off-limits) so the text is stale until their owner updates it.",
+    "evidence": "SKILL.md: 'in Claude Code say \"generate the homes.com wrapper\". Generation is the only interactive step, and it is one per site.' MAC-SETUP.sh:573: 'run /cli-anything for homes.com FIRST, then ShowingTime and Showami read-only.' Packages: integrations/cli-anything-harnesses/{homes,showingtime,showami}/agent-harness with console scripts cli-anything-homes, cli-anything-showingtime, cli-anything-showami.",
+    "fix": "Owner of the spec skill: replace the generation sentence for these three targets with the one-line install from F-H1-02 and point to each package's README; keep the generation path for SkySlope/zipForms only if the parallel engineer did not also pre-build them. MAC-SETUP.sh: add the uv pip install of the three packages after the browser-harness build and update the needs_steven text.",
+    "halt": false
+  },
+  {
+    "id": "F-H1-11",
+    "severity": "P2",
+    "area": "cliAnythingStatus document (Command Deck Showings panel)",
+    "finding": "The status doc should now carry three wrapper rows — homes.com, ShowingTime, Showami — as status:\"generated\", mode:\"domshell\", connState:\"not-installed\", readOnly:true, verbsEnabled: the 11 recipe names plus fs/page/session status, verbsDisabled: the spec's write verbs, lastRun:null, eccReviewedAt:null. Writing that document is an artifact-DB write, which is a HALT for this engineer, so the deck still shows whatever the previous pass wrote.",
+    "evidence": "Spec 'Honest status doc' schema; no lastRun exists for any of the three (nothing has run on the Mac). H1 made no DB writes.",
+    "fix": "Whoever holds the deck write path sets the three rows exactly as above; never `enabled` or `read-only-live` without a real lastRun; the panel's clamp will hold anything more optimistic back.",
+    "halt": true
+  },
+  {
+    "id": "F-H1-12",
+    "severity": "P3",
+    "area": "Engine design decision recorded for the next editor of any paths.json",
+    "finding": "Two engine rules were fixed during the offline runs and are easy to undo by accident when editing a map: (1) `prefix`/`role` lists are priority-ordered — the first entry that matches anything wins — so `[\"paragraph\", \"text\"]` means 'the paragraph, else a text node' (document-order union matched `text_1` before `paragraph_1` and put a price in the description field); (2) `root` must be a specific container such as `/main`; a `/` fallback root can never be missing, which silently disables the exit-3 path_map_error that tells Steven the map no longer fits.",
+    "evidence": "First test run: 3 failures in homes, 2 each in showingtime/showami, all from these two causes; fixed in core/recipes.py (_by_priority) and by removing '/' from every root list; TestPriorityMatching and test_root_missing_is_path_map_error now lock both in. Recorded in each SITE.md and in the recipes.py module docstring.",
+    "fix": "None outstanding. When correcting a map after --discover, keep roots specific and order prefix lists by preference.",
+    "halt": false
+  }
+]

@@ -1,0 +1,19 @@
+#!/usr/bin/env python3
+"""bin/brain — the second brain's deterministic recall CLI. Runs from any cwd.
+
+Resolves the repo root from this script's own location (symlinks followed),
+so `~/bin/brain` → `<repo>/bin/brain` works too. Stdlib only, Python 3.10+.
+Set BRAIN_ROOT to point it at another checkout (the tests do).
+"""
+import os
+import sys
+
+if sys.version_info < (3, 10):
+    sys.exit("brain needs Python 3.10+ (found %d.%d)" % sys.version_info[:2])
+
+ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+sys.path.insert(0, ROOT)
+
+from brain.__main__ import main  # noqa: E402
+
+sys.exit(main())

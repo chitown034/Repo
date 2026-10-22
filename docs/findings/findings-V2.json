@@ -1,0 +1,272 @@
+[
+  {
+    "id": "F-V2-01",
+    "severity": "info",
+    "area": "vendored skills",
+    "finding": "All nine vendored skills load. YAML frontmatter parses for all nine, `name` matches the directory name in all nine, `description` is present and non-empty in all nine (237-581 chars, all well under the loader limit). A fresh session would be able to load all nine.",
+    "evidence": "PyYAML parse of each SKILL.md frontmatter: 9/9 parse=OK, name_match=True, desc_nonempty=True. Independently corroborated by this session's own available-skills listing, which reproduces all nine descriptions verbatim (the harness lists a skill only if its frontmatter parsed). End-to-end load proved by invoking `karpathy-coding-principles` via the Skill tool: body returned intact, including its provenance note.",
+    "fix": "None needed.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-02",
+    "severity": "medium",
+    "area": "vendored skills",
+    "finding": "Eleven relative references pointed at `.claude/references/security-checklist.md` and `.claude/references/performance-checklist.md`, neither of which existed anywhere on disk. Two header notes said 'not vendored', but the inline 'See Also' and 'Review Checklist' bodies still instructed the agent to open the dead paths. FIXED by vendoring the real upstream targets.",
+    "evidence": "Dead links: code-review-and-quality/SKILL.md:354,355; security-and-hardening/SKILL.md:122,143,169; security-and-hardening/references/hardening-patterns.md:5,9,208 (plus the two header notes). `ls .claude/references` -> No such file or directory; repo-wide find for security-checklist.md / performance-checklist.md returned nothing. Fetched both from https://raw.githubusercontent.com/addyosmani/agent-skills/main/references/ (HTTP 200, 14360 and 13139 bytes); upstream LICENSE fetched and verified MIT, Copyright (c) 2025 Addy Osmani, matching what the skills already assert. Both files read before vendoring; injection scan clean.",
+    "fix": "DONE. Vendored to .claude/references/security-checklist.md and .claude/references/performance-checklist.md with provenance headers matching the repo convention. All five link classes now resolve (verified by path test from each referring file). The two header notes in code-review-and-quality/SKILL.md:7 and security-and-hardening/SKILL.md:7 were rewritten to say the targets are now vendored. Both anchors used by the skills (#owasp-top-10-quick-reference, #destructive-path-operations) exist in the vendored file. Frontmatter re-parsed after the edits: still OK.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-03",
+    "severity": "info",
+    "area": "vendored skills",
+    "finding": "All fifteen anchor links from security-and-hardening/SKILL.md into references/hardening-patterns.md resolve to real headings. No dead anchors.",
+    "evidence": "Extracted the 15 distinct `#anchor` targets from SKILL.md and slugified every heading in hardening-patterns.md; `comm -23` of referenced-vs-present returned empty.",
+    "fix": "None needed.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-04",
+    "severity": "low",
+    "area": "injection surface",
+    "finding": "apple-design/SKILL.md carries the only output-controlling directive among the nine: on first invocation it tells the agent to 'respond only with' a fixed blurb and 'Do not provide any other information until the user asks a question.' Benign upstream idiom, but it gags the agent, and the skill's description is broad enough ('the design foundations behind Apple-style interfaces') that a mis-trigger would open a session with a canned blurb instead of answering Steven.",
+    "evidence": "apple-design/SKILL.md:12 and :16.",
+    "fix": "Leave the upstream text intact, but consider a one-line local note under the provenance header saying the gag applies only to a bare invocation. Low priority; no action taken (out of scope for a reference fix).",
+    "halt": false
+  },
+  {
+    "id": "F-V2-05",
+    "severity": "medium",
+    "area": "injection surface",
+    "finding": "find-skills/SKILL.md instructs the agent to install third-party skills globally with confirmations suppressed: `npx skills add <owner/repo@skill> -g -y`. That is unvetted third-party code, installed at user level on the same machine that runs Steven's client-data tasks, with the confirmation prompt explicitly disabled. It is not malicious injection, but it is the delivery vector for everything else, and it conflicts with the router's HALT list ('anything irreversible').",
+    "evidence": "find-skills/SKILL.md:102 (`npx skills add <owner/repo@skill> -g -y`, with the text 'The -g flag installs globally (user-level) and -y skips confirmation prompts'), reached from Step 6 'Offer to Install'. Mitigating: Step 4 of the same skill does require install-count, source-reputation and star checks before recommending.",
+    "fix": "Add a local note under the provenance header binding Step 6 to the HALT list: search and recommend freely, but any actual `skills add` is a Needs-Steven packet, never an agent action. Not applied — it edits vendored upstream text beyond a broken reference, so Steven should call it.",
+    "halt": true
+  },
+  {
+    "id": "F-V2-06",
+    "severity": "info",
+    "area": "injection surface",
+    "finding": "Injection scan of all nine is otherwise CLEAN — checked, not assumed. No 'MUST USE' frontmatter (the pattern that got Agent Reach excluded), no instruction to ignore prior context, override the router, expand scope, suppress disclosure to the user, or exfiltrate. The only regex hits for injection language are defensive text that warns against it.",
+    "evidence": "grep over all nine for ignore-previous / disregard / MUST USE / always-use / override / regardless-of / do-not-tell-the-user / bypass / expand-scope / exfiltrate / pipe-to-shell / base64 -d returned only source-driven-development/SKILL.md:112,116 (instructing the agent to REJECT injected directives in fetched docs) and security-and-hardening/SKILL.md:51,162,199 (OWASP LLM01 guidance). Network/exec scan found no shell-exec instructions outside find-skills (F-V2-05) and inert `npm install` / `npx tsc` examples. karpathy-coding-principles is titled '# CLAUDE.md' upstream, which could be mistaken for a project instruction file; its provenance note already states it is NOT merged into this repo's router.",
+    "fix": "None needed.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-07",
+    "severity": "high",
+    "area": "omniroute failover",
+    "finding": "The PII gate can be bypassed by argument order. claude-auto.sh's option loop breaks at the first non-option argument, so any invocation that puts claude's own arguments before `--task` never parses the task name, leaving is_pii=0 and routing a client-data task to a free third-party provider.",
+    "evidence": "claude-auto.sh:36-41 (`*) break ;;`). Executed in a throwaway config: `claude-auto --task lofty-crm-sync -p hello` correctly printed 'client-data task deferred ... never on a free provider (exit 75)'. The same task as `claude-auto -p hello --task lofty-crm-sync` fell through to route_omni with the FREE model and only stopped at the OmniRoute /healthz check because the base URL was pointed at a dead port. Its own log line records the bypass: 'omniroute /healthz failed' with no task name, versus 'defer task=lofty-crm-sync' in the passing case.",
+    "fix": "Parse all options before the first claude argument, or require the documented `--` separator and refuse to run without it. Strongest fix: make the gate fail CLOSED (see F-V2-08).",
+    "halt": false
+  },
+  {
+    "id": "F-V2-08",
+    "severity": "high",
+    "area": "omniroute failover",
+    "finding": "The PII gate is fail-OPEN by default. With no `--task` and no `--pii`, is_pii stays 0 and the invocation is routed to the free provider. A gate whose default is 'not client data' is the wrong default for a launcher that fronts a mortgage and real-estate practice.",
+    "evidence": "claude-auto.sh:43-49 (`is_pii=0` initialised, only raised by an explicit flag or an exact list hit). Executed: `claude-auto -p hello` (no --task) proceeded to the free route; log line 'defer task=?' appears only in the --pii case. README.md:104 says 'Runner tasks pass --task <name>' but nothing enforces it.",
+    "fix": "Default is_pii=1 and require an explicit `--no-pii` (or a task name on a non-PII allowlist) to route to a free provider. Deferring a safe task costs a retry; leaking a client record does not undo.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-09",
+    "severity": "high",
+    "area": "omniroute failover",
+    "finding": "PII task matching is exact-string against a hardcoded space-delimited list, so any client-data task whose name is not byte-identical to an entry routes to a free provider. Every new or renamed client task fails open until someone remembers to edit the list.",
+    "evidence": "claude-auto.sh:24 (DEFAULT_PII_TASKS) and :47-48 (`case \" $list \" in *\" $TASK \"*`). Executed: `--task lofty-crm-sync-v2` was treated as non-PII and routed to the free model.",
+    "fix": "Match by prefix or pattern as well as exact name, and invert the default per F-V2-08 so an unknown task name is treated as client data rather than as safe.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-10",
+    "severity": "high",
+    "area": "omniroute failover",
+    "finding": "The usage-limit regex has a wide false-positive surface and will flip a healthy subscription onto a free model. The `[^0-9]429[^0-9]` branch matches a mortgage loan amount; `resets? (at|in) ` and `limit (has been )?reached` match ordinary prose. The regex is applied to the task's entire stdout and stderr, not to an error envelope.",
+    "evidence": "claude-auto.sh:23 and :98 (`cat \"$tmp\" \"$tmp.err\" | grep -qiE \"$LIMIT_RE\"`), probe.sh:12 and :37. Executed against sample strings: 'Loan amount $429,000 on the subject property' MATCHES; 'Comp at 429, Elm Street' MATCHES; 'HTTP 200 OK, 429 ms elapsed' MATCHES; 'Property tax resets at the start of the fiscal year' MATCHES; 'The escrow limit has been reached for this account' MATCHES; 'Index 429 of 5000 rows processed' MATCHES. Each would flip mode to free-fallback whenever the run also exits non-zero or sets is_error true.",
+    "fix": "Match only against the error envelope (the JSON `result`/`error` field when --output-format json is in use), anchor the 429 branch to an HTTP status context rather than a bare number, and drop the bare `resets at|in` branch. The README already flags that the real limit wording was never confirmed; until it is, narrow rather than broaden.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-11",
+    "severity": "high",
+    "area": "omniroute failover",
+    "finding": "Switch-back can strand the session on a free model permanently, with no alarm. If the probe command itself fails for any reason other than a limit match (CLI flag drift, `claude` not on PATH, a login expiry), probe.sh takes its 'inconclusive' branch, KEEPS the current mode, and exits 1. claude-auto swallows that failure with `|| true` and no log line. There is no failure counter and no escalation.",
+    "evidence": "probe.sh:42-45 (`write_route \"$mode\" ... \"probe-unknown rc=$rc\"` — mode unchanged) and claude-auto.sh:62 (`probe.sh --now >/dev/null 2>&1 || true`). Executed with a stub `claude` that exits 2: three consecutive probe runs, mode stayed free-fallback every time, probe.log recorded only 'probe inconclusive (rc=2) — mode kept: free-fallback', and `claude-auto --status` showed reason='probe-unknown rc=2' with nothing surfacing it. Note the README asserts the opposite: 'a stopped LaunchAgent cannot strand the Mac on free providers'.",
+    "fix": "Count consecutive inconclusive probes and, past a threshold (say 4, i.e. one hour), either fail back to plain `claude` or raise a Needs-Steven packet. Log the probe's exit status in claude-auto instead of discarding it.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-12",
+    "severity": "medium",
+    "area": "omniroute failover",
+    "finding": "A second permanent-strand path: the reset epoch parsed from a limit message is written to state with no sanity clamp. A far-future value silences the probe forever, because probe.sh waits while reset_at is in the future and claude-auto only re-probes once reset_at has passed.",
+    "evidence": "claude-auto.sh:99-100 and probe.sh:38-40 (epoch taken verbatim, `[ -n \"$epoch\" ] || epoch=0`, no upper bound). Executed with reset_at seeded to 4102444800 (2100-01-01): a LaunchAgent-style `probe.sh` run exited 0 having logged only 'waiting: mode=free-fallback reset_at=4102444800', and claude-auto.sh:61's re-probe gate (`reset_at <= now`) never opens. The parser `grep -oE '\\|[0-9]{10}'` correctly reads the real Claude Code format 'usage limit reached|<epoch>' (verified) but also matches a compact pipe-delimited table cell such as '|4102444800|'.",
+    "fix": "Clamp the parsed epoch: reject anything more than ~24h ahead of now or earlier than now, falling back to 0 (which makes the next probe run immediately).",
+    "halt": false
+  },
+  {
+    "id": "F-V2-13",
+    "severity": "medium",
+    "area": "omniroute failover",
+    "finding": "The redaction function used before writing to limit-samples.log misses the credential shapes this system actually uses. It only redacts a secret preceded by sk/key/token/Bearer AND a hyphen, underscore or space, so `NAME=value`, `name: value` and JSON `\"api_key\":\"value\"` all pass through unredacted — including the variable this design is built around.",
+    "evidence": "claude-auto.sh:28 and probe.sh:16, regex `(sk|key|token|Bearer)[-_ ][A-Za-z0-9_-]{6,}` — the delimiter class excludes `=`, `:` and `\"`. Executed against fake placeholder values: `OMNIROUTE_API_KEY=<value>` NOT redacted; `Invalid token: <value>` NOT redacted; `{\"api_key\":\"<value>\"}` NOT redacted; `x-api-key: <value>` NOT redacted. Only `ANTHROPIC_AUTH_TOKEN=sk-ant-<value>` and `Authorization: Bearer <value>` were redacted.",
+    "fix": "Widen the delimiter class to `[-_ =:\\\"']` and add a catch-all for long high-entropy runs following any *KEY/*TOKEN/*SECRET identifier. No real credential was used in this test and none is recorded here.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-14",
+    "severity": "medium",
+    "area": "omniroute failover",
+    "finding": "limit-samples.log is an ungated sink for task output. On a detected limit it appends up to 300 bytes of the failing task's own stdout and stderr — and the tasks most likely to fail are the client-data ones. Combined with F-V2-13 that file can accumulate client PII and unredacted credentials in plaintext. Neither the state directory nor the log has an enforced mode, no rotation, and no retention limit, while the script does enforce chmod 600 on the .env next to it.",
+    "evidence": "claude-auto.sh:101 and probe.sh:44 (`cat \"$tmp\" \"$tmp.err\" | redact` appended to $SAMPLES); claude-auto.sh:14 `mkdir -p \"$STATE\"` with no mode, versus :71-72 which does enforce 600 on the .env. Observed in the strand test: limit-samples.log accumulated one entry per failed probe with no cap.",
+    "fix": "Create $STATE with mode 700 and the log with 600, cap or rotate the file, and skip the sample entirely when is_pii=1.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-15",
+    "severity": "medium",
+    "area": "omniroute failover",
+    "finding": "claude-auto.sh's chmod-600 check on the .env uses a BSD-first stat fallback that is wrong on Linux, and the correct implementation already exists elsewhere in this repo. On GNU coreutils `stat -f` means 'file SYSTEM status': it prints a filesystem report to stdout, and because command substitution captures stdout from BOTH sides of the `||`, the filesystem report is concatenated with the real mode and the case never matches. The whole free-fallback path then refuses to run on any Linux host.",
+    "evidence": "claude-auto.sh:71 `p=$(stat -f %Lp \"$f\" 2>/dev/null || stat -c %a \"$f\" 2>/dev/null)`. Executed on this Linux host against a genuinely chmod-600 file: the script printed 'must be chmod 600 (is <multi-line filesystem report> 600)' and exited 78. mac-verify.sh:45-55 documents this exact trap ('on Linux `stat -f` means \"file SYSTEM status\" and succeeds with the wrong output') and implements it correctly as filemode() — GNU first, validated as octal, BSD as fallback. Fails closed, so it is an availability bug rather than a security hole, and it confirms claude-auto.sh has never been executed anywhere.",
+    "fix": "Reuse mac-verify.sh's filemode() shape: assign from one stat, validate the result is octal, only then try the other form. Note the README's claim that 'the launcher's stat -f, env -u and mktemp forms are the macOS ones with GNU fallbacks' is wrong for stat.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-16",
+    "severity": "low",
+    "area": "omniroute failover",
+    "finding": "`--task` or `--force` as the final argument crashes with a raw bash error instead of the script's own usage message, because `set -u` is active and `$2` is unbound.",
+    "evidence": "claude-auto.sh:38-39 with :11 `set -u`. Executed: `claude-auto --task` -> 'claude-auto.sh: line 38: $2: unbound variable', exit 1; `claude-auto --force` -> same at line 39. Fails closed. Contrast :56, which does emit a proper usage message for a bad --force VALUE.",
+    "fix": "Guard with `[ $# -ge 2 ] || { echo usage >&2; exit 64; }` before consuming $2.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-17",
+    "severity": "low",
+    "area": "omniroute failover",
+    "finding": "probe.sh is located as `$(dirname \"$0\")/probe.sh` from the launcher, so a symlink install (rather than the documented copy) breaks self-recovery silently. The README does specify copying both files into the same directory, and the LaunchAgent plist does set an explicit PATH that includes where `claude` lives, so the documented install is sound — the fragility is in what a hurried install would do instead.",
+    "evidence": "claude-auto.sh:62; README.md:104 ('Copy claude-auto.sh and probe.sh to ~/.local/bin/') and :105 (EnvironmentVariables.PATH includes $HOME/.npm-global/bin, /opt/homebrew/bin, /usr/local/bin). Combined with F-V2-11, a missing probe.sh is indistinguishable from an inconclusive probe.",
+    "fix": "Resolve the script directory through a realpath/symlink-resolving idiom, and log when the probe binary cannot be found instead of discarding the error.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-18",
+    "severity": "medium",
+    "area": "omniroute failover",
+    "finding": "route.env is SOURCED (`. \"$ROUTE\"`) on every invocation, but the state directory holding it is created with the default umask and its mode is never checked. Anything that can write route.env gets arbitrary code execution in the launcher that fronts every task. The one field derived from untrusted text (reason) IS correctly sanitised, so the exposure is the file's permissions, not its content.",
+    "evidence": "claude-auto.sh:14 `mkdir -p \"$STATE\"` (no mode), :29 `. \"$ROUTE\"`, probe.sh:8,17 the same. Mitigation verified present: :31 `tr -c 'A-Za-z0-9 _.:=-' '_'` strips quotes and metacharacters from the reason string before it is written, so a crafted limit message cannot inject shell into the sourced file.",
+    "fix": "`mkdir -p -m 700 \"$STATE\"`, and refuse to source route.env if it is group- or world-writable. Better still, parse the six known keys with grep/cut instead of sourcing.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-19",
+    "severity": "info",
+    "area": "omniroute failover",
+    "finding": "Three things in the failover scripts were tested and are GENUINELY CORRECT. (1) The subscription credential really is kept off the proxy. (2) The switch-back success condition really does match today's Claude Code output. (3) The probe really is free while the subscription is healthy.",
+    "evidence": "(1) claude-auto.sh:83 `unset ANTHROPIC_API_KEY CLAUDE_CODE_OAUTH_TOKEN` before exec, and probe.sh:31 `env -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_API_KEY`; no credential is echoed or logged anywhere in either script (the log lines carry route, model, task, pii and headless only). (2) Ran probe.sh's exact command against the real CLI (claude 2.1.278): it returned JSON containing `\"is_error\":false`, and probe.sh:34's regex `\"is_error\": ?false` matched it — the optional-space form covers the compact serialisation. `--max-turns` is absent from `claude --help` but is accepted by the CLI. (3) probe.sh:24 exits 0 immediately while mode=subscription.",
+    "fix": "None needed. Recorded so the working parts are not re-litigated.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-20",
+    "severity": "medium",
+    "area": "unsupported claims",
+    "finding": "The failover acceptance test only exercises the argument order that passes. README.md:112's PII canary runs `claude-auto --force free --task lofty-crm-sync -p '...'`, which is exactly the one ordering the gate handles correctly — it would never catch F-V2-07, F-V2-08 or F-V2-09. A test that confirms the claim rather than probing it.",
+    "evidence": "README.md:112 step 1 (and step 2, which delegates the no-task case to 'the existing guard hook' whose coverage F-E8-60 says was never verified). Executed both orderings; only the documented one defers.",
+    "fix": "Add canary cases to the README for: claude args before --task; no --task at all; and a task name not in DEFAULT_PII_TASKS. Each must exit 75 with zero requests reaching :20128 before the runner is pointed at claude-auto.",
+    "halt": true
+  },
+  {
+    "id": "F-V2-21",
+    "severity": "medium",
+    "area": "unsupported claims",
+    "finding": "integrations/CONNECTIONS.md:45 states flatly that 'Client-data tasks defer (exit 75) while on free providers'. That is presented as behaviour, in the same cell that honestly says the scripts were 'syntax-checked, not executed'. It is false for three of the four invocation patterns tested.",
+    "evidence": "See F-V2-07/08/09 for the executed counter-examples. The surrounding claims in that same row are accurate and well-hedged; this one sentence is the outlier.",
+    "fix": "Reword to the tested truth: 'Client-data tasks defer (exit 75) only when --task names a listed task AND appears before the claude arguments; otherwise they route to the free provider (F-V2-07..09).' Then fix the script and restore the claim.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-22",
+    "severity": "info",
+    "area": "unsupported claims",
+    "finding": "The install documentation's version and provenance claims hold up on a 10-of-10 sample — a genuinely good result, checked rather than assumed. The tooling runbooks are also unusually well-hedged, consistently labelling sandbox results as sandbox results ('Sandbox:', 'fake HOME', 'not executed', 'Nothing here is installed on the Mac yet').",
+    "evidence": "Checked against the live registries with no installs: PyPI headroom-ai 0.38.0, graphifyy 0.9.65, scrapling 0.4.15, scrapegraphai 2.2.4, strix-agent 1.6.2, laya 0.3.5 — all six claimed versions exist and are in fact the current latest. npm omniroute 3.8.50, codeburn 0.9.25, prompts.chat 0.1.1, agent402-mcp 0.13.3 — all four exist. `claude --version` -> 2.1.278, exactly as MAC-INSTALL-tooling.md:85 claims. MAC-INSTALL-tooling.md:20's '6 vendored' for addyosmani and :28's karpathy entry both match what is on disk (6 + 1 + find-skills + apple-design = the nine). .claude/settings.json's marketplace openai/codex-plugin-cc resolves (marketplace.json HTTP 200).",
+    "fix": "None needed.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-23",
+    "severity": "info",
+    "area": "unsupported claims",
+    "finding": "One documented status claim is UNVERIFIABLE from this sandbox and should be labelled rather than trusted or deleted: CONNECTIONS.md:42 'Orca Computer Use v1.4.203 ... Installed on the Mac'. There is no Mac here and no inventory artefact in the repo that independently attests to it.",
+    "evidence": "integrations/CONNECTIONS.md:42. github.com HTML is blocked by this sandbox's egress proxy for all repositories (a known-good control URL also returned 403), so even indirect corroboration was unavailable.",
+    "fix": "Mark it '(unverified from the cloud sandbox — confirm on the Mac with mac-verify.sh)'. Do not delete the claim.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-24",
+    "severity": "high",
+    "area": "mac-verify.sh (for V1)",
+    "finding": "mac-verify.sh cannot detect a broken skill. Its vendored-skills check tests only that SKILL.md EXISTS. A SKILL.md with unparseable YAML, a `name` that does not match its directory, an empty description or a dead reference is reported as 'ok  vendored skills  all nine present' — the exact false-green class this engagement keeps finding.",
+    "evidence": "mac-verify.sh:96-102 (`[ -f \"$REPO_DIR/.claude/skills/$s/SKILL.md\" ]`). Executed against a fake repo where security-and-hardening/SKILL.md was replaced with invalid YAML and `name: TOTALLY-WRONG-NAME`: PyYAML refuses it ('while parsing a flow sequence') so no session could load it, yet mac-verify.sh printed 'ok    vendored skills            all nine present'.",
+    "fix": "For V1: parse the frontmatter (awk the block between the --- fences), assert `name` equals the directory name, assert `description` is non-empty, and resolve every `](...)` / backticked relative path in the body. Nine skills, all local, no network — this is cheap and it is the difference between 'the file is there' and 'a session can load it'.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-25",
+    "severity": "high",
+    "area": "mac-verify.sh (for V1)",
+    "finding": "mac-verify.sh reports a DRIFTED claude-auto as 'ok'. When the installed launcher differs from the repo copy it prints an ok line with an advisory, counts it toward N_OK, and does not stop the run exiting 0. The launcher is the component that enforces the PII gate, so a tampered or stale copy is precisely what verification exists to catch.",
+    "evidence": "mac-verify.sh:129-130 — the else branch of the `cmp -s` test calls `ok`, not `bad` or `need`. Executed: a two-line stub that merely echoes TAMPERED was installed at $HOME/.local/bin/claude-auto and mac-verify printed 'ok    claude-auto    installed (differs from the repo copy — diff it before trusting it)'.",
+    "fix": "For V1: make the differs-from-repo branch `need` (or `bad`), so it lands in the summary and blocks exit 0. An advisory nobody reads inside an 'ok' line is not a check.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-26",
+    "severity": "high",
+    "area": "mac-verify.sh (for V1)",
+    "finding": "mac-verify.sh reports the stranded state as healthy. If $HOME/.config/omniroute/state/mode reads 'free-fallback' — meaning the Mac is running every non-PII task on free third-party providers — it prints 'ok  omniroute route mode  free-fallback'. The condition the entire OmniRoute design exists to make temporary is greenlit by the verifier, and F-V2-11/F-V2-12 show that state can be permanent.",
+    "evidence": "mac-verify.sh:133-135 — `ok` with the mode string, whatever the mode is. Executed with state/mode seeded to 'free-fallback': 'ok    omniroute route mode       free-fallback', contributing to N_OK.",
+    "fix": "For V1: `ok` only for mode=subscription. Anything else should be `need` with the age of state/route.env's `since` field, e.g. 'on free-fallback for 3h — the probe has not restored the subscription'. Cross-reference F-V2-11: the strand is silent at the script level too, so mac-verify is the only place it could surface.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-27",
+    "severity": "medium",
+    "area": "mac-verify.sh (for V1)",
+    "finding": "mac-verify.sh cannot distinguish an installed-but-broken tool from a healthy one. check_cmd reports ok with whatever the version command's first stdout line is, discarding its exit status, so a binary that exists but fails to run yields 'ok <label>' with a blank version.",
+    "evidence": "mac-verify.sh:60-72, specifically :63 `ok \"$_label\" \"$(\"$_p\" \"$@\" 2>/dev/null | head -1 ...)\"` — no exit-status test, stderr discarded. Executed with a graphify stub that exits 1: 'ok    graphify' with an empty version field.",
+    "fix": "For V1: capture the exit status and treat non-zero, or empty output, as `bad \"<label>\" \"on PATH but --version failed\"`.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-28",
+    "severity": "medium",
+    "area": "mac-verify.sh (for V1)",
+    "finding": "The MCP check counts lines rather than servers, so an error message or an empty-state message is reported as a successful listing.",
+    "evidence": "mac-verify.sh:197-205 — `mcp=$(claude mcp list 2>&1)` merges stderr, then `n=$(grep -c .)` and `ok \"claude mcp list\" \"$n line(s) returned\"` for any non-empty output. Executed: with no servers configured, the output 'No MCP servers configured. Use `claude mcp add` to add a server.' was reported as 'ok  claude mcp list  1 line(s) returned'.",
+    "fix": "For V1: keep stderr separate, test the exit status, and treat 'No MCP servers configured' as `need` rather than ok. The agent402 refusal check below it is good and should stay.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-29",
+    "severity": "low",
+    "area": "mac-verify.sh (for V1)",
+    "finding": "A placeholder credential passes as a real one. check_env_file tests only that something non-whitespace follows the `=`, so a skeleton value left in place reads as 'set'.",
+    "evidence": "mac-verify.sh:182 `grep -q \"^[[:space:]]*${_n}=[^[:space:]]\"`. Executed with NVIDIA_API_KEY set to the literal string 'changeme': 'ok      NVIDIA_API_KEY             set'. The genuinely-empty case is handled correctly ('no value yet').",
+    "fix": "For V1: also treat obvious placeholders (changeme, xxx, TODO, <...>, the skeleton's own default) as `need`. Do not print the value when doing so.",
+    "halt": false
+  },
+  {
+    "id": "F-V2-30",
+    "severity": "info",
+    "area": "mac-verify.sh (for V1)",
+    "finding": "What mac-verify.sh gets RIGHT, tested against a deliberately broken environment: it never prints a credential value; it reports missing tools as FAIL; it reports a wrong-mode .env as FAIL with the exact mode and the fix command; it reports an empty key as NEED; its filemode() handles the GNU/BSD stat trap correctly; and it exits 1 whenever anything failed or is waiting on Steven. The honesty claim in its header holds.",
+    "evidence": "Ran the script against a throwaway HOME seeded with: no tools installed, a 644 .env containing distinctive canary values, an empty key, a placeholder key, a tampered claude-auto, a stranded route mode and a broken graphify. Result: 'ok 19  FAIL 7  NEEDS-STEVEN 5  info 6', exit 1. Grep of the full output for the canary values and for 'changeme' returned nothing — names and 'set' only. Wrong mode surfaced as 'FAIL  omniroute/.env  mode 644 — must be 600 (chmod 600 ...)'. Missing tools surfaced as FAIL for homebrew, codeburn, headroom, omniroute, whatsapp-cli and the scrapers venv. filemode() (mac-verify.sh:47-55) read 644 correctly on Linux, where claude-auto.sh:71's equivalent is broken (F-V2-15).",
+    "fix": "None needed. The four gaps above (F-V2-24..29) are additions to a sound script, not a rewrite.",
+    "halt": false
+  }
+]

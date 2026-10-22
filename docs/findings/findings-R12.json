@@ -1,0 +1,344 @@
+[
+ {
+  "id": "R12-AIT-01",
+  "card": "orgChartCard / ORG_CHART.tier2[Vanessa].owns",
+  "verdict": "fixed",
+  "evidence": "Vanessa's node said only 'dispatches the executives and their reports in parallel ... 8 in parallel, 4 Perplexity per wave' — no 'one sub-agent per agent', no tier names, no stall rule, no proposal-only-seats line, all present in CLAUDE.md §Sub-agent dispatch.",
+  "change": "Rewrote owns: one sub-agent per agent, executive tier vs worker tier, the 2-retries→re-route→Needs-Steven stall rule, proposal-only seats (Nadia, Elon, council, twin) return proposals not changes.",
+  "source": "CLAUDE.md §Sub-agent dispatch",
+  "commit": "85cdfc6"
+ },
+ {
+  "id": "R12-AIT-02",
+  "card": "orgChartCard / ORG_CHART.tier2[Vanessa].reports",
+  "verdict": "fixed",
+  "evidence": "Laya (R11's zero-token first hop) was absent from the visual org chart entirely.",
+  "change": "Added a Laya report node ahead of Jarvis, worded 'in front of Vanessa, not under her', with its honest status (proven in sandbox 2026-09-28, Hugging Face blocked, not installed on the Mac, NEEDS-STEVEN #68).",
+  "source": "integrations/laya/README.md; OPTIMIZATION.md §System-1 hop; docs/NEEDS-STEVEN.md #68",
+  "commit": "85cdfc6"
+ },
+ {
+  "id": "R12-AIT-03",
+  "card": "orgChartCard / ORG_CHART.tier2[Vanessa].reports",
+  "verdict": "fixed",
+  "evidence": "Orca (parallel-agent surface + phone view, OPTIMIZATION.md's 2026-09-28 correction) was absent from the visual org chart.",
+  "change": "Added an Orca report node after Knowledge fabric, before Juliet: stablyai/orca, phone view for the ≤8 sub-agents, proposal vetted by the CTO Innovator, reported v1.4.203 unverified (F-V2-23), mobile companion not paired (NEEDS-STEVEN #69).",
+  "source": "OPTIMIZATION.md §Dispatch layer + §Five-level map; REMOTE-ACCESS.md §Orca mobile companion; docs/NEEDS-STEVEN.md #69",
+  "commit": "85cdfc6"
+ },
+ {
+  "id": "R12-AIT-04",
+  "card": "orgChartCard / ORG_CHART.tier2[Vanessa].reports[Knowledge fabric]",
+  "verdict": "fixed",
+  "evidence": "Node role/owns named only 'Second Brain · vault · Jarvis · Graphify · Ruflo', missing Drive, RAG/vector index, ECC, memory.md, decisions.md — the brief's explicit one-brain list.",
+  "change": "Role line now enumerates all ten: Notion · Drive · Obsidian vault · Jarvis · Graphify · Ruflo · RAG/vector index · ECC · memory.md · decisions.md. Owns rewritten as the level-by-level recall path, keeping Drive-0-files and ECC-is-a-gate honesty.",
+  "source": "OPTIMIZATION.md §Five-level map + §What each component is for",
+  "commit": "85cdfc6"
+ },
+ {
+  "id": "R12-AIT-05",
+  "card": "secondBrainLevelsCard / L1 Router row",
+  "verdict": "fixed",
+  "evidence": "L1 row (What / Where it lives / Status) had no mention of Laya at all, though Laya's own README and OPTIMIZATION.md's five-level map place it at L1.",
+  "change": "Prepended Laya's zero-token classifier description to 'What', added integrations/laya/ to 'Where it lives', appended Laya's honest status (proven in sandbox 2026-09-28, HF blocked, not on the Mac, NEEDS-STEVEN #68) to 'Status'. Did not re-date the rest of the row (still 2026-09-22 fabric snapshot).",
+  "source": "OPTIMIZATION.md §Five-level map (Laya row); integrations/laya/README.md",
+  "commit": "1a62612"
+ },
+ {
+  "id": "R12-AIT-06",
+  "card": "secondBrainLevelsCard / Remote-live-access src-note",
+  "verdict": "fixed",
+  "evidence": "Note listed Vanessa Live, Command Deck, iMessage/Discord, cloud routines, Local Bridge — no Orca mobile companion, no WhatsApp.",
+  "change": "Appended '· the Orca mobile companion (proposed ... unverified, not installed or paired, NEEDS-STEVEN #69) · WhatsApp via OpenWA (... not linked yet, NEEDS-STEVEN #66)' before the ECC sentence; rest of the note unchanged.",
+  "source": "REMOTE-ACCESS.md; integrations/openwa/README.md §What is not done yet; docs/NEEDS-STEVEN.md #66, #69",
+  "commit": "1a62612"
+ },
+ {
+  "id": "R12-AIT-07",
+  "card": "brainEngineCard / Laya + 77skills src-note",
+  "verdict": "fixed",
+  "evidence": "Text described Laya as 'proposed as the router hint and ingest gate ... boosts index scoring only, never decides alone' — the evaluation integrations/laya/README.md itself calls superseded, and 77 Skills' path said only 'ECC review', omitting the skills-refresh step NEEDS-STEVEN #70 names.",
+  "change": "Replaced the stale role claim with a pointer to the (now corrected) org chart / brain-stack cards and Laya's real 2026-09-28 sandbox status; 77 Skills line now says 'goes through skills-refresh and an ECC security review', matching NEEDS-STEVEN #70 verbatim.",
+  "source": "integrations/laya/README.md (superseded-evaluation note); OPTIMIZATION.md §System-1 hop; docs/NEEDS-STEVEN.md #70",
+  "commit": "1a62612"
+ },
+ {
+  "id": "R12-AIT-08",
+  "card": "modelDisciplineCard / Recall order sentence",
+  "verdict": "fixed",
+  "evidence": "Recall order started at '1 recall_brain...', omitting CLAUDE.md's own level 0 (Laya).",
+  "change": "Inserted '0 Laya — zero-token, on-device, once installed (not yet, NEEDS-STEVEN #68) ... →' ahead of the existing 1–5 chain; chain 1–5 left verbatim.",
+  "source": "CLAUDE.md §Recall order",
+  "commit": "1a62612"
+ },
+ {
+  "id": "R12-AIT-09",
+  "card": "AI_TEAM_FLOWS[\"Ask\"]",
+  "verdict": "fixed",
+  "evidence": "Brief §1.4 explicitly asks for 'the first hop (Laya, once installed) → Vanessa → one leaf → sub-agents' in the Ask flow; row began directly with 'Steven talks to Vanessa'.",
+  "change": "Prepended the Laya-first-hop sentence (confident→route, below threshold→ESCALATE) and added 'one per agent' to Vanessa's dispatch clause; rest of the row (Maxwell hand-off) unchanged.",
+  "source": "CLAUDE.md §Recall order level 0; integrations/laya/README.md",
+  "commit": "8f12033"
+ },
+ {
+  "id": "R12-AIT-10",
+  "card": "AI_TEAM_TOOLBOX[\"Skills\"]",
+  "verdict": "fixed",
+  "evidence": "Row said the four R11 skills were 'Mac install pending', contradicting MAC-SETUP.sh's own vendored-skills check ('nothing to install ... they load with the repo'); no schedule status per-skill; no 77 Skills line.",
+  "change": "New lead sentence: 'in the repo's .claude/skills/ (22 dirs) — enabled for every Claude Code session in this repository; MAC-SETUP.sh verifies ... skills-refresh puts them on this table'; each of loop-engineering/prompt-master/skills-refresh/interview-me now carries its always-on/README.md schedule status; appended the 77 Skills candidate/paid/not-bought line with the skills-refresh+ECC path.",
+  "source": "MAC-SETUP.sh (vendored-skills step); always-on/README.md §Proposed additions; docs/NEEDS-STEVEN.md #70; .claude/skills/ listing (22 dirs, verified by ls)",
+  "commit": "8f12033"
+ },
+ {
+  "id": "R12-AIT-11",
+  "card": "\"AI employee skill toolkit\" card src-note (panel-aiteam, unlisted in brief's card table)",
+  "verdict": "fixed",
+  "evidence": "Second, more detailed skills paragraph on the same panel said 'this page cannot install anything on the Mac, and none of them runs until a Claude Code session there installs it' — undersold that they already work for any Claude Code session in this repo today (this session included).",
+  "change": "Corrected the sentence to distinguish repo-scoped (already enabled, MAC-SETUP.sh verifies, skills-refresh populates this table) from global ~/.claude/skills install (still the pending, separate step the Copy-prompt button covers).",
+  "source": "MAC-SETUP.sh (vendored-skills step)",
+  "commit": "8f12033"
+ },
+ {
+  "id": "R12-AIT-12",
+  "card": "\"Orca\" card (panel-aiteam, unlisted in brief's card table)",
+  "verdict": "fixed",
+  "evidence": "Card title/body flatly said 'installed on the Mac' / 'What is actually on the Mac ... status RUN' and framed stablyai/orca as 'a separate thing' — contradicts OPTIMIZATION.md's 2026-09-28 correction (unverified from here, F-V2-23 open; 'both descriptions can be true of one project') and never mentioned the new phone-view/parallel-agent role at all.",
+  "change": "Title and body now say 'reported on the Mac ... unverified from here', add the 2026-09-28 correction paragraph, and the 'Where it fits' note leads with the parallel-agent-surface/phone-view role before the existing computer-use-executor proposal.",
+  "source": "OPTIMIZATION.md §Orca's honest status + §Corrected 2026-09-28; docs/NEEDS-STEVEN.md #69",
+  "commit": "8f12033"
+ },
+ {
+  "id": "R12-AIT-13",
+  "card": "AI_TEAM_ORG (Derek's tools list)",
+  "verdict": "fixed",
+  "evidence": "'Orca Computer Use v1.4.203 (Stably AI) — installed as a standalone app' overclaimed against F-V2-23.",
+  "change": "Reworded to 'reported on the Mac, unverified from here (F-V2-23)'; added that the parallel-agent/phone-view role is a proposal.",
+  "source": "OPTIMIZATION.md §Orca's honest status",
+  "commit": "a7bc6a0"
+ },
+ {
+  "id": "R12-AIT-14",
+  "card": "AI_TEAM_TOOLBOX[\"Agents (Claude Code)\"]",
+  "verdict": "fixed",
+  "evidence": "'Orca Computer Use v1.4.203 is installed on the Mac as a standalone app' — same overclaim.",
+  "change": "Reworded to 'is reported on the Mac, unverified from here (F-V2-23)'; added the mobile-companion/phone-view mention alongside the existing computer-use-executor proposal.",
+  "source": "OPTIMIZATION.md §Orca's honest status",
+  "commit": "a7bc6a0"
+ },
+ {
+  "id": "R12-AIT-15",
+  "card": "orgChartCard / #orgModelLegend",
+  "verdict": "works",
+  "evidence": "Brief: 'keep the existing legend and add the Perplexity research tier + the two caps to it if missing.' Legend already reads '...Perplexity research heavy lifting. Vanessa dispatches sub-agents per agent, at most 8 in parallel and 4 Perplexity calls per wave (roster-tiers.json: maxParallel 8 · maxPerplexityPerWave 4 · hardCap 12).'",
+  "change": "None — already present, left untouched per the brief's own instruction.",
+  "source": "command-deck.html #orgModelLegend (pre-existing)",
+  "commit": "-"
+ },
+ {
+  "id": "R12-AIT-16",
+  "card": "panel-toolkit (\"Toolkit\" tab, Orca tile ~line 6792)",
+  "verdict": "not-reached",
+  "evidence": "Same 'installed on the Mac' Orca overclaim recurs outside #panel-aiteam, in panel-toolkit's own Orca tile.",
+  "change": "Not edited — outside this round's assigned scope (#panel-aiteam and the AI Team constants only, per brief §2).",
+  "source": "command-deck.html panel-toolkit",
+  "commit": "-"
+ },
+ {
+  "id": "R12-OMNI-01",
+  "item": "route-map.json (tier/pii_gate -> route)",
+  "verdict": "tested",
+  "evidence": "integrations/tests/test_laya_route.py: 19/19 assertions pass (full tier x pii_gate matrix incl. research+PII override; missing-file fallback; unknown-tier fallback).",
+  "change": "New file integrations/omniroute/route-map.json.",
+  "source": "Mirrors CLAUDE.md's model-tiering table (read from the worktree copy).",
+  "commit": "168d756"
+ },
+ {
+  "id": "R12-OMNI-02",
+  "item": "laya_route.py prints a `route` field per decision",
+  "verdict": "tested",
+  "evidence": "Same test file as above, plus a subprocess regression of `laya_route.py --engine stub --batch sample-requests.jsonl`: unchanged 15 routed/5 escalated/2 pii_gate-fired vs the pre-existing R11 baseline in integrations/laya/README.md; both pii_gate-fired rows (id 8, id 19) now print route=local although their guessed tier is 'orchestrator', proving the override for real, not just in the unit-tested function.",
+  "change": "integrations/laya/laya_route.py: +DEFAULT_ROUTE_MAP, +load_route_map(), +route_for(), `route` added to decide()'s return dict and to the --json/text output; +--route-map flag. integrations/laya/README.md: new §`route` field addendum.",
+  "source": "integrations/laya/laya_route.py (read in full before editing).",
+  "commit": "168d756"
+ },
+ {
+  "id": "R12-OMNI-03",
+  "item": "integrations/omniroute/README.md — routing map, hard rule, token-optimization honesty",
+  "verdict": "built",
+  "evidence": "Self-contained; cross-checked against integrations/omniroute-failover/README.md so no claim here contradicts it. Links to, never duplicates, that file.",
+  "change": "New file.",
+  "source": "integrations/omniroute-failover/README.md; this round's own research (rows 04-06).",
+  "commit": "709905d"
+ },
+ {
+  "id": "R12-OMNI-04",
+  "item": "Anthropic's terms on a consumer subscription through a third-party gateway",
+  "verdict": "works",
+  "evidence": "Primary source fetched directly (not a blog/secondary post): code.claude.com/docs/en/legal-and-compliance, section 'Authentication and credential use' (fetched 2026-09-28). Quoted in full in integrations/omniroute/README.md §Hard rule. Confirms OAuth is 'intended exclusively for ... ordinary use of Claude Code and other native Anthropic applications' and that Anthropic does not permit routing Free/Pro/Max credentials through a third-party product on a user's behalf.",
+  "change": "integrations/omniroute/README.md §Hard rule (quotes it); reinforces, does not change, the existing subscription-mode behavior in omniroute-failover/claude-auto.sh.",
+  "source": "https://code.claude.com/docs/en/legal-and-compliance",
+  "commit": "709905d"
+ },
+ {
+  "id": "R12-OMNI-05",
+  "item": "OmniRoute's provider/combo/compression CLI+REST surface",
+  "verdict": "works",
+  "evidence": "Researched from OmniRoute's GitHub README, wiki (Provider-Reference, CLI-Tools) and docs/ tree (routing/AUTO-COMBO.md, compression/COMPRESSION_GUIDE.md, compression/RTK_COMPRESSION.md), fetched 2026-09-28. The REST shapes (POST /api/providers, POST /api/combos, PUT /api/combos/{name}, PUT /api/settings/compression, the x-omniroute-compression / X-OmniRoute-Compression header contract) were then independently exercised for real against a stub implementing that same contract (§2c below) — real OmniRoute itself did not run in this sandbox (row 16).",
+  "change": "integrations/omniroute/configure-omniroute.sh drives this surface; its header comment cites each source and flags the local-provider CLI flag specifically as unconfirmed (REST used instead).",
+  "source": "github.com/diegosouzapw/OmniRoute (README, wiki, docs/).",
+  "commit": "168e01d"
+ },
+ {
+  "id": "R12-OMNI-06",
+  "item": "Bonsai 27B licence, runtime, and build sizes",
+  "verdict": "works",
+  "evidence": "Verified against PrismML's own demo repo (github.com/PrismML-Eng/Bonsai-demo README.md and setup.sh, fetched 2026-09-28) rather than the brief's own stub figures, which turned out to describe an older build: License Apache-2.0 (repo footer). Runtime: PrismML's own llama.cpp fork (github.com/PrismML-Eng/llama.cpp) — stock llama.cpp, LM Studio and Ollama are NOT confirmed to run it ('stock llama.cpp cannot run these files'; upstream FWHT support merged 2026-09-25 but 'full Bonsai 2 support' has not). On Apple Silicon, an additional native MLX venv path (mlx-vlm==0.7.2) also exists. Sizes: PTQ1_0 5.9 GB (slower prompt processing) vs the demo's default PQ2_0 7.8 GB + 1.7 GB vision projector (~9.5 GB); the downloader picks between them by backend kernel support, not a user flag — setup-local-llm.sh cannot force the smaller build. docs.prismml.com and huggingface.co were both egress-blocked from this sandbox and were not fought.",
+  "change": "integrations/omniroute/setup-local-llm.sh's header comment carries the full citation.",
+  "source": "https://github.com/PrismML-Eng/Bonsai-demo (README.md, setup.sh).",
+  "commit": "709905d"
+ },
+ {
+  "id": "R12-OMNI-07",
+  "item": "setup-local-llm.sh",
+  "verdict": "tested",
+  "evidence": "bash -n and `shellcheck -S style` clean. --dry-run exercised in this sandbox: prints both build sizes, detects this sandbox's Hugging Face block and defers rather than downloading, refuses to run for real on non-macOS (exit 1, this sandbox is Linux). The real install/serve path (git clone, setup.sh, start_llama_server.sh, the loopback-only refusal check) could not run here — no macOS, no Hugging Face access — and is unproven beyond its logic; real execution is row 17 (needs-steven).",
+  "change": "New file integrations/omniroute/setup-local-llm.sh.",
+  "source": "integrations/laya/README.md's identical Hugging-Face-block finding, re-confirmed same day.",
+  "commit": "709905d"
+ },
+ {
+  "id": "R12-OMNI-08",
+  "item": "configure-omniroute.sh",
+  "verdict": "tested",
+  "evidence": "bash -n and `shellcheck -S style` clean (including a real bug caught only by execution: `_curl`'s HTTP_CODE was lost across the command-substitution subshell boundary under `set -u` — fixed via a code file, not a variable). Proved FOR REAL (not --dry-run) against the stub gateway (§2 below): registers the local provider and both combos, sets compressionMode, and is idempotent on a second run (409-exists handled by updating via PUT instead of erroring).",
+  "change": "New file integrations/omniroute/configure-omniroute.sh.",
+  "source": "OmniRoute's docs (row 05).",
+  "commit": "168e01d"
+ },
+ {
+  "id": "R12-OMNI-09",
+  "item": "Brief §2(a) — a request to the local combo reaches the stub",
+  "verdict": "works",
+  "evidence": "Proved twice: (1) direct HTTP POST to the stub gateway's /v1/messages with model=local returned 200 with X-OmniRoute-Decision: bonsai-local, and the Bonsai stub's own independent log recorded exactly 1 hit, 92 bytes; (2) through the REAL, unmodified omniroute-failover/claude-auto.sh (`--force local`, OMNIROUTE_LOCAL_MODEL=local, a stub `claude` on PATH that makes a real HTTP call) — exit 0, stub-claude reported http=200 from the gateway, Bonsai stub logged a second hit.",
+  "change": "None (a proof, not a repo change).",
+  "source": "$S/r12/work-omni/proof/ (bonsai-stub.py, omniroute-stub.py, bin/claude) — sandbox-only, not committed.",
+  "commit": ""
+ },
+ {
+  "id": "R12-OMNI-10",
+  "item": "Brief §2(b) — with the stub down, the local combo fails closed, no cloud fallback",
+  "verdict": "works",
+  "evidence": "Killed the Bonsai stub, repeated the same request twice: (1) direct to the gateway stub — 502 Bad Gateway, 'upstream bonsai-local unreachable: Connection refused', and GET /api/providers afterward shows the SAME single registered provider (nothing else exists for it to have tried); (2) through real claude-auto.sh (same invocation as row 09) — exit 1, stub-claude reported http=502 from the gateway, and claude-auto.sh's own exec propagated that failure with no retry and no other ANTHROPIC_BASE_URL ever set. Independently, route_omni()'s own healthz check (read, not modified) exits 75 before calling claude at all if OmniRoute itself — not just the local provider — is unreachable, which is a second, separate fail-closed layer.",
+  "change": "None (a proof, not a repo change).",
+  "source": "Same proof harness as row 09.",
+  "commit": ""
+ },
+ {
+  "id": "R12-OMNI-11",
+  "item": "Brief §2(c) — compression on/off changes forwarded payload size",
+  "verdict": "works",
+  "evidence": "5 non-PII sample prompts (padded with redundant whitespace, adapted from laya's own sample set), each sent twice to the stub gateway's `local` combo (compressionMode=Standard) with x-omniroute-compression: off vs default. Forwarded bytes (the X-OmniRoute-Bytes-Forwarded header, measured server-side, not client-guessed): per-prompt savings 8.0-10.9%, aggregate 843 -> 763 bytes (9.5%); X-OmniRoute-Compression echoed 'off' vs 'Standard' correctly on every call. This proves the header CONTRACT real OmniRoute documents (docs/compression/COMPRESSION_GUIDE.md), via an honestly-labeled toy whitespace-collapse stand-in for RTK+Caveman, which this sandbox never ran.",
+  "change": "None (a proof, not a repo change).",
+  "source": "Same proof harness as row 09; the compression toy transform is inside omniroute-stub.py, not presented anywhere as OmniRoute's real algorithm.",
+  "commit": ""
+ },
+ {
+  "id": "R12-OMNI-12",
+  "item": "Brief §2(d) — lease-tests.sh and the Laya tests still pass",
+  "verdict": "tested",
+  "evidence": "lease-tests.sh: 158/158 pass, run BEFORE the claude-auto.sh comment edit and again AFTER it (158/158 both times, 0 fail). 'The Laya tests' = integrations/tests/test_laya_route.py (19/19, new this round) + the pre-existing sample-requests.jsonl stub regression documented in integrations/laya/README.md (unchanged counts, confirmed in row 02). No dedicated Laya pytest suite existed before this round beyond that batch harness.",
+  "change": "None (a proof, not a repo change).",
+  "source": "integrations/omniroute-failover/lease-tests.sh (run as-is).",
+  "commit": ""
+ },
+ {
+  "id": "R12-OMNI-13",
+  "item": "claude-auto.sh: OMNIROUTE_LOCAL_MODEL comment now names Bonsai, not the 'Jarvis' placeholder",
+  "verdict": "tested",
+  "evidence": "Comment-only change (2 spots: the file header, and the LOCAL_MODEL variable line). No gate, dispatch or lease logic touched. lease-tests.sh 158/158 before and after (row 12). bash -n and `shellcheck -S style` clean.",
+  "change": "integrations/omniroute-failover/claude-auto.sh, 2 comment blocks.",
+  "source": "OPTIMIZATION.md (confirms Jarvis/OpenJarvis is a separate, already-documented local vault-index-and-voice system, not this round's local model).",
+  "commit": "168e01d"
+ },
+ {
+  "id": "R12-OMNI-14",
+  "item": "orca.md — how Orca's agents could route through the same gates",
+  "verdict": "proposal",
+  "evidence": "Evidence is real, merged PRs and open issues on stablyai/orca (custom agent launch commands: #17668, #21653, #18249; per-agent env: #17195, #5363; an exec/env detection caveat: #21255) — no single settings-doc page was found and fetched, so this is a researched plan, not a proof. Not run against a live Orca session (macOS desktop app; none in this sandbox).",
+  "change": "New file integrations/omniroute/orca.md.",
+  "source": "github.com/stablyai/orca (README, issues, PRs — see the file's own source table).",
+  "commit": "4a1d4a7"
+ },
+ {
+  "id": "R12-OMNI-15",
+  "item": "integrations/install-orca-whatsapp-laya.sh",
+  "verdict": "not-reached",
+  "evidence": "Deliberate, per the brief's own conditional ('update only if a verified setting exists'): row 14's evidence confirms the FEATURE exists, not the exact settings-file schema needed to script it unattended. Editing a live install script against a guessed schema risks silently writing the wrong key on Steven's real Orca install. Its existing line ('Orca only runs agents you start in it; it does not change how Vanessa or your Mac runner work') remains accurate and was left as-is.",
+  "change": "None.",
+  "source": "integrations/omniroute/orca.md §What this round did NOT do.",
+  "commit": ""
+ },
+ {
+  "id": "R12-OMNI-16",
+  "item": "`npm install -g omniroute` (or equivalent) in this sandbox",
+  "verdict": "not-reached",
+  "evidence": "Attempted via `npm --prefix <scratch> install omniroute`: pulled ~2.1 GB of node_modules in under 90s but did not finish producing bin/omniroute before this SHARED sandbox's disk hit its own limit (host `/` at 98% used, not caused by this session alone). The partial install was removed to give the space back; not retried, since a second attempt risked the same failure for no new information. Per the brief's own fallback ('If OmniRoute will not install or run here, say exactly why and prove the scripts against stubs') — rows 09-11 are that proof.",
+  "change": "None.",
+  "source": "integrations/omniroute/README.md §Honest status.",
+  "commit": ""
+ },
+ {
+  "id": "R12-OMNI-17",
+  "item": "needs-integrator: MAC-SETUP.sh — a local-llm step",
+  "verdict": "needs-integrator",
+  "evidence": "Drafted to match the existing `omniroute` step's exact shape (header/should_run/ensure_env_file/needs_steven helpers, read from the worktree copy at MAC-SETUP.sh:495-533) so it drops in consistently; not applied to MAC-SETUP.sh itself, which is the integrator's file.",
+  "change": "Add `local-llm` to STEPS_FR5B (MAC-SETUP.sh:58), then this block after the existing omniroute block (after line 533):\n\nif should_run local-llm; then\n  header local-llm \"Bonsai 27B local model for OmniRoute's \\`local\\` combo (R12-OMNI, PII stays on this Mac)\"\n  say \"      this step only PRINTS the plan -- it downloads several GB and needs BONSAI_TOKEN\"\n  say \"      (a Hugging Face token) exported in this shell first; see needs_steven below.\"\n  run bash \"$REPO_DIR/integrations/omniroute/setup-local-llm.sh\" --dry-run\n  ensure_env_file local-llm <<'EOF'\nBONSAI_TOKEN|Hugging Face token, read access, for Bonsai 2 27B's weights (huggingface.co/settings/tokens) -- read once by setup.sh, never written to a repo file\nEOF\n  needs_steven \"Run 'integrations/omniroute/setup-local-llm.sh' for real (no --dry-run) once BONSAI_TOKEN is exported -- it downloads several GB and this script only prints the plan here. Then 'integrations/omniroute/configure-omniroute.sh' to register it with OmniRoute (needs the omniroute step above already run and OmniRoute started). See integrations/omniroute/README.md.\"\nfi",
+  "source": "MAC-SETUP.sh:495-533 (the existing omniroute step, matched for style).",
+  "commit": ""
+ },
+ {
+  "id": "R12-OMNI-18",
+  "item": "needs-integrator: CLAUDE.md — one line under model tiering",
+  "verdict": "needs-integrator",
+  "evidence": "Follows the existing table's own convention of naming the actual product for a non-Claude-model row (it already does this for 'Perplexity (Composio perplexityai, or the local perplexity MCP)').",
+  "change": "Add one row to the Model tiering table (after the Research heavy lifting row):\n\n| Local tier -- PII-gated requests only, no exception, never a cloud fallback | Bonsai 27B, via OmniRoute's `local` combo, on the Mac only (integrations/omniroute/README.md) |",
+  "source": "CLAUDE.md (read from the worktree copy) §Model tiering.",
+  "commit": ""
+ },
+ {
+  "id": "R12-OMNI-19",
+  "item": "needs-integrator: OPTIMIZATION.md — five-level map rows (OmniRoute, Bonsai)",
+  "verdict": "needs-integrator",
+  "evidence": "Matches the exact row shape already used for the adjacent Jarvis/Graphify/Ruflo/Orca rows (read from the worktree copy, OPTIMIZATION.md:160-170) -- 'Not a recall level' rows for dispatch-path surfaces, same as Orca's own row there today.",
+  "change": "Add two rows to the five-level map table (near the existing Orca row):\n\n| **OmniRoute** | Not a recall level -- a **local dispatch gateway** (research- and local-tier routing) | Neither | Never for recall; routes a `research`-tier or PII-fired request to its combo (integrations/omniroute/README.md) | Did not install in this sandbox (disk pressure, shared host); scripts proved against stubs only -- R12-OMNI |\n| **Bonsai 27B** | Not a recall level -- the **local tier's model**, behind OmniRoute's `local` combo | Context (a PII-fired request's own local-only answer) | A PII-fired request, whatever tier it also carried -- never anything else, never a cloud fallback | Apache-2.0, PrismML-Eng/Bonsai-demo; not installed anywhere yet -- R12-OMNI |",
+  "source": "OPTIMIZATION.md:160-170 (read from the worktree copy, matched for style).",
+  "commit": ""
+ },
+ {
+  "id": "R12-OMNI-20",
+  "item": "needs-integrator: docs/NEEDS-STEVEN.md — three rows (run setup-local-llm.sh; paste the Perplexity key; any spend)",
+  "verdict": "needs-integrator",
+  "evidence": "Drafted in the file's own numbered, bulleted style (read from the worktree copy, tail of docs/NEEDS-STEVEN.md, currently ending at #72); left unnumbered here since the integrator's own merge order decides the next real number(s).",
+  "change": "Append, numbered sequentially after the current last entry:\n\n**Bonsai 27B / OmniRoute local tier** -- `integrations/omniroute/setup-local-llm.sh` is built and proved against a stub in this round's sandbox (R12-OMNI hand-back §2a/b); it has never downloaded or served anything real -- Hugging Face needs a token only you hold, and this sandbox's own huggingface.co access is blocked anyway · a network/install/credential action only you can take · **export** `BONSAI_TOKEN` (a Hugging Face token, read scope) in your own shell, then **run** `integrations/omniroute/setup-local-llm.sh` (no --dry-run) -- it prints both documented build sizes first (5.9 GB / ~9.5 GB) -- then `integrations/omniroute/configure-omniroute.sh` to register it with OmniRoute · R12-OMNI.\n\n**Perplexity key into OmniRoute** -- the `research` combo is defined by `configure-omniroute.sh` but carries no credential; this round never reads, prints or stores a key value, by design · a credential action only you can take · **paste** your Perplexity API key into OmniRoute's dashboard (http://127.0.0.1:20128 -> Providers -> Add Provider -> Perplexity -> Credential field -> Save -> Test), or run `integrations/omniroute/configure-omniroute.sh --set-perplexity-key` and paste it at the hidden prompt · R12-OMNI.\n\n**Top tier through OmniRoute -- HALT, not built** -- Anthropic's own terms (code.claude.com/docs/en/legal-and-compliance -> \"Authentication and credential use\", read 2026-09-28) reserve OAuth for \"ordinary use of Claude Code and other native Anthropic applications\" only; routing it through a third-party gateway risks the account, so this round left `subscription` mode exactly as claude-auto.sh already had it -- plain `claude`, no proxy, ever. If you ever want the top tier to have an OmniRoute-routed fallback model, that needs a pay-per-token Anthropic API key from the Console (never OAuth), which spends money · a credential + spend decision only you can make · **decide** whether you want this at all before anyone builds it · R12-OMNI.",
+  "source": "docs/NEEDS-STEVEN.md (read from the worktree copy, matched for style, tail read to confirm the current numbering).",
+  "commit": ""
+ },
+ {
+  "id": "R12-OMNI-21",
+  "item": "needs-integrator: context/decisions.md entry",
+  "verdict": "needs-integrator",
+  "evidence": "Drafted in the file's own dated-entry style (read from the worktree copy, tail of context/decisions.md).",
+  "change": "## 2026-09-28 -- OmniRoute wired as the local (Bonsai 27B) and research (Perplexity) route; subscription stays direct\n\n- **Decision (Steven, verbatim).** \"configure omni route Setup orca / Local LLM and token optimization Omniroute / PrismML's Bonsai 27B: with Perplexity and [tier model] md\" -- the top tier keeps masterminding and synthesizing on the subscription seat; Perplexity does research heavy lifting through OmniRoute's `research` combo (<=4/wave); a PII-fired request's only home is a new local tier, Bonsai 27B, behind OmniRoute's `local` combo, on the Mac only.\n- **Decision.** The Claude subscription (OAuth) never goes through OmniRoute, at any tier, full stop. Anthropic's own terms (code.claude.com/docs/en/legal-and-compliance -> \"Authentication and credential use\", read 2026-09-28) reserve OAuth for \"ordinary use of Claude Code and other native Anthropic applications\"; a third-party gateway is outside that, even self-hosted, even loopback-only. This is why claude-auto.sh's `subscription` mode already ran plain `claude` with no proxy env at all before this round started -- R12-OMNI found the rule that design already assumed, it did not invent one.\n- **Decision.** The `local` combo has no cloud fallback member, ever -- a single-target combo, not a flag. If Bonsai can't be reached, the request defers (claude-auto.sh exit 75); it never reroutes to subscription, free-fallback or research. Proved against a stub gateway and a stub local model in sandbox: a live request reaches the stub; killing the stub fails the same request closed, with the provider registry unchanged (nothing else to fall back to).\n- **Not decided -- HALT.** Whether the top tier should ever have an OmniRoute-routed model behind it. That needs a pay-per-token Anthropic API key (never OAuth), which spends money -- docs/NEEDS-STEVEN.md.\n- **Owner.** Integration Engineer (Derek's lane). **Status.** Built and proved against stubs in sandbox, 2026-09-28 (R12-OMNI); nothing has run on the Mac. Real OmniRoute did not install in this sandbox (disk pressure on a shared host) -- integrations/omniroute/README.md §Honest status.",
+  "source": "context/decisions.md (read from the worktree copy, matched for style).",
+  "commit": ""
+ },
+ {
+  "id": "R12-OMNI-22",
+  "item": "needs-steven: decide whether the top tier should ever go through OmniRoute",
+  "verdict": "needs-steven",
+  "evidence": "A standing decision point, distinct from the operational steps in row 20 -- this is a yes/no call on whether to ever spend money on an API key for this purpose at all, not a step to run.",
+  "change": "Folded into row 20's third docs/NEEDS-STEVEN.md paragraph ('Top tier through OmniRoute -- HALT, not built'); listed separately here because it is a decision, not an install step.",
+  "source": "integrations/omniroute/README.md §Hard rule; row 04's Anthropic-terms finding.",
+  "commit": ""
+ }
+]

@@ -1,54 +1,63 @@
-# Steven Shearrill — AEO / SEO / GEO / AIO Presence Kit
+# Command Deck — AI ecosystem, second brain, and loop engineering
 
-A complete, ready-to-deploy kit to make **Steven Shearrill** (Real Estate Broker, LPT Realty · Mortgage Loan Originator, Patriot Pacific Financial · Retired U.S. Navy Chief · Temecula Valley & San Diego County) the entity that Google, Bing, and every large language model (ChatGPT, Claude, Gemini, Grok, Perplexity, Copilot, Meta AI) resolve to when someone asks about a veteran-focused realtor or VA loan officer in Temecula / San Diego.
+This repository is the source of truth for Steven Shearrill's AI operation: the second brain that
+every agent reads, the skills that do the work, the integration specs for each outside system, and
+the dashboard code and tests that keep the Command Deck honest.
 
-| Acronym | What it means here | Where it lives in this repo |
-|---|---|---|
-| **SEO** | Classic search ranking: titles, on-page structure, local citations, backlinks, NAP consistency | `docs/01-presence-audit.md`, `docs/02-strategy.md`, `profiles/` |
-| **AEO** | Answer Engine Optimization: being *the* direct answer in featured snippets, People Also Ask, voice, and AI Overviews | `docs/03-question-bank.md`, FAQ schema in `site/` and `schema/` |
-| **GEO** | Generative Engine Optimization: being cited and recommended inside LLM answers (ChatGPT, Claude, Gemini, Grok, Perplexity) | `docs/05-llm-citation-checklist.md`, `site/llms.txt`, `site/robots.txt` |
-| **AIO** | AI Optimization / AI Overviews: structured, machine-readable entity data so AI systems can verify who you are | JSON-LD in `site/index.html`, `schema/*.jsonld`, `docs/06-schema-for-existing-sites.md` |
+It is a working brain, not documentation about one. `CLAUDE.md` loads automatically in every Claude
+Code session in this directory and routes the agent to exactly one leaf file per question.
 
-## What is in here
+## Layout
 
-```
-docs/
-  01-presence-audit.md              Current-state audit of every property found online (Oct 2026)
-  02-strategy.md                    The AEO/SEO/GEO/AIO strategy and 90-day execution plan
-  03-question-bank.md               140+ real questions people ask search engines and LLMs, mapped to answers
-  04-content-calendar-90-days.md    Week-by-week posting plan across every platform
-  05-llm-citation-checklist.md      How to get recommended by ChatGPT, Claude, Gemini, Grok, Perplexity
-  06-schema-for-existing-sites.md   Paste-ready JSON-LD and meta tags for temeculahomefinder.com and patriotpacific.com
-profiles/
-  00-canonical-identity.md          The single source of truth: name, titles, licenses, NAP, bios (50/100/300 words), keywords
-  instagram.md · facebook.md · linkedin.md · youtube.md · tiktok.md · x-threads.md
-  google-business-profile.md · zillow-realtor-homes.md · yelp-nextdoor-bing-apple.md · nmls-dre-directories.md
-schema/
-  person.jsonld · real-estate-agent.jsonld · mortgage-loan-originator.jsonld · faq.jsonld · video.jsonld
-site/
-  index.html                        Entity hub page: full JSON-LD graph, FAQ, speakable markup, sameAs links
-  va-home-loans-temecula.html       AEO pillar page: VA home loans in Temecula & San Diego
-  llms.txt · llms-full.txt          Machine-readable summaries for LLM crawlers
-  robots.txt · sitemap.xml · humans.txt · .well-known/security.txt
-scripts/
-  validate-schema.mjs               Checks every JSON-LD block parses and has required fields
-```
+| Path | What it is |
+|---|---|
+| `CLAUDE.md` | Level 1 router. Routing table, recall order, token rules, model tiering, HALT list. Read in full; nothing else is read until it says so. |
+| `AGENTS.md` | The same rules for Codex and other non-Claude agents, which do not read `CLAUDE.md` automatically. |
+| `context/` | `about-me.md` (always-true background) and `decisions.md` (append-only, dated). |
+| `projects/` | One file per ongoing project, with status and where its live data actually lives. |
+| `wiki/` | Level 2 topic wikis, each an index of one-line summaries. `wiki/clients/` is full-context and never chunked. |
+| `references/` | Source documents and external systems. |
+| `memory.md` | Claude Code auto-memory. Enable with `/memory`. |
+| `vector-index/` | Level 3. What gets chunked and embedded, and the rule for what must never be. |
+| `knowledge-graph/` | Level 4. Entities, typed relationships, and the never-graph-a-secret rule. |
+| `always-on/` | Level 5. What runs when, on which machine, and whether it actually ran. |
+| `recall-cache.md` | Cache TTLs, so a repeated question costs one lookup instead of five stores. |
+| `REMOTE-ACCESS.md` | Every live path to this system from a phone or another machine. |
+| `OPTIMIZATION.md` | How Orca, Jarvis, Ruflo, Graphify, Obsidian, RAG and ECC resolve into one recall path and one dispatch path under Vanessa. |
+| `MAC-INSTALL.md` | Laying this tree onto the Mac, enabling auto-memory, opening the vault in Obsidian. |
+| `.claude/skills/` | The installable skills: orchestration, backup, improvement, scale, loop engineering, stress testing, and the four integration syncs. |
+| `integrations/` | Connection status per outside system, the Apple Health recipe, and the exact Mac task definitions. |
+| `routines/` | Cloud routine and scheduled task specs, with cron in both Pacific and UTC. |
+| `dashboard/` | The Orchestration and Loop Engineering panel source, plus the test harness. |
+| `docs/` | The cycle's audit, stress test report, disruption brief, and the ecosystem inventory it was all built from. |
 
-## Quick start (in priority order)
+## The test gate
 
-1. **Fix the NAP conflicts** listed in `docs/01-presence-audit.md` § "Inconsistencies to fix first". This is the single highest-leverage task; LLMs and Google both downgrade entities whose facts disagree across sources.
-2. **Deploy `site/`** to a domain you control (recommended: `stevenshearrill.com`; if you use a different domain, search-and-replace `https://stevenshearrill.com` across `site/` and `schema/`). Any static host works: Netlify, Vercel, Cloudflare Pages, GitHub Pages.
-3. **Paste the schema** from `docs/06-schema-for-existing-sites.md` into temeculahomefinder.com (site settings → custom head code) and ask Patriot Pacific's web admin to add the loan-officer block.
-4. **Update every profile** using the copy in `profiles/`. Each file is copy-paste ready and already character-count checked.
-5. **Run the 90-day calendar** in `docs/04-content-calendar-90-days.md`.
-6. **Work the LLM checklist** in `docs/05-llm-citation-checklist.md` and re-test the prompts in its "Benchmark prompts" section monthly.
-
-## Validate
+Nothing reaches the published dashboard without passing both:
 
 ```bash
-node scripts/validate-schema.mjs
+python3 dashboard/tests/quickcheck.py <deck.html>        # syntax, seed JSON, duplicate ids, tag balance
+node    dashboard/tests/runtime-harness.js <deck.html>   # executes the whole page under a DOM shim
 ```
 
-## Facts policy
+The harness exists because the dashboard is one large immediately-invoked function: a load-time throw
+kills every render after it, the page still opens, and the cards simply sit empty. `node --check`
+passes on that file because the syntax is valid. Only executing it catches the failure.
 
-Every fact in this kit was taken from Steven's own public business pages (temeculahomefinder.com, patriotpacific.com, Instagram bio, Yelp, Homes.com, AgentPronto, LinkedIn headline) as of 12 Oct 2026. Items marked `VERIFY` could not be confirmed from a primary source and must be checked before publishing. Nothing here was invented; where a figure was unavailable the kit says so instead of guessing.
+## Two rules that matter more than the rest
+
+**Output, not execution.** A scheduled task counts as working only when the document it owns actually
+got fresher. "The task ran" is not the measure, and a green badge over a document nobody wrote is the
+failure this whole system is built to prevent.
+
+**A cloud routine can write; what it cannot do is carry a connector.** The old rule here said an
+unattended cloud routine "parks on an approval nobody is there to give". That was true when it was
+last tested on 2026-09-04 and is false now: a probe routine fired with nobody present at
+**2026-09-22 09:05:56Z** and left the `cloudWriteProbe` document behind, and four cloud writers have
+since run on it — the weekly backup, the live Pipeline Sync, the ISA escalation ladder and the feed
+freshness watchdog, whose `feedFreshness` document was written at 2026-09-23T00:50Z. Do not refuse a
+cloud write on the old rule's authority. What still pins work to the Mac is different and narrower:
+an agent-created routine carries **no connectors** (Zoho, Lofty, Gmail, Calendar, Strava, Notion run
+where the credentials live), and anything needing local files, the local model or the keychain.
+Write-up: `docs/CLOUD-WRITE-ARCHITECTURE.md`; the standing version of this rule lives in
+`wiki/dashboard-ops/index.md`.

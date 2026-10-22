@@ -1,0 +1,75 @@
+{
+  "site": "homes",
+  "site_title": "homes.com",
+  "_comment": "UNVERIFIED path map. Every recipe here is a best-effort guess at homes.com's accessibility tree, written without seeing the site. Run `cli-anything-homes recipe <name> --discover --json` on the Mac, then fix root / rows.prefix / fields and set verified:true only after the numbers match the page. Edit a copy (`paths init`), not the packaged file.",
+  "hosts": ["homes.com"],
+  "auth": {
+    "logged_in_markers": ["Sign Out", "Sign out", "Log Out", "Log out", "My Account"],
+    "logged_out_markers": ["Sign In", "Sign in", "Log In", "Log in", "Create Account"],
+    "login_url_fragments": ["/login", "/signin", "/sign-in", "/account/login"]
+  },
+  "recipes": {
+    "search-listings": {
+      "kind": "list",
+      "description": "Listings on a homes.com search-results page (public; no sign-in needed)",
+      "url": "https://www.homes.com/temecula-ca/",
+      "url_required": false,
+      "requires_auth": false,
+      "requires_match": false,
+      "root": ["/main"],
+      "rows": {"prefix": ["listitem", "article", "row", "group"], "role": ["listitem", "article"]},
+      "depth": 1,
+      "fields": {
+        "address":   {"prefix": ["link", "heading"], "index": 0},
+        "price":     {"regex": "\\$[\\d,]{4,}"},
+        "beds":      {"regex": "(\\d+)\\s*(?:bd|beds?)\\b", "group": 1},
+        "baths":     {"regex": "([\\d.]+)\\s*(?:ba|baths?)\\b", "group": 1},
+        "sqft":      {"regex": "([\\d,]+)\\s*(?:sq\\.?\\s?ft|sqft)", "group": 1},
+        "status":    {"regex": "(New|Price Reduced|Open House|Pending|Contingent|Coming Soon|Under Contract)"},
+        "listed_by": {"regex": "(?:Listed by|Listing (?:provided )?by|Courtesy of)\\s*:?\\s*([^\\n]+)", "group": 1}
+      },
+      "verified": false
+    },
+    "saved-searches": {
+      "kind": "list",
+      "description": "Steven's saved searches and their alert settings (needs sign-in)",
+      "url": "https://www.homes.com/account/saved-searches/",
+      "url_required": false,
+      "requires_auth": true,
+      "requires_match": false,
+      "root": ["/main"],
+      "rows": {"prefix": ["listitem", "article", "row", "group"], "role": ["listitem", "article"]},
+      "depth": 1,
+      "fields": {
+        "name":         {"prefix": ["heading", "link"], "index": 0},
+        "criteria":     {"regex": "((?:\\d+\\+?\\s*(?:bd|beds?)[^\\n]*)|(?:\\$[\\d,]+\\s*[-–]\\s*\\$[\\d,]+[^\\n]*))"},
+        "frequency":    {"regex": "(Instant|Daily|Weekly|Never|Off)"},
+        "new_listings": {"regex": "(\\d+)\\s*new", "group": 1}
+      },
+      "verified": false
+    },
+    "listing-detail": {
+      "kind": "record",
+      "description": "One listing's detail page (pass --url; public)",
+      "url": null,
+      "url_required": true,
+      "requires_auth": false,
+      "requires_match": false,
+      "root": ["/main"],
+      "depth": 2,
+      "fields": {
+        "address":        {"prefix": ["heading"], "index": 0},
+        "price":          {"regex": "\\$[\\d,]{4,}"},
+        "beds":           {"regex": "(\\d+)\\s*(?:bd|beds?)\\b", "group": 1},
+        "baths":          {"regex": "([\\d.]+)\\s*(?:ba|baths?)\\b", "group": 1},
+        "sqft":           {"regex": "([\\d,]+)\\s*(?:sq\\.?\\s?ft|sqft)", "group": 1},
+        "status":         {"regex": "(For Sale|Active|New|Price Reduced|Pending|Contingent|Coming Soon|Under Contract|Sold|Off Market)"},
+        "mls_id":         {"regex": "MLS\\s*#?\\s*:?\\s*([A-Z0-9-]{4,})", "group": 1},
+        "days_on_market": {"regex": "(\\d+)\\s*days? on (?:market|homes\\.com)", "group": 1},
+        "listed_by":      {"regex": "(?:Listed by|Listing (?:provided )?by|Courtesy of)\\s*:?\\s*([^\\n]+)", "group": 1},
+        "description":    {"prefix": ["paragraph", "text"], "index": 0}
+      },
+      "verified": false
+    }
+  }
+}

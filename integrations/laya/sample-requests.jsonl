@@ -1,0 +1,20 @@
+{"id": "1", "expected_class": "about_me", "state": "What states is Steven licensed in as an MLO?"}
+{"id": "2", "expected_class": "decisions", "state": "Why did we decide to show full names on the lead board instead of initials?"}
+{"id": "3", "expected_class": "project_status", "state": "What is the current status of the ISA portal project?"}
+{"id": "4", "expected_class": "mortgage_programs", "state": "What is the VA entitlement restoration process?"}
+{"id": "5", "expected_class": "re_playbooks", "state": "Walk me through the buyer showing process end to end."}
+{"id": "6", "expected_class": "ai_team", "state": "Who owns marketing on the AI team, and what trust level do they have?"}
+{"id": "7", "expected_class": "dashboard_ops", "state": "Did the brain-deck-sync Mac task run today?"}
+{"id": "8", "expected_class": "client", "state": "What is the file status for test client Jane Test-Example?"}
+{"id": "9", "expected_class": "references", "state": "Where is the VA Loan Mastery Playbook registered as a source document?"}
+{"id": "10", "expected_class": "memory", "state": "What did an earlier session learn about the Drive folder?"}
+{"id": "11", "expected_class": "vector_index", "state": "Find the TRID disclosure clause inside the compliance rule set corpus."}
+{"id": "12", "expected_class": "knowledge_graph", "state": "How does this lender connect to that referral partner in the graph?"}
+{"id": "13", "expected_class": "always_on", "state": "Did skills-refresh-weekly ever actually run under the runner?"}
+{"id": "14", "expected_class": "remote_access", "state": "How does Steven reach Vanessa live from his phone right now?"}
+{"id": "15", "expected_class": "recall_cost", "state": "How much more expensive is escalating to a five-store sweep versus the cache?"}
+{"id": "16", "expected_class": "live_number", "state": "What is today's VA 30-year rate showing on the deck snapshot?"}
+{"id": "17", "expected_class": "mortgage_programs", "state": "Does FHA or VA fit this borrower's program selection decision tree better?"}
+{"id": "18", "expected_class": "re_playbooks", "state": "What is the earnest money deadline rule for the listing process stages?"}
+{"id": "19", "expected_class": "client", "state": "Summarize the decision log and open items for test client John Sample-Borrower."}
+{"id": "20", "expected_class": "dashboard_ops", "state": "How many cloud routines are enabled right now versus the total?"}
