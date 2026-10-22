@@ -46,4 +46,3 @@ PAGE.runbooks={html:()=>`<div class="card" style="border-left:4px solid var(--ac
 if(typeof PB_GAPS!=="undefined"&&!PB_GAPS.some(g=>g[0]==="Operating manual"))PB_GAPS.push(["Operating manual","Playbooks had no written SOPs, owners or KPIs.","Fixed","Runbooks & Workforce: 16 SOPs with steps, owners, KPIs, guardrails and fixes; RACI; ops metrics."]);
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();RB.forEach(r=>out.push({src:`Runbook — ${r.n}`,t:`When: ${r.when}. Steps: ${r.steps.join("; ")}. Owner ${r.owner}, backup ${r.backup}, squad ${r.squad}. KPIs: ${r.kpi.join("; ")}. Guardrails: ${r.guard.join("; ")}. If it fails: ${r.fail.map(f=>f[0]+" → "+f[1]).join("; ")}.`}));return out}}
 if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^Runbook — /,{hash:"runbooks"}]);
-boot();
