@@ -41,3 +41,35 @@ does not repeat it.
 
 Not a complete list — 14 of ~175. For anything else, read `docs/inventory/db-docs.md` for the name
 and stamp, then the panel or task that names it.
+
+## Push-button docs — the one queue, the desks and the ISA Portal lists (2026-10-22)
+
+Added 2026-10-22 with the push-button system (`wiki/ai-team/push-button-system.md`). Shapes come from the
+routine prompts and `.claude/skills/cos-daily-cycle`; where a shape is not written down here it says "see the
+routine prompt" rather than guessing. Every doc is `{v: ...}`.
+
+| Doc | Means | Written by |
+|---|---|---|
+| `vanessaQueue` | The single intake for Vanessa's team; append-only items, each at least `{task, priority, status: pending→done\|needs-steven, from, ref, note}` (other fields: see the routine prompt) | Deck buttons ("Hand to Vanessa"), Vanessa's `queue_task` tool, the `/queue` mod, the ISA `vanessaOutbox` move, the routines and skills; worked by the 6:25 AM cycle `trig_019whypw6EeNu2G8xxY5xE5N` |
+| `cosBrief` | `{date, ranAt, needsSteven (≤3), delegated, drafts, isaInstructions, queuedForSteven, split{automation, aiTeam, isaEa, steven, stevenShare}, stale, headline}` — "Today from Vanessa" | The daily cycle, weekdays 6:25 AM PT, `set` once per run |
+| `morningBrief` | `{date, ranAt, text, voiceScript, needsYou, dashboards{commandDeck, isaPortal, brokerCommandCenter}}` — the one brief the push, the iMessage and the voice note all read | Morning brief routine `trig_01Q9VPMwrKwNUW3kZL54rKgy`, daily 6:34 AM PT |
+| `morningBriefStatus` | `{imessage: "sent", textSource: "morningBrief"\|"mac", voiceQueued, …}` — did the Mac actually send | Mac task `vanessa-morning-brief-text` (merge, §8/§8b) and the cloud brief (its own keys) |
+| `inboxDesk` | Inbox triage groups and drafts; `meetings[]` with `recapped: true` once a recap exists (shape: see the deck page) | Deck buttons "Triage inbox" / "Recap meetings" with the viewer's connectors; `meeting-recap-to-crm` changes only `recapped` |
+| `tcDeals` | The TC intake: per deal the dates the contract states (acceptance, EMD, contingencies, COE), side, client first name; a missing date is a flag, never a default | The ISA via the deck's TC intake form; `tc-doc-intake` skill (Document Intake Clerk) |
+| `tcDesk` | Each open deal's timeline, checklist, due-in-7 and overdue items, reminder and confirmation drafts, ≤3 packets | Transaction & Showing desk `trig_011iofWVNizNQ1SNujNcp5tL`, weekdays 6:05 AM PT (first run 2026-10-22 14:10 UTC) |
+| `refiWatch` | Steven's older hand-entered rate-watch rows (an array; Ops Radar panel, `p9RowList`); empty `[]` at 14 bytes in the 2026-09-22 export — the Monday routine never touches it | hand-entered on the deck |
+| `refiWatchDesk` | The Monday routine's output: `{date, ranAt, marketAverage{thirty, fifteen, asOf, note:"market average, not a quote"}, listSize, flagged[{first, loanType, noteRate, spread, flag, next}], standing}` | Refi watch `trig_014ipr6x9z35psmtHJCPVqj1`, Mon 7:20 AM PT (first run 2026-10-26); the `refi-watch` skill attended |
+| `refiWatchList` | `{clients: [{first, noteRate, loanType, closedMonth, note, ts, status}]}` — Steven's own list; the only source of a client's rate | Steven ("refi list: …"), the deck form, and the cycle moving `listOutbox.v.refi` rows in |
+| `sphereTouches` | The month's touch list: who, which kind (market / anniversary / birthday / check-in), draft id, skipped-and-why | Sphere touches `trig_01Pn8xLNKTVVFYjYTj8d8JTd`, 11th 7:40 AM PT (first run 2026-11-11); `past-client-nurture` attended |
+| `sphereList` | `{people: [{first, relation, lastTouch, birthdayMonthDay, homeAnniversaryMonthDay, note, ts, status}]}` — first names only | Steven ("sphere list: …"), the deck form, and the cycle moving `listOutbox.v.sphere` rows in |
+| `whatsappKapso` (updated) | `{status, numbers[{label, masked, kind, connected}], conversations[{contact, lastAt, lastDirection, unread}], counts{active, unread}, syncedAt, via}` — masked numbers, never a message body; v5 showed …5223 / sign-in pending on 2026-10-14 | Mac task `kapso-inbox-sync` (`integrations/mac-task-specs.md` §5b), hourly watch |
+
+### On the ISA Portal (its own `state`, artifact `9Jtqg2W1t98PfhNYHNTMDS`)
+
+| Doc | Means | Written by |
+|---|---|---|
+| `isaToday` | "Today from Vanessa": `cosBrief.isaInstructions` plus the ISA's step-by-step drafts and four standing duties | The daily cycle, copied each weekday morning |
+| `vanessaOutbox` | The ISA's "Hand to Vanessa" box — items `pending` until the cycle moves them to `vanessaQueue` and marks them `moved` | The ISA (portal form); status by the cycle |
+| `listOutbox` | `{v: {refi: [{first, noteRate, loanType, closedMonth, note, ts, status}], sphere: [{first, relation, lastTouch, birthdayMonthDay, homeAnniversaryMonthDay, note, ts, status}]}}` — the two intake forms, being added 2026-10-22; the cycle appends pending rows to the deck's `refiWatchList.v.clients` / `sphereList.v.people` (de-duplicated by first name + month) and marks them `moved` | The ISA (portal forms); status by the cycle — one of the three ISA docs the cycle may write |
+
+These, with `isaKpi` and the five Pipeline Sync docs, are the only ISA Portal docs an automation writes.

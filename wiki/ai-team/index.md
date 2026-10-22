@@ -19,8 +19,10 @@ hold the actual detail once you know which seat or layer you need.
 | `third-party-packs.md` | The 18 repos Steven asked for: installed, held or declined, and why |
 | `agent-os.md` | Every agent through Laya (lane), Jarvis (recall) and Orca (launch): `bin/brain os`, 172/172 reachable |
 | `cross-functional.md` | Who leads, who joins, the parallel waves, the gates and the HALT words — the rules `bin/brain route` runs |
+| `bot-crew.md` | The Bot Crew: 355 chat agents mirroring this org chart — 13 executive/mentor cards, named and desk seats, 8 pods and 12 workflows runnable, org-chart panel, 20 connectors behind approval cards (2026-10-22) |
 | `desk-seats.md` | The seven Sonnet 5 desk seats added 2026-10-22 (refi watch, sphere nurture, voicemail/inbox triage, document intake, open house, travel desk, meeting scribe): role, owns, HALT, starting page |
-| `mentors-and-benches.md` | Maxwell, Apex, James, Kevin, Kevin (name settled 2026-10-07), and what a "bench" row actually counts |
+| `push-button-system.md` | The 2026-10-22 architecture: one `vanessaQueue`, the 6:05 → 6:25 → 6:34 → 6:40 morning schedule, the deck push-buttons, pods and gates, the one-word mods, Pabbly workflows 1–11, the Mac paste |
+| `mentors-and-benches.md` | Maxwell, Apex, James, Kevin (name settled 2026-10-07), and what a "bench" row actually counts |
 
 ## Routing by lane
 
