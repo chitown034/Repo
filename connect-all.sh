@@ -4,15 +4,24 @@
 #   bash connect-all.sh            asks one question, then does every safe step and prints one report
 #   bash connect-all.sh --preview  shows the plan, changes nothing
 #
-# Safe means: it pulls this branch, checks and restarts the Mac runner (the thing that has been silent since
+# Safe means: it syncs this branch (scripts/repo-sync.sh: backs up, never loses your edits, never pushes) and keeps
+# it synced every 30 minutes, checks and restarts the Mac runner (the thing that has been silent since
 # Oct 13), installs Kapso (WhatsApp) for Claude Code, installs the Inkbox voice SDK, checks Jarvis and Vanessa's
-# voice, checks the Lofty and Zoho key files, and runs the read-only health check. It NEVER signs in anywhere,
+# voice, installs/registers Laya, opens Orca on the Repo folder, installs AnyDesk (official cask), checks the
+# Lofty and Zoho key files, and runs the read-only health check. It NEVER signs in anywhere,
 # never runs runnerctl login or save-token, never prints a key, never pairs Orca, never sends a message, never
 # spends money. The two things it asks you to TYPE (your mobile number and the Kapso key) go straight into the
 # Mac Keychain through a hidden prompt; press Enter to skip either. The report at the end lists exactly what is
 # still yours, with where to click. Paste that report back to Claude.
 set -u
-cd "$(dirname "$0")" || exit 1
+REPO_DIR="${CONNECT_ALL_REPO:-$(cd "$(dirname "$0")" && pwd)}"
+# Run from a private copy: step 1 updates this very file, and bash reads a script while it runs.
+if [ -z "${CONNECT_ALL_COPY:-}" ]; then
+  _c="$(mktemp "${TMPDIR:-/tmp}/connect-all.XXXXXX")" && cp "$REPO_DIR/connect-all.sh" "$_c" &&
+    CONNECT_ALL_COPY="$_c" CONNECT_ALL_REPO="$REPO_DIR" exec bash "$_c" "$@"
+fi
+cd "$REPO_DIR" || exit 1
+trap 'rm -f "${CONNECT_ALL_COPY:-}"' EXIT
 BRANCH="claude/stoic-cori-pvn3f8"
 LOGDIR="$HOME/Library/Logs/vanessa-setup"; mkdir -p "$LOGDIR" 2>/dev/null || LOGDIR="/tmp"
 LOG="$LOGDIR/connect-$(date +%Y-%m-%d-%H%M).log"
@@ -23,7 +32,7 @@ have() { command -v "$1" >/dev/null 2>&1; }
 
 say "Connect everything - $(scutil --get ComputerName 2>/dev/null || hostname -s) - $(date)"
 if [ "$(uname -s)" != "Darwin" ] && [ "${GO_FORCE:-}" != "1" ]; then say "This is for a Mac."; exit 1; fi
-if [ "$PREVIEW" = 0 ]; then
+if [ "$PREVIEW" = 0 ] && [ "${CONNECT_ALL_YES:-}" != 1 ]; then
   printf 'Reconnect everything safe on this Mac now? It never signs in, pairs, sends or pays. [y/N] '
   read -r ans; case "$ans" in y|Y|yes|YES) ;; *) say "Preview only (you answered no). Rerun and answer y when ready."; PREVIEW=1 ;; esac
 fi
@@ -36,9 +45,53 @@ step() { # <name> <needs-you-note-if-it-fails> <command...>
   else say "  did not finish (see $LOG)"; FAIL="$FAIL\n  - $name"; [ -n "$note" ] && NEEDS="$NEEDS\n  - $note"; fi
 }
 
-# 1. today's files. If you have local edits it stops rather than discard them.
-step "1 Get today's files ($BRANCH)" "git: local changes blocked the pull - tell Claude what 'git status' prints" \
-  sh -c "git fetch origin $BRANCH && git checkout $BRANCH && git pull --ff-only origin $BRANCH"
+# 1. today's files. scripts/repo-sync.sh: fetch, switch to this branch if needed, fast-forward. Files the brain
+#    rebuilds (INDEX.md, brain/index.json, reports - .gitattributes) were what blocked every pull since the cloud
+#    started committing its daily rebuild; they are backed up and replaced. Your own edits are kept, or - if GitHub
+#    changed the same file - saved to ~/Documents/Repo-sync-backups/<date-time>/ first. Never pushes.
+if [ "${CONNECT_ALL_SYNCED:-}" = 1 ]; then
+  say ""; say "== 1 Get today's files ($BRANCH) =="; say "  done (just now, before this updated copy restarted)"; PASS="$PASS\n  - 1 Get today's files"
+else
+  step "1 Get today's files ($BRANCH)" "git: the sync could not finish - paste the last lines of ~/Library/Logs/vanessa-setup/repo-sync.log to Claude" \
+    bash scripts/repo-sync.sh
+  if [ "$PREVIEW" = 0 ] && ! cmp -s "$REPO_DIR/connect-all.sh" "${CONNECT_ALL_COPY:-/dev/null}"; then
+    say "  connect-all.sh itself was updated - continuing with the new version"
+    rm -f "${CONNECT_ALL_COPY:-}"
+    exec env CONNECT_ALL_COPY= CONNECT_ALL_SYNCED=1 CONNECT_ALL_YES=1 bash "$REPO_DIR/connect-all.sh" "$@"
+  fi
+fi
+
+# 1b. keep it caught up: a LaunchAgent runs repo-sync every 30 minutes (and at login). Undo:
+#     launchctl unload ~/Library/LaunchAgents/com.vanessa.repo-sync.plist && rm that file.
+repo_sync_agent() {
+  local p="$HOME/Library/LaunchAgents/com.vanessa.repo-sync.plist"
+  mkdir -p "$HOME/Library/LaunchAgents" "$HOME/Library/Logs/vanessa-setup"
+  cat > "$p" <<PLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>Label</key><string>com.vanessa.repo-sync</string>
+  <key>ProgramArguments</key><array><string>/bin/bash</string><string>$REPO_DIR/scripts/repo-sync.sh</string><string>--quiet</string></array>
+  <key>StartInterval</key><integer>1800</integer>
+  <key>RunAtLoad</key><true/>
+  <key>StandardOutPath</key><string>$HOME/Library/Logs/vanessa-setup/repo-sync-agent.log</string>
+  <key>StandardErrorPath</key><string>$HOME/Library/Logs/vanessa-setup/repo-sync-agent.log</string>
+  <key>EnvironmentVariables</key><dict><key>PATH</key><string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string></dict>
+</dict></plist>
+PLIST
+  launchctl unload "$p" >/dev/null 2>&1; launchctl load "$p" || return 1
+  launchctl list com.vanessa.repo-sync >/dev/null 2>&1 || { echo "repo-sync agent did not load"; return 1; }
+  echo "repo-sync agent loaded (every 30 minutes)"
+  if launchctl list com.stevenshearrill.mac-sync-pull >/dev/null 2>&1; then
+    echo "NOTE: the older mac-sync-pull agent (git pull --rebase --autostash) is also loaded; repo-sync replaces it."
+    echo "      To stop it: launchctl unload ~/Library/LaunchAgents/com.stevenshearrill.mac-sync-pull.plist"
+    MACSYNC_OLD=1
+  fi
+  return 0
+}
+MACSYNC_OLD=0
+step "1b Keep the Repo folder caught up (every 30 minutes)" \
+  "Repo sync: run  bash scripts/repo-sync.sh  by hand and paste what it prints to Claude" repo_sync_agent
 
 # 2. the runner - silent on the dashboard since 2026-10-13. Its last report (2026-10-13 07:13 UTC) says it was
 #    logged in, not backing off, and stuck "running" fabric-deck-sync - so "restart only if stopped" never fired.
@@ -105,8 +158,98 @@ step "5 Inkbox voice SDK (Vanessa speaks on iMessage)" \
   "Voice: bash integrations/voice-setup.sh <your Vanessa thread's conversation id>" \
   bash MAC-SETUP.sh --only inkbox-voice
 
-# 6. Jarvis + the recorded voice clips + the brain
-step "6 Jarvis, Laya and Vanessa's recorded voice" "" bash integrations/jarvis/jarvis-setup.sh --apply
+# 6. Laya - the zero-token local router in front of Vanessa. Installs into ~/Applications/laya-venv if missing
+#    (PyPI package + one free model download from Hugging Face), registers its MCP server with Claude Code for
+#    every project, then routes one non-client test question through the REAL engine. BRAIN_ROUTER stays unset
+#    (Steven's 2026-09-28 bench: no accuracy gain), so recall never waits on it.
+laya_venv() {
+  local d; for d in "${LAYA_VENV_DIR:-}" "$HOME/Applications/laya-venv" "$HOME/laya-venv"; do
+    [ -n "$d" ] && [ -x "$d/bin/python" ] && [ -x "$d/bin/laya-mcp-server" ] && { printf '%s' "$d"; return 0; }
+  done; return 1
+}
+laya_connect() {
+  local lv out
+  lv="$(laya_venv)" || {
+    have uv || { have brew && brew install uv; } || { echo "uv missing and no Homebrew to install it"; return 1; }
+    LAYA_VENV_DIR="$HOME/Applications/laya-venv" bash integrations/laya/install.sh || { echo "Laya install did not finish (exit 2 = Hugging Face unreachable; rerun later)"; return 1; }
+    lv="$(laya_venv)" || { echo "Laya installed but laya-mcp-server not found"; return 1; }
+  }
+  echo "Laya in $lv"
+  if have claude; then
+    if claude mcp list 2>/dev/null | grep -Eq '^[[:space:]]*laya([: ]|$)'; then echo "Laya MCP already registered with Claude Code"
+    else claude mcp add -s user laya --env LAYA_DEVICE=cpu -- "$lv/bin/laya-mcp-server" || return 1; echo "Laya MCP registered (all projects)"; fi
+  else echo "claude CLI missing - Laya not registered with Claude Code"; return 1; fi
+  out="$("$lv/bin/python" integrations/laya/laya_route.py --engine real "What is the VA funding fee for a first-time use?" 2>&1 | tail -n 2)"
+  printf '%s\n' "$out"
+  printf '%s' "$out" | grep -Eq 'ROUTE|ESCALATE' || { echo "real Laya engine did not answer"; return 1; }
+}
+step "6 Laya local router (install if missing, register with Claude Code, one real test)" \
+  "Laya: needs huggingface.co once for the free model - rerun  bash connect-all.sh  on a normal internet connection" laya_connect
+
+# 6b. Jarvis + the recorded voice clips + the brain: verifies OpenJarvis memory.db, the vault, the real Laya engine
+#     (from Laya's own venv), Vanessa's clips and bin/brain doctor; writes brain/state/jarvis-status.json, which is
+#     how the brain (bin/brain loop / orgcheck) knows Jarvis is alive.
+step "6b Jarvis + Vanessa's recorded voice, wired to the brain" \
+  "Jarvis: open  ~/Library/Logs/vanessa-setup  (newest connect log) - each FAIL row under 'Jarvis' names its one fix" \
+  bash integrations/jarvis/jarvis-setup.sh --apply
+
+# 6c. Orca (stablyai/orca) - parallel Claude Code agents on this Mac + the phone view. Installs from the official
+#     Homebrew tap if missing, opens it on the Repo folder. Pairing the phone is YOURS: this never pairs, never signs
+#     in, never reads or prints a pairing code.
+orca_app() {
+  local d; for d in "${ORCA_APP:-}" /Applications/Orca.app "$HOME/Applications/Orca.app"; do
+    [ -n "$d" ] && [ -d "$d" ] && { printf '%s' "$d"; return 0; }
+  done; return 1
+}
+orca_connect() {
+  local app id ver
+  app="$(orca_app)" || {
+    have brew || { echo "Orca missing and no Homebrew; get it from https://github.com/stablyai/orca/releases"; return 1; }
+    brew install --cask stablyai/orca/orca || return 1
+    app="$(orca_app)" || { echo "brew finished but Orca.app not found"; return 1; }
+  }
+  id="$(defaults read "$app/Contents/Info" CFBundleIdentifier 2>/dev/null || echo unknown)"
+  ver="$(defaults read "$app/Contents/Info" CFBundleShortVersionString 2>/dev/null || echo unknown)"
+  echo "Orca at $app - $id $ver"
+  [ "$id" = com.stablyai.orca ] || echo "WARNING: bundle id is $id, not com.stablyai.orca - check it is the right Orca"
+  open -a "$app" "$REPO_DIR" || return 1
+  echo "opened Orca with $REPO_DIR"
+}
+step "6c Orca (agents side by side + phone view), opened on the Repo folder" \
+  "Orca: install it from https://github.com/stablyai/orca/releases (free), then rerun" orca_connect
+
+# 6d. AnyDesk - full screen/keyboard access between Mac 1, Mac 2, the Alienware, tablet and phone. Official cask
+#     (download.anydesk.com) only. Reads this Mac's AnyDesk ID (an address, not a secret). NEVER sets a password
+#     and never turns on unattended access - those are yours, in AnyDesk's own settings.
+ANYDESK_ID=""
+anydesk_app() {
+  local d; for d in "${ANYDESK_APP:-}" /Applications/AnyDesk.app "$HOME/Applications/AnyDesk.app"; do
+    [ -n "$d" ] && [ -d "$d" ] && { printf '%s' "$d"; return 0; }
+  done; return 1
+}
+anydesk_connect() {
+  local app bin tmp i pid
+  app="$(anydesk_app)" || {
+    have brew || { echo "AnyDesk missing and no Homebrew: download it from https://anydesk.com/en/downloads/mac-os"; return 1; }
+    brew install --cask anydesk || return 1
+    app="$(anydesk_app)" || { echo "brew finished but AnyDesk.app not found"; return 1; }
+  }
+  echo "AnyDesk at $app"
+  open -a "$app" || return 1
+  bin="$app/Contents/MacOS/AnyDesk"
+  if [ -x "$bin" ]; then
+    tmp="$(mktemp "${TMPDIR:-/tmp}/anydesk-id.XXXXXX")"
+    "$bin" --get-id >"$tmp" 2>/dev/null & pid=$!
+    i=0; while [ $i -lt 10 ] && kill -0 "$pid" 2>/dev/null; do sleep 1; i=$((i+1)); done
+    kill -0 "$pid" 2>/dev/null && kill "$pid" 2>/dev/null
+    wait "$pid" 2>/dev/null
+    ANYDESK_ID="$(tr -cd '0-9' <"$tmp")"; rm -f "$tmp"
+    case "${#ANYDESK_ID}" in 9|10) echo "this Mac's AnyDesk ID: $ANYDESK_ID" ;; *) ANYDESK_ID=""; echo "AnyDesk ID not readable yet (open AnyDesk once; it is on its main screen)" ;; esac
+  fi
+  return 0
+}
+step "6d AnyDesk (remote screen between all your computers)" \
+  "AnyDesk: download it from https://anydesk.com/en/downloads/mac-os (free for personal use), then rerun" anydesk_connect
 
 # 7. key files (names only, never values)
 keyfiles() {
@@ -144,6 +287,20 @@ say "     bash integrations/cli-anything-harnesses/connect.sh"
 say "  6. TikTok, GoHighLevel, Discord bot, HeyGen: say 'Composio links' to Claude when you sit down (links last 10 min)."
 say "  7. Pabbly: open the Pabbly 'Connect' link Claude sent, paste your Kapso API key there (Pabbly's page, never chat),"
 say "     then build the six workflows in integrations/pabbly/WORKFLOWS.md (about 5 minutes each at connect.pabbly.com)."
+say "  8. Orca: if the Repo folder is not listed in Orca, click Add Project and choose $REPO_DIR. Then pair your phone:"
+say "     install 'Orca IDE' (https://apps.apple.com/us/app/orca-ide/id6766130217), in Orca on the Mac open the pairing"
+say "     screen from the account/status menu, and scan the code with the phone app. Never read the code to anyone."
+say "  9. AnyDesk on this Mac: System Settings -> Privacy & Security -> Screen Recording -> AnyDesk ON, and"
+say "     Accessibility -> AnyDesk ON (quit and reopen AnyDesk after). Then, only if you want to reach this Mac when"
+say "     nobody is at it: AnyDesk -> Settings -> Security -> unlock -> unattended access -> type your own password."
+if [ -n "$ANYDESK_ID" ]; then
+say "     This Mac's AnyDesk ID is $ANYDESK_ID - type it into the Computer Hub card (Toolkit & Remote Access, panel 40)."
+fi
+say "     Alienware, tablet and phone: integrations/anydesk/README.md (one PowerShell line; App Store / Play Store)."
+if [ "$MACSYNC_OLD" = 1 ]; then
+say " 10. Optional: the old mac-sync-pull agent is still loaded and repo-sync replaces it. To stop it:"
+say "     launchctl unload ~/Library/LaunchAgents/com.stevenshearrill.mac-sync-pull.plist"
+fi
 say ""
 say "From now on, in any Claude Code session in this folder: type /paste for this list, /connections for what is"
 say "not connected, /owner <panel> for who keeps a dashboard panel alive."

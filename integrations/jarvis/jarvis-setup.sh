@@ -47,12 +47,20 @@ else row "jarvis memory.db" FAIL "no OpenJarvis memory.db found under ~ -- Jarvi
 VAULT="$HOME/Shearrill-Vault"
 if [ -d "$VAULT" ]; then n="$(find -L "$VAULT" -name '*.md' 2>/dev/null | wc -l | tr -d ' ')"; row "vault" ok "$n notes at $VAULT"; else row "vault" FAIL "$VAULT missing (docs/SECOND-MAC-SETUP.md 6b)"; fi
 
-# 4. Laya: real engine or stub?
-if python3 -c 'import laya' 2>/dev/null; then
-  OUTL="$(python3 "$REPO/integrations/laya/laya_route.py" --engine real "what is the VA funding fee" 2>&1 | head -2)"
+# 4. Laya: real engine or stub? Laya lives in its own venv (~/Applications/laya-venv on the Mac, ~/laya-venv from
+#    install.sh), so use that venv's python - the system python3 never has laya, which made this row always FAIL.
+LPY=python3
+for d in "${LAYA_VENV_DIR:-}" "$HOME/Applications/laya-venv" "$HOME/laya-venv"; do [ -n "$d" ] && [ -x "$d/bin/python" ] && { LPY="$d/bin/python"; break; }; done
+if "$LPY" -c 'import laya' 2>/dev/null; then
+  OUTL="$("$LPY" "$REPO/integrations/laya/laya_route.py" --engine real "what is the VA funding fee" 2>&1 | head -2)"
   if printf '%s' "$OUTL" | grep -q "ROUTE\|ESCALATE"; then row "laya real engine" ok "answered: $(printf '%s' "$OUTL" | head -1 | cut -c1-90)"; else row "laya real engine" FAIL "imports but did not answer: $(printf '%s' "$OUTL" | head -1 | cut -c1-90)"; fi
 else
   row "laya real engine" FAIL "laya not installed -> router runs the keyword stub only. Fix: bash integrations/laya/install.sh"
+fi
+# 4b. Laya reachable from Claude Code (the MCP server Vanessa's sessions call)
+if command -v claude >/dev/null 2>&1; then
+  if claude mcp list 2>/dev/null | grep -Eq '^[[:space:]]*laya([: ]|$)'; then row "laya mcp (claude code)" ok "registered"
+  else row "laya mcp (claude code)" FAIL "not registered. Fix: bash connect-all.sh (step 6) or claude mcp add -s user laya --env LAYA_DEVICE=cpu -- ~/Applications/laya-venv/bin/laya-mcp-server"; fi
 fi
 # 5. Vanessa's voice: the recorded clips Jarvis must speak from
 CL=0; WHERE=""

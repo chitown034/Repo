@@ -30,12 +30,12 @@ else say "  ok    Laya found in $LV"; fi
 
 if [ -n "$LV" ] && command -v claude >/dev/null 2>&1; then
   if claude mcp list 2>/dev/null | grep -q '^laya'; then say "  ok    Laya MCP server already registered with Claude Code"
-  else do_ claude mcp add laya --env LAYA_DEVICE=cpu -- "$LV/bin/laya-mcp-server"; fi
+  else do_ claude mcp add -s user laya --env LAYA_DEVICE=cpu -- "$LV/bin/laya-mcp-server"; fi
 elif ! command -v claude >/dev/null 2>&1; then say "  FAIL  Claude Code CLI missing - install it, then rerun."; BAD=1; fi
 
 if [ "$MODE" = "--apply" ] && [ -n "$LV" ]; then
   say "  test  routing one sample request through the real Laya engine (no client data)"
-  if out="$(python3 "$REPO/integrations/laya/laya_route.py" --engine real "What is the VA funding fee for a first-time use with no down payment?" 2>&1 | tail -n 2)"; then say "        $out"
+  if out="$("$LV/bin/python" "$REPO/integrations/laya/laya_route.py" --engine real "What is the VA funding fee for a first-time use with no down payment?" 2>&1 | tail -n 2)"; then say "        $out"
   else say "  WARN  real engine did not answer (checkpoint download needs huggingface.co): $out"; BAD=1; fi
 fi
 

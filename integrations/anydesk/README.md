@@ -37,6 +37,21 @@ password, pwd, secret or token is refused).
   view-only depends on AnyDesk's current rules (the repo's understanding is view-only unless AnyDesk says otherwise).
   **Verify in AnyDesk's current docs; not verified here.**
 
+## Install AnyDesk on every computer (2026-10-22)
+
+Official sources only. AnyDesk is free for personal use; nothing below buys a licence. **No step sets a password or
+turns on unattended access** — that is Steven's, typed into AnyDesk itself on the machine being reached.
+
+| Computer | Install | Then (Steven's clicks) |
+|---|---|---|
+| **Mac 1, Mac 2** | `bash connect-all.sh` step 6d: Homebrew cask `anydesk` (it downloads `https://download.anydesk.com/anydesk.dmg`, checked 2026-10-22). No Homebrew → `https://anydesk.com/en/downloads/mac-os`. The step opens AnyDesk and prints this Mac's ID in the report. | System Settings → Privacy & Security → **Screen Recording** → AnyDesk on, and **Accessibility** → AnyDesk on; quit and reopen AnyDesk. Optional: AnyDesk → Settings → Security → unlock → unattended access → type your own password. |
+| **Alienware PC (Windows)** | PowerShell: `winget install --id AnyDeskSoftwareGmbH.AnyDesk -e --source winget` — **winget id unverified** (the winget catalogue could not be reached from the build sandbox; `integrations/alienware/alienware-setup.ps1` uses `AnyDesk.AnyDesk`, which disagrees). Run `winget search AnyDesk` first and use the Id whose Publisher is *AnyDesk Software GmbH*. No winget → `https://anydesk.com/en/downloads/windows`. | Allow it through the Windows Defender prompt if asked. Optional unattended password, as above. |
+| **iPad / tablet** | App Store: search **AnyDesk Remote Desktop** (publisher AnyDesk Software GmbH). Android tablet: Google Play, same name and publisher. | Use it to reach the Macs and the PC. Being *controlled* from an iPad/iPhone is view-only/screen-share per AnyDesk's iOS rules (verify in AnyDesk's docs). |
+| **Phone** | iPhone: App Store; Android: Google Play — **AnyDesk Remote Desktop** by AnyDesk Software GmbH. | Android may ask to install the AnyDesk control plugin to be controlled; your tap. |
+
+Then put each device's ID (the 9–10 digit number on AnyDesk's main screen — an address, not a secret) into the
+Computer Hub card (Command Deck → Toolkit & Remote Access, panel 40) or `~/.config/anydesk-links/devices.json`.
+
 ## Setting an unattended-access password (Steven does this himself)
 
 In AnyDesk on that device: menu (three lines) > Settings > Security > Unlock Security Settings > turn on unattended access and

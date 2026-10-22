@@ -1,4 +1,4 @@
-# Pabbly Connect — the workflows for Steven's operation (2026-10-20)
+# Pabbly Connect — the workflows for Steven's operation (2026-10-20, five added 2026-10-22)
 
 Steven: *"connect to Pabbly Connect MCP to enable automations of workflows of items within my dashboard"* and
 *"Add workflows and automation connect to Pabbly as well."*
@@ -26,6 +26,13 @@ anything is built; the builder refuses otherwise):
 | Action | **Send WhatsApp Message** | `POST /meta/whatsapp/<version>/<phone_number_id>/messages` with the text | **Client-facing send.** Steven decides whether this action exists at all; until Phase 2 (business number, opt-in, Alexandra's template review) it is wired only to his own number |
 | Action | **List Phone Numbers** | `/whatsapp/phone_numbers` (dropdown source for the send action) | — |
 
+**Build status (2026-10-22):** Steven connected his key; login proven (HTTP 200). Built and tested: the phone-number
+dropdown source and **List Phone Numbers** (grade L3, publishable). Still to build: **Send WhatsApp Message** (its test
+really sends, so it needs Steven's own mobile as the test recipient — he types it in Pabbly), and the two triggers as
+instant webhooks (Kapso has a webhook API: `POST /platform/v1/whatsapp/phone_numbers/{id}/webhooks`, events
+`whatsapp.message.received` and `whatsapp.conversation.created`) — pending confirmation of Kapso's delete-webhook path,
+which the builder requires alongside each trigger. Then a person reviews and publishes the app in Pabbly.
+
 Auth: API key in a header (`X-API-Key`). The key is entered by Steven on Pabbly's own secure page (the builder's
 `request_connection_link`), never in chat. It is the same key the Mac Keychain item `kapso` holds.
 
@@ -41,6 +48,13 @@ Each one is a Pabbly workflow Steven creates by clicking; nothing runs until he 
 | 4 | **Gmail** — label "Action" added | **Notion** task + **Slack** message | Inbox triage hand-off the twin can see | drafts only, never sends |
 | 5 | **Kapso** (custom app) — new inbound message from Steven | **Notion** note in the Vanessa inbox database | A WhatsApp note to Vanessa becomes a record even when the Mac task is down | filter: sender = Steven |
 | 6 | **Strava** — new activity | **Notion** Health Log row | Keeps the Health tiles alive through the same Notion path the phone recipe uses | — |
+| 7 | **Lofty** — lead stage changed to Closed (or **Zoho CRM** deal Funded) | **Gmail** drafts on day 1 (thank-you), day 10 (review request: Google + Zillow links) and day 30 (check-in), via Pabbly's Delay step; **Google Calendar** task for the ISA each day | Post-close care and review requests without anyone remembering (gap audit 2026-10-22: nothing owned it) | drafts only — the ISA sends after Steven approves the three templates once; Alexandra reviews the review-request wording (no incentive for a review) |
+| 8 | **Google Sheets / Lofty** — daily scheduler 7:00 AM PT, match today's birthdays and home-purchase anniversaries | **Gmail** draft per match + **Slack** list to the ISA | Sphere touches on the dates people remember | drafts only; first names in the Slack list |
+| 9 | **Google Forms / Lofty** — open-house sign-in | **Lofty** lead (source "Open house <address>") + **Gmail** follow-up draft 24 h later + ISA call task | Open-house leads in the CRM the same day | drafts only; the ISA calls |
+| 10 | **Gmail** — voicemail-notification email (Google Voice / carrier) | **Notion** Vanessa inbox note with the voicemail text + **Slack** DM to the ISA | Voicemail becomes a lead-triage item even when the Mac is off | no callbacks or texts by automation |
+| 11 | **Kapso** (custom app) — New Inbound WhatsApp Message from a number other than Steven's | **Slack** DM to Steven + **Notion** note | Phase 2 readiness: someone new messaged the business number; Steven decides | no auto-reply to anyone but Steven |
+
+All eleven workflows run on Pabbly, not on Claude's weekly allowance — that is the point (2026-10-22: every failed cloud routine failed on the usage limit).
 
 Held on purpose (HALT): anything that sends to a client (Lofty texts, Zoho emails), anything that spends
 (Pabbly task limits, paid apps), and SkySlope/zipForms (locked until compliance signs off).

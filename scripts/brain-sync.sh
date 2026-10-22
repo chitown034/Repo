@@ -3,7 +3,9 @@
 #
 # Idempotent. Safe to run by hand, from cron, or from a launchd/scheduled task. Does five things,
 # in order, and never force-anything:
-#   1. git pull --rebase --autostash on whatever branch is currently checked out. Offline or a real
+#   1. scripts/repo-sync.sh when present (since 2026-10-22: backs up rebuilt files, keeps your edits, catches up
+#      to claude/stoic-cori-pvn3f8, never pushes). Older checkouts without it fall back to the original:
+#      git pull --rebase --autostash on whatever branch is currently checked out. Offline or a real
 #      conflict is reported and the run continues with the local copy — never a force-pull, never a
 #      reset, never a stash pop it did not create.
 #   2. bin/brain reindex, then bin/brain doctor — only if bin/brain exists in this checkout yet
@@ -59,9 +61,24 @@ say "brain-sync — $(date -u +%Y-%m-%dT%H:%M:%SZ) — $REPO_DIR"
 
 # --------------------------------------------------------------------------- 1. git pull --rebase --autostash
 say ""
-say "== git pull --rebase --autostash =="
 PULL_STATUS="skipped"
-if [ "$DRY_RUN" -eq 1 ]; then
+if [ -f "$SCRIPT_DIR/repo-sync.sh" ]; then
+  # 2026-10-22: the rebase/autostash pull below conflicted every day on the files this very script rebuilds
+  # (INDEX.md, brain/index.json), which the cloud also commits. repo-sync.sh backs those up and catches up instead.
+  say "== git pull (scripts/repo-sync.sh: back up rebuilt files, keep your edits, fast-forward) =="
+  if [ "$DRY_RUN" -eq 1 ]; then
+    say "  would run: bash \"$SCRIPT_DIR/repo-sync.sh\" --quiet"; PULL_STATUS="dry-run"
+  elif REPO_SYNC_DIR="$REPO_DIR" bash "$SCRIPT_DIR/repo-sync.sh" --quiet; then
+    PULL_STATUS="synced"
+  else
+    warn "  repo-sync could not finish (offline?) - continuing with the local copy; log: ~/Library/Logs/vanessa-setup/repo-sync.log"
+    PULL_STATUS="failed-kept-local"
+  fi
+fi
+[ -f "$SCRIPT_DIR/repo-sync.sh" ] || say "== git pull --rebase --autostash =="
+if [ -f "$SCRIPT_DIR/repo-sync.sh" ]; then
+  :
+elif [ "$DRY_RUN" -eq 1 ]; then
   say "  would run: git -C \"$REPO_DIR\" pull --rebase --autostash"
   PULL_STATUS="dry-run"
 elif ! git -C "$REPO_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then

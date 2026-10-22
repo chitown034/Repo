@@ -6,13 +6,16 @@ Written 2026-10-11. Steven's computers: **Mac 1**, **Mac 2**, the **Alienware PC
 |---|---|---|---|
 | Claude Remote Control | The Claude Code session on that computer appears in the session list at claude.ai/code and on the phone | `claude remote-control`, then `rc-agent.sh install` (Mac) | `integrations/remote-control/` |
 | Orca | All the AI agents on that computer, paired over a private network | `orca-remote.sh serve` / `pair` (Mac), `alienware-setup.ps1 -Action OrcaServe` / `OrcaPair` (Windows) | `integrations/remote-control/`, `integrations/alienware/` |
-| AnyDesk | The whole screen, keyboard and mouse | AnyDesk app on each device; ID saved in the Computer Hub card; `integrations/anydesk/anydesk-links.py` | `integrations/anydesk/` |
+| AnyDesk | The whole screen, keyboard and mouse | Macs: `connect-all.sh` step 6d (official Homebrew cask, prints the ID); Alienware: one `winget` line; tablet/phone: App Store / Google Play — all in `integrations/anydesk/README.md`. ID saved in the Computer Hub card; `integrations/anydesk/anydesk-links.py` | `integrations/anydesk/` |
 
 The dashboard card is Panel 40 on Toolkit & Remote Access. Ticks and AnyDesk IDs stay in that browser only.
 
 ## Alienware PC (Windows) — local AI
 `integrations/alienware/alienware-setup.ps1` checks and installs, asking y/N before each change: Orca, Laya (`laya[serve,mcp]` 0.3.21 in its own venv), Bonsai 2 27B through PrismML's own Bonsai-demo (pinned commit), optional Ollama with the community `MichelRosselli/bonsai-27b` upload (unverified), AnyDesk and Tailscale. `-Action Doctor` is read-only; `-Action Report` prints one status line for the dashboard. It has **never run on Windows** — first run is the real test.
 Bonsai 2 needs PrismML's llama.cpp fork; stock Ollama may not run it. The local tier (Bonsai) is for client-data requests only and never falls back to a cloud model.
+
+## Connect status (2026-10-22)
+`connect-all.sh` now does each Mac's safe half of all three doors in one paste: step 6c installs Orca (official tap `stablyai/orca/orca`) if missing and opens it on the Repo folder; step 6d installs AnyDesk (official cask) and reads the Mac's AnyDesk ID. Steven's half, printed in its report: Screen Recording + Accessibility for AnyDesk, an optional unattended-access password typed by him, and the one Orca phone-pairing scan. Nothing is "connected" until he has done those on each device.
 
 ## Rules
 - A pairing link or an AnyDesk password is full control of that computer. Never paste one into chat, the dashboard, a note or the repo.

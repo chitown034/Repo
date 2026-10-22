@@ -164,6 +164,13 @@ built alongside this runbook, not before it. Re-run `scripts/brain-sync.sh` any 
 schedule, see `always-on/README.md` → `brain-maintenance`): it is idempotent and never overwrites a
 skill directory you have hand-edited — it tells you the exact command to replace it yourself instead.
 
+**Keeping it synced (2026-10-22):** `bash scripts/repo-sync.sh` is the one way this Mac catches up with GitHub
+(`brain-sync.sh`, `go.sh` and `connect-all.sh` all call it; `connect-all.sh` step 1b also runs it every 30 minutes
+as the LaunchAgent `com.vanessa.repo-sync`). Files the brain rebuilds (listed in `.gitattributes`) are backed up to
+`~/Documents/Repo-sync-backups/<date-time>/` and replaced, your own edits are kept (or backed up first if GitHub
+changed the same file), local commits are replayed or saved on a `backup/repo-sync-*` branch, and nothing is ever
+pushed. Log: `~/Library/Logs/vanessa-setup/repo-sync.log`. Do not use plain `git pull` here.
+
 Then turn on auto-memory (step 7, right below) so this session's own recall gets written back.
 
 **Optional — Laya, a local classifier for the router:**

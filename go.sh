@@ -33,7 +33,7 @@ step() { # <name> <needs-you-note-if-skipped> <command...>
   else say "  did not finish (see $LOG)"; FAIL="$FAIL\n  - $name"; [ -n "$note" ] && NEEDS="$NEEDS\n  - $note"; fi
 }
 
-step "1 Get today's files" "" sh -c "git fetch origin $BRANCH && git checkout $BRANCH && git pull --ff-only origin $BRANCH"
+step "1 Get today's files" "git: paste the last lines of ~/Library/Logs/vanessa-setup/repo-sync.log to Claude" bash scripts/repo-sync.sh
 step "2 The brain (index, self-tests, encyclopedia)" "Python 3.10+ (brew install python)" sh -c "bin/brain doctor && bin/brain loop >/dev/null && bin/brain os check"
 step "3 Agent OS on this Mac" "" bash integrations/agent-os/install-mac.sh --apply
 step "4 Laya + Orca" "Pair Orca yourself: bash integrations/remote-control/orca-remote.sh serve --phone (Mac 1) then ... pair (Mac 2)" bash integrations/agent-os/connect-orca-laya.sh --apply
