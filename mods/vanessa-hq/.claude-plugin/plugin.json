@@ -1,0 +1,10 @@
+{
+ "name": "vanessa-hq",
+ "version": "0.1.0",
+ "description": "VANESSA HQ pane, one-word workflow commands and Steven's standing rules in every turn",
+ "types": "./types/index.d.ts",
+ "license": "MIT",
+ "author": {
+  "name": "Steven Shearrill"
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "name": "drafts-only-guard",
+ "version": "0.1.0",
+ "description": "Blocks sending, forwarding, trashing and posting through connectors unless /allow-send grants one",
+ "types": "./types/index.d.ts",
+ "license": "MIT",
+ "author": {
+  "name": "Steven Shearrill"
+ }
+}

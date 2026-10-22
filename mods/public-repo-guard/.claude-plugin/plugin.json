@@ -1,0 +1,9 @@
+{
+ "name": "public-repo-guard",
+ "version": "0.1.0",
+ "description": "Stops git commit/push when PPFC Trainual data or AE contact dumps would land in the public repo",
+ "license": "MIT",
+ "author": {
+  "name": "Steven Shearrill"
+ }
+}
