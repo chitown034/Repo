@@ -26,12 +26,13 @@ anything is built; the builder refuses otherwise):
 | Action | **Send WhatsApp Message** | `POST /meta/whatsapp/<version>/<phone_number_id>/messages` with the text | **Client-facing send.** Steven decides whether this action exists at all; until Phase 2 (business number, opt-in, Alexandra's template review) it is wired only to his own number |
 | Action | **List Phone Numbers** | `/whatsapp/phone_numbers` (dropdown source for the send action) | — |
 
-**Build status (2026-10-22):** Steven connected his key; login proven (HTTP 200). Built and tested: the phone-number
-dropdown source and **List Phone Numbers** (grade L3, publishable). Still to build: **Send WhatsApp Message** (its test
-really sends, so it needs Steven's own mobile as the test recipient — he types it in Pabbly), and the two triggers as
-instant webhooks (Kapso has a webhook API: `POST /platform/v1/whatsapp/phone_numbers/{id}/webhooks`, events
-`whatsapp.message.received` and `whatsapp.conversation.created`) — pending confirmation of Kapso's delete-webhook path,
-which the builder requires alongside each trigger. Then a person reviews and publishes the app in Pabbly.
+**Build status (2026-10-22, 15:00 UTC):** Steven connected his key; login proven (HTTP 200). Built and tested: the
+phone-number dropdown source and **List Phone Numbers** (L3, publishable). Built as instant webhooks (Kapso posts
+each event to a Pabbly URL; the manual kind, because Kapso's docs do not publish an unsubscribe endpoint and nothing
+is guessed): **New Inbound WhatsApp Message** (`whatsapp.message.received`) and **New Conversation**
+(`whatsapp.conversation.created`) — each shows a 5-step paste into Kapso → WhatsApp → your number → Webhooks, and is
+proven the first time a real message is captured. Still to build: **Send WhatsApp Message** — its test really sends,
+so Steven types his own mobile as the test recipient in Pabbly when he is ready. Then a person reviews and publishes.
 
 Auth: API key in a header (`X-API-Key`). The key is entered by Steven on Pabbly's own secure page (the builder's
 `request_connection_link`), never in chat. It is the same key the Mac Keychain item `kapso` holds.

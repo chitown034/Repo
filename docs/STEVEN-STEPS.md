@@ -31,7 +31,12 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
 4. **Orca and AnyDesk (the paste opens them):** Orca → Add Project → your Repo folder, then scan its pairing code with the
    Orca phone app. AnyDesk → System Settings → Privacy & Security → turn on Screen Recording and Accessibility for AnyDesk.
    Other computers: `integrations/anydesk/README.md`.
-5. **WhatsApp send step in Pabbly:** tell Claude "build the Pabbly send step" when you can type your own mobile number
+5. **WhatsApp triggers (2 minutes, in Pabbly):** connect.pabbly.com → your Kapso WhatsApp app → trigger "New Inbound
+   WhatsApp Message" → copy the webhook URL → Kapso (app.kapso.ai) → WhatsApp → your number → Webhooks → Add webhook →
+   paste it, kind Kapso events, tick whatsapp.message.received, any signing secret, Save → message your Kapso number
+   from your phone → back in Pabbly click Capture Webhook Response. Same for "New Conversation" (tick
+   whatsapp.conversation.created).
+5b. **WhatsApp send step in Pabbly:** tell Claude "build the Pabbly send step" when you can type your own mobile number
    into Pabbly's test box (it sends one real test message to you only).
 6. **Optional, 3 minutes — saves Claude allowance:** turn OFF these routines you made through the API (Claude cannot):
    - https://claude.ai/code/routines/trig_016qKE1TdRjzkpb2Yby8yWBX · https://claude.ai/code/routines/trig_013vYCzVa3vbHZ8BZZy6UBpX
