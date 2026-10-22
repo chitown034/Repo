@@ -1,10 +1,26 @@
-# Steven's steps — everything still waiting on you, in order (2026-10-20)
+# Steven's steps — everything still waiting on you, in order (2026-10-22)
 
 Same list as the Action Desk page (https://claude.ai/artifact/9S8G2ZhhqP1iUsPZrPsmRn), which has a button per step.
 Includes every connection that still has to be made. Already done: Lofty key (54 leads syncing), 14 failed routines re-run, both dashboards updated (cycle 11), Remote Control card built, one-command Mac script, failover with a $25 OpenRouter cap, connection plan; your USC answers and personal DRE are saved.
 research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox iMessage are connected; the five research-only routines are already off.
 
 ## 1 · Phone · 5 minutes (Do these first; nothing else depends on them)
+
+## Start here (2026-10-22) — one paste, then three clicks
+
+**Why the dashboard is stale:** your Mac's task runner froze on Oct 13 in the middle of one task (it still says "running"), so nothing Mac-side has updated for 9 days. The paste below now always restarts it, and keeps the Mac awake while it is on the charger so the 6 AM tasks run. Everything cloud-side is working: the daily cycle, the morning brief, the ISA list and the feeds.
+
+1. **On the Mac: open Terminal, paste this one line, answer y.** Leave the Mac plugged in. Paste the REPORT it prints back to Claude.
+   `cd ~/Repo && git fetch origin && git checkout claude/stoic-cori-pvn3f8 && git pull && bash connect-all.sh`
+2. **Pabbly (WhatsApp automations):** open https://connect.pabbly.com/v2/app/requested-connection?token=d2dad35e10cc15c3f528cd3af16a21c5105ad15f4ead6eb3 and paste your Kapso API key there (Pabbly's page, never chat). Good until about Oct 24. Then tell Claude "Pabbly is connected".
+3. **Optional, 2 minutes — stops four Sunday routines failing:** they run Sunday morning, before your weekly Claude allowance resets (about 1 PM PT Sunday), so they failed Oct 18. Claude cannot edit them (you made them through the API). Open each and change the schedule to Sunday evening:
+   - https://claude.ai/code/routines/trig_016qKE1TdRjzkpb2Yby8yWBX → Sunday 2:35 PM PT
+   - https://claude.ai/code/routines/trig_013vYCzVa3vbHZ8BZZy6UBpX → Sunday 3:03 PM PT
+   - https://claude.ai/code/routines/trig_013ocJfEDdmSAgDPVaiCzMZY → Sunday 3:29 PM PT
+   - https://claude.ai/code/routines/trig_019NdM12eTVDHWy89Ch2sNtU → Sunday 3:57 PM PT
+4. **Share the ISA Portal with your ISA/EA** (Share menu on https://claude.ai/artifact/9Jtqg2W1t98PfhNYHNTMDS) and send them Vanessa's check-in draft (on the Command Deck, Needs you).
+
+Claude already did (2026-10-22): moved the backup and its watchdog to Sunday evening and ran a catch-up backup (last verified one was Oct 13); fixed the brain's nightly save; the ISA Portal now gets Vanessa's ISA list every weekday.
 
 ## Start here (2026-10-20) — one paste reconnects this Mac · about 15 minutes
 

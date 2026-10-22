@@ -604,3 +604,6 @@ the record of the change. The full split, and the three web-UI routine edits onl
 
 ## 2026-10-22 — ISA Portal gets Vanessa's daily ISA list
 The daily Chief-of-Staff cycle now copies `cosBrief.isaInstructions` (plus the ISA's step-by-step drafts and four standing duties) into the ISA Portal's own store as `isaToday`; the portal's Panel 01 opens with a "Today from Vanessa" card. Rates on the portal re-mirrored from the deck the same day (the Mac rates task has been silent since 2026-10-13). Org chart: Transaction & Showing desk shown under Victor; the Broker Command Center seats another session added the same day kept, with Winston moved back inside Alexandra's reports.
+
+## 2026-10-22 — Fixing the usage-limit failures and the frozen Mac runner
+All 14 failed cloud routines failed on USAGE_LIMIT_REACHED (none for another reason). Sunday weekly jobs ran before the weekly allowance reset (~20:00 UTC Sunday), so they are moved after it: backup Sun 21:07 UTC, its watchdog Sun 23:41 UTC; four http_api-created Sunday loops need Steven to move (docs/STEVEN-STEPS.md). The Mac runner's last report (2026-10-13 07:13 UTC) showed it logged in and stuck "running" fabric-deck-sync, so connect-all.sh now restarts it unconditionally and installs a caffeinate -s LaunchAgent (no sleep on the charger). 6D Brain routine now commits docs/reports/ENCYCLOPEDIA.md.

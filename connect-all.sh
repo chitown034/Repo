@@ -40,20 +40,41 @@ step() { # <name> <needs-you-note-if-it-fails> <command...>
 step "1 Get today's files ($BRANCH)" "git: local changes blocked the pull - tell Claude what 'git status' prints" \
   sh -c "git fetch origin $BRANCH && git checkout $BRANCH && git pull --ff-only origin $BRANCH"
 
-# 2. the runner - silent on the dashboard since 2026-10-13. Status first; restart only if it is not running.
+# 2. the runner - silent on the dashboard since 2026-10-13. Its last report (2026-10-13 07:13 UTC) says it was
+#    logged in, not backing off, and stuck "running" fabric-deck-sync - so "restart only if stopped" never fired.
+#    It now always restarts once: that ends a hung task (tasks re-run at their next slot) and never logs in.
 runner_fix() {
   have runnerctl || { echo "runnerctl not installed - run ./mac-bootstrap.sh --only runner"; return 1; }
   runnerctl status 2>&1 | tee -a "$LOG" | tail -15
-  if runnerctl status 2>&1 | grep -qiE 'not running|stopped|dead|no runner'; then
-    echo "runner is not running - restarting (never logs in)"; runnerctl restart 2>&1 | tail -5
-  fi
+  echo "restarting the runner once to clear a hung task (never logs in)"; runnerctl restart 2>&1 | tail -5
+  sleep 5; runnerctl status 2>&1 | tail -5
   if runnerctl status 2>&1 | grep -qiE 'logged out|not logged in|login required'; then
     echo "RUNNER IS LOGGED OUT - only you can sign it in: run  runnerctl login  yourself"; return 1
   fi
   runnerctl list 2>&1 | grep -ciE 'ok|running' >/dev/null
 }
-step "2 Mac runner (silent since Oct 13): status, restart if stopped" \
+step "2 Mac runner (silent since Oct 13): status, restart once" \
   "Runner: run  runnerctl login  yourself (a script must never sign in), then  runnerctl status" runner_fix
+
+# 2b. keep the Mac awake while it is on the charger, so the 6 AM tasks run. A user LaunchAgent running
+#     caffeinate -s (blocks system sleep on AC power only; the display still sleeps; no password). Undo:
+#     launchctl unload ~/Library/LaunchAgents/com.vanessa.keepawake.plist && rm that file.
+keep_awake() {
+  local p="$HOME/Library/LaunchAgents/com.vanessa.keepawake.plist"
+  mkdir -p "$HOME/Library/LaunchAgents"
+  cat > "$p" <<'PLIST'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>Label</key><string>com.vanessa.keepawake</string>
+  <key>ProgramArguments</key><array><string>/usr/bin/caffeinate</string><string>-s</string></array>
+  <key>RunAtLoad</key><true/><key>KeepAlive</key><true/>
+</dict></plist>
+PLIST
+  launchctl unload "$p" >/dev/null 2>&1; launchctl load "$p" && pgrep -x caffeinate >/dev/null && echo "keep-awake on (charger only)"
+}
+step "2b Keep the Mac awake on the charger (so the morning tasks run)" \
+  "Keep-awake: System Settings -> Battery -> Options -> 'Prevent automatic sleeping on power adapter' ON" keep_awake
 
 # 3. Kapso - WhatsApp for Vanessa: plugin + MCP for every Claude Code session
 step "3 Kapso WhatsApp plugin + MCP (Claude Code)" \
@@ -115,8 +136,8 @@ say "     tick 'Zoho CRM API Access'. That is the whole 403 fix."
 say "  5. Sign in once in the agent Chrome to ShowingTime, Showami and homes.com:"
 say "     bash integrations/cli-anything-harnesses/connect.sh"
 say "  6. TikTok, GoHighLevel, Discord bot, HeyGen: say 'Composio links' to Claude when you sit down (links last 10 min)."
-say "  7. Pabbly: reply 'yes, build the Kapso app' to Claude, then build the six workflows in integrations/pabbly/WORKFLOWS.md"
-say "     (about 5 minutes each at connect.pabbly.com)."
+say "  7. Pabbly: open the Pabbly 'Connect' link Claude sent, paste your Kapso API key there (Pabbly's page, never chat),"
+say "     then build the six workflows in integrations/pabbly/WORKFLOWS.md (about 5 minutes each at connect.pabbly.com)."
 say ""
 say "From now on, in any Claude Code session in this folder: type /paste for this list, /connections for what is"
 say "not connected, /owner <panel> for who keeps a dashboard panel alive."
