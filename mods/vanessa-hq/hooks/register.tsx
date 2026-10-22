@@ -70,6 +70,18 @@ const WORKFLOWS: Record<string, { title: string; about: string; prompt: (args: s
     prompt: args =>
       `Book a consult: ${args || '(ask me for client name, email, date/time in Pacific, length and topic)'}. Steps: 1) create a scheduled Zoom meeting through Composio (ZOOM_CREATE_A_MEETING, user_id "me", timezone America/Los_Angeles); 2) add a Google Calendar hold for me with the Zoom link (notificationLevel NONE, so no invite is sent); 3) draft — do not send — a Gmail invite to the client with the time and link; 4) tell me what was created. ${DRAFTS}`,
   },
+  'global-week': {
+    title: 'Global Investor Week',
+    about: 'Pick organizations, find events, draft in-language outreach',
+    prompt: () =>
+      `Run my Global Investor Week. Read /home/user/Repo/vanessa/fiassoc.js (FI_ASSOC: foreign & immigrant investor organizations in CA, IL, NV, FL, AZ). Pick 2 per state across different communities (Chinese, European, Middle Eastern), skipping consulates. In parallel (one subagent per state) research each organization's upcoming events or sponsorship options in the next 90 days with Perplexity via Composio, with links. Then draft a short outreach email per organization from me offering to join, sponsor or give a free seminar "Financing US property as an international buyer", with a 1–2 sentence greeting in the community's language where it helps; no rates or guarantees; NMLS #[NMLS] and equal housing line. Give me a table (org, state, event, link, next step) and the drafts. ${DRAFTS} Fair lending: same terms for everyone.`,
+  },
+  'brand-check': {
+    title: 'Brand Visibility Check',
+    about: 'Is Steven cited by AI engines? Gaps → content plan',
+    prompt: () =>
+      `Run a brand visibility check for me (Steven Shearrill, Patriot Pacific Financial, Temecula CA; VA, FHA, DSCR, foreign national, non-QM; licensed CA, IL, NV, FL, AZ). Ask Perplexity (via Composio, sonar) 8 questions buyers ask AI assistants — e.g. best VA loan broker in Temecula, can a foreign national get a mortgage in California, DSCR lenders in Riverside County — in parallel. For each: am I mentioned, who is cited instead, and the sources. Then give a content plan for every gap: page title, 50-word direct answer, sources to cite, one listing/review action. No rates; include compliance reminders (NMLS ID, DRE #, equal housing).`,
+  },
   'dash-status': {
     title: 'Status Check',
     about: 'Scheduled tasks, last runs, dashboard versions',
@@ -85,7 +97,7 @@ const RULES = [
   '- The GitHub repo is public: PPFC Trainual data (PPFC_KB, PPFC_LENDERS, AE contacts, comp terms, internal SOP text) lives only in the published VANESSA page, never in a commit.',
   '- Email, Slack and calendar automation is drafts-only unless Steven explicitly asks to send.',
   '- Loan guidance: cite the source, say to verify against the current guide/AE; never recommend a lender because it pays more (LO Comp Rule 12 CFR 1026.36(e)).',
-  '- Slash commands from this mod: /vanessa, /morning-launch, /lender-digest, /lender-shop, /deal-intake, /sync-dashboards, /squad, /zoho, /research, /book-consult, /dash-status.',
+  '- Slash commands from this mod: /vanessa, /morning-launch, /lender-digest, /lender-shop, /deal-intake, /sync-dashboards, /squad, /zoho, /research, /book-consult, /global-week, /brand-check, /dash-status.',
   '- Work in parallel when tasks are independent: fan out one subagent per lane in a single message, then merge (AI Squads in VANESSA define the lanes).',
 ].join('\n')
 

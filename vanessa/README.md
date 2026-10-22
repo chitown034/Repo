@@ -187,3 +187,6 @@ Operate → 📘 Runbooks & Workforce: 16 runbooks (every playbook, the two sche
 - Loan Intelligence → Global Investor Desk: 9-step playbook, community guides (Chinese/Taiwanese/HK, European, Middle Eastern), in-language intro + invite drafts, foreign-national lender matches, association library (159 organizations in CA/IL/NV/FL/AZ — fiassoc.js, public sources), compliance (FinCEN RRE rule status, Florida SB 264, CFIUS, OFAC, FIRPTA, AML, fair lending).
 - C.A.R. Forms → LPT Broker Info: LPT Realty CA entity/DRE #/designated officer and IL/NV/FL/AZ records (lptinfo.js — confirm with LPT; note the 02249735 footer conflict), my license fields, compliant signature.
 - New squad Global Investor Desk; new seats Brand Visibility Agent, Channel Economist, Global Investor Liaison; three new runbooks.
+
+### v82 (built, publishes after the daily limit resets) — automation wiring (app46.js)
+Push-Button playbooks "Global Investor Week" (2 orgs/state not touched in 60 days, Perplexity event research, in-language outreach drafts, outreach log, board cards) and "Brand Visibility Check" (5 AEO questions through Perplexity in parallel, mention log, Claude content plan for gaps → board). Agent tools find_associations, log_outreach, channel_economics, ai_visibility_check (19 tools). Mod commands /global-week and /brand-check.
