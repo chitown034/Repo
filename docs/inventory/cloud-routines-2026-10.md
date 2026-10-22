@@ -15,3 +15,5 @@ The 2026-09-22 listing is `cloud-routines.md`; this file carries what was create
 | AI twin autopilot (posts only approved items) | `CRON_TZ=America/Los_Angeles 57 7 * * *` | True | SUCCEEDED @ 2026-10-20T14:58 | daily | 2026-10-05 | trig_01JbMx3a3KA6cJv2zMdBAE6k |
 | Attraction Command Center: daily cloud run | `CRON_TZ=America/Los_Angeles 40 6 * * 1-5` | True | SUCCEEDED @ 2026-10-20T13:40 | weekdays | 2026-10-05 | trig_01H7zYh3EteR8hJoeffebRWv |
 | RoleCompass daily job hunt (v4) | `CRON_TZ=America/Los_Angeles 40 6 * * *` | True | SUCCEEDED @ 2026-10-20T13:40 | daily | 2026-10-05 | trig_01Sac7gQ2GdGdCYPti7JsrgB |
+| Transaction & Showing desk — TC + showing assistant (weekdays 7:10 AM PT) | `CRON_TZ=America/Los_Angeles 10 7 * * 1-5` | True | — | 2026-10-22 | 2026-10-22 | trig_011iofWVNizNQ1SNujNcp5tL |
+| 6D Brain — daily rebuild and republish (3:30 AM PT, this session) | `CRON_TZ=America/Los_Angeles 30 3 * * *` | True | — | daily | 2026-10-21 | trig_01MQ7HRYTh27b8uUM4BtnFXE |

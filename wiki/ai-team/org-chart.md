@@ -27,6 +27,10 @@ Steven (Principal)
 │   ├─ Dispatch planner — `bin/brain route`: lead seat, cross-functional joins, ≤8-wide parallel waves, gates, HALTs (rules: `wiki/ai-team/cross-functional.md`)
 │   └─ Juliet — Escalation & Service Recovery
 ├─ ISA / EA (human) — Mon–Fri 12–4 PM; gets `cosBrief.isaInstructions` from the daily cycle for the noon huddle
+│   (sends showing confirmations, chases escrow/lender items, enters each new deal's dates into the TC intake)
+├─ Transaction & Showing desk — cloud routine, weekdays 7:10 AM PT, under Victor: the transaction coordinator
+│   (timelines, checklists, deadline alerts, reminder drafts) and the showing assistant (prep, route, confirmation
+│   drafts, feedback forms); Alexandra gates every draft; writes `tcDesk`
 └─ Executives (report to Vanessa, ≤8 dispatched in parallel, formed into cross-functional squads by the daily cycle):
     ├─ Marcus (CFO) — Nathan, Bianca, Dov, Anita, Paloma, Grace, Alan, Hazel, Corinne + ruflo cost-analyst bench
     ├─ Sofia (CMO) — 14 named marketing reports + ruflo audio bench

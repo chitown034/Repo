@@ -587,3 +587,17 @@ the record of the change. The full split, and the three web-UI routine edits onl
   loop report move daily. The GitHub `brain-loop` check now also runs daily (10:20 UTC) as the model-free backstop.
   Command Deck v204: menu item "6D Brain — the brain in 3D: timeline, freshness, seats, encyclopedia".
 - **Owner.** Derek. **Status.** Page v7 published (320 nodes, 135 encyclopedia entries).
+
+## 2026-10-22 — Transaction coordinator and showing assistant on a schedule; Kapso app plan agreed in Pabbly
+
+- **Request (Steven, verbatim).** *"yes build the kapso connection. add automations workflows, systems, goal is to
+  have 80% done by ai agents, claude, transaction coordinator, showing assistant, systems, AI twin and human ISA/EA
+  leaving me to do 20%"*.
+- **Decision.** New cloud routine **Transaction & Showing desk** (weekdays 7:10 AM PT, `trig_011iofWVNizNQ1SNujNcp5tL`):
+  the `ca-transaction-coordinator` and `showing-coordinator` seats run every weekday — deal timelines only from dates
+  in the TC intake (`tcDeals`, never default form periods), checklists, deadline alerts, reminder and confirmation
+  drafts, showing prep and route; Alexandra gates drafts; writes `tcDesk`, ISA instructions, ≤3 packets. The daily
+  cycle now reads `tcDesk` and folds it into the ≤3 and the split. Today `tcDeals`, `dealChecklists` and
+  `showingSchedule` are empty, so the first runs will ask the ISA to enter open deals — that intake is the one
+  manual step the desk needs. Pabbly: plan recorded with his words; Check Auth built; waiting on his Kapso key.
+- **Owner.** Victor (desk), Derek (automation). **Budget.** +5 runs/week.

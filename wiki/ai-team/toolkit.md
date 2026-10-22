@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 35 skills · 5 plugins · 15 connectors (2 ok, 13 need attention) · 60 cloud routines · 60 Mac tasks
+toolkit: 35 skills · 5 plugins · 15 connectors (2 ok, 13 need attention) · 62 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -136,6 +136,7 @@ toolkit: 35 skills · 5 plugins · 15 connectors (2 ok, 13 need attention) · 60
 - `ShowingTime · Showami · homes.com` — *pending*: sign-in pending
 
 **Cloud routines**
+- `Transaction & Showing desk — TC + showing assistant (weekdays 7:10 AM PT)`: cron CRON_TZ=America/Los_Angeles 10 7 * * 1-5 · on · —
 - `Command Deck ↔ ISA Portal drift check (2x/day)`: cron 0 2,14 * * * · on · SUCCEEDED @ 2026-09-22T02:05
 - `Command Deck ↔ ISA Portal — Pipeline Sync`: cron 0 1,7,13,19 * * * · on · SUCCEEDED @ 2026-09-22T07:08
 - `Command Deck ↔ ISA Portal comms bridge (hourly)`: cron 7 * * * * · off · SUCCEEDED @ 2026-09-09T02:07
@@ -198,6 +199,7 @@ toolkit: 35 skills · 5 plugins · 15 connectors (2 ok, 13 need attention) · 60
 - `Scrape queue runner`: cron CRON_TZ=America/Los_Angeles 7 9 * * * · on · SUCCEEDED @ 2026-10-19T16:08
 - `Attraction Command Center: daily cloud run`: cron CRON_TZ=America/Los_Angeles 40 6 * * 1-5 · on · SUCCEEDED @ 2026-10-20T13:40
 - `RoleCompass daily job hunt (v4)`: cron CRON_TZ=America/Los_Angeles 40 6 * * * · on · SUCCEEDED @ 2026-10-20T13:40
+- `6D Brain — daily rebuild and republish (3:30 AM PT, this session)`: cron CRON_TZ=America/Los_Angeles 30 3 * * * · on · —
 - `Account Health Check`: cron 0 17 * * 1 · on · SUCCEEDED @ 2026-09-21T17:09
 - `Books Reconciliation Reminder`: cron 0 22 * * 5 · on · FAILED @ 2026-09-18T22:01
 - `Command Deck Brief`: cron 45 13 * * * · on · SUCCEEDED @ 2026-09-21T13:45
