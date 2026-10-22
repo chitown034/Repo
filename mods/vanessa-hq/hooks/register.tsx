@@ -58,6 +58,18 @@ const WORKFLOWS: Record<string, { title: string; about: string; prompt: (args: s
     prompt: () =>
       `Review my Zoho CRM through the Composio connector (use the Zoho account alias "crm"; if Zoho answers NO_PERMISSION, stop and tell me to reconnect Zoho in Composio with CRM access). Pull Deals (Deal_Name, Amount, Stage, Closing_Date, Modified_Time), the 25 newest Leads and open Tasks. Report: pipeline count and volume by stage, deals closing in 30 days, deals not modified in 14+ days, leads not contacted, overdue tasks — each with the next action and owner (Steven / Vanessa / ISA). Do not create or change any Zoho records; propose changes and wait for my OK. ${DRAFTS}`,
   },
+  research: {
+    title: 'Research Desk',
+    about: '/research <question> → sourced answer (Perplexity via Composio)',
+    prompt: args =>
+      `Research this for me with sources: ${args || '(ask me the question)'}. Use Perplexity through the Composio connector (PERPLEXITYAI_CREATE_CHAT_COMPLETION, model sonar-pro) and, if useful, a second query to cross-check. Give the answer with numbers and dates, cite every claim with its URL, flag anything that may have changed recently, and end with what it means for my CA/IL/NV/FL/AZ mortgage and real estate business. Offer to save it as a Google Doc. No rate quotes.`,
+  },
+  'book-consult': {
+    title: 'Book a Consult',
+    about: '/book-consult <name, email, date/time, topic>',
+    prompt: args =>
+      `Book a consult: ${args || '(ask me for client name, email, date/time in Pacific, length and topic)'}. Steps: 1) create a scheduled Zoom meeting through Composio (ZOOM_CREATE_A_MEETING, user_id "me", timezone America/Los_Angeles); 2) add a Google Calendar hold for me with the Zoom link (notificationLevel NONE, so no invite is sent); 3) draft — do not send — a Gmail invite to the client with the time and link; 4) tell me what was created. ${DRAFTS}`,
+  },
   'dash-status': {
     title: 'Status Check',
     about: 'Scheduled tasks, last runs, dashboard versions',
@@ -73,7 +85,7 @@ const RULES = [
   '- The GitHub repo is public: PPFC Trainual data (PPFC_KB, PPFC_LENDERS, AE contacts, comp terms, internal SOP text) lives only in the published VANESSA page, never in a commit.',
   '- Email, Slack and calendar automation is drafts-only unless Steven explicitly asks to send.',
   '- Loan guidance: cite the source, say to verify against the current guide/AE; never recommend a lender because it pays more (LO Comp Rule 12 CFR 1026.36(e)).',
-  '- Slash commands from this mod: /vanessa, /morning, /lender-digest, /lender-shop, /deal-intake, /sync-dashboards, /squad, /zoho, /dash-status.',
+  '- Slash commands from this mod: /vanessa, /morning, /lender-digest, /lender-shop, /deal-intake, /sync-dashboards, /squad, /zoho, /research, /book-consult, /dash-status.',
   '- Work in parallel when tasks are independent: fan out one subagent per lane in a single message, then merge (AI Squads in VANESSA define the lanes).',
 ].join('\n')
 
