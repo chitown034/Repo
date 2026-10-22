@@ -67,7 +67,7 @@ GITDIR="$(g rev-parse --absolute-git-dir)"
 LOCK="$GITDIR/repo-sync.lock"
 # one sync at a time (the LaunchAgent and connect-all can overlap); a lock older than 30 min is stale
 if ! mkdir "$LOCK" 2>/dev/null; then
-  if [ -n "$(find "$LOCK" -maxdepth 0 -mmin +30 2>/dev/null)" ]; then rmdir "$LOCK" 2>/dev/null; mkdir "$LOCK" 2>/dev/null || exit 0
+  if [ -n "$(find "$LOCK" -maxdepth 0 -mmin +30 2>/dev/null)" ]; then rmdir "$LOCK" 2>/dev/null; mkdir "$LOCK" 2>/dev/null || { echo "repo-sync: another sync is running - skipped (try again in a minute)"; exit 75; }
   else echo "repo-sync: another sync is running - skipped (try again in a minute)"; exit 75; fi
 fi
 [ "$QUIET" = 1 ] || echo "repo-sync - $REPO - branch $BRANCH - $(date)"
