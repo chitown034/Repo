@@ -149,3 +149,7 @@ Market numbers, Home Report signals, pipeline, approvals and refi queue are **sa
 - **Broker Bridge**: detects Send-to-VANESSA payloads; Escrow watch (milestones, TRID CD-received-by date, lender-update and contingency-extension copy); import history with undo; bridge scripts tab.
 - **Brain 6D**: 24 ask templates; script library, guideline sources, operating rules and bridge log as brain sources; weekly digest; brain hygiene (freshness by source + Friday routine).
 - **Script library**: P31–P100 (`talk2.js`) — Realtor bridge, escrow deadlines, ISA desk, equity, reverse, refi, niches, referral partners, military, AI team, past clients.
+
+## v55 — Loan Niche Encyclopedia (98 niches) · 300 new scenarios (440 total)
+- **Loan Niche Encyclopedia** (`nichelib1-3.js`, `app36.js`, Loan Intelligence → after Programs): 98 niches in 11 groups (Government, Conventional & agency, Jumbo & portfolio, Non-QM, Investor & private, Equity & second liens, Reverse, Construction & renovation, Specialty property, Specialty borrower, Commercial & business). Each: what it is, who it's for, key rules, underwriting, docs, pros/cons, pitfalls, where to find clients, partners, pitch, compliance, CA/IL/NV/FL/AZ notes; lender matches from the directory; related scenarios/scripts; campaign card; Word export.
+- **Scenarios SC141–SC440** (`scenarios4-8.js`): 300 new, each with 4 ranked COAs (why, steps, risk), avoid, docs. New categories: USDA, Military, Equity, Realtor bridge, State-specific, Life events, Growth, Operations.
