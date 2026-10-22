@@ -171,3 +171,6 @@ Operate → ⚡ Push-Button Autopilot. Seven one-click playbooks (Morning Launch
 
 ### v74 — AI Squads (app41.js)
 AI Team & Bridges → AI Squads: 10 cross-functional squads (Deal Desk, Speed-to-Lead, Close & Fund, Purchase Transaction, Refi Strike, Growth Engine, Lender Intelligence, Revenue & Finance, Automation & Reliability, Morning Ops), 49 parallel lanes. Launch puts every lane on the Handoff Board at once plus a fan-in card and a compliance-gate card; "Draft all lanes with Claude" runs each lane concurrently with in-page Claude and then merges. Also a Push-Button playbook and event → squad routing. Mods for Claude Code live in ../mods (vanessa-hq with /squad for real parallel subagents, drafts-only-guard, public-repo-guard).
+
+### v76 — Zoho CRM Live (app42.js)
+The Zoho CRM page now runs live through the viewer's Composio connector (`Composio` → `COMPOSIO_MULTI_EXECUTE_TOOL` with ZOHO_* actions on account alias `crm`): pipeline by stage, newest leads (Speed-to-Lead squad, first-touch Gmail draft, notes to Zoho), open tasks, CRM search, create lead with duplicate check, deals closing ≤30 days to the board. Ask VANESSA gained zoho_search / zoho_pipeline / zoho_new_leads; Morning Launch adds a Zoho section. Zoho returned NO_PERMISSION on the old Composio connection (no CRM scopes) — reconnect with CRM access.

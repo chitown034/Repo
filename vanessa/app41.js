@@ -69,4 +69,3 @@ if(typeof PB_RUNS!=="undefined"&&!PB_RUNS.some(r=>r.k==="squad")){PB_RUNS.push({
 if(typeof AI_SEATS!=="undefined")AI_SQUADS.forEach(x=>sqAll(x).forEach(n=>{const s=sqSeat(n);if(s){s.squads=s.squads||[];if(!s.squads.includes(x.n))s.squads.push(x.n)}}));
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();AI_SQUADS.forEach(x=>out.push({src:`AI squad — ${x.n}`,t:`${x.mission} Lead ${x.lead}. Parallel lanes: ${x.lanes.map(l=>`${l[0]} (${l[1]}: ${l[2]})`).join("; ")}. Fan-in: ${x.fanIn.join(" — ")}. Gate: ${x.gate.join(" — ")}. Triggers: ${x.events.join(", ")}. SLA ${x.sla}.`}));return out}}
 if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^AI squad — /,{hash:"squads"}]);
-boot();

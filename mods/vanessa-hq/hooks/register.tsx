@@ -52,6 +52,12 @@ const WORKFLOWS: Record<string, { title: string; about: string; prompt: (args: s
     prompt: args =>
       `Run a VANESSA AI squad. Input: "${args || '(ask me which squad and the mission)'}" — the first word is the squad key, the rest is the mission. The squads are defined in /home/user/Repo/vanessa/app41.js (AI_SQUADS: lead, lanes [seat, lane, deliverable], fanIn, gate); read the matching one. Then: 1) launch ONE subagent per lane IN PARALLEL — all Agent calls in a single message — each briefed as that seat with its lane, deliverable, the mission and which other lanes run beside it, told to stay in its lane and flag cross-lane issues; 2) when all return, act as the fan-in lead and merge them, resolving conflicts explicitly; 3) run the gate seat's compliance check; 4) give me the merged result, the gate verdict and the next 5 actions with owners. ${DRAFTS} No rate quotes or guarantees; never steer on comp.`,
   },
+  zoho: {
+    title: 'Zoho CRM Review',
+    about: 'Pipeline, new leads, stale deals and tasks from Zoho CRM',
+    prompt: () =>
+      `Review my Zoho CRM through the Composio connector (use the Zoho account alias "crm"; if Zoho answers NO_PERMISSION, stop and tell me to reconnect Zoho in Composio with CRM access). Pull Deals (Deal_Name, Amount, Stage, Closing_Date, Modified_Time), the 25 newest Leads and open Tasks. Report: pipeline count and volume by stage, deals closing in 30 days, deals not modified in 14+ days, leads not contacted, overdue tasks — each with the next action and owner (Steven / Vanessa / ISA). Do not create or change any Zoho records; propose changes and wait for my OK. ${DRAFTS}`,
+  },
   'dash-status': {
     title: 'Status Check',
     about: 'Scheduled tasks, last runs, dashboard versions',
@@ -67,7 +73,7 @@ const RULES = [
   '- The GitHub repo is public: PPFC Trainual data (PPFC_KB, PPFC_LENDERS, AE contacts, comp terms, internal SOP text) lives only in the published VANESSA page, never in a commit.',
   '- Email, Slack and calendar automation is drafts-only unless Steven explicitly asks to send.',
   '- Loan guidance: cite the source, say to verify against the current guide/AE; never recommend a lender because it pays more (LO Comp Rule 12 CFR 1026.36(e)).',
-  '- Slash commands from this mod: /vanessa, /morning, /lender-digest, /lender-shop, /deal-intake, /sync-dashboards, /squad, /dash-status.',
+  '- Slash commands from this mod: /vanessa, /morning, /lender-digest, /lender-shop, /deal-intake, /sync-dashboards, /squad, /zoho, /dash-status.',
   '- Work in parallel when tasks are independent: fan out one subagent per lane in a single message, then merge (AI Squads in VANESSA define the lanes).',
 ].join('\n')
 

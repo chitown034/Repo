@@ -100,7 +100,7 @@ const PB_GO={
 const PB_LAST={};
 
 /* ---------- agent: Claude with page tools ---------- */
-const PB_TOOLS=()=>[
+let PB_TOOLS=()=>[
  {name:"search_knowledge",description:"Search VANESSA's knowledge base (scenarios, scripts, loan niches, lender profiles, PPFC SOPs, guides). Returns up to 6 {src,t} snippets.",inputSchema:{type:"object",properties:{query:{type:"string"}},required:["query"]},execute:i=>pbCorpusHits(String(i.query||""),6)},
  {name:"recommend_lenders",description:"Rank lenders for a deal. type is one of: "+(typeof LC_TYPES!=="undefined"?LC_TYPES.map(t=>t.k).join(","):"")+". Returns top 5 with score, comp, why and warnings.",inputSchema:{type:"object",properties:{type:{type:"string"},state:{type:"string"},fico:{type:"number"},ltv:{type:"number"},amount:{type:"number"}}},execute:i=>pbTop({type:String(i.type||""),state:String(i.state||""),fico:+i.fico||0,ltv:+i.ltv||0,amt:+i.amount||0,pri:"bal"},5).map(r=>({lender:r.x.name,score:r.s,lpc:r.x.lpc,ae:r.x.ae,email:r.x.email,why:r.why.slice(0,4),warn:r.warn.slice(0,3)}))},
  {name:"list_open_tasks",description:"List open Handoff Board cards (title, owner, lane, due).",execute:()=>pbOpen().slice(0,30).map(c=>({t:c.t,owner:c.owner,lane:c.lane,due:String(c.due||"").slice(0,10)}))},
