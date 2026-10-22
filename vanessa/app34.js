@@ -21,4 +21,3 @@ mount(){const tabs=[
 {const l=PAGES.find(p=>p[0]==="Loan Intelligence");if(l&&!l[1].some(x=>x[0]==="library")){const i=l[1].findIndex(x=>x[0]==="programs");l[1].splice(i+1,0,["library","Guidelines Library & Free Data"])}}
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();LIB_GUIDES.forEach(g=>out.push({src:`Official guide — ${g.n}`,t:`${g.pub}. ${g.cov} Updates: ${g.cad} Source: ${g.url}`}));store.get("lb_ex",[]).forEach(x=>out.push({src:`My excerpt — ${lbG(x.g)?.n||x.g} ${x.s} (${x.d})`,t:x.x}));LIB_FEEDS.forEach(f=>out.push({src:`Free data feed — ${f[0]}`,t:`Replaces ${f[1]}. ${f[2]}. ${f[4]}, ${f[5]}. ${f[7]}`}));return out}}
 if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^Official guide — |^My excerpt — |^Free data feed — /,{hash:"library"}]);
-boot();

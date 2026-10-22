@@ -137,3 +137,8 @@ Market numbers, Home Report signals, pipeline, approvals and refi queue are **sa
 
 ## v48 — My Tools: Real Estate Broker Dashboard
 - Added "Real Estate Broker Dashboard" (Broker Command Center) to the My Tools launcher.
+
+## v49 — AI Team Bridge · Broker Bridge · Brain 6D link
+- **AI Team Bridge** (`aiteam.js`, `app35.js`): snapshot of the Command Deck org chart (143 seats: Steve, Vanessa and her reports, ISA/EA, 8 executives with teams, 4 mentors) mapped to this dashboard — every Pabbly workflow PB01–PB52 has a primary and backup owner seat, every seat has home pages and an output lane. Dispatch creates a Handoff Board card (fires `task.delegated`) and a ready-to-paste prompt with live dashboard context. Coverage tab flags unowned workflows. The org chart is a snapshot — re-extract when it changes.
+- **Broker Bridge**: paste the Real Estate Broker Dashboard's Contacts CSV or `broker-cc-v1` JSON → buyer leads (speed-to-lead list + pipeline), escrow deadlines from RPA day counts (EMD, appraisal, loan contingency, CR, COE), open tasks, DRE/E&O alerts → Handoff Board. De-duplicated; re-paste any time. Not a live sync (separate artifact origins).
+- **Brain 6D link**: dashboard-first search + `bin/brain recall` command builder, brain-ready Markdown export (AI-team map, workflow catalog, excerpts, board, decisions), decision/lesson capture.
