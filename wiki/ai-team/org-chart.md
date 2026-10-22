@@ -84,7 +84,7 @@ into the ≤3 Needs-you items.
 
 | Desk seat | Routine / button | Reads | Writes | Steven's step |
 |---|---|---|---|---|
-| Refi Watch Analyst | Mon 7:20 AM PT `trig_014ipr6x9z35psmtHJCPVqj1`; `refi-watch` skill | `ratesSnapshot`, `refiWatchList` | `refiWatch`, `vanessaQueue` | keeps the refi list (deck form, ISA Portal form, or "refi list: …" to Claude) |
+| Refi Watch Analyst | Mon 7:20 AM PT `trig_014ipr6x9z35psmtHJCPVqj1`; `refi-watch` skill | `ratesSnapshot`, `refiWatchList` | `refiWatchDesk`, `vanessaQueue` | keeps the refi list (deck form, ISA Portal form, or "refi list: …" to Claude) |
 | Sphere Nurture Coordinator | 11th 7:40 AM PT `trig_01Pn8xLNKTVVFYjYTj8d8JTd`; `past-client-nurture` | `sphereList`, housing feeds | `sphereTouches`, `marketingQueue`, `vanessaQueue` | approves the drafts; the ISA sends |
 | Voicemail & Inbox Triage | deck "Triage my inbox" (Gmail as the viewer); `voicemail-to-lead` (WhisperAI) | Gmail, recording links | `inboxDesk`, `vanessaQueue`, Gmail drafts | clicks "Save draft in Gmail"; sends himself |
 | Document Intake Clerk | `tc-doc-intake`; deck TC intake form | Drive / Gmail attachments | `tcDeals` | confirms dates the document does not state |
