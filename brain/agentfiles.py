@@ -32,7 +32,7 @@ def _name(slug: str) -> str:
 
 def render(a: dict, lead_of: dict) -> str:
     seat = a["laya"]["lane"]
-    lead = a["lead"] or "vanessa-orchestrator"
+    lead = a["lead"] or ("Steven" if a["slug"] == "vanessa-orchestrator" else "vanessa-orchestrator")
     start = a["laya"]["starts_from"] or "CLAUDE.md"
     desc = re.sub(r"\s+", " ", a["role"]).strip().rstrip(".")[:150]
     prop = "This seat is PROPOSAL-ONLY: return proposals, never changes." if a["guard"]["proposal_only"] else ""

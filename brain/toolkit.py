@@ -263,8 +263,9 @@ def seat_cards(root: Path, inv: dict) -> str:
     from . import agentos
     try:
         roster = json.loads((root / agentos.MANIFEST).read_text(encoding="utf-8"))["agents"]
-    except (OSError, ValueError, KeyError):
-        roster = []
+    except (OSError, ValueError, KeyError) as e:
+        # Never render blank models and zero lanes over a good table (a conflicted or missing manifest).
+        raise ValueError(f"seat cards: {agentos.MANIFEST} unreadable ({e})") from e
     by_slug = {a["slug"]: a for a in roster}
     lane: dict[str, int] = {}
     for a in roster:
@@ -297,17 +298,22 @@ def seat_cards(root: Path, inv: dict) -> str:
 
 
 def write_cards(root: Path, inv: dict) -> bool:
-    """Replace the seat-cards block in the org chart. Returns False (and writes nothing) if the markers are absent."""
+    """Replace the seat-cards block in the org chart. Returns False and writes nothing if the begin/end markers are
+    absent or out of order, or if the agent manifest cannot be read."""
     p = root / ORG_CHART
     try:
         text = p.read_text(encoding="utf-8")
     except OSError:
         return False
-    if CARDS_BEGIN not in text or CARDS_END not in text:
+    head, sep, rest = text.partition(CARDS_BEGIN)
+    if not sep or CARDS_END not in rest:
         return False
-    head, rest = text.split(CARDS_BEGIN, 1)
     tail = rest.split(CARDS_END, 1)[1]
-    p.write_text(f"{head}{CARDS_BEGIN}\n{seat_cards(root, inv)}\n{CARDS_END}{tail}", encoding="utf-8")
+    try:
+        cards = seat_cards(root, inv)
+    except ValueError:
+        return False
+    p.write_text(f"{head}{CARDS_BEGIN}\n{cards}\n{CARDS_END}{tail}", encoding="utf-8")
     return True
 
 

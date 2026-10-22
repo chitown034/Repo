@@ -88,6 +88,7 @@ class AgentFiles(unittest.TestCase):
         # Tiering (wiki/ai-team/model-tiering-dispatch.md): Vanessa masterminds on Fable, never the worker tier.
         t = (ROOT / "integrations/agent-os/agents/vanessa-orchestrator.md").read_text(encoding="utf-8")
         self.assertIn("model: fable", t)
+        self.assertIn("reports to Steven", t)  # never to herself
 
     def test_engineer_toolkit(self):
         from brain import agentos
