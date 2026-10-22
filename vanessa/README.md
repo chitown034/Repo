@@ -134,3 +134,6 @@ Market numbers, Home Report signals, pipeline, approvals and refi queue are **sa
 ## v47 — Complete-documents index + FRED key walkthrough
 - Library: "All documents" tab (58 official guides, handbooks, matrices, MI insurer guidelines, regs and state licensing laws; each with Official / Find PDF / Search-site links, CSV export); every guide card gets "Find full PDF"
 - Step-by-step free FRED API key walkthrough on Market Intel Live → Relay setup and Library → Free data feeds (key stored as an Apps Script property, never in the dashboard)
+
+## v48 — My Tools: Real Estate Broker Dashboard
+- Added "Real Estate Broker Dashboard" (Broker Command Center) to the My Tools launcher.
