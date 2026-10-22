@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 35 skills · 7 plugins · 15 connectors (2 ok, 13 need attention) · 62 cloud routines · 60 Mac tasks
+toolkit: 35 skills · 7 plugins · 17 connectors (2 ok, 15 need attention) · 65 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -25,13 +25,13 @@ toolkit: 35 skills · 7 plugins · 15 connectors (2 ok, 13 need attention) · 62
 - `push-buttons`: One-word slash commands (/cycle /inbox /meetings /sync /connect /tc /queue /today /help-buttons) that send the full, correct prompt for each workflow, HALT rules included.
 
 **Connectors**
-- `Inkbox (Vanessa's iMessage, cloud)` — *reconnect*: needs_reconnect on claude.ai
-- `Kapso WhatsApp` — *pending*: number (202) 474-5223 assigned 2026-10-14; plugin, MCP and both Keychain keys pending
-- `CRMLS · dotloop · Ticor` — *pending*: applications/emails drafted, not sent
+- `Inkbox (Vanessa's iMessage + email)` — *reconnect*: reconnected 2026-10-22: email active (vanessa-shearrill@inkboxmail.com), iMessage line ready — no phone linked yet
+- `Kapso WhatsApp (Pabbly app)` — *attention*: login proven (HTTP 200); phone list + List Phone Numbers built; both instant triggers built (manual webhook: paste the Pabbly URL into Kapso); Send step waits for his test number
+- `Kapso WhatsApp (Mac)` — *pending*: plugin/MCP/Keychain keys pending
 
 **Cloud routines**
 - `Vanessa — Chief of Staff daily cycle (weekdays 6:25 AM PT, parallel squads)`: cron CRON_TZ=America/Los_Angeles 25 6 * * 1-5 · on · —
-- `Vanessa — morning brief to Steven's phone (cloud push, 6:48 AM PT; reads the daily cycle)`: cron CRON_TZ=America/Los_Angeles 48 6 * * * · on · SUCCEEDED @ 2026-10-20T13:49
+- `Vanessa — morning brief across the dashboards (6:34 AM PT; push + writes the iMessage/voice script)`: cron CRON_TZ=America/Los_Angeles 34 6 * * * · on · SUCCEEDED @ 2026-10-22T13:49 (as the 6:4
 - `Command Deck & ISA Portal Weekly Loop Engineering QA`: cron 0 16 * * 0 · on · FAILED @ 2026-09-20T16:06
 - `Command Deck — Vanessa orchestrated ops review (C-suite in parallel, Fri 4 PM PT)`: cron 0 23 * * 5 · on · FAILED @ 2026-09-18T23:03
 - `Command Deck — weekly improvement loop (research → apply)`: cron 0 16 * * 0 · on · FAILED @ 2026-09-20T16:06
@@ -78,9 +78,6 @@ toolkit: 35 skills · 7 plugins · 15 connectors (2 ok, 13 need attention) · 62
 - `web-design-guidelines`: Review UI code for Web Interface Guidelines compliance. Use when asked to "review my UI", "check accessibility", "audit design", "review UX", or "check my site against best practices".
 - `writing-guidelines`: Review docs/prose for Writing Guidelines compliance. Use when asked to "review my docs", "check writing style", "audit prose", "review docs voice and tone", or "check this page against the writing handbook".
 
-**Connectors**
-- `SkySlope · zipForms` — *pending*: locked until compliance sign-off
-
 **Cloud routines**
 - `R16 — Monthly marketing compliance sweep (Alexandra)`: cron 0 16 1 * * · on · SUCCEEDED @ 2026-09-13T23:45
 
@@ -114,10 +111,7 @@ toolkit: 35 skills · 7 plugins · 15 connectors (2 ok, 13 need attention) · 62
 - `openmontage-video`: Make a marketing, explainer or training video with OpenMontage on the Mac (~/Applications/OpenMontage) — Sofia's brief, Claude Code runs the pipeline, Steven approves every creative stop, nothing is posted. Use when Stev
 
 **Connectors**
-- `YouTube · Instagram · LinkedIn · Facebook (Composio)` — *ok*: active (Steven Shearrill channel / @stevenshearrillhomes / LinkedIn / Facebook)
-- `TikTok · GoHighLevel · Discord bot · HeyGen (Composio)` — *pending*: initiated, no account
-- `Strava · Gmail · Calendar · Drive · Notion · Slack · Canva · Zoom · Fieldy · WhisperAI · C` — *ok*: connected
-- `BlackRock · Health Data Avatar · Microsoft 365 · PlayMCP · Similarweb · Higgsfield` — *pending*: never finished connecting
+- `BlackRock · Health Data Avatar · Microsoft 365 · PlayMCP · Similarweb · Higgsfield` — *pending*: never finished connecting; nothing uses them
 
 **Cloud routines**
 - `VA Command Center — weekly avatar content drafts`: cron CRON_TZ=America/Los_Angeles 58 14 * * 0 · on · SUCCEEDED @ 2026-10-18T21:58
@@ -135,12 +129,11 @@ toolkit: 35 skills · 7 plugins · 15 connectors (2 ok, 13 need attention) · 62
 - `zoho-crm-sync`: Sync Zoho CRM — Steven's system of record for the mortgage pipeline — into the Command Deck through Composio: writes zohoSync (connection health), zohoLeads (14-stage kanban) and zohoDeals. Self-tests first and reports t
 
 **Connectors**
-- `Zoho CRM (Composio)` — *attention*: account active; API calls 403
-- `Lofty` — *attention*: key file on the Mac; sync task dark with the runner
-- `ShowingTime · Showami · homes.com` — *pending*: sign-in pending
+- `Zoho CRM (Composio)` — *attention*: account ACTIVE; ZOHO_GET_ZOHO_RECORDS → 403 NO_PERMISSION (tested 14:46 UTC)
+- `Lofty` — *attention*: no key on the Mac yet; GET-only CLI built
 
 **Cloud routines**
-- `Transaction & Showing desk — TC + showing assistant (weekdays 7:10 AM PT)`: cron CRON_TZ=America/Los_Angeles 10 7 * * 1-5 · on · —
+- `Transaction & Showing desk — TC + showing assistant (weekdays 6:05 AM PT, before the cycle)`: cron CRON_TZ=America/Los_Angeles 5 6 * * 1-5 · on · SUCCEEDED @ 2026-10-22T14:10
 - `Command Deck ↔ ISA Portal drift check (2x/day)`: cron 0 2,14 * * * · on · SUCCEEDED @ 2026-09-22T02:05
 - `Command Deck ↔ ISA Portal — Pipeline Sync`: cron 0 1,7,13,19 * * * · on · SUCCEEDED @ 2026-09-22T07:08
 - `Command Deck ↔ ISA Portal comms bridge (hourly)`: cron 7 * * * * · off · SUCCEEDED @ 2026-09-09T02:07
@@ -191,18 +184,28 @@ toolkit: 35 skills · 7 plugins · 15 connectors (2 ok, 13 need attention) · 62
 - `route-beacon`: Shows which AI route this session is on and toasts when the failover switches.
 
 **Connectors**
-- `Mac runner (every Mac task)` — *silent*: silent since 2026-10-13 07:13 UTC
-- `Inkbox voice SDK (Mac)` — *attention*: installed by MAC-SETUP.sh --only inkbox-voice
-- `Google Drive (Composio)` — *pending*: initiated — not needed
+- `Mac runner (every Mac task)` — *silent*: still silent since 2026-10-13 07:13 UTC — stuck "running" one task
+- `Repo sync on the Mac` — *attention*: git pull failed daily (cloud and Mac both rebuild the brain files)
+- `Gondola (travel MCP)` — *attention*: not yet registered anywhere
+- `Fieldy` — *ok*: connected; no recordings yet (free plan, 7-day window)
+- `Gmail · Google Calendar · Zoom · Fieldy · Inkbox` — *attention*: now callable from the Command Deck page (mcp capability) — Triage inbox, Recap meetings, Text me the brief
+- `Eromify` — *reconnect*: reconnected 2026-10-22 (creator studio; spends credits — HALT: every generation is Steven's yes)
 - `EVRoutes · Turo` — *reconnect*: needs_reconnect
+- `You.com` — *ok*: connected but 0 credits; 9 files still reference it
+- `Weekly backup` — *attention*: GREEN — catch-up run 2026-10-22 verified 191 + 16 docs; now Sunday 21:07 UTC (after the allowance reset)
+- `Cloud routines` — *attention*: 55 enabled; every failure this month = usage limit; 17 ran green today
+- `Broker Command Center (3rd dashboard)` — *attention*: data lives in the browser only — no routine can read it
 
 **Cloud routines**
-- `Command Deck — daily freshness sweep (writer, Claude)`: cron 40 3,15 * * * · on · SUCCEEDED @ 2026-10-20T15:40
+- `Command Deck — daily freshness sweep (writer, Claude; once a day since 2026-10-22, per-key cadence)`: cron 40 15 * * * · on · SUCCEEDED @ 2026-10-20T15:40
 - `Command Deck — morning feeds (writer, Claude)`: cron 5 13 * * * · on · SUCCEEDED @ 2026-10-20T13:08
 - `Command Deck — market close (writer, Claude)`: cron 20 21 * * 1-5 · on · SUCCEEDED @ 2026-10-19T21:20
 - `Scrape queue runner`: cron CRON_TZ=America/Los_Angeles 7 9 * * * · on · SUCCEEDED @ 2026-10-19T16:08
 - `Attraction Command Center: daily cloud run`: cron CRON_TZ=America/Los_Angeles 40 6 * * 1-5 · on · SUCCEEDED @ 2026-10-20T13:40
 - `RoleCompass daily job hunt (v4)`: cron CRON_TZ=America/Los_Angeles 40 6 * * * · on · SUCCEEDED @ 2026-10-20T13:40
+- `Refi watch — weekly prep list (Mon 7:20 AM PT, drafts only)`: cron CRON_TZ=America/Los_Angeles 20 7 * * 1 · on · —
+- `Sphere & past-client touches — monthly drafts (day 11, 7:40 AM PT, drafts only)`: cron CRON_TZ=America/Los_Angeles 40 7 11 * * · on · —
+- `Weekly ecosystem backup — cloud writer (Sunday, after the allowance reset)`: cron 7 21 * * 0 · on · SUCCEEDED @ 2026-10-22T14:16 (catch-up)
 - `6D Brain — daily rebuild and republish (3:30 AM PT, this session)`: cron CRON_TZ=America/Los_Angeles 30 3 * * * · on · —
 - `Account Health Check`: cron 0 17 * * 1 · on · SUCCEEDED @ 2026-09-21T17:09
 - `Books Reconciliation Reminder`: cron 0 22 * * 5 · on · FAILED @ 2026-09-18T22:01
