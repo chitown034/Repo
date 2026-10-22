@@ -26,6 +26,8 @@ Steven (Principal)
 │   ├─ Agent OS — `bin/brain os`: all 172 roster agents reachable via Laya lane, Jarvis recall and an Orca launch command (`wiki/ai-team/agent-os.md`)
 │   ├─ Dispatch planner — `bin/brain route`: lead seat, cross-functional joins, ≤8-wide parallel waves, gates, HALTs (rules: `wiki/ai-team/cross-functional.md`)
 │   ├─ Broker Command Center — realtor/broker OS (https://claude.ai/artifact/XFx2H7cf8mnS8e8hjFzxNg), connected 2026-10-22
+│   ├─ The Bot Crew — 355 chat agents mirroring this chart: 13 executive/mentor cards, 21 named + desk seats, 8 pods and
+│   │   12 workflows runnable, an org-chart panel, 20 live connectors behind approval cards (https://claude.ai/artifact/B8BPDvyE55p8hT7PTyKbjG; `wiki/ai-team/bot-crew.md`, 2026-10-22)
 │   ├─ Travel Desk — Gondola MCP: points vs cash, trips, price watches; Marcus costs each trip; booking is Steven's (new 2026-10-22, `wiki/ai-team/desk-seats.md`)
 │   ├─ Meeting Scribe — Fieldy/Zoom recaps: decisions, action items → `vanessaQueue`; drafts only (new 2026-10-22, `wiki/ai-team/desk-seats.md`)
 │   └─ Juliet — Escalation & Service Recovery
@@ -155,5 +157,6 @@ Nadia (CAIO) and Elon (CTO Innovator) never ship a change themselves — Nadia s
 - `wiki/ai-team/model-tiering-dispatch.md` — which model each layer of this chart runs on, and the parallel-dispatch limits.
 - `wiki/ai-team/tool-integration-status.md` — connector, skill, and proposed-tool status by seat.
 - `wiki/ai-team/mentors-and-benches.md` — Maxwell, Apex, James, Kevin and what a "bench" actually is.
+- `wiki/ai-team/bot-crew.md` — The Bot Crew: every seat above as a chat card, pods as runnable workflows.
 
-Source: Command Deck, `ORG_CHART` / `AI_TEAM_ORG` data (AI Team panel), toolkit snapshot referenced 2026-09-16. Tree last updated 2026-10-09 (Laya, Brain loop, Google Drive mirror, Jarvis verify script; dispatch planner, keep-going failover and weekly scout added the same day; browser control + skill finder 2026-10-10; trading desk, loan-task agents, events scout, Computer Hub, third-party packs 2026-10-11; Broker Command Center seats, the ISA's "Today from Vanessa" list and the Transaction & Showing desk node 2026-10-22; seven desk seats and the Client Care Pod 2026-10-22). `bin/brain orgcheck` proves every seat above resolves to a brain page.
+Source: Command Deck, `ORG_CHART` / `AI_TEAM_ORG` data (AI Team panel), toolkit snapshot referenced 2026-09-16. Tree last updated 2026-10-09 (Laya, Brain loop, Google Drive mirror, Jarvis verify script; dispatch planner, keep-going failover and weekly scout added the same day; browser control + skill finder 2026-10-10; trading desk, loan-task agents, events scout, Computer Hub, third-party packs 2026-10-11; Broker Command Center seats, the ISA's "Today from Vanessa" list and the Transaction & Showing desk node 2026-10-22; seven desk seats and the Client Care Pod 2026-10-22; The Bot Crew surface under Vanessa 2026-10-22). `bin/brain orgcheck` proves every seat above resolves to a brain page.
