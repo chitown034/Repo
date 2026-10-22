@@ -140,4 +140,3 @@ document.addEventListener("click",e=>{const a=e.target.closest("[data-lpn]");if(
 {const l=PAGES.find(p=>p[0]==="Loan Intelligence");if(l&&!l[1].some(x=>x[0]==="lcompare")){const i=l[1].findIndex(x=>x[0]==="lprofiles");l[1].splice(i<0?l[1].length:i+1,0,["lcompare","Lender Compare & Recommend"])}}
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();LC_TYPES.forEach(t=>{const R=lcAll().map(x=>lcScore(x,{type:t.k,pri:"bal"})).filter(Boolean).sort((a,b)=>b.s-a.s).slice(0,5);out.push({src:`Best lender for ${t.n}`,t:`What to compare: ${t.why} Top matches: ${R.map(r=>`${r.x.name}${r.x.lpc!=null?` (LPC ${r.x.lpc}%)`:""}`).join(", ")||"none tagged"}.`})});return out}}
 if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^Best lender for /,{hash:"lcompare"}]);
-boot();
