@@ -48,7 +48,7 @@ BACKUP=""; GEN=0; OWN_KEPT=""; OWN_REPLACED=""; NOTES=""
 log()  { printf '%s %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*" >>"$LOG" 2>/dev/null; [ "$QUIET" = 1 ] || printf '  %s\n' "$*"; }
 note() { NOTES="$NOTES
   - $*"; log "$*"; }
-g()    { git -C "$REPO" "$@"; }
+g()    { git -C "$REPO" -c core.quotePath=false "$@"; }
 finish() { # <rc> <one-line result>
   printf '%s repo-sync: %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$2" >>"$LOG" 2>/dev/null
   echo "repo-sync: $2"
@@ -68,7 +68,7 @@ LOCK="$GITDIR/repo-sync.lock"
 # one sync at a time (the LaunchAgent and connect-all can overlap); a lock older than 30 min is stale
 if ! mkdir "$LOCK" 2>/dev/null; then
   if [ -n "$(find "$LOCK" -maxdepth 0 -mmin +30 2>/dev/null)" ]; then rmdir "$LOCK" 2>/dev/null; mkdir "$LOCK" 2>/dev/null || exit 0
-  else echo "repo-sync: another sync is running - skipped"; exit 0; fi
+  else echo "repo-sync: another sync is running - skipped (try again in a minute)"; exit 75; fi
 fi
 [ "$QUIET" = 1 ] || echo "repo-sync - $REPO - branch $BRANCH - $(date)"
 
@@ -116,7 +116,7 @@ NL='
 '
 OLDIFS=$IFS; IFS=$NL
 for f in $(g diff --name-only --diff-filter=U 2>/dev/null); do
-  if is_generated "$f"; then backup_file "$f"; GEN=$((GEN+1)); else backup_file "$f" own; OWN_REPLACED="$OWN_REPLACED
+  if is_generated "$f"; then backup_file "$f" || finish 1 "could not write the backup folder ($BACKUP) - stopped before touching $f; nothing of yours was changed"; GEN=$((GEN+1)); else backup_file "$f" own || finish 1 "could not write the backup folder ($BACKUP) - stopped before touching $f; nothing of yours was changed"; OWN_REPLACED="$OWN_REPLACED
   - $f (had conflict markers from an earlier pull)"; fi
   restore_committed "$f"
 done
@@ -147,12 +147,12 @@ DIRTY="$(printf '%s\n' "$DIRTY" | sed '/^$/d' | sort -u)"
 IFS=$NL
 for f in $DIRTY; do
   if is_generated "$f"; then
-    backup_file "$f"; restore_committed "$f"; GEN=$((GEN+1))
+    backup_file "$f" || finish 1 "could not write the backup folder ($BACKUP) - stopped before touching $f; nothing of yours was changed"; restore_committed "$f"; GEN=$((GEN+1))
   elif in_list "$f" "$INCOMING"; then
-    backup_file "$f" own; restore_committed "$f"; OWN_REPLACED="$OWN_REPLACED
+    backup_file "$f" own || finish 1 "could not write the backup folder ($BACKUP) - stopped before touching $f; nothing of yours was changed"; restore_committed "$f"; OWN_REPLACED="$OWN_REPLACED
   - $f"
   else
-    backup_file "$f" own; OWN_KEPT="$OWN_KEPT
+    backup_file "$f" own || finish 1 "could not write the backup folder ($BACKUP) - stopped before touching $f; nothing of yours was changed"; OWN_KEPT="$OWN_KEPT
   - $f"
   fi
 done

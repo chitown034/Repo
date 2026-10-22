@@ -11,6 +11,17 @@ import json
 import re
 import sys
 
+# Node families the build itself produces. A live-only node in one of these was removed or renamed on purpose
+# by the build (a deleted page, a retired routine), so it must stay gone; only foreign families (another
+# session's lobe, e.g. "vanessa:") are carried over.
+OWN_PREFIXES = ("store:", "skill:", "plugin:", "connector:", "routine:", "mactask:", "pod:")
+
+
+def foreign(node_id: str) -> bool:
+    if "/" in node_id or node_id.endswith(".md") or node_id.startswith(OWN_PREFIXES):
+        return False
+    return ":" in node_id
+
 
 def grab(page: str, name: str):
     m = re.search(r"(?m)^const " + name + r" = (.*);\s*$", page)
@@ -25,13 +36,13 @@ def main(live_path: str, out_path: str) -> int:
         print("merge-live: could not find const G on one of the pages; nothing merged")
         return 1
     have = {n["id"] for n in mg["nodes"]}
-    added = [n for n in lg["nodes"] if n["id"] not in have]
+    added = [n for n in lg["nodes"] if n["id"] not in have and foreign(n["id"])]
     mg["nodes"] += added
     have |= {n["id"] for n in added}
     seen = {(l["s"], l["t"]) for l in mg["links"]}
     links = [l for l in lg["links"] if l["s"] in have and l["t"] in have and (l["s"], l["t"]) not in seen]
     mg["links"] += links
-    mine = mine[:mm.start(1)] + json.dumps(mg, ensure_ascii=False, separators=(",", ":")) + mine[mm.end(1):]
+    mine = mine[:mm.start(1)] + json.dumps(mg, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/") + mine[mm.end(1):]
     hl = re.search(r"const HUE = \{([^}]*)\}", live)
     hm = re.search(r"const HUE = \{([^}]*)\}", mine)
     hues = 0

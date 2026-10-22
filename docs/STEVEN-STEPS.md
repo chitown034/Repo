@@ -20,6 +20,12 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
 2. **Morning iMessage + voice from Vanessa:** claude.ai → Settings → Connectors → **Inkbox → Reconnect**; then in the
    runner task `vanessa-morning-brief-text` paste §8b at the start and §8 at the end (`integrations/mac-task-specs.md`).
    From then on, ~6:40 AM: one text covering all three dashboards and a voice note in her voice.
+2b. **Zoho CRM (one checkbox, then tell Claude "Zoho done"):** Zoho CRM → ⚙ Setup → Security Control → Profiles →
+   your profile (Administrator or yours) → Developer Permissions → tick **Zoho CRM API Access** → Save. Tested live
+   2026-10-22 14:46 UTC: Composio's Zoho connection is active, Zoho answers 403 NO_PERMISSION until that box is ticked.
+   If it still says 403 after the tick, Claude sends a fresh Composio reconnect link.
+2c. **Lofty CRM:** nothing extra — the paste (step 7b) checks your Lofty key, asks for it once if it is missing
+   (hidden, saved only on the Mac), and proves it works read-only; the Lofty sync resumes with the runner.
 3. **Gondola (travel):** claude.ai → Settings → Connectors → Add custom connector → `Gondola`, URL
    `https://mcp.gondola.ai/mcp` → Connect and sign in.
 4. **Orca and AnyDesk (the paste opens them):** Orca → Add Project → your Repo folder, then scan its pairing code with the

@@ -273,6 +273,30 @@ keyfiles() {
 }
 step "7 Lofty and Zoho key files" "Keys: open -e ~/.config/zoho/.env (and lofty) and type the values after the = signs" keyfiles
 
+# 7b. Lofty CRM - make sure the key is on this Mac (hidden prompt, file only, chmod 600; Enter skips), install the
+#     GET-only Lofty CLI if missing, and prove the key works: GET /me and the lead stage totals. Never writes to Lofty.
+LOFTY_VENV="$HOME/Applications/cli-anything-harnesses/.venv"
+lofty_connect() {
+  local env="$HOME/.config/lofty/.env" key=""
+  if ! { [ -s "$env" ] && grep -qE '^LOFTY_API_KEY=.+' "$env"; }; then
+    printf 'Lofty API key (Lofty -> Settings -> Integrations -> API). Typed hidden, saved only in ~/.config/lofty/.env. Enter to skip: '
+    stty -echo 2>/dev/null; read -r key </dev/tty; stty echo 2>/dev/null; echo
+    [ -z "$key" ] && { echo "skipped - no Lofty key on this Mac"; return 1; }
+    mkdir -p "$HOME/.config/lofty" && ( umask 077; printf 'LOFTY_API_KEY=%s\n' "$key" > "$env" ) && chmod 600 "$env"
+    key=""; echo "key saved (value not shown)"
+  fi
+  local cli="$LOFTY_VENV/bin/cli-anything-lofty"
+  if [ ! -x "$cli" ]; then
+    [ -x "$LOFTY_VENV/bin/pip" ] || python3 -m venv "$LOFTY_VENV" || return 1
+    "$LOFTY_VENV/bin/pip" install -q integrations/cli-anything-harnesses/lofty/agent-harness || return 1
+  fi
+  "$cli" me >/dev/null 2>&1 || { echo "Lofty refused the key (GET /me failed) - make a new key in Lofty and rerun"; return 1; }
+  echo "Lofty key works (GET /me ok)"
+  "$cli" leads stage-totals 2>&1 | tail -12
+}
+step "7b Lofty CRM (key on this Mac, read-only check)" \
+  "Lofty: make an API key in Lofty -> Settings -> Integrations -> API, rerun connect-all and paste it when asked" lofty_connect
+
 # 8. Claude Mods: route beacon, HALT guard, /remember, connection beacon (/connections, /owner), /paste. Asks y once.
 mods_install() { bash integrations/mods/install-mods.sh </dev/tty; }
 step "8 Claude Mods (status line, HALT guard, /remember, /connections, /owner, /paste)" \

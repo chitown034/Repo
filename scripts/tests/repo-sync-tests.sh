@@ -97,4 +97,21 @@ check "K no local .gitattributes -> INDEX.md still treated as rebuilt" '[ $RC = 
 fresh; run; run
 check "J up to date -> exit 0, no backup folder made"             '[ $RC = 0 ] && printf "%s" "$OUT" | grep -q "up to date" && [ -z "$(bk)" ]'
 
+# L. backup folder cannot be written -> stop before touching anything of Steven's (validator finding 2026-10-22)
+fresh; echo "my plan" > "$MAC/wiki/plan.md"; cloud_rebuild 'echo "plan v2" > wiki/plan.md'
+mkdir -p "$HOMEDIR"; : > "$HOMEDIR/backups"   # a FILE where the backup folder should be
+run
+check "L unwritable backup -> exit 1"                              '[ $RC = 1 ] && printf "%s" "$OUT" | grep -q "could not write the backup folder"'
+check "L unwritable backup -> his edit survives"                   '[ "$(cat "$MAC/wiki/plan.md")" = "my plan" ]'
+
+# M. non-ASCII file name with an own edit is backed up and kept, sync not stuck
+fresh; ( cd "$R/cloud" && echo "cv v1" > "wiki/Résumé.md" && git add -A && git commit -qm cv && git push -q origin "$B" 2>/dev/null )
+git -C "$MAC" pull -q 2>/dev/null; echo "my cv" > "$MAC/wiki/Résumé.md"; cloud_rebuild; run
+check "M non-ASCII own edit -> sync succeeds"                      '[ $RC = 0 ] && at_origin'
+check "M non-ASCII own edit kept and backed up"                    'grep -q "my cv" "$MAC/wiki/Résumé.md" && grep -q "my cv" "$(bk)files/wiki/Résumé.md"'
+
+# N. another sync holds the lock -> not reported as success
+fresh; mkdir "$(git -C "$MAC" rev-parse --absolute-git-dir)/repo-sync.lock"; run
+check "N lock held -> exit 75, says skipped"                       '[ $RC = 75 ] && printf "%s" "$OUT" | grep -q "skipped"'
+
 echo "repo-sync tests: $PASS passed, $FAIL failed"; [ "$FAIL" = 0 ]

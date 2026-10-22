@@ -4,7 +4,7 @@ set -u
 cd "$(dirname "$0")" || exit 1
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
 mkdir -p "$T/bin" "$T/home"
-FUNCS="$(sed -n '/^have()/p;/^runner_fix() {/,/^}/p;/^keep_awake() {/,/^}/p;/^repo_sync_agent() {/,/^}/p;/^laya_venv() {/,/^}/p;/^laya_connect() {/,/^}/p;/^orca_app() {/,/^}/p;/^orca_connect() {/,/^}/p;/^anydesk_app() {/,/^}/p;/^anydesk_connect() {/,/^}/p;/^gondola_mcp() {/,/^}/p' connect-all.sh)"
+FUNCS="$(sed -n '/^have()/p;/^runner_fix() {/,/^}/p;/^keep_awake() {/,/^}/p;/^repo_sync_agent() {/,/^}/p;/^laya_venv() {/,/^}/p;/^laya_connect() {/,/^}/p;/^orca_app() {/,/^}/p;/^orca_connect() {/,/^}/p;/^anydesk_app() {/,/^}/p;/^anydesk_connect() {/,/^}/p;/^gondola_mcp() {/,/^}/p;/^LOFTY_VENV=/p;/^lofty_connect() {/,/^}/p' connect-all.sh)"
 pass=0; fail=0
 check() { if [ "$2" = "$3" ]; then pass=$((pass+1)); echo "ok   $1"; else fail=$((fail+1)); echo "FAIL $1 (expected rc $3, got $2)"; fi; }
 stub_runner() { # <restart exit code> <status text after restart>
@@ -105,5 +105,15 @@ check "gondola: second run is a no-op"                   "$(run_fn gondola_mcp)"
 [ "$(wc -l < "$GONDOLA_FILE.args")" -eq 1 ];              check "gondola: added only once" "$?" 0
 rm -f "$T/bin/claude"
 check "gondola: missing claude CLI lands in FAIL"        "$(PATH="$T/bin:/usr/bin:/bin" run_fn gondola_mcp)" 1
+
+# lofty: key present + CLI works -> pass (read-only GET calls only); key refused -> FAIL; never writes the key twice
+mkdir -p "$T/home/.config/lofty" "$T/home/Applications/cli-anything-harnesses/.venv/bin"
+printf 'LOFTY_API_KEY=test-not-real\n' > "$T/home/.config/lofty/.env"
+LCLI="$T/home/Applications/cli-anything-harnesses/.venv/bin/cli-anything-lofty"
+printf '#!/bin/sh\necho "$*" >> "%s"\n[ "$1" = me ] && exit ${LOFTY_ME_RC:-0}\necho "New Lead: 12"\n' "$T/lofty.calls" > "$LCLI"; chmod +x "$LCLI"
+check "lofty: working key passes"                         "$(run_fn lofty_connect)" 0
+grep -qvE '^(me|leads stage-totals)$' "$T/lofty.calls"; check "lofty: only GET-style commands were run (me, stage-totals)" "$?" 1
+check "lofty: refused key lands in FAIL"                  "$(LOFTY_ME_RC=1 run_fn lofty_connect)" 1
+[ "$(grep -c LOFTY_API_KEY "$T/home/.config/lofty/.env")" = 1 ]; check "lofty: existing key file left as is" "$?" 0
 
 echo "connect-all tests: $pass passed, $fail failed"; [ "$fail" = 0 ]
