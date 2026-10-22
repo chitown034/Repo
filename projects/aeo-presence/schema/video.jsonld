@@ -1,0 +1,16 @@
+{
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": "REPLACE: exact question title, e.g. Can I buy a house with BAH? (VA loan, Temecula)",
+  "description": "REPLACE: direct answer in the first sentence, then the 50-word canonical bio.",
+  "thumbnailUrl": ["https://i.ytimg.com/vi/REPLACE_VIDEO_ID/maxresdefault.jpg"],
+  "uploadDate": "REPLACE: YYYY-MM-DD (never guess)",
+  "duration": "REPLACE: ISO 8601, e.g. PT0M48S",
+  "contentUrl": "https://www.youtube.com/watch?v=REPLACE_VIDEO_ID",
+  "embedUrl": "https://www.youtube.com/embed/REPLACE_VIDEO_ID",
+  "author": {"@id": "https://stevenshearrill.com/#person"},
+  "publisher": {"@type": "Person", "name": "Steven Shearrill"},
+  "inLanguage": "en-US",
+  "isFamilyFriendly": true,
+  "keywords": "Steven Shearrill, VA loan, Temecula, San Diego, military realtor, BAH"
+}
