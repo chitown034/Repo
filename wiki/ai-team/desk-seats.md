@@ -23,7 +23,8 @@ and pod membership live in `cross-functional.md`; the launchable agent file is `
   for scenario prep and to the Sphere Nurture Coordinator for the touch draft.
 - **HALT:** "market average, not a quote." Never a rate quote, a lock, an eligibility call or a message to a borrower —
   those are Steven's. Drafts only.
-- **Starts from:** this page, then `wiki/mortgage-programs/index.md` for program mechanics; skill `.claude/skills/refi-watch`.
+- **Starts from:** this page, then see `wiki/mortgage-programs/refi-review-prep.md` (the list fields, the 0.75 / 0.50 thresholds,
+  the Monday routine, the IRRRL pointer); skill `.claude/skills/refi-watch`.
 
 ## Sphere Nurture Coordinator
 
@@ -31,7 +32,8 @@ and pod membership live in `cross-functional.md`; the launchable agent file is `
 - **Owns:** the month's nurture calendar and the draft for each touch (text, email, card), built with Wren (referral
   reciprocity) so every touch carries a referral ask only when it fits; Alexandra reviews each draft.
 - **HALT:** drafts only — never sends a text or email, never writes to Lofty or the calendar.
-- **Starts from:** this page, then `wiki/real-estate-playbooks/referral-reciprocity.md`; skill `.claude/skills/past-client-nurture`.
+- **Starts from:** this page, then see `wiki/real-estate-playbooks/sphere-nurture.md` (the `sphereList` fields, the monthly touches,
+  the 11th-of-month routine) and `referral-reciprocity.md`; skill `.claude/skills/past-client-nurture`.
 
 ## Voicemail & Inbox Triage
 
@@ -56,7 +58,8 @@ and pod membership live in `cross-functional.md`; the launchable agent file is `
 - **Owns:** the sign-in → lead list (deduped against Lofty), the thank-you draft per visitor, the ISA call list in priority
   order, and the open house checklist for the next one.
 - **HALT:** drafts only — never sends the thank-you, never writes the lead to the CRM.
-- **Starts from:** this page, then `wiki/real-estate-playbooks/listing-process.md`; skills `.claude/skills/open-house-follow-up` and `.claude/skills/review-request`.
+- **Starts from:** this page, then see `wiki/real-estate-playbooks/open-house.md` (before / during / after, workflow 9) and
+  `post-close-care.md` (day 1 / 10 / 30); skills `.claude/skills/open-house-follow-up` and `.claude/skills/review-request`.
 
 ## Travel Desk
 

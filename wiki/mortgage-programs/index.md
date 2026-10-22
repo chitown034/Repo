@@ -18,6 +18,7 @@ borrower.
 | `fha-usda.md` | FHA (500-FICO floor, 6% concession cap) and USDA (map-first, guarantee fee) — where each beats VA |
 | `disclosure-timing.md` | TRID/RESPA/Reg Z clocks, tolerance buckets, anti-steering, CA disclosure clock, VA Tidewater — Alexandra's lane |
 | `lender-directory-notes.md` | Lender directory grouped by what each lender is actually good for, plus live verification flags |
+| `refi-review-prep.md` | Who could refi, as a prep list: `refiWatchList` fields, the 0.75 / 0.50 spread thresholds, the Monday routine, the VA IRRRL pointer, and Steven's licensed step — market average, not a quote (2026-10-22) |
 
 ## What belongs here
 

@@ -46,3 +46,24 @@ artifacts, that is the bug — do not "fix" one side by editing the other's coun
 - **The seat**: 9 messages on the line, all Steven → ISA; 0 ISA-authored, ever; scorecard never
   filled; last opened 2026-09-13. Decision packet: `docs/ISA-SEAT-DECISION.md`.
 - Panels renumbered 01–14 top to bottom; reference panels carry a "Verified <date>" stamp.
+
+## Status (2026-10-22) — version 46
+
+Published as **version 46** on 2026-10-22 (session note). What this version carries
+(`wiki/ai-team/push-button-system.md`, `context/decisions.md` 2026-10-22):
+
+- **Panel 01 opens with "Today from Vanessa"** — `isaToday`, copied each weekday from `cosBrief.isaInstructions`
+  with the ISA's step-by-step drafts and four standing duties, for the 12 PM huddle.
+- **"Hand to Vanessa" box** — writes `vanessaOutbox`; the 6:25 AM cycle moves pending items to the deck's
+  `vanessaQueue` and marks them `moved`. Vanessa is still the only AI voice that talks to the ISA.
+- **Two intake forms, being added 2026-10-22** — the refi list and the sphere list, written to `listOutbox`
+  (`{refi: [...], sphere: [...]}`, rows `pending` → `moved`); the cycle appends them to the deck's
+  `refiWatchList.v.clients` / `sphereList.v.people`. First names only; the note rate is the one figure.
+- **Rates and feeds re-mirrored** from the deck (the Mac rates task silent since 2026-10-13); the freshness sweep
+  keeps `ratesSnapshot` / `liveFeeds` here in step with the deck once a day.
+- `tcDeals` intake stays the ISA's one manual step for the Transaction & Showing desk: enter each new deal's dates
+  from the RPA; a date the document does not state is a flag, not a guess.
+- Docs an automation may write here: `isaToday`, `vanessaOutbox` status, `listOutbox` status, plus `isaKpi` and
+  the five Pipeline Sync docs (`wiki/dashboard-ops/db-docs.md`).
+- Steven's step: share the portal with the ISA/EA (`docs/STEVEN-STEPS.md` 7). The seat packet
+  (`docs/ISA-SEAT-DECISION.md`) is still open.
