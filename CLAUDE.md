@@ -19,7 +19,7 @@ On the Mac this router's job is done by the vanessa-orchestrator system prompt +
 | Any request, first — if `integrations/laya/` is installed and running | Laya's zero-token local classifier picks the row below by itself; confident → jump straight there. Below its own confidence threshold → continue down this table normally, top to bottom | Trusting Laya's guess below its own confidence threshold; skipping the HALT list because Laya routed the request |
 | Who Steven is, licences, states, credentials | `context/about-me.md` | wiki, projects |
 | "Why is it this way", a past call, a standing rule | `context/decisions.md` (find the dated entry, read that entry) | the whole file |
-| Status of a named project | `projects/<name>.md` — command-deck, isa-portal, ai-team, nonprofit, usc-pjmt-530 | the deck HTML |
+| Status of a named project | `projects/<name>.md` — command-deck, isa-portal, business-command-center, ai-team, nonprofit, usc-pjmt-530 | the deck HTML |
 | Loan program, guideline, VA mechanics, eligibility | `wiki/mortgage-programs/index.md` → one named page | playbooks |
 | Listing, buyer, transaction or showing process | `wiki/real-estate-playbooks/index.md` → one named page | mortgage wiki |
 | Who on the AI team owns X, seat/model/trust level | `wiki/ai-team/index.md` | the 172-agent roster dump |

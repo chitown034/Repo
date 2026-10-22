@@ -638,3 +638,12 @@ ISA Portal (v48, `listOutbox`); the 6:25 cycle moves ISA rows to the deck. The M
 `refiWatchDesk` — `refiWatch` stays the older hand-entered rate-watch list on the Ops Radar panel (a name collision the
 deck build caught). Another session's Capability Pack section on the ISA Portal was kept; it asks for the `downloads`
 capability without declaring it, so its Download button falls back to copy — their call, not changed here.
+
+## 2026-10-22 (night) — Business Command Center: a tracker hub with in-page agent seats
+Steven asked for a professional dashboard hub, then for it to be elite with more dashboards, automations, workflows and
+AI agents, and for the 6D brain and the org chart to carry every change. Built as a separate artifact with 135 tracker
+modules, a signals engine, live Calendar, Gmail and Drive reads, 26 in-page seats taken from this org chart, mission
+control, standing pods, 12 workflows, 7 calculators and 16 scheduled-task prompts. Decisions kept: the page's agents draft
+only and end HALT items in a Needs-Steven packet; it has its own database and does not touch the Command Deck's documents;
+none of the 16 prompts is scheduled until Steven says yes. The final republish was blocked by the daily artifact publish
+limit and goes out after the UTC reset.

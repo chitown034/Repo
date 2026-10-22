@@ -26,6 +26,9 @@ Steven (Principal)
 │   ├─ Agent OS — `bin/brain os`: all 172 roster agents reachable via Laya lane, Jarvis recall and an Orca launch command (`wiki/ai-team/agent-os.md`)
 │   ├─ Dispatch planner — `bin/brain route`: lead seat, cross-functional joins, ≤8-wide parallel waves, gates, HALTs (rules: `wiki/ai-team/cross-functional.md`)
 │   ├─ Broker Command Center — realtor/broker OS (https://claude.ai/artifact/XFx2H7cf8mnS8e8hjFzxNg), connected 2026-10-22
+│   ├─ Business Command Center — 135 tracker modules in 11 categories, signals engine, live Calendar/Gmail/Drive reads, Gmail drafts and
+│   │   calendar blocks, 26 in-page seats from this chart with mission control and pod wake-up, 12 workflows, 16 scheduled-task
+│   │   playbooks (https://claude.ai/artifact/MFxTdoS8mwiJLZQ8Sr2dE4), built 2026-10-22 — `projects/business-command-center.md`
 │   ├─ Travel Desk — Gondola MCP: points vs cash, trips, price watches; Marcus costs each trip; booking is Steven's (new 2026-10-22, `wiki/ai-team/desk-seats.md`)
 │   ├─ Meeting Scribe — Fieldy/Zoom recaps: decisions, action items → `vanessaQueue`; drafts only (new 2026-10-22, `wiki/ai-team/desk-seats.md`)
 │   └─ Juliet — Escalation & Service Recovery
@@ -79,6 +82,19 @@ on any change, Vanessa last. Rules and wake words: `wiki/ai-team/cross-functiona
 the ISA Portal's "Hand to Vanessa" box (via its `vanessaOutbox`, moved in each morning) and the routines. The 6:25 AM
 daily cycle works the queue first, marks each item done / needs-Steven with where the draft is, and folds the rest
 into the ≤3 Needs-you items.
+
+## Business Command Center — in-page seats (2026-10-22)
+
+The Business Command Center runs 26 of this chart's seats as in-page personas that read the open records in their own
+module categories: Vanessa; Marcus, Sofia, Derek, Alexandra, Nadia, Victor, Elena, Elon; Harrison, Gwen, Marguerite,
+Carmen, Wren, Rosa; the mentors Maxwell, Apex, James, Kevin; and the seven desk seats. Mission control has Vanessa pick the
+lead and joins and run up to five steps, or six when one of the eight standing pods above is woken (the pod limits who
+may be used). Every seat carries the HALT rules and ends those tasks with a Needs-Steven packet; Nadia, Elon and Apex
+stay proposal-only. Module ownership: Vanessa (executive and planning), Victor (leads and clients), Carmen (property and
+transactions), Harrison (mortgage), Marcus (marketing, finance and wealth), Sofia (veteran brand and content), Wren (agent
+attraction), Kevin (career and education), Derek (systems), with finer owners per module (for example Apex for trading,
+Alexandra for compliance and licensing, Elena for security). The personas are not the live agents: the roster, Orca,
+model tiers and routines are unchanged. `projects/business-command-center.md`.
 
 ## What the desks run on (2026-10-22, evening)
 
@@ -156,4 +172,4 @@ Nadia (CAIO) and Elon (CTO Innovator) never ship a change themselves — Nadia s
 - `wiki/ai-team/tool-integration-status.md` — connector, skill, and proposed-tool status by seat.
 - `wiki/ai-team/mentors-and-benches.md` — Maxwell, Apex, James, Kevin and what a "bench" actually is.
 
-Source: Command Deck, `ORG_CHART` / `AI_TEAM_ORG` data (AI Team panel), toolkit snapshot referenced 2026-09-16. Tree last updated 2026-10-09 (Laya, Brain loop, Google Drive mirror, Jarvis verify script; dispatch planner, keep-going failover and weekly scout added the same day; browser control + skill finder 2026-10-10; trading desk, loan-task agents, events scout, Computer Hub, third-party packs 2026-10-11; Broker Command Center seats, the ISA's "Today from Vanessa" list and the Transaction & Showing desk node 2026-10-22; seven desk seats and the Client Care Pod 2026-10-22). `bin/brain orgcheck` proves every seat above resolves to a brain page.
+Source: Command Deck, `ORG_CHART` / `AI_TEAM_ORG` data (AI Team panel), toolkit snapshot referenced 2026-09-16. Tree last updated 2026-10-09 (Laya, Brain loop, Google Drive mirror, Jarvis verify script; dispatch planner, keep-going failover and weekly scout added the same day; browser control + skill finder 2026-10-10; trading desk, loan-task agents, events scout, Computer Hub, third-party packs 2026-10-11; Broker Command Center seats, the ISA's "Today from Vanessa" list and the Transaction & Showing desk node 2026-10-22; seven desk seats and the Client Care Pod 2026-10-22; Business Command Center node and its 26 in-page seats 2026-10-22). `bin/brain orgcheck` proves every seat above resolves to a brain page.
