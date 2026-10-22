@@ -28,4 +28,3 @@ mount(){let cur=store.get("lp_cur",null);
 {const l=PAGES.find(p=>p[0]==="Loan Intelligence");if(l&&!l[1].some(x=>x[0]==="lprofiles")){const i=l[1].findIndex(x=>x[0]==="lenders");l[1].splice(i<0?l[1].length:i+1,0,["lprofiles","Lender Profiles & Matrices"])}}
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();LI().forEach(x=>out.push({src:`Lender profile — ${x.name}`,t:`${x.status}. ${x.channel}. States: ${LP_ST.map(s=>s+" "+((x.states||{})[s]||"?")).join(", ")}. Niches: ${(x.niches||[]).join(", ")}. Programs: ${(x.programs||[]).map(p=>`${p.p} (LTV ${p.ltv}; FICO ${p.fico}; DTI ${p.dti}; ${p.loan})`).join("; ")}. Cautions: ${(x.cautions||[]).join("; ")}. Checked ${x.checked}.`}));return out}}
 if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^Lender profile — /,{hash:"lprofiles"}]);
-boot();
