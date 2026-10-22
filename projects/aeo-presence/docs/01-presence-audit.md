@@ -47,13 +47,19 @@
 - Page name still reads "Realtor Brokered by EXP Realty of California, Inc". This is the most visible stale fact online and directly contradicts LPT Realty.
 
 ### YouTube
-- Only a 2018 eXp "Veteran's Day Serpa Show" interview surfaced. No owned channel with your name as the channel title was found. YouTube is Google-owned, indexed instantly, and heavily quoted by Gemini; this is the largest untapped channel.
+- An owned channel exists but is still named "Steven Shearrill eXp Realty" (per the 2026-09-24 playbook research); the only video that ranks is a 2018 eXp "Veteran's Day Serpa Show" interview you do not own. Rename the channel, replace the banner and About text, and start the Shorts cadence. YouTube is Google-owned, indexed within hours, and heavily quoted by Gemini; this is the largest untapped channel.
 
 ### Yelp
 - Two URLs exist: `/steven-shearrill-lpt-realty-temecula` (current, verified, 5.0 with 3 reviews, 41 photos) and `/steven-shearrill-exp-realty-of-california-temecula` (stale). Ask Yelp support to merge/redirect the old one.
 
 ### Homes.com, AgentPronto, src.exprealty.com
 - All three still say eXp Realty and/or Winchester. Homes.com and AgentPronto are claimable; the eXp page should be removed by asking eXp's agent-services desk (you are no longer affiliated).
+
+### Also stale (found in the 2026-09-24 playbook research)
+- Temecula Valley Chamber of Commerce listing still shows the old website MyTemeculaRealEstateConcierge.com, the old Twitter handle @exp_steven, and the eXp YouTube link.
+- Homes.com has a duplicate profile (id-24477910) that must be merged.
+- patriotpacific.com `robots.txt` times out for crawlers; AI crawlers that cannot read it may skip the site. Ask Patriot Pacific's host to fix it.
+- The 877 number on temeculahomefinder.com is unlabeled.
 
 ### Not found (opportunities)
 - Google Business Profile for "Steven Shearrill - LPT Realty" or "Steven Shearrill - Patriot Pacific Financial" (searches surfaced none).

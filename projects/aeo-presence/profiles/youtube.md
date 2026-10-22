@@ -1,6 +1,6 @@
-# YouTube — new channel (handle: @stevenshearrillhomes or @stevenshearrill)
+# YouTube — rename the existing channel (currently "Steven Shearrill eXp Realty")
 
-YouTube is owned by Google, indexed within hours, and quoted by Gemini and Google AI Overviews. Your only current video is a 2018 eXp interview you don't own. Build the channel.
+YouTube is owned by Google, indexed within hours, and quoted by Gemini and Google AI Overviews. The channel exists under the old eXp name with no recent uploads; the only video that ranks is a 2018 eXp interview you don't own. Rename it (YouTube Studio → Customization → Basic info), replace the banner, rewrite About, then start the Shorts cadence. Do not create a second channel; the existing one carries age, which helps.
 
 ## Channel name
 ```

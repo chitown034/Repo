@@ -710,7 +710,7 @@
    "role": "Sofia, Chief Marketing Officer on Steven Shearrill's AI Team — brand voice, campaigns, content calendar, webinars (VA Loan Mastermind Live,",
    "laya": {
     "lane": "Sofia",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"cmo sofia Sofia, Chief Marketing Officer on Steven\"",
@@ -802,8 +802,8 @@
    "lead": null,
    "role": "Expert code review specialist.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Sofia",
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"code reviewer Expert code review specialist.\"",
@@ -823,6 +823,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "Alexandra",
      "Vanessa"
     ]
    }
@@ -973,7 +974,7 @@
    "role": "Report under Sofia (CMO): writes finished posts, newsletters, follow-up sequences and listing one-pagers in Steven's brand voice for militar",
    "laya": {
     "lane": "Sofia",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"content writer writes finished posts, newsletters, follow-up sequences\"",
@@ -1308,8 +1309,8 @@
    "lead": null,
    "role": "PostgreSQL database specialist for query optimization, schema design, security, and performance.",
    "laya": {
-    "lane": "Elena",
-    "starts_from": "docs/"
+    "lane": "Sofia",
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"database reviewer PostgreSQL database specialist for query optimization,\"",
@@ -1329,6 +1330,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "Alexandra",
      "Vanessa"
     ]
    }
@@ -2111,7 +2113,7 @@
    "role": "Report under Sofia (CMO): optimises Steven's visibility inside AI answers — ChatGPT, Claude, Perplexity, Google AI Overviews and AI Mode — t",
    "laya": {
     "lane": "Sofia",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"geo aeo optimizer optimises Steven's visibility inside AI answers\"",
@@ -2775,7 +2777,7 @@
    "role": "Marketing strategist and copywriter for campaign planning, audience research, positioning, copy creation, and content review.",
    "laya": {
     "lane": "Sofia",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"marketing agent Marketing strategist and copywriter for campaign\"",
@@ -2934,7 +2936,7 @@
    "role": "Report under Sofia (CMO): hunts residual and affiliate income — products, tools, platforms and sponsorships Steven can credibly endorse to h",
    "laya": {
     "lane": "Sofia",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"mktg affiliate partnerships hunts residual and affiliate income —\"",
@@ -2961,7 +2963,7 @@
    "role": "Report under Sofia (CMO): measures what marketing actually produced — source attribution across Lofty and Zoho, cost per lead, cost",
    "laya": {
     "lane": "Sofia",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"mktg analytics lead measures what marketing actually produced —\"",
@@ -2988,7 +2990,7 @@
    "role": "Report under Sofia (CMO): owns positioning, brand architecture and the message hierarchy across Steven's four brands — Patriot Pacific MLO,",
    "laya": {
     "lane": "Sofia",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"mktg brand strategist owns positioning, brand architecture and the\"",
@@ -3015,7 +3017,7 @@
    "role": "Report under Sofia (CMO): owns visual identity and creative direction across every asset — brand kit, templates, ad creative, listing collat",
    "laya": {
     "lane": "Sofia",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"mktg creative designer owns visual identity and creative direction\"",
@@ -3042,7 +3044,7 @@
    "role": "Report under Sofia (CMO): runs geographic farming and direct mail — farm selection on turnover and absorption math, mail piece copy and cade",
    "laya": {
     "lane": "Sofia",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"mktg direct mail farming runs geographic farming and direct mail\"",
@@ -3069,7 +3071,7 @@
    "role": "Report under Sofia (CMO): owns email and SMS lifecycle — nurture sequences, database reactivation, newsletters, post-close campaigns and eve",
    "laya": {
     "lane": "Sofia",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"mktg email campaign manager owns email and SMS lifecycle —\"",
@@ -3096,7 +3098,7 @@
    "role": "Report under Sofia (CMO): builds the full marketing package for a listing or buyer campaign — MLS remarks, property one-pager, just-listed/j",
    "laya": {
     "lane": "Sofia",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"mktg listing marketing specialist builds the full marketing package for\"",
@@ -3123,7 +3125,7 @@
    "role": "Report under Sofia (CMO): plans, drafts and analyses paid campaigns — Google Search/PMax, Meta, YouTube, LinkedIn — plus the nonprofit's Goo",
    "laya": {
     "lane": "Sofia",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"mktg paid ads manager plans, drafts and analyses paid campaigns\"",
@@ -3150,7 +3152,7 @@
    "role": "Report under Sofia (CMO): earns media — podcast guesting, local press, HARO/Qwoted-style source requests, award and ranking submissions, spe",
    "laya": {
     "lane": "Sofia",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"mktg media relations earns media — podcast guesting, local\"",
@@ -3177,7 +3179,7 @@
    "role": "Report under Sofia (CMO): runs reviews and reputation — Google Business Profile, Zillow, Experience.com, Facebook — the ask cadence at the r",
    "laya": {
     "lane": "Sofia",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"mktg reputation manager runs reviews and reputation — Google\"",
@@ -3204,7 +3206,7 @@
    "role": "Report under Sofia (CMO): runs the platform-native social calendar (LinkedIn, Facebook, Instagram, YouTube, TikTok, Nextdoor) for military/v",
    "laya": {
     "lane": "Sofia",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"mktg social media manager runs the platform-native social calendar (LinkedIn,\"",
@@ -3231,7 +3233,7 @@
    "role": "Report under Sofia (CMO): scripts and plans video — short-form (Reels/Shorts/TikTok), YouTube long-form, listing tours, client testimonials",
    "laya": {
     "lane": "Sofia",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"mktg video producer scripts and plans video — short-form\"",
@@ -3930,8 +3932,8 @@
    "lead": null,
    "role": "Review pull request test coverage quality and completeness, with emphasis on behavioral coverage and real bug prevention.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Sofia",
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"test analyzer Review pull request test coverage quality\"",
@@ -3945,6 +3947,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "Alexandra",
      "Vanessa"
     ]
    }
@@ -4567,7 +4570,7 @@
    "role": "SEO specialist for technical SEO audits, on-page optimization, structured data, Core Web Vitals, and content/keyword mapping.",
    "laya": {
     "lane": "Sofia",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"seo specialist SEO specialist for technical SEO audits,\"",
@@ -4620,8 +4623,8 @@
    "lead": null,
    "role": "Review code for silent failures, swallowed errors, bad fallbacks, and missing error propagation.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Sofia",
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"silent failure hunter Review code for silent failures, swallowed\"",
@@ -4635,6 +4638,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "Alexandra",
      "Vanessa"
     ]
    }
@@ -4673,7 +4677,7 @@
    "role": "Report under Sofia (CMO), with Wren: monthly past-client and sphere touch drafts — birthdays, home anniversaries, check-ins. Drafts only — never sends or writes",
    "laya": {
     "lane": "Sofia",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"sphere nurture coordinator Report under Sofia (CMO), with Wren:\"",
@@ -5126,7 +5130,7 @@
    "role": "Report under Sofia (CMO): produces webinar assets for the VA Loan Mastermind Live, Hometown Hero Home Buying and Retirement Equity Strategy",
    "laya": {
     "lane": "Sofia",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "starts_from": "projects/aeo-presence.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"webinar producer produces webinar assets for the VA\"",

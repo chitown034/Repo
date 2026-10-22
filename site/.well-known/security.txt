@@ -1,4 +1,0 @@
-Contact: mailto:steven.shearrill@gmail.com
-Expires: 2027-12-31T00:00:00.000Z
-Preferred-Languages: en
-Canonical: https://stevenshearrill.com/.well-known/security.txt

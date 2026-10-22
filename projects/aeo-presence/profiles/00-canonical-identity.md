@@ -5,7 +5,7 @@ Copy from here. Never retype. If a fact changes, change it here first, then ever
 ## Name and format
 - **Display name (every name field):** `Steven Shearrill`
 - **Never:** "Steve", "Steven Shearrill-MBA…", "Steven Shearrill Homes" as the *name* field (fine as a handle).
-- **Handle (where available):** `stevenshearrillhomes` (already used on Instagram, Facebook, LinkedIn). Use the same on YouTube, TikTok, X, Threads, Reddit if free; fallback `stevenshearrill`.
+- **Handle (where available):** `stevenshearrillhomes` (already used on Instagram, Facebook, LinkedIn). Use the same on YouTube, TikTok, X, Threads, Reddit if free; fallback `stevenshearrill`. Retire `@exp_steven` (X) and the "Steven Shearrill eXp Realty" YouTube name; never register new handles that include a brokerage name.
 
 ## Headline (one sentence, used verbatim)
 > Veteran-focused Real Estate Broker (LPT Realty) and VA Loan Officer (Patriot Pacific Financial) serving Temecula Valley and San Diego County. Retired U.S. Navy Chief.
@@ -17,9 +17,9 @@ Copy from here. Never retype. If a fact changes, change it here first, then ever
 | Item | Value |
 |---|---|
 | CA Real Estate Broker | DRE #01988316 (licensed 2015; broker license July 2024) |
-| Brokerage | LPT Realty, Inc. · CA DRE #02248983 · Designated Broker: Molly Winkle |
-| Mortgage Loan Originator | NMLS #2449246 |
-| Lender | Patriot Pacific Financial Corp · NMLS #1921615 · 41923 Second St, Suite 203, Temecula, CA 92590 *(VERIFY office address before publishing)* |
+| Brokerage | LPT Realty, Inc. · CA DRE #02248983 · Designated Broker: Molly Winkle · Steven acts as Broker Associate (Space RE team per `about-me.md`; confirm whether "SPACE" appears in any required branding) |
+| Mortgage Loan Originator | NMLS #2449246 · personally licensed in CA, NV, AZ, FL, IL (per `context/about-me.md`; VERIFY each state on NMLS Consumer Access before listing it publicly) |
+| Lender | Patriot Pacific Financial Corp · NMLS #1921615 (licensed in 43 states per `about-me.md`) · 41923 Second St, Suite 203, Temecula, CA 92590 *(VERIFY office address before publishing)* |
 | Military | U.S. Navy, 20 years, retired as Chief Petty Officer, 2023 |
 | Education / certs | MBA · PMP · held TS/SCI clearance |
 | Memberships | REALTOR® (NAR / CAR / local association — VERIFY which local board) |
@@ -32,6 +32,7 @@ Copy from here. Never retype. If a fact changes, change it here first, then ever
 - **Email:** steven.shearrill@gmail.com *(recommended upgrade: steven@temeculahomefinder.com or steven@stevenshearrill.com, forwarding to Gmail)*
 - **Website (real estate):** https://temeculahomefinder.com/
 - **Website (hub, recommended):** https://stevenshearrill.com/
+- **Public VA brand (per `about-me.md`):** thevaloanmastermind.com — not found by search on 2026-10-22; VERIFY what is live and fold it into one canonical hub (`docs/07` §1)
 - **Lender page:** https://patriotpacific.com/team-member/steven-shearrill/
 
 ## Service areas (canonical list, in this order)
@@ -65,10 +66,18 @@ Primary: VA loan Temecula · military realtor Temecula · veteran realtor San Di
 Secondary: Camp Pendleton realtor · MCAS Miramar homes · PCS to San Diego · buy a house with BAH · first-time homebuyer Temecula · Temecula Wine Country homes · Menifee new construction VA · French Valley homes · Mello-Roos Temecula
 Entity: Steven Shearrill · LPT Realty Temecula · Patriot Pacific Financial · DRE 01988316 · NMLS 2449246
 
+## Retired identifiers (never reuse; update wherever they still appear)
+- Website: MyTemeculaRealEstateConcierge.com (old; still on the Temecula Valley Chamber listing)
+- X: @exp_steven
+- YouTube channel name: "Steven Shearrill eXp Realty"
+- Brokerage: eXp Realty of California, Inc.
+- Cities: Winchester (as home city), Las Vegas
+
 ## Required disclosure lines (append to every profile that allows text)
 - Real estate: `Steven Shearrill, Real Estate Broker, CA DRE #01988316 · LPT Realty, Inc., CA DRE #02248983 · Equal Housing Opportunity`
 - Mortgage: `Steven Shearrill, Mortgage Loan Originator, NMLS #2449246 · Patriot Pacific Financial Corp, NMLS #1921615 · Equal Housing Lender · nmlsconsumeraccess.org`
 - Dual capacity: when acting as both agent and MLO on the same transaction, provide the required affiliated-business / dual-capacity disclosure (confirm wording with Patriot Pacific compliance and LPT's broker).
+- VA: `Not affiliated with, endorsed by or acting on behalf of the U.S. Department of Veterans Affairs or any government agency.` on every page or post that discusses VA loans.
 
 ## Image set (same files everywhere)
 - `headshot-square.jpg` (1000×1000): profile photo on every platform. Same photo everywhere is an entity signal.

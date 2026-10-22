@@ -25,6 +25,15 @@ docs/
   04-content-calendar-90-days.md    Week-by-week posting plan across every platform
   05-llm-citation-checklist.md      How to get recommended by ChatGPT, Claude, Gemini, Grok, Perplexity
   06-schema-for-existing-sites.md   Paste-ready JSON-LD and meta tags for temeculahomefinder.com and patriotpacific.com
+  07-technical-seo-spec.md          Domains, IDX index control, URL architecture, on-page template, Core Web Vitals, GSC/Bing/IndexNow/GA4
+  08-local-seo-citations.md         Canonical NAP, 40 directories in three tiers, GBP rhythm, review engine, backlink targets
+  09-aeo-answer-engineering.md      What each answer surface extracts, the answer block, question harvesting, 10 ready answers
+  10-geo-llm-playbook.md            How LLM recommendations form, engine mechanics, llms.txt, Wikidata spec, Reddit, earned mentions, benchmark
+  11-content-pillars-and-briefs.md  Twelve pages with briefs (three built in site/)
+  12-measurement-and-governance.md  KPIs with targets, rituals, RACI by AI-team seat, HALT list, monthly report
+  13-compliance-marketing-claims.md Reg Z, UDAAP, DRE, NAR, fair housing, dual capacity, TCPA rules and the pre-publication checklist
+data/
+  llm-benchmark-log.csv · citations-nap.csv · kpi-monthly.csv · geo-activity-log.csv · compliance-log.csv
 profiles/
   00-canonical-identity.md          The single source of truth: name, titles, licenses, NAP, bios (50/100/300 words), keywords
   instagram.md · facebook.md · linkedin.md · youtube.md · tiktok.md · x-threads.md
@@ -34,10 +43,13 @@ schema/
 site/
   index.html                        Entity hub page: full JSON-LD graph, FAQ, speakable markup, sameAs links
   va-home-loans-temecula.html       AEO pillar page: VA home loans in Temecula & San Diego
+  military-families-temecula.html   AEO pillar page: commutes, neighborhoods, Mello-Roos, BAH, PCS timeline
+  links.html                        Link hub for Instagram/TikTok bios
   llms.txt · llms-full.txt          Machine-readable summaries for LLM crawlers
   robots.txt · sitemap.xml · humans.txt · .well-known/security.txt
 scripts/
   validate-schema.mjs               Checks every JSON-LD block parses and has required fields
+  nap-consistency.mjs               Checks one name, phone, city and license set across the whole kit; flags retired identifiers
 ```
 
 ## Quick start (in priority order)
@@ -53,8 +65,13 @@ scripts/
 
 ```bash
 node scripts/validate-schema.mjs
+node scripts/nap-consistency.mjs
 ```
+
+## Who owns it on the AI team
+
+Sofia (CMO) owns the kit; **Orin** (GEO / AEO Lead) runs it with the Presence Pod: SEO Specialist, Elise (brand), Delia (reviews), Gareth (press), Derek (deploy), Alexandra (compliance gate), Elena on any domain or account step. Every output is a draft or a Needs-Steven packet; Steven posts, deploys, submits and pays. See `docs/12-measurement-and-governance.md` and the brain's `wiki/ai-team/org-chart.md`.
 
 ## Facts policy
 
-Every fact in this kit was taken from Steven's own public business pages (temeculahomefinder.com, patriotpacific.com, Instagram bio, Yelp, Homes.com, AgentPronto, LinkedIn headline) as of 12 Oct 2026. Items marked `VERIFY` could not be confirmed from a primary source and must be checked before publishing. Nothing here was invented; where a figure was unavailable the kit says so instead of guessing.
+Every fact in this kit was taken from Steven's own public business pages (temeculahomefinder.com, patriotpacific.com, Instagram bio, Yelp, Homes.com, AgentPronto, LinkedIn headline) as of 12 Oct 2026, plus the 24 Sep 2026 playbook research and the brain's `context/about-me.md` (22 Oct 2026). Items marked `VERIFY` could not be confirmed from a primary source and must be checked before publishing. Nothing here was invented; where a figure was unavailable the kit says so instead of guessing.

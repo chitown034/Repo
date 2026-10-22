@@ -39,6 +39,10 @@ Steven (Principal)
     ├─ Marcus (CFO) — Nathan, Bianca, Maya (four-county market & schools data, new 2026-10-22), Dov, Anita, Paloma, Grace, Alan, Hazel, Corinne + ruflo cost-analyst bench
     ├─ Sofia (CMO) — 14 named marketing reports + ruflo audio bench
     │   ├─ Sphere Nurture Coordinator — monthly past-client/sphere touch drafts, birthdays and anniversaries, with Wren; drafts only (new 2026-10-22, `wiki/ai-team/desk-seats.md`)
+    │   ├─ Presence desk (2026-10-22) — Orin (GEO / AEO Lead, `geo-aeo-optimizer`): visibility inside AI answers, the monthly LLM benchmark, answer blocks, `llms.txt`;
+    │   │   SEO Specialist (`seo-specialist`): technical and on-page SEO, schema, Core Web Vitals, citations sweep; Elise (`mktg-brand-strategist`): positioning and the canonical bio;
+    │   │   Delia (`mktg-reputation-manager`): review asks and GBP hygiene; Gareth (`mktg-pr-media-relations`): press and podcast pitches; Tariq / Rico for the social and video derivatives.
+    │   │   Working file: `projects/aeo-presence.md` → `projects/aeo-presence/` (audit, strategy, 13 docs, profile copy, schema, entity site, data logs). Drafts only; Alexandra gates every public line; Steven posts.
     ├─ Derek (CTO) — Sam, Naomi, Integration Engineer (owns OmniRoute failover + `claude-auto --keep-going`, and the browser tools: agent-browser, Playwright MCP) + 5 ECC officers + Ivan, Lena, Grace, Raj, Tomas, Owen (Broker Command Center Autopilot) and Rafael (Workflow Studio), both new 2026-10-22
     │   + code-validator (the code-validation gate, 2026-10-12: validate-code.sh + VibeBreaker 20-pass review of every code change — a different agent than the author)
     │   + code-review / build-fix / code-quality / infrastructure benches (56 agents)
@@ -73,6 +77,7 @@ on any change, Vanessa last. Rules and wake words: `wiki/ai-team/cross-functiona
 | Money Pod | Marcus · Nathan · Anita · James | numbers with sources, deadlines, commissions |
 | Ops Pod | Derek · Elena · Elon · Nadia | fix plan, security check, feasibility, Steven's one paste |
 | Client Care Pod | Sofia · Sphere Nurture Coordinator · Open House Captain · Wren · Victor · Alexandra | sphere touch drafts, open-house sign-in → leads, thank-you drafts, ISA call list, review/referral asks |
+| Presence Pod | Sofia · Orin · SEO Specialist · Delia · Gareth · Derek · Alexandra (Elena joins on any domain, DNS or account step) | AEO/SEO/GEO/AIO: profile copy and NAP fixes, schema and `llms.txt`, hub deploy packet, citation sweep, review asks, press pitches, the monthly LLM benchmark and KPI row — drafts and packets only; Steven posts, deploys and pays |
 
 **One Vanessa, one queue (2026-10-22).** Every surface hands work to `vanessaQueue` on the Command Deck: deck buttons
 ("Hand to Vanessa" on kanban, lead and deal rows), Vanessa's own `queue_task` tool in chat, `/queue` in Claude Code,
@@ -98,6 +103,7 @@ into the ≤3 Needs-you items.
 - **Rosa** (Military & Corporate Relocation) — see `wiki/real-estate-playbooks/military-relocation.md`.
 - **Disruption Scout** (under Nadia) — runs the weekly internet scout (`integrations/scout/scout.py`): GitHub, the official MCP registry, npm, Hacker News and releases of tools already in the stack. Its shortlist feeds Nadia's weekly brief; Elon gates every ADOPT/PILOT; nothing installs without Steven. See `wiki/ai-team/tool-integration-status.md`.
 - **Wren** / **Garrett** — referral reciprocity and LPT recruiting; see `wiki/real-estate-playbooks/referral-reciprocity.md`.
+- **Orin** (GEO / AEO Lead, under Sofia) — owns Steven's visibility inside AI answers (ChatGPT, Claude, Gemini, Grok, Perplexity, Copilot, Meta AI): the monthly 10-prompt × 5-engine benchmark, entity consistency across every profile, answer blocks, schema and `llms.txt`. Working file `projects/aeo-presence/`; see `docs/10-geo-llm-playbook.md` there. Nothing he writes is posted until Alexandra clears it and Steven posts it.
 - **Desk seats (2026-10-22)** — Refi Watch Analyst, Sphere Nurture Coordinator, Voicemail & Inbox Triage, Document Intake Clerk, Open House Captain, Travel Desk, Meeting Scribe: Sonnet 5 report seats, drafts only; see `wiki/ai-team/desk-seats.md`.
 
 ## What "bench" means
@@ -130,6 +136,10 @@ click that submits, sends, pays or signs stops for Steven. `bin/brain route` bri
 - **Computer Hub** and the **Alienware local-AI tier** (Laya, Bonsai 2 27B) — `wiki/ai-team/computer-hub.md`.
 - **Third-party skill packs** — Sofia's content skills, `/watch`, vidIQ and more, installed by Steven on the Mac. `wiki/ai-team/third-party-packs.md`.
 
+## Added 2026-10-22 (presence)
+
+- **Presence desk under Sofia and the Presence Pod** — the AEO/SEO/GEO/AIO presence kit (`projects/aeo-presence/`, 13 docs, profile copy for 11 platforms, JSON-LD, a static entity site with `llms.txt`, and the benchmark/citation/KPI logs under `data/`) now has owners: Orin leads, SEO Specialist, Elise, Delia, Gareth and Tariq/Rico deliver, Derek deploys, Alexandra gates, Elena joins on domains and accounts, Steven posts. The deck's AI Team panel shows Orin as "GEO / AEO Lead" with the kit as his working file. Status and the compliance hold: `projects/aeo-presence.md`.
+
 ## Proposal-only seats
 
 Nadia (CAIO) and Elon (CTO Innovator) never ship a change themselves — Nadia scans outward and writes the weekly Disruption Brief (replace/upgrade/adopt, graded ADOPT/PILOT/WATCH/IGNORE); Elon vets every item for feasibility, integration cost and security risk before it can enter the test queue. Both report to Steven, cc Vanessa. The LLM Council and the digital twin are proposal-only in the same sense — see `wiki/ai-team/tool-integration-status.md` for what that means for Orca, Laya, and 77skills specifically.
@@ -140,4 +150,4 @@ Nadia (CAIO) and Elon (CTO Innovator) never ship a change themselves — Nadia s
 - `wiki/ai-team/tool-integration-status.md` — connector, skill, and proposed-tool status by seat.
 - `wiki/ai-team/mentors-and-benches.md` — Maxwell, Apex, James, Kevin and what a "bench" actually is.
 
-Source: Command Deck, `ORG_CHART` / `AI_TEAM_ORG` data (AI Team panel), toolkit snapshot referenced 2026-09-16. Tree last updated 2026-10-09 (Laya, Brain loop, Google Drive mirror, Jarvis verify script; dispatch planner, keep-going failover and weekly scout added the same day; browser control + skill finder 2026-10-10; trading desk, loan-task agents, events scout, Computer Hub, third-party packs 2026-10-11; Broker Command Center seats, the ISA's "Today from Vanessa" list and the Transaction & Showing desk node 2026-10-22; seven desk seats and the Client Care Pod 2026-10-22). `bin/brain orgcheck` proves every seat above resolves to a brain page.
+Source: Command Deck, `ORG_CHART` / `AI_TEAM_ORG` data (AI Team panel), toolkit snapshot referenced 2026-09-16. Tree last updated 2026-10-09 (Laya, Brain loop, Google Drive mirror, Jarvis verify script; dispatch planner, keep-going failover and weekly scout added the same day; browser control + skill finder 2026-10-10; trading desk, loan-task agents, events scout, Computer Hub, third-party packs 2026-10-11; Broker Command Center seats, the ISA's "Today from Vanessa" list and the Transaction & Showing desk node 2026-10-22; seven desk seats and the Client Care Pod 2026-10-22; Presence desk, Orin and the Presence Pod 2026-10-22). `bin/brain orgcheck` proves every seat above resolves to a brain page.

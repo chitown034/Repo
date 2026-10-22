@@ -1,0 +1,3 @@
+date,engine,prompt_id,prompt,score_0_2,named_as,facts_correct,quote,sources_cited,notes
+2026-10-22,ChatGPT,1,"Who is a good real estate agent for military families in Temecula, California?",,,,,,day-0 run pending (Orin)
+2026-10-22,Claude,4,"Who is Steven Shearrill?",,,,,,day-0 run pending (Orin)

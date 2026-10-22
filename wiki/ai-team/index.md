@@ -29,6 +29,7 @@ hold the actual detail once you know which seat or layer you need.
 | Anything at all, first | **Vanessa** — Chief of Staff / COO, orchestrator, council chair | Fable 5.1 masterminds |
 | Net worth, income, budget, liabilities, close | **Marcus** — CFO | Opus 5.5 |
 | Marketing, campaigns, content, social, email | **Sofia** — CMO | Opus 5.5 |
+| AEO/SEO/GEO/AIO: search ranking, AI-answer visibility, profiles, schema, `llms.txt`, citations, reviews, press (`projects/aeo-presence.md`) | **Orin** — GEO / AEO Lead under Sofia, with SEO Specialist, Delia, Gareth (Presence Pod) | Opus 5.5 / Sonnet 5 |
 | Automation health, connectors, stack, what is broken | **Derek** — CTO | Opus 5.5 |
 | TRID/RESPA/Reg Z, VA-FHA-USDA compliance, disclosures | **Alexandra** — CCO | Opus 5.5 |
 | Where AI genuinely helps vs hype; tooling evaluation | **Nadia** — CAIO, outward disruptor | Opus 5.5 |

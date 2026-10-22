@@ -13,7 +13,7 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Seat | Words that pull this seat in | Starts from |
 |---|---|---|
 | Marcus | net worth, income, budget, liabilities, expense, cash, close, tax, profit, money, finance, revenue forecast, plaid, balance | `projects/` |
-| Sofia | marketing, campaign, content, social, post, email blast, newsletter, video, avatar, brand, ad, seo, instagram, facebook, linkedin, youtube | `wiki/real-estate-playbooks/` |
+| Sofia | marketing, campaign, content, social, post, email blast, newsletter, video, avatar, brand, ad, seo, instagram, facebook, linkedin, youtube, aeo, geo, aio, llm visibility, ai answers, chatgpt, perplexity, gemini, grok, copilot, llms.txt, schema, json-ld, knowledge panel, entity, google business profile, gbp, citation, directory, nap, backlink, press, podcast, pitch, tiktok, threads, reddit, nextdoor | `projects/aeo-presence.md` |
 | Derek | automation, connector, integration, routine, task, broken, stack, api, mcp, dashboard, deck, sync, runner, failover, mac, script, browser, website, playwright, agent-browser, portal, anydesk, orca, remote control, alienware, tailscale, bonsai, laya | `wiki/dashboard-ops/` |
 | Alexandra | compliance, trid, respa, reg z, disclosure, fair housing, dre, nmls, license, advertising rule, anti-steering, le, cd | `wiki/mortgage-programs/` |
 | Nadia | ai strategy, tool, tooling, evaluate, adopt, disruption, new model, agent design, hype, scout, new repo, skill, mcp server, plugin, find a skill | `docs/CAIO-DISRUPTION-BRIEF.md` |
@@ -52,6 +52,7 @@ duplicated. Vanessa's daily cycle forms its squads from these pods.
 | Money Pod | budget, cash, net worth, tax, commission, expense, income, profit | Marcus, Nathan, Anita, James | Numbers with sources, deadlines, cash and commission view |
 | Ops Pod | automation, routine, connector, sync, broken, dashboard, mac, runner, integration, workflow, pabbly, mod | Derek, Elena, Elon, Nadia | Fix plan, security check, feasibility, the one paste for Steven |
 | Client Care Pod | sphere, nurture, past client, birthday, anniversary, open house, sign-in sheet, thank-you, review request, testimonial | Sofia, Sphere Nurture Coordinator, Open House Captain, Wren, Victor, Alexandra | Monthly sphere touch drafts, open-house sign-in → leads, thank-you drafts, ISA call list, review and referral asks — drafts only |
+| Presence Pod | aeo, seo, geo, aio, llm visibility, ai answers, chatgpt, perplexity, gemini, grok, llms.txt, schema, knowledge panel, google business profile, gbp, citation, directory, nap, backlink, review, press, podcast, profile, bio, handle, entity | Sofia, Orin, SEO Specialist, Delia, Gareth, Derek, Alexandra | Profile copy and NAP fixes, schema and `llms.txt`, hub deploy packet, citation sweep, review asks, press and podcast pitches, the monthly LLM benchmark and KPI row (`projects/aeo-presence/data/`) — drafts and Needs-Steven packets only; Steven posts, deploys, submits and pays |
 
 ## Joins — a seat that must come along
 
@@ -61,6 +62,7 @@ When the request matches the words, the seat joins the plan even if it is not th
 |---|---|---|
 | client, borrower, buyer, seller, post, ad, email, marketing, disclosure, rate, video | Alexandra | Anything client-facing or advertised passes compliance before it leaves |
 | website, browser, browse, log in, login, portal, fill the form, scrape | Elena | Browsing as Steven can reach logged-in accounts and client data; the CISO sets what it may touch |
+| domain, dns, registrar, hosting, deploy, verification tag, new account, claim a profile | Elena | Domains, DNS records and account creation are credential-grade; the CISO reviews before Steven does them |
 | credential, key, token, api, connector, integration, access, pii, client data | Elena | Credentials and client data are the CISO's gate |
 | automation, connector, integration, routine, script, dashboard, deck, mcp | Derek | The CTO owns whether it runs and stays green |
 | tool, adopt, new model, ai strategy | Elon | Every Nadia proposal gets Elon's feasibility check |

@@ -630,3 +630,22 @@ iMessage line ready — Steven texts `connect @vanessa-shearrill` to +1 650 484 
 "Recap my meetings"; Gondola in connect-all 4b; Kapso instant triggers built as manual webhooks because Kapso's docs
 publish no unsubscribe endpoint. Rule kept: every new seat, skill and routine drafts; nothing sends, books, quotes,
 signs or writes to a client-facing system.
+
+## 2026-10-22 — Presence kit deepened; Orin and the Presence Pod own AEO/SEO/GEO/AIO; the 6D Brain carries it
+
+- **Request (Steven, verbatim).** *"Apply AEO, SEO, GEO to improve all of my social media websites and improve my
+  presence, ranking and recommendations on LLMs like Claude, Gemini, Grok, ChatGPT, and all LLMs for Steven Shearrill.
+  AIO as well"* and then *"continue add more in depth and update 6D brain and update AI org chart with all changes"*.
+- **Decision.** The held draft in `projects/aeo-presence/` grows a deep layer (docs 07–13: technical SEO, the full
+  citation list, answer engineering per engine, GEO mechanics with the Wikidata spec and the monthly benchmark, twelve
+  page briefs, KPIs/RACI, marketing-claims compliance), three more site pages (military families' guide, link hub,
+  updated VA page), and machine-readable logs under `data/`. Alexandra's hold items 2–5 are fixed in the files; item 1
+  ("no down payment" as a Reg Z triggering term) is proposed as non-triggering under comment 24(c)-2 and waits on her.
+  Ownership is now on the org chart: **Orin** (GEO / AEO Lead, `geo-aeo-optimizer`) under Sofia, with the **Presence
+  Pod** (Sofia, Orin, SEO Specialist, Delia, Gareth, Derek, Alexandra; Elena joins on domain/DNS/account steps) in
+  `wiki/ai-team/cross-functional.md`, Sofia's lane words extended (aeo, geo, llms.txt, schema, gbp, citation, …) so
+  `bin/brain route` wakes the pod, and a routing row in `wiki/ai-team/index.md`. The deck's AI Team panel already
+  showed Orin; its `owns` text now points at the deep kit. Rule kept: drafts and packets only; Steven posts, deploys,
+  submits and pays; nothing is live.
+- **Owner.** Sofia (Orin runs it). **Gate.** Alexandra, then Steven. **Status.** Kit checks pass (schema, NAP);
+  6D Brain rebuilt with the new pages, pod and lane words.

@@ -3,7 +3,7 @@
 Grok answers from live X posts. If you are not on X, Grok cannot find you. Threads feeds Meta AI.
 
 ## X handle
-`@stevenshearrill` (or `@stevenshearrillhomes` if free)
+You already own `@exp_steven` (listed on the Temecula Chamber page). Change the handle in X → Settings → Account → Username to `@stevenshearrill` (or `@stevenshearrillhomes`); X redirects nothing, so update the Chamber listing and every profile link the same day.
 
 ## Display name
 ```

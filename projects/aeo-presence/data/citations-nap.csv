@@ -1,0 +1,41 @@
+tier,directory,url,listing_type,name_to_enter,phone,city,website_to_enter,primary_category,status,last_checked,notes
+1,Google Business Profile (real estate),https://business.google.com,service-area,Steven Shearrill - LPT Realty,(619) 368-7141,Temecula CA 92590,https://temeculahomefinder.com/,Real estate agent,not created,,
+1,Google Business Profile (mortgage),https://business.google.com,storefront,Steven Shearrill - Patriot Pacific Financial,(619) 368-7141,"41923 Second St Suite 203, Temecula CA 92590 (VERIFY)",https://patriotpacific.com/team-member/steven-shearrill/,Mortgage lender,not created,,
+1,Bing Places (real estate),https://www.bingplaces.com,service-area,Steven Shearrill - LPT Realty,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,Real estate agent,not created,,import from GBP
+1,Bing Places (mortgage),https://www.bingplaces.com,storefront,Steven Shearrill - Patriot Pacific Financial,(619) 368-7141,Temecula CA,https://patriotpacific.com/team-member/steven-shearrill/,Mortgage lender,not created,,
+1,Apple Business Connect,https://businessconnect.apple.com,service-area,Steven Shearrill - LPT Realty,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,Real Estate Agent,not created,,
+1,Yelp,https://www.yelp.com/biz/steven-shearrill-lpt-realty-temecula,business,Steven Shearrill - LPT Realty,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,Real Estate Agents; Mortgage Lenders,live (5.0 / 3),2026-10-12,merge stale duplicate /steven-shearrill-exp-realty-of-california-temecula
+1,Zillow agent,https://www.zillow.com/agent-resources/,agent,Steven Shearrill,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,Real estate agent,not found,2026-10-12,
+1,Zillow lender,https://www.zillow.com/lender-resources/,lender,Steven Shearrill (NMLS 2449246),(619) 368-7141,Temecula CA,https://patriotpacific.com/team-member/steven-shearrill/,Mortgage lender,not found,2026-10-12,
+1,Realtor.com,https://www.realtor.com/realestateagents/,agent,Steven Shearrill,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,Real estate agent,not found,2026-10-12,via NAR membership
+1,Homes.com,https://www.homes.com/real-estate-agents/steven-shearrill/xd9lcsq/,agent,Steven Shearrill,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,Real estate agent,stale (old brokerage; Winchester),2026-10-12,merge duplicate id-24477910
+1,NMLS Consumer Access,https://www.nmlsconsumeraccess.org,regulator,Steven Shearrill,,Temecula CA,,,verify employer = Patriot Pacific Financial Corp,,
+1,CA DRE license lookup,https://www.dre.ca.gov,regulator,Steven Shearrill,,Temecula CA,,,verify responsible broker = LPT Realty,,
+1,Facebook Page,https://www.facebook.com/stevenshearrillhomes/,page,Steven Shearrill - Realtor & VA Loan Officer Temecula,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,Real Estate Agent,stale name (old brokerage),2026-10-12,
+1,LinkedIn,https://www.linkedin.com/in/stevenshearrillhomes/,profile,Steven Shearrill,,Temecula CA,https://stevenshearrill.com/,,stale location (old city),2026-10-12,
+1,Nextdoor Business,https://business.nextdoor.com,business,Steven Shearrill - LPT Realty,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,Real estate agent,not created,,
+1,Temecula Valley Chamber of Commerce,https://temecula.org,member,Steven Shearrill - LPT Realty,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,Real estate,stale (old site; old X handle; old YouTube link),2026-09-24,
+2,NAR Find a REALTOR,https://www.nar.realtor/find-a-realtor,member,Steven Shearrill,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,,unknown,,
+2,California Association of REALTORS,https://www.car.org,member,Steven Shearrill,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,,unknown,,
+2,Local AOR (VERIFY board),,member,Steven Shearrill,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,,unknown,,
+2,Redfin Partner Agent,https://www.redfin.com/partner-agents,agent,Steven Shearrill,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,,unknown,,if LPT participates
+2,FastExpert,https://www.fastexpert.com,agent,Steven Shearrill,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,,unknown,,claim; do not pay
+2,U.S. News agent pages,https://realestate.usnews.com/agents,agent,Steven Shearrill,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,,unknown,,
+2,HomeLight,https://www.homelight.com,agent,Steven Shearrill,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,,unknown,,
+2,AgentPronto,https://agentpronto.com/agents/steven-shearrill-11332,agent,Steven Shearrill,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,,stale (old brokerage; Winchester),2026-10-12,
+2,VeteranPCS,https://veteranpcs.com,agent,Steven Shearrill,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,,unknown,,military
+2,PCSgrades,https://pcsgrades.com,agent,Steven Shearrill,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,,unknown,,military
+2,MilitaryByOwner,https://www.militarybyowner.com,agent,Steven Shearrill,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,,unknown,,military
+2,BBB (Patriot Pacific Financial),https://www.bbb.org,company,Patriot Pacific Financial Corp,,Temecula CA,https://patriotpacific.com/,Mortgage lender,unknown,,ask to list loan officer
+2,Murrieta/Wildomar Chamber,https://www.mwcoc.org,member,Steven Shearrill - LPT Realty,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,,unknown,,
+2,Menifee Valley Chamber,https://www.menifeevalleychamber.com,member,Steven Shearrill - LPT Realty,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,,unknown,,
+2,VFW Post 4089 Temecula,,supporter,Steven Shearrill,,Temecula CA,https://stevenshearrill.com/,,unknown,,VERIFY post number
+2,American Legion Post 852,,supporter,Steven Shearrill,,Temecula CA,https://stevenshearrill.com/,,unknown,,VERIFY post number
+3,MapQuest,https://www.mapquest.com/us/california/steven-shearrill-lpt-realty-423718482,business,Steven Shearrill - LPT Realty,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,,live (mirrors Yelp),2026-10-12,
+3,Alignable,https://www.alignable.com,business,Steven Shearrill - LPT Realty,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,,unknown,,
+3,Crunchbase (person),https://www.crunchbase.com,person,Steven Shearrill,,Temecula CA,https://stevenshearrill.com/,,unknown,,
+3,About.me,https://about.me,person,Steven Shearrill,,Temecula CA,https://stevenshearrill.com/,,unknown,,
+3,Yellow Pages,https://www.yellowpages.com,business,Steven Shearrill - LPT Realty,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,,unknown,,
+3,Foursquare / OSM,https://foursquare.com,business,Steven Shearrill - LPT Realty,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,,unknown,,
+3,Data Axle,https://www.data-axle.com,aggregator,Steven Shearrill - LPT Realty,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,,unknown,,
+3,Manta,https://www.manta.com,business,Steven Shearrill - LPT Realty,(619) 368-7141,Temecula CA,https://temeculahomefinder.com/,,unknown,,

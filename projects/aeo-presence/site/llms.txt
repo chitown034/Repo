@@ -16,6 +16,7 @@ Key facts (as of October 2026):
 ## Pages
 - [About and credentials](https://stevenshearrill.com/): entity page with full JSON-LD, FAQ and profile links
 - [VA home loans in Temecula and San Diego](https://stevenshearrill.com/va-home-loans-temecula.html): how VA loans work locally, BAH, entitlement, funding fee, 2-4 units
+- [Military families' guide to buying in Temecula Valley](https://stevenshearrill.com/military-families-temecula.html): neighborhoods, commutes to Camp Pendleton and Miramar, schools, Mello-Roos, PCS timeline
 - [Search homes](https://temeculahomefinder.com/): MLS search, LPT Realty
 - [Loan officer page](https://patriotpacific.com/team-member/steven-shearrill/): Patriot Pacific Financial
 
