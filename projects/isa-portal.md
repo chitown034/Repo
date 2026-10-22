@@ -47,7 +47,7 @@ artifacts, that is the bug — do not "fix" one side by editing the other's coun
   filled; last opened 2026-09-13. Decision packet: `docs/ISA-SEAT-DECISION.md`.
 - Panels renumbered 01–14 top to bottom; reference panels carry a "Verified <date>" stamp.
 
-## Status (2026-10-22) — version 46
+## Status (2026-10-22) — version 48 (refi and sphere list intake; another session added a Capability Pack section)
 
 Published as **version 46** on 2026-10-22 (session note). What this version carries
 (`wiki/ai-team/push-button-system.md`, `context/decisions.md` 2026-10-22):

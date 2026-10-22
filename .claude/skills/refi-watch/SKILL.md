@@ -26,7 +26,7 @@ went unnoticed because nothing compared the daily snapshot with the book.
 2. For each client on Steven's list, compute `spread = note rate − market average for the same program` and show the
    arithmetic. Thresholds are Steven's (default 0.50 point, his call 2026-10-22 pending — until he sets one, list every
    positive spread and let him cut).
-3. Order by spread, group by program. For VA loans note "IRRRL path — see `wiki/mortgage-programs/va-irrrl.md`" as a
+3. Order by spread, group by program. For VA loans note "IRRRL path — see `wiki/mortgage-programs/va-eligibility.md`" as a
    pointer only. Mark anyone funded < 210 days ago (VA seasoning) or < 6 months (most programs) as "seasoning — not yet".
 4. Queue the table and tell Steven: how many are above threshold, by program, with the market average's stamp.
 

@@ -630,3 +630,11 @@ iMessage line ready — Steven texts `connect @vanessa-shearrill` to +1 650 484 
 "Recap my meetings"; Gondola in connect-all 4b; Kapso instant triggers built as manual webhooks because Kapso's docs
 publish no unsubscribe endpoint. Rule kept: every new seat, skill and routine drafts; nothing sends, books, quotes,
 signs or writes to a client-facing system.
+
+## 2026-10-22 (late) — depth pass: playbooks, data dictionary, list intake on both pages
+Five new brain leaves (open house, post-close care, sphere nurture, refi review prep, push-button system) and a data
+dictionary row for every 2026-10-22 document. Refi and sphere lists can be entered on the Command Deck (v230) or the
+ISA Portal (v48, `listOutbox`); the 6:25 cycle moves ISA rows to the deck. The Monday refi routine writes
+`refiWatchDesk` — `refiWatch` stays the older hand-entered rate-watch list on the Ops Radar panel (a name collision the
+deck build caught). Another session's Capability Pack section on the ISA Portal was kept; it asks for the `downloads`
+capability without declaring it, so its Download button falls back to copy — their call, not changed here.

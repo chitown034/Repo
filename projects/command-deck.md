@@ -62,7 +62,7 @@ doc whose top level is not a single `v` key is a **writer bug to fix**, not a sh
   last end 2026-09-22); and the old line here — "cloud routines cannot write to the artifact DB
   unattended" — is **disproved**, see `README.md` and `docs/CLOUD-WRITE-ARCHITECTURE.md`.
 
-## Status (2026-10-22) — version 224
+## Status (2026-10-22) — version 230 (list intake forms, tools per seat, Text me the brief, Zoom recaps)
 
 Published as **version 224** on 2026-10-22 (session note; the footer stamp is not re-read here). What this
 version carries, all drafts-only (`wiki/ai-team/push-button-system.md`, `context/decisions.md` 2026-10-22):
