@@ -607,3 +607,14 @@ The daily Chief-of-Staff cycle now copies `cosBrief.isaInstructions` (plus the I
 
 ## 2026-10-22 — Fixing the usage-limit failures and the frozen Mac runner
 All 14 failed cloud routines failed on USAGE_LIMIT_REACHED (none for another reason). Sunday weekly jobs ran before the weekly allowance reset (~20:00 UTC Sunday), so they are moved after it: backup Sun 21:07 UTC, its watchdog Sun 23:41 UTC; four http_api-created Sunday loops need Steven to move (docs/STEVEN-STEPS.md). The Mac runner's last report (2026-10-13 07:13 UTC) showed it logged in and stuck "running" fabric-deck-sync, so connect-all.sh now restarts it unconditionally and installs a caffeinate -s LaunchAgent (no sleep on the charger). 6D Brain routine now commits docs/reports/ENCYCLOPEDIA.md.
+
+## 2026-10-22 — Push-button system: one Vanessa queue, pods, inbox buttons, morning brief across dashboards
+Steven asked for "the best automated push button system", cross-functional parallel teams, mods, Gondola, and a daily
+morning brief across the three dashboards by iMessage and voice. Built: `vanessaQueue` (single queue; deck buttons,
+Vanessa's queue_task tool, `/queue`, the ISA Portal's vanessaOutbox, routines) worked first by the 6:25 cycle; Command
+Deck push-buttons (Today from Vanessa, Run cycle now, TC desk + intake, follow-up drafts, Inbox & Meetings via the
+page's Gmail/Fieldy connectors — routines cannot carry connectors on this account); seven standing pods in
+`wiki/ai-team/cross-functional.md` that `bin/brain route` wakes in one parallel wave; mods `push-buttons` and
+`ops-pulse`; morning brief moved to 6:34 AM PT, reads Command Deck + ISA Portal (+ Broker Command Center, browser-only
+for now) and writes `morningBrief {text, voiceScript}` that the Mac sends by iMessage and voice (§8b); Gondola MCP
+(`https://mcp.gondola.ai/mcp`) in connect-all 4b. Drafts only everywhere; nothing sends, books or quotes.

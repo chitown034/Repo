@@ -6,24 +6,36 @@ research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox
 
 ## 1 · Phone · 5 minutes (Do these first; nothing else depends on them)
 
-## Start here (2026-10-22) — one paste, then three clicks
+## Start here (2026-10-22, evening) — one paste, then a few clicks
 
-**Why the dashboard is stale:** your Mac's task runner froze on Oct 13 in the middle of one task (it still says "running"), so nothing Mac-side has updated for 9 days. The paste below now always restarts it, and keeps the Mac awake while it is on the charger so the 6 AM tasks run. Everything cloud-side is working: the daily cycle, the morning brief, the ISA list and the feeds.
+**Why things were stale:** your Mac's task runner froze on Oct 13, and every `git pull` on the Mac failed because the
+cloud and the Mac both rebuild the same brain files. Both are fixed in the paste below. Everything cloud-side runs.
 
-1. **On the Mac: open Terminal, paste this one line, answer y.** Leave the Mac plugged in. Paste the REPORT it prints back to Claude.
+1. **On the Mac (plugged in): open Terminal, paste this one line, answer y.** Then paste the REPORT back to Claude.
    `cd ~/Repo && git fetch origin claude/stoic-cori-pvn3f8 && git show FETCH_HEAD:scripts/repo-sync.sh > /tmp/repo-sync.sh && REPO_SYNC_DIR="$PWD" bash /tmp/repo-sync.sh && bash connect-all.sh`
-   (Changed 2026-10-22: the old `git pull` in this line was what kept failing — the Mac rebuilds INDEX.md and the brain's
-   reports locally while the cloud commits its own rebuild of the same files every day. `repo-sync.sh` backs those up,
-   keeps your own edits, and catches up. From now on it also runs by itself every 30 minutes.)
-2. **Pabbly (WhatsApp automations):** open https://connect.pabbly.com/v2/app/requested-connection?token=d2dad35e10cc15c3f528cd3af16a21c5105ad15f4ead6eb3 and paste your Kapso API key there (Pabbly's page, never chat). Good until about Oct 24. Then tell Claude "Pabbly is connected".
-3. **Optional, 2 minutes — stops four Sunday routines failing:** they run Sunday morning, before your weekly Claude allowance resets (about 1 PM PT Sunday), so they failed Oct 18. Claude cannot edit them (you made them through the API). Open each and change the schedule to Sunday evening:
-   - https://claude.ai/code/routines/trig_016qKE1TdRjzkpb2Yby8yWBX → Sunday 2:35 PM PT
-   - https://claude.ai/code/routines/trig_013vYCzVa3vbHZ8BZZy6UBpX → Sunday 3:03 PM PT
-   - https://claude.ai/code/routines/trig_013ocJfEDdmSAgDPVaiCzMZY → Sunday 3:29 PM PT
-   - https://claude.ai/code/routines/trig_019NdM12eTVDHWy89Ch2sNtU → Sunday 3:57 PM PT
-4. **Share the ISA Portal with your ISA/EA** (Share menu on https://claude.ai/artifact/9Jtqg2W1t98PfhNYHNTMDS) and send them Vanessa's check-in draft (on the Command Deck, Needs you).
+   It syncs the repo (and every 30 min after), restarts the frozen runner, keeps the Mac awake on the charger, installs
+   or checks Kapso, Gondola, Inkbox voice, Laya, Jarvis, Orca and AnyDesk, the seven Claude mods (new: `/cycle`, `/inbox`,
+   `/meetings`, `/today`, `/tc`, `/queue <task>`, `/sync`, `/connect` and a status line that says when the repo is behind).
+   It never signs in, pairs, sends or pays.
+2. **Morning iMessage + voice from Vanessa:** claude.ai → Settings → Connectors → **Inkbox → Reconnect**; then in the
+   runner task `vanessa-morning-brief-text` paste §8b at the start and §8 at the end (`integrations/mac-task-specs.md`).
+   From then on, ~6:40 AM: one text covering all three dashboards and a voice note in her voice.
+3. **Gondola (travel):** claude.ai → Settings → Connectors → Add custom connector → `Gondola`, URL
+   `https://mcp.gondola.ai/mcp` → Connect and sign in.
+4. **Orca and AnyDesk (the paste opens them):** Orca → Add Project → your Repo folder, then scan its pairing code with the
+   Orca phone app. AnyDesk → System Settings → Privacy & Security → turn on Screen Recording and Accessibility for AnyDesk.
+   Other computers: `integrations/anydesk/README.md`.
+5. **WhatsApp send step in Pabbly:** tell Claude "build the Pabbly send step" when you can type your own mobile number
+   into Pabbly's test box (it sends one real test message to you only).
+6. **Optional, 3 minutes — saves Claude allowance:** turn OFF these routines you made through the API (Claude cannot):
+   - https://claude.ai/code/routines/trig_016qKE1TdRjzkpb2Yby8yWBX · https://claude.ai/code/routines/trig_013vYCzVa3vbHZ8BZZy6UBpX
+   - https://claude.ai/code/routines/trig_013ocJfEDdmSAgDPVaiCzMZY · https://claude.ai/code/routines/trig_019NdM12eTVDHWy89Ch2sNtU
+   (the Saturday Loop Engineering + Self-Test already covers them; full list in `docs/ROUTINE-BUDGET-2026-10-22.md`).
+7. **Share the ISA Portal with your ISA/EA** (Share menu) — it now has today's list and a "Hand to Vanessa" box.
 
-Claude already did (2026-10-22): moved the backup and its watchdog to Sunday evening and ran a catch-up backup (last verified one was Oct 13); fixed the brain's nightly save; the ISA Portal now gets Vanessa's ISA list every weekday.
+Claude already did (2026-10-22): one Vanessa queue every dashboard writes; push-buttons on the Command Deck (run the
+cycle, triage inbox, recap meetings, draft follow-ups, TC intake); seven standing cross-functional pods; morning brief
+across the three dashboards at 6:34 AM; cloud routine usage cut ~34%; backup moved after the weekly reset and re-run.
 
 ## Start here (2026-10-20) — one paste reconnects this Mac · about 15 minutes
 

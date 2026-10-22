@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 35 skills · 5 plugins · 15 connectors (2 ok, 13 need attention) · 62 cloud routines · 60 Mac tasks
+toolkit: 35 skills · 7 plugins · 15 connectors (2 ok, 13 need attention) · 62 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -19,6 +19,10 @@ toolkit: 35 skills · 5 plugins · 15 connectors (2 ok, 13 need attention) · 62
 - `skills-refresh`: Weekly audit of every installed skill against the Command Deck's AI Team toolkit table: frontmatter that will not load, dead paths, duplicates, and skills the dashboard advertises but the machine does not have. Reports o
 - `vanessa-orchestrator`: Vanessa as orchestrator (v2): C-Suite delegation and parallel execution — intake, decompose, delegate, run up to 8 agents concurrently, resolve conflicts, QA, consolidate, report. Use when a request spans more than one e
 - `whatsapp-kapso`: Read and answer WhatsApp through Kapso (WhatsApp Business Cloud API; MCP server "kapso" registered for every Claude Code session, Orca included) — Phase 1 is the sandbox number and Steven's own phone only. Use when Steve
+
+**Plugins (Claude Code mods)**
+- `ops-pulse`: At session start in the Repo folder: one read-only status line (behind/ahead of GitHub, local edits, brain-loop age, connect-all today) and a toast when it is time to /sync.
+- `push-buttons`: One-word slash commands (/cycle /inbox /meetings /sync /connect /tc /queue /today /help-buttons) that send the full, correct prompt for each workflow, HALT rules included.
 
 **Connectors**
 - `Inkbox (Vanessa's iMessage, cloud)` — *reconnect*: needs_reconnect on claude.ai

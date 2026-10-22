@@ -1078,3 +1078,27 @@ allow-lists the thread in `~/.config/inkbox/voice-allow`). The cloud morning bri
 `.delivered.ok = true`; a voice note from Vanessa follows her text on the thread. If the text arrived and no
 voice note did, `voiceReplyStatus…delivered.error` names the reason (5 thread not allow-listed · 6 Inkbox
 refused · 7 SDK missing — see `integrations/voice-setup.sh`).
+
+## 8b. `vanessa-morning-brief-text` — AMENDMENT: send the cloud brief across all three dashboards (2026-10-22)
+
+Steven, 2026-10-22: *"morning brief with Vanessa with update across the 3 dashboards updated daily with morning
+iMessage and voice message."* Since 2026-10-22 the cloud routine "Vanessa — morning brief across the dashboards"
+runs at **6:34 AM PT** (after the 6:25 daily cycle), reads the Command Deck, the ISA Portal and the Broker Command
+Center, and writes `morningBrief` = `{v: {date, ranAt, text, voiceScript, needsYou, dashboards: {commandDeck,
+isaPortal, brokerCommandCenter}}}` on the Command Deck. Cloud routines carry no connectors, so the Mac still sends.
+This amendment makes the 6:40 text and the voice note use that one brief, so phone, push and voice say the same.
+
+### Paste-ready — add at the START of the task prompt (keep §8 at the end)
+
+> **First** read `morningBrief` from the Command Deck (collection `state`). If `morningBrief.v.date` is today's
+> Pacific date, send `morningBrief.v.text` **exactly as written** as the iMessage (do not recompose it), and in
+> §8's voice step use `morningBrief.v.voiceScript` as the spoken lead-in instead of writing one. If it is missing
+> or not today's (the cloud run failed or has not landed yet), wait 5 minutes and read once more; if it is still
+> not today's, compose the brief yourself as before and add one line: "(cloud brief unavailable — composed on the
+> Mac)". Record `morningBriefStatus.imessage = "sent"` and `textSource = "morningBrief" | "mac"` (merge).
+
+### What proves it worked
+
+At ~6:40 AM PT the iMessage text matches the Claude-app brief word for word and contains the three "Dashboards"
+lines; a voice note in Vanessa's voice follows on the same thread; `morningBriefStatus.v.imessage = "sent"`.
+

@@ -1,0 +1,6 @@
+{
+  "name": "ops-pulse",
+  "version": "0.1.0",
+  "description": "At session start in the Repo folder: one read-only status line (behind/ahead of GitHub, local edits, brain-loop age, connect-all today) and a toast when it is time to /sync.",
+  "author": { "name": "Steven Shearrill" }
+}

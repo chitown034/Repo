@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 # Install and turn on Claude Mods on this Mac (Steven said "install and turn on Claude mods", 2026-10-09).
 #
-#   bash integrations/mods/install-mods.sh            # asks once, then installs and turns on all five
+#   bash integrations/mods/install-mods.sh            # asks once, then installs and turns on all seven
 #   bash integrations/mods/install-mods.sh --dry-run  # shows what it would do, changes nothing
 #   bash integrations/mods/install-mods.sh --off      # turns them all off again
 #
 # Turns on:
-#   Steven's own (this folder):  route-beacon · halt-guard · brain-reflect · connection-beacon · paste-desk (2026-10-21)
+#   Steven's own (this folder):  route-beacon · halt-guard · brain-reflect · connection-beacon · paste-desk (2026-10-21) · push-buttons · ops-pulse (2026-10-22)
 #   Anthropic samples (claude-code-playground, pinned to commit 569c5283d9a0, read 2026-10-09): blast-radius · replay-theater
 # Left off on purpose: Cache Tax (its repo had no code to review on 2026-10-09), Savvy Progress, Reflect,
 # Terminal Browser, Skins, Filetree — see RECOMMENDATIONS.md.
-# Changes: adds this folder as a mod store and installs the three from it; clones the Anthropic samples into
+# Changes: adds this folder as a mod store and installs Steven's seven from it; clones the Anthropic samples into
 # ~/Applications/claude-mods and names them in ~/.claude/settings.json (env CLAUDE_CODE_PLUGIN_DIRS), after a backup.
 # Mods run in the Terminal and in the desktop app's Code tab. Open a new Claude Code session afterwards.
 set -uo pipefail
@@ -48,23 +48,23 @@ PY
 }
 
 if [ "$MODE" = "--off" ]; then
-  for m in route-beacon halt-guard brain-reflect connection-beacon paste-desk; do claude plugin uninstall "$m@steven-mods" >/dev/null 2>&1 && say "off: $m"; done
+  for m in route-beacon halt-guard brain-reflect connection-beacon paste-desk push-buttons ops-pulse; do claude plugin uninstall "$m@steven-mods" >/dev/null 2>&1 && say "off: $m"; done
   set_dirs ""; say "off: blast-radius, replay-theater. Open a new session."; exit 0
 fi
 
 if [ "$MODE" != "--dry-run" ]; then
-  say ""; say "This turns on 5 mods and edits ~/.claude/settings.json (a backup is kept). Mods run with your permissions."
+  say ""; say "This turns on 7 of Steven's mods plus 2 Anthropic samples and edits ~/.claude/settings.json (a backup is kept). Mods run with your permissions."
   read -r -p "Go ahead? [y/N] " ok; [ "$ok" = y ] || [ "$ok" = Y ] || { say "Nothing changed."; exit 0; }
 fi
 
 say ""; say "1/3  Check Steven's mods"
-for m in route-beacon halt-guard brain-reflect connection-beacon paste-desk; do
+for m in route-beacon halt-guard brain-reflect connection-beacon paste-desk push-buttons ops-pulse; do
   claude plugin validate "$HERE/$m" >/dev/null 2>&1 && say "  ok  $m" || fail "$m did not validate: claude plugin validate $HERE/$m"
 done
 
 say "2/3  Turn them on (mod store: $HERE)"
 run claude plugin marketplace add "$HERE"
-for m in route-beacon halt-guard brain-reflect connection-beacon paste-desk; do run claude plugin install "$m@steven-mods"; done
+for m in route-beacon halt-guard brain-reflect connection-beacon paste-desk push-buttons ops-pulse; do run claude plugin install "$m@steven-mods"; done
 
 say "3/3  Anthropic samples: blast-radius, replay-theater (pinned $PIN)"
 if [ ! -d "$SAMPLES/.git" ]; then
@@ -81,5 +81,7 @@ set_dirs "$SAMPLES/claude-code/mods/blast-radius:$SAMPLES/claude-code/mods/repla
 say ""; say "Done. Open a NEW Claude Code session (Terminal: claude · desktop app: Code tab). You should see:"
 say "  · the status line: Route: Claude subscription   (route-beacon)"
 say "  · /remember and /replay in the slash-command list (brain-reflect, replay-theater)"
+say "  · /help-buttons lists the one-word buttons: /cycle /inbox /meetings /sync /connect /tc /queue /today (push-buttons)"
+say "  · in the Repo folder, a status entry: ⚙ repo: … behind · … local edits · brain loop … (ops-pulse)"
 say "  · a Proceed/Cancel question before any send, share, payment or force push (halt-guard, blast-radius)"
 say "Turn everything off again: bash integrations/mods/install-mods.sh --off"

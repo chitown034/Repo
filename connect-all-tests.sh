@@ -4,7 +4,7 @@ set -u
 cd "$(dirname "$0")" || exit 1
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
 mkdir -p "$T/bin" "$T/home"
-FUNCS="$(sed -n '/^have()/p;/^runner_fix() {/,/^}/p;/^keep_awake() {/,/^}/p;/^repo_sync_agent() {/,/^}/p;/^laya_venv() {/,/^}/p;/^laya_connect() {/,/^}/p;/^orca_app() {/,/^}/p;/^orca_connect() {/,/^}/p;/^anydesk_app() {/,/^}/p;/^anydesk_connect() {/,/^}/p' connect-all.sh)"
+FUNCS="$(sed -n '/^have()/p;/^runner_fix() {/,/^}/p;/^keep_awake() {/,/^}/p;/^repo_sync_agent() {/,/^}/p;/^laya_venv() {/,/^}/p;/^laya_connect() {/,/^}/p;/^orca_app() {/,/^}/p;/^orca_connect() {/,/^}/p;/^anydesk_app() {/,/^}/p;/^anydesk_connect() {/,/^}/p;/^gondola_mcp() {/,/^}/p' connect-all.sh)"
 pass=0; fail=0
 check() { if [ "$2" = "$3" ]; then pass=$((pass+1)); echo "ok   $1"; else fail=$((fail+1)); echo "FAIL $1 (expected rc $3, got $2)"; fi; }
 stub_runner() { # <restart exit code> <status text after restart>
@@ -89,5 +89,21 @@ check "anydesk: missing, no Homebrew -> FAIL with URL" "$(PATH="$T/bin:/usr/bin:
 grep -q "anydesk.com/en/downloads/mac-os" "$T/out"; check "anydesk: prints the official download URL" "$?" 0
 grep -vE '^[[:space:]]*(#|say )' connect-all.sh | grep -qiE -- '--set-password|unattended.*(on|enable)|--with-password'
 check "connect-all never sets an AnyDesk password"   "$?" 1
+
+# gondola: registers once, idempotent, fails honestly when the claude CLI is missing
+cat > "$T/bin/claude" <<'S'
+#!/bin/sh
+case "$1 $2" in
+  "mcp list") [ -f "$GONDOLA_FILE" ] && echo "gondola: https://mcp.gondola.ai/mcp (HTTP)"; exit 0 ;;
+  "mcp add") echo "$*" >> "$GONDOLA_FILE.args"; touch "$GONDOLA_FILE"; exit 0 ;;
+esac
+S
+chmod +x "$T/bin/claude"; export GONDOLA_FILE="$T/gondola"; rm -f "$GONDOLA_FILE"
+check "gondola: registers the MCP"                       "$(run_fn gondola_mcp)" 0
+grep -q -- "--transport http --scope user gondola https://mcp.gondola.ai/mcp" "$GONDOLA_FILE.args"; check "gondola: official URL, user scope" "$?" 0
+check "gondola: second run is a no-op"                   "$(run_fn gondola_mcp)" 0
+[ "$(wc -l < "$GONDOLA_FILE.args")" -eq 1 ];              check "gondola: added only once" "$?" 0
+rm -f "$T/bin/claude"
+check "gondola: missing claude CLI lands in FAIL"        "$(PATH="$T/bin:/usr/bin:/bin" run_fn gondola_mcp)" 1
 
 echo "connect-all tests: $pass passed, $fail failed"; [ "$fail" = 0 ]

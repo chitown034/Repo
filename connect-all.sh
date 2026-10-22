@@ -153,6 +153,18 @@ kapso_keys() {
 step "4 Kapso keys (your mobile + the project key, Keychain only)" \
   "Kapso keys: bash integrations/kapso/install-mac.sh keys --allow <your mobile>" kapso_keys
 
+# 4b. Gondola - travel: hotel/flight/car search with points vs cash, loyalty balances and trips (official MCP,
+#     https://mcp.gondola.ai/mcp, Streamable HTTP). Search works with no account; trips and points ask Steven to sign
+#     in (OAuth) the first time a session uses them - the script never signs in. Registered for every project.
+gondola_mcp() {
+  have claude || { echo "claude CLI not found - install Claude Code first"; return 1; }
+  if claude mcp list 2>/dev/null | grep -qi '^gondola'; then echo "gondola already registered"; return 0; fi
+  claude mcp add --transport http --scope user gondola https://mcp.gondola.ai/mcp 2>&1 | tail -3
+  claude mcp list 2>/dev/null | grep -qi '^gondola'
+}
+step "4b Gondola travel MCP (Claude Code, every project)" \
+  "Gondola: claude mcp add --transport http --scope user gondola https://mcp.gondola.ai/mcp" gondola_mcp
+
 # 5. Inkbox voice SDK so Vanessa's iMessage replies and morning brief carry her voice
 step "5 Inkbox voice SDK (Vanessa speaks on iMessage)" \
   "Voice: bash integrations/voice-setup.sh <your Vanessa thread's conversation id>" \
@@ -285,6 +297,8 @@ say "     tick 'Zoho CRM API Access'. That is the whole 403 fix."
 say "  5. Sign in once in the agent Chrome to ShowingTime, Showami and homes.com:"
 say "     bash integrations/cli-anything-harnesses/connect.sh"
 say "  6. TikTok, GoHighLevel, Discord bot, HeyGen: say 'Composio links' to Claude when you sit down (links last 10 min)."
+say "  6b. Gondola (travel): claude.ai -> Settings -> Connectors -> Add custom connector -> name Gondola, URL"
+say "     https://mcp.gondola.ai/mcp -> Connect and sign in. Then Vanessa and the dashboards can read your trips and points."
 say "  7. Pabbly: open the Pabbly 'Connect' link Claude sent, paste your Kapso API key there (Pabbly's page, never chat),"
 say "     then build the six workflows in integrations/pabbly/WORKFLOWS.md (about 5 minutes each at connect.pabbly.com)."
 say "  8. Orca: if the Repo folder is not listed in Orca, click Add Project and choose $REPO_DIR. Then pair your phone:"

@@ -81,3 +81,21 @@ behaves). Three small, no-network, local-only ones were designed; say the word a
   short "only you" list — so the non-technical answer is one command away. Reads one file; never writes or runs.
 - Both validated with `claude plugin validate` on 2.1.305 and installed by `install-mods.sh` (five mods now).
 - Skills added the same day: `pabbly-workflows`, `connection-doctor`, `cos-daily-cycle`.
+
+## Added 2026-10-22 — push-buttons and ops-pulse (one-word buttons; "is my Mac up to date?")
+
+- **push-buttons**: type one word and Claude gets the whole, correct prompt for that job. `/cycle` runs Vanessa's
+  Chief-of-Staff cycle; `/inbox` triages the last 24 hours of Gmail (replies as drafts only, fraud flags, a
+  Needs-Steven list); `/meetings` recaps recent Fieldy and Zoom meetings with a follow-up draft each; `/sync` brings
+  the Repo folder up to date (`scripts/repo-sync.sh`, never pushes); `/connect` previews `connect-all.sh` and explains
+  what is left; `/tc` runs the Transaction & Showing desk (timelines, due in 7 days, overdue, drafts); `/queue <task>`
+  adds a task to Vanessa's queue on the Command Deck (append-only, pinned to the version it read); `/today` reads
+  today's brief and lists what needs you; `/help-buttons` lists them. Every prompt ends with the HALT line: never send
+  to a client, quote a rate, decide eligibility, sign, spend money or enter credentials; drafts only; first names only.
+  `/recap` and `/brief` are names Claude Code already uses, so the meeting recap is `/meetings` and the brief is `/today`.
+- **ops-pulse**: when a session starts in the Repo folder, one status entry such as
+  `⚙ repo: 3 behind · 2 local edits · brain loop 6h · connect-all today · /sync /cycle /today`, and a toast saying
+  "type /sync" when GitHub has changes this Mac does not (or both have changed). Read-only: a quiet `git fetch` with
+  an 8-second limit (skipped when offline), then counts; never pulls, commits or resets.
+- Both pass `claude plugin validate` and `claude plugin test` on 2.1.308 and are installed by `install-mods.sh`
+  (seven of Steven's mods now).
