@@ -837,3 +837,18 @@ change-set: f163efe15c89ca93
 
 ## Coverage
 - The deck diff against /tmp/claude-0/deck-r7.bak.html is still exactly 35 changed lines: the stamp, 32 inserted lines and 1 deleted line. No other region changed. Quickcheck shows only the known `$`-amount false-positive FAIL.
+
+# Review — change-set 7a028b6f540200e3 (2026-10-22, desk seats + skills pack)
+
+Diff: brain/agentos.py (ALIASES for 7 desk seats; SEAT_OF_LEAD + chief-of-staff pin), brain/bench/routes.json (+3 cases),
+regenerated integrations/agent-os/agents.json + 7 agent files, wiki seat/pod tables, 11 new skills.
+Deterministic: validate-code.sh PASS (6/6); brain unittests 99 OK; os check 180/180, manifest current; orgcheck 38/38.
+
+## CONFIRMED → fixed
+- F1. `chief-of-staff` (no lead in the roster) was silently re-laned Vanessa → "Voicemail & Inbox Triage" by the new lane
+  word row, and its agent file regenerated. Fix: `SEAT_OF_LEAD["chief-of-staff"] = "Vanessa"` (brain/agentos.py:49).
+  Proof: manifest vs HEAD shows only the 7 new slugs and no lane change on any existing slug.
+
+## Clean
+- No alias collisions; the three new SEAT_OF_LEAD keys move no existing agent; each new route case leads for a real
+  keyword match (the refi case wakes 9 seats — noisy but correct).

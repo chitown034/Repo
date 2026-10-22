@@ -164,6 +164,34 @@
     "ECC"
    ],
    "halt": false
+  },
+  {
+   "request": "Run the weekly refi watch list against current note rates for past clients",
+   "lead": "Refi Watch Analyst",
+   "must_include": [
+    "Harrison",
+    "Alexandra",
+    "Vanessa"
+   ],
+   "halt": false
+  },
+  {
+   "request": "Triage this morning's voicemails and the Gmail inbox into the queue and flag anything that looks like fraud",
+   "lead": "Voicemail & Inbox Triage",
+   "must_include": [
+    "Elena",
+    "Vanessa"
+   ],
+   "halt": false
+  },
+  {
+   "request": "Compare points vs cash for the Las Vegas trip and set a price watch on the hotel",
+   "lead": "Travel Desk",
+   "must_include": [
+    "Marcus",
+    "Vanessa"
+   ],
+   "halt": false
   }
  ]
 }

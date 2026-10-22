@@ -27,6 +27,13 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Kevin | personal development, habit, 11-dimension, discipline, mindset, singles event, speed dating, social event | `wiki/ai-team/mentors-and-benches.md` |
 | James | family office, estate, trust, wealth plan, legacy | `wiki/ai-team/mentors-and-benches.md` |
 | Apex | trade, futures, nq, es, order flow, liquidity, backtest, paper trade, trading research, research desk, strategy idea | `wiki/ai-team/mentors-and-benches.md` |
+| Refi Watch Analyst | refi watch, note rate, rate watch, refi list, refi candidate, rate drop, market average | `wiki/ai-team/desk-seats.md` |
+| Sphere Nurture Coordinator | sphere, nurture, past client, birthday, anniversary, home anniversary, touch plan, check-in | `wiki/ai-team/desk-seats.md` |
+| Voicemail & Inbox Triage | voicemail, inbox, triage, whisperai, gmail, missed call, unread | `wiki/ai-team/desk-seats.md` |
+| Document Intake Clerk | document intake, intake, contract dates, disclosure dates, missing date, key dates, tcdeals, date entry | `wiki/ai-team/desk-seats.md` |
+| Open House Captain | open house, sign-in sheet, sign-in, visitor, thank-you, thank you note | `wiki/ai-team/desk-seats.md` |
+| Travel Desk | travel, trip, flight, hotel, points vs cash, points, miles, price watch, gondola, itinerary | `wiki/ai-team/desk-seats.md` |
+| Meeting Scribe | meeting recap, recap, meeting notes, action items, fieldy, zoom, meeting minutes, debrief | `wiki/ai-team/desk-seats.md` |
 
 ## Pods — standing cross-functional teams that work in parallel
 
@@ -37,13 +44,14 @@ duplicated. Vanessa's daily cycle forms its squads from these pods.
 
 | Pod | Words that wake it | Seats (run in parallel) | What it delivers |
 |---|---|---|---|
-| Deal Pod | escrow, contingency, under contract, closing, transaction, deal, tc, appraisal, inspection, coe | Victor, Carmen, Showing Coordinator, Harrison, Alexandra | Timeline, due-in-7 list, document checklist, reminder drafts, loan-side milestones |
-| Lead Pod | lead, leads, speed to lead, follow up, follow-up, nurture, sphere, past client, open house, referral | Victor, Gwen, Sofia, Alexandra | Call list for the ISA, follow-up drafts, nurture touches, compliance line on each |
+| Deal Pod | escrow, contingency, under contract, closing, transaction, deal, tc, appraisal, inspection, coe | Victor, Carmen, Showing Coordinator, Harrison, Document Intake Clerk, Alexandra | Timeline, due-in-7 list, document checklist, contract and disclosure dates into `tcDeals` with missing-date flags, reminder drafts, loan-side milestones |
+| Lead Pod | lead, leads, speed to lead, follow up, follow-up, nurture, sphere, past client, open house, referral | Victor, Gwen, Sofia, Voicemail & Inbox Triage, Alexandra | Call list for the ISA, voicemail and inbox triage into `vanessaQueue`, follow-up drafts, nurture touches, compliance line on each |
 | Listing Pod | listing, seller, list price, cma, staging, listing launch, open house | Marguerite, Sofia, Bianca, Alexandra | CMA prep, launch checklist, MLS remarks and marketing drafts, seller weekly report |
-| Mortgage Pod | loan, mortgage, va, fha, irrrl, refinance, pre-approval, dti, ltv, conditions, underwriting, trid, le, cd | Harrison, Denise, Howard, Walter, Lucia, Alexandra | Scenario prep, conditions list, TRID clock, program fit — never a quote or an eligibility call |
+| Mortgage Pod | loan, mortgage, va, fha, irrrl, refinance, pre-approval, dti, ltv, conditions, underwriting, trid, le, cd | Harrison, Denise, Howard, Walter, Lucia, Refi Watch Analyst, Alexandra | Scenario prep, conditions list, TRID clock, program fit, the weekly refi watch list (market average, not a quote) — never a quote or an eligibility call |
 | Growth Pod | marketing, campaign, content, brand, social, seo, video, newsletter | Sofia, Victor, Marcus, Alexandra | Content week, campaign drafts, cost and revenue read, compliance |
 | Money Pod | budget, cash, net worth, tax, commission, expense, income, profit | Marcus, Nathan, Anita, James | Numbers with sources, deadlines, cash and commission view |
 | Ops Pod | automation, routine, connector, sync, broken, dashboard, mac, runner, integration, workflow, pabbly, mod | Derek, Elena, Elon, Nadia | Fix plan, security check, feasibility, the one paste for Steven |
+| Client Care Pod | sphere, nurture, past client, birthday, anniversary, open house, sign-in sheet, thank-you, review request, testimonial | Sofia, Sphere Nurture Coordinator, Open House Captain, Wren, Victor, Alexandra | Monthly sphere touch drafts, open-house sign-in → leads, thank-you drafts, ISA call list, review and referral asks — drafts only |
 
 ## Joins — a seat that must come along
 
@@ -61,6 +69,7 @@ When the request matches the words, the seat joins the plan even if it is not th
 | cost, spend, budget, subscription, price, paid, pay, upgrade, purchase | Marcus | Anything that spends money is costed by the CFO |
 | loan, mortgage, va, fha, rate, refinance | Harrison | Loan mechanics are prepared by the senior mortgage seat |
 | buyer, listing, showing, offer, escrow | Carmen | The transaction coordinator owns the file timeline |
+| fraud, scam, phishing, wire instructions, impersonation | Elena | A fraud flag from triage or a recap goes to the CISO before anyone replies |
 
 ## Gates — run after the wave, never in parallel with it
 
@@ -78,7 +87,7 @@ run while the licensed or irreversible step waits for Steven.
 
 | When the request says | HALT because |
 |---|---|
-| send, email the client, text the client, post it, publish, schedule the post, submit the form, place the order, book it | A send to a client or a public post needs Steven's yes |
+| send, email the client, text the client, post it, publish, schedule the post, submit the form, place the order, book it, book the flight, book the hotel, book the trip | A send to a client or a public post needs Steven's yes |
 | quote, rate quote, lock, eligibility, approve the loan, pre-approve, sign, signature, negotiate | A licensed decision is Steven's |
 | pay, buy, purchase, subscribe, upgrade plan, spend | Spending money needs Steven's yes |
 | delete, wipe, drop, reset, force push | Irreversible |
@@ -93,4 +102,4 @@ run while the licensed or irreversible step waits for Steven.
 - `wiki/ai-team/org-chart.md` — the full seat map.
 - `wiki/ai-team/model-tiering-dispatch.md` — the ≤8 / ≤4 dispatch limits and model per seat.
 
-Written 2026-10-09. Routing self-test: `brain/bench/routes.json`, checked by `bin/brain loop`.
+Written 2026-10-09; desk seats (`desk-seats.md`), Client Care Pod and the fraud join added 2026-10-22. Routing self-test: `brain/bench/routes.json`, checked by `bin/brain loop`.

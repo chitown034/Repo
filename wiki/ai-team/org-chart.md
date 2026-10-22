@@ -26,6 +26,8 @@ Steven (Principal)
 │   ├─ Agent OS — `bin/brain os`: all 172 roster agents reachable via Laya lane, Jarvis recall and an Orca launch command (`wiki/ai-team/agent-os.md`)
 │   ├─ Dispatch planner — `bin/brain route`: lead seat, cross-functional joins, ≤8-wide parallel waves, gates, HALTs (rules: `wiki/ai-team/cross-functional.md`)
 │   ├─ Broker Command Center — realtor/broker OS (https://claude.ai/artifact/XFx2H7cf8mnS8e8hjFzxNg), connected 2026-10-22
+│   ├─ Travel Desk — Gondola MCP: points vs cash, trips, price watches; Marcus costs each trip; booking is Steven's (new 2026-10-22, `wiki/ai-team/desk-seats.md`)
+│   ├─ Meeting Scribe — Fieldy/Zoom recaps: decisions, action items → `vanessaQueue`; drafts only (new 2026-10-22, `wiki/ai-team/desk-seats.md`)
 │   └─ Juliet — Escalation & Service Recovery
 ├─ ISA / EA (human) — Mon–Fri 12–4 PM; the ISA Portal opens with "Today from Vanessa" (`isaToday`, copied from
 │   `cosBrief.isaInstructions` by the daily cycle, weekdays 6:25 AM PT, since 2026-10-22)
@@ -36,6 +38,7 @@ Steven (Principal)
 └─ Executives (report to Vanessa, ≤8 dispatched in parallel, formed into cross-functional squads by the daily cycle):
     ├─ Marcus (CFO) — Nathan, Bianca, Maya (four-county market & schools data, new 2026-10-22), Dov, Anita, Paloma, Grace, Alan, Hazel, Corinne + ruflo cost-analyst bench
     ├─ Sofia (CMO) — 14 named marketing reports + ruflo audio bench
+    │   ├─ Sphere Nurture Coordinator — monthly past-client/sphere touch drafts, birthdays and anniversaries, with Wren; drafts only (new 2026-10-22, `wiki/ai-team/desk-seats.md`)
     ├─ Derek (CTO) — Sam, Naomi, Integration Engineer (owns OmniRoute failover + `claude-auto --keep-going`, and the browser tools: agent-browser, Playwright MCP) + 5 ECC officers + Ivan, Lena, Grace, Raj, Tomas, Owen (Broker Command Center Autopilot) and Rafael (Workflow Studio), both new 2026-10-22
     │   + code-validator (the code-validation gate, 2026-10-12: validate-code.sh + VibeBreaker 20-pass review of every code change — a different agent than the author)
     │   + code-review / build-fix / code-quality / infrastructure benches (56 agents)
@@ -44,6 +47,10 @@ Steven (Principal)
     ├─ Victor (CRO) — Harrison, Gwen, Marguerite + 19 named reports + Carmen + the Transaction & Showing desk routine
     │   + Tax Assessor Agent and Loan Pricing Prep Agent (prep only; `wiki/mortgage-programs/loan-task-agents.md`)
     │   + Paula (probate/trust/distressed), Riley (professional alliances), Ingrid (Academy), Celeste (Coach HQ), Lenora (knowledge librarian) — new 2026-10-22, Broker Command Center
+    │   ├─ Refi Watch Analyst — under Harrison: weekly rate-vs-note-rate prep list, "market average, not a quote" (new 2026-10-22, `wiki/ai-team/desk-seats.md`)
+    │   ├─ Voicemail & Inbox Triage — ISA line: WhisperAI voicemails and Gmail triaged into `vanessaQueue`; fraud flags to Elena (new 2026-10-22, `wiki/ai-team/desk-seats.md`)
+    │   ├─ Document Intake Clerk — under Carmen: contract and disclosure dates into `tcDeals`, missing-date flags (new 2026-10-22, `wiki/ai-team/desk-seats.md`)
+    │   └─ Open House Captain — under Marguerite/Gwen: sign-in sheet → leads, thank-you drafts, ISA call list (new 2026-10-22, `wiki/ai-team/desk-seats.md`)
     ├─ Elena (CISO) — Omar, Renee, Ruth, Dev + ruflo security bench
     └─ Elon (CTO Innovator, proposal-only) — the AI Agent Engineering Team: stress-test, reliability,
        efficiency, capability, integration engineers + sandbox QA + chief automation strategist
@@ -51,20 +58,21 @@ Steven (Principal)
 
 ## Standing pods — cross-functional teams that work in parallel (2026-10-22)
 
-Steven: "ensure AI agents work cross-functional as teams and in parallel when needed." Seven standing pods sit across
+Steven: "ensure AI agents work cross-functional as teams and in parallel when needed." Eight standing pods sit across
 the executive lines; `bin/brain route` wakes a whole pod in one parallel wave (≤8 seats) and Vanessa's daily cycle
 forms its squads from them. Gates run after the wave: Alexandra on anything client-facing, ECC + the code validator
 on any change, Vanessa last. Rules and wake words: `wiki/ai-team/cross-functional.md` § Pods.
 
 | Pod | Seats (parallel) | Delivers |
 |---|---|---|
-| Deal Pod | Victor · Carmen · Showing Coordinator · Harrison · Alexandra | timelines, due-in-7, checklists, reminder drafts, loan milestones |
-| Lead Pod | Victor · Gwen · Sofia · Alexandra | ISA call list, follow-up and nurture drafts |
+| Deal Pod | Victor · Carmen · Showing Coordinator · Harrison · Document Intake Clerk · Alexandra | timelines, due-in-7, checklists, contract/disclosure dates into `tcDeals`, reminder drafts, loan milestones |
+| Lead Pod | Victor · Gwen · Sofia · Voicemail & Inbox Triage · Alexandra | ISA call list, voicemail/inbox triage into `vanessaQueue`, follow-up and nurture drafts |
 | Listing Pod | Marguerite · Sofia · Bianca · Alexandra | CMA prep, launch checklist, remarks, seller report |
-| Mortgage Pod | Harrison · Denise · Howard · Walter · Lucia · Alexandra | scenario prep, conditions, TRID clock — never a quote |
+| Mortgage Pod | Harrison · Denise · Howard · Walter · Lucia · Refi Watch Analyst · Alexandra | scenario prep, conditions, TRID clock, weekly refi watch list — never a quote |
 | Growth Pod | Sofia · Victor · Marcus · Alexandra | content week, campaigns, cost/revenue read |
 | Money Pod | Marcus · Nathan · Anita · James | numbers with sources, deadlines, commissions |
 | Ops Pod | Derek · Elena · Elon · Nadia | fix plan, security check, feasibility, Steven's one paste |
+| Client Care Pod | Sofia · Sphere Nurture Coordinator · Open House Captain · Wren · Victor · Alexandra | sphere touch drafts, open-house sign-in → leads, thank-you drafts, ISA call list, review/referral asks |
 
 **One Vanessa, one queue (2026-10-22).** Every surface hands work to `vanessaQueue` on the Command Deck: deck buttons
 ("Hand to Vanessa" on kanban, lead and deal rows), Vanessa's own `queue_task` tool in chat, `/queue` in Claude Code,
@@ -90,6 +98,7 @@ into the ≤3 Needs-you items.
 - **Rosa** (Military & Corporate Relocation) — see `wiki/real-estate-playbooks/military-relocation.md`.
 - **Disruption Scout** (under Nadia) — runs the weekly internet scout (`integrations/scout/scout.py`): GitHub, the official MCP registry, npm, Hacker News and releases of tools already in the stack. Its shortlist feeds Nadia's weekly brief; Elon gates every ADOPT/PILOT; nothing installs without Steven. See `wiki/ai-team/tool-integration-status.md`.
 - **Wren** / **Garrett** — referral reciprocity and LPT recruiting; see `wiki/real-estate-playbooks/referral-reciprocity.md`.
+- **Desk seats (2026-10-22)** — Refi Watch Analyst, Sphere Nurture Coordinator, Voicemail & Inbox Triage, Document Intake Clerk, Open House Captain, Travel Desk, Meeting Scribe: Sonnet 5 report seats, drafts only; see `wiki/ai-team/desk-seats.md`.
 
 ## What "bench" means
 
@@ -131,4 +140,4 @@ Nadia (CAIO) and Elon (CTO Innovator) never ship a change themselves — Nadia s
 - `wiki/ai-team/tool-integration-status.md` — connector, skill, and proposed-tool status by seat.
 - `wiki/ai-team/mentors-and-benches.md` — Maxwell, Apex, James, Kevin and what a "bench" actually is.
 
-Source: Command Deck, `ORG_CHART` / `AI_TEAM_ORG` data (AI Team panel), toolkit snapshot referenced 2026-09-16. Tree last updated 2026-10-09 (Laya, Brain loop, Google Drive mirror, Jarvis verify script; dispatch planner, keep-going failover and weekly scout added the same day; browser control + skill finder 2026-10-10; trading desk, loan-task agents, events scout, Computer Hub, third-party packs 2026-10-11; Broker Command Center seats, the ISA's "Today from Vanessa" list and the Transaction & Showing desk node 2026-10-22). `bin/brain orgcheck` proves every seat above resolves to a brain page.
+Source: Command Deck, `ORG_CHART` / `AI_TEAM_ORG` data (AI Team panel), toolkit snapshot referenced 2026-09-16. Tree last updated 2026-10-09 (Laya, Brain loop, Google Drive mirror, Jarvis verify script; dispatch planner, keep-going failover and weekly scout added the same day; browser control + skill finder 2026-10-10; trading desk, loan-task agents, events scout, Computer Hub, third-party packs 2026-10-11; Broker Command Center seats, the ISA's "Today from Vanessa" list and the Transaction & Showing desk node 2026-10-22; seven desk seats and the Client Care Pod 2026-10-22). `bin/brain orgcheck` proves every seat above resolves to a brain page.

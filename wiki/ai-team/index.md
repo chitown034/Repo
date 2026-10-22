@@ -19,6 +19,7 @@ hold the actual detail once you know which seat or layer you need.
 | `third-party-packs.md` | The 18 repos Steven asked for: installed, held or declined, and why |
 | `agent-os.md` | Every agent through Laya (lane), Jarvis (recall) and Orca (launch): `bin/brain os`, 172/172 reachable |
 | `cross-functional.md` | Who leads, who joins, the parallel waves, the gates and the HALT words — the rules `bin/brain route` runs |
+| `desk-seats.md` | The seven Sonnet 5 desk seats added 2026-10-22 (refi watch, sphere nurture, voicemail/inbox triage, document intake, open house, travel desk, meeting scribe): role, owns, HALT, starting page |
 | `mentors-and-benches.md` | Maxwell, Apex, James, Kevin, Kevin (name settled 2026-10-07), and what a "bench" row actually counts |
 
 ## Routing by lane
@@ -40,6 +41,7 @@ hold the actual detail once you know which seat or layer you need.
 | Family office, tax strategy, estate | **James** — Wealth Advisor | Opus 5.5 |
 | Personal development, the 11-Dimension check | **Kevin** — Personal Development Mentor | Opus 5.5 |
 | Execution, reports, benches | The named report seat | Sonnet 5 |
+| Refi watch list, sphere touches, voicemail/inbox triage, contract dates, open-house follow-up, travel, meeting recaps | **Refi Watch Analyst**, **Sphere Nurture Coordinator**, **Voicemail & Inbox Triage**, **Document Intake Clerk**, **Open House Captain**, **Travel Desk**, **Meeting Scribe** — drafts only (`desk-seats.md`) | Sonnet 5 |
 | Research heavy lifting | **Claude web research** — WebSearch/WebFetch on Steven's Claude subscription (Perplexity removed 2026-10-05) | Sonnet 5 |
 
 **Kevin is the mentor seat's name everywhere** (Steven, 2026-10-07: "replace Cole with Kevin throughout"). The
