@@ -1,5 +1,6 @@
 """dashboard/tests/quickcheck.py — the cdStateSeed check: skipped on a page with no seed, FAIL on a bad seed, PASS on a
 good one (code-validator, 2026-10-22: the skip must never hide a Command Deck regression)."""
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -18,6 +19,7 @@ def run(seed: str) -> str:
         return subprocess.run([sys.executable, str(QC), str(p)], capture_output=True, text=True).stdout
 
 
+@unittest.skipUnless(shutil.which("node"), "quickcheck runs node --check; node is not installed here")
 class SeedCheck(unittest.TestCase):
     def test_no_seed_is_skipped(self):
         out = run("")

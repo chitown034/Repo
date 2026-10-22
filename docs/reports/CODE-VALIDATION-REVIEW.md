@@ -1,6 +1,6 @@
 # VibeBreaker Final Report
 
-change-set: 0c440a6c3ee4e1ef
+change-set: 1fd1ebd683c6f74d
 
 ## Verdict
 
@@ -38,3 +38,12 @@ Clean: the seat_card_rows/seat_cards split, the card fields, the `--all` filter 
 ## Release note
 
 This review covers the files above as they are on disk. It does not cover rendering in a browser.
+
+
+## Fixed after review (change-set 1fd1ebd683c6f74d)
+
+- **P19-F1.** `brain/tests/test_quickcheck.py` now skips when `node` is not on PATH. Checked: 4 skipped with PATH emptied.
+- **P05-F1.** `seat_card_rows` skips manifest entries with no slug or no `laya` block, so it no longer raises KeyError. A
+  manifest with no agent list still raises ValueError. Test: `test_card_rows_survive_a_partial_manifest_entry`.
+- **`--all` trade-off.** This is noted for Steven, not changed. Use `--all` only when the live page has nodes from a
+  branch this checkout has not merged.

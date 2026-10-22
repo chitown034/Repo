@@ -266,10 +266,15 @@ def seat_card_rows(root: Path, inv: dict) -> list[dict]:
     except (OSError, ValueError, KeyError) as e:
         # Never render blank models and zero lanes over a good table (a conflicted or missing manifest).
         raise ValueError(f"seat cards: {agentos.MANIFEST} unreadable ({e})") from e
-    by_slug = {a["slug"]: a for a in roster}
+    if not isinstance(roster, list):
+        raise ValueError(f"seat cards: {agentos.MANIFEST} has no agent list")
+    # A half-merged or hand-edited entry (no slug, no laya block) is skipped, not fatal.
+    by_slug = {a["slug"]: a for a in roster if isinstance(a, dict) and a.get("slug")}
     lane: dict[str, int] = {}
-    for a in roster:
-        lane[a["laya"]["lane"]] = lane.get(a["laya"]["lane"], 0) + 1
+    for a in by_slug.values():
+        ln = (a.get("laya") or {}).get("lane")
+        if ln:
+            lane[ln] = lane.get(ln, 0) + 1
     try:
         pods = _pods((root / ORG_CHART).read_text(encoding="utf-8"))
     except OSError:
@@ -281,7 +286,7 @@ def seat_card_rows(root: Path, inv: dict) -> list[dict]:
             continue
         slug, kind = agentos.ALIASES.get(seat, ("", ""))
         if kind == "roster" and slug in by_slug:
-            m = by_slug[slug]["model"]
+            m = str(by_slug[slug].get("model") or "—")
             model = MODEL_WORD.get(m.strip().lower(), m)
         else:
             model = "persona skill (session model)" if kind == "skill" else "—"

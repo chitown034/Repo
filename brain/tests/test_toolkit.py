@@ -79,6 +79,18 @@ class SeatCardTests(unittest.TestCase):
         page = (ROOT / "dashboard/brain-4d/template.html").read_text(encoding="utf-8")
         self.assertIn("const C = S.c;", page)
 
+    def test_card_rows_survive_a_partial_manifest_entry(self):
+        import json
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d); (root / "integrations/agent-os").mkdir(parents=True)
+            agents = json.loads((ROOT / "integrations/agent-os/agents.json").read_text(encoding="utf-8"))
+            agents["agents"].append({"slug": "half-merged"})          # no laya, no model
+            agents["agents"].append({"laya": {"lane": "Victor"}})      # no slug
+            (root / "integrations/agent-os/agents.json").write_text(json.dumps(agents), encoding="utf-8")
+            rows = {r["seat"]: r for r in toolkit.seat_card_rows(root, toolkit.inventory(ROOT))}
+        self.assertEqual(rows["Vanessa"]["model"], "Fable 5.1")
+
     def test_write_cards_only_between_markers(self):
         import shutil
         import tempfile
