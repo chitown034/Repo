@@ -3,7 +3,7 @@ const $n=id=>+($("#"+id)||{}).value||0;
 const fm$=v=>(v<0?"-$":"$")+Math.abs(Math.round(v)).toLocaleString();
 const CR=()=>window.CORR_REF||{};
 /* ================= PRICING & CHANNEL ECONOMICS ================= */
-const CH_DEF={amt:450000,units:4,orig:1,lpc:2.5,bpcCap:0,srp:1.25,gos:0.5,wrate:7.5,days:18,wfee:250,invUW:950,inUW:600,qc:175,tech:120,close:150,lo:1.0,repo:10,fixedNon:6000,fixedDel:12000,fixedMini:3500};
+const CH_DEF={amt:450000,units:4,orig:1,lpc:2.5,bpcCap:0,srp:0.9,gos:0.25,wrate:7.5,days:18,wfee:250,invUW:950,inUW:600,qc:175,tech:120,close:150,lo:1.0,repo:10,fixedNon:6000,fixedDel:12000,fixedMini:3500};
 const CH_IN=[["amt","Loan amount $"],["units","Loans per month"],["orig","Origination charged to borrower %"],["lpc","Broker lender-paid comp %"],["srp","Servicing-release premium (SRP) %"],["gos","Price over par / gain on sale %"],["wrate","Warehouse rate %"],["days","Warehouse dwell days"],["wfee","Warehouse fees per loan $"],["invUW","Investor UW / review fee (non-del) $"],["inUW","In-house underwriting cost (delegated) $"],["qc","QC / compliance per loan $"],["tech","LOS / pricing / tech per loan $"],["close","Closing / doc / funding ops per loan $"],["lo","LO commission (bps of loan as %)"],["repo","Repurchase / EPD reserve (bps)"],["fixedMini","Fixed monthly — mini-corr $"],["fixedNon","Fixed monthly — non-delegated $"],["fixedDel","Fixed monthly — delegated $"]];
 function chCalc(v){const A=v.amt,interest=A*(v.wrate/100)*(v.days/360);
  const rows={
