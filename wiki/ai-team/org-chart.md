@@ -25,21 +25,25 @@ Steven (Principal)
 │   ├─ Weekly scout — `integrations/scout/scout.py` → `docs/reports/SCOUT.md`: new repos, skills, MCP servers, upgrades, CLIs, free tools (Disruption Scout → Nadia grades → Elon gates → Steven approves)
 │   ├─ Agent OS — `bin/brain os`: all 172 roster agents reachable via Laya lane, Jarvis recall and an Orca launch command (`wiki/ai-team/agent-os.md`)
 │   ├─ Dispatch planner — `bin/brain route`: lead seat, cross-functional joins, ≤8-wide parallel waves, gates, HALTs (rules: `wiki/ai-team/cross-functional.md`)
+│   ├─ Broker Command Center — realtor/broker OS (https://claude.ai/artifact/XFx2H7cf8mnS8e8hjFzxNg), connected 2026-10-22
 │   └─ Juliet — Escalation & Service Recovery
-├─ ISA / EA (human) — Mon–Fri 12–4 PM; gets `cosBrief.isaInstructions` from the daily cycle for the noon huddle
+├─ ISA / EA (human) — Mon–Fri 12–4 PM; the ISA Portal opens with "Today from Vanessa" (`isaToday`, copied from
+│   `cosBrief.isaInstructions` by the daily cycle, weekdays 6:25 AM PT, since 2026-10-22)
 │   (sends showing confirmations, chases escrow/lender items, enters each new deal's dates into the TC intake)
 ├─ Transaction & Showing desk — cloud routine, weekdays 7:10 AM PT, under Victor: the transaction coordinator
 │   (timelines, checklists, deadline alerts, reminder drafts) and the showing assistant (prep, route, confirmation
 │   drafts, feedback forms); Alexandra gates every draft; writes `tcDesk`
 └─ Executives (report to Vanessa, ≤8 dispatched in parallel, formed into cross-functional squads by the daily cycle):
-    ├─ Marcus (CFO) — Nathan, Bianca, Dov, Anita, Paloma, Grace, Alan, Hazel, Corinne + ruflo cost-analyst bench
+    ├─ Marcus (CFO) — Nathan, Bianca, Maya (four-county market & schools data, new 2026-10-22), Dov, Anita, Paloma, Grace, Alan, Hazel, Corinne + ruflo cost-analyst bench
     ├─ Sofia (CMO) — 14 named marketing reports + ruflo audio bench
-    ├─ Derek (CTO) — Sam, Naomi, Integration Engineer (owns OmniRoute failover + `claude-auto --keep-going`, and the browser tools: agent-browser, Playwright MCP) + 5 ECC officers + Ivan, Lena, Grace, Raj, Tomas
+    ├─ Derek (CTO) — Sam, Naomi, Integration Engineer (owns OmniRoute failover + `claude-auto --keep-going`, and the browser tools: agent-browser, Playwright MCP) + 5 ECC officers + Ivan, Lena, Grace, Raj, Tomas, Owen (Broker Command Center Autopilot) and Rafael (Workflow Studio), both new 2026-10-22
     │   + code-validator (the code-validation gate, 2026-10-12: validate-code.sh + VibeBreaker 20-pass review of every code change — a different agent than the author)
     │   + code-review / build-fix / code-quality / infrastructure benches (56 agents)
-    ├─ Alexandra (CCO) — Lucia, Bennett, Fern, Clay, Odette, Gus, Imani, Roland, Diane, Walter, Denise, Howard
+    ├─ Alexandra (CCO) — Lucia, Bennett, Fern, Clay, Odette, Gus, Imani, Roland, Diane, Walter, Denise, Howard, Beatrice (DRE broker supervision) and Winston (C.A.R. forms + file QA), both new 2026-10-22
     ├─ Nadia (CAIO, proposal-only) — Leah, Disruption Scout (runs `integrations/scout/scout.py` weekly), Yuki, Hana, Felix, Nora, Ezra + research bench
-    ├─ Victor (CRO) — Harrison, Gwen, Marguerite + 19 named reports + Carmen + Tax Assessor Agent and Loan Pricing Prep Agent (prep only; `wiki/mortgage-programs/loan-task-agents.md`)
+    ├─ Victor (CRO) — Harrison, Gwen, Marguerite + 19 named reports + Carmen + the Transaction & Showing desk routine
+    │   + Tax Assessor Agent and Loan Pricing Prep Agent (prep only; `wiki/mortgage-programs/loan-task-agents.md`)
+    │   + Paula (probate/trust/distressed), Riley (professional alliances), Ingrid (Academy), Celeste (Coach HQ), Lenora (knowledge librarian) — new 2026-10-22, Broker Command Center
     ├─ Elena (CISO) — Omar, Renee, Ruth, Dev + ruflo security bench
     └─ Elon (CTO Innovator, proposal-only) — the AI Agent Engineering Team: stress-test, reliability,
        efficiency, capability, integration engineers + sandbox QA + chief automation strategist
@@ -104,4 +108,4 @@ Nadia (CAIO) and Elon (CTO Innovator) never ship a change themselves — Nadia s
 - `wiki/ai-team/tool-integration-status.md` — connector, skill, and proposed-tool status by seat.
 - `wiki/ai-team/mentors-and-benches.md` — Maxwell, Apex, James, Kevin and what a "bench" actually is.
 
-Source: Command Deck, `ORG_CHART` / `AI_TEAM_ORG` data (AI Team panel), toolkit snapshot referenced 2026-09-16. Tree last updated 2026-10-09 (Laya, Brain loop, Google Drive mirror, Jarvis verify script; dispatch planner, keep-going failover and weekly scout added the same day; browser control + skill finder 2026-10-10; trading desk, loan-task agents, events scout, Computer Hub, third-party packs 2026-10-11). `bin/brain orgcheck` proves every seat above resolves to a brain page.
+Source: Command Deck, `ORG_CHART` / `AI_TEAM_ORG` data (AI Team panel), toolkit snapshot referenced 2026-09-16. Tree last updated 2026-10-09 (Laya, Brain loop, Google Drive mirror, Jarvis verify script; dispatch planner, keep-going failover and weekly scout added the same day; browser control + skill finder 2026-10-10; trading desk, loan-task agents, events scout, Computer Hub, third-party packs 2026-10-11; Broker Command Center seats, the ISA's "Today from Vanessa" list and the Transaction & Showing desk node 2026-10-22). `bin/brain orgcheck` proves every seat above resolves to a brain page.

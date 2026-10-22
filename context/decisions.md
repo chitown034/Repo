@@ -601,3 +601,6 @@ the record of the change. The full split, and the three web-UI routine edits onl
   `showingSchedule` are empty, so the first runs will ask the ISA to enter open deals — that intake is the one
   manual step the desk needs. Pabbly: plan recorded with his words; Check Auth built; waiting on his Kapso key.
 - **Owner.** Victor (desk), Derek (automation). **Budget.** +5 runs/week.
+
+## 2026-10-22 — ISA Portal gets Vanessa's daily ISA list
+The daily Chief-of-Staff cycle now copies `cosBrief.isaInstructions` (plus the ISA's step-by-step drafts and four standing duties) into the ISA Portal's own store as `isaToday`; the portal's Panel 01 opens with a "Today from Vanessa" card. Rates on the portal re-mirrored from the deck the same day (the Mac rates task has been silent since 2026-10-13). Org chart: Transaction & Showing desk shown under Victor; the Broker Command Center seats another session added the same day kept, with Winston moved back inside Alexandra's reports.
