@@ -15,4 +15,3 @@ function lpPPPanel(x){const p=lpPPOf(x);if(!p)return"";
 {const d0=lpDetail;lpDetail=x=>{const h=d0(x),p=lpPPPanel(x);const stub=x.stub?`<div class="card warn" style="margin-bottom:10px"><b class="sm">New PPFC lender — public program research not loaded yet.</b> <span class="sm mut">Company terms below come from Trainual.</span></div>`:"";return stub+h+p}}
 {const h0=PAGE.lprofiles.html;PAGE.lprofiles.html=()=>{lpStubs();return h0()}}
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();lpPP().forEach(p=>out.push({src:`Lender profile — ${p.name}`,t:`PPFC company terms: LPC ${p.comp||"?"}; NMLS ${p.nmls||"?"}; AE ${p.ae||"?"} ${p.email||""} ${p.phone||""}; FHA ID ${p.fha||"-"}; VA ID ${p.vaid||"-"}; lock cutoff ${p.lock||"?"}; LoanSifter ${p.sifter||"?"}. Niches: ${(p.nic||[]).map(n=>typeof ppfcPlain==="function"?ppfcPlain(n.b):n.b).join(" ").slice(0,900)}`}));return out}}
-boot();

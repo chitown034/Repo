@@ -161,3 +161,7 @@ Market numbers, Home Report signals, pipeline, approvals and refi queue are **sa
 
 ### v58 publish note — PPFC Trainual block
 Another session added the PPFC Trainual knowledge base (`PPFC_KB`, `PPFC_LENDERS`, the `ppfc` page and its panels) straight into the published artifact. It holds internal company SOPs and AE contacts, so it is **not** kept in this repo. To publish a new build: read the live artifact, copy the block that starts at `/* ===== PPFC TRAINUAL KNOWLEDGE BASE` and ends just before `boot();`, and paste it into `dist/vanessa-dashboard.html` right before `boot();`.
+
+### v70 — Lender Compare & Recommend (app39.js)
+Loan Intelligence → Lender Compare & Recommend: deal recommender (loan type, state, FICO, LTV, loan amount, DTI, priority weighting), sortable/filterable table of every lender with comp, limits, licensing and CSV export, best-lender-by-loan-type matrix for 31 loan types, side-by-side compare of up to 4, and a personal speed/service/favorite/avoid scorecard that feeds the ranking.
+Other sessions also publish directly to the live artifact (PPFC Trainual block, ARIVE Mastery 2.0, 147-seat AI team). Always merge onto the current live version before publishing; do not publish a plain repo build over it.
