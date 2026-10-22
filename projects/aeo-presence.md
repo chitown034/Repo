@@ -6,7 +6,7 @@ is in `projects/aeo-presence/`: an audit of every public profile, the strategy, 
 questions mapped to answers, a 90-day content calendar, an LLM-citation checklist, copy for each
 profile, JSON-LD schema, and a static entity site (`site/`, with `llms.txt`).
 
-**Owner.** Sofia (CMO). **Gate.** Alexandra (compliance) reviews every public line first, then
+**Owner.** Sofia (CMO); worked by Orin, her GEO / AEO Lead. **Gate.** Alexandra (compliance) reviews every public line first, then
 Steven approves the publish. Proposal-only until both say yes. Nothing has been posted, pasted or
 deployed.
 

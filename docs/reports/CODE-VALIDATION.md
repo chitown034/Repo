@@ -1,50 +1,25 @@
 # Code validation — last run
 
-Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `3b09ad0a62d61e26`: **not yet**.
+Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `602e90661a4b8a47`: **not yet**.
 
 ```
-code validation 2026-10-22T18:30:27Z - change-set 3b09ad0a62d61e26
+code validation 2026-10-22T18:41:05Z - change-set 602e90661a4b8a47
 files:
-  .claude/skills/apex-trade-journal/SKILL.md
-  .claude/skills/james-portfolio-read/SKILL.md
-  .claude/skills/listing-launch/SKILL.md
-  .claude/skills/meeting-recap-to-crm/SKILL.md
-  .claude/skills/nadia-scout-run/SKILL.md
-  .claude/skills/open-house-follow-up/SKILL.md
-  .claude/skills/past-client-nurture/SKILL.md
-  .claude/skills/refi-watch/SKILL.md
-  .claude/skills/review-request/SKILL.md
-  .claude/skills/tc-doc-intake/SKILL.md
-  .claude/skills/voicemail-to-lead/SKILL.md
-  brain/agentos.py
-  brain/bench/routes.json
+  brain/__main__.py
+  brain/tests/test_toolkit.py
+  brain/toolkit.py
   context/decisions.md
   dashboard/brain-4d.html
-  dashboard/tests/quickcheck.py
-  docs/inventory/agent-roster.md
-  integrations/agent-os/agents.json
-  integrations/agent-os/agents/README.md
-  integrations/agent-os/agents/chief-of-staff.md
-  integrations/agent-os/agents/document-intake-clerk.md
-  integrations/agent-os/agents/meeting-scribe.md
-  integrations/agent-os/agents/open-house-captain.md
-  integrations/agent-os/agents/refi-watch-analyst.md
-  integrations/agent-os/agents/sphere-nurture-coordinator.md
-  integrations/agent-os/agents/travel-desk.md
-  integrations/agent-os/agents/voicemail-inbox-triage.md
-  wiki/ai-team/agent-os.md
-  wiki/ai-team/cross-functional.md
-  wiki/ai-team/desk-seats.md
-  wiki/ai-team/index.md
+  memory.md
+  projects/aeo-presence.md
   wiki/ai-team/org-chart.md
   wiki/ai-team/toolkit.md
-PASS py_compile brain/agentos.py
-PASS json brain/bench/routes.json
+PASS py_compile brain/__main__.py
+PASS py_compile brain/tests/test_toolkit.py
+PASS py_compile brain/toolkit.py
 PASS quickcheck dashboard/brain-4d.html
-PASS py_compile dashboard/tests/quickcheck.py
-PASS json integrations/agent-os/agents.json
 PASS brain unit tests
 PASS brain layout
 PASS brain doctor
-verdict: PASS (8 passed, 0 failed)
+verdict: PASS (7 passed, 0 failed)
 ```

@@ -51,5 +51,40 @@ class ToolkitTests(unittest.TestCase):
         self.assertIn("## Vanessa", p.read_text(encoding="utf-8"))
 
 
+class SeatCardTests(unittest.TestCase):
+    def test_owner_pins_follow_the_org_chart(self):
+        inv = toolkit.inventory(ROOT)
+        seat = {it["name"]: it["seat"] for it in inv["items"] if it["kind"] == "skill"}
+        self.assertEqual(seat["loan-pricing-agent"], "Victor")
+        self.assertEqual(seat["tax-assessor-agent"], "Victor")
+        self.assertEqual(toolkit._owner({"name": "Fieldy (meeting recorder)", "seat": "Derek"}), "Vanessa")
+        self.assertEqual(toolkit._owner({"name": "Fieldyish", "seat": "Derek"}), "Derek")
+
+    def test_cards_name_models_lanes_and_pods(self):
+        cards = toolkit.seat_cards(ROOT, toolkit.inventory(ROOT))
+        row = {ln.split("|")[1].strip(" *"): ln for ln in cards.splitlines()[2:]}
+        self.assertIn("Fable 5.1", row["Vanessa"])
+        self.assertIn("proposal-only", row["Nadia"]); self.assertIn("proposal-only", row["Elon"])
+        self.assertIn("Opus 5.5", row["Sofia"]); self.assertIn("Client Care", row["Sofia"])
+        self.assertIn("`refi-watch`", row["Victor"])
+
+    def test_write_cards_only_between_markers(self):
+        import shutil
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            for rel in (toolkit.ORG_CHART, "integrations/agent-os/agents.json"):
+                (root / rel).parent.mkdir(parents=True, exist_ok=True); shutil.copy(ROOT / rel, root / rel)
+            inv = toolkit.inventory(ROOT)
+            self.assertTrue(toolkit.write_cards(root, inv))
+            once = (root / toolkit.ORG_CHART).read_text(encoding="utf-8")
+            self.assertTrue(toolkit.write_cards(root, inv))
+            self.assertEqual(once, (root / toolkit.ORG_CHART).read_text(encoding="utf-8"))
+            self.assertIn("## The shape", once)
+            (root / toolkit.ORG_CHART).write_text("# no markers\n", encoding="utf-8")
+            self.assertFalse(toolkit.write_cards(root, inv))
+            self.assertEqual((root / toolkit.ORG_CHART).read_text(encoding="utf-8"), "# no markers\n")
+
+
 if __name__ == "__main__":
     unittest.main()
