@@ -14,10 +14,10 @@
   states:{CA:"Not confirmed",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed"}, statesSrc:"",
   nmls:"",
   highlights:["Dedicated agricultural wholesale lender (brokers, banks, lenders)","Finances barndominiums, shed and shop homes","Credit score can come from one of three bureaus on land/ag loans (per site FAQ)","Fixed 15/30-yr terms on rural residential"],
-  cautions:["Does not finance construction, farm operations, equipment or livestock (per unitedaglending.com)","Site pages inconsistent on down payment/dwelling thresholds and loan caps (one page says up to $2M); several pages 1-3 yrs old — verify with AE","NMLS ID and licensed states not found on site; check NMLS Consumer Access","Page content read via search-result snippets only (direct fetch failed)"],
+  cautions:["Does not finance construction, farm operations, equipment or livestock (per unitedaglending.com)","Site pages inconsistent on down payment/dwelling thresholds and loan caps (one page says up to $2M); several pages 1-3 yrs old — verify with AE","NMLS ID and licensed states not found on site; check NMLS Consumer Access","Page content read via search-result snippets only (direct fetch failed)","A Missouri Division of Finance record (third party, not NMLS Consumer Access) lists United Mortgage LLC, NMLS 239814, Overland Park KS, DBA 'United Ag Lending, United Mortgage' — verify on NMLS Consumer Access before using; nmls field left blank (2nd pass)"],
   status:"Active wholesale verified",
-  sources:["https://unitedaglending.com/","https://unitedaglending.com/agricultural-loans/rural-residential-loan-program/","https://unitedaglending.com/agricultural-loans/farm-and-ranch-loans/","https://unitedaglending.com/hobby-farm-lenders/","https://unitedaglending.com/4-agriculture-wholesale-loan-programs-for-your-ag-customers/","https://unitedaglending.com/faq-for-lenders/"],
-  checked:"2026-10-22"
+  sources:["https://unitedaglending.com/","https://unitedaglending.com/agricultural-loans/rural-residential-loan-program/","https://unitedaglending.com/agricultural-loans/farm-and-ranch-loans/","https://unitedaglending.com/hobby-farm-lenders/","https://unitedaglending.com/4-agriculture-wholesale-loan-programs-for-your-ag-customers/","https://unitedaglending.com/faq-for-lenders/","https://finance.mo.gov/licensee-details?id=14826"],
+  checked:"2026-10-22 (2nd pass)"
 },
 {
   n:57, name:"United Wholesale Mortgage (UWM)",
@@ -29,16 +29,17 @@
     {p:"Jumbo Fixed (660 tier)", ltv:"89.99%", fico:"660", dti:"50%", loan:"$1 over conforming up to $5M", notes:"Other tiers: 680+ FICO / 80% LTV up to $2M; 700+ FICO / 80% LTV $600K-$3M", src:"https://www.uwm.com/loan-products?jumbo=jumbo-fixed-purple"},
     {p:"Prime Jumbo ARM", ltv:"80%", fico:"680", dti:"Not published — ask AE", loan:"Not published — ask AE", notes:"Conventional ARM up to 95% LTV; Conventional Elite/Prime Jumbo 80%", src:"https://uwm.com/price-a-loan/exclusives/sofr-arms"},
     {p:"Bank Statement (non-QM)", ltv:"Not published — ask AE", fico:"Minimum applies — not published", dti:"Not published — ask AE", loan:"Not published — ask AE", notes:"Self-employed; personal or business bank statements in lieu of tax returns", src:"https://www.uwm.com/non-qm-loans"},
-    {p:"Investor Flex (DSCR)", ltv:"Not published — ask AE", fico:"Minimum applies — not published", dti:"N/A (DSCR)", loan:"Not published — ask AE", notes:"Qualifies on prospective rental income of the property", src:"https://www.uwm.com/non-qm-loans"},
-    {p:"Doctor Loan", ltv:"100% (90.01-100%)", fico:"680", dti:"50%", loan:"Not published — ask AE", notes:"Eligible medical professionals; primary residence only", src:"https://www.uwm.com/trending/doctor-loan"}
+    {p:"Investor Flex (DSCR)", ltv:"80%", fico:"640 (Yellow tier); 660 (Pink/Orange tiers)", dti:"N/A (DSCR) — min DSCR 0.00 (Yellow/Orange) or 1.00 (Pink)", loan:"Yellow up to $2M; Pink $50,000-$3M; Orange $75,000-$2M", notes:"Qualifies on prospective rental income; fourth tier not shown in snippet; 'information subject to change'", src:"https://www.uwm.com/price-a-loan/exclusives/products/investor-flex"},
+    {p:"Doctor Loan", ltv:"100% (90.01-100%)", fico:"680", dti:"50%", loan:"Loan amounts to $2M", notes:"Eligible medical professionals; primary residence only", src:"https://www.uwm.com/trending/doctor-loan"},
+    {p:"Home Equity Loan (closed-end second)", ltv:"90% CLTV (640+ and 680+ tiers per loan-products page)", fico:"640", dti:"50% (DU only)", loan:"$20,000-$750,000 (680+ tier, loan-products page)", notes:"Fixed-rate lump sum; standalone or piggyback. uwm.com/trending/home-equity-loans shows older tiers (640+: 85% CLTV $25K-$500K; 680+: 90% CLTV $20K-$500K) — confirm with AE", src:"https://uwm.com/loan-products?home-equity-loan-closed-end-second="}
   ],
   states:{CA:"Yes",IL:"Yes",NV:"Yes",FL:"Yes",AZ:"Yes"}, statesSrc:"https://www.bankrate.com/mortgages/reviews/united-wholesale-mortgage/",
   nmls:"3038",
   highlights:["Broker-only wholesale lender; #1 lender by volume in 2024 (per Bankrate)","BOLT self-service initial approval in ~15 minutes inside EASE LOS","Agency credit-score overlays removed Oct 2026","Early adoption of estimated 2027 conforming limits"],
-  cautions:["NMLS 3038 and 50-state coverage per Bankrate (third party) — confirm on NMLS Consumer Access","FHA/VA 580+ LLPA waiver promotion end date year not stated (uwm.com/loan-products)","Non-QM grids (Bank Statement, Investor Flex) gated behind broker portal","Page content read via search-result snippets only (direct fetch failed)"],
+  cautions:["NMLS 3038 and 50-state coverage per Bankrate (third party) — confirm on NMLS Consumer Access","FHA/VA 580+ LLPA waiver promotion end date year not stated (uwm.com/loan-products)","Bank Statement grid not public (a third-party blog cites 90% LTV / 640 FICO / $3M — unverified, undated)","UWM's Dec-2025 deal to acquire Two Harbors was terminated in 2026 after Two Harbors accepted CrossCountry's bid; UWM sued Two Harbors (housingwire.com, mpamag.com) — no stated broker-channel impact","Page content read via search-result snippets only (direct fetch failed)"],
   status:"Active wholesale verified",
-  sources:["https://www.uwm.com/press-release-october-7-2026","https://www.uwm.com/loan-products","https://www.uwm.com/loan-products?jumbo=jumbo-fixed-purple","https://uwm.com/price-a-loan/exclusives/sofr-arms","https://www.uwm.com/non-qm-loans","https://www.uwm.com/trending/doctor-loan","https://www.housingwire.com/articles/uwm-raises-conforming-loan-limit-to-819000-fhfa/","https://www.bankrate.com/mortgages/reviews/united-wholesale-mortgage/"],
-  checked:"2026-10-22"
+  sources:["https://www.uwm.com/press-release-october-7-2026","https://www.uwm.com/price-a-loan/exclusives/products/investor-flex","https://uwm.com/loan-products?home-equity-loan-closed-end-second=","https://www.uwm.com/trending/home-equity-loans","https://www.housingwire.com/articles/uwm-two-harbors-deal-fails/","https://www.mpamag.com/us/specialty/wholesale/uwm-files-500m-lawsuit-against-two-harbors-after-deal-falls-through/585872","https://www.uwm.com/loan-products","https://www.uwm.com/loan-products?jumbo=jumbo-fixed-purple","https://uwm.com/price-a-loan/exclusives/sofr-arms","https://www.uwm.com/non-qm-loans","https://www.uwm.com/trending/doctor-loan","https://www.housingwire.com/articles/uwm-raises-conforming-loan-limit-to-819000-fhfa/","https://www.bankrate.com/mortgages/reviews/united-wholesale-mortgage/"],
+  checked:"2026-10-22 (2nd pass)"
 },
 {
   n:58, name:"Val-Chris Investments",
@@ -56,7 +57,7 @@
   cautions:["No published max LTV — ask AE","Rates/fees differ between pages and pages are 1.5-2.5 yrs old (val-chris.com)","Page content read via search-result snippets only (direct fetch failed)"],
   status:"Active — channel not confirmed",
   sources:["https://www.val-chris.com/brokers/","https://www.val-chris.com/borrowers/","https://www.val-chris.com/company/","https://www.val-chris.com/privatemoney/","https://www.val-chris.com/oakland/oakland-private-money-services-for-brokers/"],
-  checked:"2026-10-22"
+  checked:"2026-10-22 (2nd pass)"
 },
 {
   n:59, name:"Velocity Mortgage Capital",
@@ -72,10 +73,10 @@
   states:{CA:"Yes",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed"}, statesSrc:"https://www.velocitymortgage.com/",
   nmls:"",
   highlights:["All programs offered only through mortgage brokers","CA Finance Lenders License #603A366; CA offices (Westlake Village, San Clemente)","Covers 1-4, multifamily, mixed-use and small commercial","Broker ToolKit with program flyers"],
-  cautions:["Program LTV/FICO grids not public — in Broker ToolKit/AE","Loan range from a ~7-year-old press release — verify","NMLS ID not found; licensee may be Velocity Commercial Capital, LLC — check NMLS Consumer Access","Page content read via search-result snippets only (direct fetch failed)"],
+  cautions:["Program LTV/FICO grids not public — in Broker ToolKit/AE","Loan range from a ~7-year-old press release — verify","NMLS ID not found; licensee may be Velocity Commercial Capital, LLC — check NMLS Consumer Access (NC Secretary of State lists Velocity Commercial Capital, LLC as Current-Active, Westlake Village CA; no NMLS shown). Do not confuse with unrelated Velocity Mortgage Processing, LLC (TX)","Page content read via search-result snippets only (direct fetch failed)"],
   status:"Active wholesale verified",
-  sources:["https://www.velocitymortgage.com/","https://www.velocitymortgage.com/mortgage-programs/","https://www.velocitymortgage.com/broker-toolkit/","https://www.velocitymortgage.com/velocity-mortgage-capital-locations/","https://www.velocitymortgage.com/press/velocity-mortgage-capital-8th-securitization/"],
-  checked:"2026-10-22"
+  sources:["https://www.velocitymortgage.com/","https://www.velocitymortgage.com/mortgage-programs/","https://www.velocitymortgage.com/broker-toolkit/","https://www.velocitymortgage.com/velocity-mortgage-capital-locations/","https://www.velocitymortgage.com/press/velocity-mortgage-capital-8th-securitization/","https://sosnc.gov/online_services/search/Business_Registration_profile/7784854"],
+  checked:"2026-10-22 (2nd pass)"
 },
 {
   n:60, name:"Windsor Mortgage",
@@ -88,15 +89,18 @@
     {p:"Conventional (incl. HomeReady/Home Possible/manufactured)", ltv:"97% (3% down)", fico:"620", dti:"Not published — ask AE", loan:"Min $50,000 (HomeReady guide); page shows outdated $715,000 limit", notes:"Conforming, high-balance, HomeReady, Home Possible, manufactured", src:"https://www.windsormortgage.com/loan-options/conventional-loans"},
     {p:"Jumbo", ltv:"90%", fico:"Not published — ask AE", dti:"Not published — ask AE", loan:"Up to $3.5M (FAQ) / $3,000,000 (loan options page)", notes:"15/20/25/30 fixed and SOFR ARMs; manufactured ineligible on Jumbo 1/Prime Jumbo 1", src:"https://www.windsormortgage.com/why-windsor/faqs"},
     {p:"DSCR Plus", ltv:"80% (IO: 75%)", fico:"660 (IO: 700)", dti:"N/A — min DSCR 0.75x or no ratio", loan:"$125K - $2.0M", notes:"IO requires DSCR >=1.00; 5% LTV reduction in declining markets; matrix file dated 06/06/2025", src:"https://www.windsormortgage.com/assets/general-uploads/Windsor-DSCR-Plus-Matrix-06062025.pdf"},
-    {p:"Bank Statement", ltv:"80% primary (reduced from 90%)", fico:"700", dti:"Not published — ask AE", loan:"$250K - $1,000,000 ($1.5M in CA/NJ/NY/WA/CT w/740 FICO, primary SFR)", notes:"Guide v1.4 eff. 10/25/2023 — likely dated", src:"https://www.windsormortgage.com/assets/general-uploads/Windsor-Bank-Statement-Guide_10252023.pdf"}
+    {p:"Bank Statement", ltv:"80% primary (reduced from 90%)", fico:"700", dti:"50% (45% at 75%+ LTV/CLTV; 43% first-time homebuyer)", loan:"$250K - $1,000,000 ($1.5M in CA/NJ/NY/WA/CT w/740 FICO, primary SFR)", notes:"Guide v1.4 (2023) — likely dated; DTI read from Windsor-Bank-Statement-Guide_10232023.pdf", src:"https://www.windsormortgage.com/assets/general-uploads/Windsor-Bank-Statement-Guide_10252023.pdf"},
+    {p:"Prime Jumbo 1", ltv:"80% at 49.99% DTI; >80% LTV allowed at 38% DTI", fico:"740 (purchase/R&T at 70% LTV, $3M — per v4.6 03/2025 matrix)", dti:"49.99% (LTV <=80%); 38% (LTV >80%); 47% investment; residual income required >45%", loan:"Up to $3,000,000 (740 FICO tier, v4.6)", notes:"Guide v4.7 eff. 04/14/2025; v4.6 matrix: Prime-Jumbo-1-Program-Eligibility-Guide-4.6-03.25.25.pdf", src:"https://www.windsormortgage.com/assets/general-uploads/Prime-Jumbo-1-Program-Eligibility-Guide-v4.7-04.14.25.pdf"},
+    {p:"Prime Jumbo 3 AUS", ltv:"80%", fico:"700 (to $1M at 80% LTV) up to 740 (to $2M at 80% LTV)", dti:"50% w/AUS approval (primary, <=80% CLTV, <=$2M); otherwise 45% (max $1.5M, 740 FICO)", loan:"Up to $2,000,000", notes:"Guide dated 11/08/2024", src:"https://www.windsormortgage.com/assets/general-uploads/Prime-Jumbo-3-AUS.pdf"},
+    {p:"Medical Professionals", ltv:"Not published — ask AE (min LTV 90.01%; matrix table unreadable in snippet)", fico:"680 (720 tier for 100% LTV up to $2M per v1.1/v1.2 matrix)", dti:"45% on ARM and 15-yr fixed", loan:"Min $100,000 (ARM $350,000); max $2,000,000", notes:"Primary residence, 1-unit, purchase/R&T; fixed 15-30 & hybrid ARM; medical professional must contribute >=50% of qualifying income; v1.1 matrix eff. 02/02/2026; loan min from Guide v1.2", src:"https://www.windsormortgage.com/assets/general-uploads/Windsor-Medical-Professional-Matrix-v1.1.pdf"}
   ],
   states:{CA:"Not confirmed",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed"}, statesSrc:"",
   nmls:"463950",
   highlights:["Broker, non-delegated and delegated correspondent delivery","Manual underwriting and higher DTI tolerances on government loans","Manufactured home financing via FHA/VA/conventional","Public product profiles/matrices posted on site","Bank-backed (Plains Commerce Bank)"],
-  cautions:["Jumbo max conflicts across pages ($3.5M vs $3M) — verify","FHA/VA manufactured: no manual UW, 640 min (FHA Profile 01/2026)","Several guides (bank statement 2023, VA 2022) may be outdated","State coverage not found; page content read via search snippets only (direct fetch failed)"],
+  cautions:["Jumbo max conflicts across pages ($3.5M vs $3M) — verify","FHA/VA manufactured: no manual UW, 640 min (FHA Profile 01/2026)","Several guides (bank statement 2023, VA 2022) may be outdated","State coverage not found; page content read via search snippets only (direct fetch failed)","Windsor flyer says VA/jumbo/FHA/USDA/HFA available in 17+ states (unnamed); an internal bridge-loan state list includes CA/IL/NV/FL/AZ but is not a licensing list — confirm NMLS 463950 on NMLS Consumer Access","Jumbo guides found are 2024-2025 versions; none dated 2026 — confirm current version"],
   status:"Active wholesale verified",
-  sources:["https://www.windsormortgage.com/why-windsor","https://www.windsormortgage.com/why-windsor/faqs","https://www.windsormortgage.com/loan-options","https://www.windsormortgage.com/loan-options/conventional-loans","https://www.windsormortgage.com/loan-options/government-loans","https://www.windsormortgage.com/assets/general-uploads/FHA-Product-Profile-4.0.6-01.09.2026.pdf","https://www.windsormortgage.com/assets/general-uploads/Windsor-DSCR-Plus-Matrix-06062025.pdf","https://www.windsormortgage.com/assets/general-uploads/Windsor-Bank-Statement-Guide_10252023.pdf"],
-  checked:"2026-10-22"
+  sources:["https://www.windsormortgage.com/why-windsor","https://www.windsormortgage.com/assets/general-uploads/Prime-Jumbo-1-Program-Eligibility-Guide-v4.7-04.14.25.pdf","https://www.windsormortgage.com/assets/general-uploads/Prime-Jumbo-1-Program-Eligibility-Guide-4.6-03.25.25.pdf","https://www.windsormortgage.com/assets/general-uploads/Prime-Jumbo-3-AUS.pdf","https://www.windsormortgage.com/assets/general-uploads/Windsor-Medical-Professional-Matrix-v1.1.pdf","https://www.windsormortgage.com/assets/general-uploads/Windsor-Medical-Professionals-Program-Eligibility-Guide-v1.2.pdf","https://www.windsormortgage.com/assets/general-uploads/Windsor-Bank-Statement-Guide_10232023.pdf","https://windsormortgage.com/assets/general-uploads/windsor_full_service_why_02.25.25-1.pdf","https://www.windsormortgage.com/assets/general-uploads/wm_simple_bridge_states_10262230.pdf","https://www.windsormortgage.com/why-windsor/faqs","https://www.windsormortgage.com/loan-options","https://www.windsormortgage.com/loan-options/conventional-loans","https://www.windsormortgage.com/loan-options/government-loans","https://www.windsormortgage.com/assets/general-uploads/FHA-Product-Profile-4.0.6-01.09.2026.pdf","https://www.windsormortgage.com/assets/general-uploads/Windsor-DSCR-Plus-Matrix-06062025.pdf","https://www.windsormortgage.com/assets/general-uploads/Windsor-Bank-Statement-Guide_10252023.pdf"],
+  checked:"2026-10-22 (2nd pass)"
 },
 {
   n:61, name:"Loan United",
@@ -112,9 +116,9 @@
   states:{CA:"Yes",IL:"Not confirmed",NV:"Not confirmed",FL:"Yes",AZ:"Not confirmed"}, statesSrc:"https://luwholesale.com/licenses/",
   nmls:"1767490",
   highlights:["FHA to 500 FICO","VA manual underwriting to 60% DTI","Does not hold files for unsigned docs (required before CTC)","VA sponsorship for brokers"],
-  cautions:["Site says 'Licensed in 40 States' but list captured only ~19 states — verify on NMLS Consumer Access","No published FHA manual-UW or manufactured FHA rules — ask AE","No non-QM or jumbo found","Page content read via search-result snippets only (direct fetch failed)"],
+  cautions:["Site says 'Licensed in 40 States' but list captured only ~19 states — verify on NMLS Consumer Access","per saferate.com (third party): LoanUnited.com, LLC licensed in 40 jurisdictions incl. AZ, IL, NV; ~96% wholesale — states left Not confirmed pending NMLS Consumer Access","No published FHA manual-UW or manufactured FHA rules — ask AE","No non-QM or jumbo found","Page content read via search-result snippets only (direct fetch failed)"],
   status:"Active wholesale verified",
-  sources:["https://luwholesale.com/","https://luwholesale.com/va-loans/","https://luwholesale.com/conventional-loans/","https://luwholesale.com/licenses/","https://luwholesale.com/frequently-asked-questions/","https://loanunited.com/licenses.php"],
-  checked:"2026-10-22"
+  sources:["https://luwholesale.com/","https://luwholesale.com/va-loans/","https://luwholesale.com/conventional-loans/","https://luwholesale.com/licenses/","https://luwholesale.com/frequently-asked-questions/","https://loanunited.com/licenses.php","https://saferate.com/lenders/loanunitedcom.txt"],
+  checked:"2026-10-22 (2nd pass)"
 }
 ]);
