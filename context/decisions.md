@@ -618,3 +618,15 @@ page's Gmail/Fieldy connectors — routines cannot carry connectors on this acco
 `ops-pulse`; morning brief moved to 6:34 AM PT, reads Command Deck + ISA Portal (+ Broker Command Center, browser-only
 for now) and writes `morningBrief {text, voiceScript}` that the Mac sends by iMessage and voice (§8b); Gondola MCP
 (`https://mcp.gondola.ai/mcp`) in connect-all 4b. Drafts only everywhere; nothing sends, books or quotes.
+
+## 2026-10-22 (evening) — more capabilities: desk seats, skills pack, routines, Inkbox and Zoom on the deck
+Steven: "update add more capabilities, tools, resources, integrations, automations and workflows and AI agents."
+Added seven Sonnet desk seats (Refi Watch Analyst, Sphere Nurture Coordinator, Voicemail & Inbox Triage, Document
+Intake Clerk, Open House Captain, Travel Desk, Meeting Scribe — `wiki/ai-team/desk-seats.md`) and a Client Care Pod;
+11 skills (eight workflow skills + one seat tool each for Apex, James, Nadia — 35 → 46); two light routines (Refi
+watch Mondays, Sphere touches monthly), both drafts-only into `vanessaQueue`; Inkbox reconnected (email active,
+iMessage line ready — Steven texts `connect @vanessa-shearrill` to +1 650 484 9720 once), so the Command Deck got
+"Text me this brief" (to his own mobile only, kept in localStorage, never the shared store) and Zoom joined Fieldy in
+"Recap my meetings"; Gondola in connect-all 4b; Kapso instant triggers built as manual webhooks because Kapso's docs
+publish no unsubscribe endpoint. Rule kept: every new seat, skill and routine drafts; nothing sends, books, quotes,
+signs or writes to a client-facing system.
