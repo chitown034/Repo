@@ -256,9 +256,9 @@ const LENDERS = [
  L(10,"Champions Funding","Non-QM / CDFI — ITIN, DSCR, foreign national, community lending","nonqm itin dscr foreign"),
  L(11,"Change Wholesale","Non-QM — Community Mortgage program, no-ratio","nonqm itin","⚠️ Lost Treasury CDFI designation per 2024 reporting — don't repeat the 'CDFI' label until confirmed with the lender."),
  L(12,"Click N Close Mortgage","DPA / Bond programs, Conv & Govt with built-in down payment assistance","dpa conv fha va usda"),
- L(13,"Commercial Capital Bidco","Commercial Real Estate lending","comm"),
+ L(13,"Commercial Capital Bidco","Commercial Real Estate lending","comm","⚠️ Own website could not be reached; channel, LTV caps and licensing not verified — confirm directly."),
  L(14,"eLend","Agency Wholesale — Conv/Govt online channel","agency conv fha va usda"),
- L(15,"Eleven Mortgage","Agency Wholesale — Conv & Govt","agency conv fha va"),
+ L(15,"Eleven Mortgage","Agency Wholesale — Conv & Govt (EXITED wholesale Sept 25, 2026)","exited","⛔ Exited wholesale and correspondent lending effective Sept 25, 2026 (Benchmark / Ark-La-Tex) — do not submit new files; confirm pipeline status with the AE."),
  L(16,"Equity Prime Mortgage (EPM)","Agency Wholesale — full Conv/FHA/VA/USDA menu","agency conv fha va usda"),
  L(17,"Finance of America Reverse (FAR)","Reverse Mortgage — HECM + HomeSafe proprietary jumbo reverse","reverse"),
  L(18,"First National Bank of America (FNBA)","Non-QM / Portfolio — Alt-doc, ITIN, foreign national, no-MI","nonqm port itin foreign condo mfg"),
@@ -273,30 +273,30 @@ const LENDERS = [
  L(27,"Kind Lending","Agency Wholesale — Conv & Govt","agency conv fha va"),
  L(28,"Kings Mortgage Services","Agency Wholesale — Conv & Govt","agency conv fha va","⚠️ Public info shows a Visalia, CA operation with 5 CA branches — could not confirm a national wholesale TPO channel; verify directly."),
  L(29,"LendSure","Non-QM — DSCR, Bank Statement, Foreign National, Asset Utilization","nonqm dscr bank foreign asset"),
- L(30,"Liberty Reverse Mortgage","Reverse Mortgage — HECM specialist","reverse","⚠️ Parent Onity Group reportedly exiting reverse-mortgage origination — confirm still active before sending a client."),
+ L(30,"Liberty Reverse Mortgage","Reverse Mortgage — HECM specialist (parent exiting reverse)","exited","⛔ Onity/PHH announced it is stopping reverse originations and selling reverse servicing rights to Finance of America — use FAR, Longbridge or Mutual of Omaha instead; verify."),
  L(31,"Longbridge Financial Reverse","Reverse Mortgage — HECM + Platinum proprietary reverse","reverse"),
  L(32,"Mega Capital Funding","Agency Wholesale + Non-QM","agency conv fha va nonqm jumbo"),
  L(33,"Mortgage Solutions Financial","Agency Wholesale — Conv/Govt with manual underwrite capability","agency conv fha va lowfico"),
  L(34,"Mutual of Omaha Reverse","Reverse Mortgage — HECM + proprietary reverse","reverse"),
  L(35,"NewFi Lending","Non-QM — Bank Statement, DSCR, foreign national","nonqm bank dscr foreign"),
  L(36,"NewRez","Agency + Non-QM — Smart Series (SmartSelf, SmartEdge, SmartVest, SmartFunds)","agency conv fha va nonqm dscr bank jumbo"),
- L(37,"NextRes (NewRez TPO)","Agency Wholesale + Smart Series Non-QM (broker channel)","agency conv fha va nonqm dscr bank"),
+ L(37,"NextRes","Private investor lender — not NewRez (verify channel)","nonqm dscr","⚠️ Nextres LLC is a separate company from NewRez — the old \"NewRez TPO\" label was wrong. Broker channel not confirmed; check NMLS Consumer Access."),
  L(38,"Oaktree Funding","Non-QM — Bank Statement, DSCR, Foreign National","nonqm bank dscr foreign"),
  L(39,"Orion Lending","Agency Wholesale + Non-QM","agency conv fha va nonqm"),
  L(40,"Oval Mortgage","Agency Wholesale broker channel — Conv & Govt","agency conv fha va","⚠️ No public wholesale site, NMLS record, or press coverage found — do an NMLS Consumer Access lookup or call before using."),
  L(41,"PB Financial Group","Hard Money — California private money & bridge","hard bridge fnfl"),
  L(42,"Plaza Home Mortgage","Agency Wholesale — Conv/Govt + Renovation + Non-QM","agency conv fha va reno nonqm"),
  L(43,"PRMG (Paramount Residential)","Agency Wholesale — full Conv/Govt + Non-QM","agency conv fha va usda nonqm"),
- L(44,"Provident Bank","Portfolio Jumbo + Non-QM","port jumbo nonqm"),
+ L(44,"Provident Bank","Portfolio Jumbo + Non-QM (entity unclear)","port jumbo nonqm","⚠️ Name collision: Provident Bank (NJ) does warehouse lending; Provident Funding (NMLS 3821) is a separate wholesale lender — confirm which one you are approved with."),
  L(45,"Quontic Bank","Non-QM — Bank Statement, ITIN, lite-doc (CDFI bank)","nonqm bank itin"),
  L(46,"RCN Capital","DSCR / Investor — Fix & Flip, DSCR rental, new construction","dscr fnfl"),
- L(47,"REMN (Real Estate Mortgage Network)","Agency Wholesale — Conv/FHA/VA + 203(k) Renovation specialist","agency conv fha va reno"),
+ L(47,"REMN (Real Estate Mortgage Network)","Agency Wholesale — Conv/FHA/VA + 203(k) Renovation (Homebridge division)","agency conv fha va reno","⚠️ REMN is a Homebridge division — confirm whether your approval is with REMN or Homebridge Wholesale."),
  L(48,"Spring EQ","HELOC / 2nd Lien specialist — HELOAN & HELOC","heloc"),
  L(49,"Symmetry Lending","HELOC / 2nd Lien — Stand-alone & piggyback HELOCs","heloc"),
  L(50,"TaliMar Financial","Hard Money — California fix & flip, bridge","hard fnfl bridge"),
  L(51,"The Loan Store (TLS)","Agency Wholesale — Conv & Govt broker channel","agency conv fha va"),
  L(52,"TMAC Reverse","Reverse Mortgage — HECM specialist","reverse"),
- L(53,"TPO Go","Agency Wholesale broker portal — Conv/FHA/VA/USDA","agency conv fha va usda"),
+ L(53,"TPO Go","Agency Wholesale broker portal (wholesale exit Aug 2026)","exited","⛔ Exited wholesale nationally Aug 10, 2026 under an alliance with Stockton Mortgage (Cursive Lending); may keep limited markets — confirm before submitting."),
  L(54,"Triad Financial Services","Niche — Manufactured & mobile home loans","mfg"),
  L(55,"Union Home Mortgage (UHM)","Agency Wholesale — full Conv & Govt menu","agency conv fha va usda"),
  L(56,"United AG Lending","Niche — Agricultural & rural lending","ag usda"),
@@ -5675,6 +5675,1223 @@ NC({k:"c_land",n:"Land Loans",g:"Commercial & business",
  compliance:"Verify TRID/RESPA applicability for consumer land loans; disclose balloon terms clearly.",
  states:{CA:"Subdivision and zoning rules affect lot eligibility - verify.",IL:"Verify local zoning and drainage issues.",NV:"Water rights and access are critical - verify.",FL:"Wetlands and environmental restrictions are common - verify.",AZ:"Lot splits and water availability rules - verify."},
  lt:["bank","port","comm"],sc:["land","construction"]})
+]);
+
+</script>
+<script>
+// Lender research batch — public sources as of 2026-10-22; verify with the AE before quoting.
+(window.LENDER_INFO=window.LENDER_INFO||[]).push(...[
+{
+  n: 1,
+  name: "5th Street Capital",
+  channel: "Wholesale (broker) — wholesale-only non-QM; also correspondent",
+  portal: "https://www.5thstcap.com/broker-approval",
+  niches: ["Bank statement (personal/business)", "DSCR investor", "Asset depletion with income stacking", "1-yr tax return / P&L only", "Non-US citizen / foreign national", "TIC (tenancy-in-common) financing", "5-8 unit multifamily DSCR", "Interest-only options"],
+  programs: [
+    {p: "Traditional DSCR", ltv: "75% purchase / 70% cash-out", fico: "660", dti: "N/A (DSCR)", loan: "$250K min / $3.5M max", notes: "Qualify with interest-only payment option. An older DSCR page and a landing page show up to 85% purchase (to $1.5M) — current page shows 75%.", src: "https://www.5thstcap.com/dscr"},
+    {p: "DSCR 5-8 Units (Multi Family)", ltv: "75%", fico: "700", dti: "N/A (DSCR)", loan: "Up to $2M", notes: "5-8 unit residential income property.", src: "https://www.5thstcap.com/multi-family"},
+    {p: "Bank Statement", ltv: "85% primary residence (per flier)", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "No tax returns; set expense factor in lieu of 3rd-party P&L; landing page says asset depletion can be added to bank statement income. Flier may be dated.", src: "https://www.5thstcap.com/perch/resources/PDFs/23-0143k5a-broker-bank-statement-flier.pdf"},
+    {p: "Foreign National", ltv: "Up to 60% (2020 flier)", fico: "No US credit score required", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "Reserves can remain abroad; all property types. Flier dated 2020 — verify current terms.", src: "https://www.5thstcap.com/perch/resources/PDFs/20-0237k4f-foreign-national-flier.pdf"},
+    {p: "Investor DSCR (landing page promo)", ltv: "85% purchase (to $1.5M) / 80% cash-out (to $1M)", fico: "Not published — ask AE", dti: "N/A (DSCR)", loan: "See LTV tiers", notes: "Conflicts with current DSCR page (75%); confirm with AE.", src: "https://www.5thstcap.com/landing-page"}
+  ],
+  states: {CA: "Not confirmed", IL: "Not confirmed", NV: "Not confirmed", FL: "Not confirmed", AZ: "Not confirmed", statesSrc: ""},
+  nmls: "1436495",
+  highlights: ["Wholesale-only non-QM lender founded 2015, San Diego; reports $5B+ funded (per own about page / directory)", "Posted turn times: 24 hrs intake/CD/docs/funding, 24-48 hrs underwriting", "Proprietary pricing engine, Quick Pricer, program calculators, pre-submission bank statement review", "Loan amounts up to $8M by exception; 7-10 day close on a full file (per directory listing)", "Broker approval via Comergence; clientrelations@5thstcap.com / 888-702-3385"],
+  cautions: ["Jumbo program noted internally was not found on lender site — confirm with AE (search of 5thstcap.com)", "Says licensed in 26 states, but no official state list found; Safe Rate HMDA data (saferate.com/lenders/5th-street-capital.txt) shows CA/AZ/FL/IL/NV activity — not proof of license", "DSCR LTV conflicts between current page (75%) and old/landing pages (85%) — https://www.5thstcap.com/dscr-old", "Pages could not be fetched directly; values taken from search-indexed excerpts of the cited pages"],
+  status: "Active wholesale verified",
+  sources: ["https://5thstcap.com/", "https://www.5thstcap.com/about", "https://www.5thstcap.com/broker-approval", "https://www.5thstcap.com/dscr", "https://www.5thstcap.com/dscr-old", "https://www.5thstcap.com/landing-page", "https://www.5thstcap.com/multi-family", "https://www.5thstcap.com/perch/resources/PDFs/23-0143k5a-broker-bank-statement-flier.pdf", "https://www.5thstcap.com/perch/resources/PDFs/20-0237k4f-foreign-national-flier.pdf", "https://nationalmortgageprofessional.com/directories/5th-street-capital-inc", "https://lenderprice.com/5th-street-capital-joins-lender-price-marketplace-to-showcase-non-qm-and-non-agency-loan-programs/", "https://saferate.com/lenders/5th-street-capital.txt"],
+  checked: "2026-10-22"
+},
+{
+  n: 2,
+  name: "AAA Lendings",
+  channel: "Wholesale (broker) — AAA Capital Investment, Inc. dba AAA Lendings; also retail",
+  portal: "https://www.wholesaleaaalendings.com/",
+  niches: ["Agency conforming / high-balance (Fannie/Freddie, HomeReady, Home Possible)", "FHA / VA", "Non-QM DSCR (incl. 5-8 units)", "DSCR closed-end second", "Foreign national", "Jumbo", "Fix & flip / HELOC", "Government DPA first liens"],
+  programs: [
+    {p: "Non-QM DSCR (wholesale)", ltv: "80%", fico: "660", dti: "N/A (DSCR)", loan: "Up to $2M", notes: "Close in entity; no limit on number of financed properties. Older retail page (2022) cites 680 FICO and DSCR as low as 0.", src: "https://www.wholesaleaaalendings.com/aaa-lendings-non-qm-dscrdebt-service-coverage-ratio-program-aaa-lendings-37-product/"},
+    {p: "DSCR 5-8 Units", ltv: "75%", fico: "720", dti: "N/A (DSCR)", loan: "Up to $3M", notes: "Min DSCR 1.0 (page dated 2024).", src: "https://www.aaalendings.com/album.asp?id=976"},
+    {p: "DSCR CES (Closed End Second)", ltv: "75% CLTV", fico: "660", dti: "N/A (DSCR)", loan: "Up to $500K", notes: "Page dated 2024.", src: "https://aaalendings.com/album.asp?id=937"},
+    {p: "Agency (Conforming / High-Balance / HomeReady / Home Possible)", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "Listed in Jan-2026 wholesale program matrix with state-specific restrictions table.", src: "https://file.globalso.com/file_manage/685/20260103/wholesale-aaa-program-matrix-01-02-2026.pdf"},
+    {p: "Portfolio Program", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "Program page exists; terms not captured.", src: "https://www.wholesaleaaalendings.com/aaa-lendings-portfolio-program-aaa-lendings-10-product/"},
+    {p: "No Doc No Credit", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "Program page exists; terms not captured.", src: "https://www.wholesaleaaalendings.com/aaa-lendings-no-doc-no-credit-aaa-lendings-14-product/"}
+  ],
+  states: {CA: "Not confirmed", IL: "Not confirmed", NV: "Not confirmed", FL: "Not confirmed", AZ: "Not confirmed", statesSrc: ""},
+  nmls: "",
+  highlights: ["Hybrid menu: agency, FHA/VA, jumbo and broad non-QM under one wholesale shop (per wholesaleaaalendings.com)", "Advertises fast broker approval and 24-hour direct-lender turn time (AE page)", "Says it has expanded into 46 states + DC (homepage)", "Jan-2026 wholesale program matrix published with lock desk contact"],
+  cautions: ["NMLS ID not confirmed from a fetched source — verify on NMLS Consumer Access", "Several program pages are dated 2022-2024; DSCR FICO conflicts (660 vs 680) between wholesale and retail pages", "Name confusion risk: AAA Capital Funding (FL broker) and AAA Lenders Inc are unrelated companies", "Pages could not be fetched directly; values taken from search-indexed excerpts"],
+  status: "Active wholesale verified",
+  sources: ["https://www.wholesaleaaalendings.com/", "https://www.wholesaleaaalendings.com/freda-zhou/", "https://file.globalso.com/file_manage/685/20260103/wholesale-aaa-program-matrix-01-02-2026.pdf", "https://www.wholesaleaaalendings.com/aaa-lendings-non-qm-dscrdebt-service-coverage-ratio-program-aaa-lendings-37-product/", "https://www.aaalendings.com/album.asp?id=623", "https://www.aaalendings.com/album.asp?id=976", "https://aaalendings.com/album.asp?id=937", "https://elementix.ai/lenders/aaa-lendings"],
+  checked: "2026-10-22"
+},
+{
+  n: 3,
+  name: "Acra Lending",
+  channel: "Wholesale (broker) — also retail and correspondent (Citadel Servicing Corp dba Acra Lending)",
+  portal: "https://acralending.com/acra-lending-programs/",
+  niches: ["Bank statement (12/24-mo and 3-month)", "DSCR investor", "Non-owner-occupied DTI", "Non-prime / credit-event", "Asset depletion", "Business-purpose (non-TRID) loans", "Multifamily to 29 units (DSCR-only)"],
+  programs: [
+    {p: "DSCR (wholesale summary v.8.17.2026)", ltv: "85% purchase / 80% rate-term / 80% cash-out (top FICO tiers ~760-780)", fico: "Tiered; FICO < 620 requires 12 mo reserves", dti: "N/A (DSCR)", loan: "$100K min ($250K for IO) / $3M max", notes: "Loans > $2M require DSCR >= 1.0; > 80% LTV requires DSCR >= 1.20 and 6 mo PITIA reserves; FTHB DSCR >= 1.15 and loan <= $1MM.", src: "https://acralending.com/wp-content/uploads/2020/RateSheets/Wholesale/acra-ws-ratematrix-dscr-summary.pdf"},
+    {p: "Non-Owner Occupied (NOO) DTI — incl. bank statement", ltv: "80% purchase / 75% rate-term & cash-out", fico: "660", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "Version 8.17.2026.", src: "https://acralending.com/wp-content/uploads/2020/RateSheets/Wholesale/acra-ws-ratematrix-nonocp-summary.pdf"},
+    {p: "Platinum NOO", ltv: "80% purchase / 80% rate-term / 75% cash-out (FICO >= 730)", fico: "Tiered (730+ shown)", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "Platinum pricing tier.", src: "https://acralending.com/wp-content/uploads/2020/RateSheets/Wholesale/acra-ws-ratematrix-platinum-noo-summary.pdf"},
+    {p: "Bank Statement (owner-occupied)", ltv: "Up to 90% purchase", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "12 months bank statements in lieu of tax returns; no 1040s/1120s/K1s/transcripts. Programs page ~13 months old.", src: "https://acralending.com/acra-lending-programs/"},
+    {p: "Non-Prime (1st TDs)", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "Program summary v.8.17.2026 exists; figures not captured.", src: "https://acralending.com/wp-content/uploads/2020/RateSheets/Wholesale/acra-ws-ratematrix-1stTDs-summary.pdf"},
+    {p: "Business Purpose / Non-TRID programs", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "Multifamily up to 29 units and $7.5M qualifying on DSCR (per mpamag trade coverage).", src: "https://api.acralending.com/uploads/acra_non_trid_programs_676f910c19.pdf"}
+  ],
+  states: {CA: "Not confirmed", IL: "Not confirmed", NV: "Not confirmed", FL: "Not confirmed", AZ: "Not confirmed", statesSrc: ""},
+  nmls: "144549",
+  highlights: ["Published wholesale program summaries (DSCR, NOO, Non-Prime, Platinum) updated Aug-Oct 2026", "Authorized in 47 states + DC per 2025 Morningstar DBRS originator ranking", "3-month bank statement option with lighter documentation (trade coverage)", "Wholesale, retail and correspondent channels"],
+  cautions: ["State count varies by source (38-47 + DC) — verify on NMLS Consumer Access (https://finance.mo.gov/licensee/details/311 lists NMLS 144549)", "Two versions of DSCR summary seen (8.17.2026 and eff. 10/2/2026) — confirm current with AE", "Pages could not be fetched directly; values from search-indexed excerpts of the PDFs"],
+  status: "Active wholesale verified",
+  sources: ["https://acralending.com/acra-lending-programs/", "https://acralending.com/programs-platinum-pricing/", "https://acralending.com/wp-content/uploads/2020/RateSheets/Wholesale/acra-ws-ratematrix-dscr-summary.pdf", "https://acralending.com/wp-content/uploads/2020/RateSheets/Wholesale/acra-ws-ratematrix-nonocp-summary.pdf", "https://acralending.com/wp-content/uploads/2020/RateSheets/Wholesale/acra-ws-ratematrix-platinum-noo-summary.pdf", "https://acralending.com/wp-content/uploads/2020/RateSheets/Wholesale/acra-ws-ratematrix-1stTDs-summary.pdf", "https://api.acralending.com/uploads/acra_non_trid_programs_676f910c19.pdf", "https://finance.mo.gov/licensee/details/311", "https://dbrs.morningstar.com/research/459607/morningstar-dbrs-publishes-residential-mortgage-originator-ranking-report-on-acra-lending", "https://www.housingwire.com/directories/acralending/"],
+  checked: "2026-10-22"
+},
+{
+  n: 4,
+  name: "Advancial Federal Credit Union",
+  channel: "Credit union portfolio — wholesale (broker) specialty channel",
+  portal: "https://www.advancial.org/wholesale/about-us-wholesale",
+  niches: ["Non-warrantable condos & condotels", "Co-ops", "Asset depletion (no pledged assets)", "Jumbo to $5MM", "Foreign national", "Rush closings / upfront pre-approval"],
+  programs: [
+    {p: "Non-Warrantable Condos & Condotels", ltv: "80% primary/second home / 75% investment", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Up to $5MM (LTV limits apply)", notes: "Condo conversions, new developments, small projects without HOA considered; cash-out allowed; upfront project review; no pending structural litigation.", src: "https://www.advancial.org/wholesale/specialty-programs/non-warrantable-condos-and-condotels"},
+    {p: "Asset Depletion", ltv: "80% (to $2.5MM); non-occupant co-borrower 75%", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Up to $5MM incl. cash-out", notes: "No pledged assets; Advancial depletion calculator (5% return + depletion; retirement 50% under 59.5 / 100% at 59.5+ per 2021 PDF).", src: "https://www.advancial.org/wholesale/specialty-programs/asset-depletion"},
+    {p: "Jumbo", ltv: "80% to $2.5MM; 90% CLTV to $2MM case-by-case (Advancial does not offer the 2nd)", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Up to $5MM", notes: "Non-occupant co-borrower max 75% incl. cash-out.", src: "https://www.advancial.org/wholesale/specialty-programs/jumbo-loans"},
+    {p: "Co-op / Condo / Condotel (flyer)", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "$5,000,000 max", notes: "Single appraisal; Advancial condo certificate + HOA master policy review; flexible on unit size, deed restrictions. Flyer dated 1/7/22.", src: "https://www.advancial.org/getmedia/b3503c0e-9228-4459-8dbb-d51a5f84b197/Advancial-Co-op-Condo-Condotel-Program-1-7-22.pdf"},
+    {p: "Foreign National", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "Program flyer dated 1/11/22 exists; figures not captured.", src: "https://www.advancial.org/getmedia/62f433bb-3a05-40b2-ae1f-f025dd8cdbf1/Advancial-Foreign-National-Program-1-11-22.pdf"},
+    {p: "Investment property (all collateral types)", ltv: "75% incl. cash-out (2021 PDF)", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "From 2021 asset depletion PDF — verify current.", src: "https://www.advancial.org/getmedia/7e89e889-0f62-42e8-bcae-bef75af813e2/Advancial-Asset-Depletion-Program-12-15-21.pdf"}
+  ],
+  states: {CA: "Yes", IL: "Yes", NV: "Yes", FL: "Yes", AZ: "Yes", statesSrc: "https://www.advancial.org/getmedia/b3503c0e-9228-4459-8dbb-d51a5f84b197/Advancial-Co-op-Condo-Condotel-Program-1-7-22.pdf"},
+  nmls: "469500",
+  highlights: ["Programs can be layered for complex scenarios (wholesale site)", "Pre-approval before appraisal ordered; rush closings as fast as 8 business days (webinars page)", "Funded example: pre-approval to CTC in 9 business days (recently-funded-deals page)", "Federal credit union lending in all 50 states (per flyer)"],
+  cautions: ["'All 50 states' comes from a Jan-2022 flyer — reconfirm coverage with AE", "Supporting PDFs dated 2021-2022; live pages may differ", "Pages could not be fetched directly; values from search-indexed excerpts"],
+  status: "Active wholesale verified",
+  sources: ["https://www.advancial.org/wholesale/about-us-wholesale", "https://www.advancial.org/wholesale/specialty-programs/non-warrantable-condos-and-condotels", "https://www.advancial.org/wholesale/specialty-programs/asset-depletion", "https://www.advancial.org/wholesale/specialty-programs/jumbo-loans", "https://www.advancial.org/wholesale/webinars", "https://www.advancial.org/wholesale/recently-funded-deals", "https://www.advancial.org/getmedia/b3503c0e-9228-4459-8dbb-d51a5f84b197/Advancial-Co-op-Condo-Condotel-Program-1-7-22.pdf", "https://www.advancial.org/getmedia/7e89e889-0f62-42e8-bcae-bef75af813e2/Advancial-Asset-Depletion-Program-12-15-21.pdf", "https://www.advancial.org/getmedia/62f433bb-3a05-40b2-ae1f-f025dd8cdbf1/Advancial-Foreign-National-Program-1-11-22.pdf"],
+  checked: "2026-10-22"
+},
+{
+  n: 5,
+  name: "AHA / HOPER (Attainable Housing Associates)",
+  channel: "Homebuyer incentive / DPA program (not a lender) — used with a participating FHA lender",
+  portal: "https://hoperprogram.com/index.php",
+  niches: ["FHA buyer incentive (Hope for Homeownership / H4H)", "Funds toward closing costs or rate buydown", "No first-time-buyer requirement", "No income limits", "Solar / green incentive", "Homebuyer education"],
+  programs: [
+    {p: "HOPER Hope for Homeownership (H4H)", ltv: "Per FHA guidelines (program pairs with FHA loan)", fico: "Not published — ask AE (one secondary source cites 620; program says lender credit/underwriting guidelines apply)", dti: "Per FHA / lender guidelines", loan: "Incentive up to $13,000 or up to 3.5% of purchase price", notes: "Requires FHA pre-approval through participating lender, online homebuyer education, and agreement to install solar financed through the FHA loan; single-family primary residence.", src: "https://www.fairway.com/articles/fha-solar-mortgage-program-empowers-renters-to-become-homeowners----with-13-000-dollar-hoper-incentive"},
+    {p: "HOPER funds usage", ltv: "N/A", fico: "N/A", dti: "N/A", loan: "N/A", notes: "Funds may go to closing costs or interest-rate buydown; no FTHB or income-limit requirement.", src: "https://www.rate.com/mortgage/resource/hoper-program"}
+  ],
+  states: {CA: "Not confirmed", IL: "Not confirmed", NV: "Not confirmed", FL: "Not confirmed", AZ: "Not confirmed", statesSrc: "https://www.rate.com/mortgage/resource/hoper-program"},
+  nmls: "",
+  highlights: ["Up to $13,000 / 3.5% incentive usable with FHA purchase (per fairway.com)", "No first-time-buyer or income limits (per rate.com)", "Program-run homebuyer education; lender decides permitted use of funds at underwriting"],
+  cautions: ["Per HOPER-related sources, participants receive 1099 income — not treated as a grant/gift; confirm tax treatment and lender acceptance (https://mortgagedepot.com/hoper-h4h-program/)", "Excluded states differ by source (ND, SD, VT, AK, HI per rate.com vs ND, SD, AL, HI, AK elsewhere); none of CA/IL/NV/FL/AZ listed as excluded, but no official coverage page fetched", "Program site notes HUD/FHA do not approve or endorse private research organizations (hoperprogram.com)", "Requires solar installation agreement — confirm FHA lender overlay acceptance"],
+  status: "Active — channel not confirmed",
+  sources: ["https://hoperprogram.com/index.php", "https://hoperca.com/", "https://www.hoper.org/meet-the-team", "https://www.rate.com/mortgage/resource/hoper-program", "https://www.fairway.com/articles/fha-solar-mortgage-program-empowers-renters-to-become-homeowners----with-13-000-dollar-hoper-incentive", "https://mortgagedepot.com/hoper-h4h-program/", "https://modernloans.com/modern-lending-guide-to-the-hoper-program/"],
+  checked: "2026-10-22"
+},
+{
+  n: 6,
+  name: "Anchor Loans",
+  channel: "Private lender (broker-friendly) — business-purpose only",
+  portal: "https://www.anchorloans.com/solutions-for/brokers-advisors",
+  niches: ["Fix & flip", "Renovation / rehab (up to 100% rehab cost)", "Ground-up / large balance to $20MM", "Institutional bridge for investors", "Business-purpose only"],
+  programs: [
+    {p: "Fix and Flip", ltv: "Up to 95% LTC; up to 100% of rehab", fico: "Not published — ask AE (one page says 620 min; FAQ says 650 preferred, lower case-by-case)", dti: "N/A (business purpose)", loan: "$50K-$20MM", notes: "12-month term.", src: "https://www.anchorloans.com/lp/fix-and-flip"},
+    {p: "Renovation (Renovators)", ltv: "Up to 85% LTC", fico: "Not published — ask AE", dti: "N/A (business purpose)", loan: "Up to $20M", notes: "12-18 month terms; 1-2 origination points.", src: "https://www.anchorloans.com/solutions-for/renovators"},
+    {p: "ARV limit (all fix & flip)", ltv: "Generally <= 70% ARV (incl. purchase, rehab, closing costs)", fico: "650 preferred", dti: "N/A", loan: "Min $100K (FAQ) vs $50K (other page)", notes: "Pages inconsistent on minimum loan.", src: "https://www.anchorloans.com/faq"}
+  ],
+  states: {CA: "Yes", IL: "Not confirmed", NV: "Yes", FL: "Yes", AZ: "Yes", statesSrc: "https://anchorloans.com/licensing"},
+  nmls: "2289894",
+  highlights: ["Large-balance flips up to $20MM (lp/fix-and-flip)", "Up to 100% rehab financing", "Brokers & Advisors section with personalized onboarding (solutions-for/brokers-advisors)", "Not available only in SD and VT per eligibility screener"],
+  cautions: ["Anchor's own pages conflict on LTC (85% vs 95%), min loan ($50K vs $100K) and FICO (620 vs 650) — confirm with AE", "CA lending is under CFL license 603K850 (Anchor Loans, LP); Anchor Nationwide Loans, LLC NMLS 1401101 holds AZ/FL/NV licenses (anchorloans.com/licensing)", "CA broker must hold proper license to broker to a CFL lender per DFPI (https://dfpi.ca.gov/regulated-industries/california-financing-law/california-finance-lenders-license-frequently-asked-questions/)", "Business-purpose loans only — not for owner-occupied consumer loans (anchorloans.com/legal)"],
+  status: "Active wholesale verified",
+  sources: ["https://www.anchorloans.com/lp/fix-and-flip", "https://www.anchorloans.com/solutions-for/renovators", "https://www.anchorloans.com/faq", "https://anchorloans.com/licensing", "https://www.anchorloans.com/eligibility-screener", "https://www.anchorloans.com/legal", "https://www.anchorloans.com/solutions-for/brokers-advisors", "https://flipperforce.com/lenders/anchor-loans"],
+  checked: "2026-10-22"
+},
+{
+  n: 7,
+  name: "Angel Oak",
+  channel: "Wholesale (broker) — Angel Oak Mortgage Solutions LLC; separate correspondent channel",
+  portal: "https://angeloakms.com/programs/",
+  niches: ["Bank statement (12/24-mo personal or business)", "1099 income", "DSCR investor", "Asset Qualifier (no employment/income/DTI)", "Bank statement HELOC", "5/6 and 7/6 ARM non-QM options"],
+  programs: [
+    {p: "Bank Statement", ltv: "90%", fico: "640", dti: "Not published — ask AE", loan: "Up to $3M", notes: "No tax returns; 12 or 24 months personal/business statements.", src: "https://angeloakms.com/"},
+    {p: "DSCR", ltv: "85% (75% max with automated rental AVM / 1007 waiver, 1 unit)", fico: "680", dti: "N/A (DSCR)", loan: "Not published — ask AE", notes: "Third-party listing cites min DSCR 0.75 and up to $3M — unverified on lender site.", src: "https://angeloakms.com/"},
+    {p: "1099 Income", ltv: "90% (720 FICO) / 75% at 640", fico: "640", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "2 yrs seasoning for FC/SS/BK/DIL; 2 yrs self-employed same line of work.", src: "https://angeloakms.com/programs/1099-income-loan-program/"},
+    {p: "Asset Qualifier", ltv: "75%", fico: "700", dti: "No DTI requirement", loan: "Not published — ask AE", notes: "Primary and second home only; no employment or income stated.", src: "https://angeloakms.com/"},
+    {p: "Bank Statement HELOC", ltv: "80% CLTV (up to 85% by doc/FICO)", fico: "700", dti: "Not published — ask AE", loan: "$750K (business stmt/P&L/1099) / $500K (personal stmt)", notes: "", src: "https://angeloakms.com/programs/bank-statement-heloc/"},
+    {p: "Asset Depletion", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "Program page exists.", src: "https://angeloakms.com/programs/asset-depletion-mortgage-program/"}
+  ],
+  states: {CA: "Yes", IL: "Not confirmed", NV: "Not confirmed", FL: "Yes", AZ: "Yes", statesSrc: "https://angeloakms.com/licensing"},
+  nmls: "1160240",
+  highlights: ["Long-standing non-QM brand; available in 46 states + DC (company press release)", "Bank Statement HELOC for self-employed equity access", "Broad doc-type menu: bank statement, 1099, asset qualifier, DSCR", "Non-QM resource center for broker education (angeloakms.com/non-qm-resource-center/)"],
+  cautions: ["IL (MB.6761065) and NV (#4450/#4597) license numbers appeared only in third-party/partial excerpts — verify on NMLS Consumer Access", "License numbers differ between company pages (angeloakms.com/licensing vs my.angeloakms.com/about-us)", "PA DOBS consent order 2023 (https://www.dobs.pa.gov/Documents/Enforcement%20Orders/2023/070323%20Angel%20Oak%20Mortgage%20CAO%20(002)_Redacted.pdf)", "Program page ages vary (2 weeks to 3 years) — confirm with AE"],
+  status: "Active wholesale verified",
+  sources: ["https://angeloakms.com/", "https://angeloakms.com/programs/", "https://angeloakms.com/programs/1099-income-loan-program/", "https://angeloakms.com/programs/bank-statement-heloc/", "https://angeloakms.com/programs/asset-depletion-mortgage-program/", "https://angeloakms.com/non-qm-resource-center/", "https://angeloakms.com/licensing", "https://my.angeloakms.com/about-us", "https://nationalmortgageprofessional.com/directories/angel-oak-mortgage-solutions"],
+  checked: "2026-10-22"
+},
+{
+  n: 8,
+  name: "Brokers Advantage",
+  channel: "Wholesale (broker) — non-QM (Vista Point Mortgage, LLC dba Brokers Advantage Mortgage)",
+  portal: "https://brokersadvantagemortgage.com/",
+  niches: ["Non-QM closed-end seconds (CES)", "DSCR CES", "Infinite Series Non-QM", "iNC Intelligent Non-Conforming (first-time buyers, remodel)", "HELOC", "Business-purpose DSCR (unlicensed brokers in most states)"],
+  programs: [
+    {p: "Closed End Second — DSCR", ltv: "80% CLTV", fico: "Not published — ask AE", dti: "N/A (qualifies on market rent)", loan: "Up to $750K; combined up to $5M", notes: "No personal income; aimed at investors keeping low-rate first lien (BRRRR). Per NMP DealDesk (older).", src: "https://nationalmortgageprofessional.com/webinar/dealdesk-brokers-advantage-mortgages-closed-end-second-ces-dscr-loan"},
+    {p: "Non-QM Closed End Second (Infinite Series CES)", ltv: "90% CLTV owner-occupied", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "Full Doc, Bank Statement, 1099, P&L and DSCR doc options (per NMP webinar).", src: "https://nationalmortgageprofessional.com/webinar/dealdesk-focus-brokers-advantage-mortgages-non-qm-closed-end-second"},
+    {p: "Infinite Series Non-QM", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "Listed on Products page; guidelines behind portal.", src: "https://brokersadvantagemortgage.com/Products"},
+    {p: "iNC — Intelligent Non-Conforming", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "Targets first-time buyers and remodel financing.", src: "https://brokersadvantagemortgage.com/inc"}
+  ],
+  states: {CA: "Not confirmed", IL: "Not confirmed", NV: "Not confirmed", FL: "Not confirmed", AZ: "Not confirmed", statesSrc: "https://nationalmortgageprofessional.com/directories/brokers-advantage-mortgage"},
+  nmls: "1826528",
+  highlights: ["Describes itself as national wholesale lender specializing in Non-QM (brokersadvantagemortgage.com)", "Strong CES / HELOC niche to preserve borrower's low-rate first", "Licensed in 45 states + DC per NMP directory", "Irvine, CA based"],
+  cautions: ["No agency/government programs found — internal note 'Agency Wholesale' not supported by public sources (brokersadvantagemortgage.com/Products)", "Rebranded from NextUs Lending in Aug-2023 (nationalmortgageprofessional.com/tag/brokers-advantage-mortgage)", "Unlicensed-broker DSCR origination excludes AZ and CA among others (NMP directory)", "NMLS 1826528 taken from LinkedIn company page (https://www.linkedin.com/company/brokers-advantage-mortgage) — verify on NMLS Consumer Access"],
+  status: "Active wholesale verified",
+  sources: ["https://brokersadvantagemortgage.com/", "https://brokersadvantagemortgage.com/Products", "https://brokersadvantagemortgage.com/inc", "https://www.linkedin.com/company/brokers-advantage-mortgage", "https://nationalmortgageprofessional.com/directories/brokers-advantage-mortgage", "https://nationalmortgageprofessional.com/tag/brokers-advantage-mortgage", "https://nationalmortgageprofessional.com/webinar/dealdesk-brokers-advantage-mortgages-closed-end-second-ces-dscr-loan", "https://nationalmortgageprofessional.com/webinar/dealdesk-focus-brokers-advantage-mortgages-non-qm-closed-end-second"],
+  checked: "2026-10-22"
+},
+{
+  n: 9,
+  name: "CALVET",
+  channel: "State agency (CA Dept. of Veterans Affairs) — broker origination via Lender/Broker Agreement",
+  portal: "https://www.calvet.ca.gov/HomeLoans/Pages/Mortgage-Brokers.aspx",
+  niches: ["California veterans home loans (CalVet/VA)", "Manual underwriting", "Home improvement loans", "Repeat-use benefit", "Disabled-veteran fee exemptions"],
+  programs: [
+    {p: "CalVet Home Loan (CalVet/VA)", ltv: "Up to 100% financing with VA entitlement (third-party)", fico: "No set minimum — manually underwritten (per valoannetwork.com 2026 guide)", dti: "Not published — ask AE", loan: "Not published — ask AE (2026 county limits not confirmed on calvet.ca.gov)", notes: "Third-party 2026 guides cite limits tied to FHFA conforming ($832,750 / $1,249,125 high-cost) — unverified.", src: "https://valoannetwork.com/calvet-loans-in-california-guide/"},
+    {p: "CalVet/97", ltv: "97% (3% down)", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "For loans exceeding available VA entitlement; not confirmed on official site.", src: "https://joingerald.com/learn/debt--credit/calvet-home-loans-guide-california-veterans"},
+    {p: "Home Improvement Loan", ltv: "Combined debt <= 90% of enhanced market value", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "$5,000 min / $150,000 max", notes: "25-yr max term; for active CalVet contract holders or owners free and clear.", src: "https://www.calvet.ca.gov/HomeLoans/Pages/Home-Improvement-Loans.aspx"},
+    {p: "Broker origination (agency program)", ltv: "N/A", fico: "N/A", dti: "N/A", loan: "N/A", notes: "1% loan origination fee paid to broker; requires active NMLS and CA RE broker or RMLA license; submit signed Lender/Broker Agreement (9/15/23) + license.", src: "https://calvet.ca.gov/HomeLoans/Documents/CalVet%20Home%20Loans%20-%20Lender-Broker%20Agreement%20-%209.15.23%20Update.pdf"}
+  ],
+  states: {CA: "Yes", IL: "Not confirmed", NV: "Not confirmed", FL: "Not confirmed", AZ: "Not confirmed", statesSrc: "https://www.calvet.ca.gov/HomeLoans/Pages/Mortgage-Brokers.aspx"},
+  nmls: "",
+  highlights: ["Brokers paid 1% origination fee (CalVet broker documents)", "Benefit can be reused if no CalVet loan currently open (calvet.ca.gov New Customer page)", "No minimum FICO — manual underwriting (per third-party guide)", "Broker can be approved during the application process (sbcounty.gov, older)"],
+  cautions: ["Official 2026 loan limits not found on calvet.ca.gov — third-party figures conflict", "Agreement: no origination fee to an agent also earning listing/selling commission on same deal (Lender/Broker Agreement)", "State program for California veterans — out-of-state coverage not confirmed"],
+  status: "Active — channel not confirmed",
+  sources: ["https://www.calvet.ca.gov/HomeLoans/Pages/Mortgage-Brokers.aspx", "https://calvet.ca.gov/HomeLoans/Documents/CalVet%20Home%20Loans%20-%20Lender-Broker%20Agreement%20-%209.15.23%20Update.pdf", "https://calvet.ca.gov/HomeLoans/Documents/Broker%20Package%20Submittal.pdf", "https://www.calvet.ca.gov/HomeLoans/Pages/Home-Improvement-Loans.aspx", "https://www.calvet.ca.gov/HomeLoans/Pages/New-Customer.aspx", "https://valoannetwork.com/calvet-loans-in-california-guide/", "https://joingerald.com/learn/debt--credit/calvet-home-loans-guide-california-veterans", "https://welcomehome.sbcounty.gov/housing-old/"],
+  checked: "2026-10-22"
+},
+{
+  n: 10,
+  name: "Champions Funding",
+  channel: "Wholesale (broker) — Non-QM and CDFI lender; also correspondent",
+  portal: "https://www.champstpo.com/programs",
+  niches: ["ITIN (DSCR and full doc)", "Foreign national DSCR (Ambassador)", "DSCR Accelerator incl. 5-8 units", "No income / no employment (Ally)", "Full Doc investor", "CDFI community lending"],
+  programs: [
+    {p: "DSCR Accelerator", ltv: "80% (1-4 units) / 75% (5-8 units)", fico: "600 (1-4 units) / 700 (5-8 units)", dti: "N/A (DSCR)", loan: "Not published — ask AE", notes: "Correspondent page: 660+ FICO for cash-out with DSCR .75-.99.", src: "https://www.champstpo.com/dscr-accelerator-product-overview"},
+    {p: "ITIN Accelerator DSCR", ltv: "80% purchase & rate-term", fico: "660", dti: "N/A (DSCR)", loan: "Up to $1M", notes: "ITIN accepted in place of SSN (per correspondent product page).", src: "https://www.champscorr.com/correspondent-products"},
+    {p: "Ambassador Foreign National DSCR", ltv: "70% LTV/CLTV", fico: "Not published — ask AE", dti: "N/A (DSCR)", loan: "Up to $1.5M", notes: "Per correspondent product page; confirm wholesale terms.", src: "https://www.champscorr.com/correspondent-products"},
+    {p: "Ally (no income / no employment)", ltv: "80% (720 FICO)", fico: "620 (lower LTV tiers)", dti: "No income stated", loan: "Not published — ask AE", notes: "", src: "https://www.champstpo.com/product-overview-ally"},
+    {p: "Full Doc Accelerator (investor)", ltv: "85%", fico: "660", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "", src: "https://www.champstpo.com/full-doc-product-overview"}
+  ],
+  states: {CA: "Yes", IL: "Not confirmed", NV: "Not confirmed", FL: "Not confirmed", AZ: "Yes", statesSrc: "https://champstpo.com/licenses"},
+  nmls: "2254210",
+  highlights: ["ITIN and foreign national DSCR focus — strong fit for non-citizen borrowers", "CDFI designation (company description)", "DSCR down to 600 FICO on 1-4 units (DSCR Accelerator overview)", "Downloadable program matrices on champstpo.com"],
+  cautions: ["FL and IL appear on NMP directory list (nationalmortgageprofessional.com/directories/champions-funding-llc) but not confirmed on licenses page excerpt; NV not listed", "ITIN and Foreign National figures came from correspondent site (champscorr.com) — wholesale may differ", "FICO floors differ between wholesale and correspondent pages — use current matrix"],
+  status: "Active wholesale verified",
+  sources: ["https://www.champstpo.com/programs", "https://www.champstpo.com/dscr-accelerator-product-overview", "https://www.champstpo.com/product-overview-ally", "https://www.champstpo.com/full-doc-product-overview", "https://www.champstpo.com/partner-with-us", "https://www.champscorr.com/correspondent-products", "https://champstpo.com/licenses", "https://nationalmortgageprofessional.com/directories/champions-funding-llc", "https://www.loanfactory.com/our-lenders/champions-funding-31972167917"],
+  checked: "2026-10-22"
+},
+{
+  n: 11,
+  name: "Change Wholesale",
+  channel: "Wholesale (broker) — Change Lending, LLC dba Change Wholesale (CDFI)",
+  portal: "https://www.changewholesale.com/",
+  niches: ["Community Mortgage (no income/employment stated)", "Non-QM", "Real estate investor / DSCR", "Underserved-community lending"],
+  programs: [
+    {p: "Community Mortgage", ltv: "80% purchase / rate-term", fico: "640", dti: "No income stated — N/A", loan: "$100K min / $2.5M max", notes: "No income or employment on 1003; reserves as low as 6 mo; 30-day asset seasoning; primary residence only. Matrix tiers (e.g., 75% @ 680, 80% @ 720 w/ 9 mo reserves) vary by scenario. Not offered in DC, MD, ME, NV, PA, WA, WV.", src: "https://www.changewholesale.com/community-mortgage"},
+    {p: "Community Mortgage matrix (AltQM wholesale 07/22/2026)", ltv: "80%", fico: "640", dti: "N/A", loan: "$100K-$2.5M", notes: "6 months reserves; primary residence.", src: "https://cdn.prod.website-files.com/65dccaaff529b8ce5a38cafa/6a678caa58516985ba1c37f2_AltQM%20Matrices%20-%20Community%20%20WHOLESALE%20FIELD%2007_22_2026_TPO%20Website.pdf"},
+    {p: "Real Estate Investor", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "Program page exists; terms not captured.", src: "https://www.changewholesale.com/investor"}
+  ],
+  states: {CA: "Yes", IL: "Not confirmed", NV: "Not confirmed", FL: "Not confirmed", AZ: "Yes", statesSrc: ""},
+  nmls: "1839",
+  highlights: ["Community Mortgage: no income docs, 640 FICO, up to $2.5M (changewholesale.com/community-mortgage)", "Published TPO matrices (AltQM, July 2026)", "Headquartered Anaheim, CA; CA DFPI licensed (RMLA/CFL)"],
+  cautions: ["Community Mortgage NOT available in NV (changewholesale.com/community-mortgage)", "Lender discloses these products carry higher rate/points/fees than income-documented loans (community-mortgage page)", "Older blog post cites 680 FICO / $2M cap (changewholesale.com/post/community-mortgage-expanding-access-through-common-sense-lending) — superseded per current page", "AZ license #0925326 and CA licensing from company disclosure text in search excerpts; IL/FL/NV licensing not confirmed — check NMLS Consumer Access #1839"],
+  status: "Active wholesale verified",
+  sources: ["https://www.changewholesale.com/", "https://www.changewholesale.com/community-mortgage", "https://www.changewholesale.com/investor", "https://www.changewholesale.com/post/community-mortgage-expanding-access-through-common-sense-lending", "https://cdn.prod.website-files.com/65dccaaff529b8ce5a38cafa/6a678caa58516985ba1c37f2_AltQM%20Matrices%20-%20Community%20%20WHOLESALE%20FIELD%2007_22_2026_TPO%20Website.pdf", "https://www.changemtg.com/loan-products/community-mortgage", "https://extranet.dfi.in.gov/ConsumerCredit/EntityDetails/16041"],
+  checked: "2026-10-22"
+}
+]);
+
+</script>
+<script>
+// Lender research batch — public sources as of 2026-10-22; verify with the AE before quoting.
+(window.LENDER_INFO=window.LENDER_INFO||[]).push(...[
+{
+  n: 12,
+  name: "Click N Close Mortgage",
+  channel: "Wholesale (broker) + non-delegated correspondent",
+  portal: "https://mamtpo.com",
+  niches: ["SmartBuy DPA (FHA/USDA first + forgivable or repayable 2nd)", "Shared Appreciation Mortgage DPA", "USDA (named Top USDA Wholesale Lender 2026)", "FHA standard & high balance", "Conforming standard & high balance", "VA", "Jumbo (non-conforming)"],
+  programs: [
+    {p: "SmartBuy DPA Suite (FHA/USDA 1st + 2nd lien)", ltv: "Not published — ask AE", fico: "620 forgivable option / 660 repayable option (2023 guide)", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "Forgivable 2nd after 5 yrs or 10-yr repayable 2nd; no income or first-time-buyer restriction per 2023-era release. Guide dated 9/19/2023 — confirm current.", src: "https://mamtpo.com/wp-content/uploads/2023/09/SmartBuy-Suite-Combined-Guidelines-9-19-2023.pdf"},
+    {p: "SmartBuy Shared Appreciation (SAM) DPA", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "FHA/USDA 1st + repayable DPA 2nd; borrower shares up to 40% of appreciation over first 5 yrs (per MPA); conventional 30-yr option added (5% appreciation share per HousingWire).", src: "https://www.housingwire.com/articles/click-n-close-shared-appreciation-mortgage-conventional-loan/"},
+    {p: "FHA Standard Balance", ltv: "Not published — ask AE", fico: "580 (650 manufactured)", dti: "Not published — ask AE", loan: "FHA county limits", notes: "Matrix dated Jan 2023 — confirm current.", src: "https://mamtpo.com/wp-content/uploads/2023/02/FHA-Standard-Balance-9.pdf"},
+    {p: "FHA High Balance", ltv: "Not published — ask AE", fico: "580 (650/680 manufactured — matrices conflict)", dti: "Not published — ask AE", loan: "FHA high-balance county limits", notes: "Matrix dated Jan 2023 — confirm current.", src: "https://mamtpo.com/wp-content/uploads/2023/02/FHA-High-Balance-Product-4.pdf"},
+    {p: "USDA Guaranteed (incl. forgivable 2nd DPA option)", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "Forgivable 2nd can be applied to closing costs, escrows, prepaids (per press).", src: "https://www.weny.com/wires/click-n-close-named-one-of-usda-s-top-wholesale-lenders-for-2026/article_711c4cf8-44eb-53dd-865a-17f8a3ac43b8.html"}
+  ],
+  states: {CA: "Yes", IL: "Not confirmed", NV: "Not confirmed", FL: "Not confirmed", AZ: "Not confirmed", statesSrc: "https://mamtpo.com/?p=87"},
+  nmls: "",
+  highlights: ["Proprietary SmartBuy DPA with no income or first-time-buyer limits (per release)", "Named a Top USDA Wholesale Lender for 2026", "Offered free USDA lock extensions during government shutdown (per press)", "Wholesale portal 'Mortgage Machine' referenced on mamtpo.com"],
+  cautions: ["Guideline PDFs found are dated 2023 — pull current matrices from mamtpo.com", "Company NMLS reported as 150009 and AZ license numbers conflict across search snippets (mamtpo.com/?p=87 vs. footers) — verify on NMLS Consumer Access", "CA DFPI licenses RMLA 4131103 / CFL 603J732 per mamtpo.com/?p=87 snippet"],
+  status: "Active wholesale verified",
+  sources: ["https://mamtpo.com", "https://mamtpo.com/?p=87", "https://mamtpo.com/wp-content/uploads/2023/09/SmartBuy-Suite-Combined-Guidelines-9-19-2023.pdf", "https://mamtpo.com/wp-content/uploads/2023/02/FHA-Standard-Balance-9.pdf", "https://mamtpo.com/wp-content/uploads/2023/02/FHA-High-Balance-Product-4.pdf", "https://www.housingwire.com/articles/click-n-close-shared-appreciation-mortgage-conventional-loan/", "https://mpamag.com/us/specialty/wholesale/click-n-close-launches-down-payment-assistance-with-shared-home-equity-option/485761", "https://www.weny.com/wires/click-n-close-named-one-of-usda-s-top-wholesale-lenders-for-2026/article_711c4cf8-44eb-53dd-865a-17f8a3ac43b8.html"],
+  checked: "2026-10-22"
+},
+{
+  n: 13,
+  name: "Commercial Capital Bidco",
+  channel: "Private lender (direct; broker policy not confirmed)",
+  portal: "",
+  niches: ["Small-balance commercial real estate", "Cash-out refinance", "Redevelopment", "Partner buy-outs", "Restructuring"],
+  programs: [
+    {p: "Small-balance commercial loans", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "$500,000 to $3,000,000+ (per AAPL directory)", notes: "Funding in as little as ~1 week (self-described in directory listing).", src: "https://aaplonline.com/directory/commercial-capital-bidco"}
+  ],
+  states: {CA: "Not confirmed", IL: "Not confirmed", NV: "Not confirmed", FL: "Not confirmed", AZ: "Not confirmed", statesSrc: ""},
+  nmls: "",
+  highlights: ["Describes itself as licensed, verified direct lender working nationwide (per AAPL directory)", "Franklin, TN address (per AAPL directory)"],
+  cautions: ["Own website (commercialcapitalbidco.com) could not be fetched — all info from a self-submitted AAPL directory listing", "Could not verify broker/wholesale channel, LTV caps, or licensing"],
+  status: "Active — channel not confirmed",
+  sources: ["https://aaplonline.com/directory/commercial-capital-bidco", "https://www.tn.gov/tdfi/bank-trust/bank-bidcos.html"],
+  checked: "2026-10-22"
+},
+{
+  n: 14,
+  name: "eLend",
+  channel: "Wholesale (broker), non-delegated, correspondent, financial institutions (eLEND TPO, formerly AFR Wholesale)",
+  portal: "https://www.elend.com/tpo",
+  niches: ["FHA", "VA", "USDA", "Conventional (Fannie/Freddie)", "Renovation (203k)", "Manufactured housing", "HUD REO $100 Down"],
+  programs: [
+    {p: "Fannie Mae Standard (wholesale)", ltv: "Not published — ask AE", fico: "620", dti: "Not published — ask AE", loan: "Conforming limits", notes: "Guideline dated 11/18/2025.", src: "https://www.elend.com/wp-content/uploads/2025/12/eLEND_Program-Guidelines_Fannie-Mae-Standard_Wholesale_11182025.pdf"},
+    {p: "Freddie Mac Standard (wholesale)", ltv: "Not published — ask AE", fico: "620", dti: "Not published — ask AE", loan: "Conforming limits", notes: "Guideline dated 11/18/2025.", src: "https://www.elend.com/wp-content/uploads/2025/12/eLEND_Program-Guidelines_Freddie-Mac-Standard_Wholesale_11182025.pdf"},
+    {p: "FHA Manufactured Housing", ltv: "Not published — ask AE", fico: "580", dti: "Not published — ask AE", loan: "FHA limits", notes: "Min 400 sq ft; permanently affixed, classified as real estate.", src: "https://www.elend.com/tpo/products/fha-manufactured-housing/"},
+    {p: "FHA $100 Down (HUD REO)", ltv: "Not published — ask AE", fico: "580 (middle score)", dti: "Not published — ask AE", loan: "FHA limits", notes: "Can be 203(b), 203(b) w/ repair escrow, or 203(k); manufactured eligible. Guideline 10/13/2025.", src: "https://www.elend.com/wp-content/uploads/2025/11/eLEND_Program-Guidelines_FHA-100-Down_Wholesale_10132025.pdf"}
+  ],
+  states: {CA: "Yes", IL: "Yes", NV: "Not confirmed", FL: "Yes", AZ: "Yes", statesSrc: "https://elend.com/legal/legal-licensing"},
+  nmls: "2826",
+  highlights: ["Serving mortgage professionals since 1997; claims licensed in 48 states", "On-Demand Processing service for brokers", "Dedicated AE plus training", "Strong manufactured-housing and renovation niche"],
+  cautions: ["Non-QM (bank statement/DSCR) appears only in third-party profiles, not eLEND's own TPO pages — confirm with AE", "NV licensing not confirmed in search snippets of legal page"],
+  status: "Active wholesale verified",
+  sources: ["https://www.elend.com/tpo", "https://www.elend.com/tpo/channels/broker/", "https://elend.com/legal/legal-licensing", "https://www.elend.com/tpo/products/fha-manufactured-housing/", "https://www.elend.com/wp-content/uploads/2025/11/eLEND_Program-Guidelines_FHA-100-Down_Wholesale_10132025.pdf", "https://www.elend.com/wp-content/uploads/2025/12/eLEND_Program-Guidelines_Fannie-Mae-Standard_Wholesale_11182025.pdf", "https://www.elend.com/wp-content/uploads/2025/12/eLEND_Program-Guidelines_Freddie-Mac-Standard_Wholesale_11182025.pdf"],
+  checked: "2026-10-22"
+},
+{
+  n: 15,
+  name: "Eleven Mortgage",
+  channel: "Wholesale (broker) — EXITED Sept 2026",
+  portal: "",
+  niches: ["Conventional conforming", "FHA", "VA", "USDA", "CalHFA (formerly listed)"],
+  programs: [
+    {p: "Conventional / FHA / VA / USDA (historical)", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "Lineup as of July 2025 ARIVE release; channel now closed.", src: "https://www.arive.com/press/eleven-mortgage-joins-the-arive-platform-to-elevate-broker-lending-experience"}
+  ],
+  states: {CA: "Not confirmed", IL: "Not confirmed", NV: "Not confirmed", FL: "Not confirmed", AZ: "Not confirmed", statesSrc: ""},
+  nmls: "",
+  highlights: ["Formerly on ARIVE marketplace", "Was listed as a CalHFA wholesale lender (pre-exit)"],
+  cautions: ["Eleven Mortgage exited wholesale and correspondent lending effective immediately, confirmed Fri Sept 25, 2026 by Benchmark/Ark-La-Tex Financial Services (NMP 9/28/2026: https://nationalmortgageprofessional.com/news/eleven-mortgage-exits-wholesale-loans-still-pipeline)", "WARN notice: 81 layoffs Nov 24 (per National Mortgage News)", "Do not submit new loans; remove from active lender list"],
+  status: "Possibly inactive/exited — verify",
+  sources: ["https://nationalmortgageprofessional.com/news/eleven-mortgage-exits-wholesale-loans-still-pipeline", "https://www.housingwire.com/articles/eleven-mortgage-shuts-down-benchmark/", "https://www.nationalmortgagenews.com/news/benchmark-mortgage-shutters-correspondent-wholesale-ops", "https://www.arive.com/press/eleven-mortgage-joins-the-arive-platform-to-elevate-broker-lending-experience"],
+  checked: "2026-10-22"
+},
+{
+  n: 16,
+  name: "Equity Prime Mortgage (EPM)",
+  channel: "Wholesale (broker) — exited retail 2023",
+  portal: "",
+  niches: ["FHA", "VA", "USDA", "Conventional", "203(k) renovation", "Reverse"],
+  programs: [
+    {p: "Conventional / FHA / VA / 203K / USDA / Reverse", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "Product list from EPM materials per search; no public matrices found.", src: "https://www.cuinsight.com/?p=10604"}
+  ],
+  states: {CA: "Not confirmed", IL: "Not confirmed", NV: "Not confirmed", FL: "Not confirmed", AZ: "Not confirmed", statesSrc: ""},
+  nmls: "",
+  highlights: ["Dropped retail in 2023 to operate as pure wholesale/TPO lender (NMP 9/7/2023)", "Wholesale volume grew 400%+ over two years (per HousingWire)", "Fannie, Freddie & Ginnie seller/servicer", "BLVR broker-recruiting platform"],
+  cautions: ["Company NMLS reported as 21116 in search snippets of Missouri DFI records — verify on NMLS Consumer Access", "HUD action limited EPM's FHA DE approval in four geographic areas; EPM says it still originates FHA nationally (Scotsman Guide: https://www.scotsmanguide.com/news/equity-prime-mortgage-seeks-to-set-the-record-straight-on-fha-lending-curbs/)", "State count conflicts across sources (45 / 49 / 50) — verify"],
+  status: "Active wholesale verified",
+  sources: ["https://nationalmortgageprofessional.com/news/epm-embraces-wholesale-shedding-retail-champion-brokers", "https://www.housingwire.com/articles/how-epm-plans-to-win-in-the-tpo-channel-after-exiting-retail/", "https://www.scotsmanguide.com/news/equity-prime-mortgage-seeks-to-set-the-record-straight-on-fha-lending-curbs/", "https://www.cuinsight.com/?p=10604"],
+  checked: "2026-10-22"
+},
+{
+  n: 17,
+  name: "Finance of America Reverse (FAR)",
+  channel: "Wholesale (broker)",
+  portal: "https://www.financeofamerica.com/wholesale/",
+  niches: ["HECM", "HECM for Purchase", "HomeSafe proprietary jumbo reverse", "HomeSafe Second (2nd-lien reverse)", "HomeSafe Second Line of Credit", "Age 55+ proprietary reverse (most states)"],
+  programs: [
+    {p: "HomeSafe (Standard / Select / Flex)", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "N/A (reverse)", loan: "Up to $4M; property values up to $10M", notes: "Min age 55 most states (60 MA/NY/WA; 62 NC/TX/UT). Select: 25% upfront, LOC grows at 5%. No origination fee on Standard/Flex per HousingWire (date unconfirmed).", src: "https://www.financeofamerica.com/wholesale/products/"},
+    {p: "HomeSafe Second (2nd lien)", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "N/A (reverse)", loan: "Up to $1M", notes: "Keeps existing 1st mortgage; no monthly payment.", src: "https://www.housingwire.com/articles/foa-lowers-rate-expands-homesafe-second-reverse-mortgage-into-new-states/"},
+    {p: "HomeSafe Second Line of Credit", ltv: "Not published — ask AE", fico: "640", dti: "N/A (reverse)", loan: "Up to $1M", notes: "Launched in California April 1, 2026.", src: "https://www.housingwire.com/articles/finance-of-america-homesafe-second-line-of-credit-california/"},
+    {p: "HECM / HECM for Purchase", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "N/A (FHA financial assessment)", loan: "FHA HECM limit", notes: "Listed in wholesale lineup per ConsumerAffairs.", src: "https://www.consumeraffairs.com/reverse-mortgages/finance-of-america-reverse.html"}
+  ],
+  states: {CA: "Yes", IL: "Not confirmed", NV: "Not confirmed", FL: "Not confirmed", AZ: "Not confirmed", statesSrc: "https://www.businesswire.com/news/home/20260401525995/en/Finance-of-America-Introduces-HomeSafe-Second-Line-of-Credit-Unlocking-Flexible-Access-to-Home-Equity-Without-Monthly-Mortgage-Payments"},
+  nmls: "2285",
+  highlights: ["Largest proprietary reverse lineup (HomeSafe) with loans to $4M", "Only second-lien reverse product (HomeSafe Second)", "HomeSafe age 55 in most states", "New HomeSafe Second LOC in CA (2026)"],
+  cautions: ["Not all HomeSafe products available in every state — FAR wholesale page", "NMLS 2285 per BestCompany/older partner materials — verify on NMLS", "HomeSafe principal-limit changes reported by HousingWire — confirm current PLFs"],
+  status: "Active wholesale verified",
+  sources: ["https://www.financeofamerica.com/wholesale/", "https://www.financeofamerica.com/wholesale/products/", "https://www.housingwire.com/articles/foa-lowers-rate-expands-homesafe-second-reverse-mortgage-into-new-states/", "https://www.housingwire.com/articles/finance-of-america-homesafe-second-line-of-credit-california/", "https://www.businesswire.com/news/home/20260401525995/en/Finance-of-America-Introduces-HomeSafe-Second-Line-of-Credit-Unlocking-Flexible-Access-to-Home-Equity-Without-Monthly-Mortgage-Payments", "https://www.housingwire.com/articles/far-refines-proprietary-homesafe-products-drops-most-origination-fees/", "https://www.consumeraffairs.com/reverse-mortgages/finance-of-america-reverse.html", "https://bestcompany.com/mortgages/company/finance-of-america-reverse"],
+  checked: "2026-10-22"
+},
+{
+  n: 18,
+  name: "First National Bank of America (FNBA)",
+  channel: "Wholesale (broker) — bank portfolio Non-QM",
+  portal: "https://www.fnba.com/wholesale/",
+  niches: ["ITIN (no SSN, no EAD/visa needed)", "Bank statement / P&L", "Asset-based (seasoned assets)", "Recent credit events / Near Miss", "No-score borrowers", "Alt-A Premier"],
+  programs: [
+    {p: "ITIN", ltv: "85% purchase or refi", fico: "600 min or no score (TransUnion only)", dti: "60% (Aug 2025 flyer; Feb 2025 flyer showed 55%)", loan: "$50K–$3MM (Aug 2025)", notes: "Alt income: 12-mo P&L or 12-mo bank statements; unexpired ITIN card/letter.", src: "https://www.fnba.com/wp-content/uploads/2025/08/Buy-A-Home-with-ITIN.pdf"},
+    {p: "Wholesale Alt-A Premier", ltv: "85%", fico: "Not published — ask AE", dti: "60%", loan: "Not published — ask AE", notes: "No reserves required; ITIN & SSN eligible. Flyer Oct 2025.", src: "https://www.fnba.com/wp-content/uploads/2025/10/Wholesale-Alt-A-Premier.pdf"},
+    {p: "Near Miss (Non-QM)", ltv: "80%", fico: "600", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "ITIN and SSN borrowers.", src: "https://fnba.com/wp-content/uploads/2025/03/Near-Miss.pdf"}
+  ],
+  states: {CA: "Yes", IL: "Yes", NV: "Yes", FL: "Yes", AZ: "Yes", statesSrc: "https://nationalmortgageprofessional.com/directories/first-national-bank-america"},
+  nmls: "",
+  highlights: ["Portfolio bank lender since 1955, East Lansing MI", "ITIN with no SSN/EAD/green card; no-score allowed", "Non-QM in all 50 states (per FNBA / NMP directory)", "DTI up to 60% on ITIN and Alt-A Premier"],
+  cautions: ["State coverage 'all 50 states' is per NMP directory (third-party) and FNBA marketing — verify", "No public foreign national program found — ask AE", "Company NMLS not found in sources"],
+  status: "Active wholesale verified",
+  sources: ["https://www.fnba.com/wholesale/", "https://www.fnba.com/wp-content/uploads/2025/08/Buy-A-Home-with-ITIN.pdf", "https://fnba.com/wp-content/uploads/2025/02/ITIN-Home-Financing.pdf", "https://www.fnba.com/wp-content/uploads/2025/10/Wholesale-Alt-A-Premier.pdf", "https://fnba.com/wp-content/uploads/2025/03/Near-Miss.pdf", "https://nationalmortgageprofessional.com/directories/first-national-bank-america", "https://fnba.com/history"],
+  checked: "2026-10-22"
+},
+{
+  n: 19,
+  name: "Freedom Mortgage",
+  channel: "Wholesale (broker) + non-delegated correspondent",
+  portal: "https://www.freedomwholesale.com/",
+  niches: ["VA (incl. IRRRL)", "FHA (incl. Streamline)", "USDA", "Conventional / HomeReady 97%", "High-balance", "Premier Jumbo"],
+  programs: [
+    {p: "Conventional (incl. HomeReady)", ltv: "97% first-time homebuyers", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Conforming + high-balance/super conforming", notes: "Fixed rate.", src: "https://www.freedomwholesale.com/wholesale/mortgage-products"},
+    {p: "USDA Guaranteed", ltv: "100%", fico: "600", dti: "Not published — ask AE", loan: "USDA limits", notes: "Purchase and refinance.", src: "https://www.freedomwholesale.com/wholesale/mortgage-products"},
+    {p: "Premier Jumbo Fixed", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "Purchase/refi.", src: "https://www.freedomwholesale.com/wholesale/mortgage-products"},
+    {p: "VA / FHA", ltv: "Not published — ask AE", fico: "Not published — ask AE (Bankrate lists 550 retail FHA/VA)", dti: "Not published — ask AE", loan: "VA limit shown $806,500 on cached page", notes: "Minimal overlays, close to agency guidelines (per NMP directory).", src: "https://www.freedomwholesale.com/wholesale/mortgage-products"}
+  ],
+  states: {CA: "Not confirmed", IL: "Not confirmed", NV: "Not confirmed", FL: "Not confirmed", AZ: "Not confirmed", statesSrc: ""},
+  nmls: "2767",
+  highlights: ["Top VA/FHA lender; 4th largest VA lender 2024 (per review site)", "NAMB-certified FHA broker education program", "On ARIVE marketplace since Jan 2025", "Contact: Wholesale411@FreedomMortgage.com"],
+  cautions: ["Credit minimums from Bankrate are retail figures — confirm wholesale overlays with AE"],
+  status: "Active wholesale verified",
+  sources: ["https://www.freedomwholesale.com/", "https://www.freedomwholesale.com/wholesale/mortgage-products", "https://www.arive.com/press/freedom-mortgage-joins-arive-expanding-broker-access-to-va-and-fha-products", "https://www.freedommortgage.com/about/press-releases/details/NAMB-Freedom-Mortgage-Wholesale-Launch-First-Certified-Education-Program", "https://www.bankrate.com/mortgages/reviews/freedom-mortgage", "https://nationalmortgageprofessional.com/directories/freedom-mortgage?page=2"],
+  checked: "2026-10-22"
+},
+{
+  n: 20,
+  name: "Fund Loans",
+  channel: "Wholesale (broker) — Non-QM",
+  portal: "https://fundloans.com/loan-products",
+  niches: ["Jumbo Non-QM", "Bank statement / P&L", "Bank statement standalone 2nd to $1MM", "DSCR & No Ratio", "Non-QM Full Doc", "Self-employed borrowers"],
+  programs: [
+    {p: "Bank Statement / P&L", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Up to $6MM", notes: "Bank statement analyzer in broker portal.", src: "https://fundloans.com/loan-products"},
+    {p: "Standalone 2nd", ltv: "75% CLTV (page also states 90% CLTV full doc / 85% bank stmt — inconsistent)", fico: "680", dti: "Not published — ask AE", loan: "$200K–$1MM; max combined $5MM", notes: "Bank-statement 2nd up to $1MM.", src: "https://www.fundloans.com/standalone-2nd"},
+    {p: "Non-QM Full Doc", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "Higher DTI allowed (no figure published)", loan: "Not published — ask AE", notes: "Increased LTVs per site.", src: "https://fundloans.com/loan-products"},
+    {p: "DSCR / No Ratio", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "N/A", loan: "Not published — ask AE", notes: "Listed on site menu; terms not public.", src: "https://fundloans.com/loan-products"}
+  ],
+  states: {CA: "Not confirmed", IL: "Not confirmed", NV: "Not confirmed", FL: "Not confirmed", AZ: "Not confirmed", statesSrc: ""},
+  nmls: "1202262",
+  highlights: ["San Diego-based jumbo Non-QM specialist (founded 2017 by Jon Maddux)", "Quick Pricer and revamped broker portal with bank statement analyzer", "Large loan sizes (bank stmt to $6MM)"],
+  cautions: ["Licensed in 19 states per 2021 press release — current state list not found; CA HQ but CA license not confirmed in sources", "Detailed guidelines behind broker login (fundloans.com/loginrequest)"],
+  status: "Active wholesale verified",
+  sources: ["https://fundloans.com/loan-products", "https://www.fundloans.com/standalone-2nd", "https://www.fundloans.com/ourstory", "https://www.fundloans.com/loginrequest", "https://www.mpamag.com/us/specialty/non-qualified-mortgage-loan/non-qm-specialist-launches-revamped-portal/317522", "https://lenderprice.com/fundloans-partners-with-lender-price/"],
+  checked: "2026-10-22"
+},
+{
+  n: 21,
+  name: "Giant Lending",
+  channel: "Wholesale (broker) — DBA of OCMBC, Inc. (formerly Jet Advantage Mortgage)",
+  portal: "",
+  niches: ["Agency (Conv/Govt)", "Non-QM", "Prime and non-QM borrowers", "Complex-scenario structuring"],
+  programs: [
+    {p: "Agency and Non-QM programs", ltv: "Not published — ask AE", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "Available inside ARIVE (March 2026). No public matrices found; sister DBA Forward Lending publishes Non-QM sheets but terms not confirmed for GIANT.", src: "https://www.arive.com/press/giant-lending-launches-on-arive-expanding-broker-access-to-performance-driven-lending-solutions"}
+  ],
+  states: {CA: "Yes", IL: "Yes", NV: "Yes", FL: "Yes", AZ: "Yes", statesSrc: "https://www.housingwire.com/articles/loanstream-mortgage-ocmbc-launch-new-dba-giant-lending/"},
+  nmls: "",
+  highlights: ["Launched Sept 2025 as OCMBC's broker-focused DBA (sister to LoanStream and Forward Lending)", "Licensed in every state except New York (per HousingWire citing GIANT site)", "On ARIVE marketplace since March 2026", "OCMBC described as nation's 2nd-largest Non-QM originator (2024)"],
+  cautions: ["Parent OCMBC NMLS 2125 is shown on Forward Lending disclosures — confirm GIANT uses same NMLS", "Rebrand followed May 15, 2025 preliminary injunction over 'Jet Advantage Mortgage' name (per NMP)", "giantlending.com not reachable/returned in search — portal URL unverified"],
+  status: "Active wholesale verified",
+  sources: ["https://nationalmortgageprofessional.com/news/ocmbc-retires-jet-advantage-launches-giant-lending", "https://www.housingwire.com/articles/loanstream-mortgage-ocmbc-launch-new-dba-giant-lending/", "https://www.arive.com/press/giant-lending-launches-on-arive-expanding-broker-access-to-performance-driven-lending-solutions", "https://nationalmortgageprofessional.com/tag/ocmbc-inc"],
+  checked: "2026-10-22"
+},
+{
+  n: 22,
+  name: "HomeXpress Mortgage Corp",
+  channel: "Wholesale (broker)",
+  portal: "https://homexmortgage.com/broker-access",
+  niches: ["PrimeX near-prime Non-QM", "CoreX alt-doc / credit-challenged", "InvestorX DSCR (incl. short-term rentals)", "Bank statement (12/24 & 3-month) / 1099", "AssetXpress asset utilization", "P&L only", "Agency Conv/FHA/VA"],
+  programs: [
+    {p: "InvestorX DSCR", ltv: "80% at DSCR >=1.00 (purchase/R&T at 1.25+); 75% at 0.75–0.99", fico: "620 (marketing); 700 for 80% at 1.25+; 660 for <1.00 tier (2023 sheets)", dti: "N/A", loan: "Not published — ask AE", notes: "<1.00 DSCR requires 6 months reserves. Sheets dated 2023 — confirm.", src: "https://homexmortgage.com/wp-content/uploads/2023/09/InvestorX-Rate-Sheet-23.9.29.pdf"},
+    {p: "CoreX Bank Statement (12/24-mo & 3-mo)", ltv: "Not published — ask AE", fico: "600", dti: "Not published — ask AE", loan: "Up to $3,000,000 (2021 announcement)", notes: "3-month bank statement option.", src: "https://homexmortgage.com/wp-content/uploads/2023/01/CoreX1.13.2023.pdf"},
+    {p: "Asset Xpress (asset utilization)", ltv: "75%", fico: "680 if over 70% LTV", dti: "N/A", loan: "Not published — ask AE", notes: "Qualify on liquid assets. 2023 sheet.", src: "https://homexmortgage.com/wp-content/uploads/2023/01/CoreX1.13.2023.pdf"},
+    {p: "Asset Assist", ltv: "80% to $1.0M / 75% to $2.0M", fico: "Not published — ask AE", dti: "43%", loan: "$2.0M", notes: "2023 sheet.", src: "https://homexmortgage.com/wp-content/uploads/2023/01/CoreX1.13.2023.pdf"},
+    {p: "P&L Only", ltv: "75%", fico: "Not published — ask AE", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "2023 sheet.", src: "https://homexmortgage.com/wp-content/uploads/2023/01/CoreX1.13.2023.pdf"},
+    {p: "PrimeX near-prime", ltv: "2nd home max 80%", fico: "640 lowest grid band", dti: "Not published — ask AE", loan: "Not published — ask AE", notes: "For borrowers narrowly missing agency.", src: "https://homexmortgage.com/wp-content/uploads/2023/01/PrimeX1.13.2023.pdf"}
+  ],
+  states: {CA: "Not confirmed", IL: "Not confirmed", NV: "Not confirmed", FL: "Not confirmed", AZ: "Not confirmed", statesSrc: ""},
+  nmls: "1446044",
+  highlights: ["Live on ARIVE (Feb 26, 2026) for product & pricing", "X-Connect broker portal and Xpress Quick Pricer", "Broad non-QM menu incl. 3-month bank statements and asset utilization", "Licensed in 46 states (per job listing); broker support (855) 598-1430"],
+  cautions: ["Only 2021–2023 public matrices found — current LTV/FICO may differ; confirm with AE"],
+  status: "Active wholesale verified",
+  sources: ["https://homexmortgage.com/", "https://homexmortgage.com/broker-access", "https://homexmortgage.com/wp-content/uploads/2023/01/CoreX1.13.2023.pdf", "https://homexmortgage.com/wp-content/uploads/2023/01/PrimeX1.13.2023.pdf", "https://homexmortgage.com/wp-content/uploads/2023/09/InvestorX-Rate-Sheet-23.9.29.pdf", "https://homexmortgage.com/wp-content/uploads/2023/01/InvestorX1.13.2023.pdf", "https://homexmortgage.com/news/", "https://builtin.com/job/wholesale-account-executive/6663956"],
+  checked: "2026-10-22"
+}
+]);
+
+</script>
+<script>
+// Lender research batch — public sources as of 2026-10-22; verify with the AE before quoting.
+(window.LENDER_INFO=window.LENDER_INFO||[]).push(...[
+{
+ n:23, name:"JCAP Private Lending",
+ channel:"Private lender (broker-friendly)",
+ portal:"https://jcap.net/borrowers/",
+ niches:["Short-term investor-funded real estate loans","1st and 2nd trust deeds","Non-owner-occupied","Owner-occupied business purpose","Multifamily bridge","2nd TD stated product"],
+ programs:[
+  {p:"Cash-out / rate-term refinance",ltv:"65% (per jcap.net borrowers page, page ~539 days old)",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"$30k - $5.0M",notes:"Business-purpose private money; search-snippet only (page could not be fetched)",src:"https://jcap.net/borrowers/"},
+  {p:"Commercial",ltv:"65%",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Up to $5.0M",notes:"Search-snippet only",src:"https://jcap.net/borrowers/"},
+  {p:"Multifamily bridge",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"From $250k",notes:"Search-snippet only",src:"https://jcap.net/borrowers/"},
+  {p:"2nd trust deed stated/stated",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Up to $750,000",notes:"Per CEO interview in MPA magazine (third-party)",src:"https://mpamag.com/us/tv/there-are-only-two-ways-to-gain-more-business/175934"},
+  {p:"Land / renovation (third-party profile)",ltv:"Land 50% LTV; renovation 70% of ARV (per privatelenderlink.com, ~943 days old)",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"$100,000 - $5,000,000 (per privatelenderlink.com)",notes:"Rates 8.99%-13.99%, 6-24 month terms per third-party profile",src:"https://privatelenderlink.com/profile/jcap-private-lending/"}
+ ],
+ states:{CA:"Not confirmed",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed",statesSrc:""},
+ nmls:"",
+ highlights:["Direct lender that closes and services its own short-term loans (per contactout.io profile)","Does 1st and 2nd TDs incl. owner-occupied business purpose (per MPA interview)","Loans from $30k to $5.0M (jcap.net)"],
+ cautions:["NMLS 1323740 appears only on third-party privatelenderlink.com — not verified on NMLS Consumer Access, so left blank","LTV figures conflict across sources (65%-75%); jcap.net page dated","jcap.net could not be fetched directly; values from search snippets"],
+ status:"Active — channel not confirmed",
+ sources:["https://jcap.net/borrowers/","https://privatelenderlink.com/profile/jcap-private-lending/","https://mpamag.com/us/tv/there-are-only-two-ways-to-gain-more-business/175934","https://hardmoneyoffers.com/lenders/jcap-private-lending"],
+ checked:"2026-10-22"
+},
+{
+ n:24, name:"JMAC Lending",
+ channel:"Wholesale (broker)",
+ portal:"https://www.jmaclending.com/programs",
+ niches:["Agency conforming & high-balance","FHA / VA","Jumbo (Monterey, Jumbo Plus, Malibu Plus)","Non-QM DSCR (Newport, Venice, DSCR Prime)","Zuma Non-QM (self-employed, bank statement, 1099)","Foreign national / condo-hotel"],
+ programs:[
+  {p:"Fannie/Freddie conforming & high-balance",ltv:"97% (FNMA) / 95% (FHLMC)",fico:"620 (FHLMC high-balance page)",dti:"Not published — ask AE",loan:"$2,438,025",notes:"Per broker programs page; figures 'from current matrix'",src:"https://www.jmaclending.com/programs"},
+  {p:"FHA",ltv:"97.75%; 90% at 500 FICO",fico:"500 purchase & R/T to 90%; 580 cash-out",dti:"Not published — ask AE",loan:"County limit",notes:"",src:"https://www.jmaclending.com/products-fha-page"},
+  {p:"Jumbo — Monterey",ltv:"80%",fico:"720",dti:"Not published — ask AE",loan:"$3M",notes:"",src:"https://www.jmaclending.com/products-hb-jumbo"},
+  {p:"Jumbo Plus / Malibu Plus",ltv:"80% purchase",fico:"660",dti:"Not published — ask AE",loan:"$3.5M (Jumbo Plus) / $3.0M (Malibu Plus)",notes:"Pages disagree on some limits",src:"https://www.jmaclending.com/products-hb-jumbo"},
+  {p:"Newport DSCR",ltv:"Up to 80%",fico:"Not published — ask AE",dti:"N/A (DSCR)",loan:"Not published — ask AE",notes:"First-time homebuyers, 100% gift funds, STR income allowed, blend asset utilization with rent, no seasoning to use current value for R/T & cash-out",src:"https://www.jmaclending.com/products-dscr"},
+  {p:"DSCR Prime",ltv:"75% purchase/R-T; 65% cash-out",fico:"Not published — ask AE",dti:"N/A (DSCR)",loan:"Not published — ask AE",notes:"Min DSCR 0.75; no rural, ag, condo-hotel, or foreign national",src:"https://www.jmaclending.com/products-nonqm"},
+  {p:"Venice DSCR",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"N/A (DSCR)",loan:"$3.5M (DSCR >=1.0) / $3M (DSCR <1.0)",notes:"No-minimum-DSCR option with restrictions",src:"https://www.jmaclending.com/products-nonqm"},
+  {p:"Zuma Non-QM",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Up to $4M",notes:"Two options for self-employed / non-agency borrowers",src:"https://www.jmaclending.com/products-nonqm"}
+ ],
+ states:{CA:"Yes",IL:"Not confirmed",NV:"Not confirmed",FL:"Yes",AZ:"Yes",statesSrc:"https://www.jmaclending.com/licensing"},
+ nmls:"53112",
+ highlights:["Santa Ana, CA-based wholesale & correspondent lender for TPOs","Deep in-house Non-QM shelf (Newport, Venice, Zuma) alongside agency/govt","DSCR allows STR income and 100% gift funds (Newport)","Scenario submission forms on site"],
+ cautions:["IL and NV not visible on retrieved (truncated) licensing table — confirm on NMLS Consumer Access","jmaclending.com could not be fetched directly; values from search snippets of its pages","Product pages undated; verify current matrix with AE"],
+ status:"Active wholesale verified",
+ sources:["https://www.jmaclending.com/programs","https://www.jmaclending.com/products-fha-page","https://www.jmaclending.com/products-hb-jumbo","https://www.jmaclending.com/products-dscr","https://www.jmaclending.com/products-nonqm","https://www.jmaclending.com/licensing"],
+ checked:"2026-10-22"
+},
+{
+ n:25, name:"Kennedy Funding",
+ channel:"Private lender (broker-friendly)",
+ portal:"https://www.kennedyfunding.com/loan-application-2022end",
+ niches:["Commercial bridge loans","Raw land acquisition","Development & construction","Bank workouts / bankruptcies / foreclosures","Note purchases","International lending"],
+ programs:[
+  {p:"Commercial bridge loan (US)",ltv:"Up to 75% (older 2009 press cited 65%)",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"$1,000,000 min to $50M+",notes:"Asset/equity-based underwriting; closings in as little as 5 days (company claim); commercial real estate only",src:"https://www.kennedyfunding.com/kennedy-funding-surpasses-4-billion-in-closed-loans/"},
+  {p:"International bridge loan",ltv:"Up to 75%",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"$3M min international",notes:"",src:"https://www.kennedyfunding.com/miami-loans/"},
+  {p:"Raw land loans",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"$1M min",notes:"Funds raw land banks decline",src:"https://www.kennedyfunding.com/loan-application-2022end"}
+ ],
+ states:{CA:"Not confirmed",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed",statesSrc:""},
+ nmls:"",
+ highlights:["Direct private lender; says it is 'firm of choice' for brokers","Fast closings (as little as 5 days per company)","Funds raw land, workouts, bankruptcies","Surpassed $4B in closed loans (company release)"],
+ cautions:["Commercial real estate only — no residential/consumer loans (kennedyfunding.com)","$1M minimum loan","No NMLS ID found"],
+ status:"Active — channel not confirmed",
+ sources:["https://www.kennedyfunding.com/kennedy-funding-surpasses-4-billion-in-closed-loans/","https://www.kennedyfunding.com/miami-loans/","https://www.kennedyfunding.com/loan-application-2022end","https://re-nj.com/direct-private-lender-touts-3-billion-milestone/"],
+ checked:"2026-10-22"
+},
+{
+ n:26, name:"Kiavi",
+ channel:"Private lender (broker-friendly)",
+ portal:"https://kiavi.com/broker",
+ niches:["Fix & flip","Bridge loans","DSCR rental loans","Investor-only business purpose","Platinum Broker Program"],
+ programs:[
+  {p:"Fix & Flip",ltv:"Up to 100% of purchase price / 80% ARV",fico:"Not published — ask AE (640 per realestateskills.com)",dti:"N/A",loan:"$100K - $5MM",notes:"100% rehab funding; 12/18/24-mo IO terms (third-party); 2.00% YSP available",src:"https://www.kiavi.com/loans/fix-and-flip"},
+  {p:"Bridge",ltv:"Up to 100% LTC / 80% ARV",fico:"Not published — ask AE",dti:"N/A",loan:"Not published — ask AE",notes:"Top leverage tied to experience (per lendingstreet.io)",src:"https://www.kiavi.com/loans/bridge-loans"},
+  {p:"DSCR Rental",ltv:"Up to 80%",fico:"660 (per theclose.com / griffinfunding.com — third-party)",dti:"N/A (DSCR)",loan:"$100,000 - $2,000,000 (per griffinfunding.com)",notes:"DSCR as low as 0.8x; no prepay penalty after year 3; no-hard-pull quote",src:"https://www.kiavi.com/loans/dscr"}
+ ],
+ states:{CA:"Yes",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Yes",statesSrc:"https://kiavi.com/becoming-a-broker-partner"},
+ nmls:"1125207",
+ highlights:["Platinum Broker Program: 50 bps or $999 origination (whichever greater) for qualifying brokers ($6M+ bridge volume in 6 mo)","Up to 2.00% YSP on fix & flip","Tech-driven quoting, no-hard-pull rate quotes","CA Finance Lender (DFPI); AZ Mortgage Banker 0926504"],
+ cautions:["Figure closed acquisition of Kiavi on 2026-09-01; Kiavi Funding LLC now a Figure subsidiary — program terms may change (per griffinfunding.com and kiavi.com banner)","Kiavi pages could not be fetched directly; values from search snippets","Investor/business-purpose only"],
+ status:"Active wholesale verified",
+ sources:["https://kiavi.com/broker","https://kiavi.com/becoming-a-broker-partner","https://www.kiavi.com/loans/fix-and-flip","https://www.kiavi.com/loans/bridge-loans","https://www.kiavi.com/loans/dscr","https://griffinfunding.com/blog/mortgage/is-figure-still-offering-dscr-loans/","https://nationalmortgageprofessional.com/news/figure-closes-kiavi-deal-dscr-competition-tightens"],
+ checked:"2026-10-22"
+},
+{
+ n:27, name:"Kind Lending",
+ channel:"Wholesale (broker)",
+ portal:"https://www.kindlending.com/tpo/products-and-features",
+ niches:["FHA incl. manual underwrite","FHA 100% DPA (purchase)","Non-QM bank statement / P&L / 1099 / WVOE","DSCR incl. foreign national & STR","Asset utilization (No-DTI)","Jumbo","Non-traditional / no-FICO credit"],
+ programs:[
+  {p:"FHA",ltv:"96.5%",fico:"600; manual UW to 45% DTI at 660",dti:"45% manual UW",loan:"Not published — ask AE",notes:"2-1 buydown option; products page ~1,588 days old",src:"https://www.kindlending.com/tpo/products-and-features"},
+  {p:"FHA 100% DPA",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"Purchase only",src:"https://www.kindlending.com/tpo/products-and-features"},
+  {p:"Non-QM Full Doc",ltv:"90% primary; 85% second home/investment (purchase & R/T)",fico:"Not published — ask AE",dti:"55%",loan:"Not published — ask AE",notes:"",src:"https://www.kindlending.com/kind-tpo-blog-posts/break-free-from-traditional-loan-limits-with-the-non-qm-full-document-program?b26b02f1_page=7"},
+  {p:"Non-QM (bank stmt, DSCR, asset util, P&L, 1099, WVOE)",ltv:"Not published — ask AE",fico:"660 (products page); 580 cited on partner page",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"DSCR regular/foreign national/STR; no-prepay DSCR variants; 1-yr self-employed",src:"https://www.kindlending.com/kind-tpo-blog-posts/unlock-tailored-mortgage-solutions-with-kind-lendings-non-qm-products"},
+  {p:"Jumbo",ltv:"89.99%",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"$3M max",notes:"",src:"https://www.kindlending.com/tpo/partner"},
+  {p:"Non-traditional / no-FICO",ltv:"Not published — ask AE",fico:"No FICO allowed",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"Manual UW with little to no overlays",src:"https://www.kindlending.com/tpo/products-and-features"}
+ ],
+ states:{CA:"Yes",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Yes",statesSrc:"https://www.experience.com/reviews/company/kind-lending-wholesale-33258"},
+ nmls:"3925",
+ highlights:["~96% wholesale production (per loanofficer.ai)","Voted top Non-QM lender, 2025 Originator Choice Awards (kindlending.com)","FHA manual underwriting and no-FICO loans with minimal overlays","Agency + growing Non-QM shelf under one roof"],
+ cautions:["FICO minimums conflict across Kind pages (580 vs 660); one page is a 'TEST' page","Products page is ~4 years old — verify current matrix","CA/AZ licensing from wholesale footer; confirm others on NMLS Consumer Access"],
+ status:"Active wholesale verified",
+ sources:["https://www.kindlending.com/tpo/products-and-features","https://www.kindlending.com/tpo/partner","https://www.kindlending.com/kind-tpo-blog-posts/unlock-tailored-mortgage-solutions-with-kind-lendings-non-qm-products","https://www.kindlending.com/kind-tpo-blog-posts/kind-lending-voted-top-non-qm-lender-in-2025-originator-choice-awards","https://loanofficer.ai/wholesale-lenders/programs/conventional","https://www.experience.com/reviews/company/kind-lending-wholesale-33258"],
+ checked:"2026-10-22"
+},
+{
+ n:28, name:"Kings Mortgage Services",
+ channel:"Wholesale (broker)",
+ portal:"https://www.kingsmortgage.com/",
+ niches:["Conventional","FHA / FHA 203(k)","VA","USDA","Jumbo","Construction"],
+ programs:[
+  {p:"Conventional / FHA / VA (QM)",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"Underwrites to HUD 4000.1 and FNMA/FHLMC guides (per third-party lender directory)",src:"https://www.hanhnguyen.us/our-lenders/kings-mortgage-service-inc-34403937778"},
+  {p:"Jumbo / USDA / 203(k) / construction",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"Program list per FREEandCLEAR profile (third-party)",src:"https://www.freeandclear.com/mortgage-lenders/kings-mortgage-services-profile"}
+ ],
+ states:{CA:"Yes",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed",statesSrc:"https://www.kingsmortgage.com/"},
+ nmls:"264441",
+ highlights:["Self-described 'problem-solving wholesale lender'","In-house processing, underwriting and funding","Licensed by CA DFPI under the CA Residential Mortgage Lending Act"],
+ cautions:["Business model unclear: BBB lists as mortgage broker (Visalia, CA), another profile cites 5 retail offices — confirm wholesale channel with AE","Reportedly operates in one state (per freeandclear.com) — likely CA only","No program matrix published"],
+ status:"Active — channel not confirmed",
+ sources:["https://www.kingsmortgage.com/","https://www.freeandclear.com/mortgage-lenders/kings-mortgage-services-profile","https://www.bbb.org/us/ca/visalia/profile/mortgage-broker/kings-mortgage-services-inc-1126-850076144","https://www.hanhnguyen.us/our-lenders/kings-mortgage-service-inc-34403937778"],
+ checked:"2026-10-22"
+},
+{
+ n:29, name:"LendSure",
+ channel:"Wholesale (broker)",
+ portal:"https://lendsure.com/broker-resources/",
+ niches:["Bank statement (12/24-mo and 2-mo)","DSCR incl. 5-8 units","Asset qualifier / asset depletion","Full doc Non-QM","Upfront income evaluation"],
+ programs:[
+  {p:"12/24-Month Bank Statement",ltv:"Up to 90%",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Up to $3,000,000",notes:"No P&L required; 100% rental income credited",src:"https://lendsure.com/specialty-loan-solutions/12-month-24-month-bank-statement-program/"},
+  {p:"2-Month Bank Statement",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"2 months personal/business statements + 12-mo CPA-prepared P&L",src:"https://lendsure.com/specialty-loan-solutions/bank-statement-loans/"},
+  {p:"DSCR (1-4 units)",ltv:"Up to 80% (older featured page)",fico:"660 (per DSCR article)",dti:"N/A (DSCR)",loan:"Up to $1,000,000 (older page)",notes:"DSCR min 0.75 purchase / 1.0 refi (older page)",src:"https://lendsure.com/category/featured-programs/"},
+  {p:"DSCR 5-8 units",ltv:"Up to 70%",fico:"700",dti:"N/A (DSCR)",loan:"Up to $1.5M",notes:"",src:"https://lendsure.com/blog/lendsure-expands-residential-investor-program/"},
+  {p:"Asset Qualifier / Asset Depletion",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"",src:"https://lendsure.com/broker-resources/"}
+ ],
+ states:{CA:"Not confirmed",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed",statesSrc:""},
+ nmls:"1326437",
+ highlights:["San Diego-based Non-QM wholesale lender","Upfront income evaluation with no full file required","Bank statement to 90% LTV and $3M","DSCR available on 5-8 unit residential"],
+ cautions:["DSCR limits differ by page/date — confirm current matrix","No company state list found; NY not available (lendsure.com); verify on NMLS Consumer Access"],
+ status:"Active wholesale verified",
+ sources:["https://lendsure.com/broker-resources/","https://lendsure.com/specialty-loan-solutions/12-month-24-month-bank-statement-program/","https://lendsure.com/specialty-loan-solutions/bank-statement-loans/","https://lendsure.com/category/featured-programs/","https://lendsure.com/blog/lendsure-expands-residential-investor-program/","https://lendsure.com/specialty-loan-solutions/dscr-wholesale-power/","https://lendsure.com/?p=39"],
+ checked:"2026-10-22"
+},
+{
+ n:30, name:"Liberty Reverse Mortgage",
+ channel:"Wholesale (broker)",
+ portal:"",
+ niches:["HECM","HECM for Purchase","EquityIQ proprietary reverse"],
+ programs:[
+  {p:"HECM / HECM for Purchase",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"Origination ceasing — see cautions",src:"https://www.housingwire.com/articles/phh-foa-msr-deal/"},
+  {p:"EquityIQ (proprietary)",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"Was offered via wholesale channel before exit",src:"https://www.housingwire.com/articles/phh-liberty-reverse-mortgage-relaunches-equityiq-proprietary-product/"}
+ ],
+ states:{CA:"Not confirmed",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed",statesSrc:""},
+ nmls:"",
+ highlights:["Existing Liberty loans continue to be serviced by PHH under multi-year agreement with FOA"],
+ cautions:["Onity/PHH announced it will stop reverse originations and sell reverse MSRs to Finance of America; close expected Q1 2026 (housingwire.com/articles/phh-foa-msr-deal)","FOA acquiring PHH reverse pipeline and some originations staff (housingwire.com/articles/onity-sells-reverse-mortgage-business-foa)","Early-2026 review says Liberty is no longer taking applications (reverse.mortgage/liberty-reverse-mortgage)","Do not submit new files — route reverse business to FOA or other reverse lenders"],
+ status:"Possibly inactive/exited — verify",
+ sources:["https://www.housingwire.com/articles/phh-foa-msr-deal/","https://www.housingwire.com/articles/onity-sells-reverse-mortgage-business-foa/","https://hecmworld.com/2025/11/24/podcast-liberty-finance-america-mortgage-rates/","https://reverse.mortgage/liberty-reverse-mortgage","https://www.housingwire.com/articles/phh-liberty-reverse-mortgage-relaunches-equityiq-proprietary-product/"],
+ checked:"2026-10-22"
+},
+{
+ n:31, name:"Longbridge Financial Reverse",
+ channel:"Wholesale (broker)",
+ portal:"https://wholesale.longbridge-financial.com/",
+ niches:["HECM","Platinum proprietary (jumbo) reverse","Age 55+ proprietary in select states","Equity-preservation feature for heirs","HELOC for seniors"],
+ programs:[
+  {p:"HECM",ltv:"Not published — ask AE (principal limit based on age/rates)",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"FHA limit $1,249,125 (2026, per CNBC)",notes:"Age 62+",src:"https://www.cnbc.com/select/longbridge-reverse-mortgage-review/"},
+  {p:"Platinum (proprietary)",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Up to $4M ($2M max in MA)",notes:"Age 55+ in select states; not FHA-insured; LOC draw up to 100% of available LOC (2026 NRMLA post); designed for homes $450,000+ (2025 release)",src:"https://longbridge-financial.com/reverse-mortgage/reverse-mortgage-products/longbridge-platinum/"}
+ ],
+ states:{CA:"Yes",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Yes",statesSrc:"https://longbridge-financial.com/licensing"},
+ nmls:"957935",
+ highlights:["Dedicated wholesale site with Become a Partner onboarding","Platinum proprietary to $4M, age 55+ in select states","2026 Platinum update: expanded credit box, full LOC access, better pricing (NRMLA sponsored)","Wholesale processing support flyer"],
+ cautions:["Full licensing list was truncated in search results — confirm IL, NV, FL on longbridge-financial.com/licensing or NMLS Consumer Access"],
+ status:"Active wholesale verified",
+ sources:["https://wholesale.longbridge-financial.com/tag/platinum-mortgage","https://longbridge-financial.com/reverse-mortgage/reverse-mortgage-products/longbridge-platinum/","https://longbridge-financial.com/licensing","https://www.nrmlaonline.org/2026/05/01/sponsored-content-heloc-for-seniors-direct-debt-payoff-a-new-way-to-address-dti-challenges","https://www.cnbc.com/select/longbridge-reverse-mortgage-review/","https://www.businesswire.com/news/home/20250520535798/en/Longbridge-Financial-Introduces-New-Proprietary-Reverse-Mortgage-Feature-That-Preserves-Equity-for-Heirs"],
+ checked:"2026-10-22"
+},
+{
+ n:32, name:"Mega Capital Funding",
+ channel:"Wholesale (broker)",
+ portal:"https://mcfunding.com/non-qm-loans/",
+ niches:["Agency wholesale","Bank statement (MVP, Simple MVP, Simple Elite)","DSCR (Expanded, MVP)","1099 / P&L / WVOE","Asset utilization","Closed-end seconds","Piggyback"],
+ programs:[
+  {p:"Non-QM (general)",ltv:"Not published — ask AE",fico:"As low as 660",dti:"Not published — ask AE",loan:"$3 million max",notes:"",src:"https://mcfunding.com/non-qm-loans/"},
+  {p:"Simple Elite Bank Statement",ltv:"90% (per loanfactory.com — third-party)",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Up to $3M",notes:"12 or 24 months statements",src:"https://mcfunding.com/2025/05/22/explore-megas-smart-non-qm-programs/"},
+  {p:"DSCR",ltv:"80% (per loanfactory.com — third-party)",fico:"Not published — ask AE",dti:"N/A (DSCR)",loan:"Not published — ask AE",notes:"Expanded and MVP tiers",src:"https://www.loanfactory.com/our-lenders/mega-capital-funding-2"},
+  {p:"Asset depletion",ltv:"85% (per loanfactory.com — third-party)",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"",src:"https://www.loanfactory.com/our-lenders/mega-capital-funding-2"},
+  {p:"Closed-end second",ltv:"90% CLTV (per loanfactory.com — third-party)",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"",src:"https://www.loanfactory.com/our-lenders/mega-capital-funding-2"}
+ ],
+ states:{CA:"Yes",IL:"Yes",NV:"Not confirmed",FL:"Yes",AZ:"Yes",statesSrc:"https://mcfunding.com/wp-content/uploads/2023/09/Broker-Quick-Reference-Guide.pdf"},
+ nmls:"303203",
+ highlights:["Calabasas, CA-based wholesale lender; broker line 1.866.823.7777","Full Non-QM shelf plus agency","Arive LOS integration page","Broker Quick Reference Guide published"],
+ cautions:["State list from 2023 Broker Quick Reference Guide; NV appears only in older site footers — confirm on NMLS Consumer Access","LTV grid is third-party (loanfactory.com); no official Mega matrix found"],
+ status:"Active wholesale verified",
+ sources:["https://mcfunding.com/non-qm-loans/","https://mcfunding.com/2025/05/22/explore-megas-smart-non-qm-programs/","https://mcfunding.com/2025/11/13/how-non-qm-is-shaping-the-mortgage-industry-and-why-mega-capital-is-the-trusted-partner-for-non-qm-success/","https://mcfunding.com/wp-content/uploads/2023/09/Broker-Quick-Reference-Guide.pdf","https://mcfunding.com/arive/","https://www.loanfactory.com/our-lenders/mega-capital-funding-2"],
+ checked:"2026-10-22"
+},
+{
+ n:33, name:"Mortgage Solutions Financial",
+ channel:"Wholesale (broker)",
+ portal:"https://msfwholesale.net/",
+ niches:["VA","FHA","USDA","Manual underwriting","Agricultural lending (Farmer Mac)","Direct GNMA issuer / servicer"],
+ programs:[
+  {p:"VA (manual UW)",ltv:"Not published — ask AE",fico:"600 (60/60 DTI manual); 550 min manual, no LLPA (per loanfactory.com)",dti:"60% front / 60% back manual (per loanfactory.com)",loan:"Not published — ask AE",notes:"No lender UW fee (third-party)",src:"https://www.loanfactory.com/our-lenders/mortgage-solutions-financial-116"},
+  {p:"FHA (manual UW)",ltv:"80% cash-out manual (per loanfactory.com)",fico:"550 (per loanfactory.com)",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"No LLPA for manual UW (third-party)",src:"https://www.loanfactory.com/our-lenders/mortgage-solutions-financial-116"},
+  {p:"USDA",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"",src:"https://www.loanfactory.com/our-lenders/mortgage-solutions-financial-116"}
+ ],
+ states:{CA:"Not confirmed",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed",statesSrc:"https://mortgagesolutions.net/wholesale/licensing-wholesale/"},
+ nmls:"61602",
+ highlights:["Direct FNMA/FHLMC seller-servicer, direct GNMA issuer, direct to Farmer Mac","Veteran-founded (1995), Colorado Springs; services own loans","Says it does not solicit brokers' clients"],
+ cautions:["Manual UW terms are from third-party loanfactory.com and marked 'TBD' there — confirm with AE","Wholesale licensing page (2024) not read in full; state coverage unconfirmed"],
+ status:"Active wholesale verified",
+ sources:["https://msfwholesale.net/","https://mortgagesolutions.net/wholesale/licensing-wholesale/","https://www.loanfactory.com/our-lenders/mortgage-solutions-financial-116","https://finance.mo.gov/licensee/details/686"],
+ checked:"2026-10-22"
+}
+]);
+
+</script>
+<script>
+// Lender research batch — public sources as of 2026-10-22; verify with the AE before quoting.
+(window.LENDER_INFO=window.LENDER_INFO||[]).push(...[
+{
+  n:34,
+  name:"Mutual of Omaha Reverse",
+  channel:"Wholesale (broker) + Hybrid Correspondent + Advantage (lender-processed) reverse channels",
+  portal:"https://mutualreverse.com/originator-connect/",
+  niches:["FHA HECM","HECM for Purchase (H4P)","SecureEquity proprietary jumbo reverse (not FHA-insured)","High-value homes beyond FHA limit","Borrowers age 55+ (state-dependent) on proprietary","Lender processing option for brokers"],
+  programs:[
+    {p:"SecureEquity / SecureEquity+ (proprietary reverse)",ltv:"Not published — ask AE (principal-limit based)",fico:"Not published — ask AE",dti:"Not published — ask AE (financial assessment)",loan:"Up to $4,000,000",notes:"Not FHA-insured; min age 55 generally, higher in some states (e.g., 62 in TX/NC/NH per Nov 2025 UW guide); ARM requires min 25% upfront draw; min home value lowered to $300,000 (per HousingWire); availability grew to 41 states + DC (per HousingWire; CNBC says 25 — conflicting)",src:"https://mutualreverse.com/secure-equity/"},
+    {p:"SecureEquity TPO Matrix",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"Broker TPO matrix PDF (v41, 2026); brokered and hybrid SecureEquity rate sheets posted publicly",src:"https://mutualreverse.com/wp-content/uploads/2026/03/SecureEquity-Matrix-TPO-v41.pdf"},
+    {p:"HECM (FHA reverse)",ltv:"Not published — ask AE (HUD principal limit factors)",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Not published — ask AE (FHA limit)",notes:"Standard HECM and HECM refinance listed on products page; files submitted via Reverse Vision or Quantum Reverse",src:"https://mutualreverse.com/products/"},
+    {p:"HECM for Purchase (H4P)",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"Use reverse mortgage to buy a primary residence; 2026 broker webinar on purchase business",src:"https://mutualreverse.com/wp-content/uploads/2026/06/MOOMR_26_PYK_WS_ExpandYourPurchaseBusinessWithReverseMortgagesWebinarPresentation_4450251242-v2.pdf"}
+  ],
+  states:{CA:"Yes",IL:"Yes",NV:"Yes",FL:"Yes",AZ:"Yes",statesSrc:"https://www.mutualmortgage.com/licensing/"},
+  nmls:"1025894",
+  highlights:["Lender-paid broker origination fee at broker discretion; $495 processing fee if Mutual processes (per wholesale rate sheets)","Three partner channels: brokered, Hybrid Correspondent (own warehouse), Advantage (Mutual processes/UW/closes)","Proprietary SecureEquity up to $4M for high-value homes","Licensing page claims 49 states; CA RMLA 4131356, IL MB.6761115, AZ 0926603, FL MLD1827"],
+  cautions:["NV listing is an Exempt Company Registration (#4830), not a license — confirm broker eligibility in NV (https://www.mutualmortgage.com/licensing/)","SecureEquity state count conflicts (41+DC per HousingWire vs 25 per CNBC) — confirm state/age matrix with AE","Longbridge legal dispute over marketing practices reported (https://www.housingwire.com/articles/mutual-of-omaha-reverse-division-launches-broker-protection-program/)"],
+  status:"Active wholesale verified",
+  sources:["https://mutualreverse.com/originator-connect/","https://mutualreverse.com/secure-equity/","https://mutualreverse.com/wp-content/uploads/2025/04/SecureEquity_Underwriting_Lending_Guide-November-2025.pdf","https://mutualreverse.com/wp-content/uploads/2026/03/SecureEquity-Matrix-TPO-v41.pdf","https://mutualreverse.com/wholesale/secure-equity-rates/","https://mutualreverse.com/products/","https://mutualreverse.com/legal/licensing/","https://www.mutualmortgage.com/licensing/","https://www.housingwire.com/articles/mutual-omaha-secureequity-updates/","https://www.cnbc.com/select/mutual-of-omaha-reverse-mortgage-review/"],
+  checked:"2026-10-22"
+},
+{
+  n:35,
+  name:"NewFi Lending",
+  channel:"Wholesale (broker) + Correspondent + Retail",
+  portal:"https://www.newfiwholesale.com/",
+  niches:["Non-QM (Sequoia / Rainier)","12/24-mo personal & business bank statement","DSCR incl. 5-8 unit & condotel","Jumbo","1099 / asset depletion","ITIN"],
+  programs:[
+    {p:"12/24 Bank Statement (Rainier & Sequoia Non-QM)",ltv:"90% purchase & R/T / 80% cash-out",fico:"620",dti:"Not published — ask AE",loan:"Up to $3,500,000",notes:"Personal or business statements",src:"https://www.newfiwholesale.com/programs/12-24-bank-statements/"},
+    {p:"Sequoia DSCR",ltv:"Up to 80% (tiered by FICO/purpose; e.g., 75% purchase / 70% C/O at 640)",fico:"640",dti:"N/A (DSCR)",loan:"Up to $3,000,000",notes:"DSCR ≥0.75 tier; min 10% borrower contribution; loans <$150k max 70% LTV; STR max 75% LTV and DSCR ≥1.0 only; Aug 2026 matrix lists Foreign Nationals as ineligible",src:"https://www.newfiwholesale.com/wp-content/uploads/2026/08/Newfi-Lending-Sequoia-DSCR-Matrix_Final_08.03.2026.pdf"},
+    {p:"DSCR Foreign Nationals",ltv:"75% purchase & R/T / 65% cash-out",fico:"680",dti:"N/A",loan:"Up to $1,500,000",notes:"Must have owned investment property in prior 36 months; listed countries only — CONFLICTS with Aug 2026 matrix listing FN as ineligible",src:"https://www.newfiwholesale.com/programs/dscr-foreign-nationals/"},
+    {p:"Sequoia Non-QM (standard / Expanded)",ltv:"80% NOO purchase/R&T (standard)",fico:"660 standard / 620 Expanded",dti:"Not published — ask AE",loan:"Up to $5,000,000 (Sequoia portfolio, per MPA)",notes:"From July 2025 approved-account deck; may be superseded",src:"https://www.newfiwholesale.com/wp-content/uploads/2025/07/1-ApprovedAccount-POSTED.pdf"}
+  ],
+  states:{CA:"Yes",IL:"Yes",NV:"Yes",FL:"Yes",AZ:"Yes",statesSrc:"https://newfi.com/licensing/"},
+  nmls:"1231327",
+  highlights:["No minimum DSCR ratio listed in directory profile; 1-4, 5-8 unit and condotel (per NMP directory)","Broad alt-doc: bank statements, 1099, asset depletion, ITIN","Programs on ARIVE marketplace","Licensed in 45-48 states; CA CFL 60DBO43045 / RMLA 41DBO-71410"],
+  cautions:["Foreign National DSCR page conflicts with Aug 2026 Sequoia DSCR matrix (FN ineligible) — confirm (https://www.newfiwholesale.com/wp-content/uploads/2026/08/Newfi-Lending-Sequoia-DSCR-Matrix_Final_08.03.2026.pdf)","Several program pages are 1-2 yrs old by metadata — verify current matrix"],
+  status:"Active wholesale verified",
+  sources:["https://www.newfiwholesale.com/programs/12-24-bank-statements/","https://www.newfiwholesale.com/programs/dscr-foreign-nationals/","https://www.newfiwholesale.com/wp-content/uploads/2026/08/Newfi-Lending-Sequoia-DSCR-Matrix_Final_08.03.2026.pdf","https://www.newfiwholesale.com/wp-content/uploads/2026/02/Newfi-DSCR_Matrix_2.25.2026-v1.pdf","https://www.newfiwholesale.com/wp-content/uploads/2025/07/1-ApprovedAccount-POSTED.pdf","https://newfi.com/licensing/","https://nationalmortgageprofessional.com/directories/newfi-wholesale","https://www.mpamag.com/us/specialty/non-qualified-mortgage-loan/newfi-announces-expansion-into-correspondent-lending/452611"],
+  checked:"2026-10-22"
+},
+{
+  n:36,
+  name:"NewRez",
+  channel:"Wholesale (broker) + Correspondent",
+  portal:"https://www.newrezwholesale.com/",
+  niches:["Agency (Conventional/FHA/VA)","Smart Series Non-QM","SmartSelf bank statement / asset amortization","SmartVest DSCR","Asset Qualifier","Interest-only options (incl. 40-yr fixed IO)"],
+  programs:[
+    {p:"SmartEdge (full doc non-QM)",ltv:"Up to 90%",fico:"660 (product page) / 640 (full-doc page) — conflicting",dti:"Up to 50%",loan:"Up to $3,000,000 (product page) / $3,500,000 (full-doc page)",notes:"Correspondent grid shows lower caps (e.g., 75% at 700 FICO/$2M) — wholesale may differ",src:"https://www.newrezwholesale.com/loan-products/smart-series/smartedge/"},
+    {p:"SmartSelf (bank statement / asset amortization)",ltv:"90% purchase & R/T",fico:"660",dti:"50%",loan:"Up to $3,000,000",notes:"Blog/self-employed page say $3.5M, 640 FICO, 90% primary / 85% investment — conflicting",src:"https://www.newrezwholesale.com/loan-products/smart-series/smartself/"},
+    {p:"SmartVest (DSCR)",ltv:"75% cash-out; 10% LTV reduction at 0.5 DSCR",fico:"660 (680 first-time investor)",dti:"N/A",loan:"Up to $2,000,000",notes:"DSCR as low as 0.5 with LTV adjustments; no limit on number of properties",src:"https://www.newrezwholesale.com/loan-products/non-qm-solutions/"},
+    {p:"Asset Qualifier",ltv:"80%",fico:"700",dti:"No income/DTI requirement",loan:"Up to $2,000,000",notes:"Asset-only qualification",src:"https://www.newrezwholesale.com/newrez-wholesale-info/asset-based-qualification/"},
+    {p:"Agency (Conventional/FHA/VA)",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"Agency product page exists; Freddie Mac BorrowSmart Access DPA offered",src:"https://newrezwholesale.com/loan-products/agency"}
+  ],
+  states:{CA:"Yes",IL:"Yes",NV:"Yes",FL:"Yes",AZ:"Yes",statesSrc:"https://www.newrezwholesale.com/legal/licensing/"},
+  nmls:"3013",
+  highlights:["Agency + non-agency under one wholesale lender, nationwide","Smart Series: IO options, 660+ FICO, $3M loans","DSCR to 0.5 and no property count limit (SmartVest)","40-yr fixed interest-only non-QM option launched"],
+  cautions:["Aug 12 2026 multistate consent order (46 regulators): $15.5M total over force-placed insurance servicing violations (https://www.dfs.ny.gov/reports_and_publications/press_releases/pr20260812)","Smart Series FICO/loan caps conflict across NewRez pages — confirm current grid with AE"],
+  status:"Active wholesale verified",
+  sources:["https://www.newrezwholesale.com/loan-products/smart-series/","https://www.newrezwholesale.com/loan-products/smart-series/smartedge/","https://www.newrezwholesale.com/loan-products/smart-series/smartself/","https://www.newrezwholesale.com/loan-products/non-qm-solutions/","https://www.newrezwholesale.com/newrez-wholesale-info/asset-based-qualification/","https://www.newrezwholesale.com/newrez-wholesale-info/full-doc-borrowers/","https://www.newrez.com/blog/industry-insights/understanding-non-qm-loan-options-at-newrez/","https://www.newrezwholesale.com/legal/licensing/","https://www.newrezcorrespondent.com/media/1563191/smartedge_grid.pdf","https://www.dfs.ny.gov/reports_and_publications/press_releases/pr20260812","https://portal.ct.gov/dob/bulletin/2026/bulletin-3262-august-28-2026"],
+  checked:"2026-10-22"
+},
+{
+  n:37,
+  name:"NextRes (NewRez TPO)",
+  channel:"Private lender (broker-friendly) — business-purpose investor loans",
+  portal:"https://www.nextres.com/partner",
+  niches:["DSCR rental (30-yr fixed)","Fix & flip / rehab","Bridge loans","Ground-up construction","Short-term rental (Airbnb/VRBO)","Multifamily 5-50 units"],
+  programs:[
+    {p:"DSCR Rental",ltv:"80% / 75% cash-out",fico:"620 (FAQ says 680 — conflicting)",dti:"N/A",loan:"$100,000 – $3,000,000",notes:"DSCR ≥1.0 (or 0.75 with rate adj.); 30-yr fixed; vest in individual, LLC, trust or corp",src:"https://www.nextres.com/loans/dscr-rental"},
+    {p:"Fix & Flip / Rehab",ltv:"Up to 90% of purchase + 100% rehab (85% LTC first-time investors)",fico:"620",dti:"N/A",loan:"Not published — ask AE",notes:"Homepage says 85% of purchase — conflicting",src:"https://www.nextres.com/loans"},
+    {p:"Bridge",ltv:"75% as-is / 70% cash-out",fico:"Not published — ask AE",dti:"N/A",loan:"Not published — ask AE",notes:"Terms 1-24 months; origination 1-2 points; close in 5 days (advertised)",src:"https://www.nextres.com/loans/bridge"},
+    {p:"New Construction (ground-up)",ltv:"Up to 85% LTC",fico:"640",dti:"N/A",loan:"Min $500,000",notes:"Experienced builders/developers",src:"https://www.nextres.com/loans/new-construction"},
+    {p:"Multifamily (5-50 units)",ltv:"80% stabilized / 75% value-add",fico:"Not published — ask AE",dti:"N/A",loan:"$500,000 – $15,000,000",notes:"Bridge and 30-yr DSCR options",src:"https://www.nextres.com/loans/multifamily"}
+  ],
+  states:{CA:"Not confirmed",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed",statesSrc:"https://www.nextres.com/markets"},
+  nmls:"",
+  highlights:["Broker Partner Program: up to 1.5/1.75/2 points by tier (Silver/Gold/Platinum), paid at closing by wire","Advertised full fee protection for brokers","Dedicated AE; broker portal; senior UW access at Platinum tier","Site advertises lending in 50 states"],
+  cautions:["Current note 'NewRez TPO' appears incorrect — NextRes/Nextres LLC is an unrelated private investor lender, not NewRez (https://www.nextres.com/about)","No NMLS ID found; HMDA data (per SafeRate) shows 0% brokered and only AZ/FL/NJ/PA/TX — broker channel claims unverified against filings","FICO minimums conflict between program page (620) and FAQ (680) (https://www.nextres.com/faq)"],
+  status:"Active — channel not confirmed",
+  sources:["https://www.nextres.com/","https://www.nextres.com/loans","https://www.nextres.com/loans/dscr-rental","https://www.nextres.com/loans/bridge","https://www.nextres.com/loans/new-construction","https://www.nextres.com/loans/multifamily","https://www.nextres.com/faq","https://www.nextres.com/partner","https://saferate.com/lenders/nextres.txt","https://coverager.com/obie-partners-with-nextres/"],
+  checked:"2026-10-22"
+},
+{
+  n:38,
+  name:"Oaktree Funding",
+  channel:"Wholesale (broker) + Correspondent + Retail",
+  portal:"",
+  niches:["Non-QM","12-month bank statement","DSCR / investor","Asset utilization","Non-agency jumbo"],
+  programs:[
+    {p:"12-Month Bank Statement",ltv:"90% (per NMP listing, ~2022)",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Up to $4,000,000 (per MortgageOrb, bank stmt & investor)",notes:"Third-party sourced; verify",src:"https://nationalmortgageprofessional.com/tag/oaktree-funding"},
+    {p:"Non-Agency Advantage / Investor Advantage",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"Price-match guarantee vs non-QM competitors up to 100 bps price / 50 bps rate on these two products (per NMP listing)",src:"https://nationalmortgageprofessional.com/tag/oaktree-funding"},
+    {p:"DSCR / Asset Utilization",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"Full suite (bank statement, DSCR, asset utilization) on ARIVE as of Jan 2026",src:"https://www.arive.com/press/oaktree-funding-corp-joins-the-arive-platform-expanding-broker-access-to-flexible-non-qm-lending-solutions"}
+  ],
+  states:{CA:"Not confirmed",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Yes",statesSrc:"https://www.experience.com/reviews/company/headquarters-48767"},
+  nmls:"71640",
+  highlights:["Not tied to one securitization investor — can adjust guidelines (per NMP)","Price-match guarantee on Non-Agency Advantage / Investor Advantage (per NMP)","On ARIVE broker platform (Jan 2026)","HQ Chandler, AZ; AZ MB 0920541 (per Experience.com)"],
+  cautions:["No public matrices found on own domain; figures from third-party listings (~2022) — verify with AE","CA/IL/NV/FL appear only in HMDA origination data (per SafeRate), not a license list — confirm on NMLS #71640"],
+  status:"Active wholesale verified",
+  sources:["https://nationalmortgageprofessional.com/tag/oaktree-funding","https://www.arive.com/press/oaktree-funding-corp-joins-the-arive-platform-expanding-broker-access-to-flexible-non-qm-lending-solutions","https://mortgageorb.com/oaktree-funding-now-a-participating-lender-in-calyx-point","https://www.experience.com/reviews/company/headquarters-48767","https://saferate.com/lenders/oaktree-funding.txt","https://ktar.com/arizona-business/oaktree-funding-corp-chandler"],
+  checked:"2026-10-22"
+},
+{
+  n:39,
+  name:"Orion Lending",
+  channel:"Wholesale (broker) + Non-delegated correspondent",
+  portal:"https://www.orionlending.com/",
+  niches:["Agency","In-house down payment assistance (Elevate grant, Boost)","Jumbo (AUS, Plus, Titan Prime)","DSCR (COIN)","Non-QM","Solar jumbo"],
+  programs:[
+    {p:"COIN (Cashflow-Only Investor Loan / DSCR)",ltv:"80% (75% certain tiers)",fico:"620",dti:"N/A",loan:"Up to $3,500,000",notes:"DSCR down to 0.75 (another page says .01 — conflicting); highest mid-score used for pricing",src:"https://www.orionlending.com/coin"},
+    {p:"Jumbo AUS",ltv:"Up to 89.99%",fico:"660",dti:"≤50%",loan:"Up to $3,500,000",notes:"Follows AUS findings for income",src:"https://www.orionlending.com/jumbo"},
+    {p:"Jumbo Plus",ltv:"Not published — ask AE",fico:"680",dti:"Not published — ask AE",loan:"Up to $2,500,000",notes:"",src:"https://www.orionlending.com/jumbo"},
+    {p:"Titan Prime Jumbo",ltv:"Up to 90%",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"FTHB and non-occupant co-borrower allowed",src:"https://www.orionlending.com/jumbo"},
+    {p:"Elevate Grant DPA",ltv:"97% LTV / 105% CLTV conventional purchase (95% 2-4 units)",fico:"FHA 640",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"Matrix dated 12/10/2025; manual underwriting allowed",src:"https://star.orionlending.com/Download/DownloadFileWithSaveName?path=programDocs&fileName=Elevate_Grant_DPA_12_10_2025.pdf&saveName=Elevate+DPA+Grant"},
+    {p:"Boost DPA (FHA)",ltv:"96.5% FHA purchase",fico:"640",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"Matrix dated 08/18/2025",src:"https://star.orionlending.com/Download/DownloadFileWithSaveName?path=programDocs&fileName=Boost_DPA_8_18_2025.pdf&saveName=Boost+Down+Payment+Assistance%E2%84%A2"}
+  ],
+  states:{CA:"Not confirmed",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed",statesSrc:""},
+  nmls:"237341",
+  highlights:["100% wholesale / non-delegated correspondent; in-house UW and ops","Proprietary STAR portal with QuickPricer","In-house DPA programs (manual UW allowed)","On ARIVE platform; new-partner pricing special"],
+  cautions:["Orion is a DBA of American Financial Network, Inc. (NMLS 237341, Brea CA); state list not confirmed — check NMLS Consumer Access","Third-party aggregator lists separate NMLS 1275881 — unconfirmed (https://a-leads.co/company/6038678_c5330bec)"],
+  status:"Active wholesale verified",
+  sources:["https://www.orionlending.com/","https://www.orionlending.com/why-orion","https://www.orionlending.com/product-rate","https://www.orionlending.com/coin","https://www.orionlending.com/jumbo","https://star.orionlending.com/Download/DownloadFileWithSaveName?path=programDocs&fileName=Elevate_Grant_DPA_12_10_2025.pdf&saveName=Elevate+DPA+Grant","https://star.orionlending.com/Download/DownloadFileWithSaveName?path=programDocs&fileName=Boost_DPA_8_18_2025.pdf&saveName=Boost+Down+Payment+Assistance%E2%84%A2","https://www.orionlending.com/newsroom-press-releases/orion-lending-joins-the-arive-platform","https://finance.mo.gov/licensee/details/521"],
+  checked:"2026-10-22"
+},
+{
+  n:40,
+  name:"Oval Mortgage",
+  channel:"Wholesale (broker) — VA-only (per podcast profile; not verified on own site)",
+  portal:"",
+  niches:["VA loans only (\"Only VA Loans\")","Veteran borrowers","Underwriter-level VA expertise"],
+  programs:[
+    {p:"VA",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"Boutique VA-only wholesale lender co-founded 2022 by Jason York (per podcast profile)",src:"https://www.castfox.net/podcast/vetted-va-va-loan-your-journey-home-6505984/episode/get-to-know-vetted-va-professional-jason-york-226645"}
+  ],
+  states:{CA:"Not confirmed",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed",statesSrc:""},
+  nmls:"",
+  highlights:["VA specialist platform built for LOs/brokers serving veterans (per podcast profile)"],
+  cautions:["No official website, NMLS ID, or licensing found — could not verify wholesale channel (only source: https://www.castfox.net/podcast/vetted-va-va-loan-your-journey-home-6505984/episode/get-to-know-vetted-va-professional-jason-york-226645)","Not the same as VA Wholesale Mtg, Inc. (Virginia Beach)"],
+  status:"Active — channel not confirmed",
+  sources:["https://www.castfox.net/podcast/vetted-va-va-loan-your-journey-home-6505984/episode/get-to-know-vetted-va-professional-jason-york-226645"],
+  checked:"2026-10-22"
+},
+{
+  n:41,
+  name:"PB Financial Group",
+  channel:"Private lender (broker-friendly) — California hard money (CalHardMoney.com)",
+  portal:"https://www.calhardmoney.com/wholesale-brokers.php",
+  niches:["California hard money / private money","1st and 2nd position loans","Fix & flip / rehab","Bridge","Commercial hard money","Non-conforming borrowers"],
+  programs:[
+    {p:"Residential 1st position (borrower page)",ltv:"Up to 70% LTV residential; 75-80% fix & flip",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"$50,000 – $5,000,000",notes:"1st or 2nd lien; California properties only",src:"https://www.calhardmoney.com/borrowers.php"},
+    {p:"Broker program — 1st position",ltv:"SFR & 1-4 units up to 70%",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"$50,000 – $2,000,000",notes:"Broker page is old (~1,686 days); cap conflicts with $5M on borrower page",src:"https://www.calhardmoney.com/wholesale-brokers.php"},
+    {p:"Broker program — 2nd position",ltv:"Under 60% CLTV",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"$100,000 – $1,000,000",notes:"Up to 60 months",src:"https://www.calhardmoney.com/wholesale-brokers.php"},
+    {p:"Rehab",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"$100,000 – $5,000,000",notes:"",src:"https://www.calhardmoney.com/borrowers/rehab-hard-money-loans.php"}
+  ],
+  states:{CA:"Yes",IL:"No",NV:"No",FL:"No",AZ:"No",statesSrc:"https://www.calhardmoney.com/borrowers.php"},
+  nmls:"357614",
+  highlights:["California-only asset-based lending since 2006 (per third-party profile)","Dedicated wholesale broker page","2nd-position private money available","DRE License #01522495 listed on site"],
+  cautions:["Broker page figures appear outdated and conflict with borrower page — confirm current caps (https://www.calhardmoney.com/wholesale-brokers.php)","States other than CA marked No because site states it lends only on California properties"],
+  status:"Active wholesale verified",
+  sources:["https://www.calhardmoney.com/borrowers.php","https://www.calhardmoney.com/wholesale-brokers.php","https://www.calhardmoney.com/borrowers/rehab-hard-money-loans.php","https://www.calhardmoney.com/investors.php","https://news.marketersmedia.com/pb-financial-group-responds-to-rising-demand-for-hard-money-loans-as-california-borrowers-face-tighter-bank-lending/89200692"],
+  checked:"2026-10-22"
+},
+{
+  n:42,
+  name:"Plaza Home Mortgage",
+  channel:"Wholesale (broker) + National Correspondent",
+  portal:"https://www.plazahomemortgage.com/becomeabroker/",
+  niches:["Renovation (FHA 203k, HomeStyle, CHOICERenovation, USDA, VA Reno)","FHA/VA to 550 FICO","VA Jumbo","Jumbo (Jumbo 1, Jumbo Elite)","Non-QM DSCR & bank statement","Manufactured housing"],
+  programs:[
+    {p:"Renovation suite (FHA 203k Ltd/Std, HomeStyle, CHOICERenovation, USDA, VA Reno)",ltv:"95% of as-completed value; 97% FTB or FNMA-retained refi",fico:"620",dti:"Not published — ask AE",loan:"HomeStyle Limited max repair $25,000",notes:"Luxury items (pool/outdoor) eligible; 6-month completion (wholesale)",src:"https://info.plazahomemortgage.com/reno-for-brokers"},
+    {p:"FHA Fixed/ARM",ltv:"90% max if FICO <580 (per FHA)",fico:"550",dti:"31/43 if manual UW with FICO <580",loan:"Not published — ask AE",notes:"FHA Express; manual UW on AUS Refer; 100% CLTV combo needs 600 FICO",src:"https://info.plazahomemortgage.com/hubfs/PDF%20Flyers/126_Plaza%20Wholesale%20Program%20Highlights.pdf"},
+    {p:"VA / VA Jumbo",ltv:"100% to $1M; jumbo 90%; true cash-out to 100% (620 FICO)",fico:"550 (VA) / 700 (VA Jumbo)",dti:"Not published — ask AE",loan:"Up to $2,500,000 (VA Jumbo)",notes:"",src:"https://info.plazahomemortgage.com/hubfs/PDF%20Flyers/126_Plaza%20Wholesale%20Program%20Highlights.pdf"},
+    {p:"Jumbo (standard)",ltv:"80%",fico:"680 (720 self-employed, 740 FTHB)",dti:"Not published — ask AE",loan:"Up to $3,000,000",notes:"Jumbo Elite: 720 FICO, $832,751–$3M, manual UW",src:"https://info.plazahomemortgage.com/hubfs/Snapshots+Comparisons/386_Jumbo_Comparison.pdf"},
+    {p:"Non-QM DSCR Investor Solutions",ltv:"80%",fico:"680",dti:"N/A",loan:"$150,000 – $3,000,000",notes:"DSCR ≥1.0",src:"https://info.plazahomemortgage.com/wholesale-product-lineup"},
+    {p:"Non-QM Full Doc / Bank Statement",ltv:"90% (Solutions Non-QM per jumbo comparison)",fico:"660 (comparison); other listing 680 full doc / 700 bank stmt",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"Figures conflict across Plaza pages — confirm",src:"https://info.plazahomemortgage.com/hubfs/Snapshots+Comparisons/386_Jumbo_Comparison.pdf"}
+  ],
+  states:{CA:"Yes",IL:"Yes",NV:"Not confirmed",FL:"Yes",AZ:"Yes",statesSrc:"https://plazahomemortgage.com/licenses"},
+  nmls:"2113",
+  highlights:["Deep renovation lineup incl. Plaza-only options","Low FICO floors: FHA/VA to 550","Seller-paid 2-1 and 1-0 buydowns on FHA/VA/USDA","Manufactured housing FICO overlays removed"],
+  cautions:["NV license not visible in licensing snippet — confirm on NMLS #2113","Many flyers undated or from 2022 — verify current guidelines"],
+  status:"Active wholesale verified",
+  sources:["https://info.plazahomemortgage.com/wholesale-product-lineup","https://info.plazahomemortgage.com/hubfs/PDF%20Flyers/126_Plaza%20Wholesale%20Program%20Highlights.pdf","https://info.plazahomemortgage.com/hubfs/Snapshots+Comparisons/386_Jumbo_Comparison.pdf","https://info.plazahomemortgage.com/reno-for-brokers","https://www.plazahomemortgage.com/becomeabroker/","https://news.plazahomemortgage.com/newsupdates/new-lower-ficos-on-fha-and-va","https://plazahomemortgage.com/licenses","https://www.builtinla.com/company/plaza-home-mortgage-inc"],
+  checked:"2026-10-22"
+},
+{
+  n:43,
+  name:"PRMG (Paramount Residential)",
+  channel:"Wholesale (broker) + Correspondent + Retail",
+  portal:"https://tpo.prmg.net/about-prmg-wholesale/",
+  niches:["FHA/VA incl. No Credit Score FHA","VA 580+ (AUS)","Onyx Jumbo","Expanded Prime bank statement","DSCR (40-yr amort, IO)","Alternative AUS Solution"],
+  programs:[
+    {p:"Expanded Prime (12-24 mo bank statement)",ltv:"Not published — ask AE",fico:"620",dti:"Not published — ask AE",loan:"Up to $1,500,000",notes:"Self-employed",src:"https://www.eprmg.net/guidelines/PRMGProductProfileLinksWholesale.pdf"},
+    {p:"DSCR",ltv:"Not published — ask AE",fico:"660",dti:"N/A",loan:"$75,000 – $2,500,000",notes:"Investment only; 40-yr amortization and IO options",src:"https://www.eprmg.net/guidelines/PRMGProductProfileLinksWholesale.pdf"},
+    {p:"Onyx Jumbo",ltv:"Not published — ask AE",fico:"660",dti:"Not published — ask AE",loan:"$75,000 – $2,500,000",notes:"",src:"https://www.eprmg.net/guidelines/PRMGProductProfileLinksWholesale.pdf"},
+    {p:"VA Standard / High Balance",ltv:"Not published — ask AE",fico:"580 (AUS approval only, 1-2 unit, fixed); 620 for manual UW",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"No manual UW for standard balance wholesale; guideline dated 10/01/2026",src:"https://www.eprmg.net/guidelines/VA.pdf"},
+    {p:"FHA Standard / High Balance",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"Includes No Credit Score, 203(h), HUD Repair Escrow",src:"https://www.eprmg.net/guidelines/PRMGProductProfileLinksWholesale.pdf"}
+  ],
+  states:{CA:"Yes",IL:"Yes",NV:"Not confirmed",FL:"Yes",AZ:"Yes",statesSrc:"https://prmg.net/licenses/"},
+  nmls:"75243",
+  highlights:["Public wholesale product profile index (updated 09/24/2026) with linked guidelines","Claims 49 states + DC (excl. NY)","Non-QM calculators (DSCR, bank statement) in resource center","Broad government lineup incl. FHA no-credit-score"],
+  cautions:["NV entry cut off in license table snippet — company claims 49 states; confirm on NMLS #75243","Non-QM LTV caps not public — get current matrices from AE"],
+  status:"Active wholesale verified",
+  sources:["https://www.eprmg.net/guidelines/PRMGProductProfileLinksWholesale.pdf","https://www.eprmg.net/guidelines/VA.pdf","https://www.eprmg.net/guidelines/Product%20Profile%20Updates.pdf","https://www.prmg.net/non-qualified-loans/","https://tpo.prmg.net/about-prmg-wholesale/","https://prmg.net/licenses/","https://finance.mo.gov/licensee-details?id=699"],
+  checked:"2026-10-22"
+},
+{
+  n:44,
+  name:"Provident Bank",
+  channel:"Not confirmed — Provident Savings Bank FSB (Riverside, CA) HMDA shows ~99.4% brokered (per SafeRate); no public broker page found",
+  portal:"",
+  niches:["California portfolio lending","Commercial real estate / multifamily","Construction"],
+  programs:[
+    {p:"Commercial Real Estate / Multifamily (portfolio)",ltv:"70% office/industrial/retail/mini-warehouse; 75% apartments & MHP",fico:"Not published — ask AE",dti:"DSCR min 1.25x (1.30x mini-warehouse)",loan:"Up to $6,000,000 (ARM from $350,000)",notes:"10-yr commercial / 30-yr multifamily; full recourse; up to 1 pt fee",src:"https://www.myprovident.com/commercial/"},
+    {p:"Construction (commercial)",ltv:"65%",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Min $300,000",notes:"",src:"https://www.myprovident.com/commercial/"},
+    {p:"Portfolio Jumbo / Non-QM (residential)",ltv:"Not published — ask AE",fico:"Not published — ask AE",dti:"Not published — ask AE",loan:"Not published — ask AE",notes:"No public residential wholesale guidelines found; myprovident.com site map lists 'Provident Wholesale' and a wholesale rep (Wendy Hughes)",src:"https://www.myprovident.com/agents/"}
+  ],
+  states:{CA:"Yes",IL:"No",NV:"No",FL:"No",AZ:"No",statesSrc:"https://saferate.com/lenders/provident-savings-bank-fsb.txt"},
+  nmls:"",
+  highlights:["Riverside, CA bank — HMDA lending entirely in California, ~99.4% via brokers (per SafeRate)","Commercial/multifamily portfolio loans to $6M"],
+  cautions:["Name collision: Provident Bank (NJ, provident.bank) offers mortgage warehouse lending, not broker wholesale; Provident Funding (NMLS 3821) is a separate wholesale lender — confirm which entity is meant","State coverage based on HMDA footprint (per SafeRate), not a licensing page — a federal savings bank needs no state license","Residential portfolio jumbo/non-QM terms not public — ask AE"],
+  status:"Active — channel not confirmed",
+  sources:["https://www.myprovident.com/commercial/","https://www.myprovident.com/agents/","https://www.myprovident.com/sitemap/","https://saferate.com/lenders/provident-savings-bank-fsb.txt","https://www.provident.bank/business-planning/commercial-loans/specialty-lending/mortgage-warehouse-lending","https://pfloans.provident.com/info/branches/licensing.aspx?state=ID"],
+  checked:"2026-10-22"
+}
+]);
+
+</script>
+<script>
+// Lender research batch — public sources as of 2026-10-22; verify with the AE before quoting.
+(window.LENDER_INFO=window.LENDER_INFO||[]).push(...[
+{
+  n:45, name:"Quontic Bank", channel:"Wholesale (broker) + correspondent (bank / CDFI)",
+  portal:"https://cor.quontic.com/",
+  niches:["ITIN (investor)","Foreign National","Lite Doc (P&L / VOE)","DSCR","Asset Utilization","Closed-end seconds / HELOAN","CDFI mission lending"],
+  programs:[
+    {p:"ITIN Investor (Wholesale GP, eff. 10/31/2025)", ltv:"75% purchase & R/T / 70% cash-out", fico:"680", dti:"50%", loan:"Max $1,000,000", notes:"Lite Doc only; 12-mo PTIN or accountant-prepared P&L for self-employed; 1 month bank statement; property need not cash-flow. Cash-out may count toward reserves only if LTV <=70% and FICO >=720. (Read via search snippet; PDF host not reachable from this session.)", src:"https://cor.quontic.com/wp-content/uploads/2025/11/ITIN-investor-Wholesale-GP.pdf"},
+    {p:"Asset Utilization — Owner Occupied (Wholesale GP)", ltv:"80% purchase, R/T and cash-out", fico:"660", dti:"Not published — ask AE", loan:"Not published — ask AE", notes:"Guide states it is not a bank statement program; 1 month bank statement (30 days).", src:"https://cor.quontic.com/wp-content/uploads/2025/11/Asset-Utilization-Owner-Occupied-Wholesale-GP.pdf"},
+    {p:"DSCR (broker page — newer version)", ltv:"75% purchase & R/T / 70% cash-out", fico:"700", dti:"N/A (DSCR)", loan:"Not published — ask AE", notes:"DSCR >=1.00x. An older broker page showed DSCR >=1.10x, 680 FICO, loans to $2M, max $500k cash in hand. Exact page per version not isolated in search results (cor.quontic.com/?p=13334 or ?p=280).", src:"https://cor.quontic.com/?p=13334"},
+    {p:"Lite Doc (investor)", ltv:"80% (older version 75%)", fico:"Not published — ask AE", dti:"50%", loan:"Not published — ask AE", notes:"Self-employed: 12-mo CPA/accountant P&L; salaried: Quontic VOE. 100% gift funds accepted (per NMP 2023 webinar summary).", src:"https://nationalmortgageprofessional.com/webinar/dealdesk-focus-quontic-banks-lite-doc-program"},
+    {p:"Foreign National (Wholesale GP)", ltv:"Not published — ask AE", fico:"Not published — ask AE", dti:"Not published — ask AE", loan:"Not published — ask AE", notes:"Guide exists; terms not readable from this session.", src:"https://cor.quontic.com/wp-content/uploads/2025/11/Foreign-National-Wholesale-GP.pdf"},
+    {p:"HELOAN Full Doc (Wholesale GP)", ltv:"Older 2024 seconds guide: 85% CLTV primary @740 / 80% @700", fico:"700", dti:"Not published — ask AE", loan:"Not published — ask AE", notes:"2024 guide; current 2025 HELOAN GP exists — confirm terms.", src:"https://cor.quontic.com/wp-content/uploads/2024/08/QB-Full-Doc-Seconds-Guidelines-04-11-2024.pdf"}
+  ],
+  states:{CA:"Not confirmed",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed"}, statesSrc:"",
+  nmls:"403503",
+  highlights:["Self-described CDFI with ITIN, Foreign National, Lite Doc, DSCR, Asset Utilization programs","ITIN investor program — property does not need positive cash flow","Lite Doc: P&L or VOE income, no tax returns/W2s","FDIC-insured bank lender (balance sheet)"],
+  cautions:["OCC consent order (2022) terminated effective 6/30/2026 (https://www.bankingdive.com/news/occ-terminates-quontic-consent-order/825480/); OCC prohibition order vs. a former VP in June 2026 for working with unapproved brokers — follow approval process strictly","Guide versions conflict (75% vs 80% LTV; DSCR 1.00 vs 1.10) — confirm current GP with AE","NMLS 403503 taken from search summary, not confirmed on NMLS Consumer Access"],
+  status:"Active wholesale verified",
+  sources:["https://cor.quontic.com/wp-content/uploads/2025/11/ITIN-investor-Wholesale-GP.pdf","https://cor.quontic.com/wp-content/uploads/2025/11/Asset-Utilization-Owner-Occupied-Wholesale-GP.pdf","https://cor.quontic.com/wp-content/uploads/2025/11/Foreign-National-Wholesale-GP.pdf","https://cor.quontic.com/?p=13334","https://cor.quontic.com/?p=280","https://cor.quontic.com/wp-content/uploads/2024/08/QB-Full-Doc-Seconds-Guidelines-04-11-2024.pdf","https://nationalmortgageprofessional.com/webinar/dealdesk-focus-quontic-banks-lite-doc-program","https://www.bankingdive.com/news/occ-terminates-quontic-consent-order/825480/"],
+  checked:"2026-10-22"
+},
+{
+  n:46, name:"RCN Capital", channel:"Private lender (broker-friendly) — Broker Referral Program + Correspondent Lending Program",
+  portal:"https://rcncapital.com/",
+  niches:["Fix & flip (ARV)","Long-term rental / DSCR","Multifamily 5+","New construction","Bridge","Protected broker relationships"],
+  programs:[
+    {p:"Fix & Flip (ARV program)", ltv:"Up to 100% purchase + 100% rehab, max 75% of ARV (tiered by experience)", fico:"650 (one RCN blog cites 600)", dti:"N/A", loan:"$75k – $3M", notes:"12 & 18 month terms; leverage tiered by completed flips; term sheets next business day for most ARV/short-term deals.", src:"https://rcncapital.com/faqs"},
+    {p:"Long-Term Rental (DSCR)", ltv:"80% purchase (lesser of as-is/LTC) & R/T / 75% cash-out; 70% LTV on 2-4 units per RCN blog", fico:"660", dti:"N/A (DSCR)", loan:"$70k – $1.5M", notes:"30-year term; 24-hour decisions on full DSCR requests. Min DSCR not on RCN page found (third parties cite 1.00–1.15).", src:"https://rcncapital.com/faqs"},
+    {p:"Multifamily (5+ units)", ltv:"~70–75% LTV", fico:"650–700 depending on program", dti:"N/A", loan:"Not published — ask AE", notes:"Per RCN loan programs summary.", src:"https://rcncapital.com/loan-programs"},
+    {p:"New Construction / Bridge", ltv:"Not published — ask AE", fico:"Not published — ask AE", dti:"N/A", loan:"Not published — ask AE", notes:"Listed on loan programs page; terms not captured.", src:"https://rcncapital.com/loan-programs"}
+  ],
+  states:{CA:"Yes",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Yes"}, statesSrc:"https://rentalrealestate.com/tools/rcn-capital/",
+  nmls:"",
+  highlights:["Wholesale-first: Broker Referral Program with protected brokers","24-hour decisions on DSCR and bridge requests","Up to 100% purchase + 100% rehab for experienced flippers (75% ARV cap)","Broker training platform"],
+  cautions:["Third-party listings show CA Finance Lender 60DBO-46258, AZ Mortgage Banker BK-0932325 and NMLS 1045656 but conflict on which ID belongs to which state (per rentalrealestate.com / biggerpockets.com) — verify on NMLS Consumer Access","Some RCN pages are 3+ years old; min FICO cited as 600, 650 and 660 in different places","rcncapital.com not reachable from research session; values from search snippets of RCN pages"],
+  status:"Active wholesale verified",
+  sources:["https://rcncapital.com/faqs","https://rcncapital.com/loan-programs","https://rcncapital.com/blog/why-rcn-capital-is-a-top-dscr-lender-for-brokers","https://rcncapital.com/blog/close-more-deals-with-rcn-capitals-broker-focused-loan-programs","https://rentalrealestate.com/tools/rcn-capital/","https://biggerpockets.com/business/page/1623"],
+  checked:"2026-10-22"
+},
+{
+  n:47, name:"REMN (Real Estate Mortgage Network)", channel:"Wholesale (broker) — REMN Wholesale, division of Homebridge Financial Services",
+  portal:"https://www.remnwholesale.com",
+  niches:["FHA 203(k) Standard & Limited","Fannie Mae HomeStyle Renovation","Renovation Concierge Service","Conv / FHA / VA / USDA","Non-QM (Homebridge Access / Elite Access)"],
+  programs:[
+    {p:"FHA 203(k) (historic REMN launch)", ltv:"96.5% purchase / 97.5% refi (2011 launch)", fico:"Not published — ask AE", dti:"Not published — ask AE", loan:"FHA limits", notes:"Dedicated team manages post-closing, inspections and draws. 2011 data — confirm current.", src:"https://nationalmortgageprofessional.com/news/22650/remn-launches-new-wholesale-203k-product"},
+    {p:"Fannie Mae HomeStyle Renovation", ltv:"95% (Homebridge 2017 doc)", fico:"Not published — ask AE", dti:"Not published — ask AE", loan:"Fannie Mae limits", notes:"Renovation capped at 50% of sales price per older doc; contractor profile, W-9, license & insurance required (Homebridge bulletin).", src:"https://www.homebridge.com/wp-content/uploads/2017/04/Handyman-Special.pdf"},
+    {p:"Access (Non-QM) — Homebridge, Oct 2025", ltv:"IO up to 85% (80% ICF/P&L-only); P&L-only max 70%", fico:"620 full doc/bank stmt/1099/ICF; 660 P&L-only & asset qualifier (P&L-only conditions cite 720)", dti:"Not published — ask AE", loan:"Max $3.5M", notes:"Homebridge Wholesale product; confirm availability through the REMN division.", src:"https://www.homebridgewholesale.com/wp-content/uploads/2025/11/Access-Overview-10-28-25.pdf"},
+    {p:"Elite Access (Non-QM) Full Doc — Oct 2025", ltv:"80% to $2M / 75% $2M–2.5M / 70% >$2.5M", fico:"680 (older bulletin; 700 ICF)", dti:"50%", loan:"Min $125k–$150k (footnotes conflict); max ~$3M", notes:"IO eligible; non-warrantable condo 75% max (older bulletin).", src:"https://www.homebridgewholesale.com/wp-content/uploads/2025/12/Elite-Access-10-24-25.pdf"},
+    {p:"Symmetry HELOC piggyback", ltv:"89.99% CLTV primary", fico:"680", dti:"45%", loan:"Line up to $750k (<=80% CLTV)", notes:"Closes with FNMA/FHLMC/FHA first; see Symmetry entry.", src:"https://www.homebridgewholesale.com/wp-content/uploads/2026/07/HELOC-Program-Guides-7-23-26.pdf"}
+  ],
+  states:{CA:"Yes",IL:"Yes",NV:"Yes",FL:"Yes",AZ:"Yes"}, statesSrc:"https://www.homebridge.com/licensing/",
+  nmls:"6521",
+  highlights:["Long-time renovation specialist (203k, HomeStyle, Renovation Concierge)","Parent Homebridge is Ginnie Mae issuer with own servicing","On ARIVE LOS since 2022; licensed/approved in 50 states + DC (2022 release)","Homebridge sold retail to CMG (2023) — wholesale-only parent"],
+  cautions:["No REMN-specific news 2024–2026 found; division still listed on homebridge.com (2026) — confirm REMN vs Homebridge Wholesale is the right channel for your approval","Most 203(k) specifics are 2011–2014 press; verify current guides","Homebridge licensing page ~600 days old (CA DFPI RMLA; IL MB.6760732; NV 4122; FL MLD1222; AZ 0922458)"],
+  status:"Active — channel not confirmed",
+  sources:["https://nationalmortgageprofessional.com/news/22650/remn-launches-new-wholesale-203k-product","https://nationalmortgageprofessional.com/news/40684/remn-updates-product-line-include-fannie-maes-homepath-reno","https://en.wikipedia.org/wiki/Homebridge_Financial_Services","https://arive.com/press/remn-wholesale-joins-arive","https://www.homebridge.com/licensing/","https://www.homebridge.com/","https://www.homebridgewholesale.com/wp-content/uploads/2025/11/Access-Overview-10-28-25.pdf","https://www.homebridgewholesale.com/wp-content/uploads/2025/12/Elite-Access-10-24-25.pdf","https://www.homebridge.com/wp-content/uploads/2017/04/Handyman-Special.pdf"],
+  checked:"2026-10-22"
+},
+{
+  n:48, name:"Spring EQ", channel:"Wholesale (broker) + delegated correspondent",
+  portal:"https://wholesale.springeq.com/",
+  niches:["Variable-rate HELOC","Fixed-rate HELOC (FixLine)","HELOAN closed-end seconds","1st-lien HELOC","DSCR (2026 program guides)","Second homes & investment (1-unit)"],
+  programs:[
+    {p:"HELOAN (closed-end 2nd)", ltv:"Owner-occ 90% CLTV @680 / 80% @660 / 70% @640 (2024 overview showed 95% @740)", fico:"640", dti:"45% (50% exception @700 FICO w/ $3,500 residual — correspondent matrix)", loan:"$25k – $500k (>= $400k needs 740+)", notes:"20/30-yr fixed terms.", src:"https://wholesale.springeq.com/hubfs/Wholesale%20File%20Transfer/2022_website_files/Active_Spring%20EQ%20Wholesale%20Product%20Comparison.pdf"},
+    {p:"Variable-rate HELOC", ltv:"80% max CLTV (2026 correspondent matrix)", fico:"Not published — ask AE", dti:"45%", loan:"Min $50k; max $500k 2nd lien", notes:"Correspondent matrix released 9/8/2026; wholesale may differ.", src:"https://correspondent.springeq.com/hubfs/Wholesale%20File%20Transfer/Correspondent/ActiveDelegatedMatrices.pdf"},
+    {p:"Fixed-rate HELOC", ltv:"Not published — ask AE (see matrix)", fico:"640 (consumer site 'as low as')", dti:"45%", loan:"Min $25k; max $500k 2nd lien", notes:"Consumer site advertises $50k–$500k.", src:"https://correspondent.springeq.com/hubfs/Wholesale%20File%20Transfer/Correspondent/ActiveDelegatedMatrices.pdf"},
+    {p:"1st-lien HELOC", ltv:"Not published — ask AE", fico:"Not published — ask AE", dti:"Not published — ask AE", loan:"Max $750k", notes:"Per 2026 correspondent matrix.", src:"https://correspondent.springeq.com/hubfs/Wholesale%20File%20Transfer/Correspondent/ActiveDelegatedMatrices.pdf"},
+    {p:"DSCR (program guide released 1/12/2026)", ltv:"Not published — ask AE", fico:"Not published — ask AE", dti:"N/A", loan:"Not published — ask AE", notes:"Requires broker company + MLO license in CA (DSCR licensing map 2/16/2026).", src:"https://wholesale.springeq.com/hubfs/Spring%20EQ%20DSCR%20Program%20Guides%20-%20Released%201.12.2026.pdf?hsLang=en"}
+  ],
+  states:{CA:"Yes",IL:"Yes",NV:"Not confirmed",FL:"Yes",AZ:"Yes"}, statesSrc:"https://wholesale.springeq.com/legal",
+  nmls:"1464945",
+  highlights:["Dedicated home-equity wholesale lender with HELOC, FixLine and HELOAN","Public wholesale matrices and daily rate sheets (latest seen 09.30.2026)","Second home and investment eligibility (1-unit)","Expanded into DSCR in 2026"],
+  cautions:["2024 vs later matrices conflict on top CLTV (95% vs 90%) — use the current matrix","Variable HELOC capped at 80% CLTV in the 2026 correspondent matrix","NV license not seen in truncated legal page snippet"],
+  status:"Active wholesale verified",
+  sources:["https://wholesale.springeq.com/hubfs/Wholesale%20File%20Transfer/2022_website_files/Active_Spring%20EQ%20Wholesale%20Product%20Comparison.pdf","https://mortgage.springeq.com/hubfs/Wholesale%20File%20Transfer/2022_website_files/Spring%20EQ%20Wholesale%20Product%20Overview.pdf","https://correspondent.springeq.com/hubfs/Wholesale%20File%20Transfer/Correspondent/ActiveDelegatedMatrices.pdf","https://mortgage.springeq.com/hubfs/Wholesale%20File%20Transfer/2022_website_rates_fees_guidelines_matrices/ActiveWholesaleRateSheet.pdf?hsLang=en","https://wholesale.springeq.com/hubfs/Spring%20EQ%20DSCR%20Program%20Guides%20-%20Released%201.12.2026.pdf?hsLang=en","https://wholesale.springeq.com/hubfs/Wholesale%20File%20Transfer/2022_website_rates_fees_guidelines_matrices/Active%20DSCR%20State%20Licensing%20Map.pdf","https://wholesale.springeq.com/legal"],
+  checked:"2026-10-22"
+},
+{
+  n:49, name:"Symmetry Lending", channel:"Wholesale (broker) — HELOC via credit-union partner; also offered through Homebridge Wholesale",
+  portal:"",
+  niches:["Piggyback HELOC with agency/FHA first","Standalone HELOC (120+ days after first)","1st-lien HELOC","Second homes & 1-4 unit investment","Jumbo lines to $1M"],
+  programs:[
+    {p:"HELOC — Primary residence (Homebridge guide 7/23/26)", ltv:"89.99% CLTV", fico:"680", dti:"45%", loan:"Line $750k (<=80% CLTV) / $500k (>80%) / $1M (<=75% CLTV, 720+); combined 1st+HELOC max $4M", notes:"Min initial draw $25k ($50k in AZ, CA, FL, OR, WA). Prime + margin; +0.25% for 10-yr draw, +0.50% if CLTV >80%. Borrower must join partner credit union before CTC; Symmetry-ordered desk review.", src:"https://www.homebridgewholesale.com/wp-content/uploads/2026/07/HELOC-Program-Guides-7-23-26.pdf"},
+    {p:"HELOC — Second home", ltv:"85% CLTV", fico:"700", dti:"Not published — ask AE", loan:"Max line $500k", notes:"", src:"https://www.homebridgewholesale.com/wp-content/uploads/2026/07/Introduction-to-Symmetry-HELOC-Program-7-23-26.pdf"},
+    {p:"HELOC — Investment (1-4 unit)", ltv:"70% CLTV", fico:"720", dti:"Not published — ask AE", loan:"Max line $500k", notes:"", src:"https://www.homebridgewholesale.com/wp-content/uploads/2026/07/HELOC-Program-Guides-7-23-26.pdf"},
+    {p:"First-lien HELOC", ltv:"Not published — ask AE", fico:"Not published — ask AE", dti:"Not published — ask AE", loan:"Not published — ask AE", notes:"Announced for Symmetry's approved broker network (MPA).", src:"https://mpamag.com/us/specialty/wholesale/symmetry-lending-unveils-new-first-lien-heloc/470037"}
+  ],
+  states:{CA:"Not confirmed",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed"}, statesSrc:"",
+  nmls:"",
+  highlights:["Lines up to $1M at <=75% CLTV with 720+","Closes simultaneously with FNMA/FHLMC/FHA first lien","~50,000 HELOCs / $7.2B funded since 2018; master servicer (MPA)","Enhanced broker fees announced (MPA)"],
+  cautions:["Draw period reduced from 10 to 5 years on all HELOCs (https://www.mpamag.com/us/specialty/reverse/symmetry-lending-revamps-heloc-rates-and-terms/471809)","Lines > $750k ineligible in CA (2025 Homebridge deck)","Own site/NMLS not retrievable — terms are from Homebridge Wholesale documents"],
+  status:"Active wholesale verified",
+  sources:["https://www.homebridgewholesale.com/wp-content/uploads/2026/07/HELOC-Program-Guides-7-23-26.pdf","https://www.homebridgewholesale.com/wp-content/uploads/2026/07/Introduction-to-Symmetry-HELOC-Program-7-23-26.pdf","https://www.homebridgewholesale.com/wp-content/uploads/2026/04/Introduction-to-Symmetry-HELOC-Program-4-15-25.pdf","https://www.homebridgewholesale.com/wp-content/uploads/2025/10/HELOC-Program-Guides-10-28-25.pdf","https://mpamag.com/us/specialty/wholesale/symmetry-lending-unveils-new-first-lien-heloc/470037","https://www.mpamag.com/us/specialty/reverse/symmetry-lending-revamps-heloc-rates-and-terms/471809"],
+  checked:"2026-10-22"
+},
+{
+  n:50, name:"TaliMar Financial", channel:"Private lender (broker-friendly) — California direct lender / debt fund",
+  portal:"https://www.talimarfinancial.com/",
+  niches:["California bridge loans","Fix & flip","New construction / ADU / infill","Cash-out bridge","Owner-occupied consumer bridge (per directory)","Fast close (5–7 days)"],
+  programs:[
+    {p:"Bridge", ltv:"Up to 75% LTV (purchase / refi / cash-out)", fico:"Not published — ask AE", dti:"N/A", loan:"Not published — ask AE", notes:"6–60 month term; interest-only; 5–7 day close; California only.", src:"https://www.talimarfinancial.com/bridge-loan-program/"},
+    {p:"Fix & Flip", ltv:"Up to 70% of completion value", fico:"Not published — ask AE", dti:"N/A", loan:"Not published — ask AE", notes:"12–24 month terms; older pages cite up to 100% of renovation costs funded.", src:"https://www.talimarfinancial.com/hard-money-loan-programs/"},
+    {p:"New Construction", ltv:"Not published — ask AE", fico:"Not published — ask AE", dti:"N/A", loan:"Not published — ask AE", notes:"Draw-based funding; ground-up, infill, ADU.", src:"https://www.talimarfinancial.com/"},
+    {p:"Overall terms (per flipperforce.com directory)", ltv:"70% LTV / 75% LTC", fico:"Not published — ask AE", dti:"N/A", loan:"$50k – $10M", notes:"Per flipperforce.com: rates 7.99%–12%, 1–4 points, 3–24 month terms; also DSCR rental.", src:"https://flipperforce.com/lenders/talimar-financial"}
+  ],
+  states:{CA:"Yes",IL:"No",NV:"No",FL:"No",AZ:"No"}, statesSrc:"https://www.talimarfinancial.com/bridge-loan-program/",
+  nmls:"",
+  highlights:["Asset-based, California-focused direct lender","5–7 day closings","Works with mortgage brokers (per TaliMar posts)","Interest-only bridge up to 60 months"],
+  cautions:["States other than CA marked No based on 'California only' on bridge page — confirm for other products","NMLS 337721 / CA DRE 01889802 per flipperforce.com only — not verified on NMLS Consumer Access"],
+  status:"Active — channel not confirmed",
+  sources:["https://www.talimarfinancial.com/","https://www.talimarfinancial.com/bridge-loan-program/","https://www.talimarfinancial.com/hard-money-loan-programs/","https://flipperforce.com/lenders/talimar-financial"],
+  checked:"2026-10-22"
+},
+{
+  n:51, name:"The Loan Store (TLS) — now Averra Financial", channel:"Wholesale (broker) + non-delegated correspondent",
+  portal:"https://tlstpo.com",
+  niches:["Agency Conv / FHA / VA / USDA","Non-QM: DSCR, bank statement, asset depletion, foreign national","Second mortgages / HELOC (Aven partnership)","Buy-before-you-sell","Averra Advantage income tool"],
+  programs:[
+    {p:"Agency (Conv/FHA/VA/USDA)", ltv:"Not published — ask AE", fico:"Not published — ask AE", dti:"Not published — ask AE", loan:"Not published — ask AE", notes:"Guides behind broker login.", src:"https://nationalmortgageprofessional.com/news/loan-store-rebrands-averra-financial"},
+    {p:"Non-QM (DSCR, bank statement, asset depletion, foreign national)", ltv:"Not published — ask AE", fico:"Not published — ask AE", dti:"Not published — ask AE", loan:"Not published — ask AE", notes:"Non-QM volume +68% FY-to-date through Aug 2026.", src:"https://informaconnect.com/imn-non-qm/sponsors/the-loan-store/"},
+    {p:"HELOC (Aven partnership) / second mortgages", ltv:"Not published — ask AE", fico:"Not published — ask AE", dti:"Not published — ask AE", loan:"Not published — ask AE", notes:"First Aven HELOC funded May 2026.", src:"https://www.housingwire.com/articles/averra-financial-the-loan-store-rebrand/"}
+  ],
+  states:{CA:"Not confirmed",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed"}, statesSrc:"",
+  nmls:"1121650",
+  highlights:["Acquired Homepoint wholesale (2023); says it is a top-4 US wholesale lender","Broad agency + non-QM + seconds menu","Averra Advantage income-qualification tool for complex income","AEs, programs, pricing and approvals unchanged by rebrand"],
+  cautions:["Rebranded to Averra Financial effective Oct 1, 2026 (https://www.housingwire.com/articles/averra-financial-the-loan-store-rebrand/) — update lender name/portal bookmarks","NMLS 1121650 from Missouri licensee record (https://finance.mo.gov/licensee/details/219) under old name — confirm on NMLS Consumer Access","Portal tlstpo.com per older IMN profile; new Averra domain not found"],
+  status:"Active wholesale verified",
+  sources:["https://www.housingwire.com/articles/averra-financial-the-loan-store-rebrand/","https://nationalmortgageprofessional.com/news/loan-store-rebrands-averra-financial","https://informaconnect.com/imn-non-qm/sponsors/the-loan-store/","https://finance.mo.gov/licensee/details/219","https://themortgagepoint.com/2023/04/07/the-loan-store-acquires-homepoints-wholesale-operations/"],
+  checked:"2026-10-22"
+},
+{
+  n:52, name:"TMAC Reverse", channel:"Wholesale (broker) — also correspondent, principal-agent, retail (dba GoodLife Home Loans)",
+  portal:"",
+  niches:["HECM reverse mortgages","HECM for Purchase (not confirmed)","FHA direct lender / Ginnie Mae HMBS issuer","Broker wholesale reverse"],
+  programs:[
+    {p:"HECM (FHA-insured)", ltv:"Not published — ask AE (HUD PLF-based)", fico:"Not published — ask AE", dti:"N/A (HUD financial assessment)", loan:"Not published — ask AE (FHA max claim limit)", notes:"TMAC is FHA direct lender and Ginnie Mae issuer of HECMs.", src:"https://nrmlaonline.org/vendors/traditional-mortgage-acceptance-corporation"},
+    {p:"Proprietary / jumbo reverse", ltv:"Not published — ask AE", fico:"Not published — ask AE", dti:"Not published — ask AE", loan:"Not published — ask AE", notes:"No public confirmation that TMAC offers a proprietary product.", src:"https://www.housingwire.com/articles/goodlife-home-loans-chase-kinder-reverse-mortgage-expansion/"}
+  ],
+  states:{CA:"Not confirmed",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed"}, statesSrc:"",
+  nmls:"971307",
+  highlights:["4th-largest HECM originator per RMI (1,344 HECMs in year ending July 2025)","Dedicated wholesale division led by VP Chase Kinder (Sept 2025)","Ginnie Mae issuer — in-house execution"],
+  cautions:["No formal broker protection plan; launched retail reverse division May 2025 (https://www.housingwire.com/articles/goodlife-home-loans-launches-retail-reverse-mortgage-division-says-it-is-actively-hiring/)","Newest public info is late 2025; no broker portal URL found"],
+  status:"Active wholesale verified",
+  sources:["https://nrmlaonline.org/vendors/traditional-mortgage-acceptance-corporation","https://www.housingwire.com/articles/goodlife-home-loans-chase-kinder-reverse-mortgage-expansion/","https://www.housingwire.com/articles/goodlife-home-loans-launches-retail-reverse-mortgage-division-says-it-is-actively-hiring/"],
+  checked:"2026-10-22"
+},
+{
+  n:53, name:"TPO Go", channel:"Wholesale (broker) — Norwich Commercial Group dba TPO GO (former Norcom wholesale)",
+  portal:"",
+  niches:["Conventional / Government / USDA","Chenoa down payment assistance","First-time homebuyer","Renovation: 203(k), HomeStyle, CHOICERenovation, VA reno"],
+  programs:[
+    {p:"Agency Conv / FHA / VA / USDA", ltv:"Not published — ask AE", fico:"Not published — ask AE", dti:"Not published — ask AE", loan:"Not published — ask AE", notes:"Products/pricing in ARIVE (June 2026).", src:"https://www.arive.com/press/tpo-go-integrates-with-arive-bringing-its-full-suite-of-broker-focused-products-and-pricing"},
+    {p:"Renovation (203k, HomeStyle, CHOICERenovation, VA)", ltv:"Not published — ask AE", fico:"Not published — ask AE", dti:"Not published — ask AE", loan:"Not published — ask AE", notes:"Per older trade reporting.", src:"https://mpamag.com/us/specialty/wholesale/tpo-go-to-commit-fully-to-wholesale-mortgage-lending/491329"}
+  ],
+  states:{CA:"Not confirmed",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed"}, statesSrc:"",
+  nmls:"",
+  highlights:["Integrated with ARIVE (June 2026)","Chenoa DPA and renovation suite"],
+  cautions:["TPO GO exiting wholesale nationally under strategic alliance with Stockton Mortgage, closing Aug 10 (2026); may keep limited wholesale in defined markets (https://www.housingwire.com/articles/tpo-go-exits-wholesale-stockton/)","Chrisman (Aug 5, 2026) says the wholesale division joins Cursive Lending, Stockton's TPO channel (https://chrismancommentary.com/?p=22049) — consider moving pipeline/approval to Stockton/Cursive","Do not confuse with GO Mortgage (Tampa) TPO channel launched May 2026"],
+  status:"Possibly inactive/exited — verify",
+  sources:["https://www.housingwire.com/articles/tpo-go-exits-wholesale-stockton/","https://chrismancommentary.com/?p=22049","https://www.arive.com/press/tpo-go-integrates-with-arive-bringing-its-full-suite-of-broker-focused-products-and-pricing","https://mpamag.com/us/specialty/wholesale/tpo-go-to-commit-fully-to-wholesale-mortgage-lending/491329"],
+  checked:"2026-10-22"
+},
+{
+  n:54, name:"Triad Financial Services", channel:"Wholesale (broker) — manufactured housing lender (also retailer/dealer channel)",
+  portal:"https://www.triadfs.com/brokers/enrollment",
+  niches:["Chattel / home-only","Land-home (land-in-lieu of down payment)","Existing land-home","Land Plus","ITIN manufactured home program","550 credit score"],
+  programs:[
+    {p:"Home Only (chattel)", ltv:"95%", fico:"550", dti:"Not published — ask AE", loan:"Min $20,000 (retailer flyer says $10k)", notes:"Max term 300 months; credit-tier matrix applies; min 5% down.", src:"https://www.triadfs.com/hubfs/Website%20Images/Retail%20Material/Broker%20Training/Triad%20Broker%20Training%2010.3.25.pdf"},
+    {p:"Land-Home", ltv:"95%", fico:"550", dti:"Not published — ask AE", loan:"Min $35,000", notes:"Land owned free & clear; land can be gifted/inherited in lieu of cash down; up to $25k land improvements; 360-month term.", src:"https://www.triadfs.com/hubfs/Website%20Images/Retail%20Material/Broker%20Training/Triad%20Broker%20Training%2010.3.25.pdf"},
+    {p:"Land Plus", ltv:"95%", fico:"550", dti:"Not published — ask AE", loan:"Min $80,000", notes:"360-month term.", src:"https://www.triadfs.com/hubfs/Website%20Images/Retail%20Material/Broker%20Training/Triad%20Broker%20Training%2010.3.25.pdf"},
+    {p:"Broker Home Only & Existing Land Home (flyer 3/27/25)", ltv:"Not published — ask AE", fico:"550", dti:"Not published — ask AE", loan:"Min $20,000", notes:"Low down payments, fixed rates.", src:"https://triadfs.com/hubfs/Website%20Images/Retail%20Material/Flyer%20Library/Broker%20Home%20Only%20%26%20Existing%20Land%20Home%203.27.25.pdf"},
+    {p:"ITIN Program (flyer 6/24/25)", ltv:"Not published — ask AE", fico:"550", dti:"Not published — ask AE", loan:"Not published — ask AE", notes:"", src:"https://offers.triadfs.com/hubfs/Website%20Images/Retail%20Material/Flyer%20Library/TFS%20%20ITIN%20Program%206.24.25.pdf"}
+  ],
+  states:{CA:"Yes",IL:"Yes",NV:"Yes",FL:"Not confirmed",AZ:"Yes"}, statesSrc:"https://www.triadfs.com/licensing",
+  nmls:"1063",
+  highlights:["550 minimum credit score","Land-in-lieu of cash down payment","Home-only financing in 43 states (FAQ)","Broker training deck and flyers published publicly"],
+  cautions:["FL mortgage license number not found on licensing page (only insurance licenses) — verify FL lending eligibility","Loan minimums conflict across flyers ($10k vs $20k)"],
+  status:"Active wholesale verified",
+  sources:["https://www.triadfs.com/hubfs/Website%20Images/Retail%20Material/Broker%20Training/Triad%20Broker%20Training%2010.3.25.pdf","https://triadfs.com/hubfs/Website%20Images/Retail%20Material/Flyer%20Library/Broker%20Home%20Only%20%26%20Existing%20Land%20Home%203.27.25.pdf","https://www.triadfs.com/hubfs/Website%20Images/Retail%20Material/Flyer%20Library/Triad%20BROKER%20Program%20Flyer.pdf","https://offers.triadfs.com/hubfs/Website%20Images/Retail%20Material/Flyer%20Library/TFS%20%20ITIN%20Program%206.24.25.pdf","https://www.triadfs.com/licensing","https://triadfs.com/realtor/faq","https://www.triadfs.com/brokers/enrollment"],
+  checked:"2026-10-22"
+},
+{
+  n:55, name:"Union Home Mortgage (UHM)", channel:"Wholesale (broker) + retail",
+  portal:"",
+  niches:["Agency Conv / FHA / VA / USDA","Non-QM Platinum suite (bank statement, DSCR)","Jumbo","Non-owner occupied","Renovation incl. FHA 203(k) (per third-party review)","Former Sierra Pacific wholesale team"],
+  programs:[
+    {p:"Agency Conv / FHA / VA / USDA", ltv:"Not published — ask AE", fico:"Not published — ask AE", dti:"Not published — ask AE", loan:"Not published — ask AE", notes:"Products/pricing in ARIVE (May 2025).", src:"https://www.streetinsider.com/PRNewswire/Union+Home+Mortgage+Joins+ARIVE+Platform/24794343.html"},
+    {p:"Platinum Non-QM (bank statement, DSCR)", ltv:"Not published — ask AE", fico:"Not published — ask AE", dti:"Not published — ask AE", loan:"Not published — ask AE", notes:"Launched Oct 2025.", src:"https://nationalmortgageprofessional.com/news/union-home-mortgage-expands-non-qm-options"},
+    {p:"Jumbo / Non-owner-occupied QM", ltv:"Not published — ask AE", fico:"Not published — ask AE", dti:"Not published — ask AE", loan:"Not published — ask AE", notes:"", src:"https://nationalmortgageprofessional.com/news/union-home-mortgage-expands-non-qm-options"}
+  ],
+  states:{CA:"Not confirmed",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed"}, statesSrc:"",
+  nmls:"2229",
+  highlights:["Self-described 7th-largest US wholesale lender","Acquired AmeriTrust origination assets incl. broker relationships (July 2026) to expand wholesale & non-QM","On ARIVE LOS","Licensed in 48 states (Inman 2025)"],
+  cautions:["No public wholesale matrix or broker portal URL found — guides likely behind broker login","State list not confirmed for CA/IL/NV/FL/AZ (48-state claim per https://www.inman.com/2025/03/04/uhm-adds-1b-in-lending-capacity-with-nrl-mortgage-acquisition/)"],
+  status:"Active wholesale verified",
+  sources:["https://nationalmortgageprofessional.com/news/union-home-mortgage-expands-non-qm-options","https://nationalmortgageprofessional.com/news/union-home-targets-20b-run-rate-ameritrust-deal","https://www.uhm.com/in-the-news/union-home-mortgage-acquires-origination-assets-of-ameritrust-mortgage-corporation/","https://www.streetinsider.com/PRNewswire/Union+Home+Mortgage+Joins+ARIVE+Platform/24794343.html","https://www.thetruthaboutmortgage.com/union-home-mortgage-review","https://www.inman.com/2025/03/04/uhm-adds-1b-in-lending-capacity-with-nrl-mortgage-acquisition/"],
+  checked:"2026-10-22"
+}
+]);
+
+</script>
+<script>
+// Lender research batch — public sources as of 2026-10-22; verify with the AE before quoting.
+(window.LENDER_INFO=window.LENDER_INFO||[]).push(...[
+{
+  n:56, name:"United AG Lending",
+  channel:"Wholesale (broker) — agricultural wholesale lender to brokers, banks and lenders",
+  portal:"https://unitedaglending.com/",
+  niches:["Rural residential (5-160 acres)","Hobby farms","Commercial farm & ranch","Rural/bare land","Barndominiums / shop homes","Schedule F farm income"],
+  programs:[
+    {p:"Rural Residential Loan", ltv:"Not published — ask AE (site says dwelling only needs to be ~30% of total property value)", fico:"680", dti:"Not published — ask AE", loan:"Not published — ask AE", notes:"5-160 acres; 15/30-yr fixed; purchase, refi, cash-out; primary or second home in rural area; barndominiums/shed/shop homes allowed; Schedule F income allowed", src:"https://unitedaglending.com/agricultural-loans/rural-residential-loan-program/"},
+    {p:"Hobby Farm Loan", ltv:"Not published — ask AE", fico:"680", dti:"Not published — ask AE", loan:"Not published — ask AE", notes:"Min 5 acres; land value may exceed 30% of appraised value; farm income may supplement but cannot be primary income", src:"https://unitedaglending.com/hobby-farm-lenders/"},
+    {p:"Commercial Farm & Ranch Loan", ltv:"70% of appraised value", fico:"680", dti:"Not published — ask AE", loan:"$500K minimum", notes:"10+ acres; terms up to 30 years", src:"https://unitedaglending.com/agricultural-loans/farm-and-ranch-loans/"},
+    {p:"Rural Land Loan", ltv:"~70% (down payments start around 30%)", fico:"Not published — ask AE", dti:"Not published — ask AE", loan:"$500K minimum", notes:"Bare land, generally 10+ acres; 10-30 yr fixed or 1-15 yr adjustable", src:"https://unitedaglending.com/4-agriculture-wholesale-loan-programs-for-your-ag-customers/"}
+  ],
+  states:{CA:"Not confirmed",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed"}, statesSrc:"",
+  nmls:"",
+  highlights:["Dedicated agricultural wholesale lender (brokers, banks, lenders)","Finances barndominiums, shed and shop homes","Credit score can come from one of three bureaus on land/ag loans (per site FAQ)","Fixed 15/30-yr terms on rural residential"],
+  cautions:["Does not finance construction, farm operations, equipment or livestock (per unitedaglending.com)","Site pages inconsistent on down payment/dwelling thresholds and loan caps (one page says up to $2M); several pages 1-3 yrs old — verify with AE","NMLS ID and licensed states not found on site; check NMLS Consumer Access","Page content read via search-result snippets only (direct fetch failed)"],
+  status:"Active wholesale verified",
+  sources:["https://unitedaglending.com/","https://unitedaglending.com/agricultural-loans/rural-residential-loan-program/","https://unitedaglending.com/agricultural-loans/farm-and-ranch-loans/","https://unitedaglending.com/hobby-farm-lenders/","https://unitedaglending.com/4-agriculture-wholesale-loan-programs-for-your-ag-customers/","https://unitedaglending.com/faq-for-lenders/"],
+  checked:"2026-10-22"
+},
+{
+  n:57, name:"United Wholesale Mortgage (UWM)",
+  channel:"Wholesale (broker)",
+  portal:"https://www.uwm.com/",
+  niches:["Agency conventional/FHA/VA/USDA","Conforming & high-balance","Prime Jumbo (fixed & ARM)","Bank Statement (non-QM)","Investor Flex DSCR","Doctor loan","Home equity loans"],
+  programs:[
+    {p:"Agency Conventional / FHA / VA / USDA", ltv:"Per agency guidelines — ask AE", fico:"No UWM minimum overlay — AUS-driven (effective per 10/7/2026 release)", dti:"Per AUS", loan:"2027 est. conforming 1-unit $847,440; 2-unit $1,085,059; 3-unit $1,311,535; 4-unit $1,630,005 (per HousingWire)", notes:"UWM removed credit score minimum overlays on Fannie/Freddie and Ginnie (FHA/VA/USDA) products; honoring estimated 2027 limits early", src:"https://www.uwm.com/press-release-october-7-2026"},
+    {p:"Jumbo Fixed (660 tier)", ltv:"89.99%", fico:"660", dti:"50%", loan:"$1 over conforming up to $5M", notes:"Other tiers: 680+ FICO / 80% LTV up to $2M; 700+ FICO / 80% LTV $600K-$3M", src:"https://www.uwm.com/loan-products?jumbo=jumbo-fixed-purple"},
+    {p:"Prime Jumbo ARM", ltv:"80%", fico:"680", dti:"Not published — ask AE", loan:"Not published — ask AE", notes:"Conventional ARM up to 95% LTV; Conventional Elite/Prime Jumbo 80%", src:"https://uwm.com/price-a-loan/exclusives/sofr-arms"},
+    {p:"Bank Statement (non-QM)", ltv:"Not published — ask AE", fico:"Minimum applies — not published", dti:"Not published — ask AE", loan:"Not published — ask AE", notes:"Self-employed; personal or business bank statements in lieu of tax returns", src:"https://www.uwm.com/non-qm-loans"},
+    {p:"Investor Flex (DSCR)", ltv:"Not published — ask AE", fico:"Minimum applies — not published", dti:"N/A (DSCR)", loan:"Not published — ask AE", notes:"Qualifies on prospective rental income of the property", src:"https://www.uwm.com/non-qm-loans"},
+    {p:"Doctor Loan", ltv:"100% (90.01-100%)", fico:"680", dti:"50%", loan:"Not published — ask AE", notes:"Eligible medical professionals; primary residence only", src:"https://www.uwm.com/trending/doctor-loan"}
+  ],
+  states:{CA:"Yes",IL:"Yes",NV:"Yes",FL:"Yes",AZ:"Yes"}, statesSrc:"https://www.bankrate.com/mortgages/reviews/united-wholesale-mortgage/",
+  nmls:"3038",
+  highlights:["Broker-only wholesale lender; #1 lender by volume in 2024 (per Bankrate)","BOLT self-service initial approval in ~15 minutes inside EASE LOS","Agency credit-score overlays removed Oct 2026","Early adoption of estimated 2027 conforming limits"],
+  cautions:["NMLS 3038 and 50-state coverage per Bankrate (third party) — confirm on NMLS Consumer Access","FHA/VA 580+ LLPA waiver promotion end date year not stated (uwm.com/loan-products)","Non-QM grids (Bank Statement, Investor Flex) gated behind broker portal","Page content read via search-result snippets only (direct fetch failed)"],
+  status:"Active wholesale verified",
+  sources:["https://www.uwm.com/press-release-october-7-2026","https://www.uwm.com/loan-products","https://www.uwm.com/loan-products?jumbo=jumbo-fixed-purple","https://uwm.com/price-a-loan/exclusives/sofr-arms","https://www.uwm.com/non-qm-loans","https://www.uwm.com/trending/doctor-loan","https://www.housingwire.com/articles/uwm-raises-conforming-loan-limit-to-819000-fhfa/","https://www.bankrate.com/mortgages/reviews/united-wholesale-mortgage/"],
+  checked:"2026-10-22"
+},
+{
+  n:58, name:"Val-Chris Investments",
+  channel:"Private lender (broker-friendly)",
+  portal:"https://www.val-chris.com/brokers/",
+  niches:["California private money / hard money","1st, 2nd & 3rd trust deeds","Business-purpose loans","Foreign national","Stated income Corp/LLC","Owner & non-owner occupied"],
+  programs:[
+    {p:"1st Trust Deed (business purpose)", ltv:"Not published — 'conservative' LTVs; may accept other collateral", fico:"Not published — ask AE", dti:"Not published — ask AE", loan:"$25,000 - $4,000,000", notes:"Rates from 8.99%; 1-3 yr terms, typically interest-only with balloon; origination 1.5-3 pts typical", src:"https://www.val-chris.com/brokers/"},
+    {p:"2nd / 3rd Trust Deeds", ltv:"Not published — ask AE", fico:"Not published — ask AE", dti:"Not published — ask AE", loan:"Up to $4,000,000", notes:"Rates 9.00%-14.99% on most loans; 2-4 pts on most loans (older page)", src:"https://www.val-chris.com/borrowers/"},
+    {p:"Foreign National / Stated Income Corp-LLC", ltv:"Not published — ask AE", fico:"Not published — ask AE", dti:"Not published — ask AE", loan:"Up to $4,000,000", notes:"Listed under business-purpose broker programs", src:"https://www.val-chris.com/privatemoney/"}
+  ],
+  states:{CA:"Yes",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed"}, statesSrc:"https://www.val-chris.com/company/",
+  nmls:"243299",
+  highlights:["CA DRE #01002882 and CFL #603 5063 licensed","Lends throughout California; collateral flexibility when LTV is an issue","Business-purpose loans close in 5-14 days (older landing page)"],
+  cautions:["No published max LTV — ask AE","Rates/fees differ between pages and pages are 1.5-2.5 yrs old (val-chris.com)","Page content read via search-result snippets only (direct fetch failed)"],
+  status:"Active — channel not confirmed",
+  sources:["https://www.val-chris.com/brokers/","https://www.val-chris.com/borrowers/","https://www.val-chris.com/company/","https://www.val-chris.com/privatemoney/","https://www.val-chris.com/oakland/oakland-private-money-services-for-brokers/"],
+  checked:"2026-10-22"
+},
+{
+  n:59, name:"Velocity Mortgage Capital",
+  channel:"Wholesale (broker) — business-purpose investor lender, broker-only",
+  portal:"https://www.velocitymortgage.com/",
+  niches:["Investor 1-4 unit","Multifamily","Mixed-use","Small balance commercial","Foreign investor","Credit-challenged / high-equity investors (Fast50)","30-yr fixed IO (FlexTerm)"],
+  programs:[
+    {p:"Investor 1-4 / small commercial (general)", ltv:"Not published — ask AE", fico:"Not published — ask AE", dti:"N/A (business purpose)", loan:"$75,000 - $5,000,000 (older press release)", notes:"Programs range from short-term, credit repair, fix-and-flip to 30-yr fully amortized", src:"https://www.velocitymortgage.com/mortgage-programs/"},
+    {p:"FlexTerm (30-yr fixed)", ltv:"Not published — ask AE", fico:"Not published — ask AE", dti:"N/A", loan:"Not published — ask AE", notes:"Long-term interest-only fixed-rate financing", src:"https://www.velocitymortgage.com/broker-toolkit/"},
+    {p:"Fast50", ltv:"Low-LTV program — % not published", fico:"Not published — designed for derogatory credit", dti:"N/A", loan:"Not published — ask AE", notes:"High-equity investors seeking quick, easy credit qualification", src:"https://www.velocitymortgage.com/broker-toolkit/"},
+    {p:"Foreign Investor Loan", ltv:"65%", fico:"Not published — ask AE", dti:"N/A", loan:"Not published — ask AE", notes:"For non-US investors", src:"https://www.velocitymortgage.com/mortgage-programs/"}
+  ],
+  states:{CA:"Yes",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed"}, statesSrc:"https://www.velocitymortgage.com/",
+  nmls:"",
+  highlights:["All programs offered only through mortgage brokers","CA Finance Lenders License #603A366; CA offices (Westlake Village, San Clemente)","Covers 1-4, multifamily, mixed-use and small commercial","Broker ToolKit with program flyers"],
+  cautions:["Program LTV/FICO grids not public — in Broker ToolKit/AE","Loan range from a ~7-year-old press release — verify","NMLS ID not found; licensee may be Velocity Commercial Capital, LLC — check NMLS Consumer Access","Page content read via search-result snippets only (direct fetch failed)"],
+  status:"Active wholesale verified",
+  sources:["https://www.velocitymortgage.com/","https://www.velocitymortgage.com/mortgage-programs/","https://www.velocitymortgage.com/broker-toolkit/","https://www.velocitymortgage.com/velocity-mortgage-capital-locations/","https://www.velocitymortgage.com/press/velocity-mortgage-capital-8th-securitization/"],
+  checked:"2026-10-22"
+},
+{
+  n:60, name:"Windsor Mortgage",
+  channel:"Wholesale (broker) + non-delegated & delegated correspondent (division of Plains Commerce Bank)",
+  portal:"https://www.windsormortgage.com/wholesale-lending",
+  niches:["Agency conventional / high-balance","FHA/VA/USDA incl. manual UW","Manufactured homes (FHA/VA/conv)","Jumbo / Prime Jumbo","Non-QM bank statement","DSCR Plus","DPA programs","Medical professionals"],
+  programs:[
+    {p:"FHA", ltv:"Per FHA — ask AE", fico:"600 (600-619 AUS/manual section); manufactured 640", dti:"Manufactured 50%", loan:"Per FHA limits", notes:"Manual UW available but not on manufactured (Accept/Eligible only); Product Profile v4.0.6 01/09/2026", src:"https://www.windsormortgage.com/assets/general-uploads/FHA-Product-Profile-4.0.6-01.09.2026.pdf"},
+    {p:"VA / USDA", ltv:"Per agency — ask AE", fico:"600 FHA/VA; 620 USDA (AUS)", dti:"VA manual 41% or 50% w/120% residual (2022 guide)", loan:"Per agency", notes:"Manufactured homes available FHA/VA (640 min, AUS only per 2022 VA guide)", src:"https://www.windsormortgage.com/loan-options/government-loans"},
+    {p:"Conventional (incl. HomeReady/Home Possible/manufactured)", ltv:"97% (3% down)", fico:"620", dti:"Not published — ask AE", loan:"Min $50,000 (HomeReady guide); page shows outdated $715,000 limit", notes:"Conforming, high-balance, HomeReady, Home Possible, manufactured", src:"https://www.windsormortgage.com/loan-options/conventional-loans"},
+    {p:"Jumbo", ltv:"90%", fico:"Not published — ask AE", dti:"Not published — ask AE", loan:"Up to $3.5M (FAQ) / $3,000,000 (loan options page)", notes:"15/20/25/30 fixed and SOFR ARMs; manufactured ineligible on Jumbo 1/Prime Jumbo 1", src:"https://www.windsormortgage.com/why-windsor/faqs"},
+    {p:"DSCR Plus", ltv:"80% (IO: 75%)", fico:"660 (IO: 700)", dti:"N/A — min DSCR 0.75x or no ratio", loan:"$125K - $2.0M", notes:"IO requires DSCR >=1.00; 5% LTV reduction in declining markets; matrix file dated 06/06/2025", src:"https://www.windsormortgage.com/assets/general-uploads/Windsor-DSCR-Plus-Matrix-06062025.pdf"},
+    {p:"Bank Statement", ltv:"80% primary (reduced from 90%)", fico:"700", dti:"Not published — ask AE", loan:"$250K - $1,000,000 ($1.5M in CA/NJ/NY/WA/CT w/740 FICO, primary SFR)", notes:"Guide v1.4 eff. 10/25/2023 — likely dated", src:"https://www.windsormortgage.com/assets/general-uploads/Windsor-Bank-Statement-Guide_10252023.pdf"}
+  ],
+  states:{CA:"Not confirmed",IL:"Not confirmed",NV:"Not confirmed",FL:"Not confirmed",AZ:"Not confirmed"}, statesSrc:"",
+  nmls:"463950",
+  highlights:["Broker, non-delegated and delegated correspondent delivery","Manual underwriting and higher DTI tolerances on government loans","Manufactured home financing via FHA/VA/conventional","Public product profiles/matrices posted on site","Bank-backed (Plains Commerce Bank)"],
+  cautions:["Jumbo max conflicts across pages ($3.5M vs $3M) — verify","FHA/VA manufactured: no manual UW, 640 min (FHA Profile 01/2026)","Several guides (bank statement 2023, VA 2022) may be outdated","State coverage not found; page content read via search snippets only (direct fetch failed)"],
+  status:"Active wholesale verified",
+  sources:["https://www.windsormortgage.com/why-windsor","https://www.windsormortgage.com/why-windsor/faqs","https://www.windsormortgage.com/loan-options","https://www.windsormortgage.com/loan-options/conventional-loans","https://www.windsormortgage.com/loan-options/government-loans","https://www.windsormortgage.com/assets/general-uploads/FHA-Product-Profile-4.0.6-01.09.2026.pdf","https://www.windsormortgage.com/assets/general-uploads/Windsor-DSCR-Plus-Matrix-06062025.pdf","https://www.windsormortgage.com/assets/general-uploads/Windsor-Bank-Statement-Guide_10252023.pdf"],
+  checked:"2026-10-22"
+},
+{
+  n:61, name:"Loan United",
+  channel:"Wholesale (broker) — LoanUnited Wholesale (site for industry professionals only)",
+  portal:"https://luwholesale.com/",
+  niches:["FHA down to 500 FICO","VA manuals to 60% DTI","VA IRRRL no FICO minimum","FHA streamline","Conventional incl. manufactured homes"],
+  programs:[
+    {p:"FHA", ltv:"Per FHA — ask AE", fico:"500", dti:"Per AUS on full doc", loan:"Per FHA limits", notes:"FHA streamline offered; manual UW for FHA not described on site", src:"https://luwholesale.com/"},
+    {p:"VA", ltv:"Per VA — ask AE", fico:"Not published — ask AE", dti:"Manual 60%; Approve/Eligible 65%", loan:"Per VA", notes:"VA sponsorship available for brokers", src:"https://luwholesale.com/va-loans/"},
+    {p:"VA IRRRL", ltv:"Per VA", fico:"No FICO minimum", dti:"Not published — ask AE", loan:"Per VA", notes:"", src:"https://luwholesale.com/"},
+    {p:"Conventional", ltv:"95% purchase (5% down) / 80% primary cash-out", fico:"620", dti:"Not published — ask AE", loan:"$806,500 (2025 conforming, per site)", notes:"Manufactured homes eligible", src:"https://luwholesale.com/conventional-loans/"}
+  ],
+  states:{CA:"Yes",IL:"Not confirmed",NV:"Not confirmed",FL:"Yes",AZ:"Not confirmed"}, statesSrc:"https://luwholesale.com/licenses/",
+  nmls:"1767490",
+  highlights:["FHA to 500 FICO","VA manual underwriting to 60% DTI","Does not hold files for unsigned docs (required before CTC)","VA sponsorship for brokers"],
+  cautions:["Site says 'Licensed in 40 States' but list captured only ~19 states — verify on NMLS Consumer Access","No published FHA manual-UW or manufactured FHA rules — ask AE","No non-QM or jumbo found","Page content read via search-result snippets only (direct fetch failed)"],
+  status:"Active wholesale verified",
+  sources:["https://luwholesale.com/","https://luwholesale.com/va-loans/","https://luwholesale.com/conventional-loans/","https://luwholesale.com/licenses/","https://luwholesale.com/frequently-asked-questions/","https://loanunited.com/licenses.php"],
+  checked:"2026-10-22"
+}
 ]);
 
 </script>
@@ -13402,6 +14619,37 @@ mount(){let g=store.get("nl_g","All"),cur=store.get("nl_cur",null);
 {const l=PAGES.find(p=>p[0]==="Loan Intelligence");if(l&&!l[1].some(x=>x[0]==="nichelib")){const i=l[1].findIndex(x=>x[0]==="programs");l[1].splice(i+1,0,["nichelib","Loan Niche Encyclopedia"])}}
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();NL().forEach(x=>out.push({src:`Loan niche — ${x.n}`,t:`${x.what} Who: ${(x.who||[]).join("; ")}. Rules: ${(x.rules||[]).join("; ")}. Pitfalls: ${(x.pitfalls||[]).join("; ")}. Compliance: ${x.compliance}`}));return out}}
 if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^Loan niche — /,{hash:"nichelib"}]);
+
+/* app37: Lender Profiles & Matrices — public program research per wholesale lender (lenderinfo1-6.js → window.LENDER_INFO): niches, max LTV / min FICO / max DTI / loan limits by program with the source link, state coverage for CA·IL·NV·FL·AZ, status, cautions, plus your own AE-confirmed notes and a deal finder. */
+const LI=()=>(window.LENDER_INFO||[]).slice().sort((a,b)=>a.n-b.n);
+const LP_ST=["CA","IL","NV","FL","AZ"];
+const lpNum=(s,re)=>{const m=String(s||"").match(re);return m?+m[1]:null};
+const lpFico=p=>lpNum(p.fico,/(\d{3})/);
+const lpLtv=p=>{const a=String(p.ltv||"").match(/(\d{2,3}(?:\.\d+)?)\s*%/g);return a?Math.max(...a.map(x=>parseFloat(x))):null};
+const lpNotes=()=>store.get("lp_notes",{});
+const lpStChip=v=>v==="Yes"?'<span class="tag ok">Yes</span>':v==="No"?'<span class="tag bad">No</span>':'<span class="tag">?</span>';
+const lpStat=s=>/verified/i.test(s)?"ok":/inactive|exit|not found/i.test(s)?"bad":"warn";
+function lpDetail(x){const N=lpNotes()[x.n]||"";const D=(typeof LENDERS!=="undefined"?LENDERS:[]).find(l=>l.n===x.n);return `<div class="card"><div class="row" style="flex-wrap:wrap"><h3 style="margin:0">#${x.n} ${esc(x.name)}</h3><span class="tag ${lpStat(x.status)}">${esc(x.status)}</span><span class="tag">${esc(x.channel||"")}</span>${x.nmls?`<span class="tag">NMLS ${esc(x.nmls)}</span>`:""}<span class="sp"></span>${x.portal?`<a class="btn ghost sm" target="_blank" rel="noopener" href="${esc(x.portal)}">Broker site ↗</a>`:""}<button class="btn ghost sm" id="lp_ae">Copy AE verification email</button></div>
+ ${D&&D.flag?`<p class="sm" style="margin:6px 0 0">${esc(D.flag)}</p>`:""}
+ <div class="row" style="margin-top:8px;flex-wrap:wrap"><b class="sm">States:</b> ${LP_ST.map(s=>`<span class="sm">${s} ${lpStChip((x.states||{})[s])}</span>`).join(" ")}${x.statesSrc?` <a class="sm" target="_blank" rel="noopener" href="${esc(x.statesSrc)}">source</a>`:""}</div>
+ ${(x.niches||[]).length?`<div style="margin-top:6px">${x.niches.map(n=>`<span class="tag">${esc(n)}</span>`).join(" ")}</div>`:""}
+ <div style="overflow:auto;margin-top:8px"><table class="sm"><thead><tr><th>Program</th><th>Max LTV/CLTV</th><th>Min FICO</th><th>Max DTI</th><th>Loan amount</th><th>Notes</th><th></th></tr></thead><tbody>${(x.programs||[]).map(p=>`<tr><td><b>${esc(p.p)}</b></td><td>${esc(p.ltv)}</td><td>${esc(p.fico)}</td><td>${esc(p.dti)}</td><td>${esc(p.loan)}</td><td class="mut">${esc(p.notes||"")}</td><td>${p.src?`<a target="_blank" rel="noopener" href="${esc(p.src)}">src</a>`:""}</td></tr>`).join("")||'<tr><td colspan="7" class="mut">No public program data found — ask the AE for the current matrix.</td></tr>'}</tbody></table></div>
+ <div class="grid g2"><div>${(x.highlights||[]).length?`<h4 style="margin:10px 0 4px">Highlights</h4><ul class="sm" style="margin:0 0 0 18px">${x.highlights.map(h=>`<li>${esc(h)}</li>`).join("")}</ul>`:""}</div><div>${(x.cautions||[]).length?`<h4 style="margin:10px 0 4px">Cautions</h4><ul class="sm" style="margin:0 0 0 18px">${x.cautions.map(h=>`<li>${esc(h)}</li>`).join("")}</ul>`:""}</div></div>
+ <h4 style="margin:10px 0 4px">AE-confirmed notes (yours, saved in this browser)</h4><textarea id="lp_note" rows="3" style="width:100%" placeholder="e.g. 10/22 — AE confirmed 50% DTI on FHA with 640+; VA to 580; comp 2.25%">${esc(N)}</textarea>
+ <p class="sm mut" style="margin-top:8px">Researched from public pages on ${esc(x.checked||"")}. Matrices and overlays change often; quote only after the AE or the current matrix confirms. Sources: ${(x.sources||[]).slice(0,6).map((u,i)=>`<a target="_blank" rel="noopener" href="${esc(u)}">${i+1}</a>`).join(" ")}</p></div>`}
+PAGE.lprofiles={html:()=>{const L=LI();const ver=L.filter(x=>/verified/i.test(x.status)).length;return `<div class="card" style="border-left:4px solid var(--accent,#c9a227)"><h3 style="margin:0">Lender Profiles &amp; Matrices <span class="sub">${L.length} lenders · ${ver} wholesale channels verified · ${L.reduce((a,x)=>a+(x.programs||[]).length,0)} programs with published LTV / FICO / DTI / limits · CA IL NV FL AZ coverage</span></h3><p class="sm mut" style="margin:6px 0 0">Built from each lender's public broker pages and published matrices (with the source link on every number). Anything a lender keeps behind its broker login shows as "Not published — ask AE". Add what your AE confirms in the notes box; it stays in this browser.</p></div>
+ <div class="card"><h4 style="margin:0 0 6px">Deal finder</h4><div class="row" style="flex-wrap:wrap"><select id="lp_s"><option value="">Any state</option>${LP_ST.map(s=>`<option>${s}</option>`).join("")}</select><input id="lp_p" placeholder="Program (DSCR, bank statement, FHA, HELOC, ITIN…)" style="max-width:260px"><input id="lp_f" type="number" placeholder="FICO" style="max-width:90px"><input id="lp_l" type="number" placeholder="LTV %" style="max-width:90px"><select id="lp_v"><option value="">Any status</option><option value="ok">Verified only</option></select></div><p class="sm mut" style="margin:6px 0 0">Matches programs whose published minimum FICO is at or below yours and max LTV at or above yours. Programs without published numbers stay in the list so you can ask.</p></div>
+ <div class="grid g12" style="align-items:start"><div class="card" style="max-height:80vh;overflow:auto;padding:6px" id="lp_list"></div><div id="lp_det"></div></div>`},
+mount(){let cur=store.get("lp_cur",null);
+ const match=x=>{const s=$("#lp_s").value,q=$("#lp_p").value.trim().toLowerCase(),f=+$("#lp_f").value||0,l=+$("#lp_l").value||0,v=$("#lp_v").value;if(s&&(x.states||{})[s]==="No")return false;if(v==="ok"&&!/verified/i.test(x.status))return false;const P=(x.programs||[]).filter(p=>(!q||(p.p+" "+(p.notes||"")).toLowerCase().includes(q))&&(!f||lpFico(p)===null||lpFico(p)<=f)&&(!l||lpLtv(p)===null||lpLtv(p)>=l));if(q&&!P.length&&!(x.niches||[]).join(" ").toLowerCase().includes(q))return false;if((f||l)&&!P.length)return false;return true};
+ const draw=()=>{const L=LI().filter(match);$("#lp_list").innerHTML=L.length?L.map(x=>`<div class="lp-it" data-n="${x.n}" style="padding:6px 8px;border-radius:8px;cursor:pointer;${x.n===cur?"background:var(--chip)":""}"><b class="sm">#${x.n} ${esc(x.name)}</b> <span class="tag ${lpStat(x.status)}" style="font-size:10px">${esc((x.status||"").split(" ")[0])}</span><div class="sm mut">${LP_ST.map(s=>`${s}${(x.states||{})[s]==="Yes"?"✓":(x.states||{})[s]==="No"?"✗":"?"}`).join(" ")} · ${(x.programs||[]).length} programs</div></div>`).join(""):'<p class="sm mut">No lender matches — loosen the filters.</p>';
+  $$(".lp-it").forEach(d=>d.onclick=()=>{cur=+d.dataset.n;store.set("lp_cur",cur);draw()});
+  const x=LI().find(y=>y.n===cur)||L[0];$("#lp_det").innerHTML=x?lpDetail(x):'<div class="card mut">Lender research is loading.</div>';
+  if(x){$("#lp_note").oninput=e=>{const N=lpNotes();N[x.n]=e.target.value;store.set("lp_notes",N)};$("#lp_ae").onclick=()=>copy(`Hi — could you confirm your current broker guidelines for these programs so I quote accurately?\n\n${(x.programs||[]).map(p=>`• ${p.p}: max LTV ${p.ltv}; min FICO ${p.fico}; max DTI ${p.dti}; loan amount ${p.loan}`).join("\n")||"• Your current program matrix"}\n\nAlso: are you approved for brokers in CA, IL, NV, FL and AZ, and what is current broker comp? Thank you.\n— Steven Shearrill, Patriot Pacific Financial, NMLS #____`)}};
+ ["lp_s","lp_v"].forEach(i=>$("#"+i).onchange=draw);["lp_p","lp_f","lp_l"].forEach(i=>$("#"+i).oninput=draw);draw()}};
+{const l=PAGES.find(p=>p[0]==="Loan Intelligence");if(l&&!l[1].some(x=>x[0]==="lprofiles")){const i=l[1].findIndex(x=>x[0]==="lenders");l[1].splice(i<0?l[1].length:i+1,0,["lprofiles","Lender Profiles & Matrices"])}}
+{const c0=coachCorpus;coachCorpus=function(){const out=c0();LI().forEach(x=>out.push({src:`Lender profile — ${x.name}`,t:`${x.status}. ${x.channel}. States: ${LP_ST.map(s=>s+" "+((x.states||{})[s]||"?")).join(", ")}. Niches: ${(x.niches||[]).join(", ")}. Programs: ${(x.programs||[]).map(p=>`${p.p} (LTV ${p.ltv}; FICO ${p.fico}; DTI ${p.dti}; ${p.loan})`).join("; ")}. Cautions: ${(x.cautions||[]).join("; ")}. Checked ${x.checked}.`}));return out}}
+if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^Lender profile — /,{hash:"lprofiles"}]);
 boot();
 
 </script>
