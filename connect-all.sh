@@ -46,12 +46,17 @@ step "1 Get today's files ($BRANCH)" "git: local changes blocked the pull - tell
 runner_fix() {
   have runnerctl || { echo "runnerctl not installed - run ./mac-bootstrap.sh --only runner"; return 1; }
   runnerctl status 2>&1 | tee -a "$LOG" | tail -15
-  echo "restarting the runner once to clear a hung task (never logs in)"; runnerctl restart 2>&1 | tail -5
+  echo "restarting the runner once to clear a hung task (never logs in)"
+  local out rc; out="$(runnerctl restart 2>&1)"; rc=$?; printf '%s\n' "$out" | tail -5
+  [ "$rc" = 0 ] || { echo "runnerctl restart failed (exit $rc)"; return 1; }
   sleep 5; runnerctl status 2>&1 | tail -5
+  if runnerctl status 2>&1 | grep -qiE 'not running|stopped|dead|no runner'; then
+    echo "runner is still not running after the restart"; return 1
+  fi
   if runnerctl status 2>&1 | grep -qiE 'logged out|not logged in|login required'; then
     echo "RUNNER IS LOGGED OUT - only you can sign it in: run  runnerctl login  yourself"; return 1
   fi
-  runnerctl list 2>&1 | grep -ciE 'ok|running' >/dev/null
+  runnerctl list >/dev/null 2>&1
 }
 step "2 Mac runner (silent since Oct 13): status, restart once" \
   "Runner: run  runnerctl login  yourself (a script must never sign in), then  runnerctl status" runner_fix
@@ -71,7 +76,8 @@ keep_awake() {
   <key>RunAtLoad</key><true/><key>KeepAlive</key><true/>
 </dict></plist>
 PLIST
-  launchctl unload "$p" >/dev/null 2>&1; launchctl load "$p" && pgrep -x caffeinate >/dev/null && echo "keep-awake on (charger only)"
+  launchctl unload "$p" >/dev/null 2>&1; launchctl load "$p" || return 1
+  sleep 1; launchctl list com.vanessa.keepawake 2>/dev/null | grep -q '"PID"' && echo "keep-awake on (charger only)"
 }
 step "2b Keep the Mac awake on the charger (so the morning tasks run)" \
   "Keep-awake: System Settings -> Battery -> Options -> 'Prevent automatic sleeping on power adapter' ON" keep_awake
