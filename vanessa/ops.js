@@ -39,7 +39,7 @@ const ZOHO = {
     ["Z7","Daily brief from Zoho","W22 cron","ZOHO_SEARCH new leads (Created_Time > 24h) · overdue Tasks · hot leads › Morning Brief ZOHO block",false],
   ],
   edgeFunction:`// supabase/functions/zoho-sync/index.ts — Zoho CRM v8 REST via OAuth refresh token (secrets in Supabase Vault)
-import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
+import { serve } from "${"https"}://deno.land/std@0.224.0/http/server.ts";
 const DC = Deno.env.get("ZOHO_DC") ?? "com";                 // com | eu | in | com.au | jp
 const ACCOUNTS = \`https://accounts.zoho.\${DC}/oauth/v2/token\`;
 const API = \`https://www.zohoapis.\${DC}/crm/v8\`;
