@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 35 skills · 7 plugins · 17 connectors (8 ok, 9 need attention) · 65 cloud routines · 60 Mac tasks
+toolkit: 46 skills · 7 plugins · 17 connectors (8 ok, 9 need attention) · 65 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -67,6 +67,16 @@ toolkit: 35 skills · 7 plugins · 17 connectors (8 ok, 9 need attention) · 65 
 **Skills**
 - `kevin-mentor`: Kevin, Steven's standalone Standards Mentor persona (personal development, the 11-Dimension Wealth framework) with his own chat card on the Command Deck. Use whenever Steven addresses Kevin directly, or asks for a progre
 
+## Apex — Trade mentor
+
+**Skills**
+- `apex-trade-journal`: Apex's one seat tool: a Notion-backed paper-trade journal — log an NQ/ES idea, its thesis, levels, outcome and the lesson, and read back the stats — never an order, never a broker connection, paper only. Use when Steven 
+
+## James — Wealth mentor
+
+**Skills**
+- `james-portfolio-read`: James's one seat tool: read Vanguard Advisor Tools get_model_portfolios (read-only) to describe model allocations when Steven asks how a family-office style portfolio is built — education and comparison only, never a rec
+
 ## Maxwell — Broker coach
 
 **Mac tasks**
@@ -108,7 +118,9 @@ toolkit: 35 skills · 7 plugins · 17 connectors (8 ok, 9 need attention) · 65 
 ## Sofia — CMO — marketing
 
 **Skills**
+- `listing-launch`: Prepare a listing launch for a seller Steven has signed: the launch checklist, MLS public and private remarks drafts, Canva flyer and social-post drafts, and the seller weekly-report template — marketing drafts only, not
 - `openmontage-video`: Make a marketing, explainer or training video with OpenMontage on the Mac (~/Applications/OpenMontage) — Sofia's brief, Claude Code runs the pipeline, Steven approves every creative stop, nothing is posted. Use when Stev
+- `past-client-nurture`: Monthly sphere-touch marketing drafts for Steven's past clients from reClients and pipeline — a local market note, home-purchase anniversaries and birthdays, and a plain check-in — as Gmail drafts plus the three template
 
 **Connectors**
 - `BlackRock · Health Data Avatar · Microsoft 365 · PlayMCP · Similarweb · Higgsfield` — *pending*: never finished connecting; nothing uses them
@@ -125,7 +137,13 @@ toolkit: 35 skills · 7 plugins · 17 connectors (8 ok, 9 need attention) · 65 
 **Skills**
 - `cli-anything-connectors`: Install CLI-Anything on the Mac and the seven pre-built, read-only agent-native CLI wrappers for the real-estate tools that have no usable API — homes.com, ShowingTime, Showami, SkySlope, zipForms/Lone Wolf — plus the Lo
 - `lofty-crm-sync`: Sync Lofty (formerly Chime), Steven's real-estate CRM since 2026-09-22, into the Command Deck — writes the loftyLeads doc (stage totals, 90-day new leads, speed-to-lead) and points the lead-triage / lead-response / ISA-K
+- `meeting-recap-to-crm`: Turn a recorded client or partner meeting (Fieldy pendant, Zoom for Claude) into a recap — decisions, action items, a follow-up Gmail draft and a CRM note queued on the deck for the ISA to paste into Lofty or Zoho. Draft
+- `open-house-follow-up`: After an open house: read the sign-in sheet (Google Forms export or a Drive sheet), build the lead list with first names and interest level, draft the thank-you emails as Gmail drafts, and write the ISA call list — plus 
 - `pabbly-workflows`: Build and run Pabbly Connect automations for Steven's operation: the six built-in-app workflows (Lofty, Zoho, Gmail, Google Calendar, Notion, Slack, Strava) he clicks together in Pabbly's editor, and the custom Kapso Wha
+- `refi-watch`: Compare the market-average rate in ratesSnapshot with the note rates on a past-client list Steven supplies (he types each client's rate — the skill reads no loan file) and prep the pipeline list of who is worth a convers
+- `review-request`: After a Lofty close or a Zoho funding: draft the three post-close emails — day-1 thank-you, day-10 review request with Google and Zillow link placeholders, day-30 check-in — as Gmail drafts, with the timing rules and the
+- `tc-doc-intake`: Read a purchase contract, counter, addendum or disclosure package (Google Drive file or Gmail attachment) and pull the dates into the deal's tcDeals entry for the Transaction & Showing desk — acceptance, deposit, inspect
+- `voicemail-to-lead`: Transcribe a voicemail (a recording link Steven or the carrier email provides) with WhisperAI transcribe_url, summarise who called about what, and queue a lead-triage item on the deck for Victor's ISA line — no callback,
 - `zoho-crm-sync`: Sync Zoho CRM — Steven's system of record for the mortgage pipeline — into the Command Deck through Composio: writes zohoSync (connection health), zohoLeads (14-stage kanban) and zohoDeals. Self-tests first and reports t
 
 **Connectors**
@@ -157,6 +175,11 @@ toolkit: 35 skills · 7 plugins · 17 connectors (8 ok, 9 need attention) · 65 
 **Mac tasks**
 - `automation-audit-weekly`: Weekly seven-phase audit-and-remediate pass driven by the chief-automation-strategist agent, including the AI Agent Engineering Team stress-
 - `cpi-daily-scan`: Cheap daily OBSERVE + IDENTIFY pass — no subagents. Logs new, specific automation opportunities to the CPI Opportunity Log for Saturday's de
+
+## Nadia — CAIO — AI strategy
+
+**Skills**
+- `nadia-scout-run`: Nadia's one seat tool: run the weekly scout (integrations/scout/scout.py) for what is new in AI tooling that could help Steven's operation — MCP servers, Claude Code plugins, agent CLIs, real-estate and mortgage APIs — t
 
 ## Derek — CTO — automation & integrations
 
@@ -278,4 +301,4 @@ toolkit: 35 skills · 7 plugins · 17 connectors (8 ok, 9 need attention) · 65 
 
 ## Seats with no tool of their own
 
-Apex, James, Nadia
+none

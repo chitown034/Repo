@@ -35,10 +35,19 @@ ALIASES = {
     "Howard": ("ca-underwriter", "roster"), "Maxwell": ("broker-coach-maxwell", "roster"),
     "Kevin": ("kevin-mentor", "skill"), "James": ("james-wealth", "skill"), "Apex": ("apex-trader", "skill"),
     "Harrison": ("vanessa-broker", "skill"),
+    # Desk seats, 2026-10-22 (Sonnet 5 report seats, drafts only; wiki/ai-team/desk-seats.md)
+    "Refi Watch Analyst": ("refi-watch-analyst", "roster"), "Sphere Nurture Coordinator": ("sphere-nurture-coordinator", "roster"),
+    "Voicemail & Inbox Triage": ("voicemail-inbox-triage", "roster"), "Document Intake Clerk": ("document-intake-clerk", "roster"),
+    "Open House Captain": ("open-house-captain", "roster"), "Travel Desk": ("travel-desk", "roster"),
+    "Meeting Scribe": ("meeting-scribe", "roster"),
 }
 SEAT_OF_LEAD = {"cfo-marcus": "Marcus", "cmo-sofia": "Sofia", "cto-derek": "Derek", "cco-alexandra": "Alexandra",
                 "caio-nadia": "Nadia", "cro-victor": "Victor", "ciso-elena": "Elena", "cto-innovator": "Elon",
-                "vanessa-orchestrator": "Vanessa"}
+                "vanessa-orchestrator": "Vanessa",
+                # named reports that lead a desk seat of their own sit on Victor's line
+                "ca-transaction-coordinator": "Victor", "listing-agent-elite": "Victor", "buyers-agent-elite": "Victor",
+                # the chief-of-staff bench has no lead in the roster; pin it so a new lane word never moves it (2026-10-22)
+                "chief-of-staff": "Vanessa"}
 TIER_MODEL = {"1": "Opus 5.5", "2": None, "3": "Sonnet 5"}
 # Every engineering seat carries the code-validation gate (Steven, 2026-10-12): the deterministic checks, the
 # VibeBreaker 20-pass review by the code-validator agent, and the two learning shelves the reviews cite.

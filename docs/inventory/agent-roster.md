@@ -1,4 +1,4 @@
-# AI agent roster on the Mac (aiTeamRoster doc, generatedAt 2026-09-16T00:52:37+00:00, count 173; code-validator added 2026-10-12)
+# AI agent roster on the Mac (aiTeamRoster doc, generatedAt 2026-09-16T00:52:37+00:00, count 173; code-validator added 2026-10-12; seven desk seats added 2026-10-22 — not yet in the Mac's roster-tiers.json)
 
 | slug | tier | lead | model | role |
 |---|---|---|---|---|
@@ -30,9 +30,9 @@
 | cmo-sofia | 1 | vanessa-orchestrator | opus | Sofia, Chief Marketing Officer on Steven Shearrill's AI Team — brand voice, campaigns, content calendar, webinars (VA Loan Mastermind Live,  |
 | code-architect | 3 | — | opus | Designs feature architectures by analyzing existing codebase patterns and conventions, then providing implementation blueprints with concret |
 | code-explorer | 2 | cto-derek | sonnet | Deeply analyzes existing codebase features by tracing execution paths, mapping architecture layers, and documenting dependencies to inform n |
-| code-validator | 2 | cto-derek | opus | Report under Derek (CTO): the code-validation gate — validates every code change a human or agent makes before it is called done: scripts/validate-code.sh, then the VibeBreaker 20-pass adversarial review of the diff; reports evidence, never patches. |
 | code-reviewer | 3 | — | opus | Expert code review specialist. |
 | code-simplifier | 3 | — | sonnet | Simplifies and refines code for clarity, consistency, and maintainability while preserving behavior. |
+| code-validator | 2 | cto-derek | opus | Report under Derek (CTO): the code-validation gate — validates every code change a human or agent makes before it is called done: scripts/validate-code.sh, then the VibeBreaker 20-pass adversarial review of the diff; reports evidence, never patches. |
 | comment-analyzer | 3 | — | opus | Analyze code comments for accuracy, completeness, maintainability, and comment rot risk. |
 | commission-tracker | 2 | cfo-marcus | sonnet | Report under Marcus (CFO): tracks every dollar Steven is owed — real-estate commissions through the LPT split and cap, MLO compensation, ref |
 | competitive-intelligence-analyst | 2 | cro-victor | opus | Report under Victor (CRO): benchmarks Steven against the agents, brokerages and lenders actually competing for his buyers — MLS production s |
@@ -54,6 +54,7 @@
 | django-reviewer | 3 | — | opus | Expert Django code reviewer specializing in ORM correctness, DRF patterns, migration safety, security misconfigurations, and production-grad |
 | doc-updater | 3 | — | sonnet | Documentation and codemap specialist. |
 | docs-lookup | 2 | caio-nadia | sonnet | When the user asks how to use a library, framework, or API or needs up-to-date code examples, use Context7 MCP to fetch current documentatio |
+| document-intake-clerk | 2 | ca-transaction-coordinator | sonnet | Report under Carmen (CA TC, Victor's line): reads each new contract and disclosure package and enters its dates into tcDeals; flags every missing or conflicting date for Carmen. Drafts only — never signs or sends. |
 | document-intelligence-agent | 2 | cco-alexandra | opus | Report under Alexandra (Compliance): reads a loan file's documents — classifies, extracts the figures that matter, cross-checks them against |
 | e2e-runner | 3 | — | sonnet | End-to-end testing specialist using Vercel Agent Browser (preferred) with Playwright fallback. |
 | ecc-accessibility-lead | 2 | cto-derek | sonnet | ECC AI employee reporting to Derek (CTO). |
@@ -99,6 +100,7 @@
 | marketing-agent | 3 | — | opus | Marketing strategist and copywriter for campaign planning, audience research, positioning, copy creation, and content review. |
 | mbs-market-intelligence | 2 | cfo-marcus | opus | Report under Marcus (CFO): tracks what actually moves mortgage rates — MBS coupon pricing, the 10-year, Fed policy and the economic calendar |
 | meal-planner | 2 | vanessa-orchestrator | sonnet | Nutrition planner on Steven's Apple Health section — builds his weekly meal plan and grocery list from deck doc healthGoals and what his dat |
+| meeting-scribe | 2 | vanessa-orchestrator | sonnet | Report under Vanessa: recaps Fieldy conversations and Zoom meetings — decisions, action items, open questions — and hands action items to vanessaQueue. Never sends a follow-up. |
 | military-licensing-partnerships | 2 | cco-alexandra | opus | Report under Alexandra (Compliance): tracks NMLS licensing and CE across Steven's states, researches requirements for target military market |
 | military-relocation-specialist | 2 | cro-victor | opus | Report under Victor (CRO): owns the relocation client — PCS timelines and orders, BAH-versus-ownership analysis, base-area intelligence for  |
 | mktg-affiliate-partnerships | 2 | cmo-sofia | sonnet | Report under Sofia (CMO): hunts residual and affiliate income — products, tools, platforms and sponsorships Steven can credibly endorse to h |
@@ -128,6 +130,7 @@
 | news-analyst | 2 | portfolio-manager | opus | Step 4 of the AI Hedge Fund Team research committee. |
 | nonprofit-grant-writer | 2 | nonprofit-grants-lead | opus | Reports under nonprofit-grants-lead (Marcus/CFO line): writes the actual grant applications for Steven's 501(c)(3) — needs statement, progra |
 | nonprofit-grants-lead | 2 | cfo-marcus | opus | Reports under Marcus (CFO): runs the Active Duty Veteran & Hometown Hero Homeowners Club, Inc. |
+| open-house-captain | 2 | listing-agent-elite | sonnet | Report under Marguerite / Gwen (Victor's line): turns the open-house sign-in sheet into leads, thank-you drafts and an ISA call list. Drafts only — never sends or writes to the CRM. |
 | opensource-forker | 3 | — | sonnet | Fork any project for open-sourcing. |
 | opensource-packager | 3 | — | sonnet | Generate complete open-source packaging for a sanitized project. |
 | opensource-sanitizer | 3 | — | sonnet | Verify an open-source fork is fully sanitized before release. |
@@ -149,6 +152,7 @@
 | react-reviewer | 3 | — | opus | Expert React/JSX code reviewer specializing in hook correctness, render performance, server/client component boundaries, accessibility, and  |
 | realtor-reciprocity-agent | 2 | cro-victor | opus | Report under Victor (CRO): tracks referrals sent and received with each realtor partner, scores the reciprocity balance, flags partners owed |
 | refactor-cleaner | 3 | — | sonnet | Dead code cleanup and consolidation specialist. |
+| refi-watch-analyst | 2 | cro-victor | sonnet | Report under Harrison (Victor's line): weekly rate-vs-note-rate prep list of past clients and borrowers above the market average — market average, not a quote. Never quotes, locks or messages a borrower. |
 | refinance-hunter | 2 | cro-victor | opus | Report under Victor (CRO): scans the past-client database and pipeline for refinance opportunities — rate-and-term savings, PMI removal at 8 |
 | reliability-engineer | 1 | vanessa-orchestrator | opus | Reports to Elon, the CTO Innovator, on the AI Agent Engineering Team: owns uptime and error-rate reduction across the agents, skills, routin |
 | research-analyst | 2 | caio-nadia | opus | Report under Nadia (CAIO): multi-source research with graded sources (primary > official > reputable press > blogs), contradiction notes and |
@@ -161,6 +165,7 @@
 | showing-coordinator | 2 | cro-victor | sonnet | Report under Victor (CRO): turns a client's showing plan from the Command Deck Showings tab (or a pasted list) into the complete coordinatio |
 | silent-failure-hunter | 3 | — | opus | Review code for silent failures, swallowed errors, bad fallbacks, and missing error propagation. |
 | spec-miner | 3 | — | sonnet | Extracts behavioral specs from existing codebases for OpenSpec. |
+| sphere-nurture-coordinator | 2 | cmo-sofia | sonnet | Report under Sofia (CMO), with Wren: monthly past-client and sphere touch drafts — birthdays, home anniversaries, check-ins. Drafts only — never sends or writes to Lofty. |
 | stress-test-engineer | 1 | vanessa-orchestrator | opus | Reports to Elon, the CTO Innovator, on the AI Agent Engineering Team: designs and runs structured load, edge-case, failure-injection, concur |
 | swift-build-resolver | 3 | — | sonnet | Swift/Xcode build, compilation, and dependency error resolution specialist. |
 | swift-reviewer | 3 | — | opus | Expert Swift code reviewer specializing in protocol-oriented design, value semantics, ARC memory management, Swift Concurrency, and idiomati |
@@ -168,10 +173,12 @@
 | tdd-guide | 3 | — | sonnet | Test-Driven Development specialist enforcing write-tests-first methodology. |
 | technical-analyst | 2 | portfolio-manager | opus | Step 2 of the AI Hedge Fund Team research committee. |
 | title-report-analyst | 2 | cco-alexandra | opus | Report under Alexandra (Compliance): reads a preliminary title report or commitment and turns it into a plain-language issue list — vesting, |
+| travel-desk | 2 | vanessa-orchestrator | sonnet | Report under Vanessa, with Marcus: Gondola MCP travel desk — points vs cash, trip options, price watches on flights and hotels. Booking is Steven's — never books, pays or transfers points. |
 | trid-timeline-checker | 2 | cco-alexandra | sonnet | Report under Alexandra (Compliance): checks a mortgage file's disclosure timeline — 6-piece application trigger, LE within 3 business days,  |
 | type-design-analyzer | 3 | — | opus | Analyze type design for encapsulation, invariant expression, usefulness, and enforcement. |
 | typescript-reviewer | 3 | — | opus | Expert TypeScript/JavaScript code reviewer specializing in type safety, async correctness, Node/web security, and idiomatic patterns. |
 | vanessa-orchestrator | 1 | — | fable | Vanessa as AI-agent ORCHESTRATOR for Steven Shearrill's AI Team. |
 | vendor-network-manager | 2 | cro-victor | sonnet | Report under Victor (CRO): maintains the vendor bench — inspectors, contractors, stagers, photographers, cleaners, movers, warranty and insu |
+| voicemail-inbox-triage | 2 | cro-victor | sonnet | Report under Victor (CRO, ISA line): triages WhisperAI voicemails and the Gmail inbox into vanessaQueue with a next action per item; fraud flags go to Elena first. Never replies, forwards or deletes. |
 | vue-reviewer | 3 | — | opus | Expert Vue.js code reviewer specializing in Composition API correctness, reactivity pitfalls, component architecture, template security, and |
 | webinar-producer | 2 | cmo-sofia | sonnet | Report under Sofia (CMO): produces webinar assets for the VA Loan Mastermind Live, Hometown Hero Home Buying and Retirement Equity Strategy  |

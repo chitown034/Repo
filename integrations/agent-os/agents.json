@@ -1,5 +1,5 @@
 {
- "count": 173,
+ "count": 180,
  "agents": [
   {
    "slug": "a11y-architect",
@@ -796,39 +796,6 @@
    }
   },
   {
-   "slug": "code-validator",
-   "tier": "2",
-   "model": "Opus 5.5",
-   "lead": "cto-derek",
-   "role": "Report under Derek (CTO): the code-validation gate — validates every code change a human or agent makes before it is called done: scripts/validate-code.sh, then",
-   "laya": {
-    "lane": "Derek",
-    "starts_from": "wiki/dashboard-ops/"
-   },
-   "jarvis": {
-    "recall": "bin/brain recall \"code validator the code-validation gate — validates every\"",
-    "local_only_for_client_data": true
-   },
-   "orca": {
-    "command": "claude --agent code-validator",
-    "worktree": "one Orca worktree per agent; <=8 live at once"
-   },
-   "toolkit": [
-    ".claude/skills/code-validation-gate",
-    "scripts/validate-code.sh",
-    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
-    "references/backend-folder-structure.md",
-    "references/vibe-coding-learning.md"
-   ],
-   "guard": {
-    "proposal_only": false,
-    "gates": [
-     "ECC",
-     "Vanessa"
-    ]
-   }
-  },
-  {
    "slug": "code-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
@@ -882,6 +849,39 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "code-validator",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "cto-derek",
+   "role": "Report under Derek (CTO): the code-validation gate — validates every code change a human or agent makes before it is called done: scripts/validate-code.sh, then",
+   "laya": {
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"code validator the code-validation gate — validates every\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent code-validator",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -1499,6 +1499,33 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "document-intake-clerk",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "ca-transaction-coordinator",
+   "role": "Report under Carmen (CA TC, Victor's line): reads each new contract and disclosure package and enters its dates into tcDeals; flags every missing or conflicting",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"document intake clerk reads each new contract and disclosure\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent document-intake-clerk",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
      "Vanessa"
     ]
    }
@@ -2820,6 +2847,32 @@
    }
   },
   {
+   "slug": "meeting-scribe",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "vanessa-orchestrator",
+   "role": "Report under Vanessa: recaps Fieldy conversations and Zoom meetings — decisions, action items, open questions — and hands action items to vanessaQueue. Never se",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"meeting scribe Report under Vanessa: recaps Fieldy conversations\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent meeting-scribe",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
    "slug": "military-licensing-partnerships",
    "tier": "2",
    "model": "Opus 5.5",
@@ -3622,6 +3675,33 @@
    }
   },
   {
+   "slug": "open-house-captain",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "listing-agent-elite",
+   "role": "Report under Marguerite / Gwen (Victor's line): turns the open-house sign-in sheet into leads, thank-you drafts and an ISA call list. Drafts only — never sends ",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"open house captain Report under Marguerite / Gwen (Victor's\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent open-house-captain",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
    "slug": "opensource-forker",
    "tier": "3",
    "model": "Sonnet 5",
@@ -4213,6 +4293,33 @@
    }
   },
   {
+   "slug": "refi-watch-analyst",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cro-victor",
+   "role": "Report under Harrison (Victor's line): weekly rate-vs-note-rate prep list of past clients and borrowers above the market average — market average, not a quote. ",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"refi watch analyst weekly rate-vs-note-rate prep list of past\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent refi-watch-analyst",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
    "slug": "refinance-hunter",
    "tier": "2",
    "model": "Opus 5.5",
@@ -4559,6 +4666,33 @@
    }
   },
   {
+   "slug": "sphere-nurture-coordinator",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cmo-sofia",
+   "role": "Report under Sofia (CMO), with Wren: monthly past-client and sphere touch drafts — birthdays, home anniversaries, check-ins. Drafts only — never sends or writes",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"sphere nurture coordinator Report under Sofia (CMO), with Wren:\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent sphere-nurture-coordinator",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
    "slug": "stress-test-engineer",
    "tier": "1",
    "model": "Opus 5.5",
@@ -4761,6 +4895,32 @@
    }
   },
   {
+   "slug": "travel-desk",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "vanessa-orchestrator",
+   "role": "Report under Vanessa, with Marcus: Gondola MCP travel desk — points vs cash, trip options, price watches on flights and hotels. Booking is Steven's — never book",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"travel desk Report under Vanessa, with Marcus: Gondola\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent travel-desk",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
    "slug": "trid-timeline-checker",
    "tier": "2",
    "model": "Sonnet 5",
@@ -4887,6 +5047,33 @@
    },
    "orca": {
     "command": "claude --agent vendor-network-manager",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "voicemail-inbox-triage",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cro-victor",
+   "role": "Report under Victor (CRO, ISA line): triages WhisperAI voicemails and the Gmail inbox into vanessaQueue with a next action per item; fraud flags go to Elena fir",
+   "laya": {
+    "lane": "Victor",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"voicemail inbox triage triages WhisperAI voicemails and the Gmail\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent voicemail-inbox-triage",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
    "toolkit": [],
@@ -5035,6 +5222,34 @@
   "Harrison": {
    "agent": "vanessa-broker",
    "via": "skill"
+  },
+  "Refi Watch Analyst": {
+   "agent": "refi-watch-analyst",
+   "via": "roster"
+  },
+  "Sphere Nurture Coordinator": {
+   "agent": "sphere-nurture-coordinator",
+   "via": "roster"
+  },
+  "Voicemail & Inbox Triage": {
+   "agent": "voicemail-inbox-triage",
+   "via": "roster"
+  },
+  "Document Intake Clerk": {
+   "agent": "document-intake-clerk",
+   "via": "roster"
+  },
+  "Open House Captain": {
+   "agent": "open-house-captain",
+   "via": "roster"
+  },
+  "Travel Desk": {
+   "agent": "travel-desk",
+   "via": "roster"
+  },
+  "Meeting Scribe": {
+   "agent": "meeting-scribe",
+   "via": "roster"
   }
  },
  "surfaces": {

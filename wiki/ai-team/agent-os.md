@@ -54,3 +54,5 @@ See also `computer-hub.md` (the machines), `cross-functional.md` (the rules the 
 ## Seats added after the Mac snapshot
 
 `code-validator` (2026-10-12) exists in `docs/inventory/agent-roster.md`, the Agent OS manifest, the agent files and the deck's live `aiTeamRoster` document (v15). The Mac's `roster-tiers.json` and `agent-lint/roster_snapshot.py` do not know it yet: add the seat there (tier 2, lead cto-derek, model opus) before the next snapshot runs, or that run will drop it from the deck's count.
+
+The seven desk seats of 2026-10-22 (`refi-watch-analyst`, `sphere-nurture-coordinator`, `voicemail-inbox-triage`, `document-intake-clerk`, `open-house-captain`, `travel-desk`, `meeting-scribe`; tier 2, model sonnet, leads per `desk-seats.md`) are in the roster, the manifest and the agent files the same way, and are likewise missing from the Mac's `roster-tiers.json` until added there.
