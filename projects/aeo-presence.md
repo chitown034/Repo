@@ -53,7 +53,7 @@ HMDA chart and the asset audit; the kit does not repeat it. Where the two differ
 | Compliance hold | Items 2–5 fixed in the files; item 1 (Reg Z "no down payment") proposed as non-triggering per comment 24(c)-2 — Alexandra to confirm (`docs/13`) |
 | Deployed / profiles updated | No |
 | Org chart | Orin (GEO / AEO Lead) under Sofia on the deck and in the wiki; Presence Pod added 2026-10-22 |
-| 6D Brain | rebuilt 2026-10-22 with this page, the pod and the lane words |
+| 6D Brain | rebuilt 2026-10-22 with this page, the pod and the lane words (`dashboard/brain-4d.html`, 354 nodes + the live-only lobes merged); the republish to the Brain 6D page and the Command Deck's AI Team panel (splice `dashboard/wave2/splice-presence-orgchart.py`, runtime gate PASS) hit the account's daily artifact publish limit at 19:05 UTC and run again after the UTC-midnight reset |
 
 ## Facts the kit states that the brain did not hold (confirm with Steven, then add the confirmed ones to `context/about-me.md`)
 
