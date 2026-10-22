@@ -84,4 +84,3 @@ if(typeof AI_SQUADS!=="undefined"){[
   fanIn:["Vera","Client touch plan for the week"],gate:["Diane","TCPA / CAN-SPAM / tone check"]}].forEach(x=>{if(!AI_SQUADS.some(y=>y.k===x.k))AI_SQUADS.push(x)})}
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();CX_CAT.forEach(c=>out.push({src:`Integration — ${c[0]}`,t:`${c[0]} (${c[1]}): ${c[2]}.`}));return out}}
 if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^Integration — /,{hash:"connecthub"}]);
-boot();
