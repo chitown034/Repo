@@ -1,5 +1,6 @@
 """Agent OS: every roster agent reachable through Laya lane + Jarvis recall + Orca launch command."""
 import json
+from pathlib import Path
 import unittest
 
 from fixture import REPO  # noqa: E402
@@ -65,6 +66,28 @@ class AgentFiles(unittest.TestCase):
         self.assertEqual(r["present"], r["total"]); self.assertEqual(r["bad_frontmatter"], [])
         t = (ROOT / "integrations/agent-os/agents/caio-nadia.md").read_text(encoding="utf-8")
         self.assertIn("PROPOSAL-ONLY", t); self.assertIn("Needs-Steven", t); self.assertIn("model: opus", t)
+
+    def test_core_seats_in_project_agents(self):
+        from brain import agentfiles
+        for slug in agentfiles.CORE:
+            t = (ROOT / ".claude/agents" / f"{slug}.md").read_text(encoding="utf-8")
+            self.assertTrue(t.startswith(f"---\nname: {slug}\n"), slug); self.assertIn(agentfiles.MARK, t)
+
+    def test_write_core_keeps_hand_edited_file(self):
+        import tempfile
+        from brain import agentfiles, agentos
+        m = agentos.build(REPO); lead_of = {a["slug"]: a["lead"] for a in m["agents"]}
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d); (root / ".claude/agents").mkdir(parents=True)
+            mine = root / ".claude/agents/cfo-marcus.md"; mine.write_text("hand-tuned", encoding="utf-8")
+            kept = agentfiles.write_core(root, m, lead_of)
+            self.assertEqual(kept, ["cfo-marcus"]); self.assertEqual(mine.read_text(encoding="utf-8"), "hand-tuned")
+            self.assertIn("model: fable", (root / ".claude/agents/vanessa-orchestrator.md").read_text(encoding="utf-8"))
+
+    def test_orchestrator_runs_on_fable(self):
+        # Tiering (wiki/ai-team/model-tiering-dispatch.md): Vanessa masterminds on Fable, never the worker tier.
+        t = (ROOT / "integrations/agent-os/agents/vanessa-orchestrator.md").read_text(encoding="utf-8")
+        self.assertIn("model: fable", t)
 
     def test_engineer_toolkit(self):
         from brain import agentos

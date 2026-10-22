@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 35 skills · 7 plugins · 17 connectors (2 ok, 15 need attention) · 65 cloud routines · 60 Mac tasks
+toolkit: 35 skills · 7 plugins · 17 connectors (8 ok, 9 need attention) · 65 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -25,8 +25,8 @@ toolkit: 35 skills · 7 plugins · 17 connectors (2 ok, 15 need attention) · 65
 - `push-buttons`: One-word slash commands (/cycle /inbox /meetings /sync /connect /tc /queue /today /help-buttons) that send the full, correct prompt for each workflow, HALT rules included.
 
 **Connectors**
-- `Inkbox (Vanessa's iMessage + email)` — *reconnect*: reconnected 2026-10-22: email active (vanessa-shearrill@inkboxmail.com), iMessage line ready — no phone linked yet
-- `Kapso WhatsApp (Pabbly app)` — *attention*: login proven (HTTP 200); phone list + List Phone Numbers built; both instant triggers built (manual webhook: paste the Pabbly URL into Kapso); Send step waits for his test number
+- `Inkbox (Vanessa's iMessage + email)` — *ok*: connected — reconnected 2026-10-22: email active (vanessa-shearrill@inkboxmail.com), iMessage line ready; no phone linked yet
+- `Kapso WhatsApp (Pabbly app)` — *ok*: connected — login proven (HTTP 200); phone list + List Phone Numbers built; both instant triggers built (manual webhook: paste the Pabbly URL into Kapso); Send step waits for his test number
 - `Kapso WhatsApp (Mac)` — *pending*: plugin/MCP/Keychain keys pending
 
 **Cloud routines**
@@ -187,13 +187,13 @@ toolkit: 35 skills · 7 plugins · 17 connectors (2 ok, 15 need attention) · 65
 - `Mac runner (every Mac task)` — *silent*: still silent since 2026-10-13 07:13 UTC — stuck "running" one task
 - `Repo sync on the Mac` — *attention*: git pull failed daily (cloud and Mac both rebuild the brain files)
 - `Gondola (travel MCP)` — *attention*: not yet registered anywhere
-- `Fieldy` — *ok*: connected; no recordings yet (free plan, 7-day window)
-- `Gmail · Google Calendar · Zoom · Fieldy · Inkbox` — *attention*: now callable from the Command Deck page (mcp capability) — Triage inbox, Recap meetings, Text me the brief
-- `Eromify` — *reconnect*: reconnected 2026-10-22 (creator studio; spends credits — HALT: every generation is Steven's yes)
+- `Fieldy` — *ok*: connected — no recordings yet (free plan, 7-day window)
+- `Gmail · Google Calendar · Zoom · Fieldy · Inkbox` — *ok*: connected — callable from the Command Deck page (mcp capability): Triage inbox, Recap meetings, Text me the brief
+- `Eromify` — *ok*: connected — reconnected 2026-10-22 (creator studio; spends credits — HALT: every generation is Steven's yes)
 - `EVRoutes · Turo` — *reconnect*: needs_reconnect
 - `You.com` — *ok*: connected but 0 credits; 9 files still reference it
-- `Weekly backup` — *attention*: GREEN — catch-up run 2026-10-22 verified 191 + 16 docs; now Sunday 21:07 UTC (after the allowance reset)
-- `Cloud routines` — *attention*: 55 enabled; every failure this month = usage limit; 17 ran green today
+- `Weekly backup` — *ok*: active — GREEN: catch-up run 2026-10-22 verified 191 + 16 docs; now Sunday 21:07 UTC (after the allowance reset)
+- `Cloud routines` — *ok*: active — 55 enabled; every failure this month = usage limit; 17 ran green today
 - `Broker Command Center (3rd dashboard)` — *attention*: data lives in the browser only — no routine can read it
 
 **Cloud routines**
