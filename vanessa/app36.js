@@ -28,4 +28,3 @@ mount(){let g=store.get("nl_g","All"),cur=store.get("nl_cur",null);
 {const l=PAGES.find(p=>p[0]==="Loan Intelligence");if(l&&!l[1].some(x=>x[0]==="nichelib")){const i=l[1].findIndex(x=>x[0]==="programs");l[1].splice(i+1,0,["nichelib","Loan Niche Encyclopedia"])}}
 {const c0=coachCorpus;coachCorpus=function(){const out=c0();NL().forEach(x=>out.push({src:`Loan niche — ${x.n}`,t:`${x.what} Who: ${(x.who||[]).join("; ")}. Rules: ${(x.rules||[]).join("; ")}. Pitfalls: ${(x.pitfalls||[]).join("; ")}. Compliance: ${x.compliance}`}));return out}}
 if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^Loan niche — /,{hash:"nichelib"}]);
-boot();
