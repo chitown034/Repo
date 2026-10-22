@@ -30,7 +30,7 @@ Steven (Principal)
 ├─ ISA / EA (human) — Mon–Fri 12–4 PM; the ISA Portal opens with "Today from Vanessa" (`isaToday`, copied from
 │   `cosBrief.isaInstructions` by the daily cycle, weekdays 6:25 AM PT, since 2026-10-22)
 │   (sends showing confirmations, chases escrow/lender items, enters each new deal's dates into the TC intake)
-├─ Transaction & Showing desk — cloud routine, weekdays 7:10 AM PT, under Victor: the transaction coordinator
+├─ Transaction & Showing desk — cloud routine, weekdays 6:05 AM PT (before the cycle), under Victor: the transaction coordinator
 │   (timelines, checklists, deadline alerts, reminder drafts) and the showing assistant (prep, route, confirmation
 │   drafts, feedback forms); Alexandra gates every draft; writes `tcDesk`
 └─ Executives (report to Vanessa, ≤8 dispatched in parallel, formed into cross-functional squads by the daily cycle):
@@ -48,6 +48,29 @@ Steven (Principal)
     └─ Elon (CTO Innovator, proposal-only) — the AI Agent Engineering Team: stress-test, reliability,
        efficiency, capability, integration engineers + sandbox QA + chief automation strategist
 ```
+
+## Standing pods — cross-functional teams that work in parallel (2026-10-22)
+
+Steven: "ensure AI agents work cross-functional as teams and in parallel when needed." Seven standing pods sit across
+the executive lines; `bin/brain route` wakes a whole pod in one parallel wave (≤8 seats) and Vanessa's daily cycle
+forms its squads from them. Gates run after the wave: Alexandra on anything client-facing, ECC + the code validator
+on any change, Vanessa last. Rules and wake words: `wiki/ai-team/cross-functional.md` § Pods.
+
+| Pod | Seats (parallel) | Delivers |
+|---|---|---|
+| Deal Pod | Victor · Carmen · Showing Coordinator · Harrison · Alexandra | timelines, due-in-7, checklists, reminder drafts, loan milestones |
+| Lead Pod | Victor · Gwen · Sofia · Alexandra | ISA call list, follow-up and nurture drafts |
+| Listing Pod | Marguerite · Sofia · Bianca · Alexandra | CMA prep, launch checklist, remarks, seller report |
+| Mortgage Pod | Harrison · Denise · Howard · Walter · Lucia · Alexandra | scenario prep, conditions, TRID clock — never a quote |
+| Growth Pod | Sofia · Victor · Marcus · Alexandra | content week, campaigns, cost/revenue read |
+| Money Pod | Marcus · Nathan · Anita · James | numbers with sources, deadlines, commissions |
+| Ops Pod | Derek · Elena · Elon · Nadia | fix plan, security check, feasibility, Steven's one paste |
+
+**One Vanessa, one queue (2026-10-22).** Every surface hands work to `vanessaQueue` on the Command Deck: deck buttons
+("Hand to Vanessa" on kanban, lead and deal rows), Vanessa's own `queue_task` tool in chat, `/queue` in Claude Code,
+the ISA Portal's "Hand to Vanessa" box (via its `vanessaOutbox`, moved in each morning) and the routines. The 6:25 AM
+daily cycle works the queue first, marks each item done / needs-Steven with where the draft is, and folds the rest
+into the ≤3 Needs-you items.
 
 ## Tools per seat (skills · plugins · connectors · routines · Mac tasks)
 

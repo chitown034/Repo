@@ -28,6 +28,23 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | James | family office, estate, trust, wealth plan, legacy | `wiki/ai-team/mentors-and-benches.md` |
 | Apex | trade, futures, nq, es, order flow, liquidity, backtest, paper trade, trading research, research desk, strategy idea | `wiki/ai-team/mentors-and-benches.md` |
 
+## Pods — standing cross-functional teams that work in parallel
+
+A pod is a team that always works together (Steven, 2026-10-22: "ensure AI agents work cross-functional as teams
+and in parallel"). When the request matches a pod's words, every seat in the pod joins the plan and runs in the
+same wave (≤8 a wave), then the gates below run in order. A request can wake more than one pod; seats are not
+duplicated. Vanessa's daily cycle forms its squads from these pods.
+
+| Pod | Words that wake it | Seats (run in parallel) | What it delivers |
+|---|---|---|---|
+| Deal Pod | escrow, contingency, under contract, closing, transaction, deal, tc, appraisal, inspection, coe | Victor, Carmen, Showing Coordinator, Harrison, Alexandra | Timeline, due-in-7 list, document checklist, reminder drafts, loan-side milestones |
+| Lead Pod | lead, leads, speed to lead, follow up, follow-up, nurture, sphere, past client, open house, referral | Victor, Gwen, Sofia, Alexandra | Call list for the ISA, follow-up drafts, nurture touches, compliance line on each |
+| Listing Pod | listing, seller, list price, cma, staging, listing launch, open house | Marguerite, Sofia, Bianca, Alexandra | CMA prep, launch checklist, MLS remarks and marketing drafts, seller weekly report |
+| Mortgage Pod | loan, mortgage, va, fha, irrrl, refinance, pre-approval, dti, ltv, conditions, underwriting, trid, le, cd | Harrison, Denise, Howard, Walter, Lucia, Alexandra | Scenario prep, conditions list, TRID clock, program fit — never a quote or an eligibility call |
+| Growth Pod | marketing, campaign, content, brand, social, seo, video, newsletter | Sofia, Victor, Marcus, Alexandra | Content week, campaign drafts, cost and revenue read, compliance |
+| Money Pod | budget, cash, net worth, tax, commission, expense, income, profit | Marcus, Nathan, Anita, James | Numbers with sources, deadlines, cash and commission view |
+| Ops Pod | automation, routine, connector, sync, broken, dashboard, mac, runner, integration, workflow, pabbly, mod | Derek, Elena, Elon, Nadia | Fix plan, security check, feasibility, the one paste for Steven |
+
 ## Joins — a seat that must come along
 
 When the request matches the words, the seat joins the plan even if it is not the lead.

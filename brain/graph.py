@@ -123,6 +123,18 @@ def build(root: Path, links_per_node: int = 3, today: date | None = None) -> dic
             links.append({"s": nid, "t": tgt, "w": 0.6, "k": "tool"})
         if it["seat"] == "Vanessa":
             links.append({"s": "store:vanessa", "t": nid, "w": 0.4, "k": "tool"})
+    # standing cross-functional pods (2026-10-22): one node per pod, linked to the rules page and to Vanessa
+    from . import route as route_mod
+    for name, words, members, delivers in route_mod.load_rules(root).get("pods", []):
+        nid = "pod:" + name
+        if nid in ids:
+            continue
+        ids.add(nid)
+        nodes.append({"id": nid, "t": name, "d": (", ".join(members) + " · " + delivers)[:180], "g": "pod", "gl": "Pods",
+                      "lv": 1, "s": 0, "a": None, "z": None, "seat": ", ".join(members)})
+        if "wiki/ai-team/cross-functional.md" in ids:
+            links.append({"s": nid, "t": "wiki/ai-team/cross-functional.md", "w": 0.8, "k": "pod"})
+        links.append({"s": "store:vanessa", "t": nid, "w": 0.6, "k": "pod"})
     return {"generated": today.isoformat(), "files": len(files),
             "sections": sum(n["s"] for n in nodes), "nodes": nodes, "links": links}
 

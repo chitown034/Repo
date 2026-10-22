@@ -40,6 +40,20 @@ class RouteTests(unittest.TestCase):
         plan2 = route.route(REPO, "write an Instagram caption about Temecula wine country")
         self.assertNotIn("Validation", [g["gate"] for g in plan2["gates"]])
 
+    def test_pod_brings_whole_team_in_parallel(self):
+        p = route.route(REPO, "the escrow has an inspection contingency due friday", with_reads=False)
+        self.assertIn("Deal Pod", [x["pod"] for x in p["pods"]])
+        first = [x["seat"] for x in p["waves"][0]]
+        for seat in ("Victor", "Carmen", "Harrison"):
+            self.assertIn(seat, first)
+        self.assertIn("Alexandra", [g["gate"] for g in p["gates"]])
+
+    def test_two_pods_share_seats_without_duplicates(self):
+        p = route.route(REPO, "listing launch marketing campaign for the open house", with_reads=False)
+        seats = [x["seat"] for w in p["waves"] for x in w]
+        self.assertEqual(len(seats), len(set(seats)))
+        self.assertTrue({"Listing Pod", "Growth Pod"} <= {x["pod"] for x in p["pods"]})
+
     def test_no_match_goes_to_vanessa(self):
         self.assertEqual(self.plan("hello there")["lead"], "Vanessa")
 

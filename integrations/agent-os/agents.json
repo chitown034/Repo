@@ -3489,8 +3489,8 @@
    "lead": null,
    "role": "Diagnoses network connectivity, routing, DNS, interface, and policy symptoms with a read-only OSI-layer workflow and evidence-backed root ca",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"network troubleshooter Diagnoses network connectivity, routing, DNS, interface,\"",
@@ -3500,10 +3500,17 @@
     "command": "claude --agent network-troubleshooter",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
-   "toolkit": [],
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }

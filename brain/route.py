@@ -59,6 +59,8 @@ def load_rules(root: Path) -> dict:
     joins = [(_words(r[0]), r[1], r[2] if len(r) > 2 else "") for r in _table(t, "Joins") if len(r) >= 2]
     gates = [(r[0], r[1], r[2] if len(r) > 2 else "") for r in _table(t, "Gates") if len(r) >= 2]
     halts = [(_words(r[0]), r[1]) for r in _table(t, "HALT words") if len(r) >= 2]
+    pods = [(r[0], _words(r[1]), [x.strip() for x in r[2].split(",") if x.strip()], r[3] if len(r) > 3 else "")
+            for r in _table(t, "Pods") if len(r) >= 3]
     tiers: dict[str, str] = {}
     lp = root / LANES
     if lp.is_file():
@@ -71,7 +73,8 @@ def load_rules(root: Path) -> dict:
                 tiers.setdefault(seat, "Fable 5.1" if "Fable" in tier else "Opus 5.5" if "Opus" in tier else DEFAULT_TIER)
             for name in re.findall(r"(?:^|,\s*)([A-Z][a-z]+)(?=,|$)", r[1]):
                 tiers.setdefault(name, DEFAULT_TIER if "Sonnet" in r[2] and "Opus" not in r[2] else "Opus 5.5")
-    return {"lanes": lanes, "starts": starts, "joins": joins, "gates": gates, "halts": halts, "tiers": tiers}
+    return {"lanes": lanes, "starts": starts, "joins": joins, "gates": gates, "halts": halts, "tiers": tiers,
+            "pods": pods}
 
 
 def route(root: Path, request: str, rules: dict | None = None, with_reads: bool = True) -> dict:
@@ -85,6 +88,17 @@ def route(root: Path, request: str, rules: dict | None = None, with_reads: bool 
     order = sorted(scores, key=lambda s: (-len(scores[s]), list(rules["lanes"]).index(s)))
     lead = order[0] if order else "Vanessa"
     seats: dict[str, str] = {s: "owns: " + ", ".join(scores[s]) for s in order}
+    pods_on = []
+    for name, words, members, delivers in rules.get("pods", []):
+        hits = [w for w in words if _hit(text, w)]
+        if not hits:
+            continue
+        pods_on.append({"pod": name, "seats": members, "delivers": delivers, "matched": hits})
+        for m in members:
+            if m not in seats:
+                seats[m] = f"{name} ({', '.join(hits)})"
+    if not order and pods_on:
+        lead = pods_on[0]["seats"][0]
     for words, seat, why in rules["joins"]:
         hits = [w for w in words if _hit(text, w)]
         if hits and seat not in seats:
@@ -124,7 +138,7 @@ def route(root: Path, request: str, rules: dict | None = None, with_reads: bool 
         for w in waves:
             for x in w:
                 x["reads"] = _start(root, ranked, q, rules["starts"].get(x["seat"]))
-    return {"request": request, "lead": lead, "waves": waves, "gates": gates, "halts": halts,
+    return {"request": request, "lead": lead, "pods": pods_on, "waves": waves, "gates": gates, "halts": halts,
             "seat_count": sum(len(w) for w in waves),
             "limits": f"<= {MAX_PARALLEL} seats a wave, <= {MAX_RESEARCH} web-research seats a wave"}
 
@@ -148,6 +162,8 @@ def _start(root: Path, ranked: list, q, prefix: str | None) -> str | None:
 
 def format_plan(p: dict) -> str:
     out = [f"request: {p['request']}", f"lead: {p['lead']}  ·  {p['seat_count']} seats  ·  {p['limits']}"]
+    for pod in p.get("pods", []):
+        out.append(f"pod: {pod['pod']} — {', '.join(pod['seats'])}  ({pod['delivers']})")
     if p["halts"]:
         out.append("HALT — prep runs, the marked step waits for Steven (write a Needs-Steven packet):")
         out += [f"  - {h['why']}  (matched: {', '.join(h['words'])})" for h in p["halts"]]
