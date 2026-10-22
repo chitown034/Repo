@@ -638,3 +638,12 @@ ISA Portal (v48, `listOutbox`); the 6:25 cycle moves ISA rows to the deck. The M
 `refiWatchDesk` — `refiWatch` stays the older hand-entered rate-watch list on the Ops Radar panel (a name collision the
 deck build caught). Another session's Capability Pack section on the ISA Portal was kept; it asks for the `downloads`
 capability without declaring it, so its Download button falls back to copy — their call, not changed here.
+
+## 2026-10-22 (night) — The Bot Crew aligned to the org chart; Brain 6D updated
+Steven: "continue add more in depth and update 6D brain and update AI org chart with all changes." The Bot Crew
+(355 agents, `wiki/ai-team/bot-crew.md`) now mirrors this chart: Kevin replaces Cole there too (same card id, so notes
+carry over), Maxwell and Elon got cards, the 14 named seats and seven desk seats became one group, the eight standing
+pods run as workflows (Alexandra gates, Vanessa last), and an org-chart panel shows which crew groups roll up to
+which executive. Vanessa is the first card, Chief of Staff, with `consult_agent` and `start_workflow`. The crew went on
+the org chart as a surface under Vanessa, not a seat. Rule kept: drafts only, approval cards for every write.
+
