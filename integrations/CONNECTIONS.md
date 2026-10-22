@@ -339,6 +339,31 @@ Checked from the cloud session: claude.ai connectors (`ListConnectors`), Composi
 | SkySlope · zipForms | locked until compliance sign-off | — | Alexandra → Steven |
 | CRMLS · dotloop · Ticor | applications/emails drafted, not sent | STEVEN-STEPS step 19 / 30 | Steven |
 
+## Connection status — checked live 2026-10-22 17:55 UTC (Steven: "look for everything not working or not connected and fix them")
+
+Checked from the cloud session: `ListConnectors`, Inkbox `channel_status_get`, Composio Zoho (live call), Fieldy (live
+call), Pabbly Integration Builder, the deck's `runnerStatus`, `backupStatus`, `tcDesk`, `whatsappKapso`.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| **Mac runner** (every Mac task) | still silent since 2026-10-13 07:13 UTC — stuck "running" one task | `connect-all.sh` step 2 now restarts it unconditionally; 2b keeps the Mac awake on the charger | paste |
+| **Repo sync on the Mac** | `git pull` failed daily (cloud and Mac both rebuild the brain files) | `scripts/repo-sync.sh` in step 1 + a 30-minute LaunchAgent; 36 tests | paste |
+| **Inkbox** (Vanessa's iMessage + email) | connected — reconnected 2026-10-22: email active (vanessa-shearrill@inkboxmail.com), iMessage line ready; no phone linked yet | text `connect @vanessa-shearrill` to +1 650 484 9720 once from his phone | Steven |
+| **Kapso WhatsApp** (Pabbly app) | connected — login proven (HTTP 200); phone list + List Phone Numbers built; both instant triggers built (manual webhook: paste the Pabbly URL into Kapso); Send step waits for his test number | `integrations/pabbly/WORKFLOWS.md` §A; STEVEN-STEPS 5/5b | Steven |
+| Kapso WhatsApp (Mac) | plugin/MCP/Keychain keys pending | `connect-all.sh` steps 3–4, then `claude` → `/mcp` → kapso | paste + Steven |
+| Zoho CRM (Composio) | account ACTIVE; `ZOHO_GET_ZOHO_RECORDS` → **403 NO_PERMISSION** (tested 14:46 UTC) | tick "Zoho CRM API Access" on his Zoho profile | Steven |
+| Lofty | no key on the Mac yet; GET-only CLI built | `connect-all.sh` step 7b asks for the key once (hidden, file only) and proves it with GET /me | paste + Steven |
+| Gondola (travel MCP) | not yet registered anywhere | `connect-all.sh` 4b (Claude Code); custom connector in claude.ai (`https://mcp.gondola.ai/mcp`) | paste + Steven |
+| Fieldy | connected — no recordings yet (free plan, 7-day window) | record with the pendant or desktop app | Steven |
+| Gmail · Google Calendar · Zoom · Fieldy · Inkbox | connected — callable from the Command Deck page (mcp capability): Triage inbox, Recap meetings, Text me the brief | — | — |
+| Eromify | connected — reconnected 2026-10-22 (creator studio; spends credits — HALT: every generation is Steven's yes) | assign to Sofia's lane; no routine uses it | — |
+| EVRoutes · Turo | `needs_reconnect` | Reconnect or remove | Steven |
+| BlackRock · Health Data Avatar · Microsoft 365 · PlayMCP · Similarweb · Higgsfield | never finished connecting; nothing uses them | finish or remove | Steven |
+| You.com | connected but 0 credits; 9 files still reference it | research stays on Claude web research | — |
+| Weekly backup | active — GREEN: catch-up run 2026-10-22 verified 191 + 16 docs; now Sunday 21:07 UTC (after the allowance reset) | — | — |
+| Cloud routines | active — 55 enabled; every failure this month = usage limit; 17 ran green today | budget cut ~34% (`docs/ROUTINE-BUDGET-2026-10-22.md`); 4 http_api loops are his to disable | Steven (4 clicks) |
+| Broker Command Center (3rd dashboard) | data lives in the browser only — no routine can read it | move its state to its `db` (another session owns that page) | later |
+
 ### Pabbly Connect — status 2026-10-20
 
 Custom app **"Kapso WhatsApp"** created in Steven's Pabbly account by the Integration Builder (private, unpublished):

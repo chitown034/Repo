@@ -192,3 +192,19 @@ detector is already running and was simply calibrated to expect the bug — the 
 `state` and an assertion that every doc's top level is a single `v` key would catch a bare write
 within 6 hours and cost one read. **That change is Steven's to make — an agent may not edit a
 routine.**
+
+## Added 2026-10-22 — the push-button schedule (cloud, Pacific time)
+
+| When | What | Writes | Reads |
+|---|---|---|---|
+| 3:30 AM daily | 6D Brain rebuild + republish (this session) | brain-4d.html, INDEX, reports | repo |
+| 6:05 AM weekdays | Transaction & Showing desk | tcDesk, twinQueue | tcDeals, showings, calendar |
+| 6:25 AM weekdays | Vanessa's Chief-of-Staff cycle — works `vanessaQueue` first, ≤8 pod squads in parallel | cosBrief, vanessaQueue, twinQueue, ISA `isaToday` | the deck + ISA `vanessaOutbox` |
+| 6:34 AM daily | Morning brief across the three dashboards — push + `morningBrief {text, voiceScript}` | morningBrief, morningBriefStatus | cosBrief, tcDesk, inboxDesk, ISA Portal |
+| 6:40 AM daily (Mac) | iMessage text of that brief + Vanessa's voice note (`mac-task-specs` §8/§8b) | — | morningBrief |
+| 7:20 AM Mon | Refi watch — prep list vs the market average (never a quote) | refiWatch, vanessaQueue | ratesSnapshot, refiWatchList |
+| 7:40 AM, 11th monthly | Sphere & past-client touches — drafts + ISA call list | sphereTouches, marketingQueue, vanessaQueue | sphereList, liveFeeds market notes |
+| 8:40 AM daily (15:40 UTC) | Freshness sweep — per-key cadence (8 d / 4 d / 80 h / 26 h) + ISA mirror | liveFeeds, feedFreshness, ISA ratesSnapshot/liveFeeds | — |
+| Sun 2:07 PM (21:07 UTC) | Weekly backup, verified; watchdog 4:41 PM | backups/, backupStatus | both stores |
+| On a button | Run the cycle now · Triage my inbox · Recap my meetings · Draft follow-ups · Text me the brief (Command Deck; Gmail/Fieldy/Zoom/Inkbox as the viewer) | inboxDesk, twinQueue, vanessaQueue | — |
+| Pabbly (no Claude usage) | Kapso inbound → Notion; workflows 1–11 in `integrations/pabbly/WORKFLOWS.md` | Notion, Gmail drafts, Calendar tasks | Lofty, Zoho, Gmail, Kapso |

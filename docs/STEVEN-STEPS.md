@@ -17,7 +17,10 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
    or checks Kapso, Gondola, Inkbox voice, Laya, Jarvis, Orca and AnyDesk, the seven Claude mods (new: `/cycle`, `/inbox`,
    `/meetings`, `/today`, `/tc`, `/queue <task>`, `/sync`, `/connect` and a status line that says when the repo is behind).
    It never signs in, pairs, sends or pays.
-2. **Morning iMessage + voice from Vanessa:** claude.ai → Settings → Connectors → **Inkbox → Reconnect**; then in the
+2. **Vanessa's iMessage line (30 seconds, from your phone):** Inkbox is reconnected. Send the text
+   `connect @vanessa-shearrill` to **+1 650 484 9720** (tap: sms:+16504849720?&body=connect%20%40vanessa-shearrill).
+   After that, the "Text me this brief" button on the Command Deck works, and Vanessa can text you.
+2a. **Morning iMessage + voice from Vanessa (Mac side):** claude.ai → Settings → Connectors → **Inkbox → Reconnect**; then in the
    runner task `vanessa-morning-brief-text` paste §8b at the start and §8 at the end (`integrations/mac-task-specs.md`).
    From then on, ~6:40 AM: one text covering all three dashboards and a voice note in her voice.
 2b. **Zoho CRM (one checkbox, then tell Claude "Zoho done"):** Zoho CRM → ⚙ Setup → Security Control → Profiles →
@@ -42,6 +45,9 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
    - https://claude.ai/code/routines/trig_016qKE1TdRjzkpb2Yby8yWBX · https://claude.ai/code/routines/trig_013vYCzVa3vbHZ8BZZy6UBpX
    - https://claude.ai/code/routines/trig_013ocJfEDdmSAgDPVaiCzMZY · https://claude.ai/code/routines/trig_019NdM12eTVDHWy89Ch2sNtU
    (the Saturday Loop Engineering + Self-Test already covers them; full list in `docs/ROUTINE-BUDGET-2026-10-22.md`).
+6b. **Two short lists only you know (tell Claude or your ISA):** "refi list: <first name>, <note rate>, <loan type>,
+   <month closed>" for each past loan (feeds Monday's Refi Watch), and "sphere list: <first name>, <relation>,
+   <birthday>, <home anniversary>" (feeds the monthly touches). Nothing is quoted or sent from either.
 7. **Share the ISA Portal with your ISA/EA** (Share menu) — it now has today's list and a "Hand to Vanessa" box.
 
 Claude already did (2026-10-22): one Vanessa queue every dashboard writes; push-buttons on the Command Deck (run the
