@@ -16,7 +16,7 @@ const DASHBOARDS: [string, string, string][] = [
 const DRAFTS = 'Drafts only: never send, reply, forward, post or change labels/read status.'
 
 const WORKFLOWS: Record<string, { title: string; about: string; prompt: (args: string) => string }> = {
-  morning: {
+  'morning-launch': {
     title: 'Morning Launch',
     about: 'Calendar + unread mail → brief as a Gmail draft',
     prompt: () =>
@@ -85,7 +85,7 @@ const RULES = [
   '- The GitHub repo is public: PPFC Trainual data (PPFC_KB, PPFC_LENDERS, AE contacts, comp terms, internal SOP text) lives only in the published VANESSA page, never in a commit.',
   '- Email, Slack and calendar automation is drafts-only unless Steven explicitly asks to send.',
   '- Loan guidance: cite the source, say to verify against the current guide/AE; never recommend a lender because it pays more (LO Comp Rule 12 CFR 1026.36(e)).',
-  '- Slash commands from this mod: /vanessa, /morning, /lender-digest, /lender-shop, /deal-intake, /sync-dashboards, /squad, /zoho, /research, /book-consult, /dash-status.',
+  '- Slash commands from this mod: /vanessa, /morning-launch, /lender-digest, /lender-shop, /deal-intake, /sync-dashboards, /squad, /zoho, /research, /book-consult, /dash-status.',
   '- Work in parallel when tasks are independent: fan out one subagent per lane in a single message, then merge (AI Squads in VANESSA define the lanes).',
 ].join('\n')
 
@@ -102,7 +102,11 @@ export const register: Register = on => {
     const started = await next(e)
     await $.command.register({ name: 'vanessa', description: 'Open the VANESSA HQ pane' })
     for (const [name, w] of Object.entries(WORKFLOWS)) {
-      await $.command.register({ name, description: `VANESSA ${w.title}: ${w.about}` })
+      try {
+        await $.command.register({ name, description: `VANESSA ${w.title}: ${w.about}` })
+      } catch {
+        $.ui.log(`vanessa-hq: /${name} is taken by another command; skipped`, { to: 'debug' })
+      }
     }
     $.ui.status('VANESSA HQ · drafts-only · /vanessa')
     return started
