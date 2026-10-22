@@ -27,7 +27,7 @@ Steven (Principal)
 │   ├─ Dispatch planner — `bin/brain route`: lead seat, cross-functional joins, ≤8-wide parallel waves, gates, HALTs (rules: `wiki/ai-team/cross-functional.md`)
 │   ├─ Broker Command Center — realtor/broker OS (https://claude.ai/artifact/XFx2H7cf8mnS8e8hjFzxNg), connected 2026-10-22
 │   ├─ The Bot Crew — 355 chat agents mirroring this chart: 13 executive/mentor cards, 21 named + desk seats, 8 pods and
-│   │   12 workflows runnable, an org-chart panel, 20 live connectors behind approval cards (https://claude.ai/artifact/B8BPDvyE55p8hT7PTyKbjG; `wiki/ai-team/bot-crew.md`, 2026-10-22)
+│   │   15 workflows runnable, an org-chart panel, 20 live connectors behind approval cards (https://claude.ai/artifact/B8BPDvyE55p8hT7PTyKbjG; `wiki/ai-team/bot-crew.md`, 2026-10-22)
 │   ├─ Travel Desk — Gondola MCP: points vs cash, trips, price watches; Marcus costs each trip; booking is Steven's (new 2026-10-22, `wiki/ai-team/desk-seats.md`)
 │   ├─ Meeting Scribe — Fieldy/Zoom recaps: decisions, action items → `vanessaQueue`; drafts only (new 2026-10-22, `wiki/ai-team/desk-seats.md`)
 │   └─ Juliet — Escalation & Service Recovery
