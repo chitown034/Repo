@@ -219,3 +219,7 @@ validate-code.sh: `--since <ref>` may be followed by `--hash` or `--mark`; the h
 ## Resolution 2026-10-23 13:10 UTC — change-set `4a989029f75c73e1` (claude.ai export ingest; sessions ledger)
 
 brain/ingest_claude_export.py + `bin/brain ingest claude-export <conversations.json>`: keeps only Steven-side messages, masks phones/e-mails (reuses export_notebooklm.mask), newest-first table + "tasks Steven mentioned" (verb-phrase filter, de-duplicated, capped 400), dict- or list-shaped export. Tests: brain/tests/test_ingest_claude_export.py (3: assistant text never copied, masking, tasks found, file written, dict shape). docs/inventory/claude-sessions.md written from list_sessions (100 rows) and a daily routine refreshes it. inbox/ ignored except its README. Reviewed inline; brain suite OK.
+
+## Resolution 2026-10-23 13:30 UTC — change-set `f2868a38c753c71b` (placeholder memory/claude-chats.md)
+
+The 13:10 change-set (f7c0515) failed only `brain doctor`: CLAUDE.md routed to memory/claude-chats.md before any export was ingested. A placeholder now exists (the ingest overwrites it). Covers f7c0515.
