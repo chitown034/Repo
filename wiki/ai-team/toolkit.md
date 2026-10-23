@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 46 skills · 7 plugins · 12 connectors (2 ok, 10 need attention) · 65 cloud routines · 60 Mac tasks
+toolkit: 46 skills · 7 plugins · 13 connectors (3 ok, 10 need attention) · 65 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -210,6 +210,7 @@ toolkit: 46 skills · 7 plugins · 12 connectors (2 ok, 10 need attention) · 65
 - `EVRoutes · Turo` — *reconnect*: needs_reconnect
 - `Four http_api Sunday routines` — *attention*: still enabled
 - `GitHub repo visibility` — *attention*: public
+- `Fieldy → 2nd brain` — *ok*: connected — the daily "Fieldy → brain" task (6:50 AM PT, this session, Fieldy connector) writes memory/fieldy-meetings.md + the deck fieldyDesk doc and queues a recap item per meeting with action item
 - `Notion `brain-learn-daily` rows` — *attention*: resume with Mac 1's runner (signed in 2026-10-23); directory page written 2026-10-23
 
 **Cloud routines**

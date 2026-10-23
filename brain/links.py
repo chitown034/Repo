@@ -19,6 +19,7 @@ LINKS: list[dict] = [
     {"key": "notebooklm", "label": "NotebookLM (notebook.google.com)", "url": "https://notebook.google.com/", "store": "store:notebooklm", "layer": "notebooklm"},
     {"key": "notion", "label": "Notion · Second Brain database", "url": "https://app.notion.com/p/e767daccebf6434d828b5818414ef495", "store": "store:notion", "layer": "notion"},
     {"key": "notion_dir", "label": "Notion · Second Brain layer directory", "url": "https://app.notion.com/p/402c1760a749811eaea5d07005df0179", "store": None, "layer": "notion"},
+    {"key": "fieldy", "label": "Fieldy (recorded meetings)", "url": "https://app.fieldy.ai/", "store": None, "layer": "fieldy"},
     {"key": "routines", "label": "Cloud routines (claude.ai/code)", "url": "https://claude.ai/code/routines", "store": None, "layer": None},
 ]
 

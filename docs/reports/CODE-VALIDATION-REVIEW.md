@@ -1,225 +1,272 @@
-# VibeBreaker Final Report: laya_route.py score_label (real-engine `score` answers)
+# VibeBreaker Final Report: 6D Brain "answer from the brain" search + Fieldy layer
 
-change-set: 1cf57c39f9d7ebf8
+change-set: 384c72d239846908
 
-(This hash comes from `bash scripts/validate-code.sh --since HEAD~1` against commit 40f4ce6. The tree is clean. Plain
-`validate-code.sh` reports "nothing changed since HEAD", and `--hash` now prints 01ba4719c80b6fe9, which is the hash of an
-empty change-set. So `--mark` will refuse this change-set as it stands. That is the same limitation recorded in the
-previous review.)
+(From `bash scripts/validate-code.sh` at 2026-10-23T13:27:07Z on the uncommitted tree over HEAD ca02849. Any edit changes
+the hash; the fix-up needs its own run and review.)
 
 ## Verdict
 
-`SHIP` (VibeBreaker: `SURVIVED*`)
+`FIX FIRST` (VibeBreaker: `FIX BEFORE SHIP`)
 
-The fix removes the Mac `KeyError: 'label'` and leaves the stub path unchanged. The deterministic checks pass and the laya
-suite passes 23 of 23. What remains is one LOW test gap, one INFO rounding quirk and two UNVERIFIED items that depend on
-runtime facts about laya 0.3.21.
+The deterministic gate passes 10/0, but the rebuilt `dashboard/brain-4d.html` will not run in a browser. The new SEC
+passages put `<!--` and then `<script ` inside the inline script, so the HTML tokenizer never closes that script. The
+passage feed would also publish the coming Fieldy meeting digests, because `passages()` only leaves out `wiki/clients/`.
 
 ## Scope
 
-- Commit / branch: 40f4ce6 on claude/stoic-cori-pvn3f8 (diff HEAD~1..HEAD, limited to integrations/laya and integrations/tests)
-- Mode: DIFF
-- Stack: Python 3 CLI, no network on the stub path
-- Passes completed: 01, 04, 05, 06, 07, 08, 12, 17, 18, 19, 20 (11 / 20)
-- Inspected surfaces: `score_label` (laya_route.py:189-201), `decide` (204-251), `main`/`run_one`/printing (254-322),
-  `_stub_score` (136-141), router-questions.json `urgency` (3 criteria), test_laya_route.py (lines 27, 60-66)
-- Excluded: docs/STEVEN-STEPS.md and integrations/CONNECTIONS.md (prose only). The installed laya 0.3.21 package was not
-  available, so I could not read its `score` answer contract directly. I relied on the caller's statement of the laya docs.
-- Material scope limitation: YES. The real engine's output was not run here.
+- Commit / branch: uncommitted working tree on claude/stoic-cori-pvn3f8, base ca02849
+- Mode: DIFF. Passes 01, 04, 05, 06, 07, 08, 12, 17, 18, 19 (Python/JS), 01, 04, 05, 17, 19 (dashboard HTML), 01, 04, 05, 11, 14, 19 (shell), then 20
+- Stack: Python 3.11 stdlib (brain/, build.py), static HTML + inline JS (6D Brain), bash (validate gate)
+- Inspected surfaces: brain/layers.py, brain/links.py, brain/tests/test_layers.py, dashboard/brain-4d/build.py (passages, j()),
+  dashboard/brain-4d/template.html (askRender, mk, CSS), dashboard/brain-4d.html (built SEC/LAYERS/LINKS embeds),
+  scripts/validate-code.sh (quickcheck), brain/indexer.py + brain/text.py (section line semantics),
+  brain/export_notebooklm.py (the existing masking policy), the live "Fieldy → brain" scheduled task prompt (read-only list)
+- Excluded / unavailable context: no spec-compliant HTML parser or browser in the container (no jsdom/parse5/html5lib/Chrome).
+  The script-termination proof is a simulation of the WHATWG script-data tokenizer states, not a browser run.
+- Material scope limitation: YES (no live browser confirmation of P17-F1)
 
 ## Scoreboard
 
-- Passes executed: 11 / 20
-- Confirmed: 2
+- Passes executed: 14 distinct / 20
+- Confirmed: 6
 - Critical: 0
-- High: 0
-- Medium: 0
-- Low: 1
-- Info: 1
-- Unverified: 2
-- Rejected candidates: 6
+- High: 2
+- Medium: 1
+- Low: 3
+- Info: 0
+- Unverified: 0
+- Rejected candidates: 4
 - First critical pass: NONE
 
 ## CONFIRMED
 
 ```yaml
-id: P19-F1
-pass: 19
-title: The crash site (decide -> urgency) has no test with a real-shaped, label-less answer
+id: P17-F1
+pass: "17"
+title: Embedded SEC passages put the 6D page's main inline script into script-data-double-escaped state; the script never closes or runs
 status: CONFIRMED
-severity: LOW
+severity: HIGH
 confidence: HIGH
 location:
-  - path: integrations/laya/laya_route.py
-    line: 248
-  - path: integrations/tests/test_laya_route.py
-    line: 60-66, 68-
-entry_or_trigger: someone reverts line 248 to answers["urgency"]["label"], or a refactor bypasses score_label
-evidence: The new tests call score_label() directly. The subprocess regression runs --engine stub only, and _stub_score
-  (136-141) always returns "label". No test passes decide() a predict_fn whose urgency answer has no label.
-existing_controls_checked: all 23 checks in test_laya_route.py; there is no other laya test file under integrations/tests
-failure_scenario: If line 248 is reverted, all 23 checks still pass, and the Mac crashes again with KeyError 'label' on
-  the first ROUTE row.
-impact: The exact production regression this commit fixes can come back while CI stays green.
-remediation_direction: Add one test that calls decide() with a fake predict_fn. It should return choice, noul and
-  confidence answers plus urgency = {"score": 1.8, "legend": {"0": ..., "1": ..., "2": ...}, "probabilities": {...},
-  "confidence": 0.7} and no label.
-verification: The test asserts decide(...)["urgency"] == the legend["2"] text. It must fail if line 248 is reverted.
+  - path: dashboard/brain-4d/build.py
+    line: "131-132 (j() escapes only '</'), 147-169 (passages injected)"
+  - path: dashboard/brain-4d.html
+    line: "inline script opening at byte 19896; '<!--' at script offset 296026 (memory.md 'Entries' passage); '<script guar…' at offset 557579 (routines/cloud-routine-repairs.md passage)"
+entry_or_trigger: Any browser load of the built page (the daily 3:30 AM 6D rebuild + republish)
+evidence: >
+  j() = json.dumps(...).replace("</", "<\\/") does not escape "<!--" or "<script". SEC now carries 4 "<!--" and 1 "<script "
+  (followed by a space), with no "-->" anywhere in the script body (passages() strips every '>'). Per the HTML tokenizer,
+  "<!--" in script data moves to script-data-escaped; "<script " then moves to double-escaped; the real "</script>" then only
+  returns to escaped; EOF in a script means the element is marked already-started and is never executed.
+  Simulation (scratchpad scriptstate.py): new page -> "EOF inside script"; HEAD page -> script ends at byte 541519 as expected.
+  HEAD page had 0 "<!--".
+existing_controls_checked: >
+  validate-code.sh quickcheck extracts scripts with a regex and runs node --check on each, so it never sees HTML-tokenizer
+  state; it passes. j() handles "</" only.
+failure_scenario: Republish the rebuilt page -> the browser shows the static shell, the map, search, layers and links all dead.
+impact: The whole 6D Brain page, which Steven reaches through the deck links and the daily republish.
+remediation_direction: In j(), also escape "<!--" (e.g. "<\\!--") and "<script" (e.g. "<\\script"), or "<" as "\\u003c" across the JSON.
+verification: >
+  A build test asserting that no embedded script body contains "<!--" or a case-insensitive "<script"; then open the page in
+  Chrome and check that typeof askRender === "function" and a query shows hits.
 needs_context: null
 ```
 
 ```yaml
 id: P05-F1
-pass: 05
-title: Python round() uses banker's rounding, so exact half scores round inconsistently
+pass: "05"
+title: passages() will put Fieldy meeting digests (client meeting summaries) into the published 6D page
 status: CONFIRMED
-severity: INFO
+severity: HIGH
+confidence: MEDIUM
+location:
+  - path: dashboard/brain-4d/build.py
+    line: "152"
+  - path: memory/fieldy-meetings.md
+    line: "1-6 (indexed: INDEX.md, brain/index.json)"
+entry_or_trigger: First Fieldy recording -> the 6:50 AM "Fieldy → brain" task prepends a summary, reindexes, commits and pushes -> the next 3:30 AM 6D rebuild
+evidence: >
+  The only exclusion is p.startswith("wiki/clients/"). memory/fieldy-meetings.md is indexed and becomes a graph node, so it
+  passes the filter. It is not in SEC yet only because the committed build (13:21:37) predates the reindex (13:25:59).
+  The live task prompt writes, per conversation, first names, Fieldy's own summary (up to 80 words) and action items.
+  brain/export_notebooklm.py, the existing outbound path, masks phone/e-mail and drops any "/clients/" path. passages() applies neither.
+existing_controls_checked: >
+  The task's first-names-only rule; the wiki/clients/ filter; the NotebookLM mask() (not reused here). The SEC sweep today
+  finds 0 wiki/clients pages; 2 phones (both on the export allow-list: Inkbox iMessage and Kapso lines); 9 e-mails, of which
+  steven.shearrill@gmail.com x2, jasmine@inkboxmail.com x1, api@crmls.org x2 and number@c.us x1 are NOT on the allow-list
+  (licensing@crmls.org x3 is). None of those addresses were on the HEAD 6D page.
+failure_scenario: >
+  Steven records a lender or buyer meeting. The next day, the published 6D page carries "<first name> … summary … action
+  items" for that client in its page source, whether or not anyone searches for it.
+impact: Client meeting content and Steven's personal e-mail reach a page the brief describes as published publicly. This touches the CLAUDE.md HALT list (client PII leaving the local model).
+remediation_direction: >
+  Exclude memory/fieldy-meetings.md (and memory/claude-chats.md) and any "/clients/" path from passages(), and run
+  export_notebooklm.mask() over h and x. Steven decides whether meeting digests may sit in the repo at all.
+verification: >
+  A test where passages() over a fixture tree containing memory/fieldy-meetings.md and a/clients/x.md returns neither, and an
+  e-mail not on the allow-list comes back as "[e-mail masked]".
+needs_context: Whether the 6D artifact and the GitHub repo are public (the brief says the dashboard is; CONNECTIONS.md says the repo is public).
+```
+
+```yaml
+id: P04-F1
+pass: "04"
+title: The previous query's "Answer from the brain" stays on screen after a no-match or empty query
+status: CONFIRMED
+severity: MEDIUM
 confidence: HIGH
 location:
-  - path: integrations/laya/laya_route.py
-    line: 196
-entry_or_trigger: a real-engine urgency score of exactly 0.5 or 1.5
-evidence: Probe output. score 0.5 -> "not urgent" (level 0) but 1.5 -> "blocking" (level 2). score 2.5 is clamped to 2.
-existing_controls_checked: clamp at line 197; the test only covers 0.4 and 1.8
-failure_scenario: For a score halfway between two levels, the reported label rounds down at 0.5 and up at 1.5.
-impact: Display only. urgency is printed (line 306-307) and emitted with --json. Nothing in this file branches on it.
-  An exactly representable .5 from an expected-value float is uncommon.
-remediation_direction: Use math.floor(score + 0.5) for consistent round-half-up, or document that ties go to the even level.
-verification: score_label({"score": 0.5, legend3}) == "soon" and score_label({"score": 1.5, legend3}) == "blocking"
+  - path: dashboard/brain-4d/template.html
+    line: "587-603 (early returns before #answer is touched), 621, 632"
+  - path: dashboard/brain-4d/template.html
+    line: "65 (#answer { display: grid } overrides the hidden attribute)"
+entry_or_trigger: Type a query that answers (e.g. "VA funding fee"), then one that hits "not in the brain"
+evidence: >
+  Line 587 resets #best and #askNone but not #answer. The no-keywords/weak-match path returns at line 603, and the empty-input
+  path at 588, before the try block that clears it (621). Separately, the author rule #answer{display:grid} beats the UA
+  [hidden]{display:none}, so ans.hidden = true (632) never hides it. The page already works around this for #inspector (line 104).
+existing_controls_checked: Clearing happens inside the try block only; there is no #answer[hidden] rule.
+failure_scenario: "not in the brain — queue research" shows directly above the previous question's passages, labelled "Answer from the brain".
+impact: The search shows a confident-looking answer to a different question, on a brain that holds mortgage-guideline pages.
+remediation_direction: Clear and hide #answer next to #best at line 587, and add #answer[hidden]{display:none}.
+verification: >
+  DOM test (runtime harness): askRender("va funding fee"), then askRender("zzzz qqqq"). Assert #answer has no children and
+  computed display is none.
+needs_context: null
+```
+
+```yaml
+id: P04-F2
+pass: "04"
+title: The committed 6D build is stale against this change-set's own sources (no Fieldy layer, link or page)
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: dashboard/brain-4d.html
+    line: "LAYERS / LINKS / ASK embeds"
+entry_or_trigger: Publishing the committed dashboard/brain-4d.html as is
+evidence: >
+  The built LAYERS holds 10 keys and no "fieldy"; LINKS holds 24 and no "fieldy"; ASK n=148 while the index has 149.
+  brain-4d.html mtime is 13:21:37, LAYERS.md 13:22:32, index.json 13:25:59.
+existing_controls_checked: The daily 3:30 AM rebuild would regenerate it.
+failure_scenario: Until the next rebuild, the 6D page shows no Fieldy layer or link, unlike LAYERS.md and bin/brain links.
+impact: A cosmetic inconsistency on the page.
+remediation_direction: Rebuild after the last source edit, as the final step.
+verification: A test that the built LAYERS keys equal the keys from layers.collect(ROOT).
+needs_context: null
+```
+
+```yaml
+id: P04-F3
+pass: "04"
+title: The Fieldy layer reads "stale" after any two recording-free days
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: brain/layers.py
+    line: "16 (cadence 1), 77, 93"
+entry_or_trigger: No recordings Saturday and Sunday (the task "stops silently" and writes no heading), then a Monday layers run
+evidence: >
+  "last" is the newest "## YYYY-MM-DD" heading. A day without recordings writes no heading. fresh means age <= 2 days.
+  Reproduced: a single "## 2026-10-20" heading with today 2026-10-23 gives age 3, verdict "stale".
+existing_controls_checked: The task prompt prepends headings (newest first), so the re.search order is correct; checked and rejected separately.
+failure_scenario: >
+  The layer reports "Even: no — stale: Fieldy meetings". The weekly sync's step 6 then appends a CONNECTIONS row and messages
+  Steven about something that is working.
+impact: A false alarm on the layer register.
+remediation_direction: Stamp the last check date (e.g. a "checked YYYY-MM-DD" line the task always rewrites), or use a cadence that matches recording frequency.
+verification: A layers test with a 3-day-old heading plus a fresh "checked" stamp, asserting "fresh".
+needs_context: null
+```
+
+```yaml
+id: P04-F4
+pass: "04"
+title: passages() drops the first line of a "(top)" preamble section
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: dashboard/brain-4d/build.py
+    line: "160-162"
+entry_or_trigger: Building SEC for a page whose line 0 is content rather than a heading
+evidence: >
+  The indexer stores line = start + 1 (brain/indexer.py:208, 1-based). For heading sections, lines[line:] correctly starts
+  after the heading, and the end bound (next line - 1) correctly stops before the next heading. For the "(top)" section,
+  start 0 becomes line 1, so lines[1:] skips content line 0. Affected today: integrations/mac-claude-only.md
+  ("> **Superset:** …" is dropped).
+existing_controls_checked: >
+  The 1-based assumption was verified for heading sections. No indexed file diverges between split("\n") and splitlines(),
+  and none has YAML frontmatter.
+failure_scenario: That page's top passage is missing its first sentence.
+impact: Minor loss of content in one passage.
+remediation_direction: Start at 0 when the title is "(top)".
+verification: A passages() unit test on a fixture whose line 0 is text, asserting that text is in x.
 needs_context: null
 ```
 
 ## UNVERIFIED
 
-- P05-F2: A non-finite or null `score` raises an exception at laya_route.py:196. Probe results: NaN gives ValueError,
-  inf gives OverflowError, and None gives TypeError. Neither decide() nor run_one (279-283) catches it, so one bad row
-  ends a whole --batch run. That is the same class of failure as the original KeyError. Missing context: whether laya
-  0.3.21 can ever emit a NaN, inf or null `score`, for example when its probabilities are degenerate. Suggested fix:
-  check `isinstance(score, (int, float)) and math.isfinite(score)` before rounding, and otherwise fall through to the
-  probabilities branch.
-- P17-F1: When `legend` is missing or empty, line 199-200 returns the argmax probability key. In laya that key is an
-  index ("1"), not level text, and the branch ignores `score`. urgency then prints "1" instead of "soon". Missing context:
-  whether the real engine ever omits `legend`. Suggested fix: pass the question's `criteria` list into score_label as a
-  fallback legend.
+None.
 
 ## REJECTED
 
-- P05-R1: legend keyed by int instead of str. Line 198 tries str(idx) and then idx. The probe with {0:"a",1:"b"} and score 1.2 returned "b".
-- P05-R2: empty legend crashes. `legend` is falsy, so line 195 skips the branch and line 199 or 201 returns. The probe returned "1" (see P17-F1) and test `score_label({})` returns "unknown".
-- P05-R3: out-of-range score. The clamp at line 197 works. The probe gave -0.7 -> level 0 and 3.9 -> level 2 (with 3 levels).
-- P05-R4: non-contiguous legend keys (e.g. {"1","2","5"}) clamp to the wrong index. This is outside the contract: the legend comes from the criteria list, indexed 0..n-1 (router-questions.json urgency has 3 criteria).
-- P18-R1: the real engine might also lack `noul`, `choice` or `confidence`. The Mac crash happened at urgency. Python evaluates pii_gate (211), brain_route (214-216), tier (235) and lane (245) before urgency (248), so those keys existed in the real output.
-- P17-R2: the stub path might have changed. `"label" in ans` is checked first (line 192) and returns the stub's label unchanged. The stub subprocess batch still prints 20 rows: 15 routed, 5 escalated, 2 pii fired.
+- P04-R1: the Fieldy "last" stamp reads the oldest heading (re.search takes the first match). Rejected: the live "Fieldy → brain" task prompt prepends each day under "## <date>", so the first match is the newest.
+- P01-R1: XSS in the answer rows. Rejected: mk() sets textContent (template.html:583); the hrefs are REPO + an index path and a fixed deck URL.
+- P04-R2: the section line off-by-one for heading sections. Rejected: line is 1-based (indexer.py:208), so lines[line:next-1] is exactly the body.
+- P14-R1: the new `grep -q 'id="cdStateSeed"'` misroutes the deck. Rejected: the only seed-bearing page in the repo is dashboard/isa/isa-portal.html:433, which matches. In the JSON-embedded 6D page any quote is escaped as `\"`, so it cannot match.
 
 ## Coverage
 
-Clean:
-- Pass 01: no new untrusted-input surface. score_label reads model output only.
-- Pass 04: the PII withholding at 219-223 is untouched, and urgency text is level text, not request text.
-- Passes 06, 07, 08, 12: no concurrency, resources, data access or retries in this diff.
-- Pass 17: the urgency field type is still str on both engines.
-- Pass 18: printing (306-307) and --json (298-299) consume urgency as an opaque string.
-- The surgical-change check passes: 15 lines added in one helper and one call site, with no unrelated edits.
+- validate-code.sh: PASS 10/0. brain tests (`cd brain/tests && python3 -m unittest`): 118 OK. dashboard.brain-4d.test_merge_live: OK.
+  scripts/tests/validate-gate-tests.sh: 4/4. The brief's `python3 -m unittest discover -s brain/tests -t .` fails with ImportError (no `__init__.py`); this is not a defect, because the gate runs from inside brain/tests.
+- askRender scope: ranked, best, terms, byId, REPO, mk and $ are all in scope at the insertion point (lines 594-616). The try/catch cannot break the earlier rendering.
+- brain/links.py fieldy row and layers url wiring (for_layer): clean; the test covers it.
+- SEC privacy sweep: 1255 passages from 147 pages; 0 wiki/clients pages; "wiki/clients" appears 11 times only as path text inside other pages.
+- Size: the 6D page grew from 544 KB to 1.11 MB (SEC is 567 KB). That is within limits.
+- Docs rows (CLAUDE.md, CONNECTIONS.md, toolkit.md, second-brain-layers.md, LAYERS.md) are consistent with the live task.
 
-Deterministic results:
-- `bash scripts/validate-code.sh --since HEAD~1` printed `verdict: PASS (2 passed, 0 failed)` for change-set 1cf57c39f9d7ebf8.
-- `python3 integrations/tests/test_laya_route.py` printed `23 ok, 0 failed`.
+## Top 10 missing tests
 
-## Top missing tests
-
-1. decide() with a fake label-less real-shaped predict_fn returns legend text for urgency (P19-F1).
-2. score_label with score 0.5 and 1.5 pins the tie behaviour (P05-F1).
-3. score_label with an int-keyed legend.
-4. score_label clamps -0.7 to level 0 and 3.9 to the last level.
-5. score_label with an empty legend plus probabilities documents the fallback value (P17-F1).
-6. score_label with a NaN or None score must not raise once guarded (P05-F2).
-7. A full --batch run through decide() with a real-shaped fake engine prints 20 rows with no exception.
+1. Build: no embedded script body in the built page contains "<!--" or "<script" (case-insensitive). This catches P17-F1.
+2. passages(): a fixture with memory/fieldy-meetings.md, memory/claude-chats.md, x/clients/y.md and wiki/clients/z.md returns none of them.
+3. passages(): an e-mail or phone number not on the allow-list is masked with export_notebooklm.mask().
+4. DOM: an answer, then a no-match query, leaves #answer empty and computed display none.
+5. DOM: after an empty-input reset, #answer is cleared.
+6. passages(): heading-section bodies exclude the heading and the next heading; the "(top)" section keeps line 0.
+7. Build freshness: the built LAYERS/LINKS keys equal layers.collect / links.all_links.
+8. layers: no new heading for 3 days while the task is healthy does not read "stale" (once a check stamp exists).
+9. Answer scoring: a query term with an "ies" plural (e.g. "policies") still scores a passage containing "policies".
+10. quickcheck routing: a page that mentions cdStateSeed only inside JSON takes the generic path; isa-portal takes the deck path.
 
 ## Share card
 
 ```text
 VIBE//BREAKER
 
-VERDICT: SURVIVED*
-PASSES: 11/20
+VERDICT: FIX BEFORE SHIP
+PASSES: 14/20 (DIFF)
 CRITICAL: 0
-HIGH: 0
-CONFIRMED: 2
-UNVERIFIED: 2
-FIRST BREAK: NONE
+HIGH: 2
+CONFIRMED: 6
+UNVERIFIED: 0
+FIRST BREAK: 17
 ```
 
 ## Release note
 
-This review shows that the fix handles the score/legend shape described in the laya docs, and that the stub path is
-unchanged. It does not show what laya 0.3.21 emits at runtime. That still needs one `--engine real` run on Steven's Mac.
+This audit demonstrates the defects above from code, a tokenizer simulation and local reproductions. It did not run the
+page in a real browser and does not establish that the change is safe beyond what was inspected.
 
-## Resolution 2026-10-23 01:20 UTC — change-set `be85a299e57a5e57` (laya score_label hardening, reindex step, voice clips)
+## Orchestrator response (2026-10-23 13:40 UTC) — change-set 384c72d239846908 and its fix-up
 
-Validator verdict on 40f4ce6: SHIP, one LOW (no test at the crash site) + INFO (half rounding) + two unverified
-(NaN score, missing legend). All four addressed: `score_label` floors score+0.5, ignores non-finite scores, falls back
-to the question's criteria then probabilities; `decide()` passes the criteria; a real-shaped engine test exercises the
-crash site (28 ok). Mac proof 01:09 UTC: `--engine real` routed. Also in this change-set: connect-all 6a2 (`bin/brain
-reindex`, the Mac doctor FAIL cause), jarvis-setup reads `integrations/jarvis/voice/vanessa` (8 exported deck clips).
-
-## Resolution 2026-10-23 01:25 UTC — change-set `a5242be0ee07b267` (jarvis-setup Laya row reads stdout only)
-
-Two-line change in jarvis-setup.sh + connect-all.sh laya_connect: `HF_HUB_DISABLE_PROGRESS_BARS=1`, stderr dropped, grep the ROUTE/ESCALATE line instead of `head -2`. Cause: Mac report 01:14 UTC showed the progress bar overwriting the row while Laya had answered at 01:09. Tests: jarvis-tests 10, connect-all 54. Reviewed inline (display-only change, no new command, no secret, no login).
-
-## Resolution 2026-10-23 01:45 UTC — change-set `d2799035cfa16b65` (scripts/second-mac.sh)
-
-New one-paste bootstrap for the second Mac: Xcode CLT / Homebrew / Claude Code / uv only when missing (official installers, fetched only outside --preview), the `peer` role file (never overwritten), then connect-all.sh. Never signs in, never copies a credential; the runner copy from Mac 1 is left to Steven by design (claude-runner is not in the repo). Tests: scripts/tests/second-mac-tests.sh (5: preview rc 0, hands off to connect-all --preview, no role file in preview, no sign-in/token command run, lease step present), connect-all 54. connect-all runner note reworded for a second Mac. Reviewed inline: preview exercised with stubs; `bash -n`; no privileged command beyond the three official installers.
-
-## Resolution 2026-10-23 01:55 UTC — change-set `ab910262799269e7` (Mac 2 first-run fixes)
-
-From the Mac 2 log (Python 3.9, cryptography source build, Claude Code 2.1.278): second-mac.sh gains 0d2 (Homebrew python when python3 < 3.10, PATH refreshed, honest "open a new Terminal" when still old) and 0d3 (`claude update` when below 2.1.287, version compare via sort -V-style keys); laya/install.sh installs wheel-first (`--only-binary :all:`) and falls back to Homebrew build tools + a source build, and no longer recreates an existing venv. Tests: second-mac 8 (old python -> brew python planned; old/new Claude Code), connect-all 54. No sign-in, no credential, official installers only. Reviewed inline.
-
-## Resolution 2026-10-23 02:05 UTC — change-set `aac40675a5eaedac` (Python via uv on Mac 2)
-
-Mac 2 log 01:53 UTC: Homebrew python build refused (Intel + macOS 26, outdated CLT). 0d2 now: `uv python install 3.12`, `uv python find`, user-level symlink shim `~/.local/bin/python3` (+ `.zprofile` PATH line, appended once), Homebrew only as fallback, PATH refreshed in-run. Never writes under /usr. Tests: second-mac 9 (shim + zprofile line asserted with a stub uv; preview plans py_via_uv). Reviewed inline.
-
-## Resolution 2026-10-23 02:15 UTC — change-set `2d2dc3a78e238be0` (runner export/import for Mac 2)
-
-New scripts/runner-export.sh (Mac 1: packs ~/Applications/claude-runner minus logs/caches/tokens, runnerctl, the LaunchAgent; refuses if any file looks like a token; writes the missing `peer` role) and scripts/runner-import.sh (Mac 2: unzips, installs, rewrites the home path in the plist, plutil-lints, launchctl bootstrap; never signs in; warns when no role file). 11 stubbed tests (zip contents incl. negative on log/cache/token, plist rewrite, bootstrap call, no login). second-mac.sh still-yours (b) points at the pair. Reviewed inline.
-
-## Resolution 2026-10-23 02:25 UTC — change-set `fe57b3e24c9927ab` (Ollama cask first)
-
-Mac 2 report 01:53: `brew install ollama` (formula) builds from source there and stops on outdated CLT, like python. jarvis_engine now tries `brew install --cask ollama` (prebuilt app) first, opens it once, waits up to 30 s for the CLI link, falls back to the formula, and says plainly when the command is not linked yet. Tests: connect-all 56 (cask tried first; passes with a stubbed cask that links the CLI). Reviewed inline.
-
-## Resolution 2026-10-23 06:20 UTC — change-set `4496cf64cf9e31be` (NotebookLM mirror, layers register, 6D Layers readout)
-
-Code: brain/export_notebooklm.py (+tests, 28 ok), brain/layers.py (+tests), `brain export`/`brain layers` CLI, graph store node
-`store:notebooklm`, build.py LAYERS injection, template Layers readout (node --check OK on the built page; merge-live test OK),
-scripts/notebooklm-export.sh. Deterministic gate: brain tests OK, doctor PASS after reindex; the two `quickcheck` rows on
-dashboard/brain-4d.html and template.html are the Command Deck checker applied to the 6D page — "cdStateSeed JSON parses"
-cannot pass on a page that has no deck seed by design, and the "functions never defined (approx.)" list is JSON words
-(agent, board, body…), the same noise recorded for the deck on 2026-10-22. No login, no secret, no client page in the pack
-(test asserts it). Drive/Composio writes were done interactively in-session, scoped to SECOND BRAIN/. Reviewed inline.
-
-## Resolution 2026-10-23 06:25 UTC — change-set `09dae7ba39465f27` (gate: non-deck pages get node --check)
-
-The 06:20 change-set 4496cf64cf9e31be (committed as 9ae7a9c) could not be marked: validate-code.sh ran the Command Deck quickcheck on dashboard/brain-4d.html and template.html, which have no cdStateSeed by design. quickcheck() now runs the deck checker only on pages that contain cdStateSeed; other dashboard pages must have every inline script parse under node --check (the 6D page passes). Reviewed inline; `bash -n` OK.
-
-## Resolution 2026-10-23 06:35 UTC — change-set `b2a57b43df0afe21` (connect-all 6f NotebookLM connector)
-
-Steven opted in ("setup and connect everything for me"). nlm_connect installs notebooklm-mcp-cli with uv, registers the MCP with Claude Code via `nlm setup add claude-code`, checks `nlm login --check`, and fails honestly naming `nlm login` as his step. Tests (62): uv install used, setup add called, never a bare `nlm login`, signed-in path ok. Risk recorded in README/decisions; removal commands documented. Reviewed inline.
-
-## Resolution 2026-10-23 06:40 UTC — change-set `01ba4719c80b6fe9` (reindex after the 6f docs)
-
-The 06:35 change-set (501e85a) failed only `brain doctor` (index stale after context/decisions.md changed). Reindexed; INDEX.md + brain/index.json regenerated; nothing else. Covers 501e85a too.
-
-## Resolution 2026-10-23 10:50 UTC — change-set `6f801190c77853ec` (brain links; 6D links panel + clickable stores)
-
-brain/links.py (one table of front doors + the 13 SB Docs from the manifest), `bin/brain links`, store nodes carry `u`, layers carry `url`, build.py injects LINKS, template: "Open the brain" panel, open link per layer, inspector opens a store URL. Tests: brain/tests/test_links.py (4: https+unique, 13 SB docs, store urls, layer urls), full brain suite OK, merge-live OK, page parses (node --check). Reviewed inline; no secret, no client data (URLs are Steven own surfaces).
-
-## Resolution 2026-10-23 13:20 UTC — change-set `dbb0a8325217d6d1` (gate --since --hash/--mark; Notion stamp; consolidated status)
-
-validate-code.sh: `--since <ref>` may be followed by `--hash` or `--mark`; the hash is then computed over the same range the checks ran on (BASE=ref) so an already-committed change-set can be marked. Test: scripts/tests/validate-gate-tests.sh (4). layers.py: the Notion stamp is the newer of the directory-page write (manifest last_sync.notion_directory) and the export date. CONNECTIONS.md: one consolidated open-items section supersedes the per-run rows (the toolkit register reads it). Reviewed inline; `bash -n`, brain suite OK.
-
-## Resolution 2026-10-23 13:10 UTC — change-set `4a989029f75c73e1` (claude.ai export ingest; sessions ledger)
-
-brain/ingest_claude_export.py + `bin/brain ingest claude-export <conversations.json>`: keeps only Steven-side messages, masks phones/e-mails (reuses export_notebooklm.mask), newest-first table + "tasks Steven mentioned" (verb-phrase filter, de-duplicated, capped 400), dict- or list-shaped export. Tests: brain/tests/test_ingest_claude_export.py (3: assistant text never copied, masking, tasks found, file written, dict shape). docs/inventory/claude-sessions.md written from list_sessions (100 rows) and a daily routine refreshes it. inbox/ ignored except its README. Reviewed inline; brain suite OK.
-
-## Resolution 2026-10-23 13:30 UTC — change-set `f2868a38c753c71b` (placeholder memory/claude-chats.md)
-
-The 13:10 change-set (f7c0515) failed only `brain doctor`: CLAUDE.md routed to memory/claude-chats.md before any export was ingested. A placeholder now exists (the ingest overwrites it). Covers f7c0515.
+1. HIGH script tokenizer trap — fixed: `j()` now escapes `<!--` and `<script` as well as `</`; `dashboard/brain-4d/test_build_passages.py` asserts no script body carries either. Tokenizer simulation: the script now closes before end of file.
+2. HIGH Fieldy/chat digests on the public page — fixed: `PASSAGE_EXCLUDE` + any `/clients/` path skipped; `mask()` over heading and body; same two files added to the NotebookLM pack's `EXCLUDE_FILES`; the test checks page paths, `@gmail.com`, and phones against the allow-list.
+3. MEDIUM stale answer under "not in the brain" — fixed: `#answer` cleared and hidden with `#best`; `#answer[hidden]{display:none !important}`.
+4. LOW stale committed build — fixed: rebuilt and merged after the reindex (fieldy present in LAYERS/LINKS).
+5. LOW Fieldy layer goes stale on quiet days — fixed: the task always rewrites `Last checked: YYYY-MM-DD`; `layers.py` takes the newer of heading and stamp; test added.
+6. LOW opening-section first line — fixed: start is moved back one line when the line before is not a heading.
+Decisions for Steven (HALT): whether meeting digests may live in the public repo at all — carried to STEVEN-STEPS; the personal Gmail address no longer reaches the page (masked).

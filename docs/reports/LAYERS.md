@@ -13,8 +13,9 @@ inside its cadence. `bin/brain layers` prints this; `bin/brain layers --write` r
 | Notion Second Brain DB | decisions, references, the layer directory | brain-learn-daily rows; export mirrored to Drive; directory page refreshed by the weekly sync | 2026-10-23 | 0 | 7 d | **fresh** |
 | Google Drive SECOND BRAIN/ | 13 SB Google Docs (the brain, masked) + Steven's own folders | weekly Sunday 2:45 PM PT task rewrites changed Docs | 2026-10-23 | 0 | 7 d | **fresh** |
 | NotebookLM notebooks | the same 13 Docs as sources; source-grounded Q&A | Google auto-syncs Drive Docs after the weekly rewrite | 2026-10-23 | 0 | 7 d | **fresh** |
+| Fieldy meetings (recorded conversations) | daily digest of recorded meetings: title, first names, summary, action items | Fieldy → brain task, 6:50 AM PT, through the Fieldy connector; fieldyDesk doc on the deck | — | — | 1 d | **no recordings yet** |
 | Vector index | high-volume corpora (transcripts, disclosures) | spec only until a corpus is loaded (vector-index/README.md) | — | — | 30 d | **spec only** |
 | Knowledge graph | entities and relationships | spec only (knowledge-graph/README.md) | — | — | 30 d | **spec only** |
 
 **Even:** yes — every stamped layer is inside its cadence.
-Generated 2026-10-23T13:09:56Z.
+Generated 2026-10-23T13:22:32Z.

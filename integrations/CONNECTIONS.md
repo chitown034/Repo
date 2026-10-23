@@ -511,4 +511,5 @@ signed in; cloud: Drive SECOND BRAIN, Notion directory, 6D daily rebuild with pr
 | EVRoutes · Turo | `needs_reconnect` | Reconnect or remove | Steven |
 | Four http_api Sunday routines | still enabled | 4 clicks | Steven |
 | GitHub repo visibility | public | Steven decides (STEVEN-STEPS 1g) | Steven |
+| Fieldy → 2nd brain | connected — the daily "Fieldy → brain" task (6:50 AM PT, this session, Fieldy connector) writes `memory/fieldy-meetings.md` + the deck `fieldyDesk` doc and queues a recap item per meeting with action items; 0 recordings as of 2026-10-23 13:20 UTC so the first digest waits for a recording | record with the pendant or the desktop app | Steven (records) |
 | Notion `brain-learn-daily` rows | resume with Mac 1's runner (signed in 2026-10-23); directory page written 2026-10-23 | — | — |

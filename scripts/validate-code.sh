@@ -69,7 +69,8 @@ quickcheck() { # dashboard HTML: the one pre-existing "functions called but neve
   local out
   # quickcheck.py is the Command Deck checker (it asserts the deck's cdStateSeed). Pages without a seed - the 6D Brain and
   # the brain-4d template - get the generic checks instead: every inline script must parse (node --check). 2026-10-23.
-  if ! grep -q 'cdStateSeed' "$1"; then
+  # the deck is the page that DEFINES the seed element; a page that merely mentions the word (the 6D Brain embeds wiki passages) is not.
+  if ! grep -q 'id="cdStateSeed"' "$1"; then
     python3 - "$1" <<'PY' || return 1
 import re, subprocess, sys, tempfile, os
 s = open(sys.argv[1], encoding="utf-8", errors="replace").read()

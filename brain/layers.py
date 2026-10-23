@@ -13,7 +13,7 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 
 CADENCE_DAYS = {"repo": 1, "index": 1, "deck": 1, "brain6d": 1, "jarvis": 2, "notion": 7, "drive": 7, "notebooklm": 7,
-                "vector": 30, "graph": 30}
+                "vector": 30, "graph": 30, "fieldy": 1}
 
 
 def _iso(s: str | None) -> date | None:
@@ -72,6 +72,10 @@ def collect(root: Path, today: date | None = None) -> list[dict]:
          "sync": "weekly Sunday 2:45 PM PT task rewrites changed Docs", "last": _iso((man.get("last_sync") or {}).get("date") or man.get("created"))},
         {"key": "notebooklm", "layer": "NotebookLM notebooks", "holds": "the same 13 Docs as sources; source-grounded Q&A",
          "sync": "Google auto-syncs Drive Docs after the weekly rewrite", "last": _iso((man.get("last_sync") or {}).get("date") or man.get("created"))},
+        {"key": "fieldy", "layer": "Fieldy meetings (recorded conversations)", "holds": "daily digest of recorded meetings: title, first names, summary, action items",
+         "sync": "Fieldy → brain task, 6:50 AM PT, through the Fieldy connector; fieldyDesk doc on the deck",
+         "last": max(filter(None, [_iso(_grep(root / "memory" / "fieldy-meetings.md", r"(?m)^## (\d{4}-\d{2}-\d{2})") or ""),
+                                   _iso(_grep(root / "memory" / "fieldy-meetings.md", r"(?m)^Last checked: (\d{4}-\d{2}-\d{2})") or "")]), default=None)},
         {"key": "vector", "layer": "Vector index", "holds": "high-volume corpora (transcripts, disclosures)",
          "sync": "spec only until a corpus is loaded (vector-index/README.md)", "last": None},
         {"key": "graph", "layer": "Knowledge graph", "holds": "entities and relationships", "sync": "spec only (knowledge-graph/README.md)", "last": None},
@@ -83,7 +87,7 @@ def collect(root: Path, today: date | None = None) -> list[dict]:
         cad = CADENCE_DAYS[r["key"]]
         r["cadence_days"] = cad
         if r["last"] is None:
-            r["age_days"], r["verdict"] = None, "unverified" if r["key"] in ("jarvis",) else "spec only" if r["key"] in ("vector", "graph") else "unverified"
+            r["age_days"], r["verdict"] = None, "unverified" if r["key"] in ("jarvis",) else "spec only" if r["key"] in ("vector", "graph") else "no recordings yet" if r["key"] == "fieldy" else "unverified"
         else:
             age = (today - r["last"]).days
             r["age_days"] = age

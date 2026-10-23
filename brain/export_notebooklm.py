@@ -24,7 +24,7 @@ EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
 EXCLUDE_PREFIX = ("wiki/clients/", "brain/", "docs/reports/", "dashboard/", ".claude/")
 # operational logs, not knowledge: repair diaries and the rolling needs-Steven ledger (each 35-60k chars)
 EXCLUDE_FILES = {"docs/NEEDS-STEVEN.md", "routines/mac-task-repairs.md", "routines/cloud-routine-repairs.md",
-                 "docs/inventory/mac-task-descriptions.md"}
+                 "docs/inventory/mac-task-descriptions.md", "memory/fieldy-meetings.md", "memory/claude-chats.md"}  # digests of meetings/chats stay out of Drive
 
 # (file name, title, predicate on repo path) — order is the reading order in NotebookLM
 BUNDLES: list[tuple[str, str]] = [

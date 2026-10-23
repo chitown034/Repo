@@ -62,6 +62,9 @@ button, input { font: inherit; color: inherit; }
 .hit .bar i { display: block; height: 100%; width: var(--w); background: var(--now); }
 #best { margin: 0; color: #c9cfdd; font-size: 12.5px; }
 #best .heads { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+#answer { display: grid; gap: 8px; } #answer[hidden] { display: none !important; } #answer h3 { margin: 0; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--now); font-weight: 500; }
+.ansrow { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; display: grid; gap: 4px; } .ansrow b { font-size: 12.5px; } .ansrow p { margin: 0; font-size: 12.5px; color: #c9cfdd; } .ansrow .btn { justify-self: start; min-height: 28px; padding: 2px 8px; font-size: 11.5px; }
+#answer small { color: var(--muted); font-size: 11px; }
 #askTerms { margin: 0; font: 11px var(--f-data); color: var(--muted); overflow-wrap: anywhere; }
 #owner { margin: 0; font-size: 12.5px; color: #c9cfdd; } #owner b { color: var(--now); }
 #askNone { margin: 0; color: var(--warn); font-size: 12.5px; }
@@ -176,7 +179,7 @@ body.enc #enc { max-width: 720px; }
     <details id="sbWrap"><summary>The 13 SB Google Docs (the brain in Drive)</summary><div id="sbdocs" class="actions"></div></details>
   </details>
   <label class="sr" for="q">Find a page</label>
-  <input id="q" type="search" placeholder="Ask the brain — VA funding fee, Lofty, who owns compliance…" autocomplete="off" spellcheck="false" list="names" aria-describedby="askHelp" aria-controls="hits">
+  <input id="q" type="search" placeholder="Search the brain — VA funding fee, who owns compliance, what runs at 6:40…" autocomplete="off" spellcheck="false" list="names" aria-describedby="askHelp" aria-controls="hits">
   <datalist id="names"></datalist>
   <p id="askHelp" class="sr">Ranks the brain's pages from its own index, in the browser, with no model call. Arrow down moves into the results; Enter opens one on the map.</p>
   <section id="ask" aria-label="Ask the brain" aria-live="polite" aria-atomic="false">
@@ -184,6 +187,7 @@ body.enc #enc { max-width: 720px; }
     <p id="askNone" hidden></p>
     <ul id="hits" role="listbox" aria-label="Top pages for this question"></ul>
     <p id="best" hidden></p>
+    <div id="answer" hidden></div>
     <p id="owner"></p>
     <div class="actions"><button class="btn primary" id="askCopy" type="button">Copy the recall command</button></div>
     <div id="askCopied" role="status" aria-live="polite"></div>
@@ -242,6 +246,7 @@ body.enc #enc { max-width: 720px; }
 const G = /*DATA*/null;
 const LAYERS = /*LAYERS*/null;
 const LINKS = /*LINKS*/null;
+const SEC = /*SEC*/null;
 const LOOP = /*LOOP*/null;
 const SEATS = /*SEATS*/null;   // seat -> {a: agents (agents.json laya.lane), s: "starts from" prefixes (cross-functional.md)}
 const ENC = /*ENC*/null;       // A-Z encyclopedia entries from brain/index.json + graph backlinks
@@ -579,7 +584,7 @@ function mk(tag, cls, text) { const e = document.createElement(tag); if (cls) e.
 function askRender(question) {
   const show = !!question;
   askEl.classList.toggle("on", show);
-  hitsEl.textContent = ""; $("best").hidden = true; $("askNone").hidden = true; $("askCopied").textContent = "";
+  hitsEl.textContent = ""; $("best").hidden = true; $("askNone").hidden = true; $("askCopied").textContent = ""; $("answer").replaceChildren(); $("answer").hidden = true;
   if (!show) { askRes = null; if (mode === "enc") sizeEnc(); return; }
   const res = askRank(question); askRes = res;
   const { groups, ranked } = res;
@@ -611,6 +616,21 @@ function askRender(question) {
   const heads = e ? e.h.filter(h => askTokens(h).some(t => terms.has(t))) : [];
   const bp = $("best"); bp.hidden = false; bp.textContent = e && e.d ? e.d : "No one-line description in the index yet.";
   bp.append(mk("span", "heads", heads.length ? "Matching sections: " + heads.join(" · ") : "No section heading holds these terms; the page's keywords do."));
+  // the answer itself: the best-matching section passages of the top pages (zero tokens, from the embedded index)
+  try {
+    const ans = $("answer"); ans.replaceChildren();
+    const want = [...terms]; const score = sct => { const low = (sct.h + " " + sct.x).toLowerCase(); return want.reduce((n, t) => n + (low.includes(t) ? 1 : 0), 0); };
+    const tops = ranked.slice(0, 3).map(r => r.f.p);
+    const cands = (SEC || []).filter(sct => tops.includes(sct.p)).map(sct => ({ sct, s: score(sct) + (sct.p === best.f.p ? 0.5 : 0) })).filter(c => c.s >= 1).sort((a, b) => b.s - a.s).slice(0, 3);
+    if (cands.length) {
+      ans.append(mk("h3", "", "Answer from the brain"));
+      cands.forEach(c => { const n = byId.get(c.sct.p); const d = mk("div", "ansrow"); d.append(mk("b", "", (n ? n.t : c.sct.p) + " › " + c.sct.h)); d.append(mk("p", "", c.sct.x));
+        const a = mk("a", "btn", "Open the page"); a.href = REPO + c.sct.p; a.target = "_blank"; a.rel = "noopener"; d.append(a); ans.append(d); });
+      const v = mk("a", "btn primary", "Ask Vanessa about this (Command Deck)"); v.href = "https://claude.ai/artifact/3jbdGMNFkGLEpJiZ3cTmZW"; v.target = "_blank"; v.rel = "noopener"; ans.append(v);
+      ans.append(mk("small", "", "Passages are the page's own words as of its last index; for anything licensed, read the page and ask Vanessa."));
+    }
+    ans.hidden = !cands.length;
+  } catch (_) {}
   if (mode === "enc") sizeEnc();
 }
 function askPick(id) {

@@ -252,3 +252,7 @@ Reply "done N" (or "skip N") after each step and Claude keeps the dashboards in 
 33. **Turn on the Agent OS on each computer.** Mac 1, Mac 2 and the Alienware, one paste each; steps in integrations/agent-os/README.md. Read-only by default; the warnings name what to install.
 34. **Connect Orca and Laya on each Mac.** `bash integrations/agent-os/connect-orca-laya.sh --apply` (preview first without --apply). Then pair Orca yourself with the two commands it prints.
 35. **OpenStock market viewer (optional).** `bash integrations/openstock/openstock.sh install --apply`, then a free Finnhub key into `~/Applications/OpenStock/.env`. Trading Desk panel has Open/Start.
+
+### 1i. Fieldy meeting digests — your call (added 2026-10-23)
+
+The daily "Fieldy → brain" task writes a digest of each recorded meeting (first names, Fieldy's summary, action items) to `memory/fieldy-meetings.md` in the repo. The repo is public today (step 1g). The digest never reaches the 6D page or Drive, but it is in the repo. Say "keep the Fieldy digest" or "make the repo private first" — until then the task runs and the file stays first-names-only.

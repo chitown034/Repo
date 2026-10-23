@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import sys
+import tempfile
 import unittest
 from datetime import date
 from pathlib import Path
@@ -19,7 +20,7 @@ class LayerTests(unittest.TestCase):
         for k in ("repo", "index", "deck", "brain6d", "jarvis", "notion", "drive", "notebooklm", "vector", "graph"):
             self.assertIn(k, keys)
         for r in rows:
-            self.assertIn(r["verdict"], ("fresh", "stale", "unverified", "spec only"), r)
+            self.assertIn(r["verdict"], ("fresh", "stale", "unverified", "spec only", "no recordings yet"), r)
             self.assertEqual(r["cadence_days"], layers.CADENCE_DAYS[r["key"]])
 
     def test_stamps_come_from_files_not_today(self):
@@ -43,6 +44,21 @@ class LayerTests(unittest.TestCase):
             body = p.read_text(encoding="utf-8")
             self.assertIn("| Google Drive SECOND BRAIN/ |", body)
             self.assertIn("**Even:**", body)
+
+    def test_fieldy_row_reads_no_recordings_until_a_day_heading_exists(self):
+        rows = {r["key"]: r for r in layers.collect(ROOT, today=date(2026, 10, 23))}
+        self.assertEqual(rows["fieldy"]["cadence_days"], 1)
+        self.assertIn(rows["fieldy"]["verdict"], ("no recordings yet", "fresh", "stale"))
+        self.assertIn("fieldy.ai", rows["fieldy"]["url"])
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d); (root / "memory").mkdir()
+            (root / "memory" / "fieldy-meetings.md").write_text("# Fieldy\n\n## 2026-10-22\n- x\n", encoding="utf-8")
+            r = {x["key"]: x for x in layers.collect(root, today=date(2026, 10, 23))}["fieldy"]
+            self.assertEqual((r["last"], r["verdict"]), ("2026-10-22", "fresh"))
+            # an empty day still counts as checked: the task rewrites "Last checked" even when there are no recordings
+            (root / "memory" / "fieldy-meetings.md").write_text("# Fieldy\n\nLast checked: 2026-10-23\n\n## 2026-10-20\n- x\n", encoding="utf-8")
+            r = {x["key"]: x for x in layers.collect(root, today=date(2026, 10, 23))}["fieldy"]
+            self.assertEqual((r["last"], r["verdict"]), ("2026-10-23", "fresh"))
 
 
 if __name__ == "__main__":

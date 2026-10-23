@@ -28,6 +28,8 @@ produced becomes a "fact" in the repo without Steven's yes).
 - `bin/brain layers [--write] [--json]` — the register above with last-sync stamps and verdicts.
 - `bin/brain ingest claude-export <conversations.json>` — Steven's claude.ai chats (his words only, masked) → `memory/claude-chats.md`;
   the daily "Claude sessions ledger" task → `docs/inventory/claude-sessions.md` (every Claude Code session, title/date/status).
+- **Fieldy → brain** (daily 6:50 AM PT task in the orchestrator session): yesterday's recorded conversations → `memory/fieldy-meetings.md`
+  (date, title, first names, Fieldy's summary, action items) and a `fieldyDesk` doc on the Command Deck; the `meeting-recap-to-crm` skill turns one into a recap.
 - `bin/brain links` — every front door with its URL (deck, ISA Portal, 6D, Action Desk, Bot Crew, repo, Drive SECOND BRAIN,
   NotebookLM, Notion database + layer directory, the 13 SB Docs). The 6D Brain embeds the same list: "Open the brain"
   panel, an open link per layer, and clickable store nodes (Drive, NotebookLM, Notion, Command Deck).
