@@ -83,6 +83,12 @@ grep -qx "pull llama3.1:8b" "$T/ollama.calls";                   check "jarvis: 
 [ ! -f "$T/runner.calls" ] || ! grep -q "^run" "$T/runner.calls"; check "jarvis: existing index not rebuilt"         "$?" 0
 rm -f "$T/bin/ollama"
 check "jarvis: no ollama and no brew -> FAIL"        "$(PATH="$T/bin:/usr/bin:/bin" run_fn jarvis_engine)" 1
+printf '#!/bin/sh\necho "$@" >> "%s/brew.calls"\ncase "$*" in *--cask*ollama*) cp "%s/ollama.stub" "%s/bin/ollama"; chmod +x "%s/bin/ollama" ;; esac\nexit 0\n' "$T" "$T" "$T" "$T" > "$T/bin/brew"; chmod +x "$T/bin/brew"
+printf '#!/bin/sh\ncase "$1" in list) printf "NAME ID\\nllama3.1:8b abc\\n" ;; esac\nexit 0\n' > "$T/ollama.stub"; printf '#!/bin/sh\nexit 0\n' > "$T/bin/open"; chmod +x "$T/bin/open"; rm -f "$T/brew.calls"
+mkdir -p "$T/home/.openjarvis"; echo x > "$T/home/.openjarvis/memory.db"
+check "jarvis: no ollama + brew -> prebuilt cask installed, passes" "$(run_fn jarvis_engine)" 0
+grep -q "install --cask ollama" "$T/brew.calls";                 check "jarvis: the cask (prebuilt app) is tried first" "$?" 0
+rm -f "$T/bin/ollama" "$T/bin/open"
 
 export ORCA_APP="$T/apps/Orca.app"
 printf '#!/bin/sh\necho "$@" >> "%s/open.calls"\n' "$T" > "$T/bin/open"

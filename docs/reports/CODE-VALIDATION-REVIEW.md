@@ -181,3 +181,7 @@ Mac 2 log 01:53 UTC: Homebrew python build refused (Intel + macOS 26, outdated C
 ## Resolution 2026-10-23 02:15 UTC — change-set `2d2dc3a78e238be0` (runner export/import for Mac 2)
 
 New scripts/runner-export.sh (Mac 1: packs ~/Applications/claude-runner minus logs/caches/tokens, runnerctl, the LaunchAgent; refuses if any file looks like a token; writes the missing `peer` role) and scripts/runner-import.sh (Mac 2: unzips, installs, rewrites the home path in the plist, plutil-lints, launchctl bootstrap; never signs in; warns when no role file). 11 stubbed tests (zip contents incl. negative on log/cache/token, plist rewrite, bootstrap call, no login). second-mac.sh still-yours (b) points at the pair. Reviewed inline.
+
+## Resolution 2026-10-23 02:25 UTC — change-set `fe57b3e24c9927ab` (Ollama cask first)
+
+Mac 2 report 01:53: `brew install ollama` (formula) builds from source there and stops on outdated CLT, like python. jarvis_engine now tries `brew install --cask ollama` (prebuilt app) first, opens it once, waits up to 30 s for the CLI link, falls back to the formula, and says plainly when the command is not linked yet. Tests: connect-all 56 (cask tried first; passes with a stubbed cask that links the CLI). Reviewed inline.

@@ -214,8 +214,13 @@ jarvis_engine() {
   local i db
   if ! have ollama; then
     have brew || { echo "Ollama missing and no Homebrew: install it from https://ollama.com/download/mac, then rerun"; return 1; }
-    brew install ollama || return 1
-    have ollama || { echo "brew finished but ollama not on PATH - open a new Terminal and rerun"; return 1; }
+    # the cask is Ollama's prebuilt app (no compile) - the formula builds from source, which an Intel Mac on macOS 26
+    # with old Command Line Tools cannot do (Mac 2, 2026-10-23). The app links the ollama CLI on first open.
+    brew install --cask ollama || brew install ollama || return 1
+    open -a Ollama 2>/dev/null || true
+    i=0; while [ $i -lt 30 ] && ! have ollama && [ ! -x /usr/local/bin/ollama ] && [ ! -x /opt/homebrew/bin/ollama ]; do sleep 1; i=$((i+1)); done
+    have ollama || { [ -x /usr/local/bin/ollama ] && export PATH="/usr/local/bin:$PATH"; } || { [ -x /opt/homebrew/bin/ollama ] && export PATH="/opt/homebrew/bin:$PATH"; }
+    have ollama || { echo "Ollama app installed but its command is not linked yet - open Ollama once (it asks to install the command line tool), then rerun"; return 1; }
   fi
   if ! ollama list >/dev/null 2>&1; then
     { brew services start ollama >/dev/null 2>&1 || open -a Ollama 2>/dev/null || (nohup ollama serve >/dev/null 2>&1 &); }
