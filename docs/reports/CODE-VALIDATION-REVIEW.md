@@ -203,3 +203,7 @@ The 06:20 change-set 4496cf64cf9e31be (committed as 9ae7a9c) could not be marked
 ## Resolution 2026-10-23 06:35 UTC — change-set `b2a57b43df0afe21` (connect-all 6f NotebookLM connector)
 
 Steven opted in ("setup and connect everything for me"). nlm_connect installs notebooklm-mcp-cli with uv, registers the MCP with Claude Code via `nlm setup add claude-code`, checks `nlm login --check`, and fails honestly naming `nlm login` as his step. Tests (62): uv install used, setup add called, never a bare `nlm login`, signed-in path ok. Risk recorded in README/decisions; removal commands documented. Reviewed inline.
+
+## Resolution 2026-10-23 06:40 UTC — change-set `01ba4719c80b6fe9` (reindex after the 6f docs)
+
+The 06:35 change-set (501e85a) failed only `brain doctor` (index stale after context/decisions.md changed). Reindexed; INDEX.md + brain/index.json regenerated; nothing else. Covers 501e85a too.

@@ -1,9 +1,9 @@
 # Code validation — last run
 
-Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `b2a57b43df0afe21`: **not yet**.
+Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `8f35c2585bc5759d`: **not yet**.
 
 ```
-code validation 2026-10-23T06:20:47Z - change-set b2a57b43df0afe21
+code validation 2026-10-23T06:20:55Z - change-set 8f35c2585bc5759d
 files:
   connect-all-tests.sh
   connect-all.sh
