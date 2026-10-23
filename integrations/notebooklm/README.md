@@ -10,7 +10,7 @@ re-exports, rewrites the changed Docs in place through Composio Google Docs, ref
 `docs/reports/LAYERS.md`. NotebookLM auto-syncs Google Docs sources (Google, May 2026), so Steven's only step is adding
 the Docs to his notebooks once. One scoped exception to the Drive rule: writes go only to `SECOND BRAIN/`.
 
-**Steven's one-time step (5 minutes):** notebooklm.google.com → New notebook → **AI Automation and VANESSA** → Add
+**Steven's one-time step (5 minutes):** notebook.google.com → New notebook → **AI Automation and VANESSA** → Add
 sources → Google Drive → pick every `SB …` Doc in `01 Reference Sources/AI and Automation` plus `SB 00-START-HERE` and
 `SB 02-who-and-decisions`. Then **Mortgage Reference Library** (`SB 05`, `SB 09`, `SB 00`, `SB 02`) and **Business
 Operating Playbooks** (`SB 06`, `SB 08`, `SB 09`, `SB 00`, `SB 02`). Nothing else to do; the Docs refresh on their own.
@@ -38,7 +38,7 @@ AnyDesk ID is masked too — nothing of substance is lost.
 
 ## Steven's steps (5 minutes, once)
 
-1. On the Mac: `bash scripts/notebooklm-export.sh` (reindexes, exports, opens the folder and notebooklm.google.com).
+1. On the Mac: `bash scripts/notebooklm-export.sh` (reindexes, exports, opens the folder and notebook.google.com).
 2. NotebookLM → New notebook → name it **Second Brain** → Add sources → **Upload** → select all 13 `.md` files.
 3. Ask it. Suggested first question: "What runs every morning and which dashboard does each piece write to?"
 

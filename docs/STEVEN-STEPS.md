@@ -48,7 +48,7 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
    on Mac 2 needs the vault there too (`docs/SECOND-MAC-SETUP.md` 6b: iCloud or a copy).
 1f. **NotebookLM, once (5 minutes):** the brain is already in your Drive as 13 Google Docs under **SECOND BRAIN/**
    (https://drive.google.com/drive/folders/16sh0SNlicvHOEpAtTUufI504agSlQRaX) and a weekly task keeps them current.
-   notebooklm.google.com → New notebook **AI Automation and VANESSA** → Add sources → Google Drive → every `SB …` Doc in
+   notebook.google.com → New notebook **AI Automation and VANESSA** → Add sources → Google Drive → every `SB …` Doc in
    `01 Reference Sources/AI and Automation` + `SB 00-START-HERE` + `SB 02-who-and-decisions`. Then **Mortgage Reference
    Library** (`SB 05`, `SB 09`, `SB 00`, `SB 02`) and **Business Operating Playbooks** (`SB 06`, `SB 08`, `SB 09`, `SB 00`,
    `SB 02`). Google refreshes Drive Docs in NotebookLM automatically. `integrations/notebooklm/README.md`.
