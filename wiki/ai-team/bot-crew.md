@@ -15,9 +15,12 @@ It sits under Vanessa as a surface, not a new seat. Last aligned with the org ch
 | Original agents | 5 | Lucy, Riley, Jeffrey, Karen, Hermela |
 | Total | 355 | |
 
-**Workflows (20):** 12 multi-agent runs (inbox to action, new lead, loan milestone, realtor partners, recruiting,
+**Workflows (23):** 12 multi-agent runs (inbox to action, new lead, loan milestone, realtor partners, recruiting,
 content week, webinar, weekly CEO review, listing launch, closing, trading day, DAWIA study) and the 8 standing pods
-from the org chart as runnable workflows — Deal, Lead, Listing, Mortgage, Growth, Money, Ops, Client Care. Each pod
+from the org chart as runnable workflows — Deal, Lead, Listing, Mortgage, Growth, Money, Ops, Client Care — plus three
+org-level runs: the Chief of Staff daily cycle (Automation / AI team / ISA / Steven buckets, ≤3 Needs-Steven), the
+mentor council (Maxwell, James, Kevin, then Vanessa's call) and new-tool vetting (Nadia grades → Elon → Elena → Derek's
+pilot plan; nothing installs without Steven). Each pod
 runs its seats in order, Alexandra gates anything client-facing, Vanessa consolidates last. "Schedule in Claude" turns
 any workflow into a scheduled-task prompt (nothing is scheduled until Steven creates it).
 

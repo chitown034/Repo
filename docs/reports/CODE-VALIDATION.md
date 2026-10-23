@@ -1,18 +1,21 @@
 # Code validation — last run
 
-Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `1fd1ebd683c6f74d`: **not yet**.
+Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `5ce4447a7b3870eb`: **not yet**.
 
 ```
-code validation 2026-10-22T23:22:33Z - change-set 1fd1ebd683c6f74d
+code validation 2026-10-23T00:10:20Z - change-set 5ce4447a7b3870eb
 files:
-  brain/tests/test_quickcheck.py
-  brain/tests/test_toolkit.py
-  brain/toolkit.py
-PASS py_compile brain/tests/test_quickcheck.py
-PASS py_compile brain/tests/test_toolkit.py
-PASS py_compile brain/toolkit.py
-PASS brain unit tests
-PASS brain layout
+  always-on/README.md
+  dashboard/brain-4d.html
+  integrations/agent-os/agents.json
+  integrations/agent-os/agents/homelab-architect.md
+  integrations/agent-os/agents/network-troubleshooter.md
+  integrations/agent-os/agents/pytorch-build-resolver.md
+  wiki/ai-team/bot-crew.md
+  wiki/ai-team/cross-functional.md
+  wiki/ai-team/org-chart.md
+PASS quickcheck dashboard/brain-4d.html
+PASS json integrations/agent-os/agents.json
 PASS brain doctor
-verdict: PASS (6 passed, 0 failed)
+verdict: PASS (3 passed, 0 failed)
 ```
