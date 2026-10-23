@@ -98,7 +98,7 @@ step "1b Keep the Repo folder caught up (every 30 minutes)" \
 #    It now always restarts once: that ends a hung task (tasks re-run at their next slot) and never logs in.
 RUNNER_OUT=0
 runner_fix() {
-  have runnerctl || { echo "runnerctl not installed - run ./mac-bootstrap.sh --only runner"; return 1; }
+  have runnerctl || { echo "runnerctl not installed on this Mac. The task runner was built on Mac 1 only; a second Mac gets it from there (scripts/second-mac.sh, 'still yours' b)"; return 1; }
   runnerctl status 2>&1 | tee -a "$LOG" | tail -15
   echo "restarting the runner once to clear a hung task (never logs in)"
   local out rc; out="$(runnerctl restart 2>&1)"; rc=$?; printf '%s\n' "$out" | tail -5

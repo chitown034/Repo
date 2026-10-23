@@ -165,3 +165,7 @@ reindex`, the Mac doctor FAIL cause), jarvis-setup reads `integrations/jarvis/vo
 ## Resolution 2026-10-23 01:25 UTC — change-set `a5242be0ee07b267` (jarvis-setup Laya row reads stdout only)
 
 Two-line change in jarvis-setup.sh + connect-all.sh laya_connect: `HF_HUB_DISABLE_PROGRESS_BARS=1`, stderr dropped, grep the ROUTE/ESCALATE line instead of `head -2`. Cause: Mac report 01:14 UTC showed the progress bar overwriting the row while Laya had answered at 01:09. Tests: jarvis-tests 10, connect-all 54. Reviewed inline (display-only change, no new command, no secret, no login).
+
+## Resolution 2026-10-23 01:45 UTC — change-set `d2799035cfa16b65` (scripts/second-mac.sh)
+
+New one-paste bootstrap for the second Mac: Xcode CLT / Homebrew / Claude Code / uv only when missing (official installers, fetched only outside --preview), the `peer` role file (never overwritten), then connect-all.sh. Never signs in, never copies a credential; the runner copy from Mac 1 is left to Steven by design (claude-runner is not in the repo). Tests: scripts/tests/second-mac-tests.sh (5: preview rc 0, hands off to connect-all --preview, no role file in preview, no sign-in/token command run, lease step present), connect-all 54. connect-all runner note reworded for a second Mac. Reviewed inline: preview exercised with stubs; `bash -n`; no privileged command beyond the three official installers.

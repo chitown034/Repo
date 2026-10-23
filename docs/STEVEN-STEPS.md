@@ -22,6 +22,14 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
 1b. **Mac 1 is connected (2026-10-23 01:14 UTC):** runner signed in and running, Laya real engine answering, Jarvis
    all green (index 1,828 rows, vault 850 notes, 8 voice clips, brain doctor PASS), mods on. Nothing more to paste for
    these. The 30-minute sync keeps the Mac current; `bash connect-all.sh` any time re-checks everything.
+1d. **Second Mac (2026-10-23): one paste, then two small things.** On the other Mac open Terminal and paste
+   (if a window asks to install developer tools, click Install, wait, then paste the same line again):
+   `[ -d ~/Repo ] || git clone https://github.com/chitown034/Repo.git ~/Repo; cd ~/Repo && git fetch origin claude/stoic-cori-pvn3f8 && git checkout claude/stoic-cori-pvn3f8 && git pull && bash scripts/second-mac.sh`
+   It installs Homebrew, Claude Code and uv if missing, writes the lease word `peer`, then runs the same connect-all as
+   Mac 1 (Laya, Jarvis engine, Orca, AnyDesk, Agent OS, mods, Gondola, Inkbox voice). Then: (a) run `claude` once and
+   sign in; (b) on **Mac 1** paste `command -v runnerctl; ls ~/Library/LaunchAgents | grep -i runner` and send Claude
+   the two lines — the task runner was built on Mac 1 only and its copy step for Mac 2 comes from that. Jarvis's index
+   on Mac 2 needs the vault there too (`docs/SECOND-MAC-SETUP.md` 6b: iCloud or a copy).
 1c. **Kapso on the Mac:** `claude` → `/mcp` → kapso → sign in (free sandbox); then
    `bash integrations/kapso/install-mac.sh keys --allow <your mobile>` (hidden prompt, Keychain only).
 2. **Vanessa's iMessage line (30 seconds, from your phone):** Inkbox is reconnected. Send the text

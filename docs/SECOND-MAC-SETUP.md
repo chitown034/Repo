@@ -23,6 +23,12 @@ Macs — is the whole of what makes two equal Macs safe.
 
 ---
 
+## Shortcut (2026-10-23): one paste does levels (ii) and most of (iii)
+
+`bash scripts/second-mac.sh` (from the cloned repo) installs the basics, writes the `peer` role file (11b) and runs
+`connect-all.sh`. What it cannot do is in its own "still yours" list: `claude` sign-in, and the runner copy from Mac 1
+(11). The levels below remain the reference and the checks.
+
 ## Level (i) — read the dashboards  (2 minutes, nothing to install)
 
 ### 1. Sign in to claude.ai in the browser you will actually use
