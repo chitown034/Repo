@@ -31,7 +31,7 @@ class RecsTests(unittest.TestCase):
         for t in ("Link your iMessage line (fixes the missing morning text + voice note)", "Zoho", "Claim your profiles for AI search", "AnyDesk permissions",
                   "Lofty API key", "TidyCal token", "Arive", "MBS Highway", "Ticor Title", "Pivo", "Drips and texts"):
             self.assertIn(t, steps, t)
-        self.assertEqual(len(steps), 12)  # four clicks A-D + eight carried as big moves
+        self.assertEqual(len(steps), 13)  # five clicks A-E + eight carried as big moves
         self.assertGreater(steps["Lofty API key"]["impact"] / steps["Lofty API key"]["effort"], steps["AnyDesk permissions"]["impact"] / steps["AnyDesk permissions"]["effort"])
         top = recs.top(ROOT, 10, today=TODAY)
         self.assertLess([c["title"] for c in top].index("Lofty API key"), [c["title"] for c in top].index("AnyDesk permissions") if "AnyDesk permissions" in [c["title"] for c in top] else 99)

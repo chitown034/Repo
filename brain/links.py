@@ -21,6 +21,9 @@ LINKS: list[dict] = [
     {"key": "notion_dir", "label": "Notion · Second Brain layer directory", "url": "https://app.notion.com/p/402c1760a749811eaea5d07005df0179", "store": None, "layer": "notion"},
     {"key": "fieldy", "label": "Fieldy (recorded meetings)", "url": "https://app.fieldy.ai/", "store": None, "layer": "fieldy"},
     {"key": "routines", "label": "Cloud routines (claude.ai/code)", "url": "https://claude.ai/code/routines", "store": None, "layer": None},
+    {"key": "fitness", "label": "Fitness Dashboard (Health & Wellness)", "url": "https://claude.ai/artifact/4DQyh8Yw2WwGzj8CddBnEd", "store": None, "layer": None},
+    {"key": "stoics", "label": "Famous Stoics (Stoicism dimension)", "url": "https://claude.ai/artifact/14diipurEqD75R818LkLtG", "store": None, "layer": None},
+    {"key": "health_drive", "label": "Google Drive · Health Auto Export folder (daily iPhone export)", "url": "https://drive.google.com/drive/folders/1Ta6veOyTtgIsRs4lcMw0jzVgx80XiXjK", "store": "store:drive", "layer": "drive"},
 ]
 
 

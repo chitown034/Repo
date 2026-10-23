@@ -18,4 +18,4 @@ an approved item whose executor is Vanessa is queued and run by the 6:25 AM dail
 | 10 | 0.9 | low | Vanessa | vanessa | Guard wiki/dashboard-ops/db-docs.md with a gold question | no gold question tests this page, so a regression would go unseen | Add one question to brain/bench/questions.json with the expected phrase → bin/brain loop → count rises |
 
 Category weights: brain 1.00, compliance 1.00, connect 1.00, marketing 1.00, money 1.00, ops 1.00, revenue 1.00, steven 1.00, sync 1.00
-Generated 2026-10-23T17:56:37Z.
+Generated 2026-10-23T18:37:48Z.

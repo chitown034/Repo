@@ -684,3 +684,16 @@ e-mail to his own address (Inkbox) whenever the line is unlinked — cloud routi
 and the connect text is click A of the simplified steps. Never any other address.
 
 Steps simplified to three pastes + four clicks; everything else that used to be an "only you" item is now a big move.
+
+## 2026-10-23 — Apple Health: the Drive export was never broken; the sync moves to the cloud
+
+Steven: "fix auto health export and sync." Found: Health Auto Export has been writing a daily JSON file into a Google Drive
+folder all along; only the Mac daemon (:8765 → DuckDB) that turned it into the deck document died on 2026-09-13. Decision: the
+sync is a cloud routine in the orchestrator session (6:15 AM PT) that reads the Drive files and merges them into `appleHealth`
+with `scripts/health-drive-sync.py` — no Mac, no daily phone prompt. The daemon's history is kept, metric keys are never invented,
+a missing day stays a gap. Health data stays in that one document. The Notion path is optional; `r8-apple-health-snapshot` is to
+be disabled on the Mac so it cannot overwrite the document. Also added to the deck: links to the Fitness Dashboard and the
+Famous Stoics pages (Health & Wellness → Related dashboards) and to `bin/brain links`.
+Same day, "update and sync strava daily with health auto export daily and myfitnesspal": Strava joins the 6:15 AM cloud sync
+(the Strava connector writes `stravaSnapshot`; the Mac task is retired). MyFitnessPal gets no connector — it reaches the deck
+through Apple Health and the same export file once Steven switches the nutrition metrics on in Health Auto Export (click E).

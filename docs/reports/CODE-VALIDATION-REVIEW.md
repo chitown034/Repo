@@ -1,3 +1,477 @@
+## Orchestrator response (2026-10-23 19:05 UTC) — pass 3 verdict SHIP; the LOW applied (reviewed 96d0ee464204f7cd → 254097c175929cfc)
+
+change-set: 254097c175929cfc
+
+LOW P3-08-F1 backfill double count — fixed: `meta.sourceDays` keeps `_before_until` (the daemon's last_at day) and a backfilled day at or before it is not added to the daemon's count; test `test_backfill_of_a_daemon_day_does_not_double_count_the_source`. 8 tests OK, validate-code PASS (8).
+Open question answered: the five daemon-only metrics now carry empty week windows (their latest/earliest kept) — honest, since they hold only September data.
+Unverified (workout parser on a real export with workouts) stays open until the first export with a workout arrives; the parser is defensive (every field optional) and the test fixture has no workouts yet.
+
+# VibeBreaker Final Report (pass 3): health-drive-sync.py pass-2 fixes re-verified
+
+change-set: 96d0ee464204f7cd
+
+(Run on the uncommitted tree on 2026-10-23, branch claude/stoic-cori-pvn3f8. `bash scripts/validate-code.sh` gave
+`verdict: PASS (8 passed, 0 failed)`. `python3 -m unittest -q scripts.tests.test_health_drive_sync` ran 7 tests, OK. The `--hash`
+re-run just before this file was written gave 96d0ee464204f7cd. The reviewer changed no source file. Probes wrote only to the
+scratchpad (`p3/`), on the two real export files and the saved appleHealth doc, compared with booleans and counts only. No health
+value is quoted here.)
+
+## Verdict
+
+`SURVIVED*` (repo verdict: **SHIP**). P2-06-F1, P2-08-F1 and U2-1 are fixed, and my own probes on the real files confirm it.
+`meta.sourceDays` grows linearly, at about a quarter of the rate `daily` already grows, and an old doc migrates cleanly. What is
+left is one LOW finding on a manual-backfill path the daily routine never takes, plus one UNVERIFIED item on the workout parser,
+which the new BodyPark rows now depend on.
+
+## Scope
+
+- Diff mode, third pass. Passes 01, 04, 05, 06, 07, 08, 12, 17, 18, 19 and 20 on `scripts/health-drive-sync.py` (merge, window_stats,
+  main) and `scripts/tests/test_health_drive_sync.py`. Pass 01 on the new BodyPark rows in `integrations/apple-health-dashboard.md`
+  (lines 34-40), `integrations/CONNECTIONS.md` (line 26) and `docs/STEVEN-STEPS.md` click E.
+- Still not available: the deck HTML that renders the tiles (no file in `dashboard/` reads `avg7`, `samples` or `sources[].n`), so
+  I cannot verify how a null `avg7` renders. There is also no real Health Auto Export file with Workouts switched on.
+- Material scope limitation: NO for the fixes, YES for U3-1.
+
+## Scoreboard
+
+Passes executed: 11 / 20 (diff mode) · Confirmed: 1 (Low 1) · Unverified: 1 · Rejected: 4 · First critical pass: NONE
+
+## Pass-2 findings: re-verification
+
+| Pass-2 id | Probe | Result |
+|---|---|---|
+| P2-06-F1 windows only for metrics in the day's file | (a) Real files: 2 of 12 metrics are in neither file (both daemon-only). (b) Synthetic: one point metric with 2+ week days is removed from the 10-22 file. I compare 10-21 then 10-22w against both in one run. | **FIXED.** (a) Both daemon-only metrics come out days7 0, avg7/pavg7 null, latest kept, samples = Σ daily n (unchanged from the daemon). (b) The dropped metric's whole metric object equals the one-run result (days7 1). Note: the caller said "five daemon-only metrics", but on these files it is two. |
+| P2-08-F1 sources.n undercounts on a rewritten file | B2 (10-21 then 10-22) plus a fuller rewritten 10-22, where one metric gets twice the rows, compared with 10-21 + rewritten 10-22 in one run | **FIXED.** sources and metrics are equal to the one-run result, and ingests is equal. Re-feeding 10-22 onto its own output is idempotent (metrics, daily, sources, sleep, workouts, sourceDays). Split equals combined. |
+| U2-1 no --existing silently rebuilds | `--existing` omitted | **FIXED.** rc 4 with a clear message. `--allow-empty-existing` alone gives rc 0. |
+
+## meta.sourceDays: growth and migration
+
+- Shape: one key per `metric|source` and one integer per local day, plus at most one `_before`. The key cannot collide, because
+  metric names come from KNOWN and contain no `|`. Measured on the merged real doc: 10 keys, 26 entries, about 31 bytes per entry.
+  `daily` costs about 135 bytes per metric-day. With one source per metric (true today, max 1 key per metric), sourceDays adds about
+  23% to the growth daily already has. With the click-E "select all" (about 40 metrics, about 2 sources each), the projection is
+  about 2.5 KB a day, or about 0.9 MB a year. That is the same linear, unpruned class as `daily`, not a new one. Both would need the
+  same pruning rule if the ArtifactData document size limit is ever reached. That limit is not in the repo, and this is not a finding.
+- Migration: the real daemon doc has no `meta.sourceDays`. For all 7 source rows the run touched, `_before == the daemon's n`, the new
+  day keys are only 10-21 / 10-22, and `n == Σ sourceDays`. Sources the run did not touch are byte-unchanged. New source rows have no
+  `_before`. A later run does not re-seed `_before`, because the seed happens only when the key is empty.
+
+## CONFIRMED
+
+```yaml
+id: P3-08-F1
+pass: 08
+title: The first per-day count double-counts a day the daemon had already counted when a backfill export holds that day
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: scripts/health-drive-sync.py
+    line: 279-283 (`if old and not sd: sd["_before"] = old.n` then `sd.update(per_day)`)
+entry_or_trigger: >-
+  The first run that touches a metric|source has an export containing a local day on or before the daemon's last_at for that
+  source. Example: a manual Health Auto Export date-range export covering early September.
+evidence: >-
+  Probe: a one-sample file for blood_oxygen_saturation is dated the daemon's last_at day, with the daemon's own source string, and
+  run onto the real doc. sources.n becomes the daemon n + 1, but that day was already inside the daemon n. The same run also
+  replaces that day's daily bucket whole with the one-sample bucket (by design, "a day is replaced whole").
+bad_state: sources[].n overstates by that day's daemon-counted samples, permanently (later runs never revisit _before).
+disproof_attempt: >-
+  The daily routine only feeds the newest files (10-21 onward, more than a month after the daemon's last day), so it cannot reach
+  this. No file in dashboard/ reads sources[].n. Severity stays LOW, and the finding is non-blocking.
+fix_direction: >-
+  Either document "never backfill a pre-2026-09-13 day" in apple-health-dashboard.md, or seed _before only from samples whose
+  day is not in per_day (the daemon doc does not keep per-day source counts, so the documentation route is the honest one).
+proof_of_fix: >-
+  A test that seeds a daemon source row, feeds a file holding a day <= its last_at, and asserts the documented behaviour
+  (refusal, warning, or an unchanged n).
+```
+
+## UNVERIFIED
+
+- **U3-1 (pass 04/07): workout field units and names against a real Health Auto Export workout.** `read_exports` treats a bare
+  numeric `duration` as minutes and reads `activeEnergy` / `distance` / `heartRate` as `{qty, units}` dicts. Neither real file holds
+  a `workouts` array, and the tests feed workouts only through the existing doc. The new BodyPark rows (apple-health-dashboard.md
+  lines 34-40, CONNECTIONS.md line 26, STEVEN-STEPS click E) route ATOM sessions through exactly this path. Missing artifact: one
+  real `HealthAutoExport-*.json` produced after click E with Workouts on. If HAE writes duration in seconds, every workout's
+  `minutes` comes out 60x too large.
+
+## REJECTED
+
+- R3-1 window_stats crashes on a non-date day key: every daily key in the real doc matches YYYY-MM-DD, and the script writes only `%Y-%m-%d`.
+- R3-2 a non-dict `meta.sourceDays` crashes the merge: only reachable by a hand-corrupted doc, since the script always writes a dict.
+- R3-3 empty week windows for daemon-only metrics are a regression: this is the chosen behaviour (stale September figures shown as a week would be false), and latest/latest_at are kept.
+- R3-4 BodyPark doc rows overclaim: they state "no API documented" and route through the Apple Health workout path, which the code does parse. Whether that path is correct is U3-1.
+
+## Coverage (clean)
+
+merge order (daily before ref_day, windows for every metric after the newer-wins update), the window boundary, `_before` seeding,
+`n = Σ sourceDays`, idempotent re-feed, split = combined, a rewritten file, a metric absent from today's file, daemon-only metrics,
+rc 4 / rc 0 for the existing-doc flags, untouched sources unchanged, meta.files / ingests counting once, and the three BodyPark doc rows.
+
+## Top missing tests (pass 19)
+
+1. A real-shape HAE workout (from a click-E export) gives the right minutes, kcal, km and avg_hr. This closes U3-1.
+2. A backfill day <= the daemon's last_at gives the documented sources.n behaviour (P3-08-F1).
+3. Migration: an old doc without sourceDays gives `_before == old n` and is seeded once across two runs.
+4. A daemon-only metric gives days7 0, avg7 null, and latest/latest_at unchanged.
+5. A multi-source metric (Watch + iPhone) gives separate sourceDays keys and per-source n summing correctly after a re-feed.
+
+## Share card
+
+```text
+VIBE//BREAKER
+VERDICT: SURVIVED*
+PASSES: 11/20
+CRITICAL: 0
+HIGH: 0
+CONFIRMED: 1
+UNVERIFIED: 1
+FIRST BREAK: NONE
+```
+
+## Release note
+
+Demonstrated: the three pass-2 fixes hold on the real files, sourceDays growth is linear and secondary to daily, and migration from
+the daemon doc is clean. Not demonstrated: deck rendering of null week figures, and workout parsing against a real export.
+
+---
+
+# VibeBreaker Final Report (pass 2): health-drive-sync.py fixes re-verified
+
+change-set: 2fb12036ba4a26c0
+
+(Run on the uncommitted tree on 2026-10-23, branch claude/stoic-cori-pvn3f8. `bash scripts/validate-code.sh` gave
+`verdict: PASS (8 passed, 0 failed)`. `python3 -m unittest -q scripts.tests.test_health_drive_sync brain.tests.test_recs` ran 14 tests, OK.
+The `--hash` re-run just before this file was written gave 2fb12036ba4a26c0. The reviewer changed no source file. Probes wrote only
+to the scratchpad (`cv2/`). The real export files and the pre-existing appleHealth doc were compared field by field with booleans
+and counts only, and no health value is quoted here.)
+
+## Verdict
+
+`FIX BEFORE SHIP` (repo verdict: **FIX FIRST**, small). All four pass-1 findings are fixed, and my own probes confirm it on the real
+files. One residual of the P06 fix is still open: the week figures are recomputed only for metrics this run's files contain AND
+whose fresh `latest_at` wins. A metric sampled less than daily (weight, VO2 max, which STEVEN-STEPS click E switches on) keeps a
+stale "7-day" window.
+
+## Scope
+
+- Diff mode, second pass. Passes 01, 04, 05, 06, 07, 08, 12, 17, 18, 19 and 20 on `scripts/health-drive-sync.py` and
+  `scripts/tests/test_health_drive_sync.py`. Pass 01 on the changed doc rows (STEVEN-STEPS click E, mac-task-specs §9,
+  cloud-routines inventory) and on `brain/tests/test_recs.py` (13 steps).
+- Spec: `integrations/apple-health-dashboard.md` (shapes, "pavg7/psum7/pdays7 null when the prior window is empty", merge rule;
+  the previous day's file "is sometimes rewritten").
+- Not available (unchanged from pass 1): the deck HTML (which fields the tiles render, in particular `sources[].n`, `samples`,
+  `avg7` for daemon-only keys), and the routine prompt for trig_015pqDNGrZVENHZEZR8JZYF5 (the exact command line it runs).
+  Material scope limitation: NO for the confirmed finding, YES for U2-1.
+
+## Scoreboard
+
+Passes executed: 11 / 20 (diff mode) · Confirmed: 2 (Medium 1, Low 1) · Unverified: 1 · Rejected: 6 · First critical pass: NONE
+
+## Pass-1 findings: re-verification
+
+| Pass-1 id | Probe (real files unless noted) | Result |
+|---|---|---|
+| P06-F1 week stats from the run's files | 10-21 file onto the daemon doc, then the 10-22 file onto that output, vs. both files in one run | **FIXED.** All 13 metric fields (avg7…pdays7, samples, latest, latest_at, earliest) are equal for every metric. daily, sleep, workouts and sources are equal too. A 14-day fixture gives days7 7, pdays7 7, pavg7 non-null. The window boundary is (ref−7, ref], with ref−7 in the prior window. |
+| P08-F1 counts not idempotent | the 10-22 file re-fed onto its own output; both files re-fed onto the combined output | **FIXED.** metrics, sources, daily and meta.ingests are byte-equal across each re-feed. `samples == Σ daily n` holds for every metric (the daemon doc already satisfied it, so there is no semantic jump). |
+| P05-F1 missing --existing empties the doc | --existing missing, bad JSON, `[]`, `{"data":{"v":null}}`, `{"data":5}`, no `metrics`, `metrics` a list, a directory | **FIXED.** Each returns rc 4 and creates no --out. The real ArtifactData save parses (`{v:…}`), and daemon keys, daily days and workouts are all kept. |
+| P01-F1 stray table row | `docs/inventory/cloud-routines-2026-10.md` | **FIXED.** One separator, directly under the header. |
+
+## CONFIRMED
+
+```yaml
+id: P2-06-F1
+pass: 06
+title: Week figures are recomputed only for metrics the run's files contain and whose fresh latest_at wins; every other metric keeps a stale 7-day window
+status: CONFIRMED
+severity: MEDIUM
+confidence: HIGH
+location:
+  - path: scripts/health-drive-sync.py
+    line: 246-253 (window_stats is called only inside `for k, m in fresh_metrics.items()` and only on the newer-wins branch)
+entry_or_trigger: >-
+  (a) A metric sampled less than daily, such as weight_body_mass, vo2_max or body_fat_percentage (the click-E metrics), has no row in
+  the files of a later run. (b) A run holds only an older or rewritten file (the 10-21 file after the 10-22 one), so the old
+  latest_at wins.
+evidence: >-
+  Probe (a): run 1 is a 10-12 file with weight and steps. Run 2 is a 10-22 file with steps only, on top of run 1. weight comes out
+  days7 1, n7 1, avg7 non-null. window_stats on the same merged daily at the ref day 10-22 gives days7 0, n7 0, pdays7 1. So
+  "two sequential runs == one combined run", the invariant the new test asserts, fails for that metric: one run of both files gives
+  the recomputed figures. Probe (b): the 10-22 file, then the 10-21 file alone. step_count daily holds 2 days and Σ daily n is 3,
+  but the metric shows days7 1 and samples 1.
+failure_scenario: >-
+  A weight logged 9 days ago keeps showing a "7-day average" from 9 days ago, and days7/n7 never fall to 0. The "vs prior week"
+  delta that the correct window would give (pdays7 1) never appears. After (b), samples and days7 contradict the doc's own daily.
+impact: wrong 7-day figure and trend on low-frequency tiles. These are the metrics Steven is asked to turn on in click E.
+remediation_direction: >-
+  After the merge, run window_stats(k, daily[k], ref_day) for every metric key that has a daily entry, not only the fresh winners.
+  The latest/latest_at tie-break stays as it is. Steven or Derek should decide whether the five daemon-only keys (September daily)
+  get recomputed to null week figures or keep their frozen ones. The spec does not say.
+verification: >-
+  Test: file A (day D-10, weight + steps), then file B (day D, steps only) on A's output, gives the same weight_body_mass
+  avg7/days7/n7/pdays7 as one run of A+B (days7 0, pdays7 per window). Test: B, then A alone on B's output, gives
+  samples == Σ daily n and days7 == 2.
+```
+
+```yaml
+id: P2-08-F1
+pass: 08
+title: sources[].n undercounts when the previous day's file is rewritten with rows earlier than the source's stored last_at
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: scripts/health-drive-sync.py
+    line: 263-268 (new_n counts only dt > old last_at)
+entry_or_trigger: >-
+  The spec says the previous day's file is sometimes rewritten. The routine feeds it again with D's file, and the rewrite adds
+  late-synced rows timed before the last_at that the earlier run stored.
+evidence: >-
+  Probe: run 1 is the 10-21 file with one row. Run 2 is the rewritten 10-21 file (an extra 07:00 row) plus 10-22, on run 1's
+  output. sources n (iPhone) comes out 2. One combined run gives 3, and samples (Σ daily n) is 3 in both. Re-feeds are idempotent.
+failure_scenario: >-
+  sources[].n drifts below the true count, and one run of all files no longer equals sequential runs for sources. The metric
+  fields are unaffected because daily days are replaced whole.
+impact: provenance count only. Whether any tile renders sources[].n is NEEDS-CONTEXT (deck HTML not in repo).
+remediation_direction: >-
+  Derive n from data that is replaced whole, for example a per-source, per-day count kept beside daily. Or accept it as provenance,
+  and say so in the docstring.
+verification: the rewritten-D-1 sequence gives the same sources[].n as one combined run.
+```
+
+## UNVERIFIED
+
+- **U2-1 — omitting `--existing` entirely still builds from empty with rc 0.** Probe: no `--existing` and no `--allow-empty-existing`
+  gives rc 0 and writes --out. The help text for `--allow-empty-existing` reads as if starting fresh needs the flag. Deciding this
+  needs the routine prompt of trig_015pqDNGrZVENHZEZR8JZYF5, to see whether its command always passes `--existing`. If the prompt
+  can omit it, the same history loss as P05-F1 follows. A one-line guard would close it: require one of the two flags.
+
+## REJECTED
+
+- window_stats on daemon days missing min/max — handled (min7/max7 from the days that have them; None when none). No trigger in
+  real data: all 61 daemon buckets carry {sum, avg, min, max, last, n} and the script always writes min/max.
+- Metric whose merged daily is empty — window_stats returns nulls, n7 0, days7 0, samples 0, with no crash. Not reachable for a
+  fresh metric anyway (fresh_daily always holds its days).
+- Prior-week null rule — pdays7 0 → pavg7/psum7/pdays7 all null, as the spec says. The daemon doc stores pdays7 as null, not 0.
+- Day with n>0 but sum null counted in samples but not in the window — no writer produces it, and the daemon doc has none.
+- meta.files capped at 90 lets a >90-files-old re-feed count once more — only reachable by a manual backfill of a 3-month-old file.
+  Not on the routine path.
+- Step E re-letters STEVEN-STEPS ids — no. E is appended after D, and A–D keep their letters. test_recs expects 13.
+
+## Coverage
+
+Clean on probe or read: the exit codes 2/3/4 and the no-write on 4. ArtifactData shape unwrapping. The daemon's metric keys,
+daily days, sleep nights, workouts, records and sources are kept on the real doc. dailyDays is recomputed. The windows are
+cumulative per day and point per sample. The window boundaries, and the ref day as the newest merged day. Re-feeds are
+idempotent for metrics, daily, sources and ingests. meta.files de-duplicates. The 7 refusal shapes. The doc rows (click E, the
+mac-task-specs §9 disable line, the cloud-routines table). Not re-reviewed: `brain/links.py` and the remaining docs (unchanged
+since pass 1, apart from the rows listed).
+
+## Top missing tests (pass 19)
+
+1. A low-frequency metric absent from the newest file: sequential runs give the same week figures as one combined run (P2-06-F1 a).
+2. An older file fed alone after a newer one: samples == Σ daily n and days7 counts both days (P2-06-F1 b).
+3. A rewritten D-1 file with an earlier row plus D's file: sources[].n equals the combined run (P2-08-F1).
+4. A 14-day history plus one new file gives non-null pavg7/psum7/pdays7 (the probe passed, but no test pins it).
+5. Each --existing refusal shape (bad JSON, `[]`, `{"data":{"v":null}}`, `metrics` not a dict) returns 4 with no --out. Only the
+   missing path is tested.
+6. Neither --existing nor --allow-empty-existing given: the rc that is wanted (U2-1).
+7. The window boundary: a day at exactly ref−7 falls in the prior window, not the current one.
+8. A point metric's avg7 is Σsum/Σn and not the mean of the daily averages (an unequal n per day).
+
+## Share card
+
+```text
+VIBE//BREAKER
+
+VERDICT: FIX BEFORE SHIP
+PASSES: 11/20
+CRITICAL: 0
+HIGH: 0
+CONFIRMED: 2
+UNVERIFIED: 1
+FIRST BREAK: NONE
+```
+
+## Release note
+
+Demonstrated: the four pass-1 fixes hold on the real 10-21/10-22 exports and the pre-existing doc. The new code introduced no
+crash or data loss in the probed edges. Not demonstrated: how the deck renders these fields, and the routine's real command line.
+
+---
+
+# VibeBreaker Final Report: health-drive-sync.py (Health Auto Export → appleHealth) + links/docs
+
+change-set: c3330a05859bbfac
+
+(Run on the uncommitted tree at 2026-10-23, branch claude/stoic-cori-pvn3f8. `bash scripts/validate-code.sh` gave
+`verdict: PASS (6 passed, 0 failed)`. The `--hash` re-run just before this file was written gave c3330a05859bbfac. The reviewer
+changed no source file. Probes wrote only to the scratchpad (`cv/`). The health files were read for shape only, and no health
+value is quoted here.)
+
+## Verdict
+
+`FIX BEFORE SHIP` (repo verdict: **FIX FIRST**). The deterministic checks pass, and the timezone handling, sleep-night keying,
+tie-break and write scope are all correct. Two defects show up on the routine's normal daily path:
+- The 7-day statistics are computed from the files given to one run, not from the merged history.
+- A re-sync of the same file adds its counts a second time.
+A third defect turns a failed read of the existing doc into a silent overwrite of the daemon's history.
+
+## Scope
+
+- Diff mode. Passes 01, 04, 05, 06, 07, 08, 12, 17, 18, 19 and 20 on `scripts/health-drive-sync.py`, `scripts/tests/test_health_drive_sync.py` and `brain/links.py`. Passes 01 and 19 on the doc rows.
+- Spec used: `integrations/apple-health-dashboard.md` (shape, timestamp rules, "merge, never clobber", the "pavg7 is null only when the prior window is empty" rule) and `.claude/skills/apple-health-notion/SKILL.md` §4–5.
+- Not available: the deck HTML (`AH_LABELS`, and which tiles render `samples` / `sources.n`) is not in the repo, and neither is the routine prompt (trig_015pqDNGrZVENHZEZR8JZYF5; triggers were not touched).
+
+## Scoreboard
+
+Passes executed: 11 / 20 (diff mode) · Confirmed: 4 (High 1, Medium 2, Low 1) · Unverified: 2 · Rejected: 5 · First critical pass: NONE
+
+## CONFIRMED
+
+```yaml
+id: P06-F1
+title: avg7/min7/max7/sum7/n7/days7 and pavg7/psum7/pdays7 come from the run's files only, not from the merged daily history
+status: CONFIRMED
+severity: HIGH
+confidence: HIGH
+location:
+  - path: scripts/health-drive-sync.py
+    line: 203-220 (build: w7/p7 built from `rows` = this run's samples)
+  - path: scripts/health-drive-sync.py
+    line: 233-238 (merge: the fresh metric replaces the old one whole)
+entry_or_trigger: the daily routine, which feeds only the files modified since the last sync minus one day (1–2 files)
+evidence: >-
+  The stats are computed from `rows` (this run's samples) and never read the merged `daily`. Probe: run the 10-21 file, then
+  the 10-22 file with the first output as --existing. step_count comes out as days7=1, n7=15. The same two files in one run
+  give days7=2, n7=25, and avg7 differs. The merged daily holds both days.
+failure_scenario: >-
+  From the third daily run onward, every tile's "7-day" average covers at most 1–2 days. pdays7/pavg7/psum7 stay null forever,
+  because a run never holds 8+ days of files, so the "vs prior week" delta goes away for good. The spec says null only when the
+  prior window is empty.
+impact: every Apple Health tile's 7-day figure and trend is wrong every day
+remediation_direction: >-
+  Compute the windows after the merge, from merged daily[k][day] {sum,n,min,max}. Cumulative: Σsum/days. Point: Σsum/Σn.
+  min/max from the daily min/max. Window ending at the newest day key.
+verification: >-
+  Two sequential single-file runs give the same days7/n7/avg7 as one run of both files. A fixture with 14 days of daily
+  plus one new file gives a non-null pavg7.
+```
+
+```yaml
+id: P08-F1
+title: Re-syncing the same export double-counts metrics.samples, sources[].n and meta.ingests (merge is not idempotent for counts)
+status: CONFIRMED
+severity: MEDIUM
+confidence: HIGH
+location:
+  - path: scripts/health-drive-sync.py
+    line: 237 (samples = fresh + old)
+  - path: scripts/health-drive-sync.py
+    line: 251 (n = old n + fresh n)
+  - path: scripts/health-drive-sync.py
+    line: 256 (ingests += len(paths))
+entry_or_trigger: >-
+  The routine re-downloads the previous day's file (it is rewritten, and the window is "since last sync minus one day"). Or
+  any manual re-run on the same inputs.
+evidence: >-
+  Probe: the same two files, run twice in a chain. step_count.samples goes 1440 → 1465, 10 of 15 sources rows grow (3 of them
+  exactly double), and ingests goes 21 → 23. daily, sleep, workouts and every other metric field are byte-identical across
+  the two runs, so those parts are idempotent. The `>=` tie-break at line 235 lets the equal latest_at through to the
+  addition.
+failure_scenario: Each day's file is counted about twice, so samples and sources.n drift upward without bound. ingests counts files fed, not exports.
+impact: provenance/count fields inflate; whether the deck shows them is NEEDS-CONTEXT (deck HTML not in repo)
+remediation_direction: >-
+  Make the counts a function of state, not of how many runs there were. Keep a per-(metric, source, local day) count map in
+  meta, replaced per day like `daily`. Set samples = daemon base + Σ map, and sources.n the same way. Count distinct file
+  names (or a sha1 of each file) for ingests.
+verification: run the same file twice; assert the output is identical apart from syncedAt/db_now.
+```
+
+```yaml
+id: P05-F1
+title: A missing or unreadable --existing silently becomes {}, and the output (for an ArtifactData `set`) drops the daemon's history
+status: CONFIRMED
+severity: MEDIUM
+confidence: HIGH
+location:
+  - path: scripts/health-drive-sync.py
+    line: 289-295
+entry_or_trigger: >-
+  The routine's read of appleHealth fails or saves to another path, or the saved shape lacks `metrics`. A `data` that is not
+  a dict also raises AttributeError (line 293).
+evidence: >-
+  Probe with --existing pointing at a file that does not exist: rc=0, no warning. The output has dailyDays 2 vs 7, workouts
+  0 vs 3, and loses the September days, sources and the daemon-only metric keys.
+failure_scenario: the routine `set`s that body, and the September history and workouts are deleted from the live doc
+impact: irreversible loss of the daemon's history (it cannot be re-ingested, because the daemon is dead)
+remediation_direction: >-
+  If --existing is given and is missing, unparseable or has no `metrics`, exit non-zero and write nothing. Starting from empty
+  should need an explicit flag.
+verification: test that a non-existent --existing path returns non-zero and does not create --out
+```
+
+```yaml
+id: P01-F1
+title: Stray table separator row inserted mid-table
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: docs/inventory/cloud-routines-2026-10.md
+    line: 9
+evidence: A second `|---|...|` follows the new row, and line 7 is already the header separator. It renders as a row of dashes.
+remediation_direction: delete line 9
+verification: the rendered table has no dash row
+```
+
+## UNVERIFIED
+
+- KNOWN == the deck's AH_LABELS (`health-drive-sync.py:33-44`). Missing: the deck HTML. Only the doc's mapping table could be compared.
+- min7/max7 for cumulative metrics are hourly-aggregate min/max, not daily totals (`:210-214`). Missing: the daemon's definition, or the tile code that renders them.
+
+## REJECTED
+
+- Timezone math: `parse_hae_date` builds an aware datetime from the ±HHMM offset, and `utc_str` converts it. The test pins 15:00 -0700 → 22:00 UTC. The real newest sample converts across midnight correctly. Day keys use the sample's own local date. Clean.
+- 7-day window anchored on the clock: no. It ends at `newest_all` (`:186, :203`).
+- Sleep night keying: `start - 12h` in local time (`:131`). 22:00 and 01:00 starts both key to the evening date. sleepStart is present in the real rows. Clean.
+- Tie-break as string: no. `parse_doc_ts` on both sides (`:235`) handles the space, .ffffff and ISO forms.
+- NaN: `num` drops NaN (`:96`). `Infinity` would pass, but HAE writes plain numbers, so it is not reachable from the export. Rejected as not reachable.
+- Writes outside --out: there is a single `open(a.out, "w")` (`:298`), and stdout carries counts and dates only. Clean.
+
+## Coverage
+
+These were clean:
+- read_exports: bad JSON skipped, unknown keys skipped, Avg fallback, workouts id/units.
+- merge: daily per-day replace, sleep by night, workouts by id, records carried forward, dailyDays recomputed, sources first/last as same-format strings.
+- exit 2/3 paths write nothing.
+- brain/links.py: three well-formed rows, brain tests pass.
+- Doc rows in CONNECTIONS, db-docs, mac-task-specs §9, decisions, memory, INDEX and toolkit agree with the script.
+
+## Top missing tests (pass 19)
+
+1. Idempotency: the same file twice gives identical output apart from syncedAt/db_now (P08-F1).
+2. Sequential runs give the same window stats as one combined run (P06-F1).
+3. 14 days of existing daily plus one new file gives non-null pavg7/pdays7 (P06-F1).
+4. A missing or malformed --existing returns non-zero and creates no --out (P05-F1).
+5. Older export vs newer doc latest_at: the doc metric is kept and samples are unchanged.
+6. A non -0700 offset (+0530, and -0800 across DST) gives the right UTC latest_at and the right local day key.
+7. A workout with distance in mi, m and km, and a missing id, gives a stable id and the right km.
+8. Sleep with only inBedStart, and with a 01:00 start, gives the right night.
+
+## Share card
+
+```text
+VIBE//BREAKER
+VERDICT: FIX BEFORE SHIP
+PASSES: 11/20 (diff)
+CONFIRMED: 4 (H1 M2 L1)
+change-set: c3330a05859bbfac
+```
+
+---
+
 ## Orchestrator response (2026-10-23 18:25 UTC) — pass 3 verdict SHIP; the two LOW items applied (reviewed df78258a3a9e3257 → 8919bacd32270b20)
 
 change-set: 8919bacd32270b20

@@ -12,6 +12,7 @@ SUCCEEDED, the freshness sweep flags it and the Big-moves task raises a "Repair"
 | Command Deck | `morningBrief` + push (+ e-mail until iMessage is linked) | 6:34 | cloud `morning brief` |
 | Command Deck | iMessage text + voice note (or e-mail with mp3) | 6:40 | Mac `vanessa-morning-brief-text`, `voice-reply-render` |
 | Command Deck | weather & news, city and housing lists | 6:35 / evening | cloud `weather & news` |
+| Command Deck | Apple Health tiles ← Health Auto Export files in Google Drive → `appleHealth`; Strava card ← Strava connector → `stravaSnapshot`; MyFitnessPal via Apple Health | 6:15 | cloud `Health daily sync` (`scripts/health-drive-sync.py`) |
 | Command Deck | Fieldy meetings → `fieldyDesk`, `memory/fieldy-meetings.md` | 6:50 | cloud `Fieldy → brain` |
 | Command Deck | freshness sweep (every stale key re-checked, per-key cadence) | 8:40 | cloud `freshness sweep` |
 | Command Deck | market close | 14:20 weekdays | cloud `market close` |

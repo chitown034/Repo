@@ -32,7 +32,7 @@ does not repeat it.
 | `cloudWriteProbe` | Proof that a cloud routine can write the DB unattended | A one-shot probe routine, fired 2026-09-22 |
 | `feedFreshness` | Per-feed fresh/late/stale/unknown/missing verdict, 26 feeds | The feed-freshness watchdog, daily 16:12 UTC |
 | `isaLadder` | The ISA line's reply-check and escalation state | The ISA escalation-ladder routine, weekdays 14:30 UTC |
-| `appleHealth` | Apple Health vitals | Old: `r8-apple-health-snapshot` (writes nothing live — see `always-on/README.md`). New: `health-notion-sync`, spec only |
+| `appleHealth` | Apple Health vitals | Cloud routine "Apple Health — Drive export → deck sync" (6:15 AM PT) from the Health Auto Export files in Google Drive, `scripts/health-drive-sync.py`; status in `healthDriveSync`. Old `r8-apple-health-snapshot` to be disabled; `health-notion-sync` optional |
 | `stravaSnapshot` | Latest Strava activity | `strava-daily-sync`, `20 5 * * *` PT — bare-write defect, see above |
 | `loftyLeads` / `zohoLeads` / `zohoDeals` | Real-estate / mortgage pipeline | `lofty-crm-sync` / `zoho-crm-sync` skills — both blocked on a credential as of 2026-09-24 |
 | `isaKpi` | ISA scorecard actuals | The live Pipeline Sync cloud routine, 04/10/16/22 UTC |

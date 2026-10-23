@@ -42,6 +42,12 @@ Integrations → API → Manage API keys; Arive → Settings → Integrations �
   Homes.com, Yelp; send Sofia the DRE number (`wiki/real-estate-playbooks/ai-search-visibility.md`).
 - **D. AnyDesk permissions** on each Mac (Screen Recording + Accessibility, unattended password) and the tablet app
   (Play Store "AnyDesk Remote Desktop" → Unattended Access; iPad: App Store → AnyDesk, reach-only).
+- **E. Health on the phone (2 minutes, once)** → MyFitnessPal → More → Apps & Devices → Apple Health → on; Strava → Settings →
+  Apple Health → on; BodyPark ATOM app → its settings → Apple Health / HealthKit → allow (do ATOM sessions with the Apple Watch
+  so each one lands in Apple Health as a workout); Health Auto Export → Automations → your Google Drive export → Metrics: select
+  all, Workouts: on. From then
+  on the deck's Health tiles, the Strava card and the nutrition tiles refresh by themselves every morning at 6:15 (nothing on
+  the Mac, nothing to tap daily). `integrations/apple-health-dashboard.md`.
 
 **Carried by Vanessa as big moves** (no longer a list you keep — each one surfaces on the 6D Brain with its plan standing by, in
 value order, and you approve it when you want it; the Big-moves task reads this list):

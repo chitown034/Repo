@@ -1,4 +1,55 @@
-# Apple Health → Claude iOS → Notion → Command Deck
+# Apple Health → Command Deck
+
+## The path that is live (2026-10-23): Health Auto Export → Google Drive → cloud sync → `appleHealth`
+
+Found on 2026-10-23 while fixing "auto health export and sync": **the phone half never broke.** Health Auto Export has been
+writing `HealthAutoExport-YYYY-MM-DD.json` (hourly aggregates per metric, one sleep row per night, workouts when there are
+any) into the Google Drive folder `1Ta6veOyTtgIsRs4lcMw0jzVgx80XiXjK` every day — the newest file lands around 11 PM PT and the
+previous day's file is sometimes rewritten. Only the Mac daemon that turned those files into the deck document was dead.
+
+The replacement needs no Mac and no phone prompt:
+
+```
+Health Auto Export (iPhone, existing automation)
+   └─ Google Drive folder 1Ta6veOyTtgIsRs4lcMw0jzVgx80XiXjK   (HealthAutoExport-YYYY-MM-DD.json, daily)
+        └─ cloud routine "Apple Health — Drive export → deck sync" (6:15 AM PT, trig_015pqDNGrZVENHZEZR8JZYF5, this session)
+             └─ scripts/health-drive-sync.py   (merge: daemon history kept, keys never invented, gaps never zero-filled)
+                  └─ Command Deck doc appleHealth  {v:{metrics, daily, sleep, workouts, meta, …}}  via:"drive-sync"
+                       └─ the twelve Health tiles, unchanged · status doc healthDriveSync {ranAt, status, files, newestSample, days}
+```
+
+First run 2026-10-23 (orchestrator session): the 2026-10-21 and 2026-10-22 exports merged, `appleHealth` v19, 12 metric keys,
+daily days 2026-09-06 → 2026-10-22, the daemon's September days and 3 workouts still present. The deck badge reads
+"Health Auto Export → Google Drive → cloud sync (daily 6:15 AM)"; the stale-export alert now points at the phone's Drive
+automation, not the Mac. Tests: `python3 -m unittest scripts.tests.test_health_drive_sync`.
+
+**Strava and MyFitnessPal (Steven, 2026-10-23: "update and sync strava daily with health auto export daily and
+myfitnesspal").** The same 6:15 AM routine now reads the Strava connector and writes `stravaSnapshot` (the positional rows the
+Strava card parses); the Mac task `strava-daily-sync` is retired. MyFitnessPal has no connector and needs none: MFP writes
+meals to Apple Health, and Health Auto Export carries `dietary_energy`, `protein`, `carbohydrates`, `total_fat` and
+`dietary_water` into the same daily file, where the sync picks them up as metrics the tiles already label (Calories eaten,
+Protein, Carbs, Fat, Water). Today's exports hold 10–12 metrics and no nutrition, workouts, active energy, exercise minutes,
+resting HR, weight or VO₂ max — those are switched on in the phone step below, once.
+
+**BodyPark ATOM (Steven, 2026-10-23: "also sync bodypark fitness app daily").** No public API or export is documented (the
+App Store page and bodypark.fit are not reachable from this sandbox; a web search found only that the ATOM pairs with the
+Apple Watch and Garmin heart-rate devices for live metrics). The path that needs no vendor API: ATOM sessions done with the
+Apple Watch are Apple Health workouts, and the app itself is asked to write to Apple Health in click E; either way they ride
+the same daily export into `appleHealth.workouts` with their own source name, and Strava gets them too if the ATOM app posts
+there. If a session ever shows in the BodyPark app but not on the deck, the first thing to check is the app's Apple Health
+permission; the second is whether Health Auto Export's Workouts toggle is on.
+
+What Steven does: one phone step, once (see docs/STEVEN-STEPS.md click E): MyFitnessPal → More → Apps & Devices → Apple
+Health → on (Nutrition, Weight); Strava → Settings → Applications/Health → Apple Health → on; Health Auto Export → the Google
+Drive automation → Metrics: select all (or at least Active Energy, Exercise Minutes, Resting HR, VO₂ Max, Weight, Dietary
+Energy, Protein, Carbohydrates, Total Fat, Dietary Water) and Workouts: on. Then nothing daily. If the badge goes stale, open Health Auto Export on the iPhone → Automations → the Google
+Drive export → check it is on and signed in. `r8-apple-health-snapshot` on the Mac should be disabled so it can never
+overwrite this document with the daemon's frozen September data (`runnerctl disable r8-apple-health-snapshot`, in
+`integrations/mac-task-specs.md` §9). The Notion path below stays as an optional manual source; it is no longer needed.
+
+---
+
+# Earlier plan (2026-09-22): Apple Health → Claude iOS → Notion → Command Deck
 
 **Baseline 2026-09-12 · verified 2026-09-22.** Owner: Integration Engineer (under CTO Innovator).
 

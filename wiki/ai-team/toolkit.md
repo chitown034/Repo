@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 48 skills · 7 Claude mods (plugins) · 16 connectors (1 ok, 15 need attention) · 11 MCP servers · 13 APIs · 70 cloud routines · 60 Mac tasks
+toolkit: 48 skills · 7 Claude mods (plugins) · 16 connectors (1 ok, 15 need attention) · 11 MCP servers · 13 APIs · 71 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -265,6 +265,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 16 connectors (1 ok, 15 need at
 - `MBS Highway Home Report` — *none*: enrol past clients (Steven's click) · no API (integrations/mbs-highway/README.md)
 
 **Cloud routines**
+- `Health daily sync — Apple Health (Drive export) + Strava → deck (6:15 AM PT; `appleHealth`, `stravaS`: cron CRON_TZ=America/Los_Angeles 15 6 * * * · on · first run by hand 2026-10-23
 - `Command Deck — daily freshness sweep (writer, Claude; once a day since 2026-10-22, per-key cadence)`: cron 40 15 * * * · on · SUCCEEDED @ 2026-10-20T15:40
 - `Command Deck — morning feeds (writer, Claude)`: cron 5 13 * * * · on · SUCCEEDED @ 2026-10-20T13:08
 - `Command Deck — market close (writer, Claude)`: cron 20 21 * * 1-5 · on · SUCCEEDED @ 2026-10-19T21:20
