@@ -17,6 +17,9 @@ the deeper primary source when a page here doesn't answer fully.
 | `showing-operations.md` | Itinerary/route planning, ShowingTime vs. Showami, why an automation never contacts a client directly |
 | `referral-reciprocity.md` | The referral-partner ledger, reciprocity scoring, RESPA §8, and LPT recruiting/revenue share |
 | `military-relocation.md` | PCS-driven transactions, the VA house-hack mechanism, the dual-licensed referral opportunity — with an open gap flagged on rent/buy/wait mechanics |
+| `open-house.md` | Before / during / after an open house: sign-in capture, the Open House Captain's lead list, thank-you drafts and ISA call list, Pabbly workflow 9, fair-housing reminders (2026-10-22) |
+| `post-close-care.md` | Day 1 / 10 / 30 after a close or funding, the no-inducement review ask, Pabbly workflow 7, the twelve-month care touches, Delia's drafts (2026-10-22) |
+| `sphere-nurture.md` | The `sphereList` fields, monthly touches, birthdays and home anniversaries, 90-day check-ins, the 11th-of-month routine and Pabbly workflow 8 (2026-10-22) |
 
 ## Standing facts worth keeping here
 

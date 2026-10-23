@@ -61,3 +61,24 @@ doc whose top level is not a single `v` key is a **writer bug to fix**, not a sh
 - **Closed since this list was written:** `r17-trading-day-log` is no longer failing (`ok`,
   last end 2026-09-22); and the old line here — "cloud routines cannot write to the artifact DB
   unattended" — is **disproved**, see `README.md` and `docs/CLOUD-WRITE-ARCHITECTURE.md`.
+
+## Status (2026-10-22) — version 230 (list intake forms, tools per seat, Text me the brief, Zoom recaps)
+
+Published as **version 224** on 2026-10-22 (session note; the footer stamp is not re-read here). What this
+version carries, all drafts-only (`wiki/ai-team/push-button-system.md`, `context/decisions.md` 2026-10-22):
+
+- **One Vanessa queue** — `vanessaQueue`, written by "Hand to Vanessa" on kanban, lead and deal rows, Vanessa's
+  `queue_task` tool, `/queue`, the ISA Portal's outbox and the routines; worked first by the 6:25 AM cycle.
+- **Push-buttons on the Vanessa panel** — Today from Vanessa (`cosBrief`), Run cycle now, TC desk + intake form
+  (`tcDeals`), Draft follow-ups, Triage inbox and Recap meetings (Gmail / Fieldy / Zoom through the page's own
+  connectors, writing `inboxDesk`), Text me this brief (Inkbox, Steven's own mobile only, number in localStorage).
+- **Morning brief** read from `morningBrief` (6:34 AM PT, three dashboards) — the same text the Mac sends by
+  iMessage and voice at 6:40.
+- **Refi list and sphere list forms** writing `refiWatchList` and `sphereList`; cards for `refiWatchDesk` and
+  `sphereTouches` (both routines live, first runs 2026-10-26 and 2026-11-11 — nothing has run yet).
+- **WhatsApp — Kapso** card (`whatsappKapso`), Zoom beside Fieldy in the meeting recap, Gondola travel desk through
+  connect-all 4b.
+- Freshness sweep once a day (15:40 UTC) with per-key cadence; routine usage cut about 34%; backup moved to Sunday
+  21:07 UTC after the allowance reset.
+- Still open from the earlier lists: the Mac runner silent 2026-10-13 → the 2026-10-22 paste restarts it; Zoho waits
+  on the API tick; Strava guard disabled until the Mac task runs again.

@@ -2315,8 +2315,8 @@
    "lead": null,
    "role": "Designs home and small-lab network plans from hardware inventory, goals, and operator experience level, with safe staged changes and rollbac",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Maya",
+    "starts_from": "wiki/real-estate-playbooks/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"homelab architect Designs home and small-lab network plans\"",
@@ -3544,8 +3544,8 @@
    "lead": null,
    "role": "Diagnoses network connectivity, routing, DNS, interface, and policy symptoms with a read-only OSI-layer workflow and evidence-backed root ca",
    "laya": {
-    "lane": "Derek",
-    "starts_from": "wiki/dashboard-ops/"
+    "lane": "Rafael",
+    "starts_from": "wiki/dashboard-ops/index.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"network troubleshooter Diagnoses network connectivity, routing, DNS, interface,\"",
@@ -3555,17 +3555,10 @@
     "command": "claude --agent network-troubleshooter",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
-   "toolkit": [
-    ".claude/skills/code-validation-gate",
-    "scripts/validate-code.sh",
-    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
-    "references/backend-folder-structure.md",
-    "references/vibe-coding-learning.md"
-   ],
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [
-     "ECC",
      "Vanessa"
     ]
    }
@@ -4046,8 +4039,8 @@
    "lead": null,
    "role": "PyTorch runtime, CUDA, and training error resolution specialist.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Ingrid",
+    "starts_from": "wiki/ai-team/mentors-and-benches.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"pytorch build resolver PyTorch runtime, CUDA, and training error\"",

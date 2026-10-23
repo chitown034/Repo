@@ -26,6 +26,8 @@ Steven (Principal)
 │   ├─ Agent OS — `bin/brain os`: all 172 roster agents reachable via Laya lane, Jarvis recall and an Orca launch command (`wiki/ai-team/agent-os.md`)
 │   ├─ Dispatch planner — `bin/brain route`: lead seat, cross-functional joins, ≤8-wide parallel waves, gates, HALTs (rules: `wiki/ai-team/cross-functional.md`)
 │   ├─ Broker Command Center — realtor/broker OS (https://claude.ai/artifact/XFx2H7cf8mnS8e8hjFzxNg), connected 2026-10-22
+│   ├─ The Bot Crew — 355 chat agents mirroring this chart: 13 executive/mentor cards, 21 named + desk seats, 8 pods and
+│   │   15 workflows runnable, an org-chart panel, 20 live connectors behind approval cards (https://claude.ai/artifact/B8BPDvyE55p8hT7PTyKbjG; `wiki/ai-team/bot-crew.md`, 2026-10-22)
 │   ├─ Travel Desk — Gondola MCP: points vs cash, trips, price watches; Marcus costs each trip; booking is Steven's (new 2026-10-22, `wiki/ai-team/desk-seats.md`)
 │   ├─ Meeting Scribe — Fieldy/Zoom recaps: decisions, action items → `vanessaQueue`; drafts only (new 2026-10-22, `wiki/ai-team/desk-seats.md`)
 │   └─ Juliet — Escalation & Service Recovery
@@ -84,6 +86,22 @@ on any change, Vanessa last. Rules and wake words: `wiki/ai-team/cross-functiona
 the ISA Portal's "Hand to Vanessa" box (via its `vanessaOutbox`, moved in each morning) and the routines. The 6:25 AM
 daily cycle works the queue first, marks each item done / needs-Steven with where the draft is, and folds the rest
 into the ≤3 Needs-you items.
+
+## What the desks run on (2026-10-22, evening)
+
+| Desk seat | Routine / button | Reads | Writes | Steven's step |
+|---|---|---|---|---|
+| Refi Watch Analyst | Mon 7:20 AM PT `trig_014ipr6x9z35psmtHJCPVqj1`; `refi-watch` skill | `ratesSnapshot`, `refiWatchList` | `refiWatchDesk`, `vanessaQueue` | keeps the refi list (deck form, ISA Portal form, or "refi list: …" to Claude) |
+| Sphere Nurture Coordinator | 11th 7:40 AM PT `trig_01Pn8xLNKTVVFYjYTj8d8JTd`; `past-client-nurture` | `sphereList`, housing feeds | `sphereTouches`, `marketingQueue`, `vanessaQueue` | approves the drafts; the ISA sends |
+| Voicemail & Inbox Triage | deck "Triage my inbox" (Gmail as the viewer); `voicemail-to-lead` (WhisperAI) | Gmail, recording links | `inboxDesk`, `vanessaQueue`, Gmail drafts | clicks "Save draft in Gmail"; sends himself |
+| Document Intake Clerk | `tc-doc-intake`; deck TC intake form | Drive / Gmail attachments | `tcDeals` | confirms dates the document does not state |
+| Open House Captain | `open-house-follow-up`; Pabbly workflow 9 | sign-in export | `vanessaQueue`, Gmail drafts | approves thank-yous; the ISA calls |
+| Travel Desk | Gondola MCP (`connect-all` 4b; claude.ai custom connector) | Gondola | trip options, price watches | books, pays, transfers points |
+| Meeting Scribe | deck "Recap my meetings" (Fieldy + Zoom as the viewer); `meeting-recap-to-crm` | Fieldy, Zoom | `inboxDesk.meetings`, `vanessaQueue`, Gmail drafts | records with the pendant / Zoom AI Companion |
+
+The ISA Portal carries the same two lists as intake forms (`listOutbox`); the 6:25 cycle moves pending rows to the
+deck and marks them "moved". Inkbox (reconnected 2026-10-22) gives Vanessa an email address and an iMessage line;
+the deck's "Text me this brief" sends the morning brief to Steven's own mobile only.
 
 ## Tools per seat (skills · plugins · connectors · routines · Mac tasks)
 
@@ -149,5 +167,6 @@ Nadia (CAIO) and Elon (CTO Innovator) never ship a change themselves — Nadia s
 - `wiki/ai-team/model-tiering-dispatch.md` — which model each layer of this chart runs on, and the parallel-dispatch limits.
 - `wiki/ai-team/tool-integration-status.md` — connector, skill, and proposed-tool status by seat.
 - `wiki/ai-team/mentors-and-benches.md` — Maxwell, Apex, James, Kevin and what a "bench" actually is.
+- `wiki/ai-team/bot-crew.md` — The Bot Crew: every seat above as a chat card, pods as runnable workflows.
 
-Source: Command Deck, `ORG_CHART` / `AI_TEAM_ORG` data (AI Team panel), toolkit snapshot referenced 2026-09-16. Tree last updated 2026-10-09 (Laya, Brain loop, Google Drive mirror, Jarvis verify script; dispatch planner, keep-going failover and weekly scout added the same day; browser control + skill finder 2026-10-10; trading desk, loan-task agents, events scout, Computer Hub, third-party packs 2026-10-11; Broker Command Center seats, the ISA's "Today from Vanessa" list and the Transaction & Showing desk node 2026-10-22; seven desk seats and the Client Care Pod 2026-10-22; Presence desk, Orin and the Presence Pod 2026-10-22). `bin/brain orgcheck` proves every seat above resolves to a brain page.
+Source: Command Deck, `ORG_CHART` / `AI_TEAM_ORG` data (AI Team panel), toolkit snapshot referenced 2026-09-16. Tree last updated 2026-10-09 (Laya, Brain loop, Google Drive mirror, Jarvis verify script; dispatch planner, keep-going failover and weekly scout added the same day; browser control + skill finder 2026-10-10; trading desk, loan-task agents, events scout, Computer Hub, third-party packs 2026-10-11; Broker Command Center seats, the ISA's "Today from Vanessa" list and the Transaction & Showing desk node 2026-10-22; seven desk seats and the Client Care Pod 2026-10-22; The Bot Crew surface under Vanessa 2026-10-22; Presence desk, Orin and the Presence Pod 2026-10-22). `bin/brain orgcheck` proves every seat above resolves to a brain page.

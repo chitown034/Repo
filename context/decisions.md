@@ -631,6 +631,21 @@ iMessage line ready — Steven texts `connect @vanessa-shearrill` to +1 650 484 
 publish no unsubscribe endpoint. Rule kept: every new seat, skill and routine drafts; nothing sends, books, quotes,
 signs or writes to a client-facing system.
 
+## 2026-10-22 (late) — depth pass: playbooks, data dictionary, list intake on both pages
+Five new brain leaves (open house, post-close care, sphere nurture, refi review prep, push-button system) and a data
+dictionary row for every 2026-10-22 document. Refi and sphere lists can be entered on the Command Deck (v230) or the
+ISA Portal (v48, `listOutbox`); the 6:25 cycle moves ISA rows to the deck. The Monday refi routine writes
+`refiWatchDesk` — `refiWatch` stays the older hand-entered rate-watch list on the Ops Radar panel (a name collision the
+deck build caught). Another session's Capability Pack section on the ISA Portal was kept; it asks for the `downloads`
+capability without declaring it, so its Download button falls back to copy — their call, not changed here.
+
+## 2026-10-22 (night) — The Bot Crew aligned to the org chart; Brain 6D updated
+Steven: "continue add more in depth and update 6D brain and update AI org chart with all changes." The Bot Crew
+(355 agents, `wiki/ai-team/bot-crew.md`) now mirrors this chart: Kevin replaces Cole there too (same card id, so notes
+carry over), Maxwell and Elon got cards, the 14 named seats and seven desk seats became one group, the eight standing
+pods run as workflows (Alexandra gates, Vanessa last), and an org-chart panel shows which crew groups roll up to
+which executive. Vanessa is the first card, Chief of Staff, with `consult_agent` and `start_workflow`. The crew went on
+the org chart as a surface under Vanessa, not a seat. Rule kept: drafts only, approval cards for every write.
 ## 2026-10-22 — Presence kit deepened; Orin and the Presence Pod own AEO/SEO/GEO/AIO; the 6D Brain carries it
 
 - **Request (Steven, verbatim).** *"Apply AEO, SEO, GEO to improve all of my social media websites and improve my

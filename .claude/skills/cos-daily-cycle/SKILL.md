@@ -13,7 +13,8 @@ the 80/20 rule and the map are in `docs/AUTOMATION-MAP-2026-10-20.md`. Orchestra
    Showing desk, 6:05 AM PT), inboxDesk (deck Inbox & Meetings buttons), twinQueue, twinBrief, kanbanCards,
    isaLine, loftyLeads, leadTriage, leadResponse, marketingQueue, calendarSnapshot, feedFreshness, runnerStatus
    (silent > 36 h = a p1 Needs-Steven item), vanessaRuns (last 3), vanessaRecommendations (open). ISA Portal
-   (https://claude.ai/artifact/9Jtqg2W1t98PfhNYHNTMDS, `state`): vanessaOutbox — the ISA's hand-offs.
+   (https://claude.ai/artifact/9Jtqg2W1t98PfhNYHNTMDS, `state`): vanessaOutbox — the ISA's hand-offs — and listOutbox
+   (the ISA's refi and sphere rows, `{refi: [...], sphere: [...]}`, each row `status: pending|moved`).
 3. **Four buckets** for every open item: Automation (name the routine/task) · AI team (default; be aggressive) ·
    ISA-EA (write it so the ISA can do it from the ISA Portal at the noon huddle) · Steven (HALT-list items only,
    at most 3; the rest queued with dates).
@@ -25,6 +26,8 @@ the 80/20 rule and the map are in `docs/AUTOMATION-MAP-2026-10-20.md`. Orchestra
    isaInstructions, queuedForSteven, split{automation, aiTeam, isaEa, steven, stevenShare}, stale, headline};
    set `vanessaQueue` (ISA outbox items moved in; each worked item marked done / needs-steven with its result);
    append new packets to `twinQueue`; append `vanessaRuns` and `vanessaLog`. Never `set` those three. On the ISA
-   Portal set `isaToday` and mark moved outbox items "moved" (the only two ISA documents the cycle writes).
+   Portal set `isaToday` and mark moved outbox items "moved"; pending `listOutbox` rows are appended to the deck's
+   `refiWatchList.v.clients` / `sphereList.v.people` (de-duplicated by first name + month) and marked "moved" — the
+   three ISA documents the cycle may write.
 7. **Tell Steven** in plain words: the ≤3 things that need him, the split ("team drafted 6, automations 9, ISA 2,
    you 2"), what is stale and why. In an attended session, the drafts can be shown and approved on the spot.

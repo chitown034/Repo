@@ -34,6 +34,35 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Open House Captain | open house, sign-in sheet, sign-in, visitor, thank-you, thank you note | `wiki/ai-team/desk-seats.md` |
 | Travel Desk | travel, trip, flight, hotel, points vs cash, points, miles, price watch, gondola, itinerary | `wiki/ai-team/desk-seats.md` |
 | Meeting Scribe | meeting recap, recap, meeting notes, action items, fieldy, zoom, meeting minutes, debrief | `wiki/ai-team/desk-seats.md` |
+| Maya | market data, median price, zip code, neighborhood, school, schools, days on market, months of supply, inventory, comps, city stats, redfin, caaspp, community ranking | `wiki/real-estate-playbooks/` |
+| Rosa | pcs, military, base, bah, relocation, orders, scra, camp pendleton, miramar, coronado, march arb, deployment, rent buy or wait, rent vs buy, duty radius, bah affordability, breakeven, military objection, military & relocation pod | `wiki/real-estate-playbooks/military-relocation.md` |
+| Quincy | lofty, pabbly, integration, connector, crm sync, import leads, export leads, webhook, zoho lofty, smart plan | `integrations/CONNECTIONS.md` |
+| Owen | autopilot, sweep, auto task, follow-up task, dedupe, daily automation, launchpad, mission, push button, run everything, monday kickoff, friday wrap, automation & ai pod | `docs/AUTOMATION-MAP-2026-10-20.md` |
+| Beatrice | dre, broker supervision, trust account, file review, license renewal, e&o, record retention, broker compliance | `wiki/mortgage-programs/disclosure-timing.md` |
+| Paula | probate, trust sale, iaea, court confirmation, overbid, short sale, foreclosure, executor, estate sale | `wiki/real-estate-playbooks/` |
+| Riley | alliance, cpa, attorney, financial planner, partner, lunch and learn, professional network, co-marketing | `wiki/real-estate-playbooks/referral-reciprocity.md` |
+| Ingrid | training, academy, role-play, roleplay, quiz, drill, script practice, lesson, onboarding agent | `wiki/ai-team/mentors-and-benches.md` |
+| Steve | draft, drafts, inbox triage, follow-up draft, digital twin, tomorrow prep, meeting brief | `projects/ai-team.md` |
+| Winston | car forms, c.a.r. forms, rpa, contingency removal, nbp, request for repair, transaction qa, file audit, form library, tds, spq, avid, forms tutor, clause by clause, forms matrix, form pdf, zipform, which forms, forms hub, skyslope, skyslope forms, when needed matrix, when-needed, required forms, forms checklist, deal type forms, 548 forms | `wiki/real-estate-playbooks/transaction-stages.md` |
+| Sterling | 5-star, five star, client experience, service standard, ritz, delight, client preferences, nps, after-care, concierge service, value add, client experience pod | `wiki/real-estate-playbooks/buyer-process.md` |
+| Juliet | escalation, service recovery, blown closing, denied loan, failed appraisal, angry client, honors, unhappy client, complaint | `wiki/real-estate-playbooks/transaction-stages.md` |
+| Imani | pcs, military family, base, bah, relocation briefing | `wiki/real-estate-playbooks/military-relocation.md` |
+| Logan | lpt, lpt realty, hybridshare, revenue share, downline, recruiting, recruit, business builder, brokerage partner, cap, stock award, sponsor, lpt growth pod | `wiki/real-estate-playbooks/referral-reciprocity.md` |
+| Wren | referral ledger, reciprocal referral, referral fee, partner tier | `wiki/real-estate-playbooks/referral-reciprocity.md` |
+| Bianca | absorption, months of inventory, price per sqft, list-to-sale, market report, pricing authority | `wiki/real-estate-playbooks/listing-process.md` |
+| Lucia | eligibility, guideline, va m26-7, fha 4000.1, usda, program fit | `wiki/mortgage-programs/program-selection.md` |
+| Priya | instant response, new lead, speed-to-lead call, appointment setting | `wiki/real-estate-playbooks/buyer-process.md` |
+| Vera | sphere, soi, past client, review request, home anniversary, post-close, preference profile, closing gift, lifetime cadence | `wiki/real-estate-playbooks/referral-reciprocity.md` |
+| Rafael | workflow studio, workflow, automation flow, lifecycle automation, trigger, automation coverage | `wiki/dashboard-ops/index.md` |
+| Celeste | coach hq, coaching, training plan, skills assessment, recommendation, role-play gym, weekly 1:1, coach, skills plan, knowledge & coaching pod | `wiki/ai-team/mentors-and-benches.md` |
+| Lenora | q&a, question and answer, glossary, reference library, roles and responsibilities, raci, broker's guide, law library, who does what, guidebook, office policy manual, property management guide, employment law, short sale guide, foreclosure guide, lead paint, environmental hazards, earthquake safety, new broker start-up, team building | `wiki/index.md` |
+| Showing Coordinator | showingtime, showami, showing, tour, schedule a showing, showing assistant, lockbox, showing feedback, route, route planner, drive time, showing route, optimize route | `wiki/real-estate-playbooks/showing-operations.md` |
+| Halle | new construction, builder, new build, builder incentive, model home | `wiki/real-estate-playbooks/buyer-process.md` |
+| Lorenzo | investor, income property, 1031, cash flow, fourplex, duplex, adu, cap rate, investor & special sales pod | `wiki/real-estate-playbooks/buyer-process.md` |
+| Tariq | social media, instagram, tiktok, facebook post, reel | `wiki/real-estate-playbooks/listing-process.md` |
+| Delia | reviews, google review, testimonial, reputation, net promoter, scorecard | `wiki/real-estate-playbooks/referral-reciprocity.md` |
+| Ansel | predictive seller, likely seller, probate lead, expired, seller intelligence | `wiki/real-estate-playbooks/listing-process.md` |
+| Tax Assessor Agent | assessor, property tax, apn, tax bill, supplemental tax | `wiki/real-estate-playbooks/transaction-stages.md` |
 
 ## Pods — standing cross-functional teams that work in parallel
 
@@ -80,7 +109,7 @@ When the request matches the words, the seat joins the plan even if it is not th
 | Alexandra | Alexandra is in the plan | Compliance review of the drafted output; Steven decides |
 | ECC | Derek or Elon is in the plan | Standards, tests, security and agent-safety review of any change |
 | Validation | Derek or Elon is in the plan (any code change) | The code-validator agent: `scripts/validate-code.sh` then the VibeBreaker 20-pass adversarial review of the diff; code is not done until both pass (`.claude/skills/code-validation-gate`) |
-| Vanessa | always | Consolidates every seat into one answer for Steven |
+| Vanessa | always | Consolidates every seat into one answer for Steven; the same pods run as workflows on The Bot Crew (`wiki/ai-team/bot-crew.md`) |
 
 ## HALT words — stop and write a Needs-Steven packet
 
