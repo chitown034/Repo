@@ -65,9 +65,22 @@ class ToolkitTests(unittest.TestCase):
             self.assertIn(l["s"], ids); self.assertIn(l["t"], ids)
 
     def test_write_page(self):
-        p = toolkit.write_page(ROOT, toolkit.inventory(ROOT))
-        self.assertTrue(p.is_file())
-        self.assertIn("## Vanessa", p.read_text(encoding="utf-8"))
+        # never into the real tree: a test that rewrote wiki/ai-team/toolkit.md left CI's index stale (2026-10-23)
+        import tempfile
+        with tempfile.TemporaryDirectory() as t:
+            (Path(t) / "wiki/ai-team").mkdir(parents=True)
+            p = toolkit.write_page(Path(t), toolkit.inventory(ROOT))
+            self.assertTrue(p.is_file())
+            self.assertIn("## Vanessa", p.read_text(encoding="utf-8"))
+
+    def test_committed_toolkit_page_is_current(self):
+        # bin/brain reindex regenerates the page; a commit without it is what CI catches, so catch it here first
+        import tempfile
+        with tempfile.TemporaryDirectory() as t:
+            (Path(t) / "wiki/ai-team").mkdir(parents=True)
+            fresh = toolkit.write_page(Path(t), toolkit.inventory(ROOT)).read_text(encoding="utf-8")
+        self.assertEqual((ROOT / "wiki/ai-team/toolkit.md").read_text(encoding="utf-8"), fresh,
+                         "wiki/ai-team/toolkit.md is stale — run bin/brain reindex (it regenerates the page) before committing")
 
 
 if __name__ == "__main__":

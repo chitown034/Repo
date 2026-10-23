@@ -1,33 +1,17 @@
 # Code validation — last run
 
-Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `ce6bba5659d867c9`: **not yet**.
+Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `a23891b8f97640fa`: **not yet**.
 
 ```
-code validation 2026-10-23T19:08:19Z - change-set ce6bba5659d867c9
+code validation 2026-10-23T20:24:35Z - change-set a23891b8f97640fa
 files:
-  CLAUDE.md
   brain/__main__.py
-  brain/recs.py
-  brain/recs/big-moves.json
-  brain/tests/test_recs.py
-  context/decisions.md
-  dashboard/brain-4d.html
-  dashboard/brain-4d/template.html
-  docs/STEVEN-STEPS.md
-  docs/inventory/cloud-routines-2026-10.md
-  docs/inventory/daily-updates.md
-  docs/reports/BIG-MOVES.md
-  wiki/ai-team/second-brain-layers.md
+  brain/tests/test_toolkit.py
   wiki/ai-team/toolkit.md
 PASS py_compile brain/__main__.py
-PASS py_compile brain/recs.py
-PASS json brain/recs/big-moves.json
-PASS py_compile brain/tests/test_recs.py
-PASS quickcheck dashboard/brain-4d.html
-PASS quickcheck dashboard/brain-4d/template.html
-PASS 6D page tests (passages script-safe + private, merge-live)
+PASS py_compile brain/tests/test_toolkit.py
 PASS brain unit tests
 PASS brain layout
 PASS brain doctor
-verdict: PASS (10 passed, 0 failed)
+verdict: PASS (5 passed, 0 failed)
 ```

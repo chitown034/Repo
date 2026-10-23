@@ -1,3 +1,117 @@
+## Orchestrator response (2026-10-23 20:50 UTC) — verdict SHIP; INFO P05-F1 applied (reviewed bceb606992ffc7a9 → a23891b8f97640fa)
+
+change-set: a23891b8f97640fa
+
+P05-F1 applied: `reindex` regenerates the toolkit page only when the page AND `integrations/CONNECTIONS.md` both exist, so a tree
+holding the page alone keeps it byte-identical. P19-F1 (a CLI test of the branch) deferred: `test_committed_toolkit_page_is_current`
+covers the failure mode that broke CI. Gate re-run PASS; the full suite (140) OK; CI replay on a clean copy: no tracked file changed, doctor PASS.
+
+## Code-validator review (2026-10-23 20:40 UTC) — verdict SHIP (VibeBreaker DIFF: SURVIVED*, 0 critical / 0 high / 0 medium / 0 low)
+
+change-set: bceb606992ffc7a9
+
+**Verdict: SHIP.** The fix does what it claims: on a clean copy of the working tree, CI's own steps
+(`python3 -m unittest discover -s brain/tests`, then `bin/brain doctor`) give 140 tests OK, **no tracked file changed**, and
+`doctor: PASS` (160 files, 1305 sections). There are no confirmed defects at LOW or above. Two INFO notes are below. One issue
+outside the diff, in the connector status classifier, is listed for Derek or Steven.
+
+Deterministic gate, quoted: `verdict: PASS (5 passed, 0 failed)` (change-set bceb606992ffc7a9).
+
+### Scope
+
+- Diff vs HEAD: `brain/__main__.py` (reindex), `brain/tests/test_toolkit.py`, regenerated `wiki/ai-team/toolkit.md`,
+  `brain/index.json`, and `docs/reports/CODE-VALIDATION.md`, which is the gate's own output. `INDEX.md` is unchanged.
+- I also read the code the diff calls: `brain/toolkit.py` (`inventory()` and every reader it calls, plus `write_page()`),
+  `brain/indexer.py` (hashing), `.github/workflows/brain-loop.yml`, `scripts/validate-code.sh`, `scripts/brain-sync.sh`,
+  `scripts/repo-sync.sh` + `.gitattributes`, `scripts/notebooklm-export.sh`, `brain/tests/fixture.py`, `test_ask.py`, `test_learn.py`, `test_brain.py` CLI tests.
+- Passes run (Python, DIFF mode): 01, 04, 05, 06, 07, 08, 12, 17, 18, 19, 20. Passes 02/03/09–11/13–16 were excluded: the diff
+  has no auth, secrets, network, data store, concurrency or UI surface. No material scope limitation.
+
+### CONFIRMED
+
+```yaml
+id: P05-F1
+pass: 05
+title: reindex silently replaces toolkit.md with an empty register on a tree that has the page but not its sources
+status: CONFIRMED
+severity: INFO
+confidence: HIGH
+location:
+  - path: brain/__main__.py
+    line: 135-136
+entry_or_trigger: BRAIN_ROOT=<tree containing wiki/ai-team/toolkit.md but no .claude/skills, integrations/*.md, docs/inventory> bin/brain reindex
+evidence: every inventory() reader catches a missing file (OSError -> [], empty glob), so no crash. write_page then writes "0 skills · 0 connectors…, every seat has no tool"
+existing_controls_checked: the is_file() guard only checks the page itself; no in-repo producer of such a tree was found (brain-sync.sh runs on a full git checkout; notebooklm-export.sh reindexes the repo itself and writes exports/, not a root)
+failure_scenario: reproduced on a scratch tree holding only CLAUDE.md + the page. Exit 0, and the 353-line page became 13 lines. No harm shown in any real flow
+impact: none demonstrated; defence-in-depth only
+remediation_direction: optional. Also require a source register (e.g. integrations/CONNECTIONS.md or .claude/skills) before regenerating
+verification: CLI test on a fixture with only the page; assert reindex leaves it byte-identical (or regenerates only when the sources exist)
+needs_context: null
+```
+
+```yaml
+id: P19-F1
+pass: 19
+title: the new reindex branch has no test of its own
+status: CONFIRMED
+severity: INFO
+confidence: HIGH
+location:
+  - path: brain/__main__.py
+    line: 130-138
+entry_or_trigger: a future edit that drops or reorders the regeneration (e.g. indexing before write_page)
+evidence: test_brain.py CliTests run reindex only on fixture trees that have no toolkit page, so the new branch never runs in a test
+existing_controls_checked: test_committed_toolkit_page_is_current still catches a stale page locally, so the CI failure mode stays covered
+failure_scenario: the regression shows up as a stale-page test failure, not as a reindex failure. Slower diagnosis, no wrong state shipped
+impact: diagnosability only
+remediation_direction: one CLI test
+verification: fixture with a toolkit.md and one register row; run reindex; assert the page equals write_page(inventory(root)), the output line names it, and doctor passes
+needs_context: null
+```
+
+### UNVERIFIED
+
+None.
+
+### REJECTED (attack questions answered)
+
+- **Other tests writing into the real tree.** Rejected for this change-set. `test_ask.py:35 tune.write(REPO)` writes
+  `brain/state/tune-proposals.json`, which is gitignored and not indexed (this is older code). `test_learn.py` sends `learn.save(REPO…)` to a temp file
+  via `BRAIN_LEARNED`. `test_recs.py` swaps `LEDGER`/`WEIGHTS` to temp paths. Proof: after the full suite on the clean copy, `git status --short` was empty.
+- **`inventory()` crashing on a partial tree.** Rejected. `skills`, `plugins`, `connectors`, `routines`, `mac_tasks`, `_register` all
+  catch `OSError` or use globs that return nothing. `panel_map()` (the one unguarded read) is not called by `inventory()`. Reproduced: exit 0 (see P05-F1).
+- **Reindex output parsed somewhere.** Rejected. Nothing in `scripts/`, `.github/`, `bin/`, the hooks or the tests greps for "wrote INDEX.md".
+  `brain-sync.sh` and `notebooklm-export.sh` look only at the exit code. `brain-loop.yml` and `validate-code.sh` never call reindex.
+- **The equality test being brittle (date, env, ordering).** Rejected. `toolkit.py` reads no clock, no env and no cwd. Every glob is `sorted()`.
+  Routine dedup happens in sorted file order. Reads and writes are explicitly UTF-8. Nothing in the feeding dirs is gitignored or a symlink (48/48 SKILL.md are tracked).
+  The index is content-hashed, not mtime-based, so rewriting an identical page changes nothing. On the CI replay, a reindex on the clean copy left `git status` empty.
+- **The test failing to catch staleness.** Rejected. A drill on the clean copy edited a row in the last `## Connection status` table:
+  `test_committed_toolkit_page_is_current` FAILED with the "run bin/brain reindex" message. After `bin/brain reindex` it was OK and doctor PASSED.
+- **The Mac sync conflicting on the now-auto-rewritten page.** Rejected. `wiki/ai-team/toolkit.md` is already `linguist-generated` in
+  `.gitattributes`, so `repo-sync.sh` backs it up and restores the committed copy before the pull.
+- **reindex now failing where it used to succeed.** Rejected. `write_page` needs only write access under root, and `indexer.write` needs that anyway.
+
+### Coverage (inspected and clean)
+
+The order in `__main__.py` reindex (page first, then index), the existence guard, `relative_to` output; `test_write_page` (temp dir, real inventory);
+`test_committed_toolkit_page_is_current`; all `toolkit.py` readers and `write_page`; the CI step order in `brain-loop.yml` (tests before doctor, Python 3.11, same as local);
+`validate-code.sh` brain steps; `brain-sync.sh` step 2; `repo-sync.sh` generated-file handling; `notebooklm-export.sh`. Regenerated page: first names only, no client PII.
+
+### Outside this diff, for Derek or Steven (not a finding of this change-set)
+
+`toolkit.connectors()` reads only the **last** `## Connection status` table (`rfind`). The newest section is a Mac 1 report, so the
+regenerated page dropped from 16 to 14 connectors (Drip/AEO, Pivo, Ticor, MBS Highway left the page) and from 1 ok to 0 ok. The state classifier also
+marks the "Mac runner … healthy …" row as *silent*, because the cell also contains "silent since Oct 13" and "healthy" is not a word it knows.
+Now that every reindex regenerates the page, any partial status report appended to CONNECTIONS.md reshapes the register. This needs a decision: either the registers
+keep one consolidated, current status table, or the parser merges sections.
+
+### Top missing tests (pass 19)
+
+1. CLI reindex on a fixture with a toolkit page and one register row → page equals the fresh render, output names it, doctor PASS.
+2. CLI reindex on a fixture with the page but no registers → the page is not gutted (if P05-F1 is taken up).
+3. `connectors()` with two `## Connection status` sections → defines which rows win (pins the current last-section behaviour or a merge).
+4. Classifier: a status cell "healthy — … 'silent since' was wrong" → assert the state is not `silent`.
+5. Whole suite run in a scratch copy → assert `git status --porcelain` is empty (a guard against tests writing into the tree).
 ## Orchestrator response (2026-10-23 19:35 UTC) — verdict SHIP; all seven findings applied (reviewed cafcabe8265c2ad7 → ce6bba5659d867c9)
 
 change-set: ce6bba5659d867c9

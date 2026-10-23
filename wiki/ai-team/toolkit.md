@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 48 skills · 7 Claude mods (plugins) · 16 connectors (1 ok, 15 need attention) · 11 MCP servers · 13 APIs · 71 cloud routines · 60 Mac tasks
+toolkit: 48 skills · 7 Claude mods (plugins) · 14 connectors (0 ok, 14 need attention) · 11 MCP servers · 13 APIs · 71 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -23,6 +23,10 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 16 connectors (1 ok, 15 need at
 **Claude mods (plugins)**
 - `ops-pulse`: At session start in the Repo folder: one read-only status line (behind/ahead of GitHub, local edits, brain-loop age, connect-all today) and a toast when it is time to /sync.
 - `push-buttons`: One-word slash commands (/cycle /inbox /meetings /sync /connect /tc /queue /today /help-buttons) that send the full, correct prompt for each workflow, HALT rules included.
+
+**Connectors**
+- `iMessage line (morning brief text + voice)` — *attention*: still not linked — brief arrives by e-mail + push
+- `Kapso (WhatsApp)` — *attention*: keys in the Keychain; plugin + MCP waiting on the sign-in
 
 **MCP servers**
 - `laya` — *ok*: zero-token local router in front of Vanessa (lane, tier, HALT words) · registered — real engine answering on Mac 1 (2026-10-23)
@@ -110,7 +114,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 16 connectors (1 ok, 15 need at
 - `security-and-hardening`: Hardens code against vulnerabilities. Use when auditing an input handler for vulnerabilities, when handling user input, authentication, data storage, or external integrations, or when checking a login flow is safe agains
 
 **Connectors**
-- `Arive` — *attention*: not connected — REST API + private Zapier app need Pro plan credentials (integrations/arive/README.md)
+- `Arive` — *attention*: step 7e did not run (no credentials)
 
 **Mac tasks**
 - `access-audit-monthly`: First business morning of the month: Elena's access-auditor reviews who and what can read or write each store and connector, plaintext-secre
@@ -143,7 +147,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 16 connectors (1 ok, 15 need at
 - `past-client-nurture`: Monthly sphere-touch marketing drafts for Steven's past clients from reClients and pipeline — a local market note, home-purchase anniversaries and birthdays, and a plain check-in — as Gmail drafts plus the three template
 
 **Connectors**
-- `Drip campaigns + text follow-ups` — *attention*: planned — playbook written (wiki/real-estate-playbooks/drip-and-text-follow-up.md); specs on request; 10DLC is Steven's
+- `TikTok · GoHighLevel · Discord bot · HeyGen` — *attention*: not connected (Composio links last 10 minutes)
 
 **APIs**
 - `Pivo · Ticor Title` — *none*: tour links / CSV exports · no API
@@ -171,9 +175,9 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 16 connectors (1 ok, 15 need at
 - `zoho-crm-sync`: Sync Zoho CRM — Steven's system of record for the mortgage pipeline — into the Command Deck through Composio: writes zohoSync (connection health), zohoLeads (14-stage kanban) and zohoDeals. Self-tests first and reports t
 
 **Connectors**
-- `homes.com · ShowingTime · Showami` — *attention*: wrappers vendored and read-only; connect-all step 7d installs and reports; sign-ins in the agent Chrome are Steven's (MFA)
-- `Lofty` — *attention*: key file step 7b; no key on the Mac yet
-- `Zoho CRM` — *attention*: 403 NO_PERMISSION until the API box is ticked
+- `Lofty` — *attention*: two paths on Mac 1 (2026-10-23 13:05 PT): the old local bridge is the MCP named lofty (stdio, ~/Applications/lofty-bridge/mcp-server.js, connected — the runner tasks use its mcp__lofty__* tools; it re
+- `Zoho CRM` — *attention*: 403 until the API box is ticked
+- `homes.com · ShowingTime · Showami` — *attention*: wrappers installed; sign-ins (MFA) in the agent Chrome are Steven's
 
 **MCP servers**
 - `kapso` — *attention*: WhatsApp Business Cloud API read/answer (sandbox number first) · registered — needs Steven's sign-in (/mcp → kapso)
@@ -241,17 +245,13 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 16 connectors (1 ok, 15 need at
 - `route-beacon`: Shows which AI route this session is on and toasts when the failover switches.
 
 **Connectors**
-- `Jarvis · Laya · Orca (Mac 1)` — *ok*: connected — all rows ok 2026-10-23 01:14 UTC
-- `Jarvis · Laya · Orca (Mac 2)` — *attention*: partially set — engine unproven; runner not yet imported
-- `Orca · Laya · Bonsai (Alienware)` — *pending*: not started — integrations/alienware/alienware-setup.ps1 never run on Windows yet
-- `AnyDesk (Mac 1, Mac 2)` — *attention*: installed; permissions + unattended password are Steven's
-- `AnyDesk (Alienware, tablet, phone)` — *attention*: not started — winget id AnyDesk.AnyDesk confirmed; iPad is outgoing-only, Android tablet can be controlled
-- `TidyCal` — *attention*: connect-all step 7c ready (token → ~/.config/tidycal/.env, read-only proof); no token yet
-- `MBS Highway Home Report` — *attention*: not connected — no public API; rep-issued webhook or CSV (integrations/mbs-highway/README.md)
-- `Pivo` — *attention*: no API — tour link / video file only (integrations/pivo/README.md)
-- `Ticor Title property search` — *attention*: no API — rep account + CSV/PDF export (integrations/ticor/README.md)
-- `OpenFlowKit MCP + skill · pr-lens skill · archify skill (the four repos, 2026-10-23)` — *pending*: installed in the repo (skills) / pending on the Macs (MCP by connect-all 6g, archify by install-mac.sh); integrations/skill-packs/REGISTRY-2026-10-23.md
-- `AI-search presence (AEO/GEO/SEO)` — *attention*: planned — playbook written (wiki/real-estate-playbooks/ai-search-visibility.md); monthly presence audit task live (1st, 7:10 AM PT)
+- `Mac runner (all Mac tasks)` — *silent*: healthy — runnerctl status 12:33 PT: 42 ok (morning tasks all ran today), 5 error (toolkit-deck-sync, nightly-self-test, three Sunday weeklies), 4 limited, 3 paused; the step-2 "silent since Oct 13" r
+- `TidyCal` — *attention*: step 7c did not run (no token)
+- `Jarvis · Laya · Orca (Mac 1)` — *attention*: installed, tested, Orca on the Repo folder; phone pairing is Steven's
+- `AnyDesk (Mac 1)` — *attention*: installed; ID 1514099895; Screen Recording + Accessibility + unattended password are Steven's
+- `EVRoutes · Turo connectors` — *reconnect*: "needs reconnect" on claude.ai (EVRoutes also failed to connect in this session)
+- `Gondola (travel)` — *attention*: MCP installed for Claude Code; the claude.ai connector is not added
+- `Pabbly ↔ Kapso webhooks, six workflows` — *attention*: Kapso login proven; webhook URLs and the six workflows are clicks at connect.pabbly.com
 
 **MCP servers**
 - `playwright` — *ok*: browser automation for sites with no API · installed

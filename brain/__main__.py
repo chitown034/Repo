@@ -128,8 +128,15 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.cmd == "reindex":
+        # the toolkit page is generated from the registers; regenerate it first so the index never goes stale against it
+        # (CI 2026-10-23: a connections edit without `toolkit --write` failed brain-loop five pushes in a row)
+        from . import toolkit as toolkit_mod
+        wrote = ""
+        # only where the page AND its sources exist: a bare fixture tree has neither, and a tree with the page alone must keep it
+        if (root / "wiki/ai-team/toolkit.md").is_file() and (root / "integrations/CONNECTIONS.md").is_file():
+            tk = toolkit_mod.write_page(root, toolkit_mod.inventory(root)); wrote = f"{tk.relative_to(root)}, "
         ix = indexer.write(root)
-        print(f"wrote INDEX.md + brain/index.json — {ix['files_indexed']} files, {ix['sections_indexed']} sections")
+        print(f"wrote {wrote}INDEX.md + brain/index.json — {ix['files_indexed']} files, {ix['sections_indexed']} sections")
         return 0
 
     if args.cmd == "doctor":
