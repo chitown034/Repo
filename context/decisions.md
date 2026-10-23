@@ -631,6 +631,21 @@ iMessage line ready — Steven texts `connect @vanessa-shearrill` to +1 650 484 
 publish no unsubscribe endpoint. Rule kept: every new seat, skill and routine drafts; nothing sends, books, quotes,
 signs or writes to a client-facing system.
 
+## 2026-10-22 (late) — branch triage, Vanessa on Fable, leadership agents everywhere, seat cards, 6D Brain v23
+
+- **Request (Steven).** *"update add more capabilities, tools, resources, integrations, automations and workflows and AI
+  agents"*, then *"continue add more in depth and update 6D brain and update AI org chart with all changes"*.
+- **Decision.** All 13 unmerged branches graded (`docs/branch-triage-2026-10-22.md`): the AEO/SEO/GEO/AIO presence kit
+  taken as a held draft (`projects/aeo-presence/`, Sofia → Orin, Alexandra gates, kept out of the recall index);
+  Vanessa 3.0 (`focused-bardeen-klwryi`) merges cleanly but waits for Steven's yes (another session may still be on it);
+  the rest skipped. `bin/brain os agents --write` now launches Vanessa on Fable (a lookup miss had her on Sonnet) and
+  copies the nine leadership seats into `.claude/agents` for every session; `bin/brain toolkit --write` also rebuilds
+  the org chart's seat cards, with explicit owner pins where lane words misfiled an item (loan pricing and tax
+  assessor → Victor, Fieldy and Gondola → Vanessa). Brain 6D republished (v23, live-only nodes merged in); the Command
+  Deck's AI Team chart got the matching four entries.
+- **Owner.** Derek (tooling) · Sofia/Orin (kit) · Nadia's Disruption Scout (triage). **Status.** Done; merge of
+  Vanessa 3.0 pending Steven.
+
 ## 2026-10-22 (late) — depth pass: playbooks, data dictionary, list intake on both pages
 Five new brain leaves (open house, post-close care, sphere nurture, refi review prep, push-button system) and a data
 dictionary row for every 2026-10-22 document. Refi and sphere lists can be entered on the Command Deck (v230) or the

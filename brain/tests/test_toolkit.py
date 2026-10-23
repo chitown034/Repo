@@ -51,5 +51,71 @@ class ToolkitTests(unittest.TestCase):
         self.assertIn("## Vanessa", p.read_text(encoding="utf-8"))
 
 
+class SeatCardTests(unittest.TestCase):
+    def test_owner_pins_follow_the_org_chart(self):
+        inv = toolkit.inventory(ROOT)
+        seat = {it["name"]: it["seat"] for it in inv["items"] if it["kind"] == "skill"}
+        self.assertEqual(seat["loan-pricing-agent"], "Victor")
+        self.assertEqual(seat["tax-assessor-agent"], "Victor")
+        self.assertEqual(toolkit._owner({"name": "Fieldy (meeting recorder)", "seat": "Derek"}), "Vanessa")
+        self.assertEqual(toolkit._owner({"name": "Fieldyish", "seat": "Derek"}), "Derek")
+
+    def test_cards_name_models_lanes_and_pods(self):
+        cards = toolkit.seat_cards(ROOT, toolkit.inventory(ROOT))
+        row = {ln.split("|")[1].strip(" *"): ln for ln in cards.splitlines()[2:]}
+        self.assertIn("Fable 5.1", row["Vanessa"])
+        self.assertIn("proposal-only", row["Nadia"]); self.assertIn("proposal-only", row["Elon"])
+        self.assertIn("Opus 5.5", row["Sofia"]); self.assertIn("Client Care", row["Sofia"])
+        self.assertIn("`refi-watch`", row["Victor"])
+
+    def test_card_rows_feed_the_6d_seat_lens(self):
+        rows = {r["seat"]: r for r in toolkit.seat_card_rows(ROOT, toolkit.inventory(ROOT))}
+        self.assertEqual(rows["Vanessa"]["model"], "Fable 5.1")
+        self.assertTrue(rows["Nadia"]["proposal_only"]); self.assertFalse(rows["Victor"]["proposal_only"])
+        self.assertIn("refi-watch", rows["Victor"]["skills"])
+        for r in rows.values():
+            self.assertTrue(all(len(c) == 2 for c in r["connectors"]))
+            self.assertIsInstance(r["pods"], list)
+        page = (ROOT / "dashboard/brain-4d/template.html").read_text(encoding="utf-8")
+        self.assertIn("const C = S.c;", page)
+
+    def test_card_rows_survive_a_partial_manifest_entry(self):
+        import json
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d); (root / "integrations/agent-os").mkdir(parents=True)
+            agents = json.loads((ROOT / "integrations/agent-os/agents.json").read_text(encoding="utf-8"))
+            agents["agents"].append({"slug": "half-merged"})          # no laya, no model
+            agents["agents"].append({"laya": {"lane": "Victor"}})      # no slug
+            (root / "integrations/agent-os/agents.json").write_text(json.dumps(agents), encoding="utf-8")
+            rows = {r["seat"]: r for r in toolkit.seat_card_rows(root, toolkit.inventory(ROOT))}
+        self.assertEqual(rows["Vanessa"]["model"], "Fable 5.1")
+
+    def test_write_cards_only_between_markers(self):
+        import shutil
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            for rel in (toolkit.ORG_CHART, "integrations/agent-os/agents.json"):
+                (root / rel).parent.mkdir(parents=True, exist_ok=True); shutil.copy(ROOT / rel, root / rel)
+            inv = toolkit.inventory(ROOT)
+            self.assertTrue(toolkit.write_cards(root, inv))
+            once = (root / toolkit.ORG_CHART).read_text(encoding="utf-8")
+            self.assertTrue(toolkit.write_cards(root, inv))
+            self.assertEqual(once, (root / toolkit.ORG_CHART).read_text(encoding="utf-8"))
+            self.assertIn("## The shape", once)
+            swapped = f"x\n{toolkit.CARDS_END}\nkeep\n{toolkit.CARDS_BEGIN}\ny\n"
+            (root / toolkit.ORG_CHART).write_text(swapped, encoding="utf-8")
+            self.assertFalse(toolkit.write_cards(root, inv))
+            self.assertEqual((root / toolkit.ORG_CHART).read_text(encoding="utf-8"), swapped)
+            (root / toolkit.ORG_CHART).write_text(once, encoding="utf-8")
+            (root / "integrations/agent-os/agents.json").write_text("<<<<<<< conflict", encoding="utf-8")
+            self.assertFalse(toolkit.write_cards(root, inv))
+            self.assertEqual((root / toolkit.ORG_CHART).read_text(encoding="utf-8"), once)
+            (root / toolkit.ORG_CHART).write_text("# no markers\n", encoding="utf-8")
+            self.assertFalse(toolkit.write_cards(root, inv))
+            self.assertEqual((root / toolkit.ORG_CHART).read_text(encoding="utf-8"), "# no markers\n")
+
+
 if __name__ == "__main__":
     unittest.main()

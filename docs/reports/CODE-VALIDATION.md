@@ -1,15 +1,18 @@
 # Code validation — last run
 
-Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `e7f0c30a7ef41e26`: **not yet**.
+Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `1fd1ebd683c6f74d`: **not yet**.
 
 ```
-code validation 2026-10-22T23:14:04Z - change-set e7f0c30a7ef41e26
+code validation 2026-10-22T23:22:33Z - change-set 1fd1ebd683c6f74d
 files:
-  dashboard/brain-4d.html
-  projects/aeo-presence.md
-FAIL quickcheck dashboard/brain-4d.html
-      FAIL cdStateSeed JSON parses
-      FAIL no functions called but never defined (approx.) — active, addEventListener, agent, agents, and, append, approved, assistant, audience, autopilot, back, body, brain, bridge, bridges
+  brain/tests/test_quickcheck.py
+  brain/tests/test_toolkit.py
+  brain/toolkit.py
+PASS py_compile brain/tests/test_quickcheck.py
+PASS py_compile brain/tests/test_toolkit.py
+PASS py_compile brain/toolkit.py
+PASS brain unit tests
+PASS brain layout
 PASS brain doctor
-verdict: FAIL (1 passed, 1 failed)
+verdict: PASS (6 passed, 0 failed)
 ```

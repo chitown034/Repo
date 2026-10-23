@@ -12,7 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-from brain import graph, indexer, loop, stopwords, text  # noqa: E402
+from brain import graph, indexer, loop, stopwords, text, toolkit  # noqa: E402
 
 
 def seat_table(root):
@@ -125,6 +125,16 @@ last = loop.last_run(ROOT) or {"bench_correct": 0, "bench_total": 0, "org_covere
 counts = agents_per_seat(ROOT)
 rows = seat_table(ROOT)
 seats = [{"n": "Vanessa", "a": counts.get("Vanessa", 0), "s": [], "k": []}] + [{"n": n, "a": counts.get(n, 0), "s": s, "k": k} for n, s, k in rows if n != "Vanessa"]
+# Seat cards (the same rows as the org chart's generated table): model, tools by kind, pods — shown under the seat lens.
+try:
+    cards = {r["seat"]: r for r in toolkit.seat_card_rows(ROOT, toolkit.inventory(ROOT))}
+except ValueError:
+    cards = {}
+for S in seats:
+    r = cards.get(S["n"])
+    if r:
+        S["c"] = {"m": r["model"], "po": r["proposal_only"], "sk": r["skills"], "cn": len(r["connectors"]),
+                  "cok": sum(1 for _n, st in r["connectors"] if st == "ok"), "r": r["routines"], "t": r["mactasks"], "p": r["pods"]}
 enc = encyclopedia(ROOT, g)
 ask = ask_index(ROOT, json.loads((ROOT / "brain/index.json").read_text(encoding="utf-8")), {n["id"] for n in g["nodes"]})
 

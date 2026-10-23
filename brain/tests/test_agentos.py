@@ -84,10 +84,30 @@ class AgentFiles(unittest.TestCase):
             self.assertEqual(kept, ["cfo-marcus"]); self.assertEqual(mine.read_text(encoding="utf-8"), "hand-tuned")
             self.assertIn("model: fable", (root / ".claude/agents/vanessa-orchestrator.md").read_text(encoding="utf-8"))
 
+    def test_write_core_refreshes_a_stale_generated_file(self):
+        import tempfile
+        from brain import agentfiles, agentos
+        m = agentos.build(REPO); lead_of = {a["slug"]: a["lead"] for a in m["agents"]}
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d); (root / ".claude/agents").mkdir(parents=True)
+            stale = root / ".claude/agents/cto-derek.md"
+            stale.write_text(f"---\nname: cto-derek\nmodel: sonnet\n---\n{agentfiles.MARK}\nold body\n", encoding="utf-8")
+            self.assertEqual(agentfiles.write_core(root, m, lead_of), [])
+            t = stale.read_text(encoding="utf-8")
+            self.assertIn("model: opus", t); self.assertNotIn("old body", t); self.assertEqual(t.count(agentfiles.MARK), 1)
+
+    def test_unknown_model_falls_back_to_sonnet(self):
+        from brain import agentfiles, agentos
+        a = dict(agentos.build(REPO)["agents"][0]); a["model"] = "Haiku 9"
+        self.assertIn("\nmodel: sonnet\n", agentfiles.render(a, {}))
+        a["model"] = " FABLE "
+        self.assertIn("\nmodel: fable\n", agentfiles.render(a, {}))
+
     def test_orchestrator_runs_on_fable(self):
         # Tiering (wiki/ai-team/model-tiering-dispatch.md): Vanessa masterminds on Fable, never the worker tier.
         t = (ROOT / "integrations/agent-os/agents/vanessa-orchestrator.md").read_text(encoding="utf-8")
         self.assertIn("model: fable", t)
+        self.assertIn("reports to Steven", t)  # never to herself
 
     def test_engineer_toolkit(self):
         from brain import agentos

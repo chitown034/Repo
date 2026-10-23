@@ -30,7 +30,10 @@ def main(path):
     if m:
         try: json.loads(m.group(1)); seed_ok = True
         except Exception as e: print("   seed error:", e)
-    ok("cdStateSeed JSON parses", seed_ok)
+    if m or "cdStateSeed" in html:
+        ok("cdStateSeed JSON parses", seed_ok)
+    else:  # pages other than the Command Deck (brain-4d, isa-portal) carry no seed
+        print("SKIP cdStateSeed JSON parses — page has no seed")
 
     # 3. duplicate ids
     ids = re.findall(r'\sid="([^"]+)"', html)

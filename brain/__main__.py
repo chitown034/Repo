@@ -233,6 +233,10 @@ def main(argv: list[str] | None = None) -> int:
         inv = toolkit.inventory(root)
         if args.write:
             print(f"wrote {toolkit.write_page(root, inv).relative_to(root)}")
+            if toolkit.write_cards(root, inv):
+                print(f"wrote seat cards -> {toolkit.ORG_CHART}")
+            else:
+                print(f"seat cards NOT written: {toolkit.ORG_CHART} markers missing/out of order, or the agent manifest is unreadable")
         print(json.dumps(inv, indent=1) if args.json else toolkit.format_inventory(inv))
         return 0
     if args.cmd == "owner":

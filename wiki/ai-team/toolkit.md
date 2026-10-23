@@ -28,6 +28,8 @@ toolkit: 46 skills · 7 plugins · 17 connectors (8 ok, 9 need attention) · 65 
 - `Inkbox (Vanessa's iMessage + email)` — *ok*: connected — reconnected 2026-10-22: email active (vanessa-shearrill@inkboxmail.com), iMessage line ready; no phone linked yet
 - `Kapso WhatsApp (Pabbly app)` — *ok*: connected — login proven (HTTP 200); phone list + List Phone Numbers built; both instant triggers built (manual webhook: paste the Pabbly URL into Kapso); Send step waits for his test number
 - `Kapso WhatsApp (Mac)` — *pending*: plugin/MCP/Keychain keys pending
+- `Gondola (travel MCP)` — *attention*: not yet registered anywhere
+- `Fieldy` — *ok*: connected — no recordings yet (free plan, 7-day window)
 
 **Cloud routines**
 - `Vanessa — Chief of Staff daily cycle (weekdays 6:25 AM PT, parallel squads)`: cron CRON_TZ=America/Los_Angeles 25 6 * * 1-5 · on · —
@@ -104,9 +106,6 @@ toolkit: 46 skills · 7 plugins · 17 connectors (8 ok, 9 need attention) · 65 
 
 ## Marcus — CFO — money
 
-**Skills**
-- `tax-assessor-agent`: Property tax lookup for San Diego and Riverside County: reads PUBLIC assessor and tax-collector pages with read-only browser tools and writes a one-page Property Tax Sheet (APN, assessed values, exemptions to verify, Pro
-
 **Cloud routines**
 - `Command Deck — Property Search & Tax-Data integrations health check (monthly)`: cron 0 15 1 * * · on · SUCCEEDED @ 2026-09-04T19:42
 
@@ -122,9 +121,6 @@ toolkit: 46 skills · 7 plugins · 17 connectors (8 ok, 9 need attention) · 65 
 - `openmontage-video`: Make a marketing, explainer or training video with OpenMontage on the Mac (~/Applications/OpenMontage) — Sofia's brief, Claude Code runs the pipeline, Steven approves every creative stop, nothing is posted. Use when Stev
 - `past-client-nurture`: Monthly sphere-touch marketing drafts for Steven's past clients from reClients and pipeline — a local market note, home-purchase anniversaries and birthdays, and a plain check-in — as Gmail drafts plus the three template
 
-**Connectors**
-- `BlackRock · Health Data Avatar · Microsoft 365 · PlayMCP · Similarweb · Higgsfield` — *pending*: never finished connecting; nothing uses them
-
 **Cloud routines**
 - `VA Command Center — weekly avatar content drafts`: cron CRON_TZ=America/Los_Angeles 58 14 * * 0 · on · SUCCEEDED @ 2026-10-18T21:58
 - `Command Deck — Weekly content edit reminder`: cron 0 15 * * 1 · on · SUCCEEDED @ 2026-09-21T15:03
@@ -136,12 +132,14 @@ toolkit: 46 skills · 7 plugins · 17 connectors (8 ok, 9 need attention) · 65 
 
 **Skills**
 - `cli-anything-connectors`: Install CLI-Anything on the Mac and the seven pre-built, read-only agent-native CLI wrappers for the real-estate tools that have no usable API — homes.com, ShowingTime, Showami, SkySlope, zipForms/Lone Wolf — plus the Lo
+- `loan-pricing-agent`: Loan scenario and pricing PREP: builds the worksheet from facts Steven supplies, computes P&I, PITI, LTV and DTI with visible formulas, compares VA/FHA/conventional/jumbo/non-QM structures. Never quotes a rate, decides e
 - `lofty-crm-sync`: Sync Lofty (formerly Chime), Steven's real-estate CRM since 2026-09-22, into the Command Deck — writes the loftyLeads doc (stage totals, 90-day new leads, speed-to-lead) and points the lead-triage / lead-response / ISA-K
 - `meeting-recap-to-crm`: Turn a recorded client or partner meeting (Fieldy pendant, Zoom for Claude) into a recap — decisions, action items, a follow-up Gmail draft and a CRM note queued on the deck for the ISA to paste into Lofty or Zoho. Draft
 - `open-house-follow-up`: After an open house: read the sign-in sheet (Google Forms export or a Drive sheet), build the lead list with first names and interest level, draft the thank-you emails as Gmail drafts, and write the ISA call list — plus 
 - `pabbly-workflows`: Build and run Pabbly Connect automations for Steven's operation: the six built-in-app workflows (Lofty, Zoho, Gmail, Google Calendar, Notion, Slack, Strava) he clicks together in Pabbly's editor, and the custom Kapso Wha
 - `refi-watch`: Compare the market-average rate in ratesSnapshot with the note rates on a past-client list Steven supplies (he types each client's rate — the skill reads no loan file) and prep the pipeline list of who is worth a convers
 - `review-request`: After a Lofty close or a Zoho funding: draft the three post-close emails — day-1 thank-you, day-10 review request with Google and Zillow link placeholders, day-30 check-in — as Gmail drafts, with the timing rules and the
+- `tax-assessor-agent`: Property tax lookup for San Diego and Riverside County: reads PUBLIC assessor and tax-collector pages with read-only browser tools and writes a one-page Property Tax Sheet (APN, assessed values, exemptions to verify, Pro
 - `tc-doc-intake`: Read a purchase contract, counter, addendum or disclosure package (Google Drive file or Gmail attachment) and pull the dates into the deal's tcDeals entry for the Transaction & Showing desk — acceptance, deposit, inspect
 - `voicemail-to-lead`: Transcribe a voicemail (a recording link Steven or the carrier email provides) with WhisperAI transcribe_url, summarise who called about what, and queue a lead-triage item on the deck for Victor's ISA line — no callback,
 - `zoho-crm-sync`: Sync Zoho CRM — Steven's system of record for the mortgage pipeline — into the Command Deck through Composio: writes zohoSync (connection health), zohoLeads (14-stage kanban) and zohoDeals. Self-tests first and reports t
@@ -195,7 +193,6 @@ toolkit: 46 skills · 7 plugins · 17 connectors (8 ok, 9 need attention) · 65 
 - `documentation-and-adrs`: Records decisions and documentation. Use when you need to document an architecture decision (ADR) or the reasoning behind a design choice, when changing public APIs, shipping features, or when you need to record context 
 - `git-workflow-and-versioning`: Structures git workflow practices. Use when making any code change. Use when committing, branching, resolving conflicts, splitting uncommitted work in a messy working tree into clean atomic commits, opening or reviewing 
 - `karpathy-coding-principles`: Andrej Karpathy's four behavioral guidelines for LLM coding — think before coding, simplicity first, surgical changes, goal-driven execution. Use when writing or editing any code, skill, task spec or Command Deck HTML in
-- `loan-pricing-agent`: Loan scenario and pricing PREP: builds the worksheet from facts Steven supplies, computes P&I, PITI, LTV and DTI with visible formulas, compares VA/FHA/conventional/jumbo/non-QM structures. Never quotes a rate, decides e
 - `reverse-engineering`: Reverse-engineering capability (REA) — gated. Describes morluto/rea (MIT, MCP server via npx rea-agents setup, 6.x) and the rules for when Steven's agents may use it and when not. Use when a seat proposes analysing a bin
 - `source-driven-development`: Grounds every implementation decision in official documentation. Use when you want to verify an approach against the official docs before implementing it, or when you want authoritative, source-cited code free from outda
 
@@ -209,11 +206,10 @@ toolkit: 46 skills · 7 plugins · 17 connectors (8 ok, 9 need attention) · 65 
 **Connectors**
 - `Mac runner (every Mac task)` — *silent*: still silent since 2026-10-13 07:13 UTC — stuck "running" one task
 - `Repo sync on the Mac` — *attention*: git pull failed daily (cloud and Mac both rebuild the brain files)
-- `Gondola (travel MCP)` — *attention*: not yet registered anywhere
-- `Fieldy` — *ok*: connected — no recordings yet (free plan, 7-day window)
 - `Gmail · Google Calendar · Zoom · Fieldy · Inkbox` — *ok*: connected — callable from the Command Deck page (mcp capability): Triage inbox, Recap meetings, Text me the brief
 - `Eromify` — *ok*: connected — reconnected 2026-10-22 (creator studio; spends credits — HALT: every generation is Steven's yes)
 - `EVRoutes · Turo` — *reconnect*: needs_reconnect
+- `BlackRock · Health Data Avatar · Microsoft 365 · PlayMCP · Similarweb · Higgsfield` — *pending*: never finished connecting; nothing uses them
 - `You.com` — *ok*: connected but 0 credits; 9 files still reference it
 - `Weekly backup` — *ok*: active — GREEN: catch-up run 2026-10-22 verified 191 + 16 docs; now Sunday 21:07 UTC (after the allowance reset)
 - `Cloud routines` — *ok*: active — 55 enabled; every failure this month = usage limit; 17 ran green today
