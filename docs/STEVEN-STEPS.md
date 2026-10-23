@@ -26,6 +26,8 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
    Root cause of 6 of the 12 stops: Python 3.9 (brain, Agent OS, Jarvis checks need 3.10+); Laya's installer stalled
    building `cryptography` from source (no wheel for that Mac); Claude Code 2.1.278 is older than the mods need. The
    script now installs Homebrew's python, updates Claude Code and installs Laya wheel-first (build tools as fallback).
+   Second attempt (01:53 UTC): Claude Code updated to 2.1.309; Homebrew could not build python (Intel Mac on macOS 26,
+   outdated Command Line Tools), so the script now installs a ready-built Python 3.12 with uv instead.
    Rerun: `cd ~/Repo && bash scripts/repo-sync.sh && bash scripts/second-mac.sh` (then paste the REPORT). Still Steven's
    on Mac 2: `claude` sign-in, Kapso sign-in, the vault (6b: iCloud or a copy — Jarvis's index needs it), the runner copy
    from Mac 1 (`command -v runnerctl; ls ~/Library/LaunchAgents | grep -i runner` **on Mac 1**), and the Inkbox voice

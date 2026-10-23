@@ -44,10 +44,24 @@ if have uv; then say "  present"; else run brew install uv || say "  uv did not 
 say ""; say "== 0d2 Python 3.10+ (the brain, the Agent OS and Jarvis's checks need it; a fresh Mac ships 3.9) =="
 pyver() { python3 -c 'import sys; print("%d.%d" % sys.version_info[:2])' 2>/dev/null || echo 0.0; }
 py_ok() { python3 -c 'import sys; sys.exit(0 if sys.version_info >= (3, 10) else 1)' 2>/dev/null; }
+# uv first: it downloads a ready-built CPython (no compiler, no Homebrew bottle needed - Mac 2 is an Intel Mac on macOS 26,
+# where Homebrew builds python from source and stops on outdated Command Line Tools). The shim ~/.local/bin/python3 is
+# user-level only (same folder Claude Code's own installer uses) and never touches /usr/bin.
+py_via_uv() {
+  local p
+  uv python install 3.12 >/dev/null 2>&1 || return 1
+  p="$(uv python find 3.12 2>/dev/null)"; [ -x "$p" ] || return 1
+  mkdir -p "$HOME/.local/bin" && ln -sfn "$p" "$HOME/.local/bin/python3" && ln -sfn "$p" "$HOME/.local/bin/python3.12" || return 1
+  grep -qs 'HOME/.local/bin' "$HOME/.zprofile" 2>/dev/null || printf '\nexport PATH="$HOME/.local/bin:$PATH"\n' >> "$HOME/.zprofile"
+  echo "python3 -> $p (shim in ~/.local/bin)"
+}
 if py_ok; then say "  present: $(pyver)"
 else
-  say "  found $(pyver) - installing Homebrew's python (free)"; run brew install python || say "  python did not install"
-  for d in /opt/homebrew/bin /usr/local/bin; do [ -x "$d/python3" ] && export PATH="$d:$PATH"; done
+  say "  found $(pyver) - installing a ready-built Python 3.12 with uv (free, no compiler)"
+  if have uv; then run py_via_uv || say "  uv could not install Python - trying Homebrew"; fi
+  export PATH="$HOME/.local/bin:$PATH"
+  if ! py_ok && have brew; then run brew install python || say "  Homebrew python did not install (on an Intel Mac it builds from source and needs current Command Line Tools)"
+    for d in /opt/homebrew/bin /usr/local/bin; do [ -x "$d/python3" ] && export PATH="$d:$PATH"; done; fi
   if py_ok; then say "  now $(pyver)"; else say "  still $(pyver): open a NEW Terminal window and paste the same line again"; fi
 fi
 

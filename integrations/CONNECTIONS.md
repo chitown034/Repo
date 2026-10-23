@@ -477,3 +477,6 @@ present, index `~/.openjarvis/memory.db` 1,828 rows, vault 850 notes, Laya MCP r
 | Inkbox voice SDK on Mac 2 | needs an Inkbox API key file; Mac 1 already sends her voice | optional on Mac 2 | Steven (optional) |
 | Runner on Mac 2 | not installed (built on Mac 1 only) | the two lines from **Mac 1**, then a copy step | Steven |
 | Kapso sign-in, Lofty key on Mac 2 | pending | `claude` → `/mcp` → kapso; Lofty key at the 7b prompt (or Enter) | Steven |
+| Python on Mac 2 — second attempt 01:53 UTC | Homebrew cannot build python there (Intel Mac on macOS 26: Tier 3, no bottles, and the Command Line Tools are outdated) | `second-mac.sh` 0d2 now installs a ready-built Python 3.12 with uv and a user-level `~/.local/bin/python3` shim; Homebrew only as fallback | paste |
+| Claude Code on Mac 2 | connected — updated 2.1.278 → 2.1.309; a leftover npm copy remains (`npm -g uninstall @anthropic-ai/claude-code`, optional) | — | Steven (optional) |
+| Command Line Tools on Mac 2 | outdated for macOS 26 (Homebrew refuses to build) | System Settings → Software Update, or `sudo rm -rf /Library/Developer/CommandLineTools && sudo xcode-select --install` | Steven (optional; nothing in the paste needs it once Python comes from uv) |

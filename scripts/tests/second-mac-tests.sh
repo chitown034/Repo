@@ -17,7 +17,10 @@ printf '%s' "$out" | grep -q "Lease role";                                      
 printf '#!/bin/sh\ncase "$*" in *version_info*) exit 1 ;; *) echo 3.9 ;; esac\n' > "$T/bin/python3"
 printf '#!/bin/sh\n[ "$1" = --version ] && echo "2.1.278 (Claude Code)"\n' > "$T/bin/claude"; chmod +x "$T/bin/python3" "$T/bin/claude"
 out="$(GO_FORCE=1 HOME="$T/home" PATH="$T/bin:$PATH" bash scripts/second-mac.sh --preview 2>&1)"
-printf '%s' "$out" | grep -q "would run: brew install python";                   check "old python -> brew install python planned"  "$?" 0
+printf '%s' "$out" | grep -q "would run: py_via_uv";                             check "old python -> uv-built Python 3.12 planned"  "$?" 0
+printf '#!/bin/sh\ncase "$1" in python) [ "$2" = find ] && echo "%s/uvpy/bin/python3.12"; exit 0 ;; esac\nexit 0\n' "$T" > "$T/bin/uv"; mkdir -p "$T/uvpy/bin"; printf '#!/bin/sh\n' > "$T/uvpy/bin/python3.12"; chmod +x "$T/bin/uv" "$T/uvpy/bin/python3.12"
+rm -f "$T/bin/python3"; GO_FORCE=1 HOME="$T/home" PATH="$T/bin:/usr/bin:/bin" bash -c '. <(sed -n "/^have()/p;/^run()/p;/^py_via_uv() {/,/^}/p" scripts/second-mac.sh); PREVIEW=0; py_via_uv' >/dev/null 2>&1
+[ -L "$T/home/.local/bin/python3" ] && grep -q "local/bin" "$T/home/.zprofile";  check "py_via_uv: shim in ~/.local/bin + .zprofile line, nothing under /usr" "$?" 0
 printf '%s' "$out" | grep -q "would run: claude update";                         check "old Claude Code -> claude update planned"    "$?" 0
 printf '#!/bin/sh\n[ "$1" = --version ] && echo "2.1.290 (Claude Code)"\n' > "$T/bin/claude"
 out="$(GO_FORCE=1 HOME="$T/home" PATH="$T/bin:$PATH" bash scripts/second-mac.sh --preview 2>&1)"

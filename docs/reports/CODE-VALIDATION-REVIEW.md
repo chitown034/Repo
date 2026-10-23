@@ -173,3 +173,7 @@ New one-paste bootstrap for the second Mac: Xcode CLT / Homebrew / Claude Code /
 ## Resolution 2026-10-23 01:55 UTC — change-set `ab910262799269e7` (Mac 2 first-run fixes)
 
 From the Mac 2 log (Python 3.9, cryptography source build, Claude Code 2.1.278): second-mac.sh gains 0d2 (Homebrew python when python3 < 3.10, PATH refreshed, honest "open a new Terminal" when still old) and 0d3 (`claude update` when below 2.1.287, version compare via sort -V-style keys); laya/install.sh installs wheel-first (`--only-binary :all:`) and falls back to Homebrew build tools + a source build, and no longer recreates an existing venv. Tests: second-mac 8 (old python -> brew python planned; old/new Claude Code), connect-all 54. No sign-in, no credential, official installers only. Reviewed inline.
+
+## Resolution 2026-10-23 02:05 UTC — change-set `aac40675a5eaedac` (Python via uv on Mac 2)
+
+Mac 2 log 01:53 UTC: Homebrew python build refused (Intel + macOS 26, outdated CLT). 0d2 now: `uv python install 3.12`, `uv python find`, user-level symlink shim `~/.local/bin/python3` (+ `.zprofile` PATH line, appended once), Homebrew only as fallback, PATH refreshed in-run. Never writes under /usr. Tests: second-mac 9 (shim + zprofile line asserted with a stub uv; preview plans py_via_uv). Reviewed inline.
