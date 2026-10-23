@@ -85,6 +85,7 @@ def _parser() -> argparse.ArgumentParser:
     rc.add_argument("file", nargs="?", default=None, help="learn: a JSON list of {id, decision, at, by}")
     rc.add_argument("--write", action="store_true"); rc.add_argument("--json", action="store_true"); rc.add_argument("--n", type=int, default=10)
     rc.add_argument("--signals", default=None, help="a JSON list of live signals (deck queue, refi list, presence...) to rank with the brain's own")
+    rc.add_argument("--coas", action="store_true", help="the four courses of action (4 each) plus the questions block, instead of the top 10")
     og = sub.add_parser("org", help="the AI org chart as one JSON: seats, lanes, pods, tiers (what every dashboard should show)")
     ex = sub.add_parser("export", help="export the brain for another tool: `notebooklm` writes exports/notebooklm/*.md (no client pages, PII masked)")
     ex.add_argument("target", choices=["notebooklm"]); ex.add_argument("--out", default=None, help="folder (default exports/notebooklm)")
@@ -227,6 +228,16 @@ def main(argv: list[str] | None = None) -> int:
         signals = json.loads(Path(args.signals).read_text(encoding="utf-8")) if args.signals else None
         if args.write:
             print("wrote", recs.write(root, args.n, signals))
+        if args.coas:
+            groups = recs.coas(root, 4, signals)
+            if args.json:
+                print(json.dumps({"coas": groups, "questions": recs.questions(root, groups)}, indent=1)); return 0
+            for key, label, about in recs.COAS:
+                print(f"== {label} — {about}"); print(recs.format_top(groups.get(key, [])) or "  (nothing in this lane today)"); print()
+            print("== Questions you may have")
+            for q in recs.questions(root, groups):
+                print(f"- {q['q']} {q['a']} → {q['action']}")
+            return 0
         items = recs.top(root, args.n, signals)
         print(json.dumps(items, indent=1) if args.json else recs.format_top(items)); return 0
     if args.cmd == "org":

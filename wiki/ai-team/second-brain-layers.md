@@ -37,7 +37,7 @@ produced becomes a "fact" in the repo without Steven's yes).
   speaking) are the Command Deck's; "Read her answers aloud" uses the device's own voice. Outside claude.ai the chat is hidden.
 - **Presence audit** (monthly, 1st at 7:10 AM PT, Sofia): the AI-search prompt set by WebSearch → `docs/reports/PRESENCE.md` + the deck `presenceAudit` doc; rules in `wiki/real-estate-playbooks/ai-search-visibility.md`.
 - **Registers the 6D Brain draws as lobes** (2026-10-23): skills, Claude mods (the plugins in `integrations/mods/`), connectors (`integrations/CONNECTIONS.md`), MCP servers (`integrations/MCP-SERVERS.md`), APIs with where each key lives (`integrations/APIS.md`), cloud routines, Mac tasks — `bin/brain toolkit` counts them; add a row to a register and the next rebuild draws it.
-- **Vanessa recommends — the daily top 10 big moves** (2026-10-23): `bin/brain recs` scores every open item the brain can see
+- **Vanessa recommends — four courses of action, 4 each, plus the questions block** (2026-10-23 evening; `bin/brain recs --coas`): big-move · improve (loop engineering, from `brain/loop.py` history, the decision ledger and `integrations/scout/seen.json`) · risk · opportunity, one scored pool, `coa_of()` decides the lane. Earlier the same day: the daily top 10 big moves — `bin/brain recs` scores every open item the brain can see
   (unconnected tools, stale layers, loop gaps, Steven's open steps, live deck signals) by impact × confidence ÷ effort ×
   a learned category weight; `--write` → `docs/reports/BIG-MOVES.md` + `brain/recs/big-moves.json`. HITL: approve /
   decline / later on the 6D Brain (page database) or the Command Deck's Recommendations card; the **Big moves** task

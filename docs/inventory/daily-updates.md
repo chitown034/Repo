@@ -7,7 +7,7 @@ SUCCEEDED, the freshness sweep flags it and the Big-moves task raises a "Repair"
 | Dashboard | What | When | Writer |
 |---|---|---|---|
 | Command Deck | morning feeds (headlines, on-this-day, Bears, opportunity radar) | 6:05 | cloud `morning feeds` |
-| Command Deck | Big moves top 10 → `bigMoves`, `vanessaRecommendations`, `aiTeamOrg` | 6:05 | cloud `Big moves` |
+| Command Deck | Four courses of action (16 moves) + questions + top 10 → `bigMoves` (items, coas, questions), `vanessaRecommendations` (lane field), `aiTeamOrg` | 6:05 | cloud `Big moves` |
 | Command Deck | Chief-of-Staff cycle → `cosBrief`, `vanessaQueue` | 6:25 weekdays | cloud `daily cycle` |
 | Command Deck | `morningBrief` + push (+ e-mail until iMessage is linked) | 6:34 | cloud `morning brief` |
 | Command Deck | iMessage text + voice note (or e-mail with mp3) | 6:40 | Mac `vanessa-morning-brief-text`, `voice-reply-render` |
@@ -20,7 +20,7 @@ SUCCEEDED, the freshness sweep flags it and the Big-moves task raises a "Repair"
 | ISA Portal | `isaToday`, hand-offs, scorecard | 6:25 (inside the cycle) | cloud `daily cycle` |
 | ISA Portal | housing-market lists, builder incentives, live feeds (mirror of the deck) | with each deck writer | the same cloud routines (MIRROR STEP) |
 | 6D Brain | full rebuild from the repo (nodes, passages, layers, recs, Vanessa) | 3:30 | cloud `6D rebuild` |
-| 6D Brain | big-moves panel republish | 6:05 | cloud `Big moves` |
+| 6D Brain | four-lane panel + questions republish | 6:05 | cloud `Big moves` |
 | 6D Brain | layers audit (`bin/brain layers`) | weekly Sun | cloud `layers` |
 | Repo | sessions ledger, index, CI | daily / on push | cloud `sessions ledger`, GitHub Actions |
 

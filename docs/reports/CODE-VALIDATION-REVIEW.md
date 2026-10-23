@@ -1,3 +1,144 @@
+## Orchestrator response (2026-10-23 19:35 UTC) — verdict SHIP; all seven findings applied (reviewed cafcabe8265c2ad7 → ce6bba5659d867c9)
+
+change-set: ce6bba5659d867c9
+
+Every CONFIRMED finding on cafcabe8265c2ad7 is fixed in the same change-set; the deterministic gate re-ran `verdict: PASS (10 passed, 0 failed)`,
+`brain.tests.test_recs` is now 20 tests OK, the page was rebuilt, merged with the live nodes, render-checked headless (4 lanes, 18 moves, 10 questions,
+0 page errors) and published as 6D v52; the deck `bigMoves` doc was rewritten with lanes + questions (v4 → v5).
+
+- **P05-F1 (MEDIUM)** `coas()` now guarantees every move of the real `top(root, 10)` (executor cap included) a place in its lane, over the 4-per-lane
+  limit if needed; the page and the task show the lanes, so every top-10 move has an approve button. Test: `test_coas_four_per_lane_ranked_and_from_the_scored_pool`.
+  The per-lane executor mix is left as the pool decides it (Steven's call, not changed).
+- **P04-F1 (MEDIUM)** `_improve_candidates` wraps `loop.last_run` in a guard, treats a non-dict line as empty, reads every count through a tolerant `n()`,
+  and the scout read catches every exception; a wrong-shaped `ids` yields no scout move. Test: `test_malformed_loop_history_and_scout_file_do_not_stop_the_engine`.
+- **P05-F2 (LOW)** one move per topic across the four lanes (a top-10 move is exempt) — Lofty/Zoho no longer sit in two lanes and the stale-fact items reach the
+  risk lane. Test: `test_one_topic_across_the_lanes_unless_it_is_a_top_ten_move`. "Not yet connected" items still count as risks when their status names a fault (Steven's call).
+- **P06-F1 (LOW)** `_strict_date`: a missing or garbage `ts` means "never ran" → the loop:run move is offered. Test: `test_missing_or_garbage_ts_offers_the_loop_run_move`.
+- **P17-F1 (LOW)** `_clean_answer` drops headings, table rows, code lines, pointers and bold markers and cuts at a sentence; a recall miss gives
+  "ask Vanessa (the brain found no page for this)", never "None". Test: `test_question_action_never_says_none_and_answers_are_clean`.
+- **P08-F1 (LOW)** the scout move is category `brain` with an explicit `coa: opportunity`; declining it leaves the marketing weight alone. Test: `test_declining_the_scout_leaves_the_marketing_weight_alone`.
+- **P17-F2 (LOW)** `#bmQWrap > summary` has `min-height: var(--hit)`; the decision toast names the move's title.
+- **U1** resolved: the published page (v51, then v52) carries `bmGroups`; render-checked from the built file before each publish.
+
+# VibeBreaker Final Report: four courses of action (recs --coas, 6D lanes, questions block)
+
+change-set: cafcabe8265c2ad7
+
+(Run on the uncommitted tree on 2026-10-23 by code-validator. `bash scripts/validate-code.sh` gave `verdict: PASS (10 passed, 0 failed)`;
+`--hash` gave cafcabe8265c2ad7. `python3 -m unittest brain.tests.test_recs`: 14 tests OK. `bin/brain recs --coas` run. Malformed-input
+probes ran on throwaway copies in the scratchpad only. The reviewer changed no source file. The live Big-moves task
+trig_014QQGp4WQfWGDVB827R4Qb9 was read (get_trigger, read-only) to check the {items, coas, questions} contract.)
+
+## Verdict
+
+`SURVIVED*` (repo verdict: **SHIP**, with F1 recommended before the next 6:05 AM run). No critical or high findings. The lanes, the
+JSON/MD output, the page's rendering and the trigger contract agree. The main defect: the lanes are not a superset of the top 10,
+so 3 of today's top-10 moves (one of them the highest-scoring move Vanessa can run herself) reach no approve surface.
+
+## Scope
+
+- Diff mode. Python (brain/recs.py, brain/__main__.py, brain/tests/test_recs.py): passes 01, 04, 05, 06, 07, 08, 12, 17, 18, 19.
+  Dashboard (dashboard/brain-4d/template.html, built brain-4d.html): 01, 04, 05, 17, 19. Docs: pass 01. Pass 20 run on all of them.
+- Not verified: whether 6D "v51" is really published (context/decisions.md says "Live"); the Command Deck card's lane rendering.
+- Material scope limitation: NO.
+
+## Scoreboard
+
+- Passes executed: 20 / 20 (non-applicable passes marked N/A for this diff) · Confirmed: 7 · Critical 0 · High 0 · Medium 2 · Low 5 · Unverified: 1
+
+## CONFIRMED
+
+**P05-F1 · MEDIUM · confidence HIGH. Top-10 moves that rank 5th or lower in their lane vanish from every approve surface.**
+- Location: brain/recs.py:377-385 (`coas`), dashboard/brain-4d/template.html:774-777 (`bmGroups` shows only `coas` when any lane has items); task step 6a prepends only the 16 lane moves to vanessaRecommendations.
+- Trigger: today's data. Top 10 = Lofty API key, Zoho, iMessage, TidyCal token, **Connect openflowkit (vanessa, 2.4 high)**, **Arive**, tune proposals, **Connect Arive LOS**, two Guard pages. Big-move lane = the four steven items above openflowkit.
+- Bad state: openflowkit, Arive and Arive LOS are in `items` but in no lane. The 6D page draws only lanes, and the deck card gets only lane moves, so they can't be approved anywhere. Related: the 60% executor cap from `top()` isn't applied per lane. Today 12 of the 16 lane moves are `executor steven`, and big-move, risk and opportunity are all 100% steven.
+- Proof of fix: a test that asserts every `top(root, 10)` id appears in some `coas()` lane (or the page also renders leftover top-10 items), plus an assertion on the executor mix per lane if Steven wants the cap kept.
+
+**P04-F1 · MEDIUM · confidence HIGH. A malformed loop history or scout file crashes the whole recs engine.**
+- Location: brain/recs.py:128 (`int(last.get(...))` is outside any try), :122/:128 (`last` assumed to be a dict), :153/:158 (the seen.json guard catches only OSError/ValueError).
+- Trigger, probed on scratch copies: last history line `{"bench_total":"n/a"}` → ValueError. Last line `[1,2]` → AttributeError. seen.json `{"ids":5,...}` → TypeError.
+- Bad state: `_improve_candidates` is called with no guard from `candidates()`, so `top()`, `write()`, `coas()` **and `learn()`** all raise. The 6:05 task can't record decisions or write big-moves.json that day.
+- Proof of fix: unit tests with those three inputs that assert `candidates()` returns and that the improve source just yields nothing (or yields "Run the weekly brain loop").
+
+**P05-F2 · LOW · confidence HIGH. The same action fills two lanes, and real risks never surface.**
+- Location: brain/recs.py:107. "no key", "403", "unproven" and "never run" in a toolkit item's `why` route it to risk. Its steven-steps twin is exempt and stays in big-move.
+- Trigger: today. Lofty is big-move #1 ("Lofty API key") and risk #1 ("Connect Lofty (developer.lofty.com)"). Zoho is big-move #2 and risk #2. All four risk slots are "Connect X" items at 1.2-1.6. The stale-fact and sweep items (`loop:stale` 0.6, "Sweep the 20 pages" 0.7) rank below them and never show. The questions block also asks about Lofty twice.
+- Proof of fix: a test asserting that no two lane leaders share a `topic`, or that a `loop:stale`/`layers` item reaches the risk lane when one exists.
+
+**P06-F1 · LOW · confidence HIGH. A missing or garbage `ts` counts as "the loop ran today".**
+- Location: brain/recs.py:122-125 (`_date_of` falls back to `today`).
+- Trigger: last history line without `ts`, or with `ts: "garbage"` → probe returned `[]`.
+- Bad state: "Run the weekly brain loop" is suppressed for as long as that line is last. Same blind spot in task step 8.
+- Proof of fix: a test asserting that a missing or invalid ts yields the loop:run move.
+
+**P17-F1 · LOW · confidence HIGH. Standing-question answers are raw page fragments, and a recall miss shows "Open None § None".**
+- Location: brain/recs.py:405-417.
+- Trigger: today's answers. The "phone and Mac steps" answer is a PowerShell paste cut at 320 chars mid-path (`cd $env:USERPROFILE\Rep`), with `**` left in. The "connections" answer begins with unrelated lines, then a table fragment. Separately, a hint that stops matching after a page rename makes `recall` return `file: None`, and the action becomes `Open None § None`.
+- Proof of fix: a test with a hint that can't match, asserting the action never contains "None", plus stripping or excluding code spans and table rows from `a`.
+
+**P08-F1 · LOW · confidence MEDIUM. The scout move is filed under `marketing`, so declining it lowers real marketing moves.**
+- Location: brain/recs.py:156 (`rec("marketing", "scout:run", ...)`). The 6D writes `category: c.category` (template.html:828), and `learn()` multiplies `w["marketing"]` by 0.85.
+- Trigger: Steven declines "Run Nadia's weekly scout".
+- Bad state: drip, presence and Zillow moves score 15% lower the next day for an unrelated no.
+- Proof of fix: give the scout move its own category (or `brain`) with an explicit `coa: "opportunity"`, and add a test that declining it leaves `weights["marketing"]` unchanged.
+
+**P17-F2 · LOW · confidence HIGH. Small UI regressions on the new panel.**
+- template.html:264: the `#bmQWrap` summary has no `min-height: var(--hit)` (every other summary in the panel has it). On a phone it is a text-height tap target, under 44px.
+- template.html:829 / 816: the rank is now the rank within a lane, so four moves are "#1". The toast "Big move #1 approved." doesn't say which move (the Ask Vanessa text includes the title, so it is fine). `rank` written to the db doc is the lane rank; the task doesn't read it.
+- Proof of fix: a render check that the bmQWrap summary is at least 44px at a 390px viewport, and the toast including `c.title`.
+
+## UNVERIFIED
+
+- U1: context/decisions.md says "Live 2026-10-23 (6D v51)". Deciding it needs an Artifact read of https://claude.ai/artifact/VoWHW4YuKUCyNqGZMikEv8 to confirm that the published page carries `bmGroups`. Not done (read-only scope; the caller owns publishing).
+
+## REJECTED
+
+- TDZ in `bmRender()`: rejected. The synchronous paths touch only RECS, bmState, bmDb and bmBusy, and all are declared before `bmRender()` at line 834. `vanSample` is read only inside click handlers.
+- XSS in the lanes or questions: rejected. All text goes through `mk()` → textContent. `data-id` is always a `bm_` sha1, so the `querySelector` at line 922 is safe.
+- `bmQWrap.hidden` when RECS is null: rejected. `qs = []` → hidden, and no CSS overrides display on #bmQWrap.
+- `bmRunNow` with nested ols: rejected. `$("bm").querySelector('li[data-id=…]')` searches descendants, and each id is in exactly one lane.
+- Snoozed or declined moves in lanes: rejected. `coas()` draws from `top()`, which drops declined and done moves within 30 days and their snoozed topics.
+- Empty lane in the MD: rejected. It writes "- nothing in this lane today".
+- Trigger contract: rejected. The task prompt reads `items`, `coas[].items` and `questions` exactly as `write()` emits them, and searches every lane in EXECUTE-NOW mode.
+- 32px buttons in .bmq: rejected as a new defect. They copy the existing `.bm .acts .btn` rule.
+
+## Coverage (inspected, clean)
+
+coa_of explicit-coa path and invalid-coa fallback · `_signal_candidates` coa pass-through · `coas()` ranks 1..n per lane and score order · `questions()` fallback when plan[0]==why, loop question from history, exception path · `write()` JSON keys and MD sections · `recs --coas` text and --json · bmGroups fallback for an older JSON · bmRender empty state · bmDecide busy lock across nested lists · built brain-4d.html diff matches the template (plus data) · docs rows (CLAUDE.md, STEVEN-STEPS, inventories, wiki, decisions) consistent with the engine · no client PII in the outputs.
+
+## Top missing tests (pass 19)
+
+1. Every `top(root,10)` id is in some `coas()` lane (F1).
+2. `candidates()` survives a non-dict, non-int-field history line and a seen.json with non-list ids (F2).
+3. A history line with missing or invalid ts → loop:run move (F4).
+4. Standing-question recall miss → action has no "None" (F5).
+5. Declining scout:run leaves the marketing weight alone (F6).
+6. No two lane leaders share a topic, or the dedupe rule Steven picks (F3).
+7. Per-lane executor mix, if the 60% cap should hold in lanes.
+8. Node/jsdom render: lanes with one empty lane → dashed "nothing in this lane today" li; RECS null → #bmQWrap hidden.
+9. `coas()` with a signal carrying `coa: "risk"` whose text has no risk words lands in risk.
+10. `questions()` with `standard=0` returns only the lane leaders.
+
+## Share card
+
+```text
+VIBE//BREAKER
+VERDICT: SURVIVED*
+PASSES: 20/20
+CRITICAL: 0
+HIGH: 0
+CONFIRMED: 7
+UNVERIFIED: 1
+FIRST BREAK: NONE
+```
+
+## Release note
+
+Demonstrated: deterministic gate PASS, 14 unit tests, CLI output, crash probes on scratch copies, a static trace of the page and the
+live task prompt. Not demonstrated: the published 6D page, the Command Deck's lane rendering, a real 6:05 run.
+
+---
+
 ## Orchestrator response (2026-10-23 19:05 UTC) — pass 3 verdict SHIP; the LOW applied (reviewed 96d0ee464204f7cd → 254097c175929cfc)
 
 change-set: 254097c175929cfc

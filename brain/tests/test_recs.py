@@ -130,3 +130,139 @@ class RecsTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CoursesOfAction(unittest.TestCase):
+    """The four lanes (2026-10-23): big moves, self-improvement (loop engineering), risks, opportunities; and the questions block."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory(); t = Path(self._tmp.name)
+        self._saved = (recs.WEIGHTS, recs.LEDGER); recs.WEIGHTS = str(t / "w.json"); recs.LEDGER = str(t / "l.jsonl")
+
+    def tearDown(self):
+        recs.WEIGHTS, recs.LEDGER = self._saved; self._tmp.cleanup()
+
+    def test_coa_of_covers_all_four_lanes_and_explicit_wins(self):
+        self.assertEqual(recs.coa_of({"source": "loop:untested", "category": "brain"}), "improve")
+        self.assertEqual(recs.coa_of({"source": "loop:stale", "category": "brain"}), "risk")
+        self.assertEqual(recs.coa_of({"source": "toolkit:api", "category": "connect", "title": "Connect X", "why": "403 until the box is ticked"}), "risk")
+        self.assertEqual(recs.coa_of({"source": "steven-steps", "category": "steven", "title": "Zoho", "why": "no key yet"}), "big-move")
+        self.assertEqual(recs.coa_of({"source": "toolkit:connector", "category": "marketing"}), "opportunity")
+        self.assertEqual(recs.coa_of({"source": "signal", "category": "ops", "coa": "opportunity"}), "opportunity")
+        self.assertEqual(recs.coa_of({"source": "signal", "category": "ops", "coa": "nonsense"}), "big-move")
+
+    def test_coas_four_per_lane_ranked_and_from_the_scored_pool(self):
+        g = recs.coas(ROOT, 4, today=TODAY)
+        self.assertEqual(list(g), [k for k, _, _ in recs.COAS])
+        top10 = {c["id"] for c in recs.top(ROOT, 10, today=TODAY)}
+        laned = {c["id"] for items in g.values() for c in items}
+        self.assertTrue(top10 <= laned, "every top-10 move reaches an approve surface (validator P05-F1)")
+        for k, items in g.items():
+            self.assertLessEqual(len([c for c in items if c["id"] not in top10]), 4, "four per lane plus the top-10 overflow")
+            self.assertEqual([c["rank"] for c in items], list(range(1, len(items) + 1)))
+            self.assertTrue(all(c["coa"] == k for c in items))
+            self.assertEqual([c["score"] for c in items], sorted((c["score"] for c in items), reverse=True))
+        self.assertTrue(g["big-move"] and g["improve"], "the repo always has moves and loop work")
+
+    def test_explicit_coa_on_a_signal_lands_in_that_lane(self):
+        sig = [{"key": "zillow-q4", "title": "Zillow Q4 push", "plan": ["one step"], "coa": "opportunity", "impact": 5, "effort": 1, "confidence": 0.95}]
+        g = recs.coas(ROOT, 4, signals=sig, today=TODAY)
+        self.assertIn("Zillow Q4 push", [c["title"] for c in g["opportunity"]])
+
+    def test_questions_answer_each_leading_move_and_the_standing_questions(self):
+        g = recs.coas(ROOT, 4, today=TODAY)
+        qs = recs.questions(ROOT, g)
+        self.assertEqual(len(qs), sum(1 for k in g if g[k]) + len(recs.STANDARD_QUESTIONS))
+        for q in qs:
+            self.assertTrue(q["q"].endswith("?") and q["a"] and q["action"], q)
+            self.assertLessEqual(len(q["a"]), 330)
+        loop_q = [q for q in qs if q["q"].startswith("What did the weekly loop")][0]
+        self.assertIn("bench", loop_q["a"])
+        self.assertNotIn("##", " ".join(q["a"] for q in qs), "headings are stripped from recall evidence")
+
+    def test_write_carries_coas_and_questions_beside_the_top_ten(self):
+        t = Path(self._tmp.name); saved = (recs.OUT_JSON, recs.OUT_MD)
+        recs.OUT_JSON, recs.OUT_MD = "out/big-moves.json", "out/BIG-MOVES.md"
+        try:
+            (t / "brain").mkdir(); shutil.copytree(ROOT / "brain", t / "brain", dirs_exist_ok=True)
+            for p in ("docs", "integrations", "wiki", "memory.md", "INDEX.md", "always-on", "context", "projects", "references", "knowledge-graph", "vector-index", "OPTIMIZATION.md", "README.md"):
+                src = ROOT / p
+                if src.is_dir(): shutil.copytree(src, t / p, dirs_exist_ok=True, ignore=shutil.ignore_patterns("*.html", "*.jsonl.bak"))
+                elif src.exists(): shutil.copy(src, t / p)
+            recs.write(t, 10, today=TODAY)
+            d = json.loads((t / "out/big-moves.json").read_text(encoding="utf-8"))
+            self.assertEqual([g["key"] for g in d["coas"]], [k for k, _, _ in recs.COAS])
+            self.assertTrue(all(g["items"] is not None and g["label"] and g["about"] for g in d["coas"]))
+            self.assertEqual(len(d["items"]), 10); self.assertTrue(d["questions"])
+            md = (t / "out/BIG-MOVES.md").read_text(encoding="utf-8")
+            for _, label, _ in recs.COAS: self.assertIn("### " + label, md)
+            self.assertIn("## Questions you may have", md)
+        finally:
+            recs.OUT_JSON, recs.OUT_MD = saved
+
+
+class CoursesOfActionHardening(unittest.TestCase):
+    """Validator pass on cafcabe8265c2ad7: malformed inputs, one topic per lane set, no 'None' in an action, scout weight."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory(); self.t = Path(self._tmp.name)
+        self._saved = (recs.WEIGHTS, recs.LEDGER); recs.WEIGHTS = str(self.t / "w.json"); recs.LEDGER = str(self.t / "l.jsonl")
+        (self.t / "brain").mkdir(); (self.t / "integrations/scout").mkdir(parents=True); (self.t / "docs").mkdir()
+        shutil.copy(ROOT / "docs/STEVEN-STEPS.md", self.t / "docs/STEVEN-STEPS.md")
+
+    def tearDown(self):
+        recs.WEIGHTS, recs.LEDGER = self._saved; self._tmp.cleanup()
+
+    def _history(self, line: str):
+        (self.t / "brain/loop-history.jsonl").write_text(line + "\n", encoding="utf-8")
+
+    def test_malformed_loop_history_and_scout_file_do_not_stop_the_engine(self):
+        for line in ('{"ts":"2026-10-23T00:00:00Z","bench_total":"n/a","bench_correct":1}', "[1,2]", "not json at all"):
+            self._history(line)
+            (self.t / "integrations/scout/seen.json").write_text('{"updated":"2026-01-01","ids":5}', encoding="utf-8")
+            items = recs.candidates(self.t, today=TODAY)
+            self.assertTrue(items, line)
+            self.assertFalse([c for c in items if c["source"] == "scout"], "oddly shaped ids: no scout move, no crash")
+
+    def test_missing_or_garbage_ts_offers_the_loop_run_move(self):
+        for line in ('{"bench_total":31,"bench_correct":31}', '{"ts":"garbage","bench_total":31,"bench_correct":31}'):
+            self._history(line)
+            titles = [c["title"] for c in recs._improve_candidates(self.t, TODAY)]
+            self.assertIn("Run the weekly brain loop", titles, line)
+        self._history('{"ts":"2026-10-22T04:30:00Z","bench_total":31,"bench_correct":31}')
+        self.assertNotIn("Run the weekly brain loop", [c["title"] for c in recs._improve_candidates(self.t, TODAY)])
+
+    def test_one_topic_across_the_lanes_unless_it_is_a_top_ten_move(self):
+        g = recs.coas(ROOT, 4, today=TODAY)
+        top10 = {c["id"] for c in recs.top(ROOT, 10, today=TODAY)}
+        seen = {}
+        for k, items in g.items():
+            for c in items:
+                if c["id"] in top10 or not c["topic"]:
+                    continue
+                self.assertNotIn(c["topic"], seen, f"{c['title']} repeats topic {c['topic']} already in {seen.get(c['topic'])}")
+                seen[c["topic"]] = k
+
+    def test_a_signal_pinned_to_risk_lands_there_without_risk_words(self):
+        sig = [{"key": "quiet", "title": "Quiet thing", "plan": ["one"], "coa": "risk", "impact": 5, "effort": 1, "confidence": 0.9, "category": "revenue"}]
+        self.assertIn("Quiet thing", [c["title"] for c in recs.coas(ROOT, 4, signals=sig, today=TODAY)["risk"]])
+
+    def test_question_action_never_says_none_and_answers_are_clean(self):
+        saved = recs.STANDARD_QUESTIONS
+        try:
+            recs.STANDARD_QUESTIONS = (("Is there anything here?", "zqxv wkjq plmtr nonsensewords"),)
+            qs = recs.questions(ROOT, recs.coas(ROOT, 4, today=TODAY), standard=1)
+            for q in qs:
+                self.assertNotIn("None", q["action"], q)
+                self.assertNotIn("**", q["a"]); self.assertNotIn("|", q["a"]); self.assertNotIn("##", q["a"])
+        finally:
+            recs.STANDARD_QUESTIONS = saved
+        self.assertEqual(recs._clean_answer("## Head\n| a | b |\n**bold** text `code` here. [pointer → x § y] more. tail"), "bold text code here. more. tail")
+
+    def test_declining_the_scout_leaves_the_marketing_weight_alone(self):
+        self._history('{"ts":"2026-10-23T00:00:00Z","bench_total":1,"bench_correct":1}')
+        (self.t / "integrations/scout/seen.json").write_text('{"updated":"2026-01-01","ids":["mcp:a"]}', encoding="utf-8")
+        scout = [c for c in recs._improve_candidates(self.t, TODAY) if c["source"] == "scout"][0]
+        self.assertEqual((scout["coa"], scout["category"]), ("opportunity", "brain"))
+        recs.learn(self.t, [{"id": scout["id"], "decision": "declined", "at": "2026-10-23T10:00:00Z", "category": scout["category"]}], today=TODAY)
+        self.assertAlmostEqual(recs.load_weights(self.t).get("marketing", 1.0), 1.0, places=4)

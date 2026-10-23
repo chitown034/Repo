@@ -113,7 +113,16 @@ button, input { font: inherit; color: inherit; }
 #vanForm { display: grid; gap: 6px; } #vanForm[hidden] { display: none !important; } #vanNote { color: var(--muted); font-size: 11px; }
 #bmWrap > summary { cursor: pointer; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--now); list-style: none; min-height: var(--hit); display: flex; align-items: center; }
 #bmWrap > summary::after { content: "+"; margin-left: auto; } #bmWrap[open] > summary::after { content: "–"; }
-.bm { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; max-height: 46vh; overflow: auto; }
+#bmQWrap > summary { cursor: pointer; color: var(--cool); font-size: 12.5px; min-height: var(--hit); display: flex; align-items: center; }
+.bmGroups { display: grid; gap: 10px; max-height: 60vh; overflow: auto; }
+.bmGroups h3 { margin: 0; font: 600 13px var(--f-ui, inherit); color: var(--cool); display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.bmGroups h3 small { font: 11px var(--f-data); color: var(--muted); font-weight: 400; }
+.bm { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.bm li.empty { color: var(--muted); font-size: 12px; border-style: dashed; }
+.bmq { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; max-height: 40vh; overflow: auto; }
+.bmq li { border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; display: grid; gap: 4px; }
+.bmq b { font-size: 13px; overflow-wrap: anywhere; } .bmq p { margin: 0; font-size: 12.5px; color: #c9cfdd; overflow-wrap: anywhere; }
+.bmq .act { font: 11px var(--f-data); color: var(--muted); overflow-wrap: anywhere; } .bmq .acts { display: flex; gap: 6px; flex-wrap: wrap; } .bmq .acts .btn { min-height: 32px; padding: 2px 10px; font-size: 12px; }
 .bm li { border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; display: grid; gap: 4px; }
 .bm .row { display: flex; gap: 8px; align-items: baseline; } .bm .rank { font: 500 14px var(--f-data); color: var(--now); min-width: 22px; }
 .bm b { font-size: 13px; flex: 1; overflow-wrap: anywhere; } .bm .val { font: 11px var(--f-data); padding: 1px 7px; border-radius: 999px; border: 1px solid var(--line); }
@@ -250,9 +259,12 @@ body.enc #enc { max-width: 720px; }
     <div id="askCopied" role="status" aria-live="polite"></div>
     <pre class="sr" id="askCmd"></pre>
   </section>
-  <details id="bmWrap" open><summary>Vanessa recommends — today's top 10 big moves</summary>
+  <details id="bmWrap" open><summary>Vanessa recommends — four courses of action</summary>
     <p class="seatnote" id="bmNote"></p>
-    <ol id="bm" class="bm" aria-label="Today's big moves, by priority"></ol>
+    <div id="bm" class="bmGroups" aria-label="Today's courses of action: next big moves, self-improvement, risks, opportunities"></div>
+    <details id="bmQWrap"><summary>Questions you may have — answered from the brain</summary>
+      <ul id="bmQ" class="bmq" aria-label="Questions you may have, with the answer and the action"></ul>
+    </details>
     <p class="seatnote" id="bmHow">Score = impact × confidence ÷ effort × a weight the brain learns from your approvals and declines. Approve: Vanessa starts on it right away (her items), or the plan stands by for you (yours). Decline: hidden for 30 days and its kind weighs less tomorrow.</p>
   </details>
   <details id="vanWrap" open><summary>Ask Vanessa — AI chat over this brain</summary>
@@ -758,11 +770,40 @@ $("names").replaceChildren(...nodes.map(n => { const o = document.createElement(
 // the approved ones for the daily cycle. Outside claude.ai the list shows; the buttons say so.
 let bmDb = null, bmUser = null, bmMcp = null; const bmState = {};
 const BM_TRIGGER = "trig_014QQGp4WQfWGDVB827R4Qb9";   // the Big-moves task in the orchestrator session (fire_trigger runs it now)
+// The four courses of action (bin/brain recs --coas): next big moves · self-improvement (loop engineering) · risks and the
+// action that heads them off · opportunities. Four each, from the same scored pool. Older big-moves.json (items only) still draws.
+function bmGroups() {
+  if (RECS && Array.isArray(RECS.coas) && RECS.coas.some(g => g && g.items && g.items.length)) return RECS.coas;
+  return RECS && RECS.items && RECS.items.length ? [{ key: "big-move", label: "Today's top moves", about: "", items: RECS.items }] : [];
+}
 function bmRender() {
-  const ol = $("bm"); ol.replaceChildren();
-  if (!RECS || !RECS.items || !RECS.items.length) { $("bmNote").textContent = "No big moves computed yet — the 6:05 AM task writes them (bin/brain recs --write)."; return; }
-  $("bmNote").textContent = "For " + RECS.date + " · " + RECS.items.length + " moves · approve or decline below" + (bmDb ? "" : " (open this page in claude.ai to decide)");
-  RECS.items.forEach(c => {
+  const box = $("bm"); box.replaceChildren();
+  const groups = bmGroups(); const total = groups.reduce((n, g) => n + (g.items ? g.items.length : 0), 0);
+  if (!total) { $("bmNote").textContent = "No courses of action computed yet — the 6:05 AM task writes them (bin/brain recs --write)."; bmQuestions(); return; }
+  $("bmNote").textContent = "For " + RECS.date + " · " + total + " moves in " + groups.length + " lanes · approve, decline or ask below" + (bmDb ? "" : " (open this page in claude.ai to decide)");
+  groups.forEach(g => {
+    const h = mk("h3", "", g.label || g.key); if (g.about) h.append(mk("small", "", g.about)); box.append(h);
+    const ol = mk("ol", "bm"); ol.setAttribute("aria-label", g.label || g.key); box.append(ol);
+    if (!g.items || !g.items.length) { ol.append(mk("li", "empty", "nothing in this lane today")); return; }
+    g.items.forEach(c => ol.append(bmItem(c)));
+  });
+  bmQuestions();
+}
+function bmQuestions() {
+  const ul = $("bmQ"); ul.replaceChildren();
+  const qs = RECS && Array.isArray(RECS.questions) ? RECS.questions : [];
+  $("bmQWrap").hidden = !qs.length;
+  qs.forEach(q => {
+    if (!q || !q.q) return;
+    const li = mk("li"); li.append(mk("b", "", String(q.q)));
+    if (q.a) li.append(mk("p", "", String(q.a)));
+    if (q.action) li.append(mk("div", "act", "Action: " + String(q.action)));
+    // same pattern as a move's Ask Vanessa button: fill the chat box (bmRender runs before the chat's own state is declared)
+    const acts = mk("div", "acts"); const ask = mk("button", "btn", "Ask Vanessa"); ask.type = "button";
+    ask.addEventListener("click", () => { $("vanWrap").open = true; $("vanQ").value = String(q.q); $("vanQ").focus(); }); acts.append(ask); li.append(acts); ul.append(li);
+  });
+}
+function bmItem(c) {
     const li = mk("li"); li.dataset.id = c.id; let st = String(bmState[c.id] && bmState[c.id].decision || c.decision || "");
     if (!/^(approved|declined|later|done)$/.test(st)) st = "";   // only the four known states; anything else is ignored
     if (st) li.classList.add(st);
@@ -775,8 +816,7 @@ function bmRender() {
     if (bmState[c.id] && bmState[c.id].note) li.append(mk("div", "meta note", bmState[c.id].note));
     ["approved", "declined", "later"].forEach(dec => { if (st === dec) return; const b = mk("button", "btn" + (dec === "approved" ? " primary" : ""), dec === "approved" ? "Approve" : dec === "declined" ? "Decline" : "Later"); b.type = "button"; b.disabled = !bmDb || bmBusy; b.addEventListener("click", () => bmDecide(c, dec)); acts.append(b); });
     const ask = mk("button", "btn", "Ask Vanessa"); ask.type = "button"; ask.addEventListener("click", () => { $("vanWrap").open = true; $("vanQ").value = "Big move #" + c.rank + ": " + c.title + " — should I do this today, and what is the first step?"; $("vanQ").focus(); }); acts.append(ask);
-    li.append(acts); ol.append(li);
-  });
+    li.append(acts); return li;
 }
 let bmBusy = false;   // one decision in flight at a time (validator P07-F1: a double-click fired EXECUTE NOW twice)
 async function bmDecide(c, dec) {
@@ -787,7 +827,7 @@ async function bmDecide(c, dec) {
   try {
     const at = new Date().toISOString(); const by = bmUser ? await bmUser.id().catch(() => "") : "";
     await bmDb.doc("recs/" + c.id).set({ decision: dec, at, by, category: c.category, title: c.title, rank: c.rank, score: c.score, date: RECS.date });
-    bmState[c.id] = { decision: dec, at }; bmRender(); say("Big move #" + c.rank + " " + dec + ".");
+    bmState[c.id] = { decision: dec, at }; bmRender(); say("\"" + c.title + "\" " + dec + ".");
     if (dec === "approved") await bmRunNow(c);
   } catch (e) { say("Could not save that decision" + (e && e.code ? " (" + e.code + ")" : "") + " — try again or decide on the Command Deck."); }
   finally { bmBusy = false; bmRender(); }

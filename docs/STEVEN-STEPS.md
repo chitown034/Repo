@@ -6,10 +6,16 @@ research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox
 
 ## 1 · Phone · 5 minutes (Do these first; nothing else depends on them)
 
-## Every day (from 2026-10-23) — Vanessa's top 10 big moves, your yes or no
+## Every day (from 2026-10-23) — Vanessa's four courses of action, your yes or no
 
-Open the 6D Brain (https://claude.ai/artifact/VoWHW4YuKUCyNqGZMikEv8) → "Vanessa recommends". Ten moves, scored by
-impact × confidence ÷ effort, each with the plan standing by. **Approve** → Vanessa starts on it right away (the page fires her
+Open the 6D Brain (https://claude.ai/artifact/VoWHW4YuKUCyNqGZMikEv8) → "Vanessa recommends — four courses of action".
+Four lanes, four moves each, all scored by impact × confidence ÷ effort with the plan standing by: **Next big moves**
+(money, clients, connections) · **Self-improvement** (loop engineering: what the brain and the team change in themselves —
+failing gold questions, stale pages, tune proposals, declined-too-often weights, Nadia's scout) · **Risks and actions to
+take** (what is stale, failing or silent and the action that heads it off) · **Opportunities to pursue** (marketing,
+presence, new capabilities). Under them, **"Questions you may have"**: one answer per leading move plus the standing
+questions (what only you can do, what runs each morning, what is not connected, what the weekly loop found, how approval
+works, where the morning brief is), each answered from the brain's own page with the action to take. **Approve** → Vanessa starts on it right away (the page fires her
 Big-moves task through your Claude Code Remote connector; the first time, allow "Claude Code Remote" when the page asks). Her
 items land in the Vanessa queue on the Command Deck; yours stay listed with the plan standing by until you say "done".
 **Decline** → hidden 30 days and that kind weighs less. The 6:05 AM task re-learns from every decision (`docs/reports/BIG-MOVES.md`).

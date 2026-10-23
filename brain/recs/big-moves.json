@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-23T18:37:48Z",
+ "generated": "2026-10-23T19:08:14Z",
  "date": "2026-10-23",
  "items": [
   {
@@ -130,6 +130,27 @@
    "rank": 6
   },
   {
+   "id": "bm_c5020d75ae",
+   "category": "brain",
+   "topic": "",
+   "title": "Review 3 tune proposal(s) from the weekly loop",
+   "why": "the loop proposed prompt/route changes nobody has judged",
+   "owner": "Vanessa",
+   "executor": "vanessa",
+   "impact": 2,
+   "effort": 1,
+   "confidence": 0.8,
+   "plan": [
+    "docs/reports/BRAIN-LOOP.md \u2192 Proposals",
+    "promote the ones that pass the holdout; log the rest as rejected"
+   ],
+   "source": "loop:tune",
+   "weight": 1.0,
+   "score": 1.6,
+   "value": "medium",
+   "rank": 7
+  },
+  {
    "id": "bm_05f4b1690b",
    "category": "connect",
    "topic": "arive",
@@ -149,7 +170,7 @@
    "weight": 1.0,
    "score": 1.6,
    "value": "medium",
-   "rank": 7
+   "rank": 8
   },
   {
    "id": "bm_3b7b475093",
@@ -170,34 +191,13 @@
    "weight": 1.0,
    "score": 0.9,
    "value": "low",
-   "rank": 8
+   "rank": 9
   },
   {
    "id": "bm_68a99297a6",
    "category": "brain",
    "topic": "",
    "title": "Guard wiki/ai-team/toolkit.md with a gold question",
-   "why": "no gold question tests this page, so a regression would go unseen",
-   "owner": "Vanessa",
-   "executor": "vanessa",
-   "impact": 1,
-   "effort": 1,
-   "confidence": 0.9,
-   "plan": [
-    "Add one question to brain/bench/questions.json with the expected phrase",
-    "bin/brain loop \u2192 count rises"
-   ],
-   "source": "loop:untested",
-   "weight": 1.0,
-   "score": 0.9,
-   "value": "low",
-   "rank": 9
-  },
-  {
-   "id": "bm_4f2b81ccc7",
-   "category": "brain",
-   "topic": "",
-   "title": "Guard wiki/dashboard-ops/db-docs.md with a gold question",
    "why": "no gold question tests this page, so a regression would go unseen",
    "owner": "Vanessa",
    "executor": "vanessa",
@@ -225,5 +225,512 @@
   "compliance": 1.0,
   "ops": 1.0,
   "steven": 1.0
- }
+ },
+ "coas": [
+  {
+   "key": "big-move",
+   "label": "Next big moves",
+   "about": "the moves that bring money, clients or connections in \u2014 approve and Vanessa runs hers",
+   "items": [
+    {
+     "id": "bm_08ef5bf8ac",
+     "category": "steven",
+     "topic": "lofty",
+     "title": "Lofty API key",
+     "why": "Lofty \u2192 Settings \u2192 Integrations \u2192 API \u2192 create; paste 1 asks for it (step 7b).",
+     "owner": "Victor",
+     "executor": "steven",
+     "impact": 5,
+     "effort": 1,
+     "confidence": 0.85,
+     "plan": [
+      "Lofty \u2192 Settings \u2192 Integrations \u2192 API \u2192 create; paste 1 asks for it (step 7b).",
+      "Say 'done e' and Vanessa closes it and runs what it unblocks"
+     ],
+     "source": "steven-steps",
+     "weight": 1.0,
+     "score": 4.25,
+     "value": "high",
+     "rank": 1,
+     "coa": "big-move"
+    },
+    {
+     "id": "bm_e1e0f03a5a",
+     "category": "steven",
+     "topic": "zoho",
+     "title": "Zoho",
+     "why": "Setup \u2192 Security Control \u2192 Profiles \u2192 your profile \u2192 Developer Permissions \u2192 tick \"Zoho CRM API Access\".",
+     "owner": "Elena",
+     "executor": "steven",
+     "impact": 5,
+     "effort": 1,
+     "confidence": 0.85,
+     "plan": [
+      "Setup \u2192 Security Control \u2192 Profiles \u2192 your profile \u2192 Developer Permissions \u2192 tick \"Zoho CRM API Access\".",
+      "Say 'done b' and Vanessa closes it and runs what it unblocks"
+     ],
+     "source": "steven-steps",
+     "weight": 1.0,
+     "score": 4.25,
+     "value": "high",
+     "rank": 2,
+     "coa": "big-move"
+    },
+    {
+     "id": "bm_6334e9b2b9",
+     "category": "steven",
+     "topic": "imessage",
+     "title": "Link your iMessage line (fixes the missing morning text + voice note)",
+     "why": "From your phone, text `connect @vanessa-shearrill` to **+1 650 484 9720**, once. Until then the brief comes by e-mail (steven.shearrill@gmail.com) and push, with the voice note attached to the e-mail.",
+     "owner": "Vanessa",
+     "executor": "steven",
+     "impact": 4,
+     "effort": 1,
+     "confidence": 0.85,
+     "plan": [
+      "From your phone, text `connect @vanessa-shearrill` to **+1 650 484 9720**, once. Until then the brief comes by e-mail (steven.shearrill@gmail.com) and push, with the voice note attached to the e-mail.",
+      "Say 'done a' and Vanessa closes it and runs what it unblocks"
+     ],
+     "source": "steven-steps",
+     "weight": 1.0,
+     "score": 3.4,
+     "value": "high",
+     "rank": 3,
+     "coa": "big-move"
+    },
+    {
+     "id": "bm_8ffe22339d",
+     "category": "steven",
+     "topic": "tidycal",
+     "title": "TidyCal token",
+     "why": "TidyCal \u2192 Integrations \u2192 API \u2192 Manage API keys \u2192 Create token; paste 1 asks for it (step 7c).",
+     "owner": "Derek",
+     "executor": "steven",
+     "impact": 3,
+     "effort": 1,
+     "confidence": 0.85,
+     "plan": [
+      "TidyCal \u2192 Integrations \u2192 API \u2192 Manage API keys \u2192 Create token; paste 1 asks for it (step 7c).",
+      "Say 'done f' and Vanessa closes it and runs what it unblocks"
+     ],
+     "source": "steven-steps",
+     "weight": 1.0,
+     "score": 2.55,
+     "value": "high",
+     "rank": 4,
+     "coa": "big-move"
+    },
+    {
+     "id": "bm_637c1a7d7f",
+     "category": "connect",
+     "topic": "openflowkit",
+     "title": "Connect openflowkit",
+     "why": "architecture, flow, sequence and ER diagrams the agent draws and saves as `.openflow.json` \u00b7 pending \u2014 step added 2026-10-23, runs on the next paste",
+     "owner": "Derek",
+     "executor": "vanessa",
+     "impact": 3,
+     "effort": 1,
+     "confidence": 0.8,
+     "plan": [
+      "Owner Derek confirms the route in the register (integrations/MCP-SERVERS.md)",
+      "Mac 1, Mac 2 (connect-all 6g; npx -y openflowkit mcp, local stdio, no key)",
+      "Vanessa re-checks the status on the next connect report and closes the item"
+     ],
+     "source": "toolkit:mcp",
+     "weight": 1.0,
+     "score": 2.4,
+     "value": "high",
+     "rank": 5,
+     "coa": "big-move"
+    },
+    {
+     "id": "bm_f4dd4986b9",
+     "category": "steven",
+     "topic": "arive",
+     "title": "Arive",
+     "why": "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.",
+     "owner": "Derek",
+     "executor": "steven",
+     "impact": 4,
+     "effort": 2,
+     "confidence": 0.85,
+     "plan": [
+      "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.",
+      "Say 'done g' and Vanessa closes it and runs what it unblocks"
+     ],
+     "source": "steven-steps",
+     "weight": 1.0,
+     "score": 1.7,
+     "value": "medium",
+     "rank": 6,
+     "coa": "big-move"
+    },
+    {
+     "id": "bm_05f4b1690b",
+     "category": "connect",
+     "topic": "arive",
+     "title": "Connect Arive LOS (API gateway v4.6)",
+     "why": "read loans, status, leads; loan writes are HALT \u00b7 pending \u2014 Pro-plan credentials (integrations/arive/README.md)",
+     "owner": "Marcus",
+     "executor": "steven",
+     "impact": 4,
+     "effort": 2,
+     "confidence": 0.8,
+     "plan": [
+      "Owner Marcus confirms the route in the register (integrations/APIS.md)",
+      "Steven: Client ID + Secret + API key \u00b7 ~/.config/arive/.env",
+      "Vanessa re-checks the status on the next connect report and closes the item"
+     ],
+     "source": "toolkit:api",
+     "weight": 1.0,
+     "score": 1.6,
+     "value": "medium",
+     "rank": 7,
+     "coa": "big-move"
+    }
+   ]
+  },
+  {
+   "key": "improve",
+   "label": "Self-improvement (loop engineering)",
+   "about": "what the brain, the loops and the team change in themselves to get better",
+   "items": [
+    {
+     "id": "bm_c5020d75ae",
+     "category": "brain",
+     "topic": "",
+     "title": "Review 3 tune proposal(s) from the weekly loop",
+     "why": "the loop proposed prompt/route changes nobody has judged",
+     "owner": "Vanessa",
+     "executor": "vanessa",
+     "impact": 2,
+     "effort": 1,
+     "confidence": 0.8,
+     "plan": [
+      "docs/reports/BRAIN-LOOP.md \u2192 Proposals",
+      "promote the ones that pass the holdout; log the rest as rejected"
+     ],
+     "source": "loop:tune",
+     "weight": 1.0,
+     "score": 1.6,
+     "value": "medium",
+     "rank": 1,
+     "coa": "improve"
+    },
+    {
+     "id": "bm_3b7b475093",
+     "category": "brain",
+     "topic": "",
+     "title": "Guard wiki/ai-team/second-brain-layers.md with a gold question",
+     "why": "no gold question tests this page, so a regression would go unseen",
+     "owner": "Vanessa",
+     "executor": "vanessa",
+     "impact": 1,
+     "effort": 1,
+     "confidence": 0.9,
+     "plan": [
+      "Add one question to brain/bench/questions.json with the expected phrase",
+      "bin/brain loop \u2192 count rises"
+     ],
+     "source": "loop:untested",
+     "weight": 1.0,
+     "score": 0.9,
+     "value": "low",
+     "rank": 2,
+     "coa": "improve"
+    },
+    {
+     "id": "bm_68a99297a6",
+     "category": "brain",
+     "topic": "",
+     "title": "Guard wiki/ai-team/toolkit.md with a gold question",
+     "why": "no gold question tests this page, so a regression would go unseen",
+     "owner": "Vanessa",
+     "executor": "vanessa",
+     "impact": 1,
+     "effort": 1,
+     "confidence": 0.9,
+     "plan": [
+      "Add one question to brain/bench/questions.json with the expected phrase",
+      "bin/brain loop \u2192 count rises"
+     ],
+     "source": "loop:untested",
+     "weight": 1.0,
+     "score": 0.9,
+     "value": "low",
+     "rank": 3,
+     "coa": "improve"
+    },
+    {
+     "id": "bm_4f2b81ccc7",
+     "category": "brain",
+     "topic": "",
+     "title": "Guard wiki/dashboard-ops/db-docs.md with a gold question",
+     "why": "no gold question tests this page, so a regression would go unseen",
+     "owner": "Vanessa",
+     "executor": "vanessa",
+     "impact": 1,
+     "effort": 1,
+     "confidence": 0.9,
+     "plan": [
+      "Add one question to brain/bench/questions.json with the expected phrase",
+      "bin/brain loop \u2192 count rises"
+     ],
+     "source": "loop:untested",
+     "weight": 1.0,
+     "score": 0.9,
+     "value": "low",
+     "rank": 4,
+     "coa": "improve"
+    }
+   ]
+  },
+  {
+   "key": "risk",
+   "label": "Risks and actions to take",
+   "about": "what is stale, failing or silent, and the action that heads it off",
+   "items": [
+    {
+     "id": "bm_cf7a037bfe",
+     "category": "connect",
+     "topic": "orca",
+     "title": "Connect Jarvis \u00b7 Laya \u00b7 Orca (Mac 2)",
+     "why": "partially set \u2014 engine unproven; runner not yet imported",
+     "owner": "Derek",
+     "executor": "steven",
+     "impact": 3,
+     "effort": 2,
+     "confidence": 0.8,
+     "plan": [
+      "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
+      "Steven: bash scripts/second-mac.sh + runner export/import (STEVEN-STEPS 1e)",
+      "Vanessa re-checks the status on the next connect report and closes the item"
+     ],
+     "source": "toolkit:connector",
+     "weight": 1.0,
+     "score": 1.2,
+     "value": "medium",
+     "rank": 1,
+     "coa": "risk"
+    },
+    {
+     "id": "bm_f293f10b67",
+     "category": "brain",
+     "topic": "",
+     "title": "Sweep the 20 pages with stale live facts",
+     "why": "a page with a dated number that nobody re-checked is a wrong answer waiting",
+     "owner": "Derek",
+     "executor": "vanessa",
+     "impact": 2,
+     "effort": 2,
+     "confidence": 0.7,
+     "plan": [
+      "bin/brain loop lists them",
+      "re-verify each stamp against its source or move the fact to a report"
+     ],
+     "source": "loop:history",
+     "weight": 1.0,
+     "score": 0.7,
+     "value": "low",
+     "rank": 2,
+     "coa": "risk"
+    },
+    {
+     "id": "bm_e938d5c221",
+     "category": "brain",
+     "topic": "",
+     "title": "Re-check live facts on README.md",
+     "why": "newest stamp 2026-09-22 (31 days)",
+     "owner": "Vanessa",
+     "executor": "vanessa",
+     "impact": 2,
+     "effort": 2,
+     "confidence": 0.6,
+     "plan": [
+      "Read the page's live-sounding lines; re-verify each against its source",
+      "Restamp the page or move the fact to a report"
+     ],
+     "source": "loop:stale",
+     "weight": 1.0,
+     "score": 0.6,
+     "value": "low",
+     "rank": 3,
+     "coa": "risk"
+    },
+    {
+     "id": "bm_9b9d1bb501",
+     "category": "brain",
+     "topic": "",
+     "title": "Re-check live facts on docs/inventory/mac-task-descriptions.md",
+     "why": "newest stamp 2026-09-13 (40 days)",
+     "owner": "Derek",
+     "executor": "vanessa",
+     "impact": 2,
+     "effort": 2,
+     "confidence": 0.6,
+     "plan": [
+      "Read the page's live-sounding lines; re-verify each against its source",
+      "Restamp the page or move the fact to a report"
+     ],
+     "source": "loop:stale",
+     "weight": 1.0,
+     "score": 0.6,
+     "value": "low",
+     "rank": 4,
+     "coa": "risk"
+    }
+   ]
+  },
+  {
+   "key": "opportunity",
+   "label": "Opportunities to pursue",
+   "about": "marketing, presence and new capabilities worth a move",
+   "items": [
+    {
+     "id": "bm_c8dd0e3f61",
+     "category": "steven",
+     "topic": "drip",
+     "title": "Drips and texts",
+     "why": "Lofty 10DLC registration, then say \"specs ready for review\" (`wiki/real-estate-playbooks/drip-and-text-follow-up.md`).",
+     "owner": "Victor",
+     "executor": "steven",
+     "impact": 5,
+     "effort": 3,
+     "confidence": 0.85,
+     "plan": [
+      "Lofty 10DLC registration, then say \"specs ready for review\" (`wiki/real-estate-playbooks/drip-and-text-follow-up.md`).",
+      "Say 'done k' and Vanessa closes it and runs what it unblocks"
+     ],
+     "source": "steven-steps",
+     "weight": 1.0,
+     "score": 1.417,
+     "value": "medium",
+     "rank": 1,
+     "coa": "opportunity"
+    },
+    {
+     "id": "bm_02cfe4c410",
+     "category": "connect",
+     "topic": "presence",
+     "title": "Connect AI-search presence (AEO/GEO/SEO)",
+     "why": "planned \u2014 playbook written (wiki/real-estate-playbooks/ai-search-visibility.md); monthly presence audit task live (1st, 7:10 AM PT)",
+     "owner": "Derek",
+     "executor": "steven",
+     "impact": 3,
+     "effort": 2,
+     "confidence": 0.8,
+     "plan": [
+      "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
+      "Steven: claim the profiles (step j)",
+      "Vanessa re-checks the status on the next connect report and closes the item"
+     ],
+     "source": "toolkit:connector",
+     "weight": 1.0,
+     "score": 1.2,
+     "value": "medium",
+     "rank": 2,
+     "coa": "opportunity"
+    },
+    {
+     "id": "bm_10f48c6868",
+     "category": "steven",
+     "topic": "zillow",
+     "title": "Claim your profiles for AI search",
+     "why": "Google Business Profile, Bing Places, Zillow (agent + lender), Realtor.com, Homes.com, Yelp; send Sofia the DRE number (`wiki/real-estate-playbooks/ai-search-visibility.md`).",
+     "owner": "Sofia",
+     "executor": "steven",
+     "impact": 4,
+     "effort": 3,
+     "confidence": 0.85,
+     "plan": [
+      "Google Business Profile, Bing Places, Zillow (agent + lender), Realtor.com, Homes.com, Yelp; send Sofia the DRE number (`wiki/real-estate-playbooks/ai-search-visibility.md`).",
+      "Say 'done c' and Vanessa closes it and runs what it unblocks"
+     ],
+     "source": "steven-steps",
+     "weight": 1.0,
+     "score": 1.133,
+     "value": "low",
+     "rank": 3,
+     "coa": "opportunity"
+    }
+   ]
+  }
+ ],
+ "questions": [
+  {
+   "q": "What should I do about: Lofty API key?",
+   "a": "Lofty \u2192 Settings \u2192 Integrations \u2192 API \u2192 create; paste 1 asks for it (step 7b).",
+   "action": "it is yours: do the step on the move, then say done",
+   "coa": "big-move",
+   "ref": "bm_08ef5bf8ac"
+  },
+  {
+   "q": "What should I do about: Review 3 tune proposal(s) from the weekly loop?",
+   "a": "the loop proposed prompt/route changes nobody has judged.",
+   "action": "docs/reports/BRAIN-LOOP.md \u2192 Proposals",
+   "coa": "improve",
+   "ref": "bm_c5020d75ae"
+  },
+  {
+   "q": "What should I do about: Connect Jarvis \u00b7 Laya \u00b7 Orca (Mac 2)?",
+   "a": "partially set \u2014 engine unproven; runner not yet imported.",
+   "action": "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
+   "coa": "risk",
+   "ref": "bm_cf7a037bfe"
+  },
+  {
+   "q": "What should I do about: Drips and texts?",
+   "a": "Lofty 10DLC registration, then say \"specs ready for review\" (`wiki/real-estate-playbooks/drip-and-text-follow-up.md`).",
+   "action": "it is yours: do the step on the move, then say done",
+   "coa": "opportunity",
+   "ref": "bm_c8dd0e3f61"
+  },
+  {
+   "q": "What are the phone and Mac steps only I can do?",
+   "a": "\u2026 Paste 3 \u2014 Alienware (Windows 11), PowerShell (not as administrator), one line: (Claude Code, AnyDesk, the Doctor, then Orca / Laya / Bonsai / Ollama \u2014 it asks y before each.) Then claude once to sign in. Then four clicks, in this order (say \"done A\" \u2026 \"done D\"): \u2026",
+   "action": "Open docs/STEVEN-STEPS.md \u00a7 Start here (2026-10-23, round 2 \u2014 simplified the same evening) \u2014 three pastes, then four clicks",
+   "coa": "question",
+   "ref": "docs/STEVEN-STEPS.md",
+   "confidence": 0.61
+  },
+  {
+   "q": "What runs every morning, and when?",
+   "a": "Steven, 2026-10-23: \"ensure command deck, isa portal and 6d brain are updated daily.\" Every row below is a cloud routine on his Claude subscription (ids in cloud-routines-2026-10.md) unless marked Mac. Times are Pacific.",
+   "action": "Open docs/inventory/daily-updates.md \u00a7 Daily updates \u2014 what refreshes the three dashboards, and when (2026-10-23)",
+   "coa": "question",
+   "ref": "docs/inventory/daily-updates.md",
+   "confidence": 0.7
+  },
+  {
+   "q": "Which connections are not connected yet?",
+   "a": "Same twelve steps done. Mods installed (7 + 2 samples, settings backup kept). Jarvis engine: Ollama running, llama3.1:8b present, index ~/.openjarvis/memory.db 1,828 rows, vault 850 notes, Laya MCP registered, voice profile written.",
+   "action": "Open integrations/CONNECTIONS.md \u00a7 Connection status \u2014 Mac 1 report #2, 2026-10-23 01:01 UTC (connect-2026-10-22-1800)",
+   "coa": "question",
+   "ref": "integrations/CONNECTIONS.md",
+   "confidence": 0.75
+  },
+  {
+   "q": "What did the weekly loop find?",
+   "a": "last run 2026-10-23: bench 31/31, routes 23/23, 20 stale pages, 27 untested wiki pages, 3 tune proposals, 0/0 learned facts promoted",
+   "action": "Open docs/reports/BRAIN-LOOP.md; the Self-improvement lane above carries the fixes",
+   "coa": "question",
+   "ref": "brain/loop-history.jsonl"
+  },
+  {
+   "q": "How do I approve a big move and what happens next?",
+   "a": "Steven: \"allow the big moves to automatically execute when I hit the approve button.\" The 6D page now declares the mcp capability (Claude Code Remote, fire_trigger only) and, after writing the decision to its db, fires the Big-moves task with \"EXECUTE NOW big move <id>\";",
+   "action": "Open context/decisions.md \u00a7 2026-10-23 \u2014 Approve on the 6D Brain executes; the morning brief falls back to e-mail",
+   "coa": "question",
+   "ref": "context/decisions.md",
+   "confidence": 0.91
+  },
+  {
+   "q": "Where is the morning brief and why did it not arrive?",
+   "a": "Steven, 2026-10-23: \"vanessa did not send morning brief today with voice imessage fix this.\" Found: on 2026-10-23 the cloud brief was written (morningBrief v1), the push went, this task ran at 06:53 PT and reported ok, voice-reply-render rendered \u2014 and nothing reached his phone, because Vanessa's shared iMessage line\u2026",
+   "action": "Open integrations/mac-task-specs.md \u00a7 8c. vanessa-morning-brief-text \u2014 AMENDMENT: when iMessage is not linked, the brief goes by e-mail with the voice note attached (2026-10-23)",
+   "coa": "question",
+   "ref": "integrations/mac-task-specs.md",
+   "confidence": 0.86
+  }
+ ]
 }

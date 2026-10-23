@@ -27,6 +27,19 @@ OUT_JSON = "brain/recs/big-moves.json"
 OUT_MD = "docs/reports/BIG-MOVES.md"
 SNOOZE_DAYS = 30
 CATEGORIES = ("connect", "sync", "brain", "revenue", "marketing", "money", "compliance", "ops", "steven")
+# Four courses of action (Steven, 2026-10-23): what to do next, how the system improves itself, what could go wrong, what to go after.
+COAS = (("big-move", "Next big moves", "the moves that bring money, clients or connections in — approve and Vanessa runs hers"),
+        ("improve", "Self-improvement (loop engineering)", "what the brain, the loops and the team change in themselves to get better"),
+        ("risk", "Risks and actions to take", "what is stale, failing or silent, and the action that heads it off"),
+        ("opportunity", "Opportunities to pursue", "marketing, presence and new capabilities worth a move"))
+RISK_WORDS = re.compile(r"\b(error|refused|failing|failed|stale|silent|broken|repair|restart|overdue|expir\w*|unproven|never run|403|no key|missing)\b", re.I)
+# (question Steven asks, the words that route the brain's zero-token recall to the page that answers it)
+STANDARD_QUESTIONS = (("What are the phone and Mac steps only I can do?", "STEVEN-STEPS start here three pastes then four clicks"),
+                      ("What runs every morning, and when?", "daily updates schedule what runs each morning command deck isa portal 6D brain"),
+                      ("Which connections are not connected yet?", "connections not connected status CONNECTIONS"),
+                      ("What did the weekly loop find?", ""),
+                      ("How do I approve a big move and what happens next?", "approve on the 6D Brain executes big move"),
+                      ("Where is the morning brief and why did it not arrive?", "morning brief iMessage not arrive fallback e-mail"))
 
 
 def _id(category: str, key: str) -> str:
@@ -83,6 +96,86 @@ def _layer_candidates(root: Path, today: date) -> list[dict]:
                        "Derek", "vanessa", impact=3, effort=1, confidence=0.9,
                        plan=[f"Run the layer's own sync ({r['sync']})", "bin/brain layers --write; confirm 'even: yes'"], source="layers"))
     return out
+
+
+def coa_of(c: dict) -> str:
+    """Which course of action a candidate belongs to: explicit `coa`, else from its source, category and wording."""
+    coa = str(c.get("coa") or "")
+    if coa in {k for k, _, _ in COAS}:
+        return coa
+    src = str(c.get("source") or ""); cat = str(c.get("category") or ""); text = (c.get("title", "") + " " + c.get("why", ""))
+    if src in ("loop:stale", "layers") or cat == "compliance" or (RISK_WORDS.search(text) and src != "steven-steps"):
+        return "risk"
+    if src in ("loop:gaps", "loop:untested", "loop:history", "loop:ledger", "loop:tune") or cat == "brain":
+        return "improve"
+    if cat == "marketing" or src.startswith("scout") or c.get("topic") in ("presence", "zillow", "drip"):
+        return "opportunity"
+    return "big-move"
+
+
+def _improve_candidates(root: Path, today: date) -> list[dict]:
+    """Loop engineering: what the last weekly loop, the decision ledger and the scout say the system should change in itself."""
+    from . import loop
+    out = []
+    try:
+        last = loop.last_run(root) or {}
+    except Exception:  # noqa: BLE001 — a malformed history line must not take the whole engine down
+        last = {}
+    if not isinstance(last, dict):
+        last = {}
+    def n(key: str) -> int:
+        try:
+            return int(last.get(key) or 0)
+        except (TypeError, ValueError):
+            return 0
+    ran = _strict_date(str(last.get("ts") or ""))   # a missing or garbage stamp counts as "never ran", not "ran today"
+    if not last or ran is None or (today - ran).days > 7:
+        out.append(rec("brain", "loop:run", "Run the weekly brain loop", "no loop run in the last 7 days — regressions would go unseen", "Vanessa", "vanessa",
+                       impact=3, effort=1, confidence=0.9, plan=["bin/brain loop (writes docs/reports/BRAIN-LOOP.md)", "fix any gold question that regressed"], source="loop:history"))
+    bt, bc = n("bench_total"), n("bench_correct")
+    if bt and bc < bt:
+        out.append(rec("brain", "loop:bench", f"Fix the {bt - bc} gold question(s) the brain gets wrong", f"bench {bc}/{bt} on {str(last.get('ts'))[:10]}", "Vanessa", "vanessa",
+                       impact=3, effort=2, confidence=0.9, plan=["bin/brain loop → the failing questions", "write the answer into the routed page; reindex; re-run"], source="loop:history"))
+    tp = n("tune_proposals")
+    if tp:
+        out.append(rec("brain", "loop:tune", f"Review {tp} tune proposal(s) from the weekly loop", "the loop proposed prompt/route changes nobody has judged", "Vanessa", "vanessa",
+                       impact=2, effort=1, confidence=0.8, plan=["docs/reports/BRAIN-LOOP.md → Proposals", "promote the ones that pass the holdout; log the rest as rejected"], source="loop:tune"))
+    sp = n("stale_pages")
+    if sp >= 10:
+        out.append(rec("brain", "loop:stale-sweep", f"Sweep the {sp} pages with stale live facts", "a page with a dated number that nobody re-checked is a wrong answer waiting", "Derek", "vanessa",
+                       impact=2, effort=2, confidence=0.7, plan=["bin/brain loop lists them", "re-verify each stamp against its source or move the fact to a report"], source="loop:history"))
+    uw = n("untested_wiki_pages")
+    if uw >= 10:
+        out.append(rec("brain", "loop:coverage", f"Add gold questions for {uw} untested wiki pages", "coverage is how the brain proves it still answers after a change", "Vanessa", "vanessa",
+                       impact=2, effort=2, confidence=0.8, plan=["one question per page in brain/bench/questions.json", "bin/brain loop → count rises"], source="loop:untested"))
+    # the ledger: many declines in a fortnight means the ranking is off, not Steven
+    led = [d for d in read_ledger(root) if isinstance(d, dict)]
+    recent_declines = [d for d in led if d.get("decision") == "declined" and (today - _date_of(str(d.get("at") or ""), today)).days <= 14]
+    if len(recent_declines) >= 5:
+        out.append(rec("brain", "loop:weights", f"Retune the recommendation weights ({len(recent_declines)} declines in 14 days)", "the engine should stop offering what Steven keeps saying no to",
+                       "Vanessa", "vanessa", impact=3, effort=1, confidence=0.9, plan=["bin/brain recs --json → which categories were declined", "lower those weights or drop the source; log it in context/decisions.md"], source="loop:ledger"))
+    # the weekly scout: new tools seen but never evaluated become opportunities
+    try:
+        seen = json.loads((root / "integrations/scout/seen.json").read_text(encoding="utf-8"))
+        raw = seen.get("ids") if isinstance(seen, dict) else None
+        ids = [str(x) for x in raw] if isinstance(raw, list) else []
+        upd = _strict_date(str(seen.get("updated") or "")[:10]) if isinstance(seen, dict) else None
+        if ids and (upd is None or (today - upd).days > 14):
+            # category "brain", not "marketing": a no to the scout must not lower the drip / presence moves (validator P08-F1)
+            r = rec("brain", "scout:run", "Run Nadia's weekly scout for new AI tooling", f"last scout {upd or 'unknown'}; {len(ids)} servers seen so far", "Nadia", "vanessa",
+                    impact=2, effort=1, confidence=0.8, plan=["python3 integrations/scout/scout.py (proposal-only)", "shortlist 3 with a Context7 doc check; install nothing"], source="scout")
+            r["coa"] = "opportunity"; out.append(r)
+    except Exception:  # noqa: BLE001 — unreadable, unparsable or oddly shaped: no scout move, nothing else lost
+        pass
+    return out
+
+
+def _strict_date(at: str) -> date | None:
+    """YYYY-MM-DD from the front of a stamp, or None — never a guess."""
+    try:
+        return date.fromisoformat(at.strip()[:10])
+    except (ValueError, AttributeError):
+        return None
 
 
 def _loop_candidates(root: Path, today: date) -> list[dict]:
@@ -156,8 +249,11 @@ def _signal_candidates(signals: list[dict]) -> list[dict]:
         try:
             plan = s.get("plan", [])
             plan = [str(x) for x in plan] if isinstance(plan, list) else [str(plan)] if plan else []
-            out.append(rec(str(s.get("category", "ops")), str(s["key"]), str(s["title"]), str(s.get("why", "")), str(s.get("owner", "Vanessa")), str(s.get("executor", "vanessa")),
-                           int(s.get("impact", 3)), int(s.get("effort", 2)), float(s.get("confidence", 0.6)), plan, str(s.get("source", "signal"))))
+            r = rec(str(s.get("category", "ops")), str(s["key"]), str(s["title"]), str(s.get("why", "")), str(s.get("owner", "Vanessa")), str(s.get("executor", "vanessa")),
+                    int(s.get("impact", 3)), int(s.get("effort", 2)), float(s.get("confidence", 0.6)), plan, str(s.get("source", "signal")))
+            if s.get("coa"):
+                r["coa"] = str(s["coa"])
+            out.append(r)
         except (KeyError, TypeError, ValueError):
             continue
     return out
@@ -167,7 +263,7 @@ def candidates(root: Path, signals: list[dict] | None = None, today: date | None
     today = today or date.today()
     seen: set[str] = set()
     out = []
-    for c in _signal_candidates(signals or []) + _steven_steps(root) + _toolkit_candidates(root) + _layer_candidates(root, today) + _loop_candidates(root, today):
+    for c in _signal_candidates(signals or []) + _steven_steps(root) + _toolkit_candidates(root) + _layer_candidates(root, today) + _loop_candidates(root, today) + _improve_candidates(root, today):
         if c["id"] in seen:
             continue
         seen.add(c["id"])
@@ -296,6 +392,79 @@ def top(root: Path, n: int = 10, signals: list[dict] | None = None, today: date 
     return picked
 
 
+def coas(root: Path, n_per: int = 4, signals: list[dict] | None = None, today: date | None = None) -> dict:
+    """The four courses of action, n_per ranked items each, from the same scored pool as top()."""
+    pool = top(root, 80, signals, today)
+    must = {c["id"] for c in top(root, 10, signals, today)}   # the real top 10 (with its executor cap) always reaches an approve surface (validator P05-F1)
+    groups: dict[str, list] = {k: [] for k, _, _ in COAS}
+    topics_used: set[str] = set()
+    for c in pool:
+        k = coa_of(c); c["coa"] = k
+        topic = str(c.get("topic") or c["id"])
+        if topic in topics_used and c["id"] not in must:
+            continue                                  # one move per topic across the four lanes (validator P05-F2)
+        if len(groups[k]) < n_per or c["id"] in must:
+            groups[k].append(dict(c, rank=len(groups[k]) + 1)); topics_used.add(topic)
+    return groups
+
+
+def questions(root: Path, groups: dict, standard: int = 6) -> list[dict]:
+    """Answers to the questions Steven is likely to ask: one per leading move, plus the standing ones answered by the brain's
+    own zero-token recall (the page and section are named, so the answer can be checked)."""
+    from . import recall
+    out = []
+    for k, label, _ in COAS:
+        for c in (groups.get(k) or [])[:1]:
+            why = (c.get("why") or "").rstrip("."); first = (c.get("plan") or [""])[0]
+            if not first or first.rstrip(".") == why:
+                first = "approve it on the 6D Brain and Vanessa runs it" if c.get("executor") == "vanessa" else "it is yours: do the step on the move, then say done"
+            out.append({"q": f"What should I do about: {c['title']}?", "a": why + ".", "action": first, "coa": k, "ref": c["id"]})
+    for q, hint in STANDARD_QUESTIONS[:standard]:
+        if q.startswith("What did the weekly loop"):
+            from . import loop
+            last = loop.last_run(root) or {}
+            if last:
+                a = (f"last run {str(last.get('ts'))[:10]}: bench {last.get('bench_correct')}/{last.get('bench_total')}, routes {last.get('route_correct')}/{last.get('route_total')}, "
+                     f"{last.get('stale_pages')} stale pages, {last.get('untested_wiki_pages')} untested wiki pages, {last.get('tune_proposals')} tune proposals, "
+                     f"{last.get('learned_promoted')}/{last.get('learned_candidates')} learned facts promoted")
+                out.append({"q": q, "a": a, "action": "Open docs/reports/BRAIN-LOOP.md; the Self-improvement lane above carries the fixes", "coa": "question", "ref": "brain/loop-history.jsonl"})
+                continue
+        try:
+            r = recall.recall(hint or q, root=root)
+            ev = str(r.get("evidence") or "")
+            body = ev.split("\n", 1)[1] if "\n" in ev else ev
+            body = _clean_answer(body)
+            f, sec = r.get("file"), r.get("section")
+            action = f"Open {f}" + (f" § {sec}" if sec else "") if f else "ask Vanessa (the brain found no page for this)"
+            out.append({"q": q, "a": body or "not in the brain", "action": action, "coa": "question",
+                        "ref": str(f or ""), "confidence": float(r.get("confidence") or 0)})
+        except Exception:  # noqa: BLE001
+            out.append({"q": q, "a": "not in the brain (recall failed)", "action": "ask Vanessa", "coa": "question", "ref": ""})
+    return out
+
+
+def _clean_answer(text: str, limit: int = 320) -> str:
+    """A recall passage as a readable answer: no headings, pointers, code lines, table rows or bold markers; cut at a sentence."""
+    keep = []
+    for line in text.splitlines():
+        t = line.strip()
+        if not t or t.startswith("#") or t.startswith("|") or t.startswith("```") or t.startswith("[pointer"):
+            continue
+        if t.startswith("`") and t.endswith("`"):
+            continue
+        keep.append(t)
+    body = " ".join(keep)
+    body = re.sub(r"\[pointer → [^\]]*\]", " ", body)
+    body = re.sub(r"`[^`]*`", lambda m: m.group(0)[1:-1] if len(m.group(0)) < 40 else "", body)
+    body = re.sub(r"\*\*|__|(?<!\w)[*_](?!\w)", "", body)
+    body = re.sub(r"\s+", " ", body).strip()
+    if len(body) > limit:
+        cut = body[:limit]
+        end = max(cut.rfind(". "), cut.rfind("; "), cut.rfind(": "))
+        body = (cut[:end + 1] if end > limit // 2 else cut.rsplit(" ", 1)[0] + "…")
+    return body
+
+
 def format_top(items: list[dict]) -> str:
     out = [f"{'#':>2} {'score':>5} {'value':<6} {'who':<9} {'exec':<7} title"]
     for c in items:
@@ -306,9 +475,13 @@ def format_top(items: list[dict]) -> str:
 def write(root: Path, n: int = 10, signals: list[dict] | None = None, today: date | None = None) -> Path:
     today = today or date.today()
     items = top(root, n, signals, today)
+    groups = coas(root, 4, signals, today)
+    qs = questions(root, groups)
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     (root / OUT_JSON).parent.mkdir(parents=True, exist_ok=True)
-    (root / OUT_JSON).write_text(json.dumps({"generated": now, "date": today.isoformat(), "items": items, "weights": load_weights(root)}, indent=1) + "\n", encoding="utf-8")
+    (root / OUT_JSON).write_text(json.dumps({"generated": now, "date": today.isoformat(), "items": items, "weights": load_weights(root),
+                                             "coas": [{"key": k, "label": label, "about": about, "items": groups.get(k, [])} for k, label, about in COAS],
+                                             "questions": qs}, indent=1) + "\n", encoding="utf-8")
     L = [f"# Big moves — Vanessa's top {n} for {today.isoformat()}", "",
          "Scored impact × confidence ÷ effort × a weight the brain learns from Steven's approvals and declines",
          "(`brain/recs/weights.json`, `brain/recs/ledger.jsonl`). Approve or decline on the 6D Brain or the Command Deck;",
@@ -317,6 +490,17 @@ def write(root: Path, n: int = 10, signals: list[dict] | None = None, today: dat
     for c in items:
         plan = " → ".join(c["plan"])
         L.append(f"| {c['rank']} | {c['score']} | {c['value']} | {c['owner']} | {c['executor']} | {c['title']}{' (' + c['decision'] + ')' if c.get('decision') else ''} | {c['why'].replace('|', '/')} | {plan.replace('|', '/')} |")
+    L += ["", "## Four courses of action (4 each)", ""]
+    for k, label, about in COAS:
+        L += [f"### {label}", f"_{about}_", ""]
+        for c in groups.get(k, []):
+            L.append(f"- **{c['title']}** ({c['value']} value, score {c['score']}, {c['executor']}) — {c['why']}. First step: {(c.get('plan') or ['—'])[0]}")
+        if not groups.get(k):
+            L.append("- nothing in this lane today")
+        L.append("")
+    L += ["## Questions you may have", ""]
+    for q in qs:
+        L.append(f"- **{q['q']}** {q['a']} → {q['action']}")
     w = load_weights(root)
     L += ["", "Category weights: " + ", ".join(f"{k} {v:.2f}" for k, v in sorted(w.items())), f"Generated {now}."]
     (root / OUT_MD).parent.mkdir(parents=True, exist_ok=True)
