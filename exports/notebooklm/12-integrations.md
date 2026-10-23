@@ -496,6 +496,34 @@ present, index `~/.openjarvis/memory.db` 1,828 rows, vault 850 notes, Laya MCP r
 | Mac 2 run 01:53 UTC (full report) | mods on (8 done); Ollama formula build refused like python (Intel + macOS 26 + old CLT) | `connect-all.sh` 6a now installs the Ollama cask (prebuilt app) first; Python via uv; rerun | paste |
 | Command Line Tools on Mac 2 | outdated for macOS 26 — the one root cause left that only Steven can clear | System Settings → Software Update (install the Command Line Tools update), or the two `sudo` lines Homebrew printed | Steven |
 | NotebookLM (6D Brain as a notebook) | active — source pack: `bin/brain export notebooklm` → 13 files, 98+ pages, clients excluded, PII masked; no public API for a consumer account, Drive stays read-only | upload the 13 files once (`scripts/notebooklm-export.sh` opens both), re-upload changed files weekly | Steven (5 min) |
+| Google Drive `SECOND BRAIN/` (write, scoped) | connected — 13 `SB` Google Docs created 2026-10-23 06:05 UTC in Steven's folder tree (owner [e-mail masked]); weekly rewrite task trig_01MR463NSmSAcA84zJHjerUp (Sun 2:45 PM PT) | — | — |
+| NotebookLM (mirror) | connected — the 13 Docs are its sources; Google auto-syncs Drive Docs; Steven adds them to his three notebooks once (STEVEN-STEPS 1f) | add sources from Drive, once | Steven (5 min) |
+| Notion Second Brain (layer directory) | active — DB e767dacc; directory page written by the weekly sync; `brain-learn-daily` rows resume with the runner | — | — |
+| GitHub repo visibility | public — anyone can read the brain (no client files beyond first names) | Steven decides (STEVEN-STEPS 1g) | Steven |
+| NotebookLM direct connector (`notebooklm-mcp-cli`) | pending — opt-in taken; installs with the next Mac paste (connect-all 6f); sign-in his | `nlm login` on Mac 1, then `nlm login --check` | Steven |
+| NotebookLM direct connector — Mac 1, 2026-10-23 06:30 UTC | connected — `nlm login` done (protected mode, OS keystore), `--check` valid, account [e-mail masked], 5 notebooks found; MCP registered for Claude Code by connect-all 6f | first use: a Claude Code session on Mac 1 adds the SB Docs to the "2nd brain" notebook | Steven (one prompt) |
+| Mac 1 full report 06:22 UTC | connected — 17 of 20 steps done (runner, Laya, Jarvis, mods, Lofty, Agent OS, Orca, AnyDesk, Gondola, Inkbox voice); open: Kapso sign-in + keys | `claude` → `/mcp` → kapso | Steven |
+
+## Connection status — consolidated, 2026-10-23 13:10 UTC (Steven: "fix anything not optimized or broken")
+
+Supersedes the per-run rows above. Only what is still open is listed; everything else in the earlier 2026-10-23 tables is
+connected (Mac 1: runner, Laya, Jarvis, mods, Lofty, Agent OS, Orca, AnyDesk, Gondola, Inkbox voice, NotebookLM connector
+signed in; cloud: Drive SECOND BRAIN, Notion directory, 6D daily rebuild with proof row, weekly layer sync).
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| NotebookLM "2nd brain" notebook sources | connected — connector signed in (5 notebooks); the SB Docs are not yet attached as sources | one prompt in a Claude Code session on Mac 1 (STEVEN-STEPS 1f2-done) | Steven (one prompt) |
+| Kapso (Mac 1) | plugin + MCP registered; `! Needs authentication` | `claude` → `/mcp` → kapso → sign in; then the keys line | Steven |
+| Inkbox iMessage line | connected — no phone linked yet | text `connect @vanessa-shearrill` to +1 650 484 9720 | Steven |
+| Zoho CRM (Composio) | 403 NO_PERMISSION until the API box is ticked | tick "Zoho CRM API Access" | Steven |
+| Kapso webhooks (Pabbly → Kapso) | two trigger URLs not pasted yet | `docs/STEVEN-STEPS.md` step 5 | Steven |
+| Gondola (claude.ai) | Claude Code MCP registered; custom connector still his | claude.ai → Connectors → Add custom connector | Steven |
+| Orca pairing · AnyDesk permissions | apps installed on both Macs | STEVEN-STEPS step 4 | Steven |
+| Mac 2 | Python 3.12 (uv), Claude Code 2.1.309, mods, Agent OS, brain index, Orca, AnyDesk, Gondola done; Laya + Jarvis engine unproven (last REPORT not pasted) | rerun `bash scripts/second-mac.sh`, paste the REPORT; then runner-export (Mac 1) → AirDrop → runner-import (Mac 2); vault for Jarvis (SECOND-MAC-SETUP 6b) | Steven (pastes) |
+| EVRoutes · Turo | `needs_reconnect` | Reconnect or remove | Steven |
+| Four http_api Sunday routines | still enabled | 4 clicks | Steven |
+| GitHub repo visibility | public | Steven decides (STEVEN-STEPS 1g) | Steven |
+| Notion `brain-learn-daily` rows | resume with Mac 1's runner (signed in 2026-10-23); directory page written 2026-10-23 | — | — |
 
 
 ---
@@ -1611,6 +1639,79 @@ block it prints: create the owner account yourself in the first-run wizard, impo
 `workflows/` from the UI, create the credentials each workflow's sticky note names, and
 coordinate the OpenWA webhook URL/secret with the OpenWA install. Nothing here is connected,
 installed or running until Steven does that on his own Mac.
+
+
+---
+
+<!-- source file: integrations/notebooklm/README.md -->
+# FILE: integrations/notebooklm/README.md
+
+# NotebookLM — the Second Brain as a notebook (Drive mirror + source pack, 2026-10-23)
+
+**Status 2026-10-23 06:10 UTC — connected and syncing.** On Steven's instruction ("connect and sync notebook lm") the
+pack now lives in Google Drive as 13 Google Docs under `SECOND BRAIN/` (owner [e-mail masked]; folder
+https://drive.google.com/drive/folders/16sh0SNlicvHOEpAtTUufI504agSlQRaX), laid out as his plan asked: `00 Inbox`,
+`01 Reference Sources/{Mortgage and Lending, Real Estate, AI and Automation, Personal Learning}`, `02 Approved
+Playbooks`, `03 Research Briefs`, `04 Decisions and Lessons`, `99 Archive`. Doc ids, folders and the notebook each Doc
+belongs to: `drive-manifest.json`. A weekly task (Sun 2:45 PM PT, in the Claude Code session that holds the connectors)
+re-exports, rewrites the changed Docs in place through Composio Google Docs, refreshes the Notion layer directory and
+`docs/reports/LAYERS.md`. NotebookLM auto-syncs Google Docs sources (Google, May 2026), so Steven's only step is adding
+the Docs to his notebooks once. One scoped exception to the Drive rule: writes go only to `SECOND BRAIN/`.
+
+**Steven's one-time step (5 minutes):** notebook.google.com → New notebook → **AI Automation and VANESSA** → Add
+sources → Google Drive → pick every `SB …` Doc in `01 Reference Sources/AI and Automation` plus `SB 00-START-HERE` and
+`SB 02-who-and-decisions`. Then **Mortgage Reference Library** (`SB 05`, `SB 09`, `SB 00`, `SB 02`) and **Business
+Operating Playbooks** (`SB 06`, `SB 08`, `SB 09`, `SB 00`, `SB 02`). Nothing else to do; the Docs refresh on their own.
+
+---
+
+
+**What this is.** `bin/brain export notebooklm` turns the brain into 13 markdown sources under `exports/notebooklm/`
+(not committed). Steven uploads them to one NotebookLM notebook, "Second Brain", and can then ask it anything the brain
+knows, with citations back to the page (`# FILE: <path>` headers). The 6D Brain itself is in there as text
+(`11-6d-brain-map.md`: every node by lobe, its description and strongest links), so the notebook can answer "how does X
+connect to Y" the way the 6D page shows it.
+
+**Why a pack and not a connection.** NotebookLM's consumer and Workspace editions have no public API (only NotebookLM
+Enterprise on Google Cloud does, `notebooks.sources.batchCreate`), and `integrations/google-drive-brain.md` rule 1 says
+nothing writes to Google Drive. Community "connectors" drive a hidden browser on Steven's Google account and keep his
+session cookies in plain text (`integrations/skill-packs/REGISTRY-2026-10-12b.md`), so they stay out. If Steven ever
+wants the Drive route (NotebookLM can re-sync a Drive source with one click), that is one decision in `context/decisions.md`
+and the exporter gains a `--drive` step through the claude.ai Drive connector; until then, drag-and-drop.
+
+**Never exported.** `wiki/clients/**` (CLAUDE.md HALT: client PII), `brain/state`, `docs/reports`, the deck HTML,
+skills, scripts. Phone numbers and e-mails are masked except Vanessa's business lines (+1 650 484 9720 iMessage,
+(202) 474-5223 WhatsApp, vanessa-shearrill@inkboxmail.com). The mask is deliberately eager: a 10-digit version id or an
+AnyDesk ID is masked too — nothing of substance is lost.
+
+## Steven's steps (5 minutes, once)
+
+1. On the Mac: `bash scripts/notebooklm-export.sh` (reindexes, exports, opens the folder and notebook.google.com).
+2. NotebookLM → New notebook → name it **Second Brain** → Add sources → **Upload** → select all 13 `.md` files.
+3. Ask it. Suggested first question: "What runs every morning and which dashboard does each piece write to?"
+
+**Refresh.** Rerun step 1 after the brain changes; in the notebook delete the sources that changed and upload the new
+files (the `00-START-HERE.md` table shows sizes, so a changed size is a changed file). A weekly refresh is enough; the
+daily truth stays in `bin/brain recall` and the Command Deck.
+
+**Rules the notebook keeps** (they are in `00-START-HERE.md` so NotebookLM reads them as a source): never a rate quote
+or eligibility call, age every fact by the page's date, say "not in the brain" instead of guessing.
+
+Tests: `python3 -m unittest brain.tests.test_export_notebooklm` (masking, routing, exclusions, size split, a real export).
+
+## Direct connector (opt-in taken 2026-10-23: "setup and connect everything for me")
+
+`connect-all.sh` step 6f installs `notebooklm-mcp-cli` (jacob-bd, PyPI; `uv tool install notebooklm-mcp-cli`) and
+registers its MCP server with Claude Code (`nlm setup add claude-code`). It uses notebook.google.com's undocumented
+internal APIs and, after **Steven** runs `nlm login` (a browser sign-in; the script never logs in), keeps his Google
+session on that Mac. Rules: non-sensitive notebooks only (the SB Docs), `nlm login --check` before trusting it, and it
+is the first thing to remove if Google changes the interface (`uv tool uninstall notebooklm-mcp-cli`, `claude mcp remove
+notebooklm`). With it, any Claude Code or Orca session can ask the "2nd brain" notebook directly ("query my 2nd brain
+notebook for …") and add the SB Docs as sources without the picker. Upstream caveat, verbatim: "internal APIs that are
+undocumented and may change without notice; personal/experimental use, at your own risk".
+
+**Links (2026-10-23):** `bin/brain links` prints every front door; `brain/links.py` is the one place to add a surface, and the
+6D Brain, the layers register and the Notion directory read it.
 
 
 ---

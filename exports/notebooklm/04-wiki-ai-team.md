@@ -898,6 +898,71 @@ cycle allows at most three a day.
 
 ---
 
+<!-- source file: wiki/ai-team/second-brain-layers.md -->
+# FILE: wiki/ai-team/second-brain-layers.md
+
+# The second brain's layers — what lives where, how it syncs, how to tell it is even (2026-10-23)
+
+Steven's rule (2026-10-23): "ensure all data syncs evenly across all layers — Notion, Google Drive, NotebookLM and
+more". Even means **every layer is inside its own cadence**, measured from the stamp its own sync writes, never from
+today's date. `bin/brain layers` prints the register; `bin/brain layers --write` rewrites `docs/reports/LAYERS.md`.
+
+## One job per layer
+
+| Layer | Job | Writes | Reads | Cadence |
+|---|---|---|---|---|
+| **Repo** (GitHub + both Macs) | the record: every page, rule, skill, script | Claude Code sessions, cloud routines, the Macs (never force) | everything else | continuous; Macs pull every 30 min |
+| **Recall index** (`bin/brain`) | zero-token answers, level 1 | `bin/brain reindex` (daily rebuild, `connect-all` 6a2) | Vanessa, every session | daily |
+| **Command Deck DB** | live operational state (queue, desks, briefs, lists) | routines, Mac tasks, deck buttons | the three dashboards, routines | continuous |
+| **6D Brain page** | the map: every node and link, including the stores below | 3:30 AM PT rebuild + merge-live | Steven, the org chart | daily |
+| **Jarvis** (Mac) | local recall over the vault, her voice; level 5 | `openjarvis` runner task, `jarvis-setup.sh` | Mac sessions only | 2 days |
+| **Notion Second Brain** | operational memory: decisions, lessons, the layer directory | `brain-learn-daily`; the weekly sync refreshes the directory page | Steven, Vanessa (Notion MCP) | weekly |
+| **Google Drive `SECOND BRAIN/`** | the shared knowledge layer and the off-GitHub redundant copy: 13 `SB` Google Docs + Steven's own folders (Inbox, Reference Sources, Approved Playbooks, Research Briefs, Decisions and Lessons, Archive) | weekly sync rewrites the 13 Docs; Steven drops originals in his folders | NotebookLM, Claude (Drive connector), Steven | weekly |
+| **NotebookLM** | source-grounded research over the same Docs; level 4 when the repo and the Mac are unreachable | Google auto-syncs the Docs | Steven (and Claude, through a research brief he pastes) | follows Drive |
+| Vector index · knowledge graph | high-volume corpora · relationships | spec only until a corpus is loaded | — | 30 days |
+
+What flows where: **repo → index, 6D, Drive Docs → NotebookLM**; **deck DB → briefs → repo (cosBrief, memory)**;
+**NotebookLM brief → Claude → Notion decision → repo `context/decisions.md`** (the approval gate: nothing an AI
+produced becomes a "fact" in the repo without Steven's yes).
+
+## Capabilities (2026-10-23)
+
+- `bin/brain export notebooklm` — the pack (13 masked bundles, no client pages, the 6D map as text).
+- `bin/brain layers [--write] [--json]` — the register above with last-sync stamps and verdicts.
+- `bin/brain ingest claude-export <conversations.json>` — Steven's claude.ai chats (his words only, masked) → `memory/claude-chats.md`;
+  the daily "Claude sessions ledger" task → `docs/inventory/claude-sessions.md` (every Claude Code session, title/date/status).
+- `bin/brain links` — every front door with its URL (deck, ISA Portal, 6D, Action Desk, Bot Crew, repo, Drive SECOND BRAIN,
+  NotebookLM, Notion database + layer directory, the 13 SB Docs). The 6D Brain embeds the same list: "Open the brain"
+  panel, an open link per layer, and clickable store nodes (Drive, NotebookLM, Notion, Command Deck).
+- Weekly sync task **NotebookLM mirror weekly sync** (Sun 2:45 PM PT, after the allowance reset): export → commit →
+  rewrite changed Docs → stamp `drive-manifest.json` → refresh the Notion directory page → `layers --write`.
+- CLAUDE.md recall level 4 and a routing row for the mirror; 6D store node `store:notebooklm`.
+- NotebookLM notebooks (Steven's three, from his plan): **Mortgage Reference Library**, **AI Automation and VANESSA**,
+  **Business Operating Playbooks** — which Doc goes in which is in `integrations/notebooklm/drive-manifest.json`.
+
+## Rules
+
+1. Client pages never leave the Mac and the repo's `wiki/clients/` (they are not in the pack, Drive or NotebookLM).
+2. Drive writes are limited to `SECOND BRAIN/` (Steven's 2026-10-23 instruction); the rest of Drive stays read-only.
+3. A NotebookLM answer is an intermediate: for anything licensed or consequential, read the page it cites.
+4. State the age of every fact as the layer's own stamp. A stale layer says so (`bin/brain layers`).
+5. The community NotebookLM MCP connector (`notebooklm-mcp-cli`) stays opt-in on the Mac: it stores browser session
+   material; `integrations/notebooklm/README.md` has the gated steps if Steven chooses it.
+
+## What "the most powerful second brain" means here, and what is next (2026-10-23)
+
+Live now: zero-token recall (`bin/brain recall`, 1,257 sections), the 6D Brain with a Layers readout, one Vanessa queue
+every dashboard writes, push-buttons, 46 skills, seven pods, two Macs on one schedule, Jarvis + Laya on-device, the brain
+mirrored to Drive and NotebookLM with a weekly sync, Notion holding the layer directory, a validator gate on every code
+change. Next, each one Steven's yes because it spends, signs in or installs: (1) Notion **Decisions** and **Actions**
+databases fed by `context/decisions.md` and the Vanessa queue (approval gate stays); (2) the first vector-index corpus
+(Fieldy transcripts, once recordings exist); (3) NotebookLM research briefs landing in `03 Research Briefs` and read by
+`bin/brain ask`; (4) the community NotebookLM MCP on one Mac, non-sensitive notebook only; (5) a Drive copy of the 6D
+page itself (redundancy of the map, not only the data). Each becomes a dated entry here when done.
+
+
+---
+
 <!-- source file: wiki/ai-team/third-party-packs.md -->
 # FILE: wiki/ai-team/third-party-packs.md
 
@@ -1024,7 +1089,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 46 skills · 7 plugins · 17 connectors (8 ok, 9 need attention) · 65 cloud routines · 60 Mac tasks
+toolkit: 46 skills · 7 plugins · 12 connectors (2 ok, 10 need attention) · 65 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -1043,9 +1108,7 @@ toolkit: 46 skills · 7 plugins · 17 connectors (8 ok, 9 need attention) · 65 
 - `push-buttons`: One-word slash commands (/cycle /inbox /meetings /sync /connect /tc /queue /today /help-buttons) that send the full, correct prompt for each workflow, HALT rules included.
 
 **Connectors**
-- `Inkbox (Vanessa's iMessage + email)` — *ok*: connected — reconnected 2026-10-22: email active (vanessa-shearrill@inkboxmail.com), iMessage line ready; no phone linked yet
-- `Kapso WhatsApp (Pabbly app)` — *ok*: connected — login proven (HTTP 200); phone list + List Phone Numbers built; both instant triggers built (manual webhook: paste the Pabbly URL into Kapso); Send step waits for his test number
-- `Kapso WhatsApp (Mac)` — *pending*: plugin/MCP/Keychain keys pending
+- `Inkbox iMessage line` — *ok*: connected — no phone linked yet
 
 **Cloud routines**
 - `Vanessa — Chief of Staff daily cycle (weekdays 6:25 AM PT, parallel squads)`: cron CRON_TZ=America/Los_Angeles 25 6 * * 1-5 · on · —
@@ -1140,9 +1203,6 @@ toolkit: 46 skills · 7 plugins · 17 connectors (8 ok, 9 need attention) · 65 
 - `openmontage-video`: Make a marketing, explainer or training video with OpenMontage on the Mac (~/Applications/OpenMontage) — Sofia's brief, Claude Code runs the pipeline, Steven approves every creative stop, nothing is posted. Use when Stev
 - `past-client-nurture`: Monthly sphere-touch marketing drafts for Steven's past clients from reClients and pipeline — a local market note, home-purchase anniversaries and birthdays, and a plain check-in — as Gmail drafts plus the three template
 
-**Connectors**
-- `BlackRock · Health Data Avatar · Microsoft 365 · PlayMCP · Similarweb · Higgsfield` — *pending*: never finished connecting; nothing uses them
-
 **Cloud routines**
 - `VA Command Center — weekly avatar content drafts`: cron CRON_TZ=America/Los_Angeles 58 14 * * 0 · on · SUCCEEDED @ 2026-10-18T21:58
 - `Command Deck — Weekly content edit reminder`: cron 0 15 * * 1 · on · SUCCEEDED @ 2026-09-21T15:03
@@ -1165,8 +1225,7 @@ toolkit: 46 skills · 7 plugins · 17 connectors (8 ok, 9 need attention) · 65 
 - `zoho-crm-sync`: Sync Zoho CRM — Steven's system of record for the mortgage pipeline — into the Command Deck through Composio: writes zohoSync (connection health), zohoLeads (14-stage kanban) and zohoDeals. Self-tests first and reports t
 
 **Connectors**
-- `Zoho CRM (Composio)` — *attention*: account ACTIVE; ZOHO_GET_ZOHO_RECORDS → 403 NO_PERMISSION (tested 14:46 UTC)
-- `Lofty` — *attention*: no key on the Mac yet; GET-only CLI built
+- `Zoho CRM (Composio)` — *attention*: 403 NO_PERMISSION until the API box is ticked
 
 **Cloud routines**
 - `Transaction & Showing desk — TC + showing assistant (weekdays 6:05 AM PT, before the cycle)`: cron CRON_TZ=America/Los_Angeles 5 6 * * 1-5 · on · SUCCEEDED @ 2026-10-22T14:10
@@ -1225,17 +1284,16 @@ toolkit: 46 skills · 7 plugins · 17 connectors (8 ok, 9 need attention) · 65 
 - `route-beacon`: Shows which AI route this session is on and toasts when the failover switches.
 
 **Connectors**
-- `Mac runner (every Mac task)` — *silent*: still silent since 2026-10-13 07:13 UTC — stuck "running" one task
-- `Repo sync on the Mac` — *attention*: git pull failed daily (cloud and Mac both rebuild the brain files)
-- `Gondola (travel MCP)` — *attention*: not yet registered anywhere
-- `Fieldy` — *ok*: connected — no recordings yet (free plan, 7-day window)
-- `Gmail · Google Calendar · Zoom · Fieldy · Inkbox` — *ok*: connected — callable from the Command Deck page (mcp capability): Triage inbox, Recap meetings, Text me the brief
-- `Eromify` — *ok*: connected — reconnected 2026-10-22 (creator studio; spends credits — HALT: every generation is Steven's yes)
+- `NotebookLM "2nd brain" notebook sources` — *ok*: connected — connector signed in (5 notebooks); the SB Docs are not yet attached as sources
+- `Kapso (Mac 1)` — *attention*: plugin + MCP registered; ! Needs authentication
+- `Kapso webhooks (Pabbly → Kapso)` — *attention*: two trigger URLs not pasted yet
+- `Gondola (claude.ai)` — *attention*: Claude Code MCP registered; custom connector still his
+- `Orca pairing · AnyDesk permissions` — *attention*: apps installed on both Macs
+- `Mac 2` — *attention*: Python 3.12 (uv), Claude Code 2.1.309, mods, Agent OS, brain index, Orca, AnyDesk, Gondola done; Laya + Jarvis engine unproven (last REPORT not pasted)
 - `EVRoutes · Turo` — *reconnect*: needs_reconnect
-- `You.com` — *ok*: connected but 0 credits; 9 files still reference it
-- `Weekly backup` — *ok*: active — GREEN: catch-up run 2026-10-22 verified 191 + 16 docs; now Sunday 21:07 UTC (after the allowance reset)
-- `Cloud routines` — *ok*: active — 55 enabled; every failure this month = usage limit; 17 ran green today
-- `Broker Command Center (3rd dashboard)` — *attention*: data lives in the browser only — no routine can read it
+- `Four http_api Sunday routines` — *attention*: still enabled
+- `GitHub repo visibility` — *attention*: public
+- `Notion `brain-learn-daily` rows` — *attention*: resume with Mac 1's runner (signed in 2026-10-23); directory page written 2026-10-23
 
 **Cloud routines**
 - `Command Deck — daily freshness sweep (writer, Claude; once a day since 2026-10-22, per-key cadence)`: cron 40 15 * * * · on · SUCCEEDED @ 2026-10-20T15:40

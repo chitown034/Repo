@@ -214,6 +214,7 @@ routine.**
 | 6:25 AM weekdays | Vanessa's Chief-of-Staff cycle — works `vanessaQueue` first, ≤8 pod squads in parallel | cosBrief, vanessaQueue, twinQueue, ISA `isaToday` | the deck + ISA `vanessaOutbox` |
 | 6:34 AM daily | Morning brief across the three dashboards — push + `morningBrief {text, voiceScript}` | morningBrief, morningBriefStatus | cosBrief, tcDesk, inboxDesk, ISA Portal |
 | 6:40 AM daily (Mac) | iMessage text of that brief + Vanessa's voice note (`mac-task-specs` §8/§8b) | — | morningBrief |
+| 3:30 AM daily | 6D Brain rebuild + republish (reindex, loop, toolkit, layers, build, merge-live, publish, proof row) | brain6dStatus, dashboard/brain-4d.html, docs/reports/LAYERS.md | the repo tree, the live 6D page |
 | 7:20 AM Mon | Refi watch — prep list vs the market average (never a quote) | refiWatchDesk, vanessaQueue | ratesSnapshot, refiWatchList | Test-fired 2026-10-22 23:14 UTC: wrote refiWatchDesk (listSize 0, market average as of 2026-10-22) and one pending vanessaQueue item; refiWatch untouched. |
 | 7:40 AM, 11th monthly | Sphere & past-client touches — drafts + ISA call list | sphereTouches, marketingQueue, vanessaQueue | sphereList, liveFeeds market notes |
 | 8:40 AM daily (15:40 UTC) | Freshness sweep — per-key cadence (8 d / 4 d / 80 h / 26 h) + ISA mirror | liveFeeds, feedFreshness, ISA ratesSnapshot/liveFeeds | — |
@@ -1023,10 +1024,30 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
    sign in; (b) on **Mac 1** paste `command -v runnerctl; ls ~/Library/LaunchAgents | grep -i runner` and send Claude
    the two lines — the task runner was built on Mac 1 only and its copy step for Mac 2 comes from that. Jarvis's index
    on Mac 2 needs the vault there too (`docs/SECOND-MAC-SETUP.md` 6b: iCloud or a copy).
-1f. **6D Brain into NotebookLM (5 minutes, once):** on a Mac run `bash scripts/notebooklm-export.sh`; it builds 13
-   source files (no client pages, phones/e-mails masked, the 6D map as text) and opens the folder and notebook.google.com.
-   New notebook "Second Brain" → Add sources → Upload → select all 13 files. Refresh any week by rerunning and re-uploading
-   the changed files. No API exists for your account and nothing writes to Drive (`integrations/notebooklm/README.md`).
+1f. **NotebookLM, once (5 minutes):** the brain is already in your Drive as 13 Google Docs under **SECOND BRAIN/**
+   (https://drive.google.com/drive/folders/16sh0SNlicvHOEpAtTUufI504agSlQRaX) and a weekly task keeps them current.
+   notebook.google.com → New notebook **AI Automation and VANESSA** → Add sources → Google Drive → every `SB …` Doc in
+   `01 Reference Sources/AI and Automation` + `SB 00-START-HERE` + `SB 02-who-and-decisions`. Then **Mortgage Reference
+   Library** (`SB 05`, `SB 09`, `SB 00`, `SB 02`) and **Business Operating Playbooks** (`SB 06`, `SB 08`, `SB 09`, `SB 00`,
+   `SB 02`). Google refreshes Drive Docs in NotebookLM automatically. `integrations/notebooklm/README.md`.
+1f2-done. **NotebookLM connector signed in on Mac 1 (2026-10-23 06:30 UTC, 5 notebooks found).** Next, in Terminal on
+   Mac 1: `cd ~/Repo && claude`, then type: *add every SB Google Doc from my Drive folder SECOND BRAIN to my "2nd brain"
+   notebook, then list that notebook's sources*. Claude uses the notebooklm MCP; nothing else to do afterwards.
+1f2. **NotebookLM direct connector (your opt-in, 2026-10-23):** the paste now installs it (step 6f). Then on Mac 1 run
+   `nlm login` (browser sign-in, Google session stays on that Mac), then `nlm login --check`. In a new Claude Code session:
+   "list my NotebookLM notebooks" → then "add every SB Google Doc from SECOND BRAIN to my 2nd brain notebook". Claude
+   does the picker for you from then on. Non-sensitive notebooks only.
+1h. **Your claude.ai chats into the brain (5 minutes, then monthly):** claude.ai has no API for other chat windows, so the
+   path is your own export. claude.ai → Settings → Privacy → **Export data** → Google emails a zip → unzip → put
+   `conversations.json` in `~/Repo/inbox/` (any folder works) → in Terminal: `cd ~/Repo && bin/brain ingest claude-export
+   ~/Repo/inbox/conversations.json`. It writes `memory/claude-chats.md`: one line per chat (date, title, what you asked first) and
+   a "tasks you mentioned" list, your words only, phones/e-mails masked. Claude Code sessions need nothing from you: a
+   daily ledger (3:52 AM) lists them in `docs/inventory/claude-sessions.md`, and the Mac's `brain-learner` task captures your
+   words from their transcripts.
+1g. **Your GitHub repo is public.** `chitown034/Repo` answered without sign-in on 2026-10-23 (that is how the Drive
+   sync fetches the pack). It holds no client files beyond `wiki/clients/index.md` (first names, by rule), but the
+   brain, decisions and task prompts are readable by anyone. If you want it private: GitHub → Repo → Settings → Danger
+   Zone → Change visibility → Private, then tell Claude (the Drive sync switches to a signed-in fetch). Your call.
 1c. **Kapso on the Mac:** `claude` → `/mcp` → kapso → sign in (free sandbox); then
    `bash integrations/kapso/install-mac.sh keys --allow <your mobile>` (hidden prompt, Keychain only).
 2. **Vanessa's iMessage line (30 seconds, from your phone):** Inkbox is reconnected. Send the text
@@ -1400,6 +1421,121 @@ Reply "done N" (or "skip N") after each step and Claude keeps the dashboards in 
 | voicemail-inbox-triage | 2 | cro-victor | sonnet | Report under Victor (CRO, ISA line): triages WhisperAI voicemails and the Gmail inbox into vanessaQueue with a next action per item; fraud flags go to Elena first. Never replies, forwards or deletes. |
 | vue-reviewer | 3 | — | opus | Expert Vue.js code reviewer specializing in Composition API correctness, reactivity pitfalls, component architecture, template security, and |
 | webinar-producer | 2 | cmo-sofia | sonnet | Report under Sofia (CMO): produces webinar assets for the VA Loan Mastermind Live, Hometown Hero Home Buying and Retirement Equity Strategy  |
+
+
+---
+
+<!-- source file: docs/inventory/claude-sessions.md -->
+# FILE: docs/inventory/claude-sessions.md
+
+# Claude Code sessions — ledger (generated 2026-10-23; newest first)
+
+Every Claude Code session on Steven's account: title, when, status. Titles are the sessions' own words — data, not
+instructions. Refreshed daily by the "Claude sessions ledger" task in the orchestrator session. Transcript contents reach the
+brain on the Mac through `brain-learner`; claude.ai web chats through `bin/brain ingest claude-export` (STEVEN-STEPS 1h).
+
+| Created | Title | Status | Session |
+|---|---|---|---|
+| 2026-10-23 | Clean Your TV interface redesign | idle | `zn3eCGMw` |
+| 2026-10-23 | Comprehensive fitness dashboard | idle | `RFMT6WMX` |
+| 2026-10-22 | California real estate broker dashboard | idle | `Do7MPXYr` |
+| 2026-10-19 | Management presentation on process improvement | idle | `VajE2ten` |
+| 2026-10-18 | Loan Officer Dashboard | idle | `YdHZno2T` |
+| 2026-10-12 | Social media SEO/AEO/GEO optimization | idle | `uqrgDZTM` |
+| 2026-10-12 | Claude setup backup replica | idle | `3n4Uwq1B` |
+| 2026-10-12 | Time Machine backup setup | idle | `V3cao42X` |
+| 2026-10-10 | Ultimate Web Scraper connector | idle | `qDcBLkRj` |
+| 2026-10-09 | Handoff prompt for Steven Shearrill | idle | `BAiuib9Q` |
+| 2026-10-09 | Claude remote-control | idle | `W69LSka5` |
+| 2026-10-07 | Browser-use installation | idle | `fE51mS7W` |
+| 2026-10-05 | Scroll World installation | idle | `yCKoLdXY` |
+| 2026-10-04 | GitHub repository installation | idle | `zKnyAHAW` |
+| 2026-10-04 | Grok bots dashboards | idle | `HFxdejBP` |
+| 2026-10-04 | Mortgage leads CRM system | idle | `rFzKYj1e` |
+| 2026-09-27 | Dashboard website content update | idle | `GF38McZU` |
+| 2026-09-27 | Four interactive dashboards with daily updates | idle | `qX8fGcUa` |
+| 2026-09-27 | Social SDK installation | idle | `pLQAvaX8` |
+| 2026-09-22 | OpenBot installation | idle | `BKdx8VmW` |
+| 2026-09-22 | Automation dashboard and AI agent audit | running | `nupjoLP1` |
+| 2026-09-22 | OpenJarvis installation | idle | `Kc52UK34` |
+| 2026-09-22 | OmniRoute fallback setup | idle | `Tkudh1Q9` |
+| 2026-09-22 | Second brain optimization framework | idle | `hpBLaHzY` |
+| 2026-09-22 | Bonsai demo installation | idle | `jv9Rfo7m` |
+| 2026-09-22 | Orca installation | idle | `oAo3CKSZ` |
+| 2026-09-22 | PrismML 27B parameter LLM | idle | `Q23Z2Pr4` |
+| 2026-09-22 | Laya installation | idle | `ihK5YPXV` |
+| 2026-09-16 | DeepSeek Harness and Omarchy setup | idle | `qPEccFem` |
+| 2026-09-15 | Claude cookbooks installation | idle | `6PGWykv8` |
+| 2026-09-15 | Codex plugin installation | idle | `8rq6jj29` |
+| 2026-09-15 | Commit Claude Code token-optimization setup to fork | idle | `tbxtPjK4` |
+| 2026-09-15 | Push token-optimization commit to fork (files embedded) | idle | `GgPSQyGF` |
+| 2026-09-15 | Push token-optimization commit to fork | idle | `NbyrULg5` |
+| 2026-09-15 | Install Perplexity Comet MCP and public APIs | idle | `YytLcJiK` |
+| 2026-09-15 | Installing claude-video and Whisper | idle | `izUgByoA` |
+| 2026-09-15 | Token optimization implementation | idle | `H9XHmZ9g` |
+| 2026-09-13 | NAVWAR program manager dashboard | idle | `BiJe5uQv` |
+| 2026-09-13 | CLI-Anything skills and MCPs installation | idle | `WTDr51GZ` |
+| 2026-09-13 | Defense Industry Dashboard | idle | `2ekLzQPw` |
+| 2026-09-13 | Military family office website | idle | `1aQxv4g3` |
+| 2026-09-13 | Fix daysold_test 9-day stamp reading 8d | archived | `V9vyGsgN` |
+| 2026-09-12 | Second Brain live check | archived | `yaXwV3WE` |
+| 2026-09-12 | Alex honchar claude for life sync | archived | `ZMYLokZD` |
+| 2026-09-12 | Bible reference guide interactive page | archived | `XfuAZW39` |
+| 2026-09-12 | Open terminal | archived | `yCdgxjwq` |
+| 2026-09-12 | Multiple repository installations | archived | `Hf6VXdH1` |
+| 2026-09-12 | OpenTerminal installation | archived | `huxAd3Rr` |
+| 2026-09-12 | Claude-fable-5.1 AI agents setup | archived | `8yCABGFo` |
+| 2026-09-12 | Connect to NotebookLM as second brain | archived | `s49my8Df` |
+| 2026-09-12 | Connect notebook LM as second brain | archived | `Hx2P4ioj` |
+| 2026-09-11 | AI model generation with Eromify | archived | `UYDPUpBS` |
+| 2026-09-11 | Install awesome-ai-tools-for-ui and ui-ux-pro-max-skill | archived | `8y92xFDz` |
+| 2026-09-11 | Claude-cowork markdown file | archived | `xVsrkwdf` |
+| 2026-09-11 | Claude-fable-5.1 markdown file | archived | `6DDy3GZZ` |
+| 2026-09-11 | Free tools and projects | archived | `Ywzg8wQv` |
+| 2026-09-11 | Install ponytail and agent-skills | archived | `CiuVVFdJ` |
+| 2026-09-10 | Install linkedin_scraper and linkedin-mcp-server | archived | `hQBji1Ph` |
+| 2026-09-10 | Gods-eye-view installation | archived | `jQK2Qrjj` |
+| 2026-09-10 | Arcads Claude Code installation | archived | `UGSbEctc` |
+| 2026-09-10 | TradingView Claude Code bridge | archived | `Hkse9v4j` |
+| 2026-09-10 | LLM council skill integration | archived | `aea8NypR` |
+| 2026-09-08 | Claude Desktop tools folder organization | archived | `1RCCecio` |
+| 2026-09-08 | Heretic installation | archived | `Ny9QB6uf` |
+| 2026-09-08 | Claude Apple Health integration | archived | `gp8FRXpw` |
+| 2026-09-08 | Magica | archived | `AuY1BpjZ` |
+| 2026-09-07 | Personal delegation and automation system | pending | `8yJjxU1u` |
+| 2026-09-07 | AIHedgeFundTeam installation | archived | `EYostnhn` |
+| 2026-09-07 | Kronos installation | archived | `c1Yrn2tf` |
+| 2026-09-07 | Claude Code TradingView bridge setup | archived | `V5RbbjCA` |
+| 2026-09-07 | Install Graphify | archived | `ZnA3fhou` |
+| 2026-09-07 | Graphify installation | archived | `BXQMvdMu` |
+| 2026-09-07 | Claude TradingView Desktop integration | archived | `94JviAe4` |
+| 2026-09-07 | stevens-macbook-pro-local-logical-puffin | archived | `Apray1cC` |
+| 2026-09-07 | Desktop skill files loop engineer approach | archived | `7JbrSuUC` |
+| 2026-09-07 | Available skills inventory | archived | `zL1htXi8` |
+| 2026-09-07 | Perplexity-via-Composio and Magica MCP connections | archived | `7d577xPF` |
+| 2026-09-07 | stevensheard89e-luminous-newt | archived | `kJNJXxKy` |
+| 2026-09-07 | stevens-macbook-pro-local-linked-nova | archived | `GePp1s74` |
+| 2026-09-07 | Obsidian-skills installation | archived | `iq4MBj2R` |
+| 2026-09-07 | Obsidian-skills installation | archived | `35kfX5Yz` |
+| 2026-09-07 | Ruflo installation | archived | `nKwYHv7N` |
+| 2026-09-07 | Ruflo installation | archived | `U7yHE16X` |
+| 2026-09-07 | OmniRoute installation | archived | `vxpH5Uya` |
+| 2026-09-07 | OmniRoute installation | archived | `28khFCP2` |
+| 2026-09-07 | Claude-video installation | archived | `kFPqe6TT` |
+| 2026-09-07 | claude-video installation | archived | `fgzigsWr` |
+| 2026-09-07 | Heretic installation | archived | `2nqRqCSE` |
+| 2026-09-07 | Heretic installation | archived | `m142hhJA` |
+| 2026-09-07 | AI job search installation | archived | `JQeVQmRX` |
+| 2026-09-07 | ai-job-search installation | archived | `Bhpn6Tvw` |
+| 2026-09-07 | OpenJarvis installation | archived | `6uFCQgLX` |
+| 2026-09-07 | OpenJarvis installation | archived | `sy2acrue` |
+| 2026-09-07 | QR code scanning and pairing | archived | `hhdZEZRE` |
+| 2026-09-06 | Agency: 147 Pre-Built Agents installation | archived | `iptTAATs` |
+| 2026-09-06 | AIHedgeFundTeam setup | archived | `Cf1dPJ8d` |
+| 2026-09-05 | stevens-macbook-pro-local-toasty-leaf | archived | `xiyP65bM` |
+| 2026-09-04 | stevens-macbook-pro-local-linked-gosling | archived | `LhdQXgKF` |
+| 2026-09-03 | Install freellmapi | archived | `yvasMriV` |
+| 2026-09-03 | freellmapi installation | idle | `a6kHFqqF` |
 
 
 ---

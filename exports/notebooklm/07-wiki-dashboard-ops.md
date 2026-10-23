@@ -106,6 +106,7 @@ routine prompt" rather than guessing. Every doc is `{v: ...}`.
 | `listOutbox` | `{v: {refi: [{first, noteRate, loanType, closedMonth, note, ts, status}], sphere: [{first, relation, lastTouch, birthdayMonthDay, homeAnniversaryMonthDay, note, ts, status}]}}` — the two intake forms, being added 2026-10-22; the cycle appends pending rows to the deck's `refiWatchList.v.clients` / `sphereList.v.people` (de-duplicated by first name + month) and marks them `moved` | The ISA (portal forms); status by the cycle — one of the three ISA docs the cycle may write |
 
 These, with `isaKpi` and the five Pipeline Sync docs, are the only ISA Portal docs an automation writes.
+| `brain6dStatus` | `{v:{ranAt, nodes, links, encyclopedia, loop, published, by}}` — proof that the 6D Brain daily rebuild ran (3:30 AM PT, trig_01MQ7HRYTh27b8uUM4BtnFXE) | the rebuild routine, step 7 (2026-10-23) |
 
 
 ---

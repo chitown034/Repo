@@ -91,16 +91,20 @@ On the Mac this router's job is done by the vanessa-orchestrator system prompt +
 | Loan program, guideline, VA mechanics, eligibility | `wiki/mortgage-programs/index.md` → one named page | playbooks |
 | Listing, buyer, transaction or showing process | `wiki/real-estate-playbooks/index.md` → one named page | mortgage wiki |
 | Who on the AI team owns X, seat/model/trust level | `wiki/ai-team/index.md` | the 172-agent roster dump |
+| Which layer holds what, how it syncs, is the brain "even" | `wiki/ai-team/second-brain-layers.md` → `bin/brain layers` | the stores themselves |
+| "Open X" — the link to a dashboard, Drive, NotebookLM, Notion, the repo | `bin/brain links` (zero tokens; the 6D page shows the same list) | any wiki page |
 | A deck panel, DB doc, Mac task or cloud routine | `wiki/dashboard-ops/index.md` | always-on (unless it is a schedule question) |
 | A specific client | `wiki/clients/<client>.md` — FULL CONTEXT, read whole | vector index, knowledge graph |
 | A source document, playbook PDF, external system | `references/index.md` | anything else |
 | Something learned in an earlier session | `memory.md` | wiki |
+| "What did I ask Claude about X", which session/chat did something | `docs/inventory/claude-sessions.md` (Claude Code sessions, daily) · `memory/claude-chats.md` (claude.ai chats, from his export) | transcripts |
 | A high-volume corpus (transcripts, disclosure libraries, rule sets) | `vector-index/README.md` | full-context docs |
 | "How do these connect" — entities, relationships | `knowledge-graph/README.md` | vector index |
 | What runs when, and whether it actually ran | `always-on/README.md` | projects |
 | Reaching Steven, or running something live/remote | `REMOTE-ACCESS.md` | always-on |
 | Setting up or syncing the brain on a Mac | `docs/SECOND-MAC-SETUP.md` (§ 6c) → `scripts/brain-sync.sh` | always-on |
 | Cost or freshness of a recall | `recall-cache.md`, then `OPTIMIZATION.md` | — |
+| The repo and the Mac are unreachable, or a source-grounded research brief | NotebookLM mirror — `integrations/notebooklm/README.md` (the matching `SB` Doc, or the "Second Brain" notebook) | anything else as a first stop |
 | A live number (rate, balance, lead count, health stat) | The Command Deck snapshot already in context, or the named DB doc | any wiki page |
 
 If two rows could fit, take the one named first and say which file you used.
@@ -117,8 +121,11 @@ If nothing fits, say "not in the brain" and offer to queue research. Do not fill
 3. `recall_research` / `request_research` — Claude web research (Sonnet 5 with WebSearch/WebFetch on
    Steven's Claude subscription; Perplexity removed 2026-10-05), capped, async. Queued requests are
    answered by the `vanessa-research-queue` Mac task, hourly at :30, 7:30 AM–9:30 PM PT.
-4. `jarvis_obsidian` — one store.
-5. Five-store recall (Second Brain · vault · Jarvis · Graphify · Ruflo) — last resort; log why levels 1–4 failed.
+4. NotebookLM mirror — the brain as 13 Google Docs in Drive `SECOND BRAIN/` (rewritten weekly, `integrations/notebooklm/README.md`).
+   Redundancy, not a first stop: read the matching Doc when the repo, the Mac and the deck are all unreachable, or ask the
+   "Second Brain" notebook for a source-grounded brief. Say "from the NotebookLM mirror, as of <its 00-START-HERE date>".
+5. `jarvis_obsidian` — one store.
+6. Five-store recall (Second Brain · vault · Jarvis · Graphify · Ruflo) — last resort; log why levels 1–4 failed.
 
 Cache every answer as `{answer, storesHit, ts}`. TTL: 4 h volatile stores, 24 h vault/graph.
 Never serve a cached answer past its TTL without saying its age. Rules: `recall-cache.md`.

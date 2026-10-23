@@ -13,20 +13,20 @@ exported as NotebookLM sources. Upload every `.md` file in this folder to ONE no
 
 | File | Size |
 |---|---|
-| 01-router-and-index.md | 67 k chars |
-| 02-who-and-decisions.md | 85 k chars |
+| 01-router-and-index.md | 68 k chars |
+| 02-who-and-decisions.md | 87 k chars |
 | 03-projects.md | 17 k chars |
-| 04-wiki-ai-team.md | 127 k chars |
+| 04-wiki-ai-team.md | 132 k chars |
 | 05-wiki-mortgage-programs.md | 36 k chars |
 | 06-wiki-real-estate-playbooks.md | 45 k chars |
-| 07-wiki-dashboard-ops.md | 31 k chars |
+| 07-wiki-dashboard-ops.md | 32 k chars |
 | 08-wiki-events-networking.md | 8 k chars |
 | 09-references.md | 93 k chars |
-| 10-always-on-and-automation.md | 207 k chars |
-| 11-6d-brain-map.md | 98 k chars |
-| 12-integrations.md | 260 k chars |
+| 10-always-on-and-automation.md | 217 k chars |
+| 11-6d-brain-map.md | 99 k chars |
+| 12-integrations.md | 269 k chars |
 
-Pages included: 109 · left out on purpose: 35 · phone/e-mail masks applied: 10.
+Pages included: 113 · left out on purpose: 35 · phone/e-mail masks applied: 13.
 
 ## Left out (by rule)
 

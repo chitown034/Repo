@@ -729,6 +729,21 @@ to a "Second Brain" notebook; the 6D Brain is included as text. Browser-automati
 cookies in plain text). Revisit only if Steven chooses the Drive route or Google ships a consumer API.
 `integrations/notebooklm/README.md`.
 
+## 2026-10-23 — NotebookLM connected through Drive; the brain's layers must sync evenly
+
+Steven: "connect and sync notebook lm", "another layer of redundancy", "ensure all data syncs evenly across all
+layers — Notion, Google Drive, NotebookLM and more". Decisions: (1) one scoped exception to the Drive read-only rule —
+`SECOND BRAIN/` is written by the weekly sync, nothing else in Drive; (2) NotebookLM is recall level 4 (the mirror),
+never a first stop; (3) `bin/brain layers` is the measure of "even": every layer inside its own cadence from its own
+stamp; (4) the community NotebookLM MCP stays opt-in on the Mac. Pages: `wiki/ai-team/second-brain-layers.md`,
+`integrations/notebooklm/README.md`, `docs/reports/LAYERS.md`.
+
+## 2026-10-23 — NotebookLM direct connector: opt-in taken
+
+Steven: "setup and connect everything for me" after the risk was stated (browser-session material stored on the Mac,
+undocumented API). Installed by `connect-all.sh` 6f on his Macs; `nlm login` stays his; non-sensitive notebooks only;
+first thing removed if it breaks. Supersedes "stays opt-in" in the 06:10 entry.
+
 
 ---
 
@@ -862,3 +877,16 @@ Append-only: a superseded line gets a new line that says so.
 ## Entries
 
 - 2026-10-09 — Brain loop engineering (2026-10-09): bin/brain gaps|orgcheck|pack|loop|mcp added; loop report at docs/reports/BRAIN-LOOP.md, history in brain/loop-history.jsonl. Jarvis is unverified until integrations/jarvis/jarvis-setup.sh --verify passes on the Mac; Vanessa's voice is the recorded Magica set, no new clone made.
+
+
+---
+
+<!-- source file: memory/claude-chats.md -->
+# FILE: memory/claude-chats.md
+
+# Claude chats — digest of Steven's claude.ai export
+
+Not ingested yet (2026-10-23). This file is written by `bin/brain ingest claude-export <conversations.json>` from
+Steven's own claude.ai data export (claude.ai → Settings → Privacy → Export data; STEVEN-STEPS 1h). Until then, Claude
+Code sessions are in `docs/inventory/claude-sessions.md` (daily ledger) and the Mac's `brain-learner` task captures his
+words from local transcripts.
