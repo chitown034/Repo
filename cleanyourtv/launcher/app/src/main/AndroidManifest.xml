@@ -134,14 +134,14 @@
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
         <!-- Search (spotlight_search) and Control Center (control_center): translucent, in a task of their own like
-             the quick panel, so Control Center can open over a playing app and Back returns to it. -->
+             the quick panel, so Control Center can open over a playing app and Back returns to it. No screenOrientation: Android 8.0 throws
+             for a translucent activity that fixes one, and a TV is landscape anyway. -->
         <activity
             android:name=".SearchActivity"
             android:exported="false"
             android:taskAffinity=""
             android:excludeFromRecents="true"
             android:noHistory="true"
-            android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
         <activity
             android:name=".ControlCenterActivity"
@@ -150,7 +150,6 @@
             android:launchMode="singleTop"
             android:excludeFromRecents="true"
             android:noHistory="true"
-            android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
         <activity
             android:name=".HomeSettingsActivity"
