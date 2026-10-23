@@ -22,7 +22,14 @@ adb wait-for-device
 until [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = "1" ]; do sleep 2; done
 adb shell getprop ro.build.version.release
 adb install -r "$APK" || { echo "FAIL install"; exit 1; }
-adb shell cmd package set-home-activity "$PKG/.MainActivity"
+# The same order as launcher/build-and-install.sh: prove the activity starts, retire the stock launcher (disabled,
+# never uninstalled; this is a throwaway emulator), then make ours the Home preference and confirm it resolves.
+adb shell am start -W -a android.intent.action.MAIN -c android.intent.category.HOME -n "$PKG/.MainActivity"
+STOCK=$(adb shell cmd package query-activities --brief -a android.intent.action.MAIN -c android.intent.category.HOME \
+  | tr -d '\r' | grep '/' | grep -v "$PKG" | cut -d/ -f1 | sort -u)
+for p in $STOCK; do [ "$p" = com.android.tv.settings ] || adb shell pm disable-user --user 0 "$p"; done
+adb shell cmd package set-home-activity --user 0 "$PKG/.MainActivity"
+echo "Home resolves to: $(adb shell cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.HOME | tail -n 1)"
 adb logcat -c
 adb shell input keyevent KEYCODE_HOME
 sleep 8
