@@ -52,8 +52,10 @@ if [ -d "$VAULT" ]; then n="$(find -L "$VAULT" -name '*.md' 2>/dev/null | wc -l 
 LPY=python3
 for d in "${LAYA_VENV_DIR:-}" "$HOME/Applications/laya-venv" "$HOME/laya-venv"; do [ -n "$d" ] && [ -x "$d/bin/python" ] && { LPY="$d/bin/python"; break; }; done
 if "$LPY" -c 'import laya' 2>/dev/null; then
-  OUTL="$("$LPY" "$REPO/integrations/laya/laya_route.py" --engine real "what is the VA funding fee" 2>&1 | head -2)"
-  if printf '%s' "$OUTL" | grep -q "ROUTE\|ESCALATE"; then row "laya real engine" ok "answered: $(printf '%s' "$OUTL" | head -1 | cut -c1-90)"; else row "laya real engine" FAIL "imports but did not answer: $(printf '%s' "$OUTL" | head -1 | cut -c1-90)"; fi
+  # stdout only: the Hugging Face progress bars and the laya calibration warning go to stderr and used to overwrite
+  # this row (Mac report 2026-10-23: "Fetching 5 files ... nswer:"). The ROUTE/ESCALATE line is the last stdout line.
+  OUTL="$(HF_HUB_DISABLE_PROGRESS_BARS=1 "$LPY" "$REPO/integrations/laya/laya_route.py" --engine real "what is the VA funding fee" 2>/dev/null | grep -E "ROUTE|ESCALATE" | tail -1)"
+  if [ -n "$OUTL" ]; then row "laya real engine" ok "answered: $(printf '%s' "$OUTL" | cut -c1-90)"; else row "laya real engine" FAIL "imports but did not answer -- run: $LPY $REPO/integrations/laya/laya_route.py --engine real \"test\""; fi
 else
   row "laya real engine" FAIL "laya not installed -> router runs the keyword stub only. Fix: bash integrations/laya/install.sh"
 fi

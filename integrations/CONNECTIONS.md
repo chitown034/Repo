@@ -454,3 +454,12 @@ present, index `~/.openjarvis/memory.db` 1,828 rows, vault 850 notes, Laya MCP r
 | Jarvis voice clips | none on the Mac | exported the deck's 8 clips to `integrations/jarvis/voice/vanessa/`; jarvis-setup looks there first | paste |
 | Kapso (Mac) | `! Needs authentication` | `claude` → `/mcp` → kapso → sign in; then the keys line | Steven |
 | Mac's own uncommitted edits | 9 files kept in place by repo-sync (brain/bench.py, brain/tests/test_brain.py, cli-anything harness files) | review on the Mac: `git -C ~/Repo status --short`; commit or discard | Steven |
+
+## Connection status — Mac 1, 2026-10-23 01:14 UTC (Jarvis proof paste)
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Jarvis (all rows) | connected — platform, memory.db 1,828 rows, vault 850 notes, Laya MCP, 8 voice clips (repo folder), voice profile, brain doctor PASS | — | — |
+| Laya real engine row in jarvis-setup | false FAIL: Hugging Face progress bars on stderr overwrote the row; Laya itself routed a question at 01:09 | fixed: stdout only, progress bars off; proven on the next `jarvis-setup.sh --verify` | paste |
+| brain doctor (Mac) | connected — PASS after `bin/brain reindex` (now connect-all 6a2) | — | — |
+| Vanessa reference audio on the Mac | found `~/Applications/vanessa-voice/ref/vanessa_ref.wav` and `~/Documents/Vanessa/Vanessa1.m4a` — a cloned-voice reference exists locally; not copied anywhere (clone provider/consent are Steven's call, HALT) | decision only | Steven |

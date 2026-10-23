@@ -192,7 +192,7 @@ laya_connect() {
     if claude mcp list 2>/dev/null | grep -Eq '^[[:space:]]*laya([: ]|$)'; then echo "Laya MCP already registered with Claude Code"
     else claude mcp add -s user laya --env LAYA_DEVICE=cpu -- "$lv/bin/laya-mcp-server" || return 1; echo "Laya MCP registered (all projects)"; fi
   else echo "claude CLI missing - Laya not registered with Claude Code"; return 1; fi
-  out="$("$lv/bin/python" integrations/laya/laya_route.py --engine real "What is the VA funding fee for a first-time use?" 2>&1 | tail -n 2)"
+  out="$(HF_HUB_DISABLE_PROGRESS_BARS=1 "$lv/bin/python" integrations/laya/laya_route.py --engine real "What is the VA funding fee for a first-time use?" 2>/dev/null | tail -n 2)"
   printf '%s\n' "$out"
   printf '%s' "$out" | grep -Eq 'ROUTE|ESCALATE' || { echo "real Laya engine did not answer"; return 1; }
 }

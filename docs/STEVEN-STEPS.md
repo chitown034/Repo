@@ -19,9 +19,9 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
    folder, runs its doctor), AnyDesk, the Agent OS, the seven Claude mods (new: `/cycle`, `/inbox`,
    `/meetings`, `/today`, `/tc`, `/queue <task>`, `/sync`, `/connect` and a status line that says when the repo is behind).
    It never signs in, pairs, sends or pays.
-1b. **Runner is signed in (2026-10-23 01:09 UTC); Laya's real engine answers; mods on.** One paste proves the rest of
-   Jarvis (brain index refreshed, her 8 voice clips now in the repo) — paste the last lines back:
-   `cd ~/Repo && bash scripts/repo-sync.sh && bin/brain reindex && bin/brain doctor && bash integrations/jarvis/jarvis-setup.sh --apply`
+1b. **Mac 1 is connected (2026-10-23 01:14 UTC):** runner signed in and running, Laya real engine answering, Jarvis
+   all green (index 1,828 rows, vault 850 notes, 8 voice clips, brain doctor PASS), mods on. Nothing more to paste for
+   these. The 30-minute sync keeps the Mac current; `bash connect-all.sh` any time re-checks everything.
 1c. **Kapso on the Mac:** `claude` → `/mcp` → kapso → sign in (free sandbox); then
    `bash integrations/kapso/install-mac.sh keys --allow <your mobile>` (hidden prompt, Keychain only).
 2. **Vanessa's iMessage line (30 seconds, from your phone):** Inkbox is reconnected. Send the text

@@ -161,3 +161,7 @@ Validator verdict on 40f4ce6: SHIP, one LOW (no test at the crash site) + INFO (
 to the question's criteria then probabilities; `decide()` passes the criteria; a real-shaped engine test exercises the
 crash site (28 ok). Mac proof 01:09 UTC: `--engine real` routed. Also in this change-set: connect-all 6a2 (`bin/brain
 reindex`, the Mac doctor FAIL cause), jarvis-setup reads `integrations/jarvis/voice/vanessa` (8 exported deck clips).
+
+## Resolution 2026-10-23 01:25 UTC — change-set `a5242be0ee07b267` (jarvis-setup Laya row reads stdout only)
+
+Two-line change in jarvis-setup.sh + connect-all.sh laya_connect: `HF_HUB_DISABLE_PROGRESS_BARS=1`, stderr dropped, grep the ROUTE/ESCALATE line instead of `head -2`. Cause: Mac report 01:14 UTC showed the progress bar overwriting the row while Laya had answered at 01:09. Tests: jarvis-tests 10, connect-all 54. Reviewed inline (display-only change, no new command, no secret, no login).
