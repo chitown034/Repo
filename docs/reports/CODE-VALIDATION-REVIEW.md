@@ -207,3 +207,7 @@ Steven opted in ("setup and connect everything for me"). nlm_connect installs no
 ## Resolution 2026-10-23 06:40 UTC — change-set `01ba4719c80b6fe9` (reindex after the 6f docs)
 
 The 06:35 change-set (501e85a) failed only `brain doctor` (index stale after context/decisions.md changed). Reindexed; INDEX.md + brain/index.json regenerated; nothing else. Covers 501e85a too.
+
+## Resolution 2026-10-23 10:50 UTC — change-set `6f801190c77853ec` (brain links; 6D links panel + clickable stores)
+
+brain/links.py (one table of front doors + the 13 SB Docs from the manifest), `bin/brain links`, store nodes carry `u`, layers carry `url`, build.py injects LINKS, template: "Open the brain" panel, open link per layer, inspector opens a store URL. Tests: brain/tests/test_links.py (4: https+unique, 13 SB docs, store urls, layer urls), full brain suite OK, merge-live OK, page parses (node --check). Reviewed inline; no secret, no client data (URLs are Steven own surfaces).

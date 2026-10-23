@@ -26,6 +26,9 @@ produced becomes a "fact" in the repo without Steven's yes).
 
 - `bin/brain export notebooklm` — the pack (13 masked bundles, no client pages, the 6D map as text).
 - `bin/brain layers [--write] [--json]` — the register above with last-sync stamps and verdicts.
+- `bin/brain links` — every front door with its URL (deck, ISA Portal, 6D, Action Desk, Bot Crew, repo, Drive SECOND BRAIN,
+  NotebookLM, Notion database + layer directory, the 13 SB Docs). The 6D Brain embeds the same list: "Open the brain"
+  panel, an open link per layer, and clickable store nodes (Drive, NotebookLM, Notion, Command Deck).
 - Weekly sync task **NotebookLM mirror weekly sync** (Sun 2:45 PM PT, after the allowance reset): export → commit →
   rewrite changed Docs → stamp `drive-manifest.json` → refresh the Notion directory page → `layers --write`.
 - CLAUDE.md recall level 4 and a routing row for the mirror; 6D store node `store:notebooklm`.

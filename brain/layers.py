@@ -75,7 +75,10 @@ def collect(root: Path, today: date | None = None) -> list[dict]:
          "sync": "spec only until a corpus is loaded (vector-index/README.md)", "last": None},
         {"key": "graph", "layer": "Knowledge graph", "holds": "entities and relationships", "sync": "spec only (knowledge-graph/README.md)", "last": None},
     ]
+    from . import links as links_mod
+    layer_url = links_mod.for_layer(root)
     for r in rows:
+        r["url"] = layer_url.get(r["key"])
         cad = CADENCE_DAYS[r["key"]]
         r["cadence_days"] = cad
         if r["last"] is None:

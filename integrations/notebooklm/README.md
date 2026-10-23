@@ -61,3 +61,6 @@ is the first thing to remove if Google changes the interface (`uv tool uninstall
 notebooklm`). With it, any Claude Code or Orca session can ask the "2nd brain" notebook directly ("query my 2nd brain
 notebook for …") and add the SB Docs as sources without the picker. Upstream caveat, verbatim: "internal APIs that are
 undocumented and may change without notice; personal/experimental use, at your own risk".
+
+**Links (2026-10-23):** `bin/brain links` prints every front door; `brain/links.py` is the one place to add a surface, and the
+6D Brain, the layers register and the Notion directory read it.

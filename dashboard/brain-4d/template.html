@@ -89,11 +89,13 @@ button, input { font: inherit; color: inherit; }
 .toggle input { width: 22px; height: 22px; accent-color: var(--now); margin: 0; }
 #lensWrap > summary { cursor: pointer; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); list-style: none; min-height: 44px; display: flex; align-items: center; }
 #lensWrap > summary::after { content: "+"; margin-left: auto; } #lensWrap[open] > summary::after { content: "–"; }
-#chipsWrap summary, #seatWrap summary, #layersWrap > summary { cursor: pointer; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); list-style: none; min-height: var(--hit); display: flex; align-items: center; }
+#chipsWrap summary, #seatWrap summary, #layersWrap > summary, #linksWrap > summary, #sbWrap > summary { cursor: pointer; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); list-style: none; min-height: var(--hit); display: flex; align-items: center; }
 #seatWrap summary::after { content: "+"; margin-left: auto; } #seatWrap[open] summary::after { content: "–"; }
 #chipsWrap { margin: 0; } #seatWrap { margin: 0; }
 #chipsWrap summary::after { content: "+"; margin-left: auto; } #chipsWrap[open] summary::after { content: "–"; }
 #layersWrap > summary::after { content: "+"; margin-left: auto; } #layersWrap[open] > summary::after { content: "–"; }
+#linksWrap > summary::after, #sbWrap > summary::after { content: "+"; margin-left: auto; } #linksWrap[open] > summary::after, #sbWrap[open] > summary::after { content: "–"; }
+#links .btn, #sbdocs .btn { min-height: 32px; font-size: 12px; }
 
 #inspector { position: fixed; top: calc(env(safe-area-inset-top, 0px) + var(--gutter)); right: var(--gutter); width: min(380px, calc(100vw - 2 * var(--gutter))); max-height: calc(100% - 150px); overflow: auto; padding: 18px 18px 16px; z-index: 4; }
 #inspector[hidden] { display: none !important; }
@@ -169,6 +171,10 @@ body.enc #enc { max-width: 720px; }
     <ul id="layers" class="legend" aria-label="Second brain layers"></ul>
     <p class="seatnote" id="layersNote"></p>
   </details>
+  <details id="linksWrap"><summary>Open the brain: Drive, NotebookLM, Notion, the dashboards</summary>
+    <div id="links" class="actions" role="group" aria-label="Front doors of the second brain"></div>
+    <details id="sbWrap"><summary>The 13 SB Google Docs (the brain in Drive)</summary><div id="sbdocs" class="actions"></div></details>
+  </details>
   <label class="sr" for="q">Find a page</label>
   <input id="q" type="search" placeholder="Ask the brain — VA funding fee, Lofty, who owns compliance…" autocomplete="off" spellcheck="false" list="names" aria-describedby="askHelp" aria-controls="hits">
   <datalist id="names"></datalist>
@@ -235,6 +241,7 @@ body.enc #enc { max-width: 720px; }
 "use strict";
 const G = /*DATA*/null;
 const LAYERS = /*LAYERS*/null;
+const LINKS = /*LINKS*/null;
 const LOOP = /*LOOP*/null;
 const SEATS = /*SEATS*/null;   // seat -> {a: agents (agents.json laya.lane), s: "starts from" prefixes (cross-functional.md)}
 const ENC = /*ENC*/null;       // A-Z encyclopedia entries from brain/index.json + graph backlinks
@@ -470,7 +477,8 @@ function choose(n) {
   });
   if (!rel.children.length) rel.innerHTML = "<li style='color:var(--muted);font-size:12.5px'>No links at this date.</li>";
   const open = $("open");
-  if (n.g === "store") open.hidden = true; else { open.hidden = false; open.href = REPO + n.id; }
+  if (n.g === "store") { if (n.u) { open.hidden = false; open.href = n.u; open.textContent = "Open " + n.t; } else open.hidden = true; }
+  else { open.hidden = false; open.href = REPO + n.id; open.textContent = "Open the page"; }
   $("copyText").textContent = `bin/brain recall "${n.t.replace(/"/g, "'")}"`;
   $("copied").textContent = "";
 }
@@ -663,7 +671,11 @@ $("stats").replaceChildren(
 // layers: repo, index, deck, 6D, Jarvis, Notion, Drive, NotebookLM... (bin/brain layers)
 try {
   const LC = { fresh: "#6fd39b", stale: "#ff7a7a", unverified: "#8f97ad", "spec only": "#8f97ad" };
-  $("layers").replaceChildren(...(LAYERS || []).map(r => { const li = document.createElement("li"); li.innerHTML = "<i></i><span></span><b></b>"; li.querySelector("i").style.setProperty("--c", LC[r.verdict] || "#8f97ad"); li.children[1].textContent = r.layer; li.children[2].textContent = r.last ? `${r.verdict} · ${r.last}` : r.verdict; li.title = r.sync; return li; }));
+  $("layers").replaceChildren(...(LAYERS || []).map(r => { const li = document.createElement("li"); li.innerHTML = "<i></i><span></span><b></b>"; li.querySelector("i").style.setProperty("--c", LC[r.verdict] || "#8f97ad"); li.children[1].textContent = r.layer; li.children[2].textContent = r.last ? `${r.verdict} · ${r.last}` : r.verdict; li.title = r.sync;
+    if (r.url) { const a = document.createElement("a"); a.href = r.url; a.target = "_blank"; a.rel = "noopener"; a.textContent = "open"; a.className = "btn"; a.style.minHeight = "28px"; a.style.padding = "2px 8px"; li.appendChild(a); } return li; }));
+  const mk = l => { const a = document.createElement("a"); a.className = "btn"; a.href = l.url; a.target = "_blank"; a.rel = "noopener"; a.textContent = l.label; return a; };
+  $("links").replaceChildren(...(LINKS || []).filter(l => !String(l.key).startsWith("sb:")).map(mk));
+  $("sbdocs").replaceChildren(...(LINKS || []).filter(l => String(l.key).startsWith("sb:")).map(mk));
   const stale = (LAYERS || []).filter(r => r.verdict === "stale").map(r => r.layer);
   $("layersNote").textContent = stale.length ? `Not even: ${stale.join(", ")} behind its cadence.` : "Even: every stamped layer is inside its cadence. Dates are each layer's own last sync.";
   if (innerWidth <= 720) $("layersWrap").open = false;

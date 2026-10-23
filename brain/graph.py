@@ -30,7 +30,7 @@ GROUPS = [  # (prefix, group id, label, recall level)
 STORES = [  # id, label, what, files it attaches to (prefixes)
     ("store:vanessa", "Vanessa", "Chief of Staff — every recall answers through her", ["CLAUDE.md", "AGENTS.md", "projects/ai-team.md"]),
     ("store:notion", "Notion Second Brain", "The record (database)", ["references/index.md", "always-on/README.md"]),
-    ("store:drive", "Google Drive", "Read-only mirror of the Notion rows", ["references/google-drive.md", "references/drive-second-brain-notes.md", "integrations/google-drive-brain.md"]),
+    ("store:drive", "Google Drive", "SECOND BRAIN/: the 13 SB Docs (weekly rewrite) + Steven's own folders; read-only elsewhere", ["references/google-drive.md", "references/drive-second-brain-notes.md", "integrations/google-drive-brain.md"]),
     ("store:jarvis", "Jarvis", "On-device index + voice (Mac)", ["integrations/jarvis/README.md", "vector-index/README.md"]),
     ("store:laya", "Laya", "Zero-token first hop that routes requests", ["integrations/laya/README.md", "CLAUDE.md"]),
     ("store:vault", "Obsidian vault", "Visual layer, Jarvis's source", ["OPTIMIZATION.md", "MAC-INSTALL.md"]),
@@ -98,8 +98,10 @@ def build(root: Path, links_per_node: int = 3, today: date | None = None) -> dic
             if key not in seen and w > 0.15:
                 seen.add(key)
                 links.append({"s": a, "t": b, "w": round(w, 2)})
+    from . import links as links_mod
+    store_url = links_mod.for_store(root)
     for sid, label, what, attach in STORES:
-        nodes.append({"id": sid, "t": label, "d": what, "g": "store", "gl": "Live stores", "lv": 0, "s": 0, "a": None, "z": None})
+        nodes.append({"id": sid, "t": label, "d": what, "g": "store", "gl": "Live stores", "lv": 0, "s": 0, "a": None, "z": None, "u": store_url.get(sid)})
         for p in attach:
             if p in ids:
                 links.append({"s": sid, "t": p, "w": 1.0, "k": "store"})

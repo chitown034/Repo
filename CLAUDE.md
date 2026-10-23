@@ -24,6 +24,7 @@ On the Mac this router's job is done by the vanessa-orchestrator system prompt +
 | Listing, buyer, transaction or showing process | `wiki/real-estate-playbooks/index.md` → one named page | mortgage wiki |
 | Who on the AI team owns X, seat/model/trust level | `wiki/ai-team/index.md` | the 172-agent roster dump |
 | Which layer holds what, how it syncs, is the brain "even" | `wiki/ai-team/second-brain-layers.md` → `bin/brain layers` | the stores themselves |
+| "Open X" — the link to a dashboard, Drive, NotebookLM, Notion, the repo | `bin/brain links` (zero tokens; the 6D page shows the same list) | any wiki page |
 | A deck panel, DB doc, Mac task or cloud routine | `wiki/dashboard-ops/index.md` | always-on (unless it is a schedule question) |
 | A specific client | `wiki/clients/<client>.md` — FULL CONTEXT, read whole | vector index, knowledge graph |
 | A source document, playbook PDF, external system | `references/index.md` | anything else |

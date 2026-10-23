@@ -74,6 +74,7 @@ def _parser() -> argparse.ArgumentParser:
     ow = sub.add_parser("owner", help="who keeps a Command Deck panel alive, by what mechanism, and what stays Steven's")
     ow.add_argument("query"); ow.add_argument("--json", action="store_true")
     sub.add_parser("mcp", help="serve recall/remember/pack/gaps over stdio MCP for any MCP client")
+    sub.add_parser("links", help="every front door of the second brain: deck, ISA Portal, 6D, Action Desk, Drive SECOND BRAIN, NotebookLM, Notion, the SB Docs")
     ly = sub.add_parser("layers", help="every layer of the second brain (repo, index, deck, 6D, Jarvis, Notion, Drive, NotebookLM...): last sync, age, verdict")
     ly.add_argument("--write", action="store_true", help="rewrite docs/reports/LAYERS.md"); ly.add_argument("--json", action="store_true")
     ex = sub.add_parser("export", help="export the brain for another tool: `notebooklm` writes exports/notebooklm/*.md (no client pages, PII masked)")
@@ -197,6 +198,10 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "passages":
         from . import passages
         print(passages.format_passages(passages.search(root, " ".join(args.question), top=args.top))); return 0
+
+    if args.cmd == "links":
+        from . import links
+        print(links.format_links(root)); return 0
 
     if args.cmd == "layers":
         from . import layers
