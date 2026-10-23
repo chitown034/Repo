@@ -30,6 +30,11 @@ produced becomes a "fact" in the repo without Steven's yes).
   the daily "Claude sessions ledger" task → `docs/inventory/claude-sessions.md` (every Claude Code session, title/date/status).
 - **Fieldy → brain** (daily 6:50 AM PT task in the orchestrator session): yesterday's recorded conversations → `memory/fieldy-meetings.md`
   (date, title, first names, Fieldy's summary, action items) and a `fieldyDesk` doc on the Command Deck; the `meeting-recap-to-crm` skill turns one into a recap.
+- **Ask Vanessa on the 6D Brain** (2026-10-23): an AI chat inside the page (claude.ai `sample` capability, the viewer's own
+  Claude usage, allowed once per view). Vanessa answers from the passages the page's zero-token search ranks for the
+  question, cites each page with its own date, says "not in the brain" when nothing matches, and keeps the HALT list
+  (no rate quote, eligibility call, legal read or client send). Her portrait and presence states (listening, reading,
+  speaking) are the Command Deck's; "Read her answers aloud" uses the device's own voice. Outside claude.ai the chat is hidden.
 - `bin/brain links` — every front door with its URL (deck, ISA Portal, 6D, Action Desk, Bot Crew, repo, Drive SECOND BRAIN,
   NotebookLM, Notion database + layer directory, the 13 SB Docs). The 6D Brain embeds the same list: "Open the brain"
   panel, an open link per layer, and clickable store nodes (Drive, NotebookLM, Notion, Command Deck).

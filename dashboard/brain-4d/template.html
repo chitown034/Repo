@@ -65,6 +65,52 @@ button, input { font: inherit; color: inherit; }
 #answer { display: grid; gap: 8px; } #answer[hidden] { display: none !important; } #answer h3 { margin: 0; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--now); font-weight: 500; }
 .ansrow { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; display: grid; gap: 4px; } .ansrow b { font-size: 12.5px; } .ansrow p { margin: 0; font-size: 12.5px; color: #c9cfdd; } .ansrow .btn { justify-self: start; min-height: 28px; padding: 2px 8px; font-size: 11.5px; }
 #answer small { color: var(--muted); font-size: 11px; }
+#vanWrap > summary { cursor: pointer; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--now); list-style: none; min-height: var(--hit); display: flex; align-items: center; }
+#vanWrap > summary::after { content: "+"; margin-left: auto; } #vanWrap[open] > summary::after { content: "–"; }
+.presence { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: center; padding: 10px; border: 1px solid var(--line); border-radius: 14px; background: radial-gradient(circle at 28% 18%, rgba(243, 185, 77, .14), transparent 60%), var(--void-2); }
+.presence-stage { position: relative; width: 96px; height: 96px; }
+.presence-head { position: absolute; inset: 3px; border-radius: 50%; }
+.presence-breath { position: relative; width: 100%; height: 100%; border-radius: 50%; overflow: hidden; box-shadow: 0 10px 24px -12px rgba(0,0,0,.7), 0 0 0 2px var(--void); animation: presenceBreathe 5.2s ease-in-out infinite; background: var(--void-2); }
+.presence-photo { width: 100%; height: 100%; background-size: cover; background-position: center 18%; transform: scale(1.02); }
+.presence-ring { position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--cool); opacity: .35; pointer-events: none; }
+.presence-ring-b { inset: -5px; border-color: var(--now); opacity: .18; }
+.presence[data-state="listening"] .presence-ring-a { animation: presenceListen 1.6s ease-in-out infinite; opacity: .85; border-color: var(--good); }
+.presence[data-state="listening"] .presence-breath { animation: presenceLean .9s ease-out forwards; }
+.presence[data-state="thinking"] .presence-ring-b { animation: presenceSpin 2.6s linear infinite; border-style: dashed; opacity: .6; }
+.presence[data-state="thinking"] .presence-breath { animation: presenceThink 3.2s ease-in-out infinite; }
+.presence[data-state="speaking"] .presence-ring-a { animation: presenceRingOut 1.1s ease-out infinite; opacity: .7; }
+.presence[data-state="speaking"] .presence-ring-b { animation: presenceRingOut 1.1s ease-out infinite .35s; opacity: .5; }
+.presence[data-state="speaking"] .presence-breath { animation: presenceTalk .64s ease-in-out infinite; }
+.presence-eq { position: absolute; left: 50%; bottom: -6px; transform: translateX(-50%); display: flex; gap: 3px; align-items: flex-end; height: 22px; padding: 4px 8px; border-radius: 999px; background: var(--void); border: 1px solid var(--line); opacity: 0; transition: opacity .2s; }
+.presence-eq i { width: 3px; height: 5px; border-radius: 2px; background: var(--now); display: block; }
+.presence[data-state="speaking"] .presence-eq, .presence[data-state="listening"] .presence-eq { opacity: 1; }
+.presence[data-state="speaking"] .presence-eq i { animation: presenceEq .42s ease-in-out infinite alternate; }
+.presence[data-state="listening"] .presence-eq i { animation: presenceEq 1.05s ease-in-out infinite alternate; background: var(--good); }
+.presence-eq i:nth-child(2) { animation-delay: .08s; } .presence-eq i:nth-child(3) { animation-delay: .16s; } .presence-eq i:nth-child(4) { animation-delay: .24s; } .presence-eq i:nth-child(5) { animation-delay: .32s; }
+.presence-side { min-width: 0; }
+.presence-name { font: 700 20px/1 var(--f-display); letter-spacing: .04em; text-transform: uppercase; }
+.presence-state { font: 11px var(--f-data); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-top: 5px; display: flex; align-items: center; gap: 7px; }
+.presence-state::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.presence[data-state="listening"] .presence-state { color: var(--good); } .presence[data-state="thinking"] .presence-state { color: var(--warn); } .presence[data-state="speaking"] .presence-state { color: var(--good); }
+.presence-caption { margin-top: 6px; font-size: 12.5px; line-height: 1.4; color: #c9cfdd; max-width: 46ch; min-height: 0; }
+#vanVoiceWrap { min-height: 32px; margin-top: 4px; font-size: 12px; } #vanVoiceWrap input { width: 18px; height: 18px; }
+@keyframes presenceBreathe { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-2px) scale(1.016); } }
+@keyframes presenceLean { to { transform: translateY(3px) scale(1.06); } }
+@keyframes presenceThink { 0%, 100% { transform: translateX(0) translateY(0) scale(1); } 50% { transform: translateX(5px) translateY(-3px) scale(1.01); } }
+@keyframes presenceTalk { 0% { transform: scale(1) rotate(0deg); } 30% { transform: scale(1.03) rotate(-0.9deg); } 70% { transform: scale(1.015) rotate(1deg); } 100% { transform: scale(1) rotate(0deg); } }
+@keyframes presenceListen { 0%, 100% { transform: scale(1); opacity: .5; } 50% { transform: scale(1.05); opacity: .95; } }
+@keyframes presenceSpin { to { transform: rotate(360deg); } }
+@keyframes presenceRingOut { 0% { transform: scale(.92); opacity: .7; } 100% { transform: scale(1.22); opacity: 0; } }
+@keyframes presenceEq { from { height: 5px; } to { height: 16px; } }
+@media (prefers-reduced-motion: reduce) { .presence-breath, .presence-ring, .presence-eq i { animation: none !important; } }
+.msg.van { padding-left: 34px; position: relative; } .msg.van::before { content: ""; position: absolute; left: 8px; top: 8px; width: 20px; height: 20px; border-radius: 50%; background: url(/*VANESSA_PHOTO*/) center 18% / cover; }
+#van { display: grid; gap: 6px; max-height: 38vh; overflow: auto; padding-right: 2px; } #van:empty { display: none; }
+.msg { border: 1px solid var(--line); border-radius: 12px; padding: 7px 10px; font-size: 12.5px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.msg.me { background: rgba(243, 185, 77, .08); border-color: rgba(243, 185, 77, .35); justify-self: end; max-width: 92%; }
+.msg.van { color: #d9deea; } .msg.van.think { color: var(--muted); font-style: italic; } .msg.err { color: var(--warn); }
+.msg .src { display: block; margin-top: 6px; font: 11px var(--f-data); color: var(--muted); } .msg .src a { color: var(--cool); text-decoration: none; }
+#vanQ { width: 100%; border-radius: 10px; border: 1px solid var(--line); background: var(--void-2); padding: 8px 10px; resize: vertical; min-height: 44px; }
+#vanForm { display: grid; gap: 6px; } #vanForm[hidden] { display: none !important; } #vanNote { color: var(--muted); font-size: 11px; }
 #askTerms { margin: 0; font: 11px var(--f-data); color: var(--muted); overflow-wrap: anywhere; }
 #owner { margin: 0; font-size: 12.5px; color: #c9cfdd; } #owner b { color: var(--now); }
 #askNone { margin: 0; color: var(--warn); font-size: 12.5px; }
@@ -193,6 +239,21 @@ body.enc #enc { max-width: 720px; }
     <div id="askCopied" role="status" aria-live="polite"></div>
     <pre class="sr" id="askCmd"></pre>
   </section>
+  <details id="vanWrap" open><summary>Ask Vanessa — AI chat over this brain</summary>
+    <div class="presence" id="vanPresence" data-state="idle">
+      <div class="presence-stage"><div class="presence-ring presence-ring-b"></div><div class="presence-ring presence-ring-a"></div><div class="presence-head"><div class="presence-breath"><div class="presence-photo" role="img" aria-label="Vanessa" style="background-image:url(/*VANESSA_PHOTO*/);"></div></div></div><div class="presence-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div>
+      <div class="presence-side"><div class="presence-name">Vanessa</div><div class="presence-state" id="vanState">Standing by</div><div class="presence-caption" id="vanCaption" aria-live="polite"></div>
+        <label class="toggle" id="vanVoiceWrap" hidden><input type="checkbox" id="vanVoice"> Read her answers aloud (this device's voice)</label></div>
+    </div>
+    <div id="van" role="log" aria-label="Chat with Vanessa" aria-live="polite"></div>
+    <p id="vanOff" class="seatnote">Vanessa answers inside claude.ai. Open this page there (the link in the Command Deck) and allow it to use Claude once.</p>
+    <form id="vanForm" hidden>
+      <label class="sr" for="vanQ">Ask Vanessa</label>
+      <textarea id="vanQ" rows="2" placeholder="Ask Vanessa anything the brain knows — she reads the matching pages first" autocomplete="off"></textarea>
+      <div class="actions"><button class="btn primary" id="vanSend" type="submit">Ask Vanessa</button><button class="btn" id="vanStop" type="button" hidden>Stop</button><button class="btn" id="vanClear" type="button">Clear</button></div>
+      <small id="vanNote">Grounded on the pages this brain ranks for your question; nothing licensed is decided here — Vanessa says "not in the brain" when the pages don't cover it. Uses your Claude usage.</small>
+    </form>
+  </details>
   <details id="lensWrap" class="maponly" open><summary>Lenses: freshness, seat, regions</summary>
     <div class="lens">
       <section aria-labelledby="fH">
@@ -661,6 +722,89 @@ $("askCopy").addEventListener("click", () => {
 
 // search
 $("names").replaceChildren(...nodes.map(n => { const o = document.createElement("option"); o.value = n.t; return o; }));
+// ---- Ask Vanessa: an AI chat over this brain (claude.ai "sample" capability; the viewer's own Claude usage).
+// Grounding is the page's own zero-token retrieval: the top pages for the question (askRank) and their best section
+// passages (SEC) are put into the turn, so Vanessa answers from the brain and cites the page. Nothing licensed is
+// decided here: the standing rules turn carries the HALT list from CLAUDE.md.
+const VAN_RULES = `You are Vanessa, Steven Shearrill's Chief of Staff and orchestrator for his second brain (he is a Broker Associate at LPT Realty, an MLO at Patriot Pacific Financial, NMLS 1921615, and a retired Navy Chief). You are chatting inside the 6D Brain page. Rules you never break:
+1. Answer ONLY from the brain passages given in the latest message (and the earlier turns of this chat). If they do not cover the question, say "not in the brain" and name the page or person that would, or offer to queue research. Never fill a gap from general knowledge without saying so plainly.
+2. Cite the page for every fact as its path (for example wiki/mortgage-programs/va-eligibility.md) and give the fact's age as the page's own date ("as of 2026-10-22"), never today's date.
+3. HALT list — never do these, say instead that it is Steven's call: a rate quote, an eligibility decision, a negotiation position, a legal or compliance interpretation, anything sent to a client, anything that spends money or needs a credential. You may explain how a program works from the pages.
+4. First names only for anyone who is not Steven. Never repeat a phone number or an e-mail address.
+5. Be short: a direct answer first, then at most a few bullets. Plain language, no headers. Offer the command bin/brain recall "<question>" when a deeper read would help.`;
+let vanSample = null, vanCtl = null; const vanTurns = [];
+// Her presence: idle (breathing) → listening (leans in while you type) → thinking (looks away) → speaking (moves while the
+// answer streams, and while this device reads it aloud if the toggle is on) — the same states the Command Deck uses.
+const VAN_LABEL = { idle: "Standing by", listening: "Listening", thinking: "Reading the brain", speaking: "Speaking" };
+function vanState(st, caption) { const p = $("vanPresence"); p.dataset.state = st; $("vanState").textContent = VAN_LABEL[st] || st; if (caption !== undefined) $("vanCaption").textContent = caption; }
+let vanUtter = null;
+function vanSay(text) {
+  try {
+    if (!$("vanVoice").checked || !("speechSynthesis" in window)) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text.replace(/\[[^\]]*\]/g, "").slice(0, 1500)); u.rate = 1.02; u.pitch = 1.05;
+    const vs = speechSynthesis.getVoices(), pick = vs.find(v => /en/i.test(v.lang) && /female|samantha|karen|moira|zira|victoria|ava|allison/i.test(v.name)) || vs.find(v => /en/i.test(v.lang));
+    if (pick) u.voice = pick;
+    u.onstart = () => vanState("speaking", "Vanessa is speaking…"); u.onend = u.onerror = () => { vanState("idle", ""); vanUtter = null; };
+    vanUtter = u; speechSynthesis.speak(u);
+  } catch (_) {}
+}
+if ("speechSynthesis" in window) { $("vanVoiceWrap").hidden = false; }
+$("vanQ").addEventListener("input", () => { if (!vanCtl) vanState($("vanQ").value ? "listening" : "idle", $("vanQ").value ? "Go on — I'm listening." : ""); });
+$("vanQ").addEventListener("focus", () => { if (!vanCtl) vanState("listening", "Ask me anything the brain knows."); });
+$("vanQ").addEventListener("blur", () => { if (!vanCtl && !$("vanQ").value) vanState("idle", ""); });
+const vanEl = $("van");
+function vanGround(question) {
+  let ranked = [], terms = new Set();
+  try { const r = askRank(question); ranked = r.ranked.slice(0, 4); r.groups.forEach(g => g.terms.forEach(t => terms.add(t))); r.groups.forEach(g => terms.add(g.stem)); } catch (_) {}
+  const want = [...terms], tops = ranked.map(r => r.f.p);
+  const score = sct => { const low = (sct.h + " " + sct.x).toLowerCase(); return want.reduce((n, t) => n + (low.includes(t) ? 1 : 0), 0) + (tops.indexOf(sct.p) >= 0 ? (4 - tops.indexOf(sct.p)) * 0.3 : 0); };
+  const cands = (SEC || []).filter(sct => tops.includes(sct.p)).map(sct => ({ sct, s: score(sct) })).filter(c => c.s >= 1).sort((a, b) => b.s - a.s).slice(0, 7);
+  const lines = cands.map(c => { const n = byId.get(c.sct.p); return `[${c.sct.p} › ${c.sct.h}] (page: ${n ? n.t : c.sct.p}; as of ${n && n.z ? n.z : "undated"})\n${c.sct.x}`; });
+  const pages = [...new Set(cands.map(c => c.sct.p))];
+  return { text: lines.length ? lines.join("\n\n") : "(no passage matched — answer \"not in the brain\" and say which page or person would know)", pages };
+}
+function vanMsg(cls, text) { const d = mk("div", "msg " + cls, text); vanEl.append(d); vanEl.scrollTop = vanEl.scrollHeight; return d; }
+function vanSources(d, pages) {
+  if (!pages.length) return;
+  const src = mk("span", "src", "Pages read: "); pages.forEach((p, i) => { const a = mk("a", "", p); a.href = REPO + p; a.target = "_blank"; a.rel = "noopener"; src.append(i ? " · " : "", a); }); d.append(src);
+}
+const VAN_COPY = { not_granted: "Vanessa is off for this page (Claude not allowed). Allow it in the page's permissions menu.", sampling_disabled: "Claude is not available on this account.", rate_limited: "Too many questions for now — try again in a little while.", session_expired: "Sign in to claude.ai again, then ask once more.", refused: "Claude declined that one. Ask it another way.", prompt_too_large: "Too much context — ask a narrower question.", upstream_error: "Connection hiccup. Ask again." };
+async function vanAsk(question) {
+  if (!vanSample || !question || vanCtl) return;   // one call at a time: a second Enter while she answers is ignored (validator P07-F1)
+  const ground = vanGround(question);
+  vanMsg("me", question);
+  vanTurns.push({ role: "user", content: `Question: ${question}\n\nBrain passages retrieved for this question:\n${ground.text}` });
+  while (vanTurns.length > 8) vanTurns.shift();
+  const out = vanMsg("van think", "Vanessa is reading the brain…");
+  vanState("thinking", ground.pages.length ? "Reading " + ground.pages.length + " page" + (ground.pages.length > 1 ? "s" : "") + "…" : "Checking whether that is in the brain…");
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  $("vanSend").disabled = true; $("vanStop").hidden = false; vanCtl = new AbortController();
+  try {
+    const { text, truncated } = await vanSample([{ role: "user", content: VAN_RULES }, ...vanTurns], { cache: false, signal: vanCtl.signal, onText: ({ text }) => { out.classList.remove("think"); out.textContent = text; vanState("speaking", text.slice(0, 140) + (text.length > 140 ? "…" : "")); vanEl.scrollTop = vanEl.scrollHeight; } });
+    out.classList.remove("think"); out.textContent = text + (truncated ? "\n\n(cut short — ask for less at a time)" : "");
+    vanTurns.push({ role: "assistant", content: text }); vanSources(out, ground.pages);
+    vanState("idle", text.slice(0, 140) + (text.length > 140 ? "…" : "")); vanSay(text);
+  } catch (e) {
+    const code = e && e.code ? e.code : "upstream_error";
+    out.classList.remove("think");
+    if (code === "cancelled") { out.textContent = (e.text || "") + "\n(stopped)"; if (e.text) vanTurns.push({ role: "assistant", content: e.text }); else vanTurns.pop(); }
+    else { out.textContent = e.text || ""; out.classList.add("err"); out.textContent += (out.textContent ? "\n" : "") + (VAN_COPY[code] || VAN_COPY.upstream_error); if (!e.text) vanTurns.pop(); if (code === "not_granted" || code === "sampling_disabled" || code === "not_declared" || code === "capability_disabled" || code === "capability_removed") { $("vanForm").hidden = true; $("vanOff").hidden = false; } }
+  } finally { $("vanSend").disabled = false; $("vanStop").hidden = true; vanCtl = null; vanEl.scrollTop = vanEl.scrollHeight; if (!vanUtter) vanState($("vanPresence").dataset.state === "speaking" ? "idle" : $("vanPresence").dataset.state === "thinking" ? "idle" : $("vanPresence").dataset.state); }
+}
+$("vanForm").addEventListener("submit", e => { e.preventDefault(); if (vanCtl) return; const q = $("vanQ").value.trim() || $("q").value.trim(); if (!q) return; $("vanQ").value = ""; vanAsk(q); });
+$("vanQ").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("vanForm").requestSubmit(); } });
+$("vanStop").addEventListener("click", () => { if (vanCtl) vanCtl.abort(); if ("speechSynthesis" in window) speechSynthesis.cancel(); vanState("idle", ""); });
+$("vanVoice").addEventListener("change", () => { if (!$("vanVoice").checked && "speechSynthesis" in window) speechSynthesis.cancel(); });
+$("vanClear").addEventListener("click", () => { vanTurns.length = 0; vanEl.replaceChildren(); });
+(async () => {
+  try {
+    if (!window.claude || typeof window.claude.use !== "function") return;
+    vanSample = await window.claude.use("sample");
+    if (!vanSample) return;
+    $("vanOff").hidden = true; $("vanForm").hidden = false;
+  } catch (_) {}
+})();
 $("q").addEventListener("input", e => {
   query = e.target.value.trim().toLowerCase();
   askRender(e.target.value.trim());

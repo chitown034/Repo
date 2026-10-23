@@ -175,6 +175,9 @@ def passages(root, idx, ids, cap=380):
             out.append({"p": p, "h": mask(title[:90])[0], "x": mask(body[:cap] + ("…" if len(body) > cap else ""))[0]})
     return out
 _idx_for_sec = json.loads((ROOT / "brain/index.json").read_text(encoding="utf-8"))
+import base64 as _b64
+_photo = ROOT / "dashboard/brain-4d/vanessa.jpg"  # Vanessa's face, the same portrait the Command Deck shows (resized to 360 px)
+out = out.replace("/*VANESSA_PHOTO*/", "data:image/jpeg;base64," + _b64.b64encode(_photo.read_bytes()).decode("ascii") if _photo.exists() else "")
 out = out.replace("/*SEC*/null", j(passages(ROOT, _idx_for_sec, {n["id"] for n in g["nodes"]})), 1)
 out = out.replace("/*LINKS*/null", j(_links.all_links(ROOT)), 1)
 (ROOT / "dashboard/brain-4d.html").write_text(out, encoding="utf-8")

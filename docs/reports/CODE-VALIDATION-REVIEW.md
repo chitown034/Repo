@@ -1,274 +1,190 @@
-# VibeBreaker Final Report: 6D Brain "answer from the brain" search + Fieldy layer
+# VibeBreaker Final Report: "Ask Vanessa" AI chat on the 6D Brain
 
-change-set: 384c72d239846908
+change-set: 9e189531d5ea6c80
 
-(From `bash scripts/validate-code.sh` at 2026-10-23T13:27:07Z on the uncommitted tree over HEAD ca02849. Any edit changes
-the hash; the fix-up needs its own run and review.)
+(From `bash scripts/validate-code.sh` at 2026-10-23T14:10:16Z on the uncommitted tree over HEAD 7effc30, branch
+claude/stoic-cori-pvn3f8. Any edit to a hashed file changes the id; `brain/index.json` and `INDEX.md` are excluded from
+the hash, so `bin/brain reindex` alone does not change it.)
 
 ## Verdict
 
-`FIX FIRST` (VibeBreaker: `FIX BEFORE SHIP`)
+`FIX FIRST` (VibeBreaker: `BROKEN` by the repo's gate rule — the deterministic gate fails)
 
-The deterministic gate passes 10/0, but the rebuilt `dashboard/brain-4d.html` will not run in a browser. The new SEC
-passages put `<!--` and then `<script ` inside the inline script, so the HTML tokenizer never closes that script. The
-passage feed would also publish the coming Fieldy meeting digests, because `passages()` only leaves out `wiki/clients/`.
+Gate verdict line: `verdict: FAIL (3 passed, 1 failed)` — `brain doctor` fails because `brain/index.json` is stale after
+the edit to `wiki/ai-team/second-brain-layers.md`. The chat code itself works on the happy path and on every single-call
+failure path, but a second question sent with Enter while one is in flight starts a second call, and a failure of the
+first then deletes the wrong turn, leaving the chat history paired wrongly.
 
 ## Scope
 
-- Commit / branch: uncommitted working tree on claude/stoic-cori-pvn3f8, base ca02849
-- Mode: DIFF. Passes 01, 04, 05, 06, 07, 08, 12, 17, 18, 19 (Python/JS), 01, 04, 05, 17, 19 (dashboard HTML), 01, 04, 05, 11, 14, 19 (shell), then 20
-- Stack: Python 3.11 stdlib (brain/, build.py), static HTML + inline JS (6D Brain), bash (validate gate)
-- Inspected surfaces: brain/layers.py, brain/links.py, brain/tests/test_layers.py, dashboard/brain-4d/build.py (passages, j()),
-  dashboard/brain-4d/template.html (askRender, mk, CSS), dashboard/brain-4d.html (built SEC/LAYERS/LINKS embeds),
-  scripts/validate-code.sh (quickcheck), brain/indexer.py + brain/text.py (section line semantics),
-  brain/export_notebooklm.py (the existing masking policy), the live "Fieldy → brain" scheduled task prompt (read-only list)
-- Excluded / unavailable context: no spec-compliant HTML parser or browser in the container (no jsdom/parse5/html5lib/Chrome).
-  The script-termination proof is a simulation of the WHATWG script-data tokenizer states, not a browser run.
-- Material scope limitation: YES (no live browser confirmation of P17-F1)
+- Commit / branch: uncommitted working tree on claude/stoic-cori-pvn3f8, base 7effc30
+- Mode: DIFF. Dashboard HTML + inline JS: 01, 04, 05, 06, 07, 08, 12, 17, 18, 19; Python (build.py): 01, 04, 05, 19; then 20
+- Stack: static HTML + inline JS (6D Brain), Python 3 stdlib (build.py), claude.ai `sample` capability (contract
+  sample.d.ts 0.2.89)
+- Files: .gitattributes, dashboard/brain-4d/template.html, dashboard/brain-4d/build.py, dashboard/brain-4d.html (built),
+  dashboard/brain-4d/vanessa.jpg, wiki/ai-team/second-brain-layers.md
+- Excluded: the claude.ai viewer runtime itself (stubbed), speechSynthesis with real voices (headless Chromium has none)
+- Material scope limitation: YES — real `sample` runtime and real TTS were stubbed/unavailable
 
 ## Scoreboard
 
-- Passes executed: 14 distinct / 20
-- Confirmed: 6
-- Critical: 0
-- High: 2
-- Medium: 1
-- Low: 3
-- Info: 0
-- Unverified: 0
+- Passes executed: 11 / 20 (DIFF)
+- Confirmed: 3 (Critical 1 — the gate rule, High 0, Medium 1, Low 1)
+- Unverified: 2
 - Rejected candidates: 4
-- First critical pass: NONE
+- First critical pass: P00 (deterministic gate)
 
 ## CONFIRMED
 
 ```yaml
-id: P17-F1
-pass: "17"
-title: Embedded SEC passages put the 6D page's main inline script into script-data-double-escaped state; the script never closes or runs
+id: P00-F1
+pass: 00
+title: Deterministic gate fails - brain index stale after the wiki edit
 status: CONFIRMED
-severity: HIGH
+severity: CRITICAL   # by the repo rule: a failing gate is P00-F1 CRITICAL; the underlying defect is a missing reindex
 confidence: HIGH
 location:
-  - path: dashboard/brain-4d/build.py
-    line: "131-132 (j() escapes only '</'), 147-169 (passages injected)"
-  - path: dashboard/brain-4d.html
-    line: "inline script opening at byte 19896; '<!--' at script offset 296026 (memory.md 'Entries' passage); '<script guar…' at offset 557579 (routines/cloud-routine-repairs.md passage)"
-entry_or_trigger: Any browser load of the built page (the daily 3:30 AM 6D rebuild + republish)
-evidence: >
-  j() = json.dumps(...).replace("</", "<\\/") does not escape "<!--" or "<script". SEC now carries 4 "<!--" and 1 "<script "
-  (followed by a space), with no "-->" anywhere in the script body (passages() strips every '>'). Per the HTML tokenizer,
-  "<!--" in script data moves to script-data-escaped; "<script " then moves to double-escaped; the real "</script>" then only
-  returns to escaped; EOF in a script means the element is marked already-started and is never executed.
-  Simulation (scratchpad scriptstate.py): new page -> "EOF inside script"; HEAD page -> script ends at byte 541519 as expected.
-  HEAD page had 0 "<!--".
-existing_controls_checked: >
-  validate-code.sh quickcheck extracts scripts with a regex and runs node --check on each, so it never sees HTML-tokenizer
-  state; it passes. j() handles "</" only.
-failure_scenario: Republish the rebuilt page -> the browser shows the static shell, the map, search, layers and links all dead.
-impact: The whole 6D Brain page, which Steven reaches through the deck links and the daily republish.
-remediation_direction: In j(), also escape "<!--" (e.g. "<\\!--") and "<script" (e.g. "<\\script"), or "<" as "\\u003c" across the JSON.
-verification: >
-  A build test asserting that no embedded script body contains "<!--" or a case-insensitive "<script"; then open the page in
-  Chrome and check that typeof askRender === "function" and a query shows hits.
+  - path: wiki/ai-team/second-brain-layers.md
+    line: 33-37
+  - path: brain/index.json
+    line: n/a
+entry_or_trigger: bash scripts/validate-code.sh -> bin/brain doctor
+evidence: "FAIL index: brain/index.json stale vs the tree ... run `bin/brain reindex`"; verdict: FAIL (3 passed, 1 failed)
+existing_controls_checked: router, links, layout checks all ok
+failure_scenario: bin/brain recall serves the old index for the layers page; the new "Ask Vanessa" layer line is not recallable; --mark is blocked
+impact: brain recall freshness; the change cannot be marked validated
+remediation_direction: run bin/brain reindex
+verification: bash scripts/validate-code.sh prints "PASS brain doctor" and verdict PASS
 needs_context: null
 ```
 
 ```yaml
-id: P05-F1
-pass: "05"
-title: passages() will put Fieldy meeting digests (client meeting summaries) into the published 6D page
-status: CONFIRMED
-severity: HIGH
-confidence: MEDIUM
-location:
-  - path: dashboard/brain-4d/build.py
-    line: "152"
-  - path: memory/fieldy-meetings.md
-    line: "1-6 (indexed: INDEX.md, brain/index.json)"
-entry_or_trigger: First Fieldy recording -> the 6:50 AM "Fieldy → brain" task prepends a summary, reindexes, commits and pushes -> the next 3:30 AM 6D rebuild
-evidence: >
-  The only exclusion is p.startswith("wiki/clients/"). memory/fieldy-meetings.md is indexed and becomes a graph node, so it
-  passes the filter. It is not in SEC yet only because the committed build (13:21:37) predates the reindex (13:25:59).
-  The live task prompt writes, per conversation, first names, Fieldy's own summary (up to 80 words) and action items.
-  brain/export_notebooklm.py, the existing outbound path, masks phone/e-mail and drops any "/clients/" path. passages() applies neither.
-existing_controls_checked: >
-  The task's first-names-only rule; the wiki/clients/ filter; the NotebookLM mask() (not reused here). The SEC sweep today
-  finds 0 wiki/clients pages; 2 phones (both on the export allow-list: Inkbox iMessage and Kapso lines); 9 e-mails, of which
-  steven.shearrill@gmail.com x2, jasmine@inkboxmail.com x1, api@crmls.org x2 and number@c.us x1 are NOT on the allow-list
-  (licensing@crmls.org x3 is). None of those addresses were on the HEAD 6D page.
-failure_scenario: >
-  Steven records a lender or buyer meeting. The next day, the published 6D page carries "<first name> … summary … action
-  items" for that client in its page source, whether or not anyone searches for it.
-impact: Client meeting content and Steven's personal e-mail reach a page the brief describes as published publicly. This touches the CLAUDE.md HALT list (client PII leaving the local model).
-remediation_direction: >
-  Exclude memory/fieldy-meetings.md (and memory/claude-chats.md) and any "/clients/" path from passages(), and run
-  export_notebooklm.mask() over h and x. Steven decides whether meeting digests may sit in the repo at all.
-verification: >
-  A test where passages() over a fixture tree containing memory/fieldy-meetings.md and a/clients/x.md returns neither, and an
-  e-mail not on the allow-list comes back as "[e-mail masked]".
-needs_context: Whether the 6D artifact and the GitHub repo are public (the brief says the dashboard is; CONNECTIONS.md says the repo is public).
-```
-
-```yaml
-id: P04-F1
-pass: "04"
-title: The previous query's "Answer from the brain" stays on screen after a no-match or empty query
+id: P07-F1
+pass: 07 (concurrency / re-entrancy)
+title: Enter key bypasses the disabled Send button; overlapping vanAsk calls corrupt vanTurns
 status: CONFIRMED
 severity: MEDIUM
 confidence: HIGH
 location:
   - path: dashboard/brain-4d/template.html
-    line: "587-603 (early returns before #answer is touched), 621, 632"
+    line: 774 (no in-flight guard), 782 (vanCtl overwritten), 791-793 (pop()/finally act on shared state), 796 (keydown -> requestSubmit)
+entry_or_trigger: type a question, press Enter; while "Reading the brain", type another and press Enter
+evidence: >
+  vanAsk only checks `!vanSample || !question`. The Send button is disabled but the keydown handler calls
+  form.requestSubmit(), which fires submit regardless. Headless repro (stub: call 1 fails after 600 ms with no text,
+  call 2 answers "slow"): 2 sample calls made; final vanTurns = ["user: Question: first q", "assistant: slow"] -
+  call 1's catch popped the SECOND question's user turn, so the failed first question is now paired with the answer
+  to the second. Call 1's finally also sets vanCtl = null and hides Stop while call 2 is still running.
+existing_controls_checked: vanSend.disabled (does not stop requestSubmit); the contract permits consecutive user turns, so the fault is mis-pairing, not an invalid request
+failure_scenario: every later answer is generated over a history that says question 1 was answered with question 2's answer; Stop cannot cancel the live call; usage is spent twice
+impact: wrong context for Vanessa's later answers in that chat; viewer's Claude usage
+remediation_direction: return early from vanAsk (or the submit handler) while vanCtl is set; or abort the previous call and remove that call's own turn by identity, not pop()
+verification: in the stub harness, press Enter twice during a slow call -> exactly one sample call; or, if superseding, vanTurns never contains a user turn whose next assistant turn answers a different question
+needs_context: null
+```
+
+```yaml
+id: P06-F1
+pass: 06 (error handling)
+title: capability_disabled / capability_removed shown as "Connection hiccup. Ask again." instead of hiding the chat
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
   - path: dashboard/brain-4d/template.html
-    line: "65 (#answer { display: grid } overrides the hidden attribute)"
-entry_or_trigger: Type a query that answers (e.g. "VA funding fee"), then one that hits "not in the brain"
-evidence: >
-  Line 587 resets #best and #askNone but not #answer. The no-keywords/weak-match path returns at line 603, and the empty-input
-  path at 588, before the try block that clears it (621). Separately, the author rule #answer{display:grid} beats the UA
-  [hidden]{display:none}, so ans.hidden = true (632) never hides it. The page already works around this for #inspector (line 104).
-existing_controls_checked: Clearing happens inside the try block only; there is no #answer[hidden] rule.
-failure_scenario: "not in the brain — queue research" shows directly above the previous question's passages, labelled "Answer from the brain".
-impact: The search shows a confident-looking answer to a different question, on a brain that holds mortgage-guideline pages.
-remediation_direction: Clear and hide #answer next to #best at line 587, and add #answer[hidden]{display:none}.
-verification: >
-  DOM test (runtime harness): askRender("va funding fee"), then askRender("zzzz qqqq"). Assert #answer has no children and
-  computed display is none.
-needs_context: null
-```
-
-```yaml
-id: P04-F2
-pass: "04"
-title: The committed 6D build is stale against this change-set's own sources (no Fieldy layer, link or page)
-status: CONFIRMED
-severity: LOW
-confidence: HIGH
-location:
-  - path: dashboard/brain-4d.html
-    line: "LAYERS / LINKS / ASK embeds"
-entry_or_trigger: Publishing the committed dashboard/brain-4d.html as is
-evidence: >
-  The built LAYERS holds 10 keys and no "fieldy"; LINKS holds 24 and no "fieldy"; ASK n=148 while the index has 149.
-  brain-4d.html mtime is 13:21:37, LAYERS.md 13:22:32, index.json 13:25:59.
-existing_controls_checked: The daily 3:30 AM rebuild would regenerate it.
-failure_scenario: Until the next rebuild, the 6D page shows no Fieldy layer or link, unlike LAYERS.md and bin/brain links.
-impact: A cosmetic inconsistency on the page.
-remediation_direction: Rebuild after the last source edit, as the final step.
-verification: A test that the built LAYERS keys equal the keys from layers.collect(ROOT).
-needs_context: null
-```
-
-```yaml
-id: P04-F3
-pass: "04"
-title: The Fieldy layer reads "stale" after any two recording-free days
-status: CONFIRMED
-severity: LOW
-confidence: HIGH
-location:
-  - path: brain/layers.py
-    line: "16 (cadence 1), 77, 93"
-entry_or_trigger: No recordings Saturday and Sunday (the task "stops silently" and writes no heading), then a Monday layers run
-evidence: >
-  "last" is the newest "## YYYY-MM-DD" heading. A day without recordings writes no heading. fresh means age <= 2 days.
-  Reproduced: a single "## 2026-10-20" heading with today 2026-10-23 gives age 3, verdict "stale".
-existing_controls_checked: The task prompt prepends headings (newest first), so the re.search order is correct; checked and rejected separately.
-failure_scenario: >
-  The layer reports "Even: no — stale: Fieldy meetings". The weekly sync's step 6 then appends a CONNECTIONS row and messages
-  Steven about something that is working.
-impact: A false alarm on the layer register.
-remediation_direction: Stamp the last check date (e.g. a "checked YYYY-MM-DD" line the task always rewrites), or use a cadence that matches recording frequency.
-verification: A layers test with a 3-day-old heading plus a fresh "checked" stamp, asserting "fresh".
-needs_context: null
-```
-
-```yaml
-id: P04-F4
-pass: "04"
-title: passages() drops the first line of a "(top)" preamble section
-status: CONFIRMED
-severity: LOW
-confidence: HIGH
-location:
-  - path: dashboard/brain-4d/build.py
-    line: "160-162"
-entry_or_trigger: Building SEC for a page whose line 0 is content rather than a heading
-evidence: >
-  The indexer stores line = start + 1 (brain/indexer.py:208, 1-based). For heading sections, lines[line:] correctly starts
-  after the heading, and the end bound (next line - 1) correctly stops before the next heading. For the "(top)" section,
-  start 0 becomes line 1, so lines[1:] skips content line 0. Affected today: integrations/mac-claude-only.md
-  ("> **Superset:** …" is dropped).
-existing_controls_checked: >
-  The 1-based assumption was verified for heading sections. No indexed file diverges between split("\n") and splitlines(),
-  and none has YAML frontmatter.
-failure_scenario: That page's top passage is missing its first sentence.
-impact: Minor loss of content in one passage.
-remediation_direction: Start at 0 when the title is "(top)".
-verification: A passages() unit test on a fixture whose line 0 is text, asserting that text is in x.
+    line: 792
+entry_or_trigger: sample() rejects {code: "capability_disabled"} (granted but unusable in this view) or "capability_removed"
+evidence: only not_granted / sampling_disabled / not_declared hide the form; the contract lists capability_disabled and capability_removed in the same "hide the feature for this view, never re-ask" group. Stub repro: form stays visible, bubble reads "Connection hiccup. Ask again."
+existing_controls_checked: VAN_COPY map, unknown-code fallback to upstream_error
+failure_scenario: viewer retries a call that can never succeed in this view; each retry fails the same way
+impact: misleading copy, wasted clicks; no data harm
+remediation_direction: add the two codes to the hide branch
+verification: stub rejecting capability_disabled -> #vanForm hidden, #vanOff shown
 needs_context: null
 ```
 
 ## UNVERIFIED
 
-None.
+- P17-U1 — `speechSynthesis.cancel()` at the start of vanAsk (and in vanSay) may fire the previous utterance's
+  onend/onerror asynchronously, whose handler calls `vanState("idle", "")` and sets `vanUtter = null` after the new
+  state was set (template.html, vanSay `u.onend = u.onerror`). Needs a browser with real voices to see whether the
+  "thinking" caption is clobbered. Cosmetic at most.
+- P05-U1 — whether the published 6D artifact declares `capabilities: {sample: {}}`. Without it `use("sample")` returns
+  null and the chat stays hidden (handled correctly). Needs the publish call / artifact manifest.
 
 ## REJECTED
 
-- P04-R1: the Fieldy "last" stamp reads the oldest heading (re.search takes the first match). Rejected: the live "Fieldy → brain" task prompt prepends each day under "## <date>", so the first match is the newest.
-- P01-R1: XSS in the answer rows. Rejected: mk() sets textContent (template.html:583); the hrefs are REPO + an index path and a fixed deck URL.
-- P04-R2: the section line off-by-one for heading sections. Rejected: line is 1-based (indexer.py:208), so lines[line:next-1] is exactly the body.
-- P14-R1: the new `grep -q 'id="cdStateSeed"'` misroutes the deck. Rejected: the only seed-bearing page in the repo is dashboard/isa/isa-portal.html:433, which matches. In the JSON-embedded 6D page any quote is escaped as `\"`, so it cannot match.
+- Turns ending on assistant or with empty content — every failure path tested (cancelled with/without text, upstream
+  error with "" and with text, refused, capability_disabled) left the next call starting and ending on `user` with
+  non-empty content; empty `e.text` pops; partial `e.text` on cancel becomes the assistant turn.
+- Data-URI breaking the style attribute / CSS url() — the inlined value contains only `data:image/jpeg;base64,` plus
+  [A-Za-z0-9+/=]; no quote, paren or space. Computed background-image resolves in both places (smoke).
+- build.py conditional-expression precedence — `"data:..." + b64(read) if exists else ""` parses as
+  `(prefix + b64) if exists else ""`; read_bytes is not evaluated when the file is absent.
+- Trimming `vanTurns` to 8 drops the rules turn — the rules turn is prepended per call, not stored; after 7 asks the
+  call still starts with VAN_RULES (15.4 KB, far under 256 KiB).
 
-## Coverage
+## Coverage (inspected and clean)
 
-- validate-code.sh: PASS 10/0. brain tests (`cd brain/tests && python3 -m unittest`): 118 OK. dashboard.brain-4d.test_merge_live: OK.
-  scripts/tests/validate-gate-tests.sh: 4/4. The brief's `python3 -m unittest discover -s brain/tests -t .` fails with ImportError (no `__init__.py`); this is not a defect, because the gate runs from inside brain/tests.
-- askRender scope: ranked, best, terms, byId, REPO, mk and $ are all in scope at the insertion point (lines 594-616). The try/catch cannot break the earlier rendering.
-- brain/links.py fieldy row and layers url wiring (for_layer): clean; the test covers it.
-- SEC privacy sweep: 1255 passages from 147 pages; 0 wiki/clients pages; "wiki/clients" appears 11 times only as path text inside other pages.
-- Size: the 6D page grew from 544 KB to 1.11 MB (SEC is 567 KB). That is within limits.
-- Docs rows (CLAUDE.md, CONNECTIONS.md, toolkit.md, second-brain-layers.md, LAYERS.md) are consistent with the live task.
+- Gate: quickcheck of template and built page (all inline scripts parse via node --check), py_compile build.py.
+- `node smoke.js` re-run: no page errors, SEC 1256, askRender/vanAsk functions, photo data URI, state idle -> listening.
+- Extended stub harness (scratchpad smoke-van.js, `window.claude` injected via addInitScript): form shows and #vanOff
+  hides once `use` resolves; a `.msg.van` bubble reads "hi"; presence states listening -> thinking -> speaking -> idle;
+  "Pages read" links are REPO + SEC path (3 GitHub links); without `window.claude` the form stays hidden and the
+  note shows.
+- Call shape: `[{role:"user", content:VAN_RULES}, ...turns]`, `cache:false`, no tools, `signal` = AbortController.signal,
+  onText assigns `text` (not +=). Matches sample.d.ts.
+- vanGround with stopwords only ("the of and is a"): no exception; turn carries "(no passage matched — answer \"not in
+  the brain\" ...)".
+- Privacy: the composite turn holds only the question, SEC passages (already masked / excluded) and the node's title and
+  date for those same pages; no layer URLs, LINKS or DB data. VAN_RULES has no phone or e-mail (regex check); it names
+  the public NMLS id only.
+- XSS: chat text goes through mk() -> textContent and out.textContent; links set href = REPO + path only.
+- CSS: `#vanForm[hidden]` computes display:none; `.msg.van::before` shows the portrait; under reduced motion the breath,
+  ring and equalizer animations compute to `none`.
+- Built page matches template: the Ask Vanessa JS block is byte-identical; no `/*VANESSA_PHOTO*/` placeholder left.
+- `python3 -B -m unittest dashboard/brain-4d/test_build_passages.py`: 2 tests OK. Note: the gate does not run this test
+  (it only runs brain/ unit tests); it was run by hand here.
+- .gitattributes `*.jpg binary` applies (git check-attr). The gate's "ignored null byte" warning comes from the shebang
+  probe reading the JPEG; harmless.
 
-## Top 10 missing tests
+## Top missing tests (pass 19)
 
-1. Build: no embedded script body in the built page contains "<!--" or "<script" (case-insensitive). This catches P17-F1.
-2. passages(): a fixture with memory/fieldy-meetings.md, memory/claude-chats.md, x/clients/y.md and wiki/clients/z.md returns none of them.
-3. passages(): an e-mail or phone number not on the allow-list is masked with export_notebooklm.mask().
-4. DOM: an answer, then a no-match query, leaves #answer empty and computed display none.
-5. DOM: after an empty-input reset, #answer is cleared.
-6. passages(): heading-section bodies exclude the heading and the next heading; the "(top)" section keeps line 0.
-7. Build freshness: the built LAYERS/LINKS keys equal layers.collect / links.all_links.
-8. layers: no new heading for 3 days while the task is healthy does not read "stale" (once a check stamp exists).
-9. Answer scoring: a query term with an "ies" plural (e.g. "policies") still scores a passage containing "policies".
-10. quickcheck routing: a page that mentions cdStateSeed only inside JSON takes the generic path; isa-portal takes the deck path.
+1. Enter pressed twice during an in-flight call -> one sample call (or a clean supersede), vanTurns pairs intact.
+2. Every failure code (cancelled +/- text, upstream_error "" / text, refused, rate_limited) -> next call input starts and
+   ends on user, no empty content.
+3. capability_disabled / capability_removed / not_granted -> #vanForm hidden, #vanOff shown.
+4. build.py: no `/*VANESSA_PHOTO*/` left in the built page and every inlined data URI matches `^data:image/jpeg;base64,[A-Za-z0-9+/=]+$`.
+5. build.py with vanessa.jpg absent -> page builds, `url()` empty, no exception.
+6. Composite turn privacy: the user turn contains no string from LINKS / layer URLs and no phone/e-mail pattern.
+7. Stopword-only question -> the "no passage matched" text is sent.
+8. vanTurns after 10 asks: call input <= 9 turns and starts with VAN_RULES.
+9. Clear during an in-flight call -> no exception, next call well-formed.
+10. Gate wiring: validate-code.sh runs dashboard/brain-4d/test_*.py when dashboard/brain-4d/ changes.
 
 ## Share card
 
 ```text
 VIBE//BREAKER
 
-VERDICT: FIX BEFORE SHIP
-PASSES: 14/20 (DIFF)
-CRITICAL: 0
-HIGH: 2
-CONFIRMED: 6
-UNVERIFIED: 0
-FIRST BREAK: 17
+VERDICT: FIX FIRST (gate FAIL)
+PASSES: 11/20 (DIFF)
+CRITICAL: 1 (gate)
+HIGH: 0
+CONFIRMED: 3
+UNVERIFIED: 2
+FIRST BREAK: P00
 ```
 
 ## Release note
 
-This audit demonstrates the defects above from code, a tokenizer simulation and local reproductions. It did not run the
-page in a real browser and does not establish that the change is safe beyond what was inspected.
+Demonstrated with a stubbed `sample` runtime in headless Chromium, not the live claude.ai viewer, and without real
+text-to-speech voices. Not demonstrated: the published artifact's capability declaration, or answer quality.
 
-## Orchestrator response (2026-10-23 13:40 UTC) — change-set 384c72d239846908 and its fix-up
+## Orchestrator response (2026-10-23 14:20 UTC) — Vanessa chat change-set, fix-up (now b0084f31667b22e6)
 
-1. HIGH script tokenizer trap — fixed: `j()` now escapes `<!--` and `<script` as well as `</`; `dashboard/brain-4d/test_build_passages.py` asserts no script body carries either. Tokenizer simulation: the script now closes before end of file.
-2. HIGH Fieldy/chat digests on the public page — fixed: `PASSAGE_EXCLUDE` + any `/clients/` path skipped; `mask()` over heading and body; same two files added to the NotebookLM pack's `EXCLUDE_FILES`; the test checks page paths, `@gmail.com`, and phones against the allow-list.
-3. MEDIUM stale answer under "not in the brain" — fixed: `#answer` cleared and hidden with `#best`; `#answer[hidden]{display:none !important}`.
-4. LOW stale committed build — fixed: rebuilt and merged after the reindex (fieldy present in LAYERS/LINKS).
-5. LOW Fieldy layer goes stale on quiet days — fixed: the task always rewrites `Last checked: YYYY-MM-DD`; `layers.py` takes the newer of heading and stamp; test added.
-6. LOW opening-section first line — fixed: start is moved back one line when the line before is not a heading.
-Decisions for Steven (HALT): whether meeting digests may live in the public repo at all — carried to STEVEN-STEPS; the personal Gmail address no longer reaches the page (masked).
-
-Same code, change-set id after the reindex and the review notes: 1c1e646d4e22c68c (the validator read the code above; only docs/index moved since).
+1. P00-F1 stale index — fixed: reindexed; the gate passes 7/0.
+2. P07-F1 overlapping calls — fixed: `vanAsk` and the submit handler return while `vanCtl` is set, so one call at a time; turns stay paired.
+3. P06-F1 hide codes — fixed: `capability_disabled` and `capability_removed` hide the form like `not_granted`.
+Also: the gate now runs the 6D page tests (test_build_passages, test_merge_live) whenever dashboard/brain-4d changes; validate-gate-tests tolerates a bare mark commit at HEAD.
+Steven's decisions noted by the validator: the page was republished with the `sample` capability on his request ("add an ai chatbot with vanessa into the 6d 2nd brain"); the chat spends the viewer's own Claude usage and asks once per view.

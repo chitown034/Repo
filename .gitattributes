@@ -19,3 +19,4 @@ integrations/agent-os/agents.json     linguist-generated=true
 integrations/agent-os/agents/*.md     linguist-generated=true
 wiki/ai-team/toolkit.md               linguist-generated=true
 *.mp3 binary
+*.jpg binary
