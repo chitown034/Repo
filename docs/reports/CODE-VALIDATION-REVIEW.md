@@ -270,3 +270,5 @@ page in a real browser and does not establish that the change is safe beyond wha
 5. LOW Fieldy layer goes stale on quiet days — fixed: the task always rewrites `Last checked: YYYY-MM-DD`; `layers.py` takes the newer of heading and stamp; test added.
 6. LOW opening-section first line — fixed: start is moved back one line when the line before is not a heading.
 Decisions for Steven (HALT): whether meeting digests may live in the public repo at all — carried to STEVEN-STEPS; the personal Gmail address no longer reaches the page (masked).
+
+Same code, change-set id after the reindex and the review notes: 1c1e646d4e22c68c (the validator read the code above; only docs/index moved since).
