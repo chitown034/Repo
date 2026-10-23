@@ -125,5 +125,11 @@
   }
  ],
  "sync": "weekly (Sun 2:45 PM PT) scheduled task in the Claude Code session: bin/brain export notebooklm -> commit/push -> Composio workbench rewrites each doc (GOOGLEDOCS_UPDATE_DOCUMENT_MARKDOWN by doc_id); NotebookLM auto-syncs Google Docs sources",
- "account": "steven.shearrill@gmail.com (claude.ai Google Drive connector + Composio googledocs)"
+ "account": "steven.shearrill@gmail.com (claude.ai Google Drive connector + Composio googledocs)",
+ "last_sync": {
+  "notion_directory": {
+   "date": "2026-10-23",
+   "page": "https://app.notion.com/p/402c1760a749811eaea5d07005df0179"
+  }
+ }
 }

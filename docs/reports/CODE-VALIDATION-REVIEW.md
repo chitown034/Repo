@@ -211,3 +211,7 @@ The 06:35 change-set (501e85a) failed only `brain doctor` (index stale after con
 ## Resolution 2026-10-23 10:50 UTC — change-set `6f801190c77853ec` (brain links; 6D links panel + clickable stores)
 
 brain/links.py (one table of front doors + the 13 SB Docs from the manifest), `bin/brain links`, store nodes carry `u`, layers carry `url`, build.py injects LINKS, template: "Open the brain" panel, open link per layer, inspector opens a store URL. Tests: brain/tests/test_links.py (4: https+unique, 13 SB docs, store urls, layer urls), full brain suite OK, merge-live OK, page parses (node --check). Reviewed inline; no secret, no client data (URLs are Steven own surfaces).
+
+## Resolution 2026-10-23 13:20 UTC — change-set `dbb0a8325217d6d1` (gate --since --hash/--mark; Notion stamp; consolidated status)
+
+validate-code.sh: `--since <ref>` may be followed by `--hash` or `--mark`; the hash is then computed over the same range the checks ran on (BASE=ref) so an already-committed change-set can be marked. Test: scripts/tests/validate-gate-tests.sh (4). layers.py: the Notion stamp is the newer of the directory-page write (manifest last_sync.notion_directory) and the export date. CONNECTIONS.md: one consolidated open-items section supersedes the per-run rows (the toolkit register reads it). Reviewed inline; `bash -n`, brain suite OK.

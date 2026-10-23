@@ -1,32 +1,23 @@
 # Code validation — last run
 
-Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `6f801190c77853ec`: **not yet**.
+Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `dbb0a8325217d6d1`: **not yet**.
 
 ```
-code validation 2026-10-23T12:56:54Z - change-set 6f801190c77853ec
+code validation 2026-10-23T13:02:36Z - change-set dbb0a8325217d6d1
 files:
-  CLAUDE.md
-  brain/__main__.py
-  brain/graph.py
   brain/layers.py
-  brain/links.py
-  brain/tests/test_links.py
-  dashboard/brain-4d.html
-  dashboard/brain-4d/build.py
-  dashboard/brain-4d/template.html
   docs/reports/LAYERS.md
-  integrations/notebooklm/README.md
-  wiki/ai-team/second-brain-layers.md
-PASS py_compile brain/__main__.py
-PASS py_compile brain/graph.py
+  integrations/CONNECTIONS.md
+  integrations/notebooklm/drive-manifest.json
+  scripts/tests/validate-gate-tests.sh
+  scripts/validate-code.sh
+  wiki/ai-team/toolkit.md
 PASS py_compile brain/layers.py
-PASS py_compile brain/links.py
-PASS py_compile brain/tests/test_links.py
-PASS quickcheck dashboard/brain-4d.html
-PASS py_compile dashboard/brain-4d/build.py
-PASS quickcheck dashboard/brain-4d/template.html
+PASS json integrations/notebooklm/drive-manifest.json
+PASS bash -n scripts/tests/validate-gate-tests.sh
+PASS bash -n scripts/validate-code.sh
 PASS brain unit tests
 PASS brain layout
 PASS brain doctor
-verdict: PASS (11 passed, 0 failed)
+verdict: PASS (7 passed, 0 failed)
 ```

@@ -491,3 +491,24 @@ present, index `~/.openjarvis/memory.db` 1,828 rows, vault 850 notes, Laya MCP r
 | NotebookLM direct connector (`notebooklm-mcp-cli`) | pending — opt-in taken; installs with the next Mac paste (connect-all 6f); sign-in his | `nlm login` on Mac 1, then `nlm login --check` | Steven |
 | NotebookLM direct connector — Mac 1, 2026-10-23 06:30 UTC | connected — `nlm login` done (protected mode, OS keystore), `--check` valid, account steven.shearrill@gmail.com, 5 notebooks found; MCP registered for Claude Code by connect-all 6f | first use: a Claude Code session on Mac 1 adds the SB Docs to the "2nd brain" notebook | Steven (one prompt) |
 | Mac 1 full report 06:22 UTC | connected — 17 of 20 steps done (runner, Laya, Jarvis, mods, Lofty, Agent OS, Orca, AnyDesk, Gondola, Inkbox voice); open: Kapso sign-in + keys | `claude` → `/mcp` → kapso | Steven |
+
+## Connection status — consolidated, 2026-10-23 13:10 UTC (Steven: "fix anything not optimized or broken")
+
+Supersedes the per-run rows above. Only what is still open is listed; everything else in the earlier 2026-10-23 tables is
+connected (Mac 1: runner, Laya, Jarvis, mods, Lofty, Agent OS, Orca, AnyDesk, Gondola, Inkbox voice, NotebookLM connector
+signed in; cloud: Drive SECOND BRAIN, Notion directory, 6D daily rebuild with proof row, weekly layer sync).
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| NotebookLM "2nd brain" notebook sources | connected — connector signed in (5 notebooks); the SB Docs are not yet attached as sources | one prompt in a Claude Code session on Mac 1 (STEVEN-STEPS 1f2-done) | Steven (one prompt) |
+| Kapso (Mac 1) | plugin + MCP registered; `! Needs authentication` | `claude` → `/mcp` → kapso → sign in; then the keys line | Steven |
+| Inkbox iMessage line | connected — no phone linked yet | text `connect @vanessa-shearrill` to +1 650 484 9720 | Steven |
+| Zoho CRM (Composio) | 403 NO_PERMISSION until the API box is ticked | tick "Zoho CRM API Access" | Steven |
+| Kapso webhooks (Pabbly → Kapso) | two trigger URLs not pasted yet | `docs/STEVEN-STEPS.md` step 5 | Steven |
+| Gondola (claude.ai) | Claude Code MCP registered; custom connector still his | claude.ai → Connectors → Add custom connector | Steven |
+| Orca pairing · AnyDesk permissions | apps installed on both Macs | STEVEN-STEPS step 4 | Steven |
+| Mac 2 | Python 3.12 (uv), Claude Code 2.1.309, mods, Agent OS, brain index, Orca, AnyDesk, Gondola done; Laya + Jarvis engine unproven (last REPORT not pasted) | rerun `bash scripts/second-mac.sh`, paste the REPORT; then runner-export (Mac 1) → AirDrop → runner-import (Mac 2); vault for Jarvis (SECOND-MAC-SETUP 6b) | Steven (pastes) |
+| EVRoutes · Turo | `needs_reconnect` | Reconnect or remove | Steven |
+| Four http_api Sunday routines | still enabled | 4 clicks | Steven |
+| GitHub repo visibility | public | Steven decides (STEVEN-STEPS 1g) | Steven |
+| Notion `brain-learn-daily` rows | resume with Mac 1's runner (signed in 2026-10-23); directory page written 2026-10-23 | — | — |

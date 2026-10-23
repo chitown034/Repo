@@ -10,11 +10,11 @@ inside its cadence. `bin/brain layers` prints this; `bin/brain layers --write` r
 | Command Deck DB | live docs: queue, briefs, desks, lists, statuses | routines + Mac tasks write; page reads live | 2026-10-22 | 1 | 1 d | **fresh** |
 | 6D Brain page | every node (pages, stores, tools, pods) and links | daily 3:30 AM PT rebuild + merge-live publish | 2026-10-23 | 0 | 1 d | **fresh** |
 | Jarvis (Mac, local) | vault index + voice; recall level 5 | openjarvis runner task; jarvis-setup.sh writes the status file | — | — | 2 d | **unverified** |
-| Notion Second Brain DB | decisions, references, the layer directory | brain-learn-daily rows; export mirrored to Drive; directory page refreshed by the weekly sync | 2026-09-22 | 31 | 7 d | **stale** |
+| Notion Second Brain DB | decisions, references, the layer directory | brain-learn-daily rows; export mirrored to Drive; directory page refreshed by the weekly sync | 2026-10-23 | 0 | 7 d | **fresh** |
 | Google Drive SECOND BRAIN/ | 13 SB Google Docs (the brain, masked) + Steven's own folders | weekly Sunday 2:45 PM PT task rewrites changed Docs | 2026-10-23 | 0 | 7 d | **fresh** |
 | NotebookLM notebooks | the same 13 Docs as sources; source-grounded Q&A | Google auto-syncs Drive Docs after the weekly rewrite | 2026-10-23 | 0 | 7 d | **fresh** |
 | Vector index | high-volume corpora (transcripts, disclosures) | spec only until a corpus is loaded (vector-index/README.md) | — | — | 30 d | **spec only** |
 | Knowledge graph | entities and relationships | spec only (knowledge-graph/README.md) | — | — | 30 d | **spec only** |
 
-**Even:** no — stale: Notion Second Brain DB.
-Generated 2026-10-23T12:56:39Z.
+**Even:** yes — every stamped layer is inside its cadence.
+Generated 2026-10-23T13:02:36Z.

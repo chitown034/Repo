@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 46 skills · 7 plugins · 23 connectors (8 ok, 15 need attention) · 65 cloud routines · 60 Mac tasks
+toolkit: 46 skills · 7 plugins · 12 connectors (2 ok, 10 need attention) · 65 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -23,6 +23,9 @@ toolkit: 46 skills · 7 plugins · 23 connectors (8 ok, 15 need attention) · 65
 **Plugins (Claude Code mods)**
 - `ops-pulse`: At session start in the Repo folder: one read-only status line (behind/ahead of GitHub, local edits, brain-loop age, connect-all today) and a toast when it is time to /sync.
 - `push-buttons`: One-word slash commands (/cycle /inbox /meetings /sync /connect /tc /queue /today /help-buttons) that send the full, correct prompt for each workflow, HALT rules included.
+
+**Connectors**
+- `Inkbox iMessage line` — *ok*: connected — no phone linked yet
 
 **Cloud routines**
 - `Vanessa — Chief of Staff daily cycle (weekdays 6:25 AM PT, parallel squads)`: cron CRON_TZ=America/Los_Angeles 25 6 * * 1-5 · on · —
@@ -139,8 +142,7 @@ toolkit: 46 skills · 7 plugins · 23 connectors (8 ok, 15 need attention) · 65
 - `zoho-crm-sync`: Sync Zoho CRM — Steven's system of record for the mortgage pipeline — into the Command Deck through Composio: writes zohoSync (connection health), zohoLeads (14-stage kanban) and zohoDeals. Self-tests first and reports t
 
 **Connectors**
-- `Kapso sign-in, Lofty key on Mac 2` — *pending*: pending
-- `Mac 1 full report 06:22 UTC` — *ok*: connected — 17 of 20 steps done (runner, Laya, Jarvis, mods, Lofty, Agent OS, Orca, AnyDesk, Gondola, Inkbox voice); open: Kapso sign-in + keys
+- `Zoho CRM (Composio)` — *attention*: 403 NO_PERMISSION until the API box is ticked
 
 **Cloud routines**
 - `Transaction & Showing desk — TC + showing assistant (weekdays 6:05 AM PT, before the cycle)`: cron CRON_TZ=America/Los_Angeles 5 6 * * 1-5 · on · SUCCEEDED @ 2026-10-22T14:10
@@ -199,27 +201,16 @@ toolkit: 46 skills · 7 plugins · 23 connectors (8 ok, 15 need attention) · 65
 - `route-beacon`: Shows which AI route this session is on and toasts when the failover switches.
 
 **Connectors**
-- `Mac 2 basics` — *ok*: connected — repo cloned, 30-min sync, keep-awake, Gondola MCP, Orca opened, AnyDesk installed, Kapso plugin installed, Laya venv created, peer role written
-- `Python on Mac 2` — *attention*: 3.9.6 — brain reindex, Agent OS and Jarvis checks all stop on it
-- `Laya on Mac 2` — *attention*: venv made; package install stalled building cryptography from source (Intel, no wheel)
-- `Claude Code on Mac 2` — *attention*: 2.1.278, mods need 2.1.287+
-- `Jarvis engine on Mac 2` — *attention*: step 6a cut off during brew install ollama (auto-update)
-- `Jarvis index + vault on Mac 2` — *attention*: no memory.db, no ~/Shearrill-Vault
-- `Inkbox voice SDK on Mac 2` — *attention*: needs an Inkbox API key file; Mac 1 already sends her voice
-- `Runner on Mac 2` — *attention*: not installed (built on Mac 1 only)
-- `Python on Mac 2 — second attempt 01:53 UTC` — *attention*: Homebrew cannot build python there (Intel Mac on macOS 26: Tier 3, no bottles, and the Command Line Tools are outdated)
-- `Claude Code on Mac 2` — *ok*: connected — updated 2.1.278 → 2.1.309; a leftover npm copy remains (npm -g uninstall @anthropic-ai/claude-code, optional)
-- `Command Line Tools on Mac 2` — *attention*: outdated for macOS 26 (Homebrew refuses to build)
-- `Runner on Mac 2 — path known 02:10 UTC` — *attention*: Mac 1: ~/Applications/claude-runner + ~/.local/bin/runnerctl + LaunchAgent; ~/.config/claude-runner absent on Mac 1 (no role file, no token file)
-- `Mac 2 run 01:53 UTC (full report)` — *attention*: mods on (8 done); Ollama formula build refused like python (Intel + macOS 26 + old CLT)
-- `Command Line Tools on Mac 2` — *attention*: outdated for macOS 26 — the one root cause left that only Steven can clear
-- `NotebookLM (6D Brain as a notebook)` — *ok*: active — source pack: bin/brain export notebooklm → 13 files, 98+ pages, clients excluded, PII masked; no public API for a consumer account, Drive stays read-only
-- `Google Drive `SECOND BRAIN/` (write, scoped)` — *ok*: connected — 13 SB Google Docs created 2026-10-23 06:05 UTC in Steven's folder tree (owner steven.shearrill@gmail.com); weekly rewrite task trig_01MR463NSmSAcA84zJHjerUp (Sun 2:45 PM PT)
-- `NotebookLM (mirror)` — *ok*: connected — the 13 Docs are its sources; Google auto-syncs Drive Docs; Steven adds them to his three notebooks once (STEVEN-STEPS 1f)
-- `Notion Second Brain (layer directory)` — *ok*: active — DB e767dacc; directory page written by the weekly sync; brain-learn-daily rows resume with the runner
-- `GitHub repo visibility` — *attention*: public — anyone can read the brain (no client files beyond first names)
-- `NotebookLM direct connector (`notebooklm-mcp-cli`)` — *pending*: pending — opt-in taken; installs with the next Mac paste (connect-all 6f); sign-in his
-- `NotebookLM direct connector — Mac 1, 2026-10-23 06:30 UTC` — *ok*: connected — nlm login done (protected mode, OS keystore), --check valid, account steven.shearrill@gmail.com, 5 notebooks found; MCP registered for Claude Code by connect-all 6f
+- `NotebookLM "2nd brain" notebook sources` — *ok*: connected — connector signed in (5 notebooks); the SB Docs are not yet attached as sources
+- `Kapso (Mac 1)` — *attention*: plugin + MCP registered; ! Needs authentication
+- `Kapso webhooks (Pabbly → Kapso)` — *attention*: two trigger URLs not pasted yet
+- `Gondola (claude.ai)` — *attention*: Claude Code MCP registered; custom connector still his
+- `Orca pairing · AnyDesk permissions` — *attention*: apps installed on both Macs
+- `Mac 2` — *attention*: Python 3.12 (uv), Claude Code 2.1.309, mods, Agent OS, brain index, Orca, AnyDesk, Gondola done; Laya + Jarvis engine unproven (last REPORT not pasted)
+- `EVRoutes · Turo` — *reconnect*: needs_reconnect
+- `Four http_api Sunday routines` — *attention*: still enabled
+- `GitHub repo visibility` — *attention*: public
+- `Notion `brain-learn-daily` rows` — *attention*: resume with Mac 1's runner (signed in 2026-10-23); directory page written 2026-10-23
 
 **Cloud routines**
 - `Command Deck — daily freshness sweep (writer, Claude; once a day since 2026-10-22, per-key cadence)`: cron 40 15 * * * · on · SUCCEEDED @ 2026-10-20T15:40
