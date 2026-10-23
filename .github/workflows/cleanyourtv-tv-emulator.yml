@@ -46,6 +46,15 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
           disable-animations: false
           script: bash .github/scripts/tv-smoke.sh
+      # Small previews of the main screens in the log itself, for reviewers who cannot download artifacts.
+      - name: Screenshot previews
+        if: always()
+        run: |
+          for f in 01-home 03-move-settled 07-search-typed 08-search-result-focused 10-control-center 12-type-to-search; do
+            [ -f "tv-shots/$f.png" ] || continue
+            convert "tv-shots/$f.png" -resize 640x360 -quality 55 "/tmp/$f.jpg"
+            echo "PREVIEW $f $(base64 -w0 /tmp/$f.jpg)"
+          done
       - uses: actions/upload-artifact@v4
         if: always()
         with:
