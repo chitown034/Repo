@@ -32,3 +32,30 @@ unit tests, lint and a release build, then uploads `app-release.apk` as the `cle
 of that run. The size gate is 512 KB. Upstream's is 480 KB, but upstream builds at 470 KB and the redesign adds
 about 22 KB. To build it yourself, follow `launcher/build-and-install.sh` as
 upstream does.
+
+## Install it on your TV
+
+This has to run from a computer on the same Wi-Fi as the TV. First, on the TV: Settings → Device Preferences → About
+→ press OK on **Build** seven times. Then go back to Developer options and turn on **USB debugging** (and Network/ADB
+debugging if the TV has it).
+
+- **The full clean-up (recommended):** clone this repo on that computer, open Claude Code in `cleanyourtv/`, and
+  paste `PROMPT.md` with your TV model filled in. It backs up the TV, asks you which apps to keep, disables the
+  ads and bloat (never uninstalls), then builds and installs this launcher as Home.
+- **Only the launcher:** with JDK 17 and the Android SDK (platform 34, build-tools 34.0.0) installed, run:
+
+  ```sh
+  cd cleanyourtv
+  python3 -m venv tools/venv && tools/venv/bin/pip install -r tools/requirements.txt
+  TV_HOST=<tv ip> launcher/build-and-install.sh
+  ```
+
+  Accept "Allow USB debugging?" on the TV when it asks. The script makes the launcher Home and only then turns off
+  the stock home screen. `tools/restore.sh` undoes everything.
+
+When it's done, turn USB and network debugging back off on the TV. Port 5555 is unencrypted.
+
+Each launcher change is also installed on an Android TV emulator (API 30) by
+`.github/workflows/cleanyourtv-tv-emulator.yml`. It walks Home, Search (from the button, from typing, and its
+results) and Control Center with remote keys, fails on a crash or a screen that didn't open, and uploads the
+screenshots as `tv-screenshots`.
