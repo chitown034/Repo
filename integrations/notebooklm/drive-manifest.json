@@ -130,6 +130,26 @@
   "notion_directory": {
    "date": "2026-10-23",
    "page": "https://app.notion.com/p/402c1760a749811eaea5d07005df0179"
-  }
+  },
+  "date": "2026-10-23",
+  "at": "2026-10-23T13:09:56Z",
+  "sha": {
+   "00-START-HERE.md": "7f6398dae8ed88cf",
+   "01-router-and-index.md": "ed427fb82051b916",
+   "02-who-and-decisions.md": "ee98385c3cb88165",
+   "03-projects.md": "47537dfa54ab4caa",
+   "04-wiki-ai-team.md": "b7422cb47f754568",
+   "05-wiki-mortgage-programs.md": "941d2c1b9855537a",
+   "06-wiki-real-estate-playbooks.md": "2661bcc83a0ccb0d",
+   "07-wiki-dashboard-ops.md": "0c704170138a9222",
+   "08-wiki-events-networking.md": "9fafe5d7ccd9b49f",
+   "09-references.md": "c45d39d98992858e",
+   "10-always-on-and-automation.md": "d295e29c156c2468",
+   "11-6d-brain-map.md": "fe385786a279df72",
+   "12-integrations.md": "77e8d84e63854299"
+  },
+  "updated": 13,
+  "failures": [],
+  "note": "manual full sync on Steven's \"sync everything now\" (02-who-and-decisions via the chunked fallback, 0 pieces failed)"
  }
 }
