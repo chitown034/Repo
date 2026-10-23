@@ -28,6 +28,6 @@ The new text is in English. Other languages fall back to English until those str
 ## Getting the APK
 
 Each push that touches `cleanyourtv/launcher/` runs `.github/workflows/cleanyourtv-launcher.yml`. It runs the JVM
-unit tests, lint and a release build with upstream's 480 KB size gate, then uploads `app-release.apk` as the
+unit tests, lint and a release build with upstream's 480 KB size gate, it uploads `app-release.apk` as the
 `cleanyourtv-launcher-apk` artifact of that run. To build it yourself, follow `launcher/build-and-install.sh` as
 upstream does.
