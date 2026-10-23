@@ -74,6 +74,8 @@ def _parser() -> argparse.ArgumentParser:
     ow = sub.add_parser("owner", help="who keeps a Command Deck panel alive, by what mechanism, and what stays Steven's")
     ow.add_argument("query"); ow.add_argument("--json", action="store_true")
     sub.add_parser("mcp", help="serve recall/remember/pack/gaps over stdio MCP for any MCP client")
+    ex = sub.add_parser("export", help="export the brain for another tool: `notebooklm` writes exports/notebooklm/*.md (no client pages, PII masked)")
+    ex.add_argument("target", choices=["notebooklm"]); ex.add_argument("--out", default=None, help="folder (default exports/notebooklm)")
     return p
 
 
@@ -193,6 +195,11 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "passages":
         from . import passages
         print(passages.format_passages(passages.search(root, " ".join(args.question), top=args.top))); return 0
+
+    if args.cmd == "export":
+        from . import export_notebooklm
+        r = export_notebooklm.export(root, Path(args.out) if args.out else None)
+        print(export_notebooklm.format_summary(r)); return 0
 
     if args.cmd == "encyclopedia":
         from . import encyclopedia

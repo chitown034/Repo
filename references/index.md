@@ -71,3 +71,4 @@ cannot write the last one in a clause, it does not need registering.
 | `../integrations/code-validation/vibebreaker/` | VibeBreaker 20-pass adversarial audit protocol (MIT, vendored 2026-10-12) — the code-validator agent's method |
 | `backend-folder-structure.md` | The eight-layer backend layout (config, models, middlewares, controllers, services, routes, utils, tests) every service follows; `bin/brain layout` checks the brain against it |
 | `../integrations/openmontage/README.md` | OpenMontage, the agentic video studio installed on the Mac 2026-10-12 (skill `openmontage-video`) |
+| NotebookLM source pack | `integrations/notebooklm/README.md` | the brain as 13 uploadable sources; `bin/brain export notebooklm` |

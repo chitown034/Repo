@@ -46,6 +46,10 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
    sign in; (b) on **Mac 1** paste `command -v runnerctl; ls ~/Library/LaunchAgents | grep -i runner` and send Claude
    the two lines — the task runner was built on Mac 1 only and its copy step for Mac 2 comes from that. Jarvis's index
    on Mac 2 needs the vault there too (`docs/SECOND-MAC-SETUP.md` 6b: iCloud or a copy).
+1f. **6D Brain into NotebookLM (5 minutes, once):** on a Mac run `bash scripts/notebooklm-export.sh`; it builds 13
+   source files (no client pages, phones/e-mails masked, the 6D map as text) and opens the folder and notebooklm.google.com.
+   New notebook "Second Brain" → Add sources → Upload → select all 13 files. Refresh any week by rerunning and re-uploading
+   the changed files. No API exists for your account and nothing writes to Drive (`integrations/notebooklm/README.md`).
 1c. **Kapso on the Mac:** `claude` → `/mcp` → kapso → sign in (free sandbox); then
    `bash integrations/kapso/install-mac.sh keys --allow <your mobile>` (hidden prompt, Keychain only).
 2. **Vanessa's iMessage line (30 seconds, from your phone):** Inkbox is reconnected. Send the text

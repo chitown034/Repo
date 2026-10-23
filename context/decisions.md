@@ -647,3 +647,10 @@ pods run as workflows (Alexandra gates, Vanessa last), and an org-chart panel sh
 which executive. Vanessa is the first card, Chief of Staff, with `consult_agent` and `start_workflow`. The crew went on
 the org chart as a surface under Vanessa, not a seat. Rule kept: drafts only, approval cards for every write.
 
+## 2026-10-23 — NotebookLM gets the brain as a source pack, not a live connection
+
+NotebookLM (consumer/Workspace) has no public API; only NotebookLM Enterprise does. The Drive rule (nothing writes to
+Drive) stands. So `bin/brain export notebooklm` writes 13 masked markdown sources (no client pages) that Steven uploads
+to a "Second Brain" notebook; the 6D Brain is included as text. Browser-automation "connectors" stay out (session
+cookies in plain text). Revisit only if Steven chooses the Drive route or Google ships a consumer API.
+`integrations/notebooklm/README.md`.
