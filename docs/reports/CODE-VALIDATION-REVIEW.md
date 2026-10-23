@@ -199,3 +199,7 @@ cannot pass on a page that has no deck seed by design, and the "functions never 
 ## Resolution 2026-10-23 06:25 UTC — change-set `09dae7ba39465f27` (gate: non-deck pages get node --check)
 
 The 06:20 change-set 4496cf64cf9e31be (committed as 9ae7a9c) could not be marked: validate-code.sh ran the Command Deck quickcheck on dashboard/brain-4d.html and template.html, which have no cdStateSeed by design. quickcheck() now runs the deck checker only on pages that contain cdStateSeed; other dashboard pages must have every inline script parse under node --check (the 6D page passes). Reviewed inline; `bash -n` OK.
+
+## Resolution 2026-10-23 06:35 UTC — change-set `b2a57b43df0afe21` (connect-all 6f NotebookLM connector)
+
+Steven opted in ("setup and connect everything for me"). nlm_connect installs notebooklm-mcp-cli with uv, registers the MCP with Claude Code via `nlm setup add claude-code`, checks `nlm login --check`, and fails honestly naming `nlm login` as his step. Tests (62): uv install used, setup add called, never a bare `nlm login`, signed-in path ok. Risk recorded in README/decisions; removal commands documented. Reviewed inline.

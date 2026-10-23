@@ -50,3 +50,14 @@ daily truth stays in `bin/brain recall` and the Command Deck.
 or eligibility call, age every fact by the page's date, say "not in the brain" instead of guessing.
 
 Tests: `python3 -m unittest brain.tests.test_export_notebooklm` (masking, routing, exclusions, size split, a real export).
+
+## Direct connector (opt-in taken 2026-10-23: "setup and connect everything for me")
+
+`connect-all.sh` step 6f installs `notebooklm-mcp-cli` (jacob-bd, PyPI; `uv tool install notebooklm-mcp-cli`) and
+registers its MCP server with Claude Code (`nlm setup add claude-code`). It uses notebook.google.com's undocumented
+internal APIs and, after **Steven** runs `nlm login` (a browser sign-in; the script never logs in), keeps his Google
+session on that Mac. Rules: non-sensitive notebooks only (the SB Docs), `nlm login --check` before trusting it, and it
+is the first thing to remove if Google changes the interface (`uv tool uninstall notebooklm-mcp-cli`, `claude mcp remove
+notebooklm`). With it, any Claude Code or Orca session can ask the "2nd brain" notebook directly ("query my 2nd brain
+notebook for …") and add the SB Docs as sources without the picker. Upstream caveat, verbatim: "internal APIs that are
+undocumented and may change without notice; personal/experimental use, at your own risk".

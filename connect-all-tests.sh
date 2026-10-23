@@ -4,7 +4,7 @@ set -u
 cd "$(dirname "$0")" || exit 1
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
 mkdir -p "$T/bin" "$T/home"
-FUNCS="$(sed -n '/^have()/p;/^RUNNER_OUT=/p;/^runner_fix() {/,/^}/p;/^keep_awake() {/,/^}/p;/^repo_sync_agent() {/,/^}/p;/^laya_venv() {/,/^}/p;/^laya_connect() {/,/^}/p;/^JARVIS_MODEL=/p;/^jarvis_db() {/,/^}/p;/^jarvis_engine() {/,/^}/p;/^orca_app() {/,/^}/p;/^orca_connect() {/,/^}/p;/^anydesk_app() {/,/^}/p;/^anydesk_connect() {/,/^}/p;/^gondola_mcp() {/,/^}/p;/^LOFTY_VENV=/p;/^lofty_connect() {/,/^}/p' connect-all.sh)"
+FUNCS="$(sed -n '/^have()/p;/^RUNNER_OUT=/p;/^runner_fix() {/,/^}/p;/^keep_awake() {/,/^}/p;/^repo_sync_agent() {/,/^}/p;/^laya_venv() {/,/^}/p;/^laya_connect() {/,/^}/p;/^JARVIS_MODEL=/p;/^jarvis_db() {/,/^}/p;/^jarvis_engine() {/,/^}/p;/^orca_app() {/,/^}/p;/^orca_connect() {/,/^}/p;/^anydesk_app() {/,/^}/p;/^anydesk_connect() {/,/^}/p;/^gondola_mcp() {/,/^}/p;/^nlm_connect() {/,/^}/p;/^LOFTY_VENV=/p;/^lofty_connect() {/,/^}/p' connect-all.sh)"
 pass=0; fail=0
 check() { if [ "$2" = "$3" ]; then pass=$((pass+1)); echo "ok   $1"; else fail=$((fail+1)); echo "FAIL $1 (expected rc $3, got $2)"; fi; }
 stub_runner() { # <restart exit code> <status text after restart>
@@ -153,4 +153,26 @@ grep -qvE '^(me|leads stage-totals)$' "$T/lofty.calls"; check "lofty: only GET-s
 check "lofty: refused key lands in FAIL"                  "$(LOFTY_ME_RC=1 run_fn lofty_connect)" 1
 [ "$(grep -c LOFTY_API_KEY "$T/home/.config/lofty/.env")" = 1 ]; check "lofty: existing key file left as is" "$?" 0
 
+# ---- 6f notebooklm connector
+cat > "$T/nlm.stub" <<S
+#!/bin/sh
+echo "\$@" >> "$T/nlm.calls"
+case "\$1 \$2" in "login --check") exit 1 ;; esac
+exit 0
+S
+cat > "$T/bin/uv" <<S
+#!/bin/sh
+echo "\$@" >> "$T/uv.calls"
+case "\$*" in *install*notebooklm-mcp-cli*) cp "$T/nlm.stub" "$T/bin/nlm"; chmod +x "$T/bin/nlm" ;; esac
+exit 0
+S
+chmod +x "$T/bin/uv"; printf '#!/bin/sh\n[ "$2" = list ] && echo "laya: x"\nexit 0\n' > "$T/bin/claude"; chmod +x "$T/bin/claude"; rm -f "$T/bin/nlm" "$T/nlm.calls" "$T/uv.calls"
+check "nlm: installs with uv, registers MCP, not signed in -> FAIL that names nlm login" "$(run_fn nlm_connect)" 1
+grep -q "tool install notebooklm-mcp-cli" "$T/uv.calls";       check "nlm: uv tool install used"                   "$?" 0
+grep -q "^setup add claude-code" "$T/nlm.calls";               check "nlm: registered with Claude Code"            "$?" 0
+grep -qE "^login( |$)" "$T/nlm.calls" | grep -v -- "--check";   check "nlm: never runs nlm login itself"            "$?" 1
+grep -qE "^login$|^login [^-]" "$T/nlm.calls";                   check "nlm: no bare login call"                     "$?" 1
+sed -i.bak 's/"login --check") exit 1/"login --check") exit 0/' "$T/bin/nlm"
+check "nlm: already signed in -> ok"                            "$(run_fn nlm_connect)" 0
+rm -f "$T/bin/nlm" "$T/bin/uv"
 echo "connect-all tests: $pass passed, $fail failed"; [ "$fail" = 0 ]

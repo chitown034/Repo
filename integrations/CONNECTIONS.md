@@ -488,3 +488,4 @@ present, index `~/.openjarvis/memory.db` 1,828 rows, vault 850 notes, Laya MCP r
 | NotebookLM (mirror) | connected — the 13 Docs are its sources; Google auto-syncs Drive Docs; Steven adds them to his three notebooks once (STEVEN-STEPS 1f) | add sources from Drive, once | Steven (5 min) |
 | Notion Second Brain (layer directory) | active — DB e767dacc; directory page written by the weekly sync; `brain-learn-daily` rows resume with the runner | — | — |
 | GitHub repo visibility | public — anyone can read the brain (no client files beyond first names) | Steven decides (STEVEN-STEPS 1g) | Steven |
+| NotebookLM direct connector (`notebooklm-mcp-cli`) | pending — opt-in taken; installs with the next Mac paste (connect-all 6f); sign-in his | `nlm login` on Mac 1, then `nlm login --check` | Steven |

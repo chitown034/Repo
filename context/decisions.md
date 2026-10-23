@@ -663,3 +663,9 @@ layers — Notion, Google Drive, NotebookLM and more". Decisions: (1) one scoped
 never a first stop; (3) `bin/brain layers` is the measure of "even": every layer inside its own cadence from its own
 stamp; (4) the community NotebookLM MCP stays opt-in on the Mac. Pages: `wiki/ai-team/second-brain-layers.md`,
 `integrations/notebooklm/README.md`, `docs/reports/LAYERS.md`.
+
+## 2026-10-23 — NotebookLM direct connector: opt-in taken
+
+Steven: "setup and connect everything for me" after the risk was stated (browser-session material stored on the Mac,
+undocumented API). Installed by `connect-all.sh` 6f on his Macs; `nlm login` stays his; non-sensitive notebooks only;
+first thing removed if it breaks. Supersedes "stays opt-in" in the 06:10 entry.

@@ -326,6 +326,26 @@ step "6e Agent OS (brain on PATH, roster agents wired to Laya, Jarvis and Orca)"
   "Agent OS: bash integrations/agent-os/install-mac.sh --apply and read its WARN lines" \
   bash integrations/agent-os/install-mac.sh --apply
 
+# 6f. NotebookLM connector (Steven's opt-in, 2026-10-23: "setup and connect everything for me"). Community tool
+#     notebooklm-mcp-cli (jacob-bd, PyPI): installs the `nlm` CLI + the notebooklm-mcp server with uv and registers the
+#     server with Claude Code. It talks to notebook.google.com through undocumented internal APIs and keeps a copy of
+#     Steven's Google session after HE runs `nlm login` - this step never logs in, never reads a cookie. Non-sensitive
+#     notebooks only (the SB Docs hold no client data). Remove: uv tool uninstall notebooklm-mcp-cli; claude mcp remove notebooklm
+nlm_connect() {
+  have uv || { echo "uv missing - rerun after step 6 installed it (or: brew install uv)"; return 1; }
+  if ! have nlm; then uv tool install notebooklm-mcp-cli || return 1; [ -x "$HOME/.local/bin/nlm" ] && export PATH="$HOME/.local/bin:$PATH"; fi
+  have nlm || { echo "nlm installed but not on PATH - open a new Terminal and rerun"; return 1; }
+  echo "nlm $(nlm --version 2>/dev/null | head -1)"
+  if have claude; then
+    if claude mcp list 2>/dev/null | grep -Eqi '^[[:space:]]*notebooklm'; then echo "notebooklm MCP already registered"
+    else nlm setup add claude-code 2>&1 | tail -3; fi
+  fi
+  if nlm login --check >/dev/null 2>&1; then echo "signed in to NotebookLM"; return 0; fi
+  echo "not signed in yet - yours: run  nlm login  (opens your browser; your Google session stays on this Mac only)"; return 1
+}
+step "6f NotebookLM connector (nlm CLI + MCP for Claude Code; sign-in stays yours)" \
+  "NotebookLM: run  nlm login  (browser), then  nlm login --check  and  nlm setup list" nlm_connect
+
 # 7. key files (names only, never values)
 keyfiles() {
   local ok=0

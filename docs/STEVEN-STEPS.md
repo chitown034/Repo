@@ -52,6 +52,10 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
    `01 Reference Sources/AI and Automation` + `SB 00-START-HERE` + `SB 02-who-and-decisions`. Then **Mortgage Reference
    Library** (`SB 05`, `SB 09`, `SB 00`, `SB 02`) and **Business Operating Playbooks** (`SB 06`, `SB 08`, `SB 09`, `SB 00`,
    `SB 02`). Google refreshes Drive Docs in NotebookLM automatically. `integrations/notebooklm/README.md`.
+1f2. **NotebookLM direct connector (your opt-in, 2026-10-23):** the paste now installs it (step 6f). Then on Mac 1 run
+   `nlm login` (browser sign-in, Google session stays on that Mac), then `nlm login --check`. In a new Claude Code session:
+   "list my NotebookLM notebooks" → then "add every SB Google Doc from SECOND BRAIN to my 2nd brain notebook". Claude
+   does the picker for you from then on. Non-sensitive notebooks only.
 1g. **Your GitHub repo is public.** `chitown034/Repo` answered without sign-in on 2026-10-23 (that is how the Drive
    sync fetches the pack). It holds no client files beyond `wiki/clients/index.md` (first names, by rule), but the
    brain, decisions and task prompts are readable by anyone. If you want it private: GitHub → Repo → Settings → Danger
