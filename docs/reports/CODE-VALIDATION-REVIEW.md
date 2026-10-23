@@ -1,457 +1,379 @@
-# VibeBreaker Final Report: connect-all round 2 fix-up (second pass) + action-desk step D
+# VibeBreaker Final Report: big moves (brain/recs.py, 6D panel, org sync) + re-check of the four-repo fixes
 
-change-set: 098ea402f7120e2e
+change-set: 46dedb8f6dbccb36
 
-(From `bash scripts/validate-code.sh` at 2026-10-23T14:40:11Z on the uncommitted tree, branch claude/stoic-cori-pvn3f8.
-Gate line: `verdict: PASS (6 passed, 0 failed)`. `bash connect-all-tests.sh`: `connect-all tests: 73 passed, 0 failed`.)
-The first-pass review of change-set d8614738c163c002 and the orchestrator's response are kept below, unchanged.
+(From `bash scripts/validate-code.sh` at 2026-10-23T17:03:23Z on the uncommitted tree: `verdict: PASS (18 passed, 0 failed)`;
+`--hash` re-run before writing: 46dedb8f6dbccb36. `cd brain/tests && python3 -m unittest -q`: `Ran 123 tests ... OK`.
+`bash connect-all-tests.sh`: `connect-all tests: 84 passed, 0 failed`.)
 
-Late change: at 14:40:26-14:40:37 UTC, after the gate ran, two one-line doc edits landed - a new routing row in
-`CLAUDE.md` (marketing: drip, text follow-up, AI search -> the two new playbooks) and a "Presence audit" bullet in
-`wiki/ai-team/second-brain-layers.md`. `validate-code.sh --hash` now prints `3dfdbb4f5136318d`. Both lines were read
-for this review: no credential, phone or e-mail; they point at files that exist. The files reviewed below are unchanged
-since the gate run (mtimes 14:37-14:39). So this review covers change-set: 3dfdbb4f5136318d as well, provided nothing
-else moves; rerun the gate before `--mark`. The `CLAUDE.md` row edits the L1 router, which Steven may want to see.
-
-## Verdict
-
-`SHIP` (VibeBreaker: `SURVIVED*` - no critical, high or medium finding; two LOW findings, one unverified item)
-
-All five first-pass fixes hold on repro. The remaining confirmed issues are LOW: the token character check is a
-denylist that lets `|`, `<`, `>`, `(`, `)` and tab through to a file that is later sourced by `sh`, and step D's
-"done" styling follows only its last checkbox. P01-F1 is a two-line change worth making before Steven's first real run.
-
-## Scope
-
-- Commit / branch: uncommitted working tree on claude/stoic-cori-pvn3f8
-- Mode: DIFF (second pass on connect-all; first pass on dashboard/action-desk.html and the docs)
-- Stack: bash (macOS /bin/bash 3.2 target), POSIX sh subshell, curl 8.5.0; static HTML + inline JS
-- Passes completed: 01, 04, 05, 11, 14, 17, 19, 20
-- Inspected surfaces: `connect-all.sh` 40-46 (`step`), 145-153 (kapso_keys prompts), 362-424 (7b, 7c, 7d);
-  `connect-all-tests.sh` 1-25, 176-202; `integrations/cli-anything-harnesses/connect.sh` (prompts and exits);
-  `dashboard/action-desk.html` 252-282 (step D) and 612-640 (tick and copy script); new/changed docs listed in Coverage
-- Excluded / unavailable context: macOS /bin/bash 3.2 (not in the sandbox; bash 5.2.21 and dash used); TidyCal's real
-  token format and API (not reachable from the sandbox); a real terminal (`/dev/tty` cannot be opened in the sandbox)
-- Material scope limitation: NO for the verdict; YES for the TidyCal token format (see UNVERIFIED)
-
-## Scoreboard
-
-- Passes executed: 8 / 20 (DIFF mode)
-- Confirmed: 2
-- Critical: 0
-- High: 0
-- Medium: 0
-- Low: 2
-- Info: 2 (notes, not defects)
-- Unverified: 1
-- Rejected candidates: 5
-- First critical pass: NONE
-
-## First-pass fixes - verification
-
-| # | First-pass finding | Holds? | Evidence |
-|---|---|---|---|
-| 1 | Prompts swallowed by `$LOG` | YES | `connect-all.sh:148,151,365-366,393-394` write prompt and post-read newline to `/dev/tty`; `step` (line 44) redirects only stdout/stderr. Test `connect-all-tests.sh:192` would have failed on the old `printf` to stdout. |
-| 2 | Refused token kept forever | YES | `connect-all.sh:403` removes `.env` on 401/403 regardless of `fresh`; `:405` removes only when `fresh=1`; `:404` keeps on 404 (message says so); 200 keeps. Tests at `connect-all-tests.sh:187-190`. Paths 404/5xx/000 checked by reading only (see note under Coverage). |
-| 3 | Step 7d always "done" | YES | `cah_connect` (`connect-all.sh:415-421`) returns 1 naming missing wrappers, 0 only when all four `cli-anything-*` binaries are executable; `connect.sh`'s own exit code is ignored by design and it has no prompts (`grep read` finds none). Tests at `connect-all-tests.sh:199,201`. |
-| 4 | Token on curl's argv | YES | Repro with a recording curl wrapper: argv was `-s -K - -o /dev/null -w %{http_code} <url>`, no token. Local HTTP server received `Authorization: Bearer abc.DEF-123_x` and `Accept: application/json`; `200`/`401` returned correctly; unreachable host gave `000`. `printf` is a shell builtin in dash and bash (no argv exposure); `TIDYCAL_TOKEN` is not exported, so curl's environment does not carry it. |
-| 5 | Dead `CONNECT_ALL_YES` | n/a | Not in this diff; `CONNECT_ALL_YES` is still read at `connect-all.sh:35` and set at `:60` (it is live, not dead). |
-| (a) | Character guard `*[\'\"\\\$\`\ \;\&]*` | YES, as written | Well-formed: ran under bash 5.2 and dash. Rejects space, `'`, `"`, `$`, backtick, `\`, `;`, `&`; accepts `abc.DEF-123_x` and `eyJhbGciOi.J9-x_Y`. Not run on bash 3.2 (unavailable); the pattern uses only POSIX bracket syntax with backslash-escaped members. But see P01-F1: it is a denylist. |
-| (e) | New route for the token to `$LOG` / screen | NONE found | Read with `stty -echo` from `/dev/tty`; never echoed; `grep -q` is quiet; `sh -c ... 2>/dev/null` hides curl's stderr; guard message does not print the key; test `connect-all-tests.sh:183` asserts the value is absent from captured output. |
-
-## CONFIRMED
-
-```yaml
-id: P01-F1
-pass: 01
-title: Token guard is a denylist; |, <, >, (, ) and tab pass and are then executed when the .env is sourced
-status: CONFIRMED
-severity: LOW
-confidence: HIGH
-location:
-  - path: connect-all.sh
-    line: 396 (guard), 388 (`. "$1"` in tidycal_check)
-entry_or_trigger: connect-all step 7c, Steven pastes a token containing | < > ( ) or a tab
-evidence: >
-  Ran the guard: 'a|b', 'a<b', 'a>b', 'a(b' and 'a<TAB>b' are ACCEPTED. The token is saved verbatim as
-  TIDYCAL_TOKEN=<key> and tidycal_check sources it with sh. Repro: a file holding `TIDYCAL_TOKEN=abc|echo INJECTED`
-  printed INJECTED and left TIDYCAL_TOKEN empty; `TIDYCAL_TOKEN=abc>FILE` created FILE in the current directory
-  (the repo, for connect-all).
-existing_controls_checked: the case guard (blocks quote, space, $, backtick, backslash, ;, &); hidden read; chmod 600
-failure_scenario: >
-  A token with `|` (or a paste with a stray `>`) is saved; sourcing runs the text after it as a command or creates a
-  file, the bearer is sent empty, TidyCal answers 401, the .env is deleted and Steven is told to make a new token -
-  which fails the same way if the format itself contains `|`.
-impact: Steven only (self-typed input); stray file or command on his Mac; possible permanent "refused" loop
-remediation_direction: >
-  Allowlist instead of denylist, matching the message: case "$key" in *[!A-Za-z0-9._-]*) reject ;; esac - or stop
-  sourcing the file and read the value with sed -n 's/^TIDYCAL_TOKEN=//p'.
-verification: >
-  Add tests that feed 'a|b', 'a>b' and 'a b' through the prompt path and assert "not saved" and no .env; keep
-  'abc.DEF-123_x' accepted.
-```
-
-```yaml
-id: P17-F1
-pass: 17
-title: Step D's "done" styling follows only its last checkbox (sD5)
-status: CONFIRMED
-severity: LOW
-confidence: HIGH
-location:
-  - path: dashboard/action-desk.html
-    line: 621 (paint), 256-282 (sD1-sD5 in one .step)
-entry_or_trigger: Steven ticks boxes in step D
-evidence: >
-  paint() runs step.classList.toggle('done', b.checked) for every box in document order; with five boxes in the same
-  .step, the last one (sD5) decides. Steps 0 and A already have two boxes each, so the pattern pre-exists; step D
-  makes it visible.
-existing_controls_checked: the counter (n of total) and the group badges count every box correctly; ids are unique
-failure_scenario: >
-  Tick only "The eleven done" (sD5): all of step D is greyed and struck through while Mac 1, Mac 2, Alienware and
-  tablet are unticked. Tick sD1-sD4 but not sD5: D shows not done.
-impact: Display only; a half-finished step can look finished
-remediation_direction: mark a step done only when every tick box inside it is checked
-verification: >
-  In a browser test, tick sD5 alone and assert step D lacks .done; tick sD1-sD5 and assert it has .done.
-```
-
-## UNVERIFIED
-
-- P01-U1 - TidyCal token format. The guard message asserts tokens are "letters, digits, . - _ only". If TidyCal issues
-  `id|secret` style tokens (Laravel Sanctum format), P01-F1 becomes MEDIUM: every valid token is mangled by sourcing,
-  refused with 401 and deleted. Needs: one real TidyCal token's character set (not its value), from Mac 1's first run or
-  tidycal.com/developer/docs.
-
-## REJECTED
-
-- P04-C1 - token reaches `$LOG` via curl stderr - `sh -c ... 2>/dev/null` at `connect-all.sh:388`, and the config
-  line is on curl's stdin only.
-- P05-C1 - `stty -echo` acting on a pipe so the token echoes - stdin of every step is the terminal; no piped
-  invocation of connect-all found; the `exec` at `:60` keeps stdin.
-- P11-C1 - curl config `header = "..."` mis-parsed - repro against a local server delivered both headers exactly.
-- P05-C2 - 7d prompts swallowed like finding 1 - `connect.sh` has no `read` or prompt.
-- P04-C2 - phone number added in docs - the only number in the diff and new files is (202) 474-5223, the Kapso number
-  already in HEAD (`.claude/skills/whatsapp-kapso/SKILL.md`, `REMOTE-ACCESS.md`).
-
-## Coverage
-
-- `dashboard/action-desk.html`: inline script extracted and passed `node --check`; one `<script>` block. All six
-  `data-copy` values in step D equal their visible `<code>` text after HTML-unescaping. Ids sD1-sD5 are new and the
-  page has no duplicate ids; tick state keys by id in `actionDesk.v7`, so the new boxes start unticked and are counted.
-  No e-mail, phone number or secret pattern in step D. Outbound links are github.com/chitown034/Repo, tidycal.com,
-  crm.zoho.com, claude.ai/install.ps1 (Windows installer paste).
-- Docs skimmed for credentials and phone numbers: docs/STEVEN-STEPS.md, integrations/CONNECTIONS.md,
-  integrations/anydesk/README.md, integrations/{arive,mbs-highway,pivo,ticor,tidycal}/README.md,
-  wiki/real-estate-playbooks/{ai-search-visibility,drip-and-text-follow-up,index}.md, wiki/ai-team/toolkit.md,
-  docs/reports/LAYERS.md. No key, token, client id, password, e-mail address or JWT. Only phone number: the Kapso one.
-  NMLS 1921615 appears (public licence id, already in CLAUDE.md); DRE number left as `____`.
-- kapso_keys and lofty_connect prompt redirects: clean.
-- Note: a fake-tty run of tidycal_connect's 404/5xx/000 paths was blocked by the sandbox's removal guard (the function
-  contains `rm -f "$env"`); those branches were verified by reading lines 400-406 only.
-
-## Top missing tests (pass 19)
-
-1. Token with `|`, `>` or a tab is refused before saving (P01-F1).
-2. 404 with a fresh token: rc 1, `.env` kept, message names the endpoint.
-3. 500 / `000` with a fresh token: `.env` removed; with an existing token: `.env` kept.
-4. 403 removes `.env` the same as 401.
-5. 7d actually invokes `connect.sh`: in the sandbox `</dev/tty` fails, so the stub never runs and the two 7d tests pass
-   on the wrapper check alone; assert `stub-connect` reached the log (run with a fake tty or a stdin override).
-6. Step D shows done only when sD1-sD5 are all ticked (P17-F1).
-7. Copy-button text equals visible `<code>` text, page-wide (a quickcheck rule).
-
-## Notes for the caller (not findings in this change-set)
-
-- INFO: `scripts/validate-code.sh:57` accepts `--mark` if the hash appears anywhere in this file. The orchestrator's
-  response heading already named `098ea402f7120e2e` before this review existed, so the gate would have accepted a mark
-  without a validator review. Out of this diff; worth a separate fix (match only a leading `change-set: <hash>` line).
-- INFO: on a first-run 5xx/`000` the token is discarded (`connect-all.sh:405`) but the message only says "check the
-  network and rerun"; adding "the token was not kept, paste it again" would save a surprise.
-
-## Share card
-
-```text
-VIBE//BREAKER
-
-VERDICT: SURVIVED* (SHIP)
-PASSES: 8/20 (DIFF)
-CONFIRMED: 2 (0 critical, 0 high, 0 medium, 2 low)
-FIRST-PASS FIXES: 5/5 hold
-```
-
----
-
-# Previous review (change-set d8614738c163c002) and orchestrator response
-
-# VibeBreaker Final Report: connect-all 7c TidyCal + 7d CLI-Anything sites
-
-change-set: d8614738c163c002
-
-(From `bash scripts/validate-code.sh` at 2026-10-23T14:34:31Z on the uncommitted tree over HEAD 1024ed5, branch
-claude/stoic-cori-pvn3f8. Files in the change-set: `connect-all.sh`, `connect-all-tests.sh`.)
-
-Note: while this review ran, other files were added or changed in the tree (docs/STEVEN-STEPS.md,
-integrations/CONNECTIONS.md, integrations/anydesk/README.md, integrations/tidycal/, integrations/arive/, integrations/mbs-highway/,
-integrations/pivo/, integrations/ticor/, two new wiki/real-estate-playbooks pages). `validate-code.sh --hash` now prints
-`056ef84213d6cd8a`. Those files were NOT reviewed here; the two scripts above are unchanged since the review.
+**The tree moved during this review.** Gate runs gave 744af5c07a9565dc (16:57:56, `verdict: FAIL (17 passed, 1 failed)`; the
+failing row was overwritten by the next run before it could be read), then b7f395de75cbddb0 (16:58:48, PASS), then
+46dedb8f6dbccb36 (17:03:23, PASS). In between, `docs/STEVEN-STEPS.md`, `docs/inventory/cloud-routines-2026-10.md` (16:58:02),
+`memory.md` (16:58:48) and `wiki/ai-team/toolkit.md` (16:59:20) were rewritten by someone other than this reviewer. This
+review covers 46dedb8f6dbccb36. Any later edit means a new gate run and a new review before `--mark`.
 
 ## Verdict
 
-`FIX FIRST` (VibeBreaker: `SURVIVED*` - no critical or high finding; three confirmed MEDIUM findings and unverified items remain)
-
-Gate verdict line: `verdict: PASS (2 passed, 0 failed)` (bash -n on both files only; the gate does not run the test suite).
-`bash connect-all-tests.sh` run separately: `connect-all tests: 67 passed, 0 failed`. The code is correct on the stubbed
-paths, but on the real first run Steven never sees the token prompt (it goes into the log), and once a bad token is saved,
-the "make a new token and rerun" advice can never work because the rerun does not ask again. Both sit on the only path
-the feature exists for, and both fixes are small - hence FIX FIRST, not a severity upgrade.
+`FIX BEFORE SHIP` (repo verdict: FIX FIRST). No critical or high defect, and all five earlier findings are fixed. But the
+feature's main promise, a priority order Steven can act on, does not hold yet. Today's top 10 has six Steven items tied
+at 1.7 and listed alphabetically. One of Steven's steps (Arive) is missing. A declined move comes back the next day
+under a twin id.
 
 ## Scope
 
-- Commit / branch: uncommitted working tree on claude/stoic-cori-pvn3f8, base 1024ed5
-- Mode: DIFF
-- Stack: bash (macOS /bin/bash 3.2 target), POSIX sh subshell, curl
-- Passes completed: 01, 04, 05, 11, 14, 19, 20 (shell-script set)
-- Inspected surfaces: `connect-all.sh` lines 30-45 (`say`, `step`), 357-415 (7, 7b, 7c, 7d, 8), 421-445 (report);
-  `connect-all-tests.sh` 1-25, 176-188; `integrations/cli-anything-harnesses/connect.sh` (whole, the 7d callee);
-  `MAC-SETUP.sh` (prompts/exit paths only); `scripts/second-mac.sh` (how connect-all is invoked)
-- Excluded / unavailable context: TidyCal's official API docs (sandbox proxy returned 403 for tidycal.com,
-  help.tidycal.com, pipedream.com; only web-search snippets were available); a real macOS terminal
-- Material scope limitation: YES - the TidyCal endpoint, plan behaviour and token format could not be read from the vendor
+- Branch: claude/stoic-cori-pvn3f8, uncommitted tree. Mode: DIFF.
+- Stack: Python 3 stdlib (brain/), bash (connect-all*.sh, install-mac.sh), static HTML + claude.ai db capability (6D Brain), Markdown.
+- Passes: 01, 04, 05, 06, 07, 08, 11, 12, 14, 17, 18, 19, 20.
+- Inspected: brain/recs.py, brain/tests/test_recs.py, brain/__main__.py (recs, org), brain/toolkit.py, brain/graph.py,
+  brain/tests/test_toolkit.py, dashboard/brain-4d/build.py, dashboard/brain-4d/template.html (bm panel), connect-all.sh 6g +
+  tests, integrations/skill-packs/install-mac.sh tail, .claude/skills/pr-lens/{SKILL,VENDORED}.md, CLAUDE.md row,
+  wiki/ai-team/cross-functional.md, second-brain-layers.md, docs/inventory/org-chart.json, docs/reports/BIG-MOVES.md,
+  brain/recs/big-moves.json; db contract artifact-capabilities/0.2.89/db.d.ts, claude.d.ts, user.d.ts; the Big-moves
+  scheduled task prompt (trig_014QQGp4WQfWGDVB827R4Qb9, read-only get).
+- Probes: every write went to temp dirs or to the scratchpad (recs.LEDGER/WEIGHTS pointed at scratchpad/recsprobe). The
+  Playwright harness `smoke-bm.js` was re-run, and a new `smoke-bm2.js` (scratchpad) covers six db stubs.
+- Material scope limitation: NO.
 
 ## Scoreboard
 
-- Passes executed: 7 / 20 (DIFF mode, shell set)
-- Confirmed: 5
-- Critical: 0
-- High: 0
-- Medium: 3
-- Low: 1
-- Info: 1
-- Unverified: 3
-- Rejected candidates: 7
+- Passes executed: 13 / 20 (diff-applicable set)
+- Confirmed: 10 (Critical 0, High 0, Medium 3, Low 7, Info 0)
+- Unverified: 2
+- Rejected candidates: 9
 - First critical pass: NONE
 
+## Earlier review (267198e4d842179a): all five fixes confirmed
+
+1. `mods()` is now an alias of `plugins()` (brain/toolkit.py:198-200). `KINDS` (toolkit.py:203) has no "mod". The test
+   asserts that no name is counted twice and that the graph has no "mod" lobe (test_toolkit.py:26-27, 39). In
+   `dashboard/brain-4d.html`, the count of `"mod:` is 0. `bin/brain toolkit` prints "7 Claude mods (plugins)".
+2. pr-lens SKILL.md pins `@coldtea/pr-lens-cli@0.13.2` (lines 10, 17, 18) and carries a "HALT before any upload" section
+   (line 33). The npm registry shows `latest: 0.13.2`, published 2026-10-17. VENDORED.md records the pin and the HALT
+   section, but its next sentence still says `@latest` (P05-F7, Low).
+3. `_register()` downgrades an "ok" status that mentions 403, needs sign-in, until, blocked, not yet or refused
+   (toolkit.py:181-182). The test asserts that Composio (cloud) and kapso are in "attention".
+4. The archify block is the last thing in install-mac.sh. The `.zprofile` line is appended only when
+   `npx skills add` succeeds and the grep finds no existing line. The newline guard
+   (`tail -c 1` → "" when the file ends in \n) is correct.
+5. No regression: connect-all 6g plus 5 new tests pass, and the 123 unit tests pass. The build.py `start > len(lines)`
+   guard skips a stale section and does not crash.
+
 ## CONFIRMED
-
-```yaml
-id: P01-F1
-pass: 01
-title: 7c token prompt is written into the log file, not the terminal - the step looks frozen
-status: CONFIRMED
-severity: MEDIUM
-confidence: HIGH
-location:
-  - path: connect-all.sh
-    line: 390-391 (prompt printf, read </dev/tty)
-  - path: connect-all.sh
-    line: 43 (step runs "$@" >>"$LOG" 2>&1)
-entry_or_trigger: first run of connect-all.sh on a Mac with no ~/.config/tidycal/.env
-evidence: tidycal_connect runs inside step, whose stdout and stderr go to $LOG. The prompt printf goes to stdout, so it
-  lands in the log; read waits on /dev/tty. Reproduced with the same say/step shape in a scratch script - the terminal
-  showed only "== 7c ==" and the prompt text appeared only in the log.
-existing_controls_checked: none route the prompt to /dev/tty. Same root cause pre-exists in lofty_connect (365-366) and
-  kapso_keys (148-149) - not part of this change-set, but the new step copies it.
-failure_scenario: Steven pastes connect-all, sees "== 7c TidyCal ... ==" and a silent cursor. He waits (blocks forever),
-  presses Enter (skip -> FAIL), or pastes blind (works, but nothing told him to).
-impact: the one interactive thing step 7c asks for is invisible; "simple copy and paste" breaks at this step.
-remediation_direction: send the prompt (and the trailing newline after read) to /dev/tty, e.g. printf ... >/dev/tty.
-verification: a test that runs step "x" "" tidycal_connect with no .env and asserts the prompt text is NOT in $LOG
-  (or a grep that the prompt printf line ends in >/dev/tty).
-needs_context: null
-```
-
-```yaml
-id: P04-F1
-pass: 04
-title: after a refused (401/403) token, "make a new token and rerun" cannot work - the rerun never asks again
-status: CONFIRMED
-severity: MEDIUM
-confidence: HIGH
-location:
-  - path: connect-all.sh
-    line: 389 (prompt only if .env lacks TIDYCAL_TOKEN=.+)
-  - path: connect-all.sh
-    line: 399 and 404 ("make a new token in TidyCal and rerun" / "rerun connect-all and paste it when asked")
-entry_or_trigger: a token is saved and TidyCal answers 401/403 (mistyped, truncated, revoked or rotated token)
-evidence: the bad token is written to ~/.config/tidycal/.env before the check (393). Next run, the guard at 389 sees a
-  non-empty TIDYCAL_TOKEN= line and skips the prompt, goes straight to the same 401.
-existing_controls_checked: nothing deletes, renames or re-prompts on 401/403; the report line 5b only covers "skipped".
-failure_scenario: run 1 saves a bad token -> 401 "make a new token and rerun". Steven makes one, reruns -> no prompt,
-  401 again, forever, until he finds and edits ~/.config/tidycal/.env by hand (never named in the message).
-impact: the documented recovery path is a dead loop.
-remediation_direction: on 401/403, either re-prompt (overwrite) or say the exact file to remove
-  (rm ~/.config/tidycal/.env) in both the message and the step's needs-you note.
-verification: test with .env holding a bad token and a curl stub returning 401: the output must name the file to
-  remove, or a second call fed a new token on the prompt must rewrite .env.
-needs_context: null
-```
 
 ```yaml
 id: P05-F1
 pass: 05
-title: 7d always reports "done", and its sign-in guidance only reaches the log; report line 5 points at it
+title: STEVEN-STEPS extractor merges step c and d; the Arive step disappears and its text is filed under "TidyCal token"
 status: CONFIRMED
 severity: MEDIUM
 confidence: HIGH
 location:
-  - path: connect-all.sh
-    line: 409-411 (cah_connect under step)
-  - path: connect-all.sh
-    line: 439 ("Sign in ... where step 7d said so")
-  - path: integrations/cli-anything-harnesses/connect.sh
-    line: 31 (set -uo pipefail, no -e), 71 (MAC-SETUP failure not propagated), 203 (ends with say "Done.")
-entry_or_trigger: any connect-all run where the harness install or posture check fails, and every run for the guidance
-evidence: connect.sh has no non-zero exit on any failure path (only a missing /dev/tty can fail cah_connect), so step 7d
-  always lands in "Done". Its section 4 list of sites needing sign-in goes to $LOG (step redirect), not the screen.
-existing_controls_checked: report line 440 also prints "bash integrations/cli-anything-harnesses/connect.sh", which
-  shows the same text on screen if run by hand - that is the limiting factor on severity.
-failure_scenario: MAC-SETUP.sh fails partway -> the report says "7d ... done" and line 5 tells Steven to sign in "where
-  step 7d said so", text he never saw.
-impact: a false PASS in the final report and a pointer to invisible output.
-remediation_direction: make cah_connect return non-zero when the harnesses are still missing or posture fails (e.g. check
-  the console scripts after the run), and reword line 5 to "the log / rerun connect.sh shows which site", or tee 7d's
-  section 4 to the terminal.
-verification: stub connect.sh (or MAC-SETUP.sh) to fail, assert 7d lands in FAIL; assert report line 5 does not refer
-  to text that only exists in $LOG.
-needs_context: null
+  - path: brain/recs.py
+    line: 116
+  - path: docs/STEVEN-STEPS.md
+    line: 50
+entry_or_trigger: any bin/brain recs run on today's docs/STEVEN-STEPS.md
+evidence: the regex only starts an item at "^- **<letter>. ". Line 50 is "- **c. TidyCal token** (above). **d. Arive** →
+  Settings …", so _steven_steps() returns 10 items, a b c e f g h i j k. There is no "d". bm_4aaed5dca1 "TidyCal token"
+  has why = "(above). **d. Arive** → Settings → Integrations → Generate (Client ID, Secret, API Key; ne…", with the raw
+  markdown left in.
+existing_controls_checked: the test fixture has one item per line, so it never meets this case.
+failure_scenario: Steven approves "TidyCal token" and is handed the Arive instructions. Saying "done c" also closes
+  Arive. "done d" matches no move.
+impact: a Steven-only revenue step (Arive LOS) is missing from the HITL list, and another step shows the wrong plan.
+remediation_direction: start an item at any "**<letter>. " (not only at line start), or put d on its own line in the
+  doc and add a check that the letters run a..k with no gap.
+verification: a test on a fixture with "- **c. X** (above). **d. Y** → z" asserting four items, with d titled "Y".
 ```
 
 ```yaml
-id: P11-F1
-pass: 11
-title: TidyCal token is passed on curl's command line, readable by ps while the call runs
+id: P06-F2
+pass: 06
+title: one real-world action is three or four moves with different ids; declining one brings back its twin the next day
+status: CONFIRMED
+severity: MEDIUM
+confidence: HIGH
+location:
+  - path: brain/recs.py
+    line: 54, 120, 141-145
+entry_or_trigger: Steven declines "Lofty API key" (steven-steps) on the 6D panel
+evidence: candidates() dedupes on id = sha1(category|key). The same Lofty action arrives as "step:b"/steven,
+  "api:Lofty (developer.lofty.com)"/connect and "connector:Lofty"/connect. Probe with the ledger in the scratchpad:
+  after that decline, top() on 2026-10-24 ranks "Connect Lofty (developer.lofty.com)" #3 (score 1.6), and
+  "Connect Lofty" #22. Zoho has four twins (step b, api Zoho CRM, connector Zoho CRM, mcp Composio).
+existing_controls_checked: the decline lowers the weight only for the declined item's category ("steven"); the twins
+  are in category "connect" and keep weight 1.0.
+failure_scenario: Steven says no to Lofty, and the next morning the list asks him about Lofty again.
+impact: a HITL decline does not hold, and the list fills with repeats instead of different moves.
+remediation_direction: give each move one subject key (e.g. a normalised tool name), shared by its steven-steps,
+  api, connector and mcp rows, and dedupe on it, keeping the highest-scoring row; or snooze by subject.
+verification: test that declining the steven-steps Lofty move hides every candidate whose subject is Lofty for 30 days.
+```
+
+```yaml
+id: P07-F3
+pass: 07
+title: "priority" among Steven's items is alphabetical; every steven-steps move gets the same constants
+status: CONFIRMED
+severity: MEDIUM
+confidence: HIGH
+location:
+  - path: brain/recs.py
+    line: 120, 238, 250
+entry_or_trigger: today's bin/brain recs --write (docs/reports/BIG-MOVES.md, brain/recs/big-moves.json)
+evidence: _steven_steps() hard-codes impact 4, effort 2, confidence 0.85 → score 1.7 for all ten items. The tie-break is
+  the title, so ranks 1-6 are AnyDesk, Being found by AI search, Drips and texts, Lofty API key, MBS Highway, Orca
+  pairing: alphabetical. With the 60% cap, ranks 7-10 are four "Guard <page> with a gold question" items
+  (impact 1, score 0.9), while Steven-only API moves at 1.6 drop out.
+existing_controls_checked: test_top_ten checks that the list is sorted by score, which a full tie satisfies trivially.
+failure_scenario: Steven reads "#1 AnyDesk" as the most valuable thing to do today. It is first only because of the
+  letter A.
+impact: the "by priority, with the value of acting" requirement (Steven, 2026-10-23) is not met for the largest group
+  of moves.
+remediation_direction: score each step on its own terms (what it unblocks, e.g. how many toolkit items or pages wait
+  on it; revenue lanes higher), or carry impact/effort in the STEVEN-STEPS line, and break ties on something other than
+  the title.
+verification: a test asserting that the steven-steps scores are not all equal on the real file, and that Lofty or Zoho
+  (revenue unblockers) outrank AnyDesk.
+```
+
+```yaml
+id: P04-F4
+pass: 04
+title: a learn() input without "at" is counted again on every later day; a same-day change of mind is dropped
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: brain/recs.py
+    line: 189-192
+entry_or_trigger: bin/brain recs learn d.json, where d.json has no "at", run on two days (or approve and then decline on one day)
+evidence: probe on a temp root. The same {"id":"bm_a","decision":"approved"} fed on 10-23, 10-24 and 10-25 gives
+  added 1, 1, 1 and an ops weight of 1.331. [{approved},{declined}] for one id on one day gives added 1; only "approved"
+  is kept.
+existing_controls_checked: the 6D page and the deck always send a full ISO timestamp (template.html:767; the scheduled
+  task maps the deck's ts), so the scheduled task does not hit this today. Hand-written or agent-written files do.
+failure_scenario: an agent re-feeds yesterday's decisions file, and the weights move again.
+impact: the learned weights drift away from what Steven actually decided.
+remediation_direction: refuse a decision without "at" (or default it to the file's mtime and the item's index), and
+  dedupe on (id, at, decision).
+verification: test that the same no-"at" file learned on two days adds 1 row in total.
+```
+
+```yaml
+id: P04-F5
+pass: 04
+title: a declined/done row with a non-ISO "at" is hidden for ever; a non-object ledger line crashes top() and learn()
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: brain/recs.py
+    line: 227-231, 165-168, 176, 206-207, 157
+entry_or_trigger: ledger row {"decision":"declined","at":"Oct 23"}; or a ledger line "5"; or weights.json holding a non-number
+evidence: learn() stores "at" exactly as given. In top(), date.fromisoformat raises ValueError, and the except branch
+  runs `continue`, so the item never comes back (the docstring promises 30 days). read_ledger accepts any JSON value,
+  and decisions_by_id then raises TypeError "'int' object is not subscriptable" (probe). load_weights float(v) raises
+  on a non-number extra key.
+existing_controls_checked: none. The ledger is append-only, and a hand edit or a merge conflict can leave a bad line.
+failure_scenario: one bad line in brain/recs/ledger.jsonl and `bin/brain recs` exits with a traceback; the 6:05 AM task fails.
+impact: availability of the daily list; a declined item disappears for good.
+remediation_direction: on a ValueError, treat the row as not snoozed; read_ledger keeps only dicts that have id and
+  decision; load_weights skips values that are not numbers.
+verification: test with a ledger line "5" and a row with at="Oct 23", asserting that top() returns and still lists the item.
+```
+
+```yaml
+id: P08-F6
+pass: 08
+title: a signals file that is not a list of objects crashes bin/brain recs; a string "plan" becomes one step per character
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: brain/recs.py
+    line: 128-133
+entry_or_trigger: bin/brain recs --write --signals s.json, where s.json is {"items":[...]} or ["x"]; or a signal with "plan":"call them"
+evidence: probe. _signal_candidates(["x"]) and _signal_candidates({"items":[...]}) raise AttributeError "'str' object
+  has no attribute 'get'". s.get runs before the try, and the except only catches KeyError/TypeError/ValueError.
+  {"plan":"call them"} gives plan ['c','a','l','l',' ','t'].
+existing_controls_checked: the test covers a dict without "key" only.
+failure_scenario: the scheduled task writes signals.json in the wrong shape, and the whole big-moves run fails at step 4.
+impact: no list that day (the scheduled task says nothing unless a step fails twice).
+remediation_direction: skip any s that is not a dict, accept {"items":[...]}, and wrap a str plan as [plan].
+verification: test that a signals list of ["x", {"key":"k","title":"t","plan":"p"}] yields one candidate with plan ["p"].
+```
+
+```yaml
+id: P17-F7
+pass: 17
+title: one db document with a whitespace decision breaks the whole "Vanessa recommends" panel
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: dashboard/brain-4d/template.html
+    line: 752, 779-782
+entry_or_trigger: page db doc recs/<id> with decision "approved later" (any viewer at interact can write the shared recs collection)
+evidence: smoke-bm2.js (scratchpad) case spaceDecision. The pageerror is "InvalidCharacterError: Failed to execute 'add'
+  on 'DOMTokenList'", and only 1 of the 10 items renders. The catch calls bmRender() again, which throws again.
+existing_controls_checked: text goes through mk()/textContent, so XSS is clean: an `at` of "<img onerror>" renders as text.
+failure_scenario: a deck sync or agent writes a free-text decision, and the panel goes empty for every viewer.
+impact: the HITL surface is unusable until the doc is fixed.
+remediation_direction: only add the class when st is approved, declined or later; otherwise ignore the value.
+verification: extend smoke-bm2.js. The spaceDecision case must render 10 items with no pageerror.
+```
+
+```yaml
+id: P19-F8
+pass: 19
+title: two recs tests read the live repo's ledger and weights, so Steven's own declines can fail CI
 status: CONFIRMED
 severity: LOW
 confidence: MEDIUM
 location:
-  - path: connect-all.sh
-    line: 396 (-H "Authorization: Bearer $TIDYCAL_TOKEN")
-entry_or_trigger: any other local account or process listing processes during the ~1 s request
-evidence: the expanded header is an argv element of curl; macOS ps -ww shows other users' process arguments.
-existing_controls_checked: the token never reaches $LOG or the terminal (curl -s, -o /dev/null, -w only http_code,
-  2>/dev/null; test at connect-all-tests.sh:182 passes). The exposure is argv only.
-failure_scenario: a second user or a background agent on the Mac running ps at that moment reads the bearer token.
-impact: limited - single-user Mac, short window - but it is a credential in argv.
-remediation_direction: hand curl the header on stdin, e.g. printf 'header = "Authorization: Bearer %s"\n' ... | curl -K - ...
-  (printf is a builtin, so the value never appears in argv).
-verification: a curl stub that records "$@" must not contain the token (today connect-all-tests.sh's curl.calls does).
-needs_context: null
+  - path: brain/tests/test_recs.py
+    line: 22-23, 36-37
+entry_or_trigger: brain/recs/weights.json committed with revenue < 0.378 (about 6 revenue declines at ×0.85)
+evidence: test_signals asserts that the refi signal (5×0.9/1×w = 4.5w) is #1, ahead of steven-steps at 1.7×w_steven.
+  test_top_ten needs ≥10 non-snoozed candidates in the real tree. Both call recs.top(ROOT, ...), which reads
+  ROOT/brain/recs/ledger.jsonl and weights.json.
+existing_controls_checked: the learning tests use temp roots; these two do not.
+failure_scenario: after a week of real use, the brain unit tests fail and validate-code.sh reports FAIL on an
+  unrelated change.
+impact: false red gate.
+remediation_direction: point recs.LEDGER and recs.WEIGHTS at a temp dir in setUp (the module constants already
+  accept absolute paths).
+verification: the tests pass with a weights.json of {"revenue":0.3,"steven":2.0} in the real tree.
 ```
 
 ```yaml
-id: P14-F1
-pass: 14
-title: CONNECT_ALL_YES=1 in cah_connect is read by nothing
+id: P06-F9
+pass: 06
+title: the executor classifier marks openflowkit as Steven-only because its desc says "no key"
 status: CONFIRMED
-severity: INFO
+severity: LOW
 confidence: HIGH
 location:
-  - path: connect-all.sh
-    line: 409
-entry_or_trigger: step 7d
-evidence: grep finds CONNECT_ALL_YES only in connect-all.sh and scripts/second-mac.sh; connect.sh and MAC-SETUP.sh never
-  read it, and neither has a [y/N] prompt.
-existing_controls_checked: n/a
-failure_scenario: none today; it implies a consent bypass that does not exist.
-impact: reader confusion only.
-remediation_direction: drop it (Karpathy: surgical changes).
-verification: n/a
-needs_context: null
+  - path: brain/recs.py
+    line: 53
+entry_or_trigger: toolkit mcp row openflowkit (state pending)
+evidence: the substring regex finds "key" in "…no key) arch…". The probe shows the match is "key@o, no key) arch". The
+  move "Connect openflowkit" is executor steven. connect-all 6g registers it with no sign-in.
+existing_controls_checked: none. "rep" and "sign" are bare substrings too.
+failure_scenario: a move Vanessa could run once Steven has run the connect-all paste is listed as "only you can do this".
+impact: wrong owner on a small number of moves.
+remediation_direction: match whole words and skip negated phrases ("no key"), or carry the executor in the register row.
+verification: test that the openflowkit mcp candidate has executor "vanessa" (or "mac").
+```
+
+```yaml
+id: P05-F10
+pass: 05
+title: two doc lines contradict the fixes they describe
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: .claude/skills/pr-lens/VENDORED.md
+    line: 1
+  - path: wiki/ai-team/second-brain-layers.md
+    line: (added "Registers the 6D Brain draws as lobes" bullet)
+evidence: VENDORED.md says "pinned to @0.13.2 (was @latest)" and, in the next sentence, "The skill runs
+  `npx @coldtea/pr-lens-cli@latest` on demand". The layers bullet lists "skills, plugins, Claude mods
+  (`integrations/mods/`)" as separate registers, while toolkit.py now treats them as one (mods() = plugins()).
+existing_controls_checked: brain doctor does not check prose.
+failure_scenario: a reader or agent follows "@latest", or counts mods twice again.
+impact: documentation drift on the two items the last review fixed.
+remediation_direction: change "@latest" to "@0.13.2" in VENDORED.md, and say "Claude mods (plugins, `integrations/mods/`)".
+verification: grep -n "@latest" .claude/skills/pr-lens/ returns nothing.
 ```
 
 ## UNVERIFIED
 
-- **U1 - TidyCal endpoint, header and menu path.** Web search confirms the base `https://tidycal.com/api` and a personal
-  token sent as `Authorization: Bearer`; a third-party CLI exposes "booking-types list", consistent with
-  `/api/booking-types`. The official API reference could not be fetched (sandbox 403), so the exact path is not proven.
-  The script's menu path "Settings -> Integrations -> API" differs from a third-party guide (Odoo connector) that says
-  "Settings -> API & Webhooks". Needs: TidyCal's API docs page, or one real 200 from Steven's Mac.
-- **U2 - free plan.** Search results say API access is not on TidyCal's Free plan. If his plan is Free and TidyCal answers
-  403, line 399 tells him to make a new token, which will not help. Needs: Steven's plan, and the status TidyCal returns
-  for a Free-plan token.
-- **U3 - token format.** Sourcing `TIDYCAL_TOKEN=<value>` through `sh -c '. "$1"'` was tested in dash: a value with a
-  space, `;`, `&` truncates (the rest runs as a command, its error swallowed by 2>/dev/null); `'` or `"` is a syntax error;
-  `$VAR`, backticks and `\` are expanded/executed. A JWT/base64url token (letters, digits, `.`, `-`, `_`) is safe. Also,
-  macOS canonical tty input caps a typed/pasted line at 1024 bytes (MAX_CANON), so a token longer than 1023 characters
-  would be truncated by `read` and then 401. Needs: TidyCal's token character set and length.
+- U1: the FAIL at 16:57:56 (change-set 744af5c07a9565dc). Which row failed is unknown: CODE-VALIDATION.md was
+  overwritten by the next run. Two later runs passed. A concurrent doc edit during the run (STEVEN-STEPS.md at
+  16:58:02, which brain doctor/index checks read) is likely but not proved. To decide it: re-run with the tree frozen.
+- U2: whether the live 6D artifact (VoWHW4YuKUCyNqGZMikEv8) declares the `db` and `user` capabilities. The scheduled
+  task says it declares "sample, db and user", but this review did not read the artifact's manifest. Without db, the
+  buttons are correctly disabled (smoke: nodb, dbnull → disabled true).
 
 ## REJECTED
 
-- P11-C1 token leak via `set -x` - no `set -x`/xtrace anywhere in connect-all.sh (grep) - connect-all.sh:16 is `set -u` only.
-- P11-C2 token leak via curl `-w`/error text - `-w "%{http_code}"` only, `-s`, `-o /dev/null`, and `2>/dev/null` on the
-  substitution; sh's own error lines (U3) are also swallowed there - connect-all.sh:396.
-- P01-C1 bash 3.2 incompatibility - no mapfile, `declare -A`, `${x^^}`, `&>>`; `local`, `trap -`, `${code:-none}`, `case`
-  are 3.2-safe - connect-all.sh:387-401, 409.
-- P04-C1 return codes mis-feed PASS/FAIL - 200 -> 0, skip/401/403/other -> 1; step maps rc to PASS/FAIL + note; tests
-  181 and 185 prove both - connect-all.sh:392-400, 43-44.
-- P04-C2 echo left off after Ctrl-C - the INT/TERM trap runs `stty echo`; Ctrl-C then behaves as a skip (the main shell
-  continues) rather than an abort, same as 7b - connect-all.sh:391. Not verified on a real macOS tty.
-- P04-C3 stty acts on stdin while read uses /dev/tty - only matters when stdin is not the terminal; every documented
-  invocation (`bash connect-all.sh`, scripts/second-mac.sh:78) keeps stdin on the tty.
-- P05-C1 "Still yours" numbering - 5, 5b, 6, 6b follows the existing "6b" convention - connect-all.sh:439-444.
+- R1 db call shapes. `db.collection("recs").get()` → `snap.docs[]`, `d.id`, and `d.data()` match db.d.ts (QuerySnapshot,
+  DocumentSnapshot). `doc("recs/"+id).set(obj)` is 2 segments, an even count, and `bm_<10 hex>` uses only allowed characters.
+- R2 XSS. Every RECS/db string goes through mk() → textContent (template.html:661). The smoke test with
+  at="<img src=x onerror=…>" renders it as text.
+- R3 buttons without db. They are disabled (`b.disabled = !bmDb`), and the note says "open this page in claude.ai".
+  `claude.use()` resolves null and does not reject (claude.d.ts:38-44).
+- R4 candidates() on a bare repo. It returns 0 candidates, and top() returns [] with no exception (probe on an empty temp dir).
+- R5 id stability. sha1(category|key)[:10] is deterministic, and the toolkit and loop keys are stable names. (The
+  letter-keyed steven-steps id is reused if a later round re-letters a..k. That is noted under P06-F2's remedy, not a
+  separate defect today.)
+- R6 weight math. ×1.1 is capped at 2.0 and ×0.85 floored at 0.3 (recs.py:196-199). The test runs 28 decisions each way.
+- R7 writes outside brain/recs and docs/reports. write() and learn() touch only OUT_JSON, OUT_MD, LEDGER and WEIGHTS
+  under root, and `org` prints to stdout. org-chart.json equals `bin/brain org` apart from "generated" (39 seats).
+- R8 privacy. BIG-MOVES.md, big-moves.json and org-chart.json contain no phone or e-mail patterns. wiki/clients holds
+  only index.md, and no client name appears. Signals are written by the scheduled task, whose prompt says "first names
+  only". The phone number in memory.md is on a line that already existed.
+- R9 build.py stale-section guard: `start > len(lines)` → `continue`. When the index is older, the end is clamped by
+  the slice, so it cannot crash. The 6D page tests pass.
 
-## Coverage
+## Coverage (inspected and clean)
 
-| Surface | Result |
-|---|---|
-| `tidycal_connect` write path: mkdir, umask 077 subshell, chmod 600, key cleared | clean |
-| token never in $LOG/terminal on the 200 and 401 paths | clean (test 182; prompt path untested, see P01-F1) |
-| `tidycal_connect` return codes -> step PASS/FAIL/NEEDS | clean |
-| bash 3.2 constructs in the diff | clean |
-| `cah_connect` `</dev/tty` under step (same as `mods_install`) | works; output to log (P05-F1) |
-| `connect.sh` exit paths | always 0 (P05-F1) |
-| report lines 5/5b numbering | clean |
-| `connect-all-tests.sh` FUNCS extraction and 5 new tests | clean, 67/67 |
+brain/__main__.py recs/org argument parsing (learn without a file → rc 2); toolkit.py `_register`/mcps/apis/KINDS/format and
+write_page; graph.py mcp/api lobes; build.py RECS injection via j() (script-safe escaping); template.html bm panel layout at
+390 px (scrollWidth 390, no horizontal scroll); smoke-bm.js (approve → set recs/bm_ad2f80fbb8 approved, class approved,
+state text) and smoke-bm2.js (declined doc from db → li.declined + "declined · 2026-10-22"; no db → disabled; XSS → text);
+connect-all.sh 6g openflowkit_mcp plus its 5 tests; install-mac.sh archify tail; CLAUDE.md routing row; cross-functional.md
+paragraph.
 
-## Top 10 missing tests
+## Top missing tests (pass 19)
 
-1. No .env, prompt path: assert the prompt text does not land in $LOG (P01-F1).
-2. Prompt path with a typed token on stdin (feed via a fake tty or a test hook): .env is created mode 600 with exactly
-   `TIDYCAL_TOKEN=<value>` and the value is not in $T/out.
-3. Bad token saved + 401: the message names `~/.config/tidycal/.env` or the rerun re-prompts (P04-F1).
-4. 403 path: rc 1 and the "make a new token" message (only 401 is tested).
-5. curl stub prints `000`/nothing (network down): rc 1 and "not reachable (HTTP 000|none)".
-6. curl stub that records argv: the token must not appear in argv (P11-F1).
-7. Enter at the prompt: rc 1, "skipped", no .env created.
-8. 7d with connect.sh/MAC-SETUP stubbed to fail: lands in FAIL (P05-F1).
-9. .env containing a token with a space or quote: either rejected at save time or sourced intact (U3).
-10. Gate: `scripts/validate-code.sh` runs `connect-all-tests.sh` when connect-all*.sh is in the change-set (today it runs
-    only `bash -n`).
+1. STEVEN-STEPS with two items on one line (c+d) → four items, d present (P05-F1).
+2. Decline the steven-steps Lofty move → no Lofty candidate from api/connector/mcp for 30 days (P06-F2).
+3. Real-file steven-steps scores are not all equal; a revenue unblocker outranks AnyDesk (P07-F3).
+4. The same no-"at" decision file learned on two days → one ledger row (P04-F4).
+5. A ledger line "5" and a declined row with at="Oct 23" → top() returns, and the item still shows (P04-F5).
+6. Signals given as an object or a str, or with a str plan → no crash, plan wrapped (P08-F6).
+7. smoke-bm2 spaceDecision → 10 items, no pageerror (P17-F7).
+8. test_recs isolated from the live ledger and weights (P19-F8).
+9. learn() approve then decline with distinct ISO "at" on one day → decisions_by_id returns declined, and top() hides it.
+10. The 60% cap with n=1 and n=3 → the list length equals n and no executor exceeds max(1, int(0.6n)) when enough of the other executor exists.
 
 ## Share card
 
 ```text
 VIBE//BREAKER
 
-VERDICT: SURVIVED* (repo verdict FIX FIRST)
-PASSES: 7/20 (DIFF, shell set)
+VERDICT: FIX BEFORE SHIP
+PASSES: 13/20
 CRITICAL: 0
 HIGH: 0
-CONFIRMED: 5
-UNVERIFIED: 3
+CONFIRMED: 10
+UNVERIFIED: 2
 FIRST BREAK: NONE
 ```
 
 ## Release note
 
-Demonstrated: syntax, the 67 stubbed tests, the step wrapper's redirect of the 7c prompt (scratch reproduction), and
-sourcing behaviour for special characters (dash). Not demonstrated: a real TidyCal call, the vendor's documented path,
-plan behaviour or token format, and behaviour in a real macOS Terminal.
+This review showed: the deterministic gate passes on 46dedb8f6dbccb36, 123 unit tests and 84 connect-all tests pass, all
+five earlier findings are fixed, and the 6D panel's db usage matches the contract and is XSS-safe. Proven defects: the
+ranking is alphabetical among tied Steven items, one step is missing, declines do not hold across twin moves, and some
+inputs crash the code. It did not show the live artifact's capability manifest, the 6:05 AM scheduled task running end
+to end, or the Mac-side archify install.
 
-## Orchestrator response (2026-10-23 15:00 UTC) — connect-all round 2 fix-up (change-set 098ea402f7120e2e)
+change-set: bd4299d7b7e56598
+## Orchestrator response (2026-10-23 17:45 UTC) — recs findings applied (reviewed 46dedb8f6dbccb36 → bd4299d7b7e56598)
 
-1. MEDIUM prompt swallowed by the log — fixed: the TidyCal, Lofty and Kapso prompts (and the newline after read) go to /dev/tty; test "prompt never lands in captured output".
-2. MEDIUM refused token kept forever — fixed: 401/403 deletes the .env and says it was not kept; the next run asks again; a first-run network failure also discards it; 404 is reported as an endpoint question; tests.
-3. MEDIUM step 7d always "done" — fixed: cah_connect checks the four wrapper binaries after connect.sh and fails naming the missing ones; report line 5 reworded; two tests.
-4. LOW token on curl's command line — fixed: header passed on stdin with `curl -K -`; test asserts the token is absent from argv and present on stdin.
-5. INFO dead CONNECT_ALL_YES — dropped.
-Token characters: a token holding a quote, space or shell character is refused before saving (TidyCal tokens are letters, digits, . - _). Endpoint and plan: the README says the first real run on Mac 1 confirms /api/booking-types; the menu path now reads Integrations → Automations/Advanced → API → Manage API keys.
-Also in this change-set (not reviewed by the first pass): dashboard/action-desk.html step D (static HTML + copy buttons, node --check passes), docs (STEVEN-STEPS round 2, CONNECTIONS, AnyDesk README, five integration READMEs, two playbooks), toolkit/index regeneration, the rebuilt 6D page.
-
-change-set: b54bd02a675192b3
-## Orchestrator response (2026-10-23 15:15 UTC) — second-pass LOW findings applied (reviewed code 098ea402f7120e2e / 3dfdbb4f5136318d → b54bd02a675192b3)
-
-1. P01-F1 LOW denylist → allowlist `*[!A-Za-z0-9._-]*`; a first-run network failure now says the token was not kept; five bad-token tests (a|b, a>b, a b, a;b, a'b) and one good-token test, as the validator prescribed. 79/79.
-2. P17-F1 LOW Action Desk `paint()` marks a step done only when every box in it is ticked (node --check ok).
-3. Out-of-scope note taken: `--mark` now requires the hash on a review line (`change-set: <hash>` or a heading), not anywhere in prose; validate-gate tests 4/4.
+MEDIUM Arive step missing — fixed: c and d split onto their own lines in STEVEN-STEPS; test asserts all 11 steps incl. Arive.
+MEDIUM a decline does not hold — fixed: every move carries a topic (lofty, zoho, tidycal…); a declined/done move snoozes every move on that topic for 30 days; test.
+MEDIUM Steven's items alphabetical — fixed: STEP_VALUE table scores each sign-in by what it unblocks (Lofty/Zoho/drips 5:1 … Pivo 1:2); test asserts Lofty outranks AnyDesk.
+LOW timestamp-less decisions — fixed: the same decision on the same day counts once however it is fed; test.
+LOW bad ledger data — fixed: non-object lines skipped; a bad date reads as today (hidden only today); test.
+LOW signals shape — fixed: wrapped object / non-dict entries / string plan handled; test.
+LOW bad decision value empties the panel — fixed: only approved/declined/later/done are honoured; smoke-bm2 harness.
+LOW tests touching the real ledger — fixed: setUp redirects WEIGHTS/LEDGER to a temp dir.
+LOW openflowkit marked Steven-only — fixed: "no key" stripped before the key-word match; `\bkey\b`.
+LOW doc contradictions — fixed (VENDORED.md version, layers bullet wording).
+Steven's decisions noted by the validator (ranking weights, topic-wide declines, the 60% cap) are defaults he can change by saying so; recorded here, not asked.

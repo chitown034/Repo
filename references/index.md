@@ -72,3 +72,4 @@ cannot write the last one in a clause, it does not need registering.
 | `backend-folder-structure.md` | The eight-layer backend layout (config, models, middlewares, controllers, services, routes, utils, tests) every service follows; `bin/brain layout` checks the brain against it |
 | `../integrations/openmontage/README.md` | OpenMontage, the agentic video studio installed on the Mac 2026-10-12 (skill `openmontage-video`) |
 | NotebookLM source pack | `integrations/notebooklm/README.md` | the brain as 13 uploadable sources; `bin/brain export notebooklm` |
+- `vlm-architectures.md` — Awesome VLM Architectures (CC0): 155+ vision-language model architectures with primary sources; Nadia's shelf for document/photo/screen model choices (recorded 2026-10-23)

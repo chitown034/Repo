@@ -1,0 +1,1031 @@
+{
+ "generated": "2026-10-23T17:10:14Z",
+ "seats": [
+  {
+   "name": "Steve",
+   "role": "digital twin, Tier-1 work",
+   "kind": "tree"
+  },
+  {
+   "name": "Vanessa",
+   "role": "Chief of Staff / COO / orchestrator, council chair \u2014 the 80/",
+   "kind": "tree"
+  },
+  {
+   "name": "Daily Chief",
+   "role": "of-Staff cycle \u2014 cloud routine, weekdays 6:25 AM PT: backlog",
+   "kind": "tree"
+  },
+  {
+   "name": "Jarvis",
+   "role": "on-device voice + local index (verify: integrations/jarvis/j",
+   "kind": "tree"
+  },
+  {
+   "name": "Laya",
+   "role": "zero-token on-device first hop (proposed; Mac install unveri",
+   "kind": "tree"
+  },
+  {
+   "name": "Knowledge fabric",
+   "role": "Second Brain \u00b7 vault \u00b7 Jarvis \u00b7 Graphify \u00b7 Ruflo, one recall",
+   "kind": "tree"
+  },
+  {
+   "name": "Brain loop",
+   "role": "self-check that finds unanswered questions, drift, wrong rou",
+   "kind": "tree"
+  },
+  {
+   "name": "Computer Hub",
+   "role": "Claude Remote Control + Orca + AnyDesk on Mac 1, Mac 2, the",
+   "kind": "tree"
+  },
+  {
+   "name": "Weekly scout",
+   "role": "`integrations/scout/scout.py` \u2192 `docs/reports/SCOUT.md`: new",
+   "kind": "tree"
+  },
+  {
+   "name": "Agent OS",
+   "role": "`bin/brain os`: all 172 roster agents reachable via Laya lan",
+   "kind": "tree"
+  },
+  {
+   "name": "Dispatch planner",
+   "role": "`bin/brain route`: lead seat, cross-functional joins, \u22648-wid",
+   "kind": "tree"
+  },
+  {
+   "name": "Broker Command Center",
+   "role": "realtor/broker OS (https://claude.ai/artifact/XFx2H7cf8mnS8e",
+   "kind": "tree"
+  },
+  {
+   "name": "The Bot Crew",
+   "role": "355 chat agents mirroring this chart: 13 executive/mentor ca",
+   "kind": "tree"
+  },
+  {
+   "name": "Travel Desk",
+   "role": "Gondola MCP: points vs cash, trips, price watches; Marcus co",
+   "kind": "tree"
+  },
+  {
+   "name": "Meeting Scribe",
+   "role": "Fieldy/Zoom recaps: decisions, action items \u2192 `vanessaQueue`",
+   "kind": "tree"
+  },
+  {
+   "name": "Juliet",
+   "role": "Escalation & Service Recovery",
+   "kind": "tree"
+  },
+  {
+   "name": "ISA / EA",
+   "role": "human Mon\u2013Fri 12\u20134 PM; the ISA Portal opens with \"Today from Vanes",
+   "kind": "tree"
+  },
+  {
+   "name": "Transaction & Showing desk",
+   "role": "cloud routine, weekdays 6:05 AM PT (before the cycle), under",
+   "kind": "tree"
+  },
+  {
+   "name": "Marcus",
+   "role": "CFO Nathan, Bianca, Maya (four-county market & schools data, new",
+   "kind": "tree"
+  },
+  {
+   "name": "Sofia",
+   "role": "CMO 14 named marketing reports + ruflo audio bench",
+   "kind": "tree"
+  },
+  {
+   "name": "Sphere Nurture Coordinator",
+   "role": "monthly past-client/sphere touch drafts, birthdays and anniv",
+   "kind": "tree"
+  },
+  {
+   "name": "Derek",
+   "role": "CTO Sam, Naomi, Integration Engineer (owns OmniRoute failover +",
+   "kind": "tree"
+  },
+  {
+   "name": "Alexandra",
+   "role": "CCO Lucia, Bennett, Fern, Clay, Odette, Gus, Imani, Roland, Dian",
+   "kind": "tree"
+  },
+  {
+   "name": "Nadia",
+   "role": "CAIO, proposal-only Leah, Disruption Scout (runs `integrations/scout/scout.py` w",
+   "kind": "tree"
+  },
+  {
+   "name": "Victor",
+   "role": "CRO Harrison, Gwen, Marguerite + 19 named reports + Carmen + the",
+   "kind": "tree"
+  },
+  {
+   "name": "Refi Watch Analyst",
+   "role": "under Harrison: weekly rate-vs-note-rate prep list, \"market",
+   "kind": "tree"
+  },
+  {
+   "name": "Voicemail & Inbox Triage",
+   "role": "ISA line: WhisperAI voicemails and Gmail triaged into `vanes",
+   "kind": "tree"
+  },
+  {
+   "name": "Document Intake Clerk",
+   "role": "under Carmen: contract and disclosure dates into `tcDeals`,",
+   "kind": "tree"
+  },
+  {
+   "name": "Open House Captain",
+   "role": "under Marguerite/Gwen: sign-in sheet \u2192 leads, thank-you draf",
+   "kind": "tree"
+  },
+  {
+   "name": "Elena",
+   "role": "CISO Omar, Renee, Ruth, Dev + ruflo security bench",
+   "kind": "tree"
+  },
+  {
+   "name": "Elon",
+   "role": "CTO Innovator, proposal-only the AI Agent Engineering Team: stress-test, reliability,",
+   "kind": "tree"
+  },
+  {
+   "name": "Gwen",
+   "role": "Buyer's Agent",
+   "kind": "named"
+  },
+  {
+   "name": "Carmen",
+   "role": "CA Transaction Coordinator",
+   "kind": "named"
+  },
+  {
+   "name": "Lucia",
+   "role": "Guideline & Program Eligibility",
+   "kind": "named"
+  },
+  {
+   "name": "Walter",
+   "role": "TRID Timeline Checker",
+   "kind": "named"
+  },
+  {
+   "name": "Rosa",
+   "role": "Military & Corporate Relocation",
+   "kind": "named"
+  },
+  {
+   "name": "Disruption Scout",
+   "role": "under Nadia",
+   "kind": "named"
+  },
+  {
+   "name": "Trading Research Desk",
+   "role": "under Apex, paper mode only",
+   "kind": "named"
+  },
+  {
+   "name": "Reverse-engineering gate",
+   "role": "REA, under Elon with Elena and Alexandra",
+   "kind": "named"
+  }
+ ],
+ "lanes": {
+  "Marcus": [
+   "net worth",
+   "income",
+   "budget",
+   "liabilities",
+   "expense",
+   "cash",
+   "close",
+   "tax",
+   "profit",
+   "money",
+   "finance",
+   "revenue forecast",
+   "plaid",
+   "balance"
+  ],
+  "Sofia": [
+   "marketing",
+   "campaign",
+   "content",
+   "social",
+   "post",
+   "email blast",
+   "newsletter",
+   "video",
+   "avatar",
+   "brand",
+   "ad",
+   "seo",
+   "instagram",
+   "facebook",
+   "linkedin",
+   "youtube"
+  ],
+  "Derek": [
+   "automation",
+   "connector",
+   "integration",
+   "routine",
+   "task",
+   "broken",
+   "stack",
+   "api",
+   "mcp",
+   "dashboard",
+   "deck",
+   "sync",
+   "runner",
+   "failover",
+   "mac",
+   "script",
+   "browser",
+   "website",
+   "playwright",
+   "agent-browser",
+   "portal",
+   "anydesk",
+   "orca",
+   "remote control",
+   "alienware",
+   "tailscale",
+   "bonsai",
+   "laya"
+  ],
+  "Alexandra": [
+   "compliance",
+   "trid",
+   "respa",
+   "reg z",
+   "disclosure",
+   "fair housing",
+   "dre",
+   "nmls",
+   "license",
+   "advertising rule",
+   "anti-steering",
+   "le",
+   "cd"
+  ],
+  "Nadia": [
+   "ai strategy",
+   "tool",
+   "tooling",
+   "evaluate",
+   "adopt",
+   "disruption",
+   "new model",
+   "agent design",
+   "hype",
+   "scout",
+   "new repo",
+   "skill",
+   "mcp server",
+   "plugin",
+   "find a skill"
+  ],
+  "Victor": [
+   "pipeline",
+   "conversion",
+   "lead",
+   "leads",
+   "speed to lead",
+   "crm",
+   "lofty",
+   "zoho",
+   "funnel",
+   "referral",
+   "revenue",
+   "six levers",
+   "isa",
+   "networking",
+   "networking event",
+   "chamber"
+  ],
+  "Elena": [
+   "security",
+   "credential",
+   "password",
+   "key",
+   "token",
+   "access",
+   "breach",
+   "privacy",
+   "pii",
+   "data risk",
+   "backup",
+   "reverse engineer",
+   "reverse engineering",
+   "pairing link"
+  ],
+  "Elon": [
+   "feasibility",
+   "architecture",
+   "build",
+   "engineer",
+   "prototype",
+   "integration cost",
+   "refactor",
+   "brain",
+   "second brain"
+  ],
+  "Harrison": [
+   "loan",
+   "mortgage",
+   "va",
+   "fha",
+   "usda",
+   "irrrl",
+   "jumbo",
+   "non-qm",
+   "conventional",
+   "rate",
+   "refinance",
+   "pre-approval",
+   "dti",
+   "ltv",
+   "assessor",
+   "apn",
+   "property tax",
+   "piti",
+   "amortization",
+   "payment scenario",
+   "loan scenario",
+   "tax sheet"
+  ],
+  "Gwen": [
+   "buyer",
+   "showing",
+   "tour",
+   "offer",
+   "house hunt"
+  ],
+  "Marguerite": [
+   "listing",
+   "seller",
+   "list price",
+   "cma",
+   "staging"
+  ],
+  "Maxwell": [
+   "coaching",
+   "coach",
+   "weekly review",
+   "accountability"
+  ],
+  "Kevin": [
+   "personal development",
+   "habit",
+   "11-dimension",
+   "discipline",
+   "mindset",
+   "singles event",
+   "speed dating",
+   "social event"
+  ],
+  "James": [
+   "family office",
+   "estate",
+   "trust",
+   "wealth plan",
+   "legacy"
+  ],
+  "Apex": [
+   "trade",
+   "futures",
+   "nq",
+   "es",
+   "order flow",
+   "liquidity",
+   "backtest",
+   "paper trade",
+   "trading research",
+   "research desk",
+   "strategy idea"
+  ],
+  "Refi Watch Analyst": [
+   "refi watch",
+   "note rate",
+   "rate watch",
+   "refi list",
+   "refi candidate",
+   "rate drop",
+   "market average"
+  ],
+  "Sphere Nurture Coordinator": [
+   "sphere",
+   "nurture",
+   "past client",
+   "birthday",
+   "anniversary",
+   "home anniversary",
+   "touch plan",
+   "check-in"
+  ],
+  "Voicemail & Inbox Triage": [
+   "voicemail",
+   "inbox",
+   "triage",
+   "whisperai",
+   "gmail",
+   "missed call",
+   "unread"
+  ],
+  "Document Intake Clerk": [
+   "document intake",
+   "intake",
+   "contract dates",
+   "disclosure dates",
+   "missing date",
+   "key dates",
+   "tcdeals",
+   "date entry"
+  ],
+  "Open House Captain": [
+   "open house",
+   "sign-in sheet",
+   "sign-in",
+   "visitor",
+   "thank-you",
+   "thank you note"
+  ],
+  "Travel Desk": [
+   "travel",
+   "trip",
+   "flight",
+   "hotel",
+   "points vs cash",
+   "points",
+   "miles",
+   "price watch",
+   "gondola",
+   "itinerary"
+  ],
+  "Meeting Scribe": [
+   "meeting recap",
+   "recap",
+   "meeting notes",
+   "action items",
+   "fieldy",
+   "zoom",
+   "meeting minutes",
+   "debrief"
+  ],
+  "Maya": [
+   "market data",
+   "median price",
+   "zip code",
+   "neighborhood",
+   "school",
+   "schools",
+   "days on market",
+   "months of supply",
+   "inventory",
+   "comps",
+   "city stats",
+   "redfin",
+   "caaspp",
+   "community ranking"
+  ],
+  "Rosa": [
+   "pcs",
+   "military",
+   "base",
+   "bah",
+   "relocation",
+   "orders",
+   "scra",
+   "camp pendleton",
+   "miramar",
+   "coronado",
+   "march arb",
+   "deployment",
+   "rent buy or wait",
+   "rent vs buy",
+   "duty radius",
+   "bah affordability",
+   "breakeven",
+   "military objection",
+   "military & relocation pod"
+  ],
+  "Quincy": [
+   "lofty",
+   "pabbly",
+   "integration",
+   "connector",
+   "crm sync",
+   "import leads",
+   "export leads",
+   "webhook",
+   "zoho lofty",
+   "smart plan"
+  ],
+  "Owen": [
+   "autopilot",
+   "sweep",
+   "auto task",
+   "follow-up task",
+   "dedupe",
+   "daily automation",
+   "launchpad",
+   "mission",
+   "push button",
+   "run everything",
+   "monday kickoff",
+   "friday wrap",
+   "automation & ai pod"
+  ],
+  "Beatrice": [
+   "dre",
+   "broker supervision",
+   "trust account",
+   "file review",
+   "license renewal",
+   "e&o",
+   "record retention",
+   "broker compliance"
+  ],
+  "Paula": [
+   "probate",
+   "trust sale",
+   "iaea",
+   "court confirmation",
+   "overbid",
+   "short sale",
+   "foreclosure",
+   "executor",
+   "estate sale"
+  ],
+  "Riley": [
+   "alliance",
+   "cpa",
+   "attorney",
+   "financial planner",
+   "partner",
+   "lunch and learn",
+   "professional network",
+   "co-marketing"
+  ],
+  "Ingrid": [
+   "training",
+   "academy",
+   "role-play",
+   "roleplay",
+   "quiz",
+   "drill",
+   "script practice",
+   "lesson",
+   "onboarding agent"
+  ],
+  "Steve": [
+   "draft",
+   "drafts",
+   "inbox triage",
+   "follow-up draft",
+   "digital twin",
+   "tomorrow prep",
+   "meeting brief"
+  ],
+  "Winston": [
+   "car forms",
+   "c.a.r. forms",
+   "rpa",
+   "contingency removal",
+   "nbp",
+   "request for repair",
+   "transaction qa",
+   "file audit",
+   "form library",
+   "tds",
+   "spq",
+   "avid",
+   "forms tutor",
+   "clause by clause",
+   "forms matrix",
+   "form pdf",
+   "zipform",
+   "which forms",
+   "forms hub",
+   "skyslope",
+   "skyslope forms",
+   "when needed matrix",
+   "when-needed",
+   "required forms",
+   "forms checklist",
+   "deal type forms",
+   "548 forms"
+  ],
+  "Sterling": [
+   "5-star",
+   "five star",
+   "client experience",
+   "service standard",
+   "ritz",
+   "delight",
+   "client preferences",
+   "nps",
+   "after-care",
+   "concierge service",
+   "value add",
+   "client experience pod"
+  ],
+  "Juliet": [
+   "escalation",
+   "service recovery",
+   "blown closing",
+   "denied loan",
+   "failed appraisal",
+   "angry client",
+   "honors",
+   "unhappy client",
+   "complaint"
+  ],
+  "Imani": [
+   "pcs",
+   "military family",
+   "base",
+   "bah",
+   "relocation briefing"
+  ],
+  "Logan": [
+   "lpt",
+   "lpt realty",
+   "hybridshare",
+   "revenue share",
+   "downline",
+   "recruiting",
+   "recruit",
+   "business builder",
+   "brokerage partner",
+   "cap",
+   "stock award",
+   "sponsor",
+   "lpt growth pod"
+  ],
+  "Wren": [
+   "referral ledger",
+   "reciprocal referral",
+   "referral fee",
+   "partner tier"
+  ],
+  "Bianca": [
+   "absorption",
+   "months of inventory",
+   "price per sqft",
+   "list-to-sale",
+   "market report",
+   "pricing authority"
+  ],
+  "Lucia": [
+   "eligibility",
+   "guideline",
+   "va m26-7",
+   "fha 4000.1",
+   "usda",
+   "program fit"
+  ],
+  "Priya": [
+   "instant response",
+   "new lead",
+   "speed-to-lead call",
+   "appointment setting"
+  ],
+  "Vera": [
+   "sphere",
+   "soi",
+   "past client",
+   "review request",
+   "home anniversary",
+   "post-close",
+   "preference profile",
+   "closing gift",
+   "lifetime cadence"
+  ],
+  "Rafael": [
+   "workflow studio",
+   "workflow",
+   "automation flow",
+   "lifecycle automation",
+   "trigger",
+   "automation coverage"
+  ],
+  "Celeste": [
+   "coach hq",
+   "coaching",
+   "training plan",
+   "skills assessment",
+   "recommendation",
+   "role-play gym",
+   "weekly 1:1",
+   "coach",
+   "skills plan",
+   "knowledge & coaching pod"
+  ],
+  "Lenora": [
+   "q&a",
+   "question and answer",
+   "glossary",
+   "reference library",
+   "roles and responsibilities",
+   "raci",
+   "broker's guide",
+   "law library",
+   "who does what",
+   "guidebook",
+   "office policy manual",
+   "property management guide",
+   "employment law",
+   "short sale guide",
+   "foreclosure guide",
+   "lead paint",
+   "environmental hazards",
+   "earthquake safety",
+   "new broker start-up",
+   "team building"
+  ],
+  "Showing Coordinator": [
+   "showingtime",
+   "showami",
+   "showing",
+   "tour",
+   "schedule a showing",
+   "showing assistant",
+   "lockbox",
+   "showing feedback",
+   "route",
+   "route planner",
+   "drive time",
+   "showing route",
+   "optimize route"
+  ],
+  "Halle": [
+   "new construction",
+   "builder",
+   "new build",
+   "builder incentive",
+   "model home"
+  ],
+  "Lorenzo": [
+   "investor",
+   "income property",
+   "1031",
+   "cash flow",
+   "fourplex",
+   "duplex",
+   "adu",
+   "cap rate",
+   "investor & special sales pod"
+  ],
+  "Tariq": [
+   "social media",
+   "instagram",
+   "tiktok",
+   "facebook post",
+   "reel"
+  ],
+  "Delia": [
+   "reviews",
+   "google review",
+   "testimonial",
+   "reputation",
+   "net promoter",
+   "scorecard"
+  ],
+  "Ansel": [
+   "predictive seller",
+   "likely seller",
+   "probate lead",
+   "expired",
+   "seller intelligence"
+  ],
+  "Tax Assessor Agent": [
+   "assessor",
+   "property tax",
+   "apn",
+   "tax bill",
+   "supplemental tax"
+  ]
+ },
+ "tiers": {
+  "Vanessa": "Fable 5.1",
+  "Marcus": "Opus 5.5",
+  "Sofia": "Opus 5.5",
+  "Derek": "Opus 5.5",
+  "Alexandra": "Opus 5.5",
+  "Nadia": "Opus 5.5",
+  "Victor": "Opus 5.5",
+  "Elena": "Opus 5.5",
+  "Elon": "Opus 5.5",
+  "Harrison": "Opus 5.5",
+  "Gwen": "Opus 5.5",
+  "Marguerite": "Opus 5.5",
+  "Maxwell": "Opus 5.5",
+  "Apex": "Opus 5.5",
+  "James": "Opus 5.5",
+  "Kevin": "Opus 5.5",
+  "Refi Watch Analyst": "Sonnet 5",
+  "Sphere Nurture Coordinator": "Sonnet 5",
+  "Voicemail & Inbox Triage": "Sonnet 5",
+  "Document Intake Clerk": "Sonnet 5",
+  "Open House Captain": "Sonnet 5",
+  "Travel Desk": "Sonnet 5",
+  "Meeting Scribe": "Sonnet 5",
+  "Claude web research": "Sonnet 5"
+ },
+ "pods": [
+  {
+   "pod": "Deal Pod",
+   "words": [
+    "escrow",
+    "contingency",
+    "under contract",
+    "closing",
+    "transaction",
+    "deal",
+    "tc",
+    "appraisal",
+    "inspection",
+    "coe"
+   ],
+   "seats": [
+    "Victor",
+    "Carmen",
+    "Showing Coordinator",
+    "Harrison",
+    "Document Intake Clerk",
+    "Alexandra"
+   ],
+   "delivers": "Timeline, due-in-7 list, document checklist, contract and disclosure dates into `tcDeals` with missing-date flags, reminder drafts, loan-side milestones"
+  },
+  {
+   "pod": "Lead Pod",
+   "words": [
+    "lead",
+    "leads",
+    "speed to lead",
+    "follow up",
+    "follow-up",
+    "nurture",
+    "sphere",
+    "past client",
+    "open house",
+    "referral"
+   ],
+   "seats": [
+    "Victor",
+    "Gwen",
+    "Sofia",
+    "Voicemail & Inbox Triage",
+    "Alexandra"
+   ],
+   "delivers": "Call list for the ISA, voicemail and inbox triage into `vanessaQueue`, follow-up drafts, nurture touches, compliance line on each"
+  },
+  {
+   "pod": "Listing Pod",
+   "words": [
+    "listing",
+    "seller",
+    "list price",
+    "cma",
+    "staging",
+    "listing launch",
+    "open house"
+   ],
+   "seats": [
+    "Marguerite",
+    "Sofia",
+    "Bianca",
+    "Alexandra"
+   ],
+   "delivers": "CMA prep, launch checklist, MLS remarks and marketing drafts, seller weekly report"
+  },
+  {
+   "pod": "Mortgage Pod",
+   "words": [
+    "loan",
+    "mortgage",
+    "va",
+    "fha",
+    "irrrl",
+    "refinance",
+    "pre-approval",
+    "dti",
+    "ltv",
+    "conditions",
+    "underwriting",
+    "trid",
+    "le",
+    "cd"
+   ],
+   "seats": [
+    "Harrison",
+    "Denise",
+    "Howard",
+    "Walter",
+    "Lucia",
+    "Refi Watch Analyst",
+    "Alexandra"
+   ],
+   "delivers": "Scenario prep, conditions list, TRID clock, program fit, the weekly refi watch list (market average, not a quote) \u2014 never a quote or an eligibility call"
+  },
+  {
+   "pod": "Growth Pod",
+   "words": [
+    "marketing",
+    "campaign",
+    "content",
+    "brand",
+    "social",
+    "seo",
+    "video",
+    "newsletter"
+   ],
+   "seats": [
+    "Sofia",
+    "Victor",
+    "Marcus",
+    "Alexandra"
+   ],
+   "delivers": "Content week, campaign drafts, cost and revenue read, compliance"
+  },
+  {
+   "pod": "Money Pod",
+   "words": [
+    "budget",
+    "cash",
+    "net worth",
+    "tax",
+    "commission",
+    "expense",
+    "income",
+    "profit"
+   ],
+   "seats": [
+    "Marcus",
+    "Nathan",
+    "Anita",
+    "James"
+   ],
+   "delivers": "Numbers with sources, deadlines, cash and commission view"
+  },
+  {
+   "pod": "Ops Pod",
+   "words": [
+    "automation",
+    "routine",
+    "connector",
+    "sync",
+    "broken",
+    "dashboard",
+    "mac",
+    "runner",
+    "integration",
+    "workflow",
+    "pabbly",
+    "mod"
+   ],
+   "seats": [
+    "Derek",
+    "Elena",
+    "Elon",
+    "Nadia"
+   ],
+   "delivers": "Fix plan, security check, feasibility, the one paste for Steven"
+  },
+  {
+   "pod": "Client Care Pod",
+   "words": [
+    "sphere",
+    "nurture",
+    "past client",
+    "birthday",
+    "anniversary",
+    "open house",
+    "sign-in sheet",
+    "thank-you",
+    "review request",
+    "testimonial"
+   ],
+   "seats": [
+    "Sofia",
+    "Sphere Nurture Coordinator",
+    "Open House Captain",
+    "Wren",
+    "Victor",
+    "Alexandra"
+   ],
+   "delivers": "Monthly sphere touch drafts, open-house sign-in \u2192 leads, thank-you drafts, ISA call list, review and referral asks \u2014 drafts only"
+  }
+ ],
+ "source": "wiki/ai-team/org-chart.md + cross-functional.md (bin/brain org)"
+}

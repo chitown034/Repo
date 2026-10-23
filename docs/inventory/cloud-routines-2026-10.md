@@ -20,3 +20,8 @@ The 2026-09-22 listing is `cloud-routines.md`; this file carries what was create
 | Sphere & past-client touches — monthly drafts (day 11, 7:40 AM PT, drafts only) | `CRON_TZ=America/Los_Angeles 40 7 11 * *` | True | — | 2026-11-11 | 2026-10-22 | trig_01Pn8xLNKTVVFYjYTj8d8JTd |
 | Weekly ecosystem backup — cloud writer (Sunday, after the allowance reset) | `7 21 * * 0` | True | SUCCEEDED @ 2026-10-22T14:16 (catch-up) | Sunday | 2026-09-22 | trig_01JcPh3AM2z21Bsv34SvSkqM |
 | 6D Brain — daily rebuild and republish (3:30 AM PT, this session) | `CRON_TZ=America/Los_Angeles 30 3 * * *` | True | — | daily | 2026-10-21 | trig_01MQ7HRYTh27b8uUM4BtnFXE |
+| Fieldy → brain (daily meeting digest; first names only) | `CRON_TZ=America/Los_Angeles 50 6 * * *` | True | ran 2026-10-23 (0 recordings) | daily | 2026-10-23 | trig_019KqDTnzqefUGApMscmswAJ |
+| Presence audit — AI search visibility (monthly, Sofia) | `CRON_TZ=America/Los_Angeles 10 7 1 * *` | True | — | 2026-11-01 | 2026-10-23 | trig_01GCu51vT22M9nxAohu82cfa |
+| Big moves — Vanessa's daily top 10, learn, queue approved, org sync, 6D republish | `CRON_TZ=America/Los_Angeles 5 6 * * *` | True | — | 2026-10-24 | 2026-10-23 | trig_014QQGp4WQfWGDVB827R4Qb9 |
+| Claude sessions ledger (docs/inventory/claude-sessions.md, daily) | `CRON_TZ=America/Los_Angeles 52 3 * * *` | True | ran 2026-10-23 | daily | 2026-10-23 | trig_01THsaAdhiWX1zauBQX23LrX |
+| Second Brain layers weekly sync (export → Drive SB Docs → Notion directory → layers report) | `CRON_TZ=America/Los_Angeles 45 14 * * 0` | True | — | 2026-10-26 | 2026-10-23 | trig_01MR463NSmSAcA84zJHjerUp |

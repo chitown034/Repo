@@ -6,6 +6,13 @@ research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox
 
 ## 1 · Phone · 5 minutes (Do these first; nothing else depends on them)
 
+## Every day (from 2026-10-23) — Vanessa's top 10 big moves, your yes or no
+
+Open the 6D Brain (https://claude.ai/artifact/VoWHW4YuKUCyNqGZMikEv8) → "Vanessa recommends". Ten moves, scored by
+impact × confidence ÷ effort, each with the plan standing by. **Approve** → Vanessa's items are queued and run by the
+6:25 AM cycle; yours stay listed until you say "done". **Decline** → hidden 30 days and that kind weighs less. The same
+ten are on the Command Deck's Recommendations card. The 6:05 AM task learns from every decision (`docs/reports/BIG-MOVES.md`).
+
 ## Start here (2026-10-23, round 2) — every computer, one paste each · then the sign-ins only you can do
 
 What this round connects: Jarvis + Laya + Orca + AnyDesk on all three computers (and AnyDesk on the tablet), TidyCal,
@@ -40,7 +47,8 @@ Claude app on the tablet and open the Command Deck link once so it is in the rec
 **Then, the sign-ins and keys only you can do** (say "done <letter>" after each; nothing below is scripted):
 - **a. Lofty API key** → Lofty → Settings → Integrations → API → create → paste into connect-all step 7b when it asks.
 - **b. Zoho** → Setup → Security Control → Profiles → your profile → Developer Permissions → tick "Zoho CRM API Access".
-- **c. TidyCal token** (above). **d. Arive** → Settings → Integrations → Generate (Client ID, Secret, API Key; needs
+- **c. TidyCal token** (above; TidyCal → Integrations → Automations or Advanced → API → Manage API keys → Create token).
+- **d. Arive** → Settings → Integrations → Generate (Client ID, Secret, API Key; needs
   Pro / Broker Pro) and ask Arive support for the Zapier invite link; keep the three values in `~/.config/arive/.env`
   on Mac 1 (`open -e`), never in chat. `integrations/arive/README.md`.
 - **e. MBS Highway** → e-mail your rep for the Home Report webhook / CSV-import path (say "draft the MBS Highway rep

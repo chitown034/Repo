@@ -1,0 +1,229 @@
+{
+ "generated": "2026-10-23T17:10:13Z",
+ "date": "2026-10-23",
+ "items": [
+  {
+   "id": "bm_ac45270be3",
+   "category": "steven",
+   "topic": "lofty",
+   "title": "Drips and texts",
+   "why": "read `wiki/real-estate-playbooks/drip-and-text-follow-up.md` \"Setup order\": Lofty 10DLC registration, then say \"specs ready for review\" so Victor and Alexandra return the Smart Plan specs and Zoho rules.",
+   "owner": "Alexandra",
+   "executor": "steven",
+   "impact": 5,
+   "effort": 1,
+   "confidence": 0.85,
+   "plan": [
+    "read `wiki/real-estate-playbooks/drip-and-text-follow-up.md` \"Setup order\": Lofty 10DLC registration, then say \"specs ready for review\" so Victor and Alexandra return the Smart Plan specs and Zoho rul",
+    "Say 'done i' and Vanessa closes it and runs what it unblocks"
+   ],
+   "source": "steven-steps",
+   "weight": 1.0,
+   "score": 4.25,
+   "value": "high",
+   "rank": 1
+  },
+  {
+   "id": "bm_9c4f4bcc3f",
+   "category": "steven",
+   "topic": "lofty",
+   "title": "Lofty API key",
+   "why": "Lofty \u2192 Settings \u2192 Integrations \u2192 API \u2192 create \u2192 paste into connect-all step 7b when it asks.",
+   "owner": "Victor",
+   "executor": "steven",
+   "impact": 5,
+   "effort": 1,
+   "confidence": 0.85,
+   "plan": [
+    "Lofty \u2192 Settings \u2192 Integrations \u2192 API \u2192 create \u2192 paste into connect-all step 7b when it asks.",
+    "Say 'done a' and Vanessa closes it and runs what it unblocks"
+   ],
+   "source": "steven-steps",
+   "weight": 1.0,
+   "score": 4.25,
+   "value": "high",
+   "rank": 2
+  },
+  {
+   "id": "bm_e91eb3294c",
+   "category": "steven",
+   "topic": "zoho",
+   "title": "Zoho",
+   "why": "Setup \u2192 Security Control \u2192 Profiles \u2192 your profile \u2192 Developer Permissions \u2192 tick \"Zoho CRM API Access\".",
+   "owner": "Elena",
+   "executor": "steven",
+   "impact": 5,
+   "effort": 1,
+   "confidence": 0.85,
+   "plan": [
+    "Setup \u2192 Security Control \u2192 Profiles \u2192 your profile \u2192 Developer Permissions \u2192 tick \"Zoho CRM API Access\".",
+    "Say 'done b' and Vanessa closes it and runs what it unblocks"
+   ],
+   "source": "steven-steps",
+   "weight": 1.0,
+   "score": 4.25,
+   "value": "high",
+   "rank": 3
+  },
+  {
+   "id": "bm_4aaed5dca1",
+   "category": "steven",
+   "topic": "tidycal",
+   "title": "TidyCal token",
+   "why": "(above; TidyCal \u2192 Integrations \u2192 Automations or Advanced \u2192 API \u2192 Manage API keys \u2192 Create token).",
+   "owner": "Derek",
+   "executor": "steven",
+   "impact": 3,
+   "effort": 1,
+   "confidence": 0.85,
+   "plan": [
+    "(above; TidyCal \u2192 Integrations \u2192 Automations or Advanced \u2192 API \u2192 Manage API keys \u2192 Create token).",
+    "Say 'done c' and Vanessa closes it and runs what it unblocks"
+   ],
+   "source": "steven-steps",
+   "weight": 1.0,
+   "score": 2.55,
+   "value": "high",
+   "rank": 4
+  },
+  {
+   "id": "bm_637c1a7d7f",
+   "category": "connect",
+   "topic": "openflowkit",
+   "title": "Connect openflowkit",
+   "why": "architecture, flow, sequence and ER diagrams the agent draws and saves as `.openflow.json` \u00b7 pending \u2014 step added 2026-10-23, runs on the next paste",
+   "owner": "Derek",
+   "executor": "vanessa",
+   "impact": 3,
+   "effort": 1,
+   "confidence": 0.8,
+   "plan": [
+    "Owner Derek confirms the route in the register (integrations/MCP-SERVERS.md)",
+    "Mac 1, Mac 2 (connect-all 6g; npx -y openflowkit mcp, local stdio, no key)",
+    "Vanessa re-checks the status on the next connect report and closes the item"
+   ],
+   "source": "toolkit:mcp",
+   "weight": 1.0,
+   "score": 2.4,
+   "value": "high",
+   "rank": 5
+  },
+  {
+   "id": "bm_195dba826d",
+   "category": "steven",
+   "topic": "arive",
+   "title": "Arive",
+   "why": "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; needs Pro / Broker Pro) and ask Arive support for the Zapier invite link; keep the three values in `~/.config/arive/.env` on Mac 1 (`open -e`), never in chat. `integrations/arive/README.md`.",
+   "owner": "Derek",
+   "executor": "steven",
+   "impact": 4,
+   "effort": 2,
+   "confidence": 0.85,
+   "plan": [
+    "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; needs Pro / Broker Pro) and ask Arive support for the Zapier invite link; keep the three values in `~/.config/arive/.env` on Mac 1 (`ope",
+    "Say 'done d' and Vanessa closes it and runs what it unblocks"
+   ],
+   "source": "steven-steps",
+   "weight": 1.0,
+   "score": 1.7,
+   "value": "medium",
+   "rank": 6
+  },
+  {
+   "id": "bm_05f4b1690b",
+   "category": "connect",
+   "topic": "arive",
+   "title": "Connect Arive LOS (API gateway v4.6)",
+   "why": "read loans, status, leads; loan writes are HALT \u00b7 pending \u2014 Pro-plan credentials (integrations/arive/README.md)",
+   "owner": "Marcus",
+   "executor": "steven",
+   "impact": 4,
+   "effort": 2,
+   "confidence": 0.8,
+   "plan": [
+    "Owner Marcus confirms the route in the register (integrations/APIS.md)",
+    "Steven: Client ID + Secret + API key \u00b7 ~/.config/arive/.env",
+    "Vanessa re-checks the status on the next connect report and closes the item"
+   ],
+   "source": "toolkit:api",
+   "weight": 1.0,
+   "score": 1.6,
+   "value": "medium",
+   "rank": 7
+  },
+  {
+   "id": "bm_3b7b475093",
+   "category": "brain",
+   "topic": "",
+   "title": "Guard wiki/ai-team/second-brain-layers.md with a gold question",
+   "why": "no gold question tests this page, so a regression would go unseen",
+   "owner": "Vanessa",
+   "executor": "vanessa",
+   "impact": 1,
+   "effort": 1,
+   "confidence": 0.9,
+   "plan": [
+    "Add one question to brain/bench/questions.json with the expected phrase",
+    "bin/brain loop \u2192 count rises"
+   ],
+   "source": "loop:untested",
+   "weight": 1.0,
+   "score": 0.9,
+   "value": "low",
+   "rank": 8
+  },
+  {
+   "id": "bm_68a99297a6",
+   "category": "brain",
+   "topic": "",
+   "title": "Guard wiki/ai-team/toolkit.md with a gold question",
+   "why": "no gold question tests this page, so a regression would go unseen",
+   "owner": "Vanessa",
+   "executor": "vanessa",
+   "impact": 1,
+   "effort": 1,
+   "confidence": 0.9,
+   "plan": [
+    "Add one question to brain/bench/questions.json with the expected phrase",
+    "bin/brain loop \u2192 count rises"
+   ],
+   "source": "loop:untested",
+   "weight": 1.0,
+   "score": 0.9,
+   "value": "low",
+   "rank": 9
+  },
+  {
+   "id": "bm_4f2b81ccc7",
+   "category": "brain",
+   "topic": "",
+   "title": "Guard wiki/dashboard-ops/db-docs.md with a gold question",
+   "why": "no gold question tests this page, so a regression would go unseen",
+   "owner": "Vanessa",
+   "executor": "vanessa",
+   "impact": 1,
+   "effort": 1,
+   "confidence": 0.9,
+   "plan": [
+    "Add one question to brain/bench/questions.json with the expected phrase",
+    "bin/brain loop \u2192 count rises"
+   ],
+   "source": "loop:untested",
+   "weight": 1.0,
+   "score": 0.9,
+   "value": "low",
+   "rank": 10
+  }
+ ],
+ "weights": {
+  "connect": 1.0,
+  "sync": 1.0,
+  "brain": 1.0,
+  "revenue": 1.0,
+  "marketing": 1.0,
+  "money": 1.0,
+  "compliance": 1.0,
+  "ops": 1.0,
+  "steven": 1.0
+ }
+}

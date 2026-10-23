@@ -82,6 +82,14 @@ duplicated. Vanessa's daily cycle forms its squads from these pods.
 | Ops Pod | automation, routine, connector, sync, broken, dashboard, mac, runner, integration, workflow, pabbly, mod | Derek, Elena, Elon, Nadia | Fix plan, security check, feasibility, the one paste for Steven |
 | Client Care Pod | sphere, nurture, past client, birthday, anniversary, open house, sign-in sheet, thank-you, review request, testimonial | Sofia, Sphere Nurture Coordinator, Open House Captain, Wren, Victor, Alexandra | Monthly sphere touch drafts, open-house sign-in → leads, thank-you drafts, ISA call list, review and referral asks — drafts only |
 
+**Every seat is cross-functional (Steven, 2026-10-23: "enable all agents to be cross functionable").** A pod is the
+default crew, never a wall: the planner also brings in any seat whose lane words appear in the request (the Lane
+keywords table) and any Join below, and Vanessa may pull any of the 198 roster agents into any pod through the Agent OS
+(`bin/brain route "<request>"` prints the crew; `integrations/agent-os/`). The lead stays the lane owner; the gates
+still run after the wave. The org chart every dashboard shows is one JSON — `bin/brain org` — written daily to the
+Command Deck doc `aiTeamOrg` by the Big-moves task, embedded in the 6D Brain's seat lens, and mirrored by the Mac's
+`aiTeamRoster` snapshot (198 agents).
+
 ## Joins — a seat that must come along
 
 When the request matches the words, the seat joins the plan even if it is not the lead.

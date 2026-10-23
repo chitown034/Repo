@@ -1,0 +1,21 @@
+# Big moves — Vanessa's top 10 for 2026-10-23
+
+Scored impact × confidence ÷ effort × a weight the brain learns from Steven's approvals and declines
+(`brain/recs/weights.json`, `brain/recs/ledger.jsonl`). Approve or decline on the 6D Brain or the Command Deck;
+an approved item whose executor is Vanessa is queued and run by the 6:25 AM daily cycle. `bin/brain recs`.
+
+| # | Score | Value | Owner | Executor | Move | Why | Plan standing by |
+|---|---|---|---|---|---|---|---|
+| 1 | 4.25 | high | Alexandra | steven | Drips and texts | read `wiki/real-estate-playbooks/drip-and-text-follow-up.md` "Setup order": Lofty 10DLC registration, then say "specs ready for review" so Victor and Alexandra return the Smart Plan specs and Zoho rules. | read `wiki/real-estate-playbooks/drip-and-text-follow-up.md` "Setup order": Lofty 10DLC registration, then say "specs ready for review" so Victor and Alexandra return the Smart Plan specs and Zoho rul → Say 'done i' and Vanessa closes it and runs what it unblocks |
+| 2 | 4.25 | high | Victor | steven | Lofty API key | Lofty → Settings → Integrations → API → create → paste into connect-all step 7b when it asks. | Lofty → Settings → Integrations → API → create → paste into connect-all step 7b when it asks. → Say 'done a' and Vanessa closes it and runs what it unblocks |
+| 3 | 4.25 | high | Elena | steven | Zoho | Setup → Security Control → Profiles → your profile → Developer Permissions → tick "Zoho CRM API Access". | Setup → Security Control → Profiles → your profile → Developer Permissions → tick "Zoho CRM API Access". → Say 'done b' and Vanessa closes it and runs what it unblocks |
+| 4 | 2.55 | high | Derek | steven | TidyCal token | (above; TidyCal → Integrations → Automations or Advanced → API → Manage API keys → Create token). | (above; TidyCal → Integrations → Automations or Advanced → API → Manage API keys → Create token). → Say 'done c' and Vanessa closes it and runs what it unblocks |
+| 5 | 2.4 | high | Derek | vanessa | Connect openflowkit | architecture, flow, sequence and ER diagrams the agent draws and saves as `.openflow.json` · pending — step added 2026-10-23, runs on the next paste | Owner Derek confirms the route in the register (integrations/MCP-SERVERS.md) → Mac 1, Mac 2 (connect-all 6g; npx -y openflowkit mcp, local stdio, no key) → Vanessa re-checks the status on the next connect report and closes the item |
+| 6 | 1.7 | medium | Derek | steven | Arive | Settings → Integrations → Generate (Client ID, Secret, API Key; needs Pro / Broker Pro) and ask Arive support for the Zapier invite link; keep the three values in `~/.config/arive/.env` on Mac 1 (`open -e`), never in chat. `integrations/arive/README.md`. | Settings → Integrations → Generate (Client ID, Secret, API Key; needs Pro / Broker Pro) and ask Arive support for the Zapier invite link; keep the three values in `~/.config/arive/.env` on Mac 1 (`ope → Say 'done d' and Vanessa closes it and runs what it unblocks |
+| 7 | 1.6 | medium | Marcus | steven | Connect Arive LOS (API gateway v4.6) | read loans, status, leads; loan writes are HALT · pending — Pro-plan credentials (integrations/arive/README.md) | Owner Marcus confirms the route in the register (integrations/APIS.md) → Steven: Client ID + Secret + API key · ~/.config/arive/.env → Vanessa re-checks the status on the next connect report and closes the item |
+| 8 | 0.9 | low | Vanessa | vanessa | Guard wiki/ai-team/second-brain-layers.md with a gold question | no gold question tests this page, so a regression would go unseen | Add one question to brain/bench/questions.json with the expected phrase → bin/brain loop → count rises |
+| 9 | 0.9 | low | Vanessa | vanessa | Guard wiki/ai-team/toolkit.md with a gold question | no gold question tests this page, so a regression would go unseen | Add one question to brain/bench/questions.json with the expected phrase → bin/brain loop → count rises |
+| 10 | 0.9 | low | Vanessa | vanessa | Guard wiki/dashboard-ops/db-docs.md with a gold question | no gold question tests this page, so a regression would go unseen | Add one question to brain/bench/questions.json with the expected phrase → bin/brain loop → count rises |
+
+Category weights: brain 1.00, compliance 1.00, connect 1.00, marketing 1.00, money 1.00, ops 1.00, revenue 1.00, steven 1.00, sync 1.00
+Generated 2026-10-23T17:10:13Z.

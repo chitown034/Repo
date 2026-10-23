@@ -19,6 +19,25 @@ class ToolkitTests(unittest.TestCase):
         self.assertGreaterEqual(c["mactask"], 40)
         self.assertEqual(c["connector_ok"] + c["connector_attention"], c["connector"])
 
+    def test_registers_become_mcp_api_mod_items(self):
+        inv = toolkit.inventory(ROOT)
+        kinds = {it["kind"] for it in inv["items"]}
+        self.assertTrue({"mcp", "api"} <= kinds)
+        names = [(it["kind"], it["name"]) for it in inv["items"] if it["kind"] in ("plugin", "mod")]
+        self.assertEqual(len(names), len({n for _k, n in names}), "a Claude mod must be counted once (plugin), never also as 'mod'")
+        m = {it["name"]: it for it in inv["items"] if it["kind"] == "mcp"}
+        self.assertEqual(m["openflowkit"]["state"], "pending"); self.assertEqual(m["laya"]["state"], "ok"); self.assertEqual(m["laya"]["seat"], "Vanessa")
+        a = {it["name"]: it for it in inv["items"] if it["kind"] == "api"}
+        self.assertEqual(a["TidyCal (tidycal.com/api)"]["state"], "pending"); self.assertEqual(a["Pivo · Ticor Title"]["state"], "none")
+        self.assertIn("halt-guard", {it["name"] for it in inv["items"] if it["kind"] == "plugin"})
+        self.assertEqual(m["Composio (cloud)"]["state"], "attention")  # "connected — Zoho 403 until…" is not green
+        self.assertEqual(m["kapso"]["state"], "attention")
+        for it in inv["items"]:
+            self.assertNotRegex(it["desc"], r"(?i)token=|bearer [a-z0-9]{8}|api[_-]?key=")
+        g = graph.build(ROOT)
+        gs = {n["g"] for n in g["nodes"]}
+        self.assertTrue({"mcp", "api"} <= gs); self.assertNotIn("mod", gs)
+
     def test_every_item_has_a_seat(self):
         names = {n for n, _r, _w in toolkit.SEATS}
         for it in toolkit.inventory(ROOT)["items"]:

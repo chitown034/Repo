@@ -83,3 +83,16 @@ echo "  vibe-kanban, notebooklm-skill, kondo, zapier (needs the URL from your Za
 echo "  claude-x-jev (OpenRouter key + sends text to a third party), apify MCP (account + spend cap), skool-mcp (uses your login cookie on a private API),"
 echo "  Remotion (company licence to verify), the two API list repos (reference only)."
 echo; echo "Done. Restart Claude Code, then type /plugin to see what is installed."
+echo; echo "== The four repos (2026-10-23) - details in REGISTRY-2026-10-23.md (pr-lens + openflowkit skills come with the repo; the MCP via connect-all 6g)"
+echo "- Archify (explorable HTML diagrams and explainers, MIT, reviewed 25cf370)"
+if have npx; then
+  if ask "Install the archify skill with the official 'npx skills add tt-a1i/archify -g' (18 MB, user scope; update check stays off)?"; then
+    if ARCHIFY_UPDATE_CHECK_DISABLED=1 npx -y skills add tt-a1i/archify -g; then
+      echo "  done: archify. Its update check stays off through ~/.zprofile (export ARCHIFY_UPDATE_CHECK_DISABLED=1)."
+      if ! grep -q ARCHIFY_UPDATE_CHECK_DISABLED "$HOME/.zprofile" 2>/dev/null; then
+        [ -s "$HOME/.zprofile" ] && [ "$(tail -c 1 "$HOME/.zprofile")" != "" ] && printf '\n' >> "$HOME/.zprofile"
+        printf 'export ARCHIFY_UPDATE_CHECK_DISABLED=1\n' >> "$HOME/.zprofile"
+      fi
+    else echo "  archify install failed (npx skills add returned an error) - nothing written to ~/.zprofile; rerun later"; fi
+  fi
+else echo "  npx not found - install Node (brew install node) first"; fi

@@ -4,7 +4,7 @@ set -u
 cd "$(dirname "$0")" || exit 1
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
 mkdir -p "$T/bin" "$T/home"
-FUNCS="$(sed -n '/^have()/p;/^RUNNER_OUT=/p;/^runner_fix() {/,/^}/p;/^keep_awake() {/,/^}/p;/^repo_sync_agent() {/,/^}/p;/^laya_venv() {/,/^}/p;/^laya_connect() {/,/^}/p;/^JARVIS_MODEL=/p;/^jarvis_db() {/,/^}/p;/^jarvis_engine() {/,/^}/p;/^orca_app() {/,/^}/p;/^orca_connect() {/,/^}/p;/^anydesk_app() {/,/^}/p;/^anydesk_connect() {/,/^}/p;/^gondola_mcp() {/,/^}/p;/^nlm_connect() {/,/^}/p;/^LOFTY_VENV=/p;/^lofty_connect() {/,/^}/p;/^tidycal_check() {/,/^}/p;/^tidycal_connect() {/,/^}/p;/^CAH_BIN=/p;/^cah_connect() {/,/^}/p' connect-all.sh)"
+FUNCS="$(sed -n '/^have()/p;/^RUNNER_OUT=/p;/^runner_fix() {/,/^}/p;/^keep_awake() {/,/^}/p;/^repo_sync_agent() {/,/^}/p;/^laya_venv() {/,/^}/p;/^laya_connect() {/,/^}/p;/^JARVIS_MODEL=/p;/^jarvis_db() {/,/^}/p;/^jarvis_engine() {/,/^}/p;/^orca_app() {/,/^}/p;/^orca_connect() {/,/^}/p;/^anydesk_app() {/,/^}/p;/^anydesk_connect() {/,/^}/p;/^gondola_mcp() {/,/^}/p;/^openflowkit_mcp() {/,/^}/p;/^nlm_connect() {/,/^}/p;/^LOFTY_VENV=/p;/^lofty_connect() {/,/^}/p;/^tidycal_check() {/,/^}/p;/^tidycal_connect() {/,/^}/p;/^CAH_BIN=/p;/^cah_connect() {/,/^}/p' connect-all.sh)"
 pass=0; fail=0
 check() { if [ "$2" = "$3" ]; then pass=$((pass+1)); echo "ok   $1"; else fail=$((fail+1)); echo "FAIL $1 (expected rc $3, got $2)"; fi; }
 stub_runner() { # <restart exit code> <status text after restart>
@@ -207,4 +207,13 @@ cah_connect </dev/null" >"$T/out" 2>&1; echo $?; }
 check "7d: wrappers missing after connect.sh -> FAIL"            "$(run_cah)" 1
 for p in browser homes showingtime showami; do printf '#!/bin/sh\n' > "$T/home/Applications/cli-anything-harnesses/.venv/bin/cli-anything-$p"; chmod +x "$T/home/Applications/cli-anything-harnesses/.venv/bin/cli-anything-$p"; done
 check "7d: all four wrappers present -> ok"                      "$(run_cah)" 0
+# 6g OpenFlowKit MCP: stubbed claude + npx; registers once, idempotent, FAIL without claude
+printf '#!/bin/sh\ncase "$1 $2" in "mcp list") [ -f "%s/ofk" ] && echo "openflowkit: npx -y openflowkit mcp - ok" ;; "mcp add") echo "$@" >> "%s/mcp.calls"; touch "%s/ofk" ;; esac\n' "$T" "$T" "$T" > "$T/bin/claude"; chmod +x "$T/bin/claude"
+printf '#!/bin/sh\n' > "$T/bin/npx"; chmod +x "$T/bin/npx"; rm -f "$T/ofk" "$T/mcp.calls"
+check "openflowkit: registers at user scope"                     "$(run_fn openflowkit_mcp)" 0
+grep -q -- "-s user openflowkit -- npx -y openflowkit mcp" "$T/mcp.calls"; check "openflowkit: exact add command" "$?" 0
+check "openflowkit: second run is idempotent"                    "$(run_fn openflowkit_mcp)" 0
+[ "$(wc -l < "$T/mcp.calls")" = 1 ];                           check "openflowkit: add called once"                 "$?" 0
+rm -f "$T/bin/claude"; check "openflowkit: no claude CLI -> FAIL" "$(PATH="$T/bin:/usr/bin:/bin" run_fn openflowkit_mcp)" 1
+rm -f "$T/bin/npx"
 echo "connect-all tests: $pass passed, $fail failed"; [ "$fail" = 0 ]

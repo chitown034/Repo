@@ -165,6 +165,8 @@ def passages(root, idx, ids, cap=380):
         secs = f.get("sections") or []
         for i, sec in enumerate(secs):
             title, start = sec[0], sec[1]  # start is 1-based: the heading's line number, so lines[start:] is the body
+            if start > len(lines):  # the index is older than the file (a report rewritten after the last reindex): skip the section
+                continue
             if start >= 1 and not lines[start - 1].lstrip().startswith("#"):
                 start -= 1  # the opening section has no heading line: keep its first line
             end = secs[i + 1][1] - 1 if i + 1 < len(secs) else len(lines)
@@ -178,6 +180,8 @@ _idx_for_sec = json.loads((ROOT / "brain/index.json").read_text(encoding="utf-8"
 import base64 as _b64
 _photo = ROOT / "dashboard/brain-4d/vanessa.jpg"  # Vanessa's face, the same portrait the Command Deck shows (resized to 360 px)
 out = out.replace("/*VANESSA_PHOTO*/", "data:image/jpeg;base64," + _b64.b64encode(_photo.read_bytes()).decode("ascii") if _photo.exists() else "")
+_bm = ROOT / "brain/recs/big-moves.json"  # Vanessa's top 10 big moves (bin/brain recs --write), 2026-10-23
+out = out.replace("/*RECS*/null", j(json.loads(_bm.read_text(encoding="utf-8")) if _bm.exists() else None), 1)
 out = out.replace("/*SEC*/null", j(passages(ROOT, _idx_for_sec, {n["id"] for n in g["nodes"]})), 1)
 out = out.replace("/*LINKS*/null", j(_links.all_links(ROOT)), 1)
 (ROOT / "dashboard/brain-4d.html").write_text(out, encoding="utf-8")

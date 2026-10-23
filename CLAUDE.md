@@ -22,6 +22,7 @@ On the Mac this router's job is done by the vanessa-orchestrator system prompt +
 | Status of a named project | `projects/<name>.md` — command-deck, isa-portal, ai-team, nonprofit, usc-pjmt-530 | the deck HTML |
 | Loan program, guideline, VA mechanics, eligibility | `wiki/mortgage-programs/index.md` → one named page | playbooks |
 | Listing, buyer, transaction or showing process | `wiki/real-estate-playbooks/index.md` → one named page | mortgage wiki |
+| "What should I do today", the big moves, a recommendation and its plan | `docs/reports/BIG-MOVES.md` (today's top 10, scored; `bin/brain recs`) → approve or decline on the 6D Brain or the deck | the whole findings tree |
 | Marketing: drip campaigns, text follow-ups, being found by AI search / SEO | `wiki/real-estate-playbooks/index.md` → `wiki/real-estate-playbooks/drip-and-text-follow-up.md` or `wiki/real-estate-playbooks/ai-search-visibility.md` | mortgage wiki, the deck |
 | Who on the AI team owns X, seat/model/trust level | `wiki/ai-team/index.md` | the 172-agent roster dump |
 | Which layer holds what, how it syncs, is the brain "even" | `wiki/ai-team/second-brain-layers.md` → `bin/brain layers` | the stores themselves |

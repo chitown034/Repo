@@ -534,4 +534,5 @@ Supersedes the consolidated section above for the rows it names; the rest of tha
 | Pivo | no API — tour link / video file only (`integrations/pivo/README.md`) | pair the Pod; share links | Steven |
 | Ticor Title property search | no API — rep account + CSV/PDF export (`integrations/ticor/README.md`) | ask the Ticor rep | Steven |
 | Drip campaigns + text follow-ups | planned — playbook written (`wiki/real-estate-playbooks/drip-and-text-follow-up.md`); specs on request; 10DLC is Steven's | "specs ready for review"; Lofty 10DLC | Steven + Victor/Alexandra |
+| OpenFlowKit MCP + skill · pr-lens skill · archify skill (the four repos, 2026-10-23) | installed in the repo (skills) / pending on the Macs (MCP by connect-all 6g, archify by install-mac.sh); `integrations/skill-packs/REGISTRY-2026-10-23.md` | next Mac paste; pr-lens GitHub App is Steven's click | Steven (paste) · Derek |
 | AI-search presence (AEO/GEO/SEO) | planned — playbook written (`wiki/real-estate-playbooks/ai-search-visibility.md`); monthly presence audit task live (1st, 7:10 AM PT) | claim the profiles (step j) | Steven + Sofia |

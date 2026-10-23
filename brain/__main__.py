@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from datetime import datetime, timezone
 import sys
 from pathlib import Path
 
@@ -79,6 +80,12 @@ def _parser() -> argparse.ArgumentParser:
     sub.add_parser("links", help="every front door of the second brain: deck, ISA Portal, 6D, Action Desk, Drive SECOND BRAIN, NotebookLM, Notion, the SB Docs")
     ly = sub.add_parser("layers", help="every layer of the second brain (repo, index, deck, 6D, Jarvis, Notion, Drive, NotebookLM...): last sync, age, verdict")
     ly.add_argument("--write", action="store_true", help="rewrite docs/reports/LAYERS.md"); ly.add_argument("--json", action="store_true")
+    rc = sub.add_parser("recs", help="Vanessa's top 10 big moves for today: scored, prioritised, learned from approvals (docs/reports/BIG-MOVES.md)")
+    rc.add_argument("action", nargs="?", default="top", choices=["top", "learn"], help="top (default) or learn <decisions.json>")
+    rc.add_argument("file", nargs="?", default=None, help="learn: a JSON list of {id, decision, at, by}")
+    rc.add_argument("--write", action="store_true"); rc.add_argument("--json", action="store_true"); rc.add_argument("--n", type=int, default=10)
+    rc.add_argument("--signals", default=None, help="a JSON list of live signals (deck queue, refi list, presence...) to rank with the brain's own")
+    og = sub.add_parser("org", help="the AI org chart as one JSON: seats, lanes, pods, tiers (what every dashboard should show)")
     ex = sub.add_parser("export", help="export the brain for another tool: `notebooklm` writes exports/notebooklm/*.md (no client pages, PII masked)")
     ex.add_argument("target", choices=["notebooklm"]); ex.add_argument("--out", default=None, help="folder (default exports/notebooklm)")
     return p
@@ -210,6 +217,26 @@ def main(argv: list[str] | None = None) -> int:
         from . import links
         print(links.format_links(root)); return 0
 
+    if args.cmd == "recs":
+        from . import recs
+        if args.action == "learn":
+            if not args.file:
+                print("recs learn needs a decisions JSON file"); return 2
+            r = recs.learn(root, json.loads(Path(args.file).read_text(encoding="utf-8")))
+            print(f"learned {r['added']} decisions; weights: " + ", ".join(f"{k} {v:.2f}" for k, v in sorted(r["weights"].items()))); return 0
+        signals = json.loads(Path(args.signals).read_text(encoding="utf-8")) if args.signals else None
+        if args.write:
+            print("wrote", recs.write(root, args.n, signals))
+        items = recs.top(root, args.n, signals)
+        print(json.dumps(items, indent=1) if args.json else recs.format_top(items)); return 0
+    if args.cmd == "org":
+        from . import loop as loop_mod, route as route_mod
+        rules = route_mod.load_rules(root)
+        seats = loop_mod.org_seats(root)
+        print(json.dumps({"generated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "seats": seats,
+                          "lanes": {k: v for k, v in rules["lanes"].items()}, "tiers": rules["tiers"],
+                          "pods": [{"pod": n, "words": w, "seats": m, "delivers": d} for n, w, m, d in rules["pods"]],
+                          "source": "wiki/ai-team/org-chart.md + cross-functional.md (bin/brain org)"}, indent=1)); return 0
     if args.cmd == "layers":
         from . import layers
         if args.write:

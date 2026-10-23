@@ -20,3 +20,10 @@ Read, decided and pinned in `integrations/skill-packs/REGISTRY-2026-10-12.md`: i
 ## The 32-item image (2026-10-12)
 
 `integrations/skill-packs/REGISTRY-2026-10-12b.md`: 10 already yours (Slack, Notion, Context7, GitHub, Codex plugin, skill-creator, find-skills, karpathy, Playwright MCP, anthropics skills); 3 to install (same as the 16-list); HOLD wshobson/agents (cherry-pick), repomix (one-off), zapier, higgsfield; DECLINE oh-my-claudecode, vibe-kanban, claude-mem, firecrawl, github-mcp on the Mac, granola, kondo, perplexity.
+
+## The four repos (2026-10-23)
+
+`integrations/skill-packs/REGISTRY-2026-10-23.md`: **pr-lens** (MIT) skill vendored, GitHub App is Steven's; **openflowkit**
+(MIT) skill vendored + local MCP by connect-all 6g; **archify** (MIT, 18 MB) installed on the Mac by the official
+`npx skills add tt-a1i/archify -g` with its update check off; **awesome-vlm-architectures** (CC0) a reference shelf
+(`references/vlm-architectures.md`). Owners: Derek (diagrams), Sofia (explainers), Nadia (VLM choices).

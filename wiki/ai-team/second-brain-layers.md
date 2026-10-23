@@ -36,6 +36,13 @@ produced becomes a "fact" in the repo without Steven's yes).
   (no rate quote, eligibility call, legal read or client send). Her portrait and presence states (listening, reading,
   speaking) are the Command Deck's; "Read her answers aloud" uses the device's own voice. Outside claude.ai the chat is hidden.
 - **Presence audit** (monthly, 1st at 7:10 AM PT, Sofia): the AI-search prompt set by WebSearch → `docs/reports/PRESENCE.md` + the deck `presenceAudit` doc; rules in `wiki/real-estate-playbooks/ai-search-visibility.md`.
+- **Registers the 6D Brain draws as lobes** (2026-10-23): skills, Claude mods (the plugins in `integrations/mods/`), connectors (`integrations/CONNECTIONS.md`), MCP servers (`integrations/MCP-SERVERS.md`), APIs with where each key lives (`integrations/APIS.md`), cloud routines, Mac tasks — `bin/brain toolkit` counts them; add a row to a register and the next rebuild draws it.
+- **Vanessa recommends — the daily top 10 big moves** (2026-10-23): `bin/brain recs` scores every open item the brain can see
+  (unconnected tools, stale layers, loop gaps, Steven's open steps, live deck signals) by impact × confidence ÷ effort ×
+  a learned category weight; `--write` → `docs/reports/BIG-MOVES.md` + `brain/recs/big-moves.json`. HITL: approve /
+  decline / later on the 6D Brain (page database) or the Command Deck's Recommendations card; the **Big moves** task
+  (daily 6:05 AM PT) reads both, learns (`brain/recs/ledger.jsonl`, `weights.json`), queues approved Vanessa-items for
+  the 6:25 cycle, writes the deck docs `bigMoves` and `aiTeamOrg`, and republishes the 6D Brain.
 - `bin/brain links` — every front door with its URL (deck, ISA Portal, 6D, Action Desk, Bot Crew, repo, Drive SECOND BRAIN,
   NotebookLM, Notion database + layer directory, the 13 SB Docs). The 6D Brain embeds the same list: "Open the brain"
   panel, an open link per layer, and clickable store nodes (Drive, NotebookLM, Notion, Command Deck).

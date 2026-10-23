@@ -1,0 +1,1 @@
+Vendored 2026-10-23 from https://github.com/openflowkit/openflowkit (MIT, commit a252135) — skills/openflowkit/SKILL.md unchanged. The MCP server (`npx -y openflowkit mcp`, local stdio, no key) is registered by connect-all step 6g.

@@ -346,6 +346,20 @@ nlm_connect() {
 step "6f NotebookLM connector (nlm CLI + MCP for Claude Code; sign-in stays yours)" \
   "NotebookLM: run  nlm login  (browser), then  nlm login --check  and  nlm setup list" nlm_connect
 
+# 6g. OpenFlowKit MCP (Steven, 2026-10-23: "install openflowkit"): diagrams the agent draws and saves beside the code.
+#     Local stdio server from the published npm package, no key, no outside calls (reviewed a252135, MIT). Registered
+#     at user scope so every Claude Code session has it; the skill is already in .claude/skills/openflowkit.
+openflowkit_mcp() {
+  have claude || { echo "claude CLI not found"; return 1; }
+  have npx || { echo "npx not found - brew install node"; return 1; }
+  if claude mcp list 2>/dev/null | grep -q "^openflowkit"; then echo "openflowkit MCP already registered"; return 0; fi
+  claude mcp add -s user openflowkit -- npx -y openflowkit mcp 2>&1 | tail -2 || return 1
+  claude mcp list 2>/dev/null | grep -q "^openflowkit" || { echo "claude mcp add openflowkit did not register"; return 1; }
+  echo "openflowkit MCP registered (user scope); in a session: /mcp, then 'draw the pipeline' - saves .openflow.json"
+}
+step "6g OpenFlowKit diagram MCP (Claude Code, every project)" \
+  "OpenFlowKit: claude mcp add -s user openflowkit -- npx -y openflowkit mcp" openflowkit_mcp
+
 # 7. key files (names only, never values)
 keyfiles() {
   local ok=0
