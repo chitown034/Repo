@@ -8,8 +8,8 @@ in connect-all step 2 was the connect script's reading, not the runner's: its re
 
 | Task | Last | Reading | Fix (integrations/mac-task-specs.md § 9) |
 |---|---|---|---|
-| `toolkit-deck-sync` (06:15 daily) | error 2026-10-23 06:25 | the one error from today; the deck's toolkit card is stale | log needed: `runnerctl logs toolkit-deck-sync` |
-| `nightly-self-test` (23:00) | error 2026-10-22 23:19 | tool refusal in the suite | log needed: `runnerctl logs nightly-self-test`; scope writes to `~/Repo/brain/state/` |
+| `toolkit-deck-sync` (06:15 daily) | error 2026-10-23 06:25 | the one error from today; the deck's toolkit card is stale | timeout (exit 124 at 602 s, twice today): move the snapshot scripts to a pre-step, or raise the cap to 1200 s — spec § 9 |
+| `nightly-self-test` (23:00) | error 2026-10-22 23:19 | tool refusal in the suite | 30-min timeouts + refusals + "no result in envelope": split the suite (spec § 9) |
 | `brain-weekly-verify` · `health-coaching-weekly` · `skills-refresh-weekly` (Sundays) | error 2026-10-11 | hit the Sunday usage cap; have not run since | move to Monday (spec § 9), or run each once on a weekday: `runnerctl run <name>` |
 | `r9-feed-freshness-sweep` | off (paused 2026-10-23) | superseded by the cloud freshness sweep | — |
 | `r8-apple-health-snapshot` · `strava-daily-sync` | off (paused 2026-10-23) | superseded by the cloud Health daily sync | — |
