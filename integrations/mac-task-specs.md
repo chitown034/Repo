@@ -1147,14 +1147,14 @@ line below marked *log needed*.
 | `toolkit-deck-sync` (daily 6:15) | error | It writes `toolkitSnapshot`, and the deck shows `mcpServers: 0` while this repo lists 7 MCP servers — the task's `claude mcp list` call is failing (claude CLI not on the runner's PATH, or signed out). Fix: in the task prompt, read the registers from the repo (`bin/brain toolkit --json`, which reads `integrations/MCP-SERVERS.md` and `integrations/APIS.md`) instead of the CLI, and fall back to the CLI only for the "installed" flag. Then `runnerctl run toolkit-deck-sync`. |
 | `nightly-self-test` | error (tool refusal) | The runner's Claude refused a tool the test suite asks for (a write outside the repo). Fix: scope every self-test write to `~/Repo/brain/state/` and the scratchpad; drop the step that edits `~/.claude/settings.json`. *log needed* for the exact tool. |
 | `fabric-deck-sync` (odd hours) | refused | Fabric's `fabric --listpatterns` prompts for setup on a fresh machine; the task hangs then refuses. Fix: skip the task when `~/.config/fabric/.env` is missing and write `fabricStatus = {v:{state:"not set up"}}` instead. No action from Steven until Fabric is wanted. |
-| `r9-feed-freshness-sweep` | error | Superseded by the cloud freshness sweep (15:40 UTC daily) since 2026-10-22; disable it: `runnerctl disable r9-feed-freshness-sweep`. |
-| `strava-daily-sync` (5:20) | ok, but writes an empty list / a bare document | Superseded 2026-10-23 by the cloud Health daily sync, which writes `stravaSnapshot` from the Strava connector in the deck's row shape; disable it: `runnerctl disable strava-daily-sync`. |
-| `r8-apple-health-snapshot` (5:10 / 21:10) | ok, but writes the daemon's frozen September data | Superseded 2026-10-23 by the cloud Drive sync (`integrations/apple-health-dashboard.md`); disable it so it can never overwrite `appleHealth`: `runnerctl disable r8-apple-health-snapshot`. `health-full-analysis` can stay — it now has fresh data to read. |
+| `r9-feed-freshness-sweep` | error | Superseded by the cloud freshness sweep (15:40 UTC daily) since 2026-10-22; disable it: `runnerctl pause r9-feed-freshness-sweep`. |
+| `strava-daily-sync` (5:20) | ok, but writes an empty list / a bare document | Superseded 2026-10-23 by the cloud Health daily sync, which writes `stravaSnapshot` from the Strava connector in the deck's row shape; disable it: `runnerctl pause strava-daily-sync`. |
+| `r8-apple-health-snapshot` (5:10 / 21:10) | ok, but writes the daemon's frozen September data | Superseded 2026-10-23 by the cloud Drive sync (`integrations/apple-health-dashboard.md`); disable it so it can never overwrite `appleHealth`: `runnerctl pause r8-apple-health-snapshot`. `health-full-analysis` can stay — it now has fresh data to read. |
 | `health-coaching-weekly`, `skills-refresh-weekly`, `brain-weekly-verify` | error since 2026-10-11 | All three run on Sundays and hit the Sunday usage cap with the weekly review. Fix: move them to Monday 05:10 / 05:40 / 06:10 PT (`runnerctl schedule <name> "10 5 * * 1"` etc.). *log needed* to confirm the cap is the only cause. |
 | `r20-weekly-review-local`, `ops-knowledge-graph`, `access-audit-monthly`, `automation-audit-quarterly` | limited (usage cap) | Not broken — they wait for the cap window. Leave. |
 
 One paste covers the Steven side (after the specs above are applied to the runner; the REPORT tells him which):
 
 ```
-runnerctl disable r9-feed-freshness-sweep && runnerctl disable r8-apple-health-snapshot && runnerctl disable strava-daily-sync && runnerctl run toolkit-deck-sync && runnerctl status
+runnerctl pause r9-feed-freshness-sweep && runnerctl pause r8-apple-health-snapshot && runnerctl pause strava-daily-sync && runnerctl run toolkit-deck-sync && runnerctl status
 ```

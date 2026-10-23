@@ -44,7 +44,7 @@ Health → on (Nutrition, Weight); Strava → Settings → Applications/Health �
 Drive automation → Metrics: select all (or at least Active Energy, Exercise Minutes, Resting HR, VO₂ Max, Weight, Dietary
 Energy, Protein, Carbohydrates, Total Fat, Dietary Water) and Workouts: on. Then nothing daily. If the badge goes stale, open Health Auto Export on the iPhone → Automations → the Google
 Drive export → check it is on and signed in. `r8-apple-health-snapshot` on the Mac should be disabled so it can never
-overwrite this document with the daemon's frozen September data (`runnerctl disable r8-apple-health-snapshot`, in
+overwrite this document with the daemon's frozen September data (`runnerctl pause r8-apple-health-snapshot`, in
 `integrations/mac-task-specs.md` §9). The Notion path below stays as an optional manual source; it is no longer needed.
 
 ---
