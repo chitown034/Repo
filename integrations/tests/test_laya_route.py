@@ -24,7 +24,7 @@ HERE = Path(__file__).parent
 LAYA_DIR = HERE.parent / "laya"
 sys.path.insert(0, str(LAYA_DIR))
 
-from laya_route import DEFAULT_ROUTE_MAP, load_route_map, route_for  # noqa: E402
+from laya_route import DEFAULT_ROUTE_MAP, load_route_map, route_for, score_label  # noqa: E402
 
 N_PASS = 0
 N_FAIL = 0
@@ -57,6 +57,13 @@ def main() -> int:
           route_for("some-new-tier-nobody-mapped-yet", False, route_map), "subscription")
     check("no route-map.json, pii=0 -> subscription", route_for("research", False, None), "subscription")
     check("no route-map.json, pii=1 -> local", route_for("research", True, None), "local")
+    # 2026-10-23: the real laya 0.3.x engine answers a `score` question with score+legend and no `label`
+    # (Mac log: KeyError: 'label'); the stub answers with `label`. Both must give the level text.
+    check("score_label: stub shape", score_label({"label": "soon"}), "soon")
+    check("score_label: real shape (score 1.8 -> level 2)",
+          score_label({"score": 1.8, "legend": {"0": "not urgent", "1": "soon", "2": "blocking"}}), "blocking")
+    check("score_label: real shape rounds down", score_label({"score": 0.4, "legend": {"0": "not urgent", "1": "soon"}}), "not urgent")
+    check("score_label: nothing usable -> unknown", score_label({}), "unknown")
 
     print("\n== subprocess regression — laya_route.py --engine stub --batch sample-requests.jsonl")
     proc = subprocess.run(

@@ -421,3 +421,25 @@ proven read-only, health check.
 | EVRoutes · Turo | `needs_reconnect` | Reconnect or remove | Steven |
 | Four http_api Sunday routines | still enabled, fail on the usage limit | 4 clicks (`docs/ROUTINE-BUDGET-2026-10-22.md`) | Steven |
 | BlackRock · Health Data Avatar · Microsoft 365 · PlayMCP · Similarweb · Higgsfield | never finished connecting | finish or remove | Steven |
+
+## Connection status — Mac 1 report #2, 2026-10-23 01:01 UTC (connect-2026-10-22-1800)
+
+Same twelve steps done. Mods installed (7 + 2 samples, settings backup kept). Jarvis engine: Ollama running, llama3.1:8b
+present, index `~/.openjarvis/memory.db` 1,828 rows, vault 850 notes, Laya MCP registered, voice profile written.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Mac runner | signed out ("CLI NOT logged in") — 24 tasks waiting | `runnerctl login && runnerctl status` | Steven |
+| Laya real engine | crashed on `answers["urgency"]["label"]` (real 0.3.x `score` answers carry `score`+`legend`) | fixed: `score_label()` in `laya_route.py`, 23 tests; proven by the next real route on the Mac | paste |
+| Jarvis voice clips | none under `~/.cache/vanessa-voice` or `~/Applications/team-avatars/voices` | locate (STEVEN-STEPS 1b) or export the 8 deck clips | Steven / Claude |
+| brain doctor (Mac) | FAIL, reason not in the log | `bin/brain doctor` output | Steven (one paste) |
+| Kapso (Mac) | plugin + MCP registered; `! Needs authentication` | `claude` → `/mcp` → kapso → sign in; then the keys line | Steven |
+| Claude mods | connected — 7 mods + blast-radius, replay-theater | — | — |
+| Jarvis engine + index | connected — 1,828 rows, model present | — | — |
+| Inkbox iMessage line | connected — no phone linked yet | text `connect @vanessa-shearrill` to +1 650 484 9720 | Steven |
+| Zoho CRM (Composio) | 403 NO_PERMISSION until the API box is ticked | tick "Zoho CRM API Access" | Steven |
+| Kapso webhooks (Pabbly → Kapso) | two trigger URLs not pasted yet | `docs/STEVEN-STEPS.md` step 5 | Steven |
+| Gondola (claude.ai) | Claude Code MCP registered; custom connector still his | claude.ai → Connectors → Add custom connector | Steven |
+| Orca · AnyDesk | active — installed; pairing / permissions his | STEVEN-STEPS step 4 | Steven |
+| EVRoutes · Turo | `needs_reconnect` | Reconnect or remove | Steven |
+| Four http_api Sunday routines | still enabled | 4 clicks | Steven |
