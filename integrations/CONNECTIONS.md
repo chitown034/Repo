@@ -489,3 +489,5 @@ present, index `~/.openjarvis/memory.db` 1,828 rows, vault 850 notes, Laya MCP r
 | Notion Second Brain (layer directory) | active — DB e767dacc; directory page written by the weekly sync; `brain-learn-daily` rows resume with the runner | — | — |
 | GitHub repo visibility | public — anyone can read the brain (no client files beyond first names) | Steven decides (STEVEN-STEPS 1g) | Steven |
 | NotebookLM direct connector (`notebooklm-mcp-cli`) | pending — opt-in taken; installs with the next Mac paste (connect-all 6f); sign-in his | `nlm login` on Mac 1, then `nlm login --check` | Steven |
+| NotebookLM direct connector — Mac 1, 2026-10-23 06:30 UTC | connected — `nlm login` done (protected mode, OS keystore), `--check` valid, account steven.shearrill@gmail.com, 5 notebooks found; MCP registered for Claude Code by connect-all 6f | first use: a Claude Code session on Mac 1 adds the SB Docs to the "2nd brain" notebook | Steven (one prompt) |
+| Mac 1 full report 06:22 UTC | connected — 17 of 20 steps done (runner, Laya, Jarvis, mods, Lofty, Agent OS, Orca, AnyDesk, Gondola, Inkbox voice); open: Kapso sign-in + keys | `claude` → `/mcp` → kapso | Steven |

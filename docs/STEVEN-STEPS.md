@@ -52,6 +52,9 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
    `01 Reference Sources/AI and Automation` + `SB 00-START-HERE` + `SB 02-who-and-decisions`. Then **Mortgage Reference
    Library** (`SB 05`, `SB 09`, `SB 00`, `SB 02`) and **Business Operating Playbooks** (`SB 06`, `SB 08`, `SB 09`, `SB 00`,
    `SB 02`). Google refreshes Drive Docs in NotebookLM automatically. `integrations/notebooklm/README.md`.
+1f2-done. **NotebookLM connector signed in on Mac 1 (2026-10-23 06:30 UTC, 5 notebooks found).** Next, in Terminal on
+   Mac 1: `cd ~/Repo && claude`, then type: *add every SB Google Doc from my Drive folder SECOND BRAIN to my "2nd brain"
+   notebook, then list that notebook's sources*. Claude uses the notebooklm MCP; nothing else to do afterwards.
 1f2. **NotebookLM direct connector (your opt-in, 2026-10-23):** the paste now installs it (step 6f). Then on Mac 1 run
    `nlm login` (browser sign-in, Google session stays on that Mac), then `nlm login --check`. In a new Claude Code session:
    "list my NotebookLM notebooks" → then "add every SB Google Doc from SECOND BRAIN to my 2nd brain notebook". Claude
