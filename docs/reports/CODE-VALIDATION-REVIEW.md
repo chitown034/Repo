@@ -1,3 +1,100 @@
+## Orchestrator response (2026-10-23 21:10 UTC) — P04-F1 (MEDIUM) applied; verdict after fix SHIP (reviewed 800437b50a420c16 → f5e0ba45f6f0bc2c)
+
+change-set: f5e0ba45f6f0bc2c
+
+P04-F1 fixed in `brain/toolkit.py`: `_conn_key` keeps the machine/device qualifiers (Mac 1, Mac 2, Alienware, tablet, phone, iPad,
+Windows, webhook) as part of the key, and two rows of ONE section can never merge (a repeated key inside a section falls back to the
+full name). On the real file the register is now 33 connectors (was 27 with the wrong merges, 14 before the change): the AnyDesk
+Alienware/tablet/phone item, the Mac 2 Jarvis row, "Orca pairing · AnyDesk permissions" and both Kapso rows all survive, verified by
+name. "live" dropped from the ok prefixes (the reviewer's watch item). Tests: `test_different_machines_and_same_section_rows_never_merge`
+covers both the aliasing boundary and the same-section rule; full suite 144 OK; gate PASS; CI replay on a clean copy of the tree: doctor PASS.
+
+## Code-validator review (2026-10-23 21:00 UTC) — verdict FIX FIRST (VibeBreaker DIFF: FIX BEFORE SHIP, 0 critical / 0 high / 1 medium / 0 low)
+
+change-set: 800437b50a420c16
+
+**Verdict: FIX FIRST.** The multi-section merge works, and the four connectors that went missing last time are back
+(Drip/AEO, Pivo, Ticor, MBS Highway, and the runner reads `ok`). CI on a clean copy passes: 143 tests OK, no tracked file
+changed, `doctor: PASS`. One confirmed defect remains, and it is the kind of bug this change set out to fix. `_conn_key`
+removes the parenthetical, and the parenthetical is often the only part of the name that says which machine a row is about.
+So rows for different machines get merged into one, and at least one open item that needs Steven, "AnyDesk (Alienware,
+tablet, phone): not started", disappears from the register without any warning.
+
+Deterministic gate, quoted: `verdict: PASS (5 passed, 0 failed)` (change-set 800437b50a420c16).
+
+### Scope
+
+- Diff vs HEAD: `brain/toolkit.py` (`connectors()`, new `_conn_key()`), `brain/tests/test_toolkit.py` (ConnectorRegisterMerge),
+  regenerated `wiki/ai-team/toolkit.md` and `brain/index.json`, plus `docs/reports/CODE-VALIDATION.md`, which is the gate's own output.
+  `INDEX.md` has no diff vs HEAD.
+- I also read the code the diff calls and the code that consumes it: `_table_rows`, `_seat`, `inventory()`, `brain/graph.py`
+  (toolkit lobes), `brain/recs.py::_toolkit_candidates`, `brain/mcp.py`, `dashboard/brain-4d/add-toolkit.py`, and
+  `integrations/CONNECTIONS.md` lines 322–574 (every status section).
+- Passes run (Python, DIFF mode): 01, 04, 05, 06, 07, 08, 12, 17, 18, 19, 20. Not applicable: auth, secrets, network, storage,
+  concurrency and UI. No material scope limitation.
+
+### Collision table: real CONNECTIONS.md, consolidated section (s0) → round 2 (s1) → Mac 1 report #3 (s2)
+
+| key | raw rows that share it | verdict |
+|---|---|---|
+| `zoho` | Zoho CRM (Composio) s0 · Zoho CRM s1 · Zoho CRM s2 | correct |
+| `imessage` | Inkbox iMessage line s0 · iMessage line (morning brief…) s2 | correct (connected → "still not linked" is right) |
+| `gondola` | Gondola (claude.ai) s0 · Gondola (travel) s2 | correct |
+| `evroutes` | EVRoutes · Turo s0 · EVRoutes · Turo connectors s2 | correct |
+| `kapso` | Kapso (Mac 1) s0 · **Kapso webhooks (Pabbly → Kapso) s0** · Kapso (WhatsApp) s2 | **wrong**: two rows in the same section merge; the webhooks item survives only because s2 has a separate `Pabbly ↔ Kapso webhooks` row |
+| `anydesk` | AnyDesk (Mac 1, Mac 2) s1 · **AnyDesk (Alienware, tablet, phone) s1** · AnyDesk (Mac 1) s2 | **wrong**: same-section merge; the Alienware/tablet/phone "not started" item is lost (no other row covers it) |
+| `jarvis` | Jarvis · Laya · Orca (Mac 1) s1 · **Jarvis · Laya · Orca (Mac 2) s1** · (Mac 1) s2 | **wrong**: same-section merge; the Mac 2 row is replaced by Mac 1's ("Mac 2" s0 still covers part of it) |
+| `orca` | **Orca pairing · AnyDesk permissions s0** · Orca · Laya · Bonsai (Alienware) s1 | **wrong**: Mac-side pairing replaced by the unrelated Alienware row |
+
+Every other key maps to exactly one row. Result: 27 connectors, 3 ok. Without the four wrong merges it would be 31.
+
+### CONFIRMED
+
+```yaml
+id: P04-F1
+pass: 04
+title: _conn_key strips the machine qualifier, so distinct connections (even two rows of one section) merge and an open item vanishes
+status: CONFIRMED
+severity: MEDIUM
+confidence: HIGH
+location:
+  - path: brain/toolkit.py
+    line: 133 (merged[_conn_key(name)] = …), 138-142 (_conn_key)
+entry_or_trigger: bin/brain reindex / bin/brain toolkit / brain.graph / brain.recs → toolkit.inventory → connectors(root) on the real integrations/CONNECTIONS.md
+evidence: _conn_key deletes "\(.*?\)" and the word "mac", then keeps the first token. "AnyDesk (Mac 1, Mac 2)", "AnyDesk (Alienware, tablet, phone)" and "AnyDesk (Mac 1)" all become "anydesk"; "Jarvis · Laya · Orca (Mac 1|Mac 2)" both become "jarvis"; "Orca pairing · AnyDesk permissions" and "Orca · Laya · Bonsai (Alienware)" both become "orca"
+existing_controls_checked: the file's own rule ("supersedes … for the rows it names") only supports overriding across sections; nothing stops a merge inside one section. The tests check only that aliasing works, never that distinct rows stay apart
+failure_scenario: run toolkit.connectors(Path('.')) on the working tree. "AnyDesk (Alienware, tablet, phone) — not started" (round 2) is overwritten by "AnyDesk (Mac 1)" (report #3). wiki/ai-team/toolkit.md, the 6D toolkit lobe and the BIG-MOVES "Connect …" candidates no longer show it, while CONNECTIONS.md still lists it as open
+impact: connection-doctor's "what is not connected" answer and Steven's step list quietly lose open items. This is the same class as the 16→14 shrink this change fixes, only smaller and harder to notice
+remediation_direction: keep the machine/device qualifier in the key (e.g. key = first token + the Mac 1/Mac 2/Alienware/tablet/phone tokens found in the parenthetical), or use the full normalised name with an explicit alias map; and never let two rows of the same section collapse (a later section may only replace an earlier one)
+verification: a test with s1 = "AnyDesk (Mac 1, Mac 2)" + "AnyDesk (Alienware, tablet, phone)" and s2 = "AnyDesk (Mac 1)", which asserts the Alienware row survives; plus "Jarvis · Laya · Orca (Mac 1)" and "(Mac 2)" in one section, which asserts both stay; plus, on the real file, assert that every row of the last section appears by name
+needs_context: null
+```
+
+### REJECTED
+
+- P04-C2 "live"/"linked" ok-prefixes are too loose: no current row status starts with either, so there is no trigger today. Note: "live on the Mac only when…" would read as ok, and the word list should be watched.
+- P04-C3 "consolidated" in a non-status heading: `heads` is built only from `^## Connection status` lines, so other headings cannot take part. A status heading that quotes Steven saying "consolidated" would move the start point. That is hypothetical, with no such heading in the file.
+- P04-C4 `starts[first:]` when `first` is the last index: this gives one chunk, `text[i:]`. Covered by `test_without_a_consolidated_section_only_the_last_one_counts`.
+- P05-C5 the last chunk runs to EOF and could take a table from a later non-status section: this behaviour existed before the change (the old code used `text[rfind:]`), `_table_rows` takes only the first matching table, and the file currently ends at that table.
+- P07-C6 ordering: dict insertion order puts each row where its key first appeared, with the newest content. That is deterministic, the page and 6D have no ordering contract, and the committed-page test pins the output.
+- P12-C7 consumers depending on 14/16 or on single-section behaviour: `graph.py` (ids `connector:<name>`, deduped), `recs.py` (rec id from the name), `mcp.py` and `add-toolkit.py` all iterate items and take no fixed count. A grep for "14/16 connectors" found nothing outside the reports. Rec ids follow the newest row name, as they did before.
+- P04-C8 generic first tokens (`2` for "Mac 2", `ai` for "AI-search presence"): no current collision, so this is not a defect. It is part of P04-F1's remediation (key fragility).
+
+### Coverage (inspected, clean)
+
+- Multi-section walk, the consolidated anchor, override order and Pivo/Ticor/MBS/Drip/AEO retention were checked on the real file and by the 3 new tests.
+- The state classifier change: the runner reads `ok` from "healthy — …", "403" still wins first, and the iMessage row correctly goes from connected to attention.
+- CI replay on a clean copy (`git ls-files` tar into the scratchpad): `unittest discover` gives 143 OK, `bin/brain doctor` passes (160 links, 12 service modules each with a test), `git status` is empty afterwards, and the toolkit counts are identical to the working tree.
+- Repo rules: first names only, no PII in the diff, no live artifact touched.
+
+### Top missing tests (pass 19)
+
+1. Two rows in one section whose names differ only by machine (AnyDesk Mac 1/Mac 2 vs Alienware/tablet/phone): assert both survive.
+2. Real-file guard: every row name in the last status section appears in `connectors()` output, and the count is ≥ that section's row count.
+3. A cross-section override that differs only in its parenthetical (Mac 1 in s1, Mac 1 in s2): assert it replaces; Mac 2 in s1 is untouched.
+4. `_conn_key` negative cases: "Orca pairing · AnyDesk permissions" ≠ "Orca · Laya · Bonsai (Alienware)".
+5. A status that starts with "live on the Mac only when …": pin the intended state (decide whether it is ok).
+
 ## Orchestrator response (2026-10-23 20:50 UTC) — verdict SHIP; INFO P05-F1 applied (reviewed bceb606992ffc7a9 → a23891b8f97640fa)
 
 change-set: a23891b8f97640fa

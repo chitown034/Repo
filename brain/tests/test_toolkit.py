@@ -85,3 +85,43 @@ class ToolkitTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ConnectorRegisterMerge(unittest.TestCase):
+    """A partial status report appended to CONNECTIONS.md updates the register row by row; it never shrinks it (2026-10-23)."""
+
+    def _root(self, text: str) -> Path:
+        import tempfile
+        t = Path(tempfile.mkdtemp()); (t / "integrations").mkdir(); (t / "integrations/CONNECTIONS.md").write_text(text, encoding="utf-8")
+        self.addCleanup(lambda: __import__("shutil").rmtree(t, ignore_errors=True)); return t
+
+    BASE = ("## Connection status — consolidated, 2026-10-23 13:10 UTC\n\n| Connection | Status today | Fix | Who |\n|---|---|---|---|\n"
+            "| Lofty | key file step 7b; no key on the Mac yet | make the key | Steven |\n| Pivo | no API — tour link only | — | — |\n"
+            "| Mac runner (all Mac tasks) | silent since Oct 13 | restart | Steven |\n")
+    LATER = ("\n## Connection status — Mac 1 report #3, 2026-10-23 11:16 PT\n\n| Connection | Status today | Fix | Who |\n|---|---|---|---|\n"
+             "| Lofty | connected — Lofty's own MCP signed in | — | — |\n| Mac runner (all Mac tasks) | healthy — 42 ok (the \"silent since Oct 13\" reading was wrong) | — | — |\n")
+    OLD = "## Connection status — checked live 2026-10-20\n\n| Connection | Status today | Fix | Who |\n|---|---|---|---|\n| Python on Mac 2 | attention — second attempt | — | — |\n\n"
+
+    def test_later_partial_section_overrides_rows_and_keeps_the_rest(self):
+        c = {x["name"]: x for x in toolkit.connectors(self._root(self.OLD + self.BASE + self.LATER))}
+        self.assertEqual(set(c), {"Lofty", "Pivo", "Mac runner (all Mac tasks)"}, "rows before the consolidated section stay out; Pivo is kept")
+        self.assertEqual(c["Lofty"]["state"], "ok"); self.assertEqual(c["Mac runner (all Mac tasks)"]["state"], "ok", "healthy wins over a quoted 'silent'")
+        self.assertEqual(c["Pivo"]["state"], "attention")
+
+    def test_without_a_consolidated_section_only_the_last_one_counts(self):
+        c = toolkit.connectors(self._root(self.OLD + self.LATER.lstrip()))
+        self.assertEqual({x["name"] for x in c}, {"Lofty", "Mac runner (all Mac tasks)"})
+
+    def test_same_connection_named_differently_counts_once(self):
+        self.assertEqual(toolkit._conn_key("Lofty CRM"), toolkit._conn_key("Lofty (developer.lofty.com)"))
+        self.assertEqual(toolkit._conn_key("Inkbox iMessage line"), toolkit._conn_key("iMessage line (morning brief text + voice)"))
+
+    def test_different_machines_and_same_section_rows_never_merge(self):
+        self.assertNotEqual(toolkit._conn_key("AnyDesk (Mac 1, Mac 2)"), toolkit._conn_key("AnyDesk (Alienware, tablet, phone)"))
+        self.assertNotEqual(toolkit._conn_key("Jarvis · Laya · Orca (Mac 1)"), toolkit._conn_key("Jarvis · Laya · Orca (Mac 2)"))
+        self.assertEqual(toolkit._conn_key("AnyDesk (Mac 1, Mac 2)"), toolkit._conn_key("AnyDesk on Mac 1 and Mac 2"))
+        text = ("## Connection status — consolidated\n\n| Connection | Status today | Fix | Who |\n|---|---|---|---|\n"
+                "| Kapso (Mac 1) | keys saved | — | — |\n| Kapso webhooks (Pabbly → Kapso) | pending — not pasted | — | — |\n")
+        names = {x["name"] for x in toolkit.connectors(self._root(text))}
+        self.assertEqual(names, {"Kapso (Mac 1)", "Kapso webhooks (Pabbly → Kapso)"}, "two rows of one section stay two connections")
+

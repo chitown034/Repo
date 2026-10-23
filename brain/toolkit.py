@@ -108,23 +108,50 @@ def connectors(root: Path) -> list[dict]:
         text = p.read_text(encoding="utf-8")
     except OSError:
         return []
-    i = text.rfind("## Connection status")
-    if i < 0:
+    # every "## Connection status" section, oldest first; a later section's row replaces an earlier row with the same
+    # name, so a partial status report appended later (a Mac REPORT, 2026-10-23) updates the register instead of shrinking it
+    starts = [m.start() for m in re.finditer(r"^## Connection status", text, re.M)]
+    if not starts:
         return []
-    out = []
-    for cells in _table_rows(text[i:], "Connection"):
-        if len(cells) < 4:
-            continue
-        name = re.sub(r"\*\*", "", cells[0]).strip()
-        status = re.sub(r"\*\*|`", "", cells[1]).strip()
-        low = status.lower()
-        state = ("attention" if ("403" in low or "refused" in low)
-                 else "ok" if (low.startswith("connected") or low.startswith("active") or "active**" in cells[1].lower())
-                 else "silent" if "silent" in low else "pending" if ("pending" in low or "initiated" in low or "never" in low or "locked" in low or "drafted" in low)
-                 else "reconnect" if "reconnect" in low else "attention")
-        out.append({"kind": "connector", "name": name[:90], "desc": status[:200], "state": state,
-                    "fix": re.sub(r"`", "", cells[2])[:160], "who": cells[3][:40], "seat": _seat(name + " " + status)})
-    return out
+    # the register starts at the last "consolidated" section (the file's own rule: later sections supersede it row by row)
+    heads = [text[i:text.find("\n", i)].lower() for i in starts]
+    first = max((n for n, h in enumerate(heads) if "consolidated" in h), default=len(starts) - 1)
+    starts = starts[first:]
+    merged: dict[str, dict] = {}
+    for n, i in enumerate(starts):
+        chunk = text[i:starts[n + 1]] if n + 1 < len(starts) else text[i:]
+        in_section: set[str] = set()
+        for cells in _table_rows(chunk, "Connection"):
+            if len(cells) < 4:
+                continue
+            name = re.sub(r"\*\*", "", cells[0]).strip()
+            key = _conn_key(name)
+            if key in in_section:          # two rows of ONE section are two connections, whatever the key says (validator P04-F1)
+                key = name.lower().strip()
+            in_section.add(key)
+            status = re.sub(r"\*\*|`", "", cells[1]).strip()
+            low = status.lower()
+            state = ("attention" if ("403" in low or "refused" in low)
+                     else "ok" if (low.startswith(("connected", "active", "healthy", "linked")) or "active**" in cells[1].lower())
+                     else "silent" if "silent" in low else "pending" if ("pending" in low or "initiated" in low or "never" in low or "locked" in low or "drafted" in low)
+                     else "reconnect" if "reconnect" in low else "attention")
+            merged[key] = {"kind": "connector", "name": name[:90], "desc": status[:200], "state": state,
+                                       "fix": re.sub(r"`", "", cells[2])[:160], "who": cells[3][:40], "seat": _seat(name + " " + status)}
+    return list(merged.values())
+
+
+_MACHINES = ("mac 1", "mac 2", "alienware", "tablet", "phone", "ipad", "windows", "webhook")
+
+
+def _conn_key(name: str) -> str:
+    """The same connection named slightly differently across reports ("Lofty", "Lofty CRM", "Lofty (developer.lofty.com)")
+    — but a different machine or device is a different connection ("AnyDesk (Mac 1)" vs "AnyDesk (Alienware, tablet, phone)")."""
+    low = name.lower()
+    k = re.sub(r"\(.*?\)|\b(crm|api|the|line|connector|connectors|inkbox|mac|title|property|search)\b", " ", low)
+    words = re.sub(r"[^a-z0-9]+", " ", k).split()
+    base = words[0] if words else low
+    quals = [m for m in _MACHINES if m in low]
+    return base + ("|" + "+".join(quals) if quals else "")
 
 
 def routines(root: Path) -> list[dict]:

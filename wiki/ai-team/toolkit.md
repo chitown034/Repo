@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 48 skills · 7 Claude mods (plugins) · 14 connectors (0 ok, 14 need attention) · 11 MCP servers · 13 APIs · 71 cloud routines · 60 Mac tasks
+toolkit: 48 skills · 7 Claude mods (plugins) · 33 connectors (3 ok, 30 need attention) · 11 MCP servers · 13 APIs · 71 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -147,6 +147,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 14 connectors (0 ok, 14 need at
 - `past-client-nurture`: Monthly sphere-touch marketing drafts for Steven's past clients from reClients and pipeline — a local market note, home-purchase anniversaries and birthdays, and a plain check-in — as Gmail drafts plus the three template
 
 **Connectors**
+- `Drip campaigns + text follow-ups` — *attention*: planned — playbook written (wiki/real-estate-playbooks/drip-and-text-follow-up.md); specs on request; 10DLC is Steven's
 - `TikTok · GoHighLevel · Discord bot · HeyGen` — *attention*: not connected (Composio links last 10 minutes)
 
 **APIs**
@@ -175,9 +176,9 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 14 connectors (0 ok, 14 need at
 - `zoho-crm-sync`: Sync Zoho CRM — Steven's system of record for the mortgage pipeline — into the Command Deck through Composio: writes zohoSync (connection health), zohoLeads (14-stage kanban) and zohoDeals. Self-tests first and reports t
 
 **Connectors**
-- `Lofty` — *attention*: two paths on Mac 1 (2026-10-23 13:05 PT): the old local bridge is the MCP named lofty (stdio, ~/Applications/lofty-bridge/mcp-server.js, connected — the runner tasks use its mcp__lofty__* tools; it re
 - `Zoho CRM` — *attention*: 403 until the API box is ticked
 - `homes.com · ShowingTime · Showami` — *attention*: wrappers installed; sign-ins (MFA) in the agent Chrome are Steven's
+- `Lofty` — *attention*: two paths on Mac 1 (2026-10-23 13:05 PT): the old local bridge is the MCP named lofty (stdio, ~/Applications/lofty-bridge/mcp-server.js, connected — the runner tasks use its mcp__lofty__* tools; it re
 
 **MCP servers**
 - `kapso` — *attention*: WhatsApp Business Cloud API read/answer (sandbox number first) · registered — needs Steven's sign-in (/mcp → kapso)
@@ -245,12 +246,30 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 14 connectors (0 ok, 14 need at
 - `route-beacon`: Shows which AI route this session is on and toasts when the failover switches.
 
 **Connectors**
-- `Mac runner (all Mac tasks)` — *silent*: healthy — runnerctl status 12:33 PT: 42 ok (morning tasks all ran today), 5 error (toolkit-deck-sync, nightly-self-test, three Sunday weeklies), 4 limited, 3 paused; the step-2 "silent since Oct 13" r
-- `TidyCal` — *attention*: step 7c did not run (no token)
-- `Jarvis · Laya · Orca (Mac 1)` — *attention*: installed, tested, Orca on the Repo folder; phone pairing is Steven's
-- `AnyDesk (Mac 1)` — *attention*: installed; ID 1514099895; Screen Recording + Accessibility + unattended password are Steven's
-- `EVRoutes · Turo connectors` — *reconnect*: "needs reconnect" on claude.ai (EVRoutes also failed to connect in this session)
+- `NotebookLM "2nd brain" notebook sources` — *ok*: connected — connector signed in (5 notebooks); the SB Docs are not yet attached as sources
+- `Kapso (Mac 1)` — *attention*: plugin + MCP registered; ! Needs authentication
+- `Kapso webhooks (Pabbly → Kapso)` — *attention*: two trigger URLs not pasted yet
 - `Gondola (travel)` — *attention*: MCP installed for Claude Code; the claude.ai connector is not added
+- `Orca pairing · AnyDesk permissions` — *attention*: apps installed on both Macs
+- `Mac 2` — *attention*: Python 3.12 (uv), Claude Code 2.1.309, mods, Agent OS, brain index, Orca, AnyDesk, Gondola done; Laya + Jarvis engine unproven (last REPORT not pasted)
+- `EVRoutes · Turo connectors` — *reconnect*: "needs reconnect" on claude.ai (EVRoutes also failed to connect in this session)
+- `Four http_api Sunday routines` — *attention*: still enabled
+- `GitHub repo visibility` — *attention*: public
+- `Fieldy → 2nd brain` — *ok*: connected — the daily "Fieldy → brain" task (6:50 AM PT, this session, Fieldy connector) writes memory/fieldy-meetings.md + the deck fieldyDesk doc and queues a recap item per meeting with action item
+- `Notion `brain-learn-daily` rows` — *attention*: resume with Mac 1's runner (signed in 2026-10-23); directory page written 2026-10-23
+- `Jarvis · Laya · Orca (Mac 1)` — *attention*: installed, tested, Orca on the Repo folder; phone pairing is Steven's
+- `Jarvis · Laya · Orca (Mac 2)` — *attention*: partially set — engine unproven; runner not yet imported
+- `Orca · Laya · Bonsai (Alienware)` — *pending*: not started — integrations/alienware/alienware-setup.ps1 never run on Windows yet
+- `AnyDesk (Mac 1, Mac 2)` — *attention*: installed; permissions + unattended password are Steven's
+- `AnyDesk (Alienware, tablet, phone)` — *attention*: not started — winget id AnyDesk.AnyDesk confirmed; iPad is outgoing-only, Android tablet can be controlled
+- `TidyCal` — *attention*: step 7c did not run (no token)
+- `MBS Highway Home Report` — *attention*: not connected — no public API; rep-issued webhook or CSV (integrations/mbs-highway/README.md)
+- `Pivo` — *attention*: no API — tour link / video file only (integrations/pivo/README.md)
+- `Ticor Title property search` — *attention*: no API — rep account + CSV/PDF export (integrations/ticor/README.md)
+- `OpenFlowKit MCP + skill · pr-lens skill · archify skill (the four repos, 2026-10-23)` — *pending*: installed in the repo (skills) / pending on the Macs (MCP by connect-all 6g, archify by install-mac.sh); integrations/skill-packs/REGISTRY-2026-10-23.md
+- `AI-search presence (AEO/GEO/SEO)` — *attention*: planned — playbook written (wiki/real-estate-playbooks/ai-search-visibility.md); monthly presence audit task live (1st, 7:10 AM PT)
+- `Mac runner (all Mac tasks)` — *ok*: healthy — runnerctl status 12:33 PT: 42 ok (morning tasks all ran today), 5 error (toolkit-deck-sync, nightly-self-test, three Sunday weeklies), 4 limited, 3 paused; the step-2 "silent since Oct 13" r
+- `AnyDesk (Mac 1)` — *attention*: installed; ID 1514099895; Screen Recording + Accessibility + unattended password are Steven's
 - `Pabbly ↔ Kapso webhooks, six workflows` — *attention*: Kapso login proven; webhook URLs and the six workflows are clicks at connect.pabbly.com
 
 **MCP servers**
