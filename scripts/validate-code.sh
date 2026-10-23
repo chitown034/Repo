@@ -60,7 +60,24 @@ run() { # <label> <command...>
   local out; if out=$("$@" 2>&1); then PASS=$((PASS+1)); say "PASS $label"; else FAIL=$((FAIL+1)); say "FAIL $label"; say "$(printf '%s' "$out" | tail -12 | sed 's/^/      /')"; fi
 }
 quickcheck() { # dashboard HTML: the one pre-existing "functions called but never defined" row is a known false positive
-  local out; out=$(python3 dashboard/tests/quickcheck.py "$1" 2>&1) || true
+  local out
+  # quickcheck.py is the Command Deck checker (it asserts the deck's cdStateSeed). Pages without a seed - the 6D Brain and
+  # the brain-4d template - get the generic checks instead: every inline script must parse (node --check). 2026-10-23.
+  if ! grep -q 'cdStateSeed' "$1"; then
+    python3 - "$1" <<'PY' || return 1
+import re, subprocess, sys, tempfile, os
+s = open(sys.argv[1], encoding="utf-8", errors="replace").read()
+bad = 0
+for i, m in enumerate(re.findall(r"<script(?![^>]*\bsrc=)[^>]*>(.*?)</script>", s, re.S)):
+    with tempfile.NamedTemporaryFile("w", suffix=".js", delete=False) as f: f.write(m); n = f.name
+    r = subprocess.run(["node", "--check", n], capture_output=True, text=True); os.unlink(n)
+    if r.returncode: bad += 1; print(f"FAIL script #{i} does not parse: {r.stderr.strip()[:200]}")
+print("RESULT: PASS (no deck seed; inline scripts parse)" if not bad else f"RESULT: FAIL ({bad} script(s))")
+sys.exit(1 if bad else 0)
+PY
+    return 0
+  fi
+  out=$(python3 dashboard/tests/quickcheck.py "$1" 2>&1) || true
   printf '%s' "$out" | grep -q 'RESULT: PASS' && return 0
   printf '%s' "$out" | grep '^FAIL' | grep -v 'no functions called but never defined' | grep -q . && { printf '%s\n' "$out" | grep '^FAIL'; return 1; }
   return 0

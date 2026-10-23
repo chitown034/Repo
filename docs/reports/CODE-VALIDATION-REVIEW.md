@@ -195,3 +195,7 @@ dashboard/brain-4d.html and template.html are the Command Deck checker applied t
 cannot pass on a page that has no deck seed by design, and the "functions never defined (approx.)" list is JSON words
 (agent, board, body…), the same noise recorded for the deck on 2026-10-22. No login, no secret, no client page in the pack
 (test asserts it). Drive/Composio writes were done interactively in-session, scoped to SECOND BRAIN/. Reviewed inline.
+
+## Resolution 2026-10-23 06:25 UTC — change-set `09dae7ba39465f27` (gate: non-deck pages get node --check)
+
+The 06:20 change-set 4496cf64cf9e31be (committed as 9ae7a9c) could not be marked: validate-code.sh ran the Command Deck quickcheck on dashboard/brain-4d.html and template.html, which have no cdStateSeed by design. quickcheck() now runs the deck checker only on pages that contain cdStateSeed; other dashboard pages must have every inline script parse under node --check (the 6D page passes). Reviewed inline; `bash -n` OK.
