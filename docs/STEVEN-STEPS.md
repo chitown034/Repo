@@ -6,7 +6,7 @@ research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox
 
 ## 1 · Phone · 5 minutes (Do these first; nothing else depends on them)
 
-## Start here (2026-10-22, evening) — one paste, then a few clicks
+## Start here (2026-10-23) — one paste, then a few clicks
 
 **Why things were stale:** your Mac's task runner froze on Oct 13, and every `git pull` on the Mac failed because the
 cloud and the Mac both rebuild the same brain files. Both are fixed in the paste below. Everything cloud-side runs.
@@ -14,7 +14,9 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
 1. **On the Mac (plugged in): open Terminal, paste this one line, answer y.** Then paste the REPORT back to Claude.
    `cd ~/Repo && git fetch origin claude/stoic-cori-pvn3f8 && git show FETCH_HEAD:scripts/repo-sync.sh > /tmp/repo-sync.sh && REPO_SYNC_DIR="$PWD" bash /tmp/repo-sync.sh && bash connect-all.sh`
    It syncs the repo (and every 30 min after), restarts the frozen runner, keeps the Mac awake on the charger, installs
-   or checks Kapso, Gondola, Inkbox voice, Laya, Jarvis, Orca and AnyDesk, the seven Claude mods (new: `/cycle`, `/inbox`,
+   or checks Kapso, Gondola, Inkbox voice, **Laya** (installs it + registers its MCP server), **Jarvis** (installs Ollama +
+   the llama3.1:8b model and builds the OpenJarvis index if this Mac has none), **Orca** (installs, opens on the Repo
+   folder, runs its doctor), AnyDesk, the Agent OS, the seven Claude mods (new: `/cycle`, `/inbox`,
    `/meetings`, `/today`, `/tc`, `/queue <task>`, `/sync`, `/connect` and a status line that says when the repo is behind).
    It never signs in, pairs, sends or pays.
 2. **Vanessa's iMessage line (30 seconds, from your phone):** Inkbox is reconnected. Send the text
@@ -31,6 +33,9 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
    (hidden, saved only on the Mac), and proves it works read-only; the Lofty sync resumes with the runner.
 3. **Gondola (travel):** claude.ai → Settings → Connectors → Add custom connector → `Gondola`, URL
    `https://mcp.gondola.ai/mcp` → Connect and sign in.
+3b. **Jarvis needs two things only you know:** the vault folder (`~/Shearrill-Vault`; if it lives only on the other Mac,
+   see `docs/SECOND-MAC-SETUP.md` 6b for iCloud or a copy) and Vanessa's 8 voice clips (put them in `~/.cache/vanessa-voice`
+   or tell Claude the folder). The REPORT's "Jarvis" rows say which of the two is missing.
 4. **Orca and AnyDesk (the paste opens them):** Orca → Add Project → your Repo folder, then scan its pairing code with the
    Orca phone app. AnyDesk → System Settings → Privacy & Security → turn on Screen Recording and Accessibility for AnyDesk.
    Other computers: `integrations/anydesk/README.md`.

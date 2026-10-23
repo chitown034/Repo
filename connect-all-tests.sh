@@ -4,7 +4,7 @@ set -u
 cd "$(dirname "$0")" || exit 1
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
 mkdir -p "$T/bin" "$T/home"
-FUNCS="$(sed -n '/^have()/p;/^runner_fix() {/,/^}/p;/^keep_awake() {/,/^}/p;/^repo_sync_agent() {/,/^}/p;/^laya_venv() {/,/^}/p;/^laya_connect() {/,/^}/p;/^orca_app() {/,/^}/p;/^orca_connect() {/,/^}/p;/^anydesk_app() {/,/^}/p;/^anydesk_connect() {/,/^}/p;/^gondola_mcp() {/,/^}/p;/^LOFTY_VENV=/p;/^lofty_connect() {/,/^}/p' connect-all.sh)"
+FUNCS="$(sed -n '/^have()/p;/^runner_fix() {/,/^}/p;/^keep_awake() {/,/^}/p;/^repo_sync_agent() {/,/^}/p;/^laya_venv() {/,/^}/p;/^laya_connect() {/,/^}/p;/^JARVIS_MODEL=/p;/^jarvis_db() {/,/^}/p;/^jarvis_engine() {/,/^}/p;/^orca_app() {/,/^}/p;/^orca_connect() {/,/^}/p;/^anydesk_app() {/,/^}/p;/^anydesk_connect() {/,/^}/p;/^gondola_mcp() {/,/^}/p;/^LOFTY_VENV=/p;/^lofty_connect() {/,/^}/p' connect-all.sh)"
 pass=0; fail=0
 check() { if [ "$2" = "$3" ]; then pass=$((pass+1)); echo "ok   $1"; else fail=$((fail+1)); echo "FAIL $1 (expected rc $3, got $2)"; fi; }
 stub_runner() { # <restart exit code> <status text after restart>
@@ -58,6 +58,26 @@ rm -rf "$T/home/Applications/laya-venv"
 check "laya: not installed, no uv/brew -> FAIL"      "$(PATH="$T/bin:/usr/bin:/bin" run_fn laya_connect)" 1
 
 # ---- 6c Orca
+
+# ---- 6a jarvis engine (ollama + model + openjarvis index)
+stub_ollama() { # <models text>  (ollama present, serving)
+  printf '#!/bin/sh\ncase "$1" in list) printf "%%s\\n" "%s" ;; pull) echo "$@" >> "%s/ollama.calls" ;; esac\nexit 0\n' "$1" "$T" > "$T/bin/ollama"; chmod +x "$T/bin/ollama"; rm -f "$T/ollama.calls"
+}
+printf '#!/bin/sh\necho "$@" >> "%s/runner.calls"\ncase "$1" in list) echo "openjarvis ok" ;; run) mkdir -p "%s/home/.openjarvis"; echo x > "%s/home/.openjarvis/memory.db" ;; esac\nexit 0\n' "$T" "$T" "$T" > "$T/bin/runnerctl"; chmod +x "$T/bin/runnerctl"
+rm -rf "$T/home/.openjarvis"; rm -f "$T/runner.calls"
+stub_ollama "NAME ID
+llama3.1:8b abc"
+check "jarvis: model present, index built by the openjarvis task" "$(run_fn jarvis_engine)" 0
+grep -q "^run openjarvis" "$T/runner.calls";                     check "jarvis: runnerctl run openjarvis used"      "$?" 0
+grep -qiE "login|save-token" "$T/runner.calls";                  check "jarvis: never logs in"                      "$?" 1
+[ ! -f "$T/ollama.calls" ];                                      check "jarvis: model not pulled twice"             "$?" 0
+stub_ollama "NAME ID"
+check "jarvis: index present -> no runner call"      "$(rm -f "$T/runner.calls"; run_fn jarvis_engine)" 0
+grep -q "^pull llama3.1:8b" "$T/ollama.calls";                   check "jarvis: missing model is pulled"            "$?" 0
+[ ! -f "$T/runner.calls" ] || ! grep -q "^run" "$T/runner.calls"; check "jarvis: existing index not rebuilt"         "$?" 0
+rm -f "$T/bin/ollama"
+check "jarvis: no ollama and no brew -> FAIL"        "$(PATH="$T/bin:/usr/bin:/bin" run_fn jarvis_engine)" 1
+
 export ORCA_APP="$T/apps/Orca.app"
 printf '#!/bin/sh\necho "$@" >> "%s/open.calls"\n' "$T" > "$T/bin/open"
 printf '#!/bin/sh\necho com.stablyai.orca\n' > "$T/bin/defaults"

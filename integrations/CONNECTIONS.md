@@ -371,3 +371,28 @@ shell set (Communication → Phone & SMS, domain api.kapso.ai), auth = API key a
 Steven on Pabbly's own connection page. Triggers/actions are built only after he agrees the plan in
 `integrations/pabbly/WORKFLOWS.md` §A, and the login is proven with his key. The six built-in-app workflows (§B)
 are his clicks in Pabbly's editor; none exists yet.
+
+## Connection status — checked live 2026-10-23 00:20 UTC (Steven: "fix and install everything not setup or connected, including Orca, Jarvis and Laya")
+
+Nothing on the Mac is reachable from the cloud, so every Mac row below is what `connect-all.sh` now installs or
+checks, and what its REPORT will prove. New in the paste: 6a (Ollama + the Jarvis model + the OpenJarvis index),
+6c runs Orca's safe doctor after opening it, 6e turns on the Agent OS. 47 tests pass (`connect-all-tests.sh`).
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Jarvis engine (Ollama + llama3.1:8b + OpenJarvis `memory.db`) | not provable from the cloud; brain says 1,761 docs on the other Mac | `connect-all.sh` 6a installs Ollama (official formula), pulls the model if missing, runs the `openjarvis` runner task once when no index exists | paste |
+| Jarvis + Vanessa's voice (profile, clips, brain) | unverified until `brain/state/jarvis-status.json` exists | `connect-all.sh` 6b (`jarvis-setup.sh --apply`); the vault must be on that Mac (`docs/SECOND-MAC-SETUP.md` 6b) and the clips in `~/.cache/vanessa-voice` or `VANESSA_VOICE_DIR` | paste + Steven (vault/clips location) |
+| Laya (local router + MCP server) | not provable from the cloud | `connect-all.sh` 6 installs into `~/Applications/laya-venv`, registers `laya` with Claude Code, runs one real route | paste |
+| Orca (app + phone view) | not provable from the cloud | `connect-all.sh` 6c installs the official cask, opens it on the Repo folder, runs `orca-remote.sh doctor`; pairing is his (Orca → Add Project → scan the code with the phone app) | paste + Steven |
+| Agent OS (roster agents through Laya / Jarvis / Orca) | never run on a Mac | `connect-all.sh` 6e (`install-mac.sh --apply`: brain on PATH + config only) | paste |
+| **Mac runner** (every Mac task) | silent since 2026-10-13 until the paste runs | `connect-all.sh` step 2 restarts it; 2b keeps the Mac awake | paste |
+| Repo sync on the Mac | daily `git pull` failures until the paste runs | `scripts/repo-sync.sh` (step 1) + 30-minute LaunchAgent (1b) | paste |
+| Kapso WhatsApp (Mac) | plugin/MCP/Keychain keys pending | `connect-all.sh` steps 3–4, then `claude` → `/mcp` → kapso | paste + Steven |
+| Inkbox iMessage line | connected — no phone linked yet | text `connect @vanessa-shearrill` to +1 650 484 9720 | Steven |
+| Zoho CRM (Composio) | 403 NO_PERMISSION until the API box is ticked | tick "Zoho CRM API Access" on his Zoho profile | Steven |
+| Lofty | key not yet on the Mac | `connect-all.sh` 7b asks once (hidden), proves it read-only | paste + Steven |
+| Gondola (travel MCP) | not registered yet | `connect-all.sh` 4b; custom connector in claude.ai (`https://mcp.gondola.ai/mcp`) | paste + Steven |
+| EVRoutes · Turo | `needs_reconnect` (EVRoutes 402 again 2026-10-23) | Reconnect or remove | Steven |
+| BlackRock · Health Data Avatar · Microsoft 365 · PlayMCP · Similarweb · Higgsfield | never finished connecting | finish or remove | Steven |
+| Four http_api Sunday routines | still enabled, fail on the usage limit | 4 clicks (`docs/ROUTINE-BUDGET-2026-10-22.md`) | Steven |
+| Broker Command Center (3rd dashboard) | data lives in the browser only | move its state to its `db` (another session owns that page) | later |
