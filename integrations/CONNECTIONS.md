@@ -443,3 +443,14 @@ present, index `~/.openjarvis/memory.db` 1,828 rows, vault 850 notes, Laya MCP r
 | Orca · AnyDesk | active — installed; pairing / permissions his | STEVEN-STEPS step 4 | Steven |
 | EVRoutes · Turo | `needs_reconnect` | Reconnect or remove | Steven |
 | Four http_api Sunday routines | still enabled | 4 clicks | Steven |
+
+## Connection status — Mac 1, 2026-10-23 01:09 UTC (Steven's three pastes)
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Mac runner | connected — `runnerctl login` done 01:08 UTC; running toolkit-deck-sync + vanessa-morning-brief-text, 22 waiting; first scheduled runs resume on their own | — | — |
+| Laya real engine | connected — routed a test question in 5.6 s (cold start) after the `score_label` fix; MCP registered | — | — |
+| brain doctor (Mac) | index stale vs the Mac's own edits | `connect-all.sh` 6a2 now runs `bin/brain reindex` before 6b; one paste in STEVEN-STEPS 1b | paste |
+| Jarvis voice clips | none on the Mac | exported the deck's 8 clips to `integrations/jarvis/voice/vanessa/`; jarvis-setup looks there first | paste |
+| Kapso (Mac) | `! Needs authentication` | `claude` → `/mcp` → kapso → sign in; then the keys line | Steven |
+| Mac's own uncommitted edits | 9 files kept in place by repo-sync (brain/bench.py, brain/tests/test_brain.py, cli-anything harness files) | review on the Mac: `git -C ~/Repo status --short`; commit or discard | Steven |

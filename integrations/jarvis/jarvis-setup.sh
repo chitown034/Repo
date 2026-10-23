@@ -15,7 +15,7 @@ REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 MODE="${1:---verify}"
 STATE="$REPO/brain/state"; OUT="$STATE/jarvis-status.json"
 PROFILE="$REPO/integrations/jarvis/vanessa-voice-profile.json"
-VOICE_DIRS=("${VANESSA_VOICE_DIR:-}" "$HOME/.cache/vanessa-voice" "$HOME/Applications/team-avatars/voices")
+VOICE_DIRS=("${VANESSA_VOICE_DIR:-}" "$REPO/integrations/jarvis/voice/vanessa" "$HOME/.cache/vanessa-voice" "$HOME/Applications/team-avatars/voices")
 FAILS=0; ROWS=()
 
 case "$MODE" in --verify|--apply) ;; -h|--help) sed -n 2,13p "$0"; exit 0 ;; *) echo "unknown option $MODE (try --help)" >&2; exit 2 ;; esac

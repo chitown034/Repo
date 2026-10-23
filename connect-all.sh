@@ -239,6 +239,11 @@ jarvis_engine() {
 step "6a Jarvis engine (Ollama + $JARVIS_MODEL, OpenJarvis index)" \
   "Jarvis: if the report says 'no Jarvis index yet', run  runnerctl run openjarvis  once (uses Claude allowance), or rerun with JARVIS_BUILD_INDEX=1; the vault must be on this Mac (docs/SECOND-MAC-SETUP.md 6b)" jarvis_engine
 
+# 6a2. Brain index refresh: the Mac's own edits make brain/index.json stale against the tree (doctor FAIL on the first
+#      report), and 6b runs doctor. reindex writes only brain/index.json + INDEX.md (rebuilt files; never pushed).
+step "6a2 Brain index refresh (bin/brain reindex, local only)" "Brain: run  bin/brain reindex  then  bin/brain doctor" \
+  bin/brain reindex
+
 # 6b. Jarvis + the recorded voice clips + the brain: verifies OpenJarvis memory.db, the vault, the real Laya engine
 #     (from Laya's own venv), Vanessa's clips and bin/brain doctor; writes brain/state/jarvis-status.json, which is
 #     how the brain (bin/brain loop / orgcheck) knows Jarvis is alive.

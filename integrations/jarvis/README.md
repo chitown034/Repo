@@ -30,7 +30,10 @@ ask Laya for a path hint; a failure or a wait over 2 s is ignored.
 `vanessa-voice-profile.json` is the one definition. Jarvis plays or renders from **the same recorded set**
 the Command Deck and `voice-reply-render` already use (Magica Seed Audio, 8 clips). It never substitutes a
 system voice and never claims to be her voice when the clips are missing — the verify row fails instead.
-No reference clip or voice id is stored in this repo, so a **new cloned voice** is a separate decision
+**2026-10-23:** the Mac had none of her clips (both reports), so the eight audio clips the Command Deck embeds
+(openers, closers, one ack; 170 KB total, her synthetic voice, no client data) are now in
+`integrations/jarvis/voice/vanessa/` with `manifest.json` (line, kind, sha256). `jarvis-setup.sh` looks there first,
+so the "vanessa voice clips" row passes on any Mac that has the repo. No reference clip or voice id is stored, so a **new cloned voice** is a separate decision
 (provider and consent are Steven's) and is not made here. Set `VANESSA_VOICE_DIR` if the clips live
 somewhere other than `~/.cache/vanessa-voice` or `~/Applications/team-avatars/voices`.
 

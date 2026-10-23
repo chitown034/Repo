@@ -1,214 +1,163 @@
-# VibeBreaker Final Report: connect-all.sh 6a / 6c / 6e
+# VibeBreaker Final Report: laya_route.py score_label (real-engine `score` answers)
 
-change-set: a9fd68bc4df0aadb
+change-set: 1cf57c39f9d7ebf8
 
-(This is the hash of commit 6c2262a, from `bash scripts/validate-code.sh --since HEAD~1`. The working tree I first validated was
-change-set 28085daef9521edc. The caller committed it as 6c2262a at 00:26:32Z, while this review was running. The commit
-also differs from that working tree: `local i` became `local i db`. Plain `validate-code.sh` and `--mark` now report
-"nothing changed since HEAD", so `--mark` cannot record this change-set as it is.)
+(This hash comes from `bash scripts/validate-code.sh --since HEAD~1` against commit 40f4ce6. The tree is clean. Plain
+`validate-code.sh` reports "nothing changed since HEAD", and `--hash` now prints 01ba4719c80b6fe9, which is the hash of an
+empty change-set. So `--mark` will refuse this change-set as it stands. That is the same limitation recorded in the
+previous review.)
 
 ## Verdict
 
-`FIX FIRST`
+`SHIP` (VibeBreaker: `SURVIVED*`)
 
-The deterministic checks pass and 47 of 47 stubbed tests pass. Two MEDIUM issues remain. Step 6c hides a security FAIL
-from Orca's doctor and still reports "done". Step 6a starts a runner task without asking, and the repo's own guard
-list treats that as a HALT-line-1 spend.
+The fix removes the Mac `KeyError: 'label'` and leaves the stub path unchanged. The deterministic checks pass and the laya
+suite passes 23 of 23. What remains is one LOW test gap, one INFO rounding quirk and two UNVERIFIED items that depend on
+runtime facts about laya 0.3.21.
 
 ## Scope
 
-- Commit / branch: 6c2262a on claude/stoic-cori-pvn3f8 (diff HEAD~1..HEAD)
-- Mode: diff review
-- Stack: bash 3.2 shell scripts (connect-all.sh, connect-all-tests.sh). Docs are prose and were not reviewed as code.
-- Passes completed: 01, 04, 05, 11, 14, 19, 20 (the shell-script set)
-- Inspected surfaces: connect-all.sh jarvis_db / jarvis_engine / step 6a, orca_connect, step 6e, step();
-  integrations/remote-control/orca-remote.sh cmd_doctor; integrations/agent-os/install-mac.sh (whole file);
-  connect-all-tests.sh run_fn and the jarvis / orca sections; mac-bootstrap.sh HALT_GUARDS; docs/inventory/mac-task-descriptions.md
-- Excluded / unavailable context: runnerctl source and the definition of the `openjarvis` runner task (not in the repo)
-- Material scope limitation: YES. Whether `runnerctl run` blocks, and whether `openjarvis` spends Claude allowance, cannot be decided from the repo.
-
-## Deterministic checks
-
-- `bash scripts/validate-code.sh` (working tree, before the commit): `verdict: PASS (2 passed, 0 failed)`, change-set 28085daef9521edc
-- `bash scripts/validate-code.sh --since HEAD~1` (the commit): `verdict: PASS (2 passed, 0 failed)`, change-set a9fd68bc4df0aadb
-- validate-code.sh ran only `bash -n` on the .sh files. It does not run connect-all-tests.sh.
-- `bash connect-all-tests.sh`: `connect-all tests: 47 passed, 0 failed`. The brief said 55; the repo's own CONNECTIONS.md says 47, which is correct.
+- Commit / branch: 40f4ce6 on claude/stoic-cori-pvn3f8 (diff HEAD~1..HEAD, limited to integrations/laya and integrations/tests)
+- Mode: DIFF
+- Stack: Python 3 CLI, no network on the stub path
+- Passes completed: 01, 04, 05, 06, 07, 08, 12, 17, 18, 19, 20 (11 / 20)
+- Inspected surfaces: `score_label` (laya_route.py:189-201), `decide` (204-251), `main`/`run_one`/printing (254-322),
+  `_stub_score` (136-141), router-questions.json `urgency` (3 criteria), test_laya_route.py (lines 27, 60-66)
+- Excluded: docs/STEVEN-STEPS.md and integrations/CONNECTIONS.md (prose only). The installed laya 0.3.21 package was not
+  available, so I could not read its `score` answer contract directly. I relied on the caller's statement of the laya docs.
+- Material scope limitation: YES. The real engine's output was not run here.
 
 ## Scoreboard
 
-- Passes executed: 7 / 20 (shell-script set)
-- Confirmed: 4
+- Passes executed: 11 / 20
+- Confirmed: 2
 - Critical: 0
 - High: 0
-- Medium: 2
-- Low: 2
-- Info: 0
+- Medium: 0
+- Low: 1
+- Info: 1
 - Unverified: 2
-- Rejected candidates: 5
+- Rejected candidates: 6
 - First critical pass: NONE
 
 ## CONFIRMED
 
 ```yaml
+id: P19-F1
+pass: 19
+title: The crash site (decide -> urgency) has no test with a real-shaped, label-less answer
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: integrations/laya/laya_route.py
+    line: 248
+  - path: integrations/tests/test_laya_route.py
+    line: 60-66, 68-
+entry_or_trigger: someone reverts line 248 to answers["urgency"]["label"], or a refactor bypasses score_label
+evidence: The new tests call score_label() directly. The subprocess regression runs --engine stub only, and _stub_score
+  (136-141) always returns "label". No test passes decide() a predict_fn whose urgency answer has no label.
+existing_controls_checked: all 23 checks in test_laya_route.py; there is no other laya test file under integrations/tests
+failure_scenario: If line 248 is reverted, all 23 checks still pass, and the Mac crashes again with KeyError 'label' on
+  the first ROUTE row.
+impact: The exact production regression this commit fixes can come back while CI stays green.
+remediation_direction: Add one test that calls decide() with a fake predict_fn. It should return choice, noul and
+  confidence answers plus urgency = {"score": 1.8, "legend": {"0": ..., "1": ..., "2": ...}, "probabilities": {...},
+  "confidence": 0.7} and no label.
+verification: The test asserts decide(...)["urgency"] == the legend["2"] text. It must fail if line 248 is reverted.
+needs_context: null
+```
+
+```yaml
 id: P05-F1
 pass: 05
-title: Step 6c swallows orca-remote doctor's security FAIL lines and still reports "done"
+title: Python round() uses banker's rounding, so exact half scores round inconsistently
 status: CONFIRMED
-severity: MEDIUM
+severity: INFO
 confidence: HIGH
 location:
-  - path: connect-all.sh
-    line: 266-267
-  - path: integrations/remote-control/orca-remote.sh
-    line: 225-231 (bad lines for --grant-desktop-control and a non-private --pairing-address), 233 (return 1)
-entry_or_trigger: bash connect-all.sh on a Mac where an `orca serve --grant-desktop-control` process, or an orca serve advertising a public address, is running
-evidence: The doctor exits 1 and prints "FAIL orca serve pid N was started with --grant-desktop-control". orca_connect pipes the doctor into `tail -n 8` and then runs `return 0`. step() sends all function output to $LOG.
-existing_controls_checked: step() captures only the return code of orca_connect. Nothing reads the doctor's exit code or output.
-failure_scenario: An Orca runtime is serving with desktop control, or on a public address. The screen shows "== 6c ... == done", 6c appears in the PASS list, and the FAIL is only in the log file.
-impact: The one remote-control safety check this step adds never reaches Steven.
-remediation_direction: Keep the doctor advisory for "orca not on PATH", but return 1 (or add a NEEDS line) when its output contains the grant-desktop-control or non-private-address FAIL. A plain `|| return 1` would turn 6c red whenever the Orca CLI is not installed.
-verification: Add a test with a stub `ps` that prints "123 orca serve --grant-desktop-control" and assert orca_connect returns 1. Keep the existing "orca: opened on the Repo folder" test at rc 0 with no serve process.
-needs_context: null
-```
-
-```yaml
-id: P14-F1
-pass: 14
-title: 6a runs `runnerctl run openjarvis` without its own yes, which the repo's guard list classes as HALT line 1
-status: CONFIRMED (spec conflict; whether it costs anything is NEEDS-CONTEXT)
-severity: MEDIUM
-confidence: MEDIUM
-location:
-  - path: connect-all.sh
-    line: 228-230
-  - path: mac-bootstrap.sh
-    line: 57 ("running or restarting a runner task spends allowance (CLAUDE.md HALT line 1)"), 70 (guard *runnerctl run *)
-entry_or_trigger: connect-all.sh answered y on a Mac with no ~/.openjarvis/memory.db and an `openjarvis` entry in `runnerctl list`
-evidence: The only consent is the opening "[y/N] ... It never signs in, pairs, sends or pays", and then the task runs. The claude-runner inventory entry says runner tasks run headlessly through `claude -p`.
-existing_controls_checked: context/decisions.md approves `runnerctl restart` for connect-all (2026-10-13 entry). No entry approves `runnerctl run`. Steven's 2026-10-23 directive, "fix and install everything ... including Jarvis", may cover it, but it does not name a task run.
-failure_scenario: The step spends Claude allowance (if openjarvis goes through claude -p) under a prompt that promises it never pays. It also does the exact thing mac-bootstrap.sh refuses to do.
-impact: Policy and HALT consistency. A possible spend of allowance.
-remediation_direction: Steven decides. Either record that connect-all may run openjarvis once (a decisions.md entry), or replace the run with a printed `runnerctl run openjarvis` instruction and return 1.
-verification: A test that asserts the runner.calls file has no "run" line unless an explicit opt-in variable is set.
-needs_context: The openjarvis runner task definition (does it call claude -p or a model at all?)
-```
-
-```yaml
-id: P05-F2
-pass: 05
-title: The model-present check is a prefix regex, so a different tag counts as llama3.1:8b
-status: CONFIRMED
-severity: LOW
-confidence: HIGH
-location:
-  - path: connect-all.sh
-    line: 225
-entry_or_trigger: `ollama list` shows only `llama3.1:8b-instruct-q8_0` (or any tag that starts with llama3.1:8b, or "llama3x1:8b" because "." matches any character)
-evidence: grep -q "^$JARVIS_MODEL" matches a prefix, and the "." is unescaped
-existing_controls_checked: none. The pull is skipped.
-failure_scenario: The step prints "model llama3.1:8b present" and passes, but the exact tag OpenJarvis asks for is absent.
-impact: False PASS in the report. Jarvis fails later, outside this step.
-remediation_direction: Match the first column exactly, for example `ollama list | awk 'NR>1{print $1}' | grep -qxF "$JARVIS_MODEL"`, and treat a bare name as name:latest.
-verification: A stub_ollama "NAME ID\nllama3.1:8b-instruct-q8_0 x" test that asserts pull.calls contains "pull llama3.1:8b".
-needs_context: null
-```
-
-```yaml
-id: P14-F2
-pass: 14
-title: The 6e comment understates what install-mac.sh --apply writes
-status: CONFIRMED
-severity: LOW
-confidence: HIGH
-location:
-  - path: connect-all.sh
-    line: 305-306
-  - path: integrations/agent-os/install-mac.sh
-    line: 40-45 (also its own header, lines 8-9)
-entry_or_trigger: step 6e
-evidence: The comment says "--apply only writes ~/.local/bin/brain (symlink) and ~/.config/agent-os/config". --apply also symlinks every integrations/agent-os/agents/*.md into ~/.claude/agents and never overwrites existing files. Without --apply it writes brain/state/agent-os-status.json, which is gitignored.
-existing_controls_checked: Existing agent files are never overwritten, and nothing edits a live prompt.
-failure_scenario: Steven is told two files change. In fact new Claude Code agent definitions appear in ~/.claude/agents.
-impact: Honesty of the safety statement. The links can be removed.
-remediation_direction: Correct the comment in connect-all.sh and the header of install-mac.sh, or put the agent-link step behind its own flag.
-verification: Diff review. Optionally, a test that runs install-mac.sh --apply with HOME set to a temp dir and lists what it created.
+  - path: integrations/laya/laya_route.py
+    line: 196
+entry_or_trigger: a real-engine urgency score of exactly 0.5 or 1.5
+evidence: Probe output. score 0.5 -> "not urgent" (level 0) but 1.5 -> "blocking" (level 2). score 2.5 is clamped to 2.
+existing_controls_checked: clamp at line 197; the test only covers 0.4 and 1.8
+failure_scenario: For a score halfway between two levels, the reported label rounds down at 0.5 and up at 1.5.
+impact: Display only. urgency is printed (line 306-307) and emitted with --json. Nothing in this file branches on it.
+  An exactly representable .5 from an expected-value float is uncommon.
+remediation_direction: Use math.floor(score + 0.5) for consistent round-half-up, or document that ties go to the even level.
+verification: score_label({"score": 0.5, legend3}) == "soon" and score_label({"score": 1.5, legend3}) == "blocking"
 needs_context: null
 ```
 
 ## UNVERIFIED
 
-- U1: does `runnerctl run openjarvis` block until the index is written? connect-all.sh:230-231 checks for memory.db straight away. If the run only queues the task, 6a reports "ran but wrote no memory.db", and a rerun queues a second index build. Needs the runnerctl source or `runnerctl --help`.
-- U2: no timeout on `runnerctl run openjarvis` (connect-all.sh:230). If the task hangs, as the runner hung on fabric-deck-sync on 2026-10-13, connect-all stops at 6a with nothing on screen. This needs the same runnerctl facts as U1.
+- P05-F2: A non-finite or null `score` raises an exception at laya_route.py:196. Probe results: NaN gives ValueError,
+  inf gives OverflowError, and None gives TypeError. Neither decide() nor run_one (279-283) catches it, so one bad row
+  ends a whole --batch run. That is the same class of failure as the original KeyError. Missing context: whether laya
+  0.3.21 can ever emit a NaN, inf or null `score`, for example when its probabilities are degenerate. Suggested fix:
+  check `isinstance(score, (int, float)) and math.isfinite(score)` before rounding, and otherwise fall through to the
+  probabilities branch.
+- P17-F1: When `legend` is missing or empty, line 199-200 returns the argmax probability key. In laya that key is an
+  index ("1"), not level text, and the branch ignores `score`. urgency then prints "1" instead of "soon". Missing context:
+  whether the real engine ever omits `legend`. Suggested fix: pass the question's `criteria` list into score_label as a
+  fallback legend.
 
 ## REJECTED
 
-- C1: `db` unbound under set -u. Rejected: the commit declares `local i db` (connect-all.sh:213), and `db` is always assigned before it is read.
-- C2: the bash 3.2 constructs in the new code. Rejected: only `local`, `$(( ))`, `[ ]` and printf are used. No arrays, `[[ =~ ]]`, `${x,,}` or `mapfile`.
-- C3: a login, save-token, pairing or key print anywhere in 6a, 6c or 6e. Rejected: cmd_doctor is read-only (`orca --version` and `orca status`, `ps`, socketfilterfw --getglobalstate). install-mac.sh logs in nowhere. The "never logs in" test passes.
-- C4: the "no ollama and no brew" test passes for the wrong reason. Rejected: PATH is $T/bin:/usr/bin:/bin, $T/bin has no ollama or brew, so the `have brew` branch returns 1.
-- C5: 6e's failure is hidden. Rejected: install-mac.sh ends with `[ "$BAD" -eq 0 ]`, so failures reach step() as rc 1.
+- P05-R1: legend keyed by int instead of str. Line 198 tries str(idx) and then idx. The probe with {0:"a",1:"b"} and score 1.2 returned "b".
+- P05-R2: empty legend crashes. `legend` is falsy, so line 195 skips the branch and line 199 or 201 returns. The probe returned "1" (see P17-F1) and test `score_label({})` returns "unknown".
+- P05-R3: out-of-range score. The clamp at line 197 works. The probe gave -0.7 -> level 0 and 3.9 -> level 2 (with 3 levels).
+- P05-R4: non-contiguous legend keys (e.g. {"1","2","5"}) clamp to the wrong index. This is outside the contract: the legend comes from the criteria list, indexed 0..n-1 (router-questions.json urgency has 3 criteria).
+- P18-R1: the real engine might also lack `noul`, `choice` or `confidence`. The Mac crash happened at urgency. Python evaluates pii_gate (211), brain_route (214-216), tier (235) and lane (245) before urgency (248), so those keys existed in the real output.
+- P17-R2: the stub path might have changed. `"label" in ans` is checked first (line 192) and returns the stub's label unchanged. The stub subprocess batch still prints 20 rows: 15 routed, 5 escalated, 2 pii fired.
 
-## Coverage (inspected and clean)
+## Coverage
 
-- jarvis_db: `-s` makes an empty file count as missing, which is deliberate; the paths match jarvis-setup.sh:35.
-- jarvis_engine: honest return 1 on every early exit (no brew, brew install fails, not on PATH, not answering after 20 s, pull fails, run fails, no db afterwards, no task). Ollama start falls back from brew services to open -a to nohup serve.
-- step 6e: it fails honestly, and the --apply writes stay local to $HOME.
-- orca_connect: the existing open, bundle-id and install paths are unchanged. The doctor is read-only.
-- connect-all-tests.sh: the FUNCS sed extracts JARVIS_MODEL, jarvis_db and jarvis_engine. The 8 new jarvis checks are meaningful.
+Clean:
+- Pass 01: no new untrusted-input surface. score_label reads model output only.
+- Pass 04: the PII withholding at 219-223 is untouched, and urgency text is level text, not request text.
+- Passes 06, 07, 08, 12: no concurrency, resources, data access or retries in this diff.
+- Pass 17: the urgency field type is still str on both engines.
+- Pass 18: printing (306-307) and --json (298-299) consume urgency as an opaque string.
+- The surgical-change check passes: 15 lines added in one helper and one call site, with no unrelated edits.
 
-## Top missing tests (pass 19)
+Deterministic results:
+- `bash scripts/validate-code.sh --since HEAD~1` printed `verdict: PASS (2 passed, 0 failed)` for change-set 1cf57c39f9d7ebf8.
+- `python3 integrations/tests/test_laya_route.py` printed `23 ok, 0 failed`.
 
-1. orca_connect with a stub ps that shows `orca serve --grant-desktop-control`: rc must be 1 (P05-F1).
-2. jarvis_engine with only `llama3.1:8b-instruct-q8_0` listed: a pull of llama3.1:8b must happen (P05-F2).
-3. jarvis_engine where the runnerctl run stub writes no memory.db: rc 1 and the "wrote no memory.db" message.
-4. jarvis_engine with runnerctl present but no openjarvis task: rc 1 and runner.calls has no "run" line.
-5. jarvis_engine where `ollama pull` exits 1: rc 1.
-6. jarvis_engine where `ollama list` always fails and FAKESLEEP=: is set: rc 1 after the wait loop, and brew services / open are tried.
-7. jarvis_engine with no ollama and brew present: `brew install ollama` is the only brew call (the formula, not a cask).
-8. Step 6e: install-mac.sh --apply with HOME set to a temp dir creates only the documented paths (P14-F2).
-9. The orca tests stub orca-remote.sh, or point it at a temp dir, so the real doctor does not run against the host.
-10. validate-code.sh runs connect-all-tests.sh when connect-all.sh changes. Today it only runs `bash -n`.
+## Top missing tests
+
+1. decide() with a fake label-less real-shaped predict_fn returns legend text for urgency (P19-F1).
+2. score_label with score 0.5 and 1.5 pins the tie behaviour (P05-F1).
+3. score_label with an int-keyed legend.
+4. score_label clamps -0.7 to level 0 and 3.9 to the last level.
+5. score_label with an empty legend plus probabilities documents the fallback value (P17-F1).
+6. score_label with a NaN or None score must not raise once guarded (P05-F2).
+7. A full --batch run through decide() with a real-shaped fake engine prints 20 rows with no exception.
 
 ## Share card
 
 ```text
 VIBE//BREAKER
 
-VERDICT: FIX FIRST
-PASSES: 7/20 (shell set)
+VERDICT: SURVIVED*
+PASSES: 11/20
 CRITICAL: 0
 HIGH: 0
-CONFIRMED: 4
+CONFIRMED: 2
 UNVERIFIED: 2
 FIRST BREAK: NONE
 ```
 
 ## Release note
 
-What was shown: the scripts parse, the 47 stubbed tests pass, and the new code never logs in, never saves a token, never
-pairs and never prints a key. It is safe under set -u and bash 3.2. What was not shown: anything on a real Mac (Ollama,
-Homebrew, runnerctl, Orca), how runnerctl run behaves or what it costs, or whether OpenJarvis really writes memory.db
-at the paths checked.
+This review shows that the fix handles the score/legend shape described in the laya docs, and that the stub path is
+unchanged. It does not show what laya 0.3.21 emits at runtime. That still needs one `--engine real` run on Steven's Mac.
 
-## Resolution 2026-10-23 00:40 UTC — change-set `aebfcebf753596c2`
+## Resolution 2026-10-23 01:20 UTC — change-set `be85a299e57a5e57` (laya score_label hardening, reindex step, voice clips)
 
-All four confirmed findings were fixed in connect-all.sh and covered by new stubbed tests (51 pass):
-
-1. Orca doctor (6c): a `--grant-desktop-control` or non-private-address failure now fails the step (test: stub `ps`).
-2. `runnerctl run openjarvis` (6a) runs only with `JARVIS_BUILD_INDEX=1`; otherwise the step fails and names the
-   command, because the index build is a runner task that spends Claude allowance (HALT line 1). Test: runner.calls has
-   no `run` line without the opt-in.
-3. Model check matches the exact tag (`awk NR>1 | grep -qxF`); test: a `-instruct-q8_0` tag alone still pulls `llama3.1:8b`.
-4. The 6e comment and install-mac.sh's header now say the agent files are symlinked into ~/.claude/agents.
-
-Not decidable in the cloud (unchanged): whether `runnerctl run` blocks or queues, and what OpenJarvis writes — the
-first Mac REPORT answers both. Steven decides: the opt-in index run; agent symlinks in ~/.claude/agents (kept: it never
-overwrites a file there).
-
-## Resolution 2026-10-23 01:05 UTC — change-set `3975aa9d8d110660` (report text, b332251 + this fix)
-
-Second validator pass on the report block: SHIP, one LOW finding (P05-F1: line 0 claimed the runner was signed out
-whenever step 2 failed). Fixed: `runner_fix` sets `RUNNER_OUT=1` only on the logged-out branch; line 0 says "signed
-out" only then, and otherwise points at the step-2 log lines. Tests: logged-out sets the flag, a failed restart does
-not, and runner_fix never runs login/save-token (54 pass). Noted, not fixed here: the gate hashes the working-tree diff
-even with `--since`, so an already-committed change-set cannot be marked (own task).
+Validator verdict on 40f4ce6: SHIP, one LOW (no test at the crash site) + INFO (half rounding) + two unverified
+(NaN score, missing legend). All four addressed: `score_label` floors score+0.5, ignores non-finite scores, falls back
+to the question's criteria then probabilities; `decide()` passes the criteria; a real-shaped engine test exercises the
+crash site (28 ok). Mac proof 01:09 UTC: `--engine real` routed. Also in this change-set: connect-all 6a2 (`bin/brain
+reindex`, the Mac doctor FAIL cause), jarvis-setup reads `integrations/jarvis/voice/vanessa` (8 exported deck clips).

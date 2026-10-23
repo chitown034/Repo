@@ -19,14 +19,9 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
    folder, runs its doctor), AnyDesk, the Agent OS, the seven Claude mods (new: `/cycle`, `/inbox`,
    `/meetings`, `/today`, `/tc`, `/queue <task>`, `/sync`, `/connect` and a status line that says when the repo is behind).
    It never signs in, pairs, sends or pays.
-1b. **After the second REPORT (2026-10-23 01:01 UTC): mods are on; Jarvis's engine, index (1,828 rows) and vault (850 notes)
-   are live; Laya's crash (`KeyError: 'label'`) is fixed in the repo. Three short pastes finish the Mac side, in order:**
-   `runnerctl login && runnerctl status` — the runner is still signed out; nothing on the Mac runs until this.
-   `cd ~/Repo && bash scripts/repo-sync.sh && ~/Applications/laya-venv/bin/python integrations/laya/laya_route.py --engine real "What is the VA funding fee for a first-time use?" && bin/brain doctor`
-   → paste the output to Claude (Laya's real answer, and why `brain doctor` fails on this Mac).
-   `find ~ -maxdepth 6 \( -iname '*vanessa*' -o -iname '*seed*audio*' \) \( -name '*.mp3' -o -name '*.wav' -o -name '*.m4a' \) 2>/dev/null | head`
-   → if it prints a folder, tell Claude; Jarvis's "voice clips" row needs `VANESSA_VOICE_DIR` pointed at it. If it prints
-   nothing, her 8 clips live only in the Command Deck store and Claude exports them to `~/.cache/vanessa-voice` next.
+1b. **Runner is signed in (2026-10-23 01:09 UTC); Laya's real engine answers; mods on.** One paste proves the rest of
+   Jarvis (brain index refreshed, her 8 voice clips now in the repo) — paste the last lines back:
+   `cd ~/Repo && bash scripts/repo-sync.sh && bin/brain reindex && bin/brain doctor && bash integrations/jarvis/jarvis-setup.sh --apply`
 1c. **Kapso on the Mac:** `claude` → `/mcp` → kapso → sign in (free sandbox); then
    `bash integrations/kapso/install-mac.sh keys --allow <your mobile>` (hidden prompt, Keychain only).
 2. **Vanessa's iMessage line (30 seconds, from your phone):** Inkbox is reconnected. Send the text
