@@ -202,6 +202,7 @@ routine.**
 | 6:25 AM weekdays | Vanessa's Chief-of-Staff cycle — works `vanessaQueue` first, ≤8 pod squads in parallel | cosBrief, vanessaQueue, twinQueue, ISA `isaToday` | the deck + ISA `vanessaOutbox` |
 | 6:34 AM daily | Morning brief across the three dashboards — push + `morningBrief {text, voiceScript}` | morningBrief, morningBriefStatus | cosBrief, tcDesk, inboxDesk, ISA Portal |
 | 6:40 AM daily (Mac) | iMessage text of that brief + Vanessa's voice note (`mac-task-specs` §8/§8b) | — | morningBrief |
+| 3:30 AM daily | 6D Brain rebuild + republish (reindex, loop, toolkit, layers, build, merge-live, publish, proof row) | brain6dStatus, dashboard/brain-4d.html, docs/reports/LAYERS.md | the repo tree, the live 6D page |
 | 7:20 AM Mon | Refi watch — prep list vs the market average (never a quote) | refiWatchDesk, vanessaQueue | ratesSnapshot, refiWatchList | Test-fired 2026-10-22 23:14 UTC: wrote refiWatchDesk (listSize 0, market average as of 2026-10-22) and one pending vanessaQueue item; refiWatch untouched. |
 | 7:40 AM, 11th monthly | Sphere & past-client touches — drafts + ISA call list | sphereTouches, marketingQueue, vanessaQueue | sphereList, liveFeeds market notes |
 | 8:40 AM daily (15:40 UTC) | Freshness sweep — per-key cadence (8 d / 4 d / 80 h / 26 h) + ISA mirror | liveFeeds, feedFreshness, ISA ratesSnapshot/liveFeeds | — |
