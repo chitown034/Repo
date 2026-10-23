@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- View tags holding a tile's two parallax springs (Parallax), so a new lean or a settle can cancel them. -->
+    <item name="parallax_x" type="id" />
+    <item name="parallax_y" type="id" />
+</resources>

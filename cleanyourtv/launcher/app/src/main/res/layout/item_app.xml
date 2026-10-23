@@ -47,6 +47,16 @@
             android:textSize="13sp"
             android:fontFamily="@string/font_body"
             android:visibility="gone" />
+
+        <!-- tile_sheen: a soft band of light that sweeps once across the tile when it takes focus. -->
+        <View
+            android:id="@+id/sheen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0"
+            android:background="@drawable/tile_sheen"
+            android:visibility="gone"
+            android:importantForAccessibility="no" />
     </FrameLayout>
 
     <TextView

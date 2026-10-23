@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One key of Search's letter row. -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="46dp"
+    android:layout_height="46dp"
+    android:layout_marginEnd="2dp"
+    android:gravity="center"
+    android:background="@drawable/search_key_bg"
+    android:textColor="@drawable/pill_text"
+    android:drawableTint="@drawable/pill_text"
+    android:textSize="21sp"
+    android:fontFamily="@string/font_regular"
+    android:includeFontPadding="false"
+    android:focusable="true"
+    android:clickable="true" />

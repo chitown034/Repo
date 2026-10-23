@@ -73,6 +73,10 @@ is ignored, and a file that doesn't parse is ignored as a whole, so a theme can 
 | `advanced_effects` | bool | Optional lifted tile, icon zoom, smooth ambient colour and app opening effects; false by default |
 | `show_home_settings_shortcut` | bool | Keep the optional Default-home tile visible when the TV has a home picker; false by default |
 | `show_stats` | bool | One line under the clock with CPU, free memory and free storage. Off unless set |
+| `spotlight_search` | bool | A Search pill at the start of the top bar; it, the remote's Search key and typing a letter on a paired keyboard open a tvOS-style search over every installed app, best match first. On by default in this fork |
+| `control_center` | bool | A Control Center pill before Settings: a glass sheet with the time, the connection and tiles for picture, sound, network, Bluetooth, inputs, the screensaver, Search and settings. On by default in this fork |
+| `tile_parallax` | bool | The tile focus lands on leans a few degrees the way focus moved, then springs flat (with `advanced_effects`, not with `reduced_motion`). On by default in this fork |
+| `tile_sheen` | bool | A band of light sweeps once across a tile as it takes focus (with `advanced_effects`, not with `reduced_motion`). On by default in this fork |
 | `handle_view_inputs` | bool | Answer the system input switcher (`VIEW_INPUTS`, what the remote's Input button becomes) with the Inputs menu, for sets whose stock launcher was its only handler (Hisense huangshan); `false` by default so a TV with its own input picker never gets a chooser |
 | `background_color` | `#RRGGBB` | Colour behind everything; black by default |
 | `sky_intensity` | 0 to 100 | Time-of-day backdrop: a dark gradient that follows the clock, 0 hides it (default) |

@@ -255,6 +255,12 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     /** fill_dock false: how many dock slots held an app when reorder mode started. */
     private int dockedAtStart;
     private View btnReorder;
+    /** Search pill (spotlight_search), first in the top bar when shown. */
+    private View btnSearch;
+    /** spotlight_search: the Search pill, the remote's Search key and typing on Home open SearchActivity. */
+    private boolean spotlightSearch;
+    /** tile_parallax with advanced effects: the tile focus lands on leans the way focus moved. */
+    private boolean tileParallax;
     /** dock_apps as loaded (config.xml or a theme): a saved Order only applies while these are unchanged. */
     private List<String> dockApps;
     /** fill_dock false: the dock can have empty slots, which reorder mode leaves out and restores afterwards. */
@@ -359,6 +365,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         animations = cfg.animations;
         advancedEffects = cfg.animations && cfg.advancedEffects;
         reducedMotion = cfg.reducedMotion;
+        spotlightSearch = cfg.spotlightSearch;
+        tileParallax = advancedEffects && cfg.tileParallax && !reducedMotion;
         dockRow = cfg.dockRow;
         focusOvershoot = cfg.focusOvershoot;
         festival = cfg.festival;
@@ -606,6 +614,12 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             libraryFromTopBar = true;   // closing it goes back to this button, not to the pill after the last row
         });
         btnLibraryTop.setVisibility(cfg.libraryButton && cfg.appLibrary ? View.VISIBLE : View.GONE);
+        btnSearch = findViewById(R.id.btnSearch);
+        btnSearch.setOnClickListener(v -> openSearch(null));
+        btnSearch.setVisibility(spotlightSearch ? View.VISIBLE : View.GONE);
+        View btnControl = findViewById(R.id.btnControl);
+        btnControl.setOnClickListener(v -> open(new Intent(this, ControlCenterActivity.class)));
+        btnControl.setVisibility(cfg.controlCenter ? View.VISIBLE : View.GONE);
         iconOnlyButtons = cfg.iconOnlyButtons;
         topMenu = cfg.topMenu;
         wifiIconOnly = iconOnlyButtons && cfg.wifiLabelWidth <= 0;
@@ -649,7 +663,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
                 focusTile(lastFocused % COLUMNS);
                 return true;
             }
-            int firstButton = btnInputs.getVisibility() == View.VISIBLE ? R.id.btnInputs : firstTopButton().getId();
+            int firstButton = btnSearch.getVisibility() == View.VISIBLE ? R.id.btnSearch
+                    : btnInputs.getVisibility() == View.VISIBLE ? R.id.btnInputs : firstTopButton().getId();
             int leftButton = rtlMenuBar ? R.id.btnSettings : firstButton;
             int rightButton = rtlMenuBar ? firstButton : R.id.btnSettings;
             if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) return v.getId() == leftButton;
@@ -660,8 +675,10 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         btnSettings.setOnKeyListener(pillKeys);
         btnReorder.setOnKeyListener(pillKeys);
         btnLibraryTop.setOnKeyListener(pillKeys);
+        btnSearch.setOnKeyListener(pillKeys);
+        btnControl.setOnKeyListener(pillKeys);
         if (advancedEffects) {
-            for (View button : new View[]{btnInputs, btnWifi, btnReorder, btnLibraryTop, btnSettings}) {
+            for (View button : new View[]{btnSearch, btnInputs, btnWifi, btnReorder, btnLibraryTop, btnControl, btnSettings}) {
                 button.setOnFocusChangeListener((view, focused) -> view.animate()
                         .scaleX(focused ? 1.04f : 1f).scaleY(focused ? 1.04f : 1f)
                         .setDuration(reducedMotion ? Motion.REDUCED_MS : 160).start());
@@ -1110,6 +1127,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (handleSettingsKey(event)) return true;
+        if (handleSearchKey(event)) return true;
         if (tileMenuEnabled && !reordering && openPopup == null && cardPrompt == null
                 && event.getKeyCode() == KeyEvent.KEYCODE_MENU) {
             int position = focusedTilePosition();
@@ -1156,6 +1174,29 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             return true;
         }
         return super.dispatchKeyEvent(event);   // arrows navigate; OK on a top-bar pill works as usual
+    }
+
+    /**
+     * spotlight_search: the remote's Search key opens Search, and a letter typed on a keyboard paired with the TV
+     * opens it with that letter already in. Only on Home itself: not while reordering or with a menu open.
+     */
+    private boolean handleSearchKey(KeyEvent event) {
+        if (!spotlightSearch || reordering || openPopup != null || cardPrompt != null) return false;
+        int code = event.getKeyCode();
+        boolean letter = code >= KeyEvent.KEYCODE_A && code <= KeyEvent.KEYCODE_Z && !event.isCtrlPressed()
+                && !event.isAltPressed() && !event.isMetaPressed();
+        if (code != KeyEvent.KEYCODE_SEARCH && !letter) return false;
+        if (event.getAction() == KeyEvent.ACTION_UP && !event.isCanceled()) {
+            openSearch(letter ? String.valueOf((char) ('A' + code - KeyEvent.KEYCODE_A)) : null);
+        }
+        return true;
+    }
+
+    private void openSearch(String firstLetter) {
+        Intent i = new Intent(this, SearchActivity.class);
+        if (firstLetter != null) i.putExtra(SearchActivity.EXTRA_QUERY, firstLetter);
+        open(i);
+        if (animations && !reducedMotion) overridePendingTransition(android.R.anim.fade_in, 0);
     }
 
     /** Adapter position of the focused tile, or -1 when focus is not on a tile. */
@@ -1450,6 +1491,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
 
     @Override
     public void onTileFocused(int position, View card) {
+        if (tileParallax && glassShown) Parallax.nudge(card, Parallax.tilt(lastFocused, position, COLUMNS, rtlAppGrid));
         lastFocused = position;
         lastFocusedKey = adapter.keyAt(position);
         // Focus restored before the first layout (cold start): the tile has no size yet, and the glass

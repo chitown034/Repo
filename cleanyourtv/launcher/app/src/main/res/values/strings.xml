@@ -145,4 +145,24 @@
     <!-- Cinematic top shelf (cinematic_home): the line under the focused dock app's name; %1$s is when it was
          last opened, e.g. "5 minutes ago" or "yesterday, 9:40 pm". -->
     <string name="last_opened">Last opened %1$s</string>
+    <!-- Search (spotlight_search): the title, the empty query's placeholder, and what the row of tiles shows. -->
+    <string name="search">Search</string>
+    <string name="search_hint">Apps</string>
+    <string name="search_top_hits">Top hits</string>
+    <string name="search_recent">Recently opened</string>
+    <string name="search_all_apps">All apps</string>
+    <string name="search_no_results">No apps match</string>
+    <string name="search_space">Space</string>
+    <string name="search_delete">Delete</string>
+    <!-- Control Center (control_center): the sheet's title, its network line and its tiles. -->
+    <string name="control_center">Control Center</string>
+    <string name="cc_wifi_on">Connected over Wi-Fi</string>
+    <string name="cc_ethernet_on">Connected over Ethernet</string>
+    <string name="cc_offline">Not connected</string>
+    <string name="cc_picture">Picture</string>
+    <string name="cc_sound">Sound</string>
+    <string name="cc_network">Network</string>
+    <string name="cc_bluetooth">Bluetooth</string>
+    <string name="cc_screensaver">Screensaver</string>
+    <string name="cc_home">Home settings</string>
 </resources>

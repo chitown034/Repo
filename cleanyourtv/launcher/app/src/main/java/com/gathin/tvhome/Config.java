@@ -185,6 +185,14 @@ final class Config {
     final boolean handleViewInputs;
     /** Hold OK on a tile opens a menu (Move, Remove from Home, App info) instead of App info (config.xml / theme tile_menu). */
     final boolean tileMenu;
+    /** Search pill, Search key and type-to-search (config.xml spotlight_search). */
+    final boolean spotlightSearch;
+    /** Control Center pill (config.xml control_center). */
+    final boolean controlCenter;
+    /** Focused tile leans the way focus moved (config.xml tile_parallax); only with advanced effects. */
+    final boolean tileParallax;
+    /** Light sweeps across a tile as it takes focus (config.xml tile_sheen); only with advanced effects. */
+    final boolean tileSheen;
 
     private Config(List<String> dockApps, boolean fillDock, List<String> hiddenApps, List<String> libraryApps, String liveTvPackage,
                    String liveTvAction, String liveTvInputId, Map<String, String> launchActions, Map<String, String> appLabels,
@@ -198,7 +206,12 @@ final class Config {
                    Festival festival, int[] inputKeycodes, List<String> appKeys, String stockHomeRedirect,
                    List<RaceWeekend.Race> raceCalendar, boolean cinematicHome, boolean ambientGlow, boolean appGlow, int homeIdleClockMinutes,
                    boolean keyFilter, boolean dockGlass, String glowStyle, boolean wallpaperCaptions,
-                   boolean handleViewInputs, boolean tileMenu, boolean dockEvenPadding) {
+                   boolean handleViewInputs, boolean tileMenu, boolean dockEvenPadding,
+                   boolean spotlightSearch, boolean controlCenter, boolean tileParallax, boolean tileSheen) {
+        this.spotlightSearch = spotlightSearch;
+        this.controlCenter = controlCenter;
+        this.tileParallax = tileParallax;
+        this.tileSheen = tileSheen;
         this.handleViewInputs = handleViewInputs;
         this.tileMenu = tileMenu;
         this.inputKeycodes = inputKeycodes;
@@ -329,6 +342,10 @@ final class Config {
         String vpn = res.getString(R.string.vpn_app).trim();
         boolean homeSettings = res.getBoolean(R.bool.show_home_settings_shortcut);
         boolean showStats = res.getBoolean(R.bool.show_stats);
+        boolean spotlightSearch = res.getBoolean(R.bool.spotlight_search);
+        boolean controlCenter = res.getBoolean(R.bool.control_center);
+        boolean tileParallax = res.getBoolean(R.bool.tile_parallax);
+        boolean tileSheen = res.getBoolean(R.bool.tile_sheen);
         boolean library = res.getBoolean(R.bool.app_library);
         int background = 0xFF000000;
         int skyIntensity = res.getInteger(R.integer.sky_intensity);
@@ -399,6 +416,10 @@ final class Config {
             vpn = string(json, "vpn_app", vpn);
             homeSettings = bool(json, "show_home_settings_shortcut", homeSettings);
             showStats = bool(json, "show_stats", showStats);
+            spotlightSearch = bool(json, "spotlight_search", spotlightSearch);
+            controlCenter = bool(json, "control_center", controlCenter);
+            tileParallax = bool(json, "tile_parallax", tileParallax);
+            tileSheen = bool(json, "tile_sheen", tileSheen);
             library = bool(json, "app_library", library);
             background = color(json, "background_color", background);
             skyIntensity = integer(json, "sky_intensity", skyIntensity, 0, 100);
@@ -470,7 +491,8 @@ final class Config {
                 Math.max(0, Math.min(100, skyIntensity)), settingsKeycodes, settingsKeyPanel, restoreKeyServices, wallpaperEnabled, wallpaper,
                 wallpapers, rotationMinutes, wallpaperDim, dockOpacity, wallpaperOrder, applied,
                 festival, inputKeycodes, appKeys, stockHomeRedirect, json == null ? Collections.emptyList() : raceCalendar(json), cinematic, ambientGlow, appGlow,
-                Math.max(0, idleClockMinutes), keyFilter, dockGlass, glowStyle, wallpaperCaptions, handleViewInputs, tileMenu, dockEvenPadding);
+                Math.max(0, idleClockMinutes), keyFilter, dockGlass, glowStyle, wallpaperCaptions, handleViewInputs, tileMenu, dockEvenPadding,
+                spotlightSearch, controlCenter, tileParallax, tileSheen);
     }
 
     /**

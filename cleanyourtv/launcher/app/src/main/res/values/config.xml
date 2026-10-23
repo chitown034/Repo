@@ -289,6 +289,24 @@
          "show_stats": true. Nothing is read, and the clock does not move, while this is false. -->
     <bool name="show_stats">false</bool>
 
+    <!-- Search: a magnifier pill at the start of the top bar, the remote's Search key and typing on a paired
+         keyboard open a tvOS-style search over every installed app (SearchActivity), ranked as Spotlight does.
+         Nothing is indexed or sent anywhere. A theme can set "spotlight_search": false to drop the pill. -->
+    <bool name="spotlight_search">true</bool>
+
+    <!-- Control Center: a pill before Settings opens a glass sheet with the time, the connection and tiles for
+         picture, sound, network, Bluetooth, inputs, the screensaver, Search and settings (ControlCenterActivity).
+         A theme can set "control_center": false. -->
+    <bool name="control_center">true</bool>
+
+    <!-- tvOS parallax: the tile focus lands on leans a few degrees the way focus moved, then springs flat.
+         Needs animations and advanced_effects; reduced_motion turns it off. Theme key "tile_parallax". -->
+    <bool name="tile_parallax">true</bool>
+
+    <!-- A band of light sweeps once across a tile as it takes focus, like light catching glass. Needs animations
+         and advanced_effects; reduced_motion turns it off. Theme key "tile_sheen". -->
+    <bool name="tile_sheen">true</bool>
+
     <!-- Time-of-day backdrop behind everything: a dark gradient that follows the clock, with a warm
          horizon glow around sunrise and sunset. 0 keeps the plain background (the default); 1 to 100
          sets its opacity. Around 60 reads clearly without hiding a wallpaper. Can also be set with

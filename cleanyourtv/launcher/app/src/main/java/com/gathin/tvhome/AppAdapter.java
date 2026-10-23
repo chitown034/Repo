@@ -202,6 +202,8 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final boolean reducedMotion;
     /** The focus zoom may overshoot (config.xml, focus_overshoot). */
     private final boolean focusOvershoot;
+    /** Light sweeps across a tile as it takes focus (config.xml tile_sheen), with advanced effects only. */
+    private final boolean sheen;
     /** Package to the action its tile sends instead of the start screen (config.xml, launch_actions). */
     private final Map<String, String> launchActions;
     /** Hold OK opens the activity's tile menu (config.xml, tile_menu); false opens App info, as before. */
@@ -224,6 +226,7 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.showLibrary = cfg.appLibrary;
         this.reducedMotion = cfg.reducedMotion;
         this.focusOvershoot = cfg.focusOvershoot;
+        this.sheen = advancedEffects && cfg.tileSheen && !cfg.reducedMotion;
         this.rowsBelowDock = cfg.rowsBelowDock;
         this.dockTitle = cfg.dockTitle;
         this.dockRow = cfg.dockRow;
@@ -402,7 +405,7 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             v.setPadding(v.getPaddingLeft(), pad, v.getPaddingRight(), pad);
         }
         name.setLayoutParams(nameLp);
-        return new Holder(v, listener, animations, advancedEffects, reducedMotion, restNameAlpha, focusOvershoot);
+        return new Holder(v, listener, animations, advancedEffects, reducedMotion, restNameAlpha, focusOvershoot, sheen);
     }
 
     @Override
@@ -687,9 +690,11 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         /** Alpha of the name while the tile is not focused (always_show_names). */
         final float restNameAlpha;
         final boolean overshoot;
+        /** tile_sheen's band of light, or null when it is off. */
+        final View sheen;
 
         Holder(View v, TileListener listener, boolean animations, boolean advancedEffects,
-               boolean reducedMotion, float restNameAlpha, boolean overshoot) {
+               boolean reducedMotion, float restNameAlpha, boolean overshoot, boolean sheenOn) {
             super(v);
             card = v.findViewById(R.id.card);
             cardBackground = card.getBackground();
@@ -702,6 +707,9 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             this.reducedMotion = reducedMotion;
             this.restNameAlpha = restNameAlpha;
             this.overshoot = overshoot;
+            View band = v.findViewById(R.id.sheen);
+            if (sheenOn) band.setVisibility(View.VISIBLE);
+            this.sheen = sheenOn ? band : null;
 
             final float density = v.getResources().getDisplayMetrics().density;
             card.setOutlineProvider(new ViewOutlineProvider() {
@@ -725,6 +733,9 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 view.animate().cancel();
                 banner.animate().cancel();
                 name.animate().cancel();
+                // tile_parallax: a tile that lost focus mid-lean goes straight back flat.
+                if (!focused) Parallax.settle(view);
+                if (sheen != null) sweep(sheen, focused);
                 float scale = !animations ? 1f : advancedEffects ? 1.12f : 1.10f;
                 float s = focused ? scale : 1f;
                 if (!animations) {
@@ -771,6 +782,21 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     listener.onTileFocused(pos, view);
                 }
             });
+        }
+
+        /** tile_sheen: once across the tile, from beyond its left edge to beyond its right, then gone. */
+        private static void sweep(View band, boolean focused) {
+            band.animate().cancel();
+            int w = ((View) band.getParent()).getWidth();
+            if (!focused || w == 0) {
+                band.setAlpha(0f);
+                return;
+            }
+            band.setTranslationX(-w);
+            band.setAlpha(1f);
+            band.animate().translationX(w).setStartDelay(90).setDuration(720)
+                    .setInterpolator(new DecelerateInterpolator(1.2f))
+                    .withEndAction(() -> band.setAlpha(0f)).start();
         }
     }
 }
