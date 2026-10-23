@@ -204,3 +204,11 @@ All four confirmed findings were fixed in connect-all.sh and covered by new stub
 Not decidable in the cloud (unchanged): whether `runnerctl run` blocks or queues, and what OpenJarvis writes — the
 first Mac REPORT answers both. Steven decides: the opt-in index run; agent symlinks in ~/.claude/agents (kept: it never
 overwrites a file there).
+
+## Resolution 2026-10-23 01:05 UTC — change-set `3975aa9d8d110660` (report text, b332251 + this fix)
+
+Second validator pass on the report block: SHIP, one LOW finding (P05-F1: line 0 claimed the runner was signed out
+whenever step 2 failed). Fixed: `runner_fix` sets `RUNNER_OUT=1` only on the logged-out branch; line 0 says "signed
+out" only then, and otherwise points at the step-2 log lines. Tests: logged-out sets the flag, a failed restart does
+not, and runner_fix never runs login/save-token (54 pass). Noted, not fixed here: the gate hashes the working-tree diff
+even with `--since`, so an already-committed change-set cannot be marked (own task).

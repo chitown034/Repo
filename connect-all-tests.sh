@@ -4,7 +4,7 @@ set -u
 cd "$(dirname "$0")" || exit 1
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
 mkdir -p "$T/bin" "$T/home"
-FUNCS="$(sed -n '/^have()/p;/^runner_fix() {/,/^}/p;/^keep_awake() {/,/^}/p;/^repo_sync_agent() {/,/^}/p;/^laya_venv() {/,/^}/p;/^laya_connect() {/,/^}/p;/^JARVIS_MODEL=/p;/^jarvis_db() {/,/^}/p;/^jarvis_engine() {/,/^}/p;/^orca_app() {/,/^}/p;/^orca_connect() {/,/^}/p;/^anydesk_app() {/,/^}/p;/^anydesk_connect() {/,/^}/p;/^gondola_mcp() {/,/^}/p;/^LOFTY_VENV=/p;/^lofty_connect() {/,/^}/p' connect-all.sh)"
+FUNCS="$(sed -n '/^have()/p;/^RUNNER_OUT=/p;/^runner_fix() {/,/^}/p;/^keep_awake() {/,/^}/p;/^repo_sync_agent() {/,/^}/p;/^laya_venv() {/,/^}/p;/^laya_connect() {/,/^}/p;/^JARVIS_MODEL=/p;/^jarvis_db() {/,/^}/p;/^jarvis_engine() {/,/^}/p;/^orca_app() {/,/^}/p;/^orca_connect() {/,/^}/p;/^anydesk_app() {/,/^}/p;/^anydesk_connect() {/,/^}/p;/^gondola_mcp() {/,/^}/p;/^LOFTY_VENV=/p;/^lofty_connect() {/,/^}/p' connect-all.sh)"
 pass=0; fail=0
 check() { if [ "$2" = "$3" ]; then pass=$((pass+1)); echo "ok   $1"; else fail=$((fail+1)); echo "FAIL $1 (expected rc $3, got $2)"; fi; }
 stub_runner() { # <restart exit code> <status text after restart>
@@ -25,6 +25,9 @@ stub_runner 0 "logged in; idle";            check "hung runner is restarted and 
 stub_runner 1 "logged in; idle";            check "failed restart lands in FAIL"            "$(run_fn runner_fix)" 1
 stub_runner 0 "not running";                check "runner still stopped lands in FAIL"      "$(run_fn runner_fix)" 1
 stub_runner 0 "not logged in";              check "logged-out runner lands in FAIL"         "$(run_fn runner_fix)" 1
+run_fn 'RUNNER_OUT=0; runner_fix; echo "flag=$RUNNER_OUT"' >/dev/null; grep -q "flag=1" "$T/out"; check "logged-out runner sets RUNNER_OUT" "$?" 0
+stub_runner 1 "logged in; idle"; run_fn 'RUNNER_OUT=0; runner_fix; echo "flag=$RUNNER_OUT"' >/dev/null; grep -q "flag=0" "$T/out"; check "failed restart does not claim sign-out" "$?" 0
+grep -qE "login|save-token" "$T/out"; check "runner_fix never runs login or save-token" "$?" 1
 
 printf '#!/bin/sh\n[ "$1" = list ] && echo "{ \\"PID\\" = 42; }"\nexit 0\n' > "$T/bin/launchctl"; chmod +x "$T/bin/launchctl"
 check "keep-awake loads and is confirmed by PID"    "$(run_fn keep_awake)" 0

@@ -96,6 +96,7 @@ step "1b Keep the Repo folder caught up (every 30 minutes)" \
 # 2. the runner - silent on the dashboard since 2026-10-13. Its last report (2026-10-13 07:13 UTC) says it was
 #    logged in, not backing off, and stuck "running" fabric-deck-sync - so "restart only if stopped" never fired.
 #    It now always restarts once: that ends a hung task (tasks re-run at their next slot) and never logs in.
+RUNNER_OUT=0
 runner_fix() {
   have runnerctl || { echo "runnerctl not installed - run ./mac-bootstrap.sh --only runner"; return 1; }
   runnerctl status 2>&1 | tee -a "$LOG" | tail -15
@@ -107,7 +108,7 @@ runner_fix() {
     echo "runner is still not running after the restart"; return 1
   fi
   if runnerctl status 2>&1 | grep -qiE 'logged out|not logged in|login required'; then
-    echo "RUNNER IS LOGGED OUT - only you can sign it in: run  runnerctl login  yourself"; return 1
+    RUNNER_OUT=1; echo "RUNNER IS LOGGED OUT - only you can sign it in: run  runnerctl login  yourself"; return 1
   fi
   runnerctl list >/dev/null 2>&1
 }
@@ -363,7 +364,11 @@ say ""; say "================ REPORT ================"
 [ -n "$FAIL" ] && say "Did not finish:$(printf "$FAIL")"
 say ""
 say "Still yours (a script must never do these):"
-say "  0. If step 2 above did not finish, the runner is signed out: run  runnerctl login  (yours only), then  runnerctl status"
+if [ "$RUNNER_OUT" = 1 ]; then
+say "  0. The runner is signed out (step 2): run  runnerctl login  (yours only), then  runnerctl status"
+elif printf '%s' "$FAIL" | grep -q "2 Mac runner"; then
+say "  0. Step 2 (runner) stopped for a reason other than sign-in - the log names it: grep -A 12 '== 2 Mac runner' $LOG"
+fi
 say "  1. Kapso sign-in: run  claude  , type  /mcp  , choose kapso, sign in or create the free account. Then message"
 say "     (202) 474-5223 from your phone - save it as 'Vanessa (WhatsApp)'. Say 'read my WhatsApp' in Claude Code."
 say "  2. Vanessa's iMessage line: from your phone text  connect @vanessa-shearrill  to +1 650 484 9720 (once)."
