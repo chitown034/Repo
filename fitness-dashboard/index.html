@@ -83,7 +83,10 @@ header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; b
 button:focus-visible, input:focus-visible, select:focus-visible, .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 main { padding-block: 28px 64px; }
-section.panel { display: grid; gap: 28px; }
+section.panel { display: grid; gap: 28px; grid-template-columns: minmax(0, 1fr); }
+section.panel > *, .card > *, #ratios > * { min-width: 0; }
+.card, #ratios { grid-template-columns: minmax(0, 1fr); }
+#ratios { display: grid; gap: 10px; }
 .panel-head { display: grid; gap: 6px; max-width: 78ch; }
 .panel-head p { color: var(--ink-2); }
 
@@ -689,6 +692,151 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
   </div>
 </section>
 
+<!-- EXERCISE LIBRARY -->
+<section class="panel" id="p-library" data-tab="library" data-label="Exercise library" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Exercise encyclopedia</span>
+    <h2>Every major lift, by body part</h2>
+    <p>Each entry lists the target muscles, how to perform it, and the cue or mistake that matters most. Filter by body part or equipment, or search by name or muscle. Pick 1–2 compound lifts per body part, then 1–3 isolation movements that hit the muscle from a different angle or at a different length.</p>
+  </div>
+  <div class="toolbar">
+    <div class="seg" id="lib-part"></div>
+  </div>
+  <div class="toolbar">
+    <div class="seg" id="lib-eq"></div>
+    <input class="search" id="lib-search" type="search" placeholder="Search exercises or muscles" aria-label="Search exercises">
+  </div>
+  <p class="small muted" id="lib-count"></p>
+  <div class="grid g3" id="lib-grid"></div>
+</section>
+
+<!-- BODYBUILDING -->
+<section class="panel" id="p-bb" data-tab="bb" data-label="Bodybuilding" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Bodybuilding</span>
+    <h2>Principles, history, posing &amp; contest prep</h2>
+    <p>The methods bodybuilders refined from Muscle Beach to the modern Olympia, and how they hold up against today's sports science. Use the intensity techniques sparingly: they work as tools for breaking plateaus, not as an everyday routine.</p>
+  </div>
+
+  <div class="toolbar"><h3>Training principles &amp; intensity techniques</h3><div class="seg" id="tech-filter"></div></div>
+  <div class="grid g3" id="tech-grid"></div>
+
+  <div class="grid g2">
+    <div class="card">
+      <h3>Weak-point training</h3>
+      <p class="small muted">Classic bodybuilding wisdom: the physique is judged as a whole, so the weakest body part sets the ceiling. Fix it with the <strong>priority principle</strong>: train it first in the session, first in the week, with extra volume and frequency.</p>
+      <div class="table-wrap" style="border:0"><table><thead><tr><th>Weak area</th><th>Fix with</th></tr></thead><tbody id="weak-rows"></tbody></table></div>
+    </div>
+    <div class="card">
+      <h3>Golden Era vs. modern evidence</h3>
+      <div class="table-wrap" style="border:0"><table><thead><tr><th>Golden Era practice</th><th>Modern view</th></tr></thead><tbody>
+        <tr><td>Twice-a-day "double split," 6 days a week, 20+ sets per body part</td><td>Works for elite, enhanced or full-time athletes. Most naturals grow best on 10–20 hard sets per muscle per week, split over 2 sessions.</td></tr>
+        <tr><td>Train each body part 2–3× a week</td><td>Supported: frequency of 2+ per muscle beats 1× when volume is equal.</td></tr>
+        <tr><td>"Shock" the muscle with constant variety</td><td>Partly true. Some variation helps, but consistent exercises let you measure progressive overload.</td></tr>
+        <tr><td>Mind-muscle connection</td><td>Supported: an internal focus increases muscle activation and growth on isolation work.</td></tr>
+        <tr><td>Very high protein, 6 meals a day</td><td>1.6–2.2 g/kg daily is enough. 3–5 protein feedings works as well as 6.</td></tr>
+        <tr><td>Cheat reps and forced reps</td><td>Useful finishers. They add fatigue quickly, so use them on the last set only.</td></tr>
+        <tr><td>Full stretch, full contraction</td><td>Supported: training at long muscle lengths drives notable hypertrophy.</td></tr>
+      </tbody></table></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>A short history of bodybuilding</h3>
+    <div class="timeline" id="history"></div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card">
+      <h3>Mandatory poses</h3>
+      <p class="small muted">Men's bodybuilding, IFBB-style. Classic Physique, Physique, Figure and Bikini divisions use fewer poses and quarter turns.</p>
+      <div id="poses"></div>
+    </div>
+    <div class="card">
+      <h3>Posing &amp; presentation</h3>
+      <ul class="clean small">
+        <li>Practice posing daily for 8–12 weeks out, building to 30–60 minutes. Holding poses is exhausting and also acts as extra cardio.</li>
+        <li>Rehearse transitions, not just the poses. Judges are watching you between poses too.</li>
+        <li>Flex from the feet up: legs locked, then vacuum the waist, then the upper body.</li>
+        <li>Learn the stomach vacuum: exhale fully and pull the navel toward the spine. It creates the classic V-taper.</li>
+        <li>Choose a routine (60–90 s free posing) and music that show off your strengths.</li>
+        <li>Film yourself under bright overhead lighting; stage lights flatten detail.</li>
+        <li>Competition tan: 2–3 coats builds contrast. Pale skin hides muscle definition under stage lights.</li>
+        <li>Relaxed pose isn't relaxed: you stay tight, just not in a full flex.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card">
+      <h3>Contest prep timeline</h3>
+      <div class="timeline" id="prep"></div>
+    </div>
+    <div class="card">
+      <h3>Peak week</h3>
+      <p class="small muted">The final 7 days manipulate carbs, water and sodium to look fuller and drier. Risky protocols (extreme water cuts, diuretics) cause cramping, flat muscles, and hospital visits. Modern coaches favor small, practiced changes.</p>
+      <div class="table-wrap" style="border:0"><table><thead><tr><th>Day</th><th>Carbs</th><th>Water / sodium</th><th>Training</th></tr></thead><tbody>
+        <tr><td class="mono">−7 to −5</td><td>Normal or slightly lower</td><td>Normal, consistent</td><td>Last heavy sessions, moderate volume</td></tr>
+        <tr><td class="mono">−4 to −3</td><td>Lower (deplete, optional)</td><td>High water (5–8 L), normal sodium</td><td>Higher-rep full-body depletion</td></tr>
+        <tr><td class="mono">−2 to −1</td><td>Load: 6–10 g/kg, low-fiber sources</td><td>Water tapers slightly; keep sodium steady</td><td>Light pump work, posing only</td></tr>
+        <tr><td class="mono">Show day</td><td>Small carb + fat meals; sip water</td><td>Small sips; little sodium before pump-up</td><td>15–20 min pump-up with bands before stage</td></tr>
+      </tbody></table></div>
+      <p class="note">Flat? Add carbs. Spilled over and smooth? Hold carbs and walk. Do a practice peak 4–6 weeks out.</p>
+    </div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card">
+      <h3>Mental training</h3>
+      <div class="kv">
+        <dt>Visualization</dt><dd>Picture the physique you're building and each muscle growing as you train. Golden Era champions credited this habit heavily.</dd>
+        <dt>Mind in the muscle</dt><dd>Feel the target muscle stretch and contract on every rep, rather than just moving the weight.</dd>
+        <dt>Goal ladders</dt><dd>One long-term vision, yearly targets (bodyweight, lifts, measurements), and monthly checkpoints.</dd>
+        <dt>Training log</dt><dd>Record every set. What gets measured gets progressed.</dd>
+        <dt>Instinct principle</dt><dd>Experienced lifters adjust volume and exercise choice by feel. Earn it with years of logging first.</dd>
+        <dt>Prep mindset</dt><dd>Diet fatigue is normal. Plan post-show eating before the show to prevent rebound binges.</dd>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Common injuries &amp; prevention</h3>
+      <div class="table-wrap" style="border:0"><table><thead><tr><th>Injury</th><th>Common cause</th><th>Prevention</th></tr></thead><tbody>
+        <tr><td>Pec tear</td><td>Heavy bench, low reps, especially when enhanced</td><td>Controlled eccentrics, avoid ego singles, warm up thoroughly</td></tr>
+        <tr><td>Biceps tendon rupture</td><td>Mixed-grip deadlift, heavy negatives</td><td>Double overhand or straps; elbow extended but not hyperextended</td></tr>
+        <tr><td>Shoulder impingement</td><td>Too much pressing, little pulling</td><td>2:1 pull-to-push ratio, face pulls, external rotations</td></tr>
+        <tr><td>Lower back strain</td><td>Rounded deadlifts, fatigue</td><td>Brace (360° breath), hinge pattern, stop sets before form breaks</td></tr>
+        <tr><td>Elbow tendinopathy</td><td>Skull-crushers, heavy curls, high volume</td><td>Vary grips, use cables, slow eccentric rehab</td></tr>
+        <tr><td>Knee pain</td><td>Sudden volume jumps, poor tracking</td><td>Progress gradually, knees over toes is fine, strengthen quads and hips</td></tr>
+        <tr><td>Hamstring strain</td><td>Sprinting, heavy RDLs when fatigued</td><td>Nordic curls, warm-up sprints, eccentric strength</td></tr>
+      </tbody></table></div>
+      <p class="note">Sharp pain, numbness, or swelling: stop and see a professional. For most strains, gentle loaded movement (not total rest) speeds recovery.</p>
+    </div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card">
+      <h3>Divisions</h3>
+      <div class="kv">
+        <dt>Open Bodybuilding</dt><dd>Maximum size, symmetry and conditioning. No weight cap.</dd>
+        <dt>Classic Physique</dt><dd>Golden-Era aesthetics. Height-to-weight caps, a smaller waist, and posing trunks.</dd>
+        <dt>212 / 202</dt><dd>Bodybuilding with a weight limit.</dd>
+        <dt>Men's Physique</dt><dd>Board shorts, upper-body and V-taper focus. Legs are not judged.</dd>
+        <dt>Women's Bodybuilding / Physique</dt><dd>Muscle size and definition with mandatory poses.</dd>
+        <dt>Figure</dt><dd>Shoulder-to-waist sweep, quarter turns, moderate muscularity.</dd>
+        <dt>Wellness</dt><dd>Fuller lower body: glutes and thighs emphasized.</dd>
+        <dt>Bikini</dt><dd>Lean, athletic shape, stage presence, lower muscularity.</dd>
+        <dt>Natural federations</dt><dd>Drug-tested (polygraph and urinalysis): WNBF, OCB, INBA/PNBA, and others.</dd>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Symmetry &amp; the classical ideal</h3>
+      <p class="small muted">Golden Era physiques were judged against Greek statue proportions. Steve Reeves popularized the ratios below.</p>
+      <div id="ratios"></div>
+    </div>
+  </div>
+
+  <div class="callout bad"><strong>Performance-enhancing drugs:</strong> anabolic steroids, SARMs, and other drugs carry serious risks: heart enlargement, worse cholesterol, infertility, liver damage, mood changes, and early death in competitive bodybuilders. Many are illegal without a prescription. Natural lifters should set expectations against natural physiques: gaining about 0.5–1 kg of muscle a month is excellent progress in year one, and progress slows sharply after that.</div>
+</section>
+
 <!-- BODY TYPES -->
 <section class="panel" id="p-body" data-tab="body" data-label="Body types" hidden>
   <div class="panel-head">
@@ -906,7 +1054,11 @@ function readProfile() {
   store.set("profile", S);
 }
 $$(".unit-toggle button").forEach(b => b.addEventListener("click", () => {
-  readProfile(); S.units = b.dataset.unit; store.set("profile", S); fillProfile(); renderAll();
+  readProfile();
+  const wr = $("#wrist"), wv = wr ? fromDispL(parseFloat(wr.value)) : NaN;
+  S.units = b.dataset.unit; store.set("profile", S); fillProfile();
+  if (wr && Number.isFinite(wv)) { wr.value = round(toDispL(wv), 1); renderRatios(); }
+  renderAll();
 }));
 
 /* ---------- core calculations ---------- */
@@ -1343,6 +1495,233 @@ function renderSupps() {
   $("#supp-rows").innerHTML = SUPPS.filter(s => suppFilter === "all" || s[1] === suppFilter).map(s => `<tr><td><strong>${esc(s[0])}</strong></td><td>${grade(s[1])}</td><td>${esc(s[2])}</td><td class="mono small">${esc(s[3])}</td><td class="muted small">${esc(s[4])}</td></tr>`).join("");
 }
 
+/* ---------- exercise library ---------- */
+// [name, part, equipment, muscles, how, key cue / mistake, type]
+const LIB = [
+  ["Barbell bench press", "Chest", "Barbell", "Pecs, front delts, triceps", "Lie with eyes under the bar, shoulder blades pinched and down, feet planted. Lower the bar to the mid-chest, elbows about 45–70° from the torso, then press up and slightly back.", "Keep the shoulder blades retracted all set; flaring elbows to 90° stresses the shoulders.", "Compound"],
+  ["Incline barbell press", "Chest", "Barbell", "Upper (clavicular) pecs, front delts", "Bench at 30–45°. Lower to the upper chest just below the collarbones, press over the shoulders.", "Steeper than 45° turns it into a shoulder press.", "Compound"],
+  ["Decline bench press", "Chest", "Barbell", "Lower pecs, triceps", "Bench declined 15–30° with legs locked. Lower to the lower chest.", "Short range of motion; use a spotter because re-racking is awkward.", "Compound"],
+  ["Dumbbell bench press", "Chest", "Dumbbell", "Pecs, front delts, triceps", "Press dumbbells from chest level, palms forward or angled; let them travel slightly inward at the top.", "Deeper stretch than barbell; control the bottom.", "Compound"],
+  ["Incline dumbbell press", "Chest", "Dumbbell", "Upper pecs, front delts", "Bench at 30°; lower dumbbells to the outer upper chest with a deep stretch.", "A staple for upper-chest development.", "Compound"],
+  ["Dumbbell fly", "Chest", "Dumbbell", "Pecs (stretch emphasis)", "Arms slightly bent, open them in a wide arc until you feel a stretch across the chest, then hug back up as if around a barrel.", "Don't turn it into a press; keep the elbow angle fixed.", "Isolation"],
+  ["Cable crossover", "Chest", "Cable", "Pecs, inner/lower chest", "From high pulleys, step forward, and sweep hands down and together in front of the hips; squeeze 1 s.", "Constant tension; cross hands slightly for peak contraction.", "Isolation"],
+  ["Pec deck / machine fly", "Chest", "Machine", "Pecs", "Seat so handles are at chest height; bring arms together with a slight bend.", "Control the stretch; don't let the weight stack slam.", "Isolation"],
+  ["Weighted dip (chest)", "Chest", "Bodyweight", "Lower pecs, triceps, front delts", "Lean the torso forward, elbows out slightly, lower until the shoulders are just below the elbows.", "Stop if the front of the shoulder pinches; go only as deep as is comfortable.", "Compound"],
+  ["Push-up", "Chest", "Bodyweight", "Pecs, triceps, delts, core", "Hands just outside the shoulders, body in a rigid plank, chest to fist height off the floor.", "Progress via deficits, tempo, weighted vests, or feet elevated.", "Compound"],
+  ["Machine chest press", "Chest", "Machine", "Pecs, triceps", "Handles at mid-chest; press without locking out hard.", "Great for safe training to failure without a spotter.", "Compound"],
+  ["Dumbbell pullover", "Chest", "Dumbbell", "Lats, pecs, serratus", "Across a bench, hold one dumbbell over the chest and lower it behind the head with slightly bent arms, then pull back.", "A Golden Era classic for 'expanding the rib cage.' It works lats and pecs, though it won't actually change rib-cage size in adults.", "Isolation"],
+
+  ["Pull-up / chin-up", "Back", "Bodyweight", "Lats, biceps, rear delts, mid-back", "From a dead hang, drive the elbows down toward the hips until the chin clears the bar. Overhand = pull-up; underhand = chin-up (more biceps).", "Full hang at the bottom; avoid kipping for hypertrophy.", "Compound"],
+  ["Wide-grip pull-up", "Back", "Bodyweight", "Lats (width), teres major", "Grip 1.5× shoulder width; pull the chest toward the bar.", "Classic for building a wide V-taper.", "Compound"],
+  ["Lat pulldown", "Back", "Cable", "Lats, biceps", "Thighs pinned, slight lean back, pull the bar to the upper chest driving the elbows down.", "Don't yank with momentum or pull behind the neck.", "Compound"],
+  ["Barbell bent-over row", "Back", "Barbell", "Lats, rhomboids, traps, rear delts, erectors", "Hinge to about 45°, pull the bar to the lower ribs/navel, squeeze the shoulder blades.", "Keep the back neutral; excessive body English turns it into a shrug.", "Compound"],
+  ["T-bar row", "Back", "Barbell", "Mid-back thickness, lats", "Straddle a landmine bar, hinge, and row the handle to the chest.", "Classic for back thickness; a chest-supported version spares the lower back.", "Compound"],
+  ["One-arm dumbbell row", "Back", "Dumbbell", "Lats, rhomboids", "Brace one hand on a bench, row the dumbbell toward the hip in an arc.", "Let the shoulder stretch forward at the bottom for full range.", "Compound"],
+  ["Seated cable row", "Back", "Cable", "Mid-back, lats", "Sit tall, pull the handle to the stomach, squeeze shoulder blades, return with a forward stretch.", "Keep the torso mostly still.", "Compound"],
+  ["Chest-supported row", "Back", "Machine", "Rhomboids, mid-traps, lats", "Chest on an incline pad, row with dumbbells or a machine.", "Removes lower-back fatigue; ideal for high volume.", "Compound"],
+  ["Deadlift", "Back", "Barbell", "Posterior chain: erectors, glutes, hamstrings, traps, grip", "Bar over mid-foot, hips hinge, shins touch the bar, lats tight; push the floor away, lock out with the glutes.", "Brace before every rep; never round the lower back under load.", "Compound"],
+  ["Rack pull", "Back", "Barbell", "Upper back, traps, erectors", "Deadlift from pins at knee height.", "Overloads the lockout; a classic way to build trap and upper-back thickness.", "Compound"],
+  ["Straight-arm pulldown", "Back", "Cable", "Lats", "Arms nearly straight, sweep the bar from eye level down to the thighs.", "Great pre-exhaust before rows or pull-ups.", "Isolation"],
+  ["Hyperextension", "Back", "Bodyweight", "Erectors, glutes, hamstrings", "On a 45° bench, hinge at the hips and rise to a neutral spine.", "Don't hyperextend at the top.", "Isolation"],
+  ["Good morning", "Back", "Barbell", "Hamstrings, erectors", "Bar on the back, soft knees, hinge forward until the torso is near parallel.", "Start light; a high-leverage lift for the lower back.", "Compound"],
+  ["Inverted row", "Back", "Bodyweight", "Mid-back, lats, biceps", "Hang under a bar or rings, body straight, pull chest to the bar.", "Lower the angle toward horizontal to make it harder.", "Compound"],
+  ["Barbell shrug", "Back", "Barbell", "Upper traps", "Hold the bar at the thighs and elevate the shoulders straight up toward the ears; pause.", "No rolling the shoulders; it adds nothing.", "Isolation"],
+
+  ["Overhead press", "Shoulders", "Barbell", "Front and side delts, triceps, upper traps", "Standing, bar on the front delts, press overhead, moving the head back then through so the bar ends over mid-foot.", "Squeeze glutes and brace; don't lean back excessively.", "Compound"],
+  ["Seated dumbbell press", "Shoulders", "Dumbbell", "Front/side delts, triceps", "Bench at 80–90°, press dumbbells from ear level overhead.", "Lower to at least ear height for full range.", "Compound"],
+  ["Arnold press", "Shoulders", "Dumbbell", "Front and side delts", "Start with palms facing you at the chin, rotate palms forward as you press overhead.", "Named after Schwarzenegger; the rotation adds front-delt range.", "Compound"],
+  ["Behind-the-neck press", "Shoulders", "Barbell", "Side and front delts", "Seated, lower the bar behind the head to ear level.", "Needs good shoulder mobility; skip it if it causes pain.", "Compound"],
+  ["Dumbbell lateral raise", "Shoulders", "Dumbbell", "Side delts", "Slight forward lean, raise dumbbells out to the sides to shoulder height, leading with the elbows.", "Lighter than you think; swinging shifts work to the traps.", "Isolation"],
+  ["Cable lateral raise", "Shoulders", "Cable", "Side delts", "Cable from low, across the body; raise out to the side.", "More tension at the bottom than dumbbells.", "Isolation"],
+  ["Front raise", "Shoulders", "Dumbbell", "Front delts", "Raise dumbbells or a plate to eye level in front of you.", "Usually unnecessary if you press a lot.", "Isolation"],
+  ["Rear-delt fly", "Shoulders", "Dumbbell", "Rear delts, rhomboids", "Bent over (or chest on an incline bench), raise the arms out wide with slightly bent elbows.", "Think 'reach wide' rather than squeezing the shoulder blades.", "Isolation"],
+  ["Reverse pec deck", "Shoulders", "Machine", "Rear delts", "Face the pec-deck pad and sweep the handles back.", "Easy to train close to failure safely.", "Isolation"],
+  ["Face pull", "Shoulders", "Cable", "Rear delts, external rotators, mid-traps", "Rope at face height, pull toward the forehead while rotating the hands back.", "Shoulder-health essential: 2–3 sets of 15–20.", "Isolation"],
+  ["Upright row", "Shoulders", "Barbell", "Side delts, traps", "Wide grip (shoulder width or more), pull the bar to lower-chest height, elbows high.", "A narrow grip and pulling to the chin increases impingement risk.", "Compound"],
+  ["Machine shoulder press", "Shoulders", "Machine", "Delts, triceps", "Handles at shoulder level; press overhead.", "Stable for high-effort sets.", "Compound"],
+
+  ["Barbell curl", "Biceps", "Barbell", "Biceps, brachialis", "Elbows pinned to the sides, curl the bar to shoulder height, lower under control.", "Heaviest curl option; a slight cheat on the last reps is the classic way to extend a set.", "Isolation"],
+  ["EZ-bar curl", "Biceps", "Barbell", "Biceps, brachialis", "As barbell curl with the angled grip.", "Easier on the wrists.", "Isolation"],
+  ["Incline dumbbell curl", "Biceps", "Dumbbell", "Biceps long head", "Bench at 45–60°, arms hanging behind the body, curl without swinging the elbows forward.", "Training at long muscle length is strongly linked to growth.", "Isolation"],
+  ["Dumbbell curl (supinating)", "Biceps", "Dumbbell", "Biceps", "Start neutral, turn palms up as you curl.", "Supination is a primary biceps function.", "Isolation"],
+  ["Hammer curl", "Biceps", "Dumbbell", "Brachialis, brachioradialis", "Neutral (thumbs-up) grip curl.", "Adds arm thickness from the side view.", "Isolation"],
+  ["Concentration curl", "Biceps", "Dumbbell", "Biceps (peak)", "Seated, elbow braced on the inner thigh, curl and squeeze at the top.", "A classic for the 'peak' and mind-muscle connection.", "Isolation"],
+  ["Preacher curl", "Biceps", "Barbell", "Biceps (short head, lower range)", "Arms over a preacher bench, curl from a full stretch.", "Control the bottom; the biceps tendon is vulnerable at full extension.", "Isolation"],
+  ["Cable curl", "Biceps", "Cable", "Biceps", "Low pulley, constant-tension curls.", "Good for drop sets and burns.", "Isolation"],
+  ["Spider curl", "Biceps", "Dumbbell", "Biceps short head", "Chest down on an incline bench, arms hanging straight down, curl.", "Max tension at peak contraction.", "Isolation"],
+
+  ["Close-grip bench press", "Triceps", "Barbell", "Triceps, pecs", "Hands shoulder-width, elbows tucked, lower to the lower chest.", "Heaviest triceps compound.", "Compound"],
+  ["Lying triceps extension (skull-crusher)", "Triceps", "Barbell", "Triceps (long head)", "Lying, lower an EZ bar toward the forehead or behind the head, then extend.", "Lowering behind the head stretches the long head more and is easier on the elbows.", "Isolation"],
+  ["Overhead triceps extension", "Triceps", "Dumbbell", "Triceps long head", "Hold a dumbbell overhead with both hands and lower behind the head.", "Long head is 2/3 of the triceps' size; overhead work builds it best.", "Isolation"],
+  ["Cable pushdown", "Triceps", "Cable", "Triceps lateral head", "Elbows pinned, push the bar or rope down to full lockout.", "Rope: spread the ends at the bottom.", "Isolation"],
+  ["Triceps dip", "Triceps", "Bodyweight", "Triceps, chest", "Upright torso on parallel bars, lower to 90° at the elbow, press up.", "Bench dips are easier but strain the shoulder; parallel bars are better.", "Compound"],
+  ["Dumbbell kickback", "Triceps", "Dumbbell", "Triceps", "Hinged forward, upper arm parallel to the floor, extend the elbow fully.", "Light weight, full lockout squeeze.", "Isolation"],
+  ["Diamond push-up", "Triceps", "Bodyweight", "Triceps, chest", "Hands together under the chest forming a diamond.", "Bodyweight triceps builder.", "Compound"],
+
+  ["Wrist curl", "Forearms", "Barbell", "Forearm flexors", "Forearms on a bench, palms up, curl the wrist.", "Let the bar roll to the fingertips for extra range.", "Isolation"],
+  ["Reverse wrist curl", "Forearms", "Barbell", "Forearm extensors", "Palms down, extend the wrist.", "Balances forearm flexors and helps elbow health.", "Isolation"],
+  ["Reverse curl", "Forearms", "Barbell", "Brachioradialis, brachialis", "Overhand grip curl.", "Builds the top of the forearm.", "Isolation"],
+  ["Farmer's carry", "Forearms", "Dumbbell", "Grip, traps, core", "Walk 20–40 m with heavy dumbbells at the sides, tall posture.", "Real-world grip and trunk strength.", "Compound"],
+  ["Dead hang", "Forearms", "Bodyweight", "Grip, shoulders (decompression)", "Hang from a bar for time.", "Aim for 60 s+ as a grip benchmark.", "Isolation"],
+
+  ["Back squat", "Quads", "Barbell", "Quads, glutes, adductors, erectors", "Bar on the upper back, brace, sit down and between the hips until thighs pass parallel, drive up.", "Knees track over toes; heels stay down. 'King of exercises' in the classics.", "Compound"],
+  ["Front squat", "Quads", "Barbell", "Quads, upper back", "Bar on the front delts, elbows high, squat upright.", "Forces an upright torso, so more quad, less back.", "Compound"],
+  ["Hack squat", "Quads", "Machine", "Quads", "Back on the pad, feet low-to-mid platform, squat deep.", "Low foot position = more quad.", "Compound"],
+  ["Leg press", "Quads", "Machine", "Quads, glutes", "Feet shoulder-width mid-platform; lower until the knees are near the chest without the hips rolling.", "Don't let the lower back peel off the pad.", "Compound"],
+  ["Leg extension", "Quads", "Machine", "Quads (rectus femoris)", "Extend the knees fully, squeeze 1 s.", "Only exercise that trains the rectus femoris shortened; also a good pre-exhaust.", "Isolation"],
+  ["Bulgarian split squat", "Quads", "Dumbbell", "Quads, glutes", "Rear foot on a bench, lower the back knee toward the floor.", "Lean forward for more glute; upright for more quad.", "Compound"],
+  ["Walking lunge", "Quads", "Dumbbell", "Quads, glutes", "Long strides, back knee near the floor each rep.", "Great finisher and conditioner.", "Compound"],
+  ["Sissy squat", "Quads", "Bodyweight", "Quads", "Rise onto the toes and lean the body back as the knees travel forward.", "A Golden Era quad-sweep exercise.", "Isolation"],
+  ["Goblet squat", "Quads", "Dumbbell", "Quads, glutes, core", "Hold a dumbbell at the chest, squat deep between the knees.", "Best squat-teaching tool.", "Compound"],
+  ["Step-up", "Quads", "Dumbbell", "Quads, glutes", "Step onto a knee-height box, drive through the front foot.", "Minimize push from the trailing leg.", "Compound"],
+
+  ["Romanian deadlift", "Hamstrings", "Barbell", "Hamstrings, glutes, erectors", "Soft knees, push the hips back sliding the bar down the thighs until a deep hamstring stretch, then stand.", "Bar stays in contact with the legs; spine neutral.", "Compound"],
+  ["Stiff-leg deadlift", "Hamstrings", "Barbell", "Hamstrings, erectors", "Nearly straight legs, hinge from the floor or a block.", "More range than RDL; keep it light.", "Compound"],
+  ["Lying leg curl", "Hamstrings", "Machine", "Hamstrings", "Face down, curl the heels to the glutes.", "Keep the hips pressed into the pad.", "Isolation"],
+  ["Seated leg curl", "Hamstrings", "Machine", "Hamstrings", "Seated, curl the pad down and back.", "Hips flexed = hamstrings lengthened, so it outgrows lying curls in studies.", "Isolation"],
+  ["Nordic hamstring curl", "Hamstrings", "Bodyweight", "Hamstrings (eccentric)", "Kneel with ankles anchored, lower the torso slowly forward.", "Proven to cut hamstring strain risk.", "Isolation"],
+  ["Glute-ham raise", "Hamstrings", "Machine", "Hamstrings, glutes", "On a GHD, extend at the knee and hip to raise the torso.", "Advanced; use band assistance to start.", "Compound"],
+
+  ["Hip thrust", "Glutes", "Barbell", "Glutes", "Upper back on a bench, bar over the hips, drive the hips up to full extension with the chin tucked.", "Pause at the top; ribs down.", "Compound"],
+  ["Glute bridge", "Glutes", "Bodyweight", "Glutes, hamstrings", "Lying on the floor, drive the hips up.", "Single-leg version for progression.", "Isolation"],
+  ["Cable kickback", "Glutes", "Cable", "Glutes", "Ankle strap, kick the leg back and slightly out.", "Avoid arching the lower back.", "Isolation"],
+  ["Hip abduction machine", "Glutes", "Machine", "Glute medius, upper glutes", "Push the knees out against the pads.", "Leaning forward hits the upper glutes more.", "Isolation"],
+  ["Sumo deadlift", "Glutes", "Barbell", "Glutes, adductors, quads", "Wide stance, hands inside the knees, push the knees out and stand.", "Shorter range than conventional.", "Compound"],
+
+  ["Standing calf raise", "Calves", "Machine", "Gastrocnemius", "Straight knees, full stretch at the bottom with a 2 s pause, rise high on the toes.", "Calves respond to full range and pauses, not bouncing.", "Isolation"],
+  ["Seated calf raise", "Calves", "Machine", "Soleus", "Knees bent at 90°, raise the heels.", "Bent knee shifts work to the soleus.", "Isolation"],
+  ["Donkey calf raise", "Calves", "Machine", "Gastrocnemius (stretch)", "Hinged forward at the hips, raise the heels.", "Golden Era favorite; the hinge stretches the gastroc.", "Isolation"],
+  ["Leg press calf raise", "Calves", "Machine", "Gastrocnemius", "Balls of the feet at the bottom of the platform, extend the ankles.", "Safe for heavy loads.", "Isolation"],
+  ["Tibialis raise", "Calves", "Bodyweight", "Tibialis anterior", "Back against a wall, lift the toes toward the shins.", "Helps balance the lower leg and shin health.", "Isolation"],
+
+  ["Hanging leg raise", "Abs", "Bodyweight", "Lower abs, hip flexors", "Hang from a bar and lift the legs, curling the pelvis up at the top.", "The pelvic curl is what works the abs.", "Isolation"],
+  ["Cable crunch", "Abs", "Cable", "Rectus abdominis", "Kneel, rope behind the head, crunch the ribs toward the pelvis.", "Round the spine; don't just hinge at the hips.", "Isolation"],
+  ["Ab wheel rollout", "Abs", "Bodyweight", "Abs (anti-extension), lats", "From the knees, roll forward keeping the ribs down.", "Stop before the lower back sags.", "Isolation"],
+  ["Plank", "Abs", "Bodyweight", "Transverse abdominis, full core", "Forearms and toes, body straight, squeeze glutes.", "Once you hit 60 s, make it harder rather than longer.", "Isolation"],
+  ["Pallof press", "Abs", "Cable", "Obliques (anti-rotation)", "Stand side-on to a cable, press the handle out and resist rotation.", "Trains core stability for lifting.", "Isolation"],
+  ["Russian twist", "Abs", "Bodyweight", "Obliques", "Seated, lean back, rotate side to side.", "Move from the ribs, not just the arms.", "Isolation"],
+  ["Decline sit-up", "Abs", "Bodyweight", "Rectus abdominis, hip flexors", "On a decline bench, curl up.", "Classic Muscle Beach staple; hold a plate for progression.", "Isolation"],
+  ["Stomach vacuum", "Abs", "Bodyweight", "Transverse abdominis", "Exhale fully, draw the navel toward the spine, hold 15–30 s.", "Classic bodybuilders' posing skill for a tight waist.", "Isolation"],
+  ["Dead bug", "Abs", "Bodyweight", "Deep core", "On the back, extend the opposite arm and leg while pressing the lower back into the floor.", "Slow and controlled.", "Isolation"]
+];
+let libPart = "All", libEq = "All", libQ = "";
+function renderLibrary() {
+  const parts = ["All", ...new Set(LIB.map(e => e[1]))], eqs = ["All", ...new Set(LIB.map(e => e[2]))];
+  $("#lib-part").innerHTML = parts.map(p => `<button type="button" class="chip" data-v="${p}" aria-pressed="${libPart === p}">${p}</button>`).join("");
+  $("#lib-eq").innerHTML = eqs.map(p => `<button type="button" class="chip" data-v="${p}" aria-pressed="${libEq === p}">${p === "All" ? "Any equipment" : p}</button>`).join("");
+  $$("#lib-part .chip").forEach(b => b.addEventListener("click", () => { libPart = b.dataset.v; renderLibrary(); }));
+  $$("#lib-eq .chip").forEach(b => b.addEventListener("click", () => { libEq = b.dataset.v; renderLibrary(); }));
+  const q = libQ.toLowerCase();
+  const list = LIB.filter(e => (libPart === "All" || e[1] === libPart) && (libEq === "All" || e[2] === libEq) && (!q || (e[0] + " " + e[3]).toLowerCase().includes(q)));
+  $("#lib-count").textContent = `${list.length} of ${LIB.length} exercises`;
+  $("#lib-grid").innerHTML = list.length ? list.map(e => `<article class="card"><div class="card-head"><h4>${esc(e[0])}</h4><span class="pill ${e[6] === "Compound" ? "p-info" : "p-good"}">${e[6]}</span></div><p class="small mono" style="color:var(--accent)">${esc(e[1])} · ${esc(e[2])}</p><dl class="kv"><dt>Muscles</dt><dd>${esc(e[3])}</dd><dt>How</dt><dd>${esc(e[4])}</dd><dt>Key cue</dt><dd class="muted">${esc(e[5])}</dd></dl></article>`).join("") : `<p class="muted">No exercises match those filters.</p>`;
+}
+
+/* ---------- bodybuilding ---------- */
+// [name, category, what, when / how to use]
+const TECH = [
+  ["Progressive overload", "Foundation", "Gradually increase load, reps, sets or density over time.", "Always. Without it nothing else matters."],
+  ["Split training", "Foundation", "Divide body parts across days so each gets more volume and recovery.", "Once full-body sessions get too long, typically after 6–12 months."],
+  ["Double split", "Foundation", "Two sessions a day (e.g. AM chest/back, PM legs).", "Golden Era staple. For advanced lifters with time and excellent recovery."],
+  ["Priority principle", "Foundation", "Train the weakest body part first, when fresh.", "Bringing up lagging parts."],
+  ["Mind-muscle connection", "Foundation", "Consciously focus on the target muscle during every rep.", "All isolation work; less useful on max-strength lifts."],
+  ["Full range of motion", "Foundation", "Full stretch to full contraction on each rep.", "Default. Emphasize the stretched position for growth."],
+  ["Instinct principle", "Foundation", "Adjust exercises, sets and rest from bodily feedback.", "Advanced lifters with years of logged training."],
+  ["Muscle confusion / shocking", "Variation", "Change exercises, order, angles or rep schemes to provide a new stimulus.", "Every 4–8 weeks or on a plateau; not every session."],
+  ["Supersets", "Intensity", "Two exercises back to back, often antagonists (biceps + triceps).", "Saves time; antagonist supersets keep performance high."],
+  ["Compound sets", "Intensity", "Two exercises for the same muscle back to back.", "Pump and density; fatiguing."],
+  ["Tri-sets", "Intensity", "Three exercises for one muscle with no rest.", "Hitting a muscle from three angles."],
+  ["Giant sets", "Intensity", "4–6 exercises in a row for one body part.", "Shock workouts, conditioning, contest prep."],
+  ["Forced reps", "Intensity", "A partner helps you complete 1–3 reps past failure.", "Last set of an exercise, occasionally."],
+  ["Cheat reps", "Intensity", "Controlled body English to get past a sticking point after strict reps fail.", "Last reps of curls, laterals, rows. Never on squats or deadlifts."],
+  ["Negatives", "Intensity", "Emphasize or overload the lowering phase (3–6 s).", "Building strength through sticking points; very sore-making."],
+  ["Drop sets / running the rack", "Intensity", "At failure, drop the weight 20–30% and continue; repeat 2–3 times.", "Isolation exercises and machines. Time-efficient volume."],
+  ["Rest-pause", "Intensity", "Rest 10–20 s at failure, then do a few more reps; repeat.", "Myo-reps style; efficient hypertrophy sets."],
+  ["Partial reps", "Intensity", "Short-range reps after full-range failure, ideally in the stretched position.", "Lengthened partials can add growth stimulus."],
+  ["Burns", "Intensity", "Fast, short pulses at the end of a set.", "Calves, arms, delts finishers."],
+  ["Pre-exhaust", "Intensity", "Isolation before compound (flys before bench).", "When a weaker helper muscle limits the compound lift."],
+  ["Staggered sets", "Volume", "Slot sets for a lagging part (calves, abs) between sets of other body parts.", "Adds weekly volume without longer workouts."],
+  ["Pyramid training", "Load", "Increase weight and lower reps each set (12-10-8-6), or reverse it.", "Warm-up built in; reverse pyramid suits strength."],
+  ["Isotension / flexing", "Posing", "Hard flexing of a muscle for 30–60 s between sets.", "Builds posing control and the mind-muscle link."],
+  ["Flushing", "Posing", "Multiple exercises for one body part to drive maximum blood into it.", "Old-school pump work. Mechanical tension is the main growth driver."],
+  ["Periodization", "Programming", "Planned phases: accumulation (volume), intensification (load), deload.", "Long-term progress and peaking for meets or shows."],
+  ["Bulking & cutting cycles", "Programming", "Alternate a surplus (gain) with a deficit (fat loss).", "Lean gain at +5–10% calories; cut at 0.5–1% bodyweight per week."]
+];
+let techF = "All";
+const WEAK = [
+  ["Upper chest", "Incline presses at 30° first in the session; low-to-high cable flys."],
+  ["Shoulder width", "Lateral raises 3–4× a week, cable and dumbbell; wide-grip pull-ups for lat width."],
+  ["Rear delts", "Reverse pec deck and face pulls on back and shoulder days."],
+  ["Back thickness", "Heavy rows (barbell, T-bar), rack pulls, shrugs."],
+  ["Back width", "Wide pull-ups, pulldowns, straight-arm pulldowns, elbows-down cueing."],
+  ["Biceps peak", "Concentration and spider curls; supination emphasis."],
+  ["Arm mass", "Overhead triceps extensions (long head), hammer curls (brachialis)."],
+  ["Quad sweep", "Hack squats with a narrow, low stance; sissy squats; leg extensions."],
+  ["Hamstrings", "Seated leg curls plus RDLs, twice weekly."],
+  ["Calves", "Daily or 4×/week, full stretch, 2 s pauses, 10–20 reps; train barefoot or in flat shoes."],
+  ["Waist / midsection", "Vacuums, a lower body-fat level, and avoiding heavy weighted oblique work if the waist is already wide."],
+  ["Glutes", "Hip thrusts, deep squats, lunges with a forward lean, abduction."]
+];
+const HISTORY = [
+  ["1890s", "Eugen Sandow", "The 'father of modern bodybuilding' tours with strongman displays and hosts the 1901 Great Competition in London."],
+  ["1903", "Physical culture", "Bernarr Macfadden's 'Most Perfectly Developed Man' contests; Charles Atlas wins in 1921–22."],
+  ["1939–40", "Mr. America", "The AAU Mr. America begins; John Grimek becomes the first two-time winner."],
+  ["1946", "IFBB founded", "Joe and Ben Weider found the International Federation of BodyBuilders."],
+  ["1947–50s", "Muscle Beach", "Santa Monica, then Venice. Steve Reeves (1947 Mr. America) sets the aesthetic standard and becomes a film star."],
+  ["1965", "Mr. Olympia", "Joe Weider creates the Olympia; Larry Scott wins the first two titles. The preacher curl is often called the 'Scott curl.'"],
+  ["1970–80", "Golden Era", "Arnold Schwarzenegger wins seven Olympias (1970–75, 1980). Rivals include Sergio Oliva, Frank Zane, Franco Columbu, and Lou Ferrigno."],
+  ["1977", "Pumping Iron", "The documentary brings bodybuilding to the mainstream and Gold's Gym in Venice becomes the 'Mecca.'"],
+  ["1980", "Women's Olympia", "The Ms. Olympia begins; Rachel McLish wins the first title."],
+  ["1984–91", "Lee Haney", "Eight Olympia titles. 'Stimulate, don't annihilate.'"],
+  ["1992–97", "Mass era", "Dorian Yates wins six with brief, high-intensity training."],
+  ["1998–2005", "Ronnie Coleman", "Ties Haney with eight titles at unprecedented size."],
+  ["2016", "Classic Physique", "A division that rewards Golden-Era proportions; Chris Bumstead later wins six straight titles (2019–24)."],
+  ["Today", "Natural & evidence-based", "Drug-tested federations, sports-science coaching and social media shape a new generation."]
+];
+const POSES = [
+  ["Front double biceps", "Arms raised and flexed, lats spread, quads flexed. Shows overall symmetry and arm size."],
+  ["Front lat spread", "Fists on the waist, flare the lats wide. Shows the V-taper."],
+  ["Side chest", "Side-on, front arm bent, chest pushed up, calf flexed via a raised heel."],
+  ["Back double biceps", "From behind: arms flexed, back spread, one calf flexed. Shows back detail and calves."],
+  ["Back lat spread", "From behind, thumbs on the waist, flare the lats."],
+  ["Side triceps", "Side-on, arm locked straight, hands clasped behind the back."],
+  ["Abdominals & thigh", "Hands behind the head, crunch the abs, one leg forward and flexed."],
+  ["Most muscular", "Crab or hands-on-hips variation. Shows traps, chest and overall mass."],
+  ["Vacuum (Classic Physique)", "Arms overhead, stomach drawn in. A Golden-Era signature."]
+];
+const PREP = [
+  ["20–16 wks", "Start the cut", "Set a deficit for 0.5–1% bodyweight loss per week; set a baseline of steps and cardio; take photos."],
+  ["16–8 wks", "Steady fat loss", "Adjust calories every 2–3 weeks if the rate stalls. Keep lifting heavy. Optional diet break or refeeds."],
+  ["12–8 wks", "Posing practice", "Daily posing sessions. Choose a suit or trunks, start building a routine."],
+  ["8–4 wks", "Conditioning", "Lowest calories. Increase cardio gradually instead of large drops in food."],
+  ["4 wks", "Practice peak", "Rehearse carb and water changes; book the tan; finalize the routine."],
+  ["1 wk", "Peak week", "Carb manipulation, deload training volume, constant water."],
+  ["Show day", "Stage", "Tan, pump-up, small meals. Enjoy it."],
+  ["Post-show", "Reverse", "Raise calories back to maintenance over 2–6 weeks. Expect weight to rebound to a healthier level."]
+];
+function renderBB() {
+  const cats = ["All", ...new Set(TECH.map(t => t[1]))];
+  $("#tech-filter").innerHTML = cats.map(c => `<button type="button" class="chip" data-v="${c}" aria-pressed="${techF === c}">${c}</button>`).join("");
+  $$("#tech-filter .chip").forEach(b => b.addEventListener("click", () => { techF = b.dataset.v; renderBB(); }));
+  $("#tech-grid").innerHTML = TECH.filter(t => techF === "All" || t[1] === techF).map(t => `<article class="card"><div class="card-head"><h4>${esc(t[0])}</h4><span class="pill p-info">${esc(t[1])}</span></div><p class="small">${esc(t[2])}</p><p class="small muted"><strong>Use it:</strong> ${esc(t[3])}</p></article>`).join("");
+  $("#weak-rows").innerHTML = WEAK.map(w => `<tr><td><strong>${esc(w[0])}</strong></td><td class="small">${esc(w[1])}</td></tr>`).join("");
+  const tl = rows => rows.map(t => `<div class="tl" style="grid-template-columns:84px 18px 1fr"><span class="t">${esc(t[0])}</span><span class="dot"></span><div class="b"><strong>${esc(t[1])}</strong><span class="small muted">${esc(t[2])}</span></div></div>`).join("");
+  $("#history").innerHTML = tl(HISTORY);
+  $("#prep").innerHTML = tl(PREP);
+  $("#poses").innerHTML = POSES.map((p, i) => `<div class="item"><strong><span class="mono muted">${i + 1}.</span> ${esc(p[0])}</strong><span class="small muted">${esc(p[1])}</span></div>`).join("");
+  renderRatios();
+}
+function renderRatios() {
+  const el = $("#ratios");
+  if (!$("#wrist")) el.innerHTML = `<form class="fields" id="ratio-form" autocomplete="off"><label class="f full">Wrist circumference <span class="u-len">(${imp() ? "in" : "cm"})</span><input id="wrist" type="number" step="0.1" value="${round(toDispL(17.5), 1)}"></label></form><div id="ratio-out"></div>`;
+  $("#ratio-form").oninput = renderRatios;
+  const w = parseFloat($("#wrist").value);
+  if (!(w > 0)) { $("#ratio-out").innerHTML = ""; return; }
+  const chest = w * 6.5, u = imp() ? "in" : "cm";
+  const R = [["Chest", 1], ["Hips", 0.85], ["Waist", 0.7], ["Thigh", 0.53], ["Neck", 0.37], ["Upper arm", 0.36], ["Calf", 0.34], ["Forearm", 0.29]];
+  $("#ratio-out").innerHTML = `<div class="table-wrap" style="border:0"><table><thead><tr><th>Measurement</th><th class="num">Grecian ideal (${u})</th><th class="num">% of chest</th></tr></thead><tbody>${R.map(r => `<tr><td>${r[0]}</td><td class="num mono">${fmt(chest * r[1], 1)}</td><td class="num mono">${fmt(r[1] * 100)}%</td></tr>`).join("")}</tbody></table></div><p class="note">John McCallum's formula (chest = 6.5 × wrist), popular in the Golden Era. It's an aesthetic yardstick for a natural, lean, well-developed physique, not a health measure. Reeves' rule of thumb: arms, calves and neck should measure about the same.</p>`;
+}
+
 /* ---------- body types ---------- */
 const SOMA = {
   ecto: { n: "Ectomorph", look: "Long limbs, narrow shoulders and hips, low body fat, finds it hard to gain weight.", eat: "Surplus of 300–500 kcal; calorie-dense foods (nuts, olive oil, smoothies, rice); 4–5 meals; carbs 45–55%.", train: "Compound lifts, 3–4 days, 6–12 reps; keep cardio short so it doesn't eat into the surplus.", truth: "Usually means high NEAT and a small appetite. Weigh food for two weeks; most 'hard-gainers' find they are at maintenance." },
@@ -1469,11 +1848,12 @@ $("#vo2").addEventListener("input", renderCardio);
 $("#met").addEventListener("input", renderCardio);
 $("#ready").addEventListener("input", renderRecovery);
 $("#fiber").addEventListener("input", renderFiber);
+$("#lib-search").addEventListener("input", e => { libQ = e.target.value; renderLibrary(); });
 $("#fad-search").addEventListener("input", e => { fadQuery = e.target.value; renderFads(); });
 $$("form").forEach(f => { if (!["w-form", "s-form"].includes(f.id)) f.addEventListener("submit", e => e.preventDefault()); });
 
 const todayIso = iso(new Date()); $("#w-date").value = todayIso; $("#s-date").value = todayIso;
-fillProfile(); renderAll(); renderPrime(); renderAdapt(); renderDiets(); renderFads(); renderFlags(); renderProgram(); renderVolume(); renderRecovery(); renderSupps(); renderSoma(); renderBT(); renderFiber();
+fillProfile(); renderAll(); renderPrime(); renderAdapt(); renderDiets(); renderFads(); renderFlags(); renderProgram(); renderVolume(); renderRecovery(); renderSupps(); renderSoma(); renderBT(); renderFiber(); renderLibrary(); renderBB();
 const hash = (location.hash || "").slice(1);
 showTab(hash || store.get("tab", "overview"), false);
 })();
