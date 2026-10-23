@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Search and Control Center sit over Home: a deep, slightly cool veil, darker at the bottom where results sit. -->
+<!-- Search and Control Center sit over Home: a deep, slightly cool veil, nearly opaque so
+     Home's top bar and tiles never read through the query and results. -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <gradient android:angle="270" android:startColor="#EB0A0B10" android:centerColor="#F2050507" android:endColor="#FA000000" />
+    <gradient android:angle="270" android:startColor="#FA0A0B10" android:centerColor="#FC050507" android:endColor="#FF000000" />
 </shape>
