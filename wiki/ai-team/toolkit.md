@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 46 skills · 7 plugins · 20 connectors (6 ok, 14 need attention) · 65 cloud routines · 60 Mac tasks
+toolkit: 46 skills · 7 plugins · 23 connectors (8 ok, 15 need attention) · 65 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -140,6 +140,7 @@ toolkit: 46 skills · 7 plugins · 20 connectors (6 ok, 14 need attention) · 65
 
 **Connectors**
 - `Kapso sign-in, Lofty key on Mac 2` — *pending*: pending
+- `Mac 1 full report 06:22 UTC` — *ok*: connected — 17 of 20 steps done (runner, Laya, Jarvis, mods, Lofty, Agent OS, Orca, AnyDesk, Gondola, Inkbox voice); open: Kapso sign-in + keys
 
 **Cloud routines**
 - `Transaction & Showing desk — TC + showing assistant (weekdays 6:05 AM PT, before the cycle)`: cron CRON_TZ=America/Los_Angeles 5 6 * * 1-5 · on · SUCCEEDED @ 2026-10-22T14:10
@@ -217,6 +218,8 @@ toolkit: 46 skills · 7 plugins · 20 connectors (6 ok, 14 need attention) · 65
 - `NotebookLM (mirror)` — *ok*: connected — the 13 Docs are its sources; Google auto-syncs Drive Docs; Steven adds them to his three notebooks once (STEVEN-STEPS 1f)
 - `Notion Second Brain (layer directory)` — *ok*: active — DB e767dacc; directory page written by the weekly sync; brain-learn-daily rows resume with the runner
 - `GitHub repo visibility` — *attention*: public — anyone can read the brain (no client files beyond first names)
+- `NotebookLM direct connector (`notebooklm-mcp-cli`)` — *pending*: pending — opt-in taken; installs with the next Mac paste (connect-all 6f); sign-in his
+- `NotebookLM direct connector — Mac 1, 2026-10-23 06:30 UTC` — *ok*: connected — nlm login done (protected mode, OS keystore), --check valid, account steven.shearrill@gmail.com, 5 notebooks found; MCP registered for Claude Code by connect-all 6f
 
 **Cloud routines**
 - `Command Deck — daily freshness sweep (writer, Claude; once a day since 2026-10-22, per-key cadence)`: cron 40 15 * * * · on · SUCCEEDED @ 2026-10-20T15:40
