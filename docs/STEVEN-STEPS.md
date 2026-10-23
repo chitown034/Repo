@@ -32,6 +32,12 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
    on Mac 2: `claude` sign-in, Kapso sign-in, the vault (6b: iCloud or a copy — Jarvis's index needs it), the runner copy
    from Mac 1 (`command -v runnerctl; ls ~/Library/LaunchAgents | grep -i runner` **on Mac 1**), and the Inkbox voice
    key only if Mac 2 should also send her voice notes (Mac 1 already does).
+1e. **Runner onto Mac 2 (2026-10-23 02:10 UTC):** Mac 1's runner = `~/Applications/claude-runner` (supervisor.py,
+   schedule.json, tasks), `~/.local/bin/runnerctl`, LaunchAgent `com.stevenshearrill.claude-runner` (sign-in lives in the
+   Claude CLI, no token file). **On Mac 1:** `cd ~/Repo && bash scripts/repo-sync.sh && bash scripts/runner-export.sh`
+   → AirDrop `~/Desktop/claude-runner-mac2.zip` to Mac 2 (Finder → right-click → Share → AirDrop). **On Mac 2:**
+   `cd ~/Repo && bash scripts/repo-sync.sh && bash scripts/runner-import.sh && runnerctl login && runnerctl status`.
+   The export also writes Mac 1's missing lease role (`peer`), so both Macs share the schedule without double runs.
 1d. **Second Mac (2026-10-23): one paste, then two small things.** On the other Mac open Terminal and paste
    (if a window asks to install developer tools, click Install, wait, then paste the same line again):
    `[ -d ~/Repo ] || git clone https://github.com/chitown034/Repo.git ~/Repo; cd ~/Repo && git fetch origin claude/stoic-cori-pvn3f8 && git checkout claude/stoic-cori-pvn3f8 && git pull && bash scripts/second-mac.sh`

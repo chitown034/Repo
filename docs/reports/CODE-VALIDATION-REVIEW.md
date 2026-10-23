@@ -177,3 +177,7 @@ From the Mac 2 log (Python 3.9, cryptography source build, Claude Code 2.1.278):
 ## Resolution 2026-10-23 02:05 UTC — change-set `aac40675a5eaedac` (Python via uv on Mac 2)
 
 Mac 2 log 01:53 UTC: Homebrew python build refused (Intel + macOS 26, outdated CLT). 0d2 now: `uv python install 3.12`, `uv python find`, user-level symlink shim `~/.local/bin/python3` (+ `.zprofile` PATH line, appended once), Homebrew only as fallback, PATH refreshed in-run. Never writes under /usr. Tests: second-mac 9 (shim + zprofile line asserted with a stub uv; preview plans py_via_uv). Reviewed inline.
+
+## Resolution 2026-10-23 02:15 UTC — change-set `2d2dc3a78e238be0` (runner export/import for Mac 2)
+
+New scripts/runner-export.sh (Mac 1: packs ~/Applications/claude-runner minus logs/caches/tokens, runnerctl, the LaunchAgent; refuses if any file looks like a token; writes the missing `peer` role) and scripts/runner-import.sh (Mac 2: unzips, installs, rewrites the home path in the plist, plutil-lints, launchctl bootstrap; never signs in; warns when no role file). 11 stubbed tests (zip contents incl. negative on log/cache/token, plist rewrite, bootstrap call, no login). second-mac.sh still-yours (b) points at the pair. Reviewed inline.

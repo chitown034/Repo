@@ -79,7 +79,7 @@ if [ "$PREVIEW" = 1 ]; then run bash "$REPO_DIR/connect-all.sh" --preview; else 
 
 say ""; say "Second Mac - still yours:"
 say "  a. Sign in Claude Code once: run  claude  and follow the browser sign-in (your subscription)."
-say "  b. The task runner lives only on Mac 1. On MAC 1 paste:  command -v runnerctl; ls ~/Library/LaunchAgents | grep -i runner"
-say "     and send Claude the two lines; the copy step for this Mac is added from that (never a token - you run  runnerctl login  here)."
+say "  b. The task runner: on MAC 1 paste  cd ~/Repo && bash scripts/repo-sync.sh && bash scripts/runner-export.sh  , AirDrop the zip"
+say "     it writes to this Mac, then here:  cd ~/Repo && bash scripts/runner-import.sh && runnerctl login && runnerctl status"
 say "  c. Orca: Add Project -> this Repo folder, then pair the phone/Mac 1 (bash integrations/remote-control/orca-remote.sh pair)."
 say "  d. AnyDesk permissions (Screen Recording + Accessibility), then its ID into the Computer Hub card."
