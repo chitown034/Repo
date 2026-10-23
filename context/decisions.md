@@ -669,3 +669,18 @@ stamp; (4) the community NotebookLM MCP stays opt-in on the Mac. Pages: `wiki/ai
 Steven: "setup and connect everything for me" after the risk was stated (browser-session material stored on the Mac,
 undocumented API). Installed by `connect-all.sh` 6f on his Macs; `nlm login` stays his; non-sensitive notebooks only;
 first thing removed if it breaks. Supersedes "stays opt-in" in the 06:10 entry.
+
+## 2026-10-23 — Approve on the 6D Brain executes; the morning brief falls back to e-mail
+
+Steven: "allow the big moves to automatically execute when I hit the approve button." The 6D page now declares the `mcp`
+capability (Claude Code Remote, `fire_trigger` only) and, after writing the decision to its db, fires the Big-moves task with
+"EXECUTE NOW big move <id>"; the task records the approval and runs the plan at once for executor "vanessa", or leaves the plan
+standing by for executor "steven". Without the connector the approval still lands and the 6:05 AM run picks it up. The HALT
+list is unchanged: execution never sends, pays, signs or writes to a client-facing system.
+
+Same day, "vanessa did not send morning brief today with voice imessage": root cause is that Vanessa's iMessage line has no
+linked phone (Steven never sent the one connect text), so iMessage sends were dropped silently. Decision: the brief goes by
+e-mail to his own address (Inkbox) whenever the line is unlinked — cloud routine for the text, Mac task for the voice note —
+and the connect text is click A of the simplified steps. Never any other address.
+
+Steps simplified to three pastes + four clicks; everything else that used to be an "only you" item is now a big move.

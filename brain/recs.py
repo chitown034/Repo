@@ -33,8 +33,8 @@ def _id(category: str, key: str) -> str:
     return "bm_" + hashlib.sha1(f"{category}|{key}".encode("utf-8")).hexdigest()[:10]
 
 
-TOPIC_WORDS = ("lofty", "zoho", "tidycal", "arive", "kapso", "anydesk", "orca", "jarvis", "laya", "mbs", "ticor", "pivo", "notion",
-               "notebooklm", "drive", "fieldy", "openflowkit", "composio", "inkbox", "gondola", "refi", "presence", "drip", "zillow")
+TOPIC_WORDS = ("imessage", "drip", "lofty", "zoho", "tidycal", "arive", "kapso", "anydesk", "orca", "jarvis", "laya", "mbs", "ticor", "pivo", "notion",
+               "notebooklm", "drive", "fieldy", "openflowkit", "composio", "inkbox", "gondola", "refi", "presence", "zillow")
 
 
 def topic_of(text: str) -> str:
@@ -116,27 +116,31 @@ def _owner_for(path: str) -> str:
 
 
 # What each of Steven's sign-ins unblocks (impact 1-5, effort 1-5): revenue plumbing first, tools and media last.
-STEP_VALUE = {"lofty": (5, 1), "zoho": (5, 1), "drip": (5, 3), "refi": (5, 1), "presence": (4, 3), "zillow": (4, 3), "arive": (4, 2),
+STEP_VALUE = {"imessage": (4, 1), "lofty": (5, 1), "zoho": (5, 1), "drip": (5, 3), "refi": (5, 1), "presence": (4, 3), "zillow": (4, 3), "arive": (4, 2),
               "tidycal": (3, 1), "mbs": (3, 2), "orca": (3, 2), "jarvis": (3, 2), "anydesk": (2, 2), "ticor": (2, 2), "pivo": (1, 2)}
 
 
 def _steven_steps(root: Path) -> list[dict]:
-    """The round-2 'only you' list in docs/STEVEN-STEPS.md: '- **a. Title** → what' lines until the next heading."""
+    """The 'only you' lists in docs/STEVEN-STEPS.md: '- **a. Title** → what' lines under the bold markers below (the four clicks
+    A-D and the list Vanessa carries as big moves), until the next bold marker or heading."""
     p = root / "docs/STEVEN-STEPS.md"
     try:
         text = p.read_text(encoding="utf-8")
     except OSError:
         return []
-    m = re.search(r"\*\*Then, the sign-ins and keys only you can do\*\*.*?\n(.*?)(?:\n## |\Z)", text, re.S)
-    if not m:
+    # Two bold markers since 2026-10-23: the four clicks only Steven can do, and the list Vanessa carries as big moves.
+    blocks = re.findall(r"\*\*(?:Then, the sign-ins and keys only you can do|Then four clicks, in this order|Carried by Vanessa as big moves)\*\*.*?\n(.*?)(?=\n\*\*[A-Z][^*\n]*\*\*|\n## |\Z)", text, re.S)
+    if not blocks:
         return []
     out = []
-    for item in re.findall(r"^- \*\*([a-z])\. ([^*]+)\*\*(.*?)(?=^- \*\*[a-z]\. |\Z)", m.group(1), re.S | re.M):
+    for item in re.findall(r"^- \*\*([A-Za-z])\. ([^*]+?)\.?\*\*(.*?)(?=^- \*\*[A-Za-z]\. |\Z)", "\n".join(blocks), re.S | re.M):
         letter, title, rest = item
         what = re.sub(r"\s+", " ", rest).strip(" →-")
         from . import toolkit
         impact, effort = STEP_VALUE.get(topic_of(title + " " + what), (3, 2))
-        out.append(rec("steven", "step:" + letter, title.strip(), what[:280], toolkit._seat(title + " " + what), "steven", impact=impact, effort=effort, confidence=0.85,
+        letter = letter.lower()
+        slug = re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")[:48]   # id from the title, not the letter: re-lettering the list keeps every id (validator P05-F1)
+        out.append(rec("steven", "step:" + slug, title.strip(), what[:280], toolkit._seat(title + " " + what), "steven", impact=impact, effort=effort, confidence=0.85,
                        plan=[what[:200] or "see docs/STEVEN-STEPS.md", "Say 'done " + letter + "' and Vanessa closes it and runs what it unblocks"], source="steven-steps"))
     return out
 

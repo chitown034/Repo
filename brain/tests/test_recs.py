@@ -28,12 +28,13 @@ class RecsTests(unittest.TestCase):
 
     def test_steven_steps_all_eleven_and_ranked_by_what_they_unblock(self):
         steps = {c["title"]: c for c in recs._steven_steps(ROOT)}
-        for t in ("Lofty API key", "Zoho", "TidyCal token", "Arive", "MBS Highway", "Ticor Title", "Pivo", "AnyDesk"):
+        for t in ("Link your iMessage line (fixes the missing morning text + voice note)", "Zoho", "Claim your profiles for AI search", "AnyDesk permissions",
+                  "Lofty API key", "TidyCal token", "Arive", "MBS Highway", "Ticor Title", "Pivo", "Drips and texts"):
             self.assertIn(t, steps, t)
-        self.assertEqual(len(steps), 11)
-        self.assertGreater(steps["Lofty API key"]["impact"] / steps["Lofty API key"]["effort"], steps["AnyDesk"]["impact"] / steps["AnyDesk"]["effort"])
+        self.assertEqual(len(steps), 12)  # four clicks A-D + eight carried as big moves
+        self.assertGreater(steps["Lofty API key"]["impact"] / steps["Lofty API key"]["effort"], steps["AnyDesk permissions"]["impact"] / steps["AnyDesk permissions"]["effort"])
         top = recs.top(ROOT, 10, today=TODAY)
-        self.assertLess([c["title"] for c in top].index("Lofty API key"), [c["title"] for c in top].index("AnyDesk") if "AnyDesk" in [c["title"] for c in top] else 99)
+        self.assertLess([c["title"] for c in top].index("Lofty API key"), [c["title"] for c in top].index("AnyDesk permissions") if "AnyDesk permissions" in [c["title"] for c in top] else 99)
 
     def test_declining_one_lofty_move_hides_every_lofty_move(self):
         top = recs.top(ROOT, 60, today=TODAY)
@@ -115,6 +116,17 @@ class RecsTests(unittest.TestCase):
             w = recs.learn(root, decs, today=TODAY)["weights"]
             self.assertGreaterEqual(w["ops"], 0.3)
 
+    def test_step_ids_follow_the_title_not_the_letter(self):
+        import tempfile, shutil
+        t = Path(tempfile.mkdtemp()); (t / "docs").mkdir()
+        doc = "# x\n\n**Then four clicks, in this order** (say):\n- **A. Zoho** → tick the box.\n- **B. Pivo** → pair it.\n\n**Carried by Vanessa as big moves** (list):\n- **a. Lofty API key** → make it.\n\n## next\n"
+        (t / "docs/STEVEN-STEPS.md").write_text(doc, encoding="utf-8")
+        first = {c["title"]: c["id"] for c in recs._steven_steps(t)}
+        (t / "docs/STEVEN-STEPS.md").write_text(doc.replace("**A. Zoho**", "**C. Zoho**").replace("**B. Pivo**", "**D. Pivo**").replace("**a. Lofty API key**", "**k. Lofty API key**"), encoding="utf-8")
+        second = {c["title"]: c["id"] for c in recs._steven_steps(t)}
+        self.assertEqual(first, second)                      # re-lettering keeps every id
+        self.assertEqual(len(set(first.values())), 3)        # "A." and "a." never collide: ids come from titles
+        shutil.rmtree(t)
 
 if __name__ == "__main__":
     unittest.main()

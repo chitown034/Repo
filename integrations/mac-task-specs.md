@@ -1102,3 +1102,57 @@ This amendment makes the 6:40 text and the voice note use that one brief, so pho
 At ~6:40 AM PT the iMessage text matches the Claude-app brief word for word and contains the three "Dashboards"
 lines; a voice note in Vanessa's voice follows on the same thread; `morningBriefStatus.v.imessage = "sent"`.
 
+
+## 8c. `vanessa-morning-brief-text` — AMENDMENT: when iMessage is not linked, the brief goes by e-mail with the voice note attached (2026-10-23)
+
+Steven, 2026-10-23: *"vanessa did not send morning brief today with voice imessage fix this."* Found: on 2026-10-23 the cloud
+brief was written (`morningBrief` v1), the push went, this task ran at 06:53 PT and reported `ok`, `voice-reply-render`
+rendered — and nothing reached his phone, because Vanessa's shared iMessage line has **no linked recipient yet**
+(`inkbox_imessage_onboarding_get`: `dedicated_number: null`, `awaiting_inbound: []`). Inkbox's iMessage is recipient-first:
+until Steven texts `connect @vanessa-shearrill` to **+1 650 484 9720** once, every iMessage send is accepted and dropped.
+Two fixes: the cloud routine now e-mails the brief itself whenever the line is unlinked (done in its prompt, 2026-10-23),
+and this task gets the same fallback so the **voice note** also arrives.
+
+### Paste-ready — add after §8b's first paragraph (before "After the text brief is sent")
+
+> **Before sending**, call `inkbox_imessage_onboarding_get`. If `dedicated_number` is null and `awaiting_inbound` is empty
+> (no phone linked to Vanessa's line), do NOT send an iMessage — it would be silently dropped. Instead: wait for
+> `voice-reply-render` to finish the day's voice item (look for `voiceReplyStatus.items["vmb_…"].status = ready`, up to
+> 15 minutes; queue it first exactly as §8 says, with `deliver: "email"`), then send ONE e-mail with
+> `inkbox_email_send` to `steven.shearrill@gmail.com` only: subject "☀ Vanessa's morning brief — <weekday, Mon D> (voice note
+> attached)", body = `morningBrief.v.text`, the rendered mp3 attached (`inkbox_email_attachment_upload` with the file
+> `voice-reply-render` wrote; skip the attachment if it is not ready, never wait longer), and the last line exactly:
+> "Your iMessage line is not linked yet: text  connect @vanessa-shearrill  to +1 650 484 9720 once and tomorrow's brief
+> arrives as a text and a voice note instead." Record `morningBriefStatus.imessage = "skipped: line not linked"`,
+> `email = "sent"` (or `"failed: <reason>"`), `imessageLinked = false` (merge). If the cloud routine already set
+> `morningBriefStatus.email = "sent"` today, send the e-mail anyway only when the mp3 is ready (that one carries the
+> voice note; the cloud cannot attach it) — otherwise skip and record `email = "cloud sent, no voice note yet"`.
+> When a number IS linked, send by iMessage as before and record `imessageLinked = true`.
+
+### What proves it worked
+
+Unlinked: an e-mail from vanessa-shearrill@inkboxmail.com with the brief and an mp3 by ~7:00 AM PT,
+`morningBriefStatus.v.email = "sent"`, `.imessageLinked = false`. Linked (after the one connect text): a text and a voice note on
+the iMessage thread, `.imessage = "sent"`, `.imessageLinked = true`, and no e-mail.
+
+## 9. Repair pass for the runner tasks in error (2026-10-23)
+
+`runnerStatus` v66 (synced 2026-10-23 14:06 UTC) lists these tasks as not healthy. Nothing below needs a new key; each fix is a
+spec change here plus one `runnerctl run <name>` from Steven, or nothing at all. `connect-all.sh` step **2c** now prints the
+last 12 log lines of every task in error into its REPORT (secrets masked), so the next REPORT carries the diagnosis for any
+line below marked *log needed*.
+
+| Task | State on the deck | What to do |
+|---|---|---|
+| `toolkit-deck-sync` (daily 6:15) | error | It writes `toolkitSnapshot`, and the deck shows `mcpServers: 0` while this repo lists 7 MCP servers — the task's `claude mcp list` call is failing (claude CLI not on the runner's PATH, or signed out). Fix: in the task prompt, read the registers from the repo (`bin/brain toolkit --json`, which reads `integrations/MCP-SERVERS.md` and `integrations/APIS.md`) instead of the CLI, and fall back to the CLI only for the "installed" flag. Then `runnerctl run toolkit-deck-sync`. |
+| `nightly-self-test` | error (tool refusal) | The runner's Claude refused a tool the test suite asks for (a write outside the repo). Fix: scope every self-test write to `~/Repo/brain/state/` and the scratchpad; drop the step that edits `~/.claude/settings.json`. *log needed* for the exact tool. |
+| `fabric-deck-sync` (odd hours) | refused | Fabric's `fabric --listpatterns` prompts for setup on a fresh machine; the task hangs then refuses. Fix: skip the task when `~/.config/fabric/.env` is missing and write `fabricStatus = {v:{state:"not set up"}}` instead. No action from Steven until Fabric is wanted. |
+| `r9-feed-freshness-sweep` | error | Superseded by the cloud freshness sweep (15:40 UTC daily) since 2026-10-22; disable it: `runnerctl disable r9-feed-freshness-sweep`. |
+| `health-coaching-weekly`, `skills-refresh-weekly`, `brain-weekly-verify` | error since 2026-10-11 | All three run on Sundays and hit the Sunday usage cap with the weekly review. Fix: move them to Monday 05:10 / 05:40 / 06:10 PT (`runnerctl schedule <name> "10 5 * * 1"` etc.). *log needed* to confirm the cap is the only cause. |
+| `r20-weekly-review-local`, `ops-knowledge-graph`, `access-audit-monthly`, `automation-audit-quarterly` | limited (usage cap) | Not broken — they wait for the cap window. Leave. |
+
+One paste covers the Steven side (after the specs above are applied to the runner; the REPORT tells him which):
+
+```
+runnerctl disable r9-feed-freshness-sweep && runnerctl run toolkit-deck-sync && runnerctl status
+```

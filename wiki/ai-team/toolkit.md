@@ -40,8 +40,8 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 16 connectors (1 ok, 15 need at
 
 **Cloud routines**
 - `Vanessa — Chief of Staff daily cycle (weekdays 6:25 AM PT, parallel squads)`: cron CRON_TZ=America/Los_Angeles 25 6 * * 1-5 · on · —
-- `Vanessa — morning brief across the dashboards (6:34 AM PT; push + writes the iMessage/voice script)`: cron CRON_TZ=America/Los_Angeles 34 6 * * * · on · SUCCEEDED @ 2026-10-22T13:49 (as the 6:4
-- `Big moves — Vanessa's daily top 10, learn, queue approved, org sync, 6D republish`: cron CRON_TZ=America/Los_Angeles 5 6 * * * · on · —
+- `Vanessa — morning brief across the dashboards (6:34 AM PT; push + writes the iMessage/voice script; `: cron CRON_TZ=America/Los_Angeles 34 6 * * * · on · SUCCEEDED @ 2026-10-22T13:49 (as the 6:4
+- `Big moves — Vanessa's daily top 10, learn, queue approved, org sync, 6D republish; also fired by the`: cron CRON_TZ=America/Los_Angeles 5 6 * * * · on · —
 - `Command Deck & ISA Portal Weekly Loop Engineering QA`: cron 0 16 * * 0 · on · FAILED @ 2026-09-20T16:06
 - `Command Deck — Vanessa orchestrated ops review (C-suite in parallel, Fri 4 PM PT)`: cron 0 23 * * 5 · on · FAILED @ 2026-09-18T23:03
 - `Command Deck — weekly improvement loop (research → apply)`: cron 0 16 * * 0 · on · FAILED @ 2026-09-20T16:06

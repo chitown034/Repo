@@ -1,21 +1,21 @@
 {
- "generated": "2026-10-23T17:10:13Z",
+ "generated": "2026-10-23T17:56:37Z",
  "date": "2026-10-23",
  "items": [
   {
-   "id": "bm_ac45270be3",
+   "id": "bm_08ef5bf8ac",
    "category": "steven",
    "topic": "lofty",
-   "title": "Drips and texts",
-   "why": "read `wiki/real-estate-playbooks/drip-and-text-follow-up.md` \"Setup order\": Lofty 10DLC registration, then say \"specs ready for review\" so Victor and Alexandra return the Smart Plan specs and Zoho rules.",
-   "owner": "Alexandra",
+   "title": "Lofty API key",
+   "why": "Lofty \u2192 Settings \u2192 Integrations \u2192 API \u2192 create; paste 1 asks for it (step 7b).",
+   "owner": "Victor",
    "executor": "steven",
    "impact": 5,
    "effort": 1,
    "confidence": 0.85,
    "plan": [
-    "read `wiki/real-estate-playbooks/drip-and-text-follow-up.md` \"Setup order\": Lofty 10DLC registration, then say \"specs ready for review\" so Victor and Alexandra return the Smart Plan specs and Zoho rul",
-    "Say 'done i' and Vanessa closes it and runs what it unblocks"
+    "Lofty \u2192 Settings \u2192 Integrations \u2192 API \u2192 create; paste 1 asks for it (step 7b).",
+    "Say 'done e' and Vanessa closes it and runs what it unblocks"
    ],
    "source": "steven-steps",
    "weight": 1.0,
@@ -24,28 +24,7 @@
    "rank": 1
   },
   {
-   "id": "bm_9c4f4bcc3f",
-   "category": "steven",
-   "topic": "lofty",
-   "title": "Lofty API key",
-   "why": "Lofty \u2192 Settings \u2192 Integrations \u2192 API \u2192 create \u2192 paste into connect-all step 7b when it asks.",
-   "owner": "Victor",
-   "executor": "steven",
-   "impact": 5,
-   "effort": 1,
-   "confidence": 0.85,
-   "plan": [
-    "Lofty \u2192 Settings \u2192 Integrations \u2192 API \u2192 create \u2192 paste into connect-all step 7b when it asks.",
-    "Say 'done a' and Vanessa closes it and runs what it unblocks"
-   ],
-   "source": "steven-steps",
-   "weight": 1.0,
-   "score": 4.25,
-   "value": "high",
-   "rank": 2
-  },
-  {
-   "id": "bm_e91eb3294c",
+   "id": "bm_e1e0f03a5a",
    "category": "steven",
    "topic": "zoho",
    "title": "Zoho",
@@ -63,22 +42,43 @@
    "weight": 1.0,
    "score": 4.25,
    "value": "high",
+   "rank": 2
+  },
+  {
+   "id": "bm_6334e9b2b9",
+   "category": "steven",
+   "topic": "imessage",
+   "title": "Link your iMessage line (fixes the missing morning text + voice note)",
+   "why": "From your phone, text `connect @vanessa-shearrill` to **+1 650 484 9720**, once. Until then the brief comes by e-mail (steven.shearrill@gmail.com) and push, with the voice note attached to the e-mail.",
+   "owner": "Vanessa",
+   "executor": "steven",
+   "impact": 4,
+   "effort": 1,
+   "confidence": 0.85,
+   "plan": [
+    "From your phone, text `connect @vanessa-shearrill` to **+1 650 484 9720**, once. Until then the brief comes by e-mail (steven.shearrill@gmail.com) and push, with the voice note attached to the e-mail.",
+    "Say 'done a' and Vanessa closes it and runs what it unblocks"
+   ],
+   "source": "steven-steps",
+   "weight": 1.0,
+   "score": 3.4,
+   "value": "high",
    "rank": 3
   },
   {
-   "id": "bm_4aaed5dca1",
+   "id": "bm_8ffe22339d",
    "category": "steven",
    "topic": "tidycal",
    "title": "TidyCal token",
-   "why": "(above; TidyCal \u2192 Integrations \u2192 Automations or Advanced \u2192 API \u2192 Manage API keys \u2192 Create token).",
+   "why": "TidyCal \u2192 Integrations \u2192 API \u2192 Manage API keys \u2192 Create token; paste 1 asks for it (step 7c).",
    "owner": "Derek",
    "executor": "steven",
    "impact": 3,
    "effort": 1,
    "confidence": 0.85,
    "plan": [
-    "(above; TidyCal \u2192 Integrations \u2192 Automations or Advanced \u2192 API \u2192 Manage API keys \u2192 Create token).",
-    "Say 'done c' and Vanessa closes it and runs what it unblocks"
+    "TidyCal \u2192 Integrations \u2192 API \u2192 Manage API keys \u2192 Create token; paste 1 asks for it (step 7c).",
+    "Say 'done f' and Vanessa closes it and runs what it unblocks"
    ],
    "source": "steven-steps",
    "weight": 1.0,
@@ -109,19 +109,19 @@
    "rank": 5
   },
   {
-   "id": "bm_195dba826d",
+   "id": "bm_f4dd4986b9",
    "category": "steven",
    "topic": "arive",
    "title": "Arive",
-   "why": "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; needs Pro / Broker Pro) and ask Arive support for the Zapier invite link; keep the three values in `~/.config/arive/.env` on Mac 1 (`open -e`), never in chat. `integrations/arive/README.md`.",
+   "why": "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.",
    "owner": "Derek",
    "executor": "steven",
    "impact": 4,
    "effort": 2,
    "confidence": 0.85,
    "plan": [
-    "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; needs Pro / Broker Pro) and ask Arive support for the Zapier invite link; keep the three values in `~/.config/arive/.env` on Mac 1 (`ope",
-    "Say 'done d' and Vanessa closes it and runs what it unblocks"
+    "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.",
+    "Say 'done g' and Vanessa closes it and runs what it unblocks"
    ],
    "source": "steven-steps",
    "weight": 1.0,

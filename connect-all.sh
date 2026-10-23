@@ -28,6 +28,7 @@ LOG="$LOGDIR/connect-$(date +%Y-%m-%d-%H%M).log"
 PREVIEW=0; [ "${1:-}" = "--preview" ] && PREVIEW=1
 PASS=""; FAIL=""; NEEDS=""
 say() { printf '%s\n' "$*" | tee -a "$LOG"; }
+exec 3>&1   # the screen, kept open for steps that must show lines while step() sends their stdout to the log (2c)
 have() { command -v "$1" >/dev/null 2>&1; }
 
 say "Connect everything - $(scutil --get ComputerName 2>/dev/null || hostname -s) - $(date)"
@@ -114,6 +115,31 @@ runner_fix() {
 }
 step "2 Mac runner (silent since Oct 13): status, restart once" \
   "Runner: run  runnerctl login  yourself (a script must never sign in), then  runnerctl status" runner_fix
+
+# 2c. The runner's failing tasks, with their last log lines, so the REPORT carries the diagnosis (Steven, 2026-10-23:
+#     "look for other things not functioning and fix those"; this saves a second paste). Read-only; never prints a key.
+runner_logs() {
+  have runnerctl || { echo "runnerctl not on PATH"; return 1; }
+  local st; st="$(runnerctl status 2>/dev/null)" || true
+  local bad; bad="$(printf '%s\n' "$st" | grep -Ei 'error|refused|limited|failed' | head -12)"
+  [ -n "$bad" ] || { echo "no task in error, refused or limited state"; return 0; }
+  # say() so the lines land in the REPORT Steven pastes, not only in the log (validator P05-F2); the step then "fails" so the
+  # REPORT lists it under "Did not finish" with the note, never under Done.
+  # inside step() stdout is the log, so the screen gets its copy through fd 3 (opened at the top; stdout when it is closed)
+  scr() { if { : >&3; } 2>/dev/null; then cat >&3; else cat; fi; }   # a dup of the screen fd, never a reopen (no truncation on either OS)
+  { echo "  tasks not healthy:"; printf '%s\n' "$bad" | sed 's/^/    /'; } | tee -a "$LOG" | scr
+  local logdir="$HOME/Applications/claude-runner/logs" t f
+  printf '%s\n' "$bad" | grep -oE '[A-Za-z0-9][A-Za-z0-9_.-]+' | sort -u | while IFS= read -r t; do
+    for f in "$logdir/$t.log" "$logdir/$t"/*.log "$HOME/Library/Logs/claude-runner/$t.log"; do
+      [ -f "$f" ] || continue
+      { echo "  --- $t (last 12 lines, secrets masked)"
+        tail -12 "$f" | sed -E 's/Bearer [^ "]+/Bearer ***/Ig; s/(key|token|secret|password|authorization)("|'"'"')?[=: ]+("|'"'"')?[^ ",]+/\1=***/Ig; s/sk-[A-Za-z0-9_-]{6,}/sk-***/g' | sed 's/^/    /'; } | tee -a "$LOG" | scr
+      break
+    done
+  done
+  return 1
+}
+step "2c Runner tasks in error (last log lines into this report)" "Mac tasks in error (step 2c lists them above with their last log lines) - paste this REPORT to Claude; the fixes are integrations/mac-task-specs.md section 9" runner_logs
 
 # 2b. keep the Mac awake while it is on the charger, so the 6 AM tasks run. A user LaunchAgent running
 #     caffeinate -s (blocks system sleep on AC power only; the display still sleeps; no password). Undo:
@@ -223,7 +249,7 @@ jarvis_engine() {
     have ollama || { echo "Ollama app installed but its command is not linked yet - open Ollama once (it asks to install the command line tool), then rerun"; return 1; }
   fi
   if ! ollama list >/dev/null 2>&1; then
-    { brew services start ollama >/dev/null 2>&1 || open -a Ollama 2>/dev/null || (nohup ollama serve >/dev/null 2>&1 &); }
+    { brew services start ollama >/dev/null 2>&1 || open -a Ollama 2>/dev/null || (nohup ollama serve >/dev/null 2>&1 3>&- &); }
     i=0; while [ $i -lt 20 ] && ! ollama list >/dev/null 2>&1; do sleep 1; i=$((i+1)); done
     ollama list >/dev/null 2>&1 || { echo "Ollama installed but not answering - open the Ollama app once, then rerun"; return 1; }
   fi
@@ -377,7 +403,7 @@ lofty_connect() {
   local env="$HOME/.config/lofty/.env" key=""
   if ! { [ -s "$env" ] && grep -qE '^LOFTY_API_KEY=.+' "$env"; }; then
     printf 'Lofty API key (Lofty -> Settings -> Integrations -> API). Typed hidden, saved only in ~/.config/lofty/.env. Enter to skip: ' >/dev/tty
-    trap 'stty echo 2>/dev/null' INT TERM; stty -echo 2>/dev/null; read -r key </dev/tty; stty echo 2>/dev/null; trap - INT TERM; echo >/dev/tty
+    trap 'stty echo 2>/dev/null; trap - INT TERM; echo >/dev/tty; echo "interrupted - nothing saved"; return 130' INT TERM; stty -echo 2>/dev/null; read -r key </dev/tty || { stty echo 2>/dev/null; trap - INT TERM; echo "interrupted - nothing saved"; return 130; }; stty echo 2>/dev/null; trap - INT TERM; echo >/dev/tty
     [ -z "$key" ] && { echo "skipped - no Lofty key on this Mac"; return 1; }
     mkdir -p "$HOME/.config/lofty" && ( umask 077; printf 'LOFTY_API_KEY=%s\n' "$key" > "$env" ) && chmod 600 "$env"
     key=""; echo "key saved (value not shown)"
@@ -405,7 +431,7 @@ tidycal_connect() {
   local env="$HOME/.config/tidycal/.env" key="" code fresh=0
   if ! { [ -s "$env" ] && grep -qE '^TIDYCAL_TOKEN=.+' "$env"; }; then
     printf 'TidyCal API token (TidyCal -> Integrations -> Automations or Advanced -> API -> Manage API keys -> Create token; needs a paid plan). Typed hidden, saved only in ~/.config/tidycal/.env. Enter to skip: ' >/dev/tty
-    trap 'stty echo 2>/dev/null' INT TERM; stty -echo 2>/dev/null; read -r key </dev/tty; stty echo 2>/dev/null; trap - INT TERM; echo >/dev/tty
+    trap 'stty echo 2>/dev/null; trap - INT TERM; echo >/dev/tty; echo "interrupted - nothing saved"; return 130' INT TERM; stty -echo 2>/dev/null; read -r key </dev/tty || { stty echo 2>/dev/null; trap - INT TERM; echo "interrupted - nothing saved"; return 130; }; stty echo 2>/dev/null; trap - INT TERM; echo >/dev/tty
     [ -z "$key" ] && { echo "skipped - no TidyCal token on this Mac"; return 1; }
     case "$key" in *[!A-Za-z0-9._-]*) echo "that token holds a character outside letters, digits, . - _ (TidyCal tokens use only those) - not saved"; return 1 ;; esac
     mkdir -p "$HOME/.config/tidycal" && ( umask 077; printf 'TIDYCAL_TOKEN=%s\n' "$key" > "$env" ) && chmod 600 "$env"
@@ -421,6 +447,28 @@ tidycal_connect() {
 }
 step "7c TidyCal (token on this Mac, read-only check)" \
   "TidyCal: make a token in TidyCal -> Settings -> Integrations -> API, rerun connect-all and paste it when asked" tidycal_connect
+
+# 7e. Arive (mortgage LOS) credentials - Client ID, Secret and API Key from Arive -> Settings -> Integrations -> Generate
+#     (Pro plan). Hidden prompts, saved only in ~/.config/arive/.env (chmod 600); Enter skips. No call is made yet: the token
+#     endpoint is confirmed from Arive's developer docs first (integrations/arive/README.md); the daily cycle reads the file then.
+arive_keys() {
+  local env="$HOME/.config/arive/.env" cid="" sec="" key=""
+  if [ -s "$env" ] && grep -qE '^ARIVE_API_KEY=.+' "$env"; then echo "Arive credentials already on this Mac (values not shown)"; return 0; fi
+  printf 'Arive Client ID (Arive -> Settings -> Integrations -> Generate; Pro plan). Hidden; Enter to skip all three: ' >/dev/tty
+  # Ctrl-C at any of the three prompts: echo back on, trap cleared, out of the function with nothing saved (validator P04-F1 -
+  # the old trap only restored echo, so the next values were typed in clear text and still saved).
+  trap 'stty echo 2>/dev/null; trap - INT TERM; echo >/dev/tty; echo "interrupted - nothing saved"; return 130' INT TERM
+  stty -echo 2>/dev/null; read -r cid </dev/tty || { stty echo 2>/dev/null; trap - INT TERM; echo "interrupted - nothing saved"; return 130; }; echo >/dev/tty
+  [ -z "$cid" ] && { stty echo 2>/dev/null; trap - INT TERM; echo "skipped - no Arive credentials on this Mac"; return 1; }
+  printf 'Arive Secret Key: ' >/dev/tty; stty -echo 2>/dev/null; read -r sec </dev/tty || { stty echo 2>/dev/null; trap - INT TERM; echo "interrupted - nothing saved"; return 130; }; echo >/dev/tty
+  printf 'Arive API Key: ' >/dev/tty; stty -echo 2>/dev/null; read -r key </dev/tty || { stty echo 2>/dev/null; trap - INT TERM; echo "interrupted - nothing saved"; return 130; }; echo >/dev/tty; stty echo 2>/dev/null; trap - INT TERM
+  case "$cid$sec$key" in *[!A-Za-z0-9._-]*) echo "a value holds a character outside letters, digits, . - _ - not saved"; return 1 ;; esac
+  [ -n "$sec" ] && [ -n "$key" ] || { echo "all three are needed - not saved"; return 1; }
+  mkdir -p "$HOME/.config/arive" && ( umask 077; printf 'ARIVE_CLIENT_ID=%s\nARIVE_SECRET_KEY=%s\nARIVE_API_KEY=%s\n' "$cid" "$sec" "$key" > "$env" ) && chmod 600 "$env"
+  cid=""; sec=""; key=""; echo "Arive credentials saved (values not shown); the read-only loan feed is switched on once the endpoint is confirmed"
+}
+step "7e Arive credentials (file on this Mac, no call yet)" \
+  "Arive: generate the three values in Arive -> Settings -> Integrations, rerun connect-all and paste them when asked" arive_keys
 
 # 7d. The sites with no API - homes.com, ShowingTime, Showami (+ SkySlope, zipForms behind their ECC gate): the
 #     read-only CLI-Anything wrappers. connect.sh installs what is missing, runs the posture check and says which site
@@ -448,7 +496,13 @@ say ""; say "================ REPORT ================"
 [ -n "$PASS" ] && say "Done:$(printf "$PASS")"
 [ -n "$FAIL" ] && say "Did not finish:$(printf "$FAIL")"
 say ""
-say "Still yours (a script must never do these):"
+say "Still yours (a script must never do these) - the four that matter most are first:"
+say "  A. iMessage line: from your phone text  connect @vanessa-shearrill  to +1 650 484 9720 (once). Until then the"
+say "     morning brief reaches you by e-mail and push, not by text or voice."
+say "  B. Zoho: Zoho CRM -> Setup -> Security Control -> Profiles -> your profile -> Developer Permissions -> tick 'Zoho CRM API Access'."
+say "  C. Claim your profiles for AI search: Google Business Profile, Bing Places, Zillow (agent + lender), Realtor.com, Homes.com, Yelp."
+say "  D. AnyDesk permissions on each Mac (Screen Recording + Accessibility, unattended password) and the tablet app."
+say "  Keys this paste asks for (Enter skipped them): Lofty API key (7b), TidyCal token (7c), Arive credentials (7e) - make them and rerun."
 if [ "$RUNNER_OUT" = 1 ]; then
 say "  0. The runner is signed out (step 2): run  runnerctl login  (yours only), then  runnerctl status"
 elif printf '%s' "$FAIL" | grep -q "2 Mac runner"; then
@@ -456,15 +510,11 @@ say "  0. Step 2 (runner) stopped for a reason other than sign-in - the log name
 fi
 say "  1. Kapso sign-in: run  claude  , type  /mcp  , choose kapso, sign in or create the free account. Then message"
 say "     (202) 474-5223 from your phone - save it as 'Vanessa (WhatsApp)'. Say 'read my WhatsApp' in Claude Code."
-say "  2. Vanessa's iMessage line: from your phone text  connect @vanessa-shearrill  to +1 650 484 9720 (once)."
-say "     Her voice on it: bash integrations/voice-setup.sh <your Vanessa thread's conversation id>, then paste"
-say "     section 8b (start) and 8 (end) of integrations/mac-task-specs.md into the runner task vanessa-morning-brief-text."
+say "  2. Vanessa's voice on the iMessage line (after A): bash integrations/voice-setup.sh <your Vanessa thread's conversation id>, then paste"
+say "     sections 8b (start), 8c and 8 (end) of integrations/mac-task-specs.md into the runner task vanessa-morning-brief-text."
 say "  3. claude.ai -> Settings -> Connectors: EVRoutes and Turo say 'needs reconnect' - Reconnect or remove them."
-say "  4. Zoho: Zoho CRM -> Setup -> Security Control -> Profiles -> your profile -> Developer Permissions ->"
-say "     tick 'Zoho CRM API Access'. That is the whole 403 fix."
-say "  5. Sign in once in the agent Chrome to ShowingTime, Showami and homes.com (MFA is yours) - the list is in the log, or rerun:"
+say "  4. Sign in once in the agent Chrome to ShowingTime, Showami and homes.com (MFA is yours) - the list is in the log, or rerun:"
 say "     bash integrations/cli-anything-harnesses/connect.sh"
-say "  5b. TidyCal: if step 7c was skipped, make a token (TidyCal -> Settings -> Integrations -> API) and rerun connect-all."
 say "  6. TikTok, GoHighLevel, Discord bot, HeyGen: say 'Composio links' to Claude when you sit down (links last 10 min)."
 say "  6b. Gondola (travel): claude.ai -> Settings -> Connectors -> Add custom connector -> name Gondola, URL"
 say "     https://mcp.gondola.ai/mcp -> Connect and sign in. Then Vanessa and the dashboards can read your trips and points."

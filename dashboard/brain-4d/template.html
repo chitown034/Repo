@@ -236,9 +236,9 @@ body.enc #enc { max-width: 720px; }
     <details id="sbWrap"><summary>The 13 SB Google Docs (the brain in Drive)</summary><div id="sbdocs" class="actions"></div></details>
   </details>
   <label class="sr" for="q">Find a page</label>
-  <input id="q" type="search" placeholder="Search the brain — VA funding fee, who owns compliance, what runs at 6:40…" autocomplete="off" spellcheck="false" list="names" aria-describedby="askHelp" aria-controls="hits">
+  <input id="q" type="search" placeholder="Ask the brain — VA funding fee, who owns compliance, what runs at 6:40… (Enter = Vanessa answers)" autocomplete="off" spellcheck="false" list="names" aria-describedby="askHelp" aria-controls="hits">
   <datalist id="names"></datalist>
-  <p id="askHelp" class="sr">Ranks the brain's pages from its own index, in the browser, with no model call. Arrow down moves into the results; Enter opens one on the map.</p>
+  <p id="askHelp" class="sr">Ranks the brain's pages from its own index, in the browser, with no model call, and shows the matching passages as the answer. Arrow down moves into the results; Enter asks Vanessa the question in the chat below (or opens the top result when the chat is off).</p>
   <section id="ask" aria-label="Ask the brain" aria-live="polite" aria-atomic="false">
     <h3>Ask the brain <span id="askTerms"></span></h3>
     <p id="askNone" hidden></p>
@@ -253,7 +253,7 @@ body.enc #enc { max-width: 720px; }
   <details id="bmWrap" open><summary>Vanessa recommends — today's top 10 big moves</summary>
     <p class="seatnote" id="bmNote"></p>
     <ol id="bm" class="bm" aria-label="Today's big moves, by priority"></ol>
-    <p class="seatnote" id="bmHow">Score = impact × confidence ÷ effort × a weight the brain learns from your approvals and declines. Approve: Vanessa's items are queued for the 6:25 AM cycle and run; yours get a plan standing by. Decline: hidden for 30 days and its kind weighs less tomorrow.</p>
+    <p class="seatnote" id="bmHow">Score = impact × confidence ÷ effort × a weight the brain learns from your approvals and declines. Approve: Vanessa starts on it right away (her items), or the plan stands by for you (yours). Decline: hidden for 30 days and its kind weighs less tomorrow.</p>
   </details>
   <details id="vanWrap" open><summary>Ask Vanessa — AI chat over this brain</summary>
     <div class="presence" id="vanPresence" data-state="idle">
@@ -672,14 +672,16 @@ function askRender(question) {
   $("owner").textContent = ""; $("owner").append("Who owns this: "); $("owner").append(mk("b", "", own.seat));
   $("owner").append(own.words.length ? ` (lane words: ${own.words.join(", ")})` : " (no lane word matched; the orchestrator routes it)");
   const best = ranked[0], need = Math.min(2, groups.length);
-  if (!groups.length || !best || best.matched.length < 2 || best.cov < 0.5) {
-    const n = best ? best.matched.length : 0;
+  const weak = !!best && groups.length >= 2 && (best.matched.length < 2 || best.cov < 0.5);   // one term of several: answer anyway, say it is partial
+  if (!groups.length || !best || !best.matched.length) {
     $("askNone").hidden = false;
     $("askNone").textContent = !groups.length ? "No keywords in that question (only stopwords) — not in the brain. Add a noun."
-      : `not in the brain — queue research. ${n ? `Only ${n} term${n === 1 ? "" : "s"} matched (${best.matched.map(g => g.surface).join(", ")}) in ${best.f.p}` : "No term matched"}${need > n ? "; the brain needs at least two." : "."}`;
+      : "not in the brain — no page holds these words. Ask Vanessa below and she will say who would know, or queue research.";
+    askVanessaButton($("askNone"), question);
     if (mode === "enc") sizeEnc();
     return;
   }
+  if (weak) { $("askNone").hidden = false; $("askNone").textContent = `Partial match — only ${best.matched.map(g => g.surface).join(", ")} found (${best.matched.length} of ${groups.length} terms). The closest pages and passages follow; ask Vanessa for a straight answer.`; }
   ranked.slice(0, 5).forEach((r, i) => {
     const n = byId.get(r.f.p), li = mk("li"), b = mk("button", "hit"); li.setAttribute("role", "none");
     b.type = "button"; b.setAttribute("role", "option"); b.setAttribute("aria-selected", String(i === 0)); b.tabIndex = i === 0 ? 0 : -1;
@@ -704,10 +706,14 @@ function askRender(question) {
       ans.append(mk("h3", "", "Answer from the brain"));
       cands.forEach(c => { const n = byId.get(c.sct.p); const d = mk("div", "ansrow"); d.append(mk("b", "", (n ? n.t : c.sct.p) + " › " + c.sct.h)); d.append(mk("p", "", c.sct.x));
         const a = mk("a", "btn", "Open the page"); a.href = REPO + c.sct.p; a.target = "_blank"; a.rel = "noopener"; d.append(a); ans.append(d); });
-      const v = mk("a", "btn primary", "Ask Vanessa about this (Command Deck)"); v.href = "https://claude.ai/artifact/3jbdGMNFkGLEpJiZ3cTmZW"; v.target = "_blank"; v.rel = "noopener"; ans.append(v);
+      askVanessaButton(ans, question);
       ans.append(mk("small", "", "Passages are the page's own words as of its last index; for anything licensed, read the page and ask Vanessa."));
+    } else {
+      ans.append(mk("h3", "", "Answer from the brain"));
+      ans.append(mk("p", "", "The pages above rank for this, but no single section holds the words together. Ask Vanessa and she answers in plain words from those pages."));
+      askVanessaButton(ans, question);
     }
-    ans.hidden = !cands.length;
+    ans.hidden = false;
   } catch (_) {}
   if (mode === "enc") sizeEnc();
 }
@@ -726,10 +732,18 @@ hitsEl.addEventListener("keydown", e => {
   if (j < 0) { $("q").focus(); return; }
   items.forEach((b, k) => { b.tabIndex = k === j ? 0 : -1; }); items[j].focus();
 });
+// One button everywhere an answer is shown: when the Ask Vanessa chat is on, she answers the question right here (grounded on the
+// pages the search ranked); otherwise the button opens the Command Deck's Vanessa chat.
+function askVanessaButton(parent, question) {
+  const v = mk(vanSample ? "button" : "a", "btn primary", vanSample ? "Ask Vanessa this" : "Ask Vanessa about this (Command Deck)");
+  if (vanSample) { v.type = "button"; v.addEventListener("click", () => { $("vanWrap").open = true; if (vanCtl) { vanState("thinking", "Vanessa is still answering — press Stop or wait, then ask again."); return; } $("vanQ").value = ""; vanAsk(question); $("vanWrap").scrollIntoView({ block: "nearest" }); }); }
+  else { v.href = "https://claude.ai/artifact/3jbdGMNFkGLEpJiZ3cTmZW"; v.target = "_blank"; v.rel = "noopener"; }
+  parent.append(v);
+}
 $("q").addEventListener("keydown", e => {
   const first = hitsEl.querySelector(".hit");
   if (e.key === "ArrowDown" && first) { e.preventDefault(); first.focus(); }
-  else if (e.key === "Enter" && first) { e.preventDefault(); askPick(first.dataset.id); }
+  else if (e.key === "Enter") { e.preventDefault(); const q = $("q").value.trim(); if (q && vanSample && !vanCtl) { $("vanWrap").open = true; vanAsk(q); } else if (first) askPick(first.dataset.id); }
 });
 $("askCopy").addEventListener("click", () => {
   const txt = $("askCmd").textContent || `bin/brain recall "${$("q").value.trim().replace(/"/g, "'")}"`;
@@ -742,7 +756,8 @@ $("names").replaceChildren(...nodes.map(n => { const o = document.createElement(
 // ---- Vanessa recommends: the day's top 10 big moves (bin/brain recs), with approve / decline kept in this page's own
 // database (claude.ai db capability) so the 6:05 AM "Big moves" task can read the decisions, learn from them, and queue
 // the approved ones for the daily cycle. Outside claude.ai the list shows; the buttons say so.
-let bmDb = null, bmUser = null; const bmState = {};
+let bmDb = null, bmUser = null, bmMcp = null; const bmState = {};
+const BM_TRIGGER = "trig_014QQGp4WQfWGDVB827R4Qb9";   // the Big-moves task in the orchestrator session (fire_trigger runs it now)
 function bmRender() {
   const ol = $("bm"); ol.replaceChildren();
   if (!RECS || !RECS.items || !RECS.items.length) { $("bmNote").textContent = "No big moves computed yet — the 6:05 AM task writes them (bin/brain recs --write)."; return; }
@@ -757,24 +772,32 @@ function bmRender() {
     if (c.plan && c.plan.length) { const d = mk("details"); d.append(mk("summary", "", "Plan standing by (" + c.plan.length + " steps)")); const pl = mk("ol", "plan"); c.plan.forEach(p => pl.append(mk("li", "", p))); d.append(pl); li.append(d); }
     const acts = mk("div", "acts");
     if (st) { acts.append(mk("span", "state", st + (bmState[c.id] && bmState[c.id].at ? " · " + String(bmState[c.id].at).slice(0, 10) : ""))); }
-    ["approved", "declined", "later"].forEach(dec => { const b = mk("button", "btn" + (dec === "approved" ? " primary" : ""), dec === "approved" ? "Approve" : dec === "declined" ? "Decline" : "Later"); b.type = "button"; b.disabled = !bmDb; b.addEventListener("click", () => bmDecide(c, dec)); acts.append(b); });
+    if (bmState[c.id] && bmState[c.id].note) li.append(mk("div", "meta note", bmState[c.id].note));
+    ["approved", "declined", "later"].forEach(dec => { if (st === dec) return; const b = mk("button", "btn" + (dec === "approved" ? " primary" : ""), dec === "approved" ? "Approve" : dec === "declined" ? "Decline" : "Later"); b.type = "button"; b.disabled = !bmDb || bmBusy; b.addEventListener("click", () => bmDecide(c, dec)); acts.append(b); });
     const ask = mk("button", "btn", "Ask Vanessa"); ask.type = "button"; ask.addEventListener("click", () => { $("vanWrap").open = true; $("vanQ").value = "Big move #" + c.rank + ": " + c.title + " — should I do this today, and what is the first step?"; $("vanQ").focus(); }); acts.append(ask);
     li.append(acts); ol.append(li);
   });
 }
+let bmBusy = false;   // one decision in flight at a time (validator P07-F1: a double-click fired EXECUTE NOW twice)
 async function bmDecide(c, dec) {
-  if (!bmDb) return;
+  if (!bmDb || bmBusy) return;
+  const prev = bmState[c.id] && bmState[c.id].decision;
+  if (dec === "approved" && prev === "approved") { say("Big move #" + c.rank + " is already approved" + (bmState[c.id].fired ? " and started" : "") + " — Vanessa has it; decline it first if you want to start it again."); return; }
+  bmBusy = true; $("bm").querySelectorAll("button.btn").forEach(b => { if (b.textContent !== "Ask Vanessa") b.disabled = true; });
   try {
     const at = new Date().toISOString(); const by = bmUser ? await bmUser.id().catch(() => "") : "";
     await bmDb.doc("recs/" + c.id).set({ decision: dec, at, by, category: c.category, title: c.title, rank: c.rank, score: c.score, date: RECS.date });
     bmState[c.id] = { decision: dec, at }; bmRender(); say("Big move #" + c.rank + " " + dec + ".");
+    if (dec === "approved") await bmRunNow(c);
   } catch (e) { say("Could not save that decision" + (e && e.code ? " (" + e.code + ")" : "") + " — try again or decide on the Command Deck."); }
+  finally { bmBusy = false; bmRender(); }
 }
 bmRender();
 (async () => {
   try {
     if (!window.claude || typeof window.claude.use !== "function") return;
-    const [db, user] = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
+    const [db, user, mcp] = await Promise.all([window.claude.use("db"), window.claude.use("user"), window.claude.use("mcp")]);
+    bmMcp = mcp || null;
     if (!db) return;
     bmDb = db; bmUser = user;
     const snap = await db.collection("recs").get();
@@ -851,6 +874,26 @@ async function vanAsk(question) {
     if (code === "cancelled") { out.textContent = (e.text || "") + "\n(stopped)"; if (e.text) vanTurns.push({ role: "assistant", content: e.text }); else vanTurns.pop(); }
     else { out.textContent = e.text || ""; out.classList.add("err"); out.textContent += (out.textContent ? "\n" : "") + (VAN_COPY[code] || VAN_COPY.upstream_error); if (!e.text) vanTurns.pop(); if (code === "not_granted" || code === "sampling_disabled" || code === "not_declared" || code === "capability_disabled" || code === "capability_removed") { $("vanForm").hidden = true; $("vanOff").hidden = false; } }
   } finally { $("vanSend").disabled = false; $("vanStop").hidden = true; vanCtl = null; vanEl.scrollTop = vanEl.scrollHeight; if (!vanUtter) vanState($("vanPresence").dataset.state === "speaking" ? "idle" : $("vanPresence").dataset.state === "thinking" ? "idle" : $("vanPresence").dataset.state); }
+}
+// Approve = execute. The page fires the Big-moves task (Claude Code Remote connector, the viewer's own account) with the
+// move id; Vanessa's session runs the plan at once (executor "vanessa") or records the approval with the plan standing by
+// (executor "steven"). Without the connector the approval still lands in the page db and the 6:05 AM task runs it.
+async function bmRunNow(c) {
+  // the outcome is kept in bmState and drawn by bmRender, so a re-render never wipes it (validator P07-F3)
+  const note = { set textContent(v) { if (bmState[c.id]) bmState[c.id].note = v; const el = $("bm").querySelector('li[data-id="' + c.id + '"] .meta.note'); if (el) el.textContent = v; else bmRender(); } };
+  const standing = c.executor === "mac" ? "Saved. A Mac task carries it — it runs on the next connect-all pass." : "Saved. The plan is standing by for you.";
+  if (!bmMcp) { note.textContent = c.executor === "vanessa" ? "Saved. Vanessa runs it at 6:05 AM (open in the Claude app with Claude Code Remote to start it now)." : standing; return; }
+  note.textContent = "Starting Vanessa…";
+  try {
+    await bmMcp.callTool("Claude Code Remote", "fire_trigger", { trigger_id: BM_TRIGGER, text: "EXECUTE NOW big move " + c.id + ": " + c.title + " (executor " + c.executor + ", approved from the 6D Brain)" });
+    note.textContent = c.executor === "vanessa" ? "Vanessa is on it — the result lands in the Vanessa queue on the Command Deck." : c.executor === "mac" ? "Approval recorded in Vanessa's session; the Mac task carries it." : "Approval recorded in Vanessa's session; the plan is standing by for you.";
+    if (bmState[c.id]) bmState[c.id].fired = true;
+  } catch (e) {
+    const code = e && e.code ? e.code : "upstream_error";
+    note.textContent = code === "not_in_manifest" || code === "server_not_connected" || code === "needs_reauth" || code === "blocked_by_policy" || code === "approval_required"
+      ? "Saved. Claude Code Remote is not allowed for this page yet — Vanessa runs it at 6:05 AM, or allow the connector in the page's permissions, then Decline and Approve again to start it now."
+      : code === "cancelled" ? "Saved; start cancelled — Vanessa runs it at 6:05 AM." : "Saved. Could not start it now (" + code + ") — Vanessa runs it at 6:05 AM.";
+  }
 }
 $("vanForm").addEventListener("submit", e => { e.preventDefault(); if (vanCtl) return; const q = $("vanQ").value.trim() || $("q").value.trim(); if (!q) return; $("vanQ").value = ""; vanAsk(q); });
 $("vanQ").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("vanForm").requestSubmit(); } });

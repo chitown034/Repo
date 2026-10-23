@@ -4,7 +4,7 @@ set -u
 cd "$(dirname "$0")" || exit 1
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
 mkdir -p "$T/bin" "$T/home"
-FUNCS="$(sed -n '/^have()/p;/^RUNNER_OUT=/p;/^runner_fix() {/,/^}/p;/^keep_awake() {/,/^}/p;/^repo_sync_agent() {/,/^}/p;/^laya_venv() {/,/^}/p;/^laya_connect() {/,/^}/p;/^JARVIS_MODEL=/p;/^jarvis_db() {/,/^}/p;/^jarvis_engine() {/,/^}/p;/^orca_app() {/,/^}/p;/^orca_connect() {/,/^}/p;/^anydesk_app() {/,/^}/p;/^anydesk_connect() {/,/^}/p;/^gondola_mcp() {/,/^}/p;/^openflowkit_mcp() {/,/^}/p;/^nlm_connect() {/,/^}/p;/^LOFTY_VENV=/p;/^lofty_connect() {/,/^}/p;/^tidycal_check() {/,/^}/p;/^tidycal_connect() {/,/^}/p;/^CAH_BIN=/p;/^cah_connect() {/,/^}/p' connect-all.sh)"
+FUNCS="$(sed -n '/^have()/p;/^say() {/p;/^exec 3>&1/p;/^step() {/,/^}/p;/^RUNNER_OUT=/p;/^runner_fix() {/,/^}/p;/^keep_awake() {/,/^}/p;/^repo_sync_agent() {/,/^}/p;/^laya_venv() {/,/^}/p;/^laya_connect() {/,/^}/p;/^JARVIS_MODEL=/p;/^jarvis_db() {/,/^}/p;/^jarvis_engine() {/,/^}/p;/^orca_app() {/,/^}/p;/^orca_connect() {/,/^}/p;/^anydesk_app() {/,/^}/p;/^anydesk_connect() {/,/^}/p;/^gondola_mcp() {/,/^}/p;/^openflowkit_mcp() {/,/^}/p;/^nlm_connect() {/,/^}/p;/^LOFTY_VENV=/p;/^lofty_connect() {/,/^}/p;/^tidycal_check() {/,/^}/p;/^tidycal_connect() {/,/^}/p;/^CAH_BIN=/p;/^cah_connect() {/,/^}/p;/^runner_logs() {/,/^}/p;/^arive_keys() {/,/^}/p' connect-all.sh)"
 pass=0; fail=0
 check() { if [ "$2" = "$3" ]; then pass=$((pass+1)); echo "ok   $1"; else fail=$((fail+1)); echo "FAIL $1 (expected rc $3, got $2)"; fi; }
 stub_runner() { # <restart exit code> <status text after restart>
@@ -216,4 +216,41 @@ check "openflowkit: second run is idempotent"                    "$(run_fn openf
 [ "$(wc -l < "$T/mcp.calls")" = 1 ];                           check "openflowkit: add called once"                 "$?" 0
 rm -f "$T/bin/claude"; check "openflowkit: no claude CLI -> FAIL" "$(PATH="$T/bin:/usr/bin:/bin" run_fn openflowkit_mcp)" 1
 rm -f "$T/bin/npx"
+# 2c runner logs: stubbed runnerctl status + a log file; the step FAILS when a task is unhealthy (so the REPORT carries it);
+#    tails are said (stdout) with JSON / Bearer / sk- secrets masked; no runnerctl -> FAIL
+mkdir -p "$T/home/Applications/claude-runner/logs"; printf 'started\napi key=abc123secret\n{"access_token":"tok123"}\n"api_key": "k123"\nAuthorization: Bearer sk-ant-xyz789\nAuthorization: Bearer plainbear77\nerror: boom\n' > "$T/home/Applications/claude-runner/logs/toolkit-deck-sync.log"
+printf '#!/bin/sh\ncase "$1" in status) echo "logged in; idle"; echo "toolkit-deck-sync  error  2026-10-23"; echo "r1-morning-brief ok";; esac\n' > "$T/bin/runnerctl"; chmod +x "$T/bin/runnerctl"
+check "runner logs: error task found -> FAIL (lands in the REPORT)"  "$(run_fn runner_logs)" 1
+grep -q "error: boom" "$T/out";                                check "runner logs: log tail said"                   "$?" 0
+grep -q "toolkit-deck-sync" "$T/out";                          check "runner logs: task named"                      "$?" 0
+grep -q "abc123secret\|tok123\|k123\|xyz789\|plainbear77" "$T/out"; check "runner logs: every secret form masked (JSON, Bearer, sk-)" "$?" 1
+grep -q "error: boom" "$T/out";                                check "runner logs: tail printed (direct call; once-on-screen is the step() test below)" "$?" 0
+grep -q "r1-morning-brief" "$T/out";                           check "runner logs: healthy task not listed"         "$?" 1
+printf '#!/bin/sh\ncase "$1" in status) echo "logged in; idle"; echo "r1-morning-brief ok";; esac\n' > "$T/bin/runnerctl"; chmod +x "$T/bin/runnerctl"
+check "runner logs: all healthy -> ok"                           "$(run_fn runner_logs)" 0
+# through step() as connect-all runs it: the diagnosis reaches stdout (the screen) once and the REPORT lists the step under "Did not finish"
+printf '#!/bin/sh\ncase "$1" in status) echo "logged in; idle"; echo "toolkit-deck-sync  error  2026-10-23";; esac\n' > "$T/bin/runnerctl"; chmod +x "$T/bin/runnerctl"
+: > "$T/log"; PATH="$T/bin:$PATH" HOME="$T/home" LOG="$T/log" PREVIEW=0 PASS= FAIL= NEEDS= bash -c "${FUNCS//<\/dev\/tty/<\/dev\/null}
+step '2c Runner tasks in error' 'Mac tasks in error' runner_logs; printf '%s' \"\$FAIL\"" >"$T/out" 2>&1
+grep -q "toolkit-deck-sync" "$T/out";                          check "runner logs via step(): task name on screen"   "$?" 0
+[ "$(grep -c "error: boom" "$T/out")" = 1 ];                   check "runner logs via step(): tail on screen once"   "$?" 0
+grep -q "2c Runner tasks in error" "$T/out";                   check "runner logs via step(): listed under Did not finish" "$?" 0
+rm -f "$T/bin/runnerctl"; check "runner logs: no runnerctl -> FAIL" "$(PATH="$T/bin:/usr/bin:/bin" run_fn runner_logs)" 1
+# 7e arive: Enter skips; three values saved 600; values never printed
+rm -rf "$T/home/.config/arive"
+PATH="$T/bin:$PATH" HOME="$T/home" LOG="$T/log" bash -c "read() { eval \"\$2=''\"; }; stty() { :; }; ${FUNCS//<\/dev\/tty/<\/dev\/null}
+arive_keys" >"$T/out" 2>&1; check "arive: Enter skips -> FAIL noted" "$?" 1
+PATH="$T/bin:$PATH" HOME="$T/home" LOG="$T/log" bash -c "n=0; read() { n=\$((n+1)); eval \"\$2=val\$n\"; }; stty() { :; }; ${FUNCS//<\/dev\/tty/<\/dev\/null}
+arive_keys" >"$T/out" 2>&1; check "arive: three values saved" "$?" 0
+grep -q "ARIVE_API_KEY=val3" "$T/home/.config/arive/.env";   check "arive: file holds the key"                    "$?" 0
+grep -q "val1\|val2\|val3" "$T/out";                          check "arive: values never printed"                  "$?" 1
+[ "$(stat -c %a "$T/home/.config/arive/.env" 2>/dev/null || stat -f %Lp "$T/home/.config/arive/.env")" = 600 ]; check "arive: file is 600" "$?" 0
+# arive: a read that fails (Ctrl-C / EOF at the second prompt) leaves the function with nothing saved
+rm -rf "$T/home/.config/arive"
+PATH="$T/bin:$PATH" HOME="$T/home" LOG="$T/log" bash -c "n=0; read() { n=\$((n+1)); [ \$n = 2 ] && return 1; eval \"\$2=val\$n\"; }; stty() { :; }; ${FUNCS//<\/dev\/tty/<\/dev\/null}
+arive_keys" >"$T/out" 2>&1; check "arive: interrupted at prompt 2 -> 130, nothing saved" "$?" 130
+[ -e "$T/home/.config/arive/.env" ]; check "arive: no file after an interrupt" "$?" 1
+grep -q "val1" "$T/out"; check "arive: interrupted value never printed" "$?" 1
+# REPORT letters A-D match docs/STEVEN-STEPS.md
+for w in "A. iMessage" "B. Zoho" "C. Claim your profiles" "D. AnyDesk"; do grep -q "say \"  $w" connect-all.sh; check "report letter: $w" "$?" 0; done
 echo "connect-all tests: $pass passed, $fail failed"; [ "$fail" = 0 ]
