@@ -59,6 +59,13 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
    `nlm login` (browser sign-in, Google session stays on that Mac), then `nlm login --check`. In a new Claude Code session:
    "list my NotebookLM notebooks" → then "add every SB Google Doc from SECOND BRAIN to my 2nd brain notebook". Claude
    does the picker for you from then on. Non-sensitive notebooks only.
+1h. **Your claude.ai chats into the brain (5 minutes, then monthly):** claude.ai has no API for other chat windows, so the
+   path is your own export. claude.ai → Settings → Privacy → **Export data** → Google emails a zip → unzip → put
+   `conversations.json` in `~/Repo/inbox/` (any folder works) → in Terminal: `cd ~/Repo && bin/brain ingest claude-export
+   ~/Repo/inbox/conversations.json`. It writes `memory/claude-chats.md`: one line per chat (date, title, what you asked first) and
+   a "tasks you mentioned" list, your words only, phones/e-mails masked. Claude Code sessions need nothing from you: a
+   daily ledger (3:52 AM) lists them in `docs/inventory/claude-sessions.md`, and the Mac's `brain-learner` task captures your
+   words from their transcripts.
 1g. **Your GitHub repo is public.** `chitown034/Repo` answered without sign-in on 2026-10-23 (that is how the Drive
    sync fetches the pack). It holds no client files beyond `wiki/clients/index.md` (first names, by rule), but the
    brain, decisions and task prompts are readable by anyone. If you want it private: GitHub → Repo → Settings → Danger

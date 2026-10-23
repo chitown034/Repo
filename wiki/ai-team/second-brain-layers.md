@@ -26,6 +26,8 @@ produced becomes a "fact" in the repo without Steven's yes).
 
 - `bin/brain export notebooklm` — the pack (13 masked bundles, no client pages, the 6D map as text).
 - `bin/brain layers [--write] [--json]` — the register above with last-sync stamps and verdicts.
+- `bin/brain ingest claude-export <conversations.json>` — Steven's claude.ai chats (his words only, masked) → `memory/claude-chats.md`;
+  the daily "Claude sessions ledger" task → `docs/inventory/claude-sessions.md` (every Claude Code session, title/date/status).
 - `bin/brain links` — every front door with its URL (deck, ISA Portal, 6D, Action Desk, Bot Crew, repo, Drive SECOND BRAIN,
   NotebookLM, Notion database + layer directory, the 13 SB Docs). The 6D Brain embeds the same list: "Open the brain"
   panel, an open link per layer, and clickable store nodes (Drive, NotebookLM, Notion, Command Deck).

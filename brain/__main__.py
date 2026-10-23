@@ -74,6 +74,8 @@ def _parser() -> argparse.ArgumentParser:
     ow = sub.add_parser("owner", help="who keeps a Command Deck panel alive, by what mechanism, and what stays Steven's")
     ow.add_argument("query"); ow.add_argument("--json", action="store_true")
     sub.add_parser("mcp", help="serve recall/remember/pack/gaps over stdio MCP for any MCP client")
+    ig = sub.add_parser("ingest", help="ingest an outside export into the brain: `claude-export <conversations.json>` (claude.ai data export) -> memory/claude-chats.md")
+    ig.add_argument("source", choices=["claude-export"]); ig.add_argument("path")
     sub.add_parser("links", help="every front door of the second brain: deck, ISA Portal, 6D, Action Desk, Drive SECOND BRAIN, NotebookLM, Notion, the SB Docs")
     ly = sub.add_parser("layers", help="every layer of the second brain (repo, index, deck, 6D, Jarvis, Notion, Drive, NotebookLM...): last sync, age, verdict")
     ly.add_argument("--write", action="store_true", help="rewrite docs/reports/LAYERS.md"); ly.add_argument("--json", action="store_true")
@@ -198,6 +200,11 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "passages":
         from . import passages
         print(passages.format_passages(passages.search(root, " ".join(args.question), top=args.top))); return 0
+
+    if args.cmd == "ingest":
+        from . import ingest_claude_export
+        st = ingest_claude_export.ingest(root, Path(args.path))
+        print(f"ingested {st['conversations']} conversations, {st['tasks']} tasks, {st['masked']} masks -> {st['out']}"); return 0
 
     if args.cmd == "links":
         from . import links

@@ -29,6 +29,7 @@ On the Mac this router's job is done by the vanessa-orchestrator system prompt +
 | A specific client | `wiki/clients/<client>.md` — FULL CONTEXT, read whole | vector index, knowledge graph |
 | A source document, playbook PDF, external system | `references/index.md` | anything else |
 | Something learned in an earlier session | `memory.md` | wiki |
+| "What did I ask Claude about X", which session/chat did something | `docs/inventory/claude-sessions.md` (Claude Code sessions, daily) · `memory/claude-chats.md` (claude.ai chats, from his export) | transcripts |
 | A high-volume corpus (transcripts, disclosure libraries, rule sets) | `vector-index/README.md` | full-context docs |
 | "How do these connect" — entities, relationships | `knowledge-graph/README.md` | vector index |
 | What runs when, and whether it actually ran | `always-on/README.md` | projects |
