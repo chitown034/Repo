@@ -19,6 +19,14 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
    folder, runs its doctor), AnyDesk, the Agent OS, the seven Claude mods (new: `/cycle`, `/inbox`,
    `/meetings`, `/today`, `/tc`, `/queue <task>`, `/sync`, `/connect` and a status line that says when the repo is behind).
    It never signs in, pairs, sends or pays.
+1b. **After the first REPORT (2026-10-23 00:31 UTC): three short pastes, in order.** The runner is signed out, so
+   nothing on the Mac runs until the first one. Each is yours because it signs in or updates Claude itself.
+   `runnerctl login && runnerctl status`
+   `cd ~/Repo && claude update && bash integrations/mods/install-mods.sh`
+   `grep -A 14 "== 6 Laya\|== 6b Jarvis" ~/Library/Logs/vanessa-setup/connect-2026-10-22-1731.log` → paste the output to Claude
+   (it says why Laya stopped and which Jarvis rows fail; Claude fixes what is fixable and names the rest).
+1c. **Kapso on the Mac:** `claude` → `/mcp` → kapso → sign in (free sandbox); then
+   `bash integrations/kapso/install-mac.sh keys --allow <your mobile>` (hidden prompt, Keychain only).
 2. **Vanessa's iMessage line (30 seconds, from your phone):** Inkbox is reconnected. Send the text
    `connect @vanessa-shearrill` to **+1 650 484 9720** (tap: sms:+16504849720?&body=connect%20%40vanessa-shearrill).
    After that, the "Text me this brief" button on the Command Deck works, and Vanessa can text you.

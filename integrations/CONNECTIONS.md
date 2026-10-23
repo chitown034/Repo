@@ -396,3 +396,28 @@ checks, and what its REPORT will prove. New in the paste: 6a (Ollama + the Jarvi
 | BlackRock · Health Data Avatar · Microsoft 365 · PlayMCP · Similarweb · Higgsfield | never finished connecting | finish or remove | Steven |
 | Four http_api Sunday routines | still enabled, fail on the usage limit | 4 clicks (`docs/ROUTINE-BUDGET-2026-10-22.md`) | Steven |
 | Broker Command Center (3rd dashboard) | data lives in the browser only | move its state to its `db` (another session owns that page) | later |
+
+## Connection status — Mac 1 report 2026-10-23 00:31 UTC (`connect-all.sh`, log connect-2026-10-22-1731)
+
+First run of the paste on STEVEN's MacBook Pro. Done: repo sync + 30-min agent, keep-awake, Gondola MCP, Inkbox voice
+SDK, Jarvis engine (6a), Orca opened on Repo, AnyDesk (ID 1514099895 → deck `anydeskIds.mac1`), Agent OS, Lofty key
+proven read-only, health check.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Mac runner | signed out (step 2 stopped: `runnerctl login` is Steven's) | `runnerctl login && runnerctl status` | Steven |
+| Kapso (Mac plugin + keys) | sign-in and mobile number pending | `claude` → `/mcp` → kapso; `bash integrations/kapso/install-mac.sh keys --allow <mobile>` | Steven |
+| Laya | step 6 stopped (model download or venv) | paste the 6 / 6b log lines to Claude (`docs/STEVEN-STEPS.md` step 1c) | Steven (one paste) |
+| Jarvis verify (6b) | FAIL rows unknown until the log lines are pasted | same paste | Steven (one paste) |
+| Claude mods | Claude Code older than 2.1.287 | `claude update && bash integrations/mods/install-mods.sh` | Steven (one paste) |
+| Lofty | connected — key on the Mac, GET /me proven 2026-10-23 | — | — |
+| Gondola (Claude Code) | connected — MCP registered for every project; claude.ai custom connector still his | claude.ai → Connectors → Add custom connector | Steven |
+| Orca | active — installed and opened on Repo; phone pairing his | Add Project → scan the code with the Orca IDE app | Steven |
+| AnyDesk | active — installed, ID saved to the deck; permissions his | Screen Recording + Accessibility on | Steven |
+| Repo sync on the Mac | connected — step 1 and the 30-minute agent ran | — | — |
+| Inkbox iMessage line | connected — no phone linked yet | text `connect @vanessa-shearrill` to +1 650 484 9720 | Steven |
+| Zoho CRM (Composio) | 403 NO_PERMISSION until the API box is ticked | tick "Zoho CRM API Access" on his Zoho profile | Steven |
+| Kapso webhooks (Pabbly → Kapso) | two trigger URLs not pasted yet | `docs/STEVEN-STEPS.md` step 5 | Steven |
+| EVRoutes · Turo | `needs_reconnect` | Reconnect or remove | Steven |
+| Four http_api Sunday routines | still enabled, fail on the usage limit | 4 clicks (`docs/ROUTINE-BUDGET-2026-10-22.md`) | Steven |
+| BlackRock · Health Data Avatar · Microsoft 365 · PlayMCP · Similarweb · Higgsfield | never finished connecting | finish or remove | Steven |
