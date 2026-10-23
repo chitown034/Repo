@@ -185,3 +185,13 @@ New scripts/runner-export.sh (Mac 1: packs ~/Applications/claude-runner minus lo
 ## Resolution 2026-10-23 02:25 UTC — change-set `fe57b3e24c9927ab` (Ollama cask first)
 
 Mac 2 report 01:53: `brew install ollama` (formula) builds from source there and stops on outdated CLT, like python. jarvis_engine now tries `brew install --cask ollama` (prebuilt app) first, opens it once, waits up to 30 s for the CLI link, falls back to the formula, and says plainly when the command is not linked yet. Tests: connect-all 56 (cask tried first; passes with a stubbed cask that links the CLI). Reviewed inline.
+
+## Resolution 2026-10-23 06:20 UTC — change-set `4496cf64cf9e31be` (NotebookLM mirror, layers register, 6D Layers readout)
+
+Code: brain/export_notebooklm.py (+tests, 28 ok), brain/layers.py (+tests), `brain export`/`brain layers` CLI, graph store node
+`store:notebooklm`, build.py LAYERS injection, template Layers readout (node --check OK on the built page; merge-live test OK),
+scripts/notebooklm-export.sh. Deterministic gate: brain tests OK, doctor PASS after reindex; the two `quickcheck` rows on
+dashboard/brain-4d.html and template.html are the Command Deck checker applied to the 6D page — "cdStateSeed JSON parses"
+cannot pass on a page that has no deck seed by design, and the "functions never defined (approx.)" list is JSON words
+(agent, board, body…), the same noise recorded for the deck on 2026-10-22. No login, no secret, no client page in the pack
+(test asserts it). Drive/Composio writes were done interactively in-session, scoped to SECOND BRAIN/. Reviewed inline.

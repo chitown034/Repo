@@ -1,4 +1,22 @@
-# NotebookLM — the Second Brain as a notebook (source pack, 2026-10-23)
+# NotebookLM — the Second Brain as a notebook (Drive mirror + source pack, 2026-10-23)
+
+**Status 2026-10-23 06:10 UTC — connected and syncing.** On Steven's instruction ("connect and sync notebook lm") the
+pack now lives in Google Drive as 13 Google Docs under `SECOND BRAIN/` (owner steven.shearrill@gmail.com; folder
+https://drive.google.com/drive/folders/16sh0SNlicvHOEpAtTUufI504agSlQRaX), laid out as his plan asked: `00 Inbox`,
+`01 Reference Sources/{Mortgage and Lending, Real Estate, AI and Automation, Personal Learning}`, `02 Approved
+Playbooks`, `03 Research Briefs`, `04 Decisions and Lessons`, `99 Archive`. Doc ids, folders and the notebook each Doc
+belongs to: `drive-manifest.json`. A weekly task (Sun 2:45 PM PT, in the Claude Code session that holds the connectors)
+re-exports, rewrites the changed Docs in place through Composio Google Docs, refreshes the Notion layer directory and
+`docs/reports/LAYERS.md`. NotebookLM auto-syncs Google Docs sources (Google, May 2026), so Steven's only step is adding
+the Docs to his notebooks once. One scoped exception to the Drive rule: writes go only to `SECOND BRAIN/`.
+
+**Steven's one-time step (5 minutes):** notebooklm.google.com → New notebook → **AI Automation and VANESSA** → Add
+sources → Google Drive → pick every `SB …` Doc in `01 Reference Sources/AI and Automation` plus `SB 00-START-HERE` and
+`SB 02-who-and-decisions`. Then **Mortgage Reference Library** (`SB 05`, `SB 09`, `SB 00`, `SB 02`) and **Business
+Operating Playbooks** (`SB 06`, `SB 08`, `SB 09`, `SB 00`, `SB 02`). Nothing else to do; the Docs refresh on their own.
+
+---
+
 
 **What this is.** `bin/brain export notebooklm` turns the brain into 13 markdown sources under `exports/notebooklm/`
 (not committed). Steven uploads them to one NotebookLM notebook, "Second Brain", and can then ask it anything the brain

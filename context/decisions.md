@@ -654,3 +654,12 @@ Drive) stands. So `bin/brain export notebooklm` writes 13 masked markdown source
 to a "Second Brain" notebook; the 6D Brain is included as text. Browser-automation "connectors" stay out (session
 cookies in plain text). Revisit only if Steven chooses the Drive route or Google ships a consumer API.
 `integrations/notebooklm/README.md`.
+
+## 2026-10-23 — NotebookLM connected through Drive; the brain's layers must sync evenly
+
+Steven: "connect and sync notebook lm", "another layer of redundancy", "ensure all data syncs evenly across all
+layers — Notion, Google Drive, NotebookLM and more". Decisions: (1) one scoped exception to the Drive read-only rule —
+`SECOND BRAIN/` is written by the weekly sync, nothing else in Drive; (2) NotebookLM is recall level 4 (the mirror),
+never a first stop; (3) `bin/brain layers` is the measure of "even": every layer inside its own cadence from its own
+stamp; (4) the community NotebookLM MCP stays opt-in on the Mac. Pages: `wiki/ai-team/second-brain-layers.md`,
+`integrations/notebooklm/README.md`, `docs/reports/LAYERS.md`.

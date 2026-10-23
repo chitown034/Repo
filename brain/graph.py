@@ -38,6 +38,7 @@ STORES = [  # id, label, what, files it attaches to (prefixes)
     ("store:ruflo", "Ruflo", "Research and memory bench", ["wiki/ai-team/mentors-and-benches.md"]),
     ("store:omniroute", "OmniRoute", "Failover when Claude runs out", ["integrations/omniroute/README.md", "integrations/omniroute-failover/README.md"]),
     ("store:deck", "Command Deck", "The live dashboard", ["projects/command-deck.md", "wiki/dashboard-ops/index.md"]),
+    ("store:notebooklm", "NotebookLM mirror", "The brain as 13 Google Docs in Drive/SECOND BRAIN, rewritten weekly; redundant copy + source-grounded Q&A", ["integrations/notebooklm/README.md", "references/index.md"]),
 ]
 
 

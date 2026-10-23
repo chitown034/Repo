@@ -138,6 +138,9 @@ out = out.replace("/*SEATS*/null", j(seats), 1).replace("/*ENC*/null", j(enc), 1
 ask_json = j(ask)
 out = out.replace("/*ASK*/null", ask_json, 1)
 out = out.replace("/*BUILD*/null", json.dumps(date.today().isoformat()), 1)
+# the layers register (2026-10-23): every layer of the second brain with its own last-sync stamp and verdict
+from brain import layers as _layers  # noqa: E402
+out = out.replace("/*LAYERS*/null", j([{k: r[k] for k in ("key", "layer", "sync", "last", "age_days", "cadence_days", "verdict")} for r in _layers.collect(ROOT)]), 1)
 (ROOT / "dashboard/brain-4d.html").write_text(out, encoding="utf-8")
 print(f"wrote dashboard/brain-4d.html: {len(g['nodes'])} nodes, {len(g['links'])} links, {len(seats)} seats, {len(enc)} encyclopedia entries, "
       f"ask index {len(ask['v'])} terms / {sum(len(f['t']) for f in ask['f'])} postings / {len(ask_json):,} bytes, {len(out):,} bytes")

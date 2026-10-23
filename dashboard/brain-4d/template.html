@@ -89,10 +89,11 @@ button, input { font: inherit; color: inherit; }
 .toggle input { width: 22px; height: 22px; accent-color: var(--now); margin: 0; }
 #lensWrap > summary { cursor: pointer; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); list-style: none; min-height: 44px; display: flex; align-items: center; }
 #lensWrap > summary::after { content: "+"; margin-left: auto; } #lensWrap[open] > summary::after { content: "–"; }
-#chipsWrap summary, #seatWrap summary { cursor: pointer; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); list-style: none; min-height: var(--hit); display: flex; align-items: center; }
+#chipsWrap summary, #seatWrap summary, #layersWrap > summary { cursor: pointer; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); list-style: none; min-height: var(--hit); display: flex; align-items: center; }
 #seatWrap summary::after { content: "+"; margin-left: auto; } #seatWrap[open] summary::after { content: "–"; }
 #chipsWrap { margin: 0; } #seatWrap { margin: 0; }
 #chipsWrap summary::after { content: "+"; margin-left: auto; } #chipsWrap[open] summary::after { content: "–"; }
+#layersWrap > summary::after { content: "+"; margin-left: auto; } #layersWrap[open] > summary::after { content: "–"; }
 
 #inspector { position: fixed; top: calc(env(safe-area-inset-top, 0px) + var(--gutter)); right: var(--gutter); width: min(380px, calc(100vw - 2 * var(--gutter))); max-height: calc(100% - 150px); overflow: auto; padding: 18px 18px 16px; z-index: 4; }
 #inspector[hidden] { display: none !important; }
@@ -164,6 +165,10 @@ body.enc #enc { max-width: 720px; }
     <button class="tab" role="tab" id="tabEnc" aria-selected="false" aria-controls="enc" tabindex="-1">Encyclopedia</button>
   </div>
   <div class="stats maponly" id="stats"></div>
+  <details id="layersWrap" class="maponly"><summary>Layers: where the brain lives and how fresh each copy is</summary>
+    <ul id="layers" class="legend" aria-label="Second brain layers"></ul>
+    <p class="seatnote" id="layersNote"></p>
+  </details>
   <label class="sr" for="q">Find a page</label>
   <input id="q" type="search" placeholder="Ask the brain — VA funding fee, Lofty, who owns compliance…" autocomplete="off" spellcheck="false" list="names" aria-describedby="askHelp" aria-controls="hits">
   <datalist id="names"></datalist>
@@ -229,6 +234,7 @@ body.enc #enc { max-width: 720px; }
 <script>
 "use strict";
 const G = /*DATA*/null;
+const LAYERS = /*LAYERS*/null;
 const LOOP = /*LOOP*/null;
 const SEATS = /*SEATS*/null;   // seat -> {a: agents (agents.json laya.lane), s: "starts from" prefixes (cross-functional.md)}
 const ENC = /*ENC*/null;       // A-Z encyclopedia entries from brain/index.json + graph backlinks
@@ -653,6 +659,15 @@ $("stats").replaceChildren(
   stat("test Qs right", `${LOOP.bench_correct}/${LOOP.bench_total}`, LOOP.bench_correct >= LOOP.bench_total - 2 ? "good" : "warn"),
   stat("org seats found", `${LOOP.org_covered}/${LOOP.org_total}`, LOOP.org_covered === LOOP.org_total ? "good" : "warn"),
   stat("Jarvis", LOOP.jarvis === "unverified" ? "not yet" : LOOP.jarvis, LOOP.jarvis === "ok" ? "good" : "warn"));
+
+// layers: repo, index, deck, 6D, Jarvis, Notion, Drive, NotebookLM... (bin/brain layers)
+try {
+  const LC = { fresh: "#6fd39b", stale: "#ff7a7a", unverified: "#8f97ad", "spec only": "#8f97ad" };
+  $("layers").replaceChildren(...(LAYERS || []).map(r => { const li = document.createElement("li"); li.innerHTML = "<i></i><span></span><b></b>"; li.querySelector("i").style.setProperty("--c", LC[r.verdict] || "#8f97ad"); li.children[1].textContent = r.layer; li.children[2].textContent = r.last ? `${r.verdict} · ${r.last}` : r.verdict; li.title = r.sync; return li; }));
+  const stale = (LAYERS || []).filter(r => r.verdict === "stale").map(r => r.layer);
+  $("layersNote").textContent = stale.length ? `Not even: ${stale.join(", ")} behind its cadence.` : "Even: every stamped layer is inside its cadence. Dates are each layer's own last sync.";
+  if (innerWidth <= 720) $("layersWrap").open = false;
+} catch (_) {}
 
 // ---------- dim 5: freshness legend and toggles
 $("legend").replaceChildren(...Object.entries(FRESH).map(([k, v]) => { const li = document.createElement("li"); li.innerHTML = "<i></i><span></span><b></b>"; li.querySelector("i").style.setProperty("--c", v.c); li.children[1].textContent = v.l; li.children[2].textContent = String(fCount[k]); return li; }));

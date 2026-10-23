@@ -46,10 +46,16 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
    sign in; (b) on **Mac 1** paste `command -v runnerctl; ls ~/Library/LaunchAgents | grep -i runner` and send Claude
    the two lines — the task runner was built on Mac 1 only and its copy step for Mac 2 comes from that. Jarvis's index
    on Mac 2 needs the vault there too (`docs/SECOND-MAC-SETUP.md` 6b: iCloud or a copy).
-1f. **6D Brain into NotebookLM (5 minutes, once):** on a Mac run `bash scripts/notebooklm-export.sh`; it builds 13
-   source files (no client pages, phones/e-mails masked, the 6D map as text) and opens the folder and notebooklm.google.com.
-   New notebook "Second Brain" → Add sources → Upload → select all 13 files. Refresh any week by rerunning and re-uploading
-   the changed files. No API exists for your account and nothing writes to Drive (`integrations/notebooklm/README.md`).
+1f. **NotebookLM, once (5 minutes):** the brain is already in your Drive as 13 Google Docs under **SECOND BRAIN/**
+   (https://drive.google.com/drive/folders/16sh0SNlicvHOEpAtTUufI504agSlQRaX) and a weekly task keeps them current.
+   notebooklm.google.com → New notebook **AI Automation and VANESSA** → Add sources → Google Drive → every `SB …` Doc in
+   `01 Reference Sources/AI and Automation` + `SB 00-START-HERE` + `SB 02-who-and-decisions`. Then **Mortgage Reference
+   Library** (`SB 05`, `SB 09`, `SB 00`, `SB 02`) and **Business Operating Playbooks** (`SB 06`, `SB 08`, `SB 09`, `SB 00`,
+   `SB 02`). Google refreshes Drive Docs in NotebookLM automatically. `integrations/notebooklm/README.md`.
+1g. **Your GitHub repo is public.** `chitown034/Repo` answered without sign-in on 2026-10-23 (that is how the Drive
+   sync fetches the pack). It holds no client files beyond `wiki/clients/index.md` (first names, by rule), but the
+   brain, decisions and task prompts are readable by anyone. If you want it private: GitHub → Repo → Settings → Danger
+   Zone → Change visibility → Private, then tell Claude (the Drive sync switches to a signed-in fetch). Your call.
 1c. **Kapso on the Mac:** `claude` → `/mcp` → kapso → sign in (free sandbox); then
    `bash integrations/kapso/install-mac.sh keys --allow <your mobile>` (hidden prompt, Keychain only).
 2. **Vanessa's iMessage line (30 seconds, from your phone):** Inkbox is reconnected. Send the text
