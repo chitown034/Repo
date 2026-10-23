@@ -1,0 +1,1480 @@
+<title>Plate &amp; Pulse</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky scoreboard header + tab strip; each tab is a panel of a summary row followed by detail grids.
+   Palette borrows competition bumper-plate colors: blue (accent), green / yellow / red (evidence + verdict semantics). */
+:root {
+  --bg: #f1f4f7;
+  --surface: #ffffff;
+  --surface-2: #e7ecf1;
+  --ink: #131a23;
+  --ink-2: #4b5664;
+  --ink-3: #6f7b8a;
+  --line: #d3dae2;
+  --accent: #1f4fd1;
+  --accent-ink: #ffffff;
+  --accent-soft: #e3eaff;
+  --good: #1a8a4b;
+  --good-soft: #dcf2e5;
+  --warn: #b98a00;
+  --warn-ink: #7a5b00;
+  --warn-soft: #fbf0cc;
+  --bad: #c62d2d;
+  --bad-soft: #fbe1e1;
+  --header: #131a23;
+  --header-ink: #f1f4f7;
+  --font-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1116; --surface: #151b22; --surface-2: #1d252e; --ink: #e6ebf0; --ink-2: #a2adba; --ink-3: #7d8896;
+    --line: #2a333d; --accent: #7397ff; --accent-ink: #0d1116; --accent-soft: #1c2747;
+    --good: #43c47c; --good-soft: #15301f; --warn: #e6b93b; --warn-ink: #f0cd6a; --warn-soft: #33290d;
+    --bad: #f26464; --bad-soft: #3a1818; --header: #080b0f; --header-ink: #e6ebf0; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1116; --surface: #151b22; --surface-2: #1d252e; --ink: #e6ebf0; --ink-2: #a2adba; --ink-3: #7d8896;
+  --line: #2a333d; --accent: #7397ff; --accent-ink: #0d1116; --accent-soft: #1c2747;
+  --good: #43c47c; --good-soft: #15301f; --warn: #e6b93b; --warn-ink: #f0cd6a; --warn-soft: #33290d;
+  --bad: #f26464; --bad-soft: #3a1818; --header: #080b0f; --header-ink: #e6ebf0; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.55; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--header); }
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.1; margin: 0; text-wrap: balance; letter-spacing: .01em; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.35rem; }
+h4 { font-size: 1.1rem; }
+p { margin: 0; }
+a { color: var(--accent); }
+.wrap { max-width: 1240px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.mono, .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.eyebrow { font-size: .72rem; text-transform: uppercase; letter-spacing: .12em; color: var(--ink-3); font-weight: 600; }
+.muted { color: var(--ink-2); }
+.small { font-size: .85rem; }
+
+/* header */
+header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: var(--header); color: var(--header-ink); }
+.brand { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px 6px; flex-wrap: wrap; }
+.brand h1 { font-size: 1.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; display: flex; align-items: center; gap: 10px; }
+.plates { display: inline-flex; gap: 3px; align-items: center; }
+.plates i { display: block; width: 6px; border-radius: 2px; }
+.plates i:nth-child(1) { height: 26px; background: #c62d2d; }
+.plates i:nth-child(2) { height: 22px; background: #1f4fd1; }
+.plates i:nth-child(3) { height: 18px; background: #e6b93b; }
+.plates i:nth-child(4) { height: 14px; background: #1a8a4b; }
+.brand .tag { font-size: .82rem; color: #9aa7b6; }
+.unit-toggle { display: inline-flex; border: 1px solid #3a4552; border-radius: 999px; overflow: hidden; }
+.unit-toggle button { background: transparent; color: #c7d0da; border: 0; padding: 5px 12px; font: 500 .8rem var(--font-body); cursor: pointer; }
+.unit-toggle button[aria-pressed="true"] { background: #f1f4f7; color: #131a23; }
+.tabs { overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tabs ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 2px; white-space: nowrap; }
+.tabs button { background: transparent; border: 0; color: #a9b4c1; font: 600 1.02rem var(--font-display); text-transform: uppercase; letter-spacing: .06em; padding: 10px 12px 11px; cursor: pointer; border-bottom: 3px solid transparent; }
+.tabs button:hover { color: #fff; }
+.tabs button[aria-selected="true"] { color: #fff; border-bottom-color: #7397ff; }
+button:focus-visible, input:focus-visible, select:focus-visible, .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+main { padding-block: 28px 64px; }
+section.panel { display: grid; gap: 28px; }
+.panel-head { display: grid; gap: 6px; max-width: 78ch; }
+.panel-head p { color: var(--ink-2); }
+
+.grid { display: grid; gap: 16px; }
+.g2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); }
+.g3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+.g4 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); }
+.split { display: grid; gap: 20px; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); align-items: start; }
+@media (max-width: 900px) { .split { grid-template-columns: minmax(0, 1fr); } }
+.grid > *, .split > * { min-width: 0; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; display: grid; gap: 12px; align-content: start; }
+.card.flat { background: transparent; border-style: dashed; }
+.card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+
+/* stat tiles */
+.tiles { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); }
+.tile { background: var(--surface); padding: 14px 16px; display: grid; gap: 2px; }
+.tile .v { font-family: var(--font-display); font-size: 2.1rem; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+.tile .v small { font-family: var(--font-body); font-size: .8rem; font-weight: 500; color: var(--ink-3); margin-left: 3px; }
+.tile .s { font-size: .78rem; color: var(--ink-3); }
+.tile.hero { background: var(--accent); color: var(--accent-ink); }
+.tile.hero .eyebrow, .tile.hero .s, .tile.hero .v small { color: inherit; opacity: .85; }
+
+/* forms */
+form.fields { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+form.fields .full { grid-column: 1 / -1; }
+label.f { display: grid; gap: 4px; font-size: .78rem; font-weight: 600; color: var(--ink-2); text-transform: uppercase; letter-spacing: .06em; }
+input, select { font: 400 .95rem var(--font-body); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 7px; padding: 8px 10px; width: 100%; min-width: 0; }
+input[type="range"] { padding: 0; accent-color: var(--accent); background: transparent; border: 0; }
+input[type="checkbox"] { width: auto; accent-color: var(--accent); }
+.btn { font: 600 .9rem var(--font-body); background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 7px; padding: 9px 14px; cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.btn.small { padding: 5px 10px; font-size: .8rem; }
+.seg { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.chip { font: 500 .82rem var(--font-body); border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); border-radius: 999px; padding: 5px 12px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+/* pills */
+.pill { display: inline-flex; align-items: center; gap: 5px; font: 600 .72rem var(--font-body); text-transform: uppercase; letter-spacing: .07em; padding: 3px 8px; border-radius: 999px; white-space: nowrap; }
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.p-good { background: var(--good-soft); color: var(--good); }
+.p-warn { background: var(--warn-soft); color: var(--warn-ink); }
+.p-bad { background: var(--bad-soft); color: var(--bad); }
+.p-info { background: var(--accent-soft); color: var(--accent); }
+
+/* tables */
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-3); font-weight: 600; background: var(--surface-2); white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: right; }
+
+/* bars */
+.bar { height: 8px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
+.bar > span { display: block; height: 100%; background: var(--accent); border-radius: 99px; }
+.macro-row { display: grid; grid-template-columns: 80px 1fr auto; gap: 10px; align-items: center; font-size: .9rem; }
+
+/* list cards */
+.item { border-top: 1px solid var(--line); padding-top: 12px; display: grid; gap: 6px; }
+.item:first-child { border-top: 0; padding-top: 0; }
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; font-size: .88rem; }
+.kv dt { color: var(--ink-3); font-weight: 500; }
+.kv dd { margin: 0; }
+ul.clean { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+
+/* timeline */
+.timeline { display: grid; gap: 0; position: relative; }
+.tl { display: grid; grid-template-columns: 64px 18px 1fr; gap: 10px; }
+.tl .t { font-family: var(--font-mono); font-size: .8rem; color: var(--ink-3); padding-top: 2px; text-align: right; }
+.tl .dot { position: relative; }
+.tl .dot::before { content: ""; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: var(--line); }
+.tl .dot::after { content: ""; position: absolute; left: 3px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--surface); border: 3px solid var(--accent); }
+.tl:last-child .dot::before { bottom: auto; height: 10px; }
+.tl .b { padding-bottom: 16px; }
+.tl .b strong { display: block; }
+
+/* program */
+.day { border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); overflow: hidden; }
+.day-h { background: var(--surface-2); padding: 10px 14px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: baseline; }
+.day-h h4 { font-size: 1.15rem; }
+.day table th { background: transparent; }
+
+.svgbox svg { width: 100%; height: auto; display: block; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: .8rem; color: var(--ink-2); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+.score-ring { display: grid; place-items: center; }
+.note { font-size: .82rem; color: var(--ink-3); border-left: 3px solid var(--line); padding-left: 10px; }
+.callout { background: var(--accent-soft); border-radius: var(--r); padding: 14px 16px; font-size: .92rem; }
+.callout.bad { background: var(--bad-soft); }
+.example-flag { font-size: .78rem; background: var(--warn-soft); color: var(--warn-ink); padding: 6px 10px; border-radius: 7px; }
+footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var(--ink-3); font-size: .82rem; }
+.search { max-width: 320px; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+@media (max-width: 520px) {
+  form.fields { grid-template-columns: 1fr; }
+  h2 { font-size: 1.7rem; }
+  .tile .v { font-size: 1.8rem; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .bar > span { transition: width .35s ease; }
+}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <h1><span class="plates" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Plate &amp; Pulse</h1>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <span class="tag">Nutrition, metabolism, training and recovery in one place</span>
+        <div class="unit-toggle" role="group" aria-label="Units">
+          <button type="button" id="u-metric" data-unit="metric">kg · cm</button>
+          <button type="button" id="u-imperial" data-unit="imperial">lb · in</button>
+        </div>
+      </div>
+    </div>
+    <nav class="tabs" aria-label="Sections">
+      <ul role="tablist" id="tablist"></ul>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+
+<!-- OVERVIEW -->
+<section class="panel" id="p-overview" data-tab="overview" data-label="Overview">
+  <div class="panel-head">
+    <span class="eyebrow">Your numbers</span>
+    <h2>Profile &amp; energy budget</h2>
+    <p>Enter your stats once. Every calculator on the other tabs (macros, heart-rate zones, calorie burn, program volume) reads from this profile. Values are estimates; equations carry roughly ±10% error for most people, so treat them as a starting point and adjust from two to three weeks of real weigh-ins.</p>
+  </div>
+  <div class="split">
+    <div class="card">
+      <div class="card-head"><h3>Profile</h3><span class="small muted">Saved in this browser</span></div>
+      <form class="fields" id="profile" autocomplete="off">
+        <label class="f">Sex<select id="sex"><option value="male">Male</option><option value="female">Female</option></select></label>
+        <label class="f">Age<input id="age" type="number" min="13" max="100" step="1"></label>
+        <label class="f">Height <span class="u-len">(cm)</span><input id="height" type="number" step="0.1"></label>
+        <label class="f">Weight <span class="u-wt">(kg)</span><input id="weight" type="number" step="0.1"></label>
+        <label class="f">Body fat % <span style="text-transform:none;font-weight:400">(optional)</span><input id="bf" type="number" step="0.1" placeholder="auto from tape"></label>
+        <label class="f">Resting HR (bpm)<input id="rhr" type="number" step="1"></label>
+        <label class="f">Neck <span class="u-len">(cm)</span><input id="neck" type="number" step="0.1"></label>
+        <label class="f">Waist <span class="u-len">(cm)</span><input id="waist" type="number" step="0.1"></label>
+        <label class="f">Hip <span class="u-len">(cm)</span><input id="hip" type="number" step="0.1"></label>
+        <label class="f">Training hrs / day<input id="trainHours" type="number" step="0.25" min="0"></label>
+        <label class="f full">Activity level
+          <select id="activity">
+            <option value="1.2">Sedentary: desk job, under 5k steps</option>
+            <option value="1.375">Light: 1–3 sessions/wk or 5–8k steps</option>
+            <option value="1.55">Moderate: 3–5 sessions/wk, 8–10k steps</option>
+            <option value="1.725">High: 6–7 sessions/wk or physical job</option>
+            <option value="1.9">Athlete: twice-daily training</option>
+          </select>
+        </label>
+        <label class="f">Goal
+          <select id="goal">
+            <option value="-0.25">Fast fat loss (−25%)</option>
+            <option value="-0.15">Fat loss (−15%)</option>
+            <option value="-0.05">Recomposition (−5%)</option>
+            <option value="0">Maintain</option>
+            <option value="0.08">Lean gain (+8%)</option>
+            <option value="0.15">Bulk (+15%)</option>
+          </select>
+        </label>
+        <label class="f">Diet style
+          <select id="style">
+            <option value="balanced">Balanced</option>
+            <option value="highprotein">High protein</option>
+            <option value="lowcarb">Low carb (~100 g)</option>
+            <option value="keto">Ketogenic (~30 g)</option>
+            <option value="endurance">High carb / endurance</option>
+            <option value="plant">Plant-based</option>
+          </select>
+        </label>
+      </form>
+    </div>
+    <div class="grid" style="gap:20px">
+      <div class="tiles" id="tiles"></div>
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-head"><h3>Daily macros</h3><span class="small muted" id="macro-style"></span></div>
+          <div class="svgbox" id="macro-donut" style="max-width:220px;margin:0 auto"></div>
+          <div id="macro-bars" class="grid" style="gap:10px"></div>
+          <p class="note" id="macro-note"></p>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Where your calories go</h3><span class="small muted">Components of TDEE</span></div>
+          <div id="tdee-break" class="grid" style="gap:10px"></div>
+          <p class="note">BMR is what keeps you alive at rest. NEAT (fidgeting, walking, chores) is the most variable part and the first to shrink during a diet. TEF is digestion cost: protein 20–30%, carbs 5–10%, fat 0–3% of their calories.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <div class="card-head"><h3>Diet phase planner</h3><span class="pill p-info">Uses profile weight</span></div>
+      <form class="fields" id="planner" autocomplete="off">
+        <label class="f">Target weight <span class="u-wt">(kg)</span><input id="pl-target" type="number" step="0.1"></label>
+        <label class="f">Rate (% bodyweight / week)
+          <select id="pl-rate">
+            <option value="0.25">0.25% (gain, minimal fat)</option>
+            <option value="0.5">0.5% (sustainable)</option>
+            <option value="0.75">0.75% (moderate)</option>
+            <option value="1">1.0% (aggressive)</option>
+          </select>
+        </label>
+      </form>
+      <div id="planner-out"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Daily targets beyond macros</h3></div>
+      <div id="extras"></div>
+    </div>
+  </div>
+</section>
+
+<!-- METABOLISM -->
+<section class="panel" id="p-metabolism" data-tab="metabolism" data-label="Metabolic priming" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Metabolic priming</span>
+    <h2>Set up your body to burn, perform and recover</h2>
+    <p>"Metabolic priming" covers the habits that prepare your metabolism for a day, a workout, or a diet phase: light timing, fueling, movement between meals, and how you cycle calories. Some have strong evidence. Others are marketed far beyond what the data show. Each strategy below carries an evidence grade and the realistic size of its effect.</p>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h3>A primed day</h3>
+      <p class="small muted">Times assume a 6:30 wake-up and an evening workout. Shift the whole schedule to fit yours.</p>
+      <div class="timeline" id="timeline"></div>
+    </div>
+    <div class="grid" style="gap:16px">
+      <div class="card">
+        <h3>Metabolic adaptation, in numbers</h3>
+        <div class="kv">
+          <dt>Adaptive thermogenesis</dt><dd>Energy use drops about 5–15% beyond what weight loss alone predicts, mostly via reduced NEAT and hormonal shifts (leptin, thyroid T3).</dd>
+          <dt>Muscle at rest</dt><dd>About 13 kcal per kg per day, versus about 4.5 for fat. Adding 3 kg of muscle raises BMR by roughly 40 kcal. Lifting matters more for what it does to body composition and insulin sensitivity.</dd>
+          <dt>Sleep restriction</dt><dd>On 5.5 h versus 8.5 h, dieters lost the same weight but 55% less of it came from fat (Nedeltcheva 2010).</dd>
+          <dt>Diet breaks</dt><dd>MATADOR trial: 2 weeks dieting, 2 weeks at maintenance, repeated. More fat lost and less rebound than continuous dieting.</dd>
+          <dt>Fasted cardio</dt><dd>No extra fat loss when daily calories are matched (Schoenfeld 2014).</dd>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Adaptation check</h3>
+        <p class="small muted">Weeks in a deficit and signs you notice suggest whether a diet break is due.</p>
+        <form class="fields" id="adapt" autocomplete="off">
+          <label class="f full">Weeks in a deficit: <span id="adapt-w-out" class="mono">8</span><input id="adapt-w" type="range" min="0" max="24" value="8"></label>
+          <label class="f full" style="text-transform:none;font-weight:400;letter-spacing:0;display:flex;gap:8px;align-items:center"><input type="checkbox" class="adapt-c"> Weight stalled 2+ weeks with consistent intake</label>
+          <label class="f full" style="text-transform:none;font-weight:400;letter-spacing:0;display:flex;gap:8px;align-items:center"><input type="checkbox" class="adapt-c"> Constant hunger or food thoughts</label>
+          <label class="f full" style="text-transform:none;font-weight:400;letter-spacing:0;display:flex;gap:8px;align-items:center"><input type="checkbox" class="adapt-c"> Training performance dropping</label>
+          <label class="f full" style="text-transform:none;font-weight:400;letter-spacing:0;display:flex;gap:8px;align-items:center"><input type="checkbox" class="adapt-c"> Poor sleep, low libido, feeling cold</label>
+          <label class="f full" style="text-transform:none;font-weight:400;letter-spacing:0;display:flex;gap:8px;align-items:center"><input type="checkbox" class="adapt-c"> Steps dropped without trying</label>
+        </form>
+        <div id="adapt-out"></div>
+      </div>
+    </div>
+  </div>
+  <div class="toolbar">
+    <h3>Priming strategies</h3>
+    <div class="seg" id="prime-filter"></div>
+  </div>
+  <div class="grid g3" id="prime-grid"></div>
+</section>
+
+<!-- NUTRITION -->
+<section class="panel" id="p-nutrition" data-tab="nutrition" data-label="Diets" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Nutrition</span>
+    <h2>Evidence-based eating patterns</h2>
+    <p>When calories and protein are matched, most diets produce similar fat loss. The best diet is the one you can keep for years. Use the grades to separate patterns with long-term health data from those that only work for weight in the short term.</p>
+  </div>
+  <div class="callout"><strong>The hierarchy that matters:</strong> 1) total calories, 2) protein and overall macros, 3) food quality and fiber, 4) meal timing, 5) supplements. Most online arguments happen at levels 4 and 5.</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Pattern</th><th>Evidence</th><th>How it works</th><th>Best for</th><th>Watch out for</th></tr></thead>
+      <tbody id="diet-rows"></tbody>
+    </table>
+  </div>
+  <div class="grid g3">
+    <div class="card">
+      <h3>Nutrient timing</h3>
+      <div class="table-wrap" style="border:0">
+        <table>
+          <thead><tr><th>Window</th><th>What to eat</th></tr></thead>
+          <tbody>
+            <tr><td>2–3 h pre</td><td>Mixed meal: protein 20–40 g, carbs 1–2 g/kg, low fat and fiber</td></tr>
+            <tr><td>30–60 min pre</td><td>Fast carbs (banana, rice cakes), 15–30 g, optional caffeine</td></tr>
+            <tr><td>During (&gt;60 min)</td><td>30–60 g carbs/h; up to 90 g/h glucose+fructose for long events</td></tr>
+            <tr><td>Post</td><td>Protein 0.3–0.4 g/kg within a few hours; carbs if training again within 24 h</td></tr>
+            <tr><td>Before bed</td><td>30–40 g casein or Greek yogurt supports overnight muscle protein synthesis</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Protein per 100 g</h3>
+      <div class="table-wrap" style="border:0">
+        <table>
+          <thead><tr><th>Food</th><th class="num">Protein</th><th class="num">kcal</th></tr></thead>
+          <tbody id="protein-rows"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Micronutrients athletes run low on</h3>
+      <div class="kv">
+        <dt>Vitamin D</dt><dd>Common in winter and for indoor workers. Test before supplementing heavily.</dd>
+        <dt>Iron</dt><dd>Menstruating women, endurance runners, vegans. Pair plant iron with vitamin C.</dd>
+        <dt>Magnesium</dt><dd>Lost in sweat. Nuts, seeds, leafy greens, legumes.</dd>
+        <dt>Calcium</dt><dd>Bone health, especially under low energy availability.</dd>
+        <dt>B12</dt><dd>Required supplement on vegan diets.</dd>
+        <dt>Omega-3</dt><dd>Fatty fish twice a week, or algae oil.</dd>
+        <dt>Sodium</dt><dd>Heavy sweaters lose 1–2 g/h; replace it on long, hot sessions.</dd>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAD DIETS -->
+<section class="panel" id="p-fads" data-tab="fads" data-label="Fad diets" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Fad diet tracker</span>
+    <h2>What the trend promises versus what it delivers</h2>
+    <p>Nearly every fad diet works the same way: it cuts calories by banning foods, and the scale drops (often water and glycogen first). The verdict reflects safety, sustainability and whether the claimed mechanism holds up.</p>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Red-flag check</h3>
+      <p class="small muted">Thinking about a new diet or program? Tick every claim it makes.</p>
+      <div id="flags" class="grid" style="gap:8px"></div>
+      <div id="flag-out"></div>
+    </div>
+    <div class="card">
+      <h3>Why the first week always "works"</h3>
+      <div class="kv">
+        <dt>Glycogen</dt><dd>Each gram of stored carbohydrate holds about 3 g of water. Cutting carbs can drop 1–3 kg in days with no fat lost.</dd>
+        <dt>Gut content</dt><dd>Eating less food volume means less weight in the digestive tract.</dd>
+        <dt>Sodium</dt><dd>Cutting processed food lowers sodium and water retention.</dd>
+        <dt>Novelty</dt><dd>Strict rules cut calories at first. Adherence typically fades after 4–12 weeks.</dd>
+        <dt>Real fat loss</dt><dd>A 500 kcal/day deficit loses about 0.45 kg (1 lb) of fat per week. Anything much faster is mostly water.</dd>
+      </div>
+    </div>
+  </div>
+  <div class="toolbar">
+    <div class="seg" id="fad-filter"></div>
+    <input class="search" id="fad-search" type="search" placeholder="Search diets" aria-label="Search fad diets">
+  </div>
+  <div class="grid g3" id="fad-grid"></div>
+</section>
+
+<!-- TRAINING -->
+<section class="panel" id="p-training" data-tab="training" data-label="Workouts" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Resistance training</span>
+    <h2>Program builder &amp; training science</h2>
+    <p>Choose your goal, schedule and equipment to generate a week of training built on movement patterns. Progress it by adding a rep or a little load each week while keeping 1–3 reps in reserve.</p>
+  </div>
+  <div class="split">
+    <div class="card">
+      <h3>Build a program</h3>
+      <form class="fields" id="prog" autocomplete="off">
+        <label class="f full">Goal
+          <select id="pg-goal">
+            <option value="hypertrophy">Muscle growth</option>
+            <option value="strength">Max strength</option>
+            <option value="fatloss">Fat loss / conditioning</option>
+            <option value="general">General fitness &amp; health</option>
+            <option value="endurance">Muscular endurance</option>
+          </select>
+        </label>
+        <label class="f">Days / week
+          <select id="pg-days"><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option></select>
+        </label>
+        <label class="f">Experience
+          <select id="pg-exp"><option value="beginner">Beginner (&lt;1 yr)</option><option value="intermediate" selected>Intermediate</option><option value="advanced">Advanced (3+ yrs)</option></select>
+        </label>
+        <label class="f full">Equipment
+          <select id="pg-eq"><option value="gym">Full gym</option><option value="db">Dumbbells + bench</option><option value="bw">Bodyweight / bands</option></select>
+        </label>
+      </form>
+      <div id="prog-summary"></div>
+    </div>
+    <div class="grid" id="prog-out" style="gap:14px"></div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h3>One-rep max estimator</h3>
+      <form class="fields" id="orm" autocomplete="off">
+        <label class="f">Weight lifted <span class="u-wt">(kg)</span><input id="orm-w" type="number" step="0.5" value="100"></label>
+        <label class="f">Reps (1–12)<input id="orm-r" type="number" min="1" max="12" value="5"></label>
+      </form>
+      <div id="orm-out"></div>
+    </div>
+    <div class="card">
+      <h3>Rep ranges by goal</h3>
+      <div class="table-wrap" style="border:0">
+        <table>
+          <thead><tr><th>Goal</th><th>Reps</th><th>Load</th><th>Rest</th><th>Sets / muscle / wk</th></tr></thead>
+          <tbody>
+            <tr><td>Strength</td><td class="mono">1–6</td><td class="mono">80–95%</td><td class="mono">3–5 min</td><td class="mono">6–12</td></tr>
+            <tr><td>Hypertrophy</td><td class="mono">6–30</td><td class="mono">30–85%</td><td class="mono">1.5–3 min</td><td class="mono">10–20</td></tr>
+            <tr><td>Power</td><td class="mono">1–5</td><td class="mono">30–70% fast</td><td class="mono">2–5 min</td><td class="mono">varies</td></tr>
+            <tr><td>Endurance</td><td class="mono">15–25+</td><td class="mono">&lt;60%</td><td class="mono">30–90 s</td><td class="mono">varies</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Hypertrophy works across a wide rep range when sets are taken close to failure. Lighter loads just need more reps to get there.</p>
+    </div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Effort scale: RPE and reps in reserve</h3>
+      <div class="table-wrap" style="border:0">
+        <table>
+          <thead><tr><th class="num">RPE</th><th class="num">RIR</th><th>Feels like</th></tr></thead>
+          <tbody>
+            <tr><td class="num mono">10</td><td class="num mono">0</td><td>Max effort, no more reps possible</td></tr>
+            <tr><td class="num mono">9</td><td class="num mono">1</td><td>One rep left</td></tr>
+            <tr><td class="num mono">8</td><td class="num mono">2</td><td>Two reps left, bar speed slowing. Main working zone</td></tr>
+            <tr><td class="num mono">7</td><td class="num mono">3</td><td>Fast and controlled, good for technique and volume</td></tr>
+            <tr><td class="num mono">5–6</td><td class="num mono">4–6</td><td>Warm-up and deload work</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Weekly volume landmarks</h3>
+      <p class="small muted">Approximate hard sets per muscle per week for intermediates. MEV: minimum effective volume. MRV: maximum recoverable volume.</p>
+      <div id="volume"></div>
+      <div class="legend"><span><i style="background:var(--surface-2)"></i>Below MEV</span><span><i style="background:var(--accent)"></i>Productive range</span><span><i style="background:var(--bad)"></i>MRV</span></div>
+    </div>
+  </div>
+  <div class="grid g3">
+    <div class="card">
+      <h3>Progressive overload methods</h3>
+      <ul class="clean">
+        <li><strong>Double progression:</strong> hit the top of the rep range on all sets, then add 2.5–5% load.</li>
+        <li><strong>Add a set:</strong> grow weekly volume within a training block.</li>
+        <li><strong>Reduce rest</strong> at the same load (conditioning focus).</li>
+        <li><strong>Slow the tempo:</strong> 3-second eccentrics add time under tension.</li>
+        <li><strong>Increase range of motion:</strong> deficit or paused reps.</li>
+        <li><strong>Frequency:</strong> train a muscle 2× instead of 1× per week.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Splits compared</h3>
+      <div class="kv">
+        <dt>Full body</dt><dd>2–4 days. Each muscle 2–3× a week. Best for beginners and busy schedules.</dd>
+        <dt>Upper / lower</dt><dd>4 days. Balanced frequency and recovery.</dd>
+        <dt>Push / pull / legs</dt><dd>3 or 6 days. High volume per session.</dd>
+        <dt>Body-part split</dt><dd>5 days. 1× frequency; works for advanced lifters who need high per-session volume.</dd>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Special populations</h3>
+      <div class="kv">
+        <dt>Beginners</dt><dd>Prioritize technique. Linear progression works for 3–9 months.</dd>
+        <dt>40+</dt><dd>Lifting fights sarcopenia (3–8% muscle loss per decade after 30). Longer warm-ups help.</dd>
+        <dt>Women</dt><dd>Same principles apply. Performance may vary across the menstrual cycle; adjust by feel.</dd>
+        <dt>Pregnancy</dt><dd>Moderate exercise is encouraged. Avoid lying flat on the back after the first trimester and contact sports. Clear it with your clinician.</dd>
+        <dt>Teens</dt><dd>Supervised strength training is safe and beneficial.</dd>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CARDIO -->
+<section class="panel" id="p-cardio" data-tab="cardio" data-label="Cardio" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Conditioning</span>
+    <h2>Heart-rate zones, VO₂max &amp; calorie burn</h2>
+    <p>Zones use your age and resting heart rate from the profile (Karvonen heart-rate-reserve method, max HR from the Tanaka formula 208 − 0.7 × age). Guidelines call for 150–300 min of moderate or 75–150 min of vigorous activity per week, plus 2+ strength days.</p>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <div class="card-head"><h3>Your zones</h3><span class="mono small muted" id="hr-meta"></span></div>
+      <div id="zones"></div>
+      <p class="note">Train in a polarized split: about 80% of weekly cardio time in zones 1–2, about 20% in zones 4–5. Little time goes to zone 3.</p>
+    </div>
+    <div class="grid" style="gap:16px">
+      <div class="card">
+        <h3>VO₂max estimate</h3>
+        <form class="fields" id="vo2" autocomplete="off">
+          <label class="f full">Cooper 12-min run distance (m)<input id="cooper" type="number" step="10" placeholder="e.g. 2600"></label>
+        </form>
+        <div id="vo2-out"></div>
+      </div>
+      <div class="card">
+        <h3>Calorie burn estimator</h3>
+        <form class="fields" id="met" autocomplete="off">
+          <label class="f">Activity<select id="met-act"></select></label>
+          <label class="f">Minutes<input id="met-min" type="number" value="45" min="1"></label>
+        </form>
+        <div id="met-out"></div>
+      </div>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Interval protocol</th><th>Structure</th><th>Target</th><th>Best for</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Norwegian 4×4</strong></td><td>4 min hard / 3 min easy × 4</td><td>Zone 4–5 (85–95% HRmax)</td><td>Raising VO₂max</td></tr>
+        <tr><td><strong>Tabata</strong></td><td>20 s all-out / 10 s rest × 8</td><td>Maximal</td><td>Anaerobic capacity, time-efficient</td></tr>
+        <tr><td><strong>30/30s</strong></td><td>30 s hard / 30 s easy × 10–20</td><td>Zone 4–5</td><td>VO₂max with less mental strain</td></tr>
+        <tr><td><strong>Sprint intervals</strong></td><td>4–6 × 30 s sprints, 4 min rest</td><td>All-out</td><td>Power, insulin sensitivity</td></tr>
+        <tr><td><strong>Zone 2 steady state</strong></td><td>45–90 min continuous</td><td>Can talk in full sentences</td><td>Mitochondria, fat oxidation, base</td></tr>
+        <tr><td><strong>Tempo / threshold</strong></td><td>20–40 min or 3 × 10 min</td><td>Zone 3–4, "comfortably hard"</td><td>Lactate threshold, race pace</td></tr>
+        <tr><td><strong>EMOM circuits</strong></td><td>Task every minute on the minute, 10–20 min</td><td>Mixed</td><td>Conditioning alongside strength</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout"><strong>Concurrent training:</strong> cardio barely blunts muscle gain when you separate hard cardio from leg sessions by 6+ hours (or put lifting first), favor cycling or incline walking over high-volume running, and eat enough.</div>
+</section>
+
+<!-- RECOVERY -->
+<section class="panel" id="p-recovery" data-tab="recovery" data-label="Recovery" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Recovery</span>
+    <h2>Readiness, sleep &amp; deloads</h2>
+    <p>Adaptation happens between sessions. Check in each morning to decide whether to push, train as planned, or pull back.</p>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Morning readiness check-in</h3>
+      <form class="fields" id="ready" autocomplete="off">
+        <label class="f full">Sleep last night: <span class="mono" id="r-sleep-o"></span> h<input type="range" id="r-sleep" min="3" max="10" step="0.5" value="7.5"></label>
+        <label class="f full">Sleep quality: <span class="mono" id="r-qual-o"></span>/5<input type="range" id="r-qual" min="1" max="5" value="4"></label>
+        <label class="f full">Muscle soreness: <span class="mono" id="r-sore-o"></span>/5<input type="range" id="r-sore" min="1" max="5" value="2"></label>
+        <label class="f full">Life stress: <span class="mono" id="r-stress-o"></span>/5<input type="range" id="r-stress" min="1" max="5" value="2"></label>
+        <label class="f full">Motivation: <span class="mono" id="r-mot-o"></span>/5<input type="range" id="r-mot" min="1" max="5" value="4"></label>
+        <label class="f full">Resting HR vs normal: <span class="mono" id="r-hr-o"></span> bpm<input type="range" id="r-hr" min="-5" max="15" value="0"></label>
+      </form>
+    </div>
+    <div class="card" id="ready-out"></div>
+  </div>
+  <div class="grid g3">
+    <div class="card">
+      <h3>Sleep checklist</h3>
+      <ul class="clean">
+        <li>7–9 h in bed-to-wake window, same wake time daily (±30 min)</li>
+        <li>Bright light in the morning, dim light 1–2 h before bed</li>
+        <li>Bedroom around 18 °C / 65 °F, dark and quiet</li>
+        <li>Caffeine cutoff 8–10 h before bed</li>
+        <li>Alcohol fragments sleep and suppresses REM, even 1–2 drinks</li>
+        <li>Large meals finished 2–3 h before bed</li>
+        <li>Snoring or gasping? Ask about sleep apnea screening</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>When to deload</h3>
+      <ul class="clean">
+        <li>Every 4–8 weeks of hard training, or when performance stalls 2+ sessions</li>
+        <li>Cut volume 40–60% and keep intensity moderate (RPE 5–6)</li>
+        <li>Joint aches, poor sleep, or dread before sessions are signs it's due</li>
+        <li>Lasts 5–7 days; you often come back stronger</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Overreaching vs. overtraining</h3>
+      <div class="kv">
+        <dt>Functional</dt><dd>Planned fatigue that resolves in days. Leads to gains.</dd>
+        <dt>Non-functional</dt><dd>Stagnation lasting weeks. Needs more rest and more food.</dd>
+        <dt>Overtraining syndrome</dt><dd>Months of lost performance, mood disturbance, illness. Rare, and usually tied to low energy availability (RED-S).</dd>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Recovery tools, ranked</h3>
+      <div id="recovery-tools"></div>
+    </div>
+    <div class="card">
+      <h3>Mobility minimum</h3>
+      <ul class="clean">
+        <li>Hip flexor stretch: 2 × 45 s each side</li>
+        <li>Thoracic rotations: 10 each side</li>
+        <li>Deep squat hold: 60 s accumulated</li>
+        <li>Dead hang: 3 × 20–30 s</li>
+        <li>Ankle knee-to-wall: 10 each side</li>
+        <li>90/90 hip switches: 10 total</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Low energy availability (RED-S)</h3>
+      <p class="small">Chronic under-fueling relative to training. Signs include lost periods, frequent illness, stress fractures, stalled progress and low mood. Energy availability under about 30 kcal per kg of lean mass per day is the danger zone.</p>
+      <p class="note">If this sounds familiar, see a sports-medicine doctor or registered dietitian.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SUPPLEMENTS -->
+<section class="panel" id="p-supps" data-tab="supps" data-label="Supplements" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Supplements</span>
+    <h2>What's proven, what's plausible, what's a waste</h2>
+    <p>Supplements fill gaps; they don't replace food, sleep or training. Buy third-party tested products (NSF Certified for Sport, Informed Sport) because the industry is loosely regulated, and check with a doctor if you take medication.</p>
+  </div>
+  <div class="seg" id="supp-filter"></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Supplement</th><th>Tier</th><th>Purpose</th><th>Typical dose</th><th>Notes</th></tr></thead>
+      <tbody id="supp-rows"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- BODY TYPES -->
+<section class="panel" id="p-body" data-tab="body" data-label="Body types" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Individual differences</span>
+    <h2>Blood type, body type &amp; muscle fibers</h2>
+    <p>Three popular ways of saying "your body is different, so train and eat differently." Each holds some truth, but not the same amount. Below: what each claims, what research shows, and how to actually use it.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h3>Muscle fiber types</h3><span class="pill p-good">A · Strong science</span></div>
+    <p class="small muted">Skeletal muscle is a mix of slow-twitch (Type I) and fast-twitch (Type II) fibers. Your ratio is partly genetic (roughly 40–50% heritable). Training can shift Type IIx fibers toward IIa, but turning Type I into Type II, or the reverse, is limited.</p>
+    <div class="table-wrap" style="border:0">
+      <table>
+        <thead><tr><th>Property</th><th>Type I · slow oxidative</th><th>Type IIa · fast oxidative-glycolytic</th><th>Type IIx · fast glycolytic</th></tr></thead>
+        <tbody>
+          <tr><td>Contraction speed</td><td>Slow</td><td>Fast</td><td>Fastest</td></tr>
+          <tr><td>Force / power</td><td>Low</td><td>High</td><td>Highest</td></tr>
+          <tr><td>Fatigue resistance</td><td>Very high</td><td>Moderate</td><td>Low (seconds)</td></tr>
+          <tr><td>Main fuel</td><td>Fat + carbs, aerobic</td><td>Carbs, aerobic + anaerobic</td><td>Phosphocreatine + glycolysis</td></tr>
+          <tr><td>Mitochondria &amp; capillaries</td><td>Dense</td><td>Moderate</td><td>Sparse</td></tr>
+          <tr><td>Myoglobin (color)</td><td>High (red)</td><td>Medium (pink)</td><td>Low (white)</td></tr>
+          <tr><td>Growth potential</td><td>Moderate</td><td>High</td><td>High</td></tr>
+          <tr><td>Recruited for</td><td>Posture, walking, zone 2, marathons</td><td>400–1,500 m, sets of 8–15, team sports</td><td>Sprints, jumps, max lifts</td></tr>
+          <tr><td>Typical athlete</td><td>Marathoner (~70–80% Type I in calves)</td><td>Middle-distance runner, rower</td><td>Sprinter (~70%+ Type II)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid g2">
+      <div class="grid" style="gap:10px">
+        <h4>Muscles that skew one way</h4>
+        <div class="kv">
+          <dt>Slow-dominant</dt><dd>Soleus (~80% Type I), spinal erectors, deep core, forearm flexors (mixed)</dd>
+          <dt>Fast-leaning</dt><dd>Triceps, hamstrings, gastrocnemius in sprinters, pecs (mixed)</dd>
+          <dt>Mixed (~50/50)</dt><dd>Quads, biceps, deltoids, lats, glutes</dd>
+        </div>
+        <p class="note">Henneman's size principle: motor units are recruited small to large. Any set taken close to failure eventually recruits fast fibers, which is why light-load sets still build muscle.</p>
+      </div>
+      <div class="grid" style="gap:10px">
+        <h4>Rep test: are you fast or slow?</h4>
+        <p class="small muted">Find your 1RM (or estimate it on the Workouts tab), rest fully, then do as many clean reps as possible at 80% of it.</p>
+        <form class="fields" id="fiber" autocomplete="off">
+          <label class="f full">Reps at 80% of 1RM<input id="fiber-reps" type="number" min="1" max="30" value="8"></label>
+        </form>
+        <div id="fiber-out"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card">
+      <div class="card-head"><h3>Body types (somatotypes)</h3><span class="pill p-warn">C · Partly valid</span></div>
+      <p class="small muted">Somatotypes come from psychologist William Sheldon in the 1940s, who also linked body shape to personality. That idea was discredited. Body shape as a description (Heath-Carter rating) is still used in sports science, but it is a snapshot that changes with diet and training, not a fixed metabolic type.</p>
+      <div class="seg" id="soma-pick"></div>
+      <div id="soma-out"></div>
+    </div>
+    <div class="card">
+      <h3>What the evidence actually says</h3>
+      <div class="kv">
+        <dt>Real</dt><dd>Frame size, limb length, and where you store fat are partly genetic. They shape which lifts and sports suit you.</dd>
+        <dt>Real</dt><dd>Insulin sensitivity varies, and some people do better on lower-carb diets. You find out from lab work and results, not body shape.</dd>
+        <dt>Not real</dt><dd>Body type doesn't fix a metabolic rate. Most "endomorphs" are people with more body fat right now; lose fat and gain muscle, and they become "mesomorphs."</dd>
+        <dt>Not real</dt><dd>"Ectomorphs can't build muscle." Hard-gainers usually eat less than they think. A consistent surplus works.</dd>
+        <dt>Best use</dt><dd>As a starting point for food preferences and training style. Then adjust from real data: weight trend, strength, energy.</dd>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h3>Blood type and diet</h3><span class="pill p-bad">D · Not supported</span></div>
+    <p class="small muted">Peter D'Adamo's <em>Eat Right 4 Your Type</em> (1996) claims ABO blood type reflects ancestral diets and that lectins in "wrong" foods react with your blood. A 2013 systematic review found no studies supporting it. A 2014 study of 1,455 people found that the "type" diets did improve some health markers, but the improvements had <strong>no link to the person's actual blood type</strong>. Everyone benefited from eating more whole foods.</p>
+    <div class="table-wrap" style="border:0">
+      <table>
+        <thead><tr><th>Type</th><th>Claimed "ancestor"</th><th>Recommended diet</th><th>Recommended exercise</th><th>What research found</th></tr></thead>
+        <tbody>
+          <tr><td><strong class="mono">O</strong></td><td>Hunter</td><td>High protein, meat; limit grains, legumes, dairy</td><td>Intense: running, lifting</td><td>Improved triglycerides on the O diet regardless of blood type</td></tr>
+          <tr><td><strong class="mono">A</strong></td><td>Farmer</td><td>Vegetarian-leaning; grains, legumes, soy; little red meat</td><td>Calming: yoga, tai chi</td><td>Improved BMI, BP and cholesterol for everyone who followed it, any blood type</td></tr>
+          <tr><td><strong class="mono">B</strong></td><td>Nomad</td><td>Dairy, meat, vegetables; avoid chicken, corn, wheat, lentils</td><td>Moderate: hiking, swimming</td><td>No type-specific benefit shown</td></tr>
+          <tr><td><strong class="mono">AB</strong></td><td>"Enigma"</td><td>A/B mix: seafood, tofu, dairy; avoid cured meats, caffeine</td><td>Mix of calming and moderate</td><td>Improved some markers in everyone, regardless of type</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid g2">
+      <div class="grid" style="gap:8px">
+        <h4>Where blood type does matter</h4>
+        <ul class="clean small">
+          <li>Transfusions and organ transplants (critical)</li>
+          <li>Type O: slightly lower heart-disease and clot risk, higher risk of stomach ulcers (H. pylori)</li>
+          <li>Non-O types: somewhat higher risk of venous blood clots and heart disease</li>
+          <li>Type A: slightly higher stomach cancer risk in some studies</li>
+          <li>Rh factor matters in pregnancy (Rh-negative mothers get anti-D treatment)</li>
+        </ul>
+        <p class="note">None of these associations are changed by the blood type diet.</p>
+      </div>
+      <div class="grid" style="gap:8px">
+        <h4>Pick your blood type</h4>
+        <div class="seg" id="bt-pick"></div>
+        <div id="bt-out"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOG -->
+<section class="panel" id="p-log" data-tab="log" data-label="Log" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Progress log</span>
+    <h2>Weight trend &amp; training load</h2>
+    <p>Daily weight swings 1–2 kg from water, salt and food. The 7-day average is the number to steer by. Training load is session RPE × minutes, a simple measure used by coaches. Entries stay in this browser only.</p>
+  </div>
+  <div id="log-flag"></div>
+  <div class="grid g2">
+    <div class="card">
+      <div class="card-head"><h3>Weight</h3><span class="small muted" id="w-summary"></span></div>
+      <div class="svgbox" id="w-chart"></div>
+      <div class="legend"><span><i style="background:var(--ink-3)"></i>Daily weigh-in</span><span><i style="background:var(--accent)"></i>7-day average</span></div>
+      <form class="fields" id="w-form" autocomplete="off">
+        <label class="f">Date<input type="date" id="w-date"></label>
+        <label class="f">Weight <span class="u-wt">(kg)</span><input type="number" step="0.1" id="w-val"></label>
+        <div class="full" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" type="submit">Add weigh-in</button><button class="btn ghost" type="button" id="w-clear">Clear weights</button></div>
+      </form>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Weekly training load</h3><span class="small muted" id="l-summary"></span></div>
+      <div class="svgbox" id="l-chart"></div>
+      <form class="fields" id="s-form" autocomplete="off">
+        <label class="f">Date<input type="date" id="s-date"></label>
+        <label class="f">Type
+          <select id="s-type"><option>Strength</option><option>Zone 2</option><option>Intervals</option><option>Sport</option><option>Mobility</option></select>
+        </label>
+        <label class="f">Minutes<input type="number" id="s-min" value="60" min="1"></label>
+        <label class="f">Session RPE (1–10)<input type="number" id="s-rpe" value="7" min="1" max="10"></label>
+        <div class="full" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" type="submit">Add session</button><button class="btn ghost" type="button" id="s-clear">Clear sessions</button></div>
+      </form>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><h3>Recent sessions</h3></div>
+    <div class="table-wrap" style="border:0"><table><thead><tr><th>Date</th><th>Type</th><th class="num">Min</th><th class="num">RPE</th><th class="num">Load</th><th></th></tr></thead><tbody id="s-rows"></tbody></table></div>
+  </div>
+</section>
+
+</main>
+<footer>
+  <div class="wrap">Plate &amp; Pulse is educational, not medical advice. Equations (Mifflin-St Jeor, Katch-McArdle, US Navy body fat, Tanaka, Karvonen, Epley/Brzycki, Uth, Cooper, Compendium of Physical Activities METs) give population estimates. Talk to a physician or registered dietitian before major diet changes, especially with diabetes, heart disease, pregnancy, kidney disease, or a history of disordered eating.</div>
+</footer>
+
+<script>
+(function () {
+"use strict";
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const round = (n, d = 0) => { const p = Math.pow(10, d); return Math.round(n * p) / p; };
+const fmt = (n, d = 0) => Number.isFinite(n) ? round(n, d).toLocaleString(undefined, { minimumFractionDigits: d, maximumFractionDigits: d }) : "–";
+
+const store = {
+  get(k, f) { try { const v = localStorage.getItem("pp:" + k); return v ? JSON.parse(v) : f; } catch (e) { return f; } },
+  set(k, v) { try { localStorage.setItem("pp:" + k, JSON.stringify(v)); } catch (e) { /* storage unavailable */ } }
+};
+
+/* ---------- state (always metric internally) ---------- */
+const DEFAULT = { units: "metric", sex: "male", age: 32, height: 178, weight: 82, bf: "", rhr: 62, neck: 39, waist: 88, hip: 98, trainHours: 1, activity: "1.55", goal: "-0.15", style: "balanced", target: 76 };
+const S = Object.assign({}, DEFAULT, store.get("profile", {}));
+const KG_LB = 2.20462, CM_IN = 0.393701;
+const LEN = ["height", "neck", "waist", "hip"];
+const imp = () => S.units === "imperial";
+const toDispW = kg => imp() ? kg * KG_LB : kg;
+const fromDispW = v => imp() ? v / KG_LB : v;
+const toDispL = cm => imp() ? cm * CM_IN : cm;
+const fromDispL = v => imp() ? v / CM_IN : v;
+const wUnit = () => imp() ? "lb" : "kg";
+
+/* ---------- tabs ---------- */
+const panels = $$("section.panel");
+const tablist = $("#tablist");
+panels.forEach(p => {
+  const li = document.createElement("li");
+  li.innerHTML = `<button type="button" role="tab" id="tab-${p.dataset.tab}" aria-controls="${p.id}" aria-selected="false">${esc(p.dataset.label)}</button>`;
+  li.firstChild.addEventListener("click", () => showTab(p.dataset.tab, true));
+  tablist.appendChild(li);
+});
+function showTab(name, push) {
+  if (!panels.some(p => p.dataset.tab === name)) name = "overview";
+  panels.forEach(p => { p.hidden = p.dataset.tab !== name; });
+  $$("[role=tab]").forEach(b => b.setAttribute("aria-selected", b.id === "tab-" + name ? "true" : "false"));
+  if (push) { try { history.replaceState(null, "", "#" + name); } catch (e) {} window.scrollTo({ top: 0 }); }
+  store.set("tab", name);
+}
+
+/* ---------- profile form ---------- */
+const PF = ["sex", "age", "height", "weight", "bf", "rhr", "neck", "waist", "hip", "trainHours", "activity", "goal", "style"];
+function fillProfile() {
+  PF.forEach(k => {
+    const el = $("#" + k); let v = S[k];
+    if (v === "" || v == null) { el.value = ""; return; }
+    if (k === "weight") v = round(toDispW(v), 1);
+    else if (LEN.includes(k)) v = round(toDispL(v), 1);
+    el.value = v;
+  });
+  $("#pl-target").value = round(toDispW(S.target), 1);
+  $$(".u-wt").forEach(e => e.textContent = `(${wUnit()})`);
+  $$(".u-len").forEach(e => e.textContent = imp() ? "(in)" : "(cm)");
+  $$(".unit-toggle button").forEach(b => b.setAttribute("aria-pressed", b.dataset.unit === S.units ? "true" : "false"));
+}
+function readProfile() {
+  PF.forEach(k => {
+    const el = $("#" + k); const raw = el.value;
+    if (el.tagName === "SELECT") { S[k] = raw; return; }
+    if (raw === "") { S[k] = k === "bf" ? "" : S[k]; return; }
+    let v = parseFloat(raw); if (!Number.isFinite(v)) return;
+    if (k === "weight") v = fromDispW(v); else if (LEN.includes(k)) v = fromDispL(v);
+    S[k] = v;
+  });
+  const t = parseFloat($("#pl-target").value); if (Number.isFinite(t)) S.target = fromDispW(t);
+  store.set("profile", S);
+}
+$$(".unit-toggle button").forEach(b => b.addEventListener("click", () => {
+  readProfile(); S.units = b.dataset.unit; store.set("profile", S); fillProfile(); renderAll();
+}));
+
+/* ---------- core calculations ---------- */
+function navyBF() {
+  const h = S.height, n = S.neck, w = S.waist, hp = S.hip;
+  if (!(h && n && w)) return NaN;
+  let v;
+  if (S.sex === "male") { if (w - n <= 0) return NaN; v = 495 / (1.0324 - 0.19077 * Math.log10(w - n) + 0.15456 * Math.log10(h)) - 450; }
+  else { if (!hp || w + hp - n <= 0) return NaN; v = 495 / (1.29579 - 0.35004 * Math.log10(w + hp - n) + 0.22100 * Math.log10(h)) - 450; }
+  return v > 2 && v < 70 ? v : NaN;
+}
+function calc() {
+  const w = S.weight, h = S.height, a = S.age, male = S.sex === "male";
+  const bfIn = parseFloat(S.bf);
+  const bfNavy = navyBF();
+  const bf = Number.isFinite(bfIn) ? bfIn : bfNavy;
+  const bfSource = Number.isFinite(bfIn) ? "entered" : (Number.isFinite(bfNavy) ? "US Navy tape" : "");
+  const lbm = Number.isFinite(bf) ? w * (1 - bf / 100) : NaN;
+  const mifflin = 10 * w + 6.25 * h - 5 * a + (male ? 5 : -161);
+  const katch = Number.isFinite(lbm) ? 370 + 21.6 * lbm : NaN;
+  const bmr = Number.isFinite(katch) ? (mifflin + katch) / 2 : mifflin;
+  const tdee = bmr * parseFloat(S.activity);
+  const goal = parseFloat(S.goal);
+  let target = tdee * (1 + goal);
+  const floor = male ? 1500 : 1200;
+  const floored = target < floor && goal < 0;
+  if (floored) target = Math.max(target, floor);
+  const hm = h / 100;
+  const bmi = w / (hm * hm);
+  const ffmi = Number.isFinite(lbm) ? lbm / (hm * hm) + 6.1 * (1.8 - hm) : NaN;
+  const weeklyKg = (target - tdee) * 7 / 7700;
+  const maxHR = 208 - 0.7 * a;
+  return { bmr, mifflin, katch, tdee, target, floored, bmi, bf, bfSource, lbm, ffmi, weeklyKg, maxHR, goal };
+}
+function macros(c) {
+  const w = S.weight, kcal = c.target, cut = c.goal < 0;
+  let pPerKg = cut ? 2.2 : 1.8, fatPct = 0.28, carbFixed = null;
+  switch (S.style) {
+    case "highprotein": pPerKg = cut ? 2.4 : 2.2; fatPct = 0.27; break;
+    case "lowcarb": carbFixed = 100; break;
+    case "keto": carbFixed = 30; pPerKg = Math.min(pPerKg, 2.0); break;
+    case "endurance": pPerKg = 1.6; fatPct = 0.2; break;
+    case "plant": pPerKg = cut ? 2.2 : 2.0; fatPct = 0.27; break;
+  }
+  const lbmBased = Number.isFinite(c.lbm) && c.bf > 25;
+  const pBase = lbmBased ? c.lbm * (pPerKg + 0.3) : w * pPerKg;
+  let p = pBase, f, cb;
+  if (carbFixed != null) { cb = carbFixed; f = Math.max(0, (kcal - p * 4 - cb * 4) / 9); }
+  else { f = Math.max(kcal * fatPct / 9, w * 0.6); cb = Math.max(0, (kcal - p * 4 - f * 9) / 4); }
+  return { p, f, c: cb, fiber: kcal / 1000 * 14, lbmBased };
+}
+
+/* ---------- overview rendering ---------- */
+function renderOverview() {
+  const c = calc(); const m = macros(c);
+  const tiles = [
+    { e: "Target intake", v: fmt(c.target), u: "kcal", s: c.floored ? "Held at a safe minimum" : `${c.goal > 0 ? "+" : ""}${fmt(c.goal * 100)}% vs TDEE`, hero: true },
+    { e: "TDEE", v: fmt(c.tdee), u: "kcal", s: "Maintenance estimate" },
+    { e: "BMR", v: fmt(c.bmr), u: "kcal", s: Number.isFinite(c.katch) ? "Mifflin + Katch avg" : "Mifflin-St Jeor" },
+    { e: "Protein", v: fmt(m.p), u: "g", s: `${fmt(m.p / S.weight, 1)} g/kg bodyweight` },
+    { e: "Body fat", v: Number.isFinite(c.bf) ? fmt(c.bf, 1) : "–", u: "%", s: c.bfSource || "Add tape measures" },
+    { e: "Lean mass", v: Number.isFinite(c.lbm) ? fmt(toDispW(c.lbm), 1) : "–", u: wUnit(), s: "Weight minus fat" },
+    { e: "BMI", v: fmt(c.bmi, 1), u: "", s: bmiLabel(c.bmi) },
+    { e: "FFMI", v: Number.isFinite(c.ffmi) ? fmt(c.ffmi, 1) : "–", u: "", s: ffmiLabel(c.ffmi) },
+    { e: "Expected change", v: (c.weeklyKg > 0 ? "+" : "") + fmt(toDispW(c.weeklyKg), 2), u: wUnit() + "/wk", s: "From energy balance" },
+    { e: "Max heart rate", v: fmt(c.maxHR), u: "bpm", s: "Tanaka formula" }
+  ];
+  $("#tiles").innerHTML = tiles.map(t => `<div class="tile${t.hero ? " hero" : ""}"><span class="eyebrow">${t.e}</span><span class="v">${t.v}<small>${t.u}</small></span><span class="s">${esc(t.s)}</span></div>`).join("");
+
+  const kc = { p: m.p * 4, c: m.c * 4, f: m.f * 9 }; const tot = kc.p + kc.c + kc.f || 1;
+  const segs = [["Protein", kc.p, "var(--accent)", m.p], ["Carbs", kc.c, "var(--good)", m.c], ["Fat", kc.f, "var(--warn)", m.f]];
+  $("#macro-donut").innerHTML = donut(segs.map(s => ({ v: s[1], col: s[2] })), fmt(c.target), "kcal");
+  $("#macro-bars").innerHTML = segs.map(s => `<div class="macro-row"><span><span class="legend"><span><i style="background:${s[2]}"></i>${s[0]}</span></span></span><div class="bar"><span style="width:${round(s[1] / tot * 100)}%;background:${s[2]}"></span></div><span class="mono small">${fmt(s[3])} g · ${fmt(s[1] / tot * 100)}%</span></div>`).join("");
+  $("#macro-style").textContent = $("#style").selectedOptions[0].textContent;
+  $("#macro-note").textContent = (m.lbmBased ? "Protein set from lean mass because body fat is above 25%. " : "") + (S.style === "keto" ? "Keto: protein capped near 2 g/kg so carbs stay low enough for ketosis. Expect a 1–2 week adaptation dip." : S.style === "plant" ? "Plant-based: combine legumes, soy, grains and seeds. A slightly higher protein target offsets lower digestibility." : "Protein is set first, then fat (minimum 0.6 g/kg for hormones), then carbs fill the rest.");
+
+  const b = c.bmr, tefPct = 0.1, eat = 6.5 * S.weight * S.trainHours * 0.9;
+  const tef = c.tdee * tefPct; const neat = Math.max(0, c.tdee - b - tef - eat);
+  const parts = [["BMR · resting", b, "var(--accent)"], ["NEAT · daily movement", neat, "var(--good)"], ["TEF · digestion", tef, "var(--warn)"], ["EAT · workouts", Math.min(eat, c.tdee - b - tef), "var(--bad)"]];
+  $("#tdee-break").innerHTML = parts.map(p => `<div class="macro-row" style="grid-template-columns:150px 1fr auto"><span class="small">${p[0]}</span><div class="bar"><span style="width:${Math.max(0, round(p[1] / c.tdee * 100))}%;background:${p[2]}"></span></div><span class="mono small">${fmt(Math.max(0, p[1]))}</span></div>`).join("");
+
+  const water = S.weight * 0.035 + S.trainHours * 0.6;
+  const caff = S.weight * 3;
+  $("#extras").innerHTML = `<div class="kv">
+    <dt>Water</dt><dd class="mono">${imp() ? fmt(water * 33.814) + " fl oz" : fmt(water, 1) + " L"} <span class="muted" style="font-family:var(--font-body)">(35 ml/kg + about 0.6 L per training hour)</span></dd>
+    <dt>Fiber</dt><dd class="mono">${fmt(m.fiber)} g <span class="muted" style="font-family:var(--font-body)">(14 g per 1,000 kcal)</span></dd>
+    <dt>Protein per meal</dt><dd class="mono">${fmt(S.weight * 0.4)} g × 4 meals <span class="muted" style="font-family:var(--font-body)">(0.4 g/kg)</span></dd>
+    <dt>Fruit &amp; veg</dt><dd class="mono">5+ servings · 30 plant types/wk</dd>
+    <dt>Steps</dt><dd class="mono">7,000–10,000</dd>
+    <dt>Caffeine (pre-workout)</dt><dd class="mono">${fmt(caff)}–${fmt(S.weight * 6)} mg <span class="muted" style="font-family:var(--font-body)">(3–6 mg/kg, max 400 mg/day)</span></dd>
+    <dt>Sleep</dt><dd class="mono">7–9 h</dd>
+    <dt>Alcohol</dt><dd>The less the better. 7 kcal/g, and it impairs muscle protein synthesis and sleep.</dd>
+  </div>`;
+  renderPlanner(c);
+}
+function bmiLabel(b) { return b < 18.5 ? "Underweight range" : b < 25 ? "Healthy range" : b < 30 ? "Overweight range*" : "Obese range*"; }
+function ffmiLabel(f) { if (!Number.isFinite(f)) return "Needs body fat"; const male = S.sex === "male"; const t = male ? [18, 20, 22, 25] : [14, 16, 18, 21]; return f < t[0] ? "Below average" : f < t[1] ? "Average" : f < t[2] ? "Above average" : f < t[3] ? "Excellent" : "Elite / exceptional"; }
+
+function renderPlanner(c) {
+  const cur = S.weight, tgt = S.target, rate = parseFloat($("#pl-rate").value) / 100;
+  const diff = tgt - cur;
+  if (!Number.isFinite(tgt) || Math.abs(diff) < 0.1) { $("#planner-out").innerHTML = `<p class="muted small">Enter a target weight different from your current weight.</p>`; return; }
+  const gaining = diff > 0;
+  const weekly = cur * rate; const weeks = Math.ceil(Math.abs(diff) / weekly);
+  const dailyDelta = weekly * 7700 / 7;
+  const breaks = gaining ? 0 : Math.floor(weeks / 10);
+  const total = weeks + breaks;
+  const end = new Date(); end.setDate(end.getDate() + total * 7);
+  const rateWarn = gaining && rate > 0.005 ? `<p class="note">Gains faster than about 0.5% per week add mostly fat for anyone past their first year of training.</p>` : (!gaining && rate >= 1 / 100 ? `<p class="note">At 1% per week, keep protein high and lifting heavy to protect muscle. Best for shorter phases or higher body fat.</p>` : "");
+  $("#planner-out").innerHTML = `<div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,120px),1fr))">
+    <div class="tile"><span class="eyebrow">Weekly</span><span class="v">${gaining ? "+" : "−"}${fmt(toDispW(weekly), 2)}<small>${wUnit()}</small></span></div>
+    <div class="tile"><span class="eyebrow">Daily ${gaining ? "surplus" : "deficit"}</span><span class="v">${fmt(dailyDelta)}<small>kcal</small></span><span class="s">≈ ${fmt(c.tdee + (gaining ? dailyDelta : -dailyDelta))} kcal intake</span></div>
+    <div class="tile"><span class="eyebrow">Duration</span><span class="v">${total}<small>weeks</small></span><span class="s">${breaks ? breaks + " diet break" + (breaks > 1 ? "s" : "") + " included" : "Continuous"}</span></div>
+    <div class="tile"><span class="eyebrow">Finish around</span><span class="v" style="font-size:1.5rem">${end.toLocaleDateString(undefined, { month: "short", year: "numeric" })}</span></div>
+  </div>
+  <p class="small muted" style="margin-top:10px">${gaining ? "After the gain phase, spend 2–4 weeks at maintenance before cutting." : "Plan a 1–2 week diet break at maintenance every 8–12 weeks, then raise calories about 100–150 kcal per week back to maintenance after the phase ends (reverse diet)."}</p>${rateWarn}`;
+}
+
+function donut(segs, center, sub) {
+  const R = 70, r = 46, cx = 90, cy = 90; const total = segs.reduce((a, s) => a + s.v, 0) || 1;
+  let a0 = -Math.PI / 2; let out = "";
+  segs.forEach(s => {
+    const a1 = a0 + s.v / total * Math.PI * 2; const large = a1 - a0 > Math.PI ? 1 : 0;
+    if (s.v <= 0) return;
+    const p = (a, rad) => [cx + rad * Math.cos(a), cy + rad * Math.sin(a)];
+    const [x0, y0] = p(a0, R), [x1, y1] = p(a1 - 0.001, R), [x2, y2] = p(a1 - 0.001, r), [x3, y3] = p(a0, r);
+    out += `<path d="M${x0} ${y0} A${R} ${R} 0 ${large} 1 ${x1} ${y1} L${x2} ${y2} A${r} ${r} 0 ${large} 0 ${x3} ${y3} Z" style="fill:${s.col};stroke:var(--surface);stroke-width:2"/>`;
+    a0 = a1;
+  });
+  return `<svg viewBox="0 0 180 180" role="img" aria-label="Macro split">${out}<text x="90" y="90" text-anchor="middle" style="fill:var(--ink);font:600 26px var(--font-display)">${center}</text><text x="90" y="110" text-anchor="middle" style="fill:var(--ink-3);font:500 11px var(--font-body)">${sub}</text></svg>`;
+}
+
+/* ---------- metabolic priming ---------- */
+const TIMELINE = [
+  ["06:30", "Wake + light", "10–30 min outdoor light within an hour of waking anchors your circadian clock and the cortisol awakening response. Drink 400–500 ml water with a pinch of salt."],
+  ["07:15", "Protein-forward breakfast", "30–40 g protein raises satiety and TEF. Add fiber and fruit. If you fast, break the fast with the same."],
+  ["10:00", "Movement snack", "5 min walk or stairs every 60–90 min of sitting. NEAT adds up to hundreds of kcal a day."],
+  ["12:30", "Lunch, veg and protein first", "Eating vegetables and protein before starches lowers the post-meal glucose spike."],
+  ["12:50", "10–15 min post-meal walk", "Contracting muscle pulls glucose from the blood without insulin (GLUT4). One of the best-supported glucose habits."],
+  ["14:00", "Caffeine cutoff", "Caffeine has a 5–6 h half-life. Later doses cut deep sleep even when you fall asleep easily."],
+  ["16:00", "Pre-workout fuel", "1–2 h before: 30–60 g carbs and 20 g protein. Optional 3 mg/kg caffeine only if you train early enough."],
+  ["17:30", "RAMP warm-up → train", "Raise, Activate, Mobilize, Potentiate: 8–10 min, ending with ramp-up sets of your first lift."],
+  ["19:00", "Post-workout meal", "0.4 g/kg protein plus carbs to refill glycogen. The 'anabolic window' is hours wide, not 30 minutes."],
+  ["21:00", "Wind-down", "Dim the lights, cool the room, no heavy meals. Optional 30–40 g casein if dinner was early."],
+  ["22:30", "Sleep 7–9 h", "The single largest recovery and appetite-regulation lever available."]
+];
+const PRIME = [
+  { n: "Post-meal walking", cat: "daily", g: "A", eff: "Lowers glucose spike 20–30%", d: "A 10–15 minute walk after meals uses insulin-independent muscle glucose uptake. Especially useful after carb-heavy meals and for prediabetes." },
+  { n: "NEAT / daily steps", cat: "daily", g: "A", eff: "200–800+ kcal/day", d: "Non-exercise activity varies by up to about 2,000 kcal/day between people (Levine). Track steps during a diet because NEAT quietly drops as calories fall." },
+  { n: "Sleep 7–9 hours", cat: "daily", g: "A", eff: "Preserves lean mass in a deficit", d: "Short sleep raises ghrelin, lowers leptin, and adds about 300–400 kcal of next-day intake. Sleep-restricted dieters lose more muscle and less fat." },
+  { n: "Morning light exposure", cat: "daily", g: "B", eff: "Better sleep timing and alertness", d: "Bright light early in the day advances the circadian clock, improves sleep onset that night, and supports regular appetite hormones." },
+  { n: "Protein-first meals", cat: "daily", g: "A", eff: "TEF + satiety", d: "Protein costs 20–30% of its calories to digest and is the most satiating macro. 25–40 g per meal also maximizes muscle protein synthesis." },
+  { n: "Meal sequencing", cat: "daily", g: "B", eff: "~30–40% lower glucose peak", d: "Eating vegetables, then protein and fat, then carbohydrate blunts the glucose response compared with carbs first." },
+  { n: "Pre-workout carb priming", cat: "workout", g: "A", eff: "Performance in long or hard sessions", d: "1–4 g/kg carbs 1–4 h before training tops up liver and muscle glycogen. Matters most for sessions over 60 min or high-volume lifting." },
+  { n: "Caffeine timing", cat: "workout", g: "A", eff: "2–4% performance gain", d: "3–6 mg/kg 30–60 min before. Raises power, endurance and focus. Habitual users still benefit." },
+  { n: "RAMP warm-up / potentiation", cat: "workout", g: "A", eff: "Better first-set performance, fewer strains", d: "Light cardio, activation drills, dynamic mobility, then heavy ramp-up sets. Post-activation potentiation can briefly boost power output." },
+  { n: "Carb loading", cat: "workout", g: "A", eff: "2–3% faster in events > 90 min", d: "8–12 g/kg/day for 36–48 h before a long endurance event. Not useful for short events or lifting." },
+  { n: "Zone 2 / metabolic flexibility", cat: "workout", g: "B", eff: "More mitochondria, better fat oxidation", d: "2–4 h a week of easy aerobic work improves your ability to switch between fat and carbohydrate fuel and builds your aerobic base." },
+  { n: "Fasted cardio", cat: "workout", g: "C", eff: "No extra fat loss", d: "Burns more fat during the session, but the body compensates later. Fine if you prefer it; hard sessions usually go better fed." },
+  { n: "Diet breaks", cat: "phase", g: "B", eff: "Less adaptation, better adherence", d: "1–2 weeks at maintenance every 8–12 weeks of dieting restores leptin, NEAT and training quality, with a psychological break too." },
+  { n: "Refeed days", cat: "phase", g: "C", eff: "Glycogen + morale", d: "One to two higher-carb maintenance days per week. Short-term hormone effects are small; the main gains are training quality and adherence." },
+  { n: "Reverse dieting", cat: "phase", g: "C", eff: "Controls rebound", d: "Adding 100–150 kcal per week after a diet limits fat regain for some people. Evidence is limited; the main benefit is behavioral." },
+  { n: "Calorie cycling", cat: "phase", g: "C", eff: "Same weekly result", d: "More calories on training days, fewer on rest days. Weekly totals drive outcomes; cycling can make adherence easier." },
+  { n: "Strength training for muscle", cat: "phase", g: "A", eff: "~13 kcal/kg muscle/day + insulin sensitivity", d: "The resting-calorie bump is modest, but muscle improves glucose disposal, body composition and long-term weight maintenance." },
+  { n: "Cold exposure", cat: "daily", g: "C", eff: "Small calorie effect", d: "Activates brown fat and raises energy use slightly. Ice baths right after lifting may blunt muscle growth, so separate them by several hours." },
+  { n: "Sauna / heat", cat: "daily", g: "B", eff: "Cardiovascular and plasma-volume gains", d: "Regular sauna use is associated with lower cardiovascular risk and can support heat acclimation for endurance athletes. Hydrate." },
+  { n: "Drinking water before meals", cat: "daily", g: "C", eff: "Modest appetite reduction", d: "500 ml before meals reduced intake and helped weight loss modestly in older adults. Effects on metabolic rate are small and short-lived." },
+  { n: '"Metabolism-boosting" foods', cat: "daily", g: "D", eff: "< 50–100 kcal/day", d: "Green tea catechins, capsaicin, apple cider vinegar: real but tiny effects that are easily erased by one extra snack." }
+];
+let primeFilter = "all";
+function renderPrime() {
+  $("#timeline").innerHTML = TIMELINE.map(t => `<div class="tl"><span class="t">${t[0]}</span><span class="dot"></span><div class="b"><strong>${esc(t[1])}</strong><span class="small muted">${esc(t[2])}</span></div></div>`).join("");
+  const cats = [["all", "All"], ["daily", "Daily habits"], ["workout", "Workout priming"], ["phase", "Diet phases"]];
+  $("#prime-filter").innerHTML = cats.map(c => `<button type="button" class="chip" data-v="${c[0]}" aria-pressed="${primeFilter === c[0]}">${c[1]}</button>`).join("");
+  $$("#prime-filter .chip").forEach(b => b.addEventListener("click", () => { primeFilter = b.dataset.v; renderPrime(); }));
+  const list = PRIME.filter(p => primeFilter === "all" || p.cat === primeFilter);
+  $("#prime-grid").innerHTML = list.map(p => `<article class="card"><div class="card-head"><h4>${esc(p.n)}</h4>${grade(p.g)}</div><p class="mono small" style="color:var(--accent)">${esc(p.eff)}</p><p class="small muted">${esc(p.d)}</p></article>`).join("");
+}
+function grade(g) {
+  const m = { A: ["p-good", "Strong"], B: ["p-info", "Moderate"], C: ["p-warn", "Limited"], D: ["p-bad", "Weak"] }[g];
+  return `<span class="pill ${m[0]}" title="Evidence grade ${g}">${g} · ${m[1]}</span>`;
+}
+function renderAdapt() {
+  const w = +$("#adapt-w").value; $("#adapt-w-out").textContent = w;
+  const signs = $$(".adapt-c").filter(c => c.checked).length;
+  const score = Math.min(w / 12, 1.5) * 2 + signs;
+  let cls, head, body;
+  if (score >= 5) { cls = "p-bad"; head = "Take a diet break now"; body = "Eat at maintenance for 1–2 weeks: add calories mostly as carbs, keep protein and training the same. Expect a 1–2 kg water rise that is not fat."; }
+  else if (score >= 3) { cls = "p-warn"; head = "A break is due soon"; body = "Plan a maintenance week within the next 2–3 weeks, or add 1–2 refeed days per week now. Re-check steps and food-tracking accuracy first."; }
+  else { cls = "p-good"; head = "Keep going"; body = "Adaptation looks minimal. Stay consistent, and keep an eye on steps and sleep as the diet continues."; }
+  $("#adapt-out").innerHTML = `<div class="callout"><span class="pill ${cls}">${head}</span><p class="small" style="margin-top:8px">${body}</p></div>`;
+}
+
+/* ---------- diets ---------- */
+const DIETS = [
+  ["Mediterranean", "A", "Vegetables, legumes, whole grains, olive oil, fish; little red meat or processed food", "Heart health, longevity, sustainable weight control", "Calorie-dense oils and nuts. Portions still matter"],
+  ["DASH", "A", "Fruit, vegetables, low-fat dairy, limited sodium (<2,300 mg)", "High blood pressure; lowers systolic BP 5–11 mmHg", "Needs label-reading for sodium"],
+  ["High-protein", "A", "1.6–2.4 g/kg protein, everything else flexible", "Fat loss with muscle retention, appetite control", "Kidney disease: consult your doctor. Keep fiber up"],
+  ["Flexible dieting (IIFYM)", "B", "Hit calorie and macro targets with any foods; usually 80/20 whole foods", "Lifters, people who dislike food rules", "Tracking fatigue; can drift toward low food quality"],
+  ["Volume eating", "B", "Low-energy-density foods (vegetables, fruit, soups, lean protein) to stay full on fewer calories", "Big appetites during fat loss", "Can be hard to fuel heavy training"],
+  ["Plant-based / vegan", "B", "No animal products; legumes, soy, grains, nuts, seeds", "Heart health, environment, ethics", "Supplement B12; watch iron, zinc, omega-3, iodine, calcium, protein"],
+  ["Low-carb (<130 g/day)", "B", "Cuts starches and sugar; more protein, fat, vegetables", "Insulin resistance, type 2 diabetes, people who prefer it", "Lower glycogen for high-intensity sport"],
+  ["Ketogenic (<50 g carbs)", "B", "Very low carb to sustain ketosis; high fat", "Epilepsy (medical), some type 2 diabetes, appetite control", "LDL can rise sharply in some people; fiber gaps; 'keto flu'; weaker sprint performance"],
+  ["Intermittent fasting 16:8", "B", "Eat within an 8 h window", "People who skip breakfast anyway, simple structure", "Same results as daily calorie restriction when calories match; hard to hit protein"],
+  ["5:2 / alternate-day fasting", "B", "2 days a week (or alternate days) at about 500–600 kcal", "People who prefer a few hard days over daily restriction", "Hunger, training around fast days, not for disordered-eating history"],
+  ["MIND", "B", "Mediterranean-DASH hybrid emphasizing berries and leafy greens", "Brain health and cognitive aging", "Evidence mostly observational"],
+  ["Nordic", "B", "Rye, oats, root vegetables, berries, fish, rapeseed oil", "Cholesterol and blood pressure", "Regional foods may be harder to source"],
+  ["Carb cycling", "C", "High-carb training days, low-carb rest days", "Physique athletes who like structure", "Complexity with little advantage over steady intake"],
+  ["Paleo", "C", "Meat, fish, vegetables, fruit, nuts; no grains, legumes or dairy", "Cutting ultra-processed food", "Unnecessarily removes legumes, whole grains and dairy"],
+  ["Zone (40/30/30)", "C", "Fixed carb/protein/fat ratio each meal", "People who like portion templates", "The 'hormonal zone' claim isn't supported; it works as calorie control"]
+];
+const PROTEIN = [["Chicken breast (cooked)", 31, 165], ["Tuna (canned, water)", 26, 116], ["Lean beef 95% (cooked)", 29, 171], ["Salmon (cooked)", 25, 206], ["Egg whites", 11, 52], ["Whole eggs", 13, 143], ["Greek yogurt 0%", 10, 59], ["Cottage cheese 2%", 12, 84], ["Tofu, firm", 17, 144], ["Tempeh", 20, 192], ["Seitan", 25, 120], ["Lentils (cooked)", 9, 116], ["Whey isolate", 88, 370], ["Edamame", 11, 121]];
+function renderDiets() {
+  $("#diet-rows").innerHTML = DIETS.map(d => `<tr><td><strong>${esc(d[0])}</strong></td><td>${grade(d[1])}</td><td>${esc(d[2])}</td><td>${esc(d[3])}</td><td class="muted">${esc(d[4])}</td></tr>`).join("");
+  $("#protein-rows").innerHTML = PROTEIN.map(p => `<tr><td>${esc(p[0])}</td><td class="num mono">${p[1]} g</td><td class="num mono">${p[2]}</td></tr>`).join("");
+}
+
+/* ---------- fad diets ---------- */
+const FADS = [
+  { n: "Cabbage Soup Diet", v: "avoid", claim: "Lose 10 lb in 7 days", real: "Under 1,000 kcal/day of mostly soup. Weight lost is water and glycogen.", risk: "Fatigue, muscle loss, rapid regain." },
+  { n: "Juice cleanses / detox", v: "avoid", claim: "Flush toxins and reset your body", real: "Your liver and kidneys already detoxify. Juice removes fiber and protein.", risk: "Blood-sugar swings, muscle loss; oxalate kidney injury with heavy green juices." },
+  { n: "Master Cleanse", v: "avoid", claim: "Lemonade with maple syrup and cayenne for 10+ days", real: "A starvation diet of about 600 kcal/day.", risk: "Electrolyte problems, gallstones, near-total muscle loss." },
+  { n: "Detox / skinny teas", v: "avoid", claim: "Flat stomach in 14 days", real: "Senna and other laxatives cause water and stool loss.", risk: "Dehydration, laxative dependence; reduces birth-control absorption." },
+  { n: "HCG Diet", v: "avoid", claim: "Hormone drops reset metabolism", real: "500 kcal/day does all the work. Over-the-counter HCG products are illegal in the US.", risk: "FDA warnings, gallstones, heart arrhythmia risk." },
+  { n: "Blood Type Diet", v: "avoid", claim: "Eat for your blood type", real: "A 2014 study found benefits had nothing to do with blood type.", risk: "Needless restriction of whole food groups." },
+  { n: "Grapefruit Diet", v: "avoid", claim: "Grapefruit enzymes burn fat", real: "About 800 kcal/day with grapefruit at each meal.", risk: "Grapefruit interacts with statins, blood-pressure and other drugs." },
+  { n: "Military / 3-Day Diet", v: "avoid", claim: "Lose 10 lb in 3 days", real: "A 1,100–1,400 kcal menu (hot dogs, ice cream) for 3 days. Water weight.", risk: "Rebound; no long-term structure." },
+  { n: "Baby Food Diet", v: "avoid", claim: "Replace meals with jars of baby food", real: "Portion control in tiny jars.", risk: "Low protein and fiber, socially unsustainable." },
+  { n: "Cookie Diet", v: "avoid", claim: "Meal-replacement cookies plus one dinner", real: "About 1,000 kcal/day from proprietary products.", risk: "Expensive, nutrient-poor, teaches nothing." },
+  { n: "Celery juice", v: "avoid", claim: "Cures inflammation and illness", real: "Mostly water. No evidence for the health claims.", risk: "Replaces real food; diarrhea." },
+  { n: "Fruitarian", v: "avoid", claim: "Eat only fruit", real: "Very low protein, fat, B12, calcium.", risk: "Deficiencies, tooth decay, blood-sugar problems." },
+  { n: "Carnivore", v: "caution", claim: "Meat only heals everything", real: "Very low carb, high protein, so appetite drops. Some report gut relief from cutting trigger foods.", risk: "No fiber or plant nutrients; LDL often rises; almost no long-term data." },
+  { n: "Alkaline Diet", v: "caution", claim: "Change your blood pH", real: "Food can't change blood pH. Benefits come from eating more produce.", risk: "Pseudoscience used to sell products." },
+  { n: "Raw food", v: "caution", claim: "Cooking destroys enzymes", real: "Cooking increases availability of many nutrients (lycopene, protein).", risk: "Food poisoning, low energy intake, B12 deficiency." },
+  { n: "Whole30", v: "caution", claim: "30-day reset", real: "A strict elimination diet: no sugar, grains, legumes, dairy or alcohol. Works as an elimination experiment if foods are reintroduced systematically.", risk: "Unnecessary restriction; rebound after 30 days." },
+  { n: "Dukan", v: "caution", claim: "Four-phase high-protein plan", real: "Very high protein, low fat and carb. Short-term weight loss.", risk: "Very restrictive early phases; not recommended by the British Dietetic Association." },
+  { n: "Sirtfood", v: "caution", claim: "'Skinny gene' foods (kale, dark chocolate, red wine)", real: "An early phase of 1,000 kcal/day explains the results.", risk: "Overstated science; red wine is no health food." },
+  { n: "Lectin-free (Plant Paradox)", v: "caution", claim: "Lectins cause inflammation", real: "Cooking deactivates most lectins. Legumes are among the healthiest foods studied.", risk: "Removes nutrient-dense foods; sells supplements." },
+  { n: "OMAD (one meal a day)", v: "caution", claim: "Extreme fasting accelerates fat loss", real: "Works by calorie restriction. Hard to hit protein and fiber in one sitting.", risk: "Binge cycles, poor training fuel, muscle loss." },
+  { n: "Apple cider vinegar shots", v: "caution", claim: "Melts belly fat", real: "Small reduction in post-meal glucose; at most a pound or two over months.", risk: "Tooth enamel erosion, throat irritation, low potassium." },
+  { n: "'Oatzempic' drinks", v: "caution", claim: "Natural Ozempic: blended oats, water, lime", real: "A low-calorie fiber drink that briefly fills you up. No effect on GLP-1 drug pathways.", risk: "Very low protein if used as a meal replacement." },
+  { n: "Atkins", v: "merit", claim: "Carb restriction for weight loss", real: "A structured low-carb plan with decent trial data short term. Later phases reintroduce carbs.", risk: "Early-phase fatigue; quality varies (processed Atkins products)." },
+  { n: "Structured meal replacements", v: "merit", claim: "Shakes replace 1–2 meals", real: "Strong trial evidence: the DiRECT trial put many type 2 diabetes patients into remission with supervised total diet replacement.", risk: "Best done with medical supervision; needs a plan for the transition back to food." },
+  { n: "Time-restricted eating", v: "merit", claim: "Eating window improves metabolism", real: "Mixed claims about circadian benefits, but it helps some people eat less. Comparable to daily restriction.", risk: "Not for people with a history of disordered eating or for some diabetes medications." }
+];
+const FLAGS = [
+  "Promises more than 1 kg (2 lb) per week for weeks on end",
+  "Bans an entire food group without a medical reason",
+  "Requires buying proprietary products, shakes or supplements",
+  "Relies on before/after photos and testimonials over trials",
+  "Credits one 'magic' food, hormone or ingredient",
+  "Below 1,200 kcal (women) or 1,500 kcal (men) without supervision",
+  "Uses the words 'detox', 'cleanse' or 'reset'",
+  "Has no maintenance or exit plan",
+  "Blames a single macronutrient for all weight gain",
+  "Sold by a celebrity or influencer with affiliate links"
+];
+let fadFilter = "all", fadQuery = "";
+const VERDICT = { avoid: ["p-bad", "Avoid"], caution: ["p-warn", "Caution"], merit: ["p-good", "Has merit"] };
+function renderFads() {
+  const opts = [["all", "All " + FADS.length], ["avoid", "Avoid"], ["caution", "Caution"], ["merit", "Has merit"]];
+  $("#fad-filter").innerHTML = opts.map(o => `<button type="button" class="chip" data-v="${o[0]}" aria-pressed="${fadFilter === o[0]}">${o[1]}</button>`).join("");
+  $$("#fad-filter .chip").forEach(b => b.addEventListener("click", () => { fadFilter = b.dataset.v; renderFads(); }));
+  const q = fadQuery.toLowerCase();
+  const list = FADS.filter(f => (fadFilter === "all" || f.v === fadFilter) && (!q || (f.n + f.claim + f.real).toLowerCase().includes(q)));
+  $("#fad-grid").innerHTML = list.length ? list.map(f => `<article class="card"><div class="card-head"><h4>${esc(f.n)}</h4><span class="pill ${VERDICT[f.v][0]}">${VERDICT[f.v][1]}</span></div>
+    <dl class="kv"><dt>Promise</dt><dd>${esc(f.claim)}</dd><dt>Reality</dt><dd>${esc(f.real)}</dd><dt>Risks</dt><dd class="muted">${esc(f.risk)}</dd></dl></article>`).join("") : `<p class="muted">No diets match that search.</p>`;
+}
+function renderFlags() {
+  $("#flags").innerHTML = FLAGS.map((f, i) => `<label style="display:flex;gap:8px;align-items:flex-start;font-size:.9rem"><input type="checkbox" class="flag" id="flag-${i}" style="margin-top:4px"> <span>${esc(f)}</span></label>`).join("");
+  $$(".flag").forEach(c => c.addEventListener("change", flagScore));
+  flagScore();
+}
+function flagScore() {
+  const n = $$(".flag").filter(c => c.checked).length;
+  const [cls, msg] = n === 0 ? ["p-good", "No red flags ticked yet"] : n <= 2 ? ["p-warn", `${n} red flag${n > 1 ? "s" : ""}: look for independent evidence`] : ["p-bad", `${n} red flags: almost certainly a fad`];
+  $("#flag-out").innerHTML = `<span class="pill ${cls}">${msg}</span>`;
+}
+
+/* ---------- training ---------- */
+const EX = {
+  squat: { gym: ["Back squat", "Front squat", "Hack squat"], db: ["Goblet squat", "DB front squat", "Heels-elevated goblet squat"], bw: ["Bodyweight squat", "Split squat", "Pistol progression"] },
+  hinge: { gym: ["Deadlift", "Romanian deadlift", "Hip thrust"], db: ["DB Romanian deadlift", "DB hip thrust", "Single-leg RDL"], bw: ["Single-leg hip bridge", "Banded good morning", "Nordic curl (assisted)"] },
+  lunge: { gym: ["Walking lunge", "Bulgarian split squat", "Leg press"], db: ["DB reverse lunge", "DB Bulgarian split squat", "DB step-up"], bw: ["Reverse lunge", "Bulgarian split squat", "Step-up"] },
+  hpush: { gym: ["Bench press", "Incline DB press", "Machine chest press"], db: ["DB bench press", "Incline DB press", "DB floor press"], bw: ["Push-up", "Deficit push-up", "Decline push-up"] },
+  vpush: { gym: ["Overhead press", "Seated DB press", "Lateral raise"], db: ["Seated DB press", "Arnold press", "DB lateral raise"], bw: ["Pike push-up", "Band overhead press", "Band lateral raise"] },
+  hpull: { gym: ["Barbell row", "Chest-supported row", "Seated cable row"], db: ["One-arm DB row", "Chest-supported DB row", "DB rear-delt fly"], bw: ["Inverted row", "Band row", "Band face pull"] },
+  vpull: { gym: ["Pull-up", "Lat pulldown", "Single-arm pulldown"], db: ["DB pullover", "Pull-up (if bar)", "DB high row"], bw: ["Pull-up / negatives", "Band lat pulldown", "Towel row"] },
+  arms: { gym: ["Cable curl", "Triceps pushdown", "EZ-bar curl"], db: ["DB curl", "Overhead DB extension", "Hammer curl"], bw: ["Band curl", "Bench dip", "Diamond push-up"] },
+  core: { gym: ["Cable crunch", "Hanging knee raise", "Pallof press"], db: ["Farmer carry", "DB side bend", "Dead bug"], bw: ["Plank", "Dead bug", "Hollow hold"] },
+  calves: { gym: ["Standing calf raise", "Seated calf raise", "Leg press calf raise"], db: ["DB calf raise", "Single-leg DB calf raise", "Seated DB calf raise"], bw: ["Single-leg calf raise", "Calf raise", "Jump rope"] },
+  cond: { gym: ["Rower intervals", "Assault bike intervals", "Sled push"], db: ["DB thrusters", "DB complex", "Renegade row"], bw: ["Burpees", "Mountain climbers", "Jump squats"] }
+};
+const SPLITS = {
+  2: [["Full body A", ["squat", "hpush", "hpull", "hinge", "core"]], ["Full body B", ["hinge", "vpush", "vpull", "lunge", "arms"]]],
+  3: [["Full body A", ["squat", "hpush", "hpull", "core", "arms"]], ["Full body B", ["hinge", "vpush", "vpull", "lunge", "calves"]], ["Full body C", ["lunge", "hpush", "hpull", "hinge", "core"]]],
+  4: [["Upper A", ["hpush", "hpull", "vpush", "vpull", "arms"]], ["Lower A", ["squat", "hinge", "lunge", "calves", "core"]], ["Upper B", ["vpush", "vpull", "hpush", "hpull", "arms"]], ["Lower B", ["hinge", "squat", "lunge", "calves", "core"]]],
+  5: [["Upper", ["hpush", "hpull", "vpush", "vpull", "arms"]], ["Lower", ["squat", "hinge", "lunge", "calves", "core"]], ["Push", ["hpush", "vpush", "hpush", "arms", "core"]], ["Pull", ["vpull", "hpull", "hinge", "arms", "core"]], ["Legs", ["squat", "lunge", "hinge", "calves", "core"]]],
+  6: [["Push A", ["hpush", "vpush", "hpush", "arms", "core"]], ["Pull A", ["vpull", "hpull", "hpull", "arms", "core"]], ["Legs A", ["squat", "hinge", "lunge", "calves", "core"]], ["Push B", ["vpush", "hpush", "vpush", "arms", "core"]], ["Pull B", ["hpull", "vpull", "vpull", "arms", "core"]], ["Legs B", ["hinge", "squat", "lunge", "calves", "core"]]]
+};
+const SCHEME = {
+  strength: { main: ["4–5", "3–5", "RPE 8", "3–4 min"], acc: ["3", "6–10", "RPE 8", "2 min"], note: "Main lifts are heavy; add 2.5 kg (5 lb) when all sets hit the top of the range." },
+  hypertrophy: { main: ["3–4", "6–10", "RIR 1–2", "2–3 min"], acc: ["3", "10–15", "RIR 0–2", "60–90 s"], note: "Push accessories close to failure. Add a set per muscle every 1–2 weeks, then deload." },
+  fatloss: { main: ["3", "6–10", "RIR 2", "90 s"], acc: ["2–3", "12–15", "RIR 1–2", "45–60 s"], note: "Keep lifting heavy to signal muscle retention. Add a conditioning finisher and daily steps for the deficit." },
+  general: { main: ["3", "6–10", "RIR 2–3", "2 min"], acc: ["2–3", "10–15", "RIR 2", "60–90 s"], note: "Pair with 150+ min/week of cardio. Prioritize consistency and technique over max loads." },
+  endurance: { main: ["3", "12–15", "RIR 2", "60 s"], acc: ["2–3", "15–25", "RIR 1–2", "30–45 s"], note: "Circuits work well. Keep 1–2 heavier sets weekly to maintain strength." }
+};
+function renderProgram() {
+  const goal = $("#pg-goal").value, days = $("#pg-days").value, eq = $("#pg-eq").value, exp = $("#pg-exp").value;
+  const sc = SCHEME[goal]; const split = SPLITS[days];
+  const nEx = exp === "beginner" ? 4 : exp === "advanced" ? 6 : 5;
+  const used = {};
+  const html = split.map(([name, pats], di) => {
+    const list = pats.slice(0, Math.min(nEx, pats.length));
+    if (exp === "advanced" && pats.length < 6) list.push(goal === "fatloss" || goal === "endurance" ? "cond" : "arms");
+    if ((goal === "fatloss" || goal === "endurance") && !list.includes("cond")) list.push("cond");
+    const rows = list.map((pat, i) => {
+      used[pat] = (used[pat] || 0); const opts = EX[pat][eq]; const ex = opts[(used[pat]++ + di) % opts.length];
+      const s = pat === "cond" ? ["5–8", "30 s on / 30 s off", "Hard", "–"] : (i < 2 ? sc.main : sc.acc);
+      const setsAdj = exp === "beginner" && pat !== "cond" ? s[0].replace(/\d+–(\d+)/, "$1").replace("4", "3").replace("5", "3") : s[0];
+      return `<tr><td>${esc(ex)}</td><td class="mono">${esc(setsAdj)}</td><td class="mono">${esc(s[1])}</td><td class="mono">${esc(s[2])}</td><td class="mono">${esc(s[3])}</td></tr>`;
+    }).join("");
+    return `<div class="day"><div class="day-h"><h4>Day ${di + 1} · ${esc(name)}</h4><span class="small muted">~${45 + list.length * 5} min incl. warm-up</span></div><div class="table-wrap" style="border:0;border-radius:0"><table><thead><tr><th>Exercise</th><th>Sets</th><th>Reps</th><th>Effort</th><th>Rest</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+  }).join("");
+  $("#prog-out").innerHTML = html;
+  const restDays = 7 - +days;
+  $("#prog-summary").innerHTML = `<div class="callout small"><strong>${esc($("#pg-goal").selectedOptions[0].textContent)}, ${days} days.</strong> ${esc(sc.note)} ${restDays} rest day${restDays !== 1 ? "s" : ""}: keep them active with walks or easy cardio. ${exp === "beginner" ? "Beginners: start each lift 2–3 reps shy of failure and add load every session while form stays clean." : "Run 4–6 week blocks, then deload."}</div>`;
+}
+function renderORM() {
+  const w = parseFloat($("#orm-w").value), r = Math.min(12, Math.max(1, parseInt($("#orm-r").value, 10) || 1));
+  if (!Number.isFinite(w) || w <= 0) { $("#orm-out").innerHTML = ""; return; }
+  const ep = r === 1 ? w : w * (1 + r / 30), br = w * 36 / (37 - r); const one = (ep + br) / 2;
+  const pct = [[100, 1], [95, 2], [90, 4], [85, 6], [80, 8], [75, 10], [70, 12], [65, 15], [60, 20]];
+  const u = wUnit();
+  $("#orm-out").innerHTML = `<div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,120px),1fr))"><div class="tile hero"><span class="eyebrow">Estimated 1RM</span><span class="v">${fmt(one, 1)}<small>${u}</small></span></div><div class="tile"><span class="eyebrow">Epley</span><span class="v" style="font-size:1.5rem">${fmt(ep, 1)}</span></div><div class="tile"><span class="eyebrow">Brzycki</span><span class="v" style="font-size:1.5rem">${fmt(br, 1)}</span></div></div>
+  <div class="table-wrap" style="border:0"><table><thead><tr><th class="num">% 1RM</th><th class="num">Load (${u})</th><th class="num">≈ Reps</th></tr></thead><tbody>${pct.map(p => `<tr><td class="num mono">${p[0]}%</td><td class="num mono">${fmt(one * p[0] / 100, 1)}</td><td class="num mono">${p[1]}</td></tr>`).join("")}</tbody></table></div>
+  <p class="note">Estimates are most accurate from sets of 2–6 reps. Use the input weight in whatever unit you lift in.</p>`;
+}
+const VOLUME = [["Chest", 8, 12, 20, 22], ["Back", 10, 14, 22, 25], ["Quads", 8, 12, 18, 20], ["Hamstrings", 6, 10, 16, 20], ["Glutes", 0, 4, 12, 16], ["Side delts", 8, 16, 22, 26], ["Rear delts", 6, 12, 18, 22], ["Biceps", 8, 14, 20, 26], ["Triceps", 6, 10, 14, 18], ["Calves", 8, 12, 16, 20], ["Abs", 0, 16, 20, 25]];
+function renderVolume() {
+  const max = 28, x = v => v / max * 100;
+  $("#volume").innerHTML = `<div class="grid" style="gap:8px">${VOLUME.map(v => `<div class="macro-row" style="grid-template-columns:90px 1fr 76px"><span class="small">${v[0]}</span>
+    <div style="position:relative;height:12px;border-radius:99px;background:var(--surface-2)"><span style="position:absolute;left:${x(v[2])}%;width:${x(v[3]) - x(v[2])}%;top:0;bottom:0;background:var(--accent);border-radius:99px"></span><span style="position:absolute;left:${x(v[1])}%;top:-2px;bottom:-2px;width:2px;background:var(--ink-3)"></span><span style="position:absolute;left:${x(v[4])}%;top:-2px;bottom:-2px;width:3px;background:var(--bad)"></span></div>
+    <span class="mono small muted">${v[2]}–${v[3]} sets</span></div>`).join("")}</div>
+    <div class="mono small muted" style="display:flex;justify-content:space-between;padding-left:100px;padding-right:86px"><span>0</span><span>7</span><span>14</span><span>21</span><span>28</span></div>
+    <p class="note">Gray tick: MEV. Red tick: MRV. Approximations based on Renaissance Periodization guidelines; individual tolerance varies widely.</p>`;
+}
+
+/* ---------- cardio ---------- */
+const ZONES = [
+  [1, "Recovery", 0.5, 0.6, "Very easy, nasal breathing", "var(--ink-3)"],
+  [2, "Aerobic base", 0.6, 0.7, "Conversational; builds mitochondria and fat oxidation", "var(--good)"],
+  [3, "Tempo", 0.7, 0.8, "Comfortably hard, short sentences", "var(--accent)"],
+  [4, "Threshold", 0.8, 0.9, "Hard, a few words at a time", "var(--warn)"],
+  [5, "VO₂max", 0.9, 1.0, "Near maximal, 1–8 min efforts", "var(--bad)"]
+];
+const METS = [["Walking 5 km/h (3 mph)", 3.5], ["Brisk walking 6.4 km/h", 5], ["Incline treadmill walk", 6], ["Running 8 km/h (5 mph)", 8.3], ["Running 10 km/h (6.2 mph)", 9.8], ["Running 12 km/h (7.5 mph)", 11.8], ["Cycling, moderate", 6.8], ["Cycling, vigorous", 10], ["Rowing, moderate", 7], ["Swimming laps, moderate", 5.8], ["Weight training, general", 3.5], ["Weight training, vigorous", 6], ["Circuit training / HIIT", 8], ["Yoga (hatha)", 2.5], ["Hiking", 6], ["Jump rope", 11.8], ["Basketball game", 8], ["Soccer, casual", 7], ["Pilates", 3], ["Elliptical, moderate", 5]];
+function renderCardio() {
+  const c = calc(); const max = c.maxHR, rest = S.rhr || 60, hrr = max - rest;
+  $("#hr-meta").textContent = `Max ${fmt(max)} · Rest ${fmt(rest)} · Reserve ${fmt(hrr)}`;
+  $("#zones").innerHTML = `<div class="grid" style="gap:10px">${ZONES.map(z => {
+    const lo = rest + hrr * z[2], hi = rest + hrr * z[3];
+    return `<div style="display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:center"><span style="font:700 1.4rem var(--font-display);color:${z[5]}">Z${z[0]}</span><div><strong>${z[1]}</strong><div class="small muted">${z[4]}</div><div class="bar" style="margin-top:4px"><span style="width:${z[3] * 100}%;background:${z[5]}"></span></div></div><span class="mono">${fmt(lo)}–${fmt(hi)}</span></div>`;
+  }).join("")}</div>`;
+  const uth = 15.3 * max / rest; const cooper = parseFloat($("#cooper").value);
+  const cv = Number.isFinite(cooper) && cooper > 600 ? (cooper - 504.9) / 44.73 : NaN;
+  const est = Number.isFinite(cv) ? cv : uth;
+  $("#vo2-out").innerHTML = `<div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,130px),1fr))"><div class="tile"><span class="eyebrow">Uth (HR ratio)</span><span class="v">${fmt(uth, 1)}<small>ml/kg/min</small></span></div><div class="tile"><span class="eyebrow">Cooper test</span><span class="v">${Number.isFinite(cv) ? fmt(cv, 1) : "–"}<small>ml/kg/min</small></span></div></div><p class="small" style="margin-top:8px">${vo2Label(est)}</p><p class="note">VO₂max is one of the strongest predictors of all-cause mortality. Moving from the bottom 25% to above average is linked to large risk reductions.</p>`;
+  const act = $("#met-act"); if (!act.options.length) act.innerHTML = METS.map((m, i) => `<option value="${i}">${esc(m[0])}</option>`).join("");
+  const m = METS[+act.value || 0]; const mins = parseFloat($("#met-min").value) || 0;
+  const kcal = m[1] * S.weight * mins / 60;
+  $("#met-out").innerHTML = `<div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,130px),1fr))"><div class="tile hero"><span class="eyebrow">Estimated burn</span><span class="v">${fmt(kcal)}<small>kcal</small></span><span class="s">${m[1]} MET × ${fmt(toDispW(S.weight), 1)} ${wUnit()}</span></div><div class="tile"><span class="eyebrow">Above resting</span><span class="v">${fmt((m[1] - 1) * S.weight * mins / 60)}<small>kcal</small></span><span class="s">What exercise actually adds</span></div></div><p class="note">Fitness trackers overestimate burn by 20–40%. Don't eat back every calorie they report.</p>`;
+}
+function vo2Label(v) {
+  const male = S.sex === "male", a = S.age;
+  const base = male ? [35, 42, 48, 54] : [29, 35, 40, 46];
+  const adj = Math.max(0, (a - 30) / 10) * 3.5;
+  const t = base.map(b => b - adj);
+  const lab = v < t[0] ? "Poor" : v < t[1] ? "Fair" : v < t[2] ? "Good" : v < t[3] ? "Excellent" : "Superior";
+  return `<span class="pill ${v < t[1] ? "p-warn" : "p-good"}">${lab}</span> for a ${a}-year-old ${male ? "man" : "woman"} (approximate norms).`;
+}
+
+/* ---------- recovery ---------- */
+const TOOLS = [["Sleep", "A"], ["Eating enough (energy + protein)", "A"], ["Managing training load / deloads", "A"], ["Stress management", "B"], ["Low-intensity active recovery", "B"], ["Massage", "B"], ["Compression garments", "C"], ["Foam rolling", "C"], ["Cold-water immersion", "C"], ["Percussion guns", "C"], ["Cryotherapy chambers", "D"], ["Expensive recovery supplements", "D"]];
+function renderRecovery() {
+  const v = id => parseFloat($("#" + id).value);
+  const vals = { sleep: v("r-sleep"), qual: v("r-qual"), sore: v("r-sore"), stress: v("r-stress"), mot: v("r-mot"), hr: v("r-hr") };
+  $("#r-sleep-o").textContent = vals.sleep; $("#r-qual-o").textContent = vals.qual; $("#r-sore-o").textContent = vals.sore;
+  $("#r-stress-o").textContent = vals.stress; $("#r-mot-o").textContent = vals.mot; $("#r-hr-o").textContent = (vals.hr > 0 ? "+" : "") + vals.hr;
+  const sleepS = Math.min(1, Math.max(0, (vals.sleep - 4) / 4));
+  const score = Math.round(100 * (sleepS * 0.25 + (vals.qual - 1) / 4 * 0.2 + (5 - vals.sore) / 4 * 0.15 + (5 - vals.stress) / 4 * 0.15 + (vals.mot - 1) / 4 * 0.1 + Math.min(1, Math.max(0, (8 - vals.hr) / 10)) * 0.15));
+  let col, head, rec;
+  if (score >= 75) { col = "var(--good)"; head = "Ready to push"; rec = "Good day for a PR attempt, a hard interval session, or added volume."; }
+  else if (score >= 55) { col = "var(--accent)"; head = "Train as planned"; rec = "Run the session as written. Stop sets at RIR 2 if bar speed slows more than usual."; }
+  else if (score >= 40) { col = "var(--warn)"; head = "Pull back"; rec = "Cut volume by about a third, cap effort at RPE 7, or swap intervals for zone 2."; }
+  else { col = "var(--bad)"; head = "Recover today"; rec = "Walk, do mobility work, eat well, sleep early. Several days in a row in this range suggest a deload, or illness coming on."; }
+  const R = 54, C = 2 * Math.PI * R;
+  $("#ready-out").innerHTML = `<h3>Readiness</h3><div class="score-ring"><svg viewBox="0 0 140 140" width="170" role="img" aria-label="Readiness ${score} of 100"><circle cx="70" cy="70" r="${R}" style="fill:none;stroke:var(--surface-2);stroke-width:12"/><circle cx="70" cy="70" r="${R}" transform="rotate(-90 70 70)" style="fill:none;stroke:${col};stroke-width:12;stroke-linecap:round;stroke-dasharray:${C * score / 100} ${C}"/><text x="70" y="78" text-anchor="middle" style="fill:var(--ink);font:600 38px var(--font-display)">${score}</text></svg></div>
+  <h4 style="text-align:center;color:${col}">${head}</h4><p class="small" style="text-align:center">${rec}</p>
+  <p class="note">Weighted: sleep 45%, soreness and stress 30%, resting HR 15%, motivation 10%. A trend over a week tells you more than one morning.</p>`;
+  $("#recovery-tools").innerHTML = TOOLS.map(t => `<div style="display:flex;justify-content:space-between;gap:8px;align-items:center;padding:4px 0;border-bottom:1px solid var(--line)"><span class="small">${esc(t[0])}</span>${grade(t[1])}</div>`).join("");
+}
+
+/* ---------- supplements ---------- */
+const SUPPS = [
+  ["Creatine monohydrate", "A", "Strength, power, lean mass; cognitive benefits emerging", "3–5 g daily, any time", "The most-researched sports supplement. Loading is optional. Water gain is in muscle, not fat."],
+  ["Caffeine", "A", "Endurance, power, alertness", "3–6 mg/kg, 30–60 min pre", "Cap at 400 mg/day. Avoid within 8 h of bed."],
+  ["Protein powder", "A", "Convenient way to hit protein targets", "20–40 g/serving", "It's food. Whey, casein, soy and pea blends all work."],
+  ["Vitamin D3", "A", "Bone, immune and muscle function if deficient", "1,000–2,000 IU/day", "Test levels. Take with a fat-containing meal."],
+  ["Omega-3 (EPA/DHA)", "B", "Heart health, triglycerides, joint comfort", "1–2 g EPA+DHA", "Unnecessary if you eat fatty fish twice a week. Algae oil for vegans."],
+  ["Beta-alanine", "B", "Efforts of 1–4 min (rowing, 400–1,500 m)", "3.2–6.4 g/day, split", "Tingling (paresthesia) is harmless. Takes 4+ weeks to work."],
+  ["Citrulline malate", "B", "Reps to failure, pump", "6–8 g pre", "Modest effects; citrulline beats arginine."],
+  ["Dietary nitrate (beetroot)", "B", "Endurance economy", "6–8 mmol, 2–3 h pre", "Antibacterial mouthwash blunts the effect."],
+  ["Sodium bicarbonate", "B", "High-intensity repeated efforts", "0.2–0.3 g/kg, 60–180 min pre", "GI distress is common; test in training first."],
+  ["Electrolytes", "B", "Sessions over 90 min or heavy sweating", "300–700 mg sodium/h", "Plain water is fine for most gym sessions."],
+  ["Magnesium", "B", "Corrects low intake; may help sleep", "200–400 mg (glycinate)", "Oxide form causes GI upset."],
+  ["Iron", "B", "Only if deficient (test ferritin)", "As prescribed", "Excess iron is harmful. Don't take it blind."],
+  ["Collagen + vitamin C", "C", "Tendon and ligament support", "15 g, 30–60 min before rehab work", "Low-quality protein for muscle; count it separately."],
+  ["Ashwagandha", "C", "Stress, sleep, small strength gains", "300–600 mg extract", "Thyroid and liver caution; avoid in pregnancy."],
+  ["Melatonin", "C", "Jet lag, shifting sleep timing", "0.5–3 mg, 1–2 h before bed", "Prescription-only in some countries. Low doses work."],
+  ["Tart cherry", "C", "Soreness between close competitions", "30 ml concentrate twice daily", "May blunt adaptation if used year-round."],
+  ["BCAAs / EAAs", "D", "Muscle protein synthesis", "–", "Pointless when daily protein is adequate."],
+  ["Glutamine", "D", "Recovery, immunity", "–", "No performance benefit in healthy, well-fed people."],
+  ["Fat burners / thermogenics", "D", "Fat loss", "–", "Mostly caffeine with unsafe extras (synephrine, yohimbine, sometimes banned stimulants)."],
+  ["Testosterone boosters", "D", "Hormones, muscle", "–", "Tribulus, fenugreek, D-aspartic acid: no meaningful muscle effect in healthy men."],
+  ["Garcinia / raspberry ketones", "D", "Fat loss", "–", "No credible evidence; liver toxicity reports."],
+  ["Detox / cleanse kits", "D", "'Toxin removal'", "–", "Laxatives in a costume."]
+];
+let suppFilter = "all";
+function renderSupps() {
+  const opts = [["all", "All"], ["A", "A · Strong"], ["B", "B · Moderate"], ["C", "C · Limited"], ["D", "D · Skip"]];
+  $("#supp-filter").innerHTML = opts.map(o => `<button type="button" class="chip" data-v="${o[0]}" aria-pressed="${suppFilter === o[0]}">${o[1]}</button>`).join("");
+  $$("#supp-filter .chip").forEach(b => b.addEventListener("click", () => { suppFilter = b.dataset.v; renderSupps(); }));
+  $("#supp-rows").innerHTML = SUPPS.filter(s => suppFilter === "all" || s[1] === suppFilter).map(s => `<tr><td><strong>${esc(s[0])}</strong></td><td>${grade(s[1])}</td><td>${esc(s[2])}</td><td class="mono small">${esc(s[3])}</td><td class="muted small">${esc(s[4])}</td></tr>`).join("");
+}
+
+/* ---------- body types ---------- */
+const SOMA = {
+  ecto: { n: "Ectomorph", look: "Long limbs, narrow shoulders and hips, low body fat, finds it hard to gain weight.", eat: "Surplus of 300–500 kcal; calorie-dense foods (nuts, olive oil, smoothies, rice); 4–5 meals; carbs 45–55%.", train: "Compound lifts, 3–4 days, 6–12 reps; keep cardio short so it doesn't eat into the surplus.", truth: "Usually means high NEAT and a small appetite. Weigh food for two weeks; most 'hard-gainers' find they are at maintenance." },
+  meso: { n: "Mesomorph", look: "Broad shoulders, narrow waist, gains muscle easily, moderate body fat.", eat: "Balanced macros (30/40/30) near maintenance; adjust for goal.", train: "Responds to most programs; mix strength and hypertrophy blocks. Watch for under-recovering because progress comes easily.", truth: "Often a well-trained person at a lean body fat. Responds well, but still needs progressive overload." },
+  endo: { n: "Endomorph", look: "Wider frame, gains fat and muscle easily, softer look, often strong.", eat: "Higher protein (2+ g/kg), fiber-rich carbs placed around training, moderate deficit if losing fat. Lower-carb can help appetite for some.", train: "Strength training 3–4 days plus 8–10k steps and 2–3 cardio sessions. Usually strong, so lean into heavy compound lifts.", truth: "Mostly describes higher body fat now. If you suspect insulin resistance, a fasting glucose / HbA1c test tells you more than body shape." }
+};
+let somaSel = "endo";
+function renderSoma() {
+  $("#soma-pick").innerHTML = Object.keys(SOMA).map(k => `<button type="button" class="chip" data-v="${k}" aria-pressed="${somaSel === k}">${SOMA[k].n}</button>`).join("");
+  $$("#soma-pick .chip").forEach(b => b.addEventListener("click", () => { somaSel = b.dataset.v; renderSoma(); }));
+  const s = SOMA[somaSel];
+  $("#soma-out").innerHTML = `<dl class="kv"><dt>Looks like</dt><dd>${esc(s.look)}</dd><dt>Typical advice: eat</dt><dd>${esc(s.eat)}</dd><dt>Typical advice: train</dt><dd>${esc(s.train)}</dd><dt>Reality check</dt><dd class="muted">${esc(s.truth)}</dd></dl><p class="note">Most people are blends (e.g. ecto-mesomorph). The same fundamentals apply to every type: hit calorie and protein targets, lift progressively, move daily, sleep.</p>`;
+}
+const BT = {
+  O: "Following the 'hunter' plan means more protein and fewer refined grains, which helps many people. Keep the legumes and whole grains anyway: they have strong evidence for heart health, whatever your type.",
+  A: "The 'farmer' plan is close to a Mediterranean or vegetarian diet, which has strong evidence for everyone. Make sure protein reaches 1.6+ g/kg if you train.",
+  B: "The 'nomad' plan bans chicken, corn and lentils for no proven reason. Base your choices on the Diets tab instead: calories, protein, fiber, whole foods.",
+  AB: "The AB plan mixes the A and B lists. There is no evidence for type-specific benefits, so choose foods by preference, tolerance and nutrition."
+};
+let btSel = "O";
+function renderBT() {
+  $("#bt-pick").innerHTML = Object.keys(BT).map(k => `<button type="button" class="chip mono" data-v="${k}" aria-pressed="${btSel === k}">${k}</button>`).join("");
+  $$("#bt-pick .chip").forEach(b => b.addEventListener("click", () => { btSel = b.dataset.v; renderBT(); }));
+  $("#bt-out").innerHTML = `<div class="callout small"><strong>Type ${btSel}:</strong> ${esc(BT[btSel])}</div><p class="note">If a food upsets you, that's an intolerance or allergy worth testing for. It is not a blood-type reaction.</p>`;
+}
+function renderFiber() {
+  const r = parseInt($("#fiber-reps").value, 10);
+  if (!(r > 0)) { $("#fiber-out").innerHTML = ""; return; }
+  let cls, head, body;
+  if (r < 7) { cls = "p-bad"; head = "Fast-twitch leaning"; body = "You produce force well but fatigue quickly. Respond best to heavier loads (3–8 reps), longer rests (3+ min), and lower total volume. Power and sprint work suit you."; }
+  else if (r <= 12) { cls = "p-info"; head = "Mixed / average"; body = "A balanced profile. Use a range: heavy sets of 4–6 for main lifts and 8–15 for accessories."; }
+  else { cls = "p-good"; head = "Slow-twitch leaning"; body = "High fatigue resistance. You can handle more volume, shorter rests and higher reps (12–25), and you likely recover fast between sets. Endurance sports suit you."; }
+  $("#fiber-out").innerHTML = `<div class="callout small"><span class="pill ${cls}">${head}</span><p style="margin-top:8px">${body}</p></div><p class="note">A rough field test that varies by muscle: try it on a lower- and an upper-body lift. Only a muscle biopsy measures fiber type directly. Typical result: about 8–10 reps at 80%.</p>`;
+}
+
+/* ---------- log ---------- */
+const iso = d => d.toISOString().slice(0, 10);
+function sampleData() {
+  const w = [], s = []; const today = new Date();
+  for (let i = 41; i >= 0; i--) {
+    const d = new Date(today); d.setDate(d.getDate() - i);
+    const trend = 84 - (41 - i) * 0.07; const noise = Math.sin(i * 1.7) * 0.5 + Math.cos(i * 0.9) * 0.35;
+    if (i % 7 !== 3) w.push({ d: iso(d), kg: round(trend + noise, 1) });
+    const dow = d.getDay();
+    if ([1, 3, 5].includes(dow)) s.push({ d: iso(d), t: "Strength", m: 60, r: 7 + (i % 3 === 0 ? 1 : 0) });
+    if (dow === 6) s.push({ d: iso(d), t: "Zone 2", m: 50, r: 4 });
+    if (dow === 2 && i % 14 < 7) s.push({ d: iso(d), t: "Intervals", m: 30, r: 8 });
+  }
+  return { w, s };
+}
+let LOG = store.get("log", null);
+let isSample = false;
+if (!LOG || (!LOG.w.length && !LOG.s.length && !LOG.touched)) { LOG = sampleData(); isSample = true; }
+function saveLog() { LOG.touched = true; store.set("log", LOG); }
+function dropSample() { if (isSample) { LOG = { w: [], s: [], touched: true }; isSample = false; } }
+function renderLog() {
+  $("#log-flag").innerHTML = isSample ? `<div class="example-flag">Showing example data. Your first entry replaces it with your own log.</div>` : "";
+  const W = LOG.w.slice().sort((a, b) => a.d.localeCompare(b.d));
+  const ws = $("#w-summary"), wc = $("#w-chart");
+  if (W.length < 2) { wc.innerHTML = `<p class="muted small" style="padding:30px 0;text-align:center">Add at least two weigh-ins to see a trend.</p>`; ws.textContent = ""; }
+  else {
+    const vals = W.map(x => toDispW(x.kg));
+    const avg = vals.map((_, i) => { const from = W[i].d; const cut = new Date(from); cut.setDate(cut.getDate() - 6); const c = iso(cut); const win = W.map((x, j) => [x, vals[j]]).filter(([x]) => x.d >= c && x.d <= from).map(p => p[1]); return win.reduce((a, b) => a + b, 0) / win.length; });
+    const t0 = new Date(W[0].d).getTime(), t1 = new Date(W[W.length - 1].d).getTime(); const span = Math.max(1, t1 - t0);
+    const lo = Math.floor(Math.min(...vals) - 0.5), hi = Math.ceil(Math.max(...vals) + 0.5);
+    const Wd = 600, H = 240, L = 44, Rr = 12, T = 12, B = 28;
+    const X = d => L + (new Date(d).getTime() - t0) / span * (Wd - L - Rr);
+    const Y = v => T + (hi - v) / (hi - lo) * (H - T - B);
+    const step = niceStep((hi - lo) / 4); let grid = "";
+    for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-9; v += step) grid += `<line x1="${L}" x2="${Wd - Rr}" y1="${Y(v)}" y2="${Y(v)}" style="stroke:var(--line)"/><text x="${L - 6}" y="${Y(v) + 4}" text-anchor="end" style="fill:var(--ink-3);font:11px var(--font-mono)">${fmt(v, step < 1 ? 1 : 0)}</text>`;
+    const xt = [0, 0.5, 1].map(f => { const d = new Date(t0 + span * f); return `<text x="${L + f * (Wd - L - Rr)}" y="${H - 8}" text-anchor="${f === 0 ? "start" : f === 1 ? "end" : "middle"}" style="fill:var(--ink-3);font:11px var(--font-mono)">${d.toLocaleDateString(undefined, { month: "short", day: "numeric" })}</text>`; }).join("");
+    const dots = W.map((x, i) => `<circle cx="${X(x.d)}" cy="${Y(vals[i])}" r="2.6" style="fill:var(--ink-3);opacity:.55"/>`).join("");
+    const line = W.map((x, i) => `${i ? "L" : "M"}${X(x.d).toFixed(1)} ${Y(avg[i]).toFixed(1)}`).join(" ");
+    const area = line + ` L${X(W[W.length - 1].d)} ${H - B} L${X(W[0].d)} ${H - B} Z`;
+    const lx = X(W[W.length - 1].d), ly = Y(avg[avg.length - 1]);
+    wc.innerHTML = `<svg viewBox="0 0 ${Wd} ${H}" role="img" aria-label="Weight trend chart">${grid}<path d="${area}" style="fill:var(--accent);opacity:.08"/>${dots}<path d="${line}" style="fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linejoin:round"/><circle cx="${lx}" cy="${ly}" r="5" style="fill:var(--accent);stroke:var(--surface);stroke-width:2"/>${xt}</svg>`;
+    const days = span / 864e5; const delta = avg[avg.length - 1] - avg[0]; const perWk = days > 0 ? delta / days * 7 : 0;
+    ws.innerHTML = `<span class="mono">${fmt(avg[avg.length - 1], 1)} ${wUnit()} avg · ${perWk > 0 ? "+" : ""}${fmt(perWk, 2)} ${wUnit()}/wk</span>`;
+  }
+  // weekly load (last 8 ISO-ish weeks, Monday start)
+  const weekStart = d => { const x = new Date(d + "T00:00:00"); const k = (x.getDay() + 6) % 7; x.setDate(x.getDate() - k); return iso(x); };
+  const wk = {}; LOG.s.forEach(s => { const k = weekStart(s.d); wk[k] = (wk[k] || 0) + s.m * s.r; });
+  const now = weekStart(iso(new Date())); const keys = [];
+  for (let i = 7; i >= 0; i--) { const d = new Date(now + "T00:00:00"); d.setDate(d.getDate() - i * 7); keys.push(iso(d)); }
+  const loads = keys.map(k => wk[k] || 0); const mx = Math.max(1, ...loads);
+  const Wd = 600, H = 220, L = 44, B = 28, T = 12; const bw = (Wd - L - 12) / keys.length;
+  const top = Math.ceil(mx / 500) * 500 || 500;
+  const Y = v => T + (1 - v / top) * (H - T - B);
+  let g = ""; for (let v = 0; v <= top; v += top / 4) g += `<line x1="${L}" x2="${Wd - 12}" y1="${Y(v)}" y2="${Y(v)}" style="stroke:var(--line)"/><text x="${L - 6}" y="${Y(v) + 4}" text-anchor="end" style="fill:var(--ink-3);font:11px var(--font-mono)">${fmt(v)}</text>`;
+  const chronic = loads.slice(3, 7).reduce((a, b) => a + b, 0) / 4; const acute = loads[7];
+  const bars = loads.map((v, i) => { const x = L + i * bw + bw * 0.18; const h = (H - T - B) * v / top; const last = i === loads.length - 1; return `<rect x="${x}" y="${Y(v)}" width="${bw * 0.64}" height="${Math.max(0, h)}" rx="3" style="fill:${last ? "var(--accent)" : "var(--ink-3)"};opacity:${last ? 1 : .45}"/><text x="${x + bw * 0.32}" y="${H - 8}" text-anchor="middle" style="fill:var(--ink-3);font:10px var(--font-mono)">${new Date(keys[i] + "T00:00:00").toLocaleDateString(undefined, { month: "numeric", day: "numeric" })}</text>`; }).join("");
+  $("#l-chart").innerHTML = `<svg viewBox="0 0 ${Wd} ${H}" role="img" aria-label="Weekly training load">${g}${bars}</svg>`;
+  const ratio = chronic > 0 ? acute / chronic : NaN;
+  const rPill = !Number.isFinite(ratio) ? "" : ratio > 1.5 ? `<span class="pill p-bad">Spike ${fmt(ratio, 2)}</span>` : ratio < 0.8 ? `<span class="pill p-info">Light ${fmt(ratio, 2)}</span>` : `<span class="pill p-good">Steady ${fmt(ratio, 2)}</span>`;
+  $("#l-summary").innerHTML = `<span class="mono">This week ${fmt(acute)} AU</span> ${rPill}`;
+  const rows = LOG.s.slice().sort((a, b) => b.d.localeCompare(a.d)).slice(0, 10);
+  $("#s-rows").innerHTML = rows.length ? rows.map(s => `<tr><td class="mono">${s.d}</td><td>${esc(s.t)}</td><td class="num mono">${s.m}</td><td class="num mono">${s.r}</td><td class="num mono">${s.m * s.r}</td><td class="num"><button type="button" class="btn ghost small" data-del="${LOG.s.indexOf(s)}" aria-label="Delete session">Remove</button></td></tr>`).join("") : `<tr><td colspan="6" class="muted">No sessions yet. Add your first one above.</td></tr>`;
+  $$("[data-del]").forEach(b => b.addEventListener("click", () => { dropSampleKeep(); LOG.s.splice(+b.dataset.del, 1); saveLog(); renderLog(); }));
+}
+function dropSampleKeep() { if (isSample) { isSample = false; } }
+function niceStep(raw) { const p = Math.pow(10, Math.floor(Math.log10(raw || 1))); const n = raw / p; return (n < 1.5 ? 1 : n < 3 ? 2 : n < 7 ? 5 : 10) * p; }
+
+$("#w-form").addEventListener("submit", e => {
+  e.preventDefault(); const d = $("#w-date").value, v = parseFloat($("#w-val").value);
+  if (!d || !Number.isFinite(v)) return;
+  dropSample(); LOG.w = LOG.w.filter(x => x.d !== d); LOG.w.push({ d, kg: round(fromDispW(v), 2) }); saveLog(); renderLog(); $("#w-val").value = "";
+});
+$("#s-form").addEventListener("submit", e => {
+  e.preventDefault(); const d = $("#s-date").value, m = parseInt($("#s-min").value, 10), r = Math.min(10, Math.max(1, parseInt($("#s-rpe").value, 10) || 0));
+  if (!d || !(m > 0)) return;
+  dropSample(); LOG.s.push({ d, t: $("#s-type").value, m, r }); saveLog(); renderLog();
+});
+$("#w-clear").addEventListener("click", () => { if (isSample) { LOG = { w: [], s: LOG.s, touched: true }; isSample = false; } else LOG.w = []; saveLog(); renderLog(); });
+$("#s-clear").addEventListener("click", () => { if (isSample) { LOG = { w: LOG.w, s: [], touched: true }; isSample = false; } else LOG.s = []; saveLog(); renderLog(); });
+
+/* ---------- wiring ---------- */
+function renderAll() { renderOverview(); renderORM(); renderCardio(); renderLog(); }
+$("#profile").addEventListener("input", () => { readProfile(); renderAll(); });
+$("#planner").addEventListener("input", () => { readProfile(); renderPlanner(calc()); });
+$("#adapt").addEventListener("input", renderAdapt);
+$("#prog").addEventListener("input", renderProgram);
+$("#orm").addEventListener("input", renderORM);
+$("#vo2").addEventListener("input", renderCardio);
+$("#met").addEventListener("input", renderCardio);
+$("#ready").addEventListener("input", renderRecovery);
+$("#fiber").addEventListener("input", renderFiber);
+$("#fad-search").addEventListener("input", e => { fadQuery = e.target.value; renderFads(); });
+$$("form").forEach(f => { if (!["w-form", "s-form"].includes(f.id)) f.addEventListener("submit", e => e.preventDefault()); });
+
+const todayIso = iso(new Date()); $("#w-date").value = todayIso; $("#s-date").value = todayIso;
+fillProfile(); renderAll(); renderPrime(); renderAdapt(); renderDiets(); renderFads(); renderFlags(); renderProgram(); renderVolume(); renderRecovery(); renderSupps(); renderSoma(); renderBT(); renderFiber();
+const hash = (location.hash || "").slice(1);
+showTab(hash || store.get("tab", "overview"), false);
+})();
+</script>
