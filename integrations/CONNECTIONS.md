@@ -572,3 +572,14 @@ Arive (Enter skipped the key prompts; Lofty's key 7b was skipped the same way �
 | Gondola (travel) | MCP installed for Claude Code; the claude.ai connector is not added | Settings → Connectors → Add custom connector → `https://mcp.gondola.ai/mcp` | Steven |
 | Pabbly ↔ Kapso webhooks, six workflows | Kapso login proven; webhook URLs and the six workflows are clicks at connect.pabbly.com | STEVEN-STEPS step 5; `integrations/pabbly/WORKFLOWS.md` | Steven |
 | TikTok · GoHighLevel · Discord bot · HeyGen | not connected (Composio links last 10 minutes) | say "Composio links" in a live session | Steven + Vanessa |
+
+## Connection status — Vanessa everywhere, 2026-10-23 21:30 UTC (Steven: "connect Jarvis with Vanessa replacing it with her voice and persona, and Laya, Orca and all my AI team to Orca, and connect these with my 6D 2nd brain")
+
+Supersedes the sections above for the rows it names. Everything here is one paste on the Mac: `cd ~/Repo && bash scripts/fix-mine.sh`.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Jarvis speaks and thinks as Vanessa | ready — `integrations/jarvis/vanessa-persona.sh --apply` writes her SOUL/MEMORY/USER persona into OpenJarvis and sets `persona_name = "vanessa"`; her recorded voice via `jarvis-setup.sh --apply`; not yet run on Mac 1 | `bash scripts/fix-mine.sh` (step 3b) | Steven (paste) |
+| Jarvis knows the Second Brain | ready — the same script indexes the brain's pages (no client pages, no meeting digests, no findings) into Jarvis memory; the 6D layers row shows "speaks as Vanessa" + the page count once run | same paste | Steven (paste) |
+| Laya routes, Orca launches the AI team | installed on Mac 1 (connect report #3); `connect-orca-laya.sh --apply` + `agent-os/install-mac.sh --apply` re-run by the paste; `brain os check` is the proof | same paste; phone pairing in Orca is Steven's | Steven |
+| 6D Brain shows all of it | the layers panel reads `brain/state/jarvis-status.json` (persona, indexed pages) and the toolkit register reads this table; the daily 3:30 AM rebuild carries it | — | Vanessa |

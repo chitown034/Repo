@@ -1,3 +1,393 @@
+## Orchestrator response (2026-10-23 22:05 UTC) — pass 2 verdict SHIP; P19-F1 (LOW) and U1 applied (reviewed c41c06afa75d7877 → 166c49bb4015ccbb)
+
+change-set: 166c49bb4015ccbb
+
+- **P19-F1** applied: `vanessa-persona.sh` takes `JARVIS_STATUS` (default unchanged); the test suite points it at a scratch file and
+  cleans up in a `trap … EXIT`, so the real `brain/state/jarvis-status.json` is never touched by a test run (verified: absent before and after).
+- **U1** applied: any all-caps first token on a `runnerctl status` row (RUN, NOAL, BADZ) is a marker, never a task name; BADZ/NOAL rows
+  are never re-run; the fixture now carries a BADZ row and the test asserts no marker word and no BADZ task is run.
+- **Missing test #8** applied: `scripts/validate-code.sh` runs `scripts/tests/test_fix_mine.sh` and `scripts/tests/test_vanessa_persona.sh`
+  whenever the scripts they cover change (both PASS in this gate run). U2 (a task running right now with a failed last run) stays open
+  for the Mac: `runnerctl run` on a running task is the runner's own call; the REPORT shows it either way.
+
+## Code-validator review, pass 2 (2026-10-23 22:00 UTC) — verdict SHIP (VibeBreaker DIFF: SURVIVED*, 0 critical / 0 high / 0 medium / 1 low, 2 unverified)
+
+change-set: c41c06afa75d7877
+
+**Verdict: SHIP.** All five pass-1 findings (P04-F1, P05-F1, P12-F1, P04-F2, P11-F1) are fixed and each has a test that fails without the fix. The fixes did not
+break anything I could trigger in the product code. One new low defect is in a test, not in the shipped scripts: the P12-F1 assertion goes red on
+any machine where `jarvis-setup.sh` has already written the status file, which means Steven's Mac. Two open questions need one real
+`runnerctl status` paste to settle. Neither blocks the ship.
+
+Deterministic gate, quoted: `verdict: PASS (11 passed, 0 failed)`. `bash scripts/validate-code.sh --hash` printed `c41c06afa75d7877`.
+`dashboard/brain-4d.html` was not reviewed (by instruction; the gate hash leaves it out). In place: `test_fix_mine.sh` 18/0,
+`test_vanessa_persona.sh` 26/0. CI replay on a clean copy (tracked files plus untracked, non-ignored files, in the scratchpad):
+`python3 -m unittest discover -s brain/tests` ran 144 tests, OK. `bin/brain doctor` reported `doctor: PASS`. Both shell suites passed, and `bash -n` passed on
+every changed script. shellcheck is not installed here, so it was not run (NEEDS-CONTEXT).
+
+### Scope
+
+- Diff (from `git status --short`): `scripts/fix-mine.sh`, `scripts/tests/test_fix_mine.sh`, `integrations/jarvis/vanessa-persona.sh`,
+  `scripts/tests/test_vanessa_persona.sh`, `integrations/jarvis/persona/` (all new); `integrations/jarvis/jarvis-setup.sh`, `brain/layers.py`
+  and the docs (`integrations/jarvis/README.md`, `integrations/CONNECTIONS.md`, `docs/STEVEN-STEPS.md`, `context/decisions.md`,
+  `wiki/ai-team/toolkit.md`).
+- Also read: `brain/loop.py` `jarvis_status` (the reader of the status file), `integrations/jarvis/jarvis-tests.sh`.
+- Passes: 01, 04, 05, 11, 14, 19 (shell); 01, 04, 05, 06, 07, 08, 12, 17, 18, 19 (inline Python, layers.py); 20.
+- Python version here: 3.11.17. I exercised the Python < 3.11 path (no `tomllib`) by putting a stub `tomllib` on PYTHONPATH that raises
+  ModuleNotFoundError. The macOS system python3 version on Steven's Mac is NEEDS-CONTEXT.
+- Side effect, disclosed: the no-tomllib probe ran `vanessa-persona.sh --apply`, which rewrites the gitignored
+  `brain/state/jarvis-status.json` in the repo (the test suite does the same). I saved that file first and restored it byte for byte. No
+  tracked file was touched.
+
+### Re-verification of pass-1 findings
+
+| ID | Fix verified | How |
+|---|---|---|
+| P04-F1 (med) | yes | One awk parse. The pause check is `grep -qx "off $t"` on it. The error list takes `$2` for `off`/`RUN` rows, skips `off`, excludes the three retired tasks and is capped at 4 (`fix-mine.sh:104-112`). The 6 new asserts pass on the real paste. Edge probes: `updated …` header gives `on updated`, which is harmless because only `off` rows are read; the `(runnerctl list …)` footer gives nothing; `*/10` matches `^[0-9*]`; `@hourly` gives no `on` row, also harmless. Empty error list: `grep -vxE` gives empty output, the `[ -z "$errs" ]` branch is taken, and no `set -e` is in play. `head -4` follows status order, which is alphabetical in the paste. Tasks past 4 are not lost, because item T asks for a full `runnerctl status` paste. |
+| P05-F1 (low) | yes | `vanessa-persona.sh:132`. `INDEXED` is set on every `--apply` path (lines 110-112; the `;` makes `INDEXED=0` unconditional in the else branch), so `${INDEXED:-0}` under `set -u` is safe. Asserted by the test. |
+| P12-F1 (low) | yes (product) | Persona no longer writes `checked`. `jarvis-setup.sh:94-105` writes `$OUT.tmp` and merges, keeping keys it does not own. The heredoc is 3.9-safe (no 3.10+ syntax). A persona-only file has no `checked`, so `loop.jarvis_status` returns `unverified`, which is the honest state. See P19-F1 for the test. |
+| P04-F2 (low) | yes | `vanessa-persona.sh:43-64`. Indented and spaced headers pass. `[[memory_files]]` and `[memory_files.extra]` do not match the header regex. tomllib validates on 3.11+. On the no-tomllib path the indented header and subtable case still produced valid TOML (checked afterwards with tomllib). The only change is cosmetic: the blank line before `[memory_files.extra]` is dropped. |
+| P11-F1 (low) | yes | `vanessa-persona.sh:78-82`. Both refusals run before the marker is written and before any copy or prune. `repo in stage.parents` (stage inside the repo) and `stage in repo.parents` (stage = ~) are refused, as intended. pathlib `rglob` before 3.13 does not follow directory symlinks. The foreign-folder test passes. |
+
+### CONFIRMED
+
+```yaml
+id: P19-F1
+pass: 19
+title: the P12-F1 test ("persona alone writes no checked") fails on any machine where jarvis-setup.sh already wrote the status file
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: scripts/tests/test_vanessa_persona.sh
+    line: 9 (saves but does not clear the real status file), 36 (assertion)
+entry_or_trigger: bash scripts/tests/test_vanessa_persona.sh on the Mac after `jarvis-setup.sh --apply/--verify` (fix-mine step 3b runs it)
+evidence: >
+  vanessa-persona.sh has no override for STATUS (always $REPO/brain/state/jarvis-status.json) and merges into the existing file. The
+  test copies that file aside but leaves it in place. So the `checked` key that jarvis-setup.sh wrote survives into the assertion at
+  line 36. Reproduced on the clean copy: seeded brain/state/jarvis-status.json with {"checked": ...}, ran the suite, got
+  "FAIL: persona invented a 'checked' stamp, 25 passed, 1 failed".
+existing_controls_checked: >
+  Neither the gate (validate-code.sh) nor .github/workflows runs this suite, so the false red never reaches a gate. It is the suite the
+  change-set offers as proof, on the only machine where Jarvis runs.
+failure_scenario: >
+  Steven or an agent on the Mac runs the suite to confirm the install. It reports a P12-F1 regression that does not exist. The live
+  status file is also rewritten mid-test with temp-dir paths and brain_indexed=true. The restore at line 53 is not in a trap, so a
+  Ctrl-C or abort leaves that fake "indexed" state on the 6D layers panel.
+impact: A false failure on the Mac, plus a small chance of a wrong "indexed" claim on the layers panel after an aborted test run.
+remediation_direction: >
+  Isolate the status path. Add e.g. JARVIS_STATUS="${JARVIS_STATUS:-$REPO/brain/state/jarvis-status.json}" in vanessa-persona.sh and
+  point the test at $T, or remove the real file after saving it. Restore from a `trap … EXIT`.
+verification: >
+  Seed brain/state/jarvis-status.json with a "checked" key, run the suite: 26 passed. The seeded file is byte-identical afterwards,
+  including after a forced kill mid-suite.
+```
+
+### UNVERIFIED
+
+- **U1: `NOAL` / `BADZ` rows in `runnerctl status`.** The real paste's footer says `NOAL = no allow-list yet; BADZ = its tz cannot be
+  loaded`. Those read as flags in the same column as `off`/`RUN`. The parse at `fix-mine.sh:104,111` only knows `off`/`RUN`. A row
+  `  BADZ some-task … last error` would yield `runnerctl run BADZ`, and the REPORT would say "re-running BADZ" (reproduced with a
+  hand-written line). Missing artifact: one real `runnerctl status` paste that shows a NOAL or BADZ row, or the runnerctl source.
+  It is not in this repo. Cheap hardening either way: treat any all-caps `$1` as a flag, and skip BADZ/NOAL rows for re-run.
+- **U2: a task that is `RUN` (running now) and `last error`** is re-run by `fix-mine.sh:111`. Whether `runnerctl run` refuses or
+  double-runs a task already in flight is NEEDS-CONTEXT (runnerctl behaviour, not in the repo).
+
+### REJECTED
+
+- awk on the `updated …` header: it gives `on updated`, but no consumer reads `on` rows. The header holds no "last error" in the real format (`fix-mine.sh:104`).
+- `head -4` starves task 5+: rejected. Item T asks for a full status paste, so a fifth errored task is still seen (`fix-mine.sh:120`).
+- `$OUT.tmp` left behind / stale status on merge failure: the tmp JSON is built from json_escape plus `DOCS` (null or an integer from `count(*)`, defaulted with `${n:-0}`).
+  No input makes it invalid (`jarvis-setup.sh:37-41,90-93`).
+- jarvis-setup heredoc 3.9-incompatible: no walrus, match or `|` types. `json`/`pathlib` only.
+- Marker written before the prune guard: no. The guards are at lines 78-81 and the marker at line 82.
+- Pre-existing `~/.cache/jarvis-brain` without a marker from an earlier run: the persona script is untracked and never reached the Mac via git, so no such folder can exist.
+
+### Coverage (inspected, clean)
+
+`fix-mine.sh` step_runner (parse, pause, re-run, CHECK mode, log paths), `main` order, `run_quiet` capture of the persona and setup
+exit codes. `vanessa-persona.sh` all four steps, the `set -u` paths, and the dry run (writes nothing). `jarvis-setup.sh` merge.
+`brain/layers.py` jarvis row (all `.get`, so a missing `checked` gives `last: None`). `brain/loop.jarvis_status` on a persona-only
+file gives `unverified`. Docs: the README, CONNECTIONS and STEVEN-STEPS descriptions match the behaviour.
+
+### Top missing tests (pass 19)
+
+1. P19-F1 itself: the persona suite with a pre-seeded status file containing `checked` must pass and leave the file byte-identical.
+2. jarvis-setup.sh merge: seed a status file with `persona`/`brain_*` keys, run the merge block (extract it, or run on a Darwin stub),
+   and assert those keys survive and `checked` is fresh. Today only the persona side of P12-F1 is tested.
+3. step_runner with `NOAL`/`BADZ` rows in error: assert no `run NOAL|BADZ` call (settles U1).
+4. step_runner with more than 4 errored tasks: assert exactly 4 `run` calls and that the REPORT names the rest or tells Steven to re-paste.
+5. step_runner `--check`: assert zero `pause`/`run` calls against the stub.
+6. Persona config on the no-tomllib path (stub tomllib, as done here): assert valid TOML for the common configs.
+7. Persona stage refusal when `JARVIS_BRAIN_STAGE` is inside the repo and when it equals `$HOME`: non-zero exit, nothing deleted.
+8. Wire `scripts/tests/test_fix_mine.sh` and `scripts/tests/test_vanessa_persona.sh` into `validate-code.sh`. Today the gate does not run them.
+
+### Share card
+
+```text
+VIBE//BREAKER
+VERDICT: SURVIVED*
+PASSES: 13/20 (DIFF)
+CRITICAL: 0
+HIGH: 0
+CONFIRMED: 1
+UNVERIFIED: 2
+FIRST BREAK: NONE
+```
+
+Release note: this shows that the five pass-1 defects are fixed and that the shipped scripts behave correctly on the inputs above. It
+does not show how runnerctl behaves on the Mac (U1, U2), nor how the scripts run under the Mac's own python3.
+
+---
+
+## Code-validator review (2026-10-23 21:45 UTC) — verdict FIX FIRST (VibeBreaker DIFF: FIX BEFORE SHIP, 0 critical / 0 high / 1 medium / 4 low)
+
+change-set: 3d795fca8d90340c
+
+**Verdict: FIX FIRST.** The secret handling in `set_key` held up against every attack I tried. The persona install is correct
+against OpenJarvis's documented schema, and the stage leaves `wiki/clients` out. One medium defect remains. The runner step reads
+`runnerctl status` two contradictory ways, so the "re-run the failed tasks" half either runs the wrong thing or re-runs paused
+tasks, and Steven's REPORT says it was done. Four low items are about status claims that are wrong in one direction or the other.
+
+Deterministic gate, quoted: `verdict: PASS (10 passed, 0 failed)`. Gate run at 21:28 UTC: `change-set e59154e9f920e5f7`.
+That hash equals 3d795fca8d90340c plus the regenerated `dashboard/brain-4d.html` diff. I recomputed the gate's own hash with that
+one file left out and got exactly 3d795fca8d90340c, so the code reviewed here is byte-for-byte the change-set the caller named.
+The brain-4d rebuild was not reviewed (by instruction). Tests: `test_fix_mine.sh` 12 passed / 0 failed; `test_vanessa_persona.sh`
+20 passed / 0 failed. `bash -n` PASS on all four scripts. shellcheck is not installed in this container (NEEDS-CONTEXT, not run).
+
+### Scope
+
+- Diff: `scripts/fix-mine.sh` (new), `scripts/tests/test_fix_mine.sh` (new), `integrations/jarvis/vanessa-persona.sh` (new),
+  `scripts/tests/test_vanessa_persona.sh` (new), `integrations/jarvis/persona/{SOUL,MEMORY}.md` (new), `brain/layers.py`, and the docs:
+  `integrations/jarvis/README.md`, `integrations/CONNECTIONS.md`, `docs/STEVEN-STEPS.md`, `context/decisions.md`, and the regenerated
+  `wiki/ai-team/toolkit.md`.
+- Also read: `scripts/repo-sync.sh` (whole file), `integrations/jarvis/jarvis-setup.sh` (status writer), and
+  `integrations/agent-os/connect-orca-laya.sh` and `install-mac.sh` (whether they prompt). Also `context/about-me.md` as it is staged,
+  `docs/inventory/routine-health.md` (the only record of runnerctl status), and `integrations/mac-sync/mac-sync.sh` (how existing code
+  parses runnerctl).
+- Upstream: the OpenJarvis docs (Context7 `/open-jarvis/openjarvis`, docs/user-guide/agents.md and memory.md). They confirm
+  `[memory_files] persona_name`, the `~/.openjarvis/personas/<name>/{SOUL,MEMORY,USER}.md` layout, and `jarvis memory index <path>`.
+- Passes: 01, 04, 05, 11, 14, 19 for the shell scripts; 01, 04, 05, 06, 07, 08, 12, 17, 18, 19 for the inline Python and layers.py; 20.
+
+### CONFIRMED
+
+```yaml
+id: P04-F1
+pass: 04
+title: step_runner parses `runnerctl status` two contradictory ways; the error re-run launches the wrong task name or re-runs paused tasks
+status: CONFIRMED
+severity: MEDIUM
+confidence: HIGH
+location:
+  - path: scripts/fix-mine.sh
+    line: 105 (pause test) and 110 (error list)
+entry_or_trigger: bash scripts/fix-mine.sh on Mac 1 with runnerctl present and any task whose status line contains "last error"
+evidence: >
+  Line 105 assumes the state comes first and the task name second (`^\s*off\s+<task>`). Line 110 tests `$1 != "off"`, which also
+  treats column 1 as the state, but then prints `$1` as the task name. On a line like `  ok  toolkit-deck-sync  last error 06:25` the awk
+  prints `ok` (reproduced). If the name comes first instead (`toolkit-deck-sync  off  last error`), `$1 != "off"` is always true, the
+  paused retired tasks are selected for re-run, and line 105 never matches, so all three are "paused" again on every run.
+existing_controls_checked: >
+  No fixture of real runnerctl status output exists in the repo. docs/inventory/routine-health.md is a summary, not the raw lines.
+  mac-sync.sh parses `runnerctl list` (not status) and treats $1 as the name.
+failure_scenario: >
+  State-first format: the script runs `nohup runnerctl run ok &` (or another state word) once per errored task and does not re-run
+  toolkit-deck-sync, nightly-self-test or the three Sunday weeklies. The REPORT still says "re-running ok in the background", and the T
+  item tells Steven to check back in 30 minutes. Name-first format: r9-feed-freshness-sweep (paused minutes earlier, last error) is
+  re-run in the background, which is the retired task the same step just paused.
+impact: Steven's one paste claims a repair it did not make, or spends runner usage on retired tasks. This is the "Claim something ran that did not" rule.
+remediation_direction: >
+  Take one documented column layout for `runnerctl status` (from a real paste), use it in both places, print the name column, and
+  skip any name equal to the three retired tasks or not present in `runnerctl list`.
+verification: >
+  Add a fixture made from a real `runnerctl status` paste. Stub runnerctl in PATH so that `status` cats the fixture and `run`/`pause`
+  append their arguments to a calls file. Assert that the calls file holds `run toolkit-deck-sync` (and each other errored task),
+  holds no `run off|ok|on|RUN`, and holds no run of the three retired tasks.
+needs_context: the exact column layout of `runnerctl status` and whether it prints the literal words "last error"
+```
+
+```yaml
+id: P05-F1
+pass: 05
+title: vanessa-persona.sh exits 0 and prints "persona: done" when Jarvis is absent, so fix-mine reports it as done
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: integrations/jarvis/vanessa-persona.sh
+    line: 91, 111-112
+  - path: scripts/fix-mine.sh
+    line: 84
+entry_or_trigger: fix-mine step 3b on a Mac where the jarvis CLI is not installed
+evidence: >
+  With no jarvis the script prints a WARN row and keeps BAD=0. The last line is "persona: done" and it exits 0. run_quiet greps for
+  FAIL/WARN only on a non-zero exit, so it records `done_ "Jarvis speaks as Vanessa, knows the brain — persona: done"`.
+existing_controls_checked: the test asserts exit 0 + WARN by design. jarvis-setup.sh runs first and would show its own skip line.
+failure_scenario: The REPORT says Jarvis speaks as Vanessa and knows the brain, but nothing was indexed and there is no engine to speak.
+impact: misleading REPORT line; Steven pastes it back as proof
+remediation_direction: make the final line reflect a WARN (e.g. "persona: files written, NOT indexed (jarvis missing)") so run_quiet's tail -1 carries it
+verification: in test_vanessa_persona.sh, run with JARVIS_BIN=/nonexistent and assert that the last output line does not say "done" and names "not indexed"
+needs_context: null
+```
+
+```yaml
+id: P12-F1
+pass: 12
+title: the status file contract breaks both ways — jarvis-setup.sh wipes the persona fields, and vanessa-persona.sh invents a "checked" stamp
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: integrations/jarvis/jarvis-setup.sh
+    line: 88-94 (writes "$OUT" with > , not a merge)
+  - path: integrations/jarvis/vanessa-persona.sh
+    line: 106 (d.setdefault("checked", now))
+  - path: brain/layers.py
+    line: 65-68
+entry_or_trigger: >
+  (a) Any later `jarvis-setup.sh --apply/--verify`, for example connect-all.sh:283 or the next fix-mine run, rewrites
+  brain/state/jarvis-status.json from scratch. (b) `vanessa-persona.sh --apply` when no status file exists yet.
+evidence: >
+  (a) jarvis-setup builds a fresh JSON {checked, ok, documents, summary, rows} and redirects it over the file, so persona,
+  brain_indexed and brain_staged_pages are dropped. In fix-mine the order happens to be jarvis-setup and then persona, so a fix-mine
+  run ends right. Any jarvis-setup run after that removes "— speaks as Vanessa" from the layers row while Jarvis still speaks as her.
+  (b) setdefault writes `checked` = now, and layers.py uses `checked` (jarvis-setup's verification stamp) as the row's freshness.
+  A persona-only run therefore makes an unverified Jarvis read as checked today.
+existing_controls_checked: the test saves and restores the real status file; nothing tests the jarvis-setup → persona → jarvis-setup sequence
+failure_scenario: >
+  (a) Steven runs connect-all after fix-mine, and the 6D layers row stops saying Vanessa. (b) On a Mac before jarvis-setup has
+  ever run, `brain layers` shows Jarvis fresh instead of "unverified".
+impact: the 6D "is the brain even" panel is wrong about Jarvis in both directions
+remediation_direction: have jarvis-setup merge into the existing JSON (keep keys it does not own); have the persona script stamp its own key only (persona_at already exists) and never set `checked`
+verification: run the scripts in the order jarvis-setup → persona → jarvis-setup and assert `persona` survives; run persona alone with no status file and assert there is no `checked` key and that layers reports Jarvis as unverified
+needs_context: null
+```
+
+```yaml
+id: P04-F2
+pass: 04
+title: the TOML editor writes a duplicate [memory_files] table when the existing header is indented or spaced, which makes config.toml invalid
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: integrations/jarvis/vanessa-persona.sh
+    line: 43-51, 54
+entry_or_trigger: ~/.openjarvis/config.toml containing `  [memory_files]` or `[ memory_files ]` (both are valid TOML)
+evidence: >
+  `^\[memory_files\]` misses both forms, so a second `[memory_files]` is appended. tomllib then raises "Cannot declare ('memory_files',)
+  twice" (reproduced in a scratch copy). The check on line 54 (grep '^persona_name = "vanessa"') still passes and prints "ok".
+  Cases that came out correct and valid in the same harness: [memory_files] as the last section, a commented `# persona_name = ""`
+  (it is skipped and not duplicated), a [memory_files.extra] subsection before or after the section, and an empty or missing file.
+  A multi-line array whose line starts with `[` inside the section also splits the section, giving invalid TOML.
+existing_controls_checked: the backup config.toml.bak-vanessa is taken once, before the first edit, so the original can be recovered
+failure_scenario: Jarvis cannot parse its config at all after the paste, and the script reports ok
+impact: Jarvis down until the backup is restored; needs an unusual but legal config layout
+remediation_direction: match `^\s*\[\s*memory_files\s*\]\s*(#.*)?$`, and validate the result with tomllib (Python 3.11+) before writing; on failure keep the original and print FAIL
+verification: extend the test with an indented header and a spaced header; assert one [memory_files] table and that tomllib.loads succeeds
+needs_context: whether OpenJarvis's `jarvis init` ever writes indented headers (if never, this stays LOW)
+```
+
+```yaml
+id: P11-F1
+pass: 11
+title: the stage cleanup deletes every non-.md file under JARVIS_BRAIN_STAGE with no guard on where that points
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: integrations/jarvis/vanessa-persona.sh
+    line: 17, 75-80
+entry_or_trigger: JARVIS_BRAIN_STAGE set to a populated directory (e.g. ~/Documents) and --apply
+evidence: >
+  `for old in stage.rglob("*"): if old.is_file() and old not in keep: old.unlink()`, and then empty directories are rmdir'd. Nothing
+  checks that the stage is a directory the script created. The default path ~/.cache/jarvis-brain is safe. The override exists for tests.
+existing_controls_checked: none; the default path is safe
+failure_scenario: a mistyped override deletes every file in that folder except the .md files that mirror repo paths. The deletion cannot be undone (HALT class).
+impact: data loss, but only through a mis-set test hook
+remediation_direction: write a marker file (.jarvis-brain-stage) on first creation, and refuse to prune a stage that lacks it or is $HOME or the repo
+verification: a test that points JARVIS_BRAIN_STAGE at a temp dir holding a foreign file and no marker, and asserts the file survives and the exit is non-zero
+needs_context: null
+```
+
+### UNVERIFIED
+
+- U1: shellcheck -S warning was not run because shellcheck is not installed here. To decide it, someone has to run it on the Mac or in CI.
+- U2: BSD grep on macOS and `\s` / `\b` in `grep -E "^\s*off\s+$t\b"` (fix-mine.sh:105). If they are unsupported, the retired tasks get
+  "paused" again on every run and reported as newly paused (cosmetic). Needs `man grep` / a probe on the Mac.
+- U3: whether repeated `jarvis memory index <stage>` (every fix-mine run) dedupes, or appends duplicate chunks, and whether pages
+  pruned from the stage are removed from the index. Upstream docs describe index/search/stats only. Needs `jarvis memory stats`
+  before and after two runs.
+- U4: whether `claude mcp add` accepts `--client-id` and `--callback-port` in the Mac's Claude Code version. If not, the step reports skip_ (fails safe).
+- U5: whether `runnerctl run <task>` may run in parallel for five tasks at once (lease and usage cap). Needs runnerctl's docs or a test on the Mac.
+
+### REJECTED
+
+- set_key value leak: printf uses `'%s=%s\n'` with the value as an argument and never in the format string, and there is no `set -x`.
+  The REPORT carries labels only. Reproduced: the value `-n a b=c $(id)` is stored literally, mode 600, nothing on stderr.
+- tmp-file mode: `$f.tmp` is created inside `( umask 077; … )`, so it is 600. A stale 644 `$f.tmp` keeps 644 until line 50's chmod, a window of
+  microseconds in the user's own ~/.config. Rejected as not material.
+- No /dev/tty (setsid, no controlling terminal): the redirects fail, read fails, v="", the key is skipped, rc=1, no hang (reproduced; prints
+  three "No such device" lines to stderr). A value with a newline cannot be entered (read stops at the newline).
+- `[ $CHECK = 1 ] && say … || { … }`: the wrong branch would run only if printf to stdout failed; not reachable in a Terminal.
+- `run_quiet` log names: `tr ' /' '--'` yields names like `fix-mine-Jarvis-engine-+-Vanessa's-voice.log`; legal on APFS, quoted everywhere.
+- `cd "$REPO"` in step 3b: step_runner and checklist use no relative paths.
+- nohup'd `runnerctl run`: survives closing Terminal by design (SIGHUP ignored, stdin /dev/null, stdout to a per-task log). No nohup.out.
+- repo-sync.sh data loss: every replaced file is backed up first (files/, changes.patch, commits/, backup branch). The hard-reset path
+  stashes before the reset and keeps the stash on a failed pop. fix-mine.sh being replaced mid-run is safe because git writes new inodes and main is
+  already parsed.
+- Sub-scripts waiting on a hidden prompt under run_quiet: jarvis-setup, connect-orca-laya and install-mac contain no `read` from the terminal and no sudo.
+- Stage walker: `str(rel / d)` is "wiki/clients" at depth 1 (rel "wiki"), so the exclusion works. os.walk does not follow symlinked dirs, and
+  the repo has no symlinks. `docs/data` matches exactly (a `docs/data-foo` would be kept, which is fine). copy2 keeps 644. The stage has
+  435 .md pages, none under wiki/clients, memory/ or docs/findings.
+- PII in SOUL/MEMORY/USER: about-me.md holds licence numbers that are public by law (DRE, NMLS) and no client names, balances or
+  health numbers. SOUL and MEMORY carry the HALT rules and the first-names rule. The only weight figure in the stage (R7-report "938 lb")
+  is a corrupted-row example, not a real reading.
+- Bash 3.2: no `${v,,}`, mapfile, associative arrays or `read -i`. `read -rs` and `printf '%s …'` are fine.
+- layers.py with brain_indexed false: the row omits the page count. The "speaks as Vanessa" suffix appears whenever persona files exist,
+  which they do (covered by P12-F1's stamp issue, not a separate defect).
+
+### Coverage (inspected, clean)
+
+set_key (all of item a) · step_keys Zoho URL append (it is appended only once, and the later rewrites keep it) · step_lofty_cloud (the
+command matches CONNECTIONS.md:563, the client id is a public OAuth id, and a failure is caught) · checklist and REPORT (no secret,
+first names only) · --check path (it prompts for nothing and writes no key; see the missing tests for the Mac-only log dir) · vanessa-persona
+dry run (writes nothing; the test proves it) · TOML editor on 6 of 8 layouts · stage exclusions · status merge (it keeps existing keys) ·
+docs diff (STEVEN-STEPS, README, CONNECTIONS, decisions: first names only, no PII, no live artifact touched).
+
+Note, not a finding: on a Mac, `run_quiet` runs `mkdir -p ~/Library/Logs/vanessa-setup` before its --check return (fix-mine.sh:82-83). So
+--check creates one empty log directory. That breaks the "changes nothing" wording, though nothing of value is written.
+
+### Top missing tests (pass 19)
+
+1. step_runner against a real `runnerctl status` fixture with a stub runnerctl: the right names re-run, no state words, no retired tasks (P04-F1).
+2. Sequence jarvis-setup → vanessa-persona → jarvis-setup: the persona fields survive (P12-F1a).
+3. vanessa-persona --apply with no status file: no `checked` key is written (P12-F1b).
+4. TOML editor with indented, spaced and array-bracket layouts: the result parses with tomllib (P04-F2).
+5. Stage prune against a foreign directory without a marker: nothing is deleted (P11-F1).
+6. Missing jarvis: the last output line is not "done" (P05-F1).
+7. fix-mine --check with `uname` stubbed to Darwin and stub sub-scripts: nothing is created under $HOME (Library/Logs included), and each would-line is printed.
+8. step_vanessa_everywhere with a failing stub: the skip_ line carries the first FAIL/WARN row and the log path.
+9. set_key with a stale 644 `$f.tmp`: the final file is 600 and no window is observable (or the tmp is removed first).
+10. fix-mine end-to-end under a stub PATH (claude, runnerctl, brain): the REPORT has no value of any key typed in, grepped against every key fed in.
+
+```text
+VIBE//BREAKER
+
+VERDICT: FIX BEFORE SHIP
+PASSES: 14/20 applicable run (+20)
+CRITICAL: 0
+HIGH: 0
+CONFIRMED: 5
+UNVERIFIED: 5
+FIRST BREAK: P04
+```
+
+Release note: this review shows that the secret path is sound and that the stage excludes client pages, in this container, on Linux
+bash 5. It does not show macOS-specific behaviour (BSD grep, `claude mcp add` flags, runnerctl output) or a real OpenJarvis run.
+
+---
+
 ## Orchestrator response (2026-10-23 21:10 UTC) — P04-F1 (MEDIUM) applied; verdict after fix SHIP (reviewed 800437b50a420c16 → f5e0ba45f6f0bc2c)
 
 change-set: f5e0ba45f6f0bc2c

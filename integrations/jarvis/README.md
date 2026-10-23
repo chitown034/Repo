@@ -37,6 +37,18 @@ so the "vanessa voice clips" row passes on any Mac that has the repo. No referen
 (provider and consent are Steven's) and is not made here. Set `VANESSA_VOICE_DIR` if the clips live
 somewhere other than `~/.cache/vanessa-voice` or `~/Applications/team-avatars/voices`.
 
+## Vanessa's persona and the brain in Jarvis (2026-10-23)
+
+`bash integrations/jarvis/vanessa-persona.sh --apply` (dry run without the flag) makes Jarvis speak and think as Vanessa:
+OpenJarvis's named-persona files `~/.openjarvis/personas/vanessa/{SOUL,MEMORY,USER}.md` (SOUL and MEMORY from
+`integrations/jarvis/persona/`, USER from `context/about-me.md`, the one page with no client data) and
+`persona_name = "vanessa"` under `[memory_files]` in `~/.openjarvis/config.toml` (backup kept once). It then stages the
+brain's Markdown pages into `~/.cache/jarvis-brain` **without** `wiki/clients`, `memory/`, `docs/findings` or any JSON/HTML
+and runs `jarvis memory index` on that copy, so Jarvis recalls the brain but never a client page. The persona and index
+fields land in `brain/state/jarvis-status.json` (local, gitignored); `bin/brain layers` and the 6D page read them.
+Tests: `bash scripts/tests/test_vanessa_persona.sh`. The voice itself is still `jarvis-setup.sh --apply` (the recorded clips).
+`scripts/fix-mine.sh` runs both, then Laya + Orca + Agent OS, in one paste.
+
 ## What this never does
 
 Edit a skill, an MCP server, a runner task or a live prompt; log in; read client documents; send anything.

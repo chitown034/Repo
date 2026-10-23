@@ -91,6 +91,18 @@ mkdir -p "$STATE"
   first=1; for r in "${ROWS[@]}"; do IFS='|' read -r a b c <<<"$r"; [ $first -eq 0 ] && printf ','; first=0
     printf '{"name":%s,"status":%s,"detail":%s}' "$(printf '%s' "$a" | json_escape)" "$(printf '%s' "$b" | json_escape)" "$(printf '%s' "$c" | json_escape)"; done
   printf ']}\n'
-} > "$OUT"
+} > "$OUT.tmp"
+# merge: keys this script does not own (persona_*, brain_* from vanessa-persona.sh) survive a re-verify
+python3 - "$OUT" <<'PY'
+import json, sys, pathlib
+p = pathlib.Path(sys.argv[1]); new = json.loads((p.parent / (p.name + ".tmp")).read_text(encoding="utf-8"))
+old = {}
+if p.exists():
+    try: old = json.loads(p.read_text(encoding="utf-8"))
+    except ValueError: old = {}
+for k, v in old.items():
+    if k not in new: new[k] = v
+p.write_text(json.dumps(new, indent=1) + "\n", encoding="utf-8"); (p.parent / (p.name + ".tmp")).unlink()
+PY
 echo; echo "status file: $OUT -- $FAILS failing"
 [ "$FAILS" -eq 0 ]

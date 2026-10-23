@@ -62,8 +62,10 @@ def collect(root: Path, today: date | None = None) -> list[dict]:
          "sync": "routines + Mac tasks write; page reads live", "last": max((_iso(d) for d in re.findall(r"## Status \((\d{4}-\d{2}-\d{2})\)", (root / "projects" / "command-deck.md").read_text(encoding="utf-8", errors="replace") if (root / "projects" / "command-deck.md").exists() else "")), default=None)},
         {"key": "brain6d", "layer": "6D Brain page", "holds": "every node (pages, stores, tools, pods) and links",
          "sync": "daily 3:30 AM PT rebuild + merge-live publish", "last": _iso(_grep(b6, r'"generated":\s*"(\d{4}-\d{2}-\d{2})"') or "")},
-        {"key": "jarvis", "layer": "Jarvis (Mac, local)", "holds": "vault index + voice; recall level 5",
-         "sync": "openjarvis runner task; jarvis-setup.sh writes the status file", "last": _iso(js.get("checked"))},
+        {"key": "jarvis", "layer": "Jarvis (Mac, local)" + (" — speaks as Vanessa" if js.get("persona") == "vanessa" else ""),
+         "holds": ("vault index + voice; recall level 5" + (f"; the brain's pages indexed ({js.get('brain_staged_pages')} pages, no client data)"
+                                                           if js.get("brain_indexed") else "")),
+         "sync": "openjarvis runner task; jarvis-setup.sh + vanessa-persona.sh write the status file", "last": _iso(js.get("checked"))},
         {"key": "notion", "layer": "Notion Second Brain DB", "holds": "decisions, references, the layer directory",
          "sync": "brain-learn-daily rows; export mirrored to Drive; directory page refreshed by the weekly sync",
          "last": max(filter(None, [_iso(((man.get("last_sync") or {}).get("notion_directory") or {}).get("date")),

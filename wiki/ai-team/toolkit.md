@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 48 skills · 7 Claude mods (plugins) · 33 connectors (3 ok, 30 need attention) · 11 MCP servers · 13 APIs · 71 cloud routines · 60 Mac tasks
+toolkit: 48 skills · 7 Claude mods (plugins) · 37 connectors (3 ok, 34 need attention) · 11 MCP servers · 13 APIs · 71 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -27,6 +27,8 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 33 connectors (3 ok, 30 need at
 **Connectors**
 - `iMessage line (morning brief text + voice)` — *attention*: still not linked — brief arrives by e-mail + push
 - `Kapso (WhatsApp)` — *attention*: keys in the Keychain; plugin + MCP waiting on the sign-in
+- `Jarvis speaks and thinks as Vanessa` — *attention*: ready — integrations/jarvis/vanessa-persona.sh --apply writes her SOUL/MEMORY/USER persona into OpenJarvis and sets persona_name = "vanessa"; her recorded voice via jarvis-setup.sh --apply; not yet ru
+- `Jarvis knows the Second Brain` — *attention*: ready — the same script indexes the brain's pages (no client pages, no meeting digests, no findings) into Jarvis memory; the 6D layers row shows "speaks as Vanessa" + the page count once run
 
 **MCP servers**
 - `laya` — *ok*: zero-token local router in front of Vanessa (lane, tier, HALT words) · registered — real engine answering on Mac 1 (2026-10-23)
@@ -271,6 +273,8 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 33 connectors (3 ok, 30 need at
 - `Mac runner (all Mac tasks)` — *ok*: healthy — runnerctl status 12:33 PT: 42 ok (morning tasks all ran today), 5 error (toolkit-deck-sync, nightly-self-test, three Sunday weeklies), 4 limited, 3 paused; the step-2 "silent since Oct 13" r
 - `AnyDesk (Mac 1)` — *attention*: installed; ID 1514099895; Screen Recording + Accessibility + unattended password are Steven's
 - `Pabbly ↔ Kapso webhooks, six workflows` — *attention*: Kapso login proven; webhook URLs and the six workflows are clicks at connect.pabbly.com
+- `Laya routes, Orca launches the AI team` — *attention*: installed on Mac 1 (connect report #3); connect-orca-laya.sh --apply + agent-os/install-mac.sh --apply re-run by the paste; brain os check is the proof
+- `6D Brain shows all of it` — *attention*: the layers panel reads brain/state/jarvis-status.json (persona, indexed pages) and the toolkit register reads this table; the daily 3:30 AM rebuild carries it
 
 **MCP servers**
 - `playwright` — *ok*: browser automation for sites with no API · installed

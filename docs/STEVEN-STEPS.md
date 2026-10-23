@@ -4,6 +4,20 @@ Same list as the Action Desk page (https://claude.ai/artifact/9S8G2ZhhqP1iUsPZrP
 Includes every connection that still has to be made. Already done: Lofty key (54 leads syncing), 14 failed routines re-run, both dashboards updated (cycle 11), Remote Control card built, one-command Mac script, failover with a $25 OpenRouter cap, connection plan; your USC answers and personal DRE are saved.
 research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox iMessage are connected; the five research-only routines are already off.
 
+## Start here (2026-10-23, evening) — ONE paste, then the short list it prints
+
+Steven: *"make a new script that I can cut and paste into the terminal to fix whatever requires my actions; make it simple and limit the back and forth."*
+
+**Mac 1 (plugged in), Terminal, one line:**
+`cd ~/Repo && bash scripts/repo-sync.sh --quiet; bash scripts/fix-mine.sh`
+
+It brings the repo up to date, asks once (hidden; Enter skips) for the Lofty, TidyCal, Arive and Zoho keys, registers Lofty's own
+MCP server as `lofty-cloud`, makes Jarvis speak and think as Vanessa with the brain in its memory, re-runs Laya + Orca + the AI-team
+wiring, pauses the retired runner tasks, re-runs the failed ones in the background, and ends with a **REPORT**: what it did, what it
+skipped, and the lettered list only you can do (A iMessage text · B Zoho tick · C two browser sign-ins · D phone health clicks ·
+E connectors · F AnyDesk permissions · G Orca phone pairing). Paste the REPORT back to Claude. Run it again any time; it only does
+what is still missing. `bash scripts/fix-mine.sh --check` shows the plan without doing or asking anything.
+
 ## 1 · Phone · 5 minutes (Do these first; nothing else depends on them)
 
 ## Every day (from 2026-10-23) — Vanessa's four courses of action, your yes or no
