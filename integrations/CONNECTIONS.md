@@ -539,3 +539,36 @@ Supersedes the consolidated section above for the rows it names; the rest of tha
 | Drip campaigns + text follow-ups | planned — playbook written (`wiki/real-estate-playbooks/drip-and-text-follow-up.md`); specs on request; 10DLC is Steven's | "specs ready for review"; Lofty 10DLC | Steven + Victor/Alexandra |
 | OpenFlowKit MCP + skill · pr-lens skill · archify skill (the four repos, 2026-10-23) | installed in the repo (skills) / pending on the Macs (MCP by connect-all 6g, archify by install-mac.sh); `integrations/skill-packs/REGISTRY-2026-10-23.md` | next Mac paste; pr-lens GitHub App is Steven's click | Steven (paste) · Derek |
 | AI-search presence (AEO/GEO/SEO) | planned — playbook written (`wiki/real-estate-playbooks/ai-search-visibility.md`); monthly presence audit task live (1st, 7:10 AM PT) | claim the profiles (step j) | Steven + Sofia |
+
+## Connection status — Mac 1 report #3, 2026-10-23 11:16 PT (connect-2026-10-23-1116; pasted by Steven the same evening)
+
+Supersedes the round-2 section above for the rows it names. Source: the REPORT block of `scripts/connect-all.sh` on Steven's
+MacBook Pro (log `~/Library/Logs/vanessa-setup/connect-2026-10-23-1116.log`); the script pulled the branch first (step 1).
+
+**Done on the Mac (steps 1–9 except four):** repo caught up + 30-minute catch-up task · **Mac runner restarted** (it had been
+silent since Oct 13 — the morning Mac tasks have a chance again from 2026-10-24) · caffeinate-on-charger · Kapso keys in the
+Keychain · Gondola MCP · Inkbox voice SDK · Laya installed and registered, one real test · Jarvis engine (Ollama + llama3.1:8b,
+OpenJarvis index) · brain reindex · Jarvis + Vanessa's voice wired · Orca on the Repo folder · AnyDesk installed · Agent OS ·
+NotebookLM `nlm` CLI + MCP (sign-in Steven's) · OpenFlowKit MCP · Lofty/Zoho key-file steps ran · site wrappers installed ·
+Claude Mods (status line, HALT guard, /remember, /connections, /owner, /paste) · health check.
+
+**Did not finish:** 2c runner tasks in error (the report names no task — the last log lines did not reach the REPORT on this run;
+the names are in the log, and `runnerctl status` prints them) · 3 Kapso plugin + MCP (needs Steven's sign-in) · 7c TidyCal and 7e
+Arive (Enter skipped the key prompts; Lofty's key 7b was skipped the same way — the step ran, no key on the Mac).
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Mac runner (all Mac tasks) | restarted 2026-10-23 11:16 PT after 10 silent days; some tasks still in error (names in the log) | one paste: `runnerctl disable r9-feed-freshness-sweep && runnerctl disable r8-apple-health-snapshot && runnerctl disable strava-daily-sync && runnerctl run toolkit-deck-sync && runnerctl status` — paste the output to Claude | Steven (paste), then Derek |
+| iMessage line (morning brief text + voice) | still not linked — brief arrives by e-mail + push | text `connect @vanessa-shearrill` to +1 650 484 9720, once | Steven |
+| Lofty | step ran; no key on the Mac (prompt skipped) | Lofty → Settings → Integrations → API → create; rerun connect-all, paste it when asked | Steven |
+| TidyCal | step 7c did not run (no token) | TidyCal → Settings → Integrations → API → token; rerun connect-all | Steven |
+| Arive | step 7e did not run (no credentials) | Arive → Settings → Integrations → generate; rerun connect-all | Steven |
+| Zoho CRM | 403 until the API box is ticked | Setup → Security Control → Profiles → your profile → Developer Permissions → "Zoho CRM API Access" | Steven |
+| Kapso (WhatsApp) | keys in the Keychain; plugin + MCP waiting on the sign-in | `claude` → `/mcp` → kapso → sign in; then message (202) 474-5223 from the phone | Steven |
+| Jarvis · Laya · Orca (Mac 1) | installed, tested, Orca on the Repo folder; phone pairing is Steven's | Orca IDE app → pairing screen → scan | Steven |
+| AnyDesk (Mac 1) | installed; ID 1514099895; Screen Recording + Accessibility + unattended password are Steven's | System Settings → Privacy & Security; Computer Hub card (panel 40) | Steven |
+| homes.com · ShowingTime · Showami | wrappers installed; sign-ins (MFA) in the agent Chrome are Steven's | `bash integrations/cli-anything-harnesses/connect.sh` | Steven |
+| EVRoutes · Turo connectors | "needs reconnect" on claude.ai (EVRoutes also failed to connect in this session) | claude.ai → Settings → Connectors → Reconnect or remove | Steven |
+| Gondola (travel) | MCP installed for Claude Code; the claude.ai connector is not added | Settings → Connectors → Add custom connector → `https://mcp.gondola.ai/mcp` | Steven |
+| Pabbly ↔ Kapso webhooks, six workflows | Kapso login proven; webhook URLs and the six workflows are clicks at connect.pabbly.com | STEVEN-STEPS step 5; `integrations/pabbly/WORKFLOWS.md` | Steven |
+| TikTok · GoHighLevel · Discord bot · HeyGen | not connected (Composio links last 10 minutes) | say "Composio links" in a live session | Steven + Vanessa |
