@@ -22,6 +22,14 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
 1b. **Mac 1 is connected (2026-10-23 01:14 UTC):** runner signed in and running, Laya real engine answering, Jarvis
    all green (index 1,828 rows, vault 850 notes, 8 voice clips, brain doctor PASS), mods on. Nothing more to paste for
    these. The 30-minute sync keeps the Mac current; `bash connect-all.sh` any time re-checks everything.
+1d-result. **Mac 2 first run (2026-10-23 01:39 UTC, Intel MacBook Pro "(6)"):** Gondola, Orca, AnyDesk, sync, keep-awake done.
+   Root cause of 6 of the 12 stops: Python 3.9 (brain, Agent OS, Jarvis checks need 3.10+); Laya's installer stalled
+   building `cryptography` from source (no wheel for that Mac); Claude Code 2.1.278 is older than the mods need. The
+   script now installs Homebrew's python, updates Claude Code and installs Laya wheel-first (build tools as fallback).
+   Rerun: `cd ~/Repo && bash scripts/repo-sync.sh && bash scripts/second-mac.sh` (then paste the REPORT). Still Steven's
+   on Mac 2: `claude` sign-in, Kapso sign-in, the vault (6b: iCloud or a copy — Jarvis's index needs it), the runner copy
+   from Mac 1 (`command -v runnerctl; ls ~/Library/LaunchAgents | grep -i runner` **on Mac 1**), and the Inkbox voice
+   key only if Mac 2 should also send her voice notes (Mac 1 already does).
 1d. **Second Mac (2026-10-23): one paste, then two small things.** On the other Mac open Terminal and paste
    (if a window asks to install developer tools, click Install, wait, then paste the same line again):
    `[ -d ~/Repo ] || git clone https://github.com/chitown034/Repo.git ~/Repo; cd ~/Repo && git fetch origin claude/stoic-cori-pvn3f8 && git checkout claude/stoic-cori-pvn3f8 && git pull && bash scripts/second-mac.sh`

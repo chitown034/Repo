@@ -463,3 +463,17 @@ present, index `~/.openjarvis/memory.db` 1,828 rows, vault 850 notes, Laya MCP r
 | Laya real engine row in jarvis-setup | false FAIL: Hugging Face progress bars on stderr overwrote the row; Laya itself routed a question at 01:09 | fixed: stdout only, progress bars off; proven on the next `jarvis-setup.sh --verify` | paste |
 | brain doctor (Mac) | connected — PASS after `bin/brain reindex` (now connect-all 6a2) | — | — |
 | Vanessa reference audio on the Mac | found `~/Applications/vanessa-voice/ref/vanessa_ref.wav` and `~/Documents/Vanessa/Vanessa1.m4a` — a cloned-voice reference exists locally; not copied anywhere (clone provider/consent are Steven's call, HALT) | decision only | Steven |
+
+## Connection status — Mac 2 first run, 2026-10-23 01:39 UTC (connect-2026-10-22-1839, Intel MacBook Pro "(6)")
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Mac 2 basics | connected — repo cloned, 30-min sync, keep-awake, Gondola MCP, Orca opened, AnyDesk installed, Kapso plugin installed, Laya venv created, `peer` role written | — | — |
+| Python on Mac 2 | 3.9.6 — brain reindex, Agent OS and Jarvis checks all stop on it | `second-mac.sh` 0d2 installs Homebrew python; rerun | paste |
+| Laya on Mac 2 | venv made; package install stalled building `cryptography` from source (Intel, no wheel) | `install.sh` now wheel-first, build tools fallback; rerun | paste |
+| Claude Code on Mac 2 | 2.1.278, mods need 2.1.287+ | `second-mac.sh` 0d3 runs `claude update`; rerun | paste |
+| Jarvis engine on Mac 2 | step 6a cut off during `brew install ollama` (auto-update) | rerun | paste |
+| Jarvis index + vault on Mac 2 | no memory.db, no `~/Shearrill-Vault` | SECOND-MAC-SETUP 6b (iCloud or copy); then `runnerctl run openjarvis` once the runner is on Mac 2 | Steven |
+| Inkbox voice SDK on Mac 2 | needs an Inkbox API key file; Mac 1 already sends her voice | optional on Mac 2 | Steven (optional) |
+| Runner on Mac 2 | not installed (built on Mac 1 only) | the two lines from **Mac 1**, then a copy step | Steven |
+| Kapso sign-in, Lofty key on Mac 2 | pending | `claude` → `/mcp` → kapso; Lofty key at the 7b prompt (or Enter) | Steven |

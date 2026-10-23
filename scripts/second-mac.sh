@@ -41,6 +41,21 @@ else run claude_install || { say "  Claude Code install did not finish"; exit 1;
 say ""; say "== 0d uv (Laya's installer) =="
 if have uv; then say "  present"; else run brew install uv || say "  uv did not install - Laya step will say so"; fi
 
+say ""; say "== 0d2 Python 3.10+ (the brain, the Agent OS and Jarvis's checks need it; a fresh Mac ships 3.9) =="
+pyver() { python3 -c 'import sys; print("%d.%d" % sys.version_info[:2])' 2>/dev/null || echo 0.0; }
+py_ok() { python3 -c 'import sys; sys.exit(0 if sys.version_info >= (3, 10) else 1)' 2>/dev/null; }
+if py_ok; then say "  present: $(pyver)"
+else
+  say "  found $(pyver) - installing Homebrew's python (free)"; run brew install python || say "  python did not install"
+  for d in /opt/homebrew/bin /usr/local/bin; do [ -x "$d/python3" ] && export PATH="$d:$PATH"; done
+  if py_ok; then say "  now $(pyver)"; else say "  still $(pyver): open a NEW Terminal window and paste the same line again"; fi
+fi
+
+say ""; say "== 0d3 Claude Code 2.1.287+ (the mods need it) =="
+cver() { claude --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1; }
+cver_ok() { printf '%s\n%s\n' "2.1.287" "$(cver)" | sort -t. -k1,1n -k2,2n -k3,3n | tail -1 | grep -qx "$(cver)"; }
+if have claude && cver_ok; then say "  present: $(cver)"; elif have claude; then say "  $(cver) is older - updating"; run claude update || say "  claude update did not finish"; fi
+
 say ""; say "== 0e Lease role: peer (same word as Mac 1) =="
 if [ -s "$HOME/.config/claude-runner/role" ]; then say "  kept: $(head -1 "$HOME/.config/claude-runner/role")"
 else run mkdir -p "$HOME/.config/claude-runner"; [ "$PREVIEW" = 1 ] || printf 'peer\n' > "$HOME/.config/claude-runner/role"; say "  wrote peer"; fi

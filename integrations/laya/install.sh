@@ -25,10 +25,16 @@ command -v uv >/dev/null 2>&1 || {
 }
 
 echo "[1/4] uv venv at $VENV_DIR"
-uv venv --python 3.11 "$VENV_DIR"
+[ -x "$VENV_DIR/bin/python" ] || uv venv --python 3.11 "$VENV_DIR"
 
 echo "[2/4] pip install $LAYA_SPEC (from PyPI — no Hugging Face needed for this step)"
-uv pip install --python "$VENV_DIR/bin/python" "$LAYA_SPEC"
+# Intel Macs (2026-10-23, Mac 2): no cryptography wheel matched and the from-source build stalled. Prefer wheels first;
+# if a dependency has no wheel for this Mac, install the build tools Homebrew offers (rust, pkg-config, openssl) and retry.
+if ! uv pip install --python "$VENV_DIR/bin/python" --only-binary :all: "$LAYA_SPEC" 2>/dev/null; then
+  echo "      no ready-made wheel for every dependency on this Mac - installing build tools, then building (a few minutes)"
+  if command -v brew >/dev/null 2>&1; then brew list rust >/dev/null 2>&1 || brew install rust pkg-config openssl@3 || true; fi
+  uv pip install --python "$VENV_DIR/bin/python" "$LAYA_SPEC"
+fi
 
 echo "[2b/4] version check (offline, no checkpoint) — laya's own recommended check"
 "$VENV_DIR/bin/python" -I -c "import laya; print('laya', laya.__version__)"

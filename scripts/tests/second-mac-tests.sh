@@ -13,4 +13,13 @@ printf '%s' "$out" | grep -q "would run: bash .*connect-all.sh --preview";      
 [ ! -e "$T/home/.config/claude-runner/role" ];                                   check "preview writes no role file"                "$?" 0
 printf "%s" "$out" | grep -E "would run:" | grep -qiE "login|save-token|claude auth"; check "never runs a sign-in or token command" "$?" 1
 printf '%s' "$out" | grep -q "Lease role";                                        check "lease role step present"                    "$?" 0
+# python 3.9 -> brew install python is the planned step; claude 2.1.278 -> claude update
+printf '#!/bin/sh\ncase "$*" in *version_info*) exit 1 ;; *) echo 3.9 ;; esac\n' > "$T/bin/python3"
+printf '#!/bin/sh\n[ "$1" = --version ] && echo "2.1.278 (Claude Code)"\n' > "$T/bin/claude"; chmod +x "$T/bin/python3" "$T/bin/claude"
+out="$(GO_FORCE=1 HOME="$T/home" PATH="$T/bin:$PATH" bash scripts/second-mac.sh --preview 2>&1)"
+printf '%s' "$out" | grep -q "would run: brew install python";                   check "old python -> brew install python planned"  "$?" 0
+printf '%s' "$out" | grep -q "would run: claude update";                         check "old Claude Code -> claude update planned"    "$?" 0
+printf '#!/bin/sh\n[ "$1" = --version ] && echo "2.1.290 (Claude Code)"\n' > "$T/bin/claude"
+out="$(GO_FORCE=1 HOME="$T/home" PATH="$T/bin:$PATH" bash scripts/second-mac.sh --preview 2>&1)"
+printf '%s' "$out" | grep -q "would run: claude update";                         check "new Claude Code -> no update"                "$?" 1
 echo "second-mac tests: $pass passed, $fail failed"; [ "$fail" -eq 0 ]
