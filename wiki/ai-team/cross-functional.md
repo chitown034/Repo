@@ -109,6 +109,11 @@ When the request matches the words, the seat joins the plan even if it is not th
 | Validation | Derek or Elon is in the plan (any code change) | The code-validator agent: `scripts/validate-code.sh` then the VibeBreaker 20-pass adversarial review of the diff; code is not done until both pass (`.claude/skills/code-validation-gate`) |
 | Vanessa | always | Consolidates every seat into one answer for Steven; the same pods run as workflows on The Bot Crew (`wiki/ai-team/bot-crew.md`) |
 
+Who validates code after you write it, and with what protocol: the **code-validator** agent validates every code
+change — first the deterministic checks (`scripts/validate-code.sh`), then the **VibeBreaker** 20-pass adversarial
+review protocol over the diff — and the change-set is marked reviewed (`validate-code.sh --mark`). The Stop hook asks
+for it once per change-set; code is not done until both halves pass (2026-10-12, `.claude/skills/code-validation-gate`).
+
 ## HALT words — stop and write a Needs-Steven packet
 
 Mirrors the HALT list in `CLAUDE.md`. The planner still prints the plan, marked HALT, so the prep work can
