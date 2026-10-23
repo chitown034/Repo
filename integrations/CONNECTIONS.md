@@ -513,3 +513,25 @@ signed in; cloud: Drive SECOND BRAIN, Notion directory, 6D daily rebuild with pr
 | GitHub repo visibility | public | Steven decides (STEVEN-STEPS 1g) | Steven |
 | Fieldy → 2nd brain | connected — the daily "Fieldy → brain" task (6:50 AM PT, this session, Fieldy connector) writes `memory/fieldy-meetings.md` + the deck `fieldyDesk` doc and queues a recap item per meeting with action items; 0 recordings as of 2026-10-23 13:20 UTC so the first digest waits for a recording | record with the pendant or the desktop app | Steven (records) |
 | Notion `brain-learn-daily` rows | resume with Mac 1's runner (signed in 2026-10-23); directory page written 2026-10-23 | — | — |
+
+## Connection status — round 2, 2026-10-23 14:45 UTC (Steven: "connect TidyCal, homes.com, ShowingTime, Showami, Pivo, Orca, Jarvis, Laya, AnyDesk on all 3 computers and tablet, Ticor, MBS Highway, AEO/GEO/SEO, Arive, Zoho, Lofty, drips and texts")
+
+Supersedes the consolidated section above for the rows it names; the rest of that section still holds.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Jarvis · Laya · Orca (Mac 1) | connected — all rows ok 2026-10-23 01:14 UTC | — | — |
+| Jarvis · Laya · Orca (Mac 2) | partially set — engine unproven; runner not yet imported | `bash scripts/second-mac.sh` + runner export/import (STEVEN-STEPS 1e) | Steven (pastes) |
+| Orca · Laya · Bonsai (Alienware) | not started — `integrations/alienware/alienware-setup.ps1` never run on Windows yet | STEVEN-STEPS round 2, Alienware paste | Steven (pastes) |
+| AnyDesk (Mac 1, Mac 2) | installed; permissions + unattended password are Steven's | step h | Steven |
+| AnyDesk (Alienware, tablet, phone) | not started — winget id `AnyDesk.AnyDesk` confirmed; iPad is outgoing-only, Android tablet can be controlled | round 2 pastes; licence decision (free = private use) | Steven |
+| TidyCal | connect-all step 7c ready (token → `~/.config/tidycal/.env`, read-only proof); no token yet | make the token, rerun connect-all | Steven |
+| homes.com · ShowingTime · Showami | wrappers vendored and read-only; connect-all step 7d installs and reports; sign-ins in the agent Chrome are Steven's (MFA) | step 7d, then sign in where it says | Steven |
+| Lofty | key file step 7b; no key on the Mac yet | Lofty → Settings → Integrations → API | Steven |
+| Zoho CRM | 403 NO_PERMISSION until the API box is ticked | tick "Zoho CRM API Access" | Steven |
+| Arive | not connected — REST API + private Zapier app need Pro plan credentials (`integrations/arive/README.md`) | generate credentials, ask Arive for the Zapier invite | Steven |
+| MBS Highway Home Report | not connected — no public API; rep-issued webhook or CSV (`integrations/mbs-highway/README.md`) | e-mail the rep | Steven |
+| Pivo | no API — tour link / video file only (`integrations/pivo/README.md`) | pair the Pod; share links | Steven |
+| Ticor Title property search | no API — rep account + CSV/PDF export (`integrations/ticor/README.md`) | ask the Ticor rep | Steven |
+| Drip campaigns + text follow-ups | planned — playbook written (`wiki/real-estate-playbooks/drip-and-text-follow-up.md`); specs on request; 10DLC is Steven's | "specs ready for review"; Lofty 10DLC | Steven + Victor/Alexandra |
+| AI-search presence (AEO/GEO/SEO) | planned — playbook written (`wiki/real-estate-playbooks/ai-search-visibility.md`); monthly presence audit task live (1st, 7:10 AM PT) | claim the profiles (step j) | Steven + Sofia |

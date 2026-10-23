@@ -54,7 +54,9 @@ case "$ACTION" in
   --hash) printf '%s\n' "$HASH"; exit 0 ;;
   --mark)
     grep -q "^$HASH " "$STATE/passed.txt" 2>/dev/null || { echo "refused: change-set $HASH has not PASSED the deterministic checks (run: bash scripts/validate-code.sh)"; exit 1; }
-    grep -q "$HASH" "$REVIEW" 2>/dev/null || { echo "refused: $REVIEW does not name change-set $HASH - the code-validator agent has not reviewed it"; exit 1; }
+    # a review names the change-set on its own line ("change-set: <hash>" at the start of a line, as the validator writes it,
+    # or "change-set <hash>" in a heading); a hash merely mentioned in prose does not count (validator, 2026-10-23)
+    grep -qE "^(#+ .*)?change-set:? $HASH\b" "$REVIEW" 2>/dev/null || { echo "refused: $REVIEW does not name change-set $HASH on a review line - the code-validator agent has not reviewed it"; exit 1; }
     printf '%s %s\n' "$HASH" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$STATE/validated.txt"; echo "marked $HASH as reviewed"; exit 0 ;;
 esac
 

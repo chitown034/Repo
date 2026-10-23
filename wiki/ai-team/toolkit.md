@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 46 skills · 7 plugins · 13 connectors (3 ok, 10 need attention) · 65 cloud routines · 60 Mac tasks
+toolkit: 46 skills · 7 plugins · 15 connectors (1 ok, 14 need attention) · 65 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -23,9 +23,6 @@ toolkit: 46 skills · 7 plugins · 13 connectors (3 ok, 10 need attention) · 65
 **Plugins (Claude Code mods)**
 - `ops-pulse`: At session start in the Repo folder: one read-only status line (behind/ahead of GitHub, local edits, brain-loop age, connect-all today) and a toast when it is time to /sync.
 - `push-buttons`: One-word slash commands (/cycle /inbox /meetings /sync /connect /tc /queue /today /help-buttons) that send the full, correct prompt for each workflow, HALT rules included.
-
-**Connectors**
-- `Inkbox iMessage line` — *ok*: connected — no phone linked yet
 
 **Cloud routines**
 - `Vanessa — Chief of Staff daily cycle (weekdays 6:25 AM PT, parallel squads)`: cron CRON_TZ=America/Los_Angeles 25 6 * * 1-5 · on · —
@@ -97,6 +94,9 @@ toolkit: 46 skills · 7 plugins · 13 connectors (3 ok, 10 need attention) · 65
 **Skills**
 - `security-and-hardening`: Hardens code against vulnerabilities. Use when auditing an input handler for vulnerabilities, when handling user input, authentication, data storage, or external integrations, or when checking a login flow is safe agains
 
+**Connectors**
+- `Arive` — *attention*: not connected — REST API + private Zapier app need Pro plan credentials (integrations/arive/README.md)
+
 **Mac tasks**
 - `access-audit-monthly`: First business morning of the month: Elena's access-auditor reviews who and what can read or write each store and connector, plaintext-secre
 
@@ -120,6 +120,9 @@ toolkit: 46 skills · 7 plugins · 13 connectors (3 ok, 10 need attention) · 65
 - `openmontage-video`: Make a marketing, explainer or training video with OpenMontage on the Mac (~/Applications/OpenMontage) — Sofia's brief, Claude Code runs the pipeline, Steven approves every creative stop, nothing is posted. Use when Stev
 - `past-client-nurture`: Monthly sphere-touch marketing drafts for Steven's past clients from reClients and pipeline — a local market note, home-purchase anniversaries and birthdays, and a plain check-in — as Gmail drafts plus the three template
 
+**Connectors**
+- `Drip campaigns + text follow-ups` — *attention*: planned — playbook written (wiki/real-estate-playbooks/drip-and-text-follow-up.md); specs on request; 10DLC is Steven's
+
 **Cloud routines**
 - `VA Command Center — weekly avatar content drafts`: cron CRON_TZ=America/Los_Angeles 58 14 * * 0 · on · SUCCEEDED @ 2026-10-18T21:58
 - `Command Deck — Weekly content edit reminder`: cron 0 15 * * 1 · on · SUCCEEDED @ 2026-09-21T15:03
@@ -142,7 +145,9 @@ toolkit: 46 skills · 7 plugins · 13 connectors (3 ok, 10 need attention) · 65
 - `zoho-crm-sync`: Sync Zoho CRM — Steven's system of record for the mortgage pipeline — into the Command Deck through Composio: writes zohoSync (connection health), zohoLeads (14-stage kanban) and zohoDeals. Self-tests first and reports t
 
 **Connectors**
-- `Zoho CRM (Composio)` — *attention*: 403 NO_PERMISSION until the API box is ticked
+- `homes.com · ShowingTime · Showami` — *attention*: wrappers vendored and read-only; connect-all step 7d installs and reports; sign-ins in the agent Chrome are Steven's (MFA)
+- `Lofty` — *attention*: key file step 7b; no key on the Mac yet
+- `Zoho CRM` — *attention*: 403 NO_PERMISSION until the API box is ticked
 
 **Cloud routines**
 - `Transaction & Showing desk — TC + showing assistant (weekdays 6:05 AM PT, before the cycle)`: cron CRON_TZ=America/Los_Angeles 5 6 * * 1-5 · on · SUCCEEDED @ 2026-10-22T14:10
@@ -201,17 +206,16 @@ toolkit: 46 skills · 7 plugins · 13 connectors (3 ok, 10 need attention) · 65
 - `route-beacon`: Shows which AI route this session is on and toasts when the failover switches.
 
 **Connectors**
-- `NotebookLM "2nd brain" notebook sources` — *ok*: connected — connector signed in (5 notebooks); the SB Docs are not yet attached as sources
-- `Kapso (Mac 1)` — *attention*: plugin + MCP registered; ! Needs authentication
-- `Kapso webhooks (Pabbly → Kapso)` — *attention*: two trigger URLs not pasted yet
-- `Gondola (claude.ai)` — *attention*: Claude Code MCP registered; custom connector still his
-- `Orca pairing · AnyDesk permissions` — *attention*: apps installed on both Macs
-- `Mac 2` — *attention*: Python 3.12 (uv), Claude Code 2.1.309, mods, Agent OS, brain index, Orca, AnyDesk, Gondola done; Laya + Jarvis engine unproven (last REPORT not pasted)
-- `EVRoutes · Turo` — *reconnect*: needs_reconnect
-- `Four http_api Sunday routines` — *attention*: still enabled
-- `GitHub repo visibility` — *attention*: public
-- `Fieldy → 2nd brain` — *ok*: connected — the daily "Fieldy → brain" task (6:50 AM PT, this session, Fieldy connector) writes memory/fieldy-meetings.md + the deck fieldyDesk doc and queues a recap item per meeting with action item
-- `Notion `brain-learn-daily` rows` — *attention*: resume with Mac 1's runner (signed in 2026-10-23); directory page written 2026-10-23
+- `Jarvis · Laya · Orca (Mac 1)` — *ok*: connected — all rows ok 2026-10-23 01:14 UTC
+- `Jarvis · Laya · Orca (Mac 2)` — *attention*: partially set — engine unproven; runner not yet imported
+- `Orca · Laya · Bonsai (Alienware)` — *pending*: not started — integrations/alienware/alienware-setup.ps1 never run on Windows yet
+- `AnyDesk (Mac 1, Mac 2)` — *attention*: installed; permissions + unattended password are Steven's
+- `AnyDesk (Alienware, tablet, phone)` — *attention*: not started — winget id AnyDesk.AnyDesk confirmed; iPad is outgoing-only, Android tablet can be controlled
+- `TidyCal` — *attention*: connect-all step 7c ready (token → ~/.config/tidycal/.env, read-only proof); no token yet
+- `MBS Highway Home Report` — *attention*: not connected — no public API; rep-issued webhook or CSV (integrations/mbs-highway/README.md)
+- `Pivo` — *attention*: no API — tour link / video file only (integrations/pivo/README.md)
+- `Ticor Title property search` — *attention*: no API — rep account + CSV/PDF export (integrations/ticor/README.md)
+- `AI-search presence (AEO/GEO/SEO)` — *attention*: planned — playbook written (wiki/real-estate-playbooks/ai-search-visibility.md); monthly presence audit task live (1st, 7:10 AM PT)
 
 **Cloud routines**
 - `Command Deck — daily freshness sweep (writer, Claude; once a day since 2026-10-22, per-key cadence)`: cron 40 15 * * * · on · SUCCEEDED @ 2026-10-20T15:40

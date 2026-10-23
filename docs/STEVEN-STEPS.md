@@ -6,6 +6,56 @@ research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox
 
 ## 1 · Phone · 5 minutes (Do these first; nothing else depends on them)
 
+## Start here (2026-10-23, round 2) — every computer, one paste each · then the sign-ins only you can do
+
+What this round connects: Jarvis + Laya + Orca + AnyDesk on all three computers (and AnyDesk on the tablet), TidyCal,
+homes.com / ShowingTime / Showami, Lofty, Zoho; and it sets up the plans for Arive, MBS Highway Home Reports, Pivo,
+Ticor, the drip/text campaigns and your AI-search presence. Each paste asks before it changes anything, never signs
+in for you, never pays. Paste the REPORT back to Claude after each.
+
+**Mac 1 (plugged in).** Terminal:
+`cd ~/Repo && bash scripts/repo-sync.sh && bash connect-all.sh`
+New in it: step **7c TidyCal** asks for your TidyCal token (make it first: TidyCal → Integrations → Automations or
+Advanced → API → Manage API keys → Create token; Enter skips) and step **7d** installs the read-only wrappers for
+homes.com, ShowingTime and Showami and tells you which site still needs one sign-in in the agent Chrome.
+
+**Mac 2.** Terminal:
+`cd ~/Repo && bash scripts/repo-sync.sh && bash scripts/second-mac.sh`
+Then the runner copy from Mac 1 (step 1e below) so Jarvis's tasks run there too; `claude` sign-in once.
+
+**Alienware (Windows 11).** Start → type PowerShell → open it (not as administrator). Paste, one line at a time:
+`irm https://claude.ai/install.ps1 | iex` (Claude Code; official installer) · then
+`winget install --id AnyDesk.AnyDesk -e -h --accept-package-agreements --accept-source-agreements` · then
+`git clone https://github.com/chitown034/Repo.git $env:USERPROFILE\Repo; cd $env:USERPROFILE\Repo\integrations\alienware; Set-ExecutionPolicy RemoteSigned -Scope Process; .\alienware-setup.ps1`
+(the Doctor: reports the GPU and what is installed) · then `.\alienware-setup.ps1 -Action Install` (Orca, Laya, Bonsai,
+Ollama; asks y before each). Then `claude` once to sign in. AnyDesk ID: `& "C:\Program Files (x86)\AnyDesk\AnyDesk.exe" --get-id`.
+
+**Tablet.** Android: Play Store → "AnyDesk Remote Desktop" (AnyDesk Software GmbH) → open → allow the control plugin it
+offers → Settings → Security → Unattended Access (your password) — it can then be reached and can reach the others.
+iPad: App Store → AnyDesk → it reaches the computers; an iPad cannot be controlled (Apple's rule). Also install the
+Claude app on the tablet and open the Command Deck link once so it is in the recents.
+
+**Phone.** AnyDesk app (reach any computer); the Claude app for Vanessa.
+
+**Then, the sign-ins and keys only you can do** (say "done <letter>" after each; nothing below is scripted):
+- **a. Lofty API key** → Lofty → Settings → Integrations → API → create → paste into connect-all step 7b when it asks.
+- **b. Zoho** → Setup → Security Control → Profiles → your profile → Developer Permissions → tick "Zoho CRM API Access".
+- **c. TidyCal token** (above). **d. Arive** → Settings → Integrations → Generate (Client ID, Secret, API Key; needs
+  Pro / Broker Pro) and ask Arive support for the Zapier invite link; keep the three values in `~/.config/arive/.env`
+  on Mac 1 (`open -e`), never in chat. `integrations/arive/README.md`.
+- **e. MBS Highway** → e-mail your rep for the Home Report webhook / CSV-import path (say "draft the MBS Highway rep
+  email" and it lands in the queue). `integrations/mbs-highway/README.md`.
+- **f. Ticor Title** → ask your Ticor rep for Ticor Online Pro credentials; export farm lists as CSV. `integrations/ticor/README.md`.
+- **g. Pivo** → pair the Pod in the Pivo app; the tour link is what the team uses. `integrations/pivo/README.md`.
+- **h. AnyDesk** on each machine: Screen Recording + Accessibility (Macs), unattended password (yours), and the licence
+  decision (free tier is private-use; Solo is the business tier). Put each ID in the Computer Hub card.
+- **i. Drips and texts** → read `wiki/real-estate-playbooks/drip-and-text-follow-up.md` "Setup order": Lofty 10DLC
+  registration, then say "specs ready for review" so Victor and Alexandra return the Smart Plan specs and Zoho rules.
+- **j. Being found by AI search** → `wiki/real-estate-playbooks/ai-search-visibility.md` "What Steven does first":
+  claim Google Business Profile, Bing Places, Zillow (agent + lender), Realtor.com, Homes.com, Yelp; send Sofia the DRE
+  number. The monthly presence audit (1st of the month, 7:10 AM PT) scores it in `docs/reports/PRESENCE.md`.
+- **k. Orca pairing and runner copy to Mac 2** — unchanged, steps 1e and C below.
+
 ## Start here (2026-10-23) — one paste, then a few clicks
 
 **Why things were stale:** your Mac's task runner froze on Oct 13, and every `git pull` on the Mac failed because the

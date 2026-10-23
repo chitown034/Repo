@@ -35,3 +35,5 @@ the deeper primary source when a page here doesn't answer fully.
 
 A specific transaction, a specific buyer, or a specific address. Those go in `wiki/clients/` as
 full-context pages, and they stay on the Mac.
+- `ai-search-visibility.md` — being found by ChatGPT/Perplexity/Gemini/Google AI: GBP + reviews first, entity page + FAQ pages, YouTube; monthly prompt-set audit; DRE/NMLS/EHO ad rules (2026-10-23)
+- `drip-and-text-follow-up.md` — where each drip lives (Lofty Smart Plans, Zoho workflows, Arive→Zoho via Pabbly), the cadences per lane, TCPA/10DLC/CAN-SPAM/DRE-NMLS/EHO rules, who does what (2026-10-23)

@@ -35,6 +35,7 @@ produced becomes a "fact" in the repo without Steven's yes).
   question, cites each page with its own date, says "not in the brain" when nothing matches, and keeps the HALT list
   (no rate quote, eligibility call, legal read or client send). Her portrait and presence states (listening, reading,
   speaking) are the Command Deck's; "Read her answers aloud" uses the device's own voice. Outside claude.ai the chat is hidden.
+- **Presence audit** (monthly, 1st at 7:10 AM PT, Sofia): the AI-search prompt set by WebSearch → `docs/reports/PRESENCE.md` + the deck `presenceAudit` doc; rules in `wiki/real-estate-playbooks/ai-search-visibility.md`.
 - `bin/brain links` — every front door with its URL (deck, ISA Portal, 6D, Action Desk, Bot Crew, repo, Drive SECOND BRAIN,
   NotebookLM, Notion database + layer directory, the 13 SB Docs). The 6D Brain embeds the same list: "Open the brain"
   panel, an open link per layer, and clickable store nodes (Drive, NotebookLM, Notion, Command Deck).

@@ -145,10 +145,10 @@ step "3 Kapso WhatsApp plugin + MCP (Claude Code)" \
 kapso_keys() {
   if security find-generic-password -a "$USER" -s kapso-allow >/dev/null 2>&1 && security find-generic-password -a "$USER" -s kapso >/dev/null 2>&1; then
     echo "both Keychain items already present"; return 0; fi
-  printf 'Your own mobile number, digits only with country code (e.g. 16195551234) - the ONLY number Vanessa may answer. Enter to skip: '
+  printf 'Your own mobile number, digits only with country code (e.g. 16195551234) - the ONLY number Vanessa may answer. Enter to skip: ' >/dev/tty
   read -r mob </dev/tty; mob="$(printf '%s' "$mob" | tr -cd '0-9')"
   [ -z "$mob" ] && { echo "skipped"; return 1; }
-  echo "Next it asks for the Kapso project API key (app.kapso.ai -> your project -> API keys). Typed hidden, stored only in the Keychain."
+  echo "Next it asks for the Kapso project API key (app.kapso.ai -> your project -> API keys). Typed hidden, stored only in the Keychain." >/dev/tty
   bash integrations/kapso/install-mac.sh keys --allow "$mob" </dev/tty
 }
 step "4 Kapso keys (your mobile + the project key, Keychain only)" \
@@ -362,8 +362,8 @@ LOFTY_VENV="$HOME/Applications/cli-anything-harnesses/.venv"
 lofty_connect() {
   local env="$HOME/.config/lofty/.env" key=""
   if ! { [ -s "$env" ] && grep -qE '^LOFTY_API_KEY=.+' "$env"; }; then
-    printf 'Lofty API key (Lofty -> Settings -> Integrations -> API). Typed hidden, saved only in ~/.config/lofty/.env. Enter to skip: '
-    trap 'stty echo 2>/dev/null' INT TERM; stty -echo 2>/dev/null; read -r key </dev/tty; stty echo 2>/dev/null; trap - INT TERM; echo
+    printf 'Lofty API key (Lofty -> Settings -> Integrations -> API). Typed hidden, saved only in ~/.config/lofty/.env. Enter to skip: ' >/dev/tty
+    trap 'stty echo 2>/dev/null' INT TERM; stty -echo 2>/dev/null; read -r key </dev/tty; stty echo 2>/dev/null; trap - INT TERM; echo >/dev/tty
     [ -z "$key" ] && { echo "skipped - no Lofty key on this Mac"; return 1; }
     mkdir -p "$HOME/.config/lofty" && ( umask 077; printf 'LOFTY_API_KEY=%s\n' "$key" > "$env" ) && chmod 600 "$env"
     key=""; echo "key saved (value not shown)"
@@ -380,6 +380,47 @@ lofty_connect() {
 }
 step "7b Lofty CRM (key on this Mac, read-only check)" \
   "Lofty: make an API key in Lofty -> Settings -> Integrations -> API, rerun connect-all and paste it when asked" lofty_connect
+
+# 7c. TidyCal (Steven, 2026-10-23: "connect TidyCal"). Personal access token from TidyCal -> Settings -> Integrations ->
+#     API; hidden prompt, saved only in ~/.config/tidycal/.env (chmod 600); Enter skips. Proof is one read-only call
+#     (GET /api/booking-types with the bearer token). Never books, cancels or edits anything.
+tidycal_check() { # <env file> -> HTTP code; the token goes to curl on stdin (-K -), never as an argument
+  sh -c '. "$1"; printf "header = \"Authorization: Bearer %s\"\nheader = \"Accept: application/json\"\n" "$TIDYCAL_TOKEN" | curl -s -K - -o /dev/null -w "%{http_code}" https://tidycal.com/api/booking-types' sh "$1" 2>/dev/null
+}
+tidycal_connect() {
+  local env="$HOME/.config/tidycal/.env" key="" code fresh=0
+  if ! { [ -s "$env" ] && grep -qE '^TIDYCAL_TOKEN=.+' "$env"; }; then
+    printf 'TidyCal API token (TidyCal -> Integrations -> Automations or Advanced -> API -> Manage API keys -> Create token; needs a paid plan). Typed hidden, saved only in ~/.config/tidycal/.env. Enter to skip: ' >/dev/tty
+    trap 'stty echo 2>/dev/null' INT TERM; stty -echo 2>/dev/null; read -r key </dev/tty; stty echo 2>/dev/null; trap - INT TERM; echo >/dev/tty
+    [ -z "$key" ] && { echo "skipped - no TidyCal token on this Mac"; return 1; }
+    case "$key" in *[!A-Za-z0-9._-]*) echo "that token holds a character outside letters, digits, . - _ (TidyCal tokens use only those) - not saved"; return 1 ;; esac
+    mkdir -p "$HOME/.config/tidycal" && ( umask 077; printf 'TIDYCAL_TOKEN=%s\n' "$key" > "$env" ) && chmod 600 "$env"
+    key=""; fresh=1; echo "token saved (value not shown)"
+  fi
+  code="$(tidycal_check "$env")"
+  case "$code" in
+    200) echo "TidyCal token works (GET /api/booking-types -> 200)"; return 0 ;;
+    401|403) rm -f "$env"; echo "TidyCal refused the token (HTTP $code) - it was NOT kept. Make a new token (or check that your plan includes the API) and rerun connect-all; it will ask again"; return 1 ;;
+    404) echo "TidyCal answered 404 for /api/booking-types - the endpoint path needs checking against tidycal.com/developer/docs; token kept"; return 1 ;;
+    *) if [ "$fresh" = 1 ]; then rm -f "$env"; echo "TidyCal not reachable (HTTP ${code:-none}) - the token you just typed was not kept; check the network and rerun (it asks again)"; else echo "TidyCal not reachable (HTTP ${code:-none}) - check the network and rerun"; fi; return 1 ;;
+  esac
+}
+step "7c TidyCal (token on this Mac, read-only check)" \
+  "TidyCal: make a token in TidyCal -> Settings -> Integrations -> API, rerun connect-all and paste it when asked" tidycal_connect
+
+# 7d. The sites with no API - homes.com, ShowingTime, Showami (+ SkySlope, zipForms behind their ECC gate): the
+#     read-only CLI-Anything wrappers. connect.sh installs what is missing, runs the posture check and says which site
+#     still needs your sign-in in the agent Chrome. It never signs in (MFA is yours).
+CAH_BIN="$HOME/Applications/cli-anything-harnesses/.venv/bin"
+cah_connect() {
+  bash integrations/cli-anything-harnesses/connect.sh </dev/tty
+  local missing="" p
+  for p in browser homes showingtime showami; do [ -x "$CAH_BIN/cli-anything-$p" ] || missing="$missing $p"; done
+  [ -z "$missing" ] || { echo "wrappers still missing:$missing - MAC-SETUP.sh did not finish; see the log"; return 1; }
+  echo "wrappers installed (browser, homes, showingtime, showami); sign-ins in the agent Chrome are yours - the list above names them"
+}
+step "7d homes.com, ShowingTime, Showami wrappers (install + status; sign-ins stay yours)" \
+  "Sites: bash integrations/cli-anything-harnesses/connect.sh  then sign in once in the agent Chrome where it says so" cah_connect
 
 # 8. Claude Mods: route beacon, HALT guard, /remember, connection beacon (/connections, /owner), /paste. Asks y once.
 mods_install() { bash integrations/mods/install-mods.sh </dev/tty; }
@@ -407,8 +448,9 @@ say "     section 8b (start) and 8 (end) of integrations/mac-task-specs.md into 
 say "  3. claude.ai -> Settings -> Connectors: EVRoutes and Turo say 'needs reconnect' - Reconnect or remove them."
 say "  4. Zoho: Zoho CRM -> Setup -> Security Control -> Profiles -> your profile -> Developer Permissions ->"
 say "     tick 'Zoho CRM API Access'. That is the whole 403 fix."
-say "  5. Sign in once in the agent Chrome to ShowingTime, Showami and homes.com:"
+say "  5. Sign in once in the agent Chrome to ShowingTime, Showami and homes.com (MFA is yours) - the list is in the log, or rerun:"
 say "     bash integrations/cli-anything-harnesses/connect.sh"
+say "  5b. TidyCal: if step 7c was skipped, make a token (TidyCal -> Settings -> Integrations -> API) and rerun connect-all."
 say "  6. TikTok, GoHighLevel, Discord bot, HeyGen: say 'Composio links' to Claude when you sit down (links last 10 min)."
 say "  6b. Gondola (travel): claude.ai -> Settings -> Connectors -> Add custom connector -> name Gondola, URL"
 say "     https://mcp.gondola.ai/mcp -> Connect and sign in. Then Vanessa and the dashboards can read your trips and points."

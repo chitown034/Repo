@@ -249,6 +249,38 @@ footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);color:v
     <h2 id="start-title" class="section-title">Start here · three pastes, then a short list only you can do</h2>
     <p class="d intro">Everything below the line is still there for reference, but you no longer need to work through it one by one. Each paste asks you one question (type <b>y</b>, press Enter) and then does every safe step itself: it installs only into your own folder and never signs in, pairs, stores a key or spends. At the end it prints a report; copy that report and paste it to Claude.</p>
 
+  <div class="step hero" data-id="D"><div class="n">D</div><div class="body">
+    <p class="t">Round 2 (2026-10-23) · every computer, one paste each · then eleven sign-ins only you can do</p>
+    <p class="d">Connects Jarvis, Laya, Orca and AnyDesk on all three computers (AnyDesk on the tablet too), TidyCal, homes.com / ShowingTime / Showami, Lofty and Zoho; and sets up the plans for Arive, MBS Highway Home Reports, Pivo, Ticor, the drip and text campaigns and your AI-search presence. Every paste asks before it changes anything, never signs in for you, never pays. Paste each REPORT back to Claude.</p>
+    <p class="d"><b>Mac 1</b> (plugged in) — Terminal:</p>
+    <div class="acts"><code>cd ~/Repo &amp;&amp; bash scripts/repo-sync.sh &amp;&amp; bash connect-all.sh</code><button class="btn" data-copy="cd ~/Repo &amp;&amp; bash scripts/repo-sync.sh &amp;&amp; bash connect-all.sh">Copy</button><label class="tick"><input type="checkbox" id="sD1">Mac 1 done</label></div>
+    <p class="d alt">New inside it: step 7c asks for your <b>TidyCal</b> token (make it first: TidyCal → Integrations → Automations/Advanced → API → Manage API keys → Create token; Enter skips) and step 7d installs the read-only wrappers for homes.com, ShowingTime and Showami and says which site still needs one sign-in in the agent Chrome.</p>
+    <p class="d"><b>Mac 2</b> — Terminal (then the runner copy from Mac 1, step A):</p>
+    <div class="acts"><code>cd ~/Repo &amp;&amp; bash scripts/repo-sync.sh &amp;&amp; bash scripts/second-mac.sh</code><button class="btn" data-copy="cd ~/Repo &amp;&amp; bash scripts/repo-sync.sh &amp;&amp; bash scripts/second-mac.sh">Copy</button><label class="tick"><input type="checkbox" id="sD2">Mac 2 done</label></div>
+    <p class="d"><b>Alienware (Windows 11)</b> — Start → type PowerShell → open it (not as administrator). Four pastes, one at a time:</p>
+    <div class="acts"><code>irm https://claude.ai/install.ps1 | iex</code><button class="btn" data-copy="irm https://claude.ai/install.ps1 | iex">Copy</button></div>
+    <div class="acts"><code>winget install --id AnyDesk.AnyDesk -e -h --accept-package-agreements --accept-source-agreements</code><button class="btn" data-copy="winget install --id AnyDesk.AnyDesk -e -h --accept-package-agreements --accept-source-agreements">Copy</button></div>
+    <div class="acts"><code>git clone https://github.com/chitown034/Repo.git $env:USERPROFILE\Repo; cd $env:USERPROFILE\Repo\integrations\alienware; Set-ExecutionPolicy RemoteSigned -Scope Process; .\alienware-setup.ps1</code><button class="btn" data-copy="git clone https://github.com/chitown034/Repo.git $env:USERPROFILE\Repo; cd $env:USERPROFILE\Repo\integrations\alienware; Set-ExecutionPolicy RemoteSigned -Scope Process; .\alienware-setup.ps1">Copy</button></div>
+    <div class="acts"><code>.\alienware-setup.ps1 -Action Install</code><button class="btn" data-copy=".\alienware-setup.ps1 -Action Install">Copy</button><label class="tick"><input type="checkbox" id="sD3">Alienware done</label></div>
+    <p class="d alt">The third paste is the Doctor (reports the GPU and what is installed); the fourth installs Orca, Laya, Bonsai and Ollama, asking y before each. Then run <code>claude</code> once to sign in. Your PC's AnyDesk ID: <code>&amp; "C:\Program Files (x86)\AnyDesk\AnyDesk.exe" --get-id</code>.</p>
+    <p class="d"><b>Tablet and phone.</b> Android tablet: Play Store → "AnyDesk Remote Desktop" (AnyDesk Software GmbH) → allow the control plugin it offers → Settings → Security → Unattended Access (your password). iPad: App Store → AnyDesk — it reaches the computers; an iPad cannot be controlled (Apple's rule). Phone: AnyDesk + the Claude app.</p>
+    <div class="acts"><label class="tick"><input type="checkbox" id="sD4">Tablet and phone done</label></div>
+    <p class="d"><b>Then, only you</b> (say "done D-a" etc. in Claude):</p>
+    <ol class="d only">
+      <li><b>a. Lofty API key</b> → Lofty → Settings → Integrations → API → create → paste into connect-all step 7b when it asks.</li>
+      <li><b>b. Zoho</b> → Setup → Security Control → Profiles → your profile → Developer Permissions → tick "Zoho CRM API Access".</li>
+      <li><b>c. TidyCal token</b> (above). <b>d. Arive</b> → Settings → Integrations → Generate (Client ID, Secret, API Key; Pro plan) and ask Arive support for the Zapier invite; keep the values in <code>~/.config/arive/.env</code> on Mac 1, never in chat.</li>
+      <li><b>e. MBS Highway</b> → e-mail your rep for the Home Report webhook / CSV path (say "draft the MBS Highway rep email").</li>
+      <li><b>f. Ticor Title</b> → ask your Ticor rep for Ticor Online Pro credentials; farm lists export as CSV.</li>
+      <li><b>g. Pivo</b> → pair the Pod in the Pivo app; the tour link is what the team uses.</li>
+      <li><b>h. AnyDesk</b> on each machine: Screen Recording + Accessibility (Macs), unattended password (yours), the licence decision (free tier is private-use; Solo is the business tier); each ID into the Computer Hub card.</li>
+      <li><b>i. Drips and texts</b> → playbook "Setup order": Lofty 10DLC registration, then say "specs ready for review".</li>
+      <li><b>j. Being found by AI search</b> → claim Google Business Profile, Bing Places, Zillow (agent + lender), Realtor.com, Homes.com, Yelp; send Sofia the DRE number. The monthly presence audit (1st, 7:10 AM PT) scores it.</li>
+      <li><b>k. Orca pairing and the runner copy to Mac 2</b> — steps A and C.</li>
+    </ol>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/docs/STEVEN-STEPS.md" target="_blank" rel="noopener">Same list as text</a><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/wiki/real-estate-playbooks/drip-and-text-follow-up.md" target="_blank" rel="noopener">Drip &amp; text playbook</a><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/wiki/real-estate-playbooks/ai-search-visibility.md" target="_blank" rel="noopener">AI-search playbook</a><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/integrations/CONNECTIONS.md" target="_blank" rel="noopener">What is connected</a><a class="btn" href="https://tidycal.com/" target="_blank" rel="noopener">TidyCal</a><a class="btn" href="https://crm.zoho.com/" target="_blank" rel="noopener">Zoho CRM</a>
+      <label class="tick"><input type="checkbox" id="sD5">The eleven done</label></div></div></div>
+
   <div class="step hero" data-id="0"><div class="n">0</div><div class="body">
     <p class="t">First · one paste reconnects this Mac · about 15 minutes (2026-10-20)</p>
     <p class="d">Your Mac has been silent on the dashboard since <b>2026-10-13</b>, so Vanessa's 6:40 AM iMessage text, her voice note, Lofty, calendar, rates, QuantVue and the twin all stopped. Press Command + Space, type <b>Terminal</b>, press Enter. Click Copy, paste, press Enter, answer <b>y</b>. It restarts the runner, installs Kapso (WhatsApp) and the voice SDK, checks Jarvis and your key files, then asks for two things you can type or skip with Enter: your mobile number and the Kapso key (both go straight into the Mac Keychain, never shown). If the Repo folder is missing: <code>git clone https://github.com/chitown034/Repo.git ~/Repo</code> first.</p>
@@ -576,7 +608,7 @@ cd integrations/trading-desk &amp;&amp; python3 -m desk selftest">Copy</button><
 </details>
   </section>
 
-  <footer>Updated 2026-10-20 (step 0 and the 80/20 map); 2026-10-12 (start-here section); earlier 2026-10-11; first 23 steps rebuilt 2026-10-09 from the live routine list, the Mac runner status, both dashboard databases and a Composio connection check. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Same list as text: <code>docs/STEVEN-STEPS.md</code>.</footer>
+  <footer>Updated 2026-10-23 (round 2: every computer, TidyCal, sites, Arive, MBS Highway, Pivo, Ticor, drips, AI search); 2026-10-20 (step 0 and the 80/20 map); 2026-10-12 (start-here section); earlier 2026-10-11; first 23 steps rebuilt 2026-10-09 from the live routine list, the Mac runner status, both dashboard databases and a Composio connection check. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Same list as text: <code>docs/STEVEN-STEPS.md</code>.</footer>
 </main>
 
 <script>
@@ -586,7 +618,8 @@ cd integrations/trading-desk &amp;&amp; python3 -m desk selftest">Copy</button><
   var boxes=document.querySelectorAll('label.tick input');
   function paint(){
     var n=0;
-    boxes.forEach(function(b){ var step=b.closest('.step'); step.classList.toggle('done',b.checked); if(b.checked)n++; });
+    boxes.forEach(function(b){ if(b.checked)n++; });
+    document.querySelectorAll('.step').forEach(function(step){ var bs=step.querySelectorAll('input[type=checkbox]'); var all=bs.length>0; bs.forEach(function(b){ if(!b.checked)all=false; }); step.classList.toggle('done',all); });
     document.getElementById('count').textContent=n+" of "+boxes.length+" done";
     document.getElementById('fill').style.width=(100*n/boxes.length)+"%";
   }

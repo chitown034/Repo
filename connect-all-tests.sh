@@ -4,7 +4,7 @@ set -u
 cd "$(dirname "$0")" || exit 1
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
 mkdir -p "$T/bin" "$T/home"
-FUNCS="$(sed -n '/^have()/p;/^RUNNER_OUT=/p;/^runner_fix() {/,/^}/p;/^keep_awake() {/,/^}/p;/^repo_sync_agent() {/,/^}/p;/^laya_venv() {/,/^}/p;/^laya_connect() {/,/^}/p;/^JARVIS_MODEL=/p;/^jarvis_db() {/,/^}/p;/^jarvis_engine() {/,/^}/p;/^orca_app() {/,/^}/p;/^orca_connect() {/,/^}/p;/^anydesk_app() {/,/^}/p;/^anydesk_connect() {/,/^}/p;/^gondola_mcp() {/,/^}/p;/^nlm_connect() {/,/^}/p;/^LOFTY_VENV=/p;/^lofty_connect() {/,/^}/p' connect-all.sh)"
+FUNCS="$(sed -n '/^have()/p;/^RUNNER_OUT=/p;/^runner_fix() {/,/^}/p;/^keep_awake() {/,/^}/p;/^repo_sync_agent() {/,/^}/p;/^laya_venv() {/,/^}/p;/^laya_connect() {/,/^}/p;/^JARVIS_MODEL=/p;/^jarvis_db() {/,/^}/p;/^jarvis_engine() {/,/^}/p;/^orca_app() {/,/^}/p;/^orca_connect() {/,/^}/p;/^anydesk_app() {/,/^}/p;/^anydesk_connect() {/,/^}/p;/^gondola_mcp() {/,/^}/p;/^nlm_connect() {/,/^}/p;/^LOFTY_VENV=/p;/^lofty_connect() {/,/^}/p;/^tidycal_check() {/,/^}/p;/^tidycal_connect() {/,/^}/p;/^CAH_BIN=/p;/^cah_connect() {/,/^}/p' connect-all.sh)"
 pass=0; fail=0
 check() { if [ "$2" = "$3" ]; then pass=$((pass+1)); echo "ok   $1"; else fail=$((fail+1)); echo "FAIL $1 (expected rc $3, got $2)"; fi; }
 stub_runner() { # <restart exit code> <status text after restart>
@@ -175,4 +175,36 @@ grep -qE "^login$|^login [^-]" "$T/nlm.calls";                   check "nlm: no 
 sed -i.bak 's/"login --check") exit 1/"login --check") exit 0/' "$T/bin/nlm"
 check "nlm: already signed in -> ok"                            "$(run_fn nlm_connect)" 0
 rm -f "$T/bin/nlm" "$T/bin/uv"
+# 7c TidyCal: a stubbed curl records its arguments and returns the status code; the token is read from the file, never printed
+mkdir -p "$T/home/.config/tidycal"; printf 'TIDYCAL_TOKEN=secret-token-value\n' > "$T/home/.config/tidycal/.env"
+printf '#!/bin/sh\necho "$@" >> "%s/curl.calls"; cat > "%s/curl.stdin"; printf 200\n' "$T" "$T" > "$T/bin/curl"; chmod +x "$T/bin/curl"
+check "tidycal: token file + 200 -> ok"                          "$(run_fn tidycal_connect)" 0
+grep -q "secret-token-value" "$T/out";                         check "tidycal: token value never printed"           "$?" 1
+grep -q "secret-token-value" "$T/curl.calls";                  check "tidycal: token never on curl's command line"  "$?" 1
+grep -q "secret-token-value" "$T/curl.stdin";                  check "tidycal: token reaches curl on stdin"         "$?" 0
+grep -q "booking-types" "$T/curl.calls";                       check "tidycal: read-only booking-types call"        "$?" 0
+printf '#!/bin/sh\ncat >/dev/null; printf 401\n' > "$T/bin/curl"; chmod +x "$T/bin/curl"
+check "tidycal: 401 -> FAIL naming a new token"                  "$(run_fn tidycal_connect)" 1
+grep -q "NOT kept" "$T/out";                                   check "tidycal: 401 message"                         "$?" 0
+[ -f "$T/home/.config/tidycal/.env" ];                         check "tidycal: refused token is removed so the next run asks again" "$?" 1
+printf 'TIDYCAL_TOKEN=secret-token-value\n' > "$T/home/.config/tidycal/.env"
+for bad in 'a|b' 'a>b' 'a b' 'a;b' "a'b"; do
+  rm -f "$T/home/.config/tidycal/.env"
+  PATH="$T/bin:$PATH" HOME="$T/home" LOG="$T/log" bad="$bad" bash -c "read() { key=\"\$bad\"; }; stty() { :; }; ${FUNCS//<\/dev\/tty/<\/dev\/null}
+tidycal_connect" >"$T/out" 2>&1; rc=$?
+  { [ "$rc" = 1 ] && grep -q "not saved" "$T/out" && [ ! -f "$T/home/.config/tidycal/.env" ]; }; check "tidycal: token '$bad' refused, nothing saved" "$?" 0
+done
+PATH="$T/bin:$PATH" HOME="$T/home" LOG="$T/log" bash -c "read() { key=abc.DEF-123_x; }; stty() { :; }; printf '#!/bin/sh\ncat >/dev/null; printf 200\n' > '$T/bin/curl'; chmod +x '$T/bin/curl'; ${FUNCS//<\/dev\/tty/<\/dev\/null}
+tidycal_connect" >"$T/out" 2>&1; check "tidycal: a plain token is saved and proven" "$?" 0
+rm -f "$T/home/.config/tidycal/.env"; run_fn tidycal_connect >/dev/null
+grep -q "TidyCal API token" "$T/out";                          check "tidycal: the prompt never lands in captured output (goes to the terminal)" "$?" 1
+rm -f "$T/bin/curl"
+# 7d: the site wrappers - connect.sh stubbed; missing wrappers land in FAIL, present ones pass
+mkdir -p "$T/home/Applications/cli-anything-harnesses/.venv/bin" "$T/repo/integrations/cli-anything-harnesses"
+printf '#!/bin/sh\necho stub-connect\n' > "$T/repo/integrations/cli-anything-harnesses/connect.sh"
+run_cah() { PATH="$T/bin:$PATH" HOME="$T/home" LOG="$T/log" bash -c "cd '$T/repo'; $FUNCS
+cah_connect </dev/null" >"$T/out" 2>&1; echo $?; }
+check "7d: wrappers missing after connect.sh -> FAIL"            "$(run_cah)" 1
+for p in browser homes showingtime showami; do printf '#!/bin/sh\n' > "$T/home/Applications/cli-anything-harnesses/.venv/bin/cli-anything-$p"; chmod +x "$T/home/Applications/cli-anything-harnesses/.venv/bin/cli-anything-$p"; done
+check "7d: all four wrappers present -> ok"                      "$(run_cah)" 0
 echo "connect-all tests: $pass passed, $fail failed"; [ "$fail" = 0 ]
