@@ -558,7 +558,7 @@ Arive (Enter skipped the key prompts; Lofty's key 7b was skipped the same way �
 
 | Connection | Status today | Fix | Who |
 |---|---|---|---|
-| Mac runner (all Mac tasks) | restarted 2026-10-23 11:16 PT after 10 silent days; some tasks still in error (names in the log) | one paste: `runnerctl pause r9-feed-freshness-sweep && runnerctl pause r8-apple-health-snapshot && runnerctl pause strava-daily-sync && runnerctl run toolkit-deck-sync && runnerctl status` — paste the output to Claude | Steven (paste), then Derek |
+| Mac runner (all Mac tasks) | healthy — `runnerctl status` 12:33 PT: 42 ok (morning tasks all ran today), 5 error (toolkit-deck-sync, nightly-self-test, three Sunday weeklies), 4 limited, 3 paused; the step-2 "silent since Oct 13" reading was wrong (`docs/inventory/routine-health.md`) | one paste: `runnerctl pause r9-feed-freshness-sweep && runnerctl pause r8-apple-health-snapshot && runnerctl pause strava-daily-sync && runnerctl run toolkit-deck-sync && runnerctl status` — paste the output to Claude | Steven (paste), then Derek |
 | iMessage line (morning brief text + voice) | still not linked — brief arrives by e-mail + push | text `connect @vanessa-shearrill` to +1 650 484 9720, once | Steven |
 | Lofty | step ran; no key on the Mac (prompt skipped) | Lofty → Settings → Integrations → API → create; rerun connect-all, paste it when asked | Steven |
 | TidyCal | step 7c did not run (no token) | TidyCal → Settings → Integrations → API → token; rerun connect-all | Steven |

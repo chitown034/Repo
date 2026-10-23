@@ -1,3 +1,25 @@
+# Runner health — `runnerctl status` as pasted by Steven, 2026-10-23 12:33 PT (Mac 1)
+
+**Headline: the runner is healthy and was never silent.** 54 tasks; 42 last ran `ok` (most of them today), 5 `error`, 4 `limited`
+(the usage cap — not broken), 3 `off` (paused on purpose today), 0 never-run. The morning tasks all ran today: r1-morning-brief 05:37,
+vanessa-morning-brief-text 06:53 (ok — the text did not arrive only because the iMessage line is not linked), health-full-analysis 05:27,
+calendar-daily-sync 06:38, mortgage-rates-daily 06:41, lofty-crm-sync 07:48, brain-deck-sync hourly. The "silent since Oct 13" note
+in connect-all step 2 was the connect script's reading, not the runner's: its restart was harmless but unneeded.
+
+| Task | Last | Reading | Fix (integrations/mac-task-specs.md § 9) |
+|---|---|---|---|
+| `toolkit-deck-sync` (06:15 daily) | error 2026-10-23 06:25 | the one error from today; the deck's toolkit card is stale | log needed: `runnerctl logs toolkit-deck-sync` |
+| `nightly-self-test` (23:00) | error 2026-10-22 23:19 | tool refusal in the suite | log needed: `runnerctl logs nightly-self-test`; scope writes to `~/Repo/brain/state/` |
+| `brain-weekly-verify` · `health-coaching-weekly` · `skills-refresh-weekly` (Sundays) | error 2026-10-11 | hit the Sunday usage cap; have not run since | move to Monday (spec § 9), or run each once on a weekday: `runnerctl run <name>` |
+| `r9-feed-freshness-sweep` | off (paused 2026-10-23) | superseded by the cloud freshness sweep | — |
+| `r8-apple-health-snapshot` · `strava-daily-sync` | off (paused 2026-10-23) | superseded by the cloud Health daily sync | — |
+| `access-audit-monthly` · `automation-audit-quarterly` · `ops-knowledge-graph` · `r20-weekly-review-local` | limited (Oct 1–11) | usage cap; next slots Nov 1 / Jan 1 / Sunday / Friday | leave |
+| everything else (42 tasks) | ok | — | — |
+
+Paused today with `runnerctl pause` (the verb `disable` does not exist). `vanessa-imessage-inbox` was running at the time of the paste.
+
+---
+
 # routineHealth doc (written by r10-automation-health, syncedAt 2026-09-22T00:57:57-07:00) — counts {"failed": 8, "late": 3, "neverRun": 13, "ok": 6, "producedNothing": 2, "stale": 0}
 
 | Routine/task | Source | Cadence | Last run | Expected doc | Result |
