@@ -376,11 +376,11 @@ are his clicks in Pabbly's editor; none exists yet.
 
 Nothing on the Mac is reachable from the cloud, so every Mac row below is what `connect-all.sh` now installs or
 checks, and what its REPORT will prove. New in the paste: 6a (Ollama + the Jarvis model + the OpenJarvis index),
-6c runs Orca's safe doctor after opening it, 6e turns on the Agent OS. 47 tests pass (`connect-all-tests.sh`).
+6c runs Orca's safe doctor after opening it, 6e turns on the Agent OS. 51 tests pass (`connect-all-tests.sh`).
 
 | Connection | Status today | Fix | Who |
 |---|---|---|---|
-| Jarvis engine (Ollama + llama3.1:8b + OpenJarvis `memory.db`) | not provable from the cloud; brain says 1,761 docs on the other Mac | `connect-all.sh` 6a installs Ollama (official formula), pulls the model if missing, runs the `openjarvis` runner task once when no index exists | paste |
+| Jarvis engine (Ollama + llama3.1:8b + OpenJarvis `memory.db`) | not provable from the cloud; brain says 1,761 docs on the other Mac | `connect-all.sh` 6a installs Ollama (official formula), pulls the model if missing, names `runnerctl run openjarvis` when no index exists (the index build is a runner task that spends Claude allowance, so it runs only with `JARVIS_BUILD_INDEX=1` or by hand) | paste + Steven (one command) |
 | Jarvis + Vanessa's voice (profile, clips, brain) | unverified until `brain/state/jarvis-status.json` exists | `connect-all.sh` 6b (`jarvis-setup.sh --apply`); the vault must be on that Mac (`docs/SECOND-MAC-SETUP.md` 6b) and the clips in `~/.cache/vanessa-voice` or `VANESSA_VOICE_DIR` | paste + Steven (vault/clips location) |
 | Laya (local router + MCP server) | not provable from the cloud | `connect-all.sh` 6 installs into `~/Applications/laya-venv`, registers `laya` with Claude Code, runs one real route | paste |
 | Orca (app + phone view) | not provable from the cloud | `connect-all.sh` 6c installs the official cask, opens it on the Repo folder, runs `orca-remote.sh doctor`; pairing is his (Orca → Add Project → scan the code with the phone app) | paste + Steven |

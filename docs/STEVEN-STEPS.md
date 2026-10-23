@@ -15,7 +15,7 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
    `cd ~/Repo && git fetch origin claude/stoic-cori-pvn3f8 && git show FETCH_HEAD:scripts/repo-sync.sh > /tmp/repo-sync.sh && REPO_SYNC_DIR="$PWD" bash /tmp/repo-sync.sh && bash connect-all.sh`
    It syncs the repo (and every 30 min after), restarts the frozen runner, keeps the Mac awake on the charger, installs
    or checks Kapso, Gondola, Inkbox voice, **Laya** (installs it + registers its MCP server), **Jarvis** (installs Ollama +
-   the llama3.1:8b model and builds the OpenJarvis index if this Mac has none), **Orca** (installs, opens on the Repo
+   the llama3.1:8b model; if this Mac has no OpenJarvis index yet the report names the one command that builds it, `runnerctl run openjarvis`, because that run spends Claude allowance), **Orca** (installs, opens on the Repo
    folder, runs its doctor), AnyDesk, the Agent OS, the seven Claude mods (new: `/cycle`, `/inbox`,
    `/meetings`, `/today`, `/tc`, `/queue <task>`, `/sync`, `/connect` and a status line that says when the repo is behind).
    It never signs in, pairs, sends or pays.

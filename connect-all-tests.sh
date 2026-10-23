@@ -67,13 +67,16 @@ printf '#!/bin/sh\necho "$@" >> "%s/runner.calls"\ncase "$1" in list) echo "open
 rm -rf "$T/home/.openjarvis"; rm -f "$T/runner.calls"
 stub_ollama "NAME ID
 llama3.1:8b abc"
-check "jarvis: model present, index built by the openjarvis task" "$(run_fn jarvis_engine)" 0
+check "jarvis: no index and no opt-in -> FAIL, names the command" "$(run_fn jarvis_engine)" 1
+[ ! -f "$T/runner.calls" ] || ! grep -q "^run" "$T/runner.calls"; check "jarvis: runner task never run without JARVIS_BUILD_INDEX=1" "$?" 0
+check "jarvis: opt-in builds the index with the openjarvis task" "$(JARVIS_BUILD_INDEX=1 run_fn jarvis_engine)" 0
 grep -q "^run openjarvis" "$T/runner.calls";                     check "jarvis: runnerctl run openjarvis used"      "$?" 0
 grep -qiE "login|save-token" "$T/runner.calls";                  check "jarvis: never logs in"                      "$?" 1
 [ ! -f "$T/ollama.calls" ];                                      check "jarvis: model not pulled twice"             "$?" 0
-stub_ollama "NAME ID"
+stub_ollama "NAME ID
+llama3.1:8b-instruct-q8_0 def"
 check "jarvis: index present -> no runner call"      "$(rm -f "$T/runner.calls"; run_fn jarvis_engine)" 0
-grep -q "^pull llama3.1:8b" "$T/ollama.calls";                   check "jarvis: missing model is pulled"            "$?" 0
+grep -qx "pull llama3.1:8b" "$T/ollama.calls";                   check "jarvis: similar tag is not the model - exact tag pulled" "$?" 0
 [ ! -f "$T/runner.calls" ] || ! grep -q "^run" "$T/runner.calls"; check "jarvis: existing index not rebuilt"         "$?" 0
 rm -f "$T/bin/ollama"
 check "jarvis: no ollama and no brew -> FAIL"        "$(PATH="$T/bin:/usr/bin:/bin" run_fn jarvis_engine)" 1
@@ -88,6 +91,11 @@ grep -q "install --cask stablyai/orca/orca" "$T/brew.calls"; check "orca: brew c
 grep -q -- "$ORCA_APP $PWD" "$T/open.calls";               check "orca: opened on the Repo folder"         "$?" 0
 grep -qiE "pair|login|sign" "$T/open.calls" "$T/brew.calls"; check "orca: never pairs or signs in"            "$?" 1
 rm -f "$T/brew.calls"; check "orca: already installed -> no brew"   "$(run_fn orca_connect)" 0
+printf '#!/bin/sh\necho "123 orca serve --grant-desktop-control"\n' > "$T/bin/ps"; chmod +x "$T/bin/ps"
+check "orca: doctor finds --grant-desktop-control -> FAIL" "$(run_fn orca_connect)" 1
+printf '#!/bin/sh\necho "123 orca serve"\n' > "$T/bin/ps"
+check "orca: doctor clean -> ok"                            "$(run_fn orca_connect)" 0
+rm -f "$T/bin/ps"
 [ ! -f "$T/brew.calls" ]; check "orca: no reinstall"   "$?" 0
 rm -rf "$ORCA_APP"; mv "$T/bin/brew" "$T/brew.off"
 check "orca: missing and no Homebrew -> FAIL"        "$(PATH="$T/bin:/usr/bin:/bin" run_fn orca_connect)" 1

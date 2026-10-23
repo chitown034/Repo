@@ -222,10 +222,13 @@ jarvis_engine() {
     ollama list >/dev/null 2>&1 || { echo "Ollama installed but not answering - open the Ollama app once, then rerun"; return 1; }
   fi
   echo "Ollama running"
-  if ollama list 2>/dev/null | grep -q "^$JARVIS_MODEL"; then echo "model $JARVIS_MODEL present"
+  if ollama list 2>/dev/null | awk 'NR>1{print $1}' | grep -qxF "$JARVIS_MODEL"; then echo "model $JARVIS_MODEL present"
   else echo "pulling $JARVIS_MODEL (one time, about 5 GB)"; ollama pull "$JARVIS_MODEL" || { echo "model pull did not finish - rerun on a normal internet connection"; return 1; }; fi
   if db="$(jarvis_db)"; then echo "Jarvis index: $db"
   elif have runnerctl && runnerctl list 2>/dev/null | grep -q openjarvis; then
+    # Building the index is a runner task (claude -p): it spends Claude allowance, so it runs only when Steven says
+    # so:  JARVIS_BUILD_INDEX=1 bash connect-all.sh   (or: runnerctl run openjarvis   by hand).
+    [ "${JARVIS_BUILD_INDEX:-}" = 1 ] || { echo "no Jarvis index yet. To build it (one runner task, uses Claude allowance): runnerctl run openjarvis"; return 1; }
     echo "no Jarvis index yet - running the openjarvis task once (indexes the vault; no content printed)"
     runnerctl run openjarvis || { echo "openjarvis task did not finish - runnerctl logs openjarvis"; return 1; }
     db="$(jarvis_db)" || { echo "openjarvis ran but wrote no memory.db - is ~/Shearrill-Vault on this Mac? (docs/SECOND-MAC-SETUP.md 6b)"; return 1; }
@@ -233,7 +236,7 @@ jarvis_engine() {
   else echo "no Jarvis index and no openjarvis runner task on this Mac - the index lives on the other Mac (docs/SECOND-MAC-SETUP.md 6b)"; return 1; fi
 }
 step "6a Jarvis engine (Ollama + $JARVIS_MODEL, OpenJarvis index)" \
-  "Jarvis: open the Ollama app once (or brew install ollama), and put the vault on this Mac (docs/SECOND-MAC-SETUP.md 6b); then rerun" jarvis_engine
+  "Jarvis: if the report says 'no Jarvis index yet', run  runnerctl run openjarvis  once (uses Claude allowance), or rerun with JARVIS_BUILD_INDEX=1; the vault must be on this Mac (docs/SECOND-MAC-SETUP.md 6b)" jarvis_engine
 
 # 6b. Jarvis + the recorded voice clips + the brain: verifies OpenJarvis memory.db, the vault, the real Laya engine
 #     (from Laya's own venv), Vanessa's clips and bin/brain doctor; writes brain/state/jarvis-status.json, which is
@@ -263,7 +266,10 @@ orca_connect() {
   [ "$id" = com.stablyai.orca ] || echo "WARNING: bundle id is $id, not com.stablyai.orca - check it is the right Orca"
   open -a "$app" "$REPO_DIR" || return 1
   echo "opened Orca with $REPO_DIR"
-  [ -f integrations/remote-control/orca-remote.sh ] && bash integrations/remote-control/orca-remote.sh doctor 2>&1 | tail -n 8
+  if [ -f integrations/remote-control/orca-remote.sh ]; then
+    local doc; doc="$(bash integrations/remote-control/orca-remote.sh doctor 2>&1 | tail -n 12)"; printf '%s\n' "$doc"
+    case "$doc" in *--grant-desktop-control*|*"non-private address"*) echo "Orca doctor found a security problem above - stop that orca serve"; return 1 ;; esac
+  fi
   return 0
 }
 step "6c Orca (agents side by side + phone view), opened on the Repo folder" \
@@ -303,7 +309,8 @@ step "6d AnyDesk (remote screen between all your computers)" \
   "AnyDesk: download it from https://anydesk.com/en/downloads/mac-os (free for personal use), then rerun" anydesk_connect
 
 # 6e. Agent OS: every roster agent reachable through Laya (lane), Jarvis (recall) and Orca (launch). --apply only
-#     writes ~/.local/bin/brain (symlink) and ~/.config/agent-os/config; everything else it reports.
+#     writes ~/.local/bin/brain (symlink), ~/.config/agent-os/config, and symlinks the generated seat files from
+#     integrations/agent-os/agents/ into ~/.claude/agents (files already there are never overwritten); the rest it reports.
 step "6e Agent OS (brain on PATH, roster agents wired to Laya, Jarvis and Orca)" \
   "Agent OS: bash integrations/agent-os/install-mac.sh --apply and read its WARN lines" \
   bash integrations/agent-os/install-mac.sh --apply

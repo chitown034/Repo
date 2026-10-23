@@ -5,8 +5,9 @@
 #   bash integrations/agent-os/install-mac.sh            read-only: checks everything, writes a local status file
 #   bash integrations/agent-os/install-mac.sh --apply    the same, plus two safe local steps (below)
 #
-# --apply changes ONLY: (1) ~/.local/bin/brain (a symlink to this repo's bin/brain) and (2) ~/.config/agent-os/config
-# (the repo path, chmod 600). It never installs an app, logs in, pairs Orca, edits a skill, an MCP server, a runner task
+# --apply changes ONLY: (1) ~/.local/bin/brain (a symlink to this repo's bin/brain), (2) ~/.config/agent-os/config
+# (the repo path, chmod 600) and (3) symlinks for the generated seat files (integrations/agent-os/agents/*.md) in
+# ~/.claude/agents - a file already there is never overwritten. It never installs an app, logs in, pairs Orca, edits a skill, an MCP server, a runner task
 # or a live prompt, opens a port, or reads client data. Anything it finds missing it names with the one command to run.
 set -u
 MODE="${1:---verify}"
