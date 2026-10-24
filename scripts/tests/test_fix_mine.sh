@@ -59,6 +59,29 @@ grep -qx "run brain-weekly-verify" "$T/calls" && grep -qx "run toolkit-deck-sync
 grep -qE "run (ok|off|RUN|updated|BADZ|NOAL|some-broken-tz-task)$" "$T/calls" && bad "a marker word or a BADZ task was run" || ok
 grep -q "run r9-feed-freshness-sweep" "$T/calls" && bad "paused task re-run" || ok
 grep -q "run strava-daily-sync" "$T/calls" && bad "a task paused by this run was then re-run" || ok
+# 2c. set_keychain with a stub `security`: present item -> no prompt; new item stored with -w from the hidden value; Enter skips
+cat > "$T/bin/security" <<'STUB'
+#!/bin/bash
+case "$1" in
+  find-generic-password) grep -q "item=$5" "$FIX_MINE_KC" 2>/dev/null ;;
+  add-generic-password) echo "item=$6 value=$8" >> "$FIX_MINE_KC" ;;
+esac
+STUB
+chmod +x "$T/bin/security"; : > "$T/kc"; printf 'tok-123\n' > "$tty"
+PATH="$T/bin:$PATH" FIX_MINE_KC="$T/kc" FIX_MINE_TTY=$tty bash -c '. scripts/fix-mine.sh; set_keychain vanessa-discord-bot-token "Discord"; echo rc=$?' 2>"$T/err2" | grep -q "rc=0" && ok || bad "keychain store failed"
+grep -q "item=vanessa-discord-bot-token value=tok-123" "$T/kc" && ok || bad "token not stored via security add-generic-password"
+grep -q "tok-123" "$T/err2" && bad "token leaked to stderr" || ok
+printf 'other\n' > "$tty"
+PATH="$T/bin:$PATH" FIX_MINE_KC="$T/kc" FIX_MINE_TTY=$tty bash -c '. scripts/fix-mine.sh; set_keychain vanessa-discord-bot-token "Discord"; echo rc=$?' 2>/dev/null | grep -q "rc=0" && [ "$(grep -c vanessa-discord-bot-token "$T/kc")" = 1 ] && ok || bad "present item was asked again or stored twice"
+# 2d. the REPORT catalog prints shapes, never values (validator P04-F1)
+mkdir -p "$T/Applications/claude-runner"
+cat > "$T/Applications/claude-runner/schedule.json" <<'FIX'
+{"tasks":[{"name":"vanessa-imessage-inbox","cron":"*/10 * * * *","model":"claude-sonnet-5","timeout":600,"env":{"DISCORD_BOT_TOKEN":"MTA0SECRETTOKENVALUE1234567890abcdefghijklmnopqrstuvwxyz"},"api_key":"sk-SECRETKEY-0000000000","prompt":"Call Mike P. at 619-555-0101 about the house","allowedTools":["Artifact"]}]}
+FIX
+out=$(HOME="$T" FIX_MINE_TTY=/dev/null bash -c '. scripts/fix-mine.sh; runner_catalog >/dev/null 2>&1; printf "%s" "$CATALOG"' 2>/dev/null)
+printf '%s' "$out" | grep -q "vanessa-imessage-inbox" && printf '%s' "$out" | grep -q '"model": "claude-sonnet-5"' && ok || bad "catalog lost the safe keys"
+printf '%s' "$out" | grep -qE "SECRET|619-555|Mike|MTA0" && bad "catalog printed a value it must not" || ok
+printf '%s' "$out" | grep -q '"api_key": "<str' && printf '%s' "$out" | grep -q '"prompt": "<str' && ok || bad "unsafe keys not reduced to shapes"
 # 3. the script never echoes a value it was given (grep the whole file for a read without -s)
 grep -n 'read -r [a-z]' scripts/fix-mine.sh | grep -v -- '-rs' | grep -q . && bad "a read without -s found" || ok
 rm -rf "$T" "$tty"

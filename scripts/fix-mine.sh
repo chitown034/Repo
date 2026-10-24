@@ -14,8 +14,8 @@ set -u
 CHECK=0; [ "${1:-}" = "--check" ] && CHECK=1
 TTY="${FIX_MINE_TTY:-/dev/tty}"   # tests point this at a file; real runs read from the terminal
 OUT=/dev/tty; [ "$TTY" = /dev/tty ] || OUT=/dev/stderr   # prompts never go into a file that is being read
-REPO="$HOME/Repo"; BR="claude/stoic-cori-pvn3f8"
-DONE=""; SKIP=""; YOU=""
+REPO="$HOME/Repo"; BR="claude/stoic-cori-pvn3f8"; USER="${USER:-$(id -un)}"
+DONE=""; SKIP=""; YOU=""; CATALOG=""; DISCORD_DIR=""; DISCORD_VARS=""
 done_() { DONE="$DONE
   - $*"; }
 skip_() { SKIP="$SKIP
@@ -75,6 +75,47 @@ step_lofty_cloud() {
   else skip_ "lofty-cloud MCP: claude mcp add failed (run it by hand and paste the error)"; fi
 }
 
+# ---- 3a. the channels: Kapso plugin + MCP (sign-in stays Steven's), the Discord bot token into the Keychain (hidden)
+set_keychain() {   # set_keychain <item> <prompt>: hidden prompt once, stored only in the login Keychain (macOS `security`); Enter skips
+  local item="$1" prompt="$2" v=""
+  have security || { skip_ "$item: no macOS Keychain here"; return 1; }
+  if security find-generic-password -a "$USER" -s "$item" >/dev/null 2>&1; then return 0; fi
+  if [ $CHECK = 1 ]; then say "would ask (hidden, Enter skips): $prompt -> Keychain item $item"; return 1; fi
+  printf '%s (hidden; Enter to skip): ' "$prompt" >"$OUT"
+  IFS= read -rs v <"$TTY" || v=""; printf '\n' >"$OUT"
+  [ -z "$v" ] && return 1
+  security add-generic-password -U -a "$USER" -s "$item" -w "$v" >/dev/null 2>&1; local rc=$?; unset v; return $rc
+}
+step_channels() {
+  [ "$(uname)" = Darwin ] || { skip_ "channels: not a Mac"; return; }
+  [ -d "$REPO" ] && cd "$REPO" || return
+  [ -f integrations/kapso/install-mac.sh ] && run_quiet "Kapso WhatsApp plugin + MCP (sign-in is yours)" bash integrations/kapso/install-mac.sh install --apply
+  if have security && security find-generic-password -a "$USER" -s vanessa-discord-bot-token >/dev/null 2>&1; then done_ "Discord bot token already in the Keychain"
+  else set_keychain vanessa-discord-bot-token "Discord bot token (discord.com/developers -> your app -> Bot -> Reset Token)" && done_ "Discord bot token saved in the Keychain (vanessa-discord-bot-token)" || skip_ "Discord bot token: not entered (Discord stays off until it is)"; fi
+  [ $CHECK = 0 ] && runner_catalog
+}
+runner_catalog() {   # what Claude needs to wire the WhatsApp and Discord runner tasks next (key names and shapes only; never a value)
+  if [ -f "$HOME/Applications/claude-runner/schedule.json" ]; then
+    CATALOG="$(python3 - "$HOME/Applications/claude-runner/schedule.json" <<'PY' 2>/dev/null
+import json, sys
+d = json.load(open(sys.argv[1]))
+tasks = d.get("tasks", d)
+first = tasks[0] if isinstance(tasks, list) else {k: v for k, v in list(tasks.items())[:1]}
+SAFE = {"model", "max_turns", "timeout", "window", "mcp", "allowedTools", "cron", "schedule", "tz", "name", "task", "enabled"}
+def shape(o, key=""):   # values only for structural, never-secret keys; everything else is its TYPE and size (validator P04-F1)
+    if isinstance(o, dict): return {k: shape(v, k) for k, v in o.items()}
+    if isinstance(o, list): return "<list %d: %s>" % (len(o), type(o[0]).__name__ if o else "empty")
+    if key in SAFE and isinstance(o, (str, int, float, bool)) and len(str(o)) <= 60: return o
+    if isinstance(o, str): return "<str %d>" % len(o)
+    return "<%s>" % type(o).__name__
+print(json.dumps(shape(first), indent=1))
+PY
+)"
+    DISCORD_DIR="$(ls -d "$HOME"/Applications/*[Dd]iscord* 2>/dev/null | head -3 | tr '\n' ' ')"
+    DISCORD_VARS="$(grep -rhoE 'DISCORD_[A-Z_]+|discord[-_a-z]*token[-_a-z]*' "$HOME"/Applications/*[Dd]iscord*/ 2>/dev/null | sort -u | head -8 | tr '\n' ' ')"
+  fi
+}
+
 # ---- 3b. Vanessa everywhere on this Mac: Jarvis speaks and thinks as her and knows the brain; Laya routes; Orca launches the
 #          team. Each script is idempotent and reports its own FAIL/WARN rows; this just runs them in order and keeps the last line.
 run_quiet() {   # run_quiet <label> <cmd...>: run, keep the log, report one line
@@ -122,7 +163,8 @@ step_runner() {
 
 # ---- 5. only you ------------------------------------------------------------------------------------------------------------
 checklist() {
-  you_ "A. Phone: text  connect @vanessa-shearrill  to +1 650 484 9720 (once) — the morning brief then arrives by iMessage + voice."
+  you_ "A. Phone: text exactly  connect @vanessa-shearrill  to +1 650 484 9720 (tap link: sms:+16504849720?&body=connect%20%40vanessa-shearrill). Inkbox showed NO linked phone on 2026-10-23 — a plain 'hi' does not link it. Then text her a real question."
+  you_ "A2. Discord: discord.com/developers -> New Application 'Vanessa' -> Bot -> Reset Token (paste it when this script asks), -> OAuth2 URL Generator: scope bot, permissions Send Messages + Read Message History -> open the URL and add the bot to your server; make a channel named vanessa. Then tell Claude 'Discord link' for the one-click Composio connect (link lasts 10 minutes)."
   you_ "B. Zoho: Setup -> Security Control -> Profiles -> your profile -> Developer Permissions -> tick 'Zoho CRM API Access'."
   you_ "C. Sign-ins (browser, 2 minutes): type  claude  then  /mcp  -> lofty-cloud -> sign in; then kapso -> sign in. Say 'list my Lofty lead stages' there and paste the answer to Claude."
   you_ "D. Phone, once: MyFitnessPal -> Apps & Devices -> Apple Health ON; Strava -> Settings -> Apple Health ON; BodyPark app -> allow Apple Health; Health Auto Export -> Metrics select all + Workouts ON."
@@ -132,12 +174,13 @@ checklist() {
 
 main() {
   say "fix-mine $(date '+%Y-%m-%d %H:%M') $( [ $CHECK = 1 ] && echo '(check only: nothing changes, nothing asked)')"
-  step_repo; step_keys; step_lofty_cloud; step_vanessa_everywhere; step_runner; checklist
+  step_repo; step_keys; step_lofty_cloud; step_channels; step_vanessa_everywhere; step_runner; checklist
   say ""; say "================ REPORT (copy from here down and paste it to Claude) ================"
   say "Done:${DONE:-
   - nothing new (everything scripted was already in place)}"
   [ -n "$SKIP" ] && { say "Skipped / not finished:$SKIP"; }
   say "Only you (in this order; each is one screen):$YOU"
+  if [ -n "${CATALOG:-}" ]; then say ""; say "For Claude (shapes only, no values) — runner task entry sample:"; say "$CATALOG"; say "discord bot folder: ${DISCORD_DIR:-none found}  vars: ${DISCORD_VARS:-none}"; say "scheduled-tasks: $(ls "$HOME/.claude/scheduled-tasks" 2>/dev/null | head -60 | tr '\n' ' ')"; fi
   say "Run this again any time:  cd ~/Repo && bash scripts/fix-mine.sh"
 }
 [ "${FIX_MINE_NO_MAIN:-0}" = 1 ] || main "$@"

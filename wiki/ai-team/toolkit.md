@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 48 skills · 7 Claude mods (plugins) · 37 connectors (3 ok, 34 need attention) · 11 MCP servers · 13 APIs · 71 cloud routines · 60 Mac tasks
+toolkit: 48 skills · 7 Claude mods (plugins) · 40 connectors (3 ok, 37 need attention) · 11 MCP servers · 13 APIs · 72 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -25,10 +25,12 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 37 connectors (3 ok, 34 need at
 - `push-buttons`: One-word slash commands (/cycle /inbox /meetings /sync /connect /tc /queue /today /help-buttons) that send the full, correct prompt for each workflow, HALT rules included.
 
 **Connectors**
-- `iMessage line (morning brief text + voice)` — *attention*: still not linked — brief arrives by e-mail + push
+- `iMessage line (morning brief text + voice, Vanessa replies)` — *attention*: not linked — Inkbox shows no connected phone and no conversation (23:50 UTC)
 - `Kapso (WhatsApp)` — *attention*: keys in the Keychain; plugin + MCP waiting on the sign-in
-- `Jarvis speaks and thinks as Vanessa` — *attention*: ready — integrations/jarvis/vanessa-persona.sh --apply writes her SOUL/MEMORY/USER persona into OpenJarvis and sets persona_name = "vanessa"; her recorded voice via jarvis-setup.sh --apply; not yet ru
+- `Jarvis = Vanessa, single point of contact for the whole AI team` — *attention*: persona + voice + brain index + the 180-seat roster in her memory, all from vanessa-persona.sh (run by fix-mine)
 - `Jarvis knows the Second Brain` — *attention*: ready — the same script indexes the brain's pages (no client pages, no meeting digests, no findings) into Jarvis memory; the 6D layers row shows "speaks as Vanessa" + the page count once run
+- `WhatsApp (Kapso)` — *pending*: number …5223 assigned; nothing reads it — runner tasks kapso-inbox-sync / vanessa-whatsapp-inbox not registered; Kapso MCP sign-in pending; keys in the Keychain (connect report #3)
+- `Discord #vanessa` — *pending*: bot token missing (Composio discordbot initiated 23:55 UTC, not active; Mac bot in relay mode)
 
 **MCP servers**
 - `laya` — *ok*: zero-token local router in front of Vanessa (lane, tier, HALT words) · registered — real engine answering on Mac 1 (2026-10-23)
@@ -47,6 +49,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 37 connectors (3 ok, 34 need at
 **Cloud routines**
 - `Vanessa — Chief of Staff daily cycle (weekdays 6:25 AM PT, parallel squads)`: cron CRON_TZ=America/Los_Angeles 25 6 * * 1-5 · on · —
 - `Vanessa — morning brief across the dashboards (6:34 AM PT; push + writes the iMessage/voice script; `: cron CRON_TZ=America/Los_Angeles 34 6 * * * · on · SUCCEEDED @ 2026-10-22T13:49 (as the 6:4
+- `Vanessa inbox sweep (cloud) — hourly fallback behind the Mac pollers: unanswered iMessages (Inkbox),`: cron CRON_TZ=America/Los_Angeles 17 6-22 * * * · on · —
 - `Big moves — Vanessa's four courses of action (4 each: big moves · self-improvement/loop engineering `: cron CRON_TZ=America/Los_Angeles 5 6 * * * · on · —
 - `Command Deck & ISA Portal Weekly Loop Engineering QA`: cron 0 16 * * 0 · on · FAILED @ 2026-09-20T16:06
 - `Command Deck — Vanessa orchestrated ops review (C-suite in parallel, Fri 4 PM PT)`: cron 0 23 * * 5 · on · FAILED @ 2026-09-18T23:03
@@ -275,6 +278,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 37 connectors (3 ok, 34 need at
 - `Pabbly ↔ Kapso webhooks, six workflows` — *attention*: Kapso login proven; webhook URLs and the six workflows are clicks at connect.pabbly.com
 - `Laya routes, Orca launches the AI team` — *attention*: installed on Mac 1 (connect report #3); connect-orca-laya.sh --apply + agent-os/install-mac.sh --apply re-run by the paste; brain os check is the proof
 - `6D Brain shows all of it` — *attention*: the layers panel reads brain/state/jarvis-status.json (persona, indexed pages) and the toolkit register reads this table; the daily 3:30 AM rebuild carries it
+- `Command Deck chat box` — *attention*: works in claude.ai through the viewer's own Claude (sample declared); last message 2026-09-13
 
 **MCP servers**
 - `playwright` — *ok*: browser automation for sites with no API · installed

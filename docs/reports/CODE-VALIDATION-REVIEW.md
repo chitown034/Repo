@@ -1,3 +1,95 @@
+## Orchestrator response (2026-10-24 00:30 UTC) — pass 3 findings applied (reviewed f3ae6d1d0eca0a4e → 92d8222d141201e6)
+
+change-set: 92d8222d141201e6
+
+- **P04-F1 (MEDIUM)** applied: the REPORT catalog is an allowlist — values only for model, max_turns, timeout, window, mcp, allowedTools,
+  cron/schedule/tz/name/task/enabled (≤ 60 chars); every other key prints as its type and size (`<str 72>`, `<list 3: str>`). Test with a
+  fake schedule.json holding a token, an api_key and a prompt with a name and a phone number: none of the values appear, the safe keys do.
+  The Discord folder glob is case-insensitive (`*[Dd]iscord*`); a token already in the Keychain reports "already" instead of "saved".
+- **P05-F1 (LOW)** applied: the roster groups by `laya.lane` (then `lead`, then tier) with no cap — slug and role for every seat. Test asserts
+  the heading appears once after two applies and all 180 slugs are present.
+- (b) `security -w` on the command line stays as is (single-user Mac; INFO) — noted for Steven in the decisions entry.
+Gate PASS; 25 + 28 shell asserts; doctor PASS.
+
+## Code-validator review, pass 3 (2026-10-24) — verdict FIX FIRST (VibeBreaker DIFF: 0 critical / 0 high / 1 medium / 1 low, 5 info)
+
+change-set: f3ae6d1d0eca0a4e
+
+**Verdict: FIX FIRST.** The Keychain prompt, the grep for variable names and the persona append are sound. One medium defect: the REPORT
+block labelled "shapes only, no values" prints values. Every string from the first runner task, up to 60 characters, is printed as is
+(longer strings are cut to 57), and Steven pastes that REPORT to Claude in the cloud. One low defect: the persona section says "every
+seat", but it lists 97 of the 180, grouped by tier, because the key it groups on does not exist.
+
+Deterministic gate, quoted: `verdict: PASS (6 passed, 0 failed)`; `--hash` printed `f3ae6d1d0eca0a4e`. Re-run here: `test_fix_mine.sh`
+22/0, `test_vanessa_persona.sh` 26/0, `bin/brain doctor` → `doctor: PASS`, `bash -n` passed on all three changed scripts.
+
+### Scope
+- Diff: `scripts/fix-mine.sh`, `scripts/tests/test_fix_mine.sh`, `integrations/jarvis/vanessa-persona.sh`, plus docs (`context/decisions.md`,
+  `docs/STEVEN-STEPS.md`, `docs/inventory/cloud-routines-2026-10.md`, `integrations/CONNECTIONS.md`, `wiki/ai-team/toolkit.md`) and
+  the regenerated `brain/index.json` / `docs/reports/CODE-VALIDATION.md`.
+- Also read: `run_quiet`, `step_vanessa_everywhere` (fix-mine.sh), `scripts/tests/test_vanessa_persona.sh`, `integrations/agent-os/agents.json`.
+- Passes: 01, 04, 05, 11, 14, 19 (shell + inline Python); 20.
+- Probes ran only in the scratchpad: the CATALOG Python and the persona Python were cut out of the scripts and run against fake inputs.
+
+### Confirmed findings
+
+**P04-F1 (MEDIUM, CONFIRMED): the CATALOG prints values under a "shapes only, no values" heading.** `scripts/fix-mine.sh`, `step_channels`, the
+`mask()` heredoc. `mask` keeps every key and every scalar. It cuts strings only when they are longer than 60 characters, and only to 57.
+*Trigger:* the first task in `~/Applications/claude-runner/schedule.json` holds a secret or a free-text field. *Bad state:* the probe used a
+fake entry with `env.DISCORD_BOT_TOKEN` (72 characters), `api_key` (40 characters) and `prompt` (with a name and a phone number). The REPORT
+showed the first 57 characters of the token, the whole 40-character key, and `"Text Jane Doe at 619-555-0123 about her VA loan rate lock..."`.
+The REPORT is meant to be pasted to Claude, so those values would leave the Mac. Whether the real runner has `env`, `prompt` or token keys
+is NEEDS-CONTEXT: the runner's source is not in this repo. The defect does not depend on that answer, because the block says "no values".
+*Fix:* do not use a denylist. Print the value only for keys on an allowlist (`model, max_turns, timeout, window, mcp, allowedTools`, plus
+the schedule/cron key once its name is known). For every other key print only the type, e.g. `"<str 72>"`, `"<dict: keys a,b,c>"` or
+`"<list 5>"`. *Proof:* a test with a fake `schedule.json` holding `env: {DISCORD_BOT_TOKEN: "<72 chars>"}`, `api_key` and `prompt` that asserts
+the REPORT contains none of those values but still names the keys.
+
+**P05-F1 (LOW, CONFIRMED): the persona's "every seat Vanessa can dispatch" lists 97 of 180 seats, grouped by tier number.** In
+`integrations/jarvis/vanessa-persona.sh`, the agents in `agents.json` have no top-level `lane` or `exec` key. The lane is nested at
+`laya.lane`; `lead` is also present. So the grouping always falls back to `tier`, and the section has three headings, `**1** (17)`, `**2**
+(104)` and `**3** (59)`, each cut at 40. The 83 seats that are cut include most of the tier-2 and tier-3 working seats. Vanessa-in-Jarvis
+would answer "no such seat" for an agent that exists. *Fix:* group by `a.get("laya",{}).get("lane")` (or by `lead`), and either drop the cap or
+say "first N of M". *Proof (missing test):* after `--apply`, assert that MEMORY.md has the `## The AI team` heading exactly once, still
+exactly once after a second `--apply`, and that the number of slugs listed equals `count` (180).
+
+### Candidates disproved or kept as INFO (pass 20)
+- **grep of Discord variable names: safe.** When the glob matches nothing, grep gets a literal path, exits 2, and `2>/dev/null` hides it;
+  DISCORD_VARS is then empty (probed). `-o` prints only the match. `DISCORD_[A-Z_]+` and `discord[-_a-z]*token[-_a-z]*` cannot match a
+  value such as `MTA…` (digits, mixed case, dots). In the probe, a `.env` with `DISCORD_BOT_TOKEN=MTA…` printed only `DISCORD_BOT_TOKEN`.
+  INFO: the glob is case-sensitive, so a folder named `Discord-bot` is missed. `-r` also walks `node_modules`/`.venv`, which only costs time.
+- **`security … -w "$v"` on argv (INFO).** The token is visible in `ps` for the lifetime of one `security` call. On a single-user Mac that
+  is acceptable. The `security(1)` man page (from my knowledge, not checked here; this is Linux, so confirm with `man security` on the Mac)
+  says to put `-w` last with no value to be prompted. That form would keep the token off argv, but `security` then asks twice (enter and
+  retype) and the script's own Enter-to-skip prompt would come before it. Optional hardening, not a defect.
+- **`set_keychain` control flow: correct.** It returns the rc of `security`, `unset v` runs on every path after the read, and `done_`
+  always returns 0, so `&& done_ … || skip_ …` never runs both. INFO: on every rerun with the item already present it reports "Discord
+  bot token saved in the Keychain" again (no action was taken). In `--check` it reports the skip line "not entered" after the "would ask"
+  line. Both are cosmetic.
+- **`USER="${USER:-$(id -un)}"`: fine under `set -u`.** It keeps the account name that `find` and `add` use the same.
+- **Persona `>>` duplication: none.** `cp … MEMORY.md` overwrites the file just before the append on every `--apply`. The existing
+  rerun test (line 32) does not check this, which is why the test above is listed.
+- **PII in agents.json: none found.** No phone or email pattern matched (0 hits). The names are AI personas (Marcus, Sofia, …), not
+  people. The phone number added to `CONNECTIONS.md` is Vanessa's Inkbox service number, which the previous checklist already had.
+- `run_quiet` honours `--check`, so the Kapso install does not run in check mode.
+
+### Coverage — inspected and clean
+| Area | Result |
+|---|---|
+| `set_keychain` hidden read, no stderr leak, present item not re-asked | clean (4 tests) |
+| `step_channels` Darwin guard, `cd` guard, `--check` path | clean |
+| Discord folder `ls` / variable-name grep | clean (probed) |
+| CATALOG mask | **P04-F1** |
+| checklist A / A2 text | clean (no secret; the sms: link is the existing service number) |
+| persona append: idempotence, missing-file guard | clean |
+| persona team grouping and completeness | **P05-F1** |
+| docs diff (decisions, STEVEN-STEPS, inventory row, CONNECTIONS) | no secrets or client data |
+
+### Top missing tests (pass 19)
+1. CATALOG redaction with a fake `schedule.json` holding a token, a key and a prompt (proves P04-F1).
+2. Persona: the team heading appears exactly once after two `--apply` runs, and 180 slugs are listed (proves P05-F1).
+3. `set_keychain` in `--check`: no `security add-…` call and no read from the tty.
+
 ## Orchestrator response (2026-10-23 22:05 UTC) — pass 2 verdict SHIP; P19-F1 (LOW) and U1 applied (reviewed c41c06afa75d7877 → 166c49bb4015ccbb)
 
 change-set: 166c49bb4015ccbb

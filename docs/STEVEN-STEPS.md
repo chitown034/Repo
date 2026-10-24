@@ -15,7 +15,7 @@ It brings the repo up to date, asks once (hidden; Enter skips) for the Lofty, Ti
 MCP server as `lofty-cloud`, makes Jarvis speak and think as Vanessa with the brain in its memory, re-runs Laya + Orca + the AI-team
 wiring, pauses the retired runner tasks, re-runs the failed ones in the background, and ends with a **REPORT**: what it did, what it
 skipped, and the lettered list only you can do (A iMessage text · B Zoho tick · C two browser sign-ins · D phone health clicks ·
-E connectors · F AnyDesk permissions · G Orca phone pairing). Paste the REPORT back to Claude. Run it again any time; it only does
+E connectors · F AnyDesk permissions · G Orca phone pairing · A2 the Discord bot). Paste the REPORT back to Claude. **Why Vanessa did not answer your texts (2026-10-23 23:50 UTC):** Inkbox shows no linked phone — the connect text never arrived; use the tap link the script prints (A). Kapso: nothing reads that number yet (sign-in + two runner tasks). Discord: no bot token. The cloud now sweeps iMessage, the deck chat box and Discord hourly as a fallback. Run it again any time; it only does
 what is still missing. `bash scripts/fix-mine.sh --check` shows the plan without doing or asking anything.
 
 ## 1 · Phone · 5 minutes (Do these first; nothing else depends on them)

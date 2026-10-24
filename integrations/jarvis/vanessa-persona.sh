@@ -30,6 +30,26 @@ done
 if [ "$MODE" = "--apply" ]; then
   mkdir -p "$PERSONA" && chmod 700 "$JH" "$JH/personas" 2>/dev/null
   cp "$REPO/integrations/jarvis/persona/SOUL.md" "$PERSONA/SOUL.md" && cp "$REPO/integrations/jarvis/persona/MEMORY.md" "$PERSONA/MEMORY.md"
+  # the whole AI team, from the Agent OS manifest, so Vanessa-in-Jarvis knows every seat and how to dispatch it (Steven 2026-10-23)
+  if [ -f "$REPO/integrations/agent-os/agents.json" ]; then
+    python3 - "$REPO/integrations/agent-os/agents.json" >> "$PERSONA/MEMORY.md" <<'PY'
+import json, sys
+d = json.load(open(sys.argv[1], encoding="utf-8")); agents = d.get("agents", [])
+print("\n## The AI team — every seat Vanessa can dispatch (from integrations/agent-os/agents.json)\n")
+print(f"{len(agents)} agents. Vanessa is the single point of contact: Steven talks to her, she routes to the seat. Dispatch from a Claude Code session with")
+print("`brain os run \"<task>\"` (prints the Laya lane, the Jarvis recall line and one `claude --agent <slug>` per seat, at most 8 at once) or launch them")
+print("side by side with `bash integrations/agent-os/orca-launch.sh \"<task>\"` (Orca shows every running session; the phone view once paired).\n")
+by = {}
+for a in agents:
+    if not isinstance(a, dict): continue
+    laya = a.get("laya") if isinstance(a.get("laya"), dict) else {}
+    lane = str(laya.get("lane") or a.get("lead") or ("tier " + str(a.get("tier"))) or "other")
+    by.setdefault(lane, []).append(a)
+for lane in sorted(by):
+    rows = by[lane]
+    print(f"- **{lane}** ({len(rows)}): " + ", ".join(f"{a.get('slug')} — {a.get('role')}" if a.get('role') else str(a.get('slug')) for a in rows))
+PY
+  fi
   { printf '# USER — Steven (from context/about-me.md, the one page with no client data)\n\n'; cat "$REPO/context/about-me.md"; } > "$PERSONA/USER.md"
   say "  ok    persona files: $PERSONA/{SOUL,MEMORY,USER}.md"
 else say "  WOULD write $PERSONA/{SOUL,MEMORY,USER}.md from integrations/jarvis/persona + context/about-me.md"; fi

@@ -28,6 +28,16 @@ find "$T/stage" -type f ! -name '*.md' ! -name '.jarvis-brain-stage' | grep -q .
 [ -f "$T/stage/.jarvis-brain-stage" ] && ok || bad "stage marker missing"
 [ -f "$T/stage/CLAUDE.md" ] && [ -f "$T/stage/wiki/ai-team/index.md" ] && ok || bad "router or wiki index not staged"
 python3 -c "import json,sys; d=json.load(open('$JARVIS_STATUS')); sys.exit(0 if d.get('persona')=='vanessa' and d.get('brain_indexed') is True and d.get('brain_staged_pages',0)>50 else 1)" && ok || bad "status file not updated"
+# the whole AI team is in her memory, once
+[ "$(grep -c '^## The AI team' "$T/oj/personas/vanessa/MEMORY.md")" = 1 ] && ok || bad "roster heading missing or duplicated"
+want=$(python3 -c "import json;print(len(json.load(open('integrations/agent-os/agents.json'))['agents']))")
+got=$(python3 - "$T/oj/personas/vanessa/MEMORY.md" <<'PY'
+import json, re, sys
+slugs = {a["slug"] for a in json.load(open("integrations/agent-os/agents.json"))["agents"]}
+txt = open(sys.argv[1]).read(); print(sum(1 for s in slugs if s in txt))
+PY
+)
+[ "$got" = "$want" ] && ok || bad "roster lists $got of $want seats"
 # rerun is idempotent: still one persona_name line, exit 0
 bash integrations/jarvis/vanessa-persona.sh --apply >/dev/null 2>&1 && grep -c 'persona_name = "vanessa"' "$T/oj/config.toml" | grep -qx 1 && ok || bad "rerun not idempotent"
 # missing jarvis: persona still written, exit 0 with a WARN
