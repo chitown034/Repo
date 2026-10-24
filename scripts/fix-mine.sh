@@ -201,6 +201,59 @@ step_runner() {
   you_ "T. In about 30 minutes paste:  runnerctl status   (the re-run tasks should read ok; if one still says error, paste its runnerctl logs <task>)"
 }
 
+# ---- 4b. day and night: the message pollers may answer at any hour (Steven, 2026-10-24: "enable all messages to respond when message
+#          is sent anytime of day"). The runner skips a task outside its window (07-22 on every task today). Only the message tasks are
+#          widened, per task — never the runner-wide default — and the change is proven with `runnerctl dry`; if the runner does not
+#          print the new window back, the file is restored from its backup. The cloud sweep already runs hourly around the clock.
+HOURS_TASKS="vanessa-imessage-inbox vanessa-discord-inbox voice-reply-render kapso-inbox-sync vanessa-whatsapp-inbox"
+step_hours() {
+  local sched="$HOME/Applications/claude-runner/schedule.json"
+  [ -f "$sched" ] || { skip_ "hours: no runner schedule.json on this Mac (the cloud sweep still answers every hour, day and night)"; return; }
+  have runnerctl || { skip_ "hours: runnerctl not on this Mac"; return; }
+  # the Python never touches schedule.json: it writes the widened copy to $new; bash backs up, swaps, proves, and backs out
+  local new="$sched.new-$$" res; rm -f "$new"
+  res="$(python3 - "$sched" "$new" $HOURS_TASKS <<'PY' 2>/dev/null
+import json, os, re, sys
+path, out, names = sys.argv[1], sys.argv[2], sys.argv[3:]
+d = json.load(open(path))
+tasks = d.get("tasks", d) if isinstance(d, dict) else d
+if isinstance(tasks, list): found = [(e.get("name"), e) for e in tasks if isinstance(e, dict) and e.get("name") in names]
+elif isinstance(tasks, dict): found = [(k, v) for k, v in tasks.items() if k in names and isinstance(v, dict)]
+else: print("BADSHAPE"); sys.exit(0)
+if not found: print("MISSING"); sys.exit(0)
+if not any("window" in e for _, e in found): print("NOWINDOW"); sys.exit(0)
+changed, odd = [], []
+for name, e in found:
+    w = e.get("window")
+    if w == "00-24": continue
+    if isinstance(w, str) and re.fullmatch(r"\d{2}-\d{2}", w): e["window"] = "00-24"; changed.append(name)
+    else: odd.append("%s=%s" % (name, "no window key" if w is None else json.dumps(w)[:30]))
+if odd: print("ODD " + " ".join(odd)); sys.exit(0)        # a format this step does not know: never report done
+if not changed: print("ALREADY"); sys.exit(0)
+fd = os.open(out, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+with os.fdopen(fd, "w") as f: json.dump(d, f, indent=2); f.write("\n")
+print("CHANGED " + " ".join(changed))
+PY
+)"
+  case "$res" in
+    MISSING) skip_ "hours: none of the message tasks ($HOURS_TASKS) is registered in schedule.json yet — register them first (REPORT catalog), then run this again";;
+    NOWINDOW) local where; where="$(grep -rl -- '07-22' "$HOME/Applications/claude-runner" 2>/dev/null | grep -vE '/(logs?|state|allow)/|\.(log|jsonl|bak)' | head -5 | tr '\n' ' ')"
+              skip_ "hours: the 07-22 window is a runner-wide default, not a per-task key; it is set in: ${where:-no file under ~/Applications/claude-runner names 07-22 (paste: runnerctl dry vanessa-imessage-inbox)}";;
+    ODD*) skip_ "hours: a window this script does not know how to widen — ${res#ODD } (paste that to Claude with: runnerctl dry vanessa-imessage-inbox)";;
+    ALREADY) done_ "hours: message tasks already run day and night (window 00-24)";;
+    CHANGED*) local t x bak why=""; t="${res#CHANGED }"
+              if [ $CHECK = 1 ]; then rm -f "$new"; say "would: set window 00-24 on $t"; return; fi
+              bak="$sched.bak-run-$$"; cp -p "$sched" "$bak" || { rm -f "$new"; skip_ "hours: could not back up schedule.json — nothing changed"; return; }
+              cp -p "$sched" "$sched.bak-$(date +%Y%m%d)" 2>/dev/null   # the day's history copy, only when something changes
+              mv "$new" "$sched"
+              for x in $t; do runnerctl dry "$x" 2>/dev/null | grep -q "window=00-24 in_window=1" || why="$why runnerctl dry $x did not print window=00-24 in_window=1;"; done
+              runnerctl status >/dev/null 2>&1 || why="$why runnerctl status failed;"
+              if [ -z "$why" ]; then rm -f "$bak"; done_ "message tasks now run day and night (window 00-24): $t"
+              else cp -p "$bak" "$sched" && rm -f "$bak"; skip_ "hours: the runner did not accept window 00-24 (${why# }) — schedule.json restored to this run's own copy; paste to Claude: runnerctl dry ${t%% *}"; fi;;
+    *) rm -f "$new"; skip_ "hours: could not read schedule.json (${res:-not JSON this script understands}); the REPORT catalog below shows its shape";;
+  esac
+}
+
 # ---- 5. only you ------------------------------------------------------------------------------------------------------------
 checklist() {
   you_ "V. Voice: once the Inkbox key and the thread allow-list are on this Mac (this script), every text reply from Vanessa is followed by her voice note within 10 minutes (voice-reply-render). If a voice note never arrives, paste: runnerctl logs voice-reply-render"
@@ -215,7 +268,7 @@ checklist() {
 
 main() {
   say "fix-mine $(date '+%Y-%m-%d %H:%M') $( [ $CHECK = 1 ] && echo '(check only: nothing changes, nothing asked)')"
-  step_repo; step_keys; step_lofty_cloud; step_channels; step_voice; step_vanessa_everywhere; step_runner; checklist
+  step_repo; step_keys; step_lofty_cloud; step_channels; step_voice; step_vanessa_everywhere; step_hours; step_runner; checklist
   say ""; say "================ REPORT (copy from here down and paste it to Claude) ================"
   say "Done:${DONE:-
   - nothing new (everything scripted was already in place)}"

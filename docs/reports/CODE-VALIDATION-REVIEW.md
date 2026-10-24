@@ -1,3 +1,120 @@
+## Orchestrator response (2026-10-24 02:05 UTC) — step_hours findings applied (reviewed 33bc6526e76a9d13 → 2cca16c8b749f81d)
+
+change-set: 2cca16c8b749f81d
+
+- **P05-F1 (HIGH)** applied: the Python no longer writes schedule.json; it writes the widened copy to `schedule.json.new-$$` (O_EXCL, 600). Bash then takes a per-run backup (`schedule.json.bak-run-$$`) immediately before the swap, restores from that copy only, and deletes it on success. The daily history copy is written only when something changes, so a MISSING/ODD/ALREADY run leaves no backup. Tests: the MISSING → register → refused-proof sequence keeps both new tasks; a `runnerctl status` exit 1 restores and names itself.
+- **P04-F1 (MEDIUM)** applied: ALREADY is printed only when every found message task is exactly `00-24`. Any other window (`"7-22"`, a list, a missing key beside a widened one) prints `ODD name=value` and a skip line that names the task and its window (a SAFE structural key), never "already". Tests for `"7-22"` and for the 00-24 + no-key mix. Steven's call on an unrecognised format: leave it and report (the step changes nothing it does not understand).
+- **U2** narrowed: every changed task is dry-run, not only the first; the skip line lists which conjunct failed (dry on which task, or status).
+- **I4** applied: the unreadable-shape branch points at the REPORT catalog (shapes only) instead of a `json.tool` paste; test asserts no `json.tool` hint. Dict-keyed file test added (inner `name`, `defaults` and `version` survive). A `S3CR3T` fixture asserts nothing reaches stderr or the report.
+- **I1/U1** unchanged: Bash 3.2 static-clean pattern kept; `00-24` semantics stay proven at run time by the dry/status grep and the restore path.
+Gate PASS; 59 fix-mine asserts.
+
+## Code-validator review, fix-mine step_hours (2026-10-24) — verdict FIX FIRST (VibeBreaker DIFF: 0 critical / 1 high / 1 medium / 0 low, 4 info, 2 unverified; FIX BEFORE SHIP)
+
+change-set: 33bc6526e76a9d13
+
+**Verdict: FIX FIRST.** The core edit is correct. Only the five named message tasks change. The dict-keyed layout writes the
+right entry. `--check` writes nothing. No value from schedule.json reaches stdout or stderr. Everything new is static-clean for
+Bash 3.2 and Python 3.9. Two defects remain. **High:** the backup is taken once per calendar day, before the step knows whether
+it will change anything. A later run that fails its proof restores that morning copy over everything edited since. The
+reproduced case deletes the message tasks Steven registered in between, because the step's own MISSING line tells him to
+register them and run again. **Medium:** "already run day and night" is reported whenever nothing was changed. That includes
+a window it cannot parse and a message task that has no window key at all.
+
+Deterministic gate, quoted: `verdict: PASS (4 passed, 0 failed)`. `--hash` printed `33bc6526e76a9d13`.
+
+### Scope
+- Mode: DIFF. Shell passes 01, 04, 05, 11, 14, 19, then 20. The embedded Python was also read for 04/05 (it runs inline in the step).
+- Read: the whole `step_hours` function and `HOURS_TASKS` (`scripts/fix-mine.sh` 204–253), the `main` wiring (269), the helpers it
+  calls (`done_`, `skip_`, `say`, `have`, `CHECK`, `set -u`, lines 13–27), `runner_catalog` (111–128, for the house rule on
+  redacting schedule.json) and `step_runner` (180–202, for how `runnerctl status` failure is treated). Also the test block 2h
+  (`scripts/tests/test_fix_mine.sh` 111–145). Out of scope: the doc-only files, `brain/index.json` and `docs/reports/CODE-VALIDATION.md`.
+- Ran: the gate. Then reproducers in scratch HOMEs, with a `runnerctl` stub that reads list- or dict-keyed schedule.json and has
+  a settable status exit code and dry window. Nothing ran against a real runner or under Steven's HOME.
+- Limitation: there is no Bash 3.2 interpreter here (only 5.2.21) and no runner source. See UNVERIFIED.
+
+### CONFIRMED
+
+**P05-F1 (HIGH, confidence HIGH): a failed proof restores a stale same-day backup and wipes every edit since that backup.**
+- Location: `scripts/fix-mine.sh:213` creates the backup only if `$BAK` does not exist, and it does so before the Python decides
+  MISSING/ALREADY/CHANGED. `:248` restores it with `cp "$BAK" "$sched"`.
+- Trigger, reproduced:
+  1. Run 1: schedule.json has no message task. The result is MISSING ("register them first … then run this again"), and
+     `schedule.json.bak-20261024` is written.
+  2. The message tasks are registered the same day.
+  3. Run 2 widens them, and the proof fails (`runnerctl dry` prints `window=07-22`, or `runnerctl status` exits non-zero for any
+     unrelated reason).
+- Bad state: the file afterwards is `{"tasks":[{"name":"nightly-self-test","window":"07-22"}]}`. Both registered message tasks
+  are gone, and the REPORT says only "schedule.json restored". A second sequence was also reproduced: run 1 succeeds, so
+  imessage is 00-24. A new task is added at midday. Run 2's status exits 1. Imessage reverts to 07-22 and the midday task is
+  deleted, although the morning REPORT said done.
+- `$BAK` itself is always defined (a `local` at 213, before any branch), and `[ -f "$BAK" ]` guards the restore. In `--check`
+  mode no backup is made and the restore cannot be reached (it returns at 244). So the defect is staleness, not an unset variable.
+- Fix direction: take the backup immediately before the write, in the CHANGED path and outside check mode, and restore from that
+  run's own copy. One way is a per-run name. Another is to keep the daily name for history and also make a per-run copy for the
+  restore. The skip line should also say which conjunct failed (dry window or status), not always "did not accept".
+- Proof: a test that runs step_hours once with no message task (MISSING) and then adds two message tasks to schedule.json. It runs
+  again with `FIX_MINE_DRY_WINDOW=07-22` and asserts that both tasks are still present at 07-22 afterwards. A second test makes
+  the status stub exit 1 and asserts the same.
+
+**P04-F1 (MEDIUM, confidence HIGH): "already run day and night" is reported when nothing was widened for any reason.**
+- Location: `scripts/fix-mine.sh:226` (only `^\d{2}-\d{2}$` strings are changed), `:230` (`if not changed: print("ALREADY")`) and `:242`.
+- Trigger, reproduced: the message task's window is `"7-22"`, `[7,22]` or `"07:00-22:00"`. Or one message task is at `00-24` and
+  another has no `window` key, so it falls back to the runner default.
+- Bad state: every case prints `DONE: hours: message tasks already run day and night (window 00-24)`, and the file is unchanged.
+  The ALREADY branch also never runs `runnerctl dry`. Steven's request goes unmet and the REPORT says it is met. The exact file
+  format is unknown (stated in the brief), so an unrecognised format on the first real run is a realistic case.
+- Fix direction: print ALREADY only when every found entry has `window == "00-24"`. Otherwise print a distinct status that
+  names the task and the window value (it is a structural, non-secret key, already on runner_catalog's SAFE list). Optionally
+  confirm ALREADY with one `runnerctl dry`.
+- Proof: tests with `"window":"7-22"` and with a missing key on a second message task. Both should yield a skip line, not "already".
+
+### UNVERIFIED (needs context)
+- **U1, runner semantics for `00-24`.** Whether the runner accepts hour 24, computes `in_window` as `start <= h < end` (always 1),
+  or silently falls back to its default while still echoing the raw string cannot be decided without the runner source
+  (`~/Applications/claude-runner`, the `runnerctl dry` implementation). Most failure modes go the safe way: a rejected or
+  unparsable 24 makes `dry` print another window, print `in_window=0` at some hour, or error. Each of those fails the grep and
+  triggers the restore, which is P05-F1's path. A false pass needs the runner to echo `window=00-24` while it schedules
+  something else. The substring itself (`window=00-24 in_window=1`) cannot match a different window. A false fail at night
+  happens only if the runner treats 24 as invalid, and then restoring is the right outcome.
+- **U2, global default overriding per-task (your concern 7).** It is closed for the first changed task: the proof prints the
+  runner's effective window, so a global override shows as `window=07-22` and the file is restored. It is open for the 2nd
+  through 5th changed tasks, because only `$first` is dry-run (`:245`). It is open for the ALREADY branch, which is never
+  proven (P04-F1). Needs: the runner's precedence rule.
+
+### INFO (not defects)
+- **I1, Bash 3.2 (concern 1).** Static only. The heredoc inside `$( … )` (214–236) has balanced parentheses (31/31) and contains no
+  single quote, backtick or `#`, which are what break bash 3.2's comsub scanner. The same pattern already ships in
+  `runner_catalog` (113). `${res#CHANGED }`, `${t%% *}`, `local x; x=$(…)`, `case` with `*)` and `grep -rl --` are all 3.2 / BSD
+  safe. The Python uses nothing newer than 3.4 (`re.fullmatch`, `os.fchmod`, `tempfile.mkstemp`).
+- **I2, set -u (concern 6).** Clean. `res` is always assigned (empty on Python failure, which goes to `*`). `t` and `first` are
+  assigned before use, and `CHANGED` always carries at least one name. `HOURS_TASKS` is global and set at source time.
+- **I3, dict-keyed path (concern 2).** Clean, reproduced. `{"vanessa-imessage-inbox":{"window":"07-22","name":"alias"},"nightly":{…},"version":3}`:
+  only the keyed entry becomes 00-24. Its inner `"name":"alias"` is untouched because `dict(v, name=k)` is a throwaway copy
+  used only for matching, and the write goes to `tasks[k]`. `version` is preserved. `{"defaults":{…},"tasks":{…}}` also works,
+  and the defaults are left alone. Whole-file rewrite effects: the file mode becomes 600 (the backup keeps the original, e.g.
+  644), non-ASCII characters are re-escaped, and duplicate keys are collapsed. These are harmless only if the runner runs as
+  Steven, which is unverified.
+- **I4, secrets (concern 4).** No path prints a file value. Python's stderr goes to /dev/null, it prints only fixed words plus
+  names that come from `HOURS_TASKS`, and the NOWINDOW grep uses `-l` (file names only). Reproduced: a fixture with
+  `"env":{"KEY":"S3CR3T"}` produced 0 hits across the CHANGED and refused paths. One soft spot: the `*` branch (251) tells
+  Steven to paste `python3 -m json.tool … | head -40`. For valid JSON whose shape crashes the parser (e.g. `{"tasks":null}`),
+  that pastes raw values, which contradicts runner_catalog's redaction rule. The script leaks nothing itself. A better hint is
+  the REPORT catalog shape.
+- Also noted: a dated backup is left in the runner folder for every day the script runs, even when nothing changes (213).
+
+### Tests (pass 19)
+- Covered: `--check` writes nothing; only message tasks are widened; non-message tasks are untouched; a backup exists; the second run
+  says already; a refused window restores the file and says "did not accept"; a missing window key gets the runner-wide
+  explanation; unregistered tasks get the MISSING line.
+- The stub masks two things. `status)` always exits 0 (test line 115), so the `&& runnerctl status` half of the proof never
+  fails in any test. The stub's `dry` prints `in_window=1` unconditionally, so nothing tests the in-window semantics. The stub's
+  `["tasks"]` lookup (117) would crash on a dict-keyed file, so the dict path has no test at all.
+- Top missing tests: (1) the stale-backup sequence in P05-F1; (2) the status stub exiting 1, which should restore and name the
+  status failure; (3) unrecognised window formats and a mixed 00-24 plus no-key file (P04-F1); (4) a dict-keyed schedule.json,
+  asserting that only the keyed message entry changes and that the inner `name` is kept; (5) a `"KEY":"S3CR3T"` fixture
+  asserting no hit in stdout, stderr or the REPORT.
+
 ## Orchestrator response (2026-10-24 01:40 UTC) — SkySlope pass findings applied (reviewed 9650ddbafee68d3a → 0789c1e0ed20e324)
 
 change-set: 0789c1e0ed20e324

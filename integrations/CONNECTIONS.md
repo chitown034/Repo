@@ -608,3 +608,14 @@ Supersedes the sections above for the rows it names. Found live: Inkbox holds **
 | Connection | Status today | Fix | Who |
 |---|---|---|---|
 | SkySlope (transactions, documents) | key on Mac path ready — `integrations/skyslope/skyslope_cli.py` (stdlib, GET-only, SkySlope's own HMAC login from github.com/skyslope/example-authentication); the login needs **two pairs**: the Access Key + Secret Steven generated (My Account → Integrations) AND a Client ID + Client Secret that SkySlope issues to the integration or brokerage. The paste asks for all four (hidden; Enter skips the pair you lack) and proves the login with `me`. If SkySlope answers 401, the Client pair is what is missing — ask the SkySlope rep or the brokerage admin; the browser harness (`cli-anything-harnesses/skyslope`) stays the fallback | `bash scripts/fix-mine.sh` | Steven (keys), Carmen (desk) |
+
+## Connection status — answering at any hour, 2026-10-24 01:25 UTC (Steven: "enable all messages to respond when message is sent anytime of day")
+
+Supersedes the schedule wording of the two sections above. Two clocks answer Vanessa's channels: the Mac pollers (every 5–10 minutes) and the cloud sweep (the fallback). The cloud sweep now runs every hour around the clock; a cloud routine cannot run more often than hourly, so the Mac pollers remain the fast path. The Mac runner skips any task outside its window, and every task carries `07-22` today — `scripts/fix-mine.sh` (step "hours") widens only the five message tasks to `00-24`, proves it with `runnerctl dry`, and restores the file if the runner does not print the new window back.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Cloud sweep (iMessage text + voice queue, deck chat box, Discord #vanessa) | hourly at :17, 24/7 (was 6 AM–10 PM PT) | done in this session | Vanessa |
+| Mac pollers overnight (vanessa-imessage-inbox, vanessa-discord-inbox, voice-reply-render, kapso-inbox-sync, vanessa-whatsapp-inbox) | stop between 10 PM and 7 AM PT until the window is widened | the one paste (fix-mine) — if its REPORT says the window is a runner-wide default, paste the file names it lists | Steven (paste) |
+| Night-time answer latency | up to 60 minutes until the Mac window is widened, then 10 minutes | — | — |
+

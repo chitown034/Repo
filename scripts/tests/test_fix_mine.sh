@@ -108,6 +108,63 @@ HOME="$T" FIX_MINE_TTY=/dev/null bash -c '. scripts/fix-mine.sh; step_keys >/dev
 printf 'SKYSLOPE_CLIENT_ID=a\nSKYSLOPE_CLIENT_SECRET=b\n' > "$T/.config/skyslope/.env"
 HOME="$T" FIX_MINE_TTY=/dev/null bash -c '. scripts/fix-mine.sh; step_keys >/dev/null 2>&1; printf "%s" "$SKIP"' 2>/dev/null | grep -q "My Account -> Integrations" && ok || bad "missing access pair not named"
 rm -f "$T/.config/skyslope/.env"
+# 2h. step_hours: only the message tasks go to window 00-24, proven by `runnerctl dry` on each; a refusal restores THIS run's copy;
+#     --check writes nothing; unknown window formats are reported, never "already"; dict-keyed files work; no value is ever printed
+cat > "$T/bin/runnerctl" <<'STUB'
+#!/bin/bash
+case "$1" in
+  status) [ -n "${FIX_MINE_STATUS_FIXTURE:-}" ] && cat "$FIX_MINE_STATUS_FIXTURE"; exit "${FIX_MINE_STATUS_RC:-0}" ;;
+  pause|run) echo "$1 $2" >> "$FIX_MINE_CALLS" ;;
+  dry) w="${FIX_MINE_DRY_WINDOW:-$(python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); t=d.get("tasks",d); e=[x for x in t if x.get("name")==sys.argv[2]][0] if isinstance(t,list) else t[sys.argv[2]]; print(e.get("window","07-22"))' "$HOME/Applications/claude-runner/schedule.json" "$2")}"
+       echo "task=$2 model=claude-sonnet-5 max_turns=25 timeout=600 window=$w in_window=1 cwd=/x" ;;
+esac
+STUB
+SCH="$T/Applications/claude-runner/schedule.json"
+win() { python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); t=d.get("tasks",d); e=[x for x in t if x.get("name")==sys.argv[2]][0] if isinstance(t,list) else t[sys.argv[2]]; print(e.get("window","NOKEY"))' "$SCH" "$1" 2>/dev/null || echo ABSENT; }
+hours() { PATH="$T/bin:$PATH" FIX_MINE_TTY=/dev/null bash -c '. scripts/fix-mine.sh; '"${1:-}"' step_hours; printf "%s|%s" "$DONE" "$SKIP"' 2>"$T/hours.err"; }
+cat > "$SCH" <<'FIX'
+{"tasks":[{"name":"vanessa-imessage-inbox","cron":"*/10 * * * *","window":"07-22","env":{"KEY":"S3CR3T-VALUE"}},{"name":"voice-reply-render","cron":"*/10 * * * *","window":"07-22"},{"name":"nightly-self-test","cron":"0 2 * * *","window":"07-22"}]}
+FIX
+out=$(hours "CHECK=1;")
+[ "$(win vanessa-imessage-inbox)" = "07-22" ] && ok || bad "--check changed the window"
+ls "$T/Applications/claude-runner/"schedule.json.* >/dev/null 2>&1 && bad "--check left a backup or a .new file" || ok
+out=$(hours)
+[ "$(win vanessa-imessage-inbox)" = "00-24" ] && [ "$(win voice-reply-render)" = "00-24" ] && ok || bad "message tasks not widened"
+[ "$(win nightly-self-test)" = "07-22" ] && ok || bad "a non-message task was widened"
+printf '%s' "$out" | grep -q "day and night" && ok || bad "hours step did not report done"
+ls "$T/Applications/claude-runner/"schedule.json.bak-2* >/dev/null 2>&1 && ok || bad "no history backup of schedule.json"
+ls "$T/Applications/claude-runner/"schedule.json.bak-run-* "$T/Applications/claude-runner/"schedule.json.new-* >/dev/null 2>&1 && bad "per-run backup or .new file left behind" || ok
+grep -q "S3CR3T" "$T/hours.err" && bad "a schedule value leaked to stderr" || ok
+printf '%s' "$out" | grep -q "S3CR3T" && bad "a schedule value leaked to the report" || ok
+out=$(hours); printf '%s' "$out" | grep -q "already run day and night" && ok || bad "second run did not say already"
+# stale-backup sequence (validator P05-F1): MISSING run, tasks registered the same day, then a refused proof -> the new tasks survive
+printf '{"tasks":[{"name":"nightly-self-test","window":"07-22"}]}\n' > "$SCH"; rm -f "$T/Applications/claude-runner/"schedule.json.bak-*
+out=$(hours); printf '%s' "$out" | grep -q "is registered in schedule.json yet" && ok || bad "unregistered message tasks not explained"
+ls "$T/Applications/claude-runner/"schedule.json.bak-* >/dev/null 2>&1 && bad "a MISSING run wrote a backup" || ok
+cat > "$SCH" <<'FIX'
+{"tasks":[{"name":"nightly-self-test","window":"07-22"},{"name":"vanessa-imessage-inbox","window":"07-22"},{"name":"kapso-inbox-sync","window":"07-22"}]}
+FIX
+out=$(hours "export FIX_MINE_DRY_WINDOW=07-22;")
+[ "$(win vanessa-imessage-inbox)" = "07-22" ] && [ "$(win kapso-inbox-sync)" = "07-22" ] && printf '%s' "$out" | grep -q "did not accept" && ok || bad "a refused window was not restored to this run's copy"
+printf '%s' "$out" | grep -q "runnerctl dry vanessa-imessage-inbox did not print" && ok || bad "the refusal does not name the failing check"
+out=$(hours "export FIX_MINE_STATUS_RC=1;")
+[ "$(win vanessa-imessage-inbox)" = "07-22" ] && [ "$(win kapso-inbox-sync)" = "07-22" ] && printf '%s' "$out" | grep -q "runnerctl status failed" && ok || bad "a status failure did not restore and name itself"
+# odd formats (validator P04-F1): never "already"
+printf '{"tasks":[{"name":"vanessa-imessage-inbox","window":"7-22"}]}\n' > "$SCH"
+out=$(hours); printf '%s' "$out" | grep -q "already" && bad "unparsed window 7-22 reported as already" || ok
+printf '%s' "$out" | grep -q 'does not know how to widen — vanessa-imessage-inbox="7-22"' && ok || bad "odd window not named"
+printf '{"tasks":[{"name":"vanessa-imessage-inbox","window":"00-24"},{"name":"kapso-inbox-sync","cron":"* * * * *"}]}\n' > "$SCH"
+out=$(hours); printf '%s' "$out" | grep -q "kapso-inbox-sync=no window key" && ok || bad "a message task falling back to the runner default reported as already"
+[ "$(win vanessa-imessage-inbox)" = "00-24" ] && ok || bad "odd run changed the file"
+printf '{"tasks":[{"name":"vanessa-imessage-inbox","cron":"*/10 * * * *"}]}\n' > "$SCH"
+out=$(hours); printf '%s' "$out" | grep -q "runner-wide default" && ok || bad "missing window key not explained"
+# dict-keyed schedule.json: only the keyed message entry changes, its inner fields survive, the file's other keys survive
+printf '{"version":3,"defaults":{"window":"07-22"},"tasks":{"vanessa-imessage-inbox":{"window":"07-22","name":"alias","cron":"*/10 * * * *"},"nightly-self-test":{"window":"07-22"}}}\n' > "$SCH"
+out=$(hours); printf '%s' "$out" | grep -q "day and night" && ok || bad "dict-keyed file not handled"
+python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); t=d["tasks"]; assert t["vanessa-imessage-inbox"]["window"]=="00-24" and t["vanessa-imessage-inbox"]["name"]=="alias" and t["nightly-self-test"]["window"]=="07-22" and d["defaults"]["window"]=="07-22" and d["version"]==3' "$SCH" 2>/dev/null && ok || bad "dict-keyed write touched the wrong entry"
+printf '{"tasks":null}\n' > "$SCH"
+out=$(hours); printf '%s' "$out" | grep -q "could not read schedule.json" && ! printf '%s' "$out" | grep -q "json.tool" && ok || bad "bad shape not handled without a value-pasting hint"
+rm -f "$T/Applications/claude-runner/"schedule.json.*
 # 3. the script never echoes a value it was given (grep the whole file for a read without -s)
 grep -n 'read -r [a-z]' scripts/fix-mine.sh | grep -v -- '-rs' | grep -q . && bad "a read without -s found" || ok
 rm -rf "$T" "$tty"
