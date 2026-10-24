@@ -1,3 +1,111 @@
+## Orchestrator response (2026-10-24 00:55 UTC) — pass 4 findings applied (reviewed 00b8d9ff0dd3f6ae → d294b22f475b9a43)
+
+change-set: d294b22f475b9a43
+
+- **P04-F1 (MEDIUM)** applied: the thread id is tested as one string with `[[ =~ ]]`, so a newline-smuggled second id is refused; test added (two ids joined by a newline → "not a conversation id", allow-list unchanged).
+- **P05-F1 (LOW)** applied: the key line is appended (`>>`) under umask 077, other config lines survive; the pasted key is trimmed of whitespace (the unverified point). Tests: other line kept + key trimmed; Enter changes nothing.
+- (d) applied: the SDK install runs in a subshell only when MAC-SETUP.sh exists; the key prompt and the allow-list no longer depend on the repo folder.
+Gate PASS; 34 fix-mine asserts.
+
+## Code-validator review, pass 4 (2026-10-24) — verdict FIX FIRST (VibeBreaker DIFF: 0 critical / 0 high / 1 medium / 1 low, 5 info)
+
+change-set: 00b8d9ff0dd3f6ae
+
+**Verdict: FIX FIRST.** `step_voice` is mostly sound. The key prompt is hidden, the key never reaches stdout or stderr, the file is
+mode 600, `--check` writes nothing, and a Linux run skips the step. One medium defect: the "one UUID only" check on `VANESSA_THREAD`
+can be bypassed with a newline, so a second line of any content reaches `~/.config/inkbox/voice-allow`, the file that limits where
+Vanessa's voice notes may be sent. One low defect: the Inkbox config is overwritten (`>`) whenever it has no `api_key` line, so any
+other lines already in it are lost. The overwrite only fires when the file has no `api_key` line, and that part works as claimed.
+
+Deterministic gate, quoted: `verdict: PASS (3 passed, 0 failed)`; `--hash` printed `00b8d9ff0dd3f6ae`. The 2e block adds 6 asserts
+(25 + 6 = 31). Reproductions ran with `HOME` pointed at a scratch folder, `FIX_MINE_NO_MAIN=1` and `FIX_MINE_UNAME=Darwin`, so the
+real home was never touched.
+
+### Scope
+- Diff: `scripts/fix-mine.sh` (+29: `uname()`, `step_voice`, checklist line V, the call in `main`), `scripts/tests/test_fix_mine.sh` (+11, block 2e).
+  The `docs/reports/CODE-VALIDATION.md` regeneration is outside the change-set.
+- Also read: `run_quiet`, `step_vanessa_everywhere`, the script header (`set -u`, `TTY`/`OUT`) in fix-mine.sh; `integrations/voice-setup.sh` steps 1–5;
+  `MAC-SETUP.sh` `inkbox-voice` block (437–458); `integrations/vanessa-voice-send.py` `load_allow_list` (72–79) and the allow-list gate (145–152);
+  `integrations/jarvis/jarvis-setup.sh` (grep: no Inkbox key prompt).
+- Passes: 01, 04, 05, 11, 14, 19, 20 (shell-script set). Material scope limitation: NO. How the Inkbox SDK parses `~/.inkbox/config`
+  is not in the repo; see UNVERIFIED.
+
+### CONFIRMED
+
+**P04-F1 (MEDIUM, confidence HIGH): a newline in VANESSA_THREAD gets past the UUID check and writes any line into the voice allow-list.**
+- Location: `scripts/fix-mine.sh` step_voice, `printf '%s' "$t" | grep -qE '^…$'`, then `printf '%s\n' "$t" >> "$allow"`.
+- Trigger: `VANESSA_THREAD=$'aa1a9d19-c7db-4dea-b7c8-f34999e58510\n<anything>'` on the paste line.
+- Bad state: `grep` matches line by line, so the first line passes the check, and then the whole value is appended. Reproduced: the
+  allow-list held `aa1a9d19-…-f34999e58510` and `junk; touch PWNED` (data only, nothing ran). With a second UUID as the second line,
+  that UUID is allow-listed too, and `vanessa-voice-send.py` accepts every line it reads. That breaks "the one thread she may speak into".
+  The duplicate check has the same flaw: `grep -qx "$t"` treats each line as a separate pattern, so if the first line is already
+  listed, the step reports "already allow-listed" and skips the write.
+- Not command injection: the value is only ever printed as data. The test's junk value has no newline, so the suite stays green.
+- Fix: test the whole string, not each line. In Bash 3.2, use `[[ $t =~ ^[0-9a-fA-F]{8}-…-[0-9a-fA-F]{12}$ ]]` or a `case` glob,
+  or refuse a value that contains a newline. Proof: a test with `VANESSA_THREAD=$'<uuid>\n<uuid2>'` is refused with the skip line,
+  and the allow-list file is unchanged.
+
+**P05-F1 (LOW, confidence MEDIUM): when `~/.inkbox/config` has no `api_key` line, the whole file is overwritten.**
+- Location: `scripts/fix-mine.sh` step_voice, `( umask 077; printf 'api_key = %s\n' "$v" > "$cfg" )`.
+- Trigger: a config with other settings and no live key line, such as `base_url = …` or `# api_key = old`, then a key typed at the prompt.
+- Bad state: reproduced. Afterwards the file holds only `api_key = newkey`, and the other lines are gone. The claim that the file
+  "is never clobbered" holds only when an `api_key` line is already there. `voice-setup.sh` behaves the same way, so this is not new
+  in kind. Nothing in the repo writes other keys there, which is why this is LOW.
+- Fix: append (`>>`) the key line under the same umask, then chmod 600. Proof: a test seeds the config with `base_url = x`, runs
+  step_voice, and asserts both lines are present.
+
+### UNVERIFIED
+- **U1 (NEEDS-CONTEXT): whitespace around the key.** `IFS= read -rs` keeps leading and trailing spaces from the paste. Reproduced: the
+  file holds `api_key =   -x%s key ` with the spaces intact. `voice-setup.sh` uses `read -r -s` with the default IFS, which strips
+  them. Whether the Inkbox SDK 0.7.7 config reader trims the value is not in the repo, so a key pasted with a stray trailing space
+  may or may not authenticate. Needed to decide: the SDK's config parser.
+
+### REJECTED
+- (a) `uname` shadowing: the script has three calls, all `$(uname)` with no arguments (lines 91, 124, 154), and anything else falls
+  through to `command uname "$@"`. The function is not exported, so `MAC-SETUP.sh` and the other child scripts use the real binary.
+  `FIX_MINE_UNAME` appears nowhere outside the script and its test. A stray value on a Mac can only skip steps, which fails safe.
+- (b) printf with `%` or a leading `-`: the format is fixed and the key is passed as an argument. Reproduced: `-x%s` was written
+  literally. `read -r` keeps backslashes, and `read` cannot return a newline.
+- (c) Command injection through VANESSA_THREAD: rejected, because the value is never evaluated, only printed as data. The newline
+  bypass is filed as P04-F1.
+- (e) Two prompts for the same key: `jarvis-setup.sh` has no Inkbox key prompt (grep). Running `fix-mine` and then `voice-setup.sh`
+  is safe, because voice-setup sees the `api_key` line and keeps it, and its allow-list check (`grep -qix`) sees the thread. Note:
+  voice-setup steps 4–5 (the offline self-test and the §6a/§6b clipboard pastes) are intentionally not run by fix-mine.
+- (f) Bash 3.2: `uname()` is a legal function name, the step uses no arrays or `${v,,}`, and `local`, `IFS= read -rs` and
+  `grep -E {n}` all work there.
+
+### INFO
+- I1 (d): when `cd "$REPO"` fails, the step returns 1 with no DONE or SKIP line. Reproduced with no `~/Repo`. That also skips the key
+  prompt and the allow-list, which do not need the repo. `step_vanessa_everywhere` does the same, and `step_repo` runs first.
+- I2: the duplicate check here is case-sensitive (`grep -qx`), while voice-setup uses `-qix`, so an uppercase copy of a listed UUID is
+  appended again. This is harmless: `load_allow_list` lowercases every line into a set.
+- I3: the Darwin-only step runs `MAC-SETUP.sh --only inkbox-voice` on every run. The step is idempotent (it reports "skipped" when the SDK imports).
+- I4: checklist line V names `runnerctl logs voice-reply-render`. The `voice-reply-render` task is set up through voice-setup §6b, which
+  fix-mine does not do, so line V is only true once §6b has been pasted.
+- I5: the 2e mode check falls back from `stat -c` to `stat -f %Lp`, so it works on both Linux and macOS.
+
+### Coverage (inspected, clean)
+The hidden prompt (`$TTY`/`$OUT`, no echo, `unset v`); `umask 077` plus `chmod 600` on the config; the allow-list chmod 600; `--check`
+(nothing created; reproduced); the non-Darwin skip (reproduced); the "already allow-listed" idempotence for a single UUID; the
+empty-allow-list skip line; the call order in `main` (step_voice before step_vanessa_everywhere; `run_quiet` is resolved when it is
+called); `set -u` safety (`${VANESSA_THREAD:-}`, `$CHECK` set); `load_allow_list` comment and whitespace handling; the test isolation
+(`export HOME="$T"`, an empty `$T/Repo`, so no `MAC-SETUP.sh` runs).
+
+### Top missing tests (pass 19)
+1. `VANESSA_THREAD=$'<uuid>\n<uuid2>'` is refused with "not a conversation id", and the allow-list is unchanged (P04-F1).
+2. `VANESSA_THREAD=$'<uuid>\njunk'` on an empty allow-list leaves no file, or an empty one (P04-F1).
+3. A config seeded with `base_url = x` and no key keeps both lines after a key is entered (P05-F1).
+4. `--check` with a valid thread and no config creates neither `~/.inkbox` nor `~/.config/inkbox`.
+5. `FIX_MINE_UNAME=Linux` gives the "voice: not a Mac" skip and writes nothing.
+6. Enter at the key prompt (empty TTY line) gives the "not entered" skip, and no config file is created.
+7. An existing `api_key = old` line is kept byte for byte when step_voice runs with a new TTY value.
+8. Missing `~/Repo`: step_voice still emits a DONE or SKIP line (I1, if it is accepted as a change).
+
+```text
+VIBE//BREAKER  VERDICT: FIX FIRST  PASSES: 7/20 (shell set)  CRITICAL: 0  HIGH: 0  CONFIRMED: 2  UNVERIFIED: 1  FIRST BREAK: P04
+```
+This audit did not run anything on a Mac, did not call the Inkbox SDK, and did not exercise the live `voice-reply-render` task.
+
 ## Orchestrator response (2026-10-24 00:30 UTC) — pass 3 findings applied (reviewed f3ae6d1d0eca0a4e → 92d8222d141201e6)
 
 change-set: 92d8222d141201e6

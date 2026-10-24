@@ -595,3 +595,10 @@ Supersedes the sections above for the rows it names. Found live: Inkbox holds **
 | Discord #vanessa | bot token missing (Composio `discordbot` initiated 23:55 UTC, not active; Mac bot in relay mode) | A2 in the fix-mine checklist: create the bot, paste the token when the script asks (Keychain `vanessa-discord-bot-token`), invite it, then "Discord link" to Claude for the Composio connect; the cloud sweep answers #vanessa hourly once active | Steven |
 | Command Deck chat box | works in claude.ai through the viewer's own Claude (`sample` declared); last message 2026-09-13 | nothing to install; the cloud sweep now answers any question left unanswered for 10 minutes into the same thread | Vanessa |
 | Jarvis = Vanessa, single point of contact for the whole AI team | persona + voice + brain index + the 180-seat roster in her memory, all from `vanessa-persona.sh` (run by fix-mine) | one paste | Steven (paste) |
+
+## Connection status — Vanessa's voice on iMessage, 2026-10-24 00:45 UTC (Steven: "Vanessa's voice is supposed to speak with a voice message on top of the text")
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| iMessage line (Vanessa text replies) | **linked and live** since 2026-10-23 23:54 UTC — Steven's thread aa1a9d19…8510; the Mac poller answered a non-answer at 00:05, the cloud sweep answered rates + schedule at 00:22 | — | — |
+| Vanessa's voice note after each text | not yet delivering — `voiceReplyQueue` held only the Sep 12 test item until the cloud sweep queued the first real one (00:28 UTC); the Mac's `voice-reply-render` runs ok every 10 min but needs the Inkbox API key in `~/.inkbox/config` and the thread in `~/.config/inkbox/voice-allow` (both from `fix-mine.sh` step 3a2 with `VANESSA_THREAD=…`); the Mac's `vanessa-imessage-inbox` prompt still lacks §6a (the catalog in fix-mine's REPORT shows where it lives) | the one paste; the cloud sweep queues voice for every reply it sends and reports `voiceReplyStatus` in `agentInbox.channels.voice` | Steven (paste), Derek (§6a into the Mac task) |

@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 48 skills · 7 Claude mods (plugins) · 40 connectors (3 ok, 37 need attention) · 11 MCP servers · 13 APIs · 72 cloud routines · 60 Mac tasks
+toolkit: 48 skills · 7 Claude mods (plugins) · 41 connectors (4 ok, 37 need attention) · 11 MCP servers · 13 APIs · 72 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -25,12 +25,13 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 40 connectors (3 ok, 37 need at
 - `push-buttons`: One-word slash commands (/cycle /inbox /meetings /sync /connect /tc /queue /today /help-buttons) that send the full, correct prompt for each workflow, HALT rules included.
 
 **Connectors**
-- `iMessage line (morning brief text + voice, Vanessa replies)` — *attention*: not linked — Inkbox shows no connected phone and no conversation (23:50 UTC)
+- `iMessage line (Vanessa text replies)` — *ok*: linked and live since 2026-10-23 23:54 UTC — Steven's thread aa1a9d19…8510; the Mac poller answered a non-answer at 00:05, the cloud sweep answered rates + schedule at 00:22
 - `Kapso (WhatsApp)` — *attention*: keys in the Keychain; plugin + MCP waiting on the sign-in
 - `Jarvis = Vanessa, single point of contact for the whole AI team` — *attention*: persona + voice + brain index + the 180-seat roster in her memory, all from vanessa-persona.sh (run by fix-mine)
 - `Jarvis knows the Second Brain` — *attention*: ready — the same script indexes the brain's pages (no client pages, no meeting digests, no findings) into Jarvis memory; the 6D layers row shows "speaks as Vanessa" + the page count once run
 - `WhatsApp (Kapso)` — *pending*: number …5223 assigned; nothing reads it — runner tasks kapso-inbox-sync / vanessa-whatsapp-inbox not registered; Kapso MCP sign-in pending; keys in the Keychain (connect report #3)
 - `Discord #vanessa` — *pending*: bot token missing (Composio discordbot initiated 23:55 UTC, not active; Mac bot in relay mode)
+- `Vanessa's voice note after each text` — *attention*: not yet delivering — voiceReplyQueue held only the Sep 12 test item until the cloud sweep queued the first real one (00:28 UTC); the Mac's voice-reply-render runs ok every 10 min but needs the Inkbox 
 
 **MCP servers**
 - `laya` — *ok*: zero-token local router in front of Vanessa (lane, tier, HALT words) · registered — real engine answering on Mac 1 (2026-10-23)

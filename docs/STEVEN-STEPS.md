@@ -9,7 +9,9 @@ research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox
 Steven: *"make a new script that I can cut and paste into the terminal to fix whatever requires my actions; make it simple and limit the back and forth."*
 
 **Mac 1 (plugged in), Terminal, one line:**
-`cd ~/Repo && bash scripts/repo-sync.sh --quiet; bash scripts/fix-mine.sh`
+`cd ~/Repo && bash scripts/repo-sync.sh --quiet; VANESSA_THREAD=aa1a9d19-c7db-4dea-b7c8-f34999e58510 bash scripts/fix-mine.sh`
+
+(`VANESSA_THREAD` is your Vanessa iMessage thread, linked 2026-10-23 23:54 UTC; it lets the script allow-list that one thread for her voice notes. It is an id, not a secret.)
 
 It brings the repo up to date, asks once (hidden; Enter skips) for the Lofty, TidyCal, Arive and Zoho keys, registers Lofty's own
 MCP server as `lofty-cloud`, makes Jarvis speak and think as Vanessa with the brain in its memory, re-runs Laya + Orca + the AI-team

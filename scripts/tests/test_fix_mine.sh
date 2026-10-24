@@ -82,6 +82,25 @@ out=$(HOME="$T" FIX_MINE_TTY=/dev/null bash -c '. scripts/fix-mine.sh; runner_ca
 printf '%s' "$out" | grep -q "vanessa-imessage-inbox" && printf '%s' "$out" | grep -q '"model": "claude-sonnet-5"' && ok || bad "catalog lost the safe keys"
 printf '%s' "$out" | grep -qE "SECRET|619-555|Mike|MTA0" && bad "catalog printed a value it must not" || ok
 printf '%s' "$out" | grep -q '"api_key": "<str' && printf '%s' "$out" | grep -q '"prompt": "<str' && ok || bad "unsafe keys not reduced to shapes"
+# 2e. step_voice: thread allow-list
+mkdir -p "$T/Repo"   # step_voice cds into $HOME/Repo; an empty folder here means no MAC-SETUP.sh and no SDK step from VANESSA_THREAD (valid id appended once, junk refused), Inkbox key hidden -> ~/.inkbox/config 600
+printf 'ink-key-xyz\n' > "$tty"
+VANESSA_THREAD=aa1a9d19-c7db-4dea-b7c8-f34999e58510 FIX_MINE_TTY=$tty FIX_MINE_UNAME=Darwin bash -c '. scripts/fix-mine.sh; step_voice; printf "%s" "$DONE$SKIP"' > "$T/voice.out" 2>"$T/voice.err"
+grep -qx "aa1a9d19-c7db-4dea-b7c8-f34999e58510" "$T/.config/inkbox/voice-allow" && ok || bad "thread not allow-listed"
+grep -q "^api_key = ink-key-xyz$" "$T/.inkbox/config" && ok || bad "inkbox key not written in the SDK's format"
+[ "$(stat -c %a "$T/.inkbox/config" 2>/dev/null || stat -f %Lp "$T/.inkbox/config")" = "600" ] && ok || bad "inkbox config not mode 600"
+grep -q "ink-key" "$T/voice.err" "$T/voice.out" && bad "inkbox key leaked to output" || ok
+VANESSA_THREAD=aa1a9d19-c7db-4dea-b7c8-f34999e58510 FIX_MINE_TTY=/dev/null FIX_MINE_UNAME=Darwin bash -c '. scripts/fix-mine.sh; step_voice' >/dev/null 2>&1
+[ "$(grep -c . "$T/.config/inkbox/voice-allow")" = 1 ] && ok || bad "thread allow-listed twice"
+VANESSA_THREAD="not-an-id; rm -rf /" FIX_MINE_TTY=/dev/null FIX_MINE_UNAME=Darwin bash -c '. scripts/fix-mine.sh; step_voice; printf "%s" "$SKIP"' 2>/dev/null | grep -q "not a conversation id" && [ "$(grep -c . "$T/.config/inkbox/voice-allow")" = 1 ] && ok || bad "junk thread id accepted"
+# 2f. voice hardening (validator pass 4): a newline-smuggled second id is refused; other config lines survive; Enter writes nothing
+VANESSA_THREAD="$(printf 'aa1a9d19-c7db-4dea-b7c8-f34999e58510\nbbbbbbbb-cccc-dddd-eeee-ffffffffffff')" FIX_MINE_TTY=/dev/null FIX_MINE_UNAME=Darwin bash -c '. scripts/fix-mine.sh; step_voice; printf "%s" "$SKIP"' 2>/dev/null | grep -q "not a conversation id" && [ "$(grep -c . "$T/.config/inkbox/voice-allow")" = 1 ] && ok || bad "newline-smuggled thread id accepted"
+printf 'base_url = https://example.test\n' > "$T/.inkbox/config"; printf '  ink-key-2  \n' > "$tty"
+FIX_MINE_TTY=$tty FIX_MINE_UNAME=Darwin bash -c '. scripts/fix-mine.sh; step_voice' >/dev/null 2>&1
+grep -q '^base_url = https://example.test$' "$T/.inkbox/config" && grep -q '^api_key = ink-key-2$' "$T/.inkbox/config" && ok || bad "config lines lost or key not trimmed"
+printf 'base_url = x\n' > "$T/.inkbox/config"; printf '\n' > "$tty"
+FIX_MINE_TTY=$tty FIX_MINE_UNAME=Darwin bash -c '. scripts/fix-mine.sh; step_voice' >/dev/null 2>&1
+[ "$(wc -l < "$T/.inkbox/config")" -eq 1 ] && ok || bad "Enter at the key prompt changed the config"
 # 3. the script never echoes a value it was given (grep the whole file for a read without -s)
 grep -n 'read -r [a-z]' scripts/fix-mine.sh | grep -v -- '-rs' | grep -q . && bad "a read without -s found" || ok
 rm -rf "$T" "$tty"

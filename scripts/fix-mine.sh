@@ -24,6 +24,7 @@ you_()  { YOU="$YOU
   $*"; }
 say() { printf '%s\n' "$*"; }
 have() { command -v "$1" >/dev/null 2>&1; }
+uname() { if [ -n "${FIX_MINE_UNAME:-}" ]; then printf '%s\n' "$FIX_MINE_UNAME"; else command uname "$@"; fi; }   # tests fake a Mac
 
 # ---- 1. repo --------------------------------------------------------------------------------------------------------
 step_repo() {
@@ -116,6 +117,32 @@ PY
   fi
 }
 
+# ---- 3a2. Vanessa's VOICE on iMessage: the Inkbox SDK, the Inkbox API key (hidden, ~/.inkbox/config), and the one thread she may
+#           speak into (~/.config/inkbox/voice-allow). The thread id comes from VANESSA_THREAD on the paste line (Claude gives it;
+#           it is not a secret but it is deliberately not kept in the repo). voice-reply-render then sends the voice note itself.
+step_voice() {
+  [ "$(uname)" = Darwin ] || { skip_ "voice: not a Mac"; return; }
+  if [ -f "$REPO/MAC-SETUP.sh" ]; then ( cd "$REPO" && run_quiet "Inkbox voice SDK" bash MAC-SETUP.sh --only inkbox-voice ); else skip_ "Inkbox voice SDK: $REPO/MAC-SETUP.sh not found (repo step first)"; fi
+  local cfg="$HOME/.inkbox/config" v=""
+  if [ -s "$cfg" ] && grep -Eq '^[[:space:]]*api_key[[:space:]]*=[[:space:]]*[^[:space:]]' "$cfg"; then done_ "Inkbox API key already on this Mac"
+  elif [ $CHECK = 1 ]; then say "would ask (hidden, Enter skips): Inkbox API key -> $cfg"
+  else
+    printf 'Inkbox API key (Inkbox dashboard -> API keys; hidden; Enter to skip): ' >"$OUT"; IFS= read -rs v <"$TTY" || v=""; printf '\n' >"$OUT"
+    v="$(printf '%s' "$v" | tr -d '[:space:]')"   # a pasted key never carries spaces; the SDK reads the value verbatim
+    if [ -n "$v" ]; then mkdir -p "$HOME/.inkbox"; ( umask 077; printf 'api_key = %s\n' "$v" >> "$cfg" ); chmod 600 "$cfg"; done_ "Inkbox API key saved (voice notes can send)"; else skip_ "Inkbox API key: not entered — voice notes stay off"; fi
+    unset v
+  fi
+  local allow="$HOME/.config/inkbox/voice-allow" t="${VANESSA_THREAD:-}"
+  if [ -n "$t" ]; then
+    # the whole value must be one UUID: [[ =~ ]] tests the string, not a line, so a second line can never ride along (validator P04-F1)
+    if [[ "$t" =~ ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$ ]]; then
+      if [ $CHECK = 1 ]; then say "would allow-list thread $t in $allow"
+      elif grep -qx "$t" "$allow" 2>/dev/null; then done_ "Vanessa's thread already allow-listed for voice"
+      else mkdir -p "$(dirname "$allow")"; printf '%s\n' "$t" >> "$allow"; chmod 600 "$allow"; done_ "Vanessa's thread allow-listed for voice ($allow)"; fi
+    else skip_ "VANESSA_THREAD is not a conversation id — voice allow-list unchanged"; fi
+  elif [ ! -s "$allow" ]; then skip_ "voice allow-list empty: run the paste with VANESSA_THREAD=<Vanessa thread id> (Claude gives it)"; fi
+}
+
 # ---- 3b. Vanessa everywhere on this Mac: Jarvis speaks and thinks as her and knows the brain; Laya routes; Orca launches the
 #          team. Each script is idempotent and reports its own FAIL/WARN rows; this just runs them in order and keeps the last line.
 run_quiet() {   # run_quiet <label> <cmd...>: run, keep the log, report one line
@@ -163,6 +190,7 @@ step_runner() {
 
 # ---- 5. only you ------------------------------------------------------------------------------------------------------------
 checklist() {
+  you_ "V. Voice: once the Inkbox key and the thread allow-list are on this Mac (this script), every text reply from Vanessa is followed by her voice note within 10 minutes (voice-reply-render). If a voice note never arrives, paste: runnerctl logs voice-reply-render"
   you_ "A. Phone: text exactly  connect @vanessa-shearrill  to +1 650 484 9720 (tap link: sms:+16504849720?&body=connect%20%40vanessa-shearrill). Inkbox showed NO linked phone on 2026-10-23 — a plain 'hi' does not link it. Then text her a real question."
   you_ "A2. Discord: discord.com/developers -> New Application 'Vanessa' -> Bot -> Reset Token (paste it when this script asks), -> OAuth2 URL Generator: scope bot, permissions Send Messages + Read Message History -> open the URL and add the bot to your server; make a channel named vanessa. Then tell Claude 'Discord link' for the one-click Composio connect (link lasts 10 minutes)."
   you_ "B. Zoho: Setup -> Security Control -> Profiles -> your profile -> Developer Permissions -> tick 'Zoho CRM API Access'."
@@ -174,7 +202,7 @@ checklist() {
 
 main() {
   say "fix-mine $(date '+%Y-%m-%d %H:%M') $( [ $CHECK = 1 ] && echo '(check only: nothing changes, nothing asked)')"
-  step_repo; step_keys; step_lofty_cloud; step_channels; step_vanessa_everywhere; step_runner; checklist
+  step_repo; step_keys; step_lofty_cloud; step_channels; step_voice; step_vanessa_everywhere; step_runner; checklist
   say ""; say "================ REPORT (copy from here down and paste it to Claude) ================"
   say "Done:${DONE:-
   - nothing new (everything scripted was already in place)}"
