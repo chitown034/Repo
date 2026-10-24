@@ -602,3 +602,9 @@ Supersedes the sections above for the rows it names. Found live: Inkbox holds **
 |---|---|---|---|
 | iMessage line (Vanessa text replies) | **linked and live** since 2026-10-23 23:54 UTC — Steven's thread aa1a9d19…8510; the Mac poller answered a non-answer at 00:05, the cloud sweep answered rates + schedule at 00:22 | — | — |
 | Vanessa's voice note after each text | not yet delivering — `voiceReplyQueue` held only the Sep 12 test item until the cloud sweep queued the first real one (00:28 UTC); the Mac's `voice-reply-render` runs ok every 10 min but needs the Inkbox API key in `~/.inkbox/config` and the thread in `~/.config/inkbox/voice-allow` (both from `fix-mine.sh` step 3a2 with `VANESSA_THREAD=…`); the Mac's `vanessa-imessage-inbox` prompt still lacks §6a (the catalog in fix-mine's REPORT shows where it lives) | the one paste; the cloud sweep queues voice for every reply it sends and reports `voiceReplyStatus` in `agentInbox.channels.voice` | Steven (paste), Derek (§6a into the Mac task) |
+
+## Connection status — SkySlope, 2026-10-24 01:10 UTC (Steven: "setup skyslope i have an api key")
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| SkySlope (transactions, documents) | key on Mac path ready — `integrations/skyslope/skyslope_cli.py` (stdlib, GET-only, SkySlope's own HMAC login from github.com/skyslope/example-authentication); the login needs **two pairs**: the Access Key + Secret Steven generated (My Account → Integrations) AND a Client ID + Client Secret that SkySlope issues to the integration or brokerage. The paste asks for all four (hidden; Enter skips the pair you lack) and proves the login with `me`. If SkySlope answers 401, the Client pair is what is missing — ask the SkySlope rep or the brokerage admin; the browser harness (`cli-anything-harnesses/skyslope`) stays the fallback | `bash scripts/fix-mine.sh` | Steven (keys), Carmen (desk) |

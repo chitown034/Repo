@@ -119,6 +119,7 @@ while IFS= read -r f; do
   esac
 done <<< "$FILES"
 [ "$KAPSO" = 1 ] && run "kapso unit tests" sh -c "cd integrations/kapso/tests && python3 -m unittest -q 2>&1 | tail -3 | grep -q '^OK'"
+printf '%s\n' "$FILES" | grep -qE '^integrations/skyslope/' && run "skyslope unit tests" sh -c "python3 -m unittest -q integrations.skyslope.tests.test_skyslope_cli 2>&1 | tail -3 | grep -q '^OK'"
 printf '%s\n' "$FILES" | grep -qE '^(scripts/fix-mine\.sh|scripts/tests/test_fix_mine\.sh)$' && run "fix-mine shell tests" bash scripts/tests/test_fix_mine.sh
 printf '%s\n' "$FILES" | grep -qE '^(integrations/jarvis/(vanessa-persona\.sh|jarvis-setup\.sh|persona/)|scripts/tests/test_vanessa_persona\.sh)' && run "vanessa-persona shell tests" bash scripts/tests/test_vanessa_persona.sh
 printf '%s\n' "$FILES" | grep -qE '^dashboard/brain-4d(\.html|/)' && run "6D page tests (passages script-safe + private, merge-live)" sh -c "python3 -m unittest -q dashboard.brain-4d.test_build_passages dashboard.brain-4d.test_merge_live 2>&1 | tail -3 | grep -q '^OK'"

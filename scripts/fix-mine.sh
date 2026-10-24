@@ -61,6 +61,19 @@ step_keys() {
   set_key "$c/zoho/.env"    ZOHO_CLIENT_ID      "Zoho Client ID (api-console.zoho.com -> Self Client)"                  && done_ "Zoho client id saved"  || skip_ "Zoho credentials: not entered (the API tick in Zoho is still needed either way)"
   set_key "$c/zoho/.env"    ZOHO_CLIENT_SECRET  "Zoho Client Secret"                                                    >/dev/null || true
   set_key "$c/zoho/.env"    ZOHO_REFRESH_TOKEN  "Zoho Refresh Token (Enter if you only have id + secret)"              >/dev/null || true
+  # SkySlope (Steven 2026-10-24: "setup skyslope i have an api key"): two pairs — ClientId/ClientSecret from SkySlope, AccessKey/Secret from My Account -> Integrations
+  set_key "$c/skyslope/.env" SKYSLOPE_ACCESS_KEY    "SkySlope Access Key (My Account -> Integrations -> Generate New Key)"   && done_ "SkySlope access key saved" || skip_ "SkySlope keys: not entered"
+  set_key "$c/skyslope/.env" SKYSLOPE_ACCESS_SECRET "SkySlope Access Secret (shown once with the key)"                        >/dev/null || true
+  set_key "$c/skyslope/.env" SKYSLOPE_CLIENT_ID     "SkySlope Client ID (from SkySlope / your brokerage's integration contact; Enter if you only have the key pair)" >/dev/null || true
+  set_key "$c/skyslope/.env" SKYSLOPE_CLIENT_SECRET "SkySlope Client Secret"                                                >/dev/null || true
+  if [ $CHECK = 0 ] && [ -f "$REPO/integrations/skyslope/skyslope_cli.py" ] && [ -s "$c/skyslope/.env" ]; then
+    local chk; chk="$(python3 "$REPO/integrations/skyslope/skyslope_cli.py" check 2>/dev/null)"
+    case "$chk" in
+      *"all four present"*) run_quiet "SkySlope proof (GET /api/users/me, read-only)" python3 "$REPO/integrations/skyslope/skyslope_cli.py" me ;;
+      *CLIENT*) skip_ "SkySlope: $chk — the Client ID/Secret pair is issued by SkySlope (partner-gated): ask your SkySlope rep or brokerage admin" ;;
+      *) skip_ "SkySlope: ${chk:-keys incomplete} — the Access Key + Secret come from SkySlope -> My Account -> Integrations" ;;
+    esac
+  fi
   if [ -s "$c/zoho/.env" ] && [ $CHECK = 0 ]; then
     grep -q '^ZOHO_ACCOUNTS_URL=' "$c/zoho/.env" || printf 'ZOHO_ACCOUNTS_URL=https://accounts.zoho.com\nZOHO_API_URL=https://www.zohoapis.com\n' >> "$c/zoho/.env"
   fi

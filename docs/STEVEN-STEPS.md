@@ -11,6 +11,8 @@ Steven: *"make a new script that I can cut and paste into the terminal to fix wh
 **Mac 1 (plugged in), Terminal, one line:**
 `cd ~/Repo && bash scripts/repo-sync.sh --quiet; VANESSA_THREAD=aa1a9d19-c7db-4dea-b7c8-f34999e58510 bash scripts/fix-mine.sh`
 
+The script also asks for your **SkySlope** keys: the Access Key + Secret from SkySlope → My Account → Integrations → Generate New Key (the secret shows once), and the Client ID + Client Secret if SkySlope or your brokerage gave you one (Enter to skip; the login needs both pairs, so without the Client pair the proof step reports 401 and I ask SkySlope's side for it).
+
 (`VANESSA_THREAD` is your Vanessa iMessage thread, linked 2026-10-23 23:54 UTC; it lets the script allow-list that one thread for her voice notes. It is an id, not a secret.)
 
 It brings the repo up to date, asks once (hidden; Enter skips) for the Lofty, TidyCal, Arive and Zoho keys, registers Lofty's own

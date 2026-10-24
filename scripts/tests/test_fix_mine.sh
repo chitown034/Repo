@@ -101,6 +101,13 @@ grep -q '^base_url = https://example.test$' "$T/.inkbox/config" && grep -q '^api
 printf 'base_url = x\n' > "$T/.inkbox/config"; printf '\n' > "$tty"
 FIX_MINE_TTY=$tty FIX_MINE_UNAME=Darwin bash -c '. scripts/fix-mine.sh; step_voice' >/dev/null 2>&1
 [ "$(wc -l < "$T/.inkbox/config")" -eq 1 ] && ok || bad "Enter at the key prompt changed the config"
+# 2g. SkySlope hint names the pair that is actually missing (validator P11-F1)
+mkdir -p "$T/.config/skyslope" "$T/Repo/integrations/skyslope"; cp integrations/skyslope/skyslope_cli.py "$T/Repo/integrations/skyslope/"
+printf 'SKYSLOPE_ACCESS_KEY=a\nSKYSLOPE_ACCESS_SECRET=b\n' > "$T/.config/skyslope/.env"
+HOME="$T" FIX_MINE_TTY=/dev/null bash -c '. scripts/fix-mine.sh; step_keys >/dev/null 2>&1; printf "%s" "$SKIP"' 2>/dev/null | grep -q "Client ID/Secret pair is issued by SkySlope" && ok || bad "missing client pair not named"
+printf 'SKYSLOPE_CLIENT_ID=a\nSKYSLOPE_CLIENT_SECRET=b\n' > "$T/.config/skyslope/.env"
+HOME="$T" FIX_MINE_TTY=/dev/null bash -c '. scripts/fix-mine.sh; step_keys >/dev/null 2>&1; printf "%s" "$SKIP"' 2>/dev/null | grep -q "My Account -> Integrations" && ok || bad "missing access pair not named"
+rm -f "$T/.config/skyslope/.env"
 # 3. the script never echoes a value it was given (grep the whole file for a read without -s)
 grep -n 'read -r [a-z]' scripts/fix-mine.sh | grep -v -- '-rs' | grep -q . && bad "a read without -s found" || ok
 rm -rf "$T" "$tty"

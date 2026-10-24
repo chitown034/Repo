@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 48 skills · 7 Claude mods (plugins) · 41 connectors (4 ok, 37 need attention) · 11 MCP servers · 13 APIs · 72 cloud routines · 60 Mac tasks
+toolkit: 48 skills · 7 Claude mods (plugins) · 42 connectors (4 ok, 38 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -280,6 +280,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 41 connectors (4 ok, 37 need at
 - `Laya routes, Orca launches the AI team` — *attention*: installed on Mac 1 (connect report #3); connect-orca-laya.sh --apply + agent-os/install-mac.sh --apply re-run by the paste; brain os check is the proof
 - `6D Brain shows all of it` — *attention*: the layers panel reads brain/state/jarvis-status.json (persona, indexed pages) and the toolkit register reads this table; the daily 3:30 AM rebuild carries it
 - `Command Deck chat box` — *attention*: works in claude.ai through the viewer's own Claude (sample declared); last message 2026-09-13
+- `SkySlope (transactions, documents)` — *attention*: key on Mac path ready — integrations/skyslope/skyslope_cli.py (stdlib, GET-only, SkySlope's own HMAC login from github.com/skyslope/example-authentication); the login needs two pairs: the Access Key +
 
 **MCP servers**
 - `playwright` — *ok*: browser automation for sites with no API · installed
@@ -289,6 +290,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 41 connectors (4 ok, 37 need at
 - `github (cloud)` — *ok*: repository read/write, PRs, issues · connected
 
 **APIs**
+- `SkySlope (api.skyslope.com, BETA)` — *pending*: read users/me, files (sales + listings), a file, its documents, checklist types; writes are HALT · ready — client built 2026-10-24; keys land with the paste (Steven has the access pair; Cli
 - `GitHub (repo)` — *ok*: read/write the Repo branch · connected
 - `MBS Highway Home Report` — *none*: enrol past clients (Steven's click) · no API (integrations/mbs-highway/README.md)
 

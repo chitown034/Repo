@@ -1,3 +1,133 @@
+## Orchestrator response (2026-10-24 01:40 UTC) — SkySlope pass findings applied (reviewed 9650ddbafee68d3a → 0789c1e0ed20e324)
+
+change-set: 0789c1e0ed20e324
+
+- **P04-F1 (MEDIUM)** applied: `_rows()` looks one level into items/files/data/value/documents/results; an unrecognised shape exits 7 and names the top-level keys (not values). Tests: nested `value.files` yields the row; `{odd:…}` exits 7 with the hint.
+- **P05-F1 (LOW)** applied: `OSError` and `http.client.HTTPException` map to exit 7 ("network: <type>"); test with TimeoutError and RemoteDisconnected.
+- **P17-F1 (LOW)** applied: `file`, `documents` and `me` summarize by default; `--full` is the record. Test: a buyer e-mail is absent by default, present with --full. The 4,000-char cut is gone.
+- **P11-F1 (LOW)** applied: the fix-mine hint is built from `check`'s output once and names the pair that is actually missing (two shell tests). The proof now prints the `me` summary (no raw profile in the log).
+- (b) applied as defence in depth: a no-redirect opener (any redirect → exit 7, the Session header never follows) and https-only URLs; test included. APIS.md status corrected to "ready" until the paste runs.
+Gate PASS; 13 skyslope tests; 36 fix-mine asserts.
+
+## Code-validator review, SkySlope client (2026-10-24) — verdict FIX FIRST (VibeBreaker DIFF: 0 critical / 0 high / 1 medium / 3 low, 4 info; SURVIVED*)
+
+change-set: 9650ddbafee68d3a
+
+**Verdict: FIX FIRST.** The security core holds. The signature matches an independent HMAC computation. Only GET and the
+login POST can be sent. No key and no Session ticket reaches stdout, stderr, an exception message or disk. The CLI has no
+file-write path at all. `--json` and `--full` work before or after the subcommand. One medium defect: `files` prints
+`0 file(s)` and exits 0 whenever the response is shaped differently than the code expects. A transaction desk would read
+that as "no transactions". Three low defects: a network stall after the request is sent escapes as a traceback with exit 1;
+`file`, `documents` and `me` print the raw record by default, which contradicts the decision entry; and the fix-mine skip
+line is malformed and can blame the wrong key pair.
+
+Deterministic gate, quoted: `verdict: PASS (8 passed, 0 failed)`; `--hash` printed `9650ddbafee68d3a`.
+
+### Scope
+- Mode: DIFF. Passes 01, 04, 05, 06, 07, 08, 11, 12, 14, 17, 18, 19, 20 (Python set plus the shell set for fix-mine).
+- Read: `integrations/skyslope/skyslope_cli.py` (all 194 lines), `tests/test_skyslope_cli.py`, the fix-mine diff plus `set_key`,
+  `run_quiet`, `main` and the `CHECK`/`TTY` header, the validate-code.sh diff, and the doc diffs (APIS, CONNECTIONS, STEVEN-STEPS,
+  decisions, toolkit). Outside the change-set: `brain/index.json` and `docs/reports/CODE-VALIDATION.md`, both regenerated.
+- Ran: unit tests under python3.11, 3.12 and 3.13 (OK each); py_compile on each; `ast.parse(feature_version=(3,9))` plus a scan for
+  `|` used at runtime outside annotations and for `match` (none found); `bash -n scripts/fix-mine.sh` (ok); the fix-mine suite
+  (`34 passed, 0 failed`). Reproducers used a fake urlopen, a local stalled socket and two local HTTP servers, from a scratch
+  folder with fake keys. No SkySlope host was contacted.
+- Limitation: there is no real SkySlope response here and no Python 3.9 interpreter. See UNVERIFIED.
+
+### CONFIRMED
+
+**P04-F1 (MEDIUM, confidence HIGH): `files` reports `0 file(s)`, exit 0, when the response shape is not recognized.**
+- Location: `integrations/skyslope/skyslope_cli.py` 180–188 (`items = data.get("items") or … or data if isinstance(data, dict) else data`).
+- Trigger: a 200 response such as `{"value": {"files": [...]}}`, `{"data": {"files": [...]}}` or a non-JSON body (an HTML page, kept as a string).
+- Bad state: reproduced for all three. The output is `0 file(s)` with rc 0, the same as a real empty list. Nothing tells Steven or
+  Carmen that the parse failed. The real shape of `/api/files` is not in the repo (U1), so this is the likeliest first-run failure.
+- Fix direction: when the payload is not a list and no list sits under a known key (look one level into `value` and `data` too),
+  print `skyslope: unrecognized files response (top-level keys: …)` to stderr and exit 7. Print key names only, never values.
+- Proof: tests that `{"value":{"files":[{"id":"F1"}]}}` either yields F1 or exits 7 with the hint, and that a string body exits 7.
+
+**P05-F1 (LOW, confidence HIGH): a network failure after the request is sent escapes as a traceback with exit 1.**
+- Location: `skyslope_cli.py` 86–92. Only `urllib.error.URLError` is caught. urllib wraps errors raised while sending, but not those
+  raised in `getresponse()` or `r.read()`.
+- Trigger: the server accepts the connection and then stalls past `TIMEOUT`, or drops the connection (`TimeoutError`,
+  `http.client.RemoteDisconnected`, `ConnectionResetError`).
+- Bad state: reproduced against a local socket that accepts and never answers: `UNCAUGHT TimeoutError timed out`. That breaks the
+  documented exit contract (0/2/5/6/7). The traceback carries source lines, not values, so no secret leaks.
+- Fix direction: also catch `OSError` and `http.client.HTTPException` and turn them into `SkySlopeError("network: <class name>", 7)`.
+- Proof: a test where the fake urlopen raises `TimeoutError` and `RemoteDisconnected` expects rc 7, a stderr line, and no `S3CR3T`.
+
+**P17-F1 (LOW, confidence HIGH): `file`, `documents` and `me` print the raw record by default.**
+- Location: `skyslope_cli.py` 189. Without flags it prints `json.dumps(data)[:4000]`. `summarize_file` is used only for `files`.
+- Trigger: `skyslope_cli.py file <id>` with no flags.
+- Bad state: reproduced. A buyer email in the record is printed. That contradicts `context/decisions.md` (2026-10-24: "Default output
+  is a summary …; `--full` shows the record") and the comment at line 136. Truncating at 4000 characters also leaves invalid JSON.
+  The output goes to the terminal only, and nothing is written to disk (confirmed: the CLI has no open/write call).
+- Fix direction: either apply `summarize_file` to `file` by default and gate raw output behind `--full`, or reword the decision
+  entry and the docstring so that only `files` is summarized. That choice is Steven's or Derek's.
+- Proof: a test that `file F1` without `--full` does not contain `pat@example.com`.
+
+**P11-F1 (LOW, confidence HIGH): the fix-mine SkySlope skip line is malformed and can blame the wrong pair.**
+- Location: `scripts/fix-mine.sh` step_keys, the `elif` branch with `$(python3 … check 2>/dev/null || echo 'keys incomplete')`.
+- Trigger: any incomplete key set. `check` prints its line and exits 5, so the `|| echo` also runs.
+- Bad state: reproduced. The REPORT row becomes `SkySlope: SkySlope keys missing: SKYSLOPE_CLIENT_ID, … (file …)` + a newline +
+  `keys incomplete — the Client ID/Secret pair is issued by SkySlope …`, which breaks the indented list. With only the Client pair
+  saved, `check` names the ACCESS pair as missing, but the line still says the Client pair is the gap. No secret is in the line.
+- Fix direction: capture the check output once and use the fallback only when the output is empty. Word the hint from the
+  variables that are actually missing.
+- Proof: a fix-mine shell test with only the access pair saved expects one line that names `SKYSLOPE_CLIENT_ID`, and a test with
+  only the Client pair saved expects a line that names the access pair.
+
+### INFO (not defects)
+- **I1, redirects (b).** Reproduced on 3.11: a 302 from host A to host B makes urllib resend the `Session` header to B, and it
+  would follow https→http as well. A POST login is not resent on 307/308, and on 301/302/303 it is re-sent as a GET without its
+  body, so the Client secret is not replayed. Only a redirect issued by api.skyslope.com itself can trigger this, so it is not a
+  realistic defect. Defense in depth: build the opener with a redirect handler that refuses redirects, then add a test.
+- **I2, the login error that names keys (a).** `login returned no Session ticket (keys: links, value)` shows server key names
+  only, cut to 120 characters. Acceptable.
+- **I3, the proof log (f).** `run_quiet … me --json` writes Steven's own `/api/users/me` record to
+  `~/Library/Logs/vanessa-setup/fix-mine-SkySlope-proof-…log` with the default umask, and the Done line it reports reads `— }`
+  (the last line of the JSON). That is acceptable for his own profile, but a one-line proof (for example `me` printing
+  `ok: <first name>`) would keep the log clean and the REPORT readable. What `/users/me` returns is unknown (U1).
+- **I4, docs.** The APIS.md status `key on Mac` reads as though a key is already on the Mac, but Steven has not run the paste.
+  `wiki/ai-team/toolkit.md` shows the SkySlope API as `*ok*`. The checks (c) and (e) were clean: the timestamp is signed per call,
+  and `a.json` and `a.full` are always set via `getattr` in all six placements tried.
+
+### UNVERIFIED
+- **U1 (NEEDS-CONTEXT): the real response shapes.** Is the login ticket at `Session` at the top level, or nested (for example
+  `{"value": {...}}`)? What shape do `/api/files` and `/api/users/me` return? Needed: the top-level key names (no values) from a
+  single run on the Mac. P04-F1 stands either way.
+- **U2 (NEEDS-CONTEXT): Python 3.9 at runtime.** No 3.9 interpreter here. The grammar check passes and annotations are lazy, but
+  the code has not been run under 3.9.
+
+### Coverage (inspected, clean)
+Signing (`auth_header` against an independent HMAC), `timestamp_utc` (with a non-UTC input), the method allow-list in `_request`,
+secret handling (every error string checked: none interpolates a value from cfg or the ticket), `load_config` (env vars first,
+quotes and whitespace stripped, consistent with `set_key`'s `VAR=value` and its first-`=` split), `missing`/`check` (names only),
+`get` (the 401/403/404/≥400 mapping), `urllib.parse.quote` on file_id, argparse placement, the `set_key` mode 600 and umask
+077 write, the proof only running when `CHECK=0` and the keys are complete, and the validate-code.sh trigger line (`__pycache__` is gitignored).
+
+### Top missing tests (pass 19)
+1. A `files` response wrapped in `value`/`data`, or a non-JSON 200, does not print `0 file(s)` with rc 0 (P04-F1).
+2. The fake urlopen raises `TimeoutError` / `RemoteDisconnected` and the CLI returns rc 7 without a traceback (P05-F1).
+3. `file F1` without `--full` does not show buyer names or emails (P17-F1).
+4. fix-mine: the SkySlope block with only the access pair saved, then only the Client pair, then all four (the proof runs). The suite has no SkySlope assert today (P11-F1).
+5. A login 200 without `Session` returns rc 7, and stderr holds key names and no values.
+6. `--json files` and `files --json` produce identical output (only the `me` placement is implied by tests today).
+7. A cross-host redirect does not carry `Session` (after I1 hardening).
+8. A login 500 returns rc 7 with `login failed (HTTP 500)` and no body echo.
+9. Env vars win over the env file for each variable separately.
+10. `check --json` with a partial file lists exactly the missing names.
+
+```text
+VIBE//BREAKER
+VERDICT: SURVIVED* (repo verdict: FIX FIRST)
+PASSES: 13/20 (DIFF)
+CRITICAL: 0
+HIGH: 0
+CONFIRMED: 4
+UNVERIFIED: 2
+FIRST BREAK: 04
+```
+
 ## Orchestrator response (2026-10-24 00:55 UTC) — pass 4 findings applied (reviewed 00b8d9ff0dd3f6ae → d294b22f475b9a43)
 
 change-set: d294b22f475b9a43
