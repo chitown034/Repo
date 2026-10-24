@@ -40,3 +40,14 @@ class LinkTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestLinksShape(unittest.TestCase):
+    def test_keys_unique_and_rows_well_formed(self):
+        from brain import links as L
+        keys = [l["key"] for l in L.LINKS]
+        self.assertEqual(len(keys), len(set(keys)))
+        for l in L.LINKS:
+            self.assertEqual(set(l), {"key", "label", "url", "store", "layer"}, l["key"])
+            self.assertTrue(l["url"].startswith("https://"), l["key"])
+            self.assertFalse(l["key"].startswith("sb:"), l["key"])

@@ -719,6 +719,11 @@ through Apple Health and the same export file once Steven switches the nutrition
 - **Decision.** One hourly cloud routine, *Vanessa inbox sweep (cloud)*, answers what the Mac pollers did not: iMessage through the Inkbox connector (only inside an existing conversation, only after the Mac's 10-minute window), the deck chat thread (appends Vanessa's answer to `vanessaChat`), Discord #vanessa through Composio once the bot is connected (only Steven's own user id). WhatsApp stays Mac-only (Kapso has no cloud path here); `fix-mine.sh` installs the Kapso plugin + MCP, stores the Discord bot token in the Keychain at a hidden prompt, and prints the runner task catalog so the two WhatsApp tasks can be registered next round. Orca: the Agent OS already carries all 180 roster seats (`integrations/agent-os`, `brain os check` 180/180); fix-mine re-runs its installer; pairing the phone is Steven's. Jarvis: Vanessa's persona now includes the full roster from `agents.json`, so she is the single point of contact and dispatches to seats with `brain os run` / `orca-launch.sh`.
 - **Owner.** Vanessa (sweep, persona), Derek (runner tasks), Steven (connect text, bot token, sign-ins). **Status.** Routine live; first run 00:17 UTC 2026-10-24.
 
+## 2026-10-24 — Military Family Office page joins the deck and the links registry
+
+- **Context.** Steven: "in the dashboard add: Military Family Office" (the Sentinel Military Family Office page, a concept prototype of his own). It was already one line in the deck's Pages menu, which is easy to miss.
+- **Decision.** Panel 17 (Family Office) opens with a *Related dashboards* card: Military Family Office first, then the Veterans Benefits Dashboard and the Military Rent vs Buy tree, all from the Pages menu's own list. The page is also a `bin/brain links` row, so the 6D links panel and the Notion directory show it. Pattern reused from Health & Wellness (2026-10-23).
+
 ## 2026-10-24 — Vanessa answers at any hour; the cloud sweep is 24/7, the Mac window is widened per task
 
 - **Context.** Steven: "enable all messages to respond when message is sent anytime of day." The cloud inbox sweep ran 6 AM–10 PM PT; every Mac runner task carries the window `07-22`, so the 10-minute pollers sleep overnight.

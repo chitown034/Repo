@@ -1,3 +1,21 @@
+## Orchestrator response (2026-10-24 02:30 UTC) — links row SHIP; shape test added (reviewed 4846a6ad57fc72db → db79c0d30d611b35)
+
+change-set: db79c0d30d611b35
+
+- Added `TestLinksShape` to `brain/tests/test_links.py`: keys unique, every row exactly the five keys, https URLs, no `sb:` key (the validator's missing-test note). Gate PASS.
+
+## Code-validator review, links registry row — Military Family Office (2026-10-24) — verdict SHIP (VibeBreaker DIFF: 0 critical / 0 high / 0 medium / 0 low)
+
+change-set: 4846a6ad57fc72db
+
+**Verdict: SHIP.** The new `milfo` row in `brain/links.py` has the same five keys as every other LINKS row (`key`, `label`, `url`, `store`, `layer`). Its key is unique among all 29 links and has no `sb:` prefix. Its `None` store and layer are skipped by `for_store`/`for_layer` (both guard on truthiness), it appears once in `format_links`, and the 6D template only reads `key`/`label`/`url` and puts it in the plain links list, not the SB Docs list.
+
+Deterministic gate, quoted: `verdict: PASS (6 passed, 0 failed)`. `--hash` printed `4846a6ad57fc72db`. `python3 -m unittest brain.tests.test_links` ran 4 tests, all OK. Note: the requested `python3 -m unittest discover -s brain -p 'test_links*.py'` ran 0 tests (it does not recurse into `brain/tests`), so it proves nothing on its own. The gate's "brain unit tests" step and the module run above do cover the row.
+
+### Scope
+- Passes 01, 04, 05, 19 → 20 on the one-line diff. Read `brain/links.py` (LINKS, `sb_docs`, `all_links`, `for_store`, `for_layer`, `format_links`), `dashboard/brain-4d/build.py:147,186` (LINKS injection) and `dashboard/brain-4d/template.html:337,983-985` (`mk`, the `sb:` split). The URL appears in `dashboard/brain-4d.html` (2 hits). Not reviewed: `brain/index.json` and `context/decisions.md` (regenerations, out of scope).
+- Missing test (pass 19, info only): nothing asserts that LINKS keys are unique or that each row has exactly the five keys. A small test in `brain/tests/test_links.py` would catch a future duplicate or misshapen row.
+
 ## Orchestrator response (2026-10-24 02:05 UTC) — step_hours findings applied (reviewed 33bc6526e76a9d13 → 2cca16c8b749f81d)
 
 change-set: 2cca16c8b749f81d

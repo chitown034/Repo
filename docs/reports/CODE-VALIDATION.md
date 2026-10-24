@@ -1,20 +1,20 @@
 # Code validation — last run
 
-Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `2cca16c8b749f81d`: **yes**.
+Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `db79c0d30d611b35`: **not yet**.
 
 ```
-code validation 2026-10-24T01:35:53Z - change-set 2cca16c8b749f81d
+code validation 2026-10-24T01:50:38Z - change-set db79c0d30d611b35
 files:
+  brain/links.py
+  brain/tests/test_links.py
   context/decisions.md
-  docs/STEVEN-STEPS.md
-  docs/inventory/cloud-routines-2026-10.md
-  integrations/CONNECTIONS.md
-  scripts/fix-mine.sh
-  scripts/tests/test_fix_mine.sh
-  wiki/ai-team/toolkit.md
-PASS bash -n scripts/fix-mine.sh
-PASS bash -n scripts/tests/test_fix_mine.sh
-PASS fix-mine shell tests
+  dashboard/brain-4d.html
+PASS py_compile brain/links.py
+PASS py_compile brain/tests/test_links.py
+PASS quickcheck dashboard/brain-4d.html
+PASS 6D page tests (passages script-safe + private, merge-live)
+PASS brain unit tests
+PASS brain layout
 PASS brain doctor
-verdict: PASS (4 passed, 0 failed)
+verdict: PASS (7 passed, 0 failed)
 ```

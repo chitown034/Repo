@@ -22,6 +22,7 @@ LINKS: list[dict] = [
     {"key": "fieldy", "label": "Fieldy (recorded meetings)", "url": "https://app.fieldy.ai/", "store": None, "layer": "fieldy"},
     {"key": "routines", "label": "Cloud routines (claude.ai/code)", "url": "https://claude.ai/code/routines", "store": None, "layer": None},
     {"key": "fitness", "label": "Fitness Dashboard (Health & Wellness)", "url": "https://claude.ai/artifact/4DQyh8Yw2WwGzj8CddBnEd", "store": None, "layer": None},
+    {"key": "milfo", "label": "Military Family Office (Sentinel — Family Office panel 17)", "url": "https://claude.ai/artifact/64jv5GPdHnCM1bJuhyJgcP", "store": None, "layer": None},
     {"key": "stoics", "label": "Famous Stoics (Stoicism dimension)", "url": "https://claude.ai/artifact/14diipurEqD75R818LkLtG", "store": None, "layer": None},
     {"key": "health_drive", "label": "Google Drive · Health Auto Export folder (daily iPhone export)", "url": "https://drive.google.com/drive/folders/1Ta6veOyTtgIsRs4lcMw0jzVgx80XiXjK", "store": "store:drive", "layer": "drive"},
 ]
