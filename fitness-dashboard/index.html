@@ -306,6 +306,129 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
   </div>
 </section>
 
+<!-- DATA HUB -->
+<section class="panel" id="p-hub" data-tab="hub" data-label="Data hub" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Your health data</span>
+    <h2>Connect, analyze &amp; get recommendations</h2>
+    <p>Sync Strava, or import exports from Apple Health (via the Health Auto Export app or the Health app's own export), MyFitnessPal, Cronometer, Garmin, Oura, Whoop, Withings and most other apps. The analysis combines everything with your profile: trends, recovery, energy balance, training load, correlations, and specific recommendations. An optional AI coach can turn it into a written plan.</p>
+  </div>
+  <div class="callout small"><strong>Privacy:</strong> imported data is processed and stored only in this browser on this device. It is never added to the shared page, and other people who open this link can't see it. Strava sync runs with your own connected account. The AI coach sends a summary of your numbers to Claude only when you click it, and uses your Claude account.</div>
+  <div id="hub-flag"></div>
+
+  <div class="grid g3">
+    <div class="card">
+      <div class="card-head"><h3>Strava</h3><span class="pill p-info" id="sv-pill">Live connector</span></div>
+      <p class="small muted">Pulls your recent activities (type, duration, distance, calories, heart rate when available) through the Strava connector on your Claude account.</p>
+      <form class="fields" id="sv-form" autocomplete="off">
+        <label class="f full">History to sync
+          <select id="sv-range"><option value="30">Last 30 days</option><option value="90" selected>Last 90 days</option><option value="180">Last 6 months</option><option value="365">Last 12 months</option></select>
+        </label>
+      </form>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" id="sv-sync">Sync Strava</button></div>
+      <div id="sv-status" class="small muted"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Import files</h3><span class="pill p-good">Any device</span></div>
+      <p class="small muted">Drop one or more exports here. The format is detected from the file's columns, and you can import several apps together. Re-importing the same days replaces them rather than double counting.</p>
+      <label for="hub-file" id="hub-drop" style="display:grid;place-items:center;gap:4px;border:2px dashed var(--line);border-radius:var(--r);padding:20px 12px;text-align:center;cursor:pointer">
+        <strong>Choose files or drag them here</strong>
+        <span class="small muted">.json · .csv · export.xml (unzip Apple's export first)</span>
+      </label>
+      <input type="file" id="hub-file" multiple accept=".json,.csv,.xml,.txt" style="position:absolute;width:1px;height:1px;opacity:0">
+      <div id="hub-progress" class="small muted"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Your data</h3></div>
+      <div id="hub-summary" class="small"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button type="button" class="btn ghost small" id="hub-to-log">Send to Log</button>
+        <button type="button" class="btn ghost small" id="hub-export">Export CSV</button>
+        <button type="button" class="btn ghost small" id="hub-backup">Back up everything</button>
+        <label class="btn ghost small" for="hub-restore" style="display:inline-block">Restore backup</label>
+        <input type="file" id="hub-restore" accept=".json" style="position:absolute;width:1px;height:1px;opacity:0">
+        <button type="button" class="btn ghost small" id="hub-clear">Clear imported data</button>
+      </div>
+      <div id="hub-msg" class="small"></div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <h3>Analysis</h3>
+    <div class="seg" id="hub-range"></div>
+  </div>
+  <p class="small muted" id="hub-through"></p>
+  <div class="tiles" id="hub-kpis"></div>
+
+  <div class="grid g2">
+    <div class="card">
+      <div class="card-head"><h3>Recommendations</h3><span class="small muted">From your data and profile</span></div>
+      <div id="hub-recs" class="grid" style="gap:10px"></div>
+    </div>
+    <div class="grid" style="gap:16px">
+      <div class="card">
+        <div class="card-head"><h3>Today's readiness</h3><span class="small muted" id="hub-ready-date"></span></div>
+        <div id="hub-ready"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>True maintenance calories</h3><span class="pill p-info">Adaptive TDEE</span></div>
+        <div id="hub-tdee"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid g3" id="hub-charts"></div>
+
+  <div class="grid g2">
+    <div class="card">
+      <div class="card-head"><h3>Training breakdown</h3><span class="small muted" id="hub-train-meta"></span></div>
+      <div class="svgbox" id="hub-week-chart"></div>
+      <div id="hub-train"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>What affects what</h3><span class="small muted">Correlations in your data</span></div>
+      <div id="hub-corr"></div>
+      <p class="note">Correlation isn't causation, and short ranges are noisy. Patterns become trustworthy after 30+ days of data.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h3>AI coach</h3><span class="pill p-info">Claude</span></div>
+    <p class="small muted">Sends a summary of the selected range (your profile, weekly averages, the last 14 days, and the recommendations above) and returns a written analysis. It uses your Claude account, and you'll be asked to allow it the first time.</p>
+    <div class="seg" id="ai-presets">
+      <button type="button" class="chip" data-p="full">Full analysis</button>
+      <button type="button" class="chip" data-p="week">Plan my next 7 days</button>
+      <button type="button" class="chip" data-p="today">What should I do today?</button>
+      <button type="button" class="chip" data-p="nutrition">Nutrition review</button>
+      <button type="button" class="chip" data-p="recovery">Recovery &amp; sleep review</button>
+      <button type="button" class="chip" data-p="goal">Am I on track for my goal?</button>
+    </div>
+    <div id="ai-out" class="small" style="display:grid;gap:8px;max-width:80ch"></div>
+    <form id="ai-chat" class="fields" autocomplete="off" style="grid-template-columns:1fr auto">
+      <input id="ai-q" type="text" placeholder="Ask a follow-up, e.g. why is my HRV dropping?" aria-label="Ask the AI coach">
+      <div style="display:flex;gap:8px"><button type="submit" class="btn" id="ai-send">Ask</button><button type="button" class="btn ghost" id="ai-stop" hidden>Stop</button></div>
+    </form>
+    <p class="note">The AI coach offers general fitness guidance, not medical advice. It sees only the numbers summarized here.</p>
+  </div>
+
+  <div class="card">
+    <h3>How to get your data in</h3>
+    <div class="table-wrap" style="border:0"><table><thead><tr><th>Source</th><th>How to export</th><th>What's imported</th></tr></thead><tbody>
+      <tr><td><strong>Apple Health via Health Auto Export</strong> (iOS app)</td><td>In the app, tap <em>Export</em>. Format JSON (or CSV), aggregation <em>Day</em>, pick metrics and a date range, then save to Files and import here. For hands-off updates, set an <em>Automation</em> that saves to iCloud Drive or Files each day, then import the newest file. Its REST API automation can't post into this page.</td><td>Steps, active and resting energy, distance, exercise minutes, flights, weight, body fat, resting HR, HRV, sleep, VO₂max, respiratory rate, SpO₂, nutrition, water, workouts</td></tr>
+      <tr><td><strong>Apple Health (built-in export)</strong></td><td>Health app → profile picture → <em>Export All Health Data</em>. Unzip it and import <code>export.xml</code>. Big files (hundreds of MB) take a minute; overlapping iPhone and Watch data are de-duplicated.</td><td>Same metrics as above, plus workouts</td></tr>
+      <tr><td><strong>Strava</strong></td><td>Use <em>Sync Strava</em> above (needs the Strava connector in claude.ai Settings → Connectors). Or request a bulk export at strava.com → Settings → My Account → <em>Download or Delete Your Account</em> and import <code>activities.csv</code>.</td><td>Activities with time, distance, calories, heart rate</td></tr>
+      <tr><td><strong>MyFitnessPal</strong></td><td>Premium: website → Settings → <em>Export data</em>. Unzip the emailed file and import <em>Nutrition-Summary</em>, <em>Measurement-Summary</em> and <em>Exercise-Summary</em> CSVs.</td><td>Daily calories, protein, carbs, fat, fiber, sugar, sodium; weight; exercise</td></tr>
+      <tr><td><strong>Cronometer</strong></td><td>Settings → Account → <em>Export Data</em> → Daily Nutrition (and Biometrics).</td><td>Calories, macros, micronutrients, weight</td></tr>
+      <tr><td><strong>Garmin Connect</strong></td><td>connect.garmin.com → Activities → All Activities → <em>Export CSV</em>. Or account → Data Management → Export your data.</td><td>Activities, distance, calories, average HR</td></tr>
+      <tr><td><strong>Oura</strong></td><td>cloud.ouraring.com (or the membership hub) → <em>Export data</em> → CSV.</td><td>Sleep, readiness, HRV, resting HR, steps, activity burn</td></tr>
+      <tr><td><strong>Whoop</strong></td><td>App → Settings → <em>Data Export</em>. Import <code>physiological_cycles.csv</code>, <code>sleeps.csv</code> and <code>workouts.csv</code>.</td><td>Recovery, strain, HRV, resting HR, sleep, workouts</td></tr>
+      <tr><td><strong>Fitbit / Google</strong></td><td>Google Takeout → Fitbit (or export from fitbit.com dashboard settings). Import the daily CSVs. On Android, apps like Health Sync can export Health Connect data to CSV.</td><td>Steps, sleep, resting HR, weight, calories</td></tr>
+      <tr><td><strong>Withings</strong></td><td>healthmate.withings.com → Settings → <em>Download my data</em>. Import <code>weight.csv</code>.</td><td>Weight, body fat, fat mass</td></tr>
+      <tr><td><strong>Samsung Health, Polar, COROS, Peloton, others</strong></td><td>Use the app's CSV export. Any CSV with a date column and recognizable headers (steps, weight, calories, protein, sleep, HRV…) works.</td><td>Whatever columns match</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
 <!-- METABOLISM -->
 <section class="panel" id="p-metabolism" data-tab="metabolism" data-label="Metabolic priming" hidden>
   <div class="panel-head">
@@ -710,6 +833,29 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
       </tbody>
     </table>
   </div>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Sweat rate &amp; hydration</h3>
+      <p class="small muted">Weigh yourself in minimal clothing before and after a typical one-hour session, without using the bathroom in between.</p>
+      <form class="fields" id="sweat" autocomplete="off">
+        <label class="f">Weight before <span class="u-wt">(kg)</span><input id="sw-pre" data-conv="w" type="number" step="0.1"></label>
+        <label class="f">Weight after <span class="u-wt">(kg)</span><input id="sw-post" data-conv="w" type="number" step="0.1"></label>
+        <label class="f">Fluid drunk <span class="sw-fu">(L)</span><input id="sw-fluid" type="number" step="0.05" value="0.5"></label>
+        <label class="f">Duration (min)<input id="sw-min" type="number" value="60"></label>
+      </form>
+      <div id="sweat-out"></div>
+    </div>
+    <div class="card">
+      <h3>Heat, altitude, cold &amp; travel</h3>
+      <div class="kv small">
+        <dt>Heat</dt><dd>Endurance performance falls noticeably above about 20 °C / 68 °F. Heat acclimation takes 10–14 days of 60–90 min sessions in the heat. Pre-cool with cold drinks or slushies, and drink to thirst plus electrolytes. Stop for headache, confusion or chills; heat stroke is an emergency.</dd>
+        <dt>Altitude</dt><dd>Above about 1,500 m, VO₂max drops roughly 6–7% per 1,000 m. Allow 1–2 weeks to adapt, cut intensity at first, raise fluids, and check iron status before a training camp.</dd>
+        <dt>Cold</dt><dd>Warm up longer, dress in layers (wicking base, insulating middle, windproof shell), protect hands and ears. Cold air can trigger exercise-induced asthma.</dd>
+        <dt>Air quality</dt><dd>Move hard sessions indoors when AQI exceeds about 150, or 100 if you have asthma or heart disease.</dd>
+        <dt>Jet lag</dt><dd>Adjusting takes about 1 day per time zone. Get morning light after flying east and evening light after flying west. Train outdoors in daylight at the destination; keep sessions easy for 1–2 days.</dd>
+      </div>
+    </div>
+  </div>
   <div class="callout"><strong>Concurrent training:</strong> cardio barely blunts muscle gain when you separate hard cardio from leg sessions by 6+ hours (or put lifting first), favor cycling or incline walking over high-volume running, and eat enough.</div>
 </section>
 
@@ -1077,6 +1223,22 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
     <span class="eyebrow">Health</span>
     <h2>Hormones, life stages, medical markers &amp; medications</h2>
     <p>Fitness exists to serve health. This tab covers how training and nutrition change across life stages, the lab markers worth tracking, GLP-1 weight-loss medications, and exercising with common conditions. Reference ranges vary by lab and country; your clinician interprets your results.</p>
+  </div>
+  <div class="card">
+    <h3>How fitness changes your health</h3>
+    <p class="small muted">Large studies linking activity and fitness to health outcomes. Most are observational, so they show strong associations rather than guarantees, but the direction is consistent across decades of research.</p>
+    <div class="table-wrap" style="border:0"><table><thead><tr><th>Factor</th><th>What the research shows</th><th>Source</th></tr></thead><tbody>
+      <tr><td><strong>Daily steps</strong></td><td>Each additional 1,000 steps a day was linked to about 15% lower all-cause mortality. Benefits level off around 6,000–8,000 steps (age 60+) and 8,000–10,000 (under 60).</td><td class="small muted">Banach 2023; Paluch 2022 (Lancet Public Health)</td></tr>
+      <tr><td><strong>Cardiorespiratory fitness</strong></td><td>The least-fit group had about 5× the mortality of elite-fit people, a risk as large as or larger than smoking or diabetes. No upper limit of benefit was found.</td><td class="small muted">Mandsager 2018 (JAMA Netw Open, 122,007 patients)</td></tr>
+      <tr><td><strong>Strength training</strong></td><td>30–60 min a week was linked to 10–20% lower risk of death, cardiovascular disease and cancer.</td><td class="small muted">Momma 2022 (Br J Sports Med)</td></tr>
+      <tr><td><strong>Grip strength</strong></td><td>Each 5 kg lower grip strength was linked to 16% higher mortality, a stronger predictor than blood pressure.</td><td class="small muted">PURE study, Leong 2015 (Lancet)</td></tr>
+      <tr><td><strong>Sitting</strong></td><td>Long daily sitting raises risk, but 60–75 min a day of moderate activity largely offsets the risk of 8+ hours of sitting.</td><td class="small muted">Ekelund 2016 (Lancet, 1M+ adults)</td></tr>
+      <tr><td><strong>Type 2 diabetes</strong></td><td>150 min/week of activity plus 7% weight loss cut progression from prediabetes by 58%, beating metformin (31%).</td><td class="small muted">Diabetes Prevention Program 2002 (NEJM)</td></tr>
+      <tr><td><strong>Depression</strong></td><td>Walking, jogging, yoga and strength training reduced depressive symptoms about as much as psychotherapy; more intense exercise worked better.</td><td class="small muted">Noetel 2024 (BMJ network meta-analysis)</td></tr>
+      <tr><td><strong>Sleep</strong></td><td>Regularly sleeping under 6 hours was linked to about 12% higher mortality.</td><td class="small muted">Cappuccio 2010 meta-analysis</td></tr>
+      <tr><td><strong>Keeping weight off</strong></td><td>Among people who kept off 13.6 kg+ for a year or more, about 90% exercise roughly an hour a day and 75% weigh themselves at least weekly.</td><td class="small muted">National Weight Control Registry</td></tr>
+      <tr><td><strong>Brain health</strong></td><td>Regular physical activity is linked to about 20–30% lower dementia risk; aerobic exercise grew the hippocampus in older adults.</td><td class="small muted">Erickson 2011 (PNAS); Lancet Commission on dementia</td></tr>
+    </tbody></table></div>
   </div>
   <div class="grid g2">
     <div class="card">
@@ -2611,8 +2773,488 @@ $("#m-clear").addEventListener("click", () => { if (isSample) { isSample = false
 $("#w-clear").addEventListener("click", () => { if (isSample) { LOG = { w: [], s: LOG.s, m: LOG.m, touched: true }; isSample = false; } else LOG.w = []; saveLog(); renderLog(); });
 $("#s-clear").addEventListener("click", () => { if (isSample) { LOG = { w: LOG.w, s: [], m: LOG.m, touched: true }; isSample = false; } else LOG.s = []; saveLog(); renderLog(); });
 
+const cap = n => { try { return (window.claude && window.claude.use ? Promise.resolve(window.claude.use(n)) : Promise.resolve(null)).catch(() => null); } catch (_) { return Promise.resolve(null); } };
+
+/* ---------- sweat rate ---------- */
+function renderSweat() {
+  $$(".sw-fu").forEach(e => e.textContent = imp() ? "(fl oz)" : "(L)");
+  const pre = fromDispW(parseFloat($("#sw-pre").value)), post = fromDispW(parseFloat($("#sw-post").value));
+  let fl = parseFloat($("#sw-fluid").value) || 0; if (imp()) fl *= 0.0295735; const mins = parseFloat($("#sw-min").value);
+  if (!(pre > 0 && post > 0 && mins > 0)) { $("#sweat-out").innerHTML = `<p class="small muted">Enter before and after weights to calculate.</p>`; return; }
+  const lost = pre - post, rate = (lost + fl) / (mins / 60), pct = lost / pre * 100;
+  const v = l => imp() ? fmt(l / 0.0295735) + " fl oz" : fmt(l, 2) + " L";
+  const st = pct >= 2 ? `<span class="pill p-bad">${fmt(pct, 1)}% bodyweight lost</span> Performance drops above about 2%; drink more during sessions.` : pct < 0 ? `<span class="pill p-warn">Gained weight</span> You drank more than you sweated; over-drinking on long events risks low sodium (hyponatremia).` : `<span class="pill p-good">${fmt(pct, 1)}% bodyweight lost</span> Well managed.`;
+  $("#sweat-out").innerHTML = `<div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,120px),1fr))"><div class="tile hero"><span class="eyebrow">Sweat rate</span><span class="v" style="font-size:1.6rem">${v(rate)}<small>/h</small></span></div><div class="tile"><span class="eyebrow">Drink during</span><span class="v" style="font-size:1.6rem">${v(rate * 0.6)}–${v(rate * 0.8)}<small>/h</small></span></div><div class="tile"><span class="eyebrow">Afterward</span><span class="v" style="font-size:1.6rem">${v(Math.max(0, lost) * 1.5)}</span><span class="s">1.5× the weight lost</span></div></div><p class="small" style="margin-top:8px">${st}</p><p class="note">Sweat sodium averages about 900 mg/L (range 200–2,000). For sessions over 90 minutes, include 300–700 mg sodium per hour; salty crust on clothing means you're a salty sweater.</p>`;
+}
+
+/* ---------- data hub ---------- */
+// agg: how multiple readings on one day combine
+const HK = {
+  steps: { l: "Steps", agg: "sum", u: "", d: 0 }, activeKcal: { l: "Active energy", agg: "sum", u: "kcal", d: 0 }, restKcal: { l: "Resting energy", agg: "sum", u: "kcal", d: 0 },
+  totalKcal: { l: "Total burn", agg: "sum", u: "kcal", d: 0 }, intake: { l: "Calories eaten", agg: "sum", u: "kcal", d: 0 }, protein: { l: "Protein", agg: "sum", u: "g", d: 0 },
+  carbs: { l: "Carbs", agg: "sum", u: "g", d: 0 }, fat: { l: "Fat", agg: "sum", u: "g", d: 0 }, fiber: { l: "Fiber", agg: "sum", u: "g", d: 0 }, sugar: { l: "Sugar", agg: "sum", u: "g", d: 0 },
+  sodium: { l: "Sodium", agg: "sum", u: "mg", d: 0 }, water: { l: "Water", agg: "sum", u: "L", d: 1 }, distance: { l: "Distance", agg: "sum", u: "km", d: 1 }, exerciseMin: { l: "Exercise minutes", agg: "sum", u: "min", d: 0 },
+  flights: { l: "Flights climbed", agg: "sum", u: "", d: 0 }, weight: { l: "Weight", agg: "avg", u: "kg", d: 1 }, bodyFat: { l: "Body fat", agg: "avg", u: "%", d: 1 }, rhr: { l: "Resting HR", agg: "avg", u: "bpm", d: 0 },
+  hrv: { l: "HRV", agg: "avg", u: "ms", d: 0 }, sleep: { l: "Sleep", agg: "sum", u: "h", d: 1 }, vo2: { l: "VO₂max", agg: "avg", u: "", d: 1 }, resp: { l: "Respiratory rate", agg: "avg", u: "/min", d: 1 },
+  spo2: { l: "Blood oxygen", agg: "avg", u: "%", d: 0 }, readiness: { l: "Readiness / recovery", agg: "avg", u: "", d: 0 }, strain: { l: "Strain", agg: "avg", u: "", d: 1 }
+};
+let HUB = store.get("hub", null), hubDemo = false;
+function hubDemoData() {
+  const days = {}, workouts = []; const t = new Date();
+  for (let i = 89; i >= 0; i--) {
+    const d = new Date(t); d.setDate(d.getDate() - i); const k = iso(d), dow = d.getDay(), p = (89 - i) / 89;
+    const n = (a, b) => Math.sin(i * a) * b + Math.cos(i * (a * 1.7)) * b * 0.6;
+    const sl = 7.1 + n(1.3, 0.55) - (dow === 6 ? 0.4 : 0);
+    days[k] = { steps: Math.round(8200 + n(0.9, 2200) + (dow === 0 ? -2500 : 0)), activeKcal: Math.round(520 + n(1.1, 140)), restKcal: 1790, sleep: round(sl, 2),
+      rhr: round(63 - p * 3.5 + n(2.1, 1.4) + (sl < 6.6 ? 2 : 0), 0), hrv: round(44 + p * 7 + n(1.7, 5) - (sl < 6.6 ? 6 : 0), 0), exerciseMin: Math.round(35 + n(0.7, 20)), distance: round(6 + n(0.9, 1.8), 1), vo2: round(41 + p * 1.6, 1) };
+    if (i % 2 === 0 || dow === 1) days[k].weight = round(84 - p * 2.6 + n(1.9, 0.45), 1);
+    if (i % 5 !== 2) Object.assign(days[k], { intake: Math.round(2280 + n(1.4, 260) + (dow === 6 ? 450 : 0)), protein: Math.round(150 + n(1.2, 28)), carbs: Math.round(240 + n(0.8, 45)), fat: Math.round(78 + n(1.6, 14)), fiber: Math.round(24 + n(1.1, 7)), sodium: Math.round(2900 + n(1.3, 600)) });
+    if ([1, 3, 5].includes(dow)) workouts.push({ date: k, type: "Strength training", min: 58 + (i % 3) * 4, km: 0, kcal: 310, hr: 112, src: "Example" });
+    if (dow === 6) workouts.push({ date: k, type: "Run", min: 42, km: 7.2, kcal: 520, hr: 151, src: "Example" });
+    if (dow === 2 && i % 14 < 7) workouts.push({ date: k, type: "HIIT", min: 25, km: 0, kcal: 300, hr: 158, src: "Example" });
+    if (dow === 0) workouts.push({ date: k, type: "Walk", min: 55, km: 4.8, kcal: 230, hr: 98, src: "Example" });
+  }
+  return { days, workouts, sources: {} };
+}
+if (!HUB || (!Object.keys(HUB.days || {}).length && !(HUB.workouts || []).length)) { HUB = hubDemoData(); hubDemo = true; }
+HUB.sources = HUB.sources || {};
+function saveHub() { if (!hubDemo) store.set("hub", HUB); }
+function hubBeginReal() { if (hubDemo) { HUB = { days: {}, workouts: [], sources: {} }; hubDemo = false; } }
+
+function toDay(s) {
+  if (s == null) return null; s = String(s).trim().replace(/^"|"$/g, "");
+  let m = s.match(/^(\d{4})-(\d{2})-(\d{2})/); if (m) return `${m[1]}-${m[2]}-${m[3]}`;
+  m = s.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})/); if (m) return `${m[1]}-${m[2].padStart(2, "0")}-${m[3].padStart(2, "0")}`;
+  m = s.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})/);
+  if (m) { let a = +m[1], b = +m[2], y = +m[3]; if (y < 100) y += 2000; const [mo, da] = a > 12 ? [b, a] : [a, b]; return `${y}-${String(mo).padStart(2, "0")}-${String(da).padStart(2, "0")}`; }
+  const d = new Date(s); return isNaN(d) ? null : iso(d);
+}
+function parseCSV(text) {
+  const first = text.slice(0, 2000).split(/\r?\n/)[0];
+  const delim = [",", ";", "\t"].map(c => [c, first.split(c).length]).sort((a, b) => b[1] - a[1])[0][0];
+  const rows = []; let row = [], cur = "", q = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) { if (c === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else q = false; } else cur += c; }
+    else if (c === '"') q = true; else if (c === delim) { row.push(cur); cur = ""; }
+    else if (c === "\n" || c === "\r") { if (c === "\r" && text[i + 1] === "\n") i++; row.push(cur); if (row.some(x => x !== "")) rows.push(row); row = []; cur = ""; }
+    else cur += c;
+  }
+  row.push(cur); if (row.some(x => x !== "")) rows.push(row);
+  return rows;
+}
+const num = v => { if (v == null) return NaN; const s = String(v).replace(/[, ]/g, "").replace(/%$/, ""); return s === "" ? NaN : parseFloat(s); };
+function durMin(v, h) {
+  const s = String(v).trim(); if (!s) return NaN;
+  if (s.includes(":")) { const p = s.split(":").map(Number); return p.length === 3 ? p[0] * 60 + p[1] + p[2] / 60 : p[0] + p[1] / 60; }
+  const n = num(s); if (!Number.isFinite(n)) return NaN;
+  if (/\(s\)|sec|elapsed time$|moving time$/.test(h)) return n / 60; if (/\(h\)|hour/.test(h)) return n * 60; return n;
+}
+// [pattern, key, exclude?] checked in order against lower-cased headers
+const COLS = [
+  [/step/, "steps", /length|cadence/], [/active (energy|calories)|activity burn|active_energy|move \(|calories \(active\)|exercise calories/, "activeKcal"], [/basal|resting energy|resting calories|bmr/, "restKcal"],
+  [/total burn|energy burned|total calories burned|calories burned/, "totalKcal"], [/dietary energy|^calories$|^calories \(kcal\)|energy \(kcal\)|calories consumed|food calories|^energy$|^kcal$/, "intake"],
+  [/protein/, "protein"], [/carbohydrate|carbs/, "carbs", /net/], [/^fat\b|total fat|^fat \(g\)|fat \(g\)/, "fat", /saturated|trans|poly|mono|body|mass|ratio|%|percent/], [/fiber|fibre/, "fiber"], [/sugar/, "sugar", /alcohol/],
+  [/sodium/, "sodium"], [/water/, "water", /body water/], [/distance/, "distance"], [/exercise (time|min)|active minutes|exercise_time|activity minutes/, "exerciseMin"], [/flights/, "flights"],
+  [/body fat|fat percentage|fat %|fat ratio|bodyfat/, "bodyFat", /mass \(|kg|lb/], [/^weight|weight \(|body mass|^mass/, "weight", /lean|fat|bone|muscle|lifted/],
+  [/resting heart|resting hr|lowest resting|resting_heart|^rhr/, "rhr"], [/hrv|heart rate variability|rmssd|sdnn/, "hrv"],
+  [/asleep|total sleep|sleep duration|^sleep \(|sleep_analysis|hours of sleep|minutes asleep|^sleep$/, "sleep", /latency|score|efficiency|start|end|onset|need|debt|disturb|consistency|performance|awake|deep|rem|light|core/],
+  [/vo2/, "vo2"], [/respiratory/, "resp"], [/oxygen|spo2/, "spo2"], [/readiness|recovery score|recovery %|body battery/, "readiness"], [/strain/, "strain"]
+];
+function convertVal(key, v, h) {
+  if (!Number.isFinite(v)) return NaN;
+  switch (key) {
+    case "activeKcal": case "restKcal": case "totalKcal": case "intake": return /kj|kilojoule/.test(h) ? v / 4.184 : v;
+    case "weight": return /lb|pound/.test(h) ? v / KG_LB : /\(g\)/.test(h) ? v / 1000 : v;
+    case "distance": return /\(mi|mile/.test(h) ? v * 1.609344 : /\(m\)|meters|metres/.test(h) ? v / 1000 : v;
+    case "water": return /ml|milli/.test(h) ? v / 1000 : /fl|oz/.test(h) ? v * 0.0295735 : /\(g\)/.test(h) ? v / 1000 : v > 20 ? v / 1000 : v;
+    case "sodium": return /\(g\)/.test(h) ? v * 1000 : v;
+    case "sleep": return /\(s\)|second/.test(h) ? v / 3600 : /\(ms\)/.test(h) ? v / 3.6e6 : /min/.test(h) ? v / 60 : v > 1440 ? v / 3600 : v > 24 ? v / 60 : v;
+    case "bodyFat": case "spo2": return v <= 1 ? v * 100 : v;
+    default: return v;
+  }
+}
+function newAcc() { return {}; }
+function accAdd(acc, date, key, v) { if (!date || !Number.isFinite(v)) return; const a = (acc[date] = acc[date] || {}); const c = (a[key] = a[key] || { s: 0, n: 0 }); c.s += v; c.n++; }
+function accMerge(acc, srcName) {
+  let n = 0;
+  Object.entries(acc).forEach(([d, ks]) => { const day = (HUB.days[d] = HUB.days[d] || {}); Object.entries(ks).forEach(([k, c]) => { if (!HK[k]) return; day[k] = round(HK[k].agg === "sum" ? c.s : c.s / c.n, 3); n++; }); });
+  return n;
+}
+function typeGroup(t) {
+  t = String(t || "").toLowerCase();
+  if (/run|jog/.test(t)) return "Run"; if (/ride|cycl|bike|spin|peloton/.test(t)) return "Ride"; if (/swim/.test(t)) return "Swim";
+  if (/walk|hike|stair/.test(t)) return "Walk / hike"; if (/weight|strength|lift|fitbod|functional|crossfit|resistance|core/.test(t)) return "Strength";
+  if (/hiit|interval|tabata|bootcamp|circuit|rowing|row|elliptical|cardio/.test(t)) return "Conditioning"; if (/yoga|pilates|stretch|mobility|flexib|barre|cooldown/.test(t)) return "Mobility / yoga";
+  if (/soccer|tennis|basketball|golf|ski|climb|box|martial|sport|pickle|padel|surf/.test(t)) return "Sport"; return "Other";
+}
+function addWorkouts(list, src) {
+  HUB.workouts = HUB.workouts.filter(w => w.src !== src).concat(list.filter(w => w.date && w.min > 0).map(w => ({ ...w, src })));
+  return list.length;
+}
+function importCSV(text, fname) {
+  const rows = parseCSV(text); if (rows.length < 2) throw new Error("no rows found");
+  const H = rows[0].map(h => h.trim().toLowerCase());
+  const dateIdx = H.findIndex(h => /^(date|day|date\/time|summary date|cycle start time|activity date|start|start time|timestamp|sleep onset|time)$/.test(h)) >= 0 ? H.findIndex(h => /^(date|day|date\/time|summary date|cycle start time|activity date|start|start time|timestamp|sleep onset|time)$/.test(h)) : H.findIndex(h => /date|day|time/.test(h));
+  if (dateIdx < 0) throw new Error("no date column");
+  const typeIdx = H.findIndex(h => /^(activity type|workout type|sport|sport type|type|exercise|activity name|activity)$/.test(h));
+  const isWorkouts = typeIdx >= 0 && H.some(h => /duration|elapsed|moving time|^time$|minutes/.test(h));
+  if (isWorkouts) {
+    const di = H.findIndex(h => /duration|elapsed time|moving time|^time$|exercise minutes|minutes/.test(h));
+    const ki = H.findIndex(h => /distance/.test(h)), ci = H.findIndex(h => /calor|energy/.test(h)), hi = H.findIndex(h => /avg hr|average heart|avg heart|average hr|heart rate \(avg|average_heartrate/.test(h));
+    const list = rows.slice(1).map(r => ({ date: toDay(r[dateIdx]), type: r[typeIdx] || "Workout", min: di >= 0 ? durMin(r[di], H[di]) : NaN, km: ki >= 0 ? convertVal("distance", num(r[ki]), H[ki]) || 0 : 0, kcal: ci >= 0 ? num(r[ci]) || 0 : 0, hr: hi >= 0 ? num(r[hi]) || 0 : 0 }));
+    return { kind: "workouts", n: addWorkouts(list, fname) };
+  }
+  const map = []; const used = new Set();
+  H.forEach((h, i) => { if (i === dateIdx) return; const hit = COLS.find(([re, k, ex]) => !used.has(k) && re.test(h) && !(ex && ex.test(h))); if (hit) { map.push([i, hit[1], h]); used.add(hit[1]); } });
+  if (!map.length) throw new Error("no recognizable columns");
+  const acc = newAcc();
+  rows.slice(1).forEach(r => { const d = toDay(r[dateIdx]); map.forEach(([i, k, h]) => accAdd(acc, d, k, convertVal(k, num(r[i]), h))); });
+  return { kind: "daily", n: accMerge(acc, fname), cols: map.map(m => HK[m[1]].l) };
+}
+const HAE = { step_count: "steps", active_energy: "activeKcal", basal_energy_burned: "restKcal", dietary_energy: "intake", protein: "protein", carbohydrates: "carbs", total_fat: "fat", fiber: "fiber", dietary_sugar: "sugar", sodium: "sodium", dietary_water: "water",
+  walking_running_distance: "distance", apple_exercise_time: "exerciseMin", flights_climbed: "flights", weight_body_mass: "weight", body_fat_percentage: "bodyFat", resting_heart_rate: "rhr", heart_rate_variability: "hrv", sleep_analysis: "sleep", vo2_max: "vo2", respiratory_rate: "resp", blood_oxygen_saturation: "spo2" };
+function importJSON(text, fname) {
+  const o = JSON.parse(text);
+  if (o && o.app === "plate-and-pulse") { restoreBackup(o); return { kind: "backup", n: 1 }; }
+  const data = o.data || o; const metrics = data.metrics || [], wos = data.workouts || [];
+  if (!metrics.length && !wos.length) throw new Error("not a Health Auto Export file");
+  const acc = newAcc(); let n = 0;
+  metrics.forEach(m => {
+    const key = HAE[String(m.name || "").toLowerCase()]; if (!key) return; const u = String(m.units || "").toLowerCase();
+    (m.data || []).forEach(p => {
+      let v = key === "sleep" ? (p.totalSleep ?? p.asleep ?? (((p.core || 0) + (p.deep || 0) + (p.rem || 0)) || p.qty)) : (p.qty ?? p.Avg ?? p.avg);
+      v = num(v); if (key === "sleep" && /min/.test(u)) v /= 60;
+      accAdd(acc, toDay(p.date || p.sleepEnd || p.startDate), key, convertVal(key, v, "(" + u + ")"));
+    });
+  });
+  n += accMerge(acc, fname);
+  const q = x => x == null ? NaN : typeof x === "object" ? num(x.qty) : num(x);
+  const list = wos.map(w => {
+    const du = String(w.distance?.units || "").toLowerCase(), eu = String(w.activeEnergyBurned?.units || w.activeEnergy?.units || "").toLowerCase();
+    let min = num(w.duration); if (Number.isFinite(min)) min = min > 600 ? min / 60 : min; else min = (new Date(w.end) - new Date(w.start)) / 60000;
+    let kcal = q(w.activeEnergyBurned ?? w.activeEnergy); if (/kj/.test(eu)) kcal /= 4.184;
+    let km = q(w.distance); if (/mi/.test(du)) km *= 1.609344; else if (du === "m") km /= 1000;
+    return { date: toDay(w.start), type: w.name || "Workout", min, km: km || 0, kcal: kcal || 0, hr: q(w.avgHeartRate ?? w.heartRate?.avg) || 0 };
+  });
+  if (list.length) addWorkouts(list, fname);
+  return { kind: "daily", n: n + list.length };
+}
+const XMLQ = { StepCount: "steps", ActiveEnergyBurned: "activeKcal", BasalEnergyBurned: "restKcal", DietaryEnergyConsumed: "intake", DietaryProtein: "protein", DietaryCarbohydrates: "carbs", DietaryFatTotal: "fat", DietaryFiber: "fiber", DietarySugar: "sugar", DietarySodium: "sodium", DietaryWater: "water",
+  DistanceWalkingRunning: "distance", AppleExerciseTime: "exerciseMin", FlightsClimbed: "flights", BodyMass: "weight", BodyFatPercentage: "bodyFat", RestingHeartRate: "rhr", HeartRateVariabilitySDNN: "hrv", VO2Max: "vo2", RespiratoryRate: "resp", OxygenSaturation: "spo2" };
+async function importXML(file, fname, progress) {
+  const CH = 4 * 1024 * 1024; let pos = 0, tail = ""; const bySrc = {}; const wos = []; const attr = s => { const o = {}; s.replace(/(\w+)="([^"]*)"/g, (_, k, v) => { o[k] = v; return ""; }); return o; };
+  while (pos < file.size) {
+    const txt = tail + await file.slice(pos, pos + CH).text(); pos += CH;
+    const cut = txt.lastIndexOf("<"); const body = pos >= file.size ? txt : txt.slice(0, cut); tail = pos >= file.size ? "" : txt.slice(cut);
+    body.replace(/<Record\b([^>]*?)\/?>/g, (_, a) => {
+      const t = a.match(/type="HK(?:Quantity|Category)TypeIdentifier(\w+)"/); if (!t) return "";
+      const o = attr(a); let key = XMLQ[t[1]], v, date = toDay(o.startDate);
+      if (t[1] === "SleepAnalysis") { if (!/Asleep/.test(o.value || "")) return ""; key = "sleep"; v = (new Date(o.endDate.replace(" ", "T").replace(/ ([+-]\d{2})(\d{2})$/, "$1:$2")) - new Date(o.startDate.replace(" ", "T").replace(/ ([+-]\d{2})(\d{2})$/, "$1:$2"))) / 3.6e6; date = toDay(o.endDate); }
+      else { if (!key) return ""; v = convertVal(key, num(o.value), "(" + String(o.unit || "").toLowerCase() + ")"); if (key === "hrv" || key === "rhr") {} }
+      if (!Number.isFinite(v)) return "";
+      const sk = HK[key].agg === "sum" ? key + "|" + (o.sourceName || "") : key;
+      const a2 = (bySrc[date] = bySrc[date] || {}); const c = (a2[sk] = a2[sk] || { s: 0, n: 0 }); c.s += v; c.n++;
+      return "";
+    });
+    body.replace(/<Workout\b([^>]*)>/g, (_, a) => { const o = attr(a); let min = num(o.duration); if (/hr|h$/.test(o.durationUnit || "")) min *= 60; else if (/^s$/.test(o.durationUnit || "")) min /= 60; let km = num(o.totalDistance); if (/mi/.test(o.totalDistanceUnit || "")) km *= 1.609344; wos.push({ date: toDay(o.startDate), type: String(o.workoutActivityType || "").replace("HKWorkoutActivityType", ""), min, km: km || 0, kcal: num(o.totalEnergyBurned) || 0, hr: 0 }); return ""; });
+    progress(Math.min(100, Math.round(pos / file.size * 100)));
+    await new Promise(r => setTimeout(r, 0));
+  }
+  // overlapping iPhone + Watch sources: keep the largest single-source daily total
+  const acc = {};
+  Object.entries(bySrc).forEach(([d, ks]) => { const out = (acc[d] = {}); Object.entries(ks).forEach(([sk, c]) => { const k = sk.split("|")[0]; if (HK[k].agg === "sum") { if (!out[k] || c.s > out[k].s) out[k] = { s: c.s, n: 1 }; } else out[k] = c; }); });
+  const n = accMerge(acc, fname); if (wos.length) addWorkouts(wos, fname);
+  return { kind: "daily", n: n + wos.length };
+}
+async function handleFiles(files) {
+  const msgs = []; const prog = $("#hub-progress");
+  for (const f of files) {
+    try {
+      prog.textContent = `Reading ${f.name}…`;
+      hubBeginReal();
+      let r;
+      if (/\.xml$/i.test(f.name)) r = await importXML(f, f.name, p => prog.textContent = `Reading ${f.name}… ${p}%`);
+      else { const text = await f.text(); r = /^\s*[{[]/.test(text) ? importJSON(text, f.name) : importCSV(text, f.name); }
+      if (r.kind !== "backup") HUB.sources[f.name] = { at: iso(new Date()), n: r.n, kind: r.kind };
+      msgs.push(`<span class="pill p-good">Imported</span> ${esc(f.name)}: ${r.kind === "backup" ? "backup restored" : r.n + (r.kind === "workouts" ? " workouts" : " values")}${r.cols ? " (" + esc(r.cols.join(", ")) + ")" : ""}`);
+    } catch (e) { msgs.push(`<span class="pill p-bad">Skipped</span> ${esc(f.name)}: ${esc(e.message || "could not read this file")}. Check that it's a CSV with a date column, a Health Auto Export JSON, or Apple's export.xml.`); }
+  }
+  prog.innerHTML = msgs.join("<br>"); saveHub(); renderHub();
+}
+
+/* analysis helpers */
+let hubRange = 30;
+const dayAdd = (k, n) => { const d = new Date(k + "T12:00:00"); d.setDate(d.getDate() + n); return iso(d); };
+function hubEnd() { const ks = Object.keys(HUB.days).concat(HUB.workouts.map(w => w.date)).filter(Boolean).sort(); const today = iso(new Date()); return ks.length ? (ks[ks.length - 1] > today ? today : ks[ks.length - 1]) : today; }
+function hubDates(n, end) { const out = []; for (let i = n - 1; i >= 0; i--) out.push(dayAdd(end, -i)); return out; }
+const mean = a => { const v = a.filter(Number.isFinite); return v.length ? v.reduce((x, y) => x + y, 0) / v.length : NaN; };
+const sd = a => { const v = a.filter(Number.isFinite); if (v.length < 3) return NaN; const m = mean(v); return Math.sqrt(v.reduce((x, y) => x + (y - m) ** 2, 0) / (v.length - 1)); };
+function ser(key, dates) { return dates.map(d => { const v = HUB.days[d]?.[key]; return Number.isFinite(v) ? v : NaN; }); }
+function slope(dates, vals) { const pts = vals.map((v, i) => [i, v]).filter(p => Number.isFinite(p[1])); if (pts.length < 4) return NaN; const mx = mean(pts.map(p => p[0])), my = mean(pts.map(p => p[1])); let a = 0, b = 0; pts.forEach(([x, y]) => { a += (x - mx) * (y - my); b += (x - mx) ** 2; }); return b ? a / b : NaN; }
+function pearson(xs, ys) { const p = xs.map((x, i) => [x, ys[i]]).filter(([x, y]) => Number.isFinite(x) && Number.isFinite(y)); if (p.length < 10) return { r: NaN, n: p.length }; const mx = mean(p.map(q => q[0])), my = mean(p.map(q => q[1])); let a = 0, b = 0, c = 0; p.forEach(([x, y]) => { a += (x - mx) * (y - my); b += (x - mx) ** 2; c += (y - my) ** 2; }); return { r: b && c ? a / Math.sqrt(b * c) : NaN, n: p.length }; }
+function dedupWorkouts(list) { const seen = new Set(); return list.filter(w => { const k = w.date + "|" + typeGroup(w.type) + "|" + Math.round(w.min / 4); if (seen.has(k)) return false; seen.add(k); return true; }).sort((a, b) => a.date.localeCompare(b.date)); }
+const VIG = new Set(["Run", "Conditioning", "Swim"]);
+function analyze() {
+  const end = hubEnd(), dates = hubDates(hubRange, end), base = hubDates(Math.max(hubRange, 28), end);
+  const last7 = dates.slice(-7), prior = base.slice(0, -7);
+  const A = { end, dates, n: hubRange };
+  Object.keys(HK).forEach(k => { const s = ser(k, dates); A[k] = { avg: mean(s), last7: mean(ser(k, last7)), base: mean(ser(k, prior)), days: s.filter(Number.isFinite).length, s }; });
+  const wsl = slope(dates, A.weight.s); A.weightPerWk = wsl * 7;
+  const W = dedupWorkouts(HUB.workouts.filter(w => w.date >= dates[0] && w.date <= end));
+  A.workouts = W; const weeks = hubRange / 7;
+  const byG = {}; W.forEach(w => { const g = typeGroup(w.type); const o = (byG[g] = byG[g] || { n: 0, min: 0, km: 0, kcal: 0 }); o.n++; o.min += w.min || 0; o.km += w.km || 0; o.kcal += w.kcal || 0; });
+  A.byGroup = byG; A.sessionsPerWk = W.length / weeks; A.strengthPerWk = (byG.Strength?.n || 0) / weeks;
+  const modEq = W.filter(w => typeGroup(w.type) !== "Strength" && typeGroup(w.type) !== "Mobility / yoga").reduce((s, w) => s + (VIG.has(typeGroup(w.type)) ? 2 : 1) * (w.min || 0), 0);
+  A.cardioEqPerWk = modEq / weeks;
+  const minsOn = ds => W.concat(dedupWorkouts(HUB.workouts.filter(w => w.date >= dayAdd(end, -27) && w.date < dates[0]))).filter(w => ds.includes(w.date)).reduce((s, w) => s + (w.min || 0), 0);
+  const acute = minsOn(hubDates(7, end)), chronic = minsOn(hubDates(28, end)) / 4; A.acwr = chronic > 0 ? acute / chronic : NaN; A.acute = acute;
+  // adaptive TDEE: intake + energy implied by weight change
+  const intakeDays = A.intake.days, wDays = A.weight.days;
+  A.tdee = intakeDays >= 10 && wDays >= 6 && hubRange >= 14 && Number.isFinite(wsl) ? A.intake.avg - wsl * 7700 : NaN;
+  A.tdeeConf = !Number.isFinite(A.tdee) ? "" : intakeDays >= hubRange * 0.8 && wDays >= hubRange * 0.4 && hubRange >= 28 ? "good" : "rough";
+  // readiness from the latest day with recovery data
+  const lastRec = dates.slice().reverse().find(d => ["hrv", "rhr", "sleep"].some(k => Number.isFinite(HUB.days[d]?.[k])));
+  if (lastRec) {
+    const b30 = hubDates(30, dayAdd(lastRec, -1)); const day = HUB.days[lastRec]; let pts = 0, wt = 0; const parts = [];
+    if (Number.isFinite(day.hrv)) { const bm = mean(ser("hrv", b30)); if (Number.isFinite(bm)) { const z = (day.hrv - bm) / (sd(ser("hrv", b30)) || bm * 0.15); pts += Math.max(0, Math.min(1, 0.5 + z / 4)) * 40; wt += 40; parts.push(["HRV", `${fmt(day.hrv)} ms vs ${fmt(bm)} baseline`]); } }
+    if (Number.isFinite(day.rhr)) { const bm = mean(ser("rhr", b30)); if (Number.isFinite(bm)) { pts += Math.max(0, Math.min(1, 0.5 - (day.rhr - bm) / 10)) * 30; wt += 30; parts.push(["Resting HR", `${fmt(day.rhr)} bpm vs ${fmt(bm)} baseline`]); } }
+    if (Number.isFinite(day.sleep)) { pts += Math.max(0, Math.min(1, (day.sleep - 5) / 3)) * 30; wt += 30; parts.push(["Sleep", `${fmt(day.sleep, 1)} h`]); }
+    A.ready = wt ? { date: lastRec, score: Math.round(pts / wt * 100), parts } : null;
+  }
+  const lag = (arr, k) => arr.slice(k).concat(Array(k).fill(NaN));
+  const trainMin = dates.map(d => W.filter(w => w.date === d).reduce((s, w) => s + (w.min || 0), 0));
+  A.corr = [
+    ["Sleep → same-night HRV", pearson(A.sleep.s, A.hrv.s), "More sleep tends to come with higher HRV (better recovery)."],
+    ["Sleep → resting HR", pearson(A.sleep.s, A.rhr.s), "Short nights often raise resting heart rate."],
+    ["Training minutes → next-day HRV", pearson(trainMin, lag(A.hrv.s, 1)), "Hard days usually dip HRV the next morning; that's normal if it rebounds."],
+    ["Steps → sleep", pearson(A.steps.s, A.sleep.s), "Active days may help sleep, or busy days may cut it short."],
+    ["Calories eaten → next-day weight", pearson(A.intake.s, lag(A.weight.s, 1)), "High-intake days add food and water weight the next morning."],
+    ["Carbs → next-day weight", pearson(A.carbs.s, lag(A.weight.s, 1)), "Carbs store water with glycogen (about 3 g per gram)."]
+  ];
+  return A;
+}
+function hubRecs(A) {
+  const c = calc(), m = macros(c), R = [];
+  const add = (sev, title, body) => R.push({ sev, title, body });
+  const s = A.sleep;
+  if (s.days >= 5) { if (s.avg < 6.5) add("bad", `Sleep is short: ${fmt(s.avg, 1)} h average`, "Under 6.5 h raises hunger, lowers training quality and shifts weight loss toward muscle. Do this: set a fixed wake time, move bedtime 30 min earlier this week, cut caffeine after 2 pm."); else if (s.avg < 7) add("warn", `Sleep is slightly low: ${fmt(s.avg, 1)} h`, "Aim for 7–9 h. Adding 30–45 minutes is one of the cheapest performance and appetite upgrades available."); else add("good", `Sleep is solid: ${fmt(s.avg, 1)} h average`, "Keep the routine consistent, including weekends.");
+    const v = sd(s.s); if (v > 1.2) add("warn", `Sleep is irregular (±${fmt(v, 1)} h night to night)`, "Irregular sleep disrupts circadian rhythm even when the average is fine. Keep wake time within ±30 min daily."); }
+  if (Number.isFinite(A.rhr.last7) && Number.isFinite(A.rhr.base)) { const d = A.rhr.last7 - A.rhr.base; if (d >= 5) add("bad", `Resting HR is up ${fmt(d)} bpm vs baseline`, "A sustained rise signals accumulated fatigue, illness coming on, poor sleep, alcohol or dehydration. Do this: take 2–3 easy days, prioritize sleep and fluids, and recheck."); else if (d >= 3) add("warn", `Resting HR is up ${fmt(d)} bpm`, "Watch it for a few days. Pull back intensity if it stays up or you feel run-down."); else if (d <= -2) add("good", `Resting HR down ${fmt(-d)} bpm`, "A falling resting HR usually reflects improving aerobic fitness and recovery."); }
+  if (Number.isFinite(A.hrv.last7) && Number.isFinite(A.hrv.base) && A.hrv.base > 0) { const p = (A.hrv.last7 - A.hrv.base) / A.hrv.base; if (p <= -0.2) add("bad", `HRV is down ${fmt(-p * 100)}% vs baseline`, "Large drops point to under-recovery. Do this: deload or swap hard sessions for zone 2 and mobility until HRV returns to baseline."); else if (p <= -0.1) add("warn", `HRV is down ${fmt(-p * 100)}%`, "Keep intensity moderate and check sleep, stress and alcohol."); else if (p >= 0.08) add("good", `HRV is up ${fmt(p * 100)}%`, "Good recovery trend. A sensible week to push training."); }
+  const st = A.steps; if (st.days >= 5) { if (st.avg < 5000) add("bad", `Low daily movement: ${fmt(st.avg)} steps`, "Fewer than 5,000 steps is linked to higher health risk and makes fat loss harder. Do this: add a 10-minute walk after each meal (about +3,000 steps)."); else if (st.avg < 7500) add("warn", `Steps: ${fmt(st.avg)} a day`, "Mortality benefits keep rising up to about 8,000–10,000 steps (under 60) and 6,000–8,000 (60+). Add one daily walk."); else add("good", `Steps: ${fmt(st.avg)} a day`, "Great baseline movement. Keep it steady during diets, when it tends to drop."); }
+  if (A.protein.days >= 5) { const r = A.protein.avg / m.p; if (r < 0.8) add("bad", `Protein averages ${fmt(A.protein.avg)} g (target ${fmt(m.p)} g)`, `That's ${fmt(r * 100)}% of target. Do this: add a protein source to each meal. A shake (25 g), Greek yogurt (20 g) or chicken (35 g) closes most of the gap.`); else if (r < 0.92) add("warn", `Protein slightly low: ${fmt(A.protein.avg)} g / ${fmt(m.p)} g`, "Add one high-protein snack per day."); else add("good", `Protein on target: ${fmt(A.protein.avg)} g`, "Supports muscle retention and fullness."); }
+  if (A.intake.days >= 7) { const diff = A.intake.avg - c.target; const pct = diff / c.target; if (Math.abs(pct) > 0.1) add("warn", `Eating ${fmt(Math.abs(diff))} kcal ${diff > 0 ? "above" : "below"} your target`, `Logged intake averages ${fmt(A.intake.avg)} kcal vs ${fmt(c.target)} kcal. ${diff > 0 ? "Check weekends, drinks, oils and sauces, which are the usual leaks." : "Very low intake hurts training and recovery; make sure you're logging everything."}`); if (A.intake.days < A.n * 0.6) add("info", `Food logged on ${A.intake.days} of ${A.n} days`, "Logging on 80%+ of days makes energy-balance analysis and adaptive TDEE much more accurate."); }
+  if (A.fiber.days >= 5 && A.intake.days >= 5) { const tgt = A.intake.avg / 1000 * 14; if (A.fiber.avg < tgt * 0.75) add("warn", `Fiber is low: ${fmt(A.fiber.avg)} g (aim ~${fmt(tgt)} g)`, "Add beans, berries, oats, vegetables and whole grains. Fiber improves fullness, gut health and cholesterol."); }
+  if (A.sodium.days >= 5 && A.sodium.avg > 3400) add("warn", `Sodium is high: ${fmt(A.sodium.avg)} mg`, "Mostly from packaged and restaurant food. Fine for heavy sweaters; otherwise aim under 2,300–3,000 mg.");
+  const goal = parseFloat(S.goal);
+  if (Number.isFinite(A.weightPerWk) && A.weight.days >= 6 && A.n >= 14) {
+    const pct = A.weightPerWk / S.weight * 100, u = wUnit(), wk = fmt(toDispW(Math.abs(A.weightPerWk)), 2);
+    if (goal < 0) { if (pct > -0.1) add("warn", `Weight is flat (${A.weightPerWk >= 0 ? "+" : "−"}${wk} ${u}/wk) during a fat-loss phase`, "Do this: check logging accuracy for one week, then cut 150–250 kcal a day or add 2,000 steps. Check your waist too; recomposition can hide fat loss."); else if (pct < -1.1) add("bad", `Losing fast: −${wk} ${u}/wk (${fmt(-pct, 1)}%/wk)`, "Over 1% a week risks muscle loss and rebound. Add 150–250 kcal unless you have a lot to lose and it's early in the diet."); else add("good", `Losing −${wk} ${u}/wk`, "A sustainable pace that protects muscle."); }
+    else if (goal > 0) { if (pct < 0) add("warn", `Losing weight during a gain phase (−${wk} ${u}/wk)`, "Add 200–300 kcal a day, mostly carbs around training."); else if (pct > 0.6) add("warn", `Gaining fast: +${wk} ${u}/wk`, "Above about 0.5%/week, most extra gain is fat. Trim 150–200 kcal."); else add("good", `Gaining +${wk} ${u}/wk`, "A lean-gain rate."); }
+    else if (Math.abs(pct) > 0.4) add("info", `Weight is drifting ${A.weightPerWk > 0 ? "up" : "down"} ${wk} ${u}/wk at maintenance`, "Adjust intake by about 100–200 kcal to hold steady.");
+  }
+  if (A.workouts.length || A.n >= 14) {
+    if (A.strengthPerWk < 1) add(A.strengthPerWk === 0 ? "bad" : "warn", `Strength training: ${fmt(A.strengthPerWk, 1)} sessions/week`, "Two or more sessions a week preserve muscle, bone density and metabolic health. Do this: schedule 2 full-body sessions (see the Workouts tab).");
+    else if (A.strengthPerWk < 2) add("warn", `Strength training: ${fmt(A.strengthPerWk, 1)}/week`, "Add a second weekly session to hit the minimum effective dose.");
+    else add("good", `Strength training: ${fmt(A.strengthPerWk, 1)} sessions/week`, "Meets guidelines. Progress loads gradually and deload every 4–8 weeks.");
+    if (A.cardioEqPerWk < 150) add("warn", `Cardio: ${fmt(A.cardioEqPerWk)} moderate-equivalent min/week`, "Guidelines call for 150–300 (vigorous minutes count double). Steps from daily walking aren't counted here unless logged as workouts.");
+    else add("good", `Cardio: ${fmt(A.cardioEqPerWk)} moderate-equivalent min/week`, "Meets or exceeds guidelines.");
+    if (A.acwr > 1.5) add("bad", `Training spike: this week is ${fmt(A.acwr, 1)}× your 4-week average`, "Sudden jumps of 50% or more raise injury risk. Keep weekly increases under about 10–20%.");
+    else if (A.acwr < 0.6 && A.acute > 0) add("info", `Light week: ${fmt(A.acwr, 1)}× your usual load`, "Fine as a deload; return to normal volume next week.");
+  }
+  if (A.vo2.days) { const v = A.vo2.last7 || A.vo2.avg; const lab = vo2Label(v).replace(/<[^>]+>/g, ""); add(/Poor|Fair/.test(lab) ? "warn" : "good", `VO₂max ${fmt(v, 1)}: ${lab.split(" for ")[0]}`, "Cardiorespiratory fitness is one of the strongest predictors of longevity. Two interval sessions a week (e.g. 4×4 min hard) plus zone 2 raise it fastest."); }
+  if (Number.isFinite(A.tdee)) { const d = A.tdee - c.tdee; if (Math.abs(d) / c.tdee > 0.1) add("info", `Your real maintenance looks like ${fmt(A.tdee)} kcal (formula says ${fmt(c.tdee)})`, `Based on your logged intake and weight trend. Consider changing your activity level on Overview so targets match reality (${d > 0 ? "you burn more than estimated" : "you burn less than estimated, or logging misses some food"}).`); }
+  if (A.bodyFat.days >= 4 && Number.isFinite(slope(A.dates, A.bodyFat.s))) { const sl = slope(A.dates, A.bodyFat.s) * 7; if (Math.abs(sl) > 0.05) add(sl < 0 ? "good" : "info", `Body fat trend: ${sl > 0 ? "+" : ""}${fmt(sl, 2)}%/week`, "Smart scales swing with hydration. Trust multi-week trends only."); }
+  if (!R.length) add("info", "Not enough data yet", "Import at least 1–2 weeks of data (sleep, steps, weight, food or workouts) to see recommendations.");
+  const order = { bad: 0, warn: 1, info: 2, good: 3 }; return R.sort((a, b) => order[a.sev] - order[b.sev]);
+}
+function lineChart(dates, vals, opt = {}) {
+  const W = 320, H = 120, L = 34, Rr = 8, T = 10, B = 20; const pts = vals.map((v, i) => [i, v]).filter(p => Number.isFinite(p[1]));
+  if (pts.length < 2) return `<p class="small muted" style="padding:28px 0;text-align:center">Not enough data in this range</p>`;
+  const ys = pts.map(p => p[1]); let lo = Math.min(...ys), hi = Math.max(...ys); if (hi - lo < 1e-6) { lo -= 1; hi += 1; } const pad = (hi - lo) * 0.12; lo -= pad; hi += pad;
+  const X = i => L + i / Math.max(1, dates.length - 1) * (W - L - Rr), Y = v => T + (hi - v) / (hi - lo) * (H - T - B);
+  const roll = vals.map((_, i) => mean(vals.slice(Math.max(0, i - 6), i + 1)));
+  const rl = roll.map((v, i) => [i, v]).filter(p => Number.isFinite(p[1]));
+  const line = rl.map((p, j) => `${j ? "L" : "M"}${X(p[0]).toFixed(1)} ${Y(p[1]).toFixed(1)}`).join(" ");
+  const tick = [hi - pad, (hi + lo) / 2, lo + pad].map(v => `<line x1="${L}" x2="${W - Rr}" y1="${Y(v)}" y2="${Y(v)}" style="stroke:var(--line)"/><text x="${L - 4}" y="${Y(v) + 3}" text-anchor="end" style="fill:var(--ink-3);font:9px var(--font-mono)">${fmt(v, opt.d ?? 0)}</text>`).join("");
+  const dl = d => new Date(d + "T12:00:00").toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  const last = rl[rl.length - 1];
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opt.label || "trend")}">${tick}${pts.map(p => `<circle cx="${X(p[0])}" cy="${Y(p[1])}" r="1.8" style="fill:var(--ink-3);opacity:.5"/>`).join("")}<path d="${line}" style="fill:none;stroke:${opt.col || "var(--accent)"};stroke-width:2"/><circle cx="${X(last[0])}" cy="${Y(last[1])}" r="3.5" style="fill:${opt.col || "var(--accent)"};stroke:var(--surface);stroke-width:1.5"/><text x="${L}" y="${H - 5}" style="fill:var(--ink-3);font:9px var(--font-mono)">${dl(dates[0])}</text><text x="${W - Rr}" y="${H - 5}" text-anchor="end" style="fill:var(--ink-3);font:9px var(--font-mono)">${dl(dates[dates.length - 1])}</text></svg>`;
+}
+let hubA = null;
+function renderHub() {
+  $("#hub-flag").innerHTML = hubDemo ? `<div class="example-flag">Showing example data so you can see the analysis. Import a file or sync Strava and it's replaced by your own.</div>` : "";
+  $("#hub-range").innerHTML = [14, 30, 90, 180, 365].map(n => `<button type="button" class="chip" data-v="${n}" aria-pressed="${hubRange === n}">${n} days</button>`).join("");
+  $$("#hub-range .chip").forEach(b => b.addEventListener("click", () => { hubRange = +b.dataset.v; renderHub(); }));
+  const nd = Object.keys(HUB.days).length, ks = Object.keys(HUB.days).sort();
+  const srcs = Object.entries(HUB.sources);
+  $("#hub-summary").innerHTML = `<div class="kv"><dt>Days of data</dt><dd class="mono">${nd}${ks.length ? ` (${ks[0]} → ${ks[ks.length - 1]})` : ""}</dd><dt>Workouts</dt><dd class="mono">${HUB.workouts.length}</dd><dt>Sources</dt><dd>${hubDemo ? "Example data" : srcs.length ? srcs.map(([k, v]) => `${esc(k)} <span class="muted">(${v.at})</span>`).join("<br>") : "None yet"}</dd></div>`;
+  const A = analyze(); hubA = A; const u = wUnit();
+  $("#hub-through").textContent = `${A.n} days ending ${new Date(A.end + "T12:00:00").toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" })}. "Recent" = the last 7 days, compared with the rest of the period.`;
+  const tr = (k, good) => { const a = A[k]; if (!Number.isFinite(a.last7) || !Number.isFinite(a.base)) return ""; const d = a.last7 - a.base; if (Math.abs(d) < (Math.abs(a.base) * 0.02 || 0.01)) return "steady"; const up = d > 0; return `${up ? "▲" : "▼"} ${fmt(Math.abs(d), HK[k].d)} recent${good === undefined ? "" : (up === good ? " · good" : "")}`; };
+  const T = [
+    ["Steps", A.steps.avg, "", 0, tr("steps", true)], ["Sleep", A.sleep.avg, "h", 1, tr("sleep", true)], ["Resting HR", A.rhr.avg, "bpm", 0, tr("rhr", false)], ["HRV", A.hrv.avg, "ms", 0, tr("hrv", true)],
+    ["Weight", Number.isFinite(A.weight.last7) ? toDispW(A.weight.last7) : toDispW(A.weight.avg), u, 1, Number.isFinite(A.weightPerWk) ? `${A.weightPerWk > 0 ? "+" : ""}${fmt(toDispW(A.weightPerWk), 2)} ${u}/wk` : ""],
+    ["Calories eaten", A.intake.avg, "kcal", 0, A.intake.days ? `${A.intake.days} days logged` : ""], ["Protein", A.protein.avg, "g", 0, A.protein.days ? `target ${fmt(macros(calc()).p)} g` : ""],
+    ["Active energy", A.activeKcal.avg, "kcal", 0, tr("activeKcal", true)], ["Workouts", A.sessionsPerWk, "/wk", 1, `${A.workouts.length} in range`], ["Cardio", A.cardioEqPerWk, "min/wk", 0, "moderate-equivalent"]
+  ].filter(t => Number.isFinite(t[1]));
+  $("#hub-kpis").innerHTML = T.length ? T.map(t => `<div class="tile"><span class="eyebrow">${t[0]}</span><span class="v">${fmt(t[1], t[3])}<small>${t[2]}</small></span><span class="s">${esc(t[4])}</span></div>`).join("") : `<div class="tile"><span class="s">No data in this range. Pick a longer range or import more.</span></div>`;
+  const recs = hubRecs(A); const sevP = { bad: ["p-bad", "Fix"], warn: ["p-warn", "Improve"], info: ["p-info", "Note"], good: ["p-good", "Good"] };
+  $("#hub-recs").innerHTML = recs.map(r => `<div class="item" style="border-top:1px solid var(--line);padding-top:10px"><div style="display:flex;gap:8px;align-items:baseline;flex-wrap:wrap"><span class="pill ${sevP[r.sev][0]}">${sevP[r.sev][1]}</span><strong>${esc(r.title)}</strong></div><span class="small muted">${esc(r.body)}</span></div>`).join("");
+  hubA.recs = recs;
+  if (A.ready) { const s = A.ready.score, col = s >= 70 ? "var(--good)" : s >= 50 ? "var(--accent)" : s >= 35 ? "var(--warn)" : "var(--bad)"; const tip = s >= 70 ? "Recovered: a good day for intensity or a PR." : s >= 50 ? "Normal: train as planned." : s >= 35 ? "Somewhat fatigued: reduce volume or keep it aerobic." : "Under-recovered: rest, walk, mobility, early night.";
+    $("#hub-ready-date").textContent = A.ready.date; $("#hub-ready").innerHTML = `<div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap"><span style="font:700 3rem var(--font-display);color:${col};line-height:1">${s}</span><div><strong style="color:${col}">${tip}</strong><div class="kv small" style="margin-top:6px">${A.ready.parts.map(p => `<dt>${p[0]}</dt><dd class="mono">${esc(p[1])}</dd>`).join("")}</div></div></div><p class="note">Compares last night with your own 30-day baseline. Use the morning check-in on the Recovery tab for how you feel.</p>`; }
+  else { $("#hub-ready-date").textContent = ""; $("#hub-ready").innerHTML = `<p class="small muted">Needs sleep, HRV or resting HR data (Apple Watch, Oura, Whoop, Garmin, Fitbit).</p>`; }
+  const c = calc();
+  $("#hub-tdee").innerHTML = Number.isFinite(A.tdee) ? `<div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,120px),1fr))"><div class="tile hero"><span class="eyebrow">From your data</span><span class="v">${fmt(A.tdee)}<small>kcal</small></span><span class="s">${A.tdeeConf === "good" ? "Good confidence" : "Rough estimate: log more"}</span></div><div class="tile"><span class="eyebrow">Formula estimate</span><span class="v">${fmt(c.tdee)}<small>kcal</small></span><span class="s">From your profile</span></div></div><p class="small" style="margin-top:8px">Average intake ${fmt(A.intake.avg)} kcal with a weight trend of ${A.weightPerWk > 0 ? "+" : ""}${fmt(toDispW(A.weightPerWk), 2)} ${u}/week. To ${parseFloat(S.goal) < 0 ? "lose about 0.5% a week, eat around " + fmt(A.tdee - S.weight * 0.005 * 7700 / 7) : parseFloat(S.goal) > 0 ? "gain about 0.25% a week, eat around " + fmt(A.tdee + S.weight * 0.0025 * 7700 / 7) : "maintain, eat around " + fmt(A.tdee)} kcal.</p><p class="note">Works like MacroFactor-style apps: energy in minus energy stored (7,700 kcal per kg of tissue change). Needs consistent logging; 4+ weeks gives the best estimate.</p>`
+    : `<p class="small muted">Needs at least 10 days of logged food and 6 weigh-ins in a 14+ day range (e.g. MyFitnessPal or Cronometer plus a smart scale or Apple Health weight). Then it calculates the maintenance calories your body actually shows, rather than a formula guess.</p>`;
+  const CH = [["weight", "Weight", u, 1, "var(--accent)", v => toDispW(v)], ["sleep", "Sleep", "h", 1, "var(--accent)"], ["hrv", "HRV", "ms", 0, "var(--good)"], ["rhr", "Resting HR", "bpm", 0, "var(--bad)"], ["steps", "Steps", "", 0, "var(--good)"], ["intake", "Calories eaten", "kcal", 0, "var(--warn)"], ["protein", "Protein", "g", 0, "var(--accent)"], ["activeKcal", "Active energy", "kcal", 0, "var(--bad)"], ["vo2", "VO₂max", "", 1, "var(--good)"], ["bodyFat", "Body fat", "%", 1, "var(--warn)"], ["readiness", "Readiness / recovery", "", 0, "var(--good)"], ["exerciseMin", "Exercise minutes", "min", 0, "var(--accent)"]];
+  $("#hub-charts").innerHTML = CH.filter(x => A[x[0]].days >= 2).map(([k, l, un, d, col, cv]) => { const s = cv ? A[k].s.map(v => Number.isFinite(v) ? cv(v) : v) : A[k].s; const avg = mean(s); return `<div class="card"><div class="card-head"><h4>${l}</h4><span class="mono small muted">avg ${fmt(avg, d)} ${un}</span></div><div class="svgbox">${lineChart(A.dates, s, { d, col, label: l })}</div></div>`; }).join("") || `<div class="card flat"><p class="small muted">Charts appear here once you import data with daily values.</p></div>`;
+  // weekly minutes by group, last 8 weeks
+  const groups = ["Strength", "Run", "Ride", "Conditioning", "Walk / hike", "Swim", "Sport", "Mobility / yoga", "Other"]; const gc = { Strength: "var(--accent)", Run: "var(--bad)", Ride: "var(--warn)", Conditioning: "var(--bad)", "Walk / hike": "var(--good)", Swim: "var(--accent)", Sport: "var(--warn)", "Mobility / yoga": "var(--good)", Other: "var(--ink-3)" };
+  const wkEnds = []; for (let i = 7; i >= 0; i--) wkEnds.push(dayAdd(A.end, -i * 7));
+  const allW = dedupWorkouts(HUB.workouts);
+  const wk = wkEnds.map(e => { const s0 = dayAdd(e, -6); const o = {}; allW.filter(w => w.date >= s0 && w.date <= e).forEach(w => { const g = typeGroup(w.type); o[g] = (o[g] || 0) + (w.min || 0); }); return o; });
+  const mx = Math.max(60, ...wk.map(o => Object.values(o).reduce((a, b) => a + b, 0))); const top = Math.ceil(mx / 60) * 60;
+  const Wd = 600, Hh = 200, L = 40, B = 24, Tt = 10, bw = (Wd - L - 10) / 8; const Y = v => Tt + (1 - v / top) * (Hh - Tt - B);
+  let g = ""; for (let v = 0; v <= top; v += top / 4) g += `<line x1="${L}" x2="${Wd - 10}" y1="${Y(v)}" y2="${Y(v)}" style="stroke:var(--line)"/><text x="${L - 5}" y="${Y(v) + 3}" text-anchor="end" style="fill:var(--ink-3);font:10px var(--font-mono)">${fmt(v)}</text>`;
+  const bars = wk.map((o, i) => { let y0 = 0; const x = L + i * bw + bw * 0.18; return groups.filter(gr => o[gr]).map(gr => { const h = (Hh - Tt - B) * o[gr] / top; const r = `<rect x="${x}" y="${Y(y0 + o[gr])}" width="${bw * 0.64}" height="${Math.max(0, h)}" style="fill:${gc[gr]};opacity:.85"><title>${gr}: ${fmt(o[gr])} min</title></rect>`; y0 += o[gr]; return r; }).join("") + `<text x="${x + bw * 0.32}" y="${Hh - 8}" text-anchor="middle" style="fill:var(--ink-3);font:9px var(--font-mono)">${new Date(wkEnds[i] + "T12:00:00").toLocaleDateString(undefined, { month: "numeric", day: "numeric" })}</text>`; }).join("");
+  const present = groups.filter(gr => wk.some(o => o[gr]));
+  $("#hub-week-chart").innerHTML = allW.length ? `<svg viewBox="0 0 ${Wd} ${Hh}" role="img" aria-label="Weekly training minutes by type">${g}${bars}</svg><div class="legend">${present.map(gr => `<span><i style="background:${gc[gr]}"></i>${gr}</span>`).join("")}</div>` : "";
+  $("#hub-train-meta").textContent = `Minutes per week, last 8 weeks`;
+  const bg = Object.entries(A.byGroup).sort((a, b) => b[1].min - a[1].min);
+  $("#hub-train").innerHTML = bg.length ? `<div class="table-wrap" style="border:0"><table><thead><tr><th>Type (in range)</th><th class="num">Sessions</th><th class="num">Minutes</th><th class="num">Distance</th><th class="num">kcal</th></tr></thead><tbody>${bg.map(([k, o]) => `<tr><td>${k}</td><td class="num mono">${o.n}</td><td class="num mono">${fmt(o.min)}</td><td class="num mono">${o.km ? fmt(imp() ? o.km / 1.609 : o.km, 1) + (imp() ? " mi" : " km") : "–"}</td><td class="num mono">${o.kcal ? fmt(o.kcal) : "–"}</td></tr>`).join("")}</tbody></table></div><p class="small muted">Load this week vs your 4-week average: <strong class="mono">${Number.isFinite(A.acwr) ? fmt(A.acwr, 2) + "×" : "–"}</strong> (0.8–1.3× is the usual sweet spot).</p>` : `<p class="small muted">No workouts in this range. Sync Strava or import workouts from Health Auto Export, Garmin, Whoop or MyFitnessPal.</p>`;
+  const lbl = r => !Number.isFinite(r) ? "–" : Math.abs(r) < 0.1 ? "none" : Math.abs(r) < 0.3 ? "weak" : Math.abs(r) < 0.5 ? "moderate" : "strong";
+  $("#hub-corr").innerHTML = `<div class="table-wrap" style="border:0"><table><thead><tr><th>Pair</th><th class="num">r</th><th>Strength</th><th class="num">Days</th></tr></thead><tbody>${A.corr.map(([n, o, why]) => `<tr><td><strong>${n}</strong><div class="small muted">${why}</div></td><td class="num mono">${Number.isFinite(o.r) ? (o.r > 0 ? "+" : "") + fmt(o.r, 2) : "–"}</td><td>${Number.isFinite(o.r) ? `<span class="pill ${Math.abs(o.r) >= 0.3 ? "p-info" : "p-warn"}">${lbl(o.r)}</span>` : `<span class="small muted">need 10+ days</span>`}</td><td class="num mono">${o.n}</td></tr>`).join("")}</tbody></table></div>`;
+}
+/* Strava */
+async function syncStrava() {
+  const st = $("#sv-status"), btn = $("#sv-sync");
+  const mcp = await cap("mcp");
+  if (!mcp) { st.innerHTML = "Live connectors aren't available in this view. Open the dashboard on claude.ai, or import Strava's <code>activities.csv</code> instead."; return; }
+  btn.disabled = true; st.textContent = "Syncing… (you may be asked to allow Strava access)";
+  const days = +$("#sv-range").value; const start = dayAdd(iso(new Date()), -days) + "T00:00:00";
+  const all = []; let after = null, pages = 0;
+  try {
+    do {
+      const input = { first: 100, range_start: start, ordering: "StartDateLocalDesc" }; if (after) input.after = after;
+      const res = await mcp.callTool("Strava", "list_activities", input, { cache: false });
+      const p = res.payload || {}; const acts = p.activities || [];
+      acts.forEach(a => { const s = a.summary || {}; all.push({ date: toDay(a.start_local || a.start_date_local || a.start_date), type: a.sport_type || a.type || "Workout", min: (s.moving_time || s.elapsed_time || 0) / 60, km: (s.distance || 0) / 1000, kcal: s.total_calories || s.calories || 0, hr: s.average_heartrate || s.avg_heartrate || s.avg_hr || 0, name: a.name || "" }); });
+      after = p.has_next_page ? (p.end_cursor || p.pageInfo?.endCursor) : null; pages++;
+      st.textContent = `Syncing… ${all.length} activities`;
+    } while (after && pages < 6);
+    hubBeginReal(); addWorkouts(all, "Strava"); HUB.sources.Strava = { at: iso(new Date()), n: all.length, kind: "workouts" }; saveHub();
+    st.innerHTML = `<span class="pill p-good">Synced</span> ${all.length} activities from the last ${days} days.`; renderHub();
+  } catch (e) {
+    const code = e && e.code; const M = {
+      server_not_connected: "Strava isn't connected to your Claude account. Add it in claude.ai Settings → Connectors, then sync again.",
+      needs_reauth: "Your Strava connection expired. Reconnect Strava in claude.ai Settings → Connectors.",
+      not_in_manifest: "Strava access is turned off for this page. Turn it on from the artifact's Permissions menu to sync.",
+      approval_required: "Syncing needs your approval. Click Sync Strava again and choose Allow.",
+      selection_required: "You have more than one Strava connection. Choose one in the prompt claude.ai shows, then sync again.",
+      blocked_by_policy: "Your organization's policy blocks Strava for this page.",
+      server_unavailable: "Strava didn't respond. Wait a moment and try again.",
+      tool_error: "Strava returned an error: " + esc((e.message || "").slice(0, 160)) + ". The connector may need an active Strava subscription.",
+      not_granted: "Live connectors aren't enabled for this view. Import Strava's activities.csv instead.", capability_disabled: "Live connectors aren't available in this view. Import Strava's activities.csv instead."
+    };
+    st.innerHTML = `<span class="pill p-bad">Not synced</span> ${M[code] || "Something went wrong reaching Strava (" + esc(code || "unknown") + "). Try again later, or import activities.csv."}`;
+  } finally { btn.disabled = false; }
+}
+/* export, backup, log */
+async function saveFile(filename, data) {
+  const msg = $("#hub-msg"); const dl = await cap("downloads");
+  if (!dl) { msg.innerHTML = "Saving files isn't available in this view. Open the dashboard on claude.ai to export."; return; }
+  try { await dl.save({ filename, data }); msg.innerHTML = `<span class="pill p-good">Saved</span> ${esc(filename)}`; }
+  catch (e) { msg.textContent = e && e.code === "declined" ? "Export cancelled." : e && e.code === "rate_limited" ? "Another save prompt is open. Finish it first." : "This file couldn't be saved here."; }
+}
+function exportCSV() {
+  const keys = Object.keys(HK), ds = Object.keys(HUB.days).sort();
+  const rows = [["date", ...keys.map(k => `${k}${HK[k].u ? " (" + HK[k].u + ")" : ""}`)].join(",")].concat(ds.map(d => [d, ...keys.map(k => HUB.days[d][k] ?? "")].join(",")));
+  rows.push("", "workout_date,type,group,minutes,distance_km,kcal,avg_hr,source");
+  dedupWorkouts(HUB.workouts).forEach(w => rows.push([w.date, `"${String(w.type).replace(/"/g, "'")}"`, typeGroup(w.type), round(w.min || 0, 1), round(w.km || 0, 2), Math.round(w.kcal || 0), Math.round(w.hr || 0), `"${String(w.src || "").replace(/"/g, "'")}"`].join(",")));
+  saveFile(`plate-and-pulse-data-${iso(new Date())}.csv`, rows.join("\n"));
+}
+function backup() { saveFile(`plate-and-pulse-backup-${iso(new Date())}.json`, JSON.stringify({ app: "plate-and-pulse", v: 1, at: new Date().toISOString(), profile: S, log: isSample ? null : LOG, hub: hubDemo ? null : HUB })); }
+function restoreBackup(o) {
+  if (o.profile) { Object.assign(S, o.profile); store.set("profile", S); fillProfile(); }
+  if (o.log) { LOG = o.log; LOG.m = LOG.m || []; isSample = false; saveLog(); }
+  if (o.hub) { HUB = o.hub; HUB.sources = HUB.sources || {}; hubDemo = false; saveHub(); }
+  renderAll();
+}
+function hubToLog() {
+  if (hubDemo) { $("#hub-msg").textContent = "Import your own data first; example data isn't copied."; return; }
+  if (isSample) { LOG = { w: [], s: [], m: [], touched: true }; isSample = false; }
+  let nw = 0, ns = 0; const have = new Set(LOG.w.map(x => x.d));
+  Object.entries(HUB.days).forEach(([d, v]) => { if (Number.isFinite(v.weight) && !have.has(d)) { LOG.w.push({ d, kg: round(v.weight, 2) }); nw++; } });
+  const mh = calc().maxHR; const seen = new Set(LOG.s.map(s => s.d + "|" + s.t + "|" + s.m));
+  const defR = { Strength: 7, Run: 6, Ride: 6, Conditioning: 8, "Walk / hike": 3, Swim: 6, Sport: 7, "Mobility / yoga": 3, Other: 5 };
+  const tmap = { Strength: "Strength", Run: "Zone 2", Ride: "Zone 2", Conditioning: "Intervals", "Walk / hike": "Zone 2", Swim: "Zone 2", Sport: "Sport", "Mobility / yoga": "Mobility", Other: "Sport" };
+  dedupWorkouts(HUB.workouts).forEach(w => { const g = typeGroup(w.type); const m = Math.round(w.min || 0); if (m < 1) return; const pc = w.hr && mh ? w.hr / mh : 0; const r = pc ? (pc < 0.6 ? 3 : pc < 0.7 ? 4 : pc < 0.8 ? 6 : pc < 0.88 ? 7 : 8) : defR[g]; const t = g === "Run" && r >= 7 ? "Intervals" : tmap[g]; const key = w.date + "|" + t + "|" + m; if (seen.has(key)) return; seen.add(key); LOG.s.push({ d: w.date, t, m, r }); ns++; });
+  saveLog(); renderLog(); $("#hub-msg").innerHTML = `<span class="pill p-good">Done</span> Added ${nw} weigh-ins and ${ns} sessions to the Log tab (effort estimated from heart rate where available).`;
+}
+/* AI coach */
+function hubSummaryText() {
+  const A = hubA || analyze(), c = calc(), m = macros(c);
+  const prof = `Profile: ${S.sex}, ${S.age} y, ${fmt(S.height)} cm, ${fmt(S.weight, 1)} kg, body fat ${Number.isFinite(c.bf) ? fmt(c.bf, 1) + "%" : "unknown"}. Goal: ${$("#goal").selectedOptions[0].textContent}. Diet style: ${$("#style").selectedOptions[0].textContent}. Activity setting: ${$("#activity").selectedOptions[0].textContent}. Targets: ${fmt(c.target)} kcal, protein ${fmt(m.p)} g, carbs ${fmt(m.c)} g, fat ${fmt(m.f)} g. Formula TDEE ${fmt(c.tdee)} kcal. Preferred units: ${imp() ? "imperial (lb, in, mi)" : "metric"}.`;
+  const keys = Object.keys(HK).filter(k => A[k].days);
+  const agg = keys.map(k => `${HK[k].l}: avg ${fmt(A[k].avg, HK[k].d + 1)} ${HK[k].u} (last 7 d ${fmt(A[k].last7, HK[k].d + 1)}, earlier ${fmt(A[k].base, HK[k].d + 1)}, ${A[k].days} days with data)`).join("\n");
+  const last = A.dates.slice(-14); const cols = keys.slice(0, 14);
+  const table = ["date," + cols.join(",")].concat(last.map(d => d + "," + cols.map(k => { const v = HUB.days[d]?.[k]; return Number.isFinite(v) ? round(v, HK[k].d + 1) : ""; }).join(","))).join("\n");
+  const wo = Object.entries(A.byGroup).map(([g, o]) => `${g}: ${o.n} sessions, ${fmt(o.min)} min`).join("; ");
+  const recent = A.workouts.slice(-14).map(w => `${w.date} ${w.type} ${fmt(w.min)}min${w.km ? " " + fmt(w.km, 1) + "km" : ""}${w.hr ? " HR" + fmt(w.hr) : ""}`).join("\n");
+  const recs = (A.recs || []).map(r => `[${r.sev}] ${r.title}`).join("\n");
+  const corr = A.corr.filter(x => Number.isFinite(x[1].r)).map(x => `${x[0]}: r=${fmt(x[1].r, 2)} (n=${x[1].n})`).join("; ");
+  return `${prof}\n\nPeriod: ${A.n} days ending ${A.end}.${hubDemo ? " NOTE: this is example demo data, not the user's real data." : ""}\n\nDaily metric averages:\n${agg || "none"}\n\nWeight trend: ${Number.isFinite(A.weightPerWk) ? fmt(A.weightPerWk, 2) + " kg/week" : "unknown"}. Adaptive TDEE from data: ${Number.isFinite(A.tdee) ? fmt(A.tdee) + " kcal (" + A.tdeeConf + ")" : "not enough data"}.\nTraining: ${fmt(A.sessionsPerWk, 1)} sessions/week, strength ${fmt(A.strengthPerWk, 1)}/week, cardio ${fmt(A.cardioEqPerWk)} moderate-equivalent min/week, acute:chronic load ${Number.isFinite(A.acwr) ? fmt(A.acwr, 2) : "n/a"}. By type: ${wo || "none"}.\nReadiness today: ${A.ready ? A.ready.score + "/100 on " + A.ready.date : "n/a"}.\nCorrelations: ${corr || "insufficient data"}.\n\nRule-based flags:\n${recs}\n\nLast 14 days (daily values):\n${table}\n\nRecent workouts:\n${recent || "none"}`;
+}
+const AI_P = {
+  full: "Give a complete analysis. Sections: ## Summary (3 bullets) · ## What's going well · ## Top 3 priorities (each with a specific, measurable action and why) · ## Training adjustments for next week · ## Nutrition adjustments (with numbers) · ## Recovery · ## Worth discussing with a clinician (only if something in the data genuinely warrants it; otherwise omit).",
+  week: "Write a day-by-day plan for the next 7 days: training session (type, duration, key exercises or intervals, target effort), step target, calorie and protein target, and one recovery focus per day. Base it on current load, readiness trend and goal. Use a compact markdown list per day.",
+  today: "Based mainly on the most recent days (sleep, HRV, resting HR, recent training), recommend what to do TODAY: train hard, train as planned, go easy, or rest, with a concrete session and a short reason. Keep it under 150 words.",
+  nutrition: "Review nutrition: calories vs target and vs adaptive TDEE, protein, carbs, fat, fiber, sodium, consistency across days and weekends, and how intake relates to the weight trend. Give 4–6 specific changes with numbers and food examples.",
+  recovery: "Review recovery: sleep duration and regularity, HRV and resting HR trends, training load vs recovery, and correlations. Give 4–6 specific, practical recommendations.",
+  goal: "Assess whether the user is on track for their goal given the weight trend, intake, training, and body composition data. Estimate time to a sensible milestone and say what to change, if anything."
+};
+let aiTurns = [], aiCtl = null;
+function mdLite(t) {
+  const lines = esc(t).split(/\n/); let html = "", list = null;
+  const inl = s => s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/(^|[^*])\*([^*]+)\*/g, "$1<em>$2</em>").replace(/`([^`]+)`/g, "<code>$1</code>");
+  const close = () => { if (list) { html += `</${list}>`; list = null; } };
+  lines.forEach(l => {
+    let m;
+    if ((m = l.match(/^#{1,4}\s+(.*)/))) { close(); html += `<h4 style="margin-top:6px">${inl(m[1])}</h4>`; }
+    else if ((m = l.match(/^\s*[-*•]\s+(.*)/))) { if (list !== "ul") { close(); html += "<ul class=\"clean\">"; list = "ul"; } html += `<li>${inl(m[1])}</li>`; }
+    else if ((m = l.match(/^\s*\d+[.)]\s+(.*)/))) { if (list !== "ol") { close(); html += "<ol style=\"margin:0;padding-left:20px;display:grid;gap:4px\">"; list = "ol"; } html += `<li>${inl(m[1])}</li>`; }
+    else if (!l.trim()) close(); else { close(); html += `<p>${inl(l)}</p>`; }
+  });
+  close(); return html;
+}
+const AI_ERR = { not_granted: "The AI coach wasn't allowed for this page. You can enable it from the artifact's Permissions menu.", sampling_disabled: "Claude isn't available for this account.", rate_limited: "Too many requests right now, or you've hit a usage limit. Try again later.", session_expired: "Sign in to claude.ai again to use the AI coach.", refused: "Claude couldn't answer that. Try rephrasing.", prompt_too_large: "Too much data for one request. Choose a shorter range.", empty_completion: "No answer came back. Try a narrower question." };
+async function askAI(question, preset) {
+  const out = $("#ai-out"), send = $("#ai-send"), stop = $("#ai-stop");
+  const sample = await cap("sample");
+  if (!sample) { out.innerHTML = `<p class="muted">The AI coach is available when this dashboard is opened on claude.ai. All the analysis above still works without it.</p>`; return; }
+  const rules = `You are an evidence-based strength & conditioning coach and sports dietitian reviewing a user's own fitness data from their dashboard. Be specific, practical and encouraging; cite their numbers; prefer well-supported guidance; never diagnose disease; flag anything medically concerning gently. Use the user's preferred units. Format in concise Markdown (## headings, bullets). Keep answers under 450 words unless asked for a plan.\n\nDATA:\n${hubSummaryText()}`;
+  if (preset) aiTurns = [];
+  const q = preset ? AI_P[preset] : question;
+  const turns = [{ role: "user", content: rules }, ...aiTurns.slice(-8), { role: "user", content: q }];
+  aiCtl = new AbortController(); send.disabled = true; stop.hidden = false;
+  const box = document.createElement("div"); box.className = "card"; box.style.background = "var(--surface-2)";
+  if (preset) out.innerHTML = ""; else out.insertAdjacentHTML("beforeend", `<p class="small"><strong>You:</strong> ${esc(question)}</p>`);
+  box.innerHTML = `<p class="muted">Thinking…</p>`; out.appendChild(box);
+  try {
+    const r = await sample(turns, { signal: aiCtl.signal, cache: false, onText: ({ text }) => { box.innerHTML = mdLite(text); } });
+    box.innerHTML = mdLite(r.text) + (r.truncated ? `<p class="note">The answer was cut short. Ask for less at a time.</p>` : "");
+    aiTurns.push({ role: "user", content: q }, { role: "assistant", content: r.text });
+  } catch (e) {
+    if (e && e.code === "cancelled") box.innerHTML = e.text ? mdLite(e.text) + `<p class="note">Stopped.</p>` : `<p class="muted">Stopped.</p>`;
+    else box.innerHTML = (e && e.text ? mdLite(e.text) : "") + `<p class="note">${esc(AI_ERR[e && e.code] || "The AI coach couldn't finish. Try again.")}</p>`;
+  } finally { send.disabled = false; stop.hidden = true; aiCtl = null; }
+}
+
 /* ---------- wiring ---------- */
-function renderAll() { renderOverview(); renderORM(); renderCardio(); renderLog(); renderMeals(); renderStandards(); renderPlates(); renderHealthCalc(); }
+function renderAll() { renderOverview(); renderORM(); renderCardio(); renderLog(); renderMeals(); renderStandards(); renderPlates(); renderHealthCalc(); renderHub(); renderSweat(); }
 $("#profile").addEventListener("input", () => { readProfile(); renderAll(); });
 $("#planner").addEventListener("input", () => { readProfile(); renderPlanner(calc()); });
 $("#adapt").addEventListener("input", renderAdapt);
@@ -2624,6 +3266,21 @@ $("#ready").addEventListener("input", renderRecovery);
 $("#fiber").addEventListener("input", renderFiber);
 $("#lib-search").addEventListener("input", e => { libQ = e.target.value; renderLibrary(); });
 $("#mp").addEventListener("input", renderMeals);
+$("#sv-sync").addEventListener("click", syncStrava);
+$("#sweat").addEventListener("input", renderSweat);
+$("#hub-file").addEventListener("change", e => { const f = Array.from(e.target.files || []); e.target.value = ""; if (f.length) handleFiles(f); });
+const drop = $("#hub-drop");
+["dragenter", "dragover"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.style.borderColor = "var(--accent)"; }));
+["dragleave", "drop"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.style.borderColor = ""; }));
+drop.addEventListener("drop", e => { const f = Array.from(e.dataTransfer?.files || []); if (f.length) handleFiles(f); });
+$("#hub-export").addEventListener("click", exportCSV);
+$("#hub-backup").addEventListener("click", backup);
+$("#hub-restore").addEventListener("change", async e => { const f = e.target.files?.[0]; e.target.value = ""; if (!f) return; try { const o = JSON.parse(await f.text()); if (o.app !== "plate-and-pulse") throw 0; restoreBackup(o); $("#hub-msg").innerHTML = `<span class="pill p-good">Restored</span> backup from ${esc(String(o.at || "").slice(0, 10))}`; } catch (_) { $("#hub-msg").textContent = "That file isn't a Plate & Pulse backup."; } });
+$("#hub-clear").addEventListener("click", e => { const b = e.currentTarget; if (b.dataset.armed !== "1") { b.dataset.armed = "1"; b.textContent = "Click again to clear"; setTimeout(() => { b.dataset.armed = ""; b.textContent = "Clear imported data"; }, 4000); return; } b.dataset.armed = ""; b.textContent = "Clear imported data"; HUB = hubDemoData(); hubDemo = true; try { localStorage.removeItem("pp:hub"); } catch (_) {} $("#hub-msg").textContent = "Imported data cleared."; $("#hub-progress").textContent = ""; renderHub(); });
+$("#hub-to-log").addEventListener("click", hubToLog);
+$$("#ai-presets .chip").forEach(b => b.addEventListener("click", () => askAI(null, b.dataset.p)));
+$("#ai-chat").addEventListener("submit", e => { e.preventDefault(); const q = $("#ai-q").value.trim(); if (!q) return; $("#ai-q").value = ""; askAI(q, null); });
+$("#ai-stop").addEventListener("click", () => aiCtl?.abort());
 $("#mp-shuffle").addEventListener("click", () => { mpSeed++; renderMeals(); });
 $("#plate").addEventListener("input", renderPlates);
 $("#pace").addEventListener("input", renderPace);
