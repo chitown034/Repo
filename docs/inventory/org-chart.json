@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-23T17:10:14Z",
+ "generated": "2026-10-25T20:44:47Z",
  "seats": [
   {
    "name": "Steve",
@@ -814,6 +814,50 @@
    "apn",
    "tax bill",
    "supplemental tax"
+  ],
+  "Carmen": [
+   "transaction coordinator",
+   "tc",
+   "escrow timeline",
+   "contingency dates",
+   "file timeline",
+   "escrow checklist",
+   "coe date"
+  ],
+  "Booking Concierge": [
+   "tidycal",
+   "booking",
+   "booked consult",
+   "consult",
+   "discovery call",
+   "appointment",
+   "no-show",
+   "reschedule",
+   "show rate",
+   "booking link"
+  ],
+  "Autopilot Conductor": [
+   "autopilot panel",
+   "run autopilot",
+   "autopilot conductor",
+   "scheduled sweep",
+   "overnight run"
+  ],
+  "Lender Matchmaker": [
+   "lender match",
+   "lender fit",
+   "which lender",
+   "wholesale lender",
+   "lender pricing",
+   "loan scenario match"
+  ],
+  "Inbox Sentinel": [
+   "inbox watch",
+   "inbox sentinel",
+   "email watch",
+   "important email",
+   "reply needed",
+   "inbox alert"
   ]
  },
  "tiers": {

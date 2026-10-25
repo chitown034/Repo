@@ -1,6 +1,6 @@
 {
- "generated": "2026-10-23T19:08:14Z",
- "date": "2026-10-23",
+ "generated": "2026-10-25T20:44:47Z",
+ "date": "2026-10-25",
  "items": [
   {
    "id": "bm_08ef5bf8ac",
@@ -18,8 +18,8 @@
     "Say 'done e' and Vanessa closes it and runs what it unblocks"
    ],
    "source": "steven-steps",
-   "weight": 1.0,
-   "score": 4.25,
+   "weight": 1.21,
+   "score": 5.143,
    "value": "high",
    "rank": 1
   },
@@ -39,8 +39,8 @@
     "Say 'done b' and Vanessa closes it and runs what it unblocks"
    ],
    "source": "steven-steps",
-   "weight": 1.0,
-   "score": 4.25,
+   "weight": 1.21,
+   "score": 5.143,
    "value": "high",
    "rank": 2
   },
@@ -60,8 +60,8 @@
     "Say 'done a' and Vanessa closes it and runs what it unblocks"
    ],
    "source": "steven-steps",
-   "weight": 1.0,
-   "score": 3.4,
+   "weight": 1.21,
+   "score": 4.114,
    "value": "high",
    "rank": 3
   },
@@ -81,137 +81,140 @@
     "Say 'done f' and Vanessa closes it and runs what it unblocks"
    ],
    "source": "steven-steps",
-   "weight": 1.0,
-   "score": 2.55,
+   "weight": 1.21,
+   "score": 3.085,
    "value": "high",
    "rank": 4
   },
   {
-   "id": "bm_637c1a7d7f",
+   "id": "bm_bb5ab0e256",
+   "category": "sync",
+   "topic": "",
+   "title": "Resync the Command Deck DB layer",
+   "why": "last stamp 2026-10-22, 3 days old, cadence 1 d",
+   "owner": "Derek",
+   "executor": "vanessa",
+   "impact": 3,
+   "effort": 1,
+   "confidence": 0.9,
+   "plan": [
+    "Run the layer's own sync (routines + Mac tasks write; page reads live)",
+    "bin/brain layers --write; confirm 'even: yes'"
+   ],
+   "source": "layers",
+   "weight": 1.0,
+   "score": 2.7,
+   "value": "high",
+   "rank": 5
+  },
+  {
+   "id": "bm_4586beaa12",
+   "category": "ops",
+   "topic": "refi",
+   "title": "Decide the refi watch list source (approve a read-only funded-loan feed, or have the ISA pull 4 fields by hand)",
+   "why": "vanessaQueue needs-steven since 2026-10-22: refiWatchList has no source for note rate / loan type / close month; the desk never guesses a rate",
+   "owner": "Harrison",
+   "executor": "steven",
+   "impact": 3,
+   "effort": 1,
+   "confidence": 0.9,
+   "plan": [
+    "Approve a read-only funded-loan feed (Zoho/ARIVE) or hand the ISA a manual export",
+    "Harrison loads refiWatchList (first name, note rate, loan type, month closed)",
+    "Refi watch runs on it the next morning"
+   ],
+   "source": "deck:vanessaQueue",
+   "weight": 1.0,
+   "score": 2.7,
+   "value": "high",
+   "rank": 6
+  },
+  {
+   "id": "bm_0dd3a70c9d",
+   "category": "ops",
+   "topic": "lofty",
+   "title": "ISA seat: pick a course of action (recommended COA 2, fractional ISA 12-4 PM PT)",
+   "why": "cosBrief needs-Steven p1: open 31+ days, zero ISA-authored messages; COA 3 only after the Lofty key is verified and Alexandra reviews consent",
+   "owner": "Vanessa",
+   "executor": "steven",
+   "impact": 3,
+   "effort": 1,
+   "confidence": 0.9,
+   "plan": [
+    "Say COA 1, 2 or 3 on the deck or the ISA line",
+    "Vanessa opens the hiring packet for the chosen course",
+    "Alexandra reviews consent/disclosure before any outreach"
+   ],
+   "source": "deck:cosBrief",
+   "weight": 1.0,
+   "score": 2.7,
+   "value": "high",
+   "rank": 7
+  },
+  {
+   "id": "bm_6b1e5bf84e",
    "category": "connect",
-   "topic": "openflowkit",
-   "title": "Connect openflowkit",
-   "why": "architecture, flow, sequence and ER diagrams the agent draws and saves as `.openflow.json` \u00b7 pending \u2014 step added 2026-10-23, runs on the next paste",
+   "topic": "jarvis",
+   "title": "Connect 6D Brain shows all of it",
+   "why": "the layers panel reads brain/state/jarvis-status.json (persona, indexed pages) and the toolkit register reads this table; the daily 3:30 AM rebuild carries it",
    "owner": "Derek",
    "executor": "vanessa",
    "impact": 3,
    "effort": 1,
    "confidence": 0.8,
    "plan": [
-    "Owner Derek confirms the route in the register (integrations/MCP-SERVERS.md)",
-    "Mac 1, Mac 2 (connect-all 6g; npx -y openflowkit mcp, local stdio, no key)",
+    "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
+    "\u2014",
     "Vanessa re-checks the status on the next connect report and closes the item"
    ],
-   "source": "toolkit:mcp",
+   "source": "toolkit:connector",
    "weight": 1.0,
    "score": 2.4,
    "value": "high",
-   "rank": 5
-  },
-  {
-   "id": "bm_f4dd4986b9",
-   "category": "steven",
-   "topic": "arive",
-   "title": "Arive",
-   "why": "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.",
-   "owner": "Derek",
-   "executor": "steven",
-   "impact": 4,
-   "effort": 2,
-   "confidence": 0.85,
-   "plan": [
-    "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.",
-    "Say 'done g' and Vanessa closes it and runs what it unblocks"
-   ],
-   "source": "steven-steps",
-   "weight": 1.0,
-   "score": 1.7,
-   "value": "medium",
-   "rank": 6
-  },
-  {
-   "id": "bm_c5020d75ae",
-   "category": "brain",
-   "topic": "",
-   "title": "Review 3 tune proposal(s) from the weekly loop",
-   "why": "the loop proposed prompt/route changes nobody has judged",
-   "owner": "Vanessa",
-   "executor": "vanessa",
-   "impact": 2,
-   "effort": 1,
-   "confidence": 0.8,
-   "plan": [
-    "docs/reports/BRAIN-LOOP.md \u2192 Proposals",
-    "promote the ones that pass the holdout; log the rest as rejected"
-   ],
-   "source": "loop:tune",
-   "weight": 1.0,
-   "score": 1.6,
-   "value": "medium",
-   "rank": 7
-  },
-  {
-   "id": "bm_05f4b1690b",
-   "category": "connect",
-   "topic": "arive",
-   "title": "Connect Arive LOS (API gateway v4.6)",
-   "why": "read loans, status, leads; loan writes are HALT \u00b7 pending \u2014 Pro-plan credentials (integrations/arive/README.md)",
-   "owner": "Marcus",
-   "executor": "steven",
-   "impact": 4,
-   "effort": 2,
-   "confidence": 0.8,
-   "plan": [
-    "Owner Marcus confirms the route in the register (integrations/APIS.md)",
-    "Steven: Client ID + Secret + API key \u00b7 ~/.config/arive/.env",
-    "Vanessa re-checks the status on the next connect report and closes the item"
-   ],
-   "source": "toolkit:api",
-   "weight": 1.0,
-   "score": 1.6,
-   "value": "medium",
    "rank": 8
   },
   {
-   "id": "bm_3b7b475093",
-   "category": "brain",
-   "topic": "",
-   "title": "Guard wiki/ai-team/second-brain-layers.md with a gold question",
-   "why": "no gold question tests this page, so a regression would go unseen",
+   "id": "bm_52e0d6276e",
+   "category": "connect",
+   "topic": "imessage",
+   "title": "Connect Cloud sweep (iMessage text + voice queue, deck chat box, Discord #vanessa)",
+   "why": "hourly at :17, 24/7 (was 6 AM\u201310 PM PT)",
    "owner": "Vanessa",
    "executor": "vanessa",
-   "impact": 1,
+   "impact": 3,
    "effort": 1,
-   "confidence": 0.9,
+   "confidence": 0.8,
    "plan": [
-    "Add one question to brain/bench/questions.json with the expected phrase",
-    "bin/brain loop \u2192 count rises"
+    "Owner Vanessa confirms the route in the register (integrations/CONNECTIONS.md)",
+    "done in this session",
+    "Vanessa re-checks the status on the next connect report and closes the item"
    ],
-   "source": "loop:untested",
+   "source": "toolkit:connector",
    "weight": 1.0,
-   "score": 0.9,
-   "value": "low",
+   "score": 2.4,
+   "value": "high",
    "rank": 9
   },
   {
-   "id": "bm_68a99297a6",
-   "category": "brain",
+   "id": "bm_da69253e89",
+   "category": "connect",
    "topic": "",
-   "title": "Guard wiki/ai-team/toolkit.md with a gold question",
-   "why": "no gold question tests this page, so a regression would go unseen",
-   "owner": "Vanessa",
+   "title": "Connect Command Deck chat box",
+   "why": "works in claude.ai through the viewer's own Claude (sample declared); last message 2026-09-13",
+   "owner": "Derek",
    "executor": "vanessa",
-   "impact": 1,
+   "impact": 3,
    "effort": 1,
-   "confidence": 0.9,
+   "confidence": 0.8,
    "plan": [
-    "Add one question to brain/bench/questions.json with the expected phrase",
-    "bin/brain loop \u2192 count rises"
+    "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
+    "nothing to install; the cloud sweep now answers any question left unanswered for 10 minutes into the same thread",
+    "Vanessa re-checks the status on the next connect report and closes the item"
    ],
-   "source": "loop:untested",
+   "source": "toolkit:connector",
    "weight": 1.0,
-   "score": 0.9,
-   "value": "low",
+   "score": 2.4,
+   "value": "high",
    "rank": 10
   }
  ],
@@ -224,7 +227,7 @@
   "money": 1.0,
   "compliance": 1.0,
   "ops": 1.0,
-  "steven": 1.0
+  "steven": 1.2100000000000002
  },
  "coas": [
   {
@@ -248,8 +251,8 @@
       "Say 'done e' and Vanessa closes it and runs what it unblocks"
      ],
      "source": "steven-steps",
-     "weight": 1.0,
-     "score": 4.25,
+     "weight": 1.21,
+     "score": 5.143,
      "value": "high",
      "rank": 1,
      "coa": "big-move"
@@ -270,8 +273,8 @@
       "Say 'done b' and Vanessa closes it and runs what it unblocks"
      ],
      "source": "steven-steps",
-     "weight": 1.0,
-     "score": 4.25,
+     "weight": 1.21,
+     "score": 5.143,
      "value": "high",
      "rank": 2,
      "coa": "big-move"
@@ -292,8 +295,8 @@
       "Say 'done a' and Vanessa closes it and runs what it unblocks"
      ],
      "source": "steven-steps",
-     "weight": 1.0,
-     "score": 3.4,
+     "weight": 1.21,
+     "score": 4.114,
      "value": "high",
      "rank": 3,
      "coa": "big-move"
@@ -314,78 +317,125 @@
       "Say 'done f' and Vanessa closes it and runs what it unblocks"
      ],
      "source": "steven-steps",
-     "weight": 1.0,
-     "score": 2.55,
+     "weight": 1.21,
+     "score": 3.085,
      "value": "high",
      "rank": 4,
      "coa": "big-move"
     },
     {
-     "id": "bm_637c1a7d7f",
+     "id": "bm_4586beaa12",
+     "category": "ops",
+     "topic": "refi",
+     "title": "Decide the refi watch list source (approve a read-only funded-loan feed, or have the ISA pull 4 fields by hand)",
+     "why": "vanessaQueue needs-steven since 2026-10-22: refiWatchList has no source for note rate / loan type / close month; the desk never guesses a rate",
+     "owner": "Harrison",
+     "executor": "steven",
+     "impact": 3,
+     "effort": 1,
+     "confidence": 0.9,
+     "plan": [
+      "Approve a read-only funded-loan feed (Zoho/ARIVE) or hand the ISA a manual export",
+      "Harrison loads refiWatchList (first name, note rate, loan type, month closed)",
+      "Refi watch runs on it the next morning"
+     ],
+     "source": "deck:vanessaQueue",
+     "weight": 1.0,
+     "score": 2.7,
+     "value": "high",
+     "rank": 5,
+     "coa": "big-move"
+    },
+    {
+     "id": "bm_0dd3a70c9d",
+     "category": "ops",
+     "topic": "lofty",
+     "title": "ISA seat: pick a course of action (recommended COA 2, fractional ISA 12-4 PM PT)",
+     "why": "cosBrief needs-Steven p1: open 31+ days, zero ISA-authored messages; COA 3 only after the Lofty key is verified and Alexandra reviews consent",
+     "owner": "Vanessa",
+     "executor": "steven",
+     "impact": 3,
+     "effort": 1,
+     "confidence": 0.9,
+     "plan": [
+      "Say COA 1, 2 or 3 on the deck or the ISA line",
+      "Vanessa opens the hiring packet for the chosen course",
+      "Alexandra reviews consent/disclosure before any outreach"
+     ],
+     "source": "deck:cosBrief",
+     "weight": 1.0,
+     "score": 2.7,
+     "value": "high",
+     "rank": 6,
+     "coa": "big-move"
+    },
+    {
+     "id": "bm_6b1e5bf84e",
      "category": "connect",
-     "topic": "openflowkit",
-     "title": "Connect openflowkit",
-     "why": "architecture, flow, sequence and ER diagrams the agent draws and saves as `.openflow.json` \u00b7 pending \u2014 step added 2026-10-23, runs on the next paste",
+     "topic": "jarvis",
+     "title": "Connect 6D Brain shows all of it",
+     "why": "the layers panel reads brain/state/jarvis-status.json (persona, indexed pages) and the toolkit register reads this table; the daily 3:30 AM rebuild carries it",
      "owner": "Derek",
      "executor": "vanessa",
      "impact": 3,
      "effort": 1,
      "confidence": 0.8,
      "plan": [
-      "Owner Derek confirms the route in the register (integrations/MCP-SERVERS.md)",
-      "Mac 1, Mac 2 (connect-all 6g; npx -y openflowkit mcp, local stdio, no key)",
+      "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
+      "\u2014",
       "Vanessa re-checks the status on the next connect report and closes the item"
      ],
-     "source": "toolkit:mcp",
+     "source": "toolkit:connector",
      "weight": 1.0,
      "score": 2.4,
      "value": "high",
-     "rank": 5,
+     "rank": 7,
      "coa": "big-move"
     },
     {
-     "id": "bm_f4dd4986b9",
-     "category": "steven",
-     "topic": "arive",
-     "title": "Arive",
-     "why": "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.",
-     "owner": "Derek",
-     "executor": "steven",
-     "impact": 4,
-     "effort": 2,
-     "confidence": 0.85,
-     "plan": [
-      "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.",
-      "Say 'done g' and Vanessa closes it and runs what it unblocks"
-     ],
-     "source": "steven-steps",
-     "weight": 1.0,
-     "score": 1.7,
-     "value": "medium",
-     "rank": 6,
-     "coa": "big-move"
-    },
-    {
-     "id": "bm_05f4b1690b",
+     "id": "bm_52e0d6276e",
      "category": "connect",
-     "topic": "arive",
-     "title": "Connect Arive LOS (API gateway v4.6)",
-     "why": "read loans, status, leads; loan writes are HALT \u00b7 pending \u2014 Pro-plan credentials (integrations/arive/README.md)",
-     "owner": "Marcus",
-     "executor": "steven",
-     "impact": 4,
-     "effort": 2,
+     "topic": "imessage",
+     "title": "Connect Cloud sweep (iMessage text + voice queue, deck chat box, Discord #vanessa)",
+     "why": "hourly at :17, 24/7 (was 6 AM\u201310 PM PT)",
+     "owner": "Vanessa",
+     "executor": "vanessa",
+     "impact": 3,
+     "effort": 1,
      "confidence": 0.8,
      "plan": [
-      "Owner Marcus confirms the route in the register (integrations/APIS.md)",
-      "Steven: Client ID + Secret + API key \u00b7 ~/.config/arive/.env",
+      "Owner Vanessa confirms the route in the register (integrations/CONNECTIONS.md)",
+      "done in this session",
       "Vanessa re-checks the status on the next connect report and closes the item"
      ],
-     "source": "toolkit:api",
+     "source": "toolkit:connector",
      "weight": 1.0,
-     "score": 1.6,
-     "value": "medium",
-     "rank": 7,
+     "score": 2.4,
+     "value": "high",
+     "rank": 8,
+     "coa": "big-move"
+    },
+    {
+     "id": "bm_da69253e89",
+     "category": "connect",
+     "topic": "",
+     "title": "Connect Command Deck chat box",
+     "why": "works in claude.ai through the viewer's own Claude (sample declared); last message 2026-09-13",
+     "owner": "Derek",
+     "executor": "vanessa",
+     "impact": 3,
+     "effort": 1,
+     "confidence": 0.8,
+     "plan": [
+      "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
+      "nothing to install; the cloud sweep now answers any question left unanswered for 10 minutes into the same thread",
+      "Vanessa re-checks the status on the next connect report and closes the item"
+     ],
+     "source": "toolkit:connector",
+     "weight": 1.0,
+     "score": 2.4,
+     "value": "high",
+     "rank": 9,
      "coa": "big-move"
     }
    ]
@@ -418,10 +468,10 @@
      "coa": "improve"
     },
     {
-     "id": "bm_3b7b475093",
+     "id": "bm_8f08546b92",
      "category": "brain",
      "topic": "",
-     "title": "Guard wiki/ai-team/second-brain-layers.md with a gold question",
+     "title": "Guard wiki/real-estate-playbooks/buyer-process.md with a gold question",
      "why": "no gold question tests this page, so a regression would go unseen",
      "owner": "Vanessa",
      "executor": "vanessa",
@@ -440,10 +490,10 @@
      "coa": "improve"
     },
     {
-     "id": "bm_68a99297a6",
+     "id": "bm_56a4d4589e",
      "category": "brain",
      "topic": "",
-     "title": "Guard wiki/ai-team/toolkit.md with a gold question",
+     "title": "Guard wiki/real-estate-playbooks/military-relocation.md with a gold question",
      "why": "no gold question tests this page, so a regression would go unseen",
      "owner": "Vanessa",
      "executor": "vanessa",
@@ -462,10 +512,10 @@
      "coa": "improve"
     },
     {
-     "id": "bm_4f2b81ccc7",
+     "id": "bm_42e4661959",
      "category": "brain",
      "topic": "",
-     "title": "Guard wiki/dashboard-ops/db-docs.md with a gold question",
+     "title": "Guard wiki/real-estate-playbooks/open-house.md with a gold question",
      "why": "no gold question tests this page, so a regression would go unseen",
      "owner": "Vanessa",
      "executor": "vanessa",
@@ -491,93 +541,95 @@
    "about": "what is stale, failing or silent, and the action that heads it off",
    "items": [
     {
-     "id": "bm_cf7a037bfe",
-     "category": "connect",
-     "topic": "orca",
-     "title": "Connect Jarvis \u00b7 Laya \u00b7 Orca (Mac 2)",
-     "why": "partially set \u2014 engine unproven; runner not yet imported",
+     "id": "bm_bb5ab0e256",
+     "category": "sync",
+     "topic": "",
+     "title": "Resync the Command Deck DB layer",
+     "why": "last stamp 2026-10-22, 3 days old, cadence 1 d",
      "owner": "Derek",
-     "executor": "steven",
+     "executor": "vanessa",
      "impact": 3,
-     "effort": 2,
-     "confidence": 0.8,
+     "effort": 1,
+     "confidence": 0.9,
      "plan": [
-      "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
-      "Steven: bash scripts/second-mac.sh + runner export/import (STEVEN-STEPS 1e)",
-      "Vanessa re-checks the status on the next connect report and closes the item"
+      "Run the layer's own sync (routines + Mac tasks write; page reads live)",
+      "bin/brain layers --write; confirm 'even: yes'"
      ],
-     "source": "toolkit:connector",
+     "source": "layers",
      "weight": 1.0,
-     "score": 1.2,
-     "value": "medium",
+     "score": 2.7,
+     "value": "high",
      "rank": 1,
      "coa": "risk"
     },
     {
-     "id": "bm_f293f10b67",
-     "category": "brain",
+     "id": "bm_57de39fd13",
+     "category": "ops",
      "topic": "",
-     "title": "Sweep the 20 pages with stale live facts",
-     "why": "a page with a dated number that nobody re-checked is a wrong answer waiting",
-     "owner": "Derek",
-     "executor": "vanessa",
-     "impact": 2,
-     "effort": 2,
-     "confidence": 0.7,
-     "plan": [
-      "bin/brain loop lists them",
-      "re-verify each stamp against its source or move the fact to a report"
-     ],
-     "source": "loop:history",
-     "weight": 1.0,
-     "score": 0.7,
-     "value": "low",
-     "rank": 2,
-     "coa": "risk"
-    },
-    {
-     "id": "bm_e938d5c221",
-     "category": "brain",
-     "topic": "",
-     "title": "Re-check live facts on README.md",
-     "why": "newest stamp 2026-09-22 (31 days)",
+     "title": "Refresh cosBrief",
+     "why": "cosBrief stamp 2026-10-23T13:26Z; cadence weekdays 6:25 (daily-updates.md) \u2014 the 10/24 cycle did not land",
      "owner": "Vanessa",
      "executor": "vanessa",
      "impact": 2,
-     "effort": 2,
-     "confidence": 0.6,
+     "effort": 1,
+     "confidence": 0.9,
      "plan": [
-      "Read the page's live-sounding lines; re-verify each against its source",
-      "Restamp the page or move the fact to a report"
+      "Check the routine's last run in the trigger list",
+      "Fire it once by hand if it skipped",
+      "Confirm the doc's own stamp moves"
      ],
-     "source": "loop:stale",
+     "source": "deck:daily-updates",
+     "coa": "risk",
      "weight": 1.0,
-     "score": 0.6,
-     "value": "low",
-     "rank": 3,
-     "coa": "risk"
+     "score": 1.8,
+     "value": "medium",
+     "rank": 2
     },
     {
-     "id": "bm_9b9d1bb501",
-     "category": "brain",
-     "topic": "",
-     "title": "Re-check live facts on docs/inventory/mac-task-descriptions.md",
-     "why": "newest stamp 2026-09-13 (40 days)",
-     "owner": "Derek",
+     "id": "bm_3d694a5bf5",
+     "category": "ops",
+     "topic": "drive",
+     "title": "Refresh healthDriveSync",
+     "why": "healthDriveSync ranAt 2026-10-23T18:27Z; cadence daily 6:15",
+     "owner": "Vanessa",
      "executor": "vanessa",
      "impact": 2,
-     "effort": 2,
-     "confidence": 0.6,
+     "effort": 1,
+     "confidence": 0.9,
      "plan": [
-      "Read the page's live-sounding lines; re-verify each against its source",
-      "Restamp the page or move the fact to a report"
+      "Check the routine's last run in the trigger list",
+      "Fire it once by hand if it skipped",
+      "Confirm the doc's own stamp moves"
      ],
-     "source": "loop:stale",
+     "source": "deck:daily-updates",
+     "coa": "risk",
      "weight": 1.0,
-     "score": 0.6,
-     "value": "low",
-     "rank": 4,
-     "coa": "risk"
+     "score": 1.8,
+     "value": "medium",
+     "rank": 3
+    },
+    {
+     "id": "bm_8507485c19",
+     "category": "ops",
+     "topic": "",
+     "title": "Refresh morningBriefStatus",
+     "why": "morningBriefStatus stamp 2026-10-23T13:35Z; cadence daily 6:34 \u2014 10/24 and 10/25 missing",
+     "owner": "Vanessa",
+     "executor": "vanessa",
+     "impact": 2,
+     "effort": 1,
+     "confidence": 0.9,
+     "plan": [
+      "Check the routine's last run in the trigger list",
+      "Fire it once by hand if it skipped",
+      "Confirm the doc's own stamp moves"
+     ],
+     "source": "deck:daily-updates",
+     "coa": "risk",
+     "weight": 1.0,
+     "score": 1.8,
+     "value": "medium",
+     "rank": 4
     }
    ]
   },
@@ -602,10 +654,56 @@
       "Say 'done k' and Vanessa closes it and runs what it unblocks"
      ],
      "source": "steven-steps",
-     "weight": 1.0,
-     "score": 1.417,
+     "decision": "approved",
+     "decided_at": "2026-10-23T17:21:17.818Z",
+     "weight": 1.21,
+     "score": 1.714,
      "value": "medium",
      "rank": 1,
+     "coa": "opportunity"
+    },
+    {
+     "id": "bm_f611817173",
+     "category": "brain",
+     "topic": "",
+     "title": "Run Nadia's weekly scout for new AI tooling",
+     "why": "last scout 2026-10-09; 454 servers seen so far",
+     "owner": "Nadia",
+     "executor": "vanessa",
+     "impact": 2,
+     "effort": 1,
+     "confidence": 0.8,
+     "plan": [
+      "python3 integrations/scout/scout.py (proposal-only)",
+      "shortlist 3 with a Context7 doc check; install nothing"
+     ],
+     "source": "scout",
+     "coa": "opportunity",
+     "weight": 1.0,
+     "score": 1.6,
+     "value": "medium",
+     "rank": 2
+    },
+    {
+     "id": "bm_10f48c6868",
+     "category": "steven",
+     "topic": "zillow",
+     "title": "Claim your profiles for AI search",
+     "why": "Google Business Profile, Bing Places, Zillow (agent + lender), Realtor.com, Homes.com, Yelp; send Sofia the DRE number (`wiki/real-estate-playbooks/ai-search-visibility.md`).",
+     "owner": "Sofia",
+     "executor": "steven",
+     "impact": 4,
+     "effort": 3,
+     "confidence": 0.85,
+     "plan": [
+      "Google Business Profile, Bing Places, Zillow (agent + lender), Realtor.com, Homes.com, Yelp; send Sofia the DRE number (`wiki/real-estate-playbooks/ai-search-visibility.md`).",
+      "Say 'done c' and Vanessa closes it and runs what it unblocks"
+     ],
+     "source": "steven-steps",
+     "weight": 1.21,
+     "score": 1.371,
+     "value": "medium",
+     "rank": 3,
      "coa": "opportunity"
     },
     {
@@ -628,29 +726,7 @@
      "weight": 1.0,
      "score": 1.2,
      "value": "medium",
-     "rank": 2,
-     "coa": "opportunity"
-    },
-    {
-     "id": "bm_10f48c6868",
-     "category": "steven",
-     "topic": "zillow",
-     "title": "Claim your profiles for AI search",
-     "why": "Google Business Profile, Bing Places, Zillow (agent + lender), Realtor.com, Homes.com, Yelp; send Sofia the DRE number (`wiki/real-estate-playbooks/ai-search-visibility.md`).",
-     "owner": "Sofia",
-     "executor": "steven",
-     "impact": 4,
-     "effort": 3,
-     "confidence": 0.85,
-     "plan": [
-      "Google Business Profile, Bing Places, Zillow (agent + lender), Realtor.com, Homes.com, Yelp; send Sofia the DRE number (`wiki/real-estate-playbooks/ai-search-visibility.md`).",
-      "Say 'done c' and Vanessa closes it and runs what it unblocks"
-     ],
-     "source": "steven-steps",
-     "weight": 1.0,
-     "score": 1.133,
-     "value": "low",
-     "rank": 3,
+     "rank": 4,
      "coa": "opportunity"
     }
    ]
@@ -672,11 +748,11 @@
    "ref": "bm_c5020d75ae"
   },
   {
-   "q": "What should I do about: Connect Jarvis \u00b7 Laya \u00b7 Orca (Mac 2)?",
-   "a": "partially set \u2014 engine unproven; runner not yet imported.",
-   "action": "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
+   "q": "What should I do about: Resync the Command Deck DB layer?",
+   "a": "last stamp 2026-10-22, 3 days old, cadence 1 d.",
+   "action": "Run the layer's own sync (routines + Mac tasks write; page reads live)",
    "coa": "risk",
-   "ref": "bm_cf7a037bfe"
+   "ref": "bm_bb5ab0e256"
   },
   {
    "q": "What should I do about: Drips and texts?",
@@ -703,11 +779,11 @@
   },
   {
    "q": "Which connections are not connected yet?",
-   "a": "Same twelve steps done. Mods installed (7 + 2 samples, settings backup kept). Jarvis engine: Ollama running, llama3.1:8b present, index ~/.openjarvis/memory.db 1,828 rows, vault 850 notes, Laya MCP registered, voice profile written.",
-   "action": "Open integrations/CONNECTIONS.md \u00a7 Connection status \u2014 Mac 1 report #2, 2026-10-23 01:01 UTC (connect-2026-10-22-1800)",
+   "a": "Supersedes the sections above for the rows it names. Everything here is one paste on the Mac: cd ~/Repo && bash scripts/fix-mine.sh.",
+   "action": "Open integrations/CONNECTIONS.md \u00a7 Connection status \u2014 Vanessa everywhere, 2026-10-23 21:30 UTC (Steven: \"connect Jarvis with Vanessa replacing it with her voice and persona, and Laya, Orca and all my AI team to Orca, and connect these with my 6D 2nd brain\")",
    "coa": "question",
    "ref": "integrations/CONNECTIONS.md",
-   "confidence": 0.75
+   "confidence": 0.76
   },
   {
    "q": "What did the weekly loop find?",
