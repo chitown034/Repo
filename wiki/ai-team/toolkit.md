@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 48 skills · 7 Claude mods (plugins) · 45 connectors (4 ok, 41 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
+toolkit: 48 skills · 7 Claude mods (plugins) · 45 connectors (4 ok, 41 need attention) · 11 MCP servers · 14 APIs · 73 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -52,8 +52,8 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 45 connectors (4 ok, 41 need at
 **Cloud routines**
 - `Vanessa — Chief of Staff daily cycle (weekdays 6:25 AM PT, parallel squads)`: cron CRON_TZ=America/Los_Angeles 25 6 * * 1-5 · on · —
 - `Vanessa — morning brief across the dashboards (6:34 AM PT; push + writes the iMessage/voice script; `: cron CRON_TZ=America/Los_Angeles 34 6 * * * · on · SUCCEEDED @ 2026-10-22T13:49 (as the 6:4
-- `Vanessa inbox sweep (cloud) — hourly fallback behind the Mac pollers, day and night since 2026-10-24`: cron CRON_TZ=America/Los_Angeles 17 * * * * · on · ran 2026-10-24 01:17 UTC
-- `Big moves — Vanessa's four courses of action (4 each: big moves · self-improvement/loop engineering `: cron CRON_TZ=America/Los_Angeles 5 6 * * * · on · —
+- `Vanessa inbox sweep (cloud) — hourly fallback behind the Mac pollers, day and night since 2026-10-24`: cron CRON_TZ=America/Los_Angeles 17 * * * * · on · ran by hand 2026-10-25 20:28 UTC
+- `Big moves — Vanessa's four courses of action (4 each: big moves · self-improvement/loop engineering `: cron CRON_TZ=America/Los_Angeles 5 6 * * * · on · catch-up fired 2026-10-25
 - `Command Deck & ISA Portal Weekly Loop Engineering QA`: cron 0 16 * * 0 · on · FAILED @ 2026-09-20T16:06
 - `Command Deck — Vanessa orchestrated ops review (C-suite in parallel, Fri 4 PM PT)`: cron 0 23 * * 5 · on · FAILED @ 2026-09-18T23:03
 - `Command Deck — weekly improvement loop (research → apply)`: cron 0 16 * * 0 · on · FAILED @ 2026-09-20T16:06
@@ -163,7 +163,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 45 connectors (4 ok, 41 need at
 
 **Cloud routines**
 - `VA Command Center — weekly avatar content drafts`: cron CRON_TZ=America/Los_Angeles 58 14 * * 0 · on · SUCCEEDED @ 2026-10-18T21:58
-- `Presence audit — AI search visibility (monthly, Sofia)`: cron CRON_TZ=America/Los_Angeles 10 7 1 * * · on · —
+- `Presence audit — AI search visibility (monthly, Sofia; bound to the hand-off session)`: cron CRON_TZ=America/Los_Angeles 10 7 1 * * · on · —
 - `Command Deck — Weekly content edit reminder`: cron 0 15 * * 1 · on · SUCCEEDED @ 2026-09-21T15:03
 - `Content Calendar Review`: cron 0 15 * * 1 · on · SUCCEEDED @ 2026-09-21T15:06
 - `SEO Content Gap Audit`: cron 0 17 1 * * · on · @
@@ -298,7 +298,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 45 connectors (4 ok, 41 need at
 - `MBS Highway Home Report` — *none*: enrol past clients (Steven's click) · no API (integrations/mbs-highway/README.md)
 
 **Cloud routines**
-- `Health daily sync — Apple Health (Drive export) + Strava → deck (6:15 AM PT; `appleHealth`, `stravaS`: cron CRON_TZ=America/Los_Angeles 15 6 * * * · on · first run by hand 2026-10-23
+- `[retired 2026-10-25 — bound to the old session; replaced by trig_01YPmyQiy1SMzFfr1SzEoLoe below] Hea`: cron CRON_TZ=America/Los_Angeles 15 6 * * * · off · first run by hand 2026-10-23; 10/24–10/2
 - `Command Deck — daily freshness sweep (writer, Claude; once a day since 2026-10-22, per-key cadence)`: cron 40 15 * * * · on · SUCCEEDED @ 2026-10-20T15:40
 - `Command Deck — morning feeds (writer, Claude)`: cron 5 13 * * * · on · SUCCEEDED @ 2026-10-20T13:08
 - `Command Deck — market close (writer, Claude)`: cron 20 21 * * 1-5 · on · SUCCEEDED @ 2026-10-19T21:20
@@ -308,10 +308,11 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 45 connectors (4 ok, 41 need at
 - `Refi watch — weekly prep list (Mon 7:20 AM PT, drafts only)`: cron CRON_TZ=America/Los_Angeles 20 7 * * 1 · on · —
 - `Sphere & past-client touches — monthly drafts (day 11, 7:40 AM PT, drafts only)`: cron CRON_TZ=America/Los_Angeles 40 7 11 * * · on · —
 - `Weekly ecosystem backup — cloud writer (Sunday, after the allowance reset)`: cron 7 21 * * 0 · on · SUCCEEDED @ 2026-10-22T14:16 (catch-up)
-- `6D Brain — daily rebuild and republish (3:30 AM PT, this session)`: cron CRON_TZ=America/Los_Angeles 30 3 * * * · on · —
-- `Fieldy → brain (daily meeting digest; first names only)`: cron CRON_TZ=America/Los_Angeles 50 6 * * * · on · ran 2026-10-23 (0 recordings)
-- `Claude sessions ledger (docs/inventory/claude-sessions.md, daily)`: cron CRON_TZ=America/Los_Angeles 52 3 * * * · on · ran 2026-10-23
-- `Second Brain layers weekly sync (export → Drive SB Docs → Notion directory → layers report)`: cron CRON_TZ=America/Los_Angeles 45 14 * * 0 · on · —
+- `6D Brain — daily rebuild and republish (3:30 AM PT; bound to the hand-off session since 2026-10-25)`: cron CRON_TZ=America/Los_Angeles 30 3 * * * · on · catch-up fired 2026-10-25
+- `Fieldy → brain (daily meeting digest; first names only; bound to the hand-off session since 2026-10-`: cron CRON_TZ=America/Los_Angeles 50 6 * * * · on · ran 2026-10-23 (0 recordings)
+- `Claude sessions ledger (docs/inventory/claude-sessions.md, daily; bound to the hand-off session)`: cron CRON_TZ=America/Los_Angeles 52 3 * * * · on · ran 2026-10-23
+- `Second Brain layers weekly sync (export → Drive SB Docs → Notion directory → layers report; bound to`: cron CRON_TZ=America/Los_Angeles 45 14 * * 0 · on · —
+- `Health daily sync — see the first row; re-created 2026-10-25, bound to the hand-off session (was tri`: cron CRON_TZ=America/Los_Angeles 15 6 * * * · on · catch-up fired 2026-10-25
 - `Account Health Check`: cron 0 17 * * 1 · on · SUCCEEDED @ 2026-09-21T17:09
 - `Books Reconciliation Reminder`: cron 0 22 * * 5 · on · FAILED @ 2026-09-18T22:01
 - `Command Deck Brief`: cron 45 13 * * * · on · SUCCEEDED @ 2026-09-21T13:45
