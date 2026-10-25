@@ -1,0 +1,1 @@
+Vendored 2026-10-23 from https://github.com/coldteadotai/pr-lens (MIT, commit 3d04962) — skills/pr-lens; two edits: the CLI pinned to @0.13.2 (was @latest) and a HALT section on uploads to prlens.dev appended. The skill runs `npx @coldtea/pr-lens-cli@0.13.2` on demand (published npm package, no key); the GitHub App (github.com/apps/coldtea-pr-lens) is Steven's own install.

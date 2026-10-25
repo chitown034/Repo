@@ -81,3 +81,15 @@ and pod membership live in `cross-functional.md`; the launchable agent file is `
 
 Source: Steven's seat list, 2026-10-22. Mac snapshot (`roster-tiers.json`) does not know these seven yet — add them there
 (tier 2, model sonnet, leads as above) before the next snapshot, as `agent-os.md` § Seats added after the Mac snapshot says.
+
+## Booking Concierge
+
+Added 2026-10-25. Reports to Priya (ISA line); member of the Growth & Marketing and Buyer pods.
+Owns the Broker Command Center **Bookings Desk** (Clients → Bookings Desk). It reads TidyCal consults
+(read-only: `list-bookings`, `list-booking-types`) and makes each booking a contact at *Appointment Set*,
+with a confirmation the day before, a prep brief the day of the call, and a follow-up after it.
+Outcomes are logged as Held or No-show. Held starts the onboarding mission; No-show queues a two-touch
+recovery with the booking link. It also tracks the show rate and puts
+https://tidycal.com/stevenshearrill/discovery-call into every lead touch. Reschedules and cancellations stay in TidyCal.
+Launchpad mission: *Booked consult — prep to follow-up*. Vanessa tool: `tidycal_bookings`.
+

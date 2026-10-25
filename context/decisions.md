@@ -663,6 +663,101 @@ which executive. Vanessa is the first card, Chief of Staff, with `consult_agent`
 the org chart as a surface under Vanessa, not a seat. Rule kept: drafts only, approval cards for every write.
 ## 2026-10-22 — Presence kit deepened; Orin and the Presence Pod own AEO/SEO/GEO/AIO; the 6D Brain carries it
 
+## 2026-10-23 — NotebookLM gets the brain as a source pack, not a live connection
+
+NotebookLM (consumer/Workspace) has no public API; only NotebookLM Enterprise does. The Drive rule (nothing writes to
+Drive) stands. So `bin/brain export notebooklm` writes 13 masked markdown sources (no client pages) that Steven uploads
+to a "Second Brain" notebook; the 6D Brain is included as text. Browser-automation "connectors" stay out (session
+cookies in plain text). Revisit only if Steven chooses the Drive route or Google ships a consumer API.
+`integrations/notebooklm/README.md`.
+
+## 2026-10-23 — NotebookLM connected through Drive; the brain's layers must sync evenly
+
+Steven: "connect and sync notebook lm", "another layer of redundancy", "ensure all data syncs evenly across all
+layers — Notion, Google Drive, NotebookLM and more". Decisions: (1) one scoped exception to the Drive read-only rule —
+`SECOND BRAIN/` is written by the weekly sync, nothing else in Drive; (2) NotebookLM is recall level 4 (the mirror),
+never a first stop; (3) `bin/brain layers` is the measure of "even": every layer inside its own cadence from its own
+stamp; (4) the community NotebookLM MCP stays opt-in on the Mac. Pages: `wiki/ai-team/second-brain-layers.md`,
+`integrations/notebooklm/README.md`, `docs/reports/LAYERS.md`.
+
+## 2026-10-23 — NotebookLM direct connector: opt-in taken
+
+Steven: "setup and connect everything for me" after the risk was stated (browser-session material stored on the Mac,
+undocumented API). Installed by `connect-all.sh` 6f on his Macs; `nlm login` stays his; non-sensitive notebooks only;
+first thing removed if it breaks. Supersedes "stays opt-in" in the 06:10 entry.
+
+## 2026-10-23 — Approve on the 6D Brain executes; the morning brief falls back to e-mail
+
+Steven: "allow the big moves to automatically execute when I hit the approve button." The 6D page now declares the `mcp`
+capability (Claude Code Remote, `fire_trigger` only) and, after writing the decision to its db, fires the Big-moves task with
+"EXECUTE NOW big move <id>"; the task records the approval and runs the plan at once for executor "vanessa", or leaves the plan
+standing by for executor "steven". Without the connector the approval still lands and the 6:05 AM run picks it up. The HALT
+list is unchanged: execution never sends, pays, signs or writes to a client-facing system.
+
+Same day, "vanessa did not send morning brief today with voice imessage": root cause is that Vanessa's iMessage line has no
+linked phone (Steven never sent the one connect text), so iMessage sends were dropped silently. Decision: the brief goes by
+e-mail to his own address (Inkbox) whenever the line is unlinked — cloud routine for the text, Mac task for the voice note —
+and the connect text is click A of the simplified steps. Never any other address.
+
+Steps simplified to three pastes + four clicks; everything else that used to be an "only you" item is now a big move.
+
+## 2026-10-23 — Apple Health: the Drive export was never broken; the sync moves to the cloud
+
+Steven: "fix auto health export and sync." Found: Health Auto Export has been writing a daily JSON file into a Google Drive
+folder all along; only the Mac daemon (:8765 → DuckDB) that turned it into the deck document died on 2026-09-13. Decision: the
+sync is a cloud routine in the orchestrator session (6:15 AM PT) that reads the Drive files and merges them into `appleHealth`
+with `scripts/health-drive-sync.py` — no Mac, no daily phone prompt. The daemon's history is kept, metric keys are never invented,
+a missing day stays a gap. Health data stays in that one document. The Notion path is optional; `r8-apple-health-snapshot` is to
+be disabled on the Mac so it cannot overwrite the document. Also added to the deck: links to the Fitness Dashboard and the
+Famous Stoics pages (Health & Wellness → Related dashboards) and to `bin/brain links`.
+Same day, "update and sync strava daily with health auto export daily and myfitnesspal": Strava joins the 6:15 AM cloud sync
+(the Strava connector writes `stravaSnapshot`; the Mac task is retired). MyFitnessPal gets no connector — it reaches the deck
+through Apple Health and the same export file once Steven switches the nutrition metrics on in Health Auto Export (click E).
+
+## 2026-10-23 — Four courses of action on the 6D Brain, loop engineering as a standing lane
+
+- **Request (Steven, verbatim).** *"add 4 COA recommendfations for 6d brain for next big moves, self improvement, things to do and implement, anticipated risks or actions to take or recommended things to do, opportunities to pursue and things to do, answers to potentional questions i may have actionable items to do. incorporate loop engineerring to always find way to improve and add additional capabilities and more"*
+- **Decision.** `bin/brain recs` keeps one scored pool and sorts it into four lanes of four — **big-move** (money, clients, connections), **improve** (self-improvement: what the weekly loop, the decision ledger and Nadia's scout say the system should change in itself), **risk** (stale, failing or silent, with the action that heads it off), **opportunity** (marketing, presence, new capabilities) — plus a **questions** block: one answer per leading move and six standing questions answered by the brain's own zero-token recall, page and section named. `brain/recs.py::coa_of` decides the lane (an explicit `coa` on a live signal wins); `_improve_candidates` is the loop-engineering source (loop not run in 7 days → run it; failing gold questions → fix them; ≥10 stale pages → sweep; tune proposals → judge them; ≥5 declines in 14 days → retune the weights; scout older than 14 days → run it). Output: `brain/recs/big-moves.json {items, coas, questions}` and `docs/reports/BIG-MOVES.md`; the 6D panel draws the four lanes and the questions; the Big-moves cloud task (6:05 AM PT, trig_014…) learns, executes approved Vanessa-items in any lane, mirrors to the deck (`bigMoves`, `vanessaRecommendations` with a `lane`), republishes the page, and runs `bin/brain loop` itself when the improve lane is empty and the last loop is older than 7 days.
+- **Why.** One ranked list hid the system's own work and the risks behind the revenue items. Four lanes keep each kind visible every day; the loop lane means the brain always carries at least one way to get better, and an approved improve-move is a repo change with a line in `docs/reports/BRAIN-LOOP.md`, never a live-prompt edit.
+- **Owner.** Vanessa (lanes, execution); Nadia (scout opportunities); Derek (risk repairs). **Status.** Live 2026-10-23 (6D v51).
+
+## 2026-10-23 — One paste for everything that needs Steven; Jarvis becomes Vanessa and holds the brain
+
+- **Request (Steven, verbatim).** *"help fix everything broken or not working and make a new script that i can cut and paste into the terminal to fix whatever requiring my actions. make simple and limit how many back and forth required of me"* · *"connect Jarvis with Vanessa replacing it with her voice and persona and laya, Orca and all my ai team to Orca, and whatever else not connected"* · *"connect these with my 6d 2nd brain"*.
+- **Decision.** `scripts/fix-mine.sh` is the single paste for Steven's side: idempotent, every secret typed hidden and written only to `~/.config/<tool>/.env` (mode 600), prompts never land in a file, a `--check` mode changes nothing, and it ends with a REPORT plus a lettered only-you list. It calls the existing per-tool scripts rather than duplicating them. Jarvis gets Vanessa's persona through OpenJarvis's named-persona files (`integrations/jarvis/vanessa-persona.sh`), her recorded voice through `jarvis-setup.sh`, and the brain's pages in its memory from a staging copy that excludes `wiki/clients`, `memory/` and `docs/findings` (the vector-index exclusion rule applies to Jarvis too). Laya, Orca and the Agent OS installers are re-run by the same paste; `brain os check` is the proof; the 6D layers row and the toolkit register show the result.
+- **Why.** Each earlier round produced a new paste and a new back-and-forth; the keys were skipped because the prompts came mid-script. One script, run as often as needed, that only asks for what is still missing and prints the human list once, is what "limit the back and forth" means in practice.
+- **Owner.** Vanessa (script), Derek (runner, Jarvis), Steven (the lettered list). **Status.** Scripts tested in the cloud against throwaway homes (12 + 20 tests); first real run is Steven's paste.
+
+## 2026-10-23 — Every channel to Vanessa gets a cloud fallback; Jarvis is Vanessa, the single point of contact
+
+- **Request (Steven, verbatim).** *"i texted both Vanessa on imessage and on kapso whatsapp with no response. fix all communication to include discord and chatbox"* · *"orca setup and integrate all ai agents from my org chart into Orca"* · *"also do the same with Jarvis where Vanessa is the primary POC to replace jarvis and integrate with all ai agents"*.
+- **Found.** iMessage: Inkbox holds no linked phone and no conversation — the connect text never arrived (a plain text does not link). WhatsApp: the Kapso number exists but no task reads it; the two runner tasks were specified on 2026-10-13 and never registered; the Kapso sign-in is pending. Discord: no bot token anywhere. Chat box: answers only through the viewer's own Claude permission in the page.
+- **Decision.** One hourly cloud routine, *Vanessa inbox sweep (cloud)*, answers what the Mac pollers did not: iMessage through the Inkbox connector (only inside an existing conversation, only after the Mac's 10-minute window), the deck chat thread (appends Vanessa's answer to `vanessaChat`), Discord #vanessa through Composio once the bot is connected (only Steven's own user id). WhatsApp stays Mac-only (Kapso has no cloud path here); `fix-mine.sh` installs the Kapso plugin + MCP, stores the Discord bot token in the Keychain at a hidden prompt, and prints the runner task catalog so the two WhatsApp tasks can be registered next round. Orca: the Agent OS already carries all 180 roster seats (`integrations/agent-os`, `brain os check` 180/180); fix-mine re-runs its installer; pairing the phone is Steven's. Jarvis: Vanessa's persona now includes the full roster from `agents.json`, so she is the single point of contact and dispatches to seats with `brain os run` / `orca-launch.sh`.
+- **Owner.** Vanessa (sweep, persona), Derek (runner tasks), Steven (connect text, bot token, sign-ins). **Status.** Routine live; first run 00:17 UTC 2026-10-24.
+
+## 2026-10-24 — Military Family Office page joins the deck and the links registry
+
+- **Context.** Steven: "in the dashboard add: Military Family Office" (the Sentinel Military Family Office page, a concept prototype of his own). It was already one line in the deck's Pages menu, which is easy to miss.
+- **Decision.** Panel 17 (Family Office) opens with a *Related dashboards* card: Military Family Office first, then the Veterans Benefits Dashboard and the Military Rent vs Buy tree, all from the Pages menu's own list. The page is also a `bin/brain links` row, so the 6D links panel and the Notion directory show it. Pattern reused from Health & Wellness (2026-10-23).
+
+## 2026-10-24 — Vanessa answers at any hour; the cloud sweep is 24/7, the Mac window is widened per task
+
+- **Context.** Steven: "enable all messages to respond when message is sent anytime of day." The cloud inbox sweep ran 6 AM–10 PM PT; every Mac runner task carries the window `07-22`, so the 10-minute pollers sleep overnight.
+- **Decision.** The cloud sweep runs hourly, 24/7 (`17 * * * *`, PT). A 20-minute cadence was tried and refused: a cloud routine's floor is one hour, so the Mac pollers stay the fast path. `scripts/fix-mine.sh` widens the window to `00-24` for the five message tasks only, never the runner-wide default (nightly and weekly tasks keep their hours and the usage cap), and backs out if `runnerctl dry` does not confirm the new window.
+- **Consequence.** Overnight answers arrive within the hour now and within 10 minutes once the paste has run; a night-time question still gets the same HALT handling (no quote, no eligibility call, no client send).
+
+## 2026-10-24 — Voice rides every Vanessa text reply, from the cloud too
+
+- **Request (Steven, verbatim).** *"vanessa voice is suppose to speak with a voice message on top of the text"*
+- **Decision.** The cloud inbox sweep queues a `voiceReplyQueue` item (mac-task-specs §6a shape, 40–700 spoken characters, no HALT answer, no client data) after every iMessage text it sends and after every deck chat answer; the Mac's `voice-reply-render` renders her recorded voice and sends the note into the same thread. `fix-mine.sh` puts the two things that task needs on the Mac at a hidden prompt (Inkbox API key) and from the paste line (`VANESSA_THREAD`, the one allow-listed thread). The thread id is not a secret but is kept out of the repo on purpose (`voice-setup.sh` rule). Text always goes first; voice never blocks or replaces it.
+- **Owner.** Vanessa (sweep), Derek (render task, §6a in the Mac poller), Steven (paste). **Status.** First real voice item queued 00:28 UTC 2026-10-24; delivery proof is `voiceReplyStatus` on the deck.
+
+## 2026-10-24 — SkySlope by REST, read-only, from the Mac
+
+- **Request (Steven, verbatim).** *"setup skyslope i have an api key"*
+- **Decision.** A stdlib, GET-only client (`integrations/skyslope/skyslope_cli.py`) using SkySlope's documented login (HMAC-SHA256 of `ClientId:ClientSecret:Timestamp` keyed by the user's Access Secret, `Authorization: ss <AccessKey>:<hmac>`, `Timestamp` header, JSON body with the Client pair → `Session` ticket, ~2 h) replaces the browser harness as the primary SkySlope path. Keys live only in `~/.config/skyslope/.env`; `fix-mine.sh` collects all four hidden and proves the login. Default output is a summary (file id, type, status, street, dates); `--full` shows the record. Transaction data is client data: terminal only, never into the brain, a report or a message. Writes to SkySlope stay HALT (no write verb exists in the client; a test enforces it).
+- **Open.** Steven's "API key" is the user pair; SkySlope's API also needs the partner-level Client ID/Secret. The proof step tells which is missing.
+- **Owner.** Carmen (desk use), Derek (client), Steven (keys). **Status.** Built and tested in the cloud 2026-10-24; first real login is the paste.
 - **Request (Steven, verbatim).** *"Apply AEO, SEO, GEO to improve all of my social media websites and improve my
   presence, ranking and recommendations on LLMs like Claude, Gemini, Grok, ChatGPT, and all LLMs for Steven Shearrill.
   AIO as well"* and then *"continue add more in depth and update 6D brain and update AI org chart with all changes"*.

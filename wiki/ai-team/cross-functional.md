@@ -63,6 +63,11 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Delia | reviews, google review, testimonial, reputation, net promoter, scorecard | `wiki/real-estate-playbooks/referral-reciprocity.md` |
 | Ansel | predictive seller, likely seller, probate lead, expired, seller intelligence | `wiki/real-estate-playbooks/listing-process.md` |
 | Tax Assessor Agent | assessor, property tax, apn, tax bill, supplemental tax | `wiki/real-estate-playbooks/transaction-stages.md` |
+| Carmen | transaction coordinator, tc, escrow timeline, contingency dates, file timeline, escrow checklist, coe date | `wiki/real-estate-playbooks/transaction-stages.md` |
+| Booking Concierge | tidycal, booking, booked consult, consult, discovery call, appointment, no-show, reschedule, show rate, booking link | `wiki/ai-team/desk-seats.md` |
+| Autopilot Conductor | autopilot panel, run autopilot, autopilot conductor, scheduled sweep, overnight run | `wiki/dashboard-ops/index.md` |
+| Lender Matchmaker | lender match, lender fit, which lender, wholesale lender, lender pricing, loan scenario match | `wiki/mortgage-programs/program-selection.md` |
+| Inbox Sentinel | inbox watch, inbox sentinel, email watch, important email, reply needed, inbox alert | `wiki/ai-team/desk-seats.md` |
 
 ## Pods — standing cross-functional teams that work in parallel
 
@@ -82,6 +87,14 @@ duplicated. Vanessa's daily cycle forms its squads from these pods.
 | Ops Pod | automation, routine, connector, sync, broken, dashboard, mac, runner, integration, workflow, pabbly, mod | Derek, Elena, Elon, Nadia | Fix plan, security check, feasibility, the one paste for Steven |
 | Client Care Pod | sphere, nurture, past client, birthday, anniversary, open house, sign-in sheet, thank-you, review request, testimonial | Sofia, Sphere Nurture Coordinator, Open House Captain, Wren, Victor, Alexandra | Monthly sphere touch drafts, open-house sign-in → leads, thank-you drafts, ISA call list, review and referral asks — drafts only |
 | Presence Pod | aeo, seo, geo, aio, llm visibility, ai answers, chatgpt, perplexity, gemini, grok, llms.txt, schema, knowledge panel, google business profile, gbp, citation, directory, nap, backlink, review, press, podcast, profile, bio, handle, entity | Sofia, Orin, SEO Specialist, Delia, Gareth, Derek, Alexandra | Profile copy and NAP fixes, schema and `llms.txt`, hub deploy packet, citation sweep, review asks, press and podcast pitches, the monthly LLM benchmark and KPI row (`projects/aeo-presence/data/`) — drafts and Needs-Steven packets only; Steven posts, deploys, submits and pays |
+
+**Every seat is cross-functional (Steven, 2026-10-23: "enable all agents to be cross functionable").** A pod is the
+default crew, never a wall: the planner also brings in any seat whose lane words appear in the request (the Lane
+keywords table) and any Join below, and Vanessa may pull any of the 198 roster agents into any pod through the Agent OS
+(`bin/brain route "<request>"` prints the crew; `integrations/agent-os/`). The lead stays the lane owner; the gates
+still run after the wave. The org chart every dashboard shows is one JSON — `bin/brain org` — written daily to the
+Command Deck doc `aiTeamOrg` by the Big-moves task, embedded in the 6D Brain's seat lens, and mirrored by the Mac's
+`aiTeamRoster` snapshot (198 agents).
 
 ## Joins — a seat that must come along
 
@@ -110,6 +123,11 @@ When the request matches the words, the seat joins the plan even if it is not th
 | ECC | Derek or Elon is in the plan | Standards, tests, security and agent-safety review of any change |
 | Validation | Derek or Elon is in the plan (any code change) | The code-validator agent: `scripts/validate-code.sh` then the VibeBreaker 20-pass adversarial review of the diff; code is not done until both pass (`.claude/skills/code-validation-gate`) |
 | Vanessa | always | Consolidates every seat into one answer for Steven; the same pods run as workflows on The Bot Crew (`wiki/ai-team/bot-crew.md`) |
+
+Who validates code after you write it, and with what protocol: the **code-validator** agent validates every code
+change — first the deterministic checks (`scripts/validate-code.sh`), then the **VibeBreaker** 20-pass adversarial
+review protocol over the diff — and the change-set is marked reviewed (`validate-code.sh --mark`). The Stop hook asks
+for it once per change-set; code is not done until both halves pass (2026-10-12, `.claude/skills/code-validation-gate`).
 
 ## HALT words — stop and write a Needs-Steven packet
 

@@ -38,6 +38,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import re
 import sys
 import time
@@ -186,6 +187,27 @@ def get_engine(requested: str):
         return stub_predict, "stub-bow-v1"
 
 
+def score_label(ans: dict, criteria: list | None = None) -> str:
+    """The level text of a `score` answer. The stub returns `label`; the real laya engine (0.3.x) returns
+    `score` (expected level index, may fall between levels) plus `legend` {index: text} and no label.
+    `criteria` (the question's own level list) is the fallback legend. Never raises on a bad score."""
+    if "label" in ans:
+        return ans["label"]
+    legend = ans.get("legend") or {}
+    levels = [legend.get(str(k), legend.get(k)) for k in range(len(legend))] if legend else list(criteria or [])
+    score = ans.get("score")
+    if levels and isinstance(score, (int, float)) and math.isfinite(score):
+        idx = max(0, min(int(math.floor(score + 0.5)), len(levels) - 1))
+        return str(levels[idx])
+    probs = ans.get("probabilities") or {}
+    if probs:
+        best = max(probs, key=probs.get)
+        if levels and str(best).isdigit() and int(best) < len(levels):
+            return str(levels[int(best)])
+        return str(best)
+    return "unknown"
+
+
 def decide(state: str, questions: dict, leaves: dict, predict_fn, threshold: float,
            pii_threshold: float, route_map: dict | None = None) -> dict:
     t0 = time.monotonic()
@@ -230,7 +252,7 @@ def decide(state: str, questions: dict, leaves: dict, predict_fn, threshold: flo
         "lane": answers["lane"]["choice"],
         "tier": tier_choice,
         "route": route,
-        "urgency": answers["urgency"]["label"],
+        "urgency": score_label(answers["urgency"], (questions.get("urgency") or {}).get("criteria")),
         "latency_ms": round(latency_ms, 2),
         "state_shown": shown_state,
     }

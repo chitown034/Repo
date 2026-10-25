@@ -22,7 +22,10 @@ real path, what Steven does and what agents do, in `integrations/CONNECT-PLAN-20
 | **Lofty** (real-estate CRM) | `lofty-bridge` MCP (read-only) + `lofty-cli` on the Mac; REST `api.lofty.com/v1.0`, `Authorization: token <key>` | **Live since 2026-10-07:** the Mac's `lofty-crm-sync` reads 54 leads and stage totals (`loftySyncLog`, 2026-10-08 09:45 PT). **Speed to lead not measurable yet:** the bridge's lead list carries no lead id, so no activity timeline can be fetched — fix in `integrations/mac-fix-isa-kpi-2026-10-08.md`. Composio has no Lofty toolkit. | **Key: done.** Run the ISA KPI paste-in on the Mac (Action Desk step 10). | L1 → L2 after 7 clean runs |
 | **Zoho CRM** (mortgage system of record — Steven, restated 2026-09-24) | Composio toolkit `zoho`, account `zoho_talite-spike` | Connection **ACTIVE**, but every CRM call returns **HTTP 403 NO_PERMISSION** (re-tested 2026-10-08, still 403) — reproduced 2026-09-22 08:17 UTC and **re-tested 2026-09-24**, twice — the second at 15:56 UTC (`ZOHO_GET_ZOHO_RECORDS`, Leads, one record, one non-PII field): still 403. Steven reports having an API key; **the key is not the blocker** — the profile permission refuses every key and token for that user until it is switched on. | **In Zoho CRM → Setup → Security Control → Profiles → the connected user's profile → Developer Permissions, enable "Zoho CRM API Access".** Then re-authorise the Composio connection once. | L1 → L2 once unblocked |
 | **CLI-Anything** (homes.com, ShowingTime, Showami, SkySlope, zipForms — plus Lofty and Zoho REST) | `cli-anything-hub` + Claude Code plugin; `cli-anything-browser` (**vendored in this repo**, not on PyPI — F-H1-02) driving DOMShell for the sites with no API; REST for Lofty and Zoho | **Not installed on the Mac** — and no longer generated: **eight read-only harness packages are pre-built** in `integrations/cli-anything-harnesses/` (a ninth, `publicfeeds`, added R6 2026-09-24 — see the dedicated section below) and install **browser first, then the eight, into one venv** — not `pip install .` per package: the six DOMShell packages (homes, ShowingTime, Showami, plus `publicfeeds`) pin `cli-anything-browser>=1.0.0`, which is not on PyPI, so installing one of them on its own exits 1 (built and unit-tested offline 2026-09-22, F-H2b-01…13; standalone-install measurement F-P4-03). Hub and plugin are one scripted step (`MAC-SETUP.sh --only cli-anything`); the vendored browser engine and all eight site packages are another (`--only cli-anything-harnesses`, one `uv pip install` into `~/Applications/cli-anything-harnesses/.venv`, browser first, symlinked into `~/.local/bin`); the earlier claim that the install is interactive was wrong (F-S1-18), and so is the claim that each wrapper must be generated one per site (F-H1-10). **Nothing is verified:** all 26 browser recipes ship `verified: false`, no site has ever been reached, and not one of the eight has ever made a live call (F-H1-01, F-H2b-13). SkySlope and zipForms refuse every live command, exit 3, until `CLI_ANYTHING_ECC_REVIEWED_AT` holds a real sign-off date; `publicfeeds`'s three groups refuse the same way behind their own three `CLI_ANYTHING_TOS_REVIEWED_<GROUP>` gates. Hub registry has no CRM or real-estate entries (README checked 2026-09-22; `clianything.cc` egress-blocked). | **Run `./MAC-SETUP.sh` — hub, plugin, the vendored browser harness and the eight packages all install non-interactively — put `export CLI_HUB_NO_ANALYTICS=1` in your shell profile **and** the runner task's env (the script only covers its own run), install the DOMShell Chrome extension and sign in by hand, then run `integrations/cli-anything-harnesses/connect.sh` for the guided next steps (posture check, `--discover` per open gate, what's still pending). There is nothing to generate.** | L1, read-only |
-| **Apple Health** | New: Claude iOS → Notion "Health Log" → `health-notion-sync` → `appleHealth` doc. Old: Health Auto Export → daemon :8765 → DuckDB → `apple-health` MCP | Old pipeline **down** — daemon not responding, doc 9 days stale (`last_received 2026-09-13 14:30:40`), `r8-apple-health-snapshot` errors since 2026-09-17. New path: **spec written, first phone run pending.** | **Open Claude on your iPhone, say "update my health stats in Notion", and approve the Apple Health read + Notion write prompts once.** | L2 n8n evaluated for the Notion→doc leg 2026-09-28, not chosen — last hop is a Claude-only write_db call; see routing row 10. |
+| **Strava** | Cloud routine "Health daily sync" (6:15 AM PT) reads the Strava connector and writes `stravaSnapshot` (positional rows); Mac task `strava-daily-sync` retired | **Working** — read live 2026-10-23 (newest activity 2026-09-12; Fitbod posts to Strava) | Nothing. If the card says sign-in needed: claude.ai → Settings → Connectors → Strava → sign in. | L1 |
+| **BodyPark ATOM** | No API or export documented; sessions reach the deck as Apple Health workouts (Apple Watch session, or the app's own Health write) → Health Auto Export → the daily sync | **Waiting on click E** (allow the app to write to Apple Health; Workouts on in Health Auto Export) | Click E, once. | L1 |
+| **MyFitnessPal** | No API, none needed: MFP → Apple Health → Health Auto Export file → the same sync (`dietary_energy`, `protein`, `carbohydrates`, `total_fat`, `dietary_water`) | **Waiting on the phone step** (click E in STEVEN-STEPS): MFP → Apple Health on, Health Auto Export → Metrics: select all | Click E, once. | L1 |
+| **Apple Health** | **Live (2026-10-23):** Health Auto Export → Google Drive folder → cloud routine 6:15 AM PT (`scripts/health-drive-sync.py`) → `appleHealth` doc, `via:"drive-sync"`. Optional: Claude iOS → Notion "Health Log". Retired: the Mac daemon :8765 / DuckDB path | **Working** — first sync 2026-10-23 (`appleHealth` v19, days through 2026-10-22); `healthDriveSync` carries each run. | Nothing daily. If the badge goes stale: Health Auto Export app → Automations → Google Drive export → on and signed in. One-time on the Mac: `runnerctl pause r8-apple-health-snapshot`. | L2 n8n evaluated for the Notion→doc leg 2026-09-28, not chosen — last hop is a Claude-only write_db call; see routing row 10. |
 
 ## Everything else
 
@@ -371,3 +374,248 @@ shell set (Communication → Phone & SMS, domain api.kapso.ai), auth = API key a
 Steven on Pabbly's own connection page. Triggers/actions are built only after he agrees the plan in
 `integrations/pabbly/WORKFLOWS.md` §A, and the login is proven with his key. The six built-in-app workflows (§B)
 are his clicks in Pabbly's editor; none exists yet.
+
+## Connection status — checked live 2026-10-23 00:20 UTC (Steven: "fix and install everything not setup or connected, including Orca, Jarvis and Laya")
+
+Nothing on the Mac is reachable from the cloud, so every Mac row below is what `connect-all.sh` now installs or
+checks, and what its REPORT will prove. New in the paste: 6a (Ollama + the Jarvis model + the OpenJarvis index),
+6c runs Orca's safe doctor after opening it, 6e turns on the Agent OS. 51 tests pass (`connect-all-tests.sh`).
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Jarvis engine (Ollama + llama3.1:8b + OpenJarvis `memory.db`) | not provable from the cloud; brain says 1,761 docs on the other Mac | `connect-all.sh` 6a installs Ollama (official formula), pulls the model if missing, names `runnerctl run openjarvis` when no index exists (the index build is a runner task that spends Claude allowance, so it runs only with `JARVIS_BUILD_INDEX=1` or by hand) | paste + Steven (one command) |
+| Jarvis + Vanessa's voice (profile, clips, brain) | unverified until `brain/state/jarvis-status.json` exists | `connect-all.sh` 6b (`jarvis-setup.sh --apply`); the vault must be on that Mac (`docs/SECOND-MAC-SETUP.md` 6b) and the clips in `~/.cache/vanessa-voice` or `VANESSA_VOICE_DIR` | paste + Steven (vault/clips location) |
+| Laya (local router + MCP server) | not provable from the cloud | `connect-all.sh` 6 installs into `~/Applications/laya-venv`, registers `laya` with Claude Code, runs one real route | paste |
+| Orca (app + phone view) | not provable from the cloud | `connect-all.sh` 6c installs the official cask, opens it on the Repo folder, runs `orca-remote.sh doctor`; pairing is his (Orca → Add Project → scan the code with the phone app) | paste + Steven |
+| Agent OS (roster agents through Laya / Jarvis / Orca) | never run on a Mac | `connect-all.sh` 6e (`install-mac.sh --apply`: brain on PATH + config only) | paste |
+| **Mac runner** (every Mac task) | silent since 2026-10-13 until the paste runs | `connect-all.sh` step 2 restarts it; 2b keeps the Mac awake | paste |
+| Repo sync on the Mac | daily `git pull` failures until the paste runs | `scripts/repo-sync.sh` (step 1) + 30-minute LaunchAgent (1b) | paste |
+| Kapso WhatsApp (Mac) | plugin/MCP/Keychain keys pending | `connect-all.sh` steps 3–4, then `claude` → `/mcp` → kapso | paste + Steven |
+| Inkbox iMessage line | connected — no phone linked yet | text `connect @vanessa-shearrill` to +1 650 484 9720 | Steven |
+| Zoho CRM (Composio) | 403 NO_PERMISSION until the API box is ticked | tick "Zoho CRM API Access" on his Zoho profile | Steven |
+| Lofty | key not yet on the Mac | `connect-all.sh` 7b asks once (hidden), proves it read-only | paste + Steven |
+| Gondola (travel MCP) | not registered yet | `connect-all.sh` 4b; custom connector in claude.ai (`https://mcp.gondola.ai/mcp`) | paste + Steven |
+| EVRoutes · Turo | `needs_reconnect` (EVRoutes 402 again 2026-10-23) | Reconnect or remove | Steven |
+| BlackRock · Health Data Avatar · Microsoft 365 · PlayMCP · Similarweb · Higgsfield | never finished connecting | finish or remove | Steven |
+| Four http_api Sunday routines | still enabled, fail on the usage limit | 4 clicks (`docs/ROUTINE-BUDGET-2026-10-22.md`) | Steven |
+| Broker Command Center (3rd dashboard) | data lives in the browser only | move its state to its `db` (another session owns that page) | later |
+
+## Connection status — Mac 1 report 2026-10-23 00:31 UTC (`connect-all.sh`, log connect-2026-10-22-1731)
+
+First run of the paste on STEVEN's MacBook Pro. Done: repo sync + 30-min agent, keep-awake, Gondola MCP, Inkbox voice
+SDK, Jarvis engine (6a), Orca opened on Repo, AnyDesk (ID 1514099895 → deck `anydeskIds.mac1`), Agent OS, Lofty key
+proven read-only, health check.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Mac runner | signed out (step 2 stopped: `runnerctl login` is Steven's) | `runnerctl login && runnerctl status` | Steven |
+| Kapso (Mac plugin + keys) | sign-in and mobile number pending | `claude` → `/mcp` → kapso; `bash integrations/kapso/install-mac.sh keys --allow <mobile>` | Steven |
+| Laya | step 6 stopped (model download or venv) | paste the 6 / 6b log lines to Claude (`docs/STEVEN-STEPS.md` step 1c) | Steven (one paste) |
+| Jarvis verify (6b) | FAIL rows unknown until the log lines are pasted | same paste | Steven (one paste) |
+| Claude mods | Claude Code older than 2.1.287 | `claude update && bash integrations/mods/install-mods.sh` | Steven (one paste) |
+| Lofty | connected — key on the Mac, GET /me proven 2026-10-23 | — | — |
+| Gondola (Claude Code) | connected — MCP registered for every project; claude.ai custom connector still his | claude.ai → Connectors → Add custom connector | Steven |
+| Orca | active — installed and opened on Repo; phone pairing his | Add Project → scan the code with the Orca IDE app | Steven |
+| AnyDesk | active — installed, ID saved to the deck; permissions his | Screen Recording + Accessibility on | Steven |
+| Repo sync on the Mac | connected — step 1 and the 30-minute agent ran | — | — |
+| Inkbox iMessage line | connected — no phone linked yet | text `connect @vanessa-shearrill` to +1 650 484 9720 | Steven |
+| Zoho CRM (Composio) | 403 NO_PERMISSION until the API box is ticked | tick "Zoho CRM API Access" on his Zoho profile | Steven |
+| Kapso webhooks (Pabbly → Kapso) | two trigger URLs not pasted yet | `docs/STEVEN-STEPS.md` step 5 | Steven |
+| EVRoutes · Turo | `needs_reconnect` | Reconnect or remove | Steven |
+| Four http_api Sunday routines | still enabled, fail on the usage limit | 4 clicks (`docs/ROUTINE-BUDGET-2026-10-22.md`) | Steven |
+| BlackRock · Health Data Avatar · Microsoft 365 · PlayMCP · Similarweb · Higgsfield | never finished connecting | finish or remove | Steven |
+
+## Connection status — Mac 1 report #2, 2026-10-23 01:01 UTC (connect-2026-10-22-1800)
+
+Same twelve steps done. Mods installed (7 + 2 samples, settings backup kept). Jarvis engine: Ollama running, llama3.1:8b
+present, index `~/.openjarvis/memory.db` 1,828 rows, vault 850 notes, Laya MCP registered, voice profile written.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Mac runner | signed out ("CLI NOT logged in") — 24 tasks waiting | `runnerctl login && runnerctl status` | Steven |
+| Laya real engine | crashed on `answers["urgency"]["label"]` (real 0.3.x `score` answers carry `score`+`legend`) | fixed: `score_label()` in `laya_route.py`, 23 tests; proven by the next real route on the Mac | paste |
+| Jarvis voice clips | none under `~/.cache/vanessa-voice` or `~/Applications/team-avatars/voices` | locate (STEVEN-STEPS 1b) or export the 8 deck clips | Steven / Claude |
+| brain doctor (Mac) | FAIL, reason not in the log | `bin/brain doctor` output | Steven (one paste) |
+| Kapso (Mac) | plugin + MCP registered; `! Needs authentication` | `claude` → `/mcp` → kapso → sign in; then the keys line | Steven |
+| Claude mods | connected — 7 mods + blast-radius, replay-theater | — | — |
+| Jarvis engine + index | connected — 1,828 rows, model present | — | — |
+| Inkbox iMessage line | connected — no phone linked yet | text `connect @vanessa-shearrill` to +1 650 484 9720 | Steven |
+| Zoho CRM (Composio) | 403 NO_PERMISSION until the API box is ticked | tick "Zoho CRM API Access" | Steven |
+| Kapso webhooks (Pabbly → Kapso) | two trigger URLs not pasted yet | `docs/STEVEN-STEPS.md` step 5 | Steven |
+| Gondola (claude.ai) | Claude Code MCP registered; custom connector still his | claude.ai → Connectors → Add custom connector | Steven |
+| Orca · AnyDesk | active — installed; pairing / permissions his | STEVEN-STEPS step 4 | Steven |
+| EVRoutes · Turo | `needs_reconnect` | Reconnect or remove | Steven |
+| Four http_api Sunday routines | still enabled | 4 clicks | Steven |
+
+## Connection status — Mac 1, 2026-10-23 01:09 UTC (Steven's three pastes)
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Mac runner | connected — `runnerctl login` done 01:08 UTC; running toolkit-deck-sync + vanessa-morning-brief-text, 22 waiting; first scheduled runs resume on their own | — | — |
+| Laya real engine | connected — routed a test question in 5.6 s (cold start) after the `score_label` fix; MCP registered | — | — |
+| brain doctor (Mac) | index stale vs the Mac's own edits | `connect-all.sh` 6a2 now runs `bin/brain reindex` before 6b; one paste in STEVEN-STEPS 1b | paste |
+| Jarvis voice clips | none on the Mac | exported the deck's 8 clips to `integrations/jarvis/voice/vanessa/`; jarvis-setup looks there first | paste |
+| Kapso (Mac) | `! Needs authentication` | `claude` → `/mcp` → kapso → sign in; then the keys line | Steven |
+| Mac's own uncommitted edits | 9 files kept in place by repo-sync (brain/bench.py, brain/tests/test_brain.py, cli-anything harness files) | review on the Mac: `git -C ~/Repo status --short`; commit or discard | Steven |
+
+## Connection status — Mac 1, 2026-10-23 01:14 UTC (Jarvis proof paste)
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Jarvis (all rows) | connected — platform, memory.db 1,828 rows, vault 850 notes, Laya MCP, 8 voice clips (repo folder), voice profile, brain doctor PASS | — | — |
+| Laya real engine row in jarvis-setup | false FAIL: Hugging Face progress bars on stderr overwrote the row; Laya itself routed a question at 01:09 | fixed: stdout only, progress bars off; proven on the next `jarvis-setup.sh --verify` | paste |
+| brain doctor (Mac) | connected — PASS after `bin/brain reindex` (now connect-all 6a2) | — | — |
+| Vanessa reference audio on the Mac | found `~/Applications/vanessa-voice/ref/vanessa_ref.wav` and `~/Documents/Vanessa/Vanessa1.m4a` — a cloned-voice reference exists locally; not copied anywhere (clone provider/consent are Steven's call, HALT) | decision only | Steven |
+
+## Connection status — Mac 2 first run, 2026-10-23 01:39 UTC (connect-2026-10-22-1839, Intel MacBook Pro "(6)")
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Mac 2 basics | connected — repo cloned, 30-min sync, keep-awake, Gondola MCP, Orca opened, AnyDesk installed, Kapso plugin installed, Laya venv created, `peer` role written | — | — |
+| Python on Mac 2 | 3.9.6 — brain reindex, Agent OS and Jarvis checks all stop on it | `second-mac.sh` 0d2 installs Homebrew python; rerun | paste |
+| Laya on Mac 2 | venv made; package install stalled building `cryptography` from source (Intel, no wheel) | `install.sh` now wheel-first, build tools fallback; rerun | paste |
+| Claude Code on Mac 2 | 2.1.278, mods need 2.1.287+ | `second-mac.sh` 0d3 runs `claude update`; rerun | paste |
+| Jarvis engine on Mac 2 | step 6a cut off during `brew install ollama` (auto-update) | rerun | paste |
+| Jarvis index + vault on Mac 2 | no memory.db, no `~/Shearrill-Vault` | SECOND-MAC-SETUP 6b (iCloud or copy); then `runnerctl run openjarvis` once the runner is on Mac 2 | Steven |
+| Inkbox voice SDK on Mac 2 | needs an Inkbox API key file; Mac 1 already sends her voice | optional on Mac 2 | Steven (optional) |
+| Runner on Mac 2 | not installed (built on Mac 1 only) | the two lines from **Mac 1**, then a copy step | Steven |
+| Kapso sign-in, Lofty key on Mac 2 | pending | `claude` → `/mcp` → kapso; Lofty key at the 7b prompt (or Enter) | Steven |
+| Python on Mac 2 — second attempt 01:53 UTC | Homebrew cannot build python there (Intel Mac on macOS 26: Tier 3, no bottles, and the Command Line Tools are outdated) | `second-mac.sh` 0d2 now installs a ready-built Python 3.12 with uv and a user-level `~/.local/bin/python3` shim; Homebrew only as fallback | paste |
+| Claude Code on Mac 2 | connected — updated 2.1.278 → 2.1.309; a leftover npm copy remains (`npm -g uninstall @anthropic-ai/claude-code`, optional) | — | Steven (optional) |
+| Command Line Tools on Mac 2 | outdated for macOS 26 (Homebrew refuses to build) | System Settings → Software Update, or `sudo rm -rf /Library/Developer/CommandLineTools && sudo xcode-select --install` | Steven (optional; nothing in the paste needs it once Python comes from uv) |
+| Runner on Mac 2 — path known 02:10 UTC | Mac 1: `~/Applications/claude-runner` + `~/.local/bin/runnerctl` + LaunchAgent; `~/.config/claude-runner` absent on Mac 1 (no role file, no token file) | `scripts/runner-export.sh` (Mac 1, writes `peer` too) → AirDrop → `scripts/runner-import.sh` (Mac 2) → `runnerctl login` there; 11 tests | paste + Steven (AirDrop, login) |
+| Mac 2 run 01:53 UTC (full report) | mods on (8 done); Ollama formula build refused like python (Intel + macOS 26 + old CLT) | `connect-all.sh` 6a now installs the Ollama cask (prebuilt app) first; Python via uv; rerun | paste |
+| Command Line Tools on Mac 2 | outdated for macOS 26 — the one root cause left that only Steven can clear | System Settings → Software Update (install the Command Line Tools update), or the two `sudo` lines Homebrew printed | Steven |
+| NotebookLM (6D Brain as a notebook) | active — source pack: `bin/brain export notebooklm` → 13 files, 98+ pages, clients excluded, PII masked; no public API for a consumer account, Drive stays read-only | upload the 13 files once (`scripts/notebooklm-export.sh` opens both), re-upload changed files weekly | Steven (5 min) |
+| Google Drive `SECOND BRAIN/` (write, scoped) | connected — 13 `SB` Google Docs created 2026-10-23 06:05 UTC in Steven's folder tree (owner steven.shearrill@gmail.com); weekly rewrite task trig_01MR463NSmSAcA84zJHjerUp (Sun 2:45 PM PT) | — | — |
+| NotebookLM (mirror) | connected — the 13 Docs are its sources; Google auto-syncs Drive Docs; Steven adds them to his three notebooks once (STEVEN-STEPS 1f) | add sources from Drive, once | Steven (5 min) |
+| Notion Second Brain (layer directory) | active — DB e767dacc; directory page written by the weekly sync; `brain-learn-daily` rows resume with the runner | — | — |
+| GitHub repo visibility | public — anyone can read the brain (no client files beyond first names) | Steven decides (STEVEN-STEPS 1g) | Steven |
+| NotebookLM direct connector (`notebooklm-mcp-cli`) | pending — opt-in taken; installs with the next Mac paste (connect-all 6f); sign-in his | `nlm login` on Mac 1, then `nlm login --check` | Steven |
+| NotebookLM direct connector — Mac 1, 2026-10-23 06:30 UTC | connected — `nlm login` done (protected mode, OS keystore), `--check` valid, account steven.shearrill@gmail.com, 5 notebooks found; MCP registered for Claude Code by connect-all 6f | first use: a Claude Code session on Mac 1 adds the SB Docs to the "2nd brain" notebook | Steven (one prompt) |
+| Mac 1 full report 06:22 UTC | connected — 17 of 20 steps done (runner, Laya, Jarvis, mods, Lofty, Agent OS, Orca, AnyDesk, Gondola, Inkbox voice); open: Kapso sign-in + keys | `claude` → `/mcp` → kapso | Steven |
+
+## Connection status — consolidated, 2026-10-23 13:10 UTC (Steven: "fix anything not optimized or broken")
+
+Supersedes the per-run rows above. Only what is still open is listed; everything else in the earlier 2026-10-23 tables is
+connected (Mac 1: runner, Laya, Jarvis, mods, Lofty, Agent OS, Orca, AnyDesk, Gondola, Inkbox voice, NotebookLM connector
+signed in; cloud: Drive SECOND BRAIN, Notion directory, 6D daily rebuild with proof row, weekly layer sync).
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| NotebookLM "2nd brain" notebook sources | connected — connector signed in (5 notebooks); the SB Docs are not yet attached as sources | one prompt in a Claude Code session on Mac 1 (STEVEN-STEPS 1f2-done) | Steven (one prompt) |
+| Kapso (Mac 1) | plugin + MCP registered; `! Needs authentication` | `claude` → `/mcp` → kapso → sign in; then the keys line | Steven |
+| Inkbox iMessage line | connected — no phone linked yet | text `connect @vanessa-shearrill` to +1 650 484 9720 | Steven |
+| Zoho CRM (Composio) | 403 NO_PERMISSION until the API box is ticked | tick "Zoho CRM API Access" | Steven |
+| Kapso webhooks (Pabbly → Kapso) | two trigger URLs not pasted yet | `docs/STEVEN-STEPS.md` step 5 | Steven |
+| Gondola (claude.ai) | Claude Code MCP registered; custom connector still his | claude.ai → Connectors → Add custom connector | Steven |
+| Orca pairing · AnyDesk permissions | apps installed on both Macs | STEVEN-STEPS step 4 | Steven |
+| Mac 2 | Python 3.12 (uv), Claude Code 2.1.309, mods, Agent OS, brain index, Orca, AnyDesk, Gondola done; Laya + Jarvis engine unproven (last REPORT not pasted) | rerun `bash scripts/second-mac.sh`, paste the REPORT; then runner-export (Mac 1) → AirDrop → runner-import (Mac 2); vault for Jarvis (SECOND-MAC-SETUP 6b) | Steven (pastes) |
+| EVRoutes · Turo | `needs_reconnect` | Reconnect or remove | Steven |
+| Four http_api Sunday routines | still enabled | 4 clicks | Steven |
+| GitHub repo visibility | public | Steven decides (STEVEN-STEPS 1g) | Steven |
+| Fieldy → 2nd brain | connected — the daily "Fieldy → brain" task (6:50 AM PT, this session, Fieldy connector) writes `memory/fieldy-meetings.md` + the deck `fieldyDesk` doc and queues a recap item per meeting with action items; 0 recordings as of 2026-10-23 13:20 UTC so the first digest waits for a recording | record with the pendant or the desktop app | Steven (records) |
+| Notion `brain-learn-daily` rows | resume with Mac 1's runner (signed in 2026-10-23); directory page written 2026-10-23 | — | — |
+
+## Connection status — round 2, 2026-10-23 14:45 UTC (Steven: "connect TidyCal, homes.com, ShowingTime, Showami, Pivo, Orca, Jarvis, Laya, AnyDesk on all 3 computers and tablet, Ticor, MBS Highway, AEO/GEO/SEO, Arive, Zoho, Lofty, drips and texts")
+
+Supersedes the consolidated section above for the rows it names; the rest of that section still holds.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Jarvis · Laya · Orca (Mac 1) | connected — all rows ok 2026-10-23 01:14 UTC | — | — |
+| Jarvis · Laya · Orca (Mac 2) | partially set — engine unproven; runner not yet imported | `bash scripts/second-mac.sh` + runner export/import (STEVEN-STEPS 1e) | Steven (pastes) |
+| Orca · Laya · Bonsai (Alienware) | not started — `integrations/alienware/alienware-setup.ps1` never run on Windows yet | STEVEN-STEPS round 2, Alienware paste | Steven (pastes) |
+| AnyDesk (Mac 1, Mac 2) | installed; permissions + unattended password are Steven's | step h | Steven |
+| AnyDesk (Alienware, tablet, phone) | not started — winget id `AnyDesk.AnyDesk` confirmed; iPad is outgoing-only, Android tablet can be controlled | round 2 pastes; licence decision (free = private use) | Steven |
+| TidyCal | connect-all step 7c ready (token → `~/.config/tidycal/.env`, read-only proof); no token yet | make the token, rerun connect-all | Steven |
+| homes.com · ShowingTime · Showami | wrappers vendored and read-only; connect-all step 7d installs and reports; sign-ins in the agent Chrome are Steven's (MFA) | step 7d, then sign in where it says | Steven |
+| Lofty | key file step 7b; no key on the Mac yet | Lofty → Settings → Integrations → API | Steven |
+| Zoho CRM | 403 NO_PERMISSION until the API box is ticked | tick "Zoho CRM API Access" | Steven |
+| Arive | not connected — REST API + private Zapier app need Pro plan credentials (`integrations/arive/README.md`) | generate credentials, ask Arive for the Zapier invite | Steven |
+| MBS Highway Home Report | not connected — no public API; rep-issued webhook or CSV (`integrations/mbs-highway/README.md`) | e-mail the rep | Steven |
+| Pivo | no API — tour link / video file only (`integrations/pivo/README.md`) | pair the Pod; share links | Steven |
+| Ticor Title property search | no API — rep account + CSV/PDF export (`integrations/ticor/README.md`) | ask the Ticor rep | Steven |
+| Drip campaigns + text follow-ups | planned — playbook written (`wiki/real-estate-playbooks/drip-and-text-follow-up.md`); specs on request; 10DLC is Steven's | "specs ready for review"; Lofty 10DLC | Steven + Victor/Alexandra |
+| OpenFlowKit MCP + skill · pr-lens skill · archify skill (the four repos, 2026-10-23) | installed in the repo (skills) / pending on the Macs (MCP by connect-all 6g, archify by install-mac.sh); `integrations/skill-packs/REGISTRY-2026-10-23.md` | next Mac paste; pr-lens GitHub App is Steven's click | Steven (paste) · Derek |
+| AI-search presence (AEO/GEO/SEO) | planned — playbook written (`wiki/real-estate-playbooks/ai-search-visibility.md`); monthly presence audit task live (1st, 7:10 AM PT) | claim the profiles (step j) | Steven + Sofia |
+
+## Connection status — Mac 1 report #3, 2026-10-23 11:16 PT (connect-2026-10-23-1116; pasted by Steven the same evening)
+
+Supersedes the round-2 section above for the rows it names. Source: the REPORT block of `scripts/connect-all.sh` on Steven's
+MacBook Pro (log `~/Library/Logs/vanessa-setup/connect-2026-10-23-1116.log`); the script pulled the branch first (step 1).
+
+**Done on the Mac (steps 1–9 except four):** repo caught up + 30-minute catch-up task · **Mac runner restarted** (it had been
+silent since Oct 13 — the morning Mac tasks have a chance again from 2026-10-24) · caffeinate-on-charger · Kapso keys in the
+Keychain · Gondola MCP · Inkbox voice SDK · Laya installed and registered, one real test · Jarvis engine (Ollama + llama3.1:8b,
+OpenJarvis index) · brain reindex · Jarvis + Vanessa's voice wired · Orca on the Repo folder · AnyDesk installed · Agent OS ·
+NotebookLM `nlm` CLI + MCP (sign-in Steven's) · OpenFlowKit MCP · Lofty/Zoho key-file steps ran · site wrappers installed ·
+Claude Mods (status line, HALT guard, /remember, /connections, /owner, /paste) · health check.
+
+**Did not finish:** 2c runner tasks in error (the report names no task — the last log lines did not reach the REPORT on this run;
+the names are in the log, and `runnerctl status` prints them) · 3 Kapso plugin + MCP (needs Steven's sign-in) · 7c TidyCal and 7e
+Arive (Enter skipped the key prompts; Lofty's key 7b was skipped the same way — the step ran, no key on the Mac).
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Mac runner (all Mac tasks) | healthy — `runnerctl status` 12:33 PT: 42 ok (morning tasks all ran today), 5 error (toolkit-deck-sync, nightly-self-test, three Sunday weeklies), 4 limited, 3 paused; the step-2 "silent since Oct 13" reading was wrong (`docs/inventory/routine-health.md`) | one paste: `runnerctl pause r9-feed-freshness-sweep && runnerctl pause r8-apple-health-snapshot && runnerctl pause strava-daily-sync && runnerctl run toolkit-deck-sync && runnerctl status` — paste the output to Claude | Steven (paste), then Derek |
+| iMessage line (morning brief text + voice) | still not linked — brief arrives by e-mail + push | text `connect @vanessa-shearrill` to +1 650 484 9720, once | Steven |
+| Lofty | two paths on Mac 1 (2026-10-23 13:05 PT): the old local bridge is the MCP named `lofty` (stdio, `~/Applications/lofty-bridge/mcp-server.js`, connected — the runner tasks use its `mcp__lofty__*` tools; it returns one stage and no lead ids, so speed-to-lead cannot be measured); Lofty's own cloud MCP (`https://mcp.lofty.com/mcp`, OAuth) is being added as `lofty-cloud` so nothing the runner relies on changes name | `claude mcp add -s user --transport http --client-id 1wzhz7fnrr8qo --callback-port 8766 lofty-cloud https://mcp.lofty.com/mcp`, then `claude` → `/mcp` → lofty-cloud → sign in; once it answers "list my Lofty lead stages", switch `lofty-crm-sync` to it (allow-list + spec) and retire the bridge. The REST API key (step 7b) is then optional | Steven (sign-in), then Derek |
+| TidyCal | step 7c did not run (no token) | TidyCal → Settings → Integrations → API → token; rerun connect-all | Steven |
+| Arive | step 7e did not run (no credentials) | Arive → Settings → Integrations → generate; rerun connect-all | Steven |
+| Zoho CRM | 403 until the API box is ticked | Setup → Security Control → Profiles → your profile → Developer Permissions → "Zoho CRM API Access" | Steven |
+| Kapso (WhatsApp) | keys in the Keychain; plugin + MCP waiting on the sign-in | `claude` → `/mcp` → kapso → sign in; then message (202) 474-5223 from the phone | Steven |
+| Jarvis · Laya · Orca (Mac 1) | installed, tested, Orca on the Repo folder; phone pairing is Steven's | Orca IDE app → pairing screen → scan | Steven |
+| AnyDesk (Mac 1) | installed; ID 1514099895; Screen Recording + Accessibility + unattended password are Steven's | System Settings → Privacy & Security; Computer Hub card (panel 40) | Steven |
+| homes.com · ShowingTime · Showami | wrappers installed; sign-ins (MFA) in the agent Chrome are Steven's | `bash integrations/cli-anything-harnesses/connect.sh` | Steven |
+| EVRoutes · Turo connectors | "needs reconnect" on claude.ai (EVRoutes also failed to connect in this session) | claude.ai → Settings → Connectors → Reconnect or remove | Steven |
+| Gondola (travel) | MCP installed for Claude Code; the claude.ai connector is not added | Settings → Connectors → Add custom connector → `https://mcp.gondola.ai/mcp` | Steven |
+| Pabbly ↔ Kapso webhooks, six workflows | Kapso login proven; webhook URLs and the six workflows are clicks at connect.pabbly.com | STEVEN-STEPS step 5; `integrations/pabbly/WORKFLOWS.md` | Steven |
+| TikTok · GoHighLevel · Discord bot · HeyGen | not connected (Composio links last 10 minutes) | say "Composio links" in a live session | Steven + Vanessa |
+
+## Connection status — Vanessa everywhere, 2026-10-23 21:30 UTC (Steven: "connect Jarvis with Vanessa replacing it with her voice and persona, and Laya, Orca and all my AI team to Orca, and connect these with my 6D 2nd brain")
+
+Supersedes the sections above for the rows it names. Everything here is one paste on the Mac: `cd ~/Repo && bash scripts/fix-mine.sh`.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Jarvis speaks and thinks as Vanessa | ready — `integrations/jarvis/vanessa-persona.sh --apply` writes her SOUL/MEMORY/USER persona into OpenJarvis and sets `persona_name = "vanessa"`; her recorded voice via `jarvis-setup.sh --apply`; not yet run on Mac 1 | `bash scripts/fix-mine.sh` (step 3b) | Steven (paste) |
+| Jarvis knows the Second Brain | ready — the same script indexes the brain's pages (no client pages, no meeting digests, no findings) into Jarvis memory; the 6D layers row shows "speaks as Vanessa" + the page count once run | same paste | Steven (paste) |
+| Laya routes, Orca launches the AI team | installed on Mac 1 (connect report #3); `connect-orca-laya.sh --apply` + `agent-os/install-mac.sh --apply` re-run by the paste; `brain os check` is the proof | same paste; phone pairing in Orca is Steven's | Steven |
+| 6D Brain shows all of it | the layers panel reads `brain/state/jarvis-status.json` (persona, indexed pages) and the toolkit register reads this table; the daily 3:30 AM rebuild carries it | — | Vanessa |
+
+## Connection status — communication channels, 2026-10-23 23:50 UTC (Steven: "I texted Vanessa on iMessage and on Kapso WhatsApp with no response; fix all communication to include Discord and chat box")
+
+Supersedes the sections above for the rows it names. Found live: Inkbox holds **no iMessage conversation and no linked phone** (`awaiting_inbound` empty) — the connect text never reached it, so the Mac poller had nothing to answer and the morning brief's send fails `imessage_no_assignment`. Kapso's sandbox number is assigned but **no Mac task reads it** (§5b/§5c were specified, never registered) and the Kapso sign-in is pending. Discord's bot has **no token** (Composio `discordbot` not connected; the Mac bot runs in relay mode). The deck chat box answers in-page through the viewer's own Claude (`sample`); when that permission is refused it says so and nothing else answered. New: a cloud hourly fallback (`Vanessa inbox sweep (cloud)`, trig_018cLszdipa7WAVt5nd8BuXT, :17 past the hour 6 AM–10 PM PT) answers unanswered iMessages, deck chat questions and Discord #vanessa messages behind the Mac pollers.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| iMessage line (morning brief text + voice, Vanessa replies) | not linked — Inkbox shows no connected phone and no conversation (23:50 UTC) | text exactly `connect @vanessa-shearrill` to +1 650 484 9720 (tap: `sms:+16504849720?&body=connect%20%40vanessa-shearrill`), then a real question; the Mac poller answers within 10 min, the cloud sweep within the hour | Steven |
+| WhatsApp (Kapso) | number …5223 assigned; nothing reads it — runner tasks `kapso-inbox-sync` / `vanessa-whatsapp-inbox` not registered; Kapso MCP sign-in pending; keys in the Keychain (connect report #3) | `scripts/fix-mine.sh` installs the plugin + MCP and prints the runner task catalog Claude needs to register the two tasks; Steven: `claude` → `/mcp` → kapso → sign in. Until then answer WhatsApp live in a Claude Code session ("read my WhatsApp") | Steven (sign-in), Claude (task files next round) |
+| Discord #vanessa | bot token missing (Composio `discordbot` initiated 23:55 UTC, not active; Mac bot in relay mode) | A2 in the fix-mine checklist: create the bot, paste the token when the script asks (Keychain `vanessa-discord-bot-token`), invite it, then "Discord link" to Claude for the Composio connect; the cloud sweep answers #vanessa hourly once active | Steven |
+| Command Deck chat box | works in claude.ai through the viewer's own Claude (`sample` declared); last message 2026-09-13 | nothing to install; the cloud sweep now answers any question left unanswered for 10 minutes into the same thread | Vanessa |
+| Jarvis = Vanessa, single point of contact for the whole AI team | persona + voice + brain index + the 180-seat roster in her memory, all from `vanessa-persona.sh` (run by fix-mine) | one paste | Steven (paste) |
+
+## Connection status — Vanessa's voice on iMessage, 2026-10-24 00:45 UTC (Steven: "Vanessa's voice is supposed to speak with a voice message on top of the text")
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| iMessage line (Vanessa text replies) | **linked and live** since 2026-10-23 23:54 UTC — Steven's thread aa1a9d19…8510; the Mac poller answered a non-answer at 00:05, the cloud sweep answered rates + schedule at 00:22 | — | — |
+| Vanessa's voice note after each text | not yet delivering — `voiceReplyQueue` held only the Sep 12 test item until the cloud sweep queued the first real one (00:28 UTC); the Mac's `voice-reply-render` runs ok every 10 min but needs the Inkbox API key in `~/.inkbox/config` and the thread in `~/.config/inkbox/voice-allow` (both from `fix-mine.sh` step 3a2 with `VANESSA_THREAD=…`); the Mac's `vanessa-imessage-inbox` prompt still lacks §6a (the catalog in fix-mine's REPORT shows where it lives) | the one paste; the cloud sweep queues voice for every reply it sends and reports `voiceReplyStatus` in `agentInbox.channels.voice` | Steven (paste), Derek (§6a into the Mac task) |
+
+## Connection status — SkySlope, 2026-10-24 01:10 UTC (Steven: "setup skyslope i have an api key")
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| SkySlope (transactions, documents) | key on Mac path ready — `integrations/skyslope/skyslope_cli.py` (stdlib, GET-only, SkySlope's own HMAC login from github.com/skyslope/example-authentication); the login needs **two pairs**: the Access Key + Secret Steven generated (My Account → Integrations) AND a Client ID + Client Secret that SkySlope issues to the integration or brokerage. The paste asks for all four (hidden; Enter skips the pair you lack) and proves the login with `me`. If SkySlope answers 401, the Client pair is what is missing — ask the SkySlope rep or the brokerage admin; the browser harness (`cli-anything-harnesses/skyslope`) stays the fallback | `bash scripts/fix-mine.sh` | Steven (keys), Carmen (desk) |
+
+## Connection status — answering at any hour, 2026-10-24 01:25 UTC (Steven: "enable all messages to respond when message is sent anytime of day")
+
+Supersedes the schedule wording of the two sections above. Two clocks answer Vanessa's channels: the Mac pollers (every 5–10 minutes) and the cloud sweep (the fallback). The cloud sweep now runs every hour around the clock; a cloud routine cannot run more often than hourly, so the Mac pollers remain the fast path. The Mac runner skips any task outside its window, and every task carries `07-22` today — `scripts/fix-mine.sh` (step "hours") widens only the five message tasks to `00-24`, proves it with `runnerctl dry`, and restores the file if the runner does not print the new window back.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Cloud sweep (iMessage text + voice queue, deck chat box, Discord #vanessa) | hourly at :17, 24/7 (was 6 AM–10 PM PT) | done in this session | Vanessa |
+| Mac pollers overnight (vanessa-imessage-inbox, vanessa-discord-inbox, voice-reply-render, kapso-inbox-sync, vanessa-whatsapp-inbox) | stop between 10 PM and 7 AM PT until the window is widened | the one paste (fix-mine) — if its REPORT says the window is a runner-wide default, paste the file names it lists | Steven (paste) |
+| Night-time answer latency | up to 60 minutes until the Mac window is widened, then 10 minutes | — | — |
+

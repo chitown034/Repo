@@ -4,9 +4,89 @@ Same list as the Action Desk page (https://claude.ai/artifact/9S8G2ZhhqP1iUsPZrP
 Includes every connection that still has to be made. Already done: Lofty key (54 leads syncing), 14 failed routines re-run, both dashboards updated (cycle 11), Remote Control card built, one-command Mac script, failover with a $25 OpenRouter cap, connection plan; your USC answers and personal DRE are saved.
 research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox iMessage are connected; the five research-only routines are already off.
 
+## Start here (2026-10-23, evening) — ONE paste, then the short list it prints
+
+Steven: *"make a new script that I can cut and paste into the terminal to fix whatever requires my actions; make it simple and limit the back and forth."*
+
+**Mac 1 (plugged in), Terminal, one line:**
+`cd ~/Repo && bash scripts/repo-sync.sh --quiet; VANESSA_THREAD=aa1a9d19-c7db-4dea-b7c8-f34999e58510 bash scripts/fix-mine.sh`
+
+The same paste now also lets Vanessa answer at night: it widens the Mac message tasks from 7 AM–10 PM to all day (the cloud copy already answers every hour, day and night).
+
+The script also asks for your **SkySlope** keys: the Access Key + Secret from SkySlope → My Account → Integrations → Generate New Key (the secret shows once), and the Client ID + Client Secret if SkySlope or your brokerage gave you one (Enter to skip; the login needs both pairs, so without the Client pair the proof step reports 401 and I ask SkySlope's side for it).
+
+(`VANESSA_THREAD` is your Vanessa iMessage thread, linked 2026-10-23 23:54 UTC; it lets the script allow-list that one thread for her voice notes. It is an id, not a secret.)
+
+It brings the repo up to date, asks once (hidden; Enter skips) for the Lofty, TidyCal, Arive and Zoho keys, registers Lofty's own
+MCP server as `lofty-cloud`, makes Jarvis speak and think as Vanessa with the brain in its memory, re-runs Laya + Orca + the AI-team
+wiring, pauses the retired runner tasks, re-runs the failed ones in the background, and ends with a **REPORT**: what it did, what it
+skipped, and the lettered list only you can do (A iMessage text · B Zoho tick · C two browser sign-ins · D phone health clicks ·
+E connectors · F AnyDesk permissions · G Orca phone pairing · A2 the Discord bot). Paste the REPORT back to Claude. **Why Vanessa did not answer your texts (2026-10-23 23:50 UTC):** Inkbox shows no linked phone — the connect text never arrived; use the tap link the script prints (A). Kapso: nothing reads that number yet (sign-in + two runner tasks). Discord: no bot token. The cloud now sweeps iMessage, the deck chat box and Discord hourly as a fallback. Run it again any time; it only does
+what is still missing. `bash scripts/fix-mine.sh --check` shows the plan without doing or asking anything.
+
 ## 1 · Phone · 5 minutes (Do these first; nothing else depends on them)
 
-## Start here (2026-10-22, evening) — one paste, then a few clicks
+## Every day (from 2026-10-23) — Vanessa's four courses of action, your yes or no
+
+Open the 6D Brain (https://claude.ai/artifact/VoWHW4YuKUCyNqGZMikEv8) → "Vanessa recommends — four courses of action".
+Four lanes, four moves each, all scored by impact × confidence ÷ effort with the plan standing by: **Next big moves**
+(money, clients, connections) · **Self-improvement** (loop engineering: what the brain and the team change in themselves —
+failing gold questions, stale pages, tune proposals, declined-too-often weights, Nadia's scout) · **Risks and actions to
+take** (what is stale, failing or silent and the action that heads it off) · **Opportunities to pursue** (marketing,
+presence, new capabilities). Under them, **"Questions you may have"**: one answer per leading move plus the standing
+questions (what only you can do, what runs each morning, what is not connected, what the weekly loop found, how approval
+works, where the morning brief is), each answered from the brain's own page with the action to take. **Approve** → Vanessa starts on it right away (the page fires her
+Big-moves task through your Claude Code Remote connector; the first time, allow "Claude Code Remote" when the page asks). Her
+items land in the Vanessa queue on the Command Deck; yours stay listed with the plan standing by until you say "done".
+**Decline** → hidden 30 days and that kind weighs less. The 6:05 AM task re-learns from every decision (`docs/reports/BIG-MOVES.md`).
+
+## Start here (2026-10-23, round 2 — simplified the same evening) — three pastes, then four clicks
+
+Everything scripted is inside the pastes now (Jarvis, Laya, Orca, AnyDesk, TidyCal, Arive credentials, homes.com /
+ShowingTime / Showami wrappers, Lofty, Zoho check, NotebookLM, the failing-task logs). Each paste asks before it changes
+anything, never signs in for you, never pays, and prints a REPORT — paste that REPORT back to Claude; Claude does the rest.
+
+**Paste 1 — Mac 1 (plugged in), Terminal:**
+`cd ~/Repo && bash scripts/repo-sync.sh && bash connect-all.sh`
+It will ask, hidden, for: your Lofty API key (7b), your TidyCal token (7c), your Arive Client ID / Secret / API key (7e).
+Enter skips any of them; make them first if you want them in this pass (Lofty → Settings → Integrations → API; TidyCal →
+Integrations → API → Manage API keys; Arive → Settings → Integrations → Generate, Pro plan).
+
+**Paste 2 — Mac 2, Terminal:**
+`cd ~/Repo && bash scripts/repo-sync.sh && bash scripts/second-mac.sh`
+
+**Paste 3 — Alienware (Windows 11), PowerShell (not as administrator), one line:**
+`irm https://claude.ai/install.ps1 | iex; winget install --id AnyDesk.AnyDesk -e -h --accept-package-agreements --accept-source-agreements; git clone https://github.com/chitown034/Repo.git $env:USERPROFILE\Repo; cd $env:USERPROFILE\Repo\integrations\alienware; Set-ExecutionPolicy RemoteSigned -Scope Process; .\alienware-setup.ps1; .\alienware-setup.ps1 -Action Install`
+(Claude Code, AnyDesk, the Doctor, then Orca / Laya / Bonsai / Ollama — it asks y before each.) Then `claude` once to sign in.
+
+**Then four clicks, in this order** (say "done A" … "done D"):
+- **A. Link your iMessage line (fixes the missing morning text + voice note).** From your phone, text
+  `connect @vanessa-shearrill` to **+1 650 484 9720**, once. Until then the brief comes by e-mail (steven.shearrill@gmail.com)
+  and push, with the voice note attached to the e-mail.
+- **B. Zoho** → Setup → Security Control → Profiles → your profile → Developer Permissions → tick "Zoho CRM API Access".
+- **C. Claim your profiles for AI search** → Google Business Profile, Bing Places, Zillow (agent + lender), Realtor.com,
+  Homes.com, Yelp; send Sofia the DRE number (`wiki/real-estate-playbooks/ai-search-visibility.md`).
+- **D. AnyDesk permissions** on each Mac (Screen Recording + Accessibility, unattended password) and the tablet app
+  (Play Store "AnyDesk Remote Desktop" → Unattended Access; iPad: App Store → AnyDesk, reach-only).
+- **E. Health on the phone (2 minutes, once)** → MyFitnessPal → More → Apps & Devices → Apple Health → on; Strava → Settings →
+  Apple Health → on; BodyPark ATOM app → its settings → Apple Health / HealthKit → allow (do ATOM sessions with the Apple Watch
+  so each one lands in Apple Health as a workout); Health Auto Export → Automations → your Google Drive export → Metrics: select
+  all, Workouts: on. From then
+  on the deck's Health tiles, the Strava card and the nutrition tiles refresh by themselves every morning at 6:15 (nothing on
+  the Mac, nothing to tap daily). `integrations/apple-health-dashboard.md`.
+
+**Carried by Vanessa as big moves** (no longer a list you keep — each one surfaces on the 6D Brain with its plan standing by, in
+value order, and you approve it when you want it; the Big-moves task reads this list):
+- **e. Lofty API key** → Lofty → Settings → Integrations → API → create; paste 1 asks for it (step 7b).
+- **f. TidyCal token** → TidyCal → Integrations → API → Manage API keys → Create token; paste 1 asks for it (step 7c).
+- **g. Arive** → Settings → Integrations → Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.
+- **h. MBS Highway** → e-mail your rep for the Home Report webhook / CSV path (say "draft the MBS Highway rep email"). `integrations/mbs-highway/README.md`.
+- **i. Ticor Title** → ask your Ticor rep for Ticor Online Pro credentials; farm lists export as CSV. `integrations/ticor/README.md`.
+- **j. Pivo** → pair the Pod in the Pivo app; the tour link is what the team uses. `integrations/pivo/README.md`.
+- **k. Drips and texts** → Lofty 10DLC registration, then say "specs ready for review" (`wiki/real-estate-playbooks/drip-and-text-follow-up.md`).
+- **l. Orca pairing and the runner copy to Mac 2** → steps 1e and C below.
+
+## Start here (2026-10-23) — one paste, then a few clicks
 
 **Why things were stale:** your Mac's task runner froze on Oct 13, and every `git pull` on the Mac failed because the
 cloud and the Mac both rebuild the same brain files. Both are fixed in the paste below. Everything cloud-side runs.
@@ -14,9 +94,64 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
 1. **On the Mac (plugged in): open Terminal, paste this one line, answer y.** Then paste the REPORT back to Claude.
    `cd ~/Repo && git fetch origin claude/stoic-cori-pvn3f8 && git show FETCH_HEAD:scripts/repo-sync.sh > /tmp/repo-sync.sh && REPO_SYNC_DIR="$PWD" bash /tmp/repo-sync.sh && bash connect-all.sh`
    It syncs the repo (and every 30 min after), restarts the frozen runner, keeps the Mac awake on the charger, installs
-   or checks Kapso, Gondola, Inkbox voice, Laya, Jarvis, Orca and AnyDesk, the seven Claude mods (new: `/cycle`, `/inbox`,
+   or checks Kapso, Gondola, Inkbox voice, **Laya** (installs it + registers its MCP server), **Jarvis** (installs Ollama +
+   the llama3.1:8b model; if this Mac has no OpenJarvis index yet the report names the one command that builds it, `runnerctl run openjarvis`, because that run spends Claude allowance), **Orca** (installs, opens on the Repo
+   folder, runs its doctor), AnyDesk, the Agent OS, the seven Claude mods (new: `/cycle`, `/inbox`,
    `/meetings`, `/today`, `/tc`, `/queue <task>`, `/sync`, `/connect` and a status line that says when the repo is behind).
    It never signs in, pairs, sends or pays.
+1b. **Mac 1 is connected (2026-10-23 01:14 UTC):** runner signed in and running, Laya real engine answering, Jarvis
+   all green (index 1,828 rows, vault 850 notes, 8 voice clips, brain doctor PASS), mods on. Nothing more to paste for
+   these. The 30-minute sync keeps the Mac current; `bash connect-all.sh` any time re-checks everything.
+1d-result. **Mac 2 first run (2026-10-23 01:39 UTC, Intel MacBook Pro "(6)"):** Gondola, Orca, AnyDesk, sync, keep-awake done.
+   Root cause of 6 of the 12 stops: Python 3.9 (brain, Agent OS, Jarvis checks need 3.10+); Laya's installer stalled
+   building `cryptography` from source (no wheel for that Mac); Claude Code 2.1.278 is older than the mods need. The
+   script now installs Homebrew's python, updates Claude Code and installs Laya wheel-first (build tools as fallback).
+   Second attempt (01:53 UTC): Claude Code updated to 2.1.309; Homebrew could not build python (Intel Mac on macOS 26,
+   outdated Command Line Tools), so the script now installs a ready-built Python 3.12 with uv instead.
+   Rerun: `cd ~/Repo && bash scripts/repo-sync.sh && bash scripts/second-mac.sh` (then paste the REPORT). Still Steven's
+   on Mac 2: `claude` sign-in, Kapso sign-in, the vault (6b: iCloud or a copy — Jarvis's index needs it), the runner copy
+   from Mac 1 (`command -v runnerctl; ls ~/Library/LaunchAgents | grep -i runner` **on Mac 1**), and the Inkbox voice
+   key only if Mac 2 should also send her voice notes (Mac 1 already does).
+1e. **Runner onto Mac 2 (2026-10-23 02:10 UTC):** Mac 1's runner = `~/Applications/claude-runner` (supervisor.py,
+   schedule.json, tasks), `~/.local/bin/runnerctl`, LaunchAgent `com.stevenshearrill.claude-runner` (sign-in lives in the
+   Claude CLI, no token file). **On Mac 1:** `cd ~/Repo && bash scripts/repo-sync.sh && bash scripts/runner-export.sh`
+   → AirDrop `~/Desktop/claude-runner-mac2.zip` to Mac 2 (Finder → right-click → Share → AirDrop). **On Mac 2:**
+   `cd ~/Repo && bash scripts/repo-sync.sh && bash scripts/runner-import.sh && runnerctl login && runnerctl status`.
+   The export also writes Mac 1's missing lease role (`peer`), so both Macs share the schedule without double runs.
+1d. **Second Mac (2026-10-23): one paste, then two small things.** On the other Mac open Terminal and paste
+   (if a window asks to install developer tools, click Install, wait, then paste the same line again):
+   `[ -d ~/Repo ] || git clone https://github.com/chitown034/Repo.git ~/Repo; cd ~/Repo && git fetch origin claude/stoic-cori-pvn3f8 && git checkout claude/stoic-cori-pvn3f8 && git pull && bash scripts/second-mac.sh`
+   It installs Homebrew, Claude Code and uv if missing, writes the lease word `peer`, then runs the same connect-all as
+   Mac 1 (Laya, Jarvis engine, Orca, AnyDesk, Agent OS, mods, Gondola, Inkbox voice). Then: (a) run `claude` once and
+   sign in; (b) on **Mac 1** paste `command -v runnerctl; ls ~/Library/LaunchAgents | grep -i runner` and send Claude
+   the two lines — the task runner was built on Mac 1 only and its copy step for Mac 2 comes from that. Jarvis's index
+   on Mac 2 needs the vault there too (`docs/SECOND-MAC-SETUP.md` 6b: iCloud or a copy).
+1f. **NotebookLM, once (5 minutes):** the brain is already in your Drive as 13 Google Docs under **SECOND BRAIN/**
+   (https://drive.google.com/drive/folders/16sh0SNlicvHOEpAtTUufI504agSlQRaX) and a weekly task keeps them current.
+   notebook.google.com → New notebook **AI Automation and VANESSA** → Add sources → Google Drive → every `SB …` Doc in
+   `01 Reference Sources/AI and Automation` + `SB 00-START-HERE` + `SB 02-who-and-decisions`. Then **Mortgage Reference
+   Library** (`SB 05`, `SB 09`, `SB 00`, `SB 02`) and **Business Operating Playbooks** (`SB 06`, `SB 08`, `SB 09`, `SB 00`,
+   `SB 02`). Google refreshes Drive Docs in NotebookLM automatically. `integrations/notebooklm/README.md`.
+1f2-done. **NotebookLM connector signed in on Mac 1 (2026-10-23 06:30 UTC, 5 notebooks found).** Next, in Terminal on
+   Mac 1: `cd ~/Repo && claude`, then type: *add every SB Google Doc from my Drive folder SECOND BRAIN to my "2nd brain"
+   notebook, then list that notebook's sources*. Claude uses the notebooklm MCP; nothing else to do afterwards.
+1f2. **NotebookLM direct connector (your opt-in, 2026-10-23):** the paste now installs it (step 6f). Then on Mac 1 run
+   `nlm login` (browser sign-in, Google session stays on that Mac), then `nlm login --check`. In a new Claude Code session:
+   "list my NotebookLM notebooks" → then "add every SB Google Doc from SECOND BRAIN to my 2nd brain notebook". Claude
+   does the picker for you from then on. Non-sensitive notebooks only.
+1h. **Your claude.ai chats into the brain (5 minutes, then monthly):** claude.ai has no API for other chat windows, so the
+   path is your own export. claude.ai → Settings → Privacy → **Export data** → Google emails a zip → unzip → put
+   `conversations.json` in `~/Repo/inbox/` (any folder works) → in Terminal: `cd ~/Repo && bin/brain ingest claude-export
+   ~/Repo/inbox/conversations.json`. It writes `memory/claude-chats.md`: one line per chat (date, title, what you asked first) and
+   a "tasks you mentioned" list, your words only, phones/e-mails masked. Claude Code sessions need nothing from you: a
+   daily ledger (3:52 AM) lists them in `docs/inventory/claude-sessions.md`, and the Mac's `brain-learner` task captures your
+   words from their transcripts.
+1g. **Your GitHub repo is public.** `chitown034/Repo` answered without sign-in on 2026-10-23 (that is how the Drive
+   sync fetches the pack). It holds no client files beyond `wiki/clients/index.md` (first names, by rule), but the
+   brain, decisions and task prompts are readable by anyone. If you want it private: GitHub → Repo → Settings → Danger
+   Zone → Change visibility → Private, then tell Claude (the Drive sync switches to a signed-in fetch). Your call.
+1c. **Kapso on the Mac:** `claude` → `/mcp` → kapso → sign in (free sandbox); then
+   `bash integrations/kapso/install-mac.sh keys --allow <your mobile>` (hidden prompt, Keychain only).
 2. **Vanessa's iMessage line (30 seconds, from your phone):** Inkbox is reconnected. Send the text
    `connect @vanessa-shearrill` to **+1 650 484 9720** (tap: sms:+16504849720?&body=connect%20%40vanessa-shearrill).
    After that, the "Text me this brief" button on the Command Deck works, and Vanessa can text you.
@@ -31,6 +166,9 @@ cloud and the Mac both rebuild the same brain files. Both are fixed in the paste
    (hidden, saved only on the Mac), and proves it works read-only; the Lofty sync resumes with the runner.
 3. **Gondola (travel):** claude.ai → Settings → Connectors → Add custom connector → `Gondola`, URL
    `https://mcp.gondola.ai/mcp` → Connect and sign in.
+3b. **Jarvis needs two things only you know:** the vault folder (`~/Shearrill-Vault`; if it lives only on the other Mac,
+   see `docs/SECOND-MAC-SETUP.md` 6b for iCloud or a copy) and Vanessa's 8 voice clips (put them in `~/.cache/vanessa-voice`
+   or tell Claude the folder). The REPORT's "Jarvis" rows say which of the two is missing.
 4. **Orca and AnyDesk (the paste opens them):** Orca → Add Project → your Repo folder, then scan its pairing code with the
    Orca phone app. AnyDesk → System Settings → Privacy & Security → turn on Screen Recording and Accessibility for AnyDesk.
    Other computers: `integrations/anydesk/README.md`.
@@ -194,3 +332,7 @@ Reply "done N" (or "skip N") after each step and Claude keeps the dashboards in 
 33. **Turn on the Agent OS on each computer.** Mac 1, Mac 2 and the Alienware, one paste each; steps in integrations/agent-os/README.md. Read-only by default; the warnings name what to install.
 34. **Connect Orca and Laya on each Mac.** `bash integrations/agent-os/connect-orca-laya.sh --apply` (preview first without --apply). Then pair Orca yourself with the two commands it prints.
 35. **OpenStock market viewer (optional).** `bash integrations/openstock/openstock.sh install --apply`, then a free Finnhub key into `~/Applications/OpenStock/.env`. Trading Desk panel has Open/Start.
+
+### 1i. Fieldy meeting digests — your call (added 2026-10-23)
+
+The daily "Fieldy → brain" task writes a digest of each recorded meeting (first names, Fieldy's summary, action items) to `memory/fieldy-meetings.md` in the repo. The repo is public today (step 1g). The digest never reaches the 6D page or Drive, but it is in the repo. Say "keep the Fieldy digest" or "make the repo private first" — until then the task runs and the file stays first-names-only.

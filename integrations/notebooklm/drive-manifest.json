@@ -1,0 +1,155 @@
+{
+ "created": "2026-10-23",
+ "drive_root": {
+  "name": "SECOND BRAIN",
+  "id": "16sh0SNlicvHOEpAtTUufI504agSlQRaX",
+  "url": "https://drive.google.com/drive/folders/16sh0SNlicvHOEpAtTUufI504agSlQRaX"
+ },
+ "folders": {
+  "root": "16sh0SNlicvHOEpAtTUufI504agSlQRaX",
+  "ai": "1X7hiNHerp1tRnEF5S221OiDdEeiOGybt",
+  "mortgage": "1J_HgowfDcL69TTFGSFmFqG2xPqLbqdfw",
+  "realestate": "1pL1mjhX7BYN5uolMje1jxR-j7tFihWF7",
+  "playbooks": "1WRG3B7AfJUdX4SAUwKtVTSGIrNIs1ojh",
+  "decisions": "1UEqyqLmdh6YsVJ_FiUslN_woFuIEX6_b",
+  "inbox": "1rJPUezt-8cUt2yVnpTQtaY9Au3AVGqQI",
+  "briefs": "1unM-NWLaWA50o5tyveqNwg-MiDdNsIX3",
+  "archive": "1YoEJx01v7dDv9noN9IAxraiRGKch_6th",
+  "reference": "1m-sieMPUewlHvlyJ4SzMC_s6LLL1e2d7",
+  "personal": "1aw-EUI9_Cu5l-SpEirWGlGdJ9VUUuLPL"
+ },
+ "docs": [
+  {
+   "file": "00-START-HERE.md",
+   "doc_id": "1q-W6ZDD1Hbu9d1V9HHHNAUtWfKW0MMT4gEga8ZMijI0",
+   "title": "SB 00-START-HERE",
+   "folder": "root",
+   "notebook": "all three",
+   "url": "https://docs.google.com/document/d/1q-W6ZDD1Hbu9d1V9HHHNAUtWfKW0MMT4gEga8ZMijI0/edit"
+  },
+  {
+   "file": "01-router-and-index.md",
+   "doc_id": "1gQIjepa58_jWzu4FXhu0zNEQv2gdKumtvG-zNPSyJM4",
+   "title": "SB 01-router-and-index",
+   "folder": "ai",
+   "notebook": "AI Automation and VANESSA",
+   "url": "https://docs.google.com/document/d/1gQIjepa58_jWzu4FXhu0zNEQv2gdKumtvG-zNPSyJM4/edit"
+  },
+  {
+   "file": "02-who-and-decisions.md",
+   "doc_id": "1aWskT_C-nrMj9f6mG8kQEHct2I2tIdSx0aUVNETb1bE",
+   "title": "SB 02-who-and-decisions",
+   "folder": "decisions",
+   "notebook": "all three",
+   "url": "https://docs.google.com/document/d/1aWskT_C-nrMj9f6mG8kQEHct2I2tIdSx0aUVNETb1bE/edit"
+  },
+  {
+   "file": "03-projects.md",
+   "doc_id": "14N84Xk3FRBSr-zXebmU_bTQvycbIKbAmpULIHc7kYds",
+   "title": "SB 03-projects",
+   "folder": "ai",
+   "notebook": "AI Automation and VANESSA",
+   "url": "https://docs.google.com/document/d/14N84Xk3FRBSr-zXebmU_bTQvycbIKbAmpULIHc7kYds/edit"
+  },
+  {
+   "file": "04-wiki-ai-team.md",
+   "doc_id": "14yOzvlLM76u052YagQXOErum3G-thxpmAtvqV7vrzis",
+   "title": "SB 04-wiki-ai-team",
+   "folder": "ai",
+   "notebook": "AI Automation and VANESSA",
+   "url": "https://docs.google.com/document/d/14yOzvlLM76u052YagQXOErum3G-thxpmAtvqV7vrzis/edit"
+  },
+  {
+   "file": "05-wiki-mortgage-programs.md",
+   "doc_id": "1ygotEmcg5bn9FObRDF1D1v85_eAusmk1HOkTltSeS3Y",
+   "title": "SB 05-wiki-mortgage-programs",
+   "folder": "mortgage",
+   "notebook": "Mortgage Reference Library",
+   "url": "https://docs.google.com/document/d/1ygotEmcg5bn9FObRDF1D1v85_eAusmk1HOkTltSeS3Y/edit"
+  },
+  {
+   "file": "06-wiki-real-estate-playbooks.md",
+   "doc_id": "17SpyeRuj6DR6OYa2Uf6-bErvxrFcl_1gQOWKAXS7jTw",
+   "title": "SB 06-wiki-real-estate-playbooks",
+   "folder": "playbooks",
+   "notebook": "Business Operating Playbooks",
+   "url": "https://docs.google.com/document/d/17SpyeRuj6DR6OYa2Uf6-bErvxrFcl_1gQOWKAXS7jTw/edit"
+  },
+  {
+   "file": "07-wiki-dashboard-ops.md",
+   "doc_id": "1hIqr_wNAGsq43Woiv5g0xjwnr_XEXTTe14fZ_o4_Imw",
+   "title": "SB 07-wiki-dashboard-ops",
+   "folder": "ai",
+   "notebook": "AI Automation and VANESSA",
+   "url": "https://docs.google.com/document/d/1hIqr_wNAGsq43Woiv5g0xjwnr_XEXTTe14fZ_o4_Imw/edit"
+  },
+  {
+   "file": "08-wiki-events-networking.md",
+   "doc_id": "1rR0kSR0OBqjUTXV08jHTpKGiRjyBJo0lJsiVLrVzz_c",
+   "title": "SB 08-wiki-events-networking",
+   "folder": "playbooks",
+   "notebook": "Business Operating Playbooks",
+   "url": "https://docs.google.com/document/d/1rR0kSR0OBqjUTXV08jHTpKGiRjyBJo0lJsiVLrVzz_c/edit"
+  },
+  {
+   "file": "09-references.md",
+   "doc_id": "1hSzyTD_6PCyJzarg5elhGsKhHu-TLRMgrqrRhNPqKLc",
+   "title": "SB 09-references",
+   "folder": "realestate",
+   "notebook": "Mortgage Reference Library + Business Operating Playbooks",
+   "url": "https://docs.google.com/document/d/1hSzyTD_6PCyJzarg5elhGsKhHu-TLRMgrqrRhNPqKLc/edit"
+  },
+  {
+   "file": "10-always-on-and-automation.md",
+   "doc_id": "1Q_3Ep2CE-7FGNqzjpnsGh63ZvXGc-kk0hHlqM7v3lOA",
+   "title": "SB 10-always-on-and-automation",
+   "folder": "ai",
+   "notebook": "AI Automation and VANESSA",
+   "url": "https://docs.google.com/document/d/1Q_3Ep2CE-7FGNqzjpnsGh63ZvXGc-kk0hHlqM7v3lOA/edit"
+  },
+  {
+   "file": "11-6d-brain-map.md",
+   "doc_id": "1Da2yQ3PSRtW6QSFj0C14B1sgYdGC3-IhSth7sNPJsQk",
+   "title": "SB 11-6d-brain-map",
+   "folder": "ai",
+   "notebook": "AI Automation and VANESSA",
+   "url": "https://docs.google.com/document/d/1Da2yQ3PSRtW6QSFj0C14B1sgYdGC3-IhSth7sNPJsQk/edit"
+  },
+  {
+   "file": "12-integrations.md",
+   "doc_id": "1G9_nGnMxACzIbG5rYfjmbDjd-mzWfU23axAY57AAuGc",
+   "title": "SB 12-integrations",
+   "folder": "ai",
+   "notebook": "AI Automation and VANESSA",
+   "url": "https://docs.google.com/document/d/1G9_nGnMxACzIbG5rYfjmbDjd-mzWfU23axAY57AAuGc/edit"
+  }
+ ],
+ "sync": "weekly (Sun 2:45 PM PT) scheduled task in the Claude Code session: bin/brain export notebooklm -> commit/push -> Composio workbench rewrites each doc (GOOGLEDOCS_UPDATE_DOCUMENT_MARKDOWN by doc_id); NotebookLM auto-syncs Google Docs sources",
+ "account": "steven.shearrill@gmail.com (claude.ai Google Drive connector + Composio googledocs)",
+ "last_sync": {
+  "notion_directory": {
+   "date": "2026-10-23",
+   "page": "https://app.notion.com/p/402c1760a749811eaea5d07005df0179"
+  },
+  "date": "2026-10-23",
+  "at": "2026-10-23T13:09:56Z",
+  "sha": {
+   "00-START-HERE.md": "7f6398dae8ed88cf",
+   "01-router-and-index.md": "ed427fb82051b916",
+   "02-who-and-decisions.md": "ee98385c3cb88165",
+   "03-projects.md": "47537dfa54ab4caa",
+   "04-wiki-ai-team.md": "b7422cb47f754568",
+   "05-wiki-mortgage-programs.md": "941d2c1b9855537a",
+   "06-wiki-real-estate-playbooks.md": "2661bcc83a0ccb0d",
+   "07-wiki-dashboard-ops.md": "0c704170138a9222",
+   "08-wiki-events-networking.md": "9fafe5d7ccd9b49f",
+   "09-references.md": "c45d39d98992858e",
+   "10-always-on-and-automation.md": "d295e29c156c2468",
+   "11-6d-brain-map.md": "fe385786a279df72",
+   "12-integrations.md": "77e8d84e63854299"
+  },
+  "updated": 13,
+  "failures": [],
+  "note": "manual full sync on Steven's \"sync everything now\" (02-who-and-decisions via the chunked fallback, 0 pieces failed)"
+ }
+}

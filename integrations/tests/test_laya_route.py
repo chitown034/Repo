@@ -24,7 +24,7 @@ HERE = Path(__file__).parent
 LAYA_DIR = HERE.parent / "laya"
 sys.path.insert(0, str(LAYA_DIR))
 
-from laya_route import DEFAULT_ROUTE_MAP, load_route_map, route_for  # noqa: E402
+from laya_route import DEFAULT_ROUTE_MAP, load_route_map, route_for, score_label, decide  # noqa: E402
 
 N_PASS = 0
 N_FAIL = 0
@@ -57,6 +57,29 @@ def main() -> int:
           route_for("some-new-tier-nobody-mapped-yet", False, route_map), "subscription")
     check("no route-map.json, pii=0 -> subscription", route_for("research", False, None), "subscription")
     check("no route-map.json, pii=1 -> local", route_for("research", True, None), "local")
+    # 2026-10-23: the real laya 0.3.x engine answers a `score` question with score+legend and no `label`
+    # (Mac log: KeyError: 'label'); the stub answers with `label`. Both must give the level text.
+    check("score_label: stub shape", score_label({"label": "soon"}), "soon")
+    check("score_label: real shape (score 1.8 -> level 2)",
+          score_label({"score": 1.8, "legend": {"0": "not urgent", "1": "soon", "2": "blocking"}}), "blocking")
+    check("score_label: real shape rounds down", score_label({"score": 0.4, "legend": {"0": "not urgent", "1": "soon"}}), "not urgent")
+    check("score_label: halves round up (0.5 -> soon)", score_label({"score": 0.5, "legend": {"0": "not urgent", "1": "soon", "2": "blocking"}}), "soon")
+    check("score_label: NaN score -> probabilities fallback", score_label({"score": float("nan"), "legend": {"0": "a", "1": "b"}, "probabilities": {"0": 0.2, "1": 0.8}}), "b")
+    check("score_label: no legend -> the question's criteria", score_label({"score": 1.2, "probabilities": {"0": 0.1, "1": 0.9}}, ["not urgent", "soon"]), "soon")
+    # the crash site itself: decide() with a real-shaped engine (no `label` anywhere)
+    def real_shaped(state, questions):
+        return {"answers": {
+            "pii_gate": {"type": "noul", "noul": 0.05, "confidence": 0.95},
+            "brain_route": {"type": "choice", "choice": "mortgage_program", "probabilities": {"mortgage_program": 0.9, "recall_cost": 0.1}, "confidence": 0.9},
+            "tier": {"type": "choice", "choice": "report", "probabilities": {"report": 1.0}, "confidence": 1.0},
+            "lane": {"type": "choice", "choice": "victor", "probabilities": {"victor": 1.0}, "confidence": 1.0},
+            "urgency": {"type": "score", "score": 1.8, "legend": {"0": "not urgent", "1": "soon", "2": "blocking"}, "probabilities": {"0": 0.1, "1": 0.1, "2": 0.8}, "confidence": 0.8},
+        }}
+    d = decide("VA funding fee?", {"urgency": {"type": "score", "criteria": ["not urgent", "soon", "blocking"]}},
+               {"mortgage_program": "wiki/mortgage-programs/index.md"}, real_shaped, 0.5, 0.5, None)
+    check("decide(): real-shaped engine (no label) routes and names the urgency level", d["urgency"], "blocking")
+    check("decide(): real-shaped engine ROUTEs to the mapped leaf", d["leaf"], "wiki/mortgage-programs/index.md")
+    check("score_label: nothing usable -> unknown", score_label({}), "unknown")
 
     print("\n== subprocess regression — laya_route.py --engine stub --batch sample-requests.jsonl")
     proc = subprocess.run(

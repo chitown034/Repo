@@ -1102,3 +1102,68 @@ This amendment makes the 6:40 text and the voice note use that one brief, so pho
 At ~6:40 AM PT the iMessage text matches the Claude-app brief word for word and contains the three "Dashboards"
 lines; a voice note in Vanessa's voice follows on the same thread; `morningBriefStatus.v.imessage = "sent"`.
 
+
+## 8c. `vanessa-morning-brief-text` — AMENDMENT: when iMessage is not linked, the brief goes by e-mail with the voice note attached (2026-10-23)
+
+Steven, 2026-10-23: *"vanessa did not send morning brief today with voice imessage fix this."* Found: on 2026-10-23 the cloud
+brief was written (`morningBrief` v1), the push went, this task ran at 06:53 PT and reported `ok`, `voice-reply-render`
+rendered — and nothing reached his phone, because Vanessa's shared iMessage line has **no linked recipient yet**
+(`inkbox_imessage_onboarding_get`: `dedicated_number: null`, `awaiting_inbound: []`). Inkbox's iMessage is recipient-first:
+until Steven texts `connect @vanessa-shearrill` to **+1 650 484 9720** once, every iMessage send is accepted and dropped.
+Two fixes: the cloud routine now e-mails the brief itself whenever the line is unlinked (done in its prompt, 2026-10-23),
+and this task gets the same fallback so the **voice note** also arrives.
+
+### Paste-ready — add after §8b's first paragraph (before "After the text brief is sent")
+
+> **Before sending**, call `inkbox_imessage_onboarding_get`. If `dedicated_number` is null and `awaiting_inbound` is empty
+> (no phone linked to Vanessa's line), do NOT send an iMessage — it would be silently dropped. Instead: wait for
+> `voice-reply-render` to finish the day's voice item (look for `voiceReplyStatus.items["vmb_…"].status = ready`, up to
+> 15 minutes; queue it first exactly as §8 says, with `deliver: "email"`), then send ONE e-mail with
+> `inkbox_email_send` to `steven.shearrill@gmail.com` only: subject "☀ Vanessa's morning brief — <weekday, Mon D> (voice note
+> attached)", body = `morningBrief.v.text`, the rendered mp3 attached (`inkbox_email_attachment_upload` with the file
+> `voice-reply-render` wrote; skip the attachment if it is not ready, never wait longer), and the last line exactly:
+> "Your iMessage line is not linked yet: text  connect @vanessa-shearrill  to +1 650 484 9720 once and tomorrow's brief
+> arrives as a text and a voice note instead." Record `morningBriefStatus.imessage = "skipped: line not linked"`,
+> `email = "sent"` (or `"failed: <reason>"`), `imessageLinked = false` (merge). If the cloud routine already set
+> `morningBriefStatus.email = "sent"` today, send the e-mail anyway only when the mp3 is ready (that one carries the
+> voice note; the cloud cannot attach it) — otherwise skip and record `email = "cloud sent, no voice note yet"`.
+> When a number IS linked, send by iMessage as before and record `imessageLinked = true`.
+
+### What proves it worked
+
+Unlinked: an e-mail from vanessa-shearrill@inkboxmail.com with the brief and an mp3 by ~7:00 AM PT,
+`morningBriefStatus.v.email = "sent"`, `.imessageLinked = false`. Linked (after the one connect text): a text and a voice note on
+the iMessage thread, `.imessage = "sent"`, `.imessageLinked = true`, and no e-mail.
+
+## 9. Repair pass for the runner tasks in error (2026-10-23)
+
+`runnerStatus` v66 (synced 2026-10-23 14:06 UTC) lists these tasks as not healthy. Nothing below needs a new key; each fix is a
+spec change here plus one `runnerctl run <name>` from Steven, or nothing at all. `connect-all.sh` step **2c** now prints the
+last 12 log lines of every task in error into its REPORT (secrets masked), so the next REPORT carries the diagnosis for any
+line below marked *log needed*.
+
+| Task | State on the deck | What to do |
+|---|---|---|
+| `toolkit-deck-sync` (daily 6:15) | error — **timeout** (log 2026-10-23: both runs ended `exit 124` at 602 s, the runner's 10-minute cap; on 2026-10-12 the run ended with "the snapshot script is still running in the background") | Not the CLI and not a permission: `deck_snapshot.py` + `roster_snapshot.py` over 159 tools / 1,417 skills plus two deck writes no longer fit one 10-minute model turn. Fix (task config on the Mac, `runnerctl dry toolkit-deck-sync` shows it): run the two snapshot scripts as a **pre-step outside the model turn** (plain shell, their JSON to `~/Repo/brain/state/`) and give the model only the two `ArtifactData` writes; until then raise the cap: the allow-list carries it — `@timeout 600` → `@timeout 1200` in `~/Applications/claude-runner/allow/toolkit-deck-sync.txt` (one paste, 2026-10-23). Then `runnerctl run toolkit-deck-sync`. |
+| `nightly-self-test` (23:00) | error — the log shows three failure modes since 2026-09-16: **30-minute timeouts** (`exit 124` at 1802 s, four times), **permission refusals** (ArtifactData writes 09-28; Bash scripts/loops 10-13), and on 2026-10-23 `no result in envelope` after 933 s | The suite is too big for one headless turn and asks for tools the allow-list does not grant. Fix: split it — the nightly keeps the ISA Portal render probe, the claude-fallback suite and the `selfTest` doc write (under 10 minutes); the Command Deck full suite (`run-all.sh`, ~25 sub-tests) and the skills/agents frontmatter sweep move to the Saturday loop (cloud) where they already run; add `ArtifactData` set/update on `state/selfTest` and the repo's own `python3 scripts/*.py` to `~/Applications/claude-runner/allow/nightly-self-test.txt`. `runnerctl dry nightly-self-test` shows the current config. |
+| `fabric-deck-sync` (odd hours) | refused | Fabric's `fabric --listpatterns` prompts for setup on a fresh machine; the task hangs then refuses. Fix: skip the task when `~/.config/fabric/.env` is missing and write `fabricStatus = {v:{state:"not set up"}}` instead. No action from Steven until Fabric is wanted. |
+| `r9-feed-freshness-sweep` | error | Superseded by the cloud freshness sweep (15:40 UTC daily) since 2026-10-22; disable it: `runnerctl pause r9-feed-freshness-sweep`. |
+| `strava-daily-sync` (5:20) | ok, but writes an empty list / a bare document | Superseded 2026-10-23 by the cloud Health daily sync, which writes `stravaSnapshot` from the Strava connector in the deck's row shape; disable it: `runnerctl pause strava-daily-sync`. |
+| `r8-apple-health-snapshot` (5:10 / 21:10) | ok, but writes the daemon's frozen September data | Superseded 2026-10-23 by the cloud Drive sync (`integrations/apple-health-dashboard.md`); disable it so it can never overwrite `appleHealth`: `runnerctl pause r8-apple-health-snapshot`. `health-full-analysis` can stay — it now has fresh data to read. |
+| `brain-weekly-verify` (Sun 16:00) | error since 2026-10-11; re-run 2026-10-23 12:5x PT: `PERMISSION REFUSED: Bash` / `Read` | Root cause from the allow-list itself (`~/Applications/claude-runner/allow/brain-weekly-verify.txt`): step 0 is spelled `brain reindex --sources` and `brain bench --sources --write`, and `--sources` is not a flag `bin/brain` has ever had — the commands fail, the model "corrects" them, and the corrected spellings are not on the list. Fix (one paste, 2026-10-23): drop `--sources` from both lines, add `brain --help`, `brain bench` and a Read of the list itself; then `runnerctl run brain-weekly-verify`. |
+| `health-coaching-weekly`, `skills-refresh-weekly` | error since 2026-10-11 | Sunday usage cap with the weekly review. Re-run on a weekday 2026-10-23 (`runnerctl run`); if they pass, move them to Monday 05:10 / 05:40 in `schedule.json`. |
+| `r20-weekly-review-local`, `ops-knowledge-graph`, `access-audit-monthly`, `automation-audit-quarterly` | limited (usage cap) | Not broken — they wait for the cap window. Leave. |
+
+Pastes for the Steven side (2026-10-23; the first three were done at 12:3x PT):
+
+```
+runnerctl pause r9-feed-freshness-sweep && runnerctl pause r8-apple-health-snapshot && runnerctl pause strava-daily-sync && runnerctl status
+```
+
+Allow-list repairs (backs each file up first; `sed -i ''` is the macOS form):
+
+```
+cd ~/Applications/claude-runner/allow && cp brain-weekly-verify.txt brain-weekly-verify.txt.bak-20261023 && sed -i '' -e 's#brain reindex --sources)#brain reindex)#' -e 's#brain bench --sources --write)#brain bench --write)#' brain-weekly-verify.txt && printf '%s\n' 'Bash(/Users/stevenshearrill/.local/bin/brain --help)' 'Bash(/Users/stevenshearrill/.local/bin/brain bench)' 'Read(//Users/stevenshearrill/Applications/claude-runner/allow/brain-weekly-verify.txt)' >> brain-weekly-verify.txt && cp toolkit-deck-sync.txt toolkit-deck-sync.txt.bak-20261023 && sed -i '' 's/^@timeout 600$/@timeout 1200/' toolkit-deck-sync.txt && grep -n 'brain \|@timeout' brain-weekly-verify.txt toolkit-deck-sync.txt && runnerctl dry toolkit-deck-sync | head -1
+```
+
+Applied 2026-10-23 13:05 PT (grep showed `brain reindex)`, `brain bench --write)`, `@timeout 1200`; dry run `timeout=1200`). Then `runnerctl run brain-weekly-verify` and `runnerctl run toolkit-deck-sync`, and paste the last lines back.

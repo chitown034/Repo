@@ -30,7 +30,7 @@ GROUPS = [  # (prefix, group id, label, recall level)
 STORES = [  # id, label, what, files it attaches to (prefixes)
     ("store:vanessa", "Vanessa", "Chief of Staff — every recall answers through her", ["CLAUDE.md", "AGENTS.md", "projects/ai-team.md"]),
     ("store:notion", "Notion Second Brain", "The record (database)", ["references/index.md", "always-on/README.md"]),
-    ("store:drive", "Google Drive", "Read-only mirror of the Notion rows", ["references/google-drive.md", "references/drive-second-brain-notes.md", "integrations/google-drive-brain.md"]),
+    ("store:drive", "Google Drive", "SECOND BRAIN/: the 13 SB Docs (weekly rewrite) + Steven's own folders; read-only elsewhere", ["references/google-drive.md", "references/drive-second-brain-notes.md", "integrations/google-drive-brain.md"]),
     ("store:jarvis", "Jarvis", "On-device index + voice (Mac)", ["integrations/jarvis/README.md", "vector-index/README.md"]),
     ("store:laya", "Laya", "Zero-token first hop that routes requests", ["integrations/laya/README.md", "CLAUDE.md"]),
     ("store:vault", "Obsidian vault", "Visual layer, Jarvis's source", ["OPTIMIZATION.md", "MAC-INSTALL.md"]),
@@ -38,6 +38,7 @@ STORES = [  # id, label, what, files it attaches to (prefixes)
     ("store:ruflo", "Ruflo", "Research and memory bench", ["wiki/ai-team/mentors-and-benches.md"]),
     ("store:omniroute", "OmniRoute", "Failover when Claude runs out", ["integrations/omniroute/README.md", "integrations/omniroute-failover/README.md"]),
     ("store:deck", "Command Deck", "The live dashboard", ["projects/command-deck.md", "wiki/dashboard-ops/index.md"]),
+    ("store:notebooklm", "NotebookLM mirror", "The brain as 13 Google Docs in Drive/SECOND BRAIN, rewritten weekly; redundant copy + source-grounded Q&A", ["integrations/notebooklm/README.md", "references/index.md"]),
 ]
 
 
@@ -97,8 +98,10 @@ def build(root: Path, links_per_node: int = 3, today: date | None = None) -> dic
             if key not in seen and w > 0.15:
                 seen.add(key)
                 links.append({"s": a, "t": b, "w": round(w, 2)})
+    from . import links as links_mod
+    store_url = links_mod.for_store(root)
     for sid, label, what, attach in STORES:
-        nodes.append({"id": sid, "t": label, "d": what, "g": "store", "gl": "Live stores", "lv": 0, "s": 0, "a": None, "z": None})
+        nodes.append({"id": sid, "t": label, "d": what, "g": "store", "gl": "Live stores", "lv": 0, "s": 0, "a": None, "z": None, "u": store_url.get(sid)})
         for p in attach:
             if p in ids:
                 links.append({"s": sid, "t": p, "w": 1.0, "k": "store"})
@@ -106,15 +109,17 @@ def build(root: Path, links_per_node: int = 3, today: date | None = None) -> dic
         links.append({"s": "store:vanessa", "t": sid, "w": 1.0, "k": "store"})
     # the toolkit: skills, plugins, connectors, routines and Mac tasks as their own lobes (2026-10-20)
     home = {"skill": "wiki/ai-team/toolkit.md", "plugin": "integrations/mods/RECOMMENDATIONS.md",
-            "connector": "integrations/CONNECTIONS.md", "routine": "always-on/README.md", "mactask": "wiki/dashboard-ops/task-catalog.md"}
-    labels = {"skill": "Skills", "plugin": "Plugins", "connector": "Connectors", "routine": "Cloud routines", "mactask": "Mac tasks"}
+            "connector": "integrations/CONNECTIONS.md", "routine": "always-on/README.md", "mactask": "wiki/dashboard-ops/task-catalog.md",
+            "mcp": "integrations/MCP-SERVERS.md", "api": "integrations/APIS.md"}
+    labels = {"skill": "Skills", "plugin": "Claude mods", "connector": "Connectors", "routine": "Cloud routines", "mactask": "Mac tasks",
+              "mcp": "MCP servers", "api": "APIs"}
     for it in toolkit.inventory(root)["items"]:
         nid = f"{it['kind']}:{it['name']}"
         if nid in ids:
             continue
         ids.add(nid)
         d = it["desc"]
-        if it["kind"] == "connector":
+        if it["kind"] in ("connector", "mcp", "api"):
             d = f"[{it['state']}] {d}"
         nodes.append({"id": nid, "t": it["name"][:90], "d": (f"{it['seat']} · " + d)[:180], "g": it["kind"], "gl": labels[it["kind"]],
                       "lv": 1, "s": 0, "a": None, "z": None, "seat": it["seat"], "state": it.get("state")})

@@ -1,0 +1,62 @@
+{
+  "persona": "Vanessa",
+  "source": "Command Deck REAL_CLIP bank (her Magica Seed Audio renders, embedded in the deck); exported 2026-10-23 so Jarvis on the Mac speaks from the same set",
+  "clips": [
+    {
+      "file": "00.mp3",
+      "kind": "opener",
+      "line": "Got it, Steven. Here's where things stand.",
+      "bytes": 19622,
+      "sha256": "5003bfae674b77fa"
+    },
+    {
+      "file": "01.mp3",
+      "kind": "opener",
+      "line": "Good morning, Steven. Let's get you caught up.",
+      "bytes": 23174,
+      "sha256": "c203084fae247e8c"
+    },
+    {
+      "file": "02.mp3",
+      "kind": "opener",
+      "line": "I checked with the team on this one.",
+      "bytes": 15860,
+      "sha256": "2a10004ff2a6c3d6"
+    },
+    {
+      "file": "03.mp3",
+      "kind": "closer",
+      "line": "I'll keep an eye on it and flag anything that changes.",
+      "bytes": 24219,
+      "sha256": "08eaf2d03cfddc56"
+    },
+    {
+      "file": "04.mp3",
+      "kind": "closer",
+      "line": "Say the word and I'll get it moving.",
+      "bytes": 17950,
+      "sha256": "28de2adaf869e7b8"
+    },
+    {
+      "file": "05.mp3",
+      "kind": "ack",
+      "line": "On it.",
+      "bytes": 19204,
+      "sha256": "ffd174823ece244c"
+    },
+    {
+      "file": "06.mp3",
+      "kind": "closer",
+      "line": "That's my read, Steven. Your call.",
+      "bytes": 21711,
+      "sha256": "9fa8ee4c26895d4f"
+    },
+    {
+      "file": "07.mp3",
+      "kind": "opener",
+      "line": "Here's what I've got for you, Steven.",
+      "bytes": 31951,
+      "sha256": "3db34499771b026d"
+    }
+  ]
+}

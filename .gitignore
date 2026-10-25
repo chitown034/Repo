@@ -6,3 +6,7 @@ __pycache__/
 .claude/skills-staged/
 brain/state/
 .claude/state/
+exports/*
+!exports/notebooklm/
+inbox/*
+!inbox/README.md

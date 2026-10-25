@@ -126,23 +126,50 @@ def connectors(root: Path) -> list[dict]:
         text = p.read_text(encoding="utf-8")
     except OSError:
         return []
-    i = text.rfind("## Connection status")
-    if i < 0:
+    # every "## Connection status" section, oldest first; a later section's row replaces an earlier row with the same
+    # name, so a partial status report appended later (a Mac REPORT, 2026-10-23) updates the register instead of shrinking it
+    starts = [m.start() for m in re.finditer(r"^## Connection status", text, re.M)]
+    if not starts:
         return []
-    out = []
-    for cells in _table_rows(text[i:], "Connection"):
-        if len(cells) < 4:
-            continue
-        name = re.sub(r"\*\*", "", cells[0]).strip()
-        status = re.sub(r"\*\*|`", "", cells[1]).strip()
-        low = status.lower()
-        state = ("attention" if ("403" in low or "refused" in low)
-                 else "ok" if (low.startswith("connected") or low.startswith("active") or "active**" in cells[1].lower())
-                 else "silent" if "silent" in low else "pending" if ("pending" in low or "initiated" in low or "never" in low or "locked" in low or "drafted" in low)
-                 else "reconnect" if "reconnect" in low else "attention")
-        out.append({"kind": "connector", "name": name[:90], "desc": status[:200], "state": state,
-                    "fix": re.sub(r"`", "", cells[2])[:160], "who": cells[3][:40], "seat": _seat(name + " " + status)})
-    return out
+    # the register starts at the last "consolidated" section (the file's own rule: later sections supersede it row by row)
+    heads = [text[i:text.find("\n", i)].lower() for i in starts]
+    first = max((n for n, h in enumerate(heads) if "consolidated" in h), default=len(starts) - 1)
+    starts = starts[first:]
+    merged: dict[str, dict] = {}
+    for n, i in enumerate(starts):
+        chunk = text[i:starts[n + 1]] if n + 1 < len(starts) else text[i:]
+        in_section: set[str] = set()
+        for cells in _table_rows(chunk, "Connection"):
+            if len(cells) < 4:
+                continue
+            name = re.sub(r"\*\*", "", cells[0]).strip()
+            key = _conn_key(name)
+            if key in in_section:          # two rows of ONE section are two connections, whatever the key says (validator P04-F1)
+                key = name.lower().strip()
+            in_section.add(key)
+            status = re.sub(r"\*\*|`", "", cells[1]).strip()
+            low = status.lower()
+            state = ("attention" if ("403" in low or "refused" in low)
+                     else "ok" if (low.startswith(("connected", "active", "healthy", "linked")) or "active**" in cells[1].lower())
+                     else "silent" if "silent" in low else "pending" if ("pending" in low or "initiated" in low or "never" in low or "locked" in low or "drafted" in low)
+                     else "reconnect" if "reconnect" in low else "attention")
+            merged[key] = {"kind": "connector", "name": name[:90], "desc": status[:200], "state": state,
+                                       "fix": re.sub(r"`", "", cells[2])[:160], "who": cells[3][:40], "seat": _seat(name + " " + status)}
+    return list(merged.values())
+
+
+_MACHINES = ("mac 1", "mac 2", "alienware", "tablet", "phone", "ipad", "windows", "webhook")
+
+
+def _conn_key(name: str) -> str:
+    """The same connection named slightly differently across reports ("Lofty", "Lofty CRM", "Lofty (developer.lofty.com)")
+    — but a different machine or device is a different connection ("AnyDesk (Mac 1)" vs "AnyDesk (Alienware, tablet, phone)")."""
+    low = name.lower()
+    k = re.sub(r"\(.*?\)|\b(crm|api|the|line|connector|connectors|inkbox|mac|title|property|search)\b", " ", low)
+    words = re.sub(r"[^a-z0-9]+", " ", k).split()
+    base = words[0] if words else low
+    quals = [m for m in _MACHINES if m in low]
+    return base + ("|" + "+".join(quals) if quals else "")
 
 
 def routines(root: Path) -> list[dict]:
@@ -178,15 +205,59 @@ def mac_tasks(root: Path) -> list[dict]:
     return out
 
 
+def _register(root: Path, rel: str, heading: str, first_col: str, kind: str, state_words: dict) -> list[dict]:
+    """Rows of the last '## <heading>' table in a register file (MCP-SERVERS.md, APIS.md) as toolkit items (2026-10-23)."""
+    try:
+        text = (root / rel).read_text(encoding="utf-8")
+    except OSError:
+        return []
+    i = text.rfind("## " + heading)
+    if i < 0:
+        return []
+    out = []
+    for cells in _table_rows(text[i:], first_col):
+        if len(cells) < 5:
+            continue
+        name = re.sub(r"\*\*|`", "", cells[0]).strip()
+        status = re.sub(r"\*\*|`", "", cells[3]).strip()
+        low = status.lower()
+        state = next((v for k, v in state_words.items() if low.startswith(k)), "attention")
+        if state == "ok" and re.search(r"403|needs (steven|sign)|sign-in|until|blocked|not yet|refused", low):
+            state = "attention"  # "connected — Zoho 403 until…" is not green (validator, 2026-10-23)
+        owner = re.sub(r"\*\*", "", cells[4]).strip().split("·")[0].split("/")[0].strip()
+        seat = owner if any(owner == n for n, _r, _w in SEATS) else _seat(name + " " + cells[2])
+        out.append({"kind": kind, "name": name[:90], "desc": f"{cells[2][:120]} · {status[:90]}", "state": state,
+                    "fix": "", "who": owner[:40], "seat": seat, "where": re.sub(r"`", "", cells[1])[:120]})
+    return out
+
+
+def mcps(root: Path) -> list[dict]:
+    return _register(root, "integrations/MCP-SERVERS.md", "MCP servers", "Server", "mcp",
+                     {"connected": "ok", "registered": "ok", "installed": "ok", "pending": "pending"})
+
+
+def apis(root: Path) -> list[dict]:
+    return _register(root, "integrations/APIS.md", "APIs", "API", "api",
+                     {"connected": "ok", "key on mac": "ok", "ready": "pending", "pending": "pending", "no api": "none"})
+
+
+def mods(root: Path) -> list[dict]:
+    """Alias kept for callers: the Claude mods ARE the plugins() items (integrations/mods/<name>/.claude-plugin/plugin.json)."""
+    return plugins(root)
+
+
+KINDS = ("skill", "plugin", "connector", "routine", "mactask", "mcp", "api")
+
+
 def inventory(root: Path) -> dict:
-    items = skills(root) + plugins(root) + connectors(root) + routines(root) + mac_tasks(root)
+    items = skills(root) + plugins(root) + connectors(root) + routines(root) + mac_tasks(root) + mcps(root) + apis(root)
     for it in items:
         it["seat"] = _owner(it)
     by_seat: dict[str, dict[str, int]] = {}
     for it in items:
         by_seat.setdefault(it["seat"], {}).setdefault(it["kind"], 0)
         by_seat[it["seat"]][it["kind"]] += 1
-    counts = {k: sum(1 for it in items if it["kind"] == k) for k in ("skill", "plugin", "connector", "routine", "mactask")}
+    counts = {k: sum(1 for it in items if it["kind"] == k) for k in KINDS}
     counts["connector_ok"] = sum(1 for it in items if it["kind"] == "connector" and it["state"] == "ok")
     counts["connector_attention"] = counts["connector"] - counts["connector_ok"]
     seats_without = [n for n, _r, _w in SEATS if n not in by_seat]
@@ -195,7 +266,7 @@ def inventory(root: Path) -> dict:
 
 def format_inventory(inv: dict) -> str:
     c = inv["counts"]
-    out = [f"toolkit: {c['skill']} skills · {c['plugin']} plugins · {c['connector']} connectors ({c['connector_ok']} ok, {c['connector_attention']} need attention) · {c['routine']} cloud routines · {c['mactask']} Mac tasks"]
+    out = [f"toolkit: {c['skill']} skills · {c['plugin']} Claude mods (plugins) · {c['connector']} connectors ({c['connector_ok']} ok, {c['connector_attention']} need attention) · {c['mcp']} MCP servers · {c['api']} APIs · {c['routine']} cloud routines · {c['mactask']} Mac tasks"]
     for seat, _role, _w in SEATS:
         k = inv["by_seat"].get(seat)
         if k:
@@ -213,7 +284,7 @@ def format_inventory(inv: dict) -> str:
 def write_page(root: Path, inv: dict) -> Path:
     """wiki/ai-team/toolkit.md — the org chart's tool register, one line per item, grouped by seat."""
     p = root / "wiki/ai-team/toolkit.md"
-    L = ["# AI Team toolkit — skills, plugins, connectors, routines, Mac tasks per seat", "",
+    L = ["# AI Team toolkit — skills, Claude mods, connectors, MCP servers, APIs, routines, Mac tasks per seat", "",
          "Generated by `bin/brain toolkit --write` from the tree (zero tokens). Each item sits under the seat whose lane",
          "claims it; the status words come from `integrations/CONNECTIONS.md` (connectors), `docs/inventory/cloud-routines*.md`",
          "(routines) and `docs/inventory/mac-task-descriptions.md` (Mac tasks). Edit those sources, not this page.", "",
@@ -224,13 +295,13 @@ def write_page(root: Path, inv: dict) -> Path:
         if not mine:
             continue
         L += [f"## {seat} — {role}", ""]
-        for kind, label in (("skill", "Skills"), ("plugin", "Plugins (Claude Code mods)"), ("connector", "Connectors"), ("routine", "Cloud routines"), ("mactask", "Mac tasks")):
+        for kind, label in (("skill", "Skills"), ("plugin", "Claude mods (plugins)"), ("connector", "Connectors"), ("mcp", "MCP servers"), ("api", "APIs"), ("routine", "Cloud routines"), ("mactask", "Mac tasks")):
             rows = [it for it in mine if it["kind"] == kind]
             if not rows:
                 continue
             L.append(f"**{label}**")
             for it in rows:
-                extra = f" — *{it['state']}*" if kind == "connector" else ""
+                extra = f" — *{it['state']}*" if kind in ("connector", "mcp", "api") else ""
                 L.append(f"- `{it['name']}`{extra}: {it['desc']}")
             L.append("")
     L += ["## Seats with no tool of their own", "", ", ".join(inv["seats_without_tools"]) or "none", ""]

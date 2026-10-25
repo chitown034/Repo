@@ -6,6 +6,7 @@
 #   bash scripts/validate-code.sh --files a b check exactly these files
 #   bash scripts/validate-code.sh --hash      print the change-set hash the hook, --mark and the validator agree on
 #   bash scripts/validate-code.sh --mark      record the change-set as reviewed - refused unless this same hash
+#   bash scripts/validate-code.sh --since <ref> [--hash|--mark]   the same over a committed range (e.g. HEAD~1)
 #                                             PASSED the checks and docs/reports/CODE-VALIDATION-REVIEW.md names it
 #
 # Per file type: .py -> py_compile (+ the brain's unit tests and `bin/brain layout` when brain/ changed); .sh -> bash -n
@@ -23,32 +24,39 @@ REVIEW="docs/reports/CODE-VALIDATION-REVIEW.md"
 EXCLUDE='^(docs/reports/CODE-VALIDATION(-REVIEW)?\.md|brain/index\.json|INDEX\.md|brain/loop-history\.jsonl|docs/reports/(BRAIN-LOOP|BRAIN-BENCH|ENCYCLOPEDIA)\.md|\.claude/state/.*|(.*/)?__pycache__/.*|.*\.pyc|(.*/)?node_modules/.*)$'
 MODE="${1:-}"; [ $# -gt 0 ] && shift
 g() { git -c core.quotepath=off "$@"; }   # plain UTF-8 names, never "caf\303\251.py" in quotes
+# --since <ref> may be followed by --hash or --mark (2026-10-23): a change-set that is already committed is then hashed
+# over the same range the checks ran on, so it can be marked. Without --since, BASE is HEAD (the working tree) as before.
+BASE=HEAD; ACTION="$MODE"
+if [ "$MODE" = "--since" ]; then
+  BASE="${1:-}"; [ $# -gt 0 ] && shift
+  git rev-parse --verify --quiet "${BASE}^{commit}" >/dev/null 2>&1 || { echo "bad ref: ${BASE:-<none>}" >&2; exit 2; }
+  case "${1:-}" in --hash|--mark) ACTION="$1"; shift ;; *) ACTION="" ;; esac
+fi
 
 changed_files() {
   case "$MODE" in
     --files) printf '%s\n' "$@" ;;
-    --since) g diff --no-renames --name-only "$1" -- ; g diff --no-renames --cached --name-only -- ; g ls-files --others --exclude-standard ;;
+    --since) g diff --no-renames --name-only "$BASE" -- ; g diff --no-renames --cached --name-only -- ; g ls-files --others --exclude-standard ;;
     *) g diff --no-renames --name-only HEAD -- 2>/dev/null; g diff --no-renames --cached --name-only -- 2>/dev/null; g ls-files --others --exclude-standard 2>/dev/null ;;
   esac
 }
-if [ "$MODE" = "--since" ]; then
-  git rev-parse --verify --quiet "${1:-}^{commit}" >/dev/null 2>&1 || { echo "bad ref: ${1:-<none>}" >&2; exit 2; }
-fi
 FILES=$(changed_files "$@" | grep -v '^$' | grep -Ev "$EXCLUDE" | sort -u | while IFS= read -r f; do { [ -f "$f" ] || git ls-files --error-unmatch -- "$f" >/dev/null 2>&1; } && printf '%s\n' "$f"; done)
 # The hash covers the file list, the tracked diff of exactly those files, and the content of every untracked one -
 # one EXCLUDE list decides both what is checked and what is hashed, so a generated file can never move the hash.
 HASH=$( { printf '%s\n' "$FILES"
           while IFS= read -r f; do
             [ -n "$f" ] || continue
-            if git ls-files --error-unmatch -- "$f" >/dev/null 2>&1; then g diff --no-renames HEAD -- "$f" 2>/dev/null; g diff --no-renames --cached -- "$f" 2>/dev/null; [ -f "$f" ] || echo "deleted $f"; else cat -- "$f"; fi
+            if git ls-files --error-unmatch -- "$f" >/dev/null 2>&1; then g diff --no-renames "$BASE" -- "$f" 2>/dev/null; g diff --no-renames --cached -- "$f" 2>/dev/null; [ -f "$f" ] || echo "deleted $f"; else cat -- "$f"; fi
           done <<< "$FILES"
         } | (command -v shasum >/dev/null 2>&1 && shasum -a 256 || sha256sum) | cut -c1-16)
 
-case "$MODE" in
+case "$ACTION" in
   --hash) printf '%s\n' "$HASH"; exit 0 ;;
   --mark)
     grep -q "^$HASH " "$STATE/passed.txt" 2>/dev/null || { echo "refused: change-set $HASH has not PASSED the deterministic checks (run: bash scripts/validate-code.sh)"; exit 1; }
-    grep -q "$HASH" "$REVIEW" 2>/dev/null || { echo "refused: $REVIEW does not name change-set $HASH - the code-validator agent has not reviewed it"; exit 1; }
+    # a review names the change-set on its own line ("change-set: <hash>" at the start of a line, as the validator writes it,
+    # or "change-set <hash>" in a heading); a hash merely mentioned in prose does not count (validator, 2026-10-23)
+    grep -qE "^(#+ .*)?change-set:? $HASH\b" "$REVIEW" 2>/dev/null || { echo "refused: $REVIEW does not name change-set $HASH on a review line - the code-validator agent has not reviewed it"; exit 1; }
     printf '%s %s\n' "$HASH" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$STATE/validated.txt"; echo "marked $HASH as reviewed"; exit 0 ;;
 esac
 
@@ -60,7 +68,25 @@ run() { # <label> <command...>
   local out; if out=$("$@" 2>&1); then PASS=$((PASS+1)); say "PASS $label"; else FAIL=$((FAIL+1)); say "FAIL $label"; say "$(printf '%s' "$out" | tail -12 | sed 's/^/      /')"; fi
 }
 quickcheck() { # dashboard HTML: the one pre-existing "functions called but never defined" row is a known false positive
-  local out; out=$(python3 dashboard/tests/quickcheck.py "$1" 2>&1) || true
+  local out
+  # quickcheck.py is the Command Deck checker (it asserts the deck's cdStateSeed). Pages without a seed - the 6D Brain and
+  # the brain-4d template - get the generic checks instead: every inline script must parse (node --check). 2026-10-23.
+  # the deck is the page that DEFINES the seed element; a page that merely mentions the word (the 6D Brain embeds wiki passages) is not.
+  if ! grep -q 'id="cdStateSeed"' "$1"; then
+    python3 - "$1" <<'PY' || return 1
+import re, subprocess, sys, tempfile, os
+s = open(sys.argv[1], encoding="utf-8", errors="replace").read()
+bad = 0
+for i, m in enumerate(re.findall(r"<script(?![^>]*\bsrc=)[^>]*>(.*?)</script>", s, re.S)):
+    with tempfile.NamedTemporaryFile("w", suffix=".js", delete=False) as f: f.write(m); n = f.name
+    r = subprocess.run(["node", "--check", n], capture_output=True, text=True); os.unlink(n)
+    if r.returncode: bad += 1; print(f"FAIL script #{i} does not parse: {r.stderr.strip()[:200]}")
+print("RESULT: PASS (no deck seed; inline scripts parse)" if not bad else f"RESULT: FAIL ({bad} script(s))")
+sys.exit(1 if bad else 0)
+PY
+    return 0
+  fi
+  out=$(python3 dashboard/tests/quickcheck.py "$1" 2>&1) || true
   printf '%s' "$out" | grep -q 'RESULT: PASS' && return 0
   printf '%s' "$out" | grep '^FAIL' | grep -v 'no functions called but never defined' | grep -q . && { printf '%s\n' "$out" | grep '^FAIL'; return 1; }
   return 0
@@ -93,6 +119,10 @@ while IFS= read -r f; do
   esac
 done <<< "$FILES"
 [ "$KAPSO" = 1 ] && run "kapso unit tests" sh -c "cd integrations/kapso/tests && python3 -m unittest -q 2>&1 | tail -3 | grep -q '^OK'"
+printf '%s\n' "$FILES" | grep -qE '^integrations/skyslope/' && run "skyslope unit tests" sh -c "python3 -m unittest -q integrations.skyslope.tests.test_skyslope_cli 2>&1 | tail -3 | grep -q '^OK'"
+printf '%s\n' "$FILES" | grep -qE '^(scripts/fix-mine\.sh|scripts/tests/test_fix_mine\.sh)$' && run "fix-mine shell tests" bash scripts/tests/test_fix_mine.sh
+printf '%s\n' "$FILES" | grep -qE '^(integrations/jarvis/(vanessa-persona\.sh|jarvis-setup\.sh|persona/)|scripts/tests/test_vanessa_persona\.sh)' && run "vanessa-persona shell tests" bash scripts/tests/test_vanessa_persona.sh
+printf '%s\n' "$FILES" | grep -qE '^dashboard/brain-4d(\.html|/)' && run "6D page tests (passages script-safe + private, merge-live)" sh -c "python3 -m unittest -q dashboard.brain-4d.test_build_passages dashboard.brain-4d.test_merge_live 2>&1 | tail -3 | grep -q '^OK'"
 [ "$BRAIN" = 1 ] && { DOCTOR=1; run "brain unit tests" sh -c "cd brain/tests && python3 -m unittest -q 2>&1 | tail -3 | grep -q '^OK'"; run "brain layout" bin/brain layout; }
 [ "$DOCTOR" = 1 ] && run "brain doctor" bin/brain doctor
 VERDICT=$([ "$FAIL" = 0 ] && echo PASS || echo FAIL)

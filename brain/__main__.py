@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from datetime import datetime, timezone
 import sys
 from pathlib import Path
 
@@ -74,6 +75,20 @@ def _parser() -> argparse.ArgumentParser:
     ow = sub.add_parser("owner", help="who keeps a Command Deck panel alive, by what mechanism, and what stays Steven's")
     ow.add_argument("query"); ow.add_argument("--json", action="store_true")
     sub.add_parser("mcp", help="serve recall/remember/pack/gaps over stdio MCP for any MCP client")
+    ig = sub.add_parser("ingest", help="ingest an outside export into the brain: `claude-export <conversations.json>` (claude.ai data export) -> memory/claude-chats.md")
+    ig.add_argument("source", choices=["claude-export"]); ig.add_argument("path")
+    sub.add_parser("links", help="every front door of the second brain: deck, ISA Portal, 6D, Action Desk, Drive SECOND BRAIN, NotebookLM, Notion, the SB Docs")
+    ly = sub.add_parser("layers", help="every layer of the second brain (repo, index, deck, 6D, Jarvis, Notion, Drive, NotebookLM...): last sync, age, verdict")
+    ly.add_argument("--write", action="store_true", help="rewrite docs/reports/LAYERS.md"); ly.add_argument("--json", action="store_true")
+    rc = sub.add_parser("recs", help="Vanessa's top 10 big moves for today: scored, prioritised, learned from approvals (docs/reports/BIG-MOVES.md)")
+    rc.add_argument("action", nargs="?", default="top", choices=["top", "learn"], help="top (default) or learn <decisions.json>")
+    rc.add_argument("file", nargs="?", default=None, help="learn: a JSON list of {id, decision, at, by}")
+    rc.add_argument("--write", action="store_true"); rc.add_argument("--json", action="store_true"); rc.add_argument("--n", type=int, default=10)
+    rc.add_argument("--signals", default=None, help="a JSON list of live signals (deck queue, refi list, presence...) to rank with the brain's own")
+    rc.add_argument("--coas", action="store_true", help="the four courses of action (4 each) plus the questions block, instead of the top 10")
+    og = sub.add_parser("org", help="the AI org chart as one JSON: seats, lanes, pods, tiers (what every dashboard should show)")
+    ex = sub.add_parser("export", help="export the brain for another tool: `notebooklm` writes exports/notebooklm/*.md (no client pages, PII masked)")
+    ex.add_argument("target", choices=["notebooklm"]); ex.add_argument("--out", default=None, help="folder (default exports/notebooklm)")
     return p
 
 
@@ -113,8 +128,15 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.cmd == "reindex":
+        # the toolkit page is generated from the registers; regenerate it first so the index never goes stale against it
+        # (CI 2026-10-23: a connections edit without `toolkit --write` failed brain-loop five pushes in a row)
+        from . import toolkit as toolkit_mod
+        wrote = ""
+        # only where the page AND its sources exist: a bare fixture tree has neither, and a tree with the page alone must keep it
+        if (root / "wiki/ai-team/toolkit.md").is_file() and (root / "integrations/CONNECTIONS.md").is_file():
+            tk = toolkit_mod.write_page(root, toolkit_mod.inventory(root)); wrote = f"{tk.relative_to(root)}, "
         ix = indexer.write(root)
-        print(f"wrote INDEX.md + brain/index.json — {ix['files_indexed']} files, {ix['sections_indexed']} sections")
+        print(f"wrote {wrote}INDEX.md + brain/index.json — {ix['files_indexed']} files, {ix['sections_indexed']} sections")
         return 0
 
     if args.cmd == "doctor":
@@ -193,6 +215,57 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "passages":
         from . import passages
         print(passages.format_passages(passages.search(root, " ".join(args.question), top=args.top))); return 0
+
+    if args.cmd == "ingest":
+        from . import ingest_claude_export
+        st = ingest_claude_export.ingest(root, Path(args.path))
+        print(f"ingested {st['conversations']} conversations, {st['tasks']} tasks, {st['masked']} masks -> {st['out']}"); return 0
+
+    if args.cmd == "links":
+        from . import links
+        print(links.format_links(root)); return 0
+
+    if args.cmd == "recs":
+        from . import recs
+        if args.action == "learn":
+            if not args.file:
+                print("recs learn needs a decisions JSON file"); return 2
+            r = recs.learn(root, json.loads(Path(args.file).read_text(encoding="utf-8")))
+            print(f"learned {r['added']} decisions; weights: " + ", ".join(f"{k} {v:.2f}" for k, v in sorted(r["weights"].items()))); return 0
+        signals = json.loads(Path(args.signals).read_text(encoding="utf-8")) if args.signals else None
+        if args.write:
+            print("wrote", recs.write(root, args.n, signals))
+        if args.coas:
+            groups = recs.coas(root, 4, signals)
+            if args.json:
+                print(json.dumps({"coas": groups, "questions": recs.questions(root, groups)}, indent=1)); return 0
+            for key, label, about in recs.COAS:
+                print(f"== {label} — {about}"); print(recs.format_top(groups.get(key, [])) or "  (nothing in this lane today)"); print()
+            print("== Questions you may have")
+            for q in recs.questions(root, groups):
+                print(f"- {q['q']} {q['a']} → {q['action']}")
+            return 0
+        items = recs.top(root, args.n, signals)
+        print(json.dumps(items, indent=1) if args.json else recs.format_top(items)); return 0
+    if args.cmd == "org":
+        from . import loop as loop_mod, route as route_mod
+        rules = route_mod.load_rules(root)
+        seats = loop_mod.org_seats(root)
+        print(json.dumps({"generated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "seats": seats,
+                          "lanes": {k: v for k, v in rules["lanes"].items()}, "tiers": rules["tiers"],
+                          "pods": [{"pod": n, "words": w, "seats": m, "delivers": d} for n, w, m, d in rules["pods"]],
+                          "source": "wiki/ai-team/org-chart.md + cross-functional.md (bin/brain org)"}, indent=1)); return 0
+    if args.cmd == "layers":
+        from . import layers
+        if args.write:
+            print("wrote", layers.write(root)); return 0
+        rows = layers.collect(root)
+        print(json.dumps(rows, indent=1) if args.json else layers.format_rows(rows)); return 0
+
+    if args.cmd == "export":
+        from . import export_notebooklm
+        r = export_notebooklm.export(root, Path(args.out) if args.out else None)
+        print(export_notebooklm.format_summary(r)); return 0
 
     if args.cmd == "encyclopedia":
         from . import encyclopedia

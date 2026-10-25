@@ -6,8 +6,8 @@
 #
 # Safe means: it syncs this branch (scripts/repo-sync.sh: backs up, never loses your edits, never pushes) and keeps
 # it synced every 30 minutes, checks and restarts the Mac runner (the thing that has been silent since
-# Oct 13), installs Kapso (WhatsApp) for Claude Code, installs the Inkbox voice SDK, checks Jarvis and Vanessa's
-# voice, installs/registers Laya, opens Orca on the Repo folder, installs AnyDesk (official cask), checks the
+# Oct 13), installs Kapso (WhatsApp) for Claude Code, installs the Inkbox voice SDK, installs Ollama + the Jarvis model and
+# builds the Jarvis index if missing, checks Vanessa's voice, installs/registers Laya, turns on the Agent OS, opens Orca on the Repo folder, installs AnyDesk (official cask), checks the
 # Lofty and Zoho key files, and runs the read-only health check. It NEVER signs in anywhere,
 # never runs runnerctl login or save-token, never prints a key, never pairs Orca, never sends a message, never
 # spends money. The two things it asks you to TYPE (your mobile number and the Kapso key) go straight into the
@@ -28,6 +28,7 @@ LOG="$LOGDIR/connect-$(date +%Y-%m-%d-%H%M).log"
 PREVIEW=0; [ "${1:-}" = "--preview" ] && PREVIEW=1
 PASS=""; FAIL=""; NEEDS=""
 say() { printf '%s\n' "$*" | tee -a "$LOG"; }
+exec 3>&1   # the screen, kept open for steps that must show lines while step() sends their stdout to the log (2c)
 have() { command -v "$1" >/dev/null 2>&1; }
 
 say "Connect everything - $(scutil --get ComputerName 2>/dev/null || hostname -s) - $(date)"
@@ -96,8 +97,9 @@ step "1b Keep the Repo folder caught up (every 30 minutes)" \
 # 2. the runner - silent on the dashboard since 2026-10-13. Its last report (2026-10-13 07:13 UTC) says it was
 #    logged in, not backing off, and stuck "running" fabric-deck-sync - so "restart only if stopped" never fired.
 #    It now always restarts once: that ends a hung task (tasks re-run at their next slot) and never logs in.
+RUNNER_OUT=0
 runner_fix() {
-  have runnerctl || { echo "runnerctl not installed - run ./mac-bootstrap.sh --only runner"; return 1; }
+  have runnerctl || { echo "runnerctl not installed on this Mac. The task runner was built on Mac 1 only; a second Mac gets it from there (scripts/second-mac.sh, 'still yours' b)"; return 1; }
   runnerctl status 2>&1 | tee -a "$LOG" | tail -15
   echo "restarting the runner once to clear a hung task (never logs in)"
   local out rc; out="$(runnerctl restart 2>&1)"; rc=$?; printf '%s\n' "$out" | tail -5
@@ -107,12 +109,37 @@ runner_fix() {
     echo "runner is still not running after the restart"; return 1
   fi
   if runnerctl status 2>&1 | grep -qiE 'logged out|not logged in|login required'; then
-    echo "RUNNER IS LOGGED OUT - only you can sign it in: run  runnerctl login  yourself"; return 1
+    RUNNER_OUT=1; echo "RUNNER IS LOGGED OUT - only you can sign it in: run  runnerctl login  yourself"; return 1
   fi
   runnerctl list >/dev/null 2>&1
 }
 step "2 Mac runner (silent since Oct 13): status, restart once" \
   "Runner: run  runnerctl login  yourself (a script must never sign in), then  runnerctl status" runner_fix
+
+# 2c. The runner's failing tasks, with their last log lines, so the REPORT carries the diagnosis (Steven, 2026-10-23:
+#     "look for other things not functioning and fix those"; this saves a second paste). Read-only; never prints a key.
+runner_logs() {
+  have runnerctl || { echo "runnerctl not on PATH"; return 1; }
+  local st; st="$(runnerctl status 2>/dev/null)" || true
+  local bad; bad="$(printf '%s\n' "$st" | grep -Ei 'error|refused|limited|failed' | head -12)"
+  [ -n "$bad" ] || { echo "no task in error, refused or limited state"; return 0; }
+  # say() so the lines land in the REPORT Steven pastes, not only in the log (validator P05-F2); the step then "fails" so the
+  # REPORT lists it under "Did not finish" with the note, never under Done.
+  # inside step() stdout is the log, so the screen gets its copy through fd 3 (opened at the top; stdout when it is closed)
+  scr() { if { : >&3; } 2>/dev/null; then cat >&3; else cat; fi; }   # a dup of the screen fd, never a reopen (no truncation on either OS)
+  { echo "  tasks not healthy:"; printf '%s\n' "$bad" | sed 's/^/    /'; } | tee -a "$LOG" | scr
+  local logdir="$HOME/Applications/claude-runner/logs" t f
+  printf '%s\n' "$bad" | grep -oE '[A-Za-z0-9][A-Za-z0-9_.-]+' | sort -u | while IFS= read -r t; do
+    for f in "$logdir/$t.log" "$logdir/$t"/*.log "$HOME/Library/Logs/claude-runner/$t.log"; do
+      [ -f "$f" ] || continue
+      { echo "  --- $t (last 12 lines, secrets masked)"
+        tail -12 "$f" | sed -E 's/Bearer [^ "]+/Bearer ***/Ig; s/(key|token|secret|password|authorization)("|'"'"')?[=: ]+("|'"'"')?[^ ",]+/\1=***/Ig; s/sk-[A-Za-z0-9_-]{6,}/sk-***/g' | sed 's/^/    /'; } | tee -a "$LOG" | scr
+      break
+    done
+  done
+  return 1
+}
+step "2c Runner tasks in error (last log lines into this report)" "Mac tasks in error (step 2c lists them above with their last log lines) - paste this REPORT to Claude; the fixes are integrations/mac-task-specs.md section 9" runner_logs
 
 # 2b. keep the Mac awake while it is on the charger, so the 6 AM tasks run. A user LaunchAgent running
 #     caffeinate -s (blocks system sleep on AC power only; the display still sleeps; no password). Undo:
@@ -144,10 +171,10 @@ step "3 Kapso WhatsApp plugin + MCP (Claude Code)" \
 kapso_keys() {
   if security find-generic-password -a "$USER" -s kapso-allow >/dev/null 2>&1 && security find-generic-password -a "$USER" -s kapso >/dev/null 2>&1; then
     echo "both Keychain items already present"; return 0; fi
-  printf 'Your own mobile number, digits only with country code (e.g. 16195551234) - the ONLY number Vanessa may answer. Enter to skip: '
+  printf 'Your own mobile number, digits only with country code (e.g. 16195551234) - the ONLY number Vanessa may answer. Enter to skip: ' >/dev/tty
   read -r mob </dev/tty; mob="$(printf '%s' "$mob" | tr -cd '0-9')"
   [ -z "$mob" ] && { echo "skipped"; return 1; }
-  echo "Next it asks for the Kapso project API key (app.kapso.ai -> your project -> API keys). Typed hidden, stored only in the Keychain."
+  echo "Next it asks for the Kapso project API key (app.kapso.ai -> your project -> API keys). Typed hidden, stored only in the Keychain." >/dev/tty
   bash integrations/kapso/install-mac.sh keys --allow "$mob" </dev/tty
 }
 step "4 Kapso keys (your mobile + the project key, Keychain only)" \
@@ -191,12 +218,62 @@ laya_connect() {
     if claude mcp list 2>/dev/null | grep -Eq '^[[:space:]]*laya([: ]|$)'; then echo "Laya MCP already registered with Claude Code"
     else claude mcp add -s user laya --env LAYA_DEVICE=cpu -- "$lv/bin/laya-mcp-server" || return 1; echo "Laya MCP registered (all projects)"; fi
   else echo "claude CLI missing - Laya not registered with Claude Code"; return 1; fi
-  out="$("$lv/bin/python" integrations/laya/laya_route.py --engine real "What is the VA funding fee for a first-time use?" 2>&1 | tail -n 2)"
+  out="$(HF_HUB_DISABLE_PROGRESS_BARS=1 "$lv/bin/python" integrations/laya/laya_route.py --engine real "What is the VA funding fee for a first-time use?" 2>/dev/null | tail -n 2)"
   printf '%s\n' "$out"
   printf '%s' "$out" | grep -Eq 'ROUTE|ESCALATE' || { echo "real Laya engine did not answer"; return 1; }
 }
 step "6 Laya local router (install if missing, register with Claude Code, one real test)" \
   "Laya: needs huggingface.co once for the free model - rerun  bash connect-all.sh  on a normal internet connection" laya_connect
+
+# 6a. Jarvis's engine. Jarvis (OpenJarvis) is the on-device recall-and-voice system: a Rust memory store that
+#     indexes the vault into ~/.openjarvis/memory.db and answers through the local llama3.1:8b on Ollama. The runner
+#     task `openjarvis` builds the index. This installs Ollama (official Homebrew formula) and pulls the model if
+#     missing (free, about 5 GB, one time), starts Ollama, and - when no memory.db exists yet - asks the runner to run
+#     the openjarvis task once. It never logs in and never reads the index's content.
+JARVIS_MODEL="${JARVIS_MODEL:-llama3.1:8b}"
+jarvis_db() {
+  local c; for c in "$HOME/.openjarvis/memory.db" "$HOME/Library/Application Support/OpenJarvis/memory.db" "$HOME/Applications/OpenJarvis/memory.db"; do
+    [ -s "$c" ] && { printf '%s' "$c"; return 0; }
+  done; return 1
+}
+jarvis_engine() {
+  local i db
+  if ! have ollama; then
+    have brew || { echo "Ollama missing and no Homebrew: install it from https://ollama.com/download/mac, then rerun"; return 1; }
+    # the cask is Ollama's prebuilt app (no compile) - the formula builds from source, which an Intel Mac on macOS 26
+    # with old Command Line Tools cannot do (Mac 2, 2026-10-23). The app links the ollama CLI on first open.
+    brew install --cask ollama || brew install ollama || return 1
+    open -a Ollama 2>/dev/null || true
+    i=0; while [ $i -lt 30 ] && ! have ollama && [ ! -x /usr/local/bin/ollama ] && [ ! -x /opt/homebrew/bin/ollama ]; do sleep 1; i=$((i+1)); done
+    have ollama || { [ -x /usr/local/bin/ollama ] && export PATH="/usr/local/bin:$PATH"; } || { [ -x /opt/homebrew/bin/ollama ] && export PATH="/opt/homebrew/bin:$PATH"; }
+    have ollama || { echo "Ollama app installed but its command is not linked yet - open Ollama once (it asks to install the command line tool), then rerun"; return 1; }
+  fi
+  if ! ollama list >/dev/null 2>&1; then
+    { brew services start ollama >/dev/null 2>&1 || open -a Ollama 2>/dev/null || (nohup ollama serve >/dev/null 2>&1 3>&- &); }
+    i=0; while [ $i -lt 20 ] && ! ollama list >/dev/null 2>&1; do sleep 1; i=$((i+1)); done
+    ollama list >/dev/null 2>&1 || { echo "Ollama installed but not answering - open the Ollama app once, then rerun"; return 1; }
+  fi
+  echo "Ollama running"
+  if ollama list 2>/dev/null | awk 'NR>1{print $1}' | grep -qxF "$JARVIS_MODEL"; then echo "model $JARVIS_MODEL present"
+  else echo "pulling $JARVIS_MODEL (one time, about 5 GB)"; ollama pull "$JARVIS_MODEL" || { echo "model pull did not finish - rerun on a normal internet connection"; return 1; }; fi
+  if db="$(jarvis_db)"; then echo "Jarvis index: $db"
+  elif have runnerctl && runnerctl list 2>/dev/null | grep -q openjarvis; then
+    # Building the index is a runner task (claude -p): it spends Claude allowance, so it runs only when Steven says
+    # so:  JARVIS_BUILD_INDEX=1 bash connect-all.sh   (or: runnerctl run openjarvis   by hand).
+    [ "${JARVIS_BUILD_INDEX:-}" = 1 ] || { echo "no Jarvis index yet. To build it (one runner task, uses Claude allowance): runnerctl run openjarvis"; return 1; }
+    echo "no Jarvis index yet - running the openjarvis task once (indexes the vault; no content printed)"
+    runnerctl run openjarvis || { echo "openjarvis task did not finish - runnerctl logs openjarvis"; return 1; }
+    db="$(jarvis_db)" || { echo "openjarvis ran but wrote no memory.db - is ~/Shearrill-Vault on this Mac? (docs/SECOND-MAC-SETUP.md 6b)"; return 1; }
+    echo "Jarvis index built: $db"
+  else echo "no Jarvis index and no openjarvis runner task on this Mac - the index lives on the other Mac (docs/SECOND-MAC-SETUP.md 6b)"; return 1; fi
+}
+step "6a Jarvis engine (Ollama + $JARVIS_MODEL, OpenJarvis index)" \
+  "Jarvis: if the report says 'no Jarvis index yet', run  runnerctl run openjarvis  once (uses Claude allowance), or rerun with JARVIS_BUILD_INDEX=1; the vault must be on this Mac (docs/SECOND-MAC-SETUP.md 6b)" jarvis_engine
+
+# 6a2. Brain index refresh: the Mac's own edits make brain/index.json stale against the tree (doctor FAIL on the first
+#      report), and 6b runs doctor. reindex writes only brain/index.json + INDEX.md (rebuilt files; never pushed).
+step "6a2 Brain index refresh (bin/brain reindex, local only)" "Brain: run  bin/brain reindex  then  bin/brain doctor" \
+  bin/brain reindex
 
 # 6b. Jarvis + the recorded voice clips + the brain: verifies OpenJarvis memory.db, the vault, the real Laya engine
 #     (from Laya's own venv), Vanessa's clips and bin/brain doctor; writes brain/state/jarvis-status.json, which is
@@ -226,6 +303,11 @@ orca_connect() {
   [ "$id" = com.stablyai.orca ] || echo "WARNING: bundle id is $id, not com.stablyai.orca - check it is the right Orca"
   open -a "$app" "$REPO_DIR" || return 1
   echo "opened Orca with $REPO_DIR"
+  if [ -f integrations/remote-control/orca-remote.sh ]; then
+    local doc; doc="$(bash integrations/remote-control/orca-remote.sh doctor 2>&1 | tail -n 12)"; printf '%s\n' "$doc"
+    case "$doc" in *--grant-desktop-control*|*"non-private address"*) echo "Orca doctor found a security problem above - stop that orca serve"; return 1 ;; esac
+  fi
+  return 0
 }
 step "6c Orca (agents side by side + phone view), opened on the Repo folder" \
   "Orca: install it from https://github.com/stablyai/orca/releases (free), then rerun" orca_connect
@@ -263,6 +345,47 @@ anydesk_connect() {
 step "6d AnyDesk (remote screen between all your computers)" \
   "AnyDesk: download it from https://anydesk.com/en/downloads/mac-os (free for personal use), then rerun" anydesk_connect
 
+# 6e. Agent OS: every roster agent reachable through Laya (lane), Jarvis (recall) and Orca (launch). --apply only
+#     writes ~/.local/bin/brain (symlink), ~/.config/agent-os/config, and symlinks the generated seat files from
+#     integrations/agent-os/agents/ into ~/.claude/agents (files already there are never overwritten); the rest it reports.
+step "6e Agent OS (brain on PATH, roster agents wired to Laya, Jarvis and Orca)" \
+  "Agent OS: bash integrations/agent-os/install-mac.sh --apply and read its WARN lines" \
+  bash integrations/agent-os/install-mac.sh --apply
+
+# 6f. NotebookLM connector (Steven's opt-in, 2026-10-23: "setup and connect everything for me"). Community tool
+#     notebooklm-mcp-cli (jacob-bd, PyPI): installs the `nlm` CLI + the notebooklm-mcp server with uv and registers the
+#     server with Claude Code. It talks to notebook.google.com through undocumented internal APIs and keeps a copy of
+#     Steven's Google session after HE runs `nlm login` - this step never logs in, never reads a cookie. Non-sensitive
+#     notebooks only (the SB Docs hold no client data). Remove: uv tool uninstall notebooklm-mcp-cli; claude mcp remove notebooklm
+nlm_connect() {
+  have uv || { echo "uv missing - rerun after step 6 installed it (or: brew install uv)"; return 1; }
+  if ! have nlm; then uv tool install notebooklm-mcp-cli || return 1; [ -x "$HOME/.local/bin/nlm" ] && export PATH="$HOME/.local/bin:$PATH"; fi
+  have nlm || { echo "nlm installed but not on PATH - open a new Terminal and rerun"; return 1; }
+  echo "nlm $(nlm --version 2>/dev/null | head -1)"
+  if have claude; then
+    if claude mcp list 2>/dev/null | grep -Eqi '^[[:space:]]*notebooklm'; then echo "notebooklm MCP already registered"
+    else nlm setup add claude-code 2>&1 | tail -3; fi
+  fi
+  if nlm login --check >/dev/null 2>&1; then echo "signed in to NotebookLM"; return 0; fi
+  echo "not signed in yet - yours: run  nlm login  (opens your browser; your Google session stays on this Mac only)"; return 1
+}
+step "6f NotebookLM connector (nlm CLI + MCP for Claude Code; sign-in stays yours)" \
+  "NotebookLM: run  nlm login  (browser), then  nlm login --check  and  nlm setup list" nlm_connect
+
+# 6g. OpenFlowKit MCP (Steven, 2026-10-23: "install openflowkit"): diagrams the agent draws and saves beside the code.
+#     Local stdio server from the published npm package, no key, no outside calls (reviewed a252135, MIT). Registered
+#     at user scope so every Claude Code session has it; the skill is already in .claude/skills/openflowkit.
+openflowkit_mcp() {
+  have claude || { echo "claude CLI not found"; return 1; }
+  have npx || { echo "npx not found - brew install node"; return 1; }
+  if claude mcp list 2>/dev/null | grep -q "^openflowkit"; then echo "openflowkit MCP already registered"; return 0; fi
+  claude mcp add -s user openflowkit -- npx -y openflowkit mcp 2>&1 | tail -2 || return 1
+  claude mcp list 2>/dev/null | grep -q "^openflowkit" || { echo "claude mcp add openflowkit did not register"; return 1; }
+  echo "openflowkit MCP registered (user scope); in a session: /mcp, then 'draw the pipeline' - saves .openflow.json"
+}
+step "6g OpenFlowKit diagram MCP (Claude Code, every project)" \
+  "OpenFlowKit: claude mcp add -s user openflowkit -- npx -y openflowkit mcp" openflowkit_mcp
+
 # 7. key files (names only, never values)
 keyfiles() {
   local ok=0
@@ -279,8 +402,8 @@ LOFTY_VENV="$HOME/Applications/cli-anything-harnesses/.venv"
 lofty_connect() {
   local env="$HOME/.config/lofty/.env" key=""
   if ! { [ -s "$env" ] && grep -qE '^LOFTY_API_KEY=.+' "$env"; }; then
-    printf 'Lofty API key (Lofty -> Settings -> Integrations -> API). Typed hidden, saved only in ~/.config/lofty/.env. Enter to skip: '
-    trap 'stty echo 2>/dev/null' INT TERM; stty -echo 2>/dev/null; read -r key </dev/tty; stty echo 2>/dev/null; trap - INT TERM; echo
+    printf 'Lofty API key (Lofty -> Settings -> Integrations -> API). Typed hidden, saved only in ~/.config/lofty/.env. Enter to skip: ' >/dev/tty
+    trap 'stty echo 2>/dev/null; trap - INT TERM; echo >/dev/tty; echo "interrupted - nothing saved"; return 130' INT TERM; stty -echo 2>/dev/null; read -r key </dev/tty || { stty echo 2>/dev/null; trap - INT TERM; echo "interrupted - nothing saved"; return 130; }; stty echo 2>/dev/null; trap - INT TERM; echo >/dev/tty
     [ -z "$key" ] && { echo "skipped - no Lofty key on this Mac"; return 1; }
     mkdir -p "$HOME/.config/lofty" && ( umask 077; printf 'LOFTY_API_KEY=%s\n' "$key" > "$env" ) && chmod 600 "$env"
     key=""; echo "key saved (value not shown)"
@@ -298,6 +421,69 @@ lofty_connect() {
 step "7b Lofty CRM (key on this Mac, read-only check)" \
   "Lofty: make an API key in Lofty -> Settings -> Integrations -> API, rerun connect-all and paste it when asked" lofty_connect
 
+# 7c. TidyCal (Steven, 2026-10-23: "connect TidyCal"). Personal access token from TidyCal -> Settings -> Integrations ->
+#     API; hidden prompt, saved only in ~/.config/tidycal/.env (chmod 600); Enter skips. Proof is one read-only call
+#     (GET /api/booking-types with the bearer token). Never books, cancels or edits anything.
+tidycal_check() { # <env file> -> HTTP code; the token goes to curl on stdin (-K -), never as an argument
+  sh -c '. "$1"; printf "header = \"Authorization: Bearer %s\"\nheader = \"Accept: application/json\"\n" "$TIDYCAL_TOKEN" | curl -s -K - -o /dev/null -w "%{http_code}" https://tidycal.com/api/booking-types' sh "$1" 2>/dev/null
+}
+tidycal_connect() {
+  local env="$HOME/.config/tidycal/.env" key="" code fresh=0
+  if ! { [ -s "$env" ] && grep -qE '^TIDYCAL_TOKEN=.+' "$env"; }; then
+    printf 'TidyCal API token (TidyCal -> Integrations -> Automations or Advanced -> API -> Manage API keys -> Create token; needs a paid plan). Typed hidden, saved only in ~/.config/tidycal/.env. Enter to skip: ' >/dev/tty
+    trap 'stty echo 2>/dev/null; trap - INT TERM; echo >/dev/tty; echo "interrupted - nothing saved"; return 130' INT TERM; stty -echo 2>/dev/null; read -r key </dev/tty || { stty echo 2>/dev/null; trap - INT TERM; echo "interrupted - nothing saved"; return 130; }; stty echo 2>/dev/null; trap - INT TERM; echo >/dev/tty
+    [ -z "$key" ] && { echo "skipped - no TidyCal token on this Mac"; return 1; }
+    case "$key" in *[!A-Za-z0-9._-]*) echo "that token holds a character outside letters, digits, . - _ (TidyCal tokens use only those) - not saved"; return 1 ;; esac
+    mkdir -p "$HOME/.config/tidycal" && ( umask 077; printf 'TIDYCAL_TOKEN=%s\n' "$key" > "$env" ) && chmod 600 "$env"
+    key=""; fresh=1; echo "token saved (value not shown)"
+  fi
+  code="$(tidycal_check "$env")"
+  case "$code" in
+    200) echo "TidyCal token works (GET /api/booking-types -> 200)"; return 0 ;;
+    401|403) rm -f "$env"; echo "TidyCal refused the token (HTTP $code) - it was NOT kept. Make a new token (or check that your plan includes the API) and rerun connect-all; it will ask again"; return 1 ;;
+    404) echo "TidyCal answered 404 for /api/booking-types - the endpoint path needs checking against tidycal.com/developer/docs; token kept"; return 1 ;;
+    *) if [ "$fresh" = 1 ]; then rm -f "$env"; echo "TidyCal not reachable (HTTP ${code:-none}) - the token you just typed was not kept; check the network and rerun (it asks again)"; else echo "TidyCal not reachable (HTTP ${code:-none}) - check the network and rerun"; fi; return 1 ;;
+  esac
+}
+step "7c TidyCal (token on this Mac, read-only check)" \
+  "TidyCal: make a token in TidyCal -> Settings -> Integrations -> API, rerun connect-all and paste it when asked" tidycal_connect
+
+# 7e. Arive (mortgage LOS) credentials - Client ID, Secret and API Key from Arive -> Settings -> Integrations -> Generate
+#     (Pro plan). Hidden prompts, saved only in ~/.config/arive/.env (chmod 600); Enter skips. No call is made yet: the token
+#     endpoint is confirmed from Arive's developer docs first (integrations/arive/README.md); the daily cycle reads the file then.
+arive_keys() {
+  local env="$HOME/.config/arive/.env" cid="" sec="" key=""
+  if [ -s "$env" ] && grep -qE '^ARIVE_API_KEY=.+' "$env"; then echo "Arive credentials already on this Mac (values not shown)"; return 0; fi
+  printf 'Arive Client ID (Arive -> Settings -> Integrations -> Generate; Pro plan). Hidden; Enter to skip all three: ' >/dev/tty
+  # Ctrl-C at any of the three prompts: echo back on, trap cleared, out of the function with nothing saved (validator P04-F1 -
+  # the old trap only restored echo, so the next values were typed in clear text and still saved).
+  trap 'stty echo 2>/dev/null; trap - INT TERM; echo >/dev/tty; echo "interrupted - nothing saved"; return 130' INT TERM
+  stty -echo 2>/dev/null; read -r cid </dev/tty || { stty echo 2>/dev/null; trap - INT TERM; echo "interrupted - nothing saved"; return 130; }; echo >/dev/tty
+  [ -z "$cid" ] && { stty echo 2>/dev/null; trap - INT TERM; echo "skipped - no Arive credentials on this Mac"; return 1; }
+  printf 'Arive Secret Key: ' >/dev/tty; stty -echo 2>/dev/null; read -r sec </dev/tty || { stty echo 2>/dev/null; trap - INT TERM; echo "interrupted - nothing saved"; return 130; }; echo >/dev/tty
+  printf 'Arive API Key: ' >/dev/tty; stty -echo 2>/dev/null; read -r key </dev/tty || { stty echo 2>/dev/null; trap - INT TERM; echo "interrupted - nothing saved"; return 130; }; echo >/dev/tty; stty echo 2>/dev/null; trap - INT TERM
+  case "$cid$sec$key" in *[!A-Za-z0-9._-]*) echo "a value holds a character outside letters, digits, . - _ - not saved"; return 1 ;; esac
+  [ -n "$sec" ] && [ -n "$key" ] || { echo "all three are needed - not saved"; return 1; }
+  mkdir -p "$HOME/.config/arive" && ( umask 077; printf 'ARIVE_CLIENT_ID=%s\nARIVE_SECRET_KEY=%s\nARIVE_API_KEY=%s\n' "$cid" "$sec" "$key" > "$env" ) && chmod 600 "$env"
+  cid=""; sec=""; key=""; echo "Arive credentials saved (values not shown); the read-only loan feed is switched on once the endpoint is confirmed"
+}
+step "7e Arive credentials (file on this Mac, no call yet)" \
+  "Arive: generate the three values in Arive -> Settings -> Integrations, rerun connect-all and paste them when asked" arive_keys
+
+# 7d. The sites with no API - homes.com, ShowingTime, Showami (+ SkySlope, zipForms behind their ECC gate): the
+#     read-only CLI-Anything wrappers. connect.sh installs what is missing, runs the posture check and says which site
+#     still needs your sign-in in the agent Chrome. It never signs in (MFA is yours).
+CAH_BIN="$HOME/Applications/cli-anything-harnesses/.venv/bin"
+cah_connect() {
+  bash integrations/cli-anything-harnesses/connect.sh </dev/tty
+  local missing="" p
+  for p in browser homes showingtime showami; do [ -x "$CAH_BIN/cli-anything-$p" ] || missing="$missing $p"; done
+  [ -z "$missing" ] || { echo "wrappers still missing:$missing - MAC-SETUP.sh did not finish; see the log"; return 1; }
+  echo "wrappers installed (browser, homes, showingtime, showami); sign-ins in the agent Chrome are yours - the list above names them"
+}
+step "7d homes.com, ShowingTime, Showami wrappers (install + status; sign-ins stay yours)" \
+  "Sites: bash integrations/cli-anything-harnesses/connect.sh  then sign in once in the agent Chrome where it says so" cah_connect
+
 # 8. Claude Mods: route beacon, HALT guard, /remember, connection beacon (/connections, /owner), /paste. Asks y once.
 mods_install() { bash integrations/mods/install-mods.sh </dev/tty; }
 step "8 Claude Mods (status line, HALT guard, /remember, /connections, /owner, /paste)" \
@@ -310,22 +496,31 @@ say ""; say "================ REPORT ================"
 [ -n "$PASS" ] && say "Done:$(printf "$PASS")"
 [ -n "$FAIL" ] && say "Did not finish:$(printf "$FAIL")"
 say ""
-say "Still yours (a script must never do these):"
+say "Still yours (a script must never do these) - the four that matter most are first:"
+say "  A. iMessage line: from your phone text  connect @vanessa-shearrill  to +1 650 484 9720 (once). Until then the"
+say "     morning brief reaches you by e-mail and push, not by text or voice."
+say "  B. Zoho: Zoho CRM -> Setup -> Security Control -> Profiles -> your profile -> Developer Permissions -> tick 'Zoho CRM API Access'."
+say "  C. Claim your profiles for AI search: Google Business Profile, Bing Places, Zillow (agent + lender), Realtor.com, Homes.com, Yelp."
+say "  D. AnyDesk permissions on each Mac (Screen Recording + Accessibility, unattended password) and the tablet app."
+say "  Keys this paste asks for (Enter skipped them): Lofty API key (7b), TidyCal token (7c), Arive credentials (7e) - make them and rerun."
+if [ "$RUNNER_OUT" = 1 ]; then
+say "  0. The runner is signed out (step 2): run  runnerctl login  (yours only), then  runnerctl status"
+elif printf '%s' "$FAIL" | grep -q "2 Mac runner"; then
+say "  0. Step 2 (runner) stopped for a reason other than sign-in - the log names it: grep -A 12 '== 2 Mac runner' $LOG"
+fi
 say "  1. Kapso sign-in: run  claude  , type  /mcp  , choose kapso, sign in or create the free account. Then message"
 say "     (202) 474-5223 from your phone - save it as 'Vanessa (WhatsApp)'. Say 'read my WhatsApp' in Claude Code."
-say "  2. Vanessa's voice on iMessage: bash integrations/voice-setup.sh <your Vanessa thread's conversation id>"
-say "     then paste section 8 of integrations/mac-task-specs.md at the end of the runner task vanessa-morning-brief-text."
-say "  3. claude.ai -> Settings -> Connectors: Inkbox says 'needs reconnect' - click Reconnect (this is Vanessa's"
-say "     iMessage channel for cloud sessions). Same for EVRoutes and Turo, or remove them."
-say "  4. Zoho: Zoho CRM -> Setup -> Security Control -> Profiles -> your profile -> Developer Permissions ->"
-say "     tick 'Zoho CRM API Access'. That is the whole 403 fix."
-say "  5. Sign in once in the agent Chrome to ShowingTime, Showami and homes.com:"
+say "  2. Vanessa's voice on the iMessage line (after A): bash integrations/voice-setup.sh <your Vanessa thread's conversation id>, then paste"
+say "     sections 8b (start), 8c and 8 (end) of integrations/mac-task-specs.md into the runner task vanessa-morning-brief-text."
+say "  3. claude.ai -> Settings -> Connectors: EVRoutes and Turo say 'needs reconnect' - Reconnect or remove them."
+say "  4. Sign in once in the agent Chrome to ShowingTime, Showami and homes.com (MFA is yours) - the list is in the log, or rerun:"
 say "     bash integrations/cli-anything-harnesses/connect.sh"
 say "  6. TikTok, GoHighLevel, Discord bot, HeyGen: say 'Composio links' to Claude when you sit down (links last 10 min)."
 say "  6b. Gondola (travel): claude.ai -> Settings -> Connectors -> Add custom connector -> name Gondola, URL"
 say "     https://mcp.gondola.ai/mcp -> Connect and sign in. Then Vanessa and the dashboards can read your trips and points."
-say "  7. Pabbly: open the Pabbly 'Connect' link Claude sent, paste your Kapso API key there (Pabbly's page, never chat),"
-say "     then build the six workflows in integrations/pabbly/WORKFLOWS.md (about 5 minutes each at connect.pabbly.com)."
+say "  7. Pabbly (Kapso login is proven): copy each trigger's webhook URL from your Kapso WhatsApp app in Pabbly into"
+say "     Kapso -> WhatsApp -> your number -> Webhooks (docs/STEVEN-STEPS.md step 5), then the six workflows in"
+say "     integrations/pabbly/WORKFLOWS.md (about 5 minutes each at connect.pabbly.com)."
 say "  8. Orca: if the Repo folder is not listed in Orca, click Add Project and choose $REPO_DIR. Then pair your phone:"
 say "     install 'Orca IDE' (https://apps.apple.com/us/app/orca-ide/id6766130217), in Orca on the Mac open the pairing"
 say "     screen from the account/status menu, and scan the code with the phone app. Never read the code to anyone."

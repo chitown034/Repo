@@ -62,6 +62,75 @@ button, input { font: inherit; color: inherit; }
 .hit .bar i { display: block; height: 100%; width: var(--w); background: var(--now); }
 #best { margin: 0; color: #c9cfdd; font-size: 12.5px; }
 #best .heads { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+#answer { display: grid; gap: 8px; } #answer[hidden] { display: none !important; } #answer h3 { margin: 0; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--now); font-weight: 500; }
+.ansrow { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; display: grid; gap: 4px; } .ansrow b { font-size: 12.5px; } .ansrow p { margin: 0; font-size: 12.5px; color: #c9cfdd; } .ansrow .btn { justify-self: start; min-height: 28px; padding: 2px 8px; font-size: 11.5px; }
+#answer small { color: var(--muted); font-size: 11px; }
+#vanWrap > summary { cursor: pointer; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--now); list-style: none; min-height: var(--hit); display: flex; align-items: center; }
+#vanWrap > summary::after { content: "+"; margin-left: auto; } #vanWrap[open] > summary::after { content: "–"; }
+.presence { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: center; padding: 10px; border: 1px solid var(--line); border-radius: 14px; background: radial-gradient(circle at 28% 18%, rgba(243, 185, 77, .14), transparent 60%), var(--void-2); }
+.presence-stage { position: relative; width: 96px; height: 96px; }
+.presence-head { position: absolute; inset: 3px; border-radius: 50%; }
+.presence-breath { position: relative; width: 100%; height: 100%; border-radius: 50%; overflow: hidden; box-shadow: 0 10px 24px -12px rgba(0,0,0,.7), 0 0 0 2px var(--void); animation: presenceBreathe 5.2s ease-in-out infinite; background: var(--void-2); }
+.presence-photo { width: 100%; height: 100%; background-size: cover; background-position: center 18%; transform: scale(1.02); }
+.presence-ring { position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--cool); opacity: .35; pointer-events: none; }
+.presence-ring-b { inset: -5px; border-color: var(--now); opacity: .18; }
+.presence[data-state="listening"] .presence-ring-a { animation: presenceListen 1.6s ease-in-out infinite; opacity: .85; border-color: var(--good); }
+.presence[data-state="listening"] .presence-breath { animation: presenceLean .9s ease-out forwards; }
+.presence[data-state="thinking"] .presence-ring-b { animation: presenceSpin 2.6s linear infinite; border-style: dashed; opacity: .6; }
+.presence[data-state="thinking"] .presence-breath { animation: presenceThink 3.2s ease-in-out infinite; }
+.presence[data-state="speaking"] .presence-ring-a { animation: presenceRingOut 1.1s ease-out infinite; opacity: .7; }
+.presence[data-state="speaking"] .presence-ring-b { animation: presenceRingOut 1.1s ease-out infinite .35s; opacity: .5; }
+.presence[data-state="speaking"] .presence-breath { animation: presenceTalk .64s ease-in-out infinite; }
+.presence-eq { position: absolute; left: 50%; bottom: -6px; transform: translateX(-50%); display: flex; gap: 3px; align-items: flex-end; height: 22px; padding: 4px 8px; border-radius: 999px; background: var(--void); border: 1px solid var(--line); opacity: 0; transition: opacity .2s; }
+.presence-eq i { width: 3px; height: 5px; border-radius: 2px; background: var(--now); display: block; }
+.presence[data-state="speaking"] .presence-eq, .presence[data-state="listening"] .presence-eq { opacity: 1; }
+.presence[data-state="speaking"] .presence-eq i { animation: presenceEq .42s ease-in-out infinite alternate; }
+.presence[data-state="listening"] .presence-eq i { animation: presenceEq 1.05s ease-in-out infinite alternate; background: var(--good); }
+.presence-eq i:nth-child(2) { animation-delay: .08s; } .presence-eq i:nth-child(3) { animation-delay: .16s; } .presence-eq i:nth-child(4) { animation-delay: .24s; } .presence-eq i:nth-child(5) { animation-delay: .32s; }
+.presence-side { min-width: 0; }
+.presence-name { font: 700 20px/1 var(--f-display); letter-spacing: .04em; text-transform: uppercase; }
+.presence-state { font: 11px var(--f-data); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-top: 5px; display: flex; align-items: center; gap: 7px; }
+.presence-state::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.presence[data-state="listening"] .presence-state { color: var(--good); } .presence[data-state="thinking"] .presence-state { color: var(--warn); } .presence[data-state="speaking"] .presence-state { color: var(--good); }
+.presence-caption { margin-top: 6px; font-size: 12.5px; line-height: 1.4; color: #c9cfdd; max-width: 46ch; min-height: 0; }
+#vanVoiceWrap { min-height: 32px; margin-top: 4px; font-size: 12px; } #vanVoiceWrap input { width: 18px; height: 18px; }
+@keyframes presenceBreathe { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-2px) scale(1.016); } }
+@keyframes presenceLean { to { transform: translateY(3px) scale(1.06); } }
+@keyframes presenceThink { 0%, 100% { transform: translateX(0) translateY(0) scale(1); } 50% { transform: translateX(5px) translateY(-3px) scale(1.01); } }
+@keyframes presenceTalk { 0% { transform: scale(1) rotate(0deg); } 30% { transform: scale(1.03) rotate(-0.9deg); } 70% { transform: scale(1.015) rotate(1deg); } 100% { transform: scale(1) rotate(0deg); } }
+@keyframes presenceListen { 0%, 100% { transform: scale(1); opacity: .5; } 50% { transform: scale(1.05); opacity: .95; } }
+@keyframes presenceSpin { to { transform: rotate(360deg); } }
+@keyframes presenceRingOut { 0% { transform: scale(.92); opacity: .7; } 100% { transform: scale(1.22); opacity: 0; } }
+@keyframes presenceEq { from { height: 5px; } to { height: 16px; } }
+@media (prefers-reduced-motion: reduce) { .presence-breath, .presence-ring, .presence-eq i { animation: none !important; } }
+.msg.van { padding-left: 34px; position: relative; } .msg.van::before { content: ""; position: absolute; left: 8px; top: 8px; width: 20px; height: 20px; border-radius: 50%; background: url(/*VANESSA_PHOTO*/) center 18% / cover; }
+#van { display: grid; gap: 6px; max-height: 38vh; overflow: auto; padding-right: 2px; } #van:empty { display: none; }
+.msg { border: 1px solid var(--line); border-radius: 12px; padding: 7px 10px; font-size: 12.5px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.msg.me { background: rgba(243, 185, 77, .08); border-color: rgba(243, 185, 77, .35); justify-self: end; max-width: 92%; }
+.msg.van { color: #d9deea; } .msg.van.think { color: var(--muted); font-style: italic; } .msg.err { color: var(--warn); }
+.msg .src { display: block; margin-top: 6px; font: 11px var(--f-data); color: var(--muted); } .msg .src a { color: var(--cool); text-decoration: none; }
+#vanQ { width: 100%; border-radius: 10px; border: 1px solid var(--line); background: var(--void-2); padding: 8px 10px; resize: vertical; min-height: 44px; }
+#vanForm { display: grid; gap: 6px; } #vanForm[hidden] { display: none !important; } #vanNote { color: var(--muted); font-size: 11px; }
+#bmWrap > summary { cursor: pointer; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--now); list-style: none; min-height: var(--hit); display: flex; align-items: center; }
+#bmWrap > summary::after { content: "+"; margin-left: auto; } #bmWrap[open] > summary::after { content: "–"; }
+#bmQWrap > summary { cursor: pointer; color: var(--cool); font-size: 12.5px; min-height: var(--hit); display: flex; align-items: center; }
+.bmGroups { display: grid; gap: 10px; max-height: 60vh; overflow: auto; }
+.bmGroups h3 { margin: 0; font: 600 13px var(--f-ui, inherit); color: var(--cool); display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.bmGroups h3 small { font: 11px var(--f-data); color: var(--muted); font-weight: 400; }
+.bm { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.bm li.empty { color: var(--muted); font-size: 12px; border-style: dashed; }
+.bmq { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; max-height: 40vh; overflow: auto; }
+.bmq li { border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; display: grid; gap: 4px; }
+.bmq b { font-size: 13px; overflow-wrap: anywhere; } .bmq p { margin: 0; font-size: 12.5px; color: #c9cfdd; overflow-wrap: anywhere; }
+.bmq .act { font: 11px var(--f-data); color: var(--muted); overflow-wrap: anywhere; } .bmq .acts { display: flex; gap: 6px; flex-wrap: wrap; } .bmq .acts .btn { min-height: 32px; padding: 2px 10px; font-size: 12px; }
+.bm li { border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; display: grid; gap: 4px; }
+.bm .row { display: flex; gap: 8px; align-items: baseline; } .bm .rank { font: 500 14px var(--f-data); color: var(--now); min-width: 22px; }
+.bm b { font-size: 13px; flex: 1; overflow-wrap: anywhere; } .bm .val { font: 11px var(--f-data); padding: 1px 7px; border-radius: 999px; border: 1px solid var(--line); }
+.bm .val.high { color: var(--good); border-color: rgba(111, 211, 155, .5); } .bm .val.medium { color: var(--warn); } .bm .val.low { color: var(--muted); }
+.bm .meta { font: 11px var(--f-data); color: var(--muted); overflow-wrap: anywhere; } .bm .why { margin: 0; font-size: 12.5px; color: #c9cfdd; }
+.bm details { font-size: 12px; } .bm details summary { cursor: pointer; color: var(--cool); min-height: 28px; display: flex; align-items: center; } .bm ol.plan { margin: 4px 0 0 18px; padding: 0; color: #c9cfdd; }
+.bm .acts { display: flex; flex-wrap: wrap; gap: 6px; } .bm .acts .btn { min-height: 32px; padding: 2px 10px; font-size: 12px; }
+.bm li.approved { border-color: rgba(111, 211, 155, .55); } .bm li.declined { opacity: .55; } .bm .state { font: 11px var(--f-data); color: var(--good); } .bm li.declined .state { color: var(--muted); }
 #askTerms { margin: 0; font: 11px var(--f-data); color: var(--muted); overflow-wrap: anywhere; }
 #owner { margin: 0; font-size: 12.5px; color: #c9cfdd; } #owner b { color: var(--now); }
 #askNone { margin: 0; color: var(--warn); font-size: 12.5px; }
@@ -89,10 +158,13 @@ button, input { font: inherit; color: inherit; }
 .toggle input { width: 22px; height: 22px; accent-color: var(--now); margin: 0; }
 #lensWrap > summary { cursor: pointer; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); list-style: none; min-height: 44px; display: flex; align-items: center; }
 #lensWrap > summary::after { content: "+"; margin-left: auto; } #lensWrap[open] > summary::after { content: "–"; }
-#chipsWrap summary, #seatWrap summary { cursor: pointer; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); list-style: none; min-height: var(--hit); display: flex; align-items: center; }
+#chipsWrap summary, #seatWrap summary, #layersWrap > summary, #linksWrap > summary, #sbWrap > summary { cursor: pointer; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); list-style: none; min-height: var(--hit); display: flex; align-items: center; }
 #seatWrap summary::after { content: "+"; margin-left: auto; } #seatWrap[open] summary::after { content: "–"; }
 #chipsWrap { margin: 0; } #seatWrap { margin: 0; }
 #chipsWrap summary::after { content: "+"; margin-left: auto; } #chipsWrap[open] summary::after { content: "–"; }
+#layersWrap > summary::after { content: "+"; margin-left: auto; } #layersWrap[open] > summary::after { content: "–"; }
+#linksWrap > summary::after, #sbWrap > summary::after { content: "+"; margin-left: auto; } #linksWrap[open] > summary::after, #sbWrap[open] > summary::after { content: "–"; }
+#links .btn, #sbdocs .btn { min-height: 32px; font-size: 12px; }
 
 #inspector { position: fixed; top: calc(env(safe-area-inset-top, 0px) + var(--gutter)); right: var(--gutter); width: min(380px, calc(100vw - 2 * var(--gutter))); max-height: calc(100% - 150px); overflow: auto; padding: 18px 18px 16px; z-index: 4; }
 #inspector[hidden] { display: none !important; }
@@ -164,20 +236,52 @@ body.enc #enc { max-width: 720px; }
     <button class="tab" role="tab" id="tabEnc" aria-selected="false" aria-controls="enc" tabindex="-1">Encyclopedia</button>
   </div>
   <div class="stats maponly" id="stats"></div>
+  <details id="layersWrap" class="maponly"><summary>Layers: where the brain lives and how fresh each copy is</summary>
+    <ul id="layers" class="legend" aria-label="Second brain layers"></ul>
+    <p class="seatnote" id="layersNote"></p>
+  </details>
+  <details id="linksWrap"><summary>Open the brain: Drive, NotebookLM, Notion, the dashboards</summary>
+    <div id="links" class="actions" role="group" aria-label="Front doors of the second brain"></div>
+    <details id="sbWrap"><summary>The 13 SB Google Docs (the brain in Drive)</summary><div id="sbdocs" class="actions"></div></details>
+  </details>
   <label class="sr" for="q">Find a page</label>
-  <input id="q" type="search" placeholder="Ask the brain — VA funding fee, Lofty, who owns compliance…" autocomplete="off" spellcheck="false" list="names" aria-describedby="askHelp" aria-controls="hits">
+  <input id="q" type="search" placeholder="Ask the brain — VA funding fee, who owns compliance, what runs at 6:40… (Enter = Vanessa answers)" autocomplete="off" spellcheck="false" list="names" aria-describedby="askHelp" aria-controls="hits">
   <datalist id="names"></datalist>
-  <p id="askHelp" class="sr">Ranks the brain's pages from its own index, in the browser, with no model call. Arrow down moves into the results; Enter opens one on the map.</p>
+  <p id="askHelp" class="sr">Ranks the brain's pages from its own index, in the browser, with no model call, and shows the matching passages as the answer. Arrow down moves into the results; Enter asks Vanessa the question in the chat below (or opens the top result when the chat is off).</p>
   <section id="ask" aria-label="Ask the brain" aria-live="polite" aria-atomic="false">
     <h3>Ask the brain <span id="askTerms"></span></h3>
     <p id="askNone" hidden></p>
     <ul id="hits" role="listbox" aria-label="Top pages for this question"></ul>
     <p id="best" hidden></p>
+    <div id="answer" hidden></div>
     <p id="owner"></p>
     <div class="actions"><button class="btn primary" id="askCopy" type="button">Copy the recall command</button></div>
     <div id="askCopied" role="status" aria-live="polite"></div>
     <pre class="sr" id="askCmd"></pre>
   </section>
+  <details id="bmWrap" open><summary>Vanessa recommends — four courses of action</summary>
+    <p class="seatnote" id="bmNote"></p>
+    <div id="bm" class="bmGroups" aria-label="Today's courses of action: next big moves, self-improvement, risks, opportunities"></div>
+    <details id="bmQWrap"><summary>Questions you may have — answered from the brain</summary>
+      <ul id="bmQ" class="bmq" aria-label="Questions you may have, with the answer and the action"></ul>
+    </details>
+    <p class="seatnote" id="bmHow">Score = impact × confidence ÷ effort × a weight the brain learns from your approvals and declines. Approve: Vanessa starts on it right away (her items), or the plan stands by for you (yours). Decline: hidden for 30 days and its kind weighs less tomorrow.</p>
+  </details>
+  <details id="vanWrap" open><summary>Ask Vanessa — AI chat over this brain</summary>
+    <div class="presence" id="vanPresence" data-state="idle">
+      <div class="presence-stage"><div class="presence-ring presence-ring-b"></div><div class="presence-ring presence-ring-a"></div><div class="presence-head"><div class="presence-breath"><div class="presence-photo" role="img" aria-label="Vanessa" style="background-image:url(/*VANESSA_PHOTO*/);"></div></div></div><div class="presence-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div>
+      <div class="presence-side"><div class="presence-name">Vanessa</div><div class="presence-state" id="vanState">Standing by</div><div class="presence-caption" id="vanCaption" aria-live="polite"></div>
+        <label class="toggle" id="vanVoiceWrap" hidden><input type="checkbox" id="vanVoice"> Read her answers aloud (this device's voice)</label></div>
+    </div>
+    <div id="van" role="log" aria-label="Chat with Vanessa" aria-live="polite"></div>
+    <p id="vanOff" class="seatnote">Vanessa answers inside claude.ai. Open this page there (the link in the Command Deck) and allow it to use Claude once.</p>
+    <form id="vanForm" hidden>
+      <label class="sr" for="vanQ">Ask Vanessa</label>
+      <textarea id="vanQ" rows="2" placeholder="Ask Vanessa anything the brain knows — she reads the matching pages first" autocomplete="off"></textarea>
+      <div class="actions"><button class="btn primary" id="vanSend" type="submit">Ask Vanessa</button><button class="btn" id="vanStop" type="button" hidden>Stop</button><button class="btn" id="vanClear" type="button">Clear</button></div>
+      <small id="vanNote">Grounded on the pages this brain ranks for your question; nothing licensed is decided here — Vanessa says "not in the brain" when the pages don't cover it. Uses your Claude usage.</small>
+    </form>
+  </details>
   <details id="lensWrap" class="maponly" open><summary>Lenses: freshness, seat, regions</summary>
     <div class="lens">
       <section aria-labelledby="fH">
@@ -229,13 +333,17 @@ body.enc #enc { max-width: 720px; }
 <script>
 "use strict";
 const G = /*DATA*/null;
+const LAYERS = /*LAYERS*/null;
+const LINKS = /*LINKS*/null;
+const SEC = /*SEC*/null;
+const RECS = /*RECS*/null;
 const LOOP = /*LOOP*/null;
 const SEATS = /*SEATS*/null;   // seat -> {a: agents (agents.json laya.lane), s: "starts from" prefixes (cross-functional.md)}
 const ENC = /*ENC*/null;       // A-Z encyclopedia entries from brain/index.json + graph backlinks
 const ASK = /*ASK*/null;       // term index for in-page recall: vocab, df, per-file postings/ident, synonyms, priors
 const BUILD = /*BUILD*/null;   // build date; freshness is measured against it
 const REPO = "https://github.com/chitown034/Repo/blob/claude/stoic-cori-pvn3f8/";
-const HUE = { store:"#f3b94d", router:"#ffffff", context:"#ffd6a5", memory:"#f7a8d8", projects:"#c3a6ff", mortgage:"#7fc8ff", realestate:"#5fe0c8", aiteam:"#ff9e7a", ops:"#9fb4ff", vector:"#b6f09c", graph:"#e2c1ff", alwayson:"#ffcf70", sources:"#9ee6ff", integrations:"#7d9cff", loop:"#a7adbf", skill:"#ffe08a", plugin:"#c9f29b", connector:"#8ef0ff", routine:"#ffb3c7", mactask:"#d6c7ff", pod:"#ff7ad9", other:"#8f97ad" };
+const HUE = { store:"#f3b94d", router:"#ffffff", context:"#ffd6a5", memory:"#f7a8d8", projects:"#c3a6ff", mortgage:"#7fc8ff", realestate:"#5fe0c8", aiteam:"#ff9e7a", ops:"#9fb4ff", vector:"#b6f09c", graph:"#e2c1ff", alwayson:"#ffcf70", sources:"#9ee6ff", integrations:"#7d9cff", loop:"#a7adbf", skill:"#ffe08a", plugin:"#c9f29b", connector:"#8ef0ff", routine:"#ffb3c7", mactask:"#d6c7ff", mcp:"#5ad1ff", api:"#ffd16b", pod:"#ff7ad9", other:"#8f97ad" };
 const DAY = 864e5;
 const $ = id => document.getElementById(id);
 const field = $("field"), ctx = field.getContext("2d");
@@ -464,7 +572,8 @@ function choose(n) {
   });
   if (!rel.children.length) rel.innerHTML = "<li style='color:var(--muted);font-size:12.5px'>No links at this date.</li>";
   const open = $("open");
-  if (n.g === "store") open.hidden = true; else { open.hidden = false; open.href = REPO + n.id; }
+  if (n.g === "store") { if (n.u) { open.hidden = false; open.href = n.u; open.textContent = "Open " + n.t; } else open.hidden = true; }
+  else { open.hidden = false; open.href = REPO + n.id; open.textContent = "Open the page"; }
   $("copyText").textContent = `bin/brain recall "${n.t.replace(/"/g, "'")}"`;
   $("copied").textContent = "";
 }
@@ -565,7 +674,7 @@ function mk(tag, cls, text) { const e = document.createElement(tag); if (cls) e.
 function askRender(question) {
   const show = !!question;
   askEl.classList.toggle("on", show);
-  hitsEl.textContent = ""; $("best").hidden = true; $("askNone").hidden = true; $("askCopied").textContent = "";
+  hitsEl.textContent = ""; $("best").hidden = true; $("askNone").hidden = true; $("askCopied").textContent = ""; $("answer").replaceChildren(); $("answer").hidden = true;
   if (!show) { askRes = null; if (mode === "enc") sizeEnc(); return; }
   const res = askRank(question); askRes = res;
   const { groups, ranked } = res;
@@ -575,14 +684,16 @@ function askRender(question) {
   $("owner").textContent = ""; $("owner").append("Who owns this: "); $("owner").append(mk("b", "", own.seat));
   $("owner").append(own.words.length ? ` (lane words: ${own.words.join(", ")})` : " (no lane word matched; the orchestrator routes it)");
   const best = ranked[0], need = Math.min(2, groups.length);
-  if (!groups.length || !best || best.matched.length < 2 || best.cov < 0.5) {
-    const n = best ? best.matched.length : 0;
+  const weak = !!best && groups.length >= 2 && (best.matched.length < 2 || best.cov < 0.5);   // one term of several: answer anyway, say it is partial
+  if (!groups.length || !best || !best.matched.length) {
     $("askNone").hidden = false;
     $("askNone").textContent = !groups.length ? "No keywords in that question (only stopwords) — not in the brain. Add a noun."
-      : `not in the brain — queue research. ${n ? `Only ${n} term${n === 1 ? "" : "s"} matched (${best.matched.map(g => g.surface).join(", ")}) in ${best.f.p}` : "No term matched"}${need > n ? "; the brain needs at least two." : "."}`;
+      : "not in the brain — no page holds these words. Ask Vanessa below and she will say who would know, or queue research.";
+    askVanessaButton($("askNone"), question);
     if (mode === "enc") sizeEnc();
     return;
   }
+  if (weak) { $("askNone").hidden = false; $("askNone").textContent = `Partial match — only ${best.matched.map(g => g.surface).join(", ")} found (${best.matched.length} of ${groups.length} terms). The closest pages and passages follow; ask Vanessa for a straight answer.`; }
   ranked.slice(0, 5).forEach((r, i) => {
     const n = byId.get(r.f.p), li = mk("li"), b = mk("button", "hit"); li.setAttribute("role", "none");
     b.type = "button"; b.setAttribute("role", "option"); b.setAttribute("aria-selected", String(i === 0)); b.tabIndex = i === 0 ? 0 : -1;
@@ -597,6 +708,25 @@ function askRender(question) {
   const heads = e ? e.h.filter(h => askTokens(h).some(t => terms.has(t))) : [];
   const bp = $("best"); bp.hidden = false; bp.textContent = e && e.d ? e.d : "No one-line description in the index yet.";
   bp.append(mk("span", "heads", heads.length ? "Matching sections: " + heads.join(" · ") : "No section heading holds these terms; the page's keywords do."));
+  // the answer itself: the best-matching section passages of the top pages (zero tokens, from the embedded index)
+  try {
+    const ans = $("answer"); ans.replaceChildren();
+    const want = [...terms]; const score = sct => { const low = (sct.h + " " + sct.x).toLowerCase(); return want.reduce((n, t) => n + (low.includes(t) ? 1 : 0), 0); };
+    const tops = ranked.slice(0, 3).map(r => r.f.p);
+    const cands = (SEC || []).filter(sct => tops.includes(sct.p)).map(sct => ({ sct, s: score(sct) + (sct.p === best.f.p ? 0.5 : 0) })).filter(c => c.s >= 1).sort((a, b) => b.s - a.s).slice(0, 3);
+    if (cands.length) {
+      ans.append(mk("h3", "", "Answer from the brain"));
+      cands.forEach(c => { const n = byId.get(c.sct.p); const d = mk("div", "ansrow"); d.append(mk("b", "", (n ? n.t : c.sct.p) + " › " + c.sct.h)); d.append(mk("p", "", c.sct.x));
+        const a = mk("a", "btn", "Open the page"); a.href = REPO + c.sct.p; a.target = "_blank"; a.rel = "noopener"; d.append(a); ans.append(d); });
+      askVanessaButton(ans, question);
+      ans.append(mk("small", "", "Passages are the page's own words as of its last index; for anything licensed, read the page and ask Vanessa."));
+    } else {
+      ans.append(mk("h3", "", "Answer from the brain"));
+      ans.append(mk("p", "", "The pages above rank for this, but no single section holds the words together. Ask Vanessa and she answers in plain words from those pages."));
+      askVanessaButton(ans, question);
+    }
+    ans.hidden = false;
+  } catch (_) {}
   if (mode === "enc") sizeEnc();
 }
 function askPick(id) {
@@ -614,10 +744,18 @@ hitsEl.addEventListener("keydown", e => {
   if (j < 0) { $("q").focus(); return; }
   items.forEach((b, k) => { b.tabIndex = k === j ? 0 : -1; }); items[j].focus();
 });
+// One button everywhere an answer is shown: when the Ask Vanessa chat is on, she answers the question right here (grounded on the
+// pages the search ranked); otherwise the button opens the Command Deck's Vanessa chat.
+function askVanessaButton(parent, question) {
+  const v = mk(vanSample ? "button" : "a", "btn primary", vanSample ? "Ask Vanessa this" : "Ask Vanessa about this (Command Deck)");
+  if (vanSample) { v.type = "button"; v.addEventListener("click", () => { $("vanWrap").open = true; if (vanCtl) { vanState("thinking", "Vanessa is still answering — press Stop or wait, then ask again."); return; } $("vanQ").value = ""; vanAsk(question); $("vanWrap").scrollIntoView({ block: "nearest" }); }); }
+  else { v.href = "https://claude.ai/artifact/3jbdGMNFkGLEpJiZ3cTmZW"; v.target = "_blank"; v.rel = "noopener"; }
+  parent.append(v);
+}
 $("q").addEventListener("keydown", e => {
   const first = hitsEl.querySelector(".hit");
   if (e.key === "ArrowDown" && first) { e.preventDefault(); first.focus(); }
-  else if (e.key === "Enter" && first) { e.preventDefault(); askPick(first.dataset.id); }
+  else if (e.key === "Enter") { e.preventDefault(); const q = $("q").value.trim(); if (q && vanSample && !vanCtl) { $("vanWrap").open = true; vanAsk(q); } else if (first) askPick(first.dataset.id); }
 });
 $("askCopy").addEventListener("click", () => {
   const txt = $("askCmd").textContent || `bin/brain recall "${$("q").value.trim().replace(/"/g, "'")}"`;
@@ -627,6 +765,189 @@ $("askCopy").addEventListener("click", () => {
 
 // search
 $("names").replaceChildren(...nodes.map(n => { const o = document.createElement("option"); o.value = n.t; return o; }));
+// ---- Vanessa recommends: the day's top 10 big moves (bin/brain recs), with approve / decline kept in this page's own
+// database (claude.ai db capability) so the 6:05 AM "Big moves" task can read the decisions, learn from them, and queue
+// the approved ones for the daily cycle. Outside claude.ai the list shows; the buttons say so.
+let bmDb = null, bmUser = null, bmMcp = null; const bmState = {};
+const BM_TRIGGER = "trig_014QQGp4WQfWGDVB827R4Qb9";   // the Big-moves task in the orchestrator session (fire_trigger runs it now)
+// The four courses of action (bin/brain recs --coas): next big moves · self-improvement (loop engineering) · risks and the
+// action that heads them off · opportunities. Four each, from the same scored pool. Older big-moves.json (items only) still draws.
+function bmGroups() {
+  if (RECS && Array.isArray(RECS.coas) && RECS.coas.some(g => g && g.items && g.items.length)) return RECS.coas;
+  return RECS && RECS.items && RECS.items.length ? [{ key: "big-move", label: "Today's top moves", about: "", items: RECS.items }] : [];
+}
+function bmRender() {
+  const box = $("bm"); box.replaceChildren();
+  const groups = bmGroups(); const total = groups.reduce((n, g) => n + (g.items ? g.items.length : 0), 0);
+  if (!total) { $("bmNote").textContent = "No courses of action computed yet — the 6:05 AM task writes them (bin/brain recs --write)."; bmQuestions(); return; }
+  $("bmNote").textContent = "For " + RECS.date + " · " + total + " moves in " + groups.length + " lanes · approve, decline or ask below" + (bmDb ? "" : " (open this page in claude.ai to decide)");
+  groups.forEach(g => {
+    const h = mk("h3", "", g.label || g.key); if (g.about) h.append(mk("small", "", g.about)); box.append(h);
+    const ol = mk("ol", "bm"); ol.setAttribute("aria-label", g.label || g.key); box.append(ol);
+    if (!g.items || !g.items.length) { ol.append(mk("li", "empty", "nothing in this lane today")); return; }
+    g.items.forEach(c => ol.append(bmItem(c)));
+  });
+  bmQuestions();
+}
+function bmQuestions() {
+  const ul = $("bmQ"); ul.replaceChildren();
+  const qs = RECS && Array.isArray(RECS.questions) ? RECS.questions : [];
+  $("bmQWrap").hidden = !qs.length;
+  qs.forEach(q => {
+    if (!q || !q.q) return;
+    const li = mk("li"); li.append(mk("b", "", String(q.q)));
+    if (q.a) li.append(mk("p", "", String(q.a)));
+    if (q.action) li.append(mk("div", "act", "Action: " + String(q.action)));
+    // same pattern as a move's Ask Vanessa button: fill the chat box (bmRender runs before the chat's own state is declared)
+    const acts = mk("div", "acts"); const ask = mk("button", "btn", "Ask Vanessa"); ask.type = "button";
+    ask.addEventListener("click", () => { $("vanWrap").open = true; $("vanQ").value = String(q.q); $("vanQ").focus(); }); acts.append(ask); li.append(acts); ul.append(li);
+  });
+}
+function bmItem(c) {
+    const li = mk("li"); li.dataset.id = c.id; let st = String(bmState[c.id] && bmState[c.id].decision || c.decision || "");
+    if (!/^(approved|declined|later|done)$/.test(st)) st = "";   // only the four known states; anything else is ignored
+    if (st) li.classList.add(st);
+    const row = mk("div", "row"); row.append(mk("span", "rank", "#" + c.rank), mk("b", "", c.title), mk("span", "val " + c.value, c.value + " · " + c.score)); li.append(row);
+    li.append(mk("div", "meta", (c.owner || "Vanessa") + " · " + (c.executor === "vanessa" ? "Vanessa runs it once approved" : c.executor === "steven" ? "only you can do this" : "a Mac task runs it") + " · impact " + c.impact + " · effort " + c.effort + " · confidence " + Math.round(c.confidence * 100) + "%"));
+    if (c.why) li.append(mk("p", "why", c.why));
+    if (c.plan && c.plan.length) { const d = mk("details"); d.append(mk("summary", "", "Plan standing by (" + c.plan.length + " steps)")); const pl = mk("ol", "plan"); c.plan.forEach(p => pl.append(mk("li", "", p))); d.append(pl); li.append(d); }
+    const acts = mk("div", "acts");
+    if (st) { acts.append(mk("span", "state", st + (bmState[c.id] && bmState[c.id].at ? " · " + String(bmState[c.id].at).slice(0, 10) : ""))); }
+    if (bmState[c.id] && bmState[c.id].note) li.append(mk("div", "meta note", bmState[c.id].note));
+    ["approved", "declined", "later"].forEach(dec => { if (st === dec) return; const b = mk("button", "btn" + (dec === "approved" ? " primary" : ""), dec === "approved" ? "Approve" : dec === "declined" ? "Decline" : "Later"); b.type = "button"; b.disabled = !bmDb || bmBusy; b.addEventListener("click", () => bmDecide(c, dec)); acts.append(b); });
+    const ask = mk("button", "btn", "Ask Vanessa"); ask.type = "button"; ask.addEventListener("click", () => { $("vanWrap").open = true; $("vanQ").value = "Big move #" + c.rank + ": " + c.title + " — should I do this today, and what is the first step?"; $("vanQ").focus(); }); acts.append(ask);
+    li.append(acts); return li;
+}
+let bmBusy = false;   // one decision in flight at a time (validator P07-F1: a double-click fired EXECUTE NOW twice)
+async function bmDecide(c, dec) {
+  if (!bmDb || bmBusy) return;
+  const prev = bmState[c.id] && bmState[c.id].decision;
+  if (dec === "approved" && prev === "approved") { say("Big move #" + c.rank + " is already approved" + (bmState[c.id].fired ? " and started" : "") + " — Vanessa has it; decline it first if you want to start it again."); return; }
+  bmBusy = true; $("bm").querySelectorAll("button.btn").forEach(b => { if (b.textContent !== "Ask Vanessa") b.disabled = true; });
+  try {
+    const at = new Date().toISOString(); const by = bmUser ? await bmUser.id().catch(() => "") : "";
+    await bmDb.doc("recs/" + c.id).set({ decision: dec, at, by, category: c.category, title: c.title, rank: c.rank, score: c.score, date: RECS.date });
+    bmState[c.id] = { decision: dec, at }; bmRender(); say("\"" + c.title + "\" " + dec + ".");
+    if (dec === "approved") await bmRunNow(c);
+  } catch (e) { say("Could not save that decision" + (e && e.code ? " (" + e.code + ")" : "") + " — try again or decide on the Command Deck."); }
+  finally { bmBusy = false; bmRender(); }
+}
+bmRender();
+(async () => {
+  try {
+    if (!window.claude || typeof window.claude.use !== "function") return;
+    const [db, user, mcp] = await Promise.all([window.claude.use("db"), window.claude.use("user"), window.claude.use("mcp")]);
+    bmMcp = mcp || null;
+    if (!db) return;
+    bmDb = db; bmUser = user;
+    const snap = await db.collection("recs").get();
+    (snap && snap.docs ? snap.docs : []).forEach(d => { const v = typeof d.data === "function" ? d.data() : d.data; if (v && v.decision) bmState[d.id] = v; });
+    bmRender();
+  } catch (_) { bmRender(); }
+})();
+// ---- Ask Vanessa: an AI chat over this brain (claude.ai "sample" capability; the viewer's own Claude usage).
+// Grounding is the page's own zero-token retrieval: the top pages for the question (askRank) and their best section
+// passages (SEC) are put into the turn, so Vanessa answers from the brain and cites the page. Nothing licensed is
+// decided here: the standing rules turn carries the HALT list from CLAUDE.md.
+const VAN_RULES = `You are Vanessa, Steven Shearrill's Chief of Staff and orchestrator for his second brain (he is a Broker Associate at LPT Realty, an MLO at Patriot Pacific Financial, NMLS 1921615, and a retired Navy Chief). You are chatting inside the 6D Brain page. Rules you never break:
+1. Answer ONLY from the brain passages given in the latest message (and the earlier turns of this chat). If they do not cover the question, say "not in the brain" and name the page or person that would, or offer to queue research. Never fill a gap from general knowledge without saying so plainly.
+2. Cite the page for every fact as its path (for example wiki/mortgage-programs/va-eligibility.md) and give the fact's age as the page's own date ("as of 2026-10-22"), never today's date.
+3. HALT list — never do these, say instead that it is Steven's call: a rate quote, an eligibility decision, a negotiation position, a legal or compliance interpretation, anything sent to a client, anything that spends money or needs a credential. You may explain how a program works from the pages.
+4. First names only for anyone who is not Steven. Never repeat a phone number or an e-mail address.
+5. Be short: a direct answer first, then at most a few bullets. Plain language, no headers. Offer the command bin/brain recall "<question>" when a deeper read would help.`;
+let vanSample = null, vanCtl = null; const vanTurns = [];
+// Her presence: idle (breathing) → listening (leans in while you type) → thinking (looks away) → speaking (moves while the
+// answer streams, and while this device reads it aloud if the toggle is on) — the same states the Command Deck uses.
+const VAN_LABEL = { idle: "Standing by", listening: "Listening", thinking: "Reading the brain", speaking: "Speaking" };
+function vanState(st, caption) { const p = $("vanPresence"); p.dataset.state = st; $("vanState").textContent = VAN_LABEL[st] || st; if (caption !== undefined) $("vanCaption").textContent = caption; }
+let vanUtter = null;
+function vanSay(text) {
+  try {
+    if (!$("vanVoice").checked || !("speechSynthesis" in window)) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text.replace(/\[[^\]]*\]/g, "").slice(0, 1500)); u.rate = 1.02; u.pitch = 1.05;
+    const vs = speechSynthesis.getVoices(), pick = vs.find(v => /en/i.test(v.lang) && /female|samantha|karen|moira|zira|victoria|ava|allison/i.test(v.name)) || vs.find(v => /en/i.test(v.lang));
+    if (pick) u.voice = pick;
+    u.onstart = () => vanState("speaking", "Vanessa is speaking…"); u.onend = u.onerror = () => { vanState("idle", ""); vanUtter = null; };
+    vanUtter = u; speechSynthesis.speak(u);
+  } catch (_) {}
+}
+if ("speechSynthesis" in window) { $("vanVoiceWrap").hidden = false; }
+$("vanQ").addEventListener("input", () => { if (!vanCtl) vanState($("vanQ").value ? "listening" : "idle", $("vanQ").value ? "Go on — I'm listening." : ""); });
+$("vanQ").addEventListener("focus", () => { if (!vanCtl) vanState("listening", "Ask me anything the brain knows."); });
+$("vanQ").addEventListener("blur", () => { if (!vanCtl && !$("vanQ").value) vanState("idle", ""); });
+const vanEl = $("van");
+function vanGround(question) {
+  let ranked = [], terms = new Set();
+  try { const r = askRank(question); ranked = r.ranked.slice(0, 4); r.groups.forEach(g => g.terms.forEach(t => terms.add(t))); r.groups.forEach(g => terms.add(g.stem)); } catch (_) {}
+  const want = [...terms], tops = ranked.map(r => r.f.p);
+  const score = sct => { const low = (sct.h + " " + sct.x).toLowerCase(); return want.reduce((n, t) => n + (low.includes(t) ? 1 : 0), 0) + (tops.indexOf(sct.p) >= 0 ? (4 - tops.indexOf(sct.p)) * 0.3 : 0); };
+  const cands = (SEC || []).filter(sct => tops.includes(sct.p)).map(sct => ({ sct, s: score(sct) })).filter(c => c.s >= 1).sort((a, b) => b.s - a.s).slice(0, 7);
+  const lines = cands.map(c => { const n = byId.get(c.sct.p); return `[${c.sct.p} › ${c.sct.h}] (page: ${n ? n.t : c.sct.p}; as of ${n && n.z ? n.z : "undated"})\n${c.sct.x}`; });
+  const pages = [...new Set(cands.map(c => c.sct.p))];
+  return { text: lines.length ? lines.join("\n\n") : "(no passage matched — answer \"not in the brain\" and say which page or person would know)", pages };
+}
+function vanMsg(cls, text) { const d = mk("div", "msg " + cls, text); vanEl.append(d); vanEl.scrollTop = vanEl.scrollHeight; return d; }
+function vanSources(d, pages) {
+  if (!pages.length) return;
+  const src = mk("span", "src", "Pages read: "); pages.forEach((p, i) => { const a = mk("a", "", p); a.href = REPO + p; a.target = "_blank"; a.rel = "noopener"; src.append(i ? " · " : "", a); }); d.append(src);
+}
+const VAN_COPY = { not_granted: "Vanessa is off for this page (Claude not allowed). Allow it in the page's permissions menu.", sampling_disabled: "Claude is not available on this account.", rate_limited: "Too many questions for now — try again in a little while.", session_expired: "Sign in to claude.ai again, then ask once more.", refused: "Claude declined that one. Ask it another way.", prompt_too_large: "Too much context — ask a narrower question.", upstream_error: "Connection hiccup. Ask again." };
+async function vanAsk(question) {
+  if (!vanSample || !question || vanCtl) return;   // one call at a time: a second Enter while she answers is ignored (validator P07-F1)
+  const ground = vanGround(question);
+  vanMsg("me", question);
+  vanTurns.push({ role: "user", content: `Question: ${question}\n\nBrain passages retrieved for this question:\n${ground.text}` });
+  while (vanTurns.length > 8) vanTurns.shift();
+  const out = vanMsg("van think", "Vanessa is reading the brain…");
+  vanState("thinking", ground.pages.length ? "Reading " + ground.pages.length + " page" + (ground.pages.length > 1 ? "s" : "") + "…" : "Checking whether that is in the brain…");
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  $("vanSend").disabled = true; $("vanStop").hidden = false; vanCtl = new AbortController();
+  try {
+    const { text, truncated } = await vanSample([{ role: "user", content: VAN_RULES }, ...vanTurns], { cache: false, signal: vanCtl.signal, onText: ({ text }) => { out.classList.remove("think"); out.textContent = text; vanState("speaking", text.slice(0, 140) + (text.length > 140 ? "…" : "")); vanEl.scrollTop = vanEl.scrollHeight; } });
+    out.classList.remove("think"); out.textContent = text + (truncated ? "\n\n(cut short — ask for less at a time)" : "");
+    vanTurns.push({ role: "assistant", content: text }); vanSources(out, ground.pages);
+    vanState("idle", text.slice(0, 140) + (text.length > 140 ? "…" : "")); vanSay(text);
+  } catch (e) {
+    const code = e && e.code ? e.code : "upstream_error";
+    out.classList.remove("think");
+    if (code === "cancelled") { out.textContent = (e.text || "") + "\n(stopped)"; if (e.text) vanTurns.push({ role: "assistant", content: e.text }); else vanTurns.pop(); }
+    else { out.textContent = e.text || ""; out.classList.add("err"); out.textContent += (out.textContent ? "\n" : "") + (VAN_COPY[code] || VAN_COPY.upstream_error); if (!e.text) vanTurns.pop(); if (code === "not_granted" || code === "sampling_disabled" || code === "not_declared" || code === "capability_disabled" || code === "capability_removed") { $("vanForm").hidden = true; $("vanOff").hidden = false; } }
+  } finally { $("vanSend").disabled = false; $("vanStop").hidden = true; vanCtl = null; vanEl.scrollTop = vanEl.scrollHeight; if (!vanUtter) vanState($("vanPresence").dataset.state === "speaking" ? "idle" : $("vanPresence").dataset.state === "thinking" ? "idle" : $("vanPresence").dataset.state); }
+}
+// Approve = execute. The page fires the Big-moves task (Claude Code Remote connector, the viewer's own account) with the
+// move id; Vanessa's session runs the plan at once (executor "vanessa") or records the approval with the plan standing by
+// (executor "steven"). Without the connector the approval still lands in the page db and the 6:05 AM task runs it.
+async function bmRunNow(c) {
+  // the outcome is kept in bmState and drawn by bmRender, so a re-render never wipes it (validator P07-F3)
+  const note = { set textContent(v) { if (bmState[c.id]) bmState[c.id].note = v; const el = $("bm").querySelector('li[data-id="' + c.id + '"] .meta.note'); if (el) el.textContent = v; else bmRender(); } };
+  const standing = c.executor === "mac" ? "Saved. A Mac task carries it — it runs on the next connect-all pass." : "Saved. The plan is standing by for you.";
+  if (!bmMcp) { note.textContent = c.executor === "vanessa" ? "Saved. Vanessa runs it at 6:05 AM (open in the Claude app with Claude Code Remote to start it now)." : standing; return; }
+  note.textContent = "Starting Vanessa…";
+  try {
+    await bmMcp.callTool("Claude Code Remote", "fire_trigger", { trigger_id: BM_TRIGGER, text: "EXECUTE NOW big move " + c.id + ": " + c.title + " (executor " + c.executor + ", approved from the 6D Brain)" });
+    note.textContent = c.executor === "vanessa" ? "Vanessa is on it — the result lands in the Vanessa queue on the Command Deck." : c.executor === "mac" ? "Approval recorded in Vanessa's session; the Mac task carries it." : "Approval recorded in Vanessa's session; the plan is standing by for you.";
+    if (bmState[c.id]) bmState[c.id].fired = true;
+  } catch (e) {
+    const code = e && e.code ? e.code : "upstream_error";
+    note.textContent = code === "not_in_manifest" || code === "server_not_connected" || code === "needs_reauth" || code === "blocked_by_policy" || code === "approval_required"
+      ? "Saved. Claude Code Remote is not allowed for this page yet — Vanessa runs it at 6:05 AM, or allow the connector in the page's permissions, then Decline and Approve again to start it now."
+      : code === "cancelled" ? "Saved; start cancelled — Vanessa runs it at 6:05 AM." : "Saved. Could not start it now (" + code + ") — Vanessa runs it at 6:05 AM.";
+  }
+}
+$("vanForm").addEventListener("submit", e => { e.preventDefault(); if (vanCtl) return; const q = $("vanQ").value.trim() || $("q").value.trim(); if (!q) return; $("vanQ").value = ""; vanAsk(q); });
+$("vanQ").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("vanForm").requestSubmit(); } });
+$("vanStop").addEventListener("click", () => { if (vanCtl) vanCtl.abort(); if ("speechSynthesis" in window) speechSynthesis.cancel(); vanState("idle", ""); });
+$("vanVoice").addEventListener("change", () => { if (!$("vanVoice").checked && "speechSynthesis" in window) speechSynthesis.cancel(); });
+$("vanClear").addEventListener("click", () => { vanTurns.length = 0; vanEl.replaceChildren(); });
+(async () => {
+  try {
+    if (!window.claude || typeof window.claude.use !== "function") return;
+    vanSample = await window.claude.use("sample");
+    if (!vanSample) return;
+    $("vanOff").hidden = true; $("vanForm").hidden = false;
+  } catch (_) {}
+})();
 $("q").addEventListener("input", e => {
   query = e.target.value.trim().toLowerCase();
   askRender(e.target.value.trim());
@@ -653,6 +974,19 @@ $("stats").replaceChildren(
   stat("test Qs right", `${LOOP.bench_correct}/${LOOP.bench_total}`, LOOP.bench_correct >= LOOP.bench_total - 2 ? "good" : "warn"),
   stat("org seats found", `${LOOP.org_covered}/${LOOP.org_total}`, LOOP.org_covered === LOOP.org_total ? "good" : "warn"),
   stat("Jarvis", LOOP.jarvis === "unverified" ? "not yet" : LOOP.jarvis, LOOP.jarvis === "ok" ? "good" : "warn"));
+
+// layers: repo, index, deck, 6D, Jarvis, Notion, Drive, NotebookLM... (bin/brain layers)
+try {
+  const LC = { fresh: "#6fd39b", stale: "#ff7a7a", unverified: "#8f97ad", "spec only": "#8f97ad" };
+  $("layers").replaceChildren(...(LAYERS || []).map(r => { const li = document.createElement("li"); li.innerHTML = "<i></i><span></span><b></b>"; li.querySelector("i").style.setProperty("--c", LC[r.verdict] || "#8f97ad"); li.children[1].textContent = r.layer; li.children[2].textContent = r.last ? `${r.verdict} · ${r.last}` : r.verdict; li.title = r.sync;
+    if (r.url) { const a = document.createElement("a"); a.href = r.url; a.target = "_blank"; a.rel = "noopener"; a.textContent = "open"; a.className = "btn"; a.style.minHeight = "28px"; a.style.padding = "2px 8px"; li.appendChild(a); } return li; }));
+  const mk = l => { const a = document.createElement("a"); a.className = "btn"; a.href = l.url; a.target = "_blank"; a.rel = "noopener"; a.textContent = l.label; return a; };
+  $("links").replaceChildren(...(LINKS || []).filter(l => !String(l.key).startsWith("sb:")).map(mk));
+  $("sbdocs").replaceChildren(...(LINKS || []).filter(l => String(l.key).startsWith("sb:")).map(mk));
+  const stale = (LAYERS || []).filter(r => r.verdict === "stale").map(r => r.layer);
+  $("layersNote").textContent = stale.length ? `Not even: ${stale.join(", ")} behind its cadence.` : "Even: every stamped layer is inside its cadence. Dates are each layer's own last sync.";
+  if (innerWidth <= 720) $("layersWrap").open = false;
+} catch (_) {}
 
 // ---------- dim 5: freshness legend and toggles
 $("legend").replaceChildren(...Object.entries(FRESH).map(([k, v]) => { const li = document.createElement("li"); li.innerHTML = "<i></i><span></span><b></b>"; li.querySelector("i").style.setProperty("--c", v.c); li.children[1].textContent = v.l; li.children[2].textContent = String(fCount[k]); return li; }));

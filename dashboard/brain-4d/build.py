@@ -139,7 +139,10 @@ enc = encyclopedia(ROOT, g)
 ask = ask_index(ROOT, json.loads((ROOT / "brain/index.json").read_text(encoding="utf-8")), {n["id"] for n in g["nodes"]})
 
 def j(o):
-    return json.dumps(o, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+    # Inline-script safety (validator, 2026-10-23): "</", "<!--" and "<script" inside a script body change how the HTML
+    # tokenizer finds the closing tag; escape the "<" of each so the embedded JSON can carry any page text.
+    return (json.dumps(o, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+            .replace("<!--", "<\\!--").replace("<script", "<\\script").replace("<Script", "<\\Script"))
 
 tpl = (ROOT / "dashboard/brain-4d/template.html").read_text(encoding="utf-8")
 out = tpl.replace("/*DATA*/null", j(g), 1)
@@ -148,6 +151,49 @@ out = out.replace("/*SEATS*/null", j(seats), 1).replace("/*ENC*/null", j(enc), 1
 ask_json = j(ask)
 out = out.replace("/*ASK*/null", ask_json, 1)
 out = out.replace("/*BUILD*/null", json.dumps(date.today().isoformat()), 1)
+# the layers register (2026-10-23): every layer of the second brain with its own last-sync stamp and verdict
+from brain import layers as _layers  # noqa: E402
+out = out.replace("/*LAYERS*/null", j([{k: r.get(k) for k in ("key", "layer", "sync", "last", "age_days", "cadence_days", "verdict", "url")} for r in _layers.collect(ROOT)]), 1)
+from brain import links as _links  # noqa: E402
+# section passages (2026-10-23, Steven: "a search bar that can search for topics and get answers from my 2nd brain"):
+# the first ~380 characters of every section of every non-client page, so the page can show the answer text itself.
+PASSAGE_EXCLUDE = ("memory/fieldy-meetings.md", "memory/claude-chats.md")  # meeting + chat digests never reach the public page
+
+
+def passages(root, idx, ids, cap=380):
+    import re as _re
+    from brain.export_notebooklm import mask  # phones / e-mails off the allow-list are masked, as in the NotebookLM pack
+    out = []
+    for f in idx["files"]:
+        p = f["path"]
+        if p not in ids or "/clients/" in p or p.startswith("clients/") or p in PASSAGE_EXCLUDE:
+            continue
+        try:
+            lines = (root / p).read_text(encoding="utf-8", errors="replace").split("\n")
+        except OSError:
+            continue
+        secs = f.get("sections") or []
+        for i, sec in enumerate(secs):
+            title, start = sec[0], sec[1]  # start is 1-based: the heading's line number, so lines[start:] is the body
+            if start > len(lines):  # the index is older than the file (a report rewritten after the last reindex): skip the section
+                continue
+            if start >= 1 and not lines[start - 1].lstrip().startswith("#"):
+                start -= 1  # the opening section has no heading line: keep its first line
+            end = secs[i + 1][1] - 1 if i + 1 < len(secs) else len(lines)
+            body = " ".join(l.strip() for l in lines[start:end] if l.strip() and not l.strip().startswith("|--"))
+            body = _re.sub(r"[`*_>#]+", "", body); body = _re.sub(r"\[([^\]]+)\]\([^)]*\)", r"\1", body); body = _re.sub(r"\s+", " ", body).strip()
+            if len(body) < 40:
+                continue
+            out.append({"p": p, "h": mask(title[:90])[0], "x": mask(body[:cap] + ("…" if len(body) > cap else ""))[0]})
+    return out
+_idx_for_sec = json.loads((ROOT / "brain/index.json").read_text(encoding="utf-8"))
+import base64 as _b64
+_photo = ROOT / "dashboard/brain-4d/vanessa.jpg"  # Vanessa's face, the same portrait the Command Deck shows (resized to 360 px)
+out = out.replace("/*VANESSA_PHOTO*/", "data:image/jpeg;base64," + _b64.b64encode(_photo.read_bytes()).decode("ascii") if _photo.exists() else "")
+_bm = ROOT / "brain/recs/big-moves.json"  # Vanessa's top 10 big moves (bin/brain recs --write), 2026-10-23
+out = out.replace("/*RECS*/null", j(json.loads(_bm.read_text(encoding="utf-8")) if _bm.exists() else None), 1)
+out = out.replace("/*SEC*/null", j(passages(ROOT, _idx_for_sec, {n["id"] for n in g["nodes"]})), 1)
+out = out.replace("/*LINKS*/null", j(_links.all_links(ROOT)), 1)
 (ROOT / "dashboard/brain-4d.html").write_text(out, encoding="utf-8")
 print(f"wrote dashboard/brain-4d.html: {len(g['nodes'])} nodes, {len(g['links'])} links, {len(seats)} seats, {len(enc)} encyclopedia entries, "
       f"ask index {len(ask['v'])} terms / {sum(len(f['t']) for f in ask['f'])} postings / {len(ask_json):,} bytes, {len(out):,} bytes")
