@@ -63,6 +63,11 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Delia | reviews, google review, testimonial, reputation, net promoter, scorecard | `wiki/real-estate-playbooks/referral-reciprocity.md` |
 | Ansel | predictive seller, likely seller, probate lead, expired, seller intelligence | `wiki/real-estate-playbooks/listing-process.md` |
 | Tax Assessor Agent | assessor, property tax, apn, tax bill, supplemental tax | `wiki/real-estate-playbooks/transaction-stages.md` |
+| Carmen | transaction coordinator, tc, escrow timeline, contingency dates, file timeline, escrow checklist, coe date | `wiki/real-estate-playbooks/transaction-stages.md` |
+| Booking Concierge | tidycal, booking, booked consult, consult, discovery call, appointment, no-show, reschedule, show rate, booking link | `wiki/ai-team/desk-seats.md` |
+| Autopilot Conductor | autopilot panel, run autopilot, autopilot conductor, scheduled sweep, overnight run | `wiki/dashboard-ops/index.md` |
+| Lender Matchmaker | lender match, lender fit, which lender, wholesale lender, lender pricing, loan scenario match | `wiki/mortgage-programs/program-selection.md` |
+| Inbox Sentinel | inbox watch, inbox sentinel, email watch, important email, reply needed, inbox alert | `wiki/ai-team/desk-seats.md` |
 
 ## Pods — standing cross-functional teams that work in parallel
 
