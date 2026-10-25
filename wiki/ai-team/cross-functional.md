@@ -68,6 +68,8 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Autopilot Conductor | autopilot panel, run autopilot, autopilot conductor, scheduled sweep, overnight run | `wiki/dashboard-ops/index.md` |
 | Lender Matchmaker | lender match, lender fit, which lender, wholesale lender, lender pricing, loan scenario match | `wiki/mortgage-programs/program-selection.md` |
 | Inbox Sentinel | inbox watch, inbox sentinel, email watch, important email, reply needed, inbox alert | `wiki/ai-team/desk-seats.md` |
+| Aria | 7-star, seven star, anticipate, anticipation, friday pulse, status update, response time, sla, response standard, homeowners exemption, supplemental tax, moving kit | `wiki/ai-team/desk-seats.md` |
+| Kai | kaizen, bottleneck, capacity, scale, scalability, process improvement, workload, hire trigger, efficiency, automation coverage | `wiki/ai-team/desk-seats.md` |
 
 ## Pods — standing cross-functional teams that work in parallel
 

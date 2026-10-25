@@ -93,3 +93,28 @@ recovery with the booking link. It also tracks the show rate and puts
 https://tidycal.com/stevenshearrill/discovery-call into every lead touch. Reschedules and cancellations stay in TidyCal.
 Launchpad mission: *Booked consult — prep to follow-up*. Vanessa tool: `tidycal_bookings`.
 
+## Aria — Anticipation & Client Success Lead (7-Star)
+
+Added 2026-10-25. Reports to Sterling; member of the Client Experience and Escrow & Closing pods.
+Owns the Broker Command Center **7-Star & Scale Engine** (Clients → 7-Star & Scale Engine):
+- **Anticipation engine.** 15 rules, each dated from acceptance, a contract milestone or close of escrow:
+  welcome-to-escrow pack, wire-fraud call, inspection prep, appraisal watch, homeowner's insurance quotes
+  (wildfire zones), moving kit, final walk-through and closing-day kit, seller close-out, closing gift,
+  settled-in call, Homeowners' Exemption (BOE-266, Feb 15), supplemental property tax heads-up, CPA
+  note for sellers, 90-day review, and the home-anniversary equity review.
+- **Response standards by stage.** New lead same day; contacted every 2 days; appointment confirmed
+  24 h before; active client every 3 days; under contract weekly plus every milestone; closed every
+  90 days. Breaches become recovery tasks every day.
+- **Friday Pulse.** A weekly written status to every escrow client: done, next, late, what we need, and
+  the wire-fraud reminder. Drafted in Gmail with one button.
+Launchpad mission: *Friday Pulse*. Vanessa tool: `seven_star`.
+
+## Kai — Process Improvement & Scale Lead (Kaizen)
+
+Added 2026-10-25. Reports to Owen; member of the Automation & AI pod.
+- **Capacity plan.** Weekly hours needed against hours available, with hire triggers: TC at 5+ escrows,
+  ISA at 60+ leads a month, showing partner at 8+ active buyers.
+- **Kaizen board.** Bottlenecks read from live data: late tasks by owner, clients untouched for 14+ days,
+  escrows with a late milestone, automation coverage. Ideas are scored by impact ÷ effort, and the
+  winners become missions, autopilot rules or SOPs.
+Launchpad mission: *Monthly Kaizen review*.
