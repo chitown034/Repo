@@ -22,7 +22,8 @@
 |---|---|---|
 | Daily (weekdays) | Review replies, GBP Q&A, social replies drafted | Delia, Tariq (drafts) → Steven |
 | Weekly | Content week from `docs/04`; Reddit/Nextdoor answers; citation sweep (3 directories) | Sofia, Orin, SEO Specialist |
-| Monthly | LLM benchmark; GSC top queries; PageSpeed; NAP consistency script; KPI row | Orin, SEO Specialist, Derek |
+| Weekly (Mon) | `scripts/pulse.mjs` (free, CI) → queue; citation sweep of 8 listings; three answer blocks | Orin, Citation Auditor, SEO Specialist |
+| Monthly | LLM benchmark (`scripts/benchmark.mjs`); GSC top queries; PageSpeed; KPI row | LLM Visibility Analyst, SEO Specialist, Derek |
 | Quarterly | Refresh pillar dates and numbers; llms.txt bump; re-run audit (`docs/01`); check AI crawler access | Sofia, Derek |
 | Annually (January) | FHFA limits, BAH tables, VA funding fee table updated on every page | Harrison |
 
@@ -31,9 +32,10 @@
 | Work | Responsible | Accountable | Consulted | Informed |
 |---|---|---|---|---|
 | Positioning, bios, copy | Sofia, Elise (`mktg-brand-strategist`) | Sofia | Alexandra | Vanessa |
-| Answer blocks, FAQ, llms.txt, monthly LLM benchmark | Orin (`geo-aeo-optimizer`, GEO / AEO Lead) | Sofia | Harrison (loan facts) | Nadia |
+| Answer blocks, FAQ, identity file, weekly pulse | Orin (`geo-aeo-optimizer`, GEO / AEO Lead) | Sofia | Harrison (loan facts) | Nadia |
+| Monthly LLM visibility benchmark and the next three fixes | LLM Visibility Analyst (`llm-visibility-analyst`, under Orin) | Orin | Nadia (engine changes) | Sofia |
 | Technical SEO, hub deploy, schema, GSC/Bing/IndexNow | SEO Specialist (`seo-specialist`) | Derek | Elena | Sofia |
-| Citations and directory sweep | SEO Specialist | Sofia | Alexandra (ad rules) | Victor |
+| Citations and directory sweep (read-only, weekly) | Citation Auditor (`citation-auditor`, under SEO Specialist) | Sofia | Alexandra (ad rules) | Victor |
 | Review requests, responses, GBP hygiene | Delia (`mktg-reputation-manager`), Sphere Nurture Coordinator | Victor | Alexandra | Sofia |
 | Press and podcast pitches | Gareth (`mktg-pr-media-relations`) | Sofia | Alexandra | Steven |
 | Reddit/Nextdoor/Quora answers (drafts) | Orin | Sofia | Harrison | — |

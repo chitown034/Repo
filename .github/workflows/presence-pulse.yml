@@ -1,0 +1,32 @@
+# The presence program checks itself: identity drift, NAP, schema, citations, benchmark, the week's answer blocks.
+# Plain Node, no model calls, no secrets -- costs no Claude allowance. Fails when a kit gate fails.
+name: presence-pulse
+on:
+  push:
+    paths: ["projects/aeo-presence/**", ".github/workflows/presence-pulse.yml"]
+  schedule:
+    - cron: "10 13 * * 1"   # Mondays 13:10 UTC (6:10 AM PT), before Vanessa's 6:25 cycle
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  pulse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Identity → generated files (no drift)
+        run: node projects/aeo-presence/scripts/build-identity.mjs --check
+      - name: Pulse (NAP, schema, citations, benchmark, KPIs, this week's answer blocks)
+        run: node projects/aeo-presence/scripts/pulse.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: presence-pulse-report
+          path: |
+            projects/aeo-presence/docs/reports/PRESENCE-PULSE.md
+            projects/aeo-presence/docs/reports/PRESENCE-BENCHMARK.md
+            projects/aeo-presence/data/presence-queue.json

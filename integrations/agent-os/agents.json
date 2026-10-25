@@ -1,5 +1,5 @@
 {
- "count": 180,
+ "count": 182,
  "agents": [
   {
    "slug": "a11y-architect",
@@ -644,6 +644,33 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "citation-auditor",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cmo-sofia",
+   "role": "Report under SEO Specialist (Sofia's line): weekly read-only sweep of Steven's directory listings against the kit's identity file — status per listing and the f",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "projects/aeo-presence.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"citation auditor Report under SEO Specialist (Sofia's line):\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent citation-auditor",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
      "Vanessa"
     ]
    }
@@ -2625,6 +2652,33 @@
    },
    "orca": {
     "command": "claude --agent listing-agent-elite",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "llm-visibility-analyst",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cmo-sofia",
+   "role": "Report under Orin (Sofia's line): the monthly LLM visibility benchmark — ten prompts across five engines scored 0–2, the sources engines cite when Steven is abs",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "projects/aeo-presence.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"llm visibility analyst the monthly LLM visibility benchmark —\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent llm-visibility-analyst",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
    "toolkit": [],

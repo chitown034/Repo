@@ -209,3 +209,6 @@ routine.**
 | Sun 2:07 PM (21:07 UTC) | Weekly backup, verified; watchdog 4:41 PM | backups/, backupStatus | both stores |
 | On a button | Run the cycle now · Triage my inbox · Recap my meetings · Draft follow-ups · Text me the brief (Command Deck; Gmail/Fieldy/Zoom/Inkbox as the viewer) | inboxDesk, twinQueue, vanessaQueue | — |
 | Pabbly (no Claude usage) | Kapso inbound → Notion; workflows 1–11 in `integrations/pabbly/WORKFLOWS.md` | Notion, Gmail drafts, Calendar tasks | Lofty, Zoho, Gmail, Kapso |
+| Mon 6:10 AM PT + every push (GitHub, no Claude usage; live since 2026-10-25) | Presence pulse — identity drift, NAP, schema, citations, benchmark, the week's answer blocks (`.github/workflows/presence-pulse.yml`) | build artifact: PRESENCE-PULSE.md, presence-queue.json | `projects/aeo-presence/` |
+| Mon 7:50 AM PT (PROPOSED, not installed — Steven's yes; +1 Sonnet run/week) | Presence weekly pulse + citation sweep (`routines/presence-weekly-pulse.md`) | vanessaQueue, citations-nap.csv | the kit, public directory pages (read-only) |
+| 1st business day 8:10 AM PT (PROPOSED, not installed; +1 Sonnet run/month) | Presence monthly LLM benchmark (`routines/presence-monthly-benchmark.md`) | llm-benchmark-log.csv, PRESENCE-BENCHMARK.md, vanessaQueue | Claude web search, Perplexity MCP |

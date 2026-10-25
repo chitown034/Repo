@@ -1,0 +1,131 @@
+{
+  "generated": "2026-10-25",
+  "items": [
+    {
+      "task": "Fix stale citation: Homes.com",
+      "priority": "p1",
+      "status": "pending",
+      "from": "presence-pulse",
+      "ref": "data/citations-nap.csv",
+      "note": "status: stale (old brokerage; winchester); canonical NAP in profiles/00-canonical-identity.md; Steven edits the listing, Citation Auditor verifies next sweep",
+      "owner": "Citation Auditor"
+    },
+    {
+      "task": "Fix stale citation: Facebook Page",
+      "priority": "p1",
+      "status": "pending",
+      "from": "presence-pulse",
+      "ref": "data/citations-nap.csv",
+      "note": "status: stale name (old brokerage); canonical NAP in profiles/00-canonical-identity.md; Steven edits the listing, Citation Auditor verifies next sweep",
+      "owner": "Citation Auditor"
+    },
+    {
+      "task": "Fix stale citation: LinkedIn",
+      "priority": "p1",
+      "status": "pending",
+      "from": "presence-pulse",
+      "ref": "data/citations-nap.csv",
+      "note": "status: stale location (old city); canonical NAP in profiles/00-canonical-identity.md; Steven edits the listing, Citation Auditor verifies next sweep",
+      "owner": "Citation Auditor"
+    },
+    {
+      "task": "Fix stale citation: Temecula Valley Chamber of Commerce",
+      "priority": "p1",
+      "status": "pending",
+      "from": "presence-pulse",
+      "ref": "data/citations-nap.csv",
+      "note": "status: stale (old site; old x handle; old youtube link); canonical NAP in profiles/00-canonical-identity.md; Steven edits the listing, Citation Auditor verifies next sweep",
+      "owner": "Citation Auditor"
+    },
+    {
+      "task": "Fix stale citation: AgentPronto",
+      "priority": "p2",
+      "status": "pending",
+      "from": "presence-pulse",
+      "ref": "data/citations-nap.csv",
+      "note": "status: stale (old brokerage; winchester); canonical NAP in profiles/00-canonical-identity.md; Steven edits the listing, Citation Auditor verifies next sweep",
+      "owner": "Citation Auditor"
+    },
+    {
+      "task": "Create Tier-1 listing: Google Business Profile (real estate)",
+      "priority": "p2",
+      "status": "pending",
+      "from": "presence-pulse",
+      "ref": "docs/08-local-seo-citations.md",
+      "note": "packet: name, phone, city, website, category from data/citations-nap.csv; Elena reviews account creation; Steven creates",
+      "owner": "SEO Specialist"
+    },
+    {
+      "task": "Create Tier-1 listing: Google Business Profile (mortgage)",
+      "priority": "p2",
+      "status": "pending",
+      "from": "presence-pulse",
+      "ref": "docs/08-local-seo-citations.md",
+      "note": "packet: name, phone, city, website, category from data/citations-nap.csv; Elena reviews account creation; Steven creates",
+      "owner": "SEO Specialist"
+    },
+    {
+      "task": "Create Tier-1 listing: Bing Places (real estate)",
+      "priority": "p2",
+      "status": "pending",
+      "from": "presence-pulse",
+      "ref": "docs/08-local-seo-citations.md",
+      "note": "packet: name, phone, city, website, category from data/citations-nap.csv; Elena reviews account creation; Steven creates",
+      "owner": "SEO Specialist"
+    },
+    {
+      "task": "Create Tier-1 listing: Bing Places (mortgage)",
+      "priority": "p2",
+      "status": "pending",
+      "from": "presence-pulse",
+      "ref": "docs/08-local-seo-citations.md",
+      "note": "packet: name, phone, city, website, category from data/citations-nap.csv; Elena reviews account creation; Steven creates",
+      "owner": "SEO Specialist"
+    },
+    {
+      "task": "Create Tier-1 listing: Apple Business Connect",
+      "priority": "p2",
+      "status": "pending",
+      "from": "presence-pulse",
+      "ref": "docs/08-local-seo-citations.md",
+      "note": "packet: name, phone, city, website, category from data/citations-nap.csv; Elena reviews account creation; Steven creates",
+      "owner": "SEO Specialist"
+    },
+    {
+      "task": "Answer block this week: Who is Steven Shearrill?",
+      "priority": "p3",
+      "status": "pending",
+      "from": "presence-pulse",
+      "ref": "docs/09-aeo-answer-engineering.md",
+      "note": "opener: Steven Shearrill is a retired U.S. Navy Chief, a California Real Estate Broker with LPT Realty (DRE #01988316), and a VA Mortgage Loan Originator with Patriot Pacific Financial (NMLS #2449246), serving Temecula Valley and San Diego County. · derivatives: page/FAQ entry, Short, GBP post, Reddit answer (drafts; Alexandra gates)",
+      "owner": "Orin"
+    },
+    {
+      "task": "Answer block this week: Is Steven Shearrill a licensed real estate broker?",
+      "priority": "p3",
+      "status": "pending",
+      "from": "presence-pulse",
+      "ref": "docs/09-aeo-answer-engineering.md",
+      "note": "opener: Yes. Steven Shearrill holds a California Real Estate Broker license (DRE #01988316, broker license issued July 2024) and works under LPT Realty, Inc. (DRE #02248983). · derivatives: page/FAQ entry, Short, GBP post, Reddit answer (drafts; Alexandra gates)",
+      "owner": "Orin"
+    },
+    {
+      "task": "Answer block this week: Is Steven Shearrill a licensed loan officer?",
+      "priority": "p3",
+      "status": "pending",
+      "from": "presence-pulse",
+      "ref": "docs/09-aeo-answer-engineering.md",
+      "note": "opener: Yes. Steven Shearrill is a Mortgage Loan Originator, NMLS #2449246, with Patriot Pacific Financial Corp (NMLS #1921615), Temecula, CA. Verify at nmlsconsumeraccess.org. · derivatives: page/FAQ entry, Short, GBP post, Reddit answer (drafts; Alexandra gates)",
+      "owner": "Orin"
+    },
+    {
+      "task": "Run the day-0 LLM benchmark (10 prompts × 5 engines)",
+      "priority": "p2",
+      "status": "pending",
+      "from": "presence-pulse",
+      "ref": "scripts/benchmark.mjs --template",
+      "note": "Steven runs the prompts in his own ChatGPT/Gemini/Grok accounts (15 min) or the analyst drives agent-browser read-only on the Mac; scores go in data/llm-benchmark-log.csv",
+      "owner": "LLM Visibility Analyst"
+    }
+  ]
+}

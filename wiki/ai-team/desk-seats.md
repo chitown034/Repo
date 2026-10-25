@@ -14,6 +14,8 @@ and pod membership live in `cross-functional.md`; the launchable agent file is `
 | Open House Captain | `open-house-captain` | Marguerite / Gwen | Client Care Pod |
 | Travel Desk | `travel-desk` | Vanessa (with Marcus) | none — Vanessa's desk |
 | Meeting Scribe | `meeting-scribe` | Vanessa | none — Vanessa's desk |
+| Citation Auditor (2026-10-25) | `citation-auditor` | SEO Specialist (Sofia's line) | Presence Pod |
+| LLM Visibility Analyst (2026-10-25) | `llm-visibility-analyst` | Orin (Sofia's line) | Presence Pod |
 
 ## Refi Watch Analyst
 
@@ -79,7 +81,32 @@ and pod membership live in `cross-functional.md`; the launchable agent file is `
 - **HALT:** never shares a recap outside the deck, never sends a follow-up; client names stay on the local model.
 - **Starts from:** this page, then `always-on/README.md` for the recap schedule; skill `.claude/skills/meeting-recap-to-crm`.
 
-Source: Steven's seat list, 2026-10-22. Mac snapshot (`roster-tiers.json`) does not know these seven yet — add them there
+## Citation Auditor (added 2026-10-25)
+
+- **Role:** the weekly read-only sweep of Steven's directory listings (Google Business Profile, Yelp, Zillow, Realtor.com,
+  Homes.com, Bing, Apple, the Chamber, the military directories — the 40 rows of `projects/aeo-presence/data/citations-nap.csv`)
+  against the kit's single identity file (`data/identity.json`).
+- **Owns:** the `status` / `last_checked` columns, the fix packet Steven applies (field, current value, canonical value,
+  where to click), the creation packet for a missing Tier-1 listing (Elena reviews before any account is created), and
+  the weekly line in `data/geo-activity-log.csv`. Eight listings a week, Tier 1 first.
+- **HALT:** never edits a listing, never logs in as Steven, never creates an account, never emails a directory's support.
+- **Starts from:** `projects/aeo-presence.md`, then `projects/aeo-presence/docs/08-local-seo-citations.md`; skill
+  `.claude/skills/citation-sweep`; the Monday pulse (`.claude/skills/presence-pulse`) hands it the stale rows.
+
+## LLM Visibility Analyst (added 2026-10-25)
+
+- **Role:** the monthly benchmark that answers "do ChatGPT, Claude, Gemini, Grok and Perplexity recommend Steven?" —
+  ten fixed prompts × five engines, scored 0–2, logged, scored by `scripts/benchmark.mjs`, with the sources the engines
+  cited when he was absent turned into next month's citation and content targets.
+- **Owns:** `data/llm-benchmark-log.csv`, `docs/reports/PRESENCE-BENCHMARK.md`, the `llm_benchmark_avg` KPI cell, the
+  "next three fixes" as `vanessaQueue` items, and the 15-minute run sheet Steven completes in his own ChatGPT / Gemini /
+  Grok accounts (or `agent-browser` on the Mac in a logged-in profile, read-only).
+- **HALT:** never posts, never submits feedback or "memory" to an engine, never pastes client PII into any engine.
+- **Starts from:** `projects/aeo-presence.md`, then `projects/aeo-presence/docs/10-geo-llm-playbook.md`; skill
+  `.claude/skills/llm-visibility-benchmark`.
+
+Source: Steven's seat list, 2026-10-22; Presence desk seats added 2026-10-25 (Steven: "add more advanced capabilities,
+automations, workflows, process improvement to enable scalability, and AI agents if need be"). Mac snapshot (`roster-tiers.json`) does not know these seven yet — add them there
 (tier 2, model sonnet, leads as above) before the next snapshot, as `agent-os.md` § Seats added after the Mac snapshot says.
 
 ## Booking Concierge

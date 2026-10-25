@@ -1,4 +1,4 @@
-# AI agent roster on the Mac (aiTeamRoster doc, generatedAt 2026-09-16T00:52:37+00:00, count 173; code-validator added 2026-10-12; seven desk seats added 2026-10-22 — not yet in the Mac's roster-tiers.json)
+# AI agent roster on the Mac (aiTeamRoster doc, generatedAt 2026-09-16T00:52:37+00:00, count 173; code-validator added 2026-10-12; seven desk seats added 2026-10-22; citation-auditor and llm-visibility-analyst (Presence desk) added 2026-10-25 — not yet in the Mac's roster-tiers.json)
 
 | slug | tier | lead | model | role |
 |---|---|---|---|---|
@@ -25,6 +25,7 @@
 | chief-automation-strategist | 1 | vanessa-orchestrator | opus | Steven Shearrill's Chief Automation Strategist and AI Agent Orchestration Architect. |
 | chief-of-staff | 3 | — | sonnet | Personal communication chief of staff that triages email, Slack, LINE, and Messenger. |
 | ciso-elena | 1 | vanessa-orchestrator | opus | Elena, Chief Information Security Officer on Steven Shearrill's AI Team — data and cyber risk sized for a solo operator handling client PII  |
+| citation-auditor | 2 | cmo-sofia | sonnet | Report under SEO Specialist (Sofia's line): weekly read-only sweep of Steven's directory listings against the kit's identity file — status per listing and the fix packet Steven applies. Never edits a listing or creates an account. |
 | client-concierge | 2 | cro-victor | sonnet | Report under Victor (CRO): runs the white-glove layer around a transaction — move coordination, utility and address-change checklists, home  |
 | closing-coordinator | 2 | cro-victor | sonnet | Report under Victor (CRO): runs the file from clear-to-close to funded — CD timing, final figures reconciliation, signing logistics includin |
 | cmo-sofia | 1 | vanessa-orchestrator | opus | Sofia, Chief Marketing Officer on Steven Shearrill's AI Team — brand voice, campaigns, content calendar, webinars (VA Loan Mastermind Live,  |
@@ -92,6 +93,7 @@
 | kotlin-reviewer | 3 | — | opus | Kotlin and Android/KMP code reviewer. |
 | lead-triage-analyst | 2 | cro-victor | opus | Report under Victor (CRO): triages Lofty leads — new leads since a given time, first-response gaps against the 5-minute SLA, missin |
 | listing-agent-elite | 2 | cro-victor | opus | Report under Victor (CRO): the seller-side representation practitioner — preps Steven to win the listing appointment and then run the listin |
+| llm-visibility-analyst | 2 | cmo-sofia | sonnet | Report under Orin (Sofia's line): the monthly LLM visibility benchmark — ten prompts across five engines scored 0–2, the sources engines cite when Steven is absent, the next three fixes. Never posts or submits feedback to an engine. |
 | loan-servicing-transfer | 2 | cco-alexandra | sonnet | Report under Alexandra (Compliance): handles the post-funding period — servicing transfer notices and the 60-day grace period, first payment |
 | loop-operator | 2 | caio-nadia | sonnet | Operate autonomous agent loops, monitor progress, and intervene safely when loops stall. |
 | lpt-recruiting-downline | 2 | cro-victor | sonnet | Report under Victor (CRO): builds Steven's LPT Realty attraction and revenue-share organisation — recruiting pipeline, the value case for ag |

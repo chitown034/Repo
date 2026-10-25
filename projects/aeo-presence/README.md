@@ -32,8 +32,11 @@ docs/
   11-content-pillars-and-briefs.md  Twelve pages with briefs (three built in site/)
   12-measurement-and-governance.md  KPIs with targets, rituals, RACI by AI-team seat, HALT list, monthly report
   13-compliance-marketing-claims.md Reg Z, UDAAP, DRE, NAR, fair housing, dual capacity, TCPA rules and the pre-publication checklist
+  14-operating-system.md            The machine: one identity file, the weekly pulse, definition of done, queue contract, capacity model, second-brand scaling
+  reports/                          PRESENCE-PULSE.md and PRESENCE-BENCHMARK.md (generated)
 data/
-  llm-benchmark-log.csv · citations-nap.csv · kpi-monthly.csv · geo-activity-log.csv · compliance-log.csv
+  identity.json · faq.json          Single source of truth; `scripts/build-identity.mjs` regenerates llms.txt, humans.txt, person + FAQ schema, bios
+  llm-benchmark-log.csv · citations-nap.csv · kpi-monthly.csv · geo-activity-log.csv · compliance-log.csv · content-log.csv · presence-queue.json
 profiles/
   00-canonical-identity.md          The single source of truth: name, titles, licenses, NAP, bios (50/100/300 words), keywords
   instagram.md · facebook.md · linkedin.md · youtube.md · tiktok.md · x-threads.md
@@ -50,6 +53,9 @@ site/
 scripts/
   validate-schema.mjs               Checks every JSON-LD block parses and has required fields
   nap-consistency.mjs               Checks one name, phone, city and license set across the whole kit; flags retired identifiers
+  build-identity.mjs                identity.json → generated files; `--check` is the CI drift gate
+  benchmark.mjs                     `--template YYYY-MM` writes the 50 cells; `--score` writes PRESENCE-BENCHMARK.md
+  pulse.mjs                         The weekly zero-token read: gates, citations, benchmark, KPIs, this week's answer blocks, the queue
 ```
 
 ## Quick start (in priority order)
@@ -64,13 +70,13 @@ scripts/
 ## Validate
 
 ```bash
-node scripts/validate-schema.mjs
-node scripts/nap-consistency.mjs
+node scripts/pulse.mjs          # runs every gate and writes the week's queue
+node scripts/build-identity.mjs # after any change to data/identity.json
 ```
 
 ## Who owns it on the AI team
 
-Sofia (CMO) owns the kit; **Orin** (GEO / AEO Lead) runs it with the Presence Pod: SEO Specialist, Elise (brand), Delia (reviews), Gareth (press), Derek (deploy), Alexandra (compliance gate), Elena on any domain or account step. Every output is a draft or a Needs-Steven packet; Steven posts, deploys, submits and pays. See `docs/12-measurement-and-governance.md` and the brain's `wiki/ai-team/org-chart.md`.
+Sofia (CMO) owns the kit; **Orin** (GEO / AEO Lead) runs it with the Presence Pod: SEO Specialist, **Citation Auditor** (weekly read-only listing sweep), **LLM Visibility Analyst** (monthly benchmark), Delia (reviews), Derek (deploy), Alexandra (compliance gate); Gareth joins on press, Elena on any domain or account step. The operating loop is `docs/14-operating-system.md`. Every output is a draft or a Needs-Steven packet; Steven posts, deploys, submits and pays. See `docs/12-measurement-and-governance.md` and the brain's `wiki/ai-team/org-chart.md`.
 
 ## Facts policy
 

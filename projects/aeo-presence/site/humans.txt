@@ -5,6 +5,6 @@ Location: Temecula, California, USA
 Contact: steven.shearrill@gmail.com · +1 (619) 368-7141
 
 /* SITE */
-Last update: 2026-10-12
+Last update: 2026-10-25
 Standards: HTML5, CSS3, JSON-LD (schema.org), llms.txt
 Purpose: Canonical entity page for Steven Shearrill for search engines and AI assistants.

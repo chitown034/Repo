@@ -20,7 +20,7 @@ hold the actual detail once you know which seat or layer you need.
 | `agent-os.md` | Every agent through Laya (lane), Jarvis (recall) and Orca (launch): `bin/brain os`, 172/172 reachable |
 | `cross-functional.md` | Who leads, who joins, the parallel waves, the gates and the HALT words — the rules `bin/brain route` runs |
 | `bot-crew.md` | The Bot Crew: 355 chat agents mirroring this org chart — 13 executive/mentor cards, named and desk seats, 8 pods and 12 workflows runnable, org-chart panel, 20 connectors behind approval cards (2026-10-22) |
-| `desk-seats.md` | The seven Sonnet 5 desk seats added 2026-10-22 (refi watch, sphere nurture, voicemail/inbox triage, document intake, open house, travel desk, meeting scribe): role, owns, HALT, starting page |
+| `desk-seats.md` | The nine Sonnet 5 desk seats (seven added 2026-10-22: refi watch, sphere nurture, voicemail/inbox triage, document intake, open house, travel desk, meeting scribe; two added 2026-10-25: citation auditor, LLM visibility analyst): role, owns, HALT, starting page |
 | `push-button-system.md` | The 2026-10-22 architecture: one `vanessaQueue`, the 6:05 → 6:25 → 6:34 → 6:40 morning schedule, the deck push-buttons, pods and gates, the one-word mods, Pabbly workflows 1–11, the Mac paste |
 | `mentors-and-benches.md` | Maxwell, Apex, James, Kevin (name settled 2026-10-07), and what a "bench" row actually counts |
 
@@ -31,7 +31,9 @@ hold the actual detail once you know which seat or layer you need.
 | Anything at all, first | **Vanessa** — Chief of Staff / COO, orchestrator, council chair | Fable 5.1 masterminds |
 | Net worth, income, budget, liabilities, close | **Marcus** — CFO | Opus 5.5 |
 | Marketing, campaigns, content, social, email | **Sofia** — CMO | Opus 5.5 |
-| AEO/SEO/GEO/AIO: search ranking, AI-answer visibility, profiles, schema, `llms.txt`, citations, reviews, press (`projects/aeo-presence.md`) | **Orin** — GEO / AEO Lead under Sofia, with SEO Specialist, Delia, Gareth (Presence Pod) | Opus 5.5 / Sonnet 5 |
+| AEO/SEO/GEO/AIO: search ranking, AI-answer visibility, profiles, schema, `llms.txt`, citations, reviews, press (`projects/aeo-presence.md`) | **Orin** — GEO / AEO Lead under Sofia, with SEO Specialist, Delia (Presence Pod); Gareth joins on press | Opus 5.5 / Sonnet 5 |
+| Is my phone/brokerage right on Yelp, Zillow, Homes.com…; NAP audit; duplicate listings | **Citation Auditor** — weekly read-only sweep (`desk-seats.md`) | Sonnet 5 |
+| Am I showing up in ChatGPT / Gemini / Grok / Perplexity; the LLM benchmark score | **LLM Visibility Analyst** — monthly benchmark (`desk-seats.md`) | Sonnet 5 |
 | Automation health, connectors, stack, what is broken | **Derek** — CTO | Opus 5.5 |
 | TRID/RESPA/Reg Z, VA-FHA-USDA compliance, disclosures | **Alexandra** — CCO | Opus 5.5 |
 | Where AI genuinely helps vs hype; tooling evaluation | **Nadia** — CAIO, outward disruptor | Opus 5.5 |

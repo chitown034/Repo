@@ -774,3 +774,24 @@ through Apple Health and the same export file once Steven switches the nutrition
   submits and pays; nothing is live.
 - **Owner.** Sofia (Orin runs it). **Gate.** Alexandra, then Steven. **Status.** Kit checks pass (schema, NAP);
   6D Brain rebuilt with the new pages, pod and lane words.
+
+## 2026-10-25 — The presence program becomes a machine: identity file, pulse, two desk seats, free CI
+
+- **Request (Steven, verbatim).** *"continue add more advance capabilities, automations, workflows, process improvement to
+  enable scalability , and ai agents if need be and update 2nd brain and ai org chart"*.
+- **Decision.** Deterministic code before the model, as the brain's rule says. `projects/aeo-presence/data/identity.json`
+  becomes the single source of every public fact; `scripts/build-identity.mjs` regenerates `llms.txt`, `humans.txt`, the
+  Person and FAQ schema and the bios, and `--check` is a CI gate. `scripts/pulse.mjs` is the zero-token Monday read
+  (NAP, schema and drift gates; citation status by tier; benchmark; KPIs; this week's three P1 answer blocks) that writes
+  `PRESENCE-PULSE.md` and a `vanessaQueue`-shaped queue; `scripts/benchmark.mjs` templates and scores the monthly
+  10-prompt × 5-engine LLM benchmark. The free GitHub workflow `presence-pulse.yml` runs the gates on every push and every
+  Monday. Two Sonnet desk seats join the Presence Pod — **Citation Auditor** (weekly read-only sweep of the 40 listings,
+  under SEO Specialist) and **LLM Visibility Analyst** (the monthly benchmark, under Orin) — with skills `citation-sweep`,
+  `llm-visibility-benchmark` and `presence-pulse`; Gareth moves to a press join so the pod stays at eight. The Claude
+  halves are routine specs only (`routines/presence-weekly-pulse.md`, `routines/presence-monthly-benchmark.md`; +1 Sonnet
+  run/week, +1/month) until Steven says yes. Operating loop, definition of done, queue contract, capacity model (Steven
+  at ~30 min/week after week two) and second-brand scaling: `docs/14-operating-system.md`. Rule kept: read-only on the
+  web, drafts only; nothing posts, deploys, submits, creates an account or pays.
+- **Owner.** Sofia (Orin runs it). **Gate.** Alexandra; Elena on accounts; Steven on routines and posts.
+  **Status.** Roster 182; agent files regenerated; first pulse green with 14 queue items; 6D Brain and the deck's AI
+  Team panel updated.

@@ -192,6 +192,23 @@
     "Vanessa"
    ],
    "halt": false
+  },
+  {
+   "request": "Check whether my phone number and brokerage are right on Yelp, Zillow and Homes.com",
+   "lead": "Citation Auditor",
+   "must_include": [
+    "Alexandra",
+    "Vanessa"
+   ],
+   "halt": false
+  },
+  {
+   "request": "Am I showing up when people ask ChatGPT or Gemini for a VA loan officer in Temecula? Run the benchmark",
+   "lead": "LLM Visibility Analyst",
+   "must_include": [
+    "Vanessa"
+   ],
+   "halt": false
   }
  ]
 }

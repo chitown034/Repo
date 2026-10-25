@@ -6,29 +6,111 @@
   "givenName": "Steven",
   "familyName": "Shearrill",
   "honorificSuffix": "MBA, PMP",
-  "jobTitle": ["Real Estate Broker", "Mortgage Loan Originator"],
-  "description": "Retired U.S. Navy Chief (20 years, retired 2023). California Real Estate Broker with LPT Realty (DRE #01988316), licensed since 2015, and VA Mortgage Loan Originator with Patriot Pacific Financial Corp (NMLS #2449246) since 2024. Serves military families, veterans and first-time buyers in Temecula Valley and San Diego County.",
+  "jobTitle": [
+    "Real Estate Broker",
+    "Mortgage Loan Originator"
+  ],
+  "description": "Retired U.S. Navy Chief (20 years, retired 2023). California Real Estate Broker with LPT Realty (CA DRE #01988316), licensed since 2015, and VA Mortgage Loan Originator with Patriot Pacific Financial Corp (NMLS #2449246) since 2024. Serves military families, veterans and first-time buyers in Temecula Valley and San Diego County.",
   "url": "https://stevenshearrill.com/",
   "image": "https://stevenshearrill.com/headshot-square.jpg",
   "telephone": "+1-619-368-7141",
   "email": "steven.shearrill@gmail.com",
-  "homeLocation": {"@type": "Place", "name": "Temecula, California", "address": {"@type": "PostalAddress", "addressLocality": "Temecula", "addressRegion": "CA", "postalCode": "92590", "addressCountry": "US"}},
+  "homeLocation": {
+    "@type": "Place",
+    "name": "Temecula, California",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Temecula",
+      "addressRegion": "CA",
+      "postalCode": "92590",
+      "addressCountry": "US"
+    }
+  },
   "worksFor": [
-    {"@type": "Organization", "@id": "https://stevenshearrill.com/#lpt", "name": "LPT Realty, Inc.", "identifier": "CA DRE #02248983", "url": "https://lptrealty.com/"},
-    {"@type": "FinancialService", "@id": "https://stevenshearrill.com/#ppf", "name": "Patriot Pacific Financial Corp", "identifier": "NMLS #1921615", "url": "https://patriotpacific.com/"}
+    {
+      "@type": "Organization",
+      "@id": "https://stevenshearrill.com/#lpt",
+      "name": "LPT Realty, Inc.",
+      "identifier": "CA DRE #02248983",
+      "url": "https://lptrealty.com/"
+    },
+    {
+      "@type": "FinancialService",
+      "@id": "https://stevenshearrill.com/#ppf",
+      "name": "Patriot Pacific Financial Corp",
+      "identifier": "NMLS #1921615",
+      "url": "https://patriotpacific.com/"
+    }
   ],
   "hasOccupation": [
-    {"@type": "Occupation", "name": "Real Estate Broker", "occupationLocation": {"@type": "State", "name": "California"}},
-    {"@type": "Occupation", "name": "Mortgage Loan Originator", "occupationLocation": {"@type": "State", "name": "California"}}
+    {
+      "@type": "Occupation",
+      "name": "Real Estate Broker",
+      "occupationLocation": {
+        "@type": "State",
+        "name": "California"
+      }
+    },
+    {
+      "@type": "Occupation",
+      "name": "Mortgage Loan Originator",
+      "occupationLocation": {
+        "@type": "State",
+        "name": "California"
+      }
+    }
   ],
   "hasCredential": [
-    {"@type": "EducationalOccupationalCredential", "credentialCategory": "license", "name": "California Real Estate Broker License", "identifier": "DRE #01988316", "recognizedBy": {"@type": "GovernmentOrganization", "name": "California Department of Real Estate", "url": "https://www.dre.ca.gov/"}},
-    {"@type": "EducationalOccupationalCredential", "credentialCategory": "license", "name": "Mortgage Loan Originator License", "identifier": "NMLS #2449246", "recognizedBy": {"@type": "Organization", "name": "Nationwide Multistate Licensing System", "url": "https://www.nmlsconsumeraccess.org/"}},
-    {"@type": "EducationalOccupationalCredential", "credentialCategory": "degree", "name": "Master of Business Administration (MBA)"},
-    {"@type": "EducationalOccupationalCredential", "credentialCategory": "certification", "name": "Project Management Professional (PMP)", "recognizedBy": {"@type": "Organization", "name": "Project Management Institute"}}
+    {
+      "@type": "EducationalOccupationalCredential",
+      "credentialCategory": "license",
+      "name": "California Real Estate Broker License",
+      "identifier": "DRE #01988316",
+      "recognizedBy": {
+        "@type": "GovernmentOrganization",
+        "name": "California Department of Real Estate",
+        "url": "https://www.dre.ca.gov/"
+      }
+    },
+    {
+      "@type": "EducationalOccupationalCredential",
+      "credentialCategory": "license",
+      "name": "Mortgage Loan Originator License",
+      "identifier": "NMLS #2449246",
+      "recognizedBy": {
+        "@type": "Organization",
+        "name": "Nationwide Multistate Licensing System",
+        "url": "https://www.nmlsconsumeraccess.org/"
+      }
+    },
+    {
+      "@type": "EducationalOccupationalCredential",
+      "credentialCategory": "degree",
+      "name": "Master of Business Administration (MBA)"
+    },
+    {
+      "@type": "EducationalOccupationalCredential",
+      "credentialCategory": "certification",
+      "name": "Project Management Professional (PMP)"
+    }
   ],
-  "memberOf": {"@type": "Organization", "name": "National Association of REALTORS®"},
-  "knowsAbout": ["VA home loans", "VA IRRRL refinance", "VA jumbo loans", "Military relocation (PCS)", "Basic Allowance for Housing (BAH) qualification", "First-time home buyers", "Temecula Valley real estate", "San Diego County real estate", "Multi-unit (2-4) VA purchases", "New construction VA financing", "Mello-Roos community facilities districts"],
+  "memberOf": {
+    "@type": "Organization",
+    "name": "National Association of REALTORS®"
+  },
+  "knowsAbout": [
+    "VA home loans",
+    "VA IRRRL refinance",
+    "VA jumbo loans",
+    "Military relocation (PCS)",
+    "Basic Allowance for Housing (BAH) qualification",
+    "First-time home buyers",
+    "Temecula Valley real estate",
+    "San Diego County real estate",
+    "Multi-unit (2-4) VA purchases",
+    "New construction VA financing",
+    "Mello-Roos community facilities districts"
+  ],
   "knowsLanguage": "en",
   "nationality": "US",
   "sameAs": [

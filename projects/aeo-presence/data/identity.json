@@ -1,0 +1,64 @@
+{
+  "_comment": "Single source of truth for every public fact. Change a fact here, run `node scripts/build-identity.mjs`, and llms.txt, humans.txt, person.jsonld and the FAQ schema regenerate. `--check` fails when a generated file drifted. VERIFY-marked fields are not yet confirmed by Steven.",
+  "updated": "2026-10-25",
+  "canonicalUrl": "https://stevenshearrill.com/",
+  "name": "Steven Shearrill",
+  "givenName": "Steven",
+  "familyName": "Shearrill",
+  "honorificSuffix": "MBA, PMP",
+  "headline": "Veteran-focused Real Estate Broker (LPT Realty) and VA Loan Officer (Patriot Pacific Financial) serving Temecula Valley and San Diego County. Retired U.S. Navy Chief.",
+  "shortHeadline": "Veteran Realtor & VA Loan Officer · Temecula & San Diego",
+  "summary": "Steven Shearrill is a retired U.S. Navy Chief, a California Real Estate Broker with LPT Realty (DRE #01988316) and a VA Mortgage Loan Originator with Patriot Pacific Financial Corp (NMLS #2449246). He serves military families, veterans and first-time buyers in Temecula Valley and San Diego County, California, and is one of the few professionals in the area licensed to handle both the home purchase and the VA loan.",
+  "military": {"branch": "United States Navy", "years": 20, "rank": "Chief Petty Officer", "retired": 2023, "clearance": "held TS/SCI"},
+  "education": ["Master of Business Administration (MBA)", "Project Management Professional (PMP)"],
+  "realEstate": {
+    "role": "Real Estate Broker",
+    "licenseLabel": "CA DRE #01988316",
+    "licenseNumber": "01988316",
+    "licensedSince": 2015,
+    "brokerSince": "2024-07",
+    "brokerage": {"name": "LPT Realty, Inc.", "licenseLabel": "CA DRE #02248983", "designatedBroker": "Molly Winkle", "url": "https://lptrealty.com/"},
+    "website": "https://temeculahomefinder.com/",
+    "verifyUrl": "https://www.dre.ca.gov/"
+  },
+  "mortgage": {
+    "role": "Mortgage Loan Originator",
+    "licenseLabel": "NMLS #2449246",
+    "licenseNumber": "2449246",
+    "since": 2024,
+    "statesVERIFY": ["CA", "NV", "AZ", "FL", "IL"],
+    "company": {"name": "Patriot Pacific Financial Corp", "licenseLabel": "NMLS #1921615", "url": "https://patriotpacific.com/", "address": {"streetVERIFY": "41923 Second St, Suite 203", "city": "Temecula", "region": "CA", "postalCode": "92590", "country": "US"}},
+    "teamPage": "https://patriotpacific.com/team-member/steven-shearrill/",
+    "verifyUrl": "https://www.nmlsconsumeraccess.org/",
+    "programs": ["VA purchase loan", "VA IRRRL refinance", "VA jumbo loan", "FHA loan", "Conventional loan", "Down payment assistance programs"]
+  },
+  "contact": {"phone": "(619) 368-7141", "phoneE164": "+1-619-368-7141", "email": "steven.shearrill@gmail.com", "city": "Temecula", "region": "CA", "postalCode": "92590"},
+  "serviceArea": {
+    "riversideCounty": ["Temecula", "Murrieta", "Menifee", "Winchester", "French Valley", "Wildomar", "Lake Elsinore"],
+    "sanDiegoCounty": ["Fallbrook", "Oceanside", "Vista", "San Marcos", "Escondido", "Carlsbad", "San Diego", "Chula Vista"],
+    "installations": ["Camp Pendleton", "MCAS Miramar", "Naval Base San Diego", "Naval Base Coronado", "Naval Base Point Loma", "MCRD San Diego", "March ARB"]
+  },
+  "specialties": ["VA home loans (purchase, IRRRL, jumbo)", "Buying with BAH", "PCS relocation and sight-unseen purchases", "First-time buyers", "2-4 unit VA purchases", "New construction with VA financing", "Sellers with orders"],
+  "knowsAbout": ["VA home loans", "VA IRRRL refinance", "VA jumbo loans", "Military relocation (PCS)", "Basic Allowance for Housing (BAH) qualification", "First-time home buyers", "Temecula Valley real estate", "San Diego County real estate", "Multi-unit (2-4) VA purchases", "New construction VA financing", "Mello-Roos community facilities districts"],
+  "sameAs": {
+    "linkedin": "https://www.linkedin.com/in/stevenshearrillhomes/",
+    "instagram": "https://www.instagram.com/stevenshearrillhomes/",
+    "facebook": "https://www.facebook.com/stevenshearrillhomes/",
+    "yelp": "https://www.yelp.com/biz/steven-shearrill-lpt-realty-temecula",
+    "homes": "https://www.homes.com/real-estate-agents/steven-shearrill/xd9lcsq/",
+    "agentpronto": "https://agentpronto.com/agents/steven-shearrill-11332"
+  },
+  "pages": [
+    {"title": "About and credentials", "url": "https://stevenshearrill.com/", "desc": "entity page with full JSON-LD, FAQ and profile links"},
+    {"title": "VA home loans in Temecula and San Diego", "url": "https://stevenshearrill.com/va-home-loans-temecula.html", "desc": "how VA loans work locally, BAH, entitlement, funding fee, 2-4 units"},
+    {"title": "Military families' guide to buying in Temecula Valley", "url": "https://stevenshearrill.com/military-families-temecula.html", "desc": "neighborhoods, commutes to Camp Pendleton and Miramar, schools, Mello-Roos, PCS timeline"},
+    {"title": "Search homes", "url": "https://temeculahomefinder.com/", "desc": "MLS search, LPT Realty"},
+    {"title": "Loan officer page", "url": "https://patriotpacific.com/team-member/steven-shearrill/", "desc": "Patriot Pacific Financial"}
+  ],
+  "retired": {"brokerage": "eXp Realty of California, Inc.", "cities": ["Winchester (as home city)", "Las Vegas"], "x": "@exp_steven", "youtubeName": "Steven Shearrill eXp Realty", "website": "MyTemeculaRealEstateConcierge.com"},
+  "disclosures": {
+    "realEstate": "Steven Shearrill, Real Estate Broker, CA DRE #01988316 · LPT Realty, Inc., CA DRE #02248983 · Equal Housing Opportunity.",
+    "mortgage": "Steven Shearrill, Mortgage Loan Originator, NMLS #2449246 · Patriot Pacific Financial Corp, NMLS #1921615 · Equal Housing Lender · Not a commitment to lend; all loans subject to credit approval.",
+    "va": "Not affiliated with, endorsed by or acting on behalf of the U.S. Department of Veterans Affairs or any government agency."
+  }
+}
