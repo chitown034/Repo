@@ -1,3 +1,108 @@
+## Orchestrator response (2026-10-25, hand-off session) — change-set: 5c37cd38a12dfd9b
+
+Re-validated after the fix below: `verdict: PASS (3 passed, 0 failed)`, change-set `5c37cd38a12dfd9b` (supersedes d32a1e5397499579; the only delta is the inventory row).
+
+- **P05-F1 (MEDIUM) — answered, not fixable from this branch.** Correct: the routines publish from `origin/claude/stoic-cori-pvn3f8`, and this change sits on `claude/modest-gates-35btz0`. This session's harness forbids pushing to any other branch without Steven's explicit word; he has been asked ("use stoic-cori") in the same report. Until he answers, the queued catch-up runs republish the retired id — the consequence the validator traced is bounded: an Approve click still records the decision in the page's own `recs` database, and the 6:05 AM Big-moves run reads those decisions and executes approved moves, so nothing is lost, only delayed to the next morning. When he says yes, this commit is pushed to stoic-cori and the next rebuild (or one hand publish) carries the new id. Proof then: `git show origin/claude/stoic-cori-pvn3f8:dashboard/brain-4d/template.html | grep 'BM_TRIGGER ='` prints `trig_01XwFre24w9aKq5oVRq1FQ8s`.
+- **P?-F2 (LOW) — fixed.** Row 1 of `docs/inventory/cloud-routines-2026-10.md` now reads `False`, is prefixed `[retired 2026-10-25 …]` and points at the replacement `trig_01YPmyQiy1SMzFfr1SzEoLoe`, the same way the other seven retired rows were handled. `brain.toolkit.routines()` now returns one enabled Health routine.
+- **Missing test (noted, not added):** a 6D page test asserting `BM_TRIGGER` matches across template, built page and the inventory's Big-moves row. Carried as a follow-up; adding a test file is out of this surgical change's scope.
+- **HALT note:** re-creating and disabling the eight live routines was done on the hand-off document's explicit instruction (item 1); it is reported to Steven in plain words in the same message so he can object.
+
+## Code-validator review, Big-moves trigger re-point + routines inventory (2026-10-25) — verdict FIX FIRST (VibeBreaker DIFF: 0 critical / 0 high / 1 medium / 1 low, 0 unverified, 1 rejected; SURVIVED*)
+
+change-set: d32a1e5397499579
+
+**Verdict: FIX FIRST.** The code edit itself is correct. `BM_TRIGGER` reads `trig_01XwFre24w9aKq5oVRq1FQ8s` at line 772 in both
+`dashboard/brain-4d/template.html` and `dashboard/brain-4d.html`, and the two files are otherwise unchanged. A read-only
+`get_trigger` shows that id is the Big-moves task: enabled, `persistent_session_id` = session_01AycAMVzfi1LGgfCMEbs3PD, next run
+2026-10-26T13:05Z. The old id `trig_014QQGp4WQfWGDVB827R4Qb9` is `enabled:false` and renamed `[retired 2026-10-25 …]`. Nothing
+else keys on the old id or on `BM_TRIGGER`'s value: no test, JSON fixture, build.py, merge-live.py or other page. Two things are
+still open. **Medium:** the re-pointed 6D rebuild and Big-moves routines build and publish the page from
+`origin/claude/stoic-cori-pvn3f8`, and that branch still has the old id. Their queued catch-up runs would republish the
+disabled id. **Low:** the inventory's first Health row still lists the retired id as enabled, so `bin/brain toolkit` reports it
+as a live routine next to the new one.
+
+Deterministic gate, quoted: `verdict: PASS (3 passed, 0 failed)` (change-set d32a1e5397499579).
+
+### Scope
+- Mode: DIFF. Passes 01, 04, 05, 17, 19, then 20. Stack: static HTML/JS page built by Python (`dashboard/brain-4d/build.py`
+  from `template.html`), plus a Markdown inventory that `brain/toolkit.py` parses.
+- Read: the diff for the three files. `bmRunNow` and the constant block in the template (lines 769–772 and 916–938).
+  `build.py:137` (reads template.html). `merge-live.py` (it carries only `const` data lines such as G/nodes, never the script
+  constant). `brain/toolkit.py:157-174` (`routines()`). The CLAUDE.md HALT list.
+- Searched the whole tree for both ids, the fragments `014QQ` and `XwFre24`, `BM_TRIGGER` and `fire_trigger`. The old id
+  appears only in `docs/reports/CODE-VALIDATION-REVIEW.md`, `docs/HANDOFF-2026-10-25.md` and the inventory's "was …" history
+  cell, which is the expected set. `fire_trigger` is used only by the two 6D files. The `trig_` hits in `action-desk.html`,
+  `brain/tests/test_brain.py`, `cloud-routines.json` and `findings-*.json` are other routines.
+- Read-only runtime evidence: `get_trigger` on trig_01XwFre24w9aKq5oVRq1FQ8s, trig_014QQGp4WQfWGDVB827R4Qb9,
+  trig_01VSMzRRFTErpLFLwn2Lrf12 (6D rebuild) and trig_015pqDNGrZVENHZEZR8JZYF5 (old Health). Also `git fetch` of
+  `origin/claude/stoic-cori-pvn3f8` and `git show` of its two 6D files.
+- Excluded: `docs/reports/CODE-VALIDATION.md`, which the gate itself regenerates. The routines' prompts are live tasks, so they
+  were not changed.
+- Material scope limitation: NO.
+
+### CONFIRMED
+
+**P05-F1 (MEDIUM, confidence HIGH): the routines that republish the 6D page build it from a branch that still has the retired trigger id.**
+- Location: the prompts of trig_01VSMzRRFTErpLFLwn2Lrf12 (6D rebuild, steps 1, 3 and 5) and trig_01XwFre24w9aKq5oVRq1FQ8s
+  (Big moves, daily step 7). Both run `git fetch origin claude/stoic-cori-pvn3f8` into worktree `wt-stoic`, run
+  `python3 dashboard/brain-4d/build.py` there, and then publish `"$WT"/dashboard/brain-4d.html`. On that branch,
+  `dashboard/brain-4d/template.html:772` reads `const BM_TRIGGER = "trig_014QQGp4WQfWGDVB827R4Qb9"`. Its tip is c5186fd,
+  the same commit as HEAD; this change is uncommitted on `claude/modest-gates-35btz0`.
+- Trigger: both routines have `last_fired_at` 2026-10-25T20:34Z, delivered into the orchestrator session and still waiting
+  there. The next scheduled 3:30 AM rebuild is another trigger. Each one regenerates the page from the stoic template and
+  republishes it.
+- Bad state: the published 6D page keeps or regains the old id, a disabled task bound to the stalled session
+  session_01Mj2k45Bms7y7g2nupjoLP1. Approve then calls `fire_trigger` on it. Either the call errors (the note reads "Could not
+  start it now (…)") or it lands in the stalled session. In neither case does the move start now. The approval still lands in
+  the page db, and the 6:05 AM run picks it up, so this is a delay rather than a loss. That is why it is MEDIUM. Until the change
+  is published, the live page (VoWHW4YuKUCyNqGZMikEv8) also still carries the old id.
+- Existing controls checked: merge-live.py does not carry the constant over from the live page, so the build's template value
+  is what gets published. No test compares `BM_TRIGGER` with the inventory or the live task.
+- Remediation direction: commit the change and get it onto `claude/stoic-cori-pvn3f8`, the branch the routines read, before
+  the queued runs execute. Then republish once.
+- Verification: `git show origin/claude/stoic-cori-pvn3f8:dashboard/brain-4d/template.html | grep 'BM_TRIGGER ='` and the
+  same for `dashboard/brain-4d.html` both print `trig_01XwFre24w9aKq5oVRq1FQ8s`. After the next publish, an Artifact `read` of
+  VoWHW4YuKUCyNqGZMikEv8 contains the new id and not `trig_014QQ`.
+
+**P17-F1 (LOW, confidence HIGH): the inventory still lists the retired Health task as an enabled routine.**
+- Location: `docs/inventory/cloud-routines-2026-10.md:8`, the first table row: Health daily sync, `True`,
+  `trig_015pqDNGrZVENHZEZR8JZYF5`. The new row at line 29 points back to it ("see the first row").
+- Trigger: `bin/brain toolkit` (and the daily `bin/brain toolkit --write` in the 6D rebuild, which writes
+  `wiki/ai-team/toolkit.md`). `routines()` dedupes rows by name, and the two Health names differ.
+- Bad state, reproduced with `brain.toolkit.routines()`: `True trig_015pqDNGrZVENHZEZR8JZYF5 Health daily sync — Apple Health…`
+  and `True trig_01YPmyQiy1SMzFfr1SzEoLoe Health daily sync — see the first row…`. The toolkit counts two Health routines and
+  shows the retired one as on, but `get_trigger` reports `enabled:false`. The other seven re-created rows were edited in place,
+  so they do not have this problem.
+- Remediation direction: put the new id in row 1, or mark row 1 retired (Enabled False with the retired note), the same way
+  the other seven rows were handled.
+- Verification: `routines()` returns one Health routine, `trig_01YPmyQiy1SMzFfr1SzEoLoe`, enabled.
+
+### UNVERIFIED
+- None. P05-F1 does not depend on what `fire_trigger` does with a disabled task: both possible outcomes leave the move unstarted.
+
+### REJECTED
+- P01-F1 (concatenating `c.title` into the `fire_trigger` text) — this code is unchanged by the diff and was reviewed in earlier
+  change-sets. The text goes to a session prompt and is never evaluated as code — `template.html:928`.
+
+### Coverage (clean)
+- Both 6D files are identical at line 772 and differ from HEAD only on that line, as `git diff` shows. The gate quickcheck and the
+  6D page tests pass.
+- build.py reads template.html as written (`build.py:137`). It has no trigger constant and no id substitution, so a rebuild keeps
+  the new id.
+- No test, fixture, JSON, script or other dashboard page refers to the old Big-moves id or reads `BM_TRIGGER`.
+- The new Big-moves task prompt keeps EXECUTE-NOW mode keyed on the message prefix "EXECUTE NOW big move", which matches what
+  `bmRunNow` sends.
+- Inventory prose: no client PII, keys or phone numbers. The session ids and scratchpad paths are internal only.
+- Karpathy (surgical): the code change is one constant plus its comment in each file, as described.
+
+### Top missing tests (pass 19)
+1. In `dashboard/brain-4d/test_build_passages.py`: `BM_TRIGGER` in template.html equals `BM_TRIGGER` in brain-4d.html, and both
+   equal the id in the "Big moves" row of `docs/inventory/cloud-routines-2026-10.md`.
+2. In `brain/tests`: `toolkit.routines()` returns no two enabled rows whose cron and name prefix match (this catches duplicate or
+   retired rows like P17-F1).
+3. A read-only check in the 6D rebuild prompt before publishing: `get_trigger(BM_TRIGGER).enabled` is true. If it is not, stop
+   and report.
+
 ## Orchestrator response (2026-10-24 02:30 UTC) — links row SHIP; shape test added (reviewed 4846a6ad57fc72db → db79c0d30d611b35)
 
 change-set: db79c0d30d611b35
