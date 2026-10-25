@@ -406,6 +406,117 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
   </div>
 </section>
 
+<!-- MEAL PLANS -->
+<section class="panel" id="p-meals" data-tab="meals" data-label="Meal plans" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Meal planning</span>
+    <h2>A day of eating built from your targets</h2>
+    <p>The generator takes the calories and macros from your profile, splits them across your meals, and sizes real foods in grams to hit them. Weigh food raw or cooked as labeled. Click "New combination" for different foods; the weekly grocery list updates to match.</p>
+  </div>
+  <div class="split">
+    <div class="card">
+      <h3>Plan settings</h3>
+      <form class="fields" id="mp" autocomplete="off">
+        <label class="f full">Food preference
+          <select id="mp-pref"><option value="omni">Omnivore</option><option value="pesc">Pescatarian</option><option value="veg">Vegetarian</option><option value="vegan">Vegan</option></select>
+        </label>
+        <label class="f">Meals per day
+          <select id="mp-n"><option>3</option><option selected>4</option><option>5</option></select>
+        </label>
+        <label class="f">Day type
+          <select id="mp-day"><option value="train">Training day</option><option value="rest">Rest day</option></select>
+        </label>
+        <div class="full"><button type="button" class="btn" id="mp-shuffle">New combination</button></div>
+      </form>
+      <div id="mp-targets"></div>
+      <p class="note">Rest days move about 15% of carbs into fat at the same calories (simple calorie cycling). Change the goal or diet style on the Overview tab to change the targets.</p>
+    </div>
+    <div class="grid" id="mp-out" style="gap:14px"></div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <div class="card-head"><h3>Weekly grocery list</h3><span class="small muted">This plan × 7 days</span></div>
+      <div id="mp-grocery"></div>
+    </div>
+    <div class="card">
+      <h3>Meal prep system</h3>
+      <ul class="clean small">
+        <li><strong>Batch 2× a week</strong> (e.g. Sunday and Wednesday): cooked proteins keep 3–4 days refrigerated.</li>
+        <li><strong>Cook components, not meals:</strong> 2 proteins, 2 carbs, 2 roasted vegetables, 2 sauces mix into many meals.</li>
+        <li><strong>Weigh cooked batches:</strong> weigh the full pot of rice, divide by portions, and log the cooked weight.</li>
+        <li><strong>Freeze extras:</strong> chili, curries, burritos and meatballs freeze 2–3 months.</li>
+        <li><strong>Default breakfasts:</strong> one or two automatic breakfasts remove a daily decision.</li>
+        <li><strong>Snack kit:</strong> Greek yogurt, jerky, protein bars (20 g+ protein, under 250 kcal), fruit, cottage cheese.</li>
+        <li><strong>Eating out:</strong> pick a protein plus vegetables, ask for sauce on the side, and estimate about 1.5× the menu calories for restaurant dishes.</li>
+        <li><strong>Food safety:</strong> cool food within 2 h, reheat to 74 °C / 165 °F, keep the fridge at 4 °C / 40 °F or below.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="grid g3">
+    <div class="card">
+      <h3>Hand-portion method</h3>
+      <p class="small muted">For when you can't weigh food. Per meal, using your own hand:</p>
+      <div class="table-wrap" style="border:0"><table><thead><tr><th>Portion</th><th>Food</th><th>≈ per portion</th></tr></thead><tbody>
+        <tr><td>Palm</td><td>Protein</td><td class="mono">20–30 g protein</td></tr>
+        <tr><td>Cupped hand</td><td>Carbs</td><td class="mono">20–30 g carbs</td></tr>
+        <tr><td>Fist</td><td>Vegetables</td><td class="mono">1 cup</td></tr>
+        <tr><td>Thumb</td><td>Fats</td><td class="mono">7–12 g fat</td></tr>
+      </tbody></table></div>
+      <p class="note">Typical meal: men 2 palms, 2 cupped hands, 2 fists, 2 thumbs. Women 1 of each. Adjust by results.</p>
+    </div>
+    <div class="card">
+      <h3>Reading a nutrition label</h3>
+      <ul class="clean small">
+        <li>Check the <strong>serving size</strong> first; packages often hold 2–4 servings.</li>
+        <li><strong>Protein per 100 kcal:</strong> 10 g or more is a high-protein food.</li>
+        <li><strong>Fiber:</strong> 3 g or more per serving is a good source.</li>
+        <li><strong>Added sugar:</strong> keep under 10% of calories (about 50 g on 2,000 kcal).</li>
+        <li><strong>Sodium:</strong> 20% DV or more is high. Aim under 2,300 mg a day unless you sweat heavily.</li>
+        <li>Ingredients are listed by weight. A long list of additives suggests ultra-processed food.</li>
+        <li>US labels may round anything under 0.5 g down to 0 (trans fat, sugar in sprays).</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Ultra-processed food</h3>
+      <p class="small">The NOVA system groups foods: 1) unprocessed (fruit, meat, eggs), 2) culinary ingredients (oil, butter, salt), 3) processed (cheese, canned fish, fresh bread), 4) ultra-processed (soft drinks, chips, packaged snacks, most cereals).</p>
+      <p class="small">In a tightly controlled NIH trial (Hall 2019), people ate about <strong>500 kcal more per day</strong> on an ultra-processed diet than on an unprocessed one, even though both diets offered the same nutrients, and gained weight.</p>
+      <p class="note">Many processed foods are useful (whey, canned beans, frozen vegetables, Greek yogurt). Aim for roughly 80% minimally processed.</p>
+    </div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Fasting timeline</h3>
+      <p class="small muted">What changes as time since your last meal increases. Timings vary with activity level and the size of your last meal.</p>
+      <div class="timeline" id="fast-tl"></div>
+    </div>
+    <div class="grid" style="gap:16px">
+      <div class="card">
+        <h3>Alcohol</h3>
+        <div class="table-wrap" style="border:0"><table><thead><tr><th>Drink</th><th>Serving</th><th class="num">kcal</th></tr></thead><tbody>
+          <tr><td>Regular beer</td><td class="mono">355 ml / 12 oz</td><td class="num mono">150</td></tr>
+          <tr><td>Light beer</td><td class="mono">355 ml / 12 oz</td><td class="num mono">100</td></tr>
+          <tr><td>IPA / craft beer</td><td class="mono">473 ml / 16 oz</td><td class="num mono">250–300</td></tr>
+          <tr><td>Wine</td><td class="mono">150 ml / 5 oz</td><td class="num mono">120–130</td></tr>
+          <tr><td>Spirits (40%)</td><td class="mono">44 ml / 1.5 oz</td><td class="num mono">97</td></tr>
+          <tr><td>Margarita / piña colada</td><td class="mono">1 cocktail</td><td class="num mono">250–500</td></tr>
+          <tr><td>Hard seltzer</td><td class="mono">355 ml / 12 oz</td><td class="num mono">100</td></tr>
+        </tbody></table></div>
+        <p class="note">Alcohol has 7 kcal/g, pauses fat burning while your body clears it, and lowers next-day food judgment. Heavy drinking after training cut muscle protein synthesis by about 24–37% even with protein (Parr 2014). If you drink: keep it to 1–2 drinks, choose low-sugar mixers, eat protein first, and alternate with water.</p>
+      </div>
+      <div class="card">
+        <h3>Fiber &amp; gut health</h3>
+        <div class="kv">
+          <dt>Target</dt><dd>25 g (women) to 38 g (men) per day; most people eat about 15 g. Increase slowly with more water.</dd>
+          <dt>Diversity</dt><dd>30+ different plant foods a week is linked to a more diverse gut microbiome (American Gut Project).</dd>
+          <dt>Fermented foods</dt><dd>Yogurt, kefir, kimchi, sauerkraut. A Stanford trial (2021) found 6 servings a day increased microbiome diversity and lowered inflammatory markers.</dd>
+          <dt>Prebiotics</dt><dd>Onions, garlic, leeks, oats, slightly green bananas, legumes feed beneficial bacteria.</dd>
+          <dt>Gut issues</dt><dd>Bloating from protein bars and sweeteners (sugar alcohols) is common. A low-FODMAP diet, done with a dietitian, helps IBS.</dd>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- FAD DIETS -->
 <section class="panel" id="p-fads" data-tab="fads" data-label="Fad diets" hidden>
   <div class="panel-head">
@@ -476,7 +587,7 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
     <div class="card">
       <h3>One-rep max estimator</h3>
       <form class="fields" id="orm" autocomplete="off">
-        <label class="f">Weight lifted <span class="u-wt">(kg)</span><input id="orm-w" type="number" step="0.5" value="100"></label>
+        <label class="f">Weight lifted <span class="u-wt">(kg)</span><input id="orm-w" data-conv="w" type="number" step="0.5" value="100"></label>
         <label class="f">Reps (1–12)<input id="orm-r" type="number" min="1" max="12" value="5"></label>
       </form>
       <div id="orm-out"></div>
@@ -692,6 +803,109 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
   </div>
 </section>
 
+<!-- TRAINING STYLES -->
+<section class="panel" id="p-styles" data-tab="styles" data-label="Training styles" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Disciplines &amp; gym tools</span>
+    <h2>Strength standards, sport styles &amp; running</h2>
+    <p>Bodybuilding is one way to train. This tab covers the other major disciplines, how they program, and the tools lifters use every session: plate math, warm-up sets, strength benchmarks, and running pace.</p>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <div class="card-head"><h3>Strength standards</h3><span class="small muted" id="std-meta"></span></div>
+      <p class="small muted">Approximate one-rep max as a multiple of bodyweight, using your profile weight and sex. Enter your current 1RMs to see where you stand.</p>
+      <div id="std-out"></div>
+      <p class="note">Rough guide: novice = a few months of consistent training, intermediate = 1–2 years, advanced = 3–5+ years of focused work, elite = competitive lifter. Height, age and limb length shift these.</p>
+    </div>
+    <div class="grid" style="gap:16px">
+      <div class="card">
+        <h3>Plate calculator</h3>
+        <form class="fields" id="plate" autocomplete="off">
+          <label class="f">Target weight <span class="u-wt">(kg)</span><input id="pl-w" data-conv="w" type="number" step="0.5" value="100"></label>
+          <label class="f">Bar <span class="u-wt">(kg)</span><input id="pl-bar" data-conv="w" type="number" step="0.5" value="20"></label>
+        </form>
+        <div id="plate-out"></div>
+      </div>
+      <div class="card">
+        <h3>Warm-up sets</h3>
+        <p class="small muted">Ramps from the empty bar to the working weight above without tiring you out.</p>
+        <div id="warm-out"></div>
+      </div>
+    </div>
+  </div>
+  <div class="grid g3" id="disc-grid"></div>
+  <div class="card">
+    <h3>Calisthenics progressions</h3>
+    <p class="small muted">Move to the next step when you can do 3 sets of the target reps with clean form. Each row reads from easiest to hardest.</p>
+    <div class="table-wrap" style="border:0"><table><thead><tr><th>Skill</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr></thead><tbody id="cali-rows"></tbody></table></div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Pace &amp; race predictor</h3>
+      <form class="fields" id="pace" autocomplete="off">
+        <label class="f">Distance
+          <select id="pc-d"><option value="1.609">1 mile</option><option value="5" selected>5K</option><option value="10">10K</option><option value="21.0975">Half marathon</option><option value="42.195">Marathon</option></select>
+        </label>
+        <label class="f">Finish time (h:mm:ss)<input id="pc-t" type="text" value="0:28:00" inputmode="numeric"></label>
+      </form>
+      <div id="pace-out"></div>
+      <p class="note">Predictions use Riegel's formula, T₂ = T₁ × (D₂ / D₁)^1.06. They assume training suited to the longer distance; marathon predictions are usually optimistic without high weekly mileage.</p>
+    </div>
+    <div class="card">
+      <h3>Couch to 5K</h3>
+      <p class="small muted">Three sessions a week, each starting with a 5 min brisk walking warm-up. Repeat any week that feels too hard.</p>
+      <div class="table-wrap" style="border:0"><table><thead><tr><th>Week</th><th>Each session</th></tr></thead><tbody>
+        <tr><td class="mono">1</td><td>Alternate 60 s jog / 90 s walk for 20 min</td></tr>
+        <tr><td class="mono">2</td><td>Alternate 90 s jog / 2 min walk for 20 min</td></tr>
+        <tr><td class="mono">3</td><td>2 × (90 s jog, 90 s walk, 3 min jog, 3 min walk)</td></tr>
+        <tr><td class="mono">4</td><td>3 min jog, 90 s walk, 5 min jog, 2.5 min walk, 3 min jog, 90 s walk, 5 min jog</td></tr>
+        <tr><td class="mono">5</td><td>Day 1: 3 × 5 min jog / 3 min walk · Day 2: 2 × 8 min jog / 5 min walk · Day 3: 20 min jog</td></tr>
+        <tr><td class="mono">6</td><td>Day 1: 5-8-5 min jogs with 3 min walks · Day 2: 2 × 10 min jog / 3 min walk · Day 3: 25 min jog</td></tr>
+        <tr><td class="mono">7</td><td>25 min jog</td></tr>
+        <tr><td class="mono">8</td><td>28 min jog</td></tr>
+        <tr><td class="mono">9</td><td>30 min jog, which is about 5K for many new runners</td></tr>
+      </tbody></table></div>
+      <p class="note">Run at a pace where you can talk. Raise weekly running time by no more than about 10% to avoid shin splints.</p>
+    </div>
+  </div>
+  <div class="grid g3">
+    <div class="card">
+      <h3>Running form &amp; injuries</h3>
+      <ul class="clean small">
+        <li>Cadence around 170–180 steps/min reduces overstriding and knee load. Raise yours by 5–10% if it's low.</li>
+        <li>Land with the foot under the hips, not far ahead; foot strike type matters less.</li>
+        <li>Replace shoes every 500–800 km (300–500 mi). Pick by comfort.</li>
+        <li><strong>Shin splints:</strong> too much too soon. Cut volume, add calf raises.</li>
+        <li><strong>Runner's knee:</strong> strengthen hips and quads.</li>
+        <li><strong>Plantar fasciitis:</strong> calf stretches, foot strength, gradual loading.</li>
+        <li><strong>Achilles:</strong> slow, heavy calf raises.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Flexibility &amp; stretching types</h3>
+      <div class="kv">
+        <dt>Static</dt><dd>Hold 30–60 s. Best after training or as its own session. Long holds (60 s+) right before maximal lifting slightly reduce strength.</dd>
+        <dt>Dynamic</dt><dd>Controlled swings and lunges through range. Best in warm-ups.</dd>
+        <dt>PNF</dt><dd>Contract the stretched muscle 5–10 s, relax, stretch deeper. Fastest range-of-motion gains.</dd>
+        <dt>Ballistic</dt><dd>Bouncing into end range. Only for sports that need it (martial arts, dance).</dd>
+        <dt>Loaded stretching</dt><dd>Strength training through full range (deep squats, RDLs, flys) builds flexibility as well as stretching does.</dd>
+      </div>
+      <p class="note">Aim for 5+ minutes per muscle group a week to gain range. Stretching alone does little to prevent injury; warming up and building strength do more.</p>
+    </div>
+    <div class="card">
+      <h3>Plyometrics</h3>
+      <ul class="clean small">
+        <li><strong>What:</strong> rapid stretch–shorten jumps and throws that build power and reactive strength.</li>
+        <li><strong>Prerequisite:</strong> squat about 1.5× bodyweight, or land jumps quietly with stable knees.</li>
+        <li><strong>Dose:</strong> 40–80 foot contacts per session (beginner) up to 120+ (advanced), 1–2 times a week, done fresh.</li>
+        <li><strong>Progression:</strong> squat jumps → box jumps (focus on landing) → broad jumps → bounds → depth jumps.</li>
+        <li><strong>Upper body:</strong> med-ball chest passes, slams, clap push-ups.</li>
+        <li>Rest 1–2 min between sets. Plyometrics are about quality, not conditioning.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <!-- EXERCISE LIBRARY -->
 <section class="panel" id="p-library" data-tab="library" data-label="Exercise library" hidden>
   <div class="panel-head">
@@ -708,6 +922,26 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
   </div>
   <p class="small muted" id="lib-count"></p>
   <div class="grid g3" id="lib-grid"></div>
+  <div class="card">
+    <h3>Muscle anatomy &amp; function</h3>
+    <p class="small muted">Know what a muscle does and you know how to train it: load it through that motion, from full stretch to full contraction.</p>
+    <div class="table-wrap" style="border:0"><table><thead><tr><th>Muscle</th><th>Location</th><th>Main actions</th><th>Trained by</th></tr></thead><tbody id="anat-rows"></tbody></table></div>
+  </div>
+  <div class="card">
+    <h3>Movement patterns</h3>
+    <p class="small muted">A balanced program covers every pattern each week.</p>
+    <div class="table-wrap" style="border:0"><table><thead><tr><th>Pattern</th><th>Examples</th><th>Weekly hard sets</th></tr></thead><tbody>
+      <tr><td><strong>Squat</strong> (knee-dominant)</td><td>Squats, leg press, lunges</td><td class="mono">6–15</td></tr>
+      <tr><td><strong>Hinge</strong> (hip-dominant)</td><td>Deadlifts, RDLs, hip thrusts, swings</td><td class="mono">6–15</td></tr>
+      <tr><td><strong>Horizontal push</strong></td><td>Bench press, push-ups, dips</td><td class="mono">6–15</td></tr>
+      <tr><td><strong>Vertical push</strong></td><td>Overhead press, landmine press</td><td class="mono">4–10</td></tr>
+      <tr><td><strong>Horizontal pull</strong></td><td>Rows of all kinds</td><td class="mono">8–18</td></tr>
+      <tr><td><strong>Vertical pull</strong></td><td>Pull-ups, pulldowns</td><td class="mono">6–15</td></tr>
+      <tr><td><strong>Carry</strong></td><td>Farmer, suitcase, overhead carries</td><td class="mono">2–6</td></tr>
+      <tr><td><strong>Core</strong> (anti-extension / rotation / lateral flexion)</td><td>Rollouts, Pallof press, side planks</td><td class="mono">4–10</td></tr>
+      <tr><td><strong>Single-leg</strong></td><td>Split squats, step-ups, single-leg RDL</td><td class="mono">4–10</td></tr>
+    </tbody></table></div>
+  </div>
 </section>
 
 <!-- BODYBUILDING -->
@@ -837,6 +1071,139 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
   <div class="callout bad"><strong>Performance-enhancing drugs:</strong> anabolic steroids, SARMs, and other drugs carry serious risks: heart enlargement, worse cholesterol, infertility, liver damage, mood changes, and early death in competitive bodybuilders. Many are illegal without a prescription. Natural lifters should set expectations against natural physiques: gaining about 0.5–1 kg of muscle a month is excellent progress in year one, and progress slows sharply after that.</div>
 </section>
 
+<!-- HEALTH -->
+<section class="panel" id="p-health" data-tab="health" data-label="Health &amp; life stages" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Health</span>
+    <h2>Hormones, life stages, medical markers &amp; medications</h2>
+    <p>Fitness exists to serve health. This tab covers how training and nutrition change across life stages, the lab markers worth tracking, GLP-1 weight-loss medications, and exercising with common conditions. Reference ranges vary by lab and country; your clinician interprets your results.</p>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <div class="card-head"><h3>Body fat ranges</h3><span class="small muted" id="bfr-meta"></span></div>
+      <div id="bfr-out"></div>
+      <p class="note">American Council on Exercise categories. Essential fat is the minimum for normal body function. Staying below the athletic range long term risks hormonal problems, especially for women.</p>
+    </div>
+    <div class="card">
+      <h3>Waist-based health risk</h3>
+      <div id="waist-out"></div>
+      <p class="note">Waist size tracks visceral (organ) fat, which predicts heart disease and diabetes better than BMI. Measure at the navel after exhaling normally.</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Menstrual cycle &amp; training</h3>
+    <p class="small muted">Studies of "cycle syncing" show small, inconsistent performance effects, so individual tracking beats a fixed plan. Hormonal contraception flattens most of these swings.</p>
+    <div class="table-wrap" style="border:0"><table><thead><tr><th>Phase</th><th>Typical days</th><th>Hormones</th><th>What you may notice</th><th>Practical adjustments</th></tr></thead><tbody>
+      <tr><td><strong>Menstrual</strong></td><td class="mono">1–5</td><td>Estrogen and progesterone low</td><td>Cramps, fatigue, lower energy for some; others feel fine</td><td>Train by feel. Iron-rich foods. Exercise often eases cramps.</td></tr>
+      <tr><td><strong>Follicular</strong></td><td class="mono">1–13</td><td>Estrogen rising</td><td>Energy and mood often improve; may tolerate higher intensity</td><td>Good window for hard sessions and PR attempts if you feel strong</td></tr>
+      <tr><td><strong>Ovulation</strong></td><td class="mono">~14</td><td>Estrogen and LH peak</td><td>Peak strength for some; possibly more ligament laxity</td><td>Warm up thoroughly, focus on landing mechanics</td></tr>
+      <tr><td><strong>Luteal</strong></td><td class="mono">15–28</td><td>Progesterone high</td><td>Resting energy use rises about 2.5–10% (≈100–300 kcal), higher body temperature, cravings, water retention, poorer heat tolerance</td><td>A small calorie increase is reasonable; more fluid and electrolytes in heat; expect scale weight up 0.5–2 kg</td></tr>
+    </tbody></table></div>
+    <p class="note">Missing periods for 3+ months while training (not pregnant) is a medical warning sign, often linked to low energy availability. See a doctor.</p>
+  </div>
+  <div class="grid g3">
+    <div class="card">
+      <h3>Pregnancy</h3>
+      <ul class="clean small">
+        <li>ACOG recommends 150 min/week of moderate activity for uncomplicated pregnancies. Continuing lifting is generally safe at moderate effort.</li>
+        <li>Use the "talk test" rather than heart-rate caps.</li>
+        <li>After the first trimester, limit long periods lying flat on the back. Avoid contact sports, fall-risk activities, and hot yoga.</li>
+        <li>Extra calories: about 0 in trimester 1, +340 in trimester 2, +450 in trimester 3.</li>
+        <li>Folate (400–800 µg) before and during pregnancy; iron, iodine, choline, DHA.</li>
+        <li>Stop and call your provider for bleeding, dizziness, chest pain, calf swelling, fluid leakage, or regular contractions.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Postpartum</h3>
+      <ul class="clean small">
+        <li>Walking and breathing / pelvic floor work can start within days if delivery was uncomplicated.</li>
+        <li>Most return to structured training after clearance (often 6+ weeks; longer after a C-section).</li>
+        <li><strong>Diastasis recti</strong> (abdominal separation) is common. Build pressure management and core work progressively.</li>
+        <li>Leaking, heaviness or pain with running or jumping → see a pelvic floor physical therapist.</li>
+        <li>Breastfeeding burns about 400–500 kcal/day. Avoid aggressive deficits.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Perimenopause &amp; menopause</h3>
+      <ul class="clean small">
+        <li>Falling estrogen speeds bone loss (up to ~10% in the 5 years around menopause) and shifts fat toward the belly.</li>
+        <li><strong>Lift heavy:</strong> high-intensity resistance and impact training improved bone density in postmenopausal women (LIFTMOR trial).</li>
+        <li>Protein 1.2–1.6+ g/kg; calcium 1,200 mg; vitamin D.</li>
+        <li>Sleep disruption and hot flashes affect recovery. Hormone therapy is an option to discuss with a doctor.</li>
+        <li>Add sprint or plyometric work if your joints allow; it's good for muscle power and bone.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Testosterone: natural levers</h3>
+      <ul class="clean small">
+        <li><strong>Sleep:</strong> one week at 5 h/night cut testosterone 10–15% in young men.</li>
+        <li><strong>Body fat:</strong> obesity lowers testosterone; losing fat raises it.</li>
+        <li><strong>Very low-fat diets</strong> (&lt;20% of calories) can lower it modestly.</li>
+        <li><strong>Extreme dieting</strong> and heavy endurance volume can suppress it.</li>
+        <li>Zinc and vitamin D help only if you're deficient.</li>
+        <li>Symptoms plus two low morning lab tests → see a doctor. Testosterone therapy suppresses fertility.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Aging well (50+)</h3>
+      <ul class="clean small">
+        <li>Muscle mass falls 3–8% per decade after 30, faster after 60. Power falls even faster.</li>
+        <li>Strength train 2–3× a week; include fast lifting (power) and balance work.</li>
+        <li>Protein 1.2–1.6 g/kg, 30–40 g per meal, because older muscle needs more protein to respond.</li>
+        <li><strong>Longevity markers:</strong> grip strength, VO₂max, sitting down and rising from the floor without hands, 10 s single-leg stand.</li>
+        <li>Total daily energy use stays stable from about 20 to 60 and declines slowly after (Pontzer 2021). Weight gain in middle age is mostly from moving less.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Kids &amp; teens</h3>
+      <ul class="clean small">
+        <li>60 minutes of activity daily, with muscle and bone strengthening 3 days a week (WHO).</li>
+        <li>Supervised strength training is safe from about age 7–8 when children can follow instructions. It doesn't stunt growth.</li>
+        <li>Prioritize technique, variety of sports, and fun over max lifts.</li>
+        <li>No dieting for weight in growing kids without medical guidance. Focus on food quality and activity.</li>
+        <li>Teen athletes need lots of calories; under-fueling harms growth and bone.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card">
+    <h3>GLP-1 weight-loss medications</h3>
+    <p class="small muted">Prescription drugs that mimic gut hormones (GLP-1, and for tirzepatide also GIP). They slow stomach emptying, increase fullness, and quiet "food noise."</p>
+    <div class="table-wrap" style="border:0"><table><thead><tr><th>Drug</th><th>Brands</th><th>Average weight loss in trials</th><th>Notes</th></tr></thead><tbody>
+      <tr><td><strong>Semaglutide</strong></td><td>Wegovy, Ozempic</td><td>~15% of bodyweight at 68 weeks (STEP-1)</td><td>Weekly injection; also cut heart attack and stroke risk 20% in SELECT</td></tr>
+      <tr><td><strong>Tirzepatide</strong></td><td>Zepbound, Mounjaro</td><td>~21% at 72 weeks on the top dose (SURMOUNT-1)</td><td>Weekly injection; dual GIP/GLP-1 agonist</td></tr>
+      <tr><td><strong>Liraglutide</strong></td><td>Saxenda, Victoza</td><td>~8%</td><td>Daily injection; older drug</td></tr>
+    </tbody></table></div>
+    <div class="grid g2">
+      <div class="kv">
+        <dt>Muscle loss</dt><dd>Roughly 25–40% of weight lost can be lean mass. Strength training 2–3× a week and 1.2–1.6+ g/kg protein are essential.</dd>
+        <dt>Small appetite</dt><dd>Prioritize protein and fiber at each meal, plus fluids and electrolytes.</dd>
+        <dt>Side effects</dt><dd>Nausea, constipation, reflux are common early. Rare risks include pancreatitis and gallbladder disease.</dd>
+      </div>
+      <div class="kv">
+        <dt>Stopping</dt><dd>About two-thirds of lost weight returned within a year of stopping semaglutide (STEP-1 extension). Building habits and muscle during treatment helps.</dd>
+        <dt>Not for</dt><dd>Personal or family history of medullary thyroid cancer or MEN2, pregnancy. Requires a prescriber.</dd>
+        <dt>Avoid</dt><dd>Unregulated "research peptides" and compounded products from unverified sellers.</dd>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Blood work worth tracking</h3>
+    <p class="small muted">Typical adult reference ranges in US units. Ask your doctor about an annual panel. Hard training can push some markers out of range.</p>
+    <div class="table-wrap" style="border:0"><table><thead><tr><th>Marker</th><th>Typical target</th><th>Why it matters</th><th>Training note</th></tr></thead><tbody id="labs-rows"></tbody></table></div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Exercising with common conditions</h3>
+      <div class="table-wrap" style="border:0"><table><thead><tr><th>Condition</th><th>What helps</th><th>Cautions</th></tr></thead><tbody id="cond-rows"></tbody></table></div>
+      <p class="note">Get medical clearance if you have heart symptoms, a recent event, or uncontrolled conditions. The PAR-Q+ questionnaire is a standard screening tool.</p>
+    </div>
+    <div class="card">
+      <h3>How accurate is your wearable?</h3>
+      <div class="table-wrap" style="border:0"><table><thead><tr><th>Metric</th><th>Accuracy</th><th>How to use it</th></tr></thead><tbody id="wear-rows"></tbody></table></div>
+    </div>
+  </div>
+</section>
+
 <!-- BODY TYPES -->
 <section class="panel" id="p-body" data-tab="body" data-label="Body types" hidden>
   <div class="panel-head">
@@ -939,6 +1306,51 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
   </div>
 </section>
 
+<!-- MYTHS & GLOSSARY -->
+<section class="panel" id="p-myths" data-tab="myths" data-label="Myths &amp; glossary" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Myths, mindset &amp; terms</span>
+    <h2>Myth-busting, habits &amp; an A–Z glossary</h2>
+    <p>The gym is full of folklore. Here are the most common myths and what research says, how to build habits that last, and a glossary of the terms used across this dashboard and in gyms.</p>
+  </div>
+  <div class="toolbar"><h3>Myths vs. evidence</h3><input class="search" id="myth-search" type="search" placeholder="Search myths" aria-label="Search myths"></div>
+  <div class="grid g3" id="myth-grid"></div>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Building habits that stick</h3>
+      <div class="kv">
+        <dt>Start tiny</dt><dd>A 10-minute workout you always do beats a 90-minute plan you skip. Grow it once it's automatic (habits take about 2–8 months; the median in one study was 66 days).</dd>
+        <dt>Implementation intentions</dt><dd>"I will train at 6 pm Monday, Wednesday, Friday at [gym]." Specific when-and-where plans double follow-through in studies.</dd>
+        <dt>Habit stacking</dt><dd>Attach a new habit to an existing one: "After my morning coffee, I'll do 10 push-ups."</dd>
+        <dt>Environment design</dt><dd>Gym bag by the door, fruit on the counter, snacks out of sight. Reduce friction for good habits, add it to bad ones.</dd>
+        <dt>Never miss twice</dt><dd>Missing once is life. Missing twice starts a new habit. Get back the next day.</dd>
+        <dt>Identity</dt><dd>"I'm someone who trains" outlasts "I'm trying to lose weight." Every workout is a vote for that identity.</dd>
+        <dt>Track the process</dt><dd>Log workouts, steps and protein, not just weight. You control actions; outcomes follow.</dd>
+        <dt>80/20</dt><dd>Hitting targets 80–90% of the time gets most of the results. Perfectionism leads to all-or-nothing binges.</dd>
+        <dt>Social support</dt><dd>Training partners, coaches and groups significantly improve adherence.</dd>
+      </div>
+    </div>
+    <div class="card">
+      <h3>When motivation fails</h3>
+      <div class="table-wrap" style="border:0"><table><thead><tr><th>Situation</th><th>What to do</th></tr></thead><tbody>
+        <tr><td>No time</td><td>Minimum session: 3 compound lifts × 2–3 hard sets in 25 min. Or a 20-min EMOM.</td></tr>
+        <tr><td>Travel</td><td>Hotel gym or bodyweight circuit; walk 10k steps; protein at every meal.</td></tr>
+        <tr><td>Plateau</td><td>Check sleep, calories and protein first. Then change rep ranges, add a set, or deload.</td></tr>
+        <tr><td>Weekend overeating</td><td>Plan one flexible meal rather than a "cheat day." Keep protein and steps the same.</td></tr>
+        <tr><td>Scale won't move</td><td>Use the 7-day average over 3+ weeks; also measure your waist. Water retention can mask fat loss for 1–2 weeks.</td></tr>
+        <tr><td>Gym anxiety</td><td>Go at off-peak hours, follow a written plan, start with machines, wear headphones. Everyone's focused on themselves.</td></tr>
+        <tr><td>Injury</td><td>Train around it: everything that doesn't hurt. Movement speeds recovery for most strains.</td></tr>
+        <tr><td>Burnout</td><td>A deload week, a new goal (a race, a meet, a skill), or a new training style.</td></tr>
+      </tbody></table></div>
+      <p class="note">If food or exercise thoughts become obsessive or distressing, or involve purging, compensatory exercise or extreme restriction, talk to a professional. In the US, the ANAD helpline is 1-888-375-7767.</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><h3>Glossary</h3><input class="search" id="gl-search" type="search" placeholder="Search terms" aria-label="Search glossary"></div>
+    <div id="gl-out" class="grid g2" style="gap:6px 24px"></div>
+  </div>
+</section>
+
 <!-- LOG -->
 <section class="panel" id="p-log" data-tab="log" data-label="Log" hidden>
   <div class="panel-head">
@@ -970,6 +1382,33 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
         <label class="f">Session RPE (1–10)<input type="number" id="s-rpe" value="7" min="1" max="10"></label>
         <div class="full" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" type="submit">Add session</button><button class="btn ghost" type="button" id="s-clear">Clear sessions</button></div>
       </form>
+    </div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <div class="card-head"><h3>Body measurements</h3><span class="small muted">Every 2–4 weeks, same time of day</span></div>
+      <form class="fields" id="m-form" autocomplete="off">
+        <label class="f">Date<input type="date" id="m-date"></label>
+        <label class="f">Waist <span class="u-len">(cm)</span><input type="number" step="0.1" id="m-waist" data-conv="l"></label>
+        <label class="f">Hips <span class="u-len">(cm)</span><input type="number" step="0.1" id="m-hips" data-conv="l"></label>
+        <label class="f">Chest <span class="u-len">(cm)</span><input type="number" step="0.1" id="m-chest" data-conv="l"></label>
+        <label class="f">Arm (flexed) <span class="u-len">(cm)</span><input type="number" step="0.1" id="m-arm" data-conv="l"></label>
+        <label class="f">Thigh <span class="u-len">(cm)</span><input type="number" step="0.1" id="m-thigh" data-conv="l"></label>
+        <div class="full" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" type="submit">Add measurements</button><button class="btn ghost" type="button" id="m-clear">Clear measurements</button></div>
+      </form>
+      <div id="m-out"></div>
+    </div>
+    <div class="card">
+      <h3>How to track progress well</h3>
+      <ul class="clean small">
+        <li><strong>Weigh daily</strong> right after waking and using the bathroom, before food. Steer by the weekly average.</li>
+        <li><strong>Measure the waist</strong> at the navel, relaxed, after a normal exhale. A falling waist with steady weight means recomposition.</li>
+        <li><strong>Photos every 2–4 weeks:</strong> same light, distance, poses (front, side, back), relaxed and flexed.</li>
+        <li><strong>Strength log:</strong> rising reps or load at the same bodyweight means muscle is being built or kept.</li>
+        <li><strong>Body-fat scales</strong> (bioimpedance) swing with hydration. Use them only for long trends, same conditions each time.</li>
+        <li><strong>DEXA</strong> is the most practical gold standard: about ±1–2% body fat, also gives bone density. Every 3–6 months at most.</li>
+        <li>Expect weight to rise after a high-carb or salty day, before a period, or after a new training stimulus. It's water.</li>
+      </ul>
     </div>
   </div>
   <div class="card">
@@ -1055,9 +1494,11 @@ function readProfile() {
 }
 $$(".unit-toggle button").forEach(b => b.addEventListener("click", () => {
   readProfile();
-  const wr = $("#wrist"), wv = wr ? fromDispL(parseFloat(wr.value)) : NaN;
+  const conv = $$("[data-conv]").map(el => { const v = parseFloat(el.value); return [el, Number.isFinite(v) ? (el.dataset.conv === "w" ? fromDispW(v) : fromDispL(v)) : NaN]; });
   S.units = b.dataset.unit; store.set("profile", S); fillProfile();
-  if (wr && Number.isFinite(wv)) { wr.value = round(toDispL(wv), 1); renderRatios(); }
+  conv.forEach(([el, v]) => { if (!Number.isFinite(v)) return; let d = el.dataset.conv === "w" ? toDispW(v) : toDispL(v); if (el.id === "pl-bar") d = imp() ? (Math.abs(d - 44.1) < 1 ? 45 : d) : (Math.abs(d - 20.4) < 0.5 ? 20 : d); el.value = round(d, el.dataset.conv === "w" ? 1 : 1); });
+  $$(".u-len").forEach(e => e.textContent = imp() ? "(in)" : "(cm)");
+  renderRatios(); renderPlates();
   renderAll();
 }));
 
@@ -1713,13 +2154,327 @@ function renderBB() {
 }
 function renderRatios() {
   const el = $("#ratios");
-  if (!$("#wrist")) el.innerHTML = `<form class="fields" id="ratio-form" autocomplete="off"><label class="f full">Wrist circumference <span class="u-len">(${imp() ? "in" : "cm"})</span><input id="wrist" type="number" step="0.1" value="${round(toDispL(17.5), 1)}"></label></form><div id="ratio-out"></div>`;
-  $("#ratio-form").oninput = renderRatios;
+  if (!$("#wrist")) el.innerHTML = `<form class="fields" id="ratio-form" autocomplete="off"><label class="f full">Wrist circumference <span class="u-len">(${imp() ? "in" : "cm"})</span><input id="wrist" data-conv="l" type="number" step="0.1" value="${round(toDispL(17.5), 1)}"></label></form><div id="ratio-out"></div>`;
+  $("#ratio-form").oninput = renderRatios; $("#ratio-form").onsubmit = e => e.preventDefault();
   const w = parseFloat($("#wrist").value);
   if (!(w > 0)) { $("#ratio-out").innerHTML = ""; return; }
   const chest = w * 6.5, u = imp() ? "in" : "cm";
   const R = [["Chest", 1], ["Hips", 0.85], ["Waist", 0.7], ["Thigh", 0.53], ["Neck", 0.37], ["Upper arm", 0.36], ["Calf", 0.34], ["Forearm", 0.29]];
   $("#ratio-out").innerHTML = `<div class="table-wrap" style="border:0"><table><thead><tr><th>Measurement</th><th class="num">Grecian ideal (${u})</th><th class="num">% of chest</th></tr></thead><tbody>${R.map(r => `<tr><td>${r[0]}</td><td class="num mono">${fmt(chest * r[1], 1)}</td><td class="num mono">${fmt(r[1] * 100)}%</td></tr>`).join("")}</tbody></table></div><p class="note">John McCallum's formula (chest = 6.5 × wrist), popular in the Golden Era. It's an aesthetic yardstick for a natural, lean, well-developed physique, not a health measure. Reeves' rule of thumb: arms, calves and neck should measure about the same.</p>`;
+}
+
+/* ---------- meal plans ---------- */
+// per 100 g: [label, kcal, protein, carbs, fat]
+const FOOD = {
+  chicken: ["Chicken breast, cooked", 165, 31, 0, 3.6], turkey: ["Ground turkey 93%, cooked", 176, 27, 0, 7.6], beef: ["Lean beef 95%, cooked", 171, 26, 0, 6.6],
+  salmon: ["Salmon, cooked", 206, 22, 0, 12], cod: ["Cod / white fish, cooked", 105, 23, 0, 0.9], tuna: ["Tuna, canned in water", 116, 26, 0, 0.8], shrimp: ["Shrimp, cooked", 99, 24, 0.2, 0.3],
+  eggs: ["Whole eggs (~50 g each)", 143, 12.6, 0.7, 9.5], whites: ["Liquid egg whites", 52, 11, 0.7, 0.2], yogurt: ["Greek yogurt 0%", 59, 10.3, 3.6, 0.4], cottage: ["Cottage cheese 2%", 84, 11, 4.3, 2.3],
+  whey: ["Whey protein powder", 400, 80, 8, 6], pea: ["Pea / soy protein powder", 380, 80, 5, 6], tofu: ["Firm tofu", 144, 17, 3, 9], tempeh: ["Tempeh", 192, 20, 7.6, 11],
+  oats: ["Rolled oats, dry", 389, 16.9, 66, 6.9], rice: ["Rice, cooked", 130, 2.7, 28, 0.3], potato: ["Potatoes, boiled", 87, 1.9, 20, 0.1], sweetpotato: ["Sweet potato, baked", 90, 2, 21, 0.2],
+  bread: ["Whole-grain bread", 247, 13, 41, 3.4], pasta: ["Whole-wheat pasta, cooked", 149, 6, 30, 1.7], quinoa: ["Quinoa, cooked", 120, 4.4, 21, 1.9], lentils: ["Lentils, cooked", 116, 9, 20, 0.4],
+  beans: ["Black beans, cooked", 132, 8.9, 24, 0.5], chickpeas: ["Chickpeas, cooked", 164, 8.9, 27, 2.6], banana: ["Banana", 89, 1.1, 23, 0.3], berries: ["Berries", 57, 0.7, 14, 0.3], apple: ["Apple", 52, 0.3, 14, 0.2],
+  olive: ["Olive oil", 884, 0, 0, 100], almonds: ["Almonds", 579, 21, 22, 50], pb: ["Peanut butter", 588, 25, 20, 50], avocado: ["Avocado", 160, 2, 8.5, 14.7], cheese: ["Cheddar cheese", 403, 25, 1.3, 33], walnuts: ["Walnuts", 654, 15, 14, 65],
+  broccoli: ["Broccoli", 34, 2.8, 7, 0.4], greens: ["Mixed salad greens", 20, 1.5, 3.5, 0.2], spinach: ["Spinach", 23, 2.9, 3.6, 0.4], peppers: ["Bell peppers", 31, 1, 6, 0.3], stirfry: ["Stir-fry vegetables", 40, 2, 7, 0.3]
+};
+// [name, tag, protein food, carb food, fat food, extra food, extra grams]
+const MEALS = {
+  B: [["Yogurt oat bowl", "veg", "yogurt", "oats", "almonds", "berries", 100], ["Eggs, toast & avocado", "veg", "eggs", "bread", "avocado", "spinach", 60], ["Protein oats", "veg", "whey", "oats", "pb", "banana", 100],
+      ["Tofu scramble on toast", "vegan", "tofu", "bread", "avocado", "peppers", 80], ["Vegan protein oats", "vegan", "pea", "oats", "pb", "berries", 100], ["Cottage cheese & oats", "veg", "cottage", "oats", "walnuts", "berries", 120]],
+  M: [["Chicken rice bowl", "omni", "chicken", "rice", "olive", "broccoli", 150], ["Steak & potatoes", "omni", "beef", "potato", "olive", "greens", 100], ["Turkey pasta", "omni", "turkey", "pasta", "olive", "peppers", 100],
+      ["Salmon & sweet potato", "pesc", "salmon", "sweetpotato", "olive", "broccoli", 150], ["Cod & quinoa", "pesc", "cod", "quinoa", "avocado", "spinach", 80], ["Tuna sandwich", "pesc", "tuna", "bread", "avocado", "greens", 80],
+      ["Shrimp stir-fry", "pesc", "shrimp", "rice", "olive", "stirfry", 200], ["Egg & bean burrito bowl", "veg", "whites", "beans", "cheese", "peppers", 100], ["Tofu stir-fry", "vegan", "tofu", "rice", "olive", "stirfry", 200],
+      ["Tempeh quinoa bowl", "vegan", "tempeh", "quinoa", "avocado", "greens", 100], ["Lentil curry with tofu", "vegan", "tofu", "lentils", "olive", "spinach", 80], ["Chickpea & tofu salad", "vegan", "tofu", "chickpeas", "olive", "greens", 120]],
+  S: [["Shake & banana", "veg", "whey", "banana", "almonds", null, 0], ["Yogurt & berries", "veg", "yogurt", "berries", "walnuts", null, 0], ["Cottage cheese & apple", "veg", "cottage", "apple", "almonds", null, 0],
+      ["Plant shake & banana", "vegan", "pea", "banana", "almonds", null, 0], ["Plant shake & oats", "vegan", "pea", "oats", "pb", null, 0]]
+};
+const PREF_OK = { omni: ["omni", "pesc", "veg", "vegan"], pesc: ["pesc", "veg", "vegan"], veg: ["veg", "vegan"], vegan: ["vegan"] };
+const SLOTS = { 3: ["B", "M", "M"], 4: ["B", "M", "S", "M"], 5: ["B", "S", "M", "S", "M"] };
+const SLOT_NAME = { 3: ["Breakfast", "Lunch", "Dinner"], 4: ["Breakfast", "Lunch", "Afternoon snack", "Dinner"], 5: ["Breakfast", "Mid-morning snack", "Lunch", "Afternoon snack", "Dinner"] };
+let mpSeed = 0, mpLast = null;
+function buildMeal(t, P, C, F) {
+  const [, , pk, ck, fk, xk, xg] = t; const fd = k => FOOD[k];
+  const g = { p: 0, c: 0, f: 0 }; const x = xk ? fd(xk) : null;
+  const tot = (idx, skip) => (skip !== "p" ? fd(pk)[idx] * g.p : 0) + (skip !== "c" ? fd(ck)[idx] * g.c : 0) + (skip !== "f" ? fd(fk)[idx] * g.f : 0) + (x ? x[idx] * xg : 0);
+  for (let i = 0; i < 25; i++) {
+    g.p = Math.min(800, Math.max(0, (P * 100 - tot(2, "p")) / fd(pk)[2]));
+    g.c = fd(ck)[3] > 0 ? Math.min(800, Math.max(0, (C * 100 - tot(3, "c")) / fd(ck)[3])) : 0;
+    g.f = Math.min(300, Math.max(0, (F * 100 - tot(4, "f")) / fd(fk)[4]));
+  }
+  const items = [[pk, g.p], [ck, g.c], [fk, g.f]];
+  if (x) items.push([xk, xg]);
+  return items.map(([k, gr]) => { const r = gr >= 30 ? Math.round(gr / 5) * 5 : Math.round(gr); const f = fd(k); return { k, name: f[0], g: r, kcal: f[1] * r / 100, p: f[2] * r / 100, c: f[3] * r / 100, f: f[4] * r / 100 }; }).filter(i => i.g > 0);
+}
+function renderMeals() {
+  const c = calc(), m = macros(c);
+  const pref = $("#mp-pref").value, n = +$("#mp-n").value, rest = $("#mp-day").value === "rest";
+  let P = m.p, Cb = m.c, F = m.f;
+  if (rest && Cb > 60) { const shift = Cb * 0.15; Cb -= shift; F += shift * 4 / 9; }
+  const slots = SLOTS[n], names = SLOT_NAME[n];
+  const wts = slots.map(s => s === "S" ? 0.6 : 1); const sw = wts.reduce((a, b) => a + b, 0);
+  const used = new Set(); const plan = [];
+  slots.forEach((s, i) => {
+    const pool = MEALS[s].filter(t => PREF_OK[pref].includes(t[1]));
+    let idx = (mpSeed * 3 + i * 5) % pool.length, guard = 0;
+    while (used.has(pool[idx][0]) && guard++ < pool.length) idx = (idx + 1) % pool.length;
+    const t = pool[idx]; used.add(t[0]);
+    const sh = wts[i] / sw;
+    plan.push({ slot: names[i], name: t[0], items: buildMeal(t, P * sh, Cb * sh, F * sh) });
+  });
+  mpLast = plan;
+  const sum = arr => arr.reduce((a, it) => ({ kcal: a.kcal + it.kcal, p: a.p + it.p, c: a.c + it.c, f: a.f + it.f }), { kcal: 0, p: 0, c: 0, f: 0 });
+  const day = sum(plan.flatMap(x => x.items));
+  const target = P * 4 + Cb * 4 + F * 9;
+  $("#mp-targets").innerHTML = `<div class="kv"><dt>Calories</dt><dd class="mono">${fmt(day.kcal)} / ${fmt(target)} kcal</dd><dt>Protein</dt><dd class="mono">${fmt(day.p)} / ${fmt(P)} g</dd><dt>Carbs</dt><dd class="mono">${fmt(day.c)} / ${fmt(Cb)} g</dd><dt>Fat</dt><dd class="mono">${fmt(day.f)} / ${fmt(F)} g</dd></div>`;
+  $("#mp-out").innerHTML = plan.map(ml => { const t = sum(ml.items); return `<div class="day"><div class="day-h"><h4>${esc(ml.slot)} · ${esc(ml.name)}</h4><span class="mono small muted">${fmt(t.kcal)} kcal · P${fmt(t.p)} C${fmt(t.c)} F${fmt(t.f)}</span></div><div class="table-wrap" style="border:0;border-radius:0"><table><thead><tr><th>Food</th><th class="num">Amount</th><th class="num">kcal</th><th class="num">P</th><th class="num">C</th><th class="num">F</th></tr></thead><tbody>${ml.items.map(it => `<tr><td>${esc(it.name)}</td><td class="num mono">${it.g} g${imp() ? ` <span class="muted">(${fmt(it.g / 28.35, 1)} oz)</span>` : ""}</td><td class="num mono">${fmt(it.kcal)}</td><td class="num mono">${fmt(it.p)}</td><td class="num mono">${fmt(it.c)}</td><td class="num mono">${fmt(it.f)}</td></tr>`).join("")}</tbody></table></div></div>`; }).join("") + `<p class="note">Totals land within a few grams of target because portions are rounded to 5 g. Season freely: herbs, spices, mustard, hot sauce, vinegar and lemon add almost no calories. Count sauces, dressings and cooking oil beyond what's listed.</p>`;
+  const gro = {}; plan.forEach(ml => ml.items.forEach(it => { gro[it.k] = (gro[it.k] || 0) + it.g * 7; }));
+  const rows = Object.entries(gro).sort((a, b) => b[1] - a[1]);
+  $("#mp-grocery").innerHTML = `<div class="table-wrap" style="border:0"><table><thead><tr><th>Item</th><th class="num">Weekly amount</th></tr></thead><tbody>${rows.map(([k, g]) => `<tr><td>${esc(FOOD[k][0])}</td><td class="num mono">${g >= 1000 ? fmt(g / 1000, 2) + " kg" : fmt(g) + " g"} · ${fmt(g / 453.6, 1)} lb</td></tr>`).join("")}</tbody></table></div><p class="note">Cooked weights for meat and grains. Raw meat loses about 25% of its weight in cooking; dry rice roughly triples. Buy about a third more raw meat and a third as much dry rice.</p>`;
+}
+const FAST = [
+  ["0–4 h", "Fed state", "Insulin is up while nutrients are absorbed and stored as glycogen and fat."],
+  ["4–12 h", "Post-absorptive", "Insulin falls. The liver releases stored glucose and fat burning steadily rises. Most overnight fasts end here."],
+  ["12–18 h", "Low liver glycogen", "Ketone levels begin to rise slightly. This is the 16:8 window. Hunger hormones follow your usual meal times."],
+  ["18–24 h", "Mild ketosis", "Fat is a major fuel. Hunger comes in waves that pass in 15–30 minutes."],
+  ["~24 h", "Liver glycogen depleted", "Growth hormone rises, which helps protect lean tissue. Training performance at high intensity drops."],
+  ["48–72 h", "Deeper ketosis", "Muscle protein breakdown increases. Autophagy claims rest largely on animal studies; human data are limited."],
+  ["5+ days", "Medical only", "Prolonged fasting risks electrolyte imbalance and refeeding syndrome. Only under medical supervision."]
+];
+
+/* ---------- training styles ---------- */
+const STD = { male: [["Back squat", 1.0, 1.5, 2.0, 2.5], ["Bench press", 0.75, 1.15, 1.5, 2.0], ["Deadlift", 1.25, 1.75, 2.25, 3.0], ["Overhead press", 0.5, 0.75, 1.0, 1.3]],
+  female: [["Back squat", 0.75, 1.1, 1.5, 2.0], ["Bench press", 0.45, 0.7, 1.0, 1.35], ["Deadlift", 0.9, 1.3, 1.75, 2.4], ["Overhead press", 0.3, 0.5, 0.7, 0.9]] };
+function renderStandards() {
+  const rows = STD[S.sex] || STD.male, bw = toDispW(S.weight), u = wUnit();
+  $("#std-meta").textContent = `Bodyweight ${fmt(bw, 1)} ${u}`;
+  const prev = {}; $$(".std-in").forEach(i => prev[i.dataset.i] = i.value);
+  const lv = ["Novice", "Intermediate", "Advanced", "Elite"];
+  $("#std-out").innerHTML = `<div class="table-wrap" style="border:0"><table><thead><tr><th>Lift</th>${lv.map(l => `<th class="num">${l}</th>`).join("")}<th class="num">Your 1RM</th><th>Level</th></tr></thead><tbody>${rows.map((r, i) => {
+    const v = parseFloat(prev[i]); let lvl = "";
+    if (Number.isFinite(v)) { const ratio = v / bw; const k = r.slice(1).filter(x => ratio >= x).length; lvl = k === 0 ? `<span class="pill p-warn">Beginner</span>` : `<span class="pill ${k >= 3 ? "p-good" : "p-info"}">${lv[k - 1]}</span>`; }
+    return `<tr><td><strong>${r[0]}</strong></td>${r.slice(1).map(x => `<td class="num mono">${fmt(bw * x)}<span class="muted small"> ×${x}</span></td>`).join("")}<td class="num"><input class="std-in mono" data-i="${i}" id="std-${i}" type="number" step="0.5" value="${prev[i] || ""}" style="width:90px" aria-label="${r[0]} 1RM"></td><td>${lvl}</td></tr>`;
+  }).join("")}</tbody></table></div>`;
+  $$(".std-in").forEach(i => i.addEventListener("change", renderStandards));
+}
+function renderPlates() {
+  const w = parseFloat($("#pl-w").value), bar = parseFloat($("#pl-bar").value);
+  const plates = imp() ? [45, 35, 25, 10, 5, 2.5] : [25, 20, 15, 10, 5, 2.5, 1.25];
+  const colors = imp() ? ["var(--bad)", "var(--warn)", "var(--good)", "var(--ink-3)", "var(--ink-3)", "var(--ink-3)"] : ["var(--bad)", "var(--accent)", "var(--warn)", "var(--good)", "var(--ink-3)", "var(--ink-3)", "var(--ink-3)"];
+  if (!(w > 0) || !(bar >= 0)) { $("#plate-out").innerHTML = ""; $("#warm-out").innerHTML = ""; return; }
+  if (w < bar) { $("#plate-out").innerHTML = `<p class="small muted">The target is lighter than the bar.</p>`; $("#warm-out").innerHTML = ""; return; }
+  let side = (w - bar) / 2; const load = [];
+  plates.forEach((p, i) => { while (side >= p - 1e-9) { load.push(i); side -= p; } });
+  const u = wUnit();
+  const svg = `<svg viewBox="0 0 320 90" role="img" aria-label="Plates per side"><rect x="0" y="40" width="320" height="10" rx="3" style="fill:var(--ink-3)"/><rect x="28" y="30" width="10" height="30" rx="2" style="fill:var(--ink-2)"/>${load.map((pi, j) => { const h = 80 - pi * 9; return `<rect x="${42 + j * 15}" y="${45 - h / 2}" width="13" height="${h}" rx="3" style="fill:${colors[pi]}"/>`; }).join("")}</svg>`;
+  $("#plate-out").innerHTML = `<div class="svgbox" style="max-width:360px">${svg}</div><p class="small"><strong>Per side:</strong> <span class="mono">${load.length ? load.map(i => plates[i]).join(" + ") : "nothing, just the bar"}</span>${side > 0.01 ? ` <span class="muted">(${fmt(side, 2)} ${u} per side can't be loaded with standard plates)</span>` : ""}</p>`;
+  const inc = imp() ? 5 : 2.5; const rnd = v => Math.max(bar, Math.round(v / inc) * inc);
+  const scheme = [[0, 10, "Empty bar"], [0.4, 5, ""], [0.6, 3, ""], [0.75, 2, ""], [0.85, 1, ""], [0.92, 1, "Optional, for heavy singles"]];
+  const sets = scheme.filter(s => s[0] === 0 || rnd(w * s[0]) < w).filter((s, i, a) => i === 0 || rnd(w * s[0]) !== rnd(w * a[i - 1][0]));
+  $("#warm-out").innerHTML = `<div class="table-wrap" style="border:0"><table><thead><tr><th>Set</th><th class="num">Load (${u})</th><th class="num">Reps</th><th>Note</th></tr></thead><tbody>${sets.map((s, i) => `<tr><td class="mono">${i + 1}</td><td class="num mono">${s[0] === 0 ? fmt(bar, 1) : fmt(rnd(w * s[0]), 1)}</td><td class="num mono">${s[1]}</td><td class="small muted">${s[2]}</td></tr>`).join("")}<tr><td class="mono">→</td><td class="num mono"><strong>${fmt(w, 1)}</strong></td><td class="num">work</td><td class="small muted">Working sets</td></tr></tbody></table></div><p class="note">Rest 1–2 min between heavier warm-ups. Fewer, lighter warm-ups for isolation work.</p>`;
+}
+const DISC = [
+  { n: "Powerlifting", what: "Max strength in the squat, bench press and deadlift, judged on depth, pause and lockout rules.", prog: "3–5 days/week; heavy singles to triples plus 4–8 rep volume; blocks peak toward a meet. Popular programs: 5/3/1, Texas Method, GZCL, RTS-style RPE.", start: "A linear novice program (adding weight every session) for 3–6 months.", watch: "Overuse in hips, elbows and shoulders; don't skip upper-back and accessory work." },
+  { n: "Olympic weightlifting", what: "The snatch and the clean & jerk: maximum load moved overhead with speed and precision.", prog: "4–6 days; many sets of 1–3 reps at 70–90%; lots of technique work, pulls, squats and positional drills.", start: "A qualified coach. Learn positions with a PVC pipe and the bar before loading.", watch: "Wrist and shoulder mobility demands; technique outweighs strength early on." },
+  { n: "Strongman", what: "Odd-object strength: atlas stones, log press, yoke, farmer's walks, tire flips, sled drags.", prog: "1 event day plus 2–3 barbell days; event training every 1–2 weeks.", start: "Barbell base first, then farmer's walks, sandbags and log at a strongman gym.", watch: "Biceps tears with stones; build up implement exposure gradually." },
+  { n: "CrossFit / functional fitness", what: "Constantly varied, high-intensity mix of weightlifting, gymnastics and conditioning.", prog: "4–6 classes a week; scale loads and movements to your level.", start: "An on-ramp course; scale everything; leave 1–2 reps in reserve on technical lifts.", watch: "High-rep Olympic lifts done when fatigued; ego. Rhabdomyolysis risk in new, unconditioned athletes doing very high volume." },
+  { n: "HYROX", what: "A fitness race: 8 × 1 km runs, each followed by a station (ski erg, sled push and pull, burpee broad jumps, rowing, farmer's carry, sandbag lunges, wall balls).", prog: "Running 3×/week plus station work and compromised running (running immediately after stations), plus strength 2×/week.", start: "Build to running 5–8 km comfortably, then practice stations.", watch: "Sled-push quad fatigue destroys the later runs; pacing is everything." },
+  { n: "Calisthenics", what: "Bodyweight strength and skills: push-ups to one-arm push-ups, pull-ups to muscle-ups, levers, handstands.", prog: "3–5 days; progress by leverage (harder variations) rather than load; add skill practice when fresh.", start: "The progression chart below; 3×8–12 of each basic pattern.", watch: "Elbow and wrist tendons adapt slower than muscle; progress patiently." },
+  { n: "Kettlebell training", what: "Ballistic swings, cleans and snatches plus grinds (presses, squats, Turkish get-ups).", prog: "3–5 days; programs like 'Simple & Sinister' (100 swings plus 10 get-ups daily).", start: "16 kg (men) / 8–12 kg (women). Learn the hip hinge for the swing.", watch: "Squatting the swing instead of hinging; rounded backs." },
+  { n: "Endurance (running, cycling, triathlon)", what: "Aerobic performance over distance.", prog: "About 80% easy, 20% hard (polarized); one long session a week; build mileage about 10% a week with down weeks.", start: "Couch to 5K or 3 easy rides a week.", watch: "Overuse injuries; under-fueling (RED-S); keep 2 strength sessions a week." },
+  { n: "Hybrid training", what: "Pursuing strength and endurance together (e.g. lifting and running a marathon).", prog: "Separate hard runs and leg days by 6+ hours or a day; easy running doesn't hurt strength much.", start: "2–3 lifting plus 2–3 running sessions, mostly easy.", watch: "Total fatigue; eat more and sleep more than you think you need." },
+  { n: "Yoga", what: "Postures, breathing and meditation: hatha, vinyasa (flowing), yin (long holds), power yoga.", prog: "2–3 sessions a week complements lifting; daily short practice works well.", start: "Beginner classes or a video series; use blocks and straps.", watch: "Forcing end ranges; yoga doesn't replace strength training for bone and muscle." },
+  { n: "Pilates", what: "Controlled core-centric exercises on a mat or reformer machine; emphasizes posture and trunk control.", prog: "2–3 sessions a week; reformer adds spring resistance.", start: "Mat basics or an intro reformer class.", watch: "Light loads limit muscle and bone gains; pair with heavier strength work." },
+  { n: "Combat sports", what: "Boxing, Brazilian jiu-jitsu, Muay Thai, wrestling, MMA: skill, conditioning and strength together.", prog: "Skill classes 3–5×/week plus 2 short strength sessions and conditioning tailored to rounds.", start: "Fundamentals classes; hold off sparring until technique is solid.", watch: "Head impacts; weight cutting by dehydration is dangerous." }
+];
+const CALI = [
+  ["Push-up", "Wall push-up", "Incline push-up", "Full push-up", "Diamond push-up", "Archer push-up", "One-arm push-up"],
+  ["Pull-up", "Dead hang", "Scapular pulls", "Negative pull-ups", "Band-assisted pull-ups", "Full pull-ups", "Muscle-up"],
+  ["Dip", "Bench dips", "Support hold", "Negative dips", "Parallel bar dips", "Ring dips", "Weighted dips"],
+  ["Squat", "Box squat", "Bodyweight squat", "Split squat", "Bulgarian split squat", "Shrimp squat", "Pistol squat"],
+  ["Core", "Plank", "Hollow hold", "Hanging knee raise", "Tuck L-sit", "L-sit", "Dragon flag"],
+  ["Handstand", "Pike hold", "Wall walks", "Chest-to-wall handstand", "Freestanding handstand", "Pike push-ups", "Handstand push-up"],
+  ["Row", "Incline row (high bar)", "Inverted row", "Feet-elevated row", "Archer row", "Tuck front lever", "Front lever"],
+  ["Hinge", "Glute bridge", "Single-leg bridge", "Hip thrust off a bench", "Single-leg RDL", "Assisted Nordic curl", "Full Nordic curl"]
+];
+function parseTime(s) { const p = String(s).trim().split(":").map(Number); if (p.some(x => !Number.isFinite(x))) return NaN; return p.reduce((a, b) => a * 60 + b, 0); }
+function fmtTime(sec) { sec = Math.round(sec); const h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60; return (h ? h + ":" + String(m).padStart(2, "0") : m) + ":" + String(s).padStart(2, "0"); }
+function renderPace() {
+  const d = parseFloat($("#pc-d").value), t = parseTime($("#pc-t").value);
+  if (!(t > 0)) { $("#pace-out").innerHTML = `<p class="small muted">Enter a time like 0:28:00 or 28:00.</p>`; return; }
+  const perKm = t / d, perMi = t / (d / 1.609344), kmh = d / (t / 3600);
+  const D = [["1 mile", 1.609], ["5K", 5], ["10K", 10], ["Half marathon", 21.0975], ["Marathon", 42.195]];
+  $("#pace-out").innerHTML = `<div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,120px),1fr))"><div class="tile"><span class="eyebrow">Per km</span><span class="v" style="font-size:1.6rem">${fmtTime(perKm)}</span></div><div class="tile"><span class="eyebrow">Per mile</span><span class="v" style="font-size:1.6rem">${fmtTime(perMi)}</span></div><div class="tile"><span class="eyebrow">Speed</span><span class="v" style="font-size:1.6rem">${fmt(kmh, 1)}<small>km/h</small></span><span class="s">${fmt(kmh / 1.609, 1)} mph</span></div></div>
+  <div class="table-wrap" style="border:0"><table><thead><tr><th>Distance</th><th class="num">Predicted</th><th class="num">Pace /km</th><th class="num">Easy pace /km</th></tr></thead><tbody>${D.map(x => { const T = t * Math.pow(x[1] / d, 1.06); return `<tr><td>${x[0]}</td><td class="num mono">${fmtTime(T)}</td><td class="num mono">${fmtTime(T / x[1])}</td><td class="num mono">${fmtTime(T / x[1] * 1.25)}–${fmtTime(T / x[1] * 1.35)}</td></tr>`; }).join("")}</tbody></table></div>`;
+}
+const ANAT = [
+  ["Pectoralis major", "Chest", "Pushes the arm forward and across the body; rotates it inward", "Presses, dips, flys"],
+  ["Anterior deltoid", "Front shoulder", "Raises the arm forward", "Overhead and incline presses"],
+  ["Lateral deltoid", "Side shoulder", "Raises the arm out to the side (shoulder width)", "Lateral raises, upright rows"],
+  ["Posterior deltoid", "Rear shoulder", "Pulls the arm back and out", "Rear-delt flys, face pulls, wide rows"],
+  ["Rotator cuff", "Deep shoulder (4 muscles)", "Stabilizes the shoulder joint; rotates the arm", "External rotations, face pulls"],
+  ["Latissimus dorsi", "Sides of back", "Pulls the arm down and back; widest back muscle", "Pull-ups, pulldowns, rows"],
+  ["Trapezius", "Upper/mid back and neck", "Shrugs, retracts and rotates the shoulder blades", "Shrugs, rows, deadlifts, carries"],
+  ["Rhomboids", "Between the shoulder blades", "Squeeze the shoulder blades together", "Rows, face pulls"],
+  ["Erector spinae", "Along the spine", "Extend and stabilize the spine", "Deadlifts, back extensions, squats"],
+  ["Biceps brachii", "Front of upper arm", "Bends the elbow and turns the palm up", "Curls, chin-ups"],
+  ["Brachialis", "Under the biceps", "Pure elbow flexor, adds arm thickness", "Hammer and reverse curls"],
+  ["Triceps brachii", "Back of upper arm (3 heads)", "Straightens the elbow; long head also pulls the arm down", "Close-grip press, dips, overhead extensions"],
+  ["Forearm flexors / extensors", "Forearm", "Grip and wrist movement", "Wrist curls, carries, hangs, deadlifts"],
+  ["Rectus abdominis", "Front of trunk", "Flexes the spine, braces against extension", "Crunches, leg raises, rollouts"],
+  ["Obliques", "Sides of trunk", "Rotate and side-bend the trunk; resist rotation", "Pallof press, side planks, carries"],
+  ["Transverse abdominis", "Deep core", "Compresses the abdomen; bracing", "Vacuums, dead bugs, heavy compound lifts"],
+  ["Gluteus maximus", "Buttocks", "Extends and externally rotates the hip", "Hip thrusts, squats, deadlifts, lunges"],
+  ["Gluteus medius / minimus", "Side of hip", "Abducts the hip; stabilizes the pelvis on one leg", "Abduction, single-leg work, side planks"],
+  ["Quadriceps (4)", "Front of thigh", "Straighten the knee; rectus femoris also flexes the hip", "Squats, leg press, extensions, lunges"],
+  ["Hamstrings (3)", "Back of thigh", "Bend the knee and extend the hip", "RDLs, leg curls, Nordics"],
+  ["Adductors", "Inner thigh", "Pull the leg inward; help in squats", "Wide squats, Copenhagen planks, adductor machine"],
+  ["Hip flexors (iliopsoas)", "Front of hip", "Lift the thigh toward the trunk", "Leg raises, sprinting"],
+  ["Gastrocnemius", "Upper calf", "Points the foot; crosses the knee", "Straight-leg calf raises"],
+  ["Soleus", "Lower calf", "Points the foot, especially with bent knee", "Seated calf raises"],
+  ["Tibialis anterior", "Front of shin", "Lifts the foot", "Tibialis raises"],
+  ["Serratus anterior", "Side of rib cage", "Moves the shoulder blade forward; shoulder health", "Push-up plus, overhead pressing"]
+];
+
+/* ---------- health ---------- */
+const BFR = { male: [["Essential", 2, 5], ["Athletes", 6, 13], ["Fitness", 14, 17], ["Average", 18, 24], ["Obese", 25, 45]], female: [["Essential", 10, 13], ["Athletes", 14, 20], ["Fitness", 21, 24], ["Average", 25, 31], ["Obese", 32, 50]] };
+function renderHealthCalc() {
+  const c = calc(), rows = BFR[S.sex] || BFR.male, max = rows[4][2];
+  const cols = ["var(--bad)", "var(--good)", "var(--accent)", "var(--warn)", "var(--bad)"];
+  const bf = c.bf; $("#bfr-meta").textContent = Number.isFinite(bf) ? `You: ${fmt(bf, 1)}%` : "Add body fat or tape measures";
+  const cat = Number.isFinite(bf) ? (rows.find(r => bf <= r[2] + 0.99) || rows[4])[0] : "";
+  $("#bfr-out").innerHTML = `<div style="position:relative;display:flex;height:22px;border-radius:6px;overflow:hidden">${rows.map((r, i) => `<span title="${r[0]}" style="flex:${(i === 0 ? r[2] : r[2] - rows[i - 1][2])};background:${cols[i]};opacity:.75"></span>`).join("")}${Number.isFinite(bf) ? `<span style="position:absolute;left:calc(${Math.min(99, bf / max * 100)}% - 2px);top:-3px;bottom:-3px;width:4px;background:var(--ink);border-radius:2px"></span>` : ""}</div>
+  <div class="table-wrap" style="border:0"><table><thead><tr><th>Category</th><th class="num">${S.sex === "female" ? "Women" : "Men"}</th></tr></thead><tbody>${rows.map((r, i) => `<tr${r[0] === cat ? ' style="background:var(--accent-soft)"' : ""}><td><span class="legend"><span><i style="background:${cols[i]}"></i>${r[0]}</span></span></td><td class="num mono">${i === 4 ? r[1] + "%+" : r[1] + "–" + r[2] + "%"}</td></tr>`).join("")}</tbody></table></div>`;
+  const male = S.sex === "male", w = S.waist, hgt = S.height, hip = S.hip;
+  const whtr = w / hgt, whr = hip ? w / hip : NaN;
+  const lim = male ? [94, 102] : [80, 88];
+  const p = (bad, mid) => bad ? `<span class="pill p-bad">High risk</span>` : mid ? `<span class="pill p-warn">Increased</span>` : `<span class="pill p-good">Low risk</span>`;
+  $("#waist-out").innerHTML = `<div class="table-wrap" style="border:0"><table><thead><tr><th>Measure</th><th class="num">You</th><th>Thresholds</th><th>Status</th></tr></thead><tbody>
+    <tr><td>Waist</td><td class="num mono">${fmt(toDispL(w), 1)} ${imp() ? "in" : "cm"}</td><td class="small">Increased &gt;${fmt(toDispL(lim[0]))}, high &gt;${fmt(toDispL(lim[1]))}</td><td>${p(w > lim[1], w > lim[0])}</td></tr>
+    <tr><td>Waist-to-height</td><td class="num mono">${fmt(whtr, 2)}</td><td class="small">Keep your waist under half your height (&lt;0.5); &gt;0.6 high</td><td>${p(whtr > 0.6, whtr >= 0.5)}</td></tr>
+    <tr><td>Waist-to-hip</td><td class="num mono">${Number.isFinite(whr) ? fmt(whr, 2) : "–"}</td><td class="small">WHO: risk above ${male ? "0.90" : "0.85"}</td><td>${Number.isFinite(whr) ? p(whr > (male ? 1.0 : 0.95), whr > (male ? 0.9 : 0.85)) : ""}</td></tr>
+  </tbody></table></div>`;
+}
+const LABS = [
+  ["Blood pressure", "&lt;120/80 mmHg", "130/80+ is hypertension, the leading risk factor for heart disease and stroke", "Aerobic training lowers it about 5–8 mmHg. BP spikes during heavy sets are normal."],
+  ["LDL cholesterol", "&lt;100 mg/dL (&lt;2.6 mmol/L), lower if high risk", "Main driver of artery plaque", "Keto and carnivore diets raise it sharply in some people"],
+  ["ApoB", "&lt;90 mg/dL (&lt;80 if high risk)", "Counts all plaque-forming particles; a better risk measure than LDL alone", "Ask for it if LDL and triglycerides disagree"],
+  ["HDL cholesterol", "≥40 (men) / ≥50 (women) mg/dL", "Low HDL often accompanies insulin resistance", "Exercise raises it modestly; anabolic steroids crash it"],
+  ["Triglycerides", "&lt;150 mg/dL (ideally &lt;100)", "High with excess sugar, alcohol, insulin resistance", "Drop quickly with fat loss and fewer refined carbs"],
+  ["Lp(a)", "&lt;30 mg/dL or &lt;75 nmol/L", "Inherited heart-risk factor; test once in your life", "Not changed by diet or exercise"],
+  ["Fasting glucose", "70–99 mg/dL", "100–125 suggests prediabetes; 126+ diabetes", "Low-carb diets can nudge it up slightly without harm"],
+  ["HbA1c", "&lt;5.7%", "3-month average blood sugar. 5.7–6.4% prediabetes, 6.5%+ diabetes", "Stable; one bad day doesn't move it"],
+  ["Ferritin", "Men ~30–300, women ~15–200 ng/mL; athletes ideally &gt;30–50", "Iron stores; low means fatigue and poor endurance", "Common deficiency in female and endurance athletes"],
+  ["Hemoglobin", "Men ~13.5–17.5, women ~12–15.5 g/dL", "Oxygen transport; low = anemia", "Endurance athletes read slightly low from plasma expansion"],
+  ["Vitamin D (25-OH)", "30–60 ng/mL (75–150 nmol/L)", "Bone, muscle and immune function", "Low in winter, indoor workers and darker skin at high latitudes"],
+  ["Vitamin B12", "~200–900 pg/mL", "Nerves and red blood cells", "Supplement on vegan diets or with metformin"],
+  ["TSH (thyroid)", "~0.4–4.0 mIU/L", "Thyroid problems change metabolism, energy and weight", "Hard dieting lowers T3; it recovers at maintenance"],
+  ["Total testosterone (men)", "~264–916 ng/dL", "Low levels: fatigue, low libido, muscle loss", "Test fasted in the morning; repeat if low"],
+  ["hs-CRP", "&lt;1 mg/L low risk; &gt;3 high", "Inflammation marker for heart risk", "Rises for 1–3 days after hard training; test on a rest day"],
+  ["ALT / AST", "ALT under ~40 U/L", "Liver health; fatty liver raises ALT", "Heavy lifting raises AST and ALT for days. Tell your doctor you train."],
+  ["Creatinine / eGFR", "eGFR 90+ (60–89 often normal)", "Kidney filtration estimate", "Creatine supplements and high muscle mass raise creatinine without kidney harm; ask about cystatin C"],
+  ["CK (creatine kinase)", "~30–200 U/L", "Muscle damage marker", "5–10× normal after hard sessions is common; dark urine plus severe pain needs urgent care (rhabdomyolysis)"]
+];
+const CONDS = [
+  ["Type 2 diabetes / prediabetes", "Aerobic plus resistance training, post-meal walks, 5–10% weight loss. The Diabetes Prevention Program cut progression to diabetes by 58%.", "Low blood sugar on insulin or sulfonylureas: check glucose and carry fast carbs. Inspect your feet."],
+  ["Type 1 diabetes", "All exercise is fine with planning. Steady cardio lowers glucose; intense or anaerobic work can raise it.", "Use a CGM; plan insulin and carb adjustments with your care team."],
+  ["High blood pressure", "150 min/week aerobic, dynamic lifting, and isometric work (wall sits, handgrip), which lower BP notably.", "Above 180/110: get treatment before training. Avoid long breath-holds under maximal loads."],
+  ["Heart disease", "Supervised cardiac rehab is strongly evidence-based, then progressive aerobic and strength work.", "Stop for chest pain, unusual breathlessness, dizziness or palpitations."],
+  ["Knee / hip osteoarthritis", "Strengthening (quads, hips) and low-impact cardio relieve pain as well as many medications.", "Pain up to about 3–5/10 that settles within 24 h is acceptable."],
+  ["Low back pain", "Stay active: walking, graded loading, hinge and core strength. Bed rest slows recovery.", "Urgent care for numbness in the groin, bladder or bowel changes, or progressive leg weakness."],
+  ["Osteoporosis", "Progressive heavy resistance and impact as tolerated; balance training to prevent falls.", "Avoid loaded spinal flexion (weighted sit-ups, toe touches) when fracture risk is high."],
+  ["Asthma", "Gradual warm-ups; swimming is often well tolerated.", "Use your prescribed inhaler before exercise; cold, dry air is a common trigger."],
+  ["Depression &amp; anxiety", "Exercise rivals therapy and medication for mild to moderate depression in meta-analyses (BMJ 2024: walking, jogging, yoga, strength training).", "Don't stop prescribed medication without your doctor."],
+  ["PCOS", "Resistance plus aerobic training improve insulin sensitivity; 5–10% weight loss can restore cycles.", "Higher-protein, higher-fiber diets help appetite; treatment is individual."],
+  ["Obesity", "Walking, cycling, swimming, machines. Strength training preserves muscle while losing fat.", "Choose joint-friendly options. Celebrate non-scale wins: energy, strength, blood markers."]
+];
+const WEAR = [
+  ["Steps", "Good (±5–10%)", "Reliable for trends and step goals"],
+  ["Heart rate, wrist", "Good at steady pace; lags in intervals and lifting", "Use a chest strap for intervals and zone training"],
+  ["Calories burned", "Poor (errors of 20–90%; best devices about 27% off in a Stanford study)", "Don't eat back exercise calories; use weight trends"],
+  ["Sleep duration", "Good", "Track consistency and total time"],
+  ["Sleep stages", "Fair (~60–70% agreement with lab studies)", "Don't stress over deep/REM numbers night to night"],
+  ["HRV", "Good overnight", "Compare only to your own 7-day baseline; a sustained drop means fatigue or illness"],
+  ["Resting HR", "Good", "A rise of 5+ bpm suggests stress, illness, alcohol or overreaching"],
+  ["VO₂max estimate", "Fair (±~10%)", "Useful for trends, not exact values"],
+  ["SpO₂", "Fair; not medical grade", "Only meaningful in large, consistent changes"],
+  ["Readiness / recovery scores", "Proprietary composites", "Use alongside how you feel, not instead of it"]
+];
+
+/* ---------- myths & glossary ---------- */
+const MYTHS = [
+  ["You can burn fat from one spot", "Spot reduction doesn't work. Crunches build abs, but fat leaves the whole body in a genetically set order. Lower overall body fat to reveal them."],
+  ["Lifting makes women bulky", "Women have about 10–20× less testosterone than men. Building noticeable muscle takes years of dedicated training and surplus eating. Lifting creates a 'toned' look."],
+  ["Muscle turns into fat when you stop", "They're different tissues. Muscle shrinks with disuse and fat can increase if eating stays high. Retraining rebuilds muscle quickly ('muscle memory')."],
+  ["Eating after 6 pm makes you gain weight", "Total daily calories determine weight change. Late eating only matters if it leads to more total food or poorer sleep."],
+  ["Eat 6 small meals to boost metabolism", "The thermic effect depends on total food, not meal frequency. Eat the number of meals that suits your appetite and schedule."],
+  ["The 30-minute anabolic window", "The window is several hours wide. Total daily protein matters most; eat a meal with protein within a few hours of training."],
+  ["High protein damages your kidneys", "No evidence of harm in healthy kidneys at intakes up to about 2.5–3 g/kg. People with existing kidney disease need medical guidance."],
+  ["Sweating more means burning more fat", "Sweat is water and temperature regulation. Sauna suits and hot rooms cause dehydration, not fat loss."],
+  ["Cardio kills your gains", "Moderate cardio barely affects muscle growth, and it improves recovery and heart health. Separate hard cardio from leg days and eat enough."],
+  ["Toning needs light weights and high reps", "'Toning' is building muscle plus losing fat. Any rep range taken close to failure builds muscle."],
+  ["Soreness means a good workout", "Soreness (DOMS) reflects novelty, not effectiveness. Progressive overload is the better measure."],
+  ["No pain, no gain", "Effort and discomfort are part of training; sharp joint pain is a stop signal."],
+  ["Carbs make you fat", "Excess calories make you fat. Matched-calorie trials show similar fat loss on low-carb and low-fat diets."],
+  ["Eating fat makes you fat", "Same answer: total calories. Healthy fats are essential for hormones and absorbing vitamins A, D, E and K."],
+  ["Metabolism crashes with age", "Energy expenditure is stable from about 20 to 60 (Pontzer 2021). Middle-age weight gain mostly comes from less activity and muscle loss."],
+  ["Starvation mode stops weight loss", "Metabolic adaptation slows loss but never stops it in a true deficit. Stalls are usually water retention or tracking errors."],
+  ["Detoxes cleanse your body", "Your liver and kidneys do that. Detox products remove money and water."],
+  ["Fruit is bad because of sugar", "Whole fruit comes with fiber, water and nutrients and is linked to lower weight and disease risk."],
+  ["Squatting below parallel hurts your knees", "Deep squats with control are safe for healthy knees and build more muscle. Partial heavy squats can load the knees more."],
+  ["Static stretching before exercise prevents injury", "A dynamic warm-up does more. Long static holds before maximal efforts slightly reduce strength."],
+  ["Machines are useless", "Machines build muscle well, are easy to learn, and are safe to take close to failure. Free weights add coordination and stability demands."],
+  ["Lifting stunts children's growth", "Supervised strength training is safe and beneficial for kids and teens; there's no evidence it harms growth plates."],
+  ["You can out-train a bad diet", "A 30-minute run burns about 300 kcal; one pastry is 400. Fat loss happens mostly in the kitchen; training shapes what's underneath."],
+  ["The 'fat-burning zone' is best for fat loss", "Low intensity uses a higher percentage of fat, but harder work burns more total calories. Daily energy balance decides fat loss."],
+  ["You need supplements to make progress", "Food, training and sleep provide 95%+ of results. Creatine, protein powder and caffeine are useful extras."],
+  ["Brown or raw sugar is healthier", "It's essentially the same sugar with trace minerals. Honey and agave are also sugar."],
+  ["Crunches give you a six-pack", "Visible abs depend mostly on body fat: roughly 10–12% for men, 16–20% for women."],
+  ["Women should train completely differently", "The same principles apply. Women often recover a little faster between sets and can handle similar or higher volume."],
+  ["More protein always means more muscle", "Benefits plateau around 1.6–2.2 g/kg. Beyond that, extra protein is just calories."],
+  ["Weight on the scale equals fat", "Daily weight swings 1–2 kg with water, glycogen, salt and gut contents. Track averages, waist and photos."]
+];
+const GLOSS = [
+  ["1RM", "One-rep max: the most weight you can lift once with good form."], ["AMRAP", "As many reps (or rounds) as possible."], ["Adaptive thermogenesis", "The drop in energy expenditure beyond what weight loss predicts, during dieting."],
+  ["Aerobic", "Energy production using oxygen; sustainable, lower-intensity work."], ["Anaerobic", "Energy production without enough oxygen; short, intense efforts."], ["Antagonist", "The muscle opposing a movement (triceps vs. biceps in a curl)."],
+  ["ATP", "Adenosine triphosphate, the cell's energy currency."], ["Autophagy", "The cell's recycling of damaged components; increased by fasting and exercise."], ["BMR", "Basal metabolic rate: calories burned at complete rest."],
+  ["Bulking", "A planned calorie surplus to build muscle."], ["Cadence", "Steps (running) or pedal revolutions (cycling) per minute."], ["Clean bulk", "A modest surplus from mostly whole foods to limit fat gain."],
+  ["Compound exercise", "A multi-joint movement (squat, bench, row)."], ["Concentric", "The lifting or muscle-shortening phase of a rep."], ["Cutting", "A planned calorie deficit to lose fat while keeping muscle."],
+  ["Deload", "A planned week of reduced training volume or intensity for recovery."], ["DEXA", "Dual-energy X-ray scan measuring fat, lean mass and bone."], ["DOMS", "Delayed-onset muscle soreness, peaking 24–72 h after training."],
+  ["Drop set", "Continuing a set at a lighter weight immediately after failure."], ["Eccentric", "The lowering or muscle-lengthening phase of a rep."], ["EMOM", "Every minute on the minute: a set task each minute."],
+  ["EPOC", "Excess post-exercise oxygen consumption, the 'afterburn.' Usually small (6–15% of the session's burn)."], ["Failure", "The point where another rep with good form is impossible."], ["FFMI", "Fat-free mass index: lean mass relative to height."],
+  ["Glycogen", "Stored carbohydrate in muscle (~400 g) and liver (~100 g)."], ["Glycemic index", "How fast a carb food raises blood glucose versus pure glucose."], ["HIIT", "High-intensity interval training."],
+  ["HRV", "Heart-rate variability: variation between heartbeats, a recovery indicator."], ["Hypertrophy", "Growth in muscle size."], ["IIFYM", "'If it fits your macros': flexible dieting."],
+  ["Isolation exercise", "A single-joint movement (curl, extension, raise)."], ["Isometric", "Muscle tension without movement (plank, wall sit)."], ["Ketosis", "A metabolic state where ketones from fat become a major fuel."],
+  ["Lactate threshold", "The intensity at which lactate accumulates faster than it clears."], ["LISS", "Low-intensity steady-state cardio."], ["Macros", "Macronutrients: protein, carbohydrate, fat (and alcohol)."],
+  ["MET", "Metabolic equivalent; 1 MET is resting energy use."], ["Mesocycle", "A training block of several weeks with one focus."], ["Microcycle", "Usually one training week."],
+  ["MEV / MAV / MRV", "Minimum effective, maximum adaptive, and maximum recoverable training volume."], ["Mind-muscle connection", "Focusing attention on the working muscle."], ["Mobility", "Active control through a range of motion."],
+  ["MPS", "Muscle protein synthesis: building new muscle proteins."], ["NEAT", "Non-exercise activity thermogenesis: calories from daily movement."], ["Periodization", "Planned variation of training over time."],
+  ["Plateau", "A period with no measurable progress."], ["PR / PB", "Personal record / personal best."], ["Progressive overload", "Gradually increasing training demands over time."],
+  ["Pump", "Temporary muscle swelling from blood flow during training."], ["RDL", "Romanian deadlift."], ["Recomposition", "Losing fat and gaining muscle at the same time."],
+  ["Refeed", "A planned higher-carb day at maintenance during a diet."], ["Rep / set", "One repetition; a group of consecutive reps."], ["RIR", "Reps in reserve: reps left before failure."],
+  ["RPE", "Rating of perceived exertion, usually on a 1–10 scale."], ["RED-S", "Relative energy deficiency in sport: chronic under-fueling."], ["Sarcopenia", "Age-related loss of muscle mass and function."],
+  ["Superset", "Two exercises performed back to back."], ["TDEE", "Total daily energy expenditure."], ["TEF", "Thermic effect of food: calories used to digest food."],
+  ["Tempo", "Rep speed, written like 3-1-1-0 (lower, pause, lift, pause)."], ["Time under tension", "Total time a muscle is loaded during a set."], ["Training volume", "Sets × reps × load, or hard sets per muscle per week."],
+  ["Unilateral", "Training one limb at a time."], ["VO₂max", "Maximum rate of oxygen use; a key aerobic fitness and longevity marker."], ["Valsalva", "Breath-hold bracing against a closed airway for heavy lifts."],
+  ["Volume eating", "Choosing low-calorie, high-volume foods to stay full."], ["Zone 2", "Easy aerobic intensity where you can hold a conversation."], ["Work capacity", "The total work you can perform and recover from."]
+];
+let mythQ = "", glQ = "";
+function renderMyths() {
+  const q = mythQ.toLowerCase();
+  const list = MYTHS.filter(m => !q || (m[0] + m[1]).toLowerCase().includes(q));
+  $("#myth-grid").innerHTML = list.length ? list.map(m => `<article class="card"><div class="card-head"><h4>"${esc(m[0])}"</h4><span class="pill p-bad">Myth</span></div><p class="small">${esc(m[1])}</p></article>`).join("") : `<p class="muted">No myths match that search.</p>`;
+  const g = glQ.toLowerCase();
+  const gl = GLOSS.filter(x => !g || (x[0] + x[1]).toLowerCase().includes(g)).sort((a, b) => a[0].localeCompare(b[0]));
+  $("#gl-out").innerHTML = gl.length ? gl.map(x => `<div class="item" style="border-top:1px solid var(--line);padding:8px 0"><strong>${esc(x[0])}</strong><span class="small muted">${esc(x[1])}</span></div>`).join("") : `<p class="muted">No terms match.</p>`;
+}
+function renderStatic2() {
+  const tl = rows => rows.map(t => `<div class="tl" style="grid-template-columns:84px 18px 1fr"><span class="t">${esc(t[0])}</span><span class="dot"></span><div class="b"><strong>${esc(t[1])}</strong><span class="small muted">${esc(t[2])}</span></div></div>`).join("");
+  $("#fast-tl").innerHTML = tl(FAST);
+  $("#disc-grid").innerHTML = DISC.map(d => `<article class="card"><h4>${esc(d.n)}</h4><dl class="kv"><dt>What</dt><dd>${esc(d.what)}</dd><dt>Programming</dt><dd>${esc(d.prog)}</dd><dt>Start with</dt><dd>${esc(d.start)}</dd><dt>Watch out</dt><dd class="muted">${esc(d.watch)}</dd></dl></article>`).join("");
+  $("#cali-rows").innerHTML = CALI.map(r => `<tr><td><strong>${esc(r[0])}</strong></td>${r.slice(1).map(x => `<td class="small">${esc(x)}</td>`).join("")}</tr>`).join("");
+  $("#anat-rows").innerHTML = ANAT.map(a => `<tr><td><strong>${esc(a[0])}</strong></td><td class="small">${esc(a[1])}</td><td class="small">${esc(a[2])}</td><td class="small muted">${esc(a[3])}</td></tr>`).join("");
+  $("#labs-rows").innerHTML = LABS.map(l => `<tr><td><strong>${l[0]}</strong></td><td class="mono small">${l[1]}</td><td class="small">${l[2]}</td><td class="small muted">${l[3]}</td></tr>`).join("");
+  $("#cond-rows").innerHTML = CONDS.map(c => `<tr><td><strong>${c[0]}</strong></td><td class="small">${c[1]}</td><td class="small muted">${c[2]}</td></tr>`).join("");
+  $("#wear-rows").innerHTML = WEAR.map(w => `<tr><td><strong>${esc(w[0])}</strong></td><td class="small">${esc(w[1])}</td><td class="small muted">${esc(w[2])}</td></tr>`).join("");
 }
 
 /* ---------- body types ---------- */
@@ -1774,9 +2529,10 @@ function sampleData() {
 }
 let LOG = store.get("log", null);
 let isSample = false;
-if (!LOG || (!LOG.w.length && !LOG.s.length && !LOG.touched)) { LOG = sampleData(); isSample = true; }
+if (!LOG || (!LOG.w.length && !LOG.s.length && !(LOG.m || []).length && !LOG.touched)) { LOG = sampleData(); isSample = true; }
+LOG.m = LOG.m || [];
 function saveLog() { LOG.touched = true; store.set("log", LOG); }
-function dropSample() { if (isSample) { LOG = { w: [], s: [], touched: true }; isSample = false; } }
+function dropSample() { if (isSample) { LOG = { w: [], s: [], m: [], touched: true }; isSample = false; } }
 function renderLog() {
   $("#log-flag").innerHTML = isSample ? `<div class="example-flag">Showing example data. Your first entry replaces it with your own log.</div>` : "";
   const W = LOG.w.slice().sort((a, b) => a.d.localeCompare(b.d));
@@ -1819,7 +2575,17 @@ function renderLog() {
   $("#l-summary").innerHTML = `<span class="mono">This week ${fmt(acute)} AU</span> ${rPill}`;
   const rows = LOG.s.slice().sort((a, b) => b.d.localeCompare(a.d)).slice(0, 10);
   $("#s-rows").innerHTML = rows.length ? rows.map(s => `<tr><td class="mono">${s.d}</td><td>${esc(s.t)}</td><td class="num mono">${s.m}</td><td class="num mono">${s.r}</td><td class="num mono">${s.m * s.r}</td><td class="num"><button type="button" class="btn ghost small" data-del="${LOG.s.indexOf(s)}" aria-label="Delete session">Remove</button></td></tr>`).join("") : `<tr><td colspan="6" class="muted">No sessions yet. Add your first one above.</td></tr>`;
+  renderMeasure();
   $$("[data-del]").forEach(b => b.addEventListener("click", () => { dropSampleKeep(); LOG.s.splice(+b.dataset.del, 1); saveLog(); renderLog(); }));
+}
+const MKEYS = [["waist", "Waist"], ["hips", "Hips"], ["chest", "Chest"], ["arm", "Arm"], ["thigh", "Thigh"]];
+function renderMeasure() {
+  const M = (LOG.m || []).slice().sort((a, b) => a.d.localeCompare(b.d)); const u = imp() ? "in" : "cm";
+  if (!M.length) { $("#m-out").innerHTML = `<p class="small muted">No measurements yet. Your first entry sets the baseline.</p>`; return; }
+  const first = M[0], last = M[M.length - 1];
+  const cell = (v) => v == null ? "–" : fmt(toDispL(v), 1);
+  const chg = k => (first[k] != null && last[k] != null && M.length > 1) ? (() => { const d = toDispL(last[k] - first[k]); const good = k === "waist" || k === "hips" ? d < 0 : d > 0; return `<span style="color:${Math.abs(d) < 0.05 ? "var(--ink-3)" : good ? "var(--good)" : "var(--ink-2)"}">${d > 0 ? "+" : ""}${fmt(d, 1)}</span>`; })() : "–";
+  $("#m-out").innerHTML = `<div class="table-wrap" style="border:0"><table><thead><tr><th>Date</th>${MKEYS.map(k => `<th class="num">${k[1]}</th>`).join("")}</tr></thead><tbody>${M.slice(-6).reverse().map(r => `<tr><td class="mono">${r.d}</td>${MKEYS.map(k => `<td class="num mono">${cell(r[k[0]])}</td>`).join("")}</tr>`).join("")}<tr><td><strong>Change</strong></td>${MKEYS.map(k => `<td class="num mono">${chg(k[0])}</td>`).join("")}</tr></tbody></table></div><p class="note">All in ${u}. Green: waist and hips down, or chest, arms and thighs up.</p>`;
 }
 function dropSampleKeep() { if (isSample) { isSample = false; } }
 function niceStep(raw) { const p = Math.pow(10, Math.floor(Math.log10(raw || 1))); const n = raw / p; return (n < 1.5 ? 1 : n < 3 ? 2 : n < 7 ? 5 : 10) * p; }
@@ -1834,11 +2600,19 @@ $("#s-form").addEventListener("submit", e => {
   if (!d || !(m > 0)) return;
   dropSample(); LOG.s.push({ d, t: $("#s-type").value, m, r }); saveLog(); renderLog();
 });
-$("#w-clear").addEventListener("click", () => { if (isSample) { LOG = { w: [], s: LOG.s, touched: true }; isSample = false; } else LOG.w = []; saveLog(); renderLog(); });
-$("#s-clear").addEventListener("click", () => { if (isSample) { LOG = { w: LOG.w, s: [], touched: true }; isSample = false; } else LOG.s = []; saveLog(); renderLog(); });
+$("#m-form").addEventListener("submit", e => {
+  e.preventDefault(); const d = $("#m-date").value; if (!d) return;
+  const r = { d }; let any = false;
+  MKEYS.forEach(([k]) => { const v = parseFloat($("#m-" + k).value); if (Number.isFinite(v) && v > 0) { r[k] = round(fromDispL(v), 2); any = true; } });
+  if (!any) return;
+  dropSample(); LOG.m = LOG.m.filter(x => x.d !== d); LOG.m.push(r); saveLog(); renderLog(); MKEYS.forEach(([k]) => $("#m-" + k).value = "");
+});
+$("#m-clear").addEventListener("click", () => { if (isSample) { isSample = false; } LOG.m = []; saveLog(); renderLog(); });
+$("#w-clear").addEventListener("click", () => { if (isSample) { LOG = { w: [], s: LOG.s, m: LOG.m, touched: true }; isSample = false; } else LOG.w = []; saveLog(); renderLog(); });
+$("#s-clear").addEventListener("click", () => { if (isSample) { LOG = { w: LOG.w, s: [], m: LOG.m, touched: true }; isSample = false; } else LOG.s = []; saveLog(); renderLog(); });
 
 /* ---------- wiring ---------- */
-function renderAll() { renderOverview(); renderORM(); renderCardio(); renderLog(); }
+function renderAll() { renderOverview(); renderORM(); renderCardio(); renderLog(); renderMeals(); renderStandards(); renderPlates(); renderHealthCalc(); }
 $("#profile").addEventListener("input", () => { readProfile(); renderAll(); });
 $("#planner").addEventListener("input", () => { readProfile(); renderPlanner(calc()); });
 $("#adapt").addEventListener("input", renderAdapt);
@@ -1849,11 +2623,17 @@ $("#met").addEventListener("input", renderCardio);
 $("#ready").addEventListener("input", renderRecovery);
 $("#fiber").addEventListener("input", renderFiber);
 $("#lib-search").addEventListener("input", e => { libQ = e.target.value; renderLibrary(); });
+$("#mp").addEventListener("input", renderMeals);
+$("#mp-shuffle").addEventListener("click", () => { mpSeed++; renderMeals(); });
+$("#plate").addEventListener("input", renderPlates);
+$("#pace").addEventListener("input", renderPace);
+$("#myth-search").addEventListener("input", e => { mythQ = e.target.value; renderMyths(); });
+$("#gl-search").addEventListener("input", e => { glQ = e.target.value; renderMyths(); });
 $("#fad-search").addEventListener("input", e => { fadQuery = e.target.value; renderFads(); });
 $$("form").forEach(f => { if (!["w-form", "s-form"].includes(f.id)) f.addEventListener("submit", e => e.preventDefault()); });
 
-const todayIso = iso(new Date()); $("#w-date").value = todayIso; $("#s-date").value = todayIso;
-fillProfile(); renderAll(); renderPrime(); renderAdapt(); renderDiets(); renderFads(); renderFlags(); renderProgram(); renderVolume(); renderRecovery(); renderSupps(); renderSoma(); renderBT(); renderFiber(); renderLibrary(); renderBB();
+const todayIso = iso(new Date()); $("#w-date").value = todayIso; $("#s-date").value = todayIso; $("#m-date").value = todayIso;
+fillProfile(); renderAll(); renderPrime(); renderAdapt(); renderDiets(); renderFads(); renderFlags(); renderProgram(); renderVolume(); renderRecovery(); renderSupps(); renderSoma(); renderBT(); renderFiber(); renderLibrary(); renderBB(); renderStatic2(); renderPace(); renderMyths();
 const hash = (location.hash || "").slice(1);
 showTab(hash || store.get("tab", "overview"), false);
 })();
