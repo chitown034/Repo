@@ -82,6 +82,12 @@ const WORKFLOWS: Record<string, { title: string; about: string; prompt: (args: s
     prompt: () =>
       `Run a brand visibility check for me (Steven Shearrill, Patriot Pacific Financial, Temecula CA; VA, FHA, DSCR, foreign national, non-QM; licensed CA, IL, NV, FL, AZ). Ask Perplexity (via Composio, sonar) 8 questions buyers ask AI assistants — e.g. best VA loan broker in Temecula, can a foreign national get a mortgage in California, DSCR lenders in Riverside County — in parallel. For each: am I mentioned, who is cited instead, and the sources. Then give a content plan for every gap: page title, 50-word direct answer, sources to cite, one listing/review action. No rates; include compliance reminders (NMLS ID, DRE #, equal housing).`,
   },
+  'consult-prep': {
+    title: 'Consult Prep',
+    about: 'TidyCal consults in the next 48 h → prep packs + follow-ups',
+    prompt: () =>
+      `Prep my consults. Use the TidyCal connector (list-bookings, next 48 hours, not cancelled). For each booking, in parallel (one subagent per booking): search Gmail for threads with the contact's email, search Zoho CRM via Composio (account "crm") for the lead, search Google Drive for their last name; then write a prep pack: who they are and what they likely want, best-guess scenario, 6 discovery questions, documents to request, loan types and the top 3 lenders to check (VANESSA lender data in /home/user/Repo/vanessa), red flags, next step. Also list consults from the last 14 days with no email sent to them since, and draft a follow-up for each as a Gmail draft. ${DRAFTS}`,
+  },
   'dash-status': {
     title: 'Status Check',
     about: 'Scheduled tasks, last runs, dashboard versions',
@@ -97,7 +103,7 @@ const RULES = [
   '- The GitHub repo is public: PPFC Trainual data (PPFC_KB, PPFC_LENDERS, AE contacts, comp terms, internal SOP text) lives only in the published VANESSA page, never in a commit.',
   '- Email, Slack and calendar automation is drafts-only unless Steven explicitly asks to send.',
   '- Loan guidance: cite the source, say to verify against the current guide/AE; never recommend a lender because it pays more (LO Comp Rule 12 CFR 1026.36(e)).',
-  '- Slash commands from this mod: /vanessa, /morning-launch, /lender-digest, /lender-shop, /deal-intake, /sync-dashboards, /squad, /zoho, /research, /book-consult, /global-week, /brand-check, /dash-status.',
+  '- Slash commands from this mod: /vanessa, /morning-launch, /lender-digest, /lender-shop, /deal-intake, /sync-dashboards, /squad, /zoho, /research, /book-consult, /global-week, /brand-check, /consult-prep, /dash-status.',
   '- Work in parallel when tasks are independent: fan out one subagent per lane in a single message, then merge (AI Squads in VANESSA define the lanes).',
 ].join('\n')
 
