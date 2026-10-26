@@ -233,3 +233,12 @@ Operate → ⭐ 7-Star Client Journey: every client tracked Lead → Consult →
   - **Coverage Sweep** playbook: gaps and stale work (locks, conditions, trailing docs, licenses, complaints, overdue cards, down connectors) → owned Board cards.
   - **Live Sync & Health:** read-only check of 9 connectors plus data freshness, with an optional daily auto-run.
   - **Agent tools:** process_owner, coverage_gaps, sync_health.
+
+## v90 (published as artifact version 93) — 2026-10-26
+- **Licensing & Expansion** (app54):
+  - US tile map: your states, Patriot Pacific states, both, or neither.
+  - Steven's 5 MLO states + CA DRE, plus a warning where Steven is licensed but PPFC isn't (NV).
+  - Patriot Pacific footprint (ppfclic.js): NMLS 1921615, 25 states + DC with license numbers, from the public patriotpacific.com disclosure/licensing pages.
+  - Individual MLO licensing + CE requirements for all 50 states, DC, Guam, Puerto Rico and USVI (mlolic1/2; 58 licenses incl. CA DFPI/DRE, SC/TX/UT split regulators), with search, CSV and Word export.
+  - Expansion planner (PPFC sponsorship, state hours, temporary authority, NMLS steps → Board) and annual CE planner.
+  - Agent tools mlo_license_requirements and licensing_footprint, an expansion runbook, and a coverage-grid process.
