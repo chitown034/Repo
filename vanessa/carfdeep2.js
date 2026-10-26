@@ -289,3 +289,229 @@ window.CARF_DEEP_EXT=Object.assign(window.CARF_DEEP_EXT||{},{
 {s:"HOA rules",d:"Note guest parking limits, permit requirements, towing policies and any pending rule changes. The seller's statements must match the HOA documents and preliminary title report; have the buyer compare them during the HOA document review."},
 {s:"Signatures",d:"Seller signs and delivers within the RPA disclosure period; buyer signs receipt. Upload to SkySlope. Loan note: the appraiser and condo questionnaire report parking; a deeded space missing from the legal description can affect value and title."}
 ],
+"PSI":[
+{s:"Header",d:"Enter property address, date, host agent name and brokerage. Use at open houses and showings where the seller wants rules posted and visitors recorded."},
+{s:"Showing guidelines",d:"Check or write the rules: remove shoes, no photos/video, no touching personal items, children supervised, no food, limited party size. Post them at the door or read them to each visitor. Apply the same rules to everyone to stay within fair housing."},
+{s:"Visitor sign-in",d:"Visitors write name, contact and whether they are represented and by whom. Do not require driver's license numbers or other sensitive data."},
+{s:"Retention and follow-up",d:"Keep the sheet in the listing file as a security record, for seller feedback and as the source list for the NPB. Follow up only within Do-Not-Call, CAN-SPAM and privacy rules; unrepresented visitors need a written buyer agreement before touring other homes."}
+],
+"PSRA":[
+{s:"Status of this form",d:"The PSRA was C.A.R.'s short showing-and-representation agreement issued in mid-2024 right after the NAR settlement. Later releases added the LPRBC (limited property) and revised the BRBC (June 2025); check the SkySlope library for which form LPT wants used for single showings and confirm with LPT broker/TC. Fields below are generic (verify on the current form)."},
+{s:"Header and parties",d:"Enter buyer name(s), brokerage (LPT Realty) with DRE number, agent name and DRE number, and the property or properties to be shown."},
+{s:"Term",d:"Enter start and end dates - typically the showing day or a few days. Cannot exceed 3 months and cannot auto-renew (Civ. Code 1670.50); services after expiration without a new agreement violate the written-agreement rule."},
+{s:"Representation and compensation",d:"State whether the broker represents the buyer for these showings and enter a specific compensation amount or rate (objectively ascertainable). Note that the broker may not receive more than stated from any source and that seller/listing-broker payment is credited. Deliver the AD and PRBS-B."},
+{s:"Signatures and conversion",d:"Buyer and broker/agent sign and date before touring; upload to SkySlope. If the relationship continues, replace with a BRBC (do not keep stacking short agreements). Loan note: if the buyer could owe any fee, tell the MLO because it changes cash to close and VA allowable fees."}
+],
+"PVOH":[
+{s:"Placement",d:"Post the advisory at the entrance or hand it to each visitor on arrival; attach it to showing instructions for buyer's agents. Enter property address and date if the form has blanks (verify on the current form)."},
+{s:"Surveillance disclosure",d:"States that the seller may have audio/video devices (doorbells, interior cameras) recording. California is a two-party consent state for confidential conversations (Penal Code 632); advise sellers in writing to disable audio recording during showings."},
+{s:"Visitor conduct",d:"Reminds visitors not to discuss price, motivation or negotiating strategy inside the home and that the host may not represent them. Buyer's agents should coach clients before entering."},
+{s:"Acknowledgment",d:"If the seller requires it for entry, visitors sign the acknowledgment; otherwise keep the posted copy and any signed copies with the listing file in SkySlope."}
+],
+"PVR":[
+{s:"Header",d:"Enter property address, owner name(s), listing broker and the photographer/videographer or vendor. Sign before the shoot, especially for occupied units."},
+{s:"Media types",d:"Check photos, video, drone/aerial, 3D/virtual tour, floor plans. Drone work must be by an FAA Part 107 operator; note the operator."},
+{s:"Permitted uses and duration",d:"State where media may appear (MLS, syndication, social, print, broker portfolio) and for how long, including after closing. Coordinate with the PIA if both are used so the license terms match."},
+{s:"Occupant release",d:"Any occupant or person who may appear in images signs the release. Tenants must consent before an occupied unit is photographed; their belongings and identifying items should be excluded or blurred."},
+{s:"Signatures and file",d:"Owner, occupants and broker sign and date; store with vendor invoices in the SkySlope listing file."}
+],
+"RCSD":[
+{s:"Choose the right version",d:"SkySlope offers RCSD-B (buyer) -1 to -6, RCSD-S (seller) -1 to -6, RCSD-T (tenant) -1 to -2 and a housing provider version. One form per representative signer; use the next number for each additional signer."},
+{s:"Principal identification",d:"Enter the principal's legal name exactly as on title or formation documents: e.g., The Smith Family Trust dated 1/1/2010; ABC Holdings, LLC, a California limited liability company; Estate of Jane Doe; or the individual for whom a POA acts."},
+{s:"Representative and capacity",d:"Enter the representative's name and capacity: trustee, co-trustee, managing member/manager, officer, general partner, executor/administrator, attorney-in-fact, conservator. The signature on the contract should then read Name, Trustee (or as the form instructs)."},
+{s:"Proof of authority",d:"Attach a trust certification (Probate Code 18100.5), LLC operating agreement/statement of information, corporate resolution, letters testamentary, or the recorded POA. Escrow/title will require these before closing; probate sales also need court confirmation or IAEA authority."},
+{s:"Signatures and delivery",d:"Representative signs and dates; attach to the RPA, RLA or lease and deliver to escrow. Loan note: lenders restrict trust vesting (revocable trusts generally OK; LLC buyers usually need non-QM/DSCR) and require lender approval of any POA, often with a specific POA for the loan - tell the MLO at application."}
+],
+"RGM":[
+{s:"Header",d:"Enter property address, buyer and seller names and the RPA date. Deliver before the investigation contingency expires; earlier for homes with basements, crawl spaces or prior water intrusion."},
+{s:"Radon section",d:"Explains radon is a naturally occurring gas, that brokers cannot detect it, and how to test (short-term kit or certified tester). California radon potential maps by zip are available from CDPH; some foothill and coastal counties have elevated potential."},
+{s:"Mold section",d:"Explains mold and moisture risks and that visible mold may indicate hidden water intrusion. Recommend inspection and testing by a licensed professional within the contingency period; the seller still must disclose known mold or water intrusion on the TDS/SPQ."},
+{s:"Release",d:"Buyer releases the brokers from liability for radon and mold conditions. Have the buyer note testing ordered or declined (in the blank or by email). Encourage testing in writing rather than accepting a verbal waiver."},
+{s:"Signatures",d:"All buyers sign and date; brokers sign where provided; seller may acknowledge. Upload to SkySlope before CR. Loan note: visible mold noted by an FHA/VA appraiser becomes a repair condition before funding."}
+],
+"RLAN":[
+{s:"Header and parties",d:"Enter seller name(s) exactly as on title, property address, APN and list price. Enter beginning and ending dates of the open (non-exclusive) listing."},
+{s:"Non-exclusive terms",d:"The seller may list with other brokers or sell on their own; this broker earns compensation only if this broker procures the buyer who closes. Explain the procuring-cause exposure and keep a written log of every buyer you introduce, with dates."},
+{s:"Compensation",d:"Enter the compensation (percentage or amount), when earned, and any amount the seller authorizes for a buyer's broker. Post-2024, buyer-broker compensation is not published in MLS; it is communicated directly."},
+{s:"Agency and MLS",d:"Complete the agency disclosure section and deliver the AD/PRBS-S. Confirm with CRMLS whether an open listing may be entered or advertised; many MLS rules require exclusive-right or exclusive-agency for entry (verify current CRMLS rule)."},
+{s:"Seller representations and disclosures",d:"Seller represents ownership, authority and known defects; note items to be disclosed on the TDS/SPQ. Attach the SA and FHDA."},
+{s:"Signatures",d:"All sellers and broker sign and date; upload to SkySlope. Confirm with LPT broker/TC - some brokerages discourage open listings."}
+],
+"RLASR":[
+{s:"Header and parties",d:"Enter seller name(s) as on title, property address, APN, list price, and listing start and expiration dates. This is an exclusive listing except as to reserved buyers."},
+{s:"Reserved buyers",d:"List each reserved prospective buyer by full legal name (e.g., neighbor John Lee; tenant Maria Perez) and the period the reservation lasts (e.g., first 30 days). Vague entries such as family members cause disputes."},
+{s:"Compensation",d:"Enter full compensation for a sale to any non-reserved buyer, and the reduced compensation (or none) if a reserved buyer purchases within the reservation period. State any amount authorized for a buyer's broker."},
+{s:"MLS, keysafe, signage, marketing",d:"Complete the elections; confirm with CRMLS how a seller-reserved exclusion is entered (exclusive agency vs exclusive right field - verify)."},
+{s:"Standard RLA sections",d:"Complete agency disclosure, seller representations, dispute resolution and attorney fees as on the RLA; deliver AD, PRBS-S, FHDA and SA."},
+{s:"Signatures",d:"All sellers and broker sign and date; upload to SkySlope before marketing. Confirm with LPT broker/TC."}
+],
+"RPOA":[
+{s:"Header",d:"Enter the owner's name(s) and the rental property address. Deliver at the property management or lease listing appointment before advertising."},
+{s:"Fair housing and screening",d:"Review protected classes including source of income (Section 8), assistance animals, criminal history limits, and the application screening fee cap and screening-report rules (Civ. Code 1950.6)."},
+{s:"Rent control and just cause",d:"Identify whether AB 1482 (Civ. Code 1946.2/1947.12) applies: statewide rent cap and just-cause eviction for most units older than 15 years, with exemptions for some SFRs if the required notice is in the lease. Note any stricter city/county ordinance in writing."},
+{s:"Habitability, deposits, entry",d:"Security deposit limit of one month's rent (AB 12, since 7/1/2024, with small-landlord exception), move-in/move-out photo requirements (AB 2801), 21-day deposit accounting, 24-hour written entry notice, and habitability duties."},
+{s:"Required tenant disclosures",d:"Lead-based paint (pre-1978), Megan's Law, bed bugs, flood zone, mold booklet, smoking policy, pest control, military ordnance, and the AB 1482 notice as applicable. Point the owner to the C.A.R. lease package."},
+{s:"Signatures",d:"Owner signs and dates; recommend attorney/tax advice for eviction and tax questions. Upload to the property management or lease listing file in SkySlope."}
+],
+"SA":[
+{s:"Header",d:"Enter property address and every seller's name as on the RLA. Deliver at the listing appointment; the buyer gets a copy with disclosures after acceptance."},
+{s:"Disclosure duties",d:"Review the TDS, SPQ, NHD, lead, Megan's Law, water heater/smoke/CO, and death-on-property items, and the duty to disclose all known material facts even if not asked. Explain that the agent completes the AVID separately."},
+{s:"Property condition and inspections",d:"Covers pre-listing inspections, permits and unpermitted work, pool safety, and the buyer's investigation rights."},
+{s:"Taxes, title, HOA, escrow",d:"Withholding (FIRPTA/Cal 593), capital gains, HOA document delivery duties (Civ. Code 4525), prelim title review, and escrow/closing costs. Recommend tax advice."},
+{s:"Contingencies, insurance, occupancy",d:"Explains buyer contingencies and removal, insurance availability issues for buyers, and post-closing possession risks (pair with SIPA if a rent-back is likely)."},
+{s:"Signatures",d:"Every seller signs and dates at listing; upload with the RLA. Include in the buyer's disclosure package and obtain the buyer's signature; upload the fully signed copy. The SA does not replace the TDS/SPQ."}
+],
+"SELI":[
+{s:"Header",d:"Enter seller name(s) and property address as on the RLA."},
+{s:"Exclusion election",d:"Check the specific instruction: exclude the listing from all internet display, or display the listing but not the address, or no AVM/comments (verify options on the current form). These map to CRMLS internet display opt-outs."},
+{s:"Exposure advisory",d:"The seller acknowledges that limiting internet display reduces exposure and may reduce showings and offers. Explain it in writing and keep the email."},
+{s:"Clear Cooperation check",d:"Excluding from the internet is different from excluding from the MLS. If the property is publicly marketed, CRMLS still requires MLS entry within one business day; an office exclusive needs the CRMLS seller exclusion form instead. Confirm current CRMLS policy."},
+{s:"Signatures",d:"All sellers sign and date; submit to CRMLS if its rules require and upload to SkySlope with the RLA."}
+],
+"SNA":[
+{s:"Choose version",d:"SkySlope has SNA (Seller Non-Agency Agreement) and the Seller (or Housing Provider) Non-Agency version for leases. Use when you represent only the buyer/tenant and need the seller/landlord's written agreement to pay you or to confirm no agency."},
+{s:"Header and parties",d:"Enter seller/housing provider name(s), property address, your brokerage and agent, and the buyer/tenant you represent."},
+{s:"Non-agency statement",d:"States you do not represent the seller/landlord and will not advise them. Do not help them with pricing, disclosures or negotiations; direct them to get their own representation or counsel."},
+{s:"Compensation",d:"Enter the amount or rate the seller agrees to pay your brokerage, when earned (close of escrow or lease execution), and payment through escrow. Post-NAR settlement, this seller-paid amount is credited against what the buyer owes under the BRBC/LPRBC and cannot exceed it."},
+{s:"Signatures and loan note",d:"Seller/housing provider and broker sign and date before the offer or application is submitted; upload to SkySlope and give escrow a copy for disbursement. Seller-paid buyer-broker compensation must be disclosed to the lender; VA treats it separately from seller concessions."}
+],
+"CRMLS-CS":[
+{s:"Choose version",d:"Two CRMLS forms: Seller Instruction to Place Listing into Coming Soon Status, and Seller's Instructions for Limited Exposure in Coming Soon Status. Use the one that matches what the seller wants; CRMLS rules change, so verify the current form and time limits on crmls.org."},
+{s:"Header",d:"Enter seller name(s) and property address exactly as on the RLA, and the listing agent/brokerage."},
+{s:"Coming Soon election and dates",d:"Check Coming Soon (or Limited Exposure) and enter the planned Active date. CRMLS currently limits Coming Soon duration (21 days - verify) and no showings are allowed while in Coming Soon; the listing must be a signed exclusive listing."},
+{s:"Seller acknowledgments",d:"Seller acknowledges the showing restriction, that days on market start at Active, and that the limited-exposure version restricts syndication/public display per CRMLS rules."},
+{s:"Signatures and file",d:"All sellers sign and date; keep on file or submit to CRMLS as required. Upload to SkySlope and calendar the Active deadline so the listing does not sit past the limit."}
+],
+"SFLS":[
+{s:"Header",d:"Enter property address, buyer and seller names. Deliver before the investigation contingency expires whenever size figures are advertised."},
+{s:"Sources of size figures",d:"Explains that square footage and lot size may come from assessor records, MLS, prior appraisals, builder plans or the seller, and that these sources often disagree and may not be accurate."},
+{s:"Verification recommendation",d:"Recommend in writing that the buyer hire an appraiser, architect or surveyor to measure if size affects price or decision. Note the ANSI Z765 standard used by appraisers for gross living area."},
+{s:"Marketing guardrail",d:"Never state square footage as fact in marketing; cite the source (per assessor). Keep the source document in the file."},
+{s:"Signatures",d:"Every buyer signs and dates; seller may sign. Upload to SkySlope. Loan note: the appraiser measures independently; a large discrepancy can lower value and trigger an appraisal gap."}
+],
+"SIPA":[
+{s:"Header",d:"Enter property address, buyer and seller names and the RPA date. Deliver as soon as a post-closing possession term appears in the offer or a counter. (Verify the title/layout on the current form.)"},
+{s:"Risks reviewed",d:"Insurance gap (buyer's policy vs seller's), damage after closing, utilities, personal property, and that a seller who stays long may acquire tenant protections requiring formal eviction."},
+{s:"Governing agreement",d:"Confirm which form controls the stay: SIP (Seller in Possession Addendum) for short stays (typically under 30 days - verify) or RLAS (Residential Lease After Sale) for longer terms with rent and deposit. Make sure the chosen form is attached to the RPA."},
+{s:"Signatures",d:"Every buyer and seller sign and date before possession terms are final; upload to SkySlope with the SIP/RLAS and give escrow a copy."},
+{s:"Loan implication",d:"Owner-occupied loans require the buyer to occupy within 60 days of closing; a rent-back beyond that conflicts with the occupancy certification. Tell the MLO the rent-back length before the contract is final."}
+],
+"SOLAR":[
+{s:"Header",d:"Enter property address, seller and buyer names. Seller completes the questionnaire at listing; buyer receives it with disclosures."},
+{s:"System ownership",d:"Seller checks owned outright, financed (loan or PACE assessment on the tax bill), leased, or power purchase agreement (PPA). Enter the provider/lender, account contact, monthly payment, remaining term and buyout options."},
+{s:"System details",d:"Installation date, installer, system size, battery storage, net metering (NEM) agreement, warranties and transfer requirements. Attach the solar contract and any NEM paperwork."},
+{s:"Liens and UCC filings",d:"Identify any UCC-1 fixture filing or lien recorded against the property; leases and PPAs usually have one. Escrow and title need the payoff or UCC termination/assumption handled before closing."},
+{s:"Advisory and signatures",d:"Buyer reads the advisory on obligations and signs; seller signs the questionnaire. Send copies to escrow and the MLO. Loan note: lenders require the lease/PPA and UCC details; FHA/VA count lease payments in DTI and PACE assessments must usually be paid off at sale."}
+],
+"SPT":[
+{s:"Header",d:"Enter property address and buyer name(s). Deliver with the disclosure package; it is the statutory notice under Civ. Code 1102.6c."},
+{s:"Notice content",d:"Explains that the county will reassess on change of ownership and send one or more supplemental tax bills directly to the owner, prorated from the closing date, and that the lender's impound account does not pay them."},
+{s:"Buyer guidance",d:"Tell the buyer to expect the bill several months after closing, that escrow tax prorations are based on the seller's old assessment, and to budget for the difference."},
+{s:"Signatures",d:"Every buyer signs and dates; deliver a copy to escrow and upload to SkySlope. Loan note: MLOs set impounds using the new assessed value but the supplemental bill still arrives separately; remind the borrower at closing."}
+],
+"STRL":[
+{s:"Header and parties",d:"Enter owner name(s), property address and the listing term with start and end dates. Attach the RCSD if an entity owns the property."},
+{s:"Compensation",d:"Enter the broker's compensation (percentage of gross rents or flat fee), when earned, and how booking fees and cleaning fees are handled."},
+{s:"Broker duties",d:"Define advertising platforms, guest screening, booking, collecting rents and deposits (trust account under DRE rules), cleaning/turnover coordination, and transient occupancy tax (TOT) collection and remittance."},
+{s:"Owner representations",d:"Owner confirms local STR permit/registration, TOT registration, HOA approval, insurance (STR endorsement), and authorizes a keysafe/smart lock. Many cities ban or cap STRs; verify before marketing."},
+{s:"Signatures",d:"Owner and broker sign and date; give the owner a copy and upload to SkySlope. Confirm with LPT broker/TC whether LPT permits property management/STR management activity."}
+],
+"SVLA":[
+{s:"Header",d:"Enter seller name(s) and the parcel address or APN. Deliver to the seller at listing and to the buyer with the disclosure package after acceptance."},
+{s:"Topics reviewed",d:"Zoning and permitted uses, legal and physical access, easements and encroachments, utilities availability and hookup costs, water rights and wells, septic/percolation, soils and drainage, flood/fire zones, endangered species and wetlands, Williamson Act, and pending government actions."},
+{s:"Seller duties",d:"Explain the seller must disclose known material facts on the VLQ even though the TDS does not apply to unimproved land. Note items the seller mentions for the VLQ."},
+{s:"Buyer verification",d:"Recommend in writing that the buyer verify buildability with the county planning department, order a survey and check title for easements during the investigation period."},
+{s:"Signatures and loan note",d:"Seller signs at listing; buyer signs during escrow; upload to SkySlope. Land loans are limited (large down payments, few conventional programs, no FHA/VA for raw land), so buyers often use cash, seller financing or construction-to-perm; tell the MLO early."}
+],
+"SVRA":[
+{s:"Header",d:"Enter property address and the buyer or owner name(s). Use when the client plans short-term/vacation rental use."},
+{s:"Local rules and HOA",d:"Review that cities and counties ban, cap or permit STRs, require registration and TOT, and that HOA CC&Rs may prohibit them. Rules change often; the client must verify directly with the jurisdiction and HOA during the investigation period."},
+{s:"Insurance and income",d:"Note that standard homeowner policies may exclude STR use and that projected STR income is not guaranteed."},
+{s:"Signatures",d:"Client signs and dates; keep in the SkySlope file. Loan note: owner-occupied programs (VA, FHA, primary conventional) require occupancy; STR income usually cannot be used to qualify without history, so a DSCR or second-home program may be needed - tell the MLO before writing."}
+],
+"SWPI-Q":[
+{s:"Header",d:"Enter property address, seller and buyer names. Seller completes at listing; deliver with disclosures."},
+{s:"Septic system",d:"Seller identifies type and location, installation date, permits, last pumping/service date and company, known problems or repairs, and any county notices. Many counties require an inspection or certification at transfer (verify local rule)."},
+{s:"Private well",d:"Location, depth, pump age, yield, water quality tests (bacteria, nitrates), shared well agreements and easements. Attach test results and any well log."},
+{s:"Propane tank",d:"Owned or leased, supplier, tank size, location, and lease terms; a leased tank usually requires the buyer to open a new account with the supplier."},
+{s:"Signatures",d:"Seller signs; deliver within the disclosure period and obtain buyer acknowledgment; upload with attachments to SkySlope. Loan note: FHA/VA/USDA require a water potability test and septic certification/distance checks; get results to the MLO and appraiser early."}
+],
+"TIC-FD":[
+{s:"Header",d:"Enter property address, the specific TIC interest (percentage) and the exclusive-use area (unit, parking, storage) being sold, buyer and seller names."},
+{s:"Group loan",d:"List the shared loan lender, balance, rate, maturity, whether it is a single group loan or fractional loans, and each co-owner's share. Joint liability on a group loan is the key risk."},
+{s:"Shared expenses and reserves",d:"Enter the seller's monthly share of expenses (loan, taxes, insurance, maintenance), reserve balances and any special assessments or planned repairs."},
+{s:"Delinquencies and disputes",d:"Disclose co-owner delinquencies, pending disputes, litigation, condo-conversion status and resale restrictions in the TIC agreement."},
+{s:"Attachments and signatures",d:"Attach the TIC agreement, recent budget/financials and loan documents. Seller signs; deliver during the disclosure period and obtain the buyer's acknowledgment; upload to SkySlope. Loan note: fractional TIC loans are niche; the MLO should confirm a lender before the offer."}
+],
+"TIC-OA":[
+{s:"Header",d:"Enter buyer name(s) and property address; deliver before or with the offer."},
+{s:"TIC vs condo",d:"Explain there is no separate parcel per unit; the buyer owns an undivided interest in the whole with an exclusive-use right under the TIC agreement."},
+{s:"Financial and legal risks",d:"Joint liability on group loans, co-owner default risk, limits on resale and financing, HOA-like governance by agreement rather than statute, and condo-conversion limits in some cities."},
+{s:"Recommendations and signatures",d:"Recommend attorney review of the TIC agreement and a fractional loan pre-approval. Every buyer signs and dates; upload to SkySlope with the offer and give the buyer a copy."}
+],
+"TOBR":[
+{s:"Header",d:"Enter buyer name(s) and the date of the original BRBC/LPRBC being transferred."},
+{s:"Brokers",d:"Identify the transferring broker and the receiving broker with firm names, DRE numbers and the assigned agent. Typical use: an agent moves brokerages and the buyer wants to follow."},
+{s:"Compensation",d:"State how compensation is handled on pending transactions (often a referral or split to the original broker) and on future purchases under the agreement. Agree before signing; the buyer's obligation under the BRBC does not increase."},
+{s:"Consent and signatures",d:"Every buyer and both brokers sign and date; buyer consent is required because the agreement is with the brokerage. Upload to SkySlope; notify listing agents and escrow on any pending deal and update the AD/agency confirmation if the brokerage on the RPA changes (CAC). Confirm with LPT broker/TC."}
+],
+"TOL":[
+{s:"Header",d:"Enter seller name(s), property address and the date of the original RLA being transferred."},
+{s:"Brokers",d:"Identify the transferring and receiving brokers with firm names, DRE numbers and the new listing agent."},
+{s:"Compensation",d:"State how compensation is handled, including any referral fee to the original broker and treatment of a pending escrow. Agree in writing before the seller signs."},
+{s:"Consent, MLS and signatures",d:"Every seller and both brokers sign and date; seller consent is required. Update the CRMLS listing to the new broker promptly (listing must be withdrawn by the old broker and re-entered or transferred per CRMLS procedure - verify) and upload to SkySlope. Confirm with LPT broker/TC."}
+],
+"TRBC":[
+{s:"Header and parties",d:"Enter tenant name(s), brokerage and agent with DRE numbers, and the beginning and ending dates of the representation. Sign before showing rentals."},
+{s:"Scope",d:"Describe property type, areas, budget, move-in date and lease term sought; check exclusive or non-exclusive."},
+{s:"Compensation",d:"Enter the amount or rate, who pays (tenant, landlord, or landlord first with tenant paying any shortfall), and when earned (lease execution). State that compensation is negotiable. Written buyer-side agreements rules (AB 2992) apply to purchases; for leases follow the form and LPT policy - confirm with LPT broker/TC."},
+{s:"Agency and disclosures",d:"Deliver the AD (lease version for terms over one year) and FHDA; review dual representation possibilities."},
+{s:"Signatures",d:"Tenant and broker sign and date; give the tenant a copy and upload to SkySlope before showings."}
+],
+"VLL":[
+{s:"Header and parties",d:"Enter seller name(s) as on title, APN(s), legal description reference, property location, and the listing start and expiration dates."},
+{s:"Price and compensation",d:"Enter the list price, the broker's compensation and when earned, safety-clause period, and any amount authorized to offer buyer brokers (communicated directly, not in MLS)."},
+{s:"MLS, signage, marketing, access",d:"Complete the elections and write access instructions for showing the land (gate codes, legal access route, no trespass on neighbors)."},
+{s:"Seller representations",d:"Legal access, easements, liens, pending government actions, Williamson Act contracts, known environmental conditions and prior use. Confirm the APN matches the county record."},
+{s:"Disclosures and signatures",d:"Attach the SVLA, AD, PRBS-S and FHDA; have the seller start the VLQ. Sellers and broker sign and date; upload to SkySlope."}
+],
+"VLQ":[
+{s:"Header",d:"Enter seller name(s), APN and property location. Seller completes personally at listing; deliver to the buyer within the VLPA seller-disclosure period after acceptance."},
+{s:"Access and boundaries",d:"Legal and physical access, recorded and unrecorded easements, encroachments, boundary disputes, surveys and corner markers. Recommend a survey; these are the most common land disputes."},
+{s:"Utilities and improvements",d:"Availability of water, sewer/septic (percolation tests), electricity, gas, phone/internet, and any existing improvements or wells with permits."},
+{s:"Soils, drainage, water, environment",d:"Soils or geologic reports, grading, drainage and flooding, water rights, wells, hazardous materials, prior agricultural use and chemicals, endangered species and wetlands."},
+{s:"Government and legal",d:"Zoning, general plan, permits, pending assessments, Williamson Act, notices of violation, litigation and HOA/road maintenance agreements."},
+{s:"Signatures and delivery",d:"Every seller signs and dates; the agent reviews for completeness but never answers. Attach reports and notices; deliver through SkySlope and get the buyer's signed acknowledgment within the disclosure period."}
+],
+"VRL":[
+{s:"Header and parties",d:"Enter owner name(s), property address and the term of the exclusive authorization; attach the RCSD for entity owners."},
+{s:"Rates and owner use",d:"Enter nightly/weekly rates or a rate schedule, minimum stays, seasonal pricing authority, cleaning fees, and the owner's blocked personal-use dates."},
+{s:"Compensation and funds",d:"Enter the broker's percentage of rents or fee, when earned, and that rents and deposits are held in the broker's trust account per DRE trust fund rules with periodic owner statements."},
+{s:"Broker duties and compliance",d:"Advertising, guest screening, check-in, cleaning and maintenance coordination, STR permit and TOT collection/remittance, insurance responsibilities and HOA rules. Confirm the permit before marketing."},
+{s:"Signatures",d:"Owner and broker sign and date; upload to SkySlope and keep with trust account records. Confirm with LPT broker/TC on LPT's policy for vacation rental management."}
+],
+"WCMD":[
+{s:"Header",d:"Enter property address, buyer and seller names. Deliver with the disclosure package before close of escrow."},
+{s:"Water-conserving fixtures",d:"Seller checks whether non-compliant fixtures have been replaced per Civ. Code 1101.1-1101.8: toilets over 1.6 gpf, showerheads over 2.5 gpm, faucets over 2.2 gpm in pre-1994 homes. Since 1/1/2017 the seller must disclose compliance; the law does not make replacement a condition of sale, but some cities require retrofit certificates at sale."},
+{s:"Carbon monoxide detectors",d:"Seller states whether CO alarms are installed per Health & Safety Code 17926 (dwellings with fuel-burning appliances, fireplaces or attached garages) in required locations. Distinct from the smoke-alarm statement on the WHSD."},
+{s:"Signatures",d:"Every seller signs and dates; buyer signs acknowledgment; upload to SkySlope. Loan note: FHA/VA appraisers flag missing smoke/CO alarms as repair conditions."}
+],
+"WFDA":[
+{s:"Header",d:"Enter property address, buyer and seller names. Deliver during escrow before contingency removal for properties in or near declared wildfire disaster areas or high/very high fire hazard severity zones (form revised 6/22 - verify current revision)."},
+{s:"Insurance",d:"Advises the buyer to check early whether insurance can be obtained (FAIR Plan plus DIC may be the only option) and to get a quote or binder before removing contingencies. Pair with the BHIA."},
+{s:"Rebuilding and area conditions",d:"Covers prolonged construction in the area, permit and debris-removal processes, utility restoration, and possible soil, water or air contamination; recommend testing where applicable."},
+{s:"Price gouging and rules",d:"Notes emergency price-gouging limits (Penal Code 396) on rents and sales in declared disaster areas and that local/state rules may change during recovery."},
+{s:"Signatures",d:"Every buyer and seller sign and date; upload to SkySlope. Pair with the NHD fire hazard disclosures and the FHDS defensible space/home hardening form for high-fire-zone homes. Loan note: lenders require proof of hazard insurance before funding; coverage problems can derail closing."}
+],
+"WHS":[
+{s:"Header",d:"Enter property address and every seller's name. Deliver during escrow; required before close (Health & Safety Code 19211)."},
+{s:"Compliance statement",d:"Seller certifies each water heater is braced, anchored or strapped (two straps, upper and lower third, per state standards) to resist earthquake motion. If not compliant, have it strapped before closing and keep the receipt."},
+{s:"Signatures",d:"Every seller signs and dates; buyer acknowledges. Upload to SkySlope and send to escrow. If you also need the smoke alarm statement, use the combined WHSD instead. Loan note: FHA/VA appraisers require double strapping as a repair condition."}
+],
+"WHSD":[
+{s:"Header",d:"Enter property address and every seller's name. Deliver during escrow; required before close of escrow."},
+{s:"Water heater",d:"Seller certifies water heaters are braced, anchored or strapped to resist earthquake motion (Health & Safety Code 19211)."},
+{s:"Smoke alarms",d:"Seller certifies smoke alarms are installed and operable per state law (Health & Safety Code 13113.8): in each bedroom, hallways outside sleeping areas and on each level; battery-only units must be 10-year sealed. Some cities issue their own compliance certificates - check local requirements."},
+{s:"Signatures",d:"Every seller signs and dates; buyer acknowledges; upload to SkySlope and escrow. The CO alarm and water-fixture statements are on the separate WCMD. Loan note: missing alarms are common FHA/VA appraisal repair conditions."}
+]
+});
