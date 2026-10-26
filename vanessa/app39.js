@@ -55,8 +55,9 @@ function lcAll(){const D=typeof LENDERS!=="undefined"?LENDERS:[],I=window.LENDER
    comp:p.comp||"",lpc,bpcOnly,sifter:/^y/i.test(p.sifter||""),lock:p.lock||"",ae:p.ae||d.ae||"",email:p.email||d.email||"",phone:p.phone||d.phone||"",fha:p.fha||"",vaid:p.vaid||"",
    states:i.states||{},niches:i.niches||[],programs,cautions:i.cautions||[],highlights:i.highlights||[],portal:i.portal||"",nmls:i.nmls||p.nmls||"",
    maxLtv:max("_l"),minFico:min("_f"),maxLoan:max("_a"),maxDti:max("_d"),rate:R[n]||{},note:(store.get("lp_notes",{})[n]||"")}})}
-const LC_PRI={bal:["Balanced",{fit:1,comp:1,svc:1,risk:1}],comp:["Highest comp",{fit:.8,comp:2.5,svc:.6,risk:1}],odds:["Best approval odds",{fit:2,comp:.4,svc:.8,risk:1.4}],svc:["Speed & service",{fit:1,comp:.5,svc:2.5,risk:1}]};
-function lcScore(x,q){const t=LC_TYPES.find(y=>y.k===q.type),W=LC_PRI[q.pri||"bal"][1];const why=[],warn=[];let s=0;
+/* LO Comp Rule (12 CFR 1026.36(e)): comp never weights the ranking (comp weight 0 everywhere); comp is shown as information only. */
+const LC_PRI={bal:["Balanced",{fit:1,comp:0,svc:1,risk:1}],odds:["Best approval odds",{fit:2,comp:0,svc:.8,risk:1.4}],svc:["Speed & service",{fit:1,comp:0,svc:2.5,risk:1}]};
+function lcScore(x,q){const t=LC_TYPES.find(y=>y.k===q.type),W=(LC_PRI[q.pri]||LC_PRI.bal)[1];const why=[],warn=[];let s=0;
  if(x.exited)return null;
  if(t&&!lcHasType(x,t))return null;
  if(q.state){const v=x.states[q.state];if(v==="No")return null;if(v==="Yes"){s+=8;why.push(`Licensed in ${q.state}`)}else{s-=4;warn.push(`${q.state} license not confirmed — check NMLS Consumer Access`)}}
@@ -89,7 +90,7 @@ function lcRecMount(){const sv=store.get("lc_q",{});["t","s","f","l","a","d","p"
  const go=()=>{const q={type:$("#lc_t").value,state:$("#lc_s").value,fico:+$("#lc_f").value||0,ltv:+$("#lc_l").value||0,amt:+$("#lc_a").value||0,dti:+$("#lc_d").value||0,pri:$("#lc_p").value};store.set("lc_q",{t:q.type,s:q.state,f:$("#lc_f").value,l:$("#lc_l").value,a:$("#lc_a").value,d:$("#lc_d").value,p:q.pri});
   const t=LC_TYPES.find(y=>y.k===q.type);$("#lc_why").innerHTML=t?`<b>What matters when picking a ${esc(t.n)} lender:</b> ${esc(t.why)}`:"Pick a loan type for product-specific ranking.";
   const R=lcAll().map(x=>lcScore(x,q)).filter(Boolean).sort((a,b)=>b.s-a.s);
-  $("#lc_out").innerHTML=R.length?`<p class="sm mut">${R.length} lenders can be considered · top ${Math.min(12,R.length)} shown · scores weigh guide fit, comp, your ratings, licensing and cautions (${esc(LC_PRI[q.pri][0])} weighting).</p>${R.slice(0,12).map(lcCard).join("")}<p class="sm mut">Ranking is a starting point from published data and PPFC company terms — confirm price, overlays and comp with the AE before you pick. Never steer a borrower to a lender for higher comp (LO Comp Rule, 12 CFR 1026.36(e)): present the best-fit options.</p>`:'<div class="card mut">No lender fits — loosen the filters, or the deal may need a different program.</div>';
+  $("#lc_out").innerHTML=R.length?`<p class="sm mut">${R.length} lenders can be considered · top ${Math.min(12,R.length)} shown · scores weigh guide fit, comp, your ratings, licensing and cautions (${esc((LC_PRI[q.pri]||LC_PRI.bal)[0])} weighting).</p>${R.slice(0,12).map(lcCard).join("")}<p class="sm mut">Ranking is a starting point from published data and PPFC company terms — confirm price, overlays and comp with the AE before you pick. Never steer a borrower to a lender for higher comp (LO Comp Rule, 12 CFR 1026.36(e)): present the best-fit options.</p>`:'<div class="card mut">No lender fits — loosen the filters, or the deal may need a different program.</div>';
   lcBindPick()};
  $("#lc_go").onclick=go;["lc_t","lc_s","lc_p"].forEach(i=>$("#"+i).onchange=go);go()}
 /* ---- tab: comparison table ---- */
