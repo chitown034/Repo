@@ -176,3 +176,14 @@ with Carmen's escrow timeline so clear-to-close lands before the loan contingenc
 Rosa, Alexandra, Carmen). Fourteen stages, each with an owned workflow fired when the file advances:
 pre-qualification, pre-approval, application, Loan Estimate, lock, processing, appraisal, underwriting,
 conditions, clear to close, Closing Disclosure, signing, funding, post-close.
+
+## Winston — When-Needed Matrix 2.0 (addition, 2026-10-26)
+
+The Broker Command Center's When-Needed Matrix now covers 237 forms (C.A.R. plus 12 LPT Realty brokerage
+forms) across 11 stages (Consult, Listing, Buyer Rep, Offer, Escrow Open, Contingencies, Loan & Appraisal,
+Closing, Post-close, Leasing & Tenancy, Broker File) and 20 deal types, with four levels: required every
+deal, required if triggered, optional, broker admin. 24 triggers (pre-1978, HOA, probate, trust, tenant,
+rent-back, multiple offers, VA/FHA, foreign seller, solar, Mello-Roos and more) turn conditional forms into
+required ones. Stage checklists tick against a live escrow and sync across devices; missing forms become
+tasks dated by stage (daily sweep); the Doc Screener ticks a form when the matching document is screened;
+the MLO hand-off list goes to the loan side at escrow open. Vanessa tool: `when_needed`.
