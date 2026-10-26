@@ -218,3 +218,18 @@ Operate → ⭐ 7-Star Client Journey: every client tracked Lead → Consult →
 - **VA Mastery** (app49) now in the build (vamaster1-3).
 - **DV Property Tax Desk** (app52): California SB 296 (R&T 205.5.1, 2027-2031) vs the 205.5 calculator, with a 6-year projection and an in-depth explainer; 50-state + DC table with estimates (dvtax1/2).
 - Build now auto-includes every appN.js and ends with boot.js.
+
+## v89 (published as artifact version 91) — 2026-10-26
+- **AI Coverage Command** (app53):
+  - **Coverage grid:** 82 processes across 17 stages (lead gen → platform ops, VANESSA + Command Deck). Each has an AI owner, backup, trigger, automation, human gate and live pages. Coverage is computed live from PAGES / AI_SEATS / RB / AI_SQUADS (100% on the live page).
+  - **18 gap seats:**
+    - Income & Asset Analyst, Disclosure Desk Agent, Submission Packager
+    - Insurance & Escrow Analyst, Condo & HOA Project Reviewer
+    - Lender Onboarding & Scorecard Agent
+    - Licensing & CE Registrar, Complaint & Fair Lending Officer, Regulatory Reporting Clerk, GLBA Safeguards Officer
+    - DPA Navigator, Non-QM Specialist, Reverse & Equity Specialist, Renovation & Construction Coordinator, Hardship Navigator
+    - Mortgage Academy Coach, Live Sync Monitor, Coverage Auditor
+  - **Runbooks, squads and lanes:** 23 runbooks; 2 squads (Compliance & Risk Cell, Specialty Loans Desk); 8 lanes added to existing squads.
+  - **Coverage Sweep** playbook: gaps and stale work (locks, conditions, trailing docs, licenses, complaints, overdue cards, down connectors) → owned Board cards.
+  - **Live Sync & Health:** read-only check of 9 connectors plus data freshness, with an optional daily auto-run.
+  - **Agent tools:** process_owner, coverage_gaps, sync_health.
