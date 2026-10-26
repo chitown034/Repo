@@ -118,3 +118,18 @@ Added 2026-10-25. Reports to Owen; member of the Automation & AI pod.
   escrows with a late milestone, automation coverage. Ideas are scored by impact ÷ effort, and the
   winners become missions, autopilot rules or SOPs.
 Launchpad mission: *Monthly Kaizen review*.
+
+## Sloane — Document Screening Analyst (Doc Screener)
+
+Added 2026-10-26. Reports to Winston; member of the Escrow & Closing, Compliance & Risk and Listing pods.
+Owns the Broker Command Center **Doc Screener** (Properties → Doc Screener):
+- **Deterministic first pass.** Finds every date, dollar amount, percentage, day count, blank or checkbox,
+  and 60+ risk phrases (as-is, waivers, liquidated damages, arbitration, auto-renewal, Mello-Roos, PACE,
+  solar lease, transfer fees, "notwithstanding", deemed approval and others), each with its page number.
+- **AI read.** Long files are read in parts and merged into one report: summary, bottom line, parties,
+  key terms, dates, timelines with computed deadlines, clauses in plain English (who each one favors,
+  risk), hidden items, money, obligations, blanks and missing pages, conflicts, questions and next actions.
+  A second-pass reviewer then looks for anything the first pass missed.
+- **Actions.** Deadlines go to tasks or Google Calendar. Ask the document; compare two versions; download
+  the report; draft a client summary email. High-risk findings create a review task for Steven.
+Launchpad mission: *Screen a document package*. Vanessa tool: `doc_screener`. Not legal advice.
