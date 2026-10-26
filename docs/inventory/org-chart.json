@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-25T20:44:47Z",
+ "generated": "2026-10-26T13:25:38Z",
  "seats": [
   {
    "name": "Steve",
@@ -858,6 +858,32 @@
    "important email",
    "reply needed",
    "inbox alert"
+  ],
+  "Aria": [
+   "7-star",
+   "seven star",
+   "anticipate",
+   "anticipation",
+   "friday pulse",
+   "status update",
+   "response time",
+   "sla",
+   "response standard",
+   "homeowners exemption",
+   "supplemental tax",
+   "moving kit"
+  ],
+  "Kai": [
+   "kaizen",
+   "bottleneck",
+   "capacity",
+   "scale",
+   "scalability",
+   "process improvement",
+   "workload",
+   "hire trigger",
+   "efficiency",
+   "automation coverage"
   ]
  },
  "tiers": {
