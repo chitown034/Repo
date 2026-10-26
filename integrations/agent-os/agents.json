@@ -3923,8 +3923,8 @@
    "lead": null,
    "role": "Review pull request test coverage quality and completeness, with emphasis on behavioral coverage and real bug prevention.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Nova",
+    "starts_from": "wiki/ai-team/desk-seats.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"test analyzer Review pull request test coverage quality\"",

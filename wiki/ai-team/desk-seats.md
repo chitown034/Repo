@@ -133,3 +133,22 @@ Owns the Broker Command Center **Doc Screener** (Properties → Doc Screener):
 - **Actions.** Deadlines go to tasks or Google Calendar. Ask the document; compare two versions; download
   the report; draft a client summary email. High-risk findings create a review task for Steven.
 Launchpad mission: *Screen a document package*. Vanessa tool: `doc_screener`. Not legal advice.
+
+## Nova — Coverage & Process Auditor
+
+Added 2026-10-26. Reports to Owen; member of the Automation & AI and Compliance & Risk pods.
+Owns the Broker Command Center **Coverage Engine & Sync** (System → Coverage Engine & Sync):
+- **Daily sweep.** Detects offers received, showings done without feedback, listing agreements expiring
+  within 21 days, consults booked on TidyCal, screened documents with high-risk findings, cancelled
+  escrows and low appraisals, and fires the matching workflow for each. Gives every open task an owner
+  and the named seat.
+- **Process coverage matrix.** For every page in the dashboard: owning seat, pod, whether the seat lists
+  it, automation, Vanessa tool and health check. Uncovered processes go to Owen and Kai's Kaizen board.
+- **Live-sync board.** Freshness of autopilot, the sweep, TidyCal, Headline News, market data, Lofty and
+  backups against each one's standard, with one-press *Sync everything*.
+- **Health checks added:** offers answered in 24 h, showing feedback in 2 days, no listing expiring
+  unplanned, every escrow's documents screened, news and TidyCal fresh, response standards 80%+,
+  every task owned, event workflows on, sweep ran today.
+Launchpad mission: *Weekly coverage & sync audit*. Vanessa tool: `coverage_report`.
+Also new: the **Life & Wealth Pod** (lead James: Kevin, Apex, Marcus, Travel Desk, Tax Assessor Agent)
+keeps Steven's personal finance, habits, trading research and travel separate from client work.
