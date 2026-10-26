@@ -1,6 +1,6 @@
 # Fieldy meetings — digest (written daily by the "Fieldy → brain" task)
 
-Last checked: 2026-10-23
+Last checked: 2026-10-26
 
 No recordings yet (checked 2026-10-23 through the Fieldy connector: 0 conversations). When Steven records with the
 pendant or desktop app, each day's conversations land here as: date · title · who (first names only) · the summary
