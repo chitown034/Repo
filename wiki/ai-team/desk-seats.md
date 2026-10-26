@@ -187,3 +187,11 @@ rent-back, multiple offers, VA/FHA, foreign seller, solar, Mello-Roos and more) 
 required ones. Stage checklists tick against a live escrow and sync across devices; missing forms become
 tasks dated by stage (daily sweep); the Doc Screener ticks a form when the matching document is screened;
 the MLO hand-off list goes to the loan side at escrow open. Vanessa tool: `when_needed`.
+
+## Winston — SkySlope library (addition, 2026-10-26)
+
+The Broker Command Center now carries all 548 SkySlope library forms from Steven's Browse Libraries (C.A.R. 445,
+LPT Realty 100, CRMLS 2, SkySlope 1), imported from the LO dashboard's library (pulled 2026-10-22) and grouped
+into 314 base forms with stages, deal types, required levels, who signs, how-to steps, tips, loan-side notes and
+44 line-by-line walkthroughs. The Forms Hub and the When-Needed Matrix run on this library; the matrix also keeps
+34 C.A.R. forms that are not in the library. Vanessa tool: `skyslope_form`.
