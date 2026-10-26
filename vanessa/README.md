@@ -242,3 +242,14 @@ Operate → ⭐ 7-Star Client Journey: every client tracked Lead → Consult →
   - Individual MLO licensing + CE requirements for all 50 states, DC, Guam, Puerto Rico and USVI (mlolic1/2; 58 licenses incl. CA DFPI/DRE, SC/TX/UT split regulators), with search, CSV and Word export.
   - Expansion planner (PPFC sponsorship, state hours, temporary authority, NMLS steps → Board) and annual CE planner.
   - Agent tools mlo_license_requirements and licensing_footprint, an expansion runbook, and a coverage-grid process.
+
+## v91 — 2026-10-26 (Lender Match Pro suite)
+- **Lender Match Pro** (app55): full borrower profile → up to 10 lenders side by side; eligibility, overlays, seasoning, property, pricing reputation, speed, risk. Borrower-benefit ranking only; comp shown separately, never weighted (12 CFR 1026.36(e)). Anti-steering safe-harbor option set + borrower options document + file note.
+- **Elite analysis layer** (app61): sensitivity (what unlocks more lenders), approval heatmap, structure optimizer (DTI/LTV/LLPA/MI/rescore/buydown), conditions forecast, exit & refi plan, pricing deep-dive (≈APR, total interest, quote freshness), lender performance tracker, saved scenarios + A/B, AE scenario draft + Word deal report.
+- **Data (70 lenders):** competitive edge/pricing reputation/overlays (lenderedge1-3), max DTI / residual income / manual UW / overlays (lenderuw1-2), programs + borrower credits + promotions (lenderpromo1-2), agency rules/LLPA/residual table/local overlays (lendrules), **every US county 2026 loan limit** (countylimits, 3,235 rows FHFA + HUD).
+- **Loan Type Navigator** (app59): 97 loan types with what/used for/best for/not for/requirements/pros/cons/how-to/watch; filters, situation wizard, compare.
+- **Best Loan Finder** (app60): 376 borrower situations (search + grouped dropdown + free-text via Claude) → top 4 products each with best lender + alternates.
+- **Loan types, filters & drop-downs** (app58): 60+ grouped types in Lender Match; 12 filters; Programs/Credits/Promos board; lender credit in cost math.
+- **Visuals, calculators, motion** (app57): SVG chart kit, Lender Match visuals, 10 deal calculators, dashboard-wide animations (reduced-motion safe).
+- **Loan Limits page** (app56). **Loan Step Automation Engine + Daily Automation Stack** (app62): 40 steps each with trigger/automation/owner/gate/SLA; file tracker fires automations; one-button daily stack.
+- Seats +16, runbooks +15, playbooks +6, agent tools +20. Coverage grid: 89 processes, 100% owned.
