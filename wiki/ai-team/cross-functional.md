@@ -71,7 +71,7 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Aria | 7-star, seven star, anticipate, anticipation, friday pulse, status update, response time, sla, response standard, homeowners exemption, supplemental tax, moving kit | `wiki/ai-team/desk-seats.md` |
 | Kai | kaizen, bottleneck, capacity, scale, scalability, process improvement, workload, hire trigger, efficiency, automation coverage | `wiki/ai-team/desk-seats.md` |
 | Sloane | doc screener, screen document, document review, fine print, hidden clause, clause, hidden fee, prelim, title report, cc&rs, hoa documents, closing disclosure, loan estimate, lease review, contract review, deadline extraction | `wiki/ai-team/desk-seats.md` |
-| Nova | coverage, uncovered, who owns, owner for, sync status, is it synced, live data, sweep, what is missing, process gap, health check | `wiki/ai-team/desk-seats.md` |
+| Nova | coverage, uncovered, who owns, owner for, sync status, is it synced, live data, sweep, what is missing, process gap, health check, process coverage, coverage register, which doc is stale, who writes | `wiki/ai-team/desk-seats.md` |
 
 ## Pods — standing cross-functional teams that work in parallel
 

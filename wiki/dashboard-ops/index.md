@@ -78,6 +78,7 @@ count, per the "one rule" above.
 | `task-catalog.md` | The Mac task rhythm under `claude-runner`, and how to read a task's status honestly |
 | `freshness-routines.md` | Which routine refreshes each Command Deck block and how often (daily minimum since 2026-10-12), the sweep safety net, and what only the Mac can write |
 | `routine-catalog.md` | Cloud routine categories, the disproved "can't write unattended" rule, and the connector-inheritance gotcha |
+| `process-coverage.md` | Every deck document → writer, cadence, owner seat; gaps first; the live Process coverage card and `bin/brain coverage` (Nova, 2026-10-26) |
 | `connections.md` | Is a connector, CRM or integration actually working — links to `integrations/CONNECTIONS.md` |
 
 - `integrations/n8n/WORKFLOW-LIBRARY.md` — 2,061 ready-made n8n workflows as a read-only catalog (`workflow-library.sh find/show/stage`); staged inactive only, client-facing writes are Steven's switch (2026-10-12).

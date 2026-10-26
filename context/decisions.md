@@ -742,3 +742,25 @@ through Apple Health and the same export file once Steven switches the nutrition
 - **Decision.** A stdlib, GET-only client (`integrations/skyslope/skyslope_cli.py`) using SkySlope's documented login (HMAC-SHA256 of `ClientId:ClientSecret:Timestamp` keyed by the user's Access Secret, `Authorization: ss <AccessKey>:<hmac>`, `Timestamp` header, JSON body with the Client pair → `Session` ticket, ~2 h) replaces the browser harness as the primary SkySlope path. Keys live only in `~/.config/skyslope/.env`; `fix-mine.sh` collects all four hidden and proves the login. Default output is a summary (file id, type, status, street, dates); `--full` shows the record. Transaction data is client data: terminal only, never into the brain, a report or a message. Writes to SkySlope stay HALT (no write verb exists in the client; a test enforces it).
 - **Open.** Steven's "API key" is the user pair; SkySlope's API also needs the partner-level Client ID/Secret. The proof step tells which is missing.
 - **Owner.** Carmen (desk use), Derek (client), Steven (keys). **Status.** Built and tested in the cloud 2026-10-24; first real login is the paste.
+
+## 2026-10-26 — Process coverage: one writer, one cadence, one owner per deck document; Nova owns the register
+
+- **Request (Steven, verbatim).** *"update AI org chart on command deck when done. update and assign AI agents to the org
+  chart to cover what is missing. Ensure automation, worklows, streamline, expanded capabilities are provided for the
+  respected Ai agents. Update AI org chart and AI brain. Ensure all data is live and synced and look for gaps in the
+  process to automate and have an ai agent facilate to ensure complete coverage of all proccesses listed and identified
+  within the dahboard, and command deck dashboards"*; and *"fix all errors with the chitown REPo to include … Run failed:
+  brain-loop"*.
+- **Decision.** Coverage is measured per document, from the document's own stamp, never from a task status. The register
+  (`brain/coverage/writers.json`, 266 rows) names a writer, cadence, owner seat and pod for every document the deck reads;
+  `bin/brain coverage` scores it against a database export and writes `docs/inventory/process-coverage.md`; the deck's
+  `processCoverage` document and the Process coverage card (Orchestration 39.0) compute the same statuses live in the
+  browser; the freshness sweep's STEP 1b reports gaps with owners; Nova (Coverage & Process Auditor, reporting to Owen in Derek's line) owns it
+  on both dashboards and is on the deck's ORG_CHART (added there the same afternoon by the Broker Command Center session; the splice skips the seat when it is already present). 26 gaps on day one, each with its fix owner
+  (`wiki/dashboard-ops/process-coverage.md`). Seats are assigned, never invented: every gap maps to an existing seat.
+- **CI.** `brain-loop` and `setup-health` were red on every push since 2026-10-23 for two reasons: the layers test
+  hard-coded the Drive manifest date (now read from the manifest) and commits landed without `bin/brain reindex` (index
+  regenerated). Both pass on this commit.
+- **Owner.** Nova (register, card, sweep step); Sam/Ezra/Apex/Bianca own the day-one fixes. **Status.** Deck published,
+  register written, sweep updated 2026-10-26.
+

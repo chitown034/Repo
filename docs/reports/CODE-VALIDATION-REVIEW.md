@@ -2389,3 +2389,290 @@ show:
 - how the Big-moves task handles EXECUTE NOW;
 - that the live page holds the mcp grant;
 - how the change behaves on macOS bash 3.2 or BSD sed.
+
+---
+
+# VibeBreaker Final Report: process coverage register (brain/coverage.py), deck card 39.0, test_layers CI fix
+
+change-set: 93ecb2f073ca0f3c
+
+Reviewer: code-validator (did not write this code). Date: 2026-10-26. `bash scripts/validate-code.sh` →
+`verdict: PASS (11 passed, 0 failed)` (py_compile x5, json x3, brain unit tests, brain layout, brain doctor). The
+`--hash` printed 93ecb2f073ca0f3c, which matches the requested change-set.
+
+## Verdict
+
+`FIX BEFORE SHIP` (FIX FIRST)
+
+One confirmed HIGH: the card's body-scan fallback drops the time zone from stamps, so for a viewer in Pacific time
+6 of the 89 automated documents show as red "future stamp" gaps on today's real data, and every fallback-stamped age
+is off by the viewer's UTC offset. The deck page has already been published as version 250.
+
+## Scope
+
+- Commit / branch: claude/gracious-newton-4hpfco at a2cc3a3 + working tree (change-set 93ecb2f073ca0f3c)
+- Mode: DIFF
+- Stack: Python 3 (brain/), deck JS spliced into an HTML export, JSON registers, Markdown docs
+- Passes run: 01, 04, 05, 06, 07, 08, 12, 17, 18, 19, 20 (Python/JS set), plus 11 (splice idempotence) and a PII sweep
+- Inspected surfaces: brain/coverage.py, brain/tests/test_coverage.py, brain/__main__.py (coverage branch),
+  brain/tests/test_layers.py with brain/layers.py:71-76, brain/coverage/writers.json (266 rows),
+  docs/inventory/deck-doc-panels.json, process-coverage.md/.json, dashboard/wave2/splice-process-coverage.py, the spliced
+  deck /tmp/claude-0/deck-r9.html (card at lines 31484-31576; lsGet 8237, orEsc 31005, orBadge 31020, sync store 9078),
+  the pre-splice export, and the ArtifactData export the register was built from (scratchpad db/state, 203 docs)
+- Excluded / unavailable context: the live published artifact itself (I read the local copies only); a real browser in
+  the Pacific zone (simulated with node 22 and TZ=America/Los_Angeles, the same V8 date parser Chrome uses)
+- Material scope limitation: NO
+
+## Scoreboard
+
+- Passes executed: 12 / 20
+- Confirmed: 5
+- Critical: 0
+- High: 1
+- Medium: 1
+- Low: 3
+- Info: 0
+- Unverified: 0
+- Rejected candidates: 6
+- First critical pass: NONE
+
+## CONFIRMED
+
+```yaml
+id: P07-F1
+pass: 07
+title: Card fallback stamp drops the zone; a Pacific browser shows fresh documents as red "future stamp" gaps
+status: CONFIRMED
+severity: HIGH
+confidence: HIGH
+location:
+  - path: dashboard/wave2/splice-process-coverage.py
+    line: 78 and 86 (deck-r9.html 31500 and 31508, orchCovStamp / orchCovParse)
+  - path: brain/coverage.py
+    line: 84 (doc_stamp fallback, same regex)
+entry_or_trigger: renderOrchestration -> renderOrchCoverage -> orchCovStatus -> orchCovStamp, for any document with no
+  top-level stamp key (the fallback path), viewed in a browser not on UTC
+evidence: the fallback regex /20\d\d-\d\d-\d\dT\d\d:\d\d/ keeps only "YYYY-MM-DDTHH:MM", discarding seconds and the
+  Z/offset. new Date("2026-10-26T15:41") is local time in V8, so in Pacific it becomes 22:41Z. Python parses the same
+  truncated text as UTC, and turns "2026-10-26T06:39:26-07:00" into 06:39Z instead of 13:39Z.
+existing_controls_checked: the key-first path (STAMP_KEYS) keeps full strings and is correct; the "future stamp" guard
+  (age < -1) is what turns the shift into a visible gap; the Playwright run behind the publish ran on a UTC container
+failure_scenario: I replayed the register against the real export (266 rows) through the card's own functions with
+  TZ=America/Los_Angeles and now=19:00Z. liveFeeds, vanessaRecommendations, coachLog, loftySyncLog, vanessaLog and
+  vanessaRuns came back ["future stamp","amber",true]; Python and the UTC replay both say "fresh". Raw values were, for
+  example, liveFeeds "2026-10-26T15:41" -> 22:41Z. Outside that window the same shift makes every fallback-stamped
+  automated document look 7-8 h younger, so a stale one can still read fresh.
+impact: Steven's own view of the card. The badge and the "Gaps" tile overcount, and the false gaps sit at the top of the
+  default Gaps view, which is the reason the card exists
+remediation_direction: capture the whole token (optional :ss, .fff and Z/±hh:mm) in both fallbacks; read a zone-less
+  stamp as UTC in JS so it matches Python; take the newest by parsed instant, not by string order
+verification: a fixture doc {"rows":[{"at":"2026-10-26T15:41:00Z"},{"at":"2026-10-26T06:39:26-07:00"}]} stamps
+  2026-10-26T15:41Z in Python and in the JS card under TZ=America/Los_Angeles; a replay of the real export shows 0
+  "future stamp" rows
+needs_context: null
+```
+
+```yaml
+id: P05-F1
+pass: 05
+title: Python doc_stamp accepts future dates (key or body), so a stale automated document can score "fresh"
+status: CONFIRMED
+severity: MEDIUM
+confidence: HIGH
+location:
+  - path: brain/coverage.py
+    line: 79-90 (doc_stamp), 176-179 (collect age test)
+entry_or_trigger: bin/brain coverage --db <export> [--write]
+evidence: the only future-date guard is d[:10] <= "2030-12-31" on the body fallback. A `date` key, or any body date up
+  to 2030 (renewal, expiry, next run), is taken as the write stamp. A negative age is <= cadence*1.5, so it scores fresh.
+existing_controls_checked: the JS card does flag age < -1 h as "future stamp" (so the two now disagree); the test only
+  covers a 2036 date
+failure_scenario: a cloud doc liveFeeds {"v":{"items":[{"seen":"2026-09-01"},{"renewsOn":"2027-01-15"}]}} ->
+  status fresh, ageHours -1938.0, gap False. Real data already trips it: process-coverage.json records licenseTracker
+  stamp 2029-10-23T12:00Z, ageHours -26225.2 (a user doc, so it shows as a wrong "Last stamp" rather than a wrong status)
+impact: the committed register and `bin/brain coverage` can hide a real gap; Python and the card can disagree on a row
+remediation_direction: ignore candidate dates later than now (+ a small skew) in both paths, and treat a key stamp in
+  the future the same way the card does
+verification: the fixture above returns stale (or "future stamp") and gap True; licenseTracker gets no 2029 stamp
+needs_context: null
+```
+
+```yaml
+id: P17-F1
+pass: 17
+title: Python and the card classify session and empty user documents differently
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: brain/coverage.py
+    line: 164-174 (collect status chain)
+  - path: dashboard/wave2/splice-process-coverage.py
+    line: 103 (orchCovStatus)
+entry_or_trigger: any kind "session" row (aiModels, feasibilityChecks, isaDailySchedule), or a user doc that is present
+  but [] / {}
+evidence: Python has no session branch, so session falls into the automated chain ("queue-driven", or a "never
+  written" GAP if absent). The JS returns manual/"never typed". Python calls a present-but-empty user doc "manual" where
+  the JS says "never typed".
+existing_controls_checked: the replay of the real export showed 22 row differences: 6 from P07-F1, 3 session rows
+  (py queue-driven, js manual) and 13 user rows (py manual, js never typed); no gap flag differs today apart from P07-F1
+failure_scenario: if a session doc is deleted, the committed register lists it as a "never written" gap but the deck
+  shows it as a non-gap "never typed". The spec in the brief ("user/session -> manual") matches the JS, not the Python.
+impact: the md report and the card disagree on labels and, in the absent case, on the gap count
+remediation_direction: give Python the same user/session branch and empty-body rule as orchCovStatus
+verification: a parity test runs the same fixture export through collect() and through the card's functions and
+  asserts equal [status, gap] for every row
+needs_context: null
+```
+
+```yaml
+id: P07-F2
+pass: 07
+title: The card takes the first string-valued stamp key even when it does not parse; Python moves on to the next one
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: dashboard/wave2/splice-process-coverage.py
+    line: 73-75 (orchCovStamp key loop)
+entry_or_trigger: an automated doc whose v.asOf (or another STAMP_KEY) is prose, e.g. "Sourced via WebSearch" (the
+  exact string test_coverage.py uses), and whose real stamp is later in the list or in the body
+evidence: node replay: {asOf:"Sourced via WebSearch", rows:[{updatedAt:"2026-10-26T10:00:00Z"}]} -> JS "no stamp" (an
+  amber gap); Python doc_stamp -> 2026-10-26T10:00Z
+existing_controls_checked: no current export doc triggers it (I checked all 203); latent
+failure_scenario: a writer adds a descriptive asOf, and the card shows a false amber gap that the register does not show
+impact: a false gap on the card
+remediation_direction: break out of the key loop only on a key that parses, as Python does
+verification: the fixture above gives the same stamp in Python and in JS
+needs_context: null
+```
+
+```yaml
+id: P08-F1
+pass: 08
+title: --db with a wrong path silently reports every automated document as never written
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: brain/coverage.py
+    line: 133-143 (read_db)
+entry_or_trigger: bin/brain coverage --db /nonexistent/typo [--write]
+evidence: Path.glob on a missing directory yields nothing; ran it: counts never written 92, never typed 121, gaps 97, exit 0
+existing_controls_checked: no existence check in read_db or __main__
+failure_scenario: a typo in the export path, plus --write, overwrites the committed process-coverage.md/.json with 97
+  false gaps and no error
+impact: a corrupted register (it is regenerable)
+remediation_direction: refuse when the path is missing or holds no *.json
+verification: `bin/brain coverage --db /nonexistent` exits non-zero and writes nothing
+needs_context: null
+```
+
+## UNVERIFIED
+
+None.
+
+## REJECTED
+
+- C1: a writers.json row with missing keys could crash collect() — collect indexes w["writer"], w["owner"] and w["pod"]
+  directly, but all 266 rows carry all six keys (checked) and test_every_deck_doc_has_a_writer_row checks kind and
+  owner. Latent only; no current trigger. A schema assertion for all six keys is listed as missing test 4.
+- C2: the Mac "08:05 AM PDT" form is wrong — Python gives 15:05Z and V8 gives 15:05Z; 12:30 PM PST gives 20:30Z in both
+  (coverage.py:44-48, node replay).
+- C3: XSS in the card — every innerHTML value goes through orEsc, which escapes & < > ", including the data-orch-cov
+  attribute. x.cls comes from a fixed set, the badge goes through orBadge (textContent), and the note uses textContent.
+  (orEsc inside textContent only double-escapes, which is cosmetic.)
+- C4: the card breaks when processCoverage is absent — lsGet returns null and the card shows the "no register yet" row.
+  A malformed row throws inside the safeRun wrapper and is contained.
+- C5: the splice is not idempotent or has weak anchors — sub1 asserts exactly one match per anchor and writes only
+  after all anchors pass. Replayed in memory: pre-splice export -> output byte-identical to deck-r9.html; deck-r9.html ->
+  "ABORT: already applied". The Nova insertion is skipped when the seat exists.
+- C6: the lsGet value is the {v:...} wrapper, so reg.docs would be undefined — the DB sync stores data.v
+  (deck-r9.html:9078), so lsGet returns the unwrapped value, matching Python's body.get("v").
+
+## Coverage
+
+Clean after inspection:
+- The test_layers.py CI fix reads the manifest the way brain/layers.py:74 does; validate-code passes it, and doctor
+  reports PASS.
+- __main__.py coverage branch: additive, and writes only with --write, --deck-doc or --scan.
+- deck_doc() leaves out status as intended.
+- counts(), gaps() and format_rows() escape the pipe character.
+- The quickcheck FAIL set on the pre-splice and spliced deck exports is identical: the same md5 of the
+  fail/summary lines.
+- PII sweep:
+  - Scope: writers.json, deck-doc-panels.json, process-coverage.md/.json, wiki/dashboard-ops/process-coverage.md,
+    AUTOMATION-MAP-2026-10-26.md, the splice script, and the added lines in memory.md, decisions.md, wiki,
+    daily-updates.md and routines.
+  - Result: no phone number, e-mail address, key pattern or client name, and no message body. The .json carries
+    stamps and sizes only.
+  - Note: process-coverage.md names a session scratchpad path as its export source, which is harmless.
+
+## Top missing tests (pass 19)
+
+1. A zone-bearing body stamp fixture ("…T15:41:00Z", "…T06:39:26-07:00") yields the same instant in doc_stamp and in
+   orchCovStamp under TZ=America/Los_Angeles. (P07-F1)
+2. A Python/JS parity test runs one fixture export through collect() and the card's functions and gets equal
+   [status, gap] for every row. (P17-F1, P07-F2)
+3. An automated doc whose body holds a future date (2027 renewal) or a future `date` key is not "fresh". (P05-F1)
+4. Every writers.json row has all six keys (kind, writer, cadenceHours, owner, pod, note) with the right types.
+5. `--db` with a missing directory exits non-zero and writes nothing. (P08-F1)
+6. A prose asOf with a real updatedAt behind it gives the same stamp in both implementations. (P07-F2)
+7. renderOrchCoverage with processCoverage absent, with docs:[], and with a null row renders without throwing.
+8. The splice run twice aborts, and a missing anchor aborts before any write.
+9. A session row that is absent from the export gives the same status in Python and JS.
+10. The test_layers drive stamp still passes when last_sync is missing (created fallback).
+
+## Share card
+
+```text
+VIBE//BREAKER
+
+VERDICT: FIX BEFORE SHIP
+PASSES: 12/20
+CRITICAL: 0
+HIGH: 1
+CONFIRMED: 5
+UNVERIFIED: 0
+FIRST BREAK: NONE
+```
+
+## Release note
+
+This review shows the following:
+- The deterministic gate passes.
+- The splice is exact and refuses a second run.
+- The card escapes its output.
+- Python's stamp parsing is right for key stamps and for the Mac form.
+
+The card's live statuses diverge from Python, and are wrong for non-UTC viewers on fallback stamps. That was
+demonstrated by replaying the real export through the card's own functions in node 22 (V8). It was not run in a real
+Pacific-zone Chrome, and the published v250 page was not opened.
+
+---
+
+# VibeBreaker re-check: process coverage fixes
+
+change-set: cf53130f90a07878
+
+Reviewer: code-validator, 2026-10-26. `bash scripts/validate-code.sh` → `verdict: PASS (11 passed, 0 failed)`. Brain
+unit suite OK. This re-check covers the five findings filed under change-set 93ecb2f073ca0f3c, and adds no new findings.
+
+## Verdict
+
+`SHIP`
+
+All five confirmed findings are fixed and verified independently. There are no open CRITICAL or HIGH findings.
+
+| Finding | Status | Evidence (my own run) |
+|---|---|---|
+| P07-F1 (HIGH) zone dropped in the body fallback | FIXED | The card's JS, cut from the splice source, was replayed against the real export (scratchpad db/state) and compared with a fresh Python `collect()`: 266 rows, 0 differences under TZ=America/Los_Angeles, UTC and Asia/Tokyo. `orchCovParse` in LA gives: "2026-10-26T13:10" → 13:10Z; "2026-10-26" → 12:00Z; "08:05 AM PDT" → 15:05Z; "06:39:26-07:00" → 13:39:26Z. Python `doc_stamp` picks 15:41Z over 06:39-07:00 (13:39Z). |
+| P05-F1 (MEDIUM) future dates read as fresh | FIXED | `FUTURE_SKEW` = 48 h (coverage.py:75). A 2027 body date is ignored, and the stamp falls back to 2026-09-01. A future key stamp gets status "future stamp" and counts as a gap (coverage.py:197, 202). |
+| P17-F1 (LOW) Python/JS label parity | FIXED | The 0-difference replay above covers the 3 session rows and the empty user rows. Python counts now include 56 "never typed" and 11 "queue-driven". |
+| P07-F2 (LOW) first string key wins | FIXED | In the card, {asOf:"Sourced via WebSearch", rows:[{updatedAt:…10:00Z}]} → raw "2026-10-26T10:00:00Z". Python gives the same stamp. |
+| P08-F1 (LOW) silent --db typo | FIXED | `bin/brain coverage --db /nonexistent/typo` → exit 1. |
+
+## Not demonstrated
+
+I reviewed the splice source in the repo, not the published version 251. The card code above was cut from
+dashboard/wave2/splice-process-coverage.py, and I did not re-read the live page.
