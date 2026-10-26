@@ -310,3 +310,285 @@ window.CARF_DEEP_EXT=Object.assign(window.CARF_DEEP_EXT||{},{
 {s:"Binding arbitration option",d:"Both parties initial the arbitration option only if they agree to arbitrate disputes between broker and associate; read the jury-waiver notice. Do not pre-fill."},
 {s:"Signatures and retention",d:"Broker and associate sign and date; broker retains for at least three years per B&P 10148 (verify current retention period). No loan implication."}
 ],
+"LPT-INPUT":[
+{s:"Version selection",d:"Five LPT input forms: Residential, Multi Family, Land, Vacant Land and Improvement. Pick the one matching the MLS property class (CRMLS: Residential, Residential Income, Land, etc.). (confirm with LPT broker/TC whether LPT's listing coordinator enters the MLS from this form)"},
+{s:"Identification and price",d:"Enter address, APN, county, list price, property subtype, year built, zoning and occupancy from public records or the preliminary title report. Match the RLA list price exactly."},
+{s:"Size data and sources",d:"Enter bedrooms, baths, living square footage, lot size and garage spaces and CITE the source (assessor, appraisal, measured). Pair with C.A.R. SFLS so the seller acknowledges the source; inaccurate MLS square footage is a top liability claim."},
+{s:"Features and systems",d:"Complete HOA (name, dues, from the HOA Information sheet), parking, pool/spa, view, heating/cooling, utilities, water/sewer, solar (owned/leased), fireplaces, laundry. For Multi Family: unit mix, current rents, leases, expenses and separate metering."},
+{s:"Land / Vacant Land / Improvement specifics",d:"For land: zoning, utilities at street, access, topography, soils/percolation reports, entitlements. For Improvement forms: describe improvements, permits and construction details. Do not state buildable or developable without documentation."},
+{s:"Showing, access and occupancy",d:"Enter showing instructions, lockbox type/location, tenant occupancy and notice requirements (24-hour notice for tenants), alarm info and pets. Keep contact numbers current."},
+{s:"Remarks",d:"Write public and private remarks following CRMLS rules: no compensation offers in the MLS, no fair-housing-sensitive language (no family-friendly, no references to protected classes), no agent contact info in public remarks. Have the seller review for accuracy."},
+{s:"Upload and loan implication",d:"Seller reviews/approves, then upload to SkySlope for MLS entry. Accurate square footage, HOA dues and unit count help the MLO and appraiser; MLS data that conflicts with the appraisal or 1003 triggers underwriting conditions."}
+],
+"ITA":[
+{s:"Client and interpreter",d:"Enter the client's name, the interpreter's name, address, phone/email, relationship to the client (friend, relative, professional) and the language interpreted. Avoid using the other party, the other agent or anyone with a stake in the deal as interpreter."},
+{s:"Documents and meetings covered",d:"Identify the documents (RLA, BRBC, RPA, disclosures, lease) and meetings the interpreter will assist with. Add later documents by listing them on a new ITA or an addendum."},
+{s:"Interpreter's role and limits",d:"Confirm the interpreter is not an agent of the brokerage, is not giving legal, tax or real estate advice, and will interpret accurately. The client acknowledges responsibility for understanding the documents and may obtain a professional translation."},
+{s:"Translation notice (Civil Code 1632)",d:"If the agreement was negotiated primarily in Spanish, Chinese, Tagalog, Vietnamese or Korean and a translation is required (e.g., leases over one month; verify which agreements are covered), deliver the translated agreement or the FLTN notice as applicable."},
+{s:"Signatures",d:"Client and interpreter sign and date; agent signs acknowledging. Keep the ITA in SkySlope with the interpreted documents."},
+{s:"Loan implication",d:"Tell the MLO if the borrower needs an interpreter; lenders have language-access procedures (and Fannie/Freddie language preference questions on the 1003) and the closing/notary signing must be arranged so the borrower understands the loan documents."}
+],
+"LPT-LCAGENTORDERFO":[
+{s:"Agent identification",d:"Enter your full name, LPT agent ID/email and phone exactly as in your LPT profile so the order is credited and billed to the right agent. (confirm with LPT broker/TC what LC stands for in the current form and the services offered)"},
+{s:"Property / file reference",d:"Enter the property address, MLS number if assigned and the SkySlope file name so the order can be matched to the transaction and any closing deduction."},
+{s:"Items or services ordered",d:"Select or describe each item (e.g., signage, marketing pieces, broker-supplied materials) with quantity, specifications and requested delivery/install dates. Be specific about sign riders, names and phone numbers to print."},
+{s:"Payment / billing",d:"Choose card on file, deduct at closing or invoice per the options shown. If deduct at closing, the amount should also appear on your CIF so the commission math reconciles."},
+{s:"Signature and submission",d:"Sign and date, upload to the SkySlope file and submit per current LPT instructions; keep a copy to match against the closing deduction. No client or loan implication."}
+],
+"LDAA":[
+{s:"Reference block",d:"Enter the property address, and the title and date of the purchase agreement (RPA and any counter) the addendum attaches to. The RPA's liquidated damages (para. 21B area) and arbitration (para. 22B area) provisions require separate initials from every buyer and seller (verify paragraph numbers on the current RPA)."},
+{s:"Additional parties",d:"List each additional buyer and seller by full legal name exactly as on the contract or ASA (e.g., a spouse added later, a co-trustee or an additional entity signer)."},
+{s:"Liquidated damages initials",d:"Each additional party initials the liquidated damages provision ONLY if they agree (deposit retention capped at 3% of price for 1-4 unit owner-occupied property under Civil Code 1675). Initials are optional and must never be pre-filled or suggested; a party who does not initial is not bound by that clause."},
+{s:"Arbitration initials",d:"Each additional party initials the arbitration of disputes provision only if they agree, after reading the jury-waiver notice. If one side initials and the other does not, there is no arbitration agreement."},
+{s:"Signatures and delivery",d:"Each additional party signs and dates; deliver to all parties and escrow with the contract package and upload to SkySlope. Pair with ASA for the signature lines themselves."},
+{s:"Loan implication",d:"Escrow and the lender need the complete contract package including every signed addendum; missing initials or signatures delay the lender's contract review and the title company's vesting review."}
+],
+"LPT-LBP":[
+{s:"Version selection",d:"Before 1978 version: full federal lead-based paint disclosure for target housing built before 1978 (42 USC 4852d, 24 CFR 35/40 CFR 745). After 1978 version: documents the build date so the federal rule does not apply. Confirm year built from tax records or the title report; if uncertain, use the pre-1978 form. (confirm with LPT broker/TC if C.A.R. FLD is also required)"},
+{s:"Lead warning statement",d:"The pre-1978 form carries the required Lead Warning Statement (different text for sales vs. leases). Do not edit it. Make sure the correct sale or lease version is used."},
+{s:"Seller/landlord disclosure",d:"Seller/landlord checks whether they have knowledge of lead-based paint or hazards and lists any reports or records available, then provides those records to the buyer/tenant. Unknown is a valid answer; a false No is not."},
+{s:"Pamphlet and buyer/tenant acknowledgment",d:"Deliver the EPA pamphlet Protect Your Family From Lead in Your Home; buyer/tenant initials receipt of the pamphlet, the disclosure and any records."},
+{s:"10-day inspection opportunity (sales only)",d:"Buyer initials whether they take the 10-day (or other agreed period) opportunity to conduct a lead risk assessment/inspection or waive it. Coordinate with the RPA investigation contingency period."},
+{s:"Agent acknowledgment and signatures",d:"Both agents sign acknowledging their duty to ensure compliance; seller/landlord, buyer/tenant sign and date. Must be completed before the buyer/tenant is obligated. Retain 3 years. Upload to SkySlope."},
+{s:"Loan implication",d:"FHA/VA appraisers flag defective paint on pre-1978 homes; the lender may require scraping/repainting and clearance before funding. Share the disclosure and any reports with the MLO."}
+],
+"LPT-LPTMICHIGANPA":[
+{s:"Jurisdiction check",d:"Use only for property located in Michigan, by an agent holding an active Michigan license, when LPT Michigan instructs. Never use for California property; California uses the C.A.R. RPA. (confirm with LPT broker/TC)"},
+{s:"Parties, property and price",d:"Enter buyer and seller legal names, property address and legal description/parcel ID, purchase price and earnest money amount and holder (in Michigan typically the broker's trust account or title company per LPT policy)."},
+{s:"Financing terms",d:"Complete the financing section (cash, conventional, FHA, VA, MSHDA) with loan amount, interest rate cap, application and commitment deadlines. Confirm terms match the pre-approval; attach FHA/VA amendatory clauses where required."},
+{s:"Inspection and other contingencies",d:"Enter inspection period (days), any sale-of-home contingency, well/septic inspection requirements (county point-of-sale rules), and the remedies if inspection issues are not resolved, following Michigan practice."},
+{s:"Closing, possession and proration",d:"Enter closing date, possession terms (Michigan often uses post-closing occupancy with a per-day charge and escrow holdback), tax proration method (Michigan uses specific due-date proration conventions) and title insurance/closing fee allocation."},
+{s:"Disclosures and attachments",d:"Attach the Michigan Seller's Disclosure Statement, lead paint disclosure if pre-1978, agency disclosure and any LPT Michigan required forms."},
+{s:"Signatures and review",d:"All parties sign; follow LPT Michigan broker/transaction coordinator instructions for review and SkySlope filing. Loan implication: the lender needs the fully executed agreement and all addenda; confirm financing terms match the loan approval."}
+],
+"LPT-SALESDISC":[
+{s:"Version selection",d:"47 SkySlope copies: generic Sales Disclosure, LPT Network Realty version, and per-state versions (AL, AZ, CO, DC, FL, GA, IA, ID, IL, KS, LA, MA, MD, MI, MO, MS, NC, NV, PA, RI, SC, TN, TX, VA, WI, WV), many with an 11.30 revision. Use the newest version for the property's state; for California confirm whether generic or LPT Network applies. (confirm with LPT broker/TC)"},
+{s:"Client and property",d:"Enter client name(s), property address (or N/A) and your agent name, license number and office as on the listing or buyer agreement. Date on delivery at the start of the relationship."},
+{s:"Brokerage model and affiliations",d:"Walk the client through the disclosure of LPT's business model, how LPT and the agent are compensated, and any affiliated business relationships (title, mortgage, etc.). Do not edit the pre-printed disclosure text."},
+{s:"State-specific content",d:"State versions contain language required by that state's commission (e.g., brokerage relationship, fees, team disclosures). Using the wrong state version is a common compliance kickback; check the header before sending."},
+{s:"Client acknowledgment",d:"Client signs and dates acknowledging receipt; agent signs. Upload to SkySlope before LPT's compliance review deadline (typically within days of the agreement). No loan implication."}
+],
+"MARSMRN":[
+{s:"Applicability",d:"MARS (Regulation O, 16 CFR 1015) covers anyone offering to help a homeowner obtain a loan modification, forbearance or other mortgage relief for consideration. Confirm with your broker whether your activity is covered and whether the real estate licensee exemption (for short sale-only negotiation under certain conditions) applies. Not legal advice."},
+{s:"Provider identification",d:"Enter the brokerage name, DRE license number, address and contact details as the provider offering the service, and the homeowner's name and property address."},
+{s:"Required disclosures",d:"The notice states: the provider is not associated with the government and the service is not approved by the government or the lender; the lender may not agree to change the loan; the homeowner may stop doing business with the provider at any time and may accept or reject any offer; and (if applicable) that stopping payments could cause loss of the home and damage credit."},
+{s:"Timing",d:"Deliver in writing at the first communication with the consumer about relief services, before discussing specific terms. Also deliver the general commercial communication disclosures where advertising is involved (verify on the current form)."},
+{s:"Fees",d:"No advance fees: Regulation O and California Civil Code 2944.7 prohibit collecting any fee before the homeowner has a written offer from the lender and accepts it. State this on the notice and in practice."},
+{s:"Signature and recordkeeping",d:"Homeowner signs and dates the acknowledgment and receives a copy; keep in the file for the required retention period. Recommend a HUD-approved housing counselor or attorney. No buyer loan implication."}
+],
+"MARSSN":[
+{s:"Provider and homeowner",d:"Enter the listing broker name and license number, seller name(s) and property address at the top. Deliver when taking the short sale listing or agreeing to negotiate with the lender, before contacting the lender."},
+{s:"Required MARS statements",d:"The notice states that the broker is not affiliated with the government or the lender, that the lender may not agree to the short sale or to waive deficiency, that the seller may stop using the broker's short sale negotiation at any time, and that the seller may accept or reject any lender offer."},
+{s:"Consequences warning",d:"Explain that a short sale can have tax (cancellation of debt income, with possible exclusions) and credit consequences and that deficiency rights vary (Civil Code 580e protects many 1-4 unit sellers); refer the seller to a CPA or attorney. Do not promise approval or debt forgiveness."},
+{s:"Fees",d:"No fee may be collected from the seller for negotiation services before the lender approves the short sale; broker compensation comes from sale proceeds as approved by the lender. State any third-party negotiator and their fee separately."},
+{s:"Pairing with SSLA",d:"Deliver with the SSLA short sale listing addendum at listing signing; both go in SkySlope with the RLA. Seller signs and dates and receives a copy."},
+{s:"Loan implication (buyer side)",d:"Buyer's MLO should plan for long short sale timelines (60-120+ days); rate locks and credit documents may need extensions, and lender approval terms may limit seller-paid closing costs."}
+],
+"MT":[
+{s:"Version selection",d:"MT-1 to MT-3 are seller-side copies (listing agreement changes) and MT-4 to MT-6 buyer-side copies (BRBC changes); use a new copy for each separate modification in the file. C.A.R. also publishes MT-LA and MT-BR specific versions; use those if available (verify on the current form)."},
+{s:"Original agreement reference",d:"Identify the agreement by form name (RLA, BRBC, RLAA, lease listing), its date, the property address or buyer search description, and the client name(s). The modification is void if it points to the wrong agreement."},
+{s:"Modifications",d:"State each change precisely: new list price, new expiration date, new compensation amount (percent/flat), change in authorized buyer-broker compensation, added/removed exclusions, change in term. Write numbers in both figures and words if the form allows."},
+{s:"Effective date and remaining terms",d:"Enter the effective date and confirm that all other terms remain unchanged. For compensation changes after the NAR settlement, the new amount must still be specific and not open-ended."},
+{s:"Signatures",d:"Every client who signed the original agreement signs, and the broker (or agent for the broker) signs. An email agreeing to a price reduction is not a modification; MLS price changes without a signed MT violate MLS rules."},
+{s:"MLS and escrow updates",d:"Update the MLS within the required time for price/expiration changes (CRMLS rules) and, if a buyer-broker compensation authorization changes while an offer is pending, tell escrow/the cooperating agent. No direct loan implication unless compensation flows to a buyer credit."}
+],
+"NODPA":[
+{s:"Applicability (Civil Code 1695)",d:"Use instead of the RPA when the buyer is an equity purchaser acquiring an owner-occupied 1-4 unit residence that has a recorded Notice of Default and the buyer will not occupy it as a residence. Get legal advice; violations carry civil and criminal penalties. Representatives of the purchaser must be licensed AND bonded (Civ. Code 1695.17; verify)."},
+{s:"Parties and property",d:"Enter the equity seller(s) and equity purchaser names, property address and the trustee's sale date if scheduled. Name the purchaser's representative (agent) and their broker."},
+{s:"Price and terms",d:"Enter the total consideration, how it is paid (cash, assumption, seller financing), who pays liens/reinstatement, and the closing date. The contract must contain the entire agreement; side agreements are prohibited."},
+{s:"Statutory notices and type size",d:"The contract must include the required notices in at least the prescribed type size (e.g., the right-to-cancel notice immediately above the seller's signature; verify current statute). Do not alter the pre-printed statutory text."},
+{s:"Right to cancel",d:"Include the seller's right to cancel until midnight of the fifth business day after signing or 8 a.m. on the trustee's sale day, whichever is first, and attach the HENC notice of cancellation (two copies to seller). No deed may be recorded and no funds transferred during the period."},
+{s:"Prohibited acts",d:"Review that the purchaser may not take unconscionable advantage, make untrue statements, or have the seller sign a deed or other document before the cancellation period ends (Civ. Code 1695.6). The purchaser cannot resell for two years without satisfying other restrictions in some cases (verify)."},
+{s:"Signatures and copies",d:"All parties sign; give the seller a copy of the contract and the cancellation notices at signing; keep proof of delivery. Two SkySlope copies (NODPA and Notice of Default Purchase Agreement) are the same form."},
+{s:"Loan implication",d:"Coordinate reinstatement/payoff timing with the foreclosure trustee's sale date; a lender financing the purchase must close after the cancellation period but before the sale, and will scrutinize non-arm's-length and distressed-seller issues."}
+],
+"OMA":[
+{s:"Parties and office",d:"Identify the broker (brokerage entity/designated officer with DRE number), the manager (name, DRE number, salesperson or broker license) and the office/branch location covered. A salesperson may manage a branch only as permitted by DRE regulations (verify B&P 10164/Reg. 2724 requirements)."},
+{s:"Management duties",d:"List duties in detail: supervising agents and transactions, reviewing documents within required times, trust account oversight, advertising review, recruiting, training, complaint handling. The designated broker remains responsible even when delegated (Reg. 2725)."},
+{s:"Authority and limits",d:"Define what the manager may approve (listings, contracts, commission disbursements) and what requires the broker. Specify reporting lines and written delegation per DRE rules."},
+{s:"Compensation and expenses",d:"Set salary, override on office production, profit share or combination; state who bears office expenses and how the manager's own transactions are split."},
+{s:"Term and termination",d:"Enter the term, notice periods, termination rights and post-termination obligations (return of files, confidentiality, non-solicitation to the extent lawful)."},
+{s:"Signatures and records",d:"Broker and manager sign and date; keep in the brokerage's permanent records. LPT managers use LPT's own agreements unless the LPT broker directs otherwise. No loan implication."}
+],
+"PA":[
+{s:"Estate and property",d:"Enter the estate name (Estate of ___), the probate case number and court if known, the personal representative's name, and the subject property address. Give to the PR at listing and to buyers before offers."},
+{s:"Authority under IAEA",d:"Review whether the personal representative has full or limited authority under the Independent Administration of Estates Act (from the Letters). Full authority: sale may close with a Notice of Proposed Action (15-day objection period) and no court hearing; limited authority: court confirmation is required."},
+{s:"Court confirmation and overbids",d:"Explain the court confirmation process: hearing date set by the court, open overbidding (first overbid is price plus 10% of the first $10,000 plus 5% of the balance), and that the original buyer may be outbid. Overbidders bring a cashier's check deposit (commonly 10%)."},
+{s:"As-is sale and disclosures",d:"Probate sales are generally as-is; the PR is exempt from the TDS and SPQ if they never occupied the property, but must still disclose known material facts; agents still owe visual inspection (AVID). Explain limited contingencies and that timelines may run from confirmation."},
+{s:"Compensation",d:"Note that in court-confirmed sales the court approves broker compensation and sets the split if an overbidder wins. Listing side pairs with PLA; buyer side pairs with CCA."},
+{s:"Signatures and calendar",d:"Client signs and dates; agent signs; give a copy. Upload to SkySlope and calendar the NOPA objection period or court hearing. Loan implication: court confirmation can delay closing 30-60+ days; buyers should plan for longer rate locks."}
+],
+"PAC":[
+{s:"Parties",d:"Identify the agent (licensee) hiring the assistant, the personal assistant (name, address, licensed or unlicensed with DRE number if licensed) and the supervising broker. Broker approval is required; LPT may require its own form or the TPA instead. (confirm with LPT broker/TC)"},
+{s:"Permitted duties",d:"List the assistant's tasks. For unlicensed assistants, exclude licensed activity: no showing property to prospects, no negotiating, no discussing terms or price, no soliciting listings/buyers (DRE unlicensed assistant guidelines). Administrative, marketing and scheduling tasks are allowed."},
+{s:"Compensation",d:"Set the pay (hourly, salary or flat); unlicensed assistants cannot be paid a share of commission for licensed activity. Licensed assistants paid commission must be paid through the broker."},
+{s:"Employment status",d:"Address employee vs. independent contractor under California's ABC test (AB 5); most assistants controlled by the agent are employees, which triggers payroll, wage/hour and workers' comp obligations. Recommend an employment attorney or payroll service."},
+{s:"Confidentiality, systems and termination",d:"Cover client data confidentiality, use of MLS/lockbox (unlicensed assistants cannot have their own MLS access or key in most associations), CRM and e-signature accounts, and termination terms."},
+{s:"Signatures and filing",d:"Agent, assistant and broker sign; file with brokerage records. No loan implication."}
+],
+"LPT-PERSONALPROPER":[
+{s:"Header",d:"Enter property address, client name(s) and whether this is for a listing (what seller will include/exclude) or an offer (what buyer requests). (confirm with LPT broker/TC how the sheet is used)"},
+{s:"Item list",d:"List each item with description, brand/model, serial if available, and location (e.g., kitchen refrigerator, Samsung stainless; garage freezer). Include window coverings, mounted TVs/brackets, security cameras, potted plants, playsets, EV chargers."},
+{s:"Included / excluded / negotiable",d:"Mark each item. Fixtures (attached items) are included by law unless excluded; personal property is excluded unless included. Resolve the mounted TV and bracket question explicitly; it is the most common closing dispute."},
+{s:"Leased and financed items",d:"Flag leased solar, water softeners, alarm systems, propane tanks and financed items (PACE/HERO). These must be disclosed, paid off or assumed in escrow, and leased solar requires the solar company's transfer approval; coordinate with escrow and the MLO."},
+{s:"Transfer to the contract",d:"Transfer the final list into the RPA items included/excluded paragraph or attach as an ADM; the RPA states included items are transferred without warranty and no value is allocated unless stated. Do not assign a price to personal property without lender approval."},
+{s:"Signatures and upload",d:"Client initials and signs; upload to SkySlope. Loan implication: appraisers exclude personal property from value; a large furniture package in the contract can trigger lender review and, if valued, reduce the appraised real property value or require a separate bill of sale outside the loan."}
+],
+"PLA":[
+{s:"Estate and representative",d:"Enter the estate name, probate case number and court, and the personal representative's full legal name and capacity (executor/administrator). Attach the Letters Testamentary or Letters of Administration to the listing file."},
+{s:"IAEA authority",d:"Check full or limited authority under the Independent Administration of Estates Act. Full authority allows sale by Notice of Proposed Action (15-day objection window) without a hearing; limited authority requires court confirmation and overbid procedures."},
+{s:"Court-set compensation",d:"Acknowledge that in a court-confirmed sale the court approves compensation and sets the split between listing broker and the successful overbidder's broker; the RLA percentage is subject to court approval. In full-authority sales the RLA terms generally apply (verify)."},
+{s:"Overbid procedure",d:"Describe the first minimum overbid (price plus 10% of the first $10,000 plus 5% of the excess), that the listing broker may need to market for overbidders, and deposit requirements at the hearing."},
+{s:"Disclosures and as-is",d:"Note the PR's TDS/SPQ exemption when the PR did not occupy the property, the continuing duty to disclose known material facts, and that the sale is as-is. Agents still complete the AVID."},
+{s:"Signatures and filing",d:"Personal representative signs and dates with the RLA; attach RCSD. Upload to SkySlope with the Letters. No loan implication on the listing side, but advise buyers' agents of the likely timeline."}
+],
+"POSA":[
+{s:"Reference block",d:"Enter the RPA date, property address and buyer/seller names. If part of the offer, list it in the RPA addenda checklist; if agreed later, all parties sign as an amendment."},
+{s:"Storage area and access",d:"Describe the exact area (garage, a bedroom, a POD in the driveway) and the buyer's access rights (by appointment, keys not provided). Storage is not occupancy; prohibit overnight stays and living use to avoid creating a tenancy (BEO is for occupancy)."},
+{s:"Dates and fee",d:"Enter the start date (and any end date if escrow fails), and any storage fee or deposit. State that the buyer must remove items within a set number of days if escrow does not close."},
+{s:"Risk of loss and insurance",d:"Allocate risk: buyer bears loss/damage to stored items and is responsible for damage caused to the property; buyer should carry renter's or inland marine coverage; seller should confirm homeowner's coverage. Buyer may be asked to indemnify seller."},
+{s:"Condition and utilities",d:"Note the condition of the storage area before move-in and any utilities the buyer may use. Seller remains responsible for the property until COE."},
+{s:"Signatures and delivery",d:"Buyer and seller sign before anything is moved in; deliver to escrow and upload to SkySlope. Loan implication: lenders may question pre-closing possession; tell the MLO, and note the appraiser/final inspection may need access around stored items."}
+],
+"RA":[
+{s:"Licensee identification",d:"Enter the licensee's full name, brokerage, DRE license number and local association/REALTOR membership information. Verify license status on the DRE lookup and membership through NAR's database before relying on it."},
+{s:"Arrangement referenced",d:"Identify the related referral fee agreement (RFA) or broker cooperation document by date and client name so the acknowledgment ties to a specific arrangement (verify on the current form)."},
+{s:"Code of Ethics acknowledgment",d:"The signer acknowledges REALTOR status and that the arrangement is subject to the Code of Ethics (e.g., Article 16 on cooperation, Article 7 on compensation disclosure). Only REALTOR members can be bound this way."},
+{s:"Signature",d:"The receiving licensee signs and dates before any referral fee is paid; the responsible broker signs if required. Attach to the RFA/cooperation agreement."},
+{s:"Filing",d:"Keep in SkySlope and brokerage records for the DRE retention period. Referral fees go broker to broker only and never to unlicensed persons. No loan implication; RESPA bars fees for settlement-service referrals."}
+],
+"RAD":[
+{s:"Client and transaction",d:"Identify the referred client by name, the property or search area, the transaction type (sale, purchase, lease) and the referring broker/agent and receiving broker/agent with license numbers."},
+{s:"Referral fee",d:"State the fee as a percentage of the gross commission received by the receiving broker (or a flat amount) and when it is paid (at closing through escrow or by the broker after receipt). Match the RFA exactly."},
+{s:"Disclosure to the client",d:"Where required, disclose the referral relationship and fee to the client; the receiving REALTOR acknowledges the referral and the fee. Article 6 of the Code of Ethics and state law require disclosure of compensation from third parties in some situations (verify on the current form)."},
+{s:"Signatures",d:"Both referring and receiving brokers (or agents for their brokers) sign and date. Attach to the RFA and upload both to SkySlope; LPT uses the CIF Outgoing Referral version at closing."},
+{s:"Limits and loan implication",d:"Referral fees are lawful only between licensed brokers; none to unlicensed parties. RESPA Section 8 prohibits fees for referrals of settlement services, so MLOs cannot pay or receive real estate referral fees; keep loan and real estate referrals separate."}
+],
+"LPT-REFERRALAGREEM":[
+{s:"Agents and brokers",d:"Enter the referring and receiving agents' names, brokerages, DRE (or other state) license numbers and full contact information. If both are LPT agents, note the offices/states. (confirm with LPT broker/TC)"},
+{s:"Client and transaction",d:"Enter the client's name and contact information, transaction type (buy/sell/lease), location and expected price range. Confirm the client has consented to the referral."},
+{s:"Referral fee and term",d:"State the fee as a percentage of the receiving side's gross commission (or flat) and the period during which it applies (e.g., any transaction closed within 12-24 months). Address whether the fee applies to subsequent transactions with the same client."},
+{s:"Payment mechanics",d:"Fees are paid broker to broker: escrow pays LPT (or the other broker), which pays the referring broker. Agents never pay each other directly. For outgoing referrals, the LPT CIF Outgoing Referral version is submitted at closing; for incoming, the other broker needs LPT's W-9 and DPL if requested."},
+{s:"Signatures and approval",d:"Both agents and both brokers sign; upload to SkySlope for LPT approval before the referral is worked. No loan implication, and no fees for mortgage/settlement-service referrals (RESPA)."}
+],
+"REOL":[
+{s:"Seller entity and asset manager",d:"Enter the lender/servicer seller entity exactly as on title (after the trustee's deed), the asset management company and contact, and the property address. Attach the asset manager's listing instructions to the file."},
+{s:"Exempt disclosures",d:"Explain that an REO seller (acquired by foreclosure/deed in lieu) is exempt from the TDS and the NHD statement is still required from a third party (verify), but the exemption does not cover known material facts, and other disclosures (lead paint if pre-1978, water heater/smoke detector statements, Mello-Roos notices) still apply."},
+{s:"Continuing duties",d:"The seller must still disclose known material defects; the listing agent must conduct the visual inspection and complete an AVID and disclose what they observe. Recommend the seller obtain inspections (termite, roof) and disclose them."},
+{s:"Seller addenda and as-is terms",d:"Note that REO sellers typically require their own addendum that overrides the RPA (per diem penalties, no repairs, limited contingency periods). Advise that the C.A.R. REO (buyer-side advisory) is given to buyers."},
+{s:"Occupancy and evictions",d:"Address tenant/former-owner occupancy, cash-for-keys and eviction status; just-cause and Protecting Tenants at Foreclosure Act requirements affect timelines."},
+{s:"Signature and filing",d:"The seller's authorized representative/asset manager signs and dates; keep with the RLA and asset manager instructions in SkySlope. No listing-side loan implication; buyer lenders will want the trustee's deed vesting and any seller addendum."}
+],
+"LPT-SELLERSDISCLOS":[
+{s:"Applicability",d:"Confirm with the LPT broker/TC whether this brokerage form is required for the property's state and transaction. In California the TDS and SPQ are the statutory disclosures and this form supplements, never replaces, them. (confirm with LPT broker/TC)"},
+{s:"Seller and property",d:"Enter seller name(s), property address, year built, how long the seller has owned/occupied it. Dates help the buyer weigh the answers."},
+{s:"Structure, systems and components",d:"Seller personally answers each question on roof, foundation, plumbing, electrical, HVAC, water heater, appliances, pool/spa, solar and any known defects, with Yes/No/Unknown and explanations. Agents never fill in or edit answers."},
+{s:"Environmental and site issues",d:"Answer questions on flooding/drainage, soil movement, mold, lead, asbestos, radon, underground tanks, pests, easements, encroachments and neighborhood nuisances. Attach reports referenced."},
+{s:"Repairs, permits and insurance claims",d:"List repairs and improvements, whether permits were obtained, insurance claims, HOA disputes, notices of violation and pending litigation. Attach invoices and permits."},
+{s:"Seller signature and agent review",d:"Seller signs and dates; listing agent reviews for completeness only. Deliver to the buyer within the contract disclosure period (RPA: 7 days after acceptance unless changed) with the TDS/SPQ."},
+{s:"Buyer acknowledgment and upload",d:"Buyer signs receipt (buyer has a right to cancel for a set period after late delivery of statutory disclosures). Upload disclosure and receipt to SkySlope. Loan implication: disclosed roof/foundation/water issues may become FHA/VA appraisal conditions; share early with the MLO."}
+],
+"LPT-SELLERSNONOCCU":[
+{s:"Applicability",d:"For absentee owners, landlords, heirs, trustees and investors who have not lived at the property. Confirm with the LPT broker/TC when LPT requires it; it accompanies, not replaces, the TDS/SPQ or the applicable exemption form. (confirm with LPT broker/TC)"},
+{s:"Seller, property and occupancy dates",d:"Enter seller name(s), property address and the dates the seller last occupied the property, or Never. If held as a rental, note tenancy dates and whether the seller visited/inspected."},
+{s:"Knowledge the seller does have",d:"Seller describes any knowledge from tenant reports, repair invoices, property manager communications, HOA notices, insurance claims, code violations or inspections. Non-occupancy does not excuse disclosing known facts."},
+{s:"Buyer reliance statement",d:"The form advises the buyer to rely on their own inspections because the seller's knowledge is limited; pair with AVID and encourage buyer inspections and contingency use."},
+{s:"Signatures and delivery",d:"Seller signs and dates; deliver to the buyer with the TDS/SPQ (or TDS exemption forms where applicable, e.g., trustee or probate); buyer signs acknowledgment. Upload both pages to SkySlope for LPT broker review. No loan implication beyond disclosed defects."}
+],
+"SIP":[
+{s:"Reference block",d:"Enter the RPA date, property address, buyer and seller names. If part of the offer, list it in the RPA addenda checklist. The SIP covers seller possession after COE for 29 days or less; for 30 days or more use the RLAS (Residential Lease After Sale) (verify on the current form)."},
+{s:"Possession end date and time",d:"Enter the date and time the seller must vacate (e.g., 5:00 p.m. on a date no more than 29 days after COE). Possession counts from COE; be precise about the hour."},
+{s:"Compensation and deposit",d:"Set the per-day amount (or total) the seller pays the buyer, paid through escrow or directly, and a security deposit held by escrow or buyer, with return terms after a move-out inspection. Zero rent is allowed but should be deliberate."},
+{s:"Utilities, maintenance and insurance",d:"Assign utilities (seller usually keeps them on until vacating), maintenance, landscaping and repairs during the holdover. Advise both parties to consult their insurers: the buyer's homeowner's policy and the seller's renter's/liability coverage."},
+{s:"Condition, walkthrough and holdover",d:"Require the seller to leave the property in the same condition as at COE, provide for a joint inspection at move-out and set holdover damages per day if the seller stays past the date. SIP states it is not a lease; the buyer may still need an unlawful detainer if the seller does not leave."},
+{s:"Signatures and delivery",d:"Buyer and seller sign; attach to the RPA, deliver to escrow (rent/deposit may appear on the settlement statement) and upload to SkySlope."},
+{s:"Loan implication",d:"Owner-occupancy loans require the buyer to move in within 60 days of closing; lenders may limit rent-backs (some cap at 60 days, some less for FHA/VA) and may require the SIP in the file. Check with the MLO before agreeing to the term."}
+],
+"SKY-COVER":[
+{s:"Transaction identification",d:"Enter the property address, transaction type (sale, lease, referral), listing or buyer side (or both for dual agency) and the SkySlope file name. Follow LPT broker/TC requirements for required fields. (confirm with LPT broker/TC)"},
+{s:"Parties and price",d:"Enter buyer and seller legal names (matching the contract), purchase price, acceptance date and the scheduled COE. These feed the commission demand, so they must match the RPA and any counters."},
+{s:"Key dates and contingencies",d:"Fill the deposit due date, investigation, appraisal and loan contingency deadlines (default 17/17/17 days from acceptance on the RPA unless changed; verify) and COE. Update after any ETA/AEA."},
+{s:"Contacts",d:"List escrow officer, title, lender/MLO, cooperating agent/broker, inspector and TC with phone and email. Include the MLO so the file shows who handles financing."},
+{s:"Compensation details",d:"Enter the commission amount/percent, source (RLA/BRBC/SPBB), referral fees, team splits and any transaction fee per LPT instructions. Incomplete sheets delay commission disbursement."},
+{s:"Upload and maintenance",d:"Upload to the front of the SkySlope file and update whenever price, dates or parties change. Loan implication: none directly; the loan contingency date here should match what the MLO is working toward."}
+],
+"SOFBN":[
+{s:"Parties and DBA name",d:"Enter the salesperson/broker-associate name and license number, the responsible broker (LPT Realty) and its license number, and the proposed fictitious business name. The DBA must not imply a separate brokerage or mislead the public (DRE Reg. 2731/2773 advertising rules)."},
+{s:"County filing and DRE registration",d:"Confirm the FBN statement is filed with the county where the business is located and that the broker has registered the salesperson-owned name with DRE (B&P 10159.5-10159.7) BEFORE use. Attach the county filing and DRE approval."},
+{s:"Advertising requirements",d:"All advertising using the name must display the responsible broker's identity (name as licensed and license number) and the salesperson's name and license number in a conspicuous manner. Review LPT's advertising/branding policy; LPT may require specific layouts. (confirm with LPT broker/TC)"},
+{s:"Ownership, costs and departure",d:"Address who owns the name and domain/social accounts, who pays filing and renewal costs, and what happens to the name if the salesperson leaves LPT (the DRE registration is tied to the broker; a new broker must re-register)."},
+{s:"Supervision and compliance",d:"The broker retains supervision over all activity under the name; the salesperson agrees to comply with all DRE and broker rules. Team names have separate rules (B&P 10159.7); use the TEAM form for those."},
+{s:"Signatures and filing",d:"Salesperson and broker sign and date; file a copy with LPT and keep proof of DRE registration in the agent file. No loan implication."}
+],
+"SSLA":[
+{s:"Seller, property and listing reference",d:"Enter seller name(s), property address and the RLA date this addendum modifies. Attach to the RLA at signing when the payoff(s) exceed the expected net proceeds."},
+{s:"Lienholders and authorization",d:"Identify every lien (first, second, HELOC, HOA, tax, judgments) with servicer and approximate balance, and confirm the seller authorizes the broker (and any negotiator) to communicate with lienholders; the seller will sign the lender's third-party authorization separately."},
+{s:"Lender approval of sale and compensation",d:"State that any sale is subject to lender(s) written approval, that compensation is subject to lender approval and may be reduced, and whether the broker agrees to accept the reduced amount. Explain that approval may require seller contribution or a promissory note."},
+{s:"Seller obligations",d:"Seller agrees to provide the lender's required package (hardship letter, financials, tax returns), to not take actions that jeopardize approval, and to disclose any bankruptcy or foreclosure sale date."},
+{s:"Advisories",d:"Recommend in writing that the seller consult tax and legal advisors on deficiency (Civil Code 580e for many 1-4 unit loans), cancellation-of-debt income and credit impact. Deliver MARSSN with this addendum; no advance fees."},
+{s:"Marketing and offers",d:"Note that offers will be submitted to the lender, that the seller must still accept offers subject to lender approval (using the SSA on the buyer side), and that the listing may continue to be marketed per MLS short sale rules (verify)."},
+{s:"Signatures and filing",d:"Every seller signs and dates; upload with the RLA to SkySlope. No listing-side loan implication; buyer lenders will time locks from lender consent (see DSSC)."}
+],
+"TA":[
+{s:"Trust and trustees",d:"Enter the full trust name and date (e.g., The Smith Family Trust dated 1/1/2010), every trustee's name and the property address. Obtain the certification of trust (Probate Code 18100.5) early; title will require it."},
+{s:"Trustee authority",d:"Review that the trustee(s) have authority to sell under the trust; if there are co-trustees, confirm whether all must sign. Successor trustees should provide the documents establishing succession (death certificate, acceptance). Attach RCSD to the RLA/RPA."},
+{s:"Disclosure exemptions",d:"Explain that a trustee who did not occupy the property within the past year and is not a natural person-type seller may be exempt from the TDS (Civil Code 1102.2) but still must disclose known material facts; the SPQ, NHD, lead paint and other disclosures may still be required (verify). Agents still complete the AVID."},
+{s:"Buyer advisory",d:"The buyer is advised that disclosures may be limited and should rely on inspections; deliver a copy to the buyer in the disclosure package for signed acknowledgment."},
+{s:"Title and escrow documents",d:"List what escrow/title will need: certification of trust, trustee signatures in capacity, possibly the trust excerpts, and a trustee's deed. Send early to avoid closing delays."},
+{s:"Signatures and filing",d:"Trustees sign at listing; buyer acknowledges during escrow. Upload to SkySlope and send trust documents to escrow/title. Loan implication: the buyer's loan docs and title policy reference the vesting; if the buyer is also taking title in a trust, the lender needs its own trust review."}
+],
+"TCS":[
+{s:"Property and parties",d:"Enter the property address, buyer and seller legal names, side represented, purchase price and acceptance date exactly as on the RPA/final counter. Complete at acceptance or when submitting for compliance review."},
+{s:"Contacts",d:"List escrow (officer, number), title, lender/MLO, home inspector, termite company, HOA/management, cooperating agent and TC with phones and emails."},
+{s:"Key dates",d:"Calendar deposit due (3 business days default), seller disclosures due (7 days), investigation/appraisal/loan contingencies (17 days default unless changed), final walkthrough (5 days before COE) and COE (verify defaults on the current RPA). Update on every ETA/AEA."},
+{s:"Compensation",d:"Note commission/compensation per the RLA/BRBC/SPBB, referral fees and any credits so the broker can audit against the CDA."},
+{s:"Upload and maintenance",d:"Upload to SkySlope; update when dates change so the file and escrow match. Loan implication: include the loan officer's contact and loan contingency date so the team tracks lender deadlines (appraisal ordered, CTC)."}
+],
+"TEAM":[
+{s:"Team identity and members",d:"Enter the team name, team leader and each member's name and DRE license number. Team names must comply with B&P 10159.7 (include team or similar, not imply a separate brokerage) and LPT's team policy; the responsible broker must be identified in all advertising. (confirm with LPT broker/TC)"},
+{s:"Roles and lead distribution",d:"Define each member's role (buyer specialist, listing agent, TC, ISA), how leads are sourced and distributed, and lead ownership rules. Clear rules prevent disputes when a lead closes months later."},
+{s:"Compensation splits",d:"Set the split by transaction type (team lead, member-generated, referral, listing vs. buyer side) and note that all compensation flows through the broker to the team leader/members per the broker's commission schedule."},
+{s:"Expenses and tools",d:"Allocate marketing, CRM, signage, assistant and lead-generation costs; state what the team provides and what members pay."},
+{s:"Client relationships, departures and confidentiality",d:"State who owns client relationships (ultimately the broker), how pending deals and databases are handled on departure (pair with TMEA), and confidentiality of team leads/data."},
+{s:"Broker supervision and signatures",d:"The supervising broker approves the team and advertising; all members, the leader and broker sign and file with the brokerage. No loan implication."}
+],
+"TMEA":[
+{s:"Parties and effective date",d:"Enter the team name, team leader, departing member names and the effective departure date. Note whether the member is leaving the team only or also LPT Realty."},
+{s:"Pending transactions and listings",d:"List every pending escrow, active listing and buyer agreement with the agreed split after departure and who continues to service the client. Listings and buyer agreements belong to the broker; transfers to another brokerage need LPT broker approval (LPT Authorization to Transfer and Release forms)."},
+{s:"Client files, leads and marketing",d:"Address return of client files and databases, CRM access, team phone numbers, websites, social accounts and signage, and the member's continuing confidentiality obligations. Note that the member keeps their own personal contacts per the agreement."},
+{s:"Compensation on pending deals",d:"State the split percentages or dollar amounts for each pending deal and when they are paid; LPT pays through its commission process, so submit updated CIFs for those files."},
+{s:"Notices and signatures",d:"Confirm required notices to clients and MLS changes; team leader, departing member and broker sign and date; file with the brokerage. No loan implication."}
+],
+"TOA":[
+{s:"Form being supplemented",d:"Identify the form by name and date (e.g., RPA dated ___, SPQ, counter offer) and the property address. Reference the specific paragraph number whose text overflows (e.g., RPA paragraph 3L additional terms; SPQ item 11 explanation)."},
+{s:"Overflow text",d:"Write the continuation text clearly, starting with the paragraph number so readers can match it to the main form. Use the same terms and defined words as the main form. Do not introduce new topics that belong in a separate addendum."},
+{s:"Page numbering",d:"If text spans pages, number them (page 1 of 2) and keep the form reference on each page. Unsigned or unnumbered overflow pages are easy to lose and may not be enforceable."},
+{s:"Signatures",d:"Every party who signed the main form signs and dates the TOA so it is clearly incorporated. For disclosures (TDS/SPQ) the seller signs and the buyer acknowledges."},
+{s:"Attachment and delivery",d:"Attach to the main form and upload together to SkySlope and send to escrow. Loan implication: overflow terms that affect price, credits, repairs or occupancy must go to the MLO."}
+],
+"TOPA":[
+{s:"Reference block",d:"Enter the RPA date, property address and buyer/seller names. Attach to the offer when any unit is tenant-occupied. List each unit, tenant names, lease type (fixed/month-to-month), rent and deposit (an estoppel certificate from each tenant should be requested; verify on the current form)."},
+{s:"Delivery vacant or occupied",d:"Check whether the property is delivered vacant (seller to terminate tenancies lawfully before COE) or with tenants in place (buyer takes subject to leases). Do not promise vacancy unless the seller can lawfully terminate."},
+{s:"Rent control and just-cause status",d:"Identify whether the property is subject to AB 1482 (Civil Code 1946.2/1947.12) or local rent control/just-cause ordinances; a sale is not just cause for eviction. Owner move-in evictions have notice and relocation payment requirements; recommend a landlord-tenant attorney."},
+{s:"Notices and timelines",d:"Specify who serves any notices, the required notice periods (30/60/90 days depending on tenancy length and program) and relocation assistance owed under AB 1482 or local law."},
+{s:"Deposits, leases and prorations",d:"Address transfer of security deposits (credited to buyer through escrow), assignment of leases, rent proration at COE and delivery of tenant estoppels and rental history. Buyer should review leases during the investigation period."},
+{s:"Access and showings",d:"Provide for tenant notice before inspections/appraisal (24 hours written notice under Civil Code 1954) and buyer's access for the final walkthrough."},
+{s:"Signatures and loan implication",d:"Buyer and seller sign; attach to the RPA and deliver to escrow and the MLO. Owner-occupied financing (VA/FHA/primary conventional) requires move-in within 60 days, so occupancy must be realistic; lenders may require leases and estoppels for rental income and 2-4 unit loans."}
+],
+"TPA":[
+{s:"Parties and license status",d:"Enter the broker (LPT Realty and its license number), the associate-licensee and the assistant, stating whether the assistant holds a DRE license (with number). Sign before the assistant begins work; LPT may require its own form. (confirm with LPT broker/TC)"},
+{s:"Duties and licensed activity",d:"Describe the assistant's duties; for unlicensed assistants, list prohibited licensed activities (showing to prospects, negotiating, discussing terms, soliciting) per DRE guidelines. Licensed assistants may perform licensed activity only under the broker."},
+{s:"Compensation",d:"State who pays the assistant (agent or broker) and how; unlicensed assistants cannot receive per-transaction commission for licensed activity. Licensed assistants paid commission must be paid through the broker."},
+{s:"Supervision, systems and confidentiality",d:"Set broker supervision, access to MLS/lockbox/CRM/e-signature under proper credentials (no sharing of licensed access), confidentiality of client data and compliance with advertising rules."},
+{s:"Employment status and liability",d:"Address employee vs. contractor classification under AB 5 and who carries workers' comp and payroll obligations; recommend employment counsel. Allocate liability for the assistant's acts between agent and broker."},
+{s:"Termination and signatures",d:"Set termination terms and return of property/data. Broker, associate-licensee and assistant sign and date; file with the brokerage. No loan implication."}
+],
+"LPT-W9":[
+{s:"Line 1-2: name and business name",d:"Enter the legal name exactly as on the payee's tax return (individual name, or the entity name if an S corp/LLC taxed as such) and any DBA/disregarded entity name on line 2. Name/TIN mismatch triggers IRS B-notices and backup withholding."},
+{s:"Line 3: federal tax classification",d:"Check individual/sole proprietor or single-member LLC, C corp, S corp, partnership, trust/estate, or LLC with its tax election letter (C, S or P). A single-member LLC taxed as disregarded uses the owner's name on line 1 and SSN or the owner's EIN. Agents with a licensed corporation use the corporation's EIN (DRE corporate license required to be paid as a corporation)."},
+{s:"Line 4: exemptions",d:"Usually blank for individuals; corporations may enter an exempt payee code. FATCA codes do not apply to domestic payees."},
+{s:"Address",d:"Enter the mailing address where the 1099-NEC should be sent; update LPT if it changes before year end."},
+{s:"Part I: TIN",d:"Enter the SSN (individuals/sole proprietors) or EIN (entities). Submit only through LPT's secure upload process; never email an unencrypted W-9. (confirm with LPT broker/TC for the upload channel)"},
+{s:"Part II: certification and signature",d:"Sign and date certifying the TIN is correct, you are not subject to backup withholding and you are a U.S. person. E-signature is acceptable if LPT's system supports it. Required before LPT pays commission, referral fees or vendors. No loan implication."}
+]
+});
