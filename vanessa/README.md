@@ -253,3 +253,7 @@ Operate → ⭐ 7-Star Client Journey: every client tracked Lead → Consult →
 - **Visuals, calculators, motion** (app57): SVG chart kit, Lender Match visuals, 10 deal calculators, dashboard-wide animations (reduced-motion safe).
 - **Loan Limits page** (app56). **Loan Step Automation Engine + Daily Automation Stack** (app62): 40 steps each with trigger/automation/owner/gate/SLA; file tracker fires automations; one-button daily stack.
 - Seats +16, runbooks +15, playbooks +6, agent tools +20. Coverage grid: 89 processes, 100% owned.
+
+## v92–v93 — 2026-10-26
+- **Lender Match Pro:** per-column lender drop-downs in the side-by-side (swap any lender in, add/remove columns, reset to top 10) (app63).
+- **SkySlope Forms Map** (app64 + carfdeep1-4): all 548 forms mapped to library, base group, category, transaction types, stage, required status, signer, loan step, journey stage and deadline driver; field-by-field walkthroughs for all 314 form groups; package builder by transaction type + stage (→ Board / Word); forms-by-loan-step; form finder from document text (Document Screener hook); entering a loan step adds its forms checklist; agent tools car_form_lookup / forms_for_step / form_package; seat Forms & Disclosure Clerk; runbook formspkg. The form library itself (CARF_*) lives only in the published page.
