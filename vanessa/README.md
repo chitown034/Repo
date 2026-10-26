@@ -196,3 +196,25 @@ Operate → 🗓 Consult Desk (TidyCal, read-only): booking links, open slots fo
 
 ### v86 — 7-Star Client Journey, Service Excellence, Process Improvement & Scale (app48.js)
 Operate → ⭐ 7-Star Client Journey: every client tracked Lead → Consult → Application → Processing → Underwriting → Clear to close → Funded → Past client with a 30-touch journey (11 wow moments) per stage; Journey Engine drafts every due touch in one Claude pass (Gmail drafts, texts, gift cards on the board, mark done); Friday Status Updates for every active file; imports from Zoho deals and TidyCal; personal details (channel, language, birthday, family, favorites, realtor, military, gift) drive personalization. Service Excellence: SLA standards, on-time %, CSAT log, survey draft, review tracking, 6-step service recovery with Claude plan + apology draft that also adds a Kaizen item. Process Improvement & Scale: bottlenecks by owner/lane, capacity planner (utilization, max loans/month, biggest lever), automation ROI from the run log, Kaizen log (impact × (6 − effort)) with Claude suggestions. Playbooks Journey Engine + Friday Status Updates (19); agent tools journey_clients/journey_add_client/journey_move/touches_due (26); seats Journey Conductor, Service Recovery Lead, Process Improvement Analyst; runbooks 7-Star Client Journey, Service Recovery, Weekly Kaizen & Capacity Review (24).
+
+## v88 (published as artifact version 90) — 2026-10-26
+- **Document Screener** (app50): upload PDF / .docx / scans / text / email. The instant in-browser layer finds:
+  - every date and time period (turned into calendar dates from an anchor date, business days skip federal holidays)
+  - amounts, parties and blanks
+  - 67 risk rules in 11 categories
+  - hidden or altered content: Word hidden, white and micro text, tracked changes, comments, macros, external links; PDF JavaScript, embedded files, multiple saves, editing-tool producers, micro and off-page text; zero-width, bidi and look-alike characters; changed wire instructions
+
+  Claude deep screen (chunked, scans sent as images, SSN/account masking): verdict, risk score, summaries, timeline with consequences, clauses, obligations, negotiation points. Also Ask-the-document, a two-document compare (LE vs CD / TRID), a highlighted reader, a Word report, .ics deadlines, CSV, Board cards, a Gmail draft and history.
+- **Loan Lifecycle Command** (app51): 12-stage coverage map plus these tools:
+  - Rate Lock Desk
+  - TRID timing and tolerance cure
+  - QM / HPML / HOEPA tests
+  - Conditions Manager
+  - Appraisal & ROV
+  - Licensing, CE and compliance registers (GLBA Safeguards, retention)
+  - Post-close and retention
+- **GoHighLevel Live** (Composio `HIGHLEVEL_MCP_*`, alias "ghl"): pipelines, opportunities, contacts, unread conversations, AI reply drafts, confirmed send.
+- **Headline News**: weekly Perplexity headlines on 8 beats, brief, and a Gmail draft.
+- **VA Mastery** (app49) now in the build (vamaster1-3).
+- **DV Property Tax Desk** (app52): California SB 296 (R&T 205.5.1, 2027-2031) vs the 205.5 calculator, with a 6-year projection and an in-depth explainer; 50-state + DC table with estimates (dvtax1/2).
+- Build now auto-includes every appN.js and ends with boot.js.

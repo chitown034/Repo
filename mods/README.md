@@ -7,3 +7,7 @@ Three mods (function-hook plugins) that keep the automation safe and one keystro
 - **public-repo-guard** — refuses `git commit` / `git push` in `/home/user/Repo` when PPFC Trainual data would land in this public repo.
 
 Load one in Claude Code with `claude --plugin-dir mods/<name>` (or copy it into a session's mods folder). Check with `claude plugin validate mods/<name>`.
+
+## Brain 6D uses a shared database
+
+Brain 6D keeps its frequently-added content (VANESSA pages, Encyclopedia/search entries, AI seats, build-log lines) in the artifact's shared database (collections `brain_pages`, `brain_enc`, `brain_seats`, `brain_log`). Sessions and mods add to it with the `ArtifactData` tool instead of republishing the whole page, so parallel sessions can no longer overwrite each other. The page merges the database into its built-in content on load and live; the built-in copy is the fallback. Never republish the whole page just to add content. Schema and exact calls: `vanessa/docs-brain6d-db.md`.
