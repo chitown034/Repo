@@ -24,9 +24,19 @@ function ltWizard(w){return ltAll().map(t=>{let s=0;const why=[],no=[];const occ
  const mf=ltNum((t.reqs||{}).fico);if(mf&&+w.fico<mf){no.push(`FICO ${mf}+`);s-=35}else if(mf){s+=Math.min(10,(w.fico-mf)/10)}
  const md=ltDown((t.reqs||{}).ltv);if(md!=null&&+w.down<md){no.push(`${md}% down`);s-=30}
  const purp={purchase:["first-time","low-down","no-down","bridge-timing"],cashout:["cash-out","equity-access"],rt:["rate-term","streamline","payment-relief"]}[w.purpose]||[];if(purp.some(g=>(t.tags||[]).includes(g))){s+=10;why.push(w.purpose)}
- if(w.purpose==="purchase"&&(t.tags||[]).some(g=>["cash-out","streamline","rate-term"].includes(g))&&!(t.tags||[]).includes("first-time")){s-=25;no.push("refi product")}
+ if(w.purpose==="purchase"&&/refi|cash.?out|irrrl|streamline|heloc|second lien|closed.?end|reverse mortgage(?!.*purchase)|recast|equity investment|hecm(?! for purchase)/i.test(t.k+" "+t.n)&&!/purchase/i.test(t.n)){s-=25;no.push("refi / equity product")}
+ if(w.purpose!=="purchase"&&/purchase|first.?time|h4p|construction|lot|land/i.test(t.k+" "+t.n)&&!/refi|cash/i.test(t.n)){s-=20;no.push("purchase product")}
  if(w.purpose!=="purchase"&&(t.tags||[]).includes("first-time")&&!(t.tags||[]).some(g=>["cash-out","rate-term"].includes(g))){s-=20}
- w.tags.forEach(g=>{if((t.tags||[]).includes(g)){s+=14;why.push((LT_TAGS.find(x=>x[0]===g)||[g,g])[1])}});return{t,s:Math.round(s),why,no}}).sort((a,b)=>b.s-a.s)}
+ w.tags.forEach(g=>{if((t.tags||[]).includes(g)){s+=14;why.push((LT_TAGS.find(x=>x[0]===g)||[g,g])[1])}});
+ /* eligibility gates: programs reserved for a borrower group */
+ const T=t.tags||[],W=w.tags||[],has=g=>W.includes(g);
+ [["veteran",["veteran","military"]],["military",["veteran","military"]],["senior-62",["senior-62"]],["tribal",["tribal"]],["physician",["physician"]],["foreign",["foreign"]],["itin",["itin"]],["non-permanent-resident",["non-permanent-resident"]],["no-credit",["no-credit"]],["str-host",["str-host"]],["community-lending",["community-lending","dpa","first-time"]]].forEach(([g,need])=>{if(T.includes(g)&&!need.some(has)&&!(t.tags||[]).every(x=>x===g)){const strict=["veteran","military","senior-62","tribal","physician","foreign","itin","non-permanent-resident","no-credit"].includes(g);if(strict&&!T.some(x=>W.includes(x)&&x!==g)||strict&&["veteran","senior-62","tribal","foreign","itin","non-permanent-resident","physician"].includes(g)){s-=60;no.push(`for ${(LT_TAGS.find(x=>x[0]===g)||[g,g])[1].toLowerCase()} borrowers`)}else s-=10}});
+ [["credit-event",["credit-event","low-credit"],22],["renovation",["renovation"],25],["construction",["construction"],30],["jumbo",["jumbo","high-net-worth","high-cost-area","high-income"],18],["bridge-timing",["bridge-timing"],12],["inherited",["inherited"],8],["divorce",["divorce"],8]].forEach(([g,need,pen])=>{if(T.includes(g)&&!need.some(has)&&!T.some(x=>W.includes(x)&&!["low-down","first-time"].includes(x))){s-=pen;if(pen>=18)no.push(`built for ${(LT_TAGS.find(x=>x[0]===g)||[g,g])[1].toLowerCase()}`)}});
+ if(/assum/i.test(t.k+t.n)&&w.purpose==="purchase")s-=12;
+ /* credit-tier preference: strong credit leans conventional, thin credit leans FHA */
+ const fc=+w.fico||0;if(fc>=700&&t.cat==="Agency conventional")s+=8;if(fc>=720&&/fha/i.test(t.k))s-=6;if(fc&&fc<640&&/fha/i.test(t.k))s+=8;if(fc&&fc<620&&t.cat==="Agency conventional")s-=15;
+ if(!W.length&&["Agency conventional","Government"].includes(t.cat))s+=3;
+ return{t,s:Math.round(s),why,no}}).sort((a,b)=>b.s-a.s)}
 let LT_CMP=store.get("lt_cmp",[]);
 const LT_TABS=omTabs("lt_tab","ltt","browse",[
  ["browse","📚 Browse & filter",()=>{const f=ltF();const L=ltAll().filter(t=>ltMatch(t,f));const sel=(id,lab,opts,v)=>`<label class="sm">${lab}<select id="${id}" style="width:auto"><option value="">Any</option>${opts.map(o=>`<option value="${esc(o[0])}"${String(v)===String(o[0])?" selected":""}>${esc(o[1])}</option>`).join("")}</select></label>`;
