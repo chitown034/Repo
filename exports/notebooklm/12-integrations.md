@@ -1,6 +1,6 @@
 # Integrations: connections register, Pabbly workflows, per-integration READMEs
 
-Second Brain export for NotebookLM · as of 2026-10-23 · bundle `12-integrations`.
+Second Brain export for NotebookLM · as of 2026-10-26 · bundle `12-integrations`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 
@@ -34,7 +34,10 @@ real path, what Steven does and what agents do, in `integrations/CONNECT-PLAN-20
 | **Lofty** (real-estate CRM) | `lofty-bridge` MCP (read-only) + `lofty-cli` on the Mac; REST `api.lofty.com/v1.0`, `Authorization: token <key>` | **Live since 2026-10-07:** the Mac's `lofty-crm-sync` reads 54 leads and stage totals (`loftySyncLog`, 2026-10-08 09:45 PT). **Speed to lead not measurable yet:** the bridge's lead list carries no lead id, so no activity timeline can be fetched — fix in `integrations/mac-fix-isa-kpi-2026-10-08.md`. Composio has no Lofty toolkit. | **Key: done.** Run the ISA KPI paste-in on the Mac (Action Desk step 10). | L1 → L2 after 7 clean runs |
 | **Zoho CRM** (mortgage system of record — Steven, restated 2026-09-24) | Composio toolkit `zoho`, account `zoho_talite-spike` | Connection **ACTIVE**, but every CRM call returns **HTTP 403 NO_PERMISSION** (re-tested 2026-10-08, still 403) — reproduced 2026-09-22 08:17 UTC and **re-tested 2026-09-24**, twice — the second at 15:56 UTC (`ZOHO_GET_ZOHO_RECORDS`, Leads, one record, one non-PII field): still 403. Steven reports having an API key; **the key is not the blocker** — the profile permission refuses every key and token for that user until it is switched on. | **In Zoho CRM → Setup → Security Control → Profiles → the connected user's profile → Developer Permissions, enable "Zoho CRM API Access".** Then re-authorise the Composio connection once. | L1 → L2 once unblocked |
 | **CLI-Anything** (homes.com, ShowingTime, Showami, SkySlope, zipForms — plus Lofty and Zoho REST) | `cli-anything-hub` + Claude Code plugin; `cli-anything-browser` (**vendored in this repo**, not on PyPI — F-H1-02) driving DOMShell for the sites with no API; REST for Lofty and Zoho | **Not installed on the Mac** — and no longer generated: **eight read-only harness packages are pre-built** in `integrations/cli-anything-harnesses/` (a ninth, `publicfeeds`, added R6 2026-09-24 — see the dedicated section below) and install **browser first, then the eight, into one venv** — not `pip install .` per package: the six DOMShell packages (homes, ShowingTime, Showami, plus `publicfeeds`) pin `cli-anything-browser>=1.0.0`, which is not on PyPI, so installing one of them on its own exits 1 (built and unit-tested offline 2026-09-22, F-H2b-01…13; standalone-install measurement F-P4-03). Hub and plugin are one scripted step (`MAC-SETUP.sh --only cli-anything`); the vendored browser engine and all eight site packages are another (`--only cli-anything-harnesses`, one `uv pip install` into `~/Applications/cli-anything-harnesses/.venv`, browser first, symlinked into `~/.local/bin`); the earlier claim that the install is interactive was wrong (F-S1-18), and so is the claim that each wrapper must be generated one per site (F-H1-10). **Nothing is verified:** all 26 browser recipes ship `verified: false`, no site has ever been reached, and not one of the eight has ever made a live call (F-H1-01, F-H2b-13). SkySlope and zipForms refuse every live command, exit 3, until `CLI_ANYTHING_ECC_REVIEWED_AT` holds a real sign-off date; `publicfeeds`'s three groups refuse the same way behind their own three `CLI_ANYTHING_TOS_REVIEWED_<GROUP>` gates. Hub registry has no CRM or real-estate entries (README checked 2026-09-22; `clianything.cc` egress-blocked). | **Run `./MAC-SETUP.sh` — hub, plugin, the vendored browser harness and the eight packages all install non-interactively — put `export CLI_HUB_NO_ANALYTICS=1` in your shell profile **and** the runner task's env (the script only covers its own run), install the DOMShell Chrome extension and sign in by hand, then run `integrations/cli-anything-harnesses/connect.sh` for the guided next steps (posture check, `--discover` per open gate, what's still pending). There is nothing to generate.** | L1, read-only |
-| **Apple Health** | New: Claude iOS → Notion "Health Log" → `health-notion-sync` → `appleHealth` doc. Old: Health Auto Export → daemon :8765 → DuckDB → `apple-health` MCP | Old pipeline **down** — daemon not responding, doc 9 days stale (`last_received 2026-09-13 14:30:40`), `r8-apple-health-snapshot` errors since 2026-09-17. New path: **spec written, first phone run pending.** | **Open Claude on your iPhone, say "update my health stats in Notion", and approve the Apple Health read + Notion write prompts once.** | L2 n8n evaluated for the Notion→doc leg 2026-09-28, not chosen — last hop is a Claude-only write_db call; see routing row 10. |
+| **Strava** | Cloud routine "Health daily sync" (6:15 AM PT) reads the Strava connector and writes `stravaSnapshot` (positional rows); Mac task `strava-daily-sync` retired | **Working** — read live 2026-10-23 (newest activity 2026-09-12; Fitbod posts to Strava) | Nothing. If the card says sign-in needed: claude.ai → Settings → Connectors → Strava → sign in. | L1 |
+| **BodyPark ATOM** | No API or export documented; sessions reach the deck as Apple Health workouts (Apple Watch session, or the app's own Health write) → Health Auto Export → the daily sync | **Waiting on click E** (allow the app to write to Apple Health; Workouts on in Health Auto Export) | Click E, once. | L1 |
+| **MyFitnessPal** | No API, none needed: MFP → Apple Health → Health Auto Export file → the same sync (`dietary_energy`, `protein`, `carbohydrates`, `total_fat`, `dietary_water`) | **Waiting on the phone step** (click E in STEVEN-STEPS): MFP → Apple Health on, Health Auto Export → Metrics: select all | Click E, once. | L1 |
+| **Apple Health** | **Live (2026-10-23):** Health Auto Export → Google Drive folder → cloud routine 6:15 AM PT (`scripts/health-drive-sync.py`) → `appleHealth` doc, `via:"drive-sync"`. Optional: Claude iOS → Notion "Health Log". Retired: the Mac daemon :8765 / DuckDB path | **Working** — first sync 2026-10-23 (`appleHealth` v19, days through 2026-10-22); `healthDriveSync` carries each run. | Nothing daily. If the badge goes stale: Health Auto Export app → Automations → Google Drive export → on and signed in. One-time on the Mac: `runnerctl pause r8-apple-health-snapshot`. | L2 n8n evaluated for the Notion→doc leg 2026-09-28, not chosen — last hop is a Claude-only write_db call; see routing row 10. |
 
 ## Everything else
 
@@ -523,7 +526,110 @@ signed in; cloud: Drive SECOND BRAIN, Notion directory, 6D daily rebuild with pr
 | EVRoutes · Turo | `needs_reconnect` | Reconnect or remove | Steven |
 | Four http_api Sunday routines | still enabled | 4 clicks | Steven |
 | GitHub repo visibility | public | Steven decides (STEVEN-STEPS 1g) | Steven |
+| Fieldy → 2nd brain | connected — the daily "Fieldy → brain" task (6:50 AM PT, this session, Fieldy connector) writes `memory/fieldy-meetings.md` + the deck `fieldyDesk` doc and queues a recap item per meeting with action items; 0 recordings as of 2026-10-23 13:20 UTC so the first digest waits for a recording | record with the pendant or the desktop app | Steven (records) |
 | Notion `brain-learn-daily` rows | resume with Mac 1's runner (signed in 2026-10-23); directory page written 2026-10-23 | — | — |
+
+## Connection status — round 2, 2026-10-23 14:45 UTC (Steven: "connect TidyCal, homes.com, ShowingTime, Showami, Pivo, Orca, Jarvis, Laya, AnyDesk on all 3 computers and tablet, Ticor, MBS Highway, AEO/GEO/SEO, Arive, Zoho, Lofty, drips and texts")
+
+Supersedes the consolidated section above for the rows it names; the rest of that section still holds.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Jarvis · Laya · Orca (Mac 1) | connected — all rows ok 2026-10-23 01:14 UTC | — | — |
+| Jarvis · Laya · Orca (Mac 2) | partially set — engine unproven; runner not yet imported | `bash scripts/second-mac.sh` + runner export/import (STEVEN-STEPS 1e) | Steven (pastes) |
+| Orca · Laya · Bonsai (Alienware) | not started — `integrations/alienware/alienware-setup.ps1` never run on Windows yet | STEVEN-STEPS round 2, Alienware paste | Steven (pastes) |
+| AnyDesk (Mac 1, Mac 2) | installed; permissions + unattended password are Steven's | step h | Steven |
+| AnyDesk (Alienware, tablet, phone) | not started — winget id `AnyDesk.AnyDesk` confirmed; iPad is outgoing-only, Android tablet can be controlled | round 2 pastes; licence decision (free = private use) | Steven |
+| TidyCal | connect-all step 7c ready (token → `~/.config/tidycal/.env`, read-only proof); no token yet | make the token, rerun connect-all | Steven |
+| homes.com · ShowingTime · Showami | wrappers vendored and read-only; connect-all step 7d installs and reports; sign-ins in the agent Chrome are Steven's (MFA) | step 7d, then sign in where it says | Steven |
+| Lofty | key file step 7b; no key on the Mac yet | Lofty → Settings → Integrations → API | Steven |
+| Zoho CRM | 403 NO_PERMISSION until the API box is ticked | tick "Zoho CRM API Access" | Steven |
+| Arive | not connected — REST API + private Zapier app need Pro plan credentials (`integrations/arive/README.md`) | generate credentials, ask Arive for the Zapier invite | Steven |
+| MBS Highway Home Report | not connected — no public API; rep-issued webhook or CSV (`integrations/mbs-highway/README.md`) | e-mail the rep | Steven |
+| Pivo | no API — tour link / video file only (`integrations/pivo/README.md`) | pair the Pod; share links | Steven |
+| Ticor Title property search | no API — rep account + CSV/PDF export (`integrations/ticor/README.md`) | ask the Ticor rep | Steven |
+| Drip campaigns + text follow-ups | planned — playbook written (`wiki/real-estate-playbooks/drip-and-text-follow-up.md`); specs on request; 10DLC is Steven's | "specs ready for review"; Lofty 10DLC | Steven + Victor/Alexandra |
+| OpenFlowKit MCP + skill · pr-lens skill · archify skill (the four repos, 2026-10-23) | installed in the repo (skills) / pending on the Macs (MCP by connect-all 6g, archify by install-mac.sh); `integrations/skill-packs/REGISTRY-2026-10-23.md` | next Mac paste; pr-lens GitHub App is Steven's click | Steven (paste) · Derek |
+| AI-search presence (AEO/GEO/SEO) | planned — playbook written (`wiki/real-estate-playbooks/ai-search-visibility.md`); monthly presence audit task live (1st, 7:10 AM PT) | claim the profiles (step j) | Steven + Sofia |
+
+## Connection status — Mac 1 report #3, 2026-10-23 11:16 PT (connect-2026-10-23-1116; pasted by Steven the same evening)
+
+Supersedes the round-2 section above for the rows it names. Source: the REPORT block of `scripts/connect-all.sh` on Steven's
+MacBook Pro (log `~/Library/Logs/vanessa-setup/connect-2026-10-23-1116.log`); the script pulled the branch first (step 1).
+
+**Done on the Mac (steps 1–9 except four):** repo caught up + 30-minute catch-up task · **Mac runner restarted** (it had been
+silent since Oct 13 — the morning Mac tasks have a chance again from 2026-10-24) · caffeinate-on-charger · Kapso keys in the
+Keychain · Gondola MCP · Inkbox voice SDK · Laya installed and registered, one real test · Jarvis engine (Ollama + llama3.1:8b,
+OpenJarvis index) · brain reindex · Jarvis + Vanessa's voice wired · Orca on the Repo folder · AnyDesk installed · Agent OS ·
+NotebookLM `nlm` CLI + MCP (sign-in Steven's) · OpenFlowKit MCP · Lofty/Zoho key-file steps ran · site wrappers installed ·
+Claude Mods (status line, HALT guard, /remember, /connections, /owner, /paste) · health check.
+
+**Did not finish:** 2c runner tasks in error (the report names no task — the last log lines did not reach the REPORT on this run;
+the names are in the log, and `runnerctl status` prints them) · 3 Kapso plugin + MCP (needs Steven's sign-in) · 7c TidyCal and 7e
+Arive (Enter skipped the key prompts; Lofty's key 7b was skipped the same way — the step ran, no key on the Mac).
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Mac runner (all Mac tasks) | healthy — `runnerctl status` 12:33 PT: 42 ok (morning tasks all ran today), 5 error (toolkit-deck-sync, nightly-self-test, three Sunday weeklies), 4 limited, 3 paused; the step-2 "silent since Oct 13" reading was wrong (`docs/inventory/routine-health.md`) | one paste: `runnerctl pause r9-feed-freshness-sweep && runnerctl pause r8-apple-health-snapshot && runnerctl pause strava-daily-sync && runnerctl run toolkit-deck-sync && runnerctl status` — paste the output to Claude | Steven (paste), then Derek |
+| iMessage line (morning brief text + voice) | still not linked — brief arrives by e-mail + push | text `connect @vanessa-shearrill` to +1 650 484 9720, once | Steven |
+| Lofty | two paths on Mac 1 (2026-10-23 13:05 PT): the old local bridge is the MCP named `lofty` (stdio, `~/Applications/lofty-bridge/mcp-server.js`, connected — the runner tasks use its `mcp__lofty__*` tools; it returns one stage and no lead ids, so speed-to-lead cannot be measured); Lofty's own cloud MCP (`https://mcp.lofty.com/mcp`, OAuth) is being added as `lofty-cloud` so nothing the runner relies on changes name | `claude mcp add -s user --transport http --client-id 1wzhz7fnrr8qo --callback-port 8766 lofty-cloud https://mcp.lofty.com/mcp`, then `claude` → `/mcp` → lofty-cloud → sign in; once it answers "list my Lofty lead stages", switch `lofty-crm-sync` to it (allow-list + spec) and retire the bridge. The REST API key (step 7b) is then optional | Steven (sign-in), then Derek |
+| TidyCal | step 7c did not run (no token) | TidyCal → Settings → Integrations → API → token; rerun connect-all | Steven |
+| Arive | step 7e did not run (no credentials) | Arive → Settings → Integrations → generate; rerun connect-all | Steven |
+| Zoho CRM | 403 until the API box is ticked | Setup → Security Control → Profiles → your profile → Developer Permissions → "Zoho CRM API Access" | Steven |
+| Kapso (WhatsApp) | keys in the Keychain; plugin + MCP waiting on the sign-in | `claude` → `/mcp` → kapso → sign in; then message (202) 474-5223 from the phone | Steven |
+| Jarvis · Laya · Orca (Mac 1) | installed, tested, Orca on the Repo folder; phone pairing is Steven's | Orca IDE app → pairing screen → scan | Steven |
+| AnyDesk (Mac 1) | installed; ID [phone masked]; Screen Recording + Accessibility + unattended password are Steven's | System Settings → Privacy & Security; Computer Hub card (panel 40) | Steven |
+| homes.com · ShowingTime · Showami | wrappers installed; sign-ins (MFA) in the agent Chrome are Steven's | `bash integrations/cli-anything-harnesses/connect.sh` | Steven |
+| EVRoutes · Turo connectors | "needs reconnect" on claude.ai (EVRoutes also failed to connect in this session) | claude.ai → Settings → Connectors → Reconnect or remove | Steven |
+| Gondola (travel) | MCP installed for Claude Code; the claude.ai connector is not added | Settings → Connectors → Add custom connector → `https://mcp.gondola.ai/mcp` | Steven |
+| Pabbly ↔ Kapso webhooks, six workflows | Kapso login proven; webhook URLs and the six workflows are clicks at connect.pabbly.com | STEVEN-STEPS step 5; `integrations/pabbly/WORKFLOWS.md` | Steven |
+| TikTok · GoHighLevel · Discord bot · HeyGen | not connected (Composio links last 10 minutes) | say "Composio links" in a live session | Steven + Vanessa |
+
+## Connection status — Vanessa everywhere, 2026-10-23 21:30 UTC (Steven: "connect Jarvis with Vanessa replacing it with her voice and persona, and Laya, Orca and all my AI team to Orca, and connect these with my 6D 2nd brain")
+
+Supersedes the sections above for the rows it names. Everything here is one paste on the Mac: `cd ~/Repo && bash scripts/fix-mine.sh`.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Jarvis speaks and thinks as Vanessa | ready — `integrations/jarvis/vanessa-persona.sh --apply` writes her SOUL/MEMORY/USER persona into OpenJarvis and sets `persona_name = "vanessa"`; her recorded voice via `jarvis-setup.sh --apply`; not yet run on Mac 1 | `bash scripts/fix-mine.sh` (step 3b) | Steven (paste) |
+| Jarvis knows the Second Brain | ready — the same script indexes the brain's pages (no client pages, no meeting digests, no findings) into Jarvis memory; the 6D layers row shows "speaks as Vanessa" + the page count once run | same paste | Steven (paste) |
+| Laya routes, Orca launches the AI team | installed on Mac 1 (connect report #3); `connect-orca-laya.sh --apply` + `agent-os/install-mac.sh --apply` re-run by the paste; `brain os check` is the proof | same paste; phone pairing in Orca is Steven's | Steven |
+| 6D Brain shows all of it | the layers panel reads `brain/state/jarvis-status.json` (persona, indexed pages) and the toolkit register reads this table; the daily 3:30 AM rebuild carries it | — | Vanessa |
+
+## Connection status — communication channels, 2026-10-23 23:50 UTC (Steven: "I texted Vanessa on iMessage and on Kapso WhatsApp with no response; fix all communication to include Discord and chat box")
+
+Supersedes the sections above for the rows it names. Found live: Inkbox holds **no iMessage conversation and no linked phone** (`awaiting_inbound` empty) — the connect text never reached it, so the Mac poller had nothing to answer and the morning brief's send fails `imessage_no_assignment`. Kapso's sandbox number is assigned but **no Mac task reads it** (§5b/§5c were specified, never registered) and the Kapso sign-in is pending. Discord's bot has **no token** (Composio `discordbot` not connected; the Mac bot runs in relay mode). The deck chat box answers in-page through the viewer's own Claude (`sample`); when that permission is refused it says so and nothing else answered. New: a cloud hourly fallback (`Vanessa inbox sweep (cloud)`, trig_018cLszdipa7WAVt5nd8BuXT, :17 past the hour 6 AM–10 PM PT) answers unanswered iMessages, deck chat questions and Discord #vanessa messages behind the Mac pollers.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| iMessage line (morning brief text + voice, Vanessa replies) | not linked — Inkbox shows no connected phone and no conversation (23:50 UTC) | text exactly `connect @vanessa-shearrill` to +1 650 484 9720 (tap: `sms:[phone masked]?&body=connect%20%40vanessa-shearrill`), then a real question; the Mac poller answers within 10 min, the cloud sweep within the hour | Steven |
+| WhatsApp (Kapso) | number …5223 assigned; nothing reads it — runner tasks `kapso-inbox-sync` / `vanessa-whatsapp-inbox` not registered; Kapso MCP sign-in pending; keys in the Keychain (connect report #3) | `scripts/fix-mine.sh` installs the plugin + MCP and prints the runner task catalog Claude needs to register the two tasks; Steven: `claude` → `/mcp` → kapso → sign in. Until then answer WhatsApp live in a Claude Code session ("read my WhatsApp") | Steven (sign-in), Claude (task files next round) |
+| Discord #vanessa | bot token missing (Composio `discordbot` initiated 23:55 UTC, not active; Mac bot in relay mode) | A2 in the fix-mine checklist: create the bot, paste the token when the script asks (Keychain `vanessa-discord-bot-token`), invite it, then "Discord link" to Claude for the Composio connect; the cloud sweep answers #vanessa hourly once active | Steven |
+| Command Deck chat box | works in claude.ai through the viewer's own Claude (`sample` declared); last message 2026-09-13 | nothing to install; the cloud sweep now answers any question left unanswered for 10 minutes into the same thread | Vanessa |
+| Jarvis = Vanessa, single point of contact for the whole AI team | persona + voice + brain index + the 180-seat roster in her memory, all from `vanessa-persona.sh` (run by fix-mine) | one paste | Steven (paste) |
+
+## Connection status — Vanessa's voice on iMessage, 2026-10-24 00:45 UTC (Steven: "Vanessa's voice is supposed to speak with a voice message on top of the text")
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| iMessage line (Vanessa text replies) | **linked and live** since 2026-10-23 23:54 UTC — Steven's thread aa1a9d19…8510; the Mac poller answered a non-answer at 00:05, the cloud sweep answered rates + schedule at 00:22 | — | — |
+| Vanessa's voice note after each text | not yet delivering — `voiceReplyQueue` held only the Sep 12 test item until the cloud sweep queued the first real one (00:28 UTC); the Mac's `voice-reply-render` runs ok every 10 min but needs the Inkbox API key in `~/.inkbox/config` and the thread in `~/.config/inkbox/voice-allow` (both from `fix-mine.sh` step 3a2 with `VANESSA_THREAD=…`); the Mac's `vanessa-imessage-inbox` prompt still lacks §6a (the catalog in fix-mine's REPORT shows where it lives) | the one paste; the cloud sweep queues voice for every reply it sends and reports `voiceReplyStatus` in `agentInbox.channels.voice` | Steven (paste), Derek (§6a into the Mac task) |
+
+## Connection status — SkySlope, 2026-10-24 01:10 UTC (Steven: "setup skyslope i have an api key")
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| SkySlope (transactions, documents) | key on Mac path ready — `integrations/skyslope/skyslope_cli.py` (stdlib, GET-only, SkySlope's own HMAC login from github.com/skyslope/example-authentication); the login needs **two pairs**: the Access Key + Secret Steven generated (My Account → Integrations) AND a Client ID + Client Secret that SkySlope issues to the integration or brokerage. The paste asks for all four (hidden; Enter skips the pair you lack) and proves the login with `me`. If SkySlope answers 401, the Client pair is what is missing — ask the SkySlope rep or the brokerage admin; the browser harness (`cli-anything-harnesses/skyslope`) stays the fallback | `bash scripts/fix-mine.sh` | Steven (keys), Carmen (desk) |
+
+## Connection status — answering at any hour, 2026-10-24 01:25 UTC (Steven: "enable all messages to respond when message is sent anytime of day")
+
+Supersedes the schedule wording of the two sections above. Two clocks answer Vanessa's channels: the Mac pollers (every 5–10 minutes) and the cloud sweep (the fallback). The cloud sweep now runs every hour around the clock; a cloud routine cannot run more often than hourly, so the Mac pollers remain the fast path. The Mac runner skips any task outside its window, and every task carries `07-22` today — `scripts/fix-mine.sh` (step "hours") widens only the five message tasks to `00-24`, proves it with `runnerctl dry`, and restores the file if the runner does not print the new window back.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Cloud sweep (iMessage text + voice queue, deck chat box, Discord #vanessa) | hourly at :17, 24/7 (was 6 AM–10 PM PT) | done in this session | Vanessa |
+| Mac pollers overnight (vanessa-imessage-inbox, vanessa-discord-inbox, voice-reply-render, kapso-inbox-sync, vanessa-whatsapp-inbox) | stop between 10 PM and 7 AM PT until the window is widened | the one paste (fix-mine) — if its REPORT says the window is a runner-wide default, paste the file names it lists | Steven (paste) |
+| Night-time answer latency | up to 60 minutes until the Mac window is widened, then 10 minutes | — | — |
 
 
 ---
@@ -769,9 +875,13 @@ turns on unattended access** — that is Steven's, typed into AnyDesk itself on 
 | Computer | Install | Then (Steven's clicks) |
 |---|---|---|
 | **Mac 1, Mac 2** | `bash connect-all.sh` step 6d: Homebrew cask `anydesk` (it downloads `https://download.anydesk.com/anydesk.dmg`, checked 2026-10-22). No Homebrew → `https://anydesk.com/en/downloads/mac-os`. The step opens AnyDesk and prints this Mac's ID in the report. | System Settings → Privacy & Security → **Screen Recording** → AnyDesk on, and **Accessibility** → AnyDesk on; quit and reopen AnyDesk. Optional: AnyDesk → Settings → Security → unlock → unattended access → type your own password. |
-| **Alienware PC (Windows)** | PowerShell: `winget install --id AnyDeskSoftwareGmbH.AnyDesk -e --source winget` — **winget id unverified** (the winget catalogue could not be reached from the build sandbox; `integrations/alienware/alienware-setup.ps1` uses `AnyDesk.AnyDesk`, which disagrees). Run `winget search AnyDesk` first and use the Id whose Publisher is *AnyDesk Software GmbH*. No winget → `https://anydesk.com/en/downloads/windows`. | Allow it through the Windows Defender prompt if asked. Optional unattended password, as above. |
-| **iPad / tablet** | App Store: search **AnyDesk Remote Desktop** (publisher AnyDesk Software GmbH). Android tablet: Google Play, same name and publisher. | Use it to reach the Macs and the PC. Being *controlled* from an iPad/iPhone is view-only/screen-share per AnyDesk's iOS rules (verify in AnyDesk's docs). |
+| **Alienware PC (Windows)** | PowerShell: `winget install --id AnyDesk.AnyDesk -e -h --accept-package-agreements --accept-source-agreements` (winget id confirmed 2026-10-23 in the microsoft/winget-pkgs manifests, v9.8.x; the earlier `AnyDeskSoftwareGmbH.AnyDesk` guess is wrong). No winget → `https://anydesk.com/en/downloads/windows`. This PC's ID: `& "C:\Program Files (x86)\AnyDesk\AnyDesk.exe" --get-id`. | Allow it through the Windows Defender prompt if asked. Unattended password (yours, typed by you, ≥ 8 chars): AnyDesk → Settings → Security → Unattended Access, or in an **admin** PowerShell `echo <password> \| & "C:\Program Files (x86)\AnyDesk\AnyDesk.exe" --set-password` (the repo never runs this). |
+| **iPad / tablet** | App Store: **AnyDesk** (AnyDesk Software GmbH). Android tablet: Google Play `com.anydesk.anydeskandroid` "AnyDesk Remote Desktop". | Use it to reach the Macs and the PC. **iPad: outgoing control only** — iPadOS cannot be remote-controlled (AnyDesk, confirmed 2026-10-23); viewing an iPad screen needs a paid licence. **Android tablet** can be controlled (Android 7+ plus the OEM control plugin it prompts for) and supports unattended access, with a per-session cast/record consent on Android 10+. |
 | **Phone** | iPhone: App Store; Android: Google Play — **AnyDesk Remote Desktop** by AnyDesk Software GmbH. | Android may ask to install the AnyDesk control plugin to be controlled; your tap. |
+
+**Licence (2026-10-23):** AnyDesk's free tier is for private use; a broker/MLO workstation counts as commercial and gets
+"commercial use detected" throttling. The honest route for 3 computers + tablet + phone is the paid Solo tier — Steven's
+decision (spends money).
 
 Then put each device's ID (the 9–10 digit number on AnyDesk's main screen — an address, not a secret) into the
 Computer Hub card (Command Deck → Toolkit & Remote Access, panel 40) or `~/.config/anydesk-links/devices.json`.
@@ -836,6 +946,31 @@ only to teach it new sites.
    decision; the CLI-Anything harnesses stay the sanctioned path until then.
 
 Owner: Derek (automation). Risk owner: Elena (CISO). Upstream: <https://github.com/goodnight000/api-anything>.
+
+
+---
+
+<!-- source file: integrations/arive/README.md -->
+# FILE: integrations/arive/README.md
+
+# Arive (mortgage LOS/POS) — pipeline status into the brain (as of 2026-10-23)
+
+**Route:** Arive's REST API gateway (release v4.6): `POST /api/auth/access-token` with Client ID + Secret Key + API
+Key, then `GET /api/loans` (list, search, status), loan by number, leads. Also a **private Zapier app** (invite link
+from Arive support) with triggers New Loan, Loan Status Updated, Loan Tracker Updated (appraisal/title/HOI), Key Dates
+Updated, New Lead, POS Application Submitted; actions Get Loan List / Details, Create/Update Loan or Lead. Needs the
+Pro / Broker Pro plan. No Pabbly, Composio or MCP app exists; rate limits unpublished. Developer portal reportedly
+developer.arive.com (unverified).
+
+**Read-only safe:** loan list, loan details, status triggers. **HALT:** any loan write (LOS of record, client PII).
+
+**Steven, once:** Arive → Company Settings (admin) or User Settings → Integrations → Generate → Client ID, Secret Key,
+API Key (user-level credentials see only loans where he is Primary LO). Ask Arive support for the Zapier invite link and
+the developer docs. Keep the three values in `~/.config/arive/.env` on the Mac (`open -e`, chmod 600) — never in chat.
+
+**Plan:** Arive status → Zapier (or a Pabbly custom app built with the Integration Builder once docs are in hand) →
+Zoho stage change → the Zoho workflow sends the approved template (`wiki/real-estate-playbooks/drip-and-text-follow-up.md`).
+A connect-all step is added the day the credentials and the token endpoint are confirmed.
 
 
 ---
@@ -1033,6 +1168,18 @@ system voice and never claims to be her voice when the clips are missing — the
 so the "vanessa voice clips" row passes on any Mac that has the repo. No reference clip or voice id is stored, so a **new cloned voice** is a separate decision
 (provider and consent are Steven's) and is not made here. Set `VANESSA_VOICE_DIR` if the clips live
 somewhere other than `~/.cache/vanessa-voice` or `~/Applications/team-avatars/voices`.
+
+## Vanessa's persona and the brain in Jarvis (2026-10-23)
+
+`bash integrations/jarvis/vanessa-persona.sh --apply` (dry run without the flag) makes Jarvis speak and think as Vanessa:
+OpenJarvis's named-persona files `~/.openjarvis/personas/vanessa/{SOUL,MEMORY,USER}.md` (SOUL and MEMORY from
+`integrations/jarvis/persona/`, USER from `context/about-me.md`, the one page with no client data) and
+`persona_name = "vanessa"` under `[memory_files]` in `~/.openjarvis/config.toml` (backup kept once). It then stages the
+brain's Markdown pages into `~/.cache/jarvis-brain` **without** `wiki/clients`, `memory/`, `docs/findings` or any JSON/HTML
+and runs `jarvis memory index` on that copy, so Jarvis recalls the brain but never a client page. The persona and index
+fields land in `brain/state/jarvis-status.json` (local, gitignored); `bin/brain layers` and the 6D page read them.
+Tests: `bash scripts/tests/test_vanessa_persona.sh`. The voice itself is still `jarvis-setup.sh --apply` (the recorded clips).
+`scripts/fix-mine.sh` runs both, then Laya + Orca + Agent OS, in one paste.
 
 ## What this never does
 
@@ -1567,6 +1714,30 @@ lost either way).
   the exact commands to resolve it — the same discipline this repo's `git-workflow-and-versioning` skill
   already asks for.
 - **Vault detection never reads a note.** Paths and config presence only, always.
+
+
+---
+
+<!-- source file: integrations/mbs-highway/README.md -->
+# FILE: integrations/mbs-highway/README.md
+
+# MBS Highway — Home Report (as of 2026-10-23)
+
+**What it is:** an automated monthly past-client report (equity growth, estimated value, regional appreciation) with a
+live landing page per homeowner; clients get two e-mails a month, the LO gets engagement notifications. Also "Bid Over
+Asking" one-off reports. $169.95/month, up to 1,000 clients; co-branding an agent costs $20/yr (RESPA).
+
+**Route:** **no public API, Zapier, Pabbly, Composio or MCP.** Documented integrations: Shape CRM (a webhook URL from
+your MBS Highway account rep) and Surefire. Enrolment is Clients → Client Manager → Add Client (e-mail is enough) or a
+CSV of up to 500; a personal invite link/QR exists.
+
+**Practical plan:** (1) Steven asks his MBS Highway rep for the Home Report inbound webhook or CSV-import path and
+whether a generic CRM endpoint exists; (2) the team parses the "Home Report activity" notification e-mails in Gmail
+into the sphere touches (read-only); (3) a read-only browser read of Client Manager (agent-browser) for the client list
+and report links. The team never creates a client-facing send; a Home Report enrolment is Steven's click.
+
+**Steven, once:** sign in, confirm the plan, e-mail the rep (draft in the Vanessa queue when he says "draft the MBS
+Highway rep email"), and export the past-client CSV from Lofty/Zoho for the bulk enrolment.
 
 
 ---
@@ -2821,6 +2992,28 @@ there is no webhook, no n8n and no extra port.
 
 ---
 
+<!-- source file: integrations/pivo/README.md -->
+# FILE: integrations/pivo/README.md
+
+# Pivo (pivo.ai) — Pod, Track and Tour for listing video (as of 2026-10-23)
+
+**What it is:** the Pivo Pod is a motorised phone mount that auto-tracks the agent (Face/Body/Action) for walkthrough
+video; **Pivo Track** is the tracking/recording app (video lands in the phone's camera roll); **Pivo Tour** stitches
+8–12 captures into a 360° virtual tour ($199.99/yr, 10 tours), with a public share URL and a web dashboard at
+tour.pivo.app; a white-label "MLS tour" link is a paid add-on.
+
+**Route:** **no API, Zapier or Matterport integration.** The connection is the tour URL and the video file.
+
+**Plan:** Steven captures → sets the tour Public → copies the link (or AirDrops the video). The listing-launch skill
+puts the link in the MLS virtual-tour field draft, the Canva flyer and the social post; OpenMontage cuts the video. Nothing
+to install on the Mac.
+
+**Steven, once:** Pod + tripod paired by Bluetooth in the Pivo app, a Pivo account, the Tour licence if 360° tours are
+wanted (spends money — his call).
+
+
+---
+
 <!-- source file: integrations/remote-control/README.md -->
 # FILE: integrations/remote-control/README.md
 
@@ -2949,6 +3142,48 @@ lived in this repo. See the task's final report for the captured output.
 
 - `import_pack.py` — the importer (stdlib only).
 - `reports/` — dated reports land here after each run (`.gitkeep` holds the empty directory).
+
+
+---
+
+<!-- source file: integrations/ticor/README.md -->
+# FILE: integrations/ticor/README.md
+
+# Ticor Title property search (FNF agent tools) — as of 2026-10-23
+
+**What it is:** rep-provisioned agent tools: **Ticor Online Pro** (ticorpropertydata.com: property profiles, tax,
+ownership, farm lists), **Ticor Farm / Tech Farm** (farm management, ownership updates, CSV export), **Ticor Elite**
+(walking-farm app, mailing lists), **TicorAgent One** (seller net sheet, buyer estimate, rent-vs-buy), plus the FNF
+sister apps Title Toolbox and Fidelity Live Farm. Property profile PDFs can be requested from the rep.
+
+**Route:** **no published API.** Read-only options: CSV/spreadsheet export from Ticor Farm; PDF profiles; a read-only
+browser read (agent-browser / CLI-Anything) signed in as Steven. Public fallbacks with no login: San Diego ARCC
+(ParcelQuest, 25 free searches per 30 days) and Riverside RivCoView / rivcoacr.org — the `tax-assessor-agent` skill
+already reads both.
+
+**Plan:** Steven asks his Ticor rep (San Diego office) for Ticor Online Pro credentials; farm lists are exported as CSV
+into the sphere list; a property profile request is the ISA's click. No install on the Mac.
+
+
+---
+
+<!-- source file: integrations/tidycal/README.md -->
+# FILE: integrations/tidycal/README.md
+
+# TidyCal — booking data for the brain (as of 2026-10-23)
+
+**Route:** TidyCal's official REST API (docs at tidycal.com/developer/docs), personal access token, `Authorization:
+Bearer`. Reads: bookings, booking types, contacts, available slots. Writes exist (create/cancel booking) — **HALT**: the
+team never books, cancels or edits for a client. Rate limit 60 requests/min. API on the Individual Lifetime, Pro and
+Agency plans. Zapier and Pabbly have native TidyCal apps (polling "New Booking"); Composio has no TidyCal toolkit.
+
+**Steven, once:** TidyCal → Integrations → Automations (newer builds: Integrations → Advanced) → API → Manage API keys →
+Personal tokens → Create token (shown once). Then `bash connect-all.sh` step 7c asks for it (hidden; saved only in
+`~/.config/tidycal/.env`, chmod 600) and proves it with one read-only call (`GET /api/booking-types`). The exact base
+path is confirmed on that first run; if TidyCal answers 404, say so and the step is adjusted.
+
+**What it feeds:** the morning brief and the Inbox & Meetings card (today's bookings), the Fieldy digest (a booking
+with a recording), and the sphere list (contacts). Nothing is written back.
 
 
 ---

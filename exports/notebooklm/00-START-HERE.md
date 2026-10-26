@@ -1,4 +1,4 @@
-# Second Brain → NotebookLM — start here (as of 2026-10-23)
+# Second Brain → NotebookLM — start here (as of 2026-10-26)
 
 This folder is the Second Brain of Steven Shearrill (Broker Associate, LPT Realty · MLO, Patriot Pacific Financial, NMLS 1921615)
 exported as NotebookLM sources. Upload every `.md` file in this folder to ONE notebook. Ask the notebook as you would ask Vanessa.
@@ -13,20 +13,20 @@ exported as NotebookLM sources. Upload every `.md` file in this folder to ONE no
 
 | File | Size |
 |---|---|
-| 01-router-and-index.md | 68 k chars |
-| 02-who-and-decisions.md | 87 k chars |
+| 01-router-and-index.md | 69 k chars |
+| 02-who-and-decisions.md | 101 k chars |
 | 03-projects.md | 17 k chars |
-| 04-wiki-ai-team.md | 132 k chars |
+| 04-wiki-ai-team.md | 150 k chars |
 | 05-wiki-mortgage-programs.md | 36 k chars |
-| 06-wiki-real-estate-playbooks.md | 45 k chars |
+| 06-wiki-real-estate-playbooks.md | 59 k chars |
 | 07-wiki-dashboard-ops.md | 32 k chars |
 | 08-wiki-events-networking.md | 8 k chars |
-| 09-references.md | 93 k chars |
-| 10-always-on-and-automation.md | 217 k chars |
-| 11-6d-brain-map.md | 99 k chars |
-| 12-integrations.md | 269 k chars |
+| 09-references.md | 94 k chars |
+| 10-always-on-and-automation.md | 234 k chars |
+| 11-6d-brain-map.md | 120 k chars |
+| 12-integrations.md | 295 k chars |
 
-Pages included: 113 · left out on purpose: 35 · phone/e-mail masks applied: 13.
+Pages included: 121 · left out on purpose: 40 · phone/e-mail masks applied: 17.
 
 ## Left out (by rule)
 
@@ -36,6 +36,7 @@ Pages included: 113 · left out on purpose: 35 · phone/e-mail masks applied: 13
 - docs/CAIO-DISRUPTION-BRIEF.md
 - docs/CLOUD-WRITE-ARCHITECTURE.md
 - docs/ENGINEERING-BRIEF.md
+- docs/HANDOFF-2026-10-25.md
 - docs/HANDOFF-NEW-CHAT.md
 - docs/INSTALL-COVERAGE.md
 - docs/INTEGRATOR-TODO.md
@@ -52,7 +53,9 @@ Pages included: 113 · left out on purpose: 35 · phone/e-mail masks applied: 13
 - docs/SETUP-RUNBOOK.md
 - docs/STRESS-TEST-REPORT.md
 - docs/inventory/mac-task-descriptions.md
+- integrations/APIS.md
 - integrations/CONNECT-PLAN-2026-10-09.md
+- integrations/MCP-SERVERS.md
 - integrations/apple-health-dashboard.md
 - integrations/google-drive-brain.md
 - integrations/mac-brain-2026-10-08.md
@@ -62,6 +65,8 @@ Pages included: 113 · left out on purpose: 35 · phone/e-mail masks applied: 13
 - integrations/mac-fix-isa-kpi-2026-10-08.md
 - integrations/mac-task-specs.md
 - integrations/vanessa-voice-everywhere.md
+- memory/claude-chats.md
+- memory/fieldy-meetings.md
 - routines/cloud-routine-repairs.md
 - routines/mac-task-repairs.md
 - wiki/clients/index.md

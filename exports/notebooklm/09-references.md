@@ -1,6 +1,6 @@
 # Source documents and external systems
 
-Second Brain export for NotebookLM · as of 2026-10-23 · bundle `09-references`.
+Second Brain export for NotebookLM · as of 2026-10-26 · bundle `09-references`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 
@@ -611,6 +611,7 @@ cannot write the last one in a clause, it does not need registering.
 | `backend-folder-structure.md` | The eight-layer backend layout (config, models, middlewares, controllers, services, routes, utils, tests) every service follows; `bin/brain layout` checks the brain against it |
 | `../integrations/openmontage/README.md` | OpenMontage, the agentic video studio installed on the Mac 2026-10-12 (skill `openmontage-video`) |
 | NotebookLM source pack | `integrations/notebooklm/README.md` | the brain as 13 uploadable sources; `bin/brain export notebooklm` |
+- `vlm-architectures.md` — Awesome VLM Architectures (CC0): 155+ vision-language model architectures with primary sources; Nadia's shelf for document/photo/screen model choices (recorded 2026-10-23)
 
 
 ---
@@ -830,3 +831,24 @@ not for resale or client training material.
 - Engineers (Derek's and Elon's seats) cite the dictionary for definitions and the Easy-Vibe appendix "What to do if
   you encounter errors" in debugging packets; the code-validation gate (`.claude/skills/code-validation-gate`) is
   what turns "it works" into evidence.
+
+
+---
+
+<!-- source file: references/vlm-architectures.md -->
+# FILE: references/vlm-architectures.md
+
+# Awesome VLM Architectures — reference shelf (recorded 2026-10-23)
+
+**Source:** https://github.com/gokayfem/awesome-vlm-architectures (CC0 1.0; reviewed at commit 74897b3, 2026-08-01;
+maintained by Gökay Aydoğan, fal.ai). A citation-first catalogue of 155+ vision-language model architectures —
+contrastive encoders, multimodal LLMs, native multimodal, unified understanding + generation, video, OCR, GUI agents,
+embodied AI — each with primary sources, the fusion/alignment design, training stages and datasets, plus a verified
+release timeline through July 2026.
+
+**Why it is in the brain:** Nadia's (CAIO) reading shelf for "which model reads a document, a listing photo or a screen"
+decisions — e.g. picking a VLM for disclosure-package OCR (`tc-doc-intake`) or listing-photo QA. Reference only:
+nothing to install, no code, no account. Steven's instruction 2026-10-23 ("install … add to command deck and skills").
+
+**How to use:** ask Nadia "which VLM family fits <task>" — she reads the matching entry and cites the paper; a model
+choice that spends money or sends client documents to a new vendor is a Needs-Steven packet (HALT).

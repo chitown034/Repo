@@ -1,6 +1,6 @@
 # What runs when: schedule, automation map, routine budget, Steven's steps
 
-Second Brain export for NotebookLM · as of 2026-10-23 · bundle `10-always-on-and-automation`.
+Second Brain export for NotebookLM · as of 2026-10-26 · bundle `10-always-on-and-automation`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 
@@ -982,7 +982,87 @@ Same list as the Action Desk page (https://claude.ai/artifact/9S8G2ZhhqP1iUsPZrP
 Includes every connection that still has to be made. Already done: Lofty key (54 leads syncing), 14 failed routines re-run, both dashboards updated (cycle 11), Remote Control card built, one-command Mac script, failover with a $25 OpenRouter cap, connection plan; your USC answers and personal DRE are saved.
 research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox iMessage are connected; the five research-only routines are already off.
 
+## Start here (2026-10-23, evening) — ONE paste, then the short list it prints
+
+Steven: *"make a new script that I can cut and paste into the terminal to fix whatever requires my actions; make it simple and limit the back and forth."*
+
+**Mac 1 (plugged in), Terminal, one line:**
+`cd ~/Repo && bash scripts/repo-sync.sh --quiet; VANESSA_THREAD=aa1a9d19-c7db-4dea-b7c8-f34999e58510 bash scripts/fix-mine.sh`
+
+The same paste now also lets Vanessa answer at night: it widens the Mac message tasks from 7 AM–10 PM to all day (the cloud copy already answers every hour, day and night).
+
+The script also asks for your **SkySlope** keys: the Access Key + Secret from SkySlope → My Account → Integrations → Generate New Key (the secret shows once), and the Client ID + Client Secret if SkySlope or your brokerage gave you one (Enter to skip; the login needs both pairs, so without the Client pair the proof step reports 401 and I ask SkySlope's side for it).
+
+(`VANESSA_THREAD` is your Vanessa iMessage thread, linked 2026-10-23 23:54 UTC; it lets the script allow-list that one thread for her voice notes. It is an id, not a secret.)
+
+It brings the repo up to date, asks once (hidden; Enter skips) for the Lofty, TidyCal, Arive and Zoho keys, registers Lofty's own
+MCP server as `lofty-cloud`, makes Jarvis speak and think as Vanessa with the brain in its memory, re-runs Laya + Orca + the AI-team
+wiring, pauses the retired runner tasks, re-runs the failed ones in the background, and ends with a **REPORT**: what it did, what it
+skipped, and the lettered list only you can do (A iMessage text · B Zoho tick · C two browser sign-ins · D phone health clicks ·
+E connectors · F AnyDesk permissions · G Orca phone pairing · A2 the Discord bot). Paste the REPORT back to Claude. **Why Vanessa did not answer your texts (2026-10-23 23:50 UTC):** Inkbox shows no linked phone — the connect text never arrived; use the tap link the script prints (A). Kapso: nothing reads that number yet (sign-in + two runner tasks). Discord: no bot token. The cloud now sweeps iMessage, the deck chat box and Discord hourly as a fallback. Run it again any time; it only does
+what is still missing. `bash scripts/fix-mine.sh --check` shows the plan without doing or asking anything.
+
 ## 1 · Phone · 5 minutes (Do these first; nothing else depends on them)
+
+## Every day (from 2026-10-23) — Vanessa's four courses of action, your yes or no
+
+Open the 6D Brain (https://claude.ai/artifact/VoWHW4YuKUCyNqGZMikEv8) → "Vanessa recommends — four courses of action".
+Four lanes, four moves each, all scored by impact × confidence ÷ effort with the plan standing by: **Next big moves**
+(money, clients, connections) · **Self-improvement** (loop engineering: what the brain and the team change in themselves —
+failing gold questions, stale pages, tune proposals, declined-too-often weights, Nadia's scout) · **Risks and actions to
+take** (what is stale, failing or silent and the action that heads it off) · **Opportunities to pursue** (marketing,
+presence, new capabilities). Under them, **"Questions you may have"**: one answer per leading move plus the standing
+questions (what only you can do, what runs each morning, what is not connected, what the weekly loop found, how approval
+works, where the morning brief is), each answered from the brain's own page with the action to take. **Approve** → Vanessa starts on it right away (the page fires her
+Big-moves task through your Claude Code Remote connector; the first time, allow "Claude Code Remote" when the page asks). Her
+items land in the Vanessa queue on the Command Deck; yours stay listed with the plan standing by until you say "done".
+**Decline** → hidden 30 days and that kind weighs less. The 6:05 AM task re-learns from every decision (`docs/reports/BIG-MOVES.md`).
+
+## Start here (2026-10-23, round 2 — simplified the same evening) — three pastes, then four clicks
+
+Everything scripted is inside the pastes now (Jarvis, Laya, Orca, AnyDesk, TidyCal, Arive credentials, homes.com /
+ShowingTime / Showami wrappers, Lofty, Zoho check, NotebookLM, the failing-task logs). Each paste asks before it changes
+anything, never signs in for you, never pays, and prints a REPORT — paste that REPORT back to Claude; Claude does the rest.
+
+**Paste 1 — Mac 1 (plugged in), Terminal:**
+`cd ~/Repo && bash scripts/repo-sync.sh && bash connect-all.sh`
+It will ask, hidden, for: your Lofty API key (7b), your TidyCal token (7c), your Arive Client ID / Secret / API key (7e).
+Enter skips any of them; make them first if you want them in this pass (Lofty → Settings → Integrations → API; TidyCal →
+Integrations → API → Manage API keys; Arive → Settings → Integrations → Generate, Pro plan).
+
+**Paste 2 — Mac 2, Terminal:**
+`cd ~/Repo && bash scripts/repo-sync.sh && bash scripts/second-mac.sh`
+
+**Paste 3 — Alienware (Windows 11), PowerShell (not as administrator), one line:**
+`irm https://claude.ai/install.ps1 | iex; winget install --id AnyDesk.AnyDesk -e -h --accept-package-agreements --accept-source-agreements; git clone https://github.com/chitown034/Repo.git $env:USERPROFILE\Repo; cd $env:USERPROFILE\Repo\integrations\alienware; Set-ExecutionPolicy RemoteSigned -Scope Process; .\alienware-setup.ps1; .\alienware-setup.ps1 -Action Install`
+(Claude Code, AnyDesk, the Doctor, then Orca / Laya / Bonsai / Ollama — it asks y before each.) Then `claude` once to sign in.
+
+**Then four clicks, in this order** (say "done A" … "done D"):
+- **A. Link your iMessage line (fixes the missing morning text + voice note).** From your phone, text
+  `connect @vanessa-shearrill` to **+1 650 484 9720**, once. Until then the brief comes by e-mail ([e-mail masked])
+  and push, with the voice note attached to the e-mail.
+- **B. Zoho** → Setup → Security Control → Profiles → your profile → Developer Permissions → tick "Zoho CRM API Access".
+- **C. Claim your profiles for AI search** → Google Business Profile, Bing Places, Zillow (agent + lender), Realtor.com,
+  Homes.com, Yelp; send Sofia the DRE number (`wiki/real-estate-playbooks/ai-search-visibility.md`).
+- **D. AnyDesk permissions** on each Mac (Screen Recording + Accessibility, unattended password) and the tablet app
+  (Play Store "AnyDesk Remote Desktop" → Unattended Access; iPad: App Store → AnyDesk, reach-only).
+- **E. Health on the phone (2 minutes, once)** → MyFitnessPal → More → Apps & Devices → Apple Health → on; Strava → Settings →
+  Apple Health → on; BodyPark ATOM app → its settings → Apple Health / HealthKit → allow (do ATOM sessions with the Apple Watch
+  so each one lands in Apple Health as a workout); Health Auto Export → Automations → your Google Drive export → Metrics: select
+  all, Workouts: on. From then
+  on the deck's Health tiles, the Strava card and the nutrition tiles refresh by themselves every morning at 6:15 (nothing on
+  the Mac, nothing to tap daily). `integrations/apple-health-dashboard.md`.
+
+**Carried by Vanessa as big moves** (no longer a list you keep — each one surfaces on the 6D Brain with its plan standing by, in
+value order, and you approve it when you want it; the Big-moves task reads this list):
+- **e. Lofty API key** → Lofty → Settings → Integrations → API → create; paste 1 asks for it (step 7b).
+- **f. TidyCal token** → TidyCal → Integrations → API → Manage API keys → Create token; paste 1 asks for it (step 7c).
+- **g. Arive** → Settings → Integrations → Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.
+- **h. MBS Highway** → e-mail your rep for the Home Report webhook / CSV path (say "draft the MBS Highway rep email"). `integrations/mbs-highway/README.md`.
+- **i. Ticor Title** → ask your Ticor rep for Ticor Online Pro credentials; farm lists export as CSV. `integrations/ticor/README.md`.
+- **j. Pivo** → pair the Pod in the Pivo app; the tour link is what the team uses. `integrations/pivo/README.md`.
+- **k. Drips and texts** → Lofty 10DLC registration, then say "specs ready for review" (`wiki/real-estate-playbooks/drip-and-text-follow-up.md`).
+- **l. Orca pairing and the runner copy to Mac 2** → steps 1e and C below.
 
 ## Start here (2026-10-23) — one paste, then a few clicks
 
@@ -1230,6 +1310,10 @@ Reply "done N" (or "skip N") after each step and Claude keeps the dashboards in 
 33. **Turn on the Agent OS on each computer.** Mac 1, Mac 2 and the Alienware, one paste each; steps in integrations/agent-os/README.md. Read-only by default; the warnings name what to install.
 34. **Connect Orca and Laya on each Mac.** `bash integrations/agent-os/connect-orca-laya.sh --apply` (preview first without --apply). Then pair Orca yourself with the two commands it prints.
 35. **OpenStock market viewer (optional).** `bash integrations/openstock/openstock.sh install --apply`, then a free Finnhub key into `~/Applications/OpenStock/.env`. Trading Desk panel has Open/Start.
+
+### 1i. Fieldy meeting digests — your call (added 2026-10-23)
+
+The daily "Fieldy → brain" task writes a digest of each recorded meeting (first names, Fieldy's summary, action items) to `memory/fieldy-meetings.md` in the repo. The repo is public today (step 1g). The digest never reaches the 6D page or Drive, but it is in the repo. Say "keep the Fieldy digest" or "make the repo private first" — until then the task runs and the file stays first-names-only.
 
 
 ---
@@ -1550,6 +1634,7 @@ The 2026-09-22 listing is `cloud-routines.md`; this file carries what was create
 
 | Routine | Cron (UTC) | Enabled | Last run | Next | Created | id |
 |---|---|---|---|---|---|---|
+| Health daily sync — Apple Health (Drive export) + Strava → deck (6:15 AM PT; `appleHealth`, `stravaSnapshot`, `healthDriveSync`) | `CRON_TZ=America/Los_Angeles 15 6 * * *` | True | first run by hand 2026-10-23 | 2026-10-24 | 2026-10-23 | trig_015pqDNGrZVENHZEZR8JZYF5 |
 | Vanessa — Chief of Staff daily cycle (weekdays 6:25 AM PT, parallel squads) | `CRON_TZ=America/Los_Angeles 25 6 * * 1-5` | True | — | 2026-10-21 | 2026-10-20 | trig_019whypw6EeNu2G8xxY5xE5N |
 | Command Deck — daily freshness sweep (writer, Claude; once a day since 2026-10-22, per-key cadence) | `40 15 * * *` | True | SUCCEEDED @ 2026-10-20T15:40 | twice daily | 2026-10-12 | trig_01Y1zZ3bmawgi4Mw2jNw9ZFM |
 | Command Deck — morning feeds (writer, Claude) | `5 13 * * *` | True | SUCCEEDED @ 2026-10-20T13:08 | daily | 2026-10-05 | trig_01BVuP52qPuqEvfvxL48YgZz |
@@ -1560,11 +1645,17 @@ The 2026-09-22 listing is `cloud-routines.md`; this file carries what was create
 | Attraction Command Center: daily cloud run | `CRON_TZ=America/Los_Angeles 40 6 * * 1-5` | True | SUCCEEDED @ 2026-10-20T13:40 | weekdays | 2026-10-05 | trig_01H7zYh3EteR8hJoeffebRWv |
 | RoleCompass daily job hunt (v4) | `CRON_TZ=America/Los_Angeles 40 6 * * *` | True | SUCCEEDED @ 2026-10-20T13:40 | daily | 2026-10-05 | trig_01Sac7gQ2GdGdCYPti7JsrgB |
 | Transaction & Showing desk — TC + showing assistant (weekdays 6:05 AM PT, before the cycle) | `CRON_TZ=America/Los_Angeles 5 6 * * 1-5` | True | SUCCEEDED @ 2026-10-22T14:10 | weekdays | 2026-10-22 | trig_011iofWVNizNQ1SNujNcp5tL |
-| Vanessa — morning brief across the dashboards (6:34 AM PT; push + writes the iMessage/voice script) | `CRON_TZ=America/Los_Angeles 34 6 * * *` | True | SUCCEEDED @ 2026-10-22T13:49 (as the 6:48 brief) | daily | 2026-10-13 | trig_01Q9VPMwrKwNUW3kZL54rKgy |
+| Vanessa — morning brief across the dashboards (6:34 AM PT; push + writes the iMessage/voice script; since 2026-10-23 e-mails the brief to Steven when the iMessage line is unlinked) | `CRON_TZ=America/Los_Angeles 34 6 * * *` | True | SUCCEEDED @ 2026-10-22T13:49 (as the 6:48 brief) | daily | 2026-10-13 | trig_01Q9VPMwrKwNUW3kZL54rKgy |
 | Refi watch — weekly prep list (Mon 7:20 AM PT, drafts only) | `CRON_TZ=America/Los_Angeles 20 7 * * 1` | True | — | 2026-10-26 | 2026-10-22 | trig_014ipr6x9z35psmtHJCPVqj1 |
 | Sphere & past-client touches — monthly drafts (day 11, 7:40 AM PT, drafts only) | `CRON_TZ=America/Los_Angeles 40 7 11 * *` | True | — | 2026-11-11 | 2026-10-22 | trig_01Pn8xLNKTVVFYjYTj8d8JTd |
 | Weekly ecosystem backup — cloud writer (Sunday, after the allowance reset) | `7 21 * * 0` | True | SUCCEEDED @ 2026-10-22T14:16 (catch-up) | Sunday | 2026-09-22 | trig_01JcPh3AM2z21Bsv34SvSkqM |
 | 6D Brain — daily rebuild and republish (3:30 AM PT, this session) | `CRON_TZ=America/Los_Angeles 30 3 * * *` | True | — | daily | 2026-10-21 | trig_01MQ7HRYTh27b8uUM4BtnFXE |
+| Fieldy → brain (daily meeting digest; first names only) | `CRON_TZ=America/Los_Angeles 50 6 * * *` | True | ran 2026-10-23 (0 recordings) | daily | 2026-10-23 | trig_019KqDTnzqefUGApMscmswAJ |
+| Presence audit — AI search visibility (monthly, Sofia) | `CRON_TZ=America/Los_Angeles 10 7 1 * *` | True | — | 2026-11-01 | 2026-10-23 | trig_01GCu51vT22M9nxAohu82cfa |
+| Vanessa inbox sweep (cloud) — hourly fallback behind the Mac pollers, day and night since 2026-10-24 (hourly is the platform floor for a cloud routine): unanswered iMessages (Inkbox), Command Deck chat-box questions (vanessaChat), Discord #vanessa (Composio discordbot once connected); logs to agentInbox | `CRON_TZ=America/Los_Angeles 17 * * * *` | True | ran 2026-10-24 01:17 UTC | hourly, 24/7 | 2026-10-24 | trig_018cLszdipa7WAVt5nd8BuXT |
+| Big moves — Vanessa's four courses of action (4 each: big moves · self-improvement/loop engineering · risks · opportunities) + questions block + top 10, learn, queue approved, org sync, 6D republish; also fired by the 6D Approve button (EXECUTE NOW mode, since 2026-10-23) | `CRON_TZ=America/Los_Angeles 5 6 * * *` | True | — | 2026-10-24 | 2026-10-23 | trig_014QQGp4WQfWGDVB827R4Qb9 |
+| Claude sessions ledger (docs/inventory/claude-sessions.md, daily) | `CRON_TZ=America/Los_Angeles 52 3 * * *` | True | ran 2026-10-23 | daily | 2026-10-23 | trig_01THsaAdhiWX1zauBQX23LrX |
+| Second Brain layers weekly sync (export → Drive SB Docs → Notion directory → layers report) | `CRON_TZ=America/Los_Angeles 45 14 * * 0` | True | — | 2026-10-26 | 2026-10-23 | trig_01MR463NSmSAcA84zJHjerUp |
 
 
 ---
@@ -1626,6 +1717,58 @@ The 2026-09-22 listing is `cloud-routines.md`; this file carries what was create
 | Command Deck — Steve twin (works the twin queue, writes the brief) | `0 0,13,19 * * *` | False | ABANDONED @ 2026-09-09T00:06 | 2026-09-09T13:04 | 2026-09-07 | trig_0174717mnSfAk1LtQQVJhH7r |
 | Command Deck ↔ ISA Portal comms bridge (hourly) | `7 * * * *` | False | SUCCEEDED @ 2026-09-09T02:07 | 2026-09-09T03:07 | 2026-09-07 | trig_01VpcvVPTrbdfvdbXn1mD7hB |
 | Weekly Review (retired — replaced by desktop task r20-weekly-review-local) | `0 23 * * 5` | False | SUCCEEDED @ 2026-09-10T02:27 | 2026-09-11T23:01 | 2026-09-06 | trig_01LnPpmGfs4mQBfiVhe9dDs5 |
+
+
+---
+
+<!-- source file: docs/inventory/daily-updates.md -->
+# FILE: docs/inventory/daily-updates.md
+
+# Daily updates — what refreshes the three dashboards, and when (2026-10-23)
+
+Steven, 2026-10-23: "ensure command deck, isa portal and 6d brain are updated daily." Every row below is a cloud routine on
+his Claude subscription (ids in `cloud-routines-2026-10.md`) unless marked Mac. Times are Pacific. If a row's `last_run` is not
+SUCCEEDED, the freshness sweep flags it and the Big-moves task raises a "Repair" move.
+
+| Dashboard | What | When | Writer |
+|---|---|---|---|
+| Command Deck | morning feeds (headlines, on-this-day, Bears, opportunity radar) | 6:05 | cloud `morning feeds` |
+| Command Deck | Four courses of action (16 moves) + questions + top 10 → `bigMoves` (items, coas, questions), `vanessaRecommendations` (lane field), `aiTeamOrg` | 6:05 | cloud `Big moves` |
+| Command Deck | Chief-of-Staff cycle → `cosBrief`, `vanessaQueue` | 6:25 weekdays | cloud `daily cycle` |
+| Command Deck | `morningBrief` + push (+ e-mail until iMessage is linked) | 6:34 | cloud `morning brief` |
+| Command Deck | iMessage text + voice note (or e-mail with mp3) | 6:40 | Mac `vanessa-morning-brief-text`, `voice-reply-render` |
+| Command Deck | weather & news, city and housing lists | 6:35 / evening | cloud `weather & news` |
+| Command Deck | Apple Health tiles ← Health Auto Export files in Google Drive → `appleHealth`; Strava card ← Strava connector → `stravaSnapshot`; MyFitnessPal via Apple Health | 6:15 | cloud `Health daily sync` (`scripts/health-drive-sync.py`) |
+| Command Deck | Fieldy meetings → `fieldyDesk`, `memory/fieldy-meetings.md` | 6:50 | cloud `Fieldy → brain` |
+| Command Deck | freshness sweep (every stale key re-checked, per-key cadence) | 8:40 | cloud `freshness sweep` |
+| Command Deck | market close | 14:20 weekdays | cloud `market close` |
+| Command Deck | Lofty / Zoho pipeline, rates, calendar, Apple Health | 07:05 / 13:05 / 19:05 | Mac `fabric-deck-sync`, `lofty-crm-sync` |
+| ISA Portal | `isaToday`, hand-offs, scorecard | 6:25 (inside the cycle) | cloud `daily cycle` |
+| ISA Portal | housing-market lists, builder incentives, live feeds (mirror of the deck) | with each deck writer | the same cloud routines (MIRROR STEP) |
+| 6D Brain | full rebuild from the repo (nodes, passages, layers, recs, Vanessa) | 3:30 | cloud `6D rebuild` |
+| 6D Brain | four-lane panel + questions republish | 6:05 | cloud `Big moves` |
+| 6D Brain | layers audit (`bin/brain layers`) | weekly Sun | cloud `layers` |
+| Repo | sessions ledger, index, CI | daily / on push | cloud `sessions ledger`, GitHub Actions |
+
+Checked 2026-10-23: every cloud routine's last run SUCCEEDED (pages 1–7 of the trigger list). The Mac side is the weak link
+(`runnerStatus` v66 lists six tasks in error — `integrations/mac-task-specs.md` §9).
+
+## Cloud routines not green on 2026-10-23 (read from the trigger list, all pages)
+
+| Routine | Last run | Why | What happens |
+|---|---|---|---|
+| Things I Wish I Knew book — monthly (5th) | FAILED 2026-10-02 | usage limit reached that morning | re-runs 2026-11-05 by itself |
+| Rent, Buy, or Wait — monthly (9th) | FAILED 2026-10-01 | usage limit | re-runs 2026-11-09 |
+| Muster Point — monthly (8th) | FAILED 2026-10-02 | usage limit | re-runs 2026-11-08 |
+| Nellis VA Webinar deck — monthly (7th) | FAILED 2026-10-01 | usage limit | re-runs 2026-11-07 |
+| NAVWAR PM Deck — monthly (6th) | FAILED 2026-10-01 | usage limit | re-runs 2026-11-06 |
+| Tech & AI Command Deck — monthly (3rd) | ABANDONED 2026-10-18 (manual re-fire) | session abandoned mid-run | re-runs 2026-11-03 |
+| VA Command Center — monthly (4th) | ABANDONED 2026-10-18 (manual re-fire) | session abandoned mid-run | re-runs 2026-11-04 |
+| Gridiron Codex — weekly Bears | ABANDONED 2026-10-20, now **disabled** | disabled 2026-10-22 | stays off unless Steven asks |
+
+None of these feeds the three daily dashboards. They are heavy Opus research runs; firing all of them in one day is what tripped the
+cap on Oct 1–2, so they were left on their own dates. Say "re-run the monthly refreshes" and they are fired one per hour.
+Two guard routines are off by design (Strava wrapper guard, feed-freshness watchdog) — both replaced by the 15:40 UTC freshness sweep.
 
 
 ---
@@ -1874,6 +2017,28 @@ The 2026-09-22 listing is `cloud-routines.md`; this file carries what was create
 
 <!-- source file: docs/inventory/routine-health.md -->
 # FILE: docs/inventory/routine-health.md
+
+# Runner health — `runnerctl status` as pasted by Steven, 2026-10-23 12:33 PT (Mac 1)
+
+**Headline: the runner is healthy and was never silent.** 54 tasks; 42 last ran `ok` (most of them today), 5 `error`, 4 `limited`
+(the usage cap — not broken), 3 `off` (paused on purpose today), 0 never-run. The morning tasks all ran today: r1-morning-brief 05:37,
+vanessa-morning-brief-text 06:53 (ok — the text did not arrive only because the iMessage line is not linked), health-full-analysis 05:27,
+calendar-daily-sync 06:38, mortgage-rates-daily 06:41, lofty-crm-sync 07:48, brain-deck-sync hourly. The "silent since Oct 13" note
+in connect-all step 2 was the connect script's reading, not the runner's: its restart was harmless but unneeded.
+
+| Task | Last | Reading | Fix (integrations/mac-task-specs.md § 9) |
+|---|---|---|---|
+| `toolkit-deck-sync` (06:15 daily) | error 2026-10-23 06:25 | the one error from today; the deck's toolkit card is stale | timeout (exit 124 at 602 s, twice today): move the snapshot scripts to a pre-step, or raise the cap to 1200 s — spec § 9 |
+| `nightly-self-test` (23:00) | error 2026-10-22 23:19 | tool refusal in the suite | 30-min timeouts + refusals + "no result in envelope": split the suite (spec § 9) |
+| `brain-weekly-verify` · `health-coaching-weekly` · `skills-refresh-weekly` (Sundays) | error 2026-10-11 | hit the Sunday usage cap; have not run since | move to Monday (spec § 9), or run each once on a weekday: `runnerctl run <name>` |
+| `r9-feed-freshness-sweep` | off (paused 2026-10-23) | superseded by the cloud freshness sweep | — |
+| `r8-apple-health-snapshot` · `strava-daily-sync` | off (paused 2026-10-23) | superseded by the cloud Health daily sync | — |
+| `access-audit-monthly` · `automation-audit-quarterly` · `ops-knowledge-graph` · `r20-weekly-review-local` | limited (Oct 1–11) | usage cap; next slots Nov 1 / Jan 1 / Sunday / Friday | leave |
+| everything else (42 tasks) | ok | — | — |
+
+Paused today with `runnerctl pause` (the verb `disable` does not exist). `vanessa-imessage-inbox` was running at the time of the paste.
+
+---
 
 # routineHealth doc (written by r10-automation-health, syncedAt 2026-09-22T00:57:57-07:00) — counts {"failed": 8, "late": 3, "neverRun": 13, "ok": 6, "producedNothing": 2, "stale": 0}
 

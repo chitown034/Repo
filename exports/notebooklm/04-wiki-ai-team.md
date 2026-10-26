@@ -1,6 +1,6 @@
 # AI team: org chart, seats, pods, toolkit, push-button system
 
-Second Brain export for NotebookLM · as of 2026-10-23 · bundle `04-wiki-ai-team`.
+Second Brain export for NotebookLM · as of 2026-10-26 · bundle `04-wiki-ai-team`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 
@@ -268,6 +268,13 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Delia | reviews, google review, testimonial, reputation, net promoter, scorecard | `wiki/real-estate-playbooks/referral-reciprocity.md` |
 | Ansel | predictive seller, likely seller, probate lead, expired, seller intelligence | `wiki/real-estate-playbooks/listing-process.md` |
 | Tax Assessor Agent | assessor, property tax, apn, tax bill, supplemental tax | `wiki/real-estate-playbooks/transaction-stages.md` |
+| Carmen | transaction coordinator, tc, escrow timeline, contingency dates, file timeline, escrow checklist, coe date | `wiki/real-estate-playbooks/transaction-stages.md` |
+| Booking Concierge | tidycal, booking, booked consult, consult, discovery call, appointment, no-show, reschedule, show rate, booking link | `wiki/ai-team/desk-seats.md` |
+| Autopilot Conductor | autopilot panel, run autopilot, autopilot conductor, scheduled sweep, overnight run | `wiki/dashboard-ops/index.md` |
+| Lender Matchmaker | lender match, lender fit, which lender, wholesale lender, lender pricing, loan scenario match | `wiki/mortgage-programs/program-selection.md` |
+| Inbox Sentinel | inbox watch, inbox sentinel, email watch, important email, reply needed, inbox alert | `wiki/ai-team/desk-seats.md` |
+| Aria | 7-star, seven star, anticipate, anticipation, friday pulse, status update, response time, sla, response standard, homeowners exemption, supplemental tax, moving kit | `wiki/ai-team/desk-seats.md` |
+| Kai | kaizen, bottleneck, capacity, scale, scalability, process improvement, workload, hire trigger, efficiency, automation coverage | `wiki/ai-team/desk-seats.md` |
 
 ## Pods — standing cross-functional teams that work in parallel
 
@@ -286,6 +293,14 @@ duplicated. Vanessa's daily cycle forms its squads from these pods.
 | Money Pod | budget, cash, net worth, tax, commission, expense, income, profit | Marcus, Nathan, Anita, James | Numbers with sources, deadlines, cash and commission view |
 | Ops Pod | automation, routine, connector, sync, broken, dashboard, mac, runner, integration, workflow, pabbly, mod | Derek, Elena, Elon, Nadia | Fix plan, security check, feasibility, the one paste for Steven |
 | Client Care Pod | sphere, nurture, past client, birthday, anniversary, open house, sign-in sheet, thank-you, review request, testimonial | Sofia, Sphere Nurture Coordinator, Open House Captain, Wren, Victor, Alexandra | Monthly sphere touch drafts, open-house sign-in → leads, thank-you drafts, ISA call list, review and referral asks — drafts only |
+
+**Every seat is cross-functional (Steven, 2026-10-23: "enable all agents to be cross functionable").** A pod is the
+default crew, never a wall: the planner also brings in any seat whose lane words appear in the request (the Lane
+keywords table) and any Join below, and Vanessa may pull any of the 198 roster agents into any pod through the Agent OS
+(`bin/brain route "<request>"` prints the crew; `integrations/agent-os/`). The lead stays the lane owner; the gates
+still run after the wave. The org chart every dashboard shows is one JSON — `bin/brain org` — written daily to the
+Command Deck doc `aiTeamOrg` by the Big-moves task, embedded in the 6D Brain's seat lens, and mirrored by the Mac's
+`aiTeamRoster` snapshot (198 agents).
 
 ## Joins — a seat that must come along
 
@@ -313,6 +328,11 @@ When the request matches the words, the seat joins the plan even if it is not th
 | ECC | Derek or Elon is in the plan | Standards, tests, security and agent-safety review of any change |
 | Validation | Derek or Elon is in the plan (any code change) | The code-validator agent: `scripts/validate-code.sh` then the VibeBreaker 20-pass adversarial review of the diff; code is not done until both pass (`.claude/skills/code-validation-gate`) |
 | Vanessa | always | Consolidates every seat into one answer for Steven; the same pods run as workflows on The Bot Crew (`wiki/ai-team/bot-crew.md`) |
+
+Who validates code after you write it, and with what protocol: the **code-validator** agent validates every code
+change — first the deterministic checks (`scripts/validate-code.sh`), then the **VibeBreaker** 20-pass adversarial
+review protocol over the diff — and the change-set is marked reviewed (`validate-code.sh --mark`). The Stop hook asks
+for it once per change-set; code is not done until both halves pass (2026-10-12, `.claude/skills/code-validation-gate`).
 
 ## HALT words — stop and write a Needs-Steven packet
 
@@ -427,6 +447,43 @@ and pod membership live in `cross-functional.md`; the launchable agent file is `
 
 Source: Steven's seat list, 2026-10-22. Mac snapshot (`roster-tiers.json`) does not know these seven yet — add them there
 (tier 2, model sonnet, leads as above) before the next snapshot, as `agent-os.md` § Seats added after the Mac snapshot says.
+
+## Booking Concierge
+
+Added 2026-10-25. Reports to Priya (ISA line); member of the Growth & Marketing and Buyer pods.
+Owns the Broker Command Center **Bookings Desk** (Clients → Bookings Desk). It reads TidyCal consults
+(read-only: `list-bookings`, `list-booking-types`) and makes each booking a contact at *Appointment Set*,
+with a confirmation the day before, a prep brief the day of the call, and a follow-up after it.
+Outcomes are logged as Held or No-show. Held starts the onboarding mission; No-show queues a two-touch
+recovery with the booking link. It also tracks the show rate and puts
+https://tidycal.com/stevenshearrill/discovery-call into every lead touch. Reschedules and cancellations stay in TidyCal.
+Launchpad mission: *Booked consult — prep to follow-up*. Vanessa tool: `tidycal_bookings`.
+
+## Aria — Anticipation & Client Success Lead (7-Star)
+
+Added 2026-10-25. Reports to Sterling; member of the Client Experience and Escrow & Closing pods.
+Owns the Broker Command Center **7-Star & Scale Engine** (Clients → 7-Star & Scale Engine):
+- **Anticipation engine.** 15 rules, each dated from acceptance, a contract milestone or close of escrow:
+  welcome-to-escrow pack, wire-fraud call, inspection prep, appraisal watch, homeowner's insurance quotes
+  (wildfire zones), moving kit, final walk-through and closing-day kit, seller close-out, closing gift,
+  settled-in call, Homeowners' Exemption (BOE-266, Feb 15), supplemental property tax heads-up, CPA
+  note for sellers, 90-day review, and the home-anniversary equity review.
+- **Response standards by stage.** New lead same day; contacted every 2 days; appointment confirmed
+  24 h before; active client every 3 days; under contract weekly plus every milestone; closed every
+  90 days. Breaches become recovery tasks every day.
+- **Friday Pulse.** A weekly written status to every escrow client: done, next, late, what we need, and
+  the wire-fraud reminder. Drafted in Gmail with one button.
+Launchpad mission: *Friday Pulse*. Vanessa tool: `seven_star`.
+
+## Kai — Process Improvement & Scale Lead (Kaizen)
+
+Added 2026-10-25. Reports to Owen; member of the Automation & AI pod.
+- **Capacity plan.** Weekly hours needed against hours available, with hire triggers: TC at 5+ escrows,
+  ISA at 60+ leads a month, showing partner at 8+ active buyers.
+- **Kaizen board.** Bottlenecks read from live data: late tasks by owner, clients untouched for 14+ days,
+  escrows with a late milestone, automation coverage. Ideas are scored by impact ÷ effort, and the
+  winners become missions, autopilot rules or SOPs.
+Launchpad mission: *Monthly Kaizen review*.
 
 
 ---
@@ -931,6 +988,21 @@ produced becomes a "fact" in the repo without Steven's yes).
 - `bin/brain layers [--write] [--json]` — the register above with last-sync stamps and verdicts.
 - `bin/brain ingest claude-export <conversations.json>` — Steven's claude.ai chats (his words only, masked) → `memory/claude-chats.md`;
   the daily "Claude sessions ledger" task → `docs/inventory/claude-sessions.md` (every Claude Code session, title/date/status).
+- **Fieldy → brain** (daily 6:50 AM PT task in the orchestrator session): yesterday's recorded conversations → `memory/fieldy-meetings.md`
+  (date, title, first names, Fieldy's summary, action items) and a `fieldyDesk` doc on the Command Deck; the `meeting-recap-to-crm` skill turns one into a recap.
+- **Ask Vanessa on the 6D Brain** (2026-10-23): an AI chat inside the page (claude.ai `sample` capability, the viewer's own
+  Claude usage, allowed once per view). Vanessa answers from the passages the page's zero-token search ranks for the
+  question, cites each page with its own date, says "not in the brain" when nothing matches, and keeps the HALT list
+  (no rate quote, eligibility call, legal read or client send). Her portrait and presence states (listening, reading,
+  speaking) are the Command Deck's; "Read her answers aloud" uses the device's own voice. Outside claude.ai the chat is hidden.
+- **Presence audit** (monthly, 1st at 7:10 AM PT, Sofia): the AI-search prompt set by WebSearch → `docs/reports/PRESENCE.md` + the deck `presenceAudit` doc; rules in `wiki/real-estate-playbooks/ai-search-visibility.md`.
+- **Registers the 6D Brain draws as lobes** (2026-10-23): skills, Claude mods (the plugins in `integrations/mods/`), connectors (`integrations/CONNECTIONS.md`), MCP servers (`integrations/MCP-SERVERS.md`), APIs with where each key lives (`integrations/APIS.md`), cloud routines, Mac tasks — `bin/brain toolkit` counts them; add a row to a register and the next rebuild draws it.
+- **Vanessa recommends — four courses of action, 4 each, plus the questions block** (2026-10-23 evening; `bin/brain recs --coas`): big-move · improve (loop engineering, from `brain/loop.py` history, the decision ledger and `integrations/scout/seen.json`) · risk · opportunity, one scored pool, `coa_of()` decides the lane. Earlier the same day: the daily top 10 big moves — `bin/brain recs` scores every open item the brain can see
+  (unconnected tools, stale layers, loop gaps, Steven's open steps, live deck signals) by impact × confidence ÷ effort ×
+  a learned category weight; `--write` → `docs/reports/BIG-MOVES.md` + `brain/recs/big-moves.json`. HITL: approve /
+  decline / later on the 6D Brain (page database) or the Command Deck's Recommendations card; the **Big moves** task
+  (daily 6:05 AM PT) reads both, learns (`brain/recs/ledger.jsonl`, `weights.json`), queues approved Vanessa-items for
+  the 6:25 cycle, writes the deck docs `bigMoves` and `aiTeamOrg`, and republishes the 6D Brain.
 - `bin/brain links` — every front door with its URL (deck, ISA Portal, 6D, Action Desk, Bot Crew, repo, Drive SECOND BRAIN,
   NotebookLM, Notion database + layer directory, the 13 SB Docs). The 6D Brain embeds the same list: "Open the brain"
   panel, an open link per layer, and clickable store nodes (Drive, NotebookLM, Notion, Command Deck).
@@ -988,6 +1060,13 @@ Read, decided and pinned in `integrations/skill-packs/REGISTRY-2026-10-12.md`: i
 ## The 32-item image (2026-10-12)
 
 `integrations/skill-packs/REGISTRY-2026-10-12b.md`: 10 already yours (Slack, Notion, Context7, GitHub, Codex plugin, skill-creator, find-skills, karpathy, Playwright MCP, anthropics skills); 3 to install (same as the 16-list); HOLD wshobson/agents (cherry-pick), repomix (one-off), zapier, higgsfield; DECLINE oh-my-claudecode, vibe-kanban, claude-mem, firecrawl, github-mcp on the Mac, granola, kondo, perplexity.
+
+## The four repos (2026-10-23)
+
+`integrations/skill-packs/REGISTRY-2026-10-23.md`: **pr-lens** (MIT) skill vendored, GitHub App is Steven's; **openflowkit**
+(MIT) skill vendored + local MCP by connect-all 6g; **archify** (MIT, 18 MB) installed on the Mac by the official
+`npx skills add tt-a1i/archify -g` with its update check off; **awesome-vlm-architectures** (CC0) a reference shelf
+(`references/vlm-architectures.md`). Owners: Derek (diagrams), Sofia (explainers), Nadia (VLM choices).
 
 
 ---
@@ -1081,7 +1160,7 @@ Installed by `go.sh` step 11 (`integrations/kapso/install-mac.sh`): Kapso plugin
 <!-- source file: wiki/ai-team/toolkit.md -->
 # FILE: wiki/ai-team/toolkit.md
 
-# AI Team toolkit — skills, plugins, connectors, routines, Mac tasks per seat
+# AI Team toolkit — skills, Claude mods, connectors, MCP servers, APIs, routines, Mac tasks per seat
 
 Generated by `bin/brain toolkit --write` from the tree (zero tokens). Each item sits under the seat whose lane
 claims it; the status words come from `integrations/CONNECTIONS.md` (connectors), `docs/inventory/cloud-routines*.md`
@@ -1089,7 +1168,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 46 skills · 7 plugins · 12 connectors (2 ok, 10 need attention) · 65 cloud routines · 60 Mac tasks
+toolkit: 48 skills · 7 Claude mods (plugins) · 45 connectors (4 ok, 41 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -1103,16 +1182,40 @@ toolkit: 46 skills · 7 plugins · 12 connectors (2 ok, 10 need attention) · 65
 - `vanessa-orchestrator`: Vanessa as orchestrator (v2): C-Suite delegation and parallel execution — intake, decompose, delegate, run up to 8 agents concurrently, resolve conflicts, QA, consolidate, report. Use when a request spans more than one e
 - `whatsapp-kapso`: Read and answer WhatsApp through Kapso (WhatsApp Business Cloud API; MCP server "kapso" registered for every Claude Code session, Orca included) — Phase 1 is the sandbox number and Steven's own phone only. Use when Steve
 
-**Plugins (Claude Code mods)**
+**Claude mods (plugins)**
 - `ops-pulse`: At session start in the Repo folder: one read-only status line (behind/ahead of GitHub, local edits, brain-loop age, connect-all today) and a toast when it is time to /sync.
 - `push-buttons`: One-word slash commands (/cycle /inbox /meetings /sync /connect /tc /queue /today /help-buttons) that send the full, correct prompt for each workflow, HALT rules included.
 
 **Connectors**
-- `Inkbox iMessage line` — *ok*: connected — no phone linked yet
+- `iMessage line (Vanessa text replies)` — *ok*: linked and live since 2026-10-23 23:54 UTC — Steven's thread aa1a9d19…8510; the Mac poller answered a non-answer at 00:05, the cloud sweep answered rates + schedule at 00:22
+- `Kapso (WhatsApp)` — *attention*: keys in the Keychain; plugin + MCP waiting on the sign-in
+- `Jarvis = Vanessa, single point of contact for the whole AI team` — *attention*: persona + voice + brain index + the 180-seat roster in her memory, all from vanessa-persona.sh (run by fix-mine)
+- `Jarvis knows the Second Brain` — *attention*: ready — the same script indexes the brain's pages (no client pages, no meeting digests, no findings) into Jarvis memory; the 6D layers row shows "speaks as Vanessa" + the page count once run
+- `WhatsApp (Kapso)` — *pending*: number …5223 assigned; nothing reads it — runner tasks kapso-inbox-sync / vanessa-whatsapp-inbox not registered; Kapso MCP sign-in pending; keys in the Keychain (connect report #3)
+- `Discord #vanessa` — *pending*: bot token missing (Composio discordbot initiated 23:55 UTC, not active; Mac bot in relay mode)
+- `Vanessa's voice note after each text` — *attention*: not yet delivering — voiceReplyQueue held only the Sep 12 test item until the cloud sweep queued the first real one (00:28 UTC); the Mac's voice-reply-render runs ok every 10 min but needs the Inkbox 
+- `Cloud sweep (iMessage text + voice queue, deck chat box, Discord #vanessa)` — *attention*: hourly at :17, 24/7 (was 6 AM–10 PM PT)
+- `Mac pollers overnight (vanessa-imessage-inbox, vanessa-discord-inbox, voice-reply-render, ` — *attention*: stop between 10 PM and 7 AM PT until the window is widened
+
+**MCP servers**
+- `laya` — *ok*: zero-token local router in front of Vanessa (lane, tier, HALT words) · registered — real engine answering on Mac 1 (2026-10-23)
+- `gondola` — *ok*: travel: hotels, flights, points vs cash, trips · registered on the Macs; claude.ai connector is Steven's click
+- `notebooklm` — *ok*: NotebookLM notebooks and sources (community tool, opt-in) · connected — signed in 2026-10-23, 5 notebooks
+- `Fieldy · Gmail · Google Calendar · Google Drive · Notion · Slack · Zoom · WhisperAI · Inkb` — *ok*: the connector set every cloud routine and the Command Deck page can call · connected (see integrations/CONNECTIONS.md)
+
+**APIs**
+- `TidyCal (tidycal.com/api)` — *pending*: read bookings, booking types, contacts; writes are HALT · ready — token not created yet
+- `Inkbox (iMessage, e-mail, voice)` — *ok*: send Vanessa's texts and voice notes to Steven only · connected
+- `Google Drive (SECOND BRAIN/)` — *ok*: rewrite the 13 SB Docs weekly · connected
+- `Notion (Second Brain DB)` — *ok*: rows + the layer directory page · connected
+- `Fieldy` — *ok*: read recordings, summaries · connected — no recordings yet
+- `Claude (sample capability)` — *ok*: the Ask Vanessa chat on the 6D Brain · connected (v41+)
 
 **Cloud routines**
 - `Vanessa — Chief of Staff daily cycle (weekdays 6:25 AM PT, parallel squads)`: cron CRON_TZ=America/Los_Angeles 25 6 * * 1-5 · on · —
-- `Vanessa — morning brief across the dashboards (6:34 AM PT; push + writes the iMessage/voice script)`: cron CRON_TZ=America/Los_Angeles 34 6 * * * · on · SUCCEEDED @ 2026-10-22T13:49 (as the 6:4
+- `Vanessa — morning brief across the dashboards (6:34 AM PT; push + writes the iMessage/voice script; `: cron CRON_TZ=America/Los_Angeles 34 6 * * * · on · SUCCEEDED @ 2026-10-22T13:49 (as the 6:4
+- `Vanessa inbox sweep (cloud) — hourly fallback behind the Mac pollers, day and night since 2026-10-24`: cron CRON_TZ=America/Los_Angeles 17 * * * * · on · ran 2026-10-24 01:17 UTC
+- `Big moves — Vanessa's four courses of action (4 each: big moves · self-improvement/loop engineering `: cron CRON_TZ=America/Los_Angeles 5 6 * * * · on · —
 - `Command Deck & ISA Portal Weekly Loop Engineering QA`: cron 0 16 * * 0 · on · FAILED @ 2026-09-20T16:06
 - `Command Deck — Vanessa orchestrated ops review (C-suite in parallel, Fri 4 PM PT)`: cron 0 23 * * 5 · on · FAILED @ 2026-09-18T23:03
 - `Command Deck — weekly improvement loop (research → apply)`: cron 0 16 * * 0 · on · FAILED @ 2026-09-20T16:06
@@ -1180,6 +1283,9 @@ toolkit: 46 skills · 7 plugins · 12 connectors (2 ok, 10 need attention) · 65
 **Skills**
 - `security-and-hardening`: Hardens code against vulnerabilities. Use when auditing an input handler for vulnerabilities, when handling user input, authentication, data storage, or external integrations, or when checking a login flow is safe agains
 
+**Connectors**
+- `Arive` — *attention*: step 7e did not run (no credentials)
+
 **Mac tasks**
 - `access-audit-monthly`: First business morning of the month: Elena's access-auditor reviews who and what can read or write each store and connector, plaintext-secre
 
@@ -1187,6 +1293,13 @@ toolkit: 46 skills · 7 plugins · 12 connectors (2 ok, 10 need attention) · 65
 
 **Skills**
 - `tax-assessor-agent`: Property tax lookup for San Diego and Riverside County: reads PUBLIC assessor and tax-collector pages with read-only browser tools and writes a one-page Property Tax Sheet (APN, assessed values, exemptions to verify, Pro
+
+**MCP servers**
+- `Composio (cloud)` — *attention*: Zoho CRM, Google Docs, GitHub tool calls through Composio · connected — Zoho 403 until the API box is ticked
+
+**APIs**
+- `Zoho CRM (Composio)` — *pending*: read pipeline, write notes (drafts only) · pending — 403 until "Zoho CRM API Access" is ticked
+- `Arive LOS (API gateway v4.6)` — *pending*: read loans, status, leads; loan writes are HALT · pending — Pro-plan credentials (integrations/arive/README.md)
 
 **Cloud routines**
 - `Command Deck — Property Search & Tax-Data integrations health check (monthly)`: cron 0 15 1 * * · on · SUCCEEDED @ 2026-09-04T19:42
@@ -1203,8 +1316,16 @@ toolkit: 46 skills · 7 plugins · 12 connectors (2 ok, 10 need attention) · 65
 - `openmontage-video`: Make a marketing, explainer or training video with OpenMontage on the Mac (~/Applications/OpenMontage) — Sofia's brief, Claude Code runs the pipeline, Steven approves every creative stop, nothing is posted. Use when Stev
 - `past-client-nurture`: Monthly sphere-touch marketing drafts for Steven's past clients from reClients and pipeline — a local market note, home-purchase anniversaries and birthdays, and a plain check-in — as Gmail drafts plus the three template
 
+**Connectors**
+- `Drip campaigns + text follow-ups` — *attention*: planned — playbook written (wiki/real-estate-playbooks/drip-and-text-follow-up.md); specs on request; 10DLC is Steven's
+- `TikTok · GoHighLevel · Discord bot · HeyGen` — *attention*: not connected (Composio links last 10 minutes)
+
+**APIs**
+- `Pivo · Ticor Title` — *none*: tour links / CSV exports · no API
+
 **Cloud routines**
 - `VA Command Center — weekly avatar content drafts`: cron CRON_TZ=America/Los_Angeles 58 14 * * 0 · on · SUCCEEDED @ 2026-10-18T21:58
+- `Presence audit — AI search visibility (monthly, Sofia)`: cron CRON_TZ=America/Los_Angeles 10 7 1 * * · on · —
 - `Command Deck — Weekly content edit reminder`: cron 0 15 * * 1 · on · SUCCEEDED @ 2026-09-21T15:03
 - `Content Calendar Review`: cron 0 15 * * 1 · on · SUCCEEDED @ 2026-09-21T15:06
 - `SEO Content Gap Audit`: cron 0 17 1 * * · on · @
@@ -1225,7 +1346,16 @@ toolkit: 46 skills · 7 plugins · 12 connectors (2 ok, 10 need attention) · 65
 - `zoho-crm-sync`: Sync Zoho CRM — Steven's system of record for the mortgage pipeline — into the Command Deck through Composio: writes zohoSync (connection health), zohoLeads (14-stage kanban) and zohoDeals. Self-tests first and reports t
 
 **Connectors**
-- `Zoho CRM (Composio)` — *attention*: 403 NO_PERMISSION until the API box is ticked
+- `Zoho CRM` — *attention*: 403 until the API box is ticked
+- `homes.com · ShowingTime · Showami` — *attention*: wrappers installed; sign-ins (MFA) in the agent Chrome are Steven's
+- `Lofty` — *attention*: two paths on Mac 1 (2026-10-23 13:05 PT): the old local bridge is the MCP named lofty (stdio, ~/Applications/lofty-bridge/mcp-server.js, connected — the runner tasks use its mcp__lofty__* tools; it re
+
+**MCP servers**
+- `kapso` — *attention*: WhatsApp Business Cloud API read/answer (sandbox number first) · registered — needs Steven's sign-in (/mcp → kapso)
+
+**APIs**
+- `Lofty (developer.lofty.com)` — *pending*: read leads, stages, activities; writes are HALT · ready — no key on the Mac yet
+- `Kapso (WhatsApp Business Cloud)` — *pending*: read + answer WhatsApp (sandbox) · ready — Steven's sign-in
 
 **Cloud routines**
 - `Transaction & Showing desk — TC + showing assistant (weekdays 6:05 AM PT, before the cycle)`: cron CRON_TZ=America/Los_Angeles 5 6 * * 1-5 · on · SUCCEEDED @ 2026-10-22T14:10
@@ -1273,10 +1403,12 @@ toolkit: 46 skills · 7 plugins · 12 connectors (2 ok, 10 need attention) · 65
 - `git-workflow-and-versioning`: Structures git workflow practices. Use when making any code change. Use when committing, branching, resolving conflicts, splitting uncommitted work in a messy working tree into clean atomic commits, opening or reviewing 
 - `karpathy-coding-principles`: Andrej Karpathy's four behavioral guidelines for LLM coding — think before coding, simplicity first, surgical changes, goal-driven execution. Use when writing or editing any code, skill, task spec or Command Deck HTML in
 - `loan-pricing-agent`: Loan scenario and pricing PREP: builds the worksheet from facts Steven supplies, computes P&I, PITI, LTV and DTI with visible formulas, compares VA/FHA/conventional/jumbo/non-QM structures. Never quotes a rate, decides e
+- `openflowkit`: Draw diagrams that stay valid, editable and saved next to the code. Use when a flowchart, architecture, sequence, state, ER, class, mindmap or git graph would explain something better than prose, or when the user asks fo
+- `pr-lens`: WHAT: Draws a code change or part of a codebase as an animated architecture or data-flow diagram, on its own or in a pull request. WHEN: asked to diagram, visualise or explain a change or a system, or when a pull request
 - `reverse-engineering`: Reverse-engineering capability (REA) — gated. Describes morluto/rea (MIT, MCP server via npx rea-agents setup, 6.x) and the rules for when Steven's agents may use it and when not. Use when a seat proposes analysing a bin
 - `source-driven-development`: Grounds every implementation decision in official documentation. Use when you want to verify an approach against the official docs before implementing it, or when you want authoritative, source-cited code free from outda
 
-**Plugins (Claude Code mods)**
+**Claude mods (plugins)**
 - `brain-reflect`: /remember saves a standing rule into the second brain (bin/brain remember), refusing contact details and numbers.
 - `connection-beacon`: Status line with how many connections need Steven; /connections lists them with the fix; /owner <panel> says who keeps a Command Deck panel alive.
 - `halt-guard`: Proceed/Cancel before sends, shares, payments and force pushes (HALT list), when someone is at the keyboard.
@@ -1287,15 +1419,48 @@ toolkit: 46 skills · 7 plugins · 12 connectors (2 ok, 10 need attention) · 65
 - `NotebookLM "2nd brain" notebook sources` — *ok*: connected — connector signed in (5 notebooks); the SB Docs are not yet attached as sources
 - `Kapso (Mac 1)` — *attention*: plugin + MCP registered; ! Needs authentication
 - `Kapso webhooks (Pabbly → Kapso)` — *attention*: two trigger URLs not pasted yet
-- `Gondola (claude.ai)` — *attention*: Claude Code MCP registered; custom connector still his
+- `Gondola (travel)` — *attention*: MCP installed for Claude Code; the claude.ai connector is not added
 - `Orca pairing · AnyDesk permissions` — *attention*: apps installed on both Macs
 - `Mac 2` — *attention*: Python 3.12 (uv), Claude Code 2.1.309, mods, Agent OS, brain index, Orca, AnyDesk, Gondola done; Laya + Jarvis engine unproven (last REPORT not pasted)
-- `EVRoutes · Turo` — *reconnect*: needs_reconnect
+- `EVRoutes · Turo connectors` — *reconnect*: "needs reconnect" on claude.ai (EVRoutes also failed to connect in this session)
 - `Four http_api Sunday routines` — *attention*: still enabled
 - `GitHub repo visibility` — *attention*: public
+- `Fieldy → 2nd brain` — *ok*: connected — the daily "Fieldy → brain" task (6:50 AM PT, this session, Fieldy connector) writes memory/fieldy-meetings.md + the deck fieldyDesk doc and queues a recap item per meeting with action item
 - `Notion `brain-learn-daily` rows` — *attention*: resume with Mac 1's runner (signed in 2026-10-23); directory page written 2026-10-23
+- `Jarvis · Laya · Orca (Mac 1)` — *attention*: installed, tested, Orca on the Repo folder; phone pairing is Steven's
+- `Jarvis · Laya · Orca (Mac 2)` — *attention*: partially set — engine unproven; runner not yet imported
+- `Orca · Laya · Bonsai (Alienware)` — *pending*: not started — integrations/alienware/alienware-setup.ps1 never run on Windows yet
+- `AnyDesk (Mac 1, Mac 2)` — *attention*: installed; permissions + unattended password are Steven's
+- `AnyDesk (Alienware, tablet, phone)` — *attention*: not started — winget id AnyDesk.AnyDesk confirmed; iPad is outgoing-only, Android tablet can be controlled
+- `TidyCal` — *attention*: step 7c did not run (no token)
+- `MBS Highway Home Report` — *attention*: not connected — no public API; rep-issued webhook or CSV (integrations/mbs-highway/README.md)
+- `Pivo` — *attention*: no API — tour link / video file only (integrations/pivo/README.md)
+- `Ticor Title property search` — *attention*: no API — rep account + CSV/PDF export (integrations/ticor/README.md)
+- `OpenFlowKit MCP + skill · pr-lens skill · archify skill (the four repos, 2026-10-23)` — *pending*: installed in the repo (skills) / pending on the Macs (MCP by connect-all 6g, archify by install-mac.sh); integrations/skill-packs/REGISTRY-2026-10-23.md
+- `AI-search presence (AEO/GEO/SEO)` — *attention*: planned — playbook written (wiki/real-estate-playbooks/ai-search-visibility.md); monthly presence audit task live (1st, 7:10 AM PT)
+- `Mac runner (all Mac tasks)` — *ok*: healthy — runnerctl status 12:33 PT: 42 ok (morning tasks all ran today), 5 error (toolkit-deck-sync, nightly-self-test, three Sunday weeklies), 4 limited, 3 paused; the step-2 "silent since Oct 13" r
+- `AnyDesk (Mac 1)` — *attention*: installed; ID [phone masked]; Screen Recording + Accessibility + unattended password are Steven's
+- `Pabbly ↔ Kapso webhooks, six workflows` — *attention*: Kapso login proven; webhook URLs and the six workflows are clicks at connect.pabbly.com
+- `Laya routes, Orca launches the AI team` — *attention*: installed on Mac 1 (connect report #3); connect-orca-laya.sh --apply + agent-os/install-mac.sh --apply re-run by the paste; brain os check is the proof
+- `6D Brain shows all of it` — *attention*: the layers panel reads brain/state/jarvis-status.json (persona, indexed pages) and the toolkit register reads this table; the daily 3:30 AM rebuild carries it
+- `Command Deck chat box` — *attention*: works in claude.ai through the viewer's own Claude (sample declared); last message 2026-09-13
+- `SkySlope (transactions, documents)` — *attention*: key on Mac path ready — integrations/skyslope/skyslope_cli.py (stdlib, GET-only, SkySlope's own HMAC login from github.com/skyslope/example-authentication); the login needs two pairs: the Access Key +
+- `Night-time answer latency` — *attention*: up to 60 minutes until the Mac window is widened, then 10 minutes
+
+**MCP servers**
+- `playwright` — *ok*: browser automation for sites with no API · installed
+- `browser-use` — *ok*: second browser agent path (DOMShell-backed) · installed
+- `api-anything` — *ok*: turns any documented REST API into tools · installed
+- `openflowkit` — *pending*: architecture, flow, sequence and ER diagrams the agent draws and saves as `.openflow.json` · pending — step added 2026-10-23, runs on the next paste
+- `github (cloud)` — *ok*: repository read/write, PRs, issues · connected
+
+**APIs**
+- `SkySlope (api.skyslope.com, BETA)` — *pending*: read users/me, files (sales + listings), a file, its documents, checklist types; writes are HALT · ready — client built 2026-10-24; keys land with the paste (Steven has the access pair; Cli
+- `GitHub (repo)` — *ok*: read/write the Repo branch · connected
+- `MBS Highway Home Report` — *none*: enrol past clients (Steven's click) · no API (integrations/mbs-highway/README.md)
 
 **Cloud routines**
+- `Health daily sync — Apple Health (Drive export) + Strava → deck (6:15 AM PT; `appleHealth`, `stravaS`: cron CRON_TZ=America/Los_Angeles 15 6 * * * · on · first run by hand 2026-10-23
 - `Command Deck — daily freshness sweep (writer, Claude; once a day since 2026-10-22, per-key cadence)`: cron 40 15 * * * · on · SUCCEEDED @ 2026-10-20T15:40
 - `Command Deck — morning feeds (writer, Claude)`: cron 5 13 * * * · on · SUCCEEDED @ 2026-10-20T13:08
 - `Command Deck — market close (writer, Claude)`: cron 20 21 * * 1-5 · on · SUCCEEDED @ 2026-10-19T21:20
@@ -1306,6 +1471,9 @@ toolkit: 46 skills · 7 plugins · 12 connectors (2 ok, 10 need attention) · 65
 - `Sphere & past-client touches — monthly drafts (day 11, 7:40 AM PT, drafts only)`: cron CRON_TZ=America/Los_Angeles 40 7 11 * * · on · —
 - `Weekly ecosystem backup — cloud writer (Sunday, after the allowance reset)`: cron 7 21 * * 0 · on · SUCCEEDED @ 2026-10-22T14:16 (catch-up)
 - `6D Brain — daily rebuild and republish (3:30 AM PT, this session)`: cron CRON_TZ=America/Los_Angeles 30 3 * * * · on · —
+- `Fieldy → brain (daily meeting digest; first names only)`: cron CRON_TZ=America/Los_Angeles 50 6 * * * · on · ran 2026-10-23 (0 recordings)
+- `Claude sessions ledger (docs/inventory/claude-sessions.md, daily)`: cron CRON_TZ=America/Los_Angeles 52 3 * * * · on · ran 2026-10-23
+- `Second Brain layers weekly sync (export → Drive SB Docs → Notion directory → layers report)`: cron CRON_TZ=America/Los_Angeles 45 14 * * 0 · on · —
 - `Account Health Check`: cron 0 17 * * 1 · on · SUCCEEDED @ 2026-09-21T17:09
 - `Books Reconciliation Reminder`: cron 0 22 * * 5 · on · FAILED @ 2026-09-18T22:01
 - `Command Deck Brief`: cron 45 13 * * * · on · SUCCEEDED @ 2026-09-21T13:45

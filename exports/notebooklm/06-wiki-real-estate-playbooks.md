@@ -1,8 +1,93 @@
 # Real-estate playbooks
 
-Second Brain export for NotebookLM · as of 2026-10-23 · bundle `06-wiki-real-estate-playbooks`.
+Second Brain export for NotebookLM · as of 2026-10-26 · bundle `06-wiki-real-estate-playbooks`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
+
+
+---
+
+<!-- source file: wiki/real-estate-playbooks/ai-search-visibility.md -->
+# FILE: wiki/real-estate-playbooks/ai-search-visibility.md
+
+# AI-search visibility — being found by ChatGPT, Perplexity, Gemini, Google AI (AEO · GEO · SEO), as of 2026-10-23
+
+Steven's ask (2026-10-23): "AEO, AIO, GEO, SEO optimizations of me on the internet". Owner: **Sofia (CMO)** drafts and
+audits; **Alexandra** reviews any page with a licence, rate or client statement; **Steven** signs in, verifies and posts.
+Researched 2026-10-23 by web search (vendor data ±10 points; one source per claim is in the brain's research log).
+
+## Why this order
+
+- 86% of AI citations come from brand-managed sources; ChatGPT leans on third-party listings (49%), Gemini on
+  websites (52%), forums about 2% for local intent (Yext, 6.8M citations, Oct 2025).
+- Google needs no special markup for AI Overviews / AI Mode; AI-feature traffic shows in Search Console under "Web".
+- Specialty queries ("VA loan officer who is also a realtor, San Diego") name a specific agent 87% of the time; 91.5%
+  of ranked agents got zero AI citations in a 37,500-query audit (Aug 2026). **The VA / military niche is the lever.**
+
+Legend: **S** = Steven (sign-in, verification, licensed act) · **AI** = Sofia drafts or audits · **S+AI** = AI drafts, Steven posts.
+
+## Tier 1 — listings and reviews (highest impact, cheapest)
+
+1. **Google Business Profile** — one profile; primary "Real estate agent", secondary "Mortgage broker"; service area =
+   the SoCal cities he actually serves; services list (VA purchase, VA IRRRL, FHA, conventional, listing, buyer rep);
+   a Post every week; ten seeded VA questions in Q&A. **S** verify and own · **AI** descriptions, posts, Q&A, monthly audit.
+   Benchmarks from loan-officer guides: 50+ reviews, review velocity over star count, 90 days of steady posting.
+2. **Reviews, compliant** — day-10 ask after every close (the `review-request` skill): Google first, then Zillow; ask the
+   client to mention the city, VA/military and what he did (geography + specifics are what AI cites). **No incentive of
+   any kind** (Google policy; FTC Consumer Review Rule, ~$53k per violation); never gate or filter negatives. **S** sends.
+3. **Portal profiles, identical everywhere** — Zillow (agent + lender/NMLS), Realtor.com, Homes.com, LinkedIn, Yelp
+   (in ~80% of ChatGPT local answers), Bing Places. Same name, brokerage, phone, address and bio wording. **S** claims ·
+   **AI** keeps the canonical bio (`context/about-me.md`) and runs a quarterly NAP check.
+4. **NMLS Consumer Access** — name, employer (Patriot Pacific Financial), licence states current; link to it from the
+   site and LinkedIn. **S** (NMLS login) · **AI** check.
+
+## Tier 2 — his own site (the Gemini / Google lever)
+
+5. **Entity page** — `/about` as a `ProfilePage` whose `mainEntity` is a `Person` (jobTitle, worksFor → LPT Realty +
+   Patriot Pacific Financial, identifier NMLS 1921615 and the DRE number, knowsAbout VA loans, areaServed, `sameAs` →
+   GBP, Zillow, LinkedIn, YouTube, NMLS, DRE lookup), plus a `RealEstateAgent` node and a `MortgageBroker` node linked
+   by `@id`. Markup must match the visible text. **AI** writes and validates the JSON-LD · **S** publishes.
+6. **Niche answer pages + FAQPage** — 10 to 15 pages that answer one question each in the first 60 words: VA loan with
+   PCS orders in San Diego, funding-fee exemption, a veteran buying a multi-unit in Riverside, a VA offer against a
+   conventional buyer. **AI** drafts · **Alexandra/S** approve; no rate, no eligibility promise.
+7. **llms.txt** — cheap; Anthropic and Perplexity read it, OpenAI/Google unconfirmed. **AI**.
+8. **Author bio on every page** (name, licences, veteran, NMLS/DRE) with `author` → the Person `@id`. **AI**.
+
+## Tier 3 — off-site authority
+
+9. **YouTube** — the most-cited domain on Perplexity (32% of citations). Short VA explainers, titles phrased as the
+   question, transcript on the matching site page. **S** records · **AI** scripts, descriptions, chapters.
+10. **Press, podcasts, associations** — veteran-business features, the Navy Chief story, VREB/VAREP, military-spouse
+    groups, the LPT and Patriot Pacific team pages linking to `/about`. **S+AI**.
+11. **Reddit / Quora** — low weight for local; only genuine answers in r/VeteransBenefits, r/Militaryfinance, r/SanDiego
+    with the licence disclosed; never solicit. **S only** (licensed-advice risk).
+
+## Measurement — the monthly audit (the `presence-audit` task runs it; Steven reads `docs/reports/PRESENCE.md`)
+
+- **Prompt set (20)** across ChatGPT, Perplexity, Gemini, Claude, Google AI Mode: "best VA loan officer in San Diego",
+  "veteran-friendly realtor Temecula", "who is Steven Shearrill", "Steven Shearrill NMLS", "real estate agent who is also
+  a loan officer Southern California", "VA IRRRL lender Riverside County", plus 14 city × service variants. Log:
+  mentioned Y/N, position, cited URL, sentiment. The task can only run the web-search half from the cloud; the four
+  chat engines are a once-a-month 10-minute paste for Steven (the prompts are in the report).
+- **Search Console**: branded queries + the FAQ pages. **GBP Insights**: calls, site clicks, review count and velocity.
+- **Score**: mentions ÷ prompt-runs. Target: above zero by month 3, above 20% by month 6 (vendors claim 60–90 days to
+  first movement). Paid trackers are optional; the prompt set costs nothing.
+
+## Compliance flags (every item)
+
+- **DRE licence number** on all first-point-of-contact material, websites, e-mail and social (B&P 10140.6(b)); font no
+  smaller than the ad's smallest text (DRE RE 559).
+- **NMLS ID** on every ad soliciting borrowers — California B&P 10236.4 requires the broker licence and each MLO's NMLS
+  identifier; DRE RE 858 says this reaches the internet.
+- **Equal Housing Opportunity** logo or statement on real-estate and loan advertising (HUD 4310.5).
+- **Reviews**: no inducements, no selective solicitation.
+- **HALT**: any page with a rate, an eligibility statement or a client name goes to Alexandra, then Steven, before publish.
+
+## What Steven does first (30 minutes)
+
+1. Claim or verify Google Business Profile and Bing Places; 2. claim Zillow (agent and lender), Realtor.com, Homes.com,
+Yelp; 3. send Sofia the DRE number and the site's host login path (never the password) so the entity page and llms.txt can
+be drafted for his review; 4. record one 60-second VA explainer on the phone.
 
 
 ---
@@ -56,6 +141,92 @@ Source: Command Deck, "Real estate transaction — lead to close" card and the b
 
 ---
 
+<!-- source file: wiki/real-estate-playbooks/drip-and-text-follow-up.md -->
+# FILE: wiki/real-estate-playbooks/drip-and-text-follow-up.md
+
+# Drip campaigns and text follow-ups — Lofty, Zoho, Pabbly, and the rules (as of 2026-10-23)
+
+Steven's ask (2026-10-23): "setup drip campaigns and text messages follow ups" across Arive, Zoho and Lofty. Owner:
+**Victor (CRO)** for the lead lanes, **Harrison** for refi touches, **Alexandra** reviews every template; **Steven**
+enables plans, approves copy and registers texting. Researched 2026-10-23 (vendor help pages via search; menu paths
+marked (G) are to be confirmed in-app).
+
+## Where each drip lives
+
+| Lane | System | Mechanism | Trigger | Text sending |
+|---|---|---|---|---|
+| Buyer and seller leads, open-house visitors, sphere | **Lofty** | Smart Plans (Auto Email, Auto Text, call/task steps, branching; "AI Builder" builds a plan from a description). Path: Automation → Smart Plans → Create (older builds: Marketing → Automation) | "Lead Created" (new or all leads); manual or bulk apply; stage/tag triggers live in the Automation module (G) | Lofty is the ISV: it registers the 10DLC brand + campaign for you. Sole-proprietor brand = 1 campaign, 1 number; Standard brand needs an EIN. Unregistered = blocked |
+| Mortgage pipeline (lead → application → funded), refi watch, post-funding | **Zoho CRM** | Workflow Rules (Setup → Automation → Workflow Rules): create/edit/field-update triggers, instant + scheduled e-mail, task, field update, webhook; e-mail templates under Setup → Customization → Templates. Zoho Campaigns for long drips (CRM → Campaigns sync is effectively one-way) | Stage field change | No native SMS. Marketplace "Twilio SMS Texting for Zoho CRM": Twilio number + Twilio's own 10DLC registration + per-message cost |
+| Arive (LOS) | **Arive → Zoho** | Arive has no drips; its Zapier (private app) triggers — Loan Status Updated, Key Dates Updated, POS Application Submitted — feed Zoho stage changes through Pabbly (`integrations/arive/README.md`) | Loan status | — |
+| Cross-system glue | **Pabbly Connect** | Workflows 7–10 in `integrations/pabbly/WORKFLOWS.md` (post-close, sphere, open house, voicemail) + Lofty API ↔ Zoho ↔ Gmail | — | — |
+
+Auto-pause: a Lofty plan stops when the lead replies by e-mail, call or text, or to the AI Sales Agent; any manual
+message takes over. Lofty's AI Sales Agent (AI Copilots → Sales Agent → Settings) texts on its own — Proactive /
+Balanced / Reserved; it stops on do-not-contact hints but does **not** flip opt-in status. Steven picks the style.
+
+## The cadences (day · channel · purpose) — copy stays a draft until Steven approves it
+
+**New buyer lead** (Lofty, trigger Lead Created, auto-pause on reply)
+
+| Day | Channel | Purpose |
+|---|---|---|
+| 0 (≤ 5 min) | Text | Intro, confirm search criteria (the speed-to-lead text) |
+| 0 | E-mail | Welcome + saved-search link |
+| 0 | Call task | Speed-to-lead call |
+| 1 | Text | "Did the homes fit?" |
+| 2 | E-mail | Pre-approval value (the MLO angle; no rate) |
+| 4 | Call task | Second attempt |
+| 7 | Text | New-listings nudge |
+| 10 | E-mail | Market snapshot |
+| 14 | Text | Last touch → move to the long-term drip |
+
+**Seller lead:** D0 text + e-mail (home-value CTA) · D1 call task · D3 e-mail (how comps work) · D7 text · D14 e-mail
+(prep checklist) · D30 text (market update).
+**Refi / rate-watch past client** (Zoho, tag RateWatch; **no rate in any touch**): monthly e-mail market-average note ·
+quarterly text check-in · a task when the `refi-watch` routine lists them (`refi-review-prep.md`).
+**Post-close** (Lofty Closed / Zoho Funded): D1 thank-you · D10 review request · D30 check-in · D90 home-tips · annual
+anniversary e-mail + text (`post-close-care.md`, `review-request` skill).
+**Sphere monthly:** e-mail (local market note) · birthday / anniversary text · quarterly call task (`sphere-nurture.md`).
+
+## Rules every template and send obeys
+
+- **TCPA**: marketing texts need prior express written consent (an e-sign tick is fine); the FCC's one-to-one rule was
+  vacated and the prior standard reinstated 2025-08-29. Revocation by any reasonable method, honoured within 10
+  business days; one confirmation text allowed. Quiet hours 8 AM–9 PM recipient local time — set Lofty/Twilio windows
+  9 AM–7 PM PT. STOP/HELP handled by Lofty and Twilio natively — never override an opt-out.
+- **CAN-SPAM**: physical address + working unsubscribe in every marketing e-mail.
+- **10DLC**: registered before the first text (Lofty does it as ISV; Twilio is Steven's own registration).
+- **California B&P 10140.6(b)**: DRE licence number **and** NMLS ID on all first-point-of-contact solicitation material,
+  font no smaller than the ad's smallest (DRE RE 559). **Equal Housing** logo or legend on dwelling-loan ads.
+- **CCPA/CPRA**: notice at collection on every lead form; "Do Not Sell or Share" link if lead data goes to partners.
+- Footer for every template: `Steven Shearrill · LPT Realty · DRE #____ · NMLS #1921615 · Patriot Pacific Financial
+  NMLS #____ · Equal Housing Opportunity · [address] · Reply STOP to opt out.`
+- **HALT**: a rate, an eligibility promise, or a send to a client is Steven's; the team drafts and specs only.
+
+## Who does what
+
+| The AI team (drafts and specs, nothing sent) | Steven only |
+|---|---|
+| Every template with the footer; the Smart Plan spec (steps, timing, branches) phrased for Lofty's AI Builder; the Zoho workflow + template specs per stage; the Pabbly maps; the CCPA form notice text | Enable or publish each plan; approve all copy; 10DLC registration (Lofty, and Twilio if Zoho texts); buy the Twilio number and credits; generate the Lofty API key (Settings → Integrations → API); tick Zoho's API access; choose send windows; pick the Sales Agent style |
+
+## Setup order (Steven, about 40 minutes once the specs are approved)
+
+1. Lofty → Settings → Integrations → API → create key → paste it into `bash connect-all.sh` step 7b (never into chat).
+2. Lofty → start 10DLC registration (A2P 10DLC guide in Lofty help) — sole-proprietor or EIN brand.
+3. Lofty → Automation → Smart Plans → Create → AI Builder → paste the approved buyer-lead spec → set trigger Lead
+   Created → turn on. Repeat for seller, post-close, sphere.
+4. Zoho → Setup → Security Control → Profiles → Developer Permissions → tick "Zoho CRM API Access" (the 403 fix).
+5. Zoho → Setup → Automation → Workflow Rules → one rule per stage with its approved e-mail template.
+6. Only if Zoho should text: install "Twilio SMS Texting for Zoho CRM", buy a Twilio number, register 10DLC in Twilio.
+7. Say "specs ready for review" to Vanessa; Victor and Alexandra return the four Smart Plan specs and the Zoho rules as
+   drafts in the Vanessa queue.
+
+Open items to confirm in-app: Lofty stage/tag triggers, Lofty tag/note/enrolment endpoints and webhooks, the 2026
+status of the TCPA revoke-all deferral.
+
+
+---
+
 <!-- source file: wiki/real-estate-playbooks/index.md -->
 # FILE: wiki/real-estate-playbooks/index.md
 
@@ -96,6 +267,8 @@ the deeper primary source when a page here doesn't answer fully.
 
 A specific transaction, a specific buyer, or a specific address. Those go in `wiki/clients/` as
 full-context pages, and they stay on the Mac.
+- `ai-search-visibility.md` — being found by ChatGPT/Perplexity/Gemini/Google AI: GBP + reviews first, entity page + FAQ pages, YouTube; monthly prompt-set audit; DRE/NMLS/EHO ad rules (2026-10-23)
+- `drip-and-text-follow-up.md` — where each drip lives (Lofty Smart Plans, Zoho workflows, Arive→Zoho via Pabbly), the cadences per lane, TCPA/10DLC/CAN-SPAM/DRE-NMLS/EHO rules, who does what (2026-10-23)
 
 
 ---

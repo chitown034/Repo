@@ -1,6 +1,6 @@
 # Projects and their status
 
-Second Brain export for NotebookLM · as of 2026-10-23 · bundle `03-projects`.
+Second Brain export for NotebookLM · as of 2026-10-26 · bundle `03-projects`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 

@@ -1,6 +1,6 @@
 # Router (CLAUDE.md) and the index of every page
 
-Second Brain export for NotebookLM · as of 2026-10-23 · bundle `01-router-and-index`.
+Second Brain export for NotebookLM · as of 2026-10-26 · bundle `01-router-and-index`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 
@@ -90,6 +90,8 @@ On the Mac this router's job is done by the vanessa-orchestrator system prompt +
 | Status of a named project | `projects/<name>.md` — command-deck, isa-portal, ai-team, nonprofit, usc-pjmt-530 | the deck HTML |
 | Loan program, guideline, VA mechanics, eligibility | `wiki/mortgage-programs/index.md` → one named page | playbooks |
 | Listing, buyer, transaction or showing process | `wiki/real-estate-playbooks/index.md` → one named page | mortgage wiki |
+| "What should I do today", the big moves, what to improve, what could go wrong, what to pursue, a recommendation and its plan | `docs/reports/BIG-MOVES.md` (today's top 10 + four courses of action, 4 each, + the questions block; `bin/brain recs --coas`) → approve or decline on the 6D Brain or the deck | the whole findings tree |
+| Marketing: drip campaigns, text follow-ups, being found by AI search / SEO | `wiki/real-estate-playbooks/index.md` → `wiki/real-estate-playbooks/drip-and-text-follow-up.md` or `wiki/real-estate-playbooks/ai-search-visibility.md` | mortgage wiki, the deck |
 | Who on the AI team owns X, seat/model/trust level | `wiki/ai-team/index.md` | the 172-agent roster dump |
 | Which layer holds what, how it syncs, is the brain "even" | `wiki/ai-team/second-brain-layers.md` → `bin/brain layers` | the stores themselves |
 | "Open X" — the link to a dashboard, Drive, NotebookLM, Notion, the repo | `bin/brain links` (zero tokens; the 6D page shows the same list) | any wiki page |
@@ -97,6 +99,7 @@ On the Mac this router's job is done by the vanessa-orchestrator system prompt +
 | A specific client | `wiki/clients/<client>.md` — FULL CONTEXT, read whole | vector index, knowledge graph |
 | A source document, playbook PDF, external system | `references/index.md` | anything else |
 | Something learned in an earlier session | `memory.md` | wiki |
+| What was said, decided or promised in a recorded meeting | `memory/fieldy-meetings.md` (daily digest from Fieldy; first names only) → the Fieldy connector for the full recap | transcripts into the wiki |
 | "What did I ask Claude about X", which session/chat did something | `docs/inventory/claude-sessions.md` (Claude Code sessions, daily) · `memory/claude-chats.md` (claude.ai chats, from his export) | transcripts |
 | A high-volume corpus (transcripts, disclosure libraries, rule sets) | `vector-index/README.md` | full-context docs |
 | "How do these connect" — entities, relationships | `knowledge-graph/README.md` | vector index |
