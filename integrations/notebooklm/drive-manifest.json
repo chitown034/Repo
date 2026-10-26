@@ -128,28 +128,28 @@
  "account": "steven.shearrill@gmail.com (claude.ai Google Drive connector + Composio googledocs)",
  "last_sync": {
   "notion_directory": {
-   "date": "2026-10-23",
+   "date": "2026-10-26",
    "page": "https://app.notion.com/p/402c1760a749811eaea5d07005df0179"
   },
-  "date": "2026-10-23",
-  "at": "2026-10-23T13:09:56Z",
+  "date": "2026-10-26",
+  "at": "2026-10-26T03:09:31Z",
   "sha": {
-   "00-START-HERE.md": "7f6398dae8ed88cf",
-   "01-router-and-index.md": "ed427fb82051b916",
-   "02-who-and-decisions.md": "ee98385c3cb88165",
-   "03-projects.md": "47537dfa54ab4caa",
-   "04-wiki-ai-team.md": "b7422cb47f754568",
-   "05-wiki-mortgage-programs.md": "941d2c1b9855537a",
-   "06-wiki-real-estate-playbooks.md": "2661bcc83a0ccb0d",
-   "07-wiki-dashboard-ops.md": "0c704170138a9222",
-   "08-wiki-events-networking.md": "9fafe5d7ccd9b49f",
-   "09-references.md": "c45d39d98992858e",
-   "10-always-on-and-automation.md": "d295e29c156c2468",
-   "11-6d-brain-map.md": "fe385786a279df72",
-   "12-integrations.md": "77e8d84e63854299"
+   "00-START-HERE.md": "9ef329fed98bd6c1",
+   "01-router-and-index.md": "f23a8111460bc1da",
+   "02-who-and-decisions.md": "0bdfcea9300143d7",
+   "03-projects.md": "d3b2c06cbd138beb",
+   "04-wiki-ai-team.md": "aaecac82000afa4c",
+   "05-wiki-mortgage-programs.md": "57bf393be236aeea",
+   "06-wiki-real-estate-playbooks.md": "4412e02311e8c8fc",
+   "07-wiki-dashboard-ops.md": "67c1329c1b301b4f",
+   "08-wiki-events-networking.md": "18a8469613873fb3",
+   "09-references.md": "0effadfcae9aa826",
+   "10-always-on-and-automation.md": "8af9ba4aeebbb5ce",
+   "11-6d-brain-map.md": "cbfd6ef47f506563",
+   "12-integrations.md": "4aad0e6ec634fbdb"
   },
   "updated": 13,
   "failures": [],
-  "note": "manual full sync on Steven's \"sync everything now\" (02-who-and-decisions via the chunked fallback, 0 pieces failed)"
+  "note": "weekly routine (fired 2026-10-25 21:45 UTC, ran late 2026-10-26); 12 docs via GOOGLEDOCS_UPDATE_DOCUMENT_MARKDOWN, 02-who-and-decisions via the chunked fallback (26 pieces, piece 21 split into 500-char sub-pieces after a WAF 403), 0 failures"
  }
 }
