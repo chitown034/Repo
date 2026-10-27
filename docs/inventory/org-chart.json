@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-26T13:25:38Z",
+ "generated": "2026-10-27T13:08:49Z",
  "seats": [
   {
    "name": "Steve",
@@ -623,7 +623,11 @@
    "required forms",
    "forms checklist",
    "deal type forms",
-   "548 forms"
+   "548 forms",
+   "skyslope library",
+   "library copies",
+   "lpt realty forms",
+   "form lookup"
   ],
   "Sterling": [
    "5-star",
@@ -751,7 +755,12 @@
    "environmental hazards",
    "earthquake safety",
    "new broker start-up",
-   "team building"
+   "team building",
+   "transaction playbook",
+   "every step",
+   "rpa deadline",
+   "legal holiday deadline",
+   "wire verification"
   ],
   "Showing Coordinator": [
    "showingtime",
@@ -884,6 +893,63 @@
    "hire trigger",
    "efficiency",
    "automation coverage"
+  ],
+  "Sloane": [
+   "doc screener",
+   "screen document",
+   "document review",
+   "fine print",
+   "hidden clause",
+   "clause",
+   "hidden fee",
+   "prelim",
+   "title report",
+   "cc&rs",
+   "hoa documents",
+   "closing disclosure",
+   "loan estimate",
+   "lease review",
+   "contract review",
+   "deadline extraction"
+  ],
+  "Nova": [
+   "coverage",
+   "uncovered",
+   "who owns",
+   "owner for",
+   "sync status",
+   "is it synced",
+   "live data",
+   "sweep",
+   "what is missing",
+   "process gap",
+   "health check"
+  ],
+  "Isabel": [
+   "loan processing",
+   "processor",
+   "conditions",
+   "underwriting conditions",
+   "document checklist",
+   "voe",
+   "vod",
+   "application date",
+   "loan estimate",
+   "le deadline",
+   "appraisal order",
+   "intent to proceed"
+  ],
+  "Reyes": [
+   "closing disclosure",
+   "cd timing",
+   "trid",
+   "consummation",
+   "rate lock",
+   "lock expiration",
+   "funding",
+   "rescission",
+   "signing appointment",
+   "clear to close"
   ]
  },
  "tiers": {
