@@ -2676,3 +2676,235 @@ All five confirmed findings are fixed and verified independently. There are no o
 
 I reviewed the splice source in the repo, not the published version 251. The card code above was cut from
 dashboard/wave2/splice-process-coverage.py, and I did not re-read the live page.
+
+---
+
+# VibeBreaker review: setup.sh, the one Mac paste (2026-10-27)
+
+change-set: 9aa467d1f6ca9270
+
+Reviewer: code-validator, 2026-10-27. `bash scripts/validate-code.sh --hash` printed `9aa467d1f6ca9270`, the same hash
+the caller named. `bash scripts/validate-code.sh` → `verdict: PASS (13 passed, 0 failed)`. `bash scripts/tests/test_setup.sh`
+→ `pass 13 FAIL 0`. `node dashboard/tests/runtime-harness.js dashboard/action-desk.html` → `verdict: PASS`.
+Passes run: 01, 04, 05, 11, 14 and 19 on the shell scripts; 01, 04, 05, 17 and 19 on the Action Desk HTML; then 20.
+
+## Verdict
+
+`FIX FIRST`
+
+The deterministic checks pass. The paste still moves Steven's Mac off this branch within 30 minutes, and in a documented
+everyday state it may not reach setup.sh at all. The REPORT also lists a signed-out runner as connected.
+
+## Scoreboard
+
+- Confirmed: 5 (HIGH 1, MEDIUM 2, LOW 2)
+- Unverified: 1
+- Rejected: 4
+- First high pass: 05
+
+## CONFIRMED
+
+```yaml
+id: P05-F1
+pass: 05
+title: The repo-sync LaunchAgent switches the Mac back to claude/stoic-cori-pvn3f8, during the paste and every 30 minutes after it
+status: CONFIRMED
+severity: HIGH
+confidence: HIGH
+location:
+  - path: connect-all.sh
+    line: 67-84 (repo_sync_agent plist, EnvironmentVariables holds only PATH; RunAtLoad true; StartInterval 1800), 95 (installed on every non-preview run)
+  - path: scripts/repo-sync.sh
+    line: 38 (BRANCH defaults to claude/stoic-cori-pvn3f8), 170-180 (step 5 checks out BRANCH whenever the Mac is on another branch)
+  - path: setup.sh
+    line: 20-21 (the exported REPO_SYNC_BRANCH reaches only child processes, not launchd)
+entry_or_trigger: The Action Desk / STEVEN-STEPS paste checks out claude/gracious-newton-4hpfco, then runs setup.sh, which runs connect-all.sh, which runs step 1b.
+evidence: The plist runs repo-sync.sh --quiet with no REPO_SYNC_BRANCH. launchd does not inherit the shell's exports, so repo-sync uses its default stoic-cori. CUR (gracious-newton) differs from that, so step 5 runs `git checkout -q claude/stoic-cori-pvn3f8`. setup.sh exists on neither origin branch yet. When it is pushed, it will be on gracious-newton only (git cat-file -e origin/claude/stoic-cori-pvn3f8:setup.sh → 128). The two branch tips differ (git ls-remote fedd92e vs f2a8f19).
+existing_controls_checked: setup.sh exports REPO_SYNC_BRANCH. connect-all step 1 passes it to its own repo-sync call. The repo-sync lock (one sync at a time) does not help, because step 1 has already released it before 1b loads the agent.
+failure_scenario: Steven pastes. launchctl load runs repo-sync at once (RunAtLoad), while connect-all steps 2 to 7 are still reading files from the working tree. The tree flips to stoic-cori. After the paste the Mac sits on stoic-cori, so "Run this again any time: cd ~/Repo && bash setup.sh" fails with No such file, and fix-mine/connect-all fall back to the old versions.
+impact: The one paste does not stay installed, and later steps of the same run may execute the other branch's scripts.
+remediation_direction: Pick one branch that every Mac path follows. Either merge this change into claude/stoic-cori-pvn3f8 and point the paste there, or write REPO_SYNC_BRANCH (from CONNECT_ALL_BRANCH) into the plist's EnvironmentVariables.
+verification: In connect-all-tests.sh, run with CONNECT_ALL_BRANCH=x and assert the generated plist contains <key>REPO_SYNC_BRANCH</key><string>x</string>. In a repo-sync test, start on branch x with REPO_SYNC_BRANCH=x and assert HEAD is still x afterwards.
+needs_context: null
+```
+
+```yaml
+id: P11-F1
+pass: 11
+title: The paste's raw `git checkout` aborts on the rebuilt brain files, and then `bash setup.sh` runs on a branch that lacks it
+status: CONFIRMED
+severity: MEDIUM
+confidence: MEDIUM
+location:
+  - path: dashboard/action-desk.html
+    line: card data-id "E" (<code> and data-copy, identical)
+  - path: docs/STEVEN-STEPS.md
+    line: "## Start here (2026-10-27)" code block
+entry_or_trigger: Steven pastes while ~/Repo has uncommitted local rebuilds of brain/index.json, INDEX.md or docs/reports/*.md. scripts/repo-sync.sh lines 8-12 say this happens on the Mac every day.
+evidence: The line is `cd ~/Repo && git fetch -q origin && git checkout -q claude/gracious-newton-4hpfco && git pull -q --ff-only; bash setup.sh`. The rebuilt files differ between the two branch tips (git diff --stat across brain/index.json, INDEX.md and ENCYCLOPEDIA.md: 3 files, 282+/260-). In that state git refuses the checkout ("local changes would be overwritten"), the && chain stops, and the `;` still runs `bash setup.sh` on the current branch.
+existing_controls_checked: scripts/repo-sync.sh exists to handle exactly this (backup, then restore the generated files, then switch). The paste does not use it.
+failure_scenario: The checkout aborts. The Mac stays on stoic-cori, and `bash setup.sh` prints "No such file or directory". Nothing runs.
+impact: Steven's one paste does nothing, and the screen shows two git errors.
+remediation_direction: Change the branch with repo-sync instead of a raw checkout, e.g. `REPO_SYNC_BRANCH=<branch> bash scripts/repo-sync.sh`. Once P05-F1 is fixed by merging, there is no checkout to do.
+verification: In a temp clone, dirty brain/index.json on branch A, run the paste text against branch B, and assert setup.sh runs (for example, its "setup.sh -" header line is printed).
+needs_context: null
+```
+
+```yaml
+id: P04-F1
+pass: 04
+title: The connection check reports a signed-out Mac runner as "Connected"
+status: CONFIRMED
+severity: MEDIUM
+confidence: HIGH
+location:
+  - path: setup.sh
+    line: 91
+entry_or_trigger: The REPORT's step 5, on any Mac where runnerctl is installed.
+evidence: case "$rs" in *"logged in"*|*running*|*ok*). The first status line has the form "updated … · CLI logged in · running … · waiting …" (scripts/tests/test_fix_mine.sh:42). When signed out it reads "CLI NOT logged in" (integrations/CONNECTIONS.md:436). The match is case-sensitive, so "CLI NOT logged in" matches *"logged in"*. Line 1 also always contains "running", and task rows contain "last ok", so the miss branch is almost never reached. Replaying the documented signed-out line gives the OK branch.
+existing_controls_checked: fix-mine step_runner greps "CLI logged in" and adds item R to its own nested REPORT. setup.sh's final only-you list (1-11) never mentions runnerctl login.
+failure_scenario: The runner is signed out. That has been the main reason Mac tasks are silent since Oct 13. The final REPORT lists "Mac runner: updated … CLI NOT logged in …" under "Connected / on this Mac", and runnerctl login is missing from "Only you".
+impact: Steven and Claude both read the report as all clear while every Mac task is idle.
+remediation_direction: Test for "CLI logged in" exactly, as fix-mine does. Otherwise, call miss_ and add `runnerctl login` to the only-you list.
+verification: In test_setup.sh, put a runnerctl stub on PATH that prints "updated … · CLI NOT logged in · running none · waiting 24". Assert the REPORT has "Mac runner" under "Not yet" and "runnerctl login" under "Only you".
+needs_context: null
+```
+
+```yaml
+id: P14-F1
+pass: 14
+title: '"Keys asked once" is false: a key skipped in step 2 is asked again in step 3'
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: setup.sh
+    line: 52, 59
+  - path: connect-all.sh
+    line: 403-406 (Lofty), 430-434 (TidyCal), 455-464 (Arive, gated on ARIVE_API_KEY only)
+entry_or_trigger: Steven presses Enter at fix-mine's Lofty, TidyCal or Arive prompt.
+evidence: fix-mine writes nothing when a key is skipped. connect-all's lofty_connect, tidycal_connect and arive_keys each prompt again when the key is not in the file. Arive is also asked again when only the Client ID was entered.
+existing_controls_checked: Both scripts skip a key that is already in the file. The prompts are hidden, and values go only to the file, never to stdout.
+failure_scenario: Up to 5 extra hidden prompts in one run, which the Action Desk text says will not happen.
+impact: Friction and confusion only. No secret is exposed.
+remediation_direction: Have setup.sh tell connect-all to skip its key prompts (an env flag), or drop the duplicate prompts.
+verification: With a TTY-file stub, run a non-check setup where every prompt is skipped. Assert each key name is prompted exactly once.
+needs_context: null
+```
+
+```yaml
+id: P14-F2
+pass: 14
+title: The output has three "REPORT (copy from here down…)" blocks, and their only-you lists disagree
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: setup.sh
+    line: 51-52, 58-59 (nested REPORTs passed through), 112
+  - path: scripts/fix-mine.sh
+    line: 266 (item E: add custom connector 'Lofty'); setup.sh item 11 omits it
+entry_or_trigger: Every run. The --check output has REPORT banners at lines 17, 121 and 163.
+evidence: fix-mine and connect-all each print a full REPORT, with "copy from here down". setup.sh indents them and then prints its own.
+existing_controls_checked: The nested ones are indented two spaces.
+failure_scenario: Steven copies from the first banner. Claude gets fix-mine's A-G list, which differs from the eleven items on the Action Desk.
+impact: Contradictory instructions to Steven.
+remediation_direction: Suppress the nested REPORT banners when the scripts run under setup.sh (an env flag), or reword them as "section".
+verification: Assert `grep -c 'copy from here down'` on the setup.sh output equals 1.
+needs_context: null
+```
+
+## UNVERIFIED
+
+- U1: The paste needs setup.sh and these edits to be committed and pushed to origin/claude/gracious-newton-4hpfco. Today
+  they are uncommitted (`?? setup.sh`), and git cat-file shows setup.sh on neither origin branch. This is the caller's
+  next step, not a code defect.
+
+## REJECTED
+
+- (a) Secret on screen or in the log. Rejected. set_kc (setup.sh:69-71) reads with `read -rs` from /dev/tty and sends the
+  prompt to /dev/tty. fix-mine set_key, set_keychain and the Inkbox prompt (lines 47-48, 99-100, 144) write to $OUT=/dev/tty
+  and store only to a file or the Keychain. connect-all's prompts (174-178, 405-464) use /dev/tty with stty -echo, and no
+  path echoes a value to stdout. kapso install-mac.sh:87 prints only the last 4 digits of Steven's own mobile, which
+  predates this change. Note, not a finding: `security add-generic-password -w "$v"` puts the value in argv for a few
+  milliseconds. This is the same as fix-mine.sh:102. integrations/kapso/install-mac.sh:92 uses the prompt form (`-w` with
+  no value), which avoids it.
+- (b) --check writes ~/.config or reads the tty. Rejected. I ran it under `setsid` with stdin closed, GO_FORCE=1 and an
+  empty scratch HOME: rc=0, and no ~/.config was created. It writes only ~/Library/Logs/vanessa-setup/*.log, plus
+  ~/.claude*, which comes from the `claude mcp get` probe in fix-mine:86 and predates this change.
+- (c) set -u and bash 3.2. Rejected. Every variable is initialised before use (OK, MISSING, YOU, N, CHECK, BR, LOG; rs is
+  set before it is read). `${rs:0:80}` is supported in bash 3.2. `local rc=$?` captures security's status, because $? is
+  expanded before `local` runs.
+- (e) The exported override itself picks the wrong branch. Rejected for setup's own child processes. BR comes from
+  `git symbolic-ref`, and a detached HEAD falls back to stoic-cori, the earlier default. The launchd path is the defect
+  (P05-F1).
+
+## Coverage (inspected, clean apart from the findings above)
+
+- setup.sh, all lines: the kf and kc helpers (paths and variable names match what fix-mine and connect-all write:
+  lofty/LOFTY_API_KEY, tidycal/TIDYCAL_TOKEN, arive/ARIVE_API_KEY, zoho/ZOHO_CLIENT_ID, skyslope/SKYSLOPE_ACCESS_KEY;
+  Keychain items kapso, kapso-allow and vanessa-discord-bot-token match integrations/kapso/install-mac.sh and fix-mine), the
+  ok_/miss_/you_ accumulators, and the numbering.
+- The one-line env overrides in connect-all.sh:25 and fix-mine.sh:17, the SC2120 comment, and the run_quiet SC2155 split
+  (no behaviour change).
+- scripts/setup-health.sh: the new row. scripts/tests/test_setup.sh: 13 checks; checks 21-23 are grep-only.
+- dashboard/action-desk.html: the harness passes. Card E's `<code>` and its `data-copy` are byte-identical (both use
+  `&amp;&amp;`).
+- (g) No new phone number, key, token or client name in the added lines. +1 650 484 9720 and (202) 474-5223 already
+  appear in HEAD (fix-mine.sh, STEVEN-STEPS.md, action-desk.html, CONNECTIONS.md).
+- integrations/CONNECTIONS.md: the new section keeps the four columns. STEVEN-STEPS.md has exactly one "## Start here".
+
+## Top missing tests (pass 19)
+
+1. The connect-all plist carries REPO_SYNC_BRANCH. Repo-sync started on branch x with REPO_SYNC_BRANCH=x leaves HEAD on x (P05-F1).
+2. The paste text with a dirty generated file still reaches setup.sh (P11-F1).
+3. A runnerctl stub printing "CLI NOT logged in" puts the runner under "Not yet", and runnerctl login under "Only you" (P04-F1).
+4. A non-check setup run with stubbed `security` and a TTY file: the typed value never appears in stdout or in $LOG.
+5. Each key is prompted exactly once in a full skipped run (P14-F1).
+6. Exactly one "copy from here down" in the setup output (P14-F2).
+7. The kf and kc positive and negative cases for every item in step 5, with fixture .env files and a security stub.
+8. A test that the branch override actually reaches the children (run with a stub that echoes $FIX_MINE_BRANCH and
+   $CONNECT_ALL_BRANCH), replacing the grep-only checks 21-23.
+
+## Not demonstrated
+
+Nothing was run on a real Mac. launchd, `security` and runnerctl were reasoned about from the repo's own code and its
+recorded status lines. I did not re-read the published Action Desk artifact.
+
+---
+
+# VibeBreaker re-check: setup.sh fixes
+
+change-set: 601d4328f04331d6
+
+Reviewer: code-validator, 2026-10-27. `bash scripts/validate-code.sh --hash` printed `601d4328f04331d6`, the hash the
+caller named. `bash scripts/validate-code.sh` → `verdict: PASS (13 passed, 0 failed)`. `bash scripts/tests/test_setup.sh`
+→ `pass 13 FAIL 0` and the follow-up block `pass 6 FAIL 0`. `node dashboard/tests/runtime-harness.js
+dashboard/action-desk.html` → `verdict: PASS`. This re-check covers the five findings filed under 9aa467d1f6ca9270 and adds
+no new findings.
+
+## Verdict
+
+`SHIP`
+
+All five are fixed in the code I read. There is no open CRITICAL or HIGH finding.
+
+| Finding | Status | Evidence |
+|---|---|---|
+| P05-F1 (HIGH) the LaunchAgent switches the branch back | FIXED | connect-all.sh repo_sync_agent: the plist EnvironmentVariables now hold `REPO_SYNC_BRANCH` = `$BRANCH`. `$BRANCH` = `${CONNECT_ALL_BRANCH:-stoic-cori}`. setup.sh:21 exports CONNECT_ALL_BRANCH from `git symbolic-ref`. The agent is rewritten on every non-preview run, so an older plist is replaced too. |
+| P11-F1 (MEDIUM) the paste aborts on a dirty tree | FIXED | STEVEN-STEPS.md:15 and card E (`<code>` == `data-copy`, checked) now switch with `REPO_SYNC_BRANCH=claude/gracious-newton-4hpfco bash scripts/repo-sync.sh --quiet`, and fall back to checkout only if that fails. A fresh Mac clones with `-b`. The copy of repo-sync.sh that the paste runs is the current branch's. On origin/claude/stoic-cori-pvn3f8 that copy already honours REPO_SYNC_BRANCH (line 38), so the switch works from the old branch as well. |
+| P04-F1 (MEDIUM) a signed-out runner reported as connected | FIXED | setup.sh:92-95 now requires the exact "CLI logged in" substring. "CLI NOT logged in" does not contain it, and gives miss_ plus RUNNER_LOGIN=1. Line 103 then adds the `runnerctl login` only-you item. test_setup.sh:36-39 uses a stub that prints "CLI NOT logged in" and asserts the item. |
+| P14-F1 (LOW) keys asked twice | FIXED | setup.sh exports CONNECT_ALL_SKIP_KEYS=1. connect-all's lofty_connect, tidycal_connect and arive_keys return before their prompts when it is set. Each check sits after the key-present test, so the proof calls still run when a key exists. |
+| P14-F2 (LOW) three REPORT banners | FIXED | When SETUP_NESTED=1, fix-mine main and connect-all print section lines instead of their REPORT banners. test_setup.sh:40 asserts that `copy from here down` appears exactly once. |
+
+## Notes (INFO, not findings)
+
+- When a key was skipped, connect-all's skipped-key steps return 1. They are then listed under "Did not finish" in the
+  nested connect-all section, with the line "asked once already". This is cosmetic.
+- The "Older round" pastes in STEVEN-STEPS.md (lines 57, 95, 101) still run repo-sync with no branch, which moves the Mac
+  to stoic-cori. The agent moves it back within 30 minutes. Those rounds are marked as replaced.
+
+## Not demonstrated
+
+Nothing was run on a real Mac. launchd's handling of plist EnvironmentVariables and the live runnerctl output are taken
+from the code and the recorded status lines. I did not re-read the published Action Desk version 41.

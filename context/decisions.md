@@ -764,3 +764,20 @@ through Apple Health and the same export file once Steven switches the nutrition
 - **Owner.** Nova (register, card, sweep step); Sam/Ezra/Apex/Bianca own the day-one fixes. **Status.** Deck published,
   register written, sweep updated 2026-10-26.
 
+## 2026-10-27 — One paste: `setup.sh` is the single Mac entry point
+
+- **Request (Steven, verbatim).** *"fix everything not working and simplify whatever steps required of me for setup via
+  scripts that I can cut and paste into my mac terminal. make this easy and simple and minimal action for me. ensure
+  connectivity with Arive, discord, kapso whatsapp, anydesk, orca with my entire ai org chart integrated, Jarvis configured
+  with Vanessa, connect Arive, showingTime, showami, homes.com, tidycal, skyslope, ticor title property search using
+  composio, cli anything … connect myfitness pal, strava, bodypark, Hume … pabbly connect"*; then *"also connect zoho crm"*.
+- **Decision.** No new installers: the repo already had every scripted step across `connect-all.sh` and
+  `scripts/fix-mine.sh`, and seven competing "Start here" sections. `setup.sh` wraps the two in order, asks every key once
+  (hidden, Enter skips), adds the two optional keys (Hume, Composio) to the Keychain, and ends with one REPORT and one
+  numbered only-you list; `--check` is the plan. The scripts take the branch from `git` (`FIX_MINE_BRANCH`,
+  `CONNECT_ALL_BRANCH`, `REPO_SYNC_BRANCH`) instead of a hard-coded name. `docs/STEVEN-STEPS.md` keeps one Start-here; the
+  older rounds are demoted, not deleted. What a script cannot do is written as such: Zoho's profile tick, the sign-ins,
+  Discord's bot, the three phone toggles, Pabbly's editor, Ticor's rep, Hume (spend → HALT).
+- **Owner.** Derek (scripts), Nova (the register row per connection). **Status.** Written and tested 2026-10-27; the Mac
+  REPORT is the proof once Steven runs it.
+

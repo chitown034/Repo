@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 48 skills · 7 Claude mods (plugins) · 45 connectors (4 ok, 41 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
+toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -26,14 +26,19 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 45 connectors (4 ok, 41 need at
 
 **Connectors**
 - `iMessage line (Vanessa text replies)` — *ok*: linked and live since 2026-10-23 23:54 UTC — Steven's thread aa1a9d19…8510; the Mac poller answered a non-answer at 00:05, the cloud sweep answered rates + schedule at 00:22
-- `Kapso (WhatsApp)` — *attention*: keys in the Keychain; plugin + MCP waiting on the sign-in
-- `Jarvis = Vanessa, single point of contact for the whole AI team` — *attention*: persona + voice + brain index + the 180-seat roster in her memory, all from vanessa-persona.sh (run by fix-mine)
+- `Zoho CRM` — *attention*: self-client keys prompt in the paste; API 403 until the profile tick
+- `TidyCal` — *attention*: token prompt in the paste + read-only proof call
+- `Arive` — *attention*: credentials prompt in the paste; no call yet
+- `Kapso WhatsApp (Vanessa (202) 474-5223)` — *attention*: plugin + MCP + keys scripted; whatsappKapso deck doc stale since 10-22: the Mac tasks are not registered
+- `Jarvis = Vanessa` — *attention*: scripted (engine, recorded voice, persona, brain in memory) in fix-mine 3b + connect-all 6a/6b
 - `Jarvis knows the Second Brain` — *attention*: ready — the same script indexes the brain's pages (no client pages, no meeting digests, no findings) into Jarvis memory; the 6D layers row shows "speaks as Vanessa" + the page count once run
 - `WhatsApp (Kapso)` — *pending*: number …5223 assigned; nothing reads it — runner tasks kapso-inbox-sync / vanessa-whatsapp-inbox not registered; Kapso MCP sign-in pending; keys in the Keychain (connect report #3)
-- `Discord #vanessa` — *pending*: bot token missing (Composio discordbot initiated 23:55 UTC, not active; Mac bot in relay mode)
+- `Discord #vanessa` — *attention*: bot token prompt in the paste; bot not yet created
 - `Vanessa's voice note after each text` — *attention*: not yet delivering — voiceReplyQueue held only the Sep 12 test item until the cloud sweep queued the first real one (00:28 UTC); the Mac's voice-reply-render runs ok every 10 min but needs the Inkbox 
+- `SkySlope` — *attention*: four keys prompt in the paste + GET /api/users/me proof
 - `Cloud sweep (iMessage text + voice queue, deck chat box, Discord #vanessa)` — *attention*: hourly at :17, 24/7 (was 6 AM–10 PM PT)
 - `Mac pollers overnight (vanessa-imessage-inbox, vanessa-discord-inbox, voice-reply-render, ` — *attention*: stop between 10 PM and 7 AM PT until the window is widened
+- `Hume AI` — *attention*: not connected; Vanessa's voice is the recorded Magica set. A key can be stored (paste step 4) for a later EVI proposal; it spends money per call → HALT until Steven says so
 
 **MCP servers**
 - `laya` — *ok*: zero-token local router in front of Vanessa (lane, tier, HALT words) · registered — real engine answering on Mac 1 (2026-10-23)
@@ -121,9 +126,6 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 45 connectors (4 ok, 41 need at
 **Skills**
 - `security-and-hardening`: Hardens code against vulnerabilities. Use when auditing an input handler for vulnerabilities, when handling user input, authentication, data storage, or external integrations, or when checking a login flow is safe agains
 
-**Connectors**
-- `Arive` — *attention*: step 7e did not run (no credentials)
-
 **Mac tasks**
 - `access-audit-monthly`: First business morning of the month: Elena's access-auditor reviews who and what can read or write each store and connector, plaintext-secre
 
@@ -157,6 +159,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 45 connectors (4 ok, 41 need at
 **Connectors**
 - `Drip campaigns + text follow-ups` — *attention*: planned — playbook written (wiki/real-estate-playbooks/drip-and-text-follow-up.md); specs on request; 10DLC is Steven's
 - `TikTok · GoHighLevel · Discord bot · HeyGen` — *attention*: not connected (Composio links last 10 minutes)
+- `Composio (Zoho, Discord, TikTok, GHL, HeyGen)` — *attention*: claude.ai connector works from the cloud; optional key on the Mac (paste step 4)
 
 **APIs**
 - `Pivo · Ticor Title` — *none*: tour links / CSV exports · no API
@@ -184,9 +187,10 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 45 connectors (4 ok, 41 need at
 - `zoho-crm-sync`: Sync Zoho CRM — Steven's system of record for the mortgage pipeline — into the Command Deck through Composio: writes zohoSync (connection health), zohoLeads (14-stage kanban) and zohoDeals. Self-tests first and reports t
 
 **Connectors**
-- `Zoho CRM` — *attention*: 403 until the API box is ticked
 - `homes.com · ShowingTime · Showami` — *attention*: wrappers installed; sign-ins (MFA) in the agent Chrome are Steven's
 - `Lofty` — *attention*: two paths on Mac 1 (2026-10-23 13:05 PT): the old local bridge is the MCP named lofty (stdio, ~/Applications/lofty-bridge/mcp-server.js, connected — the runner tasks use its mcp__lofty__* tools; it re
+- `ShowingTime · Showami · homes.com` — *attention*: read-only CLI-Anything wrappers scripted (connect-all 7d)
+- `CLI-Anything` — *attention*: harnesses for homes.com / ShowingTime / Showami / Lofty installed by the paste
 
 **MCP servers**
 - `kapso` — *attention*: WhatsApp Business Cloud API read/answer (sandbox number first) · registered — needs Steven's sign-in (/mcp → kapso)
@@ -258,7 +262,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 45 connectors (4 ok, 41 need at
 - `Kapso (Mac 1)` — *attention*: plugin + MCP registered; ! Needs authentication
 - `Kapso webhooks (Pabbly → Kapso)` — *attention*: two trigger URLs not pasted yet
 - `Gondola (travel)` — *attention*: MCP installed for Claude Code; the claude.ai connector is not added
-- `Orca pairing · AnyDesk permissions` — *attention*: apps installed on both Macs
+- `Orca + the AI org chart` — *attention*: scripted (connect-all 6c + 6e Agent OS, 172 agents wired)
 - `Mac 2` — *attention*: Python 3.12 (uv), Claude Code 2.1.309, mods, Agent OS, brain index, Orca, AnyDesk, Gondola done; Laya + Jarvis engine unproven (last REPORT not pasted)
 - `EVRoutes · Turo connectors` — *reconnect*: "needs reconnect" on claude.ai (EVRoutes also failed to connect in this session)
 - `Four http_api Sunday routines` — *attention*: still enabled
@@ -270,20 +274,21 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 45 connectors (4 ok, 41 need at
 - `Orca · Laya · Bonsai (Alienware)` — *pending*: not started — integrations/alienware/alienware-setup.ps1 never run on Windows yet
 - `AnyDesk (Mac 1, Mac 2)` — *attention*: installed; permissions + unattended password are Steven's
 - `AnyDesk (Alienware, tablet, phone)` — *attention*: not started — winget id AnyDesk.AnyDesk confirmed; iPad is outgoing-only, Android tablet can be controlled
-- `TidyCal` — *attention*: step 7c did not run (no token)
 - `MBS Highway Home Report` — *attention*: not connected — no public API; rep-issued webhook or CSV (integrations/mbs-highway/README.md)
 - `Pivo` — *attention*: no API — tour link / video file only (integrations/pivo/README.md)
-- `Ticor Title property search` — *attention*: no API — rep account + CSV/PDF export (integrations/ticor/README.md)
+- `Ticor Title property search` — *attention*: no API (integrations/ticor/README.md); county records already feed the deck
 - `OpenFlowKit MCP + skill · pr-lens skill · archify skill (the four repos, 2026-10-23)` — *pending*: installed in the repo (skills) / pending on the Macs (MCP by connect-all 6g, archify by install-mac.sh); integrations/skill-packs/REGISTRY-2026-10-23.md
 - `AI-search presence (AEO/GEO/SEO)` — *attention*: planned — playbook written (wiki/real-estate-playbooks/ai-search-visibility.md); monthly presence audit task live (1st, 7:10 AM PT)
-- `Mac runner (all Mac tasks)` — *ok*: healthy — runnerctl status 12:33 PT: 42 ok (morning tasks all ran today), 5 error (toolkit-deck-sync, nightly-self-test, three Sunday weeklies), 4 limited, 3 paused; the step-2 "silent since Oct 13" r
+- `Mac runner · message tasks all day` — *attention*: restart + hours widening scripted (fix-mine 4)
 - `AnyDesk (Mac 1)` — *attention*: installed; ID 1514099895; Screen Recording + Accessibility + unattended password are Steven's
 - `Pabbly ↔ Kapso webhooks, six workflows` — *attention*: Kapso login proven; webhook URLs and the six workflows are clicks at connect.pabbly.com
 - `Laya routes, Orca launches the AI team` — *attention*: installed on Mac 1 (connect report #3); connect-orca-laya.sh --apply + agent-os/install-mac.sh --apply re-run by the paste; brain os check is the proof
 - `6D Brain shows all of it` — *attention*: the layers panel reads brain/state/jarvis-status.json (persona, indexed pages) and the toolkit register reads this table; the daily 3:30 AM rebuild carries it
 - `Command Deck chat box` — *attention*: works in claude.ai through the viewer's own Claude (sample declared); last message 2026-09-13
-- `SkySlope (transactions, documents)` — *attention*: key on Mac path ready — integrations/skyslope/skyslope_cli.py (stdlib, GET-only, SkySlope's own HMAC login from github.com/skyslope/example-authentication); the login needs two pairs: the Access Key +
 - `Night-time answer latency` — *attention*: up to 60 minutes until the Mac window is widened, then 10 minutes
+- `AnyDesk` — *attention*: install scripted (connect-all 6d)
+- `MyFitnessPal · Strava · BodyPark` — *attention*: all three flow through Apple Health → Health Auto Export → the cloud Health daily sync (Strava also by connector)
+- `Pabbly Connect` — *attention*: workflows written (integrations/pabbly/WORKFLOWS.md); built in Pabbly's editor, not by a script
 
 **MCP servers**
 - `playwright` — *ok*: browser automation for sites with no API · installed

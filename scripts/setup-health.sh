@@ -26,6 +26,7 @@ run "loan pricing tests"              python3 -m unittest discover -s .claude/sk
 run "anydesk link tests"              bash -c 'cd integrations/anydesk && python3 -m unittest test_anydesk_links'
 run "kapso fetch tests"                bash -c 'cd integrations/kapso/tests && python3 -m unittest -q test_kapso_fetch'
 run "code-validation gate tests"       bash scripts/tests/test-validate-code.sh
+run "setup.sh tests"                  bash scripts/tests/test_setup.sh
 run "n8n workflow library tests"      bash -c 'cd integrations/n8n/library && python3 -m unittest -q test_n8n_library'
 run "alienware script lint"           python3 integrations/alienware/lint-ps1.py integrations/alienware/alienware-setup.ps1
 run "alienware docs/secret checks"    bash integrations/alienware/test-alienware-docs.sh

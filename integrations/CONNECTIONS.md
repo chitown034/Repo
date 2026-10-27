@@ -620,3 +620,29 @@ Supersedes the schedule wording of the two sections above. Two clocks answer Van
 | Mac pollers overnight (vanessa-imessage-inbox, vanessa-discord-inbox, voice-reply-render, kapso-inbox-sync, vanessa-whatsapp-inbox) | stop between 10 PM and 7 AM PT until the window is widened | the one paste (fix-mine) — if its REPORT says the window is a runner-wide default, paste the file names it lists | Steven (paste) |
 | Night-time answer latency | up to 60 minutes until the Mac window is widened, then 10 minutes | — | — |
 
+## Connection status — one paste, 2026-10-27 02:30 UTC (Steven: "fix everything not working and simplify … scripts that I can cut and paste")
+
+`setup.sh` is now the single entry point: it runs `scripts/fix-mine.sh` then `connect-all.sh` with the keys asked once, and
+prints one REPORT. Statuses below are what the repo and the deck's documents show today; the REPORT from the Mac is the
+live truth once Steven has run it.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Kapso WhatsApp (Vanessa (202) 474-5223) | plugin + MCP + keys scripted; `whatsappKapso` deck doc stale since 10-22: the Mac tasks are not registered | `bash setup.sh`, then `claude` → `/mcp` → kapso → sign in; message the number once | Steven (paste + sign-in) |
+| Discord #vanessa | bot token prompt in the paste; bot not yet created | create the bot (discord.com/developers), paste the token when asked, say "Discord link" | Steven |
+| Jarvis = Vanessa | scripted (engine, recorded voice, persona, brain in memory) in fix-mine 3b + connect-all 6a/6b | `bash setup.sh` | Steven (paste) |
+| Orca + the AI org chart | scripted (connect-all 6c + 6e Agent OS, 172 agents wired) | `bash setup.sh`; phone pairing is his scan | Steven (paste + scan) |
+| AnyDesk | install scripted (connect-all 6d) | permissions + unattended password + IDs into the Computer Hub card | Steven |
+| Arive | credentials prompt in the paste; no call yet | type the three values when asked; the daily cycle makes the first read-only call | Steven (keys) |
+| Zoho CRM | self-client keys prompt in the paste; API 403 until the profile tick | tick "Zoho CRM API Access"; then Composio/`zoho-crm-sync` works | Steven (tick) |
+| ShowingTime · Showami · homes.com | read-only CLI-Anything wrappers scripted (connect-all 7d) | one sign-in each in the agent Chrome | Steven (sign-ins) |
+| TidyCal | token prompt in the paste + read-only proof call | type the token when asked | Steven (token) |
+| SkySlope | four keys prompt in the paste + `GET /api/users/me` proof | type the keys; the Client ID/Secret pair is partner-gated (rep) | Steven (keys, rep) |
+| Ticor Title property search | no API (`integrations/ticor/README.md`); county records already feed the deck | ask the San Diego rep for Ticor Online Pro | Steven |
+| MyFitnessPal · Strava · BodyPark | all three flow through Apple Health → Health Auto Export → the cloud Health daily sync (Strava also by connector) | three phone toggles, once | Steven (phone) |
+| Hume AI | not connected; Vanessa's voice is the recorded Magica set. A key can be stored (paste step 4) for a later EVI proposal; it spends money per call → HALT until Steven says so | optional key; decision later | Steven |
+| Pabbly Connect | workflows written (`integrations/pabbly/WORKFLOWS.md`); built in Pabbly's editor, not by a script | click-together in connect.pabbly.com; Kapso custom app on "yes build the kapso connection" | Steven (+ Claude for the Kapso app) |
+| Composio (Zoho, Discord, TikTok, GHL, HeyGen) | claude.ai connector works from the cloud; optional key on the Mac (paste step 4) | say "Composio links" in a live session for the OAuth screens | Steven |
+| CLI-Anything | harnesses for homes.com / ShowingTime / Showami / Lofty installed by the paste | sign-ins only | Steven |
+| Mac runner · message tasks all day | restart + hours widening scripted (fix-mine 4) | `bash setup.sh`; `runnerctl login` stays his if it is signed out | Steven (paste) |
+
