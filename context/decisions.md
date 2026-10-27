@@ -781,3 +781,14 @@ through Apple Health and the same export file once Steven switches the nutrition
 - **Owner.** Derek (scripts), Nova (the register row per connection). **Status.** Written and tested 2026-10-27; the Mac
   REPORT is the proof once Steven runs it.
 
+## 2026-10-27 — Ledgerwise Pro is linked from the Command Deck
+
+- **Request (Steven, verbatim).** *"add Ledgerwise Pro https://claude.ai/artifact/Nor6oCBSDPY9eufMYcVx1Y to the dashboard"*.
+- **Decision.** A link card at the top of the Tax part of the Personal Accounts & Investments panel (`#ledgerwiseCard`, above
+  the quarterly estimated tax cards) and a pages-menu entry under Money & markets after Ledger Room.
+  `dashboard/wave2/splice-ledgerwise.py` (anchors must match once; refuses a second run). Ledgerwise Pro is a tax-practice
+  prototype (clients, tax prep, bank feeds, mileage, invoices, six AI agents) on **sample data**: Plaid, Hurdlr and TaxGPT are
+  simulated and its figures are not tax advice, so the card says so and tells Steven to keep real figures in the deck's own
+  tax cards and no client information in it. It reads and writes no deck document.
+- **Owner.** Marcus (money) with Alan (tax deadlines). **Status.** Published 2026-10-27.
+

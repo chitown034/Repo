@@ -2908,3 +2908,77 @@ All five are fixed in the code I read. There is no open CRITICAL or HIGH finding
 
 Nothing was run on a real Mac. launchd's handling of plist EnvironmentVariables and the live runnerctl output are taken
 from the code and the recorded status lines. I did not re-read the published Action Desk version 41.
+
+---
+
+# VibeBreaker review: Ledgerwise Pro deck link (splice-ledgerwise.py)
+
+change-set: c6595e5657f4d03f
+
+Reviewer: code-validator, 2026-10-27. `bash scripts/validate-code.sh --hash` printed `c6595e5657f4d03f`, the same hash the
+caller named. `bash scripts/validate-code.sh` gave `verdict: PASS (2 passed, 0 failed)` (py_compile on the splice and brain
+doctor). Mode: DIFF. Passes run: 01, 04, 05, 17, 19 (dashboard HTML) plus 06/07/08/12/18 where they apply to a one-shot
+Python file splice, then 20.
+
+## Verdict
+
+`SHIP` (VibeBreaker: SURVIVED*. There are no confirmed findings. It is not 20/20 CLEAN because this was a DIFF-mode run.)
+
+Running the script on deck-r10 reproduces deck-r11 byte for byte. The splice adds exactly three hunks and changes nothing
+else. Div and section balance and the set of quickcheck FAILs are the same before and after.
+
+## CONFIRMED
+
+None.
+
+## UNVERIFIED
+
+None that affect the verdict. I did not re-read the published artifact (version 257) to confirm that it equals
+/tmp/claude-0/deck-r11.html. The missing artifact is `Artifact read` of the deck URL, compared to deck-r11.
+
+## REJECTED
+
+- P19-C1. The candidate: no test for splice-ledgerwise.py. Rejected because this is a one-shot file splice and not a
+  service. Its sibling splices (for example splice-travel-palmsprings.py) have no tests either. The guards it has are
+  sub1 (exactly one match) and the marker refusal. I exercised both: three anchors × count 1 on r10, and a second run
+  aborted with "ABORT: already applied".
+- P05-C1. The candidate: `'%s' % URL` breaks if the card contains a `%`. Rejected because the card has no other `%`, and
+  running the script on r10 succeeded and matched r11.
+
+## Coverage (inspected, clean)
+
+- (a) `diff deck-r10 deck-r11` shows 3 insertions and 0 deletions. They are: the line-11 head marker
+  `<!-- == LEDGERWISE 2026-10-27 == -->`; the line-1721 pages-menu item; and the 6-line `#ledgerwiseCard` block before the
+  "Quarterly estimated tax" grid. diff aligns the third hunk across the `    </div>\n\n` boundary, which is cosmetic. I ran
+  the splice in memory on r10 (open() patched, nothing written), and its output equals r11.
+- (b) `Nor6oCBSDPY9eufMYcVx1Y` appears exactly twice in r11 (card and menu) and zero times in r10. Both links carry
+  `target="_blank" rel="noopener"`. The count of `<script` is 4 → 4 and the count of ` on*=` handlers is 7 → 7. No
+  script and no handler was added. The CSS classes the card uses (badge.amber, card-title-row, src-note, pm-n, card-sub)
+  already exist in the deck.
+- (c) Each anchor matches exactly once in r10. The card's enclosing `<section>` is
+  `<section class="panel" id="panel-tax" data-page="wealth">` and no `</section>` falls between them. The menu item
+  sits after Ledger Room (YJAz17eL85aSpdF8fgQJ3i), under `<div class="pm-group">Money &amp; markets</div>`. The next
+  group header ("Veterans &amp; military family") comes after it.
+- (d) quickcheck counted divs at 1318/1317 before and 1320/1319 after, and sections at 26/24 before and after. The four
+  FAIL rows match exactly (2 inline scripts, section, div, the `$` pseudo-functions). There are no duplicate ids, and
+  ledgerwiseCard appears once.
+- (e) All three re.sub replacements are lambdas, so `&#128210;`, `&#8599;` and `&middot;` are inserted literally.
+- (f) The card text says the data is "illustrative sample data", that Plaid, Hurdlr and TaxGPT are "simulated", that the
+  figures "are not tax advice", and that "no client information should be typed into it". It contains no email, no phone
+  number and no key. The only 3+ digit runs are the entity codes 128210 and 8599.
+- context/decisions.md and memory.md each received one dated entry that matches the code. brain/index.json and
+  docs/reports/CODE-VALIDATION.md are regenerated files and outside the validator's file list.
+
+## Top missing tests (pass 19)
+
+1. Splice r10 in memory and assert that the result equals the published deck (catches drift between the scratch copy and
+   the live deck).
+2. Run the splice twice and assert that the second run exits with "already applied" and leaves the file unchanged.
+3. Remove the PROCESS-COVERAGE marker and assert that the run aborts before any write. The script writes only after all
+   three sub1 calls, so a partial splice is impossible today. A test would keep it that way.
+4. A quickcheck baseline diff for the deck: assert that the FAIL set before == the FAIL set after for any splice.
+
+## Not demonstrated
+
+I did not render the page in a browser and did not open the linked Ledgerwise Pro artifact, so its sample-data behaviour
+is taken from the card text and the caller's description.
