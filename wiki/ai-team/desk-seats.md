@@ -158,3 +158,46 @@ Launchpad mission: *Weekly coverage & sync audit*. Vanessa tool: `coverage_repor
   routine.
 Also new: the **Life & Wealth Pod** (lead James: Kevin, Apex, Marcus, Travel Desk, Tax Assessor Agent)
 keeps Steven's personal finance, habits, trading research and travel separate from client work.
+
+## Isabel — Loan Processing & Conditions Desk
+
+Added 2026-10-26. Reports to Harrison; member of the Loan Pod.
+Runs the Broker Command Center **Loan Pipeline** file from application to clear-to-close: records the TRID
+application date and the Loan Estimate deadline (3 business days), keeps the document checklist by program
+and sends one request list, orders VOE/VOD, title and insurance, orders the appraisal after intent to
+proceed and delivers the borrower's copy (ECOA), enters every underwriting condition with owner and due
+date, flags changed circumstances to Alexandra, and texts the borrower a status every two days. After
+funding: first payment and escrow-account follow-up.
+
+## Reyes — Closing & Funding Coordinator (TRID timing)
+
+Added 2026-10-26. Reports to Harrison; member of the Loan Pod.
+Owns the back end of every loan: consummation date, Closing Disclosure received 3 business days before
+(every day but Sunday and federal holidays), LE-to-CD comparison and tolerance check with Alexandra,
+rate-lock expiration calendar and extensions, signing logistics, the refinance rescission period, funding
+conditions, the wire call-back with Elena, recording and the final file. Keeps the loan calendar in step
+with Carmen's escrow timeline so clear-to-close lands before the loan contingency.
+
+**Loan Pod** (lead Harrison: Isabel, Reyes, Lucia, Lender Matchmaker, Inbox Sentinel, Refi Watch Analyst,
+Rosa, Alexandra, Carmen). Fourteen stages, each with an owned workflow fired when the file advances:
+pre-qualification, pre-approval, application, Loan Estimate, lock, processing, appraisal, underwriting,
+conditions, clear to close, Closing Disclosure, signing, funding, post-close.
+
+## Winston — When-Needed Matrix 2.0 (addition, 2026-10-26)
+
+The Broker Command Center's When-Needed Matrix now covers 237 forms (C.A.R. plus 12 LPT Realty brokerage
+forms) across 11 stages (Consult, Listing, Buyer Rep, Offer, Escrow Open, Contingencies, Loan & Appraisal,
+Closing, Post-close, Leasing & Tenancy, Broker File) and 20 deal types, with four levels: required every
+deal, required if triggered, optional, broker admin. 24 triggers (pre-1978, HOA, probate, trust, tenant,
+rent-back, multiple offers, VA/FHA, foreign seller, solar, Mello-Roos and more) turn conditional forms into
+required ones. Stage checklists tick against a live escrow and sync across devices; missing forms become
+tasks dated by stage (daily sweep); the Doc Screener ticks a form when the matching document is screened;
+the MLO hand-off list goes to the loan side at escrow open. Vanessa tool: `when_needed`.
+
+## Winston — SkySlope library (addition, 2026-10-26)
+
+The Broker Command Center now carries all 548 SkySlope library forms from Steven's Browse Libraries (C.A.R. 445,
+LPT Realty 100, CRMLS 2, SkySlope 1), imported from the LO dashboard's library (pulled 2026-10-22) and grouped
+into 314 base forms with stages, deal types, required levels, who signs, how-to steps, tips, loan-side notes and
+44 line-by-line walkthroughs. The Forms Hub and the When-Needed Matrix run on this library; the matrix also keeps
+34 C.A.R. forms that are not in the library. Vanessa tool: `skyslope_form`.
