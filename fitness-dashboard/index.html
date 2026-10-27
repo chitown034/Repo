@@ -178,6 +178,11 @@ ul.clean { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
 .day table th { background: transparent; }
 
 .svgbox svg { width: 100%; height: auto; display: block; }
+.whsplit { grid-template-columns: minmax(0, 430px) minmax(0, 1fr); }
+#p-books .card-head { flex-wrap: wrap; }
+#bk-sec-title { overflow-wrap: anywhere; min-width: 0; }
+@media (max-width: 760px) { .whsplit { grid-template-columns: minmax(0, 1fr); } .whrow { grid-template-columns: minmax(0, 1fr) 34px; } .whrow > :nth-child(2) { grid-column: 1 / -1; grid-row: 2; } }
+.whrow { display: grid; grid-template-columns: minmax(120px, 1.1fr) minmax(100px, 1.4fr) 34px; gap: 8px; align-items: center; padding: 4px 0; }
 .setrow { display: grid; grid-template-columns: 24px minmax(0, 1fr) minmax(0, 1fr) 44px 32px; gap: 8px; align-items: center; }
 textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: .8rem; color: var(--ink-2); }
@@ -1065,6 +1070,48 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
   </div>
 </section>
 
+<!-- WELLNESS WHEEL -->
+<section class="panel" id="p-wellness" data-tab="wellness" data-label="Wellness wheel" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Whole-person balance</span>
+    <h2>Balance wheel</h2>
+    <p>Twelve dimensions of wellbeing in four groups: Health, Mind, Connection and Stability. Rate each from 1 to 10, or use the self-assessment, the data-driven suggestions and the per-dimension calculators below. Physical comes from your workout and health data, Stoicism from a daily practice tracker, and the whole wheel feeds your 360 assessment and the AI coaches.</p>
+  </div>
+  <div class="card">
+    <div class="card-head"><h3>Balance wheel</h3><div style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small" id="wh-save">Save snapshot</button><button type="button" class="btn ghost small" id="wh-suggest">Use data suggestions</button><button type="button" class="btn ghost small" id="wh-reset">Reset</button></div></div>
+    <p class="small muted">Rate each dimension 1–10, grouped by category. Physical breaks out into Workout and Health Metrics below; Stoicism (Mind) has its own daily practice metrics and playbook.</p>
+    <div class="split whsplit"><div class="svgbox" id="wh-radar"></div><div id="wh-sliders"></div></div>
+    <div id="wh-summary"></div><div id="wh-msg" class="small"></div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><div class="card-head"><h3>Physical: workout metrics</h3><span class="pill" id="wh-wk-pill"></span></div><div id="wh-wk"></div></div>
+    <div class="card"><div class="card-head"><h3>Physical: health metrics</h3><span class="pill" id="wh-hl-pill"></span></div><div id="wh-hl"></div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><h3>Dimension workbench</h3><span class="small muted">Self-assessment, calculators, practices</span></div>
+    <form class="fields" autocomplete="off" style="grid-template-columns:minmax(0,320px)"><label class="f">Dimension<select id="wh-dim"></select></label></form>
+    <div id="wh-detail" class="grid" style="gap:14px"></div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <div class="card-head"><h3>Stoicism: daily practice</h3><span class="pill" id="st2-pill"></span></div>
+      <form class="fields" autocomplete="off"><label class="f">Date<input type="date" id="st2-d"></label><label class="f">Virtue of the day<select id="st2-virtue"><option value="">–</option><option>Wisdom</option><option>Courage</option><option>Justice</option><option>Temperance</option></select></label></form>
+      <div id="st2-list" class="grid" style="gap:4px"></div>
+      <form class="fields" autocomplete="off" style="margin-top:6px"><label class="f">Equanimity today: <span class="mono" id="st2-eq-o">5</span>/10<input type="range" id="st2-eq" min="1" max="10" value="5"></label><label class="f">Times I reacted in anger or panic<input type="number" id="st2-react" min="0" value="0"></label>
+        <label class="f full">Evening review: what did I do badly?<input type="text" id="st2-bad"></label><label class="f full">What did I do well?<input type="text" id="st2-good"></label><label class="f full">What did I leave undone?<input type="text" id="st2-undone"></label></form>
+      <div id="st2-stats"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Stoic playbook</h3><span class="small muted">Adapted from Epictetus, Marcus Aurelius and Seneca</span></div>
+      <div id="st2-play"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><h3>Wheel history</h3></div>
+    <div class="svgbox" id="wh-hist-chart"></div><div id="wh-hist"></div>
+  </div>
+</section>
+
 <!-- RECOVERY -->
 <section class="panel" id="p-recovery" data-tab="recovery" data-label="Recovery" hidden>
   <div class="panel-head">
@@ -1207,6 +1254,31 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
     <div class="table-wrap" style="border:0"><table><thead><tr><th>Peptide</th><th>Class</th><th>Status</th><th>Human evidence</th><th>Notes and risks</th></tr></thead><tbody id="pep-rows"></tbody></table></div>
     <div class="callout bad small"><strong>If you use unapproved peptides:</strong> products sold as "research chemicals" aren't made to pharmaceutical standards, and independent tests have found wrong doses, contaminants and mislabeling. Injections add infection risk. Tell your clinician what you take, avoid them if you compete in tested sport (most are on the WADA Prohibited List), and don't use them while pregnant, breastfeeding, or with a history of cancer. Regulatory status changes; check current FDA and WADA lists.</div>
   </div>
+  <div class="card">
+    <h3>Over-the-counter peptide supplements: typical studied amounts</h3>
+    <p class="small muted">These are sold as dietary supplements or foods. Amounts below come from published trials and product labels; they are not prescriptions. Check labels, and ask a clinician if you take medication or are pregnant.</p>
+    <div class="table-wrap" style="border:0"><table><thead><tr><th>Supplement</th><th>Typical studied amount</th><th>Evidence</th><th>Notes</th></tr></thead><tbody>
+      <tr><td><strong>Collagen peptides (hydrolyzed collagen)</strong></td><td class="mono small">2.5 to 15 g a day. Skin: ~2.5 to 5 g. Joint comfort: ~5 to 10 g. Tendon or ligament loading: ~15 g with 50 mg vitamin C, 30 to 60 min before training</td><td><span class="pill p-info">B · Moderate</span></td><td class="small muted">Incomplete protein (low tryptophan), so it doesn't replace complete protein. Taking it daily for 8 to 12 weeks is typical in trials.</td></tr>
+      <tr><td><strong>Whey or casein protein hydrolysate</strong></td><td class="mono small">20 to 40 g per serving, counted toward daily protein</td><td><span class="pill p-good">A · Strong</span></td><td class="small muted">It's protein. Pre-digested forms digest faster but give no proven extra muscle benefit.</td></tr>
+      <tr><td><strong>Carnosine (dipeptide)</strong></td><td class="mono small">500 to 1,000 mg a day (studies are small)</td><td><span class="pill p-warn">C · Limited</span></td><td class="small muted">Beta-alanine (3.2 to 6.4 g a day, split) raises muscle carnosine more reliably than taking carnosine itself.</td></tr>
+      <tr><td><strong>Oral glutathione (tripeptide)</strong></td><td class="mono small">250 to 1,000 mg a day in small trials</td><td><span class="pill p-warn">C · Limited</span></td><td class="small muted">Poorly absorbed orally; effects on performance or recovery are unproven. N-acetylcysteine (600 to 1,800 mg a day) is a better-studied way to raise it, but discuss with a clinician.</td></tr>
+      <tr><td><strong>Casein-derived or milk-peptide products for sleep or stress</strong></td><td class="mono small">Label dose only (varies by product)</td><td><span class="pill p-warn">C · Limited</span></td><td class="small muted">Evidence is thin and product-specific.</td></tr>
+    </tbody></table></div>
+    <h4>Peptides without a dose list here</h4>
+    <ul class="clean small">
+      <li><strong>Prescription peptides</strong> (semaglutide, tirzepatide, liraglutide, tesamorelin, bremelanotide): the label and your prescriber set the dose and titration schedule. Don't self-adjust, and avoid compounded or online copies.</li>
+      <li><strong>Unapproved peptides</strong> (BPC-157, TB-500, CJC-1295, ipamorelin, GHK-Cu injections, melanotan and similar): there is no established safe dose, because the human studies needed to set one haven't been done. Doses circulating online are anecdotes, and product strength and purity vary widely.</li>
+    </ul>
+    <h4>What to do instead, by goal</h4>
+    <div class="table-wrap" style="border:0"><table><thead><tr><th>Goal</th><th>Evidence-based options</th></tr></thead><tbody>
+      <tr><td>Tendon or joint pain</td><td class="small">Progressive loading (heavy slow resistance, isometrics), sleep, enough protein, collagen plus vitamin C before rehab work, and a physical therapist for persistent pain.</td></tr>
+      <tr><td>Fat loss</td><td class="small">A 15 to 25% calorie deficit, 2 g/kg+ protein, lifting, 8,000+ steps. If obesity or related disease is present, ask a physician about approved GLP-1 drugs.</td></tr>
+      <tr><td>Muscle growth</td><td class="small">Progressive overload, 10 to 20 hard sets per muscle a week, a 5 to 10% calorie surplus, 1.6 to 2.2 g/kg protein, creatine 3 to 5 g a day.</td></tr>
+      <tr><td>Growth hormone and recovery</td><td class="small">Heavy compound lifting, intervals, 7 to 9 hours of sleep, and body fat in a healthy range raise GH naturally. Suspected hormone problems need blood tests and a clinician.</td></tr>
+      <tr><td>Skin and tanning</td><td class="small">Sun protection, retinoids, vitamin C topicals, and a dermatologist. Avoid melanotan products.</td></tr>
+      <tr><td>Sexual function or libido</td><td class="small">Sleep, stress, blood pressure and testosterone checks, and an evaluation by a clinician, who can discuss approved treatments.</td></tr>
+    </tbody></table></div>
+  </div>
 </section>
 
 <!-- TRAINING STYLES -->
@@ -1311,6 +1383,49 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
     </div>
   </div>
 </section>
+
+<!-- BOOKS & GUIDES -->
+<section class="panel" id="p-books" data-tab="books" data-label="Books & guides" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Your licensed library</span>
+    <h2>Bring in the books and guides you own</h2>
+    <p>Import your own copies (from Google Drive, a file, or pasted text), browse them by section, search across everything, and turn workouts and meal plans in them into programs and plans you can track. Ask the AI coaches about a section, or have it summarized and turned into a quiz.</p>
+  </div>
+  <div class="callout small"><strong>Private by design.</strong> Imported text is stored only in this browser (IndexedDB) on this device. It isn't part of the published dashboard, so people who open the dashboard link can't see it, and it isn't uploaded anywhere except to Claude when you click an AI action on a section.</div>
+  <div class="grid g2">
+    <div class="card">
+      <div class="card-head"><h3>Add content</h3></div>
+      <h4>From Google Drive</h4>
+      <form class="fields" id="bk-form" autocomplete="off" style="grid-template-columns:1fr auto"><label class="f">Search your Drive by title<input id="bk-q" type="text" placeholder="e.g. Encyclopedia, Minibeast"></label><div style="align-self:end"><button type="button" class="btn" id="bk-search-drive">Search</button></div></form>
+      <div class="seg"><button type="button" class="chip" data-bkq="Encyclopedia">Encyclopedia</button><button type="button" class="chip" data-bkq="Minibeast">Minibeast</button><button type="button" class="chip" data-bkq="workout program">Workout programs</button><button type="button" class="chip" data-bkq="meal plan">Meal plans</button></div>
+      <div id="bk-results" class="small"></div>
+      <p class="note">PDFs, Google Docs and Word files are read as text. Very large books may come back partial; if so, import it in parts (a section or chapter at a time) or paste the pages you need.</p>
+      <h4 style="margin-top:6px">From a file or pasted text</h4>
+      <form class="fields" autocomplete="off"><label class="f">Title<input id="bk-title" type="text" placeholder="Book or guide name"></label>
+        <label class="f">Type<select id="bk-kind"><option>Training program</option><option>Exercise encyclopedia</option><option>Nutrition guide</option><option>Other</option></select></label>
+        <label class="f full">Text<textarea id="bk-text" rows="4" style="font:400 .9rem var(--font-mono);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:10px;width:100%;resize:vertical" placeholder="Paste text here, or choose a file below"></textarea></label></form>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" id="bk-add">Add to library</button><label for="bk-file" class="btn ghost" style="display:inline-block">Choose a text file</label><input type="file" id="bk-file" accept=".txt,.md,.html,.htm,.json,.csv" style="position:absolute;width:1px;height:1px;opacity:0"></div>
+      <div id="bk-msg" class="small"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>My library</h3><span class="small muted" id="bk-count"></span></div>
+      <div id="bk-list" class="grid" style="gap:8px"></div>
+      <form class="fields" autocomplete="off" style="margin-top:6px"><label class="f full">Search across everything<input id="bk-search" type="search" placeholder="e.g. hip thrust, protein, week 3, BMR"></label></form>
+      <div id="bk-hits" class="small"></div>
+    </div>
+  </div>
+  <div class="split" style="grid-template-columns:minmax(0,300px) minmax(0,1fr)">
+    <div class="card"><div class="card-head"><h3>Contents</h3><span class="small muted" id="bk-doc-meta"></span></div><div id="bk-toc" class="grid" style="gap:4px;max-height:520px;overflow:auto"></div></div>
+    <div class="card" style="min-width:0">
+      <div class="card-head"><h3 id="bk-sec-title">Reader</h3><span class="small muted" id="bk-sec-meta"></span></div>
+      <div id="bk-actions" style="display:flex;gap:6px;flex-wrap:wrap" hidden>
+        <button type="button" class="btn small" data-bka="program">Find workouts</button><button type="button" class="btn small" data-bka="meals">Find meal plan</button><button type="button" class="btn ghost small" data-bka="summary">Summarize</button><button type="button" class="btn ghost small" data-bka="quiz">Quiz me</button><button type="button" class="btn ghost small" data-bka="coach">Ask a coach</button><button type="button" class="btn ghost small" data-bka="copy">Copy text</button><label class="small muted" style="display:flex;gap:6px;align-items:center">Use <select id="bk-scope" style="width:auto;padding:4px 6px"><option value="sec">this section</option><option value="doc">whole document (first 60k characters)</option></select></label></div>
+      <pre id="bk-view" style="white-space:pre-wrap;word-break:break-word;max-height:480px;overflow:auto;font:400 .88rem/1.55 var(--font-body);background:var(--bg);padding:12px;border-radius:8px;border:1px solid var(--line);margin:0">Choose a section from the contents.</pre>
+      <div id="bk-out"></div>
+    </div>
+  </div>
+</section>
+
 
 <!-- PROGRAMS -->
 <section class="panel" id="p-programs" data-tab="programs" data-label="Programs" hidden>
@@ -1865,6 +1980,65 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
   </div>
 </section>
 
+<!-- TRAINING ACADEMY -->
+<section class="panel" id="p-academy" data-tab="academy" data-label="Training Academy" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Training Academy</span>
+    <h2>How to train for every goal</h2>
+    <p>Pick a goal and the page works out your calories, macros, pace, duration and weekly structure from your profile, then tracks whether your real weight trend matches the plan. Below that sits a five-level course with checklists and quizzes. General education, not medical advice.</p>
+  </div>
+  <div class="card">
+    <h3>Goal planner</h3>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px">
+      <label class="f">Goal<select id="ac-goal"></select></label>
+      <label class="f">Experience<select id="ac-exp"><option value="0">Beginner (under 1 year)</option><option value="1" selected>Intermediate (1 to 3 years)</option><option value="2">Advanced (3+ years)</option></select></label>
+      <label class="f">Days per week<select id="ac-days"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option></select></label>
+      <label class="f">Pace<select id="ac-pace"><option value="0.7">Gentle</option><option value="1" selected>Standard</option><option value="1.3">Aggressive</option></select></label>
+      <label class="f">Target weight <span class="u-wt">(kg)</span><input id="ac-tw" type="number" step="0.1" data-conv="w" placeholder="optional"></label>
+    </div>
+    <div id="ac-summary" class="callout" style="margin-top:12px"></div>
+    <div id="ac-nums" class="tiles" style="margin-top:12px"></div>
+  </div>
+  <div class="grid two">
+    <div class="card"><h3>Training blueprint</h3><div id="ac-blue"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button type="button" class="btn small" id="ac-prog">Create this program</button><button type="button" class="btn ghost small" id="ac-set">Set as my profile goal</button><button type="button" class="btn ghost small" id="ac-coach">Ask a coach to tailor it</button></div>
+      <p id="ac-msg" class="small muted" role="status"></p></div>
+    <div class="card"><h3>Mistakes and success markers</h3><div id="ac-pit"></div></div>
+  </div>
+  <div class="card">
+    <h3>Phase tracker: plan vs reality</h3>
+    <p class="small muted">Uses your logged body weights (Log tab or imports). Needs at least 7 days spanning a week or more.</p>
+    <div id="ac-track"></div>
+  </div>
+  <div class="card">
+    <h3>Phase cycle planner</h3>
+    <p class="small muted">Typical order: build, then cut, then maintain. Each block has a length; the chart is a plan, not a prediction.</p>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">
+      <label class="f">Starting weight <span class="u-wt">(kg)</span><input id="ac-cy-w" type="number" step="0.1" data-conv="w"></label>
+      <label class="f">Build weeks<input id="ac-cy-b" type="number" value="16" min="0" max="52"></label>
+      <label class="f">Cut weeks<input id="ac-cy-c" type="number" value="8" min="0" max="26"></label>
+      <label class="f">Maintain weeks<input id="ac-cy-m" type="number" value="4" min="0" max="26"></label>
+    </div>
+    <div id="ac-cy-chart" style="margin-top:10px"></div><div id="ac-cy-out" class="small muted"></div>
+  </div>
+  <div class="card">
+    <h3>Formula toolbox</h3>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">
+      <label class="f">Weight lifted <span class="u-wt">(kg)</span><input id="ac-f-w" type="number" step="0.5" data-conv="w" value="100"></label>
+      <label class="f">Reps<input id="ac-f-r" type="number" value="5" min="1" max="30"></label>
+      <label class="f">RIR (reps left)<input id="ac-f-rir" type="number" value="2" min="0" max="5"></label>
+      <label class="f">Body weight <span class="u-wt">(kg)</span><input id="ac-f-bw" type="number" step="0.1" data-conv="w"></label>
+      <label class="f">Weekly sets (muscle)<input id="ac-f-s" type="number" value="12" min="0" max="40"></label>
+    </div>
+    <div id="ac-f-out" class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:12px"></div>
+  </div>
+  <div class="card">
+    <h3>The course</h3>
+    <div id="ac-prog-bar" class="small muted"></div>
+    <div id="ac-course" style="margin-top:10px"></div>
+  </div>
+</section>
+
 <!-- MYTHS & GLOSSARY -->
 <section class="panel" id="p-myths" data-tab="myths" data-label="Myths &amp; glossary" hidden>
   <div class="panel-head">
@@ -2015,6 +2189,7 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
     <div class="card" style="min-width:0">
       <div class="card-head"><h3 id="co-title">Coach</h3><button type="button" class="btn ghost small" id="co-clear">New conversation</button></div>
       <p class="small muted" id="co-desc"></p>
+      <div id="co-attach" class="small"></div>
       <div id="co-quick" class="seg"></div>
       <div id="co-out" class="small" style="display:grid;gap:10px;max-height:640px;overflow:auto;padding:4px 2px"></div>
       <form id="co-form" class="fields" autocomplete="off" style="grid-template-columns:1fr auto">
@@ -2175,7 +2350,7 @@ const wUnit = () => imp() ? "lb" : "kg";
 const panels = $$("section.panel"); const panelBy = {}; panels.forEach(p => { panelBy[p.dataset.tab] = p; });
 const tablist = $("#tablist"), groupsEl = $("#groups");
 const GROUPS = [["home", "Home", ["overview", "hub", "a360", "coach", "log"]], ["nutrition", "Nutrition", ["meals", "foodlog", "nutrition", "fads", "metabolism"]],
-  ["train", "Training", ["programs", "training", "cardio", "styles", "library", "bb"]], ["body", "Body & health", ["recovery", "supps", "health", "body"]], ["learn", "Learn", ["myths"]]];
+  ["train", "Training", ["programs", "training", "cardio", "styles", "library", "bb"]], ["body", "Body & health", ["recovery", "wellness", "supps", "health", "body"]], ["learn", "Learn", ["academy", "books", "myths"]]];
 const groupOf = {}; GROUPS.forEach(([g, , names]) => names.forEach(n => { groupOf[n] = g; }));
 const onShow = {};
 GROUPS.forEach(([g, label, names]) => {
@@ -3783,7 +3958,7 @@ function exportCSV() {
   saveFile(`plate-and-pulse-data-${iso(new Date())}.csv`, rows.join("\n"));
 }
 const BK = [["wlog", "WLOG", v => { WLOG = v; }, () => WLOG], ["food", "FOOD_LOG", v => { FOOD_LOG = v; }, () => FOOD_LOG], ["water", "FOOD_WATER", v => { FOOD_WATER = v; }, () => FOOD_WATER], ["journal", "JOURNAL", v => { JOURNAL = v; }, () => JOURNAL], ["stack", "STACK", v => { STACK = v; }, () => STACK],
-  ["stacklog", "STACKLOG", v => { STACKLOG = v; }, () => STACKLOG], ["labs", "LABS_LOG", v => { LABS_LOG = v; }, () => LABS_LOG], ["p360", "P360", v => { P360 = v; }, () => P360], ["p360h", "P360H", v => { P360H = v; }, () => P360H], ["programs", "PROGRAMS", v => { PROGRAMS = v; }, () => PROGRAMS], ["mealplans", "MEALPLANS", v => { MEALPLANS = v; }, () => MEALPLANS], ["mappers", "MAPPERS", v => { MAPPERS = v; }, () => MAPPERS]];
+  ["stacklog", "STACKLOG", v => { STACKLOG = v; }, () => STACKLOG], ["labs", "LABS_LOG", v => { LABS_LOG = v; }, () => LABS_LOG], ["p360", "P360", v => { P360 = v; }, () => P360], ["p360h", "P360H", v => { P360H = v; }, () => P360H], ["programs", "PROGRAMS", v => { PROGRAMS = v; }, () => PROGRAMS], ["mealplans", "MEALPLANS", v => { MEALPLANS = v; }, () => MEALPLANS], ["mappers", "MAPPERS", v => { MAPPERS = v; }, () => MAPPERS], ["acad", "ACAD", v => { Object.assign(ACAD, v); }, () => ACAD], ["wheel", "WHEEL", v => { WHEEL = Object.assign({ r: {}, qs: {}, tool: {}, stoic: {}, hist: [], dim: "PHYS" }, v); }, () => WHEEL]];
 function backup() { const o = { app: "plate-and-pulse", v: 2, at: new Date().toISOString(), profile: S, log: isSample ? null : LOG, hub: hubDemo ? null : HUB }; BK.forEach(([k, , , get]) => { o[k] = get(); }); saveFile(`plate-and-pulse-backup-${iso(new Date())}.json`, JSON.stringify(o)); }
 function restoreBackup(o) {
   if (o.profile) { Object.assign(S, o.profile); store.set("profile", S); fillProfile(); }
@@ -3908,8 +4083,8 @@ const TEMPLATES = [
 ];
 const mkProgram = (name, src, days) => ({ id: uid(), name, src: src || "", created: iso(new Date()), days: days.map(d => ({ name: d[0], items: d[1].map(i => ({ ex: i[0], sets: String(i[1]), reps: String(i[2]), note: i[3] || "" })) })) });
 function parseProgramText(text) {
-  const lines = text.split(/\r?\n/).map(l => l.replace(/\t/g, " ").replace(/\*\*/g, "").trim()).filter(Boolean);
-  const setRe = /(\d{1,2})\s*(?:x|×|sets?\s*(?:of|x|×)?)\s*(\d{1,3}(?:\s*(?:-|–|to)\s*\d{1,3})?(?:\s*s(?:ec)?)?|amrap|max|failure|fail)/i;
+  const lines = text.split(/\r?\n/).map(l => l.replace(/\\\*/g, "*").replace(/\t/g, " ").replace(/\*\*/g, "").trim()).filter(Boolean);
+  const setRe = /(\d{1,2})\s*(?:x|×|\*|sets?\s*(?:of|x|×)?)\s*(\d{1,3}(?:\s*(?:-|–|to|;|,|\/)\s*\d{1,3}){0,4}(?:\s*s(?:ec)?)?|amrap|max|failure|fail)/i;
   const days = []; let cur = null;
   lines.forEach(raw => {
     let l = raw.replace(/^[-*•]\s*/, "").replace(/^\(?[A-Za-z]?\d{1,2}[.)]\s+/, "");
@@ -3918,7 +4093,7 @@ function parseProgramText(text) {
       if (!cur) { cur = { name: "Day 1", items: [] }; days.push(cur); }
       const before = l.slice(0, m.index).replace(/[-–:@,|]+\s*$/, "").trim(), after = l.slice(m.index + m[0].length).replace(/^[\s,;:@|-]+/, "").trim();
       const name = (before || after || "Exercise").replace(/\s+/g, " "), note = before ? after : "";
-      cur.items.push({ ex: cap1(name), sets: m[1], reps: m[2].replace(/\s+/g, "").replace(/to/i, "-").replace(/–/g, "-").toUpperCase().replace("AMRAP", "AMRAP"), note });
+      cur.items.push({ ex: cap1(name), sets: m[1], reps: m[2].replace(/\s+/g, "").replace(/to/i, "-").replace(/–/g, "-").toUpperCase(), note });
     } else if (raw.length <= 60 && !/[.!?]$/.test(raw)) {
       cur = { name: raw.replace(/^#+\s*/, "").replace(/[:：]\s*$/, "").trim() || "Day " + (days.length + 1), items: [] }; days.push(cur);
     }
@@ -4542,7 +4717,7 @@ function combine(comps) {
   return { score: have.reduce((a, c) => a + c.v * c.w, 0) / wh * 100, conf: wh / tot, drivers: have.map(c => ({ t: c.drv, v: c.v })).filter(d => d.t), tips: have.filter(c => c.v < 0.7 && c.tip).sort((a, b) => a.v - b.v).slice(0, 3).map(c => c.tip) };
 }
 const DOMAINS = [["training", "Training", 0.2, "Log workouts, sync Strava or import workouts."], ["nutrition", "Nutrition", 0.2, "Log food for a week or import MyFitnessPal or Cronometer data."], ["recovery", "Sleep & recovery", 0.18, "Import sleep, HRV and resting heart rate, or fill in the sleep pattern."],
-  ["stress", "Stress", 0.12, "Answer the stress screen and add daily check-ins."], ["body", "Body composition", 0.1, "Add waist, neck and hip measurements or a body scan."], ["cardio", "Cardio fitness", 0.1, "Import VO₂max or add resting heart rate."], ["metabolic", "Metabolic health", 0.07, "Add blood pressure and lab results under Health."], ["supps", "Supplements & safety", 0.03, "Log your stack on the Supplements tab."]];
+  ["stress", "Stress", 0.12, "Answer the stress screen and add daily check-ins."], ["body", "Body composition", 0.1, "Add waist, neck and hip measurements or a body scan."], ["cardio", "Cardio fitness", 0.1, "Import VO₂max or add resting heart rate."], ["metabolic", "Metabolic health", 0.07, "Add blood pressure and lab results under Health."], ["supps", "Supplements & safety", 0.03, "Log your stack on the Supplements tab."], ["balance", "Wellness balance", 0.1, "Rate your balance wheel on the Wellness tab."]];
 function assess360() {
   const A = analyze(28), c = calc(), m = macros(c), allW = allWorkouts(), SA = stackAnalysis(), out = {};
   const hasW = allW.length > 0;
@@ -4605,6 +4780,7 @@ function assess360() {
   const base = 100 - SA.flags.filter(f => f.sev === "bad").length * 25 - SA.flags.filter(f => f.sev === "warn").length * 10;
   const sc = SA.count ? clamp01(base / 100) * (Number.isFinite(SA.adh) ? 0.8 : 1) + (Number.isFinite(SA.adh) ? 0.2 * SA.adh : 0) : NaN;
   out.supps = SA.count ? { score: sc * 100, conf: 0.6, drivers: [{ t: `${SA.count} items logged, ${SA.flags.filter(f => f.sev !== "info").length} to review${Number.isFinite(SA.adh) ? `, ${fmt(SA.adh * 100)}% adherence` : ""}`, v: sc }], tips: SA.flags.filter(f => f.sev !== "info").slice(0, 3).map(f => f.title) } : { score: NaN, conf: 0, drivers: [], tips: [] };
+  out.balance = balanceDomain();
   let num2 = 0, den = 0, cw = 0, tw = 0; const list = DOMAINS.map(([id, label, w, how]) => { const o = out[id]; if (Number.isFinite(o.score)) { num2 += o.score * w * o.conf; den += w * o.conf; } cw += w * o.conf; tw += w; return { id, label, how, w, ...o }; });
   return { domains: list, overall: den ? num2 / den : NaN, completeness: cw / tw, A, c };
 }
@@ -4710,6 +4886,7 @@ function coachContext() {
     const R = LAST360 || assess360(), P = P360, sp = stressPct(), ch = chronotype();
     parts.push(`360 PROFILE (self-reported)\nGoal: ${P.goal || "not set"}${P.goaltxt ? " (" + P.goaltxt + ")" : ""}${P.event ? ", target date " + P.event : ""}. Experience: ${P.exp || "?"}. Available: ${P.days || "?"} days/week, ${P.mins || "?"} min, equipment: ${P.eq || "?"}. Body type: ${P.body || "not set"}. Blood type: ${P.blood || "unknown"}. Muscle fibers: ${P.fiber || (P.fiberReps ? "rep test " + P.fiberReps + " reps at 80%" : "not tested")}. Chronotype: ${ch ? ch.label + " (mid-sleep " + ch.mid + ")" : "unknown"}. Injuries/limits: ${P.inj || "none stated"}. Conditions/medications: ${P.cond || "none stated"}. Diet restrictions: ${P.food || "none stated"}. Notes: ${P.notes || "none"}.\nSleep answers: bed ${P.bed || "?"}, wake ${P.wake || "?"}, latency ${P.lat || "?"} min, awakenings ${P.wakes || "?"}, quality ${P.sq || "?"}/5, daytime sleepiness ${P.sleepy || "?"}/5${P.snore ? ", reports loud snoring/gasping" : ""}.\nStress screen: ${Number.isFinite(sp) ? fmt(sp * 100) + "% of maximum (" + stressLevel(sp)[0].toLowerCase() + ")" : "not answered"}.\n360 scores (0-100, with data confidence): ${R.domains.map(d => `${d.label} ${Number.isFinite(d.score) ? fmt(d.score) : "n/a"} (${fmt(d.conf * 100)}%)`).join("; ")}. Overall ${Number.isFinite(R.overall) ? fmt(R.overall) : "n/a"}.\nDrivers: ${R.domains.filter(d => d.drivers.length).map(d => d.label + ": " + d.drivers.map(x => x.t).join("; ")).join(" | ")}`);
   }
+  if (COSHARE.p360 && wheelRatedCount()) { const st = stoicStats(); parts.push(`WELLNESS WHEEL (1-10)\n${WH_ORDER.map(id => `${DIMS[id].name.split(" (")[0]} ${fmt(currentRating(id), 1)}`).join("; ")}.${Number.isFinite(st.avg7) ? ` Stoic practice 7-day completion ${fmt(st.avg7 * 100)}%, streak ${st.streak} days.` : ""}`); }
   if (COSHARE.hub) parts.push("WEARABLE / IMPORTED DATA\n" + hubSummaryText(true));
   if (COSHARE.wlog) {
     const sess = WLOG.slice().sort((a, b) => b.d.localeCompare(a.d)).slice(0, 10), bestBy = {};
@@ -4746,7 +4923,8 @@ async function askCoach(q, display) {
   const out = $("#co-out"), send = $("#co-send"), stop = $("#co-stop"), sample = await cap("sample");
   if (!sample) { flash("#co-flag", `<div class="example-flag">The coaches work when this dashboard is opened on claude.ai (they use your Claude account). Everything else on the dashboard works without them.</div>`); return; }
   flash("#co-flag", ""); const turns = (COCONV[coachSel] = COCONV[coachSel] || []);
-  const msgs = [{ role: "user", content: coachRules(coachSel) + "\n\nDATA (from the user's dashboard):\n" + coachContext() }, ...turns.slice(-8).map(t => ({ role: t.role, content: t.content })), { role: "user", content: q }];
+  const ref = COACH_ATTACH ? `\n\nREFERENCE MATERIAL the user attached from their own licensed library (${COACH_ATTACH.title}):\n${COACH_ATTACH.text.slice(0, 30000)}` : "";
+  const msgs = [{ role: "user", content: coachRules(coachSel) + "\n\nDATA (from the user's dashboard):\n" + coachContext() + ref }, ...turns.slice(-8).map(t => ({ role: t.role, content: t.content })), { role: "user", content: q }];
   turns.push({ role: "user", content: q, display: display || q }); coCtl = new AbortController(); send.disabled = true; stop.hidden = false;
   renderCoachMsgs(`<p class="muted">Thinking…</p>`);
   try {
@@ -4803,7 +4981,7 @@ $("#co-clear").addEventListener("click", () => { COCONV[coachSel] = []; renderCo
 $("#gp-go").addEventListener("click", genProgram); $("#gm-go").addEventListener("click", genMeals);
 $("#gp-out").addEventListener("click", e => { if (e.target.id !== "gp-save" || !GEN_PROG) return; const p = mkProgram(GEN_PROG.name, "AI coach", GEN_PROG.days); PROGRAMS.push(p); pgSel = p.id; store.set("pgsel", pgSel); savePG(); e.target.textContent = "Saved. Open Programs to start"; e.target.disabled = true; renderPrograms(); renderWorkout(); });
 $("#gm-out").addEventListener("click", e => { if (e.target.id !== "gm-save" || !GEN_MEAL) return; MEALPLANS.push({ id: uid(), name: GEN_MEAL.name, src: "AI coach", days: GEN_MEAL.days }); saveMP(); e.target.textContent = "Saved. Open Food log to use it"; e.target.disabled = true; renderSavedPlans(); });
-onShow.coach = () => { renderCoachUi(); $("#co-preview").textContent = coachContext(); };
+onShow.coach = () => { renderAttach(); renderCoachUi(); $("#co-preview").textContent = coachContext(); };
 
 
 
@@ -5013,8 +5191,513 @@ $("#gd-auto").addEventListener("change", e => { store.set("gdauto", e.target.che
 const prevOnShowHub = onShow.hub;
 onShow.hub = () => { if (prevOnShowHub) prevOnShowHub(); if (store.get("gdauto", false) && Date.now() - store.get("gdsync", 0) > 3 * 3600 * 1000) driveSync(true); };
 
+/* ---------- books & guides (private, IndexedDB) ---------- */
+let BOOKS = [], bkDoc = null, bkSec = 0, bkMem = false, COACH_ATTACH = null;
+const BKDB = {
+  open() { return this._p || (this._p = new Promise((res, rej) => { try { const r = indexedDB.open("pp-books", 1); r.onupgradeneeded = () => r.result.createObjectStore("docs", { keyPath: "id" }); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); } catch (e) { rej(e); } })); },
+  async all() { const db = await this.open(); return new Promise((res, rej) => { const q = db.transaction("docs").objectStore("docs").getAll(); q.onsuccess = () => res(q.result); q.onerror = () => rej(q.error); }); },
+  async put(d) { const db = await this.open(); return new Promise((res, rej) => { const q = db.transaction("docs", "readwrite").objectStore("docs").put(d); q.onsuccess = () => res(); q.onerror = () => rej(q.error); }); },
+  async del(id) { const db = await this.open(); return new Promise((res, rej) => { const q = db.transaction("docs", "readwrite").objectStore("docs").delete(id); q.onsuccess = () => res(); q.onerror = () => rej(q.error); }); }
+};
+function sectionize(text) {
+  const lines = text.replace(/\r/g, "").split("\n"), secs = []; let cur = { title: "Beginning", start: 0 }, pos = 0;
+  const isHead = l => { const t = l.trim(); if (t.length < 3 || t.length > 90) return false; if (/[.!?,;]$/.test(t)) return false;
+    if (/^(chapter|part|section|appendix|week|weeks|day|phase|workout|program|routine|meal plan|recipes?|nutrition|introduction|warm[- ]?up|glossary|index|advanced|beginner|intermediate)\b/i.test(t) && t.length < 70) return true;
+    const letters = t.replace(/[^A-Za-z]/g, ""); return letters.length >= 4 && t === t.toUpperCase() && letters.length / t.length > 0.6; };
+  lines.forEach(l => { const len = l.length + 1; if (isHead(l)) { if (pos > cur.start) { cur.end = pos; secs.push(cur); } cur = { title: l.trim().replace(/\s+/g, " ").replace(/\\\*/g, "").slice(0, 80), start: pos }; } pos += len; });
+  cur.end = pos; secs.push(cur);
+  const merged = []; secs.forEach(x => { if (merged.length && x.end - x.start < 400) merged[merged.length - 1].end = x.end; else merged.push({ ...x }); });
+  const out = [];
+  merged.forEach(x => { const len = x.end - x.start; if (len <= 24000) { out.push(x); return; } const parts = Math.ceil(len / 12000); const step = Math.ceil(len / parts);
+    for (let i = 0; i < parts; i++) { let a = x.start + i * step, b = Math.min(x.end, a + step); const body = text.slice(a, b + 400); const nl = body.indexOf("\n\n", b - a - 200 > 0 ? b - a - 200 : 0); if (i < parts - 1 && nl > 0) b = a + nl + 2; out.push({ title: `${x.title} (part ${i + 1} of ${parts})`, start: a, end: b }); } });
+  return out.length ? out : [{ title: "Full text", start: 0, end: text.length }];
+}
+const secText = (d, i) => { const s = d.sections[i]; return s ? d.text.slice(s.start, s.end).trim() : ""; };
+async function loadBooks() { try { BOOKS = (await BKDB.all()).sort((a, b) => (b.added || 0) - (a.added || 0)); bkMem = false; } catch (e) { bkMem = true; } renderBooks(); }
+async function addDoc(title, text, src, kind) {
+  text = String(text || "").replace(/\u0000/g, "").trim(); if (text.length < 50) throw new Error("no readable text");
+  const kd = kind || (/encyclop/i.test(title) ? "Exercise encyclopedia" : /challenge|program|workout|transformation|routine/i.test(title) ? "Training program" : /nutrition|meal|diet|recipe/i.test(title) ? "Nutrition guide" : "Other");
+  const d = { id: uid(), title: String(title).slice(0, 160), src, kind: kd, added: Date.now(), text, sections: sectionize(text) };
+  try { await BKDB.put(d); } catch (e) { bkMem = true; }
+  BOOKS = [d, ...BOOKS.filter(x => x.id !== d.id)]; bkDoc = d.id; bkSec = 0; renderBooks(); return d;
+}
+function curDoc() { return BOOKS.find(d => d.id === bkDoc) || null; }
+function renderBooks() {
+  $("#bk-count").textContent = BOOKS.length ? `${BOOKS.length} item${BOOKS.length === 1 ? "" : "s"}${bkMem ? " (this session only: storage unavailable)" : ""}` : "";
+  $("#bk-list").innerHTML = BOOKS.length ? BOOKS.map(d => `<div style="display:flex;gap:8px;align-items:stretch"><button type="button" class="chip" style="text-align:left;border-radius:10px;padding:8px 12px;flex:1;min-width:0" data-bkdoc="${d.id}" aria-pressed="${bkDoc === d.id}"><strong style="display:block;overflow:hidden;text-overflow:ellipsis">${esc(d.title)}</strong><span class="small" style="opacity:.75">${esc(d.kind)} · ${d.sections.length} sections · ${fmt(d.text.length / 1000)}k characters · ${esc(d.src)}</span></button><button type="button" class="btn ghost small" data-bkdel="${d.id}" aria-label="Remove ${esc(d.title)}">×</button></div>`).join("") : `<p class="small muted">Nothing imported yet. Search your Google Drive, choose a text file, or paste text.</p>`;
+  const d = curDoc();
+  $("#bk-doc-meta").textContent = d ? d.sections.length + " sections" : "";
+  $("#bk-toc").innerHTML = d ? d.sections.map((x, i) => `<button type="button" class="chip" style="text-align:left;border-radius:8px;width:100%" data-bksec="${i}" aria-pressed="${bkSec === i}">${esc(x.title)} <span class="small" style="opacity:.6">· ${fmt((x.end - x.start) / 1000, 1)}k</span></button>`).join("") : `<p class="small muted">Pick an item to see its contents.</p>`;
+  renderSection();
+}
+function renderSection() {
+  const d = curDoc(); const act = $("#bk-actions");
+  if (!d) { $("#bk-sec-title").textContent = "Reader"; $("#bk-sec-meta").textContent = ""; $("#bk-view").textContent = "Choose a section from the contents."; act.hidden = true; return; }
+  const sec = d.sections[bkSec] || d.sections[0]; $("#bk-sec-title").textContent = sec.title; $("#bk-sec-meta").textContent = d.title; act.hidden = false; $("#bk-view").textContent = secText(d, bkSec);
+}
+async function bkSearchDrive() {
+  const q = $("#bk-q").value.trim().replace(/['"\\]/g, ""), el = $("#bk-results"); if (!q) return; const mcp = await cap("mcp");
+  if (!mcp) { el.innerHTML = `<p class="muted">Google Drive search works when the dashboard is opened on claude.ai. You can still paste text or choose a file.</p>`; return; }
+  el.innerHTML = `<p class="muted">Searching…</p>`;
+  try {
+    const toks = q.split(/\s+/).filter(Boolean).slice(0, 4), query = `(${toks.map(t => `title contains '${t}'`).join(" or ")}) and mimeType != 'application/vnd.google-apps.folder'`;
+    let r = (await mcp.callTool("Google Drive", "search_files", { query, excludeContentSnippets: true, pageSize: 15 }, { cache: false })).payload || {}; if (typeof r === "string") { try { r = JSON.parse(r); } catch (e) { r = {}; } }
+    const files = (r.files || []).filter(f => f && f.id);
+    el.innerHTML = files.length ? `<div class="table-wrap" style="border:0"><table><tbody>${files.map(f => `<tr><td>${esc(f.title || f.id)}<div class="small muted">${esc((f.fileExtension || f.mimeType || "").toString())}${f.fileSize ? " · " + fmt(+f.fileSize / 1048576, 1) + " MB" : ""}</div></td><td class="num"><button type="button" class="btn small" data-bkimp="${esc(f.id)}" data-bkt="${esc(f.title || "Imported file")}">Import</button></td></tr>`).join("")}</tbody></table></div>` : `<p class="small muted">No files found for "${esc(q)}".</p>`;
+  } catch (e) { el.innerHTML = driveErr(e); }
+}
+function driveErr(e) { const c = e && e.code, M = { server_not_connected: "Google Drive isn't connected to your Claude account. Add it in claude.ai Settings → Connectors.", needs_reauth: "Your Google Drive connection expired. Reconnect it in claude.ai Settings → Connectors.", not_in_manifest: "Google Drive access is turned off for this page. Turn it on from the artifact's Permissions menu.", approval_required: "Approval needed. Try again and choose Allow.", selection_required: "You have more than one Google Drive connection. Choose one in the prompt claude.ai shows.", blocked_by_policy: "Your organization's policy blocks Google Drive for this page.", server_unavailable: "Google Drive didn't respond. Try again shortly.", tool_error: "Google Drive reported an error: " + esc(((e && e.message) || "").slice(0, 140)) }; return `<p class="small"><span class="pill p-bad">Failed</span> ${M[c] || "Something went wrong (" + esc(c || "unknown") + ")."}</p>`; }
+async function bkImportDrive(id, title) {
+  const mcp = await cap("mcp"); if (!mcp) return; flash("#bk-msg", `Reading "${esc(title)}"… large files can take a minute.`);
+  try {
+    let r = (await mcp.callTool("Google Drive", "read_file_content", { fileId: id }, { cache: false })).payload; if (typeof r === "string") { try { r = JSON.parse(r); } catch (e) { r = { fileContent: r }; } }
+    const text = r && (r.fileContent || r.content || r.text); const d = await addDoc(r.title || title, text, "Google Drive");
+    flash("#bk-msg", `<span class="pill p-good">Imported</span> ${esc(d.title)}: ${d.sections.length} sections, ${fmt(d.text.length / 1000)}k characters.${d.text.length < 20000 && /encyclop/i.test(d.title) ? " This looks partial for a book; import it in parts or paste chapters." : ""}`);
+  } catch (e) { flash("#bk-msg", e && e.code ? driveErr(e) : `<span class="pill p-bad">Failed</span> ${esc(e && e.message === "no readable text" ? "That file had no readable text." : "The file couldn't be read.")}`); }
+}
+function bkSearchAll() {
+  const q = normName($("#bk-search").value), el = $("#bk-hits"); if (!q) { el.innerHTML = ""; return; } const toks = q.split(" "), hits = [];
+  BOOKS.forEach(d => d.sections.forEach((sec, i) => { const t = d.text.slice(sec.start, sec.end), lc = t.toLowerCase(); if (!toks.every(w => lc.includes(w))) return; const at = lc.indexOf(toks[0]), cnt = toks.reduce((a, w) => a + lc.split(w).length - 1, 0); hits.push({ d, i, cnt, snip: t.slice(Math.max(0, at - 60), at + 140).replace(/\s+/g, " ") }); }));
+  hits.sort((a, b) => b.cnt - a.cnt);
+  el.innerHTML = hits.length ? hits.slice(0, 12).map(h => `<div class="item"><button type="button" class="chip" data-bkgo="${h.d.id}|${h.i}" style="text-align:left;border-radius:8px;width:100%"><strong>${esc(h.d.title.slice(0, 40))}</strong> › ${esc(h.d.sections[h.i].title)} <span class="small" style="opacity:.6">· ${h.cnt} matches</span></button><span class="small muted">…${esc(h.snip)}…</span></div>`).join("") + (hits.length > 12 ? `<p class="small muted">${hits.length - 12} more sections match.</p>` : "") : `<p class="small muted">No sections match.</p>`;
+}
+async function bkAction(a) {
+  const d = curDoc(); if (!d) return; const sec = d.sections[bkSec], text = ($("#bk-scope").value === "doc" && ["program", "meals", "summary", "quiz"].includes(a)) ? d.text.slice(0, 60000) : secText(d, bkSec), out = $("#bk-out");
+  if (a === "copy") { try { await navigator.clipboard.writeText(text); out.innerHTML = `<p class="small"><span class="pill p-good">Copied</span></p>`; } catch (e) { out.innerHTML = `<p class="small muted">Copy isn't available here. Select the text above instead.</p>`; } return; }
+  if (a === "coach") { COACH_ATTACH = { title: `${d.title} › ${sec.title}`, text }; renderAttach(); showTab("coach", true); return; }
+  if (a === "program") {
+    const local = parseProgramText(text); const src = d.title;
+    const show = (days, note) => { BK_EXTRACT = { days, src }; out.innerHTML = days.length ? `<div class="callout small" style="margin-top:10px"><strong>${days.length} day${days.length === 1 ? "" : "s"}, ${days.reduce((x, y) => x + y[1].length, 0)} exercises found${note || ""}.</strong> Check the preview, then save it as a program to track.</div>` + days.map(x => `<div class="item"><strong>${esc(x[0])}</strong><span class="small muted">${x[1].map(i => esc(i[0]) + " " + esc(i[1]) + "×" + esc(i[2])).join(" · ")}</span></div>`).join("") + `<div style="margin-top:8px"><button type="button" class="btn" id="bk-saveprog">Save as program</button></div>` : `<p class="small muted" style="margin-top:8px">No workouts found here by pattern matching. Try "Find workouts" again after the AI is available, or open the section that holds the routines.</p>`; };
+    const sample = await cap("sample");
+    if (local.length > 14) { BK_EXTRACT = null; out.innerHTML = `<p class="small muted" style="margin-top:8px">Pattern matching found a lot of fragments here (${local.length} possible days), which usually means tables or layout text. ${sample ? "The AI structuring below is more reliable." : "Open a single day or week section for a cleaner result, or use the AI when available."}</p>`; } else show(local, " by pattern matching");
+    if (sample && text.length) { out.insertAdjacentHTML("afterbegin", `<p class="small muted" id="bk-thinking">Asking the AI to structure it too…</p>`);
+      try { const o = await sample.json(`Convert the workout routines in this text into JSON: {"name": string, "days": [{"name": string, "items": [{"ex": string, "sets": string, "reps": string, "note": string}]}]}. Keep exercises in order and use the text's own names; put tempo, rest, supersets and notes in "note". If it describes weeks 1 to N, use the first week as the days and mention progression in notes. Do not invent exercises. If the text has no workouts, return {"days": []}.\n\nTEXT:\n${text.slice(0, 60000)}`, { cache: false }); const ai = (o.days || []).filter(x => x && Array.isArray(x.items) && x.items.length).map(x => [String(x.name || "Day"), x.items.map(i => [String(i.ex || "Exercise"), String(i.sets || "3"), String(i.reps || "10"), String(i.note || "")])]); if (ai.length) { if (o.name) BK_NAME = String(o.name).slice(0, 80); show(ai, " by the AI"); } } catch (e) { const t = $("#bk-thinking"); if (t) t.remove(); } }
+    return; }
+  if (a === "meals") {
+    const sample = await cap("sample"); const local = parseMealPlanText(text); const show = (days, est) => { BK_MEALS = { days, src: d.title, est }; out.innerHTML = days.length ? `<div class="callout small" style="margin-top:10px"><strong>${days.length} day${days.length === 1 ? "" : "s"} of meals found.</strong>${est ? " Calories and macros not in the text were estimated by the AI; verify them." : ""}</div>` + days.slice(0, 7).map(x => `<div class="item"><strong>${esc(x.name)}</strong><span class="small muted">${x.meals.map(m => esc(m.name) + ": " + m.items.map(i => esc(i.n) + (i.kcal ? " (" + fmt(i.kcal) + ")" : "")).join(", ")).join(" · ")}</span></div>`).join("") + `<div style="margin-top:8px"><button type="button" class="btn" id="bk-savemeals">Save as meal plan</button></div>` : `<p class="small muted" style="margin-top:8px">No meal plan found here.</p>`; };
+    show(local, false);
+    if (sample) { out.insertAdjacentHTML("afterbegin", `<p class="small muted" id="bk-thinking">Asking the AI to structure it too…</p>`);
+      try { const o = await sample.json(`Convert any meal plan in this text into JSON: {"days": [{"name": string, "meals": [{"name": "Breakfast"|"Lunch"|"Dinner"|"Snacks", "items": [{"n": string, "qty": string, "kcal": number, "p": number, "c": number, "f": number, "fiber": number, "est": boolean}]}]}]}. Use calories and macros from the text when present (est=false); otherwise estimate from standard nutrition data (est=true). If there is no meal plan, return {"days": []}.\n\nTEXT:\n${text.slice(0, 60000)}`, { cache: false }); const ai = (o.days || []).map(x => ({ name: String(x.name || "Day"), meals: (x.meals || []).map(m => ({ name: String(m.name || "Meal"), items: (m.items || []).map(i => ({ n: String(i.n || "Food"), qty: String(i.qty || ""), kcal: +i.kcal || 0, p: +i.p || 0, c: +i.c || 0, f: +i.f || 0, fiber: +i.fiber || 0, est: !!i.est })) })) })).filter(x => x.meals.length); if (ai.length) show(ai, ai.some(x => x.meals.some(m => m.items.some(i => i.est)))); } catch (e) { const t = $("#bk-thinking"); if (t) t.remove(); } }
+    return; }
+  const sample = await cap("sample"); if (!sample) { out.innerHTML = `<p class="small muted">AI actions are available when the dashboard is opened on claude.ai.</p>`; return; }
+  const ask = a === "summary" ? `Summarize this section for me in clear bullets: key ideas, any numbers or formulas, and what to do with it. Be faithful to the text.` : `Write a 5-question multiple-choice quiz on this section to test understanding and recall, with the answer key and a one-line explanation for each answer.`;
+  const box = document.createElement("div"); box.className = "card"; box.style.cssText = "background:var(--surface-2);margin-top:10px"; box.innerHTML = `<p class="muted">Thinking…</p>`; out.innerHTML = ""; out.appendChild(box);
+  try { const r = await sample(`${ask}\n\nSECTION "${sec.title}" from "${d.title}" (the user's own licensed copy):\n${text.slice(0, 60000)}`, { cache: false, onText: ({ text: t }) => { box.innerHTML = mdLite(t); } }); box.innerHTML = mdLite(r.text); } catch (e) { box.innerHTML = `<p class="small muted">${esc(AI_ERR[e && e.code] || "That didn't work. Try again.")}</p>`; }
+}
+let BK_EXTRACT = null, BK_MEALS = null, BK_NAME = "";
+function renderAttach() { const el = $("#co-attach"); if (!el) return; el.innerHTML = COACH_ATTACH ? `<div class="callout small" style="display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap"><span><strong>Reference attached:</strong> ${esc(COACH_ATTACH.title)} (${fmt(COACH_ATTACH.text.length / 1000)}k characters)</span><button type="button" class="btn ghost small" id="co-detach">Remove</button></div>` : ""; }
+$("#bk-search-drive").addEventListener("click", bkSearchDrive); $("#bk-q").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); bkSearchDrive(); } });
+$$("[data-bkq]").forEach(b => b.addEventListener("click", () => { $("#bk-q").value = b.dataset.bkq; bkSearchDrive(); }));
+$("#bk-results").addEventListener("click", e => { const b = e.target.closest("[data-bkimp]"); if (b) { b.disabled = true; bkImportDrive(b.dataset.bkimp, b.dataset.bkt).finally(() => { b.disabled = false; }); } });
+$("#bk-add").addEventListener("click", async () => { const t = $("#bk-text").value, ti = $("#bk-title").value.trim() || "Pasted text"; try { const d = await addDoc(ti, t, "Pasted", $("#bk-kind").value); $("#bk-text").value = ""; flash("#bk-msg", `<span class="pill p-good">Added</span> ${esc(d.title)}: ${d.sections.length} sections.`); } catch (e) { flash("#bk-msg", "Paste some text first."); } });
+$("#bk-file").addEventListener("change", async e => { const f = e.target.files[0]; e.target.value = ""; if (!f) return; try { let t = await f.text(); if (/\.html?$/i.test(f.name)) { const dd = new DOMParser().parseFromString(t, "text/html"); t = dd.body ? dd.body.innerText || dd.body.textContent : t; } const d = await addDoc($("#bk-title").value.trim() || f.name.replace(/\.[^.]+$/, ""), t, "File", $("#bk-kind").value); flash("#bk-msg", `<span class="pill p-good">Added</span> ${esc(d.title)}: ${d.sections.length} sections.`); } catch (er) { flash("#bk-msg", "That file couldn't be read as text. PDFs: import them from Google Drive or copy the text."); } });
+$("#bk-list").addEventListener("click", e => { const del = e.target.closest("[data-bkdel]"); if (del) { armTwice(del, "Sure?", async () => { try { await BKDB.del(del.dataset.bkdel); } catch (er) { /* memory only */ } BOOKS = BOOKS.filter(d => d.id !== del.dataset.bkdel); if (bkDoc === del.dataset.bkdel) { bkDoc = BOOKS[0] ? BOOKS[0].id : null; bkSec = 0; } renderBooks(); }); return; } const b = e.target.closest("[data-bkdoc]"); if (b) { bkDoc = b.dataset.bkdoc; bkSec = 0; $("#bk-out").innerHTML = ""; renderBooks(); } });
+$("#bk-toc").addEventListener("click", e => { const b = e.target.closest("[data-bksec]"); if (b) { bkSec = +b.dataset.bksec; $("#bk-out").innerHTML = ""; renderBooks(); $("#bk-view").scrollTop = 0; } });
+$("#bk-search").addEventListener("input", bkSearchAll);
+$("#bk-hits").addEventListener("click", e => { const b = e.target.closest("[data-bkgo]"); if (!b) return; const [id, i] = b.dataset.bkgo.split("|"); bkDoc = id; bkSec = +i; $("#bk-out").innerHTML = ""; renderBooks(); $("#bk-view").scrollIntoView({ block: "nearest" }); });
+$("#bk-actions").addEventListener("click", e => { const b = e.target.closest("[data-bka]"); if (b) bkAction(b.dataset.bka); });
+$("#bk-out").addEventListener("click", e => {
+  if (e.target.id === "bk-saveprog" && BK_EXTRACT) { const d = curDoc(), p = mkProgram(BK_NAME || (d ? d.title + " · " + d.sections[bkSec].title : "Imported program"), BK_EXTRACT.src, BK_EXTRACT.days); PROGRAMS.push(p); pgSel = p.id; store.set("pgsel", pgSel); savePG(); renderPrograms(); renderWorkout(); e.target.textContent = "Saved. Open Programs to start"; e.target.disabled = true; }
+  else if (e.target.id === "bk-savemeals" && BK_MEALS) { const d = curDoc(); MEALPLANS.push({ id: uid(), name: d ? d.title + " · " + d.sections[bkSec].title : "Imported meal plan", src: BK_MEALS.src, days: BK_MEALS.days }); saveMP(); renderSavedPlans(); e.target.textContent = "Saved. Open the Food log to use it"; e.target.disabled = true; }
+});
+$("#co-attach").addEventListener("click", e => { if (e.target.id === "co-detach") { COACH_ATTACH = null; renderAttach(); } });
+onShow.books = () => { loadBooks(); };
+
+/* ---------- wellness wheel ---------- */
+let WHEEL = Object.assign({ r: {}, qs: {}, tool: {}, stoic: {}, hist: [], dim: "PHYS" }, store.get("wheel", {}));
+const saveWheel = () => store.set("wheel", WHEEL);
+const WH_ORDER = ["PHYS", "EMOT", "INTE", "SOCI", "SPIR", "STOI", "ENVI", "FINA", "OCCU", "RELA", "FAMI", "COMM"];
+const WH_GROUPS = [["Health", ["PHYS", "EMOT"]], ["Mind", ["INTE", "SPIR", "STOI"]], ["Connection", ["SOCI", "RELA", "FAMI", "COMM"]], ["Stability", ["FINA", "OCCU", "ENVI"]]];
+const QOPT = ["Not at all", "A little", "Somewhat", "Mostly", "Completely"];
+const s10 = v => Math.max(1, Math.min(10, v));
+const lin = (v, lo, hi) => clamp01((v - lo) / (hi - lo));
+const DIMS = {
+  PHYS: { name: "Physical (Health & Fitness)", def: "Strength, stamina, energy, sleep, body composition and the medical markers that show your body is healthy.", signs: ["You train regularly and recover well", "Sleep, energy and mood are steady", "Blood pressure, glucose and lipids are in range", "Everyday tasks feel easy"], auto: true, tip: "Strength train 2 to 3 times a week, build to 150 minutes of cardio, protect 7 to 9 hours of sleep and track the basics.",
+    qs: ["I have the energy to do what matters to me each day.", "I move my body in ways I enjoy at least 4 days a week.", "I sleep well most nights.", "I get regular check-ups and act on what they show."], prompts: ["What is one physical habit I could keep for 90 days?", "What does my body need more or less of right now?"], practices: ["2 to 3 strength sessions a week", "8,000+ daily steps", "7 to 9 hours of consistent sleep", "Annual blood work and screening"] },
+  EMOT: { name: "Emotional", def: "Recognizing, understanding and working with feelings: resilience, stress handling and the ability to recover from setbacks.", signs: ["You can name what you feel", "You recover from setbacks within days", "You ask for help when needed", "You don't need alcohol or scrolling to cope"], auto: "emot", tip: "Add a daily check-in, a breathing practice and one conversation a week with someone you trust; consider therapy if stress persists.",
+    qs: ["I can name what I'm feeling as it happens.", "I bounce back from setbacks within a day or two.", "I have someone I can talk to about hard things.", "I feel my stress without numbing it (alcohol, scrolling, overeating)."], prompts: ["What emotion have I been avoiding?", "Who helps me feel steady, and when did I last reach out?"], practices: ["Daily mood and stress check-in (Log tab)", "5 minutes of slow breathing", "Journaling or voice notes", "Therapy or coaching when stress is persistent"] },
+  INTE: { name: "Intellectual (Personal Growth & Learning)", def: "Curiosity, learning, creativity and the skills you build over time.", signs: ["You're learning something new now", "You read or study every week", "You enjoy hard problems", "You apply what you learn"], tip: "Block 3 weekly learning sessions of 30 minutes and pick one skill to practice.",
+    qs: ["I'm actively learning something that matters to me.", "I read, study or practice a skill most weeks.", "I seek views that challenge my own.", "I apply what I learn in my work or life."], prompts: ["What skill, if I improved it, would change the most for me?", "What am I curious about that I keep postponing?"], practices: ["30 minutes of focused learning, 3 times a week", "One book a month", "A project that makes you use new skills", "Teach someone what you learned"],
+    tool: { fields: [{ id: "hrs", label: "Learning hours per week", type: "num", step: 0.5 }, { id: "books", label: "Books or courses finished per month", type: "num", step: 0.5 }, { id: "proj", label: "Working on a real project", type: "sel", opts: [["0", "No"], ["1", "Yes"]] }], calc: v => { const h = +v.hrs || 0, b = +v.books || 0, p = +v.proj || 0; return { score: s10(1 + 9 * (0.55 * lin(h, 0, 5) + 0.25 * lin(b, 0, 1.5) + 0.2 * p)), lines: [`Learning ${h} h/week (aim 3 to 5 h)`, `Finishing ${b} per month (aim 1)`] }; } } },
+  SPIR: { name: "Spiritual", def: "Meaning, purpose, values and a sense of connection to something larger, whether religious, philosophical or through nature.", signs: ["Your actions match your values", "You feel a sense of purpose", "You make time for reflection", "You feel connected to something larger than yourself"], tip: "Schedule 10 to 20 minutes of reflection, meditation, prayer or nature daily and write down your top 3 values.",
+    qs: ["I have a sense of purpose.", "My daily choices line up with my values.", "I make time for quiet reflection, prayer or meditation.", "I feel connected to something larger than myself."], prompts: ["If I lived by my values this week, what would change?", "What gives my life meaning when everything else is stripped away?"], practices: ["Daily 10-minute meditation, prayer or contemplation", "Time in nature each week", "Weekly values review", "Service to others"],
+    tool: { fields: [{ id: "mins", label: "Minutes of reflection, prayer or meditation per week", type: "num", step: 5 }, { id: "nature", label: "Hours in nature per week", type: "num", step: 0.5 }, { id: "purpose", label: "Sense of purpose (1 to 10)", type: "num", step: 1 }], calc: v => { const m = +v.mins || 0, n = +v.nature || 0, pu = +v.purpose || 0; return { score: s10(1 + 9 * (0.4 * lin(m, 0, 140) + 0.2 * lin(n, 0, 3) + 0.4 * lin(pu, 1, 10))), lines: [`${m} min/week of reflection (aim 70 to 140)`, `${n} h/week in nature (aim 2+)`] }; } } },
+  STOI: { name: "Stoicism (Virtue, Control & Equanimity)", def: "A practical philosophy: focus on what you can control, act with virtue (wisdom, courage, justice, temperance) and keep your composure whatever happens.", signs: ["You separate what you control from what you don't", "You pause before reacting", "You accept setbacks and look for the next right action", "You reflect each evening"], auto: "stoi", tip: "Run the morning and evening routines from the playbook for 21 days and track your reactivity.",
+    qs: ["I focus my effort on what is up to me.", "I pause before reacting when I'm provoked.", "I accept what I can't change without bitterness.", "I review my day honestly each evening."], prompts: ["What am I worried about that is not in my control?", "What would my best self do next?"], practices: ["Morning intention and premeditation of obstacles", "Dichotomy-of-control audit", "Voluntary discomfort (cold shower, skipped comfort)", "Evening review"] },
+  SOCI: { name: "Social (Fun & Recreational)", def: "Play, friendship and enjoyment: time spent for its own sake.", signs: ["You laugh most days", "You have hobbies you look forward to", "You see friends regularly", "You say yes to fun"], tip: "Put one social or play activity on the calendar each week.",
+    qs: ["I regularly do things purely because I enjoy them.", "I laugh and play most days.", "I see friends or do group activities weekly.", "I have hobbies I look forward to."], prompts: ["What did I enjoy most as a kid, and when did I last do something like it?", "Who would I love to spend an afternoon with?"], practices: ["A weekly recreational activity", "A hobby or sport with others", "Planned time with friends"],
+    tool: { fields: [{ id: "hrs", label: "Hours per week of fun or recreation (not work or chores)", type: "num", step: 0.5 }, { id: "events", label: "Social events per month", type: "num", step: 1 }, { id: "hobbies", label: "Hobbies you actively do", type: "num", step: 1 }], calc: v => { const h = +v.hrs || 0, e = +v.events || 0, b = +v.hobbies || 0; return { score: s10(1 + 9 * (0.5 * lin(h, 0, 8) + 0.3 * lin(e, 0, 6) + 0.2 * lin(b, 0, 2))), lines: [`${h} h/week of recreation (aim 6 to 10)`, `${e} social events a month (aim 4+)`] }; } } },
+  RELA: { name: "Relationship / Partners & Love", def: "Intimacy, affection, trust and communication with a partner, or the capacity and openings for them if you're single.", signs: ["You feel loved and valued", "Conflicts get repaired", "You share affection and time", "You communicate needs openly"], tip: "Schedule weekly quality time and aim for at least five positive interactions for every negative one.",
+    qs: ["I feel loved and valued (or open to love, if single).", "We communicate needs and feelings openly.", "I get the affection and intimacy I need.", "Conflicts get repaired quickly."], prompts: ["What does my partner (or my future partner) need from me that I'm not giving?", "What would a better week of connection look like?"], practices: ["A weekly date or device-free evening", "A daily 10-minute check-in", "Express appreciation daily", "Repair after conflict"],
+    tool: { fields: [{ id: "status", label: "Situation", type: "sel", opts: [["p", "Partnered"], ["d", "Dating"], ["s", "Single"]] }, { id: "hrs", label: "Quality time per week with a partner or close connection (hours)", type: "num", step: 0.5 }, { id: "ratio", label: "Positive-to-negative interactions", type: "sel", opts: [["1", "About 1:1 or worse"], ["3", "About 3:1"], ["5", "5:1 or better"]] }], calc: v => { const h = +v.hrs || 0, r = +v.ratio || 1; return { score: s10(1 + 9 * (0.5 * lin(h, 0, 10) + 0.5 * lin(r, 1, 5))), lines: [`${h} h/week of quality time (aim 5 to 10)`, `Interaction ratio about ${r}:1 (healthy couples run about 5:1)`] }; } } },
+  FAMI: { name: "Family / Friends / Parents", def: "The people you can count on and who can count on you.", signs: ["You have people you can call at 2 a.m.", "You keep in touch regularly", "You show up for them", "You feel known"], tip: "Contact two close people every week and plan one in-person meet-up each month.",
+    qs: ["I have people I can count on in a crisis.", "I keep in regular touch with family and close friends.", "I show up for the people who matter to me.", "I feel known and accepted by them."], prompts: ["Who have I been meaning to call?", "How could I make time with family more regular?"], practices: ["A weekly call with someone close", "A monthly in-person meet-up", "Share a meal without devices"],
+    tool: { fields: [{ id: "contacts", label: "Meaningful contacts with close family or friends per week", type: "num", step: 1 }, { id: "ppl", label: "People you can count on in a crisis", type: "num", step: 1 }, { id: "meet", label: "In-person meet-ups per month", type: "num", step: 1 }], calc: v => { const c = +v.contacts || 0, p = +v.ppl || 0, m = +v.meet || 0; return { score: s10(1 + 9 * (0.4 * lin(c, 0, 5) + 0.35 * lin(p, 0, 4) + 0.25 * lin(m, 0, 4))), lines: [`${c} contacts a week (aim 3 to 5)`, `${p} people to count on (3 to 5 is typical of good support)`] }; } } },
+  COMM: { name: "Community", def: "Belonging and contribution beyond your immediate circle: neighbors, clubs, teams, faith groups, volunteering.", signs: ["You belong to a group", "You contribute", "You know your neighbors", "You feel part of something"], tip: "Join one recurring group or volunteer 2 hours a month.",
+    qs: ["I belong to at least one group or community.", "I contribute my time or skills to others.", "I know my neighbors or local people.", "I feel part of something bigger than my household."], prompts: ["Where could I contribute my skills?", "Which local group would I enjoy joining?"], practices: ["A recurring group, team or club", "Volunteer a few hours a month", "Host or attend a local event"],
+    tool: { fields: [{ id: "vol", label: "Volunteering or service hours per month", type: "num", step: 1 }, { id: "groups", label: "Groups, clubs or teams you belong to", type: "num", step: 1 }, { id: "neigh", label: "Neighbors you know by name", type: "num", step: 1 }], calc: v => { const a = +v.vol || 0, g = +v.groups || 0, n = +v.neigh || 0; return { score: s10(1 + 9 * (0.4 * lin(a, 0, 6) + 0.4 * lin(g, 0, 2) + 0.2 * lin(n, 0, 5))), lines: [`${a} service hours a month (aim 4 to 8)`, `${g} groups`] }; } } },
+  FINA: { name: "Financial (Money & Finances)", def: "Security and freedom from money stress: income, saving, debt and planning.", signs: ["You spend less than you earn", "You have an emergency fund", "Debt is under control", "You have a plan for the future"], tip: "Automate saving, build a 3 to 6 month emergency fund, and pay down high-interest debt first.",
+    qs: ["I know where my money goes each month.", "I'm not losing sleep over money.", "I'm saving or investing for the future.", "I could handle a surprise expense."], prompts: ["What one money habit would make me feel safer?", "What do I want my money to do for me?"], practices: ["A monthly money review", "Automatic saving", "Emergency fund target", "Debt payoff plan"],
+    tool: { fields: [{ id: "net", label: "Monthly take-home income", type: "num", step: 50 }, { id: "spend", label: "Monthly spending", type: "num", step: 50 }, { id: "save", label: "Liquid savings", type: "num", step: 100 }, { id: "gross", label: "Gross monthly income", type: "num", step: 50 }, { id: "debtpay", label: "Monthly debt payments (not rent)", type: "num", step: 25 }, { id: "debt", label: "Total debt", type: "num", step: 500 }, { id: "assets", label: "Total assets (savings, investments, home equity)", type: "num", step: 500 }, { id: "fit", label: "Monthly spend on health and fitness", type: "num", step: 10 }],
+      calc: v => { const net = +v.net || 0, sp = +v.spend || 0, sv = +v.save || 0, gr = +v.gross || 0, dp = +v.debtpay || 0, db = +v.debt || 0, as = +v.assets || 0, ft = +v.fit || 0; if (!net || !sp) return { score: NaN, lines: ["Enter take-home income and monthly spending to calculate."] };
+        const sr = (net - sp) / net, em = sv / sp, dti = gr ? dp / gr : NaN, nw = as - db; const lines = [`Savings rate ${fmt(sr * 100, 1)}% (aim 20%+)`, `Emergency fund ${fmt(em, 1)} months of spending (aim 3 to 6)`, Number.isFinite(dti) ? `Debt-to-income ${fmt(dti * 100, 1)}% (aim under 15%, lender limit about 36 to 43%)` : "", `Net worth ${fmt(nw)}`, ft ? `Health and fitness spend ${fmt(ft / net * 100, 1)}% of take-home` : ""].filter(Boolean);
+        return { score: s10(1 + 9 * (0.4 * lin(sr, 0, 0.2) + 0.35 * lin(em, 0, 6) + 0.25 * (Number.isFinite(dti) ? 1 - lin(dti, 0.15, 0.43) : 0.5))), lines }; } } },
+  OCCU: { name: "Occupational", def: "Meaning, autonomy, growth and sustainable workload in your job or main pursuit.", signs: ["Your work feels meaningful", "You have some autonomy", "You're growing", "You have energy left after work"], tip: "Cap workweeks near 45 hours, protect time off, and talk to your manager or reassess if burnout signs persist.",
+    qs: ["My work feels meaningful.", "I have a say in how I do my work.", "I'm learning and growing in my role.", "I finish the day with energy left for my life."], prompts: ["What part of my work gives me energy, and how could I do more of it?", "What would a sustainable workweek look like?"], practices: ["Protect days off and holidays", "Weekly review of tasks and boundaries", "A skill-building goal", "A career conversation each quarter"],
+    tool: { fields: [{ id: "hrs", label: "Hours worked per week", type: "num", step: 1 }, { id: "commute", label: "Commute hours per week", type: "num", step: 0.5 }, { id: "drain", label: "I feel emotionally drained by work", type: "sel", opts: [["0", "Never"], ["1", "Rarely"], ["2", "Sometimes"], ["3", "Often"], ["4", "Almost daily"]] }, { id: "dread", label: "I dread starting the workday", type: "sel", opts: [["0", "Never"], ["1", "Rarely"], ["2", "Sometimes"], ["3", "Often"], ["4", "Almost daily"]] }, { id: "eff", label: "I feel effective at work", type: "sel", opts: [["4", "Almost daily"], ["3", "Often"], ["2", "Sometimes"], ["1", "Rarely"], ["0", "Never"]] }],
+      calc: v => { const h = +v.hrs || 0, c = +v.commute || 0, dr = +v.drain || 0, dd = +v.dread || 0, ef = v.eff == null || v.eff === "" ? 2 : +v.eff; const burn = (dr + dd + (4 - ef)) / 12; return { score: s10(1 + 9 * (0.4 * (1 - lin(h + c, 45, 70)) + 0.6 * (1 - burn))), lines: [`${h + c} total work and commute hours (under 50 protects health)`, `Burnout signals ${fmt(burn * 100)}% of maximum`] }; } } },
+  ENVI: { name: "Environmental", def: "The spaces you live and work in: sleep room, light, air, noise, order, nature and digital habits.", signs: ["Your bedroom is dark, cool and quiet", "You get daylight daily", "Your spaces feel orderly", "Nature is within reach"], tip: "Fix the sleep room first, then add morning daylight and a screen curfew.",
+    qs: ["My home feels calm and organized.", "My bedroom supports good sleep.", "I get outdoors most days.", "My workspace is comfortable and healthy."], prompts: ["Which space in my life drains me?", "What one change would make my home feel better?"], practices: ["Cool, dark, quiet bedroom", "10+ minutes outdoors in the morning", "Screen curfew an hour before bed", "Ventilate or filter indoor air"],
+    tool: { fields: [{ id: "c1", label: "Bedroom is dark", type: "chk" }, { id: "c2", label: "Bedroom is cool (around 18 °C / 65 °F)", type: "chk" }, { id: "c3", label: "Bedroom is quiet (or masked)", type: "chk" }, { id: "c4", label: "Phone charges outside the bed", type: "chk" }, { id: "c5", label: "10+ minutes of outdoor light in the morning", type: "chk" }, { id: "c6", label: "Screens off 60 minutes before bed", type: "chk" }, { id: "c7", label: "Workspace is ergonomic", type: "chk" }, { id: "c8", label: "Good ventilation or air filtering", type: "chk" }, { id: "c9", label: "Green space within a 15-minute walk", type: "chk" }, { id: "c10", label: "Healthy food is easier to reach than junk food", type: "chk" }],
+      calc: v => { const n = ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9", "c10"].filter(k => v[k] === true || v[k] === "true").length; return { score: s10(1 + 9 * n / 10), lines: [`${n} of 10 environment habits in place`] }; } } }
+};
+function cleanTool(dim) { return WHEEL.tool[dim] || (WHEEL.tool[dim] = {}); }
+function qsScore(dim) { const a = (WHEEL.qs[dim] || []).map(x => x === "" || x == null ? NaN : +x).filter(Number.isFinite); return a.length >= 3 ? 1 + 9 * a.reduce((x, y) => x + y, 0) / (a.length * 4) : NaN; }
+function toolScore(dim) { const d = DIMS[dim]; if (!d.tool) return { score: NaN, lines: [] }; const v = cleanTool(dim); const any = Object.values(v).some(x => x !== "" && x != null && x !== false); if (!any) return { score: NaN, lines: [] }; return d.tool.calc(v); }
+/* physical metrics from data */
+function physMetrics() {
+  const A = analyze(28), c = calc(), allW = allWorkouts(), has = allW.length > 0, L = k => { const l = latestLab(k); return l ? l.v : NaN; };
+  const weeksActive = [0, 1, 2, 3].reduce((a, i) => { const e = dayAdd(A.end, -i * 7), s0 = dayAdd(e, -6); return a + (dedupWorkouts(allW.filter(w => w.date >= s0 && w.date <= e)).length >= 2 ? 1 : 0); }, 0);
+  const prs = WLOG.filter(x => x.d >= dayAdd(A.end, -29)).reduce((a, x) => a + (x.prs || []).length, 0);
+  const meas = A.vo2.days ? (A.vo2.last7 || A.vo2.avg) : NaN, hr = A.hrv.last7 / A.hrv.base, rd = A.rhr.last7 - A.rhr.base, whtr = S.waist / S.height, rows = BFR[S.sex] || BFR.male;
+  const row = (label, val, disp, target, score) => ({ label, val, disp, target, score: Number.isFinite(val) ? score : NaN });
+  const W = [
+    row("Strength sessions a week", has ? A.strengthPerWk : NaN, fmt(A.strengthPerWk, 1), "2 to 4", s10(1 + 9 * clamp01(A.strengthPerWk / 2.5))),
+    row("Cardio (moderate-equivalent min a week)", has ? A.cardioEqPerWk : NaN, fmt(A.cardioEqPerWk), "150+", s10(1 + 9 * clamp01(A.cardioEqPerWk / 150))),
+    row("Active weeks of the last 4 (2+ sessions)", has ? weeksActive : NaN, `${weeksActive} of 4`, "4 of 4", s10(1 + 9 * weeksActive / 4)),
+    row("Daily steps", A.steps.days >= 5 ? A.steps.avg : NaN, fmt(A.steps.avg), "8,000+", s10(1 + 9 * clamp01(A.steps.avg / 8000))),
+    row("New PRs in the last 30 days", WLOG.length ? prs : NaN, String(prs), "1+", s10(1 + 9 * clamp01(prs / 2))),
+    row("VO₂max (measured)", meas, fmt(meas, 1), "Good or better", s10(1 + 9 * (Number.isFinite(meas) ? vo2Rate(meas).r : 0)))];
+  const sv = h => h >= 7 && h <= 9 ? 1 : h > 9 ? 0.7 : h >= 6 ? 0.5 + (h - 6) * 0.5 : h >= 5 ? 0.2 + (h - 5) * 0.3 : 0.1; let bfs = NaN, bft = "";
+  if (Number.isFinite(c.bf)) { const cat = (rows.find(r => c.bf <= r[2] + 0.99) || rows[4])[0]; bfs = cat === "Athletes" || cat === "Fitness" ? 1 : cat === "Average" ? 0.65 : cat === "Essential" ? 0.5 : 0.3; bft = `${fmt(c.bf, 1)}% (${cat.toLowerCase()})`; }
+  const bpv = (() => { const a = latestLab("bpSys"), b = latestLab("bpDia"); if (!a && !b) return NaN; const st = [a ? labStatus("bpSys", a.v) : "good", b ? labStatus("bpDia", b.v) : "good"]; return st.includes("bad") ? 0.25 : st.includes("warn") ? 0.6 : 1; })();
+  const gl = Number.isFinite(L("hba1c")) ? labStatus("hba1c", L("hba1c")) : Number.isFinite(L("glucose")) ? labStatus("glucose", L("glucose")) : null;
+  const H = [
+    row("Sleep duration (hours)", A.sleep.days >= 5 ? A.sleep.avg : NaN, fmt(A.sleep.avg, 1), "7 to 9", s10(1 + 9 * sv(A.sleep.avg))),
+    row("HRV vs your baseline", hr, fmt(hr * 100) + "%", "100%+", s10(1 + 9 * (hr >= 1 ? 1 : hr >= 0.9 ? 0.6 + (hr - 0.9) * 4 : 0.25))),
+    row("Resting heart rate vs baseline (bpm)", rd, (rd > 0 ? "+" : "") + fmt(rd, 1), "0 or lower", s10(1 + 9 * (rd <= 0 ? 1 : clamp01(1 - rd * 0.133)))),
+    row("Body fat", bfs, bft, "Fitness to athlete range", s10(1 + 9 * bfs)),
+    row("Waist-to-height ratio", S.waist ? whtr : NaN, fmt(whtr, 2), "Under 0.5", s10(1 + 9 * (whtr <= 0.5 ? 1 : whtr <= 0.6 ? 1 - (whtr - 0.5) * 6 : 0.2))),
+    row("Blood pressure", bpv, Number.isFinite(bpv) ? `${fmt(L("bpSys"))}/${fmt(L("bpDia"))}` : "", "Under 120/80", s10(1 + 9 * bpv)),
+    row("Blood sugar (HbA1c or fasting glucose)", gl ? (gl === "good" ? 1 : gl === "warn" ? 0.6 : 0.25) : NaN, gl ? (Number.isFinite(L("hba1c")) ? fmt(L("hba1c"), 1) + "%" : fmt(L("glucose")) + " mg/dL") : "", "In range", s10(1 + 9 * (gl === "good" ? 1 : gl === "warn" ? 0.6 : 0.25))),
+    row("Energy (daily check-in, 1 to 5)", A.energy.days >= 3 ? A.energy.avg : NaN, fmt(A.energy.avg, 1), "4+", s10(1 + 9 * lin(A.energy.avg, 1, 4.5))),
+    row("Mood (daily check-in, 1 to 5)", A.mood.days >= 3 ? A.mood.avg : NaN, fmt(A.mood.avg, 1), "4+", s10(1 + 9 * lin(A.mood.avg, 1, 4.5)))];
+  const avg = a => { const v = a.filter(x => Number.isFinite(x.score)).map(x => x.score); return v.length ? v.reduce((x, y) => x + y, 0) / v.length : NaN; };
+  return { W, H, wAvg: avg(W), hAvg: avg(H), avg: (() => { const x = [avg(W), avg(H)].filter(Number.isFinite); return x.length ? x.reduce((a, b) => a + b, 0) / x.length : NaN; })() };
+}
+/* stoicism */
+const STOIC_PRACT = ["Morning intention: choose a virtue and rehearse what could go wrong", "Dichotomy-of-control audit: what's up to me, what isn't", "Voluntary discomfort: cold shower, skipped comfort, hard effort", "Negative visualization: briefly imagine losing what I value", "Act with justice: one deliberate act of fairness or kindness", "Pause before reacting: name the impression, then choose", "Journal: 3+ honest sentences", "Evening review: what did I do badly, well, leave undone"];
+function stoicDay(d) { return WHEEL.stoic[d] || (WHEEL.stoic[d] = { p: Array(STOIC_PRACT.length).fill(false), virtue: "", eq: 5, react: 0, bad: "", good: "", undone: "", touched: false }); }
+function stoicStats() {
+  const end = iso(new Date()), days = hubDates(7, end), done = days.map(d => { const x = WHEEL.stoic[d]; return x && x.touched ? x.p.filter(Boolean).length / STOIC_PRACT.length : 0; });
+  const avg7 = mean(done), eqs = days.map(d => WHEEL.stoic[d] && WHEEL.stoic[d].touched ? WHEEL.stoic[d].eq : NaN), reacts = days.map(d => WHEEL.stoic[d] && WHEEL.stoic[d].touched ? WHEEL.stoic[d].react : NaN);
+  let streak = 0; for (let d = end; ; d = dayAdd(d, -1)) { const x = WHEEL.stoic[d]; if (x && x.touched && x.p.filter(Boolean).length >= 5) streak++; else if (d === end) continue; else break; if (streak > 400) break; }
+  const tracked = days.filter(d => WHEEL.stoic[d] && WHEEL.stoic[d].touched).length;
+  const score = tracked ? s10(1 + 9 * (0.6 * clamp01(avg7 / 0.75) + 0.3 * lin(mean(eqs), 1, 8) + 0.1 * (1 - clamp01(mean(reacts) / 4)))) : NaN;
+  return { avg7, streak, eq: mean(eqs), react: mean(reacts), tracked, score };
+}
+const STOIC_PLAY = [
+  ["Dichotomy of control", "Epictetus", "Sort what's in your power (your judgments, effort, choices) from what isn't (outcomes, other people, weather, the past).", "Write two columns before a stressful event. Spend your energy only on the left column. In training: control effort, form, sleep and food, not the scale or soreness."],
+  ["Premeditatio malorum", "Seneca", "Rehearse what might go wrong so it can't ambush you.", "Each morning, list 2 likely obstacles (traffic, a missed session, a hard conversation) and your response. Before a heavy day, plan a smaller backup workout."],
+  ["Negative visualization", "Seneca, Epictetus", "Imagine losing what you value to appreciate it and soften attachment.", "Pick one thing (health, a person, your routine) and picture it gone for a minute, then notice what you have today."],
+  ["Voluntary discomfort", "Seneca", "Practice small hardships so fear of them shrinks.", "End a shower cold, train when you don't feel like it, skip dessert once a week, sit with an uncomfortable feeling for two minutes."],
+  ["Evening review", "Seneca (after Sextius)", "Review the day without harshness: what did I do badly, well, and leave undone?", "Three short written answers each night. Pick one improvement for tomorrow; don't punish yourself."],
+  ["Discipline of assent", "Epictetus", "Between an event and your reaction is a judgment you can examine.", "When provoked, say: this is an impression, not yet the truth. Wait one breath, then choose."],
+  ["View from above", "Marcus Aurelius", "Zoom out to see how small today's problem is in time and space.", "Picture the situation from a year away, or from above the city. Ask what matters about it then."],
+  ["Amor fati", "Nietzsche, rooted in Stoic acceptance", "Meet what happens as material to work with, not a mistake.", "When a plan fails, ask: what does this make possible? Then take the next right step."],
+  ["Obstacle as the way", "Marcus Aurelius", "What blocks you can become the path.", "Injured? Train what you can. Short on time? Do the 20-minute version. Treat each limit as the day's exercise."],
+  ["Role ethics", "Epictetus", "Act well in each role: parent, partner, colleague, athlete, citizen.", "List your roles and one action that honors each this week."],
+  ["Virtue of the day", "Stoic ethics", "Wisdom, courage, justice and temperance are the aim; outcomes are 'preferred indifferents'.", "Pick one virtue each morning and look for a chance to practice it. Score yourself at night."]
+];
+/* rendering */
+function ratingOf(id) { const r = WHEEL.r[id]; return r ? r.v : 6; }
+function isRated(id) { const r = WHEEL.r[id]; return !!(r && r.set); }
+function autoValue(id) { const d = DIMS[id]; if (d.auto === true) return physMetrics().avg; if (d.auto === "stoi") return stoicStats().score; if (d.auto === "emot") return emotAuto().score; return NaN; }
+function emotAuto() { const A = analyze(28), sp = stressPct(), hr = A.hrv.last7 / A.hrv.base, parts = [[A.mood.days >= 3 ? lin(A.mood.avg, 1, 4.5) : NaN, 0.35], [Number.isFinite(sp) ? 1 - sp : NaN, 0.3], [A.stress.days >= 3 ? 1 - lin(A.stress.avg, 1, 5) : NaN, 0.2], [Number.isFinite(hr) ? clamp01((hr - 0.8) / 0.25) : NaN, 0.15]].filter(p => Number.isFinite(p[0])); const w = parts.reduce((a, p) => a + p[1], 0); return { score: w ? s10(1 + 9 * parts.reduce((a, p) => a + p[0] * p[1], 0) / w) : NaN, n: parts.length }; }
+function suggestion(id) { const d = DIMS[id], parts = [], q = qsScore(id), t = toolScore(id), a = d.auto ? autoValue(id) : NaN; if (Number.isFinite(a)) parts.push(["Your data", a]); if (Number.isFinite(q)) parts.push(["Self-assessment", q]); if (Number.isFinite(t.score)) parts.push(["Calculator", t.score]); return { score: parts.length ? parts.reduce((x, p) => x + p[1], 0) / parts.length : NaN, parts, lines: t.lines || [] }; }
+function wheelValues() { return Object.fromEntries(WH_ORDER.map(id => [id, WHEEL.r[id] && (WHEEL.r[id].auto && Number.isFinite(autoValue(id)) ? autoValue(id) : WHEEL.r[id].v) || 6])); }
+function wheelRatedCount() { return WH_ORDER.filter(id => isRated(id) || (WHEEL.r[id] && WHEEL.r[id].auto && Number.isFinite(autoValue(id)))).length; }
+function currentRating(id) { const r = WHEEL.r[id]; if (r && r.auto) { const a = autoValue(id); if (Number.isFinite(a)) return round(a, 1); } return r ? r.v : 6; }
+function wheelRadar() {
+  const n = WH_ORDER.length, cx = 190, cy = 175, R = 120, ang = i => -Math.PI / 2 + i * 2 * Math.PI / n, pt = (i, r) => [cx + r * Math.cos(ang(i)), cy + r * Math.sin(ang(i))];
+  const rings = [2, 4, 6, 8, 10].map(v => `<polygon points="${WH_ORDER.map((_, i) => pt(i, R * v / 10).join(",")).join(" ")}" style="fill:none;stroke:var(--line)"/>`).join("");
+  const axes = WH_ORDER.map((_, i) => `<line x1="${cx}" y1="${cy}" x2="${pt(i, R)[0]}" y2="${pt(i, R)[1]}" style="stroke:var(--line)"/>`).join("");
+  const poly = WH_ORDER.map((id, i) => pt(i, R * currentRating(id) / 10).join(",")).join(" "), dots = WH_ORDER.map((id, i) => `<circle cx="${pt(i, R * currentRating(id) / 10)[0]}" cy="${pt(i, R * currentRating(id) / 10)[1]}" r="3.5" style="fill:var(--accent)"/>`).join("");
+  const labels = WH_ORDER.map((id, i) => { const [x, y] = pt(i, R + 16), a = Math.cos(ang(i)); return `<text x="${x}" y="${y + 3}" text-anchor="${Math.abs(a) < 0.2 ? "middle" : a > 0 ? "start" : "end"}" style="fill:var(--ink-2);font:600 9.5px var(--font-mono)">${id}</text>`; }).join("");
+  return `<svg viewBox="0 0 380 350" role="img" aria-label="Balance wheel radar">${rings}${axes}<polygon points="${poly}" style="fill:var(--accent);fill-opacity:.18;stroke:var(--accent);stroke-width:2"/>${dots}${labels}</svg>`;
+}
+function renderWheel() {
+  if (!$("#wh-sliders")) return; $("#wh-radar").innerHTML = wheelRadar();
+  $("#wh-sliders").innerHTML = WH_GROUPS.map(([g, ids], gi) => { const avg = mean(ids.map(currentRating)); return `<div style="margin-bottom:10px"><div style="display:flex;gap:8px;align-items:baseline"><span class="pill p-info">${gi + 1}</span><strong class="eyebrow" style="letter-spacing:.14em">${g.toUpperCase()}</strong><span class="mono small muted">avg ${fmt(avg, 1)}</span></div>${ids.map(id => { const r = WHEEL.r[id] || {}, auto = r.auto && Number.isFinite(autoValue(id)), v = currentRating(id); return `<div class="whrow"><div class="small"><label for="whs-${id}">${esc(DIMS[id].name)}</label>${DIMS[id].auto ? `<br><label class="small muted" style="display:inline-flex;gap:4px;align-items:center"><input type="checkbox" data-whauto="${id}" ${r.auto ? "checked" : ""}> auto from data</label>` : ""}</div><input type="range" id="whs-${id}" data-whs="${id}" min="1" max="10" step="${auto ? 0.1 : 1}" value="${v}" ${auto ? "disabled" : ""}><span class="mono">${fmt(v, auto ? 1 : 0)}</span></div>`; }).join("")}</div>`; }).join("");
+  const rated = wheelRatedCount(), vals = WH_ORDER.map(currentRating), low = WH_ORDER.map(id => [id, currentRating(id)]).sort((a, b) => a[1] - b[1]).slice(0, 2);
+  $("#wh-summary").innerHTML = `<div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,130px),1fr))"><div class="tile hero"><span class="eyebrow">Average</span><span class="v">${fmt(mean(vals), 1)}<small>/10</small></span><span class="s">${rated} of 12 rated by you</span></div><div class="tile"><span class="eyebrow">Lowest</span><span class="v" style="font-size:1.5rem">${low[0][0]} ${fmt(low[0][1], 1)}</span><span class="s">${low[1][0]} ${fmt(low[1][1], 1)}</span></div><div class="tile"><span class="eyebrow">Balance</span><span class="v">${fmt(Math.max(...vals) - Math.min(...vals), 1)}<small>spread</small></span><span class="s">Smaller is more balanced</span></div></div><p class="small" style="margin-top:8px"><strong>Focus next:</strong> ${low.map(([id]) => esc(DIMS[id].name.split(" (")[0]) + ": " + esc(DIMS[id].tip)).join(" ")}</p>`;
+}
+function renderPhysical() {
+  const P = physMetrics(); const tbl = rows => `<div class="table-wrap" style="border:0"><table><thead><tr><th>Metric</th><th class="num">You</th><th>Target</th><th class="num">Score</th></tr></thead><tbody>${rows.map(r => `<tr><td>${esc(r.label)}</td><td class="num mono">${r.disp || "–"}</td><td class="small muted">${esc(r.target)}</td><td class="num">${Number.isFinite(r.score) ? `<span class="pill ${r.score >= 7 ? "p-good" : r.score >= 4.5 ? "p-warn" : "p-bad"}">${fmt(r.score, 1)}</span>` : `<span class="small muted">no data</span>`}</td></tr>`).join("")}</tbody></table></div>`;
+  $("#wh-wk").innerHTML = tbl(P.W) + `<p class="note">Each metric converts to 1 to 10: the target scores 10. Data comes from your workout log, Strava and Apple Health imports.</p>`; $("#wh-hl").innerHTML = tbl(P.H) + `<p class="note">Sleep, HRV and resting heart rate come from your wearables or imports, labs from the Health tab, and mood and energy from your daily check-ins.</p>`;
+  const pw = $("#wh-wk-pill"), ph = $("#wh-hl-pill"); pw.textContent = Number.isFinite(P.wAvg) ? fmt(P.wAvg, 1) + " / 10" : "No data"; pw.className = "pill " + (Number.isFinite(P.wAvg) ? (P.wAvg >= 7 ? "p-good" : P.wAvg >= 4.5 ? "p-warn" : "p-bad") : "p-info"); ph.textContent = Number.isFinite(P.hAvg) ? fmt(P.hAvg, 1) + " / 10" : "No data"; ph.className = "pill " + (Number.isFinite(P.hAvg) ? (P.hAvg >= 7 ? "p-good" : P.hAvg >= 4.5 ? "p-warn" : "p-bad") : "p-info");
+}
+function renderDetail() {
+  const sel = $("#wh-dim"); if (!sel.options.length) sel.innerHTML = WH_GROUPS.map(([g, ids]) => `<optgroup label="${g}">${ids.map(id => `<option value="${id}">${esc(DIMS[id].name)}</option>`).join("")}</optgroup>`).join(""); sel.value = WHEEL.dim || "PHYS";
+  const id = sel.value, d = DIMS[id], sg = suggestion(id), tool = d.tool, tv = cleanTool(id), ans = WHEEL.qs[id] || [];
+  const field = f => { const v = tv[f.id]; if (f.type === "num") return `<label class="f">${esc(f.label)}<input type="number" step="${f.step || 1}" data-tf="${f.id}" value="${v == null ? "" : v}"></label>`; if (f.type === "chk") return `<label style="display:flex;gap:8px;align-items:center" class="small"><input type="checkbox" data-tf="${f.id}" ${v === true ? "checked" : ""}> ${esc(f.label)}</label>`; return `<label class="f">${esc(f.label)}<select data-tf="${f.id}"><option value="">–</option>${f.opts.map(o => `<option value="${o[0]}" ${String(v) === o[0] ? "selected" : ""}>${esc(o[1])}</option>`).join("")}</select></label>`; };
+  const extra = id === "PHYS" ? `<p class="small">Your Physical rating comes from the workout and health metric tables above (average ${fmt(physMetrics().avg, 1)}).</p>` : id === "STOI" ? `<p class="small">Your Stoicism suggestion comes from the daily practice tracker below (${stoicStats().tracked} days tracked this week).</p>` : id === "EMOT" ? `<p class="small">Emotional data: mood and stress check-ins, your stress screen and HRV (${emotAuto().n} of 4 sources available).</p>` : "";
+  $("#wh-detail").innerHTML = `<div><p>${esc(d.def)}</p><p class="small muted"><strong>Signs of balance:</strong> ${d.signs.map(esc).join("; ")}.</p>${extra}</div>
+  <div class="grid g2"><div class="card"><h4>Self-assessment</h4><div class="grid" style="gap:8px">${d.qs.map((q, i) => `<label class="f" style="text-transform:none;letter-spacing:0;font-weight:500;color:var(--ink);font-size:.86rem">${esc(q)}<select data-wq="${i}"><option value="">–</option>${QOPT.map((o, v) => `<option value="${v}" ${String(ans[i]) === String(v) ? "selected" : ""}>${v} · ${o}</option>`).join("")}</select></label>`).join("")}</div></div>
+  <div class="card"><h4>${tool ? "Calculator" : "Practices"}</h4>${tool ? `<div class="grid" style="gap:8px">${tool.fields.map(field).join("")}</div>` : `<ul class="clean small">${d.practices.map(p => `<li>${esc(p)}</li>`).join("")}</ul>`}${tool && tool.fields.length ? `<ul class="clean small" style="margin-top:8px">${(sg.lines || []).map(l => `<li>${esc(l)}</li>`).join("")}</ul>` : ""}</div></div>
+  <div class="callout small"><strong>Suggested rating: ${Number.isFinite(sg.score) ? fmt(sg.score, 1) : "not enough answers"}</strong>${sg.parts.length ? " (" + sg.parts.map(p => p[0] + " " + fmt(p[1], 1)).join(", ") + ")" : ""} ${Number.isFinite(sg.score) ? `<button type="button" class="btn small" data-whapply="${id}" style="margin-left:8px">Apply to the wheel</button>` : ""}</div>
+  ${tool ? `<div><h4>Practices</h4><ul class="clean small">${d.practices.map(p => `<li>${esc(p)}</li>`).join("")}</ul></div>` : ""}
+  <div><h4>Reflection prompts</h4><ul class="clean small">${d.prompts.map(p => `<li>${esc(p)}</li>`).join("")}</ul></div>`;
+}
+function renderStoic() {
+  const sel = $("#st2-d"), d = sel.value || iso(new Date()), x = stoicDay(d), st = stoicStats();
+  $("#st2-list").innerHTML = STOIC_PRACT.map((t, i) => `<label style="display:flex;gap:8px;align-items:flex-start" class="small"><input type="checkbox" data-stp="${i}" ${x.p[i] ? "checked" : ""} style="margin-top:3px"> ${esc(t)}</label>`).join("");
+  $("#st2-virtue").value = x.virtue; $("#st2-eq").value = x.eq; $("#st2-eq-o").textContent = x.eq; $("#st2-react").value = x.react; $("#st2-bad").value = x.bad; $("#st2-good").value = x.good; $("#st2-undone").value = x.undone;
+  const done = x.p.filter(Boolean).length; $("#st2-pill").textContent = `${done} of ${STOIC_PRACT.length} today`; $("#st2-pill").className = "pill " + (done >= 6 ? "p-good" : done >= 3 ? "p-info" : "p-warn");
+  $("#st2-stats").innerHTML = `<div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,110px),1fr))"><div class="tile"><span class="eyebrow">7-day practice</span><span class="v">${Number.isFinite(st.avg7) ? fmt(st.avg7 * 100) : "–"}<small>%</small></span></div><div class="tile"><span class="eyebrow">Streak</span><span class="v">${st.streak}<small>days (5+ practices)</small></span></div><div class="tile"><span class="eyebrow">Equanimity</span><span class="v">${Number.isFinite(st.eq) ? fmt(st.eq, 1) : "–"}<small>/10</small></span></div><div class="tile"><span class="eyebrow">Reactivity</span><span class="v">${Number.isFinite(st.react) ? fmt(st.react, 1) : "–"}<small>/day</small></span></div></div><p class="note">Stoicism rating suggestion: ${Number.isFinite(st.score) ? fmt(st.score, 1) + "/10" : "track a day or two first"}.</p>`;
+  $("#st2-play").innerHTML = STOIC_PLAY.map(p => `<div class="item"><div style="display:flex;gap:8px;align-items:baseline;flex-wrap:wrap"><strong>${esc(p[0])}</strong><span class="pill p-info">${esc(p[1])}</span></div><span class="small">${esc(p[2])}</span><span class="small muted"><strong>Practice:</strong> ${esc(p[3])}</span></div>`).join("") + `<p class="note">Paraphrased from public-domain translations of Epictetus, Marcus Aurelius and Seneca. Use them as habits to try, not as doctrine. If low mood or anxiety is persistent, a clinician or therapist can help too.</p>`;
+}
+function renderWheelHist() {
+  const H = WHEEL.hist.slice().sort((a, b) => a.d.localeCompare(b.d)); $("#wh-hist-chart").innerHTML = H.length >= 2 ? lineChart(H.map(h => h.d), H.map(h => mean(Object.values(h.r))), { raw: true, d: 1, label: "Average wheel rating" }) : `<p class="small muted" style="padding:20px 0;text-align:center">Save snapshots over time to see your trend.</p>`;
+  $("#wh-hist").innerHTML = H.length ? `<div class="table-wrap" style="border:0"><table><thead><tr><th>Date</th><th class="num">Avg</th>${WH_ORDER.map(id => `<th class="num">${id}</th>`).join("")}</tr></thead><tbody>${H.slice(-6).reverse().map(h => `<tr><td class="mono small">${h.d}</td><td class="num mono"><strong>${fmt(mean(Object.values(h.r)), 1)}</strong></td>${WH_ORDER.map(id => `<td class="num mono">${fmt(h.r[id], 1)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>` : "";
+}
+function renderWellness() { renderWheel(); renderPhysical(); renderDetail(); renderStoic(); renderWheelHist(); }
+function balanceDomain() {
+  const n = wheelRatedCount(); if (!n) return { score: NaN, conf: 0, drivers: [], tips: [] };
+  const vals = WH_ORDER.filter(id => isRated(id) || (WHEEL.r[id] && WHEEL.r[id].auto && Number.isFinite(autoValue(id)))).map(id => [id, currentRating(id)]), mn = Math.min(...vals.map(v => v[1])), av = mean(vals.map(v => v[1]));
+  const grp = WH_GROUPS.map(([g, ids]) => { const a = mean(ids.filter(id => vals.some(v => v[0] === id)).map(currentRating)); return Number.isFinite(a) ? `${g} ${fmt(a, 1)}` : ""; }).filter(Boolean).join(", ");
+  const lows = vals.slice().sort((a, b) => a[1] - b[1]).slice(0, 2);
+  return { score: (0.75 * av + 0.25 * mn) * 10, conf: n / 12, drivers: [{ t: `Wheel average ${fmt(av, 1)}/10 across ${n} of 12 dimensions (${grp})`, v: av / 10 }, { t: `Lowest: ${lows.map(l => DIMS[l[0]].name.split(" (")[0] + " " + fmt(l[1], 1)).join(", ")}`, v: lows[0][1] / 10 }], tips: lows.filter(l => l[1] < 7).map(l => DIMS[l[0]].tip) };
+}
+/* events */
+const wheelTouch = () => { saveWheel(); renderWheel(); if (typeof renderA360 === "function") renderA360(); };
+$("#wh-sliders").addEventListener("input", e => { const id = e.target.dataset.whs; if (!id) return; WHEEL.r[id] = { ...(WHEEL.r[id] || {}), v: +e.target.value, set: true, auto: false }; saveWheel(); $("#wh-radar").innerHTML = wheelRadar(); const row = e.target.parentElement.querySelector(".mono"); if (row) row.textContent = e.target.value; renderA360 && renderA360(); });
+$("#wh-sliders").addEventListener("change", e => { const id = e.target.dataset.whauto; if (!id) return; WHEEL.r[id] = { ...(WHEEL.r[id] || { v: 6 }), auto: e.target.checked, set: true }; wheelTouch(); });
+$("#wh-dim").addEventListener("change", e => { WHEEL.dim = e.target.value; saveWheel(); renderDetail(); });
+$("#wh-detail").addEventListener("input", e => { const id = $("#wh-dim").value, t = e.target;
+  if (t.dataset.wq !== undefined) { WHEEL.qs[id] = WHEEL.qs[id] || ["", "", "", ""]; WHEEL.qs[id][+t.dataset.wq] = t.value; } else if (t.dataset.tf) { cleanTool(id)[t.dataset.tf] = t.type === "checkbox" ? t.checked : t.value; } else return;
+  saveWheel(); const keep = document.activeElement && document.activeElement.dataset ? Object.assign({}, document.activeElement.dataset) : null, tag = t.dataset.tf ? `[data-tf="${t.dataset.tf}"]` : `[data-wq="${t.dataset.wq}"]`; renderDetail(); const el = $("#wh-detail " + tag); if (el && t.type !== "checkbox") { el.focus(); if (el.setSelectionRange && el.type !== "number") { try { el.setSelectionRange(el.value.length, el.value.length); } catch (er) { /* number input */ } } } });
+$("#wh-detail").addEventListener("click", e => { const b = e.target.closest("[data-whapply]"); if (!b) return; const id = b.dataset.whapply, sg = suggestion(id); if (!Number.isFinite(sg.score)) return; WHEEL.r[id] = { v: Math.round(sg.score), set: true, auto: false }; wheelTouch(); flash("#wh-msg", `<span class="pill p-good">Applied</span> ${esc(DIMS[id].name.split(" (")[0])} set to ${Math.round(sg.score)}.`); });
+$("#wh-suggest").addEventListener("click", () => { let n = 0; WH_ORDER.forEach(id => { const sg = suggestion(id); if (Number.isFinite(sg.score)) { WHEEL.r[id] = { v: Math.round(sg.score), set: true, auto: false }; n++; } }); wheelTouch(); renderDetail(); flash("#wh-msg", n ? `<span class="pill p-good">Applied</span> ${n} data-based suggestions. Adjust any that don't feel right.` : "Not enough data or answers yet. Use the workbench below."); });
+$("#wh-reset").addEventListener("click", e => armTwice(e.currentTarget, "Click again to reset", () => { WHEEL.r = {}; wheelTouch(); }));
+$("#wh-save").addEventListener("click", () => { const d = iso(new Date()), r = Object.fromEntries(WH_ORDER.map(id => [id, currentRating(id)])); WHEEL.hist = WHEEL.hist.filter(h => h.d !== d).concat({ d, r }); saveWheel(); renderWheelHist(); flash("#wh-msg", `<span class="pill p-good">Saved</span> snapshot for ${d}`); });
+$("#st2-d").addEventListener("change", renderStoic);
+const stSave = () => { const d = $("#st2-d").value || iso(new Date()), x = stoicDay(d); x.touched = true; saveWheel(); };
+$("#st2-list").addEventListener("change", e => { const i = e.target.dataset.stp; if (i === undefined) return; const x = stoicDay($("#st2-d").value || iso(new Date())); x.p[+i] = e.target.checked; stSave(); renderStoic(); renderWheel(); renderDetail(); });
+["virtue:st2-virtue", "react:st2-react", "bad:st2-bad", "good:st2-good", "undone:st2-undone", "eq:st2-eq"].forEach(pair => { const [k, id] = pair.split(":"); $("#" + id).addEventListener("input", e => { const x = stoicDay($("#st2-d").value || iso(new Date())); x[k] = k === "eq" ? +e.target.value : k === "react" ? +e.target.value || 0 : e.target.value; if (k === "eq") $("#st2-eq-o").textContent = e.target.value; stSave(); if (k === "eq" || k === "react") { renderWheel(); } }); });
+onShow.wellness = () => { if (!$("#st2-d").value) $("#st2-d").value = iso(new Date()); renderWellness(); };
+
+/* ---------- training academy ---------- */
+const ACAD = store.get("acad", { goal: "cut", done: {}, quiz: {} });
+const saveAc = () => store.set("acad", ACAD);
+const ACGOALS = {
+  cut: { n: "Cutting (fat loss, keep muscle)", pct: -0.2, prot: 2.2, rate: [0.5, 1.0], weeks: [8, 16], sets: [10, 16], reps: "6-12 on big lifts, 10-20 on isolation", freq: "2 sessions per muscle per week", cardio: "2 to 3 easy sessions plus 8-10k daily steps; add steps before adding calories cut", prog: "Hold your loads. Strength staying flat is a win; repeat last block's weights and keep 1-3 reps in reserve", tpl: 0, deload: "Every 6 to 8 weeks, or a diet break of 1 to 2 weeks at maintenance after 8 to 12 weeks of deficit",
+    pit: ["Cutting harder than 1% of body weight a week (muscle loss, hunger rebound)", "Dropping training volume as well as food", "Skipping protein on busy days", "Judging by one morning weigh-in instead of a 7-day average"], win: ["Weekly average weight falling 0.5 to 1% of body weight", "Lifts within 5% of start", "Waist shrinking faster than weight", "Hunger and sleep still manageable"], ranking: "kcal deficit, then protein, then lifting, then steps" },
+  trim: { n: "Trimming down (slow, sustainable loss)", pct: -0.12, prot: 2.0, rate: [0.25, 0.6], weeks: [12, 30], sets: [10, 16], reps: "6-15", freq: "2 to 3 sessions per muscle per week", cardio: "Walk 8-12k steps; 1 to 2 conditioning sessions", prog: "Add reps then load as normal; strength should still climb for beginners", tpl: 1, deload: "Every 8 weeks; a maintenance week every 6 to 8 weeks keeps adherence up",
+    pit: ["Treating a small deficit as 'not working' after 2 weeks", "Weekend eating erasing the weekday deficit", "Liquid calories you never log"], win: ["Weight trend down 0.25 to 0.6% a week", "Clothes fit looser", "Energy steady all day"], ranking: "consistency, then deficit size, then protein" },
+  lean: { n: "Lean bulk (build muscle, little fat)", pct: 0.08, prot: 1.8, rate: [0.15, 0.35], weeks: [16, 40], sets: [12, 20], reps: "5-8 compounds, 8-15 accessories, 15-25 for small muscles", freq: "2 sessions per muscle per week (3 for lagging parts)", cardio: "2 easy sessions for heart health; keep steps over 7k", prog: "Double progression: when you hit the top of the rep range on all sets, add the smallest load jump", tpl: 0, deload: "Planned deload every 4 to 8 weeks or when performance dips two sessions in a row",
+    pit: ["Gaining faster than 0.5% of body weight a week (mostly fat past that)", "Changing the program every 3 weeks", "Training junk volume far from failure"], win: ["Weight up 0.15 to 0.35% a week", "Waist up slower than chest/arms", "Key lifts add reps or load every 1 to 3 weeks"], ranking: "progressive overload, then calories, then protein, then sleep" },
+  dirty: { n: "Mass phase / faster bulk", pct: 0.15, prot: 1.8, rate: [0.4, 0.7], weeks: [8, 16], sets: [14, 22], reps: "5-12", freq: "2 to 3 sessions per muscle per week", cardio: "Keep 2 short sessions and steps", prog: "Same overload rules as lean bulk", tpl: 0, deload: "Every 4 to 6 weeks",
+    pit: ["A large surplus mostly adds fat once past the beginner stage", "Lost conditioning, worse blood work, long cut afterward", "Treating 'eat everything' as a plan"], win: ["Gain stays under about 0.7% a week", "Lifts rise", "Plan a defined end date and a cut after"], ranking: "Cap this at 8 to 16 weeks; most trainees do better with a lean bulk" },
+  recomp: { n: "Recomposition (lose fat and gain muscle)", pct: -0.03, prot: 2.2, rate: [-0.1, 0.1], weeks: [12, 26], sets: [12, 18], reps: "5-12", freq: "2 to 3 sessions per muscle per week", cardio: "Steps at 8k+, 1 to 2 easy sessions", prog: "Treat strength like a bulk: push loads progressively", tpl: 0, deload: "Every 6 to 8 weeks",
+    pit: ["Expecting scale weight to move; watch waist, photos, strength", "Eating at a cut one day and a bulk the next with no pattern", "Too little protein"], win: ["Scale weight within 1 kg", "Waist down 1 to 3 cm over 12 weeks", "Lifts up"], ranking: "protein, overload, sleep, small deficit. Works best for beginners, returners, or higher body fat" },
+  maint: { n: "Maintenance / reverse diet", pct: 0, prot: 1.8, rate: [-0.1, 0.1], weeks: [4, 12], sets: [8, 12], reps: "5-12", freq: "2 sessions per muscle per week", cardio: "Whatever you enjoy, 150+ min a week", prog: "Maintain loads; practise skills", tpl: 2, deload: "Every 8 to 12 weeks",
+    pit: ["Jumping to a big surplus the day a cut ends", "Dropping steps along with the food"], win: ["Weight steady within 1%", "Hunger normalising", "Training quality high"], ranking: "Raise calories 100 to 150 a week for 3 to 6 weeks after a cut until weight stabilises" },
+  str: { n: "Maximum strength", pct: 0.03, prot: 1.8, rate: [0, 0.2], weeks: [12, 24], sets: [8, 14], reps: "1-6 on the main lift, 6-10 accessories", freq: "Main lifts 2 to 3 times a week at varied intensity", cardio: "Light only; protect recovery", prog: "Wave loading or percentage cycles; log estimated 1RM; test at the end", tpl: 3, deload: "Every 4 weeks, and a taper in the last week before testing",
+    pit: ["Testing maxes too often", "Neglecting hypertrophy accessories that fix weak points", "Sleep under 7 hours"], win: ["Estimated 1RM rising each block", "Technique unchanged under load"], ranking: "skill and intensity, then recovery, then volume" },
+  hyp: { n: "Muscle size (hypertrophy specialisation)", pct: 0.06, prot: 1.9, rate: [0.1, 0.3], weeks: [12, 30], sets: [12, 22], reps: "6-30 (most sets 6-15), within 0-3 reps of failure", freq: "2 to 3 sessions per muscle per week", cardio: "Moderate", prog: "Add a rep or two each week, then load; add sets slowly (1 to 2 per muscle per mesocycle)", tpl: 0, deload: "Every 5 to 8 weeks",
+    pit: ["Too many sets without recovery", "Only chasing the pump", "Ignoring weak points"], win: ["Measurements rise", "Weekly reps at a load trending up"], ranking: "volume you can recover from, then effort, then calories" },
+  endu: { n: "Endurance / race preparation", pct: 0.0, prot: 1.5, rate: [-0.1, 0.1], weeks: [12, 20], sets: [6, 10], reps: "3-8 heavy strength, 2 days a week", freq: "Strength 2 days, endurance 3 to 5 days", cardio: "80% easy (zone 2), 20% hard; long session weekly; increase weekly volume by no more than 10%", prog: "Base, build, peak, taper (last 1 to 2 weeks cut volume 30 to 50%)", tpl: 2, deload: "Every 3rd or 4th week at 70% volume",
+    pit: ["Doing every run at moderate effort", "Under-fuelling long sessions (aim 30 to 90 g carbohydrate per hour beyond 90 min)", "Skipping strength work"], win: ["Easy pace gets faster at same heart rate", "Long run feels controlled"], ranking: "easy volume, then fuelling, then quality sessions" },
+  ath: { n: "Athletic performance (power, speed)", pct: 0.0, prot: 1.8, rate: [-0.1, 0.1], weeks: [8, 16], sets: [8, 12], reps: "Power 1-5 explosive, strength 3-6, with full rest", freq: "Strength 2 days, speed/plyo 2 days, skills as needed", cardio: "Sport-specific conditioning", prog: "Quality over fatigue: stop sets when bar speed or jump height drops 10%", tpl: 0, deload: "Every 4th week; reduce before competition",
+    pit: ["Doing power work tired", "Too much volume in season"], win: ["Jump, sprint, throw numbers improve"], ranking: "speed and power quality, then strength, then conditioning" },
+  glute: { n: "Lower body / glute development", pct: 0.05, prot: 1.9, rate: [0.1, 0.3], weeks: [12, 30], sets: [14, 22], reps: "6-12 hip thrust and RDL, 10-20 for isolation", freq: "Glutes 3 times a week", cardio: "Steps and incline walking", prog: "Progress hip thrust, split squat, RDL by reps then load", tpl: 4, deload: "Every 6 to 8 weeks",
+    pit: ["Doing only isolation", "Skipping a full stretch on RDLs and lunges", "Undereating while expecting growth"], win: ["Hip thrust load up", "Hip circumference up with waist steady"], ranking: "heavy hip extension, then quad/hamstring balance, then calories" },
+  begin: { n: "Beginner foundation", pct: 0.0, prot: 1.6, rate: [-0.1, 0.2], weeks: [8, 12], sets: [6, 10], reps: "8-12, stopping 2-3 reps before failure", freq: "Full body 2 to 3 days a week", cardio: "Walk daily; 2 easy sessions", prog: "Add weight whenever you can complete all reps with good form, usually every session or two", tpl: 5, deload: "Not needed for the first 8 to 12 weeks if you feel fine",
+    pit: ["Doing too much too soon", "Copying an advanced split", "Skipping warm-ups and learning the movements"], win: ["You can do the program 3 weeks in a row", "Each lift gets heavier"], ranking: "turn up consistently, learn technique, add weight slowly" },
+  back: { n: "Return after a layoff or injury", pct: 0.0, prot: 1.8, rate: [-0.1, 0.1], weeks: [4, 8], sets: [4, 8], reps: "10-15 at half your old loads", freq: "2 to 3 full-body days", cardio: "Walking first", prog: "Muscle returns quickly (muscle memory). Increase load 5 to 10% a week only if pain-free; see a clinician for pain that persists", tpl: 5, deload: "Not needed; ramp slowly",
+    pit: ["Starting where you left off", "Ignoring pain signals"], win: ["Pain-free sessions", "Loads back to 80% within 4 to 8 weeks"], ranking: "gradual loading, then sleep, then protein" },
+  contest: { n: "Physique contest prep (advanced)", pct: -0.25, prot: 2.5, rate: [0.5, 1.0], weeks: [16, 30], sets: [12, 20], reps: "6-15", freq: "2 to 3 times per muscle", cardio: "Steps first, then conditioning", prog: "Keep loads; manage fatigue with deloads", tpl: 0, deload: "Diet breaks every 8 to 12 weeks; end the prep with a defined reverse",
+    pit: ["Going lean without a coach or plan", "Extreme water or sodium tricks", "No reverse-diet plan"], win: ["Planned weekly loss", "Strength mostly retained", "Mood and sleep stable"], ranking: "Work with a qualified coach; this page gives structure, not supervision" }
+};
+const ACEXTRA = [
+  { name: "Glute and lower body focus (4 days)", src: "Academy template", days: [
+    ["Lower A (glute heavy)", [["Hip thrust", 4, "6-10"], ["Romanian deadlift", 3, "8-10"], ["Bulgarian split squat", 3, "8-12"], ["Back extension", 3, "12-15"], ["Cable kickback", 3, "12-15"]]],
+    ["Upper A", [["Bench press", 3, "6-10"], ["Lat pulldown", 3, "8-12"], ["Seated dumbbell press", 3, "8-12"], ["Seated cable row", 3, "10-12"], ["Lateral raise", 3, "12-20"]]],
+    ["Lower B (quad and hamstring)", [["Back squat", 4, "6-10"], ["Leg press", 3, "10-15"], ["Seated leg curl", 3, "10-15"], ["Walking lunge", 3, "10-12"], ["Standing calf raise", 4, "10-15"]]],
+    ["Glutes and core", [["Hip thrust", 3, "10-15"], ["Sumo deadlift", 3, "6-8"], ["Abduction machine", 3, "15-20"], ["Hanging knee raise", 3, "10-15"], ["Plank", 3, "45-60 s"]]]] },
+  { name: "Beginner full body (2 to 3 days)", src: "Academy template", days: [
+    ["Day A", [["Goblet squat", 3, "8-12"], ["Dumbbell bench press", 3, "8-12"], ["Seated cable row", 3, "8-12"], ["Plank", 3, "30-45 s"]]],
+    ["Day B", [["Romanian deadlift", 3, "8-12"], ["Overhead press", 3, "8-12"], ["Lat pulldown", 3, "8-12"], ["Walking lunge", 2, "10"]]]] },
+  { name: "Hybrid strength + conditioning (4 days)", src: "Academy template", days: [
+    ["Lower strength", [["Back squat", 4, "4-6"], ["Romanian deadlift", 3, "6-8"], ["Walking lunge", 3, "10"], ["Standing calf raise", 3, "12-15"]]],
+    ["Upper strength", [["Bench press", 4, "4-6"], ["Barbell row", 4, "6-8"], ["Overhead press", 3, "6-8"], ["Pull-up", 3, "6-10"]]],
+    ["Zone 2 + core", [["Easy run or bike (minutes)", 1, "40-60"], ["Plank", 3, "45-60 s"], ["Dead bug", 3, "10"]]],
+    ["Intervals + accessories", [["Intervals (rounds)", 6, "3 min hard"], ["Face pull", 3, "15"], ["Hammer curl", 3, "10-12"], ["Triceps pushdown", 3, "10-12"]]]] },
+  { name: "Bodyweight and bands (3 days)", src: "Academy template", days: [
+    ["Day 1", [["Push-up", 4, "8-20"], ["Band row", 4, "10-15"], ["Split squat", 3, "10-12"], ["Plank", 3, "45 s"]]],
+    ["Day 2", [["Pike push-up", 3, "6-12"], ["Band pull-apart", 3, "15-20"], ["Single-leg Romanian deadlift", 3, "8-12"], ["Glute bridge", 3, "12-20"]]],
+    ["Day 3", [["Band squat", 4, "12-20"], ["Inverted row", 4, "8-12"], ["Dip on bench", 3, "10-15"], ["Side plank", 3, "30 s"]]]] }
+];
+ACEXTRA.forEach(t => TEMPLATES.push(t));
+function acTemplateFor(g, days) {
+  const idx = days >= 6 ? 0 : days >= 4 ? 1 : 2;
+  if (g.tpl === 4) return TEMPLATES.findIndex(t => t.name.startsWith("Glute"));
+  if (g.tpl === 5) return TEMPLATES.findIndex(t => t.name.startsWith("Beginner full"));
+  if (g.tpl === 2) return TEMPLATES.findIndex(t => t.name.startsWith(days >= 4 ? "Hybrid" : "Full body"));
+  if (g.tpl === 3) return TEMPLATES.findIndex(t => t.name.startsWith("5x5"));
+  return idx;
+}
+function acPlan() {
+  const g = ACGOALS[ACAD.goal]; const c = calc();
+  const exp = +$("#ac-exp").value, days = +$("#ac-days").value, pace = +$("#ac-pace").value;
+  const pct = g.pct * pace * (g.pct < 0 ? 1 : 1);
+  const bounded = Math.max(-0.3, Math.min(0.2, pct));
+  const floor = S.sex === "male" ? 1500 : 1200;
+  let kcal = c.tdee * (1 + bounded); const floored = bounded < 0 && kcal < floor; if (floored) kcal = floor;
+  const base = Number.isFinite(c.lbm) && c.bf > 25 ? c.lbm * (g.prot + 0.3) : S.weight * g.prot;
+  const fat = Math.max(S.weight * 0.7, kcal * 0.25 / 9);
+  const carb = Math.max(0, (kcal - base * 4 - fat * 9) / 4);
+  const wk = (kcal - c.tdee) * 7 / 7700;
+  const rate = wk / S.weight * 100;
+  const sets = [g.sets[0] - (exp === 0 ? 2 : 0), g.sets[1] - (exp === 0 ? 4 : 0)].map(x => Math.max(4, x));
+  const tw = fromDispW(parseFloat($("#ac-tw").value)); let weeks = NaN;
+  if (Number.isFinite(tw) && Math.abs(wk) > 0.02) { const diff = tw - S.weight; if (Math.sign(diff) === Math.sign(wk)) weeks = Math.abs(diff / wk); }
+  return { g, c, exp, days, pace, kcal, floored, p: base, f: fat, cb: carb, wk, rate, sets, tw, weeks, pct: bounded };
+}
+function acSplit(days, g) {
+  const m = { 2: "Full body x2 (A/B)", 3: "Full body x3 (A/B/A) or Push / Pull / Legs once", 4: "Upper / Lower x2", 5: "Upper / Lower plus one weak-point day", 6: "Push / Pull / Legs x2" };
+  return m[days];
+}
+function renderAcademy() {
+  const sel = $("#ac-goal"); if (!sel.options.length) sel.innerHTML = Object.entries(ACGOALS).map(([k, v]) => `<option value="${k}">${esc(v.n)}</option>`).join("");
+  sel.value = ACAD.goal;
+  const P = acPlan(), g = P.g;
+  const dir = P.wk < -0.02 ? "losing" : P.wk > 0.02 ? "gaining" : "holding";
+  $("#ac-summary").innerHTML = `<strong>${esc(g.n)}.</strong> Eat about <strong>${fmt(P.kcal)} kcal</strong> a day (${P.pct > 0 ? "+" : ""}${fmt(P.pct * 100)}% vs your ${fmt(P.c.tdee)} kcal maintenance), expecting to be ${dir} about <strong>${fmt(Math.abs(toDispW(P.wk)), 2)} ${wUnit()}/week</strong> (${fmt(Math.abs(P.rate), 2)}% of body weight). Typical length: ${g.weeks[0]} to ${g.weeks[1]} weeks.${P.floored ? " Calories were held at a safe minimum; slow the pace or lengthen the plan." : ""}${Number.isFinite(P.weeks) ? ` At this rate, reaching your target weight takes about <strong>${fmt(P.weeks)} weeks</strong>.` : ""}`;
+  const t = (e, v, u, s) => `<div class="tile"><span class="eyebrow">${e}</span><span class="v" style="font-size:1.6rem">${v}<small>${u}</small></span><span class="s">${esc(s)}</span></div>`;
+  $("#ac-nums").innerHTML = t("Calories", fmt(P.kcal), "kcal", "Target intake") + t("Protein", fmt(P.p), "g", `${fmt(P.p / S.weight, 1)} g/kg`) + t("Carbs", fmt(P.cb), "g", "Fills the remainder") + t("Fat", fmt(P.f), "g", "Floor 0.7 g/kg") + t("Weekly sets", `${P.sets[0]}-${P.sets[1]}`, "per muscle", "Hard sets") + t("Steps", g.cardio.match(/\d+-?\d*k/)?.[0] || "7k+", "daily", "Movement base");
+  $("#ac-blue").innerHTML = `<ul class="small" style="padding-left:18px;display:grid;gap:5px">
+    <li><strong>Split for ${P.days} days:</strong> ${acSplit(P.days, g)}</li><li><strong>Frequency:</strong> ${esc(g.freq)}</li><li><strong>Rep ranges:</strong> ${esc(g.reps)}</li>
+    <li><strong>Progression:</strong> ${esc(g.prog)}</li><li><strong>Cardio:</strong> ${esc(g.cardio)}</li><li><strong>Deloads and breaks:</strong> ${esc(g.deload)}</li>
+    <li><strong>What to prioritise, in order:</strong> ${esc(g.ranking)}</li>${P.exp === 0 ? "<li><strong>Beginner note:</strong> start at the low end of the set range; most early gains come from practise and consistency.</li>" : ""}${P.exp === 2 ? "<li><strong>Advanced note:</strong> gains are slower; use mesocycles of 4 to 8 weeks with planned volume ramps and deloads.</li>" : ""}</ul>`;
+  $("#ac-pit").innerHTML = `<h4>Common mistakes</h4><ul class="small" style="padding-left:18px;display:grid;gap:4px">${g.pit.map(x => `<li>${esc(x)}</li>`).join("")}</ul><h4 style="margin-top:10px">What success looks like</h4><ul class="small" style="padding-left:18px;display:grid;gap:4px">${g.win.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`;
+  renderAcTrack(P); renderAcCycle(); renderAcFormulas(); renderCourse();
+}
+function renderAcTrack(P) {
+  const W = (isSample ? [] : LOG.w).slice().sort((a, b) => a.d.localeCompare(b.d)).slice(-28);
+  if (W.length < 5 || (new Date(W[W.length - 1].d) - new Date(W[0].d)) / 864e5 < 7) { $("#ac-track").innerHTML = `<p class="small muted">Log at least 5 weigh-ins across a week or more (Log tab) to compare your real trend with the plan.</p>`; return; }
+  const t0 = new Date(W[0].d + "T12:00:00");
+  const xs = W.map(x => (new Date(x.d + "T12:00:00") - t0) / 864e5), ys = W.map(x => x.kg), mx = mean(xs), my = mean(ys);
+  let a = 0, b = 0; xs.forEach((x, i) => { a += (x - mx) * (ys[i] - my); b += (x - mx) ** 2; });
+  const perDay = b ? a / b : 0, actualWk = perDay * 7, gap = actualWk - P.wk;
+  const adj = Math.round(-gap * 7700 / 7 / 10) * 10;
+  const ok = Math.abs(gap) <= Math.max(0.15, Math.abs(P.wk) * 0.35);
+  $("#ac-track").innerHTML = `<div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))">
+    <div class="tile"><span class="eyebrow">Planned</span><span class="v" style="font-size:1.5rem">${P.wk >= 0 ? "+" : ""}${fmt(toDispW(P.wk), 2)}<small>${wUnit()}/wk</small></span></div>
+    <div class="tile"><span class="eyebrow">Actual trend</span><span class="v" style="font-size:1.5rem">${actualWk >= 0 ? "+" : ""}${fmt(toDispW(actualWk), 2)}<small>${wUnit()}/wk</small></span><span class="s">${W.length} weigh-ins</span></div>
+    <div class="tile"><span class="eyebrow">Adjust intake</span><span class="v" style="font-size:1.5rem">${adj > 0 ? "+" : ""}${ok ? 0 : adj}<small>kcal/day</small></span><span class="s">(planned − actual) × 7700 ÷ 7</span></div></div>
+    <p class="small" style="margin-top:8px">${ok ? "You are on pace. Hold calories for another 2 weeks before changing anything." : `Your trend is ${Math.abs(toDispW(gap)).toFixed(2)} ${wUnit()}/wk ${gap > 0 ? "higher (more gain or less loss)" : "lower (more loss or less gain)"} than plan. Change daily intake by about ${Math.abs(adj)} kcal ${adj > 0 ? "up" : "down"}, or ${adj < 0 ? "add steps" : "add a snack"}, and reassess in 2 weeks. Smooth ± a few hundred grams of daily noise; trust the trend.`}</p>`;
+}
+function renderAcCycle() {
+  const w0 = fromDispW(parseFloat($("#ac-cy-w").value)) || S.weight;
+  const b = +$("#ac-cy-b").value || 0, c = +$("#ac-cy-c").value || 0, m = +$("#ac-cy-m").value || 0;
+  const vals = [w0], rb = 0.0025, rc = -0.0075; let w = w0;
+  for (let i = 0; i < b; i++) { w *= 1 + rb; vals.push(w); }
+  const peak = w;
+  for (let i = 0; i < c; i++) { w *= 1 + rc; vals.push(w); }
+  const low = w;
+  for (let i = 0; i < m; i++) vals.push(w);
+  const d0 = new Date(); const dates = vals.map((_, i) => iso(new Date(d0.getTime() + i * 7 * 864e5)));
+  $("#ac-cy-chart").innerHTML = lineChart(dates, vals.map(v => toDispW(v)), { raw: true });
+  $("#ac-cy-out").textContent = `Plan: ${fmt(toDispW(w0), 1)} → ${fmt(toDispW(peak), 1)} (build, +0.25%/wk) → ${fmt(toDispW(low), 1)} ${wUnit()} (cut, −0.75%/wk) → hold ${m} weeks. Total ${b + c + m} weeks. Cut about a third as long as you built for the best muscle-to-fat result.`;
+}
+function renderAcFormulas() {
+  const w = fromDispW(parseFloat($("#ac-f-w").value)) || 0, r = +$("#ac-f-r").value || 1, rir = +$("#ac-f-rir").value || 0, bwIn = parseFloat($("#ac-f-bw").value);
+  const bw = Number.isFinite(bwIn) ? fromDispW(bwIn) : S.weight, s = +$("#ac-f-s").value || 0;
+  const eff = r + rir, e1 = w * (1 + eff / 30), pct = w / e1;
+  const nextLoad = e1 * 0.8;
+  const card = (h, v, n) => `<div class="card" style="padding:10px"><h4 style="margin:0 0 4px">${h}</h4><div class="v" style="font-size:1.3rem">${v}</div><p class="small muted">${n}</p></div>`;
+  $("#ac-f-out").innerHTML =
+    card("Estimated 1RM (Epley, effort-adjusted)", `${fmt(toDispW(e1), 1)} ${wUnit()}`, `Formula: weight × (1 + (reps + RIR) ÷ 30). The set was ${fmt(pct * 100)}% of max.`) +
+    card("Relative strength", `${fmt(e1 / bw, 2)}× body weight`, "Rough ladder for this lift: 1× body weight is novice territory, 1.5× solid, 2× advanced (varies by lift).") +
+    card("Working weight for 8 reps", `${fmt(toDispW(e1 / (1 + 8 / 30)), 1)} ${wUnit()}`, "Same formula inverted: 1RM ÷ (1 + reps ÷ 30), assuming near-failure.") +
+    card("Volume check", s < 10 ? "Low" : s <= 20 ? "In range" : "High", `${s} weekly hard sets for one muscle. Evidence supports about 10 to 20; below 10 maintains, above 20 needs great recovery.`) +
+    card("Calories from a weight target", `${fmt(Math.abs(7700 / 7 * 0.5))} kcal/day`, "0.5 kg per week = 0.5 × 7700 ÷ 7. Fat tissue is about 7700 kcal/kg; real loss runs slower as you get leaner.") +
+    card("Protein range", `${fmt(S.weight * 1.6)}-${fmt(S.weight * 2.2)} g`, "1.6 to 2.2 g per kg covers nearly all training goals; use the high end when cutting.");
+}
+const COURSE = [
+  { lv: "Level 1 · Foundations", ls: [
+    { t: "How muscle and fat change", b: "Muscle grows when you load it hard enough, repeatedly, and eat and sleep enough to recover. Fat changes with energy balance over weeks. Both happen on a slow timescale: judge a block of 4 weeks, not 4 days.", chk: ["Know your maintenance calories (Overview)", "Log 7 days of weight"], q: ["What drives fat change?", ["Energy balance over weeks", "Sweating", "Cardio alone"], 0] },
+    { t: "Calories, protein, and the order of priorities", b: "For body composition the order is: calories for your goal, enough protein (1.6 to 2.2 g/kg), consistent training, sleep, then everything else. Supplements and meal timing sit at the bottom.", chk: ["Set your protein target", "Hit it 5 of 7 days"], q: ["Daily protein range for most goals?", ["0.8 g/kg", "1.6 to 2.2 g/kg", "4 g/kg"], 1] },
+    { t: "Progressive overload", b: "To grow or get stronger you must do a little more over time: another rep, a bit more load, a better rep, or more sets. Keep a log so you know what 'more' means.", chk: ["Log every set", "Beat last week on one lift"], q: ["What counts as progressive overload?", ["Only adding weight", "More reps, load, quality or sets", "Changing exercises each week"], 1] },
+    { t: "Effort, RIR and failure", b: "Reps in reserve (RIR) is how many more good reps you could do. Most sets sit at 1 to 3 RIR; the last set of an isolation exercise can go to 0. Going to failure on everything costs recovery.", chk: ["Rate effort (RIR) on your main sets"], q: ["A set with 2 RIR means", ["You failed", "You could do about 2 more good reps", "You did 2 reps"], 1] },
+    { t: "Warm-up, technique, and safety", b: "Warm up with the lift itself: 2 to 4 progressively heavier sets before work sets. Learn the pattern with light loads first. Stop a set when form breaks.", chk: ["Film a set of squats or deadlifts and check depth and back position"], q: ["Best warm-up for squats?", ["Static stretching 10 min", "Light sets of squats building up", "Nothing"], 1] }
+  ]},
+  { lv: "Level 2 · Programming", ls: [
+    { t: "Volume, frequency, intensity", b: "Volume (hard sets per muscle per week) is the main dial: roughly 10 to 20 for growth. Frequency of 2 times per muscle spreads that volume. Intensity (effort and load) must stay high enough that sets are productive.", chk: ["Count your weekly sets per muscle"], q: ["Typical growth range per muscle per week?", ["2 to 4 sets", "10 to 20 hard sets", "40 sets"], 1] },
+    { t: "Choosing a split", b: "Fewer days: full body. 4 days: upper/lower. 5 to 6 days: push/pull/legs or body-part hybrids. The best split is the one you can attend; frequency matters more than the name.", chk: ["Pick a split that fits your calendar"], q: ["Best split?", ["Whatever you can attend consistently", "Always PPL", "Always bro split"], 0] },
+    { t: "Rep ranges and exercise selection", b: "Muscle grows across roughly 5 to 30 reps when sets are taken close to failure. Use heavier work (4 to 8) for big compound lifts and lighter (10 to 20) for isolations and joint-friendly work. Pick exercises you can load and recover from.", chk: ["Review your exercise list for each muscle group"], q: ["Do light weights build muscle?", ["No", "Yes, if sets are close to failure", "Only with machines"], 1] },
+    { t: "Deloads and managing fatigue", b: "Fatigue accumulates. Signs you need a deload: performance falls across two sessions, joints ache, sleep suffers, motivation drops. Cut volume by 40 to 50% for a week, keep weights moderate.", chk: ["Schedule a deload every 4 to 8 weeks"], q: ["A deload usually", ["Cuts volume for a week", "Stops all activity for a month", "Raises weights"], 0] },
+    { t: "Periodisation basics", b: "Linear: increase load slowly. Block: focus on one quality at a time. Undulating: vary rep ranges across the week. All work if overload continues; beginners need none of it beyond adding weight.", chk: ["Plan your next 4-week mesocycle"], q: ["For a beginner the best periodisation is", ["Complex waves", "Add weight steadily", "Random"], 1] }
+  ]},
+  { lv: "Level 3 · Nutrition for the goal", ls: [
+    { t: "Setting a deficit (cutting)", b: "Pick a weekly loss of 0.5 to 1% of body weight. That equals a deficit of 15 to 25% of maintenance. Slower keeps muscle and mood; faster is for short, supervised phases. Use the tracker above to adjust every 2 weeks.", chk: ["Set a cutting rate", "Check your trend every 14 days"], q: ["Deficit for a 1% weekly loss at 80 kg?", ["About 800 g fat", "About 0.8 kg/week, around 880 kcal/day deficit", "Always 500 kcal"], 1] },
+    { t: "Setting a surplus (bulking)", b: "Beginners can gain 0.5 to 1% body weight a month; intermediates 0.25 to 0.5%; advanced less. A surplus of 5 to 10% of maintenance is usually enough. Extra calories beyond that mostly become fat.", chk: ["Set a gain rate", "Track waist monthly"], q: ["Why a lean bulk?", ["It looks better on Instagram", "Faster fat gain is wasted energy", "It avoids lifting"], 1] },
+    { t: "Recomposition and trimming", b: "Recomposition works for beginners, returners, and people with higher body fat: eat near maintenance, high protein, lift hard. Trimming is a gentle deficit (10 to 15%) held for a long time.", chk: ["Take baseline photos, waist, and key lifts"], q: ["Who recomps best?", ["Beginners and returners", "Contest bodybuilders at 5% body fat", "Nobody"], 0] },
+    { t: "Diet breaks, refeeds, and reverse dieting", b: "A 1 to 2 week return to maintenance every 8 to 12 weeks of dieting helps adherence and training. After a cut, raise calories by 100 to 150 a week until weight stabilises.", chk: ["Decide when your next break happens"], q: ["A diet break is", ["Quitting the diet", "A planned 1 to 2 weeks at maintenance", "Fasting"], 1] },
+    { t: "Fuelling training, endurance, and recovery", b: "Carbohydrate drives high-effort sessions. For work over 90 minutes take 30 to 90 g carbohydrate an hour. After training, protein (0.3 g/kg) and carbs speed recovery, but total daily intake matters most.", chk: ["Plan fuel for your longest session"], q: ["Carbs per hour for long endurance sessions?", ["None", "30 to 90 g", "300 g"], 1] }
+  ]},
+  { lv: "Level 4 · Cardio, recovery, and lifestyle", ls: [
+    { t: "Zone 2, intervals, and steps", b: "Easy aerobic work (talk-test pace) builds your base with little fatigue. A few hard intervals build VO₂max. Daily steps raise energy use without eating into recovery, so raise steps first when cutting.", chk: ["Average 8k+ steps", "One interval session per week if goals include fitness"], q: ["Which burns fatigue-free calories when cutting?", ["More steps", "Another max-effort session", "Skipping meals"], 0] },
+    { t: "Sleep and stress", b: "Seven to nine hours supports muscle gain, appetite control, and injury resistance. High life stress reduces recovery capacity: lower volume when stress is high, not just when you feel sore.", chk: ["Keep a consistent bedtime for a week"], q: ["Short sleep tends to", ["Raise hunger and reduce recovery", "Improve gains", "Have no effect"], 0] },
+    { t: "Hydration, caffeine, and supplements", b: "Evidence-backed supplements: creatine monohydrate (3 to 5 g/day), protein powder for convenience, caffeine before training (3 mg/kg), and vitamin D if low. See the Supplements tab for safety checks.", chk: ["Review your stack against the evidence"], q: ["Most proven performance supplement?", ["Creatine monohydrate", "BCAAs", "Fat burners"], 0] },
+    { t: "Injury prevention and returning to training", b: "Pain that changes how you move, lasts past 24 to 48 hours, or wakes you at night deserves assessment. Reduce load, keep training what doesn't hurt, then rebuild gradually.", chk: ["Know your pain-stop rule"], q: ["Sharp joint pain during a lift: ", ["Push through", "Stop, reduce load or swap the exercise", "Add weight"], 1] },
+    { t: "Tracking: what to measure", b: "Daily weight (use weekly averages), waist weekly, photos every 2 to 4 weeks, strength logs every session, sleep and mood notes. Judge decisions by 2-week trends, not single readings.", chk: ["Log weight, waist, and photos on schedule"], q: ["Use which weight for decisions?", ["Single morning reading", "Weekly average trend", "After a big meal"], 1] }
+  ]},
+  { lv: "Level 5 · Advanced and specialised", ls: [
+    { t: "Specialisation phases", b: "To bring up a lagging body part, raise its weekly sets by 30 to 50% while holding others at maintenance volume, for 6 to 8 weeks.", chk: ["Pick one weak point"], q: ["Specialisation means", ["Training everything harder", "Raising volume for one area while maintaining others", "Stopping other lifts"], 1] },
+    { t: "Peaking for strength", b: "Taper the final week: keep intensity, cut volume 30 to 50%, no new exercises. Test or compete when fatigue is low.", chk: ["Plan a test date"], q: ["A strength taper", ["Cuts volume, keeps intensity", "Adds volume", "Stops lifting"], 0] },
+    { t: "Contest prep and extreme leanness", b: "Very low body fat has health costs: hormones, sleep, mood, and bone. Use a qualified coach, limit duration, and plan a reverse diet and a rebound strategy before starting.", chk: ["Decide your stopping rules before you start"], q: ["Before an extreme cut you should", ["Plan how it ends", "Just start", "Cut water"], 0] },
+    { t: "Training for longevity", b: "Strength, VO₂max, muscle mass, and balance predict long-term health and independence. Aim for 2 to 3 strength sessions a week, 150 minutes of aerobic work, and mobility work you enjoy.", chk: ["Add a balance or power exercise"], q: ["Strong predictors of longevity include", ["VO₂max and grip strength", "Selfie lighting", "Max bench"], 0] },
+    { t: "Building your own program", b: "Pick days, choose a split, assign 10 to 20 weekly hard sets per muscle, choose rep ranges, schedule progression and a deload, then log and adjust every 4 weeks. Use the Programs tab to save it.", chk: ["Write a 4-week plan"], q: ["How often should you adjust a program?", ["Every session", "Every 4 weeks using logged data", "Never"], 1] }
+  ]}
+];
+function renderCourse() {
+  const all = COURSE.flatMap((l, li) => l.ls.map((x, i) => `${li}-${i}`)); const done = all.filter(k => ACAD.done[k]).length;
+  $("#ac-prog-bar").innerHTML = `${done} of ${all.length} lessons complete <div class="bar" style="margin-top:4px"><span style="width:${round(done / all.length * 100)}%;background:var(--accent)"></span></div>`;
+  $("#ac-course").innerHTML = COURSE.map((L, li) => `<details ${li === 0 ? "open" : ""}><summary><strong>${esc(L.lv)}</strong></summary><div style="display:grid;gap:10px;padding:8px 0">${L.ls.map((x, i) => {
+    const k = `${li}-${i}`, qa = ACAD.quiz[k];
+    return `<div class="card" style="padding:10px"><label style="display:flex;gap:8px;align-items:center"><input type="checkbox" data-acdone="${k}" ${ACAD.done[k] ? "checked" : ""}><strong>${esc(x.t)}</strong></label><p class="small">${esc(x.b)}</p><ul class="small" style="padding-left:18px">${x.chk.map(c => `<li>${esc(c)}</li>`).join("")}</ul><p class="small"><strong>Quiz:</strong> ${esc(x.q[0])}</p><div style="display:flex;gap:6px;flex-wrap:wrap">${x.q[1].map((o, oi) => `<button type="button" class="btn ${qa === oi ? (oi === x.q[2] ? "" : "ghost") : "ghost"} small" data-acq="${k}:${oi}">${esc(o)}</button>`).join("")}</div>${qa != null ? `<p class="small" style="margin-top:4px">${qa === x.q[2] ? "Correct." : "Not quite. Answer: " + esc(x.q[1][x.q[2]])}</p>` : ""}</div>`;
+  }).join("")}</div></details>`).join("");
+}
+["ac-exp", "ac-days", "ac-pace", "ac-tw"].forEach(id => $("#" + id).addEventListener("input", renderAcademy));
+$("#ac-goal").addEventListener("change", e => { ACAD.goal = e.target.value; saveAc(); renderAcademy(); });
+["ac-cy-w", "ac-cy-b", "ac-cy-c", "ac-cy-m"].forEach(id => $("#" + id).addEventListener("input", renderAcCycle));
+["ac-f-w", "ac-f-r", "ac-f-rir", "ac-f-bw", "ac-f-s"].forEach(id => $("#" + id).addEventListener("input", renderAcFormulas));
+$("#ac-course").addEventListener("click", e => {
+  const q = e.target.closest("[data-acq]"); if (q) { const [k, o] = q.dataset.acq.split(":"); ACAD.quiz[k] = +o; saveAc(); renderCourse(); return; }
+});
+$("#ac-course").addEventListener("change", e => { const d = e.target.dataset.acdone; if (d) { ACAD.done[d] = e.target.checked; saveAc(); renderCourse(); } });
+$("#ac-prog").addEventListener("click", () => {
+  const P = acPlan(), i = acTemplateFor(P.g, P.days), t = TEMPLATES[i]; if (!t) return;
+  PROGRAMS.unshift(mkProgram(`${t.name} · ${P.g.n.split(" (")[0]}`, "Training Academy", t.days)); savePG();
+  if (typeof renderPrograms === "function") renderPrograms();
+  $("#ac-msg").textContent = `Created "${t.name}" in the Programs tab. Adjust exercises there.`;
+});
+$("#ac-set").addEventListener("click", () => {
+  const P = acPlan(), sel = $("#goal"); let best = 0, bd = 9; [...sel.options].forEach((o, i) => { const d = Math.abs(+o.value - P.pct); if (d < bd) { bd = d; best = i; } });
+  sel.selectedIndex = best; sel.dispatchEvent(new Event("input", { bubbles: true })); sel.dispatchEvent(new Event("change", { bubbles: true }));
+  $("#ac-msg").textContent = `Profile goal set to "${sel.options[best].textContent}". The Overview now uses it.`;
+});
+$("#ac-coach").addEventListener("click", () => {
+  const P = acPlan(); showTab("coach", true);
+  const q = $("#co-q"); if (q) { q.value = `Tailor a ${P.days}-day plan for this goal: ${P.g.n}. My numbers: ${fmt(P.kcal)} kcal, ${fmt(P.p)} g protein, experience level ${["beginner", "intermediate", "advanced"][P.exp]}. What would you change given my data?`; q.focus(); }
+});
+onShow.academy = () => { if (!$("#ac-cy-w").value) $("#ac-cy-w").value = round(toDispW(S.weight), 1); if (!$("#ac-f-bw").value) $("#ac-f-bw").value = round(toDispW(S.weight), 1); renderAcademy(); };
+
 /* ---------- wiring ---------- */
-function renderAll() { renderOverview(); renderORM(); renderCardio(); renderLog(); renderMeals(); renderStandards(); renderPlates(); renderHealthCalc(); renderHub(); renderSweat(); renderPrograms(); renderWorkout(); renderProgress(); renderFoodLog(); renderStack(); renderLabs(); renderJournal(); renderA360(); renderGoalBF(); renderCaffeine(); renderCortisol(); renderFTP(); renderCSS(); renderFrame(); $("#maf-out").textContent = 180 - S.age; }
+function renderAll() { renderOverview(); renderORM(); renderCardio(); renderLog(); renderMeals(); renderStandards(); renderPlates(); renderHealthCalc(); renderHub(); renderSweat(); renderPrograms(); renderWorkout(); renderProgress(); renderFoodLog(); renderStack(); renderLabs(); renderJournal(); renderA360(); renderWellness(); renderGoalBF(); renderCaffeine(); renderCortisol(); renderFTP(); renderCSS(); renderFrame(); $("#maf-out").textContent = 180 - S.age; }
 $("#profile").addEventListener("input", () => { readProfile(); renderAll(); });
 $("#planner").addEventListener("input", () => { readProfile(); renderPlanner(calc()); });
 $("#adapt").addEventListener("input", renderAdapt);
