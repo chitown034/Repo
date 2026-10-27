@@ -792,3 +792,16 @@ through Apple Health and the same export file once Steven switches the nutrition
   tax cards and no client information in it. It reads and writes no deck document.
 - **Owner.** Marcus (money) with Alan (tax deadlines). **Status.** Published 2026-10-27.
 
+
+## 2026-10-27 — Fitness Coach (Plate & Pulse) is linked from the Command Deck
+
+- **Request (Steven, verbatim).** *"add to the dashboard: Fitness Coach https://claude.ai/artifact/4DQyh8Yw2WwGzj8CddBnEd"*.
+- **Decision.** The artifact already had a bare "Fitness Dashboard" button in Health & Wellness (added 2026-10-23). Rather than
+  a duplicate link, the deck now has a descriptive card (#fitnessCoachCard) at the top of Health & Wellness, that button is
+  renamed "Fitness Coach (Plate & Pulse)", and the pages menu has an entry under Personal. Deck v258, via
+  `dashboard/wave2/splice-fitness-coach.py` (anchors must match once; refuses a second run).
+- **Boundaries.** Plate & Pulse is its own page: training, nutrition, recovery and AI coaching, syncing Strava, Google Drive
+  (Health Auto Export) and OpenGym through its own connectors. Its data stays in the browser it is opened in; it reads and
+  writes no deck document, so the deck's Apple Health and Strava tiles keep their own daily sync. Figures are estimates, not
+  medical advice.
+- **Owner.** Cole (health and wellness). **Status.** Published 2026-10-27.

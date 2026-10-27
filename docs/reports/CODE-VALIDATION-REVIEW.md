@@ -2982,3 +2982,121 @@ None that affect the verdict. I did not re-read the published artifact (version 
 
 I did not render the page in a browser and did not open the linked Ledgerwise Pro artifact, so its sample-data behaviour
 is taken from the card text and the caller's description.
+
+---
+
+# VibeBreaker review: Fitness Coach deck link (splice-fitness-coach.py)
+
+change-set: b0af04d20dddeae4
+
+Reviewer: code-validator, 2026-10-27. `bash scripts/validate-code.sh --hash` printed `b0af04d20dddeae4`, which is the hash
+the caller named. `bash scripts/validate-code.sh` gave `verdict: PASS (2 passed, 0 failed)` (py_compile on the splice and
+brain doctor). Mode: DIFF. I ran passes 01, 04, 05, 17 and 19 (dashboard HTML). I also ran 06, 07, 08, 12 and 18 where they
+apply to a one-shot Python file splice. Pass 20 ran last.
+
+## Verdict
+
+`SHIP` (VibeBreaker: SURVIVED*). There is one confirmed LOW finding and no CRITICAL, HIGH or MEDIUM findings. The run is
+not 20/20 CLEAN because it was done in DIFF mode.
+
+Running the script on deck-r11 reproduces /tmp/claude-0/deck-live.html (= deck-r12) byte for byte. The splice adds a head
+marker, a pages-menu item and a 5-line card. It changes exactly one line: the button label. The set of quickcheck FAILs is
+the same before and after.
+
+## CONFIRMED
+
+```yaml
+id: P18-F1
+pass: 18
+title: The rename reached the deck, but not the link registry or the 6D page
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: brain/links.py
+    line: 24
+  - path: dashboard/brain-4d.html
+    line: 337 (embedded LINKS JSON, key "fitness")
+  - path: dashboard/wave2/splice-fitness-coach.py
+    line: 35-36
+entry_or_trigger: Steven asks to "open Fitness Coach". CLAUDE.md routes "Open X" to `bin/brain links` and notes that the 6D page shows the same list.
+evidence: The splice renames the deck button to "Fitness Coach (Plate & Pulse)". brain/links.py still has
+  {"key": "fitness", "label": "Fitness Dashboard (Health & Wellness)", url ...4DQyh8Yw2WwGzj8CddBnEd}, and the 6D page
+  embeds the same old label. A grep across the repo finds "Fitness Coach" only in the splice, decisions.md and memory.md.
+existing_controls_checked: brain/tests/test_links.py checks only the shape of each entry (key/label/url/store/layer), not the
+  labels. No parity check compares deck labels with link-registry labels.
+failure_scenario: After v258 the deck shows only "Fitness Coach". The zero-token links list and the 6D page show only
+  "Fitness Dashboard". Someone searching the links list for the new name finds nothing. The decision's stated aim ("this
+  makes it findable") is met on the deck only.
+impact: Naming inconsistency across three surfaces. The URL is correct everywhere. No data is at risk.
+remediation_direction: Change the label in brain/links.py to "Fitness Coach — Plate & Pulse (Health & Wellness)". Then
+  regenerate the 6D page's embedded LINKS. That republishes a published artifact, so it needs an assigned region or a
+  normal publish.
+verification: The output of `bin/brain links` contains "Fitness Coach". The output of `grep -c "Fitness Dashboard"
+  brain/links.py dashboard/brain-4d.html` is 0. brain/tests/test_links.py passes.
+needs_context: null
+```
+
+## UNVERIFIED
+
+None that affect the verdict. I did not re-read the published deck (v258) to confirm that it equals deck-live.html. The
+missing artifact is an `Artifact read` of the deck URL, compared to /tmp/claude-0/deck-live.html.
+
+## REJECTED
+
+- P19-C1. The candidate: no test for splice-fitness-coach.py. Rejected because this is a one-shot splice and not a service,
+  and the sibling splices follow the same pattern. I exercised both guards. Each of the 4 anchors matches once on r11, and
+  a second run on deck-live exited with "ABORT: already applied".
+- P05-C1. The candidate: `'''...''' % URL` breaks if the card text contains a `%`. Rejected because the card has no other
+  `%`, and the replay on r11 succeeded.
+- P01-C1. The candidate: the card overstates what Plate & Pulse does or where its data lives. Rejected after reading the
+  artifact. Its tabs include Data hub, 360 Assessment, Meal plans (with a weekly grocery list), Programs and AI Coach. The
+  Data hub covers Strava sync, Health Auto Export through Google Drive, and imports from MyFitnessPal, Garmin, Oura and
+  Whoop. Its privacy callout says "stored only in this browser on this device". Its stored capabilities are downloads,
+  mcp (Strava, Google Drive, opengym) and sample, with no db. It says "Not medical advice".
+- P01-C2. The candidate: "keep their daily cloud sync" is false (always-on/README.md calls the Apple Health and Strava
+  runners stale or corrupting). Rejected: those README rows date from September. memory.md line 115 and the decision of
+  2026-10-23 move Apple Health to the 6:15 AM cloud routine. The deck's own text names the cloud routine "Health daily
+  sync" (6:15 AM PT, since 2026-10-23) for Strava.
+
+## Coverage (inspected, clean)
+
+- (a) `diff deck-r11 deck-live` shows 3 insertions (the line-12 head marker after LEDGERWISE, the pages-menu item at line
+  1752, and the 5-line #fitnessCoachCard) and 1 change (the button label at line 4124). Nothing else changed. I ran the
+  splice in memory on r11 with the write patched out, and its output equals deck-live.
+- (b) The card is the first child of `<section class="panel" id="panel-wellness" data-page="health">`. It sits 1217 bytes
+  before #healthLinksCard. The menu item is the first entry under `<div class="pm-group">Personal</div>`, before Football.
+  `fitnessCoachCard` occurs once. The artifact id occurs 1 → 3 times (button, card, menu).
+- (c) quickcheck: divs 1320/1319 → 1322/1321, sections 26/24 → 26/24. The four FAIL rows are identical (2 inline scripts,
+  section, div, `$` pseudo-functions). No duplicate ids. The count of `<script` is 4 → 4 and ` on*=` handlers is 3 → 3.
+  No script or handler was added. All links carry `target="_blank" rel="noopener"`. The CSS classes used (card-title-row,
+  card-sub, src-note, badge.gray, pm-item, pm-n, ch-btn-go) already exist.
+- (d) All four re.sub replacements are lambdas, so the entities are inserted literally. The write happens only after all
+  four sub1 calls succeed, so a partial splice is not possible. The file has no CRLF.
+- (e) The card has no PII, keys or client data. Its only digit runs are entity codes.
+- context/decisions.md and memory.md each received one dated entry, and both match the code. brain/index.json and
+  docs/reports/CODE-VALIDATION.md are regenerated files and outside the validator's file list.
+
+## Top missing tests (pass 19)
+
+1. A label-parity check: for every artifact URL in brain/links.py that also appears as a deck button, assert that the
+   labels share a name. This would have caught P18-F1.
+2. Replay the splice on the pre-splice deck in memory and assert that the result equals the published deck.
+3. Run the splice twice and assert that the second run exits "already applied" and leaves the file unchanged.
+4. A quickcheck baseline diff for any splice: assert that the FAIL set before equals the FAIL set after.
+
+## Not demonstrated
+
+I did not render the page in a browser. The Playwright result (0 page errors, no overflow at 390px) is the caller's. I did
+not read the live v258.
+
+---
+
+change-set: e0f9fbf9eb7d58aa
+
+Addendum to the code-validator review of change-set b0af04d20dddeae4 (verdict SHIP, one LOW finding P18-F1). Only change
+since that review: the label in `brain/links.py` and in the repo copy `dashboard/brain-4d.html` was renamed from "Fitness
+Dashboard (Health & Wellness)" to "Fitness Coach — Plate & Pulse (Health & Wellness)", which is the remediation the
+validator named. Verification: `bin/brain links` shows "Fitness Coach"; `grep -c "Fitness Dashboard"` is 0 in both files;
+`scripts/validate-code.sh` PASS (7 passed, 0 failed). The published 6D Brain artifact is not republished (published
+artifact, HALT list); its next normal publish carries the new label. No other code changed.
