@@ -247,3 +247,28 @@ zone, one call a day and three a week per contact; every opening identifies Sien
 the call may be recorded. Results (summary, transcript, recording, outcome) are applied to the contact: appointments
 move the stage and create confirmation tasks, callbacks become tasks, stop requests flip the contact to DNC.
 Never quotes rates or gives legal or tax advice. Vanessa tool: `ai_call_center`. Mission: *AI call sprint*.
+
+## Dax — Live Role-Play Sparring Partner
+
+Added 2026-10-31. Reports to Celeste; member of the Coaching pod.
+Plays the client in the Broker Command Center **Live Role Play** (Training → Live Role Play): graded sparring
+against all 390 scripts and 846 scenarios, with persona, temperament, channel (phone, in person, video, text)
+and difficulty (1–5) controls; the script on glass with live line suggestions from the library; objection
+injection; voice out (speech synthesis) and voice in (browser speech recognition); hints from Ingrid (−5 after
+two); a six-point grade (listening, discovery, script fidelity, objection handling, compliance, close) with a
+compliance cap at 59 for fair-housing, legal/tax/rate advice, promised outcomes, touring without a BRBC or
+disparaging another agent; debriefs (what the client was thinking, best line, say-this-instead); the daily
+three-script drill picked by date; streaks and weak-skill tracking. Three 85s in a row raise the difficulty;
+three grades under 65 book a Celeste coaching review. Vanessa tool: `role_play`. Mission: *Sparring week*.
+
+## Regina — Regulatory Watch Analyst
+
+Added 2026-10-31. Reports to Alexandra; member of the Compliance & Risk and Coaching pods.
+Keeps the **New Rules & Laws** desk inside the Training & Regulations Hub: 113 tracked California (64) and
+federal (49) changes from 2024 to 2027 — title, bill or rule, effective date, status (in effect, upcoming,
+proposed, vacated, expired), area, roles affected (agent, broker, TC, MLO), what changed, what to do, forms,
+penalty, source and confidence. Turns each Do list into dated tasks (Beatrice), auto-tasks upcoming effective
+dates 45 days out, tracks acknowledgments by role, triages law headlines from the weekly Headline News into
+the desk, and curates the 132-source **Reference Library** (federal, state, LA/OC/RV/SD local, association),
+flagging entries that need link or fact verification. Vanessa tools: `new_laws`, `reference_library`.
+Mission: *Quarterly regulatory review*.
