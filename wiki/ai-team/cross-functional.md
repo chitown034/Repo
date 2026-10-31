@@ -34,7 +34,7 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Open House Captain | open house, sign-in sheet, sign-in, visitor, thank-you, thank you note | `wiki/ai-team/desk-seats.md` |
 | Travel Desk | travel, trip, flight, hotel, points vs cash, points, miles, price watch, gondola, itinerary | `wiki/ai-team/desk-seats.md` |
 | Meeting Scribe | meeting recap, recap, meeting notes, action items, fieldy, zoom, meeting minutes, debrief | `wiki/ai-team/desk-seats.md` |
-| Maya | market data, median price, zip code, neighborhood, school, schools, days on market, months of supply, inventory, comps, city stats, redfin, caaspp, community ranking | `wiki/real-estate-playbooks/` |
+| Maya | market data, median price, zip code, neighborhood, school, schools, days on market, months of supply, inventory, comps, city stats, redfin, caaspp, community ranking, demographics, median age, population, employers, unemployment, mello-roos, cfd, special assessment, tax rate, lowest taxes, transfer tax, sales tax, zip code, area brief | `wiki/real-estate-playbooks/` |
 | Rosa | pcs, military, base, bah, relocation, orders, scra, camp pendleton, miramar, coronado, march arb, deployment, rent buy or wait, rent vs buy, duty radius, bah affordability, breakeven, military objection, military & relocation pod | `wiki/real-estate-playbooks/military-relocation.md` |
 | Quincy | lofty, pabbly, integration, connector, crm sync, import leads, export leads, webhook, zoho lofty, smart plan | `integrations/CONNECTIONS.md` |
 | Owen | autopilot, sweep, auto task, follow-up task, dedupe, daily automation, launchpad, mission, push button, run everything, monday kickoff, friday wrap, automation & ai pod | `docs/AUTOMATION-MAP-2026-10-20.md` |
@@ -47,7 +47,7 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Sterling | 5-star, five star, client experience, service standard, ritz, delight, client preferences, nps, after-care, concierge service, value add, client experience pod | `wiki/real-estate-playbooks/buyer-process.md` |
 | Juliet | escalation, service recovery, blown closing, denied loan, failed appraisal, angry client, honors, unhappy client, complaint | `wiki/real-estate-playbooks/transaction-stages.md` |
 | Imani | pcs, military family, base, bah, relocation briefing | `wiki/real-estate-playbooks/military-relocation.md` |
-| Logan | lpt, lpt realty, hybridshare, revenue share, downline, recruiting, recruit, business builder, brokerage partner, cap, stock award, sponsor, lpt growth pod | `wiki/real-estate-playbooks/referral-reciprocity.md` |
+| Logan | lpt, lpt realty, hybridshare, revenue share, downline, recruiting, recruit, business builder, brokerage partner, cap, stock award, sponsor, lpt growth pod, lpt policy, p&p, cabrokers, managing broker, broker of record, bill hays, ask a broker, 48-hour upload, funding request, broker signature, dba | `wiki/real-estate-playbooks/referral-reciprocity.md` |
 | Wren | referral ledger, reciprocal referral, referral fee, partner tier | `wiki/real-estate-playbooks/referral-reciprocity.md` |
 | Bianca | absorption, months of inventory, price per sqft, list-to-sale, market report, pricing authority | `wiki/real-estate-playbooks/listing-process.md` |
 | Lucia | eligibility, guideline, va m26-7, fha 4000.1, usda, program fit | `wiki/mortgage-programs/program-selection.md` |

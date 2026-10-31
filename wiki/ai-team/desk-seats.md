@@ -201,3 +201,25 @@ LPT Realty 100, CRMLS 2, SkySlope 1), imported from the LO dashboard's library (
 into 314 base forms with stages, deal types, required levels, who signs, how-to steps, tips, loan-side notes and
 44 line-by-line walkthroughs. The Forms Hub and the When-Needed Matrix run on this library; the matrix also keeps
 34 C.A.R. forms that are not in the library. Vanessa tool: `skyslope_form`.
+
+## Maya — Area Intelligence (addition, 2026-10-31)
+
+The Broker Command Center's Area Intelligence page (Local Markets) joins the Market Explorer's 382 Southern
+California cities and communities with demographics (Census ACS 2023 5-year: population, median age, household
+income, home value, owner-occupancy, education, unemployment, rent, veterans — read live from the Census API in
+the viewer's browser when available, otherwise an embedded seed), schools, major employers and military, typical
+property tax rates, Mello-Roos / CFD amounts and communities, special assessments, transfer and sales tax. Sortable
+by any metric, lowest-tax and Mello-Roos rankings, ZIP lookup, side-by-side compare and a client-ready area brief.
+The Tax Assessor Agent keeps the tax tables current. Vanessa tool: `area_intel`.
+
+## Logan — LPT California broker & policies (addition, 2026-10-31)
+
+LPT HQ in the Broker Command Center gains a **CA Broker & Policies** tab: the California broker-in-charge
+(Bill Hays, Managing Broker – California, 805-995-9957; office 10620 Treena Street, Suite 230, San Diego, CA
+92131; 805-995-9957 or 951-625-2052; CAbrokers@lptrealty.com; 8 AM–5 PM PST; the 8/19/2025 P&Ps list Leah
+Cowley as Broker of Record and Craig Sasville as Managing Broker), standing meetings (Ask A Broker Thursdays
+1:00–1:45 PM, Zoom 85968203826; Dotloop class and Getting Paid Tuesdays 8 AM), the C.A.R. Legal Hotline, and
+all 29 California Policies & Procedures (8/19/2025) as searchable rules. Automations: 48-hour upload workflows
+on new escrows and listings, final file 48 hours before COE, funding-request check at close, CE proof 15 days
+before renewal, broker-only signature flag (COBR, TOBR, COL, RFA, CI, CDA, MLSA, SELI) in the When-Needed
+Matrix, AVID and upload health checks. Beatrice enforces; Alexandra checks advertising. Vanessa tool: `lpt_policy`.
