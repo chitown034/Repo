@@ -72,6 +72,7 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Kai | kaizen, bottleneck, capacity, scale, scalability, process improvement, workload, hire trigger, efficiency, automation coverage | `wiki/ai-team/desk-seats.md` |
 | Sloane | doc screener, screen document, document review, fine print, hidden clause, clause, hidden fee, prelim, title report, cc&rs, hoa documents, closing disclosure, loan estimate, lease review, contract review, deadline extraction | `wiki/ai-team/desk-seats.md` |
 | Nova | coverage, uncovered, who owns, owner for, sync status, is it synced, live data, sweep, what is missing, process gap, health check, process coverage, coverage register, which doc is stale, who writes | `wiki/ai-team/desk-seats.md` |
+| Sienna | bland, ai call, call center, voice agent, ai isa, dial, call queue, tcpa consent, voicemail drop, phone follow-up | `wiki/ai-team/desk-seats.md` |
 | Isabel | loan processing, processor, conditions, underwriting conditions, document checklist, voe, vod, application date, loan estimate, le deadline, appraisal order, intent to proceed | `wiki/mortgage-programs/` |
 | Reyes | closing disclosure, cd timing, trid, consummation, rate lock, lock expiration, funding, rescission, signing appointment, clear to close | `wiki/mortgage-programs/` |
 
