@@ -2039,6 +2039,34 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
   </div>
 </section>
 
+<!-- SCIENCE LAB -->
+<section class="panel" id="p-lab" data-tab="lab" data-label="Science lab" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">See how it works</span>
+    <h2>Science lab</h2>
+    <p>Animated explainers and calculators that show how energy, insulin, protein, muscle, heart-rate zones, glycogen, hydration and recovery actually work. Many pull in your own profile. Models are illustrative, not measurements of you.</p>
+  </div>
+  <div id="sl-grid" class="grid g2"></div>
+</section>
+
+<!-- KNOWLEDGE BASE -->
+<section class="panel" id="p-kb" data-tab="kb" data-label="Knowledge base" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Reference library</span>
+    <h2>Knowledge base</h2>
+    <p>Searchable tables from your workbook: training principles, Arnold-style routines, 14 diets, glycemic index, 26 vitamins and minerals, 48 supplements, blood markers, body types, physiology concepts and a library of ready-made programs you can add to the Programs tab.</p>
+  </div>
+  <div class="card">
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;align-items:end">
+      <label class="f">Section<select id="kb-set"></select></label>
+      <label class="f">Search<input id="kb-q" type="search" placeholder="Search this section" autocomplete="off"></label>
+      <label class="f" id="kb-fl" hidden>Filter<select id="kb-f"></select></label>
+    </div>
+    <p class="note" id="kb-note" style="margin-top:10px"></p><span class="small muted" id="kb-count"></span>
+  </div>
+  <div id="kb-out" style="margin-top:12px"></div>
+</section>
+
 <!-- MYTHS & GLOSSARY -->
 <section class="panel" id="p-myths" data-tab="myths" data-label="Myths &amp; glossary" hidden>
   <div class="panel-head">
@@ -2350,7 +2378,7 @@ const wUnit = () => imp() ? "lb" : "kg";
 const panels = $$("section.panel"); const panelBy = {}; panels.forEach(p => { panelBy[p.dataset.tab] = p; });
 const tablist = $("#tablist"), groupsEl = $("#groups");
 const GROUPS = [["home", "Home", ["overview", "hub", "a360", "coach", "log"]], ["nutrition", "Nutrition", ["meals", "foodlog", "nutrition", "fads", "metabolism"]],
-  ["train", "Training", ["programs", "training", "cardio", "styles", "library", "bb"]], ["body", "Body & health", ["recovery", "wellness", "supps", "health", "body"]], ["learn", "Learn", ["academy", "books", "myths"]]];
+  ["train", "Training", ["programs", "training", "cardio", "styles", "library", "bb"]], ["body", "Body & health", ["recovery", "wellness", "supps", "health", "body"]], ["learn", "Learn", ["academy", "lab", "kb", "books", "myths"]]];
 const groupOf = {}; GROUPS.forEach(([g, , names]) => names.forEach(n => { groupOf[n] = g; }));
 const onShow = {};
 GROUPS.forEach(([g, label, names]) => {
@@ -4127,7 +4155,7 @@ function renderPrograms() {
   if (!p) { el.innerHTML = `<h3>Program</h3><p class="small muted">Pick or add a program and its days appear here, ready to start and edit.</p>`; return; }
   const inp = (di, i, f, v, w) => `<input data-pf="${f}" data-d="${di}" data-i="${i}" value="${esc(v)}" aria-label="${f}" style="${w ? "width:" + w + ";" : "width:100%;min-width:150px;"}padding:5px 7px;font-size:.85rem">`;
   el.innerHTML = `<div class="card-head"><h3>${esc(p.name)}</h3><span class="small muted">${esc(p.src || "")}</span></div><div style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn ghost small" data-pgact="export">Export</button><button type="button" class="btn ghost small" data-pgact="dup">Duplicate</button><button type="button" class="btn ghost small" data-pgact="addday">Add a day</button><button type="button" class="btn ghost small" data-pgact="del">Delete</button></div>` +
-    p.days.map((d, di) => `<div class="day"><div class="day-h"><input data-pf="dayname" data-d="${di}" value="${esc(d.name)}" aria-label="Day name" style="font:600 1.05rem var(--font-display);padding:4px 8px;max-width:60%"><span style="display:flex;gap:6px"><button type="button" class="btn small" data-start="${p.id}|${di}">Start</button></span></div><div class="table-wrap" style="border:0;border-radius:0"><table><thead><tr><th>Exercise</th><th>Sets</th><th>Reps</th><th>Notes</th><th></th></tr></thead><tbody>${d.items.map((it, i) => `<tr><td>${inp(di, i, "ex", it.ex)}</td><td>${inp(di, i, "sets", it.sets, "52px")}</td><td>${inp(di, i, "reps", it.reps, "78px")}</td><td>${inp(di, i, "note", it.note || "")}</td><td><button type="button" class="btn ghost small" data-rmex="${di}|${i}" aria-label="Remove exercise">×</button></td></tr>`).join("")}</tbody></table></div><div style="padding:8px 12px"><button type="button" class="btn ghost small" data-addrow="${di}">Add exercise</button></div></div>`).join("");
+    p.days.map((d, di) => `<div class="day"><div class="day-h"><input data-pf="dayname" data-d="${di}" value="${esc(d.name)}" aria-label="Day name" style="font:600 1.05rem var(--font-display);padding:4px 8px;max-width:60%"><span style="display:flex;gap:6px"><button type="button" class="btn small" data-start="${p.id}|${di}">Start</button></span></div><div class="table-wrap" style="border:0;border-radius:0"><table><thead><tr><th>Exercise</th><th>Sets</th><th>Reps</th><th>Notes</th><th></th></tr></thead><tbody>${d.items.map((it, i) => `<tr><td>${inp(di, i, "ex", it.ex)}</td><td>${inp(di, i, "sets", it.sets, "52px")}</td><td>${inp(di, i, "reps", it.reps, "78px")}</td><td>${inp(di, i, "note", it.note || "")}</td><td style="white-space:nowrap"><a class="btn ghost small" style="text-decoration:none" target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/results?search_query=${encodeURIComponent(it.ex + " proper form")}" aria-label="Watch form video for ${esc(it.ex)}">▶</a> <button type="button" class="btn ghost small" data-rmex="${di}|${i}" aria-label="Remove exercise">×</button></td></tr>`).join("")}</tbody></table></div><div style="padding:8px 12px"><button type="button" class="btn ghost small" data-addrow="${di}">Add exercise</button></div></div>`).join("");
 }
 function newDraft(prog, di) {
   const d = { id: uid(), d: iso(new Date()), name: "", prog: null, day: "", start: Date.now(), entries: [], notes: "" };
@@ -4332,7 +4360,7 @@ $("#pg-preview").addEventListener("click", e => {
   PROGRAMS.push(p); pgSel = p.id; store.set("pgsel", pgSel); savePG(); PG_PARSED = null; $("#pg-preview").innerHTML = ""; $("#pg-text").value = ""; $("#pg-name").value = ""; $("#pg-add").hidden = true; flash("#pg-msg", `<span class="pill p-good">Saved</span> ${esc(p.name)}`); renderPrograms(); renderWorkout();
 });
 $("#pg-templates").addEventListener("click", () => {
-  TEMPLATES.forEach(t => { if (!PROGRAMS.some(p => p.name === t.name)) PROGRAMS.push(mkProgram(t.name, t.src, t.days)); }); savePG(); pgSel = pgSel || PROGRAMS[0].id; flash("#pg-msg", `<span class="pill p-good">Added</span> starter templates`); renderPrograms(); renderWorkout();
+  TEMPLATES.filter(t => !t.lib).forEach(t => { if (!PROGRAMS.some(p => p.name === t.name)) PROGRAMS.push(mkProgram(t.name, t.src, t.days)); }); savePG(); pgSel = pgSel || PROGRAMS[0].id; flash("#pg-msg", `<span class="pill p-good">Added</span> starter templates`); renderPrograms(); renderWorkout();
 });
 $("#pg-file").addEventListener("change", async e => { const f = e.target.files[0]; e.target.value = ""; if (f) await importWorkoutFiles([f]); renderPrograms(); renderWorkout(); });
 $("#pg-list").addEventListener("click", e => { const b = e.target.closest("[data-pg]"); if (!b) return; pgSel = b.dataset.pg; store.set("pgsel", pgSel); renderPrograms(); renderWorkout(); renderProgress(); });
@@ -5695,6 +5723,893 @@ $("#ac-coach").addEventListener("click", () => {
   const q = $("#co-q"); if (q) { q.value = `Tailor a ${P.days}-day plan for this goal: ${P.g.n}. My numbers: ${fmt(P.kcal)} kcal, ${fmt(P.p)} g protein, experience level ${["beginner", "intermediate", "advanced"][P.exp]}. What would you change given my data?`; q.focus(); }
 });
 onShow.academy = () => { if (!$("#ac-cy-w").value) $("#ac-cy-w").value = round(toDispW(S.weight), 1); if (!$("#ac-f-bw").value) $("#ac-f-bw").value = round(toDispW(S.weight), 1); renderAcademy(); };
+
+/* ---------- imported program library (user-supplied guides, workouts as plain exercise lists) ---------- */
+const SRC_CJ = "Minibeast Summer Challenge 2019 (your copy)";
+const SRC_LEG = "Misscarriejune's Full Leg Routine (your copy)";
+const SRC_AR = "Your Arnold-style workbook";
+const PDSL = {
+legs: ["Misscarriejune legs (2x a week, alternate routines)", SRC_LEG, `
+# Glutes/Hams: Routine 1
+Romanian deadlift|6|6-8|1 warm-up set, heavy
+Weighted hip thrust|5|10|Smith machine or barbell, go heavy
+Leg press (glute/ham focused)|4|8|Feet wide at top of platform
+Lying hamstring curl|3|15|Machine. Superset with next
+Dumbbell plie squat|3|15|
+Lunge|4|8 each leg|Barbell on back
+Cable glute kickback|4|12 each|Superset with next
+Barbell good morning|4|15|
+# Glutes/Hams: Routine 2
+Squat|5|10|1 warm-up set, wide stance, toes out, squeeze glutes at top
+Straight-leg deadlift|5|8-10|1 warm-up set
+Reverse hack squat|4|10|
+Sumo deadlift|4|8-10|Barbell
+Seated hamstring curl|4|12|
+Reverse hyperextension|4|15|Hold a plate to chest, feet straight
+Hip abductor|4|15|Raised off seat, hold machine, slow reps. Superset with next
+Bulgarian split squat|3|15 each leg|
+Cable pull-through|4|12|Superset with next
+Alternating glute pushdown|4|12 each|Assisted dip machine
+# Quads/Calves: Routine 1
+Leg extension|4|25|
+Narrow stance squat|5|8-10|Barbell
+Leg press narrow stance (toes neutral)|4|10|Triset with next two
+Leg press narrow stance (toes in)|4|10|
+Leg press narrow stance (toes out)|4|10|
+Goblet squat|4|20|Kettlebell or dumbbell
+Alternating curtsy squat|4|15 each|Barbell
+Smith machine calf raise|4|20|Small box if available. Superset with next
+Seated machine calf raise|4|20|
+# Quads/Calves: Routine 2
+Jump squat|4|25|Warm-up
+Front squat|4|8-10|Heels on 5 lb plates
+Hack squat|4|12|
+Single-leg press|4|15 each|
+Alternating reverse lunge|3|12 each|In place, barbell on back
+Dumbbell step-up|3|10 each|
+Seated calf extension|4|12|Superset with next
+Toe press (leg press)|4|15|
+# At-home legs
+Resistance band crab walk|4|45 s|Band around calves, stay in squat
+Standing hip extension|4|20 each|Bands around ankles
+Alternating step-up with kickback|4|15 each|
+Alternating kickback|4|15 each|Bands around ankles
+Single-leg glute bridge|4|20 each|Band around shins and quads. Superset with next
+Jump squat|4|30 s|Band around ankles
+Alternating lunge|4|25 each|Hold household items if desired
+Quad deadman raise|4|30 s|Slow and controlled
+`],
+shred14: ["Challenge: Shredding, weeks 1-4", SRC_CJ, `
+# Day 1: Back / Biceps
+Lat pulldown|4|10|Superset with hammer curl
+Dumbbell hammer curl|4|15|
+Lying cable curl|4|20|Straight bar, arms at 90 degrees, curl to top of head
+Barbell row|3|10|
+Spider curl|4|15|Facing bench
+Single-arm pulldown|4|10-12 each|Cable. Source sets/reps unclear, adjust
+Reverse barbell curl|4|10|
+Cable row|4|10|
+# Day 2: Glutes / Hamstrings
+Hip abduction|4|25|Pre-exhaust, 45 s rest between sets
+Romanian deadlift|4|20 then 8-10|1x20 then 3x8-10, barbell, as heavy as possible
+Cable pull-through|4|25|Kneeling
+Leg press|4|8-10|Toes out, feet at top of platform
+Stiff-leg dumbbell deadlift|4|15|Superset with next
+Bulgarian split squat|4|15|
+Cable glute kickback|4|20|
+# Day 3: Shoulders
+Dumbbell Arnold press|4|10|
+Barbell upright row|4|10|
+Dumbbell lateral raise|4|15|Superset with next
+Dumbbell front raise|4|15|
+Face pull with rope|4|20|Cable
+Cable crossover|4|15|Standing or kneeling
+# Day 4: Quads / Calves
+Leg extension|4|25|Pre-exhaust, 45 s max rest
+Barbell squat|5|20 then 8-10|1x20 then 4x8-10, close stance, heavy
+Sissy squat|4|15|Smith machine if no machine
+Deadman raise|4|20|
+Barbell lunge|4|10 each leg|
+Seated calf raise|4|20|Superset with next
+Standing calf raise|4|15|Smith machine on platform
+# Day 6: At-home plyometrics (5 rounds)
+Alternating jump lunge|5|60 s|Warm up 30 s jogging in place; rest between rounds as needed
+Burpee|5|60 s|
+Mountain climber|5|60 s|
+Pike jump|5|60 s|
+High knees|5|60 s|
+Tuck jump|5|60 s|
+# Day 7: Chest / Triceps
+Barbell chest press|4|10|Superset with next
+Close-grip tricep press|4|10|Barbell
+Dumbbell chest fly|4|15|Standing
+Overhead tricep press|4|10|Seated
+Low cable fly|4|20|Superset with next
+Tricep kickback|4|20|Cable
+`],
+shred58: ["Challenge: Shredding, weeks 5-8", SRC_CJ, `
+# Day 1: Quads / Calves
+Shoulder-width leg press|3|15|Triset, toes neutral
+Wide-stance leg press|3|15|Toes out
+Feet-together leg press|3|15|Toes neutral
+Squat (heels on 5 lb plates)|4|15|Superset with step-ups
+Dumbbell step-up|4|15 each|Onto bench
+Goblet squat|4|20|Kettlebell
+Leg extension|4|10|Superset with next
+Single-leg extension|4|20 each|
+Toe press on leg press|4|15|
+Donkey raise|4|15|Smith machine, kneeling, alternate legs back
+# Day 2: At-home plyometrics (6 rounds)
+Jumping jacks|6|45 s|Warm up 30 s jogging in place
+Alternating jump lunge|6|45 s|
+Lateral jump|6|45 s|
+Skater|6|45 s|
+Leap jump|6|45 s|
+Jump squat|6|45 s|
+# Day 3: Back / Chest
+Underhand lat pulldown|4|10|
+Incline bench press|4|12|Smith machine
+Alternating dumbbell chest press|3|10 each|Superset with next
+Alternating bent-over dumbbell row|3|10 each|
+Cable chest fly|3|15|Superset with next
+Cable low row|3|15|V-bar
+Flat dumbbell bench press|4|12|
+Supinated barbell row|4|8-10|
+Push-up|1|failure|Superset with pull-up
+Pull-up|1|failure|
+# Day 4: Hamstrings / Glutes
+Crab walk with resistance band|2|30|Superset with glute bridge; burn out glutes to activate
+Glute bridge with resistance band|2|30|
+Weighted hip thrust|5|10|Push knees out, drive through heels
+Sumo deadlift|4|10|
+Cable squat with rope|4|15|Squeeze at top
+Glute pushdown|4|15 each leg|Assisted pull-up machine
+Barbell good morning|4|15|Superset with next
+Reverse hyperextension|4|15|On bench with dumbbell between feet
+# Day 5: Shoulders
+Battle ropes|4|failure|
+Military press|4|10|Smith machine
+Reverse fly|4|15|Dumbbells, chest on incline bench
+Upright row with rope|4|15|Superset with next
+Front raise with rope|4|15|
+Standing cable side raise|4|15 each|Superset with next
+Seated rear delt fly|4|12|
+Arnold press|4|10|Dumbbells
+# Day 6: Biceps / Triceps
+Preacher curl|4|10|EZ bar. Superset with overhead extension
+Dumbbell overhead extension|4|10|
+Skull crusher|4|10|Superset with wide-grip curl
+Wide-grip barbell curl|4|10|
+Cable kickback|4|15|Superset with biceps curl
+Dumbbell biceps curl|4|15|
+Assisted dip|4|10|Superset with isolation curl
+Dumbbell isolation curl|4|15|
+`],
+tone14: ["Challenge: Tone and Tighten, weeks 1-4", SRC_CJ, `
+# Day 1: Glutes / Hamstrings
+Squat|6|20 then 8-10|1x20 then 5x8-10, wide stance
+Single-side leg press|4|15 each|Foot at top of platform, push through heel
+Landmine stiff-leg deadlift|4|10|Squeeze at top
+Hack squat|4|15|
+Hip thrust|5|8-10|Push knees out at top, drive through heels
+Plie pulse squat|4|20|Heavy dumbbell, low/short reps
+# Day 2: Back / Biceps
+Seated row, wide grip|5|10|
+Lat pulldown|5|10|
+Straight-arm pulldown|4|12|Cable, straight bar
+Single-arm lat pulldown|4|10 each|
+Hyperextension|4|15|
+Seated dumbbell curl|5|10|
+Arnold curl|4|10|Cable machine
+Reverse curl|4|10|EZ or straight bar
+# Day 3: Chest / Triceps
+Flat bench press|5|10|Barbell
+Lying chest fly|4|12|Dumbbells
+Alternating single-arm chest press|4|10 each|Dumbbell
+Tricep pressdown|4|10|
+Rope overhead extension|4|12|Cable, standing
+Alternating kickback|4|15 each|Dumbbells
+Close-grip push-up|3|failure|
+# Day 4: Quads / Calves
+Barbell squat|6|20 then 8-10|1x20 then 5x8-10, heels on 5 lb plates
+Leg press (narrow)|4|15|
+Single-leg press|4|10 each|
+Hack / V-squat|4|8-10|Superset with leg extension
+Leg extension|4|15|
+Sissy squat|4|15|Superset with calf extension
+Calf extension (leg press)|4|15|
+Seated calf raise|4|10|
+# Day 6: At-home plyometrics (5 rounds)
+Kettlebell swing|5|60 s|Warm up 30 s jogging in place
+High knees|5|60 s|
+Jumping jacks|5|60 s|
+Broad jump|5|60 s|
+Push-up to squat|5|60 s|
+Jump squat|5|60 s|
+Frog jump|5|60 s|
+# Day 7: Shoulders
+Overhead press|5|8-10|Barbell
+Plate front raise|4|15|Superset with lateral raise
+Dumbbell lateral raise|4|15|
+Upright row|4|8-10|Weighted bar
+Machine shoulder press|4|15|
+Alternating single-arm press|4|10 each|Dumbbells, seated
+Face pull with rope|4|12|Kneeling cable, superset with rear delt fly
+Rear delt seated fly machine|4|12|
+`],
+tone58: ["Challenge: Tone and Tighten, weeks 5-8", SRC_CJ, `
+# Day 1: Chest / Back
+Landmine chest press|4|15|Superset with landmine row
+Landmine row|4|10|V-bar and barbell or T-bar machine
+Alternating dumbbell row|4|10|Superset with flat bench press
+Dumbbell flat bench press|4|10|
+Lat pull with rope|4|12|Palms in, seated on incline bench. Superset with chest fly
+Chest fly|4|15|Lying on bench
+Incline barbell bench press|4|8-10|
+Underhand barbell row|4|8-10|Tuck elbows in
+# Day 2: Glutes / Hamstrings
+Sumo squat|5|15 then 8|1x15 then 4x8
+Hip thrust|5|10|Push knees out, squeeze at top
+Hip abduction|4|15|
+Cable pull-through|4|15|Rope, kneeling
+Double donkey kickback|4|10|Smith machine
+Bulgarian split squat|4|8 each leg|Barbell on back
+# Day 3: Shoulders
+Military press|4|8-10|
+Arnold press|4|15|
+Barbell lateral raise|4|15|Superset with front raise
+Barbell front raise|4|15|
+Reverse cable crossover|4|12|Superset with bent-over barbell reverse raise
+Bent-over barbell reverse raise|4|12|Barbell behind knees
+Upright row|4|10|Weighted bar
+# Day 4: Quads / Calves
+Leg press (feet together)|5|20 then 10|1x20 then 4x10, center of platform
+Walking lunge|4|8 each leg|Barbell on back, short steps
+Barbell squat|5|15,12,8,6,4|Feet shoulder width
+Alternating step-up|4|15 each|Holding dumbbells. Superset with standing calf raise
+Standing calf raise|5|10|Smith machine
+Seated calf extension|5|10|
+Hack squat|4|12|
+# Day 5: At-home plyometrics (6 rounds)
+Jump rope or jumping jacks|6|45 s|Warm up 30 s jogging in place
+Burpee|6|45 s|
+Mountain climber|6|45 s|
+Alternating step-up|6|45 s|
+Squat jump|6|45 s|
+Jumping jacks|6|45 s|
+Alternating jump lunge|6|45 s|
+# Day 6: Biceps / Triceps
+Reverse pressdown|4|10|Cable straight bar. Superset with skull crusher
+Skull crusher|4|10|EZ bar
+Reverse curl|4|12|Cable straight bar. Superset with hammer curl
+Hammer curl|4|12|Dumbbells
+Dip|4|10|Superset with Arnold curl
+Arnold curl|4|10|Cable
+Reverse spider curl|4|15|Weighted bar. Superset with barbell 21s
+Barbell 21s|3|7 high, 7 low, 7 full|
+`],
+mass14: ["Challenge: Muscle Building, weeks 1-4", SRC_CJ, `
+# Day 1: Shoulders
+Military press|5|6-8|Barbell
+Upright row|5|6-8|EZ bar or barbell
+Barbell front raise|4|10|
+Alternating lateral raise|5|10 each|Dumbbells. Superset with seated rear delt machine
+Seated rear delt machine|5|10|
+Rear delt raise to shrug|4|8|Smith machine
+# Day 2: Chest
+Flat bench press|5|8-10|
+Incline bench cable fly|4|10|
+Dip|5|10|
+Machine decline press|4|10|
+Push-up|4|failure|Feet up on bench for more resistance
+Seated machine chest press|4|10|Superset with alternating single-arm press
+Alternating single-arm chest press|5|10|Dumbbells
+# Day 3: Quads / Calves
+Squat (narrow stance)|5|8-10|
+Wide-stance leg press|5|12|Toes out. Superset with narrow press
+Narrow-stance leg press|5|12|Toes straight
+Hack squat|4|10|
+In-place lunge|4|8 each leg|Close steps
+Seated calf raise|4|10|
+Seated dumbbell calf raise|4|15|Dumbbells on knees
+# Day 4: Back
+Bent-over barbell row|5|8-10|Superset with seated row
+Seated row|4|8|
+Inverted row|4|8|Smith machine
+Dumbbell pullover|5|10|Face up on bench
+Chin-up|3|failure|Superset with pull-up
+Pull-up|3|failure|
+Lat pulldown|5|10|
+Close-grip pulldown|4|10|V-bar
+# Day 5: Glutes / Hamstrings
+Seated hamstring curl|4|10|
+Romanian deadlift|5|6-8|
+Glute bridge|5|12|On floor with barbell on hips
+Hip abduction|4|10|
+Stiff-leg dumbbell deadlift|4|10|
+Double donkey kick|5|10|Smith machine
+# Day 7: Biceps / Triceps
+Incline dumbbell hammer curl|5|15|
+Wide-grip standing curl|4|10|Barbell. Superset with alternating incline curl
+Alternating incline dumbbell curl|4|10|
+Seated overhead extension|5|8-10|Dumbbell
+Close-grip bench press|5|6-8|
+Skull crusher|4|10|EZ or weighted bar
+Chin-up|3|failure|
+Close-grip push-up|3|failure|
+`],
+mass58: ["Challenge: Muscle Building, weeks 5-8", SRC_CJ, `
+# Day 1: Back
+Lat pulldown|5|8-10|
+Seated row, wide grip|5|10|Straight bar
+Underhand barbell row|5|8-10|Elbows tucked
+Chainsaw row|4|15|
+Single-arm pulldown|4|15 each|Kneeling cable. Superset with V-bar low row
+V-bar low row|4|15|Cable
+Dumbbell shrug|5|8|
+# Day 2: Glutes / Hamstrings
+Resistance band crab walk|4|45 s|Squat with band around knees. Superset with band glute bridge
+Glute bridge with resistance band|3|25|40 s rest
+Hip thrust|5|10|
+Leg press (feet together at top)|5|8|
+Barbell sumo squat|4|20,15,10,5|
+Cable glute kickback|4|15 each|Standing or kneeling
+Abductor machine|4|10|
+Good morning|5|10|
+# Day 3: Biceps / Triceps
+Dip|5|10|
+Preacher curl|4|10|
+Tricep pressdown|5|8|V-bar
+Overhead curl|4|12|Straight bar on lat pulldown. Superset with rope overhead extension
+Rope overhead extension|4|12|
+Cable kickback|4|10|
+Hammer curl|4|12|Superset with alternating incline curl
+Alternating incline dumbbell curl|4|12|
+# Day 4: Quads / Calves
+Seated calf extension|4|15|Superset with standing calf raise
+Standing calf raise|4|15|
+Barbell squat (narrow)|6|15 then 10|1x15 then 5x10
+Quad deadman raise|4|15|
+Leg extension|5|12|
+Alternating dumbbell step-up|4|10 each|Superset with reverse lunge
+Alternating reverse lunge|4|10|Weighted bar on back, short steps
+Hack squat|5|8-10|
+# Day 5: Chest
+Flat bench press|5|8-10|Barbell
+Incline dumbbell fly|4|12|
+Wide-grip push-up|4|failure|Feet up for more resistance
+Alternating dumbbell press|4|15 each|
+Landmine chest press|4|15|
+# Day 6: Shoulders
+Barbell clean and press|5|8|Start light if new to this movement
+Seated incline front raise|4|12|Weighted bar. Superset with side raise
+Alternating standing side raise|4|12|
+Face pull with rope|5|10|Cable
+Standing bent-over lateral raise|4|15|
+Plate front raise|4|15|
+`],
+home14: ["Challenge: At-home routine, weeks 1-4 (dumbbells + bands)", SRC_CJ, `
+# Day 1: Back / Biceps
+Seated band lat pulldown|5|15|Band on door handle or similar
+Dumbbell biceps curl|4|10 each|
+Seated band row|5|15|
+Dumbbell hammer curl|4|12 each|
+Single-arm dumbbell row|5|15 each|
+Concentration curl|5|10 each|Elbow to knee
+Single-arm band lat pulldown|5|20|
+Standing band curl|5|20|Band under feet
+# Day 2: Quads / Calves
+Narrow-stance dumbbell squat|5|20|
+Dumbbell reverse lunge|5|20|
+Standing band quad extension|4|10 each|Band around sturdy object and ankle
+Standing calf raise on stairs|5|20|Dumbbells at sides
+Seated dumbbell calf raise|5|20|Dumbbell on each knee
+Dumbbell jump squat|4|30 s|
+Alternating jump lunge|4|30 s|
+# Day 3: Shoulders / Triceps
+Dumbbell upright row|5|15|
+Dumbbell military press|6|8-10|
+Dumbbell side raise|5|15|
+Band rear delt fly|4|20|
+Band face pull|4|20|
+Dumbbell overhead extension|4|10|
+Dumbbell skull crusher|4|10|
+Diamond push-up|4|10|
+# Day 4: Glutes / Hamstrings
+Dumbbell step-up|4|15|No rest between legs
+Dumbbell sumo squat|4|25|
+Dumbbell sumo deadlift|4|25|
+Weighted hip thrust with band|5|30|Band plus one dumbbell
+Dumbbell walking lunge|4|15 each|
+Stiff-leg dumbbell deadlift|4|25|
+Band kickback|5|15-20 each|Bands at ankles, 1 min rest
+Jump lunge|5|30 s|
+# Day 5: Abs / Chest
+Front plank|5|45 s|
+Push-up|4|15|Modify as needed
+Bicycle crunch|5|45 s|
+Dumbbell chest fly|5|15|
+Lying leg raise|4|25|30 s rest
+Dumbbell chest press|4|10|
+Knee-in|3|35|30 s rest
+# Day 6: Full-body plyometrics (5 rounds)
+Jump squat|5|60 s|Warm up 30 s jogging; rest 3-5 min between rounds
+Alternating jump lunge|5|60 s|
+Burpee|5|60 s|
+Mountain climber|5|60 s|
+Dumbbell kettlebell-style swing|5|60 s|
+Box jump|5|60 s|
+Side-to-side jumping lunge|5|60 s|
+`],
+home58: ["Challenge: At-home routine, weeks 5-8 (dumbbells + bands)", SRC_CJ, `
+# Day 1: Glutes / Hamstrings
+Dumbbell pull-through|4|20|
+Single-leg dumbbell deadlift|5|15 each|
+Resistance band crab walk|5|45 s|
+Straight-leg dumbbell deadlift|4|12|
+Band hamstring curl|3|12 each|
+Alternating side lunge|5|10|Dumbbell
+Alternating step-up to kickback|5|10 each|Dumbbell
+Band hip abduction|5|45 s|
+# Day 2: Shoulders / Chest
+Seated Arnold press|5|10|
+Dumbbell chest press|4|10|
+Dumbbell reverse fly|4|15|
+Dumbbell upright row|5|10|
+Alternating dumbbell press|5|10 each|
+Dumbbell chest fly|4|15|
+Side raise|5|15|
+Band rear delt fly|4|15|
+# Day 3: Plyometric circuit (3-4 rounds)
+Push-up|4|30 s|One round = push-ups, jumping jacks, high knees, jump squats, 10 burpees, mountain climbers, bicycle crunch, plank
+Jumping jacks|4|30 s|
+High knees|4|30 s|
+Jump squat|4|30 s|
+Burpee|4|10|
+Mountain climber|4|30 s|
+Bicycle crunch|4|30 s|
+Plank|4|30 s|
+# Day 4: Quads / Calves
+Dumbbell front squat|5|10|
+Dumbbell Bulgarian split squat|4|15 each|
+Curtsy lunge|5|10 each|Dumbbell
+Jump squat then alternating jump lunge|5|30 s + 30 s|3-5 min rest between rounds
+Dumbbell side lunge|5|15 each|
+Calf raise on stairs|5|20|Dumbbells
+Alternating calf raise on stairs|5|15 each|
+# Day 6: Biceps / Triceps
+Standing dumbbell curl|5|10 each|
+Bench or stair tricep dip|5|failure|
+Isolated dumbbell biceps curl|5|15 each|
+Dumbbell skull crusher|5|15|
+Hammer curl|5|10|
+Alternating dumbbell kickback|5|10 each|
+Spider curl|5|15|Facing bench
+# Day 7: Back
+Reverse-grip band lat pulldown|5|15|Band on door handle
+Wide-grip band seated row|5|20|
+Single-arm side band pulldown|5|15 each|
+Bent-over dumbbell row|4|15|
+Band straight-arm pulldown|5|25|
+Straight-arm dumbbell pullover|5|10|
+`],
+abs: ["Abs and core routines (post-lifting, 2-3x a week max)", SRC_CJ, `
+# Abs 1 (gym)
+Swiss ball roll-out|4|15|
+Swiss ball plank circle|4|15|
+Pike-up on Bosu ball|3|10|
+Light medicine ball knee-in|5|12|Sit on bench, ball between feet
+Medicine ball V-up|4|15|
+Sit-up with ball throw|5|15|Anchor feet; start light
+Medicine ball Russian twist|5|30 s|Superset with mountain climber
+Medicine ball mountain climber|5|30 s|
+# Abs 2 (home)
+Crunch|3|30|
+Knee-tuck crunch|4|10-15|
+Knee to elbow|3|10 each side|
+Partial sit-up on bench or chair|5|30|
+Russian twist|4|30 s|
+Pulse-up|4|15|
+Toe tap|3|10 each side|
+Leg raise|4|20|Stop short at bottom to keep tension
+Reverse crunch|5|15|Superset with long-arm crunch
+Long-arm crunch|5|15|
+`]
+};
+PDSL.arnold = ["Arnold-style body-part routines (scaled sets for natural lifters)", SRC_AR, `
+# Chest
+Bench Press|5|12, 10, 8, 6, 4 (pyramid)|Rest 60-90s. Foundation lift, full ROM
+Incline Barbell Press|5|10-12|Rest 60-90s. Upper chest, ~30-45° incline
+Dumbbell Flyes|5|10-12|Rest 60s. Stretch deeply, peak squeeze
+Weighted Dips|5|Failure|Rest 60-90s. Lean forward for chest emphasis
+Cable Crossover|5|12-15|Rest 45s. Peak contraction, slow eccentric
+Dumbbell Pullover|5|15-20|Rest 60s. Stretches ribcage — Arnold favorite
+# Back
+Wide-Grip Pull-Up (behind neck)|5|Max|Rest 60-90s. Width — the cobra spread
+Wide-Grip Pull-Up (to chest)|5|Max|Rest 60-90s. Thickness
+T-Bar Row|5|10-12|Rest 60-90s. Squeeze shoulder blades
+Bent-Over Barbell Row|5|8-10|Rest 90s. Heavy, controlled, no jerking
+Seated Cable Row|5|10-12|Rest 60s. Squeeze 1s at full contraction
+Stiff-Leg Deadlift|5|10|Rest 90s. Lower-back + hamstring + erectors
+# Shoulders
+Behind-Neck Press (Barbell)|5|10-8-6-4-2 (pyramid)|Rest 90s. Heaviest movement; warm shoulders well
+Dumbbell Lateral Raise|5|10-12|Rest 60s. Pinkies up, no momentum
+Bent-Over Lateral Raise|5|10-12|Rest 60s. Rear delts, vital for 3D look
+Cable Lateral Raise (1-arm)|5|12|Rest 45s. Constant tension
+Upright Row|5|10|Rest 60s. Wide grip — lats + traps
+Barbell Shrug|5|10|Rest 60s. Hold peak 1s
+# Arms
+Barbell Curl + Close-Grip Bench (superset)|5|8-10 / 8-10|Rest 90s. Antagonist superset
+Seated Dumbbell Curl + Tricep Pushdown (superset)|5|10-12 / 10-12|Rest 60s. Pump it up
+Preacher Curl + Lying Tricep Extension (superset)|5|8-10 / 8-10|Rest 60s. Stretch + isolation
+Concentration Curl + Cable Kickback (superset)|5|12 / 12|Rest 45s. Peak contraction
+Hammer Curl + Overhead Tricep Extension (superset)|5|10 / 10|Rest 60s. Brachialis + long head
+# Legs
+Squat|6|20, 12, 10, 8, 6, 4|Rest 2-3 min. King of leg movements, full depth
+Leg Press|5|12-15|Rest 90s. Deep ROM, feet shoulder-width
+Lunges (walking)|5|10 each leg|Rest 60s. Glutes + quads
+Leg Extension|5|12-15|Rest 60s. Peak contraction 2s
+Stiff-Leg Deadlift|5|10|Rest 90s. Hamstrings
+Lying Leg Curl|5|10-12|Rest 60s. Hold peak 1s
+Standing Calf Raise|10|10-15|Rest 30-45s. Full stretch at bottom, peak at top
+Seated Calf Raise|5|15-20|Rest 45s. Soleus emphasis
+# Abs + Forearms
+Roman Chair Sit-Up|5|25-50|Rest 30s. Daily — abs respond to high volume
+Hanging Leg Raise|5|15-25|Rest 45s. Lower abs, slow tempo
+Crunch|5|25|Rest 30s. Squeeze top
+Twisting Crunch|5|25 each side|Rest 30s. Obliques
+Wrist Curl (palms up)|5|10-15|Rest 30s. Forearm flexors
+Reverse Wrist Curl (palms down)|5|10-15|Rest 30s. Forearm extensors
+Hammer Curl|5|10|Rest 45s. Brachioradialis
+`];
+const KB = {"principles":{"h":["#","Principle","What It Means","How To Apply","Why It Works"],"r":[["1","Progressive Overload","Continually increase the demands on your muscles — more weight, more reps, more sets, less rest, or better form.","Add weight when you hit the top of your rep range with perfect form for all sets. Log every workout.","Muscles adapt to stimulus. Without progression, they have no reason to grow."],["2","Confusion Principle","Constantly vary stimulus so the body never adapts and plateaus.","Rotate exercises, rep ranges, intensities, and angles every 4-8 weeks. Don't do the same workout for 6 months.","Adaptation is the enemy of growth. Surprise = stimulus."],["3","Shock Principle","Periodically blast the muscle with something completely unexpected — drop sets, giant sets, supersets, 100-rep sets.","Add one shock workout per body part every 2 weeks. Mix it up: sometimes go ultra-heavy, sometimes ultra-high-rep.","Recruits dormant fibers, breaks plateaus, builds mental toughness."],["4","Mind-Muscle Connection","Visualize the muscle working through every rep. Feel the target muscle, not the weight.","Slow eccentrics (3 sec down). Hold peak contraction 1 sec. Look at the muscle. Don't just move weight.","Higher motor unit recruitment in the target muscle, less compensation by helpers."],["5","Quality Training (Density)","Reduce rest between sets to keep intensity high; great for pre-contest cuts.","When cutting, drop rest from 90s → 30-45s. Stay in the pump zone.","Increases work density, GH response, conditioning, vascularity."],["6","Priority Principle","Train your weakest body parts FIRST in the week and FIRST in the workout, when energy and focus are highest.","If arms lag, train them on Monday and start arm day with weighted dips/curls, not cable kickbacks.","Lagging parts need MORE attention, not less. Fresh = better stimulus."],["7","Isolation Principle","Isolate a muscle to fix weak points and improve shape (vs. compound only).","Use machines, cables, and unilateral work after compounds to target gaps.","Compounds build mass; isolation refines shape and corrects imbalances."],["8","Pre-Exhaustion","Pre-fatigue a target muscle with an isolation move BEFORE the compound, so the compound finishes off the isolated muscle.","Example: dumbbell flyes BEFORE bench press for chest emphasis. Leg extensions before squats for quads.","Forces target muscle to be the limiting factor in the compound, not the smaller helpers."],["9","Forced Reps","After failure on a set, partner helps you eke out 2-3 more reps.","Use sparingly (1 set per body part) — taxing on CNS.","Pushes past muscular failure into deeper recruitment."],["10","Cheat Reps (Strict-then-Cheat)","Hit failure with strict form, then use minimal body english to get 2-3 more.","Only on the final set. Curls, lateral raises, rows.","Extends set past mechanical failure when strict reps end."],["11","Rest-Pause","After failure, rest 10-15 seconds, do as many more reps as possible, repeat.","Last set of an exercise. 8 reps → 15s rest → 3 reps → 15s rest → 2 reps.","Increases time under tension at near-max effort."],["12","Drop Sets (Stripping)","After failure, strip 20-30% of the weight and continue without rest.","Last set of an exercise. Do 2-3 drops.","Recruits all available fibers; massive hypertrophy stimulus."],["13","Supersets (Antagonist)","Two exercises back-to-back for opposing muscle groups (biceps/triceps, chest/back).","Curl + pushdown. Bench + row. No rest between.","Save time, increase pump, opposing muscle relaxes while the other works."],["14","Tri-Sets / Giant Sets","3 or 4+ exercises back-to-back for the same muscle group.","Shoulders: lateral raise + front raise + rear delt fly + upright row.","Maximum pump, conditioning, and stimulus in less time."],["15","Peak Contraction","Hold the fully contracted (peak) position for 1-2 seconds on every rep.","Top of curl, top of leg extension, top of cable crossover. Squeeze.","Maximizes time at the strongest point of the strength curve."],["16","Continuous Tension","Never lock out, never relax. Keep the muscle under load for the entire set.","Curls: stop short of full extension AND full flexion. Leg extensions: don't bounce.","Constant time under tension = bigger hypertrophy stimulus."],["17","Slow Negatives (Eccentric Emphasis)","Eccentric (lowering) is the most damaging phase to muscle fibers — emphasize it.","3-5 second negative on every rep. Eccentric-only sets (use partner to lift).","Eccentrics cause the most microtrauma → growth signal."],["18","Full Range of Motion","Train every muscle through its complete ROM for full development.","Squat ass-to-grass. Press all the way down on bench. Curl all the way down.","Builds strength, flexibility, and muscle in every part of the strength curve."],["19","Instinctive Training","Learn to listen to your body. Adjust volume, intensity, and exercise selection day-by-day.","Tired today? Reduce volume, focus on technique. Feel great? Push harder.","Long-term gains require adaptation to recovery, sleep, stress, nutrition."],["20","Split System Training","Train different body parts on different days so each gets full intensity AND full recovery.","Push/Pull/Legs, Upper/Lower, Bro split (chest/back/legs/shoulders/arms).","Allows training a body part to failure while another recovers."],["21","Volume Training","Higher set/rep counts to maximize hypertrophy.","16-25 working sets per body part per week for advanced lifters.","Volume is the #1 driver of hypertrophy after intensity."],["22","Eating to Grow","You cannot out-train a poor diet. 5-6 meals/day, 1g protein per lb bodyweight, lots of calories on bulk.","Plan meals like workouts. Eggs, beef, chicken, fish, rice, oats, sweet potato, veg.","Muscle is built in the kitchen as much as the gym."],["23","Visualization & Mental Drive","Picture the physique you want. Walk into the gym with a plan and a purpose.","Pre-workout: 60s visualization. Set goals. Track progress with photos.","The mind moves the body. Champions are built between the ears first."],["24","Stretching Between Sets","Stretch the muscle being trained between sets to enhance pump and flexibility.","Chest day: stretch in doorway between sets. Back day: hang from bar.","May increase fascial expansion (theoretical), definitely improves mobility and circulation."],["25","Posing as Training","Practice posing — it builds the mind-muscle connection and isometric strength.","10-15 min posing 2-3x/week. Hold each pose 30-60s, squeeze hard.","Most underrated bodybuilding tool. Builds detail, control, and stage readiness."]]},"arnold":[{"title":"Arnold's Weekly Split (Double-Split, 6 days)","h":["Day","AM Session","PM Session"],"r":[["Monday / Thursday","Chest + Back","Legs (Calves prominent)"],["Tuesday / Friday","Shoulders + Arms","Calves + Forearms + Abs"],["Wednesday / Saturday","Legs (full)","Calves + Forearms + Abs"],["Sunday","REST / posing practice","REST / posing practice"]]},{"title":"Chest","h":["Exercise","Sets","Reps","Rest","Notes"],"r":[["Bench Press","5","12, 10, 8, 6, 4 (pyramid)","60-90s","Foundation lift, full ROM"],["Incline Barbell Press","5","10-12","60-90s","Upper chest, ~30-45° incline"],["Dumbbell Flyes","5","10-12","60s","Stretch deeply, peak squeeze"],["Weighted Dips","5","Failure","60-90s","Lean forward for chest emphasis"],["Cable Crossover","5","12-15","45s","Peak contraction, slow eccentric"],["Dumbbell Pullover","5","15-20","60s","Stretches ribcage — Arnold favorite"]]},{"title":"Back","h":["Exercise","Sets","Reps","Rest","Notes"],"r":[["Wide-Grip Pull-Up (behind neck)","5","Max","60-90s","Width — the cobra spread"],["Wide-Grip Pull-Up (to chest)","5","Max","60-90s","Thickness"],["T-Bar Row","5","10-12","60-90s","Squeeze shoulder blades"],["Bent-Over Barbell Row","5","8-10","90s","Heavy, controlled, no jerking"],["Seated Cable Row","5","10-12","60s","Squeeze 1s at full contraction"],["Stiff-Leg Deadlift","5","10","90s","Lower-back + hamstring + erectors"]]},{"title":"Shoulders","h":["Exercise","Sets","Reps","Rest","Notes"],"r":[["Behind-Neck Press (Barbell)","5","10-8-6-4-2 (pyramid)","90s","Heaviest movement; warm shoulders well"],["Dumbbell Lateral Raise","5","10-12","60s","Pinkies up, no momentum"],["Bent-Over Lateral Raise","5","10-12","60s","Rear delts, vital for 3D look"],["Cable Lateral Raise (1-arm)","5","12","45s","Constant tension"],["Upright Row","5","10","60s","Wide grip — lats + traps"],["Barbell Shrug","5","10","60s","Hold peak 1s"]]},{"title":"Arms (Biceps + Triceps Superset)","h":["Exercise","Sets","Reps","Rest","Notes"],"r":[["Barbell Curl + Close-Grip Bench (superset)","5","8-10 / 8-10","90s","Antagonist superset"],["Seated Dumbbell Curl + Tricep Pushdown (superset)","5","10-12 / 10-12","60s","Pump it up"],["Preacher Curl + Lying Tricep Extension (superset)","5","8-10 / 8-10","60s","Stretch + isolation"],["Concentration Curl + Cable Kickback (superset)","5","12 / 12","45s","Peak contraction"],["Hammer Curl + Overhead Tricep Extension (superset)","5","10 / 10","60s","Brachialis + long head"]]},{"title":"Legs","h":["Exercise","Sets","Reps","Rest","Notes"],"r":[["Squat","6","20, 12, 10, 8, 6, 4","2-3 min","King of leg movements, full depth"],["Leg Press","5","12-15","90s","Deep ROM, feet shoulder-width"],["Lunges (walking)","5","10 each leg","60s","Glutes + quads"],["Leg Extension","5","12-15","60s","Peak contraction 2s"],["Stiff-Leg Deadlift","5","10","90s","Hamstrings"],["Lying Leg Curl","5","10-12","60s","Hold peak 1s"],["Standing Calf Raise","10","10-15","30-45s","Full stretch at bottom, peak at top"],["Seated Calf Raise","5","15-20","45s","Soleus emphasis"]]},{"title":"Abs + Forearms","h":["Exercise","Sets","Reps","Rest","Notes"],"r":[["Roman Chair Sit-Up","5","25-50","30s","Daily — abs respond to high volume"],["Hanging Leg Raise","5","15-25","45s","Lower abs, slow tempo"],["Crunch","5","25","30s","Squeeze top"],["Twisting Crunch","5","25 each side","30s","Obliques"],["Wrist Curl (palms up)","5","10-15","30s","Forearm flexors"],["Reverse Wrist Curl (palms down)","5","10-15","30s","Forearm extensors"],["Hammer Curl","5","10","45s","Brachioradialis"]]},{"title":"Scaled Splits for Natural Lifters","h":["Level","Split","Days/Week","Sample Week","Best For"],"r":[["Beginner (0-1 yr)","Full Body 3x/Week","3","Mon/Wed/Fri — squat, bench, row, OHP, pull-up, curl every session","Skill acquisition, fast strength gains"],["Beginner-Intermediate","Upper / Lower","4","Mon Upper, Tue Lower, Thu Upper, Fri Lower","Balanced volume + recovery"],["Intermediate","Push / Pull / Legs","6","Mon Push, Tue Pull, Wed Legs, Thu Push, Fri Pull, Sat Legs","Optimal hypertrophy frequency (2x/week per muscle)"],["Intermediate-Advanced","PPL + Arms","6","Push/Pull/Legs/Push/Pull/Legs+Arms","Arm priority"],["Advanced","Bro Split (Arnold-style)","5-6","Mon Chest, Tue Back, Wed Shoulders, Thu Arms, Fri Legs, Sat Weak point","High volume per body part, longer recovery"],["Advanced (Arnold actual)","Double-Split 2x/day","6","AM + PM sessions, twice through body in week","Pro-level only — requires recovery support"]]}],"diets":{"h":["Diet","Macro Split (P/C/F)","Core Mechanism","Best For","Pros","Cons","Foods to Emphasize","Foods to Avoid","Fat Loss Rating","Muscle Build Rating","Sustainability"],"r":[["Standard / Balanced","30/40/30","Moderate everything; flexible dieting (IIFYM)","Most people; recomp; beginners","Sustainable, no foods banned, easy social life","Slower fat loss than aggressive approaches","Lean proteins, whole grains, fruits, vegetables, healthy fats","Refined sugar, ultra-processed foods","","",""],["Ketogenic","25/5/70","Carbs <30-50g/day → ketosis; fat as primary fuel","Insulin-resistant, neurological conditions, appetite control","Strong appetite suppression, stable energy, blood sugar control","Hard to build muscle, social difficulty, keto-flu, cholesterol shifts","Fatty meat, eggs, avocado, olive oil, nuts, low-carb veg","Grains, sugar, most fruit, starchy veg, beans","","",""],["Targeted Keto (TKD)","25/15/60","Keto + carbs around training only","Performance athletes wanting keto benefits","Keeps lifting performance + ketosis","Complex timing, niche","Same as keto + dextrose/rice pre-workout","Same as keto","","",""],["Cyclical Keto (CKD)","Varies","5-6 days keto + 1-2 day carb refeed","Bodybuilders cutting + lifters","Glycogen replenish for training","Refeeds tricky, easy to spill over","Keto staples + refeed: rice, potato, fruit","Junk on refeed days","","",""],["Paleo","30/30/40","Eat what hunter-gatherers ate; no grains/dairy/legumes/processed","Autoimmune, gut issues, clean-eating beginners","Whole foods, anti-inflammatory, simple rules","Restrictive, expensive, no legumes/dairy hurts variety","Meat, fish, eggs, vegetables, fruit, nuts, seeds","Grains, dairy, legumes, refined oils, sugar","","",""],["Mediterranean","20/50/30","Whole foods + olive oil + fish + moderate red wine","Longevity, heart health, general population","Most studied for longevity, sustainable, delicious","Slower fat loss without portion control","Olive oil, fish, vegetables, legumes, whole grains, nuts, fruit","Red meat (limit), refined grains, sugar","","",""],["Carnivore","30/0/70","Animal products only; zero plant foods","Severe autoimmune, elimination diet, ketosis","Simple, autoimmune relief reported, no carb crashes","No fiber, micronutrient gaps, social impossibility, long-term unknown","Beef, lamb, eggs, fish, organ meats","ALL plant foods","","",""],["Vegan / Plant-Based","20/55/25","Zero animal products; whole-food plant focus best","Ethical, environmental, longevity-focused","High fiber, anti-inflammatory, planet-friendly","Protein quality lower, B12/iron/D3/omega-3/creatine deficiencies common","Legumes, tofu/tempeh, seitan, whole grains, nuts, vegetables, fruit","Animal products","","",""],["Vegetarian (Lacto-Ovo)","25/50/25","No meat; dairy + eggs allowed","Ethical-leaning, easier than vegan","Easier protein vs vegan, sustainable","Still need attention to iron/B12/omega-3","Eggs, dairy, legumes, grains, vegetables, nuts","Meat, fish, poultry","","",""],["Intermittent Fasting 16:8","Flexible","16h fast + 8h eating window; lowers insulin baseline","Office workers, simplicity seekers, IR","Simple, no calorie counting needed, insulin sensitivity","Hard for athletes/females, social meals","Whatever fits your goal during window","Calories during fast (including cream in coffee)","","",""],["OMAD (One Meal A Day)","Flexible","23h fast + 1h window","Hardcore IF, extreme simplicity","Maximum autophagy, simple","Hard to hit protein/calories, muscle loss risk","Nutrient-dense single meal","Snacking","","",""],["Carb Cycling","30/varies/varies","High-carb on training days, low-carb on rest days","Lifters cutting, advanced dieters","Performance + fat loss, hormonal benefit","Requires planning, harder for beginners","Rice/potato/oats on training day; fats/protein on off days","Same junk all days","","",""],["Zone Diet","30/40/30","Strict 30/40/30 every meal; controls insulin","Hormone-focused, anti-inflammatory","Stable blood sugar, structured","Tedious to weigh every meal","Lean protein, low-GI carbs, mono fats","Refined carbs, saturated fats in excess","","",""],["DASH","20/55/25","Designed to lower blood pressure; high produce, low sodium","Hypertension, cardiovascular risk","Evidence-based BP reduction","Not optimized for fat loss or muscle","Vegetables, fruit, whole grains, low-fat dairy, lean protein","Sodium, red meat, sweets","","",""]]},"bloodtype":{"h":["Blood Type","Ancestral Profile","D'Adamo Recommendation","Beneficial Foods","Foods to Avoid","Best Exercise","Common Strengths","Common Weaknesses","Practical Verdict"],"r":[["Type O","'The Hunter' — oldest blood type","High-protein, meat-based diet. Low grain, low dairy.","Lean red meat, fish, kale, spinach, broccoli, olive oil, walnuts, plums, figs, ginger","Wheat, corn, dairy (most), kidney beans, lentils, cabbage, cauliflower","High-intensity: lifting, sprinting, martial arts, HIIT","Strong digestion of protein, robust immune system, optimistic","Inflexible, intolerant to grain, prone to ulcers/hypothyroid","Pairs well with paleo/carnivore-leaning. High-protein lifters fit naturally."],["Type A","'The Cultivator' — agricultural","Vegetarian-leaning. Plants, grains, legumes, soy. Limited meat.","Tofu, tempeh, soy, legumes, vegetables, pineapple, berries, green tea, oats","Red meat, dairy, kidney beans, lima beans, potatoes, tomatoes (per D'Adamo)","Calming: yoga, tai chi, walking, pilates","Adapts to plant foods, sensitive disposition","Lower stomach acid, prone to anxiety/cortisol issues, cardiovascular risk","Pairs well with Mediterranean/plant-forward. Watch B12/iron/creatine if going low-meat."],["Type B","'The Nomad' — pastoral","Balanced omnivore. Meat (not chicken), dairy OK, grains OK except wheat.","Lamb, mutton, venison, fish, eggs, low-fat dairy, green vegetables, eggs, oats","Chicken, corn, wheat, lentils, tomatoes, peanuts, sesame","Moderate: tennis, hiking, cycling, swimming","Most flexible digestion, balanced disposition","Susceptible to type-1 diabetes, MS, autoimmune","Most flexible — can run almost any diet. Avoid chicken per D'Adamo (mitogenic lectin theory)."],["Type AB","'The Enigma' — modern (rare)","Mix of A + B. Seafood, tofu, dairy, some meat. Avoid red meat + chicken.","Lamb, fish, tofu, dairy, eggs, green vegetables, pineapple, oats, walnuts","Red meat, chicken, kidney beans, corn, buckwheat","Mix: calming + moderate cardio + light lifting","Adaptable, social, intuitive","Low stomach acid (A trait), prone to cardiovascular issues","Mediterranean + pescatarian fits naturally."]]},"gi":{"h":["Food","Glycemic Index (GI)","Typical Serving","Glycemic Load (GL)","Insulin Response","Use Case"],"r":[["White bread","75","1 slice (30g)","11","High spike","Avoid except post-workout"],["White rice","73","1 cup cooked","23","High spike","Post-workout glycogen"],["Brown rice","68","1 cup cooked","22","Moderate","Daily training fuel"],["Oats (rolled)","55","1 cup cooked","13","Low-moderate","Pre-workout, breakfast"],["Sweet potato","63","1 medium","17","Moderate","Post-workout, balanced meal"],["Quinoa","53","1 cup cooked","13","Low-moderate","Daily complex carb"],["Banana (ripe)","62","1 medium","16","Moderate","Pre/post workout"],["Apple","36","1 medium","6","Low","Daily snack"],["Berries (mixed)","25","1 cup","4","Very low","Daily, antioxidants"],["Watermelon","76","1 cup","8","Low GL despite high GI","Hot weather, post-workout"],["Carrots (cooked)","39","1 cup","4","Low","Anytime"],["Beans (black)","30","1 cup","9","Low","Daily fiber"],["Lentils","32","1 cup","9","Low","Daily protein+fiber"],["Whole milk","31","1 cup","4","Low GI / high insulin (insulin index ~90)","Caution — milk spikes insulin disproportionately"],["Whey protein","n/a","30g scoop","n/a","High insulin (insulin index ~96)","Post-workout strategic"],["Honey","61","1 tbsp","10","Moderate","Pre/intra workout"],["Glucose (dextrose)","100","20g","20","Maximum","Intra-workout for intense sessions"],["Pasta (al dente)","42","1 cup","21","Moderate","Daily training fuel"],["Potato (baked)","85","1 medium","26","High spike","Post-workout"],["Cauliflower rice","5","1 cup","1","Negligible","Cut phase substitute"],["Almonds","0","1 oz","0","Negligible","Snack, fat-protein combo"],["Eggs","0","2 large","0","Negligible","Anytime"],["Chicken breast","0","4 oz","0","Moderate insulin (gluconeogenic)","Anytime"],["Avocado","0","1/2 fruit","0","Negligible","Daily healthy fat"]]},"insulinStrat":{"h":["Strategy","Mechanism","How","Expected Impact"],"r":[["Resistance training","GLUT4 translocation independent of insulin","3-5x/week, compound lifts","single biggest lever"],["Post-meal walks (10-15 min)","Muscle contraction uptakes glucose","Walk after main carb meal","20-30% lower glucose AUC"],["Berberine 500mg 3x/day","AMPK activation, glucose uptake","With or before meals","comparable to metformin in some studies"],["Cinnamon (Ceylon) 1-3g/day","Mimics insulin signaling","Sprinkle on oats/coffee","modest"],["Apple cider vinegar 1-2 tbsp pre-carb meal","Slows gastric emptying","Diluted in water before meal","reduces post-meal glucose 20-30%"],["Chromium picolinate 200-400mcg","Cofactor for insulin receptor","Daily, with meal","modest, dose-dependent"],["Magnesium 300-400mg","Cofactor for glucose metabolism","Glycinate before bed","corrects deficiency"],["Sleep 7-9 hrs","Cortisol/leptin/insulin axis","Consistent schedule","one bad night = next-day IR"],["Lower body fat %","Visceral fat drives IR","Sustained deficit + lifting","root cause"],["Reduce liquid sugar/alcohol","Massive insulin spikes, fructose → liver","Cut soda, juice, daily drinking",""],["Front-load carbs earlier in day","Better insulin sensitivity AM vs PM","Bigger carb meal at breakfast/lunch","modest"],["Intermittent fasting 14-16h","Resets baseline insulin","Skip breakfast or stop eating 7pm","variable response"],["Inositol (myo + d-chiro)","PCOS, secondary messenger","2g myo + 50mg d-chiro 2x/day","especially for PCOS/PCO"],["Metformin (prescription)","Decreases hepatic glucose output","500-2000mg/day with food","if clinically indicated"],["GLP-1 agonists (Rx)","Slow gastric emptying, satiety","Per physician","Tirzepatide/Semaglutide"]]},"insulinTiming":{"h":["Time","Goal","Carb Strategy","Example"],"r":[["Wake → first meal","Maintain low insulin, burn fat","Protein + fat, minimal carbs (or fast)","3 eggs + avocado + black coffee"],["Pre-workout (60-90 min before)","Top off glycogen, moderate insulin","Slow carb + protein","Oats + whey, or banana + Greek yogurt"],["Intra-workout (45+ min sessions)","Performance + recovery","Fast carb (only for intense >60 min)","Dextrose 20-40g + EAAs in water"],["Post-workout (0-90 min)","Maximize glycogen + protein synthesis","Fast carb + fast protein OK here","White rice + chicken + dextrose-flavored shake"],["Main daytime meals","Steady energy, no spikes","Moderate carbs + protein + veggies + fat","Salmon + sweet potato + greens + olive oil"],["Evening meal","Wind-down, lower insulin","Lower carbs, higher protein/fat","Steak + roasted veg + butter"],["Pre-bed (optional)","Overnight recovery","Casein protein, no carbs unless cutting hard","30g casein + 1 tbsp almond butter"]]},"vitamins":{"h":["Vitamin / Mineral","Class","Role / Why It Matters","Deficiency Symptoms","Best Food Sources","RDA","Optimal Range","Upper Limit","Best Form","Timing","Cofactors / Synergy","Notes"],"r":[["Vitamin A (retinol)","Fat-soluble vitamin","Vision; immune function; skin and cell differentiation; gene expression","Night blindness; dry skin; frequent infections","Liver, egg yolk, butter, cod liver oil; beta-carotene in carrots, sweet potato","900 mcg RAE (M) / 700 (F)","2000-3000 IU retinol","3000 mcg RAE (10000 IU)","Retinyl palmitate or cod liver oil","With fatty meal","Vit D, K2, zinc","Toxicity is real — don't megadose retinol. Beta-carotene is safe."],["Vitamin D3 (cholecalciferol)","Fat-soluble vitamin","Calcium absorption; immune modulation; testosterone; mood; muscle function","Low T; depression; weak bones; frequent illness","Sun on skin; fatty fish; egg yolks; cod liver oil","600-800 IU","50-80 ng/mL serum","4000 IU/day (higher only with clinician monitoring)","D3 with K2","AM with fat","K2, magnesium, zinc, vit A","Test serum 25-OH. Critical for hormone optimization."],["Vitamin K2 (MK-7)","Fat-soluble vitamin","Directs calcium to bones (not arteries); arterial health","Arterial calcification; osteopenia","Natto, hard cheese, egg yolk, grass-fed butter","120 mcg","180-360 mcg MK-7","No established UL","MK-7 form (longer half-life than MK-4)","With fat","Vit D3, magnesium","Pair with EVERY vit D3 dose."],["Vitamin E (mixed tocopherols)","Fat-soluble vitamin","Antioxidant; protects cell membranes","Neuropathy; immune dysfunction","Sunflower seeds, almonds, spinach, avocado","15 mg","15-30 mg natural","1000 mg synthetic","Mixed tocopherols (not just alpha)","With fat","Selenium, vit C","Avoid synthetic dl-alpha. Use natural d-alpha + gamma."],["Vitamin B1 (Thiamine)","B-vitamin","Carb metabolism; nerve function; ATP production","Beriberi; brain fog; tingling; tachycardia","Pork, sunflower seeds, whole grains, legumes","1.2 mg","50-100 mg","No UL set","Benfotiamine (fat-soluble form)","AM with food","B-complex","Heavy training, alcohol, sugar deplete thiamine."],["Vitamin B2 (Riboflavin)","B-vitamin","Energy metabolism; antioxidant cofactor (glutathione)","Cracked lips; sore throat; light sensitivity","Liver, eggs, dairy, almonds","1.3 mg","25-50 mg","No UL","R5P (active form)","AM with food","B-complex, iron","Active form (R5P) bypasses conversion."],["Vitamin B3 (Niacinamide/NMN/NR)","B-vitamin","NAD+ precursor; DNA repair; energy metabolism","Pellagra; fatigue; cognitive decline","Meat, fish, peanuts, whole grains","16 mg","Niacinamide 500 mg or NMN 250-500 mg","35 mg niacin (flush)","Niacinamide (no flush) or NMN/NR for NAD+","AM with food","Magnesium, B-complex","NMN/NR are precursors driving NAD+ rejuvenation. Pair with peptides for synergy."],["Vitamin B5 (Pantothenic acid)","B-vitamin","CoA synthesis; adrenal hormone production","Adrenal fatigue; burning feet","Egg yolks, liver, avocado, mushrooms","5 mg","100-500 mg","No UL","Pantothenic acid","AM with food","B-complex","Boosts adrenal output during high stress."],["Vitamin B6 (P5P)","B-vitamin","Neurotransmitter synthesis; protein metabolism; estrogen detox","Low mood; PMS; muscle cramps; high homocysteine","Salmon, chicken, banana, potatoes","1.3 mg","25-50 mg P5P","100 mg (neuropathy risk above)","P5P (active form)","AM with food","Magnesium, zinc","Use P5P — pyridoxine HCl can cause neuropathy at high doses."],["Vitamin B7 (Biotin)","B-vitamin","Fatty acid synthesis; hair/skin/nails","Hair loss; brittle nails; rash","Egg yolk, liver, almonds, sweet potato","30 mcg","300-1000 mcg","No UL","Biotin","AM with food","B-complex","Interferes with thyroid blood tests — stop 3 days before labs."],["Vitamin B9 (Folate / Methylfolate)","B-vitamin","DNA synthesis; methylation; homocysteine recycling","Anemia; high homocysteine; neural tube defects","Liver, leafy greens, legumes, asparagus","400 mcg DFE","400-800 mcg L-methylfolate","1000 mcg synthetic","L-5-MTHF (methylfolate)","AM with food","B12, B6, choline","Avoid folic acid if MTHFR variant — use methylfolate."],["Vitamin B12 (Methylcobalamin)","B-vitamin","Nerve function; red blood cell production; methylation","Numbness; fatigue; depression; pernicious anemia","Meat, fish, eggs, dairy; not in plants","2.4 mcg","500-1000 mcg sublingual","No UL","Methyl/adenosylcobalamin","AM sublingual","Folate, B6, choline","Test serum + MMA. Vegetarians/vegans require supplementation."],["Vitamin C (Ascorbate)","Water-soluble","Collagen synthesis; antioxidant; immune; cortisol regulation","Scurvy; slow wound healing; bleeding gums","Citrus, peppers, kiwi, strawberries, broccoli","90 mg","500-2000 mg","2000 mg","Buffered ascorbate or liposomal","Split AM/PM","Bioflavonoids, vit E, glutathione","Doubles BPC-157 effectiveness for tendon work. Critical during healing."],["Magnesium","Mineral","300+ enzyme reactions; sleep; muscle relaxation; insulin sensitivity; testosterone","Cramps; insomnia; anxiety; constipation; high BP","Pumpkin seeds, dark chocolate, leafy greens, almonds","400 mg","400-600 mg elemental","350 mg from supplement (food unlimited)","Glycinate (sleep), threonate (brain), malate (energy)","PM with food","Vit D, B6, calcium","Most-deficient mineral. Try different forms for different needs."],["Zinc","Mineral","Testosterone; immune function; wound healing; DNA synthesis","Low T; frequent illness; poor wound healing; loss of taste","Oysters, beef, pumpkin seeds, lentils","11 mg","15-30 mg","40 mg (causes copper deficiency)","Picolinate or bisglycinate","PM on empty stomach","Copper (15:1 ratio), B6","Take long-term zinc with copper or rotate. 1mg copper per 10mg zinc."],["Copper","Mineral","Connective tissue; iron metabolism; antioxidant enzymes","Anemia; gray hair; bone fragility","Liver, oysters, dark chocolate, nuts","0.9 mg","1-3 mg","10 mg","Bisglycinate","Separate from zinc","Vit C, iron","Balance with zinc — too much causes oxidative damage."],["Selenium","Mineral","Thyroid hormone conversion; glutathione peroxidase; antioxidant","Hypothyroid symptoms; immune dysfunction","Brazil nuts (1-2/day = full RDA), tuna, eggs","55 mcg","100-200 mcg","400 mcg","Selenomethionine","AM with food","Iodine, vit E","Critical for T4→T3 conversion. Toxic if over 400 mcg long-term."],["Iodine","Mineral","Thyroid hormone synthesis","Hypothyroid; goiter; brain fog; weight gain","Seaweed, iodized salt, dairy, eggs","150 mcg","150-300 mcg","1100 mcg","Kelp or potassium iodide","AM with food","Selenium, tyrosine","Pair with selenium. Excess can trigger autoimmune thyroid."],["Iron","Mineral","Oxygen transport; energy; cognition","Anemia; fatigue; brittle hair; cold hands","Red meat, liver, oysters, lentils, spinach","8 mg (M) / 18 mg (F)","Ferritin 70-150 ng/mL","45 mg supplement","Bisglycinate (gentler)","Empty stomach with vit C","Vit C, copper, B12","Don't supplement men without testing — overload is real."],["Calcium","Mineral","Bone density; muscle contraction; nerve signaling","Osteopenia; muscle cramps","Dairy, sardines, leafy greens, almonds","1000 mg","800-1200 mg from food + supplement","2500 mg","Citrate or hydroxyapatite","Split AM/PM with meal","Vit D, K2, magnesium","Food first; don't over-supplement without K2."],["Potassium","Mineral","BP regulation; cell hydration; muscle function","Cramps; weakness; high BP; arrhythmia","Bananas, potatoes, beans, salmon, leafy greens","3400 mg","3500-4700 mg","No UL from food","Citrate (gentle)","Spread through day","Magnesium, sodium","Most Americans massively underconsume. Aim for food."],["Sodium","Mineral","BP; fluid balance; nerve signaling; muscle contraction","Fatigue; cramping; low BP; brain fog","Salt, broth, pickles, sea salt","1500 mg (debated)","3000-5000 mg active people","2300 mg (debated)","Sea salt, electrolyte mix","Pre/intra workout","Potassium, magnesium","Active individuals need MORE not less. Hydration without electrolytes is harmful."],["Chromium","Mineral","Insulin sensitivity; carb metabolism","Insulin resistance; sugar cravings","Broccoli, grape juice, oysters, brewer's yeast","35 mcg","200-1000 mcg","No UL","Picolinate or polynicotinate","With carbs","Biotin, magnesium","Best for blood sugar control."],["Manganese","Mineral","Bone formation; collagen; antioxidant","Brittle bones; cartilage issues","Pineapple, pecans, brown rice, oysters","2.3 mg","2-5 mg","11 mg","Bisglycinate","AM with food","Vit C, vit K","Usually adequate from diet."],["Boron","Mineral","Bone density; testosterone; estrogen modulation","Bone weakness; low free T","Raisins, almonds, avocado, prunes","Not established","3-10 mg","20 mg","Calcium fructoborate","AM with food","Vit D, magnesium","Small studies suggest a rise in free T; evidence is limited."],["Molybdenum","Mineral","Sulfite detox; uric acid metabolism","Sulfite sensitivity; gout","Legumes, leafy greens, organ meats","45 mcg","75-250 mcg","2000 mcg","Glycinate","AM with food","Sulfur amino acids","Lifesaving for sulfite sensitivity."]]},"supps":{"h":["Supplement","Category","Mechanism","Benefits","Dose","Timing","Form","Cycle","Side Effects","Notes"],"r":[["Creatine Monohydrate","Performance","Replenishes ATP via phosphocreatine; cell hydration; cognitive support","Strength +5-10%; lean mass +1-3 kg; cognition; recovery","5 g daily (no loading needed)","Anytime; consistency matters","Monohydrate (cheapest, most studied)","Continuous","Mild water retention (intramuscular = good)","The most-studied supplement on Earth. Take every day forever."],["Beta-Alanine","Performance","Buffers muscle acidity via carnosine increase","+endurance in 60-240 sec efforts; less fatigue","3-5 g daily (split if tingles)","Anytime","Powder","Cycle 8 wks on / 4 off optional","Paresthesia (tingles, harmless)","Effects take 4 weeks. Pre-workout with caffeine is wasted otherwise."],["Caffeine","Performance","Adenosine antagonist; CNS stimulant; lipolytic","Strength; endurance; focus; fat oxidation","100-400 mg pre-WO","30-45 min pre-WO","Anhydrous caffeine","Cycle every 6-8 wks (1 wk off)","Insomnia; anxiety; tolerance","200 mg sweet spot. Don't drink after 2 PM."],["L-Citrulline","Performance","Boosts NO via arginine pathway; vasodilation","Pumps; endurance; lower BP; ED support","6-8 g pre-WO","30-45 min pre-WO","L-Citrulline malate","Continuous OK","Mild GI","Better than arginine for NO. Stacks with PT-141."],["Beetroot Extract","Performance","Nitrate → NO; mitochondrial efficiency","Endurance; lower BP; pumps","500 mg nitrate or 2 cups beet juice","2-3 hrs pre-WO","Standardized to 400+ mg nitrate","Continuous","Pink urine (harmless)","Whole-food NO booster."],["EAAs / BCAAs","Performance","Direct amino acid pool for muscle protein synthesis","Preserve muscle in fasted training","10-15 g EAAs","Intra-workout if fasted","EAAs > BCAAs","Continuous","Mild GI","EAAs include all 9 essentials — superior to BCAAs."],["Whey Protein Isolate","Performance","Fast-absorbing complete protein; high leucine","Stimulates MPS; convenient protein","25-40 g post-WO","Post-WO or anytime","Isolate (less lactose)","Continuous","Mild GI if lactose-sensitive","Not magic — total daily protein matters more."],["Casein Protein","Performance","Slow-digesting; sustained amino release","Overnight MPS; satiety","30-40 g pre-bed","Pre-bed","Micellar casein","Continuous","Mild GI","Good pre-sleep alongside DSIP/CJC/Ipa."],["Collagen Peptides","Performance","Glycine/proline/hydroxyproline for connective tissue","Joint comfort; skin; nail strength; hair","10-20 g with vit C","Pre-WO 30-60 min","Hydrolyzed Type I & III","Continuous","None","Take WITH vit C 30 min before training tendons."],["Taurine","Performance","Osmolyte; mitochondrial function; bile acid conjugate","Endurance; cardiovascular; insulin sensitivity","1-3 g daily","Anytime","Powder","Continuous","Very safe; high UL","Cellular hydration; pairs well with creatine."],["Electrolyte Mix","Performance","Sodium/potassium/magnesium replacement","Hydration; cramps prevention; energy","1-3 sachets/day","Pre/intra workout","No-sugar mix (LMNT-style)","Daily for active people","Excess Na if not sweating","Essential on low-carb/keto and GLP-1s."],["HMB","Muscle / Recovery","Leucine metabolite; reduces muscle breakdown","Preserves muscle in deficit; reduces DOMS","3 g/day split","With meals","HMB free acid","Continuous in cuts","None","Best in caloric deficit and detraining periods."],["Glycine","Muscle / Recovery","Inhibitory neurotransmitter; collagen amino acid; glutathione precursor","Sleep quality; collagen; glutathione","3-5 g pre-bed","Pre-bed","Powder","Continuous","Very safe","Cheap pre-bed sleep aid + collagen support."],["L-Glutamine","Muscle / Recovery","Gut lining substrate; conditional EAA","Gut healing; immune in overtraining","5-15 g daily","Empty stomach or pre-bed","L-Glutamine powder","Cycle 4-8 wks","Very safe","Useful for athletes with leaky gut; underwhelming for muscle growth."],["L-Carnitine (Acetyl or L-tartrate)","Muscle / Recovery","Fatty acid transport into mitochondria","Recovery; cognition (acetyl form); possibly fat oxidation","1-3 g daily","Pre-WO or AM","Acetyl-L-carnitine (brain) or L-carnitine tartrate (muscle)","Continuous","Fishy odor in some","ALCAR for brain; tartrate for muscle recovery."],["Tongkat Ali (Eurycoma)","Muscle / Recovery","SHBG reduction; testosterone support; cortisol modulation","Free T; libido; recovery; mood","200-400 mg standardized","AM","Standardized to 2% eurycomanone","Cycle 5 on / 2 off","Insomnia if late dose","Best natural T-supporter. Pair with zinc + boron."],["Fadogia Agrestis","Muscle / Recovery","LH support; testosterone","Testosterone; libido; aggression in gym","300-600 mg","AM","Standardized extract","Cycle 5 on / 2 off","Limited human data; possible LFT impact","Aggressive T booster — use cautiously and monitor labs."],["Ashwagandha (KSM-66)","Muscle / Recovery","Cortisol reduction; HPA axis modulation","Sleep; stress; testosterone +10-15%; recovery","600 mg KSM-66 daily","AM or PM","KSM-66 or Sensoril","Cycle 8-12 wks on / 2-4 off","Sedation; thyroid impact (rare)","King of adaptogens for stressed lifters."],["Berberine","Metabolic / Fat Loss","AMPK activator; insulin sensitizer; similar mechanism to metformin","Blood sugar; LDL; weight; gut health","500 mg 3x daily with meals","Pre-meal","Berberine HCl (or Dihydroberberine)","Cycle 8-12 wks","Mild GI","Nature's metformin. Powerful blood sugar tool."],["Metformin","Metabolic / Fat Loss","AMPK activator; reduces hepatic glucose; longevity signaling","Blood sugar; cancer risk; longevity; mild fat loss","500-2000 mg/day","With meals","Rx (Glucophage, generics)","Continuous if Rx","Blunts mTOR (may reduce hypertrophy)","Limit on training days for hypertrophy goals."],["Alpha Lipoic Acid (ALA)","Metabolic / Fat Loss","Glucose uptake; antioxidant; both water + fat soluble","Insulin sensitivity; neuropathy; antioxidant","300-600 mg","With carb meals","R-ALA preferred","Continuous","Mild GI","R-form is more bioactive than racemic."],["Inositol (Myo + D-chiro 40:1)","Metabolic / Fat Loss","Insulin signaling; ovulation in PCOS","Insulin sensitivity; PCOS; anxiety; mood","2-4 g daily","Split AM/PM","40:1 myo/D-chiro","Continuous","Mild GI","Gold-standard PCOS supplement."],["Green Tea Extract (EGCG)","Metabolic / Fat Loss","Catechol-O-methyltransferase inhibition; mild thermogenic; antioxidant","Modest fat oxidation; cardio protection","500-1000 mg EGCG","AM with caffeine","Decaf EGCG capsule","Cycle if high-dose","High-dose liver concerns","Modest effect; stack with caffeine for synergy."],["Yohimbine HCl","Metabolic / Fat Loss","Alpha-2 antagonist; lipolysis in stubborn fat","Stubborn fat (lower belly, hips); fasted training","0.1-0.2 mg/kg","Pre-fasted cardio","Standardized HCl","Cycle 6-8 wks","Anxiety; tachycardia; BP spike","Stubborn fat tool — only on empty stomach, not for anxious people."],["MCT Oil / C8","Metabolic / Fat Loss","Direct ketone substrate; thermogenic","Mental clarity; satiety; ketosis support","1-3 Tbsp daily","AM or in coffee","C8 (caprylic) for ketosis","Continuous OK","Loose stools if too much","C8-MCT is the fastest ketone driver."],["GLP-1 Stack Support (B-complex, electrolytes, fiber)","Metabolic / Fat Loss","Mitigates GLP-1 side effects","Reduces nausea, constipation, hair shedding","Per stack","Daily","Various","Continuous on GLP-1","—","Often-overlooked support on weight-loss peptides."],["Lion's Mane Mushroom","Cognitive","NGF and BDNF support","Memory; nerve regeneration; mood","1-3 g extract","AM","Dual-extract (8:1)","Continuous","Mild GI","Stack with Semax for nerve repair."],["Bacopa Monnieri","Cognitive","Modulates acetylcholine, BDNF; antioxidant","Memory; anxiety reduction","300-600 mg","AM with food","50% bacoside extract","Cycle 12 wks","Mild GI; sedation","Takes 8-12 weeks for full effect."],["L-Theanine","Cognitive","GABA-A modulation; calm focus","Reduces caffeine jitters; focus","100-200 mg","With caffeine","Suntheanine form","Continuous","Very safe","Pair with caffeine 1:2 ratio."],["Rhodiola Rosea","Cognitive","Adaptogen; serotonin/dopamine modulation","Stress; fatigue; cognition; mild antidepressant","200-600 mg","AM","3% rosavins, 1% salidroside","Cycle 8 wks on / 2 off","Insomnia if late","Best adaptogen for burnout."],["Phosphatidylserine","Cognitive","Cortisol reduction; membrane support","Stress; cognition; sleep","100-300 mg","PM","Soy or sunflower-derived","Continuous","Very safe","Drops cortisol — great post-WO if stressed."],["Melatonin","Sleep","Pineal hormone; circadian phase shift; antioxidant","Sleep onset; jet lag; antioxidant","0.3-3 mg","30-60 min pre-bed","Sustained release for sleep maintenance","Continuous OK at low dose","Vivid dreams; AM grogginess at high dose","Lower is better. 0.3 mg is plenty for most."],["Apigenin","Sleep","GABA modulation; aromatase inhibition","Deeper sleep; mild estrogen reduction","50 mg","Pre-bed","Pure apigenin","Continuous","Very safe","Huberman protocol staple."],["Glycine + Magnesium Threonate","Sleep","Inhibitory NT support; CNS magnesium","Deeper sleep; lower body temp; vivid dreams","3 g glycine + 144 mg Mg threonate","Pre-bed","Powder + capsule","Continuous","Very safe","Most-effective natural sleep stack."],["GABA","Sleep","GABA-A receptor agonist (limited BBB crossing)","Calming; sleep onset","500-3000 mg","Pre-bed","GABA powder","Continuous","Tingling; flushing","Effects controversial — try and see."],["NAC (N-Acetyl Cysteine)","Longevity / Antioxidant","Glutathione precursor; mucolytic","Detox; respiratory; liver; OCD/anxiety","600-1800 mg","AM/PM","NAC capsule","Continuous OK","Mild GI","Glutathione substrate. Lifesaving in liver overload."],["Glutathione (liposomal)","Longevity / Antioxidant","Master antioxidant; detox","Detox; skin; immune; oxidative stress","500-1000 mg","AM empty stomach","Liposomal or S-acetyl","Continuous","Mild sulfur smell","Liposomal form actually absorbs."],["CoQ10 / Ubiquinol","Longevity / Antioxidant","Mitochondrial electron transport; antioxidant","Energy; statins recovery; heart health","100-300 mg","With fat","Ubiquinol (active form) > ubiquinone","Continuous","Very safe","Essential on statins. Ubiquinol after age 40."],["PQQ","Longevity / Antioxidant","Mitochondrial biogenesis; antioxidant","Mitochondrial density; cognition","20-40 mg","AM","BioPQQ form","Continuous","Mild headache rare","Pair with CoQ10 + MOTS-c for mito stack."],["NMN / NR","Longevity / Antioxidant","NAD+ precursor","NAD+; energy; DNA repair signaling","250-1000 mg NMN or 300-600 mg NR","AM","NMN sublingual or NR (Niagen)","Continuous","Very safe","Most-popular longevity supplement. Pair with peptides."],["Resveratrol","Longevity / Antioxidant","Sirtuin activator; antioxidant","Cardio; longevity signaling","150-500 mg","With fat","Trans-resveratrol","Continuous","Mild GI","Synergistic with NMN/NR."],["Quercetin","Longevity / Antioxidant","Senolytic-adjacent; mast cell stabilizer; antiviral","Allergies; senolytic effect; CV health","500-1000 mg","With fat + bromelain","With bromelain or piperine","Cycle pulses","Very safe","Senolytic pulse: 1000 mg × 2 days/wk."],["Fisetin","Longevity / Antioxidant","Senolytic; SIRT1 activator","Clears senescent cells","100-500 mg or pulse 1500 mg × 2 days/mo","With fat","Pure fisetin","Pulses","Very safe","Best evidence-based oral senolytic."],["Spermidine","Longevity / Antioxidant","Autophagy inducer","Cellular cleanup; longevity","1-5 mg daily","AM","Wheat germ extract","Continuous","Very safe","Autophagy support without fasting."],["Omega-3 (EPA/DHA fish oil)","Foundational","Anti-inflammatory; brain DHA; cardiac","Inflammation; mood; cognition; lipids; joints","2-4 g EPA+DHA","With fat","Triglyceride form or krill","Continuous","Fish burps","Test Omega-3 Index — target >8%."],["Curcumin (with piperine)","Foundational","Multi-pathway anti-inflammatory; NF-kB inhibition","Inflammation; joints; mood","500-1000 mg with 5 mg piperine","With fat","Meriva or BCM-95","Continuous OK","Mild GI","Use a bioavailable form — plain curcumin is poorly absorbed."],["Vitamin D + K2 combo","Foundational","Bone, immune, hormonal","See vitamin entries","See entries","See entries","Combo softgel","Daily","See entries","Always together."],["Multivitamin (high-quality)","Foundational","Insurance against gaps","Fills micronutrient gaps","1 serving","AM","Methylated forms (Thorne/Pure Encaps)","Continuous","Some forms cause nausea","Foundation tier — don't skip even if eating well."]]},"peptides":{"h":["Name","Category","Origin / AKA","Plain English","Benefits","Mechanism","Form","Side Effects"],"r":[["BPC-157","Healing & Tissue Repair","Body Protection Compound-157 (15-aa fragment from human gastric juice)","Your body's internal repair-crew dispatcher.","Faster tendon/ligament/muscle healing; reduced joint pain in 1-2 weeks; gut healing; lower inflammation; better recovery.","Promotes angiogenesis; modulates nitric oxide; upregulates GH receptors at injury sites.","SubQ","Rare local irritation"],["TB-500","Healing & Tissue Repair","Thymosin Beta-4 active fragment","Construction worker — travels systemically to damage.","Whole-body healing; flexibility; hair regrowth; reduced chronic inflammation.","Upregulates actin; promotes cell migration and angiogenesis.","SubQ","Mild lethargy first dose"],["GHK-Cu","Healing & Tissue Repair","Glycine-Histidine-Lysine + copper","Natural blood peptide that drops with age — youth signaling for skin, hair, connective tissue.","Smoother skin; collagen boost; reduced wrinkles; hair regrowth; wound healing.","Signals stem cells; boosts collagen/elastin; modulates 4000+ repair genes.","SubQ or topical","Mild irritation"],["KPV","Healing & Tissue Repair","Lysine-Proline-Valine (tail of alpha-MSH)","Tiny anti-inflammatory peptide for gut, skin, immune flare-ups.","Reduced gut inflammation; IBD/colitis; eczema.","Melanocortin receptor agonism; downregulates inflammatory cytokines.","Oral / SubQ","Very few"],["LL-37","Healing & Tissue Repair","Human cathelicidin antimicrobial peptide","Natural antibiotic peptide for stubborn infections incl. biofilms.","Antimicrobial; chronic infections (Lyme, mold, UTIs); wound healing.","Disrupts microbial membranes; immunomodulatory.","SubQ","Herxheimer reactions"],["VIP","Healing & Tissue Repair","Vasoactive Intestinal Peptide","Master inflammation regulator — used in CIRS/mold protocols.","Anti-inflammatory; restores hormones; chronic illness recovery.","VIP/PACAP receptor binding; broad immunomodulation.","Intranasal","BP drop; flushing"],["CJC-1295 (No DAC)","Growth Hormone","Modified GRF 1-29; ConjuChem #1295","Tells pituitary to release a GH pulse — short-acting.","Better sleep; leaner comp; faster recovery; improved skin.","GHRH receptor agonist.","SubQ","Mild flush; tingling"],["CJC-1295 + DAC","Growth Hormone","CJC-1295 + Drug Affinity Complex","Long-acting (~1 wk half-life) → constant low GH bleed.","Convenience; steady benefits.","GHRH analog with albumin binding.","SubQ","Loss of pulsatile rhythm"],["Ipamorelin","Growth Hormone","Synthetic ghrelin mimetic","Cleanest GH releaser — no cortisol/prolactin/hunger.","Better sleep; recovery; fat loss; lean mass.","Selective GHS-R1a agonist.","SubQ","Mild head rush"],["Sermorelin","Growth Hormone","First 29 aa of natural GHRH","OG GH peptide — FDA-approved.","Anti-aging; sleep; recovery; gentle.","GHRH receptor agonist.","SubQ","Flushing"],["Tesamorelin","Growth Hormone","Stabilized GHRH analog (Egrifta)","FDA-approved to reduce visceral belly fat.","Targets deep belly fat; cognition; lipids.","GHRH receptor agonist with extended stability.","SubQ","Joint pain; rare BG elevation"],["GHRP-2","Growth Hormone","Growth Hormone Releasing Peptide #2","Strong GH releaser — slight hunger/cortisol bump.","Strong GH pulse; appetite boost.","Ghrelin receptor agonist.","SubQ","Hunger; mild cortisol bump"],["GHRP-6","Growth Hormone","Growth Hormone Releasing Peptide #6","Like GHRP-2 with MORE hunger.","Strong GH pulse; major appetite stimulation.","Ghrelin receptor agonist.","SubQ","Intense hunger"],["Hexarelin","Growth Hormone","Hexapeptide GHRP","Most potent GHRP — tolerance builds quickly.","Strong GH spike; cardio-protective.","Ghrelin receptor agonist; cardiac CD36.","SubQ","Tachyphylaxis"],["MK-677 (Ibutamoren)","Growth Hormone","Oral ghrelin mimetic","PILL form of a GHRP.","GH/IGF-1 elevation; deep sleep; muscle; appetite.","Oral ghrelin agonist.","Oral","Water retention; insulin resistance"],["Semaglutide","Fat Loss & Metabolic","GLP-1 receptor agonist (Ozempic/Wegovy)","GLP-1 mimetic — satiety + slower gastric emptying.","15-20% body weight loss; glucose control; reduced food noise.","GLP-1R agonist; central satiety + delayed gastric emptying.","SubQ","Nausea; GI; muscle loss without training"],["Tirzepatide","Fat Loss & Metabolic","Dual GLP-1 + GIP (Mounjaro/Zepbound)","Dual-action — more powerful than semaglutide.","20-25% weight loss; superior glucose control.","Dual GLP-1/GIP receptor agonist.","SubQ","Nausea; GI; muscle loss"],["Retatrutide","Fat Loss & Metabolic","Triple GLP-1/GIP/glucagon agonist","Most powerful weight-loss peptide yet.","Up to 24% weight loss; burns fat via glucagon.","Triple agonist GLP-1/GIP/glucagon.","SubQ","GI; HR elevation"],["MOTS-c","Fat Loss & Metabolic","Mitochondrial-derived peptide","Exercise mimetic — activates cellular powerhouses.","Insulin sensitivity; endurance; fat loss; longevity.","AMPK activation; mito biogenesis.","SubQ","Mild fatigue first week"],["5-Amino-1MQ","Fat Loss & Metabolic","NNMT inhibitor small molecule","Blocks fat-cell-enlarging enzyme; boosts NAD+.","Fat loss; NAD+; energy.","NNMT inhibition.","Oral","Mild"],["AOD-9604","Fat Loss & Metabolic","16-aa C-terminal HGH fragment","Fat-burning portion of GH isolated.","Targets fat metabolism; no BG effect.","Beta-3 adrenergic-like lipolysis.","SubQ","Modest effects"],["HGH Fragment 176-191","Fat Loss & Metabolic","C-terminal HGH fragment","Lipolytic without anabolic effects.","Fat breakdown; no insulin/IGF-1 effect.","Selective lipolytic.","SubQ","Mild"],["Cagrilintide","Fat Loss & Metabolic","Long-acting amylin analog","Amylin analog — pairs with GLP-1s ('CagriSema').","Enhanced fullness; additive weight loss.","Amylin receptor agonist.","SubQ","Nausea"],["IGF-1 LR3","Anabolic / Muscle Building","Insulin-like Growth Factor 1, Long Arg3","Direct muscle-cell growth signal — drives hyperplasia.","Muscle growth; fat loss; healing.","IGF-1R agonist with extended half-life.","SubQ","Hypoglycemia; theoretical cancer risk"],["IGF-1 DES","Anabolic / Muscle Building","Des(1-3) IGF-1 truncated variant","Site-specific muscle growth — inject near target.","Local muscle growth; fast acting.","IGF-1R agonist with reduced IGFBP binding.","SubQ local","Local hypoglycemia"],["Follistatin 344","Anabolic / Muscle Building","Myostatin-binding glycoprotein","Removes the brake on muscle growth (myostatin).","Significant muscle gain potential; strength.","Myostatin and activin antagonist.","SubQ","Expensive; unknowns long-term"],["PEG-MGF","Anabolic / Muscle Building","PEGylated Mechano Growth Factor","Activates satellite cells after exercise.","Muscle hyperplasia; recovery.","Activates satellite cells via IGF-1Ec splice.","SubQ","Possible cardiac concerns long-term"],["Semax","Nootropic & Cognitive","Russian ACTH(4-10) analog","Boosts BDNF — fertilizer for neurons.","Sharper focus; memory; neuroprotection; mood lift.","Upregulates BDNF/NGF; modulates dopamine/serotonin.","Intranasal","Mild"],["Selank","Nootropic & Cognitive","Russian tuftsin-derived peptide","Calm focus — anxiety without sedation.","Reduced anxiety; improved focus; no addiction.","Modulates GABA/serotonin; enkephalinase.","Intranasal","Very mild"],["NA-Semax","Nootropic & Cognitive","Acetylated/amidated Semax","More stable, longer-acting Semax.","Similar to Semax, longer duration.","Enzyme-resistant Semax.","Intranasal","Same as Semax"],["Cerebrolysin","Nootropic & Cognitive","Porcine-brain neuropeptide complex","Used in Europe for stroke/dementia recovery.","Cognitive recovery; neuroprotection.","Mimics BDNF/NGF activity.","IM","Allergic"],["Dihexa","Nootropic & Cognitive","Angiotensin IV analog","Synaptogenesis — grows new neural connections.","Memory; cognition; possible Alzheimer's potential.","HGF/c-Met agonism.","Oral/topical","Limited human data"],["FGL","Nootropic & Cognitive","FG Loop NCAM-mimetic","May aid learning via NCAM-FGFR.","Memory consolidation; neuroplasticity.","NCAM-FGFR mimetic.","SubQ/intranasal","Insufficient data"],["P21","Nootropic & Cognitive","CNTF analog","Drives hippocampal neurogenesis.","Memory; cognitive enhancement.","CNTF mimetic.","SubQ","Limited data"],["DSIP","Sleep","Delta Sleep-Inducing Peptide","Promotes deep slow-wave sleep.","Deeper sleep; recovery; mild stress reduction.","Modulates GABA/serotonin; entrains delta EEG.","SubQ","Vivid dreams"],["Epitalon","Longevity & Anti-Aging","Russian pineal tetrapeptide","Most-studied 'telomere-supporting' peptide.","Better sleep; antioxidant; possible telomerase upregulation.","Possible telomerase activation; pineal normalization.","SubQ","Very mild"],["Thymalin","Longevity & Anti-Aging","Thymus-extract peptide complex","Rejuvenates immune function in older adults.","Immune restoration; longevity signals.","Thymic hormone activity.","SubQ/IM","Mild"],["Pinealon","Longevity & Anti-Aging","Khavinson pineal bioregulator","Pineal-targeted tripeptide.","Cognitive support; sleep rhythm.","Tissue-specific gene regulation.","Oral/SubQ","Mild"],["Vesugen","Longevity & Anti-Aging","Khavinson vascular bioregulator","Vascular-targeted tripeptide.","Vascular health support.","Bioregulator hypothesis.","Oral","Mild"],["Endoluten","Longevity & Anti-Aging","Khavinson pineal/longevity bioregulator","Pineal-targeted bioregulator.","Sleep; longevity signaling.","Bioregulator hypothesis.","Oral","Mild"],["FOXO4-DRI","Longevity & Anti-Aging","Senolytic peptide","Kills zombie senescent cells.","Hair regrowth; vitality (animal data).","Disrupts FOXO4-p53; apoptosis of senescent cells.","SubQ","ALT/AST flag possible"],["Humanin","Longevity & Anti-Aging","Mitochondrial-encoded peptide","Mito peptide that protects against neurodegeneration.","Neuroprotection; metabolic; longevity.","Anti-apoptotic via Bax inhibition.","SubQ","Limited data"],["Thymosin Alpha-1","Immune","TA-1 (Zadaxin)","Boosts T-cell function.","Chronic infections; autoimmune modulation; post-viral recovery.","Enhances Th1; modulates dendritic cells.","SubQ","Very mild"],["Thymulin","Immune","Zinc-dependent thymic peptide","Supports T-cell maturation.","Immune balancing.","Zinc-dependent T-cell factor.","SubQ","Mild"],["PT-141 (Bremelanotide)","Sexual Health","Palatin #141 (Vyleesi)","Acts on BRAIN for desire/arousal — not blood vessels.","Libido (M & F); works without physical stimulation.","MC4R agonist — central arousal.","SubQ","Nausea; flush; BP spike; mole darkening"],["Melanotan II","Sexual Health","Synthetic alpha-MSH analog","Tanning + libido peptide.","Tanning; libido; mild appetite suppression.","Non-selective melanocortin agonist.","SubQ","Mole darkening; nausea"],["Kisspeptin-10","Sexual Health","C-terminal kisspeptin decapeptide","Boosts LH and natural testosterone.","Libido; fertility; testosterone support.","KISS1R → GnRH → LH/FSH.","SubQ","Mild"],["Gonadorelin","Sexual Health","Synthetic GnRH","Preserves testicular function on TRT.","Fertility/testicle preservation on TRT.","GnRH receptor agonist.","SubQ","Mild"]]},"markers":{"h":["Marker","Category","Why It Matters / Peptide Link","Optimal Low","Optimal High","Units"],"r":[["Total Cholesterol","Lipids","Baseline + when on GH peptides","125","200","mg/dL"],["LDL-C","Lipids","Baseline; rises with GH","40","100","mg/dL"],["HDL-C","Lipids","Higher = protective","50","90","mg/dL"],["Triglycerides","Lipids","Watch on GLP-1s & GH","40","100","mg/dL"],["ApoB","Lipids","Best CV risk marker","40","90","mg/dL"],["Lp(a)","Lipids","Genetic CV risk","0","30","nmol/L"],["hs-CRP","Inflammation","BPC-157, TA-1 should LOWER this","0","1","mg/L"],["Fasting Glucose","Metabolic","CRITICAL on GH peptides & MK-677","70","90","mg/dL"],["HbA1c","Metabolic","Watch on MK-677, CJC, Tesamorelin","4.5","5.4","%"],["Fasting Insulin","Metabolic","Insulin sensitivity","2","6","µIU/mL"],["HOMA-IR","Metabolic","Calc: glucose × insulin / 405","0.5","1.5","ratio"],["IGF-1","Growth Hormone","TARGET top quartile on GH peptides","100","280","ng/mL"],["Free IGF-1","Growth Hormone","More sensitive than total","0.4","1.5","ng/mL"],["IGFBP-3","Growth Hormone","Carrier protein","3","6","mg/L"],["Prolactin","Hormonal","Watch on GHRPs","2","15","ng/mL"],["Cortisol AM","Hormonal","Watch on GHRP-2/6 & Hexarelin","8","18","µg/dL"],["Total Testosterone","Hormonal","Kisspeptin/Gonadorelin targets","600","1000","ng/dL"],["Free Testosterone","Hormonal","Bioavailable T","15","30","pg/mL"],["LH","Hormonal","Kisspeptin response","2","9","mIU/mL"],["FSH","Hormonal","Fertility marker","2","12","mIU/mL"],["Estradiol (sensitive)","Hormonal","Aromatization on TRT","20","40","pg/mL"],["SHBG","Hormonal","Binding protein","20","45","nmol/L"],["TSH","Thyroid","Should be stable","0.5","2","mIU/L"],["Free T3","Thyroid","Watch on aggressive fat loss","3.2","4.4","pg/mL"],["Free T4","Thyroid","Conversion check","1","1.7","ng/dL"],["AST","Liver","Watch on all injectables","10","30","U/L"],["ALT","Liver","Watch on FOXO4-DRI & oral peptides","10","30","U/L"],["GGT","Liver","Oxidative stress marker","5","20","U/L"],["BUN","Kidney","Baseline","8","20","mg/dL"],["Creatinine","Kidney","Baseline","0.7","1.2","mg/dL"],["eGFR","Kidney","> 90 ideal","90","120","mL/min"],["Ferritin","Iron","Inflammation context","30","150","ng/mL"],["Vitamin D 25-OH","Vitamins","50-80 optimal","50","80","ng/mL"],["B12","Vitamins","Energy / cognition","500","900","pg/mL"],["Homocysteine","Vitamins","Methylation marker","5","8","µmol/L"],["Omega-3 Index","Lipids","Target >8% for CV health","8","12","%"],["PSA (men 40+)","Cancer screen","On any GH/IGF stack","0","1","ng/mL"],["Cystatin C","Kidney","Better than creatinine","0.6","1","mg/L"]]},"soma":[{"type":"Ectomorph","body":"Lean, narrow shoulders, fast metabolism, struggles to gain weight.","diet":"Bulk easier than recomp. Eat at +15-20% TDEE. Carbs are your friend. Lift heavy 3-4x. Limit cardio.","supplements":"Creatine, EAAs, ashwagandha (cortisol management is critical), zinc, ZMA pre-bed."},{"type":"Mesomorph","body":"Naturally muscular, V-taper, responds quickly to training, moderate metabolism.","diet":"Recomp easy. Sit near maintenance with mild cycles up/down. P/C/F balanced 30/45/25.","supplements":"Creatine, beta-alanine, omega-3, tongkat ali for natural T support."},{"type":"Endomorph","body":"Wider frame, holds fat easily, slower metabolism, gains muscle but also fat.","diet":"Lower carbs (≤30% on rest days), high protein, heavy strength training + significant cardio (240+ min/wk).","supplements":"Berberine, ALA, chromium, inositol, NAC, fish oil 3-4 g, soluble fiber."},{"type":"Ecto-Meso","body":"Athletic but lean, often advanced lifters who hit a hypertrophy plateau.","diet":"Slight surplus (10%) → recomp → cut cycles. Higher carb timing around workouts.","supplements":"Creatine, omega-3, ashwagandha, magnesium glycinate."},{"type":"Endo-Meso","body":"Strong and powerful but carry extra fat — common in lifters with desk jobs.","diet":"Slight deficit (10-15%) at first. Strength-focused training, daily steps 10k+, conditioning 3x/wk.","supplements":"Berberine, omega-3, chromium, magnesium, ashwagandha (cortisol)."}],"physiology":[{"title":"The 3 Drivers of Muscle Growth","rows":[["1. Mechanical tension","The PRIMARY driver. High-tension contractions (heavy load OR proximity to failure) signal mTOR pathway via mechanosensors (titin, integrins). Roughly 70-85% of 1RM and/or sets within 3-4 reps of failure. This is non-negotiable for hypertrophy."],["2. Metabolic stress","The 'pump' — lactate, H+, Pi accumulation in muscle under sustained tension. Drives growth via cell swelling, satellite cell activation, GH/IGF-1 amplification. Higher reps (12-20) with shorter rest. Adds ~20-30% to total hypertrophy on top of tension."],["3. Muscle damage","Microtears from eccentrics and novel stimuli. Triggers satellite cell repair → new myonuclei. Useful but overrated — excessive damage delays recovery and reduces frequency. Best from controlled eccentrics + new exercises."]]},{"title":"Muscle Fiber Types","rows":[["Type I (slow-twitch, red, oxidative)","Endurance fibers. High mitochondrial density, fatigue-resistant. Hypertrophy moderately. Targeted by higher reps (15-30) and longer time under tension. Composition: ~50% in average person; more in endurance athletes."],["Type IIa (fast-twitch, intermediate)","The most-trainable hypertrophy fibers. Largest absolute growth potential. Targeted by classic 6-12 rep bodybuilding range. Most hypertrophy work hits these."],["Type IIx (fast-twitch, white, glycolytic)","Pure power fibers. Largest individual fibers but lowest endurance. Activated by max effort 1-5 rep work, plyometrics, sprints. Convert to IIa with chronic moderate-rep training."]]},{"title":"Hypertrophy Mechanisms (Cellular Level)","rows":[["Myofibrillar hypertrophy","Growth of actin/myosin filaments — the contractile machinery. Drives strength and 'dense' muscle. Heavy training (5-8 reps) bias."],["Sarcoplasmic hypertrophy","Growth of cell fluid, glycogen, mitochondria. Drives size with less proportional strength gain. Higher-rep, pump-focused bias (12-20 reps)."],["Hyperplasia (debated in humans)","Splitting of muscle cells into new ones. Demonstrated in animals; uncertain in humans. PEG-MGF, IGF-1 LR3 may stimulate this via satellite cell pathways."],["Satellite cells & myonuclear addition","Dormant stem cells around muscle fibers. Activated by damage/stretch → donate nuclei to fibers → permanent growth potential. PEG-MGF and IGF-1 variants activate these directly."]]},{"title":"Muscle Protein Synthesis (MPS) — The Anabolic Switch","rows":[["mTOR pathway","Mechanistic Target Of Rapamycin — the master regulator of MPS. Activated by: (1) mechanical tension, (2) leucine (~2.5-3g per meal hits the leucine threshold), (3) insulin spike from carbs, (4) IGF-1. Inhibited by: low energy, AMPK activation, high cortisol, fasting."],["The MPS window","Elevated for 24-48 hours after a hard training session. Distributed protein every 3-5 hours (4-6 meals at 30-50g) maximizes 24-hour MPS more than 2 huge meals."],["Leucine threshold","~2.5-3g leucine per meal triggers MPS. Whey protein has ~12% leucine = 25-40g whey hits it. Plant proteins need 40-60g to reach same threshold."],["Muscle full effect","After hitting the leucine/MPS trigger, additional protein at that meal does little extra. Spread protein — don't dump."]]},{"title":"Peptides → Muscle Physiology Map","rows":[["GH peptides (CJC, Ipa, Sermorelin, Tesamorelin, MK-677)","Elevate endogenous GH → liver makes IGF-1 → systemic anabolic signal. Improves recovery and nutrient partitioning. Modest direct hypertrophy in trained lifters; bigger effects on fat loss + healing."],["IGF-1 LR3 / IGF-1 DES","Direct IGF-1 receptor agonism. Activates PI3K/Akt/mTOR. Causes satellite cell activation → myonuclear addition → permanent growth potential. Most-potent anabolic peptide class."],["Follistatin 344","Blocks myostatin (the brake on growth). Removes a ceiling. Effect size large but cost + unknowns high."],["PEG-MGF","Long-acting mechano growth factor. Mimics the post-exercise muscle splice signal — activates satellite cells. Post-workout timing essential."],["BPC-157 / TB-500","Not anabolic per se — but accelerate recovery 30-50%. More recovery = more training frequency = more total hypertrophy."]]}],"metabolism":[{"title":"What Insulin Actually Does","rows":[["Storage hormone","Released by pancreatic beta cells in response to carbs (mainly) and protein (somewhat). Signals cells to ABSORB glucose, amino acids, and fatty acids out of the bloodstream. Anabolic."],["GLUT4 transporters","Insulin's primary mechanism: it makes muscle and fat cells display GLUT4 transporters that pull glucose out of the blood. Exercise also triggers GLUT4 translocation — independent of insulin. THIS is why training fixes blood sugar."],["Insulin SENSITIVITY","How responsive your cells are to insulin. HIGH sensitivity = small insulin spike clears blood sugar fast and partitions nutrients to muscle. LOW sensitivity (resistance) = need huge insulin spikes, glucose lingers, body stores fat."],["Insulin and fat","When insulin is high, hormone-sensitive lipase (HSL) is suppressed → you cannot burn fat. You burn carbs/glucose first. This is why low-carb works for fat loss: it lets HSL operate."],["Insulin and muscle","Insulin is also anti-catabolic and pro-anabolic for muscle. Post-workout, an insulin spike from carbs accelerates glycogen replenishment and amplifies MPS. Bodybuilders use this strategically."]]},{"title":"Nutrient Partitioning — Why Some People Get Lean Eating More","rows":[["Partitioning defined","When you eat 100g of carbs, where do they go? Insulin-sensitive lean individuals: ~70% to muscle glycogen, ~20% to liver, ~10% to fat. Insulin-resistant: ~30% to muscle, ~30% to liver, ~40% to fat."],["Drivers of better partitioning","Muscle mass (the biggest 'glucose sink'), training (depletes glycogen → more capacity to refill), insulin sensitivity, cardio (improves GLUT4), low body fat % (fat cells secrete inflammatory adipokines)."],["Foods that improve insulin sensitivity","Cinnamon, apple cider vinegar with meals, fiber (slows glucose), berberine (mimics metformin), chromium, ALA, magnesium, fish oil, polyphenols."],["Lifestyle wins","10-minute walk after meals (drops postprandial glucose 30-40%). Sleep 7-9 hours (one bad night = next-day insulin resistance equivalent to 6 months pre-diabetes progression). Lift weights ≥3x/week. Cold exposure."]]},{"title":"Metabolic Effects of Peptides","rows":[["GLP-1 agonists (Semaglutide, Tirzepatide, Retatrutide)","Mimic GLP-1, a gut hormone released with meals. Effects: (1) augment insulin release from beta cells, (2) suppress glucagon, (3) slow gastric emptying, (4) act on hypothalamus to reduce appetite. Improve insulin sensitivity dramatically. The 'food noise' reduction is mostly central (brain)."],["Tirzepatide's extra arm","Adds GIP agonism → enhances adipocyte function → improves insulin sensitivity beyond GLP-1 alone. Why it beats semaglutide head-to-head."],["Retatrutide's glucagon arm","Glucagon normally raises blood sugar — but in a controlled setting also increases energy expenditure 10-15% and directly mobilizes fat. The most-anticipated metabolic peptide of 2026."],["MOTS-c","Activates AMPK = the same pathway exercise and metformin hit. Improves insulin sensitivity and mitochondrial biogenesis. Exercise mimetic."],["Tesamorelin","Reduces visceral adipose tissue (the deep, inflammatory fat). VAT secretes inflammatory adipokines that drive insulin resistance — so reducing VAT improves systemic insulin sensitivity. Hence FDA approval for HIV-associated lipodystrophy."],["MK-677 / GH peptides — INSULIN RESISTANCE WARNING","GH antagonizes insulin (it raises blood sugar to fuel growth). Chronic high-dose GH or MK-677 can induce insulin resistance and elevate HbA1c. ALWAYS monitor fasting glucose, fasting insulin, and HbA1c every 3 months on these. Pair with berberine or metformin if needed."]]},{"title":"Practical Targets","rows":[["Fasting glucose","70-90 mg/dL ideal (NOT 99). Trend matters more than single value."],["HbA1c","<5.4% optimal. >5.7% = pre-diabetes."],["Fasting insulin","<6 µIU/mL ideal. The most-ignored marker of pending metabolic disease."],["HOMA-IR","(glucose × insulin) / 405. Target <1.5. >2.5 = significant resistance."],["Postprandial glucose","2 hours after a typical meal: <120 mg/dL ideal. A CGM (continuous glucose monitor) is the highest-leverage health tool you can buy."],["Triglycerides:HDL ratio","<1.5 = insulin sensitive. >3 = strong sign of insulin resistance."]]}],"fatburn":[{"title":"The Two-Step Fat Burning Process","rows":[["Step 1: LIPOLYSIS (fat release)","Hormone-sensitive lipase (HSL) inside fat cells breaks triglycerides into free fatty acids (FFAs) + glycerol, which leave the cell. Triggered by: low insulin, high catecholamines (adrenaline/noradrenaline), low blood glucose, fasting, exercise, cold exposure, caffeine."],["Step 2: OXIDATION (fat burning)","FFAs enter cells (mostly muscle, liver, heart), get transported into mitochondria via CARNITINE shuttle, then broken down via BETA-OXIDATION into acetyl-CoA → enters Krebs cycle → ATP. This is where carnitine, MCTs, and exercise capacity matter."],["The bottleneck","You can lipolyze fat (release it) without oxidizing it (burning it). If FFAs aren't used, they're RE-ESTERIFIED back into triglycerides and stored again. The key is creating energy demand to actually burn what you mobilize."]]},{"title":"Hormonal Drivers of Fat Loss","rows":[["Catecholamines (adrenaline, noradrenaline)","The primary lipolytic hormones. Activate HSL via beta-adrenergic receptors on fat cells. Released by stress, exercise, cold, caffeine, yohimbine, fasting. Yohimbine specifically blocks alpha-2 receptors (the 'brake' on lipolysis in stubborn fat areas)."],["Growth Hormone","Powerful lipolytic — particularly on visceral fat. Spikes during sleep, fasting, intense exercise. CJC-1295, Ipamorelin, Tesamorelin, Sermorelin all amplify this."],["Glucagon","Released when blood sugar drops. Triggers liver to release glucose AND triggers lipolysis. Retatrutide harnesses this directly."],["Cortisol","Acute spikes promote lipolysis, but CHRONIC elevation promotes visceral fat storage (paradoxically). Why chronic stress + poor sleep = belly fat."],["Thyroid hormones (T3/T4)","Set basal metabolic rate. Chronic dieting suppresses T3 — refeeds and diet breaks restore it. Selenium and iodine are critical cofactors."],["Insulin (the antagonist)","When high, completely suppresses HSL — you CANNOT burn fat in this state. This is the entire mechanism behind low-carb fat loss strategies."],["Leptin","Released by fat cells; signals 'fed' state to the brain. Drops during cuts → cravings, low energy, slow metabolism. Refeeds (high carb) raise leptin temporarily."],["Ghrelin","Hunger hormone. Rises before meals and during dieting. GLP-1s blunt ghrelin response — partly why they work for sustained dieting."]]},{"title":"Exercise Zones — Each Burns Fat Differently","rows":[["Zone 1 (50-60% HRmax) — Walking","Highest % of fuel from fat (~80%) but lowest total kcal/min. Excellent for daily recovery, blood sugar after meals, building aerobic base. NEAT — most underrated fat-loss tool."],["Zone 2 (60-70% HRmax) — Conversational pace","~65% fat fuel. Builds mitochondria, raises fat-burning ceiling. Peter Attia's preferred zone. 3-5 hours/wk = transformational over 6 months."],["Zone 3 (70-80% HRmax) — Tempo","~50% fat fuel. The 'gray zone' — too hard for easy recovery, too easy for true intensity. Useful but not optimal as primary cardio."],["Zone 4 (80-90% HRmax) — Threshold","~30% fat fuel; mostly glycogen. Improves lactate clearance. Anaerobic threshold work."],["Zone 5 / HIIT (90-100% HRmax)","Very low fat % during the work, but EPOC (excess post-exercise oxygen consumption) keeps you burning fat for 24-48 hours after. Sprints, intervals."],["The optimal combo","Zone 2 (long, slow, frequent) for the FAT-BURNING CEILING; HIIT (1-2x/wk) for EPOC + cardiovascular efficiency; daily walking (10k+ steps) for NEAT."]]},{"title":"Brown Fat & Cold Thermogenesis","rows":[["Brown adipose tissue (BAT)","A different kind of fat full of mitochondria that BURN fuel to generate heat (no ATP made — pure thermogenesis via UCP1). Most prevalent in babies; adults retain small depots in neck and shoulders."],["Cold exposure → BAT recruitment","Regular cold exposure (cold showers, ice baths 50-60°F × 2-4 min, 11 minutes/week total) activates and grows BAT. Increases resting energy expenditure 10-15% over months."],["Beige fat","Subcutaneous white fat that can 'browning' under cold or exercise stimulus. Same UCP1 thermogenic capacity."],["Practical protocol","11 minutes/week of cold exposure (Søberg principle). Can be 3-4 sessions of 2-3 min at 50-55°F. Surface area matters more than duration."]]},{"title":"Ketosis","rows":[["Definition","Metabolic state where blood ketones (beta-hydroxybutyrate, acetoacetate) >0.5 mmol/L. Liver makes ketones from FFAs when carb intake is very low (<30-50g/day) or fasting >12-16 hours."],["Ketones as fuel","Brain, muscle, heart can all use ketones. Brain preference: glucose > ketones > FFAs. Ketones are more efficient (more ATP per oxygen) than glucose."],["Why it helps fat loss","Forces continuous lipolysis. Suppresses appetite (ketones blunt ghrelin centrally). Preserves muscle (vs pure starvation). Stabilizes energy by removing glucose spikes."],["Downsides","Reduced top-end performance for power athletes. Slower glycogen replenishment. Electrolyte loss (need MORE sodium/potassium/magnesium). Hair shedding is common 2-3 months in."],["Cyclical keto","5-6 days keto, 1-2 days higher carbs. Preserves training output while keeping fat-burning machinery sharp."],["Exogenous ketones","C8-MCT oil, BHB salts/esters. Useful for cognitive boost and bridging into ketosis. Don't enable fat loss by themselves."]]},{"title":"Fasting & Autophagy","rows":[["Time-restricted eating (TRE)","16:8 — 16hr fast, 8hr eating window. Improves insulin sensitivity, glycemic variability, may modestly improve body composition vs same calories spread."],["Extended fasting (24-72hr)","Triggers autophagy (~16-18hr in), growth hormone spike (~36hr peak), deep ketosis. Use 2-4x per year."],["Fat adaptation","After ~4 weeks of consistently low carbs or repeated fasting, mitochondria upregulate fat-oxidation enzymes. Same workout now burns more fat for same intensity."],["Caution","Women may be more sensitive to extended fasting (HPA axis suppression). Athletes need carbs around intense sessions."]]},{"title":"Peptides Mapped to Fat Loss Pathways","rows":[["Direct lipolysis (Step 1)","AOD-9604, HGH Fragment 176-191 — act directly on beta-3 receptors. Tesamorelin via GH spike. Yohimbine (supplement) on alpha-2 receptors for stubborn fat."],["Appetite reduction (intake)","Semaglutide, Tirzepatide, Retatrutide, Cagrilintide — central + peripheral satiety. Slow gastric emptying. Reduce food noise."],["Insulin sensitivity","GLP-1s, Tirzepatide, Retatrutide directly improve. MOTS-c via AMPK. Berberine and metformin co-stack."],["Mitochondrial biogenesis (oxidation capacity)","MOTS-c, Humanin, exercise. Pair with CoQ10, PQQ, NMN/NR for amplification."],["Visceral fat targeting","Tesamorelin (FDA-approved for this), GLP-1s, Retatrutide."],["Energy expenditure (glucagon arm)","Retatrutide. Cold exposure. Caffeine + L-carnitine."]]}],"landmarks":{"h":["Muscle Group","MV (maintenance)","MEV (min effective)","MAV (max adaptive)","MRV (max recoverable)"],"r":[["Chest","4 sets","8 sets","12-20 sets","22 sets"],["Back","6 sets","10 sets","14-22 sets","25 sets"],["Quads","6 sets","8 sets","12-18 sets","20 sets"],["Hamstrings","4 sets","6 sets","10-16 sets","20 sets"],["Shoulders","6 sets","8 sets","16-22 sets","26 sets"],["Biceps","4 sets","8 sets","14-20 sets","26 sets"],["Triceps","4 sets","6 sets","10-14 sets","18 sets"],["Calves","6 sets","8 sets","12-16 sets","20 sets"],["Abs","0 sets","0 sets","14-20 sets","25 sets"]]},"safety":[{"title":"RED FLAGS — Stop and call your doctor","rows":[["Severe headache or vision changes","Pituitary stress (GH peptides) or BP spike (PT-141, MT-II)."],["Heart palpitations / chest pain","Stop GHRPs, Hexarelin, PT-141 immediately."],["Severe injection-site reaction","Spreading redness >2 inches, pus, fever = ER."],["Unusual extremity swelling","GH-related edema. Reduce/stop dose."],["Severe mood change","Psychiatric red flag."],["Allergic reaction","Anaphylaxis = 911."],["Persistent hypoglycemia","Esp. with IGF-1 variants. Keep glucose tabs handy."],["New or growing moles","Stop MT-II. Dermatology referral within 30 days."]]},{"title":"Drug Interactions / Conditions to Flag","rows":[["Active cancer","Avoid GH/IGF peptides, TB-500. Discuss with oncologist."],["Diabetes / pre-diabetes","Care with MK-677, CJC, Tesamorelin. GLP-1s helpful — monitor."],["Thyroid disease","TSH/T3 baseline + quarterly on aggressive fat-loss stacks."],["Heart disease","Avoid Hexarelin, MT-II, PT-141. GLP-1s have CV benefits."],["Pregnancy / breastfeeding","Avoid ALL peptides."],["Antidepressants","Caution with Selank, Semax, PT-141 (serotonergic)."],["Insulin / sulfonylureas","Major hypoglycemia risk with GLP-1s + IGF-1. Adjust under MD."]]}]};
+/* ---------- science lab: animated explainers + calculators ---------- */
+const slC = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const SL_REDUCE = typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
+const slAnim = (dur, fn, done) => {
+  if (SL_REDUCE) { fn(1); if (done) done(); return { stop() {} }; }
+  let t0 = null, id; const step = ts => { if (t0 == null) t0 = ts; const p = Math.min(1, (ts - t0) / dur); fn(p); if (p < 1) id = requestAnimationFrame(step); else if (done) done(); };
+  id = requestAnimationFrame(step); return { stop() { cancelAnimationFrame(id); } };
+};
+const slEase = p => p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+const slNum = (id, d = 0) => { const v = parseFloat($("#" + id).value); return Number.isFinite(v) ? v : d; };
+const slOut = (n, v, u = "") => `<div class="tile"><span class="eyebrow">${n}</span><span class="v" style="font-size:1.45rem">${v}<small>${u}</small></span></div>`;
+const slTiles = h => `<div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,130px),1fr));margin-top:10px">${h}</div>`;
+const slRange = (id, label, min, max, val, step = 1, unit = "") => `<label class="f">${label} <span class="mono small" id="${id}-v">${val}${unit}</span><input id="${id}" type="range" min="${min}" max="${max}" step="${step}" value="${val}"></label>`;
+const slBind = (ids, fn) => ids.forEach(id => { const el = $("#" + id); if (!el) return; el.addEventListener("input", () => { const o = $("#" + id + "-v"); if (o && el.type === "range") o.textContent = el.value + (el.dataset.u || ""); fn(); }); });
+const SL_YT = q => "https://www.youtube.com/results?search_query=" + encodeURIComponent(q);
+
+const SLCARDS = [];
+const slCard = (id, title, blurb, body, init) => SLCARDS.push({ id, title, blurb, body, init });
+
+/* 1. Energy balance */
+slCard("sl-energy", "Where your calories go (TDEE)", "Four buckets set your daily burn. Move the sliders to see which lever is biggest. This is an estimate, not a measurement.",
+  `<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">${slRange("sle-steps", "Daily steps", 2000, 20000, 8000, 500)}${slRange("sle-ses", "Sessions / week", 0, 7, 4)}${slRange("sle-min", "Minutes / session", 20, 120, 60, 5)}${slRange("sle-prot", "Protein % of calories", 10, 45, 25)}</div>
+   <div id="sle-bar" style="display:flex;height:34px;border-radius:8px;overflow:hidden;margin-top:12px;background:var(--surface-2)" role="img" aria-label="TDEE split"></div><div id="sle-leg" class="legend" style="margin-top:6px"></div><div id="sle-out"></div>`,
+  () => {
+    const draw = () => {
+      const c = calc(), w = S.weight, steps = slNum("sle-steps"), ses = slNum("sle-ses"), mn = slNum("sle-min"), pp = slNum("sle-prot") / 100, intake = c.target;
+      const neat = 0.12 * c.bmr + steps * 0.04 * (w / 70), eat = ses * mn * (6 - 1) * 3.5 * w / 200 / 7, tef = intake * (pp * 0.25 + (1 - pp - 0.25) * 0.075 + 0.25 * 0.025);
+      const parts = [["BMR", c.bmr, "var(--accent)"], ["NEAT", neat, "var(--good)"], ["TEF", tef, "var(--warn)"], ["Exercise", eat, "var(--bad)"]], tot = parts.reduce((a, p) => a + p[1], 0);
+      $("#sle-bar").innerHTML = parts.map(p => `<div style="width:${p[1] / tot * 100}%;background:${p[2]};transition:width .6s ease"></div>`).join("");
+      $("#sle-leg").innerHTML = parts.map(p => `<span><i style="background:${p[2]}"></i>${p[0]} ${fmt(p[1])} (${fmt(p[1] / tot * 100)}%)</span>`).join("");
+      const dSteps = 2000 * 0.04 * (w / 70), dEat = 1 * mn * 5 * 3.5 * w / 200 / 7, dProt = intake * 0.1 * (0.25 - 0.075);
+      $("#sle-out").innerHTML = slTiles(slOut("Estimated TDEE", fmt(tot), "kcal") + slOut("Profile TDEE", fmt(c.tdee), "kcal") + slOut("+2,000 steps", "+" + fmt(dSteps), "kcal/d") + slOut("+1 session/wk", "+" + fmt(dEat), "kcal/d") + slOut("+10% protein", "+" + fmt(dProt), "kcal/d")) +
+        `<p class="note" style="margin-top:8px">BMR is the biggest share and is driven by lean mass. NEAT (everyday movement) swings most between people. Exercise is usually the smallest bucket, which is why food intake and daily movement matter more for fat loss than another cardio session. Thermic effect: protein burns about 20-30% of its calories in digestion, carbs 5-10%, fat 0-3%.</p>`;
+    };
+    slBind(["sle-steps", "sle-ses", "sle-min", "sle-prot"], draw); draw(); return draw;
+  });
+
+/* 2. Insulin + fat burning */
+const SL_MEALS = { fast: ["Water or black coffee (fasted)", 0, 0, 0], eggs: ["Eggs, avocado, coffee", 1, 0.6, 1], oats: ["Oats, whey, berries", 14, 0.8, 0], rice: ["Chicken, white rice, broccoli", 24, 0.7, 0], sweet: ["Steak, sweet potato, greens", 17, 0.7, 0.6], soda: ["Soda (about 45 g sugar)", 40, 0, 0], whey: ["Whey shake alone", 2, 1, 0] };
+slCard("sl-insulin", "Insulin, blood sugar and the fat-burning gate", "Insulin works like a gate: while it is high, fat release is switched down. Pick a meal and press Play. Curves are an illustrative model, not your measured response.",
+  `<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;align-items:end"><label class="f">Meal<select id="sli-meal">${Object.entries(SL_MEALS).map(([k, v]) => `<option value="${k}" ${k === "rice" ? "selected" : ""}>${v[0]}</option>`).join("")}</select></label>
+   <label class="small" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="sli-walk"> 10-15 min walk after eating</label><button type="button" class="btn small" id="sli-play">Play</button></div>
+   <svg id="sli-svg" viewBox="0 0 320 170" role="img" aria-label="Glucose and insulin curves over four hours" style="width:100%;max-width:640px;margin-top:8px"></svg>
+   <div class="legend"><span><i style="background:var(--warn)"></i>Blood glucose</span><span><i style="background:var(--accent)"></i>Insulin</span><span><i style="background:var(--good)"></i>Fat release open</span></div><div id="sli-out" class="small" style="margin-top:6px"></div>`,
+  () => {
+    let run = null;
+    const model = () => {
+      const m = SL_MEALS[$("#sli-meal").value], walk = $("#sli-walk").checked; const [, gl, pr, fat] = m;
+      const tpG = 45 * (1 + 0.3 * fat), tpI = 55 * (1 + 0.2 * fat), ag = (gl * 1.3 + 4) * (walk ? 0.75 : 1), ai = (gl * 0.9 + pr * 14 + 1) * (walk ? 0.85 : 1);
+      const f = (t, tp) => t <= 0 ? 0 : (t / tp) * Math.exp(1 - t / tp);
+      const pts = []; for (let t = 0; t <= 240; t += 4) pts.push({ t, g: 90 + ag * f(t, tpG), i: 6 + ai * f(t, tpI) });
+      pts.forEach(p => p.gate = slC(1 - (p.i - 6) / 22)); return { pts, ag, ai };
+    };
+    const draw = p => {
+      const { pts, ag, ai } = model(); const X = t => 30 + t / 240 * 280, gmax = 90 + Math.max(30, ag) + 8, Y = v => 130 - (v - 80) / (gmax - 80) * 100, imax = 6 + Math.max(10, ai) + 2, YI = v => 130 - (v - 4) / (imax - 4) * 100;
+      const upto = pts.filter(q => q.t <= p * 240), lastT = upto.length ? upto[upto.length - 1].t : 0;
+      const path = (arr, fy) => arr.map((q, i) => `${i ? "L" : "M"}${X(q.t).toFixed(1)} ${fy(q).toFixed(1)}`).join(" ");
+      const gate = upto.map(q => `<rect x="${X(q.t)}" y="142" width="${280 / 60 + 0.4}" height="14" fill="var(--good)" opacity="${(0.15 + 0.85 * q.gate).toFixed(2)}"/>`).join("");
+      $("#sli-svg").innerHTML = `<line x1="30" y1="130" x2="310" y2="130" stroke="var(--line)"/>${[0, 60, 120, 180, 240].map(t => `<text x="${X(t)}" y="166" font-size="8" text-anchor="middle" fill="var(--ink-3)">${t / 60}h</text>`).join("")}<text x="2" y="30" font-size="8" fill="var(--warn-ink)">mg/dL</text><text x="2" y="42" font-size="8" fill="var(--accent)">µIU/mL</text>
+        <path d="${path(upto, q => Y(q.g))}" fill="none" stroke="var(--warn)" stroke-width="2.2"/><path d="${path(upto, q => YI(q.i))}" fill="none" stroke="var(--accent)" stroke-width="2.2"/>${gate}<line x1="${X(lastT)}" x2="${X(lastT)}" y1="20" y2="132" stroke="var(--ink-3)" stroke-dasharray="3 3" opacity="${p < 1 ? 1 : 0}"/>`;
+      const open = mean(pts.map(q => q.gate)); $("#sli-out").textContent = `Peak glucose rise about ${fmt(ag)} mg/dL, peak insulin rise about ${fmt(ai, 1)} µIU/mL. Fat release stays open about ${fmt(open * 100)}% of the next 4 hours. Lower-glycemic carbs, fiber, protein with carbs, resistance training and post-meal walks all flatten the curve. Protein and dairy raise insulin even with little glucose; that is normal and helps muscle.`;
+    };
+    const play = () => { if (run) run.stop(); run = slAnim(5200, p => draw(p)); };
+    $("#sli-play").addEventListener("click", play); ["sli-meal", "sli-walk"].forEach(id => $("#" + id).addEventListener("input", () => { if (run) run.stop(); draw(1); }));
+    draw(1); return () => draw(1);
+  });
+
+/* 3. MPS and protein distribution */
+const SL_LEU = { whey: ["Whey", 0.11], egg: ["Egg", 0.088], casein: ["Casein", 0.09], beef: ["Beef / chicken / fish", 0.08], soy: ["Soy", 0.08], pea: ["Pea / plant blend", 0.075], rice: ["Rice protein", 0.07] };
+slCard("sl-mps", "Muscle protein synthesis: how protein is spread across the day", "Each meal needs about 2.5 g of the amino acid leucine to switch on muscle building. Smaller doses give a weak pulse. Press Play to run the day.",
+  `<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">${slRange("slm-n", "Meals per day", 2, 6, 4)}${slRange("slm-g", "Protein per meal (g)", 10, 70, 40, 5)}<label class="f">Source<select id="slm-src">${Object.entries(SL_LEU).map(([k, v]) => `<option value="${k}">${v[0]}</option>`).join("")}</select></label><button type="button" class="btn small" id="slm-play" style="align-self:end">Play</button></div>
+   <svg id="slm-svg" viewBox="0 0 320 146" role="img" aria-label="Muscle protein synthesis across a day" style="width:100%;max-width:640px;margin-top:8px"></svg><div id="slm-out" class="small" style="margin-top:6px"></div>`,
+  () => {
+    let run = null;
+    const get = () => { const n = slNum("slm-n"), g = slNum("slm-g"), pct = SL_LEU[$("#slm-src").value][1], leu = g * pct; const times = []; for (let i = 0; i < n; i++) times.push(7 + i * (14 / Math.max(1, n - 1))); return { n, g, leu, times, pct }; };
+    const mps = (t, d) => { let v = 0.08; d.times.forEach(tm => { const dt = t - tm; if (dt >= 0 && dt <= 4.5) v += Math.min(1, d.leu / 2.5) * Math.exp(-Math.pow((dt - 1.2) / 1.6, 2)) * 0.92; }); return slC(v, 0, 1.15); };
+    const draw = p => {
+      const d = get(), X = h => 20 + h / 24 * 290, Y = v => 110 - v * 85; const hrs = p * 24; let area = `M${X(0)} 110`; for (let h = 0; h <= hrs; h += 0.25) area += ` L${X(h).toFixed(1)} ${Y(mps(h, d)).toFixed(1)}`; area += ` L${X(Math.min(24, hrs))} 110Z`;
+      $("#slm-svg").innerHTML = `<line x1="20" x2="310" y1="110" y2="110" stroke="var(--line)"/><line x1="20" x2="310" y1="${Y(1)}" y2="${Y(1)}" stroke="var(--good)" stroke-dasharray="4 3" opacity=".6"/><text x="22" y="${Y(1) - 3}" font-size="8" fill="var(--good)">full muscle-building signal</text><path d="${area}" fill="var(--accent)" opacity=".35" stroke="var(--accent)"/>${d.times.map(tm => `<g opacity="${tm <= hrs ? 1 : .25}"><circle cx="${X(tm)}" cy="126" r="4" fill="${d.leu >= 2.5 ? "var(--good)" : "var(--warn)"}"/><text x="${X(tm)}" y="120" font-size="7" text-anchor="middle" fill="var(--ink-3)">${d.g}g</text></g>`).join("")}${[0, 6, 12, 18, 24].map(h => `<text x="${X(h)}" y="143" font-size="7" text-anchor="middle" fill="var(--ink-3)">${h}h</text>`).join("")}`;
+      const trig = d.leu >= 2.5, minP = 2.5 / d.pct; let up = 0; for (let h = 0; h < 24; h += 0.25) if (mps(h, d) > 0.5) up += 0.25;
+      $("#slm-out").innerHTML = `${d.g} g of ${SL_LEU[$("#slm-src").value][0].toLowerCase()} gives about <strong>${fmt(d.leu, 1)} g leucine</strong> per meal: ${trig ? "enough to trigger a full response" : "below the 2.5 g trigger, so the response is partial"}. You would need about <strong>${fmt(minP)} g</strong> of this source per meal to reach 2.5 g. Total ${fmt(d.n * d.g)} g a day (${fmt(d.n * d.g / S.weight, 1)} g/kg); about ${fmt(up, 1)} hours above half-strength signal. Spreading protein across 3-5 meals beats one or two huge ones, and extra protein beyond the trigger at a single meal adds little.`;
+    };
+    const play = () => { if (run) run.stop(); run = slAnim(4800, p => draw(p)); };
+    $("#slm-play").addEventListener("click", play); slBind(["slm-n", "slm-g", "slm-src"], () => { if (run) run.stop(); draw(1); }); draw(1); return () => draw(1);
+  });
+
+/* 4. Rep range continuum */
+slCard("sl-reps", "Rep ranges: what each does", "Slide the rep count. Bars show which adaptation and which fibers that range emphasises. Every set assumed to be taken within 0-3 reps of failure.",
+  `${slRange("slr-r", "Reps per set", 1, 30, 8)}<div id="slr-out"></div>`,
+  () => {
+    const draw = () => {
+      const r = slNum("slr-r"), g = (x, c, w) => Math.exp(-Math.pow((x - c) / w, 2)) * 100;
+      const rows = [["Max strength", g(r, 3, 3.2)], ["Mechanical tension (main growth driver)", g(r, 9, 9)], ["Metabolic stress (pump)", g(r, 17, 6)], ["Muscular endurance", slC((r - 12) / 18) * 100], ["Type IIx (power) fibers", g(r, 2, 3)], ["Type IIa (fast, most trainable)", g(r, 9, 5)], ["Type I (slow, endurance)", slC((r - 12) / 16) * 100]];
+      const pct = 100 / (1 + r / 30);
+      $("#slr-out").innerHTML = rows.map(([n, v]) => `<div class="macro-row" style="grid-template-columns:minmax(120px,1fr) 2fr 38px"><span class="small">${n}</span><div class="bar"><span style="width:${v}%;background:var(--accent);transition:width .45s ease"></span></div><span class="mono small">${fmt(v)}</span></div>`).join("") + `<p class="small" style="margin-top:8px">${r} reps to failure is about <strong>${fmt(pct)}% of your 1-rep max</strong> (Epley). ${r <= 5 ? "Heavy loads train strength and the biggest fibers; keep exercises simple and rest 2-5 minutes." : r <= 12 ? "The classic growth zone: heavy enough for high tension, enough volume for size. Rest 1.5-3 minutes on big lifts." : r <= 20 ? "Lighter loads grow muscle just as well if sets end close to failure; good for isolation moves and sore joints. Expect more burn." : "Mostly endurance and local fatigue. Fine for conditioning and small muscles, but hard to reach true failure safely on heavy compounds."}</p>`;
+    };
+    slBind(["slr-r"], draw); draw(); return draw;
+  });
+
+/* 5. Volume landmarks */
+slCard("sl-vol", "Weekly volume landmarks (MV / MEV / MAV / MRV)", "Hard sets per muscle per week. Find your muscle and enter what you actually do.",
+  `<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;align-items:end"><label class="f">Muscle<select id="slv-m">${KB.landmarks.r.map((r, i) => `<option value="${i}">${esc(r[0])}</option>`).join("")}</select></label>${slRange("slv-s", "Your weekly sets", 0, 30, 12)}</div><svg id="slv-svg" viewBox="0 0 320 70" role="img" aria-label="Volume zones" style="width:100%;max-width:640px;margin-top:8px"></svg><div id="slv-out" class="small"></div>`,
+  () => {
+    const nums = s => (String(s).match(/\d+/g) || []).map(Number);
+    const draw = () => {
+      const row = KB.landmarks.r[+$("#slv-m").value], mv = nums(row[1])[0], mev = nums(row[2])[0], mav = nums(row[3]), mrv = nums(row[4])[0], s = slNum("slv-s"), max = Math.max(mrv * 1.3, s + 2), X = v => 10 + v / max * 300;
+      const z = [[0, mv, "var(--surface-2)", "losing"], [mv, mev, "var(--warn-soft)", "maintain"], [mev, mav[0], "var(--accent-soft)", "building"], [mav[0], mav[mav.length - 1], "var(--good-soft)", "sweet spot"], [mav[mav.length - 1], mrv, "var(--warn-soft)", "high"], [mrv, max, "var(--bad-soft)", "too much"]];
+      $("#slv-svg").innerHTML = z.map(([a, b, c, l]) => `<rect x="${X(a)}" y="16" width="${Math.max(0, X(b) - X(a))}" height="26" fill="${c}"/><text x="${(X(a) + X(b)) / 2}" y="32" font-size="6.5" text-anchor="middle" fill="var(--ink-2)">${l}</text>`).join("") + [["MV", mv], ["MEV", mev], ["MAV", mav[0]], ["MRV", mrv]].map(([n, v]) => `<text x="${X(v)}" y="12" font-size="7" text-anchor="middle" fill="var(--ink-3)">${n} ${v}</text>`).join("") + `<g style="transition:transform .5s ease"><polygon points="${X(s) - 5},58 ${X(s) + 5},58 ${X(s)},46" fill="var(--ink)"/><text x="${X(s)}" y="68" font-size="8" text-anchor="middle" fill="var(--ink)">${s}</text></g>`;
+      const zone = s < mv ? "below maintenance, so muscle can shrink" : s < mev ? "maintenance only" : s < mav[0] ? "productive but below the sweet spot; add a set or two" : s <= mav[mav.length - 1] ? "in the sweet spot" : s <= mrv ? "high; watch recovery and joints" : "past what most people can recover from; cut back or deload";
+      $("#slv-out").innerHTML = `${esc(row[0])}: ${s} sets/week is <strong>${zone}</strong>. MV = keep what you have, MEV = smallest dose that grows, MAV = most gains per set, MRV = the most you can recover from. Raise sets by 1-2 per week across a training block, then deload.`;
+    };
+    slBind(["slv-m", "slv-s"], draw); draw(); return draw;
+  });
+
+/* 6. HR zones and fuel */
+slCard("sl-zones", "Heart-rate zones and what you burn", "Lower zones burn the biggest share from fat but fewer calories a minute. Total energy decides fat loss, not zone alone.",
+  `${slRange("slz-m", "Minutes in each zone", 10, 90, 30, 5)}<div id="slz-out"></div>`,
+  () => {
+    const Z = [["Zone 1 · walking", 50, 60, 80, 3.5], ["Zone 2 · easy, can talk", 60, 70, 65, 6], ["Zone 3 · tempo", 70, 80, 50, 8], ["Zone 4 · threshold", 80, 90, 30, 10], ["Zone 5 · intervals", 90, 100, 10, 12]];
+    const draw = () => {
+      const c = calc(), mx = c.maxHR, mn = slNum("slz-m"), w = S.weight; const kmax = Math.max(...Z.map(z => z[4] * 3.5 * w / 200 * mn));
+      $("#slz-out").innerHTML = `<div class="table-wrap"><table><thead><tr><th>Zone</th><th class="num">Heart rate</th><th class="num">Fuel from fat</th><th class="num">kcal in ${mn} min</th><th class="num">Fat kcal</th></tr></thead><tbody>${Z.map(z => { const k = z[4] * 3.5 * w / 200 * mn; return `<tr><td>${z[0]}</td><td class="num mono">${fmt(mx * z[1] / 100)}-${fmt(mx * z[2] / 100)}</td><td class="num mono">${z[3]}%</td><td class="num mono">${fmt(k)}</td><td class="num mono">${fmt(k * z[3] / 100)}</td></tr>`; }).join("")}</tbody></table></div>
+      <div style="margin-top:8px">${Z.map(z => { const k = z[4] * 3.5 * w / 200 * mn; return `<div class="macro-row" style="grid-template-columns:110px 1fr 54px"><span class="small">${z[0].split(" ·")[0]}</span><div class="bar" style="display:flex"><span style="width:${k * z[3] / 100 / kmax * 100}%;background:var(--good);transition:width .5s"></span><span style="width:${k * (100 - z[3]) / 100 / kmax * 100}%;background:var(--accent);transition:width .5s"></span></div><span class="mono small">${fmt(k)}</span></div>`; }).join("")}</div><div class="legend"><span><i style="background:var(--good)"></i>fat</span><span><i style="background:var(--accent)"></i>carbohydrate</span></div>
+      <p class="note" style="margin-top:6px">Max HR ${fmt(mx)} bpm (Tanaka: 208 − 0.7 × age; individual values vary by about ±10). Zone 2 builds the aerobic base and the mitochondria that burn fat; intervals burn more per minute and raise fitness; walking adds energy use with almost no recovery cost. Combine them: lots of easy movement, 1-2 hard sessions.</p>`;
+    };
+    slBind(["slz-m"], draw); draw(); return draw;
+  });
+
+/* 7. Glycogen + carb load */
+slCard("sl-glyco", "Glycogen tank, water and carb loading", "Muscles store carbohydrate as glycogen with about 3 g of water per gram. Filling or draining the tank changes scale weight and muscle fullness. Press Play to run a 7-day load.",
+  `<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;align-items:end"><label class="f">Goal<select id="slg-g"><option value="end">Endurance event (36-48 h load)</option><option value="phys">Photo or physique day (moderate)</option></select></label><label class="f">Lean mass (<span class="u-wt">(kg)</span>)<input id="slg-l" type="number" data-conv="w" step="0.5"></label><button class="btn small" type="button" id="slg-play">Play</button></div>
+   <div style="display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;margin-top:10px"><svg id="slg-tank" viewBox="0 0 90 120" style="width:90px" role="img" aria-label="Glycogen tank"></svg><div style="flex:1;min-width:230px"><svg id="slg-days" viewBox="0 0 300 100" style="width:100%" role="img" aria-label="Daily carbohydrate plan"></svg></div></div><div id="slg-out" class="small" style="margin-top:8px"></div>`,
+  () => {
+    let run = null;
+    const plan = g => g === "end" ? [5, 5, 5, 5, 5, 10, 10] : [4, 4, 3, 3, 4, 6, 5];
+    const info = () => { const l = (parseFloat($("#slg-l").value) ? fromDispW(parseFloat($("#slg-l").value)) : calc().lbm || S.weight * 0.8), musc = l * 0.45, full = musc * 15 + 100, depl = musc * 8 + 20, load = musc * 20 + 110; return { l, musc, full, depl, load }; };
+    const draw = p => {
+      const g = $("#slg-g").value, pl = plan(g), I = info(); const day = Math.min(6, Math.floor(p * 7)), dd = p * 7 - day;
+      let gly = I.full; const lvl = []; pl.forEach((cgk, i) => { const carbs = cgk * S.weight; const delta = (carbs - I.full / 3.3) * 0.55; gly = slC(gly + delta * (g === "end" ? 1 : 0.9), I.depl, I.load); lvl.push(gly); });
+      const cur = lvl[day] * (dd < 1 ? 1 : 1), fillP = (cur - I.depl * 0.6) / (I.load - I.depl * 0.6);
+      $("#slg-tank").innerHTML = `<rect x="14" y="8" width="62" height="104" rx="8" fill="var(--surface-2)" stroke="var(--line)"/><rect x="14" y="${112 - 104 * slC(fillP)}" width="62" height="${104 * slC(fillP)}" rx="8" fill="var(--accent)" opacity=".75" style="transition:y .3s,height .3s"/><text x="45" y="64" font-size="10" text-anchor="middle" fill="var(--ink)">${fmt(cur)} g</text>`;
+      $("#slg-days").innerHTML = pl.map((c, i) => { const x = 12 + i * 41; const h = c / 10 * 70; return `<rect x="${x}" y="${84 - h}" width="30" height="${h}" fill="${i <= day ? "var(--good)" : "var(--surface-2)"}" rx="3"/><text x="${x + 15}" y="94" font-size="8" text-anchor="middle" fill="var(--ink-3)">D${i + 1}</text><text x="${x + 15}" y="${80 - h}" font-size="7.5" text-anchor="middle" fill="var(--ink-2)">${c} g/kg</text>`; }).join("");
+      const swing = I.load - I.depl;
+      $("#slg-out").innerHTML = `Estimated muscle mass ${fmt(toDispW(I.musc), 1)} ${wUnit()}. Tank range about <strong>${fmt(I.depl)} g (depleted) to ${fmt(I.full)} g (full) to ${fmt(I.load)} g (loaded)</strong>. The depleted-to-loaded swing is about ${fmt(swing)} g of glycogen plus roughly ${fmt(swing * 3 / 1000, 1)} kg of bound water, which explains a 1-2 kg scale change and fuller-looking muscle. Daily carbohydrate targets above are in g per kg body weight (${fmt(pl[day] * S.weight)} g today).`;
+    };
+    $("#slg-l").value = round(toDispW(calc().lbm || S.weight * 0.8), 1);
+    const play = () => { if (run) run.stop(); run = slAnim(5600, p => draw(Math.min(0.999, p))); };
+    $("#slg-play").addEventListener("click", play); slBind(["slg-g", "slg-l"], () => { if (run) run.stop(); draw(0.999); }); draw(0.999); return () => draw(0.999);
+  });
+
+/* 8. Hydration */
+slCard("sl-hydra", "Hydration and sodium, and why extreme water loading is risky", "Kidneys can clear roughly 0.8-1 L per hour. Drinking far past that, especially while cutting salt or taking diuretics, dilutes blood sodium (hyponatremia). Dehydrating on purpose is the opposite danger.",
+  `<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">${slRange("slh-t", "Training hours / day", 0, 4, 1, 0.5)}${slRange("slh-s", "Sweat rate (L/h)", 0.3, 2, 0.8, 0.1)}${slRange("slh-w", "Water you drink (L/day)", 1, 12, 3, 0.5)}${slRange("slh-na", "Sodium you eat (g/day)", 0.5, 6, 2.5, 0.1)}</div><div id="slh-out"></div>`,
+  () => {
+    const draw = () => {
+      const w = S.weight, t = slNum("slh-t"), sw = slNum("slh-s"), drink = slNum("slh-w"), na = slNum("slh-na");
+      const base = w * 0.033, sweat = t * sw, need = base + sweat * 0.85, naNeed = 1.5 + t * sw * 0.9 * 0.9;
+      const r = drink > 8 ? ["bad", "Very high intake. Without large sweat losses this can dilute sodium; headache, nausea and confusion are warning signs."] : drink > need * 1.8 ? ["warn", "Well above your estimated need. Spread intake out and keep sodium normal."] : drink < need * 0.7 ? ["warn", "Below estimated need. Add fluid, especially around training."] : ["good", "Within a sensible range for your estimate."];
+      $("#slh-out").innerHTML = slTiles(slOut("Baseline fluid", fmt(base, 1), "L") + slOut("Sweat to replace", fmt(sweat * 0.85, 1), "L") + slOut("Target total", fmt(need, 1), "L/day") + slOut("Sodium (hard training)", fmt(naNeed, 1), "g/day") + slOut("Per hour max", "≈1", "L/h")) +
+        `<p style="margin-top:8px"><span class="pill p-${r[0]}">${r[0] === "good" ? "OK" : "Check"}</span> ${r[1]} Sodium entered: ${na} g (${fmt(na * 1000)} mg). ${na < naNeed - 1.5 && drink > need * 1.5 ? "High water with low sodium is the combination that causes trouble." : ""}</p>
+        <div class="callout" style="margin-top:8px"><strong>Why this tab does not include a "dry-out" schedule.</strong> Physique shows sometimes use days of very high water, herbal or drug diuretics, long fasted cardio, sauna and sedating antihistamines to look "dry". These plans have sent competitors to hospital (low sodium, low potassium, cramps, arrhythmia, collapse). If you need a look-your-best day, a safer approach is: normal hydration, normal sodium, keep potassium from food, moderate carbohydrate increase the day before (see the glycogen card), no sauna dehydration, and a coach you trust. Talk to a physician before any depletion or diuretic plan.</div>`;
+    };
+    slBind(["slh-t", "slh-s", "slh-w", "slh-na"], draw); draw(); return draw;
+  });
+
+/* 9. Insulin sensitivity markers */
+slCard("sl-ir", "Insulin sensitivity markers (HOMA-IR, TG/HDL)", "Enter fasting labs. Targets follow the tables in your workbook; clinical cutoffs for diagnosis are different, so ask your doctor.",
+  `<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px"><label class="f">Fasting glucose (mg/dL)<input id="slir-g" type="number" value="88"></label><label class="f">Fasting insulin (µIU/mL)<input id="slir-i" type="number" step="0.1" value="5"></label><label class="f">Triglycerides (mg/dL)<input id="slir-t" type="number" value="90"></label><label class="f">HDL (mg/dL)<input id="slir-h" type="number" value="55"></label><label class="f">HbA1c (%)<input id="slir-a" type="number" step="0.1" value="5.2"></label></div><div id="slir-out"></div>`,
+  () => {
+    const draw = () => {
+      const g = slNum("slir-g"), i = slNum("slir-i"), t = slNum("slir-t"), h = slNum("slir-h"), a = slNum("slir-a"), homa = g * i / 405, tg = t / h;
+      const cls = (v, ok, mid) => v < ok ? ["good", "Optimal"] : v < mid ? ["warn", "Watch"] : ["bad", "High"];
+      const H = cls(homa, 1.5, 2.5), T = cls(tg, 1.5, 3), A = a < 5.4 ? ["good", "Optimal"] : a < 5.7 ? ["warn", "Upper normal"] : a < 6.5 ? ["bad", "Prediabetes range"] : ["bad", "Diabetes range"], G = g < 90 ? ["good", "Optimal"] : g < 100 ? ["warn", "Upper normal"] : g < 126 ? ["bad", "Impaired"] : ["bad", "Diabetes range"];
+      $("#slir-out").innerHTML = slTiles([["HOMA-IR", fmt(homa, 2), "= glucose × insulin ÷ 405", H], ["TG : HDL", fmt(tg, 2), "under 1.5 is insulin-sensitive", T], ["HbA1c", fmt(a, 1) + "%", "under 5.4 optimal, 5.7+ prediabetes", A], ["Glucose", fmt(g), "70-90 optimal, 100+ impaired", G]].map(r => `<div class="tile"><span class="eyebrow">${r[0]}</span><span class="v" style="font-size:1.45rem">${r[1]}</span><span class="s"><span class="pill p-${r[3][0]}">${r[3][1]}</span> ${r[2]}</span></div>`).join("")) + `<p class="note" style="margin-top:8px">Best levers: lift weights 3+ times a week, walk after meals, sleep 7-9 hours, lose visceral fat, cut liquid sugar and alcohol, eat fiber. Rising numbers on growth-hormone-type products or steroids are a reason to talk to a doctor.</p>`;
+    };
+    slBind(["slir-g", "slir-i", "slir-t", "slir-h", "slir-a"], draw); draw(); return draw;
+  });
+
+/* 10. Formula lab (BMR, TDEE, macros) */
+slCard("sl-form", "Formula lab: BMR, TDEE, deficit and macros", "Same steps as a manual calculation so you can see every number. Compare the formulas side by side.",
+  `<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px"><label class="f">Activity factor<select id="slf-act"><option value="1.2">1.2 desk job, little exercise</option><option value="1.375">1.375 light</option><option value="1.45">1.45 desk job + 4 moderate sessions</option><option value="1.55" selected>1.55 moderate</option><option value="1.725">1.725 hard training</option><option value="1.9">1.9 very active</option><option value="2">2.0 labor job + 11-14 h hard training</option></select></label>
+   ${slRange("slf-rate", "Goal: lb per week", -2, 1, -1, 0.25)}<label class="f">Macro split (P/C/F)<select id="slf-sp"><option value="40,35,25">40/35/25 high protein</option><option value="30,40,30">30/40/30 balanced</option><option value="25,50,25">25/50/25 higher carb</option><option value="35,30,35">35/30/35 lower carb</option><option value="20,50,30">20/50/30 Mediterranean</option></select></label>
+   <label class="f">Total carbs on a label (g)<input id="slf-tc" type="number" value="18"></label><label class="f">Fiber on that label (g)<input id="slf-fb" type="number" value="6"></label></div><div id="slf-out"></div>`,
+  () => {
+    const draw = () => {
+      const c = calc(), w = S.weight, h = S.height, a = S.age, male = S.sex === "male", lb = w * 2.2046, inch = h / 2.54, act = slNum("slf-act", 1.55), rate = slNum("slf-rate");
+      const hb = male ? 66.47 + 6.24 * lb + 12.7 * inch - 6.755 * a : 655.1 + 4.35 * lb + 4.7 * inch - 4.7 * a;
+      const rows = [["Harris-Benedict (revised)", hb], ["Mifflin-St Jeor", c.mifflin], ["Katch-McArdle (needs body fat)", c.katch], ["Cunningham (athletes)", Number.isFinite(c.lbm) ? 500 + 22 * c.lbm : NaN]];
+      const bmr = c.bmr, tdee = bmr * act, kcal = Math.max(S.sex === "male" ? 1500 : 1200, tdee + rate * 500), [p, cb, f] = $("#slf-sp").value.split(",").map(Number), gP = kcal * p / 100 / 4, gC = kcal * cb / 100 / 4, gF = kcal * f / 100 / 9;
+      $("#slf-out").innerHTML = `<div class="table-wrap" style="margin-top:8px"><table><thead><tr><th>Formula</th><th class="num">BMR kcal</th><th class="num">× ${act} = TDEE</th></tr></thead><tbody>${rows.map(r => `<tr><td>${r[0]}</td><td class="num mono">${fmt(r[1])}</td><td class="num mono">${fmt(r[1] * act)}</td></tr>`).join("")}</tbody></table></div>
+       <p class="small" style="margin-top:8px"><strong>Step 3, goal:</strong> 1 lb of fat ≈ 3,500 kcal, so ${rate} lb/week = ${rate > 0 ? "+" : ""}${fmt(rate * 500)} kcal/day → <strong>${fmt(kcal)} kcal/day</strong> (blended BMR ${fmt(bmr)} × ${act} ${rate >= 0 ? "+" : "−"} ${fmt(Math.abs(rate * 500))}).</p>
+       <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap"><div style="width:170px;max-width:100%">${donut([{ v: gP * 4, col: "var(--accent)" }, { v: gC * 4, col: "var(--good)" }, { v: gF * 9, col: "var(--warn)" }], fmt(kcal), "kcal")}</div><div class="small"><div>Protein: ${p}% × ${fmt(kcal)} ÷ 4 = <strong>${fmt(gP)} g</strong> (${fmt(gP / w, 1)} g/kg)</div><div>Carbs: ${cb}% ÷ 4 = <strong>${fmt(gC)} g</strong></div><div>Fat: ${f}% ÷ 9 = <strong>${fmt(gF)} g</strong></div><div style="margin-top:6px">Net carbs = total − fiber = ${slNum("slf-tc")} − ${slNum("slf-fb")} = <strong>${fmt(slNum("slf-tc") - slNum("slf-fb"))} g</strong></div></div></div>
+       <p class="note" style="margin-top:6px">Protein and carbohydrate are 4 kcal per gram, fat 9, alcohol 7. Treat every formula as a starting point: run it 2 weeks, compare with your weight trend, adjust by about 100-200 kcal. New dieters often drop water weight in week 1; judge after 2 weeks.</p>`;
+    };
+    slBind(["slf-act", "slf-rate", "slf-sp", "slf-tc", "slf-fb"], draw); draw(); return draw;
+  });
+
+/* 11. Concentration / unit math */
+slCard("sl-unit", "Concentration and syringe unit math (for products a clinician prescribed)", "Pure arithmetic: how a vial strength, added liquid and a prescribed dose turn into a draw volume. It does not suggest a dose. Confirm every number with the prescribing clinician or pharmacist.",
+  `<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px"><label class="f">Vial total (mg)<input id="slu-mg" type="number" step="0.1" value=""></label><label class="f">Liquid added (mL)<input id="slu-ml" type="number" step="0.1" value=""></label><label class="f">Prescribed dose<input id="slu-d" type="number" step="0.01" value=""></label><label class="f">Dose unit<select id="slu-u"><option value="mg">mg</option><option value="mcg">mcg</option></select></label><label class="f">Syringe<select id="slu-s"><option value="100">U-100 (100 units = 1 mL)</option><option value="50">U-50</option><option value="40">U-40</option></select></label></div><svg id="slu-svg" viewBox="0 0 320 44" style="width:100%;max-width:520px;margin-top:8px" role="img" aria-label="Syringe fill"></svg><div id="slu-out" class="small"></div>`,
+  () => {
+    const draw = () => {
+      const mg = slNum("slu-mg", NaN), ml = slNum("slu-ml", NaN), d = slNum("slu-d", NaN), u = $("#slu-u").value, per = +$("#slu-s").value;
+      if (![mg, ml, d].every(v => v > 0)) { $("#slu-svg").innerHTML = `<rect x="30" y="14" width="250" height="16" rx="3" fill="var(--surface-2)" stroke="var(--line)"/>`; $("#slu-out").textContent = "Enter the vial strength, the liquid volume and the dose your clinician gave you."; return; }
+      const conc = mg / ml, doseMg = u === "mcg" ? d / 1000 : d, vol = doseMg / conc, units = vol * per, doses = mg / doseMg;
+      const fill = slC(vol / (per === 100 ? 1 : 1), 0, 1.2);
+      $("#slu-svg").innerHTML = `<rect x="30" y="14" width="250" height="16" rx="3" fill="var(--surface-2)" stroke="var(--line)"/><rect x="30" y="14" width="${250 * slC(vol)}" height="16" rx="3" fill="var(--accent)" opacity=".7" style="transition:width .5s"/><line x1="280" y1="22" x2="312" y2="22" stroke="var(--ink-3)"/><text x="30" y="42" font-size="8" fill="var(--ink-3)">0</text><text x="280" y="42" font-size="8" text-anchor="end" fill="var(--ink-3)">${per} units = 1 mL</text>`;
+      $("#slu-out").innerHTML = `Concentration <strong>${fmt(conc, 3)} mg/mL</strong> (${fmt(conc * 1000)} mcg/mL). Draw <strong>${fmt(vol, 3)} mL = ${fmt(units, 1)} units</strong> on a U-${per} syringe. About ${fmt(doses, 1)} doses per vial. ${vol > 1 ? "That volume does not fit in a 1 mL syringe; recheck the numbers." : units < 2 ? "A very small draw is hard to measure accurately; ask the pharmacist about a different dilution." : ""}`;
+    };
+    slBind(["slu-mg", "slu-ml", "slu-d", "slu-u", "slu-s"], draw); draw(); return draw;
+  });
+
+/* 12. Fitness-fatigue */
+slCard("sl-ff", "Fitness, fatigue and supercompensation", "Every session adds fitness (slow to fade) and fatigue (fast to fade). Performance is the gap. Watch how deloads and tapering make you stronger. Press Play.",
+  `<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">${slRange("slf2-s", "Sessions / week", 1, 7, 4)}${slRange("slf2-h", "How hard (1-10)", 2, 10, 7)}${slRange("slf2-d", "Deload every N weeks (0 = never)", 0, 8, 4)}<button class="btn small" type="button" id="slf2-play" style="align-self:end">Play</button></div><svg id="slf2-svg" viewBox="0 0 320 150" style="width:100%;max-width:640px;margin-top:8px" role="img" aria-label="Fitness, fatigue and performance over 16 weeks"></svg><div class="legend"><span><i style="background:var(--good)"></i>Fitness</span><span><i style="background:var(--bad)"></i>Fatigue</span><span><i style="background:var(--accent)"></i>Performance</span></div><div id="slf2-out" class="small"></div>`,
+  () => {
+    let run = null;
+    const sim = () => {
+      const s = slNum("slf2-s"), hd = slNum("slf2-h"), dl = slNum("slf2-d"), N = 112, fit = [], fat = [], perf = [], days = { 1: [3], 2: [1, 4], 3: [1, 3, 5], 4: [0, 2, 4, 5], 5: [0, 1, 3, 4, 5], 6: [0, 1, 2, 3, 4, 5], 7: [0, 1, 2, 3, 4, 5, 6] }[s];
+      let F = 0, G = 0; for (let t = 0; t < N; t++) { const wk = Math.floor(t / 7), isDl = dl > 0 && (wk + 1) % dl === 0, load = days.includes(t % 7) ? hd * (isDl ? 0.5 : 1) : 0; F = F * Math.exp(-1 / 42) + load; G = G * Math.exp(-1 / 7) + load; fit.push(F); fat.push(G); perf.push(F - 2 * G); }
+      return { fit, fat, perf, N };
+    };
+    const draw = p => {
+      const { fit, fat, perf, N } = sim(), all = [...fit, ...fat, ...perf], lo = Math.min(...all), hi = Math.max(...all), X = t => 8 + t / (N - 1) * 304, Y = v => 135 - (v - lo) / (hi - lo || 1) * 120, n = Math.floor(p * (N - 1));
+      const line = (a, c) => `<path d="${a.slice(0, n + 1).map((v, i) => `${i ? "L" : "M"}${X(i).toFixed(1)} ${Y(v).toFixed(1)}`).join(" ")}" fill="none" stroke="${c}" stroke-width="2"/>`;
+      $("#slf2-svg").innerHTML = `<line x1="8" x2="312" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--line)" stroke-dasharray="3 3"/>${line(fit, "var(--good)")}${line(fat, "var(--bad)")}${line(perf, "var(--accent)")}${[0, 4, 8, 12, 16].map(w => `<text x="${Math.min(X(w * 7), 300)}" y="148" font-size="7" text-anchor="middle" fill="var(--ink-3)">wk ${w}</text>`).join("")}`;
+      $("#slf2-out").textContent = "Model: fitness decays slowly (about 6 weeks), fatigue quickly (about 1 week), performance = fitness − 2 × fatigue. Hard training pushes performance below baseline for a while; planned lighter weeks let fatigue clear while fitness stays, so performance rebounds above where it started. Illustrative, not individual.";
+    };
+    const play = () => { if (run) run.stop(); run = slAnim(5200, p => draw(p)); };
+    $("#slf2-play").addEventListener("click", play); slBind(["slf2-s", "slf2-h", "slf2-d"], () => { if (run) run.stop(); draw(1); }); draw(1); return () => draw(1);
+  });
+
+/* 13. Sliding filament */
+slCard("sl-sarc", "Inside a muscle: the sliding filament", "Thin actin filaments slide over thick myosin. Drag the slider or press Play. Force is highest near the middle length, which is one reason full range of motion and loaded stretches build muscle.",
+  `<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">${slRange("sls-c", "Contraction", 0, 100, 0, 1, "%")}<button type="button" class="btn small" id="sls-play">Play</button></div><svg id="sls-svg" viewBox="0 0 320 120" style="width:100%;max-width:640px" role="img" aria-label="Sarcomere contraction"></svg><div id="sls-out" class="small"></div>`,
+  () => {
+    let run = null;
+    const draw = () => {
+      const c = slNum("sls-c") / 100, L = 3.6 - 1.6 * c, half = L / 3.6 * 130, cx = 160, zl = cx - half, zr = cx + half, th = 54 * 1.0;
+      const myo = `<rect x="${cx - 52}" y="52" width="104" height="14" rx="7" fill="var(--bad)" opacity=".85"/>`;
+      let act = ""; for (let r = 0; r < 3; r++) { const y = 34 + r * 15 + (r === 1 ? 0 : 0); }
+      const aL = [34, 80, 90].map(y => `<rect x="${zl}" y="${y === 34 ? 34 : y === 80 ? 82 : 94}" width="${Math.min(zl + 118, cx + 10) - zl + 0}" height="5" rx="2.5" fill="var(--accent)"/>`).join("");
+      const aR = [34, 80, 90].map(y => `<rect x="${Math.max(zr - 118, cx - 10)}" y="${y === 34 ? 34 : y === 80 ? 82 : 94}" width="${zr - Math.max(zr - 118, cx - 10)}" height="5" rx="2.5" fill="var(--accent)"/>`).join("");
+      $("#sls-svg").innerHTML = `<rect x="${zl - 4}" y="22" width="5" height="86" fill="var(--ink-2)"/><rect x="${zr - 1}" y="22" width="5" height="86" fill="var(--ink-2)"/>${aL}${aR}${myo}<text x="${cx}" y="62" font-size="8" text-anchor="middle" fill="#fff">myosin</text><text x="${zl + 20}" y="16" font-size="8" fill="var(--accent)">actin</text><text x="${zl - 4}" y="118" font-size="7" fill="var(--ink-3)">Z-line</text><text x="${zr - 4}" y="118" font-size="7" fill="var(--ink-3)">Z-line</text>`;
+      const force = L > 3.0 ? slC((3.6 - L) / 0.6) : L >= 2.0 ? 1 : slC(1 - (2.0 - L) / 0.6);
+      $("#sls-out").textContent = `Sarcomere length ${L.toFixed(2)} µm (resting about 2.5, stretched about 3.6, fully shortened about 2.0). Relative force potential ${fmt(force * 100)}%. Each cycle of myosin heads grabbing, pulling and releasing uses ATP, which is why creatine (rebuilds ATP) and carbohydrate (fuels it) matter.`;
+    };
+    const play = () => { if (run) run.stop(); const el = $("#sls-c"); run = slAnim(3200, p => { el.value = Math.round((p < .5 ? p * 2 : 2 - p * 2) * 100); $("#sls-c-v").textContent = el.value + "%"; draw(); }); };
+    $("#sls-play").addEventListener("click", play); $("#sls-c").dataset.u = "%"; slBind(["sls-c"], () => { if (run) run.stop(); draw(); }); draw(); return draw;
+  });
+
+/* 14. Size principle */
+slCard("sl-size", "Fiber recruitment: why heavy or close-to-failure sets work", "Your nervous system recruits small slow fibers first and adds bigger fast fibers as demand rises. Heavy lifts do it instantly; light lifts do it only as fatigue builds. Press Play for a light set taken to failure.",
+  `<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">${slRange("slx-l", "Effort demanded", 0, 100, 30, 1, "%")}<button type="button" class="btn small" id="slx-play">Play light set to failure</button></div><svg id="slx-svg" viewBox="0 0 320 90" style="width:100%;max-width:640px" role="img" aria-label="Fiber recruitment"></svg><div class="legend"><span><i style="background:var(--good)"></i>Type I slow</span><span><i style="background:var(--accent)"></i>Type IIa</span><span><i style="background:var(--bad)"></i>Type IIx</span></div><div id="slx-out" class="small"></div>`,
+  () => {
+    let run = null;
+    const draw = (eff, rep) => {
+      const f = [], n = [30, 20, 10]; let k = 0; const groups = [[0, 30, "var(--good)", 0], [30, 50, "var(--accent)", 35], [50, 60, "var(--bad)", 70]];
+      let dots = ""; groups.forEach(([a, b, col, th]) => { for (let i = a; i < b; i++) { const order = (i - a) / (b - a) * 25 + th; const on = eff >= order; const x = 14 + (i % 30) * 10, y = 18 + Math.floor(i / 30) * 24 + (a === 50 ? 0 : 0); dots += `<circle cx="${x}" cy="${y}" r="4.2" fill="${on ? col : "var(--surface-2)"}" stroke="${on ? col : "var(--line)"}" style="transition:fill .15s"/>`; } });
+      const rows = []; $("#slx-svg").innerHTML = `<g>${dots}</g><text x="14" y="82" font-size="8" fill="var(--ink-3)">${rep ? "Rep " + rep + ", effort needed rises as fatigue builds" : "Effort " + fmt(eff) + "%"}</text>`;
+      const on = [0, 1, 2].map((g, i) => { const [a, b, , th] = groups[i]; let c = 0; for (let j = a; j < b; j++) if (eff >= (j - a) / (b - a) * 25 + th) c++; return c / (b - a); });
+      $("#slx-out").textContent = `Recruited: Type I ${fmt(on[0] * 100)}%, Type IIa ${fmt(on[1] * 100)}%, Type IIx ${fmt(on[2] * 100)}%. Fast fibers have the most growth potential, so a set must be heavy (high effort from rep 1) or light but taken within a few reps of failure so those fibers get recruited and worked.`;
+    };
+    const play = () => { if (run) run.stop(); run = slAnim(4200, p => { const rep = Math.max(1, Math.round(p * 25)); const eff = 25 + p * 70; draw(eff, rep); }); };
+    $("#slx-play").addEventListener("click", play); $("#slx-l").dataset.u = "%"; slBind(["slx-l"], () => { if (run) run.stop(); draw(slNum("slx-l")); }); draw(30); return () => draw(slNum("slx-l"));
+  });
+
+const SL_VIDEOS = [["Progressive overload explained", "progressive overload explained"], ["How muscle grows (hypertrophy)", "how muscles grow hypertrophy explained"], ["Protein per meal and muscle protein synthesis", "muscle protein synthesis protein per meal"], ["Energy balance, TDEE and calorie deficit", "TDEE calorie deficit explained"], ["Insulin, blood sugar and fat loss", "insulin resistance explained animation"], ["Zone 2 cardio explained", "zone 2 cardio explained"], ["How to find your 1RM safely", "estimate one rep max safely"], ["Squat form basics", "barbell squat form tutorial"], ["Romanian deadlift form", "romanian deadlift form tutorial"], ["Hip thrust form", "hip thrust form tutorial"], ["Bench press form", "bench press form tutorial"], ["Pull-up progression", "pull up progression beginners"], ["Overhead press form", "overhead press form tutorial"], ["Sliding filament theory animation", "sliding filament theory animation"], ["Carb loading and glycogen explained", "carb loading glycogen supercompensation explained"], ["Sleep and recovery for muscle", "sleep and muscle recovery explained"], ["Deload weeks and fatigue management", "deload week explained"], ["Reading a nutrition label and net carbs", "how to count macros net carbs tutorial"]];
+function renderLab() {
+  const el = $("#sl-grid"); if (el.dataset.built) return; el.dataset.built = "1";
+  el.innerHTML = SLCARDS.map(c => `<section class="card" id="${c.id}" style="min-width:0"><h3>${esc(c.title)}</h3><p class="small muted" style="margin:4px 0 10px">${esc(c.blurb)}</p>${c.body}</section>`).join("") +
+    `<section class="card" style="min-width:0"><h3>Watch and learn</h3><p class="small muted" style="margin:4px 0 10px">These open a YouTube search for the topic in a new tab. Pick a channel you trust; the dashboard does not host or vouch for any one video.</p><div style="display:grid;gap:6px">${SL_VIDEOS.map(v => `<a class="btn ghost small" style="text-align:left;text-decoration:none" target="_blank" rel="noopener noreferrer" href="${SL_YT(v[1])}">▶ ${esc(v[0])}</a>`).join("")}</div></section>`;
+  SLCARDS.forEach(c => { c.redraw = c.init(); });
+}
+onShow.lab = () => { renderLab(); SLCARDS.forEach(c => { if (c.redraw) c.redraw(); }); $$("#p-lab .u-wt").forEach(s => s.textContent = `(${wUnit()})`); };
+/* ---------- knowledge base: reference tables from the user's workbook (peptide dose columns left out) ---------- */
+const PEP_STATUS = { "Semaglutide": "Approved (specific uses), prescription", "Tirzepatide": "Approved (specific uses), prescription", "Tesamorelin": "Approved (specific use), prescription", "PT-141 (Bremelanotide)": "Approved (specific use), prescription", "Sermorelin": "Formerly approved, limited availability", "Gonadorelin": "Prescription, limited uses", "Thymosin Alpha-1": "Approved in some countries, not the US", "Cerebrolysin": "Approved in some countries, not the US", "Semax": "Approved in Russia only", "Selank": "Approved in Russia only", "NA-Semax": "Not approved", "Retatrutide": "Investigational (trials)", "Cagrilintide": "Investigational (trials)", "MK-677 (Ibutamoren)": "Investigational, not approved", "Melanotan II": "Not approved; safety concerns", "BPC-157": "Not approved; mostly animal data", "TB-500": "Not approved; mostly animal data", "IGF-1 LR3": "Not approved", "IGF-1 DES": "Not approved", "Follistatin 344": "Not approved", "PEG-MGF": "Not approved", "FOXO4-DRI": "Not approved; animal data only" };
+const KBX_SETS = [
+  { id: "principles", label: "Arnold's 25 training principles", mode: "cards", d: KB.principles, title: 1, sum: [2], note: "Paraphrased from your workbook of the classic bodybuilding principles. Behind-the-neck presses and pull-ups stress the shoulder; use the front variations unless you have excellent mobility." },
+  { id: "arnold", label: "Arnold-style routines and splits", mode: "sections", d: KB.arnold, note: "Arnold's volume (20-30 sets per body part) was for full-time, drug-assisted bodybuilders. Natural lifters should do roughly half." },
+  { id: "diets", label: "Diet types compared (14)", mode: "cards", d: KB.diets, title: 0, sum: [1, 3], filter: null, note: "Star ratings are the workbook author's judgement. Adherence beats the label: the best diet is the one you can follow." },
+  { id: "bloodtype", label: "Blood-type diet (D'Adamo)", mode: "cards", d: KB.bloodtype, title: 0, sum: [1], note: "Evidence note: controlled studies do not show blood type changes how people respond to these diets. People improve mostly because they cut processed food. Treat as a clean-eating framework." },
+  { id: "gi", label: "Glycemic index and load of common foods", mode: "table", d: KB.gi, note: "GI = how fast a carbohydrate raises blood sugar; GL = GI × carbohydrate in the serving. GL is the more useful number." },
+  { id: "insulinStrat", label: "Insulin-sensitivity strategies", mode: "table", d: KB.insulinStrat, note: "Prescription drugs listed here are for a physician to manage. Supplement doses are typical label ranges, not advice for any one person." },
+  { id: "insulinTiming", label: "Insulin-smart meal timing", mode: "table", d: KB.insulinTiming },
+  { id: "vitamins", label: "Vitamins and minerals (26)", mode: "cards", d: KB.vitamins, title: 0, sum: [1], note: "RDA = official daily need. Upper limit = official safe ceiling for most adults. 'Optimal' ranges are the workbook author's targets, test before supplementing high doses (vitamins A, D, iron, zinc, selenium)." },
+  { id: "supps", label: "Supplements (48)", mode: "cards", d: KB.supps, title: 0, sum: [1, 3], filter: 1, note: "Doses are typical over-the-counter label ranges. Prescription drugs (metformin) and higher-risk items (yohimbine, fadogia) need a clinician. The strongest evidence: creatine, caffeine, protein, vitamin D if low, omega-3 if you eat little fish." },
+  { id: "peptides", label: "Peptides: what they are (no dosing)", mode: "cards", d: KB.peptides, title: 0, sum: [1], filter: 1, status: true, note: "Education only. Dose, schedule, cycle, stacking and sourcing details from the source workbook are intentionally left out: most of these are not approved for human use, quality of gray-market products is unreliable, and the evidence is mostly animal or small trials. Any peptide use belongs under a physician who orders labs." },
+  { id: "markers", label: "Blood markers and optimal ranges (38)", mode: "table", d: KB.markers, note: "Optimal ranges are tighter than lab 'normal' ranges. Use for conversations with your clinician, not self-diagnosis." },
+  { id: "landmarks", label: "Weekly volume landmarks by muscle", mode: "table", d: KB.landmarks, note: "Hard sets per week. MV maintain, MEV minimum to grow, MAV most gains, MRV most you can recover from." },
+  { id: "soma", label: "Body types (somatotypes)", mode: "soma", d: KB.soma, note: "Somatotypes are a loose description of frame and fat distribution, not destiny. Use them to choose a starting point, then follow your own data." },
+  { id: "physiology", label: "Concepts: muscle physiology", mode: "secs", d: KB.physiology },
+  { id: "metabolism", label: "Concepts: insulin and metabolism", mode: "secs", d: KB.metabolism },
+  { id: "fatburn", label: "Concepts: how the body burns fat", mode: "secs", d: KB.fatburn },
+  { id: "safety", label: "Safety: red flags and who should check first", mode: "secs", d: KB.safety },
+  { id: "programs", label: "Program library (add to your Programs tab)", mode: "programs" }
+];
+function kbxParseDsl(txt) {
+  const days = []; let cur = null;
+  txt.split("\n").forEach(l => {
+    l = l.trim(); if (!l) return;
+    if (l[0] === "#") { cur = [l.replace(/^#\s*/, ""), []]; days.push(cur); return; }
+    const p = l.split("|"); if (cur && p.length >= 3) cur[1].push([p[0].trim(), p[1].trim(), p[2].trim(), (p[3] || "").trim()]);
+  });
+  return days;
+}
+Object.values(PDSL).forEach(([name, src, txt]) => { const days = kbxParseDsl(txt); if (!TEMPLATES.some(t => t.name === name)) TEMPLATES.push({ name, src, days, lib: true }); });
+const kbxTable = (h, rows) => `<div class="table-wrap"><table><thead><tr>${h.map((x, i) => `<th${i > 0 && rows.length && /^[\d.\-–+ %<>]+$/.test(String(rows[0][i])) ? ' class="num"' : ""}>${esc(x)}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((v, i) => `<td>${esc(v)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+function renderKB() {
+  const id = $("#kb-set").value, spec = KBX_SETS.find(s => s.id === id) || KBX_SETS[0], q = $("#kb-q").value.trim().toLowerCase(), out = $("#kb-out"), fsel = $("#kb-f");
+  store.set("kbset", spec.id); $("#kb-note").textContent = spec.note || "";
+  $("#kb-fl").hidden = spec.filter == null;
+  if (spec.filter != null && fsel.dataset.set !== spec.id) { const cats = [...new Set(spec.d.r.map(r => r[spec.filter]))]; fsel.innerHTML = `<option value="">All categories</option>` + cats.map(c => `<option>${esc(c)}</option>`).join(""); fsel.dataset.set = spec.id; }
+  const match = v => !q || String(v).toLowerCase().includes(q);
+  let html = "", count = 0;
+  if (spec.mode === "cards") {
+    const d = spec.d, fv = spec.filter != null ? fsel.value : "";
+    const rows = d.r.filter(r => (!fv || r[spec.filter] === fv) && match(r.join(" ")));
+    count = rows.length;
+    html = rows.map(r => `<details class="card" style="padding:10px 14px;margin-bottom:8px"><summary style="cursor:pointer"><strong>${esc(r[spec.title])}</strong>${spec.status ? ` <span class="pill p-warn" style="margin-left:6px">${esc(PEP_STATUS[r[0]] || "Not approved for human use")}</span>` : ""} <span class="small muted">${spec.sum.map(i => esc(String(r[i]).slice(0, 110))).join(" · ")}</span></summary><dl style="display:grid;grid-template-columns:minmax(110px,170px) 1fr;gap:4px 12px;margin:10px 0 0" class="small">${d.h.map((k, i) => i === spec.title ? "" : `<dt class="muted">${esc(k)}</dt><dd style="margin:0">${esc(r[i])}</dd>`).join("")}</dl></details>`).join("");
+  } else if (spec.mode === "table") {
+    const rows = spec.d.r.filter(r => match(r.join(" "))); count = rows.length; html = kbxTable(spec.d.h, rows);
+  } else if (spec.mode === "sections") {
+    spec.d.forEach(s => { const rows = s.r.filter(r => match(r.join(" "))); if (!rows.length) return; count += rows.length; html += `<h4 style="margin:14px 0 6px">${esc(s.title)}</h4>${kbxTable(s.h, rows)}`; });
+    html += `<div style="margin-top:12px"><button type="button" class="btn small" data-kbadd="arnold">Add the Arnold-style routines to my Programs</button></div>`;
+  } else if (spec.mode === "soma") {
+    const rows = spec.d.filter(r => match(JSON.stringify(r))); count = rows.length;
+    html = rows.map(r => `<div class="card" style="margin-bottom:8px"><h4>${esc(r.type)}</h4><p class="small">${esc(r.body)}</p><dl class="small" style="display:grid;grid-template-columns:110px 1fr;gap:4px 12px;margin:8px 0 0"><dt class="muted">Diet and training</dt><dd style="margin:0">${esc(r.diet)}</dd><dt class="muted">Supplements</dt><dd style="margin:0">${esc(r.supplements)}</dd></dl></div>`).join("");
+  } else if (spec.mode === "secs") {
+    spec.d.forEach(s => { const rr0 = s.rows || s.r; const rr = rr0.filter(r => match(r.join(" "))); if (!rr.length) return; count += rr.length; html += `<details class="card" style="padding:10px 14px;margin-bottom:8px" ${q ? "open" : ""}><summary style="cursor:pointer"><strong>${esc(s.title)}</strong> <span class="small muted">${rr.length} items</span></summary><dl class="small" style="display:grid;grid-template-columns:minmax(120px,210px) 1fr;gap:6px 12px;margin:10px 0 0">${rr.map(r => `<dt style="font-weight:600">${esc(r[0])}</dt><dd style="margin:0">${esc(r[1])}</dd>`).join("")}</dl></details>`; });
+  } else if (spec.mode === "programs") {
+    const lib = TEMPLATES.filter(t => t.lib && match(t.name + " " + t.src)); count = lib.length;
+    html = lib.map(t => `<details class="card" style="padding:10px 14px;margin-bottom:8px"><summary style="cursor:pointer"><strong>${esc(t.name)}</strong> <span class="small muted">${t.days.length} days · ${esc(t.src)}</span></summary><div style="margin:8px 0"><button type="button" class="btn small" data-kbprog="${esc(t.name)}">Add to my Programs</button></div>${t.days.map(d => `<h4 style="margin:8px 0 4px;font-size:1rem">${esc(d[0])}</h4><ul class="small" style="padding-left:18px">${d[1].map(i => `<li>${esc(i[0])} · ${esc(i[1])} × ${esc(i[2])}${i[3] ? ` <span class="muted">(${esc(i[3])})</span>` : ""} <a target="_blank" rel="noopener noreferrer" href="${SL_YT(i[0] + " proper form")}" aria-label="Watch ${esc(i[0])} form video">▶</a></li>`).join("")}</ul>`).join("")}</details>`).join("");
+  }
+  $("#kb-count").textContent = count ? `${count} shown` : "";
+  out.innerHTML = html || `<p class="small muted">Nothing matches that search.</p>`;
+}
+$("#kb-set").innerHTML = KBX_SETS.map(s => `<option value="${s.id}">${esc(s.label)}</option>`).join("");
+$("#kb-set").value = store.get("kbset", "principles"); if (!$("#kb-set").value) $("#kb-set").value = "principles";
+$("#kb-set").addEventListener("change", () => { $("#kb-q").value = ""; $("#kb-f").dataset.set = ""; renderKB(); });
+$("#kb-q").addEventListener("input", renderKB); $("#kb-f").addEventListener("input", renderKB);
+$("#kb-out").addEventListener("click", e => {
+  const a = e.target.closest("[data-kbprog]"), b = e.target.closest("[data-kbadd]");
+  if (a) { const t = TEMPLATES.find(x => x.name === a.dataset.kbprog); if (t && !PROGRAMS.some(p => p.name === t.name)) { PROGRAMS.unshift(mkProgram(t.name, t.src, t.days)); savePG(); renderPrograms(); } a.textContent = "Added. See the Programs tab."; a.disabled = true; }
+  if (b) { const t = TEMPLATES.find(x => x.name.startsWith("Arnold-style")); if (t && !PROGRAMS.some(p => p.name === t.name)) { PROGRAMS.unshift(mkProgram(t.name, t.src, t.days)); savePG(); renderPrograms(); } b.textContent = "Added. See the Programs tab."; b.disabled = true; }
+});
+onShow.kb = () => renderKB();
 
 /* ---------- wiring ---------- */
 function renderAll() { renderOverview(); renderORM(); renderCardio(); renderLog(); renderMeals(); renderStandards(); renderPlates(); renderHealthCalc(); renderHub(); renderSweat(); renderPrograms(); renderWorkout(); renderProgress(); renderFoodLog(); renderStack(); renderLabs(); renderJournal(); renderA360(); renderWellness(); renderGoalBF(); renderCaffeine(); renderCortisol(); renderFTP(); renderCSS(); renderFrame(); $("#maf-out").textContent = 180 - S.age; }
