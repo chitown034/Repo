@@ -1,0 +1,981 @@
+<title>Groove School</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=IBM+Plex+Mono:wght@400;500&family=Work+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout concept: sticky tab bar over one working panel at a time; playable instruments up top, lesson text below, data tables last. */
+:root{
+  --bg:#f1eff7; --surface:#ffffff; --surface2:#e9e5f5; --ink:#1c1830; --muted:#5d5878; --line:#d5cfea;
+  --accent:#5a3fd0; --accent-ink:#ffffff; --accent-soft:#d9d0fb; --hot:#d98a00; --hot-soft:#fbe7b8;
+  --good:#1f7a52; --key-w:#fbfaff; --key-b:#231f3a; --key-edge:#b9b2d6;
+  --f-display:'Big Shoulders Display','Arial Narrow',Impact,sans-serif;
+  --f-body:'Work Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#13101f; --surface:#1d1930; --surface2:#292345; --ink:#efecfa; --muted:#a8a3c6; --line:#38325a;
+  --accent:#a592ff; --accent-ink:#13101f; --accent-soft:#3b3270; --hot:#f2b53a; --hot-soft:#4d3b0f;
+  --good:#5fd49b; --key-w:#e9e6f7; --key-b:#0e0b19; --key-edge:#58507f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#13101f; --surface:#1d1930; --surface2:#292345; --ink:#efecfa; --muted:#a8a3c6; --line:#38325a;
+  --accent:#a592ff; --accent-ink:#13101f; --accent-soft:#3b3270; --hot:#f2b53a; --hot-soft:#4d3b0f;
+  --good:#5fd49b; --key-w:#e9e6f7; --key-b:#0e0b19; --key-edge:#58507f; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 var(--f-body);padding-block:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+h1,h2,h3{font-family:var(--f-display);text-transform:uppercase;letter-spacing:.02em;line-height:1;margin:0;text-wrap:balance}
+h2{font-size:clamp(30px,5vw,44px);font-weight:900}
+h3{font-size:22px;font-weight:700}
+p{margin:0 0 .8em;max-width:70ch} a{color:var(--accent)}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--hot);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line);margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:8px max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+.bar{display:flex;align-items:center;gap:12px;max-width:1120px;margin:0 auto}
+.brand{font:900 26px var(--f-display);text-transform:uppercase;letter-spacing:.03em;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.brand i{width:20px;height:20px;border-radius:50%;background:conic-gradient(var(--accent) 0 25%,var(--ink) 0 50%,var(--accent) 0 75%,var(--ink) 0);animation:spin 2.4s linear infinite;display:inline-block}
+.sp{flex:1}
+.ghost{background:transparent;border:1px solid var(--line);border-radius:8px;padding:5px 10px;font-size:14px}
+.ghost:hover{border-color:var(--accent)}
+#tabs{display:flex;gap:2px;overflow-x:auto;max-width:1120px;margin:4px auto 0;scrollbar-width:none}
+#tabs button{background:none;border:0;border-bottom:3px solid transparent;padding:8px 12px;font:600 14px var(--f-body);color:var(--muted);white-space:nowrap}
+#tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--hot)}
+main{padding-block:28px 64px}
+.panel{display:grid;gap:22px;max-width:1120px;margin:0 auto}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}
+.card.flat{background:transparent;border-style:dashed}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.kicker{font:500 12px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.btn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:9px;padding:8px 14px;font-weight:600}
+.btn.alt{background:var(--surface2);color:var(--ink)}
+.btn:hover{filter:brightness(1.08)}
+select,input[type=text],input[type=search]{background:var(--surface2);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+label.f{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--muted)}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:4px 12px;font-size:14px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.note{font-size:14px;color:var(--muted)}
+.g2{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.readout{white-space:pre-line;font:500 14px var(--f-mono);background:var(--surface2);border-radius:8px;padding:8px 10px;overflow-wrap:anywhere}
+.tag{font:500 11px var(--f-mono);border-radius:5px;padding:2px 6px;background:var(--surface2);white-space:nowrap}
+.tag.b{background:#cdeedd;color:#14573a}.tag.i{background:var(--hot-soft);color:#7a4a00}.tag.a{background:#f6d4d4;color:#8a1f1f}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tag.b{background:#17402e;color:#8fe3ba}:root:not([data-theme="light"]) .tag.i{color:#f4cf80}:root:not([data-theme="light"]) .tag.a{background:#4a2020;color:#f3a9a9}}
+:root[data-theme="dark"] .tag.b{background:#17402e;color:#8fe3ba}:root[data-theme="dark"] .tag.i{color:#f4cf80}:root[data-theme="dark"] .tag.a{background:#4a2020;color:#f3a9a9}
+/* hero */
+.hero{display:grid;grid-template-columns:1.3fr 1fr;gap:24px;align-items:center}
+.hero h1{font-size:clamp(54px,11vw,120px);font-weight:900;line-height:.86}
+.hero h1 span{color:var(--accent)}
+.eq{display:flex;align-items:flex-end;gap:5px;height:130px}
+.eq b{flex:1;background:var(--accent);border-radius:3px 3px 0 0;animation:eq 1.1s ease-in-out infinite alternate;transform-origin:bottom}
+.eq b:nth-child(3n){background:var(--hot)}
+.vinyl{width:min(260px,70%);aspect-ratio:1;border-radius:50%;margin:0 auto;background:repeating-radial-gradient(circle,var(--key-b) 0 3px,#2d2850 3px 4px);position:relative;animation:spin 5s linear infinite;box-shadow:0 10px 30px #0004}
+.vinyl::after{content:"";position:absolute;inset:36%;border-radius:50%;background:var(--hot);box-shadow:0 0 0 6px var(--accent)}
+.prog{height:10px;border-radius:99px;background:var(--surface2);overflow:hidden}
+.prog>i{display:block;height:100%;background:var(--hot);width:0;transition:width .5s}
+.nav-card{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:6px;transition:transform .15s,border-color .15s}
+.nav-card:hover{transform:translateY(-3px);border-color:var(--accent)}
+.nav-card b{font:900 28px var(--f-display);text-transform:uppercase}
+.nav-card span{font-size:14px;color:var(--muted)}
+/* metronome */
+.pend{width:8px;height:110px;background:var(--accent);border-radius:4px;transform-origin:50% 100%;margin:0 auto;position:relative;transition:transform .5s ease-in-out;transform:rotate(-24deg)}
+.pend::before{content:"";position:absolute;left:50%;top:22px;width:22px;height:22px;margin-left:-11px;border-radius:5px;background:var(--hot)}
+.pend.r{transform:rotate(24deg)}
+.dots{display:flex;gap:8px;justify-content:center}.dots i{width:14px;height:14px;border-radius:50%;background:var(--surface2);border:1px solid var(--line)}.dots i.on{background:var(--hot);border-color:var(--hot);transform:scale(1.25)}
+/* piano */
+.kbwrap{overflow-x:auto;padding:4px 0 10px;scrollbar-width:thin}
+.kb{position:relative;display:flex;height:200px;width:max-content;--kw:46px;--bw:28px;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.wk{width:var(--kw);height:100%;background:var(--key-w);border:1px solid var(--key-edge);border-radius:0 0 7px 7px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;padding-bottom:6px;font:500 11px var(--f-mono);color:#4a4668;cursor:pointer;transition:background .08s,transform .08s}
+.bk{position:absolute;top:0;width:var(--bw);height:62%;background:var(--key-b);border-radius:0 0 5px 5px;z-index:2;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:5px;font:500 10px var(--f-mono);color:#cfc9ee;transition:background .08s}
+.kb .nm{display:none}.kb.names .nm,.kb .isC .nm{display:inline}
+.ky{opacity:.55;text-transform:uppercase}
+.kb [data-d]::after{content:attr(data-d);font-weight:600;color:var(--accent-ink);background:var(--accent);border-radius:50%;min-width:20px;height:20px;line-height:20px;text-align:center;font-size:11px;order:-1;margin-bottom:6px}
+.kb .hl{background:var(--accent-soft)}.kb .bk.hl{background:var(--accent)}
+.kb .rt{background:var(--hot-soft)}.kb .bk.rt{background:var(--hot)}
+.kb .rt[data-d]::after{background:var(--hot);color:#1c1830}
+.kb .down,.kb .now{background:var(--hot)!important;transform:translateY(2px)}
+.kb .target{animation:pulse .9s ease-in-out infinite}
+.shake{animation:shake .25s}
+@keyframes pulse{50%{background:var(--hot);box-shadow:0 0 14px var(--hot)}}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes eq{from{transform:scaleY(.15)}to{transform:scaleY(1)}}
+/* guitar */
+.fbwrap{overflow-x:auto;padding-bottom:6px}
+#fb{min-width:760px;width:100%;height:auto;display:block}
+#fb .wood{fill:var(--surface2)}
+#fb .fret{stroke:var(--key-edge);stroke-width:2}
+#fb .nut{stroke:var(--ink);stroke-width:6}
+#fb .str{stroke:var(--muted)}
+#fb .mk{fill:var(--line)}
+#fb .fn{fill:var(--muted);font:500 11px var(--f-mono);text-anchor:middle}
+#fb .sl{fill:var(--muted);font:600 12px var(--f-mono);text-anchor:middle}
+.gp{cursor:pointer}
+.gd{fill:var(--accent);opacity:0;transform-box:fill-box;transform-origin:center}
+.gp:hover .gd{opacity:.25}
+.gp.on .gd{opacity:1}.gp.root .gd{fill:var(--hot)}
+.gt{fill:var(--accent-ink);font:600 11px var(--f-mono);text-anchor:middle;opacity:0;pointer-events:none}
+.gp.on .gt{opacity:1}.gp.root .gt{fill:#1c1830}
+.gp.ping .gd{animation:gping .45s}
+.gp.target .gd{opacity:1;fill:var(--hot);animation:pulse2 .9s infinite}
+@keyframes gping{50%{transform:scale(1.5)}}
+@keyframes pulse2{50%{transform:scale(1.35)}}
+.chord{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:6px 4px 8px;text-align:center;font:600 13px var(--f-mono)}
+.chord:hover,.chord[aria-pressed="true"]{border-color:var(--hot);background:var(--hot-soft)}
+.chord svg{width:84px;height:104px;display:block;margin:0 auto}
+.cgrid{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(98px,1fr))}
+.cd{stroke:var(--ink);fill:none}.cd-d{fill:var(--ink)}.cd-t{fill:var(--muted);font:500 10px var(--f-mono);text-anchor:middle}
+.tab{font:500 14px/1.35 var(--f-mono);background:var(--surface2);border-radius:10px;padding:12px;overflow-x:auto;white-space:pre}
+.tab .tc.on{background:var(--hot);color:#1c1830;border-radius:3px}
+/* lessons */
+details.ls{border:1px solid var(--line);border-radius:12px;background:var(--surface);margin-bottom:8px}
+details.ls>summary{cursor:pointer;padding:12px 14px;font-weight:600;display:flex;align-items:center;gap:10px;list-style:none}
+details.ls>summary::-webkit-details-marker{display:none}
+details.ls>summary::before{content:"+";font:700 18px var(--f-mono);color:var(--accent);width:16px}
+details.ls[open]>summary::before{content:"–"}
+details.ls .lb{padding:0 14px 14px 40px}
+details.ls.done>summary{color:var(--good)}
+.chk{margin-left:auto;font:500 12px var(--f-mono);display:flex;gap:6px;align-items:center;color:var(--muted)}
+/* tables */
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{text-align:left;font:500 12px var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:8px;border-bottom:2px solid var(--line);white-space:nowrap}
+td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:hover td{background:var(--surface2)}
+/* beat lab */
+.seq{display:grid;grid-template-columns:78px repeat(16,minmax(0,1fr));gap:4px;align-items:center;min-width:620px}
+.seq .tn{font:600 12px var(--f-mono);text-align:left;background:var(--surface2);border:1px solid var(--line);border-radius:6px;padding:7px 4px}
+.st{aspect-ratio:1;border-radius:5px;border:1px solid var(--line);background:var(--surface2);padding:0}
+.st.g{background:var(--surface);}
+.st.on{background:var(--accent);border-color:var(--accent)}
+.st.cur{outline:3px solid var(--hot);outline-offset:-1px}
+.st.on.cur{background:var(--hot)}
+.deck{position:relative;width:min(300px,100%);aspect-ratio:1;margin:0 auto;touch-action:none}
+.plat{position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle,var(--key-b) 0 3px,#2f2a55 3px 4px);cursor:grab;animation:spin 1.8s linear infinite;box-shadow:0 8px 24px #0005}
+.plat::after{content:"";position:absolute;inset:34%;border-radius:50%;background:var(--accent);box-shadow:inset 0 0 0 10px var(--hot)}
+.plat::before{content:"";position:absolute;left:50%;top:6%;width:3px;height:14%;margin-left:-1.5px;background:#fff;z-index:2}
+.plat.drag{animation:none;cursor:grabbing}
+/* history */
+.tl{position:relative;display:grid;gap:12px;padding-left:22px}
+.tl::before{content:"";position:absolute;left:6px;top:4px;bottom:4px;width:3px;background:linear-gradient(var(--accent),var(--hot));border-radius:3px}
+.ev{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.ev::before{content:"";position:absolute;left:-22px;top:18px;width:15px;height:15px;border-radius:50%;background:var(--bg);border:3px solid var(--hot)}
+.ev h3{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.ev h3 em{font:500 13px var(--f-mono);font-style:normal;color:var(--accent);text-transform:none;letter-spacing:0}
+.ev.in{animation:rise .4s both}
+@keyframes rise{from{opacity:.0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.four{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+/* lyric devices */
+mark{background:var(--hot-soft);color:inherit;border-radius:4px;padding:0 3px;box-shadow:inset 0 -2px var(--hot)}
+mark.b2{background:var(--accent-soft);box-shadow:inset 0 -2px var(--accent)}
+.ex{font:500 15px/1.5 var(--f-mono);background:var(--surface2);border-radius:10px;padding:10px 12px;margin-top:8px}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.fc{border:1px solid var(--line);border-radius:8px;padding:10px 4px;text-align:center;font:600 14px var(--f-mono);background:var(--surface2);transition:transform .08s}
+.fc.on{background:var(--hot);color:#1c1830;transform:scale(1.07);border-color:var(--hot)}
+/* gear signal */
+.sig{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.sig span{padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface2);font-weight:600;font-size:13px;transition:.15s}
+.sig span.lit{background:var(--hot);color:#1c1830;border-color:var(--hot);transform:translateY(-3px)}
+.sig b{color:var(--muted)}
+@media (max-width:760px){.hero{grid-template-columns:1fr}.brand{font-size:22px}.kb{height:170px}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="bar">
+    <div class="brand"><i></i>Groove School</div><div class="sp"></div>
+    <button class="ghost" id="theme" aria-label="Toggle light and dark theme">Theme</button>
+  </div>
+  <nav id="tabs" role="tablist" aria-label="Sections"></nav>
+</header>
+
+<main>
+<!-- START -->
+<section class="panel" id="p-start">
+  <div class="hero">
+    <div>
+      <div class="kicker">Piano · Guitar · Beats · Hip hop history</div>
+      <h1>Groove <span>School</span></h1>
+      <p style="margin-top:14px;font-size:18px">Play real notes on the keyboard and fretboard, follow short lessons, then use the artist guides to learn the sound of Prince, Morris Day and The Time, Michael Jackson, Dr. Dre, Jimi Hendrix and R. Kelly.</p>
+    </div>
+    <div>
+      <div class="vinyl" aria-hidden="true"></div>
+      <div class="eq" aria-hidden="true" id="heroEq" style="margin-top:14px"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><h3>Your progress</h3><span class="readout" id="progTxt">0 of 0 lessons</span></div>
+    <div class="prog" style="margin:12px 0 4px"><i id="progBar"></i></div>
+    <p class="note" style="margin:0">Tick "Done" inside any piano or guitar lesson. Your progress is saved in this browser.</p>
+  </div>
+
+  <div class="grid" id="navCards"></div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Practice room metronome</h3>
+      <div style="margin:14px 0 8px"><div class="pend" id="pend"></div></div>
+      <div class="dots" id="mdots"><i></i><i></i><i></i><i></i></div>
+      <div class="row" style="margin-top:14px">
+        <button class="btn" id="mGo">Start</button>
+        <button class="btn alt" id="mTap">Tap tempo</button>
+        <input type="range" id="mBpm" min="40" max="200" value="90" aria-label="Metronome tempo">
+        <span class="readout"><b id="mBpmV">90</b> BPM</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>How this works</h3>
+      <p>Sound is generated in your browser, so there is nothing to install. Click an instrument to hear it, or use your computer keyboard on the piano.</p>
+      <p><b>Scope, plainly:</b> a dashboard cannot hold every song's full tabs or sheet music. Those are copyrighted and run to thousands of pages. Instead, each artist guide teaches the sound: instruments, chords, rhythm and technique, plus a graded song list so you know what to learn first. For exact note-for-note charts, use licensed sources linked in the Artist Guides tab.</p>
+    </div>
+    <div class="card">
+      <h3>Suggested path</h3>
+      <ol style="margin:0;padding-left:20px">
+        <li>Piano lessons 1 to 3 (or guitar lessons 1 to 3).</li>
+        <li>Play "Ode to Joy" in Learn mode.</li>
+        <li>Open the Beat Lab and build a loop.</li>
+        <li>Pick one artist guide and learn the easiest song.</li>
+        <li>Read Rap History, then explore Sampled.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- PIANO -->
+<section class="panel" id="p-piano" hidden>
+  <div><div class="kicker">Instrument 1</div><h2>Piano</h2></div>
+  <div class="card">
+    <div class="row" style="margin-bottom:10px">
+      <label class="f">Root<select id="pRoot"></select></label>
+      <label class="f">Scale or chord<select id="pType"></select></label>
+      <button class="btn" id="pPlay">Play it</button>
+      <button class="btn alt" id="pClear">Clear</button>
+      <label class="chk"><input type="checkbox" id="pNames"> Note names</label>
+      <span class="note">Computer keys: A W S E D F T G Y H U J K O L P ; &nbsp;(Z / X shift octave)</span>
+    </div>
+    <div class="readout" id="pRead" style="margin-bottom:10px">Pick a root and a scale or chord to light up the keys. The number on a key is its scale degree. Sharps are used for all black-key names.</div>
+    <div class="kbwrap"><div class="kb" id="kb" role="group" aria-label="Piano keyboard"></div></div>
+  </div>
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><h3>Learn mode: Ode to Joy</h3><span class="readout" id="pGStat">Ready</span></div>
+    <p style="margin-top:8px">A public-domain melody that uses only five white keys. Start learn mode, then press the glowing key each time. Right hand: thumb on C, one finger per key.</p>
+    <div class="row"><button class="btn" id="pGo">Start learn mode</button><button class="btn alt" id="pHear">Hear it</button><button class="btn alt" id="pStop">Stop</button></div>
+  </div>
+  <div><h3 style="margin-bottom:10px">Piano lessons</h3><div id="pLessons"></div></div>
+</section>
+
+<!-- GUITAR -->
+<section class="panel" id="p-guitar" hidden>
+  <div><div class="kicker">Instrument 2</div><h2>Guitar</h2></div>
+  <div class="card">
+    <div class="row" style="margin-bottom:10px">
+      <label class="f">Root<select id="gRoot"></select></label>
+      <label class="f">Scale or chord<select id="gType"></select></label>
+      <label class="f">Labels<select id="gLab"><option value="n">Note names</option><option value="d">Degrees</option><option value="x">Dots only</option></select></label>
+      <label class="chk"><input type="checkbox" id="gBox"> One box (4 frets from the low-E root)</label>
+      <button class="btn" id="gPlay">Play it</button>
+      <button class="btn alt" id="gClear">Clear</button>
+    </div>
+    <div class="readout" id="gRead" style="margin-bottom:10px">Standard tuning, low to high: E A D G B e. Click any spot on the neck to hear the note.</div>
+    <div class="fbwrap"><svg id="fb" viewBox="0 0 900 190" role="img" aria-label="Guitar fretboard"></svg></div>
+  </div>
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><h3>Chord library</h3><div class="row"><button class="chip" id="gDown" aria-pressed="true">Downstrum</button><button class="chip" id="gUp" aria-pressed="false">Upstrum</button></div></div>
+    <p class="note" style="margin:6px 0 12px">Click a chord to see it on the neck and hear it. X means do not play that string, a hollow circle means open. Barre chords are marked in the name.</p>
+    <div id="chords"></div>
+    <div class="row" style="margin-top:12px"><span class="readout" id="cRead">No chord selected</span></div>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="row" style="justify-content:space-between"><h3>Tab player</h3>
+      <select id="tabSel" aria-label="Choose a tab exercise"></select></div>
+      <p class="note" style="margin:8px 0">Each line is a string, high e on top. A number is the fret to press. The glowing column is the note being played.</p>
+      <div class="tab" id="tabBox"></div>
+      <div class="row" style="margin-top:10px"><button class="btn" id="tabGo">Play tab</button><button class="btn alt" id="tabStop">Stop</button></div>
+    </div>
+    <div class="card">
+      <div class="row" style="justify-content:space-between"><h3>Learn mode: Ode to Joy</h3><span class="readout" id="gGStat">Ready</span></div>
+      <p style="margin-top:8px">Played on the top two strings. Start learn mode, then click the glowing dot on the neck.</p>
+      <div class="row"><button class="btn" id="gGo">Start learn mode</button><button class="btn alt" id="gHear">Hear it</button><button class="btn alt" id="gStop">Stop</button></div>
+    </div>
+  </div>
+  <div><h3 style="margin-bottom:10px">Guitar lessons</h3><div id="gLessons"></div></div>
+</section>
+
+<!-- BEAT LAB -->
+<section class="panel" id="p-beats" hidden>
+  <div><div class="kicker">Drum machine and turntable</div><h2>Beat Lab</h2></div>
+  <div class="card">
+    <div class="row" style="margin-bottom:12px">
+      <button class="btn" id="bGo">Play</button>
+      <label class="f">Preset<select id="bPre"></select></label>
+      <label class="f">Tempo <b id="bBpmV">90</b> BPM<input type="range" id="bBpm" min="60" max="170" value="90"></label>
+      <label class="f">Swing<input type="range" id="bSw" min="0" max="35" value="10"></label>
+      <button class="btn alt" id="bClr">Clear</button>
+    </div>
+    <div class="tw"><div class="seq" id="seq"></div></div>
+    <p class="note" style="margin:10px 0 0">Click a step to turn it on. Click a row name to hear that sound. Presets are inspired by each style's feel, not copies of any record.</p>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <h3>Scratch deck</h3>
+      <p class="note" style="margin:6px 0 12px">Press and drag the platter back and forth. Faster movement gives a higher pitch, like a record scratch.</p>
+      <div class="deck"><div class="plat" id="plat" aria-label="Scratch platter"></div></div>
+    </div>
+    <div class="card">
+      <h3>What each sound does</h3>
+      <p><b>Kick</b> sets the low pulse. <b>Snare and clap</b> mark the backbeat on 2 and 4 (steps 5 and 13 in the grid). <b>Hats</b> keep time and add speed. <b>808</b> is a long, tuned bass drum used as a bass note.</p>
+      <p><b>Swing</b> pushes every second 16th note late, which gives boom bap its lazy bounce.</p>
+      <p><b>Try this:</b> load Boom Bap, then add one extra kick on step 11 and listen to how the feel changes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ARTISTS -->
+<section class="panel" id="p-artists" hidden>
+  <div><div class="kicker">Piano and guitar approaches</div><h2>Artist Guides</h2></div>
+  <div class="card" id="learnAny"></div>
+  <div class="row" id="artChips" role="group" aria-label="Choose an artist"></div>
+  <div id="artBody" class="panel"></div>
+</section>
+
+<!-- HISTORY -->
+<section class="panel" id="p-history" hidden>
+  <div><div class="kicker">1973 to now</div><h2>History of Rap and Hip Hop</h2></div>
+  <div class="card">
+    <h3>The four elements</h3>
+    <div class="four" style="margin-top:12px">
+      <div><b>DJing</b><br><span class="note">Turntables, breaks, mixing and scratching.</span></div>
+      <div><b>MCing</b><br><span class="note">Rhythmic speech over beats; rap.</span></div>
+      <div><b>Breaking</b><br><span class="note">Dance moves built on the drum break.</span></div>
+      <div><b>Graffiti</b><br><span class="note">Visual art and lettering. Many add "knowledge" as a fifth element.</span></div>
+    </div>
+  </div>
+  <div class="row" id="eraChips" role="group" aria-label="Filter by era"></div>
+  <div class="tl" id="tl"></div>
+</section>
+
+<!-- LYRICS -->
+<section class="panel" id="p-lyrics" hidden>
+  <div><div class="kicker">Writing and flow</div><h2>Poetic Devices Used in Rap</h2></div>
+  <p>All example bars below are original, written for this lesson. Highlighted words show the device at work.</p>
+  <div class="grid" id="devs"></div>
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><h3>Flow lab: four bars on the beat</h3>
+      <div class="row"><button class="btn" id="fGo">Play</button><label class="f">Tempo <b id="fBpmV">80</b> BPM<input type="range" id="fBpm" min="60" max="120" value="80"></label></div></div>
+    <p class="note" style="margin:8px 0 12px">Each box is one beat. The words land on the beat; the click is the beat. Say the line out loud and match the glow.</p>
+    <div class="flow" id="flow"></div>
+  </div>
+</section>
+
+<!-- GEAR -->
+<section class="panel" id="p-gear" hidden>
+  <div><div class="kicker">Devices and instruments</div><h2>Gear Behind the Sound</h2></div>
+  <div class="card">
+    <h3>Hendrix signal chain</h3>
+    <p class="note" style="margin:6px 0 12px">Signal travels left to right. Click to replay the animation.</p>
+    <div class="sig" id="sig" role="button" tabindex="0" aria-label="Replay the signal chain animation"></div>
+  </div>
+  <div class="grid" id="gearCards"></div>
+</section>
+
+<!-- SAMPLES -->
+<section class="panel" id="p-samples" hidden>
+  <div><div class="kicker">Records that became other records</div><h2>Sampled Songs</h2></div>
+  <div class="card">
+    <p><b>Honest scope:</b> there is no single official "top 500 sampled songs" list, and I will not invent rankings. This is a curated set of well-documented examples, grouped so you can hear where each idea came from. To dig deeper, search any track on <a href="https://www.whosampled.com" target="_blank" rel="noopener">WhoSampled</a>.</p>
+    <div class="row" style="margin-top:8px">
+      <input type="search" id="sQ" placeholder="Search artist, song or sampler" aria-label="Search samples" style="min-width:220px;flex:1">
+      <div class="row" id="sChips" role="group" aria-label="Filter by type"></div>
+      <span class="readout" id="sCount"></span>
+    </div>
+  </div>
+  <div class="card tw"><table><thead><tr><th>Original</th><th>Year</th><th>Type</th><th>Used in</th></tr></thead><tbody id="sBody"></tbody></table></div>
+</section>
+</main>
+
+<script>
+"use strict";
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+/* ---------- theme ---------- */
+$("#theme").onclick=()=>{const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;r.dataset.theme=dark?"light":"dark"};
+
+/* ---------- audio ---------- */
+let AC=null,MASTER=null;
+function ac(){if(!AC){AC=new(window.AudioContext||window.webkitAudioContext)();const c=AC.createDynamicsCompressor();const g=AC.createGain();g.gain.value=.9;c.connect(g).connect(AC.destination);MASTER=c}if(AC.state==="suspended")AC.resume();return AC}
+const out=()=>{ac();return MASTER};
+const mtof=m=>440*Math.pow(2,(m-69)/12);
+function pianoNote(m,t=0,dur=1.3,vol=.2){
+  const a=ac(),now=a.currentTime+t,f=mtof(m),g=a.createGain();
+  g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(vol,now+.008);g.gain.exponentialRampToValueAtTime(vol*.35,now+.3);g.gain.exponentialRampToValueAtTime(.0001,now+dur);
+  [[1,1,"triangle"],[2,.35,"sine"],[3,.14,"sine"],[4,.06,"sine"]].forEach(([k,amp,type])=>{const o=a.createOscillator();o.type=type;o.frequency.value=f*k;const og=a.createGain();og.gain.value=amp;o.connect(og).connect(g);o.start(now);o.stop(now+dur+.05)});
+  g.connect(out());
+}
+const GB={};
+function pluck(m,t=0,vol=.55){
+  const a=ac(),f=mtof(m);let b=GB[m];
+  if(!b){const sr=a.sampleRate,len=Math.floor(sr*2.2),N=Math.max(2,Math.round(sr/f));b=a.createBuffer(1,len,sr);const d=b.getChannelData(0),ring=new Float32Array(N);for(let i=0;i<N;i++)ring[i]=Math.random()*2-1;let p=0;for(let i=0;i<len;i++){const n=(p+1)%N;d[i]=ring[p];ring[p]=(ring[p]+ring[n])*.5*.9965;p=n}GB[m]=b}
+  const s=a.createBufferSource();s.buffer=b;const g=a.createGain();g.gain.value=vol;s.connect(g).connect(out());s.start(a.currentTime+t);
+}
+let NB=null;
+function noise(){const a=ac();if(!NB){NB=a.createBuffer(1,a.sampleRate,a.sampleRate);const d=NB.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1}const s=a.createBufferSource();s.buffer=NB;s.loop=true;return s}
+function nz(t,type,freq,vol,dec){const a=ac(),s=noise(),f=a.createBiquadFilter();f.type=type;f.frequency.value=freq;const g=a.createGain();g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.001,t+dec);s.connect(f).connect(g).connect(out());s.start(t);s.stop(t+dec+.05)}
+function tone(t,f0,f1,vol,dec,type="sine"){const a=ac(),o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(f1,t+Math.min(dec,.14));g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.001,t+dec);o.connect(g).connect(out());o.start(t);o.stop(t+dec+.05)}
+const DR={
+  kick:t=>tone(t,150,42,.95,.45),
+  snare:t=>{nz(t,"highpass",1200,.4,.2);tone(t,200,150,.3,.1,"triangle")},
+  clap:t=>{[0,.012,.026].forEach(d=>nz(t+d,"bandpass",1500,.35,.05));nz(t+.03,"bandpass",1400,.3,.16)},
+  hat:t=>nz(t,"highpass",7500,.2,.05),
+  ohat:t=>nz(t,"highpass",7000,.2,.32),
+  b808:(t,m=31)=>{const f=mtof(m);tone(t,f*1.6,f,.9,.7)}
+};
+function click(t,hi){tone(t,hi?1400:900,hi?1300:850,.25,.05,"square")}
+function makeClock(dur,onStep,onUi){
+  let id=null,next=0,step=0,q=[],raf=0;
+  const tick=()=>{const a=ac();while(next<a.currentTime+.15){onStep(step,next);q.push([step,next]);step++;next+=dur()}};
+  const loop=()=>{if(id===null)return;const n=ac().currentTime;while(q.length&&q[0][1]<=n)onUi(q.shift()[0]);raf=requestAnimationFrame(loop)};
+  return{get on(){return id!==null},start(){if(id!==null)return;next=ac().currentTime+.06;step=0;q=[];id=setInterval(tick,25);tick();loop()},stop(){clearInterval(id);id=null;cancelAnimationFrame(raf);q=[];onUi(-1)}};
+}
+
+/* ---------- theory data ---------- */
+const NOTES=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+const nn=m=>NOTES[((m%12)+12)%12];
+const DEG=["1","♭2","2","♭3","3","4","♭5","5","♭6","6","♭7","7"];
+const CL={0:"1",3:"♭3",4:"3",5:"4",6:"♭5",7:"5",10:"♭7",11:"7",14:"9",15:"♯9"};
+const THEORY=[
+ {id:"major",k:"s",name:"Major scale",iv:[0,2,4,5,7,9,11],f:"whole, whole, half, whole, whole, whole, half"},
+ {id:"minor",k:"s",name:"Natural minor scale",iv:[0,2,3,5,7,8,10],f:"whole, half, whole, whole, half, whole, whole"},
+ {id:"mpent",k:"s",name:"Major pentatonic",iv:[0,2,4,7,9],f:"five notes, no half steps"},
+ {id:"npent",k:"s",name:"Minor pentatonic",iv:[0,3,5,7,10],f:"five notes, the rock and funk workhorse"},
+ {id:"blues",k:"s",name:"Blues scale",iv:[0,3,5,6,7,10],f:"minor pentatonic plus the ♭5 'blue note'"},
+ {id:"dorian",k:"s",name:"Dorian mode",iv:[0,2,3,5,7,9,10],f:"minor with a bright 6th; big in funk and Prince-style grooves"},
+ {id:"mixo",k:"s",name:"Mixolydian mode",iv:[0,2,4,5,7,9,10],f:"major with a ♭7; the dominant, bluesy sound"},
+ {id:"maj",k:"c",sym:"",name:"major chord",iv:[0,4,7]},
+ {id:"min",k:"c",sym:"m",name:"minor chord",iv:[0,3,7]},
+ {id:"d7",k:"c",sym:"7",name:"dominant 7th",iv:[0,4,7,10]},
+ {id:"maj7",k:"c",sym:"maj7",name:"major 7th",iv:[0,4,7,11]},
+ {id:"m7",k:"c",sym:"m7",name:"minor 7th",iv:[0,3,7,10]},
+ {id:"d9",k:"c",sym:"9",name:"dominant 9th",iv:[0,4,7,10,14]},
+ {id:"m9",k:"c",sym:"m9",name:"minor 9th",iv:[0,3,7,10,14]},
+ {id:"maj9",k:"c",sym:"maj9",name:"major 9th",iv:[0,4,7,11,14]},
+ {id:"s9",k:"c",sym:"7♯9",name:"7♯9 (the Hendrix chord)",iv:[0,4,7,10,15]},
+ {id:"sus4",k:"c",sym:"sus4",name:"suspended 4th",iv:[0,5,7]},
+ {id:"dim",k:"c",sym:"dim",name:"diminished triad",iv:[0,3,6]}
+];
+const TH=Object.fromEntries(THEORY.map(t=>[t.id,t]));
+function fillSel(rootSel,typeSel,r0,t0){
+  rootSel.innerHTML=NOTES.map((n,i)=>`<option value="${i}">${n}</option>`).join("");rootSel.value=r0;
+  typeSel.innerHTML=`<optgroup label="Scales">${THEORY.filter(t=>t.k==="s").map(t=>`<option value="${t.id}">${t.name}</option>`).join("")}</optgroup><optgroup label="Chords">${THEORY.filter(t=>t.k==="c").map(t=>`<option value="${t.id}">${t.name}</option>`).join("")}</optgroup>`;typeSel.value=t0;
+}
+const pcsOf=(r,t)=>t.iv.map(x=>(r+x)%12);
+const labelFor=(t,semi)=>{if(t.k==="s")return DEG[semi];const x=t.iv.find(v=>v%12===semi||(v===15&&semi===3));return x==null?"":CL[x]};
+const chordName=(r,id)=>NOTES[r]+TH[id].sym;
+function describe(r,t){
+  const ns=t.iv.map(x=>NOTES[(r+x)%12]).join(" ");
+  return t.k==="s"?`${NOTES[r]} ${t.name}: ${ns}\nFormula: ${t.f}`:`${chordName(r,t.id)} (${NOTES[r]} ${t.name}): ${ns}\nDegrees: ${t.iv.map(x=>CL[x]).join(" ")}`;
+}
+function chordMidis(r,id,base){const t=TH[id];return t.iv.map(x=>base+r+x)}
+function playProg(list,bpm,inst,ui){
+  const beat=60/bpm*2;let tm=[];
+  list.forEach((c,i)=>{
+    const root=inst==="g"?40+((c.r-4+12)%12):48+c.r;
+    TH[c.t].iv.forEach((x,k)=>{if(inst==="g")pluck(root+x,i*beat+k*.035,.5);else pianoNote(root+x,i*beat+k*.012,beat*1.1,.14)});
+    tm.push(setTimeout(()=>ui&&ui(i,c),i*beat*1000));
+  });
+  tm.push(setTimeout(()=>ui&&ui(-1),list.length*beat*1000));
+  return tm;
+}
+
+/* ---------- tabs / routing ---------- */
+const TABS=[["start","Start"],["piano","Piano"],["guitar","Guitar"],["beats","Beat Lab"],["artists","Artist Guides"],["history","Rap History"],["lyrics","Lyric Devices"],["gear","Gear"],["samples","Sampled"]];
+$("#tabs").innerHTML=TABS.map(([id,n])=>`<button role="tab" data-t="${id}" aria-selected="false">${n}</button>`).join("");
+$("#navCards").innerHTML=[["piano","Piano","Playable keyboard, scales, chords and 8 lessons."],["guitar","Guitar","Live fretboard, chord library, tabs and 11 lessons."],["beats","Beat Lab","Drum machine and scratch deck."],["artists","Artist Guides","Six artists with graded song lists."],["history","Rap History","Timeline from 1973 to the streaming era."],["samples","Sampled","Well-documented sample sources, searchable."]].map(([id,t,d])=>`<button class="nav-card" data-go="${id}"><b>${t}</b><span>${d}</span></button>`).join("");
+function show(id){
+  if(!TABS.some(t=>t[0]===id))id="start";
+  TABS.forEach(([t])=>{$("#p-"+t).hidden=t!==id});
+  $$("#tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.t===id));
+  if(id!=="beats"&&seqClock.on)seqClock.stop();
+  if(id!=="start"&&metro.on)metro.stop();
+  if(id!=="lyrics"&&flowClock.on)flowClock.stop();
+  if(id==="history")animateHistory();
+  if(id==="gear")runSignal();
+  window.scrollTo({top:0});
+}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-t],[data-go]");if(b){location.hash=b.dataset.t||b.dataset.go}});
+addEventListener("hashchange",()=>show(location.hash.slice(1)));
+
+/* ---------- hero eq ---------- */
+$("#heroEq").innerHTML=Array.from({length:18},(_,i)=>`<b style="animation-delay:${(i*.13)%1.1}s;animation-duration:${.7+(i*37%9)/10}s"></b>`).join("");
+
+/* ---------- metronome ---------- */
+const metro=makeClock(()=>60/$("#mBpm").value,(s,t)=>click(t,s%4===0),s=>{
+  const d=$$("#mdots i");d.forEach((x,i)=>x.classList.toggle("on",i===s%4&&s>=0));
+  $("#pend").classList.toggle("r",s>=0&&s%2===0);
+  $("#pend").style.transitionDuration=(60/$("#mBpm").value)+"s";
+});
+$("#mGo").onclick=()=>{if(metro.on){metro.stop();$("#mGo").textContent="Start"}else{metro.start();$("#mGo").textContent="Stop"}};
+$("#mBpm").oninput=e=>$("#mBpmV").textContent=e.target.value;
+let taps=[];
+$("#mTap").onclick=()=>{const n=performance.now();taps=taps.filter(t=>n-t<2500);taps.push(n);if(taps.length>1){const iv=[];for(let i=1;i<taps.length;i++)iv.push(taps[i]-taps[i-1]);const bpm=Math.round(60000/(iv.reduce((a,b)=>a+b)/iv.length));const v=Math.max(40,Math.min(200,bpm));$("#mBpm").value=v;$("#mBpmV").textContent=v}};
+
+/* ---------- lessons ---------- */
+let LESSONS=[];
+function lessonList(el,arr,pre){
+  el.innerHTML=arr.map((l,i)=>`<details class="ls" id="${pre}${i}"><summary>${i+1}. ${l.t}<label class="chk" onclick="event.stopPropagation()"><input type="checkbox" data-done="${pre}${i}"> Done</label></summary><div class="lb">${l.b}${l.a?`<div class="row" style="margin-top:6px">${l.a.map((a,j)=>`<button class="btn alt" data-act="${pre}${i}:${j}">${a[0]}</button>`).join("")}</div>`:""}</div></details>`).join("");
+  LESSONS.push(...arr.map((l,i)=>({id:pre+i,a:l.a})));
+}
+const doneSet=new Set(store.get("gs.done",[]));
+function refreshProg(){
+  $$("[data-done]").forEach(c=>{c.checked=doneSet.has(c.dataset.done);$("#"+c.dataset.done).classList.toggle("done",c.checked)});
+  const tot=$$("[data-done]").length,n=[...doneSet].filter(x=>$("#"+x)).length;
+  $("#progTxt").textContent=`${n} of ${tot} lessons`;$("#progBar").style.width=(tot?n/tot*100:0)+"%";
+}
+document.addEventListener("change",e=>{const c=e.target.closest("[data-done]");if(!c)return;c.checked?doneSet.add(c.dataset.done):doneSet.delete(c.dataset.done);store.set("gs.done",[...doneSet]);refreshProg()});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-act]");if(!b)return;const[id,j]=b.dataset.act.split(":");const l=LESSONS.find(x=>x.id===id);l.a[+j][1]()});
+
+/* ---------- PIANO ---------- */
+const P={base:60,timers:[],guide:null,rootSel:$("#pRoot"),typeSel:$("#pType")};
+fillSel($("#pRoot"),$("#pType"),0,"major");
+const MAPK="awsedftgyhujkolp;".split("");
+const ODE_P=[...("EEFGGFEDCCDEEDDEEFGGFEDCCDEDCC")].map(c=>({C:60,D:62,E:64,F:65,G:67})[c]);
+(function buildPiano(){
+  let wi=0,h="";
+  for(let m=48;m<=84;m++){
+    const pc=m%12,blk=[1,3,6,8,10].includes(pc);
+    if(blk)h+=`<div class="bk" data-m="${m}" data-pc="${pc}" style="left:calc(var(--kw)*${wi} - var(--bw)/2)"><span class="nm">${NOTES[pc]}</span><span class="ky"></span></div>`;
+    else{h+=`<div class="wk ${pc===0?"isC":""}" data-m="${m}" data-pc="${pc}"><span class="nm">${NOTES[pc]}${Math.floor(m/12)-1}</span><span class="ky"></span></div>`;wi++}
+  }
+  $("#kb").innerHTML=h;
+})();
+function pHints(){$$("#kb [data-m]").forEach(k=>{const i=+k.dataset.m-P.base;k.querySelector(".ky").textContent=i>=0&&i<MAPK.length?MAPK[i]:""})}
+pHints();
+const pk=m=>$(`#kb [data-m="${m}"]`);
+function pClearHL(){$$("#kb .hl,#kb .rt").forEach(k=>{k.classList.remove("hl","rt");k.removeAttribute("data-d")})}
+function pShow(r,id){
+  pClearHL();const t=TH[id],pcs=pcsOf(r,t);
+  $$("#kb [data-m]").forEach(k=>{const pc=+k.dataset.pc;if(pcs.includes(pc)){k.classList.add("hl");if(pc===r)k.classList.add("rt");k.dataset.d=labelFor(t,(pc-r+12)%12)}});
+  $("#pRead").textContent=describe(r,t);
+}
+function pSync(){pShow(+P.rootSel.value,P.typeSel.value)}
+P.rootSel.onchange=P.typeSel.onchange=pSync;
+function pStopAll(){P.timers.forEach(clearTimeout);P.timers=[];$$("#kb .now").forEach(k=>k.classList.remove("now"))}
+function pFlash(m,cls="down",ms=160){const k=pk(m);if(!k)return;k.classList.add(cls);setTimeout(()=>k.classList.remove(cls),ms)}
+function pSeq(ms,gap=.28,dur=1){pStopAll();ms.forEach((m,i)=>{pianoNote(m,i*gap,dur);P.timers.push(setTimeout(()=>pFlash(m,"now",gap*900),i*gap*1000))})}
+$("#pClear").onclick=()=>{pClearHL();$("#pRead").textContent="Cleared. Pick a root and a scale or chord to light up the keys."};
+$("#pPlay").onclick=()=>{
+  const r=+P.rootSel.value,t=TH[P.typeSel.value];pShow(r,t.id);
+  const base=60+(r>6?r-12:r);
+  if(t.k==="s")pSeq([...t.iv.map(x=>base+x),base+12],.26);
+  else{pStopAll();t.iv.forEach((x,i)=>{pianoNote(base+x,i*.012,1.8,.17)});$$("#kb .hl").forEach(k=>pFlash(+k.dataset.m,"down",500))}
+};
+$("#pNames").onchange=e=>$("#kb").classList.toggle("names",e.target.checked);
+function pPress(m){
+  pianoNote(m);pFlash(m);
+  const g=P.guide;if(!g)return;
+  if(m===g.seq[g.i]){g.i++;if(g.i>=g.seq.length){$("#pGStat").textContent="Finished! Play it again from memory.";P.guide=null;pTarget(null)}else{$("#pGStat").textContent=`Note ${g.i+1} of ${g.seq.length}`;pTarget(g.seq[g.i])}}
+  else{const k=pk(m);if(k){k.classList.add("shake");setTimeout(()=>k.classList.remove("shake"),260)}}
+}
+function pTarget(m){$$("#kb .target").forEach(k=>k.classList.remove("target"));if(m!=null)pk(m).classList.add("target")}
+$("#pGo").onclick=()=>{pStopAll();pClearHL();P.guide={seq:ODE_P,i:0};$("#pGStat").textContent=`Note 1 of ${ODE_P.length}`;pTarget(ODE_P[0]);ac()};
+$("#pHear").onclick=()=>{P.guide=null;pTarget(null);pSeq(ODE_P,.34,.5)};
+$("#pStop").onclick=()=>{P.guide=null;pTarget(null);pStopAll();$("#pGStat").textContent="Ready"};
+$("#kb").addEventListener("pointerdown",e=>{const k=e.target.closest("[data-m]");if(k){e.preventDefault();pPress(+k.dataset.m)}});
+$("#kb").addEventListener("pointerover",e=>{if(e.pointerType==="mouse"&&e.buttons===1){const k=e.target.closest("[data-m]");if(k)pPress(+k.dataset.m)}});
+const held=new Set();
+addEventListener("keydown",e=>{
+  if(e.target.closest("input,select,textarea")||e.metaKey||e.ctrlKey||e.altKey||$("#p-piano").hidden)return;
+  const c=e.key.toLowerCase();
+  if(c==="z"){P.base=Math.max(48,P.base-12);pHints();return}
+  if(c==="x"){P.base=Math.min(72,P.base+12);pHints();return}
+  const i=MAPK.indexOf(c);if(i<0||held.has(c))return;held.add(c);pPress(P.base+i);
+});
+addEventListener("keyup",e=>held.delete(e.key.toLowerCase()));
+lessonList($("#pLessons"),[
+ {t:"Sit, hands, and the landmarks",b:"<p>Sit on the front half of the bench with your forearms level and your wrists relaxed. Curve your fingers as if holding a ball. Number your fingers 1 to 5, thumb to pinky.</p><p>Black keys come in groups of two and three. <b>C is the white key just left of the two-black-key group.</b> The C near the middle of the keyboard is middle C (C4).</p>",a:[["Show every C",()=>{pClearHL();$$("#kb [data-pc='0']").forEach(k=>{k.classList.add("rt");k.dataset.d="C"});pSeq([48,60,72],.4)}]]},
+ {t:"Name the white keys",b:"<p>The white keys use seven letters, A to G, then repeat. Put your right thumb on middle C and play one finger per key: C D E F G. Say each name out loud as you play.</p>",a:[["Hear C D E F G",()=>pSeq([60,62,64,65,67],.4)]]},
+ {t:"Your first scale: C major",b:"<p>Major scales follow whole and half steps: whole, whole, half, whole, whole, whole, half. On white keys, C major has no sharps or flats.</p><p><b>Right hand fingering:</b> 1 2 3, tuck thumb under, 1 2 3 4 5. <b>Left hand:</b> 5 4 3 2 1, cross 3 over, 2 1. Practice slowly with the metronome.</p>",a:[["Light up C major",()=>{P.rootSel.value=0;P.typeSel.value="major";pSync()}],["Play it",()=>{P.rootSel.value=0;P.typeSel.value="major";$("#pPlay").click()}]]},
+ {t:"Chords from stacked thirds",b:"<p>A chord stacks notes a third apart. Take every other note of a scale: C, E, G is C major. Lower the middle note by one half step and you get C minor (C, E♭, G). Major sounds bright, minor sounds darker.</p>",a:[["C major",()=>{P.rootSel.value=0;P.typeSel.value="maj";$("#pPlay").click()}],["C minor",()=>{P.rootSel.value=0;P.typeSel.value="min";$("#pPlay").click()}]]},
+ {t:"I–IV–V–I and song forms",b:"<p>Most pop, rock and R&B songs lean on three chords built on the 1st, 4th and 5th notes of the key. In C: C, F, G. Play the root with your left hand and the full triad with your right. Use inversions so your hand barely moves.</p>",a:[["Hear C F G C",()=>{pStopAll();playProg([{r:0,t:"maj"},{r:5,t:"maj"},{r:7,t:"maj"},{r:0,t:"maj"}],80,"p")}]]},
+ {t:"Rhythm and left-hand patterns",b:"<p>Count 16th notes as <b>1 e & a 2 e & a</b>. For funk and R&B comping, hit the chord on the 'and' of 2 and the 'and' of 4, and keep the left hand short and dry. Build a drum loop in the Beat Lab and play along.</p>",a:[["Open Beat Lab",()=>{location.hash="beats"}]]},
+ {t:"Sevenths and ninths: the funk and R&B palette",b:"<p>Add a 7th for soul, a 9th for sparkle. Minor 9th and dominant 9th chords are the core of Minneapolis funk and neo-soul. Try playing Am9 then D9 as a two-chord vamp.</p>",a:[["Hear Am9 → D9 vamp",()=>{pStopAll();playProg([{r:9,t:"m9"},{r:2,t:"d9"},{r:9,t:"m9"},{r:2,t:"d9"}],100,"p")}],["Show Am9",()=>{P.rootSel.value=9;P.typeSel.value="m9";pSync()}]]},
+ {t:"Learning songs by ear, and a practice routine",b:"<p>Loop one bar slowly. Find the bass note first, then the chord quality (major, minor, 7th), then the rhythm. Check against the artist guides.</p><p><b>30-minute routine:</b> 5 min scales, 10 min chords and changes, 10 min a song, 5 min ear training.</p>",a:[["Open Artist Guides",()=>{location.hash="artists"}]]}
+],"pl");
+
+/* ---------- GUITAR ---------- */
+const G={open:[40,45,50,55,59,64],timers:[],guide:null,chord:null,dir:1,tab:null};
+fillSel($("#gRoot"),$("#gType"),9,"npent");
+const FX0=48,FW=830,fx=n=>FX0+FW*(1-Math.pow(2,-n/12))/(1-Math.pow(2,-15/12));
+const gy=s=>150-s*24, gcx=f=>f===0?26:(fx(f-1)+fx(f))/2;
+(function buildFB(){
+  let h=`<rect class="wood" x="${FX0}" y="18" width="${fx(15)-FX0}" height="144" rx="4"/>`;
+  [3,5,7,9,15].forEach(f=>h+=`<circle class="mk" cx="${gcx(f)}" cy="90" r="7"/>`);
+  h+=`<circle class="mk" cx="${gcx(12)}" cy="66" r="7"/><circle class="mk" cx="${gcx(12)}" cy="114" r="7"/>`;
+  for(let f=1;f<=15;f++)h+=`<line class="fret" x1="${fx(f)}" y1="18" x2="${fx(f)}" y2="162"/><text class="fn" x="${gcx(f)}" y="184">${f}</text>`;
+  h+=`<line class="nut" x1="${FX0}" y1="16" x2="${FX0}" y2="164"/>`;
+  for(let s=0;s<6;s++)h+=`<line class="str" x1="${FX0}" y1="${gy(s)}" x2="${fx(15)}" y2="${gy(s)}" stroke-width="${2.6-s*.32}"/><text class="sl" x="8" y="${gy(s)+4}">${["E","A","D","G","B","e"][s]}</text>`;
+  for(let s=0;s<6;s++)for(let f=0;f<=15;f++){const m=G.open[s]+f;h+=`<g class="gp" data-s="${s}" data-f="${f}" data-m="${m}"><circle class="gd" cx="${gcx(f)}" cy="${gy(s)}" r="11"/><text class="gt" x="${gcx(f)}" y="${gy(s)+4}"></text><rect x="${gcx(f)-(f?Math.max(10,(fx(f)-fx(f-1))/2-1):12)}" y="${gy(s)-12}" width="${f?Math.max(20,fx(f)-fx(f-1)-2):24}" height="24" fill="transparent"/></g>`}
+  $("#fb").innerHTML=h;
+})();
+const gp=(s,f)=>$(`#fb .gp[data-s="${s}"][data-f="${f}"]`);
+function gPing(s,f){const g=gp(s,f);if(!g)return;g.classList.remove("ping");void g.getBoundingClientRect();g.classList.add("ping");setTimeout(()=>g.classList.remove("ping"),480)}
+function gClear(){$$("#fb .gp").forEach(g=>{g.classList.remove("on","root");g.querySelector("text").textContent=""})}
+function gShow(){
+  G.chord=null;$$("#chords .chord").forEach(c=>c.setAttribute("aria-pressed","false"));$("#cRead").textContent="No chord selected";
+  gClear();const r=+$("#gRoot").value,t=TH[$("#gType").value],pcs=pcsOf(r,t),lab=$("#gLab").value;
+  const rootFret=((r-4+12)%12)||12,box=$("#gBox").checked;
+  $$("#fb .gp").forEach(g=>{
+    const m=+g.dataset.m,f=+g.dataset.f,pc=m%12;if(!pcs.includes(pc))return;
+    if(box&&!(f>=rootFret&&f<=rootFret+3))return;
+    g.classList.add("on");if(pc===r)g.classList.add("root");
+    g.querySelector("text").textContent=lab==="n"?NOTES[pc]:lab==="d"?labelFor(t,(pc-r+12)%12):"";
+  });
+  $("#gRead").textContent=describe(r,t)+(box?`\nBox: frets ${rootFret} to ${rootFret+3}`:"");
+}
+["gRoot","gType","gLab","gBox"].forEach(id=>$("#"+id).onchange=gShow);
+$("#gClear").onclick=()=>{gClear();G.chord=null;$("#gRead").textContent="Cleared. Pick a root and a scale or chord, or choose a chord below."};
+function gStop(){G.timers.forEach(clearTimeout);G.timers=[]}
+$("#gPlay").onclick=()=>{
+  if(G.chord){strum(G.chord.shape,G.dir);return}
+  gStop();const on=$$("#fb .gp.on");if(!on.length)gShow();
+  const nodes=$$("#fb .gp.on").map(g=>({m:+g.dataset.m,s:+g.dataset.s,f:+g.dataset.f}));
+  const r=+$("#gRoot").value,t=TH[$("#gType").value];
+  const uniq=new Map();nodes.sort((a,b)=>a.m-b.m||a.f-b.f).forEach(n=>{if(!uniq.has(n.m))uniq.set(n.m,n)});
+  let list=[...uniq.values()];
+  if(!$("#gBox").checked){const lo=list.find(n=>n.m%12===r);if(lo)list=list.filter(n=>n.m>=lo.m&&n.m<=lo.m+12)}
+  list.forEach((n,i)=>{pluck(n.m,i*.2);G.timers.push(setTimeout(()=>gPing(n.s,n.f),i*200))});
+};
+$("#fb").addEventListener("pointerdown",e=>{const g=e.target.closest(".gp");if(!g)return;const s=+g.dataset.s,f=+g.dataset.f;pluck(+g.dataset.m);gPing(s,f);gGuideCheck(s,f)});
+/* chords */
+const CH={
+ "Open major / minor":{E:[0,2,2,1,0,0],Em:[0,2,2,0,0,0],A:[-1,0,2,2,2,0],Am:[-1,0,2,2,1,0],D:[-1,-1,0,2,3,2],Dm:[-1,-1,0,2,3,1],G:[3,2,0,0,0,3],C:[-1,3,2,0,1,0]},
+ "Sevenths and ninths":{E7:[0,2,0,1,0,0],A7:[-1,0,2,0,2,0],D7:[-1,-1,0,2,1,2],G7:[3,2,0,0,0,1],C7:[-1,3,2,3,1,0],B7:[-1,2,1,2,0,2],Am7:[-1,0,2,0,1,0],Em7:[0,2,0,0,0,0],Dm7:[-1,-1,0,2,1,1],Cmaj7:[-1,3,2,0,0,0],Fmaj7:[-1,-1,3,2,1,0],E9:[0,2,0,1,0,2],A9:[-1,0,2,4,2,3]},
+ "Barre and power":{"F (barre)":[1,3,3,2,1,1],"Bm (barre)":[-1,2,4,4,3,2],"F#m (barre)":[2,4,4,2,2,2],"Gm (barre)":[3,5,5,3,3,3],E5:[0,2,2,-1,-1,-1],A5:[-1,0,2,2,-1,-1],D5:[-1,-1,0,2,3,-1]},
+ "Hendrix":{"E7#9":[-1,7,6,7,8,-1]}
+};
+function chordSVG(sh){
+  const pos=sh.filter(f=>f>0),mx=Math.max(0,...pos),mn=pos.length?Math.min(...pos):1,base=mx>4?mn:1;
+  let s=`<svg viewBox="0 0 90 110" aria-hidden="true">`;
+  for(let i=0;i<6;i++)s+=`<line class="cd" x1="${14+i*12}" y1="24" x2="${14+i*12}" y2="104" stroke-width="1"/>`;
+  for(let j=0;j<=5;j++)s+=`<line class="cd" x1="14" y1="${24+j*16}" x2="74" y2="${24+j*16}" stroke-width="${j===0&&base===1?4:1}"/>`;
+  sh.forEach((f,i)=>{const x=14+i*12;if(f<0)s+=`<text class="cd-t" x="${x}" y="17">×</text>`;else if(f===0)s+=`<circle class="cd" cx="${x}" cy="13" r="3.2" stroke-width="1.2"/>`;else s+=`<circle class="cd-d" cx="${x}" cy="${24+16*(f-base+.5)}" r="5"/>`});
+  if(base>1)s+=`<text class="cd-t" x="82" y="40" style="text-anchor:start">${base}fr</text>`;
+  return s+"</svg>";
+}
+$("#chords").innerHTML=Object.entries(CH).map(([g,cs])=>`<div class="kicker" style="margin:12px 0 6px">${g}</div><div class="cgrid">${Object.entries(cs).map(([n,sh])=>`<button class="chord" data-ch="${esc(n)}" data-g="${esc(g)}" aria-pressed="false">${chordSVG(sh)}${esc(n)}</button>`).join("")}</div>`).join("");
+function strum(shape,dir=1,at=0){
+  const idx=dir>0?[0,1,2,3,4,5]:[5,4,3,2,1,0];let k=0;
+  idx.forEach(s=>{const f=shape[s];if(f<0)return;pluck(G.open[s]+f,at+k*.045);G.timers.push(setTimeout(()=>gPing(s,f),(at+k*.045)*1000));k++});
+}
+function chordShow(name,sound=true){
+  const shape=Object.values(CH).find(g=>name in g)[name];G.chord={name,shape};
+  gClear();shape.forEach((f,s)=>{if(f<0)return;const g=gp(s,f);if(!g||f>15)return;g.classList.add("on");g.querySelector("text").textContent=nn(G.open[s]+f)});
+  $$("#chords .chord").forEach(c=>c.setAttribute("aria-pressed",c.dataset.ch===name));
+  const nts=[...new Set(shape.map((f,s)=>f<0?null:nn(G.open[s]+f)).filter(Boolean))];
+  $("#cRead").textContent=`${name}: ${shape.map(f=>f<0?"x":f).join(" ")} (low E to high e). Notes: ${nts.join(" ")}`;
+  $("#gRead").textContent=`${name} on the neck. Click any lit dot to hear a single string.`;
+  if(sound)strum(shape,G.dir);
+}
+$("#chords").addEventListener("click",e=>{const b=e.target.closest(".chord");if(b)chordShow(b.dataset.ch)});
+$("#gDown").onclick=()=>{G.dir=1;$("#gDown").setAttribute("aria-pressed","true");$("#gUp").setAttribute("aria-pressed","false")};
+$("#gUp").onclick=()=>{G.dir=-1;$("#gUp").setAttribute("aria-pressed","true");$("#gDown").setAttribute("aria-pressed","false")};
+/* tabs */
+const TABS_EX={
+ pent:{n:"A minor pentatonic, box 1",ev:[[0,5],[0,8],[1,5],[1,7],[2,5],[2,7],[3,5],[3,7],[4,5],[4,8],[5,5],[5,8]]},
+ spider:{n:"Four-finger warm-up (frets 5 to 8)",ev:[[0,5],[0,6],[0,7],[0,8],[1,5],[1,6],[1,7],[1,8],[2,5],[2,6],[2,7],[2,8],[3,5],[3,6],[3,7],[3,8]]},
+ e79:{n:"E7♯9 arpeggio (Hendrix chord shape)",ev:[[1,7],[2,6],[3,7],[4,8],[3,7],[2,6],[1,7]]},
+ open:{n:"Open strings, low to high",ev:[[0,0],[1,0],[2,0],[3,0],[4,0],[5,0]]}
+};
+$("#tabSel").innerHTML=Object.entries(TABS_EX).map(([k,v])=>`<option value="${k}">${v.n}</option>`).join("");
+function renderTab(){
+  const ex=TABS_EX[$("#tabSel").value];G.tab=ex;
+  const names=["E","A","D","G","B","e"];
+  $("#tabBox").innerHTML=[5,4,3,2,1,0].map(s=>`${names[s]}|${ex.ev.map((e,i)=>`<span class="tc" data-i="${i}">${e[0]===s?String(e[1]).padStart(2,"-")+"-":"---"}</span>`).join("")}|`).join("\n");
+}
+$("#tabSel").onchange=()=>{gStop();renderTab()};renderTab();
+$("#tabGo").onclick=()=>{gStop();renderTab();G.tab.ev.forEach(([s,f],i)=>{pluck(G.open[s]+f,i*.3);G.timers.push(setTimeout(()=>{$$("#tabBox .tc.on").forEach(c=>c.classList.remove("on"));$$(`#tabBox .tc[data-i="${i}"]`).forEach(c=>c.classList.add("on"));gPing(s,f)},i*300))});G.timers.push(setTimeout(()=>$$("#tabBox .tc.on").forEach(c=>c.classList.remove("on")),G.tab.ev.length*300))};
+$("#tabStop").onclick=()=>{gStop();renderTab()};
+/* guitar guide */
+const ODE_G=[...("EEFGGFEDCCDEEDDEEFGGFEDCCDEDCC")].map(c=>({E:[5,0],F:[5,1],G:[5,3],D:[4,3],C:[4,1]})[c]);
+function gTarget(p){$$("#fb .target").forEach(g=>g.classList.remove("target"));if(p)gp(p[0],p[1]).classList.add("target")}
+function gGuideCheck(s,f){const g=G.guide;if(!g)return;const t=g.seq[g.i];if(s===t[0]&&f===t[1]){g.i++;if(g.i>=g.seq.length){$("#gGStat").textContent="Finished! Try it from memory.";G.guide=null;gTarget(null)}else{$("#gGStat").textContent=`Note ${g.i+1} of ${g.seq.length}`;gTarget(g.seq[g.i])}}}
+$("#gGo").onclick=()=>{gStop();gClear();G.chord=null;G.guide={seq:ODE_G,i:0};gTarget(ODE_G[0]);$("#gGStat").textContent=`Note 1 of ${ODE_G.length}`;ac()};
+$("#gHear").onclick=()=>{G.guide=null;gTarget(null);gStop();ODE_G.forEach(([s,f],i)=>{pluck(G.open[s]+f,i*.34);G.timers.push(setTimeout(()=>gPing(s,f),i*340))})};
+$("#gStop").onclick=()=>{G.guide=null;gTarget(null);gStop();$("#gGStat").textContent="Ready"};
+function strumPattern(name,bpm){
+  gStop();const sh=Object.values(CH).find(g=>name in g)[name];chordShow(name,false);
+  const pat=["D","","D","U","","U","D","U"],e8=60/bpm/2;
+  for(let bar=0;bar<2;bar++)pat.forEach((p,i)=>{if(p)strum(sh,p==="D"?1:-1,(bar*8+i)*e8)});
+}
+lessonList($("#gLessons"),[
+ {t:"Anatomy and tuning",b:"<p>Standard tuning from the thickest (6th) string to the thinnest (1st): <b>E A D G B e</b>. A common memory aid: Eddie Ate Dynamite, Good Bye Eddie.</p><p><b>Tune by ear:</b> press the 5th fret of each string and match the next open string. The exception is the G string: press the 4th fret to match open B.</p>",a:[["Hear the open strings",()=>{gStop();G.open.forEach((m,i)=>{pluck(m,i*.5);G.timers.push(setTimeout(()=>gPing(i,0),i*500))})}]]},
+ {t:"Reading tab and chord boxes",b:"<p>In tab, each line is a string with high e on top and a number tells you which fret to press. In a chord box, vertical lines are strings, horizontal lines are frets, dots are fingers, × means mute and a hollow circle means open.</p>",a:[["Try the tab player",()=>{$("#tabBox").scrollIntoView({behavior:"smooth",block:"center"})}]]},
+ {t:"First open chords",b:"<p>Learn Em, Am, E, A, D, C and G. Press with your fingertips right behind the fret and let the string ring clearly. Practice changing between two chords in time with the metronome, even if you play only one strum per change.</p>",a:[["Em",()=>chordShow("Em")],["Am",()=>chordShow("Am")],["D",()=>chordShow("D")],["G",()=>chordShow("G")]]},
+ {t:"Strumming patterns",b:"<p>The all-purpose pattern is <b>D, D U, U D U</b> (down, down-up, up, down-up) over eight eighth-notes. Keep your hand moving down and up constantly and only touch the strings on the written strokes.</p>",a:[["Play it on G at 90 BPM",()=>strumPattern("G",90)],["Play it on Am at 90 BPM",()=>strumPattern("Am",90)]]},
+ {t:"Power chords and palm muting",b:"<p>A power chord is a root plus a fifth, sometimes with the octave. Play it from the 6th or 5th string and slide it anywhere. Rest the edge of your picking hand on the strings by the bridge to palm mute for a tight, chunky sound.</p>",a:[["E5",()=>chordShow("E5")],["A5",()=>chordShow("A5")],["D5",()=>chordShow("D5")]]},
+ {t:"Pentatonic box 1",b:"<p>The minor pentatonic scale is the foundation for blues, rock and funk solos. Box 1 is a four-fret shape starting at the root note on the low E string. Move the shape to change key.</p>",a:[["Show A minor box 1",()=>{$("#gRoot").value=9;$("#gType").value="npent";$("#gBox").checked=true;gShow();$("#fb").scrollIntoView({behavior:"smooth",block:"center"})}],["Play it",()=>{$("#gRoot").value=9;$("#gType").value="npent";$("#gBox").checked=true;gShow();$("#gPlay").click()}]]},
+ {t:"Expression: bends, slides, hammer-ons and vibrato",b:"<p><b>Hammer-on:</b> fret a note with a quick finger tap, no pick. <b>Pull-off:</b> flick the finger away. <b>Slide:</b> move along the string. <b>Bend:</b> push the string sideways to raise pitch, aiming for the target note. <b>Vibrato:</b> a small, steady wobble. These make a pentatonic run sound like a voice.</p>",a:[["Practice with the warm-up tab",()=>{$("#tabSel").value="spider";renderTab();$("#tabBox").scrollIntoView({behavior:"smooth",block:"center"})}]]},
+ {t:"Barre chords and moving shapes",b:"<p>Lay your index finger flat across all six strings and build an E or A shape with the other fingers. Because the shape has no open strings, you can slide it anywhere. A barre F on the 1st fret uses the E major shape.</p>",a:[["F barre",()=>chordShow("F (barre)")],["F#m barre",()=>chordShow("F#m (barre)")]]},
+ {t:"Hendrix techniques",b:"<p>Jimi played a right-handed guitar flipped upside down and often tuned a half-step lower. He mixed rhythm and lead in one part: chord shapes with embellishing hammer-ons, double-stops, thumb-fretted bass notes, and the dominant 7♯9 chord. Add fuzz and a wah pedal and the signature sound follows. See the Gear tab for the signal chain.</p>",a:[["E7♯9 chord",()=>chordShow("E7#9")],["Play the arpeggio tab",()=>{$("#tabSel").value="e79";renderTab();$("#tabGo").click()}]]},
+ {t:"Funk rhythm guitar (Prince and The Time style)",b:"<p>Funk guitar is a rhythm instrument. Keep your picking hand moving in constant 16ths and let the fretting hand release pressure for muted scratches. Hit the chord only on chosen beats, usually short stabs on the top three or four strings with 9th chords.</p>",a:[["E9",()=>chordShow("E9")],["A9",()=>chordShow("A9")],["Open Beat Lab to groove",()=>{location.hash="beats"}]]},
+ {t:"Ear training and a practice plan",b:"<p>Learn to hear a note, find it on the fretboard, and name the fret. Loop a bar slowly. Find the bass note, then the chord, then the rhythm.</p><p><b>30-minute routine:</b> 5 min warm-up, 10 min chords and strumming, 10 min a song, 5 min ear training.</p>",a:[["Open Artist Guides",()=>{location.hash="artists"}]]}
+],"gl");
+
+/* ---------- BEAT LAB ---------- */
+const TRK=[["kick","Kick"],["snare","Snare"],["clap","Clap"],["hat","Hat"],["ohat","Open hat"],["b808","808 bass"]];
+const PRE={
+ "Boom Bap":{bpm:90,sw:12,p:{kick:[0,7,10],snare:[4,12],hat:[0,2,4,6,8,10,12,14],ohat:[14]}},
+ "G-Funk":{bpm:92,sw:8,p:{kick:[0,6,10],snare:[4,12],clap:[4,12],hat:[0,2,4,6,8,10,12,14],b808:[0,3,6,10]}},
+ "Trap":{bpm:140,sw:0,p:{kick:[0,10],snare:[8],clap:[8],hat:[0,2,4,6,8,10,11,12,13,14,15],ohat:[6],b808:[0,3,7,10]}},
+ "LM-1 Funk":{bpm:108,sw:0,p:{kick:[0,3,6,10],snare:[4,12],hat:[0,2,4,6,8,10,12,14]}}
+};
+const GR={};TRK.forEach(([k])=>GR[k]=Array(16).fill(0));
+$("#seq").innerHTML=TRK.map(([k,n])=>`<button class="tn" data-pad="${k}">${n}</button>${Array.from({length:16},(_,i)=>`<button class="st ${Math.floor(i/4)%2?"":"g"}" data-k="${k}" data-i="${i}" aria-label="${n} step ${i+1}" aria-pressed="false"></button>`).join("")}`).join("");
+$("#bPre").innerHTML=Object.keys(PRE).map(n=>`<option>${n}</option>`).join("");
+function loadPre(n){const p=PRE[n];TRK.forEach(([k])=>{GR[k]=Array(16).fill(0);(p.p[k]||[]).forEach(i=>GR[k][i]=1)});$("#bBpm").value=p.bpm;$("#bBpmV").textContent=p.bpm;$("#bSw").value=p.sw;paintGrid()}
+function paintGrid(){$$("#seq .st").forEach(b=>{const on=GR[b.dataset.k][+b.dataset.i];b.classList.toggle("on",!!on);b.setAttribute("aria-pressed",!!on)})}
+$("#bPre").onchange=e=>loadPre(e.target.value);
+$("#bBpm").oninput=e=>$("#bBpmV").textContent=e.target.value;
+$("#seq").addEventListener("click",e=>{
+  const p=e.target.closest("[data-pad]");if(p){ac();DR[p.dataset.pad](ac().currentTime+.01);return}
+  const s=e.target.closest(".st");if(!s)return;const k=s.dataset.k,i=+s.dataset.i;GR[k][i]^=1;paintGrid();if(GR[k][i])DR[k](ac().currentTime+.01);
+});
+const sdur=()=>60/$("#bBpm").value/4;
+const seqClock=makeClock(sdur,(s,t)=>{const i=s%16,sw=i%2?($("#bSw").value/100)*sdur():0;TRK.forEach(([k])=>{if(GR[k][i])DR[k](t+sw)})},s=>{$$("#seq .st.cur").forEach(b=>b.classList.remove("cur"));if(s>=0)$$(`#seq .st[data-i="${s%16}"]`).forEach(b=>b.classList.add("cur"))});
+$("#bGo").onclick=()=>{if(seqClock.on){seqClock.stop();$("#bGo").textContent="Play"}else{seqClock.start();$("#bGo").textContent="Stop"}};
+$("#bClr").onclick=()=>{TRK.forEach(([k])=>GR[k].fill(0));paintGrid()};
+loadPre("Boom Bap");
+/* scratch */
+(function(){
+  const pl=$("#plat");let rot=0,last=null,osc=null,gain=null,lt=0;
+  const ang=e=>{const r=pl.getBoundingClientRect();return Math.atan2(e.clientY-(r.top+r.height/2),e.clientX-(r.left+r.width/2))*180/Math.PI};
+  pl.addEventListener("pointerdown",e=>{pl.setPointerCapture(e.pointerId);const a=ac();pl.classList.add("drag");rot=(rot%360);last=ang(e);lt=performance.now();
+    osc=a.createOscillator();osc.type="sawtooth";const f=a.createBiquadFilter();f.type="bandpass";f.frequency.value=1400;f.Q.value=.8;gain=a.createGain();gain.gain.value=0;osc.connect(f).connect(gain).connect(out());osc.frequency.value=200;osc.start()});
+  pl.addEventListener("pointermove",e=>{if(last==null)return;const a=ang(e);let d=a-last;if(d>180)d-=360;if(d<-180)d+=360;last=a;rot+=d;pl.style.transform=`rotate(${rot}deg)`;
+    const n=performance.now(),dt=Math.max(1,n-lt);lt=n;const v=Math.abs(d)/dt;const t=ac().currentTime;osc.frequency.setTargetAtTime(120+Math.min(v,3)*500,t,.02);gain.gain.setTargetAtTime(Math.min(.18,v*.2),t,.02)});
+  const end=()=>{if(last==null)return;last=null;pl.classList.remove("drag");pl.style.transform="";try{gain.gain.setTargetAtTime(0,ac().currentTime,.03);osc.stop(ac().currentTime+.15)}catch(e){}osc=null};
+  pl.addEventListener("pointerup",end);pl.addEventListener("pointercancel",end);
+})();
+
+/* ---------- ARTISTS ---------- */
+const FIND=`<p style="margin:0">Method for any song: <b>1.</b> Listen and tap the pulse. <b>2.</b> Find the key from the last bass note. <b>3.</b> Find the chord roots, then decide major, minor or 7th. <b>4.</b> Copy the rhythm, loop one bar slowly. <b>5.</b> Speed up with the metronome. <b>6.</b> Add details: fills, voicings, tone.</p><p class="note" style="margin:10px 0 0">Licensed charts and tabs: <a href="https://www.musicnotes.com" target="_blank" rel="noopener">Musicnotes</a> (official sheet music), <a href="https://www.songsterr.com" target="_blank" rel="noopener">Songsterr</a> (interactive tabs), and official songbooks from Hal Leonard. Tempos and keys below are approximate; confirm by ear.</p>`;
+$("#learnAny").innerHTML=`<h3 style="margin-bottom:8px">How to learn any song in this list</h3>${FIND}`;
+const ART=[
+{id:"prince",n:"Prince",tag:"Minneapolis funk, rock and ballads",
+ b:"Minneapolis multi-instrumentalist who played most parts on his early records, blending funk, rock, pop and gospel-flavored ballads.",
+ dna:["Linn LM-1 drum machine grooves with space between the parts","9th and minor-9th chords on keys and clean funk guitar","Tight 16th-note guitar scratches, then minor-pentatonic solos","Falsetto hooks stacked with backing vocals"],
+ pi:"Play 9th chords with a short left-hand root and stab the right hand off the beat. Start with Am9 → D9 and keep the wrist loose.",
+ gt:"Rhythm: muted 16th-note scratch with a hard accent on beats 2 and 4. Lead: A minor pentatonic with bends and slow vibrato, then add Dorian color.",
+ jam:[["Minneapolis vamp (Am9 → D9)",[{r:9,t:"m9"},{r:2,t:"d9"},{r:9,t:"m9"},{r:2,t:"d9"}],104],["Slow-ballad loop (Am – F – C – G, style exercise)",[{r:9,t:"min"},{r:5,t:"maj"},{r:0,t:"maj"},{r:7,t:"maj"}],64]],
+ songs:[["I Wanna Be Your Lover",1979,"b","Bright synth-funk groove; focus on staying steady in 16ths."],["Controversy",1981,"i","Tight funk guitar chops and synth bass lines."],["1999",1982,"b","Repeating chord groove; learn the rhythm hits before the melody."],["Little Red Corvette",1983,"i","Layered synth pop; save the rock guitar solo for last."],["When Doves Cry",1984,"i","Famously has no bass line, so the groove lives in drums and a minor-key keyboard vamp."],["Let's Go Crazy",1984,"i","Organ-led intro, then a fast rock-funk riff and solo."],["Purple Rain",1984,"a","Slow gospel-rock ballad in a swaying 12/8 feel; the solo is bends and space."],["Darling Nikki",1984,"i","Heavy minor groove; practice dynamics from whisper to wail."],["Raspberry Beret",1985,"b","Open strummed chords and a bouncing pop pulse."],["Kiss",1986,"i","Space is the lesson: sparse funk with a dry, tight guitar scratch."],["Sign o' the Times",1987,"i","Stark electronic groove; copy the minimalism."],["Cream",1991,"b","Mid-tempo pop-funk; steady groove and a catchy hook."]]},
+{id:"time",n:"Morris Day and The Time",tag:"Minneapolis funk with showmanship",
+ b:"The Time (fronted by Morris Day) turned stripped-down Minneapolis funk into a stage show full of call-and-response and comic timing.",
+ dna:["Stripped-down funk: synth bass, crisp drum machine, almost no wasted notes","Dry guitar stabs rather than long strumming","One-bar vamps locked tight","Call-and-response vocals and sharp showmanship"],
+ pi:"Keep the right-hand chords short and the left-hand bass line simple and repeating. Practice leaving gaps: the silence is the groove.",
+ gt:"Clean chord stabs on the top strings with a muted 16th pulse. Use dominant 9th shapes like E9 and A9.",
+ jam:[["Funk stab vamp (E9 → A9)",[{r:4,t:"d9"},{r:4,t:"d9"},{r:9,t:"d9"},{r:9,t:"d9"}],112]],
+ songs:[["Cool",1981,"b","Laid-back one-chord feel with call-and-response; great first funk groove."],["The Walk",1981,"b","Swaggering mid-tempo groove; keep the bass line steady."],["777-9311",1982,"i","Tight, bouncy bass and drum machine pattern."],["Gigolos Get Lonely Too",1982,"i","Slower groove with held chords and space."],["Jungle Love",1984,"i","Catchy guitar riff and chant hook over a locked groove."],["The Bird",1984,"b","Simple repeating vamp; the lesson is staying in time."],["Ice Cream Castles",1984,"i","Smoother, melodic funk with layered keys."],["Fishnet (Morris Day solo)",1988,"i","Groove-led R&B funk with horn-like synth lines."]]},
+{id:"mj",n:"Michael Jackson",tag:"Pop, funk and R&B",
+ b:"Songs built with producer Quincy Jones and Rod Temperton: tight bass lines, layered keys, sharp horns and strings, and vocal percussion.",
+ dna:["Syncopated bass lines that carry the song","Drum machines and live drums layered together","Clean funk rhythm guitar (and a hard rock tone for Beat It)","Vocal percussion: breaths, hiccups, and layered backing vocals"],
+ pi:"Play bass and chords with separate rhythms: a syncopated left-hand bass pattern and short right-hand stabs. Learn the bass first.",
+ gt:"Clean 16th-note funk rhythm guitar with muted scratches; switch to power chords and palm muting for the rock tracks.",
+ jam:[["Pop-funk ii – V – I – IV (style exercise)",[{r:4,t:"m7"},{r:9,t:"d7"},{r:2,t:"maj7"},{r:7,t:"maj7"}],100]],
+ songs:[["Don't Stop 'Til You Get Enough",1979,"i","Disco-funk with a driving bass and string lines; learn the bass groove first."],["Rock with You",1979,"b","Smooth mid-tempo groove with simple, repeating chord movement."],["Billie Jean",1982,"b","Learn the bass line first. About 117 BPM, F♯ minor."],["Beat It",1982,"i","Palm-muted minor riff (about 138 BPM). The guitar solo is a showcase for Eddie Van Halen."],["Thriller",1982,"i","Syncopated synth-bass pattern, about 118 BPM."],["Wanna Be Startin' Somethin'",1983,"i","Busy, percussive groove with a chanted hook."],["Human Nature",1983,"i","Soft synth arpeggios with spacious chords."],["P.Y.T. (Pretty Young Thing)",1983,"b","Bouncy pop-funk with simple bass movement."],["Bad",1987,"i","Heavy staccato groove; focus on tight stops."],["The Way You Make Me Feel",1987,"i","Swung, bluesy shuffle feel with playful call-and-response."],["Smooth Criminal",1987,"a","A minor, about 118 BPM; famous bass line and tricky rhythmic hits."],["Man in the Mirror",1987,"i","Gospel-style chords that build and modulate up near the end."],["Black or White",1991,"b","Hard-rock riff inside a pop frame."],["Remember the Time",1992,"i","New jack swing groove; sparse keys and a heavy beat."],["You Are Not Alone",1995,"b","Slow ballad with open, singable chords."]]},
+{id:"dre",n:"Dr. Dre",tag:"G-funk and West Coast hip hop",
+ b:"Producer and rapper whose records mix interpolated funk, live-played bass and keys, and hard drum programming.",
+ dna:["G-funk: slow, sunny, minor-key groove with a whining mono-synth lead","Live bass and keys played over funk-inspired parts","Sparse drums with a hard snare and rolling hi-hats","Obsessive mixing: each part has its own pocket"],
+ pi:"Play minor-7th vamps with a repeating two-bar hook. Left hand low and short; right hand single-note octave riff, like a piano ostinato.",
+ gt:"Dre's world is keys and bass first. Guitar adds clean funk chops, slide-style bends, and talk-box lines that double the synth lead.",
+ jam:[["G-funk minor vamp (Gm9 → C9)",[{r:7,t:"m9"},{r:7,t:"m9"},{r:0,t:"d9"},{r:0,t:"d9"}],92]],
+ songs:[["Straight Outta Compton (N.W.A)",1988,"b","Break-driven groove; build the drum pattern in the Beat Lab."],["Express Yourself (N.W.A)",1988,"b","Funk-sample groove with a bouncing bass line."],["Deep Cover",1992,"i","Dark, minimal minor groove."],["Nuthin' but a 'G' Thang",1992,"b","Slow, bouncy groove (about 90 BPM) with a Moog-style whine on top."],["Let Me Ride",1993,"i","Layered funk keys, live-style bass and a rolling beat."],["Keep Their Heads Ringin'",1995,"i","Bass-heavy groove and sparse synth riff."],["California Love (2Pac)",1995,"i","Talk-box style lead and piano stabs over a driving beat."],["Still D.R.E.",1999,"b","A two-hand piano ostinato; the most famous hook to learn first."],["Forgot About Dre",1999,"i","Dark minor-key piano and strings with a bouncing bass."],["The Next Episode",1999,"b","Short sample-based riff; practice the bass line underneath."],["I Need a Doctor",2011,"i","Piano-led, dramatic minor progression with a big chorus."]]},
+{id:"jimi",n:"Jimi Hendrix",tag:"Electric blues, psychedelic rock",
+ b:"A left-handed player on a flipped right-handed Stratocaster who treated feedback, fuzz and wah as instruments.",
+ dna:["Stratocaster played upside down, tuned a half-step lower (E♭)","Fuzz Face, wah, Uni-Vibe and loud Marshall amplification","Rhythm and lead in one part: chords, thumb-fretted bass notes and fills","The dominant 7♯9 'Hendrix chord' and blues-pentatonic mixing"],
+ pi:"Translate the guitar ideas: play the E7♯9 chord and the octave pentatonic riffs with the left hand, and add right-hand double-stop fills.",
+ gt:"Tune down a half step to match the records. Learn the E7♯9 shape, minor pentatonic box 1, double-stops in 6ths, then add fuzz and wah.",
+ jam:[["Hey Joe loop (C – G – D – A – E)",[{r:0,t:"maj"},{r:7,t:"maj"},{r:2,t:"maj"},{r:9,t:"maj"},{r:4,t:"maj"}],78],["Purple Haze-style move (E7♯9 – G – A)",[{r:4,t:"s9"},{r:7,t:"maj"},{r:9,t:"maj"},{r:4,t:"s9"}],92]],
+ songs:[["Hey Joe",1966,"b","C–G–D–A–E chord loop; study the arpeggiated fills."],["Purple Haze",1967,"i","E7♯9 chord, tritone opening and octave riff; tune down a half step to match the record."],["The Wind Cries Mary",1967,"i","Chord embellishments with hammer-ons and sliding double-stops."],["Foxy Lady",1967,"i","Feedback intro, then a big riff mostly on the low strings."],["Fire",1967,"i","Driving rhythm with a repeating riff and quick rhythm-lead fills."],["Little Wing",1967,"a","Chord-melody with double-stops, hammer-ons and thumb fretting."],["Red House",1967,"i","Slow 12-bar blues; copy the vibrato and phrasing."],["Crosstown Traffic",1968,"i","Riff-driven groove with a fuzz and kazoo-style flavor."],["All Along the Watchtower",1968,"i","Same simple loop as Dylan's original but in a higher key; add fills between chords."],["Voodoo Child (Slight Return)",1968,"a","Wah-driven minor-pentatonic riff; the solo is a bending masterclass."],["Star-Spangled Banner (Woodstock)",1969,"a","Feedback and whammy dives; study the controlled noise."],["Machine Gun",1970,"a","Expressive solo using effects and picking dynamics."]]},
+{id:"rk",n:"R. Kelly",tag:"Gospel-flavored R&B and hip-hop soul",
+ b:"A note first: R. Kelly was convicted of federal sex crimes in 2021 and 2022 and is serving a prison sentence. This section is only about the music's technique, which draws on gospel, slow-jam and hip-hop-soul conventions common to many artists.",
+ dna:["Gospel-flavored R&B: slow jams in 6/8 or 12/8 with 7th and 9th chords","Piano as the backbone with simple, singable melodies","Clean, chorus-tinted guitar with gentle chord stabs","Hip-hop-soul drum programming"],
+ pi:"Play rich seventh and ninth chords with a rolling left-hand root and fifth, and a steady right-hand pulse. Add passing chords between the main ones.",
+ gt:"Clean tone with a little chorus. Play soft chord stabs on the top strings and add single-note fills between vocal lines.",
+ jam:[["Gospel slow-jam loop (Cmaj9 – Am9 – Dm9 – G9)",[{r:0,t:"maj9"},{r:9,t:"m9"},{r:2,t:"m9"},{r:7,t:"d9"}],68]],
+ songs:[["Bump n' Grind",1993,"b","Slow-jam groove with sparse chords and a steady beat."],["Your Body's Callin'",1993,"b","Smooth slow jam; practice clean chord changes."],["I Believe I Can Fly",1996,"i","Gospel-pop ballad: block chords and a long, building melody."],["Gotham City",1997,"i","Moody minor groove with strings and piano."],["I'm Your Angel",1998,"b","Duet ballad with simple piano chords."],["The World's Greatest",2002,"b","Uplifting ballad; simple chords and an open sound."],["Ignition (Remix)",2003,"b","Mid-tempo groove with easy chords and a bouncing rhythm."],["Step in the Name of Love",2003,"b","Steppin' groove; steady backbeat and easy chord movement."],["Happy People",2004,"b","Smooth R&B groove with simple chord loops."],["Trapped in the Closet",2005,"b","Repeating chord pattern under a spoken-sung story."]]}
+];
+let artCur="prince",artLvl="all",artTm=[];
+function artRender(){
+  const a=ART.find(x=>x.id===artCur);
+  $("#artChips").innerHTML=ART.map(x=>`<button class="chip" data-art="${x.id}" aria-pressed="${x.id===artCur}">${esc(x.n)}</button>`).join("");
+  const songs=a.songs.filter(s=>artLvl==="all"||s[2]===artLvl);
+  $("#artBody").innerHTML=`
+  <div class="card"><div class="kicker">${esc(a.tag)}</div><h2 style="margin:4px 0 8px">${esc(a.n)}</h2><p>${esc(a.b)}</p>
+    <h3 style="margin:12px 0 6px;font-size:18px">Sound DNA</h3><ul style="margin:0;padding-left:20px">${a.dna.map(d=>`<li>${esc(d)}</li>`).join("")}</ul></div>
+  <div class="g2">
+    <div class="card"><h3>On piano</h3><p style="margin-top:6px">${esc(a.pi)}</p></div>
+    <div class="card"><h3>On guitar</h3><p style="margin-top:6px">${esc(a.gt)}</p></div>
+  </div>
+  <div class="card"><h3>Style jam</h3><p class="note" style="margin:6px 0 10px">Original practice progressions in this artist's spirit. They are exercises, not transcriptions of any song.</p>
+    ${a.jam.map((j,i)=>`<div class="row" style="margin-bottom:10px"><b style="min-width:240px">${esc(j[0])}</b><button class="btn" data-jam="${i}" data-i="p">Piano</button><button class="btn alt" data-jam="${i}" data-i="g">Guitar</button><span class="readout" id="jr${i}">${j[1].map(c=>chordName(c.r,c.t)).join("  ")}</span></div>`).join("")}</div>
+  <div class="card"><div class="row" style="justify-content:space-between;margin-bottom:8px"><h3>Song list</h3>
+    <div class="row" role="group" aria-label="Filter by difficulty">${[["all","All"],["b","Beginner"],["i","Intermediate"],["a","Advanced"]].map(([k,n])=>`<button class="chip" data-lvl="${k}" aria-pressed="${k===artLvl}">${n}</button>`).join("")}</div></div>
+    <div class="tw"><table><thead><tr><th>Song</th><th>Year</th><th>Level</th><th>How to approach it</th></tr></thead><tbody>${songs.map(s=>`<tr><td><b>${esc(s[0])}</b></td><td>${s[1]}</td><td><span class="tag ${s[2]}">${{b:"Beginner",i:"Intermediate",a:"Advanced"}[s[2]]}</span></td><td>${esc(s[3])}</td></tr>`).join("")}</tbody></table></div>
+    <p class="note" style="margin:10px 0 0">This is a graded selection of the best-known songs, not every track the artist recorded. Level is a rough guide. Use the method above for any song not listed.</p></div>`;
+}
+document.addEventListener("click",e=>{
+  const a=e.target.closest("[data-art]");if(a){artCur=a.dataset.art;artRender();return}
+  const l=e.target.closest("[data-lvl]");if(l){artLvl=l.dataset.lvl;artRender();return}
+  const j=e.target.closest("[data-jam]");if(j){const art=ART.find(x=>x.id===artCur),jam=art.jam[+j.dataset.jam];artTm.forEach(clearTimeout);const el=$("#jr"+j.dataset.jam);
+    artTm=playProg(jam[1],jam[2],j.dataset.i,(i,c)=>{el.innerHTML=jam[1].map((x,k)=>k===i?`<mark>${chordName(x.r,x.t)}</mark>`:chordName(x.r,x.t)).join("  ")})}
+});
+artRender();
+
+/* ---------- HISTORY ---------- */
+const ERAS=[["all","All"],["o","Origins 1973–79"],["s","Old school 1980s"],["g","Golden age 1986–96"],["m","Coasts and 2000s"],["n","Streaming era"]];
+const HIST=[
+["o","1973","Back-to-school party at 1520 Sedgwick Avenue","On August 11, 1973 in the Bronx, DJ Kool Herc extended the instrumental 'break' of funk records by playing two copies of the same record back and forth. Dancers waiting for the break became 'break-boys' and 'break-girls', and the style grew into breaking."],
+["o","Early 1970s","Zulu Nation and the culture takes shape","Afrika Bambaataa founded the Universal Zulu Nation, using music and community to steer young people away from gang violence and into the culture of DJing, MCing, breaking and graffiti."],
+["o","Mid-1970s","Quick mixing and scratching","Grandmaster Flash refined cueing records in headphones and using the crossfader for precise 'quick mix' loops. Grandwizard Theodore is widely credited with inventing the scratch."],
+["o","1979","The first rap records reach the public","Fatback Band's 'King Tim III (Personality Jock)' and The Sugarhill Gang's 'Rapper's Delight' brought rap to radio. 'Rapper's Delight' (built on a live replay of Chic's 'Good Times') reached the US Top 40."],
+["s","1980","Gold record for rap","Kurtis Blow's 'The Breaks' became the first rap song certified gold in the US."],
+["s","1982","Social commentary and the 808","Grandmaster Flash and the Furious Five released 'The Message', a landmark of storytelling about city life. Afrika Bambaataa's 'Planet Rock' fused Kraftwerk melodies with the Roland TR-808 drum machine."],
+["s","1983","Hip hop goes to the movies and jazz","The film Wild Style captured the culture. Herbie Hancock's 'Rockit', with turntablist Grand Mixer D.ST, brought scratching to a global audience. Run-DMC released 'Sucker M.C.'s'."],
+["s","1984","Def Jam and Run-DMC","Rick Rubin and Russell Simmons founded Def Jam. Run-DMC's debut album became the first gold rap album, pairing hard drum machines with rock guitars."],
+["g","1986–87","Rap meets rock","Run-DMC's 'Walk This Way' with Aerosmith broke rap into pop radio, and Beastie Boys' 'Licensed to Ill' became the first rap album to top the Billboard 200."],
+["g","1987–88","The art of the sample","Eric B. & Rakim's 'Paid in Full', Boogie Down Productions' 'Criminal Minded', Public Enemy's 'It Takes a Nation of Millions to Hold Us Back' and N.W.A's 'Straight Outta Compton' expanded rap's lyrical depth, production and politics."],
+["g","1989","De La Soul and the first rap Grammy","De La Soul's '3 Feet High and Rising' brought playful, jazz-and-psychedelia sampling. The first Grammy for rap was awarded in 1989 (amid a boycott because it was not televised)."],
+["g","1991","Sales data and sample lawsuits","Billboard started using SoundScan, revealing how large hip hop sales really were. A court ruling in Biz Markie's sampling case pushed the industry toward formal sample clearance."],
+["m","1992","The Chronic and G-funk","Dr. Dre's 'The Chronic' defined West Coast G-funk: slow, bass-heavy, melodic funk with whining synth leads. Snoop Dogg's 'Doggystyle' followed in 1993."],
+["m","1993–94","New York classics","Wu-Tang Clan's 'Enter the Wu-Tang (36 Chambers)' (1993), A Tribe Called Quest's 'Midnight Marauders' (1993), Nas's 'Illmatic' (1994) and The Notorious B.I.G.'s 'Ready to Die' (1994) set standards for lyricism and production."],
+["m","1996–97","A turning point","Tupac Shakur (September 1996) and The Notorious B.I.G. (March 1997) were killed. Their deaths ended a bitter coastal feud and are remembered as a great loss to the culture."],
+["m","1998–99","Wider voices","Lauryn Hill's 'The Miseducation of Lauryn Hill' won five Grammys in 1999 and Eminem's 'The Slim Shady LP' (1999) brought a new era of technical rhyming."],
+["m","2000s","The South rises, producers become stars","OutKast, crunk (Lil Jon) and Lil Wayne pushed the South to the forefront. Kanye West's 'The College Dropout' (2004) put the producer-rapper in the spotlight. Auto-Tune became a stylistic tool through T-Pain and Kanye's '808s & Heartbreak' (2008)."],
+["n","2010s","Trap and streaming","Atlanta trap (T.I., Gucci Mane, Future, Migos) went global, powered by 808 bass and rolling hi-hats. In 2017 Nielsen reported R&B/hip hop passed rock as the most-consumed genre in the US. Kendrick Lamar's 'DAMN.' won the 2018 Pulitzer Prize for Music."],
+["n","2023","Fifty years","Hip hop celebrated its 50th anniversary on August 11, 2023, now a global culture spanning drill, boom bap revival, melodic rap, regional scenes and every language."]
+];
+let eraCur="all";
+function histRender(){
+  $("#eraChips").innerHTML=ERAS.map(([k,n])=>`<button class="chip" data-era="${k}" aria-pressed="${k===eraCur}">${n}</button>`).join("");
+  $("#tl").innerHTML=HIST.filter(h=>eraCur==="all"||h[0]===eraCur).map(h=>`<div class="ev"><h3><em>${h[1]}</em>${esc(h[2])}</h3><p style="margin:6px 0 0">${esc(h[3])}</p></div>`).join("");
+  animateHistory();
+}
+function animateHistory(){$$("#tl .ev").forEach((e,i)=>{e.classList.remove("in");void e.offsetWidth;e.style.animationDelay=(i*55)+"ms";e.classList.add("in")})}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-era]");if(b){eraCur=b.dataset.era;histRender()}});
+histRender();
+
+/* ---------- LYRIC DEVICES ---------- */
+const DEVS=[
+["End rhyme","Matching sounds at the end of lines.","I'm tuning up the <mark>strings</mark>, warming up the keys<br>Building up a bridge from the bass to the <mark class=b2>breeze</mark>"],
+["Internal rhyme","Rhymes inside a line, not just at the end.","The <mark>beat</mark>'s on re<mark>peat</mark>, I com<mark>pete</mark> with the heat"],
+["Multisyllabic rhyme","Rhymes that match two or more syllables in a row.","<mark>cele-brating the groove</mark><br><mark class=b2>demon-strating the move</mark>"],
+["Slant rhyme","Near rhymes: similar, not identical, vowels or consonants.","Walking <mark>home</mark> to the sound I <mark class=b2>known</mark>, <mark>alone</mark>"],
+["Alliteration","Repeating the same starting sound.","<mark>S</mark>even <mark>s</mark>ilver <mark>s</mark>ynths <mark>s</mark>ing"],
+["Assonance","Repeating vowel sounds inside nearby words.","S<mark>lo</mark>w fl<mark>ow</mark>, c<mark>o</mark>ld s<mark>ou</mark>l, l<mark>ow</mark> n<mark>o</mark>te r<mark>o</mark>lling"],
+["Simile","Comparing with 'like' or 'as'.","My hands move <mark>like</mark> the second hand of a clock"],
+["Metaphor","Saying one thing is another.","The mic <mark>is</mark> my passport"],
+["Double entendre","A phrase with two meanings.","I'm sharp on every <mark>key</mark> (piano key and key to success)"],
+["Punchline","A setup followed by a twist.","I practiced so much my fingers <mark>filed a complaint</mark>"],
+["Personification","Giving objects human traits.","The bass line <mark>whispers</mark> my name"],
+["Hyperbole","Deliberate exaggeration.","Played that riff so loud <mark>the Bronx called</mark>"],
+["Onomatopoeia","Words that sound like what they mean.","<mark>Boom</mark>, <mark class=b2>bap</mark>, <mark>clap</mark>, <mark class=b2>tick</mark>"],
+["Anaphora (repetition)","Repeating a phrase at the start of lines for emphasis.","<mark>Count it in</mark> and loop it,<br><mark>Count it in</mark> and play it"],
+["Storytelling","A beginning, a conflict and a resolution in 16 bars. Classics like Slick Rick's 'Children's Story' (1988) are masterclasses.","Verse 1: setup · Verse 2: conflict · Verse 3: twist"],
+["Flow and cadence","How words sit on the beat: on-beat, off-beat, double-time, or triplets (three syllables per beat).","<mark>Ba-na-na</mark> <mark class=b2>Ba-na-na</mark> (triplet flow)"]
+];
+$("#devs").innerHTML=DEVS.map(d=>`<div class="card"><h3>${d[0]}</h3><p style="margin:6px 0 0">${d[1]}</p><div class="ex">${d[2]}</div></div>`).join("");
+const FLOW=["Left hand","holds the","low end","steady","Right hand","finds the","melody","ready","Count it","one two","three four","loop it","Slow it","down then","speed it","up"];
+$("#flow").innerHTML=FLOW.map(w=>`<div class="fc">${w}</div>`).join("");
+const flowClock=makeClock(()=>60/$("#fBpm").value,(s,t)=>click(t,s%4===0),s=>{$$("#flow .fc").forEach((c,i)=>c.classList.toggle("on",s>=0&&i===s%16))});
+$("#fGo").onclick=()=>{if(flowClock.on){flowClock.stop();$("#fGo").textContent="Play"}else{flowClock.start();$("#fGo").textContent="Stop"}};
+$("#fBpm").oninput=e=>$("#fBpmV").textContent=e.target.value;
+
+/* ---------- GEAR ---------- */
+const GEAR=[
+["Technics SL-1200","1972, MK2 1979","Direct-drive turntable with strong torque and a pitch slider. It became the DJ standard for mixing and scratching."],
+["Mixer and crossfader","1970s on","Lets a DJ blend two records and cut quickly between them, the heart of scratching and quick-mix routines."],
+["Roland TR-808","1980","Analog drum machine famous for its booming, long-decay kick and snare. It shaped 'Planet Rock' (1982), Marvin Gaye's 'Sexual Healing' (1982), and the trap bass sound."],
+["Roland TR-909","1983","Hybrid drum machine with punchy kick and crisp hats; a foundation of house and techno."],
+["Linn LM-1","1982","First drum machine using digital recordings of real drums. Prince used it on records such as '1999' and 'When Doves Cry'."],
+["Oberheim DMX","1981","Digital sample-based drum machine that became a staple of early-80s hip hop and electro."],
+["E-mu SP-1200","1987","12-bit sampler with a few seconds of sample time and a gritty crunch. Producers like Pete Rock and Large Professor made it a classic boom-bap sound."],
+["Akai MPC60","1988","Sampler and sequencer with pads, designed with Roger Linn. Swing and pad finger-drumming became the producer's craft; its descendants include the MPC3000 favored by J Dilla."],
+["Moog-style mono synth","1970s on","A single-note analog synth with portamento (glide). Its high, wavering lead is the signature sound of G-funk."],
+["Talk box and vocoder","1970s on","The talk box lets a performer shape a synth or guitar sound with their mouth. Roger Troutman used it on 'California Love' and many Zapp records. Vocoders appear on Kraftwerk records."],
+["Fender Rhodes","1960s on","Electric piano with a warm, bell-like tone, a favorite of soul, jazz and R&B and a rich source of samples."],
+["Auto-Tune","1997–98","Pitch-correction software that became a vocal effect after Cher's 'Believe' (1998) and later T-Pain and Kanye West."],
+["DAWs","1990s on","Digital audio workstations like FL Studio, Ableton Live, Logic and Pro Tools let one person produce a whole record on a laptop."]
+];
+$("#gearCards").innerHTML=GEAR.map(g=>`<div class="card"><div class="kicker">${g[1]}</div><h3 style="margin:2px 0 6px">${esc(g[0])}</h3><p style="margin:0">${esc(g[2])}</p></div>`).join("");
+const SIG=["Stratocaster","Fuzz Face","Wah pedal","Uni-Vibe","Marshall amp"];
+$("#sig").innerHTML=SIG.map((s,i)=>`<span>${s}</span>${i<SIG.length-1?"<b>→</b>":""}`).join("");
+let sigTm=[];
+function runSignal(){sigTm.forEach(clearTimeout);sigTm=[];const sp=$$("#sig span");sp.forEach(s=>s.classList.remove("lit"));sp.forEach((s,i)=>sigTm.push(setTimeout(()=>{sp.forEach(x=>x.classList.remove("lit"));s.classList.add("lit")},i*550)))}
+$("#sig").onclick=runSignal;$("#sig").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();runSignal()}};
+
+/* ---------- SAMPLES ---------- */
+const SMP=[
+["The Winstons – Amen, Brother",1969,"Drum break","N.W.A – Straight Outta Compton (1988); countless jungle and drum and bass tracks"],
+["James Brown – Funky Drummer",1970,"Drum break","Public Enemy – Fight the Power (1989)"],
+["Lyn Collins – Think (About It)",1972,"Vocal and break","Rob Base & DJ E-Z Rock – It Takes Two (1988)"],
+["Chic – Good Times",1979,"Bassline","The Sugarhill Gang – Rapper's Delight (1979, replayed live)"],
+["Kraftwerk – Trans-Europe Express / Numbers",1977,"Melody and rhythm","Afrika Bambaataa & Soulsonic Force – Planet Rock (1982)"],
+["Incredible Bongo Band – Apache",1973,"Percussion break","Nas – Made You Look (2002); long a Bronx party favorite"],
+["The Honey Drippers – Impeach the President",1973,"Drum break","Roxanne Shanté – Roxanne's Revenge (1984)"],
+["Bob James – Take Me to the Mardi Gras",1975,"Piano and drums","Run-DMC – Peter Piper (1986)"],
+["Bob James – Nautilus",1974,"Bass and drums","Ghostface Killah – Daytona 500 (1996)"],
+["Rick James – Super Freak",1981,"Bassline","MC Hammer – U Can't Touch This (1990)"],
+["Queen & David Bowie – Under Pressure",1981,"Bassline","Vanilla Ice – Ice Ice Baby (1990)"],
+["Led Zeppelin – When the Levee Breaks",1971,"Drum break","Beastie Boys – Rhymin & Stealin (1986)"],
+["Gilbert O'Sullivan – Alone Again (Naturally)",1972,"Piano and melody","Biz Markie – Alone Again (1991); the case that changed sample clearance"],
+["Jackson 5 – I Want You Back",1969,"Melody and vocal","Jay-Z – Izzo (H.O.V.A.) (2001)"],
+["Chaka Khan – Through the Fire",1984,"Vocal","Kanye West – Through the Wire (2003)"],
+["Ray Charles – I Got a Woman",1954,"Vocal and horns","Kanye West – Gold Digger (2005)"],
+["Herbie Hancock – Jessica",1973,"Piano and bass","Mobb Deep – Shook Ones Pt. II (1995)"],
+["The Charmels – As Long as I've Got You",1967,"Vocal and strings","Wu-Tang Clan – C.R.E.A.M. (1993)"],
+["Donald Byrd – Flight Time",1972,"Piano","Nas – N.Y. State of Mind (1994)"],
+["Ahmad Jamal – I Love Music",1970,"Piano and strings","Nas – The World Is Yours (1994)"],
+["Lou Reed – Walk on the Wild Side",1972,"Bassline","A Tribe Called Quest – Can I Kick It? (1990)"],
+["Funkadelic – (Not Just) Knee Deep",1979,"Bassline and guitar","De La Soul – Me Myself and I (1989)"],
+["Steely Dan – Peg",1977,"Vocal hook","De La Soul – Eye Know (1989)"],
+["Labi Siffre – I Got The...",1975,"Bass and piano","Eminem – My Name Is (1999)"],
+["The Police – Every Breath You Take",1983,"Guitar riff","Puff Daddy & Faith Evans – I'll Be Missing You (1997)"],
+["Joe Cocker – Woman to Woman",1972,"Horns and vocal","2Pac – California Love (1995), produced by Dr. Dre"],
+["Bobby Byrd – I Know You Got Soul",1971,"Drums and vocal","Eric B. & Rakim – I Know You Got Soul (1987)"],
+["Leon Haywood – I Want'a Do Something Freaky to You",1975,"Synth riff","Dr. Dre – Nuthin' but a 'G' Thang (1992)"],
+["David McCallum – The Edge",1967,"Melody","Dr. Dre – The Next Episode (1999)"],
+["Parliament – Mothership Connection (Star Child)",1975,"Vocal and groove","Dr. Dre – Let Me Ride (1993)"],
+["Charles Wright & the Watts 103rd Street Rhythm Band – Express Yourself",1970,"Groove","N.W.A – Express Yourself (1988)"],
+["Bill Withers – Grandma's Hands",1971,"Vocal and melody","Blackstreet ft. Dr. Dre – No Diggity (1996)"],
+["Stevie Wonder – Pastime Paradise",1976,"Melody and strings","Coolio – Gangsta's Paradise (1995)"],
+["Lakeside – Fantastic Voyage",1980,"Interpolation","Coolio – Fantastic Voyage (1994)"],
+["Tom Tom Club – Genius of Love",1981,"Bassline","Mariah Carey – Fantasy (1995)"],
+["Isley Brothers – Between the Sheets",1983,"Groove","The Notorious B.I.G. – Big Poppa (1994)"],
+["DeBarge – Stay with Me",1983,"Melody","The Notorious B.I.G. – One More Chance (Remix) (1995)"],
+["Mtume – Juicy Fruit",1983,"Groove","The Notorious B.I.G. – Juicy (1994)"],
+["Manu Dibango – Soul Makossa",1972,"Vocal chant","Michael Jackson – Wanna Be Startin' Somethin' (1983)"],
+["Michael Jackson – Wanna Be Startin' Somethin'",1983,"Vocal chant","Rihanna – Don't Stop the Music (2007)"],
+["Michael Jackson – Human Nature",1983,"Melody","SWV – Right Here (Human Nature Remix) (1993)"],
+["Jimmy Castor Bunch – It's Just Begun",1972,"Break","Beloved among early b-boys; widely sampled since"],
+["Babe Ruth – The Mexican",1972,"Break","Early b-boy favorite; widely sampled since"]
+];
+const STYPES=["All",...new Set(SMP.map(s=>s[2]))];
+let sType="All";
+$("#sChips").innerHTML=STYPES.map(t=>`<button class="chip" data-st="${esc(t)}" aria-pressed="${t===sType}">${esc(t)}</button>`).join("");
+function sRender(){
+  const q=$("#sQ").value.trim().toLowerCase();
+  const rows=SMP.filter(s=>(sType==="All"||s[2]===sType)&&(!q||s.join(" ").toLowerCase().includes(q)));
+  $("#sBody").innerHTML=rows.map(s=>`<tr><td><b>${esc(s[0])}</b></td><td>${s[1]}</td><td><span class="tag">${esc(s[2])}</span></td><td>${esc(s[3])}</td></tr>`).join("")||`<tr><td colspan="4">No matches. Try a shorter search.</td></tr>`;
+  $("#sCount").textContent=`${rows.length} of ${SMP.length}`;
+  $$("#sChips .chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.st===sType));
+}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-st]");if(b){sType=b.dataset.st;sRender()}});
+$("#sQ").oninput=sRender;sRender();
+
+/* ---------- init ---------- */
+pShow(0,"major");gShow();refreshProg();
+show(location.hash.slice(1));
+</script>
