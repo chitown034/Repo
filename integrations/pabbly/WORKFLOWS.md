@@ -34,6 +34,8 @@ is guessed): **New Inbound WhatsApp Message** (`whatsapp.message.received`) and 
 proven the first time a real message is captured. Still to build: **Send WhatsApp Message** — its test really sends,
 so Steven types his own mobile as the test recipient in Pabbly when he is ready. Then a person reviews and publishes.
 
+**Update 2026-10-31:** Send WhatsApp Message is designed and passes the builder's checks (send-from dropdown on the tested phone-number source, To, Message, optional link preview, optional reply-to id from the trigger). It is **not saved yet** because saving runs one real send. Two things first, both Steven's: (1) message (202) 474-5223 from your phone (Meta only allows free text inside 24 hours of your last message); (2) say "send the Kapso test to my phone" — Claude then saves it with your own mobile as the only test recipient. The sending number shows CONNECTED (production) in Kapso.
+
 Auth: API key in a header (`X-API-Key`). The key is entered by Steven on Pabbly's own secure page (the builder's
 `request_connection_link`), never in chat. It is the same key the Mac Keychain item `kapso` holds.
 
