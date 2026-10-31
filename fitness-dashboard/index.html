@@ -282,6 +282,7 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
     </div>
     <div class="grid" style="gap:20px">
       <div class="tiles" id="tiles"></div>
+      <div class="card" id="ov-health"></div>
       <div class="grid g2">
         <div class="card">
           <div class="card-head"><h3>Daily macros</h3><span class="small muted" id="macro-style"></span></div>
@@ -2112,6 +2113,43 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
   </div>
 </section>
 
+<!-- APPLE HEALTH -->
+<section class="panel" id="p-apple" data-tab="apple" data-label="Apple Health" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Apple Watch · iPhone · connected apps</span>
+    <h2>Apple Health</h2>
+    <p>Everything Apple Health collects (Watch, iPhone, Oura, Hume, Withings, Garmin and any app that writes to Health) in one place: activity rings, heart, sleep, body and vitals, with 7- and 30-day trends and norms. Apple has no web API, so data arrives through Health Auto Export: automatically from Google Drive, or by importing its files.</p>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <div class="card-head"><h3>Connection</h3><span id="ap-conn" class="pill p-info">Checking</span></div>
+      <div class="kv" id="ap-connkv"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button type="button" class="btn" id="ap-sync">Sync from Google Drive</button><button type="button" class="btn ghost" id="ap-import">Import a file instead</button><label class="small" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="ap-auto"> Auto-sync when I open the dashboard</label></div>
+      <div id="ap-status" class="small muted" style="margin-top:6px"></div>
+      <details style="margin-top:10px"><summary class="small">Set-up steps (one time, about 5 minutes)</summary><ol class="small" style="padding-left:18px;display:grid;gap:4px;margin-top:6px"><li>Install <strong>Health Auto Export</strong> on your iPhone and allow it to read every Health category you want here.</li><li>Create an automation: Format <strong>JSON</strong>, aggregation <strong>Day</strong> (hourly also works), period <em>last 7 days</em>, destination <strong>Google Drive</strong>, repeat <em>daily</em>. Keep "HealthAutoExport" in the file name.</li><li>Connect Google Drive in claude.ai Settings → Connectors, then press <em>Sync</em>. The page reads only files whose names contain HealthAutoExport.</li><li>Oura, Hume, Withings, Garmin, Whoop and others write to Apple Health, so they come along automatically.</li></ol></details>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Today's rings</h3><span class="small muted" id="ap-ringday"></span></div>
+      <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap"><div class="svgbox" id="ap-rings" style="width:170px"></div><div id="ap-ringtxt" class="small" style="flex:1;min-width:180px"></div></div>
+      <form class="fields" autocomplete="off" style="margin-top:10px"><label class="f">Move goal (kcal)<input id="ap-g-move" type="number" min="100" step="10"></label><label class="f">Exercise goal (min)<input id="ap-g-ex" type="number" min="5" step="5"></label><label class="f">Stand goal (h)<input id="ap-g-stand" type="number" min="1" max="24"></label><label class="f">Step goal<input id="ap-g-steps" type="number" min="1000" step="500"></label></form>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><h3>Health metrics</h3><div style="display:flex;gap:6px;flex-wrap:wrap" id="ap-range"></div></div>
+    <p class="small muted">Latest value, recent average, change versus the period, and how it compares with general norms for your age and sex. Tap a metric for its chart.</p>
+    <div id="ap-cats"></div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><div class="card-head"><h3 id="ap-chart-title">Chart</h3><span class="small muted" id="ap-chart-sub"></span></div><div class="svgbox" id="ap-chart"></div><p class="note" id="ap-chart-note"></p></div>
+    <div class="card"><h3>What this data says</h3><div id="ap-insights" class="grid" style="gap:8px"></div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><h3>Coverage</h3><span class="small muted" id="ap-covsum"></span></div>
+    <p class="small muted">Metrics the dashboard understands from Apple Health. Grey ones have no data yet: enable them in Health Auto Export (and in the Health app's sharing) to fill them in.</p>
+    <div id="ap-cov" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+  </div>
+</section>
+
 <!-- 360 ASSESSMENT -->
 <section class="panel" id="p-a360" data-tab="a360" data-label="360 Assessment" hidden>
   <div class="panel-head">
@@ -2377,7 +2415,7 @@ const wUnit = () => imp() ? "lb" : "kg";
 /* ---------- tabs ---------- */
 const panels = $$("section.panel"); const panelBy = {}; panels.forEach(p => { panelBy[p.dataset.tab] = p; });
 const tablist = $("#tablist"), groupsEl = $("#groups");
-const GROUPS = [["home", "Home", ["overview", "hub", "a360", "coach", "log"]], ["nutrition", "Nutrition", ["meals", "foodlog", "nutrition", "fads", "metabolism"]],
+const GROUPS = [["home", "Home", ["overview", "apple", "hub", "a360", "coach", "log"]], ["nutrition", "Nutrition", ["meals", "foodlog", "nutrition", "fads", "metabolism"]],
   ["train", "Training", ["programs", "training", "cardio", "styles", "library", "bb"]], ["body", "Body & health", ["recovery", "wellness", "supps", "health", "body"]], ["learn", "Learn", ["academy", "lab", "kb", "books", "myths"]]];
 const groupOf = {}; GROUPS.forEach(([g, , names]) => names.forEach(n => { groupOf[n] = g; }));
 const onShow = {};
@@ -3580,7 +3618,7 @@ const HK = {
   leanMass: { l: "Lean mass", agg: "avg", u: "kg", d: 1 }, visceralFat: { l: "Visceral fat", agg: "avg", u: "", d: 0 }, bodyWater: { l: "Body water", agg: "avg", u: "%", d: 1 }, boneMass: { l: "Bone mass", agg: "avg", u: "kg", d: 1 },
   bmr: { l: "BMR (scale)", agg: "avg", u: "kcal", d: 0 }, metabolicAge: { l: "Metabolic age", agg: "avg", u: "y", d: 0 }, bpSys: { l: "Systolic BP", agg: "avg", u: "mmHg", d: 0 }, bpDia: { l: "Diastolic BP", agg: "avg", u: "mmHg", d: 0 },
   glucose: { l: "Glucose", agg: "avg", u: "mg/dL", d: 0 }, mood: { l: "Mood (check-in)", agg: "avg", u: "/5", d: 1 }, energy: { l: "Energy (check-in)", agg: "avg", u: "/5", d: 1 }, stress: { l: "Stress (check-in)", agg: "avg", u: "/5", d: 1 },
-  sore: { l: "Soreness (check-in)", agg: "avg", u: "/5", d: 1 }, bodyTemp: { l: "Body temperature", agg: "avg", u: "°C", d: 1 }, hr: { l: "Heart rate (avg)", agg: "avg", u: "bpm", d: 0 }, alcohol: { l: "Alcohol", agg: "sum", u: "drinks", d: 1 }, caffeine: { l: "Caffeine", agg: "sum", u: "mg", d: 0 }
+  sore: { l: "Soreness (check-in)", agg: "avg", u: "/5", d: 1 }, bodyTemp: { l: "Body temperature", agg: "avg", u: "°C", d: 1 }, standHours: { l: "Stand hours", agg: "sum", u: "h", d: 0 }, mindful: { l: "Mindful minutes", agg: "sum", u: "min", d: 0 }, walkHr: { l: "Walking HR", agg: "avg", u: "bpm", d: 0 }, hrRecovery: { l: "HR recovery (1 min)", agg: "avg", u: "bpm", d: 0 }, daylight: { l: "Time in daylight", agg: "sum", u: "min", d: 0 }, wristTemp: { l: "Wrist temp deviation", agg: "avg", u: "°C", d: 2 }, hr: { l: "Heart rate (avg)", agg: "avg", u: "bpm", d: 0 }, alcohol: { l: "Alcohol", agg: "sum", u: "drinks", d: 1 }, caffeine: { l: "Caffeine", agg: "sum", u: "mg", d: 0 }
 };
 let HUB = store.get("hub", null), hubDemo = false;
 function hubDemoData() {
@@ -3656,6 +3694,9 @@ function convertVal(key, v, h) {
     case "weight": case "muscleMass": case "fatMass": case "leanMass": case "boneMass": return /lb|pound/.test(h) ? v / KG_LB : /\(g\)/.test(h) ? v / 1000 : v;
     case "stressMin": return /sec|\(s\)/.test(h) ? v / 60 : v;
     case "bodyTemp": return /degf|°f|\(f\)|fahrenheit/.test(h) ? (v - 32) * 5 / 9 : v;
+    case "wristTemp": return /degf|°f|\(f\)|fahrenheit/.test(h) ? v * 5 / 9 : v;
+    case "standHours": return /min/.test(h) ? v / 60 : v;
+    case "mindful": case "daylight": return /sec|\(s\)/.test(h) ? v / 60 : /\(hr|hour/.test(h) ? v * 60 : v;
     case "distance": return /\(mi|mile/.test(h) ? v * 1.609344 : /\(m\)|meters|metres/.test(h) ? v / 1000 : v;
     case "water": return /ml|milli/.test(h) ? v / 1000 : /fl|oz/.test(h) ? v * 0.0295735 : /\(g\)/.test(h) ? v / 1000 : v > 20 ? v / 1000 : v;
     case "sodium": return /\(g\)/.test(h) ? v * 1000 : v;
@@ -3704,7 +3745,7 @@ function importCSV(text, fname) {
   return { kind: "daily", n: accMerge(acc, fname), cols: map.map(m => HK[m[1]].l) };
 }
 const HAE = { step_count: "steps", active_energy: "activeKcal", basal_energy_burned: "restKcal", dietary_energy: "intake", protein: "protein", carbohydrates: "carbs", total_fat: "fat", fiber: "fiber", dietary_sugar: "sugar", sodium: "sodium", dietary_water: "water",
-  walking_running_distance: "distance", blood_glucose: "glucose", lean_body_mass: "leanMass", body_temperature: "bodyTemp", heart_rate: "hr", apple_exercise_time: "exerciseMin", flights_climbed: "flights", weight_body_mass: "weight", body_fat_percentage: "bodyFat", resting_heart_rate: "rhr", heart_rate_variability: "hrv", sleep_analysis: "sleep", vo2_max: "vo2", respiratory_rate: "resp", blood_oxygen_saturation: "spo2" };
+  walking_running_distance: "distance", blood_glucose: "glucose", lean_body_mass: "leanMass", body_temperature: "bodyTemp", heart_rate: "hr", apple_exercise_time: "exerciseMin", flights_climbed: "flights", weight_body_mass: "weight", body_fat_percentage: "bodyFat", resting_heart_rate: "rhr", heart_rate_variability: "hrv", sleep_analysis: "sleep", vo2_max: "vo2", respiratory_rate: "resp", blood_oxygen_saturation: "spo2", apple_stand_hour: "standHours", apple_stand_time: "standHours", mindful_minutes: "mindful", walking_heart_rate_average: "walkHr", cardio_recovery: "hrRecovery", heart_rate_recovery: "hrRecovery", time_in_daylight: "daylight", apple_sleeping_wrist_temperature: "wristTemp", wrist_temperature: "wristTemp" };
 function importJSON(text, fname) {
   const o = JSON.parse(text);
   if (o && o.app === "plate-and-pulse") { restoreBackup(o); return { kind: "backup", n: 1 }; }
@@ -3735,7 +3776,7 @@ function importJSON(text, fname) {
   return { kind: "daily", n: n + list.length };
 }
 const XMLQ = { StepCount: "steps", ActiveEnergyBurned: "activeKcal", BasalEnergyBurned: "restKcal", DietaryEnergyConsumed: "intake", DietaryProtein: "protein", DietaryCarbohydrates: "carbs", DietaryFatTotal: "fat", DietaryFiber: "fiber", DietarySugar: "sugar", DietarySodium: "sodium", DietaryWater: "water",
-  DistanceWalkingRunning: "distance", AppleExerciseTime: "exerciseMin", FlightsClimbed: "flights", BodyMass: "weight", BodyFatPercentage: "bodyFat", RestingHeartRate: "rhr", HeartRateVariabilitySDNN: "hrv", VO2Max: "vo2", RespiratoryRate: "resp", OxygenSaturation: "spo2" };
+  DistanceWalkingRunning: "distance", AppleExerciseTime: "exerciseMin", FlightsClimbed: "flights", BodyMass: "weight", BodyFatPercentage: "bodyFat", RestingHeartRate: "rhr", HeartRateVariabilitySDNN: "hrv", VO2Max: "vo2", RespiratoryRate: "resp", OxygenSaturation: "spo2", AppleStandTime: "standHours", WalkingHeartRateAverage: "walkHr", HeartRateRecoveryOneMinute: "hrRecovery", TimeInDaylight: "daylight", AppleSleepingWristTemperature: "wristTemp", AppleStandHour: "standHours" };
 async function importXML(file, fname, progress) {
   const CH = 4 * 1024 * 1024; let pos = 0, tail = ""; const bySrc = {}; const wos = []; const attr = s => { const o = {}; s.replace(/(\w+)="([^"]*)"/g, (_, k, v) => { o[k] = v; return ""; }); return o; };
   while (pos < file.size) {
@@ -3745,7 +3786,9 @@ async function importXML(file, fname, progress) {
       const t = a.match(/type="HK(?:Quantity|Category)TypeIdentifier(\w+)"/); if (!t) return "";
       const o = attr(a); let key = XMLQ[t[1]], v, date = toDay(o.startDate);
       if (t[1] === "SleepAnalysis") { if (!/Asleep/.test(o.value || "")) return ""; key = "sleep"; v = (new Date(o.endDate.replace(" ", "T").replace(/ ([+-]\d{2})(\d{2})$/, "$1:$2")) - new Date(o.startDate.replace(" ", "T").replace(/ ([+-]\d{2})(\d{2})$/, "$1:$2"))) / 3.6e6; date = toDay(o.endDate); }
-      else { if (!key) return ""; v = convertVal(key, num(o.value), "(" + String(o.unit || "").toLowerCase() + ")"); if (key === "hrv" || key === "rhr") {} }
+      else if (t[1] === "AppleStandHour") { if (!/Stood/.test(o.value || "")) return ""; v = 1; }
+      else if (t[1] === "MindfulSession") { key = "mindful"; v = (new Date(o.endDate.replace(" ", "T").replace(/ ([+-]\d{2})(\d{2})$/, "$1:$2")) - new Date(o.startDate.replace(" ", "T").replace(/ ([+-]\d{2})(\d{2})$/, "$1:$2"))) / 6e4; }
+      else { if (!key) return ""; v = convertVal(key, num(o.value), "(" + String(o.unit || "").toLowerCase() + ")"); }
       if (!Number.isFinite(v)) return "";
       const sk = HK[key].agg === "sum" ? key + "|" + (o.sourceName || "") : key;
       const a2 = (bySrc[date] = bySrc[date] || {}); const c = (a2[sk] = a2[sk] || { s: 0, n: 0 }); c.s += v; c.n++;
@@ -3774,7 +3817,7 @@ async function handleFiles(files) {
       msgs.push(`<span class="pill p-good">Imported</span> ${esc(f.name)}: ${r.kind === "backup" ? "backup restored" : r.n + (r.kind === "workouts" ? " workouts" : " values")}${r.cols ? " (" + esc(r.cols.join(", ")) + ")" : ""}`);
     } catch (e) { msgs.push(`<span class="pill p-bad">Skipped</span> ${esc(f.name)}: ${esc(e.message || "could not read this file")}. Check that it's a CSV with a date column, a Health Auto Export JSON, or Apple's export.xml.`); }
   }
-  prog.innerHTML = msgs.join("<br>"); saveHub(); renderHub();
+  prog.innerHTML = msgs.join("<br>"); saveHub(); renderHub(); renderApple(); renderHealthStrip();
 }
 
 /* personal data stores (all local to this browser) */
@@ -3893,6 +3936,7 @@ function lineChart(dates, vals, opt = {}) {
 }
 let hubA = null;
 function renderHub() {
+  if (typeof renderApple === "function" && !renderHub._in) { renderHub._in = true; try { renderApple(); renderHealthStrip(); } finally { renderHub._in = false; } }
   $("#hub-flag").innerHTML = hubDemo ? `<div class="example-flag">Showing example data so you can see the analysis. Import a file or sync Strava and it's replaced by your own.</div>` : "";
   $("#hub-range").innerHTML = [14, 30, 90, 180, 365].map(n => `<button type="button" class="chip" data-v="${n}" aria-pressed="${hubRangeSel === n}">${n} days</button>`).join("");
   $$("#hub-range .chip").forEach(b => b.addEventListener("click", () => { hubRangeSel = +b.dataset.v; renderHub(); }));
@@ -3986,7 +4030,7 @@ function exportCSV() {
   saveFile(`plate-and-pulse-data-${iso(new Date())}.csv`, rows.join("\n"));
 }
 const BK = [["wlog", "WLOG", v => { WLOG = v; }, () => WLOG], ["food", "FOOD_LOG", v => { FOOD_LOG = v; }, () => FOOD_LOG], ["water", "FOOD_WATER", v => { FOOD_WATER = v; }, () => FOOD_WATER], ["journal", "JOURNAL", v => { JOURNAL = v; }, () => JOURNAL], ["stack", "STACK", v => { STACK = v; }, () => STACK],
-  ["stacklog", "STACKLOG", v => { STACKLOG = v; }, () => STACKLOG], ["labs", "LABS_LOG", v => { LABS_LOG = v; }, () => LABS_LOG], ["p360", "P360", v => { P360 = v; }, () => P360], ["p360h", "P360H", v => { P360H = v; }, () => P360H], ["programs", "PROGRAMS", v => { PROGRAMS = v; }, () => PROGRAMS], ["mealplans", "MEALPLANS", v => { MEALPLANS = v; }, () => MEALPLANS], ["mappers", "MAPPERS", v => { MAPPERS = v; }, () => MAPPERS], ["acad", "ACAD", v => { Object.assign(ACAD, v); }, () => ACAD], ["wheel", "WHEEL", v => { WHEEL = Object.assign({ r: {}, qs: {}, tool: {}, stoic: {}, hist: [], dim: "PHYS" }, v); }, () => WHEEL]];
+  ["stacklog", "STACKLOG", v => { STACKLOG = v; }, () => STACKLOG], ["labs", "LABS_LOG", v => { LABS_LOG = v; }, () => LABS_LOG], ["p360", "P360", v => { P360 = v; }, () => P360], ["p360h", "P360H", v => { P360H = v; }, () => P360H], ["programs", "PROGRAMS", v => { PROGRAMS = v; }, () => PROGRAMS], ["mealplans", "MEALPLANS", v => { MEALPLANS = v; }, () => MEALPLANS], ["mappers", "MAPPERS", v => { MAPPERS = v; }, () => MAPPERS], ["acad", "ACAD", v => { Object.assign(ACAD, v); }, () => ACAD], ["apple", "APG", v => { Object.assign(APG, v); }, () => APG], ["wheel", "WHEEL", v => { WHEEL = Object.assign({ r: {}, qs: {}, tool: {}, stoic: {}, hist: [], dim: "PHYS" }, v); }, () => WHEEL]];
 function backup() { const o = { app: "plate-and-pulse", v: 2, at: new Date().toISOString(), profile: S, log: isSample ? null : LOG, hub: hubDemo ? null : HUB }; BK.forEach(([k, , , get]) => { o[k] = get(); }); saveFile(`plate-and-pulse-backup-${iso(new Date())}.json`, JSON.stringify(o)); }
 function restoreBackup(o) {
   if (o.profile) { Object.assign(S, o.profile); store.set("profile", S); fillProfile(); }
@@ -4915,7 +4959,7 @@ function coachContext() {
     parts.push(`360 PROFILE (self-reported)\nGoal: ${P.goal || "not set"}${P.goaltxt ? " (" + P.goaltxt + ")" : ""}${P.event ? ", target date " + P.event : ""}. Experience: ${P.exp || "?"}. Available: ${P.days || "?"} days/week, ${P.mins || "?"} min, equipment: ${P.eq || "?"}. Body type: ${P.body || "not set"}. Blood type: ${P.blood || "unknown"}. Muscle fibers: ${P.fiber || (P.fiberReps ? "rep test " + P.fiberReps + " reps at 80%" : "not tested")}. Chronotype: ${ch ? ch.label + " (mid-sleep " + ch.mid + ")" : "unknown"}. Injuries/limits: ${P.inj || "none stated"}. Conditions/medications: ${P.cond || "none stated"}. Diet restrictions: ${P.food || "none stated"}. Notes: ${P.notes || "none"}.\nSleep answers: bed ${P.bed || "?"}, wake ${P.wake || "?"}, latency ${P.lat || "?"} min, awakenings ${P.wakes || "?"}, quality ${P.sq || "?"}/5, daytime sleepiness ${P.sleepy || "?"}/5${P.snore ? ", reports loud snoring/gasping" : ""}.\nStress screen: ${Number.isFinite(sp) ? fmt(sp * 100) + "% of maximum (" + stressLevel(sp)[0].toLowerCase() + ")" : "not answered"}.\n360 scores (0-100, with data confidence): ${R.domains.map(d => `${d.label} ${Number.isFinite(d.score) ? fmt(d.score) : "n/a"} (${fmt(d.conf * 100)}%)`).join("; ")}. Overall ${Number.isFinite(R.overall) ? fmt(R.overall) : "n/a"}.\nDrivers: ${R.domains.filter(d => d.drivers.length).map(d => d.label + ": " + d.drivers.map(x => x.t).join("; ")).join(" | ")}`);
   }
   if (COSHARE.p360 && wheelRatedCount()) { const st = stoicStats(); parts.push(`WELLNESS WHEEL (1-10)\n${WH_ORDER.map(id => `${DIMS[id].name.split(" (")[0]} ${fmt(currentRating(id), 1)}`).join("; ")}.${Number.isFinite(st.avg7) ? ` Stoic practice 7-day completion ${fmt(st.avg7 * 100)}%, streak ${st.streak} days.` : ""}`); }
-  if (COSHARE.hub) parts.push("WEARABLE / IMPORTED DATA\n" + hubSummaryText(true));
+  if (COSHARE.hub) { const dv = HUB.devices ? Object.keys(HUB.devices).filter(Boolean) : []; parts.push("WEARABLE / IMPORTED DATA" + (dv.length ? ` (Apple Health devices: ${dv.join(", ")})` : "") + "\n" + hubSummaryText(true)); }
   if (COSHARE.wlog) {
     const sess = WLOG.slice().sort((a, b) => b.d.localeCompare(a.d)).slice(0, 10), bestBy = {};
     WLOG.forEach(s => s.entries.forEach(e => e.sets.forEach(x => { const v = e1rm(x.w, x.r); if (v > 0 && (!bestBy[e.ex] || v > bestBy[e.ex].v)) bestBy[e.ex] = { v, w: x.w, r: x.r, d: s.d }; })));
@@ -6611,8 +6655,146 @@ $("#kb-out").addEventListener("click", e => {
 });
 onShow.kb = () => renderKB();
 
+/* ---------- apple health ---------- */
+const APG = Object.assign({ move: 500, ex: 30, stand: 12, steps: 8000 }, store.get("apple", {}));
+const saveApple = () => store.set("apple", APG);
+let apRange = 30, apSel = "steps";
+const AP_CATS = [
+  ["Activity", ["steps", "activeKcal", "exerciseMin", "standHours", "distance", "flights", "restKcal", "daylight"]],
+  ["Heart", ["rhr", "hrv", "hr", "walkHr", "hrRecovery", "vo2", "bpSys", "bpDia"]],
+  ["Sleep", ["sleep", "deepSleep", "remSleep", "wristTemp"]],
+  ["Body", ["weight", "bodyFat", "leanMass", "bodyTemp"]],
+  ["Vitals", ["spo2", "resp", "glucose"]],
+  ["Mind", ["mindful"]]
+];
+const AP_ALL = AP_CATS.flatMap(c => c[1]);
+const AP_HELP = { steps: "Count of steps from Watch or iPhone.", activeKcal: "Energy burned above resting (the Move ring).", exerciseMin: "Minutes at or above a brisk walk (the Exercise ring).", standHours: "Hours with at least one minute standing (the Stand ring).", distance: "Walking and running distance.", flights: "Flights of stairs climbed.", restKcal: "Resting energy Apple estimates from your profile.", daylight: "Minutes outdoors in daylight (Watch Series 9 and later).", rhr: "Resting heart rate: lower usually means better fitness; a sudden rise can mean illness, poor sleep or overtraining.", hrv: "Heart-rate variability (SDNN, measured at rest). Higher than your own baseline is good; compare with yourself, not others.", hr: "Average heart rate across the day.", walkHr: "Average heart rate while walking.", hrRecovery: "Beats dropped in the first minute after a workout ends; higher is fitter.", vo2: "Estimated cardio fitness from outdoor walks and runs.", bpSys: "Top blood-pressure number (needs a connected cuff).", bpDia: "Bottom blood-pressure number.", sleep: "Time asleep.", deepSleep: "Deep (slow-wave) sleep.", remSleep: "REM sleep.", wristTemp: "Overnight wrist temperature deviation from your baseline (Watch Series 8 and later).", weight: "Body weight from a smart scale or manual entry.", bodyFat: "Body fat from a scale.", leanMass: "Lean body mass.", bodyTemp: "Body temperature.", spo2: "Blood oxygen saturation.", resp: "Breaths per minute during sleep.", glucose: "Blood glucose (CGM or meter).", mindful: "Minutes of mindfulness sessions." };
+function apNorm(k, v) {
+  if (!Number.isFinite(v)) return null; const male = S.sex === "male", a = S.age;
+  switch (k) {
+    case "steps": return v >= APG.steps ? ["good", "goal met"] : v >= APG.steps * 0.7 ? ["warn", "near goal"] : ["bad", "below goal"];
+    case "activeKcal": return v >= APG.move ? ["good", "goal met"] : ["warn", `${fmt(APG.move - v)} short`];
+    case "exerciseMin": return v >= APG.ex ? ["good", "goal met"] : ["warn", `${fmt(APG.ex - v)} min short`];
+    case "standHours": return v >= APG.stand ? ["good", "goal met"] : ["warn", `${fmt(APG.stand - v)} h short`];
+    case "rhr": return v < 50 ? ["good", "athletic"] : v <= 60 ? ["good", "excellent"] : v <= 70 ? ["good", "normal"] : v <= 80 ? ["warn", "upper normal"] : ["bad", "high"];
+    case "hrv": { const base = Math.max(20, (male ? 75 : 70) - (a - 20) * 1.1); return v >= base ? ["good", "above typical for age"] : v >= base * 0.6 ? ["info", "typical for age"] : ["warn", "below typical"]; }
+    case "hrRecovery": return v >= 25 ? ["good", "fit"] : v >= 18 ? ["info", "average"] : ["warn", "low"];
+    case "vo2": { const t = (male ? [35, 42, 48] : [29, 35, 40]).map(b => b - Math.max(0, (a - 30) / 10) * 3.5); return v < t[0] ? ["bad", "poor"] : v < t[1] ? ["warn", "fair"] : v < t[2] ? ["good", "good"] : ["good", "excellent"]; }
+    case "bpSys": return v < 120 ? ["good", "normal"] : v < 130 ? ["warn", "elevated"] : v < 140 ? ["warn", "stage 1"] : ["bad", "stage 2"];
+    case "bpDia": return v < 80 ? ["good", "normal"] : v < 90 ? ["warn", "stage 1"] : ["bad", "stage 2"];
+    case "sleep": return v >= 7 && v <= 9 ? ["good", "7-9 h"] : v >= 6 ? ["warn", "short"] : v > 9.5 ? ["info", "long"] : ["bad", "very short"];
+    case "deepSleep": return v >= 1 ? ["good", "1 h+"] : v >= 0.7 ? ["warn", "a bit low"] : ["bad", "low"];
+    case "remSleep": return v >= 1.5 ? ["good", "1.5 h+"] : v >= 1 ? ["warn", "a bit low"] : ["bad", "low"];
+    case "wristTemp": return Math.abs(v) < 0.5 ? ["good", "baseline"] : v > 0 ? ["warn", "elevated, rest or illness?"] : ["info", "below baseline"];
+    case "spo2": return v >= 95 ? ["good", "normal"] : v >= 92 ? ["warn", "low"] : ["bad", "very low, see a doctor"];
+    case "resp": return v >= 12 && v <= 20 ? ["good", "normal"] : ["warn", "outside 12-20"];
+    case "glucose": return v < 100 ? ["good", "normal fasting"] : v < 126 ? ["warn", "impaired range"] : ["bad", "high"];
+    case "bodyFat": { const c = calc(); return Number.isFinite(c.bf) ? null : null; }
+    case "mindful": return v >= 10 ? ["good", "10 min+"] : ["info", "any is good"];
+    case "daylight": return v >= 20 ? ["good", "20 min+"] : ["info", "aim for 20+ min"];
+  }
+  return null;
+}
+function apSeries(k, n) { const end = hubEnd(), dates = hubDates(n, end); return { dates, vals: dates.map(d => dayVal(k, d)) }; }
+function apLatest(k) { const { dates, vals } = apSeries(k, 60); for (let i = vals.length - 1; i >= 0; i--) if (Number.isFinite(vals[i])) return { d: dates[i], v: vals[i] }; return null; }
+function apDisp(k, v) { if (!Number.isFinite(v)) return "–"; const m = HK[k]; if (["weight", "leanMass"].includes(k)) return fmt(toDispW(v), 1); if (k === "distance" && imp()) return fmt(v / 1.609344, 1); if (k === "bodyTemp" && imp()) return fmt(v * 9 / 5 + 32, 1); if (k === "wristTemp" && imp()) return (v > 0 ? "+" : "") + fmt(v * 9 / 5, 2); return (k === "wristTemp" && v > 0 ? "+" : "") + fmt(v, m.d); }
+function apUnit(k) { const m = HK[k]; if (["weight", "leanMass"].includes(k)) return wUnit(); if (k === "distance") return imp() ? "mi" : "km"; if (k === "bodyTemp") return imp() ? "°F" : "°C"; if (k === "wristTemp") return imp() ? "°F" : "°C"; return m.u; }
+function apSpark(vals) {
+  const pts = vals.map((v, i) => [i, v]).filter(p => Number.isFinite(p[1])); if (pts.length < 2) return "";
+  const ys = pts.map(p => p[1]); let lo = Math.min(...ys), hi = Math.max(...ys); if (hi - lo < 1e-9) { lo -= 1; hi += 1; }
+  const X = i => i / Math.max(1, vals.length - 1) * 100, Y = v => 26 - (v - lo) / (hi - lo) * 22;
+  return `<svg viewBox="0 0 100 30" preserveAspectRatio="none" style="width:100%;height:30px;display:block" aria-hidden="true"><path d="${pts.map((p, j) => `${j ? "L" : "M"}${X(p[0]).toFixed(1)} ${Y(p[1]).toFixed(1)}`).join(" ")}" fill="none" stroke="var(--accent)" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>`;
+}
+function apRings() {
+  const end = hubEnd(), vals = { move: dayVal("activeKcal", end), ex: dayVal("exerciseMin", end), stand: dayVal("standHours", end), steps: dayVal("steps", end) };
+  const R = [["move", APG.move, "var(--bad)", "Move", "kcal"], ["ex", APG.ex, "var(--good)", "Exercise", "min"], ["stand", APG.stand, "var(--accent)", "Stand", "h"]];
+  const arc = (r, p, col) => { const c = 2 * Math.PI * r; return `<circle cx="60" cy="60" r="${r}" fill="none" stroke="${col}" stroke-opacity=".18" stroke-width="12"/><circle cx="60" cy="60" r="${r}" fill="none" stroke="${col}" stroke-width="12" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c * (1 - Math.min(1, p))}" transform="rotate(-90 60 60)" style="transition:stroke-dashoffset .8s ease"/>`; };
+  $("#ap-rings").innerHTML = `<svg viewBox="0 0 120 120" role="img" aria-label="Activity rings">${R.map((r, i) => arc(50 - i * 15, Number.isFinite(vals[r[0]]) ? vals[r[0]] / r[1] : 0, r[2])).join("")}</svg>`;
+  $("#ap-ringday").textContent = end ? new Date(end + "T12:00:00").toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" }) : "";
+  $("#ap-ringtxt").innerHTML = R.map(r => `<div><span class="legend"><span><i style="background:${r[2]}"></i>${r[3]}</span></span> <strong class="mono">${Number.isFinite(vals[r[0]]) ? fmt(vals[r[0]]) : "–"}</strong> / ${r[1]} ${r[4]}</div>`).join("") + `<div><span class="legend"><span><i style="background:var(--ink-3)"></i>Steps</span></span> <strong class="mono">${Number.isFinite(vals.steps) ? fmt(vals.steps) : "–"}</strong> / ${fmt(APG.steps)}</div>` + (Object.values(vals).every(v => !Number.isFinite(v)) ? `<p class="muted" style="margin-top:6px">No activity data for the latest day yet.</p>` : "");
+}
+function apChart(k) {
+  apSel = k; const { dates, vals } = apSeries(k, apRange); const m = HK[k];
+  $("#ap-chart-title").textContent = m.l; $("#ap-chart-sub").textContent = `${apRange} days · ${apUnit(k)}`;
+  const disp = vals.map(v => Number.isFinite(v) ? parseFloat(apDisp(k, v).replace(/,/g, "")) : NaN);
+  $("#ap-chart").innerHTML = lineChart(dates, disp, { raw: m.agg === "sum" && k !== "steps" ? true : false });
+  const s = vals.filter(Number.isFinite); const mu = mean(s), dev = sd(s), lt = apLatest(k);
+  $("#ap-chart-note").textContent = s.length ? `${s.length} days with data. Average ${apDisp(k, mu)} ${apUnit(k)}${Number.isFinite(dev) ? `, typical day-to-day swing ±${apDisp(k, dev)}` : ""}. ${lt ? `Latest ${apDisp(k, lt.v)} on ${lt.d}. ` : ""}${AP_HELP[k] || ""}${m.agg === "sum" && k !== "steps" ? "" : " Line is a 7-day rolling average."}` : "No data for this metric in the range.";
+  $$("#ap-cats [data-apk]").forEach(b => b.setAttribute("aria-pressed", b.dataset.apk === k));
+}
+function apInsights() {
+  const A = analyze(apRange), out = [];
+  const add = (sev, t) => out.push(`<div class="rec ${sev}"><span class="pill p-${sev}">${sev === "good" ? "Good" : sev === "bad" ? "Act" : sev === "warn" ? "Watch" : "Note"}</span> ${t}</div>`);
+  const d = k => A[k], ch = k => Number.isFinite(d(k).last7) && Number.isFinite(d(k).base) ? d(k).last7 - d(k).base : NaN;
+  if (Number.isFinite(ch("rhr")) && ch("rhr") >= 3) add("warn", `Resting heart rate is up ${fmt(ch("rhr"))} bpm over the last week (${fmt(d("rhr").last7)} vs ${fmt(d("rhr").base)}). Common causes: poor sleep, illness coming on, alcohol, heat, or accumulated training. Ease off for 2-3 days and see if it settles.`);
+  else if (Number.isFinite(ch("rhr")) && ch("rhr") <= -2) add("good", `Resting heart rate fell ${fmt(-ch("rhr"))} bpm this week, a sign of improving fitness or better recovery.`);
+  if (Number.isFinite(ch("hrv")) && Number.isFinite(d("hrv").base) && ch("hrv") <= -0.12 * d("hrv").base) add("warn", `HRV is ${fmt(-ch("hrv") / d("hrv").base * 100)}% below your baseline (${fmt(d("hrv").last7)} vs ${fmt(d("hrv").base)} ms). Your body is under more stress than usual; keep training but drop the intensity until it recovers.`);
+  else if (Number.isFinite(ch("hrv")) && ch("hrv") >= 0.1 * d("hrv").base) add("good", `HRV is running ${fmt(ch("hrv") / d("hrv").base * 100)}% above your baseline. Recovery is good; a hard session will land well.`);
+  if (Number.isFinite(d("sleep").last7)) { if (d("sleep").last7 < 6.5) add("bad", `Averaging ${fmt(d("sleep").last7, 1)} h of sleep this week. Under 7 h for several nights raises hunger, lowers strength and slows fat loss more than any supplement can fix.`); else if (d("sleep").last7 >= 7) add("good", `Sleep averaged ${fmt(d("sleep").last7, 1)} h this week.`); }
+  const sp = pearson(d("sleep").s, d("hrv").s); if (sp.n >= 14 && sp.r > 0.3) add("info", `On this data, nights with more sleep line up with higher HRV the next day (r = ${fmt(sp.r, 2)}). Sleep is your biggest recovery lever.`);
+  const stp = pearson(d("steps").s, d("weight").s); if (stp.n >= 20 && stp.r < -0.25) add("info", `Higher-step days coincide with lower weight across this period (r = ${fmt(stp.r, 2)}); daily movement is doing visible work.`);
+  if (Number.isFinite(d("steps").avg)) { if (d("steps").avg < APG.steps * 0.75) add("warn", `Averaging ${fmt(d("steps").avg)} steps a day against a ${fmt(APG.steps)} goal. Each extra 2,000 steps burns roughly ${fmt(2000 * 0.04 * S.weight / 70)} kcal with no recovery cost.`); else add("good", `Averaging ${fmt(d("steps").avg)} steps a day.`); }
+  if (Number.isFinite(d("vo2").avg)) add("info", `Cardio fitness (VO₂max) ${fmt(d("vo2").last7 || d("vo2").avg, 1)}: ${vo2Label(d("vo2").last7 || d("vo2").avg).replace(/<[^>]+>/g, "")}`);
+  if (Number.isFinite(d("spo2").last7) && d("spo2").last7 < 94) add("bad", `Blood oxygen averaged ${fmt(d("spo2").last7)}% this week. Persistently low readings warrant a medical check (sleep apnoea is common and treatable).`);
+  if (Number.isFinite(d("wristTemp").last7) && d("wristTemp").last7 > 0.5) add("warn", `Wrist temperature has been running ${fmt(d("wristTemp").last7, 2)} °C above baseline, which often precedes illness or follows hard training or alcohol.`);
+  if (Number.isFinite(d("bpSys").last7) && d("bpSys").last7 >= 130) add("warn", `Blood pressure averaging ${fmt(d("bpSys").last7)}/${fmt(d("bpDia").last7)} mmHg. Share this with your doctor; sodium, sleep, alcohol, weight and aerobic training all move it.`);
+  if (Number.isFinite(A.weightPerWk) && d("weight").days >= 6) { const t = calc().weeklyKg; add("info", `Weight trend ${A.weightPerWk > 0 ? "+" : ""}${fmt(toDispW(A.weightPerWk), 2)} ${wUnit()}/week from Apple Health weigh-ins; your plan expects ${t > 0 ? "+" : ""}${fmt(toDispW(t), 2)}.`); }
+  if (Number.isFinite(A.acwr) && A.acwr > 1.5) add("warn", `Training load this week is ${fmt(A.acwr, 1)}× your 4-week average. Spikes like this raise injury risk; build up more gradually.`);
+  $("#ap-insights").innerHTML = out.length ? out.join("") : `<p class="small muted">Sync or import Apple Health data and insights appear here.</p>`;
+}
+function renderApple() {
+  if (!$("#p-apple")) return;
+  const real = !hubDemo && Object.keys(HUB.days).length;
+  const src = HUB.sources["Apple Health (Google Drive)"], last = store.get("gdsync", 0), devs = HUB.devices ? Object.keys(HUB.devices).filter(Boolean) : [];
+  const conn = $("#ap-conn"); if (src || last) { conn.textContent = "Connected"; conn.className = "pill p-good"; } else if (real) { conn.textContent = "File import"; conn.className = "pill p-info"; } else { conn.textContent = "Not connected"; conn.className = "pill p-warn"; }
+  $("#ap-connkv").innerHTML = `<dt>Last sync</dt><dd class="mono">${last ? new Date(last).toLocaleString() : "never"}</dd><dt>Last data day</dt><dd class="mono">${real ? hubEnd() : "example data"}</dd><dt>Devices seen</dt><dd>${devs.length ? esc(devs.join(", ")) : "none yet"}</dd><dt>Days with data</dt><dd class="mono">${real ? Object.keys(HUB.days).length : 0}</dd>`;
+  $("#ap-auto").checked = !!store.get("gdauto", false);
+  ["move", "ex", "stand", "steps"].forEach(g => { const el = $("#ap-g-" + g); if (document.activeElement !== el) el.value = APG[g]; });
+  $("#ap-range").innerHTML = [7, 14, 30, 90, 365].map(n => `<button type="button" class="chip" data-apr="${n}" aria-pressed="${apRange === n}">${n} d</button>`).join("");
+  apRings();
+  const A = analyze(apRange); let have = 0;
+  $("#ap-cats").innerHTML = AP_CATS.map(([cat, keys]) => {
+    const rows = keys.filter(k => A[k] && A[k].days > 0); if (!rows.length) return ""; have += rows.length;
+    return `<h4 style="margin:12px 0 6px">${cat}</h4><div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr))">${rows.map(k => {
+      const a = A[k], lt = apLatest(k), n = apNorm(k, k === "weight" ? NaN : (a.last7 ?? lt?.v)), delta = Number.isFinite(a.last7) && Number.isFinite(a.base) ? a.last7 - a.base : NaN; const goodUp = { rhr: false, bpSys: false, bpDia: false, bodyFat: false, resp: null, weight: null, hr: false, wristTemp: null, glucose: false }[k]; const up = delta > 0;
+      return `<button type="button" class="tile" data-apk="${k}" aria-pressed="${k === apSel}" style="text-align:left;cursor:pointer;border:1px solid var(--line)"><span class="eyebrow">${esc(HK[k].l)}</span><span class="v" style="font-size:1.45rem">${lt ? apDisp(k, lt.v) : "–"}<small>${apUnit(k)}</small></span>${apSpark(a.s)}<span class="s">${Number.isFinite(a.last7) ? `7-day ${apDisp(k, a.last7)}` : ""}${Number.isFinite(delta) && Math.abs(delta) > Math.abs(a.base) * 0.02 ? ` · ${up ? "▲" : "▼"}${apDisp(k, Math.abs(delta))}${goodUp == null ? "" : up === goodUp ? " ✓" : " ⚠"}` : ""}</span>${n ? `<span class="pill p-${n[0]}" style="justify-self:start">${esc(n[1])}</span>` : ""}</button>`;
+    }).join("")}</div>`;
+  }).join("") || `<p class="small muted">No Apple Health metrics yet. Sync from Google Drive or import a Health Auto Export file on the Data hub.</p>`;
+  if (!A[apSel] || !A[apSel].days) { const f = AP_ALL.find(k => A[k] && A[k].days); if (f) apSel = f; }
+  apChart(apSel); apInsights();
+  $("#ap-cov").innerHTML = AP_ALL.map(k => `<span class="pill ${A[k] && A[k].days ? "p-good" : ""}" style="${A[k] && A[k].days ? "" : "background:var(--surface-2);color:var(--ink-3)"}" title="${esc(AP_HELP[k] || "")}">${esc(HK[k].l)}</span>`).join("");
+  $("#ap-covsum").textContent = `${have} of ${AP_ALL.length} metrics present`;
+}
+$("#ap-cats").addEventListener("click", e => { const b = e.target.closest("[data-apk]"); if (b) apChart(b.dataset.apk); });
+$("#ap-range").addEventListener("click", e => { const b = e.target.closest("[data-apr]"); if (b) { apRange = +b.dataset.apr; renderApple(); } });
+["move", "ex", "stand", "steps"].forEach(g => $("#ap-g-" + g).addEventListener("input", e => { const v = parseFloat(e.target.value); if (Number.isFinite(v) && v > 0) { APG[g] = v; saveApple(); apRings(); } }));
+$("#ap-sync").addEventListener("click", async () => { $("#ap-status").innerHTML = "Syncing…"; await driveSync(false); $("#ap-status").innerHTML = $("#gd-status").innerHTML; renderApple(); renderOverview(); });
+$("#ap-import").addEventListener("click", () => { showTab("hub", true); const f = $("#hub-file") || $("#hub-files"); if (f) f.scrollIntoView({ behavior: "smooth", block: "center" }); });
+$("#ap-auto").addEventListener("change", e => { store.set("gdauto", e.target.checked); $("#gd-auto").checked = e.target.checked; if (e.target.checked) driveSync(true); });
+onShow.apple = () => { renderApple(); if (store.get("gdauto", false) && Date.now() - store.get("gdsync", 0) > 3 * 3600 * 1000) driveSync(true).then(renderApple); };
+
+/* overview health strip */
+function renderHealthStrip() {
+  const el = $("#ov-health"); if (!el) return;
+  const A = analyze(30), end = hubEnd(), real = !hubDemo && Object.keys(HUB.days).length;
+  const keys = [["steps", "Steps"], ["activeKcal", "Active energy"], ["exerciseMin", "Exercise"], ["sleep", "Sleep"], ["rhr", "Resting HR"], ["hrv", "HRV"], ["vo2", "VO₂max"], ["spo2", "Blood oxygen"], ["weight", "Weight"], ["bpSys", "Blood pressure"]];
+  const tiles = keys.map(([k, l]) => { const a = A[k]; if (!a || !a.days) return ""; const lt = apLatest(k), n = apNorm(k, k === "weight" ? NaN : (a.last7 ?? lt?.v)); const val = k === "bpSys" ? `${fmt(lt.v)}/${fmt(dayVal("bpDia", lt.d))}` : apDisp(k, lt.v);
+    return `<button type="button" class="tile" data-ovk="${k}" style="text-align:left;cursor:pointer;border:1px solid var(--line)"><span class="eyebrow">${l}</span><span class="v" style="font-size:1.4rem">${val}<small>${k === "bpSys" ? "mmHg" : apUnit(k)}</small></span><span class="s">${lt.d === end ? "latest day" : lt.d}${Number.isFinite(a.last7) && k !== "bpSys" ? ` · 7-day ${apDisp(k, a.last7)}` : ""}</span>${n ? `<span class="pill p-${n[0]}" style="justify-self:start">${esc(n[1])}</span>` : ""}</button>`; }).filter(Boolean);
+  const lt = apLatest("weight"), diff = lt && real ? toDispW(lt.v) - toDispW(S.weight) : 0;
+  const sync = store.get("gdsync", 0);
+  el.innerHTML = `<div class="card-head"><h3>Health metrics</h3><span class="small muted">${real ? `Apple Health and imports · ${sync ? "synced " + new Date(sync).toLocaleDateString() : "file import"}` : "Example data until you sync"}</span></div>
+    ${tiles.length ? `<div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr))">${tiles.join("")}</div>` : `<p class="small muted">No health data yet.</p>`}
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px"><button type="button" class="btn small" id="ov-sync">Sync Apple Health</button><button type="button" class="btn ghost small" data-goto="apple">Open Apple Health</button>${lt && real && Math.abs(diff) >= 0.2 ? `<button type="button" class="btn ghost small" id="ov-usew">Use latest weight (${fmt(toDispW(lt.v), 1)} ${wUnit()}) in profile</button>` : ""}<span class="small muted" id="ov-sync-st"></span></div>`;
+}
+$("#ov-health").addEventListener("click", async e => {
+  const t = e.target.closest("[data-ovk]"); if (t) { apSel = t.dataset.ovk; showTab("apple", true); return; }
+  if (e.target.id === "ov-sync") { $("#ov-sync-st").textContent = "Syncing…"; await driveSync(false); $("#ov-sync-st").innerHTML = $("#gd-status").innerHTML; renderHealthStrip(); return; }
+  if (e.target.id === "ov-usew") { const lt = apLatest("weight"); if (lt) { $("#weight").value = round(toDispW(lt.v), 1); $("#weight").dispatchEvent(new Event("input", { bubbles: true })); } return; }
+  const g = e.target.closest("[data-goto]"); if (g) showTab(g.dataset.goto, true);
+});
+
 /* ---------- wiring ---------- */
-function renderAll() { renderOverview(); renderORM(); renderCardio(); renderLog(); renderMeals(); renderStandards(); renderPlates(); renderHealthCalc(); renderHub(); renderSweat(); renderPrograms(); renderWorkout(); renderProgress(); renderFoodLog(); renderStack(); renderLabs(); renderJournal(); renderA360(); renderWellness(); renderGoalBF(); renderCaffeine(); renderCortisol(); renderFTP(); renderCSS(); renderFrame(); $("#maf-out").textContent = 180 - S.age; }
+function renderAll() { renderOverview(); renderORM(); renderCardio(); renderLog(); renderMeals(); renderStandards(); renderPlates(); renderHealthCalc(); renderHub(); renderSweat(); renderPrograms(); renderWorkout(); renderProgress(); renderFoodLog(); renderStack(); renderLabs(); renderJournal(); renderA360(); renderWellness(); renderApple(); renderHealthStrip(); renderGoalBF(); renderCaffeine(); renderCortisol(); renderFTP(); renderCSS(); renderFrame(); $("#maf-out").textContent = 180 - S.age; }
 $("#profile").addEventListener("input", () => { readProfile(); renderAll(); });
 $("#planner").addEventListener("input", () => { readProfile(); renderPlanner(calc()); });
 $("#adapt").addEventListener("input", renderAdapt);
