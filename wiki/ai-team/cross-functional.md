@@ -34,7 +34,7 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Open House Captain | open house, sign-in sheet, sign-in, visitor, thank-you, thank you note | `wiki/ai-team/desk-seats.md` |
 | Travel Desk | travel, trip, flight, hotel, points vs cash, points, miles, price watch, gondola, itinerary | `wiki/ai-team/desk-seats.md` |
 | Meeting Scribe | meeting recap, recap, meeting notes, action items, fieldy, zoom, meeting minutes, debrief | `wiki/ai-team/desk-seats.md` |
-| Maya | market data, median price, zip code, neighborhood, school, schools, days on market, months of supply, inventory, comps, city stats, redfin, caaspp, community ranking | `wiki/real-estate-playbooks/` |
+| Maya | market data, median price, zip code, neighborhood, school, schools, days on market, months of supply, inventory, comps, city stats, redfin, caaspp, community ranking, demographics, median age, population, employers, unemployment, mello-roos, cfd, special assessment, tax rate, lowest taxes, transfer tax, sales tax, zip code, area brief | `wiki/real-estate-playbooks/` |
 | Rosa | pcs, military, base, bah, relocation, orders, scra, camp pendleton, miramar, coronado, march arb, deployment, rent buy or wait, rent vs buy, duty radius, bah affordability, breakeven, military objection, military & relocation pod | `wiki/real-estate-playbooks/military-relocation.md` |
 | Quincy | lofty, pabbly, integration, connector, crm sync, import leads, export leads, webhook, zoho lofty, smart plan | `integrations/CONNECTIONS.md` |
 | Owen | autopilot, sweep, auto task, follow-up task, dedupe, daily automation, launchpad, mission, push button, run everything, monday kickoff, friday wrap, automation & ai pod | `docs/AUTOMATION-MAP-2026-10-20.md` |
