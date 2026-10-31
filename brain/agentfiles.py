@@ -17,6 +17,7 @@ from pathlib import Path
 from . import agentos
 
 OUT = "integrations/agent-os/agents"
+HAND = ".claude/agents"  # hand-written agents (Steven-tuned prompts) win over the generated seat file of the same slug
 MODEL = {"Opus 5.5": "opus", "Sonnet 5": "sonnet", "Fable 5.1": "opus"}
 HALT = ("Never send to a client, post publicly, pay, sign, lock or quote a rate, grant access, or write to a CRM, calendar "
         "invite or email send: stop and write a Needs-Steven packet. Never move client data off the local model. State the "
@@ -63,23 +64,30 @@ def write(root: Path) -> tuple[int, Path]:
     lead_of = {a["slug"]: a["lead"] for a in m["agents"]}
     n = 0
     for a in m["agents"]:
-        (out / f"{a['slug']}.md").write_text(render(a, lead_of), encoding="utf-8")
+        gen = out / f"{a['slug']}.md"
+        if (root / HAND / f"{a['slug']}.md").is_file():
+            gen.unlink(missing_ok=True)  # the hand-written file is the agent; a generated twin would shadow it on the Mac
+            continue
+        gen.write_text(render(a, lead_of), encoding="utf-8")
         n += 1
     (out / "README.md").write_text(
         "# Generated agent files — do not edit here\n\nOne file per roster seat, written by `bin/brain os agents --write` from "
         "`docs/inventory/agent-roster.md` and `integrations/agent-os/agents.json`. `install-mac.sh` links them into "
         "`~/.claude/agents` without overwriting a file that already exists there, so a hand-tuned prompt on the Mac wins. "
-        f"{n} files as of the last run.\n", encoding="utf-8")
+        f"{n} files as of the last run. Seats with a hand-written file in `.claude/agents/` are not generated here.\n", encoding="utf-8")
     return n, out
 
 
 def check(root: Path) -> dict:
     m = agentos.build(root)
     out = root / OUT
-    missing = [a["slug"] for a in m["agents"] if not (out / f"{a['slug']}.md").is_file()]
+    def path(slug: str) -> Path:
+        hand = root / HAND / f"{slug}.md"
+        return hand if hand.is_file() else out / f"{slug}.md"
+    missing = [a["slug"] for a in m["agents"] if not path(a["slug"]).is_file()]
     bad = []
     for a in m["agents"]:
-        p = out / f"{a['slug']}.md"
+        p = path(a["slug"])
         if p.is_file():
             t = p.read_text(encoding="utf-8")
             if not t.startswith("---\nname: " + a["slug"] + "\n"):

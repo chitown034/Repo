@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
 <title>Steven's Action Desk</title>
-<meta name="description" content="Everything still waiting on Steven, in order: three pastes, a short list only he can do, and the 35 detailed steps for reference.">
+<meta name="description" content="Everything still waiting on Steven, in order: one paste (setup.sh), the short list only he can do, and the earlier rounds for reference.">
 <style>
 /* Action Desk — calm hierarchy, system type, one accent. Tokens first; every colour below is a token. */
 :root{
@@ -246,8 +246,30 @@ footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);color:v
   </aside>
 
   <section class="start" aria-labelledby="start-title">
-    <h2 id="start-title" class="section-title">Start here · three pastes, then a short list only you can do</h2>
-    <p class="d intro">Everything below the line is still there for reference, but you no longer need to work through it one by one. Each paste asks you one question (type <b>y</b>, press Enter) and then does every safe step itself: it installs only into your own folder and never signs in, pairs, stores a key or spends. At the end it prints a report; copy that report and paste it to Claude.</p>
+    <h2 id="start-title" class="section-title">Start here · one paste, then the short list only you can do</h2>
+    <p class="d intro">Card 1 is the whole setup now; the older cards stay for reference. Each paste asks you one question (type <b>y</b>, press Enter) and then does every safe step itself: it installs only into your own folder and never signs in, pairs, stores a key or spends. At the end it prints a report; copy that report and paste it to Claude.</p>
+
+  <div class="step hero" data-id="E"><div class="n">1</div><div class="body">
+    <p class="t">2026-10-27 · ONE paste on Mac 1, then the short list it prints</p>
+    <p class="d">This replaces every paste below it. Press Command + Space, type <b>Terminal</b>, press Enter, click Copy, paste, press Enter. It asks for each key <b>once</b>, hidden (Enter skips): Lofty, TidyCal, Arive, Zoho, SkySlope, the Kapso key and your mobile, the Discord bot token, the Inkbox key, and two optional ones (Hume AI, Composio). Then, without asking again, it wires Kapso WhatsApp, Vanessa's voice on iMessage, Jarvis = Vanessa with the brain, Laya, Orca with the whole AI team, AnyDesk, NotebookLM, the homes.com / ShowingTime / Showami wrappers, the Claude mods, the message tasks all day and the Mac runner. It never signs in, pairs, sends or spends. It ends with <b>one REPORT</b>: paste that back to Claude.</p>
+    <div class="acts"><code>cd ~/Repo 2>/dev/null || git clone -q -b claude/gracious-newton-4hpfco https://github.com/chitown034/Repo.git ~/Repo; cd ~/Repo &amp;&amp; git fetch -q origin &amp;&amp; { REPO_SYNC_BRANCH=claude/gracious-newton-4hpfco bash scripts/repo-sync.sh --quiet || git checkout -q claude/gracious-newton-4hpfco; }; bash setup.sh</code><button class="btn" data-copy="cd ~/Repo 2>/dev/null || git clone -q -b claude/gracious-newton-4hpfco https://github.com/chitown034/Repo.git ~/Repo; cd ~/Repo &amp;&amp; git fetch -q origin &amp;&amp; { REPO_SYNC_BRANCH=claude/gracious-newton-4hpfco bash scripts/repo-sync.sh --quiet || git checkout -q claude/gracious-newton-4hpfco; }; bash setup.sh">Copy</button><label class="tick"><input type="checkbox" id="sE1">Paste done</label></div>
+    <p class="d alt">Plan only, nothing changed or asked: add <code>--check</code> after <code>setup.sh</code>. Run it again any time; it only does what is still missing.</p>
+    <p class="d"><b>Then only you</b> (the REPORT prints the same list; each is one screen):</p>
+    <ol class="d only">
+      <li><b>Phone:</b> text <code>connect @vanessa-shearrill</code> to <b>+1 650 484 9720</b> (links the iMessage line: morning text + voice note).</li>
+      <li><b>Zoho CRM</b> → Setup → Security Control → Profiles → your profile → Developer Permissions → tick <b>Zoho CRM API Access</b> (the keys are already on the Mac; this tick is the whole 403 fix).</li>
+      <li><b>Sign-ins:</b> <code>claude</code> → <code>/mcp</code> → lofty-cloud → sign in; kapso → sign in; then message <b>(202) 474-5223</b> from your phone once.</li>
+      <li><b>Discord:</b> discord.com/developers → New Application "Vanessa" → Bot → Reset Token (the paste asks for it) → OAuth2 URL Generator (scope bot; Send Messages + Read Message History) → open the URL, pick your server; then say "Discord link" to Claude.</li>
+      <li><b>Phone, once:</b> MyFitnessPal → Apps &amp; Devices → Apple Health ON; Strava → Settings → Apple Health ON; BodyPark app → allow Apple Health. Health Auto Export → Google Drive is already the pipe.</li>
+      <li><b>Browser sign-ins</b>, once each, in the agent Chrome: ShowingTime, Showami, homes.com.</li>
+      <li><b>AnyDesk:</b> System Settings → Privacy &amp; Security → Screen Recording + Accessibility ON; unattended password; type each computer's AnyDesk <i>ID</i> (never the password) into the Command Deck's Computer Hub card.</li>
+      <li><b>Orca phone pairing:</b> <code>bash integrations/remote-control/orca-remote.sh serve --phone</code>, scan the QR in the Orca app.</li>
+      <li><b>Pabbly Connect:</b> build the workflows in <code>integrations/pabbly/WORKFLOWS.md</code> in Pabbly's editor; say "yes build the kapso connection" to Claude for the custom WhatsApp app.</li>
+      <li><b>Ticor Title:</b> ask your San Diego rep for Ticor Online Pro (no API exists; the deck's property search already uses the free county records).</li>
+      <li><b>claude.ai → Settings → Connectors:</b> Reconnect or remove EVRoutes and Turo; add "Gondola" https://mcp.gondola.ai/mcp.</li>
+    </ol>
+    <div class="acts"><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/docs/STEVEN-STEPS.md" target="_blank" rel="noopener">Same list as text</a><a class="btn" href="https://github.com/chitown034/Repo/blob/claude/gracious-newton-4hpfco/integrations/CONNECTIONS.md" target="_blank" rel="noopener">What is connected</a><a class="btn" href="https://crm.zoho.com/" target="_blank" rel="noopener">Zoho CRM</a><a class="btn" href="https://discord.com/developers/applications" target="_blank" rel="noopener">Discord developers</a><a class="btn" href="https://connect.pabbly.com/" target="_blank" rel="noopener">Pabbly Connect</a><a class="btn" href="https://claude.ai/settings/connectors" target="_blank" rel="noopener">Connectors</a>
+      <label class="tick"><input type="checkbox" id="sE2">The eleven done</label></div></div></div>
 
   <div class="step hero" data-id="D"><div class="n">D</div><div class="body">
     <p class="t">Round 2 (2026-10-23, simplified) · three pastes, then four clicks</p>
@@ -604,7 +626,7 @@ cd integrations/trading-desk &amp;&amp; python3 -m desk selftest">Copy</button><
 </details>
   </section>
 
-  <footer>Updated 2026-10-23 evening (round 2 simplified to three pastes and four clicks; Approve on the 6D Brain now runs the move; morning brief falls back to e-mail until the iMessage line is linked); 2026-10-23 (round 2: every computer, TidyCal, sites, Arive, MBS Highway, Pivo, Ticor, drips, AI search); 2026-10-20 (step 0 and the 80/20 map); 2026-10-12 (start-here section); earlier 2026-10-11; first 23 steps rebuilt 2026-10-09 from the live routine list, the Mac runner status, both dashboard databases and a Composio connection check. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Same list as text: <code>docs/STEVEN-STEPS.md</code>.</footer>
+  <footer>Updated 2026-10-27 (one paste: setup.sh wraps fix-mine.sh and connect-all.sh, keys asked once, one REPORT; eleven only-you items); 2026-10-23 evening (round 2 simplified to three pastes and four clicks; Approve on the 6D Brain now runs the move; morning brief falls back to e-mail until the iMessage line is linked); 2026-10-23 (round 2: every computer, TidyCal, sites, Arive, MBS Highway, Pivo, Ticor, drips, AI search); 2026-10-20 (step 0 and the 80/20 map); 2026-10-12 (start-here section); earlier 2026-10-11; first 23 steps rebuilt 2026-10-09 from the live routine list, the Mac runner status, both dashboard databases and a Composio connection check. Your dashboard: <a href="https://claude.ai/code/artifact/1624daae-d683-405a-971d-c5828dce0f8d" target="_blank" rel="noopener">Command Deck</a>. Same list as text: <code>docs/STEVEN-STEPS.md</code>.</footer>
 </main>
 
 <script>
@@ -676,3 +698,4 @@ cd integrations/trading-desk &amp;&amp; python3 -m desk selftest">Copy</button><
 </script>
 </body>
 </html>
+

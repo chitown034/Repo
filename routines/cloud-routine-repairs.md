@@ -512,3 +512,15 @@ speak in the chat"*.
   adds a text-paced talk (speaking + word-cadence nod for the reading time of the reply, idle after, audio handlers win
   when audio is live) and a `window.cdSpeak` test hook. Headless check: both go speaking → nod → idle, 0 page errors.
   Deck **v195**.
+
+## 2026-10-26 — freshness sweep gains STEP 1b (process coverage)
+
+- **Routine:** Command Deck — daily freshness sweep (`trig_01Y1zZ3bmawgi4Mw2jNw9ZFM`), prompt updated 18:51 UTC.
+- **Change:** STEP 1b reads the `processCoverage` register, checks up to 60 automated documents against their own stamps
+  (cadence × 1.5) and writes the gaps with owner seats into `feedFreshness.v.coverage`; STEP 5/6 report the gap count.
+  It writes nothing to those documents — the sweep still refreshes only what STEPS 2-4 own.
+- **Proof:** the next run (2026-10-27 15:40 UTC) leaves `feedFreshness.v.coverage` with `checked`, `unchecked` and `gaps`.
+- **Not changed:** the Big-moves routine (`trig_01XwFre24w9aKq5oVRq1FQ8s`) — its prompt is bound to the session that
+  created it and the API refused the edit from here; the step it should adopt is written in
+  `wiki/dashboard-ops/process-coverage.md` and `docs/inventory/daily-updates.md`.
+

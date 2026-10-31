@@ -150,6 +150,12 @@ Owns the Broker Command Center **Coverage Engine & Sync** (System → Coverage E
   unplanned, every escrow's documents screened, news and TidyCal fresh, response standards 80%+,
   every task owned, event workflows on, sweep ran today.
 Launchpad mission: *Weekly coverage & sync audit*. Vanessa tool: `coverage_report`.
+- **Command Deck (added 2026-10-26).** Owns the process-coverage register — every document the deck reads, its
+  writer, cadence and owning seat (`brain/coverage/writers.json`, `bin/brain coverage`) — and the live **Process
+  coverage** card at the top of Orchestration & Loop Engineering, which scores each automated document from its own
+  stamp in the database. The freshness sweep's STEP 1b and the Big-moves "Cover <doc>" signals are hers. Rules and the
+  gap table: `wiki/dashboard-ops/process-coverage.md`. Proposes fixes to the writer's owner seat; never edits a live
+  routine.
 Also new: the **Life & Wealth Pod** (lead James: Kevin, Apex, Marcus, Travel Desk, Tax Assessor Agent)
 keeps Steven's personal finance, habits, trading research and travel separate from client work.
 

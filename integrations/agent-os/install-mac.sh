@@ -26,7 +26,7 @@ echo "repo: $REPO"
 
 echo "1. Platform and tools"
 if [ "$(uname -s)" = "Darwin" ] || [ "${AGENT_OS_FORCE:-}" = "1" ]; then ok "macOS"; else bad "this script is for a Mac (the Alienware uses install-alienware.ps1)"; fi
-for t in git python3; do command -v "$t" >/dev/null 2>&1 && ok "$t found" || bad "$t missing"; done
+for t in git python3; do if command -v "$t" >/dev/null 2>&1; then ok "$t found"; else bad "$t missing"; fi; done
 if command -v claude >/dev/null 2>&1; then ok "Claude Code CLI: $(claude --version 2>/dev/null | head -n 1)"; else bad "Claude Code CLI missing - install it first (https://claude.com/claude-code)"; fi
 
 echo "2. The brain and the roster"
@@ -43,9 +43,19 @@ if [ "$MODE" = "--apply" ] && [ -d "$REPO/integrations/agent-os/agents" ]; then
   for f in "$REPO"/integrations/agent-os/agents/*.md; do b="$(basename "$f")"; [ "$b" = "README.md" ] && continue
     [ -e "$HOME/.claude/agents/$b" ] || { ln -s "$f" "$HOME/.claude/agents/$b" && LINKED=$((LINKED+1)); }; done
   ok "linked $LINKED generated agent files into ~/.claude/agents (existing files kept)"
+  # Hand-written agents (.claude/agents: chief-of-staff, inbox-triage, calendar-prep, competitor-watch, hook-writer,
+  # code-validator) win over a generated twin: an old link into integrations/agent-os/agents is replaced; a real file is kept.
+  HAND=0
+  for f in "$REPO"/.claude/agents/*.md; do [ -f "$f" ] || continue; b="$(basename "$f")"; d="$HOME/.claude/agents/$b"
+    if [ -L "$d" ] && case "$(readlink "$d")" in */integrations/agent-os/agents/*) true ;; *) false ;; esac; then rm -f "$d"; fi
+    if [ -e "$d" ] || [ -L "$d" ]; then
+      [ "$(readlink "$d" 2>/dev/null)" = "$f" ] || warn "kept your own $d - the repo's $b is NOT active; rename yours to use it"
+    else ln -s "$f" "$d" && HAND=$((HAND+1)); fi; done
+  ok "linked $HAND hand-written agents (try: claude --agent chief-of-staff \"prep my Monday\")"
 fi
 AGDIR="${HOME}/.claude/agents"; TOTAL=0; HAVE=0; MISSING=""
 if [ -f "$REPO/integrations/agent-os/agents.json" ]; then
+  # shellcheck disable=SC2013  # slugs are single words by construction (brain/agentos.py)
   for s in $(grep -o '"slug": "[^"]*"' "$REPO/integrations/agent-os/agents.json" | sed 's/"slug": "//; s/"$//'); do
     TOTAL=$((TOTAL+1))
     if [ -f "$AGDIR/$s.md" ]; then HAVE=$((HAVE+1)); else MISSING="$MISSING $s"; fi
@@ -75,6 +85,7 @@ if [ "$MODE" = "--apply" ]; then
   mkdir -p "$HOME/.local/bin" "$HOME/.config/agent-os"
   ln -sf "$REPO/bin/brain" "$HOME/.local/bin/brain" && ok "linked ~/.local/bin/brain -> $REPO/bin/brain"
   umask 077; printf 'AGENT_OS_REPO=%s\n' "$REPO" > "$HOME/.config/agent-os/config" && ok "wrote ~/.config/agent-os/config"
+  # shellcheck disable=SC2088  # the tilde is message text for Steven, not a path
   case ":$PATH:" in *":$HOME/.local/bin:"*) ok "~/.local/bin is on PATH" ;; *) warn "add ~/.local/bin to PATH (zshrc): export PATH=\"\$HOME/.local/bin:\$PATH\"" ;; esac
 fi
 

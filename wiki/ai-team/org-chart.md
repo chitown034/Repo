@@ -41,7 +41,7 @@ Steven (Principal)
     ├─ Marcus (CFO) — Nathan, Bianca, Maya (four-county market & schools data, new 2026-10-22), Dov, Anita, Paloma, Grace, Alan, Hazel, Corinne + ruflo cost-analyst bench
     ├─ Sofia (CMO) — 14 named marketing reports + ruflo audio bench
     │   ├─ Sphere Nurture Coordinator — monthly past-client/sphere touch drafts, birthdays and anniversaries, with Wren; drafts only (new 2026-10-22, `wiki/ai-team/desk-seats.md`)
-    ├─ Derek (CTO) — Sam, Naomi, Integration Engineer (owns OmniRoute failover + `claude-auto --keep-going`, and the browser tools: agent-browser, Playwright MCP) + 5 ECC officers + Ivan, Lena, Grace, Raj, Tomas, Owen (Broker Command Center Autopilot) and Rafael (Workflow Studio), both new 2026-10-22
+    ├─ Derek (CTO) — Nova (Coverage & Process Auditor, reports to Owen, new 2026-10-26: the process-coverage register and the deck's live Process coverage card, `wiki/dashboard-ops/process-coverage.md`), Sam, Naomi, Integration Engineer (owns OmniRoute failover + `claude-auto --keep-going`, and the browser tools: agent-browser, Playwright MCP) + 5 ECC officers + Ivan, Lena, Grace, Raj, Tomas, Owen (Broker Command Center Autopilot) and Rafael (Workflow Studio), both new 2026-10-22
     │   + code-validator (the code-validation gate, 2026-10-12: validate-code.sh + VibeBreaker 20-pass review of every code change — a different agent than the author)
     │   + code-review / build-fix / code-quality / infrastructure benches (56 agents)
     ├─ Alexandra (CCO) — Lucia, Bennett, Fern, Clay, Odette, Gus, Imani, Roland, Diane, Walter, Denise, Howard, Beatrice (DRE broker supervision) and Winston (C.A.R. forms + file QA), both new 2026-10-22
@@ -117,6 +117,7 @@ the deck's "Text me this brief" sends the morning brief to Steven's own mobile o
 - **Disruption Scout** (under Nadia) — runs the weekly internet scout (`integrations/scout/scout.py`): GitHub, the official MCP registry, npm, Hacker News and releases of tools already in the stack. Its shortlist feeds Nadia's weekly brief; Elon gates every ADOPT/PILOT; nothing installs without Steven. See `wiki/ai-team/tool-integration-status.md`.
 - **Wren** / **Garrett** — referral reciprocity and LPT recruiting; see `wiki/real-estate-playbooks/referral-reciprocity.md`.
 - **Desk seats (2026-10-22)** — Refi Watch Analyst, Sphere Nurture Coordinator, Voicemail & Inbox Triage, Document Intake Clerk, Open House Captain, Travel Desk, Meeting Scribe: Sonnet 5 report seats, drafts only; see `wiki/ai-team/desk-seats.md`.
+- **Five agents (2026-10-31)** — `chief-of-staff` (the boss: one front door that runs the specialists in parallel) with `inbox-triage`, `calendar-prep`, `competitor-watch` and `hook-writer`: hand-written in `.claude/agents/`, drafts only; see `wiki/ai-team/five-agents.md`.
 
 ## What "bench" means
 

@@ -742,3 +742,102 @@ through Apple Health and the same export file once Steven switches the nutrition
 - **Decision.** A stdlib, GET-only client (`integrations/skyslope/skyslope_cli.py`) using SkySlope's documented login (HMAC-SHA256 of `ClientId:ClientSecret:Timestamp` keyed by the user's Access Secret, `Authorization: ss <AccessKey>:<hmac>`, `Timestamp` header, JSON body with the Client pair → `Session` ticket, ~2 h) replaces the browser harness as the primary SkySlope path. Keys live only in `~/.config/skyslope/.env`; `fix-mine.sh` collects all four hidden and proves the login. Default output is a summary (file id, type, status, street, dates); `--full` shows the record. Transaction data is client data: terminal only, never into the brain, a report or a message. Writes to SkySlope stay HALT (no write verb exists in the client; a test enforces it).
 - **Open.** Steven's "API key" is the user pair; SkySlope's API also needs the partner-level Client ID/Secret. The proof step tells which is missing.
 - **Owner.** Carmen (desk use), Derek (client), Steven (keys). **Status.** Built and tested in the cloud 2026-10-24; first real login is the paste.
+
+## 2026-10-26 — Process coverage: one writer, one cadence, one owner per deck document; Nova owns the register
+
+- **Request (Steven, verbatim).** *"update AI org chart on command deck when done. update and assign AI agents to the org
+  chart to cover what is missing. Ensure automation, worklows, streamline, expanded capabilities are provided for the
+  respected Ai agents. Update AI org chart and AI brain. Ensure all data is live and synced and look for gaps in the
+  process to automate and have an ai agent facilate to ensure complete coverage of all proccesses listed and identified
+  within the dahboard, and command deck dashboards"*; and *"fix all errors with the chitown REPo to include … Run failed:
+  brain-loop"*.
+- **Decision.** Coverage is measured per document, from the document's own stamp, never from a task status. The register
+  (`brain/coverage/writers.json`, 266 rows) names a writer, cadence, owner seat and pod for every document the deck reads;
+  `bin/brain coverage` scores it against a database export and writes `docs/inventory/process-coverage.md`; the deck's
+  `processCoverage` document and the Process coverage card (Orchestration 39.0) compute the same statuses live in the
+  browser; the freshness sweep's STEP 1b reports gaps with owners; Nova (Coverage & Process Auditor, reporting to Owen in Derek's line) owns it
+  on both dashboards and is on the deck's ORG_CHART (added there the same afternoon by the Broker Command Center session; the splice skips the seat when it is already present). 26 gaps on day one, each with its fix owner
+  (`wiki/dashboard-ops/process-coverage.md`). Seats are assigned, never invented: every gap maps to an existing seat.
+- **CI.** `brain-loop` and `setup-health` were red on every push since 2026-10-23 for two reasons: the layers test
+  hard-coded the Drive manifest date (now read from the manifest) and commits landed without `bin/brain reindex` (index
+  regenerated). Both pass on this commit.
+- **Owner.** Nova (register, card, sweep step); Sam/Ezra/Apex/Bianca own the day-one fixes. **Status.** Deck published,
+  register written, sweep updated 2026-10-26.
+
+## 2026-10-27 — One paste: `setup.sh` is the single Mac entry point
+
+- **Request (Steven, verbatim).** *"fix everything not working and simplify whatever steps required of me for setup via
+  scripts that I can cut and paste into my mac terminal. make this easy and simple and minimal action for me. ensure
+  connectivity with Arive, discord, kapso whatsapp, anydesk, orca with my entire ai org chart integrated, Jarvis configured
+  with Vanessa, connect Arive, showingTime, showami, homes.com, tidycal, skyslope, ticor title property search using
+  composio, cli anything … connect myfitness pal, strava, bodypark, Hume … pabbly connect"*; then *"also connect zoho crm"*.
+- **Decision.** No new installers: the repo already had every scripted step across `connect-all.sh` and
+  `scripts/fix-mine.sh`, and seven competing "Start here" sections. `setup.sh` wraps the two in order, asks every key once
+  (hidden, Enter skips), adds the two optional keys (Hume, Composio) to the Keychain, and ends with one REPORT and one
+  numbered only-you list; `--check` is the plan. The scripts take the branch from `git` (`FIX_MINE_BRANCH`,
+  `CONNECT_ALL_BRANCH`, `REPO_SYNC_BRANCH`) instead of a hard-coded name. `docs/STEVEN-STEPS.md` keeps one Start-here; the
+  older rounds are demoted, not deleted. What a script cannot do is written as such: Zoho's profile tick, the sign-ins,
+  Discord's bot, the three phone toggles, Pabbly's editor, Ticor's rep, Hume (spend → HALT).
+- **Owner.** Derek (scripts), Nova (the register row per connection). **Status.** Written and tested 2026-10-27; the Mac
+  REPORT is the proof once Steven runs it.
+
+## 2026-10-27 — Ledgerwise Pro is linked from the Command Deck
+
+- **Request (Steven, verbatim).** *"add Ledgerwise Pro https://claude.ai/artifact/Nor6oCBSDPY9eufMYcVx1Y to the dashboard"*.
+- **Decision.** A link card at the top of the Tax part of the Personal Accounts & Investments panel (`#ledgerwiseCard`, above
+  the quarterly estimated tax cards) and a pages-menu entry under Money & markets after Ledger Room.
+  `dashboard/wave2/splice-ledgerwise.py` (anchors must match once; refuses a second run). Ledgerwise Pro is a tax-practice
+  prototype (clients, tax prep, bank feeds, mileage, invoices, six AI agents) on **sample data**: Plaid, Hurdlr and TaxGPT are
+  simulated and its figures are not tax advice, so the card says so and tells Steven to keep real figures in the deck's own
+  tax cards and no client information in it. It reads and writes no deck document.
+- **Owner.** Marcus (money) with Alan (tax deadlines). **Status.** Published 2026-10-27.
+
+
+## 2026-10-27 — Fitness Coach (Plate & Pulse) is linked from the Command Deck
+
+- **Request (Steven, verbatim).** *"add to the dashboard: Fitness Coach https://claude.ai/artifact/4DQyh8Yw2WwGzj8CddBnEd"*.
+- **Decision.** The artifact already had a bare "Fitness Dashboard" button in Health & Wellness (added 2026-10-23). Rather than
+  a duplicate link, the deck now has a descriptive card (#fitnessCoachCard) at the top of Health & Wellness, that button is
+  renamed "Fitness Coach (Plate & Pulse)", and the pages menu has an entry under Personal. Deck v258, via
+  `dashboard/wave2/splice-fitness-coach.py` (anchors must match once; refuses a second run).
+- **Boundaries.** Plate & Pulse is its own page: training, nutrition, recovery and AI coaching, syncing Strava, Google Drive
+  (Health Auto Export) and OpenGym through its own connectors. Its data stays in the browser it is opened in; it reads and
+  writes no deck document, so the deck's Apple Health and Strava tiles keep their own daily sync. Figures are estimates, not
+  medical advice.
+- **Owner.** Cole (health and wellness). **Status.** Published 2026-10-27.
+
+## 2026-10-31 — Five agents built; 62 repos read, two packs installed, one malware repo blocked
+
+- **Request (Steven, verbatim).** *"build the following ai agents and install the repos in the image"* (three images:
+  5 Claude agents; 20 Claude repos; 28 motion-graphics installs) plus 17 repo links.
+- **Agents.** `chief-of-staff` (boss, Opus), `inbox-triage`, `calendar-prep`, `competitor-watch`, `hook-writer` (Sonnet),
+  hand-written in `.claude/agents/`, on the roster under Vanessa, Victor's ISA line, Meeting Scribe, the CI analyst and
+  Sofia's content writer. The generic generated `chief-of-staff` seat is replaced. `brain/agentfiles.py` now skips any
+  seat with a hand-written file; the Mac installer links them and replaces an old generated link. Drafts only; every
+  send, invite, CRM write, rate and spend stays HALT. Scheduling calendar-prep and competitor-watch is Steven's yes.
+- **Repos.** Read in six parallel reviews, nothing executed (`integrations/skill-packs/REGISTRY-2026-10-31.md`).
+  Install: gsap-skills (aed9cfd) and three Anthropic skills (ca45fc4) via `integrations/skill-packs/install-mac.sh`.
+  yqman34/reverse-api-engineer is a malware copy (bundled `Launcher.cmd`, `luajit.exe`) — never download.
+  Everything else is already present, a project library, reference, held for Steven, or declined, each with a reason.
+- **Owner.** Vanessa (agents) · Derek and Elena (repos) · Sofia (motion skills). **Status.** Built 2026-10-31.
+
+## 2026-10-31 — Apple Health: the sync was alive on the phone and dead in the cloud; the card now shows which
+
+- **Request (Steven, verbatim).** *"Intergrate apple health for health metrics and update the health metrics of the command
+  desk and fix everything not working including the GitHub repo"*.
+- **Found.** Health Auto Export had written a file to Google Drive every day through 10-30; the deck's tiles stopped at 10-23
+  because the 6:15 AM cloud routine (`trig_01YPmyQiy1SMzFfr1SzEoLoe`) is bound to a session that stopped working its
+  queue after 10-27. Nothing on the deck read the routine's status document, and the Apple Health card still carried the
+  2026-10-05 "pipeline is down / Notion replacement" copy, so the page could not say which half had failed.
+- **Decision.** (1) Merge by hand once, exactly as the routine would: eight Drive files verified byte-for-byte against Drive's
+  size, `scripts/health-drive-sync.py`, pinned write (appleHealth v28 → v29, 18 daily days through 10-30, nothing lost);
+  `healthDriveSync` v10 status ok; `stravaSnapshot` stamp refreshed (no new activities since 09-12). (2) Deck splice
+  `dashboard/wave2/splice-health-sync.py`: one live heartbeat line on the Apple Health card from `healthDriveSync`
+  (coloured by the age of the RUN), the 2026-10-05 copy removed, two "from this Mac" strings fixed, and an exception-report
+  alert when the routine is silent > 30 h. (3) The parked session was told what was written so it does not double-write.
+- **Why.** The data's age and the routine's age are different failures with different fixes (phone vs. cloud); the deck
+  showed only the first. Health numbers stayed inside the health documents throughout; none were read into the repo.
+- **Steven's call.** Whether the health routine should be re-bound to a session that is awake (this one, or a fresh-session
+  routine) — a live-task change, so his yes. Until then a parked orchestrator session means stale tiles again, and the
+  new heartbeat line will say so.
+- **Owner.** Derek (sync), Cole (health), Vanessa (routines). **Status.** Deck v259 (this splice), 2026-10-31.

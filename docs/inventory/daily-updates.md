@@ -43,3 +43,12 @@ Checked 2026-10-23: every cloud routine's last run SUCCEEDED (pages 1–7 of the
 None of these feeds the three daily dashboards. They are heavy Opus research runs; firing all of them in one day is what tripped the
 cap on Oct 1–2, so they were left on their own dates. Say "re-run the monthly refreshes" and they are fired one per hour.
 Two guard routines are off by design (Strava wrapper guard, feed-freshness watchdog) — both replaced by the 15:40 UTC freshness sweep.
+
+## Process coverage (2026-10-26)
+
+The document-level version of this table is the process-coverage register: `bin/brain coverage --db <export> --write`
+→ `docs/inventory/process-coverage.md` (gaps first, owner seat per row), the `processCoverage` deck document and the live
+Process coverage card in Orchestration. The freshness sweep reads it (STEP 1b). The Big-moves routine's "Refresh <doc>"
+step should take its stale list from `bin/brain coverage --db <export> --json` (its `gaps`) instead of this table once
+that routine's session adopts the step — its prompt can only be edited from the conversation it posts into.
+

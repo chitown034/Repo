@@ -46,6 +46,8 @@ copyskills() { # label owner/repo sha folder...   - copies named skill folders o
   if ! have git; then echo "  git not found"; return; fi
   if ask "Copy skill folders from github.com/$repo into ~/.claude/skills (no hooks, no plugin)?"; then
     local tmp; tmp="$(mktemp -d)"; git clone -q --depth 1 "https://github.com/$repo.git" "$tmp/r" || { echo "  clone failed"; return; }
+    local head; head="$(git -C "$tmp/r" rev-parse --short=7 HEAD)"
+    [ "$head" = "$sha" ] || { echo "  upstream moved since review ($sha -> $head)"; ask "Copy anyway?" || { rm -rf "$tmp"; return; }; }
     mkdir -p "$HOME/.claude/skills"
     for f in "$@"; do
       src="$(find "$tmp/r" -type d -name "$f" -path '*skills*' | head -n 1)"
@@ -77,6 +79,12 @@ else echo "  Homebrew not found - install it from https://brew.sh first, then re
 echo; echo "== Reverse engineering (REA) - gated: only on software Steven owns or may analyse"
 echo "  Read .claude/skills/reverse-engineering/SKILL.md first. Setup is interactive and edits agent configs with backups."
 have npx && { ask "Run: npx rea-agents setup (you review every change it proposes)?" && npx rea-agents setup; } || echo "  npx not found (install Node first)"
+echo; echo "== From the three images + 17 links (2026-10-31) - 62 repos read; details in REGISTRY-2026-10-31.md"
+plug "GSAP animation skills (official, 8 skills)" greensock/gsap-skills gsap-skills gsap-skills aed9cfd "(motion for web pages and videos; no hooks, no key)"
+copyskills "Anthropic visual skills (3, no hooks)" anthropics/skills ca45fc4 canvas-design algorithmic-art slack-gif-creator
+echo "  NEVER download yqman34/reverse-api-engineer - it is a malware copy (zip with Launcher.cmd / luajit.exe)."
+echo "  Held for your yes: Remotion licence, ElevenLabs, 21st.dev magic-mcp, After Effects MCP, claude-task-master, DeepTutor,"
+echo "  kalil0321/reverse-api-engineer (uses your logged-in Chrome), ViralWave. Libraries (three.js, gsap, motion...) install per project."
 echo; echo "== NOT installed on purpose (see REGISTRY-2026-10-11.md and -12.md)"
 echo "  Still not here after 'install all' (each needs your own explicit yes, see REGISTRY-2026-10-12b.md): oh-my-claudecode, claude-mem, gstack,"
 echo "  vibe-kanban, notebooklm-skill, kondo, zapier (needs the URL from your Zapier account), github-mcp on the Mac (gh already does it)."

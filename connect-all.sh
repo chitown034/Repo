@@ -22,7 +22,7 @@ if [ -z "${CONNECT_ALL_COPY:-}" ]; then
 fi
 cd "$REPO_DIR" || exit 1
 trap 'rm -f "${CONNECT_ALL_COPY:-}"' EXIT
-BRANCH="claude/stoic-cori-pvn3f8"
+BRANCH="${CONNECT_ALL_BRANCH:-claude/stoic-cori-pvn3f8}"
 LOGDIR="$HOME/Library/Logs/vanessa-setup"; mkdir -p "$LOGDIR" 2>/dev/null || LOGDIR="/tmp"
 LOG="$LOGDIR/connect-$(date +%Y-%m-%d-%H%M).log"
 PREVIEW=0; [ "${1:-}" = "--preview" ] && PREVIEW=1
@@ -77,7 +77,7 @@ repo_sync_agent() {
   <key>RunAtLoad</key><true/>
   <key>StandardOutPath</key><string>$HOME/Library/Logs/vanessa-setup/repo-sync-agent.log</string>
   <key>StandardErrorPath</key><string>$HOME/Library/Logs/vanessa-setup/repo-sync-agent.log</string>
-  <key>EnvironmentVariables</key><dict><key>PATH</key><string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string></dict>
+  <key>EnvironmentVariables</key><dict><key>PATH</key><string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string><key>REPO_SYNC_BRANCH</key><string>$BRANCH</string></dict>
 </dict></plist>
 PLIST
   launchctl unload "$p" >/dev/null 2>&1; launchctl load "$p" || return 1
@@ -402,6 +402,7 @@ LOFTY_VENV="$HOME/Applications/cli-anything-harnesses/.venv"
 lofty_connect() {
   local env="$HOME/.config/lofty/.env" key=""
   if ! { [ -s "$env" ] && grep -qE '^LOFTY_API_KEY=.+' "$env"; }; then
+    if [ "${CONNECT_ALL_SKIP_KEYS:-}" = 1 ]; then echo "skipped - asked once already in this paste (setup.sh step 2)"; return 1; fi
     printf 'Lofty API key (Lofty -> Settings -> Integrations -> API). Typed hidden, saved only in ~/.config/lofty/.env. Enter to skip: ' >/dev/tty
     trap 'stty echo 2>/dev/null; trap - INT TERM; echo >/dev/tty; echo "interrupted - nothing saved"; return 130' INT TERM; stty -echo 2>/dev/null; read -r key </dev/tty || { stty echo 2>/dev/null; trap - INT TERM; echo "interrupted - nothing saved"; return 130; }; stty echo 2>/dev/null; trap - INT TERM; echo >/dev/tty
     [ -z "$key" ] && { echo "skipped - no Lofty key on this Mac"; return 1; }
@@ -430,6 +431,7 @@ tidycal_check() { # <env file> -> HTTP code; the token goes to curl on stdin (-K
 tidycal_connect() {
   local env="$HOME/.config/tidycal/.env" key="" code fresh=0
   if ! { [ -s "$env" ] && grep -qE '^TIDYCAL_TOKEN=.+' "$env"; }; then
+    if [ "${CONNECT_ALL_SKIP_KEYS:-}" = 1 ]; then echo "skipped - asked once already in this paste (setup.sh step 2)"; return 1; fi
     printf 'TidyCal API token (TidyCal -> Integrations -> Automations or Advanced -> API -> Manage API keys -> Create token; needs a paid plan). Typed hidden, saved only in ~/.config/tidycal/.env. Enter to skip: ' >/dev/tty
     trap 'stty echo 2>/dev/null; trap - INT TERM; echo >/dev/tty; echo "interrupted - nothing saved"; return 130' INT TERM; stty -echo 2>/dev/null; read -r key </dev/tty || { stty echo 2>/dev/null; trap - INT TERM; echo "interrupted - nothing saved"; return 130; }; stty echo 2>/dev/null; trap - INT TERM; echo >/dev/tty
     [ -z "$key" ] && { echo "skipped - no TidyCal token on this Mac"; return 1; }
@@ -454,6 +456,7 @@ step "7c TidyCal (token on this Mac, read-only check)" \
 arive_keys() {
   local env="$HOME/.config/arive/.env" cid="" sec="" key=""
   if [ -s "$env" ] && grep -qE '^ARIVE_API_KEY=.+' "$env"; then echo "Arive credentials already on this Mac (values not shown)"; return 0; fi
+  if [ "${CONNECT_ALL_SKIP_KEYS:-}" = 1 ]; then echo "skipped - asked once already in this paste (setup.sh step 2)"; return 1; fi
   printf 'Arive Client ID (Arive -> Settings -> Integrations -> Generate; Pro plan). Hidden; Enter to skip all three: ' >/dev/tty
   # Ctrl-C at any of the three prompts: echo back on, trap cleared, out of the function with nothing saved (validator P04-F1 -
   # the old trap only restored echo, so the next values were typed in clear text and still saved).
@@ -492,7 +495,7 @@ step "8 Claude Mods (status line, HALT guard, /remember, /connections, /owner, /
 # 9. read-only health check
 step "9 Health check (read-only)" "" sh -c "./mac-verify.sh --quiet || true"
 
-say ""; say "================ REPORT ================"
+say ""; if [ "${SETUP_NESTED:-}" = 1 ]; then say "---------------- connect-all section (the one REPORT to paste is at the very end of setup.sh) ----------------"; else say "================ REPORT ================"; fi
 [ -n "$PASS" ] && say "Done:$(printf "$PASS")"
 [ -n "$FAIL" ] && say "Did not finish:$(printf "$FAIL")"
 say ""

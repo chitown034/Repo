@@ -14,7 +14,7 @@ set -u
 CHECK=0; [ "${1:-}" = "--check" ] && CHECK=1
 TTY="${FIX_MINE_TTY:-/dev/tty}"   # tests point this at a file; real runs read from the terminal
 OUT=/dev/tty; [ "$TTY" = /dev/tty ] || OUT=/dev/stderr   # prompts never go into a file that is being read
-REPO="$HOME/Repo"; BR="claude/stoic-cori-pvn3f8"; USER="${USER:-$(id -un)}"
+REPO="$HOME/Repo"; BR="${FIX_MINE_BRANCH:-claude/stoic-cori-pvn3f8}"; USER="${USER:-$(id -un)}"
 DONE=""; SKIP=""; YOU=""; CATALOG=""; DISCORD_DIR=""; DISCORD_VARS=""
 done_() { DONE="$DONE
   - $*"; }
@@ -24,6 +24,7 @@ you_()  { YOU="$YOU
   $*"; }
 say() { printf '%s\n' "$*"; }
 have() { command -v "$1" >/dev/null 2>&1; }
+# shellcheck disable=SC2120  # callers use plain `uname`; "$@" is kept so a flagged call still reaches the real one
 uname() { if [ -n "${FIX_MINE_UNAME:-}" ]; then printf '%s\n' "$FIX_MINE_UNAME"; else command uname "$@"; fi; }   # tests fake a Mac
 
 # ---- 1. repo --------------------------------------------------------------------------------------------------------
@@ -159,7 +160,7 @@ step_voice() {
 # ---- 3b. Vanessa everywhere on this Mac: Jarvis speaks and thinks as her and knows the brain; Laya routes; Orca launches the
 #          team. Each script is idempotent and reports its own FAIL/WARN rows; this just runs them in order and keeps the last line.
 run_quiet() {   # run_quiet <label> <cmd...>: run, keep the log, report one line
-  local label="$1"; shift; local log="$HOME/Library/Logs/vanessa-setup/fix-mine-$(printf '%s' "$label" | tr ' /' '--').log"
+  local label="$1" log; shift; log="$HOME/Library/Logs/vanessa-setup/fix-mine-$(printf '%s' "$label" | tr ' /' '--').log"
   mkdir -p "$(dirname "$log")"
   if [ $CHECK = 1 ]; then say "would: $*"; return 0; fi
   if "$@" >"$log" 2>&1; then done_ "$label — $(tail -1 "$log")"; else skip_ "$label — $(grep -m1 -E 'FAIL|WARN|rror' "$log" || tail -1 "$log") (log: $log)"; fi
@@ -269,7 +270,7 @@ checklist() {
 main() {
   say "fix-mine $(date '+%Y-%m-%d %H:%M') $( [ $CHECK = 1 ] && echo '(check only: nothing changes, nothing asked)')"
   step_repo; step_keys; step_lofty_cloud; step_channels; step_voice; step_vanessa_everywhere; step_hours; step_runner; checklist
-  say ""; say "================ REPORT (copy from here down and paste it to Claude) ================"
+  say ""; if [ "${SETUP_NESTED:-}" = 1 ]; then say "---------------- fix-mine section (the one REPORT to paste is at the very end of setup.sh) ----------------"; else say "================ REPORT (copy from here down and paste it to Claude) ================"; fi
   say "Done:${DONE:-
   - nothing new (everything scripted was already in place)}"
   [ -n "$SKIP" ] && { say "Skipped / not finished:$SKIP"; }

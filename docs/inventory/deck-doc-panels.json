@@ -1,0 +1,1493 @@
+{
+ "scannedFrom": "Command Deck artifact 3jbdGMNFkGLEpJiZ3cTmZW version 1793038727-c3c9 (2026-10-26)",
+ "how": "bin/brain coverage --scan <deck.html>: every lsGet() call, the render function around it, and the tab/panel whose element ids that function fills",
+ "docs": {
+  "accounts": {
+   "tab": "Family Office & Wealth",
+   "panel": "Personal Accounts & Investments",
+   "funcs": [
+    "dashboardSnapshotForVanessa",
+    "feoNetWorth",
+    "renderAccounts",
+    "renderGlobalNetWorth"
+   ]
+  },
+  "actionDesk": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "actionDeskSteps"
+   ]
+  },
+  "agentInbox": {
+   "tab": "Toolkit & Remote Access",
+   "panel": "Toolkit & Remote Access",
+   "funcs": [
+    "renderAgentInbox"
+   ]
+  },
+  "ahLogFilledFor": {
+   "tab": "Health & Wellness",
+   "panel": "Health & Wellness",
+   "funcs": [
+    "renderAppleHealth"
+   ]
+  },
+  "aiModels": {
+   "tab": "Rewards & Ventures",
+   "panel": "Nonprofit & Future Ventures",
+   "funcs": [
+    "renderAiModels"
+   ]
+  },
+  "aiNews": {
+   "tab": "PE & Defense Innovation",
+   "panel": "Private Equity & Defense Innovation",
+   "funcs": [
+    "renderAiNews"
+   ]
+  },
+  "aiNewsResetToken": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "resetAiNewsOnce"
+   ]
+  },
+  "aiTeamRoster": {
+   "tab": "AI Team",
+   "panel": "AI Employees & Digital Twin",
+   "funcs": [
+    "renderRoster"
+   ]
+  },
+  "aiTrainingPct": {
+   "tab": "Daily Ops",
+   "panel": "Master Plan",
+   "funcs": [
+    "renderAiTrainingTracker"
+   ]
+  },
+  "annualTodo": {
+   "tab": "Daily Ops",
+   "panel": "Appointments & Tasks",
+   "funcs": [
+    "renderAnnualTodo"
+   ]
+  },
+  "annualTodoExtra": {
+   "tab": "Daily Ops",
+   "panel": "Appointments & Tasks",
+   "funcs": [
+    "renderAnnualTodo"
+   ]
+  },
+  "anydeskIds": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "chIds"
+   ]
+  },
+  "appleHealth": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "add",
+    "ahSnapshot",
+    "dashboardSnapshotForVanessa"
+   ]
+  },
+  "appointments": {
+   "tab": "Daily Ops",
+   "panel": "Appointments & Tasks",
+   "funcs": [
+    "buildDailyBriefText",
+    "renderAppointments",
+    "renderReminders",
+    "resetAppointmentsOnce",
+    "scan"
+   ]
+  },
+  "appointmentsResetToken": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "resetAppointmentsOnce"
+   ]
+  },
+  "assetItems": {
+   "tab": "Family Office & Wealth",
+   "panel": "Assets",
+   "funcs": [
+    "persist",
+    "renderAssetItems"
+   ]
+  },
+  "augustaEvents": {
+   "tab": "Family Office & Wealth",
+   "panel": "Tax & Compliance",
+   "funcs": [
+    "renderAugustaLog"
+   ]
+  },
+  "augustaRate": {
+   "tab": "Family Office & Wealth",
+   "panel": "Tax & Compliance",
+   "funcs": [
+    "renderAugustaLog"
+   ]
+  },
+  "backupStatus": {
+   "tab": "Daily Ops",
+   "panel": "Ops Radar",
+   "funcs": [
+    "backupAlerts",
+    "renderBackupStatus"
+   ]
+  },
+  "biohackLog": {
+   "tab": "Health & Wellness",
+   "panel": "Health & Wellness",
+   "funcs": [
+    "renderBiohackLog"
+   ]
+  },
+  "calendarSnapshot": {
+   "tab": "Daily Ops",
+   "panel": "Appointments & Tasks",
+   "funcs": [
+    "dashboardSnapshotForVanessa",
+    "renderCalUpcoming",
+    "uscCalDeadlines"
+   ]
+  },
+  "capacityPct": {
+   "tab": "Lending & Real Estate",
+   "panel": "Virtual EA / ISA Operations",
+   "funcs": [
+    "renderCapacityAudit"
+   ]
+  },
+  "checklist": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "checklistState"
+   ]
+  },
+  "ciLog": {
+   "tab": "Daily Ops",
+   "panel": "Process Excellence \u2014 DMAIC, Lean Six Sigma & Agile/PM",
+   "funcs": [
+    "renderCiLog"
+   ]
+  },
+  "ciLogResetToken": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "resetCiLogOnce"
+   ]
+  },
+  "city": {
+   "tab": "Daily Ops",
+   "panel": "News \u2014 Global & Local",
+   "funcs": [
+    "renderLocalNews"
+   ]
+  },
+  "claudeNotes": {
+   "tab": "Daily Ops",
+   "panel": "Master Plan",
+   "funcs": [
+    "renderRefLinks"
+   ]
+  },
+  "cliAnythingStatus": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "ccDoc"
+   ]
+  },
+  "computerHub": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "chState"
+   ]
+  },
+  "cosBrief": {
+   "tab": "Lending & Real Estate",
+   "panel": "Practice Trackers",
+   "funcs": [
+    "cosBriefTextForSms",
+    "cosRunNow",
+    "cosUpdateNeed",
+    "pbSnapshotLines",
+    "renderCosToday",
+    "wirePushButtons"
+   ]
+  },
+  "councilLog": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "councilHistory"
+   ]
+  },
+  "councilPricing": {
+   "tab": "AI Team",
+   "panel": "AI Employees & Digital Twin",
+   "funcs": [
+    "renderCouncilOutside"
+   ]
+  },
+  "cpiCycles": {
+   "tab": "Daily Ops",
+   "panel": "Process Excellence \u2014 DMAIC, Lean Six Sigma & Agile/PM",
+   "funcs": [
+    "improveSyncCpi",
+    "initCpi",
+    "renderCpi"
+   ]
+  },
+  "dbaCourses": {
+   "tab": "Career & Education",
+   "panel": "Mind \u2014 USC & Study: AI DBA",
+   "funcs": [
+    "renderCaio"
+   ]
+  },
+  "dealChecklists": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "tcAlerts"
+   ]
+  },
+  "dmaicProjects": {
+   "tab": "Daily Ops",
+   "panel": "Process Excellence \u2014 DMAIC, Lean Six Sigma & Agile/PM",
+   "funcs": [
+    "dashboardSnapshotForVanessa",
+    "reconcileDmaicNote",
+    "renderDmaic",
+    "renderDmaicPhaseChart"
+   ]
+  },
+  "downtimeFound": {
+   "tab": "Daily Ops",
+   "panel": "Process Excellence \u2014 DMAIC, Lean Six Sigma & Agile/PM",
+   "funcs": [
+    "renderDowntime"
+   ]
+  },
+  "dreamFeatures": {
+   "tab": "Next Big Moves",
+   "panel": "Dream Future Empire",
+   "funcs": [
+    "renderDreamFeatures"
+   ]
+  },
+  "dreamProperties": {
+   "tab": "Next Big Moves",
+   "panel": "Dream Future Empire",
+   "funcs": [
+    "renderDreamProperties"
+   ]
+  },
+  "editableOverrides": {
+   "tab": "Next Big Moves",
+   "panel": "Next Big Moves",
+   "funcs": [
+    "renderPlanDecisions"
+   ]
+  },
+  "estateReview": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "estateAlerts"
+   ]
+  },
+  "eventsChecked": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "evTicks"
+   ]
+  },
+  "eventsFeed": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "evFeedRows"
+   ]
+  },
+  "feasibilityChecks": {
+   "tab": "Next Big Moves",
+   "panel": "Next Big Moves",
+   "funcs": [
+    "renderFeasibility"
+   ]
+  },
+  "fedSalaryCalc": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "fedState"
+   ]
+  },
+  "fersEngine": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "fersState"
+   ]
+  },
+  "foActions": {
+   "tab": "Family Office & Wealth",
+   "panel": "Family Office",
+   "funcs": [
+    "renderFoActions"
+   ]
+  },
+  "foAdvisors": {
+   "tab": "Family Office & Wealth",
+   "panel": "Family Office",
+   "funcs": [
+    "renderAdvisors"
+   ]
+  },
+  "foEntities": {
+   "tab": "Family Office & Wealth",
+   "panel": "Family Office",
+   "funcs": [
+    "renderEntities"
+   ]
+  },
+  "foReviews": {
+   "tab": "Family Office & Wealth",
+   "panel": "Family Office",
+   "funcs": [
+    "renderFoReviews",
+    "renderReminders",
+    "scan"
+   ]
+  },
+  "grantPipeline": {
+   "tab": "Rewards & Ventures",
+   "panel": "Nonprofit & Future Ventures",
+   "funcs": [
+    "dashboardSnapshotForVanessa",
+    "grantStageDot",
+    "renderGrantPipeline",
+    "renderReminders",
+    "scan"
+   ]
+  },
+  "healthAnalysis": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "hlDailyHtml"
+   ]
+  },
+  "healthCoaching": {
+   "tab": "Health & Wellness",
+   "panel": "Health & Wellness",
+   "funcs": [
+    "renderHealthCoaching"
+   ]
+  },
+  "healthGoals": {
+   "tab": "Health & Wellness",
+   "panel": "Health & Wellness",
+   "funcs": [
+    "renderHealthCoaching",
+    "renderHealthGoalsForm",
+    "saveHealthGoals"
+   ]
+  },
+  "healthInsight": {
+   "tab": "Health & Wellness",
+   "panel": "Health & Wellness",
+   "funcs": [
+    "hlAutoMaybe",
+    "hlRenderInsight"
+   ]
+  },
+  "healthMetrics": {
+   "tab": "Health & Wellness",
+   "panel": "Health & Wellness",
+   "funcs": [
+    "ahFillHealthLog",
+    "bucket",
+    "hmPlausible",
+    "parseLooseDate",
+    "renderHealthMetrics"
+   ]
+  },
+  "healthNotionSync": {
+   "tab": "Health & Wellness",
+   "panel": "Health & Wellness",
+   "funcs": [
+    "renderHealthNotionStatus"
+   ]
+  },
+  "healthNutrition": {
+   "tab": "Health & Wellness",
+   "panel": "Health & Wellness",
+   "funcs": [
+    "renderNutritionLog"
+   ]
+  },
+  "hfCommitteeMemo": {
+   "tab": "Markets & Trading",
+   "panel": "AI Hedge Fund Team",
+   "funcs": [
+    "renderHfMemo",
+    "resetHfMemoOnce"
+   ]
+  },
+  "hfMemoResetToken": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "resetHfMemoOnce"
+   ]
+  },
+  "hfRequest": {
+   "tab": "Markets & Trading",
+   "panel": "AI Hedge Fund Team",
+   "funcs": [
+    "renderHfRequest"
+   ]
+  },
+  "hlAutoTried": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "hlAutoMaybe"
+   ]
+  },
+  "hlPrefs": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "hlPrefs"
+   ]
+  },
+  "hvmPlaybook": {
+   "tab": "Health & Wellness",
+   "panel": "Health & Wellness",
+   "funcs": [
+    "renderHvmPlaybook"
+   ]
+  },
+  "hvmRoadmap": {
+   "tab": "Health & Wellness",
+   "panel": "Health & Wellness",
+   "funcs": [
+    "renderHvmRoadmap"
+   ]
+  },
+  "improvementProposals": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "extendExecExceptions",
+    "improveProposals"
+   ]
+  },
+  "inboxDesk": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "inboxDesk"
+   ]
+  },
+  "incentivePrograms": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "add",
+    "incentDoc"
+   ]
+  },
+  "instLogins": {
+   "tab": "Family Office & Wealth",
+   "panel": "Personal Accounts & Investments",
+   "funcs": [
+    "renderInstitutionDirectory",
+    "wireInstitutionDirectory"
+   ]
+  },
+  "instPlaidMap": {
+   "tab": "Family Office & Wealth",
+   "panel": "Personal Accounts & Investments",
+   "funcs": [
+    "plaidMatchRow",
+    "renderInstitutionDirectory",
+    "wireInstitutionDirectory"
+   ]
+  },
+  "isaDailySchedule": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "isaPlaybookDoc"
+   ]
+  },
+  "isaGradingScores": {
+   "tab": "Lending & Real Estate",
+   "panel": "Virtual EA / ISA Operations",
+   "funcs": [
+    "renderIsaGrading"
+   ]
+  },
+  "isaKpi": {
+   "tab": "Lending & Real Estate",
+   "panel": "Virtual EA / ISA Operations",
+   "funcs": [
+    "renderIsaKpiDoc"
+   ]
+  },
+  "isaKpiSopActuals": {
+   "tab": "Lending & Real Estate",
+   "panel": "Virtual EA / ISA Operations",
+   "funcs": [
+    "renderIsaKpiSop"
+   ]
+  },
+  "isaLadder": {
+   "tab": "AI Team",
+   "panel": "AI Employees & Digital Twin",
+   "funcs": [
+    "renderIsaLadder",
+    "renderProgramStatus"
+   ]
+  },
+  "isaLine": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "isaLineMsgs",
+    "renderProgramStatus"
+   ]
+  },
+  "isaLineRead": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "isaLineRead",
+    "renderProgramStatus"
+   ]
+  },
+  "isaScorecard": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "dashboardSnapshotForVanessa",
+    "extendExecExceptions",
+    "isaScRows",
+    "renderProgramStatus"
+   ]
+  },
+  "kaizenBoard": {
+   "tab": "Daily Ops",
+   "panel": "Process Excellence \u2014 DMAIC, Lean Six Sigma & Agile/PM",
+   "funcs": [
+    "dashboardSnapshotForVanessa",
+    "renderKaizen",
+    "scan"
+   ]
+  },
+  "kanbanCards": {
+   "tab": "Daily Ops",
+   "panel": "Morning Brief",
+   "funcs": [
+    "computeExecExceptions",
+    "dashboardSnapshotForVanessa",
+    "kanbanEnsureRoutines",
+    "renderKanban",
+    "renderKanbanFilter",
+    "renderKanbanWeek"
+   ]
+  },
+  "kanbanOwnerFilter": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "kanbanOwnerOf"
+   ]
+  },
+  "knowledgeFabric": {
+   "tab": "Toolkit & Remote Access",
+   "panel": "Toolkit & Remote Access",
+   "funcs": [
+    "renderKnowledgeFabric",
+    "renderSecondBrainLevels"
+   ]
+  },
+  "kpiActuals": {
+   "tab": "Lending & Real Estate",
+   "panel": "Virtual EA / ISA Operations",
+   "funcs": [
+    "renderKpiScorecard"
+   ]
+  },
+  "leadResponse": {
+   "tab": "Daily Ops",
+   "panel": "Ops Radar",
+   "funcs": [
+    "leadFlowFacts",
+    "renderSpeedToLead",
+    "stlStats"
+   ]
+  },
+  "leadTriage": {
+   "tab": "Lending & Real Estate",
+   "panel": "Virtual EA / ISA Operations",
+   "funcs": [
+    "dashboardSnapshotForVanessa",
+    "extendExecExceptions",
+    "pbLeadList",
+    "renderLeadTriage"
+   ]
+  },
+  "liabilities": {
+   "tab": "Family Office & Wealth",
+   "panel": "Personal Accounts & Investments",
+   "funcs": [
+    "dashboardSnapshotForVanessa",
+    "feoNetWorth",
+    "renderGlobalNetWorth",
+    "renderLiabilities"
+   ]
+  },
+  "licenseTracker": {
+   "tab": "Career & Education",
+   "panel": "Mind \u2014 USC & Study: AI DBA",
+   "funcs": [
+    "dashboardSnapshotForVanessa",
+    "renderLicenseTracker",
+    "renderReminders",
+    "scan"
+   ]
+  },
+  "licenses": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "licenseAlerts",
+    "renderProgramStatus"
+   ]
+  },
+  "liveFeeds": {
+   "tab": "Markets & Trading",
+   "panel": "QuantVue \u2014 NQ Trading Bot",
+   "funcs": [
+    "dashboardSnapshotForVanessa",
+    "feedStampIso",
+    "marketContextText",
+    "newsFromLiveFeed",
+    "orRenderFeedInto",
+    "renderAiNews"
+   ]
+  },
+  "localBridgeQueue": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "lbQueueDoc"
+   ]
+  },
+  "loftyLeads": {
+   "tab": "Toolkit & Remote Access",
+   "panel": "Toolkit & Remote Access",
+   "funcs": [
+    "leadFlowFacts",
+    "loftyDoc",
+    "pbLeadList",
+    "renderConnectionsCard",
+    "snapStampIso"
+   ]
+  },
+  "lumenScores": {
+   "tab": "Health & Wellness",
+   "panel": "Health & Wellness",
+   "funcs": [
+    "renderLumenLog"
+   ]
+  },
+  "marketSnapshot": {
+   "tab": "Markets & Trading",
+   "panel": "QuantVue \u2014 NQ Trading Bot",
+   "funcs": [
+    "marketContextText",
+    "renderMarketSnapshot"
+   ]
+  },
+  "marketSnapshotResetToken": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "resetMarketSnapshotOnce"
+   ]
+  },
+  "marketingQueue": {
+   "tab": "Rewards & Ventures",
+   "panel": "Marketing & Content",
+   "funcs": [
+    "renderMarketing"
+   ]
+  },
+  "memberships": {
+   "tab": "Daily Ops",
+   "panel": "Morning Brief",
+   "funcs": [
+    "renderMemberships",
+    "renderReminders"
+   ]
+  },
+  "morningBrief": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "cosBriefTextForSms"
+   ]
+  },
+  "mtgGciDeals": {
+   "tab": "Family Office & Wealth",
+   "panel": "Road to a Million",
+   "funcs": [
+    "renderGciCalc"
+   ]
+  },
+  "mtgGciPerDeal": {
+   "tab": "Family Office & Wealth",
+   "panel": "Road to a Million",
+   "funcs": [
+    "renderGciCalc"
+   ]
+  },
+  "myCards": {
+   "tab": "Rewards & Ventures",
+   "panel": "Loyalty & Credit Cards",
+   "funcs": [
+    "renderMyCards"
+   ]
+  },
+  "newsSnapshot": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "applyNewsDoc"
+   ]
+  },
+  "npFamilies": {
+   "tab": "Rewards & Ventures",
+   "panel": "Nonprofit & Future Ventures",
+   "funcs": [
+    "dashboardSnapshotForVanessa",
+    "renderNpMetrics"
+   ]
+  },
+  "npGrantFunding": {
+   "tab": "Rewards & Ventures",
+   "panel": "Nonprofit & Future Ventures",
+   "funcs": [
+    "renderNpMetrics"
+   ]
+  },
+  "npHours": {
+   "tab": "Rewards & Ventures",
+   "panel": "Nonprofit & Future Ventures",
+   "funcs": [
+    "renderNpMetrics"
+   ]
+  },
+  "nqGuideRead": {
+   "tab": "Markets & Trading",
+   "panel": "QuantVue \u2014 NQ Trading Bot",
+   "funcs": [
+    "renderNqGuideTracker"
+   ]
+  },
+  "onboardDone": {
+   "tab": "Lending & Real Estate",
+   "panel": "Virtual EA / ISA Operations",
+   "funcs": [
+    "renderOnboardTracker"
+   ]
+  },
+  "openTerminalQueue": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "otQueueDoc"
+   ]
+  },
+  "openTerminalSnapshot": {
+   "tab": "Markets & Trading",
+   "panel": "OpenTerminal",
+   "funcs": [
+    "renderOpenTerminal"
+   ]
+  },
+  "openrouterCredits": {
+   "tab": "PE & Defense Innovation",
+   "panel": "Private Equity & Defense Innovation",
+   "funcs": [
+    "renderCouncilOutside",
+    "renderOpenrouterCredits"
+   ]
+  },
+  "peptideTracker": {
+   "tab": "Daily Ops",
+   "panel": "Appointments & Tasks",
+   "funcs": [
+    "renderTrackerList"
+   ]
+  },
+  "pipeline": {
+   "tab": "Lending & Real Estate",
+   "panel": "Mortgage, Lending & Real Estate Tools",
+   "funcs": [
+    "dashboardSnapshotForVanessa",
+    "renderPipeline",
+    "renderProgramStatus"
+   ]
+  },
+  "plaidBalances": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "plaidSnapshot"
+   ]
+  },
+  "plan10yr": {
+   "tab": "Next Big Moves",
+   "panel": "Next Big Moves",
+   "funcs": [
+    "initPlan"
+   ]
+  },
+  "plan1yr": {
+   "tab": "Next Big Moves",
+   "panel": "Next Big Moves",
+   "funcs": [
+    "initPlan"
+   ]
+  },
+  "plan5yr": {
+   "tab": "Next Big Moves",
+   "panel": "Next Big Moves",
+   "funcs": [
+    "initPlan"
+   ]
+  },
+  "priorities": {
+   "tab": "Daily Ops",
+   "panel": "Morning Brief",
+   "funcs": [
+    "renderPriorities"
+   ]
+  },
+  "properties": {
+   "tab": "Family Office & Wealth",
+   "panel": "Personal Accounts & Investments",
+   "funcs": [
+    "feoNetWorth",
+    "renderGlobalNetWorth",
+    "renderProperties"
+   ]
+  },
+  "qetPaid": {
+   "tab": "Family Office & Wealth",
+   "panel": "Tax & Compliance",
+   "funcs": [
+    "renderQet"
+   ]
+  },
+  "qetPriorAGI": {
+   "tab": "Family Office & Wealth",
+   "panel": "Tax & Compliance",
+   "funcs": [
+    "renderQet"
+   ]
+  },
+  "qetPriorTax": {
+   "tab": "Family Office & Wealth",
+   "panel": "Tax & Compliance",
+   "funcs": [
+    "renderQet"
+   ]
+  },
+  "qetProjected": {
+   "tab": "Family Office & Wealth",
+   "panel": "Tax & Compliance",
+   "funcs": [
+    "renderQet"
+   ]
+  },
+  "quickTasks": {
+   "tab": "Daily Ops",
+   "panel": "Appointments & Tasks",
+   "funcs": [
+    "renderQuickTasks"
+   ]
+  },
+  "ratesSnapshot": {
+   "tab": "Lending & Real Estate",
+   "panel": "Mortgage, Lending & Real Estate Tools",
+   "funcs": [
+    "applyMarketsDoc",
+    "applyRatesDoc",
+    "dashboardSnapshotForVanessa",
+    "renderMortgageBenchmarks"
+   ]
+  },
+  "reClients": {
+   "tab": "Lending & Real Estate",
+   "panel": "Mortgage, Lending & Real Estate Tools",
+   "funcs": [
+    "renderProgramStatus",
+    "renderReClients"
+   ]
+  },
+  "reGciDeals": {
+   "tab": "Family Office & Wealth",
+   "panel": "Road to a Million",
+   "funcs": [
+    "renderGciCalc"
+   ]
+  },
+  "reGciPerDeal": {
+   "tab": "Family Office & Wealth",
+   "panel": "Road to a Million",
+   "funcs": [
+    "renderGciCalc"
+   ]
+  },
+  "recruitPipeline": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "recruitAlerts"
+   ]
+  },
+  "refLinksCustom": {
+   "tab": "Daily Ops",
+   "panel": "Master Plan",
+   "funcs": [
+    "renderRefLinks"
+   ]
+  },
+  "referralPartners": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "partnerAlerts"
+   ]
+  },
+  "refiWatch": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "refiAlerts"
+   ]
+  },
+  "refiWatchDesk": {
+   "tab": "Lending & Real Estate",
+   "panel": "Practice Trackers",
+   "funcs": [
+    "renderRefiList"
+   ]
+  },
+  "refiWatchList": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "refiListClients"
+   ]
+  },
+  "repsREHours": {
+   "tab": "Family Office & Wealth",
+   "panel": "Personal Accounts & Investments",
+   "funcs": [
+    "renderReps"
+   ]
+  },
+  "repsTotalHours": {
+   "tab": "Family Office & Wealth",
+   "panel": "Personal Accounts & Investments",
+   "funcs": [
+    "renderReps"
+   ]
+  },
+  "reviewPipeline": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "reviewAlerts"
+   ]
+  },
+  "riskAccountsBlown": {
+   "tab": "Markets & Trading",
+   "panel": "QuantVue \u2014 NQ Trading Bot",
+   "funcs": [
+    "renderRiskMonitor"
+   ]
+  },
+  "riskDailyLossTriggered": {
+   "tab": "Markets & Trading",
+   "panel": "QuantVue \u2014 NQ Trading Bot",
+   "funcs": [
+    "renderRiskMonitor"
+   ]
+  },
+  "riskMonitor": {
+   "tab": "Markets & Trading",
+   "panel": "QuantVue \u2014 NQ Trading Bot",
+   "funcs": [
+    "renderRiskMonitor"
+   ]
+  },
+  "routineHealth": {
+   "tab": "Daily Ops",
+   "panel": "Ops Radar",
+   "funcs": [
+    "automationHealthAlerts",
+    "renderAutomationHealth"
+   ]
+  },
+  "runnerStatus": {
+   "tab": "Toolkit & Remote Access",
+   "panel": "Toolkit & Remote Access",
+   "funcs": [
+    "cnt",
+    "liveRunnerState",
+    "renderConnectionsCard",
+    "renderMacWorkerBanner",
+    "renderRunnerStatus"
+   ]
+  },
+  "secondBrain": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "brainDoc"
+   ]
+  },
+  "sectionEdits": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "recordSectionEdit",
+    "stampFromEdits"
+   ]
+  },
+  "sectionSliderHidden": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "refreshSectionSlider"
+   ]
+  },
+  "showingRoute": {
+   "tab": "Showings",
+   "panel": "Showings \u2014 Schedule by Client",
+   "funcs": [
+    "initShowings",
+    "srState"
+   ]
+  },
+  "showingSchedule": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "dashboardSnapshotForVanessa",
+    "extendExecExceptions",
+    "shState"
+   ]
+  },
+  "showingSyncRequests": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "shSyncReqs"
+   ]
+  },
+  "sixLevers": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "sixLeversState"
+   ]
+  },
+  "speakDiag": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "speakRecord"
+   ]
+  },
+  "sphereList": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "sphereListPeople"
+   ]
+  },
+  "sphereTouches": {
+   "tab": "Lending & Real Estate",
+   "panel": "Practice Trackers",
+   "funcs": [
+    "renderSphereList"
+   ]
+  },
+  "sprintDates": {
+   "tab": "Daily Ops",
+   "panel": "Process Excellence \u2014 DMAIC, Lean Six Sigma & Agile/PM",
+   "funcs": [
+    "initSprint"
+   ]
+  },
+  "sprintGoal": {
+   "tab": "Daily Ops",
+   "panel": "Process Excellence \u2014 DMAIC, Lean Six Sigma & Agile/PM",
+   "funcs": [
+    "initSprint"
+   ]
+  },
+  "sprintVelocity": {
+   "tab": "Daily Ops",
+   "panel": "Process Excellence \u2014 DMAIC, Lean Six Sigma & Agile/PM",
+   "funcs": [
+    "initSprint"
+   ]
+  },
+  "stlManual": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "stlStats"
+   ]
+  },
+  "strategySnapshot": {
+   "tab": "Markets & Trading",
+   "panel": "QuantVue \u2014 NQ Trading Bot",
+   "funcs": [
+    "dashboardSnapshotForVanessa",
+    "liveStrategyRows",
+    "marketContextText",
+    "renderStrategyTables"
+   ]
+  },
+  "stravaSnapshot": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "stravaDoc"
+   ]
+  },
+  "subscriptions": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "dashboardSnapshotForVanessa",
+    "subsAlerts"
+   ]
+  },
+  "supplementTracker": {
+   "tab": "Daily Ops",
+   "panel": "Appointments & Tasks",
+   "funcs": [
+    "renderTrackerList"
+   ]
+  },
+  "taxWorkbookLink": {
+   "tab": "Family Office & Wealth",
+   "panel": "Tax & Compliance",
+   "funcs": [
+    "renderTaxCategories"
+   ]
+  },
+  "tcDeals": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "tcDeals"
+   ]
+  },
+  "tcDesk": {
+   "tab": "Lending & Real Estate",
+   "panel": "Practice Trackers",
+   "funcs": [
+    "pbSnapshotLines",
+    "renderTcDesk"
+   ]
+  },
+  "techStackExtra": {
+   "tab": "Lending & Real Estate",
+   "panel": "Virtual EA / ISA Operations",
+   "funcs": [
+    "initEditableReset"
+   ]
+  },
+  "todoList": {
+   "tab": "Daily Ops",
+   "panel": "Master Plan",
+   "funcs": [
+    "renderTodoList"
+   ]
+  },
+  "toolkitSnapshot": {
+   "tab": "Toolkit & Remote Access",
+   "panel": "Toolkit & Remote Access",
+   "funcs": [
+    "renderLocalBridgeCounts",
+    "renderToolkitInventory"
+   ]
+  },
+  "tradingDeskReport": {
+   "tab": "Markets & Trading",
+   "panel": "Self-Improving Trading Research Desk",
+   "funcs": [
+    "tdTiles"
+   ]
+  },
+  "tradingLogins": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "tradingLogins"
+   ]
+  },
+  "travelFilterCat": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "travelState"
+   ]
+  },
+  "travelShowPassed": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "travelState"
+   ]
+  },
+  "travelSoonOnly": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "travelState"
+   ]
+  },
+  "ttsHold": {
+   "tab": "Markets & Trading",
+   "panel": "QuantVue \u2014 NQ Trading Bot",
+   "funcs": [
+    "renderTts"
+   ]
+  },
+  "ttsIntent": {
+   "tab": "Markets & Trading",
+   "panel": "QuantVue \u2014 NQ Trading Bot",
+   "funcs": [
+    "renderTts"
+   ]
+  },
+  "ttsSetup": {
+   "tab": "Markets & Trading",
+   "panel": "QuantVue \u2014 NQ Trading Bot",
+   "funcs": [
+    "renderTts"
+   ]
+  },
+  "tvaChartState": {
+   "tab": "Markets & Trading",
+   "panel": "AI Hedge Fund Team",
+   "funcs": [
+    "done"
+   ]
+  },
+  "twinBrief": {
+   "tab": "AI Team",
+   "panel": "AI Employees & Digital Twin",
+   "funcs": [
+    "renderTwinBrief"
+   ]
+  },
+  "twinQueue": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "dashboardSnapshotForVanessa",
+    "extendExecExceptions",
+    "needsYouFacts",
+    "twinQueue"
+   ]
+  },
+  "tz": {
+   "tab": "Daily Ops",
+   "panel": "Morning Brief",
+   "funcs": [
+    "renderPriorities",
+    "renderShift"
+   ]
+  },
+  "uscDeadlines": {
+   "tab": "Career & Education",
+   "panel": "Mind \u2014 USC & Study: AI DBA",
+   "funcs": [
+    "renderDeadlines",
+    "renderProgramStatus",
+    "renderReminders",
+    "scan",
+    "uscCalDeadlines"
+   ]
+  },
+  "uscSchedule": {
+   "tab": "Career & Education",
+   "panel": "Mind \u2014 USC & Study: AI DBA",
+   "funcs": [
+    "renderSchedule"
+   ]
+  },
+  "uwpRead": {
+   "tab": "Family Office & Wealth",
+   "panel": "Family Office",
+   "funcs": [
+    "renderUwpTracker"
+   ]
+  },
+  "vanessaChat": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "vanessaChatHistory"
+   ]
+  },
+  "vanessaQueue": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "vqItems"
+   ]
+  },
+  "vanessaRecommendations": {
+   "tab": "AI Team",
+   "panel": "AI Employees & Digital Twin",
+   "funcs": [
+    "computeExecExceptions",
+    "dashboardSnapshotForVanessa",
+    "needsYouFacts",
+    "runCouncil",
+    "vanessaRecs"
+   ]
+  },
+  "vanessaResearch": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "renderVanessaResearch",
+    "sharedResearchDoc"
+   ]
+  },
+  "voicePlayed": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "voiceMarkPlayed",
+    "voiceWasPlayed"
+   ]
+  },
+  "voiceReplyQueue": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "voiceQueue"
+   ]
+  },
+  "voiceReplyStatus": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "voiceStatus"
+   ]
+  },
+  "weather": {
+   "tab": "Daily Ops",
+   "panel": "Morning Brief",
+   "funcs": [
+    "renderPriorities"
+   ]
+  },
+  "weatherSnapshot": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "applyWeatherDoc",
+    "dashboardSnapshotForVanessa"
+   ]
+  },
+  "wellness": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "wellnessState"
+   ]
+  },
+  "wellnessMetricCurrent": {
+   "tab": "Health & Wellness",
+   "panel": "Health & Wellness",
+   "funcs": [
+    "renderWellnessMetrics"
+   ]
+  },
+  "whatsappKapso": {
+   "tab": "Toolkit & Remote Access",
+   "panel": "Toolkit & Remote Access",
+   "funcs": [
+    "renderKapsoCard"
+   ]
+  },
+  "workout": {
+   "tab": "Health & Wellness",
+   "panel": "Health & Wellness",
+   "funcs": [
+    "renderWorkout"
+   ]
+  },
+  "zohoDeals": {
+   "tab": "",
+   "panel": "",
+   "funcs": [
+    "zhDealsDoc"
+   ]
+  },
+  "zohoLeads": {
+   "tab": "Lending & Real Estate",
+   "panel": "Mortgage, Lending & Real Estate Tools",
+   "funcs": [
+    "renderZohoBoard",
+    "zhDoc"
+   ]
+  },
+  "zohoSync": {
+   "tab": "Toolkit & Remote Access",
+   "panel": "Toolkit & Remote Access",
+   "funcs": [
+    "renderConnectionsCard",
+    "renderProgramStatus",
+    "zhSyncDoc"
+   ]
+  }
+ }
+}

@@ -86,6 +86,12 @@ def _parser() -> argparse.ArgumentParser:
     rc.add_argument("--write", action="store_true"); rc.add_argument("--json", action="store_true"); rc.add_argument("--n", type=int, default=10)
     rc.add_argument("--signals", default=None, help="a JSON list of live signals (deck queue, refi list, presence...) to rank with the brain's own")
     rc.add_argument("--coas", action="store_true", help="the four courses of action (4 each) plus the questions block, instead of the top 10")
+    cv = sub.add_parser("coverage", help="process coverage: every deck document, its writer, owner, cadence and (with --db) whether it moved; gaps first")
+    cv.add_argument("--db", help="ArtifactData export dir (state/<doc>.json) to score live stamps")
+    cv.add_argument("--write", action="store_true", help="write docs/inventory/process-coverage.md + .json")
+    cv.add_argument("--deck-doc", help="write the processCoverage document (JSON) for the deck's card to this path")
+    cv.add_argument("--scan", help="a Command Deck HTML export: rebuild docs/inventory/deck-doc-panels.json from it")
+    cv.add_argument("--json", action="store_true")
     og = sub.add_parser("org", help="the AI org chart as one JSON: seats, lanes, pods, tiers (what every dashboard should show)")
     ex = sub.add_parser("export", help="export the brain for another tool: `notebooklm` writes exports/notebooklm/*.md (no client pages, PII masked)")
     ex.add_argument("target", choices=["notebooklm"]); ex.add_argument("--out", default=None, help="folder (default exports/notebooklm)")
@@ -247,6 +253,29 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         items = recs.top(root, args.n, signals)
         print(json.dumps(items, indent=1) if args.json else recs.format_top(items)); return 0
+    if args.cmd == "coverage":
+        from brain import coverage
+        if args.scan:
+            scanned = coverage.scan_deck(Path(args.scan).read_text(encoding="utf-8", errors="replace"))
+            out = {"scannedFrom": args.scan, "how": "bin/brain coverage --scan <deck.html>", "docs": scanned}
+            (root / "docs" / "inventory" / "deck-doc-panels.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
+            print("scanned %d documents into docs/inventory/deck-doc-panels.json" % len(scanned))
+        db = Path(args.db) if args.db else None
+        rows = coverage.collect(root, db)
+        note = ("ArtifactData export " + str(db)) if db else ""
+        if args.write:
+            print("wrote", coverage.write(root, rows, note))
+        if args.deck_doc:
+            Path(args.deck_doc).write_text(json.dumps(coverage.deck_doc(rows), indent=1), encoding="utf-8")
+            print("wrote", args.deck_doc)
+        if args.json:
+            print(json.dumps({"counts": coverage.counts(rows), "gaps": coverage.gaps(rows)}, indent=1))
+        elif not (args.write or args.deck_doc):
+            c = coverage.counts(rows)
+            print("coverage: %d docs · %d automated · %d gaps" % (c["docs"], c["automated"], c["gaps"]))
+            for r in coverage.gaps(rows):
+                print("  %-26s %-14s %-8s %s — %s" % (r["doc"], r["status"], "" if r["ageHours"] is None else "%dh" % r["ageHours"], r["owner"], (r["note"] or r["writer"])[:90]))
+        return 0
     if args.cmd == "org":
         from . import loop as loop_mod, route as route_mod
         rules = route_mod.load_rules(root)

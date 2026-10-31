@@ -1,5 +1,5 @@
 {
- "count": 180,
+ "count": 184,
  "agents": [
   {
    "slug": "a11y-architect",
@@ -486,6 +486,32 @@
    }
   },
   {
+   "slug": "calendar-prep",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": "meeting-scribe",
+   "role": "One-page PREP brief per upcoming meeting: who the attendees are, past touchpoints and open promises (Gmail, Fieldy), the goal. Read-only. Hand-written: .claude/",
+   "laya": {
+    "lane": "Voicemail & Inbox Triage",
+    "starts_from": "wiki/ai-team/desk-seats.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"calendar prep One-page PREP brief per upcoming meeting:\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent calendar-prep",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
    "slug": "capability-engineer",
    "tier": "1",
    "model": "Opus 5.5",
@@ -598,16 +624,16 @@
   },
   {
    "slug": "chief-of-staff",
-   "tier": "3",
-   "model": "Sonnet 5",
-   "lead": null,
-   "role": "Personal communication chief of staff that triages email, Slack, LINE, and Messenger.",
+   "tier": "2",
+   "model": "Opus 5.5",
+   "lead": "vanessa-orchestrator",
+   "role": "Boss agent and Steven's one front door (2026-10-31): splits a plain request into jobs, runs inbox-triage, calendar-prep, competitor-watch, hook-writer and any r",
    "laya": {
     "lane": "Vanessa",
     "starts_from": null
    },
    "jarvis": {
-    "recall": "bin/brain recall \"chief staff Personal communication chief of staff that\"",
+    "recall": "bin/brain recall \"chief staff Boss agent and Steven's one front\"",
     "local_only_for_client_data": true
    },
    "orca": {
@@ -961,6 +987,32 @@
     "proposal_only": false,
     "gates": [
      "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "competitor-watch",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": "competitive-intelligence-analyst",
+   "role": "Weekly public-page check of the rivals in context/competitors.md; dated snapshot; reports only what changed. Hand-written: .claude/agents/competitor-watch.md (2",
+   "laya": {
+    "lane": "Vanessa",
+    "starts_from": null
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"competitor watch Weekly public-page check of the rivals\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent competitor-watch",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
      "Vanessa"
     ]
    }
@@ -2331,6 +2383,59 @@
     "references/backend-folder-structure.md",
     "references/vibe-coding-learning.md"
    ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "hook-writer",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": "content-writer",
+   "role": "3 hooks, 3 titles and a caption per post in Steven's voice, banned-word list and ad rules applied; drafts only. Hand-written: .claude/agents/hook-writer.md (202",
+   "laya": {
+    "lane": "Sofia",
+    "starts_from": "wiki/real-estate-playbooks/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"hook writer 3 hooks, 3 titles and a\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent hook-writer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "Alexandra",
+     "Vanessa"
+    ]
+   }
+  },
+  {
+   "slug": "inbox-triage",
+   "tier": "3",
+   "model": "Sonnet 5",
+   "lead": "voicemail-inbox-triage",
+   "role": "Sorts unread Gmail into URGENT / REPLY / READ LATER / IGNORE and drafts replies in Steven's voice; never sends. Hand-written: .claude/agents/inbox-triage.md (20",
+   "laya": {
+    "lane": "Voicemail & Inbox Triage",
+    "starts_from": "wiki/ai-team/desk-seats.md"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"inbox triage Sorts unread Gmail into URGENT /\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent inbox-triage",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [],
    "guard": {
     "proposal_only": false,
     "gates": [

@@ -2389,3 +2389,1129 @@ show:
 - how the Big-moves task handles EXECUTE NOW;
 - that the live page holds the mcp grant;
 - how the change behaves on macOS bash 3.2 or BSD sed.
+
+---
+
+# VibeBreaker Final Report: process coverage register (brain/coverage.py), deck card 39.0, test_layers CI fix
+
+change-set: 93ecb2f073ca0f3c
+
+Reviewer: code-validator (did not write this code). Date: 2026-10-26. `bash scripts/validate-code.sh` →
+`verdict: PASS (11 passed, 0 failed)` (py_compile x5, json x3, brain unit tests, brain layout, brain doctor). The
+`--hash` printed 93ecb2f073ca0f3c, which matches the requested change-set.
+
+## Verdict
+
+`FIX BEFORE SHIP` (FIX FIRST)
+
+One confirmed HIGH: the card's body-scan fallback drops the time zone from stamps, so for a viewer in Pacific time
+6 of the 89 automated documents show as red "future stamp" gaps on today's real data, and every fallback-stamped age
+is off by the viewer's UTC offset. The deck page has already been published as version 250.
+
+## Scope
+
+- Commit / branch: claude/gracious-newton-4hpfco at a2cc3a3 + working tree (change-set 93ecb2f073ca0f3c)
+- Mode: DIFF
+- Stack: Python 3 (brain/), deck JS spliced into an HTML export, JSON registers, Markdown docs
+- Passes run: 01, 04, 05, 06, 07, 08, 12, 17, 18, 19, 20 (Python/JS set), plus 11 (splice idempotence) and a PII sweep
+- Inspected surfaces: brain/coverage.py, brain/tests/test_coverage.py, brain/__main__.py (coverage branch),
+  brain/tests/test_layers.py with brain/layers.py:71-76, brain/coverage/writers.json (266 rows),
+  docs/inventory/deck-doc-panels.json, process-coverage.md/.json, dashboard/wave2/splice-process-coverage.py, the spliced
+  deck /tmp/claude-0/deck-r9.html (card at lines 31484-31576; lsGet 8237, orEsc 31005, orBadge 31020, sync store 9078),
+  the pre-splice export, and the ArtifactData export the register was built from (scratchpad db/state, 203 docs)
+- Excluded / unavailable context: the live published artifact itself (I read the local copies only); a real browser in
+  the Pacific zone (simulated with node 22 and TZ=America/Los_Angeles, the same V8 date parser Chrome uses)
+- Material scope limitation: NO
+
+## Scoreboard
+
+- Passes executed: 12 / 20
+- Confirmed: 5
+- Critical: 0
+- High: 1
+- Medium: 1
+- Low: 3
+- Info: 0
+- Unverified: 0
+- Rejected candidates: 6
+- First critical pass: NONE
+
+## CONFIRMED
+
+```yaml
+id: P07-F1
+pass: 07
+title: Card fallback stamp drops the zone; a Pacific browser shows fresh documents as red "future stamp" gaps
+status: CONFIRMED
+severity: HIGH
+confidence: HIGH
+location:
+  - path: dashboard/wave2/splice-process-coverage.py
+    line: 78 and 86 (deck-r9.html 31500 and 31508, orchCovStamp / orchCovParse)
+  - path: brain/coverage.py
+    line: 84 (doc_stamp fallback, same regex)
+entry_or_trigger: renderOrchestration -> renderOrchCoverage -> orchCovStatus -> orchCovStamp, for any document with no
+  top-level stamp key (the fallback path), viewed in a browser not on UTC
+evidence: the fallback regex /20\d\d-\d\d-\d\dT\d\d:\d\d/ keeps only "YYYY-MM-DDTHH:MM", discarding seconds and the
+  Z/offset. new Date("2026-10-26T15:41") is local time in V8, so in Pacific it becomes 22:41Z. Python parses the same
+  truncated text as UTC, and turns "2026-10-26T06:39:26-07:00" into 06:39Z instead of 13:39Z.
+existing_controls_checked: the key-first path (STAMP_KEYS) keeps full strings and is correct; the "future stamp" guard
+  (age < -1) is what turns the shift into a visible gap; the Playwright run behind the publish ran on a UTC container
+failure_scenario: I replayed the register against the real export (266 rows) through the card's own functions with
+  TZ=America/Los_Angeles and now=19:00Z. liveFeeds, vanessaRecommendations, coachLog, loftySyncLog, vanessaLog and
+  vanessaRuns came back ["future stamp","amber",true]; Python and the UTC replay both say "fresh". Raw values were, for
+  example, liveFeeds "2026-10-26T15:41" -> 22:41Z. Outside that window the same shift makes every fallback-stamped
+  automated document look 7-8 h younger, so a stale one can still read fresh.
+impact: Steven's own view of the card. The badge and the "Gaps" tile overcount, and the false gaps sit at the top of the
+  default Gaps view, which is the reason the card exists
+remediation_direction: capture the whole token (optional :ss, .fff and Z/±hh:mm) in both fallbacks; read a zone-less
+  stamp as UTC in JS so it matches Python; take the newest by parsed instant, not by string order
+verification: a fixture doc {"rows":[{"at":"2026-10-26T15:41:00Z"},{"at":"2026-10-26T06:39:26-07:00"}]} stamps
+  2026-10-26T15:41Z in Python and in the JS card under TZ=America/Los_Angeles; a replay of the real export shows 0
+  "future stamp" rows
+needs_context: null
+```
+
+```yaml
+id: P05-F1
+pass: 05
+title: Python doc_stamp accepts future dates (key or body), so a stale automated document can score "fresh"
+status: CONFIRMED
+severity: MEDIUM
+confidence: HIGH
+location:
+  - path: brain/coverage.py
+    line: 79-90 (doc_stamp), 176-179 (collect age test)
+entry_or_trigger: bin/brain coverage --db <export> [--write]
+evidence: the only future-date guard is d[:10] <= "2030-12-31" on the body fallback. A `date` key, or any body date up
+  to 2030 (renewal, expiry, next run), is taken as the write stamp. A negative age is <= cadence*1.5, so it scores fresh.
+existing_controls_checked: the JS card does flag age < -1 h as "future stamp" (so the two now disagree); the test only
+  covers a 2036 date
+failure_scenario: a cloud doc liveFeeds {"v":{"items":[{"seen":"2026-09-01"},{"renewsOn":"2027-01-15"}]}} ->
+  status fresh, ageHours -1938.0, gap False. Real data already trips it: process-coverage.json records licenseTracker
+  stamp 2029-10-23T12:00Z, ageHours -26225.2 (a user doc, so it shows as a wrong "Last stamp" rather than a wrong status)
+impact: the committed register and `bin/brain coverage` can hide a real gap; Python and the card can disagree on a row
+remediation_direction: ignore candidate dates later than now (+ a small skew) in both paths, and treat a key stamp in
+  the future the same way the card does
+verification: the fixture above returns stale (or "future stamp") and gap True; licenseTracker gets no 2029 stamp
+needs_context: null
+```
+
+```yaml
+id: P17-F1
+pass: 17
+title: Python and the card classify session and empty user documents differently
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: brain/coverage.py
+    line: 164-174 (collect status chain)
+  - path: dashboard/wave2/splice-process-coverage.py
+    line: 103 (orchCovStatus)
+entry_or_trigger: any kind "session" row (aiModels, feasibilityChecks, isaDailySchedule), or a user doc that is present
+  but [] / {}
+evidence: Python has no session branch, so session falls into the automated chain ("queue-driven", or a "never
+  written" GAP if absent). The JS returns manual/"never typed". Python calls a present-but-empty user doc "manual" where
+  the JS says "never typed".
+existing_controls_checked: the replay of the real export showed 22 row differences: 6 from P07-F1, 3 session rows
+  (py queue-driven, js manual) and 13 user rows (py manual, js never typed); no gap flag differs today apart from P07-F1
+failure_scenario: if a session doc is deleted, the committed register lists it as a "never written" gap but the deck
+  shows it as a non-gap "never typed". The spec in the brief ("user/session -> manual") matches the JS, not the Python.
+impact: the md report and the card disagree on labels and, in the absent case, on the gap count
+remediation_direction: give Python the same user/session branch and empty-body rule as orchCovStatus
+verification: a parity test runs the same fixture export through collect() and through the card's functions and
+  asserts equal [status, gap] for every row
+needs_context: null
+```
+
+```yaml
+id: P07-F2
+pass: 07
+title: The card takes the first string-valued stamp key even when it does not parse; Python moves on to the next one
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: dashboard/wave2/splice-process-coverage.py
+    line: 73-75 (orchCovStamp key loop)
+entry_or_trigger: an automated doc whose v.asOf (or another STAMP_KEY) is prose, e.g. "Sourced via WebSearch" (the
+  exact string test_coverage.py uses), and whose real stamp is later in the list or in the body
+evidence: node replay: {asOf:"Sourced via WebSearch", rows:[{updatedAt:"2026-10-26T10:00:00Z"}]} -> JS "no stamp" (an
+  amber gap); Python doc_stamp -> 2026-10-26T10:00Z
+existing_controls_checked: no current export doc triggers it (I checked all 203); latent
+failure_scenario: a writer adds a descriptive asOf, and the card shows a false amber gap that the register does not show
+impact: a false gap on the card
+remediation_direction: break out of the key loop only on a key that parses, as Python does
+verification: the fixture above gives the same stamp in Python and in JS
+needs_context: null
+```
+
+```yaml
+id: P08-F1
+pass: 08
+title: --db with a wrong path silently reports every automated document as never written
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: brain/coverage.py
+    line: 133-143 (read_db)
+entry_or_trigger: bin/brain coverage --db /nonexistent/typo [--write]
+evidence: Path.glob on a missing directory yields nothing; ran it: counts never written 92, never typed 121, gaps 97, exit 0
+existing_controls_checked: no existence check in read_db or __main__
+failure_scenario: a typo in the export path, plus --write, overwrites the committed process-coverage.md/.json with 97
+  false gaps and no error
+impact: a corrupted register (it is regenerable)
+remediation_direction: refuse when the path is missing or holds no *.json
+verification: `bin/brain coverage --db /nonexistent` exits non-zero and writes nothing
+needs_context: null
+```
+
+## UNVERIFIED
+
+None.
+
+## REJECTED
+
+- C1: a writers.json row with missing keys could crash collect() — collect indexes w["writer"], w["owner"] and w["pod"]
+  directly, but all 266 rows carry all six keys (checked) and test_every_deck_doc_has_a_writer_row checks kind and
+  owner. Latent only; no current trigger. A schema assertion for all six keys is listed as missing test 4.
+- C2: the Mac "08:05 AM PDT" form is wrong — Python gives 15:05Z and V8 gives 15:05Z; 12:30 PM PST gives 20:30Z in both
+  (coverage.py:44-48, node replay).
+- C3: XSS in the card — every innerHTML value goes through orEsc, which escapes & < > ", including the data-orch-cov
+  attribute. x.cls comes from a fixed set, the badge goes through orBadge (textContent), and the note uses textContent.
+  (orEsc inside textContent only double-escapes, which is cosmetic.)
+- C4: the card breaks when processCoverage is absent — lsGet returns null and the card shows the "no register yet" row.
+  A malformed row throws inside the safeRun wrapper and is contained.
+- C5: the splice is not idempotent or has weak anchors — sub1 asserts exactly one match per anchor and writes only
+  after all anchors pass. Replayed in memory: pre-splice export -> output byte-identical to deck-r9.html; deck-r9.html ->
+  "ABORT: already applied". The Nova insertion is skipped when the seat exists.
+- C6: the lsGet value is the {v:...} wrapper, so reg.docs would be undefined — the DB sync stores data.v
+  (deck-r9.html:9078), so lsGet returns the unwrapped value, matching Python's body.get("v").
+
+## Coverage
+
+Clean after inspection:
+- The test_layers.py CI fix reads the manifest the way brain/layers.py:74 does; validate-code passes it, and doctor
+  reports PASS.
+- __main__.py coverage branch: additive, and writes only with --write, --deck-doc or --scan.
+- deck_doc() leaves out status as intended.
+- counts(), gaps() and format_rows() escape the pipe character.
+- The quickcheck FAIL set on the pre-splice and spliced deck exports is identical: the same md5 of the
+  fail/summary lines.
+- PII sweep:
+  - Scope: writers.json, deck-doc-panels.json, process-coverage.md/.json, wiki/dashboard-ops/process-coverage.md,
+    AUTOMATION-MAP-2026-10-26.md, the splice script, and the added lines in memory.md, decisions.md, wiki,
+    daily-updates.md and routines.
+  - Result: no phone number, e-mail address, key pattern or client name, and no message body. The .json carries
+    stamps and sizes only.
+  - Note: process-coverage.md names a session scratchpad path as its export source, which is harmless.
+
+## Top missing tests (pass 19)
+
+1. A zone-bearing body stamp fixture ("…T15:41:00Z", "…T06:39:26-07:00") yields the same instant in doc_stamp and in
+   orchCovStamp under TZ=America/Los_Angeles. (P07-F1)
+2. A Python/JS parity test runs one fixture export through collect() and the card's functions and gets equal
+   [status, gap] for every row. (P17-F1, P07-F2)
+3. An automated doc whose body holds a future date (2027 renewal) or a future `date` key is not "fresh". (P05-F1)
+4. Every writers.json row has all six keys (kind, writer, cadenceHours, owner, pod, note) with the right types.
+5. `--db` with a missing directory exits non-zero and writes nothing. (P08-F1)
+6. A prose asOf with a real updatedAt behind it gives the same stamp in both implementations. (P07-F2)
+7. renderOrchCoverage with processCoverage absent, with docs:[], and with a null row renders without throwing.
+8. The splice run twice aborts, and a missing anchor aborts before any write.
+9. A session row that is absent from the export gives the same status in Python and JS.
+10. The test_layers drive stamp still passes when last_sync is missing (created fallback).
+
+## Share card
+
+```text
+VIBE//BREAKER
+
+VERDICT: FIX BEFORE SHIP
+PASSES: 12/20
+CRITICAL: 0
+HIGH: 1
+CONFIRMED: 5
+UNVERIFIED: 0
+FIRST BREAK: NONE
+```
+
+## Release note
+
+This review shows the following:
+- The deterministic gate passes.
+- The splice is exact and refuses a second run.
+- The card escapes its output.
+- Python's stamp parsing is right for key stamps and for the Mac form.
+
+The card's live statuses diverge from Python, and are wrong for non-UTC viewers on fallback stamps. That was
+demonstrated by replaying the real export through the card's own functions in node 22 (V8). It was not run in a real
+Pacific-zone Chrome, and the published v250 page was not opened.
+
+---
+
+# VibeBreaker re-check: process coverage fixes
+
+change-set: cf53130f90a07878
+
+Reviewer: code-validator, 2026-10-26. `bash scripts/validate-code.sh` → `verdict: PASS (11 passed, 0 failed)`. Brain
+unit suite OK. This re-check covers the five findings filed under change-set 93ecb2f073ca0f3c, and adds no new findings.
+
+## Verdict
+
+`SHIP`
+
+All five confirmed findings are fixed and verified independently. There are no open CRITICAL or HIGH findings.
+
+| Finding | Status | Evidence (my own run) |
+|---|---|---|
+| P07-F1 (HIGH) zone dropped in the body fallback | FIXED | The card's JS, cut from the splice source, was replayed against the real export (scratchpad db/state) and compared with a fresh Python `collect()`: 266 rows, 0 differences under TZ=America/Los_Angeles, UTC and Asia/Tokyo. `orchCovParse` in LA gives: "2026-10-26T13:10" → 13:10Z; "2026-10-26" → 12:00Z; "08:05 AM PDT" → 15:05Z; "06:39:26-07:00" → 13:39:26Z. Python `doc_stamp` picks 15:41Z over 06:39-07:00 (13:39Z). |
+| P05-F1 (MEDIUM) future dates read as fresh | FIXED | `FUTURE_SKEW` = 48 h (coverage.py:75). A 2027 body date is ignored, and the stamp falls back to 2026-09-01. A future key stamp gets status "future stamp" and counts as a gap (coverage.py:197, 202). |
+| P17-F1 (LOW) Python/JS label parity | FIXED | The 0-difference replay above covers the 3 session rows and the empty user rows. Python counts now include 56 "never typed" and 11 "queue-driven". |
+| P07-F2 (LOW) first string key wins | FIXED | In the card, {asOf:"Sourced via WebSearch", rows:[{updatedAt:…10:00Z}]} → raw "2026-10-26T10:00:00Z". Python gives the same stamp. |
+| P08-F1 (LOW) silent --db typo | FIXED | `bin/brain coverage --db /nonexistent/typo` → exit 1. |
+
+## Not demonstrated
+
+I reviewed the splice source in the repo, not the published version 251. The card code above was cut from
+dashboard/wave2/splice-process-coverage.py, and I did not re-read the live page.
+
+---
+
+# VibeBreaker review: setup.sh, the one Mac paste (2026-10-27)
+
+change-set: 9aa467d1f6ca9270
+
+Reviewer: code-validator, 2026-10-27. `bash scripts/validate-code.sh --hash` printed `9aa467d1f6ca9270`, the same hash
+the caller named. `bash scripts/validate-code.sh` → `verdict: PASS (13 passed, 0 failed)`. `bash scripts/tests/test_setup.sh`
+→ `pass 13 FAIL 0`. `node dashboard/tests/runtime-harness.js dashboard/action-desk.html` → `verdict: PASS`.
+Passes run: 01, 04, 05, 11, 14 and 19 on the shell scripts; 01, 04, 05, 17 and 19 on the Action Desk HTML; then 20.
+
+## Verdict
+
+`FIX FIRST`
+
+The deterministic checks pass. The paste still moves Steven's Mac off this branch within 30 minutes, and in a documented
+everyday state it may not reach setup.sh at all. The REPORT also lists a signed-out runner as connected.
+
+## Scoreboard
+
+- Confirmed: 5 (HIGH 1, MEDIUM 2, LOW 2)
+- Unverified: 1
+- Rejected: 4
+- First high pass: 05
+
+## CONFIRMED
+
+```yaml
+id: P05-F1
+pass: 05
+title: The repo-sync LaunchAgent switches the Mac back to claude/stoic-cori-pvn3f8, during the paste and every 30 minutes after it
+status: CONFIRMED
+severity: HIGH
+confidence: HIGH
+location:
+  - path: connect-all.sh
+    line: 67-84 (repo_sync_agent plist, EnvironmentVariables holds only PATH; RunAtLoad true; StartInterval 1800), 95 (installed on every non-preview run)
+  - path: scripts/repo-sync.sh
+    line: 38 (BRANCH defaults to claude/stoic-cori-pvn3f8), 170-180 (step 5 checks out BRANCH whenever the Mac is on another branch)
+  - path: setup.sh
+    line: 20-21 (the exported REPO_SYNC_BRANCH reaches only child processes, not launchd)
+entry_or_trigger: The Action Desk / STEVEN-STEPS paste checks out claude/gracious-newton-4hpfco, then runs setup.sh, which runs connect-all.sh, which runs step 1b.
+evidence: The plist runs repo-sync.sh --quiet with no REPO_SYNC_BRANCH. launchd does not inherit the shell's exports, so repo-sync uses its default stoic-cori. CUR (gracious-newton) differs from that, so step 5 runs `git checkout -q claude/stoic-cori-pvn3f8`. setup.sh exists on neither origin branch yet. When it is pushed, it will be on gracious-newton only (git cat-file -e origin/claude/stoic-cori-pvn3f8:setup.sh → 128). The two branch tips differ (git ls-remote fedd92e vs f2a8f19).
+existing_controls_checked: setup.sh exports REPO_SYNC_BRANCH. connect-all step 1 passes it to its own repo-sync call. The repo-sync lock (one sync at a time) does not help, because step 1 has already released it before 1b loads the agent.
+failure_scenario: Steven pastes. launchctl load runs repo-sync at once (RunAtLoad), while connect-all steps 2 to 7 are still reading files from the working tree. The tree flips to stoic-cori. After the paste the Mac sits on stoic-cori, so "Run this again any time: cd ~/Repo && bash setup.sh" fails with No such file, and fix-mine/connect-all fall back to the old versions.
+impact: The one paste does not stay installed, and later steps of the same run may execute the other branch's scripts.
+remediation_direction: Pick one branch that every Mac path follows. Either merge this change into claude/stoic-cori-pvn3f8 and point the paste there, or write REPO_SYNC_BRANCH (from CONNECT_ALL_BRANCH) into the plist's EnvironmentVariables.
+verification: In connect-all-tests.sh, run with CONNECT_ALL_BRANCH=x and assert the generated plist contains <key>REPO_SYNC_BRANCH</key><string>x</string>. In a repo-sync test, start on branch x with REPO_SYNC_BRANCH=x and assert HEAD is still x afterwards.
+needs_context: null
+```
+
+```yaml
+id: P11-F1
+pass: 11
+title: The paste's raw `git checkout` aborts on the rebuilt brain files, and then `bash setup.sh` runs on a branch that lacks it
+status: CONFIRMED
+severity: MEDIUM
+confidence: MEDIUM
+location:
+  - path: dashboard/action-desk.html
+    line: card data-id "E" (<code> and data-copy, identical)
+  - path: docs/STEVEN-STEPS.md
+    line: "## Start here (2026-10-27)" code block
+entry_or_trigger: Steven pastes while ~/Repo has uncommitted local rebuilds of brain/index.json, INDEX.md or docs/reports/*.md. scripts/repo-sync.sh lines 8-12 say this happens on the Mac every day.
+evidence: The line is `cd ~/Repo && git fetch -q origin && git checkout -q claude/gracious-newton-4hpfco && git pull -q --ff-only; bash setup.sh`. The rebuilt files differ between the two branch tips (git diff --stat across brain/index.json, INDEX.md and ENCYCLOPEDIA.md: 3 files, 282+/260-). In that state git refuses the checkout ("local changes would be overwritten"), the && chain stops, and the `;` still runs `bash setup.sh` on the current branch.
+existing_controls_checked: scripts/repo-sync.sh exists to handle exactly this (backup, then restore the generated files, then switch). The paste does not use it.
+failure_scenario: The checkout aborts. The Mac stays on stoic-cori, and `bash setup.sh` prints "No such file or directory". Nothing runs.
+impact: Steven's one paste does nothing, and the screen shows two git errors.
+remediation_direction: Change the branch with repo-sync instead of a raw checkout, e.g. `REPO_SYNC_BRANCH=<branch> bash scripts/repo-sync.sh`. Once P05-F1 is fixed by merging, there is no checkout to do.
+verification: In a temp clone, dirty brain/index.json on branch A, run the paste text against branch B, and assert setup.sh runs (for example, its "setup.sh -" header line is printed).
+needs_context: null
+```
+
+```yaml
+id: P04-F1
+pass: 04
+title: The connection check reports a signed-out Mac runner as "Connected"
+status: CONFIRMED
+severity: MEDIUM
+confidence: HIGH
+location:
+  - path: setup.sh
+    line: 91
+entry_or_trigger: The REPORT's step 5, on any Mac where runnerctl is installed.
+evidence: case "$rs" in *"logged in"*|*running*|*ok*). The first status line has the form "updated … · CLI logged in · running … · waiting …" (scripts/tests/test_fix_mine.sh:42). When signed out it reads "CLI NOT logged in" (integrations/CONNECTIONS.md:436). The match is case-sensitive, so "CLI NOT logged in" matches *"logged in"*. Line 1 also always contains "running", and task rows contain "last ok", so the miss branch is almost never reached. Replaying the documented signed-out line gives the OK branch.
+existing_controls_checked: fix-mine step_runner greps "CLI logged in" and adds item R to its own nested REPORT. setup.sh's final only-you list (1-11) never mentions runnerctl login.
+failure_scenario: The runner is signed out. That has been the main reason Mac tasks are silent since Oct 13. The final REPORT lists "Mac runner: updated … CLI NOT logged in …" under "Connected / on this Mac", and runnerctl login is missing from "Only you".
+impact: Steven and Claude both read the report as all clear while every Mac task is idle.
+remediation_direction: Test for "CLI logged in" exactly, as fix-mine does. Otherwise, call miss_ and add `runnerctl login` to the only-you list.
+verification: In test_setup.sh, put a runnerctl stub on PATH that prints "updated … · CLI NOT logged in · running none · waiting 24". Assert the REPORT has "Mac runner" under "Not yet" and "runnerctl login" under "Only you".
+needs_context: null
+```
+
+```yaml
+id: P14-F1
+pass: 14
+title: '"Keys asked once" is false: a key skipped in step 2 is asked again in step 3'
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: setup.sh
+    line: 52, 59
+  - path: connect-all.sh
+    line: 403-406 (Lofty), 430-434 (TidyCal), 455-464 (Arive, gated on ARIVE_API_KEY only)
+entry_or_trigger: Steven presses Enter at fix-mine's Lofty, TidyCal or Arive prompt.
+evidence: fix-mine writes nothing when a key is skipped. connect-all's lofty_connect, tidycal_connect and arive_keys each prompt again when the key is not in the file. Arive is also asked again when only the Client ID was entered.
+existing_controls_checked: Both scripts skip a key that is already in the file. The prompts are hidden, and values go only to the file, never to stdout.
+failure_scenario: Up to 5 extra hidden prompts in one run, which the Action Desk text says will not happen.
+impact: Friction and confusion only. No secret is exposed.
+remediation_direction: Have setup.sh tell connect-all to skip its key prompts (an env flag), or drop the duplicate prompts.
+verification: With a TTY-file stub, run a non-check setup where every prompt is skipped. Assert each key name is prompted exactly once.
+needs_context: null
+```
+
+```yaml
+id: P14-F2
+pass: 14
+title: The output has three "REPORT (copy from here down…)" blocks, and their only-you lists disagree
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: setup.sh
+    line: 51-52, 58-59 (nested REPORTs passed through), 112
+  - path: scripts/fix-mine.sh
+    line: 266 (item E: add custom connector 'Lofty'); setup.sh item 11 omits it
+entry_or_trigger: Every run. The --check output has REPORT banners at lines 17, 121 and 163.
+evidence: fix-mine and connect-all each print a full REPORT, with "copy from here down". setup.sh indents them and then prints its own.
+existing_controls_checked: The nested ones are indented two spaces.
+failure_scenario: Steven copies from the first banner. Claude gets fix-mine's A-G list, which differs from the eleven items on the Action Desk.
+impact: Contradictory instructions to Steven.
+remediation_direction: Suppress the nested REPORT banners when the scripts run under setup.sh (an env flag), or reword them as "section".
+verification: Assert `grep -c 'copy from here down'` on the setup.sh output equals 1.
+needs_context: null
+```
+
+## UNVERIFIED
+
+- U1: The paste needs setup.sh and these edits to be committed and pushed to origin/claude/gracious-newton-4hpfco. Today
+  they are uncommitted (`?? setup.sh`), and git cat-file shows setup.sh on neither origin branch. This is the caller's
+  next step, not a code defect.
+
+## REJECTED
+
+- (a) Secret on screen or in the log. Rejected. set_kc (setup.sh:69-71) reads with `read -rs` from /dev/tty and sends the
+  prompt to /dev/tty. fix-mine set_key, set_keychain and the Inkbox prompt (lines 47-48, 99-100, 144) write to $OUT=/dev/tty
+  and store only to a file or the Keychain. connect-all's prompts (174-178, 405-464) use /dev/tty with stty -echo, and no
+  path echoes a value to stdout. kapso install-mac.sh:87 prints only the last 4 digits of Steven's own mobile, which
+  predates this change. Note, not a finding: `security add-generic-password -w "$v"` puts the value in argv for a few
+  milliseconds. This is the same as fix-mine.sh:102. integrations/kapso/install-mac.sh:92 uses the prompt form (`-w` with
+  no value), which avoids it.
+- (b) --check writes ~/.config or reads the tty. Rejected. I ran it under `setsid` with stdin closed, GO_FORCE=1 and an
+  empty scratch HOME: rc=0, and no ~/.config was created. It writes only ~/Library/Logs/vanessa-setup/*.log, plus
+  ~/.claude*, which comes from the `claude mcp get` probe in fix-mine:86 and predates this change.
+- (c) set -u and bash 3.2. Rejected. Every variable is initialised before use (OK, MISSING, YOU, N, CHECK, BR, LOG; rs is
+  set before it is read). `${rs:0:80}` is supported in bash 3.2. `local rc=$?` captures security's status, because $? is
+  expanded before `local` runs.
+- (e) The exported override itself picks the wrong branch. Rejected for setup's own child processes. BR comes from
+  `git symbolic-ref`, and a detached HEAD falls back to stoic-cori, the earlier default. The launchd path is the defect
+  (P05-F1).
+
+## Coverage (inspected, clean apart from the findings above)
+
+- setup.sh, all lines: the kf and kc helpers (paths and variable names match what fix-mine and connect-all write:
+  lofty/LOFTY_API_KEY, tidycal/TIDYCAL_TOKEN, arive/ARIVE_API_KEY, zoho/ZOHO_CLIENT_ID, skyslope/SKYSLOPE_ACCESS_KEY;
+  Keychain items kapso, kapso-allow and vanessa-discord-bot-token match integrations/kapso/install-mac.sh and fix-mine), the
+  ok_/miss_/you_ accumulators, and the numbering.
+- The one-line env overrides in connect-all.sh:25 and fix-mine.sh:17, the SC2120 comment, and the run_quiet SC2155 split
+  (no behaviour change).
+- scripts/setup-health.sh: the new row. scripts/tests/test_setup.sh: 13 checks; checks 21-23 are grep-only.
+- dashboard/action-desk.html: the harness passes. Card E's `<code>` and its `data-copy` are byte-identical (both use
+  `&amp;&amp;`).
+- (g) No new phone number, key, token or client name in the added lines. +1 650 484 9720 and (202) 474-5223 already
+  appear in HEAD (fix-mine.sh, STEVEN-STEPS.md, action-desk.html, CONNECTIONS.md).
+- integrations/CONNECTIONS.md: the new section keeps the four columns. STEVEN-STEPS.md has exactly one "## Start here".
+
+## Top missing tests (pass 19)
+
+1. The connect-all plist carries REPO_SYNC_BRANCH. Repo-sync started on branch x with REPO_SYNC_BRANCH=x leaves HEAD on x (P05-F1).
+2. The paste text with a dirty generated file still reaches setup.sh (P11-F1).
+3. A runnerctl stub printing "CLI NOT logged in" puts the runner under "Not yet", and runnerctl login under "Only you" (P04-F1).
+4. A non-check setup run with stubbed `security` and a TTY file: the typed value never appears in stdout or in $LOG.
+5. Each key is prompted exactly once in a full skipped run (P14-F1).
+6. Exactly one "copy from here down" in the setup output (P14-F2).
+7. The kf and kc positive and negative cases for every item in step 5, with fixture .env files and a security stub.
+8. A test that the branch override actually reaches the children (run with a stub that echoes $FIX_MINE_BRANCH and
+   $CONNECT_ALL_BRANCH), replacing the grep-only checks 21-23.
+
+## Not demonstrated
+
+Nothing was run on a real Mac. launchd, `security` and runnerctl were reasoned about from the repo's own code and its
+recorded status lines. I did not re-read the published Action Desk artifact.
+
+---
+
+# VibeBreaker re-check: setup.sh fixes
+
+change-set: 601d4328f04331d6
+
+Reviewer: code-validator, 2026-10-27. `bash scripts/validate-code.sh --hash` printed `601d4328f04331d6`, the hash the
+caller named. `bash scripts/validate-code.sh` → `verdict: PASS (13 passed, 0 failed)`. `bash scripts/tests/test_setup.sh`
+→ `pass 13 FAIL 0` and the follow-up block `pass 6 FAIL 0`. `node dashboard/tests/runtime-harness.js
+dashboard/action-desk.html` → `verdict: PASS`. This re-check covers the five findings filed under 9aa467d1f6ca9270 and adds
+no new findings.
+
+## Verdict
+
+`SHIP`
+
+All five are fixed in the code I read. There is no open CRITICAL or HIGH finding.
+
+| Finding | Status | Evidence |
+|---|---|---|
+| P05-F1 (HIGH) the LaunchAgent switches the branch back | FIXED | connect-all.sh repo_sync_agent: the plist EnvironmentVariables now hold `REPO_SYNC_BRANCH` = `$BRANCH`. `$BRANCH` = `${CONNECT_ALL_BRANCH:-stoic-cori}`. setup.sh:21 exports CONNECT_ALL_BRANCH from `git symbolic-ref`. The agent is rewritten on every non-preview run, so an older plist is replaced too. |
+| P11-F1 (MEDIUM) the paste aborts on a dirty tree | FIXED | STEVEN-STEPS.md:15 and card E (`<code>` == `data-copy`, checked) now switch with `REPO_SYNC_BRANCH=claude/gracious-newton-4hpfco bash scripts/repo-sync.sh --quiet`, and fall back to checkout only if that fails. A fresh Mac clones with `-b`. The copy of repo-sync.sh that the paste runs is the current branch's. On origin/claude/stoic-cori-pvn3f8 that copy already honours REPO_SYNC_BRANCH (line 38), so the switch works from the old branch as well. |
+| P04-F1 (MEDIUM) a signed-out runner reported as connected | FIXED | setup.sh:92-95 now requires the exact "CLI logged in" substring. "CLI NOT logged in" does not contain it, and gives miss_ plus RUNNER_LOGIN=1. Line 103 then adds the `runnerctl login` only-you item. test_setup.sh:36-39 uses a stub that prints "CLI NOT logged in" and asserts the item. |
+| P14-F1 (LOW) keys asked twice | FIXED | setup.sh exports CONNECT_ALL_SKIP_KEYS=1. connect-all's lofty_connect, tidycal_connect and arive_keys return before their prompts when it is set. Each check sits after the key-present test, so the proof calls still run when a key exists. |
+| P14-F2 (LOW) three REPORT banners | FIXED | When SETUP_NESTED=1, fix-mine main and connect-all print section lines instead of their REPORT banners. test_setup.sh:40 asserts that `copy from here down` appears exactly once. |
+
+## Notes (INFO, not findings)
+
+- When a key was skipped, connect-all's skipped-key steps return 1. They are then listed under "Did not finish" in the
+  nested connect-all section, with the line "asked once already". This is cosmetic.
+- The "Older round" pastes in STEVEN-STEPS.md (lines 57, 95, 101) still run repo-sync with no branch, which moves the Mac
+  to stoic-cori. The agent moves it back within 30 minutes. Those rounds are marked as replaced.
+
+## Not demonstrated
+
+Nothing was run on a real Mac. launchd's handling of plist EnvironmentVariables and the live runnerctl output are taken
+from the code and the recorded status lines. I did not re-read the published Action Desk version 41.
+
+---
+
+# VibeBreaker review: Ledgerwise Pro deck link (splice-ledgerwise.py)
+
+change-set: c6595e5657f4d03f
+
+Reviewer: code-validator, 2026-10-27. `bash scripts/validate-code.sh --hash` printed `c6595e5657f4d03f`, the same hash the
+caller named. `bash scripts/validate-code.sh` gave `verdict: PASS (2 passed, 0 failed)` (py_compile on the splice and brain
+doctor). Mode: DIFF. Passes run: 01, 04, 05, 17, 19 (dashboard HTML) plus 06/07/08/12/18 where they apply to a one-shot
+Python file splice, then 20.
+
+## Verdict
+
+`SHIP` (VibeBreaker: SURVIVED*. There are no confirmed findings. It is not 20/20 CLEAN because this was a DIFF-mode run.)
+
+Running the script on deck-r10 reproduces deck-r11 byte for byte. The splice adds exactly three hunks and changes nothing
+else. Div and section balance and the set of quickcheck FAILs are the same before and after.
+
+## CONFIRMED
+
+None.
+
+## UNVERIFIED
+
+None that affect the verdict. I did not re-read the published artifact (version 257) to confirm that it equals
+/tmp/claude-0/deck-r11.html. The missing artifact is `Artifact read` of the deck URL, compared to deck-r11.
+
+## REJECTED
+
+- P19-C1. The candidate: no test for splice-ledgerwise.py. Rejected because this is a one-shot file splice and not a
+  service. Its sibling splices (for example splice-travel-palmsprings.py) have no tests either. The guards it has are
+  sub1 (exactly one match) and the marker refusal. I exercised both: three anchors × count 1 on r10, and a second run
+  aborted with "ABORT: already applied".
+- P05-C1. The candidate: `'%s' % URL` breaks if the card contains a `%`. Rejected because the card has no other `%`, and
+  running the script on r10 succeeded and matched r11.
+
+## Coverage (inspected, clean)
+
+- (a) `diff deck-r10 deck-r11` shows 3 insertions and 0 deletions. They are: the line-11 head marker
+  `<!-- == LEDGERWISE 2026-10-27 == -->`; the line-1721 pages-menu item; and the 6-line `#ledgerwiseCard` block before the
+  "Quarterly estimated tax" grid. diff aligns the third hunk across the `    </div>\n\n` boundary, which is cosmetic. I ran
+  the splice in memory on r10 (open() patched, nothing written), and its output equals r11.
+- (b) `Nor6oCBSDPY9eufMYcVx1Y` appears exactly twice in r11 (card and menu) and zero times in r10. Both links carry
+  `target="_blank" rel="noopener"`. The count of `<script` is 4 → 4 and the count of ` on*=` handlers is 7 → 7. No
+  script and no handler was added. The CSS classes the card uses (badge.amber, card-title-row, src-note, pm-n, card-sub)
+  already exist in the deck.
+- (c) Each anchor matches exactly once in r10. The card's enclosing `<section>` is
+  `<section class="panel" id="panel-tax" data-page="wealth">` and no `</section>` falls between them. The menu item
+  sits after Ledger Room (YJAz17eL85aSpdF8fgQJ3i), under `<div class="pm-group">Money &amp; markets</div>`. The next
+  group header ("Veterans &amp; military family") comes after it.
+- (d) quickcheck counted divs at 1318/1317 before and 1320/1319 after, and sections at 26/24 before and after. The four
+  FAIL rows match exactly (2 inline scripts, section, div, the `$` pseudo-functions). There are no duplicate ids, and
+  ledgerwiseCard appears once.
+- (e) All three re.sub replacements are lambdas, so `&#128210;`, `&#8599;` and `&middot;` are inserted literally.
+- (f) The card text says the data is "illustrative sample data", that Plaid, Hurdlr and TaxGPT are "simulated", that the
+  figures "are not tax advice", and that "no client information should be typed into it". It contains no email, no phone
+  number and no key. The only 3+ digit runs are the entity codes 128210 and 8599.
+- context/decisions.md and memory.md each received one dated entry that matches the code. brain/index.json and
+  docs/reports/CODE-VALIDATION.md are regenerated files and outside the validator's file list.
+
+## Top missing tests (pass 19)
+
+1. Splice r10 in memory and assert that the result equals the published deck (catches drift between the scratch copy and
+   the live deck).
+2. Run the splice twice and assert that the second run exits with "already applied" and leaves the file unchanged.
+3. Remove the PROCESS-COVERAGE marker and assert that the run aborts before any write. The script writes only after all
+   three sub1 calls, so a partial splice is impossible today. A test would keep it that way.
+4. A quickcheck baseline diff for the deck: assert that the FAIL set before == the FAIL set after for any splice.
+
+## Not demonstrated
+
+I did not render the page in a browser and did not open the linked Ledgerwise Pro artifact, so its sample-data behaviour
+is taken from the card text and the caller's description.
+
+---
+
+# VibeBreaker review: Fitness Coach deck link (splice-fitness-coach.py)
+
+change-set: b0af04d20dddeae4
+
+Reviewer: code-validator, 2026-10-27. `bash scripts/validate-code.sh --hash` printed `b0af04d20dddeae4`, which is the hash
+the caller named. `bash scripts/validate-code.sh` gave `verdict: PASS (2 passed, 0 failed)` (py_compile on the splice and
+brain doctor). Mode: DIFF. I ran passes 01, 04, 05, 17 and 19 (dashboard HTML). I also ran 06, 07, 08, 12 and 18 where they
+apply to a one-shot Python file splice. Pass 20 ran last.
+
+## Verdict
+
+`SHIP` (VibeBreaker: SURVIVED*). There is one confirmed LOW finding and no CRITICAL, HIGH or MEDIUM findings. The run is
+not 20/20 CLEAN because it was done in DIFF mode.
+
+Running the script on deck-r11 reproduces /tmp/claude-0/deck-live.html (= deck-r12) byte for byte. The splice adds a head
+marker, a pages-menu item and a 5-line card. It changes exactly one line: the button label. The set of quickcheck FAILs is
+the same before and after.
+
+## CONFIRMED
+
+```yaml
+id: P18-F1
+pass: 18
+title: The rename reached the deck, but not the link registry or the 6D page
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: brain/links.py
+    line: 24
+  - path: dashboard/brain-4d.html
+    line: 337 (embedded LINKS JSON, key "fitness")
+  - path: dashboard/wave2/splice-fitness-coach.py
+    line: 35-36
+entry_or_trigger: Steven asks to "open Fitness Coach". CLAUDE.md routes "Open X" to `bin/brain links` and notes that the 6D page shows the same list.
+evidence: The splice renames the deck button to "Fitness Coach (Plate & Pulse)". brain/links.py still has
+  {"key": "fitness", "label": "Fitness Dashboard (Health & Wellness)", url ...4DQyh8Yw2WwGzj8CddBnEd}, and the 6D page
+  embeds the same old label. A grep across the repo finds "Fitness Coach" only in the splice, decisions.md and memory.md.
+existing_controls_checked: brain/tests/test_links.py checks only the shape of each entry (key/label/url/store/layer), not the
+  labels. No parity check compares deck labels with link-registry labels.
+failure_scenario: After v258 the deck shows only "Fitness Coach". The zero-token links list and the 6D page show only
+  "Fitness Dashboard". Someone searching the links list for the new name finds nothing. The decision's stated aim ("this
+  makes it findable") is met on the deck only.
+impact: Naming inconsistency across three surfaces. The URL is correct everywhere. No data is at risk.
+remediation_direction: Change the label in brain/links.py to "Fitness Coach — Plate & Pulse (Health & Wellness)". Then
+  regenerate the 6D page's embedded LINKS. That republishes a published artifact, so it needs an assigned region or a
+  normal publish.
+verification: The output of `bin/brain links` contains "Fitness Coach". The output of `grep -c "Fitness Dashboard"
+  brain/links.py dashboard/brain-4d.html` is 0. brain/tests/test_links.py passes.
+needs_context: null
+```
+
+## UNVERIFIED
+
+None that affect the verdict. I did not re-read the published deck (v258) to confirm that it equals deck-live.html. The
+missing artifact is an `Artifact read` of the deck URL, compared to /tmp/claude-0/deck-live.html.
+
+## REJECTED
+
+- P19-C1. The candidate: no test for splice-fitness-coach.py. Rejected because this is a one-shot splice and not a service,
+  and the sibling splices follow the same pattern. I exercised both guards. Each of the 4 anchors matches once on r11, and
+  a second run on deck-live exited with "ABORT: already applied".
+- P05-C1. The candidate: `'''...''' % URL` breaks if the card text contains a `%`. Rejected because the card has no other
+  `%`, and the replay on r11 succeeded.
+- P01-C1. The candidate: the card overstates what Plate & Pulse does or where its data lives. Rejected after reading the
+  artifact. Its tabs include Data hub, 360 Assessment, Meal plans (with a weekly grocery list), Programs and AI Coach. The
+  Data hub covers Strava sync, Health Auto Export through Google Drive, and imports from MyFitnessPal, Garmin, Oura and
+  Whoop. Its privacy callout says "stored only in this browser on this device". Its stored capabilities are downloads,
+  mcp (Strava, Google Drive, opengym) and sample, with no db. It says "Not medical advice".
+- P01-C2. The candidate: "keep their daily cloud sync" is false (always-on/README.md calls the Apple Health and Strava
+  runners stale or corrupting). Rejected: those README rows date from September. memory.md line 115 and the decision of
+  2026-10-23 move Apple Health to the 6:15 AM cloud routine. The deck's own text names the cloud routine "Health daily
+  sync" (6:15 AM PT, since 2026-10-23) for Strava.
+
+## Coverage (inspected, clean)
+
+- (a) `diff deck-r11 deck-live` shows 3 insertions (the line-12 head marker after LEDGERWISE, the pages-menu item at line
+  1752, and the 5-line #fitnessCoachCard) and 1 change (the button label at line 4124). Nothing else changed. I ran the
+  splice in memory on r11 with the write patched out, and its output equals deck-live.
+- (b) The card is the first child of `<section class="panel" id="panel-wellness" data-page="health">`. It sits 1217 bytes
+  before #healthLinksCard. The menu item is the first entry under `<div class="pm-group">Personal</div>`, before Football.
+  `fitnessCoachCard` occurs once. The artifact id occurs 1 → 3 times (button, card, menu).
+- (c) quickcheck: divs 1320/1319 → 1322/1321, sections 26/24 → 26/24. The four FAIL rows are identical (2 inline scripts,
+  section, div, `$` pseudo-functions). No duplicate ids. The count of `<script` is 4 → 4 and ` on*=` handlers is 3 → 3.
+  No script or handler was added. All links carry `target="_blank" rel="noopener"`. The CSS classes used (card-title-row,
+  card-sub, src-note, badge.gray, pm-item, pm-n, ch-btn-go) already exist.
+- (d) All four re.sub replacements are lambdas, so the entities are inserted literally. The write happens only after all
+  four sub1 calls succeed, so a partial splice is not possible. The file has no CRLF.
+- (e) The card has no PII, keys or client data. Its only digit runs are entity codes.
+- context/decisions.md and memory.md each received one dated entry, and both match the code. brain/index.json and
+  docs/reports/CODE-VALIDATION.md are regenerated files and outside the validator's file list.
+
+## Top missing tests (pass 19)
+
+1. A label-parity check: for every artifact URL in brain/links.py that also appears as a deck button, assert that the
+   labels share a name. This would have caught P18-F1.
+2. Replay the splice on the pre-splice deck in memory and assert that the result equals the published deck.
+3. Run the splice twice and assert that the second run exits "already applied" and leaves the file unchanged.
+4. A quickcheck baseline diff for any splice: assert that the FAIL set before equals the FAIL set after.
+
+## Not demonstrated
+
+I did not render the page in a browser. The Playwright result (0 page errors, no overflow at 390px) is the caller's. I did
+not read the live v258.
+
+---
+
+change-set: e0f9fbf9eb7d58aa
+
+Addendum to the code-validator review of change-set b0af04d20dddeae4 (verdict SHIP, one LOW finding P18-F1). Only change
+since that review: the label in `brain/links.py` and in the repo copy `dashboard/brain-4d.html` was renamed from "Fitness
+Dashboard (Health & Wellness)" to "Fitness Coach — Plate & Pulse (Health & Wellness)", which is the remediation the
+validator named. Verification: `bin/brain links` shows "Fitness Coach"; `grep -c "Fitness Dashboard"` is 0 in both files;
+`scripts/validate-code.sh` PASS (7 passed, 0 failed). The published 6D Brain artifact is not republished (published
+artifact, HALT list); its next normal publish carries the new label. No other code changed.
+
+---
+
+# VibeBreaker review: five hand-written agents, agentfiles skip, two Mac installers (2026-10-31)
+
+change-set: c101a968e0458a2c
+
+Reviewer: code-validator, 2026-10-31. `bash scripts/validate-code.sh --hash` printed `c101a968e0458a2c`, the hash the caller
+named. `bash scripts/validate-code.sh` gave `verdict: PASS (9 passed, 0 failed)`: py_compile, json, bash -n and shellcheck on
+both installers, brain unit tests, layout and doctor. Mode: DIFF. I ran passes 01, 04, 05, 11, 14 and 19 on the two shell
+scripts. I ran 01, 04, 05, 06, 07, 08, 12, 17, 18 and 19 on `brain/agentfiles.py`. I ran 05, 14 and 18 as a spec/consistency
+read of the agent prompts against CLAUDE.md and the repo's own advertising rules. Pass 20 ran last.
+
+## Verdict
+
+`FIX FIRST` (VibeBreaker: SURVIVED*). There are no CRITICAL or HIGH findings. One MEDIUM is narrow and cheap to fix: the
+ready-made disclosure lines in hook-writer break the repo's own advertising rules. The code (agentfiles.py and both
+installers) behaves as described and could ship on its own. The run is not 20/20 CLEAN because it was done in DIFF mode.
+
+## CONFIRMED
+
+```yaml
+id: P14-F1
+pass: 14
+title: hook-writer's "disclosure lines" omit the DRE licence number (both lines) and Equal Housing (real-estate line), contrary to the repo's own ad rules
+status: CONFIRMED
+severity: MEDIUM
+confidence: HIGH
+location:
+  - path: .claude/agents/hook-writer.md
+    line: 22-23
+entry_or_trigger: Steven asks hook-writer for a caption on any listing or mortgage topic. The prompt tells it to end the caption with these exact lines.
+evidence: Line 22 reads `Steven Shearrill, NMLS 1921615 · Patriot Pacific Financial · Equal Housing Opportunity.` and line 23
+  reads `Steven Shearrill · Broker Associate, LPT Realty.`. Neither line has DRE #01988316 (context/about-me.md:18).
+  The repo's rules require the DRE number on all first-point-of-contact material including social (B&P 10140.6(b),
+  wiki/real-estate-playbooks/ai-search-visibility.md:66 and drip-and-text-follow-up.md:53). They also require Equal Housing
+  Opportunity on real-estate and loan advertising (ai-search-visibility.md:70). The same page wants the individual MLO's NMLS
+  ID (ai-search-visibility.md:68). about-me.md:20 gives 1921615 as the company's NMLS ID (Patriot Pacific Financial Corp),
+  yet line 22 attaches it to Steven's name. The repo itself is split on this: drip-and-text-follow-up.md:56 and
+  open-house.md:88 use 1921615 as Steven's own ID.
+existing_controls_checked: Rule 4 marks the output "DRAFT — ad-compliance-reviewer before posting". That is an instruction
+  only; nothing enforces it. The agent is told the line is the disclosure, so it has no reason to add anything.
+failure_scenario: hook-writer produces a listing caption that ends with "Steven Shearrill · Broker Associate, LPT Realty."
+  If the review step is skipped or relies on the agent's line, a social post goes out without the DRE number or EHO.
+impact: Steven's licence-advertising compliance on social. This is not a client-data or system failure.
+remediation_direction: Replace both lines with the repo's footer pattern, which includes DRE #01988316 and Equal Housing
+  Opportunity. Use one NMLS convention, decided by Steven or Alexandra: either both individual and company IDs, or a label
+  saying whose ID 1921615 is.
+verification: grep shows "DRE #01988316" and "Equal Housing Opportunity" in both disclosure lines of hook-writer.md. A sample
+  run on "first-time buyer listing tour" ends with the corrected line.
+needs_context: Steven's individual NMLS ID, if it differs from 1921615 (it is not in the repo).
+```
+
+```yaml
+id: P14-F2
+pass: 14
+title: hook-writer's Reg Z trigger list leaves out "period of repayment / number of payments" and "finance charge amount"
+status: CONFIRMED
+severity: LOW
+confidence: MEDIUM
+location:
+  - path: .claude/agents/hook-writer.md
+    line: 28-29
+entry_or_trigger: A hook or title such as "Own it with a 30-year fixed VA home loan".
+evidence: The rule bans "rate, APR, payment, down-payment amount or '% down'" without full disclosure. 12 CFR 1026.24(d)(1)
+  lists four triggering terms: (i) amount or percentage of any downpayment, (ii) number of payments or period of repayment,
+  (iii) amount of any payment, (iv) amount of any finance charge. Items (ii) and (iv) are missing. Including "rate" is
+  conservative (1026.24(c)), which is fine. The repo has no written trigger-term rule to check against (grep found none).
+existing_controls_checked: The ad-compliance-reviewer draft gate (instruction only).
+failure_scenario: The agent follows its rule list literally and writes "30-year" or "360 payments" with no disclosure, believing it is compliant.
+impact: Ad-compliance rework. The downstream review should catch it.
+remediation_direction: Name all four 1026.24(d)(1) triggers in rule 2, plus "zero/no down". Have Alexandra confirm the wording. Her sign-off is a compliance interpretation, so Steven decides.
+verification: The rule text lists all four triggers. A sample "30-year fixed" topic comes back without the term or with the full disclosure.
+needs_context: Alexandra's sign-off on the exact wording.
+```
+
+```yaml
+id: P05-F1
+pass: 05
+title: chief-of-staff is told to dispatch "the seat bin/brain route names" as an Agent subagent_type, but route returns display names, and some of those are skills
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: .claude/agents/chief-of-staff.md
+    line: 20
+entry_or_trigger: Any request outside the four specialists, e.g. "draft a caption for my VA loan reel".
+evidence: `bin/brain route --json` returns `"seat": "Harrison"`, `"Steve"`, `"Tariq"` and has no slug/agent field (grep count
+  0). The name-to-agent map lives in integrations/agent-os/agents.json (e.g. "Harrison": {"agent": "vanessa-broker", "via":
+  "skill"}, "Voicemail & Inbox Triage": {"agent": "voicemail-inbox-triage", "via": "roster"}). The prompt does not mention it.
+  The prompt's examples are slugs, which suggests the author expected slugs.
+existing_controls_checked: The stall rule (2 retries, then re-route, then Needs-Steven) limits the damage.
+failure_scenario: chief-of-staff calls Agent(subagent_type="Harrison"), which fails or gets guessed to the wrong seat. After
+  two retries it escalates a routine request to Steven.
+impact: A wasted wave and an unneeded Needs-Steven item. Nothing unsafe happens.
+remediation_direction: Tell the agent to map seat names through agents.json (via=roster → subagent_type, via=skill → the
+  Skill), or add the slug to route's JSON output.
+verification: Run `claude --agent chief-of-staff "draft a caption for my VA loan reel"` and check that every dispatch names a real slug or skill.
+needs_context: null
+```
+
+```yaml
+id: P04-F1
+pass: 04
+title: install-mac.sh skips a hand-written agent silently when a real file of the same name already exists in ~/.claude/agents
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: integrations/agent-os/install-mac.sh
+    line: 49-52
+entry_or_trigger: `bash integrations/agent-os/install-mac.sh --apply` on a Mac where ~/.claude/agents/chief-of-staff.md is a regular file (or a symlink that does not point into integrations/agent-os/agents).
+evidence: `[ -e "$d" ] || { ln -s ...; HAND=$((HAND+1)); }`. The existing file is kept, which matches the stated design.
+  However, the skip is not reported: the only output is "linked $HAND hand-written agents (try: claude --agent
+  chief-of-staff ...)". The pre-change roster row ("Personal communication chief of staff that triages email, Slack, LINE,
+  and Messenger", docs/inventory/agent-roster.md, which says it describes the Mac) suggests a different chief-of-staff
+  agent already exists on the Mac.
+existing_controls_checked: In-repo sessions read .claude/agents directly. Outside the repo, the ~/.claude/agents copy is the one that runs.
+failure_scenario: Steven follows the printed hint outside the repo and runs the old third-party triage agent. It does not
+  carry this change's HALT block or its routing, and he gets no warning.
+impact: Steven runs the wrong agent. How serious that is depends on what the old file allows.
+remediation_direction: When a hand-written slug is skipped, print a WARN that names the file and the resolved target.
+verification: Use a throwaway HOME with a real ~/.claude/agents/chief-of-staff.md. --apply prints a WARN naming it, and HAND does not count it.
+needs_context: `ls -l ~/.claude/agents/chief-of-staff.md` on each Mac decides whether the bad case is live today.
+```
+
+```yaml
+id: P11-F1
+pass: 11
+title: The two new installs say "reviewed <sha>" but install whatever is on the default branch; the registry also contradicts itself on gsap-skills
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: integrations/skill-packs/install-mac.sh
+    line: 81-82 (callers); 10-17 plug(), 43-56 copyskills() (pre-existing)
+  - path: integrations/skill-packs/REGISTRY-2026-10-31.md
+    line: 163 vs 202
+entry_or_trigger: Steven answers y to "Install plugin gsap-skills" or "Copy skill folders from github.com/anthropics/skills".
+evidence: plug() runs `claude plugin marketplace add "$2"` and copyskills() runs `git clone --depth 1`. Neither checks out
+  aed9cfd or ca45fc4, so the SHA is only a label. This pattern is older than the change; the change adds two more callers.
+  REGISTRY line 163 says gsap-skills was "NOT read in depth, so unreviewed. Add it only if GSAP actually gets used". Line 202
+  rates the same repo INSTALL-SKILL ("No hooks, no scripts").
+existing_controls_checked: A y/N prompt for each install, plus the content review on line 202.
+failure_scenario: Upstream pushes a commit with a hook or script after the review. The installer then puts that unreviewed
+  code into ~/.claude while printing "(reviewed aed9cfd)".
+impact: A supply-chain gap that applies to every pack in this script. Both new sources are first-party and reputable.
+remediation_direction: Either check out the reviewed SHA (`git -C "$tmp/r" checkout <sha>` after a non-shallow fetch, or a
+  marketplace ref if Claude Code supports one), or change the label to "reviewed at". Bring registry line 163 into line with 202.
+verification: After a pin, the copied skill tree hashes the same as the tree at ca45fc4. The registry has one status for gsap-skills.
+needs_context: Whether `claude plugin marketplace add` accepts a pinned ref (not verified here).
+```
+
+```yaml
+id: P05-F2
+pass: 05
+title: The five agents' HALT rules are prompt-only; no tools allowlist keeps Gmail send or Calendar create out of reach
+status: CONFIRMED
+severity: INFO
+confidence: HIGH
+location:
+  - path: .claude/agents/inbox-triage.md
+    line: 1-5 (frontmatter)
+  - path: .claude/agents/calendar-prep.md
+    line: 1-5 (frontmatter)
+entry_or_trigger: Any run of inbox-triage or calendar-prep while the Gmail or Google Calendar connector is on.
+evidence: The frontmatter has only name/description/model. With no `tools:` field, the agent inherits every tool, including
+  mcp__Gmail__send_message and mcp__Google_Calendar__create_event. This is the same as the generated seats.
+existing_controls_checked: Each "Never" block matches CLAUDE.md's HALT list (no send, post, invite, CRM write, quote, or
+  spend). The permission prompt on the session also applies.
+failure_scenario: None was demonstrated. This is defense in depth.
+impact: n/a
+remediation_direction: Add a `tools:` allowlist (read and draft tools only) to inbox-triage, calendar-prep and competitor-watch.
+verification: Ask the agent to "send it". It has no send tool to call.
+needs_context: null
+```
+
+## UNVERIFIED
+
+- **Client PII on a cloud model (Steven decides).** chief-of-staff.md:34-35 says "move client data to any cloud model other
+  than where it already lives". CLAUDE.md's HALT says "Client PII leaving the local model", and the generated seats say
+  "Never move client data off the local model". inbox-triage and calendar-prep read client email bodies through the Gmail
+  connector on Sonnet. To decide this, I need Steven's or Alexandra's ruling on whether Gmail-connector reads count as PII
+  leaving the local model. The 2026-10-31 decision entry does not address it.
+
+## REJECTED
+
+- Lane-text change in homelab-architect, network-troubleshooter, pr-test-analyzer, pytorch-build-resolver: **pre-existing
+  drift, not introduced.** `agentfiles.render()` on a `git archive HEAD` copy (HEAD's own inputs) reproduces the new working
+  files byte for byte and differs from HEAD's committed files. agents.json equals a fresh `agentos.build()` (184 agents, no key differs).
+- Dangling generated links (chief-of-staff, code-validator) after the twins are deleted: handled. `[ -L "$d" ]` is true for
+  a dangling link, readlink matches `*/integrations/agent-os/agents/*`, and the link is replaced (install-mac.sh:50).
+- `ln -s` failing and aborting the installer: the script uses `set -u` only, with no `-e`.
+- Invalid agent frontmatter: all six `.claude/agents/*.md` parse as YAML, and `name` equals the filename.
+  `bin/brain os agents` reports 184/184 present and 0 bad.
+- Routing names: all 12 agent names in chief-of-staff and the four specialists exist as slugs in agents.json.
+- agentfiles.check() hiding a missing seat: path() falls back to the generated file when no hand file exists, and the
+  frontmatter-name check runs on whichever file wins.
+- The four removed shellcheck findings: rewritten (SC2015 `&&||`) or disabled with a stated reason (SC2013, SC2088); shellcheck passes.
+
+## Coverage (inspected, clean)
+
+- brain/agentfiles.py write()/check(): the skip deletes only the generated twin, `missing_ok`, and n excludes skipped seats.
+  The README count is 178 = 184 − 6 hand files.
+- install-mac.sh (agent-os): the empty-glob guard `[ -f "$f" ] || continue`, the Bash 3.2-safe `case` in an `if`, the
+  replace-only-our-link rule, and the MISSING count, which still sees hand links.
+- skill-packs/install-mac.sh: the new lines call existing helpers with the right argument order (label repo marketplace
+  plugin sha note / label repo sha folders). The malware line is echo-only and nothing downloads it.
+- Agent HALT blocks against CLAUDE.md: send, post, invite, CRM write, rate quote or lock, eligibility, sign, pay, spend,
+  credential, live task and published artifact are all covered. The schedules for calendar-prep and competitor-watch are left as Steven's yes.
+- competitor-watch: context/competitors.md is empty on purpose, so the first run only proposes. No login, no paid tool.
+- Roster rows, the decisions.md and memory.md entries, org-chart.md, five-agents.md and third-party-packs.md agree with the code.
+
+## Top missing tests (pass 19)
+
+1. `agentfiles.write()` on a temp root with `.claude/agents/x.md`: assert the generated `x.md` is deleted, n is total−1, and `check()` reads the hand file.
+2. `agentfiles.check()` with a hand file whose `name:` differs from its slug: assert it lands in `bad_frontmatter`.
+3. install-mac.sh --apply (AGENT_OS_FORCE=1, throwaway HOME) for four cases: fresh, stale generated link, real file, and a
+   foreign dangling symlink. Assert HAND counts, and (after the P04-F1 fix) a WARN for the real file.
+4. A lint over `.claude/agents/*.md`: YAML parses, name equals the filename, and every backticked agent in chief-of-staff's routing table exists in agents.json.
+5. A text test on hook-writer: both disclosure lines contain the DRE number and "Equal Housing Opportunity" (P14-F1).
+6. `brain route --json`: each seat resolves through agents.json's name map to a roster slug or a skill (P05-F1).
+7. skill-packs: after any pin fix, assert the installed tree's commit equals the SHA printed as "reviewed".
+
+## Not demonstrated
+
+I did not run either installer. The caller's throwaway-HOME results are the caller's. I did not run any agent live, and I
+did not read the live ~/.claude/agents on either Mac. The Reg Z wording in P14-F2 is the regulation text as I know it;
+Alexandra confirms.
+
+---
+
+change-set: f1e43c4712e41b70
+
+Addendum to the code-validator review of change-set c101a968e0458a2c (verdict FIX FIRST). Each CONFIRMED finding:
+- **P14-F1 (MEDIUM) — fixed.** hook-writer's disclosure lines now carry DRE #01988316 and Equal Housing Opportunity on
+  both, name Patriot Pacific Financial Corp with its company NMLS #1921615, and leave Steven's personal NMLS ID as a
+  `[your NMLS ID]` placeholder (not in the brain; question raised to Steven). Source cited:
+  `wiki/real-estate-playbooks/ai-search-visibility.md` § Compliance flags.
+- **P14-F2 (LOW) — fixed.** Rule 2 now names all four 12 CFR 1026.24(d) trigger terms (down payment, number of
+  payments/repayment period, payment amount, finance charge), APR for any rate, and routes final wording to Alexandra.
+- **P05-F1 (LOW) — fixed.** chief-of-staff maps route display names through `named_seats` in agents.json (roster →
+  slug; skill → use the skill) and never invents a subagent_type. Checked: Harrison → {agent: vanessa-broker, via: skill}.
+- **P04-F1 (LOW) — fixed.** The installer now WARNs when a real file of the same name blocks a hand-written agent.
+  Tested with a throwaway HOME holding a real chief-of-staff.md: WARN printed, file kept, other 5 linked.
+- **P11-F1 (LOW) — fixed.** `copyskills` now compares the clone's HEAD with the reviewed sha and asks before copying if
+  upstream moved; `plug` keeps the existing printed-label pattern (Claude Code's marketplace cannot pin a commit). The
+  registry's GSAP row no longer calls gsap-skills unreviewed.
+- **P05-F2 (INFO) — answered, not changed.** A `tools:` allowlist needs the exact connector tool names on each Mac
+  (claude.ai connector names differ by install); a wrong name would leave the agent with no Gmail at all. The never-send
+  rules stay prompt-level, same as every roster seat, and Gmail drafts still need Steven to press Send.
+- **Client data on a cloud model** — chief-of-staff's line now restates CLAUDE.md (client details never copied to any
+  store; client-data questions that need a model go to the local tier). Whether reading client email through the Gmail
+  connector counts as "PII leaving the local model" is Steven's (and Alexandra's) ruling; raised to him.
+`scripts/validate-code.sh`: PASS (9 passed, 0 failed); shellcheck clean on both installers at the default level.
+
+---
+
+# VibeBreaker review: Apple Health cloud-sync heartbeat (splice-health-sync.py) + docs (2026-10-31)
+
+change-set: b25eb075ea5fe77f
+
+Reviewer: code-validator, 2026-10-31. `bash scripts/validate-code.sh --hash` printed `b25eb075ea5fe77f`, the hash the caller
+named. `bash scripts/validate-code.sh` printed `verdict: PASS (2 passed, 0 failed)` (py_compile on the splice, brain
+doctor). No deck HTML is in the repo diff, so the script ran no quickcheck. I ran `dashboard/tests/quickcheck.py` by hand on
+both `/tmp/claude-0/deck-live.html` (v258) and `/tmp/claude-0/deck-r13.html` (spliced). Results are below. Mode: DIFF.
+I ran passes 01, 04, 05, 06, 07, 08, 12, 17, 18 and 19 on the Python splice. I ran 01, 04, 05, 17 and 19 on the deck code
+it injects, which I read in the spliced copy. I ran 17 and 18 as a consistency read of the docs against the live routine.
+Pass 20 ran last. Read-only: I did not run the splice. I did not open the health JSON files. I read the two routines'
+stored prompts with `get_trigger`, and nothing else from the live store.
+
+## Verdict
+
+`FIX FIRST` (VibeBreaker: SURVIVED*). There are no CRITICAL, HIGH or MEDIUM findings. One LOW is confirmed: the new
+"cloud sync silent" alert never reaches the exception report when the `appleHealth` snapshot is missing. The card line,
+the escaping, the anchors and the routine field contract all hold. This is not 20/20 CLEAN because the run was in DIFF mode.
+Steven may ship it as it is and fix the LOW next; that choice is his.
+
+## CONFIRMED
+
+```yaml
+id: P05-F1
+pass: 05
+title: healthDriveSync alert is skipped whenever ahSnapshot() returns null (early return above it)
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: dashboard/wave2/splice-health-sync.py
+    line: 90-103 (alert inserted after the `age > 3` line)
+  - path: /tmp/claude-0/deck-r13.html (deck v259 copy)
+    line: 28582-28597 (appleHealthAlerts; early `return out` at 28586, new block at 28590-28592)
+entry_or_trigger: computeExecExceptions / bell -> appleHealthAlerts() while state/appleHealth is absent or has no `metrics`
+evidence: appleHealthAlerts runs `if (!snap) { out.push(<setup info>); return out; }` before the splice's insertion point,
+  so the healthDriveSync checks run only when an appleHealth snapshot with `metrics` exists.
+existing_controls_checked: ahSnapshot() (28381) returns null for a missing doc or one without metrics; the card line
+  (ahDriveSyncRender) is called inside renderAppleHealth before any snapshot check, so the card itself is correct.
+failure_scenario: appleHealth is missing or malformed (fresh browser before hydration, a failed routine write, a restore)
+  and healthDriveSync.ranAt is 72 h old -> the exception report shows only the info-level "finish the Health Auto Export
+  setup" row, with no warn/critical "Health cloud sync silent 3 days". The brief says the alert is appended when
+  healthDriveSync is missing or older than 30 h. That is false on this path.
+impact: The exception report under-reports a dead routine in the exact case where the tiles are also empty. The card line
+  still shows it. Low.
+remediation_direction: evaluate the healthDriveSync block before the `if (!snap)` early return (or in its own try).
+verification: seed localStorage with no appleHealth and healthDriveSync {ranAt: now-72h, status:"ok"}; assert
+  appleHealthAlerts() contains {sev:"critical", title:"Health cloud sync silent 3 days"}; with no healthDriveSync either,
+  assert the "has never reported" warn row is present alongside the setup info row.
+needs_context: null
+```
+
+```yaml
+id: P17-F1
+pass: 17
+title: The spec doc under-describes the healthDriveSync shape the deck now reads
+status: CONFIRMED
+severity: INFO
+confidence: HIGH
+location:
+  - path: integrations/apple-health-dashboard.md
+    line: 29
+  - path: dashboard/wave2/splice-health-sync.py
+    line: 15, 73-76
+entry_or_trigger: a future edit of the routine made from the doc the routine names as its `spec`
+evidence: line 29 lists `healthDriveSync {ranAt, status, files, newestSample, days}`. The live routine's PART C
+  (trig_01YPmyQiy1SMzFfr1SzEoLoe, read with get_trigger) also writes newestFile, strava, by, error and spec. The splice reads
+  newestFile, strava and error.
+existing_controls_checked: the routine prompt matches the splice today, and every optional field is guarded, so nothing
+  breaks if one is missing.
+failure_scenario: none today. If the routine were rewritten from line 29, the "newest export", Strava and error segments
+  would disappear from the card without any error.
+impact: maintainability only.
+remediation_direction: list the full field set on line 29.
+verification: grep line 29 for newestFile, strava and error.
+needs_context: null
+```
+
+## UNVERIFIED
+
+None.
+
+## REJECTED
+
+- P18-C1 (field-name mismatch: the splice reads `newestFile`/`strava`/`error`, but the doc lists `newestSample`): rejected.
+  The live routine prompt PART C writes `newestFile`, `newestSample`, `days:<dailyDays>`, `strava` and `error`
+  (get_trigger trig_01YPmyQiy1SMzFfr1SzEoLoe). Kept only as P17-F1 (INFO, doc drift).
+- P01-C1 (routine text reaching HTML): rejected. The card uses `textContent` only (deck-r13 28533-28537). The alert
+  title/sub, including `String(ds.ranAt).slice(0,10)`, go through `chatEsc` in both renderers (deck-r13 23641, 25111).
+- P01-C2 (the DOTALL step-3 span could eat a different region): rejected for every deck that exists. On v258 the span is
+  2236 chars and holds exactly 3 `<p>`, ending at the single `id="ahSyncNote"`. `sub1` needs exactly one match, and the
+  `<head>` marker aborts a second run (v259 carries it). The remaining risk is that the lazy `.*?` has no size or
+  paragraph-count bound. On an unmarked deck where `ahSyncNote` had moved below other markup, the span would remove that
+  markup while still counting 1 match. No such deck exists, so this is not a defect. A one-line `assert span.count("<p ")
+  == 3` would close it.
+- P05-C2 (non-ISO `ranAt` makes the card show the raw string but the alert say "never reported"): rejected. The routine
+  writes `ranAt:<ISO now>` (PART C), so the trigger is outside the producer contract.
+- P05-C3 (the alert ignores `status:"error"` on a fresh run): rejected as out of the stated spec. The brief scopes the
+  alert to silence (missing or >30 h). A failing-but-running routine already surfaces through the existing "export
+  stalled" alert once `meta.last_received` passes 2 days, and through the amber card line.
+- P06/P12-C1 (stale ageH while the page stays open): rejected. A remote doc change reloads the page
+  (applyRemoteSnapshot -> `changed` -> throttled `location.reload()`), and renderAppleHealth re-runs on load.
+- P06-C2 (`var ds`/`dsMs`/`dsH` or `ahDriveSyncRender` colliding with existing names): rejected. `ahDriveSync`
+  appears 4 times in the spliced deck, all from this splice. The vars are function-scoped inside appleHealthAlerts.
+
+## Coverage (inspected, clean)
+
+- Splice anchors: I counted all seven read-only on v258 and got 1 each. On the spliced copy the badge, stale-copy,
+  no-snapshot and age-sub anchors count 0, and the marker is present, so a re-run aborts before any `sub1`. The `panel`
+  value comes from the deck itself (`panel-wellness`). Replacements are lambdas, so backslash and group escapes cannot occur.
+- Deck code: `lsGet(key, null)` has a shape guard (8254), and `$`, `chatFmtTs` and `chatEsc` exist. The card call is
+  wrapped in try/catch. Colour thresholds (60 h negative, 30 h warning, else ok -> positive) match the brief. The 30 h
+  threshold matches `brain/coverage/writers.json` cadenceHours 30. Severity strings `warn`/`critical` are in the sort map.
+- Quickcheck: v258 shows 4 FAIL rows (div 1322/1321, section 26/24, 2 inline scripts, the known "$10B…"
+  never-defined false positive) and 9 PASS. The spliced copy's sorted PASS/FAIL set is byte-identical to v258's, so the splice
+  adds no new quickcheck failure.
+- Docs: the trigger id correction is verified live. trig_015pq… is disabled and named "[retired 2026-10-25]".
+  trig_01YPmy… is enabled, bound to session_01AycAMVzfi1LGgfCMEbs3PD, and last fired 2026-10-30T13:20Z with delivery
+  SUCCEEDED, which fits "fired but the session did not work it". The decisions entry, the memory line and the INDEX
+  line contain no health values, only counts and versions. That fits the routine's "health data stays in the health docs"
+  rule.
+- Not in the diff, outside scope: `wiki/dashboard-ops/db-docs.md`, `integrations/CONNECTIONS.md` and
+  `docs/inventory/cloud-routines-2026-10.md` still name the old routine and trigger id.
+
+## Top missing tests (pass 19)
+
+1. appleHealthAlerts with no appleHealth and stale healthDriveSync -> the critical "silent" row is present (P05-F1).
+2. appleHealthAlerts at ranAt now-29h / now-31h / now-61h -> none / warn "1 day" / critical "2 days".
+3. ahDriveSyncRender with status "error" and ranAt now-2h -> warning colour, text contains "error: <msg>".
+4. ahDriveSyncRender with healthDriveSync = null, = [] and = {} -> the "never reported" text, no throw.
+5. ahDriveSyncRender with newestFile/strava/error containing `<img onerror>` -> rendered as literal text (no element created).
+6. Splice on a deck with the marker -> exit "already applied", file byte-identical.
+7. Splice on a deck missing any one anchor -> abort naming that anchor, file byte-identical (no partial write).
+8. Splice stale-copy span -> exactly 3 `<p>` removed and `#ahSyncNote` retained.
+9. Exception-report dedupe: the drive-sync alert appears once in the bell even though appleHealthAlerts is folded in twice.
+
+## Not demonstrated
+
+I did not run the splice, Playwright or the runtime harness. The caller's 390 px renders and the three seeded states are
+the caller's evidence. I did not read deck v259 as published, only the local copy /tmp/claude-0/deck-r13.html.
+
+---
+
+change-set: 0531c7c1483bf815
+
+Addendum to the code-validator review of change-set b25eb075ea5fe77f (verdict FIX FIRST, one LOW + one INFO).
+- **P05-F1 (LOW) — fixed.** The healthDriveSync alert block now sits at the top of `appleHealthAlerts`, in its own try,
+  before the `if (!snap)` early return. Proof (Playwright on the re-spliced copy, rendered `.er-title` rows only, script
+  text excluded): no appleHealth + stale status → "Health cloud sync silent 3 days" AND the setup row; no appleHealth +
+  no status doc → "Health cloud sync has never reported" AND the setup row; appleHealth + fresh status → neither. 0 page
+  errors in all three. Published as deck v260 (v259 carried the first placement for about seven minutes).
+- **P17-F1 (INFO) — fixed.** `integrations/apple-health-dashboard.md` line 29 lists the full field set the routine writes
+  and the six the deck reads. The validator's side note is also taken: the retired trigger id in
+  `docs/inventory/cloud-routines-2026-10.md` now names the live one (the other two files it listed no longer contain it).
+- **Anchor risk (not filed) — closed.** The DOTALL step now aborts unless the matched span holds exactly three `<p ` tags.
+  Re-applied to the v258 copy: byte-identical to the published v260 file.
+`scripts/validate-code.sh` PASS; runtime harness PASS; quickcheck FAIL set identical to v258.

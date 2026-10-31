@@ -4,7 +4,7 @@ from __future__ import annotations
 import sys
 import tempfile
 import unittest
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -24,8 +24,16 @@ class LayerTests(unittest.TestCase):
             self.assertEqual(r["cadence_days"], layers.CADENCE_DAYS[r["key"]])
 
     def test_stamps_come_from_files_not_today(self):
-        rows = {r["key"]: r for r in layers.collect(ROOT, today=date(2026, 12, 31))}
-        self.assertEqual(rows["drive"]["last"], "2026-10-23")  # drive-manifest.json `created`
+        # The weekly layers sync rewrites drive-manifest.json `last_sync.date`, so the expected stamp is read
+        # from the file (last_sync.date, else `created`) rather than typed here; the verdict is checked far enough
+        # past that stamp that it must read stale whatever the date is.
+        import json
+        man = json.loads((ROOT / "integrations" / "notebooklm" / "drive-manifest.json").read_text(encoding="utf-8"))
+        expected = (man.get("last_sync") or {}).get("date") or man.get("created")
+        self.assertRegex(expected, r"^\d{4}-\d{2}-\d{2}")
+        far = date.fromisoformat(expected[:10]) + timedelta(days=69)
+        rows = {r["key"]: r for r in layers.collect(ROOT, today=far)}
+        self.assertEqual(rows["drive"]["last"], expected[:10])
         self.assertEqual(rows["drive"]["verdict"], "stale")      # 69 days later it must say so
         self.assertIsNone(rows["vector"]["last"]); self.assertEqual(rows["vector"]["verdict"], "spec only")
 

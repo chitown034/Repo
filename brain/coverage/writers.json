@@ -1,0 +1,2130 @@
+{
+ "accounts": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "actionDesk": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "agentInbox": {
+  "cadenceHours": 26,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "Vanessa inbox sweep (hourly) + Mac pollers vanessa-imessage-inbox / vanessa-discord-inbox"
+ },
+ "ahLogFilledFor": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "aiModels": {
+  "cadenceHours": null,
+  "kind": "session",
+  "note": "",
+  "owner": "Nadia",
+  "pod": "Ops Pod",
+  "writer": "Nadia's model table (session pass)"
+ },
+ "aiNews": {
+  "cadenceHours": null,
+  "kind": "retired",
+  "note": "",
+  "owner": "Nadia",
+  "pod": "Ops Pod",
+  "writer": "aiNews \u2014 superseded by liveFeeds.aiNewsList (morning feeds)"
+ },
+ "aiNewsResetToken": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "aiTeamOrg": {
+  "cadenceHours": 30,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "Big moves (6:05 AM PT) \u2014 set from bin/brain org"
+ },
+ "aiTeamRoster": {
+  "cadenceHours": 30,
+  "kind": "mac",
+  "note": "Times out at 602 s most mornings (exit 124) yet still writes; raise the cap to 1200 s (spec \u00a79).",
+  "owner": "Sam",
+  "pod": "Ops Pod",
+  "writer": "toolkit-deck-sync (6:15 AM PT)"
+ },
+ "aiTrainingPct": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "annualTodo": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "annualTodoExtra": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "anydeskIds": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "apexChat": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Apex",
+  "pod": "Life & Wealth Pod",
+  "writer": "chat threads (Steven writes, the seat answers)"
+ },
+ "appleHealth": {
+  "cadenceHours": 30,
+  "kind": "cloud",
+  "note": "Health numbers stay in these docs; never into the brain or a message.",
+  "owner": "Kevin",
+  "pod": "Life & Wealth Pod",
+  "writer": "Health daily sync \u2014 Apple Health (Drive export) + Strava (6:15 AM PT)"
+ },
+ "appointments": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "appointmentsResetToken": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "apptPrep": {
+  "cadenceHours": null,
+  "kind": "mac",
+  "note": "",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "r13-appointment-prep (every 2 h, 6 AM-7 PM PT; event-driven)"
+ },
+ "assetItems": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "auditFindings": {
+  "cadenceHours": 192,
+  "kind": "mac",
+  "note": "loopLog moves; the four companion docs do not \u2014 the loop writes only loopLog now. Add their write steps back or retire their cards.",
+  "owner": "Ezra",
+  "pod": "Ops Pod",
+  "writer": "loop-engineering-weekly (Sat 7:30 AM PT)"
+ },
+ "augustaEvents": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "augustaRate": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "backupStatus": {
+  "cadenceHours": 192,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Elena",
+  "pod": "Ops Pod",
+  "writer": "Weekly ecosystem backup \u2014 cloud writer (Sun 21:07 UTC)"
+ },
+ "bigMoves": {
+  "cadenceHours": 30,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "Big moves (6:05 AM PT)"
+ },
+ "biohackLog": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "brain6dStatus": {
+  "cadenceHours": 30,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Naomi",
+  "pod": "Ops Pod",
+  "writer": "6D Brain \u2014 daily rebuild (3:30 AM PT)"
+ },
+ "calendarSnapshot": {
+  "cadenceHours": 14,
+  "kind": "mac",
+  "note": "",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "calendar-daily-sync (6:35 AM / 5:35 PM PT)"
+ },
+ "capacityPct": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "cfoLog": {
+  "cadenceHours": null,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Marcus",
+  "pod": "Money Pod",
+  "writer": "exec squads inside the daily cycle (event-driven)"
+ },
+ "chatDiag": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "checklist": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "ciLog": {
+  "cadenceHours": 30,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Sam",
+  "pod": "Ops Pod",
+  "writer": "every cloud writer appends a row"
+ },
+ "ciLogResetToken": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "cisoLog": {
+  "cadenceHours": null,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Elena",
+  "pod": "Ops Pod",
+  "writer": "exec squads inside the daily cycle (event-driven)"
+ },
+ "city": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "claudeNotes": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "cliAnythingStatus": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "cloudWriteProbe": {
+  "cadenceHours": null,
+  "kind": "retired",
+  "note": "",
+  "owner": "Sam",
+  "pod": "Ops Pod",
+  "writer": "probe / guard docs from the 2026-09-22 cloud-write proof"
+ },
+ "coachLog": {
+  "cadenceHours": 192,
+  "kind": "mac",
+  "note": "",
+  "owner": "Maxwell",
+  "pod": "Growth Pod",
+  "writer": "coach-weekly-recs (Mon 6:10 AM PT)"
+ },
+ "coleChat": {
+  "cadenceHours": null,
+  "kind": "retired",
+  "note": "",
+  "owner": "Kevin",
+  "pod": "Life & Wealth Pod",
+  "writer": "coleChat \u2014 Kevin replaced Cole 2026-10-07"
+ },
+ "collabLedger": {
+  "cadenceHours": 80,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "Vanessa \u2014 Chief of Staff daily cycle (weekdays 6:25 AM PT)"
+ },
+ "computerHub": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "cosBrief": {
+  "cadenceHours": 80,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "Vanessa \u2014 Chief of Staff daily cycle (weekdays 6:25 AM PT)"
+ },
+ "councilLog": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "councilPricing": {
+  "cadenceHours": 30,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Nadia",
+  "pod": "Ops Pod",
+  "writer": "LLM council pricing check (daily)"
+ },
+ "cpiCycles": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "cpiOpportunityLog": {
+  "cadenceHours": 30,
+  "kind": "mac",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "cpi-daily-scan (10:30 PM PT)"
+ },
+ "croLog": {
+  "cadenceHours": null,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Victor",
+  "pod": "Lead Pod",
+  "writer": "exec squads inside the daily cycle (event-driven)"
+ },
+ "ctoLog": {
+  "cadenceHours": null,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "exec squads inside the daily cycle (event-driven)"
+ },
+ "dbaCourses": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "dealChecklists": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "deviceId": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "deviceRoster": {
+  "cadenceHours": null,
+  "kind": "mac",
+  "note": "",
+  "owner": "Sam",
+  "pod": "Ops Pod",
+  "writer": "rc-agent.sh report (Computer Hub)"
+ },
+ "dmaicProjects": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "downtimeFound": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "dreamFeatures": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "dreamProperties": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "editableOverrides": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "eodRollup": {
+  "cadenceHours": 30,
+  "kind": "mac",
+  "note": "",
+  "owner": "Steve",
+  "pod": "Ops Pod",
+  "writer": "r3-eod-rollup (10:45 PM PT)"
+ },
+ "estateReview": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "eventsChecked": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "eventsFeed": {
+  "cadenceHours": 192,
+  "kind": "ci",
+  "note": "GAP: the Sunday events-scout action writes docs/reports only; a session must copy its rows into eventsFeed. Give the action an ArtifactData step or fold it into the Travel weekly refresh.",
+  "owner": "Travel Desk",
+  "pod": "Life & Wealth Pod",
+  "writer": "GitHub Action events-scout (Sundays) \u2192 eventsFeed"
+ },
+ "feasibilityChecks": {
+  "cadenceHours": null,
+  "kind": "session",
+  "note": "",
+  "owner": "Elon",
+  "pod": "Ops Pod",
+  "writer": "Elon's feasibility register (session pass)"
+ },
+ "fedSalaryCalc": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "feedFreshness": {
+  "cadenceHours": 30,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Nova",
+  "pod": "Ops Pod",
+  "writer": "Command Deck \u2014 daily freshness sweep (15:40 UTC)"
+ },
+ "fersEngine": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "fieldyDesk": {
+  "cadenceHours": 192,
+  "kind": "cloud",
+  "note": "Written only on days with a recording; the routine's 'checked' line lives in memory/fieldy-meetings.md.",
+  "owner": "Meeting Scribe",
+  "pod": "Ops Pod",
+  "writer": "Fieldy \u2192 brain (daily 6:50 AM PT)"
+ },
+ "foActions": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "foAdvisors": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "foEntities": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "foReviews": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "goalCalories": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "goalCarbs": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "goalFat": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "goalProtein": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "grantPipeline": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "healthAnalysis": {
+  "cadenceHours": 30,
+  "kind": "mac",
+  "note": "Task reports ok but the doc has not moved since 2026-10-08: it reads the retired Notion path. Repoint it at appleHealth (mac-task-specs \u00a79).",
+  "owner": "Kevin",
+  "pod": "Life & Wealth Pod",
+  "writer": "health-full-analysis (5:25 AM PT)"
+ },
+ "healthCoaching": {
+  "cadenceHours": 192,
+  "kind": "mac",
+  "note": "Errored on the Sunday usage cap since 2026-10-11; move to a weekday slot (spec \u00a79).",
+  "owner": "Kevin",
+  "pod": "Life & Wealth Pod",
+  "writer": "health-coaching-weekly (Sun 6:30 AM PT)"
+ },
+ "healthDriveSync": {
+  "cadenceHours": 30,
+  "kind": "cloud",
+  "note": "Health numbers stay in these docs; never into the brain or a message.",
+  "owner": "Kevin",
+  "pod": "Life & Wealth Pod",
+  "writer": "Health daily sync \u2014 Apple Health (Drive export) + Strava (6:15 AM PT)"
+ },
+ "healthGoals": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "healthInsight": {
+  "cadenceHours": 48,
+  "kind": "deck",
+  "note": "",
+  "owner": "Kevin",
+  "pod": "Life & Wealth Pod",
+  "writer": "the page's own daily insight (sample capability, hlAutoMaybe)"
+ },
+ "healthMetrics": {
+  "cadenceHours": null,
+  "kind": "retired",
+  "note": "",
+  "owner": "Kevin",
+  "pod": "Life & Wealth Pod",
+  "writer": "health-notion-sync \u2014 replaced by the cloud Health daily sync on 2026-10-23"
+ },
+ "healthNotionSync": {
+  "cadenceHours": null,
+  "kind": "retired",
+  "note": "",
+  "owner": "Kevin",
+  "pod": "Life & Wealth Pod",
+  "writer": "health-notion-sync \u2014 replaced by the cloud Health daily sync on 2026-10-23"
+ },
+ "healthNutrition": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "hfCommitteeMemo": {
+  "cadenceHours": 192,
+  "kind": "cloud",
+  "note": "Reads hfRequest (the ticker Steven types).",
+  "owner": "Apex",
+  "pod": "Life & Wealth Pod",
+  "writer": "Command Deck \u2014 AI Hedge Fund Team remote run (Mon 12:00 UTC)"
+ },
+ "hfMemoResetToken": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "hfRequest": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "hlAutoTried": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "hlPrefs": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "hvmPlaybook": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "hvmRoadmap": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "improvementProposals": {
+  "cadenceHours": 192,
+  "kind": "mac",
+  "note": "",
+  "owner": "Nadia",
+  "pod": "Ops Pod",
+  "writer": "weekly-self-update (Fri 11:10 PM PT)"
+ },
+ "inboxDesk": {
+  "cadenceHours": null,
+  "kind": "none",
+  "note": "GAP: point r12-inbox-triage (or the cloud inbox sweep) at inboxDesk with the card's shape, or make the card read inboxTriage.",
+  "owner": "Voicemail & Inbox Triage",
+  "pod": "Lead Pod",
+  "writer": "no writer \u2014 the Inbox & Meetings card reads inboxDesk but nothing produces it"
+ },
+ "inboxTriage": {
+  "cadenceHours": 14,
+  "kind": "mac",
+  "note": "",
+  "owner": "Voicemail & Inbox Triage",
+  "pod": "Lead Pod",
+  "writer": "r12-inbox-triage (6:55 AM / 1:55 PM PT)"
+ },
+ "inc-2ndpension": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "inc-401k": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "inc-capgains": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "inc-dividends": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "inc-federal-gs": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "inc-flip": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "inc-interest": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "inc-mlo": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "inc-navy": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "inc-passive-other": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "inc-post911": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "inc-realtor": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "inc-rental": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "inc-roth": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "inc-royalty": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "inc-sdira": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "inc-ss": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "inc-turo": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "inc-usc-professor": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "inc-va": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "inc-w2-e3r": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "inc-yield": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "incentivePrograms": {
+  "cadenceHours": 30,
+  "kind": "mac",
+  "note": "",
+  "owner": "Hazel",
+  "pod": "Money Pod",
+  "writer": "incentives-daily-scan (7:50 AM PT)"
+ },
+ "instLogins": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "instPlaidMap": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "isaDailySchedule": {
+  "cadenceHours": null,
+  "kind": "session",
+  "note": "",
+  "owner": "Victor",
+  "pod": "Lead Pod",
+  "writer": "ISA playbook seed (session pass)"
+ },
+ "isaGradingScores": {
+  "cadenceHours": 30,
+  "kind": "cloud",
+  "note": "Never written: no ISA scored day exists yet (the human ISA has not started). Not a sync gap.",
+  "owner": "Victor",
+  "pod": "Lead Pod",
+  "writer": "Command Deck \u2194 ISA Portal \u2014 Pipeline Sync (04/10/16/22 UTC)"
+ },
+ "isaKpi": {
+  "cadenceHours": 192,
+  "kind": "mac",
+  "note": "",
+  "owner": "Victor",
+  "pod": "Lead Pod",
+  "writer": "r11-isa-kpi-compile (Sun 4:40 AM PT)"
+ },
+ "isaKpiSopActuals": {
+  "cadenceHours": 30,
+  "kind": "cloud",
+  "note": "Never written: no ISA scored day exists yet (the human ISA has not started). Not a sync gap.",
+  "owner": "Victor",
+  "pod": "Lead Pod",
+  "writer": "Command Deck \u2194 ISA Portal \u2014 Pipeline Sync (04/10/16/22 UTC)"
+ },
+ "isaLadder": {
+  "cadenceHours": 80,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Victor",
+  "pod": "Lead Pod",
+  "writer": "ISA line \u2014 reply check & escalation ladder (weekdays 14:30 UTC)"
+ },
+ "isaLine": {
+  "cadenceHours": 26,
+  "kind": "mac",
+  "note": "",
+  "owner": "Victor",
+  "pod": "Lead Pod",
+  "writer": "isa-comms-bridge-local (hourly 7-21 PT)"
+ },
+ "isaLineRead": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Victor",
+  "pod": "Lead Pod",
+  "writer": "deck read marker"
+ },
+ "isaScorecard": {
+  "cadenceHours": 30,
+  "kind": "cloud",
+  "note": "isaScorecard is [] on both stores: the ISA has no scored days yet \u2014 a data gap, not a sync gap.",
+  "owner": "Victor",
+  "pod": "Lead Pod",
+  "writer": "Command Deck \u2194 ISA Portal \u2014 Pipeline Sync (04/10/16/22 UTC)"
+ },
+ "jamesChat": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "James",
+  "pod": "Life & Wealth Pod",
+  "writer": "chat threads (Steven writes, the seat answers)"
+ },
+ "kaizenBoard": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "kanbanCards": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "the ISA's kanban + the daily cycle's assignments"
+ },
+ "kanbanOwnerFilter": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "kevinChat": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Kevin",
+  "pod": "Life & Wealth Pod",
+  "writer": "chat threads (Steven writes, the seat answers)"
+ },
+ "knowledgeFabric": {
+  "cadenceHours": 6,
+  "kind": "mac",
+  "note": "Refused on 2026-10-26 09:11 PT \u2014 a path or tool is off the allow-list; the 2 h stamp is the proof either way.",
+  "owner": "Sam",
+  "pod": "Ops Pod",
+  "writer": "fabric-deck-sync (every 2 h, 7 AM-9 PM PT)"
+ },
+ "knowledgeGraph": {
+  "cadenceHours": 192,
+  "kind": "mac",
+  "note": "Has not written since 2026-09-13 (usage cap on Sundays). Move to a weekday or run once by hand: runnerctl run ops-knowledge-graph.",
+  "owner": "Naomi",
+  "pod": "Ops Pod",
+  "writer": "ops-knowledge-graph (Sun 5:45 AM PT)"
+ },
+ "kpiActuals": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "leadResponse": {
+  "cadenceHours": 14,
+  "kind": "mac",
+  "note": "Speed to lead is not measurable until Lofty returns lead ids.",
+  "owner": "Kenji",
+  "pod": "Lead Pod",
+  "writer": "r2-lead-response-watchdog (every 30 min, 7 AM-7:40 PM PT)"
+ },
+ "leadTriage": {
+  "cadenceHours": 80,
+  "kind": "mac",
+  "note": "",
+  "owner": "Priya",
+  "pod": "Lead Pod",
+  "writer": "lead-triage-daily (weekdays 11:33 AM PT)"
+ },
+ "liabilities": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "licenseTracker": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "licenses": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "liveFeeds": {
+  "cadenceHours": 26,
+  "kind": "cloud",
+  "note": "Six morning keys must carry today's date after 14:00 UTC; the sweep refills what the Mac feed tasks clobber.",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "Command Deck \u2014 morning feeds (13:05 UTC) + daily freshness sweep (15:40 UTC)"
+ },
+ "localBridgeQueue": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Apex",
+  "pod": "Life & Wealth Pod",
+  "writer": "deck button \u2192 openterminal-remote-queue"
+ },
+ "loftyLeads": {
+  "cadenceHours": 30,
+  "kind": "mac",
+  "note": "",
+  "owner": "Victor",
+  "pod": "Lead Pod",
+  "writer": "lofty-crm-sync (7:45 AM / 1:45 PM PT, Mon-Sat)"
+ },
+ "loftySyncLog": {
+  "cadenceHours": 30,
+  "kind": "mac",
+  "note": "",
+  "owner": "Victor",
+  "pod": "Lead Pod",
+  "writer": "lofty-crm-sync (7:45 AM / 1:45 PM PT, Mon-Sat)"
+ },
+ "loopLog": {
+  "cadenceHours": 192,
+  "kind": "mac",
+  "note": "loopLog moves; the four companion docs do not \u2014 the loop writes only loopLog now. Add their write steps back or retire their cards.",
+  "owner": "Ezra",
+  "pod": "Ops Pod",
+  "writer": "loop-engineering-weekly (Sat 7:30 AM PT)"
+ },
+ "lumenScores": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "marketSnapshot": {
+  "cadenceHours": 80,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Dov",
+  "pod": "Money Pod",
+  "writer": "Command Deck \u2014 market close (weekdays 21:20 UTC) + sweep catch-up"
+ },
+ "marketSnapshotResetToken": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "marketingQueue": {
+  "cadenceHours": 96,
+  "kind": "mac",
+  "note": "Task reports ok (Oct 23) but the doc stamp is Oct 8: it is not writing the deck. Re-check its write step.",
+  "owner": "Sofia",
+  "pod": "Growth Pod",
+  "writer": "r14-content-pipeline (Tue-Fri 5:45 AM PT)"
+ },
+ "memberships": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "morningBrief": {
+  "cadenceHours": 30,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "Vanessa \u2014 morning brief (6:34 AM PT; push + e-mail until iMessage is linked)"
+ },
+ "morningBriefStatus": {
+  "cadenceHours": 30,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "Vanessa \u2014 morning brief (6:34 AM PT; push + e-mail until iMessage is linked)"
+ },
+ "mtgGciDeals": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "mtgGciPerDeal": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "myCards": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "newsSnapshot": {
+  "cadenceHours": 14,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "Command Deck \u2014 weather & news (01:35/13:35 UTC)"
+ },
+ "npFamilies": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "npGrantFunding": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "npHours": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "nqGuideRead": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "onboardDone": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "openTerminalQueue": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Apex",
+  "pod": "Life & Wealth Pod",
+  "writer": "deck button \u2192 openterminal-remote-queue"
+ },
+ "openTerminalSnapshot": {
+  "cadenceHours": 26,
+  "kind": "mac",
+  "note": "",
+  "owner": "Apex",
+  "pod": "Life & Wealth Pod",
+  "writer": "openterminal-remote-queue (hourly 6-21 PT)"
+ },
+ "openrouterCredits": {
+  "cadenceHours": 30,
+  "kind": "mac",
+  "note": "",
+  "owner": "Marcus",
+  "pod": "Money Pod",
+  "writer": "openrouter-credits-refresh (11:40 PM PT)"
+ },
+ "openrouterFeeds": {
+  "cadenceHours": null,
+  "kind": "retired",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "openrouter-feeds-refresh \u2014 frozen since 2026-09-13 and it clobbers liveFeeds; Steven pauses it (runnerctl pause openrouter-feeds-refresh feeds-weekly feeds-market-close)"
+ },
+ "peptideTracker": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "pipeline": {
+  "cadenceHours": 30,
+  "kind": "cloud",
+  "note": "isaScorecard is [] on both stores: the ISA has no scored days yet \u2014 a data gap, not a sync gap.",
+  "owner": "Victor",
+  "pod": "Lead Pod",
+  "writer": "Command Deck \u2194 ISA Portal \u2014 Pipeline Sync (04/10/16/22 UTC)"
+ },
+ "plaidBalances": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Marcus",
+  "pod": "Money Pod",
+  "writer": "r7-plaid-balances stays silent until Steven says \"Plaid yes\" (declined by default)"
+ },
+ "plan10yr": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "plan1yr": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "plan5yr": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "presenceAudit": {
+  "cadenceHours": 800,
+  "kind": "cloud",
+  "note": "First run 2026-11-01 (monthly, the 1st).",
+  "owner": "Orin",
+  "pod": "Growth Pod",
+  "writer": "Presence audit (monthly, 1st)"
+ },
+ "priorities": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "properties": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "qetPaid": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "qetPriorAGI": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "qetPriorTax": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "qetProjected": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "quickTasks": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "ratesSnapshot": {
+  "cadenceHours": 30,
+  "kind": "mac",
+  "note": "ISA Portal mirror copied by the sweep.",
+  "owner": "Dov",
+  "pod": "Mortgage Pod",
+  "writer": "mortgage-rates-daily (weekdays 6:38 AM / 1:38 PM PT) + r5-rates-market-refresh (Mon)"
+ },
+ "reClients": {
+  "cadenceHours": 30,
+  "kind": "cloud",
+  "note": "isaScorecard is [] on both stores: the ISA has no scored days yet \u2014 a data gap, not a sync gap.",
+  "owner": "Victor",
+  "pod": "Lead Pod",
+  "writer": "Command Deck \u2194 ISA Portal \u2014 Pipeline Sync (04/10/16/22 UTC)"
+ },
+ "reGciDeals": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "reGciPerDeal": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "realEstateBrief": {
+  "cadenceHours": 192,
+  "kind": "cloud",
+  "note": "The routine hangs (no finished_at) on most Mondays; last write 2026-10-05. Rewrite it to WebSearch-only, or fold it into the morning feeds.",
+  "owner": "Bianca",
+  "pod": "Listing Pod",
+  "writer": "Real Estate Weekly Brief (Mon 16:30 UTC)"
+ },
+ "recruitPipeline": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "refLinksCustom": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "referralPartners": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "refiWatch": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "refiWatchDesk": {
+  "cadenceHours": 192,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Refi Watch Analyst",
+  "pod": "Mortgage Pod",
+  "writer": "Refi watch \u2014 weekly prep list (Mon 7:20 AM PT)"
+ },
+ "refiWatchList": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "Never written yet: the Monday routine has nothing to compare until Steven types the list.",
+  "owner": "Refi Watch Analyst",
+  "pod": "Mortgage Pod",
+  "writer": "Steven's own refi list (first name, note rate, loan type, month closed)"
+ },
+ "repsREHours": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "repsTotalHours": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "revenueScan": {
+  "cadenceHours": 192,
+  "kind": "mac",
+  "note": "",
+  "owner": "Victor",
+  "pod": "Growth Pod",
+  "writer": "revenue-scan-weekly (Sun 5:40 AM PT)"
+ },
+ "reviewPipeline": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "riskAccountsBlown": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "riskDailyLossTriggered": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "riskMonitor": {
+  "cadenceHours": 80,
+  "kind": "mac",
+  "note": "",
+  "owner": "Apex",
+  "pod": "Life & Wealth Pod",
+  "writer": "r17-trading-day-log (weekdays 10:40 PM PT)"
+ },
+ "routineHealth": {
+  "cadenceHours": 30,
+  "kind": "mac",
+  "note": "",
+  "owner": "Sam",
+  "pod": "Ops Pod",
+  "writer": "r10-automation-health (10:10 PM PT)"
+ },
+ "runnerProbe": {
+  "cadenceHours": null,
+  "kind": "retired",
+  "note": "",
+  "owner": "Sam",
+  "pod": "Ops Pod",
+  "writer": "probe / guard docs from the 2026-09-22 cloud-write proof"
+ },
+ "runnerStatus": {
+  "cadenceHours": 6,
+  "kind": "mac",
+  "note": "Refused on 2026-10-26 09:11 PT \u2014 a path or tool is off the allow-list; the 2 h stamp is the proof either way.",
+  "owner": "Sam",
+  "pod": "Ops Pod",
+  "writer": "fabric-deck-sync (every 2 h, 7 AM-9 PM PT)"
+ },
+ "scaleOpportunityLog": {
+  "cadenceHours": 192,
+  "kind": "mac",
+  "note": "loopLog moves; the four companion docs do not \u2014 the loop writes only loopLog now. Add their write steps back or retire their cards.",
+  "owner": "Ezra",
+  "pod": "Ops Pod",
+  "writer": "loop-engineering-weekly (Sat 7:30 AM PT)"
+ },
+ "secondBrain": {
+  "cadenceHours": 6,
+  "kind": "mac",
+  "note": "",
+  "owner": "Naomi",
+  "pod": "Ops Pod",
+  "writer": "brain-deck-sync (hourly :20, 7 AM-10 PM PT)"
+ },
+ "sectionEdits": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "sectionSliderHidden": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "selfTest": {
+  "cadenceHours": 30,
+  "kind": "mac",
+  "note": "",
+  "owner": "Theo",
+  "pod": "Ops Pod",
+  "writer": "nightly-self-test (11:00 PM PT)"
+ },
+ "showingRoute": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "showingSchedule": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "showingSyncRequests": {
+  "cadenceHours": null,
+  "kind": "mac",
+  "note": "",
+  "owner": "Showing Coordinator",
+  "pod": "Deal Pod",
+  "writer": "showing-sync (8:15 AM / 12:15 PM / 4:15 PM PT, Mon-Sat; queue-driven)"
+ },
+ "sixLevers": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "speakDiag": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "sphereList": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "Never written yet: the 11th-of-month drafts need it.",
+  "owner": "Sphere Nurture Coordinator",
+  "pod": "Client Care Pod",
+  "writer": "Steven's sphere list (birthdays, anniversaries)"
+ },
+ "sphereTouches": {
+  "cadenceHours": 800,
+  "kind": "cloud",
+  "note": "First run 2026-11-11.",
+  "owner": "Sphere Nurture Coordinator",
+  "pod": "Client Care Pod",
+  "writer": "Sphere & past-client touches (11th monthly, 7:40 AM PT)"
+ },
+ "sprintDates": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "sprintGoal": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "sprintVelocity": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "steveChat": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steve",
+  "pod": "Ops Pod",
+  "writer": "chat threads (Steven writes, the seat answers)"
+ },
+ "stlManual": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "strategySnapshot": {
+  "cadenceHours": 80,
+  "kind": "mac",
+  "note": "Limited by the usage cap on Oct 24; QuantVue reads need the Mac.",
+  "owner": "Apex",
+  "pod": "Life & Wealth Pod",
+  "writer": "r4-quantvue-sync (weekdays 11:20 PM PT)"
+ },
+ "stravaSnapshot": {
+  "cadenceHours": 30,
+  "kind": "cloud",
+  "note": "Health numbers stay in these docs; never into the brain or a message.",
+  "owner": "Kevin",
+  "pod": "Life & Wealth Pod",
+  "writer": "Health daily sync \u2014 Apple Health (Drive export) + Strava (6:15 AM PT)"
+ },
+ "stravaWrapGuard": {
+  "cadenceHours": null,
+  "kind": "retired",
+  "note": "",
+  "owner": "Sam",
+  "pod": "Ops Pod",
+  "writer": "probe / guard docs from the 2026-09-22 cloud-write proof"
+ },
+ "stressTestReport": {
+  "cadenceHours": 192,
+  "kind": "mac",
+  "note": "loopLog moves; the four companion docs do not \u2014 the loop writes only loopLog now. Add their write steps back or retire their cards.",
+  "owner": "Ezra",
+  "pod": "Ops Pod",
+  "writer": "loop-engineering-weekly (Sat 7:30 AM PT)"
+ },
+ "subscriptions": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "supplementTracker": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "taxWorkbookLink": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "tcDeals": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "Never written yet: no deal has been entered \u2014 the desk reads an empty intake.",
+  "owner": "Document Intake Clerk",
+  "pod": "Deal Pod",
+  "writer": "ISA enters each new deal's dates (tc-doc-intake skill drafts them)"
+ },
+ "tcDesk": {
+  "cadenceHours": 80,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Carmen",
+  "pod": "Deal Pod",
+  "writer": "Transaction & Showing desk (weekdays 6:05 AM PT)"
+ },
+ "techStackExtra": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "todoList": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "toolkitSnapshot": {
+  "cadenceHours": 30,
+  "kind": "mac",
+  "note": "Times out at 602 s most mornings (exit 124) yet still writes; raise the cap to 1200 s (spec \u00a79).",
+  "owner": "Sam",
+  "pod": "Ops Pod",
+  "writer": "toolkit-deck-sync (6:15 AM PT)"
+ },
+ "tradingDeskReport": {
+  "cadenceHours": null,
+  "kind": "none",
+  "note": "GAP: give the desk a weekly Mac task (integrations/trading-desk) so the panel's tiles move.",
+  "owner": "Apex",
+  "pod": "Life & Wealth Pod",
+  "writer": "no writer \u2014 the Trading Research Desk writes its report on the Mac only when run by hand"
+ },
+ "tradingLogins": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "travelFilterCat": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "travelShowPassed": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "travelSoonOnly": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "trustLevels": {
+  "cadenceHours": 192,
+  "kind": "mac",
+  "note": "loopLog moves; the four companion docs do not \u2014 the loop writes only loopLog now. Add their write steps back or retire their cards.",
+  "owner": "Ezra",
+  "pod": "Ops Pod",
+  "writer": "loop-engineering-weekly (Sat 7:30 AM PT)"
+ },
+ "ttsHold": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "ttsIntent": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "ttsSetup": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "tvaChartState": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "twinBrief": {
+  "cadenceHours": 30,
+  "kind": "mac",
+  "note": "",
+  "owner": "Steve",
+  "pod": "Ops Pod",
+  "writer": "r1-morning-brief (5:30 AM PT)"
+ },
+ "twinLog": {
+  "cadenceHours": 80,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Steve",
+  "pod": "Ops Pod",
+  "writer": "daily cycle + steve-twin-sweep (Mac, weekdays 12:55 PM PT)"
+ },
+ "twinQueue": {
+  "cadenceHours": null,
+  "kind": "cloud",
+  "note": "Written only when the cycle or the twin has an item for Steven; empty weeks leave it still.",
+  "owner": "Steve",
+  "pod": "Ops Pod",
+  "writer": "daily cycle + steve-twin-sweep (Mac, weekdays 12:55 PM PT)"
+ },
+ "tz": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "uscDeadlines": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Vanessa",
+  "pod": "Life & Wealth Pod",
+  "writer": "Steven's USC deadlines (R19 planner drafts the week's plan around them)"
+ },
+ "uscSchedule": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "uwpRead": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "vanessaBrief": {
+  "cadenceHours": 80,
+  "kind": "mac",
+  "note": "",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "vanessa-sweep (weekdays 12:35 PM PT)"
+ },
+ "vanessaChat": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "chat threads (Steven writes, the seat answers)"
+ },
+ "vanessaLog": {
+  "cadenceHours": 80,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "Vanessa \u2014 Chief of Staff daily cycle (weekdays 6:25 AM PT)"
+ },
+ "vanessaQueue": {
+  "cadenceHours": 80,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "every surface hands to it; the daily cycle works it"
+ },
+ "vanessaRecommendations": {
+  "cadenceHours": 30,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "Big moves (6:05 AM PT)"
+ },
+ "vanessaResearch": {
+  "cadenceHours": null,
+  "kind": "mac",
+  "note": "",
+  "owner": "Leah",
+  "pod": "Ops Pod",
+  "writer": "vanessa-research-queue (hourly :30, queue-driven)"
+ },
+ "vanessaRuns": {
+  "cadenceHours": 80,
+  "kind": "cloud",
+  "note": "",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "Vanessa \u2014 Chief of Staff daily cycle (weekdays 6:25 AM PT)"
+ },
+ "voicePlayed": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "voiceReplyQueue": {
+  "cadenceHours": null,
+  "kind": "mac",
+  "note": "",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "voice-reply-render (every 10 min, queue-driven)"
+ },
+ "voiceReplyStatus": {
+  "cadenceHours": null,
+  "kind": "mac",
+  "note": "",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "voice-reply-render (every 10 min, queue-driven)"
+ },
+ "weather": {
+  "cadenceHours": null,
+  "kind": "derived",
+  "note": "",
+  "owner": "Derek",
+  "pod": "Ops Pod",
+  "writer": "deck UI state (filters, read markers, reset tokens, diagnostics)"
+ },
+ "weatherSnapshot": {
+  "cadenceHours": 14,
+  "kind": "mac",
+  "note": "NEEDS-STEVEN 102: add AccuWeather to the sweep routine so the cloud can own it.",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "weather-news-refresh (8:05 AM / 8:05 PM PT); the cloud sweep writes it only when AccuWeather is attached"
+ },
+ "weeklyBrief": {
+  "cadenceHours": 192,
+  "kind": "mac",
+  "note": "Limited by the usage cap every Friday since Sep 26; move earlier in the week.",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "r20-weekly-review-local (Fri 11:50 PM PT)"
+ },
+ "wellness": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "wellnessMetricCurrent": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "whatsappKapso": {
+  "cadenceHours": 26,
+  "kind": "mac",
+  "note": "GAP: Steven registers the Kapso tasks (STEVEN-STEPS 2026-10-14); until then a session writes it.",
+  "owner": "Vanessa",
+  "pod": "Ops Pod",
+  "writer": "kapso-inbox-sync (spec \u00a75b \u2014 not registered on the Mac yet)"
+ },
+ "workout": {
+  "cadenceHours": null,
+  "kind": "user",
+  "note": "",
+  "owner": "Steven",
+  "pod": "\u2014",
+  "writer": "Steven types it on the deck"
+ },
+ "zohoDeals": {
+  "cadenceHours": null,
+  "kind": "retired",
+  "note": "NEEDS-STEVEN: the API grant. Not a writer problem.",
+  "owner": "Victor",
+  "pod": "Lead Pod",
+  "writer": "Zoho API blocked until Steven ticks \"Zoho CRM API Access\" (STEVEN-STEPS 15); deck data is the Sep 14 paste"
+ },
+ "zohoLeads": {
+  "cadenceHours": null,
+  "kind": "retired",
+  "note": "NEEDS-STEVEN: the API grant. Not a writer problem.",
+  "owner": "Victor",
+  "pod": "Lead Pod",
+  "writer": "Zoho API blocked until Steven ticks \"Zoho CRM API Access\" (STEVEN-STEPS 15); deck data is the Sep 14 paste"
+ },
+ "zohoSync": {
+  "cadenceHours": null,
+  "kind": "retired",
+  "note": "NEEDS-STEVEN: the API grant. Not a writer problem.",
+  "owner": "Victor",
+  "pod": "Lead Pod",
+  "writer": "Zoho API blocked until Steven ticks \"Zoho CRM API Access\" (STEVEN-STEPS 15); deck data is the Sep 14 paste"
+ }
+}

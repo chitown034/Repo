@@ -4,7 +4,52 @@ Same list as the Action Desk page (https://claude.ai/artifact/9S8G2ZhhqP1iUsPZrP
 Includes every connection that still has to be made. Already done: Lofty key (54 leads syncing), 14 failed routines re-run, both dashboards updated (cycle 11), Remote Control card built, one-command Mac script, failover with a $25 OpenRouter cap, connection plan; your USC answers and personal DRE are saved.
 research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox iMessage are connected; the five research-only routines are already off.
 
-## Start here (2026-10-23, evening) — ONE paste, then the short list it prints
+## Start here (2026-10-27) — ONE paste, then the short list it prints
+
+Steven: *"fix everything not working and simplify whatever steps required of me for setup via scripts that I can cut and
+paste into my mac terminal. make this easy and simple and minimal action for me."*
+
+**Mac 1 (plugged in), Terminal, one line — press Command + Space, type Terminal, Enter, then paste:**
+
+```
+cd ~/Repo 2>/dev/null || git clone -q -b claude/gracious-newton-4hpfco https://github.com/chitown034/Repo.git ~/Repo; cd ~/Repo && git fetch -q origin && { REPO_SYNC_BRANCH=claude/gracious-newton-4hpfco bash scripts/repo-sync.sh --quiet || git checkout -q claude/gracious-newton-4hpfco; }; bash setup.sh
+```
+
+That one line replaces every earlier paste on this page (`connect-all.sh`, `fix-mine.sh`, `go.sh`, `mac-bootstrap.sh` —
+`setup.sh` runs the two that still matter, in the right order, and skips what is already done). It asks for each key
+**once**, hidden, Enter skips: Lofty, TidyCal, Arive (3 values), Zoho self-client (id, secret, refresh token), SkySlope
+(access key + secret, client id + secret), the Kapso project key and your mobile, the Discord bot token, the Inkbox key,
+and two optional ones (Hume AI, Composio). Then it installs and wires, without asking again: Kapso WhatsApp (plugin + MCP
++ the runner tasks), the Inkbox voice SDK, Jarvis = Vanessa (engine, her recorded voice, the brain in its memory), Laya,
+Orca with the whole AI team (Agent OS, 172 agents), AnyDesk, NotebookLM, OpenFlowKit, the homes.com / ShowingTime / Showami
+read-only wrappers, the Claude mods, the message tasks all day, and the Mac runner. It ends with **one REPORT**: what is
+connected, what is not, and the numbered list only you can do. Paste that REPORT back to Claude. Plan only, nothing
+changed or asked: `bash setup.sh --check`. Run it again any time; it only does what is still missing.
+
+**Only you, after the paste (the REPORT prints the same list; each is one screen):**
+
+1. Phone: text `connect @vanessa-shearrill` to +1 650 484 9720 (links the iMessage line: morning text + voice note).
+2. Zoho CRM → Setup → Security Control → Profiles → your profile → Developer Permissions → tick **Zoho CRM API Access**
+   (the keys are already on the Mac from the paste; this tick is the whole 403 fix).
+3. Sign-ins: `claude` → `/mcp` → lofty-cloud → sign in; kapso → sign in; then message (202) 474-5223 from your phone once.
+4. Discord: discord.com/developers → New Application "Vanessa" → Bot → Reset Token (the paste asks for it) → OAuth2 URL
+   Generator (scope bot; Send Messages + Read Message History) → open the URL, pick your server; then say "Discord link".
+5. Phone, once: MyFitnessPal → Apps & Devices → Apple Health ON; Strava → Settings → Apple Health ON; BodyPark app →
+   allow Apple Health. (Health Auto Export → Google Drive is already the pipe; nothing else to install.)
+6. Browser sign-ins, once each, in the agent Chrome: ShowingTime, Showami, homes.com.
+7. AnyDesk: System Settings → Privacy & Security → Screen Recording + Accessibility ON; unattended password; type each
+   computer's AnyDesk **ID** (never the password) into the Command Deck's Computer Hub card.
+8. Orca phone pairing: `bash integrations/remote-control/orca-remote.sh serve --phone`, scan the QR in the Orca app.
+9. Pabbly Connect: build the workflows in `integrations/pabbly/WORKFLOWS.md` in Pabbly's editor (click-together); say
+   "yes build the kapso connection" to Claude for the custom WhatsApp app.
+10. Ticor Title: ask your San Diego rep for Ticor Online Pro (no API exists; the deck's property search already uses the
+    free county records).
+11. claude.ai → Settings → Connectors: Reconnect or remove EVRoutes and Turo; add "Gondola" https://mcp.gondola.ai/mcp.
+
+Not possible from any script, so not promised: a Hume AI voice for Vanessa (her voice is the recorded set; a Hume key
+is stored for a later proposal only), BodyPark (no API; it reaches the deck through Apple Health), Ticor (no API).
+
+## Older round (2026-10-23, evening) — ONE paste, then the short list it prints
 
 Steven: *"make a new script that I can cut and paste into the terminal to fix whatever requires my actions; make it simple and limit the back and forth."*
 
@@ -40,7 +85,7 @@ Big-moves task through your Claude Code Remote connector; the first time, allow 
 items land in the Vanessa queue on the Command Deck; yours stay listed with the plan standing by until you say "done".
 **Decline** → hidden 30 days and that kind weighs less. The 6:05 AM task re-learns from every decision (`docs/reports/BIG-MOVES.md`).
 
-## Start here (2026-10-23, round 2 — simplified the same evening) — three pastes, then four clicks
+## Older round (2026-10-23, round 2 — simplified the same evening) — three pastes, then four clicks
 
 Everything scripted is inside the pastes now (Jarvis, Laya, Orca, AnyDesk, TidyCal, Arive credentials, homes.com /
 ShowingTime / Showami wrappers, Lofty, Zoho check, NotebookLM, the failing-task logs). Each paste asks before it changes
@@ -86,7 +131,7 @@ value order, and you approve it when you want it; the Big-moves task reads this 
 - **k. Drips and texts** → Lofty 10DLC registration, then say "specs ready for review" (`wiki/real-estate-playbooks/drip-and-text-follow-up.md`).
 - **l. Orca pairing and the runner copy to Mac 2** → steps 1e and C below.
 
-## Start here (2026-10-23) — one paste, then a few clicks
+## Older round (2026-10-23) — one paste, then a few clicks
 
 **Why things were stale:** your Mac's task runner froze on Oct 13, and every `git pull` on the Mac failed because the
 cloud and the Mac both rebuild the same brain files. Both are fixed in the paste below. Everything cloud-side runs.
@@ -192,7 +237,7 @@ Claude already did (2026-10-22): one Vanessa queue every dashboard writes; push-
 cycle, triage inbox, recap meetings, draft follow-ups, TC intake); seven standing cross-functional pods; morning brief
 across the three dashboards at 6:34 AM; cloud routine usage cut ~34%; backup moved after the weekly reset and re-run.
 
-## Start here (2026-10-20) — one paste reconnects this Mac · about 15 minutes
+## Older round (2026-10-20) — one paste reconnects this Mac · about 15 minutes
 
 - **Open Terminal and paste this one line, answer y.** Your Mac has been silent on the dashboard since 2026-10-13. The paste restarts the runner, installs Kapso (WhatsApp) and the Inkbox voice SDK, checks Jarvis and your key files, then asks for your mobile number and the Kapso key (Keychain only, hidden; Enter skips). It never signs in, pairs, sends or pays. Paste the REPORT it prints back to Claude.
    `cd ~/Repo && git fetch origin && git checkout claude/stoic-cori-pvn3f8 && git pull && bash connect-all.sh`
@@ -201,7 +246,7 @@ across the three dashboards at 6:34 AM; cloud routine usage cut ~34%; backup mov
    - Open Zoho CRM: https://crm.zoho.com/
 - **After the paste, in any Claude Code session in the Repo folder:** type `/paste` for this list, `/connections` for what is not connected and the fix, `/owner marketing` for who keeps a dashboard panel alive. (7) Pabbly: reply "yes, build the Kapso app", then build the six workflows in `integrations/pabbly/WORKFLOWS.md`.
 
-## Start here (2026-10-14) — WhatsApp with Vanessa, two pastes on the Mac
+## Older round (2026-10-14) — WhatsApp with Vanessa, two pastes on the Mac
 
 Kapso gave Vanessa **(202) 474-5223**. In Terminal, in the Repo folder (`git pull` first):
 1. `bash integrations/kapso/install-mac.sh install --apply` — installs the Kapso plugin and MCP for every Claude Code session.
@@ -209,7 +254,7 @@ Kapso gave Vanessa **(202) 474-5223**. In Terminal, in the Repo folder (`git pul
 3. Then `claude` → type `/mcp` → pick **kapso** → sign in once in the browser. Check with `bash integrations/kapso/install-mac.sh doctor`.
 4. Save (202) 474-5223 in your phone as *Vanessa (WhatsApp)* and send her a message. Answer it from any Claude Code or Orca session with "answer my WhatsApp"; the unattended 5-minute reply task is `integrations/mac-task-specs.md` §5c (register it on the runner when you want her replying on her own).
 
-## Start here (2026-10-13) — two things, 5 minutes
+## Older round (2026-10-13) — two things, 5 minutes
 
 - **Mac, Terminal, in the Repo folder — stop the three Mac feed tasks that keep erasing the deck's fresh news:**
   `runnerctl pause openrouter-feeds-refresh && runnerctl pause feeds-weekly && runnerctl pause feeds-market-close && runnerctl list`
@@ -223,7 +268,7 @@ Kapso gave Vanessa **(202) 474-5223**. In Terminal, in the Repo folder (`git pul
 - **One click:** the USC study planner failed Sunday on the usage cap — press Run now at
   https://claude.ai/code/routines/trig_01VkpVzzqPkGtXPS24E4JNKP.
 
-## Start here (2026-10-12) — three pastes, then a short "only you" list
+## Older round (2026-10-12) — three pastes, then a short "only you" list
 
 - **A. Mac 1, then Mac 2:** Terminal → `cd ~/Repo && git fetch origin && git checkout claude/stoic-cori-pvn3f8 && git pull && bash go.sh` → answer `y`. Does every safe step (brain, Agent OS, Laya, Orca check, browser hands, skill packs, Jarvis, events scan, health report) and prints a report to paste back to Claude.
 - **B. Alienware:** PowerShell → `cd $HOME\Repo; git fetch origin; git checkout claude/stoic-cori-pvn3f8; git pull; powershell -ExecutionPolicy Bypass -File go.ps1` → answer `y`.
