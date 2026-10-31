@@ -78,7 +78,7 @@ header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; b
 .groups::-webkit-scrollbar { display: none; }
 .grp { border: 1px solid #3a4552; background: transparent; color: #c7d0da; border-radius: 999px; padding: 4px 13px; font: 600 .78rem var(--font-body); cursor: pointer; white-space: nowrap; }
 .grp:hover { color: #fff; border-color: #6f7b8a; }
-@media (max-width: 600px) { .brand .tag { display: none; } .brand h1 { font-size: 1.45rem; } .brand { padding-block: 8px 4px; } .tabs button { padding: 8px 10px 9px; font-size: .95rem; } }
+@media (max-width: 600px) { .brand { gap: 8px; } .unit-toggle button { padding: 5px 9px; } #gs-open { padding: 5px 8px; min-height: 0; } #gs-open .gs-lbl { display: none; } .brand > div { flex-wrap: nowrap !important; gap: 6px !important; } .brand .tag { display: none; } .brand h1 { font-size: 1.45rem; } .brand { padding-block: 8px 4px; } .tabs button { padding: 8px 10px 9px; font-size: .95rem; } }
 .grp[aria-pressed="true"] { background: #f1f4f7; color: #131a23; border-color: #f1f4f7; }
 .tabs { overflow-x: auto; scrollbar-width: none; }
 .tabs::-webkit-scrollbar { display: none; }
@@ -617,6 +617,7 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
     </div>
   </div>
   <div id="x-nutrition"></div>
+  <div id="y-nutrition"></div>
 </section>
 
 <!-- MEAL PLANS -->
@@ -978,6 +979,7 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
     </div>
   </div>
   <div id="x-training"></div>
+  <div id="y-training"></div>
 </section>
 
 <!-- CARDIO -->
@@ -1072,6 +1074,7 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
     </div>
   </div>
   <div id="x-cardio"></div>
+  <div id="y-cardio"></div>
 </section>
 
 <!-- WELLNESS WHEEL -->
@@ -1115,6 +1118,7 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
     <div class="svgbox" id="wh-hist-chart"></div><div id="wh-hist"></div>
   </div>
   <div id="x-wellness"></div>
+  <div id="y-wellness"></div>
 </section>
 
 <!-- RECOVERY -->
@@ -1285,6 +1289,7 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
       <tr><td>Sexual function or libido</td><td class="small">Sleep, stress, blood pressure and testosterone checks, and an evaluation by a clinician, who can discuss approved treatments.</td></tr>
     </tbody></table></div>
   </div>
+  <div id="y-supps"></div>
 </section>
 
 <!-- TRAINING STYLES -->
@@ -1878,6 +1883,7 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
     </div>
   </div>
   <div id="x-health"></div>
+  <div id="y-health"></div>
 </section>
 
 <!-- BODY TYPES -->
@@ -1986,6 +1992,7 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
     <div id="frame-out"></div>
   </div>
   <div id="x-body"></div>
+  <div id="y-body"></div>
 </section>
 
 <!-- TRAINING ACADEMY -->
@@ -2386,6 +2393,7 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
     <div class="card-head"><h3>Recent sessions</h3></div>
     <div class="table-wrap" style="border:0"><table><thead><tr><th>Date</th><th>Type</th><th class="num">Min</th><th class="num">RPE</th><th class="num">Load</th><th></th></tr></thead><tbody id="s-rows"></tbody></table></div>
   </div>
+  <div id="y-log"></div>
 </section>
 
 </main>
@@ -3284,6 +3292,7 @@ function parseTime(s) { const p = String(s).trim().split(":").map(Number); if (p
 function fmtTime(sec) { sec = Math.round(sec); const h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60; return (h ? h + ":" + String(m).padStart(2, "0") : m) + ":" + String(s).padStart(2, "0"); }
 function renderPace() {
   const d = parseFloat($("#pc-d").value), t = parseTime($("#pc-t").value);
+  setTimeout(() => { const el = $("#pace-out"); if (!el || !(t > 0) || el.querySelector(".vdot")) return; const v = d * 1000 / (t / 60), vo2 = -4.6 + 0.182258 * v + 0.000104 * v * v, pct = 0.8 + 0.1894393 * Math.exp(-0.012778 * t / 60) + 0.2989558 * Math.exp(-0.1932605 * t / 60), pk = t / d; el.insertAdjacentHTML("beforeend", `<p class="small vdot" style="margin-top:8px">Estimated VDOT (Daniels running fitness) ≈ <strong>${fmt(vo2 / pct, 1)}</strong>. Training paces: easy ${fmtTime(pk * 1.25)}-${fmtTime(pk * 1.35)}/km · marathon ${fmtTime(pk * 1.12)}/km · threshold ${fmtTime(pk * 1.05)}/km · interval ${fmtTime(pk * 0.97)}/km · repetition ${fmtTime(pk * 0.92)}/km.</p>`); }, 0);
   if (!(t > 0)) { $("#pace-out").innerHTML = `<p class="small muted">Enter a time like 0:28:00 or 28:00.</p>`; return; }
   const perKm = t / d, perMi = t / (d / 1.609344), kmh = d / (t / 3600);
   const D = [["1 mile", 1.609], ["5K", 5], ["10K", 10], ["Half marathon", 21.0975], ["Marathon", 42.195]];
@@ -4037,7 +4046,7 @@ function exportCSV() {
   saveFile(`plate-and-pulse-data-${iso(new Date())}.csv`, rows.join("\n"));
 }
 const BK = [["wlog", "WLOG", v => { WLOG = v; }, () => WLOG], ["food", "FOOD_LOG", v => { FOOD_LOG = v; }, () => FOOD_LOG], ["water", "FOOD_WATER", v => { FOOD_WATER = v; }, () => FOOD_WATER], ["journal", "JOURNAL", v => { JOURNAL = v; }, () => JOURNAL], ["stack", "STACK", v => { STACK = v; }, () => STACK],
-  ["stacklog", "STACKLOG", v => { STACKLOG = v; }, () => STACKLOG], ["labs", "LABS_LOG", v => { LABS_LOG = v; }, () => LABS_LOG], ["p360", "P360", v => { P360 = v; }, () => P360], ["p360h", "P360H", v => { P360H = v; }, () => P360H], ["programs", "PROGRAMS", v => { PROGRAMS = v; }, () => PROGRAMS], ["mealplans", "MEALPLANS", v => { MEALPLANS = v; }, () => MEALPLANS], ["mappers", "MAPPERS", v => { MAPPERS = v; }, () => MAPPERS], ["acad", "ACAD", v => { Object.assign(ACAD, v); }, () => ACAD], ["apple", "APG", v => { Object.assign(APG, v); }, () => APG], ["habits", "HABITS", v => { HABITS = v; }, () => HABITS], ["wheel", "WHEEL", v => { WHEEL = Object.assign({ r: {}, qs: {}, tool: {}, stoic: {}, hist: [], dim: "PHYS" }, v); }, () => WHEEL]];
+  ["stacklog", "STACKLOG", v => { STACKLOG = v; }, () => STACKLOG], ["labs", "LABS_LOG", v => { LABS_LOG = v; }, () => LABS_LOG], ["p360", "P360", v => { P360 = v; }, () => P360], ["p360h", "P360H", v => { P360H = v; }, () => P360H], ["programs", "PROGRAMS", v => { PROGRAMS = v; }, () => PROGRAMS], ["mealplans", "MEALPLANS", v => { MEALPLANS = v; }, () => MEALPLANS], ["mappers", "MAPPERS", v => { MAPPERS = v; }, () => MAPPERS], ["acad", "ACAD", v => { Object.assign(ACAD, v); }, () => ACAD], ["apple", "APG", v => { Object.assign(APG, v); }, () => APG], ["habits", "HABITS", v => { HABITS = v; }, () => HABITS], ["mh", "MH", v => { MH = v; }, () => MH], ["wheel", "WHEEL", v => { WHEEL = Object.assign({ r: {}, qs: {}, tool: {}, stoic: {}, hist: [], dim: "PHYS" }, v); }, () => WHEEL]];
 function backup() { const o = { app: "plate-and-pulse", v: 2, at: new Date().toISOString(), profile: S, log: isSample ? null : LOG, hub: hubDemo ? null : HUB }; BK.forEach(([k, , , get]) => { o[k] = get(); }); saveFile(`plate-and-pulse-backup-${iso(new Date())}.json`, JSON.stringify(o)); }
 function restoreBackup(o) {
   if (o.profile) { Object.assign(S, o.profile); store.set("profile", S); fillProfile(); }
@@ -6878,16 +6887,6 @@ const INJ = [
 ];
 
 /* ===== Cardio: race predictor, plans, HIIT library, walking ladder ===== */
-function renderRace() {
-  const d1 = parseFloat($("#rc-d1").value), t1 = (parseFloat($("#rc-h").value) || 0) * 3600 + (parseFloat($("#rc-m").value) || 0) * 60 + (parseFloat($("#rc-s").value) || 0);
-  if (!(d1 > 0 && t1 > 0)) { $("#rc-out").innerHTML = `<p class="small muted">Enter a recent race or time trial.</p>`; return; }
-  const targets = [["5 km", 5], ["10 km", 10], ["Half marathon", 21.0975], ["Marathon", 42.195], ["1 mile", 1.609]];
-  const rows = targets.map(([n, d]) => { const t = t1 * Math.pow(d / d1, 1.06); return [n, fmtTime(t), fmtTime(t / d) + " /km", fmtTime(t / (d / 1.609)) + " /mi"]; });
-  const vdot = (() => { const v = d1 * 1000 / (t1 / 60); const vo2 = -4.6 + 0.182258 * v + 0.000104 * v * v; const pct = 0.8 + 0.1894393 * Math.exp(-0.012778 * t1 / 60) + 0.2989558 * Math.exp(-0.1932605 * t1 / 60); return vo2 / pct; })();
-  const easy = t1 / d1 * 1.25, tempo = t1 / d1 * 1.08, interval = t1 / d1 * 0.96;
-  $("#rc-out").innerHTML = xTable(["Distance", "Predicted time", "Pace", "Pace"], rows) + `<p class="small" style="margin-top:8px">Riegel formula: T₂ = T₁ × (D₂ ÷ D₁)^1.06. Estimated VDOT (running fitness) ≈ <strong>${fmt(vdot, 1)}</strong>. Training paces from this: easy ${fmtTime(easy)}/km, tempo ${fmtTime(tempo)}/km, intervals ${fmtTime(interval)}/km. Predictions assume you have trained for the longer distance; marathon predictions run optimistic for most people.</p>`;
-}
-const C25K = [["1", "Walk 5 min, then 8 × (60 s jog, 90 s walk), 3 times this week"], ["2", "8 × (90 s jog, 2 min walk)"], ["3", "2 × (90 s jog, 90 s walk, 3 min jog, 3 min walk)"], ["4", "3 min jog, 90 s walk, 5 min jog, 2.5 min walk, 3 min jog, 90 s walk, 5 min jog"], ["5", "5 min jog, 3 min walk, 5 min jog, 3 min walk, 5 min jog → by day 3: 20 min jog"], ["6", "5 jog, 3 walk, 8 jog, 3 walk, 5 jog → by day 3: 25 min jog"], ["7", "25 min jog, 3 times"], ["8", "28 min jog, 3 times"], ["9", "30 min jog, 3 times. You can run 5 km."]];
 const K10 = [["1-2", "3 runs: 30 min easy, 20 min easy + 4 strides, 35 min easy"], ["3-4", "30 easy · 6 × 2 min at 5K effort with 2 min jog · 40-45 min long run"], ["5-6", "35 easy · 20 min tempo (comfortably hard) · 50 min long run"], ["7-8", "35 easy · 5 × 3 min at 10K effort · 55-60 min long run"], ["9", "Taper: 25 easy · 4 × 1 min fast · 30 easy"], ["10", "Race week: 2 short easy runs, then 10 km."]];
 const HIIT = [["Norwegian 4×4", "4 × 4 min at 90-95% max HR, 3 min easy between", "VO₂max; the best-studied protocol", "Hard, 1-2× a week"], ["30/30s", "10-20 × 30 s hard, 30 s easy", "VO₂max with less dread", "Moderate-hard"], ["Tabata", "8 × 20 s all-out, 10 s rest (4 min)", "Anaerobic capacity; only true all-out efforts count", "Very hard"], ["Sprint intervals", "6-10 × 10-20 s sprint, 2-4 min walk", "Power, fast-twitch; low time cost", "Hard, low volume"], ["Hill repeats", "8 × 45-60 s uphill hard, jog down", "Strength-endurance, joint-friendly", "Hard"], ["Tempo run", "20-40 min at 'comfortably hard' (threshold)", "Lactate threshold; race pace durability", "Moderate-hard"], ["Fartlek", "30-45 min with unstructured 1-3 min surges", "Fun aerobic + speed mix", "Moderate"], ["EMOM conditioning", "Every minute on the minute: 10-15 reps of a movement, 12-20 min", "Work capacity with weights", "Moderate"], ["Rower 500s", "6-8 × 500 m hard, 2 min easy", "Full-body power endurance", "Hard"], ["Bike 1-min on/offs", "10 × 1 min hard, 1 min easy", "Simple, low impact", "Moderate-hard"]];
 const WALK = [["1", "5,000-6,000", "Add a 10-min walk after one meal"], ["2", "6,000-7,000", "Walk after two meals"], ["3", "7,000-8,000", "Add a 20-min morning or evening walk"], ["4", "8,000-9,000", "Stand/walk breaks every hour at work"], ["5", "9,000-10,000", "One longer weekend walk (45-60 min)"], ["6+", "10,000-12,000", "Hold here; add incline or pace for fitness, not more steps"]];
@@ -6955,11 +6954,9 @@ MYTHS.push(["Muscle turns to fat when you stop training", "They are different ti
 function buildExpansions() {
   const put = (sel, html) => { const el = $(sel); if (el && !el.dataset.built) { el.dataset.built = "1"; el.innerHTML = html; } };
   put("#x-training", `<div class="grid g2">${xCard("Exercise technique library", `<span id="xl-count"></span>`, `<div class="grid" style="grid-template-columns:1fr auto;gap:8px"><input id="xl-q" type="search" placeholder="Search exercises or muscles" autocomplete="off"><select id="xl-cat" style="width:auto"><option value="">All</option><option>Compound</option><option>Isolation</option><option>Machine</option><option>Core</option><option>Power</option><option>Bodyweight</option><option>Carry</option></select></div><p class="small muted" style="margin:6px 0 10px">Setup, cues, common faults and substitutes for ${EXLIB.length} exercises. ▶ opens a video search.</p><div id="xl-out" style="max-height:620px;overflow:auto"></div>`)}
-    <div class="grid" style="gap:20px">${xCard("Warm-up builder", "general + ramp sets", `<form class="fields" autocomplete="off"><label class="f">Lift type<select id="wu-lift"><option value="lower">Lower body</option><option value="upper">Upper body</option><option value="full">Full body</option></select></label><label class="f">First work set <span class="u-wt">(kg)</span><input id="wu-w" type="number" step="0.5" data-conv="w" value="100"></label><label class="f">Bar weight <span class="u-wt">(kg)</span><input id="wu-bar" type="number" step="0.5" data-conv="w" value="20"></label></form><div id="wu-out" style="margin-top:10px"></div>`)}
+    <div class="grid" style="gap:20px">${xCard("General warm-up and ramp sets", "pairs with the plate calculator on Training styles", `<form class="fields" autocomplete="off"><label class="f">Lift type<select id="wu-lift"><option value="lower">Lower body</option><option value="upper">Upper body</option><option value="full">Full body</option></select></label><label class="f">First work set <span class="u-wt">(kg)</span><input id="wu-w" type="number" step="0.5" data-conv="w" value="100"></label><label class="f">Bar weight <span class="u-wt">(kg)</span><input id="wu-bar" type="number" step="0.5" data-conv="w" value="20"></label></form><div id="wu-out" style="margin-top:10px"></div>`)}
     ${xCard("Injury prevention by joint", "what protects it, what hurts it, when to get help", INJ.map(r => `<details style="margin-bottom:6px"><summary><strong>${r[0]}</strong></summary><dl class="small" style="display:grid;grid-template-columns:100px 1fr;gap:4px 10px;margin:6px 0 0"><dt class="muted">Protects</dt><dd style="margin:0">${r[1]}</dd><dt class="muted">Hurts</dt><dd style="margin:0">${r[2]}</dd><dt class="muted">See someone if</dt><dd style="margin:0">${r[3]}</dd></dl></details>`).join(""))}</div></div>`);
-  put("#x-cardio", `<div class="grid g2">${xCard("Race time predictor and training paces", "Riegel + VDOT", `<form class="fields" autocomplete="off"><label class="f">Recent distance (km)<input id="rc-d1" type="number" step="0.1" value="5"></label><label class="f">Time h<input id="rc-h" type="number" min="0" value="0"></label><label class="f">min<input id="rc-m" type="number" min="0" value="25"></label><label class="f">s<input id="rc-s" type="number" min="0" value="0"></label></form><div id="rc-out" style="margin-top:10px"></div>`)}
-    ${xCard("HIIT and interval protocol library", "pick by goal and tolerance", xTable(["Protocol", "Structure", "Builds", "Effort"], HIIT))}
-    ${xCard("Couch to 5K (9 weeks, 3 runs a week)", "walk/jog progression", xTable(["Week", "Sessions"], C25K) + `<p class="note" style="margin-top:6px">Repeat any week that felt too hard. Jog pace is conversational. Add the walking ladder on other days.</p>`)}
+  put("#x-cardio", `<div class="grid g2">${xCard("HIIT and interval protocol library", "pick by goal and tolerance", xTable(["Protocol", "Structure", "Builds", "Effort"], HIIT))}
     ${xCard("5K to 10K (10 weeks)", "3 runs a week", xTable(["Weeks", "Pattern"], K10))}
     ${xCard("Walking ladder", "the cheapest fat-loss and health tool", xTable(["Week", "Daily steps", "How"], WALK, [1]) + `<p class="note" style="margin-top:6px">Each extra 1,000 steps burns roughly ${fmt(1000 * 0.04 * S.weight / 70 * 1.0)} kcal for you and costs no recovery. Post-meal walks also lower blood-sugar spikes by 20-30%.</p>`)}
     ${xCard("Running form and economy", "small things that save energy", `<ul class="small" style="padding-left:18px;display:grid;gap:5px"><li><strong>Cadence</strong> 170-180 steps per minute for most adults; shorter, quicker steps reduce braking and knee load.</li><li><strong>Land under the hips</strong>, not out in front; a slight forward lean from the ankles.</li><li><strong>Relaxed upper body</strong>: shoulders down, hands loose, arms swing front-to-back.</li><li><strong>Breathe rhythmically</strong> (e.g. 3 steps in, 2 out) on easy runs.</li><li><strong>Strength train</strong> 2× a week: heavy squats, deadlifts, calf raises and single-leg work improve economy 2-8%.</li><li><strong>Shoes</strong>: comfort is the best predictor of injury-free running; rotate two pairs; replace around 600-800 km.</li><li><strong>80/20</strong>: four of every five runs easy. Most recreational runners run easy days too hard and hard days too easy.</li></ul>`)}</div>`);
@@ -6974,14 +6971,12 @@ function buildExpansions() {
     ${xCard("Hydration and electrolytes", "", xTable(["Nutrient", "Daily target", "Sources", "Signs of shortfall"], ELECTRO))}
     ${xCard("Alcohol impact", "", `<form class="fields" autocomplete="off"><label class="f">Drinks per occasion<input id="al-n" type="number" min="0" value="3"></label><label class="f">Type<select id="al-k"><option value="beer">Beer (350 mL, 5%)</option><option value="wine">Wine (150 mL)</option><option value="spirit">Spirit shot (45 mL)</option><option value="cocktail">Cocktail</option></select></label><label class="f">Occasions per week<input id="al-wk" type="number" min="0" step="0.5" value="2"></label></form><div id="al-out" style="margin-top:10px"></div>`)}
     ${xCard("Eating-out playbook", "", EATOUT.map(r => `<details style="margin-bottom:5px"><summary><strong>${r[0]}</strong></summary><p class="small" style="margin:4px 0 0">${r[1]}</p></details>`).join(""))}
-    ${xCard("Smart swaps", "same meal, fewer calories, more protein", xTable(["Instead of", "Try"], SWAPS))}
-    ${xCard("Meal-prep system", "", `<ol class="small" style="padding-left:18px;display:grid;gap:5px"><li><strong>Pick 3 proteins, 3 carbs, 3 vegetables, 2 sauces</strong> for the week. Mix and match; nine meals from twelve ingredients.</li><li><strong>Cook in batches</strong>: sheet-pan proteins and vegetables, a rice cooker or oven tray of potatoes, 30-40 min total.</li><li><strong>Portion by target</strong>: a palm (or weigh once) of protein, a fist of carbs, two fists of vegetables, a thumb of fats; scale to your macros from the Overview.</li><li><strong>Store</strong> 3 days in the fridge, freeze the rest; reheat with a splash of water.</li><li><strong>Keep emergency meals</strong>: canned fish, microwave rice, frozen vegetables, Greek yogurt, protein powder, eggs.</li><li><strong>Plan the treat</strong>: one meal a week you look forward to, logged, not a whole day.</li></ol>`)}</div>`);
+    ${xCard("Smart swaps", "same meal, fewer calories, more protein", xTable(["Instead of", "Try"], SWAPS))}</div>`);
   put("#x-body", xCard("Ideal proportions calculator", "classic bodybuilding ratios from your wrist", `<form class="fields" autocomplete="off"><label class="f">Wrist circumference <span class="u-len">(cm)</span><input id="pr-wrist" type="number" step="0.1" data-conv="l"></label></form><div id="pr-out" style="margin-top:10px"></div>`));
   put("#x-wellness", xCard("Habit builder", "daily check-offs with streaks", `<div id="hb-list" style="display:grid;gap:4px"></div><div style="display:flex;gap:8px;margin-top:8px"><input id="hb-new" type="text" placeholder="Add a habit (e.g. stretch 5 min)" style="flex:1"><button type="button" class="btn small" id="hb-add">Add</button></div><div id="hb-grid" style="margin-top:10px"></div>`));
   // wire
   if ($("#xl-q")) { $("#xl-q").addEventListener("input", renderExLib); $("#xl-cat").addEventListener("change", renderExLib); renderExLib(); }
   if ($("#wu-w")) { ["wu-w", "wu-lift", "wu-bar"].forEach(id => $("#" + id).addEventListener("input", renderWarmup)); renderWarmup(); }
-  if ($("#rc-d1")) { ["rc-d1", "rc-h", "rc-m", "rc-s"].forEach(id => $("#" + id).addEventListener("input", renderRace)); renderRace(); }
   if ($("#rk-out")) { ["rk-act", "rk-veg", "rk-bp", "rk-glu", "rk-fam", "sb-snore", "sb-tired", "sb-obs", "sb-bp"].forEach(id => $("#" + id).addEventListener("input", renderRisk)); renderRisk(); }
   if ($("#al-n")) { ["al-n", "al-k", "al-wk"].forEach(id => $("#" + id).addEventListener("input", renderAlcohol)); renderAlcohol(); }
   if ($("#pr-wrist")) { $("#pr-wrist").addEventListener("input", renderProportions); renderProportions(); }
@@ -6996,8 +6991,237 @@ function buildExpansions() {
 buildExpansions();
 function renderExpansions() { if ($("#wu-out")) renderWarmup(); if ($("#rk-out")) renderRisk(); if ($("#al-out")) renderAlcohol(); if ($("#pr-out")) renderProportions(); }
 
+/* ---------- depth pack: search, progress photos, mental health check, Life's Essential 8, fueling, supplements, training structure, posture, hormones, rowing ---------- */
+
+/* ===== Global search ===== */
+let SRCH = null;
+function buildSearchIndex() {
+  SRCH = [];
+  panels.forEach(p => {
+    const tab = p.dataset.tab, label = p.dataset.label || tab;
+    $$("h3, h4", p).forEach(h => {
+      const card = h.closest(".card") || h.parentElement; const txt = (card ? card.textContent : h.textContent).replace(/\s+/g, " ").trim();
+      SRCH.push({ tab, label, title: h.textContent.trim(), txt: txt.slice(0, 1200).toLowerCase(), el: h });
+    });
+    const ph = $(".panel-head", p); if (ph) SRCH.push({ tab, label, title: label, txt: ph.textContent.replace(/\s+/g, " ").toLowerCase(), el: ph });
+  });
+}
+function runSearch() {
+  const q = $("#gs-q").value.trim().toLowerCase(), out = $("#gs-out");
+  if (q.length < 2) { out.innerHTML = `<p class="small muted">Type at least 2 letters. Searches every tab, card and calculator.</p>`; return; }
+  if (!SRCH) buildSearchIndex();
+  const words = q.split(/\s+/);
+  const hits = SRCH.map(r => { const t = r.title.toLowerCase(); let s = 0; words.forEach(w => { if (t.includes(w)) s += 5; if (r.txt.includes(w)) s += 1; else s -= 10; }); return [s, r]; }).filter(x => x[0] > 0).sort((a, b) => b[0] - a[0]).slice(0, 30);
+  out.innerHTML = hits.length ? hits.map(([, r], i) => { const at = r.txt.indexOf(words[0]); const snip = at >= 0 ? r.txt.slice(Math.max(0, at - 50), at + 90) : ""; return `<button type="button" class="chip" data-gs="${i}" style="display:block;width:100%;text-align:left;border-radius:10px;padding:8px 12px;margin-bottom:6px"><strong>${esc(r.title)}</strong> <span class="small muted">· ${esc(r.label)}</span>${snip ? `<div class="small muted" style="white-space:normal">…${esc(snip)}…</div>` : ""}</button>`; }).join("") : `<p class="small muted">Nothing found for "${esc(q)}".</p>`;
+  out._hits = hits.map(h => h[1]);
+}
+function openSearch() { const d = $("#gs-dlg"); if (typeof d.showModal === "function") d.showModal(); else d.setAttribute("open", ""); $("#gs-q").focus(); runSearch(); }
+(() => {
+  const host = $(".unit-toggle"); if (host) host.insertAdjacentHTML("beforebegin", `<button type="button" class="btn ghost small" id="gs-open" aria-label="Search the dashboard (press /)" title="Search (/)" style="color:inherit;border-color:rgba(255,255,255,.35);display:inline-flex;align-items:center;gap:6px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg><span class="gs-lbl">Search</span></button>`);
+  document.body.insertAdjacentHTML("beforeend", `<dialog id="gs-dlg" aria-label="Search" style="width:min(640px,calc(100vw - 32px));max-height:80vh;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);padding:16px"><div style="display:flex;gap:8px"><input id="gs-q" type="search" placeholder="Search calculators, topics, exercises…" autocomplete="off" style="flex:1"><button type="button" class="btn ghost small" id="gs-close">Close</button></div><div id="gs-out" style="margin-top:12px;max-height:60vh;overflow:auto"></div></dialog>`);
+  $("#gs-open").addEventListener("click", openSearch);
+  $("#gs-close").addEventListener("click", () => $("#gs-dlg").close());
+  $("#gs-q").addEventListener("input", runSearch);
+  $("#gs-out").addEventListener("click", e => { const b = e.target.closest("[data-gs]"); if (!b) return; const r = $("#gs-out")._hits[+b.dataset.gs]; $("#gs-dlg").close(); showTab(r.tab, true); setTimeout(() => { try { const c = r.el.closest("details"); if (c) c.open = true; r.el.scrollIntoView({ block: "center" }); const card = r.el.closest(".card"); if (card) { card.style.outline = "2px solid var(--accent)"; setTimeout(() => { card.style.outline = ""; }, 1800); } } catch (err) {} }, 120); });
+  document.addEventListener("keydown", e => { if ((e.key === "/" && !/input|textarea|select/i.test(document.activeElement.tagName)) || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k")) { e.preventDefault(); openSearch(); } });
+})();
+
+/* ===== Progress photos (IndexedDB, never leaves the browser) ===== */
+const PHDB = {
+  open() { return this._p || (this._p = new Promise((res, rej) => { try { const r = indexedDB.open("pp-photos", 1); r.onupgradeneeded = () => r.result.createObjectStore("photos", { keyPath: "id" }); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); } catch (e) { rej(e); } })); },
+  async tx(mode, fn) { const db = await this.open(); return new Promise((res, rej) => { const t = db.transaction("photos", mode), st = t.objectStore("photos"); const out = fn(st); t.oncomplete = () => res(out && out.result !== undefined ? out.result : out); t.onerror = () => rej(t.error); }); },
+  all() { return this.tx("readonly", st => st.getAll()); }, put(o) { return this.tx("readwrite", st => st.put(o)); }, del(id) { return this.tx("readwrite", st => st.delete(id)); }
+};
+let PHOTOS = [], phURLs = {};
+const phURL = p => phURLs[p.id] || (phURLs[p.id] = URL.createObjectURL(p.blob));
+async function phShrink(file) {
+  try { const bmp = await createImageBitmap(file); const s = Math.min(1, 1400 / Math.max(bmp.width, bmp.height)); const c = document.createElement("canvas"); c.width = Math.round(bmp.width * s); c.height = Math.round(bmp.height * s); c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height); return await new Promise(r => c.toBlob(b => r(b || file), "image/jpeg", 0.85)); } catch (e) { return file; }
+}
+async function renderPhotos() {
+  if (!$("#ph-grid")) return;
+  try { PHOTOS = (await PHDB.all()).sort((a, b) => b.date.localeCompare(a.date)); } catch (e) { $("#ph-grid").innerHTML = `<p class="small muted">Photo storage isn't available in this browser view (private mode or blocked storage).</p>`; return; }
+  $("#ph-count").textContent = PHOTOS.length ? `${PHOTOS.length} saved` : "";
+  $("#ph-grid").innerHTML = PHOTOS.length ? PHOTOS.map(p => `<figure style="margin:0;position:relative"><img src="${phURL(p)}" alt="${esc(p.pose)} photo ${esc(p.date)}" style="width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:8px;background:var(--surface-2)"><figcaption class="small" style="display:flex;justify-content:space-between;gap:4px;margin-top:4px"><span class="mono">${esc(p.date)}</span><span class="muted">${esc(p.pose)}${Number.isFinite(p.kg) ? " · " + fmt(toDispW(p.kg), 1) + " " + wUnit() : ""}</span></figcaption><button type="button" class="btn ghost small" data-phdel="${p.id}" style="position:absolute;top:4px;right:4px;padding:2px 8px" aria-label="Delete photo">×</button></figure>`).join("") : `<p class="small muted">No photos yet. Same spot, same light, same time of day (morning, before eating), same clothing, every 2-4 weeks.</p>`;
+  const opts = PHOTOS.map(p => `<option value="${p.id}">${esc(p.date)} · ${esc(p.pose)}</option>`).join("");
+  ["ph-a", "ph-b"].forEach((id, i) => { const el = $("#" + id), prev = el.value; el.innerHTML = opts; if (prev && PHOTOS.some(p => p.id === prev)) el.value = prev; else if (PHOTOS.length) el.value = (i === 0 ? PHOTOS[PHOTOS.length - 1] : PHOTOS[0]).id; });
+  if (PHOTOS.length >= 2 && $("#ph-a").value === $("#ph-b").value) { $("#ph-a").value = PHOTOS[PHOTOS.length - 1].id; $("#ph-b").value = PHOTOS[0].id; }
+  phCompare();
+}
+function phCompare() {
+  const a = PHOTOS.find(p => p.id === $("#ph-a").value), b = PHOTOS.find(p => p.id === $("#ph-b").value), el = $("#ph-cmp");
+  if (!a || !b || a === b) { el.innerHTML = `<p class="small muted">Save at least two photos to compare.</p>`; $("#ph-ai").hidden = true; return; }
+  const days = Math.round((new Date(b.date) - new Date(a.date)) / 864e5), dk = Number.isFinite(a.kg) && Number.isFinite(b.kg) ? b.kg - a.kg : NaN;
+  el.innerHTML = `<div style="position:relative;max-width:420px;margin:0 auto;aspect-ratio:3/4;border-radius:10px;overflow:hidden;background:var(--surface-2)"><img src="${phURL(a)}" alt="Before" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"><div id="ph-clip" style="position:absolute;inset:0;clip-path:inset(0 0 0 50%)"><img src="${phURL(b)}" alt="After" style="width:100%;height:100%;object-fit:cover"></div><div id="ph-bar" style="position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;box-shadow:0 0 4px #000"></div><span class="pill p-info" style="position:absolute;top:6px;left:6px">${esc(a.date)}</span><span class="pill p-info" style="position:absolute;top:6px;right:6px">${esc(b.date)}</span></div><input id="ph-slide" type="range" min="0" max="100" value="50" aria-label="Before and after slider" style="width:100%;max-width:420px;display:block;margin:8px auto 0"><p class="small" style="text-align:center">${Math.abs(days)} days apart${Number.isFinite(dk) ? ` · ${dk > 0 ? "+" : ""}${fmt(toDispW(dk), 1)} ${wUnit()}` : ""}</p>`;
+  $("#ph-slide").addEventListener("input", e => { const v = e.target.value; $("#ph-clip").style.clipPath = `inset(0 0 0 ${v}%)`; $("#ph-bar").style.left = v + "%"; });
+  cap("sample").then(async sm => { if (sm && sm.limits) { const l = await sm.limits().catch(() => null); $("#ph-ai").hidden = !(l && l.images); } });
+}
+async function phAsk() {
+  const sm = await cap("sample"), a = PHOTOS.find(p => p.id === $("#ph-a").value), b = PHOTOS.find(p => p.id === $("#ph-b").value), out = $("#ph-ai-out"); if (!sm || !a || !b) return;
+  out.innerHTML = `<p class="muted">Comparing…</p>`;
+  try {
+    const r = await sm(`You are a physique coach. Image 1 is from ${a.date}, image 2 from ${b.date} (${a.pose} view). Body weight: ${Number.isFinite(a.kg) ? fmt(a.kg, 1) + " kg" : "unknown"} then ${Number.isFinite(b.kg) ? fmt(b.kg, 1) + " kg" : "unknown"}. Describe visible changes in muscle and fat (waist, shoulders, arms, legs, definition) in 4-6 short bullet points, note if lighting or pose differences limit the comparison, and give 2 practical suggestions. Be encouraging but honest; do not guess body-fat percentage.`, { images: [a.blob, b.blob], modelTier: "default", cache: false });
+    out.innerHTML = `<div class="callout small">${mdLite(r.text || "")}</div>`;
+  } catch (e) { out.innerHTML = `<p class="small muted">${e && e.code === "not_granted" ? "AI comparison isn't allowed in this view." : "Couldn't compare right now."}</p>`; }
+}
+
+/* ===== Mental health check (PHQ-4 + PSS-4) ===== */
+const PHQ4 = ["Feeling nervous, anxious or on edge", "Not being able to stop or control worrying", "Little interest or pleasure in doing things", "Feeling down, depressed or hopeless"];
+const PSS4 = [["How often have you felt unable to control the important things in your life?", 0], ["How often have you felt confident about your ability to handle your personal problems?", 1], ["How often have you felt that things were going your way?", 1], ["How often have you felt difficulties were piling up so high that you could not overcome them?", 0]];
+let MH = store.get("mh", { phq: [], pss: [], hist: [] });
+function renderMH() {
+  if (!$("#mh-phq")) return;
+  const f = ["Not at all", "Several days", "More than half the days", "Nearly every day"], fp = ["Never", "Almost never", "Sometimes", "Fairly often", "Very often"];
+  $("#mh-phq").innerHTML = PHQ4.map((q, i) => `<label class="f">${q}<select data-mhp="${i}"><option value="">Choose</option>${f.map((o, j) => `<option value="${j}" ${MH.phq[i] === j ? "selected" : ""}>${o}</option>`).join("")}</select></label>`).join("");
+  $("#mh-pss").innerHTML = PSS4.map((q, i) => `<label class="f">${q[0]}<select data-mhs="${i}"><option value="">Choose</option>${fp.map((o, j) => `<option value="${j}" ${MH.pss[i] === j ? "selected" : ""}>${o}</option>`).join("")}</select></label>`).join("");
+  mhScore();
+}
+function mhScore() {
+  const p = MH.phq, s = MH.pss, done = a => a.length === 4 && a.every(Number.isFinite);
+  let html = "";
+  if (done(p)) {
+    const anx = p[0] + p[1], dep = p[2] + p[3], tot = anx + dep; const lvl = tot <= 2 ? ["good", "Normal"] : tot <= 5 ? ["info", "Mild"] : tot <= 8 ? ["warn", "Moderate"] : ["bad", "Severe"];
+    html += `<div class="tile"><span class="eyebrow">PHQ-4 total</span><span class="v" style="font-size:1.5rem">${tot}<small>/12</small></span><span class="s"><span class="pill p-${lvl[0]}">${lvl[1]}</span> anxiety ${anx}/6${anx >= 3 ? " (screen positive)" : ""} · mood ${dep}/6${dep >= 3 ? " (screen positive)" : ""}</span></div>`;
+  }
+  if (done(s)) { const t = s.reduce((a, v, i) => a + (PSS4[i][1] ? 4 - v : v), 0); const l = t <= 5 ? ["good", "Low stress"] : t <= 9 ? ["warn", "Moderate stress"] : ["bad", "High stress"]; html += `<div class="tile"><span class="eyebrow">Perceived stress (PSS-4)</span><span class="v" style="font-size:1.5rem">${t}<small>/16</small></span><span class="s"><span class="pill p-${l[0]}">${l[1]}</span></span></div>`; }
+  const flag = done(p) && (p[0] + p[1] >= 3 || p[2] + p[3] >= 3);
+  $("#mh-out").innerHTML = (html ? `<div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr))">${html}</div>` : `<p class="small muted">Answer the questions about the last 2 weeks (PHQ-4) and the last month (PSS-4).</p>`) +
+    (flag ? `<div class="callout" style="margin-top:8px"><strong>A score of 3 or more on either pair suggests talking to a doctor or counsellor.</strong> These are screening questions, not a diagnosis, and they are very treatable. Exercise, sleep and social contact help, but they are not a substitute for care.</div>` : "") +
+    `<p class="note" style="margin-top:8px">If you are thinking about harming yourself or are in crisis: in the US call or text 988 (Suicide &amp; Crisis Lifeline); elsewhere find a free line at findahelpline.com, or call your local emergency number. Answers stay in this browser.</p>`;
+  $("#mh-hist").innerHTML = MH.hist.length ? xTable(["Date", "PHQ-4", "PSS-4"], MH.hist.slice(-8).reverse().map(h => [h.d, h.phq ?? "–", h.pss ?? "–"]), [1, 2]) : "";
+}
+
+/* ===== Life's Essential 8 (AHA cardiovascular health score) ===== */
+function renderLE8() {
+  if (!$("#le-out")) return;
+  const A = analyze(30), c = calc(), g = id => $("#" + id);
+  const pre = (id, v, d = 0) => { const el = g(id); if (!el.dataset.touched && Number.isFinite(v)) el.value = round(v, d); };
+  pre("le-act", Number.isFinite(A.cardioEqPerWk) && A.cardioEqPerWk > 0 ? A.cardioEqPerWk : (A.exerciseMin.avg || NaN) * 7); pre("le-sleep", A.sleep.avg, 1); pre("le-sys", A.bpSys.last7 || A.bpSys.avg); pre("le-dia", A.bpDia.last7 || A.bpDia.avg); pre("le-glu", A.glucose.avg);
+  const act = parseFloat(g("le-act").value), sl = parseFloat(g("le-sleep").value), nonhdl = parseFloat(g("le-nhdl").value), glu = parseFloat(g("le-glu").value), a1c = parseFloat(g("le-a1c").value), sys = parseFloat(g("le-sys").value), dia = parseFloat(g("le-dia").value), dm = g("le-dm").checked, bpmed = g("le-bpmed").checked, nic = +g("le-nic").value, diet = $$("#le-diet input:checked").length;
+  const P = {};
+  P.Diet = !$("#le-diet").dataset.touched && !diet ? NaN : diet >= 8 ? 100 : diet >= 6 ? 80 : diet >= 4 ? 50 : diet >= 2 ? 25 : 0;
+  P["Physical activity"] = !Number.isFinite(act) ? NaN : act >= 150 ? 100 : act >= 120 ? 90 : act >= 90 ? 80 : act >= 60 ? 60 : act >= 30 ? 40 : act >= 1 ? 20 : 0;
+  P["Nicotine"] = Math.max(0, nic - (g("le-shs").checked && nic > 0 ? 20 : 0));
+  P.Sleep = !Number.isFinite(sl) ? NaN : sl >= 7 && sl < 9 ? 100 : sl >= 9 && sl < 10 ? 90 : sl >= 6 && sl < 7 ? 70 : (sl >= 5 && sl < 6) || sl >= 10 ? 40 : sl >= 4 ? 20 : 0;
+  const bmi = c.bmi; P.BMI = bmi < 25 ? 100 : bmi < 30 ? 70 : bmi < 35 ? 30 : bmi < 40 ? 15 : 0;
+  P["Blood lipids"] = !Number.isFinite(nonhdl) ? NaN : nonhdl < 130 ? 100 : nonhdl < 160 ? 60 : nonhdl < 190 ? 40 : nonhdl < 220 ? 20 : 0;
+  P["Blood glucose"] = dm ? (!Number.isFinite(a1c) ? NaN : a1c < 7 ? 40 : a1c < 8 ? 30 : a1c < 9 ? 20 : a1c < 10 ? 10 : 0) : Number.isFinite(a1c) ? (a1c < 5.7 ? 100 : a1c < 6.5 ? 60 : 0) : !Number.isFinite(glu) ? NaN : glu < 100 ? 100 : glu < 126 ? 60 : 0;
+  P["Blood pressure"] = !Number.isFinite(sys) || !Number.isFinite(dia) ? NaN : Math.max(0, (sys < 120 && dia < 80 ? 100 : sys < 130 && dia < 80 ? 75 : sys < 140 && dia < 90 ? 50 : sys < 160 && dia < 100 ? 25 : 0) - (bpmed ? 20 : 0));
+  const vals = Object.values(P).filter(Number.isFinite), score = mean(vals), lvl = score >= 80 ? ["good", "High cardiovascular health"] : score >= 50 ? ["warn", "Moderate"] : ["bad", "Low"];
+  $("#le-out").innerHTML = `<div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap"><div class="tile" style="min-width:180px"><span class="eyebrow">Life's Essential 8</span><span class="v">${Number.isFinite(score) ? fmt(score) : "–"}<small>/100</small></span><span class="s">${vals.length}/8 measured ${Number.isFinite(score) ? `<span class="pill p-${lvl[0]}">${lvl[1]}</span>` : ""}</span></div><div style="flex:1;min-width:220px">${Object.entries(P).map(([k, v]) => `<div class="macro-row" style="grid-template-columns:120px 1fr 34px"><span class="small">${k}</span><div class="bar"><span style="width:${Number.isFinite(v) ? v : 0}%;background:${v >= 80 ? "var(--good)" : v >= 50 ? "var(--warn)" : "var(--bad)"};transition:width .5s"></span></div><span class="mono small">${Number.isFinite(v) ? v : "–"}</span></div>`).join("")}</div></div><p class="note" style="margin-top:8px">The American Heart Association's 8 measures of heart and brain health, each scored 0-100. Activity, sleep, blood pressure and glucose are pre-filled from Apple Health and imports where available; BMI comes from your profile. Fill in non-HDL cholesterol (total minus HDL) from a lab report. A higher score is linked to many more years free of heart disease, stroke and dementia. The diet part uses a quick checklist instead of the full food-frequency questionnaire.</p>`;
+}
+const LE_DIET = ["Vegetables at least twice a day", "Fruit at least once a day", "Whole grains most days", "Beans, nuts or seeds several times a week", "Fish or seafood twice a week", "Mostly olive or other unsaturated oils", "Rarely sugary drinks or sweets", "Rarely processed or red meat", "Low-fat dairy or alternatives daily", "Rarely ultra-processed snacks or fast food"];
+
+/* ===== Workout fueling calculator ===== */
+function renderFuel() {
+  if (!$("#fu-out")) return;
+  const w = S.weight, min = parseFloat($("#fu-min").value) || 60, int = $("#fu-int").value, goal = $("#fu-goal").value, time = +$("#fu-time").value;
+  const hrs = min / 60, hard = int !== "easy";
+  const pre = time >= 3 ? [2 * w, 3 * w] : time >= 2 ? [1 * w, 2 * w] : time >= 1 ? [0.5 * w, 1 * w] : [0.25 * w, 0.5 * w];
+  if (goal === "cut") { pre[0] *= 0.6; pre[1] *= 0.6; }
+  const during = min < 60 ? [0, 0] : min < 90 ? (hard ? [15, 30] : [0, 15]) : min < 150 ? [30, 60] : [60, 90];
+  const fluid = [0.4 * hrs, 0.8 * hrs], na = min >= 90 ? [300 * hrs, 600 * hrs] : [0, 0];
+  const postC = goal === "refuel" ? [1.0 * w, 1.2 * w] : hard && min >= 60 ? [0.5 * w, 1.0 * w] : [0.3 * w, 0.5 * w], postP = 0.3 * w;
+  const r = ([a, b], u = "g") => a === b ? `${fmt(a)} ${u}` : `${fmt(a)}-${fmt(b)} ${u}`;
+  $("#fu-out").innerHTML = xTable(["When", "Carbohydrate", "Protein", "Fluid / sodium", "Example"], [
+    [`Before (${time >= 1 ? time + " h" : "30-60 min"})`, r(pre), time >= 1 ? fmt(0.25 * w) + " g" : "optional 10-20 g", time >= 2 ? "5-7 mL/kg 2-4 h before" : "250-500 mL", time >= 2 ? "Rice or potatoes, lean protein, low fat and fiber" : time >= 1 ? "Oats or bagel with banana and a little yogurt" : "Banana, rice cakes or a sports drink"],
+    ["During", during[1] ? r(during, "g/h") : "Not needed", min >= 120 ? "Optional 5-10 g/h" : "–", `${fmt(fluid[0], 1)}-${fmt(fluid[1], 1)} L total${na[1] ? ` · ${r(na, "mg")} sodium` : ""}`, during[1] > 60 ? "Glucose + fructose drinks or gels (needed above 60 g/h)" : during[1] ? "Sports drink, gels, chews" : "Water"],
+    ["After (within 2 h)", r(postC), `${fmt(postP)} g (about 2.5-3 g leucine)`, "1.25-1.5 L per kg lost", goal === "refuel" ? "Repeat the carbohydrate hourly for 4 h if training again within 8 h" : "Normal meal: protein, carbs, vegetables"]
+  ]) + `<p class="note" style="margin-top:6px">Based on sports-nutrition position stands (ACSM, ISSN). Short or easy sessions need nothing special: total daily intake matters most. Practise race-day fueling in training; the gut adapts. ${goal === "cut" ? "Cutting: keep carbohydrate around training and trim it elsewhere." : ""}</p>`;
+}
+const DIAAS = [["Whole milk / casein", "1.14-1.18"], ["Whey protein", "1.09"], ["Egg (whole, cooked)", "1.13"], ["Chicken breast", "1.08"], ["Beef", "1.11"], ["Soy protein isolate", "0.90-0.98"], ["Pea protein", "0.82"], ["Chickpeas", "0.83"], ["Tofu", "0.97"], ["Cooked rice", "0.59"], ["Wheat (bread)", "0.40-0.48"], ["Almonds", "0.40"], ["Pea + rice blend", "≈0.95-1.0"]];
+const VEGAN = [["Vitamin B12", "Essential. Supplement 25-100 µg a day or 1,000 µg twice a week, or eat fortified foods daily."], ["Protein", "Aim 10-20% higher than omnivore targets; combine legumes, soy, seitan, grains; 30-40 g per meal from mixed sources reaches the leucine threshold."], ["Iron", "Plant (non-heme) iron absorbs less; pair with vitamin C, avoid tea/coffee with meals; test ferritin."], ["Omega-3 (EPA/DHA)", "Algae oil 250-500 mg a day; ALA from flax/chia converts poorly."], ["Vitamin D", "Test; supplement 1,000-2,000 IU in winter or low sun."], ["Calcium", "Fortified plant milks, tofu set with calcium, greens; aim 1,000 mg."], ["Zinc", "Legumes, seeds, whole grains; soaking and sprouting improve absorption."], ["Iodine", "Iodised salt or 150 µg supplement; seaweed varies wildly."], ["Creatine", "Vegans have lower muscle stores and often respond more to 3-5 g a day."]];
+const FODMAP = [["Fermentable oligosaccharides", "Wheat, onions, garlic, beans, lentils", "Sourdough spelt, chives, garlic-infused oil, canned rinsed lentils in small amounts"], ["Disaccharides (lactose)", "Milk, soft cheese, ice cream", "Lactose-free milk, hard cheese, Greek yogurt in small amounts"], ["Monosaccharides (excess fructose)", "Apples, pears, mango, honey, high-fructose syrup", "Berries, citrus, kiwi, banana (firm), maple syrup"], ["Polyols", "Sugar alcohols (sorbitol, xylitol, erythritol in protein bars), stone fruit, mushrooms, cauliflower", "Bars without sugar alcohols, grapes, peppers, carrots"]];
+
+/* ===== Supplements: creatine, evidence grades, interactions, testing ===== */
+function renderCreatine() {
+  if (!$("#cr-out")) return;
+  const w = S.weight, load = $("#cr-load").checked;
+  $("#cr-out").innerHTML = `<div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr))"><div class="tile"><span class="eyebrow">Daily maintenance</span><span class="v" style="font-size:1.5rem">${fmt(Math.max(3, Math.min(5, w * 0.04)), 1)}<small>g</small></span><span class="s">0.03-0.05 g/kg, 3-5 g covers almost everyone</span></div>${load ? `<div class="tile"><span class="eyebrow">Optional loading</span><span class="v" style="font-size:1.5rem">${fmt(w * 0.3)}<small>g/day</small></span><span class="s">5-7 days, split into 4 doses, then maintenance</span></div>` : ""}<div class="tile"><span class="eyebrow">Muscles saturated</span><span class="v" style="font-size:1.5rem">${load ? "≈1" : "≈3-4"}<small>week${load ? "" : "s"}</small></span></div></div><p class="note" style="margin-top:8px">Creatine monohydrate is the most-studied sports supplement: about 5-10% more strength and 1-2 kg extra lean mass over months of training, with good safety data in healthy people. Timing doesn't matter; daily consistency does. Expect 0.5-2 kg of water in muscle early on. It can raise blood creatinine (a kidney test) without harming kidneys, so tell your doctor you take it. Anyone with kidney disease should ask first. Look for third-party testing (below).</p>`;
+}
+const SUPP_GRADES = [["Muscle and strength", "Creatine monohydrate (A), protein powder to hit targets (A), caffeine (A)", "HMB (C, helps mainly beginners/deficits), beta-alanine (B for 1-4 min efforts)", "BCAAs when protein is adequate, testosterone boosters, most 'anabolic' herbs"], ["Endurance", "Caffeine (A), carbohydrate during long sessions (A), nitrate/beetroot (B)", "Beta-alanine (B), sodium bicarbonate (B, GI upset common)", "Most 'fat burners' and oxygen products"], ["Fat loss", "Protein and fiber for fullness (A), caffeine (B, small)", "Green tea extract (C, small)", "Raspberry ketones, garcinia, CLA, detox teas"], ["Sleep and recovery", "Fixing vitamin D or magnesium deficiency (B), tart cherry (C)", "Glycine (C), melatonin for jet lag (B)", "Most proprietary sleep blends"], ["Health and longevity", "Vitamin D if low (A), omega-3 if little fish (B), B12 for vegans (A)", "Multivitamin as insurance (C)", "NMN/NR, resveratrol (no human outcome data yet)"], ["Joints", "Collagen + vitamin C before loading (C)", "Curcumin (C), omega-3 (C)", "Glucosamine for most people (inconsistent)"]];
+const SUPP_INTER = [["St John's wort", "Antidepressants, birth control, blood thinners, many others", "Strong enzyme inducer; can make medicines stop working"], ["Vitamin K, high-dose fish oil, ginkgo, turmeric", "Warfarin and other blood thinners", "Changes clotting; keep intake consistent and tell your doctor"], ["Berberine", "Diabetes drugs, cyclosporine, many others", "Additive blood-sugar lowering; enzyme interactions"], ["Grapefruit (and juice)", "Statins, some blood-pressure drugs", "Raises drug levels"], ["Potassium supplements", "ACE inhibitors, ARBs, spironolactone", "Dangerous high potassium"], ["Calcium, iron, magnesium, zinc", "Thyroid medicine, some antibiotics", "Block absorption; separate by 4 hours"], ["Yohimbine, high-dose caffeine, synephrine", "Stimulant medicines, blood-pressure drugs, MAOIs", "Raises heart rate and blood pressure"], ["Ashwagandha", "Thyroid medicine, sedatives, immunosuppressants", "May raise thyroid hormone; rare liver injury reported"], ["5-HTP, SAM-e", "SSRIs and other serotonergic drugs", "Serotonin syndrome risk"], ["Melatonin", "Sedatives, blood thinners", "Additive drowsiness"]];
+
+/* ===== Training structure ===== */
+const REST = [["Heavy compound (1-5 reps)", "3-5 min", "Full ATP and nervous-system recovery for max strength"], ["Compound for size (6-12)", "2-3 min", "Longer rest lets you lift more volume; more growth than 60 s rests"], ["Isolation (10-20)", "60-90 s", "Smaller muscles recover quickly"], ["Supersets (antagonist)", "0 between, 90 s after the pair", "Saves time with little performance loss"], ["Conditioning circuits", "As programmed (15-60 s)", "Work density and heart rate are the goal"], ["Power / plyometric", "2-3 min", "Quality and speed matter more than fatigue"]];
+const TEMPO = `<p class="small">Tempo is written as 4 numbers, e.g. <strong>3-1-1-0</strong>: 3 s lowering (eccentric), 1 s pause at the bottom, 1 s lifting (concentric), 0 s pause at the top. "X" means lift explosively. Uses: slow eccentrics (3-4 s) for control and tendon health, pauses to kill bounce and build strength at the sticking point, explosive concentrics for power. For growth, any controlled tempo works as long as sets get close to failure; super-slow reps (10 s+) build less muscle.</p>`;
+const ORDER = [["1. Power and skill first", "Jumps, Olympic lifts, sprints while fresh."], ["2. Big compound lifts", "Squat, deadlift, bench, row, press: heaviest loads early."], ["3. Secondary compounds", "Lunges, RDLs, incline press, pull-ups."], ["4. Isolation", "Curls, raises, extensions, calves."], ["5. Core and conditioning", "Last, so they don't tire the stabilisers you need for heavy lifts."], ["Exceptions", "Prioritise a lagging muscle by training it first (Arnold's priority principle); pre-exhaust deliberately if a compound is limited by a helper muscle."]];
+const HOMEWO = {
+  none: { a: ["Push-up (incline if needed)", "Bodyweight squat or split squat", "Glute bridge (single-leg to progress)", "Backpack or towel row under a table", "Pike push-up", "Reverse lunge", "Plank", "Side plank"], note: "Make it harder with slower lowering, pauses, single-leg versions and higher reps to near failure." },
+  bands: { a: ["Banded push-up", "Band squat", "Band row (door anchor)", "Band overhead press", "Band Romanian deadlift", "Band face pull", "Band curl", "Band triceps pushdown", "Pallof press"], note: "Bands are hardest at the top; add pauses there. Stack bands to progress." },
+  db: { a: ["Goblet squat", "Dumbbell Romanian deadlift", "Dumbbell floor or bench press", "One-arm dumbbell row", "Dumbbell shoulder press", "Bulgarian split squat", "Dumbbell hip thrust", "Lateral raise", "Hammer curl", "Overhead triceps extension"], note: "Progress with reps first, then slower tempo, then unilateral work when the dumbbells get light." },
+  hotel: { a: ["Hotel gym: leg press or goblet squat", "Dumbbell bench or push-up", "Cable or dumbbell row", "Dumbbell RDL", "Step-ups on a bench", "Shoulder press", "Treadmill incline walk 10 min"], note: "Hotel gyms often top out at light dumbbells: use 1.5-rep reps, slow eccentrics and supersets." }
+};
+function renderHomeWO() {
+  if (!$("#hw-out")) return;
+  const eq = $("#hw-eq").value, min = +$("#hw-min").value, set = HOMEWO[eq], n = min <= 20 ? 4 : min <= 30 ? 6 : 8, rounds = min <= 20 ? 3 : min <= 30 ? 3 : 4;
+  const list = set.a.slice(0, n);
+  $("#hw-out").innerHTML = `<p class="small">${rounds} rounds, ${min <= 20 ? "40 s on / 20 s off" : "8-15 reps each, minimal rest between exercises, 90 s between rounds"}:</p><ol class="small" style="padding-left:18px">${list.map(x => `<li>${esc(x)} ${xYT(x + " form")}</li>`).join("")}</ol><p class="note">${set.note}</p><button type="button" class="btn ghost small" id="hw-save">Save as a program</button>`;
+  $("#hw-save").addEventListener("click", () => { const p = mkProgram(`Home workout (${$("#hw-eq").selectedOptions[0].textContent}, ${min} min)`, "Generated", [["Circuit", list.map(x => [x, rounds, min <= 20 ? "40 s" : "8-15"])]]); PROGRAMS.unshift(p); savePG(); renderPrograms(); $("#hw-save").textContent = "Saved to Programs"; $("#hw-save").disabled = true; });
+}
+
+/* ===== Body: posture, hormones, genetics ===== */
+const POSTURE = [["Forward head", "Ear well in front of the shoulder from the side.", "Chin tucks 3×10, thoracic extensions over a foam roller, face pulls; raise your screen to eye level."], ["Rounded shoulders", "Knuckles face forward when arms hang; shoulders roll in.", "Doorway pec stretch, band pull-aparts, rows at 2:1 with pressing, wall slides."], ["Anterior pelvic tilt", "Exaggerated low-back arch, belly pushed forward.", "Glute bridges, dead bugs, couch stretch for hip flexors, RKC planks. Some tilt is normal."], ["Posterior pelvic tilt / flat back", "Tucked pelvis, flat lower back.", "Hamstring mobility, hip hinges, back extensions."], ["Knee valgus", "Knees cave in on squats or landing.", "Banded squats, side-lying hip abduction, single-leg balance work, landing drills."], ["Flat feet / overpronation", "Arches collapse when standing.", "Short-foot drill, calf raises, barefoot balance; supportive shoes for long runs if painful."], ["Uneven shoulders / hips", "One side higher in the mirror.", "Often harmless; train unilaterally, check for scoliosis if marked or progressing."]];
+const HORMONES = [["Testosterone", "Muscle, libido, red blood cells, mood (men and women)", "Sleep 7-9 h, lift, keep body fat moderate, avoid big deficits, enough fat and zinc/vitamin D if low", "Chronic sleep loss, obesity, heavy alcohol, opioids, overtraining"], ["Estrogen", "Bone, heart, brain, body-fat distribution, recovery", "Healthy body fat, adequate energy intake", "Very low body fat or energy (missed periods), menopause"], ["Cortisol", "Wake-up, energy mobilisation, stress response", "Morning light, regular sleep, exercise, social connection", "Chronic stress, short sleep, late caffeine, extreme dieting"], ["Insulin", "Stores nutrients; builds muscle and fat", "Lift, walk after meals, fiber, lose visceral fat", "Inactivity, excess refined carbs and alcohol, poor sleep"], ["Growth hormone / IGF-1", "Repair, fat release, growth", "Deep sleep, hard training, adequate protein", "Sleep loss, obesity, alcohol before bed"], ["Thyroid (T3/T4)", "Metabolic rate, temperature, energy", "Adequate calories, iodine, selenium", "Long hard diets (lower T3), iodine deficiency or excess"], ["Leptin", "Signals 'fed' and body-fat level to the brain", "Diet breaks and refeeds temporarily raise it", "Prolonged deficits and low body fat drop it (hunger, lower energy)"], ["Ghrelin", "Hunger", "Protein, fiber, sleep, GLP-1 medicines", "Sleep loss, highly processed foods"], ["Melatonin", "Sleep timing", "Darkness in the evening, morning light", "Bright screens late, shift work, jet lag"], ["Adrenaline", "Fight or flight, fat release", "Training, cold exposure", "Chronic stress and stimulants overuse"]];
+const GENES = [["What DNA tests can reliably tell you", "Ancestry, some disease-risk genes (BRCA, APOE, familial hypercholesterolemia), caffeine metabolism (CYP1A2), lactose tolerance, a few drug-response genes."], ["Fitness genes (ACTN3, ACE)", "Real but small effects. ACTN3 'XX' is more common in endurance athletes and less in sprinters, yet elite sprinters with XX exist. They should not decide how you train."], ["Weight genes (FTO and others)", "Hundreds of variants each add tiny amounts. People with 'risk' variants lose weight just as well with the same diet and exercise."], ["Diet-by-genotype plans", "Randomised trials (e.g. DIETFITS) found no benefit of matching low-fat or low-carb diets to genotype."], ["Trainability", "Responses to the same program vary widely, partly genetic. If you're a low responder to one method, change volume, intensity or type; almost everyone responds to something."], ["Bottom line", "Your training log and body data are far more useful than a gene panel. If you test, share disease-risk results with a doctor or genetic counsellor."]];
+
+/* ===== Rowing ===== */
+function renderRow() {
+  if (!$("#rw-out")) return;
+  const m = parseFloat($("#rw-m").value) || 0, s = parseFloat($("#rw-s").value) || 0, pace = m * 60 + s; if (!(pace > 0)) return;
+  const watts = 2.8 / Math.pow(pace / 500, 3), kcalh = watts * 4 * 0.8604 + 300, ds = [500, 1000, 2000, 5000, 6000, 10000];
+  $("#rw-out").innerHTML = `<div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,130px),1fr))"><div class="tile"><span class="eyebrow">Power</span><span class="v" style="font-size:1.5rem">${fmt(watts)}<small>W</small></span><span class="s">${fmt(watts / S.weight, 2)} W/kg</span></div><div class="tile"><span class="eyebrow">Calories (machine formula)</span><span class="v" style="font-size:1.5rem">${fmt(kcalh)}<small>/h</small></span></div></div>${xTable(["Distance", "Time at this split"], ds.map(d => [d + " m", fmtTime(pace * d / 500)]), [1])}<p class="note" style="margin-top:6px">Concept2 formula: watts = 2.80 ÷ (pace per metre)³. Halving the split time takes 8× the power. A 2,000 m test under 7:00 (men) or 8:00 (women) is strong for recreational rowers. Good technique: legs, then body, then arms on the drive; arms, body, legs on the recovery; about 1:2 drive-to-recovery timing at 18-24 strokes per minute for steady rows.</p>`;
+}
+
+/* ===== build ===== */
+function buildDepth() {
+  const put = (sel, html) => { const el = $(sel); if (el && !el.dataset.built) { el.dataset.built = "1"; el.innerHTML = html; } };
+  put("#y-log", `<div class="grid g2">${xCard("Progress photos", `<span id="ph-count"></span>`, `<p class="small muted">Photos are stored only in this browser (IndexedDB), never uploaded, and are not included in backups. They are shrunk to save space.</p><form class="fields" autocomplete="off"><label class="f">Date<input id="ph-d" type="date"></label><label class="f">Pose<select id="ph-pose"><option>Front</option><option>Side</option><option>Back</option><option>Flexed</option></select></label><label class="f full">Photo<input id="ph-file" type="file" accept="image/*" capture="environment"></label></form><div id="ph-msg" class="small muted"></div><div id="ph-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-top:10px;max-height:520px;overflow:auto"></div>`)}
+    ${xCard("Compare", "drag the slider", `<div class="grid" style="grid-template-columns:1fr 1fr;gap:8px"><label class="f">Before<select id="ph-a"></select></label><label class="f">After<select id="ph-b"></select></label></div><div id="ph-cmp" style="margin-top:10px"></div><button type="button" class="btn ghost small" id="ph-ai" hidden>Ask the AI coach to describe the changes</button><div id="ph-ai-out" style="margin-top:8px"></div><ul class="small muted" style="padding-left:18px;margin-top:10px"><li>Same place, light (window daylight is best), distance and camera height (navel level).</li><li>Morning, after the bathroom, before food or water.</li><li>Relaxed, then one flexed shot; same clothing each time.</li><li>Every 2-4 weeks: daily photos hide change.</li></ul>`)}</div>`);
+  put("#y-wellness", `<div class="grid g2">${xCard("Mental health check-in", "PHQ-4 and PSS-4 screening questions", `<h4 style="margin:0 0 6px">Over the last 2 weeks, how often have you been bothered by:</h4><form class="fields" id="mh-phq" autocomplete="off"></form><h4 style="margin:12px 0 6px">In the last month:</h4><form class="fields" id="mh-pss" autocomplete="off"></form><div style="margin-top:10px"><button type="button" class="btn small" id="mh-save">Save today's result</button></div><div id="mh-out" style="margin-top:10px"></div><div id="mh-hist" style="margin-top:8px"></div>`)}
+    ${xCard("Exercise and mental health", "what the evidence shows", `<ul class="small" style="padding-left:18px;display:grid;gap:5px"><li><strong>Depression:</strong> large meta-analyses (2023-2024) find walking, jogging, yoga and strength training reduce depressive symptoms about as much as therapy or medication for mild-to-moderate cases; higher intensity gives bigger effects.</li><li><strong>Anxiety:</strong> regular aerobic and resistance training lower anxiety; even single sessions help for hours.</li><li><strong>Dose:</strong> benefits appear from about 2.5 hours a week of moderate activity; consistency beats volume.</li><li><strong>Strength training:</strong> 2-3 sessions a week improve mood, self-esteem and sleep regardless of strength gains.</li><li><strong>Outdoors and social:</strong> green space and group training add extra mood benefit.</li><li><strong>Caution:</strong> compulsive exercise, rigid dieting and body-image distress can signal an eating disorder or exercise dependence; seek specialist help.</li><li><strong>Sleep:</strong> poor sleep and low mood feed each other; the Recovery tab's sleep plan is part of mental health care.</li></ul>`)}</div>`);
+  put("#y-health", `<div class="grid g2">${xCard("Heart health score: Life's Essential 8", "American Heart Association", `<form class="fields" autocomplete="off"><label class="f">Moderate activity (min/week)<input id="le-act" type="number" min="0"></label><label class="f">Average sleep (h)<input id="le-sleep" type="number" step="0.1"></label><label class="f">Systolic BP<input id="le-sys" type="number"></label><label class="f">Diastolic BP<input id="le-dia" type="number"></label><label class="f">Non-HDL cholesterol (mg/dL)<input id="le-nhdl" type="number" placeholder="total − HDL"></label><label class="f">Fasting glucose (mg/dL)<input id="le-glu" type="number"></label><label class="f">HbA1c (%)<input id="le-a1c" type="number" step="0.1" placeholder="optional"></label><label class="f">Nicotine<select id="le-nic"><option value="100">Never</option><option value="75">Quit 5+ years ago</option><option value="50">Quit 1-5 years ago</option><option value="25">Quit under 1 year or vape</option><option value="0">Current smoker</option></select></label><label class="small" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="le-shs"> Live with a smoker</label><label class="small" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="le-dm"> Diabetes</label><label class="small" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="le-bpmed"> Take BP medicine</label></form><h4 style="margin:10px 0 6px">Diet checklist (tick what's usually true)</h4><div id="le-diet" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:4px">${LE_DIET.map(x => `<label class="small" style="display:flex;gap:6px;align-items:center"><input type="checkbox"> ${x}</label>`).join("")}</div><div id="le-out" style="margin-top:12px"></div>`)}
+    ${xCard("Blood pressure: how to measure and improve", "", `<ol class="small" style="padding-left:18px;display:grid;gap:4px"><li>Sit quietly 5 minutes, back supported, feet flat, arm at heart level, no talking.</li><li>No caffeine, exercise or smoking for 30 minutes before.</li><li>Cuff on bare skin, correct size (most common error).</li><li>Take 2 readings 1 minute apart, morning and evening, for a week; average them.</li></ol>${xTable(["Category", "Systolic", "Diastolic"], [["Normal", "<120", "and <80"], ["Elevated", "120-129", "and <80"], ["Stage 1", "130-139", "or 80-89"], ["Stage 2", "≥140", "or ≥90"], ["Crisis: seek care", ">180", "or >120"]])}<p class="small" style="margin-top:8px"><strong>Typical drops:</strong> DASH diet −8 to −14 mmHg · losing 5 kg −5 · cutting sodium to under 1,500 mg −5 to −6 · aerobic exercise −4 to −8 · isometric handgrip or wall-sit training −5 to −8 · limiting alcohol −2 to −4.</p>`)}</div>`);
+  put("#y-nutrition", `<div class="grid g2">${xCard("Workout fueling calculator", "before, during and after", `<form class="fields" autocomplete="off"><label class="f">Session length (min)<input id="fu-min" type="number" value="75" min="10" step="5"></label><label class="f">Intensity<select id="fu-int"><option value="easy">Easy / lifting</option><option value="hard" selected>Hard / intervals</option><option value="race">Race or key session</option></select></label><label class="f">Last meal before<select id="fu-time"><option value="0">30-60 min</option><option value="1">1 h</option><option value="2" selected>2 h</option><option value="3">3-4 h</option></select></label><label class="f">Goal<select id="fu-goal"><option value="perf">Performance</option><option value="cut">Fat loss</option><option value="refuel">Train again within 8 h</option></select></label></form><div id="fu-out" style="margin-top:10px"></div>`)}
+    ${xCard("Protein quality (DIAAS)", "how well a protein meets amino-acid needs", xTable(["Protein", "DIAAS"], DIAAS) + `<p class="note" style="margin-top:6px">Score ≥1.0 is excellent, 0.75-0.99 good, under 0.75 can't be relied on alone. Mixing plant proteins (e.g. pea + rice, beans + grains) fills each other's gaps.</p>`)}
+    ${xCard("Vegan and vegetarian checklist", "", xTable(["Nutrient", "What to do"], VEGAN))}
+    ${xCard("Gut trouble: FODMAP basics", "for bloating and IBS", xTable(["Group", "Common triggers", "Usually tolerated swaps"], FODMAP) + `<p class="note" style="margin-top:6px">Low-FODMAP is a 2-6 week elimination then structured reintroduction, ideally with a dietitian; it isn't meant to be permanent. Sudden changes in bowel habits, blood, weight loss or night symptoms need a doctor.</p>`)}
+    ${xCard("Shift work, travel and jet lag", "", `<ul class="small" style="padding-left:18px;display:grid;gap:5px"><li><strong>Night shifts:</strong> eat the main meal before the shift, a light protein-based snack mid-shift, avoid large meals 1-6 am, keep caffeine to the first half of the shift.</li><li><strong>Sleep after nights:</strong> dark glasses on the way home, blackout room, same sleep window each day.</li><li><strong>Jet lag east:</strong> light in the morning at the destination, avoid evening light; melatonin 0.5-3 mg at destination bedtime for a few nights.</li><li><strong>Jet lag west:</strong> evening light, stay up until local bedtime.</li><li><strong>Flights:</strong> water 250 mL per hour, walk the aisle, pack protein (jerky, bars, nuts).</li><li><strong>Hotels:</strong> breakfast buffets: eggs, Greek yogurt, fruit, oats; grocery store over room service.</li><li><strong>Training while travelling:</strong> see the home and hotel workout generator on the Training tab.</li></ul>`)}</div>`);
+  put("#y-supps", `<div class="grid g2">${xCard("Creatine calculator", "the best-evidence supplement", `<label class="small" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="cr-load"> Show optional loading phase</label><div id="cr-out" style="margin-top:8px"></div>`)}
+    ${xCard("Evidence by goal", "A = strong · B = moderate · C = limited", xTable(["Goal", "Worth it", "Maybe", "Skip"], SUPP_GRADES))}
+    ${xCard("Supplement and drug interactions", "check before you stack", xTable(["Supplement", "Interacts with", "Why it matters"], SUPP_INTER) + `<p class="note" style="margin-top:6px">Not a complete list. Tell your doctor and pharmacist everything you take, especially before surgery (stop most herbs 2 weeks before).</p>`)}
+    ${xCard("Choosing a product that is what it says", "", `<ul class="small" style="padding-left:18px;display:grid;gap:5px"><li><strong>Third-party seals:</strong> NSF Certified for Sport, Informed Sport / Informed Choice, USP Verified, BSCG. They test for label accuracy and banned substances.</li><li><strong>Tested athletes:</strong> use only certified products; one contaminated batch can cost a career.</li><li><strong>Avoid proprietary blends</strong> that hide doses, and anything promising drug-like results (weight loss, testosterone, "SARMs").</li><li><strong>Red flags:</strong> sold only on social media, "pharmaceutical grade research chemical", huge discounts, no lot number.</li><li><strong>Single ingredients</strong> (creatine monohydrate, whey, vitamin D) are cheapest and easiest to verify.</li><li><strong>FDA</strong> does not approve supplements before sale; the FDA tainted-products database lists recalled weight-loss and sexual-performance products.</li></ul>`)}</div>`);
+  put("#y-training", `<div class="grid g2">${xCard("Rest periods", "", xTable(["Type of set", "Rest", "Why"], REST))}
+    ${xCard("Tempo and exercise order", "", TEMPO + xTable(["Order", "What goes here"], ORDER))}
+    ${xCard("Home and hotel workout generator", "", `<form class="fields" autocomplete="off"><label class="f">Equipment<select id="hw-eq"><option value="none">Nothing (bodyweight)</option><option value="bands">Resistance bands</option><option value="db" selected>A pair of dumbbells</option><option value="hotel">Hotel gym</option></select></label><label class="f">Time<select id="hw-min"><option value="20">20 min</option><option value="30" selected>30 min</option><option value="45">45 min</option></select></label></form><div id="hw-out" style="margin-top:10px"></div>`)}
+    ${xCard("Grip and forearms", "a strong predictor of healthy aging", `<ul class="small" style="padding-left:18px;display:grid;gap:5px"><li><strong>Carries:</strong> farmer's carry 3-4 × 30-40 m with heavy dumbbells, twice a week.</li><li><strong>Hangs:</strong> dead hangs 3 × max; work up to 60-90 s.</li><li><strong>Holds:</strong> hold the last rep of deadlifts and rows 5-10 s; train double-overhand before using straps.</li><li><strong>Wrist work:</strong> wrist curls and reverse curls 2-3 × 15-20.</li><li><strong>Thick grips</strong> or towels over the bar for pull-ups and rows.</li><li><strong>Test:</strong> grip dynamometer norms are on the Health tab's fitness test card.</li></ul>`)}</div>`);
+  put("#y-body", `<div class="grid g2">${xCard("Posture self-check", "look in a mirror or take side photos", POSTURE.map(r => `<details style="margin-bottom:6px"><summary><strong>${r[0]}</strong></summary><p class="small" style="margin:4px 0"><span class="muted">Signs:</span> ${r[1]}</p><p class="small"><span class="muted">Correctives:</span> ${r[2]}</p></details>`).join("") + `<p class="note">Posture varies a lot between healthy people and is weakly linked to pain. Strength, movement variety and not staying in one position too long matter more than "perfect" posture.</p>`)}
+    ${xCard("Hormones that shape your body", "what each does and what moves it", xTable(["Hormone", "Role", "Helps", "Hurts"], HORMONES))}
+    ${xCard("Genetics and DNA tests", "what's real, what's marketing", GENES.map(r => `<p class="small" style="margin:0 0 6px"><strong>${r[0]}.</strong> ${r[1]}</p>`).join(""))}</div>`);
+  put("#y-cardio", xCard("Rowing split calculator", "split → watts, calories and distance times", `<form class="fields" autocomplete="off"><label class="f">500 m split min<input id="rw-m" type="number" min="1" value="2"></label><label class="f">sec<input id="rw-s" type="number" min="0" max="59" value="0"></label></form><div id="rw-out" style="margin-top:10px"></div>`));
+  // wire
+  if ($("#ph-file")) {
+    $("#ph-d").value = iso(new Date());
+    $("#ph-file").addEventListener("change", async e => { const f = e.target.files[0]; if (!f) return; $("#ph-msg").textContent = "Saving…"; try { const blob = await phShrink(f); const d = $("#ph-d").value || iso(new Date()); const kgv = dayVal("weight", d); const lw = (LOG.w || []).find(x => x.d === d); await PHDB.put({ id: uid(), date: d, pose: $("#ph-pose").value, blob, kg: Number.isFinite(kgv) ? kgv : lw ? lw.kg : NaN }); $("#ph-msg").textContent = "Saved."; e.target.value = ""; renderPhotos(); } catch (err) { $("#ph-msg").textContent = "Couldn't save the photo in this browser."; } });
+    $("#ph-grid").addEventListener("click", async e => { const b = e.target.closest("[data-phdel]"); if (!b) return; if (!confirm("Delete this photo?")) return; await PHDB.del(b.dataset.phdel); renderPhotos(); });
+    ["ph-a", "ph-b"].forEach(id => $("#" + id).addEventListener("change", phCompare)); $("#ph-ai").addEventListener("click", phAsk);
+  }
+  if ($("#mh-phq")) {
+    $("#y-wellness").addEventListener("change", e => { const p = e.target.dataset.mhp, s = e.target.dataset.mhs; if (p != null) MH.phq[+p] = e.target.value === "" ? undefined : +e.target.value; if (s != null) MH.pss[+s] = e.target.value === "" ? undefined : +e.target.value; if (p != null || s != null) { store.set("mh", MH); mhScore(); } });
+    $("#mh-save").addEventListener("click", () => { const ok = a => a.length === 4 && a.every(Number.isFinite); const ph = ok(MH.phq) ? MH.phq.reduce((a, b) => a + b, 0) : null, ps = ok(MH.pss) ? MH.pss.reduce((a, v, i) => a + (PSS4[i][1] ? 4 - v : v), 0) : null; if (ph == null && ps == null) return; const d = iso(new Date()); MH.hist = MH.hist.filter(h => h.d !== d); MH.hist.push({ d, phq: ph, pss: ps }); store.set("mh", MH); mhScore(); });
+    renderMH();
+  }
+  if ($("#le-out")) { $("#y-health").addEventListener("input", e => { if (e.target.closest("#le-out")) return; if (e.target.id && e.target.id.startsWith("le-")) e.target.dataset.touched = "1"; if (e.target.closest("#le-diet")) $("#le-diet").dataset.touched = "1"; renderLE8(); }); renderLE8(); }
+  if ($("#fu-out")) { ["fu-min", "fu-int", "fu-time", "fu-goal"].forEach(id => $("#" + id).addEventListener("input", renderFuel)); renderFuel(); }
+  if ($("#cr-out")) { $("#cr-load").addEventListener("change", renderCreatine); renderCreatine(); }
+  if ($("#hw-out")) { ["hw-eq", "hw-min"].forEach(id => $("#" + id).addEventListener("input", renderHomeWO)); renderHomeWO(); }
+  if ($("#rw-out")) { ["rw-m", "rw-s"].forEach(id => $("#" + id).addEventListener("input", renderRow)); renderRow(); }
+}
+buildDepth();
+onShow.log = (prev => () => { if (prev) prev(); renderPhotos(); })(onShow.log);
+function renderDepth() { renderLE8(); renderFuel(); renderCreatine(); renderRow(); }
+
 /* ---------- wiring ---------- */
-function renderAll() { renderOverview(); renderORM(); renderCardio(); renderLog(); renderMeals(); renderStandards(); renderPlates(); renderHealthCalc(); renderHub(); renderSweat(); renderPrograms(); renderWorkout(); renderProgress(); renderFoodLog(); renderStack(); renderLabs(); renderJournal(); renderA360(); renderWellness(); renderApple(); renderHealthStrip(); renderExpansions(); renderGoalBF(); renderCaffeine(); renderCortisol(); renderFTP(); renderCSS(); renderFrame(); $("#maf-out").textContent = 180 - S.age; }
+function renderAll() { renderOverview(); renderORM(); renderCardio(); renderLog(); renderMeals(); renderStandards(); renderPlates(); renderHealthCalc(); renderHub(); renderSweat(); renderPrograms(); renderWorkout(); renderProgress(); renderFoodLog(); renderStack(); renderLabs(); renderJournal(); renderA360(); renderWellness(); renderApple(); renderHealthStrip(); renderExpansions(); renderDepth(); renderGoalBF(); renderCaffeine(); renderCortisol(); renderFTP(); renderCSS(); renderFrame(); $("#maf-out").textContent = 180 - S.age; }
 $("#profile").addEventListener("input", () => { readProfile(); renderAll(); });
 $("#planner").addEventListener("input", () => { readProfile(); renderPlanner(calc()); });
 $("#adapt").addEventListener("input", renderAdapt);
