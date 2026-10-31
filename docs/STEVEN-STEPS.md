@@ -4,7 +4,7 @@ Same list as the Action Desk page (https://claude.ai/artifact/9S8G2ZhhqP1iUsPZrP
 Includes every connection that still has to be made. Already done: Lofty key (54 leads syncing), 14 failed routines re-run, both dashboards updated (cycle 11), Remote Control card built, one-command Mac script, failover with a $25 OpenRouter cap, connection plan; your USC answers and personal DRE are saved.
 research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox iMessage are connected; the five research-only routines are already off.
 
-## Start here (2026-10-27) — ONE paste, then the short list it prints
+## Start here (2026-10-31) — ONE paste, then the short list it prints
 
 Steven: *"fix everything not working and simplify whatever steps required of me for setup via scripts that I can cut and
 paste into my mac terminal. make this easy and simple and minimal action for me."*
@@ -12,8 +12,10 @@ paste into my mac terminal. make this easy and simple and minimal action for me.
 **Mac 1 (plugged in), Terminal, one line — press Command + Space, type Terminal, Enter, then paste:**
 
 ```
-cd ~/Repo 2>/dev/null || git clone -q -b claude/gracious-newton-4hpfco https://github.com/chitown034/Repo.git ~/Repo; cd ~/Repo && git fetch -q origin && { REPO_SYNC_BRANCH=claude/gracious-newton-4hpfco bash scripts/repo-sync.sh --quiet || git checkout -q claude/gracious-newton-4hpfco; }; bash setup.sh
+cd ~/Repo 2>/dev/null || git clone -q -b claude/stoic-cori-pvn3f8 https://github.com/chitown034/Repo.git ~/Repo; cd ~/Repo && git fetch -q origin && { REPO_SYNC_BRANCH=claude/stoic-cori-pvn3f8 bash scripts/repo-sync.sh --quiet || git checkout -q claude/stoic-cori-pvn3f8; }; git pull -q --ff-only origin claude/stoic-cori-pvn3f8; bash setup.sh
 ```
+
+(2026-10-31: the paste now tracks `claude/stoic-cori-pvn3f8` — the gracious-newton work was merged into it on 2026-10-31 via PR #3, so it is the one branch the routines, the Mac and the 6D Brain all read.)
 
 That one line replaces every earlier paste on this page (`connect-all.sh`, `fix-mine.sh`, `go.sh`, `mac-bootstrap.sh` —
 `setup.sh` runs the two that still matter, in the right order, and skips what is already done). It asks for each key
@@ -28,6 +30,7 @@ changed or asked: `bash setup.sh --check`. Run it again any time; it only does w
 
 **Only you, after the paste (the REPORT prints the same list; each is one screen):**
 
+0. GitHub, two clicks (step 1g): github.com/chitown034/Repo → Settings → General → Danger Zone → Change visibility → Private. The repo is still public as of 2026-10-31; the cloud session was not allowed to flip it.
 1. Phone: text `connect @vanessa-shearrill` to +1 650 484 9720 (links the iMessage line: morning text + voice note).
 2. Zoho CRM → Setup → Security Control → Profiles → your profile → Developer Permissions → tick **Zoho CRM API Access**
    (the keys are already on the Mac from the paste; this tick is the whole 403 fix).

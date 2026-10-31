@@ -998,8 +998,8 @@
    "lead": "competitive-intelligence-analyst",
    "role": "Weekly public-page check of the rivals in context/competitors.md; dated snapshot; reports only what changed. Hand-written: .claude/agents/competitor-watch.md (2",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Regina",
+    "starts_from": "wiki/ai-team/desk-seats.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"competitor watch Weekly public-page check of the rivals\"",

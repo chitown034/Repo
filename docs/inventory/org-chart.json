@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-27T13:08:49Z",
+ "generated": "2026-10-31T19:03:10Z",
  "seats": [
   {
    "name": "Steve",
@@ -108,7 +108,7 @@
   },
   {
    "name": "Derek",
-   "role": "CTO Sam, Naomi, Integration Engineer (owns OmniRoute failover +",
+   "role": "CTO Nova (Coverage & Process Auditor, reports to Owen, new 2026-",
    "kind": "tree"
   },
   {
@@ -368,14 +368,26 @@
    "showing",
    "tour",
    "offer",
-   "house hunt"
+   "house hunt",
+   "buyer checklist",
+   "moving checklist",
+   "walk-through checklist",
+   "first year homeowner",
+   "house hunting kit"
   ],
   "Marguerite": [
    "listing",
    "seller",
    "list price",
    "cma",
-   "staging"
+   "staging",
+   "staging checklist",
+   "home prep",
+   "declutter",
+   "curb appeal",
+   "photo day",
+   "showing ready",
+   "seller checklist"
   ],
   "Maxwell": [
    "coaching",
@@ -495,7 +507,21 @@
    "city stats",
    "redfin",
    "caaspp",
-   "community ranking"
+   "community ranking",
+   "demographics",
+   "median age",
+   "population",
+   "employers",
+   "unemployment",
+   "mello-roos",
+   "cfd",
+   "special assessment",
+   "tax rate",
+   "lowest taxes",
+   "transfer tax",
+   "sales tax",
+   "zip code",
+   "area brief"
   ],
   "Rosa": [
    "pcs",
@@ -674,7 +700,18 @@
    "cap",
    "stock award",
    "sponsor",
-   "lpt growth pod"
+   "lpt growth pod",
+   "lpt policy",
+   "p&p",
+   "cabrokers",
+   "managing broker",
+   "broker of record",
+   "bill hays",
+   "ask a broker",
+   "48-hour upload",
+   "funding request",
+   "broker signature",
+   "dba"
   ],
   "Wren": [
    "referral ledger",
@@ -923,7 +960,23 @@
    "sweep",
    "what is missing",
    "process gap",
-   "health check"
+   "health check",
+   "process coverage",
+   "coverage register",
+   "which doc is stale",
+   "who writes"
+  ],
+  "Sienna": [
+   "bland",
+   "ai call",
+   "call center",
+   "voice agent",
+   "ai isa",
+   "dial",
+   "call queue",
+   "tcpa consent",
+   "voicemail drop",
+   "phone follow-up"
   ],
   "Isabel": [
    "loan processing",

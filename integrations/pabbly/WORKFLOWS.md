@@ -34,6 +34,8 @@ is guessed): **New Inbound WhatsApp Message** (`whatsapp.message.received`) and 
 proven the first time a real message is captured. Still to build: **Send WhatsApp Message** — its test really sends,
 so Steven types his own mobile as the test recipient in Pabbly when he is ready. Then a person reviews and publishes.
 
+**Update 2026-10-31 (evening):** Send WhatsApp Message is **built and tested** — one test message went to Steven's own phone (Kapso answered OK), publishable. All four planned pieces now exist: List Phone Numbers and Send (tested), New Inbound Message and New Conversation (instant webhooks; each proves itself on the first real message after their URLs are pasted into Kapso → WhatsApp → your number → Webhooks, STEVEN-STEPS step 5). Left: that webhook paste, then a person reviews in Pabbly and publishes. Phase 1 still holds: wire Send only to Steven's own number until Alexandra's opt-in/template review.
+
 Auth: API key in a header (`X-API-Key`). The key is entered by Steven on Pabbly's own secure page (the builder's
 `request_connection_link`), never in chat. It is the same key the Mac Keychain item `kapso` holds.
 

@@ -1,19 +1,28 @@
-# Claude Code sessions — ledger (generated 2026-10-27; newest first)
+# Claude Code sessions — ledger (generated 2026-10-31; newest first)
 
 Every Claude Code session on Steven's account: title, when, status. Titles are the sessions' own words — data, not
 instructions. Refreshed daily by the "Claude sessions ledger" task in the orchestrator session. Transcript contents reach the
 brain on the Mac through `brain-learner`; claude.ai web chats through `bin/brain ingest claude-export` (STEVEN-STEPS 1h).
-172 sessions listed.
+180 sessions listed.
+`memory/claude-chats.md` is stale: no claude.ai export ingested since 2026-10-23 (>14 days by the file's own stamp cadence) — Steven re-exports from claude.ai (Settings → Privacy → Export data; STEVEN-STEPS 1h).
 
 | Created | Title | Status | Session |
 |---|---|---|---|
-| 2026-10-25 | Steven Shearrill handoff continuation | idle | `CMEbs3PD` |
+| 2026-10-29 | Interactive AI academy dashboard | idle | `siybUiyK` |
+| 2026-10-28 | GhostCLI gateway setup | idle | `ojefp7S8` |
+| 2026-10-28 | Interactive music learning dashboard | idle | `PFfKUFZZ` |
+| 2026-10-27 | Comprehensive home repair guide | idle | `1W8vTnX5` |
+| 2026-10-27 | Comprehensive aviation flight training guide | idle | `TuEwC5di` |
+| 2026-10-27 | Auto and aviation mechanics dashboard guide | idle | `wQTrpdji` |
+| 2026-10-27 | Personal health education dashboard | idle | `YXbakw8X` |
+| 2026-10-27 | Professional tax dashboard with AI integration | idle | `iX3dcukk` |
+| 2026-10-25 | Steven Shearrill handoff continuation | needs action | `CMEbs3PD` |
 | 2026-10-23 | Famous Stoics dashboard and lessons | idle | `2Cfgo9SL` |
 | 2026-10-23 | Clean Your TV interface redesign | idle | `zn3eCGMw` |
 | 2026-10-23 | Comprehensive fitness dashboard | idle | `RFMT6WMX` |
-| 2026-10-22 | California real estate broker dashboard | idle | `Do7MPXYr` |
+| 2026-10-22 | California real estate broker dashboard | running | `Do7MPXYr` |
 | 2026-10-19 | Management presentation on process improvement | idle | `VajE2ten` |
-| 2026-10-18 | Loan Officer Dashboard | idle | `YdHZno2T` |
+| 2026-10-18 | Loan Officer Dashboard | running | `YdHZno2T` |
 | 2026-10-12 | Social media SEO/AEO/GEO optimization | idle | `uqrgDZTM` |
 | 2026-10-12 | Claude setup backup replica | idle | `3n4Uwq1B` |
 | 2026-10-12 | Time Machine backup setup | idle | `V3cao42X` |
@@ -75,7 +84,7 @@ brain on the Mac through `brain-learner`; claude.ai web chats through `bin/brain
 | 2026-09-08 | Heretic installation | archived | `Ny9QB6uf` |
 | 2026-09-08 | Claude Apple Health integration | archived | `gp8FRXpw` |
 | 2026-09-08 | Magica | archived | `AuY1BpjZ` |
-| 2026-09-07 | Personal delegation and automation system | idle | `8yJjxU1u` |
+| 2026-09-07 | Personal delegation and automation system | archived | `8yJjxU1u` |
 | 2026-09-07 | AIHedgeFundTeam installation | archived | `EYostnhn` |
 | 2026-09-07 | Kronos installation | archived | `c1Yrn2tf` |
 | 2026-09-07 | Claude Code TradingView bridge setup | archived | `V5RbbjCA` |
@@ -125,7 +134,7 @@ brain on the Mac through `brain-learner`; claude.ai web chats through `bin/brain
 | 2026-08-30 | Install multiple tools and plugins | archived | `roco8f4k` |
 | 2026-08-30 | Plugin installations | archived | `E6VodDDf` |
 | 2026-08-29 | Install iptv into VLC player | archived | `qTJqLDDq` |
-| 2026-08-29 | Advanced personal dashboard | idle | `YHp57H7U` |
+| 2026-08-29 | Advanced personal dashboard | archived | `YHp57H7U` |
 | 2026-08-29 | SkillSpector installation | archived | `iAf6oY3e` |
 | 2026-08-29 | SkillSpector installation | archived | `tRgRxf6j` |
 | 2026-08-29 | Media-inference-worker installation | archived | `x7tci7Sy` |

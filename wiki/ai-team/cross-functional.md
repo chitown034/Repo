@@ -21,8 +21,8 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Elena | security, credential, password, key, token, access, breach, privacy, pii, data risk, backup, reverse engineer, reverse engineering, pairing link | `docs/` |
 | Elon | feasibility, architecture, build, engineer, prototype, integration cost, refactor, brain, second brain | `brain/README.md` |
 | Harrison | loan, mortgage, va, fha, usda, irrrl, jumbo, non-qm, conventional, rate, refinance, pre-approval, dti, ltv, assessor, apn, property tax, piti, amortization, payment scenario, loan scenario, tax sheet | `wiki/mortgage-programs/` |
-| Gwen | buyer, showing, tour, offer, house hunt | `wiki/real-estate-playbooks/` |
-| Marguerite | listing, seller, list price, cma, staging | `wiki/real-estate-playbooks/` |
+| Gwen | buyer, showing, tour, offer, house hunt, buyer checklist, moving checklist, walk-through checklist, first year homeowner, house hunting kit | `wiki/real-estate-playbooks/` |
+| Marguerite | listing, seller, list price, cma, staging, staging checklist, home prep, declutter, curb appeal, photo day, showing ready, seller checklist | `wiki/real-estate-playbooks/` |
 | Maxwell | coaching, coach, weekly review, accountability | `wiki/ai-team/mentors-and-benches.md` |
 | Kevin | personal development, habit, 11-dimension, discipline, mindset, singles event, speed dating, social event | `wiki/ai-team/mentors-and-benches.md` |
 | James | family office, estate, trust, wealth plan, legacy | `wiki/ai-team/mentors-and-benches.md` |
@@ -36,16 +36,16 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Meeting Scribe | meeting recap, recap, meeting notes, action items, fieldy, zoom, meeting minutes, debrief | `wiki/ai-team/desk-seats.md` |
 | Maya | market data, median price, zip code, neighborhood, school, schools, days on market, months of supply, inventory, comps, city stats, redfin, caaspp, community ranking, demographics, median age, population, employers, unemployment, mello-roos, cfd, special assessment, tax rate, lowest taxes, transfer tax, sales tax, zip code, area brief | `wiki/real-estate-playbooks/` |
 | Rosa | pcs, military, base, bah, relocation, orders, scra, camp pendleton, miramar, coronado, march arb, deployment, rent buy or wait, rent vs buy, duty radius, bah affordability, breakeven, military objection, military & relocation pod | `wiki/real-estate-playbooks/military-relocation.md` |
-| Quincy | lofty, pabbly, integration, connector, crm sync, import leads, export leads, webhook, zoho lofty, smart plan | `integrations/CONNECTIONS.md` |
-| Owen | autopilot, sweep, auto task, follow-up task, dedupe, daily automation, launchpad, mission, push button, run everything, monday kickoff, friday wrap, automation & ai pod | `docs/AUTOMATION-MAP-2026-10-20.md` |
+| Quincy | lofty, pabbly, integration, connector, crm sync, import leads, export leads, webhook, zoho lofty, smart plan command deck feed, live feed, deck relay, lofty live | `integrations/CONNECTIONS.md` |
+| Owen | autopilot, sweep, auto task, follow-up task, dedupe, daily automation, launchpad, mission, push button, run everything, monday kickoff, friday wrap, automation & ai pod automation control, orchestrator, what runs automatically, job schedule | `docs/AUTOMATION-MAP-2026-10-20.md` |
 | Beatrice | dre, broker supervision, trust account, file review, license renewal, e&o, record retention, broker compliance | `wiki/mortgage-programs/disclosure-timing.md` |
 | Paula | probate, trust sale, iaea, court confirmation, overbid, short sale, foreclosure, executor, estate sale | `wiki/real-estate-playbooks/` |
 | Riley | alliance, cpa, attorney, financial planner, partner, lunch and learn, professional network, co-marketing | `wiki/real-estate-playbooks/referral-reciprocity.md` |
-| Ingrid | training, academy, role-play, roleplay, quiz, drill, script practice, lesson, onboarding agent | `wiki/ai-team/mentors-and-benches.md` |
+| Ingrid | training, academy, role-play, roleplay, quiz, drill, script practice, lesson, onboarding agent training hub, curriculum, study plan, exam prep, dre exam, continuing education, ce hours, quiz me, mock exam course material, chapter, practice test, teach me, foundational law | `wiki/ai-team/mentors-and-benches.md` |
 | Steve | draft, drafts, inbox triage, follow-up draft, digital twin, tomorrow prep, meeting brief | `projects/ai-team.md` |
 | Winston | car forms, c.a.r. forms, rpa, contingency removal, nbp, request for repair, transaction qa, file audit, form library, tds, spq, avid, forms tutor, clause by clause, forms matrix, form pdf, zipform, which forms, forms hub, skyslope, skyslope forms, when needed matrix, when-needed, required forms, forms checklist, deal type forms, 548 forms, skyslope library, library copies, lpt realty forms, form lookup | `wiki/real-estate-playbooks/transaction-stages.md` |
 | Sterling | 5-star, five star, client experience, service standard, ritz, delight, client preferences, nps, after-care, concierge service, value add, client experience pod | `wiki/real-estate-playbooks/buyer-process.md` |
-| Juliet | escalation, service recovery, blown closing, denied loan, failed appraisal, angry client, honors, unhappy client, complaint | `wiki/real-estate-playbooks/transaction-stages.md` |
+| Juliet | escalation, service recovery, blown closing, denied loan, failed appraisal, angry client, honors, unhappy client, complaint stale work, overdue backlog, escalation digest | `wiki/real-estate-playbooks/transaction-stages.md` |
 | Imani | pcs, military family, base, bah, relocation briefing | `wiki/real-estate-playbooks/military-relocation.md` |
 | Logan | lpt, lpt realty, hybridshare, revenue share, downline, recruiting, recruit, business builder, brokerage partner, cap, stock award, sponsor, lpt growth pod, lpt policy, p&p, cabrokers, managing broker, broker of record, bill hays, ask a broker, 48-hour upload, funding request, broker signature, dba | `wiki/real-estate-playbooks/referral-reciprocity.md` |
 | Wren | referral ledger, reciprocal referral, referral fee, partner tier | `wiki/real-estate-playbooks/referral-reciprocity.md` |
@@ -71,7 +71,10 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Aria | 7-star, seven star, anticipate, anticipation, friday pulse, status update, response time, sla, response standard, homeowners exemption, supplemental tax, moving kit | `wiki/ai-team/desk-seats.md` |
 | Kai | kaizen, bottleneck, capacity, scale, scalability, process improvement, workload, hire trigger, efficiency, automation coverage | `wiki/ai-team/desk-seats.md` |
 | Sloane | doc screener, screen document, document review, fine print, hidden clause, clause, hidden fee, prelim, title report, cc&rs, hoa documents, closing disclosure, loan estimate, lease review, contract review, deadline extraction | `wiki/ai-team/desk-seats.md` |
-| Nova | coverage, uncovered, who owns, owner for, sync status, is it synced, live data, sweep, what is missing, process gap, health check, process coverage, coverage register, which doc is stale, who writes | `wiki/ai-team/desk-seats.md` |
+| Nova | coverage, uncovered, who owns, owner for, sync status, is it synced, live data, sweep, what is missing, process gap, health check, process coverage, coverage register, which doc is stale, who writes self-heal, failing health check | `wiki/ai-team/desk-seats.md` |
+| Sienna | bland, ai call, call center, voice agent, ai isa, dial, call queue, tcpa consent, voicemail drop, phone follow-up | `wiki/ai-team/desk-seats.md` |
+| Dax | role play, role-play, roleplay, spar, sparring, practice call, objection drill, mock call, rehearse | `wiki/ai-team/desk-seats.md` |
+| Regina | new law, new laws, regulation, effective date, legislation, reference library, statute, ordinance, what changed | `wiki/ai-team/desk-seats.md` |
 | Isabel | loan processing, processor, conditions, underwriting conditions, document checklist, voe, vod, application date, loan estimate, le deadline, appraisal order, intent to proceed | `wiki/mortgage-programs/` |
 | Reyes | closing disclosure, cd timing, trid, consummation, rate lock, lock expiration, funding, rescission, signing appointment, clear to close | `wiki/mortgage-programs/` |
 

@@ -223,3 +223,74 @@ all 29 California Policies & Procedures (8/19/2025) as searchable rules. Automat
 on new escrows and listings, final file 48 hours before COE, funding-request check at close, CE proof 15 days
 before renewal, broker-only signature flag (COBR, TOBR, COL, RFA, CI, CDA, MLSA, SELI) in the When-Needed
 Matrix, AVID and upload health checks. Beatrice enforces; Alexandra checks advertising. Vanessa tool: `lpt_policy`.
+
+## Client checklists (addition, 2026-10-31)
+
+The Broker Command Center adds 22 client-facing checklists (242 items), tracked per client with copy,
+Gmail draft, tasks and AI tailoring. Marguerite owns the 12 seller lists: 8-weeks-out home prep, declutter
+and depersonalize, repairs before photos, deep clean, staging room by room, curb appeal, photo and video day,
+showing-ready routine, reviewing offers, during escrow, move-out and closing day, vacant-home care. Gwen owns
+the 10 buyer lists: getting ready, house-hunting day kit, making an offer, inspection period, keeping the loan
+on track, moving preparation, final walk-through, closing and first week, first-year homeowner, military PCS /
+remote purchase. The listing, buyer, escrow and close missions hand the right list to the client at the right
+moment. Vanessa tool: `client_checklists`.
+
+## Sienna — AI Voice ISA (Bland.ai call center)
+
+Added 2026-10-31. Reports to Priya; member of the Growth & Marketing and Buyer pods.
+Runs the Broker Command Center **AI Call Center** (Clients → AI Call Center): eight call playbooks
+(speed-to-lead, follow-up, appointment confirmation, no-show rebook, open-house follow-up, seller inquiry,
+past-client check-in, mortgage check-in), a daily queue built from pipeline rules, and Bland.ai dialing either
+direct from the browser (key kept in local storage only) or through a Pabbly relay. Hard gates before every call:
+recorded prior express written consent for AI/automated calls, not on DNC, 8 AM–9 PM in the recipient's time
+zone, one call a day and three a week per contact; every opening identifies Sienna as an AI assistant and says
+the call may be recorded. Results (summary, transcript, recording, outcome) are applied to the contact: appointments
+move the stage and create confirmation tasks, callbacks become tasks, stop requests flip the contact to DNC.
+Never quotes rates or gives legal or tax advice. Vanessa tool: `ai_call_center`. Mission: *AI call sprint*.
+
+## Dax — Live Role-Play Sparring Partner
+
+Added 2026-10-31. Reports to Celeste; member of the Coaching pod.
+Plays the client in the Broker Command Center **Live Role Play** (Training → Live Role Play): graded sparring
+against all 390 scripts and 846 scenarios, with persona, temperament, channel (phone, in person, video, text)
+and difficulty (1–5) controls; the script on glass with live line suggestions from the library; objection
+injection; voice out (speech synthesis) and voice in (browser speech recognition); hints from Ingrid (−5 after
+two); a six-point grade (listening, discovery, script fidelity, objection handling, compliance, close) with a
+compliance cap at 59 for fair-housing, legal/tax/rate advice, promised outcomes, touring without a BRBC or
+disparaging another agent; debriefs (what the client was thinking, best line, say-this-instead); the daily
+three-script drill picked by date; streaks and weak-skill tracking. Three 85s in a row raise the difficulty;
+three grades under 65 book a Celeste coaching review. Vanessa tool: `role_play`. Mission: *Sparring week*.
+
+## Regina — Regulatory Watch Analyst
+
+Added 2026-10-31. Reports to Alexandra; member of the Compliance & Risk and Coaching pods.
+Keeps the **New Rules & Laws** desk inside the Training & Regulations Hub: 113 tracked California (64) and
+federal (49) changes from 2024 to 2027 — title, bill or rule, effective date, status (in effect, upcoming,
+proposed, vacated, expired), area, roles affected (agent, broker, TC, MLO), what changed, what to do, forms,
+penalty, source and confidence. Turns each Do list into dated tasks (Beatrice), auto-tasks upcoming effective
+dates 45 days out, tracks acknowledgments by role, triages law headlines from the weekly Headline News into
+the desk, and curates the 132-source **Reference Library** (federal, state, LA/OC/RV/SD local, association),
+flagging entries that need link or fact verification. Vanessa tools: `new_laws`, `reference_library`.
+Mission: *Quarterly regulatory review*.
+
+## Automation Control (Owen, with Nova and Juliet)
+
+Added 2026-10-31. The Broker Command Center orchestrator runs eight jobs on their own cadence while the
+dashboard is open, instead of autopilot running only on the first open of the day: autopilot with every sweep
+(hourly), TidyCal sync (every 2 h, when connected), self-healing (hourly: every failing health check becomes a
+task for the seat the router picks, auto-closed when the check passes — Nova), duplicate collapse (every 4 h:
+date-stamped sweep tasks keep only the newest copy, with undo), stale-work escalation (twice a day: tasks 3+
+days overdue grouped by owner into one task for Juliet), the AI call queue rebuild (every 3 h; dials only if
+Auto-dial is on), law effective-date watch, and the Command Deck snapshot (every 30 min). The snapshot now
+carries the full workflow list, orchestrator job status, every AI seat with what it owns, pods and missions, and
+the Command Deck renders them live. Vanessa tool: `automation_control`.
+
+## Training Hub course material (Ingrid, with Regina)
+
+Added 2026-10-31. Every curriculum module now carries full written course material: 34 modules (salesperson
+a1–a14, broker b1–b7, transaction coordinator t1–t6, MLO m1–m7), 179 chapters and about 85,000 words of
+California-specific teaching text with takeaways, numbers to know, traps, authorities and a 10-question practice
+test graded in the page (340 questions; a pass at 70% completes the module's quiz). Chapters are ticked as read;
+reading every chapter marks the module read. The New Rules & Laws desk gained 45 foundational laws (filter Type →
+Foundational law) next to the 113 recent changes, and the reference library grew to about 170 official sources.
+Items the writers could not confirm are marked "verify" in the text. Vanessa tool: `course_material`.

@@ -1,6 +1,6 @@
 # Encyclopedia of the second brain
 
-Generated 2026-10-27 by `bin/brain encyclopedia` from `brain/index.json` — 426 pages, 565 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
+Generated 2026-10-31 by `bin/brain encyclopedia` from `brain/index.json` — 440 pages, 583 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
 
 Jump: [#](#other) · [A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#g) · [H](#h) · [I](#i) · [J](#j) · [K](#k) · [L](#l) · [M](#m) · [N](#n) · [O](#o) · [P](#p) · [R](#r) · [S](#s) · [T](#t) · [U](#u) · [V](#v) · [W](#w) · [Z](#z)
 
@@ -65,12 +65,12 @@ See also: `wiki/ai-team/toolkit.md`
 Same brain, same rules. CLAUDE.md is the router and is authoritative; this file is its mirror for agents that do not…  
 `AGENTS.md` · Router · newest date stamp undated  
 Sections: Read order on every task; Non-negotiables; Writing back; HALT  
-Linked from: `CLAUDE.md`, `docs/MASTER-FINDINGS.md`, `wiki/dashboard-ops/connections.md`  
-See also: `README.md`, `memory/ai-team.md`
+Linked from: `routines/isa-escalation-ladder.md`, `wiki/dashboard-ops/connections.md`  
+See also: `CLAUDE.md`, `README.md`, `docs/MASTER-FINDINGS.md`
 
 ### AI agent roster on the Mac (aiTeamRoster doc, generatedAt 2026-09-16T00:52:37+00:00, count
 AI agent roster on the Mac (aiTeamRoster doc, generatedAt 2026-09-16T00:52:37+00:00, count 173; code-validator added 2026-10-12; seven desk seats added 2026-10-22 — not yet in the   
-`docs/inventory/agent-roster.md` · Loop & findings · newest date stamp 2026-10-22  
+`docs/inventory/agent-roster.md` · Loop & findings · newest date stamp 2026-10-31  
 Linked from: `projects/ai-team.md`  
 See also: `integrations/APIS.md`, `wiki/ai-team/index.md`
 
@@ -78,7 +78,7 @@ See also: `integrations/APIS.md`, `wiki/ai-team/index.md`
 The org of AI seats that runs behind Vanessa: on the Mac, 172 agents (tier 1: 17, tier 2: 96, tier 3: 59), 15 MCP…  
 `projects/ai-team.md` · Projects · newest date stamp 2026-10-07  
 Sections: The shape; The engineering loop (under Elon, vetted before anything ships); Status (2026-09-22) — honest  
-See also: `docs/CAIO-DISRUPTION-BRIEF.md`, `docs/inventory/agent-roster.md`, `wiki/ai-team/bot-crew.md`
+See also: `docs/inventory/agent-roster.md`, `integrations/MCP-SERVERS.md`, `wiki/ai-team/bot-crew.md`
 
 ### AI team
 Who owns what, which model a seat runs on, what it may decide on its own.  
@@ -89,9 +89,9 @@ See also: `wiki/ai-team/mentors-and-benches.md`, `wiki/ai-team/model-tiering-dis
 
 ### AI Team org chart
 The full seat map behind Vanessa: Steven at the top, then Steve (digital twin) / Vanessa (Chief of Staff) / the human…  
-`wiki/ai-team/org-chart.md` · AI team · newest date stamp 2026-10-22  
+`wiki/ai-team/org-chart.md` · AI team · newest date stamp 2026-10-31  
 Sections: The shape; Standing pods — cross-functional teams that work in parallel (2026-10-22); What the desks run on (2026-10-22, evening); Tools per seat (skills · plugins · connectors · routines · Mac tasks); The named seats worth knowing by name; What "bench" means; How the seats work together; What every seat can now do (2026-10-10)  
-Linked from: `integrations/loan-stack/README.md`, `wiki/ai-team/cross-functional.md`, `wiki/ai-team/mentors-and-benches.md`  
+Linked from: `memory/ai-team.md`, `wiki/ai-team/cross-functional.md`, `wiki/ai-team/mentors-and-benches.md`  
 See also: `wiki/ai-team/push-button-system.md`
 
 ### AI Team toolkit — skills, Claude mods, connectors, MCP servers, APIs, routines, Mac tasks
@@ -126,14 +126,18 @@ See also: `integrations/api-anything/README.md`, `wiki/ai-team/capability-matrix
 Dated facts about ai-team, one line each, appended by bin/brain remember --topic ai-team.  
 `memory/ai-team.md` · Memory · newest date stamp 2026-10-09  
 Sections: Entries  
-Linked from: `AGENTS.md`, `docs/ROUTINE-BUDGET-2026-10-09.md`  
-See also: `integrations/jarvis/README.md`, `wiki/ai-team/cross-functional.md`
+See also: `integrations/jarvis/README.md`, `wiki/ai-team/cross-functional.md`, `wiki/ai-team/org-chart.md`
 
 ### ALIENWARE setup (Windows)
 One PowerShell script, alienware-setup.ps1, that checks and installs the AI tools on the ALIENWARE gaming PC: Orca…  
 `integrations/alienware/README.md` · Integrations · newest date stamp undated  
 Sections: What it will and will not do; Step by step; The five parts; Orca on Windows (serve and pair); Opening Bonsai afterwards; Undo (roll back); What is verified, and what is not; Top risks  
 Linked from: `docs/PASTE-TO-CLAUDE-ON-MAC.md`, `integrations/agent-os/README.md`, `integrations/anydesk/README.md`, `wiki/ai-team/computer-hub.md`  
+
+### AnyDesk
+Derek · [attention] install scripted (connect-all 6d)  
+`connector:AnyDesk` · Connectors · newest date stamp undated  
+See also: `integrations/CONNECTIONS.md`
 
 ### AnyDesk (Alienware, tablet, phone)
 Derek · [attention] not started — winget id AnyDesk.AnyDesk confirmed; iPad is outgoing-only, Android tablet can be controlled  
@@ -182,11 +186,10 @@ Linked from: `api:Arive LOS (API gateway v4.6)`, `api:Claude (sample capability)
 See also: `integrations/CONNECT-PLAN-2026-10-09.md`, `integrations/MCP-SERVERS.md`, `integrations/mbs-highway/README.md`
 
 ### Apple Health → Command Deck
-Found on 2026-10-23 while fixing "auto health export and sync": the phone half never broke.  
-`integrations/apple-health-dashboard.md` · Integrations · newest date stamp 2026-10-23  
+2026-10-31 — what actually broke, and the fix.  
+`integrations/apple-health-dashboard.md` · Integrations · newest date stamp 2026-10-31  
 Sections: The path that is live (2026-10-23): Health Auto Export → Google Drive → cloud sync → appleHealth; What is live, precisely (2026-09-22); Source, honestly; Why we are replacing the pipeline, not repairing it; The chain; Notion "Health Log" database — schema read back from the real database, 2026-09-22; Mapping into the appleHealth doc (what the tiles actually read); Merge rule (the daemon's history must survive)  
-Linked from: `docs/inventory/mac-task-descriptions.md`  
-See also: `integrations/open-design/README.md`, `wiki/ai-team/second-brain-layers.md`
+Linked from: `docs/inventory/mac-task-descriptions.md`, `integrations/open-design/README.md`, `references/google-drive.md`, `wiki/ai-team/second-brain-layers.md`  
 
 ### apple-design
 Derek · Apple's approach to interface design and fluid, physical motion, translated for the web. Use when building or reviewing gesture-driven UI, spring animations, drag/swipe/she  
@@ -199,15 +202,14 @@ Derek · Keep Steven's Command Deck Apple Health tiles alive through the phone i
 See also: `wiki/ai-team/toolkit.md`
 
 ### Arive
-Elena · [attention] step 7e did not run (no credentials)  
+Vanessa · [attention] credentials prompt in the paste; no call yet  
 `connector:Arive` · Connectors · newest date stamp undated  
 See also: `integrations/CONNECTIONS.md`
 
 ### Arive (mortgage LOS/POS) — pipeline status into the brain (as of 2026-10-23)
 Arive's REST API gateway (release v4.6): POST /api/auth/access-token with Client ID + Secret Key + API Key, then GET…  
 `integrations/arive/README.md` · Integrations · newest date stamp 2026-10-23  
-Linked from: `docs/inventory/mac-task-descriptions.md`  
-See also: `integrations/APIS.md`, `integrations/tidycal/README.md`
+See also: `integrations/APIS.md`, `integrations/ticor/README.md`, `integrations/tidycal/README.md`
 
 ### Arive LOS (API gateway v4.6)
 Marcus · [pending] read loans, status, leads; loan writes are HALT · pending — Pro-plan credentials (integrations/arive/README.md)  
@@ -223,8 +225,15 @@ See also: `always-on/README.md`
 Steven, 2026-10-20: "AI, automation workflows, systems, tools, resources, AI twin Steve, Vanessa and the human ISA/EA…  
 `docs/AUTOMATION-MAP-2026-10-20.md` · Loop & findings · newest date stamp 2026-10-26  
 Sections: What changed today; The one thing blocking most of the 80%; Panel by panel; Vanessa as Chief of Staff — how the parallel teams work now; Pabbly Connect; What stays Steven's (the 20%) — the standing list  
-Linked from: `wiki/ai-team/push-button-system.md`  
-See also: `docs/inventory/daily-updates.md`, `wiki/dashboard-ops/db-docs.md`
+Linked from: `wiki/ai-team/push-button-system.md`, `wiki/dashboard-ops/db-docs.md`  
+See also: `docs/AUTOMATION-MAP-2026-10-26.md`, `docs/inventory/process-coverage.md`
+
+### Automation map — who does what on the Command Deck (2026-10-26)
+Carried forward from docs/AUTOMATION-MAP-2026-10-20.md (same columns, so bin/brain owner answers from this file) with…  
+`docs/AUTOMATION-MAP-2026-10-26.md` · Loop & findings · newest date stamp 2026-10-27  
+Sections: What changed on 2026-10-26  
+Linked from: `docs/AUTOMATION-MAP-2026-10-20.md`, `wiki/dashboard-ops/process-coverage.md`  
+See also: `docs/ROUTINE-SCHEDULE-FIX.md`
 
 ### automation-audit-quarterly
 Derek · The full seven-phase audit-and-remediate pass — nine parallel audit passes scored on output not execution, every Finding ID driven to resolv  
@@ -239,7 +248,7 @@ See also: `wiki/dashboard-ops/task-catalog.md`
 ### Awesome VLM Architectures — reference shelf (recorded 2026-10-23)
 https://github.com/gokayfem/awesome-vlm-architectures (CC0 1.0; reviewed at commit 74897b3, 2026-08-01; maintained by…  
 `references/vlm-architectures.md` · Sources · newest date stamp 2026-10-23  
-Linked from: `references/vibe-coding-learning.md`, `wiki/ai-team/third-party-packs.md`  
+Linked from: `references/motion-and-claude-repos.md`, `references/vibe-coding-learning.md`, `wiki/ai-team/third-party-packs.md`  
 
 ## B
 
@@ -254,6 +263,12 @@ A cheap cloud routine that answers one question: is Steven's backup actually cur
 `routines/backup-watchdog-cloud.md` · Always-on · newest date stamp 2026-09-22  
 Sections: Where it runs; Schedule; Model; Tools; Prompt text (paste verbatim into the routine); Success condition; Expected first result (honest baseline, 2026-09-22)  
 See also: `docs/ROUTINE-SCHEDULE-FIX.md`, `routines/cloud-routine-repairs.md`, `routines/parallel-csuite-task-cycle.md`
+
+### Banned words — hook-writer never uses these (add your own at the bottom)
+Owner: Sofia (CMO) · read by the hook-writer agent.  
+`context/banned-words.md` · Who & why · newest date stamp undated  
+Sections: Sounds AI-written; Advertising red flags (never, any topic); Steven's own (add below)  
+See also: `wiki/ai-team/five-agents.md`
 
 ### Big moves — Vanessa's four courses of action (4 each: big moves · self-improvement/loop en
 Vanessa · cron CRON_TZ=America/Los_Angeles 5 6 * * * · on · —  
@@ -295,7 +310,8 @@ See also: `wiki/dashboard-ops/task-catalog.md`
 Steven: "install vercel-labs/agent-skills, agenticskills.io/tools, vercel-labs/skills, vercel-labs/agent-browser and…  
 `integrations/browser-agents/README.md` · Integrations · newest date stamp 2026-10-10  
 Sections: What each one is, and what was done with it; Install on the Mac (Steven, ~5 minutes); Guardrails (CLAUDE.md HALT list — they win over any skill's own text); Verified here (cloud sandbox, 2026-10-10) / not verified  
-See also: `MAC-INSTALL-tooling.md`, `integrations/browser-use/README.md`, `wiki/ai-team/tool-integration-status.md`
+Linked from: `integrations/browser-use/README.md`, `wiki/ai-team/tool-integration-status.md`  
+See also: `MAC-INSTALL-tooling.md`, `references/motion-and-claude-repos.md`
 
 ### browser-use
 Derek · [ok] second browser agent path (DOMShell-backed) · installed  
@@ -306,14 +322,14 @@ See also: `integrations/MCP-SERVERS.md`
 Steven, 2026-10-07: "install https://github.com/browser-use/browser-use.git".  
 `integrations/browser-use/README.md` · Integrations · newest date stamp 2026-10-07  
 Sections: Steven: one command on the Mac; Rules for every agent that uses it  
-Linked from: `integrations/api-anything/README.md`, `integrations/browser-agents/README.md`  
-See also: `integrations/open-design/README.md`
+Linked from: `integrations/api-anything/README.md`  
+See also: `integrations/browser-agents/README.md`, `integrations/open-design/README.md`
 
 ### Buyer process
 The buyer-side path from lead intake through matching, showings, offer, earnest money, contingencies, and close — the…  
 `wiki/real-estate-playbooks/buyer-process.md` · Real-estate wiki · newest date stamp undated  
 Sections: Lead intake and the First-10-Days Sprint; Consultation and matching; Stage-by-stage ownership; Earnest money — a deadline, not a detail; Wire fraud protocol; See also  
-Linked from: `wiki/ai-team/desk-seats.md`, `wiki/mortgage-programs/disclosure-timing.md`  
+Linked from: `wiki/ai-team/desk-seats.md`, `wiki/mortgage-programs/disclosure-timing.md`, `wiki/real-estate-playbooks/showing-operations.md`  
 See also: `wiki/real-estate-playbooks/index.md`, `wiki/real-estate-playbooks/listing-process.md`, `wiki/real-estate-playbooks/transaction-stages.md`
 
 ## C
@@ -322,8 +338,7 @@ See also: `wiki/real-estate-playbooks/index.md`, `wiki/real-estate-playbooks/lis
 Nadia (CAIO, outward disruptor) · run by E9 · Baseline 2026-09-12 · verified 2026-09-22 Reports to: Steven · cc…  
 `docs/CAIO-DISRUPTION-BRIEF.md` · Loop & findings · newest date stamp 2026-09-28  
 Sections: 1. Disruption scanning; 2. Obsolescence flags against the current stack (BRIEF §2 + toolkitSnapshot 2026-09-22); 3. Competitive / capability gap analysis — solo VA-loan MLO + broker, Temecula/San Diego; 4. Weekly Disruptive Recommendation Brief (proposal-only, trust L1); 5. Summary — top three (≤300 words)  
-Linked from: `projects/ai-team.md`  
-See also: `docs/inventory/claude-sessions.md`, `docs/inventory/cloud-routines.md`
+See also: `docs/inventory/claude-sessions.md`, `docs/inventory/cloud-routines.md`, `wiki/mortgage-programs/program-selection.md`
 
 ### calendar-daily-sync
 Derek · Pulls the next 7 days from Steven's business Google Calendars through the connector and writes the calendarSnapshot document, so the Command  
@@ -344,12 +359,11 @@ See also: `integrations/APIS.md`
 ### Claude chats — digest of Steven's claude.ai export
 Not ingested yet (2026-10-23). This file is written by bin/brain ingest claude-export from Steven's own claude.ai data…  
 `memory/claude-chats.md` · Memory · newest date stamp 2026-10-23  
-Linked from: `integrations/pivo/README.md`  
-See also: `docs/STEVEN-STEPS.md`, `integrations/MCP-SERVERS.md`, `memory/fieldy-meetings.md`
+See also: `docs/STEVEN-STEPS.md`, `integrations/MCP-SERVERS.md`, `integrations/pivo/README.md`
 
-### Claude Code sessions — ledger (generated 2026-10-26; newest first)
+### Claude Code sessions — ledger (generated 2026-10-31; newest first)
 Every Claude Code session on Steven's account: title, when, status.  
-`docs/inventory/claude-sessions.md` · Loop & findings · newest date stamp 2026-10-26  
+`docs/inventory/claude-sessions.md` · Loop & findings · newest date stamp 2026-10-31  
 Linked from: `docs/CAIO-DISRUPTION-BRIEF.md`, `memory.md`  
 See also: `docs/inventory/cloud-routines.md`
 
@@ -357,6 +371,11 @@ See also: `docs/inventory/cloud-routines.md`
 Derek · cron CRON_TZ=America/Los_Angeles 52 3 * * * · on · ran 2026-10-23  
 `routine:Claude sessions ledger (docs/inventory/claude-sessions.md, daily)` · Cloud routines · newest date stamp undated  
 See also: `always-on/README.md`
+
+### CLI-Anything
+Victor · [attention] harnesses for homes.com / ShowingTime / Showami / Lofty installed by the paste  
+`connector:CLI-Anything` · Connectors · newest date stamp undated  
+See also: `integrations/CONNECTIONS.md`
 
 ### cli-anything-connectors
 Victor · Install CLI-Anything on the Mac and the seven pre-built, read-only agent-native CLI wrappers for the real-estate tools that have no usable API — homes.com, ShowingTime, Sh  
@@ -372,12 +391,11 @@ See also: `wiki/ai-team/cross-functional.md`
 Every page in this directory is FULL CONTEXT.  
 `wiki/clients/index.md` · Dashboard ops · newest date stamp undated  
 Sections: The rules, before anything else; Page shape (on the Mac only); What still belongs in the deck instead; If you are asked for client information  
-Linked from: `wiki/ai-team/second-brain-layers.md`  
-See also: `knowledge-graph/schema.md`, `wiki/index.md`
+See also: `knowledge-graph/schema.md`, `wiki/ai-team/second-brain-layers.md`, `wiki/index.md`
 
 ### Cloud routine repairs — what was changed, and what proves it
 Written 2026-09-23 by R1 (Reliability). Every routine state quoted here was read live from list_triggers at 2026-09-23…  
-`routines/cloud-routine-repairs.md` · Always-on · newest date stamp 2026-10-13  
+`routines/cloud-routine-repairs.md` · Always-on · newest date stamp 2026-10-27  
 Sections: The hypothesis I was given, and where it is wrong; What actually failed, across all five; 1. Feed freshness watchdog — it works, and the register was out of date; 2. Books Reconciliation Reminder — disabled; there is nothing to reconcile; 3. Ops Issue Review — disabled; the vault path does not exist and the deck already does this job; 4. Real Estate Weekly Brief — rewritten; it was querying a CRM retired the day before; 5. Rent, Buy, or Wait refresh — already repaired, deliberately not fired; The five that have never run — per routine, as asked  
 Linked from: `always-on/README.md`, `routines/backup-watchdog-cloud.md`  
 See also: `docs/NEEDS-STEVEN-R1.append.md`
@@ -386,12 +404,12 @@ See also: `docs/NEEDS-STEVEN-R1.append.md`
 2026-09-22 · Owner: Reliability Engineer · Finding: F-INT-02 (P1, effort S)  
 `docs/ROUTINE-SCHEDULE-FIX.md` · Loop & findings · newest date stamp 2026-10-09  
 Sections: What was wrong; What was changed (2026-09-22); What Steven has to change by hand; The rule this establishes: how many cloud routines may fire in the same UTC hour  
-Linked from: `always-on/README.md`, `docs/ROUTINE-BUDGET-2026-10-22.md`, `routines/backup-watchdog-cloud.md`, `routines/events-weekly.md`  
+Linked from: `always-on/README.md`, `docs/AUTOMATION-MAP-2026-10-26.md`, `docs/ROUTINE-BUDGET-2026-10-22.md`, `routines/backup-watchdog-cloud.md`, `routines/events-weekly.md`  
 
 ### Cloud routines (claude.ai/code/routines) — live listing pulled 2026-09-22 08:09 UTC
 Cloud routines (claude.ai/code/routines) — live listing pulled 2026-09-22 08:09 UTC  
 `docs/inventory/cloud-routines.md` · Loop & findings · newest date stamp 2026-09-22  
-Linked from: `docs/CAIO-DISRUPTION-BRIEF.md`, `docs/inventory/claude-sessions.md`, `docs/inventory/daily-updates.md`, `docs/inventory/mac-runner-status.md`, `wiki/ai-team/toolkit.md`  
+Linked from: `docs/CAIO-DISRUPTION-BRIEF.md`, `docs/inventory/claude-sessions.md`, `docs/inventory/mac-runner-status.md`, `wiki/ai-team/toolkit.md`  
 See also: `docs/inventory/cloud-routines-2026-10.md`
 
 ### Cloud routines added or rewritten in October 2026 (agent-created, meta_mcp; editable by ag
@@ -404,7 +422,7 @@ See also: `docs/inventory/mac-runner-status.md`
 Settled 2026-09-22 by measurement. Finding F-INT-08.  
 `docs/CLOUD-WRITE-ARCHITECTURE.md` · Loop & findings · newest date stamp 2026-09-23  
 Sections: What was assumed; What was measured; What changes; What does not change; How to re-test  
-Linked from: `routines/pipeline-sync-live.md`, `wiki/dashboard-ops/routine-catalog.md`  
+Linked from: `projects/isa-portal.md`, `routines/pipeline-sync-live.md`, `wiki/dashboard-ops/routine-catalog.md`  
 See also: `integrations/anydesk/README.md`
 
 ### Cloud sweep (iMessage text + voice queue, deck chat box, Discord #vanessa)
@@ -431,7 +449,7 @@ See also: `wiki/ai-team/toolkit.md`
 Steven's single-file personal/business dashboard, published as a claude.ai artifact. ~4 MB, ~25.6k lines, one HTML…  
 `projects/command-deck.md` · Projects · newest date stamp 2026-10-26  
 Sections: Where the live data lives; Rules for working on it; Known open items (listed 2026-09-22 · re-verified 2026-09-23 03:10 UTC); Status (2026-10-22) — version 230 (list intake forms, tools per seat, Text me the brief, Zoom recaps)  
-Linked from: `always-on/README.md`, `integrations/trading-desk/README.md`  
+Linked from: `integrations/trading-desk/README.md`  
 See also: `docs/MASTER-FINDINGS.md`, `docs/NEEDS-STEVEN-R2.append.md`, `wiki/dashboard-ops/db-docs.md`
 
 ### Command Deck & ISA Portal Weekly Loop Engineering QA
@@ -512,7 +530,7 @@ See also: `always-on/README.md`
 As of 2026-10-12. Steven's rule (2026-10-12): every block refreshes at least once a day, more often where the data…  
 `wiki/dashboard-ops/freshness-routines.md` · Dashboard ops · newest date stamp 2026-10-13  
 Sections: Cloud routines (Claude subscription, WebSearch only, ArtifactData writes; never publish/Edit); ISA Portal mirror (https://claude.ai/code/artifact/4348b34d-afa0-4d2e-8214-29b1319cf041); Mac tasks (the cloud cannot write these); Baked seeds (HTML, refreshed by a session pass, not a routine); Known failure modes  
-Linked from: `docs/ROUTINE-BUDGET-2026-10-09.md`, `wiki/dashboard-ops/db-docs.md`  
+Linked from: `docs/ROUTINE-BUDGET-2026-10-09.md`  
 See also: `docs/NEEDS-STEVEN.md`, `wiki/ai-team/toolkit.md`, `wiki/mortgage-programs/refi-review-prep.md`
 
 ### Command Deck — market close (writer, Claude)
@@ -579,13 +597,14 @@ See also: `always-on/README.md`
 Created 2026-09-22 23:27 UTC by the orchestrator, as a stopgap.  
 `routines/strava-wrap-guard.md` · Always-on · newest date stamp 2026-09-22  
 Sections: Why it exists; What it does, exactly; What it does NOT fix — read this before trusting the panel; Evidence it can run at all; Retiring it  
-See also: `always-on/README.md`, `memory/fieldy-meetings.md`, `routines/mac-task-repairs.md`
+See also: `always-on/README.md`, `integrations/mac-fix-isa-kpi-2026-10-08.md`, `routines/mac-task-repairs.md`
 
 ### Command Deck — Stress Test Report
 E7 — Stress Test Engineer · Cycle: Loop Cycle 6 · 2026-09-22 · Run: 2026-09-22T09:46:19.463Z Baseline 2026-09-12 ·…  
 `docs/STRESS-TEST-REPORT.md` · Loop & findings · newest date stamp 2026-09-22  
 Sections: What these numbers are, and what they are not; Results; Weakness dossier — for the Reliability / Efficiency / Capability / Integration Engineers; Baseline digest; Volume digest; Edge digest — 7 malformed shapes per document; Failure-injection digest; Concurrency digest  
-Linked from: `docs/MASTER-FINDINGS.md`, `docs/OPEN-FINDINGS.md`, `knowledge-graph/README.md`  
+Linked from: `docs/MASTER-FINDINGS.md`, `knowledge-graph/README.md`  
+See also: `projects/usc-pjmt-530.md`
 
 ### Command Deck — top performers refresh
 Derek · cron 30 13 * * * · on · SUCCEEDED @ 2026-09-21T13:37  
@@ -656,8 +675,7 @@ See also: `always-on/README.md`
 trig_01M5zR1Po44gnHvTwA9ogZaB · cron 0 4,10,16,22 * * * (UTC) · created 2026-09-22 · needs no connectors, because…  
 `routines/pipeline-sync-live.md` · Always-on · newest date stamp 2026-09-22  
 Sections: Why this routine was created; What this one does; How to tell it is working  
-Linked from: `docs/INTEGRATOR-TODO.md`  
-See also: `docs/CLOUD-WRITE-ARCHITECTURE.md`, `docs/NEEDS-STEVEN-R1.append.md`, `routines/mac-task-repairs.md`
+See also: `always-on/README.md`, `docs/CLOUD-WRITE-ARCHITECTURE.md`, `routines/mac-task-repairs.md`
 
 ### Company Brain Blueprint (AI Horizon / @gobi_automates) — mapped onto Steven's second brain
 Company_Brain_Blueprint_AI_Horizon.docx in Steven's Google Drive (read through the Drive connector 2026-10-12; a…  
@@ -666,10 +684,21 @@ Sections: Layer by layer — what the blueprint asks for and what this brain alr
 Linked from: `recall-cache.md`  
 See also: `OPTIMIZATION.md`, `knowledge-graph/README.md`
 
+### Competitors — the list competitor-watch checks every Monday
+Owner: Victor (CRO) · competitive-intelligence-analyst · read by the competitor-watch agent.  
+`context/competitors.md` · Who & why · newest date stamp 2026-10-31  
+Linked from: `wiki/mortgage-programs/refi-review-prep.md`  
+See also: `always-on/README.md`, `memory/fieldy-meetings.md`, `wiki/ai-team/five-agents.md`
+
 ### Composio (cloud)
 Marcus · [attention] Zoho CRM, Google Docs, GitHub tool calls through Composio · connected — Zoho 403 until the API box is ticked  
 `mcp:Composio (cloud)` · MCP servers · newest date stamp undated  
 See also: `integrations/MCP-SERVERS.md`
+
+### Composio (Zoho, Discord, TikTok, GHL, HeyGen)
+Sofia · [attention] claude.ai connector works from the cloud; optional key on the Mac (paste step 4)  
+`connector:Composio (Zoho, Discord, TikTok, GHL, HeyGen)` · Connectors · newest date stamp undated  
+See also: `integrations/CONNECTIONS.md`
 
 ### Computer Hub — reaching every computer
 Written 2026-10-11. Steven's computers: Mac 1, Mac 2, the Alienware PC, plus a tablet and phone.  
@@ -682,7 +711,7 @@ See also: `integrations/alienware/README.md`, `integrations/anydesk/README.md`, 
 Steven, 2026-10-09: connect Zoho and Lofty (he has API keys for both), Showami, ShowingTime, homes.com, CRMLS…  
 `integrations/CONNECT-PLAN-2026-10-09.md` · Integrations · newest date stamp 2026-10-09  
 Sections: 1. The two with keys; 2. Systems that hold client data or are licence-gated; 3. Showing and portal sites (no public API found); 4. Routers and tools (the second brain's wiring); 5. "And more" — proposed, public, read-only (Steven says yes per group); 6. Drafts only — nothing below has been sent  
-Linked from: `integrations/APIS.md`, `wiki/real-estate-playbooks/showing-operations.md`  
+Linked from: `integrations/APIS.md`  
 See also: `docs/STEVEN-STEPS.md`, `integrations/ticor/README.md`
 
 ### connection-beacon
@@ -696,9 +725,9 @@ See also: `wiki/ai-team/toolkit.md`
 
 ### CONNECTIONS — every integration, its real status, and the one thing Steven must do
 Baseline 2026-09-12 · verified 2026-09-22.  
-`integrations/CONNECTIONS.md` · Integrations · newest date stamp 2026-10-26  
+`integrations/CONNECTIONS.md` · Integrations · newest date stamp 2026-10-27  
 Sections: The four that need Steven today; Everything else; CLI-Anything: the sites and feeds with no Composio toolkit and no API (R6, 2026-09-24); Standing rules for every row here; Related files; CLI-Anything vs. Composio vs. n8n vs. Pabbly — ten-system routing, R9 (2026-09-28); C2-fabric routing table — ten systems, one path each; Connection status — checked live 2026-10-20 (Steven: "what is not connected and fix those connections")  
-Linked from: `connector:6D Brain shows all of it`, `connector:AI-search presence (AEO/GEO/SEO)`, `connector:AnyDesk (Alienware, tablet, phone)`, `connector:AnyDesk (Mac 1)`, `connector:AnyDesk (Mac 1, Mac 2)`, `connector:Arive`  
+Linked from: `connector:6D Brain shows all of it`, `connector:AI-search presence (AEO/GEO/SEO)`, `connector:AnyDesk`, `connector:AnyDesk (Alienware, tablet, phone)`, `connector:AnyDesk (Mac 1)`, `connector:AnyDesk (Mac 1, Mac 2)`  
 
 ### Content Calendar Review
 Sofia · cron 0 15 * * 1 · on · SUCCEEDED @ 2026-09-21T15:06  
@@ -725,20 +754,19 @@ bin/brain route "" reads this page and the lane table in wiki/ai-team/index.md a
 `wiki/ai-team/cross-functional.md` · AI team · newest date stamp 2026-10-23  
 Sections: Lane keywords — which seat owns a request; Pods — standing cross-functional teams that work in parallel; Joins — a seat that must come along; Gates — run after the wave, never in parallel with it; HALT words — stop and write a Needs-Steven packet; See also  
 Linked from: `memory/ai-team.md`, `pod:Client Care Pod`, `pod:Deal Pod`, `pod:Growth Pod`, `pod:Lead Pod`, `pod:Listing Pod`  
-See also: `wiki/ai-team/desk-seats.md`, `wiki/ai-team/org-chart.md`, `wiki/real-estate-playbooks/listing-process.md`
+See also: `wiki/ai-team/org-chart.md`, `wiki/real-estate-playbooks/drip-and-text-follow-up.md`, `wiki/real-estate-playbooks/listing-process.md`
 
 ## D
 
 ### Daily updates — what refreshes the three dashboards, and when (2026-10-23)
 Steven, 2026-10-23: "ensure command deck, isa portal and 6d brain are updated daily." Every row below is a cloud…  
-`docs/inventory/daily-updates.md` · Loop & findings · newest date stamp 2026-10-23  
-Sections: Cloud routines not green on 2026-10-23 (read from the trigger list, all pages)  
-Linked from: `docs/AUTOMATION-MAP-2026-10-20.md`  
-See also: `docs/OPEN-FINDINGS.md`, `docs/inventory/cloud-routines.md`
+`docs/inventory/daily-updates.md` · Loop & findings · newest date stamp 2026-10-26  
+Sections: Cloud routines not green on 2026-10-23 (read from the trigger list, all pages); Process coverage (2026-10-26)  
+Linked from: `docs/OPEN-FINDINGS.md`, `wiki/ai-team/second-brain-layers.md`, `wiki/dashboard-ops/process-coverage.md`  
 
 ### Dashboard ops
 How the Command Deck, its documents and its automations actually behave.  
-`wiki/dashboard-ops/index.md` · Dashboard ops · newest date stamp 2026-10-12  
+`wiki/dashboard-ops/index.md` · Dashboard ops · newest date stamp 2026-10-26  
 Sections: The one rule; Where a status comes from; Standing facts (2026-09-22); Pages  
 Linked from: `docs/inventory/db-docs.md`  
 See also: `docs/NEEDS-STEVEN.md`, `docs/inventory/routine-health.md`, `wiki/dashboard-ops/task-catalog.md`
@@ -755,16 +783,16 @@ See also: `wiki/ai-team/toolkit.md`
 
 ### Decisions — append-only, dated
 One entry per decision. Append, never edit and never delete.  
-`context/decisions.md` · Who & why · newest date stamp 2026-10-24  
+`context/decisions.md` · Who & why · newest date stamp 2026-10-31  
 Sections: 2026-09-22 — Lofty is the real-estate CRM; 2026-09-22 — Zoho CRM API access is Steven's to grant; 2026-09-22 — Model tiering; 2026-09-22 — Backup specification; 2026-09-22 — Apple Health moves to the Notion recipe; 2026-09-22 — You.com is retired; 2026-09-22 — Mentor naming drift: open, Steven's call; 2026-09-22 — Correction: the Lofty entry above was edited in place, and it overstated  
-See also: `integrations/MCP-SERVERS.md`, `knowledge-graph/schema.md`, `memory.md`
+See also: `knowledge-graph/schema.md`, `memory.md`, `wiki/dashboard-ops/process-coverage.md`
 
 ### Desk seats — seven Sonnet 5 report seats added 2026-10-22
 Seven report-tier seats that prepare lists and drafts for Steven, the ISA and the executives.  
-`wiki/ai-team/desk-seats.md` · AI team · newest date stamp 2026-10-26  
+`wiki/ai-team/desk-seats.md` · AI team · newest date stamp 2026-10-31  
 Sections: Refi Watch Analyst; Sphere Nurture Coordinator; Voicemail & Inbox Triage; Document Intake Clerk; Open House Captain; Travel Desk; Meeting Scribe; Booking Concierge  
-Linked from: `integrations/tidycal/README.md`, `wiki/ai-team/cross-functional.md`  
-See also: `wiki/ai-team/index.md`, `wiki/real-estate-playbooks/buyer-process.md`
+Linked from: `integrations/tidycal/README.md`  
+See also: `wiki/ai-team/index.md`, `wiki/real-estate-playbooks/buyer-process.md`, `wiki/real-estate-playbooks/post-close-care.md`
 
 ### Disclosure timing — TRID, RESPA, Reg Z
 The TRID/RESPA/Reg Z timing gates that govern every mortgage file, plus the parallel California real-estate disclosure…  
@@ -773,7 +801,7 @@ Sections: The TRID clock (Reg Z §1026.19); Tolerance buckets; Reg Z LO compensa
 See also: `wiki/mortgage-programs/index.md`, `wiki/real-estate-playbooks/buyer-process.md`, `wiki/real-estate-playbooks/referral-reciprocity.md`
 
 ### Discord #vanessa
-Vanessa · [pending] bot token missing (Composio discordbot initiated 23:55 UTC, not active; Mac bot in relay mode)  
+Vanessa · [attention] bot token prompt in the paste; bot not yet created  
 `connector:Discord #vanessa` · Connectors · newest date stamp undated  
 See also: `integrations/CONNECTIONS.md`
 
@@ -791,7 +819,8 @@ See also: `integrations/CONNECTIONS.md`
 Steven's ask (2026-10-23): "setup drip campaigns and text messages follow ups" across Arive, Zoho and Lofty.  
 `wiki/real-estate-playbooks/drip-and-text-follow-up.md` · Real-estate wiki · newest date stamp 2026-10-23  
 Sections: Where each drip lives; The cadences (day · channel · purpose) — copy stays a draft until Steven approves it; Rules every template and send obeys; Who does what; Setup order (Steven, about 40 minutes once the specs are approved)  
-See also: `integrations/mbs-highway/README.md`, `routines/fub-removal-2026-09-24.md`, `wiki/ai-team/cross-functional.md`
+Linked from: `wiki/ai-team/cross-functional.md`  
+See also: `integrations/mbs-highway/README.md`, `routines/fub-removal-2026-09-24.md`
 
 ### Drive Second Brain notes (screened)
 Steven's Notion Second Brain rows as exported to Google Drive, synced 2026-09-22.  
@@ -843,10 +872,11 @@ Vanessa · [ok] read recordings, summaries · connected — no recordings yet
 See also: `integrations/APIS.md`
 
 ### Fieldy meetings — digest (written daily by the "Fieldy → brain" task)
-Last checked: 2026-10-26  
-`memory/fieldy-meetings.md` · Memory · newest date stamp 2026-10-26  
-Linked from: `memory/claude-chats.md`, `routines/strava-wrap-guard.md`  
-See also: `docs/NEEDS-STEVEN-R2.append.md`, `integrations/ticor/README.md`
+Last checked: 2026-10-31  
+`memory/fieldy-meetings.md` · Memory · newest date stamp 2026-10-31  
+Sections: 2026-10-31  
+Linked from: `context/competitors.md`  
+See also: `routines/fub-removal-2026-09-24.md`, `wiki/mortgage-programs/loan-task-agents.md`
 
 ### Fieldy · Gmail · Google Calendar · Google Drive · Notion · Slack · Zoom · WhisperAI · Inkb
 Vanessa · [ok] the connector set every cloud routine and the Command Deck page can call · connected (see integrations/CONNECTIONS.md)  
@@ -877,8 +907,8 @@ See also: `wiki/ai-team/toolkit.md`
 Steven: "remove FUB aka Follow Up Boss from all routines, and everything.  
 `routines/fub-removal-2026-09-24.md` · Always-on · newest date stamp 2026-09-24  
 Sections: Done from the cloud session, and verified; The three edits only Steven can make — routines created in the web UI; Still Steven's, on the Mac — runbook B4; Left on purpose — records, not configuration  
-Linked from: `wiki/real-estate-playbooks/drip-and-text-follow-up.md`  
-See also: `docs/ENGINEERING-BRIEF.md`, `docs/SETUP-RUNBOOK.md`
+Linked from: `memory/fieldy-meetings.md`, `wiki/real-estate-playbooks/drip-and-text-follow-up.md`  
+See also: `docs/ENGINEERING-BRIEF.md`
 
 ### Four http_api Sunday routines
 Derek · [attention] still enabled  
@@ -932,8 +962,7 @@ See also: `integrations/APIS.md`
 As of 2026-10-09. Read-only, through the claude.ai Google Drive connector on Steven's own sign-in.  
 `references/google-drive.md` · Sources · newest date stamp 2026-10-09  
 Sections: How a question uses Drive; Rules  
-Linked from: `wiki/ai-team/second-brain-layers.md`  
-See also: `integrations/google-drive-brain.md`, `integrations/notebooklm/README.md`
+See also: `integrations/apple-health-dashboard.md`, `integrations/google-drive-brain.md`, `integrations/notebooklm/README.md`
 
 ### Google Drive → the second brain
 UPDATE 2026-10-09 — connected, read-only, pointer level.  
@@ -978,6 +1007,11 @@ Victor · [attention] wrappers installed; sign-ins (MFA) in the agent Chrome are
 `connector:homes.com · ShowingTime · Showami` · Connectors · newest date stamp undated  
 See also: `integrations/CONNECTIONS.md`
 
+### Hume AI
+Vanessa · [attention] not connected; Vanessa's voice is the recorded Magica set. A key can be stored (paste step 4) for a later EVI proposal; it spends money per call → HALT until   
+`connector:Hume AI` · Connectors · newest date stamp undated  
+See also: `integrations/CONNECTIONS.md`
+
 ## I
 
 ### iMessage line (Vanessa text replies)
@@ -999,7 +1033,7 @@ See also: `integrations/APIS.md`
 Built 2026-09-22 by P6 (Install Coverage).  
 `docs/INSTALL-COVERAGE.md` · Loop & findings · newest date stamp 2026-10-09  
 Sections: Counts; The matrix — worst status first; Two gaps that are not any single item's fault; Method, and what I did not do  
-Linked from: `MAC-INSTALL.md`, `wiki/events-networking/index.md`  
+Linked from: `MAC-INSTALL.md`, `references/motion-and-claude-repos.md`, `wiki/events-networking/index.md`  
 See also: `docs/NEEDS-STEVEN-R3.append.md`, `integrations/open-design/README.md`
 
 ### Integrator pass — items routed to me by the engineers
@@ -1007,7 +1041,7 @@ Applied after all branches merge, before the splice and republish.
 `docs/INTEGRATOR-TODO.md` · Loop & findings · newest date stamp 2026-09-23  
 Sections: From E3 (wealth); From E11a (orchestration skills); From E10 (second brain); Mine  
 Linked from: `docs/ENGINEERING-BRIEF.md`  
-See also: `integrations/trading-desk/README.md`, `routines/pipeline-sync-live.md`
+See also: `integrations/trading-desk/README.md`, `memory.md`
 
 ### interview-me
 Vanessa · The relentless 'Grill Me' interview: pulls what only Steven knows about one named topic out of his head and files it as structured knowledge — a vault 60-Knowledge note p  
@@ -1023,14 +1057,14 @@ See also: `AGENTS.md`, `memory.md`, `wiki/dashboard-ops/routine-catalog.md`
 trig_01J9xuWgAuUCHATtpLivDkgp · cron 30 14 * * 2-6 (weekdays 7:30 AM PT) · created 2026-09-22 · needs no connectors  
 `routines/isa-escalation-ladder.md` · Always-on · newest date stamp 2026-09-22  
 Sections: Why; What it does; What it never does; What it cannot do; Related  
-See also: `docs/ISA-SEAT-DECISION.md`, `docs/NEEDS-STEVEN-R3.append.md`, `integrations/mac-task-specs.md`
+See also: `AGENTS.md`, `docs/ISA-SEAT-DECISION.md`, `integrations/mac-task-specs.md`
 
 ### ISA Portal
 A second published artifact, separate from the Command Deck: the working surface for the human ISA / EA and for the…  
 `projects/isa-portal.md` · Projects · newest date stamp 2026-10-22  
 Sections: Status (2026-09-22) — honest; Where the live data lives; Rules; Update — 2026-09-22 (second pass); Status (2026-10-22) — version 48 (refi and sphere list intake; another session added a Capability Pack section)  
 Linked from: `wiki/real-estate-playbooks/referral-reciprocity.md`  
-See also: `docs/ISA-SEAT-DECISION.md`, `integrations/mac-fix-isa-kpi-2026-10-08.md`, `wiki/dashboard-ops/db-docs.md`
+See also: `docs/CLOUD-WRITE-ARCHITECTURE.md`, `docs/ISA-SEAT-DECISION.md`, `integrations/mac-fix-isa-kpi-2026-10-08.md`
 
 ### ISA seat — decision packet (2026-09-22)
 Nothing below is a staffing decision made by an agent.  
@@ -1051,9 +1085,9 @@ James · James's one seat tool: read Vanguard Advisor Tools get_model_portfolios
 `skill:james-portfolio-read` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
 
-### Jarvis = Vanessa, single point of contact for the whole AI team
-Vanessa · [attention] persona + voice + brain index + the 180-seat roster in her memory, all from vanessa-persona.sh (run by fix-mine)  
-`connector:Jarvis = Vanessa, single point of contact for the whole AI team` · Connectors · newest date stamp undated  
+### Jarvis = Vanessa
+Vanessa · [attention] scripted (engine, recorded voice, persona, brain in memory) in fix-mine 3b + connect-all 6a/6b  
+`connector:Jarvis = Vanessa` · Connectors · newest date stamp undated  
 See also: `integrations/CONNECTIONS.md`
 
 ### Jarvis knows the Second Brain
@@ -1095,14 +1129,14 @@ Victor · [pending] read + answer WhatsApp (sandbox) · ready — Steven's sign-
 `api:Kapso (WhatsApp Business Cloud)` · APIs · newest date stamp undated  
 See also: `integrations/APIS.md`
 
-### Kapso (WhatsApp)
-Vanessa · [attention] keys in the Keychain; plugin + MCP waiting on the sign-in  
-`connector:Kapso (WhatsApp)` · Connectors · newest date stamp undated  
-See also: `integrations/CONNECTIONS.md`
-
 ### Kapso webhooks (Pabbly → Kapso)
 Derek · [attention] two trigger URLs not pasted yet  
 `connector:Kapso webhooks (Pabbly → Kapso)` · Connectors · newest date stamp undated  
+See also: `integrations/CONNECTIONS.md`
+
+### Kapso WhatsApp (Vanessa (202) 474-5223)
+Vanessa · [attention] plugin + MCP + keys scripted; whatsappKapso deck doc stale since 10-22: the Mac tasks are not registered  
+`connector:Kapso WhatsApp (Vanessa (202) 474-5223)` · Connectors · newest date stamp undated  
 See also: `integrations/CONNECTIONS.md`
 
 ### Kapso — WhatsApp for Vanessa, on Orca and the Command Deck (installed 2026-10-13)
@@ -1125,7 +1159,7 @@ See also: `wiki/ai-team/toolkit.md`
 Small, closed vocabularies. A graph with an open vocabulary is a graph nobody can query.  
 `knowledge-graph/schema.md` · Knowledge graph · newest date stamp 2026-09-22  
 Sections: Entity types; Relationship vocabulary; Node shape; Rules  
-Linked from: `context/decisions.md`, `knowledge-graph/README.md`, `references/vibe-coding-learning.md`, `wiki/clients/index.md`  
+Linked from: `context/decisions.md`, `knowledge-graph/README.md`, `wiki/clients/index.md`  
 
 ## L
 
@@ -1133,8 +1167,8 @@ Linked from: `context/decisions.md`, `knowledge-graph/README.md`, `references/vi
 Five topics. The index line is the product.  
 `wiki/index.md` · Dashboard ops · newest date stamp undated  
 Sections: What belongs in the wiki; What does NOT belong here; The full-context rule; Adding a page  
-Linked from: `wiki/clients/index.md`  
-See also: `CLAUDE.md`, `vector-index/README.md`
+Linked from: `CLAUDE.md`, `wiki/clients/index.md`  
+See also: `vector-index/README.md`
 
 ### L3 — Semantic search
 Semantic search is for high-volume corpora only.  
@@ -1154,8 +1188,8 @@ See also: `docs/STRESS-TEST-REPORT.md`, `knowledge-graph/schema.md`
 What keeps the brain current while nobody is watching.  
 `always-on/README.md` · Always-on · newest date stamp 2026-10-22  
 Sections: The brain's own tasks; The self-improvement pair; Proposed additions to the loop — NOT scheduled, 2026-09-28; Tasks the brain depends on; The Sunday review gate; The uptime bound — say it out loud; What the weekly loop must check here; Cloud routines that WRITE — added 2026-09-22  
-Linked from: `docs/ISA-SEAT-DECISION.md`, `routine:6D Brain — daily rebuild and republish (3:30 AM PT, this session)`, `routine:AI twin autopilot (posts only approved items)`, `routine:Account Health Check`, `routine:Attraction Command Center: daily cloud run`, `routine:Big moves — Vanessa's four courses of action (4 each: big moves · self-improvement/loop engineering `  
-See also: `docs/ROUTINE-SCHEDULE-FIX.md`, `projects/command-deck.md`, `routines/cloud-routine-repairs.md`
+Linked from: `context/competitors.md`, `docs/ISA-SEAT-DECISION.md`, `routine:6D Brain — daily rebuild and republish (3:30 AM PT, this session)`, `routine:AI twin autopilot (posts only approved items)`, `routine:Account Health Check`, `routine:Attraction Command Center: daily cloud run`  
+See also: `docs/ROUTINE-SCHEDULE-FIX.md`, `routines/cloud-routine-repairs.md`, `routines/mac-task-repairs.md`
 
 ### laya
 Vanessa · [ok] zero-token local router in front of Vanessa (lane, tier, HALT words) · registered — real engine answering on Mac 1 (2026-10-23)  
@@ -1188,7 +1222,6 @@ See also: `wiki/dashboard-ops/task-catalog.md`
 How the deck's lender directory groups in practice — by what each lender actually does well — plus the verification…  
 `wiki/mortgage-programs/lender-directory-notes.md` · Mortgage wiki · newest date stamp undated  
 Sections: Agency wholesale generalists; Non-QM specialists; Investor / DSCR / hard money; Equity, reverse, and niche; Verification flags carried from the deck — repeat these, do not drop them; What "overlay" means here; See also  
-Linked from: `wiki/real-estate-playbooks/post-close-care.md`  
 See also: `wiki/mortgage-programs/fha-usda.md`, `wiki/mortgage-programs/index.md`, `wiki/mortgage-programs/program-selection.md`
 
 ### Listing Pod
@@ -1211,20 +1244,21 @@ See also: `wiki/ai-team/toolkit.md`
 ### Live artifact DB — collection state (161 docs exported 2026-09-22 ~08:10 UTC to scratchpad
 Live artifact DB — collection state (161 docs exported 2026-09-22 ~08:10 UTC to scratchpad/db/state/.json)  
 `docs/inventory/db-docs.md` · Loop & findings · newest date stamp 2026-09-30  
-Linked from: `recall-cache.md`  
-See also: `docs/inventory/routine-health.md`, `routines/mac-task-repairs.md`, `wiki/dashboard-ops/index.md`
+Linked from: `docs/inventory/process-coverage.md`, `recall-cache.md`, `routines/mac-task-repairs.md`  
+See also: `docs/inventory/routine-health.md`, `wiki/dashboard-ops/index.md`
 
 ### Loan stack — how the new agents fit the org chart (written 2026-10-11)
 Three additions, all reached through Vanessa's dispatch and none changing a live agent prompt:  
 `integrations/loan-stack/README.md` · Integrations · newest date stamp 2026-10-11  
 Sections: Flow; Rules  
 Linked from: `wiki/mortgage-programs/loan-task-agents.md`  
-See also: `wiki/ai-team/org-chart.md`, `wiki/real-estate-playbooks/open-house.md`
+See also: `wiki/mortgage-programs/refi-review-prep.md`, `wiki/real-estate-playbooks/open-house.md`
 
 ### Loan task agents
 Written 2026-10-11. Three agent skills that prepare loan and real-estate work for Steven.  
 `wiki/mortgage-programs/loan-task-agents.md` · Mortgage wiki · newest date stamp 2026-10-11  
 Sections: Tax assessor agent; Loan pricing prep agent; The rules; See also  
+Linked from: `memory/fieldy-meetings.md`, `wiki/ai-team/third-party-packs.md`  
 See also: `integrations/loan-stack/README.md`, `integrations/skill-packs/README.md`, `wiki/mortgage-programs/va-eligibility.md`
 
 ### loan-pricing-agent
@@ -1280,11 +1314,6 @@ Vanessa · [attention] stop between 10 PM and 7 AM PT until the window is widene
 `connector:Mac pollers overnight (vanessa-imessage-inbox, vanessa-discord-inbox, voice-reply-render, ` · Connectors · newest date stamp undated  
 See also: `integrations/CONNECTIONS.md`
 
-### Mac runner (all Mac tasks)
-Derek · [ok] healthy — runnerctl status 12:33 PT: 42 ok (morning tasks all ran today), 5 error (toolkit-deck-sync, nightly-self-test, three Sunday weeklies), 4 limited, 3 paused; t  
-`connector:Mac runner (all Mac tasks)` · Connectors · newest date stamp undated  
-See also: `integrations/CONNECTIONS.md`
-
 ### Mac runner task specs — the five new integration tasks
 Baseline 2026-09-12 · verified 2026-09-22.  
 `integrations/mac-task-specs.md` · Integrations · newest date stamp 2026-10-23  
@@ -1292,19 +1321,24 @@ Sections: 1. lofty-crm-sync — NEW; 2. zoho-crm-sync — NEW; 3. health-notion-
 Linked from: `docs/NEEDS-STEVEN-R4.append.md`, `docs/SETUP-RUNBOOK.md`, `integrations/kapso/README.md`, `integrations/openwa/README.md`, `routines/isa-escalation-ladder.md`, `routines/mac-task-repairs.md`  
 See also: `integrations/vanessa-voice-everywhere.md`
 
+### Mac runner · message tasks all day
+Derek · [attention] restart + hours widening scripted (fix-mine 4)  
+`connector:Mac runner · message tasks all day` · Connectors · newest date stamp undated  
+See also: `integrations/CONNECTIONS.md`
+
 ### Mac scheduled task descriptions (toolkitSnapshot doc, syncedAt 2026-09-16T00:52:24Z; count
 access-audit-monthly — First business morning of the month: Elena's access-auditor reviews who and what can read or…  
 `docs/inventory/mac-task-descriptions.md` · Loop & findings · newest date stamp 2026-09-13  
 Sections: MCP servers on the Mac; Tools index (id · category · description)  
 Linked from: `REMOTE-ACCESS.md`  
-See also: `integrations/MCP-SERVERS.md`, `integrations/apple-health-dashboard.md`, `integrations/arive/README.md`
+See also: `integrations/MCP-SERVERS.md`, `integrations/apple-health-dashboard.md`, `integrations/vanessa-voice-everywhere.md`
 
 ### Mac task & cloud routine repairs — paste-ready
 Written 2026-09-22 by W2 (Reliability). Every document state quoted here was read live from the Command Deck store…  
 `routines/mac-task-repairs.md` · Always-on · newest date stamp 2026-10-01  
 Sections: 1. strava-daily-sync — corrupts its document every run · DEADLINE 2026-09-23 12:20 UTC; 2. runnerStatus — the stamp is seven hours wrong; the document is NOT dead; 3. r8-apple-health-snapshot — a decision, not a repair; 4. r4-quantvue-sync — it writes strategySnapshot, and it is refused, not silent; 5. The strategy cycle — a routine whose own prompt forbids it to write; 6. isaLadder.updatedAt — stamps a scheduled slot, never the write time; 7. Nine failing cloud routines — one root cause, not nine; 8. The old Pipeline Sync — Steven clicks, or it keeps lying  
-Linked from: `docs/inventory/db-docs.md`, `integrations/trading-desk/README.md`, `routines/pipeline-sync-live.md`, `routines/strava-wrap-guard.md`  
-See also: `always-on/README.md`, `docs/OPEN-FINDINGS.md`, `integrations/mac-task-specs.md`
+Linked from: `always-on/README.md`, `integrations/trading-desk/README.md`, `routines/pipeline-sync-live.md`, `routines/strava-wrap-guard.md`  
+See also: `docs/inventory/db-docs.md`, `integrations/mac-task-specs.md`
 
 ### MAC-INSTALL — communications, data & model-routing tools (FR5b)
 Written 2026-09-22 in the cloud sandbox.  
@@ -1317,14 +1351,13 @@ See also: `docs/SETUP-RUNBOOK.md`, `integrations/omniroute-failover/README.md`
 Goal: the same brain on the Mac, where the vault, Jarvis, Graphify, Ruflo and claude-runner live.  
 `MAC-INSTALL.md` · Other · newest date stamp 2026-10-09  
 Sections: 0. Decide the home; 1. Copy the tree; 2. Turn on auto-memory; 3. Duplicate AGENTS.md wherever a non-Claude agent starts; 4. Open the vault in Obsidian; 5. Fix the write that is currently refused; 6. Point the always-on tasks at it; 7. Verify  
-Linked from: `projects/usc-pjmt-530.md`  
-See also: `docs/INSTALL-COVERAGE.md`, `docs/NEEDS-STEVEN-R3.append.md`, `docs/SECOND-MAC-SETUP.md`
+See also: `docs/INSTALL-COVERAGE.md`, `docs/SECOND-MAC-SETUP.md`, `projects/usc-pjmt-530.md`
 
 ### MAC-INSTALL-tooling — the tools Steven asked about, verified where the sandbox allowed
 Companion to MAC-INSTALL.md. Nothing here is required for the brain.  
 `MAC-INSTALL-tooling.md` · Other · newest date stamp 2026-09-23  
 Sections: Summary; 1. Headroom — headroom-ai 0.38.0, Apache-2.0; 2. Graphify — PyPI graphifyy 0.9.65 (CLI/skill still named graphify), MIT (pyproject); 3. CodeBurn — npm codeburn 0.9.25, MIT; 4. Ponytail — Claude Code plugin 4.10.0, MIT; 5. Screenshot to Code — web app, MIT; 6. Agent Skills (addyosmani) — 25 skills, MIT · 6 vendored; 7. Find Skills (vercel-labs) · 8. Apple Design (emilkowalski) — vendored, MIT  
-Linked from: `integrations/browser-agents/README.md`, `wiki/ai-team/third-party-packs.md`  
+Linked from: `integrations/browser-agents/README.md`  
 See also: `MAC-INSTALL-comms-data.md`, `integrations/kapso/README.md`, `integrations/mac-fix-all-2026-10-05.md`
 
 ### mac-sync — the "same information" half of two equal Macs
@@ -1358,7 +1391,7 @@ See also: `integrations/remote-control/README.md`
 Steven, 2026-10-08: "fix anything not working to include ISA kpi and content pipeline automations".  
 `integrations/mac-fix-isa-kpi-2026-10-08.md` · Integrations · newest date stamp 2026-10-08  
 Sections: After you paste the report back  
-Linked from: `integrations/mac-fix-all-2026-10-05.md`, `projects/isa-portal.md`  
+Linked from: `integrations/mac-fix-all-2026-10-05.md`, `projects/isa-portal.md`, `routines/strava-wrap-guard.md`  
 See also: `docs/ENGINEERING-BRIEF.md`
 
 ### Mac: remove Perplexity, run everything on the Claude subscription (2026-10-05)
@@ -1371,8 +1404,8 @@ See also: `integrations/mac-everything-2026-10-09.md`, `integrations/mac-fix-all
 2026-09-12 04:47 UTC · Audited and remediated: 2026-09-22 · Findings: 285 (cycle 6) + 313 (2026-09-22 engineering…  
 `docs/MASTER-FINDINGS.md` · Loop & findings · newest date stamp 2026-10-02  
 Sections: Totals (cycle 6 rows); Halted — waiting on Steven (47); Every finding; Before and after, for every remediated row; By category; 2026-09-22 — "Fix everything" engineering pass (folded in by X2)  
-Linked from: `projects/command-deck.md`  
-See also: `AGENTS.md`, `docs/STRESS-TEST-REPORT.md`
+Linked from: `AGENTS.md`, `projects/command-deck.md`  
+See also: `docs/STRESS-TEST-REPORT.md`
 
 ### MBS Highway Home Report
 Derek · [none] enrol past clients (Steven's click) · no API (integrations/mbs-highway/README.md)  
@@ -1394,7 +1427,7 @@ See also: `integrations/ticor/README.md`
 One row per server. bin/brain toolkit reads this table (the last "## MCP servers" section) and the 6D Brain draws one…  
 `integrations/MCP-SERVERS.md` · Integrations · newest date stamp 2026-10-23  
 Sections: MCP servers  
-Linked from: `context/decisions.md`, `docs/inventory/mac-task-descriptions.md`, `integrations/APIS.md`, `integrations/api-anything/README.md`, `integrations/gondola/README.md`, `mcp:Composio (cloud)`  
+Linked from: `docs/inventory/mac-task-descriptions.md`, `integrations/APIS.md`, `integrations/api-anything/README.md`, `integrations/gondola/README.md`, `mcp:Composio (cloud)`, `mcp:Fieldy · Gmail · Google Calendar · Google Drive · Notion · Slack · Zoom · WhisperAI · Inkb`  
 See also: `wiki/ai-team/tool-integration-status.md`
 
 ### meeting-recap-to-crm
@@ -1410,9 +1443,9 @@ See also: `integrations/mac-fix-all-2026-10-05.md`, `knowledge-graph/README.md`,
 
 ### memory.md — auto-memory scaffold
 Auto-memory store for the Second Brain project — 47 dated entries as of 2026-10-09, near the 100-line cap.  
-`memory.md` · Memory · newest date stamp 2026-10-23  
+`memory.md` · Memory · newest date stamp 2026-10-31  
 Sections: Turning it on; What goes in; What does NOT go in; Hygiene; Entries; How many browser recipes across the five DOMShell harnesses  
-Linked from: `context/decisions.md`, `wiki/dashboard-ops/connections.md`  
+Linked from: `context/decisions.md`, `docs/INTEGRATOR-TODO.md`, `wiki/dashboard-ops/connections.md`  
 See also: `docs/inventory/claude-sessions.md`, `integrations/mac-fix-all-2026-10-05.md`, `wiki/ai-team/tool-integration-status.md`
 
 ### Mentors and benches
@@ -1477,6 +1510,18 @@ Derek · Weekdays 06:40 and 13:40, publishes the free daily mortgage-rate feed (
 `mactask:mortgage-rates-daily` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
 
+### Motion graphics and Claude repos — the reference shelf (2026-10-31)
+Nothing here is installed globally. Libraries are added inside a web or video project when one needs them; lists and…  
+`references/motion-and-claude-repos.md` · Sources · newest date stamp 2026-10-31  
+Sections: Motion libraries (npm, add inside a project); Claude reading; API and data lists (cporter202)  
+Linked from: `integrations/browser-agents/README.md`, `integrations/openmontage/README.md`  
+See also: `docs/INSTALL-COVERAGE.md`, `references/vibe-coding-learning.md`, `references/vlm-architectures.md`
+
+### MyFitnessPal · Strava · BodyPark
+Derek · [attention] all three flow through Apple Health → Health Auto Export → the cloud Health daily sync (Strava also by connector)  
+`connector:MyFitnessPal · Strava · BodyPark` · Connectors · newest date stamp undated  
+See also: `integrations/CONNECTIONS.md`
+
 ## N
 
 ### n8n — Steven's Mac, loopback only
@@ -1494,14 +1539,14 @@ See also: `wiki/ai-team/toolkit.md`
 From the R1 reliability pass over the failing cloud routines.  
 `docs/NEEDS-STEVEN-R1.append.md` · Loop & findings · newest date stamp 2026-09-27  
 Sections: Nothing in the existing runbook changes; 1. Seven web-created routines are failing, and only you can see inside them; 2. Decision — three more stock templates that will run hollow; 3. Correction to the record — the connector rule is not what the docs say  
-Linked from: `routines/cloud-routine-repairs.md`, `routines/pipeline-sync-live.md`  
-See also: `docs/NEEDS-STEVEN-R2.append.md`
+Linked from: `routines/cloud-routine-repairs.md`  
+See also: `docs/NEEDS-STEVEN-R2.append.md`, `docs/ROUTINE-BUDGET-2026-10-22.md`
 
 ### Needs Steven — R2 append (2026-09-23)
 Written by the Findings Closer after re-verifying every recorded-open finding against the repo as it stands, the live…  
 `docs/NEEDS-STEVEN-R2.append.md` · Loop & findings · newest date stamp 2026-09-23  
 Sections: 1. Corrections to items 0–48; 2. Hand-backs — exact replacements for files this seat may not edit; 3. What this pass did not touch  
-Linked from: `docs/NEEDS-STEVEN-R1.append.md`, `memory/fieldy-meetings.md`, `projects/command-deck.md`  
+Linked from: `docs/NEEDS-STEVEN-R1.append.md`, `projects/command-deck.md`  
 See also: `docs/NEEDS-STEVEN.md`, `docs/OPEN-FINDINGS.md`
 
 ### Needs Steven — the one list (2026-09-22)
@@ -1514,7 +1559,7 @@ Linked from: `docs/NEEDS-STEVEN-R2.append.md`, `docs/NEEDS-STEVEN-R3.append.md`,
 Append to docs/NEEDS-STEVEN.md. Three items.  
 `docs/NEEDS-STEVEN-R3.append.md` · Loop & findings · newest date stamp 2026-10-02  
 Sections: R3-1 — ./MAC-SETUP.sh installs a Claude Code plugin into your live user scope, unasked; R3-2 — Phase A's fourth line is the whole install, and Phase A is expected to end in exit 1; R3-3 — The never-run Mac tasks: 15 of them already missed a slot. Do not wait for Sunday.; Not for you — two things fixed, recorded so nobody re-opens them  
-Linked from: `MAC-INSTALL.md`, `docs/INSTALL-COVERAGE.md`, `routines/isa-escalation-ladder.md`  
+Linked from: `docs/INSTALL-COVERAGE.md`  
 See also: `docs/NEEDS-STEVEN.md`, `integrations/CONNECTIONS.md`
 
 ### NEEDS-STEVEN — R4 append (Voice Channel Engineer, 2026-09-23)
@@ -1548,7 +1593,7 @@ See also: `integrations/CONNECTIONS.md`
 Status 2026-10-23 06:10 UTC — connected and syncing.  
 `integrations/notebooklm/README.md` · Integrations · newest date stamp 2026-10-23  
 Sections: Steven's steps (5 minutes, once); Direct connector (opt-in taken 2026-10-23: "setup and connect everything for me")  
-Linked from: `integrations/google-drive-brain.md`, `integrations/skill-packs/README.md`, `references/google-drive.md`, `references/index.md`, `wiki/ai-team/second-brain-layers.md`  
+Linked from: `integrations/google-drive-brain.md`, `references/google-drive.md`, `references/index.md`, `wiki/ai-team/second-brain-layers.md`  
 
 ### Notion (Second Brain DB)
 Vanessa · [ok] rows + the layer directory page · connected  
@@ -1579,8 +1624,8 @@ See also: `integrations/omniroute/README.md`
 Produced 2026-09-23 by the Findings Closer.  
 `docs/OPEN-FINDINGS.md` · Loop & findings · newest date stamp 2026-09-30  
 Sections: The headline; 1. Steven — nothing else moves until he does; 2. A Mac session — his hands, but not his judgement; 3. Another seat in this repo — exact replacements are written and waiting; 4. Upstream — a local patch would be the wrong fix; 5. Nobody yet — no reachable owner can close it today; 6. Findings that were themselves wrong; 7. What was fixed in this pass  
-Linked from: `docs/HANDOFF-NEW-CHAT.md`, `docs/NEEDS-STEVEN-R2.append.md`, `docs/inventory/daily-updates.md`, `routines/mac-task-repairs.md`  
-See also: `docs/STRESS-TEST-REPORT.md`
+Linked from: `docs/HANDOFF-NEW-CHAT.md`, `docs/NEEDS-STEVEN-R2.append.md`  
+See also: `docs/inventory/daily-updates.md`
 
 ### Open house — before, during, after
 How an open house is run on Steven's listing side and what happens to every visitor afterwards: the sign-in capture…  
@@ -1598,7 +1643,8 @@ See also: `wiki/ai-team/toolkit.md`
 Steven, 2026-10-08: "also install https://github.com/nexu-io/open-design.git".  
 `integrations/open-design/README.md` · Integrations · newest date stamp 2026-10-08  
 Sections: Steven: one command on the Mac; Rules  
-Linked from: `docs/INSTALL-COVERAGE.md`, `integrations/apple-health-dashboard.md`, `integrations/browser-use/README.md`  
+Linked from: `docs/INSTALL-COVERAGE.md`, `integrations/browser-use/README.md`  
+See also: `integrations/apple-health-dashboard.md`
 
 ### openflowkit
 Derek · [pending] architecture, flow, sequence and ER diagrams the agent draws and saves as `.openflow.json` · pending — step added 2026-10-23, runs on the next paste  
@@ -1618,7 +1664,7 @@ See also: `integrations/CONNECTIONS.md`
 ### OpenMontage — the video studio (installed 2026-10-12)
 calesthio/OpenMontage, "the first open-source, agentic video production system." There is no orchestrator process: the…  
 `integrations/openmontage/README.md` · Integrations · newest date stamp 2026-10-12  
-See also: `integrations/APIS.md`, `integrations/pivo/README.md`, `references/index.md`
+See also: `integrations/pivo/README.md`, `references/index.md`, `references/motion-and-claude-repos.md`
 
 ### openmontage-video
 Sofia · Make a marketing, explainer or training video with OpenMontage on the Mac (~/Applications/OpenMontage) — Sofia's brief, Claude Code runs the pipeline, Steven approves every  
@@ -1666,9 +1712,9 @@ Sections: The two paths; The System-1 hop — before either path, 2026-09-28; Th
 Linked from: `CLAUDE.md`, `README.md`, `recall-cache.md`, `references/company-brain-blueprint.md`  
 See also: `wiki/ai-team/model-tiering-dispatch.md`
 
-### Orca pairing · AnyDesk permissions
-Derek · [attention] apps installed on both Macs  
-`connector:Orca pairing · AnyDesk permissions` · Connectors · newest date stamp undated  
+### Orca + the AI org chart
+Derek · [attention] scripted (connect-all 6c + 6e Agent OS, 172 agents wired)  
+`connector:Orca + the AI org chart` · Connectors · newest date stamp undated  
 See also: `integrations/CONNECTIONS.md`
 
 ### Orca · Laya · Bonsai (Alienware)
@@ -1677,6 +1723,11 @@ Derek · [pending] not started — integrations/alienware/alienware-setup.ps1 ne
 See also: `integrations/CONNECTIONS.md`
 
 ## P
+
+### Pabbly Connect
+Derek · [attention] workflows written (integrations/pabbly/WORKFLOWS.md); built in Pabbly's editor, not by a script  
+`connector:Pabbly Connect` · Connectors · newest date stamp undated  
+See also: `integrations/CONNECTIONS.md`
 
 ### Pabbly ↔ Kapso webhooks, six workflows
 Derek · [attention] Kapso login proven; webhook URLs and the six workflows are clicks at connect.pabbly.com  
@@ -1730,8 +1781,7 @@ See also: `integrations/CONNECTIONS.md`
 ### Pivo (pivo.ai) — Pod, Track and Tour for listing video (as of 2026-10-23)
 the Pivo Pod is a motorised phone mount that auto-tracks the agent (Face/Body/Action) for walkthrough video; Pivo…  
 `integrations/pivo/README.md` · Integrations · newest date stamp 2026-10-23  
-Linked from: `integrations/openmontage/README.md`, `projects/nonprofit.md`  
-See also: `memory/claude-chats.md`
+Linked from: `integrations/openmontage/README.md`, `memory/claude-chats.md`, `projects/nonprofit.md`  
 
 ### Pivo · Ticor Title
 Sofia · [none] tour links / CSV exports · no API  
@@ -1747,8 +1797,8 @@ See also: `integrations/MCP-SERVERS.md`
 What happens after a real-estate close (Lofty stage → Closed) or a mortgage funding (Zoho deal → Funded): the…  
 `wiki/real-estate-playbooks/post-close-care.md` · Real-estate wiki · newest date stamp 2026-10-22  
 Sections: Who does what; The sequence (skill review-request); Review-request rules (no inducement); Pabbly workflow 7 — the unattended version; The twelve-month care touches; HALT; See also  
-Linked from: `wiki/real-estate-playbooks/ai-search-visibility.md`  
-See also: `wiki/mortgage-programs/lender-directory-notes.md`, `wiki/real-estate-playbooks/index.md`, `wiki/real-estate-playbooks/sphere-nurture.md`
+Linked from: `wiki/ai-team/desk-seats.md`, `wiki/real-estate-playbooks/ai-search-visibility.md`  
+See also: `wiki/real-estate-playbooks/index.md`, `wiki/real-estate-playbooks/sphere-nurture.md`
 
 ### pr-lens
 Derek · WHAT: Draws a code change or part of a codebase as an animated architecture or data-flow diagram, on its own or in a pull request. WHEN: asked to diagram, visualise or expl  
@@ -1760,11 +1810,25 @@ Sofia · cron CRON_TZ=America/Los_Angeles 10 7 1 * * · on · —
 `routine:Presence audit — AI search visibility (monthly, Sofia)` · Cloud routines · newest date stamp undated  
 See also: `always-on/README.md`
 
+### Process coverage — every Command Deck document, its writer, its owner, and whether it move
+Generated by bin/brain coverage --write (plain code, no model call).  
+`docs/inventory/process-coverage.md` · Loop & findings · newest date stamp 2026-10-23  
+Sections: Gaps — automated documents that did not move, have no writer, or whose writer is retired (26); Every document, by tab  
+Linked from: `docs/AUTOMATION-MAP-2026-10-20.md`, `docs/ROUTINE-BUDGET-2026-10-09.md`  
+See also: `docs/inventory/db-docs.md`
+
+### Process coverage — who keeps every Command Deck document alive, and whether it did
+As of 2026-10-26. Steven (2026-10-26): "ensure all data is live and synced and look for gaps in the process to…  
+`wiki/dashboard-ops/process-coverage.md` · Dashboard ops · newest date stamp 2026-10-26  
+Sections: The rule; Where it lives; Counts on 2026-10-26 (database export at 18:24 UTC); The gaps, by fix owner (2026-10-26); How to read the card; See also  
+Linked from: `context/decisions.md`  
+See also: `docs/AUTOMATION-MAP-2026-10-26.md`, `docs/inventory/daily-updates.md`
+
 ### Program selection
 The decision tree across the deck's loan-program cards, grouped by category, so a scenario routes to the right program…  
 `wiki/mortgage-programs/program-selection.md` · Mortgage wiki · newest date stamp undated  
 Sections: Start here: the default path; Government programs — by borrower situation; Credit-and-income-shaped routes (Non-QM); Property-and-purpose-shaped routes; See also  
-Linked from: `wiki/mortgage-programs/fha-usda.md`, `wiki/mortgage-programs/index.md`, `wiki/mortgage-programs/lender-directory-notes.md`  
+Linked from: `docs/CAIO-DISRUPTION-BRIEF.md`, `wiki/mortgage-programs/fha-usda.md`, `wiki/mortgage-programs/index.md`, `wiki/mortgage-programs/lender-directory-notes.md`  
 
 ### Project Risk Review
 Derek · cron 0 21 * * 5 · on · FAILED @ 2026-09-18T21:07  
@@ -1780,8 +1844,8 @@ See also: `wiki/ai-team/toolkit.md`
 The architecture Steven asked for on 2026-10-22 ("the best automated push button system"): every surface hands work to…  
 `wiki/ai-team/push-button-system.md` · AI team · newest date stamp 2026-10-22  
 Sections: What vanessaQueue is — the one queue; The daily schedule (Pacific time; always-on/README.md); The Command Deck push-buttons; Pods and gates (wiki/ai-team/cross-functional.md); The mods — one word each (integrations/mods/RECOMMENDATIONS.md, added 2026-10-22); Pabbly workflows 1–11 (integrations/pabbly/WORKFLOWS.md); The Mac paste (docs/STEVEN-STEPS.md "Start here (2026-10-22, evening)"); HALT (mirrors CLAUDE.md)  
-Linked from: `wiki/ai-team/org-chart.md`, `wiki/mortgage-programs/refi-review-prep.md`  
-See also: `docs/AUTOMATION-MAP-2026-10-20.md`, `wiki/real-estate-playbooks/sphere-nurture.md`
+Linked from: `wiki/ai-team/org-chart.md`  
+See also: `docs/AUTOMATION-MAP-2026-10-20.md`, `wiki/dashboard-ops/db-docs.md`
 
 ### push-buttons
 Vanessa · One-word slash commands (/cycle /inbox /meetings /sync /connect /tc /queue /today /help-buttons) that send the full, correct prompt for each workflow, HALT rules included  
@@ -1920,8 +1984,8 @@ See also: `projects/isa-portal.md`, `wiki/mortgage-programs/index.md`
 How the Refi Watch works: the list Steven keeps, the market average it is compared with, the spread thresholds, the…  
 `wiki/mortgage-programs/refi-review-prep.md` · Mortgage wiki · newest date stamp 2026-10-26  
 Sections: Who does what; Who could refi — the question this page answers; The list — refiWatchList on the Command Deck; The comparison; VA IRRRL — Harrison's lane, pointer only; The Monday routine — trig_014ipr6x9z35psmtHJCPVqj1; Steven's licensed step; HALT  
-Linked from: `wiki/dashboard-ops/freshness-routines.md`  
-See also: `wiki/ai-team/push-button-system.md`, `wiki/real-estate-playbooks/sphere-nurture.md`
+Linked from: `integrations/loan-stack/README.md`, `wiki/dashboard-ops/freshness-routines.md`  
+See also: `context/competitors.md`, `wiki/real-estate-playbooks/sphere-nurture.md`
 
 ### Refi watch — weekly prep list (Mon 7:20 AM PT, drafts only)
 Derek · cron CRON_TZ=America/Los_Angeles 20 7 * * 1 · on · —  
@@ -1974,13 +2038,13 @@ Steven: "ensure all sections of the dashboards that require updates are on routi
 `docs/ROUTINE-BUDGET-2026-10-09.md` · Loop & findings · newest date stamp 2026-10-11  
 Sections: What was wrong; Freshness (computed in code, 2026-10-09 ~18:30 UTC, scripts/feed_freshness.py); Changes made (each reversible; old schedule shown); Needs Steven (agents cannot change routines he created); Model change — Steven approved ("yes, Sonnet", 2026-10-09); Follow-ups (2026-10-09, later)  
 Linked from: `projects/usc-pjmt-530.md`  
-See also: `memory/ai-team.md`, `wiki/dashboard-ops/freshness-routines.md`
+See also: `docs/inventory/process-coverage.md`, `wiki/dashboard-ops/freshness-routines.md`
 
 ### Routine budget — 2026-10-22
 Steven (2026-10-22): "streamline efficiencies… fix anything not working." The weekly Claude allowance is the binding…  
 `docs/ROUTINE-BUDGET-2026-10-22.md` · Loop & findings · newest date stamp 2026-10-25  
 Sections: Runs per week (scheduled cloud routines, enabled, as listed 2026-10-22 ~14:30 UTC); Changed (all routines created via meta_mcp; each reversible: set the old schedule back or enabled=true); Steven only (created via API — agents cannot change these); Recommendation only — model changes need Steven's own words  
-Linked from: `wiki/ai-team/toolkit.md`  
+Linked from: `docs/NEEDS-STEVEN-R1.append.md`, `wiki/ai-team/toolkit.md`  
 See also: `docs/ROUTINE-SCHEDULE-FIX.md`, `docs/inventory/cloud-routines-2026-10.md`
 
 ### Routine catalog
@@ -2021,8 +2085,8 @@ See also: `always-on/README.md`
 Read this file in full. Read nothing else until the routing table sends you there.  
 `CLAUDE.md` · Router · newest date stamp 2026-10-05  
 Sections: Routing table — load exactly ONE leaf, then answer; Recall order — stop at the first level that answers; Token rules; Model tiering (Steven's decisions, 2026-09-22; executives to Opus 5.5 on 2026-09-28; research to Claude on 2026-10-05); Sub-agent dispatch; HALT — stop, write a Needs-Steven packet, do not proceed  
-Linked from: `routines/parallel-csuite-task-cycle.md`, `wiki/index.md`  
-See also: `AGENTS.md`, `OPTIMIZATION.md`, `references/index.md`
+Linked from: `AGENTS.md`, `routines/parallel-csuite-task-cycle.md`  
+See also: `OPTIMIZATION.md`, `references/index.md`, `wiki/index.md`
 
 ### security-and-hardening
 Elena · Hardens code against vulnerabilities. Use when auditing an input handler for vulnerabilities, when handling user input, authentication, data storage, or external integratio  
@@ -2045,7 +2109,7 @@ See also: `always-on/README.md`
 The browsable version, with tick-boxes that sync across your devices, is the artifact…  
 `docs/SETUP-RUNBOOK.md` · Loop & findings · newest date stamp 2026-10-09  
 Sections: Before you start — four things you should know; A — Get the Mac to a known state; B — The two credentials that unblock the most; C — Finish WhatsApp; D — CLI-Anything, the browser targets; E — The ECC gate: SkySlope and zipForms; F — Tell the dashboard the truth; G — Vanessa speaks when she writes  
-Linked from: `MAC-INSTALL-comms-data.md`, `integrations/google-drive-brain.md`, `integrations/vanessa-voice-everywhere.md`, `routines/fub-removal-2026-09-24.md`  
+Linked from: `MAC-INSTALL-comms-data.md`, `integrations/google-drive-brain.md`, `integrations/vanessa-voice-everywhere.md`  
 See also: `integrations/CONNECTIONS.md`, `integrations/mac-task-specs.md`
 
 ### Showing operations
@@ -2053,19 +2117,24 @@ How a showing actually gets booked: itinerary building, the ShowingTime-vs-Showa
 `wiki/real-estate-playbooks/showing-operations.md` · Real-estate wiki · newest date stamp 2026-09-22  
 Sections: The itinerary and route planner; ShowingTime vs. Showami; The one rule that never moves; Automation status — read this before assuming something is live; Feedback capture; See also  
 Linked from: `wiki/real-estate-playbooks/open-house.md`  
-See also: `integrations/CONNECT-PLAN-2026-10-09.md`, `references/drive-second-brain-notes.md`
+See also: `references/drive-second-brain-notes.md`, `wiki/real-estate-playbooks/buyer-process.md`
 
 ### showing-sync
 Victor · Works the Command Deck showing sync queue three times a day: creates calendar events and **Lofty** appointments for confirmed showings. **Not connected yet** — needs `LOFT  
 `mactask:showing-sync` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
 
+### ShowingTime · Showami · homes.com
+Victor · [attention] read-only CLI-Anything wrappers scripted (connect-all 7d)  
+`connector:ShowingTime · Showami · homes.com` · Connectors · newest date stamp undated  
+See also: `integrations/CONNECTIONS.md`
+
 ### Skill-pack imports (77skills.ai and similar)
 77skills.ai sells a $77 pack of 77 business-skill SKILL.md folders.  
 `integrations/skill-packs/README.md` · Integrations · newest date stamp undated  
 Sections: Status; The flow; Why not load all 77 at once; Self-test (not committed); Files  
-Linked from: `wiki/ai-team/third-party-packs.md`, `wiki/mortgage-programs/loan-task-agents.md`  
-See also: `integrations/notebooklm/README.md`
+Linked from: `wiki/mortgage-programs/loan-task-agents.md`  
+See also: `wiki/ai-team/third-party-packs.md`, `wiki/ai-team/tool-integration-status.md`
 
 ### skills-refresh
 Vanessa · Weekly audit of every installed skill against the Command Deck's AI Team toolkit table: frontmatter that will not load, dead paths, duplicates, and skills the dashboard a  
@@ -2077,15 +2146,15 @@ Vanessa · Sundays 7:00 AM - audits every SKILL.md on this Mac (skills, schedule
 `mactask:skills-refresh-weekly` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
 
+### SkySlope
+Vanessa · [attention] four keys prompt in the paste + GET /api/users/me proof  
+`connector:SkySlope` · Connectors · newest date stamp undated  
+See also: `integrations/CONNECTIONS.md`
+
 ### SkySlope (api.skyslope.com, BETA)
 Derek · [pending] read users/me, files (sales + listings), a file, its documents, checklist types; writes are HALT · ready — client built 2026-10-24; keys land with the paste (Stev  
 `api:SkySlope (api.skyslope.com, BETA)` · APIs · newest date stamp undated  
 See also: `integrations/APIS.md`
-
-### SkySlope (transactions, documents)
-Derek · [attention] key on Mac path ready — integrations/skyslope/skyslope_cli.py (stdlib, GET-only, SkySlope's own HMAC login from github.com/skyslope/example-authentication); the  
-`connector:SkySlope (transactions, documents)` · Connectors · newest date stamp undated  
-See also: `integrations/CONNECTIONS.md`
 
 ### Social Calendar Planning
 Sofia · cron 30 15 * * 1 · on · SUCCEEDED @ 2026-09-21T15:31  
@@ -2106,7 +2175,7 @@ See also: `always-on/README.md`
 How past clients and the wider sphere are kept warm without anything being sent by a machine: what the sphere list…  
 `wiki/real-estate-playbooks/sphere-nurture.md` · Real-estate wiki · newest date stamp 2026-10-22  
 Sections: Who does what; The sphere list — sphereList on the Command Deck; The monthly touches (skill past-client-nurture); The 11th-of-month routine — trig_01Pn8xLNKTVVFYjYTj8d8JTd; Pabbly workflow 8 — the dated touches, unattended; What Steven does; HALT; See also  
-Linked from: `wiki/ai-team/push-button-system.md`, `wiki/mortgage-programs/refi-review-prep.md`, `wiki/real-estate-playbooks/post-close-care.md`  
+Linked from: `wiki/mortgage-programs/refi-review-prep.md`, `wiki/real-estate-playbooks/post-close-care.md`  
 See also: `wiki/real-estate-playbooks/index.md`
 
 ### steve-twin-sweep
@@ -2116,8 +2185,8 @@ See also: `wiki/dashboard-ops/task-catalog.md`
 
 ### Steven's steps — everything still waiting on you, in order (2026-10-22)
 Same list as the Action Desk page (https://claude.ai/artifact/9S8G2ZhhqP1iUsPZrPsmRn), which has a button per step.  
-`docs/STEVEN-STEPS.md` · Loop & findings · newest date stamp 2026-10-23  
-Sections: Start here (2026-10-23, evening) — ONE paste, then the short list it prints; 1 · Phone · 5 minutes (Do these first; nothing else depends on them); Every day (from 2026-10-23) — Vanessa's four courses of action, your yes or no; Start here (2026-10-23, round 2 — simplified the same evening) — three pastes, then four clicks; Start here (2026-10-23) — one paste, then a few clicks; Start here (2026-10-20) — one paste reconnects this Mac · about 15 minutes; Start here (2026-10-14) — WhatsApp with Vanessa, two pastes on the Mac; Start here (2026-10-13) — two things, 5 minutes  
+`docs/STEVEN-STEPS.md` · Loop & findings · newest date stamp 2026-10-27  
+Sections: Start here (2026-10-27) — ONE paste, then the short list it prints; Older round (2026-10-23, evening) — ONE paste, then the short list it prints; 1 · Phone · 5 minutes (Do these first; nothing else depends on them); Every day (from 2026-10-23) — Vanessa's four courses of action, your yes or no; Older round (2026-10-23, round 2 — simplified the same evening) — three pastes, then four clicks; Older round (2026-10-23) — one paste, then a few clicks; Older round (2026-10-20) — one paste reconnects this Mac · about 15 minutes; Older round (2026-10-14) — WhatsApp with Vanessa, two pastes on the Mac  
 Linked from: `integrations/CONNECT-PLAN-2026-10-09.md`, `integrations/mac-sync/README.md`, `memory/claude-chats.md`  
 See also: `integrations/CONNECTIONS.md`, `integrations/agent-os/README.md`, `integrations/mac-everything-2026-10-09.md`
 
@@ -2154,33 +2223,40 @@ The Bot Crew (https://claude.ai/artifact/B8BPDvyE55p8hT7PTyKbjG) is Steven's in-
 `wiki/ai-team/bot-crew.md` · AI team · newest date stamp 2026-10-22  
 Sections: What is on it (2026-10-22); Rules the page keeps; Where the build lives  
 Linked from: `projects/ai-team.md`, `wiki/dashboard-ops/panel-map.md`  
-See also: `wiki/ai-team/index.md`, `wiki/ai-team/mentors-and-benches.md`
+See also: `wiki/ai-team/cross-functional.md`, `wiki/ai-team/index.md`, `wiki/ai-team/mentors-and-benches.md`
+
+### The five agents — one boss and four specialists (built 2026-10-31)
+From Steven's "5 Claude Agents to Build First" image.  
+`wiki/ai-team/five-agents.md` · AI team · newest date stamp 2026-10-31  
+Linked from: `context/banned-words.md`, `context/competitors.md`  
+See also: `projects/usc-pjmt-530.md`
 
 ### The second brain's layers — what lives where, how it syncs, how to tell it is even (2026-1
 Steven's rule (2026-10-23): "ensure all data syncs evenly across all layers — Notion, Google Drive, NotebookLM and…  
 `wiki/ai-team/second-brain-layers.md` · AI team · newest date stamp 2026-10-23  
 Sections: One job per layer; Capabilities (2026-10-23); Rules; What "the most powerful second brain" means here, and what is next (2026-10-23)  
-Linked from: `integrations/apple-health-dashboard.md`  
-See also: `integrations/notebooklm/README.md`, `references/google-drive.md`, `wiki/clients/index.md`
+Linked from: `wiki/clients/index.md`  
+See also: `docs/inventory/daily-updates.md`, `integrations/apple-health-dashboard.md`, `integrations/notebooklm/README.md`
 
 ### Third-party skills and tools — what was installed, held or declined (2026-10-11)
 Steven asked for 18 repositories. Each was read before anything was installed; nothing was run from the cloud sandbox.  
-`wiki/ai-team/third-party-packs.md` · AI team · newest date stamp 2026-10-23  
-Sections: The 16-item list (2026-10-12); The 32-item image (2026-10-12); The four repos (2026-10-23)  
-See also: `MAC-INSTALL-tooling.md`, `integrations/skill-packs/README.md`, `references/vlm-architectures.md`
+`wiki/ai-team/third-party-packs.md` · AI team · newest date stamp 2026-10-31  
+Sections: The 16-item list (2026-10-12); The 32-item image (2026-10-12); The four repos (2026-10-23); The three images and 17 links (2026-10-31)  
+Linked from: `integrations/skill-packs/README.md`  
+See also: `references/vlm-architectures.md`, `wiki/ai-team/tool-integration-status.md`, `wiki/mortgage-programs/loan-task-agents.md`
 
 ### Ticor Title property search
-Derek · [attention] no API — rep account + CSV/PDF export (integrations/ticor/README.md)  
+Derek · [attention] no API (integrations/ticor/README.md); county records already feed the deck  
 `connector:Ticor Title property search` · Connectors · newest date stamp undated  
 See also: `integrations/CONNECTIONS.md`
 
 ### Ticor Title property search (FNF agent tools) — as of 2026-10-23
 rep-provisioned agent tools: Ticor Online Pro (ticorpropertydata.com: property profiles, tax, ownership, farm lists)…  
 `integrations/ticor/README.md` · Integrations · newest date stamp 2026-10-23  
-Linked from: `integrations/CONNECT-PLAN-2026-10-09.md`, `integrations/mbs-highway/README.md`, `memory/fieldy-meetings.md`, `wiki/events-networking/index.md`  
+Linked from: `integrations/CONNECT-PLAN-2026-10-09.md`, `integrations/arive/README.md`, `integrations/mbs-highway/README.md`, `wiki/events-networking/index.md`  
 
 ### TidyCal
-Derek · [attention] step 7c did not run (no token)  
+Vanessa · [attention] token prompt in the paste + read-only proof call  
 `connector:TidyCal` · Connectors · newest date stamp undated  
 See also: `integrations/CONNECTIONS.md`
 
@@ -2204,8 +2280,8 @@ See also: `integrations/CONNECTIONS.md`
 What is actually connected, installed, or merely proposed — read this before assuming a seat can do something because…  
 `wiki/ai-team/tool-integration-status.md` · AI team · newest date stamp 2026-10-13  
 Sections: Connectors (claude.ai); Local MCP / bridges (Mac); Mac scheduled tasks and cloud routines; Orca — proposed, not integrated; Laya — proposed, not installed; 77skills.ai — proposed, not purchased; Skills actually in the repo today; See also  
-Linked from: `integrations/MCP-SERVERS.md`, `integrations/browser-agents/README.md`, `memory.md`  
-See also: `integrations/remote-control/README.md`, `wiki/ai-team/computer-hub.md`
+Linked from: `integrations/MCP-SERVERS.md`, `integrations/skill-packs/README.md`, `memory.md`, `wiki/ai-team/third-party-packs.md`  
+See also: `integrations/browser-agents/README.md`, `integrations/remote-control/README.md`, `wiki/ai-team/computer-hub.md`
 
 ### toolkit-deck-sync
 Derek · Twice daily: builds the toolkitSnapshot document (tools, agents, skills, scheduled tasks, MCP servers) from what is installed on the Mac and  
@@ -2230,8 +2306,8 @@ See also: `references/drive-second-brain-notes.md`
 Steven's current course in the USC MS Project Management program.  
 `projects/usc-pjmt-530.md` · Projects · newest date stamp 2026-10-19  
 Sections: Deadlines (live doc: uscDeadlines); Why it is in the brain; Where the live data lives  
-Linked from: `context/about-me.md`  
-See also: `MAC-INSTALL.md`, `docs/ROUTINE-BUDGET-2026-10-09.md`
+Linked from: `MAC-INSTALL.md`, `context/about-me.md`, `docs/STRESS-TEST-REPORT.md`, `wiki/ai-team/five-agents.md`  
+See also: `docs/ROUTINE-BUDGET-2026-10-09.md`
 
 ## V
 
@@ -2263,7 +2339,7 @@ See also: `always-on/README.md`
 CORRECTION 2026-09-24 — read before anything below.  
 `integrations/vanessa-voice-everywhere.md` · Integrations · newest date stamp 2026-09-24  
 Sections: Per-channel: what she does today, what she does after Steven's steps, what she cannot do; The gap, stated exactly; The chain, after this change; The three changes; Rules this must not break; Measured on 2026-09-22 — what the encoder produces and what Inkbox does with it; What is still unverified, and how you would know; Discord and WhatsApp — specified, and the answer is no send path  
-Linked from: `docs/NEEDS-STEVEN-R4.append.md`, `integrations/jarvis/README.md`, `integrations/mac-task-specs.md`  
+Linked from: `docs/NEEDS-STEVEN-R4.append.md`, `docs/inventory/mac-task-descriptions.md`, `integrations/jarvis/README.md`, `integrations/mac-task-specs.md`  
 See also: `docs/SETUP-RUNBOOK.md`
 
 ### Vanessa — Chief of Staff daily cycle (weekdays 6:25 AM PT, parallel squads)
@@ -2325,8 +2401,8 @@ See also: `wiki/dashboard-ops/task-catalog.md`
 Two reading resources Steven asked to install on 2026-10-12.  
 `references/vibe-coding-learning.md` · Sources · newest date stamp 2026-10-12  
 Sections: awesome-vibe-coding (awesome-vibe-coding/awesome-vibe-coding, CC0, commit 46d0f0d, 2026-08-13); Easy-Vibe (datawhalechina/easy-vibe, CC BY-NC-SA 4.0, commit 130e9b7, 2026-08-25); How the team uses them  
-Linked from: `references/backend-folder-structure.md`, `references/index.md`  
-See also: `knowledge-graph/schema.md`, `references/vlm-architectures.md`
+Linked from: `references/backend-folder-structure.md`, `references/index.md`, `references/motion-and-claude-repos.md`  
+See also: `references/vlm-architectures.md`
 
 ### voice-reply-render
 Vanessa · Reads the Command Deck's voiceReplyQueue, renders each new Vanessa or Steve chat reply in that persona's own voice with Magica Seed Audio (f  
@@ -2393,8 +2469,8 @@ See also: `wiki/dashboard-ops/task-catalog.md`
 What each state doc means and who writes it.  
 `wiki/dashboard-ops/db-docs.md` · Dashboard ops · newest date stamp 2026-10-26  
 Sections: liveFeeds on both pages (2026-10-05); Docs this round's reading actually surfaced, with what each one is (2026-09-28); Push-button docs — the one queue, the desks and the ISA Portal lists (2026-10-22)  
-Linked from: `docs/AUTOMATION-MAP-2026-10-20.md`, `projects/command-deck.md`, `projects/isa-portal.md`  
-See also: `wiki/dashboard-ops/freshness-routines.md`
+Linked from: `projects/command-deck.md`, `wiki/ai-team/push-button-system.md`  
+See also: `docs/AUTOMATION-MAP-2026-10-20.md`
 
 ### WhatsApp (Kapso)
 Vanessa · [pending] number …5223 assigned; nothing reads it — runner tasks kapso-inbox-sync / vanessa-whatsapp-inbox not registered; Kapso MCP sign-in pending; keys in the Keychain  
@@ -2421,7 +2497,7 @@ See also: `wiki/ai-team/toolkit.md`
 ## Z
 
 ### Zoho CRM
-Victor · [attention] 403 until the API box is ticked  
+Vanessa · [attention] self-client keys prompt in the paste; API 403 until the profile tick  
 `connector:Zoho CRM` · Connectors · newest date stamp undated  
 See also: `integrations/CONNECTIONS.md`
 
