@@ -138,6 +138,20 @@ details.ls.done>summary{color:var(--good)}
 .chk{margin-left:auto;font:500 12px var(--f-mono);display:flex;gap:6px;align-items:center;color:var(--muted)}
 /* tables */
 .tw{overflow-x:auto}
+.mp{width:min(150px,100%);aspect-ratio:1;border-radius:50%;margin:0 auto;background:repeating-radial-gradient(circle,var(--key-b) 0 3px,#2f2a55 3px 4px);position:relative;animation:spin 2s linear infinite;animation-play-state:paused}
+.mp.run{animation-play-state:running}
+.mp::after{content:"";position:absolute;inset:34%;border-radius:50%;background:var(--accent);box-shadow:inset 0 0 0 8px var(--hot)}
+.mp::before{content:"";position:absolute;left:50%;top:5%;width:3px;height:14%;margin-left:-1.5px;background:#fff;z-index:2}
+.pbar{position:relative;height:16px;border-radius:99px;background:var(--surface2);border:1px solid var(--line)}
+.pbar::before{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:2px;background:var(--good)}
+.pbar i{position:absolute;top:1px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--hot);left:50%;transition:left .1s}
+.pbar.ok i{background:var(--good)}
+.cam{display:grid;grid-template-columns:repeat(12,minmax(48px,1fr));gap:4px;min-width:640px}
+.cam button{border:1px solid var(--line);background:var(--surface2);border-radius:8px;padding:6px 2px;font:600 12px var(--f-mono);line-height:1.3}
+.cam button small{display:block;font-weight:400;color:var(--muted)}
+.cam button.cc{background:var(--accent-soft);border-color:var(--accent)}
+.cam button.cs{background:var(--hot);color:#1c1830;border-color:var(--hot)}
+.cam button.cs small{color:#1c1830}
 table{border-collapse:collapse;width:100%;font-size:14px}
 th{text-align:left;font:500 12px var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:8px;border-bottom:2px solid var(--line);white-space:nowrap}
 td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
@@ -332,6 +346,36 @@ mark.b2{background:var(--accent-soft);box-shadow:inset 0 -2px var(--accent)}
   </div>
 </section>
 
+<!-- DJ -->
+<section class="panel" id="p-dj" hidden>
+  <div><div class="kicker">Mixing, beatmatching and scratching</div><h2>How to Be a DJ</h2></div>
+  <div class="card">
+    <div class="row" style="justify-content:space-between;margin-bottom:6px"><h3>Beatmatch trainer</h3><span class="readout" id="djRead">Press Start, then match Deck B to Deck A.</span></div>
+    <p class="note" style="margin:0 0 12px">Deck A is a low thud and Deck B is a high tick. Move the pitch slider until the ticks fall exactly on the thuds, then use the nudge buttons to line them up. Wear headphones if you can.</p>
+    <div class="g2">
+      <div style="text-align:center"><b>Deck A</b> <span class="readout" id="djAv">–</span><div class="mp" id="djPA" style="margin-top:10px"></div></div>
+      <div style="text-align:center"><b>Deck B</b> <span class="readout" id="djBv">–</span><div class="mp" id="djPB" style="margin-top:10px"></div>
+        <label class="f" style="margin-top:10px">Pitch <b id="djPv">0.0%</b><input type="range" id="djPitch" min="-10" max="10" step="0.05" value="0"></label></div>
+    </div>
+    <div style="margin:16px 0 6px" class="row"><span class="note">Deck B behind</span><span class="sp"></span><span class="note">In phase</span><span class="sp"></span><span class="note">Deck B ahead</span></div>
+    <div class="pbar" id="djBar"><i id="djMark"></i></div>
+    <div class="row" style="margin-top:14px">
+      <button class="btn" id="djGo">Start decks</button>
+      <button class="btn alt" id="djLate">Nudge later</button>
+      <button class="btn alt" id="djEarly">Nudge earlier</button>
+      <button class="btn alt" id="djNew">New tracks</button>
+      <label class="chk"><input type="checkbox" id="djHide"> Hide BPM numbers (train your ears)</label>
+    </div>
+    <label class="f" style="margin-top:12px;max-width:420px">Crossfader (Deck A ← → Deck B)<input type="range" id="djXf" min="0" max="100" value="50"></label>
+  </div>
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><h3>Camelot wheel: harmonic mixing</h3><span class="readout" id="camRead">Click a key to see which tracks mix well with it.</span></div>
+    <p class="note" style="margin:6px 0 12px">Top row (B) is major keys, bottom row (A) is minor. Tracks that share a number, or sit one step away on the same letter, blend without clashing.</p>
+    <div class="tw"><div class="cam" id="cam"></div></div>
+  </div>
+  <div><h3 style="margin-bottom:10px">DJ lessons</h3><div id="djLessons"></div></div>
+</section>
+
 <!-- ARTISTS -->
 <section class="panel" id="p-artists" hidden>
   <div><div class="kicker">Piano and guitar approaches</div><h2>Artist Guides</h2></div>
@@ -491,14 +535,15 @@ function playProg(list,bpm,inst,ui){
 }
 
 /* ---------- tabs / routing ---------- */
-const TABS=[["start","Start"],["piano","Piano"],["guitar","Guitar"],["beats","Beat Lab"],["artists","Artist Guides"],["history","Rap History"],["lyrics","Lyric Devices"],["gear","Gear"],["samples","Sampled"]];
+const TABS=[["start","Start"],["piano","Piano"],["guitar","Guitar"],["beats","Beat Lab"],["dj","DJ School"],["artists","Artist Guides"],["history","Rap History"],["lyrics","Lyric Devices"],["gear","Gear"],["samples","Sampled"]];
 $("#tabs").innerHTML=TABS.map(([id,n])=>`<button role="tab" data-t="${id}" aria-selected="false">${n}</button>`).join("");
-$("#navCards").innerHTML=[["piano","Piano","Playable keyboard, scales, chords and 8 lessons."],["guitar","Guitar","Live fretboard, chord library, tabs and 11 lessons."],["beats","Beat Lab","Drum machine and scratch deck."],["artists","Artist Guides","Six artists with graded song lists."],["history","Rap History","Timeline from 1973 to the streaming era."],["samples","Sampled","Well-documented sample sources, searchable."]].map(([id,t,d])=>`<button class="nav-card" data-go="${id}"><b>${t}</b><span>${d}</span></button>`).join("");
+$("#navCards").innerHTML=[["piano","Piano","Playable keyboard, scales, chords and 8 lessons."],["guitar","Guitar","Live fretboard, chord library, tabs and 11 lessons."],["beats","Beat Lab","Drum machine and scratch deck."],["dj","DJ School","Beatmatch trainer, Camelot wheel and 10 lessons."],["artists","Artist Guides","Six artists with graded song lists."],["history","Rap History","Timeline from 1973 to the streaming era."],["samples","Sampled","Well-documented sample sources, searchable."]].map(([id,t,d])=>`<button class="nav-card" data-go="${id}"><b>${t}</b><span>${d}</span></button>`).join("");
 function show(id){
   if(!TABS.some(t=>t[0]===id))id="start";
   TABS.forEach(([t])=>{$("#p-"+t).hidden=t!==id});
   $$("#tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.t===id));
   if(id!=="beats"&&seqClock.on)seqClock.stop();
+  if(id!=="dj")djStop();
   if(id!=="start"&&metro.on)metro.stop();
   if(id!=="lyrics"&&flowClock.on)flowClock.stop();
   if(id==="history")animateHistory();
@@ -760,6 +805,64 @@ loadPre("Boom Bap");
   const end=()=>{if(last==null)return;last=null;pl.classList.remove("drag");pl.style.transform="";try{gain.gain.setTargetAtTime(0,ac().currentTime,.03);osc.stop(ac().currentTime+.15)}catch(e){}osc=null};
   pl.addEventListener("pointerup",end);pl.addEventListener("pointercancel",end);
 })();
+
+/* ---------- DJ ---------- */
+const DJ={a:120,b:126,tA:[],tB:[],nudge:0,ok:0,mon:null,tm:null};
+const djBpmB=()=>DJ.b*(1+ +$("#djPitch").value/100);
+const djVol=()=>{const x=$("#djXf").value/100;return[Math.cos(x*Math.PI/2),Math.sin(x*Math.PI/2)]};
+const djPush=(arr,t)=>{arr.push(t);if(arr.length>8)arr.shift()};
+const djA=makeClock(()=>60/DJ.a,(s,t)=>{tone(t,150,42,.9*djVol()[0],.3);djPush(DJ.tA,t)},()=>{});
+const djB=makeClock(()=>{const d=60/djBpmB()+DJ.nudge;DJ.nudge=0;return d},(s,t)=>{tone(t,1100,1000,.35*djVol()[1],.07,"square");djPush(DJ.tB,t)},()=>{});
+function djLabels(){
+  const hide=$("#djHide").checked,p=+$("#djPitch").value;
+  $("#djPv").textContent=(p>0?"+":"")+p.toFixed(1)+"%";
+  $("#djAv").textContent=hide?"? BPM":DJ.a+" BPM";$("#djBv").textContent=hide?"? BPM":djBpmB().toFixed(1)+" BPM";
+  $("#djPA").style.animationDuration=(240/DJ.a)+"s";$("#djPB").style.animationDuration=(240/djBpmB())+"s";
+}
+function djNew(){DJ.a=98+Math.floor(Math.random()*31);DJ.b=DJ.a+(Math.random()<.5?-1:1)*(4+Math.floor(Math.random()*5));$("#djPitch").value=0;DJ.ok=0;djLabels()}
+function djStop(){djA.stop();djB.stop();clearInterval(DJ.mon);clearTimeout(DJ.tm);DJ.mon=null;$("#djGo").textContent="Start decks";$("#djPA").classList.remove("run");$("#djPB").classList.remove("run")}
+function djMonitor(){
+  if(!DJ.tA.length||!DJ.tB.length)return;
+  const p=60/DJ.a,tb=DJ.tB[DJ.tB.length-1];let off=((tb-DJ.tA[DJ.tA.length-1])%p+p)%p;if(off>p/2)off-=p;
+  const diff=djBpmB()-DJ.a,aoff=Math.abs(off);
+  $("#djMark").style.left=(50+Math.max(-1,Math.min(1,off/(p/2)))*50)+"%";
+  const good=Math.abs(diff)<.4&&aoff<.04;DJ.ok=good?DJ.ok+1:0;$("#djBar").classList.toggle("ok",good);
+  let m;
+  if(DJ.ok>=15)m="Matched! Hit New tracks and try it again.";
+  else if(Math.abs(diff)>=.4)m=diff>0?"Deck B is too fast. Lower the pitch.":"Deck B is too slow. Raise the pitch.";
+  else m=aoff<.04?"Hold it steady…":(off>0?"Tempos match. Deck B is behind: nudge it earlier.":"Tempos match. Deck B is ahead: nudge it later.");
+  $("#djRead").textContent=m;
+}
+$("#djGo").onclick=()=>{
+  if(djA.on){djStop();return}
+  ac();DJ.tA=[];DJ.tB=[];DJ.nudge=0;DJ.ok=0;djA.start();DJ.tm=setTimeout(()=>djB.start(),Math.random()*.35*60/DJ.a*1000);
+  DJ.mon=setInterval(djMonitor,100);$("#djGo").textContent="Stop decks";$("#djPA").classList.add("run");$("#djPB").classList.add("run");djLabels();
+};
+$("#djPitch").oninput=djLabels;$("#djHide").onchange=djLabels;
+$("#djLate").onclick=()=>DJ.nudge=.02;$("#djEarly").onclick=()=>DJ.nudge=-.02;
+$("#djNew").onclick=djNew;
+djNew();
+/* camelot */
+const CAM_B=["B","F♯","D♭","A♭","E♭","B♭","F","C","G","D","A","E"],CAM_A=["G♯m","E♭m","B♭m","Fm","Cm","Gm","Dm","Am","Em","Bm","F♯m","C♯m"];
+$("#cam").innerHTML=["B","A"].map(L=>Array.from({length:12},(_,i)=>`<button data-c="${i+1}${L}">${i+1}${L}<small>${(L==="B"?CAM_B:CAM_A)[i]}</small></button>`).join("")).join("");
+$("#cam").addEventListener("click",e=>{
+  const b=e.target.closest("[data-c]");if(!b)return;const n=parseInt(b.dataset.c),L=b.dataset.c.slice(-1),o=L==="A"?"B":"A";
+  const wrap=x=>((x-1+12)%12)+1,ok=new Set([n+L,wrap(n+1)+L,wrap(n-1)+L,n+o]);
+  $$("#cam button").forEach(x=>{x.classList.toggle("cs",x===b);x.classList.toggle("cc",ok.has(x.dataset.c)&&x!==b)});
+  $("#camRead").textContent=`${b.dataset.c} (${b.querySelector("small").textContent}) mixes with: ${[...ok].filter(x=>x!==b.dataset.c).join(", ")}`;
+});
+lessonList($("#djLessons"),[
+ {t:"What a DJ actually does",b:"<p>A DJ chooses tracks, sequences them, and blends them so the music never stops and the energy moves where the room needs it. Skills: <b>selection</b> (knowing music), <b>technique</b> (mixing, EQ, effects, scratching) and <b>reading the crowd</b>.</p><p>Two traditions overlap: club DJs who blend tracks smoothly for dancing, and hip hop or turntablist DJs who cut, scratch and juggle records as an instrument. Both start with the same fundamentals.</p>"},
+ {t:"Know your gear",b:"<p><b>Decks</b> play the music (vinyl turntables, CDJs, or a software controller). A <b>mixer</b> has volume faders, a three-band EQ (low, mid, high), a crossfader and a headphone cue. <b>Headphones</b> let you hear the next track before the crowd does.</p><p>Beginners usually start with an all-in-one controller plus software such as Serato, rekordbox, Traktor or Virtual DJ. Learn on whichever you can use daily; the skills transfer. See the Gear tab for turntable history.</p>",a:[["Open Gear tab",()=>{location.hash="gear"}]]},
+ {t:"Beats, bars and phrases",b:"<p>Most dance, pop and hip hop is in 4/4: four beats to a bar. Group bars into <b>phrases</b> of 8, 16 or 32 beats' worth, and mix on phrase boundaries so a new track's intro begins exactly where the old section ends. Count out loud: 1 2 3 4, 2 2 3 4, up to 8 bars, and listen for where the music changes.</p>"},
+ {t:"Beatmatching by ear",b:"<p><b>1.</b> Cue the next track in your headphones. <b>2.</b> Release it on beat 1 of the playing track. <b>3.</b> If the new track drifts ahead, lower its pitch; if it falls behind, raise it. <b>4.</b> Fine-tune with a small nudge on the platter or jog wheel. <b>5.</b> Once matched, check again every few bars because tempos drift.</p><p>Use the trainer above with BPM numbers hidden to build your ear.</p>",a:[["Go to the trainer",()=>{$("#djBar").scrollIntoView({behavior:"smooth",block:"center"})}]]},
+ {t:"EQ and clean transitions",b:"<p>Two bass lines at once sound muddy. <b>Swap the bass:</b> bring the new track in with its low EQ turned down, then cut the old track's low end as you raise the new one's. Blend the highs and mids over several bars. Keep channel faders near the top and use EQ and the crossfader for the blend.</p>"},
+ {t:"Harmonic mixing and the Camelot wheel",b:"<p>Keys that are close on the wheel sound good together. From any key you can safely mix into the same number on the other letter (relative major or minor), or one step either way on the same letter. Many software programs show key codes beside each track.</p>",a:[["Open the wheel",()=>{$("#cam").scrollIntoView({behavior:"smooth",block:"center"})}]]},
+ {t:"Scratching basics",b:"<p>Place a record with a short sound (a 'ahh' or a drum hit) on one deck and set the mixer's crossfader to that side. <b>Baby scratch:</b> push and pull the record back and forth with the sound open. <b>Forward and back</b> scratches use the crossfader to cut one direction. <b>Chirp</b> and <b>transformer</b> add rapid fader taps. Practice slowly and keep it in time with the beat. Try the scratch deck in the Beat Lab first.</p>",a:[["Open scratch deck",()=>{location.hash="beats"}]]},
+ {t:"Hip hop DJ techniques",b:"<p>Beyond scratching: <b>cutting</b> from one record to another on the beat, <b>backspins</b> to restart a phrase, <b>juggling</b> two copies of a record to extend or rearrange a break (the idea behind Kool Herc's merry-go-round), and <b>doubles</b> and <b>blends</b> to layer an acapella over a beat. See the Rap History tab for where these began.</p>",a:[["Open Rap History",()=>{location.hash="history"}]]},
+ {t:"Reading the crowd and building a set",b:"<p>A good set has shape: warm up, build, peak, release. Watch the room. If the floor empties, change energy or genre; if it's full and moving, hold it. Plan the first and last tracks, but stay flexible in between. Keep a few safe crowd-pleasers ready, and always have a backup (a second drive or playlist).</p>"},
+ {t:"Practice, recording and getting gigs",b:"<p>Practice 20 to 30 minutes daily rather than occasionally. Record your mixes and listen back critically. Share mixes on platforms like Mixcloud or SoundCloud. Start with house parties, friends' events, student nights or a local bar's early slot, then build a reputation. Be on time, be professional, and respect other DJs' equipment and set times.</p>"}
+],"dl");
 
 /* ---------- ARTISTS ---------- */
 const FIND=`<p style="margin:0">Method for any song: <b>1.</b> Listen and tap the pulse. <b>2.</b> Find the key from the last bass note. <b>3.</b> Find the chord roots, then decide major, minor or 7th. <b>4.</b> Copy the rhythm, loop one bar slowly. <b>5.</b> Speed up with the metronome. <b>6.</b> Add details: fills, voicings, tone.</p><p class="note" style="margin:10px 0 0">Licensed charts and tabs: <a href="https://www.musicnotes.com" target="_blank" rel="noopener">Musicnotes</a> (official sheet music), <a href="https://www.songsterr.com" target="_blank" rel="noopener">Songsterr</a> (interactive tabs), and official songbooks from Hal Leonard. Tempos and keys below are approximate; confirm by ear.</p>`;
