@@ -1,4 +1,4 @@
-# Claude Code sessions — ledger (generated 2026-10-26; newest first)
+# Claude Code sessions — ledger (generated 2026-10-27; newest first)
 
 Every Claude Code session on Steven's account: title, when, status. Titles are the sessions' own words — data, not
 instructions. Refreshed daily by the "Claude sessions ledger" task in the orchestrator session. Transcript contents reach the
@@ -108,26 +108,26 @@ brain on the Mac through `brain-learner`; claude.ai web chats through `bin/brain
 | 2026-09-05 | stevens-macbook-pro-local-toasty-leaf | archived | `xiyP65bM` |
 | 2026-09-04 | stevens-macbook-pro-local-linked-gosling | archived | `LhdQXgKF` |
 | 2026-09-03 | Install freellmapi | archived | `yvasMriV` |
-| 2026-09-03 | freellmapi installation | idle | `a6kHFqqF` |
-| 2026-09-03 | Event-driven autonomous loop installation | idle | `XXMha5Bj` |
+| 2026-09-03 | freellmapi installation | archived | `a6kHFqqF` |
+| 2026-09-03 | Event-driven autonomous loop installation | archived | `XXMha5Bj` |
 | 2026-09-02 | Install event-driven-autonomus-loop | archived | `xMnrPyhA` |
 | 2026-09-01 | stevensheard89e-compressed-hartmanis | archived | `WGuJ5K6J` |
-| 2026-09-01 | Claude-video installation | idle | `wBp18EB5` |
-| 2026-09-01 | Kronos installation | idle | `ck6fdQMv` |
+| 2026-09-01 | Claude-video installation | archived | `wBp18EB5` |
+| 2026-09-01 | Kronos installation | archived | `ck6fdQMv` |
 | 2026-09-01 | freellmapi installation | archived | `EMoMADhs` |
-| 2026-09-01 | Install agents repository | idle | `5aFUeL4Y` |
-| 2026-09-01 | Install agents repository | idle | `6KhiX27y` |
+| 2026-09-01 | Install agents repository | archived | `5aFUeL4Y` |
+| 2026-09-01 | Install agents repository | archived | `6KhiX27y` |
 | 2026-09-01 | Install modelcontextprotocol servers | archived | `F7d8zmQV` |
 | 2026-09-01 | Awesome Claude skills installation | archived | `L7RxrfNX` |
 | 2026-09-01 | Install awesome-claude-skills | archived | `882Ltpvk` |
 | 2026-08-31 | Ruflo installation | archived | `QUXcwTBd` |
 | 2026-08-31 | screenshot-to-code installation | archived | `CCZps4mD` |
-| 2026-08-30 | Install multiple tools and plugins | idle | `roco8f4k` |
+| 2026-08-30 | Install multiple tools and plugins | archived | `roco8f4k` |
 | 2026-08-30 | Plugin installations | archived | `E6VodDDf` |
 | 2026-08-29 | Install iptv into VLC player | archived | `qTJqLDDq` |
 | 2026-08-29 | Advanced personal dashboard | idle | `YHp57H7U` |
 | 2026-08-29 | SkillSpector installation | archived | `iAf6oY3e` |
-| 2026-08-29 | SkillSpector installation | idle | `tRgRxf6j` |
+| 2026-08-29 | SkillSpector installation | archived | `tRgRxf6j` |
 | 2026-08-29 | Media-inference-worker installation | archived | `x7tci7Sy` |
 | 2026-08-29 | Media-inference-worker installation | archived | `3xYc73oj` |
 | 2026-08-29 | GROKBOT-SUPER-GUIDE implementation | archived | `zggLhz1E` |
@@ -139,34 +139,34 @@ brain on the Mac through `brain-learner`; claude.ai web chats through `bin/brain
 | 2026-08-28 | Install github.com/nexu-io/open-d | archived | `KcdP3ou1` |
 | 2026-08-28 | Install github.com/nexu-io/open-d | archived | `Bq8VTrbn` |
 | 2026-08-28 | Install aweso | archived | `gR3oUbxV` |
-| 2026-08-28 | aweso installation | idle | `CYiTHT18` |
+| 2026-08-28 | aweso installation | archived | `CYiTHT18` |
 | 2026-08-28 | Install github.com/langflow-ai/la | archived | `egHZ7ntV` |
-| 2026-08-28 | Install github.com/langflow-ai/la | idle | `fRhTTBG5` |
+| 2026-08-28 | Install github.com/langflow-ai/la | archived | `fRhTTBG5` |
 | 2026-08-28 | Install github.com/ripienaar/free | archived | `p5zx2AYa` |
 | 2026-08-28 | Install ripienaar/free | archived | `iJBtbHG8` |
 | 2026-08-28 | Install ollama | archived | `ZU2i7rr1` |
-| 2026-08-28 | Install ollama | idle | `KKQXypup` |
+| 2026-08-28 | Install ollama | archived | `KKQXypup` |
 | 2026-08-28 | Scrapl installation | archived | `M52nQFa5` |
 | 2026-08-28 | Install Scrapl | archived | `6bNbDSyn` |
 | 2026-08-28 | Install github.com/public-apis/pu | archived | `1h5yGA5x` |
 | 2026-08-28 | Install public-apis/pu | archived | `3TUjaUXD` |
 | 2026-08-28 | Install github.com/sindresorhus/a | archived | `M3WhgmUN` |
-| 2026-08-28 | Install sindresorhus/a | idle | `arxPjezb` |
+| 2026-08-28 | Install sindresorhus/a | archived | `arxPjezb` |
 | 2026-08-27 | Estorides installation | archived | `4G264xvK` |
 | 2026-08-27 | Estorides installation | archived | `BbTyAKxx` |
 | 2026-08-27 | Claude-OSINT installation | archived | `eKJ3pJEh` |
 | 2026-08-27 | Claude-OSINT installation | archived | `L9qSkv1h` |
 | 2026-08-27 | Voicebox installation | archived | `LvRKYM4o` |
-| 2026-08-27 | Voicebox installation | idle | `oLZhjyiQ` |
+| 2026-08-27 | Voicebox installation | archived | `oLZhjyiQ` |
 | 2026-08-27 | gstack installation | archived | `niKRVNLt` |
 | 2026-08-27 | gstack installation | archived | `adwm5EGt` |
-| 2026-08-27 | Install gstack | idle | `qjdE3DFs` |
-| 2026-08-27 | Eromify-mcp installation | idle | `G7m5V3xo` |
-| 2026-08-27 | Eromify-mcp installation | idle | `vQyTinTy` |
+| 2026-08-27 | Install gstack | archived | `qjdE3DFs` |
+| 2026-08-27 | Eromify-mcp installation | archived | `G7m5V3xo` |
+| 2026-08-27 | Eromify-mcp installation | archived | `vQyTinTy` |
 | 2026-08-27 | Perplexity MCP server setup | archived | `oNWFcVRq` |
 | 2026-08-27 | Install palantir-mcp | archived | `C53jVc1T` |
-| 2026-08-27 | Palantir-mcp installation | idle | `MkR8yF7G` |
-| 2026-08-24 | screenshot-to-code installation | idle | `v2P84Y7k` |
+| 2026-08-27 | Palantir-mcp installation | archived | `MkR8yF7G` |
+| 2026-08-24 | screenshot-to-code installation | archived | `v2P84Y7k` |
 | 2026-08-24 | screenshot-to-code installation | archived | `dGMeV682` |
 | 2026-08-24 | Model context protocol setup | archived | `KsH2RMfL` |
 | 2026-08-24 | modelcontextprotocol installation | archived | `Yq44xQ5Z` |

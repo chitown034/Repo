@@ -1,6 +1,6 @@
 {
- "generated": "2026-10-26T13:25:38Z",
- "date": "2026-10-26",
+ "generated": "2026-10-27T13:08:49Z",
+ "date": "2026-10-27",
  "items": [
   {
    "id": "bm_08ef5bf8ac",
@@ -18,8 +18,8 @@
     "Say 'done e' and Vanessa closes it and runs what it unblocks"
    ],
    "source": "steven-steps",
-   "weight": 1.331,
-   "score": 5.657,
+   "weight": 1.464,
+   "score": 6.222,
    "value": "high",
    "rank": 1
   },
@@ -39,8 +39,8 @@
     "Say 'done b' and Vanessa closes it and runs what it unblocks"
    ],
    "source": "steven-steps",
-   "weight": 1.331,
-   "score": 5.657,
+   "weight": 1.464,
+   "score": 6.222,
    "value": "high",
    "rank": 2
   },
@@ -60,8 +60,8 @@
     "Say 'done a' and Vanessa closes it and runs what it unblocks"
    ],
    "source": "steven-steps",
-   "weight": 1.331,
-   "score": 4.525,
+   "weight": 1.464,
+   "score": 4.978,
    "value": "high",
    "rank": 3
   },
@@ -81,8 +81,8 @@
     "Say 'done f' and Vanessa closes it and runs what it unblocks"
    ],
    "source": "steven-steps",
-   "weight": 1.331,
-   "score": 3.394,
+   "weight": 1.464,
+   "score": 3.733,
    "value": "high",
    "rank": 4
   },
@@ -91,7 +91,7 @@
    "category": "sync",
    "topic": "",
    "title": "Resync the Command Deck DB layer",
-   "why": "last stamp 2026-10-22, 4 days old, cadence 1 d",
+   "why": "last stamp 2026-10-22, 5 days old, cadence 1 d",
    "owner": "Derek",
    "executor": "vanessa",
    "impact": 3,
@@ -108,69 +108,25 @@
    "rank": 5
   },
   {
-   "id": "bm_18a228a6eb",
-   "category": "sync",
-   "topic": "fieldy",
-   "title": "Resync the Fieldy meetings (recorded conversations) layer",
-   "why": "last stamp 2026-10-23, 3 days old, cadence 1 d",
+   "id": "bm_f4dd4986b9",
+   "category": "steven",
+   "topic": "arive",
+   "title": "Arive",
+   "why": "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.",
    "owner": "Derek",
-   "executor": "vanessa",
-   "impact": 3,
-   "effort": 1,
-   "confidence": 0.9,
+   "executor": "steven",
+   "impact": 4,
+   "effort": 2,
+   "confidence": 0.85,
    "plan": [
-    "Run the layer's own sync (Fieldy \u2192 brain task, 6:50 AM PT, through the Fieldy connector; fieldyDesk doc on the deck)",
-    "bin/brain layers --write; confirm 'even: yes'"
+    "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.",
+    "Say 'done g' and Vanessa closes it and runs what it unblocks"
    ],
-   "source": "layers",
-   "weight": 1.0,
-   "score": 2.7,
+   "source": "steven-steps",
+   "weight": 1.464,
+   "score": 2.489,
    "value": "high",
    "rank": 6
-  },
-  {
-   "id": "bm_03c37668ee",
-   "category": "ops",
-   "topic": "refi",
-   "title": "Decide the refi watch list source (approve a read-only funded-loan feed, or have the ISA pull 4 fields by hand)",
-   "why": "vanessaQueue needs-steven since 2026-10-22: refiWatchList has no source for note rate / loan type / close month; the desk never guesses a rate",
-   "owner": "Harrison",
-   "executor": "steven",
-   "impact": 3,
-   "effort": 1,
-   "confidence": 0.9,
-   "plan": [
-    "Approve a read-only funded-loan feed (Zoho/ARIVE) or hand the ISA a manual export",
-    "Harrison loads refiWatchList (first name, note rate, loan type, month closed)",
-    "Refi watch runs on it the next morning"
-   ],
-   "source": "vanessaQueue",
-   "weight": 1.0,
-   "score": 2.7,
-   "value": "high",
-   "rank": 7
-  },
-  {
-   "id": "bm_77dfbdf9b8",
-   "category": "ops",
-   "topic": "lofty",
-   "title": "ISA seat: pick a course of action (recommended COA 2, fractional ISA 12-4 PM PT)",
-   "why": "cosBrief needs-Steven p1: open 34 days, zero ISA-authored messages on the line; COA 3 only after the Lofty key is verified and Alexandra reviews consent",
-   "owner": "Vanessa",
-   "executor": "steven",
-   "impact": 3,
-   "effort": 1,
-   "confidence": 0.9,
-   "plan": [
-    "Say COA 1, 2 or 3 on the deck or the ISA line",
-    "Vanessa opens the hiring packet for the chosen course",
-    "Alexandra reviews consent/disclosure before any outreach"
-   ],
-   "source": "cosBrief",
-   "weight": 1.0,
-   "score": 2.7,
-   "value": "high",
-   "rank": 8
   },
   {
    "id": "bm_6b1e5bf84e",
@@ -192,7 +148,7 @@
    "weight": 1.0,
    "score": 2.4,
    "value": "high",
-   "rank": 9
+   "rank": 7
   },
   {
    "id": "bm_52e0d6276e",
@@ -214,6 +170,50 @@
    "weight": 1.0,
    "score": 2.4,
    "value": "high",
+   "rank": 8
+  },
+  {
+   "id": "bm_da69253e89",
+   "category": "connect",
+   "topic": "",
+   "title": "Connect Command Deck chat box",
+   "why": "works in claude.ai through the viewer's own Claude (sample declared); last message 2026-09-13",
+   "owner": "Derek",
+   "executor": "vanessa",
+   "impact": 3,
+   "effort": 1,
+   "confidence": 0.8,
+   "plan": [
+    "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
+    "nothing to install; the cloud sweep now answers any question left unanswered for 10 minutes into the same thread",
+    "Vanessa re-checks the status on the next connect report and closes the item"
+   ],
+   "source": "toolkit:connector",
+   "weight": 1.0,
+   "score": 2.4,
+   "value": "high",
+   "rank": 9
+  },
+  {
+   "id": "bm_96168aa081",
+   "category": "connect",
+   "topic": "",
+   "title": "Connect Night-time answer latency",
+   "why": "up to 60 minutes until the Mac window is widened, then 10 minutes",
+   "owner": "Derek",
+   "executor": "vanessa",
+   "impact": 3,
+   "effort": 1,
+   "confidence": 0.8,
+   "plan": [
+    "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
+    "\u2014",
+    "Vanessa re-checks the status on the next connect report and closes the item"
+   ],
+   "source": "toolkit:connector",
+   "weight": 1.0,
+   "score": 2.4,
+   "value": "high",
    "rank": 10
   }
  ],
@@ -226,7 +226,7 @@
   "money": 1.0,
   "compliance": 1.0,
   "ops": 1.0,
-  "steven": 1.3310000000000004
+  "steven": 1.4641000000000006
  },
  "coas": [
   {
@@ -250,8 +250,8 @@
       "Say 'done e' and Vanessa closes it and runs what it unblocks"
      ],
      "source": "steven-steps",
-     "weight": 1.331,
-     "score": 5.657,
+     "weight": 1.464,
+     "score": 6.222,
      "value": "high",
      "rank": 1,
      "coa": "big-move"
@@ -272,8 +272,8 @@
       "Say 'done b' and Vanessa closes it and runs what it unblocks"
      ],
      "source": "steven-steps",
-     "weight": 1.331,
-     "score": 5.657,
+     "weight": 1.464,
+     "score": 6.222,
      "value": "high",
      "rank": 2,
      "coa": "big-move"
@@ -294,8 +294,8 @@
       "Say 'done a' and Vanessa closes it and runs what it unblocks"
      ],
      "source": "steven-steps",
-     "weight": 1.331,
-     "score": 4.525,
+     "weight": 1.464,
+     "score": 4.978,
      "value": "high",
      "rank": 3,
      "coa": "big-move"
@@ -316,56 +316,32 @@
       "Say 'done f' and Vanessa closes it and runs what it unblocks"
      ],
      "source": "steven-steps",
-     "weight": 1.331,
-     "score": 3.394,
+     "weight": 1.464,
+     "score": 3.733,
      "value": "high",
      "rank": 4,
      "coa": "big-move"
     },
     {
-     "id": "bm_03c37668ee",
-     "category": "ops",
-     "topic": "refi",
-     "title": "Decide the refi watch list source (approve a read-only funded-loan feed, or have the ISA pull 4 fields by hand)",
-     "why": "vanessaQueue needs-steven since 2026-10-22: refiWatchList has no source for note rate / loan type / close month; the desk never guesses a rate",
-     "owner": "Harrison",
+     "id": "bm_f4dd4986b9",
+     "category": "steven",
+     "topic": "arive",
+     "title": "Arive",
+     "why": "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.",
+     "owner": "Derek",
      "executor": "steven",
-     "impact": 3,
-     "effort": 1,
-     "confidence": 0.9,
+     "impact": 4,
+     "effort": 2,
+     "confidence": 0.85,
      "plan": [
-      "Approve a read-only funded-loan feed (Zoho/ARIVE) or hand the ISA a manual export",
-      "Harrison loads refiWatchList (first name, note rate, loan type, month closed)",
-      "Refi watch runs on it the next morning"
+      "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.",
+      "Say 'done g' and Vanessa closes it and runs what it unblocks"
      ],
-     "source": "vanessaQueue",
-     "weight": 1.0,
-     "score": 2.7,
+     "source": "steven-steps",
+     "weight": 1.464,
+     "score": 2.489,
      "value": "high",
      "rank": 5,
-     "coa": "big-move"
-    },
-    {
-     "id": "bm_77dfbdf9b8",
-     "category": "ops",
-     "topic": "lofty",
-     "title": "ISA seat: pick a course of action (recommended COA 2, fractional ISA 12-4 PM PT)",
-     "why": "cosBrief needs-Steven p1: open 34 days, zero ISA-authored messages on the line; COA 3 only after the Lofty key is verified and Alexandra reviews consent",
-     "owner": "Vanessa",
-     "executor": "steven",
-     "impact": 3,
-     "effort": 1,
-     "confidence": 0.9,
-     "plan": [
-      "Say COA 1, 2 or 3 on the deck or the ISA line",
-      "Vanessa opens the hiring packet for the chosen course",
-      "Alexandra reviews consent/disclosure before any outreach"
-     ],
-     "source": "cosBrief",
-     "weight": 1.0,
-     "score": 2.7,
-     "value": "high",
-     "rank": 6,
      "coa": "big-move"
     },
     {
@@ -388,7 +364,7 @@
      "weight": 1.0,
      "score": 2.4,
      "value": "high",
-     "rank": 7,
+     "rank": 6,
      "coa": "big-move"
     },
     {
@@ -411,7 +387,53 @@
      "weight": 1.0,
      "score": 2.4,
      "value": "high",
+     "rank": 7,
+     "coa": "big-move"
+    },
+    {
+     "id": "bm_da69253e89",
+     "category": "connect",
+     "topic": "",
+     "title": "Connect Command Deck chat box",
+     "why": "works in claude.ai through the viewer's own Claude (sample declared); last message 2026-09-13",
+     "owner": "Derek",
+     "executor": "vanessa",
+     "impact": 3,
+     "effort": 1,
+     "confidence": 0.8,
+     "plan": [
+      "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
+      "nothing to install; the cloud sweep now answers any question left unanswered for 10 minutes into the same thread",
+      "Vanessa re-checks the status on the next connect report and closes the item"
+     ],
+     "source": "toolkit:connector",
+     "weight": 1.0,
+     "score": 2.4,
+     "value": "high",
      "rank": 8,
+     "coa": "big-move"
+    },
+    {
+     "id": "bm_96168aa081",
+     "category": "connect",
+     "topic": "",
+     "title": "Connect Night-time answer latency",
+     "why": "up to 60 minutes until the Mac window is widened, then 10 minutes",
+     "owner": "Derek",
+     "executor": "vanessa",
+     "impact": 3,
+     "effort": 1,
+     "confidence": 0.8,
+     "plan": [
+      "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
+      "\u2014",
+      "Vanessa re-checks the status on the next connect report and closes the item"
+     ],
+     "source": "toolkit:connector",
+     "weight": 1.0,
+     "score": 2.4,
+     "value": "high",
+     "rank": 9,
      "coa": "big-move"
     }
    ]
@@ -426,7 +448,7 @@
      "category": "brain",
      "topic": "",
      "title": "Fix the 1 gold question(s) the brain gets wrong",
-     "why": "bench 30/31 on 2026-10-26",
+     "why": "bench 30/31 on 2026-10-27",
      "owner": "Vanessa",
      "executor": "vanessa",
      "impact": 3,
@@ -521,7 +543,7 @@
      "category": "sync",
      "topic": "",
      "title": "Resync the Command Deck DB layer",
-     "why": "last stamp 2026-10-22, 4 days old, cadence 1 d",
+     "why": "last stamp 2026-10-22, 5 days old, cadence 1 d",
      "owner": "Derek",
      "executor": "vanessa",
      "impact": 3,
@@ -539,72 +561,72 @@
      "coa": "risk"
     },
     {
-     "id": "bm_18a228a6eb",
-     "category": "sync",
-     "topic": "fieldy",
-     "title": "Resync the Fieldy meetings (recorded conversations) layer",
-     "why": "last stamp 2026-10-23, 3 days old, cadence 1 d",
+     "id": "bm_7e0efd9917",
+     "category": "ops",
+     "topic": "",
+     "title": "Repair the health sync",
+     "why": "No new Health Auto Export file has landed since 10-23; two runs in a row with nothing new.",
      "owner": "Derek",
      "executor": "vanessa",
      "impact": 3,
-     "effort": 1,
-     "confidence": 0.9,
+     "effort": 2,
+     "confidence": 0.8,
      "plan": [
-      "Run the layer's own sync (Fieldy \u2192 brain task, 6:50 AM PT, through the Fieldy connector; fieldyDesk doc on the deck)",
-      "bin/brain layers --write; confirm 'even: yes'"
+      "Check the phone export automation",
+      "Confirm files reach the Drive folder"
      ],
-     "source": "layers",
+     "source": "healthDriveSync",
+     "coa": "risk",
      "weight": 1.0,
-     "score": 2.7,
-     "value": "high",
-     "rank": 2,
+     "score": 1.2,
+     "value": "medium",
+     "rank": 2
+    },
+    {
+     "id": "bm_87552be112",
+     "category": "connect",
+     "topic": "composio",
+     "title": "Connect Discord #vanessa",
+     "why": "bot token missing (Composio discordbot initiated 23:55 UTC, not active; Mac bot in relay mode)",
+     "owner": "Vanessa",
+     "executor": "steven",
+     "impact": 3,
+     "effort": 2,
+     "confidence": 0.8,
+     "plan": [
+      "Owner Vanessa confirms the route in the register (integrations/CONNECTIONS.md)",
+      "Steven: A2 in the fix-mine checklist: create the bot, paste the token when the script asks (Keychain vanessa-discord-bot-token), invite it, then \"Discord link\" to Claud",
+      "Vanessa re-checks the status on the next connect report and closes the item"
+     ],
+     "source": "toolkit:connector",
+     "weight": 1.0,
+     "score": 1.2,
+     "value": "medium",
+     "rank": 3,
      "coa": "risk"
     },
     {
-     "id": "bm_e86d0e5d31",
-     "category": "ops",
+     "id": "bm_83d63d2172",
+     "category": "connect",
      "topic": "",
-     "title": "Refresh cosBrief",
-     "why": "cosBrief stamp 2026-10-23T13:26Z; cadence weekdays 6:25 PT (daily-updates.md) \u2014 the 10/24 cycle did not land",
+     "title": "Connect EVRoutes \u00b7 Turo connectors",
+     "why": "\"needs reconnect\" on claude.ai (EVRoutes also failed to connect in this session)",
      "owner": "Derek",
-     "executor": "vanessa",
+     "executor": "steven",
      "impact": 3,
-     "effort": 1,
+     "effort": 2,
      "confidence": 0.8,
      "plan": [
-      "Check the daily cycle routine's last run in the trigger list",
-      "Fire it once if it is green but skipped; read its error if not",
-      "Confirm the new stamp on the deck and the ISA Portal mirror"
+      "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
+      "Steven: claude.ai \u2192 Settings \u2192 Connectors \u2192 Reconnect or remove",
+      "Vanessa re-checks the status on the next connect report and closes the item"
      ],
-     "source": "freshness",
-     "coa": "risk",
+     "source": "toolkit:connector",
      "weight": 1.0,
-     "score": 2.4,
-     "value": "high",
-     "rank": 3
-    },
-    {
-     "id": "bm_9ec7ecc62e",
-     "category": "ops",
-     "topic": "",
-     "title": "Refresh morningBrief",
-     "why": "morningBrief stamp 2026-10-23T13:35Z; cadence daily 6:34 PT \u2014 no brief landed 10/24 or 10/25",
-     "owner": "Derek",
-     "executor": "vanessa",
-     "impact": 3,
-     "effort": 1,
-     "confidence": 0.8,
-     "plan": [
-      "Same routine as morningBriefStatus \u2014 one fix covers both",
-      "Confirm the e-mail/push copy went out",
-      "Confirm the new stamp on the deck"
-     ],
-     "source": "freshness",
-     "coa": "risk",
-     "weight": 1.0,
-     "score": 2.4,
-     "value": "high",
-     "rank": 4
+     "score": 1.2,
+     "value": "medium",
+     "rank": 4,
+     "coa": "risk"
     }
    ]
   },
@@ -630,11 +652,33 @@
      ],
      "source": "steven-steps",
      "decision": "approved",
-     "decided_at": "2026-10-25T20:45:21Z",
-     "weight": 1.331,
-     "score": 1.886,
+     "decided_at": "2026-10-26T13:21:00Z",
+     "weight": 1.464,
+     "score": 2.074,
      "value": "medium",
      "rank": 1,
+     "coa": "opportunity"
+    },
+    {
+     "id": "bm_10f48c6868",
+     "category": "steven",
+     "topic": "zillow",
+     "title": "Claim your profiles for AI search",
+     "why": "Google Business Profile, Bing Places, Zillow (agent + lender), Realtor.com, Homes.com, Yelp; send Sofia the DRE number (`wiki/real-estate-playbooks/ai-search-visibility.md`).",
+     "owner": "Sofia",
+     "executor": "steven",
+     "impact": 4,
+     "effort": 3,
+     "confidence": 0.85,
+     "plan": [
+      "Google Business Profile, Bing Places, Zillow (agent + lender), Realtor.com, Homes.com, Yelp; send Sofia the DRE number (`wiki/real-estate-playbooks/ai-search-visibility.md`).",
+      "Say 'done c' and Vanessa closes it and runs what it unblocks"
+     ],
+     "source": "steven-steps",
+     "weight": 1.464,
+     "score": 1.659,
+     "value": "medium",
+     "rank": 2,
      "coa": "opportunity"
     },
     {
@@ -657,29 +701,7 @@
      "weight": 1.0,
      "score": 1.6,
      "value": "medium",
-     "rank": 2
-    },
-    {
-     "id": "bm_10f48c6868",
-     "category": "steven",
-     "topic": "zillow",
-     "title": "Claim your profiles for AI search",
-     "why": "Google Business Profile, Bing Places, Zillow (agent + lender), Realtor.com, Homes.com, Yelp; send Sofia the DRE number (`wiki/real-estate-playbooks/ai-search-visibility.md`).",
-     "owner": "Sofia",
-     "executor": "steven",
-     "impact": 4,
-     "effort": 3,
-     "confidence": 0.85,
-     "plan": [
-      "Google Business Profile, Bing Places, Zillow (agent + lender), Realtor.com, Homes.com, Yelp; send Sofia the DRE number (`wiki/real-estate-playbooks/ai-search-visibility.md`).",
-      "Say 'done c' and Vanessa closes it and runs what it unblocks"
-     ],
-     "source": "steven-steps",
-     "weight": 1.331,
-     "score": 1.508,
-     "value": "medium",
-     "rank": 3,
-     "coa": "opportunity"
+     "rank": 3
     },
     {
      "id": "bm_02cfe4c410",
@@ -717,14 +739,14 @@
   },
   {
    "q": "What should I do about: Fix the 1 gold question(s) the brain gets wrong?",
-   "a": "bench 30/31 on 2026-10-26.",
+   "a": "bench 30/31 on 2026-10-27.",
    "action": "bin/brain loop \u2192 the failing questions",
    "coa": "improve",
    "ref": "bm_d72970e1e7"
   },
   {
    "q": "What should I do about: Resync the Command Deck DB layer?",
-   "a": "last stamp 2026-10-22, 4 days old, cadence 1 d.",
+   "a": "last stamp 2026-10-22, 5 days old, cadence 1 d.",
    "action": "Run the layer's own sync (routines + Mac tasks write; page reads live)",
    "coa": "risk",
    "ref": "bm_bb5ab0e256"
@@ -762,7 +784,7 @@
   },
   {
    "q": "What did the weekly loop find?",
-   "a": "last run 2026-10-26: bench 30/31, routes 23/23, 20 stale pages, 29 untested wiki pages, 0 tune proposals, 0/0 learned facts promoted",
+   "a": "last run 2026-10-27: bench 30/31, routes 23/23, 20 stale pages, 29 untested wiki pages, 0 tune proposals, 0/0 learned facts promoted",
    "action": "Open docs/reports/BRAIN-LOOP.md; the Self-improvement lane above carries the fixes",
    "coa": "question",
    "ref": "brain/loop-history.jsonl"
