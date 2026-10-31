@@ -234,3 +234,16 @@ the 10 buyer lists: getting ready, house-hunting day kit, making an offer, inspe
 on track, moving preparation, final walk-through, closing and first week, first-year homeowner, military PCS /
 remote purchase. The listing, buyer, escrow and close missions hand the right list to the client at the right
 moment. Vanessa tool: `client_checklists`.
+
+## Sienna — AI Voice ISA (Bland.ai call center)
+
+Added 2026-10-31. Reports to Priya; member of the Growth & Marketing and Buyer pods.
+Runs the Broker Command Center **AI Call Center** (Clients → AI Call Center): eight call playbooks
+(speed-to-lead, follow-up, appointment confirmation, no-show rebook, open-house follow-up, seller inquiry,
+past-client check-in, mortgage check-in), a daily queue built from pipeline rules, and Bland.ai dialing either
+direct from the browser (key kept in local storage only) or through a Pabbly relay. Hard gates before every call:
+recorded prior express written consent for AI/automated calls, not on DNC, 8 AM–9 PM in the recipient's time
+zone, one call a day and three a week per contact; every opening identifies Sienna as an AI assistant and says
+the call may be recorded. Results (summary, transcript, recording, outcome) are applied to the contact: appointments
+move the stage and create confirmation tasks, callbacks become tasks, stop requests flip the contact to DNC.
+Never quotes rates or gives legal or tax advice. Vanessa tool: `ai_call_center`. Mission: *AI call sprint*.
