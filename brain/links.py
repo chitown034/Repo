@@ -24,6 +24,10 @@ LINKS: list[dict] = [
     {"key": "fitness", "label": "Fitness Dashboard (Health & Wellness)", "url": "https://claude.ai/artifact/4DQyh8Yw2WwGzj8CddBnEd", "store": None, "layer": None},
     {"key": "milfo", "label": "Military Family Office (Sentinel — Family Office panel 17)", "url": "https://claude.ai/artifact/64jv5GPdHnCM1bJuhyJgcP", "store": None, "layer": None},
     {"key": "stoics", "label": "Famous Stoics (Stoicism dimension)", "url": "https://claude.ai/artifact/14diipurEqD75R818LkLtG", "store": None, "layer": None},
+    {"key": "flight_school", "label": "Flight School", "url": "https://claude.ai/artifact/98b8htgDXoXpxLUW6MZZzG", "store": None, "layer": None},
+    {"key": "home_repair", "label": "Home Repair Guide", "url": "https://claude.ai/artifact/JarFK9VX7t7ohedWrw6A3g", "store": None, "layer": None},
+    {"key": "how_vehicles_work", "label": "How Vehicles Work", "url": "https://claude.ai/artifact/Kk6is8jF8RUrAQsJWpontF", "store": None, "layer": None},
+    {"key": "health_wellness", "label": "Health and Wellness", "url": "https://claude.ai/artifact/Rmexwbuc7nqnVUsFzjbMrV", "store": None, "layer": None},
     {"key": "health_drive", "label": "Google Drive · Health Auto Export folder (daily iPhone export)", "url": "https://drive.google.com/drive/folders/1Ta6veOyTtgIsRs4lcMw0jzVgx80XiXjK", "store": "store:drive", "layer": "drive"},
 ]
 
