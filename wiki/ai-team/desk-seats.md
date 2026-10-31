@@ -223,3 +223,14 @@ all 29 California Policies & Procedures (8/19/2025) as searchable rules. Automat
 on new escrows and listings, final file 48 hours before COE, funding-request check at close, CE proof 15 days
 before renewal, broker-only signature flag (COBR, TOBR, COL, RFA, CI, CDA, MLSA, SELI) in the When-Needed
 Matrix, AVID and upload health checks. Beatrice enforces; Alexandra checks advertising. Vanessa tool: `lpt_policy`.
+
+## Client checklists (addition, 2026-10-31)
+
+The Broker Command Center adds 22 client-facing checklists (242 items), tracked per client with copy,
+Gmail draft, tasks and AI tailoring. Marguerite owns the 12 seller lists: 8-weeks-out home prep, declutter
+and depersonalize, repairs before photos, deep clean, staging room by room, curb appeal, photo and video day,
+showing-ready routine, reviewing offers, during escrow, move-out and closing day, vacant-home care. Gwen owns
+the 10 buyer lists: getting ready, house-hunting day kit, making an offer, inspection period, keeping the loan
+on track, moving preparation, final walk-through, closing and first week, first-year homeowner, military PCS /
+remote purchase. The listing, buyer, escrow and close missions hand the right list to the client at the right
+moment. Vanessa tool: `client_checklists`.

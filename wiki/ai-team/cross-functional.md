@@ -21,8 +21,8 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Elena | security, credential, password, key, token, access, breach, privacy, pii, data risk, backup, reverse engineer, reverse engineering, pairing link | `docs/` |
 | Elon | feasibility, architecture, build, engineer, prototype, integration cost, refactor, brain, second brain | `brain/README.md` |
 | Harrison | loan, mortgage, va, fha, usda, irrrl, jumbo, non-qm, conventional, rate, refinance, pre-approval, dti, ltv, assessor, apn, property tax, piti, amortization, payment scenario, loan scenario, tax sheet | `wiki/mortgage-programs/` |
-| Gwen | buyer, showing, tour, offer, house hunt | `wiki/real-estate-playbooks/` |
-| Marguerite | listing, seller, list price, cma, staging | `wiki/real-estate-playbooks/` |
+| Gwen | buyer, showing, tour, offer, house hunt, buyer checklist, moving checklist, walk-through checklist, first year homeowner, house hunting kit | `wiki/real-estate-playbooks/` |
+| Marguerite | listing, seller, list price, cma, staging, staging checklist, home prep, declutter, curb appeal, photo day, showing ready, seller checklist | `wiki/real-estate-playbooks/` |
 | Maxwell | coaching, coach, weekly review, accountability | `wiki/ai-team/mentors-and-benches.md` |
 | Kevin | personal development, habit, 11-dimension, discipline, mindset, singles event, speed dating, social event | `wiki/ai-team/mentors-and-benches.md` |
 | James | family office, estate, trust, wealth plan, legacy | `wiki/ai-team/mentors-and-benches.md` |
