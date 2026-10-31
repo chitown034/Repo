@@ -272,3 +272,15 @@ dates 45 days out, tracks acknowledgments by role, triages law headlines from th
 the desk, and curates the 132-source **Reference Library** (federal, state, LA/OC/RV/SD local, association),
 flagging entries that need link or fact verification. Vanessa tools: `new_laws`, `reference_library`.
 Mission: *Quarterly regulatory review*.
+
+## Automation Control (Owen, with Nova and Juliet)
+
+Added 2026-10-31. The Broker Command Center orchestrator runs eight jobs on their own cadence while the
+dashboard is open, instead of autopilot running only on the first open of the day: autopilot with every sweep
+(hourly), TidyCal sync (every 2 h, when connected), self-healing (hourly: every failing health check becomes a
+task for the seat the router picks, auto-closed when the check passes — Nova), duplicate collapse (every 4 h:
+date-stamped sweep tasks keep only the newest copy, with undo), stale-work escalation (twice a day: tasks 3+
+days overdue grouped by owner into one task for Juliet), the AI call queue rebuild (every 3 h; dials only if
+Auto-dial is on), law effective-date watch, and the Command Deck snapshot (every 30 min). The snapshot now
+carries the full workflow list, orchestrator job status, every AI seat with what it owns, pods and missions, and
+the Command Deck renders them live. Vanessa tool: `automation_control`.
