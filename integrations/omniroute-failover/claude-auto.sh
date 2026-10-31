@@ -607,6 +607,15 @@ lease_gate() {
     fi
   fi
   LOCKHELD=1; trap 'lease_unlock' EXIT INT TERM
+  # double-check under the lock: a task scheduled late can find the lock already released by the one that just
+  # checked; without this re-read it would pay for a second check (lease test C6, flaky under CI load)
+  read_lease_cache
+  if [ -n "$c_decision" ] && [ "$c_role" = "$ROLE" ] && [ "$c_checked" -gt "$c0_checked" ]; then
+    lease_unlock
+    LEASE_SEEN_HOLDER="$c_holder"; LEASE_WHY="another claude-auto checked just before this one; used its $c_verdict"
+    [ "$c_decision" = run ] && return 0
+    return 1
+  fi
   if lease_check_now; then
     _dec=defer; case "$LEASE_VERDICT" in HELD|ACQUIRED) _dec=run ;; esac
     write_lease_cache "$_dec" "$LEASE_VERDICT" "$ROLE" "$_t" "$LEASE_EXP" "$LEASE_HOLDER" 0
@@ -622,8 +631,9 @@ lease_gate() {
       LEASE_WHY="check inconclusive (rc=$LEASE_RC, $_n in a row) — PRIMARY fails OPEN, the task runs"
       return 0 ;;
     peer)
-      # Sticky leadership: c_verdict/c_holder/c_expires are still whatever read_lease_cache() found on
-      # disk at the TOP of this function, before this attempt — i.e. this Mac's own last real check, since
+      # Sticky leadership: c_verdict/c_holder/c_expires are whatever read_lease_cache() found on disk just
+      # after taking the lock (the double-check above), before this attempt — i.e. this Mac's own last real
+      # check (or nothing, if --take-lease/--release-lease wiped the cache meanwhile: then a peer fails CLOSED), since
       # write_lease_cache below carries them forward on every inconclusive write instead of blanking them
       # (unlike primary/standby, whose inconclusive writes stay holder=- expires=- exactly as before).
       if peer_sticky "$_t"; then

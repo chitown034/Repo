@@ -3515,3 +3515,142 @@ Addendum to the code-validator review of change-set b25eb075ea5fe77f (verdict FI
 - **Anchor risk (not filed) — closed.** The DOTALL step now aborts unless the matched span holds exactly three `<p ` tags.
   Re-applied to the v258 copy: byte-identical to the published v260 file.
 `scripts/validate-code.sh` PASS; runtime harness PASS; quickcheck FAIL set identical to v258.
+
+---
+
+# VibeBreaker review: lease_gate double-checked locking (claude-auto.sh) (2026-10-31)
+
+change-set: e533237275f8604f
+
+## Verdict
+
+**SHIP** (VibeBreaker: SURVIVED*). One INFO finding (a comment the change made inaccurate), no defects. The race theory
+matches the code and the new branch closes it; its guards are the same as the existing wait-loop reuse path.
+
+## Scope
+
+- Diff: `integrations/omniroute-failover/claude-auto.sh` +9 lines, lines 610-618 of `lease_gate()`. The other modified files
+  (`brain/loop-history.jsonl`, `docs/reports/BRAIN-LOOP.md`, `docs/reports/CODE-VALIDATION.md`, `docs/reports/ENCYCLOPEDIA.md`)
+  are generated reports, not code. I did not review them.
+- Mode: shell. Passes 01, 04, 05, 11, 14, 19, 20.
+- Read: `read_lease_cache`/`write_lease_cache`/`lease_unlock` (316-335), `peer_sticky` (439-444), `lease_check_now` (524-550),
+  `lease_gate` (552-652), `--lease-check` (970-985), the cache wipes at 1005/1025, the caller at 1055, and test C6 plus the
+  `slow` stub in `lease-tests.sh`.
+- Material scope limitation: NO. I could not reproduce the CI failure (see Not demonstrated).
+
+## Evidence
+
+- `bash scripts/validate-code.sh`: `verdict: PASS (2 passed, 0 failed)` (bash -n, shellcheck), change-set e533237275f8604f.
+- `lease-tests.sh` x4: `pass 158   FAIL 0` each time. C6 showed `ok ... (1)`.
+- `failover-tests.sh`: `pass 265   FAIL 0`.
+
+## Questions asked by the caller
+
+1. **Race theory is sound.** C6 starts with no cache, so B's `c0_checked` is 0. The stub check takes 3 s (`slow`), and A
+   runs `write_lease_cache` and then `lease_unlock` straight after it. Before the change, B's wait loop ran only when
+   `mkdir` FAILED. So if B's top-of-function `read_lease_cache` came before A's write (or B read the file while `>`
+   had truncated it but not yet written it), and B's `mkdir` came after A's `rmdir`, B got the lock and paid for a second check.
+   Under the lock, A's write is already complete, so the re-read sees `checked_at` >= 1 > 0 and reuses it. I found no
+   other path that gives nleases=2. The stale-lock removal needs a lock older than `LEASE_TIMEOUT+60`. A wait-loop
+   timeout returns without checking.
+2. **The early return can't reuse an answer it shouldn't, given the guards that apply here.**
+   - Different ROLE: guarded by `c_role = ROLE`. This is the same guard as the wait loop at 590.
+   - `c_checked` in the future: the top path rejects it (`c_checked <= _t`), so `c0_checked` = that future value. Only a write
+     with a strictly greater stamp passes `-gt`. Every writer stamps `now()`, so a wall-clock rollback can't produce one.
+     Safe without the explicit `<= _t` guard.
+   - TTL: a stamp newer than `c0_checked` was written after this invocation's own top read, so it is as old as this
+     invocation's own wait. TTL adds nothing.
+   - FOREIGN expiry: not applied, the same as the wait-loop path. Trigger: during a burst, the check returns FOREIGN with no
+     `expires` (LEASE_EXP `-`) or with a lease that ends within seconds. Result: B defers. A, the invocation that made
+     the check, also defers on that same answer. So B's outcome matches the one paid check, and the next invocation
+     re-checks through the top path. This fits the gate's design ("59 tasks firing together pay for one"), so I did not file it.
+     If wanted, one shared helper could apply the FOREIGN-expiry test to both reuse paths (590 and 613). That is a choice
+     for Steven, not a defect.
+   - `--lease-check` (975-978) writes without the lock. A fresh write from it passes `-gt` and is reused. It is a real check,
+     so this is correct.
+3. **Trap and return codes match.** `lease_unlock` runs `rmdir`, sets `LOCKHELD=0` and resets `trap - EXIT INT TERM`. 609 is the
+   only trap in the file, so resetting it clears nothing else. The new branch returns 0 for `run` and 1 for `defer`, the same as
+   the top path and the wait-loop path. It sets `LEASE_SEEN_HOLDER` and `LEASE_WHY`, and those are the only outputs the
+   caller at 1055 reads.
+
+## CONFIRMED
+
+```
+id: P04-F1
+title: Sticky-leadership comment now misdescribes where c_verdict/c_holder/c_expires/c_fails come from
+status: CONFIRMED
+severity: INFO
+confidence: HIGH
+location:
+  - path: integrations/omniroute-failover/claude-auto.sh
+    line: 634-637 (comment), 612 (the new read)
+entry_or_trigger: lease_gate; the double-check does not fire (no newer same-role cache), then the check is inconclusive
+evidence: the new read_lease_cache at 612 overwrites every c_* global. The comment says they are "still whatever
+  read_lease_cache() found on disk at the TOP of this function". That is now false whenever the file changed between
+  the two reads without passing the 613 test. Example: --take-lease/--release-lease run `rm -f "$LEASE_CACHE"` (1005, 1025).
+existing_controls_checked: the wait loop (589) already re-read before the peer_sticky at 599, so that path was already
+  inexact. No test covers peer-sticky after a cache wipe that lands mid-gate.
+failure_scenario: a peer gate's top read sees HELD by this Mac. Then --release-lease wipes the cache. The gate takes the lock,
+  the re-read gives c_verdict='', and the check is inconclusive. The peer now fails CLOSED. Before this change it failed OPEN
+  on the sticky HELD it had read. The new behaviour is the safer one, because the lease was just released. But the comment
+  says the opposite, and no test pins it.
+impact: a future maintainer reasoning about the sticky rule from the comment. No runtime harm found.
+remediation_direction: reword the comment to say the values come from the read under the lock (612).
+verification: a lease-tests case: role peer, cache HELD by me, wipe the cache between the gate's top read and its lock
+  (see missing test 2), STUB_LEASE=fail. Expect RC 75 and "PEER fails CLOSED".
+needs_context: null
+```
+
+## UNVERIFIED
+
+- That this race is what caused the two CI failures on e92674d. The code allows it and nothing else gives nleases=2, but I
+  have no CI log beyond the assertion line.
+
+## REJECTED
+
+- FOREIGN-expired reuse on the new path: matches A's own outcome and the wait loop (590). Not a bad state (see question 2).
+- Future `c_checked` reuse: needs a write stamped above an already-future `c0_checked`. Writers stamp `now()` (621, 630, 639,
+  643, 647, 978).
+- Cross-ROLE reuse: blocked at 613 by `c_role = ROLE`.
+- Trap leak or double rmdir: `lease_unlock` is idempotent (`LOCKHELD` guard, 335). Later paths call it only when the branch
+  was not taken.
+- Same-second stamp (`c_checked == c0_checked`) makes B re-check: this only costs an extra check and is never wrong. C6 starts with no cache, so it can't hit this.
+
+## Coverage (inspected, clean)
+
+- Return-code and output-variable contract of all four `lease_gate` exits against the caller at 1055.
+- Lock lifecycle: acquire (580/586), the stale removal (582-585), the new release (614), the existing releases (622, 630,
+  639, 643, 647).
+- `read_lease_cache` trust gate (`route_file_trusted`, 319-322) still applies to the new read. A world-writable cache is
+  dropped and the branch is not taken (C5 still passes).
+- shellcheck clean. POSIX-only constructs.
+
+## Top missing tests (pass 19)
+
+1. Deterministic C6. Put a `mkdir` shim on the test PATH. On `*/lease.lock`, it first writes a fresh mode-600 `lease.env`
+   (decision=run, role=primary, checked_at=now), then calls the real mkdir. Run one invocation with no prior cache and
+   expect `nleases` = 0 and a log line containing "checked just before this one". Before this change it gives 1. This
+   removes the dependence on CI scheduling.
+2. The same shim with role=peer, the prior cache HELD by me, the shim deleting `lease.env` instead, and STUB_LEASE=fail.
+   Expect RC 75 and "PEER fails CLOSED" (P04-F1).
+3. The same shim writing role=standby while the role file says primary. Expect the double-check NOT to fire and a real
+   check to run (`nleases` = 1).
+4. The same shim writing FOREIGN with `expires_iso=-`. Expect RC 75 with zero checks. This pins the chosen behaviour from question 2.
+
+## Not demonstrated
+
+I could not reproduce the original CI failure. My 4 runs, and the caller's 6, are not evidence that the race existed.
+They show only that the change does not break the existing 158+265 assertions. I did not run C6 under a CPU load or in a loop.
+
+---
+
+change-set: 8a699e2e6856a0c0
+
+Addendum to the code-validator review of change-set e533237275f8604f (verdict SHIP, one INFO).
+- **P04-F1 (INFO) — fixed.** The sticky-leadership comment in `claude-auto.sh` now says the c_* values come from the
+  double-check read under the lock, and that a cache wiped by --take-lease/--release-lease meanwhile makes a peer fail CLOSED.
+- **Main missing test — added, as the validator specified.** `lease-tests.sh` C6b puts a `mkdir` shim on PATH that writes a
+  fresh `lease.env` at the moment `lease.lock` is created. With the fix: 0 lease checks, rc 0, log "checked just before
+  this one"; a fresh answer for a different role still triggers a real check (1). Against the pre-fix gate
+  (`git show HEAD:…/claude-auto.sh`) the same test FAILS (expected 0, got 1; log line absent), so the race the CI hit is now
+  reproduced deterministically and closed. Suite: 162/162 (was 158). shellcheck clean on both files.

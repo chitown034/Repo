@@ -1,16 +1,15 @@
 # Code validation — last run
 
-Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `0531c7c1483bf815`: **not yet**.
+Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `8a699e2e6856a0c0`: **not yet**.
 
 ```
-code validation 2026-10-31T08:21:18Z - change-set 0531c7c1483bf815
+code validation 2026-10-31T23:39:01Z - change-set 8a699e2e6856a0c0
 files:
-  context/decisions.md
-  dashboard/wave2/splice-health-sync.py
-  docs/inventory/cloud-routines-2026-10.md
-  integrations/apple-health-dashboard.md
-  memory.md
-PASS py_compile dashboard/wave2/splice-health-sync.py
-PASS brain doctor
-verdict: PASS (2 passed, 0 failed)
+  integrations/omniroute-failover/claude-auto.sh
+  integrations/omniroute-failover/lease-tests.sh
+PASS bash -n integrations/omniroute-failover/claude-auto.sh
+PASS shellcheck integrations/omniroute-failover/claude-auto.sh
+PASS bash -n integrations/omniroute-failover/lease-tests.sh
+PASS shellcheck integrations/omniroute-failover/lease-tests.sh
+verdict: PASS (4 passed, 0 failed)
 ```

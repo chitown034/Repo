@@ -386,6 +386,31 @@ wait $p1 $p2 2>/dev/null || true
 eq   "C6 two concurrent invocations pay for ONE lease check (mkdir lock)" "$(nleases)" "1"
 STUB_LEASE=''
 
+# C6b: the same race, made deterministic. A `mkdir` shim on PATH writes a fresh answer into lease.env at the exact
+# moment this invocation takes the lock — i.e. "another claude-auto finished its check and released the lock just
+# before us". The double-check under the lock must reuse that answer instead of paying for a second check.
+# (Before the fix this gave 1 lease check; CI hit the real race twice on 2026-10-31.)
+SHIM="$ROOT/shim"; mkdir -p "$SHIM"
+cat > "$SHIM/mkdir" <<SHIMEOF
+#!/bin/bash
+for a in "\$@"; do case "\$a" in */lease.lock)
+  [ -n "\${SHIM_CACHE:-}" ] && { printf '%b' "\$SHIM_CACHE" > "$STATE/lease.env"; chmod 600 "$STATE/lease.env"; } ;;
+esac; done
+exec /bin/mkdir "\$@"
+SHIMEOF
+chmod +x "$SHIM/mkdir"
+shim_run() { SHIM_CACHE="$1" PATH="$SHIM:$PATH" run --task r10-automation-health -p hello; }
+
+reset; myid; role primary
+shim_run "decision=run\nverdict=HELD\nrole=primary\nchecked_at=$(date +%s)\nexpires_iso=$(iso_in 900)\nholder=test-mac-one\nfails=0\n"
+eq   "C6b a fresh answer that lands as we take the lock is reused (no second check)" "$(nleases)" "0"
+eq   "C6b and the task runs on it"                        "$RC" "0"
+has  "C6b and says why"                                   "$(LOGF)" "checked just before this one"
+
+reset; myid; role primary
+shim_run "decision=run\nverdict=HELD\nrole=standby\nchecked_at=$(date +%s)\nexpires_iso=$(iso_in 900)\nholder=test-mac-one\nfails=0\n"
+eq   "C6b a fresh answer for a DIFFERENT role is not reused -> real check" "$(nleases)" "1"
+
 # ================================================================== D. scope of the gate
 sect "D. scope"
 
