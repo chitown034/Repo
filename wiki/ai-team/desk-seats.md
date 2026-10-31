@@ -284,3 +284,13 @@ days overdue grouped by owner into one task for Juliet), the AI call queue rebui
 Auto-dial is on), law effective-date watch, and the Command Deck snapshot (every 30 min). The snapshot now
 carries the full workflow list, orchestrator job status, every AI seat with what it owns, pods and missions, and
 the Command Deck renders them live. Vanessa tool: `automation_control`.
+
+## Training Hub course material (Ingrid, with Regina)
+
+Added 2026-10-31. Every curriculum module now carries full written course material: 34 modules (salesperson
+a1–a14, broker b1–b7, transaction coordinator t1–t6, MLO m1–m7), 179 chapters and about 85,000 words of
+California-specific teaching text with takeaways, numbers to know, traps, authorities and a 10-question practice
+test graded in the page (340 questions; a pass at 70% completes the module's quiz). Chapters are ticked as read;
+reading every chapter marks the module read. The New Rules & Laws desk gained 45 foundational laws (filter Type →
+Foundational law) next to the 113 recent changes, and the reference library grew to about 170 official sources.
+Items the writers could not confirm are marked "verify" in the text. Vanessa tool: `course_material`.
