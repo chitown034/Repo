@@ -5,7 +5,7 @@ The 2026-09-22 listing is `cloud-routines.md`; this file carries what was create
 
 | Routine | Cron (UTC) | Enabled | Last run | Next | Created | id |
 |---|---|---|---|---|---|---|
-| Health daily sync — Apple Health (Drive export) + Strava → deck (6:15 AM PT; `appleHealth`, `stravaSnapshot`, `healthDriveSync`) | `CRON_TZ=America/Los_Angeles 15 6 * * *` | True | first run by hand 2026-10-23 | 2026-10-24 | 2026-10-23 | trig_015pqDNGrZVENHZEZR8JZYF5 |
+| Health daily sync — Apple Health (Drive export) + Strava → deck (6:15 AM PT; `appleHealth`, `stravaSnapshot`, `healthDriveSync`) | `CRON_TZ=America/Los_Angeles 15 6 * * *` | True | first run by hand 2026-10-23 | 2026-10-24 | 2026-10-23 | trig_01YPmyQiy1SMzFfr1SzEoLoe (re-bound 2026-10-25; trig_015pq… retired) |
 | Vanessa — Chief of Staff daily cycle (weekdays 6:25 AM PT, parallel squads) | `CRON_TZ=America/Los_Angeles 25 6 * * 1-5` | True | — | 2026-10-21 | 2026-10-20 | trig_019whypw6EeNu2G8xxY5xE5N |
 | Command Deck — daily freshness sweep (writer, Claude; once a day since 2026-10-22, per-key cadence) | `40 15 * * *` | True | SUCCEEDED @ 2026-10-20T15:40 | twice daily | 2026-10-12 | trig_01Y1zZ3bmawgi4Mw2jNw9ZFM |
 | Command Deck — morning feeds (writer, Claude) | `5 13 * * *` | True | SUCCEEDED @ 2026-10-20T13:08 | daily | 2026-10-05 | trig_01BVuP52qPuqEvfvxL48YgZz |

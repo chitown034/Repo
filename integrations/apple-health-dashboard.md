@@ -2,6 +2,17 @@
 
 ## The path that is live (2026-10-23): Health Auto Export → Google Drive → cloud sync → `appleHealth`
 
+> **2026-10-31 — what actually broke, and the fix.** The phone never stopped: `HealthAutoExport-2026-10-24 … -10-30.json`
+> were all in the Drive folder. The 6:15 AM routine is bound to the orchestrator session (`session_01AycAMVzfi1LGgfCMEbs3PD`)
+> and that session stopped working its notification queue after 10-27, so three scheduled firings produced no write
+> (`healthDriveSync.ranAt` stayed at 10-27 13:30). Fixed by hand from session gracious-newton: the eight files were
+> downloaded, each verified byte-for-byte against Drive's `fileSize`, merged with `scripts/health-drive-sync.py`
+> (18 daily days through 10-30, nothing older lost) and written pinned to version 28 → 29. The deck now shows the
+> routine's own heartbeat (`#ahDriveSync`, from `healthDriveSync`) and raises an exception-report alert when the run is
+> older than 30 h — the DATA's age and the ROUTINE's age are two different failures and now read differently. Standing
+> rule: a routine bound to a session only runs when that session is working its queue; the heartbeat line is how to tell.
+> Manual rerun recipe = the routine's PART A with `--existing` = the current `appleHealth` export and a pinned `set`.
+
 Found on 2026-10-23 while fixing "auto health export and sync": **the phone half never broke.** Health Auto Export has been
 writing `HealthAutoExport-YYYY-MM-DD.json` (hourly aggregates per metric, one sleep row per night, workouts when there are
 any) into the Google Drive folder `1Ta6veOyTtgIsRs4lcMw0jzVgx80XiXjK` every day — the newest file lands around 11 PM PT and the
@@ -12,10 +23,10 @@ The replacement needs no Mac and no phone prompt:
 ```
 Health Auto Export (iPhone, existing automation)
    └─ Google Drive folder 1Ta6veOyTtgIsRs4lcMw0jzVgx80XiXjK   (HealthAutoExport-YYYY-MM-DD.json, daily)
-        └─ cloud routine "Apple Health — Drive export → deck sync" (6:15 AM PT, trig_015pqDNGrZVENHZEZR8JZYF5, this session)
+        └─ cloud routine "Health daily sync — Apple Health (Drive export) + Strava → deck" (6:15 AM PT, trig_01YPmyQiy1SMzFfr1SzEoLoe since 2026-10-25; the 10-23 trigger trig_015pq… is retired)
              └─ scripts/health-drive-sync.py   (merge: daemon history kept, keys never invented, gaps never zero-filled)
                   └─ Command Deck doc appleHealth  {v:{metrics, daily, sleep, workouts, meta, …}}  via:"drive-sync"
-                       └─ the twelve Health tiles, unchanged · status doc healthDriveSync {ranAt, status, files, newestSample, days}
+                       └─ the twelve Health tiles, unchanged · status doc healthDriveSync {ranAt, status (ok | no-new-export | error), files, newestFile, newestSample, days, strava, by, error, spec} — the deck's #ahDriveSync line reads ranAt, status, newestFile, days, strava and error
 ```
 
 First run 2026-10-23 (orchestrator session): the 2026-10-21 and 2026-10-22 exports merged, `appleHealth` v19, 12 metric keys,

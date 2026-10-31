@@ -820,3 +820,24 @@ through Apple Health and the same export file once Steven switches the nutrition
   yqman34/reverse-api-engineer is a malware copy (bundled `Launcher.cmd`, `luajit.exe`) — never download.
   Everything else is already present, a project library, reference, held for Steven, or declined, each with a reason.
 - **Owner.** Vanessa (agents) · Derek and Elena (repos) · Sofia (motion skills). **Status.** Built 2026-10-31.
+
+## 2026-10-31 — Apple Health: the sync was alive on the phone and dead in the cloud; the card now shows which
+
+- **Request (Steven, verbatim).** *"Intergrate apple health for health metrics and update the health metrics of the command
+  desk and fix everything not working including the GitHub repo"*.
+- **Found.** Health Auto Export had written a file to Google Drive every day through 10-30; the deck's tiles stopped at 10-23
+  because the 6:15 AM cloud routine (`trig_01YPmyQiy1SMzFfr1SzEoLoe`) is bound to a session that stopped working its
+  queue after 10-27. Nothing on the deck read the routine's status document, and the Apple Health card still carried the
+  2026-10-05 "pipeline is down / Notion replacement" copy, so the page could not say which half had failed.
+- **Decision.** (1) Merge by hand once, exactly as the routine would: eight Drive files verified byte-for-byte against Drive's
+  size, `scripts/health-drive-sync.py`, pinned write (appleHealth v28 → v29, 18 daily days through 10-30, nothing lost);
+  `healthDriveSync` v10 status ok; `stravaSnapshot` stamp refreshed (no new activities since 09-12). (2) Deck splice
+  `dashboard/wave2/splice-health-sync.py`: one live heartbeat line on the Apple Health card from `healthDriveSync`
+  (coloured by the age of the RUN), the 2026-10-05 copy removed, two "from this Mac" strings fixed, and an exception-report
+  alert when the routine is silent > 30 h. (3) The parked session was told what was written so it does not double-write.
+- **Why.** The data's age and the routine's age are different failures with different fixes (phone vs. cloud); the deck
+  showed only the first. Health numbers stayed inside the health documents throughout; none were read into the repo.
+- **Steven's call.** Whether the health routine should be re-bound to a session that is awake (this one, or a fresh-session
+  routine) — a live-task change, so his yes. Until then a parked orchestrator session means stale tiles again, and the
+  new heartbeat line will say so.
+- **Owner.** Derek (sync), Cole (health), Vanessa (routines). **Status.** Deck v259 (this splice), 2026-10-31.

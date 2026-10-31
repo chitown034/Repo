@@ -3355,3 +3355,163 @@ Addendum to the code-validator review of change-set c101a968e0458a2c (verdict FI
   store; client-data questions that need a model go to the local tier). Whether reading client email through the Gmail
   connector counts as "PII leaving the local model" is Steven's (and Alexandra's) ruling; raised to him.
 `scripts/validate-code.sh`: PASS (9 passed, 0 failed); shellcheck clean on both installers at the default level.
+
+---
+
+# VibeBreaker review: Apple Health cloud-sync heartbeat (splice-health-sync.py) + docs (2026-10-31)
+
+change-set: b25eb075ea5fe77f
+
+Reviewer: code-validator, 2026-10-31. `bash scripts/validate-code.sh --hash` printed `b25eb075ea5fe77f`, the hash the caller
+named. `bash scripts/validate-code.sh` printed `verdict: PASS (2 passed, 0 failed)` (py_compile on the splice, brain
+doctor). No deck HTML is in the repo diff, so the script ran no quickcheck. I ran `dashboard/tests/quickcheck.py` by hand on
+both `/tmp/claude-0/deck-live.html` (v258) and `/tmp/claude-0/deck-r13.html` (spliced). Results are below. Mode: DIFF.
+I ran passes 01, 04, 05, 06, 07, 08, 12, 17, 18 and 19 on the Python splice. I ran 01, 04, 05, 17 and 19 on the deck code
+it injects, which I read in the spliced copy. I ran 17 and 18 as a consistency read of the docs against the live routine.
+Pass 20 ran last. Read-only: I did not run the splice. I did not open the health JSON files. I read the two routines'
+stored prompts with `get_trigger`, and nothing else from the live store.
+
+## Verdict
+
+`FIX FIRST` (VibeBreaker: SURVIVED*). There are no CRITICAL, HIGH or MEDIUM findings. One LOW is confirmed: the new
+"cloud sync silent" alert never reaches the exception report when the `appleHealth` snapshot is missing. The card line,
+the escaping, the anchors and the routine field contract all hold. This is not 20/20 CLEAN because the run was in DIFF mode.
+Steven may ship it as it is and fix the LOW next; that choice is his.
+
+## CONFIRMED
+
+```yaml
+id: P05-F1
+pass: 05
+title: healthDriveSync alert is skipped whenever ahSnapshot() returns null (early return above it)
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: dashboard/wave2/splice-health-sync.py
+    line: 90-103 (alert inserted after the `age > 3` line)
+  - path: /tmp/claude-0/deck-r13.html (deck v259 copy)
+    line: 28582-28597 (appleHealthAlerts; early `return out` at 28586, new block at 28590-28592)
+entry_or_trigger: computeExecExceptions / bell -> appleHealthAlerts() while state/appleHealth is absent or has no `metrics`
+evidence: appleHealthAlerts runs `if (!snap) { out.push(<setup info>); return out; }` before the splice's insertion point,
+  so the healthDriveSync checks run only when an appleHealth snapshot with `metrics` exists.
+existing_controls_checked: ahSnapshot() (28381) returns null for a missing doc or one without metrics; the card line
+  (ahDriveSyncRender) is called inside renderAppleHealth before any snapshot check, so the card itself is correct.
+failure_scenario: appleHealth is missing or malformed (fresh browser before hydration, a failed routine write, a restore)
+  and healthDriveSync.ranAt is 72 h old -> the exception report shows only the info-level "finish the Health Auto Export
+  setup" row, with no warn/critical "Health cloud sync silent 3 days". The brief says the alert is appended when
+  healthDriveSync is missing or older than 30 h. That is false on this path.
+impact: The exception report under-reports a dead routine in the exact case where the tiles are also empty. The card line
+  still shows it. Low.
+remediation_direction: evaluate the healthDriveSync block before the `if (!snap)` early return (or in its own try).
+verification: seed localStorage with no appleHealth and healthDriveSync {ranAt: now-72h, status:"ok"}; assert
+  appleHealthAlerts() contains {sev:"critical", title:"Health cloud sync silent 3 days"}; with no healthDriveSync either,
+  assert the "has never reported" warn row is present alongside the setup info row.
+needs_context: null
+```
+
+```yaml
+id: P17-F1
+pass: 17
+title: The spec doc under-describes the healthDriveSync shape the deck now reads
+status: CONFIRMED
+severity: INFO
+confidence: HIGH
+location:
+  - path: integrations/apple-health-dashboard.md
+    line: 29
+  - path: dashboard/wave2/splice-health-sync.py
+    line: 15, 73-76
+entry_or_trigger: a future edit of the routine made from the doc the routine names as its `spec`
+evidence: line 29 lists `healthDriveSync {ranAt, status, files, newestSample, days}`. The live routine's PART C
+  (trig_01YPmyQiy1SMzFfr1SzEoLoe, read with get_trigger) also writes newestFile, strava, by, error and spec. The splice reads
+  newestFile, strava and error.
+existing_controls_checked: the routine prompt matches the splice today, and every optional field is guarded, so nothing
+  breaks if one is missing.
+failure_scenario: none today. If the routine were rewritten from line 29, the "newest export", Strava and error segments
+  would disappear from the card without any error.
+impact: maintainability only.
+remediation_direction: list the full field set on line 29.
+verification: grep line 29 for newestFile, strava and error.
+needs_context: null
+```
+
+## UNVERIFIED
+
+None.
+
+## REJECTED
+
+- P18-C1 (field-name mismatch: the splice reads `newestFile`/`strava`/`error`, but the doc lists `newestSample`): rejected.
+  The live routine prompt PART C writes `newestFile`, `newestSample`, `days:<dailyDays>`, `strava` and `error`
+  (get_trigger trig_01YPmyQiy1SMzFfr1SzEoLoe). Kept only as P17-F1 (INFO, doc drift).
+- P01-C1 (routine text reaching HTML): rejected. The card uses `textContent` only (deck-r13 28533-28537). The alert
+  title/sub, including `String(ds.ranAt).slice(0,10)`, go through `chatEsc` in both renderers (deck-r13 23641, 25111).
+- P01-C2 (the DOTALL step-3 span could eat a different region): rejected for every deck that exists. On v258 the span is
+  2236 chars and holds exactly 3 `<p>`, ending at the single `id="ahSyncNote"`. `sub1` needs exactly one match, and the
+  `<head>` marker aborts a second run (v259 carries it). The remaining risk is that the lazy `.*?` has no size or
+  paragraph-count bound. On an unmarked deck where `ahSyncNote` had moved below other markup, the span would remove that
+  markup while still counting 1 match. No such deck exists, so this is not a defect. A one-line `assert span.count("<p ")
+  == 3` would close it.
+- P05-C2 (non-ISO `ranAt` makes the card show the raw string but the alert say "never reported"): rejected. The routine
+  writes `ranAt:<ISO now>` (PART C), so the trigger is outside the producer contract.
+- P05-C3 (the alert ignores `status:"error"` on a fresh run): rejected as out of the stated spec. The brief scopes the
+  alert to silence (missing or >30 h). A failing-but-running routine already surfaces through the existing "export
+  stalled" alert once `meta.last_received` passes 2 days, and through the amber card line.
+- P06/P12-C1 (stale ageH while the page stays open): rejected. A remote doc change reloads the page
+  (applyRemoteSnapshot -> `changed` -> throttled `location.reload()`), and renderAppleHealth re-runs on load.
+- P06-C2 (`var ds`/`dsMs`/`dsH` or `ahDriveSyncRender` colliding with existing names): rejected. `ahDriveSync`
+  appears 4 times in the spliced deck, all from this splice. The vars are function-scoped inside appleHealthAlerts.
+
+## Coverage (inspected, clean)
+
+- Splice anchors: I counted all seven read-only on v258 and got 1 each. On the spliced copy the badge, stale-copy,
+  no-snapshot and age-sub anchors count 0, and the marker is present, so a re-run aborts before any `sub1`. The `panel`
+  value comes from the deck itself (`panel-wellness`). Replacements are lambdas, so backslash and group escapes cannot occur.
+- Deck code: `lsGet(key, null)` has a shape guard (8254), and `$`, `chatFmtTs` and `chatEsc` exist. The card call is
+  wrapped in try/catch. Colour thresholds (60 h negative, 30 h warning, else ok -> positive) match the brief. The 30 h
+  threshold matches `brain/coverage/writers.json` cadenceHours 30. Severity strings `warn`/`critical` are in the sort map.
+- Quickcheck: v258 shows 4 FAIL rows (div 1322/1321, section 26/24, 2 inline scripts, the known "$10B…"
+  never-defined false positive) and 9 PASS. The spliced copy's sorted PASS/FAIL set is byte-identical to v258's, so the splice
+  adds no new quickcheck failure.
+- Docs: the trigger id correction is verified live. trig_015pq… is disabled and named "[retired 2026-10-25]".
+  trig_01YPmy… is enabled, bound to session_01AycAMVzfi1LGgfCMEbs3PD, and last fired 2026-10-30T13:20Z with delivery
+  SUCCEEDED, which fits "fired but the session did not work it". The decisions entry, the memory line and the INDEX
+  line contain no health values, only counts and versions. That fits the routine's "health data stays in the health docs"
+  rule.
+- Not in the diff, outside scope: `wiki/dashboard-ops/db-docs.md`, `integrations/CONNECTIONS.md` and
+  `docs/inventory/cloud-routines-2026-10.md` still name the old routine and trigger id.
+
+## Top missing tests (pass 19)
+
+1. appleHealthAlerts with no appleHealth and stale healthDriveSync -> the critical "silent" row is present (P05-F1).
+2. appleHealthAlerts at ranAt now-29h / now-31h / now-61h -> none / warn "1 day" / critical "2 days".
+3. ahDriveSyncRender with status "error" and ranAt now-2h -> warning colour, text contains "error: <msg>".
+4. ahDriveSyncRender with healthDriveSync = null, = [] and = {} -> the "never reported" text, no throw.
+5. ahDriveSyncRender with newestFile/strava/error containing `<img onerror>` -> rendered as literal text (no element created).
+6. Splice on a deck with the marker -> exit "already applied", file byte-identical.
+7. Splice on a deck missing any one anchor -> abort naming that anchor, file byte-identical (no partial write).
+8. Splice stale-copy span -> exactly 3 `<p>` removed and `#ahSyncNote` retained.
+9. Exception-report dedupe: the drive-sync alert appears once in the bell even though appleHealthAlerts is folded in twice.
+
+## Not demonstrated
+
+I did not run the splice, Playwright or the runtime harness. The caller's 390 px renders and the three seeded states are
+the caller's evidence. I did not read deck v259 as published, only the local copy /tmp/claude-0/deck-r13.html.
+
+---
+
+change-set: 0531c7c1483bf815
+
+Addendum to the code-validator review of change-set b25eb075ea5fe77f (verdict FIX FIRST, one LOW + one INFO).
+- **P05-F1 (LOW) — fixed.** The healthDriveSync alert block now sits at the top of `appleHealthAlerts`, in its own try,
+  before the `if (!snap)` early return. Proof (Playwright on the re-spliced copy, rendered `.er-title` rows only, script
+  text excluded): no appleHealth + stale status → "Health cloud sync silent 3 days" AND the setup row; no appleHealth +
+  no status doc → "Health cloud sync has never reported" AND the setup row; appleHealth + fresh status → neither. 0 page
+  errors in all three. Published as deck v260 (v259 carried the first placement for about seven minutes).
+- **P17-F1 (INFO) — fixed.** `integrations/apple-health-dashboard.md` line 29 lists the full field set the routine writes
+  and the six the deck reads. The validator's side note is also taken: the retired trigger id in
+  `docs/inventory/cloud-routines-2026-10.md` now names the live one (the other two files it listed no longer contain it).
+- **Anchor risk (not filed) — closed.** The DOTALL step now aborts unless the matched span holds exactly three `<p ` tags.
+  Re-applied to the v258 copy: byte-identical to the published v260 file.
+`scripts/validate-code.sh` PASS; runtime harness PASS; quickcheck FAIL set identical to v258.
