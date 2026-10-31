@@ -117,6 +117,7 @@ the deck's "Text me this brief" sends the morning brief to Steven's own mobile o
 - **Disruption Scout** (under Nadia) — runs the weekly internet scout (`integrations/scout/scout.py`): GitHub, the official MCP registry, npm, Hacker News and releases of tools already in the stack. Its shortlist feeds Nadia's weekly brief; Elon gates every ADOPT/PILOT; nothing installs without Steven. See `wiki/ai-team/tool-integration-status.md`.
 - **Wren** / **Garrett** — referral reciprocity and LPT recruiting; see `wiki/real-estate-playbooks/referral-reciprocity.md`.
 - **Desk seats (2026-10-22)** — Refi Watch Analyst, Sphere Nurture Coordinator, Voicemail & Inbox Triage, Document Intake Clerk, Open House Captain, Travel Desk, Meeting Scribe: Sonnet 5 report seats, drafts only; see `wiki/ai-team/desk-seats.md`.
+- **Five agents (2026-10-31)** — `chief-of-staff` (the boss: one front door that runs the specialists in parallel) with `inbox-triage`, `calendar-prep`, `competitor-watch` and `hook-writer`: hand-written in `.claude/agents/`, drafts only; see `wiki/ai-team/five-agents.md`.
 
 ## What "bench" means
 

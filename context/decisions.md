@@ -805,3 +805,18 @@ through Apple Health and the same export file once Steven switches the nutrition
   writes no deck document, so the deck's Apple Health and Strava tiles keep their own daily sync. Figures are estimates, not
   medical advice.
 - **Owner.** Cole (health and wellness). **Status.** Published 2026-10-27.
+
+## 2026-10-31 — Five agents built; 62 repos read, two packs installed, one malware repo blocked
+
+- **Request (Steven, verbatim).** *"build the following ai agents and install the repos in the image"* (three images:
+  5 Claude agents; 20 Claude repos; 28 motion-graphics installs) plus 17 repo links.
+- **Agents.** `chief-of-staff` (boss, Opus), `inbox-triage`, `calendar-prep`, `competitor-watch`, `hook-writer` (Sonnet),
+  hand-written in `.claude/agents/`, on the roster under Vanessa, Victor's ISA line, Meeting Scribe, the CI analyst and
+  Sofia's content writer. The generic generated `chief-of-staff` seat is replaced. `brain/agentfiles.py` now skips any
+  seat with a hand-written file; the Mac installer links them and replaces an old generated link. Drafts only; every
+  send, invite, CRM write, rate and spend stays HALT. Scheduling calendar-prep and competitor-watch is Steven's yes.
+- **Repos.** Read in six parallel reviews, nothing executed (`integrations/skill-packs/REGISTRY-2026-10-31.md`).
+  Install: gsap-skills (aed9cfd) and three Anthropic skills (ca45fc4) via `integrations/skill-packs/install-mac.sh`.
+  yqman34/reverse-api-engineer is a malware copy (bundled `Launcher.cmd`, `luajit.exe`) — never download.
+  Everything else is already present, a project library, reference, held for Steven, or declined, each with a reason.
+- **Owner.** Vanessa (agents) · Derek and Elena (repos) · Sofia (motion skills). **Status.** Built 2026-10-31.

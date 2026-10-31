@@ -19,11 +19,12 @@
 | ca-transaction-coordinator | 2 | cro-victor | opus | Top-1%-caliber California real estate Transaction Coordinator — runs the operational file, not the coaching conversation. |
 | ca-underwriter | 2 | cco-alexandra | opus | Top-1%-caliber mortgage Underwriter's-eye analysis — reads a file the way DU/LPA and a manual underwriter actually would, and tells Steven e |
 | caio-nadia | 1 | vanessa-orchestrator | opus | Nadia, Chief AI Officer on Steven Shearrill's AI Team — separating where AI genuinely helps a mortgage / real-estate / trading / nonprofit o |
+| calendar-prep | 3 | meeting-scribe | sonnet | One-page PREP brief per upcoming meeting: who the attendees are, past touchpoints and open promises (Gmail, Fieldy), the goal. Read-only. Hand-written: .claude/agents/calendar-prep.md (2026-10-31). |
 | capability-engineer | 1 | vanessa-orchestrator | opus | Reports to Elon, the CTO Innovator, on the AI Agent Engineering Team: extends what the agents and skills can actually DO once their core rel |
 | cco-alexandra | 1 | vanessa-orchestrator | opus | Alexandra, Chief Compliance Officer on Steven Shearrill's AI Team — TRID (LE 3 business days, CD 3 business days), RESPA §8, Reg Z LO comp a |
 | cfo-marcus | 1 | vanessa-orchestrator | opus | Marcus, Chief Financial Officer on Steven Shearrill's AI Team — cash position, P&L, net worth, budget, liabilities, Road to a Million, deal  |
 | chief-automation-strategist | 1 | vanessa-orchestrator | opus | Steven Shearrill's Chief Automation Strategist and AI Agent Orchestration Architect. |
-| chief-of-staff | 3 | — | sonnet | Personal communication chief of staff that triages email, Slack, LINE, and Messenger. |
+| chief-of-staff | 2 | vanessa-orchestrator | opus | Boss agent and Steven's one front door (2026-10-31): splits a plain request into jobs, runs inbox-triage, calendar-prep, competitor-watch, hook-writer and any routed seat in parallel, returns one brief. Hand-written: .claude/agents/chief-of-staff.md. |
 | ciso-elena | 1 | vanessa-orchestrator | opus | Elena, Chief Information Security Officer on Steven Shearrill's AI Team — data and cyber risk sized for a solo operator handling client PII  |
 | client-concierge | 2 | cro-victor | sonnet | Report under Victor (CRO): runs the white-glove layer around a transaction — move coordination, utility and address-change checklists, home  |
 | closing-coordinator | 2 | cro-victor | sonnet | Report under Victor (CRO): runs the file from clear-to-close to funded — CD timing, final figures reconciliation, signing logistics includin |
@@ -36,6 +37,7 @@
 | comment-analyzer | 3 | — | opus | Analyze code comments for accuracy, completeness, maintainability, and comment rot risk. |
 | commission-tracker | 2 | cfo-marcus | sonnet | Report under Marcus (CFO): tracks every dollar Steven is owed — real-estate commissions through the LPT split and cap, MLO compensation, ref |
 | competitive-intelligence-analyst | 2 | cro-victor | opus | Report under Victor (CRO): benchmarks Steven against the agents, brokerages and lenders actually competing for his buyers — MLS production s |
+| competitor-watch | 3 | competitive-intelligence-analyst | sonnet | Weekly public-page check of the rivals in context/competitors.md; dated snapshot; reports only what changed. Hand-written: .claude/agents/competitor-watch.md (2026-10-31). |
 | content-writer | 2 | cmo-sofia | sonnet | Report under Sofia (CMO): writes finished posts, newsletters, follow-up sequences and listing one-pagers in Steven's brand voice for militar |
 | conversation-analyzer | 3 | — | opus | Use this agent when analyzing conversation transcripts to find behaviors worth preventing with hooks. |
 | cpp-build-resolver | 3 | — | sonnet | C++ build, CMake, and compilation error resolution specialist. |
@@ -82,6 +84,8 @@
 | health-coach-analyst | 2 | vanessa-orchestrator | opus | Health coach and analyst on Steven's Apple Health section — reads his metrics, trends, workouts and sleep from the apple-health MCP and his  |
 | healthcare-reviewer | 3 | — | opus | Reviews healthcare application code for clinical safety, CDSS accuracy, PHI compliance, and medical data integrity. |
 | homelab-architect | 3 | — | sonnet | Designs home and small-lab network plans from hardware inventory, goals, and operator experience level, with safe staged changes and rollbac |
+| hook-writer | 3 | content-writer | sonnet | 3 hooks, 3 titles and a caption per post in Steven's voice, banned-word list and ad rules applied; drafts only. Hand-written: .claude/agents/hook-writer.md (2026-10-31). |
+| inbox-triage | 3 | voicemail-inbox-triage | sonnet | Sorts unread Gmail into URGENT / REPLY / READ LATER / IGNORE and drafts replies in Steven's voice; never sends. Hand-written: .claude/agents/inbox-triage.md (2026-10-31). |
 | incentives-programs-scout | 2 | cfo-marcus | opus | Report under Marcus (CFO): finds and verifies incentives, rebates, grants, tax credits, down-payment assistance, veteran benefits and promot |
 | inspection-repair-negotiator | 2 | cro-victor | sonnet | Report under Victor (CRO): runs the inspection period — coordinating inspections, reading reports for what is material versus cosmetic, buil |
 | integration-engineer | 1 | vanessa-orchestrator | opus | Reports to Elon, the CTO Innovator, on the AI Agent Engineering Team: owns the stability of every plugin, connector, MCP server, bridge and  |

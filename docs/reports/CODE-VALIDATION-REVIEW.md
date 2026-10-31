@@ -3100,3 +3100,258 @@ Dashboard (Health & Wellness)" to "Fitness Coach — Plate & Pulse (Health & Wel
 validator named. Verification: `bin/brain links` shows "Fitness Coach"; `grep -c "Fitness Dashboard"` is 0 in both files;
 `scripts/validate-code.sh` PASS (7 passed, 0 failed). The published 6D Brain artifact is not republished (published
 artifact, HALT list); its next normal publish carries the new label. No other code changed.
+
+---
+
+# VibeBreaker review: five hand-written agents, agentfiles skip, two Mac installers (2026-10-31)
+
+change-set: c101a968e0458a2c
+
+Reviewer: code-validator, 2026-10-31. `bash scripts/validate-code.sh --hash` printed `c101a968e0458a2c`, the hash the caller
+named. `bash scripts/validate-code.sh` gave `verdict: PASS (9 passed, 0 failed)`: py_compile, json, bash -n and shellcheck on
+both installers, brain unit tests, layout and doctor. Mode: DIFF. I ran passes 01, 04, 05, 11, 14 and 19 on the two shell
+scripts. I ran 01, 04, 05, 06, 07, 08, 12, 17, 18 and 19 on `brain/agentfiles.py`. I ran 05, 14 and 18 as a spec/consistency
+read of the agent prompts against CLAUDE.md and the repo's own advertising rules. Pass 20 ran last.
+
+## Verdict
+
+`FIX FIRST` (VibeBreaker: SURVIVED*). There are no CRITICAL or HIGH findings. One MEDIUM is narrow and cheap to fix: the
+ready-made disclosure lines in hook-writer break the repo's own advertising rules. The code (agentfiles.py and both
+installers) behaves as described and could ship on its own. The run is not 20/20 CLEAN because it was done in DIFF mode.
+
+## CONFIRMED
+
+```yaml
+id: P14-F1
+pass: 14
+title: hook-writer's "disclosure lines" omit the DRE licence number (both lines) and Equal Housing (real-estate line), contrary to the repo's own ad rules
+status: CONFIRMED
+severity: MEDIUM
+confidence: HIGH
+location:
+  - path: .claude/agents/hook-writer.md
+    line: 22-23
+entry_or_trigger: Steven asks hook-writer for a caption on any listing or mortgage topic. The prompt tells it to end the caption with these exact lines.
+evidence: Line 22 reads `Steven Shearrill, NMLS 1921615 · Patriot Pacific Financial · Equal Housing Opportunity.` and line 23
+  reads `Steven Shearrill · Broker Associate, LPT Realty.`. Neither line has DRE #01988316 (context/about-me.md:18).
+  The repo's rules require the DRE number on all first-point-of-contact material including social (B&P 10140.6(b),
+  wiki/real-estate-playbooks/ai-search-visibility.md:66 and drip-and-text-follow-up.md:53). They also require Equal Housing
+  Opportunity on real-estate and loan advertising (ai-search-visibility.md:70). The same page wants the individual MLO's NMLS
+  ID (ai-search-visibility.md:68). about-me.md:20 gives 1921615 as the company's NMLS ID (Patriot Pacific Financial Corp),
+  yet line 22 attaches it to Steven's name. The repo itself is split on this: drip-and-text-follow-up.md:56 and
+  open-house.md:88 use 1921615 as Steven's own ID.
+existing_controls_checked: Rule 4 marks the output "DRAFT — ad-compliance-reviewer before posting". That is an instruction
+  only; nothing enforces it. The agent is told the line is the disclosure, so it has no reason to add anything.
+failure_scenario: hook-writer produces a listing caption that ends with "Steven Shearrill · Broker Associate, LPT Realty."
+  If the review step is skipped or relies on the agent's line, a social post goes out without the DRE number or EHO.
+impact: Steven's licence-advertising compliance on social. This is not a client-data or system failure.
+remediation_direction: Replace both lines with the repo's footer pattern, which includes DRE #01988316 and Equal Housing
+  Opportunity. Use one NMLS convention, decided by Steven or Alexandra: either both individual and company IDs, or a label
+  saying whose ID 1921615 is.
+verification: grep shows "DRE #01988316" and "Equal Housing Opportunity" in both disclosure lines of hook-writer.md. A sample
+  run on "first-time buyer listing tour" ends with the corrected line.
+needs_context: Steven's individual NMLS ID, if it differs from 1921615 (it is not in the repo).
+```
+
+```yaml
+id: P14-F2
+pass: 14
+title: hook-writer's Reg Z trigger list leaves out "period of repayment / number of payments" and "finance charge amount"
+status: CONFIRMED
+severity: LOW
+confidence: MEDIUM
+location:
+  - path: .claude/agents/hook-writer.md
+    line: 28-29
+entry_or_trigger: A hook or title such as "Own it with a 30-year fixed VA home loan".
+evidence: The rule bans "rate, APR, payment, down-payment amount or '% down'" without full disclosure. 12 CFR 1026.24(d)(1)
+  lists four triggering terms: (i) amount or percentage of any downpayment, (ii) number of payments or period of repayment,
+  (iii) amount of any payment, (iv) amount of any finance charge. Items (ii) and (iv) are missing. Including "rate" is
+  conservative (1026.24(c)), which is fine. The repo has no written trigger-term rule to check against (grep found none).
+existing_controls_checked: The ad-compliance-reviewer draft gate (instruction only).
+failure_scenario: The agent follows its rule list literally and writes "30-year" or "360 payments" with no disclosure, believing it is compliant.
+impact: Ad-compliance rework. The downstream review should catch it.
+remediation_direction: Name all four 1026.24(d)(1) triggers in rule 2, plus "zero/no down". Have Alexandra confirm the wording. Her sign-off is a compliance interpretation, so Steven decides.
+verification: The rule text lists all four triggers. A sample "30-year fixed" topic comes back without the term or with the full disclosure.
+needs_context: Alexandra's sign-off on the exact wording.
+```
+
+```yaml
+id: P05-F1
+pass: 05
+title: chief-of-staff is told to dispatch "the seat bin/brain route names" as an Agent subagent_type, but route returns display names, and some of those are skills
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: .claude/agents/chief-of-staff.md
+    line: 20
+entry_or_trigger: Any request outside the four specialists, e.g. "draft a caption for my VA loan reel".
+evidence: `bin/brain route --json` returns `"seat": "Harrison"`, `"Steve"`, `"Tariq"` and has no slug/agent field (grep count
+  0). The name-to-agent map lives in integrations/agent-os/agents.json (e.g. "Harrison": {"agent": "vanessa-broker", "via":
+  "skill"}, "Voicemail & Inbox Triage": {"agent": "voicemail-inbox-triage", "via": "roster"}). The prompt does not mention it.
+  The prompt's examples are slugs, which suggests the author expected slugs.
+existing_controls_checked: The stall rule (2 retries, then re-route, then Needs-Steven) limits the damage.
+failure_scenario: chief-of-staff calls Agent(subagent_type="Harrison"), which fails or gets guessed to the wrong seat. After
+  two retries it escalates a routine request to Steven.
+impact: A wasted wave and an unneeded Needs-Steven item. Nothing unsafe happens.
+remediation_direction: Tell the agent to map seat names through agents.json (via=roster → subagent_type, via=skill → the
+  Skill), or add the slug to route's JSON output.
+verification: Run `claude --agent chief-of-staff "draft a caption for my VA loan reel"` and check that every dispatch names a real slug or skill.
+needs_context: null
+```
+
+```yaml
+id: P04-F1
+pass: 04
+title: install-mac.sh skips a hand-written agent silently when a real file of the same name already exists in ~/.claude/agents
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: integrations/agent-os/install-mac.sh
+    line: 49-52
+entry_or_trigger: `bash integrations/agent-os/install-mac.sh --apply` on a Mac where ~/.claude/agents/chief-of-staff.md is a regular file (or a symlink that does not point into integrations/agent-os/agents).
+evidence: `[ -e "$d" ] || { ln -s ...; HAND=$((HAND+1)); }`. The existing file is kept, which matches the stated design.
+  However, the skip is not reported: the only output is "linked $HAND hand-written agents (try: claude --agent
+  chief-of-staff ...)". The pre-change roster row ("Personal communication chief of staff that triages email, Slack, LINE,
+  and Messenger", docs/inventory/agent-roster.md, which says it describes the Mac) suggests a different chief-of-staff
+  agent already exists on the Mac.
+existing_controls_checked: In-repo sessions read .claude/agents directly. Outside the repo, the ~/.claude/agents copy is the one that runs.
+failure_scenario: Steven follows the printed hint outside the repo and runs the old third-party triage agent. It does not
+  carry this change's HALT block or its routing, and he gets no warning.
+impact: Steven runs the wrong agent. How serious that is depends on what the old file allows.
+remediation_direction: When a hand-written slug is skipped, print a WARN that names the file and the resolved target.
+verification: Use a throwaway HOME with a real ~/.claude/agents/chief-of-staff.md. --apply prints a WARN naming it, and HAND does not count it.
+needs_context: `ls -l ~/.claude/agents/chief-of-staff.md` on each Mac decides whether the bad case is live today.
+```
+
+```yaml
+id: P11-F1
+pass: 11
+title: The two new installs say "reviewed <sha>" but install whatever is on the default branch; the registry also contradicts itself on gsap-skills
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: integrations/skill-packs/install-mac.sh
+    line: 81-82 (callers); 10-17 plug(), 43-56 copyskills() (pre-existing)
+  - path: integrations/skill-packs/REGISTRY-2026-10-31.md
+    line: 163 vs 202
+entry_or_trigger: Steven answers y to "Install plugin gsap-skills" or "Copy skill folders from github.com/anthropics/skills".
+evidence: plug() runs `claude plugin marketplace add "$2"` and copyskills() runs `git clone --depth 1`. Neither checks out
+  aed9cfd or ca45fc4, so the SHA is only a label. This pattern is older than the change; the change adds two more callers.
+  REGISTRY line 163 says gsap-skills was "NOT read in depth, so unreviewed. Add it only if GSAP actually gets used". Line 202
+  rates the same repo INSTALL-SKILL ("No hooks, no scripts").
+existing_controls_checked: A y/N prompt for each install, plus the content review on line 202.
+failure_scenario: Upstream pushes a commit with a hook or script after the review. The installer then puts that unreviewed
+  code into ~/.claude while printing "(reviewed aed9cfd)".
+impact: A supply-chain gap that applies to every pack in this script. Both new sources are first-party and reputable.
+remediation_direction: Either check out the reviewed SHA (`git -C "$tmp/r" checkout <sha>` after a non-shallow fetch, or a
+  marketplace ref if Claude Code supports one), or change the label to "reviewed at". Bring registry line 163 into line with 202.
+verification: After a pin, the copied skill tree hashes the same as the tree at ca45fc4. The registry has one status for gsap-skills.
+needs_context: Whether `claude plugin marketplace add` accepts a pinned ref (not verified here).
+```
+
+```yaml
+id: P05-F2
+pass: 05
+title: The five agents' HALT rules are prompt-only; no tools allowlist keeps Gmail send or Calendar create out of reach
+status: CONFIRMED
+severity: INFO
+confidence: HIGH
+location:
+  - path: .claude/agents/inbox-triage.md
+    line: 1-5 (frontmatter)
+  - path: .claude/agents/calendar-prep.md
+    line: 1-5 (frontmatter)
+entry_or_trigger: Any run of inbox-triage or calendar-prep while the Gmail or Google Calendar connector is on.
+evidence: The frontmatter has only name/description/model. With no `tools:` field, the agent inherits every tool, including
+  mcp__Gmail__send_message and mcp__Google_Calendar__create_event. This is the same as the generated seats.
+existing_controls_checked: Each "Never" block matches CLAUDE.md's HALT list (no send, post, invite, CRM write, quote, or
+  spend). The permission prompt on the session also applies.
+failure_scenario: None was demonstrated. This is defense in depth.
+impact: n/a
+remediation_direction: Add a `tools:` allowlist (read and draft tools only) to inbox-triage, calendar-prep and competitor-watch.
+verification: Ask the agent to "send it". It has no send tool to call.
+needs_context: null
+```
+
+## UNVERIFIED
+
+- **Client PII on a cloud model (Steven decides).** chief-of-staff.md:34-35 says "move client data to any cloud model other
+  than where it already lives". CLAUDE.md's HALT says "Client PII leaving the local model", and the generated seats say
+  "Never move client data off the local model". inbox-triage and calendar-prep read client email bodies through the Gmail
+  connector on Sonnet. To decide this, I need Steven's or Alexandra's ruling on whether Gmail-connector reads count as PII
+  leaving the local model. The 2026-10-31 decision entry does not address it.
+
+## REJECTED
+
+- Lane-text change in homelab-architect, network-troubleshooter, pr-test-analyzer, pytorch-build-resolver: **pre-existing
+  drift, not introduced.** `agentfiles.render()` on a `git archive HEAD` copy (HEAD's own inputs) reproduces the new working
+  files byte for byte and differs from HEAD's committed files. agents.json equals a fresh `agentos.build()` (184 agents, no key differs).
+- Dangling generated links (chief-of-staff, code-validator) after the twins are deleted: handled. `[ -L "$d" ]` is true for
+  a dangling link, readlink matches `*/integrations/agent-os/agents/*`, and the link is replaced (install-mac.sh:50).
+- `ln -s` failing and aborting the installer: the script uses `set -u` only, with no `-e`.
+- Invalid agent frontmatter: all six `.claude/agents/*.md` parse as YAML, and `name` equals the filename.
+  `bin/brain os agents` reports 184/184 present and 0 bad.
+- Routing names: all 12 agent names in chief-of-staff and the four specialists exist as slugs in agents.json.
+- agentfiles.check() hiding a missing seat: path() falls back to the generated file when no hand file exists, and the
+  frontmatter-name check runs on whichever file wins.
+- The four removed shellcheck findings: rewritten (SC2015 `&&||`) or disabled with a stated reason (SC2013, SC2088); shellcheck passes.
+
+## Coverage (inspected, clean)
+
+- brain/agentfiles.py write()/check(): the skip deletes only the generated twin, `missing_ok`, and n excludes skipped seats.
+  The README count is 178 = 184 − 6 hand files.
+- install-mac.sh (agent-os): the empty-glob guard `[ -f "$f" ] || continue`, the Bash 3.2-safe `case` in an `if`, the
+  replace-only-our-link rule, and the MISSING count, which still sees hand links.
+- skill-packs/install-mac.sh: the new lines call existing helpers with the right argument order (label repo marketplace
+  plugin sha note / label repo sha folders). The malware line is echo-only and nothing downloads it.
+- Agent HALT blocks against CLAUDE.md: send, post, invite, CRM write, rate quote or lock, eligibility, sign, pay, spend,
+  credential, live task and published artifact are all covered. The schedules for calendar-prep and competitor-watch are left as Steven's yes.
+- competitor-watch: context/competitors.md is empty on purpose, so the first run only proposes. No login, no paid tool.
+- Roster rows, the decisions.md and memory.md entries, org-chart.md, five-agents.md and third-party-packs.md agree with the code.
+
+## Top missing tests (pass 19)
+
+1. `agentfiles.write()` on a temp root with `.claude/agents/x.md`: assert the generated `x.md` is deleted, n is total−1, and `check()` reads the hand file.
+2. `agentfiles.check()` with a hand file whose `name:` differs from its slug: assert it lands in `bad_frontmatter`.
+3. install-mac.sh --apply (AGENT_OS_FORCE=1, throwaway HOME) for four cases: fresh, stale generated link, real file, and a
+   foreign dangling symlink. Assert HAND counts, and (after the P04-F1 fix) a WARN for the real file.
+4. A lint over `.claude/agents/*.md`: YAML parses, name equals the filename, and every backticked agent in chief-of-staff's routing table exists in agents.json.
+5. A text test on hook-writer: both disclosure lines contain the DRE number and "Equal Housing Opportunity" (P14-F1).
+6. `brain route --json`: each seat resolves through agents.json's name map to a roster slug or a skill (P05-F1).
+7. skill-packs: after any pin fix, assert the installed tree's commit equals the SHA printed as "reviewed".
+
+## Not demonstrated
+
+I did not run either installer. The caller's throwaway-HOME results are the caller's. I did not run any agent live, and I
+did not read the live ~/.claude/agents on either Mac. The Reg Z wording in P14-F2 is the regulation text as I know it;
+Alexandra confirms.
+
+---
+
+change-set: f1e43c4712e41b70
+
+Addendum to the code-validator review of change-set c101a968e0458a2c (verdict FIX FIRST). Each CONFIRMED finding:
+- **P14-F1 (MEDIUM) — fixed.** hook-writer's disclosure lines now carry DRE #01988316 and Equal Housing Opportunity on
+  both, name Patriot Pacific Financial Corp with its company NMLS #1921615, and leave Steven's personal NMLS ID as a
+  `[your NMLS ID]` placeholder (not in the brain; question raised to Steven). Source cited:
+  `wiki/real-estate-playbooks/ai-search-visibility.md` § Compliance flags.
+- **P14-F2 (LOW) — fixed.** Rule 2 now names all four 12 CFR 1026.24(d) trigger terms (down payment, number of
+  payments/repayment period, payment amount, finance charge), APR for any rate, and routes final wording to Alexandra.
+- **P05-F1 (LOW) — fixed.** chief-of-staff maps route display names through `named_seats` in agents.json (roster →
+  slug; skill → use the skill) and never invents a subagent_type. Checked: Harrison → {agent: vanessa-broker, via: skill}.
+- **P04-F1 (LOW) — fixed.** The installer now WARNs when a real file of the same name blocks a hand-written agent.
+  Tested with a throwaway HOME holding a real chief-of-staff.md: WARN printed, file kept, other 5 linked.
+- **P11-F1 (LOW) — fixed.** `copyskills` now compares the clone's HEAD with the reviewed sha and asks before copying if
+  upstream moved; `plug` keeps the existing printed-label pattern (Claude Code's marketplace cannot pin a commit). The
+  registry's GSAP row no longer calls gsap-skills unreviewed.
+- **P05-F2 (INFO) — answered, not changed.** A `tools:` allowlist needs the exact connector tool names on each Mac
+  (claude.ai connector names differ by install); a wrong name would leave the agent with no Gmail at all. The never-send
+  rules stay prompt-level, same as every roster seat, and Gmail drafts still need Steven to press Send.
+- **Client data on a cloud model** — chief-of-staff's line now restates CLAUDE.md (client details never copied to any
+  store; client-data questions that need a model go to the local tier). Whether reading client email through the Gmail
+  connector counts as "PII leaving the local model" is Steven's (and Alexandra's) ruling; raised to him.
+`scripts/validate-code.sh`: PASS (9 passed, 0 failed); shellcheck clean on both installers at the default level.

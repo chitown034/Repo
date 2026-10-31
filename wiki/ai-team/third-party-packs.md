@@ -27,3 +27,12 @@ Read, decided and pinned in `integrations/skill-packs/REGISTRY-2026-10-12.md`: i
 (MIT) skill vendored + local MCP by connect-all 6g; **archify** (MIT, 18 MB) installed on the Mac by the official
 `npx skills add tt-a1i/archify -g` with its update check off; **awesome-vlm-architectures** (CC0) a reference shelf
 (`references/vlm-architectures.md`). Owners: Derek (diagrams), Sofia (explainers), Nadia (VLM choices).
+
+## The three images and 17 links (2026-10-31)
+
+`integrations/skill-packs/REGISTRY-2026-10-31.md`: 62 repos read. **Installed (Mac, y/N):** GSAP skills (official) and
+Anthropic's canvas-design, algorithmic-art, slack-gif-creator. **Malware, never download:** yqman34/reverse-api-engineer.
+**Held for Steven:** Remotion licence, ElevenLabs, 21st.dev magic-mcp, After Effects MCP, claude-task-master, DeepTutor,
+kalil0321/reverse-api-engineer, ViralWave. **Declined:** competing coding agents (Cline, Continue, Aider, OpenHands,
+Open Interpreter, DeepCode, claude-engineer), SuperClaude, claude-code-router, AI-Trader, blender-mcp, headcount and
+others. Libraries and reading: `references/motion-and-claude-repos.md`. The five agents: `wiki/ai-team/five-agents.md`.
