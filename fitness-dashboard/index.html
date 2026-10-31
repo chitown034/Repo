@@ -333,6 +333,33 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
   </div>
 </section>
 
+<!-- INSIGHTS -->
+<section class="panel" id="p-insights" data-tab="insights" data-label="Insights &amp; adjustments" hidden>
+  <div class="panel-head">
+    <span class="eyebrow">Your data, analysed</span>
+    <h2>Insights and adjustments</h2>
+    <p>Every synced source (Apple Health, Strava, Oura, Hume, scales, food log, workout log, check-ins) is compared with your goal and your own baselines, then turned into specific changes: how many calories, grams, steps, sets or minutes to adjust, and why. Re-checked every time you open this tab.</p>
+  </div>
+  <div class="grid g2">
+    <div class="card"><div class="card-head"><h3>Goals</h3><span class="small muted" id="go-sum"></span></div><div id="go-list"></div>
+      <details style="margin-top:8px"><summary class="small">Add a goal</summary><form class="fields" id="go-form" autocomplete="off" style="margin-top:6px"><label class="f">Type<select id="go-type"><option value="weight">Body weight</option><option value="waist">Waist</option><option value="bf">Body fat %</option><option value="steps">Daily steps (7-day avg)</option><option value="sleep">Sleep hours (7-day avg)</option><option value="lift">Lift: estimated 1RM</option><option value="sessions">Training sessions per week</option><option value="cardio">Cardio minutes per week</option><option value="vo2">VO₂max</option><option value="rhr">Resting heart rate</option><option value="custom">Custom (manual progress)</option></select></label><label class="f" id="go-exwrap" hidden>Exercise<input id="go-ex" type="text" placeholder="e.g. Back squat"></label><label class="f">Target<input id="go-target" type="number" step="0.1"></label><label class="f">By date<input id="go-date" type="date"></label><label class="f" style="grid-column:1/-1">Label (optional)<input id="go-label" type="text"></label></form><button type="button" class="btn small" id="go-add" style="margin-top:6px">Add goal</button></details></div>
+    <div class="card"><div class="card-head"><h3>Weekly report card</h3><span class="small muted" id="rc-week"></span></div><div id="rc-out"></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button type="button" class="btn ghost small" id="rc-export">Export report (.md)</button><span class="small muted" id="rc-msg"></span></div></div>
+  </div>
+  <div class="card"><div class="card-head"><h3>Adjustments to make this week</h3><span class="small muted" id="adj-sum"></span></div><p class="small muted">Ordered by impact on your goal. Each one says what to change, by how much, and what the data showed.</p><div id="adj-list" class="grid" style="gap:8px"></div></div>
+  <div class="grid g2">
+    <div class="card"><div class="card-head"><h3>Goal forecast and what-if</h3><span class="small muted" id="wi-sub"></span></div><div id="wi-out"></div><form class="fields" autocomplete="off" style="margin-top:8px"><label class="f">Change daily calories by<input id="wi-kcal" type="number" step="50" value="0"></label><label class="f">Change daily steps by<input id="wi-steps" type="number" step="500" value="0"></label><label class="f">Extra training sessions / week<input id="wi-ses" type="number" step="1" value="0" min="0"></label></form><div id="wi-res" class="small" style="margin-top:6px"></div></div>
+    <div class="card"><div class="card-head"><h3>Today's session, adjusted for readiness</h3><span class="small muted" id="td-sub"></span></div><div id="td-out"></div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><div class="card-head"><h3>Day-of-week patterns</h3><span class="small muted">last 8 weeks</span></div><div id="dow-out"></div></div>
+    <div class="card"><div class="card-head"><h3>Anomalies and early warnings</h3><span class="small muted">your own baselines</span></div><div id="an-out"></div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><div class="card-head"><h3>What moves what, for you</h3><span class="small muted">correlations in your data</span></div><div id="cx-out"></div></div>
+    <div class="card"><div class="card-head"><h3>AI weekly plan</h3><span class="small muted">uses everything above</span></div><p class="small muted">The coach team reads the adjustments, goals and your logs and writes a concrete 7-day plan: calories and macros per day type, training days and intensities, steps, sleep window and one habit to focus on.</p><button type="button" class="btn" id="ai-plan">Write my plan for next week</button><div id="ai-plan-out" style="margin-top:10px"></div></div>
+  </div>
+</section>
+
 <!-- DATA HUB -->
 <section class="panel" id="p-hub" data-tab="hub" data-label="Data hub" hidden>
   <div class="panel-head">
@@ -2430,7 +2457,7 @@ const wUnit = () => imp() ? "lb" : "kg", lUnit = () => imp() ? "in" : "cm";
 /* ---------- tabs ---------- */
 const panels = $$("section.panel"); const panelBy = {}; panels.forEach(p => { panelBy[p.dataset.tab] = p; });
 const tablist = $("#tablist"), groupsEl = $("#groups");
-const GROUPS = [["home", "Home", ["overview", "apple", "hub", "a360", "coach", "log"]], ["nutrition", "Nutrition", ["meals", "foodlog", "nutrition", "fads", "metabolism"]],
+const GROUPS = [["home", "Home", ["overview", "insights", "apple", "hub", "a360", "coach", "log"]], ["nutrition", "Nutrition", ["meals", "foodlog", "nutrition", "fads", "metabolism"]],
   ["train", "Training", ["programs", "training", "cardio", "styles", "library", "bb"]], ["body", "Body & health", ["recovery", "wellness", "supps", "health", "body"]], ["learn", "Learn", ["academy", "lab", "kb", "books", "myths"]]];
 const groupOf = {}; GROUPS.forEach(([g, , names]) => names.forEach(n => { groupOf[n] = g; }));
 const onShow = {};
@@ -4046,7 +4073,7 @@ function exportCSV() {
   saveFile(`plate-and-pulse-data-${iso(new Date())}.csv`, rows.join("\n"));
 }
 const BK = [["wlog", "WLOG", v => { WLOG = v; }, () => WLOG], ["food", "FOOD_LOG", v => { FOOD_LOG = v; }, () => FOOD_LOG], ["water", "FOOD_WATER", v => { FOOD_WATER = v; }, () => FOOD_WATER], ["journal", "JOURNAL", v => { JOURNAL = v; }, () => JOURNAL], ["stack", "STACK", v => { STACK = v; }, () => STACK],
-  ["stacklog", "STACKLOG", v => { STACKLOG = v; }, () => STACKLOG], ["labs", "LABS_LOG", v => { LABS_LOG = v; }, () => LABS_LOG], ["p360", "P360", v => { P360 = v; }, () => P360], ["p360h", "P360H", v => { P360H = v; }, () => P360H], ["programs", "PROGRAMS", v => { PROGRAMS = v; }, () => PROGRAMS], ["mealplans", "MEALPLANS", v => { MEALPLANS = v; }, () => MEALPLANS], ["mappers", "MAPPERS", v => { MAPPERS = v; }, () => MAPPERS], ["acad", "ACAD", v => { Object.assign(ACAD, v); }, () => ACAD], ["apple", "APG", v => { Object.assign(APG, v); }, () => APG], ["habits", "HABITS", v => { HABITS = v; }, () => HABITS], ["mh", "MH", v => { MH = v; }, () => MH], ["wheel", "WHEEL", v => { WHEEL = Object.assign({ r: {}, qs: {}, tool: {}, stoic: {}, hist: [], dim: "PHYS" }, v); }, () => WHEEL]];
+  ["stacklog", "STACKLOG", v => { STACKLOG = v; }, () => STACKLOG], ["labs", "LABS_LOG", v => { LABS_LOG = v; }, () => LABS_LOG], ["p360", "P360", v => { P360 = v; }, () => P360], ["p360h", "P360H", v => { P360H = v; }, () => P360H], ["programs", "PROGRAMS", v => { PROGRAMS = v; }, () => PROGRAMS], ["mealplans", "MEALPLANS", v => { MEALPLANS = v; }, () => MEALPLANS], ["mappers", "MAPPERS", v => { MAPPERS = v; }, () => MAPPERS], ["acad", "ACAD", v => { Object.assign(ACAD, v); }, () => ACAD], ["apple", "APG", v => { Object.assign(APG, v); }, () => APG], ["habits", "HABITS", v => { HABITS = v; }, () => HABITS], ["mh", "MH", v => { MH = v; }, () => MH], ["goals", "GOALS", v => { GOALS = v; }, () => GOALS], ["injuries", "INJ_LOG", v => { INJ_LOG = v; }, () => INJ_LOG], ["cycle", "CYCLE", v => { CYCLE = v; }, () => CYCLE], ["wheel", "WHEEL", v => { WHEEL = Object.assign({ r: {}, qs: {}, tool: {}, stoic: {}, hist: [], dim: "PHYS" }, v); }, () => WHEEL]];
 function backup() { const o = { app: "plate-and-pulse", v: 2, at: new Date().toISOString(), profile: S, log: isSample ? null : LOG, hub: hubDemo ? null : HUB }; BK.forEach(([k, , , get]) => { o[k] = get(); }); saveFile(`plate-and-pulse-backup-${iso(new Date())}.json`, JSON.stringify(o)); }
 function restoreBackup(o) {
   if (o.profile) { Object.assign(S, o.profile); store.set("profile", S); fillProfile(); }
@@ -4975,6 +5002,9 @@ function coachContext() {
     parts.push(`360 PROFILE (self-reported)\nGoal: ${P.goal || "not set"}${P.goaltxt ? " (" + P.goaltxt + ")" : ""}${P.event ? ", target date " + P.event : ""}. Experience: ${P.exp || "?"}. Available: ${P.days || "?"} days/week, ${P.mins || "?"} min, equipment: ${P.eq || "?"}. Body type: ${P.body || "not set"}. Blood type: ${P.blood || "unknown"}. Muscle fibers: ${P.fiber || (P.fiberReps ? "rep test " + P.fiberReps + " reps at 80%" : "not tested")}. Chronotype: ${ch ? ch.label + " (mid-sleep " + ch.mid + ")" : "unknown"}. Injuries/limits: ${P.inj || "none stated"}. Conditions/medications: ${P.cond || "none stated"}. Diet restrictions: ${P.food || "none stated"}. Notes: ${P.notes || "none"}.\nSleep answers: bed ${P.bed || "?"}, wake ${P.wake || "?"}, latency ${P.lat || "?"} min, awakenings ${P.wakes || "?"}, quality ${P.sq || "?"}/5, daytime sleepiness ${P.sleepy || "?"}/5${P.snore ? ", reports loud snoring/gasping" : ""}.\nStress screen: ${Number.isFinite(sp) ? fmt(sp * 100) + "% of maximum (" + stressLevel(sp)[0].toLowerCase() + ")" : "not answered"}.\n360 scores (0-100, with data confidence): ${R.domains.map(d => `${d.label} ${Number.isFinite(d.score) ? fmt(d.score) : "n/a"} (${fmt(d.conf * 100)}%)`).join("; ")}. Overall ${Number.isFinite(R.overall) ? fmt(R.overall) : "n/a"}.\nDrivers: ${R.domains.filter(d => d.drivers.length).map(d => d.label + ": " + d.drivers.map(x => x.t).join("; ")).join(" | ")}`);
   }
   if (COSHARE.p360 && wheelRatedCount()) { const st = stoicStats(); parts.push(`WELLNESS WHEEL (1-10)\n${WH_ORDER.map(id => `${DIMS[id].name.split(" (")[0]} ${fmt(currentRating(id), 1)}`).join("; ")}.${Number.isFinite(st.avg7) ? ` Stoic practice 7-day completion ${fmt(st.avg7 * 100)}%, streak ${st.streak} days.` : ""}`); }
+  if (GOALS.length) parts.push("GOALS\n" + GOALS.map(g => `- ${g.label || GOAL_LABEL(g)}: now ${goalDisp(g, goalCurrent(g))}, target ${goalDisp(g, g.target)} ${GOAL_U[g.type]()}${g.date ? " by " + g.date : ""}`).join("\n"));
+  if (INJ_LOG.some(i => i.status !== "healed")) parts.push("INJURIES / PAIN\n" + INJ_LOG.filter(i => i.status !== "healed").map(i => `- ${i.part} since ${i.d}, pain ${i.pain}/10, ${i.status}${i.avoid ? ", avoid: " + i.avoid : ""}`).join("\n"));
+  { const ph = typeof cyclePhase === "function" ? cyclePhase() : null; if (ph) parts.push(`MENSTRUAL CYCLE: day ${ph.day} of ${ph.len}, ${ph.name} phase.`); }
   if (COSHARE.hub) { const dv = HUB.devices ? Object.keys(HUB.devices).filter(Boolean) : []; parts.push("WEARABLE / IMPORTED DATA" + (dv.length ? ` (Apple Health devices: ${dv.join(", ")})` : "") + "\n" + hubSummaryText(true)); }
   if (COSHARE.wlog) {
     const sess = WLOG.slice().sort((a, b) => b.d.localeCompare(a.d)).slice(0, 10), bestBy = {};
@@ -5083,7 +5113,7 @@ async function refreshConnectors() {
   const st = name => { const v = servers.find(x => x.server === name); return v ? (v.authStatus === "needs_reauth" ? ["Reconnect needed", "p-warn"] : ["Available", "p-good"]) : mcp ? ["Not connected", "p-warn"] : ["Open on claude.ai", "p-info"]; };
   const src = n => HUB.sources[n] ? `last ${HUB.sources[n].at}` : "";
   const rows = [["Strava", "Live sync through your Claude connector", st("Strava"), src("Strava")], ["openGym", "Live via its MCP server (Claude desktop app), or backup file", mcp ? (servers.find(x => x.server === "host:opengym") ? ["Desktop app detected", "p-good"] : ["Desktop app only", "p-info"]) : ["Open on claude.ai", "p-info"], src("openGym")],
-    ["Apple Health (auto)", "Health Auto Export → Google Drive → this page", st("Google Drive"), src("Apple Health (Google Drive)")], ["Apple Health (manual)", "Health Auto Export file or export.xml", ["File import", "p-info"], ""], ["Oura", "CSV export, screenshot or column mapper", ["File import", "p-info"], ""], ["Hume Health", HUB.devices && Object.keys(HUB.devices).some(k => /hum/i.test(k)) ? "Syncing through Apple Health (seen in your Health Auto Export data)" : "Through Apple Health if your Hume app writes there, or body scan entry and screenshots", HUB.devices && Object.keys(HUB.devices).some(k => /hum/i.test(k)) ? ["Via Apple Health", "p-good"] : ["Apple Health / manual", "p-info"], ""], ["Whoop · Garmin · Fitbit · Withings", "CSV export, screenshot or column mapper", ["File import", "p-info"], ""],
+    ["Apple Health (auto)", "Health Auto Export → Google Drive → this page", st("Google Drive"), src("Apple Health (Google Drive)")], ["Apple Health (manual)", "Health Auto Export file or export.xml", ["File import", "p-info"], ""], ["Fitbit", "Google Takeout JSON, or export saved to Drive", ["File import / Drive", "p-info"], ""], ["Garmin · Whoop · Withings · Samsung · Polar", "CSV export, or saved to Drive (add the app name under Drive patterns)", ["File import / Drive", "p-info"], ""], ["Oura", "CSV export, screenshot or column mapper", ["File import", "p-info"], ""], ["Hume Health", HUB.devices && Object.keys(HUB.devices).some(k => /hum/i.test(k)) ? "Syncing through Apple Health (seen in your Health Auto Export data)" : "Through Apple Health if your Hume app writes there, or body scan entry and screenshots", HUB.devices && Object.keys(HUB.devices).some(k => /hum/i.test(k)) ? ["Via Apple Health", "p-good"] : ["Apple Health / manual", "p-info"], ""], ["Whoop · Garmin · Fitbit · Withings", "CSV export, screenshot or column mapper", ["File import", "p-info"], ""],
     ["MyFitnessPal · Cronometer", "CSV export, or log in the Food log", ["File import", "p-info"], ""], ["Any other app or device", "Screenshot import or column mapper", ["Always works", "p-good"], ""]];
   el.innerHTML = `<div class="table-wrap" style="border:0"><table><tbody>${rows.map(r => `<tr><td><strong>${esc(r[0])}</strong><div class="small muted">${esc(r[1])}</div></td><td><span class="pill ${r[2][1]}">${esc(r[2][0])}</span><div class="small muted">${esc(r[3])}</div></td></tr>`).join("")}</tbody></table></div>`;
 }
@@ -5249,9 +5279,9 @@ async function driveSync(auto) {
   try {
     const since = new Date(Date.now() - (+$("#gd-range").value) * 864e5).toISOString(), files = []; let token = null, pages = 0;
     do {
-      const input = { query: `title contains 'HealthAutoExport' and modifiedTime > '${since}'`, excludeContentSnippets: true, pageSize: 50 }; if (token) input.pageToken = token;
+      const input = { query: `(${DRIVE_PAT.map(pt => `title contains '${pt.replace(/'/g, "")}'`).join(" or ")}) and modifiedTime > '${since}'`, excludeContentSnippets: true, pageSize: 50 }; if (token) input.pageToken = token;
       let r = (await mcp.callTool("Google Drive", "search_files", input, { cache: false })).payload || {}; if (typeof r === "string") { try { r = JSON.parse(r); } catch (e) { r = {}; } }
-      (r.files || []).forEach(f => { if (f && f.id && (/\.json$/i.test(f.title || "") || f.mimeType === "application/json")) files.push(f); }); token = r.nextPageToken || null; pages++;
+      (r.files || []).forEach(f => { if (f && f.id && (/\.(json|csv)$/i.test(f.title || "") || /json|csv/.test(f.mimeType || ""))) files.push(f); }); token = r.nextPageToken || null; pages++;
     } while (token && pages < 4);
     files.sort((a, b) => String(a.modifiedTime).localeCompare(String(b.modifiedTime)));
     const seen = store.get("gdrive", {}), todo = files.filter(f => seen[f.id] !== f.modifiedTime).slice(-45); let n = 0, vals = 0, wk = 0, bad = 0;
@@ -5260,7 +5290,7 @@ async function driveSync(auto) {
       flash(st, `Reading files… ${n}/${todo.length}`);
       try {
         const d = (await mcp.callTool("Google Drive", "download_file_content", { fileId: f.id }, { cache: false })).payload; const b64 = d && (d.content || d.data);
-        if (!b64) throw new Error("empty"); const before = HUB.workouts.length; const r = importJSON(b64text(b64), f.title || f.id); vals += r.n; wk += HUB.workouts.length - before; seen[f.id] = f.modifiedTime; n++;
+        if (!b64) throw new Error("empty"); const before = HUB.workouts.length; const txt = b64text(b64), r = /^\s*[{[]/.test(txt) ? importJSON(txt, f.title || f.id) : importCSV(txt, f.title || f.id); vals += r.n; wk += HUB.workouts.length - before; seen[f.id] = f.modifiedTime; n++;
       } catch (e) { bad++; }
     }
     if (n) { HUB.sources["Apple Health (Google Drive)"] = { at: iso(new Date()), n: vals, kind: "daily" }; saveHub(); }
@@ -6800,7 +6830,7 @@ function renderHealthStrip() {
   const sync = store.get("gdsync", 0);
   el.innerHTML = `<div class="card-head"><h3>Health metrics</h3><span class="small muted">${real ? `Apple Health and imports · ${sync ? "synced " + new Date(sync).toLocaleDateString() : "file import"}` : "Example data until you sync"}</span></div>
     ${tiles.length ? `<div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr))">${tiles.join("")}</div>` : `<p class="small muted">No health data yet.</p>`}
-    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px"><button type="button" class="btn small" id="ov-sync">Sync Apple Health</button><button type="button" class="btn ghost small" data-goto="apple">Open Apple Health</button>${lt && real && Math.abs(diff) >= 0.2 ? `<button type="button" class="btn ghost small" id="ov-usew">Use latest weight (${fmt(toDispW(lt.v), 1)} ${wUnit()}) in profile</button>` : ""}<span class="small muted" id="ov-sync-st"></span></div>`;
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px"><button type="button" class="btn small" id="ov-sync">Sync Apple Health</button><button type="button" class="btn ghost small" data-goto="apple">Open Apple Health</button><button type="button" class="btn ghost small" data-goto="insights">Adjustments${typeof buildAdjustments === "function" && !hubDemo ? ` (${buildAdjustments().filter(x => x.sev === "bad" || x.sev === "warn").length})` : ""}</button>${lt && real && Math.abs(diff) >= 0.2 ? `<button type="button" class="btn ghost small" id="ov-usew">Use latest weight (${fmt(toDispW(lt.v), 1)} ${wUnit()}) in profile</button>` : ""}<span class="small muted" id="ov-sync-st"></span></div>`;
 }
 $("#ov-health").addEventListener("click", async e => {
   const t = e.target.closest("[data-ovk]"); if (t) { apSel = t.dataset.ovk; showTab("apple", true); return; }
@@ -7219,6 +7249,262 @@ function buildDepth() {
 buildDepth();
 onShow.log = (prev => () => { if (prev) prev(); renderPhotos(); })(onShow.log);
 function renderDepth() { renderLE8(); renderFuel(); renderCreatine(); renderRow(); }
+
+/* ---------- insights & adjustments engine ---------- */
+let GOALS = store.get("goals", []), INJ_LOG = store.get("injuries", []), CYCLE = store.get("cycle", { on: false, starts: [], len: 28 });
+const saveGoals = () => store.set("goals", GOALS), saveInj = () => store.set("injuries", INJ_LOG), saveCycle = () => store.set("cycle", CYCLE);
+const dowName = d => ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][new Date(d + "T12:00:00").getDay()];
+const bestE1 = ex => { let b = 0; WLOG.forEach(s => s.entries.forEach(e => { if (normName(e.ex) === normName(ex)) e.sets.forEach(x => { b = Math.max(b, e1rm(x.w, x.r)); }); })); return b || NaN; };
+const latestVal = k => { const l = apLatest(k); return l ? l.v : NaN; };
+function goalCurrent(g) {
+  const A = analyze(28);
+  switch (g.type) {
+    case "weight": return latestVal("weight") || S.weight;
+    case "waist": return +S.waist || NaN;
+    case "bf": return calc().bf;
+    case "steps": return A.steps.last7;
+    case "sleep": return A.sleep.last7;
+    case "lift": return bestE1(g.ex || "");
+    case "sessions": return A.sessionsPerWk;
+    case "cardio": return A.cardioEqPerWk;
+    case "vo2": return A.vo2.last7 || A.vo2.avg;
+    case "rhr": return A.rhr.last7;
+    default: return Number.isFinite(g.manual) ? g.manual : NaN;
+  }
+}
+const GOAL_U = { weight: () => wUnit(), waist: () => lUnit(), bf: () => "%", steps: () => "steps", sleep: () => "h", lift: () => wUnit(), sessions: () => "/wk", cardio: () => "min/wk", vo2: () => "", rhr: () => "bpm", custom: () => "" };
+const goalDisp = (g, v) => !Number.isFinite(v) ? "–" : g.type === "weight" || g.type === "lift" ? fmt(toDispW(v), 1) : g.type === "waist" ? fmt(toDispL(v), 1) : fmt(v, g.type === "steps" || g.type === "cardio" ? 0 : 1);
+function goalRate(g) { // units per week from data trend
+  const A = analyze(56);
+  if (g.type === "weight") return A.weightPerWk;
+  if (g.type === "lift") { const pts = []; WLOG.slice().sort((a, b) => a.d.localeCompare(b.d)).forEach(s => { const e = s.entries.find(x => normName(x.ex) === normName(g.ex || "")); if (e) { const b = Math.max(0, ...e.sets.map(x => e1rm(x.w, x.r))); if (b > 0) pts.push([s.d, b]); } }); if (pts.length < 3) return NaN; const t0 = new Date(pts[0][0]); const xs = pts.map(p => (new Date(p[0]) - t0) / 6048e5), ys = pts.map(p => p[1]); return slope(xs.map((_, i) => i), ys) * (pts.length - 1) / Math.max(1, xs[xs.length - 1] - xs[0]); }
+  const key = { steps: "steps", sleep: "sleep", vo2: "vo2", rhr: "rhr" }[g.type]; if (key) return slope(A.dates, A[key].s) * 7;
+  return NaN;
+}
+function renderGoals() {
+  if (!$("#go-list")) return;
+  $("#go-exwrap").hidden = $("#go-type").value !== "lift";
+  if (!GOALS.length) { $("#go-list").innerHTML = `<p class="small muted">No goals yet. Add a target (e.g. 78 kg by March, squat 140 kg, 9,000 steps) and progress is tracked from your synced data.</p>`; $("#go-sum").textContent = ""; return; }
+  let onTrack = 0;
+  $("#go-list").innerHTML = GOALS.map((g, i) => {
+    const cur = goalCurrent(g), start = g.start, tgt = g.target, lower = ({ steps: false, sleep: false, lift: false, sessions: false, cardio: false, vo2: false, rhr: true })[g.type] ?? (tgt < start), prog = Number.isFinite(cur) && start !== tgt ? slC((cur - start) / (tgt - start)) : 0;
+    const rate = goalRate(g), remain = Number.isFinite(cur) ? tgt - cur : NaN, weeksLeft = g.date ? (new Date(g.date) - Date.now()) / 6048e5 : NaN;
+    const reached = Number.isFinite(cur) && ((lower && cur <= tgt) || (!lower && cur >= tgt)); const eta = !reached && Number.isFinite(rate) && Math.abs(rate) > 1e-6 && Math.sign(rate) === Math.sign(remain) ? remain / rate : NaN;
+    const needRate = Number.isFinite(weeksLeft) && weeksLeft > 0 ? remain / weeksLeft : NaN;
+    let st = ["info", "No trend yet"]; if (reached) st = ["good", "Reached"]; else if (Number.isFinite(eta)) { st = Number.isFinite(weeksLeft) ? (eta <= weeksLeft * 1.1 ? ["good", `On track: ${fmt(eta)} wk at current pace`] : ["warn", `Behind: ${fmt(eta)} wk at current pace, ${fmt(weeksLeft)} left`]) : ["good", `About ${fmt(eta)} wk at current pace`]; } else if (Number.isFinite(rate) && Number.isFinite(remain) && Math.abs(remain) > 1e-6) st = ["bad", "Moving the wrong way"];
+    if (st[0] === "good") onTrack++;
+    return `<div style="padding:8px 0;border-bottom:1px solid var(--line)"><div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline"><strong>${esc(g.label || GOAL_LABEL(g))}</strong><span class="mono small">${goalDisp(g, cur)} → ${goalDisp(g, tgt)} ${GOAL_U[g.type]()}</span></div><div class="bar" style="margin:4px 0"><span style="width:${prog * 100}%;background:var(--${st[0] === "bad" ? "bad" : st[0] === "warn" ? "warn" : "accent"})"></span></div><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><span class="small"><span class="pill p-${st[0]}">${st[1]}</span>${Number.isFinite(needRate) && st[1] !== "Reached" ? ` <span class="muted">needs ${goalDisp(g, Math.abs(needRate))}/wk${Number.isFinite(rate) ? `, current ${goalDisp(g, Math.abs(rate))}/wk` : ""}</span>` : ""}${g.date ? ` <span class="muted">by ${g.date}</span>` : ""}</span><span>${g.type === "custom" ? `<input type="number" step="0.1" data-gman="${i}" value="${Number.isFinite(g.manual) ? g.manual : ""}" placeholder="progress" style="width:90px;padding:3px 6px">` : ""}<button type="button" class="btn ghost small" data-gorm="${i}" aria-label="Remove goal">×</button></span></div></div>`;
+  }).join("");
+  $("#go-sum").textContent = `${onTrack} of ${GOALS.length} on track`;
+}
+const GOAL_LABEL = g => ({ weight: "Body weight", waist: "Waist", bf: "Body fat", steps: "Daily steps", sleep: "Sleep", lift: (g.ex || "Lift") + " 1RM", sessions: "Sessions per week", cardio: "Cardio per week", vo2: "VO₂max", rhr: "Resting HR", custom: "Goal" })[g.type];
+
+/* adjustments engine */
+function buildAdjustments() {
+  const A = analyze(28), A7 = analyze(7), c = calc(), m = macros(c), out = [], goal = P360.goal || "", cutting = c.goal < 0, bulking = c.goal > 0, real = !hubDemo;
+  const add = (imp, sev, title, change, why, tab) => out.push({ imp, sev, title, change, why, tab });
+  // 1. energy balance vs plan
+  if (A.weight.days >= 6 && Number.isFinite(A.weightPerWk)) {
+    const planned = c.weeklyKg, gap = A.weightPerWk - planned, adj = Math.round(-gap * 7700 / 7 / 25) * 25;
+    if (Math.abs(gap) > Math.max(0.12, Math.abs(planned) * 0.35) && Math.abs(adj) >= 75) add(10, Math.abs(adj) > 300 ? "bad" : "warn", `${adj < 0 ? "Reduce" : "Increase"} daily calories by about ${Math.abs(adj)} kcal`, `${fmt(c.target)} → ${fmt(c.target + adj)} kcal/day`, `Your weight trend is ${A.weightPerWk >= 0 ? "+" : ""}${fmt(toDispW(A.weightPerWk), 2)} ${wUnit()}/week against a plan of ${planned >= 0 ? "+" : ""}${fmt(toDispW(planned), 2)}. Hold the change 2 weeks before judging.`, "overview");
+    else if (A.weight.days >= 8) add(3, "good", "Calories are on target", "no change", `Weight trend ${A.weightPerWk >= 0 ? "+" : ""}${fmt(toDispW(A.weightPerWk), 2)} ${wUnit()}/week matches the plan.`, "overview");
+    const last21 = A.weight.s.slice(-21).filter(Number.isFinite); if (cutting && last21.length >= 10 && Math.abs(slope(A.dates.slice(-21), A.weight.s.slice(-21)) * 7) < 0.1 && A.intake.days >= 10) add(8, "warn", "Plateau: weight flat for 3 weeks on a cut", "take a 7-day diet break at maintenance, then resume 150 kcal lower", "Flat weight with logged intake close to target suggests adaptation or under-reporting. A break restores hormones and adherence; re-weigh portions for a week.", "metabolism");
+  } else add(4, "info", "Weigh in more often", "aim for 4+ mornings a week", "Fewer than 6 weigh-ins in 4 weeks; the trend (and every calorie recommendation) needs them. A smart scale that writes to Apple Health does it automatically.", "log");
+  // 2. protein
+  if (A.protein.days >= 5) { const gap = m.p - A.protein.avg; if (gap > 15) add(9, gap > 40 ? "bad" : "warn", `Add about ${fmt(gap / 5) * 5} g protein a day`, `${fmt(A.protein.avg)} → ${fmt(m.p)} g (${fmt(m.p / S.weight, 1)} g/kg)`, `Logged average over ${A.protein.days} days is ${fmt(A.protein.avg)} g. One extra ${gap > 30 ? "serving at two meals" : "scoop of whey or 150 g Greek yogurt"} closes the gap. Protein protects muscle ${cutting ? "while cutting" : "and drives growth"}.`, "foodlog"); else add(2, "good", "Protein is on target", "keep it", `${fmt(A.protein.avg)} g/day vs ${fmt(m.p)} g target.`, "foodlog"); }
+  if (A.fiber.days >= 5 && A.fiber.avg < c.target / 1000 * 14 * 0.7) add(4, "info", `Raise fiber by about ${fmt(c.target / 1000 * 14 - A.fiber.avg)} g a day`, `${fmt(A.fiber.avg)} → ${fmt(c.target / 1000 * 14)} g`, "Low fiber means less fullness and worse blood sugar; add beans, berries, oats or vegetables at two meals. Increase slowly.", "nutrition");
+  // energy availability
+  if (A.intake.days >= 7 && Number.isFinite(c.lbm)) { const exK = A.workouts.length ? A.workouts.reduce((t, w) => t + (w.kcal || 0), 0) / A.n : (A.activeKcal.avg || 300) * 0.4; const ea = (A.intake.avg - exK) / c.lbm; if (ea < 30 && A.intake.avg < c.bmr * 1.25) add(9, "bad", "Intake is too low for your lean mass", `eat at least ${fmt(30 * c.lbm + exK)} kcal on training days`, `Energy availability is about ${fmt(ea)} kcal per kg lean mass; under 30 for weeks disrupts hormones, bone and recovery (RED-S), even when weight loss looks fine.`, "recovery"); }
+  // 3. steps
+  if (A.steps.days >= 5) { const g = APG.steps; if (A.steps.last7 < g * 0.85) { const d = Math.round((g - A.steps.last7) / 500) * 500; add(cutting ? 8 : 5, "warn", `Add about ${fmt(d)} steps a day`, `${fmt(A.steps.last7)} → ${fmt(g)}`, `That is roughly a ${fmt(d / 100)}-minute walk, worth about ${fmt(d * 0.04 * S.weight / 70)} kcal a day with no recovery cost. Split it: 10 minutes after two meals.`, "apple"); } else add(2, "good", "Steps on target", "keep it", `${fmt(A.steps.last7)} a day this week.`, "apple"); }
+  // weekday vs weekend
+  if (A.intake.days >= 10) { const wk = [], we = []; A.dates.forEach((d, i) => { const v = A.intake.s[i]; if (!Number.isFinite(v)) return; ([0, 6].includes(new Date(d + "T12:00:00").getDay()) ? we : wk).push(v); }); if (wk.length >= 6 && we.length >= 3 && mean(we) - mean(wk) > 350) add(7, "warn", `Weekends run ${fmt(mean(we) - mean(wk))} kcal/day higher`, `cap weekend days at ${fmt(mean(wk) + 150)} kcal, or plan one treat meal`, `Two high weekend days can erase a weekday deficit of ${fmt((mean(we) - mean(wk)) * 2 / 5)} kcal/day. Decide the treat in advance and log it.`, "foodlog"); }
+  // 4. sleep
+  if (A.sleep.days >= 5) { if (A.sleep.last7 < 7) { const d = Math.round((7.25 - A.sleep.last7) * 60 / 15) * 15; add(8, A.sleep.last7 < 6.3 ? "bad" : "warn", `Move bedtime ${d} minutes earlier`, `${fmt(A.sleep.last7, 1)} → 7.25 h`, `Short sleep raises hunger hormones, lowers HRV and cuts strength 5-10%. Keep the wake time fixed and shift bedtime.`, "recovery"); } const v = sd(A.sleep.s); if (v > 1.2) add(5, "warn", "Make sleep timing more regular", `keep bed and wake within ±30 min`, `Night-to-night sleep varies ±${fmt(v, 1)} h; irregularity hurts even when the average is fine.`, "recovery"); }
+  // 5. recovery markers
+  if (Number.isFinite(A.rhr.last7) && Number.isFinite(A.rhr.base) && A.rhr.last7 - A.rhr.base >= 4) add(9, "bad", "Deload this week", "cut sets by 40-50% and skip intervals for 5-7 days", `Resting HR is ${fmt(A.rhr.last7 - A.rhr.base)} bpm above your baseline${Number.isFinite(A.hrv.last7) && Number.isFinite(A.hrv.base) && A.hrv.last7 < A.hrv.base * 0.9 ? ` and HRV is ${fmt((1 - A.hrv.last7 / A.hrv.base) * 100)}% below` : ""}. If it is illness, training through it makes it worse; if it is fatigue, you come back stronger.`, "recovery");
+  else if (Number.isFinite(A.hrv.last7) && Number.isFinite(A.hrv.base) && A.hrv.last7 < A.hrv.base * 0.85) add(7, "warn", "Lower intensity for 3-4 days", "replace hard sessions with zone 2 and technique work", `HRV is ${fmt((1 - A.hrv.last7 / A.hrv.base) * 100)}% below baseline; your nervous system is under more stress than usual.`, "recovery");
+  if (Number.isFinite(A.acwr) && A.acwr > 1.4) add(8, "warn", "Training load jumped too fast", `keep this week under ${fmt(A.acute / A.acwr * 1.2)} minutes`, `This week is ${fmt(A.acwr, 2)}× your 4-week average (${fmt(A.acute)} min). Ratios above 1.3-1.5 raise injury risk; build 10% a week.`, "hub");
+  // 6. training frequency and volume
+  const prog = PROGRAMS[0]; const target = prog ? prog.days.length : (+P360.days || 3);
+  if (A.sessionsPerWk < target * 0.7 && (A.workouts.length || WLOG.length)) add(8, "warn", `Train ${fmt(target - A.sessionsPerWk, 1)} more sessions a week`, `${fmt(A.sessionsPerWk, 1)} → ${target} per week`, `Averaging ${fmt(A.sessionsPerWk, 1)} sessions against a ${target}-day plan. Frequency is the strongest predictor of results; shorten sessions before skipping them.`, "programs");
+  const from = dayAdd(iso(new Date()), -6), parts = {}; WLOG.filter(s => s.d >= from).forEach(s => s.entries.forEach(e => { const l = partOf(e.ex); parts[l] = (parts[l] || 0) + e.sets.length; }));
+  if (WLOG.filter(s => s.d >= dayAdd(iso(new Date()), -13)).length >= 2) { const low = Object.entries(parts).filter(([k, v]) => v < 8 && k !== "Other" && k !== "Core"), high = Object.entries(parts).filter(([k, v]) => v > 22); low.slice(0, 2).forEach(([k, v]) => add(5, "info", `Add ${Math.max(2, 10 - v)} sets for ${k}`, `${v} → ${Math.max(10, v + 2)} sets this week`, `${v} hard sets last week is below the minimum effective dose (about 10). Add one exercise or one set to each existing one.`, "programs")); high.forEach(([k, v]) => add(4, "info", `Trim ${k} volume`, `${v} → about 18 sets`, `${v} sets a week is near the most most people can recover from; extra sets add fatigue, not growth.`, "programs")); }
+  if (A.strengthPerWk < 2 && (goal.includes("muscle") || bulking || goal.includes("recomp"))) add(7, "warn", "Lift at least twice a week", `${fmt(A.strengthPerWk, 1)} → 2-4 strength sessions`, "Muscle goals need each muscle trained about twice a week.", "programs");
+  if (A.cardioEqPerWk < 100 && !goal.includes("strength") && A.workouts.length) add(5, "info", `Add ${fmt(150 - A.cardioEqPerWk)} minutes of cardio a week`, `${fmt(A.cardioEqPerWk)} → 150 min moderate-equivalent`, "Two easy 30-minute sessions cover heart health and improve recovery between lifting days.", "cardio");
+  // 7. stress & check-ins
+  const sp = stressPct(); if (Number.isFinite(sp) && sp > 0.6) add(6, "warn", "Reduce stress load before adding training", "10 minutes of breathing or a walk daily; keep training at RPE 7", `Stress questionnaire at ${fmt(sp * 100)}%. High life stress halves recovery capacity; progress comes from doing less, better.`, "wellness");
+  if (A.alcohol && A.alcohol.days >= 4 && A.alcohol.avg * 7 > 7) add(6, "warn", `Cut alcohol to under 7 drinks a week`, `${fmt(A.alcohol.avg * 7)} → ≤7 per week`, "Each drink is about 100-150 kcal and cuts REM sleep and next-day HRV; after training it reduces muscle protein synthesis.", "meals");
+  // 8. hydration/vitals
+  if (Number.isFinite(A.spo2.last7) && A.spo2.last7 < 94) add(9, "bad", "Get low blood oxygen checked", "see a doctor; ask about sleep apnoea", `Overnight SpO₂ averaged ${fmt(A.spo2.last7)}% this week.`, "health");
+  if (Number.isFinite(A.bpSys.last7) && A.bpSys.last7 >= 130) add(8, "warn", "Blood pressure is elevated", "cut sodium to 1.5-2 g, add 20 min walking, limit alcohol; discuss with a doctor", `Average ${fmt(A.bpSys.last7)}/${fmt(A.bpDia.last7)} mmHg.`, "health");
+  if (INJ_LOG.some(i => i.status === "active")) add(7, "warn", "Work around the injury", INJ_LOG.filter(i => i.status === "active").map(i => `${i.part}: avoid ${i.avoid || "painful movements"}`).join("; "), "Active injuries logged. Keep training everything else; load the injured area only pain-free.", "log");
+  if (CYCLE.on && CYCLE.starts.length) { const ph = cyclePhase(); if (ph && ph.name === "Late luteal") add(3, "info", "Late luteal phase: expect +0.5-1.5 kg water and more hunger", "judge weight against the same phase last cycle; allow +100-200 kcal if hunger is high", ph.note, "health"); }
+  if (!real) out.unshift({ imp: 11, sev: "info", title: "This is example data", change: "sync Apple Health or import files to analyse your own", why: "Nothing here applies to you yet.", tab: "apple" });
+  return out.sort((a, b) => b.imp - a.imp);
+}
+function renderAdjust() {
+  const L = buildAdjustments(), sevN = { bad: "Act", warn: "Adjust", info: "Note", good: "Keep" };
+  $("#adj-sum").textContent = `${L.filter(x => x.sev === "bad" || x.sev === "warn").length} changes · ${L.filter(x => x.sev === "good").length} on target`;
+  $("#adj-list").innerHTML = L.length ? L.map(x => `<div class="rec ${x.sev}" style="display:grid;gap:4px"><div style="display:flex;gap:8px;align-items:baseline;flex-wrap:wrap"><span class="pill p-${x.sev}">${sevN[x.sev]}</span><strong>${esc(x.title)}</strong><span class="mono small" style="margin-left:auto">${esc(x.change)}</span></div><div class="small">${esc(x.why)}</div><div><button type="button" class="btn ghost small" data-goto="${x.tab}">Open</button></div></div>`).join("") : `<p class="small muted">Sync data and the engine will propose changes.</p>`;
+  return L;
+}
+function renderReport() {
+  const A = analyze(14), end = A.end, cur = A.dates.slice(-7), prev = A.dates.slice(0, 7);
+  const rows = [["steps", "Steps", 0, true], ["activeKcal", "Active energy", 0, true], ["exerciseMin", "Exercise min", 0, true], ["sleep", "Sleep h", 1, true], ["rhr", "Resting HR", 0, false], ["hrv", "HRV", 0, true], ["intake", "Calories", 0, null], ["protein", "Protein g", 0, true], ["weight", "Weight", 1, null], ["standHours", "Stand h", 0, true], ["mindful", "Mindful min", 0, true]];
+  const W = dedupWorkouts(allWorkouts()); const wk = ds => W.filter(w => ds.includes(w.date)); const cw = wk(cur), pw = wk(prev);
+  const line = (k, l, d, goodUp) => { const a = mean(cur.map(x => dayVal(k, x))), b = mean(prev.map(x => dayVal(k, x))); if (!Number.isFinite(a)) return ""; const delta = a - b, disp = v => k === "weight" ? fmt(toDispW(v), 1) : fmt(v, d); const ok = goodUp == null || !Number.isFinite(delta) || Math.abs(delta) < Math.abs(b) * 0.02 ? "" : (delta > 0) === goodUp ? "✓" : "⚠"; return `<tr><td>${l}</td><td class="num mono">${disp(a)}</td><td class="num mono">${Number.isFinite(b) ? disp(b) : "–"}</td><td class="num mono">${Number.isFinite(delta) ? (delta > 0 ? "+" : "") + disp(delta) + " " + ok : ""}</td></tr>`; };
+  $("#rc-week").textContent = `${cur[0]} → ${end}`;
+  $("#rc-out").innerHTML = `<div class="table-wrap"><table><thead><tr><th>Metric</th><th class="num">This week</th><th class="num">Last week</th><th class="num">Change</th></tr></thead><tbody>${rows.map(r => line(...r)).join("")}<tr><td>Workouts</td><td class="num mono">${cw.length}</td><td class="num mono">${pw.length}</td><td class="num mono">${cw.length - pw.length > 0 ? "+" : ""}${cw.length - pw.length}</td></tr><tr><td>Training minutes</td><td class="num mono">${fmt(cw.reduce((s, w) => s + w.min, 0))}</td><td class="num mono">${fmt(pw.reduce((s, w) => s + w.min, 0))}</td><td></td></tr></tbody></table></div>`;
+}
+function reportMd() {
+  const A = analyze(7), L = buildAdjustments();
+  return `# Weekly report ${A.dates[0]} to ${A.end}\n\n${$("#rc-out").innerText.trim()}\n\n## Adjustments\n${L.map(x => `- **${x.title}** (${x.change}): ${x.why}`).join("\n")}\n\n## Goals\n${GOALS.map(g => `- ${g.label || GOAL_LABEL(g)}: ${goalDisp(g, goalCurrent(g))} → ${goalDisp(g, g.target)} ${GOAL_U[g.type]()}${g.date ? " by " + g.date : ""}`).join("\n") || "- none set"}\n\nGenerated by Plate & Pulse.`;
+}
+function renderWhatIf() {
+  const A = analyze(28), c = calc(), cur = latestVal("weight") || S.weight, gw = GOALS.find(g => g.type === "weight");
+  const dk = parseFloat($("#wi-kcal").value) || 0, ds = parseFloat($("#wi-steps").value) || 0, dses = parseFloat($("#wi-ses").value) || 0;
+  const baseRate = Number.isFinite(A.weightPerWk) && A.weight.days >= 6 ? A.weightPerWk : c.weeklyKg;
+  const delta = (dk - ds * 0.04 * S.weight / 70 - dses * 300 / 7) * 7 / 7700, newRate = baseRate + delta;
+  const tgt = gw ? gw.target : null;
+  const eta = r => tgt != null && Math.abs(r) > 0.01 && Math.sign(tgt - cur) === Math.sign(r) ? (tgt - cur) / r : NaN;
+  $("#wi-sub").textContent = gw ? `target ${goalDisp(gw, gw.target)} ${wUnit()}` : "add a body-weight goal for a forecast";
+  const in12 = cur + newRate * 12;
+  $("#wi-out").innerHTML = `<div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,130px),1fr))"><div class="tile"><span class="eyebrow">Current trend</span><span class="v" style="font-size:1.4rem">${baseRate >= 0 ? "+" : ""}${fmt(toDispW(baseRate), 2)}<small>${wUnit()}/wk</small></span><span class="s">${A.weight.days >= 6 ? "from your weigh-ins" : "from your plan (no trend yet)"}</span></div><div class="tile"><span class="eyebrow">In 12 weeks</span><span class="v" style="font-size:1.4rem">${fmt(toDispW(in12), 1)}<small>${wUnit()}</small></span><span class="s">if nothing changes${dk || ds || dses ? " (with your what-if)" : ""}</span></div>${tgt != null ? `<div class="tile"><span class="eyebrow">Reach target</span><span class="v" style="font-size:1.4rem">${Number.isFinite(eta(newRate)) ? fmt(eta(newRate)) : "–"}<small>weeks</small></span><span class="s">${Number.isFinite(eta(baseRate)) ? `was ${fmt(eta(baseRate))} wk` : "not at the current trend"}</span></div>` : ""}</div>`;
+  $("#wi-res").innerHTML = dk || ds || dses ? `Your change shifts the trend by ${delta >= 0 ? "+" : ""}${fmt(toDispW(delta), 2)} ${wUnit()}/week (calories ${dk >= 0 ? "+" : ""}${dk}, steps ${ds >= 0 ? "+" : ""}${fmt(ds)} ≈ ${fmt(-ds * 0.04 * S.weight / 70)} kcal, sessions +${dses} ≈ ${fmt(-dses * 300 / 7)} kcal/day). Safe fat-loss range is 0.5-1% of body weight a week (${fmt(toDispW(S.weight * 0.005), 2)}-${fmt(toDispW(S.weight * 0.01), 2)} ${wUnit()}).` : "Move the inputs to see how a change in food, steps or training changes the forecast. Estimates assume about 7,700 kcal per kg.";
+}
+function renderTodayAdj() {
+  const A = analyze(30), R = A.ready, prog = PROGRAMS.find(p => p.id === pgSel) || PROGRAMS[0];
+  const dow = new Date().getDay(), nextDay = prog ? prog.days[(WLOG.filter(s => s.prog === prog.id).length) % prog.days.length] : null;
+  $("#td-sub").textContent = R ? `readiness ${R.score}/100 on ${R.date}` : "no recovery data";
+  if (!prog) { $("#td-out").innerHTML = `<p class="small muted">Add a program on the Programs tab and this card adapts today's session to your readiness.</p>`; return; }
+  const s = R ? R.score : 60, mode = s >= 70 ? ["good", "Full session, push the top sets", 1, 1] : s >= 50 ? ["info", "Normal session, stop 2 reps shy of failure", 1, 0.97] : s >= 35 ? ["warn", "Reduced: 2/3 of the sets, loads −10%, no failure", 0.67, 0.9] : ["bad", "Recovery day: light technique work or a walk", 0.4, 0.75];
+  $("#td-out").innerHTML = `<p><span class="pill p-${mode[0]}">${mode[1]}</span></p>${nextDay ? `<p class="small muted">Next in ${esc(prog.name)}: <strong>${esc(nextDay.name)}</strong></p><div class="table-wrap"><table><thead><tr><th>Exercise</th><th class="num">Sets</th><th>Reps</th><th>Load</th></tr></thead><tbody>${nextDay.items.map(it => `<tr><td>${esc(it.ex)}</td><td class="num mono">${Math.max(1, Math.round((parseInt(it.sets, 10) || 3) * mode[2]))}</td><td class="mono">${esc(it.reps)}</td><td class="mono">${mode[3] < 1 ? `${fmt((1 - mode[3]) * 100)}% lighter` : "as planned"}</td></tr>`).join("")}</tbody></table></div>` : ""}${R ? `<p class="note" style="margin-top:6px">${R.parts.map(p => p.join(": ")).join(" · ")}</p>` : ""}<div style="margin-top:8px"><button type="button" class="btn small" data-goto="programs">Start the workout</button></div>`;
+}
+function renderDow() {
+  const end = hubEnd(), dates = hubDates(56, end), K = [["steps", "Steps", 0], ["sleep", "Sleep h", 1], ["intake", "Calories", 0], ["activeKcal", "Active kcal", 0]];
+  const W = dedupWorkouts(allWorkouts()).filter(w => w.date >= dates[0]);
+  const by = i => dates.filter(d => new Date(d + "T12:00:00").getDay() === i);
+  const rows = [0, 1, 2, 3, 4, 5, 6].map(i => { const ds = by(i); return [["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][i], ...K.map(([k, , d]) => { const v = mean(ds.map(x => dayVal(k, x))); return Number.isFinite(v) ? fmt(v, d) : "–"; }), fmt(W.filter(w => ds.includes(w.date)).length / Math.max(1, ds.length) * 100) + "%"]; });
+  const hasAny = rows.some(r => r.slice(1, -1).some(v => v !== "–"));
+  const find = (k, d, lowBad) => { const vals = [0, 1, 2, 3, 4, 5, 6].map(i => mean(by(i).map(x => dayVal(k, x)))); if (vals.filter(Number.isFinite).length < 5) return ""; const idx = vals.indexOf(lowBad ? Math.min(...vals.filter(Number.isFinite)) : Math.max(...vals.filter(Number.isFinite))); return `${["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][idx]} (${fmt(vals[idx], d)})`; };
+  $("#dow-out").innerHTML = hasAny ? xTable(["Day", ...K.map(k => k[1]), "Trained"], rows, [1, 2, 3, 4, 5]) + `<p class="small" style="margin-top:8px">${find("steps", 0, true) ? `Fewest steps: <strong>${find("steps", 0, true)}</strong>. ` : ""}${find("sleep", 1, true) ? `Shortest sleep: <strong>${find("sleep", 1, true)}</strong>. ` : ""}${find("intake", 0, false) ? `Highest intake: <strong>${find("intake", 0, false)}</strong>. ` : ""}Plan around the pattern: a scheduled walk on the lowest-step day, an earlier night before the shortest-sleep day, a pre-planned meal on the highest-intake day.</p>` : `<p class="small muted">Needs a few weeks of daily data.</p>`;
+}
+function renderAnomalies() {
+  const end = hubEnd(), base = hubDates(60, end), recent = hubDates(7, end), out = [];
+  [["rhr", "Resting HR", false, 0], ["hrv", "HRV", true, 0], ["wristTemp", "Wrist temperature", null, 2], ["sleep", "Sleep", true, 1], ["resp", "Respiratory rate", null, 1], ["spo2", "Blood oxygen", true, 0], ["weight", "Weight", null, 1], ["steps", "Steps", true, 0]].forEach(([k, l, goodUp, d]) => {
+    const bs = (k === "weight" ? base.slice(-21, -7) : base.slice(0, -7)).map(x => dayVal(k, x)).filter(Number.isFinite); if (bs.length < (k === "weight" ? 6 : 14)) return; const mu = mean(bs), s = k === "weight" ? Math.max(sd(bs) || 0, mu * 0.008) : (sd(bs) || Math.abs(mu) * 0.1 || 1);
+    recent.forEach(dt => { const v = dayVal(k, dt); if (!Number.isFinite(v)) return; const z = (v - mu) / s; if (Math.abs(z) >= 2) { const bad = goodUp == null ? true : (z > 0) !== goodUp; out.push({ dt, k, l, v, z, bad, d }); } });
+  });
+  // consecutive sleep debt
+  const debt = recent.map(x => dayVal("sleep", x)).filter(Number.isFinite).reduce((s, v) => s + Math.max(0, 7.5 - v), 0);
+  $("#an-out").innerHTML = (out.length ? out.sort((a, b) => Math.abs(b.z) - Math.abs(a.z)).slice(0, 8).map(o => `<div class="rec ${o.bad ? (Math.abs(o.z) >= 3 ? "bad" : "warn") : "good"}"><span class="pill p-${o.bad ? (Math.abs(o.z) >= 3 ? "bad" : "warn") : "good"}">${o.dt.slice(5)}</span> <strong>${o.l}</strong> ${o.k === "weight" ? fmt(toDispW(o.v), 1) : fmt(o.v, o.d)} is ${fmt(Math.abs(o.z), 1)} standard deviations ${o.z > 0 ? "above" : "below"} your 2-month norm${o.k === "rhr" && o.z > 0 ? ": possible illness, alcohol, heat or hard training" : o.k === "wristTemp" && o.z > 0 ? ": often 1-2 days before symptoms; ease off and sleep" : o.k === "hrv" && o.z < 0 ? ": under-recovered" : o.k === "weight" ? ": usually water (sodium, carbs, cycle, travel)" : ""}.</div>`).join("") : `<p class="small">No unusual readings in the last 7 days${base.length ? "" : ""}.</p>`) + (debt >= 5 ? `<div class="rec warn" style="margin-top:6px"><span class="pill p-warn">Sleep debt</span> About ${fmt(debt, 1)} hours short of 7.5 h a night this week. Repay with 1-2 earlier nights, not a weekend lie-in past 1 h.</div>` : "") + `<p class="note" style="margin-top:8px">Flags compare each day with your own last 2 months. A single odd day is noise; two or three in a row is a signal.</p>`;
+}
+function renderCorr() {
+  const A = analyze(90), rows = A.corr.filter(c => c[1] && c[1].n >= 14).map(c => { const r = c[1].r; const str = Math.abs(r) < 0.2 ? "none" : Math.abs(r) < 0.4 ? "weak" : Math.abs(r) < 0.6 ? "moderate" : "strong"; return [c[0], Number.isFinite(r) ? (r > 0 ? "+" : "") + fmt(r, 2) : "–", str, c[1].n, c[2]]; });
+  const extra = []; const al = A.alcohol, sl = A.sleep; if (al && al.days >= 8) { const p = pearson(al.s, lag(sl.s, 0)); if (p.n >= 10) extra.push(["Alcohol → same-night sleep", (p.r > 0 ? "+" : "") + fmt(p.r, 2), Math.abs(p.r) < 0.2 ? "none" : Math.abs(p.r) < 0.4 ? "weak" : "moderate+", p.n, "Drinks usually shorten and fragment sleep."]); }
+  const stp = pearson(A.steps.s, A.weight.s); if (stp.n >= 20) extra.push(["Steps → weight (same day)", (stp.r > 0 ? "+" : "") + fmt(stp.r, 2), Math.abs(stp.r) < 0.2 ? "none" : "present", stp.n, "Negative means higher-step days coincide with lower weight."]);
+  const all = rows.concat(extra);
+  $("#cx-out").innerHTML = all.length ? xTable(["Relationship", "r", "Strength", "Days", "Meaning"], all, [1, 3]) + `<p class="note" style="margin-top:6px">Correlation is not cause, and with under 30 days it is mostly noise. Use these to pick experiments: change one thing for two weeks and watch.</p>` : `<p class="small muted">Needs 2+ weeks of overlapping data (sleep, HRV, steps, intake, weight).</p>`;
+}
+const lag = (arr, k) => k ? arr.slice(k).concat(Array(k).fill(NaN)) : arr;
+async function aiPlan() {
+  const sm = await cap("sample"), out = $("#ai-plan-out"); if (!sm) { out.innerHTML = `<p class="small muted">The AI coaches work when the dashboard is opened on claude.ai.</p>`; return; }
+  const L = buildAdjustments(), c = calc(), m = macros(c);
+  out.innerHTML = `<p class="muted">Writing your plan…</p>`; $("#ai-plan").disabled = true;
+  try {
+    const r = await sm(`${coachRules("team")}\n\nDATA (from the user's dashboard):\n${coachContext()}\n\nENGINE ADJUSTMENTS (rule-based, from the user's synced data):\n${L.map(x => `- [${x.sev}] ${x.title} | ${x.change} | ${x.why}`).join("\n")}\n\nGOALS:\n${GOALS.map(g => `- ${g.label || GOAL_LABEL(g)}: now ${goalDisp(g, goalCurrent(g))}, target ${goalDisp(g, g.target)} ${GOAL_U[g.type]()}${g.date ? " by " + g.date : ""}`).join("\n") || "- none set"}\n\nCurrent targets: ${fmt(c.target)} kcal, P ${fmt(m.p)} g, C ${fmt(m.c)} g, F ${fmt(m.f)} g.\n\nWrite a concrete 7-day plan for next week in markdown with these sections: 1) The one thing that matters most this week (2 sentences). 2) Nutrition: calories and macros for training days and rest days as numbers, plus 2 specific food changes. 3) Training: a day-by-day table (Mon-Sun) with session type, intensity (RPE or zone) and duration, respecting readiness and any injuries. 4) Movement and sleep: daily step target and a bed/wake window. 5) One habit to track. 6) What to re-check next Sunday (3 bullets). Keep it under 450 words, specific numbers, no generic advice.`, { modelTier: "default", cache: false });
+    out.innerHTML = `<div class="callout small">${mdLite(r.text || "")}</div><div style="margin-top:8px"><button type="button" class="btn ghost small" id="ai-plan-save">Save plan (.md)</button> <span class="small muted" id="ai-plan-msg"></span></div>`;
+    $("#ai-plan-save").addEventListener("click", () => saveFileTo("#ai-plan-msg", `plate-and-pulse-plan-${iso(new Date())}.md`, r.text || ""));
+  } catch (e) { out.innerHTML = `<p class="small muted">${AI_ERR ? AI_ERR(e) : "Couldn't write the plan right now."}</p>`; } finally { $("#ai-plan").disabled = false; }
+}
+function renderInsights() { if (!$("#p-insights")) return; renderGoals(); renderReport(); renderAdjust(); renderWhatIf(); renderTodayAdj(); renderDow(); renderAnomalies(); renderCorr(); }
+onShow.insights = renderInsights;
+$("#p-insights").addEventListener("click", e => { const g = e.target.closest("[data-goto]"); if (g) showTab(g.dataset.goto, true); const rm = e.target.closest("[data-gorm]"); if (rm) { GOALS.splice(+rm.dataset.gorm, 1); saveGoals(); renderGoals(); renderWhatIf(); } });
+$("#p-insights").addEventListener("input", e => { const i = e.target.dataset.gman; if (i != null) { GOALS[+i].manual = parseFloat(e.target.value); saveGoals(); } });
+$("#go-type").addEventListener("change", () => { $("#go-exwrap").hidden = $("#go-type").value !== "lift"; });
+$("#go-add").addEventListener("click", () => { const type = $("#go-type").value, tRaw = parseFloat($("#go-target").value); if (!Number.isFinite(tRaw)) { flash("#go-sum", "Enter a target."); return; } const target = type === "weight" || type === "lift" ? fromDispW(tRaw) : type === "waist" ? fromDispL(tRaw) : tRaw; const g = { id: uid(), type, target, date: $("#go-date").value || "", label: $("#go-label").value.trim(), ex: $("#go-ex").value.trim(), created: iso(new Date()) }; const cur = goalCurrent(g); g.start = Number.isFinite(cur) ? cur : target; GOALS.push(g); saveGoals(); $("#go-target").value = ""; $("#go-label").value = ""; renderGoals(); renderWhatIf(); });
+["wi-kcal", "wi-steps", "wi-ses"].forEach(id => $("#" + id).addEventListener("input", renderWhatIf));
+$("#rc-export").addEventListener("click", () => saveFileTo("#rc-msg", `plate-and-pulse-week-${iso(new Date())}.md`, reportMd()));
+$("#ai-plan").addEventListener("click", aiPlan);
+
+/* ---------- injury log (Log tab) ---------- */
+function renderInjuries() {
+  if (!$("#in-list")) return;
+  $("#in-list").innerHTML = INJ_LOG.length ? xTable(["Since", "Area", "Pain /10", "Avoid", "Status", ""], INJ_LOG.slice().sort((a, b) => b.d.localeCompare(a.d)).map((i, idx) => [i.d, esc(i.part), i.pain, esc(i.avoid || ""), `<select data-inst="${i.id}" style="padding:3px 6px;width:auto"><option ${i.status === "active" ? "selected" : ""}>active</option><option ${i.status === "improving" ? "selected" : ""}>improving</option><option ${i.status === "healed" ? "selected" : ""}>healed</option></select>`, `<button type="button" class="btn ghost small" data-inrm="${i.id}" aria-label="Remove">×</button>`]), [2]) : `<p class="small muted">Nothing logged. Recording pain early changes how the coach and the adjustment engine program around it.</p>`;
+}
+/* ---------- cycle tracker (Health tab) ---------- */
+function cyclePhase() {
+  if (!CYCLE.on || !CYCLE.starts.length) return null;
+  const starts = CYCLE.starts.slice().sort(), last = starts[starts.length - 1], len = starts.length >= 3 ? Math.round(mean(starts.slice(1).map((d, i) => (new Date(d) - new Date(starts[i])) / 864e5))) : (+CYCLE.len || 28);
+  const day = Math.floor((Date.now() - new Date(last + "T12:00:00")) / 864e5) % len + 1;
+  const ph = day <= 5 ? { name: "Menstrual", note: "Energy often lower the first 1-2 days; iron needs are higher this week. Train as you feel; many women lift well here." } : day <= Math.round(len * 0.5) ? { name: "Follicular", note: "Rising estrogen: typically better recovery, strength and pain tolerance. A good window for heavier lifting and PR attempts." } : day <= Math.round(len * 0.5) + 2 ? { name: "Ovulation", note: "Peak estrogen, slightly higher injury risk reported for ligaments in some studies; warm up well." } : day <= len - 5 ? { name: "Early luteal", note: "Progesterone rises: core temperature up about 0.3-0.5 °C, heart rate a few bpm higher, HRV a little lower. Endurance in heat feels harder." } : { name: "Late luteal", note: "Water retention (+0.5-1.5 kg) and appetite (+100-300 kcal) are normal; weight comparisons should be made with the same phase. Prioritise sleep and magnesium-rich foods." };
+  return { day, len, next: dayAdd(last, len), ...ph };
+}
+function renderCycle() {
+  if (!$("#cy-out")) return;
+  $("#cy-on").checked = !!CYCLE.on; $("#cy-body").hidden = !CYCLE.on;
+  if (!CYCLE.on) { $("#cy-out").innerHTML = ""; return; }
+  const ph = cyclePhase();
+  $("#cy-starts").innerHTML = CYCLE.starts.slice().sort().reverse().slice(0, 6).map(d => `<span class="chip" style="display:inline-flex;gap:6px;align-items:center">${d} <button type="button" class="btn ghost small" data-cyrm="${d}" style="padding:0 6px" aria-label="Remove">×</button></span>`).join(" ") || `<span class="small muted">Add the first day of your last period.</span>`;
+  $("#cy-out").innerHTML = ph ? `<div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr))"><div class="tile"><span class="eyebrow">Cycle day</span><span class="v" style="font-size:1.5rem">${ph.day}<small>/${ph.len}</small></span></div><div class="tile"><span class="eyebrow">Phase</span><span class="v" style="font-size:1.3rem">${ph.name}</span></div><div class="tile"><span class="eyebrow">Next period (est.)</span><span class="v" style="font-size:1.3rem">${ph.next.slice(5)}</span></div></div><p class="small" style="margin-top:8px">${ph.note}</p><p class="note">Phase-based training plans show small or no average effects in trials; individual symptoms matter more. Use this to interpret weight, HRV and temperature swings and to log symptoms, not as a rule book. Cycles vary; hormonal contraception changes the pattern.</p>` : "";
+}
+function buildInsightsExtras() {
+  const put = (sel, html) => { const el = $(sel); if (el && !el.dataset.built2) { el.dataset.built2 = "1"; el.insertAdjacentHTML("beforeend", html); } };
+  put("#y-log", `<div class="card" style="margin-top:20px"><div class="card-head"><h3>Injury and pain log</h3><span class="small muted">feeds the coach and the adjustment engine</span></div><form class="fields" autocomplete="off"><label class="f">Date<input id="in-d" type="date"></label><label class="f">Area<select id="in-part"><option>Lower back</option><option>Knee (L)</option><option>Knee (R)</option><option>Shoulder (L)</option><option>Shoulder (R)</option><option>Elbow</option><option>Wrist</option><option>Hip</option><option>Ankle / Achilles</option><option>Neck</option><option>Hamstring</option><option>Other</option></select></label><label class="f">Pain (0-10)<input id="in-pain" type="number" min="0" max="10" value="4"></label><label class="f" style="grid-column:1/-1">Movements to avoid<input id="in-avoid" type="text" placeholder="e.g. overhead pressing, deep squats"></label></form><button type="button" class="btn small" id="in-add" style="margin-top:6px">Log it</button><div id="in-list" style="margin-top:10px"></div></div>`);
+  put("#y-health", `<div class="card" style="margin-top:20px"><div class="card-head"><h3>Menstrual cycle tracker</h3><span class="small muted">optional, stays in this browser</span></div><label class="small" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="cy-on"> Track my cycle and use it to interpret weight, temperature and recovery data</label><div id="cy-body" hidden style="margin-top:8px"><form class="fields" autocomplete="off"><label class="f">First day of a period<input id="cy-d" type="date"></label><label class="f">Usual cycle length (days)<input id="cy-len" type="number" min="20" max="45" value="${CYCLE.len || 28}"></label></form><button type="button" class="btn small" id="cy-add" style="margin-top:6px">Add period start</button><div id="cy-starts" style="margin-top:8px"></div><div id="cy-out" style="margin-top:10px"></div></div></div>`);
+  if ($("#in-add")) {
+    $("#in-d").value = iso(new Date());
+    $("#in-add").addEventListener("click", () => { INJ_LOG.push({ id: uid(), d: $("#in-d").value || iso(new Date()), part: $("#in-part").value, pain: +$("#in-pain").value || 0, avoid: $("#in-avoid").value.trim(), status: "active" }); saveInj(); $("#in-avoid").value = ""; renderInjuries(); });
+    $("#in-list").addEventListener("click", e => { const b = e.target.closest("[data-inrm]"); if (b) { INJ_LOG = INJ_LOG.filter(i => i.id !== b.dataset.inrm); saveInj(); renderInjuries(); } });
+    $("#in-list").addEventListener("change", e => { const s = e.target.dataset.inst; if (s) { const i = INJ_LOG.find(x => x.id === s); if (i) { i.status = e.target.value; saveInj(); } } });
+    renderInjuries();
+  }
+  if ($("#cy-on")) {
+    $("#cy-on").addEventListener("change", e => { CYCLE.on = e.target.checked; saveCycle(); renderCycle(); });
+    $("#cy-len").addEventListener("input", e => { CYCLE.len = +e.target.value || 28; saveCycle(); renderCycle(); });
+    $("#cy-add").addEventListener("click", () => { const d = $("#cy-d").value; if (d && !CYCLE.starts.includes(d)) { CYCLE.starts.push(d); saveCycle(); renderCycle(); } });
+    $("#cy-starts").addEventListener("click", e => { const b = e.target.closest("[data-cyrm]"); if (b) { CYCLE.starts = CYCLE.starts.filter(x => x !== b.dataset.cyrm); saveCycle(); renderCycle(); } });
+    renderCycle();
+  }
+}
+buildInsightsExtras();
+
+/* ---------- device importers: Fitbit (Google Takeout), Withings, Garmin, Whoop, Samsung Health, Polar ---------- */
+const FITBIT_FILES = [[/^steps-|steps/, "steps", 1], [/^calories-|calories/, "totalKcal", 1], [/^distance-|distance/, "distance", 0.00001], [/resting_heart_rate/, "rhr", 1], [/heart_rate_variability.*daily|daily_hrv|hrv_summary/, "hrv", 1], [/^weight-|weight/, "weight", 1], [/very_active_minutes|moderately_active_minutes/, "exerciseMin", 1], [/spo2|oxygen/, "spo2", 1], [/respiratory_rate|breathing/, "resp", 1], [/sleep_score/, "sleepScore", 1], [/^sleep-/, "sleep", 1 / 60], [/skin_temperature|temperature/, "tempDev", 1]];
+function importFitbit(o, fname) {
+  // Google Takeout Fitbit: arrays of {dateTime, value} or sleep logs [{dateOfSleep, minutesAsleep, levels}]
+  if (!Array.isArray(o) || !o.length) return null; const first = o[0]; if (!first || typeof first !== "object") return null;
+  const acc = newAcc(); let n = 0;
+  if ("dateOfSleep" in first || "minutesAsleep" in first) { o.forEach(s => { const d = toDay(s.dateOfSleep || s.endTime); if (!d) return; accAdd(acc, d, "sleep", num(s.minutesAsleep) / 60); const lv = s.levels && s.levels.summary; if (lv) { if (lv.deep) accAdd(acc, d, "deepSleep", num(lv.deep.minutes) / 60); if (lv.rem) accAdd(acc, d, "remSleep", num(lv.rem.minutes) / 60); } if (Number.isFinite(num(s.efficiency))) accAdd(acc, d, "sleepEff", num(s.efficiency)); }); n = accMerge(acc, fname); return { kind: "daily", n }; }
+  if ("dateTime" in first && "value" in first) {
+    const hit = FITBIT_FILES.find(f => f[0].test(fname.toLowerCase())); if (!hit) return null; const [, key, mult] = hit;
+    o.forEach(p => { const d = toDay(p.dateTime); let v = p.value; if (v && typeof v === "object") v = v.value ?? v.dailyRmssd ?? v.bpm ?? v.weight ?? v.avg ?? v.deepSleepSummary?.averageValue ?? v.nightlyRelative ?? NaN; v = num(v) * mult; if (key === "weight" && v > 250) v /= KG_LB; accAdd(acc, d, key, v); });
+    n = accMerge(acc, fname); return { kind: "daily", n };
+  }
+  if ("bodyFat" in first || ("weight" in first && "date" in first)) { o.forEach(p => { const d = toDay(p.date); accAdd(acc, d, "weight", num(p.weight) > 250 ? num(p.weight) / KG_LB : num(p.weight)); if (num(p.fat) > 0) accAdd(acc, d, "bodyFat", num(p.fat)); }); n = accMerge(acc, fname); return { kind: "daily", n }; }
+  if ("activityName" in first || "logType" in first) { addWorkouts(o.map(w => ({ date: toDay(w.startTime || w.startDate), type: w.activityName || "Workout", min: num(w.duration) / 60000 || num(w.activeDuration) / 60000, km: (num(w.distance) || 0) * (String(w.distanceUnit || "").toLowerCase().startsWith("mile") ? 1.609344 : 1), kcal: num(w.calories) || 0, hr: num(w.averageHeartRate) || 0 })), fname); return { kind: "workouts", n: o.length }; }
+  return null;
+}
+COLS.push([/fat mass \(kg\)|fat_mass/, "fatMass"], [/muscle mass \(kg\)/, "muscleMass"], [/hydration \(kg\)|body water/, "bodyWater"], [/^recovery score|recovery_score|recovery %/, "readiness"], [/day strain|^strain/, "strain"], [/asleep duration|time asleep|total sleep|sleep duration/, "sleep"], [/avg hrv|hrv \(ms\)|rmssd/, "hrv"], [/resting hr|resting heart rate \(bpm\)|rhr/, "rhr"], [/body battery|body_battery/, "readiness"], [/floors|floors climbed/, "flights"], [/intensity minutes|active minutes|moderately active|very active/, "exerciseMin"], [/stand hours|stand_hours/, "standHours"], [/weight \(kg\)|weight\(kg\)|body weight/, "weight", /goal|target/], [/skin temp|sleep temp|temperature deviation/, "tempDev"]);
+const _importJSON0 = importJSON;
+importJSON = function (text, fname) {
+  const o = JSON.parse(text);
+  if (Array.isArray(o)) { const r = importFitbit(o, fname); if (r) { HUB.devices = HUB.devices || {}; HUB.devices["Fitbit"] = iso(new Date()); return r; } }
+  if (o && Array.isArray(o.sleep) && o.sleep[0] && "dateOfSleep" in o.sleep[0]) { const r = importFitbit(o.sleep, fname); if (r) return r; }
+  if (o && o.data && Array.isArray(o.data) && o.data[0] && ("weight" in o.data[0] || "steps" in o.data[0]) && "date" in o.data[0]) { const acc = newAcc(); o.data.forEach(p => { const d = toDay(p.date); Object.entries(p).forEach(([k, v]) => { const key = { weight: "weight", steps: "steps", fat_ratio: "bodyFat", fat_mass_weight: "fatMass", muscle_mass: "muscleMass", hydration: "bodyWater", sleep: "sleep", hr_average: "hr", spo2: "spo2" }[k]; if (key) accAdd(acc, d, key, num(v)); }); }); return { kind: "daily", n: accMerge(acc, fname) }; }
+  return _importJSON0(text, fname);
+};
+/* Google Drive watch patterns: pull other apps' exports saved to Drive */
+let DRIVE_PAT = store.get("drivepat", ["HealthAutoExport"]);
+function renderDrivePat() { const el = $("#gd-pats"); if (!el) return; el.innerHTML = DRIVE_PAT.map(p => `<span class="chip" style="display:inline-flex;gap:6px;align-items:center">${esc(p)} ${p !== "HealthAutoExport" ? `<button type="button" class="btn ghost small" data-gdrm="${esc(p)}" style="padding:0 6px" aria-label="Remove">×</button>` : ""}</span>`).join(" "); }
+(() => {
+  const st = $("#gd-status"); if (!st) return;
+  st.insertAdjacentHTML("beforebegin", `<details style="margin-top:8px"><summary class="small">Also watch Drive for other apps' exports</summary><p class="small muted" style="margin:6px 0">Any CSV or JSON whose file name contains one of these words is synced too: Withings, Garmin, Whoop, Fitbit (Takeout), Oura, Samsung Health, Polar, MyFitnessPal, Cronometer exports saved or shared to Google Drive.</p><div id="gd-pats"></div><div style="display:flex;gap:6px;margin-top:6px"><input id="gd-newpat" type="text" placeholder="e.g. withings, garmin, oura" style="flex:1"><button type="button" class="btn ghost small" id="gd-addpat">Add</button></div></details>`);
+  renderDrivePat();
+  $("#gd-addpat").addEventListener("click", () => { const v = $("#gd-newpat").value.trim(); if (v && !DRIVE_PAT.includes(v)) { DRIVE_PAT.push(v); store.set("drivepat", DRIVE_PAT); $("#gd-newpat").value = ""; renderDrivePat(); } });
+  $("#gd-pats").addEventListener("click", e => { const b = e.target.closest("[data-gdrm]"); if (b) { DRIVE_PAT = DRIVE_PAT.filter(p => p !== b.dataset.gdrm); store.set("drivepat", DRIVE_PAT); renderDrivePat(); } });
+})();
 
 /* ---------- wiring ---------- */
 function renderAll() { renderOverview(); renderORM(); renderCardio(); renderLog(); renderMeals(); renderStandards(); renderPlates(); renderHealthCalc(); renderHub(); renderSweat(); renderPrograms(); renderWorkout(); renderProgress(); renderFoodLog(); renderStack(); renderLabs(); renderJournal(); renderA360(); renderWellness(); renderApple(); renderHealthStrip(); renderExpansions(); renderDepth(); renderGoalBF(); renderCaffeine(); renderCortisol(); renderFTP(); renderCSS(); renderFrame(); $("#maf-out").textContent = 180 - S.age; }
