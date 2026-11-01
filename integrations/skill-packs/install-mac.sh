@@ -106,15 +106,14 @@ if have npx; then
 else echo "  npx not found - install Node (brew install node) first"; fi
 echo; echo "== From the ~64 screenshots (2026-11-01) - ~45 repos read; details in REGISTRY-2026-11-01.md"
 copyskills "Social media skills (15 of 17, text-only, drafts only - Alexandra checks every post)" charlie947/social-media-skills 10ca79c voice-builder post-writer hook-generator post-formatter content-matrix newsletter-voice pinned-comment quote-post graphic-designer gemini-infographic gemini-carousel youtube-thumbnail profile-optimizer analytics-dashboard niche-research
-echo "  Held for your yes: Apillow Zillow MCP (key + Zillow terms - Alexandra), Cloudflare Code Mode MCP (needs a Cloudflare account),"
-echo "  skill-recorder (Copilot sign-in, records screen), postiz / social-media-agent (post as you - Alexandra), openscreen, flux2, ACE-Step."
+echo "  Apillow Zillow MCP stays yours (sign-up, key, Zillow terms - Alexandra). Everything else held is offered at the end of this script."
 echo "  The rest of the held list is offered at the end of this script (Steven, 2026-11-01)."
 echo; echo "== Steven asked for these two by name (2026-11-01) - installed in their safe form"
 echo "- AI website cloner (JCodesMore/ai-website-cloner-template, MIT, reviewed ee3f5a2): a Next.js project with a /clone-website command."
 echo "  Use it only on sites you own or have written permission to copy (copyright, trademark, DRE/NMLS ad rules: Alexandra)."
 if have git && ask "Clone it into ~/Projects/ai-website-cloner (nothing runs; you open it in Claude Code later)?"; then
   mkdir -p "$HOME/Projects"
-  if [ -d "$HOME/Projects/ai-website-cloner" ]; then echo "  already there"; else
+  if [ -e "$HOME/Projects/ai-website-cloner" ]; then echo "  already there"; else
     # pinned to the reviewed commit: npm install would run its scripts, so never a newer, unread version
     if git -c core.hooksPath=/dev/null clone -q https://github.com/JCodesMore/ai-website-cloner-template.git "$HOME/Projects/ai-website-cloner" &&
        git -C "$HOME/Projects/ai-website-cloner" -c advice.detachedHead=false checkout -q ee3f5a2; then
@@ -148,7 +147,7 @@ fi
 echo; echo "- OpenScreen demo skill (also installs the OpenScreen desktop app + MCP; macOS will ask for Screen Recording and Accessibility)"
 have npx && { ask "Run: npx skills add getopenscreen/openscreen --skill openscreen-demo ?" && npx -y skills add getopenscreen/openscreen --skill openscreen-demo; }
 echo; echo "- spec-kit (GitHub's spec-driven development CLI, MIT)"
-if have uv; then ask "uv tool install specify-cli from github/spec-kit ?" && uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
+if have uv; then ask "uv tool install specify-cli from github/spec-kit (held at the reviewed 7370e59)?" && uv tool install specify-cli --from git+https://github.com/github/spec-kit.git@7370e59
 else echo "  uv not found - brew install uv, then re-run"; fi
 echo; echo "-- Cloudflare Code Mode MCP (free to register; using it needs your Cloudflare account and sign-in in the browser)"
 mcpadd cloudflare-api https://mcp.cloudflare.com/mcp "Cloudflare Code Mode; sign-in happens on first use"
@@ -168,7 +167,7 @@ if have git && ask "Download all 31 into $GP (shallow copies, hooks off, nothing
   mkdir -p "$GP"
   for r in $PICKS; do d="$GP/$(basename "$r")"
     if [ -d "$d" ]; then echo "  have $(basename "$r")"; else
-      git -c core.hooksPath=/dev/null clone -q --depth 1 "https://github.com/$r.git" "$d" 2>/dev/null && echo "  got $r" || echo "  could not get $r (moved or private)"; fi
+      GIT_LFS_SKIP_SMUDGE=1 git -c core.hooksPath=/dev/null clone -q --depth 1 "https://github.com/$r.git" "$d" 2>/dev/null && echo "  got $r" || echo "  could not get $r (moved or private)"; fi
   done
 fi
 echo; echo "  Not installable: BillionMail (a Linux mail server; its installer refuses macOS), CleanMyLinux (Linux only), Orbit Agents"

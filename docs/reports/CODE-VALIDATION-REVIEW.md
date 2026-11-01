@@ -1,113 +1,99 @@
-# VibeBreaker Final Report — commit bb92142 (skill-pick.sh + install-mac.sh tail)
+# VibeBreaker Final Report — re-review of 9e874b4 (over bb92142~1..HEAD)
 
-change-set: fe34cd2d0339d666
+change-set: 606fcde42622e248
 
-(Hash from `bash scripts/validate-code.sh --since bb92142~1`; mark with `bash scripts/validate-code.sh --since bb92142~1 --mark`.)
+(Hash from `bash scripts/validate-code.sh --since bb92142~1` at HEAD 9e874b4; mark with
+`bash scripts/validate-code.sh --since bb92142~1 --mark`. Supersedes the review of change-set fe34cd2d0339d666.)
 
 ## Verdict
 
-`FIX FIRST` (VibeBreaker: FIX BEFORE SHIP) — no critical or high defect; the deterministic gate passes; one MEDIUM: the
-website-cloner clone is not held to the reviewed commit before Steven is told to `npm install` it.
+`FIX FIRST` (VibeBreaker: FIX BEFORE SHIP) — the four earlier findings are fixed, the gate passes; the new "Everything
+else" section has one MEDIUM: spec-kit is installed as an executable tool at unreviewed upstream HEAD, the same class of
+defect just fixed for the cloner.
 
 ## Scope
 
-- Commit / branch: bb92142 on claude/stoic-cori-pvn3f8 (worktree wt-stoic)
-- Mode: diff review, read-only, static (nothing executed against a HOME; no network)
-- Stack: bash, macOS bash 3.2 target
-- Passes completed: 01, 04, 05, 11, 14, 19, 20 (shell-script set)
-- Inspected surfaces: `scripts/skill-pick.sh` (whole file, new), `integrations/skill-packs/install-mac.sh` lines 1-60
-  (`ask`, `have`, `copyskills`, DRY) and the appended block (lines 107-132); REGISTRY-2026-11-01.md and group-b/c reports
-  for the intended behaviour; setup.sh for the `~/Repo` convention
-- Excluded / unavailable context: upstream repo layouts (charlie947/social-media-skills, sickn33/antigravity-awesome-skills);
-  shellcheck not installed in this container
-- Material scope limitation: YES — layout assumptions (see UNVERIFIED) cannot be proved without the upstream trees
+- Commit: 9e874b4 on claude/stoic-cori-pvn3f8 (worktree wt-stoic); diff `git show 9e874b4 -- integrations/skill-packs/install-mac.sh scripts/skill-pick.sh`
+- Mode: diff review, read-only, static; nothing executed against a HOME; no network
+- Passes: 01, 04, 05, 11, 14, 19, 20 (shell set)
+- Inspected: skill-pick.sh `--find`/`--remove`; install-mac.sh `ask`, `have`, `copyskills`, `mcpadd` (lines 8-68) and lines
+  107-176; REGISTRY-2026-11-01.md and group-b/c reports for reviewed commits
+- Unavailable: upstream trees; whether `npx skills add` accepts a ref; whether git-lfs is installed on the Mac; shellcheck
+- Material scope limitation: YES (U1-U3)
 
 ## Deterministic gate
 
-`verdict: PASS (4 passed, 0 failed)` — bash -n on both scripts, agents.json parse, brain doctor. (Plain
-`validate-code.sh` reports "nothing changed since HEAD" because bb92142 is committed; the `--since bb92142~1` run is the
-one that covers it.)
+`verdict: PASS (4 passed, 0 failed)` (bash -n both scripts, agents.json, brain doctor).
 
-## Scoreboard
+## Earlier findings — status
 
-- Passes executed: 7 / 20 (the shell set + 20)
-- Confirmed: 3 (Critical 0, High 0, Medium 1, Low 2) + 1 Info
-- Unverified: 2
-- Rejected candidates: 7
-- First critical pass: NONE
+- P11-F1 (cloner unpinned): FIXED — full clone then `checkout -q ee3f5a2`, removed on failure (install-mac.sh:118-122).
+- P11-F2 (library drift silent): FIXED for re-runs (line 130 prints reviewed -> now); a first `--depth 1` clone still
+  prints no hash (INFO, harmless: nothing loads).
+- P05-F1 (`--remove`): FIXED — library-only, y/N, honest failure message and exit 1 (skill-pick.sh:20-23).
+- P04-I1 (`--find` regex): FIXED — `grep -qiF` (skill-pick.sh:16).
 
 ## CONFIRMED
 
-### P11-F1 MEDIUM — website cloner kept at whatever upstream HEAD is, then `npm install` is recommended
-- Location: integrations/skill-packs/install-mac.sh:117-119
-- Trigger: JCodesMore/ai-website-cloner-template gains any commit after ee3f5a2, Steven answers y.
-- Bad state: the full clone stays at the new, unreviewed HEAD; the drift is only an `echo "note: ..."` whose exit 0 lets
-  the `&&` chain continue to "done. To use: ... npm install", which runs the unreviewed package's lifecycle scripts.
-  `copyskills` (line 49) asks "Copy anyway?" on the same drift; this block does not, and never checks out ee3f5a2
-  although the clone is full-depth so it could.
-- Fix proof: after the clone, `git -C ... checkout -q ee3f5a2` (or an `ask "Keep anyway?"` that removes the clone on no);
-  a test with a fake upstream whose HEAD != ee3f5a2 shows the working tree at ee3f5a2 or the clone removed.
+### P11-F3 MEDIUM — spec-kit installed from unreviewed HEAD
+- Location: integrations/skill-packs/install-mac.sh:151
+- Trigger: `uv` present, Steven answers y, github/spec-kit has any commit after the reviewed 7370e59 (group-c report line 24).
+- Bad state: `uv tool install specify-cli --from git+https://github.com/github/spec-kit.git` builds (build backend runs)
+  and puts on PATH whatever HEAD is; no reviewed commit is printed or compared — the policy the cloner and anatomy now follow.
+- Fix proof: `--from git+https://github.com/github/spec-kit.git@7370e59`; `uv tool list` / the installed dist metadata
+  shows that revision.
 
-### P11-F2 LOW — the skill library is never compared with the reviewed commit and fast-forwards on every re-run
-- Location: integrations/skill-packs/install-mac.sh:126-129
-- Trigger: re-running install-mac.sh and answering y when ~/skill-library/agentic-awesome-skills already exists.
-- Bad state: `git pull -q --ff-only` moves the library to unreviewed upstream with no 6f819e3 comparison or note; a first
-  clone (`--depth 1`) is also never compared. Mitigated: nothing in the library loads, and skill-pick shows 25 lines and a
-  file/script count before any copy.
-- Fix proof: print `reviewed 6f819e3 -> now <h>` after clone/pull, as the cloner block does.
+### P05-F2 LOW — cloner cleanup can delete a pre-existing non-directory
+- Location: integrations/skill-packs/install-mac.sh:116 (`[ -d ... ]`) with 122 (`rm -rf` on failure)
+- Trigger: `~/Projects/ai-website-cloner` exists as a regular file (or a symlink to a file).
+- Bad state: `-d` is false, `git clone` fails ("already exists"), and the else branch `rm -rf`s the user's file.
+  The anatomy block (line 141) correctly uses `-e`.
+- Fix proof: `[ -e ... ]`; a test with a file at that path leaves it untouched.
 
-### P05-F1 LOW — `--remove` deletes any same-named skill in ~/.claude/skills with no prompt, and misreports failures
-- Location: scripts/skill-pick.sh:20-21
-- Trigger: `bash scripts/skill-pick.sh --remove writing-plans` (installed by copyskills/superpowers, or a hand-made skill).
-- Bad state: `rm -rf` runs with no y/N and no check that the folder came from the library (irreversible for a hand-made
-  skill), while install is gated by y/N. Also `[ -d ] && rm && echo || echo "not installed"`: if rm fails the user is told
-  "<n> is not installed", and the script exits 0 either way.
-- Fix proof: only remove when `$LIB/$n/SKILL.md` exists (or a marker written at install), ask y/N, and report rm failure
-  with a non-zero exit.
-
-### P04-I1 INFO — `--find` treats the word as a regex
-- Location: scripts/skill-pick.sh:16 (`grep -qi -- "$w"` twice)
-- Trigger: `--find "["` -> grep error per file (about 2,800 stderr lines), no results. Fix: `grep -qiF`.
+### P01-I2 INFO — stale "held" message
+- Location: install-mac.sh:109-110 still says Cloudflare Code Mode MCP and openscreen are "Held for your yes" while
+  lines 148-154 now offer them (line 111 says "offered at the end"). Wording only.
 
 ## UNVERIFIED
 
-- U1 — charlie947 skills may report "not found": `copyskills` matches `find "$tmp/r" -type d -name "$f" -path '*skills*'`;
-  the clone path `$tmp/r` contains no "skills", so this only works if the 15 folders sit under a directory whose path
-  contains "skills". NEEDS-CONTEXT: the upstream tree at 10ca79c. (Pre-existing function, newly applied to this repo.)
-- U2 — skill-pick and the "done: N skills" line assume a flat `skills/<name>/SKILL.md` at the library root. If the library
-  nests categories, `--find` and `<name>` find nothing and the count reads 0 (with an ls error). NEEDS-CONTEXT: the
-  upstream tree at 6f819e3.
+- U1 — `copyskills` path filter `-path '*skills*'` against `$tmp/r`: charlie947 (15 + 2) and ScrapeCreators (10) folders
+  are found only if they sit under a `*skills*` directory upstream. NEEDS-CONTEXT: trees at 10ca79c and 64ba7b4.
+- U2 — OpenScreen (line 148) runs `npx -y skills add getopenscreen/openscreen` at HEAD (reviewed 8ecc76b) and, per the
+  registry, installs a desktop app and an MCP server. Pin it if `skills add` accepts a ref. NEEDS-CONTEXT: the
+  `skills` CLI's ref syntax.
+- U3 — the 31-repo loop (lines 166-170) promises "nothing runs", but if git-lfs is installed globally, clone runs the LFS
+  smudge filter and downloads every LFS object (model-heavy repos such as flux2 / ACE-Step are candidates).
+  `GIT_LFS_SKIP_SMUDGE=1` would make the promise unconditional. NEEDS-CONTEXT: git-lfs on the Mac and those repos'
+  .gitattributes.
 
 ## REJECTED
 
-- R1 path traversal in `<name>` — `*/*|.*` rejects any slash and leading dot (`..`, `a/../x`, `.hidden`) — skill-pick.sh:20,23
-- R2 rm -rf of DEST or HOME — `${DEST:?}` guard, name validated non-empty with no slash, fully quoted, no glob; HOME unset aborts under `set -u` — skill-pick.sh:9,21
-- R3 symlinked skill escaping — BSD `cp -R` copies an operand symlink as a link (no -H/-L); it writes nothing outside DEST and the head shown is the content loaded — skill-pick.sh:28
-- R4 bash 3.2 incompatibility — no arrays, `[[`, `${,,}`, `mapfile`, `|&` or `;&`; `${*:-}`, `local`, `read -r`, nested `"$(... "x" ...)"` all valid in 3.2; `wc -l | tr -d ' '` handles BSD padding; `grep -m1` exists in BSD grep — both files
-- R5 unquoted variables — every expansion in both new blocks is quoted; `$DRY` in `[ $DRY = 1 ]` is pre-existing and always 0/1 — install-mac.sh:8
-- R6 dry-run writes — every new action is behind `ask`, which returns 1 under `--dry-run` before any mkdir/clone/copy; copyskills' first gate is `ask` — install-mac.sh:8,47,115,125
-- R7 git hooks on clone — clone runs no remote hooks; `core.hooksPath=/dev/null` is harmless and git >= 2.9 on macOS — install-mac.sh:118,128
+- R1 `for r in $PICKS` unquoted — intentional word split; no glob characters in any entry; 31 entries with 31 unique basenames (counted) — install-mac.sh:166
+- R2 anatomy rm -rf — reached only when the path did not exist (`-e` guard) so it removes only what clone created — 141-145
+- R3 `--remove` name collision with a hand-made skill of a library name — now behind y/N with the name shown — skill-pick.sh:22
+- R4 dry-run — every new action (copyskills, anatomy, openscreen, spec-kit, mcpadd, loop) is behind `ask`, which returns 1 under `--dry-run`; `mkdir -p "$GP"` is inside the ask branch — 8, 67, 140, 148, 151, 165
+- R5 bash 3.2 — multi-line double-quoted list, `basename`, `{ ...; }` groups, `local` all valid; no arrays / `[[` / mapfile
+- R6 Cloudflare MCP — `mcpadd` asks first and registers only a URL; sign-in is Cloudflare's browser flow, no key handled — 64-68, 154
+- R7 shallow clone hooks — clone executes no repo hooks; output suppressed but failures reported per repo — 169
 
 ## Coverage
 
-Clean: skill-pick name validation, install path, `-h`, missing library message, already-installed check, y/N parse
-(EOF = no); install-mac `ask`/DRY semantics for the new block; `copyskills` call (15 names = group-b list minus
-post-scorer and reels-scripting, matches the registry); cloner "already there" path; library mkdir/clone path;
-`~/Repo/scripts/skill-pick.sh` path matches setup.sh's `$HOME/Repo` default.
+Clean: skill-pick fixes; cloner pin and cleanup path; library drift line; anatomy pin (1482e84 matches group-c);
+ScrapeCreators pin 64ba7b4 matches group-b; second charlie947 call; mcpadd use; PICKS loop quoting, idempotence ("have"),
+failure reporting; the "not installable" text.
 
 ## Top missing tests (pass 19)
 
-No test exists for skill-pick.sh (scripts/tests/ has tests for sibling scripts). Ranked:
-1. Fake HOME + fake upstream at a commit != ee3f5a2: cloner ends at ee3f5a2 or asks/removes (F1).
-2. skill-pick `<name>` with `..`, `a/b`, `.x`, empty: "bad name", exit 1, DEST unchanged.
-3. skill-pick `--remove` on a skill not in the library: refused, folder still there (F3).
-4. skill-pick `--remove` on an installed library skill with rm failing (read-only DEST): non-zero exit, honest message.
-5. skill-pick `<name>` answering n / EOF: DEST unchanged; answering y: DEST/<name>/SKILL.md identical to source.
-6. `install-mac.sh --dry-run` with a fake HOME: no file under HOME created or changed (diff of a tree listing).
-7. skill-pick `--find "["` and `--find c++`: no stderr flood, sane results (I1).
-8. copyskills against a fixture repo with skills at the root vs under skills/: both found (U1).
-9. skill-pick against a nested-category fixture library: either finds the skill or says the layout is unsupported (U2).
-10. Run both scripts under /bin/bash 3.2 (macOS CI) end to end with a fixture library.
+1. Fake upstream for spec-kit / cloner / anatomy at a commit after the reviewed one: installed revision equals the reviewed one.
+2. `install-mac.sh --dry-run` with a fake HOME: tree listing of HOME unchanged.
+3. File (not dir) at ~/Projects/ai-website-cloner: still there after a failed clone (F2).
+4. skill-pick `--remove` on a non-library skill: exit 1, folder intact; on a library skill answering n: intact; y with read-only DEST: exit 1.
+5. skill-pick bad names (`..`, `a/b`, `.x`, empty) for install and `--remove`: exit 1, DEST unchanged.
+6. skill-pick `--find "["` / `--find c++`: no stderr, literal match.
+7. PICKS loop with one unreachable repo: others still cloned, failure line printed.
+8. copyskills against fixtures with skills at root and under skills/ (U1).
+9. Loop with git-lfs installed and an LFS fixture: no LFS download (U3).
+10. Both scripts end to end under /bin/bash 3.2 with fixture repos.
 
 ## Share card
 
@@ -118,13 +104,13 @@ VERDICT: FIX BEFORE SHIP
 PASSES: 7/20
 CRITICAL: 0
 HIGH: 0
-CONFIRMED: 3 (+1 info)
-UNVERIFIED: 2
+CONFIRMED: 2 (+1 info)
+UNVERIFIED: 3
 FIRST BREAK: NONE
 ```
 
 ## Release note
 
-Static review plus syntax checks only. Nothing was executed against a real or fake HOME, no network was used, and the
-upstream layouts were not seen. This shows no traversal or rm -rf escape in the inspected code and no bash 3.2 construct
-problems; it does not show that the 15 social-media skills or the library skills will actually be found.
+Static review and syntax checks only; nothing executed against a HOME and no network. It shows the earlier four findings
+are fixed and no traversal, rm -rf escape, unquoted-variable or bash 3.2 problem in the new code; it does not show that
+the copyskills targets exist upstream or what the unpinned installers fetch.
