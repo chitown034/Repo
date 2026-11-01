@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Happy Birthday card</title>
+<style>
+  @font-face { font-family: "Script"; src: url("{{FONT_SCRIPT}}"); }
+  @font-face { font-family: "NameCaps"; src: url("{{FONT_NAME}}"); }
+  @font-face { font-family: "Body"; src: url("{{FONT_BODY}}"); }
+  @font-face { font-family: "BodyBold"; src: url("{{FONT_BODY_BOLD}}"); }
+  html, body { margin: 0; padding: 0; }
+  body { width: 1080px; height: 1080px; overflow: hidden; background: #fff; }
+  .card {
+    position: relative; width: 1080px; height: 1080px; overflow: hidden;
+    background: linear-gradient(180deg, {{BG_TOP}} 0%, {{BG_BOTTOM}} 70%, #fbf5e6 100%);
+    font-family: "Body", Arial, sans-serif; color: {{INK}};
+  }
+  /* balloons */
+  .balloon { position: absolute; border-radius: 50% 50% 50% 50% / 46% 46% 54% 54%; }
+  .balloon::after { /* knot */
+    content: ""; position: absolute; left: 50%; bottom: -10px; width: 14px; height: 14px;
+    transform: translateX(-50%) rotate(45deg); background: inherit; border-radius: 2px;
+  }
+  .balloon.gold { background: radial-gradient(circle at 32% 28%, #fff4c9 0%, #f0cf74 22%, {{GOLD}} 55%, #8a6414 100%); }
+  .balloon.black { background: radial-gradient(circle at 32% 28%, #6c6c6c 0%, #2b2b2b 30%, {{BLACK}} 70%, #000 100%); }
+  .string { position: absolute; width: 2px; background: rgba(20,20,20,.75); transform-origin: top; border-radius: 2px; }
+  /* confetti */
+  .conf { position: absolute; display: block; }
+  .conf.star { width: 0; height: 0; }
+  .conf.dot { border-radius: 50%; background: {{GOLD}}; }
+  .conf.ribbon { height: 7px; border-radius: 4px; background: linear-gradient(90deg, #f7e2a3, {{GOLD}}, #b37f1a); }
+  svg.stars { position: absolute; inset: 0; width: 1080px; height: 1080px; }
+  /* headline */
+  .headline {
+    position: absolute; left: 0; right: 0; top: 430px; text-align: center;
+    font-family: "Script", cursive; font-size: 150px; line-height: 1; color: {{INK}};
+    text-shadow: 0 6px 10px rgba(0,0,0,.22);
+    letter-spacing: 1px; white-space: nowrap;
+  }
+  /* band */
+  .band {
+    position: absolute; left: 0; right: 0; top: 770px; height: 150px;
+    background: linear-gradient(180deg, #9d9d95 0%, {{BAND}} 55%, #76766f 100%);
+    box-shadow: 0 -4px 14px rgba(0,0,0,.08), 0 6px 14px rgba(0,0,0,.12);
+  }
+  .photo {
+    position: absolute; left: 36px; top: 690px; width: 250px; height: 258px;
+    display: flex; align-items: flex-end; justify-content: center; overflow: hidden;
+  }
+  .photo img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block;
+    filter: drop-shadow(0 8px 10px rgba(0,0,0,.25)); }
+  .photo.empty { display: none; }
+  .name {
+    position: absolute; left: 330px; right: 40px; top: 770px; height: 150px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: "NameCaps", "Times New Roman", serif; font-size: 44px; letter-spacing: 3px;
+    text-transform: uppercase; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,.35);
+    text-align: center; line-height: 1.1;
+  }
+  .name.long { font-size: 34px; }
+  .name.verylong { font-size: 27px; letter-spacing: 2px; }
+  /* branding */
+  .brand {
+    position: absolute; left: 60px; right: 60px; top: 955px; height: 100px;
+    display: flex; align-items: center; justify-content: center; gap: 34px;
+  }
+  .brand .block { text-align: center; }
+  .brand .who { font-family: "NameCaps", serif; font-size: 28px; letter-spacing: 4px; color: #1d1d1d; text-transform: uppercase; }
+  .brand .lines { font-family: "BodyBold", Arial, sans-serif; font-size: 13px; letter-spacing: .9px; color: #2a2a2a; margin-top: 6px; text-transform: uppercase; white-space: nowrap; }
+  .brand .lines div + div { margin-top: 3px; font-family: "Body", Arial, sans-serif; letter-spacing: 1.1px; }
+  .brand img { max-height: 80px; max-width: 300px; object-fit: contain; }
+  .brand .rule { width: 2px; height: 70px; background: #1d1d1d; opacity: .75; }
+</style>
+</head>
+<body>
+<div class="card">
+  <!-- balloon cluster: top edge, gold and black, like the reference -->
+  <div class="balloon black" style="left:-60px; top:-120px; width:230px; height:290px;"></div>
+  <div class="balloon gold"  style="left:95px;  top:-70px;  width:215px; height:270px;"></div>
+  <div class="balloon black" style="left:290px; top:-150px; width:200px; height:250px;"></div>
+  <div class="balloon gold"  style="left:420px; top:-30px;  width:160px; height:205px;"></div>
+  <div class="balloon black" style="left:555px; top:-130px; width:215px; height:270px;"></div>
+  <div class="balloon gold"  style="left:720px; top:-80px;  width:225px; height:280px;"></div>
+  <div class="balloon black" style="left:890px; top:-140px; width:230px; height:290px;"></div>
+  <div class="balloon gold"  style="left:985px; top:-20px;  width:150px; height:190px;"></div>
+  <!-- strings -->
+  <div class="string" style="left:52px;  top:168px; height:120px; transform: rotate(6deg);"></div>
+  <div class="string" style="left:202px; top:198px; height:150px; transform: rotate(-4deg);"></div>
+  <div class="string" style="left:390px; top:98px;  height:140px; transform: rotate(3deg);"></div>
+  <div class="string" style="left:500px; top:173px; height:110px; transform: rotate(-6deg);"></div>
+  <div class="string" style="left:662px; top:138px; height:140px; transform: rotate(5deg);"></div>
+  <div class="string" style="left:832px; top:198px; height:150px; transform: rotate(-3deg);"></div>
+  <div class="string" style="left:1005px;top:148px; height:130px; transform: rotate(4deg);"></div>
+  <!-- confetti: stars, dots and ribbons (deterministic positions) -->
+  <svg class="stars" viewBox="0 0 1080 1080" aria-hidden="true">
+    <defs>
+      <symbol id="st" viewBox="0 0 24 24"><path d="M12 1.6l3.1 6.9 7.4.8-5.5 5 1.5 7.3L12 17.9 5.5 21.6 7 14.3 1.5 9.3l7.4-.8z"/></symbol>
+      <linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#f3dc9a"/><stop offset="1" stop-color="#b98417"/></linearGradient>
+    </defs>
+    {{STARS}}
+  </svg>
+  <!-- headline -->
+  <div class="headline">Happy Birthday</div>
+  <!-- band, photo, name -->
+  <div class="band"></div>
+  <div class="photo {{PHOTO_CLASS}}"><img src="{{PHOTO_SRC}}" alt=""></div>
+  <div class="name {{NAME_CLASS}}">{{NAME}}</div>
+  <!-- branding row -->
+  <div class="brand">
+    {{BRAND_LEFT}}
+    <div class="rule"></div>
+    {{BRAND_RIGHT}}
+  </div>
+</div>
+</body>
+</html>

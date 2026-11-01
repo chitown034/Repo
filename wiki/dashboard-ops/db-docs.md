@@ -34,7 +34,9 @@ does not repeat it.
 | `isaLadder` | The ISA line's reply-check and escalation state | The ISA escalation-ladder routine, weekdays 14:30 UTC |
 | `appleHealth` | Apple Health vitals | Cloud routine "Apple Health — Drive export → deck sync" (6:15 AM PT) from the Health Auto Export files in Google Drive, `scripts/health-drive-sync.py`; status in `healthDriveSync`. Old `r8-apple-health-snapshot` to be disabled; `health-notion-sync` optional |
 | `stravaSnapshot` | Latest Strava activity | `strava-daily-sync`, `20 5 * * *` PT — bare-write defect, see above |
-| `loftyLeads` / `zohoLeads` / `zohoDeals` | Real-estate / mortgage pipeline | `lofty-crm-sync` / `zoho-crm-sync` skills — both blocked on a credential as of 2026-09-24 |
+| `loftyLeads` | Real-estate pipeline (54 leads, stage totals) | The Mac's `lofty-crm-sync` (live since 2026-10-07); the *Deck relay* cloud routine copies it to the Broker Command Center 4×/day |
+| `zohoSync` / `zohoLeads` / `zohoDeals` | Mortgage pipeline health, 14-stage lead board, deals | The *Zoho CRM feed* cloud routine (05:41 · 11:41 · 16:41 · 21:41 PT, from 2026-11-01): writes `zohoSync` every run (today `status:"blocked"` — two 403s, see `context/decisions.md` 2026-11-01) and `zohoLeads`/`zohoDeals` on the first 200; all three mirrored to the Broker Command Center by the relay |
+| `birthdayList` / `birthdayPosts` / `birthdayLog` | Steven's own birthday list (never scraped), the daily cards' config (`autoPostPage`, Page id) and last run, the posting log | Steven (the list) · the *Birthday cards* cloud routine 9:17 AM PT (`integrations/birthday-posts/`) |
 | `isaKpi` | ISA scorecard actuals | The live Pipeline Sync cloud routine, 04/10/16/22 UTC |
 | `realEstateBrief` | Weekly Monday brief | The "Real Estate Weekly Brief" cloud routine — proving run has hung twice, see `always-on/README.md` |
 | `strategySnapshot` | QuantVue-style strategy state | Contested by two writers, `r4-quantvue-sync` (refused) and a cloud routine (writes nothing) — see `always-on/README.md` |

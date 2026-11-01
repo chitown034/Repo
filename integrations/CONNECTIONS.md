@@ -646,3 +646,18 @@ live truth once Steven has run it.
 | CLI-Anything | harnesses for homes.com / ShowingTime / Showami / Lofty installed by the paste | sign-ins only | Steven |
 | Mac runner · message tasks all day | restart + hours widening scripted (fix-mine 4) | `bash setup.sh`; `runnerctl login` stays his if it is signed out | Steven (paste) |
 
+
+## Connection status — CRM feed to the two boards, 2026-11-01 20:30 UTC (Steven: "connect Lofty as a connector on my dashboard, fix my repo errors, zoho is now connected, sync to command desk and loan dashboard")
+
+| Connection | Status today (measured) | Fix | Who |
+|---|---|---|---|
+| Zoho CRM — claude.ai connector | connected + enabled; every read → 403 `NO_PERMISSION` (`Crm_Implied_RetriveFor_ZohoMcp`) at 20:04 UTC | profile tick "API Access for Zoho MCP ≥ Get Data" | Steven |
+| Zoho CRM — Composio `zoho_talite-spike` | ACTIVE; Leads / Deals / modules → 403 `NO_PERMISSION` at 20:05 UTC | profile tick "Zoho CRM API Access"; re-authorise once if still 403 | Steven |
+| Zoho feed → Command Deck + Broker Command Center | wired: `zohoSync` v14 (deck) / v1 (BCC) written; routine `trig_01QRFyrwyB5F6j1adBSTXnvG` 4×/day; relay carries `zoho*` | fills itself after the ticks | — |
+| Lofty — Mac `lofty-bridge` | live: `loftyLeads` 2026-10-31 20:48 UTC, 54 leads, mirrored to the BCC | nothing | — |
+| Lofty — claude.ai connector | `connect_incomplete` (sign-in never finished); no official Lofty MCP server exists | remove + re-add + finish sign-in, or remove | Steven |
+| Deck relay routine `trig_01A5Tbjwx1BMQiLZhobtdkq3` | prompt extended (bccMetrics, loftyLeads, zoho*); last run 18:13 UTC **failed: usage limit reached** (so did Heartbeat 14:27) | nothing to fix in the routine; runs again 22:13 UTC | — |
+| Facebook Page (Composio) | ACTIVE, 5 Pages listed; birthday posting gated by `autoPostPage:false` | say "post birthdays to my Page" | Steven |
+| Canva | connected + enabled; brand kit `kAGdzymuEqA`; design `DAHZtNow20k` added; no Brand Templates | optional: publish the design as a Brand Template | Steven |
+| VEED | no key; `api.veed.io` unreachable from the sandbox; client built | key in `~/.config/veed/.env` + spend cap | Steven |
+| Repo CI | setup-health #184/#185 and brain-loop #198/#199 green on both tips; doctor PASS; 155 tests OK | nothing | — |

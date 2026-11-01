@@ -841,3 +841,33 @@ through Apple Health and the same export file once Steven switches the nutrition
   routine) — a live-task change, so his yes. Until then a parked orchestrator session means stale tiles again, and the
   new heartbeat line will say so.
 - **Owner.** Derek (sync), Cole (health), Vanessa (routines). **Status.** Deck v259 (this splice), 2026-10-31.
+
+## 2026-11-01 — "Zoho is now connected" is true in claude.ai and still 403 in Zoho; Lofty connector half-added; birthdays by the rules
+
+- **Request (Steven, verbatim).** *"help me connect Lofty as a connector on my dashboard, fix my repo errors, zoho is now
+  connected, sync to command desk and loan dashboard and wire so this feed is now working to the 2 dashboards"*, then
+  *"lofty connection isnt working fix it"*; plus the daily Facebook birthday cards and *"veed.io connections API"*.
+- **Found.** (1) The Zoho CRM claude.ai connector is connected and enabled, and every read returns `NO_PERMISSION` with the
+  permission name `Crm_Implied_RetriveFor_ZohoMcp`; Composio still returns `NO_PERMISSION` too (re-tested 20:04 UTC on
+  Leads, Deals, modules, organisation). The blocker is the Zoho **profile**, not the connection. (2) The Lofty claude.ai
+  connector sits at `connect_incomplete` — added, never signed in — and Lofty has no official MCP server; the Mac bridge
+  path is working (`loftyLeads` 2026-10-31). (3) The repo itself is clean: doctor PASS, 155 unit tests OK, CI green on
+  both tips; the two red CI runs of 2026-10-31 23:42/23:44 were the stale `brain/index.json` already fixed by the two
+  reindex commits that followed. (4) Meta's API has not exposed friends' birthdays since 2014 nor personal-timeline
+  posting since 2018, and its Terms bar automated collection — so "scrape every friend's birthday and photo and post on
+  their wall" cannot be built without risking the account.
+- **Decision.** Wire the feed so it works the moment the permissions land, and say so on every surface instead of showing a
+  stale paste as live: `zohoSync` rewritten on the deck and created on the Broker Command Center; the deck relay carries
+  `zoho*` and `loftyLeads` deck → BCC; a 4×/day *Zoho CRM feed* routine (bound to a connector-holding session) re-tests and
+  fills `zohoLeads`/`zohoDeals` on both; VANESSA's own Zoho card already calls Composio live. Lofty stays on the Mac bridge
+  (the working connector); the claude.ai entry is Steven's sign-in. Birthdays: Steven's own list in the deck's private DB,
+  a deterministic renderer (`integrations/birthday-posts/`, proof in `samples/sample-card.png`), tap-to-post to his phone
+  for personal and friends' timelines, Page posting through Composio behind `autoPostPage`. A Canva on-brand design was
+  added to his account as the editable twin (`DAHZtNow20k`). VEED: client + README, key and spend are his.
+- **Why.** Connected is not the same as working (the 2026-09-22 rule); a feed that fills itself the moment a tick lands
+  beats one more paste. Facebook's rules decide the birthday design, not the wish list. The list of friends' names never
+  enters the public repo.
+- **Steven's calls.** The two Zoho profile ticks; finish or remove the Lofty connector; the birthday list and the
+  `autoPostPage` yes; the VEED key and a monthly cap. All in `docs/STEVEN-STEPS.md` § 9.
+- **Owner.** Marcus (Zoho), Victor (Lofty), Sofia (cards, VEED), Derek (routines), Alexandra (advertising lines on the
+  card). **Status.** Built 2026-11-01; routines `trig_01QRFyrwyB5F6j1adBSTXnvG`, `trig_0168VtGY16ekRDyQkD9QSDia`.

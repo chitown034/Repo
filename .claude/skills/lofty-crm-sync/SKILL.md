@@ -143,6 +143,11 @@ doc `loftySyncLog` (`read_db` get → missing means `[]` → `write_db` **set**)
    `stageTotals`, and that `leadTriage`/`leadResponse`/`isaKpi` were **not** touched.
 4. Run twice in a row → assert idempotence (same stamps except `syncedAt`).
 
+## Where the doc goes now (2026-11-01)
+The Mac writes `loftyLeads` on the Command Deck; the *Deck relay* cloud routine copies it to the Broker Command Center
+(`https://claude.ai/artifact/XFx2H7cf8mnS8e8hjFzxNg`, same `state` collection) four times a day, so both boards show the same
+stamp. The claude.ai "Lofty" connector is `connect_incomplete` and Lofty has no official MCP server; this bridge is the connector.
+
 ## The one line Steven has to do
 **In Lofty go to Settings → Integrations → API, generate an API key, and put it in
 `~/.config/lofty/.env` on the Mac as `LOFTY_API_KEY=…` — then run `lofty-crm-sync` once to prove it.**

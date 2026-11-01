@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
+toolkit: 48 skills · 7 Claude mods (plugins) · 60 connectors (5 ok, 55 need attention) · 11 MCP servers · 16 APIs · 72 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -26,7 +26,6 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need at
 
 **Connectors**
 - `iMessage line (Vanessa text replies)` — *ok*: linked and live since 2026-10-23 23:54 UTC — Steven's thread aa1a9d19…8510; the Mac poller answered a non-answer at 00:05, the cloud sweep answered rates + schedule at 00:22
-- `Zoho CRM` — *attention*: self-client keys prompt in the paste; API 403 until the profile tick
 - `TidyCal` — *attention*: token prompt in the paste + read-only proof call
 - `Arive` — *attention*: credentials prompt in the paste; no call yet
 - `Kapso WhatsApp (Vanessa (202) 474-5223)` — *attention*: plugin + MCP + keys scripted; whatsappKapso deck doc stale since 10-22: the Mac tasks are not registered
@@ -39,6 +38,8 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need at
 - `Cloud sweep (iMessage text + voice queue, deck chat box, Discord #vanessa)` — *attention*: hourly at :17, 24/7 (was 6 AM–10 PM PT)
 - `Mac pollers overnight (vanessa-imessage-inbox, vanessa-discord-inbox, voice-reply-render, ` — *attention*: stop between 10 PM and 7 AM PT until the window is widened
 - `Hume AI` — *attention*: not connected; Vanessa's voice is the recorded Magica set. A key can be stored (paste step 4) for a later EVI proposal; it spends money per call → HALT until Steven says so
+- `Deck relay routine `trig_01A5Tbjwx1BMQiLZhobtdkq3`` — *attention*: prompt extended (bccMetrics, loftyLeads, zoho*); last run 18:13 UTC failed: usage limit reached (so did Heartbeat 14:27)
+- `Repo CI` — *attention*: setup-health #184/#185 and brain-loop #198/#199 green on both tips; doctor PASS; 155 tests OK
 
 **MCP servers**
 - `laya` — *ok*: zero-token local router in front of Vanessa (lane, tier, HALT words) · registered — real engine answering on Mac 1 (2026-10-23)
@@ -138,7 +139,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need at
 - `Composio (cloud)` — *attention*: Zoho CRM, Google Docs, GitHub tool calls through Composio · connected — Zoho 403 until the API box is ticked
 
 **APIs**
-- `Zoho CRM (Composio)` — *pending*: read pipeline, write notes (drafts only) · pending — 403 until "Zoho CRM API Access" is ticked
+- `Zoho CRM (claude.ai connector + Composio)` — *pending*: read pipeline (leads, deals); writes are HALT · pending — 403 NO_PERMISSION on both paths 2026-11-01 (Crm_Implied_RetriveFor_ZohoMcp / API
 - `Arive LOS (API gateway v4.6)` — *pending*: read loans, status, leads; loan writes are HALT · pending — Pro-plan credentials (integrations/arive/README.md)
 
 **Cloud routines**
@@ -160,8 +161,12 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need at
 - `Drip campaigns + text follow-ups` — *attention*: planned — playbook written (wiki/real-estate-playbooks/drip-and-text-follow-up.md); specs on request; 10DLC is Steven's
 - `TikTok · GoHighLevel · Discord bot · HeyGen` — *attention*: not connected (Composio links last 10 minutes)
 - `Composio (Zoho, Discord, TikTok, GHL, HeyGen)` — *attention*: claude.ai connector works from the cloud; optional key on the Mac (paste step 4)
+- `Facebook Page (Composio)` — *ok*: ACTIVE, 5 Pages listed; birthday posting gated by autoPostPage:false
+- `Canva` — *ok*: connected + enabled; brand kit kAGdzymuEqA; design DAHZtNow20k added; no Brand Templates
 
 **APIs**
+- `Facebook Pages (Composio facebook)` — *ok*: publish photo posts to Steven's Page only (never the personal profile or a friend's wall) · connected — Page 1844639009096096; birthday posting waits on autoPostPage
+- `VEED (api.veed.io)` — *pending*: create talking-video / lipsync / render jobs (spends credits → HALT) · ready — client built 2026-11-01, no key yet (integrations/veed/README.md)
 - `Pivo · Ticor Title` — *none*: tour links / CSV exports · no API
 
 **Cloud routines**
@@ -187,10 +192,14 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need at
 - `zoho-crm-sync`: Sync Zoho CRM — Steven's system of record for the mortgage pipeline — into the Command Deck through Composio: writes zohoSync (connection health), zohoLeads (14-stage kanban) and zohoDeals. Self-tests first and reports t
 
 **Connectors**
+- `Zoho CRM — claude.ai connector` — *attention*: connected + enabled; every read → 403 NO_PERMISSION (Crm_Implied_RetriveFor_ZohoMcp) at 20:04 UTC
 - `homes.com · ShowingTime · Showami` — *attention*: wrappers installed; sign-ins (MFA) in the agent Chrome are Steven's
-- `Lofty` — *attention*: two paths on Mac 1 (2026-10-23 13:05 PT): the old local bridge is the MCP named lofty (stdio, ~/Applications/lofty-bridge/mcp-server.js, connected — the runner tasks use its mcp__lofty__* tools; it re
+- `Lofty — Mac `lofty-bridge`` — *attention*: live: loftyLeads 2026-10-31 20:48 UTC, 54 leads, mirrored to the BCC
 - `ShowingTime · Showami · homes.com` — *attention*: read-only CLI-Anything wrappers scripted (connect-all 7d)
 - `CLI-Anything` — *attention*: harnesses for homes.com / ShowingTime / Showami / Lofty installed by the paste
+- `Zoho CRM — Composio `zoho_talite-spike`` — *attention*: ACTIVE; Leads / Deals / modules → 403 NO_PERMISSION at 20:05 UTC
+- `Zoho feed → Command Deck + Broker Command Center` — *attention*: wired: zohoSync v14 (deck) / v1 (BCC) written; routine trig_01QRFyrwyB5F6j1adBSTXnvG 4×/day; relay carries zoho*
+- `Lofty — claude.ai connector` — *pending*: connect_incomplete (sign-in never finished); no official Lofty MCP server exists
 
 **MCP servers**
 - `kapso` — *attention*: WhatsApp Business Cloud API read/answer (sandbox number first) · registered — needs Steven's sign-in (/mcp → kapso)
@@ -289,6 +298,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need at
 - `AnyDesk` — *attention*: install scripted (connect-all 6d)
 - `MyFitnessPal · Strava · BodyPark` — *attention*: all three flow through Apple Health → Health Auto Export → the cloud Health daily sync (Strava also by connector)
 - `Pabbly Connect` — *attention*: workflows written (integrations/pabbly/WORKFLOWS.md); built in Pabbly's editor, not by a script
+- `VEED` — *attention*: no key; api.veed.io unreachable from the sandbox; client built
 
 **MCP servers**
 - `playwright` — *ok*: browser automation for sites with no API · installed

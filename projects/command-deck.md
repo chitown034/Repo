@@ -82,3 +82,22 @@ version carries, all drafts-only (`wiki/ai-team/push-button-system.md`, `context
   21:07 UTC after the allowance reset.
 - Still open from the earlier lists: the Mac runner silent 2026-10-13 → the 2026-10-22 paste restarts it; Zoho waits
   on the API tick; Strava guard disabled until the Mac task runs again.
+
+## Status (2026-11-01) — the CRM feed to the two other boards, Zoho still 403, Lofty connector half-added
+
+- **Two sibling boards now count as "the dashboards":** the **Broker Command Center** (`XFx2H7cf8mnS8e8hjFzxNg`, real
+  estate; its own `state` DB holds `bccMetrics`, `loftyLeads`, `zohoSync`) and the **VANESSA Command Dashboard**
+  (`Ce5m1WNWsQW7y2u91EA8az`, the loan / LO desk; no DB — its Zoho card calls Composio live, its Pabbly card lists this deck
+  and the Broker Command Center). Both are in `bin/brain links`.
+- **Deck relay** (cloud routine `trig_01A5Tbjwx1BMQiLZhobtdkq3`, 06:13 · 10:13 · 14:13 · 18:13 PT) now carries
+  `bccMetrics` (BCC → deck) and `loftyLeads`, `zohoSync`, `zohoLeads`, `zohoDeals` (deck → BCC). Its 2026-11-01 18:13 run
+  failed on the account's usage limit — a relay that did not run leaves the BCC copy one stamp behind, nothing worse.
+- **Zoho:** `zohoSync` v14 (2026-11-01 20:04 UTC) — `status:"blocked"`, both the claude.ai Zoho CRM connector
+  (`Crm_Implied_RetriveFor_ZohoMcp`) and Composio refuse with 403. New routine *Zoho CRM feed — re-test and fill both
+  dashboards* (`trig_01QRFyrwyB5F6j1adBSTXnvG`, bound to session `01Tbr62ZwNACYJe4ra76JqsL` because a fresh-session routine
+  gets no connectors) re-tests 4×/day and writes `zohoLeads`/`zohoDeals` on the first 200. `zohoLeads`/`zohoDeals` still
+  **do not exist**; the deck's board stays the Sep 14 paste, labelled as such.
+- **Lofty:** live through the Mac bridge (`loftyLeads` 2026-10-31 20:48 UTC) on this deck and, via the relay, on the BCC.
+  The claude.ai Lofty connector is `connect_incomplete` — Steven's sign-in, see `docs/STEVEN-STEPS.md` § 9.
+- **Birthday cards:** `birthdayList` (empty), `birthdayPosts` (`autoPostPage:false`, Page 1844639009096096) created;
+  routine *Birthday cards (daily)* `trig_0168VtGY16ekRDyQkD9QSDia` 9:17 AM PT. Spec `integrations/birthday-posts/README.md`.

@@ -1,0 +1,23 @@
+{
+  "name": "Steven Shearrill",
+  "line1": "Broker Associate · LPT Realty · DRE #01988316",
+  "line2": "MLO · Patriot Pacific Financial Corp · NMLS #1921615",
+  "logo_left": null,
+  "logo_right": null,
+  "default_photo": "samples/steven-headshot-sample.jpg",
+  "caption": "Happy Birthday, {first}! 🎂🎉 Wishing you a year full of good health, good people and good news. — Steven",
+  "colors": {
+    "bg_top": "#f1dfb0",
+    "bg_bottom": "#f8eed6",
+    "gold": "#d4a53c",
+    "black": "#161616",
+    "band": "#8b8b84",
+    "ink": "#2a2623"
+  },
+  "fonts": {
+    "script": "fonts/GreatVibes-Regular.ttf",
+    "name": "fonts/Cinzel-SemiBold.ttf",
+    "body": "fonts/Montserrat-Regular.ttf",
+    "body_bold": "fonts/Montserrat-SemiBold.ttf"
+  }
+}

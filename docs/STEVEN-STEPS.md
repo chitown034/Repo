@@ -384,3 +384,23 @@ Reply "done N" (or "skip N") after each step and Claude keeps the dashboards in 
 ### 1i. Fieldy meeting digests — your call (added 2026-10-23)
 
 The daily "Fieldy → brain" task writes a digest of each recorded meeting (first names, Fieldy's summary, action items) to `memory/fieldy-meetings.md` in the repo. The repo is public today (step 1g). The digest never reaches the 6D page or Drive, but it is in the repo. Say "keep the Fieldy digest" or "make the repo private first" — until then the task runs and the file stays first-names-only.
+
+## 9 · New this round (2026-11-01) · about 20 minutes (Zoho ticks, the Lofty sign-in, your birthday list, VEED key)
+
+36. **Zoho — the two ticks that unblock both dashboards (5 min).** Zoho CRM → Setup → Security Control → Profiles → the
+    profile of the user who connected Zoho → Developer Permissions: turn ON **"Zoho CRM API Access"** and set **"API Access
+    for Zoho MCP"** to at least **Get Data**. Then say "Zoho done". The routine *Zoho CRM feed* re-tests at 05:41 · 11:41 ·
+    16:41 · 21:41 PT and fills the Zoho boards on the Command Deck and the Broker Command Center by itself; VANESSA's Zoho
+    card (Test connection) goes green on its next click. Both connections already exist; nothing to reconnect first. If the
+    Composio path still says 403 after the tick, re-authorise that one connection once (Composio → Zoho → reconnect).
+37. **Lofty connector (3 min, optional).** claude.ai → Settings → Connectors → **Lofty** shows "connection incomplete".
+    Remove it, then Add custom connector again with the server URL you used, and finish the sign-in it opens. Lofty has no
+    official MCP server, so this entry only works if that URL is a server you run; your Lofty data is already live on the
+    Command Deck and the Broker Command Center through the Mac bridge, so you can also just remove the entry.
+38. **Birthday list (10 min, once).** In Chrome on facebook.com/events/birthdays run the *Birthday Calendar Exporter for
+    Facebook* extension → it downloads `birthday-calendar.ics`. Send it to Claude with "load my birthday calendar" (or paste
+    names + dates). Add a photo only where the person gave it to you. Cards start the next morning at 9:17 AM PT: texted to
+    your phone to tap-post; to let the routine post `page` cards to your Facebook Page by itself, say "post birthdays to my
+    Page". Logos: drop the LPT and Patriot Pacific PNGs into `integrations/birthday-posts/` and name them in `brand.json`.
+39. **VEED (2 min + a decision).** VEED workspace → API → create a key → on the Mac `~/.config/veed/.env` as
+    `VEED_API_KEY=…` (chmod 600). Say the monthly credit cap you accept; until then every VEED call stays a dry run.

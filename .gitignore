@@ -10,3 +10,8 @@ exports/*
 !exports/notebooklm/
 inbox/*
 !inbox/README.md
+
+# birthday cards rendered per day (names of friends and clients) — never in the public repo
+integrations/birthday-posts/out/
+integrations/birthday-posts/birthdays.csv
+integrations/birthday-posts/*.ics

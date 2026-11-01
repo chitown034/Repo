@@ -5,6 +5,12 @@ description: "Sync Zoho CRM — Steven's system of record for the mortgage pipel
 
 # zoho-crm-sync — Zoho CRM → Command Deck (via Composio)
 
+> **2026-11-01.** A second path exists: the claude.ai **Zoho CRM connector** (`mcp__Zoho_CRM__getRecords`, module `Leads`/`Deals`).
+> It returns the same 403 today, with the permission name `Crm_Implied_RetriveFor_ZohoMcp` — the profile needs "API Access for
+> Zoho MCP" (≥ Get Data) as well as "Zoho CRM API Access". The cloud routine *Zoho CRM feed — re-test and fill both dashboards*
+> runs this procedure 4×/day on the connector path and writes the three docs to the Command Deck **and** the Broker Command
+> Center (`https://claude.ai/artifact/XFx2H7cf8mnS8e8hjFzxNg`, mirrored copies carry `mirroredFrom`). Same shapes, same guardrails.
+
 Status today (verified 2026-09-22 08:17 UTC): the Composio connection is **ACTIVE** (account
 `zoho_talite-spike`, created 2026-09-21) but **every CRM call returns HTTP 403 NO_PERMISSION
 `Crm_Implied_Api_Access`** — reproduced on `ZOHO_LIST_LEADS` and `ZOHO_LIST_DEALS`. Connected is not

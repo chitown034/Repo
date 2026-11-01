@@ -14,6 +14,8 @@ LINKS: list[dict] = [
     {"key": "brain6d", "label": "6D Brain", "url": "https://claude.ai/artifact/VoWHW4YuKUCyNqGZMikEv8", "store": None, "layer": "brain6d"},
     {"key": "desk", "label": "Action Desk (what only Steven can do)", "url": "https://claude.ai/artifact/9S8G2ZhhqP1iUsPZrPsmRn", "store": None, "layer": None},
     {"key": "botcrew", "label": "The Bot Crew", "url": "https://claude.ai/artifact/B8BPDvyE55p8hT7PTyKbjG", "store": "store:vanessa", "layer": None},
+    {"key": "bcc", "label": "Broker Command Center (real estate; Lofty live via the deck relay)", "url": "https://claude.ai/artifact/XFx2H7cf8mnS8e8hjFzxNg", "store": None, "layer": "deck"},
+    {"key": "vanessa_cmd", "label": "VANESSA Command Dashboard (loan / LO desk; Zoho card calls Composio live)", "url": "https://claude.ai/artifact/Ce5m1WNWsQW7y2u91EA8az", "store": None, "layer": "deck"},
     {"key": "repo", "label": "Repo (GitHub, branch claude/stoic-cori-pvn3f8)", "url": "https://github.com/chitown034/Repo/tree/claude/stoic-cori-pvn3f8", "store": None, "layer": "repo"},
     {"key": "drive", "label": "Google Drive · SECOND BRAIN", "url": "https://drive.google.com/drive/folders/16sh0SNlicvHOEpAtTUufI504agSlQRaX", "store": "store:drive", "layer": "drive"},
     {"key": "notebooklm", "label": "NotebookLM (notebook.google.com)", "url": "https://notebook.google.com/", "store": "store:notebooklm", "layer": "notebooklm"},
