@@ -104,3 +104,29 @@ if have npx; then
     else echo "  archify install failed (npx skills add returned an error) - nothing written to ~/.zprofile; rerun later"; fi
   fi
 else echo "  npx not found - install Node (brew install node) first"; fi
+echo; echo "== From the ~64 screenshots (2026-11-01) - ~45 repos read; details in REGISTRY-2026-11-01.md"
+copyskills "Social media skills (15 of 17, text-only, drafts only - Alexandra checks every post)" charlie947/social-media-skills 10ca79c voice-builder post-writer hook-generator post-formatter content-matrix newsletter-voice pinned-comment quote-post graphic-designer gemini-infographic gemini-carousel youtube-thumbnail profile-optimizer analytics-dashboard niche-research
+echo "  Held for your yes: Apillow Zillow MCP (key + Zillow terms - Alexandra), Cloudflare Code Mode MCP (needs a Cloudflare account),"
+echo "  skill-recorder (Copilot sign-in, records screen), postiz / social-media-agent (post as you - Alexandra), openscreen, flux2, ACE-Step."
+echo "  NEVER installed: Turnitout-Humanizer (detector evasion), BillionMail (root server installer), openclaude, pinchtab."
+echo; echo "== Steven asked for these two by name (2026-11-01) - installed in their safe form"
+echo "- AI website cloner (JCodesMore/ai-website-cloner-template, MIT, reviewed ee3f5a2): a Next.js project with a /clone-website command."
+echo "  Use it only on sites you own or have written permission to copy (copyright, trademark, DRE/NMLS ad rules: Alexandra)."
+if have git && ask "Clone it into ~/Projects/ai-website-cloner (nothing runs; you open it in Claude Code later)?"; then
+  mkdir -p "$HOME/Projects"
+  if [ -d "$HOME/Projects/ai-website-cloner" ]; then echo "  already there"; else
+    git -c core.hooksPath=/dev/null clone -q https://github.com/JCodesMore/ai-website-cloner-template.git "$HOME/Projects/ai-website-cloner" &&
+    h="$(git -C "$HOME/Projects/ai-website-cloner" rev-parse --short=7 HEAD)" && { [ "$h" = "ee3f5a2" ] || echo "  note: upstream moved since review (ee3f5a2 -> $h)"; } &&
+    echo "  done. To use: cd ~/Projects/ai-website-cloner && npm install && claude, then type /clone-website <your own site URL>"
+  fi
+fi
+echo "- Agentic Awesome Skills library (sickn33/antigravity-awesome-skills, MIT, reviewed 6f819e3): ~2,900 skills."
+echo "  Kept as a LIBRARY in ~/skill-library, not loaded into Claude Code: 2,900 skill descriptions in every turn would"
+echo "  slow every session and burn your limit. Pull any one skill in when you want it: bash ~/Repo/scripts/skill-pick.sh <name>"
+if have git && ask "Download the library into ~/skill-library/agentic-awesome-skills (~28,000 files, nothing runs)?"; then
+  mkdir -p "$HOME/skill-library"
+  if [ -d "$HOME/skill-library/agentic-awesome-skills" ]; then git -C "$HOME/skill-library/agentic-awesome-skills" pull -q --ff-only && echo "  updated"; else
+    git -c core.hooksPath=/dev/null clone -q --depth 1 https://github.com/sickn33/antigravity-awesome-skills.git "$HOME/skill-library/agentic-awesome-skills" &&
+    echo "  done: $(ls "$HOME/skill-library/agentic-awesome-skills/skills" | wc -l | tr -d ' ') skills in the library. Search: bash ~/Repo/scripts/skill-pick.sh --find <word>"
+  fi
+fi
