@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-31T19:03:10Z",
+ "generated": "2026-11-01T20:19:00Z",
  "seats": [
   {
    "name": "Steve",
@@ -554,7 +554,10 @@
    "export leads",
    "webhook",
    "zoho lofty",
-   "smart plan"
+   "smart plan command deck feed",
+   "live feed",
+   "deck relay",
+   "lofty live"
   ],
   "Owen": [
    "autopilot",
@@ -569,7 +572,10 @@
    "run everything",
    "monday kickoff",
    "friday wrap",
-   "automation & ai pod"
+   "automation & ai pod automation control",
+   "orchestrator",
+   "what runs automatically",
+   "job schedule"
   ],
   "Beatrice": [
    "dre",
@@ -611,7 +617,19 @@
    "drill",
    "script practice",
    "lesson",
-   "onboarding agent"
+   "onboarding agent training hub",
+   "curriculum",
+   "study plan",
+   "exam prep",
+   "dre exam",
+   "continuing education",
+   "ce hours",
+   "quiz me",
+   "mock exam course material",
+   "chapter",
+   "practice test",
+   "teach me",
+   "foundational law"
   ],
   "Steve": [
    "draft",
@@ -678,7 +696,9 @@
    "angry client",
    "honors",
    "unhappy client",
-   "complaint"
+   "complaint stale work",
+   "overdue backlog",
+   "escalation digest"
   ],
   "Imani": [
    "pcs",
@@ -964,7 +984,8 @@
    "process coverage",
    "coverage register",
    "which doc is stale",
-   "who writes"
+   "who writes self-heal",
+   "failing health check"
   ],
   "Sienna": [
    "bland",
@@ -977,6 +998,28 @@
    "tcpa consent",
    "voicemail drop",
    "phone follow-up"
+  ],
+  "Dax": [
+   "role play",
+   "role-play",
+   "roleplay",
+   "spar",
+   "sparring",
+   "practice call",
+   "objection drill",
+   "mock call",
+   "rehearse"
+  ],
+  "Regina": [
+   "new law",
+   "new laws",
+   "regulation",
+   "effective date",
+   "legislation",
+   "reference library",
+   "statute",
+   "ordinance",
+   "what changed"
   ],
   "Isabel": [
    "loan processing",
