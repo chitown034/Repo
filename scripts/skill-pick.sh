@@ -13,11 +13,14 @@ case "${1:-}" in
   ""|-h|--help) sed -n '2,7p' "$0"; exit 0 ;;
   --find) shift; w="${*:-}"; [ -n "$w" ] || { echo "give a word"; exit 1; }
     for d in "$LIB"/*/; do n="$(basename "$d")"; f="$d/SKILL.md"; [ -f "$f" ] || continue
-      if echo "$n" | grep -qi -- "$w" || grep -qi -- "$w" "$f"; then
+      if echo "$n" | grep -qiF -- "$w" || grep -qiF -- "$w" "$f"; then
         printf '%-40s %s\n' "$n" "$(grep -m1 -i '^description:' "$f" | cut -c14-110)"; fi
     done | head -40; exit 0 ;;
   --remove) n="${2:-}"; case "$n" in ""|*/*|.*) echo "bad name"; exit 1 ;; esac
-    [ -d "$DEST/$n" ] && rm -rf "${DEST:?}/$n" && echo "removed $n" || echo "$n is not installed"; exit 0 ;;
+    [ -d "$DEST/$n" ] || { echo "$n is not installed"; exit 0; }
+    [ -f "$LIB/$n/SKILL.md" ] || { echo "$n did not come from the library - left alone (remove it by hand if you mean it)"; exit 1; }
+    printf 'Remove %s from %s? [y/N] ' "$n" "$DEST"; read -r a || a=''
+    case "$a" in y|Y|yes) rm -rf "${DEST:?}/$n" && { echo "removed $n"; exit 0; }; echo "could not remove $n"; exit 1 ;; *) echo "kept"; exit 0 ;; esac ;;
 esac
 n="$1"; case "$n" in */*|.*) echo "bad name"; exit 1 ;; esac
 src="$LIB/$n"; [ -f "$src/SKILL.md" ] || { echo "no skill named $n (try --find)"; exit 1; }
