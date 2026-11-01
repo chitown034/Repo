@@ -1,6 +1,6 @@
 # Router (CLAUDE.md) and the index of every page
 
-Second Brain export for NotebookLM · as of 2026-10-26 · bundle `01-router-and-index`.
+Second Brain export for NotebookLM · as of 2026-11-01 · bundle `01-router-and-index`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 

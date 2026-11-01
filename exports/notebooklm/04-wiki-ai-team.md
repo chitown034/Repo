@@ -1,6 +1,6 @@
 # AI team: org chart, seats, pods, toolkit, push-button system
 
-Second Brain export for NotebookLM · as of 2026-10-26 · bundle `04-wiki-ai-team`.
+Second Brain export for NotebookLM · as of 2026-11-01 · bundle `04-wiki-ai-team`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 
@@ -226,8 +226,8 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Elena | security, credential, password, key, token, access, breach, privacy, pii, data risk, backup, reverse engineer, reverse engineering, pairing link | `docs/` |
 | Elon | feasibility, architecture, build, engineer, prototype, integration cost, refactor, brain, second brain | `brain/README.md` |
 | Harrison | loan, mortgage, va, fha, usda, irrrl, jumbo, non-qm, conventional, rate, refinance, pre-approval, dti, ltv, assessor, apn, property tax, piti, amortization, payment scenario, loan scenario, tax sheet | `wiki/mortgage-programs/` |
-| Gwen | buyer, showing, tour, offer, house hunt | `wiki/real-estate-playbooks/` |
-| Marguerite | listing, seller, list price, cma, staging | `wiki/real-estate-playbooks/` |
+| Gwen | buyer, showing, tour, offer, house hunt, buyer checklist, moving checklist, walk-through checklist, first year homeowner, house hunting kit | `wiki/real-estate-playbooks/` |
+| Marguerite | listing, seller, list price, cma, staging, staging checklist, home prep, declutter, curb appeal, photo day, showing ready, seller checklist | `wiki/real-estate-playbooks/` |
 | Maxwell | coaching, coach, weekly review, accountability | `wiki/ai-team/mentors-and-benches.md` |
 | Kevin | personal development, habit, 11-dimension, discipline, mindset, singles event, speed dating, social event | `wiki/ai-team/mentors-and-benches.md` |
 | James | family office, estate, trust, wealth plan, legacy | `wiki/ai-team/mentors-and-benches.md` |
@@ -239,20 +239,20 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Open House Captain | open house, sign-in sheet, sign-in, visitor, thank-you, thank you note | `wiki/ai-team/desk-seats.md` |
 | Travel Desk | travel, trip, flight, hotel, points vs cash, points, miles, price watch, gondola, itinerary | `wiki/ai-team/desk-seats.md` |
 | Meeting Scribe | meeting recap, recap, meeting notes, action items, fieldy, zoom, meeting minutes, debrief | `wiki/ai-team/desk-seats.md` |
-| Maya | market data, median price, zip code, neighborhood, school, schools, days on market, months of supply, inventory, comps, city stats, redfin, caaspp, community ranking | `wiki/real-estate-playbooks/` |
+| Maya | market data, median price, zip code, neighborhood, school, schools, days on market, months of supply, inventory, comps, city stats, redfin, caaspp, community ranking, demographics, median age, population, employers, unemployment, mello-roos, cfd, special assessment, tax rate, lowest taxes, transfer tax, sales tax, zip code, area brief | `wiki/real-estate-playbooks/` |
 | Rosa | pcs, military, base, bah, relocation, orders, scra, camp pendleton, miramar, coronado, march arb, deployment, rent buy or wait, rent vs buy, duty radius, bah affordability, breakeven, military objection, military & relocation pod | `wiki/real-estate-playbooks/military-relocation.md` |
-| Quincy | lofty, pabbly, integration, connector, crm sync, import leads, export leads, webhook, zoho lofty, smart plan | `integrations/CONNECTIONS.md` |
-| Owen | autopilot, sweep, auto task, follow-up task, dedupe, daily automation, launchpad, mission, push button, run everything, monday kickoff, friday wrap, automation & ai pod | `docs/AUTOMATION-MAP-2026-10-20.md` |
+| Quincy | lofty, pabbly, integration, connector, crm sync, import leads, export leads, webhook, zoho lofty, smart plan command deck feed, live feed, deck relay, lofty live | `integrations/CONNECTIONS.md` |
+| Owen | autopilot, sweep, auto task, follow-up task, dedupe, daily automation, launchpad, mission, push button, run everything, monday kickoff, friday wrap, automation & ai pod automation control, orchestrator, what runs automatically, job schedule | `docs/AUTOMATION-MAP-2026-10-20.md` |
 | Beatrice | dre, broker supervision, trust account, file review, license renewal, e&o, record retention, broker compliance | `wiki/mortgage-programs/disclosure-timing.md` |
 | Paula | probate, trust sale, iaea, court confirmation, overbid, short sale, foreclosure, executor, estate sale | `wiki/real-estate-playbooks/` |
 | Riley | alliance, cpa, attorney, financial planner, partner, lunch and learn, professional network, co-marketing | `wiki/real-estate-playbooks/referral-reciprocity.md` |
-| Ingrid | training, academy, role-play, roleplay, quiz, drill, script practice, lesson, onboarding agent | `wiki/ai-team/mentors-and-benches.md` |
+| Ingrid | training, academy, role-play, roleplay, quiz, drill, script practice, lesson, onboarding agent training hub, curriculum, study plan, exam prep, dre exam, continuing education, ce hours, quiz me, mock exam course material, chapter, practice test, teach me, foundational law | `wiki/ai-team/mentors-and-benches.md` |
 | Steve | draft, drafts, inbox triage, follow-up draft, digital twin, tomorrow prep, meeting brief | `projects/ai-team.md` |
-| Winston | car forms, c.a.r. forms, rpa, contingency removal, nbp, request for repair, transaction qa, file audit, form library, tds, spq, avid, forms tutor, clause by clause, forms matrix, form pdf, zipform, which forms, forms hub, skyslope, skyslope forms, when needed matrix, when-needed, required forms, forms checklist, deal type forms, 548 forms | `wiki/real-estate-playbooks/transaction-stages.md` |
+| Winston | car forms, c.a.r. forms, rpa, contingency removal, nbp, request for repair, transaction qa, file audit, form library, tds, spq, avid, forms tutor, clause by clause, forms matrix, form pdf, zipform, which forms, forms hub, skyslope, skyslope forms, when needed matrix, when-needed, required forms, forms checklist, deal type forms, 548 forms, skyslope library, library copies, lpt realty forms, form lookup | `wiki/real-estate-playbooks/transaction-stages.md` |
 | Sterling | 5-star, five star, client experience, service standard, ritz, delight, client preferences, nps, after-care, concierge service, value add, client experience pod | `wiki/real-estate-playbooks/buyer-process.md` |
-| Juliet | escalation, service recovery, blown closing, denied loan, failed appraisal, angry client, honors, unhappy client, complaint | `wiki/real-estate-playbooks/transaction-stages.md` |
+| Juliet | escalation, service recovery, blown closing, denied loan, failed appraisal, angry client, honors, unhappy client, complaint stale work, overdue backlog, escalation digest | `wiki/real-estate-playbooks/transaction-stages.md` |
 | Imani | pcs, military family, base, bah, relocation briefing | `wiki/real-estate-playbooks/military-relocation.md` |
-| Logan | lpt, lpt realty, hybridshare, revenue share, downline, recruiting, recruit, business builder, brokerage partner, cap, stock award, sponsor, lpt growth pod | `wiki/real-estate-playbooks/referral-reciprocity.md` |
+| Logan | lpt, lpt realty, hybridshare, revenue share, downline, recruiting, recruit, business builder, brokerage partner, cap, stock award, sponsor, lpt growth pod, lpt policy, p&p, cabrokers, managing broker, broker of record, bill hays, ask a broker, 48-hour upload, funding request, broker signature, dba | `wiki/real-estate-playbooks/referral-reciprocity.md` |
 | Wren | referral ledger, reciprocal referral, referral fee, partner tier | `wiki/real-estate-playbooks/referral-reciprocity.md` |
 | Bianca | absorption, months of inventory, price per sqft, list-to-sale, market report, pricing authority | `wiki/real-estate-playbooks/listing-process.md` |
 | Lucia | eligibility, guideline, va m26-7, fha 4000.1, usda, program fit | `wiki/mortgage-programs/program-selection.md` |
@@ -260,7 +260,7 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Vera | sphere, soi, past client, review request, home anniversary, post-close, preference profile, closing gift, lifetime cadence | `wiki/real-estate-playbooks/referral-reciprocity.md` |
 | Rafael | workflow studio, workflow, automation flow, lifecycle automation, trigger, automation coverage | `wiki/dashboard-ops/index.md` |
 | Celeste | coach hq, coaching, training plan, skills assessment, recommendation, role-play gym, weekly 1:1, coach, skills plan, knowledge & coaching pod | `wiki/ai-team/mentors-and-benches.md` |
-| Lenora | q&a, question and answer, glossary, reference library, roles and responsibilities, raci, broker's guide, law library, who does what, guidebook, office policy manual, property management guide, employment law, short sale guide, foreclosure guide, lead paint, environmental hazards, earthquake safety, new broker start-up, team building | `wiki/index.md` |
+| Lenora | q&a, question and answer, glossary, reference library, roles and responsibilities, raci, broker's guide, law library, who does what, guidebook, office policy manual, property management guide, employment law, short sale guide, foreclosure guide, lead paint, environmental hazards, earthquake safety, new broker start-up, team building, transaction playbook, every step, rpa deadline, legal holiday deadline, wire verification | `wiki/index.md` |
 | Showing Coordinator | showingtime, showami, showing, tour, schedule a showing, showing assistant, lockbox, showing feedback, route, route planner, drive time, showing route, optimize route | `wiki/real-estate-playbooks/showing-operations.md` |
 | Halle | new construction, builder, new build, builder incentive, model home | `wiki/real-estate-playbooks/buyer-process.md` |
 | Lorenzo | investor, income property, 1031, cash flow, fourplex, duplex, adu, cap rate, investor & special sales pod | `wiki/real-estate-playbooks/buyer-process.md` |
@@ -275,6 +275,13 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Inbox Sentinel | inbox watch, inbox sentinel, email watch, important email, reply needed, inbox alert | `wiki/ai-team/desk-seats.md` |
 | Aria | 7-star, seven star, anticipate, anticipation, friday pulse, status update, response time, sla, response standard, homeowners exemption, supplemental tax, moving kit | `wiki/ai-team/desk-seats.md` |
 | Kai | kaizen, bottleneck, capacity, scale, scalability, process improvement, workload, hire trigger, efficiency, automation coverage | `wiki/ai-team/desk-seats.md` |
+| Sloane | doc screener, screen document, document review, fine print, hidden clause, clause, hidden fee, prelim, title report, cc&rs, hoa documents, closing disclosure, loan estimate, lease review, contract review, deadline extraction | `wiki/ai-team/desk-seats.md` |
+| Nova | coverage, uncovered, who owns, owner for, sync status, is it synced, live data, sweep, what is missing, process gap, health check, process coverage, coverage register, which doc is stale, who writes self-heal, failing health check | `wiki/ai-team/desk-seats.md` |
+| Sienna | bland, ai call, call center, voice agent, ai isa, dial, call queue, tcpa consent, voicemail drop, phone follow-up | `wiki/ai-team/desk-seats.md` |
+| Dax | role play, role-play, roleplay, spar, sparring, practice call, objection drill, mock call, rehearse | `wiki/ai-team/desk-seats.md` |
+| Regina | new law, new laws, regulation, effective date, legislation, reference library, statute, ordinance, what changed | `wiki/ai-team/desk-seats.md` |
+| Isabel | loan processing, processor, conditions, underwriting conditions, document checklist, voe, vod, application date, loan estimate, le deadline, appraisal order, intent to proceed | `wiki/mortgage-programs/` |
+| Reyes | closing disclosure, cd timing, trid, consummation, rate lock, lock expiration, funding, rescission, signing appointment, clear to close | `wiki/mortgage-programs/` |
 
 ## Pods — standing cross-functional teams that work in parallel
 
@@ -484,6 +491,212 @@ Added 2026-10-25. Reports to Owen; member of the Automation & AI pod.
   escrows with a late milestone, automation coverage. Ideas are scored by impact ÷ effort, and the
   winners become missions, autopilot rules or SOPs.
 Launchpad mission: *Monthly Kaizen review*.
+
+## Sloane — Document Screening Analyst (Doc Screener)
+
+Added 2026-10-26. Reports to Winston; member of the Escrow & Closing, Compliance & Risk and Listing pods.
+Owns the Broker Command Center **Doc Screener** (Properties → Doc Screener):
+- **Deterministic first pass.** Finds every date, dollar amount, percentage, day count, blank or checkbox,
+  and 60+ risk phrases (as-is, waivers, liquidated damages, arbitration, auto-renewal, Mello-Roos, PACE,
+  solar lease, transfer fees, "notwithstanding", deemed approval and others), each with its page number.
+- **AI read.** Long files are read in parts and merged into one report: summary, bottom line, parties,
+  key terms, dates, timelines with computed deadlines, clauses in plain English (who each one favors,
+  risk), hidden items, money, obligations, blanks and missing pages, conflicts, questions and next actions.
+  A second-pass reviewer then looks for anything the first pass missed.
+- **Actions.** Deadlines go to tasks or Google Calendar. Ask the document; compare two versions; download
+  the report; draft a client summary email. High-risk findings create a review task for Steven.
+Launchpad mission: *Screen a document package*. Vanessa tool: `doc_screener`. Not legal advice.
+
+## Nova — Coverage & Process Auditor
+
+Added 2026-10-26. Reports to Owen; member of the Automation & AI and Compliance & Risk pods.
+Owns the Broker Command Center **Coverage Engine & Sync** (System → Coverage Engine & Sync):
+- **Daily sweep.** Detects offers received, showings done without feedback, listing agreements expiring
+  within 21 days, consults booked on TidyCal, screened documents with high-risk findings, cancelled
+  escrows and low appraisals, and fires the matching workflow for each. Gives every open task an owner
+  and the named seat.
+- **Process coverage matrix.** For every page in the dashboard: owning seat, pod, whether the seat lists
+  it, automation, Vanessa tool and health check. Uncovered processes go to Owen and Kai's Kaizen board.
+- **Live-sync board.** Freshness of autopilot, the sweep, TidyCal, Headline News, market data, Lofty and
+  backups against each one's standard, with one-press *Sync everything*.
+- **Health checks added:** offers answered in 24 h, showing feedback in 2 days, no listing expiring
+  unplanned, every escrow's documents screened, news and TidyCal fresh, response standards 80%+,
+  every task owned, event workflows on, sweep ran today.
+Launchpad mission: *Weekly coverage & sync audit*. Vanessa tool: `coverage_report`.
+- **Command Deck (added 2026-10-26).** Owns the process-coverage register — every document the deck reads, its
+  writer, cadence and owning seat (`brain/coverage/writers.json`, `bin/brain coverage`) — and the live **Process
+  coverage** card at the top of Orchestration & Loop Engineering, which scores each automated document from its own
+  stamp in the database. The freshness sweep's STEP 1b and the Big-moves "Cover <doc>" signals are hers. Rules and the
+  gap table: `wiki/dashboard-ops/process-coverage.md`. Proposes fixes to the writer's owner seat; never edits a live
+  routine.
+Also new: the **Life & Wealth Pod** (lead James: Kevin, Apex, Marcus, Travel Desk, Tax Assessor Agent)
+keeps Steven's personal finance, habits, trading research and travel separate from client work.
+
+## Isabel — Loan Processing & Conditions Desk
+
+Added 2026-10-26. Reports to Harrison; member of the Loan Pod.
+Runs the Broker Command Center **Loan Pipeline** file from application to clear-to-close: records the TRID
+application date and the Loan Estimate deadline (3 business days), keeps the document checklist by program
+and sends one request list, orders VOE/VOD, title and insurance, orders the appraisal after intent to
+proceed and delivers the borrower's copy (ECOA), enters every underwriting condition with owner and due
+date, flags changed circumstances to Alexandra, and texts the borrower a status every two days. After
+funding: first payment and escrow-account follow-up.
+
+## Reyes — Closing & Funding Coordinator (TRID timing)
+
+Added 2026-10-26. Reports to Harrison; member of the Loan Pod.
+Owns the back end of every loan: consummation date, Closing Disclosure received 3 business days before
+(every day but Sunday and federal holidays), LE-to-CD comparison and tolerance check with Alexandra,
+rate-lock expiration calendar and extensions, signing logistics, the refinance rescission period, funding
+conditions, the wire call-back with Elena, recording and the final file. Keeps the loan calendar in step
+with Carmen's escrow timeline so clear-to-close lands before the loan contingency.
+
+**Loan Pod** (lead Harrison: Isabel, Reyes, Lucia, Lender Matchmaker, Inbox Sentinel, Refi Watch Analyst,
+Rosa, Alexandra, Carmen). Fourteen stages, each with an owned workflow fired when the file advances:
+pre-qualification, pre-approval, application, Loan Estimate, lock, processing, appraisal, underwriting,
+conditions, clear to close, Closing Disclosure, signing, funding, post-close.
+
+## Winston — When-Needed Matrix 2.0 (addition, 2026-10-26)
+
+The Broker Command Center's When-Needed Matrix now covers 237 forms (C.A.R. plus 12 LPT Realty brokerage
+forms) across 11 stages (Consult, Listing, Buyer Rep, Offer, Escrow Open, Contingencies, Loan & Appraisal,
+Closing, Post-close, Leasing & Tenancy, Broker File) and 20 deal types, with four levels: required every
+deal, required if triggered, optional, broker admin. 24 triggers (pre-1978, HOA, probate, trust, tenant,
+rent-back, multiple offers, VA/FHA, foreign seller, solar, Mello-Roos and more) turn conditional forms into
+required ones. Stage checklists tick against a live escrow and sync across devices; missing forms become
+tasks dated by stage (daily sweep); the Doc Screener ticks a form when the matching document is screened;
+the MLO hand-off list goes to the loan side at escrow open. Vanessa tool: `when_needed`.
+
+## Winston — SkySlope library (addition, 2026-10-26)
+
+The Broker Command Center now carries all 548 SkySlope library forms from Steven's Browse Libraries (C.A.R. 445,
+LPT Realty 100, CRMLS 2, SkySlope 1), imported from the LO dashboard's library (pulled 2026-10-22) and grouped
+into 314 base forms with stages, deal types, required levels, who signs, how-to steps, tips, loan-side notes and
+44 line-by-line walkthroughs. The Forms Hub and the When-Needed Matrix run on this library; the matrix also keeps
+34 C.A.R. forms that are not in the library. Vanessa tool: `skyslope_form`.
+
+## Maya — Area Intelligence (addition, 2026-10-31)
+
+The Broker Command Center's Area Intelligence page (Local Markets) joins the Market Explorer's 382 Southern
+California cities and communities with demographics (Census ACS 2023 5-year: population, median age, household
+income, home value, owner-occupancy, education, unemployment, rent, veterans — read live from the Census API in
+the viewer's browser when available, otherwise an embedded seed), schools, major employers and military, typical
+property tax rates, Mello-Roos / CFD amounts and communities, special assessments, transfer and sales tax. Sortable
+by any metric, lowest-tax and Mello-Roos rankings, ZIP lookup, side-by-side compare and a client-ready area brief.
+The Tax Assessor Agent keeps the tax tables current. Vanessa tool: `area_intel`.
+
+## Logan — LPT California broker & policies (addition, 2026-10-31)
+
+LPT HQ in the Broker Command Center gains a **CA Broker & Policies** tab: the California broker-in-charge
+(Bill Hays, Managing Broker – California, [phone masked]; office 10620 Treena Street, Suite 230, San Diego, CA
+92131; [phone masked] or [phone masked]; [e-mail masked]; 8 AM–5 PM PST; the 8/19/2025 P&Ps list Leah
+Cowley as Broker of Record and Craig Sasville as Managing Broker), standing meetings (Ask A Broker Thursdays
+1:00–1:45 PM, Zoom 85968203826; Dotloop class and Getting Paid Tuesdays 8 AM), the C.A.R. Legal Hotline, and
+all 29 California Policies & Procedures (8/19/2025) as searchable rules. Automations: 48-hour upload workflows
+on new escrows and listings, final file 48 hours before COE, funding-request check at close, CE proof 15 days
+before renewal, broker-only signature flag (COBR, TOBR, COL, RFA, CI, CDA, MLSA, SELI) in the When-Needed
+Matrix, AVID and upload health checks. Beatrice enforces; Alexandra checks advertising. Vanessa tool: `lpt_policy`.
+
+## Client checklists (addition, 2026-10-31)
+
+The Broker Command Center adds 22 client-facing checklists (242 items), tracked per client with copy,
+Gmail draft, tasks and AI tailoring. Marguerite owns the 12 seller lists: 8-weeks-out home prep, declutter
+and depersonalize, repairs before photos, deep clean, staging room by room, curb appeal, photo and video day,
+showing-ready routine, reviewing offers, during escrow, move-out and closing day, vacant-home care. Gwen owns
+the 10 buyer lists: getting ready, house-hunting day kit, making an offer, inspection period, keeping the loan
+on track, moving preparation, final walk-through, closing and first week, first-year homeowner, military PCS /
+remote purchase. The listing, buyer, escrow and close missions hand the right list to the client at the right
+moment. Vanessa tool: `client_checklists`.
+
+## Sienna — AI Voice ISA (Bland.ai call center)
+
+Added 2026-10-31. Reports to Priya; member of the Growth & Marketing and Buyer pods.
+Runs the Broker Command Center **AI Call Center** (Clients → AI Call Center): eight call playbooks
+(speed-to-lead, follow-up, appointment confirmation, no-show rebook, open-house follow-up, seller inquiry,
+past-client check-in, mortgage check-in), a daily queue built from pipeline rules, and Bland.ai dialing either
+direct from the browser (key kept in local storage only) or through a Pabbly relay. Hard gates before every call:
+recorded prior express written consent for AI/automated calls, not on DNC, 8 AM–9 PM in the recipient's time
+zone, one call a day and three a week per contact; every opening identifies Sienna as an AI assistant and says
+the call may be recorded. Results (summary, transcript, recording, outcome) are applied to the contact: appointments
+move the stage and create confirmation tasks, callbacks become tasks, stop requests flip the contact to DNC.
+Never quotes rates or gives legal or tax advice. Vanessa tool: `ai_call_center`. Mission: *AI call sprint*.
+
+## Dax — Live Role-Play Sparring Partner
+
+Added 2026-10-31. Reports to Celeste; member of the Coaching pod.
+Plays the client in the Broker Command Center **Live Role Play** (Training → Live Role Play): graded sparring
+against all 390 scripts and 846 scenarios, with persona, temperament, channel (phone, in person, video, text)
+and difficulty (1–5) controls; the script on glass with live line suggestions from the library; objection
+injection; voice out (speech synthesis) and voice in (browser speech recognition); hints from Ingrid (−5 after
+two); a six-point grade (listening, discovery, script fidelity, objection handling, compliance, close) with a
+compliance cap at 59 for fair-housing, legal/tax/rate advice, promised outcomes, touring without a BRBC or
+disparaging another agent; debriefs (what the client was thinking, best line, say-this-instead); the daily
+three-script drill picked by date; streaks and weak-skill tracking. Three 85s in a row raise the difficulty;
+three grades under 65 book a Celeste coaching review. Vanessa tool: `role_play`. Mission: *Sparring week*.
+
+## Regina — Regulatory Watch Analyst
+
+Added 2026-10-31. Reports to Alexandra; member of the Compliance & Risk and Coaching pods.
+Keeps the **New Rules & Laws** desk inside the Training & Regulations Hub: 113 tracked California (64) and
+federal (49) changes from 2024 to 2027 — title, bill or rule, effective date, status (in effect, upcoming,
+proposed, vacated, expired), area, roles affected (agent, broker, TC, MLO), what changed, what to do, forms,
+penalty, source and confidence. Turns each Do list into dated tasks (Beatrice), auto-tasks upcoming effective
+dates 45 days out, tracks acknowledgments by role, triages law headlines from the weekly Headline News into
+the desk, and curates the 132-source **Reference Library** (federal, state, LA/OC/RV/SD local, association),
+flagging entries that need link or fact verification. Vanessa tools: `new_laws`, `reference_library`.
+Mission: *Quarterly regulatory review*.
+
+## Automation Control (Owen, with Nova and Juliet)
+
+Added 2026-10-31. The Broker Command Center orchestrator runs eight jobs on their own cadence while the
+dashboard is open, instead of autopilot running only on the first open of the day: autopilot with every sweep
+(hourly), TidyCal sync (every 2 h, when connected), self-healing (hourly: every failing health check becomes a
+task for the seat the router picks, auto-closed when the check passes — Nova), duplicate collapse (every 4 h:
+date-stamped sweep tasks keep only the newest copy, with undo), stale-work escalation (twice a day: tasks 3+
+days overdue grouped by owner into one task for Juliet), the AI call queue rebuild (every 3 h; dials only if
+Auto-dial is on), law effective-date watch, and the Command Deck snapshot (every 30 min). The snapshot now
+carries the full workflow list, orchestrator job status, every AI seat with what it owns, pods and missions, and
+the Command Deck renders them live. Vanessa tool: `automation_control`.
+
+## Training Hub course material (Ingrid, with Regina)
+
+Added 2026-10-31. Every curriculum module now carries full written course material: 34 modules (salesperson
+a1–a14, broker b1–b7, transaction coordinator t1–t6, MLO m1–m7), 179 chapters and about 85,000 words of
+California-specific teaching text with takeaways, numbers to know, traps, authorities and a 10-question practice
+test graded in the page (340 questions; a pass at 70% completes the module's quiz). Chapters are ticked as read;
+reading every chapter marks the module read. The New Rules & Laws desk gained 45 foundational laws (filter Type →
+Foundational law) next to the 113 recent changes, and the reference library grew to about 170 official sources.
+Items the writers could not confirm are marked "verify" in the text. Vanessa tool: `course_material`.
+
+
+---
+
+<!-- source file: wiki/ai-team/five-agents.md -->
+# FILE: wiki/ai-team/five-agents.md
+
+# The five agents — one boss and four specialists (built 2026-10-31)
+
+From Steven's "5 Claude Agents to Build First" image. Each is one text file in `.claude/agents/`; the Mac installer
+(`bash integrations/agent-os/install-mac.sh --apply`) links them into `~/.claude/agents` so they run from anywhere.
+
+| Agent | What it does | Reports to | Model | Never |
+|---|---|---|---|---|
+| `chief-of-staff` | The only agent Steven talks to. Splits a request, runs the specialists in parallel, returns one brief | Vanessa | Opus | sends, posts, quotes, spends |
+| `inbox-triage` | Unread Gmail → URGENT / REPLY / READ LATER / IGNORE; reply drafts in his voice from his last 20 sent emails; fraud flags first | Voicemail & Inbox Triage (Victor) | Sonnet | sends, deletes, labels |
+| `calendar-prep` | PREP page per meeting: WHO, HISTORY, OPEN PROMISES, GOAL (Calendar + Gmail + Fieldy) | Meeting Scribe (Vanessa) | Sonnet | touches the calendar or emails attendees |
+| `competitor-watch` | Weekly public-page check of `context/competitors.md`; dated snapshot in `docs/competitor-watch/`; reports only changes | Competitive Intelligence Analyst (Victor) | Sonnet | logs in, uses paid data, invents rivals |
+| `hook-writer` | 3 hooks, 3 titles, 1 caption per post; `context/banned-words.md`; Reg Z / Fair Housing rules; NMLS line | Content Writer (Sofia) | Sonnet | posts; uses numbers without disclosure |
+
+**Use it:** in Terminal, `claude --agent chief-of-staff "prep my Monday"`. Or ask any agent directly, e.g.
+`claude --agent hook-writer "VA loan with zero down for a first-time buyer"`.
+
+**Steven's part:** (1) Gmail, Google Calendar and Fieldy connectors on in claude.ai (they are); (2) name 3–6 rivals
+in `context/competitors.md`, or let the first run propose them; (3) add his own words to `context/banned-words.md`;
+(4) say yes if he wants calendar-prep hourly on weekdays and competitor-watch on Monday mornings as cloud tasks
+(live tasks are his decision).
+
+The old generated `chief-of-staff` seat (a generic message-triage seat) is replaced by this boss agent; message
+triage is now `inbox-triage`. Hand-written files in `.claude/agents/` always win over generated seat files.
 
 
 ---
@@ -705,7 +918,7 @@ Steven (Principal)
     ├─ Marcus (CFO) — Nathan, Bianca, Maya (four-county market & schools data, new 2026-10-22), Dov, Anita, Paloma, Grace, Alan, Hazel, Corinne + ruflo cost-analyst bench
     ├─ Sofia (CMO) — 14 named marketing reports + ruflo audio bench
     │   ├─ Sphere Nurture Coordinator — monthly past-client/sphere touch drafts, birthdays and anniversaries, with Wren; drafts only (new 2026-10-22, `wiki/ai-team/desk-seats.md`)
-    ├─ Derek (CTO) — Sam, Naomi, Integration Engineer (owns OmniRoute failover + `claude-auto --keep-going`, and the browser tools: agent-browser, Playwright MCP) + 5 ECC officers + Ivan, Lena, Grace, Raj, Tomas, Owen (Broker Command Center Autopilot) and Rafael (Workflow Studio), both new 2026-10-22
+    ├─ Derek (CTO) — Nova (Coverage & Process Auditor, reports to Owen, new 2026-10-26: the process-coverage register and the deck's live Process coverage card, `wiki/dashboard-ops/process-coverage.md`), Sam, Naomi, Integration Engineer (owns OmniRoute failover + `claude-auto --keep-going`, and the browser tools: agent-browser, Playwright MCP) + 5 ECC officers + Ivan, Lena, Grace, Raj, Tomas, Owen (Broker Command Center Autopilot) and Rafael (Workflow Studio), both new 2026-10-22
     │   + code-validator (the code-validation gate, 2026-10-12: validate-code.sh + VibeBreaker 20-pass review of every code change — a different agent than the author)
     │   + code-review / build-fix / code-quality / infrastructure benches (56 agents)
     ├─ Alexandra (CCO) — Lucia, Bennett, Fern, Clay, Odette, Gus, Imani, Roland, Diane, Walter, Denise, Howard, Beatrice (DRE broker supervision) and Winston (C.A.R. forms + file QA), both new 2026-10-22
@@ -770,6 +983,35 @@ the deck's "Text me this brief" sends the morning brief to Steven's own mobile o
 60 Mac tasks; Apex, James and Nadia have no tool of their own (they answer through Vanessa's recall). `bin/brain owner
 "<panel>"` says who keeps a Command Deck panel alive and what stays Steven's. The 3D brain shows the same five as lobes.
 
+## Added 2026-11-01: Paperclip, fitted with no duplicates
+
+Steven: "add update ai agents from paperclip them to fit within org chart with no duplications". Paperclip
+(paperclipai/paperclip, MIT, read at 1a6017d) ships 12 agent templates. Ten already have a seat here, so nothing was
+copied for them:
+
+| Paperclip agent | Already here as |
+|---|---|
+| CEO | Vanessa |
+| CTO (2 templates) | Derek |
+| QA (2) | code-validator + sandbox-qa |
+| Senior Coder / Coder | Derek's engineers and benches |
+| Security Engineer | Elena and her reports |
+| Content Lead | Sofia's content-writer, social calendar and creative seats |
+| Company Phone Agent (Speko) | the ISA line + Voicemail & Inbox Triage |
+| Summarizer | Vanessa's `cosBrief` |
+| Wiki Maintainer | Lenora + `bin/brain reindex` / `loop` |
+
+Two changes, the only gaps:
+- **New seat: `ux-designer`** (under Derek, Sonnet 5). Owns how Steven's own screens work: the Command Deck, the 6D
+  Brain, the ISA Portal, Broker Command Center and his site. Brand look stays with Sofia's mktg-creative-designer.
+- **Updated seat: `agent-evaluator`** (under Nadia) gains Paperclip's reflection loop: it reads one seat's recent work,
+  finds repeated misses and proposes the smallest fix. It is proposal-only, never reflects on itself, and applies nothing
+  in the run that finds the problem.
+
+Ideas carried as proposals, not seats: the Summarizer's format (lead with the 1–3 things that unblock the work, then
+plain prose, no link dumps) for Vanessa's morning brief, which is a live routine prompt so it is Steven's call; and
+per-agent monthly budgets with auto-pause, for Marcus and Derek.
+
 ## The named seats worth knowing by name
 
 - **Harrison** — Elite Mortgage Broker, the senior mortgage authority across six standing lanes (VA purchase, VA IRRRL, conventional/high-balance, FHA, self-employed/non-QM, jumbo/portfolio). Preparation and analysis only — the licensed act stays Steven's.
@@ -781,6 +1023,7 @@ the deck's "Text me this brief" sends the morning brief to Steven's own mobile o
 - **Disruption Scout** (under Nadia) — runs the weekly internet scout (`integrations/scout/scout.py`): GitHub, the official MCP registry, npm, Hacker News and releases of tools already in the stack. Its shortlist feeds Nadia's weekly brief; Elon gates every ADOPT/PILOT; nothing installs without Steven. See `wiki/ai-team/tool-integration-status.md`.
 - **Wren** / **Garrett** — referral reciprocity and LPT recruiting; see `wiki/real-estate-playbooks/referral-reciprocity.md`.
 - **Desk seats (2026-10-22)** — Refi Watch Analyst, Sphere Nurture Coordinator, Voicemail & Inbox Triage, Document Intake Clerk, Open House Captain, Travel Desk, Meeting Scribe: Sonnet 5 report seats, drafts only; see `wiki/ai-team/desk-seats.md`.
+- **Five agents (2026-10-31)** — `chief-of-staff` (the boss: one front door that runs the specialists in parallel) with `inbox-triage`, `calendar-prep`, `competitor-watch` and `hook-writer`: hand-written in `.claude/agents/`, drafts only; see `wiki/ai-team/five-agents.md`.
 
 ## What "bench" means
 
@@ -1068,6 +1311,15 @@ Read, decided and pinned in `integrations/skill-packs/REGISTRY-2026-10-12.md`: i
 `npx skills add tt-a1i/archify -g` with its update check off; **awesome-vlm-architectures** (CC0) a reference shelf
 (`references/vlm-architectures.md`). Owners: Derek (diagrams), Sofia (explainers), Nadia (VLM choices).
 
+## The three images and 17 links (2026-10-31)
+
+`integrations/skill-packs/REGISTRY-2026-10-31.md`: 62 repos read. **Installed (Mac, y/N):** GSAP skills (official) and
+Anthropic's canvas-design, algorithmic-art, slack-gif-creator. **Malware, never download:** yqman34/reverse-api-engineer.
+**Held for Steven:** Remotion licence, ElevenLabs, 21st.dev magic-mcp, After Effects MCP, claude-task-master, DeepTutor,
+kalil0321/reverse-api-engineer, ViralWave. **Declined:** competing coding agents (Cline, Continue, Aider, OpenHands,
+Open Interpreter, DeepCode, claude-engineer), SuperClaude, claude-code-router, AI-Trader, blender-mcp, headcount and
+others. Libraries and reading: `references/motion-and-claude-repos.md`. The five agents: `wiki/ai-team/five-agents.md`.
+
 
 ---
 
@@ -1168,7 +1420,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 48 skills · 7 Claude mods (plugins) · 45 connectors (4 ok, 41 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
+toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -1188,14 +1440,19 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 45 connectors (4 ok, 41 need at
 
 **Connectors**
 - `iMessage line (Vanessa text replies)` — *ok*: linked and live since 2026-10-23 23:54 UTC — Steven's thread aa1a9d19…8510; the Mac poller answered a non-answer at 00:05, the cloud sweep answered rates + schedule at 00:22
-- `Kapso (WhatsApp)` — *attention*: keys in the Keychain; plugin + MCP waiting on the sign-in
-- `Jarvis = Vanessa, single point of contact for the whole AI team` — *attention*: persona + voice + brain index + the 180-seat roster in her memory, all from vanessa-persona.sh (run by fix-mine)
+- `Zoho CRM` — *attention*: self-client keys prompt in the paste; API 403 until the profile tick
+- `TidyCal` — *attention*: token prompt in the paste + read-only proof call
+- `Arive` — *attention*: credentials prompt in the paste; no call yet
+- `Kapso WhatsApp (Vanessa (202) 474-5223)` — *attention*: plugin + MCP + keys scripted; whatsappKapso deck doc stale since 10-22: the Mac tasks are not registered
+- `Jarvis = Vanessa` — *attention*: scripted (engine, recorded voice, persona, brain in memory) in fix-mine 3b + connect-all 6a/6b
 - `Jarvis knows the Second Brain` — *attention*: ready — the same script indexes the brain's pages (no client pages, no meeting digests, no findings) into Jarvis memory; the 6D layers row shows "speaks as Vanessa" + the page count once run
 - `WhatsApp (Kapso)` — *pending*: number …5223 assigned; nothing reads it — runner tasks kapso-inbox-sync / vanessa-whatsapp-inbox not registered; Kapso MCP sign-in pending; keys in the Keychain (connect report #3)
-- `Discord #vanessa` — *pending*: bot token missing (Composio discordbot initiated 23:55 UTC, not active; Mac bot in relay mode)
+- `Discord #vanessa` — *attention*: bot token prompt in the paste; bot not yet created
 - `Vanessa's voice note after each text` — *attention*: not yet delivering — voiceReplyQueue held only the Sep 12 test item until the cloud sweep queued the first real one (00:28 UTC); the Mac's voice-reply-render runs ok every 10 min but needs the Inkbox 
+- `SkySlope` — *attention*: four keys prompt in the paste + GET /api/users/me proof
 - `Cloud sweep (iMessage text + voice queue, deck chat box, Discord #vanessa)` — *attention*: hourly at :17, 24/7 (was 6 AM–10 PM PT)
 - `Mac pollers overnight (vanessa-imessage-inbox, vanessa-discord-inbox, voice-reply-render, ` — *attention*: stop between 10 PM and 7 AM PT until the window is widened
+- `Hume AI` — *attention*: not connected; Vanessa's voice is the recorded Magica set. A key can be stored (paste step 4) for a later EVI proposal; it spends money per call → HALT until Steven says so
 
 **MCP servers**
 - `laya` — *ok*: zero-token local router in front of Vanessa (lane, tier, HALT words) · registered — real engine answering on Mac 1 (2026-10-23)
@@ -1283,9 +1540,6 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 45 connectors (4 ok, 41 need at
 **Skills**
 - `security-and-hardening`: Hardens code against vulnerabilities. Use when auditing an input handler for vulnerabilities, when handling user input, authentication, data storage, or external integrations, or when checking a login flow is safe agains
 
-**Connectors**
-- `Arive` — *attention*: step 7e did not run (no credentials)
-
 **Mac tasks**
 - `access-audit-monthly`: First business morning of the month: Elena's access-auditor reviews who and what can read or write each store and connector, plaintext-secre
 
@@ -1319,6 +1573,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 45 connectors (4 ok, 41 need at
 **Connectors**
 - `Drip campaigns + text follow-ups` — *attention*: planned — playbook written (wiki/real-estate-playbooks/drip-and-text-follow-up.md); specs on request; 10DLC is Steven's
 - `TikTok · GoHighLevel · Discord bot · HeyGen` — *attention*: not connected (Composio links last 10 minutes)
+- `Composio (Zoho, Discord, TikTok, GHL, HeyGen)` — *attention*: claude.ai connector works from the cloud; optional key on the Mac (paste step 4)
 
 **APIs**
 - `Pivo · Ticor Title` — *none*: tour links / CSV exports · no API
@@ -1346,9 +1601,10 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 45 connectors (4 ok, 41 need at
 - `zoho-crm-sync`: Sync Zoho CRM — Steven's system of record for the mortgage pipeline — into the Command Deck through Composio: writes zohoSync (connection health), zohoLeads (14-stage kanban) and zohoDeals. Self-tests first and reports t
 
 **Connectors**
-- `Zoho CRM` — *attention*: 403 until the API box is ticked
 - `homes.com · ShowingTime · Showami` — *attention*: wrappers installed; sign-ins (MFA) in the agent Chrome are Steven's
 - `Lofty` — *attention*: two paths on Mac 1 (2026-10-23 13:05 PT): the old local bridge is the MCP named lofty (stdio, ~/Applications/lofty-bridge/mcp-server.js, connected — the runner tasks use its mcp__lofty__* tools; it re
+- `ShowingTime · Showami · homes.com` — *attention*: read-only CLI-Anything wrappers scripted (connect-all 7d)
+- `CLI-Anything` — *attention*: harnesses for homes.com / ShowingTime / Showami / Lofty installed by the paste
 
 **MCP servers**
 - `kapso` — *attention*: WhatsApp Business Cloud API read/answer (sandbox number first) · registered — needs Steven's sign-in (/mcp → kapso)
@@ -1420,7 +1676,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 45 connectors (4 ok, 41 need at
 - `Kapso (Mac 1)` — *attention*: plugin + MCP registered; ! Needs authentication
 - `Kapso webhooks (Pabbly → Kapso)` — *attention*: two trigger URLs not pasted yet
 - `Gondola (travel)` — *attention*: MCP installed for Claude Code; the claude.ai connector is not added
-- `Orca pairing · AnyDesk permissions` — *attention*: apps installed on both Macs
+- `Orca + the AI org chart` — *attention*: scripted (connect-all 6c + 6e Agent OS, 172 agents wired)
 - `Mac 2` — *attention*: Python 3.12 (uv), Claude Code 2.1.309, mods, Agent OS, brain index, Orca, AnyDesk, Gondola done; Laya + Jarvis engine unproven (last REPORT not pasted)
 - `EVRoutes · Turo connectors` — *reconnect*: "needs reconnect" on claude.ai (EVRoutes also failed to connect in this session)
 - `Four http_api Sunday routines` — *attention*: still enabled
@@ -1432,20 +1688,21 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 45 connectors (4 ok, 41 need at
 - `Orca · Laya · Bonsai (Alienware)` — *pending*: not started — integrations/alienware/alienware-setup.ps1 never run on Windows yet
 - `AnyDesk (Mac 1, Mac 2)` — *attention*: installed; permissions + unattended password are Steven's
 - `AnyDesk (Alienware, tablet, phone)` — *attention*: not started — winget id AnyDesk.AnyDesk confirmed; iPad is outgoing-only, Android tablet can be controlled
-- `TidyCal` — *attention*: step 7c did not run (no token)
 - `MBS Highway Home Report` — *attention*: not connected — no public API; rep-issued webhook or CSV (integrations/mbs-highway/README.md)
 - `Pivo` — *attention*: no API — tour link / video file only (integrations/pivo/README.md)
-- `Ticor Title property search` — *attention*: no API — rep account + CSV/PDF export (integrations/ticor/README.md)
+- `Ticor Title property search` — *attention*: no API (integrations/ticor/README.md); county records already feed the deck
 - `OpenFlowKit MCP + skill · pr-lens skill · archify skill (the four repos, 2026-10-23)` — *pending*: installed in the repo (skills) / pending on the Macs (MCP by connect-all 6g, archify by install-mac.sh); integrations/skill-packs/REGISTRY-2026-10-23.md
 - `AI-search presence (AEO/GEO/SEO)` — *attention*: planned — playbook written (wiki/real-estate-playbooks/ai-search-visibility.md); monthly presence audit task live (1st, 7:10 AM PT)
-- `Mac runner (all Mac tasks)` — *ok*: healthy — runnerctl status 12:33 PT: 42 ok (morning tasks all ran today), 5 error (toolkit-deck-sync, nightly-self-test, three Sunday weeklies), 4 limited, 3 paused; the step-2 "silent since Oct 13" r
+- `Mac runner · message tasks all day` — *attention*: restart + hours widening scripted (fix-mine 4)
 - `AnyDesk (Mac 1)` — *attention*: installed; ID [phone masked]; Screen Recording + Accessibility + unattended password are Steven's
 - `Pabbly ↔ Kapso webhooks, six workflows` — *attention*: Kapso login proven; webhook URLs and the six workflows are clicks at connect.pabbly.com
 - `Laya routes, Orca launches the AI team` — *attention*: installed on Mac 1 (connect report #3); connect-orca-laya.sh --apply + agent-os/install-mac.sh --apply re-run by the paste; brain os check is the proof
 - `6D Brain shows all of it` — *attention*: the layers panel reads brain/state/jarvis-status.json (persona, indexed pages) and the toolkit register reads this table; the daily 3:30 AM rebuild carries it
 - `Command Deck chat box` — *attention*: works in claude.ai through the viewer's own Claude (sample declared); last message 2026-09-13
-- `SkySlope (transactions, documents)` — *attention*: key on Mac path ready — integrations/skyslope/skyslope_cli.py (stdlib, GET-only, SkySlope's own HMAC login from github.com/skyslope/example-authentication); the login needs two pairs: the Access Key +
 - `Night-time answer latency` — *attention*: up to 60 minutes until the Mac window is widened, then 10 minutes
+- `AnyDesk` — *attention*: install scripted (connect-all 6d)
+- `MyFitnessPal · Strava · BodyPark` — *attention*: all three flow through Apple Health → Health Auto Export → the cloud Health daily sync (Strava also by connector)
+- `Pabbly Connect` — *attention*: workflows written (integrations/pabbly/WORKFLOWS.md); built in Pabbly's editor, not by a script
 
 **MCP servers**
 - `playwright` — *ok*: browser automation for sites with no API · installed
