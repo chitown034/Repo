@@ -29,3 +29,18 @@ Bonsai 2 needs PrismML's llama.cpp fork; stock Ollama may not run it. The local 
 ## Remote access from anywhere — AnyDesk (added 2026-10-12)
 
 Panel 40 opens with a "Remote access — every computer" card: one Connect button per computer, driven by the AnyDesk IDs saved in each device card. IDs are stored in the deck's shared store (`anydeskIds`) so the phone, tablet and both Macs see the same list; an ID is an address, never a secret. The password stays inside AnyDesk on the computer being reached (Settings → Security → unattended access, set on that machine). Source: `dashboard/wave2/splice-anydesk.py`; local tool `integrations/anydesk/anydesk-links.py`.
+
+## Violoop (proposal, 2026-11-01)
+
+Steven asked for Violoop on the org chart. It is BVIO Technology's plug-in AI box: HDMI in (it reads the screen), USB
+out (it types and clicks as a second user), an on-device 8B model, and a slot for a Claude, OpenAI or Gemini key for
+heavier tasks; per press coverage, irreversible actions (send, pay, delete) need a physical button press. Kickstarter
+pricing was reported at $399 early and $699 retail, shipping late 2026. What it would add here: control of a computer
+that has no API and no browser path, from outside the OS, including the Alienware PC. What already covers most of that:
+Claude Remote Control, Orca, AnyDesk, Claude for Chrome, agent-browser and Playwright (above and
+`integrations/browser-agents/README.md`).
+
+Status: **proposal only.** Not bought, not installed, nothing verified. Buying it is a spend (HALT); plugging it into a
+machine that shows client data is a PII question (HALT). Order of events if Steven wants it: Elon grades fit against the
+tools above; Elena lists what the box can see and where its traffic goes; Steven buys; first use on a machine with no
+client data, with the local model only; a dated entry in `context/decisions.md` records the result.

@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
+toolkit: 48 skills · 7 Claude mods (plugins) · 58 connectors (3 ok, 55 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -39,6 +39,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need at
 - `Cloud sweep (iMessage text + voice queue, deck chat box, Discord #vanessa)` — *attention*: hourly at :17, 24/7 (was 6 AM–10 PM PT)
 - `Mac pollers overnight (vanessa-imessage-inbox, vanessa-discord-inbox, voice-reply-render, ` — *attention*: stop between 10 PM and 7 AM PT until the window is widened
 - `Hume AI` — *attention*: not connected; Vanessa's voice is the recorded Magica set. A key can be stored (paste step 4) for a later EVI proposal; it spends money per call → HALT until Steven says so
+- `Violoop (BVIO plug-in AI box, computer control over HDMI + USB)` — *pending*: pending — proposal on the org chart and in wiki/ai-team/computer-hub.md; not bought, not installed, not verified
 
 **MCP servers**
 - `laya` — *ok*: zero-token local router in front of Vanessa (lane, tier, HALT words) · registered — real engine answering on Mac 1 (2026-10-23)
@@ -267,7 +268,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need at
 - `EVRoutes · Turo connectors` — *reconnect*: "needs reconnect" on claude.ai (EVRoutes also failed to connect in this session)
 - `Four http_api Sunday routines` — *attention*: still enabled
 - `GitHub repo visibility` — *attention*: public
-- `Fieldy → 2nd brain` — *ok*: connected — the daily "Fieldy → brain" task (6:50 AM PT, this session, Fieldy connector) writes memory/fieldy-meetings.md + the deck fieldyDesk doc and queues a recap item per meeting with action item
+- `Fieldy AI (recording pendant; connector)` — *ok*: connected — read through the Fieldy connector by the daily Fieldy → brain task; no recordings yet as of 2026-10-31 (memory/fieldy-meetings.md)
 - `Notion `brain-learn-daily` rows` — *attention*: resume with Mac 1's runner (signed in 2026-10-23); directory page written 2026-10-23
 - `Jarvis · Laya · Orca (Mac 1)` — *attention*: installed, tested, Orca on the Repo folder; phone pairing is Steven's
 - `Jarvis · Laya · Orca (Mac 2)` — *attention*: partially set — engine unproven; runner not yet imported
@@ -289,6 +290,11 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need at
 - `AnyDesk` — *attention*: install scripted (connect-all 6d)
 - `MyFitnessPal · Strava · BodyPark` — *attention*: all three flow through Apple Health → Health Auto Export → the cloud Health daily sync (Strava also by connector)
 - `Pabbly Connect` — *attention*: workflows written (integrations/pabbly/WORKFLOWS.md); built in Pabbly's editor, not by a script
+- `Claude Duet (phone app)` — *pending*: pending — install and waitlist are Steven's; no device has reported yet
+- `Claude Duet → the brain (GitHub connector, branch claude/stoic-cori-pvn3f8)` — *pending*: pending — GitHub connector is connected on claude.ai (integrations/APIS.md); the phone has not read CLAUDE.md yet
+- `Claude Duet → Drive SECOND BRAIN, Notion, Gmail, Calendar, Fieldy, Slack, Zoom, Strava, Ti` — *pending*: pending — all connected on claude.ai per the rows above; whether the app lists them is test 1
+- `Claude Duet → Claude for Chrome on Mac 1 (computer use from the phone)` — *pending*: pending — the agent Chrome profile exists (integrations/browser-agents/); not yet driven from a phone
+- `Claude Duet purchases (Stripe Link)` — *pending*: never — standing HALT: anything that spends money
 
 **MCP servers**
 - `playwright` — *ok*: browser automation for sites with no API · installed

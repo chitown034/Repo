@@ -30,6 +30,14 @@ Steven (Principal)
 │   │   15 workflows runnable, an org-chart panel, 20 live connectors behind approval cards (https://claude.ai/artifact/B8BPDvyE55p8hT7PTyKbjG; `wiki/ai-team/bot-crew.md`, 2026-10-22)
 │   ├─ Travel Desk — Gondola MCP: points vs cash, trips, price watches; Marcus costs each trip; booking is Steven's (new 2026-10-22, `wiki/ai-team/desk-seats.md`)
 │   ├─ Meeting Scribe — Fieldy/Zoom recaps: decisions, action items → `vanessaQueue`; drafts only (new 2026-10-22, `wiki/ai-team/desk-seats.md`)
+│   ├─ Claude Duet — Vanessa's phone front door (added 2026-11-01): Anthropic's proactive agent app on the same connectors;
+│   │   reads the brain through the GitHub connector; drafts and queues only, every send, spend, sign or CRM write a HALT
+│   │   (`integrations/claude-duet/README.md`; pending Steven's install and the eight tests)
+│   ├─ Fieldy AI — the recording pendant and app: every in-person and phone conversation → `memory/fieldy-meetings.md`
+│   │   (daily 6:50 AM PT, first names only) → the Meeting Scribe's recaps; connector live, no recordings yet as of 2026-10-31
+│   ├─ Violoop — plug-in AI box (BVIO; HDMI in, USB keyboard and mouse out) that drives a computer with no API as a second
+│   │   user; a Computer Hub proposal (added 2026-11-01), not bought, not installed: the spend is a HALT, Elena gates,
+│   │   Steven decides (`wiki/ai-team/computer-hub.md` § Violoop)
 │   └─ Juliet — Escalation & Service Recovery
 ├─ ISA / EA (human) — Mon–Fri 12–4 PM; the ISA Portal opens with "Today from Vanessa" (`isaToday`, copied from
 │   `cosBrief.isaInstructions` by the daily cycle, weekdays 6:25 AM PT, since 2026-10-22)
@@ -134,6 +142,23 @@ Two changes, the only gaps:
 Ideas carried as proposals, not seats: the Summarizer's format (lead with the 1–3 things that unblock the work, then
 plain prose, no link dumps) for Vanessa's morning brief, which is a live routine prompt so it is Steven's call; and
 per-agent monthly budgets with auto-pause, for Marcus and Derek.
+
+## Added 2026-11-01: Claude Duet, Fieldy AI, Violoop
+
+Steven: "add Claude Duet to AI org chart, Fieldy AI, Violoop". None is a new seat; each is a surface or a device that a
+seat already uses, so each is drawn under Vanessa with its owner named and nothing duplicated.
+
+| Node | What it is | Sits under | Status (as of 2026-11-01) | Rules |
+|---|---|---|---|---|
+| **Claude Duet** | Anthropic's proactive agent app (phone and claude.ai web): Channels, a task list, background tasks in its own browser, voice. Same connectors as claude.ai | Vanessa, beside iMessage and the Command Deck as a front door | pending: install, waitlist and the eight tests in `integrations/claude-duet/README.md` are Steven's | the standing brief `integrations/claude-duet/VANESSA-DUET-BRIEF.md`; drafts and queues only; purchases through its Stripe Link never |
+| **Fieldy AI** | the recording pendant and app: summaries and transcripts of real conversations | Vanessa → Meeting Scribe (the recap seat); the `Fieldy → brain` daily task under Derek | connector connected; no recordings yet (`memory/fieldy-meetings.md`, checked daily) | first names only in the digest; transcripts never into the wiki; a recap is a draft, the CRM note is pasted by the ISA |
+| **Violoop** | BVIO's palm-sized box: reads the screen over HDMI, types and clicks over USB, runs a local 8B model, takes a Claude key for heavier work; irreversible actions need a physical button press (press coverage, IFA 2026 and Kickstarter, $399 early to $699 retail) | Vanessa → Computer Hub, next to Claude Remote Control, Orca and AnyDesk | proposal: not bought, not installed, not verified | a spend and a new device on his network: HALT. Elena reviews what it can reach, Elon grades fit against the browser hands already installed, Steven decides. If bought: client-data screens never shown to it until the local-only path is proven |
+
+Sources for Violoop, read 2026-11-01: [New Atlas](https://newatlas.com/computers/violoop-plug-in-ai-computer-assistant/),
+[PC Guide](https://www.pcguide.com/pro/news-pro/violoop-unveiled-at-ifa-berlin-a-palm-sized-device-that-turns-any-computer-into-an-autonomous-ai-assistant/),
+[Tom's Guide](https://tomsguide.com/computing/laptops/violoop-hands-on-ifa-2026),
+[Android Guys](https://androidguys.com/news/bvio-violoop-launches-on-kickstarter-as-a-second-ai-user-for-your-computer/).
+Dates and prices are as reported, not verified with the maker.
 
 ## The named seats worth knowing by name
 

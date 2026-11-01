@@ -37,6 +37,7 @@ On the Mac this router's job is done by the vanessa-orchestrator system prompt +
 | "How do these connect" — entities, relationships | `knowledge-graph/README.md` | vector index |
 | What runs when, and whether it actually ran | `always-on/README.md` | projects |
 | Reaching Steven, or running something live/remote | `REMOTE-ACCESS.md` | always-on |
+| Claude Duet on the phone: setup, connectors, the standing brief, channels, what it may do | `integrations/claude-duet/README.md` (the paste is `integrations/claude-duet/VANESSA-DUET-BRIEF.md`) | REMOTE-ACCESS.md, the wiki |
 | Setting up or syncing the brain on a Mac | `docs/SECOND-MAC-SETUP.md` (§ 6c) → `scripts/brain-sync.sh` | always-on |
 | Cost or freshness of a recall | `recall-cache.md`, then `OPTIMIZATION.md` | — |
 | The repo and the Mac are unreachable, or a source-grounded research brief | NotebookLM mirror — `integrations/notebooklm/README.md` (the matching `SB` Doc, or the "Second Brain" notebook) | anything else as a first stop |
