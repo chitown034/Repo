@@ -660,3 +660,10 @@ run on a device from this session; every row below is pending until Steven repor
 | Claude Duet → Drive SECOND BRAIN, Notion, Gmail, Calendar, Fieldy, Slack, Zoom, Strava, TidyCal, Inkbox | pending — all connected on claude.ai per the rows above; whether the app lists them is test 1 | run test 1 ("what connectors can you see?") and report the gaps | Steven |
 | Claude Duet → Claude for Chrome on Mac 1 (computer use from the phone) | pending — the agent Chrome profile exists (`integrations/browser-agents/`); not yet driven from a phone | Mac 1 awake, Claude for Chrome open, ask-per-action on; run test 8 (LinkedIn feed, read-only) | Steven, Elena (settings) |
 | Claude Duet purchases (Stripe Link) | never — standing HALT: anything that spends money | leave no payment method in the app | Steven |
+
+## Connection status — org chart additions, 2026-11-01 (Steven: "add Claude Duet to AI org chart, Fieldy AI, Violoop")
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Fieldy AI (recording pendant; connector) | connected — read through the Fieldy connector by the daily `Fieldy → brain` task; no recordings yet as of 2026-10-31 (`memory/fieldy-meetings.md`) | wear the pendant or use the app; the next 6:50 AM PT run digests it, first names only | Steven (records), Meeting Scribe (recaps) |
+| Violoop (BVIO plug-in AI box, computer control over HDMI + USB) | pending — proposal on the org chart and in `wiki/ai-team/computer-hub.md`; not bought, not installed, not verified | Elon grades fit, Elena reviews reach, Steven decides the spend; first use on a machine with no client data | Steven (spend), Elena, Elon |

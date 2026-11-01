@@ -1,9 +1,9 @@
 # Code validation — last run
 
-Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `6074bec914c1ef26`: **not yet**.
+Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `0aa3e25f4979a818`: **not yet**.
 
 ```
-code validation 2026-11-01T20:25:02Z - change-set 6074bec914c1ef26
+code validation 2026-11-01T20:26:58Z - change-set 0aa3e25f4979a818
 files:
   CLAUDE.md
   REMOTE-ACCESS.md
@@ -12,6 +12,8 @@ files:
   integrations/claude-duet/README.md
   integrations/claude-duet/VANESSA-DUET-BRIEF.md
   memory/ai-team.md
+  wiki/ai-team/computer-hub.md
+  wiki/ai-team/org-chart.md
   wiki/ai-team/toolkit.md
 PASS brain doctor
 verdict: PASS (1 passed, 0 failed)
