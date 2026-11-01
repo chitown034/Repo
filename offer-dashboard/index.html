@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hormozi Offer Workbench</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a fixed left desk (inputs, value equation, progress) and a right rail of seven numbered prompt cards that fill in as you type. */
+:root{
+  --bg:#EDF0EE;
+  --surface:#FFFFFF;
+  --surface-2:#F6F8F7;
+  --fg:#151B1F;
+  --muted:#5A6670;
+  --line:#D3D9D6;
+  --accent:#0E6B6B;
+  --accent-ink:#FFFFFF;
+  --accent-soft:rgba(14,107,107,.10);
+  --gold:#A5721A;
+  --gold-soft:rgba(165,114,26,.14);
+  --ok:#2E7D4F;
+  --warn:#B4541C;
+  --display:"Bricolage Grotesque","Archivo Black","Helvetica Neue",Arial,sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --radius:10px;
+  --shadow:0 1px 2px rgba(21,27,31,.06),0 8px 24px -16px rgba(21,27,31,.25);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1416;--surface:#171E21;--surface-2:#1D2529;--fg:#E7ECEA;--muted:#9BA7A4;--line:#2B363A;
+    --accent:#4FB8B0;--accent-ink:#0B1416;--accent-soft:rgba(79,184,176,.14);
+    --gold:#E0B04A;--gold-soft:rgba(224,176,74,.16);--ok:#5DBB82;--warn:#E28A52;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px -16px rgba(0,0,0,.7);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1416;--surface:#171E21;--surface-2:#1D2529;--fg:#E7ECEA;--muted:#9BA7A4;--line:#2B363A;
+  --accent:#4FB8B0;--accent-ink:#0B1416;--accent-soft:rgba(79,184,176,.14);
+  --gold:#E0B04A;--gold-soft:rgba(224,176,74,.16);--ok:#5DBB82;--warn:#E28A52;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px -16px rgba(0,0,0,.7);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1240px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.1}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Masthead */
+.mast{display:flex;flex-wrap:wrap;gap:20px 32px;align-items:flex-end;justify-content:space-between;border-bottom:2px solid var(--fg);padding-bottom:20px;margin-bottom:28px}
+.mast h1{font-size:clamp(30px,4.6vw,48px);font-weight:800;letter-spacing:-.02em}
+.mast h1 em{font-style:normal;color:var(--accent)}
+.mast .lede{color:var(--muted);max-width:56ch;margin-top:8px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.progress{min-width:240px}
+.progress .count{font-family:var(--display);font-size:28px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+.progress .count small{font-size:14px;color:var(--muted);font-family:var(--body);font-weight:500}
+.segs{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:10px}
+.segs span{height:8px;border-radius:2px;background:var(--line);transition:background .2s}
+.segs span.on{background:var(--accent)}
+
+/* Two-column desk */
+.desk{display:grid;grid-template-columns:minmax(300px,360px) minmax(0,1fr);gap:28px;align-items:start}
+.side{position:sticky;top:calc(16px + env(safe-area-inset-top,0px));display:grid;gap:18px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+.panel h2{font-size:17px;font-weight:700;margin-bottom:4px}
+.panel .hint{color:var(--muted);font-size:13px;margin-bottom:14px}
+.field{display:grid;gap:6px;margin-bottom:14px}
+.field:last-child{margin-bottom:0}
+.field label{font-size:13px;font-weight:600;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.field label .uses{font-family:var(--mono);font-weight:400;font-size:11px;color:var(--muted);letter-spacing:.04em}
+textarea,input[type=text]{width:100%;font:inherit;font-size:14px;color:var(--fg);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;resize:vertical;min-height:44px}
+textarea{min-height:110px;line-height:1.45}
+textarea.short{min-height:72px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 12px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:background .15s,border-color .15s}
+.btn:hover{background:var(--surface-2);border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--muted)}
+.btn.ghost:hover{color:var(--fg);background:var(--surface-2)}
+.example-note{display:flex;gap:8px;align-items:center;justify-content:space-between;background:var(--gold-soft);border:1px dashed var(--gold);color:var(--fg);border-radius:8px;padding:8px 10px;font-size:12.5px;margin-bottom:14px}
+.example-note b{color:var(--gold)}
+
+/* Value equation */
+.veq{display:grid;gap:14px}
+.veq .formula{font-family:var(--mono);font-size:12px;color:var(--muted);background:var(--surface-2);border-radius:8px;padding:10px 12px;line-height:1.6}
+.veq .formula b{color:var(--fg);font-weight:500}
+.slider{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center}
+.slider label{font-size:13px;font-weight:600}
+.slider .dir{grid-column:1;font-size:11.5px;color:var(--muted);font-family:var(--mono);letter-spacing:.02em}
+.slider output{grid-row:1/3;font-family:var(--display);font-weight:700;font-size:22px;font-variant-numeric:tabular-nums;min-width:2ch;text-align:right}
+.slider input[type=range]{grid-column:1/3;width:100%;accent-color:var(--accent);margin:4px 0 0}
+.score{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:center;border-top:1px solid var(--line);padding-top:14px}
+.score .num{font-family:var(--display);font-weight:800;font-size:40px;line-height:1;font-variant-numeric:tabular-nums;grid-row:1/3}
+.score .lbl{font-size:12px;color:var(--muted);font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.score .read{font-size:13px}
+.score .read b{color:var(--accent)}
+.bar{grid-column:1/3;height:8px;border-radius:4px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .25s}
+
+/* Prompt cards */
+.rail{display:grid;gap:18px;min-width:0}
+.rail > .eyebrow{margin-bottom:-6px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;min-width:0;transition:border-color .2s}
+.card.done{border-color:var(--ok)}
+.card header{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:start;padding:16px 18px 10px}
+.step{font-family:var(--display);font-weight:800;font-size:30px;line-height:1;color:var(--accent);min-width:1.4ch;font-variant-numeric:tabular-nums}
+.card.done .step{color:var(--ok)}
+.card h3{font-size:19px;font-weight:700}
+.card .why{color:var(--muted);font-size:13.5px;margin-top:4px;max-width:62ch}
+.check{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--muted);user-select:none;white-space:nowrap;padding-top:4px}
+.check input{width:18px;height:18px;accent-color:var(--ok);margin:0}
+.card.done .check{color:var(--ok)}
+.needs{display:flex;gap:6px;flex-wrap:wrap;padding:0 18px 10px}
+.chip{font-family:var(--mono);font-size:11px;letter-spacing:.04em;padding:3px 8px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);color:var(--muted)}
+.chip.filled{background:var(--accent-soft);border-color:transparent;color:var(--accent)}
+.chip.missing{background:transparent;border-style:dashed;color:var(--warn);border-color:var(--warn)}
+.prompt{margin:0 18px;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:14px 16px;font-family:var(--mono);font-size:13px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere;min-width:0}
+.prompt mark{background:var(--accent-soft);color:var(--fg);border-radius:3px;padding:0 2px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.prompt mark.gap{background:var(--gold-soft);color:var(--gold);font-style:italic}
+.card footer{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:12px 18px 16px}
+.card footer .spacer{flex:1}
+.toast{font-size:12.5px;color:var(--ok);font-weight:600;opacity:0;transition:opacity .2s}
+.toast.show{opacity:1}
+.notes{padding:0 18px 16px;display:none}
+.card.open .notes{display:block}
+.notes textarea{min-height:120px;font-size:13.5px}
+.notes label{display:block;font-size:12.5px;font-weight:600;margin-bottom:6px;color:var(--muted)}
+
+/* Flow note */
+.flow{border-left:3px solid var(--gold);padding:4px 0 4px 14px;color:var(--muted);font-size:13.5px;max-width:70ch}
+.flow b{color:var(--fg)}
+
+@media (max-width:900px){
+  .desk{grid-template-columns:1fr}
+  .side{position:static}
+  .mast{align-items:flex-start}
+}
+@media (max-width:520px){
+  .card header{grid-template-columns:auto minmax(0,1fr)}
+  .check{grid-column:2}
+  .step{font-size:24px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="mast">
+  <div>
+    <div class="eyebrow">Seven-prompt offer system · $100M Offers method</div>
+    <h1>Hormozi <em>Offer</em> Workbench</h1>
+    <p class="lede">Paste your offer once. All seven prompts fill themselves in, in the order you should run them. Copy each one into Claude, paste the answer back under the card, and check it off.</p>
+  </div>
+  <div class="progress" aria-live="polite">
+    <div class="eyebrow">Progress</div>
+    <div class="count"><span id="doneCount">0</span> <small>of 7 prompts run</small></div>
+    <div class="segs" id="segs" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  </div>
+</header>
+
+<div class="desk">
+
+  <aside class="side">
+    <section class="panel" aria-labelledby="inputsH">
+      <h2 id="inputsH">Your inputs</h2>
+      <p class="hint">Everything below is pasted into the prompts wherever the original says [paste].</p>
+      <div class="example-note" id="exampleNote"><span><b>Example offer loaded.</b> Replace it with yours.</span><button class="btn ghost" id="clearExample" type="button">Clear</button></div>
+      <div class="field">
+        <label for="offer">Offer or idea <span class="uses">used by 1·2·3·4·5·6·7</span></label>
+        <textarea id="offer" placeholder="What you sell, who it's for, what they get, what it costs today. Messy is fine."></textarea>
+      </div>
+      <div class="field">
+        <label for="audience">Target audience <span class="uses">used by 3</span></label>
+        <textarea id="audience" class="short" placeholder="Who buys, what they earn or spend, what they've tried before."></textarea>
+      </div>
+      <div class="field">
+        <label for="launch">Launch context <span class="uses">used by 5</span></label>
+        <textarea id="launch" class="short" placeholder="Launch date, list size, channel, cohort cap, current price and planned price."></textarea>
+      </div>
+      <div class="row">
+        <button class="btn primary" id="copyAll" type="button">Copy all 7 prompts</button>
+        <button class="btn ghost" id="resetAll" type="button">Reset workbench</button>
+      </div>
+    </section>
+
+    <section class="panel veq" aria-labelledby="veqH">
+      <div>
+        <h2 id="veqH">Value Equation score</h2>
+        <p class="hint" style="margin-bottom:0">Rate your offer as a buyer would. Prompt 6 asks Claude to do the same, so compare the two.</p>
+      </div>
+      <div class="formula"><b>Dream Outcome × Perceived Likelihood</b><br>÷ Time Delay ÷ Effort &amp; Sacrifice</div>
+      <div class="slider">
+        <label for="vDream">Dream outcome</label><output id="oDream">7</output>
+        <span class="dir">higher is better</span>
+        <input type="range" id="vDream" min="1" max="10" value="7">
+      </div>
+      <div class="slider">
+        <label for="vLike">Perceived likelihood</label><output id="oLike">6</output>
+        <span class="dir">higher is better</span>
+        <input type="range" id="vLike" min="1" max="10" value="6">
+      </div>
+      <div class="slider">
+        <label for="vTime">Time delay</label><output id="oTime">5</output>
+        <span class="dir">lower is better</span>
+        <input type="range" id="vTime" min="1" max="10" value="5">
+      </div>
+      <div class="slider">
+        <label for="vEffort">Effort &amp; sacrifice</label><output id="oEffort">6</output>
+        <span class="dir">lower is better</span>
+        <input type="range" id="vEffort" min="1" max="10" value="6">
+      </div>
+      <div class="score">
+        <div class="num" id="score">1.4</div>
+        <div class="lbl">Value score · max 100</div>
+        <div class="read" id="scoreRead">Weakest lever: <b>Effort &amp; sacrifice</b></div>
+        <div class="bar"><i id="scoreBar"></i></div>
+      </div>
+    </section>
+  </aside>
+
+  <main class="rail" id="rail">
+    <div class="eyebrow">Run in order · 1 → 7</div>
+    <p class="flow"><b>Why this order:</b> compress first so every later prompt works from a clear sentence, build and price it, then stress-test with objections, urgency and the value audit, and finish with the one-page brief you'll actually use on calls.</p>
+  </main>
+
+</div>
+</div>
+
+<script>
+(function(){
+  var PROMPTS=[
+    {n:1,name:"The Offer Value Proposition Compressor",why:"Forces the offer into one sentence and tells you what's missing before you build anything on top of it.",
+     text:"Act like Alex Hormozi. Compress my current offer into one crystal-clear sentence using his exact formula. Format: I help [specific who] achieve [specific outcome] without [biggest objection they have]. Remove all fluff and tell me if anything is missing. My offer: {offer}.",needs:["offer"]},
+    {n:2,name:"The Grand Slam Offer Builder",why:"Turns the idea into a full offer: core deliverables, bonus stack, guarantee, scarcity and pricing tiers.",
+     text:"Think like Alex Hormozi building a Grand Slam Offer. Take my idea and engineer it with high value, low risk, and high probability of success. Stack bonuses, guarantees, and scarcity. Define the core offer, deliverables, pricing tiers, and why it's 10x better than alternatives. Idea: {offer}.",needs:["offer"]},
+    {n:3,name:"The Pricing Psychology Architect",why:"Picks the price point and the anchor, decides one-time versus recurring, and writes the ROI math that justifies it.",
+     text:"Act as Alex Hormozi's pricing strategist. Analyze my offer and recommend the exact price point (or range) that maximizes revenue and perceived value. Explain the anchoring strategy, one-time vs recurring, and how to justify the price with ROI math. Offer details: {offer}. Target audience: {audience}.",needs:["offer","audience"]},
+    {n:4,name:"The Objection Killer Framework",why:"Lists the seven objections you'll hear, flips each into a reason to buy, and adds a risk-reversal guarantee.",
+     text:"Using Hormozi's objection handling method, list the top 7 objections a buyer would have to my offer. For each one, write the exact response that flips it into a reason to buy. Then add a risk-reversal guarantee that makes saying no irrational. Offer: {offer}.",needs:["offer"]},
+    {n:5,name:"The Scarcity & Urgency Engine",why:"Designs limited spots, time-bound bonuses, price steps and waitlist mechanics for the launch itself.",
+     text:"Build Hormozi-style scarcity and urgency into my offer launch. Create limited spots, time-bound bonuses, price increases, and waitlist mechanics that drive immediate action without feeling sleazy. Offer: {offer}. Launch context: {launch}.",needs:["offer","launch"]},
+    {n:6,name:"The Value Equation Auditor",why:"Scores the four levers of the Value Equation 1–10 and tells you how to raise the weakest ones. Compare with your own score on the left.",
+     text:"Apply Alex Hormozi's Value Equation to my offer: Dream Outcome × Perceived Likelihood of Achievement ÷ Time Delay ÷ Effort & Sacrifice. Rate each component 1-10, then show me exactly how to improve the weakest ones to 10x the perceived value. Current offer: {offer}.",needs:["offer"]},
+    {n:7,name:"The One-Page Offer Brief",why:"Collapses everything above into the one-pager you use on sales calls and in ads.",
+     text:"Create a one-page Hormozi-style offer summary that I can use for sales calls or ads. Include: who it's for, the problem it solves, the transformation promised, deliverables, bonuses, guarantee, investment, and the exact next step. Make it impossible to say no to. Offer details: {offer}.",needs:["offer"]}
+  ];
+  var LABEL={offer:"offer",audience:"target audience",launch:"launch context"};
+  var EXAMPLE={
+    offer:"A 6-week group coaching program for independent personal trainers who want to move from $4k/month in sessions to $10k/month with online clients. Includes weekly calls, a client-onboarding template pack, and a Slack group. Currently priced at $997.",
+    audience:"Certified personal trainers, 2–6 years in, earning $3k–$6k/month from in-person sessions, who have tried posting on Instagram but never sold an online package.",
+    launch:"Launching to an email list of 1,400 and 9k Instagram followers on the first Monday of next month. Capped at 20 seats per cohort. Planning to raise the price to $1,497 after the first cohort."
+  };
+  var KEY="hormozi-offer-workbench-v1";
+  var state={offer:"",audience:"",launch:"",done:{},notes:{},open:{},veq:{d:7,l:6,t:5,e:6},example:true};
+
+  function load(){try{var s=localStorage.getItem(KEY);if(s){var o=JSON.parse(s);for(var k in o)state[k]=o[k];return true;}}catch(e){}return false;}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+  function $(id){return document.getElementById(id);}
+
+  if(!load()){state.offer=EXAMPLE.offer;state.audience=EXAMPLE.audience;state.launch=EXAMPLE.launch;state.example=true;}
+
+  function plain(p){return p.text.replace(/\{(\w+)\}/g,function(_,k){var v=(state[k]||"").trim();return v?v:"[paste your "+LABEL[k]+" here]";});}
+  function html(p){return esc(p.text).replace(/\{(\w+)\}/g,function(_,k){var v=(state[k]||"").trim();return v?'<mark>'+esc(v)+'</mark>':'<mark class="gap">[paste your '+LABEL[k]+' here]</mark>';});}
+
+  // Build cards
+  var rail=$("rail");
+  PROMPTS.forEach(function(p){
+    var art=document.createElement("article");art.className="card";art.id="card-"+p.n;
+    art.innerHTML=
+      '<header><div class="step">'+p.n+'</div><div style="min-width:0"><h3>'+esc(p.name)+'</h3><p class="why">'+esc(p.why)+'</p></div>'+
+      '<label class="check"><input type="checkbox" id="done-'+p.n+'"> Done</label></header>'+
+      '<div class="needs" id="needs-'+p.n+'"></div>'+
+      '<pre class="prompt" id="prompt-'+p.n+'"></pre>'+
+      '<footer><button class="btn primary" type="button" id="copy-'+p.n+'">Copy prompt</button>'+
+      '<button class="btn" type="button" id="notes-btn-'+p.n+'">Paste Claude’s answer</button>'+
+      '<span class="toast" id="toast-'+p.n+'">Copied</span><span class="spacer"></span></footer>'+
+      '<div class="notes"><label for="notes-'+p.n+'">Claude’s answer for step '+p.n+' (saved in this browser)</label>'+
+      '<textarea id="notes-'+p.n+'" placeholder="Paste the result here so the next step has it to hand."></textarea></div>';
+    rail.appendChild(art);
+    $("copy-"+p.n).addEventListener("click",function(){copyText(plain(p),$("toast-"+p.n),$("prompt-"+p.n));});
+    $("done-"+p.n).addEventListener("change",function(e){state.done[p.n]=e.target.checked;save();render();});
+    $("notes-btn-"+p.n).addEventListener("click",function(){state.open[p.n]=!state.open[p.n];save();render();if(state.open[p.n])$("notes-"+p.n).focus();});
+    $("notes-"+p.n).addEventListener("input",function(e){state.notes[p.n]=e.target.value;save();});
+  });
+
+  function render(){
+    var done=0;
+    PROMPTS.forEach(function(p){
+      var art=$("card-"+p.n);
+      $("prompt-"+p.n).innerHTML=html(p);
+      $("needs-"+p.n).innerHTML=p.needs.map(function(k){var ok=(state[k]||"").trim().length>0;return '<span class="chip '+(ok?'filled':'missing')+'">'+(ok?'✓ ':'needs ')+LABEL[k]+'</span>';}).join("");
+      var d=!!state.done[p.n];if(d)done++;
+      art.classList.toggle("done",d);$("done-"+p.n).checked=d;
+      art.classList.toggle("open",!!state.open[p.n]);
+      $("notes-btn-"+p.n).textContent=state.open[p.n]?"Hide answer":(state.notes[p.n]?"Show Claude’s answer":"Paste Claude’s answer");
+      if($("notes-"+p.n).value!==(state.notes[p.n]||""))$("notes-"+p.n).value=state.notes[p.n]||"";
+    });
+    $("doneCount").textContent=done;
+    var segs=$("segs").children;for(var i=0;i<segs.length;i++)segs[i].classList.toggle("on",i<done);
+    $("exampleNote").hidden=!state.example;
+    renderVeq();
+  }
+
+  function renderVeq(){
+    var v=state.veq;
+    $("oDream").value=v.d;$("oLike").value=v.l;$("oTime").value=v.t;$("oEffort").value=v.e;
+    var score=(v.d*v.l)/(v.t*v.e);
+    $("score").textContent=score>=10?score.toFixed(0):score.toFixed(1);
+    $("scoreBar").style.width=Math.min(100,score)+"%";
+    var levers=[{n:"Dream outcome",gap:10-v.d},{n:"Perceived likelihood",gap:10-v.l},{n:"Time delay",gap:v.t-1},{n:"Effort & sacrifice",gap:v.e-1}];
+    levers.sort(function(a,b){return b.gap-a.gap;});
+    var read=score>=25?"Strong offer. ":score>=5?"Average. ":"Buyers see little value yet. ";
+    $("scoreRead").innerHTML=esc(read)+"Weakest lever: <b>"+esc(levers[0].n)+"</b>";
+  }
+
+  // Inputs
+  ["offer","audience","launch"].forEach(function(k){
+    var el=$(k);el.value=state[k];
+    el.addEventListener("input",function(){state[k]=el.value;if(state.example&&(el.value!==EXAMPLE[k]))state.example=false;save();render();});
+  });
+  $("clearExample").addEventListener("click",function(){state.offer="";state.audience="";state.launch="";state.example=false;["offer","audience","launch"].forEach(function(k){$(k).value="";});save();render();$("offer").focus();});
+  $("resetAll").addEventListener("click",function(){
+    var b=this;
+    if(b.dataset.armed!=="1"){b.dataset.armed="1";b.textContent="Click again to clear everything";setTimeout(function(){b.dataset.armed="";b.textContent="Reset workbench";},3000);return;}
+    state={offer:EXAMPLE.offer,audience:EXAMPLE.audience,launch:EXAMPLE.launch,done:{},notes:{},open:{},veq:{d:7,l:6,t:5,e:6},example:true};
+    try{localStorage.removeItem(KEY);}catch(e){}
+    ["offer","audience","launch"].forEach(function(k){$(k).value=state[k];});
+    b.dataset.armed="";b.textContent="Reset workbench";render();
+  });
+  [["vDream","d"],["vLike","l"],["vTime","t"],["vEffort","e"]].forEach(function(pair){
+    var el=$(pair[0]);el.value=state.veq[pair[1]];
+    el.addEventListener("input",function(){state.veq[pair[1]]=+el.value;save();renderVeq();});
+  });
+  $("copyAll").addEventListener("click",function(){
+    var all=PROMPTS.map(function(p){return p.n+". "+p.name+"\n\n"+plain(p);}).join("\n\n— — —\n\n");
+    var b=this;copyText(all,null,null,function(ok){b.textContent=ok?"Copied all 7":"Copy failed, select manually";setTimeout(function(){b.textContent="Copy all 7 prompts";},1800);});
+  });
+
+  function copyText(text,toast,fallbackEl,cb){
+    function done(ok){
+      if(toast){toast.textContent=ok?"Copied":"Select the text and copy";toast.classList.add("show");setTimeout(function(){toast.classList.remove("show");},1600);}
+      if(!ok&&fallbackEl){try{var r=document.createRange();r.selectNodeContents(fallbackEl);var s=window.getSelection();s.removeAllRanges();s.addRange(r);}catch(e){}}
+      if(cb)cb(ok);
+    }
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){done(true);},function(){legacy();});
+    }else legacy();
+    function legacy(){
+      try{var ta=document.createElement("textarea");ta.value=text;ta.setAttribute("readonly","");ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();var ok=document.execCommand("copy");document.body.removeChild(ta);done(!!ok);}catch(e){done(false);}
+    }
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
