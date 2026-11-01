@@ -17,10 +17,12 @@ row says what it can actually do: "connected" and "can write" are not the same t
 | **Local Bridge queue** | `localBridgeQueue` doc → `local-bridge-queue` task (hourly :25, 6 AM–9 PM PT) → `~/Applications/local-bridge/run.sh` | **Read-only verbs**, enforced by an allow-list |
 | **Research queue** | `vanessaResearch` doc → `vanessa-research-queue` (hourly :30, 7:30 AM–9:30 PM PT) | Writes answers back to the doc |
 | **Push / text** | `vanessa-significant-alerts` (11 AM, 3 PM, 7 PM PT) and the morning text | Outbound only |
+| **Claude Duet** (phone app, added 2026-11-01, **unverified until Steven installs it**) | Anthropic's proactive agent app (Channels, task list, background tasks, voice). The same connectors as claude.ai, so the same Gmail, Calendar, Drive, Notion, GitHub (the brain), Fieldy. Setup and the standing brief: `integrations/claude-duet/README.md` | Reads everything the connectors reach; **drafts and queues only**. Every send, spend, sign, invite or CRM write is a HALT; purchases through Stripe Link never. No write access to a Mac |
 
 ## Which path for which job
 
 - **"Answer me"** → iMessage or Discord. Cheapest, already running.
+- **"Brief me, triage my inbox, prep this meeting, remember this" from the phone** → **Claude Duet**, once installed. It reads the brain through the GitHub connector and the connectors on his sign-in; drafts only, HALT list unchanged.
 - **"Look something up I cannot see"** → Local Bridge queue (read-only) or the research queue.
 - **"Do something on a Mac"** → **Vanessa Live.** The only path with real write access to files.
 - **"Run this while I sleep"** → a **cloud routine** if it needs only the web and the artifact DB; a

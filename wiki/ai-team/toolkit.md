@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
+toolkit: 48 skills · 7 Claude mods (plugins) · 57 connectors (3 ok, 54 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -289,6 +289,11 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need at
 - `AnyDesk` — *attention*: install scripted (connect-all 6d)
 - `MyFitnessPal · Strava · BodyPark` — *attention*: all three flow through Apple Health → Health Auto Export → the cloud Health daily sync (Strava also by connector)
 - `Pabbly Connect` — *attention*: workflows written (integrations/pabbly/WORKFLOWS.md); built in Pabbly's editor, not by a script
+- `Claude Duet (phone app)` — *pending*: pending — install and waitlist are Steven's; no device has reported yet
+- `Claude Duet → the brain (GitHub connector, branch claude/stoic-cori-pvn3f8)` — *pending*: pending — GitHub connector is connected on claude.ai (integrations/APIS.md); the phone has not read CLAUDE.md yet
+- `Claude Duet → Drive SECOND BRAIN, Notion, Gmail, Calendar, Fieldy, Slack, Zoom, Strava, Ti` — *pending*: pending — all connected on claude.ai per the rows above; whether the app lists them is test 1
+- `Claude Duet → Claude for Chrome on Mac 1 (computer use from the phone)` — *pending*: pending — the agent Chrome profile exists (integrations/browser-agents/); not yet driven from a phone
+- `Claude Duet purchases (Stripe Link)` — *pending*: never — standing HALT: anything that spends money
 
 **MCP servers**
 - `playwright` — *ok*: browser automation for sites with no API · installed

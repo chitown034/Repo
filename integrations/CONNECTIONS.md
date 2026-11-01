@@ -646,3 +646,17 @@ live truth once Steven has run it.
 | CLI-Anything | harnesses for homes.com / ShowingTime / Showami / Lofty installed by the paste | sign-ins only | Steven |
 | Mac runner · message tasks all day | restart + hours widening scripted (fix-mine 4) | `bash setup.sh`; `runnerctl login` stays his if it is signed out | Steven (paste) |
 
+## Connection status — Claude Duet, 2026-11-01 (Steven: "maximize and optimize my Claude Duet executive assistant by connecting to my 6D brain")
+
+Claude Duet is Anthropic's proactive agent app (phone + claude.ai web; Channels, a task list, background tasks, voice). It uses
+the connectors already on Steven's claude.ai sign-in, so nothing new is wired here: the brain reaches it through the GitHub
+connector, and the setup, channel plan, standing brief and eight tests are in `integrations/claude-duet/README.md`. Nothing was
+run on a device from this session; every row below is pending until Steven reports the tests.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Claude Duet (phone app) | pending — install and waitlist are Steven's; no device has reported yet | install Duet on the account that holds the connectors; settings: no payment method, ask-before-acting, Chrome ask-per-action | Steven |
+| Claude Duet → the brain (GitHub connector, branch claude/stoic-cori-pvn3f8) | pending — GitHub connector is connected on claude.ai (`integrations/APIS.md`); the phone has not read `CLAUDE.md` yet | run test 2 in the README ("three sentences on who I am"); paste `integrations/claude-duet/VANESSA-DUET-BRIEF.md` into the main chat first | Steven (paste), Vanessa |
+| Claude Duet → Drive SECOND BRAIN, Notion, Gmail, Calendar, Fieldy, Slack, Zoom, Strava, TidyCal, Inkbox | pending — all connected on claude.ai per the rows above; whether the app lists them is test 1 | run test 1 ("what connectors can you see?") and report the gaps | Steven |
+| Claude Duet → Claude for Chrome on Mac 1 (computer use from the phone) | pending — the agent Chrome profile exists (`integrations/browser-agents/`); not yet driven from a phone | Mac 1 awake, Claude for Chrome open, ask-per-action on; run test 8 (LinkedIn feed, read-only) | Steven, Elena (settings) |
+| Claude Duet purchases (Stripe Link) | never — standing HALT: anything that spends money | leave no payment method in the app | Steven |
