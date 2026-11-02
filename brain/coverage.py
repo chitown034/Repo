@@ -76,7 +76,7 @@ FUTURE_SKEW = timedelta(hours=48)
 
 
 def doc_stamp(body, now: datetime | None = None) -> tuple[datetime | None, str]:
-    """The freshest stamp a document carries: the first known key on v that parses, else the newest date in the first 20 kB.
+    """The freshest stamp a document carries: the first known key on v that parses, else the newest date in the first and last 20 kB.
     A key stamp in the future is returned as is (the caller flags it); body dates in the future (renewal dates, expiry
     years, plan horizons) are never write stamps and are ignored."""
     now = now or datetime.now(timezone.utc)
@@ -86,7 +86,10 @@ def doc_stamp(body, now: datetime | None = None) -> tuple[datetime | None, str]:
             d = parse_stamp(v.get(k))
             if d:
                 return d, k
-    text = json.dumps(v)[:20000]
+    text = json.dumps(v)
+    # head + tail: list-shaped docs (logs) append their newest rows at the end, so a head-only scan (the old
+    # 20 kB cap) called a log stale on the day it was written (ciLog, 2026-11-02 audit)
+    text = text if len(text) <= 40000 else text[:20000] + " " + text[-20000:]
     found = re.findall(r"20\d\d-\d\d-\d\dT\d\d:\d\d(?::\d\d)?(?:\.\d+)?(?:Z|[+-]\d\d:?\d\d)?", text) or re.findall(r"\b20\d\d-\d\d-\d\d\b", text)
     best = None
     for s in found:

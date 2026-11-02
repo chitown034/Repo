@@ -86,6 +86,20 @@ class RegisterTests(unittest.TestCase):
         self.assertEqual(s["runnerStatus"]["funcs"], ["renderRunnerStatus"])
 
 
+
+class LogTailStampTests(unittest.TestCase):
+    """2026-11-02: a long list-shaped doc whose newest row is at the end must read by that row's date."""
+
+    def test_newest_row_at_tail_counts(self):
+        rows = [{"ts": "2026-09-01T00:00:00Z", "note": "x" * 400} for _ in range(200)]
+        rows.append({"ts": "2026-11-02T20:00:00Z", "note": "today"})
+        d, how = coverage.doc_stamp({"v": rows}, now=datetime(2026, 11, 2, 21, 0, tzinfo=timezone.utc))
+        self.assertEqual(d.date().isoformat(), "2026-11-02")
+
+    def test_short_doc_unchanged(self):
+        d, _ = coverage.doc_stamp({"v": [{"ts": "2026-10-30T00:00:00Z"}]}, now=datetime(2026, 11, 2, tzinfo=timezone.utc))
+        self.assertEqual(d.date().isoformat(), "2026-10-30")
+
 if __name__ == "__main__":
     unittest.main()
 

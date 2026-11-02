@@ -314,7 +314,7 @@ def main(argv: list[str] | None = None) -> int:
             from . import agentfiles
             if args.write:
                 n, out = agentfiles.write(root); print(f"wrote {n} agent files -> {out}"); return 0
-            r = agentfiles.check(root); print(f"agent files: {r['present']}/{r['total']} present, {len(r['bad_frontmatter'])} bad"); return 0 if not r["missing"] and not r["bad_frontmatter"] else 1
+            r = agentfiles.check(root); print(f"agent files: {r['present']}/{r['total']} present, {len(r['bad_frontmatter'])} bad, {len(r['bad_chains'])} broken reporting lines" + "".join("\n  " + b for b in r["bad_chains"])); return 0 if not r["missing"] and not r["bad_frontmatter"] and not r["bad_chains"] else 1
         if args.action == "check":
             r = agentos.check(root); print(agentos.format_check(r)); return 0 if not r["unreachable"] and not r["manifest_stale"] else 1
         if args.action == "run":

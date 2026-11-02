@@ -1,6 +1,6 @@
 """Agent files -- one Claude Code sub-agent definition per roster seat, laid out as the org chart says.
 
-``brain os agents --write`` turns docs/inventory/agent-roster.md (172 seats: slug, tier, lead, model, role) plus the
+``brain os agents --write`` turns docs/inventory/agent-roster.md (185 seats on 2026-11-02: slug, tier, lead, model, role) plus the
 Agent OS manifest (Laya lane, starting page, gates, proposal-only) into ``integrations/agent-os/agents/<slug>.md``:
 the frontmatter Claude Code reads (name, description, model) and a short system prompt that states the seat's place
 in the org chart, who it reports to, the brain page it starts from, and the HALT rules that never move. The Mac
@@ -48,7 +48,7 @@ def _name(slug: str) -> str:
 
 def render(a: dict, lead_of: dict) -> str:
     seat = a["laya"]["lane"]
-    lead = a["lead"] or "vanessa-orchestrator"
+    lead = "Steven" if a["slug"] == "vanessa-orchestrator" else (a["lead"] or "vanessa-orchestrator")
     start = a["laya"]["starts_from"] or "CLAUDE.md"
     desc = re.sub(r"\s+", " ", a["role"]).strip().rstrip(".")[:150]
     prop = "This seat is PROPOSAL-ONLY: return proposals, never changes." if a["guard"]["proposal_only"] else ""
@@ -113,4 +113,27 @@ def check(root: Path) -> dict:
             t = p.read_text(encoding="utf-8")
             if not t.startswith("---\nname: " + a["slug"] + "\n"):
                 bad.append(a["slug"])
-    return {"total": m["count"], "present": m["count"] - len(missing), "missing": missing, "bad_frontmatter": bad}
+    return {"total": m["count"], "present": m["count"] - len(missing), "missing": missing, "bad_frontmatter": bad,
+            "bad_chains": bad_chains(m["agents"])}
+
+
+def bad_chains(agents: list) -> list:
+    """Seats whose reporting line does not reach vanessa-orchestrator: an unknown lead slug, a self-lead or a loop
+    (2026-11-02 code review: these used to print a quiet, wrong 'Reporting line' with every check green)."""
+    known = {a["slug"] for a in agents}
+    lead_of = {a["slug"]: a.get("lead") for a in agents}
+    bad = []
+    for a in agents:
+        s = a["slug"]
+        if s == "vanessa-orchestrator":
+            continue
+        x, seen = lead_of.get(s), {s}
+        while True:
+            if not x or x == "vanessa-orchestrator":
+                break
+            if x not in known:
+                bad.append(f"{s}: unknown lead {x}"); break
+            if x in seen:
+                bad.append(f"{s}: loop at {x}"); break
+            seen.add(x); x = lead_of.get(x)
+    return bad

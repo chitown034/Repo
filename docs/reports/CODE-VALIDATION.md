@@ -1,199 +1,27 @@
 # Code validation — last run
 
-Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `c7fb1a85763b4f43`: **not yet**.
+Deterministic checks by `scripts/validate-code.sh`; the agent review (VibeBreaker 20-pass, code-validator) for change-set `820913cd34b3754c`: **not yet**.
 
 ```
-code validation 2026-11-02T21:13:22Z - change-set c7fb1a85763b4f43
+code validation 2026-11-02T21:18:02Z - change-set 820913cd34b3754c
 files:
+  brain/__main__.py
   brain/agentfiles.py
-  docs/inventory/agent-roster.md
-  docs/inventory/org-chart.json
+  brain/agentos.py
+  brain/coverage.py
+  brain/tests/test_agentos.py
+  brain/tests/test_coverage.py
   integrations/agent-os/agents.json
-  integrations/agent-os/agents/a11y-architect.md
-  integrations/agent-os/agents/access-auditor.md
-  integrations/agent-os/agents/ad-compliance-reviewer.md
-  integrations/agent-os/agents/agent-evaluator.md
-  integrations/agent-os/agents/appraisal-manager.md
-  integrations/agent-os/agents/architect.md
-  integrations/agent-os/agents/automation-engineer.md
-  integrations/agent-os/agents/bookkeeper.md
-  integrations/agent-os/agents/borrower-retention-agent.md
-  integrations/agent-os/agents/broker-coach-maxwell.md
-  integrations/agent-os/agents/build-error-resolver.md
-  integrations/agent-os/agents/buyer-matching-engine.md
-  integrations/agent-os/agents/buyers-agent-elite.md
-  integrations/agent-os/agents/ca-loan-processor.md
-  integrations/agent-os/agents/ca-transaction-coordinator.md
-  integrations/agent-os/agents/ca-underwriter.md
-  integrations/agent-os/agents/caio-nadia.md
-  integrations/agent-os/agents/capability-engineer.md
-  integrations/agent-os/agents/cco-alexandra.md
-  integrations/agent-os/agents/cfo-marcus.md
-  integrations/agent-os/agents/chief-automation-strategist.md
-  integrations/agent-os/agents/ciso-elena.md
-  integrations/agent-os/agents/client-concierge.md
-  integrations/agent-os/agents/closing-coordinator.md
-  integrations/agent-os/agents/cmo-sofia.md
-  integrations/agent-os/agents/code-architect.md
-  integrations/agent-os/agents/code-explorer.md
-  integrations/agent-os/agents/code-reviewer.md
-  integrations/agent-os/agents/code-simplifier.md
-  integrations/agent-os/agents/comment-analyzer.md
-  integrations/agent-os/agents/commission-tracker.md
-  integrations/agent-os/agents/competitive-intelligence-analyst.md
-  integrations/agent-os/agents/content-writer.md
-  integrations/agent-os/agents/conversation-analyzer.md
-  integrations/agent-os/agents/cpp-build-resolver.md
-  integrations/agent-os/agents/cpp-reviewer.md
-  integrations/agent-os/agents/credit-analyst.md
-  integrations/agent-os/agents/cro-victor.md
-  integrations/agent-os/agents/csharp-reviewer.md
-  integrations/agent-os/agents/cto-derek.md
-  integrations/agent-os/agents/cto-innovator.md
-  integrations/agent-os/agents/dart-build-resolver.md
-  integrations/agent-os/agents/data-steward.md
-  integrations/agent-os/agents/database-reviewer.md
-  integrations/agent-os/agents/deal-desk-analyst.md
-  integrations/agent-os/agents/disruption-scout.md
-  integrations/agent-os/agents/django-build-resolver.md
-  integrations/agent-os/agents/django-reviewer.md
-  integrations/agent-os/agents/doc-updater.md
-  integrations/agent-os/agents/docs-lookup.md
-  integrations/agent-os/agents/document-intake-clerk.md
-  integrations/agent-os/agents/document-intelligence-agent.md
-  integrations/agent-os/agents/e2e-runner.md
-  integrations/agent-os/agents/ecc-accessibility-lead.md
-  integrations/agent-os/agents/ecc-agent-safety-officer.md
-  integrations/agent-os/agents/ecc-dependency-steward.md
-  integrations/agent-os/agents/ecc-observability-lead.md
-  integrations/agent-os/agents/ecc-security-steward.md
-  integrations/agent-os/agents/ecc-standards-officer.md
-  integrations/agent-os/agents/ecc-test-architect.md
-  integrations/agent-os/agents/efficiency-engineer.md
-  integrations/agent-os/agents/escalation-recovery-agent.md
-  integrations/agent-os/agents/fastapi-reviewer.md
-  integrations/agent-os/agents/fitness-trainer.md
-  integrations/agent-os/agents/flutter-reviewer.md
-  integrations/agent-os/agents/fsharp-reviewer.md
-  integrations/agent-os/agents/fundamental-analyst.md
-  integrations/agent-os/agents/gan-evaluator.md
-  integrations/agent-os/agents/gan-generator.md
-  integrations/agent-os/agents/gan-planner.md
-  integrations/agent-os/agents/geo-aeo-optimizer.md
-  integrations/agent-os/agents/go-build-resolver.md
-  integrations/agent-os/agents/go-reviewer.md
-  integrations/agent-os/agents/harmonyos-app-resolver.md
-  integrations/agent-os/agents/harness-optimizer.md
-  integrations/agent-os/agents/health-coach-analyst.md
-  integrations/agent-os/agents/healthcare-reviewer.md
-  integrations/agent-os/agents/homelab-architect.md
-  integrations/agent-os/agents/incentives-programs-scout.md
-  integrations/agent-os/agents/inspection-repair-negotiator.md
-  integrations/agent-os/agents/integration-engineer.md
-  integrations/agent-os/agents/investor-client-manager.md
-  integrations/agent-os/agents/java-build-resolver.md
-  integrations/agent-os/agents/java-reviewer.md
-  integrations/agent-os/agents/kotlin-build-resolver.md
-  integrations/agent-os/agents/kotlin-reviewer.md
-  integrations/agent-os/agents/lead-triage-analyst.md
-  integrations/agent-os/agents/listing-agent-elite.md
-  integrations/agent-os/agents/loan-servicing-transfer.md
-  integrations/agent-os/agents/loop-operator.md
-  integrations/agent-os/agents/lpt-recruiting-downline.md
-  integrations/agent-os/agents/luxury-market-specialist.md
-  integrations/agent-os/agents/market-scout.md
-  integrations/agent-os/agents/marketing-agent.md
-  integrations/agent-os/agents/mbs-market-intelligence.md
-  integrations/agent-os/agents/meal-planner.md
-  integrations/agent-os/agents/meeting-scribe.md
-  integrations/agent-os/agents/military-licensing-partnerships.md
-  integrations/agent-os/agents/military-relocation-specialist.md
-  integrations/agent-os/agents/mktg-affiliate-partnerships.md
-  integrations/agent-os/agents/mktg-analytics-lead.md
-  integrations/agent-os/agents/mktg-brand-strategist.md
-  integrations/agent-os/agents/mktg-creative-designer.md
-  integrations/agent-os/agents/mktg-direct-mail-farming.md
-  integrations/agent-os/agents/mktg-email-campaign-manager.md
-  integrations/agent-os/agents/mktg-listing-marketing-specialist.md
-  integrations/agent-os/agents/mktg-paid-ads-manager.md
-  integrations/agent-os/agents/mktg-pr-media-relations.md
-  integrations/agent-os/agents/mktg-reputation-manager.md
-  integrations/agent-os/agents/mktg-social-media-manager.md
-  integrations/agent-os/agents/mktg-video-producer.md
-  integrations/agent-os/agents/mle-reviewer.md
-  integrations/agent-os/agents/modelmatch-partner-network.md
-  integrations/agent-os/agents/mortgage-analytics-lead.md
-  integrations/agent-os/agents/mortgage-broker-elite.md
-  integrations/agent-os/agents/mortgage-guideline-agent.md
-  integrations/agent-os/agents/mortgage-intake-agent.md
-  integrations/agent-os/agents/mortgage-isa-ai.md
-  integrations/agent-os/agents/mortgage-qa-auditor.md
-  integrations/agent-os/agents/network-architect.md
-  integrations/agent-os/agents/network-config-reviewer.md
-  integrations/agent-os/agents/network-troubleshooter.md
-  integrations/agent-os/agents/new-construction-specialist.md
-  integrations/agent-os/agents/news-analyst.md
-  integrations/agent-os/agents/nonprofit-grant-writer.md
-  integrations/agent-os/agents/nonprofit-grants-lead.md
-  integrations/agent-os/agents/open-house-captain.md
-  integrations/agent-os/agents/opensource-forker.md
-  integrations/agent-os/agents/opensource-packager.md
-  integrations/agent-os/agents/opensource-sanitizer.md
-  integrations/agent-os/agents/performance-optimizer.md
-  integrations/agent-os/agents/phishing-triage.md
-  integrations/agent-os/agents/php-reviewer.md
-  integrations/agent-os/agents/planner.md
-  integrations/agent-os/agents/portfolio-manager.md
-  integrations/agent-os/agents/pr-test-analyzer.md
-  integrations/agent-os/agents/predictive-lead-mining.md
-  integrations/agent-os/agents/premium-lead-partnerships.md
-  integrations/agent-os/agents/python-reviewer.md
-  integrations/agent-os/agents/pytorch-build-resolver.md
-  integrations/agent-os/agents/quant-analyst.md
-  integrations/agent-os/agents/rag-pipeline-reviewer.md
-  integrations/agent-os/agents/rate-pricing-optimizer.md
-  integrations/agent-os/agents/re-market-analytics.md
-  integrations/agent-os/agents/react-build-resolver.md
-  integrations/agent-os/agents/react-reviewer.md
-  integrations/agent-os/agents/realtor-reciprocity-agent.md
-  integrations/agent-os/agents/refactor-cleaner.md
-  integrations/agent-os/agents/refi-watch-analyst.md
-  integrations/agent-os/agents/refinance-hunter.md
-  integrations/agent-os/agents/reliability-engineer.md
-  integrations/agent-os/agents/research-analyst.md
-  integrations/agent-os/agents/risk-manager.md
-  integrations/agent-os/agents/rust-build-resolver.md
-  integrations/agent-os/agents/rust-reviewer.md
-  integrations/agent-os/agents/sandbox-qa.md
-  integrations/agent-os/agents/security-reviewer.md
-  integrations/agent-os/agents/seo-specialist.md
-  integrations/agent-os/agents/showing-coordinator.md
-  integrations/agent-os/agents/silent-failure-hunter.md
-  integrations/agent-os/agents/spec-miner.md
-  integrations/agent-os/agents/sphere-nurture-coordinator.md
-  integrations/agent-os/agents/stress-test-engineer.md
-  integrations/agent-os/agents/swift-build-resolver.md
-  integrations/agent-os/agents/swift-reviewer.md
-  integrations/agent-os/agents/tax-deadline-analyst.md
-  integrations/agent-os/agents/tdd-guide.md
-  integrations/agent-os/agents/technical-analyst.md
-  integrations/agent-os/agents/title-report-analyst.md
-  integrations/agent-os/agents/travel-desk.md
-  integrations/agent-os/agents/trid-timeline-checker.md
-  integrations/agent-os/agents/type-design-analyzer.md
-  integrations/agent-os/agents/typescript-reviewer.md
-  integrations/agent-os/agents/ux-designer.md
   integrations/agent-os/agents/vanessa-orchestrator.md
-  integrations/agent-os/agents/vendor-network-manager.md
-  integrations/agent-os/agents/voicemail-inbox-triage.md
-  integrations/agent-os/agents/vue-reviewer.md
-  integrations/agent-os/agents/webinar-producer.md
-  wiki/ai-team/org-chart.md
+PASS py_compile brain/__main__.py
 PASS py_compile brain/agentfiles.py
-PASS json docs/inventory/org-chart.json
+PASS py_compile brain/agentos.py
+PASS py_compile brain/coverage.py
+PASS py_compile brain/tests/test_agentos.py
+PASS py_compile brain/tests/test_coverage.py
 PASS json integrations/agent-os/agents.json
 PASS brain unit tests
 PASS brain layout
 PASS brain doctor
-verdict: PASS (6 passed, 0 failed)
+verdict: PASS (10 passed, 0 failed)
 ```

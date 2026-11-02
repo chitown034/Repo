@@ -36,6 +36,23 @@ class AgentOS(unittest.TestCase):
         self.assertIn("About Steven", t)
 
 
+
+class ReportingLineTests(unittest.TestCase):
+    """2026-11-02: every seat's line reaches Vanessa; typos and loops are named, not hidden."""
+
+    def test_bad_chains_named(self):
+        from brain import agentfiles
+        seats = [{"slug": "vanessa-orchestrator", "lead": None}, {"slug": "a", "lead": "b"}, {"slug": "b", "lead": "a"},
+                 {"slug": "c", "lead": "ghost"}, {"slug": "d", "lead": "vanessa-orchestrator"}, {"slug": "e", "lead": "e"}]
+        bad = agentfiles.bad_chains(seats)
+        self.assertTrue(any(x.startswith("a:") for x in bad)); self.assertTrue(any("unknown lead ghost" in x for x in bad))
+        self.assertTrue(any(x.startswith("e:") for x in bad)); self.assertFalse(any(x.startswith("d:") for x in bad))
+
+    def test_real_roster_has_no_broken_lines(self):
+        from brain import agentfiles
+        r = agentfiles.check(ROOT)
+        self.assertEqual(r["bad_chains"], [])
+
 if __name__ == "__main__":
     unittest.main()
 
