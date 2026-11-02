@@ -18,4 +18,4 @@ inside its cadence. `bin/brain layers` prints this; `bin/brain layers --write` r
 | Knowledge graph | entities and relationships | spec only (knowledge-graph/README.md) | — | — | 30 d | **spec only** |
 
 **Even:** yes — every stamped layer is inside its cadence.
-Generated 2026-11-02T00:20:34Z.
+Generated 2026-11-02T11:34:26Z.
