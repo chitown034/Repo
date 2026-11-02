@@ -47,7 +47,7 @@ function acGate(e){const c=acCfg(),C=acCamp(e.camp),B=[],W=[];const ph=acPhone(e
  return{ok:!B.length,B,W,ph}}
 function acTask(e){const C=acCamp(e.camp),c=acCfg(),first=acFirst(e.name);const re=["openhouse","partner"].includes(C.k);
  const fill=s=>String(s||"").replace(/\{first\}/g,first).replace(/\{docs\}/g,e.docs||"the remaining items on your checklist");
- return [`You are Vanessa, an AI assistant (a virtual inside sales assistant) calling on behalf of Steven Shearrill (NMLS 2449246), a mortgage broker with Patriot Pacific Financial Corp (company NMLS 1921615)${re?" who is also a real estate broker with LPT Realty":""}. Steven is a retired Navy Chief based in Southern California.`,
+ return [`You are Vanessa, an AI assistant (a virtual inside sales assistant) calling on behalf of Steven Shearrill (NMLS 2449246), a mortgage broker with Patriot Pacific Financial Corp (company NMLS 1921615)${re?" who is also a California real estate broker (DRE #01988316) with LPT Realty":""}. Steven is a retired Navy Chief based in Southern California.`,
  `CALL GOAL: ${C.goal}`,
  `CONTACT: ${e.name||"the contact"}${e.state?" in "+e.state:""}. How we know them: ${e.src||"inquiry"}.${e.notes?" Notes: "+String(e.notes).slice(0,400):""}`,
  `OPENING (say this first, in your own natural words): "Hi, is this ${first}? This is Vanessa, an AI assistant calling for Steven Shearrill at Patriot Pacific Financial. This call is being recorded. I'm calling because ${fill(C.why)}. Do you have a quick minute?" If it is not a good time, ask for a better day and time, thank them, and end the call.`,
