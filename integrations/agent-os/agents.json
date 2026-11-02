@@ -295,11 +295,11 @@
    "slug": "build-error-resolver",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Build and TypeScript error resolution specialist.",
    "laya": {
-    "lane": "Elon",
-    "starts_from": "brain/README.md"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"build error resolver Build and TypeScript error resolution specialist.\"",
@@ -759,11 +759,11 @@
    "slug": "code-architect",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Designs feature architectures by analyzing existing codebase patterns and conventions, then providing implementation blueprints with concret",
    "laya": {
-    "lane": "Elon",
-    "starts_from": "brain/README.md"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"code architect Designs feature architectures by analyzing existing\"",
@@ -825,11 +825,11 @@
    "slug": "code-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Expert code review specialist.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"code reviewer Expert code review specialist.\"",
@@ -849,6 +849,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -857,11 +858,11 @@
    "slug": "code-simplifier",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Simplifies and refines code for clarity, consistency, and maintainability while preserving behavior.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"code simplifier Simplifies and refines code for clarity,\"",
@@ -871,10 +872,17 @@
     "command": "claude --agent code-simplifier",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
-   "toolkit": [],
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -916,11 +924,11 @@
    "slug": "comment-analyzer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Analyze code comments for accuracy, completeness, maintainability, and comment rot risk.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"comment analyzer Analyze code comments for accuracy, completeness,\"",
@@ -930,10 +938,17 @@
     "command": "claude --agent comment-analyzer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
-   "toolkit": [],
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -1048,11 +1063,11 @@
    "slug": "conversation-analyzer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "caio-nadia",
    "role": "Use this agent when analyzing conversation transcripts to find behaviors worth preventing with hooks.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Nadia",
+    "starts_from": "docs/CAIO-DISRUPTION-BRIEF.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"conversation analyzer Use this agent when analyzing conversation\"",
@@ -1074,11 +1089,11 @@
    "slug": "cpp-build-resolver",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "C++ build, CMake, and compilation error resolution specialist.",
    "laya": {
-    "lane": "Elon",
-    "starts_from": "brain/README.md"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"cpp build resolver C++ build, CMake, and compilation error\"",
@@ -1107,11 +1122,11 @@
    "slug": "cpp-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Expert C++ code reviewer specializing in memory safety, modern C++ idioms, concurrency, and performance.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"cpp reviewer Expert C++ code reviewer specializing in\"",
@@ -1131,6 +1146,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -1193,11 +1209,11 @@
    "slug": "csharp-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Expert C# code reviewer specializing in .NET conventions, async patterns, security, nullable reference types, and performance.",
    "laya": {
-    "lane": "Elena",
-    "starts_from": "docs/"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"csharp reviewer Expert C# code reviewer specializing in\"",
@@ -1217,6 +1233,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -1291,11 +1308,11 @@
    "slug": "dart-build-resolver",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Dart/Flutter build, analysis, and dependency error resolution specialist.",
    "laya": {
-    "lane": "Elon",
-    "starts_from": "brain/README.md"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"dart build resolver Dart/Flutter build, analysis, and dependency error\"",
@@ -1357,11 +1374,11 @@
    "slug": "database-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "PostgreSQL database specialist for query optimization, schema design, security, and performance.",
    "laya": {
-    "lane": "Elena",
-    "starts_from": "docs/"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"database reviewer PostgreSQL database specialist for query optimization,\"",
@@ -1381,6 +1398,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -1442,11 +1460,11 @@
    "slug": "django-build-resolver",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Django/Python build, migration, and dependency error resolution specialist.",
    "laya": {
-    "lane": "Elon",
-    "starts_from": "brain/README.md"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"django build resolver Django/Python build, migration, and dependency error\"",
@@ -1475,11 +1493,11 @@
    "slug": "django-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Expert Django code reviewer specializing in ORM correctness, DRF patterns, migration safety, security misconfigurations, and production-grad",
    "laya": {
-    "lane": "Elena",
-    "starts_from": "docs/"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"django reviewer Expert Django code reviewer specializing in\"",
@@ -1499,6 +1517,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -1507,11 +1526,11 @@
    "slug": "doc-updater",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Documentation and codemap specialist.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"doc updater Documentation and codemap specialist.\"",
@@ -1521,10 +1540,17 @@
     "command": "claude --agent doc-updater",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
-   "toolkit": [],
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -1613,7 +1639,7 @@
    "slug": "e2e-runner",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "End-to-end testing specialist using Vercel Agent Browser (preferred) with Playwright fallback.",
    "laya": {
     "lane": "Derek",
@@ -1991,11 +2017,11 @@
    "slug": "flutter-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Flutter and Dart code reviewer.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"flutter reviewer Flutter and Dart code reviewer.\"",
@@ -2015,6 +2041,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -2023,11 +2050,11 @@
    "slug": "fsharp-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Expert F# code reviewer specializing in functional idioms, type safety, pattern matching, computation expressions, and performance.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"fsharp reviewer Expert F# code reviewer specializing in\"",
@@ -2047,6 +2074,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -2081,11 +2109,11 @@
    "slug": "gan-evaluator",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "caio-nadia",
    "role": "GAN Harness — Evaluator agent.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Nadia",
+    "starts_from": "docs/CAIO-DISRUPTION-BRIEF.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"gan evaluator GAN Harness — Evaluator agent.\"",
@@ -2107,11 +2135,11 @@
    "slug": "gan-generator",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-innovator",
    "role": "GAN Harness — Generator agent.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Elon",
+    "starts_from": "brain/README.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"gan generator GAN Harness — Generator agent.\"",
@@ -2121,10 +2149,17 @@
     "command": "claude --agent gan-generator",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
-   "toolkit": [],
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -2133,11 +2168,11 @@
    "slug": "gan-planner",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-innovator",
    "role": "GAN Harness — Planner agent.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Elon",
+    "starts_from": "brain/README.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"gan planner GAN Harness — Planner agent.\"",
@@ -2147,10 +2182,17 @@
     "command": "claude --agent gan-planner",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
-   "toolkit": [],
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -2186,11 +2228,11 @@
    "slug": "go-build-resolver",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Go build, vet, and compilation error resolution specialist.",
    "laya": {
-    "lane": "Elon",
-    "starts_from": "brain/README.md"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"build resolver Go build, vet, and compilation error\"",
@@ -2219,11 +2261,11 @@
    "slug": "go-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Expert Go code reviewer specializing in idiomatic Go, concurrency patterns, error handling, and performance.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"reviewer Expert Go code reviewer specializing in\"",
@@ -2243,6 +2285,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -2251,11 +2294,11 @@
    "slug": "harmonyos-app-resolver",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "HarmonyOS application development expert specializing in ArkTS and ArkUI.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"harmonyos app resolver HarmonyOS application development expert specializing in\"",
@@ -2265,10 +2308,17 @@
     "command": "claude --agent harmonyos-app-resolver",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
-   "toolkit": [],
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -2329,7 +2379,7 @@
    "slug": "healthcare-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cco-alexandra",
    "role": "Reviews healthcare application code for clinical safety, CDSS accuracy, PHI compliance, and medical data integrity.",
    "laya": {
     "lane": "Alexandra",
@@ -2362,11 +2412,11 @@
    "slug": "homelab-architect",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Designs home and small-lab network plans from hardware inventory, goals, and operator experience level, with safe staged changes and rollbac",
    "laya": {
-    "lane": "Maya",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"homelab architect Designs home and small-lab network plans\"",
@@ -2386,6 +2436,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -2559,11 +2610,11 @@
    "slug": "java-build-resolver",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Java/Maven/Gradle build, compilation, and dependency error resolution specialist.",
    "laya": {
-    "lane": "Elon",
-    "starts_from": "brain/README.md"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"java build resolver Java/Maven/Gradle build, compilation, and dependency error\"",
@@ -2592,11 +2643,11 @@
    "slug": "java-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Expert Java code reviewer for Spring Boot and Quarkus projects.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"java reviewer Expert Java code reviewer for Spring\"",
@@ -2616,6 +2667,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -2624,11 +2676,11 @@
    "slug": "kotlin-build-resolver",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Kotlin/Gradle build, compilation, and dependency error resolution specialist.",
    "laya": {
-    "lane": "Elon",
-    "starts_from": "brain/README.md"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"kotlin build resolver Kotlin/Gradle build, compilation, and dependency error\"",
@@ -2657,11 +2709,11 @@
    "slug": "kotlin-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Kotlin and Android/KMP code reviewer.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"kotlin reviewer Kotlin and Android/KMP code reviewer.\"",
@@ -2681,6 +2733,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -2876,7 +2929,7 @@
    "slug": "marketing-agent",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cmo-sofia",
    "role": "Marketing strategist and copywriter for campaign planning, audience research, positioning, copy creation, and content review.",
    "laya": {
     "lane": "Sofia",
@@ -3359,11 +3412,11 @@
    "slug": "mle-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "caio-nadia",
    "role": "Production machine-learning engineering reviewer for data contracts, feature pipelines, training reproducibility, offline/online evaluation,",
    "laya": {
-    "lane": "Victor",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "lane": "Nadia",
+    "starts_from": "docs/CAIO-DISRUPTION-BRIEF.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"mle reviewer Production machine-learning engineering reviewer for data\"",
@@ -3383,7 +3436,6 @@
    "guard": {
     "proposal_only": false,
     "gates": [
-     "Alexandra",
      "Vanessa"
     ]
    }
@@ -3580,11 +3632,11 @@
    "slug": "network-architect",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Designs enterprise or multi-site network architecture from requirements, using existing network skills for focused routing, validation, auto",
    "laya": {
-    "lane": "Nadia",
-    "starts_from": "docs/CAIO-DISRUPTION-BRIEF.md"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"network architect Designs enterprise or multi-site network architecture\"",
@@ -3604,6 +3656,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -3612,11 +3665,11 @@
    "slug": "network-config-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Reviews router and switch configurations for security, correctness, stale references, risky change-window commands, and missing operational",
    "laya": {
-    "lane": "Elena",
-    "starts_from": "docs/"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"network config reviewer Reviews router and switch configurations for\"",
@@ -3636,6 +3689,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -3644,11 +3698,11 @@
    "slug": "network-troubleshooter",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Diagnoses network connectivity, routing, DNS, interface, and policy symptoms with a read-only OSI-layer workflow and evidence-backed root ca",
    "laya": {
-    "lane": "Rafael",
-    "starts_from": "wiki/dashboard-ops/index.md"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"network troubleshooter Diagnoses network connectivity, routing, DNS, interface,\"",
@@ -3658,10 +3712,17 @@
     "command": "claude --agent network-troubleshooter",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
-   "toolkit": [],
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -3803,11 +3864,11 @@
    "slug": "opensource-forker",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-innovator",
    "role": "Fork any project for open-sourcing.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Elon",
+    "starts_from": "brain/README.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"opensource forker Fork any project for open-sourcing.\"",
@@ -3817,10 +3878,17 @@
     "command": "claude --agent opensource-forker",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
-   "toolkit": [],
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -3829,11 +3897,11 @@
    "slug": "opensource-packager",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-innovator",
    "role": "Generate complete open-source packaging for a sanitized project.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Elon",
+    "starts_from": "brain/README.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"opensource packager Generate complete open-source packaging for a\"",
@@ -3843,10 +3911,17 @@
     "command": "claude --agent opensource-packager",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
-   "toolkit": [],
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -3855,11 +3930,11 @@
    "slug": "opensource-sanitizer",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "ciso-elena",
    "role": "Verify an open-source fork is fully sanitized before release.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Elena",
+    "starts_from": "docs/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"opensource sanitizer Verify an open-source fork is fully\"",
@@ -3881,11 +3956,11 @@
    "slug": "performance-optimizer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Performance analysis and optimization specialist.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"performance optimizer Performance analysis and optimization specialist.\"",
@@ -3895,10 +3970,17 @@
     "command": "claude --agent performance-optimizer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
-   "toolkit": [],
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -3933,11 +4015,11 @@
    "slug": "php-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Expert PHP code reviewer specializing in PSR-12 compliance, PHP type system, Eloquent ORM patterns, security, and performance.",
    "laya": {
-    "lane": "Alexandra",
-    "starts_from": "wiki/mortgage-programs/"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"php reviewer Expert PHP code reviewer specializing in\"",
@@ -3957,7 +4039,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
-     "Alexandra",
+     "ECC",
      "Vanessa"
     ]
    }
@@ -4025,11 +4107,11 @@
    "slug": "pr-test-analyzer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Review pull request test coverage quality and completeness, with emphasis on behavioral coverage and real bug prevention.",
    "laya": {
-    "lane": "Nova",
-    "starts_from": "wiki/ai-team/desk-seats.md"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"test analyzer Review pull request test coverage quality\"",
@@ -4039,10 +4121,17 @@
     "command": "claude --agent pr-test-analyzer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
-   "toolkit": [],
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -4105,11 +4194,11 @@
    "slug": "python-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Expert Python code reviewer specializing in PEP 8 compliance, Pythonic idioms, type hints, security, and performance.",
    "laya": {
-    "lane": "Alexandra",
-    "starts_from": "wiki/mortgage-programs/"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"python reviewer Expert Python code reviewer specializing in\"",
@@ -4129,7 +4218,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
-     "Alexandra",
+     "ECC",
      "Vanessa"
     ]
    }
@@ -4138,11 +4227,11 @@
    "slug": "pytorch-build-resolver",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "PyTorch runtime, CUDA, and training error resolution specialist.",
    "laya": {
-    "lane": "Ingrid",
-    "starts_from": "wiki/ai-team/mentors-and-benches.md"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"pytorch build resolver PyTorch runtime, CUDA, and training error\"",
@@ -4152,10 +4241,17 @@
     "command": "claude --agent pytorch-build-resolver",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
-   "toolkit": [],
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -4190,11 +4286,11 @@
    "slug": "rag-pipeline-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "caio-nadia",
    "role": "Reviews RAG (Retrieval-Augmented Generation) pipelines for retrieval quality, chunking strategy, embedding choices, and evaluation coverage.",
    "laya": {
-    "lane": "Victor",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "lane": "Nadia",
+    "starts_from": "docs/CAIO-DISRUPTION-BRIEF.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"rag pipeline reviewer Reviews RAG (Retrieval-Augmented Generation) pipelines for\"",
@@ -4214,7 +4310,6 @@
    "guard": {
     "proposal_only": false,
     "gates": [
-     "Alexandra",
      "Vanessa"
     ]
    }
@@ -4276,11 +4371,11 @@
    "slug": "react-build-resolver",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Diagnose and fix React build failures across Vite, webpack, Next.js, CRA, Parcel, esbuild, and Bun.",
    "laya": {
-    "lane": "Elon",
-    "starts_from": "brain/README.md"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"react build resolver Diagnose and fix React build failures\"",
@@ -4309,11 +4404,11 @@
    "slug": "react-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Expert React/JSX code reviewer specializing in hook correctness, render performance, server/client component boundaries, accessibility, and",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"react reviewer Expert React/JSX code reviewer specializing in\"",
@@ -4333,6 +4428,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -4368,11 +4464,11 @@
    "slug": "refactor-cleaner",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Dead code cleanup and consolidation specialist.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"refactor cleaner Dead code cleanup and consolidation specialist.\"",
@@ -4382,10 +4478,17 @@
     "command": "claude --agent refactor-cleaner",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
-   "toolkit": [],
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -4532,11 +4635,11 @@
    "slug": "rust-build-resolver",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Rust build, compilation, and dependency error resolution specialist.",
    "laya": {
-    "lane": "Elon",
-    "starts_from": "brain/README.md"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"rust build resolver Rust build, compilation, and dependency error\"",
@@ -4565,11 +4668,11 @@
    "slug": "rust-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Expert Rust code reviewer specializing in ownership, lifetimes, error handling, unsafe usage, and idiomatic patterns.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"rust reviewer Expert Rust code reviewer specializing in\"",
@@ -4589,6 +4692,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -4629,7 +4733,7 @@
    "slug": "security-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "ciso-elena",
    "role": "Security vulnerability detection and remediation specialist.",
    "laya": {
     "lane": "Elena",
@@ -4661,7 +4765,7 @@
    "slug": "seo-specialist",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cmo-sofia",
    "role": "SEO specialist for technical SEO audits, on-page optimization, structured data, Core Web Vitals, and content/keyword mapping.",
    "laya": {
     "lane": "Sofia",
@@ -4715,11 +4819,11 @@
    "slug": "silent-failure-hunter",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Review code for silent failures, swallowed errors, bad fallbacks, and missing error propagation.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"silent failure hunter Review code for silent failures, swallowed\"",
@@ -4729,10 +4833,17 @@
     "command": "claude --agent silent-failure-hunter",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
-   "toolkit": [],
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -4741,11 +4852,11 @@
    "slug": "spec-miner",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Extracts behavioral specs from existing codebases for OpenSpec.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"spec miner Extracts behavioral specs from existing codebases\"",
@@ -4755,10 +4866,17 @@
     "command": "claude --agent spec-miner",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
-   "toolkit": [],
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -4826,11 +4944,11 @@
    "slug": "swift-build-resolver",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Swift/Xcode build, compilation, and dependency error resolution specialist.",
    "laya": {
-    "lane": "Elon",
-    "starts_from": "brain/README.md"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"swift build resolver Swift/Xcode build, compilation, and dependency error\"",
@@ -4859,11 +4977,11 @@
    "slug": "swift-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Expert Swift code reviewer specializing in protocol-oriented design, value semantics, ARC memory management, Swift Concurrency, and idiomati",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"swift reviewer Expert Swift code reviewer specializing in\"",
@@ -4883,6 +5001,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -4917,11 +5036,11 @@
    "slug": "tdd-guide",
    "tier": "3",
    "model": "Sonnet 5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Test-Driven Development specialist enforcing write-tests-first methodology.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"tdd guide Test-Driven Development specialist enforcing write-tests-first methodology.\"",
@@ -4931,10 +5050,17 @@
     "command": "claude --agent tdd-guide",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
-   "toolkit": [],
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -5049,11 +5175,11 @@
    "slug": "type-design-analyzer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Analyze type design for encapsulation, invariant expression, usefulness, and enforcement.",
    "laya": {
-    "lane": "Vanessa",
-    "starts_from": null
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"type design analyzer Analyze type design for encapsulation, invariant\"",
@@ -5063,10 +5189,17 @@
     "command": "claude --agent type-design-analyzer",
     "worktree": "one Orca worktree per agent; <=8 live at once"
    },
-   "toolkit": [],
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -5075,11 +5208,11 @@
    "slug": "typescript-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Expert TypeScript/JavaScript code reviewer specializing in type safety, async correctness, Node/web security, and idiomatic patterns.",
    "laya": {
-    "lane": "Elena",
-    "starts_from": "docs/"
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
    },
    "jarvis": {
     "recall": "bin/brain recall \"typescript reviewer Expert TypeScript/JavaScript code reviewer specializing in\"",
@@ -5099,6 +5232,7 @@
    "guard": {
     "proposal_only": false,
     "gates": [
+     "ECC",
      "Vanessa"
     ]
    }
@@ -5220,7 +5354,7 @@
    "slug": "vue-reviewer",
    "tier": "3",
    "model": "Opus 5.5",
-   "lead": null,
+   "lead": "cto-derek",
    "role": "Expert Vue.js code reviewer specializing in Composition API correctness, reactivity pitfalls, component architecture, template security, and",
    "laya": {
     "lane": "Derek",

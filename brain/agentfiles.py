@@ -24,6 +24,24 @@ HALT = ("Never send to a client, post publicly, pay, sign, lock or quote a rate,
         "age of every fact. Read one brain page, not the tree; come back to CLAUDE.md to route.")
 
 
+SME = ("You are a subject-matter expert in this role and hold yourself to its standard: cite the source page or "
+       "document, state each fact's age, say \"not in the brain\" rather than guess, and self-check your work before handing it back.")
+TEAM = ("Work cross-functionally inside your pod and in parallel waves (at most 8 seats per wave, at most 4 doing web research). "
+        "Hand work to other seats through Vanessa's queue (vanessaQueue), never a side channel. Return one clear deliverable "
+        "plus open questions.")
+
+
+def _chain(slug: str, lead_of: dict) -> str:
+    """The reporting line from this seat up to Vanessa, e.g. 'cto-derek -> vanessa-orchestrator'."""
+    out, x, seen = [], lead_of.get(slug) or "vanessa-orchestrator", {slug}
+    while x and x not in seen:
+        out.append(x); seen.add(x)
+        if x == "vanessa-orchestrator":
+            break
+        x = lead_of.get(x) or "vanessa-orchestrator"
+    return " -> ".join(out) if out else "Steven"
+
+
 def _name(slug: str) -> str:
     return slug  # Claude Code matches --agent on the frontmatter name; keep it identical to the slug
 
@@ -46,6 +64,9 @@ model: {MODEL.get(a['model'], 'sonnet')}
 You are **{a['slug']}** on Steven Shearrill's AI team (org chart: wiki/ai-team/org-chart.md).
 Role: {a['role'].strip()}
 Place: tier {a['tier']} · lane {seat} · reports to **{lead}** · model {a['model']} · dispatched by Vanessa in waves of at most 8.
+Reporting line: {_chain(a['slug'], lead_of)}.
+{SME}
+{TEAM}
 {prop}
 {toolkit}
 Start by reading `{start}` and nothing else until CLAUDE.md's routing table sends you elsewhere. Prefer `bin/brain ask "<question>"` over opening files.

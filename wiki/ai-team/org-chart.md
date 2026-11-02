@@ -135,6 +135,28 @@ Ideas carried as proposals, not seats: the Summarizer's format (lead with the 1�
 plain prose, no link dumps) for Vanessa's morning brief, which is a live routine prompt so it is Steven's call; and
 per-agent monthly budgets with auto-pause, for Marcus and Derek.
 
+## 2026-11-02: every seat reports to Vanessa
+
+Steven asked that every agent be a master of its craft, work cross-functionally and in parallel, and report to
+Vanessa. All 185 roster seats now have a reporting line that ends at `vanessa-orchestrator` (checked: no orphan, no
+loop, no duplicate slug). The 58 tier-3 bench seats that had no lead were given the executive whose lane fits:
+
+| Exec | Seats given a lead | What they are |
+|---|---|---|
+| Derek (`cto-derek`) | 45 | code/language reviewers, build resolvers, network, docs, tests, refactor |
+| Nadia (`caio-nadia`) | 4 | agent and ML evaluation (GAN evaluator, MLE, RAG, conversation analyzer) |
+| Elon (`cto-innovator`) | 4 | R&D: GAN planner/generator, open-source fork and packaging |
+| Elena (`ciso-elena`) | 2 | security reviewer, open-source sanitizer |
+| Sofia (`cmo-sofia`) | 2 | marketing agent, SEO specialist |
+| Alexandra (`cco-alexandra`) | 1 | healthcare-safety reviewer |
+
+**The standard every seat file now states** (`brain/agentfiles.py`, regenerated with `bin/brain os agents --write`):
+its full reporting line up to Vanessa; that it is the subject-matter expert for its role — cites its source, states
+each fact's age, says "not in the brain" rather than guess, self-checks before handing back; that it works inside its
+pod and in parallel waves (at most 8 seats, at most 4 doing web research); that handoffs go through Vanessa's queue
+(`vanessaQueue`), never a side channel; and that it returns one clear deliverable plus open questions. The HALT rules
+are unchanged. Seats with a hand-written `.claude/agents/` file keep their own prompt.
+
 ## The named seats worth knowing by name
 
 - **Harrison** — Elite Mortgage Broker, the senior mortgage authority across six standing lanes (VA purchase, VA IRRRL, conventional/high-balance, FHA, self-employed/non-QM, jumbo/portfolio). Preparation and analysis only — the licensed act stays Steven's.
