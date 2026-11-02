@@ -10,3 +10,6 @@ exports/*
 !exports/notebooklm/
 inbox/*
 !inbox/README.md
+
+# third-party skill installers (npx skills add, project scope) drop copies here - never commit them (2026-11-02)
+.agents/
