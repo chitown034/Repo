@@ -159,11 +159,12 @@ black-forest-labs/flux2 LearningCircuit/local-deep-research souzatharsis/podcast
 krillinai/OpenCreator YILS-LIN/short-video-factory Human-Agent-Society/reef CopilotKit/OpenBot paperclipai/paperclip alibaba/open-code-review
 zai-org/ZCode Donchitos/Claude-Code-Game-Studios pinchtab/pinchtab microsoft/skill-recorder greenarmor/GESF HKUDS/DeepTutor
 eyaltoledano/claude-task-master kalil0321/reverse-api-engineer cporter202/real-estate-data-apis cporter202/ai-agent-data-apis
-cporter202/video-scraping-apis cporter202/ai-apis-you-can-ship-today cporter202/social-growth-apis-for-creators cporter202/stock-market-signal-automation"
-echo; echo "- The held apps and lists (31 repos) - downloaded to $GP so they are on hand; NOTHING is installed or run."
+cporter202/video-scraping-apis cporter202/ai-apis-you-can-ship-today cporter202/social-growth-apis-for-creators cporter202/stock-market-signal-automation
+hesreallyhim/awesome-claude-code"
+echo; echo "- The held apps and lists (32 repos) - downloaded to $GP so they are on hand; NOTHING is installed or run."
 echo "  Each one's own README says how to start it; several need Docker, a GPU, or your own keys. Licence notes: postiz, VoiceStudio,"
 echo "  short-video-factory are AGPL; flux2 [dev] weights are non-commercial. Anything that posts as you waits for Alexandra."
-if have git && ask "Download all 31 into $GP (shallow copies, hooks off, nothing runs)?"; then
+if have git && ask "Download all 32 into $GP (shallow copies, hooks off, nothing runs)?"; then
   mkdir -p "$GP"
   for r in $PICKS; do d="$GP/$(basename "$r")"
     if [ -d "$d" ]; then echo "  have $(basename "$r")"; else
