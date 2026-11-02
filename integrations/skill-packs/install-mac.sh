@@ -173,3 +173,21 @@ fi
 echo; echo "  Not installable: BillionMail (a Linux mail server; its installer refuses macOS), CleanMyLinux (Linux only), Orbit Agents"
 echo "  (paid hosted service, no code), roast-room (gone), Turnitout (no engine code - a proprietary hosted web app), openclaude"
 echo "  (its own licence says it redistributes Anthropic's code without permission), yqman34/reverse-api-engineer (malware)."
+
+echo; echo "== Steven, 2026-11-02: cc-switch + career-ops (both MIT, read before this was written)"
+echo "- CC Switch (farion1231/cc-switch, reviewed 9119dec): desktop app that edits Claude Code's settings and switches its API provider,"
+echo "  and manages MCP servers, skills and prompts in one window. KEEP THE PROVIDER ON OFFICIAL ANTHROPIC: the 'relay' providers its"
+echo "  README advertises (discount gateways) route every prompt - and any client data in it - through a third party. Not allowed here."
+if have brew; then
+  if brew list --cask cc-switch >/dev/null 2>&1; then echo "  already installed"
+  elif ask "brew install --cask cc-switch ?"; then brew install --cask cc-switch && echo "  done - open CC Switch from Applications; leave Claude on the official provider"; fi
+else echo "  Homebrew not found - install it from https://brew.sh first"; fi
+echo "- career-ops (career-ops-hq/career-ops, reviewed 6825dc6, v1.38.0): AI job-search agent - scores openings against your CV,"
+echo "  tailors the CV and drafts answers. It never submits: you press Submit. Your CV and profile stay in that folder on this Mac."
+if have npx; then
+  if [ -e "$HOME/Projects/career-ops" ]; then echo "  already there: cd ~/Projects/career-ops && claude"
+  elif ask "Set up career-ops in ~/Projects/career-ops (npx @santifer/career-ops init)?"; then
+    mkdir -p "$HOME/Projects" && ( cd "$HOME/Projects" && npx -y @santifer/career-ops@1.38.0 init career-ops ) &&
+      echo "  done. Start: cd ~/Projects/career-ops && claude  (it walks you through your CV and target roles by chatting)"
+  fi
+else echo "  npx not found - brew install node first"; fi
