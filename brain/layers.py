@@ -46,6 +46,42 @@ def _grep(p: Path, pattern: str) -> str | None:
         return None
 
 
+DECK_STAMP = Path("brain") / "deck-sync.json"  # tracked; brain/state/ is gitignored
+
+
+def _safe_iso(v) -> date | None:
+    try:
+        return _iso(v) if isinstance(v, str) else None
+    except ValueError:  # e.g. 2026-13-40
+        return None
+
+
+def _deck_last(root: Path) -> date | None:
+    """Newest proof the Command Deck DB was written (2026-11-02). Two sources only, both written by the deck's own
+    sync: the status notes in projects/command-deck.md, and brain/deck-sync.json, stamped by
+    `bin/brain deck-stamp <doc> <version>` right after a CONFIRMED write (the result named a new version). A report
+    that merely ran (e.g. BIG-MOVES.md) is not proof, so it does not count: it would clear its own stale alarm."""
+    cands: list[date | None] = []
+    cd = root / "projects" / "command-deck.md"
+    if cd.exists():
+        cands += [_safe_iso(d) for d in re.findall(r"## Status \((\d{4}-\d{2}-\d{2})\)", cd.read_text(encoding="utf-8", errors="replace"))]
+    st = _json(root / DECK_STAMP)
+    if isinstance(st, dict):
+        cands.append(_safe_iso(st.get("lastWrite")))
+    return max((c for c in cands if c), default=None)
+
+
+def deck_stamp(root: Path, doc: str, version: str, by: str, now: datetime | None = None) -> Path:
+    """Record a confirmed Command Deck write: call only after the write's result named its new version."""
+    if not re.fullmatch(r"[A-Za-z0-9_.-]{1,80}", doc or "") or not str(version).strip():
+        raise ValueError("deck-stamp needs a doc id and the version the write returned")
+    now = now or datetime.now(timezone.utc)
+    p = root / DECK_STAMP
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps({"lastWrite": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "doc": doc, "version": str(version)[:40],
+                             "by": (by or "")[:80]}, indent=1) + "\n", encoding="utf-8")
+    return p
+
 def collect(root: Path, today: date | None = None) -> list[dict]:
     today = today or date.today()
     ix = _json(root / "brain" / "index.json")
@@ -59,7 +95,7 @@ def collect(root: Path, today: date | None = None) -> list[dict]:
          "sync": "bin/brain reindex (daily rebuild routine; connect-all 6a2)", "last": _iso(ix.get("built") or ix.get("generated") or "")
          or _git_date(root)},
         {"key": "deck", "layer": "Command Deck DB", "holds": "live docs: queue, briefs, desks, lists, statuses",
-         "sync": "routines + Mac tasks write; page reads live", "last": max((_iso(d) for d in re.findall(r"## Status \((\d{4}-\d{2}-\d{2})\)", (root / "projects" / "command-deck.md").read_text(encoding="utf-8", errors="replace") if (root / "projects" / "command-deck.md").exists() else "")), default=None)},
+         "sync": "routines + Mac tasks write; page reads live", "last": _deck_last(root)},
         {"key": "brain6d", "layer": "6D Brain page", "holds": "every node (pages, stores, tools, pods) and links",
          "sync": "daily 3:30 AM PT rebuild + merge-live publish", "last": _iso(_grep(b6, r'"generated":\s*"(\d{4}-\d{2}-\d{2})"') or "")},
         {"key": "jarvis", "layer": "Jarvis (Mac, local)" + (" — speaks as Vanessa" if js.get("persona") == "vanessa" else ""),

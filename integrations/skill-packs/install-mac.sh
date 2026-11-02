@@ -104,3 +104,90 @@ if have npx; then
     else echo "  archify install failed (npx skills add returned an error) - nothing written to ~/.zprofile; rerun later"; fi
   fi
 else echo "  npx not found - install Node (brew install node) first"; fi
+echo; echo "== From the ~64 screenshots (2026-11-01) - ~45 repos read; details in REGISTRY-2026-11-01.md"
+copyskills "Social media skills (15 of 17, text-only, drafts only - Alexandra checks every post)" charlie947/social-media-skills 10ca79c voice-builder post-writer hook-generator post-formatter content-matrix newsletter-voice pinned-comment quote-post graphic-designer gemini-infographic gemini-carousel youtube-thumbnail profile-optimizer analytics-dashboard niche-research
+echo "  Apillow Zillow MCP stays yours (sign-up, key, Zillow terms - Alexandra). Everything else held is offered at the end of this script."
+echo "  The rest of the held list is offered at the end of this script (Steven, 2026-11-01)."
+echo; echo "== Steven asked for these two by name (2026-11-01) - installed in their safe form"
+echo "- AI website cloner (JCodesMore/ai-website-cloner-template, MIT, reviewed ee3f5a2): a Next.js project with a /clone-website command."
+echo "  Use it only on sites you own or have written permission to copy (copyright, trademark, DRE/NMLS ad rules: Alexandra)."
+if have git && ask "Clone it into ~/Projects/ai-website-cloner (nothing runs; you open it in Claude Code later)?"; then
+  mkdir -p "$HOME/Projects"
+  if [ -e "$HOME/Projects/ai-website-cloner" ]; then echo "  already there"; else
+    # pinned to the reviewed commit: npm install would run its scripts, so never a newer, unread version
+    if git -c core.hooksPath=/dev/null clone -q https://github.com/JCodesMore/ai-website-cloner-template.git "$HOME/Projects/ai-website-cloner" &&
+       git -C "$HOME/Projects/ai-website-cloner" -c advice.detachedHead=false checkout -q ee3f5a2; then
+      echo "  done (held at the reviewed commit ee3f5a2). To use: cd ~/Projects/ai-website-cloner && npm install && claude, then /clone-website <your own site URL>"
+    else rm -rf "$HOME/Projects/ai-website-cloner"; echo "  clone failed or ee3f5a2 is gone upstream - nothing kept"; fi
+  fi
+fi
+echo "- Agentic Awesome Skills library (sickn33/antigravity-awesome-skills, MIT, reviewed 6f819e3): ~2,900 skills."
+echo "  Kept as a LIBRARY in ~/skill-library, not loaded into Claude Code: 2,900 skill descriptions in every turn would"
+echo "  slow every session and burn your limit. Pull any one skill in when you want it: bash ~/Repo/scripts/skill-pick.sh <name>"
+if have git && ask "Download the library into ~/skill-library/agentic-awesome-skills (~28,000 files, nothing runs)?"; then
+  mkdir -p "$HOME/skill-library"
+  if [ -d "$HOME/skill-library/agentic-awesome-skills" ]; then git -C "$HOME/skill-library/agentic-awesome-skills" pull -q --ff-only && echo "  updated (reviewed 6f819e3 -> now $(git -C "$HOME/skill-library/agentic-awesome-skills" rev-parse --short=7 HEAD); nothing in it loads until you pick a skill)"; else
+    git -c core.hooksPath=/dev/null clone -q --depth 1 https://github.com/sickn33/antigravity-awesome-skills.git "$HOME/skill-library/agentic-awesome-skills" &&
+    echo "  done: $(ls "$HOME/skill-library/agentic-awesome-skills/skills" | wc -l | tr -d ' ') skills in the library. Search: bash ~/Repo/scripts/skill-pick.sh --find <word>"
+  fi
+fi
+
+echo; echo "== Everything else (Steven, 2026-11-01: 'whatever else not installed') - each y/N; keys and sign-ins stay yours"
+copyskills "Social media skills: the last 2 (post-scorer, reels-scripting - need your own Apify / Gemini key to do anything)" charlie947/social-media-skills 10ca79c post-scorer reels-scripting
+copyskills "ScrapeCreators research skills (10 - need a ScrapeCreators API key from scrapecreators.com, yours to buy)" ScrapeCreators/social-media-research-skills 64ba7b4 ad-library-teardown audience-research comment-mining competitor-social-research content-repurposing creator-profile-teardown influencer-prospecting outlier-post-finder product-demand-research scrapecreators-api
+echo; echo "- Anatomy (one explainer-graphic skill, MIT, reviewed 1482e84)"
+if have git && ask "Install the anatomy skill into ~/.claude/skills/anatomy?"; then
+  if [ -e "$HOME/.claude/skills/anatomy" ]; then echo "  already there"; else
+    mkdir -p "$HOME/.claude/skills"
+    if git -c core.hooksPath=/dev/null clone -q https://github.com/wheresryan22/anatomy.git "$HOME/.claude/skills/anatomy" &&
+       git -C "$HOME/.claude/skills/anatomy" -c advice.detachedHead=false checkout -q 1482e84; then echo "  done (held at 1482e84)"
+    else rm -rf "$HOME/.claude/skills/anatomy"; echo "  failed - nothing kept"; fi
+  fi
+fi
+echo; echo "- OpenScreen demo skill (also installs the OpenScreen desktop app + MCP; macOS will ask for Screen Recording and Accessibility)"
+have npx && { ask "Run: npx skills add getopenscreen/openscreen --skill openscreen-demo ?" && npx -y skills add getopenscreen/openscreen --skill openscreen-demo; }
+echo; echo "- spec-kit (GitHub's spec-driven development CLI, MIT)"
+if have uv; then ask "uv tool install specify-cli from github/spec-kit (held at the reviewed 7370e59)?" && uv tool install specify-cli --from git+https://github.com/github/spec-kit.git@7370e59
+else echo "  uv not found - brew install uv, then re-run"; fi
+echo; echo "-- Cloudflare Code Mode MCP (free to register; using it needs your Cloudflare account and sign-in in the browser)"
+mcpadd cloudflare-api https://mcp.cloudflare.com/mcp "Cloudflare Code Mode; sign-in happens on first use"
+echo; echo "-- Apillow Zillow MCP: not scriptable from here (sign-up, key and plan are yours; Zillow terms - Alexandra first)."
+echo "   If you go ahead: sign up at apillow.co, then run the 'claude mcp add' line their page gives you. Never paste the key into a chat."
+GP="$HOME/Projects/github-picks"
+PICKS="huginn/huginn gitroomhq/postiz-app langchain-ai/social-media-agent soumatheusgomes/editonny debpalash/VoiceStudio ace-step/ACE-Step-1.5
+black-forest-labs/flux2 LearningCircuit/local-deep-research souzatharsis/podcastfy Anil-matcha/AI-Youtube-Shorts-Generator jakeb144/reel-watcher
+krillinai/OpenCreator YILS-LIN/short-video-factory Human-Agent-Society/reef CopilotKit/OpenBot paperclipai/paperclip alibaba/open-code-review
+zai-org/ZCode Donchitos/Claude-Code-Game-Studios pinchtab/pinchtab microsoft/skill-recorder greenarmor/GESF HKUDS/DeepTutor
+eyaltoledano/claude-task-master kalil0321/reverse-api-engineer cporter202/real-estate-data-apis cporter202/ai-agent-data-apis
+cporter202/video-scraping-apis cporter202/ai-apis-you-can-ship-today cporter202/social-growth-apis-for-creators cporter202/stock-market-signal-automation"
+echo; echo "- The held apps and lists (31 repos) - downloaded to $GP so they are on hand; NOTHING is installed or run."
+echo "  Each one's own README says how to start it; several need Docker, a GPU, or your own keys. Licence notes: postiz, VoiceStudio,"
+echo "  short-video-factory are AGPL; flux2 [dev] weights are non-commercial. Anything that posts as you waits for Alexandra."
+if have git && ask "Download all 31 into $GP (shallow copies, hooks off, nothing runs)?"; then
+  mkdir -p "$GP"
+  for r in $PICKS; do d="$GP/$(basename "$r")"
+    if [ -d "$d" ]; then echo "  have $(basename "$r")"; else
+      GIT_LFS_SKIP_SMUDGE=1 git -c core.hooksPath=/dev/null clone -q --depth 1 "https://github.com/$r.git" "$d" 2>/dev/null && echo "  got $r" || echo "  could not get $r (moved or private)"; fi
+  done
+fi
+echo; echo "  Not installable: BillionMail (a Linux mail server; its installer refuses macOS), CleanMyLinux (Linux only), Orbit Agents"
+echo "  (paid hosted service, no code), roast-room (gone), Turnitout (no engine code - a proprietary hosted web app), openclaude"
+echo "  (its own licence says it redistributes Anthropic's code without permission), yqman34/reverse-api-engineer (malware)."
+
+echo; echo "== Steven, 2026-11-02: cc-switch + career-ops (both MIT, read before this was written)"
+echo "- CC Switch (farion1231/cc-switch, reviewed 9119dec): desktop app that edits Claude Code's settings and switches its API provider,"
+echo "  and manages MCP servers, skills and prompts in one window. KEEP THE PROVIDER ON OFFICIAL ANTHROPIC: the 'relay' providers its"
+echo "  README advertises (discount gateways) route every prompt - and any client data in it - through a third party. Not allowed here."
+if have brew; then
+  if brew list --cask cc-switch >/dev/null 2>&1; then echo "  already installed"
+  elif ask "brew install --cask cc-switch ?"; then brew install --cask cc-switch && echo "  done - open CC Switch from Applications; leave Claude on the official provider"; fi
+else echo "  Homebrew not found - install it from https://brew.sh first"; fi
+echo "- career-ops (career-ops-hq/career-ops, reviewed 6825dc6, v1.38.0): AI job-search agent - scores openings against your CV,"
+echo "  tailors the CV and drafts answers. It never submits: you press Submit. Your CV and profile stay in that folder on this Mac."
+if have npx; then
+  if [ -e "$HOME/Projects/career-ops" ]; then echo "  already there: cd ~/Projects/career-ops && claude"
+  elif ask "Set up career-ops in ~/Projects/career-ops (npx @santifer/career-ops init)?"; then
+    mkdir -p "$HOME/Projects" && ( cd "$HOME/Projects" && npx -y @santifer/career-ops@1.38.0 init career-ops ) &&
+      echo "  done. Start: cd ~/Projects/career-ops && claude  (it walks you through your CV and target roles by chatting)"
+  fi
+else echo "  npx not found - brew install node first"; fi

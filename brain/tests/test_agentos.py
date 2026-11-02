@@ -24,6 +24,16 @@ class AgentOS(unittest.TestCase):
         self.assertTrue(m["caio-nadia"]["guard"]["proposal_only"])
         self.assertFalse(m["cfo-marcus"]["guard"]["proposal_only"])
 
+    def test_five_agents_lane_and_gates(self):
+        # validator 2026-11-02: each hand-written agent sits in the lane its own requests route to, and the
+        # ad-copy writer keeps Alexandra's compliance gate.
+        m = {a["slug"]: a for a in agentos.build(ROOT)["agents"]}
+        self.assertEqual(m["hook-writer"]["laya"]["lane"], "Hook Writer")
+        self.assertIn("Alexandra", m["hook-writer"]["guard"]["gates"])
+        self.assertEqual(m["inbox-triage"]["laya"]["lane"], "Voicemail & Inbox Triage")
+        self.assertEqual(m["calendar-prep"]["laya"]["lane"], "Calendar Prep")
+        self.assertEqual(m["react-reviewer"]["laya"]["lane"], "Vanessa")
+
     def test_launch_sheet_halts_on_send(self):
         out = agentos.plan_launch(ROOT, "prepare a VA buyer loan scenario in Temecula and email the client")
         self.assertIn("HALT", out)

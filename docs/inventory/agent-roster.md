@@ -1,11 +1,11 @@
-# AI agent roster on the Mac (aiTeamRoster doc, generatedAt 2026-09-16T00:52:37+00:00, count 173; code-validator added 2026-10-12; seven desk seats added 2026-10-22 — not yet in the Mac's roster-tiers.json)
+# AI agent roster on the Mac (aiTeamRoster doc, generatedAt 2026-09-16T00:52:37+00:00, count 173; code-validator added 2026-10-12; seven desk seats added 2026-10-22 — not yet in the Mac's roster-tiers.json; ux-designer added and agent-evaluator gained the reflection loop 2026-11-01 from Paperclip)
 
 | slug | tier | lead | model | role |
 |---|---|---|---|---|
 | a11y-architect | 2 | ecc-accessibility-lead | sonnet | Accessibility Architect specializing in WCAG 2.2 compliance for Web and Native platforms. |
 | access-auditor | 2 | ciso-elena | opus | Report under Elena (CISO): audits who and what can read or write each data store — dashboard db rules, connector grants, tokens in plaintext |
 | ad-compliance-reviewer | 2 | cco-alexandra | opus | Report under Alexandra (Compliance): reviews marketing copy, social posts, emails, ad text and webinar registration pages for mortgage/real- |
-| agent-evaluator | 2 | caio-nadia | opus | Evaluates agent output against 5-axis quality rubric (accuracy, completeness, clarity, actionability, conciseness). |
+| agent-evaluator | 2 | caio-nadia | opus | Evaluates agent output against a 5-axis quality rubric (accuracy, completeness, clarity, actionability, conciseness), then runs the reflection loop (from Paperclip's Reflection Coach, 2026-11-01): reads one seat's recent finished, blocked and corrected work, clusters repeated misses backed by evidence, and proposes the smallest durable fix (a prompt diff, a skill draft, a tool note) with replay cases. Never reflects on itself; discovery and applying are separate runs; proposals only. |
 | appraisal-manager | 2 | cco-alexandra | sonnet | Report under Alexandra (Compliance): manages the appraisal — ordering expectations under AMC rules, preparing the comparable support package |
 | architect | 2 | cto-derek | opus | Software architecture specialist for system design, scalability, and technical decision-making. |
 | automation-engineer | 2 | cto-derek | sonnet | Report under Derek (CTO): builds and repairs the automation layer — cloud routines (RemoteTrigger), desktop scheduled tasks, /loop prompts,  |
@@ -181,6 +181,7 @@
 | trid-timeline-checker | 2 | cco-alexandra | sonnet | Report under Alexandra (Compliance): checks a mortgage file's disclosure timeline — 6-piece application trigger, LE within 3 business days,  |
 | type-design-analyzer | 3 | — | opus | Analyze type design for encapsulation, invariant expression, usefulness, and enforcement. |
 | typescript-reviewer | 3 | — | opus | Expert TypeScript/JavaScript code reviewer specializing in type safety, async correctness, Node/web security, and idiomatic patterns. |
+| ux-designer | 2 | cto-derek | sonnet | Report under Derek (CTO), added 2026-11-01 from Paperclip's UX Designer template: owns how Steven's own screens work: the Command Deck, the 6D Brain, the ISA Portal, Broker Command Center and his site. Writes UX specs, reviews interface quality with the web-design-guidelines and apple-design skills, flags usability and accessibility risks (with a11y-architect), and keeps the dashboards' design consistent. Brand look stays with mktg-creative-designer; drafts and specs only, the change itself goes through Derek's builders and the code validator. |
 | vanessa-orchestrator | 1 | — | fable | Vanessa as AI-agent ORCHESTRATOR for Steven Shearrill's AI Team. |
 | vendor-network-manager | 2 | cro-victor | sonnet | Report under Victor (CRO): maintains the vendor bench — inspectors, contractors, stagers, photographers, cleaners, movers, warranty and insu |
 | voicemail-inbox-triage | 2 | cro-victor | sonnet | Report under Victor (CRO, ISA line): triages WhisperAI voicemails and the Gmail inbox into vanessaQueue with a next action per item; fraud flags go to Elena first. Never replies, forwards or deletes. |

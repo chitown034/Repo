@@ -294,3 +294,25 @@ test graded in the page (340 questions; a pass at 70% completes the module's qui
 reading every chapter marks the module read. The New Rules & Laws desk gained 45 foundational laws (filter Type →
 Foundational law) next to the 113 recent changes, and the reference library grew to about 170 official sources.
 Items the writers could not confirm are marked "verify" in the text. Vanessa tool: `course_material`.
+
+## Claude Duet — Anthropic's always-on assistant (an app, not a Claude Code agent)
+
+Added 2026-11-02. Reports to Vanessa; member of the Lead Pod for inbox and calendar work. **Research preview**
+(Anthropic, released 2026-10-21): a Claude you message by text or voice in the Claude iPhone/Android app. It runs on
+its own cloud computer on Claude Opus 5.5, works in the connectors already set up in Claude (Gmail, Google Calendar,
+Google Drive, Slack, HubSpot, Docusign, Calendly, Stripe; not Microsoft 365), writes a morning brief, drafts replies,
+follows up on quiet threads, and returns larger jobs (research briefs, slide decks) to its Make tab.
+**Approvals:** Anthropic designs it to ask before it sends a message, makes a payment, signs a document or deletes
+anything; trading securities, moving money between accounts and using someone else's account are off-limits even
+with approval; it makes no phone calls or texts. Those rules match this brain's HALT list, so Duet is a seat that
+*drafts and asks* — Steven approves on his phone.
+**How it fits the team:** Duet lives on the phone and in Steven's connected apps; it cannot read this repo, the brain
+or the Command Deck. The Claude Code agents (`chief-of-staff`, `inbox-triage`, `calendar-prep`) do the same jobs
+*with* the brain and the deck. Rule of thumb: on the go → Duet; at the desk or anything that needs the brain → the
+chief-of-staff. Never both on the same inbox pass: two morning briefs means two sets of drafts.
+**Costs:** included with Pro/Max/Ultra during the preview, but background work (the morning brief, check-ins) draws on
+the same five-hour and weekly limits as chat and as the cloud routines — the routines already ran into a usage limit
+on 2026-10-31. **Access:** US, by waitlist (claude.com product page) — joining is Steven's step (account action).
+**Client data:** it reads his Gmail and Calendar like the existing connectors; first names only in anything it
+passes back into the brain. Sources: support.claude.com article 17631495 (read 2026-11-02).
+

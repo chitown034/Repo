@@ -1,6 +1,6 @@
 # Integrations: connections register, Pabbly workflows, per-integration READMEs
 
-Second Brain export for NotebookLM · as of 2026-10-26 · bundle `12-integrations`.
+Second Brain export for NotebookLM · as of 2026-11-01 · bundle `12-integrations`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 
@@ -38,6 +38,7 @@ real path, what Steven does and what agents do, in `integrations/CONNECT-PLAN-20
 | **BodyPark ATOM** | No API or export documented; sessions reach the deck as Apple Health workouts (Apple Watch session, or the app's own Health write) → Health Auto Export → the daily sync | **Waiting on click E** (allow the app to write to Apple Health; Workouts on in Health Auto Export) | Click E, once. | L1 |
 | **MyFitnessPal** | No API, none needed: MFP → Apple Health → Health Auto Export file → the same sync (`dietary_energy`, `protein`, `carbohydrates`, `total_fat`, `dietary_water`) | **Waiting on the phone step** (click E in STEVEN-STEPS): MFP → Apple Health on, Health Auto Export → Metrics: select all | Click E, once. | L1 |
 | **Apple Health** | **Live (2026-10-23):** Health Auto Export → Google Drive folder → cloud routine 6:15 AM PT (`scripts/health-drive-sync.py`) → `appleHealth` doc, `via:"drive-sync"`. Optional: Claude iOS → Notion "Health Log". Retired: the Mac daemon :8765 / DuckDB path | **Working** — first sync 2026-10-23 (`appleHealth` v19, days through 2026-10-22); `healthDriveSync` carries each run. | Nothing daily. If the badge goes stale: Health Auto Export app → Automations → Google Drive export → on and signed in. One-time on the Mac: `runnerctl pause r8-apple-health-snapshot`. | L2 n8n evaluated for the Notion→doc leg 2026-09-28, not chosen — last hop is a Claude-only write_db call; see routing row 10. |
+| **Second Brain layers** (weekly sync, 2026-10-26) | `bin/brain layers` · `docs/reports/LAYERS.md` · `integrations/notebooklm/drive-manifest.json` | **Sync ran clean** — all 13 SB Google Docs rewritten (02-who-and-decisions via the chunked fallback, 0 pieces failed), Notion layer directory rewritten, LAYERS.md written. **even: no** — Command Deck DB stamp 2026-10-22 (4 d against a 1-d cadence) and Fieldy meetings digest stamp 2026-10-23 (3 d against a 1-d cadence) are stale; Jarvis unverified, vector index and knowledge graph spec only. | Check that the Mac tasks that stamp the Command Deck DB and the Fieldy daily digest are running (`always-on/README.md`); nothing to do for the Docs. | L1 |
 
 ## Everything else
 
@@ -630,6 +631,32 @@ Supersedes the schedule wording of the two sections above. Two clocks answer Van
 | Cloud sweep (iMessage text + voice queue, deck chat box, Discord #vanessa) | hourly at :17, 24/7 (was 6 AM–10 PM PT) | done in this session | Vanessa |
 | Mac pollers overnight (vanessa-imessage-inbox, vanessa-discord-inbox, voice-reply-render, kapso-inbox-sync, vanessa-whatsapp-inbox) | stop between 10 PM and 7 AM PT until the window is widened | the one paste (fix-mine) — if its REPORT says the window is a runner-wide default, paste the file names it lists | Steven (paste) |
 | Night-time answer latency | up to 60 minutes until the Mac window is widened, then 10 minutes | — | — |
+
+## Connection status — one paste, 2026-10-27 02:30 UTC (Steven: "fix everything not working and simplify … scripts that I can cut and paste")
+
+`setup.sh` is now the single entry point: it runs `scripts/fix-mine.sh` then `connect-all.sh` with the keys asked once, and
+prints one REPORT. Statuses below are what the repo and the deck's documents show today; the REPORT from the Mac is the
+live truth once Steven has run it.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Kapso WhatsApp (Vanessa (202) 474-5223) | plugin + MCP + keys scripted; `whatsappKapso` deck doc stale since 10-22: the Mac tasks are not registered | `bash setup.sh`, then `claude` → `/mcp` → kapso → sign in; message the number once | Steven (paste + sign-in) |
+| Discord #vanessa | bot token prompt in the paste; bot not yet created | create the bot (discord.com/developers), paste the token when asked, say "Discord link" | Steven |
+| Jarvis = Vanessa | scripted (engine, recorded voice, persona, brain in memory) in fix-mine 3b + connect-all 6a/6b | `bash setup.sh` | Steven (paste) |
+| Orca + the AI org chart | scripted (connect-all 6c + 6e Agent OS, 172 agents wired) | `bash setup.sh`; phone pairing is his scan | Steven (paste + scan) |
+| AnyDesk | install scripted (connect-all 6d) | permissions + unattended password + IDs into the Computer Hub card | Steven |
+| Arive | credentials prompt in the paste; no call yet | type the three values when asked; the daily cycle makes the first read-only call | Steven (keys) |
+| Zoho CRM | self-client keys prompt in the paste; API 403 until the profile tick | tick "Zoho CRM API Access"; then Composio/`zoho-crm-sync` works | Steven (tick) |
+| ShowingTime · Showami · homes.com | read-only CLI-Anything wrappers scripted (connect-all 7d) | one sign-in each in the agent Chrome | Steven (sign-ins) |
+| TidyCal | token prompt in the paste + read-only proof call | type the token when asked | Steven (token) |
+| SkySlope | four keys prompt in the paste + `GET /api/users/me` proof | type the keys; the Client ID/Secret pair is partner-gated (rep) | Steven (keys, rep) |
+| Ticor Title property search | no API (`integrations/ticor/README.md`); county records already feed the deck | ask the San Diego rep for Ticor Online Pro | Steven |
+| MyFitnessPal · Strava · BodyPark | all three flow through Apple Health → Health Auto Export → the cloud Health daily sync (Strava also by connector) | three phone toggles, once | Steven (phone) |
+| Hume AI | not connected; Vanessa's voice is the recorded Magica set. A key can be stored (paste step 4) for a later EVI proposal; it spends money per call → HALT until Steven says so | optional key; decision later | Steven |
+| Pabbly Connect | workflows written (`integrations/pabbly/WORKFLOWS.md`); built in Pabbly's editor, not by a script | click-together in connect.pabbly.com; Kapso custom app on "yes build the kapso connection" | Steven (+ Claude for the Kapso app) |
+| Composio (Zoho, Discord, TikTok, GHL, HeyGen) | claude.ai connector works from the cloud; optional key on the Mac (paste step 4) | say "Composio links" in a live session for the OAuth screens | Steven |
+| CLI-Anything | harnesses for homes.com / ShowingTime / Showami / Lofty installed by the paste | sign-ins only | Steven |
+| Mac runner · message tasks all day | restart + hours widening scripted (fix-mine 4) | `bash setup.sh`; `runnerctl login` stays his if it is signed out | Steven (paste) |
 
 
 ---

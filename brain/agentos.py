@@ -40,10 +40,17 @@ ALIASES = {
     "Voicemail & Inbox Triage": ("voicemail-inbox-triage", "roster"), "Document Intake Clerk": ("document-intake-clerk", "roster"),
     "Open House Captain": ("open-house-captain", "roster"), "Travel Desk": ("travel-desk", "roster"),
     "Meeting Scribe": ("meeting-scribe", "roster"),
+    # The five hand-written agents, 2026-10-31 (.claude/agents; wiki/ai-team/five-agents.md)
+    "Chief of Staff": ("chief-of-staff", "roster"),
+    "Calendar Prep": ("calendar-prep", "roster"), "Competitor Watch": ("competitor-watch", "roster"),
+    "Hook Writer": ("hook-writer", "roster"),
 }
 SEAT_OF_LEAD = {"cfo-marcus": "Marcus", "cmo-sofia": "Sofia", "cto-derek": "Derek", "cco-alexandra": "Alexandra",
                 "caio-nadia": "Nadia", "cro-victor": "Victor", "ciso-elena": "Elena", "cto-innovator": "Elon",
                 "vanessa-orchestrator": "Vanessa",
+                # the five hand-written agents (2026-10-31) sit in the lane their own requests route to
+                "chief-of-staff": "Chief of Staff", "inbox-triage": "Voicemail & Inbox Triage", "calendar-prep": "Calendar Prep",
+                "competitor-watch": "Competitor Watch", "hook-writer": "Hook Writer",
                 # named reports that lead a desk seat of their own sit on Victor's line
                 "ca-transaction-coordinator": "Victor", "listing-agent-elite": "Victor", "buyers-agent-elite": "Victor",
                 # the chief-of-staff bench has no lead in the roster; pin it so a new lane word never moves it (2026-10-22)
@@ -94,7 +101,7 @@ def entry(root: Path, a: dict, rules: dict) -> dict:
         "orca": {"command": f"claude --agent {a['slug']}", "worktree": "one Orca worktree per agent; <=8 live at once"},
         "toolkit": ENGINEER_TOOLKIT if is_engineer(a["slug"], seat) else [],
         "guard": {"proposal_only": a["slug"] in PROPOSAL_ONLY,
-                  "gates": [g for g in ("Alexandra" if seat in ("Alexandra", "Victor", "Sofia", "Harrison") else "",
+                  "gates": [g for g in ("Alexandra" if seat in ("Alexandra", "Victor", "Sofia", "Harrison", "Hook Writer") else "",
                                         "ECC" if seat in ("Derek", "Elon") else "", "Vanessa") if g]},
     }
 

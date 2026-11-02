@@ -1,6 +1,6 @@
 {
- "generated": "2026-10-31T19:03:10Z",
- "date": "2026-10-31",
+ "generated": "2026-11-01T20:19:00Z",
+ "date": "2026-11-01",
  "items": [
   {
    "id": "bm_08ef5bf8ac",
@@ -66,28 +66,6 @@
    "rank": 3
   },
   {
-   "id": "bm_3c127f463b",
-   "category": "ops",
-   "topic": "imessage",
-   "title": "Link your iMessage line (one text: connect @vanessa-shearrill to +1 650 484 9720)",
-   "why": "morningBriefStatus 2026-10-31: imessageLinked not set and the e-mail fallback failed (Inkbox tools unavailable), so the morning text and voice note did not reach you.",
-   "owner": "Vanessa",
-   "executor": "steven",
-   "impact": 4,
-   "effort": 1,
-   "confidence": 1.0,
-   "plan": [
-    "Send one text from your iPhone: connect @vanessa-shearrill to +1 650 484 9720",
-    "Vanessa confirms the link on the deck",
-    "The 6:40 morning text and voice note resume"
-   ],
-   "source": "deck 2026-10-31",
-   "weight": 1.0,
-   "score": 4.0,
-   "value": "high",
-   "rank": 4
-  },
-  {
    "id": "bm_8ffe22339d",
    "category": "steven",
    "topic": "tidycal",
@@ -106,37 +84,14 @@
    "weight": 1.464,
    "score": 3.733,
    "value": "high",
-   "rank": 5
-  },
-  {
-   "id": "bm_3f1d9d73ef",
-   "category": "ops",
-   "topic": "",
-   "title": "Refresh cosBrief (daily cycle missed Fri 2026-10-30)",
-   "why": "cosBrief is stamped 2026-10-27; the weekday 6:25 cycle did not write on 10-28, 10-29 or 10-30 (docs/inventory/daily-updates.md cadence).",
-   "owner": "Vanessa",
-   "executor": "vanessa",
-   "impact": 3,
-   "effort": 1,
-   "confidence": 0.9,
-   "plan": [
-    "Run the daily cycle (cos-daily-cycle skill) in an attended session",
-    "Write cosBrief and isaToday",
-    "Check the cloud `daily cycle` routine's last run"
-   ],
-   "source": "deck 2026-10-31",
-   "coa": "risk",
-   "weight": 1.0,
-   "score": 2.7,
-   "value": "high",
-   "rank": 6
+   "rank": 4
   },
   {
    "id": "bm_bb5ab0e256",
    "category": "sync",
    "topic": "",
    "title": "Resync the Command Deck DB layer",
-   "why": "last stamp 2026-10-22, 9 days old, cadence 1 d",
+   "why": "last stamp 2026-10-22, 10 days old, cadence 1 d",
    "owner": "Derek",
    "executor": "vanessa",
    "impact": 3,
@@ -150,29 +105,28 @@
    "weight": 1.0,
    "score": 2.7,
    "value": "high",
-   "rank": 7
+   "rank": 5
   },
   {
-   "id": "bm_ac702e6a32",
-   "category": "ops",
-   "topic": "",
-   "title": "Confirm the two open mortgage files' status (cosBrief d7)",
-   "why": "cosBrief 2026-10-27 needs-Steven p1: whether the clear-to-close file funded and the underwriting file's open conditions and owners; say who runs the read-only checklist.",
-   "owner": "Carmen",
+   "id": "bm_f4dd4986b9",
+   "category": "steven",
+   "topic": "arive",
+   "title": "Arive",
+   "why": "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.",
+   "owner": "Derek",
    "executor": "steven",
-   "impact": 3,
-   "effort": 1,
-   "confidence": 0.9,
+   "impact": 4,
+   "effort": 2,
+   "confidence": 0.85,
    "plan": [
-    "Open cosBrief draft d7",
-    "Confirm funded / open conditions in ARIVE",
-    "Name who runs the read-only checklist"
+    "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.",
+    "Say 'done g' and Vanessa closes it and runs what it unblocks"
    ],
-   "source": "deck 2026-10-31",
-   "weight": 1.0,
-   "score": 2.7,
+   "source": "steven-steps",
+   "weight": 1.464,
+   "score": 2.489,
    "value": "high",
-   "rank": 8
+   "rank": 6
   },
   {
    "id": "bm_6b1e5bf84e",
@@ -194,7 +148,7 @@
    "weight": 1.0,
    "score": 2.4,
    "value": "high",
-   "rank": 9
+   "rank": 7
   },
   {
    "id": "bm_52e0d6276e",
@@ -210,6 +164,50 @@
    "plan": [
     "Owner Vanessa confirms the route in the register (integrations/CONNECTIONS.md)",
     "done in this session",
+    "Vanessa re-checks the status on the next connect report and closes the item"
+   ],
+   "source": "toolkit:connector",
+   "weight": 1.0,
+   "score": 2.4,
+   "value": "high",
+   "rank": 8
+  },
+  {
+   "id": "bm_da69253e89",
+   "category": "connect",
+   "topic": "",
+   "title": "Connect Command Deck chat box",
+   "why": "works in claude.ai through the viewer's own Claude (sample declared); last message 2026-09-13",
+   "owner": "Derek",
+   "executor": "vanessa",
+   "impact": 3,
+   "effort": 1,
+   "confidence": 0.8,
+   "plan": [
+    "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
+    "nothing to install; the cloud sweep now answers any question left unanswered for 10 minutes into the same thread",
+    "Vanessa re-checks the status on the next connect report and closes the item"
+   ],
+   "source": "toolkit:connector",
+   "weight": 1.0,
+   "score": 2.4,
+   "value": "high",
+   "rank": 9
+  },
+  {
+   "id": "bm_96168aa081",
+   "category": "connect",
+   "topic": "",
+   "title": "Connect Night-time answer latency",
+   "why": "up to 60 minutes until the Mac window is widened, then 10 minutes",
+   "owner": "Derek",
+   "executor": "vanessa",
+   "impact": 3,
+   "effort": 1,
+   "confidence": 0.8,
+   "plan": [
+    "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
+    "\u2014",
     "Vanessa re-checks the status on the next connect report and closes the item"
    ],
    "source": "toolkit:connector",
@@ -326,24 +324,23 @@
      "coa": "big-move"
     },
     {
-     "id": "bm_ac702e6a32",
-     "category": "ops",
-     "topic": "",
-     "title": "Confirm the two open mortgage files' status (cosBrief d7)",
-     "why": "cosBrief 2026-10-27 needs-Steven p1: whether the clear-to-close file funded and the underwriting file's open conditions and owners; say who runs the read-only checklist.",
-     "owner": "Carmen",
+     "id": "bm_f4dd4986b9",
+     "category": "steven",
+     "topic": "arive",
+     "title": "Arive",
+     "why": "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.",
+     "owner": "Derek",
      "executor": "steven",
-     "impact": 3,
-     "effort": 1,
-     "confidence": 0.9,
+     "impact": 4,
+     "effort": 2,
+     "confidence": 0.85,
      "plan": [
-      "Open cosBrief draft d7",
-      "Confirm funded / open conditions in ARIVE",
-      "Name who runs the read-only checklist"
+      "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.",
+      "Say 'done g' and Vanessa closes it and runs what it unblocks"
      ],
-     "source": "deck 2026-10-31",
-     "weight": 1.0,
-     "score": 2.7,
+     "source": "steven-steps",
+     "weight": 1.464,
+     "score": 2.489,
      "value": "high",
      "rank": 5,
      "coa": "big-move"
@@ -393,6 +390,52 @@
      "value": "high",
      "rank": 7,
      "coa": "big-move"
+    },
+    {
+     "id": "bm_da69253e89",
+     "category": "connect",
+     "topic": "",
+     "title": "Connect Command Deck chat box",
+     "why": "works in claude.ai through the viewer's own Claude (sample declared); last message 2026-09-13",
+     "owner": "Derek",
+     "executor": "vanessa",
+     "impact": 3,
+     "effort": 1,
+     "confidence": 0.8,
+     "plan": [
+      "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
+      "nothing to install; the cloud sweep now answers any question left unanswered for 10 minutes into the same thread",
+      "Vanessa re-checks the status on the next connect report and closes the item"
+     ],
+     "source": "toolkit:connector",
+     "weight": 1.0,
+     "score": 2.4,
+     "value": "high",
+     "rank": 8,
+     "coa": "big-move"
+    },
+    {
+     "id": "bm_96168aa081",
+     "category": "connect",
+     "topic": "",
+     "title": "Connect Night-time answer latency",
+     "why": "up to 60 minutes until the Mac window is widened, then 10 minutes",
+     "owner": "Derek",
+     "executor": "vanessa",
+     "impact": 3,
+     "effort": 1,
+     "confidence": 0.8,
+     "plan": [
+      "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
+      "\u2014",
+      "Vanessa re-checks the status on the next connect report and closes the item"
+     ],
+     "source": "toolkit:connector",
+     "weight": 1.0,
+     "score": 2.4,
+     "value": "high",
+     "rank": 9,
+     "coa": "big-move"
     }
    ]
   },
@@ -406,7 +449,7 @@
      "category": "brain",
      "topic": "",
      "title": "Fix the 1 gold question(s) the brain gets wrong",
-     "why": "bench 30/31 on 2026-10-27",
+     "why": "bench 30/31 on 2026-10-31",
      "owner": "Vanessa",
      "executor": "vanessa",
      "impact": 3,
@@ -497,57 +540,11 @@
    "about": "what is stale, failing or silent, and the action that heads it off",
    "items": [
     {
-     "id": "bm_3c127f463b",
-     "category": "ops",
-     "topic": "imessage",
-     "title": "Link your iMessage line (one text: connect @vanessa-shearrill to +1 650 484 9720)",
-     "why": "morningBriefStatus 2026-10-31: imessageLinked not set and the e-mail fallback failed (Inkbox tools unavailable), so the morning text and voice note did not reach you.",
-     "owner": "Vanessa",
-     "executor": "steven",
-     "impact": 4,
-     "effort": 1,
-     "confidence": 1.0,
-     "plan": [
-      "Send one text from your iPhone: connect @vanessa-shearrill to +1 650 484 9720",
-      "Vanessa confirms the link on the deck",
-      "The 6:40 morning text and voice note resume"
-     ],
-     "source": "deck 2026-10-31",
-     "weight": 1.0,
-     "score": 4.0,
-     "value": "high",
-     "rank": 1,
-     "coa": "risk"
-    },
-    {
-     "id": "bm_3f1d9d73ef",
-     "category": "ops",
-     "topic": "",
-     "title": "Refresh cosBrief (daily cycle missed Fri 2026-10-30)",
-     "why": "cosBrief is stamped 2026-10-27; the weekday 6:25 cycle did not write on 10-28, 10-29 or 10-30 (docs/inventory/daily-updates.md cadence).",
-     "owner": "Vanessa",
-     "executor": "vanessa",
-     "impact": 3,
-     "effort": 1,
-     "confidence": 0.9,
-     "plan": [
-      "Run the daily cycle (cos-daily-cycle skill) in an attended session",
-      "Write cosBrief and isaToday",
-      "Check the cloud `daily cycle` routine's last run"
-     ],
-     "source": "deck 2026-10-31",
-     "coa": "risk",
-     "weight": 1.0,
-     "score": 2.7,
-     "value": "high",
-     "rank": 2
-    },
-    {
      "id": "bm_bb5ab0e256",
      "category": "sync",
      "topic": "",
      "title": "Resync the Command Deck DB layer",
-     "why": "last stamp 2026-10-22, 9 days old, cadence 1 d",
+     "why": "last stamp 2026-10-22, 10 days old, cadence 1 d",
      "owner": "Derek",
      "executor": "vanessa",
      "impact": 3,
@@ -561,28 +558,74 @@
      "weight": 1.0,
      "score": 2.7,
      "value": "high",
-     "rank": 3,
+     "rank": 1,
      "coa": "risk"
     },
     {
-     "id": "bm_ee46f4ac28",
+     "id": "bm_e86d0e5d31",
      "category": "ops",
      "topic": "",
-     "title": "Refresh isaToday on the ISA Portal (stamped 2026-10-27)",
-     "why": "isaToday is written inside the daily cycle; it is 4 days old (daily-updates.md cadence).",
+     "title": "Refresh cosBrief",
+     "why": "cosBrief stamp 2026-10-27 is past its daily cadence (docs/inventory/daily-updates.md).",
      "owner": "Vanessa",
      "executor": "vanessa",
-     "impact": 2,
+     "impact": 3,
      "effort": 1,
-     "confidence": 0.9,
+     "confidence": 0.8,
      "plan": [
-      "Run the daily cycle",
-      "Mirror isaToday to the ISA Portal"
+      "Run the cos-daily-cycle in an attended session",
+      "Write cosBrief with at most 3 Needs-Steven items"
      ],
-     "source": "deck 2026-10-31",
+     "source": "deck morningBriefStatus",
      "coa": "risk",
      "weight": 1.0,
-     "score": 1.8,
+     "score": 2.4,
+     "value": "high",
+     "rank": 2
+    },
+    {
+     "id": "bm_6f55d98887",
+     "category": "ops",
+     "topic": "",
+     "title": "Repair Mac task brain-weekly-verify",
+     "why": "runnerStatus (2026-11-01T02:08Z) shows brain-weekly-verify last status error/refused.",
+     "owner": "Derek",
+     "executor": "vanessa",
+     "impact": 3,
+     "effort": 2,
+     "confidence": 0.8,
+     "plan": [
+      "Read the task's log from the next connect-all REPORT",
+      "Fix the spec in integrations/mac-task-specs.md",
+      "Steven pastes runnerctl run brain-weekly-verify"
+     ],
+     "source": "deck runnerStatus",
+     "coa": "risk",
+     "weight": 1.0,
+     "score": 1.2,
+     "value": "medium",
+     "rank": 3
+    },
+    {
+     "id": "bm_d1ef858fef",
+     "category": "ops",
+     "topic": "",
+     "title": "Repair Mac task health-coaching-weekly",
+     "why": "runnerStatus (2026-11-01T02:08Z) shows health-coaching-weekly last status error/refused.",
+     "owner": "Derek",
+     "executor": "vanessa",
+     "impact": 3,
+     "effort": 2,
+     "confidence": 0.8,
+     "plan": [
+      "Read the task's log from the next connect-all REPORT",
+      "Fix the spec in integrations/mac-task-specs.md",
+      "Steven pastes runnerctl run health-coaching-weekly"
+     ],
+     "source": "deck runnerStatus",
+     "coa": "risk",
+     "weight": 1.0,
+     "score": 1.2,
      "value": "medium",
      "rank": 4
     }
@@ -662,27 +705,27 @@
      "rank": 3
     },
     {
-     "id": "bm_02cfe4c410",
-     "category": "connect",
+     "id": "bm_bbf2732f6c",
+     "category": "marketing",
      "topic": "presence",
-     "title": "Connect AI-search presence (AEO/GEO/SEO)",
-     "why": "planned \u2014 playbook written (wiki/real-estate-playbooks/ai-search-visibility.md); monthly presence audit task live (1st, 7:10 AM PT)",
-     "owner": "Derek",
+     "title": "Claim the profiles Sofia listed (GBP, Bing Places, Zillow, Realtor.com, Homes.com, Yelp, LinkedIn)",
+     "why": "Presence audit 2026-11-01: 0 of 16 searches mention Steven; no profile indexed (docs/reports/PRESENCE.md).",
+     "owner": "Sofia",
      "executor": "steven",
-     "impact": 3,
+     "impact": 4,
      "effort": 2,
      "confidence": 0.8,
      "plan": [
-      "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
-      "Steven: claim the profiles (step j)",
-      "Vanessa re-checks the status on the next connect report and closes the item"
+      "Steven claims and verifies GBP + Bing Places",
+      "Claims the portal profiles with the canonical bio",
+      "Sofia drafts the /about entity page once the DRE number arrives"
      ],
-     "source": "toolkit:connector",
+     "source": "deck presenceAudit",
+     "coa": "opportunity",
      "weight": 1.0,
-     "score": 1.2,
+     "score": 1.6,
      "value": "medium",
-     "rank": 4,
-     "coa": "opportunity"
+     "rank": 4
     }
    ]
   }
@@ -697,17 +740,17 @@
   },
   {
    "q": "What should I do about: Fix the 1 gold question(s) the brain gets wrong?",
-   "a": "bench 30/31 on 2026-10-27.",
+   "a": "bench 30/31 on 2026-10-31.",
    "action": "bin/brain loop \u2192 the failing questions",
    "coa": "improve",
    "ref": "bm_d72970e1e7"
   },
   {
-   "q": "What should I do about: Link your iMessage line (one text: connect @vanessa-shearrill to +1 650 484 9720)?",
-   "a": "morningBriefStatus 2026-10-31: imessageLinked not set and the e-mail fallback failed (Inkbox tools unavailable), so the morning text and voice note did not reach you.",
-   "action": "Send one text from your iPhone: connect @vanessa-shearrill to +1 650 484 9720",
+   "q": "What should I do about: Resync the Command Deck DB layer?",
+   "a": "last stamp 2026-10-22, 10 days old, cadence 1 d.",
+   "action": "Run the layer's own sync (routines + Mac tasks write; page reads live)",
    "coa": "risk",
-   "ref": "bm_3c127f463b"
+   "ref": "bm_bb5ab0e256"
   },
   {
    "q": "What should I do about: Drips and texts?",
@@ -742,7 +785,7 @@
   },
   {
    "q": "What did the weekly loop find?",
-   "a": "last run 2026-10-27: bench 30/31, routes 23/23, 20 stale pages, 29 untested wiki pages, 0 tune proposals, 0/0 learned facts promoted",
+   "a": "last run 2026-10-31: bench 30/31, routes 23/23, 20 stale pages, 31 untested wiki pages, 0 tune proposals, 0/0 learned facts promoted",
    "action": "Open docs/reports/BRAIN-LOOP.md; the Self-improvement lane above carries the fixes",
    "coa": "question",
    "ref": "brain/loop-history.jsonl"

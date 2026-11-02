@@ -80,6 +80,8 @@ def _parser() -> argparse.ArgumentParser:
     sub.add_parser("links", help="every front door of the second brain: deck, ISA Portal, 6D, Action Desk, Drive SECOND BRAIN, NotebookLM, Notion, the SB Docs")
     ly = sub.add_parser("layers", help="every layer of the second brain (repo, index, deck, 6D, Jarvis, Notion, Drive, NotebookLM...): last sync, age, verdict")
     ly.add_argument("--write", action="store_true", help="rewrite docs/reports/LAYERS.md"); ly.add_argument("--json", action="store_true")
+    ds = sub.add_parser("deck-stamp", help="record a CONFIRMED Command Deck write (after the result names a new version) for the layers report")
+    ds.add_argument("doc"); ds.add_argument("version"); ds.add_argument("--by", default="")
     rc = sub.add_parser("recs", help="Vanessa's top 10 big moves for today: scored, prioritised, learned from approvals (docs/reports/BIG-MOVES.md)")
     rc.add_argument("action", nargs="?", default="top", choices=["top", "learn"], help="top (default) or learn <decisions.json>")
     rc.add_argument("file", nargs="?", default=None, help="learn: a JSON list of {id, decision, at, by}")
@@ -284,6 +286,9 @@ def main(argv: list[str] | None = None) -> int:
                           "lanes": {k: v for k, v in rules["lanes"].items()}, "tiers": rules["tiers"],
                           "pods": [{"pod": n, "words": w, "seats": m, "delivers": d} for n, w, m, d in rules["pods"]],
                           "source": "wiki/ai-team/org-chart.md + cross-functional.md (bin/brain org)"}, indent=1)); return 0
+    if args.cmd == "deck-stamp":
+        from . import layers
+        print("wrote", layers.deck_stamp(root, args.doc, args.version, args.by)); return 0
     if args.cmd == "layers":
         from . import layers
         if args.write:

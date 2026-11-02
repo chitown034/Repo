@@ -1,6 +1,6 @@
 # What runs when: schedule, automation map, routine budget, Steven's steps
 
-Second Brain export for NotebookLM · as of 2026-10-26 · bundle `10-always-on-and-automation`.
+Second Brain export for NotebookLM · as of 2026-11-01 · bundle `10-always-on-and-automation`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 
@@ -360,6 +360,78 @@ workflow and the service, and the builder path in `integrations/CONNECTIONS.md` 
 6. The open decisions: ISA seat, NMLS number for the Attraction Command Center, LPT DRE/entity, avatar provider.
 
 Everything else is owned above. `docs/STEVEN-STEPS.md` / the Action Desk carry these as numbered steps.
+
+
+---
+
+<!-- source file: docs/AUTOMATION-MAP-2026-10-26.md -->
+# FILE: docs/AUTOMATION-MAP-2026-10-26.md
+
+# Automation map — who does what on the Command Deck (2026-10-26)
+
+Carried forward from `docs/AUTOMATION-MAP-2026-10-20.md` (same columns, so `bin/brain owner` answers from this file) with the
+2026-10-26 process-coverage pass: Nova (Coverage & Process Auditor) owns the document-level register and the live Process
+coverage card; rows 15, 20, 33, 35, 39 and 41 changed. The document-level truth is `docs/inventory/process-coverage.md`
+(`bin/brain coverage`), gaps first with their owner seats; this table stays panel-level.
+
+Owners: **Routine** (claude.ai cloud routine), **Mac** (claude-runner task), **Vanessa** (daily Chief-of-Staff cycle), **Steve**
+(digital twin), **ISA/EA** (human), **Nova** (coverage register + card), **Steven** (the HALT list in `CLAUDE.md`).
+
+| # | Panel | Owner | Mechanism (what keeps it alive) | Steven's residual |
+|---|---|---|---|---|
+| 0 | Vanessa — Chief of Staff (pinned) | **Vanessa** | Daily cycle (cloud, weekdays) + `vanessa-sweep` (Mac, 3×/day) + research queue (Mac, hourly) + iMessage/WhatsApp inbox (Mac, 10 min). Chat card is live. | Answer the ≤3 "Needs you" lines |
+| 1 | Morning Brief | Routine + Mac | Cloud push 6:48 AM; Mac text 6:40 AM; voice note after §7 paste; feeds 13:05 UTC; freshness sweep 03:40/15:40 UTC | Read it |
+| 2 | News — global & local | Routine | Morning feeds + freshness sweep (local-news keys refill when searches find dated stories) | — |
+| 3 | Apex — trade mentor | Steven | Persona chat on demand | Ask |
+| 4 | QuantVue — NQ bot | Mac + Routine | `r4-quantvue-sync` (strategy), market-close writer (cloud, weekdays 21:20 UTC), Econoday (cloud), `r17-trading-day-log` | Daily-loss inputs (his trading) |
+| 5 | AI Hedge Fund Team | Routine | Monday remote run reads `hfRequest` | Type the ticker |
+| 6 | OpenTerminal | Mac | `openterminal-remote-queue` | — |
+| 7 | Mortgage, Lending & RE Tools | Routine + Steven | Pipeline Sync (cloud, weekdays 15/20/23 UTC) writes pipeline/reClients; Zoho stays red until the API permission | **Zoho: tick "Zoho CRM API Access"** (STEVEN-STEPS 15) |
+| 8 | James — wealth mentor | Steven | Persona chat | Ask |
+| 9 | Personal Accounts & Investments | Steven | Manual; Plaid declined by default | Type balances, or say "Plaid yes" |
+| 10 | Tax & Compliance | Steven + Marcus | Manual inputs; Alan (tax deadlines) drafts the calendar through the cycle | Type the figures |
+| 11 | Appointments & Tasks | Routine + Mac | Calendar refresh (cloud 03/15 UTC) + `calendar-daily-sync`; `r13-appointment-prep` an hour before each meeting | Attend |
+| 12 | PTO Optimization | Steven | Static planner | — |
+| 13 | E3R APM Support | Steven | Static; RoleCompass daily (cloud) feeds the job hunt separately | — |
+| 14 | Kevin — standards mentor | Steven | Persona chat | Ask |
+| 15 | Health & Wellness | Routine + Kevin | Cloud Health daily sync (6:15 AM PT: Apple Health Drive export + Strava → `appleHealth`, `stravaSnapshot`); `health-full-analysis` still reads the retired Notion path (`healthAnalysis` stale since Oct 8 — Sam repoints it) | Keep Health Auto Export running on the phone |
+| 16 | Mind — USC | Routine | R19 USC planner (Sun evening) | Study |
+| 17 | Family Office | Steven + James | Manual; James drafts reviews on request | Decide |
+| 18 | Tools & Notebooks | Mac | `weekly-self-update` (never run under the runner) | — |
+| 19 | Showings | Routine + Mac + ISA | Transaction & Showing desk (weekdays): prep, route, confirmation drafts, feedback form; `showing-sync` 3×/day from Lofty appointments; ISA sends confirmations | **Sign in once to ShowingTime / Showami** (step 14) |
+| 20 | Virtual EA / ISA Operations | Routine + Mac + ISA + Voicemail & Inbox Triage | Pipeline Sync (KPI docs; `isaScorecard` empty until the ISA's first scored day), `lead-triage-daily`, `lofty-crm-sync`, `r2-lead-response-watchdog`, `r11-isa-kpi-compile`, `r12-inbox-triage`; the Inbox & Meetings card reads `inboxDesk`, which nothing writes yet (Nova gap) | Hire/onboard the ISA; Zoho API grant |
+| 21 | AI Employees & Digital Twin | Vanessa + Steve + Mac | Daily cycle writes `twinQueue`/`vanessaRuns`/`vanessaLog`; `steve-twin-sweep` weekdays; `fabric-deck-sync`, `brain-deck-sync`, `toolkit-deck-sync`; ISA ladder (cloud) | Answer packets |
+| 22 | Master Plan | Steven | Manual | Edit |
+| 23 | Loyalty & Credit Cards | Routine | Elite Rewards scan (Mon), R18 credits & deadlines (1st/15th) | Act on a deadline |
+| 24 | Road to a Million | Steven + Marcus | Manual GCI inputs; FERS engine annual (cloud) | Type deals |
+| 25 | Nonprofit & Future Ventures | Steven + Corinne/Paloma | Manual; grant drafts through the cycle on request | Decide |
+| 26 | PE & Defense Innovation | Routine | PE & Defense notes (Mon/Thu), `openrouter-credits-refresh` (Mac) | — |
+| 27 | Elite Affluent Tracker | Routine | Weekly (Sun) | — |
+| 28 | Next Big Moves | Routine | Opportunity Radar daily, Next Big Moves weekly | Pick a move |
+| 29 | Travel & Experiences | Routine | Weekly (Mon) | Book (money = HALT) |
+| 30 | Task Board | Vanessa + Steven | The cycle reads cards due within 7 days and assigns them; `r20-weekly-review-local` (Fri) | Move cards |
+| 31 | Process Excellence | Mac | `cpi-daily-scan`, `ciLog` from every writer | — |
+| 32 | Assets | Steven | Manual | Edit |
+| 33 | Marketing & Content | Mac + Routine + Sofia/Alexandra | `r14-content-pipeline` (Tue–Fri) reports ok but `marketingQueue` has not moved since Oct 8 (Nova gap; Sofia/Sam); VA avatar drafts (Sun); AI twin autopilot posts only approved items; Alexandra's compliance line on every draft | Approve posts |
+| 34 | Dream Future Empire | Steven | Manual | — |
+| 35 | Ops Radar | Mac + Routine + Nova | `r10-automation-health`, backup writer (Sun), `r2` watchdog; the Process coverage card (Orchestration 39.0) scores every automated document from its own stamp | Read |
+| 36 | Practice Trackers | Routine + ISA + Victor | Transaction & Showing desk reads the TC intake (`tcDeals`): timelines, checklists, deadline alerts, reminder drafts; ISA enters each new deal's dates from the RPA; `revenue-scan-weekly` / `mortgage-desk-weekly` (Mac, Sun) | Sign; approve client sends |
+| 37 | Money Housekeeping | Steven + Grace | Manual subscriptions list; Grace flags anomalies at month-end (`month-end-close-prep`, 28th) | Cancel/keep |
+| 38 | Toolkit & Remote Access | Mac | `toolkit-deck-sync`, `fabric-deck-sync` | Paste `rc-agent.sh report` once |
+| 39 | Orchestration & Loop Engineering | Routine + Mac + Nova | **Process coverage card (39.0, live, no tokens)**; Saturday loop + self-test (cloud), `loop-engineering-weekly` (now writes only `loopLog` — its four companion docs are stale: Ezra), `cpi-daily-scan`; GitHub `brain-loop` on every push | Switch off the 3 duplicate Sunday loops |
+| 40 | Computer Hub | Steven | Paste the two report lines (steps 9–10) | Once |
+| 41 | Trading Research Desk | Apex + Mac | No writer today: `tradingDeskReport` never moves. Fix: a weekly Mac task running `integrations/trading-desk` (paper mode) — Nova's gap #1 | — |
+
+## What changed on 2026-10-26
+
+| Change | Where | Status |
+|---|---|---|
+| Process-coverage register: every deck document → writer, cadence, owner seat, pod | `brain/coverage/writers.json`, `bin/brain coverage`, `docs/inventory/process-coverage.md` | written; 266 rows, 26 gaps with owners |
+| Live Process coverage card, first section of Orchestration & Loop Engineering; `processCoverage` deck document | Command Deck version 250 (artifact 3jbdGMNFkGLEpJiZ3cTmZW), `dashboard/wave2/splice-process-coverage.py` | published |
+| Nova joins Derek's reports on the deck's org chart and in `wiki/ai-team/org-chart.md` | deck ORG_CHART, wiki | done |
+| Freshness sweep STEP 1b: reads the register, reports gaps with owner seats into `feedFreshness.coverage` | `trig_01Y1zZ3bmawgi4Mw2jNw9ZFM` | prompt updated 18:51 UTC; first proof 2026-10-27 15:40 UTC |
+| Big-moves "Cover <doc>" signals from `bin/brain coverage --json` | `trig_01XwFre24w9aKq5oVRq1FQ8s` | NOT applied — prompt bound to its own session; step written in `docs/inventory/daily-updates.md` for that session to adopt |
+| CI green again: layers test reads the manifest date; index reindexed | `.github/workflows/brain-loop.yml`, `setup-health.yml` | passing on this commit |
 
 
 ---
@@ -982,7 +1054,55 @@ Same list as the Action Desk page (https://claude.ai/artifact/9S8G2ZhhqP1iUsPZrP
 Includes every connection that still has to be made. Already done: Lofty key (54 leads syncing), 14 failed routines re-run, both dashboards updated (cycle 11), Remote Control card built, one-command Mac script, failover with a $25 OpenRouter cap, connection plan; your USC answers and personal DRE are saved.
 research on Claude only; Gmail, Google Calendar, Notion, Slack, Canva and Inkbox iMessage are connected; the five research-only routines are already off.
 
-## Start here (2026-10-23, evening) — ONE paste, then the short list it prints
+## Start here (2026-10-31) — ONE paste, then the short list it prints
+
+Steven: *"fix everything not working and simplify whatever steps required of me for setup via scripts that I can cut and
+paste into my mac terminal. make this easy and simple and minimal action for me."*
+
+**Mac 1 (plugged in), Terminal, one line — press Command + Space, type Terminal, Enter, then paste:**
+
+```
+cd ~/Repo 2>/dev/null || git clone -q -b claude/stoic-cori-pvn3f8 https://github.com/chitown034/Repo.git ~/Repo; cd ~/Repo && git fetch -q origin && { REPO_SYNC_BRANCH=claude/stoic-cori-pvn3f8 bash scripts/repo-sync.sh --quiet || git checkout -q claude/stoic-cori-pvn3f8; }; git pull -q --ff-only origin claude/stoic-cori-pvn3f8; bash setup.sh
+```
+
+(2026-10-31: the paste now tracks `claude/stoic-cori-pvn3f8` — the gracious-newton work was merged into it on 2026-10-31 via PR #3, so it is the one branch the routines, the Mac and the 6D Brain all read.)
+
+That one line replaces every earlier paste on this page (`connect-all.sh`, `fix-mine.sh`, `go.sh`, `mac-bootstrap.sh` —
+`setup.sh` runs the two that still matter, in the right order, and skips what is already done). It asks for each key
+**once**, hidden, Enter skips: Lofty, TidyCal, Arive (3 values), Zoho self-client (id, secret, refresh token), SkySlope
+(access key + secret, client id + secret), the Kapso project key and your mobile, the Discord bot token, the Inkbox key,
+and two optional ones (Hume AI, Composio). Then it installs and wires, without asking again: Kapso WhatsApp (plugin + MCP
++ the runner tasks), the Inkbox voice SDK, Jarvis = Vanessa (engine, her recorded voice, the brain in its memory), Laya,
+Orca with the whole AI team (Agent OS, 172 agents), AnyDesk, NotebookLM, OpenFlowKit, the homes.com / ShowingTime / Showami
+read-only wrappers, the Claude mods, the message tasks all day, and the Mac runner. It ends with **one REPORT**: what is
+connected, what is not, and the numbered list only you can do. Paste that REPORT back to Claude. Plan only, nothing
+changed or asked: `bash setup.sh --check`. Run it again any time; it only does what is still missing.
+
+**Only you, after the paste (the REPORT prints the same list; each is one screen):**
+
+0. GitHub, two clicks (step 1g): github.com/chitown034/Repo → Settings → General → Danger Zone → Change visibility → Private. The repo is still public as of 2026-10-31; the cloud session was not allowed to flip it.
+1. Phone: text `connect @vanessa-shearrill` to +1 650 484 9720 (links the iMessage line: morning text + voice note).
+2. Zoho CRM → Setup → Security Control → Profiles → your profile → Developer Permissions → tick **Zoho CRM API Access**
+   (the keys are already on the Mac from the paste; this tick is the whole 403 fix).
+3. Sign-ins: `claude` → `/mcp` → lofty-cloud → sign in; kapso → sign in; then message (202) 474-5223 from your phone once.
+4. Discord: discord.com/developers → New Application "Vanessa" → Bot → Reset Token (the paste asks for it) → OAuth2 URL
+   Generator (scope bot; Send Messages + Read Message History) → open the URL, pick your server; then say "Discord link".
+5. Phone, once: MyFitnessPal → Apps & Devices → Apple Health ON; Strava → Settings → Apple Health ON; BodyPark app →
+   allow Apple Health. (Health Auto Export → Google Drive is already the pipe; nothing else to install.)
+6. Browser sign-ins, once each, in the agent Chrome: ShowingTime, Showami, homes.com.
+7. AnyDesk: System Settings → Privacy & Security → Screen Recording + Accessibility ON; unattended password; type each
+   computer's AnyDesk **ID** (never the password) into the Command Deck's Computer Hub card.
+8. Orca phone pairing: `bash integrations/remote-control/orca-remote.sh serve --phone`, scan the QR in the Orca app.
+9. Pabbly Connect: build the workflows in `integrations/pabbly/WORKFLOWS.md` in Pabbly's editor (click-together); say
+   "yes build the kapso connection" to Claude for the custom WhatsApp app.
+10. Ticor Title: ask your San Diego rep for Ticor Online Pro (no API exists; the deck's property search already uses the
+    free county records).
+11. claude.ai → Settings → Connectors: Reconnect or remove EVRoutes and Turo; add "Gondola" https://mcp.gondola.ai/mcp.
+
+Not possible from any script, so not promised: a Hume AI voice for Vanessa (her voice is the recorded set; a Hume key
+is stored for a later proposal only), BodyPark (no API; it reaches the deck through Apple Health), Ticor (no API).
+
+## Older round (2026-10-23, evening) — ONE paste, then the short list it prints
 
 Steven: *"make a new script that I can cut and paste into the terminal to fix whatever requires my actions; make it simple and limit the back and forth."*
 
@@ -1018,7 +1138,7 @@ Big-moves task through your Claude Code Remote connector; the first time, allow 
 items land in the Vanessa queue on the Command Deck; yours stay listed with the plan standing by until you say "done".
 **Decline** → hidden 30 days and that kind weighs less. The 6:05 AM task re-learns from every decision (`docs/reports/BIG-MOVES.md`).
 
-## Start here (2026-10-23, round 2 — simplified the same evening) — three pastes, then four clicks
+## Older round (2026-10-23, round 2 — simplified the same evening) — three pastes, then four clicks
 
 Everything scripted is inside the pastes now (Jarvis, Laya, Orca, AnyDesk, TidyCal, Arive credentials, homes.com /
 ShowingTime / Showami wrappers, Lofty, Zoho check, NotebookLM, the failing-task logs). Each paste asks before it changes
@@ -1064,7 +1184,7 @@ value order, and you approve it when you want it; the Big-moves task reads this 
 - **k. Drips and texts** → Lofty 10DLC registration, then say "specs ready for review" (`wiki/real-estate-playbooks/drip-and-text-follow-up.md`).
 - **l. Orca pairing and the runner copy to Mac 2** → steps 1e and C below.
 
-## Start here (2026-10-23) — one paste, then a few clicks
+## Older round (2026-10-23) — one paste, then a few clicks
 
 **Why things were stale:** your Mac's task runner froze on Oct 13, and every `git pull` on the Mac failed because the
 cloud and the Mac both rebuild the same brain files. Both are fixed in the paste below. Everything cloud-side runs.
@@ -1170,7 +1290,7 @@ Claude already did (2026-10-22): one Vanessa queue every dashboard writes; push-
 cycle, triage inbox, recap meetings, draft follow-ups, TC intake); seven standing cross-functional pods; morning brief
 across the three dashboards at 6:34 AM; cloud routine usage cut ~34%; backup moved after the weekly reset and re-run.
 
-## Start here (2026-10-20) — one paste reconnects this Mac · about 15 minutes
+## Older round (2026-10-20) — one paste reconnects this Mac · about 15 minutes
 
 - **Open Terminal and paste this one line, answer y.** Your Mac has been silent on the dashboard since 2026-10-13. The paste restarts the runner, installs Kapso (WhatsApp) and the Inkbox voice SDK, checks Jarvis and your key files, then asks for your mobile number and the Kapso key (Keychain only, hidden; Enter skips). It never signs in, pairs, sends or pays. Paste the REPORT it prints back to Claude.
    `cd ~/Repo && git fetch origin && git checkout claude/stoic-cori-pvn3f8 && git pull && bash connect-all.sh`
@@ -1179,7 +1299,7 @@ across the three dashboards at 6:34 AM; cloud routine usage cut ~34%; backup mov
    - Open Zoho CRM: https://crm.zoho.com/
 - **After the paste, in any Claude Code session in the Repo folder:** type `/paste` for this list, `/connections` for what is not connected and the fix, `/owner marketing` for who keeps a dashboard panel alive. (7) Pabbly: reply "yes, build the Kapso app", then build the six workflows in `integrations/pabbly/WORKFLOWS.md`.
 
-## Start here (2026-10-14) — WhatsApp with Vanessa, two pastes on the Mac
+## Older round (2026-10-14) — WhatsApp with Vanessa, two pastes on the Mac
 
 Kapso gave Vanessa **(202) 474-5223**. In Terminal, in the Repo folder (`git pull` first):
 1. `bash integrations/kapso/install-mac.sh install --apply` — installs the Kapso plugin and MCP for every Claude Code session.
@@ -1187,7 +1307,7 @@ Kapso gave Vanessa **(202) 474-5223**. In Terminal, in the Repo folder (`git pul
 3. Then `claude` → type `/mcp` → pick **kapso** → sign in once in the browser. Check with `bash integrations/kapso/install-mac.sh doctor`.
 4. Save (202) 474-5223 in your phone as *Vanessa (WhatsApp)* and send her a message. Answer it from any Claude Code or Orca session with "answer my WhatsApp"; the unattended 5-minute reply task is `integrations/mac-task-specs.md` §5c (register it on the runner when you want her replying on her own).
 
-## Start here (2026-10-13) — two things, 5 minutes
+## Older round (2026-10-13) — two things, 5 minutes
 
 - **Mac, Terminal, in the Repo folder — stop the three Mac feed tasks that keep erasing the deck's fresh news:**
   `runnerctl pause openrouter-feeds-refresh && runnerctl pause feeds-weekly && runnerctl pause feeds-market-close && runnerctl list`
@@ -1201,7 +1321,7 @@ Kapso gave Vanessa **(202) 474-5223**. In Terminal, in the Repo folder (`git pul
 - **One click:** the USC study planner failed Sunday on the usage cap — press Run now at
   https://claude.ai/code/routines/trig_01VkpVzzqPkGtXPS24E4JNKP.
 
-## Start here (2026-10-12) — three pastes, then a short "only you" list
+## Older round (2026-10-12) — three pastes, then a short "only you" list
 
 - **A. Mac 1, then Mac 2:** Terminal → `cd ~/Repo && git fetch origin && git checkout claude/stoic-cori-pvn3f8 && git pull && bash go.sh` → answer `y`. Does every safe step (brain, Agent OS, Laya, Orca check, browser hands, skill packs, Jarvis, events scan, health report) and prints a report to paste back to Claude.
 - **B. Alienware:** PowerShell → `cd $HOME\Repo; git fetch origin; git checkout claude/stoic-cori-pvn3f8; git pull; powershell -ExecutionPolicy Bypass -File go.ps1` → answer `y`.
@@ -1321,14 +1441,14 @@ The daily "Fieldy → brain" task writes a digest of each recorded meeting (firs
 <!-- source file: docs/inventory/agent-roster.md -->
 # FILE: docs/inventory/agent-roster.md
 
-# AI agent roster on the Mac (aiTeamRoster doc, generatedAt 2026-09-16T00:52:37+00:00, count 173; code-validator added 2026-10-12; seven desk seats added 2026-10-22 — not yet in the Mac's roster-tiers.json)
+# AI agent roster on the Mac (aiTeamRoster doc, generatedAt 2026-09-16T00:52:37+00:00, count 173; code-validator added 2026-10-12; seven desk seats added 2026-10-22 — not yet in the Mac's roster-tiers.json; ux-designer added and agent-evaluator gained the reflection loop 2026-11-01 from Paperclip)
 
 | slug | tier | lead | model | role |
 |---|---|---|---|---|
 | a11y-architect | 2 | ecc-accessibility-lead | sonnet | Accessibility Architect specializing in WCAG 2.2 compliance for Web and Native platforms. |
 | access-auditor | 2 | ciso-elena | opus | Report under Elena (CISO): audits who and what can read or write each data store — dashboard db rules, connector grants, tokens in plaintext |
 | ad-compliance-reviewer | 2 | cco-alexandra | opus | Report under Alexandra (Compliance): reviews marketing copy, social posts, emails, ad text and webinar registration pages for mortgage/real- |
-| agent-evaluator | 2 | caio-nadia | opus | Evaluates agent output against 5-axis quality rubric (accuracy, completeness, clarity, actionability, conciseness). |
+| agent-evaluator | 2 | caio-nadia | opus | Evaluates agent output against a 5-axis quality rubric (accuracy, completeness, clarity, actionability, conciseness), then runs the reflection loop (from Paperclip's Reflection Coach, 2026-11-01): reads one seat's recent finished, blocked and corrected work, clusters repeated misses backed by evidence, and proposes the smallest durable fix (a prompt diff, a skill draft, a tool note) with replay cases. Never reflects on itself; discovery and applying are separate runs; proposals only. |
 | appraisal-manager | 2 | cco-alexandra | sonnet | Report under Alexandra (Compliance): manages the appraisal — ordering expectations under AMC rules, preparing the comparable support package |
 | architect | 2 | cto-derek | opus | Software architecture specialist for system design, scalability, and technical decision-making. |
 | automation-engineer | 2 | cto-derek | sonnet | Report under Derek (CTO): builds and repairs the automation layer — cloud routines (RemoteTrigger), desktop scheduled tasks, /loop prompts,  |
@@ -1342,11 +1462,12 @@ The daily "Fieldy → brain" task writes a digest of each recorded meeting (firs
 | ca-transaction-coordinator | 2 | cro-victor | opus | Top-1%-caliber California real estate Transaction Coordinator — runs the operational file, not the coaching conversation. |
 | ca-underwriter | 2 | cco-alexandra | opus | Top-1%-caliber mortgage Underwriter's-eye analysis — reads a file the way DU/LPA and a manual underwriter actually would, and tells Steven e |
 | caio-nadia | 1 | vanessa-orchestrator | opus | Nadia, Chief AI Officer on Steven Shearrill's AI Team — separating where AI genuinely helps a mortgage / real-estate / trading / nonprofit o |
+| calendar-prep | 3 | meeting-scribe | sonnet | One-page PREP brief per upcoming meeting: who the attendees are, past touchpoints and open promises (Gmail, Fieldy), the goal. Read-only. Hand-written: .claude/agents/calendar-prep.md (2026-10-31). |
 | capability-engineer | 1 | vanessa-orchestrator | opus | Reports to Elon, the CTO Innovator, on the AI Agent Engineering Team: extends what the agents and skills can actually DO once their core rel |
 | cco-alexandra | 1 | vanessa-orchestrator | opus | Alexandra, Chief Compliance Officer on Steven Shearrill's AI Team — TRID (LE 3 business days, CD 3 business days), RESPA §8, Reg Z LO comp a |
 | cfo-marcus | 1 | vanessa-orchestrator | opus | Marcus, Chief Financial Officer on Steven Shearrill's AI Team — cash position, P&L, net worth, budget, liabilities, Road to a Million, deal  |
 | chief-automation-strategist | 1 | vanessa-orchestrator | opus | Steven Shearrill's Chief Automation Strategist and AI Agent Orchestration Architect. |
-| chief-of-staff | 3 | — | sonnet | Personal communication chief of staff that triages email, Slack, LINE, and Messenger. |
+| chief-of-staff | 2 | vanessa-orchestrator | opus | Boss agent and Steven's one front door (2026-10-31): splits a plain request into jobs, runs inbox-triage, calendar-prep, competitor-watch, hook-writer and any routed seat in parallel, returns one brief. Hand-written: .claude/agents/chief-of-staff.md. |
 | ciso-elena | 1 | vanessa-orchestrator | opus | Elena, Chief Information Security Officer on Steven Shearrill's AI Team — data and cyber risk sized for a solo operator handling client PII  |
 | client-concierge | 2 | cro-victor | sonnet | Report under Victor (CRO): runs the white-glove layer around a transaction — move coordination, utility and address-change checklists, home  |
 | closing-coordinator | 2 | cro-victor | sonnet | Report under Victor (CRO): runs the file from clear-to-close to funded — CD timing, final figures reconciliation, signing logistics includin |
@@ -1359,6 +1480,7 @@ The daily "Fieldy → brain" task writes a digest of each recorded meeting (firs
 | comment-analyzer | 3 | — | opus | Analyze code comments for accuracy, completeness, maintainability, and comment rot risk. |
 | commission-tracker | 2 | cfo-marcus | sonnet | Report under Marcus (CFO): tracks every dollar Steven is owed — real-estate commissions through the LPT split and cap, MLO compensation, ref |
 | competitive-intelligence-analyst | 2 | cro-victor | opus | Report under Victor (CRO): benchmarks Steven against the agents, brokerages and lenders actually competing for his buyers — MLS production s |
+| competitor-watch | 3 | competitive-intelligence-analyst | sonnet | Weekly public-page check of the rivals in context/competitors.md; dated snapshot; reports only what changed. Hand-written: .claude/agents/competitor-watch.md (2026-10-31). |
 | content-writer | 2 | cmo-sofia | sonnet | Report under Sofia (CMO): writes finished posts, newsletters, follow-up sequences and listing one-pagers in Steven's brand voice for militar |
 | conversation-analyzer | 3 | — | opus | Use this agent when analyzing conversation transcripts to find behaviors worth preventing with hooks. |
 | cpp-build-resolver | 3 | — | sonnet | C++ build, CMake, and compilation error resolution specialist. |
@@ -1405,6 +1527,8 @@ The daily "Fieldy → brain" task writes a digest of each recorded meeting (firs
 | health-coach-analyst | 2 | vanessa-orchestrator | opus | Health coach and analyst on Steven's Apple Health section — reads his metrics, trends, workouts and sleep from the apple-health MCP and his  |
 | healthcare-reviewer | 3 | — | opus | Reviews healthcare application code for clinical safety, CDSS accuracy, PHI compliance, and medical data integrity. |
 | homelab-architect | 3 | — | sonnet | Designs home and small-lab network plans from hardware inventory, goals, and operator experience level, with safe staged changes and rollbac |
+| hook-writer | 3 | content-writer | sonnet | 3 hooks, 3 titles and a caption per post in Steven's voice, banned-word list and ad rules applied; drafts only. Hand-written: .claude/agents/hook-writer.md (2026-10-31). |
+| inbox-triage | 3 | voicemail-inbox-triage | sonnet | Sorts unread Gmail into URGENT / REPLY / READ LATER / IGNORE and drafts replies in Steven's voice; never sends. Hand-written: .claude/agents/inbox-triage.md (2026-10-31). |
 | incentives-programs-scout | 2 | cfo-marcus | opus | Report under Marcus (CFO): finds and verifies incentives, rebates, grants, tax credits, down-payment assistance, veteran benefits and promot |
 | inspection-repair-negotiator | 2 | cro-victor | sonnet | Report under Victor (CRO): runs the inspection period — coordinating inspections, reading reports for what is material versus cosmetic, buil |
 | integration-engineer | 1 | vanessa-orchestrator | opus | Reports to Elon, the CTO Innovator, on the AI Agent Engineering Team: owns the stability of every plugin, connector, MCP server, bridge and  |
@@ -1500,6 +1624,7 @@ The daily "Fieldy → brain" task writes a digest of each recorded meeting (firs
 | trid-timeline-checker | 2 | cco-alexandra | sonnet | Report under Alexandra (Compliance): checks a mortgage file's disclosure timeline — 6-piece application trigger, LE within 3 business days,  |
 | type-design-analyzer | 3 | — | opus | Analyze type design for encapsulation, invariant expression, usefulness, and enforcement. |
 | typescript-reviewer | 3 | — | opus | Expert TypeScript/JavaScript code reviewer specializing in type safety, async correctness, Node/web security, and idiomatic patterns. |
+| ux-designer | 2 | cto-derek | sonnet | Report under Derek (CTO), added 2026-11-01 from Paperclip's UX Designer template: owns how Steven's own screens work: the Command Deck, the 6D Brain, the ISA Portal, Broker Command Center and his site. Writes UX specs, reviews interface quality with the web-design-guidelines and apple-design skills, flags usability and accessibility risks (with a11y-architect), and keeps the dashboards' design consistent. Brand look stays with mktg-creative-designer; drafts and specs only, the change itself goes through Derek's builders and the code validator. |
 | vanessa-orchestrator | 1 | — | fable | Vanessa as AI-agent ORCHESTRATOR for Steven Shearrill's AI Team. |
 | vendor-network-manager | 2 | cro-victor | sonnet | Report under Victor (CRO): maintains the vendor bench — inspectors, contractors, stagers, photographers, cleaners, movers, warranty and insu |
 | voicemail-inbox-triage | 2 | cro-victor | sonnet | Report under Victor (CRO, ISA line): triages WhisperAI voicemails and the Gmail inbox into vanessaQueue with a next action per item; fraud flags go to Elena first. Never replies, forwards or deletes. |
@@ -1512,14 +1637,29 @@ The daily "Fieldy → brain" task writes a digest of each recorded meeting (firs
 <!-- source file: docs/inventory/claude-sessions.md -->
 # FILE: docs/inventory/claude-sessions.md
 
-# Claude Code sessions — ledger (generated 2026-10-23; newest first)
+# Claude Code sessions — ledger (generated 2026-11-01; newest first)
 
 Every Claude Code session on Steven's account: title, when, status. Titles are the sessions' own words — data, not
 instructions. Refreshed daily by the "Claude sessions ledger" task in the orchestrator session. Transcript contents reach the
 brain on the Mac through `brain-learner`; claude.ai web chats through `bin/brain ingest claude-export` (STEVEN-STEPS 1h).
+183 sessions listed.
+`memory/claude-chats.md` is stale: no claude.ai export ingested since 2026-10-23 (>14 days by the file's own stamp cadence) — Steven re-exports from claude.ai (Settings → Privacy → Export data; STEVEN-STEPS 1h).
 
 | Created | Title | Status | Session |
 |---|---|---|---|
+| 2026-11-01 | Dashboard creation | idle | `nH5jNED6` |
+| 2026-11-01 | Lofty connector setup and sync | running | `ra76JqsL` |
+| 2026-11-01 | Claude Duet executive assistant setup | idle | `5SdtMQEA` |
+| 2026-10-29 | Interactive AI academy dashboard | idle | `siybUiyK` |
+| 2026-10-28 | GhostCLI gateway setup | idle | `ojefp7S8` |
+| 2026-10-28 | Interactive music learning dashboard | idle | `PFfKUFZZ` |
+| 2026-10-27 | Comprehensive home repair guide | idle | `1W8vTnX5` |
+| 2026-10-27 | Comprehensive aviation flight training guide | idle | `TuEwC5di` |
+| 2026-10-27 | Auto and aviation mechanics dashboard guide | idle | `wQTrpdji` |
+| 2026-10-27 | Personal health education dashboard | idle | `YXbakw8X` |
+| 2026-10-27 | Professional tax dashboard with AI integration | idle | `iX3dcukk` |
+| 2026-10-25 | Steven Shearrill handoff continuation | running | `CMEbs3PD` |
+| 2026-10-23 | Famous Stoics dashboard and lessons | idle | `2Cfgo9SL` |
 | 2026-10-23 | Clean Your TV interface redesign | idle | `zn3eCGMw` |
 | 2026-10-23 | Comprehensive fitness dashboard | idle | `RFMT6WMX` |
 | 2026-10-22 | California real estate broker dashboard | idle | `Do7MPXYr` |
@@ -1540,7 +1680,7 @@ brain on the Mac through `brain-learner`; claude.ai web chats through `bin/brain
 | 2026-09-27 | Four interactive dashboards with daily updates | idle | `qX8fGcUa` |
 | 2026-09-27 | Social SDK installation | idle | `pLQAvaX8` |
 | 2026-09-22 | OpenBot installation | idle | `BKdx8VmW` |
-| 2026-09-22 | Automation dashboard and AI agent audit | running | `nupjoLP1` |
+| 2026-09-22 | Automation dashboard and AI agent audit | idle | `nupjoLP1` |
 | 2026-09-22 | OpenJarvis installation | idle | `Kc52UK34` |
 | 2026-09-22 | OmniRoute fallback setup | idle | `Tkudh1Q9` |
 | 2026-09-22 | Second brain optimization framework | idle | `hpBLaHzY` |
@@ -1586,7 +1726,7 @@ brain on the Mac through `brain-learner`; claude.ai web chats through `bin/brain
 | 2026-09-08 | Heretic installation | archived | `Ny9QB6uf` |
 | 2026-09-08 | Claude Apple Health integration | archived | `gp8FRXpw` |
 | 2026-09-08 | Magica | archived | `AuY1BpjZ` |
-| 2026-09-07 | Personal delegation and automation system | pending | `8yJjxU1u` |
+| 2026-09-07 | Personal delegation and automation system | archived | `8yJjxU1u` |
 | 2026-09-07 | AIHedgeFundTeam installation | archived | `EYostnhn` |
 | 2026-09-07 | Kronos installation | archived | `c1Yrn2tf` |
 | 2026-09-07 | Claude Code TradingView bridge setup | archived | `V5RbbjCA` |
@@ -1619,7 +1759,77 @@ brain on the Mac through `brain-learner`; claude.ai web chats through `bin/brain
 | 2026-09-05 | stevens-macbook-pro-local-toasty-leaf | archived | `xiyP65bM` |
 | 2026-09-04 | stevens-macbook-pro-local-linked-gosling | archived | `LhdQXgKF` |
 | 2026-09-03 | Install freellmapi | archived | `yvasMriV` |
-| 2026-09-03 | freellmapi installation | idle | `a6kHFqqF` |
+| 2026-09-03 | freellmapi installation | archived | `a6kHFqqF` |
+| 2026-09-03 | Event-driven autonomous loop installation | archived | `XXMha5Bj` |
+| 2026-09-02 | Install event-driven-autonomus-loop | archived | `xMnrPyhA` |
+| 2026-09-01 | stevensheard89e-compressed-hartmanis | archived | `WGuJ5K6J` |
+| 2026-09-01 | Claude-video installation | archived | `wBp18EB5` |
+| 2026-09-01 | Kronos installation | archived | `ck6fdQMv` |
+| 2026-09-01 | freellmapi installation | archived | `EMoMADhs` |
+| 2026-09-01 | Install agents repository | archived | `5aFUeL4Y` |
+| 2026-09-01 | Install agents repository | archived | `6KhiX27y` |
+| 2026-09-01 | Install modelcontextprotocol servers | archived | `F7d8zmQV` |
+| 2026-09-01 | Awesome Claude skills installation | archived | `L7RxrfNX` |
+| 2026-09-01 | Install awesome-claude-skills | archived | `882Ltpvk` |
+| 2026-08-31 | Ruflo installation | archived | `QUXcwTBd` |
+| 2026-08-31 | screenshot-to-code installation | archived | `CCZps4mD` |
+| 2026-08-30 | Install multiple tools and plugins | archived | `roco8f4k` |
+| 2026-08-30 | Plugin installations | archived | `E6VodDDf` |
+| 2026-08-29 | Install iptv into VLC player | archived | `qTJqLDDq` |
+| 2026-08-29 | Advanced personal dashboard | archived | `YHp57H7U` |
+| 2026-08-29 | SkillSpector installation | archived | `iAf6oY3e` |
+| 2026-08-29 | SkillSpector installation | archived | `tRgRxf6j` |
+| 2026-08-29 | Media-inference-worker installation | archived | `x7tci7Sy` |
+| 2026-08-29 | Media-inference-worker installation | archived | `3xYc73oj` |
+| 2026-08-29 | GROKBOT-SUPER-GUIDE implementation | archived | `zggLhz1E` |
+| 2026-08-29 | GROKBOT-SUPER-GUIDE implementation | archived | `yX2wqD52` |
+| 2026-08-28 | Install github.com/All-Hands-AI/O | archived | `Tjk8AfYs` |
+| 2026-08-28 | Install github.com/All-Hands-AI/O | archived | `7hUhEfqs` |
+| 2026-08-28 | Install github.com/Shubhamsaboo/a | archived | `AjZkSDyX` |
+| 2026-08-28 | Install Shubhamsaboo/a | archived | `J4MEN2Vr` |
+| 2026-08-28 | Install github.com/nexu-io/open-d | archived | `KcdP3ou1` |
+| 2026-08-28 | Install github.com/nexu-io/open-d | archived | `Bq8VTrbn` |
+| 2026-08-28 | Install aweso | archived | `gR3oUbxV` |
+| 2026-08-28 | aweso installation | archived | `CYiTHT18` |
+| 2026-08-28 | Install github.com/langflow-ai/la | archived | `egHZ7ntV` |
+| 2026-08-28 | Install github.com/langflow-ai/la | archived | `fRhTTBG5` |
+| 2026-08-28 | Install github.com/ripienaar/free | archived | `p5zx2AYa` |
+| 2026-08-28 | Install ripienaar/free | archived | `iJBtbHG8` |
+| 2026-08-28 | Install ollama | archived | `ZU2i7rr1` |
+| 2026-08-28 | Install ollama | archived | `KKQXypup` |
+| 2026-08-28 | Scrapl installation | archived | `M52nQFa5` |
+| 2026-08-28 | Install Scrapl | archived | `6bNbDSyn` |
+| 2026-08-28 | Install github.com/public-apis/pu | archived | `1h5yGA5x` |
+| 2026-08-28 | Install public-apis/pu | archived | `3TUjaUXD` |
+| 2026-08-28 | Install github.com/sindresorhus/a | archived | `M3WhgmUN` |
+| 2026-08-28 | Install sindresorhus/a | archived | `arxPjezb` |
+| 2026-08-27 | Estorides installation | archived | `4G264xvK` |
+| 2026-08-27 | Estorides installation | archived | `BbTyAKxx` |
+| 2026-08-27 | Claude-OSINT installation | archived | `eKJ3pJEh` |
+| 2026-08-27 | Claude-OSINT installation | archived | `L9qSkv1h` |
+| 2026-08-27 | Voicebox installation | archived | `LvRKYM4o` |
+| 2026-08-27 | Voicebox installation | archived | `oLZhjyiQ` |
+| 2026-08-27 | gstack installation | archived | `niKRVNLt` |
+| 2026-08-27 | gstack installation | archived | `adwm5EGt` |
+| 2026-08-27 | Install gstack | archived | `qjdE3DFs` |
+| 2026-08-27 | Eromify-mcp installation | archived | `G7m5V3xo` |
+| 2026-08-27 | Eromify-mcp installation | archived | `vQyTinTy` |
+| 2026-08-27 | Perplexity MCP server setup | archived | `oNWFcVRq` |
+| 2026-08-27 | Install palantir-mcp | archived | `C53jVc1T` |
+| 2026-08-27 | Palantir-mcp installation | archived | `MkR8yF7G` |
+| 2026-08-24 | screenshot-to-code installation | archived | `v2P84Y7k` |
+| 2026-08-24 | screenshot-to-code installation | archived | `dGMeV682` |
+| 2026-08-24 | Model context protocol setup | archived | `KsH2RMfL` |
+| 2026-08-24 | modelcontextprotocol installation | archived | `Yq44xQ5Z` |
+| 2026-08-24 | OmniRoute installation | archived | `xFwHKFxv` |
+| 2026-08-23 | Install homebrew | archived | `JgiujbVE` |
+| 2026-08-23 | Kronos installation | archived | `ifHN1W3H` |
+| 2026-08-23 | Ruflo installation | archived | `hGZtWwyU` |
+| 2026-08-23 | Ruflo installation | archived | `jZb2bU9f` |
+| 2026-08-23 | Ecc installation | archived | `hR6Q2v5N` |
+| 2026-08-23 | Playwright installation | archived | `4Kfbvoiw` |
+| 2026-08-23 | stevensheard89e-binary-piglet | archived | `JagDQJ58` |
+| 2026-08-23 | ECC repository | archived | `8rFVaULF` |
 
 
 ---
@@ -1634,7 +1844,7 @@ The 2026-09-22 listing is `cloud-routines.md`; this file carries what was create
 
 | Routine | Cron (UTC) | Enabled | Last run | Next | Created | id |
 |---|---|---|---|---|---|---|
-| Health daily sync — Apple Health (Drive export) + Strava → deck (6:15 AM PT; `appleHealth`, `stravaSnapshot`, `healthDriveSync`) | `CRON_TZ=America/Los_Angeles 15 6 * * *` | True | first run by hand 2026-10-23 | 2026-10-24 | 2026-10-23 | trig_015pqDNGrZVENHZEZR8JZYF5 |
+| Health daily sync — Apple Health (Drive export) + Strava → deck (6:15 AM PT; `appleHealth`, `stravaSnapshot`, `healthDriveSync`) | `CRON_TZ=America/Los_Angeles 15 6 * * *` | True | first run by hand 2026-10-23 | 2026-10-24 | 2026-10-23 | trig_01YPmyQiy1SMzFfr1SzEoLoe (re-bound 2026-10-25; trig_015pq… retired) |
 | Vanessa — Chief of Staff daily cycle (weekdays 6:25 AM PT, parallel squads) | `CRON_TZ=America/Los_Angeles 25 6 * * 1-5` | True | — | 2026-10-21 | 2026-10-20 | trig_019whypw6EeNu2G8xxY5xE5N |
 | Command Deck — daily freshness sweep (writer, Claude; once a day since 2026-10-22, per-key cadence) | `40 15 * * *` | True | SUCCEEDED @ 2026-10-20T15:40 | twice daily | 2026-10-12 | trig_01Y1zZ3bmawgi4Mw2jNw9ZFM |
 | Command Deck — morning feeds (writer, Claude) | `5 13 * * *` | True | SUCCEEDED @ 2026-10-20T13:08 | daily | 2026-10-05 | trig_01BVuP52qPuqEvfvxL48YgZz |
@@ -1769,6 +1979,14 @@ Checked 2026-10-23: every cloud routine's last run SUCCEEDED (pages 1–7 of the
 None of these feeds the three daily dashboards. They are heavy Opus research runs; firing all of them in one day is what tripped the
 cap on Oct 1–2, so they were left on their own dates. Say "re-run the monthly refreshes" and they are fired one per hour.
 Two guard routines are off by design (Strava wrapper guard, feed-freshness watchdog) — both replaced by the 15:40 UTC freshness sweep.
+
+## Process coverage (2026-10-26)
+
+The document-level version of this table is the process-coverage register: `bin/brain coverage --db <export> --write`
+→ `docs/inventory/process-coverage.md` (gaps first, owner seat per row), the `processCoverage` deck document and the live
+Process coverage card in Orchestration. The freshness sweep reads it (STEP 1b). The Big-moves routine's "Refresh <doc>"
+step should take its stale list from `bin/brain coverage --db <export> --json` (its `gaps`) instead of this table once
+that routine's session adopts the step — its prompt can only be edited from the conversation it posts into.
 
 
 ---
@@ -2011,6 +2229,395 @@ Two guard routines are off by design (Strava wrapper guard, feed-freshness watch
 | voice-reply-render | `*/10 * * * *` | True | 2026-09-21T21:01:18 | ok | 2026-09-21T21:10:00 |
 | weather-news-refresh | `5 8,20 * * *` | True | 2026-09-21T20:10:40 | ok | 2026-09-22T08:05:00 |
 | weekly-self-update | `10 23 * * 5` | True | None | None | 2026-09-25T23:10:00 |
+
+
+---
+
+<!-- source file: docs/inventory/process-coverage.md -->
+# FILE: docs/inventory/process-coverage.md
+
+# Process coverage — every Command Deck document, its writer, its owner, and whether it moved
+
+Generated by `bin/brain coverage --write` (plain code, no model call). Writers: `brain/coverage/writers.json`. Panels: `docs/inventory/deck-doc-panels.json` (scanned from the live deck). Live stamps: ArtifactData export /tmp/claude-0/-home-user-Repo/d7285472-c26c-53cb-9b5d-d785a15668cc/scratchpad/db.
+
+| Count | |
+|---|---|
+| docs | 266 |
+| automated | 89 |
+| fresh | 57 |
+| stale | 13 |
+| never written | 5 |
+| no writer | 2 |
+| queue-driven | 11 |
+| manual | 68 |
+| derived | 40 |
+| retired | 11 |
+| gaps | 26 |
+
+## Gaps — automated documents that did not move, have no writer, or whose writer is retired (26)
+
+| Doc | Panel | Status | Age | Writer | Owner | Fix |
+|---|---|---|---|---|---|---|
+| `tradingDeskReport` | Self-Improving Trading Research Desk | no writer | — | no writer — the Trading Research Desk writes its report on the Mac only when run by hand | Apex | GAP: give the desk a weekly Mac task (integrations/trading-desk) so the panel's tiles move. |
+| `inboxDesk` | — | no writer | — | no writer — the Inbox & Meetings card reads inboxDesk but nothing produces it | Voicemail & Inbox Triage | GAP: point r12-inbox-triage (or the cloud inbox sweep) at inboxDesk with the card's shape, or make the card read inboxTriage. |
+| `sphereTouches` | Practice Trackers | never written | — | Sphere & past-client touches (11th monthly, 7:40 AM PT) | Sphere Nurture Coordinator | First run 2026-11-11. |
+| `isaGradingScores` | Virtual EA / ISA Operations | never written | — | Command Deck ↔ ISA Portal — Pipeline Sync (04/10/16/22 UTC) | Victor | Never written: no ISA scored day exists yet (the human ISA has not started). Not a sync gap. |
+| `isaKpiSopActuals` | Virtual EA / ISA Operations | never written | — | Command Deck ↔ ISA Portal — Pipeline Sync (04/10/16/22 UTC) | Victor | Never written: no ISA scored day exists yet (the human ISA has not started). Not a sync gap. |
+| `eventsFeed` | — | never written | — | GitHub Action events-scout (Sundays) → eventsFeed | Travel Desk | GAP: the Sunday events-scout action writes docs/reports only; a session must copy its rows into eventsFeed. Give the action an ArtifactData step or fold it into the Travel weekly refresh. |
+| `presenceAudit` | — | never written | — | Presence audit (monthly, 1st) | Orin | First run 2026-11-01 (monthly, the 1st). |
+| `hfCommitteeMemo` | AI Hedge Fund Team | stale | 48d | Command Deck — AI Hedge Fund Team remote run (Mon 12:00 UTC) | Apex | Reads hfRequest (the ticker Steven types). |
+| `knowledgeGraph` | — | stale | 42d | ops-knowledge-graph (Sun 5:45 AM PT) | Naomi | Has not written since 2026-09-13 (usage cap on Sundays). Move to a weekday or run once by hand: runnerctl run ops-knowledge-graph. |
+| `weeklyBrief` | — | stale | 34d | r20-weekly-review-local (Fri 11:50 PM PT) | Vanessa | Limited by the usage cap every Friday since Sep 26; move earlier in the week. |
+| `auditFindings` | — | stale | 34d | loop-engineering-weekly (Sat 7:30 AM PT) | Ezra | loopLog moves; the four companion docs do not — the loop writes only loopLog now. Add their write steps back or retire their cards. |
+| `ciLog` | Process Excellence — DMAIC, Lean Six Sigma & Agile/PM | stale | 33d | every cloud writer appends a row | Sam | — |
+| `scaleOpportunityLog` | — | stale | 21d | loop-engineering-weekly (Sat 7:30 AM PT) | Ezra | loopLog moves; the four companion docs do not — the loop writes only loopLog now. Add their write steps back or retire their cards. |
+| `realEstateBrief` | — | stale | 21d | Real Estate Weekly Brief (Mon 16:30 UTC) | Bianca | The routine hangs (no finished_at) on most Mondays; last write 2026-10-05. Rewrite it to WebSearch-only, or fold it into the morning feeds. |
+| `stressTestReport` | — | stale | 20d | loop-engineering-weekly (Sat 7:30 AM PT) | Ezra | loopLog moves; the four companion docs do not — the loop writes only loopLog now. Add their write steps back or retire their cards. |
+| `healthAnalysis` | — | stale | 18d | health-full-analysis (5:25 AM PT) | Kevin | Task reports ok but the doc has not moved since 2026-10-08: it reads the retired Notion path. Repoint it at appleHealth (mac-task-specs §9). |
+| `marketingQueue` | Marketing & Content | stale | 18d | r14-content-pipeline (Tue-Fri 5:45 AM PT) | Sofia | Task reports ok (Oct 23) but the doc stamp is Oct 8: it is not writing the deck. Re-check its write step. |
+| `trustLevels` | — | stale | 15d | loop-engineering-weekly (Sat 7:30 AM PT) | Ezra | loopLog moves; the four companion docs do not — the loop writes only loopLog now. Add their write steps back or retire their cards. |
+| `whatsappKapso` | Toolkit & Remote Access | stale | 4d | kapso-inbox-sync (spec §5b — not registered on the Mac yet) | Vanessa | GAP: Steven registers the Kapso tasks (STEVEN-STEPS 2026-10-14); until then a session writes it. |
+| `cpiOpportunityLog` | — | stale | 3d | cpi-daily-scan (10:30 PM PT) | Derek | — |
+| `pipeline` | Mortgage, Lending & Real Estate Tools | no stamp | — | Command Deck ↔ ISA Portal — Pipeline Sync (04/10/16/22 UTC) | Victor | isaScorecard is [] on both stores: the ISA has no scored days yet — a data gap, not a sync gap. |
+| `reClients` | Mortgage, Lending & Real Estate Tools | no stamp | — | Command Deck ↔ ISA Portal — Pipeline Sync (04/10/16/22 UTC) | Victor | isaScorecard is [] on both stores: the ISA has no scored days yet — a data gap, not a sync gap. |
+| `isaScorecard` | — | no stamp | — | Command Deck ↔ ISA Portal — Pipeline Sync (04/10/16/22 UTC) | Victor | isaScorecard is [] on both stores: the ISA has no scored days yet — a data gap, not a sync gap. |
+| `zohoSync` | Toolkit & Remote Access | retired | 34d | Zoho API blocked until Steven ticks "Zoho CRM API Access" (STEVEN-STEPS 15); deck data is the Sep 14 paste | Victor | NEEDS-STEVEN: the API grant. Not a writer problem. |
+| `zohoLeads` | Mortgage, Lending & Real Estate Tools | retired | — | Zoho API blocked until Steven ticks "Zoho CRM API Access" (STEVEN-STEPS 15); deck data is the Sep 14 paste | Victor | NEEDS-STEVEN: the API grant. Not a writer problem. |
+| `zohoDeals` | — | retired | — | Zoho API blocked until Steven ticks "Zoho CRM API Access" (STEVEN-STEPS 15); deck data is the Sep 14 paste | Victor | NEEDS-STEVEN: the API grant. Not a writer problem. |
+
+## Every document, by tab
+
+
+### Daily Ops
+
+| Doc | Panel | Writer | Cadence | Owner | Pod | Last stamp | Status |
+|---|---|---|---|---|---|---|---|
+| `annualTodo` | Appointments & Tasks | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `annualTodoExtra` | Appointments & Tasks | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `appointments` | Appointments & Tasks | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | 2026-09-30T12:00Z | derived |
+| `calendarSnapshot` | Appointments & Tasks | Mac task: calendar-daily-sync (6:35 AM / 5:35 PM PT) | 14h | Vanessa | Ops Pod | 2026-10-26T13:39Z | fresh |
+| `peptideTracker` | Appointments & Tasks | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `quickTasks` | Appointments & Tasks | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `supplementTracker` | Appointments & Tasks | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `aiTrainingPct` | Master Plan | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `claudeNotes` | Master Plan | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `refLinksCustom` | Master Plan | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `todoList` | Master Plan | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `kanbanCards` | Morning Brief | Steven types it: the ISA's kanban + the daily cycle's assignments | — | Vanessa | Ops Pod | 2026-10-19T12:00Z | manual |
+| `memberships` | Morning Brief | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `priorities` | Morning Brief | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `tz` | Morning Brief | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `weather` | Morning Brief | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `city` | News — Global & Local | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `backupStatus` | Ops Radar | cloud routine: Weekly ecosystem backup — cloud writer (Sun 21:07 UTC) | 192h | Elena | Ops Pod | 2026-10-25T20:19Z | fresh |
+| `leadResponse` | Ops Radar | Mac task: r2-lead-response-watchdog (every 30 min, 7 AM-7:40 PM PT) | 14h | Kenji | Lead Pod | 2026-10-26T18:14Z | fresh |
+| `routineHealth` | Ops Radar | Mac task: r10-automation-health (10:10 PM PT) | 30h | Sam | Ops Pod | 2026-10-26T05:13Z | fresh |
+| `ciLog` | Process Excellence — DMAIC, Lean Six Sigma & Agile/PM | cloud routine: every cloud writer appends a row | 30h | Sam | Ops Pod | 2026-09-23T02:55Z | stale **GAP** |
+| `cpiCycles` | Process Excellence — DMAIC, Lean Six Sigma & Agile/PM | Steven types it: Steven types it on the deck | — | Steven | — | 2026-09-03T12:00Z | manual |
+| `dmaicProjects` | Process Excellence — DMAIC, Lean Six Sigma & Agile/PM | Steven types it: Steven types it on the deck | — | Steven | — | 2026-09-02T12:00Z | manual |
+| `downtimeFound` | Process Excellence — DMAIC, Lean Six Sigma & Agile/PM | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `kaizenBoard` | Process Excellence — DMAIC, Lean Six Sigma & Agile/PM | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `sprintDates` | Process Excellence — DMAIC, Lean Six Sigma & Agile/PM | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `sprintGoal` | Process Excellence — DMAIC, Lean Six Sigma & Agile/PM | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `sprintVelocity` | Process Excellence — DMAIC, Lean Six Sigma & Agile/PM | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+
+### Markets & Trading
+
+| Doc | Panel | Writer | Cadence | Owner | Pod | Last stamp | Status |
+|---|---|---|---|---|---|---|---|
+| `hfCommitteeMemo` | AI Hedge Fund Team | cloud routine: Command Deck — AI Hedge Fund Team remote run (Mon 12:00 UTC) | 192h | Apex | Life & Wealth Pod | 2026-09-08T03:50Z | stale **GAP** |
+| `hfRequest` | AI Hedge Fund Team | Steven types it: Steven types it on the deck | — | Steven | — | 2026-09-13T00:15Z | manual |
+| `tvaChartState` | AI Hedge Fund Team | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `openTerminalSnapshot` | OpenTerminal | Mac task: openterminal-remote-queue (hourly 6-21 PT) | 26h | Apex | Life & Wealth Pod | 2026-10-26T17:46Z | fresh |
+| `liveFeeds` | QuantVue — NQ Trading Bot | cloud routine: Command Deck — morning feeds (13:05 UTC) + daily freshness sweep (15:40 UTC) | 26h | Vanessa | Ops Pod | 2026-10-26T15:41Z | fresh |
+| `marketSnapshot` | QuantVue — NQ Trading Bot | cloud routine: Command Deck — market close (weekdays 21:20 UTC) + sweep catch-up | 80h | Dov | Money Pod | 2026-10-23T21:00Z | fresh |
+| `nqGuideRead` | QuantVue — NQ Trading Bot | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `riskAccountsBlown` | QuantVue — NQ Trading Bot | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `riskDailyLossTriggered` | QuantVue — NQ Trading Bot | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `riskMonitor` | QuantVue — NQ Trading Bot | Mac task: r17-trading-day-log (weekdays 10:40 PM PT) | 80h | Apex | Life & Wealth Pod | 2026-10-23T05:44Z | fresh |
+| `strategySnapshot` | QuantVue — NQ Trading Bot | Mac task: r4-quantvue-sync (weekdays 11:20 PM PT) | 80h | Apex | Life & Wealth Pod | 2026-10-23T06:26Z | fresh |
+| `ttsHold` | QuantVue — NQ Trading Bot | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `ttsIntent` | QuantVue — NQ Trading Bot | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `ttsSetup` | QuantVue — NQ Trading Bot | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `tradingDeskReport` | Self-Improving Trading Research Desk | no writer: no writer — the Trading Research Desk writes its report on the Mac only when run by hand | — | Apex | Life & Wealth Pod | — | no writer **GAP** |
+
+### Family Office & Wealth
+
+| Doc | Panel | Writer | Cadence | Owner | Pod | Last stamp | Status |
+|---|---|---|---|---|---|---|---|
+| `assetItems` | Assets | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `foActions` | Family Office | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `foAdvisors` | Family Office | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `foEntities` | Family Office | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `foReviews` | Family Office | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `uwpRead` | Family Office | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `accounts` | Personal Accounts & Investments | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `instLogins` | Personal Accounts & Investments | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `instPlaidMap` | Personal Accounts & Investments | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `liabilities` | Personal Accounts & Investments | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `properties` | Personal Accounts & Investments | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `repsREHours` | Personal Accounts & Investments | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `repsTotalHours` | Personal Accounts & Investments | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `mtgGciDeals` | Road to a Million | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `mtgGciPerDeal` | Road to a Million | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `reGciDeals` | Road to a Million | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `reGciPerDeal` | Road to a Million | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `augustaEvents` | Tax & Compliance | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `augustaRate` | Tax & Compliance | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `qetPaid` | Tax & Compliance | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `qetPriorAGI` | Tax & Compliance | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `qetPriorTax` | Tax & Compliance | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `qetProjected` | Tax & Compliance | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `taxWorkbookLink` | Tax & Compliance | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+
+### Lending & Real Estate
+
+| Doc | Panel | Writer | Cadence | Owner | Pod | Last stamp | Status |
+|---|---|---|---|---|---|---|---|
+| `pipeline` | Mortgage, Lending & Real Estate Tools | cloud routine: Command Deck ↔ ISA Portal — Pipeline Sync (04/10/16/22 UTC) | 30h | Victor | Lead Pod | — | no stamp **GAP** |
+| `ratesSnapshot` | Mortgage, Lending & Real Estate Tools | Mac task: mortgage-rates-daily (weekdays 6:38 AM / 1:38 PM PT) + r5-rates-market-refresh (Mon) | 30h | Dov | Mortgage Pod | 2026-10-26T13:45Z | fresh |
+| `reClients` | Mortgage, Lending & Real Estate Tools | cloud routine: Command Deck ↔ ISA Portal — Pipeline Sync (04/10/16/22 UTC) | 30h | Victor | Lead Pod | — | no stamp **GAP** |
+| `zohoLeads` | Mortgage, Lending & Real Estate Tools | retired: Zoho API blocked until Steven ticks "Zoho CRM API Access" (STEVEN-STEPS 15); deck data is the Sep 14 paste | — | Victor | Lead Pod | — | retired **GAP** |
+| `cosBrief` | Practice Trackers | cloud routine: Vanessa — Chief of Staff daily cycle (weekdays 6:25 AM PT) | 80h | Vanessa | Ops Pod | 2026-10-26T13:39Z | fresh |
+| `refiWatchDesk` | Practice Trackers | cloud routine: Refi watch — weekly prep list (Mon 7:20 AM PT) | 192h | Refi Watch Analyst | Mortgage Pod | 2026-10-26T14:32Z | fresh |
+| `sphereTouches` | Practice Trackers | cloud routine: Sphere & past-client touches (11th monthly, 7:40 AM PT) | 800h | Sphere Nurture Coordinator | Client Care Pod | — | never written **GAP** |
+| `tcDesk` | Practice Trackers | cloud routine: Transaction & Showing desk (weekdays 6:05 AM PT) | 80h | Carmen | Deal Pod | 2026-10-26T13:18Z | fresh |
+| `capacityPct` | Virtual EA / ISA Operations | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `isaGradingScores` | Virtual EA / ISA Operations | cloud routine: Command Deck ↔ ISA Portal — Pipeline Sync (04/10/16/22 UTC) | 30h | Victor | Lead Pod | — | never written **GAP** |
+| `isaKpi` | Virtual EA / ISA Operations | Mac task: r11-isa-kpi-compile (Sun 4:40 AM PT) | 192h | Victor | Lead Pod | 2026-10-25T20:04Z | fresh |
+| `isaKpiSopActuals` | Virtual EA / ISA Operations | cloud routine: Command Deck ↔ ISA Portal — Pipeline Sync (04/10/16/22 UTC) | 30h | Victor | Lead Pod | — | never written **GAP** |
+| `kpiActuals` | Virtual EA / ISA Operations | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `leadTriage` | Virtual EA / ISA Operations | Mac task: lead-triage-daily (weekdays 11:33 AM PT) | 80h | Priya | Lead Pod | 2026-10-23T18:33Z | fresh |
+| `onboardDone` | Virtual EA / ISA Operations | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `techStackExtra` | Virtual EA / ISA Operations | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+
+### Showings
+
+| Doc | Panel | Writer | Cadence | Owner | Pod | Last stamp | Status |
+|---|---|---|---|---|---|---|---|
+| `showingRoute` | Showings — Schedule by Client | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+
+### AI Team
+
+| Doc | Panel | Writer | Cadence | Owner | Pod | Last stamp | Status |
+|---|---|---|---|---|---|---|---|
+| `aiTeamRoster` | AI Employees & Digital Twin | Mac task: toolkit-deck-sync (6:15 AM PT) | 30h | Sam | Ops Pod | 2026-10-26T13:28Z | fresh |
+| `councilPricing` | AI Employees & Digital Twin | cloud routine: LLM council pricing check (daily) | 30h | Nadia | Ops Pod | 2026-10-26T06:44Z | fresh |
+| `isaLadder` | AI Employees & Digital Twin | cloud routine: ISA line — reply check & escalation ladder (weekdays 14:30 UTC) | 80h | Victor | Lead Pod | 2026-10-23T14:38Z | fresh |
+| `twinBrief` | AI Employees & Digital Twin | Mac task: r1-morning-brief (5:30 AM PT) | 30h | Steve | Ops Pod | 2026-10-26T12:36Z | fresh |
+| `vanessaRecommendations` | AI Employees & Digital Twin | cloud routine: Big moves (6:05 AM PT) | 30h | Vanessa | Ops Pod | 2026-10-26T13:21Z | fresh |
+
+### Career & Education
+
+| Doc | Panel | Writer | Cadence | Owner | Pod | Last stamp | Status |
+|---|---|---|---|---|---|---|---|
+| `dbaCourses` | Mind — USC & Study: AI DBA | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `licenseTracker` | Mind — USC & Study: AI DBA | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `uscDeadlines` | Mind — USC & Study: AI DBA | Steven types it: Steven's USC deadlines (R19 planner drafts the week's plan around them) | — | Vanessa | Life & Wealth Pod | 2026-10-19T12:00Z | manual |
+| `uscSchedule` | Mind — USC & Study: AI DBA | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+
+### Health & Wellness
+
+| Doc | Panel | Writer | Cadence | Owner | Pod | Last stamp | Status |
+|---|---|---|---|---|---|---|---|
+| `ahLogFilledFor` | Health & Wellness | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | 2026-10-25T20:54Z | derived |
+| `biohackLog` | Health & Wellness | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `healthCoaching` | Health & Wellness | Mac task: health-coaching-weekly (Sun 6:30 AM PT) | 192h | Kevin | Life & Wealth Pod | 2026-10-23T19:58Z | fresh |
+| `healthGoals` | Health & Wellness | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `healthInsight` | Health & Wellness | the page itself: the page's own daily insight (sample capability, hlAutoMaybe) | 48h | Kevin | Life & Wealth Pod | 2026-10-25T21:03Z | fresh |
+| `healthMetrics` | Health & Wellness | retired: health-notion-sync — replaced by the cloud Health daily sync on 2026-10-23 | — | Kevin | Life & Wealth Pod | 2026-10-23T12:00Z | retired |
+| `healthNotionSync` | Health & Wellness | retired: health-notion-sync — replaced by the cloud Health daily sync on 2026-10-23 | — | Kevin | Life & Wealth Pod | 2026-09-22T13:18Z | retired |
+| `healthNutrition` | Health & Wellness | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `hvmPlaybook` | Health & Wellness | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `hvmRoadmap` | Health & Wellness | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `lumenScores` | Health & Wellness | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `wellnessMetricCurrent` | Health & Wellness | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `workout` | Health & Wellness | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+
+### Rewards & Ventures
+
+| Doc | Panel | Writer | Cadence | Owner | Pod | Last stamp | Status |
+|---|---|---|---|---|---|---|---|
+| `myCards` | Loyalty & Credit Cards | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `marketingQueue` | Marketing & Content | Mac task: r14-content-pipeline (Tue-Fri 5:45 AM PT) | 96h | Sofia | Growth Pod | 2026-10-08T12:50Z | stale **GAP** |
+| `aiModels` | Nonprofit & Future Ventures | session pass: Nadia's model table (session pass) | — | Nadia | Ops Pod | — | manual |
+| `grantPipeline` | Nonprofit & Future Ventures | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `npFamilies` | Nonprofit & Future Ventures | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `npGrantFunding` | Nonprofit & Future Ventures | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `npHours` | Nonprofit & Future Ventures | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+
+### PE & Defense Innovation
+
+| Doc | Panel | Writer | Cadence | Owner | Pod | Last stamp | Status |
+|---|---|---|---|---|---|---|---|
+| `aiNews` | Private Equity & Defense Innovation | retired: aiNews — superseded by liveFeeds.aiNewsList (morning feeds) | — | Nadia | Ops Pod | 2026-10-04T21:00Z | retired |
+| `openrouterCredits` | Private Equity & Defense Innovation | Mac task: openrouter-credits-refresh (11:40 PM PT) | 30h | Marcus | Money Pod | 2026-10-26T06:44Z | fresh |
+
+### Next Big Moves
+
+| Doc | Panel | Writer | Cadence | Owner | Pod | Last stamp | Status |
+|---|---|---|---|---|---|---|---|
+| `dreamFeatures` | Dream Future Empire | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `dreamProperties` | Dream Future Empire | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `editableOverrides` | Next Big Moves | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `feasibilityChecks` | Next Big Moves | session pass: Elon's feasibility register (session pass) | — | Elon | Ops Pod | — | manual |
+| `plan10yr` | Next Big Moves | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `plan1yr` | Next Big Moves | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `plan5yr` | Next Big Moves | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+
+### Toolkit & Remote Access
+
+| Doc | Panel | Writer | Cadence | Owner | Pod | Last stamp | Status |
+|---|---|---|---|---|---|---|---|
+| `agentInbox` | Toolkit & Remote Access | cloud routine: Vanessa inbox sweep (hourly) + Mac pollers vanessa-imessage-inbox / vanessa-discord-inbox | 26h | Vanessa | Ops Pod | 2026-10-26T17:18Z | fresh |
+| `knowledgeFabric` | Toolkit & Remote Access | Mac task: fabric-deck-sync (every 2 h, 7 AM-9 PM PT) | 6h | Sam | Ops Pod | 2026-10-26T18:09Z | fresh |
+| `loftyLeads` | Toolkit & Remote Access | Mac task: lofty-crm-sync (7:45 AM / 1:45 PM PT, Mon-Sat) | 30h | Victor | Lead Pod | 2026-10-26T14:47Z | fresh |
+| `runnerStatus` | Toolkit & Remote Access | Mac task: fabric-deck-sync (every 2 h, 7 AM-9 PM PT) | 6h | Sam | Ops Pod | 2026-10-26T18:09Z | fresh |
+| `toolkitSnapshot` | Toolkit & Remote Access | Mac task: toolkit-deck-sync (6:15 AM PT) | 30h | Sam | Ops Pod | 2026-10-26T13:18Z | fresh |
+| `whatsappKapso` | Toolkit & Remote Access | Mac task: kapso-inbox-sync (spec §5b — not registered on the Mac yet) | 26h | Vanessa | Ops Pod | 2026-10-22T14:52Z | stale **GAP** |
+| `zohoSync` | Toolkit & Remote Access | retired: Zoho API blocked until Steven ticks "Zoho CRM API Access" (STEVEN-STEPS 15); deck data is the Sep 14 paste | — | Victor | Lead Pod | 2026-09-22T08:17Z | retired **GAP** |
+
+### Read by code, not by a panel (state, queues, markers)
+
+| Doc | Panel | Writer | Cadence | Owner | Pod | Last stamp | Status |
+|---|---|---|---|---|---|---|---|
+| `actionDesk` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `aiNewsResetToken` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | 2026-09-07T12:00Z | derived |
+| `aiTeamOrg` | — | cloud routine: Big moves (6:05 AM PT) — set from bin/brain org | 30h | Derek | Ops Pod | 2026-10-26T13:25Z | fresh |
+| `anydeskIds` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `apexChat` | — | Steven types it: chat threads (Steven writes, the seat answers) | — | Apex | Life & Wealth Pod | 2026-09-12T15:17Z | manual |
+| `appleHealth` | — | cloud routine: Health daily sync — Apple Health (Drive export) + Strava (6:15 AM PT) | 30h | Kevin | Life & Wealth Pod | 2026-10-25T20:54Z | fresh |
+| `appointmentsResetToken` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | 2026-09-07T12:00Z | derived |
+| `apptPrep` | — | Mac task: r13-appointment-prep (every 2 h, 6 AM-7 PM PT; event-driven) | — | Vanessa | Ops Pod | 2026-09-23T19:00Z | queue-driven |
+| `auditFindings` | — | Mac task: loop-engineering-weekly (Sat 7:30 AM PT) | 192h | Ezra | Ops Pod | 2026-09-22T12:00Z | stale **GAP** |
+| `bigMoves` | — | cloud routine: Big moves (6:05 AM PT) | 30h | Vanessa | Ops Pod | 2026-10-26T13:21Z | fresh |
+| `brain6dStatus` | — | cloud routine: 6D Brain — daily rebuild (3:30 AM PT) | 30h | Naomi | Ops Pod | 2026-10-26T10:43Z | fresh |
+| `cfoLog` | — | cloud routine: exec squads inside the daily cycle (event-driven) | — | Marcus | Money Pod | 2026-10-23T23:02Z | queue-driven |
+| `chatDiag` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | 2026-09-13T01:19Z | derived |
+| `checklist` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `ciLogResetToken` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | 2026-09-20T12:00Z | derived |
+| `cisoLog` | — | cloud routine: exec squads inside the daily cycle (event-driven) | — | Elena | Ops Pod | 2026-10-09T23:00Z | queue-driven |
+| `cliAnythingStatus` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `cloudWriteProbe` | — | retired: probe / guard docs from the 2026-09-22 cloud-write proof | — | Sam | Ops Pod | 2026-09-22T00:00Z | retired |
+| `coachLog` | — | Mac task: coach-weekly-recs (Mon 6:10 AM PT) | 192h | Maxwell | Growth Pod | 2026-10-26T13:14Z | fresh |
+| `coleChat` | — | retired: coleChat — Kevin replaced Cole 2026-10-07 | — | Kevin | Life & Wealth Pod | — | retired |
+| `collabLedger` | — | cloud routine: Vanessa — Chief of Staff daily cycle (weekdays 6:25 AM PT) | 80h | Vanessa | Ops Pod | 2026-10-25T00:00Z | fresh |
+| `computerHub` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `councilLog` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `cpiOpportunityLog` | — | Mac task: cpi-daily-scan (10:30 PM PT) | 30h | Derek | Ops Pod | 2026-10-23T01:29Z | stale **GAP** |
+| `croLog` | — | cloud routine: exec squads inside the daily cycle (event-driven) | — | Victor | Lead Pod | 2026-10-09T23:00Z | queue-driven |
+| `ctoLog` | — | cloud routine: exec squads inside the daily cycle (event-driven) | — | Derek | Ops Pod | 2026-09-11T12:28Z | queue-driven |
+| `dealChecklists` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `deviceId` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `deviceRoster` | — | Mac task: rc-agent.sh report (Computer Hub) | — | Sam | Ops Pod | 2026-10-26T16:51Z | queue-driven |
+| `eodRollup` | — | Mac task: r3-eod-rollup (10:45 PM PT) | 30h | Steve | Ops Pod | 2026-10-26T05:47Z | fresh |
+| `estateReview` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `eventsChecked` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `eventsFeed` | — | GitHub Action: GitHub Action events-scout (Sundays) → eventsFeed | 192h | Travel Desk | Life & Wealth Pod | — | never written **GAP** |
+| `fedSalaryCalc` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `feedFreshness` | — | cloud routine: Command Deck — daily freshness sweep (15:40 UTC) | 30h | Nova | Ops Pod | 2026-10-26T15:42Z | fresh |
+| `fersEngine` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `fieldyDesk` | — | cloud routine: Fieldy → brain (daily 6:50 AM PT) | 192h | Meeting Scribe | Ops Pod | 2026-10-23T13:27Z | fresh |
+| `goalCalories` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `goalCarbs` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `goalFat` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `goalProtein` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `healthAnalysis` | — | Mac task: health-full-analysis (5:25 AM PT) | 30h | Kevin | Life & Wealth Pod | 2026-10-08T12:32Z | stale **GAP** |
+| `healthDriveSync` | — | cloud routine: Health daily sync — Apple Health (Drive export) + Strava (6:15 AM PT) | 30h | Kevin | Life & Wealth Pod | 2026-10-26T13:45Z | fresh |
+| `hfMemoResetToken` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | 2026-09-07T12:00Z | derived |
+| `hlAutoTried` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `hlPrefs` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `improvementProposals` | — | Mac task: weekly-self-update (Fri 11:10 PM PT) | 192h | Nadia | Ops Pod | 2026-10-26T01:48Z | fresh |
+| `inboxDesk` | — | no writer: no writer — the Inbox & Meetings card reads inboxDesk but nothing produces it | — | Voicemail & Inbox Triage | Lead Pod | — | no writer **GAP** |
+| `inboxTriage` | — | Mac task: r12-inbox-triage (6:55 AM / 1:55 PM PT) | 14h | Voicemail & Inbox Triage | Lead Pod | 2026-10-26T13:56Z | fresh |
+| `inc-2ndpension` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `inc-401k` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `inc-capgains` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `inc-dividends` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `inc-federal-gs` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `inc-flip` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `inc-interest` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `inc-mlo` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `inc-navy` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `inc-passive-other` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `inc-post911` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `inc-realtor` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `inc-rental` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `inc-roth` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `inc-royalty` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `inc-sdira` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `inc-ss` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `inc-turo` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `inc-usc-professor` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `inc-va` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `inc-w2-e3r` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `inc-yield` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `incentivePrograms` | — | Mac task: incentives-daily-scan (7:50 AM PT) | 30h | Hazel | Money Pod | 2026-10-26T14:58Z | fresh |
+| `isaDailySchedule` | — | session pass: ISA playbook seed (session pass) | — | Victor | Lead Pod | 2026-09-10T07:40Z | manual |
+| `isaLine` | — | Mac task: isa-comms-bridge-local (hourly 7-21 PT) | 26h | Victor | Lead Pod | 2026-10-26T05:47Z | fresh |
+| `isaLineRead` | — | deck UI state: deck read marker | — | Victor | Lead Pod | 2026-09-13T22:11Z | derived |
+| `isaScorecard` | — | cloud routine: Command Deck ↔ ISA Portal — Pipeline Sync (04/10/16/22 UTC) | 30h | Victor | Lead Pod | — | no stamp **GAP** |
+| `jamesChat` | — | Steven types it: chat threads (Steven writes, the seat answers) | — | James | Life & Wealth Pod | 2026-09-12T15:04Z | manual |
+| `kanbanOwnerFilter` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `kevinChat` | — | Steven types it: chat threads (Steven writes, the seat answers) | — | Kevin | Life & Wealth Pod | — | never typed |
+| `knowledgeGraph` | — | Mac task: ops-knowledge-graph (Sun 5:45 AM PT) | 192h | Naomi | Ops Pod | 2026-09-14T00:23Z | stale **GAP** |
+| `licenses` | — | Steven types it: Steven types it on the deck | — | Steven | — | 2026-09-30T12:00Z | manual |
+| `localBridgeQueue` | — | deck UI state: deck button → openterminal-remote-queue | — | Apex | Life & Wealth Pod | 2026-09-12T06:31Z | derived |
+| `loftySyncLog` | — | Mac task: lofty-crm-sync (7:45 AM / 1:45 PM PT, Mon-Sat) | 30h | Victor | Lead Pod | 2026-10-26T14:47Z | fresh |
+| `loopLog` | — | Mac task: loop-engineering-weekly (Sat 7:30 AM PT) | 192h | Ezra | Ops Pod | 2026-10-26T01:48Z | fresh |
+| `marketSnapshotResetToken` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | 2026-09-20T12:00Z | derived |
+| `morningBrief` | — | cloud routine: Vanessa — morning brief (6:34 AM PT; push + e-mail until iMessage is linked) | 30h | Vanessa | Ops Pod | 2026-10-26T13:45Z | fresh |
+| `morningBriefStatus` | — | cloud routine: Vanessa — morning brief (6:34 AM PT; push + e-mail until iMessage is linked) | 30h | Vanessa | Ops Pod | 2026-10-26T13:45Z | fresh |
+| `newsSnapshot` | — | cloud routine: Command Deck — weather & news (01:35/13:35 UTC) | 14h | Vanessa | Ops Pod | 2026-10-26T13:51Z | fresh |
+| `openTerminalQueue` | — | deck UI state: deck button → openterminal-remote-queue | — | Apex | Life & Wealth Pod | 2026-09-12T06:00Z | derived |
+| `openrouterFeeds` | — | retired: openrouter-feeds-refresh — frozen since 2026-09-13 and it clobbers liveFeeds; Steven pauses it (runnerctl pause openrouter-feeds-refresh feeds-weekly feeds-market-close) | — | Derek | Ops Pod | 2026-09-13T22:51Z | retired |
+| `plaidBalances` | — | Steven types it: r7-plaid-balances stays silent until Steven says "Plaid yes" (declined by default) | — | Marcus | Money Pod | — | never typed |
+| `presenceAudit` | — | cloud routine: Presence audit (monthly, 1st) | 800h | Orin | Growth Pod | — | never written **GAP** |
+| `realEstateBrief` | — | cloud routine: Real Estate Weekly Brief (Mon 16:30 UTC) | 192h | Bianca | Listing Pod | 2026-10-05T18:46Z | stale **GAP** |
+| `recruitPipeline` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `referralPartners` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `refiWatch` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `refiWatchList` | — | Steven types it: Steven's own refi list (first name, note rate, loan type, month closed) | — | Refi Watch Analyst | Mortgage Pod | — | never typed |
+| `revenueScan` | — | Mac task: revenue-scan-weekly (Sun 5:40 AM PT) | 192h | Victor | Growth Pod | 2026-10-25T20:20Z | fresh |
+| `reviewPipeline` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `runnerProbe` | — | retired: probe / guard docs from the 2026-09-22 cloud-write proof | — | Sam | Ops Pod | 2026-09-15T02:57Z | retired |
+| `scaleOpportunityLog` | — | Mac task: loop-engineering-weekly (Sat 7:30 AM PT) | 192h | Ezra | Ops Pod | 2026-10-05T05:21Z | stale **GAP** |
+| `secondBrain` | — | Mac task: brain-deck-sync (hourly :20, 7 AM-10 PM PT) | 6h | Naomi | Ops Pod | 2026-10-26T18:24Z | fresh |
+| `sectionEdits` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | 2026-10-09T03:06Z | derived |
+| `sectionSliderHidden` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `selfTest` | — | Mac task: nightly-self-test (11:00 PM PT) | 30h | Theo | Ops Pod | 2026-10-26T06:04Z | fresh |
+| `showingSchedule` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `showingSyncRequests` | — | Mac task: showing-sync (8:15 AM / 12:15 PM / 4:15 PM PT, Mon-Sat; queue-driven) | — | Showing Coordinator | Deal Pod | — | queue-driven |
+| `sixLevers` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `speakDiag` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | 2026-10-25T22:16Z | derived |
+| `sphereList` | — | Steven types it: Steven's sphere list (birthdays, anniversaries) | — | Sphere Nurture Coordinator | Client Care Pod | — | never typed |
+| `steveChat` | — | Steven types it: chat threads (Steven writes, the seat answers) | — | Steve | Ops Pod | 2026-09-10T13:47Z | manual |
+| `stlManual` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `stravaSnapshot` | — | cloud routine: Health daily sync — Apple Health (Drive export) + Strava (6:15 AM PT) | 30h | Kevin | Life & Wealth Pod | 2026-10-26T13:45Z | fresh |
+| `stravaWrapGuard` | — | retired: probe / guard docs from the 2026-09-22 cloud-write proof | — | Sam | Ops Pod | 2026-10-22T12:58Z | retired |
+| `stressTestReport` | — | Mac task: loop-engineering-weekly (Sat 7:30 AM PT) | 192h | Ezra | Ops Pod | 2026-10-06T01:41Z | stale **GAP** |
+| `subscriptions` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | never typed |
+| `tcDeals` | — | Steven types it: ISA enters each new deal's dates (tc-doc-intake skill drafts them) | — | Document Intake Clerk | Deal Pod | — | never typed |
+| `tradingLogins` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `travelFilterCat` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `travelShowPassed` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `travelSoonOnly` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `trustLevels` | — | Mac task: loop-engineering-weekly (Sat 7:30 AM PT) | 192h | Ezra | Ops Pod | 2026-10-11T00:00Z | stale **GAP** |
+| `twinLog` | — | cloud routine: daily cycle + steve-twin-sweep (Mac, weekdays 12:55 PM PT) | 80h | Steve | Ops Pod | 2026-10-23T19:58Z | fresh |
+| `twinQueue` | — | cloud routine: daily cycle + steve-twin-sweep (Mac, weekdays 12:55 PM PT) | — | Steve | Ops Pod | 2026-10-05T19:59Z | queue-driven |
+| `vanessaBrief` | — | Mac task: vanessa-sweep (weekdays 12:35 PM PT) | 80h | Vanessa | Ops Pod | 2026-10-23T19:36Z | fresh |
+| `vanessaChat` | — | Steven types it: chat threads (Steven writes, the seat answers) | — | Vanessa | Ops Pod | 2026-10-24T00:22Z | manual |
+| `vanessaLog` | — | cloud routine: Vanessa — Chief of Staff daily cycle (weekdays 6:25 AM PT) | 80h | Vanessa | Ops Pod | 2026-10-26T13:39Z | fresh |
+| `vanessaQueue` | — | cloud routine: every surface hands to it; the daily cycle works it | 80h | Vanessa | Ops Pod | 2026-10-22T23:14Z | fresh |
+| `vanessaResearch` | — | Mac task: vanessa-research-queue (hourly :30, queue-driven) | — | Leah | Ops Pod | 2026-10-06T01:41Z | queue-driven |
+| `vanessaRuns` | — | cloud routine: Vanessa — Chief of Staff daily cycle (weekdays 6:25 AM PT) | 80h | Vanessa | Ops Pod | 2026-10-26T13:39Z | fresh |
+| `voicePlayed` | — | deck UI state: deck UI state (filters, read markers, reset tokens, diagnostics) | — | Derek | Ops Pod | — | derived |
+| `voiceReplyQueue` | — | Mac task: voice-reply-render (every 10 min, queue-driven) | — | Vanessa | Ops Pod | 2026-10-24T00:28Z | queue-driven |
+| `voiceReplyStatus` | — | Mac task: voice-reply-render (every 10 min, queue-driven) | — | Vanessa | Ops Pod | 2026-10-24T00:44Z | queue-driven |
+| `weatherSnapshot` | — | Mac task: weather-news-refresh (8:05 AM / 8:05 PM PT); the cloud sweep writes it only when AccuWeather is attached | 14h | Vanessa | Ops Pod | 2026-10-26T15:05Z | fresh |
+| `weeklyBrief` | — | Mac task: r20-weekly-review-local (Fri 11:50 PM PT) | 192h | Vanessa | Ops Pod | 2026-09-22T09:00Z | stale **GAP** |
+| `wellness` | — | Steven types it: Steven types it on the deck | — | Steven | — | — | manual |
+| `zohoDeals` | — | retired: Zoho API blocked until Steven ticks "Zoho CRM API Access" (STEVEN-STEPS 15); deck data is the Sep 14 paste | — | Victor | Lead Pod | — | retired **GAP** |
 
 
 ---

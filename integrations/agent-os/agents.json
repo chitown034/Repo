@@ -1,5 +1,5 @@
 {
- "count": 184,
+ "count": 185,
  "agents": [
   {
    "slug": "a11y-architect",
@@ -98,13 +98,13 @@
    "tier": "2",
    "model": "Opus 5.5",
    "lead": "caio-nadia",
-   "role": "Evaluates agent output against 5-axis quality rubric (accuracy, completeness, clarity, actionability, conciseness).",
+   "role": "Evaluates agent output against a 5-axis quality rubric (accuracy, completeness, clarity, actionability, conciseness), then runs the reflection loop (from Paperc",
    "laya": {
     "lane": "Nadia",
     "starts_from": "docs/CAIO-DISRUPTION-BRIEF.md"
    },
    "jarvis": {
-    "recall": "bin/brain recall \"agent evaluator Evaluates agent output against 5-axis quality\"",
+    "recall": "bin/brain recall \"agent evaluator Evaluates agent output against a 5-axis\"",
     "local_only_for_client_data": true
    },
    "orca": {
@@ -492,8 +492,8 @@
    "lead": "meeting-scribe",
    "role": "One-page PREP brief per upcoming meeting: who the attendees are, past touchpoints and open promises (Gmail, Fieldy), the goal. Read-only. Hand-written: .claude/",
    "laya": {
-    "lane": "Voicemail & Inbox Triage",
-    "starts_from": "wiki/ai-team/desk-seats.md"
+    "lane": "Calendar Prep",
+    "starts_from": "wiki/ai-team/five-agents.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"calendar prep One-page PREP brief per upcoming meeting:\"",
@@ -998,8 +998,8 @@
    "lead": "competitive-intelligence-analyst",
    "role": "Weekly public-page check of the rivals in context/competitors.md; dated snapshot; reports only what changed. Hand-written: .claude/agents/competitor-watch.md (2",
    "laya": {
-    "lane": "Regina",
-    "starts_from": "wiki/ai-team/desk-seats.md"
+    "lane": "Competitor Watch",
+    "starts_from": "wiki/ai-team/five-agents.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"competitor watch Weekly public-page check of the rivals\"",
@@ -2397,8 +2397,8 @@
    "lead": "content-writer",
    "role": "3 hooks, 3 titles and a caption per post in Steven's voice, banned-word list and ad rules applied; drafts only. Hand-written: .claude/agents/hook-writer.md (202",
    "laya": {
-    "lane": "Sofia",
-    "starts_from": "wiki/real-estate-playbooks/"
+    "lane": "Hook Writer",
+    "starts_from": "wiki/ai-team/five-agents.md"
    },
    "jarvis": {
     "recall": "bin/brain recall \"hook writer 3 hooks, 3 titles and a\"",
@@ -5104,6 +5104,39 @@
    }
   },
   {
+   "slug": "ux-designer",
+   "tier": "2",
+   "model": "Sonnet 5",
+   "lead": "cto-derek",
+   "role": "Report under Derek (CTO), added 2026-11-01 from Paperclip's UX Designer template: owns how Steven's own screens work: the Command Deck, the 6D Brain, the ISA Po",
+   "laya": {
+    "lane": "Derek",
+    "starts_from": "wiki/dashboard-ops/"
+   },
+   "jarvis": {
+    "recall": "bin/brain recall \"designer Report under Derek (CTO), added 2026-11-01\"",
+    "local_only_for_client_data": true
+   },
+   "orca": {
+    "command": "claude --agent ux-designer",
+    "worktree": "one Orca worktree per agent; <=8 live at once"
+   },
+   "toolkit": [
+    ".claude/skills/code-validation-gate",
+    "scripts/validate-code.sh",
+    "integrations/code-validation/vibebreaker (20-pass audit protocol)",
+    "references/backend-folder-structure.md",
+    "references/vibe-coding-learning.md"
+   ],
+   "guard": {
+    "proposal_only": false,
+    "gates": [
+     "ECC",
+     "Vanessa"
+    ]
+   }
+  },
+  {
    "slug": "vanessa-orchestrator",
    "tier": "1",
    "model": "fable",
@@ -5347,6 +5380,22 @@
   },
   "Meeting Scribe": {
    "agent": "meeting-scribe",
+   "via": "roster"
+  },
+  "Chief of Staff": {
+   "agent": "chief-of-staff",
+   "via": "roster"
+  },
+  "Calendar Prep": {
+   "agent": "calendar-prep",
+   "via": "roster"
+  },
+  "Competitor Watch": {
+   "agent": "competitor-watch",
+   "via": "roster"
+  },
+  "Hook Writer": {
+   "agent": "hook-writer",
    "via": "roster"
   }
  },

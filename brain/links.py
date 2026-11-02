@@ -27,6 +27,9 @@ LINKS: list[dict] = [
     {"key": "flight_school", "label": "Flight School", "url": "https://claude.ai/artifact/98b8htgDXoXpxLUW6MZZzG", "store": None, "layer": None},
     {"key": "home_repair", "label": "Home Repair Guide", "url": "https://claude.ai/artifact/JarFK9VX7t7ohedWrw6A3g", "store": None, "layer": None},
     {"key": "how_vehicles_work", "label": "How Vehicles Work", "url": "https://claude.ai/artifact/Kk6is8jF8RUrAQsJWpontF", "store": None, "layer": None},
+    {"key": "hormozi_offer", "label": "Hormozi Offer Workbench", "url": "https://claude.ai/artifact/S5dCiUaeFUpnmbmgf9NAMN", "store": None, "layer": None},
+    {"key": "music_school", "label": "Music School", "url": "https://claude.ai/artifact/XSK8iDXgrJ7U5BGPgHKxcy", "store": None, "layer": None},
+    {"key": "ai_academy", "label": "AI Academy", "url": "https://claude.ai/artifact/NNYAh4ZhDtNU87srbNUZoH", "store": None, "layer": None},
     {"key": "health_wellness", "label": "Health and Wellness", "url": "https://claude.ai/artifact/Rmexwbuc7nqnVUsFzjbMrV", "store": None, "layer": None},
     {"key": "health_drive", "label": "Google Drive · Health Auto Export folder (daily iPhone export)", "url": "https://drive.google.com/drive/folders/1Ta6veOyTtgIsRs4lcMw0jzVgx80XiXjK", "store": "store:drive", "layer": "drive"},
 ]

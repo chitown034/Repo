@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-31T19:03:10Z",
+ "generated": "2026-11-02T01:22:58Z",
  "seats": [
   {
    "name": "Steve",
@@ -155,6 +155,16 @@
    "name": "Elon",
    "role": "CTO Innovator, proposal-only the AI Agent Engineering Team: stress-test, reliability,",
    "kind": "tree"
+  },
+  {
+   "name": "New seat: `ux-designer`",
+   "role": "under Derek, Sonnet 5",
+   "kind": "named"
+  },
+  {
+   "name": "Updated seat: `agent-evaluator`",
+   "role": "under Nadia",
+   "kind": "named"
   },
   {
    "name": "Gwen",
@@ -554,7 +564,10 @@
    "export leads",
    "webhook",
    "zoho lofty",
-   "smart plan"
+   "smart plan command deck feed",
+   "live feed",
+   "deck relay",
+   "lofty live"
   ],
   "Owen": [
    "autopilot",
@@ -569,7 +582,10 @@
    "run everything",
    "monday kickoff",
    "friday wrap",
-   "automation & ai pod"
+   "automation & ai pod automation control",
+   "orchestrator",
+   "what runs automatically",
+   "job schedule"
   ],
   "Beatrice": [
    "dre",
@@ -611,7 +627,19 @@
    "drill",
    "script practice",
    "lesson",
-   "onboarding agent"
+   "onboarding agent training hub",
+   "curriculum",
+   "study plan",
+   "exam prep",
+   "dre exam",
+   "continuing education",
+   "ce hours",
+   "quiz me",
+   "mock exam course material",
+   "chapter",
+   "practice test",
+   "teach me",
+   "foundational law"
   ],
   "Steve": [
    "draft",
@@ -678,7 +706,9 @@
    "angry client",
    "honors",
    "unhappy client",
-   "complaint"
+   "complaint stale work",
+   "overdue backlog",
+   "escalation digest"
   ],
   "Imani": [
    "pcs",
@@ -964,7 +994,8 @@
    "process coverage",
    "coverage register",
    "which doc is stale",
-   "who writes"
+   "who writes self-heal",
+   "failing health check"
   ],
   "Sienna": [
    "bland",
@@ -977,6 +1008,28 @@
    "tcpa consent",
    "voicemail drop",
    "phone follow-up"
+  ],
+  "Dax": [
+   "role play",
+   "role-play",
+   "roleplay",
+   "spar",
+   "sparring",
+   "practice call",
+   "objection drill",
+   "mock call",
+   "rehearse"
+  ],
+  "Regina": [
+   "new law",
+   "new laws",
+   "regulation",
+   "effective date",
+   "legislation",
+   "reference library",
+   "statute",
+   "ordinance",
+   "what changed"
   ],
   "Isabel": [
    "loan processing",
@@ -1003,6 +1056,53 @@
    "rescission",
    "signing appointment",
    "clear to close"
+  ],
+  "Claude Duet": [
+   "claude duet",
+   "duet",
+   "duet app",
+   "duet approval",
+   "duet brief",
+   "always-on agent",
+   "background assistant",
+   "approve on phone"
+  ],
+  "Chief of Staff": [
+   "prep my monday",
+   "prep my week",
+   "prep my day",
+   "chief of staff",
+   "run the specialists"
+  ],
+  "Calendar Prep": [
+   "meeting prep",
+   "prep my meeting",
+   "who am i meeting",
+   "attendee brief",
+   "before my call",
+   "open promises"
+  ],
+  "Competitor Watch": [
+   "competitor",
+   "competitors",
+   "rival",
+   "rivals",
+   "competition",
+   "competitor pricing",
+   "what changed in the market"
+  ],
+  "Hook Writer": [
+   "write a hook",
+   "reel hook",
+   "video hook",
+   "post hook",
+   "3 hooks",
+   "hook ideas",
+   "caption",
+   "title ideas",
+   "video title",
+   "curiosity gap",
+   "banned words"
   ]
  },
  "tiers": {
@@ -1014,6 +1114,8 @@
   "Nadia": "Opus 5.5",
   "Victor": "Opus 5.5",
   "Elena": "Opus 5.5",
+  "Chief of Staff": "Opus 5.5",
+  "Claude Duet": "Opus 5.5",
   "Elon": "Opus 5.5",
   "Harrison": "Opus 5.5",
   "Gwen": "Opus 5.5",

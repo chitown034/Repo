@@ -106,6 +106,35 @@ the deck's "Text me this brief" sends the morning brief to Steven's own mobile o
 60 Mac tasks; Apex, James and Nadia have no tool of their own (they answer through Vanessa's recall). `bin/brain owner
 "<panel>"` says who keeps a Command Deck panel alive and what stays Steven's. The 3D brain shows the same five as lobes.
 
+## Added 2026-11-01: Paperclip, fitted with no duplicates
+
+Steven: "add update ai agents from paperclip them to fit within org chart with no duplications". Paperclip
+(paperclipai/paperclip, MIT, read at 1a6017d) ships 12 agent templates. Ten already have a seat here, so nothing was
+copied for them:
+
+| Paperclip agent | Already here as |
+|---|---|
+| CEO | Vanessa |
+| CTO (2 templates) | Derek |
+| QA (2) | code-validator + sandbox-qa |
+| Senior Coder / Coder | Derek's engineers and benches |
+| Security Engineer | Elena and her reports |
+| Content Lead | Sofia's content-writer, social calendar and creative seats |
+| Company Phone Agent (Speko) | the ISA line + Voicemail & Inbox Triage |
+| Summarizer | Vanessa's `cosBrief` |
+| Wiki Maintainer | Lenora + `bin/brain reindex` / `loop` |
+
+Two changes, the only gaps:
+- **New seat: `ux-designer`** (under Derek, Sonnet 5). Owns how Steven's own screens work: the Command Deck, the 6D
+  Brain, the ISA Portal, Broker Command Center and his site. Brand look stays with Sofia's mktg-creative-designer.
+- **Updated seat: `agent-evaluator`** (under Nadia) gains Paperclip's reflection loop: it reads one seat's recent work,
+  finds repeated misses and proposes the smallest fix. It is proposal-only, never reflects on itself, and applies nothing
+  in the run that finds the problem.
+
+Ideas carried as proposals, not seats: the Summarizer's format (lead with the 1–3 things that unblock the work, then
+plain prose, no link dumps) for Vanessa's morning brief, which is a live routine prompt so it is Steven's call; and
+per-agent monthly budgets with auto-pause, for Marcus and Derek.
+
 ## The named seats worth knowing by name
 
 - **Harrison** — Elite Mortgage Broker, the senior mortgage authority across six standing lanes (VA purchase, VA IRRRL, conventional/high-balance, FHA, self-employed/non-QM, jumbo/portfolio). Preparation and analysis only — the licensed act stays Steven's.
@@ -118,6 +147,7 @@ the deck's "Text me this brief" sends the morning brief to Steven's own mobile o
 - **Wren** / **Garrett** — referral reciprocity and LPT recruiting; see `wiki/real-estate-playbooks/referral-reciprocity.md`.
 - **Desk seats (2026-10-22)** — Refi Watch Analyst, Sphere Nurture Coordinator, Voicemail & Inbox Triage, Document Intake Clerk, Open House Captain, Travel Desk, Meeting Scribe: Sonnet 5 report seats, drafts only; see `wiki/ai-team/desk-seats.md`.
 - **Five agents (2026-10-31)** — `chief-of-staff` (the boss: one front door that runs the specialists in parallel) with `inbox-triage`, `calendar-prep`, `competitor-watch` and `hook-writer`: hand-written in `.claude/agents/`, drafts only; see `wiki/ai-team/five-agents.md`.
+- **Claude Duet (2026-11-02)** — Anthropic's always-on assistant app (research preview, Opus 5.5), a seat under Vanessa that drafts and asks for approval on Steven's phone; it cannot read the brain, so desk work stays with `chief-of-staff`. See `wiki/ai-team/desk-seats.md` § Claude Duet.
 
 ## What "bench" means
 

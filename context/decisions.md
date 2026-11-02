@@ -841,3 +841,21 @@ through Apple Health and the same export file once Steven switches the nutrition
   routine) — a live-task change, so his yes. Until then a parked orchestrator session means stale tiles again, and the
   new heartbeat line will say so.
 - **Owner.** Derek (sync), Cole (health), Vanessa (routines). **Status.** Deck v259 (this splice), 2026-10-31.
+
+## 2026-11-02 — Claude Duet added to the brain and the AI org; the org now lists every agent
+
+- **Request (Steven, verbatim).** *"Add Claide duet to the brain and AI org as well / Update ai org with all ai agents"*.
+- **Decision.** Claude Duet (Anthropic's always-on assistant app, research preview) is a **named seat, not a Claude Code
+  agent**: lane row in `wiki/ai-team/cross-functional.md`, section in `wiki/ai-team/desk-seats.md`, a bullet in
+  `org-chart.md`, an Opus 5.5 row in the index "Routing by lane" table. Split with the chief-of-staff: on the go → Duet;
+  at the desk or anything that needs the brain → chief-of-staff; never both on the same inbox pass. Duet asks before any
+  send, payment, signature or delete; first names only. Joining the waitlist is Steven's step.
+- **All agents.** The five agents of 2026-10-31 got lane rows and aliases; manifest + generated agent files rewritten
+  (185/185 reachable); `docs/inventory/org-chart.json` regenerated (41 seats, 70 lanes after the fixes). Deck `aiTeamRoster` v29 (204 rows:
+  +inbox-triage, calendar-prep, competitor-watch, hook-writer, ux-designer, claude-duet; chief-of-staff refreshed) and
+  `aiTeamOrg` v12 → v13 (after the validator fixes: 41 seats, 70 lanes) written pinned; the Mac's next toolkit-deck-sync rewrites the roster from `~/.claude/agents`. 6D Brain v95.
+- **Validator fixes (same day).** No bare "hook"/"front door" keywords (they pulled engineering hook requests and listing
+  staging into the new lanes); inbox-triage sits in the existing Voicemail & Inbox Triage lane (no duplicate inbox lane, so
+  one inbox gets one set of drafts); the five agents are pinned to their own lanes; hook-writer keeps Alexandra's gate.
+  Guarded by `brain/tests/test_route_baseline.py` + `test_five_agents_lane_and_gates`. Open for Steven: whether
+  "always-on agent" / "approve on phone" should route to Duet (today they do; `always-on/README.md` still answers schedules).

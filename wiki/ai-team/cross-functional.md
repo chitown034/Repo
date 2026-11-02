@@ -77,6 +77,11 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Regina | new law, new laws, regulation, effective date, legislation, reference library, statute, ordinance, what changed | `wiki/ai-team/desk-seats.md` |
 | Isabel | loan processing, processor, conditions, underwriting conditions, document checklist, voe, vod, application date, loan estimate, le deadline, appraisal order, intent to proceed | `wiki/mortgage-programs/` |
 | Reyes | closing disclosure, cd timing, trid, consummation, rate lock, lock expiration, funding, rescission, signing appointment, clear to close | `wiki/mortgage-programs/` |
+| Claude Duet | claude duet, duet, duet app, duet approval, duet brief, always-on agent, background assistant, approve on phone | `wiki/ai-team/desk-seats.md` |
+| Chief of Staff | prep my monday, prep my week, prep my day, chief of staff, run the specialists | `wiki/ai-team/five-agents.md` |
+| Calendar Prep | meeting prep, prep my meeting, who am i meeting, attendee brief, before my call, open promises | `wiki/ai-team/five-agents.md` |
+| Competitor Watch | competitor, competitors, rival, rivals, competition, competitor pricing, what changed in the market | `wiki/ai-team/five-agents.md` |
+| Hook Writer | write a hook, reel hook, video hook, post hook, 3 hooks, hook ideas, caption, title ideas, video title, curiosity gap, banned words | `wiki/ai-team/five-agents.md` |
 
 ## Pods — standing cross-functional teams that work in parallel
 

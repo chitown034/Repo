@@ -1,10 +1,11 @@
 """Tests for brain/layers.py — the second brain's layer register (2026-10-23)."""
 from __future__ import annotations
 
+import json
 import sys
 import tempfile
 import unittest
-from datetime import date, timedelta
+from datetime import date, datetime, timezone, timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -67,6 +68,54 @@ class LayerTests(unittest.TestCase):
             (root / "memory" / "fieldy-meetings.md").write_text("# Fieldy\n\nLast checked: 2026-10-23\n\n## 2026-10-20\n- x\n", encoding="utf-8")
             r = {x["key"]: x for x in layers.collect(root, today=date(2026, 10, 23))}["fieldy"]
             self.assertEqual((r["last"], r["verdict"]), ("2026-10-23", "fresh"))
+
+
+def _tree(d: Path, status=None, sync=None, moves=None) -> Path:
+    if status:
+        (d / "projects").mkdir(parents=True, exist_ok=True)
+        (d / "projects" / "command-deck.md").write_text(f"# Deck\n\n## Status ({status}) — note\n", encoding="utf-8")
+    if sync is not None:
+        (d / "brain").mkdir(parents=True, exist_ok=True)
+        (d / "brain" / "deck-sync.json").write_text(sync if isinstance(sync, str) else json.dumps(sync), encoding="utf-8")
+    if moves:
+        (d / "docs" / "reports").mkdir(parents=True, exist_ok=True)
+        (d / "docs" / "reports" / "BIG-MOVES.md").write_text(f"# Big moves — Vanessa's top 10 for {moves}\n", encoding="utf-8")
+    return d
+
+
+class DeckStampTests(unittest.TestCase):
+    """2026-11-02: the deck row reads only proof of a confirmed deck write."""
+
+    def test_report_alone_is_not_proof(self):
+        with tempfile.TemporaryDirectory() as t:
+            r = _tree(Path(t), status="2026-10-22", moves="2026-11-01")
+            self.assertEqual(layers._deck_last(r), date(2026, 10, 22))
+            row = [x for x in layers.collect(r, today=date(2026, 11, 2)) if x["key"] == "deck"][0]
+            self.assertEqual(row["verdict"], "stale")
+
+    def test_confirmed_stamp_counts(self):
+        with tempfile.TemporaryDirectory() as t:
+            r = _tree(Path(t), status="2026-10-22")
+            layers.deck_stamp(r, "agentInbox", "115", "inbox sweep", now=datetime(2026, 11, 1, 20, 4, tzinfo=timezone.utc))
+            self.assertEqual(layers._deck_last(r), date(2026, 11, 1))
+            row = [x for x in layers.collect(r, today=date(2026, 11, 2)) if x["key"] == "deck"][0]
+            self.assertEqual(row["verdict"], "fresh")
+
+    def test_bad_stamp_files_never_crash(self):
+        for body in ("[]", '"x"', "not json", json.dumps({"lastWrite": "2026-13-40"}), json.dumps({"lastWrite": 7})):
+            with tempfile.TemporaryDirectory() as t:
+                self.assertIsNone(layers._deck_last(_tree(Path(t), sync=body)), body)
+
+    def test_stamp_refuses_without_a_version(self):
+        with tempfile.TemporaryDirectory() as t:
+            with self.assertRaises(ValueError):
+                layers.deck_stamp(Path(t), "agentInbox", "", "x")
+            with self.assertRaises(ValueError):
+                layers.deck_stamp(Path(t), "../etc", "3", "x")
+
+    def test_nothing_is_none(self):
+        with tempfile.TemporaryDirectory() as t:
+            self.assertIsNone(layers._deck_last(Path(t)))
 
 
 if __name__ == "__main__":

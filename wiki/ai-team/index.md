@@ -36,6 +36,8 @@ hold the actual detail once you know which seat or layer you need.
 | Where AI genuinely helps vs hype; tooling evaluation | **Nadia** — CAIO, outward disruptor | Opus 5.5 |
 | Pipeline, conversion, the Six Levers | **Victor** — CRO | Opus 5.5 |
 | Data/cyber risk, credential hygiene, access | **Elena** — CISO | Opus 5.5 |
+| "Prep my Monday", one brief from the specialists run in parallel | **Chief of Staff** — Vanessa's front door (`claude --agent chief-of-staff`) | Opus 5.5 |
+| On-the-go inbox/calendar triage and approvals on the phone | **Claude Duet** — Anthropic's always-on assistant app (research preview; cannot read the brain) | Opus 5.5 |
 | Feasibility of anything Nadia proposes; the engineering team | **Elon** — CTO Innovator, inward architect | Opus 5.5 |
 | Lending / real-estate specialist work | **Vanessa (broker skill)**, Harrison, Gwen, Marguerite | Opus 5.5 / Sonnet 5 |
 | Broker coaching, weekly pipeline review | **Maxwell** — Broker Mentor & Coach | Opus 5.5 |
