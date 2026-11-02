@@ -336,110 +336,111 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
   },
   "scenarios": [
    {
-    "t": "Move-up family in a competitive market",
-    "who": "Jason, 39, sales manager, Carlsbad",
-    "situation": "Jason found a 4-bed in San Marcos but sellers will not accept a sale contingency. His current home has $700k equity and no time to sell first.",
-    "structure": "Steven uses an equity bridge on the departing home for the down payment, and a conforming high-balance first on the new home qualified with both payments.",
-    "numbers": "Illustrative: $1.15M departing value, $420k owed, bridge $300k; new purchase $1.2M with 25% down.",
-    "why": "Non-contingent offer wins; HELOC approval timing could fail once the home is listed.",
-    "alternatives": "A buy-before-you-sell company was considered; fees higher and loss of control over listing price.",
-    "watch": "DTI with both payments; listing must occur promptly; market softening risk."
+    "t": "Move-up family beating contingent offers",
+    "who": "Jason, 39, regional sales manager, Carlsbad",
+    "situation": "Jason and his wife found a 4-bedroom in San Marcos near their kids' new school. The listing agent told them sellers will not accept a home-sale contingency in this price band. Their current Carlsbad home has about $700k of equity, but listing it, staging it and moving out first would take at least 60 days. They are W-2 earners with strong credit and modest cash savings.",
+    "structure": "Steven arranges an equity bridge on the Carlsbad home for the down payment and closing costs, then a high-balance conforming first on the San Marcos home. Because the departing home is not yet under contract, he qualifies them with both the existing first-lien payment and the bridge payment (or confirms the bridge has deferred interest the new lender may exclude, per that lender's rules).",
+    "numbers": "Illustrative: Carlsbad value $1.15M, existing first $420k; bridge at 75% CLTV caps at $442.5k, they draw $300k. New purchase $1.2M with $300k down (25%) = $900k first lien. Combined DTI with both homes ~46%; it drops to ~31% once Carlsbad sells.",
+    "why": "A non-contingent offer is what wins in this market, and the bridge turns locked-up equity into usable cash in weeks. It also lets them move once instead of renting in between, which saves moving and storage costs and school disruption. The bridge cost is known up front, so they can compare it to the risk of losing the house.",
+    "alternatives": "Steven considered a HELOC on the Carlsbad home, but many HELOC lenders will not open a line once a home is listed and approval timing was uncertain. He also considered a buy-before-you-sell company, but its fee (often a percentage of price) and listing obligations cost more in dollars than the bridge in this case.",
+    "watch": "DTI must work with both payments until the sale; if the Carlsbad home takes longer than 6 months, extension fees apply. Steven sets a price-reduction schedule with the listing agent before closing."
    },
    {
-    "t": "Retiree downsizing",
+    "t": "Retiree downsizing to single-story",
     "who": "Linda, 67, retired teacher, Escondido",
-    "situation": "Linda owns her home free and clear and wants a single-story condo before selling. Income is pension plus Social Security.",
-    "structure": "Steven arranges a short bridge on the free-and-clear home and purchases the condo with a small first to keep liquidity.",
-    "numbers": "Illustrative: $900k home, $250k bridge, $480k condo with $250k down.",
-    "why": "Bridge avoids two moves; a reverse mortgage for purchase was considered too.",
-    "alternatives": "HECM for Purchase was weighed; she preferred to sell and buy outright.",
-    "watch": "Condo warrantability; she must qualify for both payments temporarily."
+    "situation": "Linda owns her two-story home free and clear and wants a single-story condo before her knees make stairs impossible. Her income is a CalSTRS pension plus Social Security, and she wants to move only once. She is worried about owning two homes even briefly.",
+    "structure": "Steven arranges a short bridge on the Escondido home for the condo down payment and pairs it with a small first lien on the condo so she keeps a cash cushion. He confirms the condo project is warrantable before she writes the offer.",
+    "numbers": "Illustrative: Escondido value $900k; bridge $250k (27.8% CLTV). Condo $480k with $250k down = $230k first. Pension and Social Security $7,200/month; both payments during the bridge ~$3,400 = 47% DTI; after sale and payoff ~$1,650 = 23%.",
+    "why": "The bridge lets Linda move on her timeline and prepare the old house for sale without living in it. Her free-and-clear house supports a low-CLTV bridge, which keeps the cost down. Once the house sells she can recast or pay down the condo loan.",
+    "alternatives": "A HECM for Purchase was discussed; it would remove the condo payment but uses more of her equity in fees and she wanted to leave the house sale proceeds to her kids. Selling first and renting was considered but meant two moves.",
+    "watch": "Condo warrantability, HOA budget and special assessments; she must qualify for both payments temporarily and should keep 6 months of reserves."
    },
    {
     "t": "Military PCS buy-first",
-    "who": "Rachel, 33, Army officer, Fort Irwin to San Diego",
-    "situation": "Rachel is moving to San Diego and wants to use VA for her new home before her Barstow-area home sells.",
-    "structure": "Steven checks VA entitlement for two loans and whether rental income on departing home can offset; if not, uses a business-purpose bridge only if appropriate.",
-    "numbers": "Illustrative: remaining entitlement supports $0-down only up to entitlement limits; down payment may be needed.",
-    "why": "VA keeps her rate structure; bridge may be unnecessary if she rents the old home.",
-    "alternatives": "Converting departing home to rental was considered; requires lease and deposit for offset.",
-    "watch": "Entitlement calculation; rental offset rules (verify)."
+    "who": "Rachel, 33, Army captain, Fort Irwin to San Diego",
+    "situation": "Rachel received PCS orders to San Diego and found a home near her new duty station. Her Barstow-area home is still occupied by her family until the school year ends. She has full VA entitlement used on the Barstow home and wants to use VA again.",
+    "structure": "Steven first checks remaining entitlement and whether she can keep the Barstow home as a rental with a lease and deposit to offset its payment. If the numbers work, no bridge is needed; if she needs cash for a down payment beyond remaining entitlement, he arranges a bridge on the Barstow home that the VA lender accepts as a source of funds.",
+    "numbers": "Illustrative: Barstow value $380k, VA first $300k; remaining entitlement in San Diego supports a portion of the purchase, with a $20k down payment needed on a $700k purchase (verify calculation). Barstow lease $2,100 offsets ~75% per lender rules.",
+    "why": "Keeping VA on the new home preserves no-PMI financing and the funding-fee structure she is used to. A bridge is only used if renting the old home does not cover the gap. This avoids forcing a sale at a bad time.",
+    "alternatives": "Selling Barstow first would mean temporary housing in San Diego at high rents. Conventional financing with 5% down was also run but cost more monthly than VA with a small down payment.",
+    "watch": "Entitlement math must be confirmed by the lender; rental offset needs a signed lease and deposit; SCRA protections do not change underwriting."
    },
    {
-    "t": "Self-employed buy before sell",
+    "t": "Self-employed buyer pairing two non-QM loans",
     "who": "Oscar, 48, restaurant owner, Chula Vista",
-    "situation": "Oscar's tax returns show low net income; he needs a bridge and a bank-statement first.",
-    "structure": "Steven pairs a non-QM bridge with a bank-statement first-lien lender who accepts bridge funds as down payment.",
-    "numbers": "Illustrative: bridge $220k; new purchase $950k; bank-statement income $22k/month.",
-    "why": "Non-QM lenders understand bridge proceeds; agency may not fit his income documentation.",
-    "alternatives": "Hard money on departing home was cheaper to close but higher carry.",
-    "watch": "Two non-QM fee loads; exit sale timing."
+    "situation": "Oscar's tax returns show low net income because of depreciation and write-offs. He needs to buy a larger home before selling his current one. His bank deposits support strong income, but agency lenders will not count it.",
+    "structure": "Steven pairs a non-QM business-purpose or consumer bridge (depending on use) on the current home with a 12-month bank-statement first lien on the new home. He confirms in writing that the first-lien lender accepts bridge proceeds as down payment and how it treats the bridge payment.",
+    "numbers": "Illustrative: current home $750k, first $310k; bridge $220k (70.7% CLTV). New purchase $950k with $220k down = $730k bank-statement first. Bank-statement income $22k/month; both payments ~$9,900 = 45% DTI.",
+    "why": "Non-QM lenders understand bridge proceeds and alternative income. The structure gets him into the new home without a contingency. Once the old home sells, the bridge is paid off and the DTI improves sharply.",
+    "alternatives": "A hard money loan on the departing home closed faster but carried higher points and interest. A conventional first was not possible because of his tax-return income.",
+    "watch": "Two non-QM fee loads add cost; the exit sale must happen within the bridge term; bank-statement income must remain consistent."
    },
    {
-    "t": "Nevada relocation",
-    "who": "Grace, 55, nurse, Temecula to Henderson",
-    "situation": "Grace is moving to Henderson for a job and wants to buy there before her Temecula home sells.",
-    "structure": "Steven uses a bridge on the CA home and a NV purchase first; confirms licensing in both states.",
-    "numbers": "Illustrative: $680k CA home, $200k owed, $250k bridge; NV purchase $560k.",
-    "why": "Grace can start her new job without commuting from Temecula and without a sale contingency that NV sellers would reject.",
-    "alternatives": "Renting in NV first was considered but she wanted to lock the home.",
-    "watch": "Two-state title and closing coordination; job offer letter for income."
+    "t": "Nevada job relocation",
+    "who": "Grace, 55, ICU nurse, Temecula to Henderson",
+    "situation": "Grace accepted a hospital position in Henderson starting in six weeks. She owns her Temecula home and wants to buy in Henderson rather than rent. Her Temecula home needs minor repairs before listing.",
+    "structure": "Steven uses a bridge on the Temecula home and a Nevada purchase first lien, confirming licensing in both CA and NV and using the job offer letter for income. He coordinates two escrows in two states.",
+    "numbers": "Illustrative: Temecula value $680k, first $200k; bridge $250k (66.2% CLTV). Henderson purchase $560k with $250k down = $310k first. Income $13,500/month; both payments ~$5,900 = 44% DTI.",
+    "why": "The bridge lets Grace start her job on time without a long commute or short-term rental. It also gives her time to repair and stage the Temecula home properly to maximize sale price. The cost is predictable compared with renting for months.",
+    "alternatives": "Renting in Henderson first was considered, but she would lose time in a rising market and face two moves. A HELOC was considered but approval would not be timely.",
+    "watch": "Job offer letter must meet lender requirements for future income; two-state title and closing coordination; Temecula repairs must not delay listing."
    },
    {
-    "t": "Investor bridge to stabilize",
+    "t": "Investor bridge ahead of an exchange",
     "who": "Henry, 60, retired engineer, La Mesa",
-    "situation": "Henry owns several rentals and wants to buy a duplex before selling a 4-plex he plans to 1031.",
-    "structure": "Steven uses business-purpose bridge on the 4-plex and coordinates with the QI for the exchange timing.",
-    "numbers": "Illustrative: 4-plex value $1.6M, bridge $400k.",
-    "why": "Business-purpose bridge is fast; but exchange rules need tax advisor input.",
-    "alternatives": "Reverse exchange was considered; more cost but cleaner tax structure.",
-    "watch": "1031 compliance; constructive receipt risk."
+    "situation": "Henry owns several rentals and wants to buy a duplex before selling a 4-plex that he plans to use in a 1031 exchange. The duplex seller wants a quick close. He has strong equity in the 4-plex.",
+    "structure": "Steven uses a business-purpose bridge on the 4-plex for the duplex down payment and coordinates with Henry's QI and tax advisor, noting a reverse exchange may be required because the replacement is acquired before the relinquished sale.",
+    "numbers": "Illustrative: 4-plex value $1.6M, existing loan $500k; bridge $400k (56.3% CLTV). Duplex $1.1M with $400k down = $700k DSCR loan.",
+    "why": "The bridge provides speed and avoids losing the duplex. Business-purpose bridge underwriting focuses on equity and exit, not personal DTI. It keeps options open while the tax advisor confirms the exchange structure.",
+    "alternatives": "A reverse exchange using an Exchange Accommodation Titleholder was considered and may be required for tax deferral. Selling the 4-plex first was considered but the duplex would be lost.",
+    "watch": "1031 rules: buying replacement first can break the exchange unless structured as a reverse exchange; tax advisor must confirm before closing."
    }
   ],
   "qa": [
    {
     "q": "Is a bridge loan subject to TRID?",
-    "a": "Consumer-purpose bridges secured by a dwelling generally are, though temporary bridge loans of 12 months or less have some ATR exemptions (verify). Business-purpose ones are not."
+    "a": "Consumer-purpose bridge loans secured by a dwelling are generally subject to TILA and RESPA disclosure rules. Reg Z exempts temporary or bridge loans with terms of 12 months or less from the ability-to-repay rule, but disclosures and other consumer rules still apply (verify). Business-purpose bridges are outside TILA/RESPA but remain subject to state law."
    },
    {
-    "q": "Does the new lender count the bridge payment?",
-    "a": "Usually yes unless deferred interest or program excludes it; confirm with underwriter."
+    "q": "Does the new first-lien lender count the bridge payment?",
+    "a": "Usually yes, unless interest is deferred to payoff and the lender's guide allows exclusion. Some agency guides allow excluding the departing residence payment when it is under contract with contingencies cleared (verify). Steven confirms the treatment in writing before the offer is written."
    },
    {
-    "q": "What if the departing home is under contract?",
-    "a": "Agency guides may allow excluding the departing payment with an executed contract and contingencies cleared (verify)."
+    "q": "What if the departing home is already under contract?",
+    "a": "Agency guides may allow excluding the departing payment with an executed contract and financing contingency cleared (verify). That can make a bridge unnecessary if the buyer only needs the timing gap covered. Steven checks with the underwriter before relying on it."
    },
    {
-    "q": "Can the bridge pay off the departing first?",
-    "a": "Some do, consolidating into a single bridge lien; others sit in second position."
+    "q": "Can the bridge pay off the existing first lien on the departing home?",
+    "a": "Some bridge programs refinance the existing first and add cash, leaving one lien. Others sit in second position behind the first. A single-lien bridge simplifies payments but may change the cost of the existing loan."
    },
    {
-    "q": "Is there rescission?",
-    "a": "On a principal-residence consumer bridge, rescission generally applies; purchase-money loans are exempt but the bridge is not purchase-money for the departing home."
+    "q": "Is there a right of rescission?",
+    "a": "A consumer bridge secured by the principal dwelling generally carries a 3-day rescission right because it is not purchase-money for that home. This adds time to the schedule, so Steven closes the bridge first. Business-purpose bridges do not have rescission."
    },
    {
-    "q": "What if the home does not sell?",
-    "a": "Extension, refinance to a permanent loan, rent the home, or price reduction."
+    "q": "What if the home does not sell before maturity?",
+    "a": "Options include an extension for a fee, a price reduction, renting the home and refinancing into a DSCR or investment loan, or paying off from other assets. Steven sets a price-reduction plan with the listing agent before closing. Extension terms should be negotiated up front."
    },
    {
-    "q": "Can I use a HELOC instead?",
-    "a": "Yes, if obtained before listing; many HELOC lenders will not open a line on a listed property."
+    "q": "Is a HELOC cheaper than a bridge?",
+    "a": "Often, if the HELOC is opened before listing and the lender permits use for a down payment. Many HELOC lenders will not open a line on a listed property. The HELOC payment still counts in DTI."
    },
    {
     "q": "How fast can a bridge close?",
-    "a": "Often 2-4 weeks depending on valuation and rescission."
+    "a": "Commonly 2-4 weeks depending on valuation method, rescission and lender capacity. Business-purpose bridges can close faster. Steven builds the bridge timeline before the purchase contract deadlines."
    }
   ],
   "aeQuestions": [
-   "Is the bridge consumer or business-purpose, and how is rescission handled?",
-   "Max CLTV, and does it use AVM or appraisal?",
-   "Will you lend on a listed property?",
-   "Is interest paid monthly, deferred, or prepaid from proceeds?",
-   "Extension terms and fees?",
-   "Does the payment count in the new first-lien DTI on your program?",
-   "Can you pay off the existing first lien in the bridge?",
-   "Minimum loan amount and states?",
-   "Recording timeline vs the purchase escrow?"
+   "Is your bridge program consumer-purpose, business-purpose or both, and how do you handle rescission on the departing primary?",
+   "What is your max CLTV on the departing home, and do you use an AVM, BPO or full appraisal?",
+   "Will you lend on a home that is already listed or in escrow?",
+   "Is interest paid monthly, deferred to payoff, or prepaid from proceeds, and how does that affect the buyer's DTI on the new loan?",
+   "What are your extension terms and fees if the home has not sold at maturity?",
+   "Can the bridge refinance and pay off the existing first lien, or must it sit in second position?",
+   "What minimum loan amount and which states (CA, NV, AZ, FL, IL) do you serve?",
+   "How quickly can you record and fund relative to the purchase escrow?",
+   "Do you require a listing agreement or list price before funding?",
+   "Can the bridge cross-collateralize the new home if equity in the departing home is short?"
   ],
   "redFlags": [
    "Unrealistic sale price expectations",
@@ -459,18 +460,18 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
    "Relocation companies and HR departments"
   ],
   "checklist": [
-   "Departing home mortgage statement",
-   "Valuation/AVM",
-   "Listing agreement or plan",
-   "New purchase contract",
-   "Income docs",
-   "Asset statements",
-   "Bridge disclosures (TRID or HELOC/BP)",
+   "Departing home mortgage statement and payoff estimate",
+   "Valuation of departing home (AVM/BPO/appraisal)",
+   "Listing agreement or pre-listing plan with target list date",
+   "Price-reduction schedule agreed with listing agent",
+   "New purchase contract with deadlines",
+   "First-lien lender written confirmation of bridge payment treatment and source-of-funds acceptance",
+   "Income and asset documents for both-payment DTI",
+   "Bridge disclosures (TRID, HELOC or business-purpose certification)",
+   "Rescission notice and expiration date if consumer primary",
    "Insurance on both homes",
-   "Title on departing home",
-   "Rescission notice if applicable",
-   "Payoff/recast plan",
-   "Payoff plan with listing timeline"
+   "Title on departing home including liens and PACE/solar UCC",
+   "Payoff and recast plan after sale"
   ],
   "updated": "2026-11"
  },
@@ -554,118 +555,111 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
   },
   "scenarios": [
    {
-    "t": "Credit event business owner",
-    "who": "Daniel, 44, contractor, Santee",
-    "situation": "Daniel had a business failure and a short sale 18 months ago; he has a paid-off rental and needs capital for equipment.",
-    "structure": "Steven arranges a business-purpose first lien on the rental with a 12-month term and a plan to refinance to DSCR after credit seasoning.",
-    "numbers": "Illustrative: rental worth $700k, $350k loan = 50% LTV.",
-    "why": "Equity-based; DSCR may not qualify until seasoning.",
-    "alternatives": "Equipment financing was considered; he needs more flexible use.",
-    "watch": "Ensure true business-purpose use and documentation."
+    "t": "Business owner after a credit event",
+    "who": "Daniel, 44, general contractor, Santee",
+    "situation": "Daniel's previous company failed two years ago and he completed a short sale 18 months ago. He owns a paid-off rental duplex and needs about $350k to buy equipment and fund payroll for a large new contract. Banks declined him because of the recent credit events.",
+    "structure": "Steven arranges a business-purpose first lien on the duplex with a 12-month interest-only term and a planned refinance into a DSCR loan once short-sale seasoning is met. Loan proceeds go to the business with a signed business-purpose statement.",
+    "numbers": "Illustrative: duplex value $700k; loan $350k = 50% LTV. Points 2.5 = $8,750. If the DSCR refi happens in month 10, total private loan cost = points + 10 months interest + fees.",
+    "why": "Hard money lends on equity and exit, so the short sale matters far less than it would to a bank. The 50% LTV gives the lender a strong cushion, which helps pricing. The DSCR exit is realistic because the duplex rents already cover a market payment.",
+    "alternatives": "Equipment financing was considered but would only fund the equipment, not payroll. An SBA loan was considered but would take months and still scrutinize the credit history.",
+    "watch": "Proceeds must truly be for business purposes; if the duplex is ever his residence, consumer rules apply. DSCR exit depends on seasoning and rents."
    },
    {
-    "t": "Estate settlement",
+    "t": "Estate needs repairs and a sibling buyout",
     "who": "Maria, 58, executor, Escondido",
-    "situation": "Maria's late father's house needs to be sold; siblings need a buyout before sale.",
-    "structure": "Steven arranges a business-purpose loan to the estate or LLC (verify) for repairs and buyout, with sale as exit.",
-    "numbers": "Illustrative: $850k home, $300k loan.",
-    "why": "Banks may not lend to estates.",
-    "alternatives": "Selling as-is was considered; lower price.",
-    "watch": "Probate court approval and authority to borrow."
+    "situation": "Maria is the executor of her late father's estate, and the house needs a roof and paint before sale. One sibling wants to be bought out now. Banks will not lend to an estate in probate.",
+    "structure": "Steven arranges a business-purpose loan to the estate or a successor trust (structure and court authority confirmed by the probate attorney), funding repairs and the buyout with sale as exit.",
+    "numbers": "Illustrative: house value $850k as-is, $930k after repairs; loan $300k = 35% LTV. Repairs $40k; buyout $220k; 9-month term.",
+    "why": "Private lenders can lend to estates and trusts when authority is documented. Low leverage keeps cost manageable. Repairs increase sale price by more than the cost of the loan in this example.",
+    "alternatives": "Selling as-is was considered but the sibling buyout timeline would not wait. A personal loan from Maria was considered but she lacked liquidity.",
+    "watch": "Probate court approval and authority to encumber; title insurer requirements; the loan must be repaid at sale."
    },
    {
-    "t": "Construction completion",
+    "t": "Completing a stalled spec home",
     "who": "Pete, 50, builder, Fallbrook",
-    "situation": "Pete's construction lender pulled out; the house is 85% complete.",
-    "structure": "Steven arranges a hard money completion loan with a reserve to finish.",
-    "numbers": "Illustrative: as-is $1.1M, completion cost $120k, loan $650k.",
-    "why": "Speed; banks won't take over partial projects.",
-    "alternatives": "Mezzanine financing considered; more complex.",
-    "watch": "Mechanics liens; title endorsement."
+    "situation": "Pete's construction lender pulled its line when the house was 85% complete. He needs funds to finish and pay subcontractors. Mechanics liens are threatened.",
+    "structure": "Steven arranges a hard money completion loan that pays off the existing construction loan and funds a holdback for remaining work, with lien releases collected from subs.",
+    "numbers": "Illustrative: as-is value $1.1M; completion cost $120k; payoff $480k; new loan $650k = 59% LTV.",
+    "why": "Banks do not usually take over partially completed projects. Hard money focuses on equity and completion feasibility. Finishing the home protects its value and Pete's reputation.",
+    "alternatives": "Mezzanine or equity partner financing was considered but would cost a share of profits. Selling as-is would lose much of the profit.",
+    "watch": "Mechanics liens must be released or bonded; title must insure over the construction loan; completion budget must be verified."
    },
    {
-    "t": "Fast close commercial",
-    "who": "Ana, 46, business owner, National City",
-    "situation": "Ana's landlord offered to sell her shop building with a 2-week close.",
-    "structure": "Steven arranges a 12-month hard money loan and SBA 504 takeout plan.",
-    "numbers": "Illustrative: $1.2M price, 60% LTV = $720k.",
-    "why": "Speed; SBA takes 60-90 days.",
-    "alternatives": "Seller carry considered; seller declined.",
-    "watch": "Environmental; SBA eligibility."
+    "t": "Two-week close on a shop building",
+    "who": "Ana, 46, auto upholstery shop owner, National City",
+    "situation": "Ana's landlord offered to sell her the building she operates in, but wants to close in two weeks. Her SBA 504 application will take 60-90 days. She has strong business cash flow.",
+    "structure": "Steven arranges a 12-month hard money loan to close the purchase and plans an SBA 504 takeout.",
+    "numbers": "Illustrative: price $1.2M; 60% LTV = $720k; Ana provides $480k from savings and a business partner. SBA takeout later at up to 90% financing could return cash.",
+    "why": "Speed wins the deal. The SBA takeout lowers long-term cost. Owning the building stabilizes her occupancy costs.",
+    "alternatives": "Seller carry was proposed but the seller wanted cash. A bank commercial loan would also take more than two weeks.",
+    "watch": "Environmental review for automotive use; SBA eligibility; prepayment terms on the hard money loan."
    },
    {
-    "t": "Investor with tax-return gaps",
-    "who": "Kevin, 37, crypto trader, San Diego",
-    "situation": "Kevin has large liquid assets but inconsistent returns and needs to buy a 4-plex quickly.",
-    "structure": "Steven uses hard money for purchase and refinances to DSCR after leasing.",
-    "numbers": "Illustrative: $1.4M price, 65% LTV = $910k.",
-    "why": "Hard money funds on asset value in days, letting Kevin win the fourplex; the DSCR refinance after leasing replaces it at lower cost.",
-    "alternatives": "Asset-depletion non-QM considered; slower for investment.",
-    "watch": "Prepayment terms of DSCR exit."
+    "t": "Liquid investor with irregular tax returns",
+    "who": "Kevin, 37, independent trader, San Diego",
+    "situation": "Kevin has substantial liquid assets but inconsistent tax returns. He wants to buy a fourplex in El Cajon quickly before another buyer. DSCR lenders need time for rent verification.",
+    "structure": "Steven uses hard money for the purchase and then refinances into DSCR after leasing vacant units.",
+    "numbers": "Illustrative: price $1.4M; 65% LTV = $910k. Refinance at 75% of $1.5M stabilized value = $1.125M.",
+    "why": "Hard money allows fast closing and value-add. DSCR refinance lowers long-term cost. Kevin's liquidity supports the plan.",
+    "alternatives": "Asset-depletion non-QM was considered but is primarily for owner-occupied homes. Paying all cash was considered but would tie up most of his liquidity.",
+    "watch": "Prepayment terms on both loans; lease-up timeline; DSCR at refinance."
    },
    {
-    "t": "Owner-occupied hard money (consumer)",
+    "t": "Owner-occupied request handled as consumer credit",
     "who": "Sandra, 61, retired, Oceanside",
-    "situation": "Sandra wants to cash out for a family emergency; credit is poor.",
-    "structure": "Steven explains that consumer owner-occupied private loans trigger TILA/RESPA, ATR, HOEPA testing and CA law; only places with a compliant consumer lender.",
-    "numbers": "Illustrative: $800k home, $150k need.",
-    "why": "Only if a fully compliant consumer lender is available.",
-    "alternatives": "Reverse mortgage was considered and is often better for her age.",
-    "watch": "High-cost thresholds; predatory lending laws."
+    "situation": "Sandra wants to borrow against her home for a family emergency. Her credit is poor and income is limited. She asked for a 'hard money' loan.",
+    "structure": "Steven explains that an owner-occupied loan is consumer credit subject to TILA/RESPA, ATR, HOEPA and California law, and he only considers a fully compliant consumer lender. He also presents a HECM option and refers to HUD counseling.",
+    "numbers": "Illustrative: home value $800k; need $150k. HECM principal limit may exceed $150k at her age (verify).",
+    "why": "Protecting Sandra from an unaffordable loan is the priority. A HECM may solve the need without monthly payments. A compliant consumer lender is the only acceptable alternative.",
+    "alternatives": "Business-purpose hard money is not appropriate for owner-occupied consumer needs. A personal loan was too small.",
+    "watch": "High-cost thresholds, ATR, elder financial protection concerns."
    }
   ],
   "qa": [
    {
     "q": "Is hard money legal for owner-occupied homes?",
-    "a": "Yes, but it is consumer credit: TILA/RESPA, ATR/QM, HOEPA and CA predatory-lending law apply."
+    "a": "Yes, but an owner-occupied loan for personal purposes is consumer credit. TILA, RESPA, ATR/QM, HOEPA and California predatory lending laws apply. Many private lenders avoid consumer loans for this reason."
    },
    {
-    "q": "What is a fractionalized loan?",
-    "a": "A loan funded by multiple private investors; CA has specific DRE rules (verify)."
+    "q": "What is a fractionalized or multi-lender loan?",
+    "a": "It is a loan funded by multiple private investors. California has specific DRE rules for multi-lender loans, including disclosures and suitability (verify). Steven confirms the lender's compliance before arranging."
    },
    {
     "q": "Can the borrower prepay?",
-    "a": "Often subject to minimum interest periods; read the note."
+    "a": "Many notes have minimum interest periods or prepayment penalties. Steven reads the note and models payoff at different dates. For business-purpose loans, state limits may still apply."
    },
    {
     "q": "Can points be financed?",
-    "a": "Often yes within the LTV cap."
+    "a": "Often yes within the LTV cap. Financing points increases the loan amount and interest. Steven compares the total cost."
    },
    {
-    "q": "What about default interest?",
-    "a": "Typical; read the note and state limits."
+    "q": "What is default interest?",
+    "a": "A higher rate charged after default. It must comply with state law. Steven highlights it in the term sheet."
    },
    {
-    "q": "Is usury an issue in CA?",
-    "a": "DRE broker-arranged loans are generally exempt from CA usury; verify."
+    "q": "Is usury an issue in California?",
+    "a": "Loans arranged by a licensed real estate broker are generally exempt from California usury limits (verify). Other lenders may rely on different exemptions. Steven confirms the exemption."
    },
    {
-    "q": "Can a second lien be hard money?",
-    "a": "Yes; CLTV caps apply."
+    "q": "Can hard money be in second position?",
+    "a": "Yes. CLTV caps apply and pricing is higher. The first-lien lender's terms must permit a junior lien."
    },
    {
     "q": "What appraisal is required?",
-    "a": "Varies; some use BPOs."
-   },
-   {
-    "q": "How does a CA DRE broker-arranged private loan differ from a CFL lender loan?",
-    "a": "A DRE broker arranging a loan funded by private investors follows Real Estate Law (including Article 7 disclosures where applicable and multi-lender rules), while a CFL licensee lends its own funds under the Financing Law; both still must follow state disclosure and anti-fraud rules (verify thresholds)."
-   },
-   {
-    "q": "What is a typical minimum interest provision?",
-    "a": "Many private notes charge a minimum number of months of interest (often 3-6) even if paid off early; it should be modeled as part of total cost."
+    "a": "Some lenders use broker opinions of value, others full appraisals. Higher LTV loans usually require appraisals. Steven orders the valuation the lender accepts."
    }
   ],
   "aeQuestions": [
-   "Are you licensed in this state as a lender (CFL in CA)?",
-   "Do you fund from a pool or individual investors?",
-   "Minimum interest period and prepayment terms?",
-   "Default interest and late fees?",
-   "Extension terms?",
-   "Appraisal type accepted?",
-   "Max LTV by property type?",
-   "Broker compensation and disclosures?",
-   "Second-lien appetite?"
+   "Are you licensed as a CFL lender in California, and in which other states do you lend?",
+   "Do you fund from your own balance sheet, a pooled fund, or individual investors (multi-lender)?",
+   "What is your minimum interest period and prepayment structure?",
+   "What default rate and late fees apply?",
+   "What are your extension terms and fees?",
+   "Which valuation methods do you accept at different LTVs?",
+   "What is your max LTV by property type and lien position?",
+   "Do you require personal guaranties and what form?",
+   "Do you make consumer-purpose owner-occupied loans, and if so, what compliance processes do you use?",
+   "What broker compensation and disclosure requirements apply?"
   ],
   "redFlags": [
    "No exit strategy",
@@ -685,18 +679,18 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
    "Attorneys handling probate and partition matters"
   ],
   "checklist": [
-   "Purpose and exit letter",
-   "Business-purpose certification",
-   "Valuation",
-   "Title and liens",
-   "Insurance",
-   "Entity or trust docs",
-   "Guarantor ID",
-   "Lender package",
-   "Disclosures",
+   "Written purpose of funds and exit plan",
+   "Business-purpose certification (or consumer loan disclosures if owner-occupied)",
+   "Valuation (appraisal or BPO)",
+   "Title report and lien review",
+   "Insurance with lender as mortgagee",
+   "Entity, trust or estate authority documents",
+   "Guarantor ID and credit authorization",
+   "Lender package summary",
+   "CA DRE Article 7 or multi-lender disclosures where applicable (verify)",
    "Escrow instructions",
-   "Investor/lender suitability documents for private-funded loans (verify DRE requirements)",
-   "Payoff and minimum-interest disclosure acknowledgement"
+   "Payoff and minimum-interest acknowledgement",
+   "Exit refinance or sale plan with timeline"
   ],
   "updated": "2026-11"
  },
@@ -787,119 +781,113 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
   },
   "scenarios": [
    {
-    "t": "Spec home builder",
-    "who": "Mike, 47, builder, Ramona",
-    "situation": "Mike owns a lot and wants to build a 2,400 sq ft spec home.",
-    "structure": "Steven places with a ground-up lender crediting land equity and building an interest reserve.",
-    "numbers": "Illustrative: $1.3M cost, $1.9M ARV, 85% LTC.",
-    "why": "Land equity reduces cash; banks want more financial statements.",
-    "alternatives": "Bank construction loan considered; slower and personal guaranty heavier.",
-    "watch": "Wildfire zone insurance and building code compliance."
+    "t": "Spec home on an owned lot",
+    "who": "Mike, 47, licensed builder, Ramona",
+    "situation": "Mike has owned a half-acre lot in Ramona for three years and has completed four spec homes. He wants to build a 2,400 sq ft single-story home to sell. His last bank lender required full business financial statements and took 75 days to approve.",
+    "structure": "Steven places Mike with a ground-up lender that credits his land equity at appraised value and builds a 12-month interest reserve into the budget. Draws are milestone-based with third-party inspection.",
+    "numbers": "Illustrative: land appraised $350k; hard costs $780k; soft costs $70k; contingency $50k; total $1.25M. Loan at 85% LTC = $1.0625M; as-completed value $1.9M, 70% cap = $1.33M, so LTC governs.",
+    "why": "Land equity covers Mike's required equity, so he does not need to bring cash. The interest reserve keeps carrying costs off his personal cash flow during construction. A specialized ground-up lender approves faster than a bank.",
+    "alternatives": "A bank construction loan was considered but required more financials and a slower process. Partnering with an equity investor was considered but would give away profit.",
+    "watch": "Wildfire zone insurance and building code (Chapter 7A); interest reserve could run out if the build exceeds 12 months."
    },
    {
-    "t": "Lot split SB 9",
-    "who": "Jenna, 42, investor, San Diego",
-    "situation": "Jenna used SB 9 to split a lot and wants to build two units.",
-    "structure": "Steven confirms lender accepts SB 9 parcels and the owner-occupancy affidavit requirements of SB 9 (verify local rules).",
-    "numbers": "Illustrative: two units at $650k cost each.",
-    "why": "Unlocks value; few lenders understand SB 9.",
-    "alternatives": "Selling lot was considered.",
-    "watch": "SB 9 owner-occupancy affidavit; resale restrictions (verify)."
+    "t": "SB 9 lot split duplex build",
+    "who": "Jenna, 42, real estate investor, San Diego",
+    "situation": "Jenna used SB 9 to split her single-family lot and wants to build a new unit on the rear parcel. Many lenders do not understand SB 9 parcels. She plans to sell the new parcel.",
+    "structure": "Steven finds a lender that accepts recorded SB 9 parcels and confirms owner-occupancy affidavit and any resale restrictions with the city (verify).",
+    "numbers": "Illustrative: new unit cost $650k; lot value $300k; total $950k; 80% LTC = $760k; as-completed $1.25M.",
+    "why": "SB 9 unlocks value in her existing property. The ground-up lender funds construction on the new parcel. The sale exit is realistic in her neighborhood.",
+    "alternatives": "Selling the split lot unimproved was considered but would capture less value. A HELOC on her home was considered but would not fund full construction.",
+    "watch": "SB 9 owner-occupancy affidavit requirements and local implementation (verify); utility separation costs."
    },
    {
-    "t": "Fourplex build",
+    "t": "Fourplex build-to-hold",
     "who": "Victor, 51, developer, Riverside",
-    "situation": "Victor wants to build a fourplex to hold as a rental.",
-    "structure": "Steven pairs construction with a DSCR take-out quoted in advance.",
-    "numbers": "Illustrative: $1.8M cost, $2.4M value, rents $12k/month.",
-    "why": "Plan exit before start.",
-    "alternatives": "Agency 2-4 unit construction considered; owner-occupancy required.",
-    "watch": "Rent assumptions and lease-up time."
+    "situation": "Victor wants to build a fourplex to keep as a long-term rental. He has built small multifamily before. He wants certainty about the takeout loan.",
+    "structure": "Steven pairs the ground-up loan with a DSCR take-out quote obtained before construction starts.",
+    "numbers": "Illustrative: total cost $1.8M; loan $1.53M (85% LTC); as-completed $2.4M; rents $12k/month; DSCR take-out at 75% = $1.8M.",
+    "why": "Locking in the exit plan reduces risk. The DSCR lender evaluates the property on rents. The construction lender sees a credible exit.",
+    "alternatives": "Agency financing for 2-4 units requires owner occupancy for best terms. A bank construction-to-perm loan was considered but required more financials.",
+    "watch": "Rent assumptions and lease-up time; DSCR guidelines may change."
    },
    {
-    "t": "Veteran builder",
-    "who": "Carl, 55, veteran, Temecula",
-    "situation": "Carl is a GC and a veteran building a home for resale.",
-    "structure": "Business-purpose ground-up; VA not applicable for resale.",
-    "numbers": "Illustrative: $900k cost, $1.3M value.",
-    "why": "Speed and draws.",
-    "alternatives": "VA construction is for owner-occupants only.",
-    "watch": "Business-purpose certification."
+    "t": "Veteran builder building for resale",
+    "who": "Carl, 55, Marine veteran and GC, Temecula",
+    "situation": "Carl is a licensed GC and veteran building a home for resale. He asked whether VA could be used. He has three completed projects.",
+    "structure": "Steven explains VA is only for owner-occupants and uses a business-purpose ground-up loan.",
+    "numbers": "Illustrative: cost $900k; 85% LTC = $765k; as-completed $1.3M.",
+    "why": "The business-purpose loan matches the resale plan. Draws are suited to construction. Carl's experience supports favorable terms.",
+    "alternatives": "VA construction loans are only for owner-occupied homes. Self-funding was considered but would tie up his capital.",
+    "watch": "Business-purpose certification; never misuse VA."
    },
    {
-    "t": "Arizona build-to-rent",
+    "t": "Three-lot build-to-rent",
     "who": "Wendy, 49, investor, Phoenix",
-    "situation": "Wendy wants to build 3 homes on adjacent lots.",
-    "structure": "Steven uses a multi-property construction facility.",
-    "numbers": "Illustrative: 3 homes at $400k cost each = $1.2M; 85% LTC = $1.02M; as-completed $560k each ($1.68M), 70% = $1.176M cap.",
-    "why": "One facility with a shared budget and inspector is faster and cheaper to administer than three separate loans, and draw timing can be coordinated across lots.",
-    "alternatives": "Three separate ground-up loans were considered; more flexibility to sell individually but three sets of points, appraisals and title policies.",
-    "watch": "Cross-default and release prices per lot; one slow lot can hold up the others."
+    "situation": "Wendy owns three adjacent lots and wants to build three homes to rent. She wants one lender for efficiency.",
+    "structure": "Steven arranges a multi-property construction facility with lot-level budgets and release provisions.",
+    "numbers": "Illustrative: 3 homes at $400k cost each = $1.2M; 85% LTC = $1.02M; as-completed $560k each.",
+    "why": "One facility with shared inspector reduces administration. Draw timing can be coordinated. Wendy has one relationship.",
+    "alternatives": "Three separate loans were considered for flexibility but cost more.",
+    "watch": "Cross-default and release prices per lot."
    },
    {
-    "t": "Fire rebuild for investor",
+    "t": "Fire rebuild for a landlord",
     "who": "Ron, 60, landlord, Altadena",
-    "situation": "Ron's rental burned in the 2025 Eaton fire; insurance pays part.",
-    "structure": "Steven uses ground-up construction with insurance proceeds as equity.",
-    "numbers": "Illustrative: insurance $500k, cost $900k, loan $450k.",
-    "why": "Rebuild; agency loans not suited.",
-    "alternatives": "Selling the lot considered.",
+    "situation": "Ron's rental burned in the January 2025 Eaton fire. Insurance pays part of the rebuild. He wants to rebuild as a rental.",
+    "structure": "Steven uses a ground-up loan with insurance proceeds as equity and plans DSCR exit.",
+    "numbers": "Illustrative: insurance $500k; cost $900k; loan $450k.",
+    "why": "Rebuilding restores income. Insurance proceeds reduce borrowing. DSCR exit is planned.",
+    "alternatives": "Selling the lot was considered but would forfeit long-term rental income. Agency loans are not suited.",
     "watch": "Insurance claim timing; permit backlog (verify)."
    }
   ],
   "qa": [
    {
     "q": "Do lenders accept land equity?",
-    "a": "Often yes, at appraised or cost basis depending on seasoning (lender-specific)."
+    "a": "Many ground-up lenders credit land equity toward the borrower's contribution, using appraised value if owned long enough or cost basis if recently acquired (lender-specific). This can eliminate cash needed at closing. Steven confirms seasoning rules."
    },
    {
     "q": "How are change orders handled?",
-    "a": "Lender approval needed; may require additional equity."
+    "a": "Change orders require lender approval and may require additional equity if they increase cost. Unapproved changes can delay draws. Steven advises documenting all changes."
    },
    {
     "q": "Can soft costs be financed?",
-    "a": "Many lenders finance some soft costs (lender-specific)."
+    "a": "Many lenders finance some soft costs like architecture, permits and engineering (lender-specific). Some require soft costs to be paid before closing. The budget must show them clearly."
    },
    {
     "q": "How are lien waivers handled?",
-    "a": "Conditional/unconditional waivers collected with each draw."
+    "a": "Lenders collect conditional and unconditional lien waivers with each draw. Title may require date-down endorsements. Missing waivers delay draws."
    },
    {
     "q": "What if the project runs late?",
-    "a": "Extension fees; interest reserve may run out."
+    "a": "Extension fees apply and the interest reserve may run out. The borrower must cover additional interest. Planning contingency time is essential."
    },
    {
     "q": "Is GC experience enough without borrower experience?",
-    "a": "Sometimes, with reduced leverage."
+    "a": "Sometimes, but leverage may be reduced. Lenders evaluate both the sponsor and GC. A strong GC can offset a less experienced borrower."
    },
    {
     "q": "Can I build an ADU too?",
-    "a": "Yes, often as part of scope."
+    "a": "Yes, often as part of the scope. The appraisal must reflect both units. Permits are required."
    },
    {
     "q": "What about utility connections?",
-    "a": "Budget for them; delays are common."
-   },
-   {
-    "q": "Can SB 9 lot splits be financed with ground-up loans?",
-    "a": "Some lenders accept SB 9 parcels once the split is recorded; owner-occupancy affidavit and local implementation rules must be verified."
-   },
-   {
-    "q": "How are utility connection fees handled?",
-    "a": "They are typically soft costs in the budget; delays in utility will-serve letters are a common cause of schedule slip."
+    "a": "Utility fees and timelines must be budgeted. Delays in utility will-serve letters are common. Steven recommends early coordination."
    }
   ],
   "aeQuestions": [
-   "Max LTC and as-completed LTV by tier?",
-   "Land equity treatment?",
-   "Interest reserve allowed?",
-   "Draw process and inspection fees?",
-   "Soft cost limits?",
-   "Permits required before closing?",
-   "Contingency requirement?",
-   "Extension terms?",
-   "Builder approval process?",
-   "Exit DSCR take-out options?"
+   "What is your max LTC and as-completed LTV by experience tier?",
+   "How do you value land equity for owned vs recently purchased lots?",
+   "Do you allow an interest reserve in the loan budget?",
+   "What is your draw process, inspection fee and typical turnaround?",
+   "What soft costs will you finance?",
+   "Do you require permits issued before closing or before the first construction draw?",
+   "What contingency percentage do you require?",
+   "What are your extension terms and fees?",
+   "How do you approve builders and GCs?",
+   "Do you offer a DSCR take-out or partner with one?",
+   "Do you lend on SB 9 parcels?",
+   "How do you handle builder's risk and wildfire insurance requirements in CA?"
   ],
   "redFlags": [
    "No permits",
@@ -919,18 +907,20 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
    "Civil engineers and permit expediters"
   ],
   "checklist": [
-   "Plans and specs",
-   "Permits",
-   "Budget",
+   "Approved plans and specifications",
+   "Issued permits or permit timeline",
+   "Line-item budget with soft costs and contingency",
    "GC contract",
    "GC license and insurance",
-   "Appraisal",
-   "Cost review",
-   "Title",
-   "Builder's risk",
-   "Entity docs",
+   "Land deed or purchase contract",
+   "As-is land appraisal and as-completed appraisal",
+   "Third-party cost review",
+   "Title with construction endorsements",
+   "Builder's risk and liability insurance",
+   "Entity documents and guarantor info",
    "Draw schedule",
-   "Exit plan"
+   "Interest reserve calculation",
+   "Exit plan (sale comps or DSCR take-out quote)"
   ],
   "updated": "2026-11"
  },
@@ -1244,117 +1234,109 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
    {
     "t": "Condo to fourplex upgrade",
     "who": "Paul, 52, civil engineer, San Diego",
-    "situation": "Paul is selling a rental condo with about $500k of gain. He wants a fourplex in El Cajon. He fears missing the 180-day deadline.",
-    "structure": "Steven pre-approves DSCR before Paul lists the condo, orders appraisal on contract day and closes with buffer.",
-    "numbers": "Illustrative: fourplex $1.6M; exchange equity $560k; loan $1.04M (65%); rents $11,200/month.",
-    "why": "DSCR handles a fourplex without counting his W-2 DTI.",
-    "alternatives": "Agency investment loan considered; DTI tight with his existing mortgage.",
-    "watch": "Day 45 and 180 deadlines; rent assumptions."
+    "situation": "Paul is selling a rental condo in Mission Valley with about $500k of gain. He wants to trade into a fourplex in El Cajon for more cash flow. He is worried about missing the 180-day deadline because his last refinance took 50 days.",
+    "structure": "Steven pre-approves DSCR financing before the condo is listed, orders the fourplex appraisal on contract day, and schedules closing with at least 10 days of buffer before day 180.",
+    "numbers": "Illustrative: fourplex $1.6M; exchange equity $560k; loan $1.04M (65% LTV); rents $11,200/month; illustrative PITIA $8,900; DSCR 1.26x.",
+    "why": "DSCR underwriting avoids his personal DTI and works well for a fourplex. Pre-approval lets him identify aggressively within 45 days. The early appraisal reduces the risk of a late surprise.",
+    "alternatives": "An agency investment loan was considered, but his DTI was tight with his own mortgage. Paying more cash to reduce the loan was considered, but would leave less liquidity.",
+    "watch": "Day 45 and 180 deadlines; rent assumptions; tax advisor confirmation of boot."
    },
    {
     "t": "CA to AZ diversification",
     "who": "Lisa, 60, retired teacher, Encinitas",
-    "situation": "Lisa sells a CA rental and wants two homes in Arizona. She plans to keep the tax deferral and lower taxes. She has never owned out of state.",
-    "structure": "Steven arranges two DSCR loans in AZ coordinated with one QI and closes both within the window.",
-    "numbers": "Illustrative: $1.1M sale; two $550k homes; two $300k loans.",
-    "why": "Diversification and lower property taxes.",
-    "alternatives": "Staying in CA was considered.",
-    "watch": "CA FTB tracking of deferred gain (verify)."
+    "situation": "Lisa is selling a CA rental and wants two homes in Arizona. She wants to defer gain and diversify. She has never owned out of state.",
+    "structure": "Steven arranges two DSCR loans in Arizona coordinated with one QI and closes both within the window.",
+    "numbers": "Illustrative: $1.1M sale; net equity $700k; two $550k homes with $350k down each; two $200k loans (36% LTV each).",
+    "why": "Diversification and lower property taxes. DSCR loans fit investment property. Coordinated closing reduces risk.",
+    "alternatives": "Staying in CA was considered for familiarity. A single larger property was considered but less diversified.",
+    "watch": "CA FTB tracking of deferred gain (verify); out-of-state management."
    },
    {
-    "t": "Reverse exchange with EAT",
+    "t": "Reverse exchange with an EAT",
     "who": "Tony, 48, contractor, Temecula",
     "situation": "Tony found a property before selling his. He needs to buy now. His QI suggested a reverse exchange.",
     "structure": "Steven finds a lender that will lend to the Exchange Accommodation Titleholder with Tony's guaranty.",
-    "numbers": "Illustrative: $900k purchase; $600k loan; EAT parking fees.",
-    "why": "Captures the property without losing deferral.",
-    "alternatives": "Bridge loan and later forward exchange.",
-    "watch": "Few lenders lend to EATs; costs higher."
+    "numbers": "Illustrative: $900k purchase; $600k loan; EAT parking fees and higher costs.",
+    "why": "Captures the property without losing deferral. The lender is comfortable with EAT. Tony keeps tax benefits.",
+    "alternatives": "A bridge loan and later forward exchange was considered but riskier for tax purposes. Waiting risked losing the property.",
+    "watch": "Few lenders lend to EATs; costs and documentation are higher."
    },
    {
     "t": "Cash exchange then cash-out",
     "who": "Jill, 56, nurse, Chula Vista",
-    "situation": "Jill exchanged into a home all-cash. She now needs liquidity. Her tax advisor says timing matters.",
+    "situation": "Jill exchanged into a home all-cash. She now needs liquidity for another investment. Her tax advisor says timing matters.",
     "structure": "Steven uses a DSCR cash-out after the exchange with tax advisor input.",
-    "numbers": "Illustrative: $800k value; $500k loan.",
-    "why": "Liquidity without selling.",
-    "alternatives": "Waiting for seasoning.",
-    "watch": "Tax implications of cash-out soon after exchange."
+    "numbers": "Illustrative: $800k value; $500k loan (62.5% LTV).",
+    "why": "Provides liquidity without selling. DSCR loan fits investment property. Tax advisor ensures compliance.",
+    "alternatives": "Waiting for longer seasoning was considered. Selling another property was considered but would trigger tax.",
+    "watch": "Tax implications of cash-out soon after exchange; prepayment penalty."
    },
    {
     "t": "Exchange into a short-term rental",
     "who": "Hector, 58, Army veteran, Oceanside",
-    "situation": "Hector exchanges into a short-term rental in Big Bear. He wants rental income. He also wants occasional use.",
-    "structure": "Steven uses DSCR with STR income documented by AirDNA or 12-month history.",
-    "numbers": "Illustrative: $1.2M; $780k loan.",
-    "why": "STR income counts.",
-    "alternatives": "Long-term rental.",
-    "watch": "Personal-use limits for 1031 (tax advisor) and local STR permits."
+    "situation": "Hector wants to exchange into a short-term rental in Big Bear. He wants rental income and occasional personal use. He is unsure of 1031 rules.",
+    "structure": "Steven uses DSCR with STR income documented by projection reports and confirms personal-use limits with the tax advisor.",
+    "numbers": "Illustrative: $1.2M property; $780k loan; projected STR income $8,500/month.",
+    "why": "STR income counts with DSCR lenders. Exchange defers tax. Tax advisor sets usage limits.",
+    "alternatives": "A long-term rental was considered for stability. A different market was considered but Hector prefers Big Bear.",
+    "watch": "Personal-use limits; local STR permits."
    },
    {
     "t": "DST instead of financing",
     "who": "Dorothy, 70, retired, La Jolla",
     "situation": "Dorothy wants to stop managing property. She is considering a DST. She asks if she needs a loan.",
-    "structure": "Steven explains DSTs carry their own non-recourse debt; she would not take a new mortgage.",
-    "numbers": "Illustrative only: a $1.0M exchange equity into a DST that carries ~50% non-recourse debt gives roughly $2.0M of property exposure with no personal loan; Steven's role ends at education.",
-    "why": "Dorothy wants passive income and no management; a DST can provide that while keeping the exchange intact (tax and securities advisors confirm).",
-    "alternatives": "Buying a single NNN-leased property with a small DSCR loan was considered; still needs some oversight and a lender.",
+    "structure": "Steven explains DSTs carry their own non-recourse debt; she would not take a new mortgage. Steven's role is education only.",
+    "numbers": "Illustrative only: $1.0M exchange equity into a DST with ~50% non-recourse debt gives ~$2.0M property exposure without a personal loan.",
+    "why": "Passive income and no management. Exchange remains intact. Tax and securities advisors guide the choice.",
+    "alternatives": "Buying a NNN property with a small DSCR loan was considered but still requires oversight. Selling and paying tax was considered.",
     "watch": "Liquidity and fees; securities advice is outside Steven's role."
    }
   ],
   "qa": [
    {
     "q": "Can a primary residence be exchanged?",
-    "a": "No; Section 121 may apply instead (tax advisor)."
+    "a": "No. Primary residences are not eligible for 1031. Section 121 may apply instead, and the tax advisor should confirm."
    },
    {
-    "q": "Who holds funds?",
-    "a": "A qualified intermediary."
+    "q": "Who holds the exchange funds?",
+    "a": "A qualified intermediary holds funds to avoid constructive receipt. The borrower must not receive them. The lender verifies funds via QI statement."
    },
    {
     "q": "Does the lender care about the exchange?",
-    "a": "Only to verify funds and timing."
+    "a": "The lender verifies funds and timing. It does not evaluate tax compliance. The tax advisor is responsible for exchange rules."
    },
    {
     "q": "What if financing fails?",
-    "a": "Identify backup properties within 45 days."
+    "a": "Identify backup properties within 45 days. Financing pre-approval reduces risk. Missing deadlines can trigger tax."
    },
    {
     "q": "Can I refinance right before selling?",
-    "a": "Tax implications may arise; consult the tax advisor."
+    "a": "Refinancing shortly before an exchange can have tax implications. Consult the tax advisor. Lenders may also have seasoning rules."
    },
    {
     "q": "Can I buy from a related party?",
-    "a": "Restricted; tax advisor."
+    "a": "Related-party exchanges are restricted. Tax advisor guidance is required. Lenders may also review."
    },
    {
     "q": "Is boot taxable?",
-    "a": "Generally yes."
+    "a": "Generally yes. Cash or debt relief not replaced can be taxable. Tax advisor confirms."
    },
    {
     "q": "Can I close in an LLC?",
-    "a": "If disregarded and matching the taxpayer, often yes (tax advisor)."
-   },
-   {
-    "q": "Does the lender issue any tax opinion on the exchange?",
-    "a": "No. The lender only verifies funds and closes on time; the QI and tax advisor own exchange compliance."
-   },
-   {
-    "q": "What if appraisal comes in low on the replacement?",
-    "a": "The borrower may need added cash to keep debt and equity replaced; the tax advisor should rerun the boot analysis."
+    "a": "If the LLC is disregarded and matches the taxpayer, often yes. Tax advisor confirms. Lenders must accept entity vesting."
    }
   ],
   "aeQuestions": [
-   "Do you accept QI-held funds and what verification do you need?",
+   "Do you accept QI-held funds and what verification do you need from the QI?",
    "Can you lend to an EAT on reverse exchanges?",
-   "What is your typical time to close?",
-   "What are appraisal turn times?",
-   "What are your DSCR requirements?",
+   "What is your typical time to close, and can you guarantee a closing date before day 180?",
+   "What are appraisal turn times in this county?",
+   "What DSCR requirements and rent documentation do you need?",
    "What prepayment options are available?",
-   "Can you vest in a single-member LLC?",
-   "Do you allow cash-out after an exchange?",
-   "Can you close in 21 days or fewer if needed?",
-   "Do you require the QI to sign anything at closing?"
+   "Can you vest in a single-member LLC or trust that matches the taxpayer?",
+   "Do you allow cash-out after an exchange and what seasoning applies?",
+   "Do you require the QI to sign any documents at closing?",
+   "Can you close in 21 days or fewer if needed?"
   ],
   "redFlags": [
    "Borrower received exchange funds",
@@ -1373,16 +1355,18 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
    "Content on exchange timelines"
   ],
   "checklist": [
-   "QI agreement",
-   "Relinquished CD",
-   "QI statement",
-   "Purchase contract",
-   "Appraisal",
-   "Leases",
-   "Entity docs",
+   "QI agreement and contact",
+   "Relinquished property CD with closing date",
+   "QI statement showing exchange funds",
+   "Day 45 and 180 calendar",
+   "Identification letter (from QI/tax advisor)",
+   "Replacement purchase contract",
+   "Appraisal ordered on contract day",
+   "Leases or rent projections",
+   "Entity documents matching taxpayer",
    "Insurance",
-   "Title",
-   "Tax advisor contact"
+   "Title commitment",
+   "Tax advisor contact and boot analysis"
   ],
   "updated": "2026-11"
  },
@@ -1473,109 +1457,110 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
   "scenarios": [
    {
     "t": "Liability-conscious physician",
-    "who": "Jessica, 40, physician, La Jolla",
-    "situation": "Jessica is buying her first rental and her attorney recommends an LLC. She does not want a future due-on-sale issue. She has strong W-2 income but prefers not to mix rentals with personal credit.",
-    "structure": "Steven uses a DSCR loan closed directly in her single-member LLC with her personal guaranty.",
-    "numbers": "Illustrative: $900k purchase; $675k loan (75%); rent $4,800; DSCR ~1.05x.",
-    "why": "Vesting in the LLC from day one avoids later transfer issues.",
-    "alternatives": "Agency loan in her name then deed to LLC; risks due-on-sale and title insurance gaps.",
-    "watch": "Insurance and umbrella; LLC liability protection is limited if she personally guarantees."
+    "who": "Jessica, 40, emergency physician, La Jolla",
+    "situation": "Jessica is buying her first rental, a 3-bed in Clairemont, and her attorney recommends holding it in an LLC. She has heard that deeding a property into an LLC after an agency loan can trigger the due-on-sale clause. Her W-2 income is strong, but she wants her rental portfolio separate from her personal finances.",
+    "structure": "Steven closes a DSCR loan directly in her single-member LLC with her personal guaranty, so title, note and insurance all start in the entity's name.",
+    "numbers": "Illustrative: $900k purchase; $675k loan (75% LTV); rent $4,800; illustrative PITIA $4,550; DSCR 1.05x.",
+    "why": "Vesting in the LLC from day one avoids a later transfer that could breach a due-on-sale clause and leave a title insurance gap. DSCR qualification does not add the rental payment to the way her income is analyzed for this loan. It also sets up a repeatable structure for her next purchase.",
+    "alternatives": "An agency loan in her name followed by a deed to the LLC was considered; it is cheaper up front but risks a due-on-sale breach and loses title coverage. Buying in her name with a large umbrella policy was also considered; it is simpler but gives less separation.",
+    "watch": "Her personal guaranty means the LLC does not shield her from this lender; she still needs landlord insurance and an umbrella. Keep the LLC in good standing each year."
    },
    {
-    "t": "Friends' partnership",
+    "t": "Two friends buying a duplex",
     "who": "Tom, 45, firefighter, and Mike, 48, electrician, Carlsbad",
-    "situation": "Tom and Mike are buying a duplex together. They want clear ownership and an exit plan. Their credit scores differ by 60 points.",
-    "structure": "Steven requires both as guarantors (both own 50%) and recommends an operating agreement with buy-sell terms.",
-    "numbers": "Illustrative: $1.2M duplex; $900k loan; pricing uses the lower qualifying FICO per lender rules.",
-    "why": "Clean ownership with liability protection.",
-    "alternatives": "Tenancy in common; simpler but no entity protection.",
-    "watch": "Exit disputes; lender may price off the lower score."
+    "situation": "Tom and Mike want to buy a duplex in Oceanside together as 50/50 partners. Their credit scores differ by about 60 points. Neither wants the other's personal debts to touch the property.",
+    "structure": "Steven puts the loan in their two-member LLC with both members as guarantors, and recommends their attorney add buy-sell and capital-call terms to the operating agreement.",
+    "numbers": "Illustrative: $1.2M duplex; $900k loan (75%); rents $6,400; illustrative PITIA $6,000; DSCR 1.07x. The lender prices off the lower guarantor score per its rules.",
+    "why": "An LLC defines ownership, management and exit terms better than co-owning in their own names. Both guarantors' liquidity counts toward reserves. The operating agreement can settle disputes before they happen.",
+    "alternatives": "Tenancy in common was considered; it is simpler but leaves no structure for disputes or a forced sale. One partner buying alone with the other lending money was considered but creates an unequal risk position.",
+    "watch": "The lower score may set pricing. Without a buy-sell clause a partner's divorce, death or bankruptcy can disrupt ownership."
    },
    {
-    "t": "Out-of-state LLC holding CA property",
+    "t": "Wyoming LLC owning a California rental",
     "who": "Ellen, 52, investor, Henderson",
-    "situation": "Ellen uses a Wyoming LLC for a California rental. She wants privacy. The lender requires California registration.",
-    "structure": "Steven requires CA foreign registration and confirms franchise tax awareness before closing.",
-    "numbers": "Illustrative: $650k rental; $480k loan.",
-    "why": "Compliance with CA law; lender requires good standing.",
-    "alternatives": "Forming a CA LLC.",
-    "watch": "CA franchise tax and filing obligations."
+    "situation": "Ellen holds her rentals in a Wyoming LLC for privacy. She is buying a California rental and expects to use the same entity. The lender's title officer flagged that the LLC is not registered in California.",
+    "structure": "Steven requires the Wyoming LLC to register as a foreign LLC in California before closing and reminds her to talk to her CPA about California's annual LLC tax.",
+    "numbers": "Illustrative: $650k rental; $487.5k loan (75%); CA annual LLC tax $800 minimum (verify) adds ~$67/month outside DSCR.",
+    "why": "Lenders and title insurers require good standing where the property sits. Registering keeps the entity able to defend itself in California courts. It avoids a closing-day delay.",
+    "alternatives": "Forming a separate California LLC was considered for cleaner state compliance. Keeping the property in her personal name was rejected because she wants the separation.",
+    "watch": "Foreign registration filing time; CA franchise tax and filings; registered agent required in CA."
    },
    {
-    "t": "Trust-owned LLC",
+    "t": "LLC owned by a living trust",
     "who": "Robert, 70, retired pharmacist, Rancho Bernardo",
-    "situation": "Robert's LLC is owned by his revocable trust. He wants to refinance a rental. The lender needs trust documents.",
-    "structure": "Steven collects the trust certification and has Robert as trustee and individual guarantor.",
-    "numbers": "Illustrative: $800k value; $500k loan; DSCR 1.25x.",
-    "why": "Fits estate planning.",
-    "alternatives": "Personal vesting.",
-    "watch": "Lender acceptance of trust-owned entities."
+    "situation": "Robert's rental LLC is owned 100% by his revocable trust for estate planning. He wants to refinance a rental to fund repairs on two others. The lender has never closed a loan with a trust as the LLC's sole member.",
+    "structure": "Steven collects the certification of trust, the LLC operating agreement naming the trust as member and Robert as manager, and has Robert sign the guaranty individually and as trustee.",
+    "numbers": "Illustrative: $800k value; $500k cash-out (62.5% LTV); rent $4,600; illustrative PITIA $3,700; DSCR 1.24x.",
+    "why": "This keeps his estate plan intact while unlocking cash. The lender gets a clear chain of authority. DSCR qualification avoids pension-only income limits.",
+    "alternatives": "Taking the property out of the LLC to refinance personally was considered but would disturb his estate plan. A HELOC on his primary was considered but he wanted to keep rentals and residence separate.",
+    "watch": "Lender acceptance of trust-owned entities; successor trustee language; guaranty signature capacity."
    },
    {
     "t": "Veteran keeping VA separate",
     "who": "Jose, 39, Navy veteran, Oceanside",
-    "situation": "Jose has a VA loan on his home. He wants rentals in an LLC. He wants to keep his entitlement for a future move.",
-    "structure": "Steven separates programs: VA for primary, DSCR in LLC for rentals.",
-    "numbers": "Illustrative: $550k rental; $412.5k loan.",
-    "why": "Keeps entitlement intact.",
-    "alternatives": "VA cannot be used for rentals.",
-    "watch": "Occupancy compliance."
+    "situation": "Jose has a VA loan on his home and plans to buy rentals. He wants to keep his VA entitlement available for a future move. He is new to entity investing.",
+    "structure": "Steven keeps VA on the primary and uses DSCR loans in an LLC for rentals, documenting non-owner occupancy.",
+    "numbers": "Illustrative: $550k rental; $412.5k loan (75%); rent $3,200; illustrative PITIA $3,000; DSCR 1.07x.",
+    "why": "Separating programs keeps entitlement intact. DSCR loans do not need his personal income. LLC vesting gives structure for future purchases.",
+    "alternatives": "Using VA for a rental is not permitted. A conventional investment loan in his name was considered but would count against his DTI for a future VA move.",
+    "watch": "Occupancy compliance; future VA eligibility depends on entitlement and occupancy rules."
    },
    {
-    "t": "Curing a post-closing deed transfer",
+    "t": "Fixing a post-closing deed transfer",
     "who": "Amy, 44, realtor, Temecula",
-    "situation": "Amy deeded her rental into an LLC after closing an agency loan. Her attorney flagged due-on-sale risk. She wants to fix it.",
-    "structure": "Steven refinances into DSCR in the LLC.",
-    "numbers": "Illustrative: $700k value; $450k loan.",
-    "why": "Removes due-on-sale exposure.",
-    "alternatives": "Ask the servicer for consent.",
-    "watch": "DSCR prepayment terms."
+    "situation": "Amy deeded her rental into an LLC two years after closing an agency loan. Her attorney flagged due-on-sale risk. She wants to fix it before refinancing others.",
+    "structure": "Steven refinances the rental into a DSCR loan closed in the LLC, paying off the agency loan.",
+    "numbers": "Illustrative: $700k value; $450k loan (64% LTV).",
+    "why": "Removes due-on-sale exposure and aligns title and loan. DSCR loan fits the entity. Title coverage is updated.",
+    "alternatives": "Requesting servicer consent was considered but uncertain. Deeding back to herself was considered but defeats the purpose.",
+    "watch": "Prepayment terms on the DSCR; rate change vs agency loan."
    }
   ],
   "qa": [
    {
     "q": "Can an agency loan close in an LLC?",
-    "a": "Generally no; Fannie and Freddie require individual borrowers with limited trust exceptions (verify)."
+    "a": "Generally no. Fannie Mae and Freddie Mac require individual borrowers, with limited exceptions for certain trusts (verify). DSCR and portfolio lenders are the usual path for LLC vesting."
    },
    {
     "q": "Is a personal guaranty required?",
-    "a": "Usually from owners above a threshold such as 20-25%."
+    "a": "Usually yes for owners above a threshold such as 20-25% (lender-specific). The guaranty means the LLC does not shield the guarantor from this lender. It does help protect against tenant claims when combined with insurance."
    },
    {
-    "q": "What docs are needed?",
-    "a": "Articles, operating agreement, EIN letter, good standing, resolution, foreign registration if applicable."
+    "q": "What documents are needed?",
+    "a": "Articles or certificate of formation, the full operating agreement with amendments, EIN letter, a recent good standing certificate, and a resolution or incumbency certificate if signing authority is unclear. Out-of-state entities need foreign registration where the property sits."
    },
    {
     "q": "Can a trust own the LLC?",
-    "a": "Often yes with additional documents."
+    "a": "Often yes with a certification of trust and documentation of who can sign. Lenders vary on revocable vs irrevocable trusts. The trustee typically guarantees."
    },
    {
     "q": "Is foreign registration required?",
-    "a": "Generally yes when the property sits in another state."
+    "a": "Generally yes when the property is in a state other than where the LLC was formed. Lenders and title insurers often require it before closing. California also imposes an annual LLC tax (verify)."
    },
    {
     "q": "Does the LLC need its own credit?",
-    "a": "Rarely for DSCR; guarantors' credit drives pricing."
+    "a": "Rarely for DSCR loans. Guarantor credit drives pricing. Larger commercial loans may review entity financials."
    },
    {
     "q": "Are series LLCs accepted?",
-    "a": "Some lenders accept with extra documentation."
+    "a": "Some lenders accept with extra documentation showing the specific series owns the property. Others decline. Steven confirms early."
    },
    {
-    "q": "Can I transfer later?",
-    "a": "Lender consent is usually required."
+    "q": "Can I transfer property into an LLC later?",
+    "a": "Transfers usually require lender consent under the loan documents. Without consent, the lender could call the loan. Title insurance may also need updating."
    }
   ],
   "aeQuestions": [
-   "What is your guaranty threshold?",
-   "Which entity types do you accept?",
-   "Do you allow series LLCs?",
-   "Do you lend to trust-owned entities?",
-   "Is foreign registration required before closing?",
-   "What signing authority documents do you require?",
-   "What prepayment options are available?",
-   "What is the max LTV for entity loans?",
-   "How fresh must good standing be?"
+   "What ownership percentage triggers a required personal guaranty?",
+   "Do you accept single-member, multi-member, series LLCs, LPs and corporations?",
+   "Do you lend to LLCs owned by revocable or irrevocable trusts, and what trust documents do you require?",
+   "How recent must the good standing certificate be at closing?",
+   "Do you require foreign registration in the property state before closing?",
+   "What signing authority documents do you require for manager-managed LLCs?",
+   "Do you price off the lowest or highest guarantor FICO?",
+   "Can entity bank accounts be used for reserves and closing funds?",
+   "What prepayment options apply to entity loans in each state?",
+   "Do you allow transfers between affiliated entities after closing?"
   ],
   "redFlags": [
    "Entity not in good standing",
@@ -1594,18 +1579,21 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
    "Investor meetups"
   ],
   "checklist": [
-   "Articles of organization",
-   "Operating agreement",
-   "EIN letter",
-   "Good standing certificate",
-   "Foreign registration",
-   "Resolution/incumbency",
-   "Guarantor ID and credit",
-   "Appraisal",
+   "Articles/certificate of formation",
+   "Full operating agreement with amendments",
+   "EIN letter (IRS CP-575 or 147C)",
+   "Good standing certificate dated within lender window",
+   "Foreign registration in property state",
+   "Member resolution or incumbency certificate",
+   "Ownership chart showing guarantors",
+   "Certification of trust if trust-owned",
+   "Guarantor ID and credit authorization",
+   "Entity bank statements for reserves",
+   "Appraisal with rent schedule",
    "Leases",
-   "Insurance",
-   "Title vesting",
-   "Business-purpose certification"
+   "Insurance naming the LLC with lender as mortgagee",
+   "Title vesting in exact entity name",
+   "Business-purpose and occupancy certification"
   ],
   "updated": "2026-11"
  },
@@ -1696,108 +1684,109 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
    {
     "t": "BRRRR exit after rehab",
     "who": "Kyle, 33, IT specialist, Escondido",
-    "situation": "Kyle bought a Hemet fixer with a private rehab loan, renovated and leased it for $2,950. The rehab loan matures in four months. He wants to pull out as much cash as possible to repeat.",
-    "structure": "Steven uses a DSCR lender that uses appraised value after 3 months of seasoning and pays off the rehab loan.",
-    "numbers": "Illustrative: ARV $520k; 75% = $390k; rehab payoff $372k; DSCR 1.04x.",
-    "why": "DSCR allows appraised value with short seasoning; agency would limit to cost basis.",
-    "alternatives": "Agency delayed financing would cap to purchase plus documented rehab.",
-    "watch": "Prepayment penalty on the DSCR if he sells soon."
+    "situation": "Kyle bought a dated house in Hemet with a private rehab loan, finished a $70k renovation and leased it for $2,950. The rehab loan matures in four months with an extension fee. He wants to pull out as much cash as possible to do it again.",
+    "structure": "Steven places a DSCR cash-out with a lender that uses the new appraised value after 3 months of ownership, paying off the rehab loan.",
+    "numbers": "Illustrative: appraised $520k; 75% = $390k; rehab payoff $372k plus ~$8k costs; DSCR = $2,950 / illustrative $2,820 PITIA = 1.05x.",
+    "why": "DSCR lenders can use the after-rehab appraised value with short seasoning, which captures the equity he created. The refinance retires an expensive short-term loan before extension fees hit. It sets up his next purchase.",
+    "alternatives": "Agency delayed financing was considered but caps the loan to documented purchase and rehab costs. Waiting 12 months for agency cash-out was considered but would incur rehab-loan extensions.",
+    "watch": "Prepayment penalty on the DSCR if he sells within its term; appraisal must support value."
    },
    {
-    "t": "Retiree simplifying",
+    "t": "Retiree replacing a high-rate private loan",
     "who": "Gloria, 68, retired nurse, Chula Vista",
-    "situation": "Gloria owns two rentals; one has a high-rate private loan from 2023. She has pension and Social Security. She wants no prepayment penalty.",
-    "structure": "Steven uses an agency rate/term refinance with rental income from her tax returns.",
-    "numbers": "Illustrative: $520k value; $250k payoff; payment drops ~$600/month.",
-    "why": "Agency pricing and no prepayment.",
-    "alternatives": "DSCR would add a prepay.",
-    "watch": "Schedule E depreciation add-backs."
+    "situation": "Gloria owns two rentals; one carries a 2023 private loan at a high rate with a balloon next year. She has pension and Social Security income. She does not want any prepayment penalty.",
+    "structure": "Steven uses an agency rate/term refinance with rental income from her Schedule E.",
+    "numbers": "Illustrative: $520k value; $250k payoff (48% LTV); payment drops ~$600/month.",
+    "why": "Agency financing has no prepayment penalty and removes the balloon. Her income and rental history qualify. The payment savings improve retirement cash flow.",
+    "alternatives": "A DSCR loan was considered but would add a prepayment penalty. Paying off with savings was considered but would deplete reserves.",
+    "watch": "Schedule E depreciation add-backs; agency financed-property count."
    },
    {
-    "t": "Scaling with DSCR cash-out",
+    "t": "DSCR cash-out to buy more",
     "who": "Jake, 41, firefighter, Temecula",
-    "situation": "Jake has 4 financed properties and DTI at 44%. He wants two more rentals. His properties have strong equity.",
-    "structure": "Steven does DSCR cash-outs on two properties in an LLC, keeping his personal DTI unchanged.",
-    "numbers": "Illustrative: two properties $1.4M total value; 70% = $980k; existing loans $540k; net cash ~$420k.",
-    "why": "DSCR does not use personal DTI.",
-    "alternatives": "Agency cash-out would push DTI over 50%.",
+    "situation": "Jake owns four financed properties and his DTI is 44%. He wants to buy two more rentals. Two of his properties have strong equity.",
+    "structure": "Steven does DSCR cash-outs on two properties in an LLC, leaving his personal DTI unchanged.",
+    "numbers": "Illustrative: two properties $1.4M total value; 70% = $980k; existing loans $540k; net cash ~$420k after costs.",
+    "why": "DSCR loans qualify on rents, not his DTI. The cash funds down payments on two more rentals. LLC vesting supports scaling.",
+    "alternatives": "An agency cash-out was considered but would push DTI above 50%. A HELOC on his primary was considered but would put his home at risk.",
     "watch": "Cash flow thinning; future agency loans will count DSCR payments."
    },
    {
     "t": "Freeing VA entitlement",
     "who": "Steve B., 50, retired Marine, Vista",
     "situation": "Steve's former VA home is now a rental. He wants to buy a new primary with VA in Oceanside. His remaining entitlement is limited.",
-    "structure": "Steven refinances the rental into a conventional investment loan, then requests VA entitlement restoration (verify one-time restoration rules).",
-    "numbers": "Illustrative: $600k value; $420k loan.",
-    "why": "Restores entitlement for a zero-down purchase.",
-    "alternatives": "Buying with partial entitlement and a down payment.",
-    "watch": "Entitlement restoration rules; rate on the new investment loan."
+    "structure": "Steven refinances the rental into a conventional investment loan and requests entitlement restoration (verify one-time restoration rules).",
+    "numbers": "Illustrative: $600k value; $420k loan (70% LTV); rent $3,400.",
+    "why": "Restoring entitlement enables a zero-down purchase. The conventional loan fits the rental. Steve keeps the property.",
+    "alternatives": "Buying with partial entitlement and a down payment was considered. Selling the rental was considered but would lose income.",
+    "watch": "Entitlement restoration rules; investment loan pricing."
    },
    {
-    "t": "STR income refinance",
+    "t": "Short-term rental refinance",
     "who": "Tina, 44, dental hygienist, Big Bear",
-    "situation": "Tina's cabin earned strong STR income for two years. Agency underwriting would use lower long-term rent. She wants a lower payment and some cash.",
-    "structure": "Steven uses a DSCR lender that uses 12-month STR income history.",
-    "numbers": "Illustrative: $700k value; $490k loan; STR income $5,200/month avg.",
-    "why": "STR income counts fully.",
-    "alternatives": "Agency with long-term rent.",
-    "watch": "Big Bear STR permit rules (verify)."
+    "situation": "Tina's cabin has two years of strong STR income. Agency underwriting would use lower long-term rent. She wants a lower payment and some cash for upgrades.",
+    "structure": "Steven uses a DSCR lender that uses 12-month STR history.",
+    "numbers": "Illustrative: $700k value; $490k loan (70%); STR income avg $5,200/month; illustrative PITIA $4,300; DSCR 1.21x.",
+    "why": "STR income counts fully. The DSCR loan fits investment use. Cash funds upgrades.",
+    "alternatives": "An agency refinance was considered but would use long-term rent. A HELOC was considered but few lenders offer them on STRs.",
+    "watch": "Local STR permit rules (verify); seasonality."
    },
    {
-    "t": "Florida condo",
+    "t": "Florida condo with assessments",
     "who": "Brian, 37, aerospace engineer, San Diego (condo in Tampa)",
-    "situation": "Brian's Tampa condo association has a large special assessment after milestone inspections. Agency review failed. He wants to refinance a high-rate loan.",
-    "structure": "Steven uses a non-warrantable condo DSCR lender after reviewing the assessment and reserves.",
-    "numbers": "Illustrative: $310k value; $210k loan; assessment $12k.",
-    "why": "Non-warrantable DSCR is the available option.",
-    "alternatives": "Wait until the building becomes warrantable.",
+    "situation": "Brian's Tampa condo association levied a large special assessment after milestone inspections. Agency condo review failed. He wants to refinance a high-rate loan.",
+    "structure": "Steven uses a non-warrantable condo DSCR lender after reviewing the assessment, reserves and insurance.",
+    "numbers": "Illustrative: $310k value; $210k loan (68%); assessment $12k paid at closing.",
+    "why": "Non-warrantable DSCR lenders accept the project. Paying the assessment at closing reduces risk. Refinance lowers cost.",
+    "alternatives": "Waiting until the building becomes warrantable was considered. Selling was considered but market conditions were soft.",
     "watch": "Assessments, insurance costs, FL condo law changes (verify)."
    }
   ],
   "qa": [
    {
     "q": "Can I use appraised value after a rehab?",
-    "a": "Depends on seasoning rules; DSCR lenders vary, agency uses cost basis within short windows (verify)."
+    "a": "It depends on seasoning rules. DSCR lenders vary, with some allowing appraised value after 3-6 months. Agency programs often limit to cost basis within short windows (verify)."
    },
    {
     "q": "What is delayed financing?",
-    "a": "An agency exception allowing cash-out shortly after an all-cash purchase, limited to documented costs (verify)."
+    "a": "An agency exception allowing cash-out shortly after an all-cash purchase, limited to documented acquisition costs (verify). It requires the purchase to be arm's length and funds sourced. It is useful for cash buyers."
    },
    {
     "q": "Do DSCR loans affect my DTI later?",
-    "a": "Yes, future agency loans will count those payments unless offset by rents."
+    "a": "Yes. Future agency loans will count DSCR loan payments, offset by rental income per guide. Plan the order of refinances."
    },
    {
     "q": "How many properties can I finance with agency loans?",
-    "a": "There is a cap on financed properties (verify current count); DSCR has no such cap."
+    "a": "There is a cap on financed properties (verify current count). Reserves increase with each property. DSCR has no such cap."
    },
    {
     "q": "Can I refinance in an LLC?",
-    "a": "DSCR lenders allow LLC vesting; agency does not."
+    "a": "DSCR lenders allow LLC vesting. Agency loans do not. Transfer into an LLC may require lender consent."
    },
    {
     "q": "How do prepayment penalties work?",
-    "a": "Step-down schedules charge a percentage of balance if paid off early; plan the hold period."
+    "a": "Step-down schedules charge a percentage of balance if paid off early (e.g., 3-2-1). Some states restrict penalties. Plan the hold period."
    },
    {
     "q": "Can STR income qualify?",
-    "a": "Yes with DSCR lenders using history or projections (lender-specific)."
+    "a": "Yes with DSCR lenders using history or projections (lender-specific). Agency rules are stricter. Local permits matter."
    },
    {
     "q": "Will I need leases?",
-    "a": "Usually leases or rent schedules; vacant properties use market rent with lower LTV (lender-specific)."
+    "a": "Usually leases or rent schedules. Vacant properties use market rent with lower LTV (lender-specific). Deposits may be verified."
    }
   ],
   "aeQuestions": [
-   "What seasoning applies for appraised value?",
-   "What are max LTVs for cash-out by property type?",
-   "Do you accept STR income and how?",
-   "What prepayment options are available and in which states?",
-   "What reserves are required for multiple properties?",
-   "Do you lend on non-warrantable condos?",
-   "Do you allow LLC vesting?",
-   "What are appraisal and rent schedule requirements?",
-   "Do you allow DSCR below 1.0x?"
+   "What seasoning applies before you will use appraised value instead of cost basis?",
+   "What are your max LTVs for DSCR cash-out by property type and FICO?",
+   "Do you accept STR income and what documentation (12-month history, projection reports)?",
+   "What prepayment options do you offer and how do they vary by state (IL restrictions)?",
+   "What reserves do you require across multiple financed properties?",
+   "Do you lend on non-warrantable condos and what assessment thresholds apply?",
+   "Do you allow LLC vesting and cash-out to the entity?",
+   "What appraisal and rent schedule requirements apply?",
+   "Do you allow DSCR below 1.0x and at what LTV?",
+   "How do you handle vacant units at refinance?"
   ],
   "redFlags": [
    "Prepayment penalty on current loan not checked",
@@ -1817,17 +1806,18 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
    "Tax season CPA referrals for landlords reviewing Schedule E"
   ],
   "checklist": [
-   "Mortgage statements",
-   "Leases and deposits",
-   "Rent roll",
-   "Appraisals with rent schedules",
-   "Insurance declarations",
-   "Tax bills",
-   "Entity docs",
-   "Reserves verification",
+   "Mortgage statements for all properties",
    "Prepayment terms of existing loans",
+   "Leases and proof of deposits",
+   "Portfolio rent roll",
+   "Appraisals with rent schedules (1007/1025)",
+   "Insurance declarations",
+   "Property tax bills",
+   "HOA statements and condo questionnaires",
+   "Entity documents if vesting in LLC",
+   "Reserves verification",
    "Payoff demands",
-   "STR history if applicable"
+   "STR income history if applicable"
   ],
   "updated": "2026-11"
  },
@@ -2147,108 +2137,109 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
    {
     "t": "Fixed-rate remodel",
     "who": "Andrea, 42, accountant, Chula Vista",
-    "situation": "Andrea wants a predictable payment for a $90,000 remodel. Her first mortgage rate is low. She dislikes variable rates.",
-    "structure": "Steven places a 20-year fixed HELOAN with funds disbursed at closing into a dedicated account for the contractor.",
-    "numbers": "Illustrative: $720k value; $350k first; $90k second; CLTV 61%.",
-    "why": "Fixed payment and preserved first-lien rate.",
-    "alternatives": "HELOC was considered but variable.",
-    "watch": "Contractor payment schedule vs lump sum; avoid paying contractor in full up front."
+    "situation": "Andrea wants to remodel her kitchen and add a bathroom for about $90,000. Her first mortgage has a low 2021 rate she does not want to lose. She dislikes variable rates and wants a payment she can budget to the dollar.",
+    "structure": "Steven places a 20-year fixed HELOAN, with funds disbursed into a dedicated account so she can pay the contractor by milestone rather than up front.",
+    "numbers": "Illustrative: value $720k; first $350k; second $90k; CLTV = $440k / $720k = 61%. Illustrative second payment ~$800/month for 240 months.",
+    "why": "A fixed closed-end second gives a known payment and payoff date, which matches her budgeting style. Her first-lien rate stays untouched. A 61% CLTV qualifies for better second-lien pricing tiers.",
+    "alternatives": "A HELOC was considered; it is flexible but variable and she would pay interest only on draws. A cash-out refi was considered; it would reprice her entire $350k balance at today's market.",
+    "watch": "Pay the contractor by completed milestones with lien releases, not in a lump sum; the full loan accrues interest from day one even if work is slow."
    },
    {
-    "t": "Self-employed second",
-    "who": "Raul, 50, landscaper, Escondido",
-    "situation": "Raul's returns show low income after deductions. He needs $120,000 to buy equipment and pay off a truck loan. He has strong bank deposits.",
-    "structure": "Steven uses a non-QM bank-statement HELOAN with 12 months of business statements.",
-    "numbers": "Illustrative: bank-statement income $15,000/month; $820k value; $380k first; $120k second; CLTV 61%.",
-    "why": "Bank statements show true income.",
-    "alternatives": "Equipment financing for the equipment portion.",
-    "watch": "Non-QM pricing; ATR still applies."
+    "t": "Self-employed borrower using bank statements",
+    "who": "Raul, 50, landscaping company owner, Escondido",
+    "situation": "Raul's tax returns show modest income after equipment depreciation and vehicle write-offs. He needs $120,000 to buy two trucks and pay off a high-rate equipment loan. His business deposits are steady at about $45,000 a month.",
+    "structure": "Steven uses a non-QM 12-month bank-statement HELOAN, applying the lender's expense factor to deposits, with ATR documentation in the file.",
+    "numbers": "Illustrative: deposits $540k/year x (1 - 50% expense factor) = $270k, or $22.5k/month. Value $820k; first $380k; second $120k; CLTV 61%.",
+    "why": "Bank statements reflect his real cash flow. A fixed second keeps his low first lien. Paying off the equipment loan improves monthly cash flow.",
+    "alternatives": "Equipment financing for the trucks was considered; it keeps the home out of it but at a higher cost and shorter term. A full-doc HELOAN was considered but his returns would not qualify.",
+    "watch": "Non-QM pricing; ATR still applies; deposits must be consistent and not include transfers."
    },
    {
     "t": "Investment property second",
     "who": "Nina, 46, landlord, Phoenix",
-    "situation": "Nina wants to pull equity from a rental without refinancing a low-rate first. She wants to buy another rental. Her DTI is tight.",
+    "situation": "Nina owns a rental with a low-rate first. She wants $100,000 to buy another rental. Her personal DTI is tight because of her primary residence.",
     "structure": "Steven uses a DSCR second lien on the rental.",
-    "numbers": "Illustrative: $500k value; $250k first; $100k second; CLTV 70%; combined DSCR 1.10x.",
-    "why": "Keeps the first-lien rate and avoids DTI.",
-    "alternatives": "DSCR cash-out.",
-    "watch": "Combined DSCR; prepayment."
+    "numbers": "Illustrative: value $500k; first $250k; second $100k; CLTV 70%. Rent $3,200; combined PITIA $2,900; DSCR 1.10x.",
+    "why": "A DSCR second qualifies on the property's rent. It preserves the first lien's rate. It funds her next purchase.",
+    "alternatives": "A DSCR cash-out refi was considered but would reprice the first lien. A HELOC on her primary was considered but she preferred not to risk her home.",
+    "watch": "Combined DSCR must stay above lender floor; possible prepayment penalty on investment second."
    },
    {
     "t": "Veteran accessibility upgrades",
     "who": "Greg, 59, Marine veteran, Fallbrook",
-    "situation": "Greg needs accessibility upgrades after an injury. He has a VA first lien. He wants a fixed payment.",
-    "structure": "Steven first checks VA Specially Adapted Housing grant eligibility, then places a fixed HELOAN for the remaining cost.",
-    "numbers": "Illustrative: $650k value; $300k first; $80k second; CLTV 58%.",
-    "why": "Preserves VA first and uses grants first.",
-    "alternatives": "VA cash-out.",
-    "watch": "SAH/SHA eligibility first."
+    "situation": "Greg needs a ramp, widened doors and an accessible bathroom after an injury. He has a VA first lien at a low rate. He wants fixed payments.",
+    "structure": "Steven first checks VA Specially Adapted Housing (SAH) or Special Housing Adaptation (SHA) grant eligibility, then places a fixed HELOAN for the remaining cost.",
+    "numbers": "Illustrative: project $110k; SHA/SAH grant may cover part (verify current amounts); HELOAN $80k; value $650k; first $300k; CLTV 58%.",
+    "why": "Grants reduce how much Greg must borrow. A fixed second keeps his VA first. The payment is predictable.",
+    "alternatives": "A VA cash-out refi was considered but would reprice his whole balance. A personal loan was considered but too small for the project.",
+    "watch": "Grant application timing; contractors familiar with accessibility standards."
    },
    {
-    "t": "Paying off a tax lien",
+    "t": "Paying off an IRS installment plan",
     "who": "Lorena, 55, boutique owner, Las Vegas",
-    "situation": "Lorena has an IRS installment plan of $60,000. She wants to clear it. The lien affects her credit.",
-    "structure": "Steven pays the IRS at closing and obtains the lien release.",
-    "numbers": "Illustrative: $500k value; $200k first; $65k second; CLTV 53%.",
-    "why": "Clears the lien.",
-    "alternatives": "Continue the installment plan.",
-    "watch": "IRS payoff letter timing."
+    "situation": "Lorena owes the IRS $60,000 on an installment plan with a recorded federal tax lien. The lien affects her credit and ability to borrow. She wants it cleared.",
+    "structure": "Steven pays the IRS directly at closing with a HELOAN and obtains the lien release.",
+    "numbers": "Illustrative: value $500k; first $200k; second $65k; CLTV 53%.",
+    "why": "Clearing the lien removes a title cloud and simplifies her finances. Fixed payment replaces IRS penalties and interest. CLTV is low.",
+    "alternatives": "Continuing the installment plan was considered. A cash-out refi was considered but would reprice her first.",
+    "watch": "IRS payoff letter timing and lien release recording."
    },
    {
-    "t": "Small loan high-cost test",
+    "t": "Small loan and the HOEPA test",
     "who": "Terry, 66, retired, El Cajon",
-    "situation": "Terry needs only $30,000. Fixed fees could push the loan over HOEPA thresholds. He is on fixed income.",
-    "structure": "Steven picks a lender with low fixed fees and runs the HOEPA test before issuing the LE.",
-    "numbers": "Illustrative: points and fees kept under HOEPA limits.",
-    "why": "Avoids a high-cost loan.",
-    "alternatives": "Personal loan.",
-    "watch": "HOEPA and CA high-cost thresholds."
+    "situation": "Terry needs only $30,000 for a new roof. Some lenders charge fixed fees that could push a small loan over HOEPA points-and-fees thresholds. He is on fixed income.",
+    "structure": "Steven picks a lender with low fixed fees and runs the HOEPA and state high-cost tests before issuing the Loan Estimate.",
+    "numbers": "Illustrative: $30k loan; points and fees must stay under HOEPA limits (verify current threshold for small loans).",
+    "why": "Avoids a high-cost loan with added restrictions. Keeps fees proportional. Fixed payment fits his budget.",
+    "alternatives": "A personal loan was considered but cost more. Roof financing from the contractor was considered but had high fees.",
+    "watch": "HOEPA and California high-cost thresholds; rescission."
    }
   ],
   "qa": [
    {
     "q": "Is a HELOAN subject to TRID?",
-    "a": "Yes, closed-end consumer second liens are covered by TRID."
+    "a": "Yes. Closed-end consumer second liens secured by real property require a Loan Estimate within 3 business days and a Closing Disclosure 3 business days before consummation. This differs from HELOCs, which use Reg Z open-end disclosures."
    },
    {
-    "q": "Is there rescission?",
-    "a": "Yes on a principal residence, 3 business days."
+    "q": "Is there a right of rescission?",
+    "a": "Yes on a principal residence. The borrower has 3 business days after signing to cancel. Funds cannot be disbursed until rescission expires."
    },
    {
     "q": "Can I use bank statements?",
-    "a": "Non-QM seconds allow this; ATR still applies."
+    "a": "Non-QM seconds allow bank-statement income. ATR still applies and the lender must document repayment ability. Pricing is usually higher."
    },
    {
     "q": "Does it require an appraisal?",
-    "a": "Depends on loan amount and CLTV; AVMs are common for smaller loans."
+    "a": "It depends on loan size and CLTV. Smaller loans may use AVMs or hybrids. Larger loans often require full appraisals."
    },
    {
     "q": "Are there prepayment penalties?",
-    "a": "Rare on owner-occupied; check state law."
+    "a": "They are rare on owner-occupied seconds and restricted by law. Investment seconds may have them (verify state rules). Steven checks the note."
    },
    {
     "q": "How fast can it close?",
-    "a": "Often 2-4 weeks."
+    "a": "Often 2-4 weeks, depending on valuation and rescission. Fintech lenders may be faster. Title issues can delay."
    },
    {
     "q": "Can I use it for investment property?",
-    "a": "Some lenders offer investment seconds."
+    "a": "Some lenders offer investment seconds, including DSCR seconds. CLTV caps are lower. Pricing is higher."
    },
    {
     "q": "Is the interest deductible?",
-    "a": "Tax advisor question; depends on use of funds."
+    "a": "It depends on how the funds are used and current tax law. Funds used to buy, build or substantially improve the home may qualify. Consult a tax advisor."
    }
   ],
   "aeQuestions": [
-   "What is your max CLTV by FICO and occupancy?",
-   "What income documentation types do you accept?",
-   "What valuation method applies?",
-   "What term options are available?",
-   "What fees apply?",
-   "Do you lend on investment properties?",
-   "How do you test HOEPA?",
+   "What is your max CLTV by FICO for primary, second home and investment?",
+   "Do you offer bank-statement, 1099 or DSCR second liens?",
+   "What valuation method applies at my loan amount (AVM, hybrid, full appraisal)?",
+   "Which fixed terms do you offer (10/15/20/30), and any balloons?",
+   "What are your fixed fees, and how do they test against HOEPA on loans under $50k?",
+   "Will you lend behind a VA or FHA first lien?",
+   "Do you allow payoff of debts or IRS liens directly at closing?",
    "What is your minimum loan amount?",
-   "Do you lend behind a VA first lien?"
+   "How do you handle a first lien with prior forbearance or modification?",
+   "What is your turn time from application to funding?"
   ],
   "redFlags": [
    "High fees on small loans",
@@ -2267,17 +2258,18 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
    "Veteran education on equity options"
   ],
   "checklist": [
-   "First-lien statement",
-   "Income docs",
-   "Insurance declarations",
-   "Loan Estimate",
-   "Closing Disclosure",
-   "Valuation",
-   "Title",
+   "First-lien statement and note terms",
+   "Income documents (W-2/returns or bank statements)",
+   "Homeowners insurance declarations",
+   "Loan Estimate and intent to proceed",
+   "HOEPA and state high-cost test results",
+   "Valuation report",
+   "Title with lien search (PACE, UCC, judgments)",
+   "Closing Disclosure delivered 3 business days before signing",
    "Rescission notice",
-   "Payoff instructions",
-   "HOEPA test",
-   "ID"
+   "Payoff letters for any debts paid at closing",
+   "Contractor bid if for improvements",
+   "Government ID"
   ],
   "updated": "2026-11"
  },
@@ -2362,109 +2354,110 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
   },
   "scenarios": [
    {
-    "t": "Avoiding jumbo pricing",
+    "t": "Keeping the first lien under the county limit",
     "who": "Kevin, 36, software engineer, San Diego",
-    "situation": "Kevin is buying at $1.4M with 10% down. A 90% first would exceed the county high-balance limit and be jumbo. He prefers conforming terms.",
-    "structure": "Steven uses an 80% high-balance first ($1.12M if within limit) and a 10% second.",
-    "numbers": "Illustrative: $1.12M first; $140k second; CLTV 90%.",
-    "why": "Keeps the first lien conforming.",
-    "alternatives": "Jumbo with 10% down and PMI.",
-    "watch": "Second-lien rate; combined DTI."
+    "situation": "Kevin is buying a $1.35M home in North Park with 10% down. A 90% first lien of $1.215M would exceed San Diego County's high-balance limit and be priced as jumbo. He has strong income but wants to keep cash reserves for furnishing and a possible job change.",
+    "structure": "Steven uses an 80% high-balance first and a 10% fixed second, confirming the county limit and that both lenders accept the structure.",
+    "numbers": "Illustrative: price $1.35M; first $1.08M (must be at or under the 2026 San Diego County limit - verify); second $135k; CLTV 90%; down $135k.",
+    "why": "The first lien stays conforming high-balance, avoiding jumbo reserve requirements and pricing. No PMI is required on an 80% first. Kevin keeps more cash because jumbo would demand more reserves.",
+    "alternatives": "A jumbo loan with 10% down and PMI was considered; it simplifies to one loan but costs more and requires larger reserves. Putting 20% down was considered but would drain his liquidity.",
+    "watch": "Second-lien rate is higher; combined DTI must fit; future refinances need second-lien subordination or payoff."
    },
    {
-    "t": "No PMI with planned payoff",
+    "t": "Avoiding PMI with a planned payoff",
     "who": "Maria, 33, teacher, Temecula",
-    "situation": "Maria has 10% down and expects a $40k inheritance next year. She wants to avoid PMI. She plans to pay the second off quickly.",
-    "structure": "80-10-10 with a HELOC second she can pay off without penalty.",
-    "numbers": "Illustrative: $650k price; $520k first; $65k HELOC.",
-    "why": "No PMI and flexible payoff.",
-    "alternatives": "PMI with cancellation later.",
-    "watch": "Variable HELOC rate."
+    "situation": "Maria has 10% down on a $650,000 home. She expects a $40,000 inheritance next year. She wants to avoid PMI and pay down debt quickly.",
+    "structure": "Steven sets up an 80-10-10 with a HELOC second she can pay off without penalty.",
+    "numbers": "Illustrative: first $520k; HELOC $65k; CLTV 90%; inheritance pays HELOC down to $25k.",
+    "why": "No PMI from day one. The HELOC can be paid down flexibly. The structure matches her expected inheritance.",
+    "alternatives": "PMI with cancellation at 78-80% LTV was considered. Waiting to buy until the inheritance arrives was considered but prices might rise.",
+    "watch": "Variable HELOC rate; inheritance timing uncertain."
    },
    {
-    "t": "Buy before sell with piggyback",
+    "t": "Buy-before-sell with an 80-15-5",
     "who": "Ben, 48, sales manager, Carlsbad",
-    "situation": "Ben wants to buy before selling his current home. He has 5% down in cash. He will pay off the second when his home sells.",
-    "structure": "80-15-5 with a HELOC second.",
-    "numbers": "Illustrative: $1.2M price; $960k first; $180k second.",
-    "why": "Avoids bridge loan cost.",
-    "alternatives": "Bridge loan.",
-    "watch": "DTI with both homes."
+    "situation": "Ben wants to buy before selling his current home. He has 5% down in cash. He plans to pay off the second when his home sells.",
+    "structure": "Steven arranges an 80-15-5 with a HELOC second.",
+    "numbers": "Illustrative: price $1.2M; first $960k; HELOC $180k; down $60k.",
+    "why": "Avoids a bridge loan and keeps payments manageable. HELOC can be paid off upon sale. Conventional first stays at 80%.",
+    "alternatives": "A bridge loan was considered but cost more. Selling first was considered but risked losing the home.",
+    "watch": "DTI with both homes until sale."
    },
    {
     "t": "Veteran comparing options",
     "who": "Tasha, 30, Navy petty officer, Chula Vista",
-    "situation": "Tasha has partial entitlement from a previous VA loan. VA would need some down payment. She asks about piggyback.",
-    "structure": "Steven compares VA with partial entitlement vs conventional piggyback.",
-    "numbers": "Illustrative: VA down payment $25k vs conventional $65k.",
-    "why": "VA usually wins on cost.",
-    "alternatives": "Conventional piggyback.",
-    "watch": "Entitlement calculation."
+    "situation": "Tasha has partial entitlement from a previous VA loan. VA would need some down payment. She asks about a piggyback.",
+    "structure": "Steven compares VA with partial entitlement vs a conventional piggyback.",
+    "numbers": "Illustrative: VA down payment ~$25k vs conventional piggyback $65k on a $650k home.",
+    "why": "VA usually wins on cost with lower down payment and no PMI. Funding fee may apply. Piggyback requires more cash.",
+    "alternatives": "A conventional piggyback was considered. FHA was considered but has MIP.",
+    "watch": "Entitlement calculation; VA funding fee."
    },
    {
     "t": "Condo purchase",
     "who": "Leo, 40, chef, Las Vegas",
-    "situation": "Leo is buying a condo with 10% down. PMI quotes are high for condos. The project is warrantable.",
-    "structure": "80-10-10: an 80% conventional first plus a 10% fixed second, with the condo project reviewed and approved by both lenders.",
-    "numbers": "Illustrative: $400k price; $320k first; $40k second.",
-    "why": "Lower cost than PMI in this case.",
-    "alternatives": "90% conventional with borrower-paid PMI; condo PMI factors at his score made it the higher-cost option over a 5-year hold.",
-    "watch": "Condo approval for both lenders."
+    "situation": "Leo is buying a condo with 10% down. PMI quotes are high for condos at his credit score. The project is warrantable.",
+    "structure": "80-10-10 with a fixed second.",
+    "numbers": "Illustrative: price $400k; first $320k; second $40k; CLTV 90%.",
+    "why": "Lower cost than PMI in this case. Fixed second gives predictability. Both lenders approve condo.",
+    "alternatives": "90% conventional with PMI was considered. FHA was considered but condo approval was not available.",
+    "watch": "Condo approval for both lenders; HOA dues."
    },
    {
     "t": "Chicago jumbo avoidance",
     "who": "Rachel, 42, attorney, Chicago",
     "situation": "Rachel is buying a $1.05M home with 15% down. Cook County limit is the baseline. She wants conforming terms.",
     "structure": "80-5-15 with a conforming first and a 5% second.",
-    "numbers": "Illustrative: $840k first (verify limit) and $52.5k second.",
-    "why": "Keeping the first lien at or under the Cook County conforming limit avoids jumbo reserve and pricing requirements.",
-    "alternatives": "Jumbo with 15% down; available but required 12 months of reserves she would rather keep invested.",
-    "watch": "IL attorney review period and the second-lien investor's CLTV and FICO rules."
+    "numbers": "Illustrative: first $840k (verify limit); second $52.5k; down $157.5k.",
+    "why": "Avoids jumbo pricing and reserves. Keeps first conforming. Second is small.",
+    "alternatives": "Jumbo with 15% down was considered. 20% down was considered but she prefers liquidity.",
+    "watch": "IL attorney review; second-lien CLTV rules."
    }
   ],
   "qa": [
    {
-    "q": "Is piggyback cheaper than PMI?",
-    "a": "It depends on rates, PMI factors and the hold period; Steven runs both."
+    "q": "Is a piggyback cheaper than PMI?",
+    "a": "It depends on second-lien rate, PMI factor, and how long you keep the loan. Steven compares total cost over 3, 5 and 7 years. PMI can be removed later, while a second must be paid off."
    },
    {
-    "q": "Can the second be a HELOC?",
-    "a": "Yes, many piggybacks use HELOC seconds."
+    "q": "Can the second lien be a HELOC?",
+    "a": "Yes, many piggybacks use HELOC seconds for flexibility. The payment is variable. Qualifying payment rules vary."
    },
    {
     "q": "Do both lenders need to approve?",
-    "a": "Yes, both underwrite and close simultaneously."
+    "a": "Yes. Both underwrite and close simultaneously. Delays from either lender delay closing."
    },
    {
     "q": "Are seller concessions limited?",
-    "a": "Often based on CLTV (verify)."
+    "a": "Often based on CLTV, not just first-lien LTV (verify). This can reduce allowed concessions. Steven checks early."
    },
    {
-    "q": "Can I refinance later?",
-    "a": "The second must be subordinated or paid off; subordination policies vary."
+    "q": "Can I refinance the first lien later?",
+    "a": "The second lien must be subordinated or paid off. Subordination policies vary. Some second lenders refuse."
    },
    {
     "q": "Do I need a higher FICO?",
-    "a": "Often for the second lien."
+    "a": "Often for the second lien. Second-lien investors set their own floors. Pricing tiers vary."
    },
    {
     "q": "Is second-lien interest deductible?",
-    "a": "Tax advisor question."
+    "a": "Mortgage interest on acquisition debt may be deductible within limits. Consult a tax advisor. Rules changed in recent years."
    },
    {
     "q": "Can I pay off the second early?",
-    "a": "Usually yes without penalty on owner-occupied loans."
+    "a": "Usually yes without penalty on owner-occupied loans. Check the note. Paying it off can improve DTI later."
    }
   ],
   "aeQuestions": [
-   "What is your max CLTV?",
-   "What FICO do you require for the second?",
-   "HELOC or fixed second?",
-   "What is your subordination policy?",
-   "How are seller concessions calculated?",
-   "How is DTI calculated with a HELOC second?",
-   "What property types are eligible?",
-   "How do you coordinate closings?"
+   "What is your max CLTV on piggyback seconds and does it differ for condos?",
+   "What FICO minimum applies to the second lien?",
+   "Do you offer HELOC or fixed-rate seconds, and what are the terms?",
+   "What is your subordination policy for future first-lien refinances?",
+   "How are seller concessions calculated (LTV vs CLTV)?",
+   "How do you calculate the qualifying payment on a HELOC second?",
+   "Which property types are eligible (condo, 2-4 unit)?",
+   "How do you coordinate closing with a different first-lien lender?",
+   "What second-lien loan amount limits apply?"
   ],
   "redFlags": [
    "Second-lien terms not finalized before contract",
@@ -2484,16 +2477,17 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
    "Past FHA clients now eligible for conventional"
   ],
   "checklist": [
-   "Both Loan Estimates",
-   "Both Closing Disclosures",
+   "First-lien Loan Estimate",
+   "Second-lien Loan Estimate",
+   "PMI vs piggyback comparison over hold period",
    "Appraisal",
-   "Title for both liens",
-   "Income docs",
-   "Asset docs",
+   "Title commitment insuring both liens",
+   "Income and asset documents",
    "Subordination agreement",
-   "Insurance",
-   "PMI comparison",
-   "Second-lien approval"
+   "Insurance declarations",
+   "Both Closing Disclosures",
+   "County loan limit verification",
+   "Condo approval if applicable"
   ],
   "updated": "2026-11"
  },
