@@ -92,114 +92,114 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
    {
     "t": "First flip with a contractor partner",
     "who": "Marcus, 34, firefighter, Temecula",
-    "situation": "Marcus has $140k saved and a licensed GC friend. He found a dated 3-bed in Murrieta at $560k with an ARV near $760k. He has never completed a flip.",
+    "situation": "Marcus has $140k saved and a licensed GC friend who will run the job. He found a dated 3-bed in Murrieta at $560k with an ARV near $760k based on four recent remodeled sales. He has never completed a flip, so most lenders will put him in their lowest experience tier.",
     "structure": "Steven places him with a lender that has a first-timer tier, adds the GC's resume and license to the file, and uses a slightly lower LTC with a larger contingency.",
     "numbers": "Illustrative: 75% of purchase = $420k, rehab $90k held back, total $510k = 67% of ARV.",
-    "why": "Business-purpose bridge lends on the deal and funds rehab; a conventional cash-out or personal loan could not fund rehab draws on a non-occupied purchase.",
-    "alternatives": "HELOC on his primary to pay cash was considered but puts his home at risk and cash competes poorly in a short close; kept as the contingency source.",
+    "why": "A business-purpose bridge lends on the deal and funds the rehab in draws, which a conventional purchase loan cannot do on a non-owner-occupied fixer. Adding the GC's license and track record to the file can improve how the lender views execution risk. Lower leverage with a larger contingency keeps a first project survivable if costs run over.",
+    "alternatives": "A HELOC on his primary to pay cash was considered; it competes well on speed but puts his home at risk, so it is kept only as the contingency source. Partnering with an experienced flipper was considered; it would raise the tier but cost him half the profit.",
     "watch": "First-timer pricing and lower leverage; GC must be licensed; permits for any structural work; 9-month timeline realistic?"
    },
    {
     "t": "Experienced flipper scaling volume",
     "who": "Danielle, 41, real estate investor, Chula Vista",
-    "situation": "Danielle has done 11 flips in 3 years and wants a repeatable lender for 6-8 deals a year. She buys at trustee sales and off-market.",
+    "situation": "Danielle has completed 11 flips in 3 years, mostly from trustee sales and off-market wholesalers. She wants one repeatable lender for 6-8 deals a year. Her current lender takes 10 days to fund draws, which slows her crews.",
     "structure": "Steven sets her up with a lender offering a top experience tier and fast draws, plus a separate line for auction purchases where title is less clean.",
     "numbers": "Illustrative: 90% LTC on purchase, 100% rehab, 75% ARV cap; per-deal points lower at higher tiers.",
-    "why": "Volume tiers reward documented experience; a portfolio bank line requires more financial reporting and is slower to fund.",
-    "alternatives": "A private credit line from a single investor was considered but concentration and personal guaranties without caps were a concern.",
+    "why": "Top experience tiers give the best leverage and lowest points, which matters across many deals a year. A lender with 2-3 day draws keeps crews working and shortens hold time. A separate auction-purchase source lets her bid at trustee sales where financing contingencies are not allowed.",
+    "alternatives": "A portfolio bank line was considered; it may be cheaper but requires full financial reporting and slower approvals. A single private investor credit line was considered but concentrated risk and uncapped personal guaranties were a concern.",
     "watch": "Auction purchases need title insurance options; trustee sale cash requirements may need a separate funding source first."
    },
    {
     "t": "Veteran using VA primary plus flipping on the side",
     "who": "Andre, 38, Navy veteran, Oceanside",
-    "situation": "Andre owns his home with a VA loan and wants to start flipping. He wants to keep his entitlement for a future primary move.",
+    "situation": "Andre owns his Oceanside home with a VA loan and wants to start flipping on weekends. He wants to keep his VA entitlement available for a future PCS-style move. He has $120k in savings and a contractor he trusts.",
     "structure": "Steven keeps the flip in an LLC with business-purpose financing, never touching VA entitlement, and documents the business-purpose intent.",
     "numbers": "Illustrative: $450k purchase, $70k rehab, 80% LTC, 70% ARV cap on $700k ARV = $490k max.",
-    "why": "VA is owner-occupied only; misusing it for a flip would be occupancy fraud.",
-    "alternatives": "Using his home equity via HELOC for the down payment was considered; acceptable if disclosed and liquidity is tracked.",
+    "why": "Keeping the flip in an LLC with business-purpose financing leaves his VA loan and entitlement untouched. The rehab lender evaluates the deal, not his military pay structure. Documenting business purpose protects both Andre and the lender.",
+    "alternatives": "Using VA to buy the flip was rejected because VA is owner-occupied only and misuse would be occupancy fraud. A HELOC on his home for the down payment was considered and is acceptable if disclosed and liquidity is tracked.",
     "watch": "Business-purpose certification must be truthful; never move into the flip without disclosing."
    },
    {
     "t": "Small multi-unit value-add flip",
     "who": "Priya, 45, engineer, Los Angeles",
-    "situation": "Priya wants to buy a tired triplex in Riverside, renovate, then sell to an owner-occupant house-hacker.",
+    "situation": "Priya wants to buy a tired triplex in Riverside, renovate all three units, and sell to an owner-occupant house-hacker. Two units are vacant and one tenant is month-to-month. Her budget is $150k.",
     "structure": "Steven places a fix-and-flip lender that accepts 2-4 units and confirms appraiser will use unit-comps and sold triplex comps.",
     "numbers": "Illustrative: $780k purchase, $150k rehab, $1.15M ARV; 70% ARV cap = $805k max loan vs $930k cost basis.",
-    "why": "Gives rehab funding and speed; DSCR on a vacant unrenovated triplex would not qualify.",
-    "alternatives": "Selling vs. holding: she ran a DSCR refi exit as plan B; rents support about 1.0x after stabilization.",
+    "why": "A fix-and-flip lender that accepts 2-4 units funds the rehab and lends on ARV. The appraiser can use sold triplex comps to support value. Speed lets her compete with cash buyers.",
+    "alternatives": "A DSCR purchase loan was considered but a vacant, unrenovated triplex will not cover debt service. Holding as a rental with a DSCR exit was modeled as plan B at about 1.0x after stabilization.",
     "watch": "Tenant occupancy at purchase; relocation rules in CA jurisdictions; just-cause eviction laws (verify local)."
    },
    {
     "t": "Arizona out-of-state flip",
     "who": "Tom, 52, retired Marine, Temecula",
-    "situation": "Tom wants to flip in Phoenix where prices are lower. He has 4 completed flips in CA.",
+    "situation": "Tom wants to flip in Phoenix where prices are lower than in Temecula. He has 4 completed flips in California. He cannot be on site more than once a month.",
     "structure": "Steven confirms Steven's lender is active in AZ and that Steven's AZ license covers the arrangement, and uses a lender with local inspectors.",
     "numbers": "Illustrative: $340k purchase, $60k rehab, $480k ARV; 70% cap = $336k.",
-    "why": "Remote flippers need lender-run inspections and quick draws; a local hard money lender may want higher points for out-of-state.",
-    "alternatives": "Partnering with a local investor was considered but would cut profit and complicate guaranties.",
+    "why": "A lender with local inspectors and photo-verified draws makes remote flipping practical. His California experience counts toward the tier. Arizona's lower price points mean a smaller loan and lower carry.",
+    "alternatives": "A local Phoenix hard money lender was considered but quoted more points for an out-of-state borrower. Partnering with a local investor was considered but would complicate guaranties and split profit.",
     "watch": "Remote GC oversight risk; get photo-verified draws and local GC references."
    },
    {
     "t": "Florida flip with insurance pressure",
     "who": "Kendra, 36, nurse, Tampa (formerly San Diego)",
-    "situation": "Kendra bought her first flip in Tampa; insurance on a 1980s roof is hard to obtain.",
+    "situation": "Kendra bought her first flip in Tampa after relocating from San Diego. The house has a 1980s roof that carriers will not insure. Her draw budget assumed insurance at $2,500/year.",
     "structure": "Steven pre-screens builder's risk/vacant coverage before contract and budgets the roof first in the scope.",
     "numbers": "Illustrative: insurance quote $6k/year vs $2.5k assumed; carry rises roughly $300/month.",
-    "why": "Fix-and-flip funds the roof replacement in draw one; agency financing would not close on an uninsurable roof.",
-    "alternatives": "Cash purchase with a later delayed-financing refi was considered but she lacked enough cash.",
+    "why": "The flip lender funds the roof in the first draw, which makes the property insurable for the rest of the project and for the end buyer. Pre-screening coverage before contract avoids buying an uninsurable asset. Budgeting the real premium keeps her profit math honest.",
+    "alternatives": "A cash purchase with delayed financing afterward was considered but she lacked enough cash. Skipping the roof to save money was rejected because buyers' lenders would require insurance anyway.",
     "watch": "Wind mitigation, roof age rules, flood zone; FL insurance market volatility (verify)."
    },
    {
     "t": "Partner joint venture",
     "who": "Luis, 29, contractor, El Cajon",
-    "situation": "Luis has construction skill but little cash; his money partner has cash but no time. They form an LLC 50/50.",
+    "situation": "Luis has construction skill and five projects as a subcontractor but little cash. His money partner has $110k but no time. They formed a 50/50 LLC to flip a house in El Cajon.",
     "structure": "Steven structures both members as guarantors so the stronger credit/liquidity profile counts and Luis's experience counts toward the tier.",
     "numbers": "Illustrative: partner provides $110k; Luis's GC license and 5 prior projects as a sub support the tier.",
-    "why": "Fix-and-flip lenders accept combined guarantor strength; a bank would want 2 years of entity history.",
-    "alternatives": "Seller financing was considered but the seller wanted cash.",
+    "why": "Fix-and-flip lenders accept combined guarantor strength, so the partner's liquidity and Luis's construction background both count. The LLC defines roles and capital. The deal gets done that neither could do alone.",
+    "alternatives": "Seller financing was considered but the seller wanted cash. A bank loan was considered but would want two years of entity history.",
     "watch": "Operating agreement must address capital calls and who signs draws."
    }
   ],
   "qa": [
    {
     "q": "Can rehab funds be advanced up front?",
-    "a": "Rarely; most lenders reimburse in arrears after inspection. Some allow a small initial draw at closing for mobilization (lender-specific)."
+    "a": "Rarely. Most lenders reimburse in arrears after an inspection confirms completed work. Some allow a small initial draw at closing for mobilization or materials deposits (lender-specific)."
    },
    {
     "q": "Does a 'gross profit' or 'margin' test apply?",
-    "a": "Many lenders want the projected margin (ARV minus all costs) to clear a minimum, often 10-20% (lender-specific)."
+    "a": "Many lenders want projected margin (ARV minus all costs including selling costs) to clear a minimum, often 10-20% (lender-specific). Thin-margin deals are declined or resized. Steven runs the margin before submitting."
    },
    {
     "q": "How is experience counted for co-guarantors?",
-    "a": "Usually the most experienced guarantor sets the tier if they own a meaningful share of the entity (lender-specific threshold, often 20-25%)."
+    "a": "Usually the most experienced guarantor sets the tier if they own a meaningful share of the entity, often 20-25% or more (lender-specific). Experience is verified with settlement statements or deeds. Self-reported experience without records is not counted."
    },
    {
     "q": "What if the appraisal ARV comes in low?",
-    "a": "Loan is resized to the ARV cap; borrower brings more cash or reduces scope. Reconsideration of value needs new comps."
+    "a": "The loan is resized to the ARV cap and the borrower brings more cash or reduces scope. A reconsideration of value needs new, closer, recent sold comps. Steven sets the offer price with a conservative ARV to reduce this risk."
    },
    {
     "q": "Are interest reserves available?",
-    "a": "Some lenders build an interest reserve into the loan; it raises the loan amount and is still capped by LTC/ARV (lender-specific)."
+    "a": "Some lenders build an interest reserve into the loan. It raises the loan amount and is still capped by LTC and ARV limits. It protects cash flow but increases total interest."
    },
    {
     "q": "Is this a consumer loan?",
-    "a": "No, if truly business-purpose to an entity or investor; TILA/RESPA generally do not apply, but CA DRE/CFL and state law do."
+    "a": "No, if it is truly business-purpose to an entity or investor. TILA and RESPA generally do not apply. California DRE and CFL rules and state licensing still apply."
    },
    {
     "q": "Can the borrower live in the property during the rehab?",
-    "a": "No; that converts it to consumer-purpose owner-occupied credit and the program is not eligible."
+    "a": "No. That converts the transaction to owner-occupied consumer credit, which these programs do not offer. Misrepresenting occupancy is fraud."
    },
    {
     "q": "What about permits?",
-    "a": "Lenders increasingly require permits for structural, electrical, plumbing and additions; unpermitted work hurts ARV and resale."
+    "a": "Lenders increasingly require permits for structural, electrical, plumbing and additions. Unpermitted work hurts ARV and resale. Final permit sign-off may be required before the last draw."
    },
    {
     "q": "How long do draws take?",
-    "a": "Typically 2-7 business days from request to wire depending on inspection method (lender-specific)."
+    "a": "Typically 2-7 business days from request to wire depending on inspection method (lender-specific). Photo or app-based inspections are faster. Incomplete draw packages are the most common delay."
    },
    {
     "q": "What happens at maturity if unsold?",
-    "a": "Extension for a fee if in good standing, or refinance to DSCR/another bridge; default interest otherwise."
+    "a": "The borrower can request an extension for a fee if in good standing, refinance to a DSCR or another bridge, or sell at a reduced price. Default interest applies if the loan matures unpaid. Steven starts exit planning 60 days before maturity."
    }
   ],
   "aeQuestions": [
@@ -818,17 +818,17 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "numbers": "Illustrative: cost $900k; 85% LTC = $765k; as-completed $1.3M.",
     "why": "The business-purpose loan matches the resale plan. Draws are suited to construction. Carl's experience supports favorable terms.",
     "alternatives": "VA construction loans are only for owner-occupied homes. Self-funding was considered but would tie up his capital.",
-    "watch": "Business-purpose certification; never misuse VA."
+    "watch": "Carl must sign a truthful business-purpose certification; if he later decides to live in the home, the loan becomes a consumer-purpose problem and VA cannot be applied retroactively."
    },
    {
     "t": "Three-lot build-to-rent",
     "who": "Wendy, 49, investor, Phoenix",
-    "situation": "Wendy owns three adjacent lots and wants to build three homes to rent. She wants one lender for efficiency.",
+    "situation": "Wendy owns three adjacent lots in a Phoenix infill neighborhood and wants to build three homes to rent. She has completed two builds before with the same GC. She wants one lender and one draw inspector for efficiency.",
     "structure": "Steven arranges a multi-property construction facility with lot-level budgets and release provisions.",
     "numbers": "Illustrative: 3 homes at $400k cost each = $1.2M; 85% LTC = $1.02M; as-completed $560k each.",
     "why": "One facility with shared inspector reduces administration. Draw timing can be coordinated. Wendy has one relationship.",
-    "alternatives": "Three separate loans were considered for flexibility but cost more.",
-    "watch": "Cross-default and release prices per lot."
+    "alternatives": "Three separate ground-up loans were considered; they allow independent sales but triple the points, appraisals and title fees. A bank construction line was considered but required two years of entity financials she does not have.",
+    "watch": "Cross-default ties all three lots together; negotiate release prices (e.g., 110% of allocation) so a finished home can be refinanced or sold while the others are still building."
    },
    {
     "t": "Fire rebuild for a landlord",
@@ -838,7 +838,7 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "numbers": "Illustrative: insurance $500k; cost $900k; loan $450k.",
     "why": "Rebuilding restores income. Insurance proceeds reduce borrowing. DSCR exit is planned.",
     "alternatives": "Selling the lot was considered but would forfeit long-term rental income. Agency loans are not suited.",
-    "watch": "Insurance claim timing; permit backlog (verify)."
+    "watch": "Insurance proceeds may be released by the servicer in stages; LA County rebuild permits after the Eaton fire may take months (verify); the DSCR exit depends on rents at completion."
    }
   ],
   "qa": [
@@ -1017,8 +1017,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Gary owns 9 single-family rentals financed with 9 different loans opened over 15 years. Two have balloons coming due and one is with a lender that is slow on escrow analysis. He wants one payment and about $400k to buy a duplex.",
     "structure": "Steven quotes both a blanket and nine individual DSCR refis. He places a 7-year fixed blanket at about 65% LTV with release at 115% of allocation and a step-down prepayment that does not apply to partial releases after year 3.",
     "numbers": "Illustrative: pool value $5.4M; blanket $3.5M; existing debt $3.0M; cash out ~$420k after costs; aggregate DSCR ~1.25x.",
-    "why": "One closing, one set of fees and one maturity; releases let him sell houses over time.",
-    "alternatives": "Nine DSCR loans would allow individual sales without release math but cost more in closing fees and leave nine maturities.",
+    "why": "One closing, one set of fees and one maturity date simplify Gary's financial life. The release clause lets him sell houses one at a time without refinancing the whole pool. Cash-out funds the duplex purchase while aggregate DSCR stays healthy.",
+    "alternatives": "Nine individual DSCR refinances were considered; they allow independent sales with no release premium but cost more in closing fees and leave nine maturities to manage. Keeping the existing loans was considered but two balloons are coming due.",
     "watch": "Cross-default; the release price must be negotiated before signing; balloon in year 7."
    },
    {
@@ -1027,8 +1027,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Sonia owns 4 rentals in Phoenix and 2 in Las Vegas. She wants to pull equity and simplify. Her income is irregular because of contract work.",
     "structure": "Steven uses a non-QM blanket lender active in AZ and NV (both states where Steven is licensed), qualified on DSCR rather than her W-2s.",
     "numbers": "Illustrative: $2.4M aggregate value; $1.6M blanket (66.7%); rents $14,800/month.",
-    "why": "DSCR blanket ignores her irregular income and gives one relationship across two states.",
-    "alternatives": "Agency cash-outs would need two years of steady income and count against financed-property limits.",
+    "why": "A DSCR blanket ignores Sonia's irregular travel-contract income and qualifies on rents. One lender covering AZ and NV avoids two separate relationships. Steven is licensed in both states, so he can arrange it directly.",
+    "alternatives": "Agency cash-outs were considered but would need two years of steady income and count against financed-property limits. Separate state-specific DSCR loans were considered but would add closing costs.",
     "watch": "Two closing agents; NV and AZ foreclosure differences; insurance across both states."
    },
    {
@@ -1037,8 +1037,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Jim wants to sell one house a year for 6 years to fund retirement and pay modest capital gains each year. He needs lower payments now. He worries about penalties when he sells.",
     "structure": "Steven negotiates release at 110% of allocation with no prepayment applied to releases and a 5-year fixed term.",
     "numbers": "Illustrative: house allocated $300k releases for $330k; sale at $620k nets ~$245k after 7% costs.",
-    "why": "Gives lower payments now while preserving planned sales.",
-    "alternatives": "Individual loans would avoid release premiums but cost more up front; a HELOC on his primary would not reduce rental payments.",
+    "why": "The blanket lowers Jim's payments now while preserving his planned sales. A 110% release with no prepayment on releases keeps each sale's cost predictable. One loan is easier for him to manage in retirement.",
+    "alternatives": "Individual loans were considered; they avoid release premiums but cost more up front. A HELOC on his primary was considered but would not reduce rental payments.",
     "watch": "Release covenants that require the remaining pool to stay above a DSCR floor."
    },
    {
@@ -1047,8 +1047,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Hannah bought 5 condos in Tampa for cash in 2023. She wants to pull equity to buy more. Two buildings have post-Surfside milestone inspection and structural reserve study requirements.",
     "structure": "Steven screens each condo association for milestone inspection status, reserve funding and special assessments before submitting, and uses a lender that accepts non-warrantable condos in a pool.",
     "numbers": "Illustrative: $1.1M value, $700k loan (63.6%); one building's $18k per-unit assessment reduces that unit's value.",
-    "why": "One loan on five small-balance condos is easier than five small loans that many lenders avoid.",
-    "alternatives": "Individual DSCR loans face the same condo review and higher minimum-loan pricing.",
+    "why": "One loan on five small-balance condos is easier to place than five small loans, which many lenders avoid. Screening each association up front prevents a late decline. Cash-out funds her next purchases.",
+    "alternatives": "Individual DSCR loans were considered; they face the same condo review and higher small-loan pricing. Waiting until assessments are paid was considered but would delay her plans.",
     "watch": "Special assessments, insurance costs and condo concentration limits (verify FL law and lender rules)."
    },
    {
@@ -1057,57 +1057,57 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Ray owns 4 duplexes near Camp Pendleton rented to military families. Roofs and HVAC need work. Rents are tied to BAH levels.",
     "structure": "Steven uses a blanket with a capex holdback released on proof of work.",
     "numbers": "Illustrative: rents $18,000/month; loan $2.1M; $150k capex holdback.",
-    "why": "Blanket funds capex and refinances all four in one closing.",
-    "alternatives": "HELOC on his primary was considered but puts his home at risk for rental work.",
+    "why": "The blanket funds capex and refinances all four duplexes in one closing. A holdback ensures repairs are done. Ray avoids using his home equity.",
+    "alternatives": "A HELOC on his primary was considered but puts his home at risk for rental work. Individual refinances were considered but would cost more.",
     "watch": "BAH changes and deployment-driven vacancy; tenant protections for servicemembers (SCRA)."
    },
    {
     "t": "Substitution instead of refinance",
     "who": "Bea, 50, dental hygienist, Temecula",
-    "situation": "Bea wants to sell one weak property and buy a better one without refinancing her pool. Her current blanket has a substitution clause.",
+    "situation": "Bea wants to sell one weak property and buy a better one without refinancing her pool. Her current blanket has a substitution clause. The new property is in the same county.",
     "structure": "Steven coordinates the substitution: new appraisal, title, insurance and a substitution fee, keeping her existing loan.",
     "numbers": "Illustrative: substitution fee ~0.5% of allocation plus appraisal and title; no new points.",
-    "why": "Avoids prepayment penalty and new loan costs.",
-    "alternatives": "Release plus a separate DSCR loan for the new property.",
+    "why": "Substitution avoids a prepayment penalty and new loan costs. The lender keeps its collateral pool. Bea upgrades her portfolio efficiently.",
+    "alternatives": "A release plus a separate DSCR loan for the new property was considered. Refinancing the whole pool was considered but would trigger prepayment.",
     "watch": "Lender approval timeline vs purchase contract; DSCR re-test."
    }
   ],
   "qa": [
    {
     "q": "What is a release clause?",
-    "a": "A clause allowing one parcel to be removed from the lien by paying a stated amount, often 110-125% of its allocated loan balance."
+    "a": "A clause allowing one parcel to be removed from the lien by paying a stated amount, often 110-125% of its allocated loan balance. Some lenders also re-test DSCR and LTV on the remaining pool. Negotiate it before signing."
    },
    {
     "q": "Can properties be substituted?",
-    "a": "Some lenders allow substitution for a fee with a new appraisal and DSCR test."
+    "a": "Some lenders allow substitution for a fee with a new appraisal, title and DSCR test. The replacement must meet the lender's property standards. It avoids prepayment penalties."
    },
    {
     "q": "What if one property goes vacant?",
-    "a": "The aggregate DSCR may absorb it, but covenants may require reporting and reserves."
+    "a": "The aggregate DSCR may absorb it. Covenants may require reporting and reserves. Prolonged vacancy can trigger lender review."
    },
    {
     "q": "Is there cross-default?",
-    "a": "Yes, typically a default on the blanket affects all collateral."
+    "a": "Yes, typically a default on the blanket affects all collateral. One problem property can put the whole portfolio at risk. Borrowers should maintain reserves."
    },
    {
     "q": "Do I need separate appraisals?",
-    "a": "Usually yes for each property."
+    "a": "Usually yes for each property. Some lenders accept portfolio valuations. Appraisal costs add up."
    },
    {
     "q": "Do prepayment penalties apply to releases?",
-    "a": "Often; negotiate before signing."
+    "a": "Often yes unless negotiated. Some lenders waive prepayment on partial releases. Read the note."
    },
    {
     "q": "Can properties be held in several LLCs?",
-    "a": "Some lenders allow co-borrowing affiliated LLCs with joint and several liability."
+    "a": "Some lenders allow co-borrowing affiliated LLCs with joint and several liability. Others require a single borrowing entity. Transfers may trigger tax or reassessment issues."
    },
    {
     "q": "Can I add properties later?",
-    "a": "Some programs allow add-ons or have accordion features."
+    "a": "Some programs allow add-ons or have accordion features. Each addition requires appraisal and underwriting. Terms vary."
    },
    {
     "q": "Is a blanket cheaper than individual loans?",
-    "a": "Not always; compare total costs including release premiums."
+    "a": "Not always. Compare total costs including release premiums, appraisal costs and prepayment. Individual loans give more flexibility."
    }
   ],
   "aeQuestions": [
@@ -1279,7 +1279,7 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "numbers": "Illustrative: $1.2M property; $780k loan; projected STR income $8,500/month.",
     "why": "STR income counts with DSCR lenders. Exchange defers tax. Tax advisor sets usage limits.",
     "alternatives": "A long-term rental was considered for stability. A different market was considered but Hector prefers Big Bear.",
-    "watch": "Personal-use limits; local STR permits."
+    "watch": "Personal use above the IRS safe-harbor limits (tax advisor confirms, commonly cited as 14 days or 10% of rented days) can jeopardize the exchange; Big Bear STR permits and caps must be checked before identification."
    },
    {
     "t": "DST instead of financing",
@@ -1513,7 +1513,7 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "numbers": "Illustrative: $700k value; $450k loan (64% LTV).",
     "why": "Removes due-on-sale exposure and aligns title and loan. DSCR loan fits the entity. Title coverage is updated.",
     "alternatives": "Requesting servicer consent was considered but uncertain. Deeding back to herself was considered but defeats the purpose.",
-    "watch": "Prepayment terms on the DSCR; rate change vs agency loan."
+    "watch": "A DSCR prepayment penalty (e.g., 3-year step-down) limits a sale in the near term; the new rate may be higher than the agency loan, so the cost of curing the risk must be shown in dollars."
    }
   ],
   "qa": [
@@ -1719,7 +1719,7 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "numbers": "Illustrative: $600k value; $420k loan (70% LTV); rent $3,400.",
     "why": "Restoring entitlement enables a zero-down purchase. The conventional loan fits the rental. Steve keeps the property.",
     "alternatives": "Buying with partial entitlement and a down payment was considered. Selling the rental was considered but would lose income.",
-    "watch": "Entitlement restoration rules; investment loan pricing."
+    "watch": "One-time entitlement restoration rules require the prior VA loan to be paid in full (verify); the new investment loan must be priced and qualified before the VA purchase contract is written."
    },
    {
     "t": "Short-term rental refinance",
@@ -1729,7 +1729,7 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "numbers": "Illustrative: $700k value; $490k loan (70%); STR income avg $5,200/month; illustrative PITIA $4,300; DSCR 1.21x.",
     "why": "STR income counts fully. The DSCR loan fits investment use. Cash funds upgrades.",
     "alternatives": "An agency refinance was considered but would use long-term rent. A HELOC was considered but few lenders offer them on STRs.",
-    "watch": "Local STR permit rules (verify); seasonality."
+    "watch": "San Bernardino County and Big Bear STR permit caps and renewal rules (verify); winter vs summer seasonality means the lender should average 12 months, not peak months."
    },
    {
     "t": "Florida condo with assessments",
@@ -1912,8 +1912,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Michelle has a 2021 first mortgage at a rate she will never see again. She needs $120,000 for a kitchen, solar battery and her son's tuition. A cash-out refi would reset her whole balance.",
     "structure": "Steven arranges a $150,000 HELOC to 75% CLTV and suggests a fixed-rate lock on the remodel portion.",
     "numbers": "Illustrative: $880k value, $480k first, $150k line, CLTV 71.6%.",
-    "why": "She keeps her first-lien rate and only pays interest on what she draws.",
-    "alternatives": "Cash-out refi would raise the cost on $480k of existing debt; a personal loan would be smaller and shorter.",
+    "why": "Michelle keeps her low first-lien rate and only pays interest on what she draws. A fixed-rate lock on the remodel portion gives payment certainty. The line remains available for future needs.",
+    "alternatives": "A cash-out refi would reprice $480k of existing debt at today's rates. A personal loan would be smaller and have a shorter term.",
     "watch": "Variable rate risk; tuition draws are not tax-deductible interest (tax advisor)."
    },
    {
@@ -1922,8 +1922,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Darnell has a VA first lien and wants to open a gym franchise. He needs flexible access to about $200,000 over 18 months. His pension and disability income are stable.",
     "structure": "Steven places a HELOC with a 10-year draw on his primary and documents VA disability income as non-taxable (gross-up per lender).",
     "numbers": "Illustrative: $1.05M value, $520k VA first, $200k line, CLTV 68.6%.",
-    "why": "Draws as needed, keeps the VA loan intact.",
-    "alternatives": "SBA loan would avoid putting his home at risk but takes longer; Steven suggests both.",
+    "why": "A HELOC lets Darnell draw as the gym build-out progresses and keeps his VA loan intact. His pension and disability income are stable. Interest is paid only on what he uses.",
+    "alternatives": "An SBA loan would avoid putting his home at risk but takes longer; Steven suggests both. A VA cash-out was considered but would reprice his first lien.",
     "watch": "Putting the home behind a business; franchise failure risk; SBA may require pledging home equity anyway."
    },
    {
@@ -1932,8 +1932,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Kim wants a safety net while she transitions to self-employment. She plans to leave her W-2 job in four months. She does not need money now.",
     "structure": "Steven opens the HELOC while she still has W-2 income, with no required initial draw.",
     "numbers": "Illustrative: $100k line, $0 drawn; annual fee small.",
-    "why": "Qualifying later on self-employed income would be harder.",
-    "alternatives": "Savings or a business line of credit.",
+    "why": "Opening the line while Kim still has W-2 income avoids the harder self-employed qualification later. An unused line costs little. It gives her a safety net during the transition.",
+    "alternatives": "Building savings was considered but would take time. A business line of credit was considered but would require business history.",
     "watch": "Lender can freeze or reduce lines if value or credit drops (Reg Z permits in certain cases)."
    },
    {
@@ -1942,8 +1942,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Rick owns a paid-off rental in Henderson and wants a line for repairs and future down payments. Few lenders offer non-owner HELOCs. He prefers flexibility.",
     "structure": "Steven finds a lender offering investment-property HELOCs at 70% CLTV.",
     "numbers": "Illustrative: $480k value, $336k line.",
-    "why": "Flexible capital for a portfolio.",
-    "alternatives": "DSCR cash-out would be a lump sum.",
+    "why": "An investment-property HELOC gives Rick flexible capital for repairs and down payments. It keeps his paid-off rental unencumbered until he draws. Few lenders offer it, so Steven's sourcing matters.",
+    "alternatives": "A DSCR cash-out was considered but would be a lump sum with interest from day one. A HELOC on his primary was considered but he prefers to keep his home separate.",
     "watch": "Fewer lenders; higher margins; business-purpose rules if used for business."
    },
    {
@@ -1952,8 +1952,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Ellen wants a HELOC for a roof and defensible-space work. Her insurer non-renewed her and she is on the CA FAIR Plan with a DIC wrap. Value is uncertain.",
     "structure": "Steven confirms the lender accepts FAIR Plan plus DIC, orders a full appraisal, and sizes conservatively.",
     "numbers": "Illustrative: $700k value, $150k first, $120k line, CLTV 38.6%.",
-    "why": "Mitigation work may improve insurability.",
-    "alternatives": "Cash-out refi; PACE was rejected because of lien priority problems.",
+    "why": "Mitigation work like a new roof and defensible space may improve Ellen's insurability. A low CLTV keeps pricing favorable. A HELOC lets her draw as contractors finish.",
+    "alternatives": "A cash-out refi was considered but she has a low-rate first. PACE was rejected because of lien priority problems.",
     "watch": "FAIR Plan premium increases (29.1% average approved effective Oct 2026 - verify) affect DTI."
    },
    {
@@ -1962,47 +1962,47 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Sam wants to buy a new home before selling. He has not listed yet. He plans to use HELOC funds for the down payment.",
     "structure": "Steven opens a HELOC before listing and plans payoff at sale.",
     "numbers": "Illustrative: $1.2M value, $300k line.",
-    "why": "Cheaper than a bridge loan.",
-    "alternatives": "Bridge loan.",
+    "why": "A HELOC opened before listing is usually cheaper than a bridge loan. Sam can draw for the down payment and pay it off at sale. It keeps his options open.",
+    "alternatives": "A bridge loan was considered but costs more. Selling first was considered but risked losing the new home.",
     "watch": "Lenders may not open lines on listed homes; both payments in DTI."
    }
   ],
   "qa": [
    {
     "q": "Is a HELOC subject to TRID?",
-    "a": "No; open-end credit uses Reg Z HELOC disclosures under 1026.40."
+    "a": "No. HELOCs are open-end credit covered by Reg Z's HELOC rules (1026.40). Borrowers receive HELOC disclosures and the CFPB brochure instead of a Loan Estimate."
    },
    {
     "q": "Can the lender freeze my line?",
-    "a": "Reg Z allows suspension or reduction in specified circumstances such as significant value decline or material change in finances."
+    "a": "Yes, in specified circumstances such as a significant decline in property value or material change in finances. Reg Z sets the rules. Lenders must notify the borrower."
    },
    {
     "q": "How is DTI calculated?",
-    "a": "On the lender's qualifying payment, often a fully amortizing payment on the full line."
+    "a": "On the lender's qualifying payment, often a fully amortizing payment on the full line amount. This can be higher than the initial interest-only payment. Methods vary."
    },
    {
     "q": "Is HELOC interest deductible?",
-    "a": "Depends on use and tax law; refer to a tax advisor."
+    "a": "It depends on how funds are used and current tax law. Interest on funds used to buy, build or substantially improve the home may be deductible. Consult a tax advisor."
    },
    {
-    "q": "Can I convert to fixed?",
-    "a": "Some lenders allow fixed-rate lock segments."
+    "q": "Can I convert to a fixed rate?",
+    "a": "Some lenders allow fixed-rate lock segments on drawn balances. Fees may apply. It helps manage rate risk."
    },
    {
-    "q": "What happens at end of draw?",
-    "a": "The balance amortizes over the repayment term; payments may rise significantly."
+    "q": "What happens at the end of the draw period?",
+    "a": "The balance amortizes over the repayment period. Payments can rise significantly. Plan ahead."
    },
    {
     "q": "Can I have a HELOC on a rental?",
-    "a": "Some lenders offer investment-property lines."
+    "a": "Some lenders offer investment-property HELOCs with lower CLTV. Pricing is higher. Business-purpose rules may apply."
    },
    {
     "q": "Does a HELOC affect credit?",
-    "a": "Utilization on HELOCs can be scored differently by models; verify."
+    "a": "HELOC utilization may be treated differently by scoring models (verify). Opening a new line adds an inquiry. Paying on time helps."
    },
    {
     "q": "What about solar or PACE?",
-    "a": "PACE often blocks second liens; solar UCC filings must be reviewed."
+    "a": "PACE often blocks second liens because of lien priority. Solar UCC filings must be reviewed. Some lenders decline."
    }
   ],
   "aeQuestions": [
@@ -2182,7 +2182,7 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "numbers": "Illustrative: value $500k; first $200k; second $65k; CLTV 53%.",
     "why": "Clearing the lien removes a title cloud and simplifies her finances. Fixed payment replaces IRS penalties and interest. CLTV is low.",
     "alternatives": "Continuing the installment plan was considered. A cash-out refi was considered but would reprice her first.",
-    "watch": "IRS payoff letter timing and lien release recording."
+    "watch": "The IRS payoff letter must be current to the funding date; the Certificate of Release of Federal Tax Lien must be recorded, which can take 30 days after payment."
    },
    {
     "t": "Small loan and the HOEPA test",
@@ -2192,7 +2192,7 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "numbers": "Illustrative: $30k loan; points and fees must stay under HOEPA limits (verify current threshold for small loans).",
     "why": "Avoids a high-cost loan with added restrictions. Keeps fees proportional. Fixed payment fits his budget.",
     "alternatives": "A personal loan was considered but cost more. Roof financing from the contractor was considered but had high fees.",
-    "watch": "HOEPA and California high-cost thresholds; rescission."
+    "watch": "On a $30k loan, a few thousand dollars of fixed fees can exceed HOEPA's points-and-fees trigger; rescission still applies and funds cannot disburse until day 4."
    }
   ],
   "qa": [
@@ -2371,7 +2371,7 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "numbers": "Illustrative: first $520k; HELOC $65k; CLTV 90%; inheritance pays HELOC down to $25k.",
     "why": "No PMI from day one. The HELOC can be paid down flexibly. The structure matches her expected inheritance.",
     "alternatives": "PMI with cancellation at 78-80% LTV was considered. Waiting to buy until the inheritance arrives was considered but prices might rise.",
-    "watch": "Variable HELOC rate; inheritance timing uncertain."
+    "watch": "The HELOC rate is variable, so the payment rises if the index rises; if the inheritance is delayed or smaller, the HELOC could remain outstanding into the repayment period."
    },
    {
     "t": "Buy-before-sell with an 80-15-5",
@@ -2381,7 +2381,7 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "numbers": "Illustrative: price $1.2M; first $960k; HELOC $180k; down $60k.",
     "why": "Avoids a bridge loan and keeps payments manageable. HELOC can be paid off upon sale. Conventional first stays at 80%.",
     "alternatives": "A bridge loan was considered but cost more. Selling first was considered but risked losing the home.",
-    "watch": "DTI with both homes until sale."
+    "watch": "Both homes' payments count in DTI until the Carlsbad home sells; if it does not sell within the HELOC's expected window, Ben carries three liens."
    },
    {
     "t": "Veteran comparing options",
@@ -2391,7 +2391,7 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "numbers": "Illustrative: VA down payment ~$25k vs conventional piggyback $65k on a $650k home.",
     "why": "VA usually wins on cost with lower down payment and no PMI. Funding fee may apply. Piggyback requires more cash.",
     "alternatives": "A conventional piggyback was considered. FHA was considered but has MIP.",
-    "watch": "Entitlement calculation; VA funding fee."
+    "watch": "Remaining entitlement must be calculated by the lender using the county limit; VA funding fee applies unless Tasha has a disability rating that exempts her."
    },
    {
     "t": "Condo purchase",
@@ -2401,7 +2401,7 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "numbers": "Illustrative: price $400k; first $320k; second $40k; CLTV 90%.",
     "why": "Lower cost than PMI in this case. Fixed second gives predictability. Both lenders approve condo.",
     "alternatives": "90% conventional with PMI was considered. FHA was considered but condo approval was not available.",
-    "watch": "Condo approval for both lenders; HOA dues."
+    "watch": "Both lenders must approve the condo project; HOA dues and any special assessment count in DTI and can change the comparison against PMI."
    },
    {
     "t": "Chicago jumbo avoidance",
@@ -2411,7 +2411,7 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "numbers": "Illustrative: first $840k (verify limit); second $52.5k; down $157.5k.",
     "why": "Avoids jumbo pricing and reserves. Keeps first conforming. Second is small.",
     "alternatives": "Jumbo with 15% down was considered. 20% down was considered but she prefers liquidity.",
-    "watch": "IL attorney review; second-lien CLTV rules."
+    "watch": "Illinois attorney review period (commonly 5 business days) affects timing; the second-lien investor's CLTV and FICO limits must be confirmed before the offer."
    }
   ],
   "qa": [
@@ -2584,8 +2584,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Jamie has $52,000 on four credit cards after a medical leave. Her 2021 first mortgage rate is low and she will not refinance it. She is current on everything but stressed.",
     "structure": "Steven places a 15-year fixed HELOAN paying the cards directly, with two cards closed and two kept open at zero balance for credit history.",
     "numbers": "Illustrative: $760k value; $390k first; $55k second; CLTV 58.6%; card minimums $1,560 replaced by ~$560 second payment.",
-    "why": "Keeps her first-lien rate and cuts payments by roughly $1,000/month.",
-    "alternatives": "Cash-out refi would reprice $390k; a personal loan capped at $35k.",
+    "why": "Jamie keeps her low first-lien rate and cuts payments by roughly $1,000 per month. Paying the cards directly ensures they are actually paid. Keeping two cards open preserves credit history.",
+    "alternatives": "A cash-out refi would reprice $390k of low-rate debt. A personal loan was capped at $35k and would not cover all the cards.",
     "watch": "Re-accumulating card debt; Steven documents the counseling conversation."
    },
    {
@@ -2594,8 +2594,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Henry has $38,000 of medical and card debt on a fixed pension. His home is paid off. He wants lower payments, not new spending.",
     "structure": "Steven compares a small HELOAN with a HECM reverse mortgage and refers to a HUD counselor; Henry chooses the HELOAN with low fees after a HOEPA test.",
     "numbers": "Illustrative: $620k value; $40k second; CLTV 6.5%; payment ~$350 replaces $1,100.",
-    "why": "Smallest-cost fix that keeps the home free of a reverse mortgage.",
-    "alternatives": "HECM would remove the payment entirely but costs more up front.",
+    "why": "A small HELOAN is the lowest-cost fix and keeps the home free of a reverse mortgage. HUD counseling ensures Henry understands options. Running HOEPA tests protects him from high fees.",
+    "alternatives": "A HECM would remove the payment entirely but costs more up front. Negotiating with medical providers was considered and may reduce some balances.",
     "watch": "Small loan size makes fees large relative to loan; medical debt reporting rules changed recently (verify)."
    },
    {
@@ -2604,8 +2604,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Luis has a VA first lien at a low rate and $41,000 of personal loans and cards. VA cash-out would reset his entire balance. His disability income is non-taxable.",
     "structure": "Steven uses a fixed second behind the VA loan and grosses up non-taxable income per lender rules.",
     "numbers": "Illustrative: $700k value; $430k VA first; $45k second; CLTV 67.9%.",
-    "why": "Preserves the VA first-lien rate.",
-    "alternatives": "VA cash-out refi; considered but would raise total housing cost.",
+    "why": "A fixed second preserves Luis's low VA first-lien rate. Grossing up non-taxable disability income helps qualification. Consolidation simplifies payments.",
+    "alternatives": "A VA cash-out refi was considered but would raise total housing cost. A personal loan was considered but at a higher rate.",
     "watch": "Ensure no VA loan assumption or entitlement issues; spending habits."
    },
    {
@@ -2614,8 +2614,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Ana has $60,000 of private student loans at variable rates and $40,000 of federal loans on an income-driven plan. She wants one payment. She is pursuing Public Service Loan Forgiveness.",
     "structure": "Steven consolidates only the private loans and leaves the federal loans alone.",
     "numbers": "Illustrative: $600k value; $380k first; $62k second; private loan payments $780 replaced by ~$520.",
-    "why": "Lowers the private loan cost without losing federal protections.",
-    "alternatives": "Private student loan refinance; similar outcome without lien on home.",
+    "why": "Consolidating only the private loans lowers cost without losing federal protections. Ana's PSLF progress is protected. Payment savings help her budget.",
+    "alternatives": "A private student loan refinance was considered; similar outcome without a lien on her home. Leaving loans as-is was considered but variable rates are rising.",
     "watch": "Putting unsecured debt on her home; PSLF eligibility must not be affected."
    },
    {
@@ -2624,9 +2624,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Mark has $70,000 of business credit card debt personally guaranteed. His tax returns are thin. He wants to consolidate on his Nevada home.",
     "structure": "Steven uses a non-QM bank-statement second and treats the loan as consumer-purpose because it is secured by his dwelling and the debts are personally guaranteed (compliance reviewed).",
     "numbers": "Illustrative: $560k value; $250k first; $75k second; CLTV 58%.",
-    "why": "Bank statements show true income.",
-    "alternatives": "SBA or business loan; slower and requires business financials.",
-    "watch": "Purpose classification; non-QM pricing."
+    "why": "Bank statements show Mark's true income. Consolidating guaranteed business debt lowers monthly payments. Treating the loan as consumer ensures compliance.",
+    "alternatives": "An SBA or business loan was considered; slower and requires business financials. A business line of credit was considered but at higher cost.",
+    "watch": "Purpose classification must be documented; non-QM pricing; Mark must stop using the cards or the debt will stack on top."
    },
    {
     "t": "IRS balance and judgment",
@@ -2634,47 +2634,47 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Sue owes the IRS $28,000 on an installment plan and has a $9,000 judgment. Both are on title or credit. She wants a clean slate.",
     "structure": "Steven pays both at closing with a second lien and obtains lien releases.",
     "numbers": "Illustrative: $480k value; $200k first; $40k second; CLTV 50%.",
-    "why": "Clears liens and simplifies.",
-    "alternatives": "Continue installment plan.",
-    "watch": "IRS payoff letter timing; lien release recording."
+    "why": "Paying the IRS and judgment at closing clears liens and simplifies Sue's finances. A fixed payment replaces IRS penalties and interest. Title is cleaned up.",
+    "alternatives": "Continuing the IRS installment plan was considered. Paying with savings was considered but would deplete reserves.",
+    "watch": "IRS payoff letter timing; lien release recording can take 30 days; judgment creditor must provide a payoff demand."
    }
   ],
   "qa": [
    {
     "q": "Will consolidating raise my credit score?",
-    "a": "Lower revolving utilization often helps, but there is no guaranteed score change, and new inquiries and accounts can offset it."
+    "a": "Lower revolving utilization often helps, but there is no guaranteed score change. New inquiries and accounts can offset it. Results vary by scoring model."
    },
    {
     "q": "Should I close the paid-off cards?",
-    "a": "Closing all cards can shorten credit history and raise utilization on remaining cards; some lenders require closing certain accounts (lender-specific)."
+    "a": "Closing all cards can shorten credit history and raise utilization on remaining cards. Some lenders require closing certain accounts (lender-specific). Keep one or two for history if allowed."
    },
    {
     "q": "Is this a high-cost loan?",
-    "a": "Every loan must be tested under HOEPA and state thresholds; Steven avoids high-cost structures."
+    "a": "Every loan must be tested under HOEPA and state thresholds. Small loans with high fees are at risk. Steven avoids high-cost structures."
    },
    {
     "q": "Should federal student loans be consolidated into a mortgage?",
-    "a": "Usually not, because borrowers lose income-driven repayment, deferment and forgiveness options."
+    "a": "Usually not. Borrowers lose income-driven repayment, deferment and forgiveness options. Private loans are a different analysis."
    },
    {
     "q": "Is there a right of rescission?",
-    "a": "Yes, 3 business days on a principal dwelling."
+    "a": "Yes, 3 business days on a principal dwelling. Funds cannot disburse until rescission expires. Business-purpose loans differ."
    },
    {
     "q": "Are creditors paid directly?",
-    "a": "Commonly yes at closing, which also lets the underwriter exclude those debts from DTI."
+    "a": "Commonly yes at closing. This lets the underwriter exclude those debts from DTI. It also ensures funds are used as intended."
    },
    {
     "q": "How long does it take?",
-    "a": "Often 2-4 weeks depending on valuation and rescission."
+    "a": "Often 2-4 weeks depending on valuation and rescission. Title issues can delay. Fintech lenders may be faster."
    },
    {
     "q": "Is the interest deductible?",
-    "a": "Interest on home equity debt used for consolidation is generally not deductible under current tax law; consult a tax advisor."
+    "a": "Interest on home equity debt used for consolidation is generally not deductible under current tax law. Consult a tax advisor. Rules may change."
    },
    {
     "q": "What if I run up the cards again?",
-    "a": "The home now secures the old debt and new debt could stack on top; Steven discusses a budget plan before closing."
+    "a": "The home now secures the old debt and new debt could stack on top. Steven discusses a budget plan before closing. Credit counseling is recommended."
    }
   ],
   "aeQuestions": [
@@ -2812,9 +2812,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Barbara needs $60,000 for a roof and foundation repairs. Her income will not support a new payment. She has $700k in equity and no mortgage.",
     "structure": "Steven compares an HEI with a HECM reverse mortgage and refers her to HUD counseling; HECM generally fits better for her age and goals.",
     "numbers": "Illustrative: HECM line available ~$300k+ (verify principal limit factors); HEI $60k with settlement at sale.",
-    "why": "HECM has no repayment until she leaves and is federally regulated.",
-    "alternatives": "HEI would work but cost depends on appreciation.",
-    "watch": "Heirs' expectations; HECM costs."
+    "why": "A HECM has no repayment until Barbara leaves the home and is federally regulated with counseling. It can provide more than she needs. An HEI's cost depends on appreciation and could be high.",
+    "alternatives": "An HEI would work but its cost depends on appreciation. A HELOAN was considered but her income would not support a payment.",
+    "watch": "Heirs' expectations about the home; HECM upfront costs and mortgage insurance; Barbara must keep paying taxes and insurance."
    },
    {
     "t": "Credit-challenged homeowner",
@@ -2822,9 +2822,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Ray has a 560 FICO after a business setback. He needs $50,000 to pay a tax debt. A non-QM second at his score is unavailable.",
     "structure": "Steven reviews the HEI as a last resort, shows the settlement table, and suggests a plan to refinance the HEI out once credit improves.",
     "numbers": "Illustrative: $600k value; $50k HEI; settlement in year 4 at 4% growth ~ $75k.",
-    "why": "No monthly payment while he rebuilds credit.",
-    "alternatives": "IRS installment plan.",
-    "watch": "Cost if values rise fast; refinance payoff later."
+    "why": "An HEI requires no monthly payment while Ray rebuilds credit. It pays the tax debt now. A plan to refinance out later limits cost.",
+    "alternatives": "An IRS installment plan was considered. A non-QM second was unavailable at his score.",
+    "watch": "Cost rises sharply if home values grow fast; the HEI must be paid off when he refinances, which requires enough equity."
    },
    {
     "t": "Divorce buyout",
@@ -2832,9 +2832,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Jenna needs $120,000 to buy out her ex-husband. Her DTI won't support a cash-out refi. She wants to stay in the home for her kids.",
     "structure": "Steven compares an HEI with a cash-out refi using support income once seasoned and a co-borrower option.",
     "numbers": "Illustrative: $950k value; $380k first; HEI $120k.",
-    "why": "May allow her to keep the home.",
-    "alternatives": "Cash-out refi with qualifying support income later.",
-    "watch": "Future refinance limits; settlement cost."
+    "why": "An HEI may let Jenna keep the home without qualifying for more debt. It avoids a payment increase. Her kids stay in their school.",
+    "alternatives": "A cash-out refi with qualifying support income later was considered. Selling the home was considered but disruptive.",
+    "watch": "Future refinance limits; settlement cost if values rise; divorce decree must allow the transaction."
    },
    {
     "t": "Investor seeking no-payment capital",
@@ -2842,18 +2842,18 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Paul wants capital without increasing his monthly payments. He owns several rentals. A provider offers investment HEIs.",
     "structure": "Steven compares with DSCR cash-out on one property.",
     "numbers": "Illustrative: $450k rental; HEI $60k vs DSCR cash-out $90k.",
-    "why": "No payment, but potentially costly.",
-    "alternatives": "DSCR cash-out.",
-    "watch": "Cost; business-purpose treatment."
+    "why": "An HEI gives Paul capital without increasing payments. However, it may be costly. DSCR cash-out provides more money with a payment.",
+    "alternatives": "A DSCR cash-out was considered and provides more capital. Selling a rental was considered but would trigger tax.",
+    "watch": "Cost at settlement; business-purpose treatment; provider's investment-property terms."
    },
    {
     "t": "Veteran who saw an ad",
     "who": "Alan, 60, retired Navy, Oceanside",
-    "situation": "Alan saw an HEI ad promising 'no payments.' He has a low VA first lien and $40,000 of needs. His income supports a small payment.",
+    "situation": "Alan saw an HEI ad promising 'no payments.' He has a low VA first lien and $40,000 of needs. His pension supports a small payment.",
     "structure": "Steven shows the HELOAN option behind his VA loan and the HEI cost table.",
     "numbers": "Illustrative: HELOAN payment ~$400/month vs HEI settlement $60k-$80k later.",
-    "why": "HELOAN is cheaper for his situation.",
-    "alternatives": "HEI was reviewed but the HELOAN costs less over his expected 10-year hold.",
+    "why": "A HELOAN is cheaper for Alan's situation and keeps ownership of appreciation. His income supports the payment. The VA first is preserved.",
+    "alternatives": "The HEI was reviewed but costs more over his expected 10-year hold. A VA cash-out was considered but would reprice his first.",
     "watch": "HEI marketing that emphasizes 'no payments' without showing settlement cost."
    },
    {
@@ -2862,43 +2862,43 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Lily needs capital for 3 years and plans to sell. The HEI contract has a minimum return provision. She thinks short-term will be cheap.",
     "structure": "Steven models the minimum return and appreciation scenarios.",
     "numbers": "Illustrative: year 3 settlement could exceed 15%/year at strong growth.",
-    "why": "Modeling the minimum return and appreciation shows the true cost of a short hold.",
-    "alternatives": "A HELOC would cost less for a 3-year need.",
-    "watch": "Minimum return provisions and early settlement terms."
+    "why": "Modeling the minimum return and appreciation shows the true cost of a short hold. Lily can compare to a HELOC. She avoids an expensive surprise.",
+    "alternatives": "A HELOC would cost less for a 3-year need. A personal loan was considered but too small.",
+    "watch": "Minimum return provisions can make early settlement expensive; selling sooner than planned triggers settlement."
    }
   ],
   "qa": [
    {
     "q": "Is an HEI a loan?",
-    "a": "Providers say no, but some states now regulate HEIs as loans, and federal legislation has been introduced (verify)."
+    "a": "Providers say no, but some states now regulate HEIs as loans, and federal legislation has been introduced (verify). Treatment varies by state. Steven checks before discussing."
    },
    {
     "q": "Are there monthly payments?",
-    "a": "Usually no; settlement occurs at sale, refinance or term end."
+    "a": "Usually no. Settlement occurs at sale, refinance or term end. Taxes and insurance must still be paid."
    },
    {
     "q": "What is a risk adjustment?",
-    "a": "A reduction of starting value used in the settlement calculation that increases the investor's share."
+    "a": "A reduction of starting value used in the settlement calculation. It increases the investor's share. Read the contract."
    },
    {
     "q": "Can I refinance my first lien later?",
-    "a": "Often requires payoff or investor consent due to the recorded instrument."
+    "a": "Often requires payoff or investor consent due to the recorded instrument. This can limit flexibility. Plan ahead."
    },
    {
     "q": "What if home value falls?",
-    "a": "Depends on contract; some share losses, others have minimum returns."
+    "a": "It depends on the contract. Some share losses, others have minimum returns. Read carefully."
    },
    {
     "q": "Is there a cap on cost?",
-    "a": "Some contracts cap annualized cost; read the terms."
+    "a": "Some contracts cap annualized cost. Not all do. Compare offers."
    },
    {
     "q": "Can I buy out early?",
-    "a": "Usually yes with a settlement based on current value."
+    "a": "Usually yes with a settlement based on current value. Minimum return provisions may apply. Appraisal required."
    },
    {
     "q": "Can Steven broker an HEI?",
-    "a": "Only if state law and company policy permit; otherwise he provides education and alternatives."
+    "a": "Only if state law and company policy permit. Otherwise he provides education and alternatives. Licensing requirements are evolving."
    }
   ],
   "aeQuestions": [
@@ -3036,8 +3036,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Carlos's parents gifted him a 1-acre lot in Fallbrook. He wants to build a 3-bed home with his VA benefit. He has a builder friend who has never done a VA build.",
     "structure": "Steven gets the builder VA-registered and lender-approved, uses the gifted lot as equity, and places a VA OTC loan.",
     "numbers": "Illustrative: lot appraised $220k; build $580k; as-completed $830k; VA loan for build cost plus funding fee (verify cap).",
-    "why": "VA OTC avoids two closings and uses his entitlement with no down payment.",
-    "alternatives": "Two-time close with a construction loan would need cash for interest payments and a second closing.",
+    "why": "VA OTC avoids two closings and uses Carlos's entitlement with no down payment. The gifted lot adds equity. Builder registration is a one-time hurdle.",
+    "alternatives": "A two-time close with a construction loan would need cash for interest payments and a second closing. Buying an existing home was considered but he wants to build near family.",
     "watch": "Builder approval delays; wildfire zone insurance; gift letter and title transfer before closing."
    },
    {
@@ -3046,9 +3046,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Tiana wants to build in a new subdivision where the builder offers lots. She has 3.5% down and a 640 score. The builder is approved by the lender.",
     "structure": "Steven uses FHA OTC with the builder on the approved list.",
     "numbers": "Illustrative: total cost $480k; FHA 96.5% = $463k plus UFMIP.",
-    "why": "Low down payment and one closing.",
-    "alternatives": "Builder's in-house lender considered; Steven compares fees.",
-    "watch": "Lender overlays on FICO; build delays."
+    "why": "FHA OTC offers low down payment and one closing. The builder is already approved. Tiana qualifies at her score.",
+    "alternatives": "The builder's in-house lender was considered; Steven compares fees. Conventional was considered but required more down.",
+    "watch": "Lender overlays may require 620-640 FICO; build delays extend the construction period and may require lock extensions."
    },
    {
     "t": "Conventional OTC on owned lot",
@@ -3056,9 +3056,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "They own a lot for 6 years and want to build a single-story retirement home. They have strong equity in the lot. They want one loan.",
     "structure": "Steven uses conventional OTC with appraised lot value counted as equity.",
     "numbers": "Illustrative: lot value $300k; build $700k; as-completed $1.1M; loan $700k (63.6% of value).",
-    "why": "Land equity covers down payment.",
-    "alternatives": "Cash build then refi; ties up cash.",
-    "watch": "Seasoning rules for using appraised value."
+    "why": "Land equity covers the down payment. One closing simplifies the process. They qualify on the permanent payment.",
+    "alternatives": "A cash build then refinance was considered but would tie up their savings. A two-time close was considered but costs more.",
+    "watch": "Seasoning rules for using appraised land value; as-completed appraisal must support value."
    },
    {
     "t": "Fire rebuild",
@@ -3066,8 +3066,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Diana's home burned in the January 2025 Eaton fire. Insurance covers part. She owns the lot.",
     "structure": "Steven uses conventional or FHA OTC with insurance proceeds and lot equity, coordinating with the existing lender.",
     "numbers": "Illustrative: insurance $450k; build $750k; existing loan $300k.",
-    "why": "Rebuild with one closing.",
-    "alternatives": "Sell the lot.",
+    "why": "An OTC loan rebuilds with one closing and coordinates insurance proceeds. Diana keeps her lot and community. The lender handles draws.",
+    "alternatives": "Selling the lot was considered but she wants to rebuild. A two-time close was considered but costs more.",
     "watch": "Existing mortgage payoff; insurance claims timing; permit backlogs (verify)."
    },
    {
@@ -3076,8 +3076,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Ryan wants a modular home for speed and fire-resistant materials. The lender treats modular as site-built. He has 10% down.",
     "structure": "Conventional OTC with modular builder.",
     "numbers": "Illustrative: modular package $380k + site work and foundation $160k + lot equity $210k; total cost $540k on owned lot; 90% LTV = $486k.",
-    "why": "Factory construction shortens the build to a few months and can use fire-resistant assemblies valued by insurers.",
-    "alternatives": "Stick-built home on the same lot; 4-6 months longer with more weather and labor risk.",
+    "why": "Factory construction shortens the build to a few months and can use fire-resistant assemblies. Ryan's lot equity reduces cash needed. One closing simplifies.",
+    "alternatives": "A stick-built home was considered but would take longer. A two-time close was considered but costs more.",
     "watch": "Factory deposit timing (often required before the loan closes), transport and crane logistics, and set-up crew licensing."
    },
    {
@@ -3086,43 +3086,43 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Joe wants to build on a 2-acre desert lot. It needs a well and septic. VA OTC.",
     "structure": "Steven confirms well and septic plans and VA appraisal requirements.",
     "numbers": "Illustrative: $750k total cost.",
-    "why": "VA benefit.",
-    "alternatives": "Two-time close.",
-    "watch": "Well permits and water rights (verify)."
+    "why": "VA OTC uses Joe's benefit with no down payment. Desert lot costs are financed. One closing.",
+    "alternatives": "A two-time close was considered. Buying an existing home was considered but he wants acreage.",
+    "watch": "Well permits and water rights in Arizona (verify); septic approval; VA appraisal requirements for wells."
    }
   ],
   "qa": [
    {
     "q": "Can I be my own builder?",
-    "a": "Most OTC programs require a licensed GC; owner-builder is rarely allowed."
+    "a": "Most OTC programs require a licensed GC; owner-builder is rarely allowed. Some lenders allow licensed owner-builders. Check program rules."
    },
    {
     "q": "When does the rate lock?",
-    "a": "Often at closing; extended locks cost more (lender-specific)."
+    "a": "Often at closing for the full construction period. Extended locks cost more (lender-specific). Some offer float-down."
    },
    {
     "q": "Do I make payments during construction?",
-    "a": "Depends on program; some defer, some require interest-only."
+    "a": "It depends on the program. Some defer payments, others require interest-only on drawn funds. VA and FHA OTC vary by lender."
    },
    {
     "q": "What if costs exceed budget?",
-    "a": "Contingency first, then borrower cash."
+    "a": "Contingency is used first, then borrower cash. Change orders require lender approval. Overruns can delay draws."
    },
    {
     "q": "Can I use VA for land only?",
-    "a": "No; VA requires a home."
+    "a": "No. VA requires a home. Land can be purchased as part of an OTC construction loan."
    },
    {
     "q": "How long is the build period?",
-    "a": "Commonly up to 12 months."
+    "a": "Commonly up to 12 months. Extensions may be available. Delays add cost."
    },
    {
     "q": "What happens at completion?",
-    "a": "Final inspection and conversion to permanent."
+    "a": "A final inspection and appraisal update confirm completion. The loan converts to permanent. Payments begin."
    },
    {
     "q": "Can I make upgrades?",
-    "a": "Yes, but pay difference in cash or re-underwrite."
+    "a": "Yes, but pay the difference in cash or re-underwrite. Upgrades must be documented. Appraisal must support value."
    }
   ],
   "aeQuestions": [
@@ -3262,9 +3262,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Matt bought a $1.2M lot and wants a $2.4M custom build. No OTC lender would take a total project of this size with his custom architect. He prefers to choose a jumbo permanent loan later.",
     "structure": "Steven places a bank construction loan at 75% of cost with an interest reserve, then shops jumbo permanent lenders at 75% completion.",
     "numbers": "Illustrative: total cost $3.6M; construction loan $2.7M; as-completed $4.2M; permanent at 70% = $2.94M.",
-    "why": "Two-time is the only practical route at this size and allows competitive permanent pricing later.",
-    "alternatives": "Jumbo OTC from a private bank was considered but required moving assets to the bank.",
-    "watch": "Rate and jumbo guideline changes during the 18-month build."
+    "why": "Two-time is the practical route for a $3.6M custom build that OTC lenders will not take. Matt can shop jumbo permanent lenders at completion. An interest reserve protects his cash flow during construction.",
+    "alternatives": "A jumbo OTC from a private bank was considered but required moving assets to the bank. Paying cash for construction was considered but would tie up investments.",
+    "watch": "Rate and jumbo guideline changes during the 18-month build; jumbo reserves at permanent closing; appraisal must support $4.2M."
    },
    {
     "t": "Licensed owner-builder",
@@ -3272,8 +3272,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Sam wants to build his own home on land he owns. OTC programs will not let the borrower be the builder. He has strong equity in the lot and pays his subs directly.",
     "structure": "Steven finds a credit union construction loan that allows licensed owner-builders with a third-party inspector, then a conventional permanent loan.",
     "numbers": "Illustrative: lot $280k; build $620k; loan 80% of $900k = $720k; as-completed $1.05M.",
-    "why": "Owner-builder allowed; Sam saves the GC margin.",
-    "alternatives": "Hiring a separate GC to qualify for OTC would cost ~10-15% more.",
+    "why": "Owner-builder is allowed with this credit union. Sam saves the GC margin. Land equity reduces cash.",
+    "alternatives": "Hiring a separate GC to qualify for OTC would cost ~10-15% more. A hard money construction loan was considered but more expensive.",
     "watch": "Lender scrutiny of self-performed draws; his own income stability during the build."
    },
    {
@@ -3282,9 +3282,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Kara expects to finish her build in 14 months. She does not want to lock a permanent rate now. She understands rates could also rise.",
     "structure": "Steven explains the two-sided risk and structures a two-time close with a qualifying cushion at a higher stress payment.",
     "numbers": "Illustrative: permanent loan $640k; stress-tested payment 10% above today's estimate still keeps DTI under 45%.",
-    "why": "Flexibility on permanent terms.",
-    "alternatives": "OTC with a 12-month lock would give certainty at a lock cost.",
-    "watch": "Rates rising; requalification if income changes."
+    "why": "Two-time gives flexibility on permanent terms. A stress test ensures Kara can qualify even if rates rise. She avoids paying for a long lock.",
+    "alternatives": "OTC with a 12-month lock would give certainty at a lock cost. Waiting to build was considered but prices may rise.",
+    "watch": "If permanent rates rise more than the stress test, Kara may need to pay down or accept a higher payment; any job change during construction affects requalification."
    },
    {
     "t": "Veteran using VA for the permanent loan",
@@ -3292,8 +3292,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Dan's builder is not VA-registered and will not register. He wants VA benefits for the permanent loan. He has the cash to carry construction interest.",
     "structure": "Steven uses a bank construction loan, then a VA refinance (cash-out type) to pay it off after completion (verify VA refinance treatment and seasoning).",
     "numbers": "Illustrative: construction $700k; as-completed $900k; VA permanent $720k plus funding fee unless exempt.",
-    "why": "Lets Dan use VA on the permanent loan despite a non-VA builder.",
-    "alternatives": "VA OTC would require switching builders.",
+    "why": "Two-time lets Dan use VA on the permanent loan despite a non-VA builder. He keeps his chosen builder. VA permanent loan has no PMI.",
+    "alternatives": "VA OTC would require switching builders. A conventional permanent was considered but requires down payment.",
     "watch": "VA appraisal and minimum property requirements at completion; VA funding fee exemption if disability rated."
    },
    {
@@ -3302,9 +3302,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Jill's taxable income is low, but her deposits are strong. A construction lender accepts her financial statements. Her permanent loan will be non-QM.",
     "structure": "Construction loan with a portfolio bank, permanent non-QM bank-statement loan arranged at completion.",
     "numbers": "Illustrative: 12-month deposits support $18k/month income; permanent $560k.",
-    "why": "Fits her documentation.",
-    "alternatives": "OTC agency programs need tax-return income.",
-    "watch": "Requalification risk if deposits drop during build."
+    "why": "A portfolio construction lender accepts Jill's documentation. Non-QM permanent fits her income. Two-time accommodates both.",
+    "alternatives": "OTC agency programs need tax-return income. Buying an existing home was considered but she wants custom.",
+    "watch": "Requalification risk if deposits drop during the build; non-QM guideline changes; higher permanent pricing."
    },
    {
     "t": "Fire rebuild",
@@ -3312,47 +3312,47 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Tom's home burned in the January 2025 Eaton fire. He has insurance proceeds and an existing mortgage on the lot. He wants a larger design than before.",
     "structure": "Steven coordinates with the existing servicer on insurance proceeds, places a construction loan that pays off the old mortgage, then a permanent loan at completion.",
     "numbers": "Illustrative: insurance dwelling $600k; old mortgage $250k; build $950k; construction loan $700k.",
-    "why": "Flexibility with insurance proceeds and the old lien.",
-    "alternatives": "OTC programs may not handle the existing lien and insurance escrow.",
+    "why": "Two-time handles the insurance proceeds and old lien. Tom builds a larger design. Permanent loan is set at completion.",
+    "alternatives": "OTC programs may not handle the existing lien and insurance escrow. Selling the lot was considered but Tom wants to stay.",
     "watch": "Servicer release of insurance funds; permit backlog; new insurance availability (verify)."
    }
   ],
   "qa": [
    {
     "q": "Why choose two-time over one-time close?",
-    "a": "Flexibility on the permanent loan, owner-builder allowance, large custom builds and lenders willing to accept unusual budgets."
+    "a": "Flexibility on the permanent loan, owner-builder allowance, large custom builds and lenders willing to accept unusual budgets. It costs two closings. It suits complex projects."
    },
    {
     "q": "Do I have to requalify for the permanent loan?",
-    "a": "Yes. Income, credit and appraisal are re-verified, so job changes or new debt during the build can derail it."
+    "a": "Yes. Income, credit and appraisal are re-verified. Job changes or new debt during the build can derail it."
    },
    {
     "q": "Will I pay two sets of closing costs?",
-    "a": "Yes, though some lenders offer reduced permanent fees if they did the construction loan."
+    "a": "Yes, though some lenders offer reduced permanent fees if they did the construction loan. Compare total cost. Factor this into budget."
    },
    {
     "q": "How is interest paid during construction?",
-    "a": "Usually interest-only on drawn funds monthly, or from an interest reserve included in the budget (lender-specific)."
+    "a": "Usually interest-only on drawn funds monthly, or from an interest reserve included in the budget (lender-specific). Payments grow as draws increase. Budget accordingly."
    },
    {
     "q": "Is the permanent loan cash-out or rate/term?",
-    "a": "It depends on lot ownership timing and guide rules; some treat it as a construction-to-permanent refinance (verify before quoting)."
+    "a": "It depends on lot ownership timing and guide rules. Some treat it as a construction-to-permanent refinance (verify). Pricing differs."
    },
    {
     "q": "Can I be my own builder?",
-    "a": "Some credit unions and banks allow licensed owner-builders; unlicensed owner-builders are rarely financed."
+    "a": "Some credit unions and banks allow licensed owner-builders. Unlicensed owner-builders are rarely financed. Lender approval required."
    },
    {
     "q": "What happens if the build runs late?",
-    "a": "Extension fees, possible new appraisal and interest costs; the interest reserve may run out."
+    "a": "Extension fees, possible new appraisal and interest costs. The interest reserve may run out. Plan contingency time."
    },
    {
     "q": "Can I lock the permanent rate early?",
-    "a": "Some lenders offer extended locks or float-down; costs vary (lender-specific)."
+    "a": "Some lenders offer extended locks or float-down. Costs vary (lender-specific). Compare options."
    },
    {
     "q": "Does TRID apply?",
-    "a": "Yes for consumer construction loans; Reg Z has specific provisions for construction-to-permanent disclosure (verify)."
+    "a": "Yes for consumer construction loans. Reg Z has specific provisions for construction-to-permanent disclosure (verify). Both loans require disclosures."
    }
   ],
   "aeQuestions": [
@@ -3490,109 +3490,110 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
   },
   "scenarios": [
    {
-    "t": "Granny flat for parents",
-    "who": "Maria, 42, nurse, Chula Vista",
-    "situation": "Maria wants a detached ADU for her aging parents. She has a low first-lien rate and $450k equity. Her parents will contribute $50k.",
-    "structure": "Steven uses a HELOC for the build and documents the parents' gift.",
-    "numbers": "Illustrative: $250k cost; $200k HELOC; $50k gift.",
-    "why": "Keeps her first rate; flexible draws.",
-    "alternatives": "Cash-out refi would reprice $380k.",
-    "watch": "Gift documentation; permit timeline."
+    "t": "Detached ADU for aging parents",
+    "who": "Maria, 42, labor and delivery nurse, Chula Vista",
+    "situation": "Maria wants to build a 750 sq ft detached ADU so her parents can move in near her. Her first mortgage has a low rate and she has about $450,000 of equity. Her parents will contribute $50,000 from the sale of their condo.",
+    "structure": "Steven arranges a HELOC sized to the build budget and documents the parents' contribution with a gift letter and transfer evidence.",
+    "numbers": "Illustrative: value $900k; first $360k; HELOC $200k; CLTV 62%; budget $250k = $200k HELOC + $50k gift.",
+    "why": "A HELOC lets her draw as the builder hits milestones and pay interest only on what is used. Her low-rate first stays intact. The gift reduces the borrowing.",
+    "alternatives": "A cash-out refinance was considered but would reprice $360k of low-rate debt. A renovation loan on as-completed value was considered but would also require refinancing the first.",
+    "watch": "Permit timeline and utility connection costs; variable HELOC rate; gift must be documented before closing."
    },
    {
-    "t": "Rental ADU to qualify",
+    "t": "Buying a home with a rented ADU",
     "who": "Jason, 35, firefighter, Temecula",
-    "situation": "Jason wants to buy a home with an existing permitted ADU. He needs the ADU rent to qualify. The ADU is leased at $2,200.",
-    "structure": "Steven uses Fannie Mae rules allowing ADU rental income (verify).",
-    "numbers": "Illustrative: $900k price; ADU income counted at a capped percentage.",
-    "why": "Qualifies with rent.",
-    "alternatives": "FHA with ADU income (verify).",
-    "watch": "Lease and appraiser rent support."
+    "situation": "Jason wants to buy a home with an existing permitted ADU leased at $2,200. He needs the ADU rent to qualify. The listing agent says the ADU is permitted.",
+    "structure": "Steven uses Fannie Mae rules allowing ADU rental income on a 1-unit property (verify current caps and documentation), confirming permits and lease.",
+    "numbers": "Illustrative: price $900k; base income $10k/month; ADU rent counted at 75% = $1,650; capped at the guide's percentage of qualifying income (verify).",
+    "why": "ADU income helps Jason qualify. Agency pricing applies. The ADU adds long-term value.",
+    "alternatives": "FHA with ADU income was considered (verify). A larger down payment was considered but he lacks cash.",
+    "watch": "Permit verification; appraiser's rent support; lease and deposit documentation."
    },
    {
-    "t": "Legalizing unpermitted ADU",
+    "t": "Legalizing a garage conversion",
     "who": "Rosa, 60, retired, National City",
-    "situation": "Rosa's garage conversion was done in 2015 without permits. She wants to refinance. Lenders flag unpermitted units.",
-    "structure": "Steven refers her to the city's AB 2533 legalization process before refinancing (verify).",
-    "numbers": "Illustrative: legalization cost $15k-$40k.",
-    "why": "Value and insurability improve.",
-    "alternatives": "Refi without counting ADU.",
-    "watch": "Safety upgrades required."
+    "situation": "Rosa's garage was converted into a unit in 2015 without permits. She wants to refinance. Lenders often exclude unpermitted units.",
+    "structure": "Steven refers her to the city's AB 2533 legalization process before refinancing (verify local implementation).",
+    "numbers": "Illustrative: legalization cost $15k-$40k; value increase may exceed cost.",
+    "why": "Legalization improves value and insurability. Lenders can then count the unit. Impact fees may be waived for pre-2020 units.",
+    "alternatives": "Refinancing without counting the ADU was considered. Removing the unit was considered but would lose rental income.",
+    "watch": "AB 2533 legalization may require safety upgrades (smoke, egress, electrical) and city inspection; processing times vary and refinancing should wait until sign-off (verify)."
    },
    {
-    "t": "Multifamily ADUs",
+    "t": "Adding ADUs to a fourplex",
     "who": "Victor, 55, landlord, San Diego",
-    "situation": "Victor owns a fourplex. SB 1211 allows more detached ADUs. He wants to add 3.",
-    "structure": "Steven uses a commercial construction loan or bridge with DSCR exit.",
-    "numbers": "Illustrative: $750k cost; rents $7,500 extra/month.",
-    "why": "Adds income.",
-    "alternatives": "HELOC on primary.",
-    "watch": "Local implementation and utility capacity."
+    "situation": "Victor owns a fourplex and wants to add detached ADUs. SB 1211 allows more detached ADUs on existing multifamily lots. He wants to add 3.",
+    "structure": "Steven uses a commercial construction loan or bridge with a DSCR exit.",
+    "numbers": "Illustrative: cost $750k; added rents $7,500/month; post-construction value increase ~$1.1M.",
+    "why": "Additional units increase rental income and value. DSCR exit is based on new rents. SB 1211 allows the density.",
+    "alternatives": "A HELOC on his primary was considered but would risk his home. Selling the fourplex was considered but would lose income.",
+    "watch": "Local implementation of SB 1211 (verify); utility capacity; construction cost overruns."
    },
    {
-    "t": "Veteran adding ADU",
+    "t": "Veteran adding an ADU",
     "who": "Mike, 48, Navy veteran, Oceanside",
-    "situation": "Mike has a VA loan. He wants an ADU for rental income. He wants to keep the VA loan.",
-    "structure": "Steven uses a HELOAN behind the VA first.",
-    "numbers": "Illustrative: $900k value; $430k VA first; $200k second; CLTV = $630k / $900k = 70%.",
-    "why": "A fixed second keeps Mike's VA first-lien rate intact while funding the ADU.",
-    "alternatives": "VA renovation cash-out (verify).",
-    "watch": "CLTV cap and whether the lender will count future ADU rent; VA first-lien servicer does not need to consent to a junior lien but the second lender must accept a VA first."
+    "situation": "Mike has a VA loan and wants an ADU for rental income. He wants to keep the VA loan. He has equity.",
+    "structure": "Steven uses a fixed HELOAN behind the VA first.",
+    "numbers": "Illustrative: value $900k; VA first $430k; second $200k; CLTV 70%.",
+    "why": "A fixed second keeps Mike's VA first-lien rate intact while funding the ADU. Rental income improves cash flow. The second lender accepts a VA first.",
+    "alternatives": "VA cash-out refinance was considered but would reprice the first. A HELOC was considered but variable.",
+    "watch": "Combined CLTV must stay within the second-lien lender's cap; the lender must accept a VA first lien; ADU rental income may not count until a lease is in place."
    },
    {
-    "t": "ADU in fire zone",
+    "t": "ADU in a fire zone",
     "who": "Sarah, 46, teacher, Ramona",
-    "situation": "Sarah wants an ADU but insurers declined her. She uses FAIR Plan. Lender acceptance matters.",
-    "structure": "Steven confirms FAIR Plan plus DIC acceptance.",
-    "numbers": "Illustrative: $230k ADU; FAIR Plan plus DIC adds ~$350/month to housing costs; DTI rises from 41% to 44%.",
-    "why": "Securing insurance first prevents a stalled loan and protects the investment once the ADU is built.",
-    "alternatives": "Delay construction until admitted-market coverage returns, or harden the home (Class A roof, defensible space) to improve options.",
-    "watch": "FAIR Plan premium increases (29.1% average approved for Oct 2026 - verify) and lender acceptance of FAIR Plan plus DIC."
+    "situation": "Sarah wants an ADU but admitted insurers declined her. She is on the FAIR Plan. Lender acceptance matters.",
+    "structure": "Steven confirms FAIR Plan plus DIC acceptance and includes premiums in DTI.",
+    "numbers": "Illustrative: ADU $230k; insurance adds ~$350/month; DTI rises from 41% to 44%.",
+    "why": "Securing insurance first prevents a stalled loan. Mitigation can lower premiums. ADU adds value.",
+    "alternatives": "Delaying construction until admitted coverage returns was considered. Hardening the home first was considered to improve options.",
+    "watch": "FAIR Plan premium increases (29.1% average approved for Oct 2026 - verify); lender acceptance."
    }
   ],
   "qa": [
    {
     "q": "Can ADU rent count for qualifying?",
-    "a": "Under specific agency rules and limits; verify current guide."
+    "a": "Under specific agency rules and limits, yes (verify current guide). Fannie Mae allows ADU income on 1-unit properties with caps. FHA has its own rules."
    },
    {
     "q": "Do I need permits?",
-    "a": "Yes; unpermitted ADUs are often excluded from value."
+    "a": "Yes. Unpermitted ADUs are often excluded from value and income. AB 2533 provides a path to legalize pre-2020 units (verify)."
    },
    {
     "q": "Can I sell the ADU separately?",
-    "a": "Only where AB 1033 has been adopted locally (verify)."
+    "a": "Only where AB 1033 has been adopted locally (verify). Most cities have not yet adopted. Condo mapping is required."
    },
    {
     "q": "What is a JADU?",
-    "a": "Junior ADU within the main home, up to 500 sq ft."
+    "a": "A junior ADU within the main home, up to 500 sq ft. Owner occupancy is typically required. It may share facilities."
    },
    {
     "q": "Are impact fees waived?",
-    "a": "For ADUs under 750 sq ft (verify)."
+    "a": "For ADUs under 750 sq ft (verify). Larger units may pay proportional fees. Utility fees may still apply."
    },
    {
     "q": "Can I use a HELOC?",
-    "a": "Yes, on current equity."
+    "a": "Yes, on current equity. HELOCs allow draws as needed. CLTV limits apply."
    },
    {
     "q": "What about renovation loans?",
-    "a": "HomeStyle and 203(k) can fund ADUs within limits (verify)."
+    "a": "HomeStyle and 203(k) can fund ADUs within limits (verify). They lend on as-completed value. Contractor requirements apply."
    },
    {
     "q": "How long does building take?",
-    "a": "Often 6-12 months after permits."
+    "a": "Often 6-12 months after permits. Prefab ADUs can be faster. Utility connections can delay."
    }
   ],
   "aeQuestions": [
-   "Do you allow ADU rental income and how is it calculated?",
-   "Do you lend on as-completed value for ADUs?",
-   "What renovation programs do you offer?",
-   "Do you accept FAIR Plan plus DIC?",
-   "Do you finance prefab ADUs?",
-   "What contractor requirements apply?",
-   "Do you lend on properties with unpermitted ADUs?",
-   "What are draw procedures?"
+   "Do you allow ADU rental income on a 1-unit property, and what cap and documentation apply?",
+   "Do you lend on as-completed value for ADU construction?",
+   "Do you offer HomeStyle or 203(k) for ADU builds?",
+   "Do you accept CA FAIR Plan plus DIC?",
+   "Do you finance prefab or modular ADUs?",
+   "What contractor approval requirements apply?",
+   "Do you lend on properties with unpermitted ADUs or JADUs?",
+   "What draw procedures and inspection fees apply?",
+   "Do you finance SB 1211 multifamily ADU additions?"
   ],
   "redFlags": [
    "No permits",
@@ -3611,17 +3612,18 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
    "Real estate agents with multigenerational buyers"
   ],
   "checklist": [
-   "Plans",
-   "Permits",
-   "Contractor bids",
-   "License",
-   "Appraisal",
-   "Income docs",
-   "Insurance",
+   "ADU plans and permits",
+   "Local ADU ordinance review",
+   "Contractor bids and license",
+   "Utility will-serve letters",
+   "Appraisal (as-is or as-completed)",
+   "Income documents",
+   "Insurance with ADU coverage",
    "Title",
-   "Gift letters",
+   "Gift letters if family contributions",
    "Draw schedule",
-   "Lease if ADU rented"
+   "ADU lease and deposits if rented",
+   "AB 2533 legalization documents if applicable"
   ],
   "updated": "2026-11"
  },
@@ -3709,109 +3711,109 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
   },
   "scenarios": [
    {
-    "t": "FAIR Plan buyer",
-    "who": "Megan, 38, teacher, Ramona",
-    "situation": "Megan's target home is in a very high fire hazard zone. Admitted carriers declined it. Her DTI is tight.",
-    "structure": "Steven gets FAIR Plan plus DIC quotes before contract and recalculates DTI.",
-    "numbers": "Illustrative: $7,800/year insurance = $650/month; DTI 47%.",
-    "why": "Only realistic insurance path.",
-    "alternatives": "Different property with admitted coverage.",
-    "watch": "Premium increases at renewal."
+    "t": "FAIR Plan buyer with tight DTI",
+    "who": "Megan, 38, middle-school teacher, Ramona",
+    "situation": "Megan's target home sits in a very high fire hazard severity zone, and three admitted carriers declined to quote it. Her DTI is already 44% with a standard insurance estimate. She is using a conventional loan with 10% down.",
+    "structure": "Steven gets FAIR Plan plus DIC quotes during the inspection period, confirms the lender accepts that combination, and recalculates DTI before contingency removal.",
+    "numbers": "Illustrative: FAIR Plan $5,400 + DIC $2,400 = $7,800/year ($650/month) vs $150/month estimate; DTI rises from 44% to 49%, within the AUS approval in this example.",
+    "why": "Insurance is the deciding factor on approval in this zone. Getting quotes before removing contingencies protects her deposit. Steven also suggests hardening steps that may lower premiums later.",
+    "alternatives": "Choosing a different home outside the zone was considered. Increasing the down payment to lower PITI was considered but she lacked cash.",
+    "watch": "FAIR Plan premium increases (29.1% average approved effective Oct 15, 2026 - verify); renewal risk; lender acceptance."
    },
    {
-    "t": "Flood zone purchase with private flood",
+    "t": "Zone AE purchase with private flood",
     "who": "Rick, 45, engineer, Tampa",
-    "situation": "Rick is buying in zone AE. NFIP quote is $4,200/year. A private policy quotes $2,400.",
-    "structure": "Steven confirms the private policy meets federal requirements.",
+    "situation": "Rick is buying in flood zone AE. The NFIP quote is $4,200/year. A private policy quotes $2,400.",
+    "structure": "Steven confirms the private policy meets federal requirements and lender acceptance.",
     "numbers": "Illustrative: $150/month savings vs NFIP.",
-    "why": "Private flood that meets federal requirements can cost less than NFIP for some elevated properties.",
-    "alternatives": "NFIP policy at $4,200/year; simpler but higher in this case.",
-    "watch": "Policy compliance and renewals."
+    "why": "Private flood that meets federal requirements can cost less. Lender must accept compliant private policies. Savings improve DTI.",
+    "alternatives": "An NFIP policy was considered; simpler but higher in this case. Buying outside the flood zone was considered.",
+    "watch": "The private policy must meet the federal private flood definition each year; if the private insurer exits Florida, Rick must replace coverage without a lapse."
    },
    {
-    "t": "Veteran in fire zone",
+    "t": "Veteran in a fire zone",
     "who": "Tom, 60, veteran, Julian",
-    "situation": "Tom is buying with VA. Insurance options are limited. VA residual income must include premiums.",
-    "structure": "VA with FAIR Plan plus DIC and residual income recalculated.",
-    "numbers": "Illustrative: residual income still above table after $650 insurance.",
-    "why": "VA allows zero down and Tom's residual income still clears the table after insurance.",
-    "alternatives": "Buying outside the fire zone; Tom wants this property for family reasons.",
+    "situation": "Tom is buying with VA in a fire zone. Insurance options are limited. VA residual income must include premiums.",
+    "structure": "Steven uses FAIR Plan plus DIC and recalculates residual income.",
+    "numbers": "Illustrative: insurance $650/month; residual income still above VA table.",
+    "why": "VA allows zero down and Tom's residual income clears after insurance. FAIR Plan provides coverage. Steven confirms lender acceptance.",
+    "alternatives": "Buying outside the fire zone was considered. Conventional financing was considered but with a down payment.",
     "watch": "Insurance availability at renewal and VA residual income sensitivity."
    },
    {
-    "t": "Illinois river flooding",
+    "t": "Illinois river flood zone",
     "who": "Jen, 40, nurse, Peoria",
-    "situation": "Jen buys near the Illinois River in zone A. NFIP required. No elevation certificate.",
+    "situation": "Jen is buying near the Illinois River in zone A. NFIP is required. No elevation certificate exists.",
     "structure": "Steven orders an elevation certificate to refine premiums.",
-    "numbers": "Illustrative: premium drops after EC.",
-    "why": "Flood insurance is required in zone A; an elevation certificate can lower the premium.",
-    "alternatives": "Private flood policy if it meets federal requirements.",
+    "numbers": "Illustrative: premium drops from $3,600 to $2,100/year after EC.",
+    "why": "Flood insurance is required in zone A. An elevation certificate can lower the premium. Savings improve affordability.",
+    "alternatives": "A private flood policy was considered. Buying elsewhere was considered.",
     "watch": "Elevation certificate cost (~$500-$1,500, verify) and timing."
    },
    {
-    "t": "Map change at refinance",
+    "t": "Remapped into an SFHA",
     "who": "Al, 55, retired, Oceanside",
     "situation": "Al's home was remapped into an SFHA. His refinance now requires flood insurance. He believes the home is above base flood elevation.",
     "structure": "Steven helps him pursue a LOMA with a surveyor while binding flood to close.",
     "numbers": "Illustrative: flood $1,800/year until LOMA.",
-    "why": "The refinance cannot close without flood coverage in an SFHA.",
-    "alternatives": "Delay the refinance until LOMA approval.",
-    "watch": "LOMA processing time; continuous coverage requirements."
+    "why": "The refinance cannot close without flood coverage. LOMA may remove the requirement. Al saves long term.",
+    "alternatives": "Delaying the refinance until LOMA approval was considered. Paying cash for improvements was considered.",
+    "watch": "LOMA review by FEMA can take 60+ days (verify); coverage must stay in force until the LOMA is issued and the lender releases the requirement."
    },
    {
-    "t": "Arizona wildfire",
+    "t": "Arizona forest wildfire",
     "who": "Kate, 50, teacher, Flagstaff",
-    "situation": "Kate buys in a pine forest. Insurance is available but expensive. She wants to lower it.",
-    "structure": "Steven includes premiums and suggests mitigation measures.",
+    "situation": "Kate is buying in a pine forest. Insurance is available but expensive. She wants to lower it.",
+    "structure": "Steven includes premiums in DTI and suggests mitigation measures.",
     "numbers": "Illustrative: $3,600/year = $300/month; DTI increases by 3% on $10k income.",
-    "why": "Coverage is required to close and premiums must be in DTI.",
-    "alternatives": "Buying outside forested areas.",
-    "watch": "Premium increases and mitigation credits."
+    "why": "Coverage is required to close and premiums must be in DTI. Mitigation may lower future premiums. Kate understands costs.",
+    "alternatives": "Buying outside forested areas was considered. A smaller home was considered.",
+    "watch": "Coconino County wildfire risk can drive renewal increases; mitigation credits (defensible space, ember-resistant vents) should be documented with the insurer."
    }
   ],
   "qa": [
    {
     "q": "Is flood insurance required?",
-    "a": "Yes in SFHAs for federally backed or regulated loans."
+    "a": "Yes in SFHAs for federally backed or regulated loans. Coverage must meet minimums. Lenders verify with flood certification."
    },
    {
     "q": "Can I use private flood?",
-    "a": "Yes if compliant with federal requirements."
+    "a": "Yes if compliant with federal requirements. Lenders must accept compliant policies. Some private policies are cheaper."
    },
    {
-    "q": "Does FAIR Plan satisfy lenders?",
-    "a": "Often with a DIC policy; verify lender requirements."
+    "q": "Does the FAIR Plan satisfy lenders?",
+    "a": "Often with a DIC policy (verify lender requirements). FAIR Plan alone is fire-only. Lenders want full coverage."
    },
    {
-    "q": "Are premiums in DTI?",
-    "a": "Yes, full premiums."
+    "q": "Are premiums included in DTI?",
+    "a": "Yes, full premiums. Rising premiums can affect approval. Get quotes early."
    },
    {
     "q": "Can I remove the flood requirement?",
-    "a": "Through a LOMA or LOMR if eligible."
+    "a": "Through a LOMA or LOMR if eligible. A surveyor's elevation data is needed. FEMA approval takes time."
    },
    {
     "q": "What is DIC?",
-    "a": "Difference in conditions coverage for perils excluded by FAIR Plan."
+    "a": "Difference in conditions coverage for perils excluded by the FAIR Plan. It includes theft and liability. Lenders often require it."
    },
    {
     "q": "Will premiums rise?",
-    "a": "Often; plan for increases."
+    "a": "Often. FAIR Plan rates were increased in 2026 (verify). Plan for increases."
    },
    {
     "q": "Is escrow required?",
-    "a": "Usually for flood on regulated lenders."
+    "a": "Usually for flood on regulated lenders. Hazard insurance is often escrowed. Exceptions exist."
    }
   ],
   "aeQuestions": [
-   "Do you accept FAIR Plan plus DIC?",
-   "Do you accept private flood?",
-   "What are deductible limits?",
-   "Escrow requirements?",
-   "Replacement cost requirements?",
-   "How early must insurance be bound?",
-   "Do you require wind coverage in FL?",
-   "Do you accept Citizens policies?"
+   "Do you accept CA FAIR Plan plus DIC, and what coverage minimums apply?",
+   "Do you accept private flood policies, and how do you verify compliance?",
+   "What are your deductible limits for wildfire and wind?",
+   "Do you require escrow for flood and hazard?",
+   "What replacement cost requirements apply?",
+   "How early must insurance be bound before closing?",
+   "Do you require separate wind coverage in Florida?",
+   "Do you accept Citizens Property Insurance policies?"
   ],
   "redFlags": [
    "Late insurance quote",
@@ -3831,15 +3833,16 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
   ],
   "checklist": [
    "Flood certification",
-   "Insurance quotes",
+   "Hazard insurance quotes",
    "FAIR Plan declarations",
    "DIC declarations",
-   "Flood notice",
+   "Flood insurance quote (NFIP and private)",
+   "Notice of special flood hazard",
    "Escrow setup",
-   "DTI recalculation",
+   "DTI recalculation with insurance",
    "Elevation certificate",
    "Mortgagee clause",
-   "Renewal reminders"
+   "Wind mitigation inspection (FL)"
   ],
   "updated": "2026-11"
  },
@@ -3931,111 +3934,111 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
   },
   "scenarios": [
    {
-    "t": "First BRRRR",
+    "t": "First BRRRR project",
     "who": "Kyle, 33, IT specialist, Escondido",
-    "situation": "Kyle bought a dated house in Hemet with tenants moving out. He wants to renovate and rent it. He has never done a rehab and has $110k saved.",
-    "structure": "Steven uses a new-investor tier private rehab loan with a DSCR exit pre-quoted, plus a 10% contingency.",
-    "numbers": "Illustrative: $400k purchase; $70k rehab; ARV $560k; loan ~$390k; DSCR refi at 75% = $420k.",
-    "why": "Funds rehab and allows a refinance on new value.",
-    "alternatives": "HomeStyle investor would work but has slower draw approvals and a contractor review he could not wait for.",
-    "watch": "Seasoning for the DSCR refi; rent estimate realism."
+    "situation": "Kyle is buying a dated 3-bed in Hemet as the tenants move out. He has never done a renovation and has $110k saved. He wants to rent it long term and pull most of his cash back out.",
+    "structure": "Steven uses a new-investor-tier private rehab loan with a 10% contingency and gets a written DSCR take-out quote before Kyle removes contingencies.",
+    "numbers": "Illustrative: purchase $400k; rehab $70k; ARV $560k. Rehab loan 80% of purchase ($320k) + 100% rehab ($70k) = $390k (69.6% of ARV). DSCR refi at 75% x $560k = $420k pays off $390k plus ~$9k costs.",
+    "why": "A rehab loan funds the renovation in draws, which a standard purchase loan cannot do on a property that needs work. The pre-quoted DSCR exit shows Kyle how much cash comes back. The contingency protects a first-time investor from common overruns.",
+    "alternatives": "Fannie Mae HomeStyle for an investor 1-unit was considered; it would be a single long-term loan but contractor review and draw approvals would delay his timeline. Paying cash and using delayed financing was considered but he lacks the cash for both purchase and rehab.",
+    "watch": "DSCR seasoning (often 3-6 months) before using appraised value; rent estimate must be supported by the appraiser's rent schedule; draw fees add up on many small draws."
    },
    {
     "t": "HomeStyle for a long-term hold",
     "who": "Patricia, 49, accountant, Chula Vista",
-    "situation": "Patricia wants a single rental she will hold for 20 years. She has strong W-2 income. The house needs $60k of work.",
-    "structure": "Steven uses Fannie Mae HomeStyle investor 1-unit (verify current eligibility) with a licensed contractor.",
-    "numbers": "Illustrative: $550k purchase; $60k rehab; 85% of $610k = $518.5k loan.",
-    "why": "Long-term fixed financing in one closing, no refinance needed.",
-    "alternatives": "Private rehab plus DSCR has two closings and higher cost.",
-    "watch": "Contractor approval; 12-month completion (verify)."
+    "situation": "Patricia wants one rental she will hold for 20 years. She has strong W-2 income and good credit. The house needs about $60,000 of work and she prefers one closing.",
+    "structure": "Steven uses Fannie Mae HomeStyle for an investor 1-unit (verify current eligibility) with a licensed contractor and lender-approved draw schedule.",
+    "numbers": "Illustrative: purchase $550k; rehab $60k; total $610k; as-completed $640k; 85% of lesser of cost or value = $518.5k (verify investor LTV).",
+    "why": "One long-term fixed loan replaces two closings. Agency pricing is usually lower than private rehab money. Her strong income makes agency qualification easy.",
+    "alternatives": "A private rehab loan plus DSCR refinance was considered; faster but two sets of costs. Buying a turnkey rental was considered but would cost more per square foot.",
+    "watch": "Contractor approval and plan review; renovation must be completed within the program's timeline (verify); contingency reserve may be required."
    },
    {
-    "t": "Tenant-occupied duplex value-add",
+    "t": "Partially occupied duplex",
     "who": "Omar, 42, engineer, Los Angeles",
-    "situation": "Omar is buying a tenant-occupied duplex in San Bernardino. One unit is vacant. He wants to renovate that unit and keep the other tenant.",
-    "structure": "Steven uses a private rehab loan that accepts partial occupancy, with draws only for the vacant unit and exterior.",
-    "numbers": "Illustrative: $620k; $90k rehab; ARV $760k.",
-    "why": "Flexibility with occupied units.",
-    "alternatives": "DSCR on purchase would not fund rehab.",
-    "watch": "AB 1482 just-cause and local ordinances (verify)."
+    "situation": "Omar is buying a duplex in San Bernardino with one long-term tenant and one vacant unit. He wants to renovate the vacant unit and the exterior. He wants to keep the existing tenant.",
+    "structure": "Steven uses a private rehab lender that allows partial occupancy, with draws limited to the vacant unit and exterior.",
+    "numbers": "Illustrative: price $620k; rehab $90k; ARV $760k; loan 80% of purchase ($496k) + rehab $90k = $586k (77% of ARV, verify lender cap).",
+    "why": "Private lenders accept occupied units where agency renovation programs may not. Keeping the tenant preserves income during rehab. The exterior work raises value for both units.",
+    "alternatives": "A DSCR purchase loan was considered but does not fund rehab. Waiting until the tenant leaves was considered but could take a year.",
+    "watch": "Tenant protections under AB 1482 and local ordinances (verify); construction disruption to the occupied unit."
    },
    {
-    "t": "Veteran investor out of state",
+    "t": "Out-of-state remote rehab",
     "who": "Tony, 51, retired Army, Temecula",
-    "situation": "Tony wants to renovate a rental in Phoenix. He cannot oversee daily. He wants a reliable draw process.",
-    "structure": "Steven uses a lender with remote-inspection draws and local GC references.",
-    "numbers": "Illustrative: $350k; $50k rehab; ARV $460k.",
-    "why": "Remote draws fit an out-of-state investor.",
-    "alternatives": "Cash rehab then delayed financing.",
-    "watch": "GC oversight."
+    "situation": "Tony wants to renovate a rental in Phoenix. He cannot oversee the work daily. He wants a reliable draw process and local GC.",
+    "structure": "Steven uses a lender with remote photo-verified draws and requires local GC references.",
+    "numbers": "Illustrative: price $350k; rehab $50k; ARV $460k; loan $350k (76% of ARV).",
+    "why": "Remote inspections allow him to manage from Temecula. Draws are only released when work is verified. The lender is active in AZ.",
+    "alternatives": "Paying cash and using delayed financing was considered. Partnering with a local investor was considered but would split profits.",
+    "watch": "GC oversight; draw verification; Arizona contractor licensing."
    },
    {
-    "t": "Florida insurance-driven rehab",
+    "t": "Roof replacement on a Florida rental",
     "who": "Kendra, 36, nurse, Tampa",
-    "situation": "Kendra's rental needs a new roof to be insurable. She has a low-rate first on it. She wants to keep it.",
-    "structure": "Steven compares an investment HELOAN for the roof versus a full rehab refinance.",
-    "numbers": "Illustrative: $380k value; $190k low-rate first; $40k investment second; CLTV = $230k / $380k = 60.5%.",
-    "why": "A small second on the rental funds the roof without refinancing her low-rate first lien.",
-    "alternatives": "Full rehab refinance; would reprice $190k of cheap debt to fix a $40k problem.",
-    "watch": "Florida insurer roof-age rules and wind mitigation inspection to capture premium credits."
+    "situation": "Kendra's Tampa rental needs a new roof to be insurable. She has a low-rate first she wants to keep. Insurance carriers want a roof under 15 years old.",
+    "structure": "Steven compares an investment second lien for the roof versus a full rehab refinance.",
+    "numbers": "Illustrative: value $380k; first $190k; second $40k; CLTV 60.5%.",
+    "why": "A small second keeps the low-rate first. It funds the roof quickly. Insurance becomes available.",
+    "alternatives": "A full rehab refinance was considered but would reprice the first. Paying cash was considered but would deplete reserves.",
+    "watch": "Florida insurer roof-age rules; wind mitigation inspection credits; investment second pricing."
    },
    {
     "t": "Small multifamily renovation",
     "who": "Lena, 55, landlord, Las Vegas",
-    "situation": "Lena buys a 6-unit building needing interior updates. Agency doesn't fit 5+ units. She wants long-term financing after renovation.",
+    "situation": "Lena is buying a 6-unit building needing interior updates. Agency 2-4 unit programs do not apply. She wants long-term financing after renovation.",
     "structure": "Steven uses a commercial bridge then a 5+ unit DSCR loan.",
-    "numbers": "Illustrative: $1.2M; $180k rehab; ARV $1.6M.",
-    "why": "Bridge for 5+ units.",
-    "alternatives": "Agency multifamily (Fannie DUS) needs larger size.",
-    "watch": "Lease-up time."
+    "numbers": "Illustrative: price $1.2M; rehab $180k; ARV $1.6M; bridge 75% of cost = $1.035M; DSCR refi 70% of $1.6M = $1.12M.",
+    "why": "Commercial bridge lenders fund 5+ units. DSCR exit is based on stabilized rents. Renovation increases value.",
+    "alternatives": "Agency multifamily programs were considered but require larger loan sizes. A bank loan was considered but required more experience.",
+    "watch": "Lease-up of 6 renovated units may take 3-6 months; DSCR take-out depends on stabilized rents; the take-out will likely carry a prepayment penalty."
    }
   ],
   "qa": [
    {
     "q": "Can investors use FHA 203(k)?",
-    "a": "No; 203(k) is owner-occupied only."
+    "a": "No. FHA 203(k) is limited to owner-occupants. Investors use private rehab loans or HomeStyle where eligible."
    },
    {
     "q": "Does HomeStyle allow investment property?",
-    "a": "Yes for 1-unit investor properties under current guide (verify)."
+    "a": "Yes for 1-unit investor properties under the current guide (verify). It requires a licensed contractor and plan review. It is one long-term loan."
    },
    {
     "q": "Can I refinance right after rehab?",
-    "a": "DSCR lenders have seasoning rules; some allow appraised value after 3-6 months."
+    "a": "DSCR lenders often require 3-6 months seasoning to use appraised value (lender-specific). Agency loans have longer seasoning or cost-basis limits. Plan the exit before purchase."
    },
    {
     "q": "How long do draws take?",
-    "a": "Private 2-7 days; HomeStyle depends on lender."
+    "a": "Private lenders often fund draws in 2-7 days after inspection. HomeStyle draws depend on the lender's process. Delays can stall contractors."
    },
    {
     "q": "Can I do the work myself?",
-    "a": "Private lenders may allow experienced investors; HomeStyle generally requires a licensed contractor (verify DIY limits)."
+    "a": "Some private lenders allow experienced investors to self-perform. HomeStyle generally requires a licensed contractor (verify DIY limits). Self-performed work must still be inspected."
    },
    {
     "q": "What about tenants in place?",
-    "a": "Local rules may require relocation assistance."
+    "a": "California and local ordinances may require relocation assistance or limit evictions (verify). Some lenders limit funding for occupied units. Plan the tenant strategy."
    },
    {
     "q": "Is contingency required?",
-    "a": "Commonly yes."
+    "a": "Many lenders require 5-10% contingency. HomeStyle may require reserves for older properties (verify). Contingency protects against overruns."
    },
    {
     "q": "Can rehab include an ADU?",
-    "a": "Often yes."
+    "a": "Often yes if permitted. The appraisal must reflect the ADU. Rental income from the ADU may help the DSCR exit."
    }
   ],
   "aeQuestions": [
-   "Do you allow occupied units during rehab?",
-   "What is your new-investor tier leverage?",
-   "What is the draw process and fee?",
-   "Do you allow owner-performed work?",
-   "What seasoning applies for a DSCR take-out?",
-   "Do you offer HomeStyle investor?",
-   "What property types?",
-   "Are permits required?",
-   "Contingency requirements?",
-   "Extension terms?"
+   "Do you lend on partially occupied 2-4 unit properties during rehab?",
+   "What leverage do you offer first-time investors vs experienced tiers?",
+   "What is your draw process, inspection method and fee per draw?",
+   "Do you allow owner-performed labor, and how is it documented?",
+   "What seasoning applies for a DSCR take-out using appraised value?",
+   "Do you offer Fannie Mae HomeStyle for investor 1-unit properties?",
+   "What property types and unit counts do you finance?",
+   "Do you require permits before the first draw?",
+   "What contingency percentage do you require?",
+   "What extension terms apply if renovation runs late?"
   ],
   "redFlags": [
    "Budget without bids",
@@ -4055,16 +4058,17 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
   ],
   "checklist": [
    "Purchase contract",
-   "Scope and bids",
-   "Contractor license",
-   "Appraisal as-is and ARV",
-   "Title",
-   "Insurance",
-   "Entity docs",
-   "Liquidity",
-   "Exit plan",
-   "Tenant status",
-   "Permit status"
+   "Line-item scope of work with contractor bids",
+   "Contractor license and insurance",
+   "As-is and ARV appraisal",
+   "Feasibility or cost review",
+   "Title report with permit and code violation check",
+   "Builder's risk or renovation insurance",
+   "Entity documents if LLC",
+   "Liquidity verification",
+   "Exit plan (DSCR quote or sale comps)",
+   "Tenant status and estoppels",
+   "Permit plan"
   ],
   "updated": "2026-11"
  },
@@ -4161,9 +4165,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "David wants a condo on Agua Caliente tribal land. The lease runs to 2065 and was extended by the HOA years ago. He has 25% down.",
     "structure": "Steven confirms term vs a 30-year maturity (2056), the BIA process and a lender experienced with tribal leaseholds.",
     "numbers": "Illustrative: $450k price; $337.5k loan; ground rent included in HOA dues.",
-    "why": "The lease meets term requirements and lowers purchase price vs fee simple.",
-    "alternatives": "Fee simple condo at a higher price.",
-    "watch": "BIA processing time; future lease renegotiation risk."
+    "why": "The lease meets term requirements for a 30-year loan maturing in 2056. Leasehold pricing makes the condo more affordable than fee simple. A lender experienced with tribal land reduces delays.",
+    "alternatives": "A fee simple condo elsewhere in Palm Springs was considered but costs more. Paying cash was considered but David wants liquidity.",
+    "watch": "BIA approval and recording through the Land Titles and Records Office can add weeks (verify); future lease renegotiation could change ground rent."
    },
    {
     "t": "Community land trust buyer",
@@ -4171,9 +4175,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Tanya is buying a CLT home with a resale formula. The price is far below market. She has 3% down.",
     "structure": "Agency conventional with the CLT ground lease rider and lender approval of the CLT documents.",
     "numbers": "Illustrative: $220k price; 97% LTV; ground lease fee $35/month.",
-    "why": "Affordable ownership with agency financing.",
-    "alternatives": "Market-rate condo with higher payment.",
-    "watch": "Resale cap limits equity growth; she must understand it."
+    "why": "A CLT makes ownership affordable with agency financing. Tanya builds some equity. Ground lease fees are low.",
+    "alternatives": "A market-rate condo was considered but with a much higher payment. Renting was considered but offers no equity.",
+    "watch": "The resale formula caps equity growth; Tanya must understand she cannot sell at full market value."
    },
    {
     "t": "Short remaining lease",
@@ -4181,9 +4185,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Ben's target home is on a ground lease with 25 years remaining. A 30-year loan fails program requirements. The price reflects the short term.",
     "structure": "Steven finds a portfolio lender willing to do a 15-year amortizing loan and suggests negotiating a lease extension before closing.",
     "numbers": "Illustrative: $1.2M price; 60% LTV; 15-year term.",
-    "why": "Fits within lease term.",
-    "alternatives": "Purchase all cash.",
-    "watch": "Value declines as the lease shortens."
+    "why": "A 15-year portfolio loan fits within the remaining lease term. The price reflects the short lease. Ben's income supports the higher payment.",
+    "alternatives": "Purchasing all cash was considered. Negotiating a lease extension before closing was considered and would improve value.",
+    "watch": "Value declines as the lease shortens; future resale will be harder; lease extension negotiations are uncertain."
    },
    {
     "t": "Manufactured home on leased lot",
@@ -4191,8 +4195,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Carol is buying a manufactured home in a 55+ park on leased land. Space rent is $1,250/month. She has $50k down.",
     "structure": "Chattel loan with lot rent included in DTI.",
     "numbers": "Illustrative: $150k price; $100k chattel loan; total housing ~$2,050.",
-    "why": "Leased land requires chattel financing.",
-    "alternatives": "All cash.",
+    "why": "Chattel financing is the only option on leased land in a park. Carol keeps savings. Monthly housing fits her income.",
+    "alternatives": "Paying all cash was considered. Renting an apartment was considered but she prefers the park community.",
     "watch": "Space rent increases; CA mobilehome rent stabilization varies by city (verify)."
    },
    {
@@ -4201,9 +4205,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Eric wants a leasehold cabin. VA has specific leasehold requirements. The lease is renewable.",
     "structure": "Steven submits the lease for VA review and confirms term requirements (verify).",
     "numbers": "Illustrative: $600k; VA $600k plus funding fee unless exempt.",
-    "why": "Zero down VA if the lease qualifies.",
-    "alternatives": "Conventional with down payment.",
-    "watch": "VA leasehold review timing."
+    "why": "VA allows zero down if the lease meets requirements. Eric keeps savings. Lake Tahoe leasehold is affordable.",
+    "alternatives": "Conventional with down payment was considered. A fee simple cabin was considered but costs more.",
+    "watch": "VA leasehold review timing; lease term relative to loan maturity; ground rent escalations."
    },
    {
     "t": "Florida leasehold condo",
@@ -4211,43 +4215,43 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Marie is buying a condo on leased land with a land rent component. The building has post-Surfside milestone inspection requirements. She wants a 30-year loan.",
     "structure": "Agency if both the lease and condo project meet requirements; otherwise portfolio.",
     "numbers": "Illustrative: $380k; 75% LTV; land rent $300/month.",
-    "why": "Agency pricing if eligible.",
-    "alternatives": "Fee simple condo.",
-    "watch": "Condo reserves and assessments; lease escalation."
+    "why": "Agency financing gives better pricing if the lease and condo meet requirements. Marie keeps payments manageable. Land rent is predictable.",
+    "alternatives": "A fee simple condo was considered but costs more. A portfolio loan was considered if agency fails.",
+    "watch": "Condo milestone inspections and reserves under Florida law (verify); land rent escalations; special assessments."
    }
   ],
   "qa": [
    {
     "q": "What is a leasehold property?",
-    "a": "The buyer owns the improvements and a long-term right to use the land, but not the land itself."
+    "a": "The buyer owns the improvements and a long-term right to use the land, but not the land itself. Ground rent is paid to the landowner. Lease terms control rights."
    },
    {
     "q": "Is ground rent included in DTI?",
-    "a": "Yes, it is a housing expense."
+    "a": "Yes, it is a housing expense. Escalations should be considered. Lenders use current rent."
    },
    {
     "q": "How long must the lease run?",
-    "a": "Program-specific; commonly 5-10 years beyond maturity (verify)."
+    "a": "Program-specific; commonly 5-10 years beyond maturity (verify). FHA and Fannie differ. VA has its own rules."
    },
    {
     "q": "Can a lease be extended?",
-    "a": "Sometimes; extensions can restore value and eligibility."
+    "a": "Sometimes; extensions can restore value and eligibility. Lessor must agree. Costs vary."
    },
    {
     "q": "Does leasehold affect value?",
-    "a": "Yes, especially as the remaining term shortens."
+    "a": "Yes, especially as the remaining term shortens. Buyers pay less for shorter leases. Appraisers use leasehold comps."
    },
    {
     "q": "Is lessor consent needed?",
-    "a": "Often for mortgaging or transfer; the lease must not allow unreasonable refusal."
+    "a": "Often for mortgaging or transfer. The lease must not allow unreasonable refusal. Estoppels help."
    },
    {
     "q": "Is title insurance different?",
-    "a": "Yes, leasehold policies and endorsements are used."
+    "a": "Yes, leasehold policies and endorsements are used. Title reviews the lease. Coverage differs."
    },
    {
     "q": "Can I refinance later?",
-    "a": "Only if the remaining term still meets requirements."
+    "a": "Only if the remaining term still meets requirements. Shorter leases limit options. Plan ahead."
    }
   ],
   "aeQuestions": [
@@ -4379,107 +4383,108 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
    {
     "t": "First-time buyer on owned land",
     "who": "Ashley, 29, CNA, Hemet",
-    "situation": "Ashley wants a 2005 double-wide on a quarter acre. It is on a permanent foundation with a recorded 433A. She has 3.5% down.",
-    "structure": "FHA Title II with engineer certification and HUD label verification.",
-    "numbers": "Illustrative: $340k price; FHA $328.1k plus UFMIP.",
-    "why": "Lowest down payment for real property MH.",
-    "alternatives": "Fannie MH Advantage if the home meets MH Advantage features.",
-    "watch": "HUD labels and engineer certification."
+    "situation": "Ashley wants a 2005 double-wide on a quarter acre. It sits on a permanent foundation and the prior owner recorded a 433A converting it to real property. She has 3.5% down and a 640 FICO.",
+    "structure": "Steven uses FHA Title II, orders the engineer's foundation certification and checks HUD labels on both sections.",
+    "numbers": "Illustrative: price $340k; FHA 96.5% = $328.1k plus 1.75% UFMIP = $333.8k total loan.",
+    "why": "FHA Title II offers the lowest down payment for real property manufactured homes. The 433A conversion makes the home eligible. Ashley builds equity in land and home.",
+    "alternatives": "Fannie MH Advantage was considered but the home lacks required features. A chattel loan was considered but costs more and does not include land.",
+    "watch": "HUD labels must be present or verified; engineer certification can take 1-2 weeks; FHA MIP for life of loan at 96.5% LTV."
    },
    {
     "t": "Retiree in a 55+ park",
     "who": "Don, 70, retired machinist, Escondido",
-    "situation": "Don wants a home in a 55+ park. He does not own the land. He has $40k saved.",
-    "structure": "Chattel loan with lot rent in DTI.",
-    "numbers": "Illustrative: $180k home; $140k loan; lot rent $1,200.",
-    "why": "Chattel is the only option on leased land.",
-    "alternatives": "All cash.",
-    "watch": "Lot rent increases; local rent stabilization (verify)."
+    "situation": "Don wants a home in a 55+ park. He does not own the land and pays space rent. He has $40k saved and Social Security plus a pension.",
+    "structure": "Steven arranges a chattel loan with space rent included in DTI.",
+    "numbers": "Illustrative: home $180k; loan $140k; space rent $1,200; payment ~$1,100; total housing ~$2,300.",
+    "why": "Chattel is the only option on leased land. Don keeps some savings. Monthly cost fits his income.",
+    "alternatives": "Paying cash was considered but would deplete his savings. Renting in the park was considered but offers no equity.",
+    "watch": "Space rent increases; local rent stabilization ordinances vary (verify); chattel rates higher."
    },
    {
     "t": "Veteran on rural land",
     "who": "James, 55, retired Marine, Ramona",
     "situation": "James owns 2 acres and wants a new manufactured home. He wants zero down. The dealer is VA-familiar.",
-    "structure": "VA with permanent foundation and land equity.",
-    "numbers": "Illustrative: $400k total; VA $400k plus funding fee unless exempt.",
-    "why": "VA allows zero down on a manufactured home permanently affixed to land James owns.",
-    "alternatives": "FHA Title II would require 3.5% down and MIP.",
-    "watch": "Foundation and setup; VA MPRs."
+    "structure": "Steven uses a VA loan with permanent foundation and land equity.",
+    "numbers": "Illustrative: home and setup $250k; land value $150k; total $400k; VA $400k plus funding fee unless exempt.",
+    "why": "VA allows zero down on a manufactured home permanently affixed to land James owns. No PMI. Land equity supports value.",
+    "alternatives": "FHA Title II would require 3.5% down and MIP. A chattel loan was considered but would not include land.",
+    "watch": "Foundation and setup inspections; VA minimum property requirements; delivery timing."
    },
    {
-    "t": "Missing HUD label",
+    "t": "Missing HUD labels",
     "who": "Kelly, 41, server, Lake Elsinore",
     "situation": "Kelly's purchase has no HUD labels. The lender requires verification. Escrow is set for 30 days.",
-    "structure": "Steven orders IBTS label verification and requests a closing extension.",
-    "numbers": "Illustrative: IBTS letter cost ~$200-$300 (verify).",
-    "why": "Without HUD label verification, most lenders will not finance the home as eligible collateral.",
-    "alternatives": "Chattel lender with different requirements.",
-    "watch": "IBTS turnaround can push closing; Steven requests an extension early."
+    "structure": "Steven orders an IBTS label verification letter and requests a closing extension.",
+    "numbers": "Illustrative: IBTS letter cost ~$200-$300 (verify); 2-4 week turnaround.",
+    "why": "Without HUD label verification, most lenders will not finance the home. The letter allows FHA or conventional financing. An extension keeps the deal alive.",
+    "alternatives": "A chattel lender with different requirements was considered. Walking away was considered but Kelly likes the home.",
+    "watch": "IBTS turnaround of 2-4 weeks can push closing; the seller must agree to an extension in writing or Kelly risks her deposit."
    },
    {
-    "t": "Arizona community home",
+    "t": "Arizona 55+ community",
     "who": "Tom, 66, retired, Mesa",
     "situation": "Tom wants a home in an AZ 55+ community. Land is leased. He has 20% down.",
-    "structure": "Chattel loan secured by the home only, with space rent included in DTI.",
-    "numbers": "Illustrative: $120k home; $96k loan.",
-    "why": "The land is leased, so a real property mortgage is not possible.",
-    "alternatives": "Paying cash; Tom prefers to keep liquidity.",
-    "watch": "Community rules and lot rent."
+    "structure": "Steven arranges a chattel loan secured by the home only.",
+    "numbers": "Illustrative: home $120k; loan $96k; lot rent $800.",
+    "why": "Leased land requires chattel financing. Tom keeps liquidity. Payments fit his budget.",
+    "alternatives": "Paying cash was considered. Buying a site-built home was considered but cost more.",
+    "watch": "Community rules and lot rent increases; AZ titling (verify)."
    },
    {
-    "t": "Fire rebuild with MH",
+    "t": "Fire rebuild with a manufactured home",
     "who": "Lisa, 52, teacher, Paradise",
     "situation": "Lisa replaces a burned home with a manufactured home on her lot. It is faster than stick-built. She wants a 30-year loan.",
-    "structure": "Conventional or FHA with new MH on permanent foundation.",
-    "numbers": "Illustrative: $280k total; 95% LTV.",
-    "why": "Factory-built homes can be delivered and set faster than stick-built rebuilds after a wildfire.",
-    "alternatives": "Stick-built rebuild; longer timeline and higher cost per square foot.",
-    "watch": "Insurance availability in the burn area and the foundation engineer certification."
+    "structure": "Steven uses conventional or FHA with a new manufactured home on a permanent foundation.",
+    "numbers": "Illustrative: home and setup $280k; lot equity $80k; loan 95% of total.",
+    "why": "Factory-built homes can be delivered and set faster than stick-built rebuilds. Real property financing provides long-term terms. Lot equity reduces cash needed.",
+    "alternatives": "A stick-built rebuild was considered but longer and costlier. Selling the lot was considered but Lisa wants to stay.",
+    "watch": "Insurance availability in the burn area; foundation certification; permits."
    }
   ],
   "qa": [
    {
     "q": "Can a manufactured home get a 30-year mortgage?",
-    "a": "Yes if it is real property on a permanent foundation with title converted."
+    "a": "Yes, if it is real property on a permanent foundation with title converted. FHA, VA, USDA and conventional programs are available. Chattel loans have shorter terms."
    },
    {
     "q": "What is chattel financing?",
-    "a": "A personal property loan for a home not attached to owned land."
+    "a": "A personal property loan for a home not attached to owned land. Rates and terms differ from mortgages. Lot rent is included in DTI."
    },
    {
     "q": "Can a moved home be financed?",
-    "a": "Often not; most programs require the original site."
+    "a": "Often not. Most programs require the home to be on its original site. Some exceptions exist (verify)."
    },
    {
     "q": "What if HUD labels are missing?",
-    "a": "Order an IBTS label verification letter."
+    "a": "Order an IBTS label verification letter. It can take weeks. Without labels, financing is difficult."
    },
    {
     "q": "Does FHA finance manufactured homes?",
-    "a": "Yes, under Title II (real property) and Title I (chattel)."
+    "a": "Yes. Title II for real property and Title I for chattel. Foundation and label requirements apply."
    },
    {
     "q": "What is MH Advantage?",
-    "a": "A Fannie Mae program for homes with site-built-like features (verify)."
+    "a": "A Fannie Mae program for manufactured homes with site-built features (verify). It offers better terms. Specific features are required."
    },
    {
-    "q": "Can I refinance chattel into a mortgage?",
-    "a": "If you own the land and convert title."
+    "q": "Can I refinance a chattel loan into a mortgage?",
+    "a": "Yes, if you own the land and convert title to real property. A permanent foundation is required. Appraisal must support value."
    },
    {
     "q": "Are there age limits?",
-    "a": "Post-June 1976 HUD-code homes are typical."
+    "a": "Homes built after June 15, 1976 under HUD code are typical. USDA has specific age rules (verify). Older homes are hard to finance."
    }
   ],
   "aeQuestions": [
-   "Do you offer chattel and real property MH loans?",
-   "What is your minimum FICO?",
-   "Do you allow single-wides?",
-   "Do you allow homes that were moved?",
-   "Do you lend on leased land?",
+   "Do you offer chattel, FHA Title I, FHA Title II, VA and conventional manufactured home loans?",
+   "What is your minimum FICO for each MH program?",
+   "Do you allow single-wide homes?",
+   "Do you finance homes moved from their original site?",
+   "Do you lend on leased land or in parks?",
    "What foundation certification do you require?",
-   "How do you handle title conversion?",
-   "Do you offer MH Advantage?"
+   "How do you handle CA 433A title conversion?",
+   "Do you offer Fannie MH Advantage or Freddie CHOICEHome?",
+   "How do you value homes in parks?"
   ],
   "redFlags": [
    "Missing HUD labels",
@@ -4498,16 +4503,17 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
    "Content on chattel vs real property"
   ],
   "checklist": [
-   "HUD labels",
-   "Data plate",
-   "Foundation certification",
-   "Title documents (433A or state equivalent)",
-   "Appraisal",
-   "Insurance",
+   "HUD certification labels (each section)",
+   "HUD data plate",
+   "IBTS letter if labels missing",
+   "Engineer foundation certification",
+   "Title docs (HCD 433A or state equivalent)",
+   "Appraisal with manufactured comps",
+   "Insurance quote",
    "Income docs",
-   "Land lease if any",
-   "IBTS letter if needed",
-   "Installation permit"
+   "Land lease and park rules if applicable",
+   "Original installation permit",
+   "Space rent statement"
   ],
   "updated": "2026-11"
  },
@@ -4592,117 +4598,118 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
   },
   "scenarios": [
    {
-    "t": "Owner-occupied storefront",
+    "t": "Owner-occupied bakery building",
     "who": "Elena, 46, bakery owner, Chula Vista",
-    "situation": "Elena wants to buy a building with her bakery downstairs and an apartment upstairs where she'll live. The commercial portion is about 45% of square footage. She has two years of business returns.",
-    "structure": "Steven checks FHA 51% residential rule and Fannie rules; if commercial exceeds agency tolerance, he uses SBA 504 or a mixed-use non-QM loan.",
-    "numbers": "Illustrative: $950k price; SBA 504 10% down = $95k.",
-    "why": "SBA fits owner-occupied business; residential programs may not.",
-    "alternatives": "Non-QM mixed-use at 25% down.",
-    "watch": "Business health drives SBA approval."
+    "situation": "Elena wants to buy a two-story building with her bakery downstairs and an apartment upstairs where she will live. The commercial portion is about 45% of square footage. She has two years of business returns showing growth.",
+    "structure": "Steven first checks whether FHA's residential-share rule (residential at least 51% of floor area - verify) or Fannie's limited business-use rule fits. Because the commercial share is large, he leads with an SBA 504 loan.",
+    "numbers": "Illustrative: price $950k; SBA 504: 10% down ($95k), bank first 50% ($475k), CDC second 40% ($380k).",
+    "why": "SBA 504 fits an owner-occupied business with a low down payment and long fixed terms. Residential programs may not fit the commercial share. Owning stabilizes her business costs.",
+    "alternatives": "A non-QM mixed-use loan at 25% down was considered; faster but more cash. Continuing to lease was considered but rent increases are a risk.",
+    "watch": "SBA approval depends on business financials; 51% owner occupancy for existing buildings (verify)."
    },
    {
     "t": "Chicago storefront 2-flat",
     "who": "Marcus, 39, IT manager, Chicago",
     "situation": "Marcus wants a storefront with two apartments in Logan Square. He will live upstairs. The storefront is leased to a barber.",
-    "structure": "Steven checks Fannie 2-4 unit rules with a commercial unit, else non-QM mixed-use owner-occupied.",
-    "numbers": "Illustrative: $780k price; 25% down non-QM.",
-    "why": "Mixed-use lenders accept storefront.",
-    "alternatives": "Agency only if residential character.",
-    "watch": "IL attorney review; prepay limits (verify)."
+    "structure": "Steven checks Fannie 2-4 unit rules with a commercial unit, else uses a non-QM mixed-use owner-occupied loan.",
+    "numbers": "Illustrative: price $780k; 25% down = $195k; loan $585k; rents $3,500/month.",
+    "why": "Mixed-use lenders accept storefront income. Owner occupancy improves pricing. Rental income helps qualify.",
+    "alternatives": "Agency financing was considered if the building keeps residential character. A commercial bank loan was considered but has balloon terms.",
+    "watch": "IL attorney review; prepayment limits (verify); commercial lease terms."
    },
    {
-    "t": "Investor mixed-use",
+    "t": "Investor mixed-use DSCR",
     "who": "Sam, 58, landlord, El Cajon",
-    "situation": "Sam buys a 3-unit with a ground-floor office. He wants DSCR financing. Office lease has 2 years left.",
-    "structure": "Mixed-use DSCR loan in Sam's LLC with the office income haircut by a vacancy factor and 30-year amortization.",
-    "numbers": "Illustrative: $1.4M; 70% LTV = $980k.",
-    "why": "DSCR underwriting ignores Sam's personal DTI and accepts the commercial unit up to the lender's share limit.",
-    "alternatives": "Bank commercial loan with balloon.",
-    "watch": "Office lease expires in 2 years; Steven asks for an estoppel and models DSCR with the office vacant."
+    "situation": "Sam buys a 3-unit residential building with a ground-floor office. He wants DSCR financing. The office lease has 2 years left.",
+    "structure": "Steven uses a mixed-use DSCR loan in Sam's LLC with office income haircut by a vacancy factor.",
+    "numbers": "Illustrative: price $1.4M; 70% LTV = $980k; DSCR 1.22x.",
+    "why": "DSCR underwriting ignores Sam's personal DTI and accepts the commercial unit. Long-term financing suits his hold. LLC vesting supports liability planning.",
+    "alternatives": "A bank commercial loan was considered but with a 5-year balloon. An agency loan was not available.",
+    "watch": "Office lease expires in 2 years; Steven models DSCR with the office vacant."
    },
    {
     "t": "Live-work loft",
     "who": "Jen, 33, designer, San Diego",
-    "situation": "Jen wants a live-work loft in East Village. Condo with commercial zoning. Agency may reject.",
-    "structure": "Non-warrantable condo non-QM.",
-    "numbers": "Illustrative: $650k loft; 75% LTV = $487.5k; HOA has 35% commercial space, above typical agency limits.",
-    "why": "Non-QM condo lenders accept higher commercial percentages in the project.",
-    "alternatives": "Agency only if the project is warrantable; this project is not.",
-    "watch": "HOA commercial percentage, budget reserves and litigation."
+    "situation": "Jen wants a live-work loft in East Village. The condo project has commercial zoning and more commercial space than agency limits allow. She has 25% down.",
+    "structure": "Steven uses a non-warrantable condo non-QM lender.",
+    "numbers": "Illustrative: price $650k; 75% LTV = $487.5k.",
+    "why": "Non-QM condo lenders accept higher commercial percentages. Jen can live and work in one place. 25% down meets requirements.",
+    "alternatives": "Agency was considered only if the project were warrantable. Renting a loft was considered but offers no equity.",
+    "watch": "If the HOA's commercial share, reserves or pending litigation worsen, even non-QM lenders may decline; Steven reviews the HOA budget and questionnaire before the appraisal."
    },
    {
-    "t": "Veteran small business",
+    "t": "Veteran's auto shop with apartment",
     "who": "Ray, 50, veteran, Oceanside",
-    "situation": "Ray wants a building for his auto shop with an apartment. Environmental risk. VA not eligible for commercial.",
-    "structure": "SBA 504 with a Phase I environmental report because of the auto shop use; apartment upstairs treated as part of the owner-occupied building.",
-    "numbers": "Illustrative: $1.1M price; SBA 504 10% down = $110k; bank first 50% and CDC second 40%.",
-    "why": "SBA 504 offers low down payment and long-term fixed financing for owner-occupied business property.",
-    "alternatives": "Continuing to lease; no equity and rent increases.",
+    "situation": "Ray wants to buy a building for his auto shop with an apartment upstairs. The property's prior use raises environmental concerns. VA does not finance commercial property.",
+    "structure": "Steven uses an SBA 504 loan with a Phase I environmental report.",
+    "numbers": "Illustrative: price $1.1M; 10% down $110k; bank first 50%; CDC second 40%.",
+    "why": "SBA 504 offers low down payment and long-term fixed financing. Ray's business occupies the property. The apartment adds income.",
+    "alternatives": "Continuing to lease was considered. A commercial bank loan was considered but required more down.",
     "watch": "Environmental findings from prior auto use; SBA occupancy requirements."
    },
    {
     "t": "Florida downtown mixed-use",
     "who": "Ana, 44, investor, St. Petersburg",
-    "situation": "Ana buys a building with retail and 4 apartments. Flood zone. Insurance is costly.",
-    "structure": "Commercial bank loan with flood insurance.",
-    "numbers": "Illustrative: $1.6M; 70% LTV = $1.12M; DSCR with flood premium $9k/year ~1.22x.",
-    "why": "A local bank with a relationship offers flexible commercial terms in a flood zone.",
-    "alternatives": "Mixed-use DSCR non-QM; higher cost but faster.",
+    "situation": "Ana buys a building with retail and 4 apartments. It is in a flood zone. Insurance is costly.",
+    "structure": "Steven uses a commercial bank loan with flood insurance.",
+    "numbers": "Illustrative: price $1.6M; 70% LTV = $1.12M; DSCR 1.22x with flood premium $9k/year.",
+    "why": "A local bank with a relationship offers flexible terms. The building's income supports the loan. Flood insurance is required.",
+    "alternatives": "A mixed-use DSCR non-QM loan was considered; higher cost but faster. Buying outside the flood zone was considered but she likes the location.",
     "watch": "Flood insurance cost and availability; FL condo or association rules if applicable."
    }
   ],
   "qa": [
    {
     "q": "Can FHA finance mixed-use?",
-    "a": "If residential share meets FHA rules (verify)."
+    "a": "Yes if the residential share meets FHA rules (verify). The borrower must occupy. Commercial use cannot dominate."
    },
    {
     "q": "Does Fannie allow mixed-use?",
-    "a": "Limited; residential character must be preserved (verify)."
+    "a": "Limited business use is allowed if residential character is preserved (verify). The borrower must occupy. Appraisal must show residential comps."
    },
    {
     "q": "What if commercial is vacant?",
-    "a": "Lenders apply vacancy or exclude."
+    "a": "Lenders apply vacancy or exclude vacant commercial space. DSCR may drop. Higher reserves may be required."
    },
    {
     "q": "Is an environmental report required?",
-    "a": "Often for certain prior uses."
+    "a": "Often for certain prior uses like gas stations or dry cleaners. Phase I reports cost money and time. Lenders decide."
    },
    {
     "q": "Can SBA finance?",
-    "a": "If owner-occupied business uses 51%+ for existing buildings (verify)."
+    "a": "If the business occupies 51%+ of an existing building (verify). SBA 504 and 7(a) are options. Business financials are reviewed."
    },
    {
     "q": "What about zoning?",
-    "a": "Must be legal."
+    "a": "The mixed use must be legal. Legal non-conforming status may affect rebuild rights. Lenders review zoning."
    },
    {
-    "q": "What DSCR?",
-    "a": "Commonly 1.20x+."
+    "q": "What DSCR is required?",
+    "a": "Commonly 1.20x+ for commercial lenders. Non-QM may accept lower. Vacancy factors apply."
    },
    {
-    "q": "Prepayment?",
-    "a": "Common on commercial."
+    "q": "Are prepayment penalties common?",
+    "a": "Yes on commercial and DSCR loans. State limits may apply. Plan the hold period."
    },
    {
     "q": "How is commercial vacancy treated?",
-    "a": "Many lenders apply a higher vacancy factor or exclude vacant commercial space from DSCR."
+    "a": "Many lenders apply a higher vacancy factor or exclude vacant commercial space from DSCR. This lowers qualifying income. Leases help."
    },
    {
     "q": "Are triple-net leases helpful?",
-    "a": "Yes, NNN leases shift taxes, insurance and maintenance to tenants and can improve DSCR."
+    "a": "Yes, NNN leases shift taxes, insurance and maintenance to tenants. This improves DSCR. Lenders like strong tenants."
    }
   ],
   "aeQuestions": [
-   "Max commercial share?",
-   "DSCR method?",
-   "Vacancy factor?",
-   "Environmental requirements?",
-   "LTV?",
-   "Term/balloon?",
-   "Prepayment?",
-   "Owner-occupied allowed?"
+   "What is your max commercial share by square footage and by income?",
+   "How do you calculate DSCR and what vacancy factor do you apply to commercial space?",
+   "Do you finance owner-occupied mixed-use (consumer) or only investment?",
+   "When do you require a Phase I environmental report?",
+   "What LTV do you offer for mixed-use?",
+   "What term and balloon structure applies?",
+   "What prepayment options are available?",
+   "Do you lend on live-work condos?",
+   "Do you accept short remaining commercial leases?"
   ],
   "redFlags": [
    "Illegal use",
@@ -4721,16 +4728,18 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
    "Main Street and business improvement district associations"
   ],
   "checklist": [
-   "Floor plans",
-   "Zoning",
-   "Leases",
+   "Floor plans with residential and commercial square footage",
+   "Zoning verification letter",
+   "Commercial and residential leases",
    "Rent roll",
-   "Environmental",
-   "Appraisal",
-   "Insurance",
-   "Title",
-   "Business financials",
-   "Entity docs"
+   "Tenant estoppels",
+   "Environmental questionnaire or Phase I",
+   "Appraisal with income approach",
+   "Commercial package insurance",
+   "Title with CC&Rs and easements",
+   "Business financials (if owner-occupied)",
+   "Entity documents",
+   "SBA forms if applicable"
   ],
   "updated": "2026-11"
  },
@@ -4826,9 +4835,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Jake and his partner want a modest home on 2 acres outside Ramona. Their combined income is under the USDA limit and they have $10,000 saved. The home has a private well and septic.",
     "structure": "Steven uses USDA Guaranteed with well and septic inspections and the seller paying some closing costs.",
     "numbers": "Illustrative: $520k price; USDA loan $525,200 including 1% fee; buyer cash ~$8k.",
-    "why": "Zero down and lower mortgage insurance than FHA.",
-    "alternatives": "FHA would need 3.5% down ($18.2k).",
-    "watch": "Well potability; FAIR Plan insurance costs in DTI."
+    "why": "USDA offers zero down and lower mortgage insurance than FHA. Jake's income qualifies. Seller credits cover most closing costs.",
+    "alternatives": "FHA would need 3.5% down ($18.2k). Conventional would require more down and PMI.",
+    "watch": "Well potability test must pass; FAIR Plan insurance cost must be included in ratios; USDA conditional commitment adds days."
    },
    {
     "t": "Hobby horse property",
@@ -4836,9 +4845,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Sandra wants 5 acres with a barn and arena for two horses. She has no farm income. The appraiser may give little value to the arena.",
     "structure": "Conventional loan with 20% down; Steven briefs the appraiser that use is hobby only.",
     "numbers": "Illustrative: $950k price; land value $350k (36.8%); loan $760k.",
-    "why": "Conventional fits a high-value hobby property.",
-    "alternatives": "Portfolio lender if the appraiser flags commercial use.",
-    "watch": "Outbuilding value; insurance."
+    "why": "Conventional financing fits a high-value hobby property. Briefing the appraiser prevents commercial classification. Sandra's income qualifies.",
+    "alternatives": "A portfolio lender was considered if the appraiser flags commercial use. A jumbo was not needed.",
+    "watch": "Outbuilding and arena may get little value; insurance for barns; appraiser must find acreage comps."
    },
    {
     "t": "Veteran on 10 acres in fire country",
@@ -4846,9 +4855,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Hank wants 10 acres with a cabin. He has full VA entitlement. Insurers have declined the area.",
     "structure": "VA with FAIR Plan plus DIC; Steven confirms lender acceptance and includes full premiums in DTI and residual income.",
     "numbers": "Illustrative: $750k; VA $750k plus funding fee unless exempt; insurance ~$8k/year.",
-    "why": "Zero down with VA.",
-    "alternatives": "Conventional with 10% down.",
-    "watch": "VA MPRs for wells and access; insurance renewals."
+    "why": "VA allows zero down on rural property. Hank keeps savings. FAIR Plan provides coverage.",
+    "alternatives": "Conventional with 10% down was considered. USDA was considered but income limits applied.",
+    "watch": "VA minimum property requirements for wells and access; FAIR Plan renewals; residual income with insurance."
    },
    {
     "t": "Arizona acreage with water questions",
@@ -4856,9 +4865,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Ellen buys 15 acres with a private well. The area is in an Active Management Area. She has 30% down.",
     "structure": "Portfolio lender comfortable with 15 acres; Steven requires well flow test and water rights review.",
     "numbers": "Illustrative: $650k; 70% = $455k.",
-    "why": "Agency lenders cap acreage in some cases.",
-    "alternatives": "Conventional if appraiser finds typical acreage comps.",
-    "watch": "Groundwater restrictions (verify)."
+    "why": "A portfolio lender comfortable with 15 acres fits Ellen's property. Water rights review protects her investment. 30% down meets requirements.",
+    "alternatives": "Conventional was considered if the appraiser finds typical acreage comps. Paying cash was considered.",
+    "watch": "Arizona groundwater restrictions in Active Management Areas (verify); well flow; comps."
    },
    {
     "t": "Working avocado grove",
@@ -4866,9 +4875,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Tom wants a 12-acre avocado grove with a home. The grove produces income. Residential lenders will decline.",
     "structure": "Steven refers to an agricultural lender such as Farm Credit and stays involved on the residential side if split.",
     "numbers": "Illustrative: $1.5M; ag lender 65% = $975k.",
-    "why": "Ag lender understands crop income.",
-    "alternatives": "Residential only if the grove is incidental.",
-    "watch": "Water costs; crop insurance."
+    "why": "An agricultural lender understands crop income. Residential programs exclude working farms. Tom gets appropriate financing.",
+    "alternatives": "Residential financing only if the grove is incidental. Leasing the grove was considered.",
+    "watch": "Water costs and drought; crop insurance; ag lender terms differ from residential."
    },
    {
     "t": "Nevada rural first-time buyer",
@@ -4876,43 +4885,43 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Rita wants 1 acre with a manufactured home on a permanent foundation. USDA eligible. Septic system is older.",
     "structure": "USDA with septic inspection and manufactured home requirements (new or specific age rules for USDA - verify).",
     "numbers": "Illustrative: $340k; USDA $343.4k.",
-    "why": "Zero down.",
-    "alternatives": "FHA.",
-    "watch": "USDA manufactured home age rules; septic repairs."
+    "why": "USDA allows zero down for Rita. Income is under limits. Septic inspection ensures safety.",
+    "alternatives": "FHA was considered with 3.5% down. A chattel loan was considered but she owns the land.",
+    "watch": "USDA manufactured home age and new-home requirements (verify); septic repairs; Nye County well permits."
    }
   ],
   "qa": [
    {
     "q": "Is there a maximum acreage for agency loans?",
-    "a": "No fixed cap, but the site must be typical for the area and value predominantly in the home; many lenders set their own caps."
+    "a": "No fixed cap, but the site must be typical for the area and value predominantly in the home. Many lenders set their own caps. Appraisers comment on typicality."
    },
    {
     "q": "Can I use farm income to qualify?",
-    "a": "Only if documented on tax returns and allowed by the program; income-producing farms are generally ineligible for residential loans."
+    "a": "Only if documented on tax returns and allowed by the program. Income-producing farms are generally ineligible for residential loans. Ag lenders are the alternative."
    },
    {
     "q": "Is USDA available everywhere rural?",
-    "a": "Only in eligible areas on the USDA map and under income limits."
+    "a": "Only in eligible areas on the USDA map and under household income limits. Maps change. Check the address."
    },
    {
     "q": "Are well and septic tests required?",
-    "a": "Often, depending on program and lender; VA and FHA have specific requirements."
+    "a": "Often, depending on program and lender. VA and FHA have specific requirements. Failed tests require repairs."
    },
    {
     "q": "Do barns and shops add value?",
-    "a": "Some, but appraisers often give limited contributory value."
+    "a": "Some, but appraisers often give limited contributory value. Commercial-looking buildings raise questions. Document hobby use."
    },
    {
     "q": "What if there is no recorded access?",
-    "a": "Most lenders will not close; an easement must be recorded."
+    "a": "Most lenders will not close. An easement must be recorded. Title confirms."
    },
    {
     "q": "Can I have animals?",
-    "a": "Hobby use is usually fine; commercial operations are not."
+    "a": "Hobby use is usually fine. Commercial operations are not. Zoning may limit numbers."
    },
    {
     "q": "What about wildfire insurance?",
-    "a": "Must be bound before closing; FAIR Plan plus DIC is common in CA backcountry."
+    "a": "It must be bound before closing. FAIR Plan plus DIC is common in California backcountry. Premiums count in DTI."
    }
   ],
   "aeQuestions": [
@@ -5037,109 +5046,109 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
   },
   "scenarios": [
    {
-    "t": "Buyer facing seller's PACE",
-    "who": "Angela, 36, nurse, Riverside",
-    "situation": "Angela is buying a home with a $38,000 PACE assessment for solar and windows. She is using FHA. The seller assumed it would transfer.",
-    "structure": "Steven tells the agents early that FHA will not insure with first-priority PACE; seller must pay it off at closing.",
-    "numbers": "Illustrative: $38k payoff from seller proceeds; price $560k.",
-    "why": "Avoids a failed FHA closing.",
-    "alternatives": "Conventional also requires payoff.",
-    "watch": "Payoff timing."
+    "t": "FHA buyer facing the seller's PACE lien",
+    "who": "Angela, 36, pediatric nurse, Riverside",
+    "situation": "Angela is under contract on a $560k home that carries a $38,000 PACE assessment for solar and windows on the tax bill. She is using FHA with 3.5% down. The seller's agent assumed the assessment would simply transfer with the property taxes.",
+    "structure": "Steven tells both agents in week one that FHA will not insure the loan with a first-priority PACE obligation, orders the payoff from the PACE administrator, and the parties amend the contract so the seller pays it off from proceeds.",
+    "numbers": "Illustrative: PACE payoff $38k reduces seller net from ~$170k to ~$132k; Angela's tax bill drops by about $4,200/year ($350/month), lowering her DTI.",
+    "why": "Raising the PACE issue early avoids a failed FHA closing in the last week. Seller payoff is the standard fix. Angela benefits from a lower tax bill.",
+    "alternatives": "A conventional loan was considered but also generally requires payoff of senior-priority PACE. Asking for a price reduction instead was considered but the seller preferred to pay it off directly.",
+    "watch": "PACE payoff letters can take 1-3 weeks; the county tax roll must show the assessment removed."
    },
    {
-    "t": "Refinance with PACE",
+    "t": "Refinance with an unexpected PACE balance",
     "who": "Robert, 62, retired, Escondido",
-    "situation": "Robert has PACE of $55,000 and wants to refinance. He did not understand the lien. His tax bill is high.",
-    "structure": "Steven includes PACE payoff in the refi and checks cash-out classification.",
-    "numbers": "Illustrative: $650k value; $300k first + $55k PACE = $355k + costs.",
-    "why": "Removes the high-cost assessment.",
-    "alternatives": "Keep PACE and refinance impossible with agency.",
-    "watch": "Cash-out pricing."
+    "situation": "Robert has a $55,000 PACE assessment he did not fully understand when he signed. He wants to refinance his first mortgage. His property tax bill is much higher because of the assessment.",
+    "structure": "Steven includes the PACE payoff in the refinance and checks how the lender classifies it (limited cash-out vs cash-out).",
+    "numbers": "Illustrative: value $650k; first $300k + PACE $55k + costs $8k = $363k; LTV 55.8%.",
+    "why": "Removing the PACE lowers his tax bill and clears title. The refinance is still under cash-out LTV limits. Agency lenders require payoff.",
+    "alternatives": "Keeping the PACE and not refinancing was considered. A HELOAN to pay off PACE was considered but most second-lien lenders also require PACE payoff.",
+    "watch": "If the lender treats PACE payoff as cash-out, pricing and max LTV change; verify classification before locking."
    },
    {
-    "t": "Solar lease transfer",
+    "t": "Solar lease on a purchase",
     "who": "Jess, 31, teacher, Temecula",
-    "situation": "Jess is buying a home with leased solar panels. Payment $140/month with 2.9% escalator. The lease must transfer.",
-    "structure": "Steven reviews the lease, counts payment in DTI, gets transfer approval.",
-    "numbers": "Illustrative: $140 added to DTI.",
-    "why": "Agency guides require lease/PPA payments to be considered and leased panels excluded from value.",
-    "alternatives": "Seller buys out the lease before closing.",
-    "watch": "Annual escalator increases payment over time."
+    "situation": "Jess is buying a home with leased solar panels. The payment is $140/month with a 2.9% annual escalator. The lease must transfer to her.",
+    "structure": "Steven reviews the lease, counts the payment in DTI, and obtains transfer approval from the solar company.",
+    "numbers": "Illustrative: $140 added to DTI; year 10 payment ~$181.",
+    "why": "Agency guides require lease payments to be considered and leased panels excluded from value. Transfer approval prevents a closing delay. Jess understands the long-term cost.",
+    "alternatives": "Having the seller buy out the lease was considered. Negotiating a price reduction was considered.",
+    "watch": "Escalator increases payment over time; transfer approval timing."
    },
    {
-    "t": "Solar loan with UCC",
+    "t": "Solar loan with a UCC fixture filing",
     "who": "Kevin, 45, engineer, Chula Vista",
-    "situation": "Kevin's solar loan has a UCC filing. He wants to refinance. Lender requires handling.",
+    "situation": "Kevin's solar loan has a UCC fixture filing on his property. He wants to refinance. The title company flags it.",
     "structure": "Steven obtains UCC subordination or temporary termination per guide.",
-    "numbers": "Illustrative: $25k solar loan.",
-    "why": "Clears the UCC filing so title can insure the new first lien.",
-    "alternatives": "Paying off the solar loan at closing.",
-    "watch": "Provider response time for subordination."
+    "numbers": "Illustrative: solar loan balance $25k; payment $180/month in DTI.",
+    "why": "Clearing the UCC allows title to insure the new first lien. Kevin keeps his solar loan. Refinance proceeds.",
+    "alternatives": "Paying off the solar loan was considered. Waiting was considered but rates could change.",
+    "watch": "Solar providers can take 2-4 weeks to issue subordination or termination; start the request at application."
    },
    {
     "t": "Veteran with PACE",
     "who": "Daniel, 54, veteran, Oceanside",
-    "situation": "Daniel wants a VA IRRRL but has PACE. VA requires payoff or subordination. He lacks cash.",
-    "structure": "Steven checks if VA cash-out can pay off PACE.",
-    "numbers": "Illustrative: $700k value; $450k VA loan + $30k PACE payoff; VA cash-out to $490k = 70% LTV.",
-    "why": "VA generally requires PACE payoff or subordination.",
-    "alternatives": "Conventional cash-out refinance.",
-    "watch": "VA cash-out rules and funding fee."
+    "situation": "Daniel wants a VA refinance but has PACE. VA generally requires payoff or subordination. He lacks cash.",
+    "structure": "Steven checks whether a VA cash-out can pay off the PACE.",
+    "numbers": "Illustrative: value $700k; VA loan $450k + PACE $30k; VA cash-out to $490k = 70% LTV.",
+    "why": "VA generally requires PACE payoff or subordination. A cash-out solves it. Daniel keeps VA benefits.",
+    "alternatives": "A conventional cash-out refinance was considered. Paying off PACE with savings was considered but he lacks cash.",
+    "watch": "VA cash-out requires full VA underwriting and appraisal; the funding fee applies unless exempt; net tangible benefit rules apply."
    },
    {
-    "t": "Florida PACE",
+    "t": "Florida seller with PACE",
     "who": "Linda, 66, retired, Orlando",
-    "situation": "Linda has hurricane-hardening PACE. She wants to sell. Buyer's lender requires payoff.",
-    "structure": "PACE paid from Linda's sale proceeds at closing, confirmed with county and administrator.",
-    "numbers": "Illustrative: $28k PACE payoff reduces net proceeds from $380k to $352k.",
-    "why": "Buyer's lender requires payoff; seller payoff keeps the sale on track.",
-    "alternatives": "None practical for most buyer financing.",
-    "watch": "Payoff letter timing and seller net proceeds."
+    "situation": "Linda has hurricane-hardening PACE and wants to sell. The buyer's lender requires payoff. Her net proceeds will decrease.",
+    "structure": "Steven confirms PACE payoff from Linda's sale proceeds at closing.",
+    "numbers": "Illustrative: PACE payoff $28k reduces net proceeds from $380k to $352k.",
+    "why": "Buyer's lender requires payoff; seller payoff keeps the sale on track. Linda understands net. Title is cleared.",
+    "alternatives": "Few alternatives exist for most buyer financing. Negotiating with the buyer was considered.",
+    "watch": "PACE payoff letters must be good through closing; seller net proceeds drop dollar for dollar, so the listing agent must show Linda the net sheet."
    }
   ],
   "qa": [
    {
     "q": "Why do lenders require PACE payoff?",
-    "a": "PACE often has priority over the mortgage."
+    "a": "PACE assessments often have lien priority over the mortgage. Agency, FHA and VA programs generally require payoff or subordination (verify). This protects the lender's position."
    },
    {
     "q": "Does solar add value?",
-    "a": "Owned panels may; leased do not."
+    "a": "Owned panels may add value if the appraiser supports it. Leased or PPA panels do not. Appraisers need ownership info."
    },
    {
-    "q": "Are lease payments in DTI?",
-    "a": "Generally yes (verify)."
+    "q": "Are solar lease payments included in DTI?",
+    "a": "Generally yes (verify guide). PPA payments may be treated similarly. Escalators should be considered."
    },
    {
-    "q": "What is a UCC filing?",
-    "a": "A fixture filing for solar equipment."
+    "q": "What is a UCC fixture filing?",
+    "a": "A filing that gives the solar lender a security interest in the equipment. Title may require subordination or termination. It can delay closing."
    },
    {
-    "q": "Can PACE transfer to buyer?",
-    "a": "Legally may, but most mortgage programs require payoff."
+    "q": "Can PACE transfer to a buyer?",
+    "a": "Legally it may, but most mortgage programs require payoff. Sellers usually pay it off. Buyers should check the tax bill."
    },
    {
     "q": "Is PACE regulated?",
-    "a": "CFPB rule and state law (verify)."
+    "a": "Yes. The CFPB rule applying ability-to-repay to PACE took effect March 1, 2026 (verify). California also regulates PACE administrators."
    },
    {
-    "q": "Is PACE payoff cash-out?",
-    "a": "Depends on guide (verify)."
+    "q": "Is PACE payoff treated as cash-out?",
+    "a": "It depends on the guide (verify). Some treat it as limited cash-out. Pricing may differ."
    },
    {
     "q": "Can PACE be subordinated?",
-    "a": "Rarely."
+    "a": "Rarely, because it is a tax assessment. Some programs allow it. Most require payoff."
    }
   ],
   "aeQuestions": [
-   "How do you treat PACE payoff on refinance?",
-   "Do you accept solar leases?",
-   "UCC handling?",
-   "Do you count PPA payment?",
+   "How do you treat PACE payoff on a refinance (limited cash-out or cash-out)?",
+   "Do you accept solar leases and PPAs, and how do you calculate the payment in DTI?",
+   "How do you handle UCC fixture filings (subordination vs termination)?",
    "Do you lend if PACE is subordinated?",
-   "VA/FHA policy?",
-   "Appraisal instructions for solar?",
-   "Timeline for payoff?"
+   "What are your FHA and VA PACE policies?",
+   "What appraisal instructions do you give for owned vs leased solar?",
+   "How long do PACE payoffs typically take in your pipeline?",
+   "Do you accept the CFPB PACE rule disclosures as part of the file?"
   ],
   "redFlags": [
    "PACE discovered late",
@@ -5159,18 +5168,15 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
    "Tax bill education content for homeowners"
   ],
   "checklist": [
-   "Tax bill",
-   "Title with UCC search",
-   "Solar contract",
-   "PACE payoff",
-   "Appraisal instructions",
-   "DTI calc",
-   "Transfer approval",
-   "PACE assessment notice and administrator contact",
-   "Solar lease or PPA contract with escalator schedule",
-   "Transfer approval from solar provider",
-   "UCC termination or subordination",
-   "Appraiser instructions on panel ownership",
+   "Property tax bill showing PACE assessment",
+   "PACE payoff letter from administrator",
+   "Title report with UCC search",
+   "Solar lease/PPA/loan contract",
+   "Escalator schedule",
+   "Solar transfer approval",
+   "UCC subordination or termination",
+   "Appraisal instructions on panel ownership",
+   "DTI calculation with solar payment",
    "Updated tax bill after payoff"
   ],
   "updated": "2026-11"
@@ -5262,106 +5268,106 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "t": "Log home in the mountains",
     "who": "Gary, 57, retired firefighter, Idyllwild",
     "situation": "Gary wants a 1990s log home on an acre. The local insurer pool is thin and the home has some exterior checking in the logs. He has 25% down.",
-    "structure": "Steven pre-screens insurance (FAIR Plan plus DIC likely), orders a pest/log inspection, and requests an appraiser familiar with log homes; agency conventional if comps support.",
-    "numbers": "Illustrative: $650k price; 75% LTV = $487.5k; insurance quote $5,200/year budgeted in DTI.",
-    "why": "Agency pricing is possible if marketable; early insurance check prevents a late collapse.",
-    "alternatives": "Portfolio lender at 70% LTV was lined up as backup.",
-    "watch": "Log maintenance condition; wildfire insurance renewals."
+    "structure": "Steven pre-screens insurance (FAIR Plan plus DIC likely), orders a pest and log inspection, and requests an appraiser familiar with log homes. He uses agency conventional if comps support value.",
+    "numbers": "Illustrative: price $650k; 75% LTV = $487.5k; insurance $5,200/year budgeted in DTI.",
+    "why": "Agency pricing is possible if the home is marketable. Early insurance check prevents a late collapse. Inspections protect Gary from hidden log damage.",
+    "alternatives": "A portfolio lender at 70% LTV was lined up as backup. Paying cash was considered but would tie up retirement funds.",
+    "watch": "Log maintenance condition; wildfire insurance renewals; appraiser comps."
    },
    {
     "t": "Barndominium conversion",
     "who": "Kayla, 34, veterinarian, Valley Center",
     "situation": "Kayla found a metal barndominium where the living area was added inside an ag building. The seller says permits were 'mostly' pulled. She loves the land and shop space.",
-    "structure": "Steven requires the county permit history and certificate of occupancy for the living space before going further; then places with a lender that accepts barndos with adequate comps.",
-    "numbers": "Illustrative: $890k price; if unpermitted living area is excluded, value drops to land plus shop.",
-    "why": "Permits determine whether it is a home at all.",
-    "alternatives": "Buyer could negotiate a price reduction and legalize after closing with a construction or renovation loan.",
-    "watch": "Unpermitted living space, insurance classification, energy code."
+    "structure": "Steven requires the county permit history and certificate of occupancy for the living space before going further, then places with a lender that accepts barndos with adequate comps.",
+    "numbers": "Illustrative: price $890k; if unpermitted living area is excluded, value drops to land plus shop (~$600k).",
+    "why": "Permits determine whether it is legally a home. A lender that knows barndos can value it properly. Kayla avoids buying an unfinanceable property.",
+    "alternatives": "Negotiating a price reduction and legalizing after closing was considered. Walking away was considered if permits are missing.",
+    "watch": "Unpermitted living space; insurance classification; energy code."
    },
    {
-    "t": "Dome home",
+    "t": "Geodesic dome",
     "who": "Ray, 61, engineer, Joshua Tree area",
     "situation": "Ray wants a geodesic dome. Comparable sales are few. He has strong assets.",
-    "structure": "Portfolio lender with asset-based qualifying and 65% LTV.",
-    "numbers": "Illustrative: $480k; 65% = $312k.",
-    "why": "Agency appraisal would likely fail on comps.",
-    "alternatives": "Cash purchase and later refinance.",
-    "watch": "Resale market thin."
+    "structure": "Steven uses a portfolio lender with asset-based qualifying and 65% LTV.",
+    "numbers": "Illustrative: price $480k; 65% = $312k; down $168k.",
+    "why": "Agency appraisal would likely fail on comps. Portfolio lenders evaluate unique collateral. Ray's assets support the loan.",
+    "alternatives": "Paying cash and refinancing later was considered. A non-QM lender was considered but at higher cost.",
+    "watch": "Thin resale market; insurance availability; structural inspection."
    },
    {
-    "t": "Tiny home on foundation",
+    "t": "Tiny home on a foundation",
     "who": "Mia, 27, teacher, Escondido",
-    "situation": "Mia wants a 400 sq ft tiny home on a permanent foundation as a primary. It meets local codes. She has limited cash.",
+    "situation": "Mia wants a 400 sq ft tiny home on a permanent foundation as her primary. It meets local codes. She has limited cash.",
     "structure": "Steven checks FHA/agency minimum property standards; if real property with comps, FHA may work.",
-    "numbers": "Illustrative: $250k; FHA 96.5% = $241k.",
-    "why": "Low down payment.",
-    "alternatives": "Chattel or RV loan if on wheels.",
-    "watch": "Comparable sales; HOA/zoning."
+    "numbers": "Illustrative: price $250k; FHA 96.5% = $241k.",
+    "why": "Low down payment through FHA. Real property status allows a mortgage. Mia gets affordable ownership.",
+    "alternatives": "A chattel or RV loan was considered if on wheels. Renting was considered but offers no equity.",
+    "watch": "FHA requires the home to meet minimum property standards and be marketable; many cities set minimum dwelling sizes; HOA rules may prohibit tiny homes."
    },
    {
     "t": "Container home in Arizona",
     "who": "Leo, 38, IT consultant, Tucson",
-    "situation": "Leo buys a container-built home permitted under local code. Off-grid solar. Unique comps.",
-    "structure": "Portfolio lender, structural engineer report.",
-    "numbers": "Illustrative: $380k; 70% = $266k.",
-    "why": "Lender comfortable with structure.",
-    "alternatives": "Non-QM.",
-    "watch": "Off-grid backup systems."
+    "situation": "Leo is buying a container-built home permitted under local code. It runs on off-grid solar. Comps are unique.",
+    "structure": "Steven uses a portfolio lender and requires a structural engineer report and off-grid system review.",
+    "numbers": "Illustrative: price $380k; 70% = $266k.",
+    "why": "Portfolio lender is comfortable with structure. Engineer report supports value. Leo gets financing.",
+    "alternatives": "A non-QM lender was considered at higher cost. Paying cash was considered but Leo prefers leverage.",
+    "watch": "Off-grid power and water systems must have adequate capacity and backup; resale buyer pool is small, which affects future value."
    },
    {
     "t": "3D-printed home",
     "who": "Nora, 45, architect, Temecula",
     "situation": "Nora is buying one of the first 3D-printed homes in a subdivision. Several similar homes exist. Agency may accept with comps.",
-    "structure": "Agency if appraiser finds similar sales in the subdivision; else portfolio.",
-    "numbers": "Illustrative: $720k price; 80% = $576k conventional if 2+ similar subdivision sales support value.",
-    "why": "Agency financing is possible if the appraiser finds similar 3D-printed sales in the same subdivision.",
-    "alternatives": "Portfolio lender at 75% if comps are thin.",
-    "watch": "New technology appraisal gaps."
+    "structure": "Steven uses agency if the appraiser finds similar sales in the subdivision; else portfolio.",
+    "numbers": "Illustrative: price $720k; 80% = $576k conventional if 2+ similar subdivision sales support value.",
+    "why": "Agency financing is possible if comps exist. Nora gets better pricing. New technology is gaining acceptance.",
+    "alternatives": "A portfolio lender at 75% was considered if comps are thin. Paying more down was considered.",
+    "watch": "Appraisers may lack comps for 3D-printed homes outside the subdivision; builder warranty and code approval documentation should be in the file."
    }
   ],
   "qa": [
    {
     "q": "Why do unique homes appraise low?",
-    "a": "Lack of comparable sales and limited buyer pool."
+    "a": "Lack of comparable sales and a limited buyer pool. Appraisers must use distant or dated comps. Value may be adjusted down."
    },
    {
     "q": "Are log homes eligible for agency?",
-    "a": "Yes if marketable and comps support."
+    "a": "Yes if marketable and comps support value. Inspections may be required. Insurance must be available."
    },
    {
     "q": "Is a tiny home on wheels a mortgage?",
-    "a": "No, it is chattel/RV."
+    "a": "No, it is chattel or an RV loan. Mortgages require real property on a foundation. Local codes apply."
    },
    {
     "q": "Do barndos qualify?",
-    "a": "If permitted and comps support."
+    "a": "If permitted and comps support value. Unpermitted living areas are a problem. Lenders vary."
    },
    {
-    "q": "What about off-grid?",
-    "a": "Needs adequate utilities; lender-specific."
+    "q": "What about off-grid homes?",
+    "a": "They need adequate utilities. Some lenders require backup systems. Lender-specific."
    },
    {
     "q": "Can I appeal a low appraisal?",
-    "a": "Via reconsideration of value with new comps."
+    "a": "Through a reconsideration of value with new comps. It must be supported. Not always successful."
    },
    {
-    "q": "Is insurance harder?",
-    "a": "Often."
+    "q": "Is insurance harder to get?",
+    "a": "Often for unique construction. Fire zones add challenges. Shop early."
    },
    {
     "q": "Should I get extra inspections?",
-    "a": "Yes."
+    "a": "Yes. Structural, pest and systems inspections are wise. Lenders may require them."
    }
   ],
   "aeQuestions": [
-   "Which unique property types do you accept?",
-   "How many similar comps are required?",
-   "Do you accept off-grid?",
-   "Max LTV for unique collateral?",
-   "Do you allow tiny homes?",
-   "Barndominium policy?",
-   "Insurance requirements?",
-   "Do you require structural reports?"
+   "Which unique property types do you accept (log, dome, container, barndo, 3D-printed, tiny on foundation)?",
+   "How many similar-type comparable sales do you require?",
+   "Do you accept off-grid homes and what backup systems are required?",
+   "What is your max LTV for unique collateral?",
+   "Do you have a minimum square footage?",
+   "What is your barndominium policy on converted ag buildings?",
+   "Do you accept FAIR Plan plus DIC for unique homes in fire zones?",
+   "Do you require structural engineer reports?"
   ],
   "redFlags": [
    "No comps",
@@ -5382,16 +5388,15 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
   ],
   "checklist": [
    "Photos and construction details",
-   "Permits/CO",
-   "Appraisal",
-   "Inspections",
-   "Insurance quote",
-   "Title",
-   "Income",
-   "Assets",
+   "Permits and certificate of occupancy",
+   "Appraisal with appraiser experience noted",
    "Structural engineer report",
    "Pest/log inspection",
-   "Off-grid system documentation"
+   "Off-grid system documentation",
+   "Insurance quote",
+   "Title confirming real property",
+   "Income documents",
+   "Asset documents"
   ],
   "updated": "2026-11"
  }
