@@ -21,11 +21,11 @@ TITLES  1) …  2) …  3) …      (under 60 characters each)
 CAPTION <80–150 words, one call to action, ends with the disclosure line below>
 ```
 Disclosure line on any mortgage topic:
-`Steven Shearrill · DRE #01988316 · NMLS #[your NMLS ID] · Patriot Pacific Financial Corp, NMLS #1921615 · Equal Housing Opportunity.`
+`Steven Shearrill · DRE #01988316 · NMLS #2449246 · Patriot Pacific Financial Corp, NMLS #1921615 · Equal Housing Opportunity.`
 On any listing/real-estate topic:
-`Steven Shearrill · DRE #01988316 · Broker Associate, LPT Realty · Equal Housing Opportunity.`
+`Steven Shearrill · DRE #01988316 · NMLS #2449246 · Broker Associate, LPT Realty · Equal Housing Opportunity.`
 (California B&P 10140.6(b) and 10236.4: DRE number and NMLS IDs on first-contact ads; HUD: Equal Housing on housing ads.
-Steven's personal NMLS ID is not in the brain yet, so it stays a placeholder he fills before posting.)
+He is also an MLO, so his personal NMLS #2449246 goes on the real-estate line too, per B&P 10140.6(b).)
 
 ## Rules
 1. Read `context/banned-words.md` and never use a word or phrase on it (Steven adds his own there). Re-read your draft

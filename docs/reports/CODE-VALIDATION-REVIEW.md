@@ -635,3 +635,132 @@ test_agentos.test_five_agents_lane_and_gates. brain unit tests OK; validate-code
 ### Addendum — change-set: d740e35be5071e38
 
 Docs-only follow-up to 68f1a82fb79faaeb: the lane count in context/decisions.md and memory.md corrected to 70 after the validator fixes, the index rebuilt to match. No code changed.
+
+# VibeBreaker review: Steven's personal NMLS #2449246 filled in (docs only) (2026-11-02)
+
+change-set: e5a3b7607055ed6c
+
+## Verdict
+
+`FIX FIRST` (verdict scale: SHIP / FIX FIRST / NEEDS-CONTEXT). The number is correct and consistent everywhere it was written,
+and the legal claim matches what the repo already quotes. But two "still needs your NMLS" prompts Steven will see were left
+behind, one drip footer still puts the company NMLS in his personal slot, and one memory line states a broader rule than
+the hook-writer follows. All four are LOW and take minutes to fix.
+
+## Scope
+
+- Change-set: e5a3b7607055ed6c (uncommitted, `git diff HEAD`): .claude/agents/hook-writer.md, context/about-me.md,
+  context/decisions.md, docs/HANDOFF-NEW-CHAT.md, docs/STEVEN-STEPS.md, integrations/ai-replica-studio/PLAN.md, memory.md.
+  brain/index.json and docs/reports/CODE-VALIDATION.md are generated and are not part of the change-set.
+- Mode: docs/prompt only, no executable code. Passes run: 01 (intent vs. change), 19 (missing checks), 20 (disproof). Code passes did not apply.
+- `bash scripts/validate-code.sh`: `verdict: PASS (1 passed, 0 failed)` (brain doctor).
+- Material scope limitation: NO. The statute text was not checked against the official code. The check was against what the repo quotes, as asked.
+
+## Scoreboard
+
+Confirmed 4 (LOW 4) · Info 1 · Rejected 4 · First critical pass: NONE
+
+## CONFIRMED
+
+```yaml
+id: P01-F1
+pass: 01
+title: Replica reply template still asks Steven for his NMLS ID
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: docs/STEVEN-STEPS.md
+    line: 356
+trigger: Steven copies the item 21 reply line as instructed
+bad_state: "`... LPT DRE ______ · NMLS ID ______ · ...`" asks for a number that line 355 (same item, edited in this change) now says is on file
+fix_proof: grep -n "NMLS ID ______" docs/STEVEN-STEPS.md returns nothing
+```
+
+```yaml
+id: P01-F2
+pass: 01
+title: Action Desk copy of item 21 not updated
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: dashboard/action-desk.html
+    line: 515
+  - path: dashboard/action-desk.html
+    line: 517
+trigger: Steven opens the Action Desk (the dashboard copy of STEVEN-STEPS item 21)
+bad_state: it still reads "(4) LPT Realty's brokerage DRE number and name plus your personal NMLS ID for the disclosure line" and the copy button holds "NMLS ID ______"
+fix_proof: grep -c "personal NMLS ID\|NMLS ID ______" dashboard/action-desk.html returns 0; dashboard quickcheck still passes
+```
+
+```yaml
+id: P01-F3
+pass: 01
+title: Drip/text footer puts the company NMLS in Steven's personal slot (pre-existing; now resolvable)
+status: CONFIRMED
+severity: LOW
+confidence: MEDIUM
+location:
+  - path: wiki/real-estate-playbooks/drip-and-text-follow-up.md
+    line: 56-57
+trigger: a drafter builds a drip/text template from the "Footer for every template" line
+bad_state: "`Steven Shearrill · LPT Realty · DRE #____ · NMLS #1921615 · Patriot Pacific Financial NMLS #____`" shows Patriot Pacific's company NMLS as Steven's and leaves Patriot's blank. The personal NMLS (2449246) and personal DRE (01988316) are both known now
+fix_proof: the footer reads DRE #01988316 · NMLS #2449246 · Patriot Pacific Financial Corp NMLS #1921615 (to match hook-writer.md:24), with no "#____" left except the LPT brokerage DRE if that is meant
+note: this line was not part of the diff. It falls under "no leftover placeholder anywhere it matters", and drafts still pass Alexandra's gate and Steven's send.
+```
+
+```yaml
+id: P01-F4
+pass: 01
+title: memory.md states a rule wider than the hook-writer applies
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: memory.md
+    line: 124
+  - path: .claude/agents/hook-writer.md
+    line: 26
+trigger: an agent answers "what goes on an ad" from memory.md (recall level 2)
+bad_state: memory.md says DRE and personal NMLS "go on every ad with Patriot Pacific's company NMLS #1921615", but the hook-writer real-estate line has no company NMLS. The repo only quotes the company ID as required on mortgage ads (B&P 10236.4)
+fix_proof: memory.md line says the company NMLS #1921615 goes on mortgage ads only, matching hook-writer.md lines 24 and 26
+```
+
+## INFO
+
+- P01-I1: the repo already holds a candidate LPT Realty broker DRE. `dashboard/brain-4d.html` graph node "LPT Realty broker info
+  — CA DRE #02248983, designated officer Kim McKeag" (from VANESSA v81 › C.A.R.). PLAN.md, decisions.md, STEVEN-STEPS.md and
+  HANDOFF still call it missing. It is not verified here, so only Steven can confirm it before it goes on an ad.
+
+## REJECTED
+
+- Legal citation overstated: rejected. hook-writer.md:28 ("also an MLO, so his personal NMLS ... per B&P 10140.6(b)") matches
+  PLAN.md:42 ("Where the licensee is also an MLO the NMLS unique identifier is required too (B&P 10140.6 ...)") and
+  wiki/real-estate-playbooks/drip-and-text-follow-up.md:53. decisions.md:866 says the same and no more.
+- Number inconsistency: rejected. Every occurrence of the personal NMLS in the repo is 2449246, including the earlier,
+  independent dashboard/isa/isa-portal.html:3170 (valoaneducator.tv/stevenshearrill-2449246) and
+  references/drive-second-brain-notes.md:169. Every occurrence of Steven's DRE is 01988316.
+- Leftover `[your NMLS ID]`: rejected. `git grep "your NMLS"` returns no hits.
+- Stale copies in exports/notebooklm/: rejected. That mirror is rewritten weekly (integrations/notebooklm/README.md) and is not a source.
+
+## Coverage (inspected, clean)
+
+All seven changed files were read line by line in the diff. hook-writer.md (both disclosure lines; the mortgage line keeps
+company NMLS #1921615 and Equal Housing), about-me.md, decisions.md (append-only, new dated entry at the bottom),
+HANDOFF-NEW-CHAT.md, PLAN.md (both spots) and STEVEN-STEPS.md line 355 are clean. A repo-wide grep for NMLS/DRE numbers and placeholders found nothing else.
+
+## Top missing tests (pass 19)
+
+1. A brain doctor or lint check that fails when a disclosure line in .claude/agents/*.md or wiki/real-estate-playbooks/*.md
+   contains `#____`, `[your`, or an NMLS other than 2449246 / 1921615 in Steven's or Patriot's slot.
+2. A check that the Action Desk item text matches docs/STEVEN-STEPS.md for the same step number. It would have caught P01-F2.
+
+## Not demonstrated
+
+Whether B&P 10140.6(b) actually requires the NMLS ID on a pure listing ad was not checked against the official code.
+Alexandra drafts and Steven decides (HALT: legal interpretation).
+
+### Addendum — change-set: e5f8b0d076fdbe04 (follow-up to e5a3b7607055ed6c)
+
+All four LOW findings fixed by the author: P01-F1/F2 the copy-reply line in docs/STEVEN-STEPS.md and dashboard/action-desk.html no longer asks for the NMLS ID, and item 21 in the Action Desk says it is on file; P01-F3 the drip footer reads DRE #01988316 · NMLS #2449246 · Patriot Pacific Financial Corp NMLS #1921615, company NMLS on mortgage templates only; P01-F4 the memory line limits the company NMLS to mortgage ads. Greps for `NMLS ID ______`, `personal NMLS ID`, `#____` and `[your NMLS` return nothing in those files. LPT DRE #02248983 seen in the 6D Brain is left for Steven to confirm.

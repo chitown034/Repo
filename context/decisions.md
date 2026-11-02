@@ -859,3 +859,9 @@ through Apple Health and the same export file once Steven switches the nutrition
   one inbox gets one set of drafts); the five agents are pinned to their own lanes; hook-writer keeps Alexandra's gate.
   Guarded by `brain/tests/test_route_baseline.py` + `test_five_agents_lane_and_gates`. Open for Steven: whether
   "always-on agent" / "approve on phone" should route to Duet (today they do; `always-on/README.md` still answers schedules).
+
+## 2026-11-02 — Steven's personal NMLS ID is 2449246
+
+- **Given by Steven:** "DRE#01988316 NMLS: 2449246". Filled in `context/about-me.md`, the hook-writer disclosure lines (the
+  mortgage line, and the real-estate line too, since B&P 10140.6(b) wants the NMLS ID on a licensee who is also an MLO), and the
+  AI Replica Studio plan. The LPT Realty brokerage name and DRE # remain the only missing ad identifiers.

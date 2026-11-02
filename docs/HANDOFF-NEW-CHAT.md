@@ -27,7 +27,7 @@ run `bin/brain recall "<question>"` before opening any other file. Do not re-rea
 2. Switch off 3 duplicate Sunday loops (Action Desk step 1 has the links).
 3. Run the Mac commands in Terminal and paste back the last lines (Action Desk steps).
 4. Zoho credential type (he has "an API key"; Zoho CRM needs client id + secret + refresh token); LPT brokerage DRE
-   number and entity name; personal NMLS ID; avatar provider/voice/cadence; yes/no on custom features he hasn't decided.
+   number and entity name; (personal NMLS #2449246 on file 2026-11-02); avatar provider/voice/cadence; yes/no on custom features he hasn't decided.
 
 **Rules that never change (from CLAUDE.md HALT list)**
 Stop and write a Needs-Steven note before anything irreversible or that spends money; anything needing a credential, API

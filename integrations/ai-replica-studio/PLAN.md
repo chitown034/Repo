@@ -40,7 +40,7 @@ writes otherwise). Nothing posts without that week's Approved stage.
 - **California real estate:** the DRE's chart RE 559 requires each licensee shown in an ad to carry their 8-digit license
   number, no smaller than the ad's smallest text; DRE treats online video as advertising (2019 SDAR note quoting DRE). Where the
   licensee is also an MLO the NMLS unique identifier is required too (B&P 10140.6 as quoted in a DRE filing). Steven's personal DRE
-  # is on file (01988316); **LPT Realty's brokerage name and DRE #, and his personal NMLS ID, are still missing.**
+  # is on file (01988316); his personal NMLS # is 2449246 (given 2026-11-02); **LPT Realty's brokerage name and DRE # are still missing.**
 - **Mortgage ads:** Reg Z §1026.24 trigger terms (rate/payment/down-payment statements need the full disclosures), Reg N, state
   rules (Cal. Fin. Code §§22162, 50326 are cited by a study guide, unverified). **No rate quotes** in an avatar video: a quote is
   a licensed decision (CLAUDE.md HALT).
@@ -58,7 +58,7 @@ channels. Eromify on Composio is for fictional characters only and is **not** us
 1. Provider: HeyGen (available on Composio, paid), another avatar vendor, or CAM as a done-for-you service. Price is the first thing to learn; any subscription is his yes.
 2. Voice: the avatar's built-in voice, or a cloned voice on his own ElevenLabs account.
 3. Platforms and cadence (the plan assumes one real-estate and one loan-officer video a week to Facebook, Instagram, LinkedIn, YouTube).
-4. The missing IDs for the disclosure line (LPT brokerage DRE and name; personal NMLS ID).
+4. The missing IDs for the disclosure line (LPT brokerage DRE and name; personal NMLS #2449246 is now on file).
 5. Whether Instagram/LinkedIn/YouTube timed posts run as a routine (uses allowance) or through Buffer (a new connection).
 
 ## What can be built now, before the provider is chosen (nothing posts)

@@ -53,8 +53,9 @@ anniversary e-mail + text (`post-close-care.md`, `review-request` skill).
 - **California B&P 10140.6(b)**: DRE licence number **and** NMLS ID on all first-point-of-contact solicitation material,
   font no smaller than the ad's smallest (DRE RE 559). **Equal Housing** logo or legend on dwelling-loan ads.
 - **CCPA/CPRA**: notice at collection on every lead form; "Do Not Sell or Share" link if lead data goes to partners.
-- Footer for every template: `Steven Shearrill · LPT Realty · DRE #____ · NMLS #1921615 · Patriot Pacific Financial
-  NMLS #____ · Equal Housing Opportunity · [address] · Reply STOP to opt out.`
+- Footer for every template: `Steven Shearrill · LPT Realty · DRE #01988316 · NMLS #2449246 · Patriot Pacific Financial
+  Corp NMLS #1921615 · Equal Housing Opportunity · [address] · Reply STOP to opt out.` (company NMLS on mortgage templates;
+  listing-only templates drop the Patriot Pacific part, as in `.claude/agents/hook-writer.md`)
 - **HALT**: a rate, an eligibility promise, or a send to a client is Steven's; the team drafts and specs only.
 
 ## Who does what
