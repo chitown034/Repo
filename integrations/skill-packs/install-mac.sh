@@ -95,7 +95,7 @@ echo; echo "== The four repos (2026-10-23) - details in REGISTRY-2026-10-23.md (
 echo "- Archify (explorable HTML diagrams and explainers, MIT, reviewed 25cf370)"
 if have npx; then
   if ask "Install the archify skill with the official 'npx skills add tt-a1i/archify -g' (18 MB, user scope; update check stays off)?"; then
-    if ARCHIFY_UPDATE_CHECK_DISABLED=1 npx -y skills add tt-a1i/archify -g; then
+    if ARCHIFY_UPDATE_CHECK_DISABLED=1 npx -y skills add tt-a1i/archify -g -a claude-code -y; then
       echo "  done: archify. Its update check stays off through ~/.zprofile (export ARCHIFY_UPDATE_CHECK_DISABLED=1)."
       if ! grep -q ARCHIFY_UPDATE_CHECK_DISABLED "$HOME/.zprofile" 2>/dev/null; then
         [ -s "$HOME/.zprofile" ] && [ "$(tail -c 1 "$HOME/.zprofile")" != "" ] && printf '\n' >> "$HOME/.zprofile"
@@ -145,7 +145,7 @@ if have git && ask "Install the anatomy skill into ~/.claude/skills/anatomy?"; t
   fi
 fi
 echo; echo "- OpenScreen demo skill (also installs the OpenScreen desktop app + MCP; macOS will ask for Screen Recording and Accessibility)"
-have npx && { ask "Run: npx skills add getopenscreen/openscreen --skill openscreen-demo ?" && npx -y skills add getopenscreen/openscreen --skill openscreen-demo; }
+have npx && { ask "Run: npx skills add getopenscreen/openscreen --skill openscreen-demo ?" && npx -y skills add getopenscreen/openscreen --skill openscreen-demo -g -a claude-code -y; }
 echo; echo "- spec-kit (GitHub's spec-driven development CLI, MIT)"
 if have uv; then ask "uv tool install specify-cli from github/spec-kit (held at the reviewed 7370e59)?" && uv tool install specify-cli --from git+https://github.com/github/spec-kit.git@7370e59
 else echo "  uv not found - brew install uv, then re-run"; fi
