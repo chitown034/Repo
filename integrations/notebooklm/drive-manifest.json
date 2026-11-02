@@ -128,28 +128,28 @@
  "account": "steven.shearrill@gmail.com (claude.ai Google Drive connector + Composio googledocs)",
  "last_sync": {
   "notion_directory": {
-   "date": "2026-10-26",
+   "date": "2026-11-02",
    "page": "https://app.notion.com/p/402c1760a749811eaea5d07005df0179"
   },
-  "date": "2026-10-26",
-  "at": "2026-10-26T03:09:31Z",
+  "date": "2026-11-02",
+  "at": "2026-11-02T00:08:50Z",
   "sha": {
-   "00-START-HERE.md": "9ef329fed98bd6c1",
-   "01-router-and-index.md": "f23a8111460bc1da",
-   "02-who-and-decisions.md": "0bdfcea9300143d7",
-   "03-projects.md": "d3b2c06cbd138beb",
-   "04-wiki-ai-team.md": "aaecac82000afa4c",
-   "05-wiki-mortgage-programs.md": "57bf393be236aeea",
-   "06-wiki-real-estate-playbooks.md": "4412e02311e8c8fc",
-   "07-wiki-dashboard-ops.md": "67c1329c1b301b4f",
-   "08-wiki-events-networking.md": "18a8469613873fb3",
-   "09-references.md": "0effadfcae9aa826",
-   "10-always-on-and-automation.md": "8af9ba4aeebbb5ce",
-   "11-6d-brain-map.md": "cbfd6ef47f506563",
-   "12-integrations.md": "4aad0e6ec634fbdb"
+   "00-START-HERE.md": "31036889de1e0ebb",
+   "01-router-and-index.md": "c25a01239b9ca84d",
+   "02-who-and-decisions.md": "f3c999f8325088fd",
+   "03-projects.md": "539f2e777bdf27a4",
+   "04-wiki-ai-team.md": "a01591a510b6d410",
+   "05-wiki-mortgage-programs.md": "2cf68d63cace9501",
+   "06-wiki-real-estate-playbooks.md": "000cf79b07c20e72",
+   "07-wiki-dashboard-ops.md": "030eb8295578ae0a",
+   "08-wiki-events-networking.md": "11b10d747f8184e1",
+   "09-references.md": "274737d2e3f0f399",
+   "10-always-on-and-automation.md": "3b5c5324347e5063",
+   "11-6d-brain-map.md": "6203b365578d6faf",
+   "12-integrations.md": "e2fa8de481f96dc8"
   },
   "updated": 13,
   "failures": [],
-  "note": "weekly routine (fired 2026-10-25 21:45 UTC, ran late 2026-10-26); 12 docs via GOOGLEDOCS_UPDATE_DOCUMENT_MARKDOWN, 02-who-and-decisions via the chunked fallback (26 pieces, piece 21 split into 500-char sub-pieces after a WAF 403), 0 failures"
+  "note": "weekly routine (fired 2026-11-01 22:45 UTC); 12 docs via GOOGLEDOCS_UPDATE_DOCUMENT_MARKDOWN, 02-who-and-decisions via the chunked fallback (30 pieces; piece 23 split into 500-char sub-pieces after a WAF 403, one sub-piece re-inserted in place with an inline proxy-status shell command reworded); phone-number patterns masked in the text sent to Drive; 0 failures"
  }
 }
