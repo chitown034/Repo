@@ -646,3 +646,4 @@ live truth once Steven has run it.
 | CLI-Anything | harnesses for homes.com / ShowingTime / Showami / Lofty installed by the paste | sign-ins only | Steven |
 | Mac runner · message tasks all day | restart + hours widening scripted (fix-mine 4) | `bash setup.sh`; `runnerctl login` stays his if it is signed out | Steven (paste) |
 
+| Weekly layers sync, 2026-11-02 | 13/13 SB Google Docs rewritten (02 via chunked fallback), Notion layer directory updated; `bin/brain layers`: even no, Command Deck DB stale (stamp 2026-10-22, 11 days vs 1-day cadence) | Mac deck writers: `bash setup.sh` (runner restart), then check the deck snapshot task | Steven (paste) |
