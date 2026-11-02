@@ -865,3 +865,17 @@ through Apple Health and the same export file once Steven switches the nutrition
 - **Given by Steven:** "DRE#01988316 NMLS: 2449246". Filled in `context/about-me.md`, the hook-writer disclosure lines (the
   mortgage line, and the real-estate line too, since B&P 10140.6(b) wants the NMLS ID on a licensee who is also an MLO), and the
   AI Replica Studio plan. The LPT Realty brokerage name and DRE # remain the only missing ad identifiers.
+
+## 2026-11-02 — Automation optimization: fewer, sturdier routines before more automation
+
+- **Request (Steven, verbatim).** *"optimize all workflows, automations, cross functional tasks and so forth to automate as
+  much as possible especially with AI agents and add intergrations"*.
+- **Found.** ~100 scheduled cloud tasks + 61 Mac tasks; 11 failed on the usage limit 10-30..11-01; the persistent session
+  carrying 8 daily routines is at 788k/1M context and runs them up to 47 min late. Full evidence and plan:
+  `docs/reports/AUTOMATION-OPTIMIZATION-2026-11-02.md`.
+- **Decision (Steven approved in chat).** Retire true duplicates, move the bound routines to fresh sessions, replace the 23
+  Chrome-on-Zoho reminders with one weekly connector task, re-run the failed monthlies; leave `agentInbox` as is.
+- **Limits found (standing facts).** From Claude: `create_trigger` cannot attach connectors in this organization, fresh
+  runs cannot push to the repo, and tasks created through the HTTP API cannot be changed by an agent. Routines that need
+  connectors or a push are therefore made in the claude.ai routines screen by Steven. A "duplicate" is retired only when
+  every output it writes has another writer — most were not duplicates.

@@ -2104,27 +2104,27 @@
   "writer": "Steven types it on the deck"
  },
  "zohoDeals": {
-  "cadenceHours": null,
-  "kind": "retired",
-  "note": "NEEDS-STEVEN: the API grant. Not a writer problem.",
+  "cadenceHours": 8,
+  "kind": "cloud",
+  "note": "NEEDS-STEVEN: Zoho profile permission (Crm_Implied_RetriveFor_ZohoMcp). The writer exists; the doc stays the Sep 14 paste until reads are allowed.",
   "owner": "Victor",
   "pod": "Lead Pod",
-  "writer": "Zoho API blocked until Steven ticks \"Zoho CRM API Access\" (STEVEN-STEPS 15); deck data is the Sep 14 paste"
+  "writer": "Zoho CRM feed routine (claude.ai Zoho CRM connector, 05:41/11:41/16:41/21:41 PT) + deck relay to the Broker Command Center \u2014 written only once Zoho grants data reads"
  },
  "zohoLeads": {
-  "cadenceHours": null,
-  "kind": "retired",
-  "note": "NEEDS-STEVEN: the API grant. Not a writer problem.",
+  "cadenceHours": 8,
+  "kind": "cloud",
+  "note": "NEEDS-STEVEN: Zoho profile permission (Crm_Implied_RetriveFor_ZohoMcp). The writer exists; the doc stays the Sep 14 paste until reads are allowed.",
   "owner": "Victor",
   "pod": "Lead Pod",
-  "writer": "Zoho API blocked until Steven ticks \"Zoho CRM API Access\" (STEVEN-STEPS 15); deck data is the Sep 14 paste"
+  "writer": "Zoho CRM feed routine (claude.ai Zoho CRM connector, 05:41/11:41/16:41/21:41 PT) + deck relay to the Broker Command Center \u2014 written only once Zoho grants data reads"
  },
  "zohoSync": {
-  "cadenceHours": null,
-  "kind": "retired",
-  "note": "NEEDS-STEVEN: the API grant. Not a writer problem.",
+  "cadenceHours": 8,
+  "kind": "cloud",
+  "note": "Writer live since 2026-11-01. Still blocked on Steven's Zoho profile permission (403 Crm_Implied_RetriveFor_ZohoMcp, re-tested 2026-11-02 19:42 UTC).",
   "owner": "Victor",
   "pod": "Lead Pod",
-  "writer": "Zoho API blocked until Steven ticks \"Zoho CRM API Access\" (STEVEN-STEPS 15); deck data is the Sep 14 paste"
+  "writer": "Zoho CRM feed routine (claude.ai Zoho CRM connector, 05:41/11:41/16:41/21:41 PT) + deck relay to the Broker Command Center \u2014 writes the status every run"
  }
 }

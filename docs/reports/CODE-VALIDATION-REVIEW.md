@@ -764,3 +764,83 @@ Alexandra drafts and Steven decides (HALT: legal interpretation).
 ### Addendum — change-set: e5f8b0d076fdbe04 (follow-up to e5a3b7607055ed6c)
 
 All four LOW findings fixed by the author: P01-F1/F2 the copy-reply line in docs/STEVEN-STEPS.md and dashboard/action-desk.html no longer asks for the NMLS ID, and item 21 in the Action Desk says it is on file; P01-F3 the drip footer reads DRE #01988316 · NMLS #2449246 · Patriot Pacific Financial Corp NMLS #1921615, company NMLS on mortgage templates only; P01-F4 the memory line limits the company NMLS to mortgage ads. Greps for `NMLS ID ______`, `personal NMLS ID`, `#____` and `[your NMLS` return nothing in those files. LPT DRE #02248983 seen in the 6D Brain is left for Steven to confirm.
+
+# VibeBreaker review: Zoho coverage rows, 6D Big-moves trigger id, automation-optimization docs (2026-11-02)
+
+change-set: 6d5974c523b4c3ea
+
+## Verdict
+
+`FIX BEFORE SHIP` (FIX FIRST). The code change works: the 6D trigger id is correct, the tests pass, and the docs contain no PII. Two of the brief's stated claims do not hold. The Zoho email-log README says a live task is disabled when it is enabled, and the zoho* rows no longer appear in the default `bin/brain coverage` output. Both fixes are text-only.
+
+## Scope
+
+- Commit / branch: uncommitted on top of HEAD. The tracked diff covers writers.json, template.html, brain-4d.html, decisions.md and memory.md, plus INDEX.md, brain/index.json and CODE-VALIDATION.md, which are generated. The untracked files are docs/reports/AUTOMATION-OPTIMIZATION-2026-11-02.md, integrations/zoho-email-log/{README,SCHEDULE}.md
+- Mode: proportionate. JSON register, one JS constant, docs.
+- Passes completed: 01, 04, 05, 17, 19, 20
+- Evidence: `bash scripts/validate-code.sh` gave `verdict: PASS (5 passed, 0 failed)`. `python3 -m unittest discover -s brain/tests -q` ran 163 tests, OK. Read-only `get_trigger` on 01XwFre, 014QQGp, 01QRFyr, 01VAGt, 01UiJfB8, 018ZJ, 011xpW, 01JoMrj, 016qKE and 01AvXB. `list_triggers enabled=true recurring=false` returned 0 enabled one-shots.
+- Material scope limitation: NO. Deck docs (zohoSync history, 6D v100) were not read. See UNVERIFIED.
+
+## Scoreboard
+
+- Confirmed: 3 (Medium 1, Low 2) · Unverified: 1 · Rejected: 4
+
+## CONFIRMED
+
+**P05-F1 · MEDIUM · integrations/zoho-email-log/README.md:147 and :173 (also SCHEDULE.md:117-119)**
+- Claim: the README says the daily task "Zoho VA class follow-up notes" `trig_01UiJfB8tvbxrAJCZDQhJTUp` was replaced and moved from enabled to disabled. SCHEDULE.md says it "ran until 2027-01-05" in the past tense.
+- Evidence: `get_trigger` returns `"enabled":true` with updated_at 2026-11-02T22:51:18Z. AUTOMATION-OPTIMIZATION-2026-11-02.md:60 itself says it was "re-enabled by Claude". The two committed files contradict each other, and the README describes a change that was reversed.
+- Trigger: anyone, or the cloud-routines inventory regen (F9), reads the README as the record.
+- Bad state: they believe the daily Chrome task is off. It is live, and it writes notes nightly.
+- Fix proof: README :147 and the :173 row say "kept enabled (re-enabled 22:51Z; it also logs calls)". SCHEDULE.md :117 says "runs until 2027-01-05".
+
+**P01-F2 · LOW · brain/coverage/writers.json zohoSync/zohoLeads/zohoDeals (behavior in brain/coverage.py:179-202)**
+- Claim: the intent was to keep these rows visible in `bin/brain coverage`.
+- Evidence: under HEAD, kind "retired" with a note set gap=True. Default `bin/brain coverage` listed 5 gaps, including zohoLeads, zohoSync and zohoDeals. This was recomputed with HEAD's writers.json. Now kind "cloud" without `--db` gives status "unchecked" and gap=False. The output says "2 gaps" and names no zoho row. The `--json` output carries only counts and gaps, so the rows are not shown there either.
+- With `--db` and a deck export: zohoLeads and zohoDeals stay "stale", because the feed routine's blocked branch says "Do NOT touch zohoLeads or zohoDeals". Their 8 h cadence makes them gaps again, so the deck-side view still shows them.
+- Trigger: running `bin/brain coverage` locally.
+- Bad state: the Zoho block disappears from the CLI gap list. The report's F6 measurement "gaps 2 → 0" can then read as done while Zoho data is still the Sep 14 paste.
+- Fix proof: either accept this and say so in the report, or add a test that asserts zohoLeads is a gap under a `--db` fixture with a stale stamp.
+- test_coverage.py still passes; its assertions are kind-generic.
+
+**P17-F3 · LOW · dashboard/brain-4d.html (G constant)**
+- Evidence: the rebuilt page has `"files":168`, but INDEX.md now says 169 files. `grep -c zoho-email-log dashboard/brain-4d.html` returns 0. The page was built before the reindex that added the new README.
+- Bad state: the 6D graph and search miss integrations/zoho-email-log/README.md until the next rebuild.
+- Fix proof: rerun `python3 dashboard/brain-4d/build.py` after the reindex, and G.files reads 169.
+- The 3:30 AM rebuild fixes this on its own if the change is not re-run.
+
+## UNVERIFIED
+
+- writers.json zohoSync note says the feed was "re-tested 2026-11-02 19:42 UTC" and "writes the status every run". The trigger's last_fired_at is 19:42:03Z, which matches. But last_run finished 9 ms after firing, which is the "delivered, not done" pattern the report's own F1 describes. Proving the status is written needs a read of the Command Deck `state/zohoSync` history.
+
+## REJECTED
+
+- BM_TRIGGER wrong: rejected. trig_01XwFre24w9aKq5oVRq1FQ8s is enabled, named "Big moves — …", cron 6:05 AM PT. trig_014QQGp4WQfWGDVB827R4Qb9 is disabled and named "[retired 2026-10-25 …]". Both copies of template.html:772 and brain-4d.html carry the new id.
+- 22 one-shots still enabled: rejected. The first (018ZJ) and last (011xpW) are disabled, and `list_triggers enabled=true recurring=false` returns none.
+- "True duplicates NOT disabled" overstated: rejected. 01JoMrj and 016qKE are both enabled. 016qKE has `created_via: http_api`, as the report says.
+- PII in committed files: rejected. A phone and e-mail regex over the new files and the diffs returns no hits. SCHEDULE.md names tags and templates only.
+
+## Coverage (inspected, clean)
+
+- writers.json: valid JSON. The trailing newline was added. The kind value is in coverage.KINDS.
+- decisions.md: the new dated entry is append-only.
+- memory.md: one dated line.
+- Weekly task 01VAGt matches the README: Mon 7:43 PT, fresh session, push on, no connectors, first run 11-09.
+- Saved fresh-session Big moves 01AvXB is disabled, as stated.
+- QRFyr cron 05:41/11:41/16:41/21:41 PT matches the writers.json text.
+
+## Top missing tests (pass 19)
+
+1. test_coverage: with a `--db` fixture whose zohoLeads stamp is older than 12 h and kind "cloud", assert status "stale" and gap True.
+2. A doc-lint check that every `trig_…` id with a stated state in integrations/*/README.md matches `list_triggers` output. It would have caught P05-F1.
+3. validate-code.sh: when INDEX.md changed, assert brain-4d.html G.files equals INDEX's file count.
+
+## Not demonstrated
+
+- Live overlap: the daily Chrome task 01UiJfB8 and the weekly connector task 01VAGt both cover CLASS leads.
+- The weekly task's B4 dedupe only looks for "Email sent - <date>". The daily task's notes are titled "Follow-up log <date>".
+- Once the Zoho connector is attached and the permission is granted, the same email may be logged twice. This is a live-prompt question for Steven, not part of this diff.
+
+### Addendum — change-set: 7b33b658534678ce (follow-up to 6d5974c523b4c3ea)
+
+F1 fixed: integrations/zoho-email-log/README.md and SCHEDULE.md now say the daily Chrome task trig_01UiJfB8tvbxrAJCZDQhJTUp was re-enabled 22:51Z and stays on; the live weekly prompt (trig_01VAGtRqjLsfKxfh1FXSM9Xf, updated 22:55Z) and the README copy both skip any email already in a "Follow-up log <date>" note, so the two never double-log. F2 answered: the report now states that plain `bin/brain coverage` no longer lists the Zoho docs and that `--db` still shows zohoLeads/zohoDeals stale. F3 accepted: dashboard/brain-4d.html is one indexed file behind; the 3:30 AM rebuild picks it up, no republish for one README.
