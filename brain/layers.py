@@ -46,20 +46,41 @@ def _grep(p: Path, pattern: str) -> str | None:
         return None
 
 
+DECK_STAMP = Path("brain") / "deck-sync.json"  # tracked; brain/state/ is gitignored
+
+
+def _safe_iso(v) -> date | None:
+    try:
+        return _iso(v) if isinstance(v, str) else None
+    except ValueError:  # e.g. 2026-13-40
+        return None
+
+
 def _deck_last(root: Path) -> date | None:
-    """Newest proof the Command Deck DB was written (2026-11-02 fix: the old stamp read only the hand-kept
-    status notes in projects/command-deck.md, so the layer showed stale for 11 days while routines wrote the deck
-    daily). Takes the newest of: those status notes; brain/state/deck-sync.json `lastWrite` (any writer may stamp
-    it); and the date of the daily Big-moves report, whose routine writes bigMoves, vanessaRecommendations and
-    aiTeamOrg to the deck in the same run."""
+    """Newest proof the Command Deck DB was written (2026-11-02). Two sources only, both written by the deck's own
+    sync: the status notes in projects/command-deck.md, and brain/deck-sync.json, stamped by
+    `bin/brain deck-stamp <doc> <version>` right after a CONFIRMED write (the result named a new version). A report
+    that merely ran (e.g. BIG-MOVES.md) is not proof, so it does not count: it would clear its own stale alarm."""
     cands: list[date | None] = []
     cd = root / "projects" / "command-deck.md"
     if cd.exists():
-        cands += [_iso(d) for d in re.findall(r"## Status \((\d{4}-\d{2}-\d{2})\)", cd.read_text(encoding="utf-8", errors="replace"))]
-    cands.append(_iso(str(_json(root / "brain" / "state" / "deck-sync.json").get("lastWrite") or "")))
-    cands.append(_iso(_grep(root / "docs" / "reports" / "BIG-MOVES.md", r"top 10 for (\d{4}-\d{2}-\d{2})") or ""))
+        cands += [_safe_iso(d) for d in re.findall(r"## Status \((\d{4}-\d{2}-\d{2})\)", cd.read_text(encoding="utf-8", errors="replace"))]
+    st = _json(root / DECK_STAMP)
+    if isinstance(st, dict):
+        cands.append(_safe_iso(st.get("lastWrite")))
     return max((c for c in cands if c), default=None)
 
+
+def deck_stamp(root: Path, doc: str, version: str, by: str, now: datetime | None = None) -> Path:
+    """Record a confirmed Command Deck write: call only after the write's result named its new version."""
+    if not re.fullmatch(r"[A-Za-z0-9_.-]{1,80}", doc or "") or not str(version).strip():
+        raise ValueError("deck-stamp needs a doc id and the version the write returned")
+    now = now or datetime.now(timezone.utc)
+    p = root / DECK_STAMP
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps({"lastWrite": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "doc": doc, "version": str(version)[:40],
+                             "by": (by or "")[:80]}, indent=1) + "\n", encoding="utf-8")
+    return p
 
 def collect(root: Path, today: date | None = None) -> list[dict]:
     today = today or date.today()

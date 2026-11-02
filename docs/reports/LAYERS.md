@@ -7,7 +7,7 @@ inside its cadence. `bin/brain layers` prints this; `bin/brain layers --write` r
 |---|---|---|---|---|---|---|
 | Repo (GitHub, both Macs) | every page, the router, skills, scripts | git; Macs pull every 30 min (repo-sync.sh); cloud routines commit daily | 2026-11-02 | 0 | 1 d | **fresh** |
 | Recall index (bin/brain) | INDEX.md + brain/index.json over the tree | bin/brain reindex (daily rebuild routine; connect-all 6a2) | 2026-11-02 | 0 | 1 d | **fresh** |
-| Command Deck DB | live docs: queue, briefs, desks, lists, statuses | routines + Mac tasks write; page reads live | 2026-11-02 | 0 | 1 d | **fresh** |
+| Command Deck DB | live docs: queue, briefs, desks, lists, statuses | routines + Mac tasks write; page reads live | 2026-11-01 | 1 | 1 d | **fresh** |
 | 6D Brain page | every node (pages, stores, tools, pods) and links | daily 3:30 AM PT rebuild + merge-live publish | 2026-11-01 | 1 | 1 d | **fresh** |
 | Jarvis (Mac, local) | vault index + voice; recall level 5 | openjarvis runner task; jarvis-setup.sh + vanessa-persona.sh write the status file | — | — | 2 d | **unverified** |
 | Notion Second Brain DB | decisions, references, the layer directory | brain-learn-daily rows; export mirrored to Drive; directory page refreshed by the weekly sync | 2026-11-02 | 0 | 7 d | **fresh** |
@@ -18,4 +18,4 @@ inside its cadence. `bin/brain layers` prints this; `bin/brain layers --write` r
 | Knowledge graph | entities and relationships | spec only (knowledge-graph/README.md) | — | — | 30 d | **spec only** |
 
 **Even:** yes — every stamped layer is inside its cadence.
-Generated 2026-11-02T00:13:37Z.
+Generated 2026-11-02T00:20:34Z.
