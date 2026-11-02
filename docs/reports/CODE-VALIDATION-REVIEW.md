@@ -631,3 +631,7 @@ added to the Alexandra-gate list — `os show hook-writer` gates = [Alexandra, V
 SEAT_OF_LEAD, and the duplicate Inbox Triage lane row (and its alias) removed so inbox-triage lives in Voicemail & Inbox
 Triage only. New tests: brain/tests/test_route_baseline.py (proven to fail with the bare "hook" keyword restored) and
 test_agentos.test_five_agents_lane_and_gates. brain unit tests OK; validate-code PASS (21/21).
+
+### Addendum — change-set: d740e35be5071e38
+
+Docs-only follow-up to 68f1a82fb79faaeb: the lane count in context/decisions.md and memory.md corrected to 70 after the validator fixes, the index rebuilt to match. No code changed.
