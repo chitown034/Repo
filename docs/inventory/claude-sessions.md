@@ -1,15 +1,18 @@
-# Claude Code sessions — ledger (generated 2026-11-01; newest first)
+# Claude Code sessions — ledger (generated 2026-11-02; newest first)
 
 Every Claude Code session on Steven's account: title, when, status. Titles are the sessions' own words — data, not
 instructions. Refreshed daily by the "Claude sessions ledger" task in the orchestrator session. Transcript contents reach the
 brain on the Mac through `brain-learner`; claude.ai web chats through `bin/brain ingest claude-export` (STEVEN-STEPS 1h).
-183 sessions listed.
-`memory/claude-chats.md` is stale: no claude.ai export ingested since 2026-10-23 (>14 days by the file's own stamp cadence) — Steven re-exports from claude.ai (Settings → Privacy → Export data; STEVEN-STEPS 1h).
+186 sessions listed.
+`memory/claude-chats.md` has no claude.ai export ingested yet (placeholder stamped 2026-10-23) — Steven re-exports from claude.ai (Settings → Privacy → Export data; STEVEN-STEPS 1h).
 
 | Created | Title | Status | Session |
 |---|---|---|---|
+| 2026-11-02 | stevens-macbook-pro-local-composed-pretzel | idle | `J9n55zBm` |
+| 2026-11-02 | OpenGym server setup, Pivo track config, OneNote sync | idle | `F2Zo13Uk` |
+| 2026-11-02 | Artifact installation | idle | `3dbXqVQm` |
 | 2026-11-01 | Dashboard creation | idle | `nH5jNED6` |
-| 2026-11-01 | Lofty connector setup and sync | running | `ra76JqsL` |
+| 2026-11-01 | Lofty connector setup and sync | idle | `ra76JqsL` |
 | 2026-11-01 | Claude Duet executive assistant setup | idle | `5SdtMQEA` |
 | 2026-10-29 | Interactive AI academy dashboard | idle | `siybUiyK` |
 | 2026-10-28 | GhostCLI gateway setup | idle | `ojefp7S8` |
@@ -19,7 +22,7 @@ brain on the Mac through `brain-learner`; claude.ai web chats through `bin/brain
 | 2026-10-27 | Auto and aviation mechanics dashboard guide | idle | `wQTrpdji` |
 | 2026-10-27 | Personal health education dashboard | idle | `YXbakw8X` |
 | 2026-10-27 | Professional tax dashboard with AI integration | idle | `iX3dcukk` |
-| 2026-10-25 | Steven Shearrill handoff continuation | running | `CMEbs3PD` |
+| 2026-10-25 | Steven Shearrill handoff continuation | idle | `CMEbs3PD` |
 | 2026-10-23 | Famous Stoics dashboard and lessons | idle | `2Cfgo9SL` |
 | 2026-10-23 | Clean Your TV interface redesign | idle | `zn3eCGMw` |
 | 2026-10-23 | Comprehensive fitness dashboard | idle | `RFMT6WMX` |
