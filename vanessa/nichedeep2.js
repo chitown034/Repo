@@ -381,7 +381,7 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Grace is moving to Henderson for a job and wants to buy there before her Temecula home sells.",
     "structure": "Steven uses a bridge on the CA home and a NV purchase first; confirms licensing in both states.",
     "numbers": "Illustrative: $680k CA home, $200k owed, $250k bridge; NV purchase $560k.",
-    "why": "Allows a smooth job start.",
+    "why": "Grace can start her new job without commuting from Temecula and without a sale contingency that NV sellers would reject.",
     "alternatives": "Renting in NV first was considered but she wanted to lock the home.",
     "watch": "Two-state title and closing coordination; job offer letter for income."
    },
@@ -599,7 +599,7 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Kevin has large liquid assets but inconsistent returns and needs to buy a 4-plex quickly.",
     "structure": "Steven uses hard money for purchase and refinances to DSCR after leasing.",
     "numbers": "Illustrative: $1.4M price, 65% LTV = $910k.",
-    "why": "Asset-based; fast.",
+    "why": "Hard money funds on asset value in days, letting Kevin win the fourplex; the DSCR refinance after leasing replaces it at lower cost.",
     "alternatives": "Asset-depletion non-QM considered; slower for investment.",
     "watch": "Prepayment terms of DSCR exit."
    },
@@ -831,10 +831,10 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "who": "Wendy, 49, investor, Phoenix",
     "situation": "Wendy wants to build 3 homes on adjacent lots.",
     "structure": "Steven uses a multi-property construction facility.",
-    "numbers": "Illustrative: $1.2M cost total.",
-    "why": "Efficiency.",
-    "alternatives": "Separate loans considered.",
-    "watch": "Cross-default terms."
+    "numbers": "Illustrative: 3 homes at $400k cost each = $1.2M; 85% LTC = $1.02M; as-completed $560k each ($1.68M), 70% = $1.176M cap.",
+    "why": "One facility with a shared budget and inspector is faster and cheaper to administer than three separate loans, and draw timing can be coordinated across lots.",
+    "alternatives": "Three separate ground-up loans were considered; more flexibility to sell individually but three sets of points, appraisals and title policies.",
+    "watch": "Cross-default and release prices per lot; one slow lot can hold up the others."
    },
    {
     "t": "Fire rebuild for investor",
@@ -1296,9 +1296,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "who": "Dorothy, 70, retired, La Jolla",
     "situation": "Dorothy wants to stop managing property. She is considering a DST. She asks if she needs a loan.",
     "structure": "Steven explains DSTs carry their own non-recourse debt; she would not take a new mortgage.",
-    "numbers": "N/A.",
-    "why": "Passive income.",
-    "alternatives": "Direct property.",
+    "numbers": "Illustrative only: a $1.0M exchange equity into a DST that carries ~50% non-recourse debt gives roughly $2.0M of property exposure with no personal loan; Steven's role ends at education.",
+    "why": "Dorothy wants passive income and no management; a DST can provide that while keeping the exchange intact (tax and securities advisors confirm).",
+    "alternatives": "Buying a single NNN-leased property with a small DSCR loan was considered; still needs some oversight and a lender.",
     "watch": "Liquidity and fees; securities advice is outside Steven's role."
    }
   ],
@@ -2405,10 +2405,10 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "t": "Condo purchase",
     "who": "Leo, 40, chef, Las Vegas",
     "situation": "Leo is buying a condo with 10% down. PMI quotes are high for condos. The project is warrantable.",
-    "structure": "80-10-10.",
+    "structure": "80-10-10: an 80% conventional first plus a 10% fixed second, with the condo project reviewed and approved by both lenders.",
     "numbers": "Illustrative: $400k price; $320k first; $40k second.",
     "why": "Lower cost than PMI in this case.",
-    "alternatives": "PMI.",
+    "alternatives": "90% conventional with borrower-paid PMI; condo PMI factors at his score made it the higher-cost option over a 5-year hold.",
     "watch": "Condo approval for both lenders."
    },
    {
@@ -2417,9 +2417,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Rachel is buying a $1.05M home with 15% down. Cook County limit is the baseline. She wants conforming terms.",
     "structure": "80-5-15 with a conforming first and a 5% second.",
     "numbers": "Illustrative: $840k first (verify limit) and $52.5k second.",
-    "why": "Avoids jumbo.",
-    "alternatives": "Jumbo with 15% down.",
-    "watch": "IL attorney review."
+    "why": "Keeping the first lien at or under the Cook County conforming limit avoids jumbo reserve and pricing requirements.",
+    "alternatives": "Jumbo with 15% down; available but required 12 months of reserves she would rather keep invested.",
+    "watch": "IL attorney review period and the second-lien investor's CLTV and FICO rules."
    }
   ],
   "qa": [
@@ -2859,8 +2859,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "structure": "Steven shows the HELOAN option behind his VA loan and the HEI cost table.",
     "numbers": "Illustrative: HELOAN payment ~$400/month vs HEI settlement $60k-$80k later.",
     "why": "HELOAN is cheaper for his situation.",
-    "alternatives": "HEI.",
-    "watch": "Marketing claims."
+    "alternatives": "HEI was reviewed but the HELOAN costs less over his expected 10-year hold.",
+    "watch": "HEI marketing that emphasizes 'no payments' without showing settlement cost."
    },
    {
     "t": "Short-term need before sale",
@@ -2868,9 +2868,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Lily needs capital for 3 years and plans to sell. The HEI contract has a minimum return provision. She thinks short-term will be cheap.",
     "structure": "Steven models the minimum return and appreciation scenarios.",
     "numbers": "Illustrative: year 3 settlement could exceed 15%/year at strong growth.",
-    "why": "Shows true cost.",
-    "alternatives": "HELOC.",
-    "watch": "Minimum return provisions."
+    "why": "Modeling the minimum return and appreciation shows the true cost of a short hold.",
+    "alternatives": "A HELOC would cost less for a 3-year need.",
+    "watch": "Minimum return provisions and early settlement terms."
    }
   ],
   "qa": [
@@ -3081,10 +3081,10 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "who": "Ryan, 41, firefighter, Ramona",
     "situation": "Ryan wants a modular home for speed and fire-resistant materials. The lender treats modular as site-built. He has 10% down.",
     "structure": "Conventional OTC with modular builder.",
-    "numbers": "Illustrative: $650k total.",
-    "why": "Faster build.",
-    "alternatives": "Stick-built.",
-    "watch": "Factory deposit timing."
+    "numbers": "Illustrative: modular package $380k + site work and foundation $160k + lot equity $210k; total cost $540k on owned lot; 90% LTV = $486k.",
+    "why": "Factory construction shortens the build to a few months and can use fire-resistant assemblies valued by insurers.",
+    "alternatives": "Stick-built home on the same lot; 4-6 months longer with more weather and labor risk.",
+    "watch": "Factory deposit timing (often required before the loan closes), transport and crane logistics, and set-up crew licensing."
    },
    {
     "t": "Arizona desert lot",
@@ -3540,20 +3540,20 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "who": "Mike, 48, Navy veteran, Oceanside",
     "situation": "Mike has a VA loan. He wants an ADU for rental income. He wants to keep the VA loan.",
     "structure": "Steven uses a HELOAN behind the VA first.",
-    "numbers": "Illustrative: $200k second.",
-    "why": "Preserves VA first.",
+    "numbers": "Illustrative: $900k value; $430k VA first; $200k second; CLTV = $630k / $900k = 70%.",
+    "why": "A fixed second keeps Mike's VA first-lien rate intact while funding the ADU.",
     "alternatives": "VA renovation cash-out (verify).",
-    "watch": "CLTV."
+    "watch": "CLTV cap and whether the lender will count future ADU rent; VA first-lien servicer does not need to consent to a junior lien but the second lender must accept a VA first."
    },
    {
     "t": "ADU in fire zone",
     "who": "Sarah, 46, teacher, Ramona",
     "situation": "Sarah wants an ADU but insurers declined her. She uses FAIR Plan. Lender acceptance matters.",
     "structure": "Steven confirms FAIR Plan plus DIC acceptance.",
-    "numbers": "Illustrative: $230k cost.",
-    "why": "Insurability first.",
-    "alternatives": "Delay.",
-    "watch": "Premium costs."
+    "numbers": "Illustrative: $230k ADU; FAIR Plan plus DIC adds ~$350/month to housing costs; DTI rises from 41% to 44%.",
+    "why": "Securing insurance first prevents a stalled loan and protects the investment once the ADU is built.",
+    "alternatives": "Delay construction until admitted-market coverage returns, or harden the home (Class A roof, defensible space) to improve options.",
+    "watch": "FAIR Plan premium increases (29.1% average approved for Oct 2026 - verify) and lender acceptance of FAIR Plan plus DIC."
    }
   ],
   "qa": [
@@ -3730,8 +3730,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Rick is buying in zone AE. NFIP quote is $4,200/year. A private policy quotes $2,400.",
     "structure": "Steven confirms the private policy meets federal requirements.",
     "numbers": "Illustrative: $150/month savings vs NFIP.",
-    "why": "Lower cost.",
-    "alternatives": "NFIP.",
+    "why": "Private flood that meets federal requirements can cost less than NFIP for some elevated properties.",
+    "alternatives": "NFIP policy at $4,200/year; simpler but higher in this case.",
     "watch": "Policy compliance and renewals."
    },
    {
@@ -3740,9 +3740,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Tom is buying with VA. Insurance options are limited. VA residual income must include premiums.",
     "structure": "VA with FAIR Plan plus DIC and residual income recalculated.",
     "numbers": "Illustrative: residual income still above table after $650 insurance.",
-    "why": "VA benefit.",
-    "alternatives": "Other areas.",
-    "watch": "Insurance availability."
+    "why": "VA allows zero down and Tom's residual income still clears the table after insurance.",
+    "alternatives": "Buying outside the fire zone; Tom wants this property for family reasons.",
+    "watch": "Insurance availability at renewal and VA residual income sensitivity."
    },
    {
     "t": "Illinois river flooding",
@@ -3750,9 +3750,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Jen buys near the Illinois River in zone A. NFIP required. No elevation certificate.",
     "structure": "Steven orders an elevation certificate to refine premiums.",
     "numbers": "Illustrative: premium drops after EC.",
-    "why": "Required and lowers cost.",
-    "alternatives": "Private flood.",
-    "watch": "Elevation certificate cost."
+    "why": "Flood insurance is required in zone A; an elevation certificate can lower the premium.",
+    "alternatives": "Private flood policy if it meets federal requirements.",
+    "watch": "Elevation certificate cost (~$500-$1,500, verify) and timing."
    },
    {
     "t": "Map change at refinance",
@@ -3760,19 +3760,19 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Al's home was remapped into an SFHA. His refinance now requires flood insurance. He believes the home is above base flood elevation.",
     "structure": "Steven helps him pursue a LOMA with a surveyor while binding flood to close.",
     "numbers": "Illustrative: flood $1,800/year until LOMA.",
-    "why": "Required to close.",
-    "alternatives": "Delay refinance.",
-    "watch": "LOMA timeline."
+    "why": "The refinance cannot close without flood coverage in an SFHA.",
+    "alternatives": "Delay the refinance until LOMA approval.",
+    "watch": "LOMA processing time; continuous coverage requirements."
    },
    {
     "t": "Arizona wildfire",
     "who": "Kate, 50, teacher, Flagstaff",
     "situation": "Kate buys in a pine forest. Insurance is available but expensive. She wants to lower it.",
     "structure": "Steven includes premiums and suggests mitigation measures.",
-    "numbers": "Illustrative: $3,600/year.",
-    "why": "Required.",
-    "alternatives": "Other areas.",
-    "watch": "Premiums."
+    "numbers": "Illustrative: $3,600/year = $300/month; DTI increases by 3% on $10k income.",
+    "why": "Coverage is required to close and premiums must be in DTI.",
+    "alternatives": "Buying outside forested areas.",
+    "watch": "Premium increases and mitigation credits."
    }
   ],
   "qa": [
@@ -3981,10 +3981,10 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "who": "Kendra, 36, nurse, Tampa",
     "situation": "Kendra's rental needs a new roof to be insurable. She has a low-rate first on it. She wants to keep it.",
     "structure": "Steven compares an investment HELOAN for the roof versus a full rehab refinance.",
-    "numbers": "Illustrative: $40k roof.",
-    "why": "Keeps the low first.",
-    "alternatives": "Rehab refi.",
-    "watch": "Roof age insurance rules."
+    "numbers": "Illustrative: $380k value; $190k low-rate first; $40k investment second; CLTV = $230k / $380k = 60.5%.",
+    "why": "A small second on the rental funds the roof without refinancing her low-rate first lien.",
+    "alternatives": "Full rehab refinance; would reprice $190k of cheap debt to fix a $40k problem.",
+    "watch": "Florida insurer roof-age rules and wind mitigation inspection to capture premium credits."
    },
    {
     "t": "Small multifamily renovation",
@@ -4408,8 +4408,8 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "James owns 2 acres and wants a new manufactured home. He wants zero down. The dealer is VA-familiar.",
     "structure": "VA with permanent foundation and land equity.",
     "numbers": "Illustrative: $400k total; VA $400k plus funding fee unless exempt.",
-    "why": "VA benefit.",
-    "alternatives": "FHA.",
+    "why": "VA allows zero down on a manufactured home permanently affixed to land James owns.",
+    "alternatives": "FHA Title II would require 3.5% down and MIP.",
     "watch": "Foundation and setup; VA MPRs."
    },
    {
@@ -4418,18 +4418,18 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Kelly's purchase has no HUD labels. The lender requires verification. Escrow is set for 30 days.",
     "structure": "Steven orders IBTS label verification and requests a closing extension.",
     "numbers": "Illustrative: IBTS letter cost ~$200-$300 (verify).",
-    "why": "Required for financing.",
+    "why": "Without HUD label verification, most lenders will not finance the home as eligible collateral.",
     "alternatives": "Chattel lender with different requirements.",
-    "watch": "Timeline."
+    "watch": "IBTS turnaround can push closing; Steven requests an extension early."
    },
    {
     "t": "Arizona community home",
     "who": "Tom, 66, retired, Mesa",
     "situation": "Tom wants a home in an AZ 55+ community. Land is leased. He has 20% down.",
-    "structure": "Chattel loan.",
+    "structure": "Chattel loan secured by the home only, with space rent included in DTI.",
     "numbers": "Illustrative: $120k home; $96k loan.",
-    "why": "Leased land.",
-    "alternatives": "Cash.",
+    "why": "The land is leased, so a real property mortgage is not possible.",
+    "alternatives": "Paying cash; Tom prefers to keep liquidity.",
     "watch": "Community rules and lot rent."
    },
    {
@@ -4438,9 +4438,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Lisa replaces a burned home with a manufactured home on her lot. It is faster than stick-built. She wants a 30-year loan.",
     "structure": "Conventional or FHA with new MH on permanent foundation.",
     "numbers": "Illustrative: $280k total; 95% LTV.",
-    "why": "Speed and cost.",
-    "alternatives": "Stick-built.",
-    "watch": "Insurance availability."
+    "why": "Factory-built homes can be delivered and set faster than stick-built rebuilds after a wildfire.",
+    "alternatives": "Stick-built rebuild; longer timeline and higher cost per square foot.",
+    "watch": "Insurance availability in the burn area and the foundation engineer certification."
    }
   ],
   "qa": [
@@ -4621,41 +4621,41 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "t": "Investor mixed-use",
     "who": "Sam, 58, landlord, El Cajon",
     "situation": "Sam buys a 3-unit with a ground-floor office. He wants DSCR financing. Office lease has 2 years left.",
-    "structure": "Mixed-use DSCR.",
+    "structure": "Mixed-use DSCR loan in Sam's LLC with the office income haircut by a vacancy factor and 30-year amortization.",
     "numbers": "Illustrative: $1.4M; 70% LTV = $980k.",
-    "why": "DSCR.",
+    "why": "DSCR underwriting ignores Sam's personal DTI and accepts the commercial unit up to the lender's share limit.",
     "alternatives": "Bank commercial loan with balloon.",
-    "watch": "Lease rollover."
+    "watch": "Office lease expires in 2 years; Steven asks for an estoppel and models DSCR with the office vacant."
    },
    {
     "t": "Live-work loft",
     "who": "Jen, 33, designer, San Diego",
     "situation": "Jen wants a live-work loft in East Village. Condo with commercial zoning. Agency may reject.",
     "structure": "Non-warrantable condo non-QM.",
-    "numbers": "Illustrative: $650k.",
-    "why": "Non-QM accepts.",
-    "alternatives": "Agency if warrantable.",
-    "watch": "HOA commercial percentage."
+    "numbers": "Illustrative: $650k loft; 75% LTV = $487.5k; HOA has 35% commercial space, above typical agency limits.",
+    "why": "Non-QM condo lenders accept higher commercial percentages in the project.",
+    "alternatives": "Agency only if the project is warrantable; this project is not.",
+    "watch": "HOA commercial percentage, budget reserves and litigation."
    },
    {
     "t": "Veteran small business",
     "who": "Ray, 50, veteran, Oceanside",
     "situation": "Ray wants a building for his auto shop with an apartment. Environmental risk. VA not eligible for commercial.",
-    "structure": "SBA 504 with Phase I.",
-    "numbers": "Illustrative: $1.1M.",
-    "why": "SBA fits.",
-    "alternatives": "Lease.",
-    "watch": "Environmental."
+    "structure": "SBA 504 with a Phase I environmental report because of the auto shop use; apartment upstairs treated as part of the owner-occupied building.",
+    "numbers": "Illustrative: $1.1M price; SBA 504 10% down = $110k; bank first 50% and CDC second 40%.",
+    "why": "SBA 504 offers low down payment and long-term fixed financing for owner-occupied business property.",
+    "alternatives": "Continuing to lease; no equity and rent increases.",
+    "watch": "Environmental findings from prior auto use; SBA occupancy requirements."
    },
    {
     "t": "Florida downtown mixed-use",
     "who": "Ana, 44, investor, St. Petersburg",
     "situation": "Ana buys a building with retail and 4 apartments. Flood zone. Insurance is costly.",
     "structure": "Commercial bank loan with flood insurance.",
-    "numbers": "Illustrative: $1.6M.",
-    "why": "Bank relationship.",
-    "alternatives": "DSCR.",
-    "watch": "Flood insurance costs."
+    "numbers": "Illustrative: $1.6M; 70% LTV = $1.12M; DSCR with flood premium $9k/year ~1.22x.",
+    "why": "A local bank with a relationship offers flexible commercial terms in a flood zone.",
+    "alternatives": "Mixed-use DSCR non-QM; higher cost but faster.",
+    "watch": "Flood insurance cost and availability; FL condo or association rules if applicable."
    }
   ],
   "qa": [
@@ -5068,9 +5068,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Jess is buying a home with leased solar panels. Payment $140/month with 2.9% escalator. The lease must transfer.",
     "structure": "Steven reviews the lease, counts payment in DTI, gets transfer approval.",
     "numbers": "Illustrative: $140 added to DTI.",
-    "why": "Compliance with guide.",
-    "alternatives": "Seller buys out lease.",
-    "watch": "Escalator."
+    "why": "Agency guides require lease/PPA payments to be considered and leased panels excluded from value.",
+    "alternatives": "Seller buys out the lease before closing.",
+    "watch": "Annual escalator increases payment over time."
    },
    {
     "t": "Solar loan with UCC",
@@ -5078,29 +5078,29 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "situation": "Kevin's solar loan has a UCC filing. He wants to refinance. Lender requires handling.",
     "structure": "Steven obtains UCC subordination or temporary termination per guide.",
     "numbers": "Illustrative: $25k solar loan.",
-    "why": "Clears title.",
-    "alternatives": "Pay off solar loan.",
-    "watch": "Provider response time."
+    "why": "Clears the UCC filing so title can insure the new first lien.",
+    "alternatives": "Paying off the solar loan at closing.",
+    "watch": "Provider response time for subordination."
    },
    {
     "t": "Veteran with PACE",
     "who": "Daniel, 54, veteran, Oceanside",
     "situation": "Daniel wants a VA IRRRL but has PACE. VA requires payoff or subordination. He lacks cash.",
     "structure": "Steven checks if VA cash-out can pay off PACE.",
-    "numbers": "Illustrative: $30k PACE.",
-    "why": "VA rules.",
-    "alternatives": "Conventional.",
-    "watch": "VA requirements."
+    "numbers": "Illustrative: $700k value; $450k VA loan + $30k PACE payoff; VA cash-out to $490k = 70% LTV.",
+    "why": "VA generally requires PACE payoff or subordination.",
+    "alternatives": "Conventional cash-out refinance.",
+    "watch": "VA cash-out rules and funding fee."
    },
    {
     "t": "Florida PACE",
     "who": "Linda, 66, retired, Orlando",
     "situation": "Linda has hurricane-hardening PACE. She wants to sell. Buyer's lender requires payoff.",
-    "structure": "Payoff from proceeds.",
-    "numbers": "Illustrative: $28k.",
-    "why": "Clean sale.",
-    "alternatives": "None.",
-    "watch": "Seller net proceeds."
+    "structure": "PACE paid from Linda's sale proceeds at closing, confirmed with county and administrator.",
+    "numbers": "Illustrative: $28k PACE payoff reduces net proceeds from $380k to $352k.",
+    "why": "Buyer's lender requires payoff; seller payoff keeps the sale on track.",
+    "alternatives": "None practical for most buyer financing.",
+    "watch": "Payoff letter timing and seller net proceeds."
    }
   ],
   "qa": [
@@ -5319,9 +5319,9 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "who": "Nora, 45, architect, Temecula",
     "situation": "Nora is buying one of the first 3D-printed homes in a subdivision. Several similar homes exist. Agency may accept with comps.",
     "structure": "Agency if appraiser finds similar sales in the subdivision; else portfolio.",
-    "numbers": "Illustrative: $720k.",
-    "why": "Agency if marketable.",
-    "alternatives": "Portfolio.",
+    "numbers": "Illustrative: $720k price; 80% = $576k conventional if 2+ similar subdivision sales support value.",
+    "why": "Agency financing is possible if the appraiser finds similar 3D-printed sales in the same subdivision.",
+    "alternatives": "Portfolio lender at 75% if comps are thin.",
     "watch": "New technology appraisal gaps."
    }
   ],
