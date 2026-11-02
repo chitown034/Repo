@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-01T20:19:00Z",
- "date": "2026-11-01",
+ "generated": "2026-11-02T14:44:38Z",
+ "date": "2026-11-02",
  "items": [
   {
    "id": "bm_08ef5bf8ac",
@@ -87,27 +87,6 @@
    "rank": 4
   },
   {
-   "id": "bm_bb5ab0e256",
-   "category": "sync",
-   "topic": "",
-   "title": "Resync the Command Deck DB layer",
-   "why": "last stamp 2026-10-22, 10 days old, cadence 1 d",
-   "owner": "Derek",
-   "executor": "vanessa",
-   "impact": 3,
-   "effort": 1,
-   "confidence": 0.9,
-   "plan": [
-    "Run the layer's own sync (routines + Mac tasks write; page reads live)",
-    "bin/brain layers --write; confirm 'even: yes'"
-   ],
-   "source": "layers",
-   "weight": 1.0,
-   "score": 2.7,
-   "value": "high",
-   "rank": 5
-  },
-  {
    "id": "bm_f4dd4986b9",
    "category": "steven",
    "topic": "arive",
@@ -126,7 +105,7 @@
    "weight": 1.464,
    "score": 2.489,
    "value": "high",
-   "rank": 6
+   "rank": 5
   },
   {
    "id": "bm_6b1e5bf84e",
@@ -148,7 +127,7 @@
    "weight": 1.0,
    "score": 2.4,
    "value": "high",
-   "rank": 7
+   "rank": 6
   },
   {
    "id": "bm_52e0d6276e",
@@ -170,7 +149,7 @@
    "weight": 1.0,
    "score": 2.4,
    "value": "high",
-   "rank": 8
+   "rank": 7
   },
   {
    "id": "bm_da69253e89",
@@ -192,7 +171,7 @@
    "weight": 1.0,
    "score": 2.4,
    "value": "high",
-   "rank": 9
+   "rank": 8
   },
   {
    "id": "bm_96168aa081",
@@ -200,6 +179,28 @@
    "topic": "",
    "title": "Connect Night-time answer latency",
    "why": "up to 60 minutes until the Mac window is widened, then 10 minutes",
+   "owner": "Derek",
+   "executor": "vanessa",
+   "impact": 3,
+   "effort": 1,
+   "confidence": 0.8,
+   "plan": [
+    "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
+    "\u2014",
+    "Vanessa re-checks the status on the next connect report and closes the item"
+   ],
+   "source": "toolkit:connector",
+   "weight": 1.0,
+   "score": 2.4,
+   "value": "high",
+   "rank": 9
+  },
+  {
+   "id": "bm_895e933ee8",
+   "category": "connect",
+   "topic": "notion",
+   "title": "Connect Notion `brain-learn-daily` rows",
+   "why": "resume with Mac 1's runner (signed in 2026-10-23); directory page written 2026-10-23",
    "owner": "Derek",
    "executor": "vanessa",
    "impact": 3,
@@ -227,7 +228,7 @@
   "compliance": 1.0,
   "ops": 1.0,
   "steven": 1.4641000000000006,
-  "opportunity": 1.1
+  "opportunity": 1.2100000000000002
  },
  "coas": [
   {
@@ -436,6 +437,29 @@
      "value": "high",
      "rank": 9,
      "coa": "big-move"
+    },
+    {
+     "id": "bm_895e933ee8",
+     "category": "connect",
+     "topic": "notion",
+     "title": "Connect Notion `brain-learn-daily` rows",
+     "why": "resume with Mac 1's runner (signed in 2026-10-23); directory page written 2026-10-23",
+     "owner": "Derek",
+     "executor": "vanessa",
+     "impact": 3,
+     "effort": 1,
+     "confidence": 0.8,
+     "plan": [
+      "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
+      "\u2014",
+      "Vanessa re-checks the status on the next connect report and closes the item"
+     ],
+     "source": "toolkit:connector",
+     "weight": 1.0,
+     "score": 2.4,
+     "value": "high",
+     "rank": 10,
+     "coa": "big-move"
     }
    ]
   },
@@ -449,7 +473,7 @@
      "category": "brain",
      "topic": "",
      "title": "Fix the 1 gold question(s) the brain gets wrong",
-     "why": "bench 30/31 on 2026-10-31",
+     "why": "bench 30/31 on 2026-11-02",
      "owner": "Vanessa",
      "executor": "vanessa",
      "impact": 3,
@@ -540,47 +564,48 @@
    "about": "what is stale, failing or silent, and the action that heads it off",
    "items": [
     {
-     "id": "bm_bb5ab0e256",
-     "category": "sync",
+     "id": "bm_a68ad9938c",
+     "category": "revenue",
      "topic": "",
-     "title": "Resync the Command Deck DB layer",
-     "why": "last stamp 2026-10-22, 10 days old, cadence 1 d",
-     "owner": "Derek",
+     "title": "Restart the ISA line",
+     "why": "isaLine: no ISA-side message since 2026-09-22 (over 36 h silent); EOD summaries not arriving.",
+     "owner": "Victor",
      "executor": "vanessa",
-     "impact": 3,
-     "effort": 1,
-     "confidence": 0.9,
-     "plan": [
-      "Run the layer's own sync (routines + Mac tasks write; page reads live)",
-      "bin/brain layers --write; confirm 'even: yes'"
-     ],
-     "source": "layers",
-     "weight": 1.0,
-     "score": 2.7,
-     "value": "high",
-     "rank": 1,
-     "coa": "risk"
-    },
-    {
-     "id": "bm_e86d0e5d31",
-     "category": "ops",
-     "topic": "",
-     "title": "Refresh cosBrief",
-     "why": "cosBrief stamp 2026-10-27 is past its daily cadence (docs/inventory/daily-updates.md).",
-     "owner": "Vanessa",
-     "executor": "vanessa",
-     "impact": 3,
-     "effort": 1,
+     "impact": 4,
+     "effort": 2,
      "confidence": 0.8,
      "plan": [
-      "Run the cos-daily-cycle in an attended session",
-      "Write cosBrief with at most 3 Needs-Steven items"
+      "Vanessa drafts the ISA restart checklist and EOD template",
+      "Steven picks the ISA seat COA (brief d8)",
+      "Nothing sent to a client"
+     ],
+     "source": "deck isaLine",
+     "coa": "risk",
+     "weight": 1.0,
+     "score": 1.6,
+     "value": "medium",
+     "rank": 1
+    },
+    {
+     "id": "bm_4995b14b0c",
+     "category": "ops",
+     "topic": "",
+     "title": "Refresh morningBriefStatus",
+     "why": "Deck doc stamped 2026-10-31, past its daily 6:34 cadence (docs/inventory/daily-updates.md).",
+     "owner": "Vanessa",
+     "executor": "vanessa",
+     "impact": 2,
+     "effort": 1,
+     "confidence": 0.7,
+     "plan": [
+      "Check the morning brief routine's last run",
+      "Re-fire it once if it failed"
      ],
      "source": "deck morningBriefStatus",
      "coa": "risk",
      "weight": 1.0,
-     "score": 2.4,
-     "value": "high",
+     "score": 1.4,
+     "value": "medium",
      "rank": 2
     },
     {
@@ -588,7 +613,7 @@
      "category": "ops",
      "topic": "",
      "title": "Repair Mac task brain-weekly-verify",
-     "why": "runnerStatus (2026-11-01T02:08Z) shows brain-weekly-verify last status error/refused.",
+     "why": "runnerStatus (2026-11-02T05:06Z) shows brain-weekly-verify last status error/refused.",
      "owner": "Derek",
      "executor": "vanessa",
      "impact": 3,
@@ -607,11 +632,11 @@
      "rank": 3
     },
     {
-     "id": "bm_d1ef858fef",
+     "id": "bm_835cd83fb2",
      "category": "ops",
      "topic": "",
-     "title": "Repair Mac task health-coaching-weekly",
-     "why": "runnerStatus (2026-11-01T02:08Z) shows health-coaching-weekly last status error/refused.",
+     "title": "Repair Mac task cpi-daily-scan",
+     "why": "runnerStatus (2026-11-02T05:06Z) shows cpi-daily-scan last status error/refused.",
      "owner": "Derek",
      "executor": "vanessa",
      "impact": 3,
@@ -620,7 +645,7 @@
      "plan": [
       "Read the task's log from the next connect-all REPORT",
       "Fix the spec in integrations/mac-task-specs.md",
-      "Steven pastes runnerctl run health-coaching-weekly"
+      "Steven pastes runnerctl run cpi-daily-scan"
      ],
      "source": "deck runnerStatus",
      "coa": "risk",
@@ -653,7 +678,7 @@
      ],
      "source": "steven-steps",
      "decision": "approved",
-     "decided_at": "2026-10-27T13:09:24Z",
+     "decided_at": "2026-11-01T20:19:36Z",
      "weight": 1.464,
      "score": 2.074,
      "value": "medium",
@@ -709,7 +734,7 @@
      "category": "marketing",
      "topic": "presence",
      "title": "Claim the profiles Sofia listed (GBP, Bing Places, Zillow, Realtor.com, Homes.com, Yelp, LinkedIn)",
-     "why": "Presence audit 2026-11-01: 0 of 16 searches mention Steven; no profile indexed (docs/reports/PRESENCE.md).",
+     "why": "Presence audit 2026-11-01: score 0, 0 of 16 searches mention Steven (docs/reports/PRESENCE.md).",
      "owner": "Sofia",
      "executor": "steven",
      "impact": 4,
@@ -740,17 +765,17 @@
   },
   {
    "q": "What should I do about: Fix the 1 gold question(s) the brain gets wrong?",
-   "a": "bench 30/31 on 2026-10-31.",
+   "a": "bench 30/31 on 2026-11-02.",
    "action": "bin/brain loop \u2192 the failing questions",
    "coa": "improve",
    "ref": "bm_d72970e1e7"
   },
   {
-   "q": "What should I do about: Resync the Command Deck DB layer?",
-   "a": "last stamp 2026-10-22, 10 days old, cadence 1 d.",
-   "action": "Run the layer's own sync (routines + Mac tasks write; page reads live)",
+   "q": "What should I do about: Restart the ISA line?",
+   "a": "isaLine: no ISA-side message since 2026-09-22 (over 36 h silent); EOD summaries not arriving.",
+   "action": "Vanessa drafts the ISA restart checklist and EOD template",
    "coa": "risk",
-   "ref": "bm_bb5ab0e256"
+   "ref": "bm_a68ad9938c"
   },
   {
    "q": "What should I do about: Drips and texts?",
@@ -785,7 +810,7 @@
   },
   {
    "q": "What did the weekly loop find?",
-   "a": "last run 2026-10-31: bench 30/31, routes 23/23, 20 stale pages, 31 untested wiki pages, 0 tune proposals, 0/0 learned facts promoted",
+   "a": "last run 2026-11-02: bench 30/31, routes 23/23, 20 stale pages, 31 untested wiki pages, 0 tune proposals, 0/0 learned facts promoted",
    "action": "Open docs/reports/BRAIN-LOOP.md; the Self-improvement lane above carries the fixes",
    "coa": "question",
    "ref": "brain/loop-history.jsonl"

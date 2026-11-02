@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-01T20:19:00Z",
+ "generated": "2026-11-02T14:44:38Z",
  "seats": [
   {
    "name": "Steve",
@@ -155,6 +155,16 @@
    "name": "Elon",
    "role": "CTO Innovator, proposal-only the AI Agent Engineering Team: stress-test, reliability,",
    "kind": "tree"
+  },
+  {
+   "name": "New seat: `ux-designer`",
+   "role": "under Derek, Sonnet 5",
+   "kind": "named"
+  },
+  {
+   "name": "Updated seat: `agent-evaluator`",
+   "role": "under Nadia",
+   "kind": "named"
   },
   {
    "name": "Gwen",
