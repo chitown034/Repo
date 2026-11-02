@@ -64,3 +64,9 @@ undocumented and may change without notice; personal/experimental use, at your o
 
 **Links (2026-10-23):** `bin/brain links` prints every front door; `brain/links.py` is the one place to add a surface, and the
 6D Brain, the layers register and the Notion directory read it.
+
+## Phone numbers in the Docs (Steven, 2026-11-02)
+
+The two business service lines on the exporter allow-list (`brain/export_notebooklm.py` `ALLOW`): Vanessa's Kapso WhatsApp
+line and her Inkbox iMessage line, are shown in the Google Docs on purpose ("show the two numbers"). Every other phone
+number and e-mail stays masked. The weekly sync sends the export files as they are, with no extra masking.

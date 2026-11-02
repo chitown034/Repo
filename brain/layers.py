@@ -46,6 +46,21 @@ def _grep(p: Path, pattern: str) -> str | None:
         return None
 
 
+def _deck_last(root: Path) -> date | None:
+    """Newest proof the Command Deck DB was written (2026-11-02 fix: the old stamp read only the hand-kept
+    status notes in projects/command-deck.md, so the layer showed stale for 11 days while routines wrote the deck
+    daily). Takes the newest of: those status notes; brain/state/deck-sync.json `lastWrite` (any writer may stamp
+    it); and the date of the daily Big-moves report, whose routine writes bigMoves, vanessaRecommendations and
+    aiTeamOrg to the deck in the same run."""
+    cands: list[date | None] = []
+    cd = root / "projects" / "command-deck.md"
+    if cd.exists():
+        cands += [_iso(d) for d in re.findall(r"## Status \((\d{4}-\d{2}-\d{2})\)", cd.read_text(encoding="utf-8", errors="replace"))]
+    cands.append(_iso(str(_json(root / "brain" / "state" / "deck-sync.json").get("lastWrite") or "")))
+    cands.append(_iso(_grep(root / "docs" / "reports" / "BIG-MOVES.md", r"top 10 for (\d{4}-\d{2}-\d{2})") or ""))
+    return max((c for c in cands if c), default=None)
+
+
 def collect(root: Path, today: date | None = None) -> list[dict]:
     today = today or date.today()
     ix = _json(root / "brain" / "index.json")
@@ -59,7 +74,7 @@ def collect(root: Path, today: date | None = None) -> list[dict]:
          "sync": "bin/brain reindex (daily rebuild routine; connect-all 6a2)", "last": _iso(ix.get("built") or ix.get("generated") or "")
          or _git_date(root)},
         {"key": "deck", "layer": "Command Deck DB", "holds": "live docs: queue, briefs, desks, lists, statuses",
-         "sync": "routines + Mac tasks write; page reads live", "last": max((_iso(d) for d in re.findall(r"## Status \((\d{4}-\d{2}-\d{2})\)", (root / "projects" / "command-deck.md").read_text(encoding="utf-8", errors="replace") if (root / "projects" / "command-deck.md").exists() else "")), default=None)},
+         "sync": "routines + Mac tasks write; page reads live", "last": _deck_last(root)},
         {"key": "brain6d", "layer": "6D Brain page", "holds": "every node (pages, stores, tools, pods) and links",
          "sync": "daily 3:30 AM PT rebuild + merge-live publish", "last": _iso(_grep(b6, r'"generated":\s*"(\d{4}-\d{2}-\d{2})"') or "")},
         {"key": "jarvis", "layer": "Jarvis (Mac, local)" + (" — speaks as Vanessa" if js.get("persona") == "vanessa" else ""),
