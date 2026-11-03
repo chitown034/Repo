@@ -1,150 +1,141 @@
-# VibeBreaker Final Report — commit 95d4598 (roster upgrade: reporting line + SME/parallel standard)
+# VibeBreaker Final Report — commit af6a83c (install-mac.sh: promptfoo, ghidra, libraries noted, open-webui + new-api download-only)
 
-change-set: 928616d7be834c2d
+change-set: d3305c9750ca4c4c
 
-Reviewer: code-validator (did not write this code). Date: 2026-11-02. Mode: DIFF (`--since 95d4598~1`).
+Reviewer: code-validator (did not write this code). Date: 2026-11-03. Mode: DIFF (`--since HEAD~1`).
 
 ## Verdict
 
 `SURVIVED*` — **SHIP**
 
-No confirmed defect reachable with the current roster; two LOW latent weaknesses in `_chain` (a cycle or an unknown lead is rendered silently instead of failing) and no test pins the new output.
+Deterministic checks pass, dry-run changes nothing, the `~/.zprofile` writes are idempotent and newline-safe, and the clone loop cannot leave `$GP`. Two LOW gaps remain in when the promptfoo privacy exports get written. Neither one corrupts anything or blocks shipping.
 
 ## Scope
 
-- Commit / branch: 95d4598 on claude/stoic-cori-pvn3f8 (the change-set also includes 29a73bb, docs-only: wiki/ai-team/org-chart.md, brain/index.json)
+- Commit / branch: af6a83c on claude/stoic-cori-pvn3f8 (also touches `integrations/skill-packs/REGISTRY-2026-11-01.md`, docs only, and `docs/reports/CODE-VALIDATION.md`, a generated report)
 - Mode: DIFF
-- Stack: Python 3 (brain/), generated Markdown agent files, JSON manifests
-- Passes completed: 01, 04, 05, 06, 07, 08, 12, 17, 18, 19, 20
-- Inspected surfaces: brain/agentfiles.py (whole file), brain/agentos.py (load_roster, entry, check), docs/inventory/agent-roster.md diff, brain/tests/test_agentos.py, generated files tdd-guide.md and vanessa-orchestrator.md (diffs), all 179 generated files programmatically
-- Excluded / unavailable context: the Mac install (`install-mac.sh` link behaviour into ~/.claude/agents) was not exercised
-- Material scope limitation: NO
+- Stack: bash script for macOS (target bash 3.2), Homebrew, npm, git
+- Passes completed: 01, 04, 05, 11, 14, 19, 20 (the shell-script set)
+- Inspected surfaces: `integrations/skill-packs/install-mac.sh` lines 195-232 (new), plus the helpers it calls (`ask`, `have`, lines 7-9) and the precedents it copies (the archify `~/.zprofile` block at lines 96-106 and the github-picks clone loop at lines 156-173)
+- Excluded / unavailable context: no macOS or bash 3.2 binary in this sandbox, so bash 3.2 safety was checked by reading. The Homebrew `ghidra` cask definition could not be fetched (proxy 403 / 404). Steven's Node version on the Mac is unknown.
+- Material scope limitation: NO for the diff's own logic. The ghidra/Java claim and the Node engine fit are listed as UNVERIFIED.
 
-## Deterministic checks
+Deterministic gate: `bash scripts/validate-code.sh --since HEAD~1` printed `verdict: PASS (1 passed, 0 failed)` (`bash -n` on install-mac.sh).
 
-`verdict: PASS (6 passed, 0 failed)` — py_compile brain/agentfiles.py, json org-chart.json, json agents.json, brain unit tests, brain layout, brain doctor.
+Behavioural evidence: the new section was extracted together with the `ask`/`have` helpers and run under `env -i` with a sandbox HOME and logging stubs for npm, brew, git and promptfoo, in `/tmp/claude-0/-home-user-Repo/4c5c5813-d1a1-57d6-9aa2-cfd8ed00fc6c/scratchpad/cv-test`:
+- `--dry-run`: the only command that ran was `brew list --cask ghidra`, which is read-only. No npm install, no `mkdir`, no clone, and no `~/.zprofile` was created.
+- Yes to every prompt, starting with no `~/.zprofile`: the file ends up with exactly two lines, `export PROMPTFOO_DISABLE_TELEMETRY=1` and `export PROMPTFOO_DISABLE_UPDATE=1`.
+- A pre-existing `~/.zprofile` with no trailing newline (`export FOO=1`), run twice: the script added a newline separator once and wrote each export once. No line was glued to the previous one and nothing was duplicated.
+- npm install returning non-zero: the script printed "promptfoo install failed - nothing written to ~/.zprofile" and the file was unchanged.
+- The clone targets were `$HOME/Projects/github-picks/open-webui` and `$HOME/Projects/github-picks/new-api`, with `core.hooksPath=/dev/null`, `--depth 1` and `GIT_LFS_SKIP_SMUDGE=1`.
+- The npm registry has `promptfoo@0.125.1`, and the package has no own install or postinstall script. Its `prepare` script runs only for git installs.
 
 ## Scoreboard
 
-- Passes executed: 11 / 20 (the applicable set for a Python change)
-- Confirmed: 3
+- Passes executed: 7 / 20 (DIFF set for a shell script)
+- Confirmed: 2
 - Critical: 0
 - High: 0
 - Medium: 0
 - Low: 2
 - Info: 1
-- Unverified: 0
-- Rejected candidates: 5
+- Unverified: 3
+- Rejected candidates: 6
 - First critical pass: NONE
 
 ## CONFIRMED
 
 ```yaml
+id: P04-F1
+pass: 04
+title: promptfoo privacy exports are skipped whenever promptfoo is already on PATH
+status: CONFIRMED
+severity: LOW
+confidence: HIGH
+location:
+  - path: integrations/skill-packs/install-mac.sh
+    line: 201-208
+entry_or_trigger: run install-mac.sh on a Mac where `promptfoo` already resolves (an earlier `brew install promptfoo`, another npm -g version, or a manual install)
+evidence: the `have promptfoo` branch prints "already installed" and never reaches the loop at 204-206; that branch also does no version check against the 0.125.1 pin
+existing_controls_checked: the export writes are reached only from the `npm install -g ... && then` path
+failure_scenario: with a promptfoo stub on PATH and yes to every prompt, ~/.zprofile was never created and the output was "already installed". REGISTRY-2026-11-01.md still says "telemetry and update checks off via ~/.zprofile", but telemetry stays on and an unpinned version stays in place
+impact: Derek / code-validator could run promptfoo with telemetry and update checks on. Privacy only; nothing is corrupted
+remediation_direction: write the two exports whenever promptfoo is present, not only right after this script installs it, and print the installed version next to the 0.125.1 pin
+verification: run the section with a promptfoo stub on PATH and an empty HOME, then assert both export lines are in ~/.zprofile exactly once
+needs_context: null
+```
+
+```yaml
 id: P05-F1
 pass: 05
-title: _chain silently renders a truncated reporting line on a lead cycle
+title: the "already set" check is a substring grep, so a commented-out or =0 line counts as set
 status: CONFIRMED
 severity: LOW
 confidence: HIGH
 location:
-  - path: brain/agentfiles.py
-    line: 34-42
-entry_or_trigger: bin/brain os agents --write after a roster edit where seat a's lead is b and b's lead is a (or a seat leads itself)
-evidence: _chain('a', {'a':'b','b':'a'}) returns "b"; _chain('a', {'a':'a'}) returns "Steven". The loop terminates (seen set), but nothing raises or reports.
-existing_controls_checked: agentos.check only tests lane/recall/orca presence; agentfiles.check only tests frontmatter; no test asserts chains end at vanessa-orchestrator. Current roster has no cycle (all 184 non-Vanessa chains end at vanessa-orchestrator, max depth 3).
-failure_scenario: a future roster typo creates a 2-cycle; both seat files state a reporting line that never reaches Vanessa (or claim to report to Steven) and every check stays green.
-impact: wrong escalation path in a seat prompt; no data or security impact.
-remediation_direction: have _chain (or agentos.check) report seats whose chain does not end at vanessa-orchestrator, and fail the check.
-verification: unit test — _chain on a 2-cycle and a self-loop is flagged; a check over the real roster returns zero non-Vanessa chains.
-needs_context: null
-```
-
-```yaml
-id: P05-F2
-pass: 05
-title: Unknown lead slug is printed in the reporting line without error
-status: CONFIRMED
-severity: LOW
-confidence: HIGH
-location:
-  - path: brain/agentfiles.py
-    line: 36-41
-  - path: brain/agentos.py
-    line: 85-88
-entry_or_trigger: roster row whose lead column names a slug that is not a roster seat (typo, renamed seat)
-evidence: _chain('a', {'a':'ghost'}) returns "ghost -> vanessa-orchestrator"; agentos.entry falls back to role-text routing when SEAT_OF_LEAD has no entry, so nothing fails.
-existing_controls_checked: today every lead resolves (0 unknown leads across 185 seats; only vanessa-orchestrator has no lead).
-failure_scenario: renaming an exec slug leaves dozens of seat files naming a non-existent lead; checks stay green.
-impact: misleading seat prompts; no crash.
-remediation_direction: validate that every non-empty lead is a roster slug in agentos.check.
-verification: test — roster with one unknown lead makes the check report that slug.
-needs_context: null
-```
-
-```yaml
-id: P19-F1
-pass: 19
-title: New prompt output and _chain have no test
-status: CONFIRMED
-severity: INFO
-confidence: HIGH
-location:
-  - path: brain/tests/test_agentos.py
-    line: 63-82
-entry_or_trigger: any future edit of SME/TEAM/_chain
-evidence: tests call render() with lead_of={} and assert only the Toolkit line; no assertion on "Reporting line:", SME/TEAM text, or HALT invariance.
-existing_controls_checked: agentfiles.check (frontmatter only).
-failure_scenario: a regression that drops the HALT line or breaks the chain passes all checks.
-impact: test gap only.
-remediation_direction: add the tests listed below.
-verification: the tests below exist and pass.
+  - path: integrations/skill-packs/install-mac.sh
+    line: 205
+entry_or_trigger: ~/.zprofile already contains `# export PROMPTFOO_DISABLE_TELEMETRY=1` or `export PROMPTFOO_DISABLE_TELEMETRY=0`
+evidence: `grep -q "$v" "$HOME/.zprofile"` matches the bare name anywhere on any line
+existing_controls_checked: same pattern as the accepted archify block (line 100), so this is consistent with precedent and is not a regression
+failure_scenario: reproduced. Starting from `# export PROMPTFOO_DISABLE_TELEMETRY=1`, a run with yes to every prompt wrote only `export PROMPTFOO_DISABLE_UPDATE=1`; the commented line was taken as already set and telemetry stays on
+impact: the telemetry opt-out is silently skipped. The file is never corrupted
+remediation_direction: anchor the match to an active assignment (`^export NAME=1`), and apply the same change to the archify check if it is touched
+verification: seed ~/.zprofile with a commented or =0 line, run the section, then assert that an active `export NAME=1` line exists
 needs_context: null
 ```
 
 ## UNVERIFIED
 
-None.
+- U1: line 212 says "Needs Java; the Homebrew cask brings it." The `ghidra` cask (`Casks/g/ghidra.rb`, its `depends_on` and caveats) could not be fetched from this sandbox. If the cask does not pull in a JDK, `ghidraRun` will fail on first launch on a Mac without Java. Needed to decide: `brew info --cask ghidra` on the Mac.
+- U2: `promptfoo@0.125.1` declares `engines.node >=22.22.0`. npm -g only warns (EBADENGINE) on an older Node, so the install would report "done" and then the tool may fail when it runs. Needed: `node -v` on Steven's Mac.
+- U3: `~/.zprofile` is read only by zsh login shells. Whether the shell that Claude Code or code-validator uses to run promptfoo loads it is a runtime fact about the Mac. The archify precedent has the same dependency.
 
 ## REJECTED
 
-- P01-R1 — chain-walk can loop forever — `seen` grows each step over a finite key set; synthetic cycle/self-loop/empty map all terminate — brain/agentfiles.py:36-41
-- P01-R2 — crash on missing/None lead — `lead_of.get(x) or "vanessa-orchestrator"` covers missing key, None and ""; lead values come from agentos.entry as str or None — brain/agentos.py:91
-- P04-R1 — hand-written .claude/agents files overwritten — write() unchanged; commit touches nothing under .claude/agents; 6 hand-written slugs (calendar-prep, chief-of-staff, code-validator, competitor-watch, hook-writer, inbox-triage) have no generated twin — brain/agentfiles.py:88-91
-- P04-R2 — HALT text changed — HALT constant byte-identical to parent (md5 match) and present in all 179 generated files
-- P17-R1 — generated files stale vs generator — render(a, lead_of) equals every committed generated file (0 drift); 185 unique slugs, 0 unknown leads
+- R1 — the loop can clone outside $GP — the loop list is two fixed literals (`open-webui/open-webui QuantumNous/new-api`), `basename` gives `open-webui` and `new-api`, `$d` is always `"$GP/<name>"`, and no user input reaches it; stub run confirmed the targets — lines 228-229
+- R2 — dry-run has side effects — `ask` returns 1 before any action (line 8); stub log showed only read-only `brew list --cask ghidra`, no mkdir, and no zprofile — lines 214, 226
+- R3 — a zprofile line gets glued to the previous one or duplicated — tail-byte newline guard plus grep guard; reproduced with a file with no trailing newline and a run done twice — line 205
+- R4 — `;` inside the brace group lets the export run even when the newline guard fails — intended: the `&&` chain only decides whether a separator newline is needed, and the export must run either way — line 205
+- R5 — bash 3.2 incompatibility — no arrays, `local`, `[[`, `${var,,}`, `mapfile` or process substitution in the new code; `tail -c 1`, `basename` and `printf %s` exist on macOS — lines 195-232
+- R6 — quoting breaks when HOME contains spaces — every use of `$HOME`, `$GP`, `$d` and `$v` is double-quoted, and the echo strings contain no `$` or backticks except intended expansions — lines 195-232
+
+## INFO
+
+- I1 (pass 14/11): the open-webui and new-api downloads are not held at the commits recorded in the registry (f7ac7ee, 45746ee), and clone stderr is discarded, so any failure is reported as "moved or private". Both copy the accepted github-picks loop (line 171), and nothing in them runs, so this is not a defect. It matters only when Steven later follows a README from an unreviewed HEAD.
 
 ## Coverage
 
-- brain/agentfiles.py: SME, TEAM, _chain, render, write, check — clean apart from P05-F1/F2.
-- Roster: 58 rows changed from `—` to an exec lead; all targets exist (cto-derek, caio-nadia, cto-innovator, ciso-elena, cmo-sofia, cco-alexandra).
-- Token cost: SME+TEAM add 483 chars (~120 tokens) plus a ~10-token reporting line per seat file; each seat loads only its own file, so ~130 tokens per dispatch, not 185x per call. SME repeats HALT's "state the age of every fact" (redundant, harmless).
-- Side effect, as intended: seats moved to the Derek/Elon lane now also get the code-validation toolkit, the ECC gate and the lane's start page (e.g. tdd-guide now starts at `wiki/dashboard-ops/`).
-- Pre-existing, not introduced here: vanessa-orchestrator's roster model `fable` is not in MODEL, so its frontmatter is `model: sonnet`; its Place line says "reports to vanessa-orchestrator" while the new line says "Reporting line: Steven"; module docstring says 172 seats (now 185).
+- Clean: promptfoo install guard, pin (`@0.125.1` exists on npm), failure message, and the claim that nothing is written on failure; idempotence and newline safety of the export writes; ghidra already-installed check and install gate; the y/N gate on the github-picks download, the shallow clone without hooks or LFS, and the skip when a folder exists; dry-run; set -u safety (no unset vars referenced: `GP`, `d`, `r`, `v` are all assigned before use); echo-only notes (langchain, transformers, open-webui, new-api, ecommerce-intelligence-apis) contain no commands that execute.
+- Registry addendum matches the script (versions, commits, decisions).
 
-## Top missing tests
+## Top missing tests (pass 19)
 
-1. _chain on a 2-cycle and a self-loop is flagged (not silently rendered).
-2. Every non-empty roster lead is a roster slug (fails on an unknown lead).
-3. Every seat's chain, over the real roster, ends at vanessa-orchestrator (Vanessa itself renders "Steven").
-4. render() output contains HALT verbatim for every seat.
-5. render() output contains "Reporting line:" and the SME/TEAM text.
-6. write() leaves no generated twin for a slug that exists in .claude/agents.
-7. Generated files equal render() for the current roster (drift check).
+1. Dry-run with stubbed npm/brew/git and an empty HOME: assert the only stub call is `brew list --cask ghidra` and HOME stays empty.
+2. Yes to every prompt with no ~/.zprofile: assert exactly two lines, `export PROMPTFOO_DISABLE_TELEMETRY=1` and `export PROMPTFOO_DISABLE_UPDATE=1`.
+3. ~/.zprofile without a trailing newline, run twice: assert the original line is intact and each export appears once.
+4. npm stub exits 1: assert ~/.zprofile is byte-identical and the failure line is printed.
+5. promptfoo already on PATH: assert both exports are present afterwards (fails today, P04-F1).
+6. A commented `# export PROMPTFOO_DISABLE_TELEMETRY=1` line: assert an active export is added (fails today, P05-F1).
+7. Pre-existing `$GP/open-webui` directory: assert no clone call for it and "have open-webui" is printed.
+8. git stub exits 1: assert "could not get" is printed and the loop continues to the second repo.
+9. HOME containing a space: assert clone targets and zprofile path stay intact.
+10. `bash -n` under /bin/bash 3.2 on macOS CI (not available here).
 
 ## Share card
 
 ```text
 VIBE//BREAKER
 
-VERDICT: SURVIVED* (SHIP)
-PASSES: 11/20 (applicable set)
+VERDICT: SURVIVED*
+PASSES: 7/20 (DIFF)
 CRITICAL: 0
 HIGH: 0
-CONFIRMED: 3 (2 LOW, 1 INFO)
-UNVERIFIED: 0
+CONFIRMED: 2
+UNVERIFIED: 3
 FIRST BREAK: NONE
 ```
 
 ## Release note
 
-Demonstrated: the deterministic checks pass; the chain walk terminates on every input shape tried; every lead resolves and every chain reaches Vanessa today; HALT is unchanged; hand-written agents are not shadowed; generated files match the generator. Not demonstrated: the Mac installer's link behaviour, or how a model weighs the added prompt text.
+This audit showed, using stubs on Linux bash, that the new section is safe in dry-run, writes ~/.zprofile idempotently without corrupting it, and only clones the two named repos into `$GP`. It did not run the script on macOS or bash 3.2, did not install promptfoo or ghidra, and did not confirm that the ghidra cask brings Java.

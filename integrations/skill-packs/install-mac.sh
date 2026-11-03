@@ -197,14 +197,19 @@ echo; echo "== Steven, 2026-11-03: langchain, transformers, open-webui, promptfo
 echo "- Already yours: spec-kit (installed above, held at 7370e59), OpenMontage (integrations/openmontage), OpenScreen skill (installed above)."
 echo "  The OpenScreen desktop app is installed by that skill after you agree to it; macOS then asks for Screen Recording + Accessibility."
 echo "- promptfoo (promptfoo/promptfoo, MIT, reviewed 06778a3, v0.125.1): test and compare prompts/agents before you trust them (Derek / code-validator use)."
+pf_privacy() { # active (uncommented) export lines only, once each; adds a newline first if the file lacks one
+  local v; for v in PROMPTFOO_DISABLE_TELEMETRY PROMPTFOO_DISABLE_UPDATE; do
+    grep -Eq "^[[:space:]]*export[[:space:]]+$v=1([[:space:]]|$)" "$HOME/.zprofile" 2>/dev/null && continue
+    [ -s "$HOME/.zprofile" ] && [ "$(tail -c 1 "$HOME/.zprofile")" != "" ] && printf '\n' >> "$HOME/.zprofile"
+    printf 'export %s=1\n' "$v" >> "$HOME/.zprofile"
+  done
+}
 if have npm; then
-  if have promptfoo; then echo "  already installed"
-  elif ask "npm install -g promptfoo@0.125.1 (telemetry and update checks switched off in ~/.zprofile)?"; then
-    if npm install -g promptfoo@0.125.1; then
-      for v in PROMPTFOO_DISABLE_TELEMETRY PROMPTFOO_DISABLE_UPDATE; do
-        grep -q "$v" "$HOME/.zprofile" 2>/dev/null || { [ -s "$HOME/.zprofile" ] && [ "$(tail -c 1 "$HOME/.zprofile")" != "" ] && printf '\n' >> "$HOME/.zprofile"; printf 'export %s=1\n' "$v" >> "$HOME/.zprofile"; }
-      done
-      echo "  done: promptfoo. Open a new Terminal window so the privacy settings load."
+  if have promptfoo; then echo "  already installed ($(promptfoo --version 2>/dev/null | head -n 1)); reviewed version is 0.125.1"
+    if ask "Make sure its telemetry and update checks are switched off in ~/.zprofile?"; then pf_privacy && echo "  privacy settings in place (open a new Terminal window)"; fi
+  elif ask "npm install -g promptfoo@0.125.1 (needs Node 22.22 or newer; telemetry and update checks switched off in ~/.zprofile)?"; then
+    echo "  your Node is $(node -v 2>/dev/null || echo missing); promptfoo 0.125.1 wants v22.22.0 or newer"
+    if npm install -g promptfoo@0.125.1; then pf_privacy; echo "  done: promptfoo. Open a new Terminal window so the privacy settings load."
     else echo "  promptfoo install failed - nothing written to ~/.zprofile"; fi
   fi
 else echo "  npm not found - brew install node first"; fi
