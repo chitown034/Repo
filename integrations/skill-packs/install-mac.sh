@@ -213,12 +213,33 @@ if have npm; then
     else echo "  promptfoo install failed - nothing written to ~/.zprofile"; fi
   fi
 else echo "  npm not found - brew install node first"; fi
-echo "- Ghidra (NationalSecurityAgency/ghidra, Apache-2.0, reviewed 251f3603): the NSA's reverse-engineering suite. Only for software you own or may analyse"
-echo "  (Elena + Alexandra gate it; see .claude/skills/reverse-engineering/SKILL.md). Needs Java; the Homebrew cask brings it."
-if have brew; then
-  if brew list --cask ghidra >/dev/null 2>&1; then echo "  already installed"
-  elif ask "brew install --cask ghidra ?"; then brew install --cask ghidra && echo "  done: run 'ghidraRun' (first launch: macOS may ask you to allow it in Privacy & Security)"; fi
-else echo "  Homebrew not found - install it from https://brew.sh first"; fi
+echo "- Ghidra (NationalSecurityAgency/ghidra, Apache-2.0, source reviewed at 251f3603; the install below is the release/brew build, not that commit): the NSA's reverse-engineering suite. Only for software you own or may analyse"
+echo "  (Elena + Alexandra gate it; see .claude/skills/reverse-engineering/SKILL.md). Needs Java (JDK 21+)."
+echo "  Homebrew's Ghidra CASK is gone (2026-11-02: 'No Cask with this name exists'); Ghidra is now the FORMULA 'ghidra' (pulls openjdk itself)."
+GH_VER="12.2"; GH_TAG="Ghidra_12.2_build"; GH_DIR="$HOME/Applications/ghidra"
+# SHA-256 printed in the GitHub release notes for $GH_TAG (tag commit 8ca9077). NOT yet matched against the real zip: if it differs the script stops and prints the manual line.
+# It guards against a corrupt download only. The zip name carries a build date, so the URL is looked up at run time; the hash is pinned here.
+GH_SHA="2c2cd776db3c1f6a097ba418922378ac3649cadd5e844a6f5f088ae628a7be67"
+ghidra_zip() { # download the pinned release zip, verify SHA-256, unzip into $GH_DIR - no sudo
+  have curl && have unzip && have shasum || { echo "  curl/unzip/shasum missing"; return 1; }
+  local tmp url got; tmp="$(mktemp -d)" || return 1
+  url="$(curl -fsSL "https://api.github.com/repos/NationalSecurityAgency/ghidra/releases/tags/$GH_TAG" 2>/dev/null \
+    | grep -o '"browser_download_url": *"[^"]*ghidra_[^"]*_PUBLIC_[^"]*\.zip"' | head -n 1 | sed 's/.*"\(https[^"]*\)"$/\1/')"
+  case "$url" in https://github.com/NationalSecurityAgency/ghidra/releases/download/"$GH_TAG"/*.zip) ;; *) echo "  could not find the $GH_TAG zip"; rm -rf "$tmp"; return 1 ;; esac
+  curl -fsSL -o "$tmp/g.zip" "$url" || { echo "  download failed"; rm -rf "$tmp"; return 1; }
+  got="$(shasum -a 256 "$tmp/g.zip" | cut -d' ' -f1)"
+  [ "$got" = "$GH_SHA" ] || { echo "  SHA-256 mismatch (got $got, expected $GH_SHA) - NOT unzipped"; rm -rf "$tmp"; return 1; }
+  mkdir -p "$GH_DIR" && unzip -q "$tmp/g.zip" -d "$tmp/x" && rm -rf "$GH_DIR/ghidra_${GH_VER}_PUBLIC" && mv "$tmp/x/ghidra_${GH_VER}_PUBLIC" "$GH_DIR/" || { rm -rf "$tmp"; echo "  unzip/move failed"; return 1; }
+  rm -rf "$tmp"; have java || echo "  note: no Java found - 'brew install openjdk@21' before first launch"
+  echo "  done: $GH_DIR/ghidra_${GH_VER}_PUBLIC/ghidraRun (first launch: macOS may ask you to allow it in Privacy & Security)"
+}
+GH_HAND="  install by hand: brew install ghidra   (or download ghidra_${GH_VER}_PUBLIC_*.zip from github.com/NationalSecurityAgency/ghidra/releases, check SHA-256 $GH_SHA, unzip into ~/Applications/ghidra)"
+if [ -f "$GH_DIR/ghidra_${GH_VER}_PUBLIC/ghidraRun" ] || { have brew && brew list --formula ghidra >/dev/null 2>&1; }; then echo "  already installed"
+elif ask "Install Ghidra (current brew formula, else the ${GH_VER} release zip with SHA-256 check into ~/Applications/ghidra)?"; then
+  if have brew && brew install ghidra; then echo "  done: run 'ghidraRun' (first launch: macOS may ask you to allow it in Privacy & Security)"
+  elif ghidra_zip; then :
+  else echo "$GH_HAND"; fi
+fi
 echo "- LangChain (MIT) and Transformers (Apache-2.0) are Python LIBRARIES, not apps: they go inside a project's own virtual environment"
 echo "  (python3 -m venv .venv && . .venv/bin/activate && pip install langchain  /  pip install transformers torch). Nothing global to install;"
 echo "  Transformers pulls several GB (torch). Tell Claude which project needs them and it adds them there."
