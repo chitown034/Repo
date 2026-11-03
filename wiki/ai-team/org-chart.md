@@ -1,12 +1,13 @@
 # AI Team org chart
 
-The full seat map behind Vanessa: Steven at the top, then Steve (digital twin) / Vanessa (Chief of Staff) / the human ISA, then eight executives each with their own named reports and ruflo benches, then the mentor seats on call through Vanessa.
+The full seat map behind Vanessa: Steven at the top, then Steve (digital twin) / Vanessa (Chief of Staff) / the human ISA / Claude Duet (executive assistant), then eight executives each with their own named reports and ruflo benches, then the mentor seats on call through Vanessa.
 
 ## The shape
 
 ```
 Steven (Principal)
 ├─ Steve — digital twin, Tier-1 work
+├─ Claude Duet — Steven's executive assistant (Claude), top row beside Steve, Vanessa and the ISA/EA; hands team-sized work to Vanessa's queue (added 2026-11-03)
 ├─ Vanessa — Chief of Staff / COO / orchestrator, council chair — the 80/20 rule (Steven, 2026-10-20):
 │   │   AI, automations, Steve, Vanessa and the ISA/EA handle 80%; Steven personally does only the 20% on the HALT list
 │   ├─ Daily Chief-of-Staff cycle — cloud routine, weekdays 6:25 AM PT: backlog → Automation / AI team / ISA-EA /
