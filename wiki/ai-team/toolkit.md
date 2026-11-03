@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
+toolkit: 48 skills · 7 Claude mods (plugins) · 53 connectors (3 ok, 50 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -29,7 +29,8 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need at
 - `Zoho CRM` — *attention*: self-client keys prompt in the paste; API 403 until the profile tick
 - `TidyCal` — *attention*: token prompt in the paste + read-only proof call
 - `Arive` — *attention*: credentials prompt in the paste; no call yet
-- `Kapso WhatsApp (Vanessa (202) 474-5223)` — *attention*: plugin + MCP + keys scripted; whatsappKapso deck doc stale since 10-22: the Mac tasks are not registered
+- `Mac runner` — *attention*: synced 2026-11-03 05:08 UTC, logged in; most tasks ok. Last-run refused/error: brain-weekly-verify, health-coaching-weekly, mortgage-desk-weekly, ops-knowledge-graph (error), r14-content-pipeline, ste
+- `Kapso WhatsApp` — *pending*: number connected; deck doc last synced 2026-10-31 23:55 UTC; Mac sign-in and Keychain keys pending; vanessa-whatsapp-inbox task disabled
 - `Jarvis = Vanessa` — *attention*: scripted (engine, recorded voice, persona, brain in memory) in fix-mine 3b + connect-all 6a/6b
 - `Jarvis knows the Second Brain` — *attention*: ready — the same script indexes the brain's pages (no client pages, no meeting digests, no findings) into Jarvis memory; the 6D layers row shows "speaks as Vanessa" + the page count once run
 - `WhatsApp (Kapso)` — *pending*: number …5223 assigned; nothing reads it — runner tasks kapso-inbox-sync / vanessa-whatsapp-inbox not registered; Kapso MCP sign-in pending; keys in the Keychain (connect report #3)
@@ -191,6 +192,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need at
 - `Lofty` — *attention*: two paths on Mac 1 (2026-10-23 13:05 PT): the old local bridge is the MCP named lofty (stdio, ~/Applications/lofty-bridge/mcp-server.js, connected — the runner tasks use its mcp__lofty__* tools; it re
 - `ShowingTime · Showami · homes.com` — *attention*: read-only CLI-Anything wrappers scripted (connect-all 7d)
 - `CLI-Anything` — *attention*: harnesses for homes.com / ShowingTime / Showami / Lofty installed by the paste
+- `claude.ai connectors in this session` — *attention*: Gmail, Calendar, Drive, Docs, Sheets, Slides, Notion, Slack, Zoho CRM, Fieldy, TidyCal, Strava, Composio, Inkbox present in the tool list; ListConnectors not callable from this routine, so per-connect
 
 **MCP servers**
 - `kapso` — *attention*: WhatsApp Business Cloud API read/answer (sandbox number first) · registered — needs Steven's sign-in (/mcp → kapso)
@@ -279,7 +281,6 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need at
 - `Ticor Title property search` — *attention*: no API (integrations/ticor/README.md); county records already feed the deck
 - `OpenFlowKit MCP + skill · pr-lens skill · archify skill (the four repos, 2026-10-23)` — *pending*: installed in the repo (skills) / pending on the Macs (MCP by connect-all 6g, archify by install-mac.sh); integrations/skill-packs/REGISTRY-2026-10-23.md
 - `AI-search presence (AEO/GEO/SEO)` — *attention*: planned — playbook written (wiki/real-estate-playbooks/ai-search-visibility.md); monthly presence audit task live (1st, 7:10 AM PT)
-- `Mac runner · message tasks all day` — *attention*: restart + hours widening scripted (fix-mine 4)
 - `AnyDesk (Mac 1)` — *attention*: installed; ID 1514099895; Screen Recording + Accessibility + unattended password are Steven's
 - `Pabbly ↔ Kapso webhooks, six workflows` — *attention*: Kapso login proven; webhook URLs and the six workflows are clicks at connect.pabbly.com
 - `Laya routes, Orca launches the AI team` — *attention*: installed on Mac 1 (connect report #3); connect-orca-laya.sh --apply + agent-os/install-mac.sh --apply re-run by the paste; brain os check is the proof

@@ -648,3 +648,13 @@ live truth once Steven has run it.
 
 | Weekly layers sync, 2026-11-02 | 13/13 SB Google Docs rewritten (02 via chunked fallback), Notion layer directory updated; `bin/brain layers`: even no, Command Deck DB stale (stamp 2026-10-22, 11 days vs 1-day cadence) | Mac deck writers: `bash setup.sh` (runner restart), then check the deck snapshot task | Steven (paste) |
 | Layers fix, 2026-11-02 | The Command Deck DB "stale" reading was a stamp bug: it read only the status notes in projects/command-deck.md. `brain/layers.py` now also reads the daily Big-moves date and `brain/deck-sync.json`; `bin/brain layers`: even yes | none | cloud (done) |
+
+## Connection status — daily rebuild, 2026-11-03 11:35 UTC (6D Brain routine, 7-day re-check)
+
+Read from the Command Deck documents (runnerStatus, whatsappKapso); claude.ai connectors seen in the session's tool list. No keys, no numbers.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Mac runner | synced 2026-11-03 05:08 UTC, logged in; most tasks ok. Last-run `refused`/`error`: brain-weekly-verify, health-coaching-weekly, mortgage-desk-weekly, ops-knowledge-graph (error), r14-content-pipeline, steve-twin-sweep, vanessa-ops-review, vanessa-sweep, weekly-self-update. Disabled: r8-apple-health-snapshot, r9-feed-freshness-sweep, strava-daily-sync, vanessa-whatsapp-inbox | none from the cloud; look at the refused tasks on the Mac | Steven |
+| Kapso WhatsApp | number connected; deck doc last synced 2026-10-31 23:55 UTC; Mac sign-in and Keychain keys pending; `vanessa-whatsapp-inbox` task disabled | `bash setup.sh`, then `claude` → `/mcp` → kapso | Steven |
+| claude.ai connectors in this session | Gmail, Calendar, Drive, Docs, Sheets, Slides, Notion, Slack, Zoho CRM, Fieldy, TidyCal, Strava, Composio, Inkbox present in the tool list; ListConnectors not callable from this routine, so per-connector auth was not re-tested | none | cloud |
