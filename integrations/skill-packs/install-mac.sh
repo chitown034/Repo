@@ -192,3 +192,41 @@ if have npx; then
       echo "  done. Start: cd ~/Projects/career-ops && claude  (it walks you through your CV and target roles by chatting)"
   fi
 else echo "  npx not found - brew install node first"; fi
+
+echo; echo "== Steven, 2026-11-03: langchain, transformers, open-webui, promptfoo, new-api, spec-kit, OpenMontage, ghidra, ecommerce-intelligence-apis, openscreen (10 links, read first)"
+echo "- Already yours: spec-kit (installed above, held at 7370e59), OpenMontage (integrations/openmontage), OpenScreen skill (installed above)."
+echo "  The OpenScreen desktop app is installed by that skill after you agree to it; macOS then asks for Screen Recording + Accessibility."
+echo "- promptfoo (promptfoo/promptfoo, MIT, reviewed 06778a3, v0.125.1): test and compare prompts/agents before you trust them (Derek / code-validator use)."
+if have npm; then
+  if have promptfoo; then echo "  already installed"
+  elif ask "npm install -g promptfoo@0.125.1 (telemetry and update checks switched off in ~/.zprofile)?"; then
+    if npm install -g promptfoo@0.125.1; then
+      for v in PROMPTFOO_DISABLE_TELEMETRY PROMPTFOO_DISABLE_UPDATE; do
+        grep -q "$v" "$HOME/.zprofile" 2>/dev/null || { [ -s "$HOME/.zprofile" ] && [ "$(tail -c 1 "$HOME/.zprofile")" != "" ] && printf '\n' >> "$HOME/.zprofile"; printf 'export %s=1\n' "$v" >> "$HOME/.zprofile"; }
+      done
+      echo "  done: promptfoo. Open a new Terminal window so the privacy settings load."
+    else echo "  promptfoo install failed - nothing written to ~/.zprofile"; fi
+  fi
+else echo "  npm not found - brew install node first"; fi
+echo "- Ghidra (NationalSecurityAgency/ghidra, Apache-2.0, reviewed 251f3603): the NSA's reverse-engineering suite. Only for software you own or may analyse"
+echo "  (Elena + Alexandra gate it; see .claude/skills/reverse-engineering/SKILL.md). Needs Java; the Homebrew cask brings it."
+if have brew; then
+  if brew list --cask ghidra >/dev/null 2>&1; then echo "  already installed"
+  elif ask "brew install --cask ghidra ?"; then brew install --cask ghidra && echo "  done: run 'ghidraRun' (first launch: macOS may ask you to allow it in Privacy & Security)"; fi
+else echo "  Homebrew not found - install it from https://brew.sh first"; fi
+echo "- LangChain (MIT) and Transformers (Apache-2.0) are Python LIBRARIES, not apps: they go inside a project's own virtual environment"
+echo "  (python3 -m venv .venv && . .venv/bin/activate && pip install langchain  /  pip install transformers torch). Nothing global to install;"
+echo "  Transformers pulls several GB (torch). Tell Claude which project needs them and it adds them there."
+echo "- Open WebUI (open-webui/open-webui, 'Open WebUI License' = BSD-3 + a branding clause): a self-hosted chat window for local models (Ollama) or API keys."
+echo "  Held for your yes: needs a model behind it (Ollama or a key) and a few GB; it is downloaded below (not run). To start it later: see its README 'Installation'."
+echo "- new-api (QuantumNous/new-api, AGPL-3.0): a gateway that HOLDS all your upstream API keys and hands out its own. Held for your yes + Elena (it is a key vault"
+echo "  and a relay); downloaded below, never run here."
+echo "- cporter202/ecommerce-intelligence-apis (MIT): another link list of paid scrapers (products/prices/reviews). Off-lane for a broker: not installed, not downloaded."
+GP="$HOME/Projects/github-picks"
+if have git && ask "Download open-webui and new-api into $GP (shallow copies, hooks off, LFS off, nothing runs)?"; then
+  mkdir -p "$GP"
+  for r in open-webui/open-webui QuantumNous/new-api; do d="$GP/$(basename "$r")"
+    if [ -d "$d" ]; then echo "  have $(basename "$r")"; else
+      GIT_LFS_SKIP_SMUDGE=1 git -c core.hooksPath=/dev/null clone -q --depth 1 "https://github.com/$r.git" "$d" 2>/dev/null && echo "  got $r" || echo "  could not get $r (moved or private)"; fi
+  done
+fi
