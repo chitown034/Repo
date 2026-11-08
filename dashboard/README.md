@@ -4,7 +4,11 @@ Single-file dashboard (`index.html`) for running a veteran-owned HoldCo and its 
 Military Family Office, AI company, real estate, mortgage broker/MLO, foundation, nonprofit,
 research grants, gov contracts & grants, buy-a-business, and the acquisition HoldCo.
 
-Tabs: Overview, Ventures (KPIs + 4-phase execution checklists per venture), Funding, Acquisitions
+Tabs: Overview (with a Needs Attention alerts panel), Scorecard (13-week weekly measures with
+goal coloring and trend lines), CEO Desk (time allocation, decision log, key relationships),
+Legal & Risk (risk register, insurance matrix, legal docs, data security), Wealth & Exit (net worth,
+venture valuations, exit options, veteran benefits, tax and estate checklists), Marketing (brand,
+channels, ad rules, funnel and content calendar), Ventures (KPIs + 4-phase execution checklists per venture), Funding, Acquisitions
 (deal board, SBA 7(a) + seller-note calculator, buy box, due diligence), Grants, Veteran GovCon
 (VetCert, VR&E, Boots to Business, VBOC, bid tracker), SME Operator (Integrator scorecard, hiring,
 30-60-90), Automation, New Ventures (idea scoring), Roadmap (36-month plan, quarterly rocks, venture synergies),

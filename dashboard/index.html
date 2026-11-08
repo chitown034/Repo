@@ -148,6 +148,13 @@ svg .barfill{fill:var(--accent)} svg .bartrack{fill:var(--surface-2)} svg .barva
 .orgnode{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:1px solid var(--line);border-radius:4px;background:var(--surface-2);font-size:.85rem}
 .orgnode span{color:var(--muted);font-size:.8rem}
 .orgnode.lead{border-left:3px solid var(--accent);background:var(--surface)}
+table.edit input.wk{min-width:56px;width:62px;padding:5px 4px}
+table.sc td.sc-good{background:var(--good-soft)} table.sc td.sc-bad{background:var(--bad-soft)}
+table.sc td.sc-good input{color:var(--good);font-weight:600} table.sc td.sc-bad input{color:var(--bad);font-weight:600}
+svg .spark{fill:none;stroke:var(--accent);stroke-width:1.6} svg .goal{stroke:var(--muted);stroke-dasharray:3 3;stroke-width:1} svg .sparkdot{fill:var(--accent)}
+.alerts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:8px}
+.alert{display:flex;gap:10px;align-items:center;padding:9px 12px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:4px;font-size:.86rem;min-width:0}
+.alert.bad{border-left-color:var(--bad)} .alert span:last-child{min-width:0;overflow-wrap:anywhere}
 .back{font-family:var(--f-mono);font-size:.78rem;text-decoration:none}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 @media (max-width:560px){.stat{border-right:0;border-bottom:1px solid var(--line)} h2{font-size:1.6rem}}
@@ -423,6 +430,7 @@ function defaults(){return{
   {ex:true,idea:"AI proposal writer for small GovCon firms",market:4,fit:5,capital:4,speed:3,vet:5},
   {ex:true,idea:"PCS mid-term rental management",market:3,fit:5,capital:4,speed:4,vet:4}],
  ...EXTRA_DEFAULTS(),
+ ...EXTRA_DEFAULTS2(),
  calc:{price:1800000,sde:520000,down:10,seller:10,rate:10.5,years:10,srate:6,syears:7,mgr:90000,closing:3}
 };}
 function load(){try{const r=localStorage.getItem(LS);if(r){return Object.assign(defaults(),JSON.parse(r));}}catch(e){}return defaults();}
@@ -1069,6 +1077,245 @@ document.addEventListener("input",e=>{const t=e.target;if(!t.dataset||!t.dataset
 document.addEventListener("click",e=>{const b=e.target.closest("#loadSops");if(!b)return;let n=0;VENTURES.forEach(v=>DETAIL[v.id].sops.forEach(sop=>{if(!S.sops.some(x=>x.sop===sop&&x.venture===v.name)){S.sops.push({sop,venture:v.name,owner:"",status:"Not started",reviewed:""});n++;}}));save();const y=window.scrollY;route();window.scrollTo(0,y);toast(n?`Added ${n} SOPs`:"All venture SOPs are already listed");});
 /* make sure saved data from an older version gets the new keys */
 (function(){const x=EXTRA_DEFAULTS();for(const k in x){if(S[k]==null)S[k]=x[k];}for(const c in x.calcs){if(!S.calcs[c])S.calcs[c]=x.calcs[c];}})();
+
+/* =========================================================
+   ROUND 3: SCORECARD, CEO, MARKETING, LEGAL & RISK, WEALTH & EXIT
+   ========================================================= */
+function mondays(n){const d=new Date();d.setHours(0,0,0,0);const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);const out=[];for(let i=n-1;i>=0;i--){const x=new Date(d);x.setDate(d.getDate()-7*i);out.push(x.toISOString().slice(0,10));}return out;}
+function EXTRA_DEFAULTS2(){
+ const wk=mondays(13);const seed=(base,spread,k)=>{const o={};wk.slice(0,12).forEach((w,i)=>{o[w]=Math.max(0,Math.round(base+spread*Math.sin(i*1.3+k)+i*spread*0.08));});return o;};
+ return{
+ score:[
+  {ex:true,measure:"New leads (all ventures)",venture:"All",owner:"Integrator",goal:25,dir:">=",w:seed(22,6,1)},
+  {ex:true,measure:"Loans closed",venture:"Mortgage Broker / MLO",owner:"Founder",goal:2,dir:">=",w:seed(1.6,1,2)},
+  {ex:true,measure:"Bids / Sources Sought responses",venture:"Gov Contracts & Grants",owner:"Capture mgr",goal:1,dir:">=",w:seed(1,1,3)},
+  {ex:true,measure:"Acquisition deals reviewed",venture:"Buy a Business",owner:"Founder",goal:10,dir:">=",w:seed(8,4,4)},
+  {ex:true,measure:"AI pilot / demo meetings",venture:"AI Company",owner:"Founder",goal:3,dir:">=",w:seed(2.5,1.5,5)},
+  {ex:true,measure:"Client meetings",venture:"Military Family Office",owner:"Advisor",goal:4,dir:">=",w:seed(3.5,1.5,6)},
+  {ex:true,measure:"Cash on hand, all entities ($k)",venture:"HoldCo",owner:"Fractional CFO",goal:100,dir:">=",w:seed(95,10,7)},
+  {ex:true,measure:"Overdue receivables ($k)",venture:"HoldCo",owner:"Bookkeeper",goal:10,dir:"<=",w:seed(9,5,8)},
+  {ex:true,measure:"Content pieces published",venture:"All",owner:"Marketing",goal:3,dir:">=",w:seed(2.5,1.5,9)}],
+ time:[
+  {ex:true,venture:"Buy a Business",plan:8,actual:5},{ex:true,venture:"Mortgage Broker / MLO",plan:12,actual:16},{ex:true,venture:"Gov Contracts & Grants",plan:8,actual:6},
+  {ex:true,venture:"AI Company",plan:8,actual:9},{ex:true,venture:"HoldCo",plan:6,actual:10},{ex:true,venture:"Real Estate",plan:3,actual:4}],
+ decisions:[
+  {ex:true,date:today(-6),venture:"HoldCo",decision:"Hire a fractional Integrator before a full-time one",why:"Test the role for 90 days at lower cost",revisit:today(84)},
+  {ex:true,date:today(-2),venture:"Mortgage Broker / MLO",decision:"Join a sponsoring brokerage for year 1",why:"Faster start; own entity once volume justifies licensing costs",revisit:today(180)}],
+ contacts:[
+  {ex:true,name:"SBA Preferred Lender — BDO",org:"Community bank",role:"Lender",venture:"Buy a Business",last:today(-20),next:today(10)},
+  {ex:true,name:"Local APEX Accelerator counselor",org:"APEX Accelerator",role:"Advisor",venture:"Gov Contracts & Grants",last:today(-35),next:today(-5)},
+  {ex:true,name:"Prime contractor SBLO",org:"Large prime",role:"Prime contractor",venture:"Gov Contracts & Grants",last:"",next:today(7)},
+  {ex:true,name:"Business broker (county)",org:"Brokerage",role:"Broker",venture:"Buy a Business",last:today(-12),next:today(18)},
+  {ex:true,name:"CPA (multi-entity)",org:"CPA firm",role:"CPA",venture:"HoldCo",last:today(-50),next:today(3)}],
+ content:[
+  {ex:true,date:today(2),channel:"LinkedIn",topic:"VetCert moved to SBA: what changed",venture:"Gov Contracts & Grants",status:"Drafted"},
+  {ex:true,date:today(5),channel:"YouTube",topic:"VA loan house hack walkthrough",venture:"Mortgage Broker / MLO",status:"Idea"},
+  {ex:true,date:today(9),channel:"Newsletter",topic:"BRS vs. legacy retirement: what to check before you separate",venture:"Military Family Office",status:"Idea"}],
+ funnel:[
+  {ex:true,venture:"Mortgage Broker / MLO",month:"This month",leads:60,qualified:22,proposals:12,won:6},
+  {ex:true,venture:"Military Family Office",month:"This month",leads:25,qualified:12,proposals:6,won:3},
+  {ex:true,venture:"AI Company",month:"This month",leads:40,qualified:10,proposals:4,won:1},
+  {ex:true,venture:"Gov Contracts & Grants",month:"This month",leads:30,qualified:8,proposals:3,won:1}],
+ risks:[
+  {ex:true,risk:"Founder burnout across 10 ventures",venture:"HoldCo",like:4,impact:5,owner:"Founder",mitigation:"Integrator, time caps per venture, launch order"},
+  {ex:true,risk:"Ownership structure breaks VetCert eligibility",venture:"Gov Contracts & Grants",like:3,impact:5,owner:"Attorney",mitigation:"Direct 51%+ veteran ownership; counsel review"},
+  {ex:true,risk:"Data breach of borrower or client files",venture:"Mortgage Broker / MLO",like:3,impact:4,owner:"Integrator",mitigation:"GLBA Safeguards program, MFA, encrypted storage"},
+  {ex:true,risk:"Interest rate spike reduces loan volume",venture:"Mortgage Broker / MLO",like:3,impact:3,owner:"Founder",mitigation:"Purchase-focused pipeline, realtor partners"},
+  {ex:true,risk:"Overpaying for first acquisition",venture:"Buy a Business",like:2,impact:5,owner:"Founder",mitigation:"QoE, disciplined multiple, seller note"}],
+ networth:[
+  {ex:true,item:"Primary residence (house hack)",type:"Asset",cat:"Real estate",value:410000},
+  {ex:true,item:"Rental property",type:"Asset",cat:"Real estate",value:285000},
+  {ex:true,item:"TSP",type:"Asset",cat:"Retirement",value:120000},
+  {ex:true,item:"Cash (personal)",type:"Asset",cat:"Cash",value:35000},
+  {ex:true,item:"Mortgages",type:"Liability",cat:"Debt",value:607000}],
+ vals:[
+  {ex:true,venture:"Real Estate",metric:"Equity",amount:88000,mult:1},
+  {ex:true,venture:"Mortgage Broker / MLO",metric:"SDE",amount:60000,mult:1.5},
+  {ex:true,venture:"AI Company",metric:"ARR",amount:18000,mult:4},
+  {ex:true,venture:"Military Family Office",metric:"Recurring revenue",amount:14400,mult:2}]
+};}
+
+/* ---------- Scorecard ---------- */
+function scClass(r,v){if(v===""||v==null)return "";const g=+r.goal;return (r.dir==="<="?+v<=g:+v>=g)?"sc-good":"sc-bad";}
+function spark(r,wks){const vals=wks.map(w=>r.w&&r.w[w]!=null&&r.w[w]!==""?+r.w[w]:null);const nums=vals.filter(v=>v!=null);if(!nums.length)return `<span class="muted small">—</span>`;
+ const W=96,H=26,max=Math.max(+r.goal||0,...nums),min=Math.min(+r.goal||0,...nums),rng=max-min||1;const x=i=>2+i*(W-4)/(wks.length-1),y=v=>H-3-(v-min)/rng*(H-6);
+ const pts=vals.map((v,i)=>v==null?null:`${x(i).toFixed(1)},${y(v).toFixed(1)}`).filter(Boolean).join(" ");const li=vals.map((v,i)=>v==null?-1:i).filter(i=>i>=0).pop();
+ return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true"><line class="goal" x1="2" x2="${W-2}" y1="${y(+r.goal||0)}" y2="${y(+r.goal||0)}"/><polyline class="spark" points="${pts}"/><circle class="sparkdot" cx="${x(li)}" cy="${y(vals[li])}" r="2.5"/></svg>`;}
+function scoreRow(r,i,wks){return `<tr data-scrow="${i}">
+ <td class="wide"><div style="display:flex;align-items:center">${r.ex?'<span class="ex">EX</span>':""}<input id="score-${i}-measure" data-bind="score:${i}:measure" value="${h(r.measure)}" aria-label="Measure"></div></td>
+ <td><input id="score-${i}-owner" data-bind="score:${i}:owner" value="${h(r.owner)}" aria-label="Owner"></td>
+ <td><select id="score-${i}-dir" data-bind="score:${i}:dir" aria-label="Direction"><option ${r.dir===">="?"selected":""}>&gt;=</option><option ${r.dir==="<="?"selected":""}>&lt;=</option></select></td>
+ <td><input type="number" id="score-${i}-goal" data-bind="score:${i}:goal" value="${h(r.goal)}" aria-label="Goal"></td>
+ ${wks.map(w=>{const v=r.w&&r.w[w]!=null?r.w[w]:"";return `<td class="${scClass(r,v)}"><input class="wk" type="number" id="sc-${i}-${w}" data-sc="${i}|${w}" value="${h(v)}" aria-label="Week of ${w}"></td>`;}).join("")}
+ <td data-spark="${i}">${spark(r,wks)}</td>
+ <td><button class="del" data-del="score:${i}">Delete</button></td></tr>`;}
+VIEWS.scorecard=()=>{const wks=mondays(13);const last=wks[wks.length-2];const R=S.score;
+ const hit=R.filter(r=>r.w&&r.w[last]!=null&&r.w[last]!==""&&scClass(r,r.w[last])==="sc-good").length;const rep=R.filter(r=>r.w&&r.w[last]!=null&&r.w[last]!=="").length;
+ return `<div class="sec"><div class="eyebrow">13-week view</div><h2>Weekly scorecard</h2><p class="lede">5–15 numbers that tell you, in five minutes, whether the portfolio is on track. Enter each week's number on Monday. Green meets the goal, red misses it. Review it first in the weekly meeting.</p></div>
+ ${sumStrip([["Measures",R.length],["Hit goal last week",`${hit} / ${rep||0}`],["Week of",last]])}
+ <div class="tbl-wrap"><table class="edit sc"><thead><tr><th>Measure</th><th>Owner</th><th>Rule</th><th class="r">Goal</th>${wks.map(w=>`<th class="r">${w.slice(5).replace("-","/")}</th>`).join("")}<th>Trend</th><th></th></tr></thead><tbody>${R.map((r,i)=>scoreRow(r,i,wks)).join("")}</tbody></table></div>
+ <div class="btn-row"><button class="btn" id="addScore">+ Add measure</button>${R.some(r=>r.ex)?`<button class="btn ghost" data-clearex="score">Remove example rows</button>`:""}</div>
+ <div class="cols">
+  <div class="panel sec"><h3>Good measures</h3>${ul(["Leading activity you control (calls, bids, deals reviewed), not only results","One owner per measure","A clear weekly goal and direction","Pulled from a system automatically where possible","Red two weeks in a row becomes an issue in the weekly meeting"])}</div>
+  <div class="panel sec"><h3>Suggested measures by venture</h3>${staticTable(["Venture","Measure"],[["Mortgage","Applications, locks, loans funded, realtor meetings"],["Family Office","Discovery meetings, plans delivered, new households"],["AI Company","Demos, pilots started, MRR, support tickets open"],["Real Estate","Properties analyzed, offers made, occupancy, rent collected %"],["GovCon","Opportunities qualified, Sources Sought answered, bids submitted"],["Acquisitions","Deals reviewed, owner conversations, LOIs"],["Nonprofit","Founders enrolled, mentor hours, dollars raised"],["Grants / Research","Topics screened, proposals in progress"],["HoldCo","Cash by entity, AR over 30 days, open hires"]],true)}</div>
+ </div>`;};
+
+/* ---------- CEO ---------- */
+VIEWS.ceo=()=>`
+ <div class="sec"><div class="eyebrow">Founder's cockpit</div><h2>CEO desk</h2><p class="lede">Where your hours go, the decisions you've made and why, and the relationships that move every venture forward.</p></div>
+ <div class="cols">
+  <div class="panel sec"><h3>Friday CEO review (45 min)</h3>${phaseList("ceofri",["Scan the scorecard: which measures are red two weeks running?","Check the 13-week cash forecast for every entity","Review rocks: anything off track needs a plan or a cut","Clear the decision queue the Integrator escalated","Touch 5 key relationships (lenders, brokers, primes, investors)","Review the deal and bid pipelines","Compare planned vs. actual hours by venture","Pick next week's top 3 founder priorities","Block deep-work time on the calendar"])}</div>
+  <div class="panel sec"><h3>Founder rules of engagement</h3>${ul(["Launch at most one new venture per 6 months","No new venture until the last one has an operator or is profitable","Founder time goes to capital, deals, relationships and hiring leaders","Every recurring task done twice gets an SOP or an automation","Kill or pause any venture that misses its 12-month gate","Protect two deep-work blocks a week for strategy and deals"])}</div>
+ </div>
+ <div class="sec"><h3>Time allocation (hours per week)</h3>
+ ${table("time",[{k:"venture",label:"Venture",type:"select",opts:VNAMES},{k:"plan",label:"Planned hrs",type:"num"},{k:"actual",label:"Actual hrs",type:"num"}],{extra:{label:"Over / under",fn:r=>{const d=(+r.actual||0)-(+r.plan||0);return (d>0?"+":"")+d+" h";}},sum:()=>{const T=S.time;const p=T.reduce((s,r)=>s+(+r.plan||0),0),a=T.reduce((s,r)=>s+(+r.actual||0),0);const top=T.slice().sort((x,y)=>(+y.actual||0)-(+x.actual||0))[0];return sumStrip([["Planned hrs / wk",p],["Actual hrs / wk",a],["Variance",(a-p>0?"+":"")+(a-p)+" h"],["Biggest time sink",top?top.venture:"—"]]);}})}</div>
+ <div class="sec"><h3>Decision log</h3><p class="small muted">Write down big decisions and when to revisit them. It stops re-arguing settled questions and shows the Integrator your reasoning.</p>
+ ${table("decisions",[{k:"date",label:"Date",type:"date"},{k:"venture",label:"Venture",type:"select",opts:VNAMES},{k:"decision",label:"Decision",wide:true},{k:"why",label:"Why",wide:true},{k:"revisit",label:"Revisit",type:"date"}])}</div>
+ <div class="sec"><h3>Key relationships</h3>
+ ${table("contacts",[{k:"name",label:"Name",wide:true},{k:"org",label:"Organization"},{k:"role",label:"Role",type:"select",opts:["Lender","Broker","Attorney","CPA","Prime contractor","Contracting officer / OSDBU","Investor","Mentor","Advisor","Realtor","Seller","Vendor","Board member","Donor"]},{k:"venture",label:"Venture",type:"select",opts:VNAMES},{k:"last",label:"Last touch",type:"date"},{k:"next",label:"Next touch",type:"date"}],{extra:{label:"Status",fn:r=>{const n=daysUntil(r.next);return n==null?"—":n<0?Math.abs(n)+"d overdue":n===0?"Today":"in "+n+"d";}},sum:()=>{const C=S.contacts;return sumStrip([["Contacts",C.length],["Overdue touches",C.filter(c=>{const n=daysUntil(c.next);return n!=null&&n<0;}).length],["Due this week",C.filter(c=>{const n=daysUntil(c.next);return n!=null&&n>=0&&n<=7;}).length]]);}})}</div>`;
+
+/* ---------- Marketing ---------- */
+VIEWS.marketing=()=>`
+ <div class="sec"><div class="eyebrow">Demand</div><h2>Marketing & sales</h2><p class="lede">One founder story, many offers. A veteran-owned family of companies builds trust once and uses it across every venture, within each industry's advertising rules.</p></div>
+ <div class="cols">
+  <div class="panel sec"><h3>Brand architecture</h3>${ul(["HoldCo brand: the veteran-owned family of companies; your story, values and track record","Venture brands: each business keeps its own name, site and licensing disclosures","Shared proof: one testimonial library and case-study bank, used within each industry's rules","Separate domains and email for regulated businesses (mortgage, advisory) to keep records clean"])}</div>
+  <div class="panel sec"><h3>Content pillars</h3>${ul(["Founder journey: veteran to serial entrepreneur, lessons and numbers","Education: VA loans, BRS and TSP, VetCert, buying a business","Behind the deal: anonymized walk-throughs of acquisitions and bids","Community: spotlight veteran founders from the nonprofit (no sales pitch)"])}</div>
+ </div>
+ <div class="sec"><h3>Channel plan by venture</h3>${staticTable(["Venture","Main channels","Lead magnet / offer","Watch"],[
+  ["Mortgage Broker / MLO","Realtor partners, past clients, YouTube VA-loan explainers, Google Business Profile","VA loan readiness checklist; free pre-approval review","Leads per realtor, application rate"],
+  ["Military Family Office","Workshops, LinkedIn, spouse networks, CPA/attorney referrals","Transition money checklist; BRS/TSP review","Discovery calls booked"],
+  ["Real Estate","Driving for dollars, wholesalers, agents, direct mail","Off-market seller offer; tenant-friendly listings with BAH-based rent","Offers per month"],
+  ["AI Company","Founder-led LinkedIn, demos, partner channels, GovCon events","Free workflow audit; 30-day pilot","Demos → pilots"],
+  ["Gov Contracts & Grants","Industry days, OSDBU events, prime supplier portals, capability statement emails","Capability statement; quick-turn subcontract support","Meetings → teaming agreements"],
+  ["Buy a Business","Broker relationships, owner letters, CPA and banker referrals","Confidential, veteran-run succession for the owner's team","Owner conversations"],
+  ["Nonprofit","Partner VSOs, base transition offices, corporate sponsors, events","Free founder cohort; mentor program","Applications, donor conversions"],
+  ["Foundation","Grantee referrals and VSO partnerships","Clear grant criteria page","Quality applications"]],true)}</div>
+ <div class="cols">
+  <div class="panel sec"><h3>Repurpose one piece of content</h3>${stepList(["Record one 10–15 minute video or podcast a week","AI tool transcribes and pulls 5 short clips","Turn the transcript into a newsletter and a LinkedIn post","Clip quotes into 3 graphics","Compliance review for mortgage and advisory content","Schedule everything for the week","Track leads by source in the funnel table below"])}</div>
+  <div class="panel sec"><h3>Advertising rules by industry</h3>${ul(["Mortgage: show the NMLS ID; use Equal Housing Opportunity language; Regulation Z 'trigger terms' require full disclosures; follow state ad rules","Advisory: SEC/state Marketing Rule covers testimonials, endorsements and performance claims","Real estate: Fair Housing rules on ad wording and targeting","Nonprofit: some states require solicitation disclosures","Government: federal employees generally can't accept gifts; keep event hospitality within ethics rules","All: CAN-SPAM for email and TCPA consent for texts and autodialed calls"])}</div>
+ </div>
+ <div class="sec"><h3>Sales funnel by venture</h3>
+ ${table("funnel",[{k:"venture",label:"Venture",type:"select",opts:VNAMES},{k:"month",label:"Period"},{k:"leads",label:"Leads",type:"num"},{k:"qualified",label:"Qualified",type:"num"},{k:"proposals",label:"Proposals",type:"num"},{k:"won",label:"Won",type:"num"}],{extra:{label:"Lead → won",fn:r=>(+r.leads?((+r.won||0)/(+r.leads)*100).toFixed(1)+"%":"—")}})}</div>
+ <div class="sec"><h3>Content calendar</h3>
+ ${table("content",[{k:"date",label:"Date",type:"date"},{k:"channel",label:"Channel",type:"select",opts:["LinkedIn","YouTube","Newsletter","Instagram","Facebook","X","Podcast","Blog","Event"]},{k:"topic",label:"Topic",wide:true},{k:"venture",label:"Venture",type:"select",opts:VNAMES},{k:"status",label:"Status",type:"select",opts:["Idea","Drafted","In review","Scheduled","Published"]}])}</div>`;
+
+/* ---------- Legal & Risk ---------- */
+VIEWS.legal=()=>`
+ <div class="sec"><div class="eyebrow">Protect the portfolio</div><h2>Legal & risk</h2><p class="lede">Insurance, core legal documents, data security and a risk register for every venture. General information only; confirm with your attorney and insurance broker.</p></div>
+ <div class="sec"><h3>Risk register</h3><p class="small muted">Score = likelihood × impact (1–5 each). 15+ needs a plan this quarter.</p>
+ ${table("risks",[{k:"risk",label:"Risk",wide:true},{k:"venture",label:"Venture",type:"select",opts:VNAMES},{k:"like",label:"Likelihood",type:"num"},{k:"impact",label:"Impact",type:"num"},{k:"owner",label:"Owner"},{k:"mitigation",label:"Mitigation",wide:true}],{extra:{label:"Score",fn:r=>(+r.like||0)*(+r.impact||0)},sum:()=>{const R=S.risks;const sc=r=>(+r.like||0)*(+r.impact||0);return sumStrip([["Risks",R.length],["High (15+)",R.filter(r=>sc(r)>=15).length],["Medium (8–14)",R.filter(r=>sc(r)>=8&&sc(r)<15).length],["Low",R.filter(r=>sc(r)<8).length]]);}})}</div>
+ <div class="sec"><h3>Insurance matrix</h3>${staticTable(["Coverage","What it covers","Ventures that usually need it"],[
+  ["General liability","Injury and property damage claims","All operating companies"],
+  ["Professional liability / E&O","Mistakes in advice or services","Family Office, Mortgage, AI, GovCon, Nonprofit"],
+  ["Cyber liability","Breach response, ransomware, notification costs","Mortgage, Family Office, AI, HoldCo"],
+  ["Directors & officers (D&O)","Claims against board and officers","Nonprofit, Foundation, AI (with investors)"],
+  ["Workers' compensation","Employee injuries (state-required)","Any entity with employees"],
+  ["Employment practices (EPLI)","Hiring, firing and harassment claims","Entities with staff"],
+  ["Landlord / commercial property","Building, loss of rents","Real Estate, acquired businesses"],
+  ["Umbrella","Extra limits above other policies","Founder, Real Estate, HoldCo"],
+  ["Crime / fidelity bond","Employee theft and fraud","Mortgage, Nonprofit, acquired businesses"],
+  ["License surety bond","Required for mortgage licenses in most states","Mortgage Broker / MLO"],
+  ["Performance and payment bonds","Required on many construction contracts","GovCon (construction), acquired trades businesses"],
+  ["Key person life and disability","Loss of the founder or key operator; SBA lenders may require life insurance","HoldCo, acquisitions"],
+  ["Commercial auto","Vehicles used for business","Acquired trades and service businesses"]],true)}</div>
+ <div class="cols">
+  <div class="panel sec"><h3>Entity & ownership documents</h3>${phaseList("lg1",["Articles of organization or incorporation for every entity","Operating agreements or bylaws, signed","Buy-sell agreement (funded with insurance) where there are partners","Cap table and equity grant documents (AI company)","Annual minutes or written consents","Registered agent in every state of operation","Intercompany management agreements"])}</div>
+  <div class="panel sec"><h3>Contracts</h3>${phaseList("lg2",["Master services agreement + statement of work templates","Mutual NDA","Independent contractor agreement with IP assignment","Employee offer letter, handbook, confidentiality and invention assignment","Teaming agreement and subcontract templates (GovCon)","Advisory agreement and privacy notice (Family Office)","Lease and property management agreements (Real Estate)","Asset purchase agreement template and LOI (Acquisitions)","Grant agreement template (Foundation)"])}</div>
+  <div class="panel sec"><h3>Nonprofit governance policies</h3>${phaseList("lg3",["Conflict of interest policy","Whistleblower policy","Document retention and destruction policy","Executive compensation review process","Gift acceptance policy","Expense reimbursement policy"])}<p class="small muted">Form 990 asks whether you have several of these.</p></div>
+  <div class="panel sec"><h3>Brand & IP</h3>${phaseList("lg4",["Clear names before you use them (USPTO search and state filings)","File federal trademarks for the HoldCo and key venture names","Register matching domains and social handles","IP assignment from every founder, employee and contractor","Keep AI training data, prompts and models documented and owned"])}</div>
+ </div>
+ <div class="panel sec"><h3>Data security baseline (all ventures)</h3>
+ <div class="cols">${[["Accounts",["Multi-factor authentication on email, banking and every app","Password manager for the whole team","Remove access the day someone leaves"]],["Devices & data",["Encrypt laptops and phones","Automatic backups, tested quarterly","Store client documents only in approved systems"]],["Programs",["GLBA Safeguards Rule written security program (Mortgage)","Regulation S-P privacy and safeguards (Family Office)","Incident response plan with contacts","Annual phishing training","CMMC readiness if you handle DoD controlled information"]]].map(([t,a],i)=>`<div class="phase"><div class="eyebrow">${t}</div>${phaseList("sec"+i,a)}</div>`).join("")}</div></div>`;
+
+/* ---------- Wealth & Exit ---------- */
+VIEWS.wealth=()=>`
+ <div class="sec"><div class="eyebrow">Founder wealth</div><h2>Wealth & exit</h2><p class="lede">Turn business profits into personal wealth: track net worth, estimate what each venture is worth, and plan exits, benefits, taxes and estate.</p></div>
+ <div class="sec"><h3>Net worth</h3>
+ ${table("networth",[{k:"item",label:"Item",wide:true},{k:"type",label:"Type",type:"select",opts:["Asset","Liability"]},{k:"cat",label:"Category",type:"select",opts:["Business equity","Real estate","Retirement","Brokerage","Cash","Vehicle","Other","Debt"]},{k:"value",label:"Value",type:"num"}],{sum:()=>{const N=S.networth;const a=N.filter(r=>r.type==="Asset").reduce((s,r)=>s+(+r.value||0),0),l=N.filter(r=>r.type==="Liability").reduce((s,r)=>s+(+r.value||0),0);const biz=S.vals.reduce((s,r)=>s+(+r.amount||0)*(+r.mult||0),0);return sumStrip([["Assets",money(a)],["Liabilities",money(l)],["Net worth",money(a-l)],["+ Est. business value",money(biz)]]);}})}</div>
+ <div class="sec"><h3>What each venture might be worth</h3>
+ ${table("vals",[{k:"venture",label:"Venture",type:"select",opts:VNAMES},{k:"metric",label:"Metric",type:"select",opts:["SDE","EBITDA","ARR","Revenue","Recurring revenue","NOI","Equity"]},{k:"amount",label:"Amount (annual)",type:"num"},{k:"mult",label:"Multiple",type:"num"}],{extra:{label:"Est. value",fn:r=>fullMoney((+r.amount||0)*(+r.mult||0))}})}
+ ${staticTable(["Business type","Common valuation basis"],[["Small service business","About 2–4x SDE"],["Larger profitable company ($1M+ EBITDA)","Higher EBITDA multiples; size and recurring revenue raise them"],["SaaS / AI","Multiple of ARR; varies widely with growth and retention"],["Advisory firm","Multiple of recurring revenue; depends on client retention after transition"],["Mortgage brokerage","Often modest; value follows the loan officers and referral relationships"],["Real estate","Market value (cap rate on NOI) minus debt"],["Government contractor","Backlog, contract vehicles and past performance; set-aside status may not transfer to a buyer"]],true)}<p class="small muted">Rough guide only. Get a formal valuation before any sale, partner buyout or estate plan.</p></div>
+ <div class="sec"><h3>Exit options</h3>${staticTable(["Option","Best when","Watch out for"],[["Hold for cash flow","Business runs without you and throws off cash","Key-person risk; keep systems current"],["Sell to a strategic buyer","A competitor or larger firm gains a lot from you","Earn-outs; customer and staff reaction"],["Sell to private equity or a search fund","EBITDA large enough to attract professional buyers","Rollover equity, reps and warranties"],["Management buyout","Strong operator who wants to own it","Financing often needs a seller note"],["Employee ownership (ESOP)","Profitable company with a loyal team; tax benefits possible","Cost and complexity; VetCert status depends on ownership"],["Fold into a HoldCo platform","Add-on acquisitions share services","Integration effort"],["Wind down","Venture misses its gates","Close entity filings, licenses and contracts properly"]],true)}</div>
+ <div class="cols">
+  <div class="panel sec"><h3>Your veteran benefits</h3>${phaseList("vb",["VA disability rating current (an SDVOSB needs a service-connected disability determination)","Concurrent retirement and disability pay (CRDP/CRSC) checked","TSP strategy after separation (keep, roll over, or both)","SBP decision documented with spouse","VA health care enrollment","GI Bill: use for business or MBA programs, or transfer to dependents","State veteran property tax exemptions on your home","VR&E Chapter 31 self-employment eligibility checked","VA home loan entitlement remaining for the next purchase"])}</div>
+  <div class="panel sec"><h3>Tax strategy topics for your CPA</h3>${phaseList("tx",["Entity tax elections and reasonable salary for S-corps","Qualified business income deduction (Section 199A)","Retirement plans: Solo 401(k), SEP-IRA, or a defined benefit plan","Cost segregation and depreciation for rentals","1031 exchanges for real estate","QSBS for C-corp stock in the AI company","R&D tax credit (Form 6765) and research expensing rules for the AI company","Giving appreciated stock to a DAF or the foundation","Home office and accountable plan reimbursements","State tax nexus across ventures"])}</div>
+  <div class="panel sec"><h3>Estate & continuity</h3>${phaseList("est",["Will and revocable living trust","Durable power of attorney and healthcare directive","Business continuity letter: who runs what if you're unavailable","Buy-sell agreements funded with insurance","Beneficiaries on TSP, IRAs and life insurance updated","Guardian named for minor children","Password and document vault access for your spouse or executor","Foundation succession: who serves on the board after you"])}</div>
+ </div>`;
+
+/* ---------- GovCon market research (Mindy-style) ---------- */
+const _gov2=VIEWS.govcon;
+VIEWS.govcon=()=>_gov2()+`
+ <div class="sec"><h3>Find what the government buys in your industry</h3><p class="small muted">The free research workflow behind tools like Mindy's industry spending lookup, done by hand with official data.</p>
+ <div class="cols">
+  <div class="panel sec"><div class="eyebrow">Past spending</div>${stepList(["USAspending.gov → Advanced Search → Award Type: Contracts","Filter by your NAICS code and the last 3 fiscal years","Add the set-aside filter (SDVOSB or VOSB) to see what's reserved for veterans","Sort by agency: these are your target buyers","Sort by recipient: these are your competitors and possible primes","Check period-of-performance end dates: contracts ending in 12–18 months are recompete targets"])}</div>
+  <div class="panel sec"><div class="eyebrow">Future buys</div>${stepList(["Agency procurement forecasts on the GSA Acquisition Gateway","VA OSDBU forecast of upcoming opportunities","SAM.gov Contract Opportunities: save searches by NAICS and set-aside, including Sources Sought","SBA SubNet for subcontracting opportunities from primes","DLA DIBBS if you sell products to DoD","Contact the agency OSDBU 6–12 months before a target solicitation"])}</div>
+  <div class="panel sec"><div class="eyebrow">Your target list</div>${phaseList("mr",["Top 5 agencies buying your NAICS","Top 10 incumbents and primes in your space","5 contracts ending in the next 18 months","3 agency small business specialists contacted","Typical award size and contract type noted","Pricing benchmarks from GSA eLibrary or past awards"])}</div>
+ </div></div>
+ <div class="callout navy"><b>SDVOSB vs. VOSB:</b> SDVOSB status requires a service-connected disability determination from the VA or DoD in addition to veteran status. Without one you can still certify as a VOSB, which mainly helps at the VA.</div>`;
+
+/* ---------- Automation: AI agent roster ---------- */
+const _auto2=VIEWS.automation;
+VIEWS.automation=()=>_auto2()+`
+ <div class="sec"><h3>AI agent roster</h3>${staticTable(["Agent","Venture","What it does","Human checkpoint"],[
+  ["Inbox triage","All","Sorts email, drafts replies, flags urgent items for the EA","EA approves outgoing replies"],
+  ["Meeting notes to tasks","All","Transcribes calls, writes summaries, creates CRM tasks","Owner checks tasks weekly"],
+  ["Opportunity scout","GovCon, Research","Reads new SAM.gov and SBIR notices, scores fit against your NAICS and past performance","Capture manager decides bid/no-bid"],
+  ["Proposal drafter","GovCon, Research, Nonprofit","First drafts from your boilerplate library and the compliance matrix","Proposal manager edits; red team reviews"],
+  ["Deal screener","Buy a Business","Reads listings and CIMs, checks the buy box, flags red flags","Founder reviews scored deals"],
+  ["Loan document checker","Mortgage","Checks uploads against the condition list, flags missing pages","Processor verifies before submission"],
+  ["Benefits review prep","Family Office","Pre-fills the military benefits template from client documents","Advisor reviews every recommendation"],
+  ["Bookkeeping categorizer","HoldCo","Suggests categories and flags unusual transactions","Bookkeeper approves in month-end close"],
+  ["Content repurposer","All","Turns one video into clips, posts and a newsletter","Compliance review for regulated ventures"],
+  ["Lead qualifier","Mortgage, AI, Family Office","Asks intake questions and books qualified leads","Human follows up within 1 business day"]],true)}
+ <p class="small muted">Keep client financial data inside approved, secure tools; check each vendor's data terms before connecting regulated systems.</p></div>
+ <div class="sec"><h3>Starter automation recipes</h3>${staticTable(["Trigger","Steps","Result"],[
+  ["New web form lead","Create CRM contact → tag venture → text and email within 5 minutes → book call","Faster speed to lead"],
+  ["Deal stage changes to LOI","Create due-diligence folder → send request list → add calendar deadlines","Diligence starts the same day"],
+  ["SAM.gov saved search match","Add row to the bid sheet → AI fit score → post to team chat","No missed opportunities"],
+  ["Loan milestone in LOS","Text borrower and agent → update CRM → next-step reminder","Fewer status calls"],
+  ["Invoice 15 days overdue","Reminder email → 30 days: task to call → 45 days: escalate to the Integrator","Lower receivables"],
+  ["New hire signed","Create accounts → send handbook and SOPs → schedule 30/60/90 check-ins","Consistent onboarding"],
+  ["Monthly close finished","Pull P&L per entity → update the Finance tab → send the founder summary","Board-ready numbers monthly"]],true)}</div>`;
+
+/* ---------- Overview alerts ---------- */
+function alertsHTML(){const A=[];
+ const od=[];S.funding.forEach(f=>f.due&&!["Funded","Declined"].includes(f.stage)&&od.push([f.due,f.source]));S.grants.forEach(g=>g.due&&!["Awarded","Declined","Submitted"].includes(g.status)&&od.push([g.due,g.program]));S.bids.forEach(b=>b.due&&["Evaluate","Bid"].includes(b.decision)&&od.push([b.due,b.title]));(S.deadlines||[]).forEach(d=>d.date&&d.status!=="Done"&&od.push([d.date,d.item]));
+ od.filter(x=>daysUntil(x[0])<0).forEach(x=>A.push(["bad","Overdue",x[1]]));
+ VENTURES.filter(v=>vmeta(v).health==="bad").forEach(v=>A.push(["bad","Venture at risk",v.name]));
+ (S.rocks||[]).filter(r=>r.status==="Off track").forEach(r=>A.push(["warn","Rock off track",r.rock]));
+ (S.risks||[]).filter(r=>(+r.like||0)*(+r.impact||0)>=15).forEach(r=>A.push(["warn","High risk",r.risk]));
+ (S.contacts||[]).filter(c=>{const n=daysUntil(c.next);return n!=null&&n<0;}).forEach(c=>A.push(["warn","Relationship overdue",c.name]));
+ const wks=mondays(13),last=wks[wks.length-2];(S.score||[]).forEach(r=>{const v=r.w&&r.w[last];if(v!=null&&v!==""&&scClass(r,v)==="sc-bad")A.push(["warn","Missed scorecard goal",r.measure]);});
+ (S.time||[]).forEach(t=>{if((+t.actual||0)-(+t.plan||0)>=4)A.push(["warn","Time over plan",`${t.venture} (+${(+t.actual)-(+t.plan)} h)`]);});
+ return `<div class="sec"><div class="sec-head"><h3>Needs attention</h3><span class="small muted">${A.length} item${A.length===1?"":"s"}</span></div>${A.length?`<div class="alerts">${A.slice(0,12).map(a=>`<div class="alert ${a[0]}"><span class="pill ${a[0]}">${h(a[1])}</span><span>${h(a[2])}</span></div>`).join("")}</div>${A.length>12?`<p class="small muted">+${A.length-12} more</p>`:""}`:`<p class="small muted">Nothing overdue or off track.</p>`}</div>`;}
+const _ov2=VIEWS.overview;
+VIEWS.overview=()=>{const html=_ov2();const mark='<div class="sec"><div class="sec-head"><h3>Portfolio</h3>';return html.replace(mark,()=>alertsHTML()+mark);};
+
+/* ---------- More resources ---------- */
+RESOURCES.push(
+ ["Federal Contracting","Acquisition Gateway forecasts","https://acquisitiongateway.gov/forecast","Agency procurement forecasts: see buys before they're posted."],
+ ["Federal Contracting","SBA SubNet","https://subnet.sba.gov","Subcontracting opportunities posted by prime contractors."],
+ ["Federal Contracting","DLA DIBBS","https://www.dibbs.bsm.dla.mil","Defense Logistics Agency bids for products."],
+ ["Veteran Programs","VA disability compensation","https://www.va.gov/disability/","File or update a disability claim (needed for SDVOSB status)."],
+ ["Ops & Hiring","E-Verify","https://www.e-verify.gov","Required on many federal contracts with the FAR E-Verify clause."],
+ ["Ops & Hiring","CISA cyber guidance for small businesses","https://www.cisa.gov/cyber-guidance-small-businesses","Free security baseline for every venture."],
+ ["Mortgage / MLO","FTC Gramm-Leach-Bliley Act guidance","https://www.ftc.gov/business-guidance/privacy-security/gramm-leach-bliley-act","Safeguards Rule requirements for mortgage brokers."],
+ ["Wealth / Family Office","Retirement plans for the self-employed","https://www.irs.gov/retirement-plans/retirement-plans-for-self-employed-people","Solo 401(k), SEP and SIMPLE options."],
+ ["AI / Tech","IRS Form 6765 (research credit)","https://www.irs.gov/forms-pubs/about-form-6765","R&D tax credit for qualifying research at the AI company."],
+ ["Ops & Hiring","USPTO trademarks","https://www.uspto.gov/trademarks","Search and register brand names for the HoldCo and ventures."]
+);
+RESOURCES.forEach(r=>{if(r[1]==="NIST AI Risk Management Framework")r[0]="AI / Tech";});
+
+/* ---------- Tabs ---------- */
+TABS.splice(0,TABS.length,["overview","Overview"],["scorecard","Scorecard"],["ceo","CEO Desk"],["ventures","Ventures"],["roadmap","Roadmap"],["funding","Funding"],["acquisitions","Acquisitions"],["grants","Grants"],["govcon","Veteran GovCon"],["finance","Finance"],["legal","Legal & Risk"],["wealth","Wealth & Exit"],["marketing","Marketing"],["operator","SME Operator"],["automation","Automation"],["playbooks","Playbooks"],["calculators","Calculators"],["ideas","New Ventures"],["resources","Resources"]);
+
+/* ---------- Scorecard events ---------- */
+document.addEventListener("change",e=>{const t=e.target;if(!t.dataset||!t.dataset.sc)return;const [i,w]=t.dataset.sc.split("|");const r=S.score[+i];if(!r)return;r.w=r.w||{};if(t.value==="")delete r.w[w];else r.w[w]=+t.value;save();
+ const td=t.closest("td");td.className=scClass(r,t.value===""?"":+t.value);const sp=document.querySelector(`[data-spark="${i}"]`);if(sp)sp.innerHTML=spark(r,mondays(13));});
+document.addEventListener("change",e=>{const t=e.target;if(!t.dataset||!t.dataset.bind||!t.dataset.bind.startsWith("score:"))return;const i=+t.dataset.bind.split(":")[1];const r=S.score[i];const wks=mondays(13);
+ document.querySelectorAll(`tr[data-scrow="${i}"] input.wk`).forEach(inp=>{inp.closest("td").className=scClass(r,inp.value===""?"":+inp.value);});const sp=document.querySelector(`[data-spark="${i}"]`);if(sp)sp.innerHTML=spark(r,wks);});
+document.addEventListener("click",e=>{if(!e.target.closest("#addScore"))return;S.score.push({measure:"",venture:"All",owner:"",goal:0,dir:">=",w:{}});save();const y=window.scrollY;route();window.scrollTo(0,y);const inp=document.getElementById(`score-${S.score.length-1}-measure`);if(inp)inp.focus();});
+(function(){const x=EXTRA_DEFAULTS2();for(const k in x){if(S[k]==null)S[k]=x[k];}})();
 
 /* =========================================================
    ROUTER + EVENTS
