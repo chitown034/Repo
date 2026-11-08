@@ -856,3 +856,20 @@ through Apple Health and the same export file once Steven switches the nutrition
   in parallel waves of at most eight through one queue (vanessaQueue).
 - **Cost note.** Opus on every seat costs more per run than Sonnet did; Marcus reports the AI team's monthly cost.
 - **Owner.** Vanessa (dispatch), Derek (agent files), Nadia (tiering). **Status.** Done 2026-11-08.
+
+## 2026-11-08 — One mirror across the Command Deck, the Broker Command Center and the Loan Dashboard
+
+- **Request (Steven, verbatim).** *"ensure all data and feeds from command desk, broker dashboard and loan dashboard. are
+  linked and mirrored across all 3 dashboards"*.
+- **Decision.** The Command Deck's database is the hub. Each dashboard writes its own snapshot to its own `state` collection
+  (Broker: `bccMetrics`, Loan: `loanMetrics`, new: the Loan Dashboard now declares `db`). The Deck relay scheduled task
+  (06:13 · 10:13 · 14:13 · 18:13 PT, trig_01A5Tbjwx1BMQiLZhobtdkq3) copies 16 feeds both ways, unchanged, stamped
+  `mirroredFrom`/`mirroredAt`: bccMetrics, loanMetrics, loftyLeads, zohoSync, zohoLeads, zohoDeals, ratesSnapshot,
+  refiWatchDesk, leadResponse, cosBrief, bigMoves, aiTeamOrg, marketSnapshot, newsSnapshot, weatherSnapshot, feedFreshness.
+  Each page shows them on one "Three-dashboard mirror" view (Deck: card above Zoho leads; Broker: System menu; Loan: AI Team
+  & Bridges), built from one shared module, `integrations/dashboard-mirror/mirror-core.js`.
+- **Limits.** Pages are separate artifacts with separate storage, so the mirror is as fresh as the last relay run; a feed
+  shows "awaiting relay" until its first copy lands. Health, finances and private chat logs stay on the Command Deck only.
+  `loanMetrics` carries counts only (no names, phones or e-mails); a loan pipeline still holding the built-in sample rows is
+  flagged "sample data".
+- **Owner.** Quincy (feeds), Derek (relay). **Status.** Done 2026-11-08; first relay pass run by hand the same day.
