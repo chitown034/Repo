@@ -3,11 +3,12 @@
    The Deck relay scheduled task (06:13 · 10:13 · 14:13 · 18:13 PT) copies every feed in MIR_FEEDS into the other two dashboards' `state` collection, unchanged.
    This module reads them live and renders the same Mirror page on every dashboard. It never invents a value: a feed that has not arrived shows "awaiting relay". ===== */
 var MIR=(function(){
- var URLS={deck:'https://claude.ai/artifact/3jbdGMNFkGLEpJiZ3cTmZW',bcc:'https://claude.ai/artifact/XFx2H7cf8mnS8e8hjFzxNg',loan:'https://claude.ai/artifact/Ce5m1WNWsQW7y2u91EA8az'};
- var NAMES={deck:'Command Deck',bcc:'Broker Command Center',loan:'Loan Dashboard'};
+ var URLS={deck:'https://claude.ai/artifact/3jbdGMNFkGLEpJiZ3cTmZW',bcc:'https://claude.ai/artifact/XFx2H7cf8mnS8e8hjFzxNg',loan:'https://claude.ai/artifact/Ce5m1WNWsQW7y2u91EA8az',ret:'https://claude.ai/artifact/QKRB5uNwSuEyxd7C9obPGf'};
+ var NAMES={deck:'Command Deck',bcc:'Broker Command Center',loan:'Loan Dashboard',ret:'Retirement Dashboard'};
  var FEEDS=[
   ['bccMetrics','bcc','Broker metrics','pipeline, deals, loans, tasks, calls, SLA, health, integrations'],
   ['loanMetrics','loan','Loan metrics','pipeline, leads, speed-to-lead, rate locks, Handoff Board, approvals'],
+  ['retirementMetrics','ret','Retirement plan','plan success, nest egg at retirement, income gap, Social Security claim age'],
   ['loftyLeads','deck','Lofty CRM','stage totals, new leads, speed-to-lead'],
   ['zohoSync','deck','Zoho CRM status','connection health'],
   ['zohoLeads','deck','Zoho CRM leads','14-stage counts'],
@@ -36,6 +37,7 @@ var MIR=(function(){
   switch(id){
    case 'bccMetrics':return (v.pipeline?v.pipeline.total+' in pipeline · ':'')+(v.deals?v.deals.active+' active deals ('+money(v.deals.volume)+') · ':'')+(v.loans?v.loans.total+' loans in process · ':'')+(v.tasks?v.tasks.overdue+' tasks overdue':'');
    case 'loanMetrics':return (v.pipeline?v.pipeline.total+' in loan pipeline'+(v.pipeline.sample?' (sample data)':'')+' · ':'')+(v.leads?v.leads.total+' leads, '+v.leads.uncontacted+' not yet contacted · ':'')+(v.locks?v.locks.active+' rate locks, '+v.locks.expiring5d+' expiring ≤5 d · ':'')+(v.handoff?v.handoff.needsSteven+' Handoff cards need you':'');
+   case 'retirementMetrics':return (v.successPct!=null?v.successPct+'% plan success · ':'')+(v.nestEggAtRetire!=null?money(v.nestEggAtRetire)+' at retirement · ':'')+(v.retireAge!=null?'retire at '+v.retireAge:'')+(v.ssClaimAge!=null?' · SS at '+v.ssClaimAge:'');
    case 'loftyLeads':return (v.status||'')+(Array.isArray(v.stageTotals)?' · '+v.stageTotals.reduce(function(a,r){return a+(+r[1]||0)},0)+' leads':'')+(v.firstResponse&&v.firstResponse.medianMin!=null?' · median first response '+v.firstResponse.medianMin+' min':'');
    case 'zohoSync':return (v.status||'')+(v.leads!=null?' · '+v.leads+' leads':'')+(v.deals!=null?' · '+v.deals+' deals':'')+(v.status!=='ok'&&v.error?' · '+String(v.error).slice(0,120):'');
    case 'zohoLeads':return v.counts?Object.keys(v.counts).filter(function(k){return v.counts[k]}).map(function(k){return k+' '+v.counts[k]}).join(' · '):'';
@@ -64,9 +66,9 @@ var MIR=(function(){
  function kpi(label,val,sub,cls){return '<div class="'+(S.cls||'card')+'" style="padding:10px;min-width:140px;flex:1"><div class="sm mut" style="font-size:12px;opacity:.75">'+e(label)+'</div><div style="font-size:22px;font-weight:700" class="'+(cls||'')+'">'+e(val==null?'—':val)+'</div>'+(sub?'<div style="font-size:12px;opacity:.75">'+e(sub)+'</div>':'')+'</div>'}
  function html(){var R=rows(),ok=R.filter(function(r){return r.badge==='fresh'}).length;
   var b=get('bccMetrics'),l=get('loanMetrics'),z=get('zohoSync'),lf=get('loftyLeads'),cb=get('cosBrief'),bm=get('bigMoves'),rs=get('ratesSnapshot');
-  var links=['deck','bcc','loan'].map(function(k){return '<a class="btn ghost sm" style="margin:2px" href="'+URLS[k]+'" target="_blank" rel="noopener">'+e(NAMES[k])+(k===S.self?' (this one)':'')+' ↗</a>'}).join('');
+  var links=['deck','bcc','loan','ret'].map(function(k){return '<a class="btn ghost sm" style="margin:2px" href="'+URLS[k]+'" target="_blank" rel="noopener">'+e(NAMES[k])+(k===S.self?' (this one)':'')+' ↗</a>'}).join('');
   var h='<div class="'+(S.cls||'card')+'" style="border-left:4px solid #c9a227"><h3 style="margin:0">Three-dashboard mirror <span style="font-size:13px;opacity:.7">'+ok+' of '+R.length+' feeds fresh · '+(S.err?e(S.err):S.ready?'live from this dashboard’s database':'connecting…')+'</span></h3>'
-   +'<p style="font-size:13px;margin:6px 0">The Command Deck, the Broker Command Center and the Loan Dashboard each write their own feed; the <b>Deck relay</b> (06:13 · 10:13 · 14:13 · 18:13 PT) copies every feed below into the other two, unchanged, so all three show the same numbers. Values are shown exactly as the source wrote them, with the source’s own time stamp.</p><div>'+links+'</div></div>';
+   +'<p style="font-size:13px;margin:6px 0">The Command Deck, the Broker Command Center and the Loan Dashboard each write their own feed; the <b>Deck relay</b> (06:13 · 10:13 · 14:13 · 18:13 PT) copies every feed below into the others (the Retirement Dashboard included), unchanged, so all three show the same numbers. Values are shown exactly as the source wrote them, with the source’s own time stamp.</p><div>'+links+'</div></div>';
   h+='<div style="display:flex;flex-wrap:wrap;gap:8px;margin:8px 0">'
    +kpi('Broker pipeline',b&&b.pipeline?b.pipeline.total:null,b?'Broker · '+age(b.syncedAt):'awaiting relay')
    +kpi('Active deals',b&&b.deals?b.deals.active:null,b&&b.deals?money(b.deals.volume):'')
