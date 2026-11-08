@@ -249,6 +249,7 @@ tr.hl td{background:var(--accent-soft)}
     <nav class="tabs" aria-label="Sections">
       <a href="#overview">Overview</a>
       <a href="#cockpit">Family office cockpit</a>
+      <a href="#planner">Budget &amp; life events</a>
       <a href="#advisor">Advisor &amp; war-game</a>
       <a href="#wealth">Wealth &amp; family office</a>
       <a href="#portfolio">Portfolio &amp; dividends</a>
@@ -263,6 +264,7 @@ tr.hl td{background:var(--accent-soft)}
       <a href="#benefits">Disability &amp; VA benefits</a>
       <a href="#investing">Investing &amp; risk</a>
       <a href="#leak">Spending leak</a>
+      <a href="#tools">Tools &amp; checklists</a>
     </nav>
   </div>
 </header>
@@ -324,6 +326,9 @@ tr.hl td{background:var(--accent-soft)}
           <option value="proportional">Proportional from every bucket</option></select></div>
         <div class="field full"><label for="conv">Roth conversions until RMDs</label><select id="conv" data-k="conv">
           <option value="none">None</option><option value="12">Fill the 12% bracket</option><option value="22">Fill the 22% bracket</option><option value="24">Fill the 24% bracket</option></select></div>
+        <div class="field full"><label for="spendShape">Spending pattern</label><select id="spendShape" data-k="spendShape"><option value="flat">Flat: same real spending every year</option><option value="smile">Spending smile: eases in the 70s–80s</option></select></div>
+        <div class="field"><label for="ptIncome">Part-time income in retirement $/yr</label><input type="number" id="ptIncome" data-k="ptIncome" step="1000"></div>
+        <div class="field"><label for="ptUntil">…until age</label><input type="number" id="ptUntil" data-k="ptUntil"></div>
       </div>
     </details>
 
@@ -685,6 +690,107 @@ tr.hl td{background:var(--accent-soft)}
       </div>
       <div class="card"><div class="card-head"><h3>Enrollment deadlines for your household</h3></div><div class="timeline" id="mcTimeline"></div></div>
       <div class="card"><div class="card-head"><h3>How Medicare and health coverage work</h3></div><div class="cat-grid" id="mcEdu"></div></div>
+    </section>
+
+    <!-- PLANNER -->
+    <section class="view" id="v-planner" aria-labelledby="h-pl">
+      <div class="view-head"><div><span class="eyebrow">Cash flow &amp; life events</span><h2 id="h-pl">Budget, debts &amp; life events</h2></div>
+        <p>Your monthly budget and emergency fund, a debt payoff plan, and the big one-time costs and windfalls (cars, roofs, weddings, inheritances, downsizing) that flow straight into the retirement plan.</p></div>
+      <div class="grid g-side">
+        <div class="card">
+          <div class="card-head"><h3>Monthly budget</h3><p id="budTake"></p></div>
+          <div class="inline-fields" id="budFields"></div>
+          <div class="inline-fields" style="margin-top:10px"><div class="field"><label for="budEF">Emergency fund target (months)</label><input type="number" id="budEF" data-k="budEF" min="1" max="24"></div></div>
+          <div class="grid g2" style="margin-top:12px"><div class="chart sm"><canvas id="chBud"></canvas></div><div class="insights" id="budOut"></div></div>
+        </div>
+        <div class="card"><div class="card-head"><h3>Where each paycheck dollar goes</h3></div><div class="chart"><canvas id="chBudFlow"></canvas></div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Debts and payoff plan</h3><p>Every liability, the order to attack them, and your debt-free date.</p></div>
+        <div class="tbl-wrap"><table id="dbTable"></table></div>
+        <div class="inline-fields" style="margin-top:10px">
+          <button class="btn" type="button" id="dbAdd">Add a debt</button>
+          <div class="field w"><label for="dbMethod">Payoff method</label><select id="dbMethod" data-k="dbMethod"><option value="avalanche">Avalanche: highest rate first (least interest)</option><option value="snowball">Snowball: smallest balance first (quick wins)</option></select></div>
+          <div class="field"><label for="dbExtra">Extra payment $/mo</label><input type="number" id="dbExtra" data-k="dbExtra" step="25"></div>
+        </div>
+        <div class="kpis" id="dbKpis" style="margin-top:12px"></div>
+        <div class="grid g-side" style="margin-top:12px"><div class="chart"><canvas id="chDebt"></canvas></div><div class="insights" id="dbOut"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>One-time events &amp; windfalls</h3><p>Entered in today's dollars at the age they happen. They flow into every projection, the war-game and the cockpit.</p></div>
+        <div class="tbl-wrap"><table id="evTable"></table></div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px">
+          <button class="btn" type="button" id="evAdd">Add an event</button>
+          <button class="btn" type="button" data-evp="inherit">+ Inheritance</button>
+          <button class="btn" type="button" data-evp="downsize">+ Downsize home</button>
+          <button class="btn" type="button" data-evp="wedding">+ Child's wedding</button>
+          <button class="btn" type="button" data-evp="care">+ Help aging parent</button>
+          <button class="btn" type="button" data-evp="ltc">+ Long-term care</button>
+        </div>
+        <div class="grid g-side" style="margin-top:12px"><div class="chart"><canvas id="chEv"></canvas></div><div class="insights" id="evOut"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Retirement spending shape &amp; part-time work</h3><p>Real-world spending usually falls in the slow-go years, then rises with health care. Both settings also live in the sidebar.</p></div>
+        <div class="grid g-side"><div class="chart sm"><canvas id="chShape"></canvas></div><div class="insights" id="shapeOut"></div></div>
+      </div>
+    </section>
+
+    <!-- TOOLS -->
+    <section class="view" id="v-tools" aria-labelledby="h-tl">
+      <div class="view-head"><div><span class="eyebrow">More calculators</span><h2 id="h-tl">Planning tools, scenarios &amp; checklists</h2></div>
+        <p>Relocation taxes, charitable giving, equity compensation, bond ladders, saved scenarios side by side, a plan backup, and the annual-review and estate checklist a family office runs every year.</p></div>
+      <div class="card">
+        <div class="card-head"><h3>Where to retire: state tax comparison</h3><p>Your first full retirement year's income (Social Security, pension, IRA withdrawals, gains, rentals) taxed in each state, plus property tax on your home.</p></div>
+        <div class="grid g-side"><div class="chart lg"><canvas id="chStates"></canvas></div><div class="insights" id="stOut"></div></div>
+      </div>
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-head"><h3>Charitable giving: the smartest way to give</h3></div>
+          <div class="inline-fields">
+            <div class="field"><label for="cgAmt">Giving per year $</label><input type="number" id="cgAmt" data-k="cgAmt" step="500"></div>
+            <div class="field"><label for="cgYears">Bunch years into a DAF</label><input type="number" id="cgYears" data-k="cgYears" min="2" max="10"></div>
+            <div class="field"><label for="cgStockGain">Gain in donated stock %</label><input type="number" id="cgStockGain" data-k="cgStockGain" step="5"></div>
+          </div>
+          <div class="chart sm" style="margin-top:12px"><canvas id="chGive"></canvas></div><div class="insights" id="cgOut" style="margin-top:10px"></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Equity compensation</h3></div>
+          <div class="inline-fields">
+            <div class="field w"><label for="eqType">Type</label><select id="eqType" data-k="eqType"><option value="rsu">Restricted stock units (RSU)</option><option value="espp">Employee stock purchase plan (ESPP)</option><option value="iso">Incentive stock options (ISO)</option><option value="nso">Non-qualified options (NSO)</option></select></div>
+            <div class="field"><label for="eqShares">Shares</label><input type="number" id="eqShares" data-k="eqShares" step="50"></div>
+            <div class="field"><label for="eqPrice">Share price $</label><input type="number" id="eqPrice" data-k="eqPrice" step="1"></div>
+            <div class="field"><label for="eqGrant">Strike / grant price $</label><input type="number" id="eqGrant" data-k="eqGrant" step="1"></div>
+            <div class="field"><label for="eqDiscount">ESPP discount %</label><input type="number" id="eqDiscount" data-k="eqDiscount" step="1"></div>
+            <div class="field"><label for="eqSup">Withholding rate %</label><input type="number" id="eqSup" data-k="eqSup" step="1"></div>
+          </div>
+          <div class="kpis" id="eqKpis" style="margin-top:12px"></div><div class="insights" id="eqOut" style="margin-top:10px"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Bond, TIPS or CD ladder builder</h3><p>Guaranteed income for a set number of years: spend principal plus interest as each rung matures.</p></div>
+        <div class="inline-fields">
+          <div class="field"><label for="ldAmt">Amount $</label><input type="number" id="ldAmt" data-k="ldAmt" step="10000"></div>
+          <div class="field"><label for="ldYears">Years</label><input type="number" id="ldYears" data-k="ldYears" min="2" max="30"></div>
+          <div class="field"><label for="ldRate">Yield %</label><input type="number" id="ldRate" data-k="ldRate" step="0.05"></div>
+          <div class="field w"><label for="ldType">Ladder</label><select id="ldType" data-k="ldType"><option value="tips">TIPS (income rises with inflation; yield is real)</option><option value="treas">Treasuries (level income)</option><option value="cd">CDs (level income, FDIC)</option></select></div>
+        </div>
+        <div class="grid g-side" style="margin-top:12px"><div class="chart"><canvas id="chLadder2"></canvas></div><div class="insights" id="ldOut"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Saved scenarios, side by side</h3><p>Save the current plan, change anything, save again, and compare. Stored in this browser.</p></div>
+        <div class="inline-fields"><div class="field w"><label for="scName">Scenario name</label><input type="text" id="scName" placeholder="Retire at 63, claim at 70"></div><button class="btn primary" type="button" id="scSave">Save current plan</button></div>
+        <div class="tbl-wrap" style="margin-top:12px"><table id="scTable"></table></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Back up or move your plan</h3><p>Copy your inputs as text to keep or paste into another browser.</p></div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap"><button class="btn" type="button" id="bkCopy">Copy plan to clipboard</button><button class="btn" type="button" id="bkLoad">Load plan from the box below</button><span class="small muted" id="bkNote" style="align-self:center"></span></div>
+        <textarea id="bkText" rows="4" style="width:100%; margin-top:10px; font-family:var(--f-mono); font-size:11.5px; color:var(--ink); background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:8px" aria-label="Plan backup text"></textarea>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Annual review &amp; estate checklist</h3><p id="ckProg"></p></div>
+        <div class="goal-bar" style="margin-bottom:12px"><i id="ckBar" style="background:var(--good)"></i></div>
+        <div class="cat-grid" id="ckList"></div>
+      </div>
     </section>
 
     <!-- SOCIAL SECURITY -->
@@ -1743,6 +1849,53 @@ function leverageCurve(p, s, N){
     return { dp, irr: irr(flows), coc: pp.rows[0].cfbt/cash, end: ex.sellAfterTax + pp.rows.slice(0, N).reduce((a, x) => a + x.cfat, 0), cash }; });
 }
 
+/* ---------- Cash flow, life events, debts & tools data ---------- */
+Object.assign(DEFAULTS, {
+  spendShape:'flat', ptIncome:0, ptUntil:70,
+  events:[
+    { n:'Travel in the go-go years', age:65, amt:8000, kind:'expense', yrs:10 },
+    { n:'Replace car', age:72, amt:40000, kind:'expense', yrs:1 },
+    { n:'Roof & kitchen', age:68, amt:35000, kind:'expense', yrs:1 }
+  ],
+  debts:[
+    { n:'Auto loan', bal:18000, rate:6.5, pay:450 },
+    { n:'Credit card', bal:4500, rate:22.9, pay:180 }
+  ],
+  dbMethod:'avalanche', dbExtra:200,
+  bud:{ housing:1300, transport:400, food:750, utilities:300, insurance:300, healthcare:300, giving:150, fun:250, other:150 }, budEF:6,
+  stMove:'none',
+  cgAmt:12000, cgYears:5, cgStockGain:60,
+  eqType:'rsu', eqShares:400, eqPrice:180, eqGrant:60, eqDiscount:15, eqSup:22,
+  ldAmt:300000, ldYears:10, ldRate:4.3, ldType:'tips',
+  check:{}, scen:[]
+});
+const SMILE = age => age < 75 ? 1 : age < 85 ? 1 - 0.015*(age - 75) : Math.min(1, 0.85 + 0.01*(age - 85));
+const BUD_N = { housing:'Housing (mortgage/rent, tax)', transport:'Transportation', food:'Food & groceries', utilities:'Utilities & phone', insurance:'Insurance', healthcare:'Health care', giving:'Giving', fun:'Travel & fun', other:'Everything else' };
+function debtSchedule(debts, method, extra){
+  // monthly simulation; returns per-debt payoff month, interest, yearly payments (by year offset)
+  const ds = debts.map(d => ({ n:d.n, bal:+d.bal, r:+d.rate/1200, pay:+d.pay, int:0, paidOff:null }));
+  const yearly = [], hist = [ds.map(d => d.bal)]; let m = 0, freed = 0;
+  const order = () => ds.filter(d => d.bal > 0.01).sort((a, b) => method === 'snowball' ? a.bal - b.bal : b.r - a.r);
+  while (ds.some(d => d.bal > 0.01) && m < 600){
+    let pot = +extra + freed, paidThis = 0;
+    ds.forEach(d => { if (d.bal <= 0.01) return; const i = d.bal*d.r; d.int += i; d.bal += i; const p = Math.min(d.bal, d.pay); d.bal -= p; paidThis += p; });
+    for (const d of order()){ if (pot <= 0) break; const p = Math.min(d.bal, pot); d.bal -= p; pot -= p; paidThis += p; }
+    ds.forEach(d => { if (d.bal <= 0.01 && d.paidOff === null){ d.paidOff = m + 1; freed += d.pay; } });
+    const y = Math.floor(m/12); yearly[y] = (yearly[y] || 0) + paidThis; m++; hist.push(ds.map(d => Math.max(0, d.bal)));
+  }
+  return { ds, months: m, interest: ds.reduce((a, d) => a + d.int, 0), yearly, hist };
+}
+const CHECK = [
+  ['Estate documents', [['will','Will (with guardians for minors)'], ['trust','Revocable living trust signed and funded'], ['poa','Durable financial power of attorney'], ['hc','Health-care power of attorney & living will'], ['hipaa','HIPAA release'], ['digital','Digital-asset & password instructions'], ['loi','Letter of instruction (where everything is)']]],
+  ['Beneficiaries & titling', [['ben401','401(k)/403(b) beneficiaries current'], ['benira','IRA & Roth beneficiaries current (with contingents)'], ['benlife','Life insurance & annuity beneficiaries current'], ['tod','TOD/POD on brokerage and bank accounts'], ['deed','Home deed: trust, TBE or transfer-on-death'], ['llc','Rental/business LLCs owned by the trust']]],
+  ['Insurance', [['life','Life insurance matches the DIME need'], ['di','Disability coverage replaces 60%+ of income'], ['ltc','Long-term care plan decided (insure, hybrid or self-fund)'], ['umb','Umbrella liability ≥ net worth'], ['prop','Home & auto limits reviewed'], ['medi','Medicare plan reviewed in open enrollment']]],
+  ['Every year', [['rebal','Rebalance and harvest losses/gains'], ['conv','Roth conversion and bracket plan for the year'], ['rmd','RMDs / QCDs scheduled'], ['irmaa','IRMAA thresholds checked (2-year look-back)'], ['ssa','my Social Security statement reviewed'], ['credit','Credit report checked; freezes in place'], ['budget','Budget and emergency fund reviewed'], ['fam','Family meeting held']]],
+  ['Life changes', [['marr','Marriage, divorce or death: update all beneficiaries'], ['move','Moving states: domicile steps completed'], ['retire','Retirement: pension election, rollover, Medicare, withdrawals set'], ['inherit','Inheritance: 10-year IRA plan, step-up basis recorded'], ['sell','Business or property sale: tax plan before signing']]]
+];
+const STATE_EXTRA = { // property tax effective rate approximations, estate tax flag
+  none:{prop:.0095, n:'No income tax'}, IL:{prop:.021}, PA:{prop:.014}, MS:{prop:.0075}, IA:{prop:.015}, GA:{prop:.009}, NY:{prop:.017}, NC:{prop:.0082}, AZ:{prop:.0062}, CO:{prop:.0055}, MI:{prop:.0138}, NJ:{prop:.0247}, CA:{prop:.0075}, MN:{prop:.011}, custom:{prop:.011}
+};
+
 /* ---------- Helpers ---------- */
 const $ = (s, r=document) => r.querySelector(s);
 const $$ = (s, r=document) => [...r.querySelectorAll(s)];
@@ -1859,6 +2012,7 @@ function project(s, o={}){
   const an = (s.anInclude && s.anPremium > 0) ? annuityQuote(s, s.retireAge) : null;
   let anPay = 0, anBasisLeft = 0, anExcl = 0, anPay2 = 0;
   let idxAcc = 1, colaAcc = 1, prevRet = 0, spendMult = 1, initRate = null, hecmLoc = o.hecm ? o.hecm.limit : 0, hecmBal = 0, hecmDrawn = 0;
+  const DEBTY = (s.debts && s.debts.length) ? debtSchedule(s.debts, s.dbMethod, +s.dbExtra || 0).yearly : null;
   const RPY = (s.rpInclude && s.props && s.props.length) ? rentalPortfolio(s, Math.max(5, s.le - (BASE_YEAR + 1 - by) + 2)).byYear : null;
   const rows = [];
   for (let year = BASE_YEAR + 1; ; year++){
@@ -1874,6 +2028,8 @@ function project(s, o={}){
     const r = o.retPath ? o.retPath(age, retired, rBase, s) : rBase;
     const colaF = colaAcc;
     const row = { year, age, spAge, idx, retired, start: B.pre + B.roth + B.hsa + B.tax };
+    let evExp = 0, evIn = 0; (s.events || []).forEach(e => { if (age >= +e.age && age < +e.age + Math.max(1, +e.yrs || 1)){ const v = (+e.amt || 0)*idx; if (e.kind === 'inflow') evIn += v; else evExp += v; } });
+    const debtPay = DEBTY ? (DEBTY[year - BASE_YEAR - 1] || 0) : 0; row.evExp = evExp; row.evIn = evIn; row.debtPay = debtPay;
     // Social Security
     let ss = age >= s.claim ? s.pia*ssF*12*colaF : 0;
     if (disabled) ss = s.pia*12*colaF; // SSDI pays full PIA
@@ -1902,7 +2058,7 @@ function project(s, o={}){
       const ira = sal > 0 ? Math.min(s.ira*idx, iraLim) : 0;
       const hsa = (sal > 0 && age < 65) ? Math.min(s.hsa*idx, (mfj ? 8750 : 4400)*idx + (age >= 55 ? 1000 : 0)) : 0;
       const taxC = sal > 0 ? s.taxableC*idx : 0;
-      const extra = (disabled ? 0 : (ss + ssSp + pension + annuity) * 0.8) + rentCash*0.8;
+      const extra = (disabled ? 0 : (ss + ssSp + pension + annuity) * 0.8) + rentCash*0.8 + evIn - evExp;
       B.pre *= 1+r; B.roth *= 1+r; B.hsa *= 1+r; B.tax *= 1+r;
       B.pre += def - rothPart + match + (s.iraType === 'trad' ? ira : 0);
       B.roth += rothPart + (s.iraType === 'roth' ? ira : 0);
@@ -1914,11 +2070,12 @@ function project(s, o={}){
     }
     // Retirement year
     const n65 = 1 + (mfj && spAge >= 65 ? 1 : 0);
-    const work = o.work && age < o.work.until ? o.work.amt*idx : 0;
-    const coreSpend = s.spend*idx*(spDead ? .8 : 1);
+    const work = o.work ? (age < o.work.until ? o.work.amt*idx : 0) : (+s.ptIncome && age < +s.ptUntil ? +s.ptIncome*idx : 0);
+    const coreSpend = s.spend*idx*(spDead ? .8 : 1)*(s.spendShape === 'smile' ? SMILE(age) : 1);
+    if (evIn){ B.tax += evIn; B.basis += evIn; }
     const hcF = Math.pow(1 + (s.mcHInfl ?? 5)/100, yi);
     const medX = s.hcInclude ? ((age >= 65 ? medCost(s, age).total : 0) + (mfj && !spDead && spAge >= 65 ? medCost(s, spAge).total : 0))*hcF : 0;
-    const extraSpend = (age < 65 ? s.health*idx : (mfj && !spDead && spAge < 65 ? s.health*idx*.5 : 0)) + (o.shock ? o.shock(age)*idx : 0) + medX;
+    const extraSpend = (age < 65 ? s.health*idx : (mfj && !spDead && spAge < 65 ? s.health*idx*.5 : 0)) + (o.shock ? o.shock(age)*idx : 0) + medX + evExp + debtPay;
     const prev = rows[rows.length - 2] || rows[rows.length - 1];
     const irm = age >= 65 && prev ? irmaaFor(prev.agi || 0, filY, idx, mfj && !spDead && spAge >= 65 ? 2 : 1) : {tier:0, cost:0};
     const rmd = age >= rmdAge ? B.pre / (ULT[Math.min(age,120)] || 2) : 0;
@@ -2921,11 +3078,13 @@ function planContext(){
     spending: { goalTodayDollars: S.spend, preMedicareHealth: S.health }, assumptions: { returnBefore: S.rPre, returnAfter: S.rPost, inflation: S.infl, stocks: S.stock, withdrawalOrder: S.order, rothConversions: S.conv },
     results: { portfolioAtRetirementToday: Math.round(rr.start/rr.idx), monteCarloSuccess: Math.round(MC.success*100) + '%', moneyLasts: P.depleted ? 'short at ' + P.depleted.age : 'past ' + S.le, lifetimeTaxToday: Math.round(P.lifeTaxReal), legacyToday: Math.round(legacyOf(S, P)), firstYearGuaranteedIncome: Math.round(rr.ss + rr.ssSp + rr.pension + rr.annuity) },
     levers: (LEVERS || []).map(l => ({ lever: l.n, successChangePts: Math.round(l.dSucc*100), legacyChange: Math.round(l.dLeg), taxChange: Math.round(l.dTax) })),
-    reverseMortgage: (() => { const h = hecmCalc(S); return { ageAtClosing: h.age, netLine: Math.round(h.net), tenureMonthly: Math.round(h.tenure) }; })() };
+    reverseMortgage: (() => { const h = hecmCalc(S); return { ageAtClosing: h.age, netLine: Math.round(h.net), tenureMonthly: Math.round(h.tenure) }; })(),
+    rentals: (S.props || []).map(p => ({ name: p.n, value: p.value, loan: p.loan, rate: p.rate, rentMonthly: p.rent })), lifeEvents: S.events, debts: S.debts, spendingPattern: S.spendShape, partTimeIncome: S.ptIncome, partTimeUntil: S.ptUntil,
+    medicare: { plan: S.mcPlan, includedInPlan: S.hcInclude }, dividendCalc: { amount: S.dvAmt, rate: S.dvRate, method: S.dvMethod } };
   if (WG){ ctx.warGame = COAS.map((c, j) => ({ coa: c.n + ' ' + c.t, description: c.d, funded: WG.res.filter(x => x.r[j].funded).length + '/200', best: WG.res.filter(x => bestIdx(x.r) === j).length })); }
   return JSON.stringify(ctx);
 }
-const ASK_RULES = () => `You are a careful, plain-spoken retirement planning assistant inside a planning dashboard. You are not a licensed advisor; give educational analysis, not personal advice. Use ONLY the plan data below plus well-established U.S. rules (2026 tax law: TCJA brackets made permanent, $6,000 senior deduction 2025-2028, SECURE 2.0). Cite the user's own numbers. Cover tradeoffs and risks, including reverse mortgages, securities-based loans, annuities, Roth conversions, Social Security timing and insurance when relevant. When a dashboard tab can show more, name it (Overview, Social Security, Pension, Annuities, Accounts, Taxes & strategy, Insurance, Disability & VA benefits, Investing & risk, Spending leak, Advisor & war-game). Keep answers under 250 words, use short paragraphs or bullets, no headings. Plan data (JSON): ${planContext()}`;
+const ASK_RULES = () => `You are a careful, plain-spoken retirement planning assistant inside a planning dashboard. You are not a licensed advisor; give educational analysis, not personal advice. Use ONLY the plan data below plus well-established U.S. rules (2026 tax law: TCJA brackets made permanent, $6,000 senior deduction 2025-2028, SECURE 2.0). Cite the user's own numbers. Cover tradeoffs and risks, including reverse mortgages, securities-based loans, annuities, Roth conversions, Social Security timing and insurance when relevant. When a dashboard tab can show more, name it (Overview, Family office cockpit, Budget & life events, Wealth & family office, Portfolio & dividends, Rental properties, Medicare & healthcare, Tools & checklists, Social Security, Pension, Annuities, Accounts, Taxes & strategy, Insurance, Disability & VA benefits, Investing & risk, Spending leak, Advisor & war-game). Keep answers under 250 words, use short paragraphs or bullets, no headings. Plan data (JSON): ${planContext()}`;
 async function initAsk(){
   if (askInit) return; askInit = true;
   const chips = ['What are my three most important moves?','Should I use a reverse mortgage line of credit?','Is borrowing against my brokerage account smart for me?','How do I protect against a crash right after I retire?','When should my spouse and I claim Social Security?','Which course of action should I choose and why?'];
@@ -3565,6 +3724,143 @@ function renderRentals(){
   $('#rpEdu').innerHTML = edu.map(e => catCard(e[0], '', `<p>${e[1]}</p>`)).join('');
 }
 
+/* ---------- CASH FLOW, DEBTS & LIFE EVENTS ---------- */
+function rowRefresh(fn){ clearTimeout(tmr); tmr = setTimeout(() => { recompute(); const id = document.activeElement && document.activeElement.id; fn(); if (id){ const n = document.getElementById(id); if (n && n !== document.activeElement){ n.focus(); try { const v = n.value; if (n.type === 'text') n.setSelectionRange(v.length, v.length); } catch(_){} } } }, 450); }
+function takeHome(){ const gross = S.salary/12; const pre = (Math.min(S.salary*S.k401/100, 32500) + +S.hsa)/12; const a0 = ageOn(S.birth);
+  const t = calcTax({ ordinary: S.salary - pre*12 - (S.iraType === 'trad' ? +S.ira : 0), retInc: 0, ltcg: 0, ss: 0, year: BASE_YEAR, ages: S.filing === 'mfj' ? [a0, ageOn(S.spBirth)].map(x => Math.min(x, 64)) : [Math.min(a0, 64)], fil: S.filing === 'mfj' ? 'mfj' : 'single', s: S, idx: 1 });
+  const fica = Math.min(S.salary, SSA26.wageBase)*.062/12 + S.salary*.0145/12; const tax = (t.fed + t.state)/12 + fica; return { gross, pre, tax, net: gross - pre - tax, eff: (t.fed + t.state)/Math.max(1, S.salary) }; }
+function renderPlanner(){
+  const c = COL(), age0 = ageOn(S.birth), by = parseDate(S.birth).y;
+  // budget
+  const th = takeHome(); const B = S.bud || {};
+  $('#budFields').innerHTML = Object.keys(BUD_N).map(k => `<div class="field"><label for="bud_${k}">${BUD_N[k]}</label><input type="number" id="bud_${k}" data-bud="${k}" value="${+B[k] || 0}" step="25"></div>`).join('');
+  const dsch = debtSchedule(S.debts || [], S.dbMethod, +S.dbExtra || 0);
+  const debtPay = (S.debts || []).reduce((a, d) => a + +d.pay, 0) + (+S.dbExtra || 0);
+  const exp = Object.keys(BUD_N).reduce((a, k) => a + (+B[k] || 0), 0);
+  const planned = (+S.ira + +S.taxableC)/12;
+  const left = th.net - exp - debtPay - planned;
+  const saveRate = (S.salary*(+S.k401 + +S.match)/100 + +S.ira + +S.hsa + Math.max(0, left)*12)/Math.max(1, S.salary);
+  const cashH = (S.holdings || []).filter(h => h.t === 'cash').reduce((a, h) => a + +h.v, 0);
+  const efNeed = (exp + debtPay)*S.budEF;
+  $('#budTake').textContent = `Take-home about ${fmt(th.net)}/mo from ${fmt(th.gross)} gross, after ${fmt(th.pre)} of 401(k)/HSA and ${fmt(th.tax)} of income tax and FICA (${pct(th.eff,1)} effective income tax).`;
+  const keys = Object.keys(BUD_N); const pal = [c.pre, c.tax, c.roth, c.pen, c.hsa, c.ss, c.ann, c.ss2, c.muted];
+  chart('chBud', { type:'doughnut', data:{ labels: [...keys.map(k => BUD_N[k]), 'Debt payments'], datasets:[{ data: [...keys.map(k => +B[k] || 0), debtPay], backgroundColor: [...pal, c.bad], borderColor: c.surface, borderWidth:2 }] }, options:{ responsive:true, maintainAspectRatio:false, cutout:'58%', plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => `${ctx.label}: ${fmt(ctx.parsed)}/mo` } } } } });
+  chart('chBudFlow', { type:'bar', data:{ labels:['Gross pay','Taxes & FICA','401(k) & HSA','IRA & brokerage','Living costs','Debt payments','Left over'], datasets:[ bar('Monthly', [th.gross, -th.tax, -th.pre, -planned, -exp, -debtPay, left], [c.ink, c.bad, c.roth, c.hsa, c.pre, c.warn, left >= 0 ? c.good : c.bad]) ] }, options: baseOpts({ xType:'category', legend:false, zero:true, tip: v => fmt(v) + '/mo' }) });
+  $('#budOut').innerHTML = insight(left >= 0 ? 'good' : 'bad', 'LEFT', left >= 0 ? `<b>${fmt(left)}/mo</b> unassigned after living costs, debts and your planned ${fmt(planned)}/mo of IRA and brokerage saving. Send it to the savings order on the Accounts tab or the extra debt payment.` : `Spending, debts and planned IRA/brokerage saving exceed take-home by <b>${fmt(-left)}/mo</b>. Trim categories, or lower the IRA/brokerage saving in the sidebar so the plan matches reality.`) +
+    insight(saveRate >= .15 ? 'good' : 'warn', 'RATE', `Total saving rate about <b>${pct(saveRate,0)}</b> of gross pay including the match (15%+ is the usual target).`) +
+    insight(cashH >= efNeed ? 'good' : 'warn', 'CASH', `A ${S.budEF}-month emergency fund is <b>${fmtK(efNeed)}</b>; holdings show ${fmtK(cashH)} in cash/money market.`) +
+    insight('', 'RETIRE', exp*12 + debtPay*12 > +S.spend ? `Today's living costs and debts are ${fmtK((exp + debtPay)*12)}/yr vs. a ${fmtK(+S.spend)} retirement goal. Costs that end at retirement (commuting, debts, a paid-off mortgage) usually explain the drop.` : `Today's living costs are ${fmtK(exp*12)}/yr but your retirement goal is ${fmtK(+S.spend)}. That leaves room for travel, health care and taxes. Make sure the goal isn't overstated: it drives every projection.`);
+  // debts
+  $('#dbTable').innerHTML = `<thead><tr><th>Debt</th><th class="n">Balance $</th><th class="n">Rate %</th><th class="n">Payment $/mo</th><th class="n">Paid off</th><th class="n">Interest</th><th></th></tr></thead><tbody>${(S.debts || []).map((d, i) => { const r = dsch.ds[i];
+    return `<tr><td><input type="text" id="db_${i}_n" data-dbf="${i}" data-f="n" value="${esc(d.n)}" aria-label="Debt name"></td><td><input type="number" id="db_${i}_bal" data-dbf="${i}" data-f="bal" value="${d.bal}" step="500" style="width:110px" aria-label="Balance"></td><td><input type="number" id="db_${i}_rate" data-dbf="${i}" data-f="rate" value="${d.rate}" step="0.25" style="width:80px" aria-label="Rate"></td><td><input type="number" id="db_${i}_pay" data-dbf="${i}" data-f="pay" value="${d.pay}" step="10" style="width:90px" aria-label="Payment"></td><td class="n">${r && r.paidOff ? (() => { const t = NOW.getFullYear()*12 + NOW.getMonth() + r.paidOff; return MONTHS[t % 12] + ' ' + Math.floor(t/12); })() : '—'}</td><td class="n">${r ? fmt(r.int) : '—'}</td><td><button type="button" class="btn" data-dbtdel="${i}" aria-label="Remove">✕</button></td></tr>`; }).join('')}</tbody>`;
+  const total = (S.debts || []).reduce((a, d) => a + +d.bal, 0);
+  const minOnly = debtSchedule(S.debts || [], S.dbMethod, 0), other = debtSchedule(S.debts || [], S.dbMethod === 'avalanche' ? 'snowball' : 'avalanche', +S.dbExtra || 0);
+  const freeDate = d => { const t = NOW.getFullYear()*12 + NOW.getMonth() + d; return MONTHS[t % 12] + ' ' + Math.floor(t/12); };
+  kpis('dbKpis', [
+    { l:'Total owed', v: total, s: `${(S.debts || []).length} debts` },
+    { l:'Monthly payments', v: debtPay, f: v => fmt(v) + '/mo', s: `${pct(debtPay/Math.max(1, th.gross),0)} of gross pay` },
+    { l:'Debt-free', text: dsch.months ? freeDate(dsch.months) : 'Now', s: `${(dsch.months/12).toFixed(1)} years at this pace` },
+    { l:'Total interest', v: dsch.interest, s: S.dbMethod === 'avalanche' ? 'Avalanche order' : 'Snowball order' },
+    { l:`Extra ${fmt(+S.dbExtra || 0)}/mo saves`, v: minOnly.interest - dsch.interest, s: `${((minOnly.months - dsch.months)/12).toFixed(1)} years sooner than minimums` }
+  ]);
+  const hist = dsch.hist, step = Math.max(1, Math.ceil(hist.length/120));
+  const dsets = (S.debts || []).map((d, i) => area(d.n, hist.filter((_, k) => k % step === 0).map((h, k) => ({x: k*step/12, y: h[i]})), [c.bad, c.tax, c.hsa, c.pre, c.pen, c.ann][i % 6]));
+  chart('chDebt', { type:'line', data:{ datasets: dsets }, options: baseOpts({ stacked:true, x:{min:0, max: Math.max(1, hist.length/12)}, xTitle:'Years from now' }) });
+  const hiRate = (S.debts || []).filter(d => +d.rate >= 8);
+  $('#dbOut').innerHTML = insight('acc','ORDER', `${S.dbMethod === 'avalanche' ? 'Avalanche' : 'Snowball'} costs ${fmt(dsch.interest)} in interest; ${S.dbMethod === 'avalanche' ? 'snowball' : 'avalanche'} would cost ${fmt(other.interest)} (${fmt(Math.abs(other.interest - dsch.interest))} ${other.interest > dsch.interest ? 'more' : 'less'}).`) +
+    (hiRate.length ? insight('warn','RATE', `${hiRate.map(d => esc(d.n)).join(', ')} charge${hiRate.length > 1 ? '' : 's'} 8%+: paying ${hiRate.length > 1 ? 'them' : 'it'} off is a guaranteed return higher than expected investment returns. Keep capturing the 401(k) match first.`) : '') +
+    insight(dsch.months/12 + age0 > S.retireAge ? 'bad' : 'good', 'RETIRE', dsch.months/12 + age0 > S.retireAge ? `Debts last past your retirement at ${S.retireAge}; the remaining payments are added to retirement spending in the plan.` : `You'll be debt-free about ${Math.max(0, Math.round(S.retireAge - age0 - dsch.months/12))} years before retiring.`) +
+    insight('', 'MORTGAGE', 'Your home mortgage is handled separately (Insurance → mortgage protection, Advisor → reverse mortgage). Rental mortgages live on the Rental properties tab.');
+  // events
+  $('#evTable').innerHTML = `<thead><tr><th>Event</th><th class="n">At age</th><th class="n">Amount (today $)</th><th>Type</th><th class="n">Years</th><th></th></tr></thead><tbody>${(S.events || []).map((e, i) => `<tr><td><input type="text" id="ev_${i}_n" data-evf="${i}" data-f="n" value="${esc(e.n)}" aria-label="Event name" style="min-width:180px"></td><td><input type="number" id="ev_${i}_age" data-evf="${i}" data-f="age" value="${e.age}" style="width:70px" aria-label="Age"></td><td><input type="number" id="ev_${i}_amt" data-evf="${i}" data-f="amt" value="${e.amt}" step="1000" style="width:110px" aria-label="Amount"></td><td><select id="ev_${i}_kind" data-evf="${i}" data-f="kind" aria-label="Type"><option value="expense" ${e.kind !== 'inflow' ? 'selected' : ''}>Expense</option><option value="inflow" ${e.kind === 'inflow' ? 'selected' : ''}>Windfall / inflow</option></select></td><td><input type="number" id="ev_${i}_yrs" data-evf="${i}" data-f="yrs" value="${e.yrs || 1}" min="1" style="width:64px" aria-label="Years"></td><td><button type="button" class="btn" data-evdel="${i}" aria-label="Remove">✕</button></td></tr>`).join('')}</tbody>`;
+  const noEv = project(Object.assign({}, S, { events: [] }), { fast:true });
+  const rows = PLAN.rows;
+  chart('chEv', { type:'bar', data:{ labels: rows.map(r => r.age), datasets:[ bar('Expenses', rows.map(r => -(r.evExp || 0)/r.idx), c.bad), bar('Windfalls', rows.map(r => (r.evIn || 0)/r.idx), c.good),
+      { type:'line', label:'Portfolio with events', yAxisID:'y2', data: rows.map(r => dv(r.end, r)), borderColor: c.pre, borderWidth:2, pointRadius:0 }, { type:'line', label:'Without events', yAxisID:'y2', data: noEv.rows.map(r => dv(r.end, r)), borderColor: c.muted, borderDash:[5,4], borderWidth:1.5, pointRadius:0 } ] },
+    options: (() => { const o = baseOpts({ xType:'category', stacked:true, zero:true, y2:{ fmt: v => fmtK(v) } }); o.scales.y2.stacked = false; return o; })() });
+  const totE = rows.reduce((a, r) => a + (r.evExp || 0)/r.idx, 0), totI = rows.reduce((a, r) => a + (r.evIn || 0)/r.idx, 0);
+  const mcNo = monteCarlo(Object.assign({}, S, { events: [] }), noEv, 500, 3).success, mcYes = monteCarlo(S, PLAN, 500, 3).success;
+  $('#evOut').innerHTML = insight('acc','TOTAL', `Planned expenses <b>${fmtK(totE)}</b> and windfalls <b>${fmtK(totI)}</b> (today's dollars).`) +
+    insight(mcYes >= mcNo - .02 ? 'good' : 'warn', 'IMPACT', `Success with these events: <b>${pct(mcYes,0)}</b> vs ${pct(mcNo,0)} without; money left at ${S.le}: ${fmtK(dv(PLAN.last.end, PLAN.last))} vs ${fmtK(dv(noEv.last.end, noEv.last))}.`) +
+    insight('', 'TIPS', 'Fund near-term events (next 1–3 years) from cash or a CD ladder, not stocks. Inheritances of IRAs follow the 10-year rule; inherited taxable assets and homes get a stepped-up basis. Selling a home you lived in 2 of the last 5 years excludes up to $250,000 of gain ($500,000 joint).');
+  // shape
+  const ret = rows.filter(r => r.retired);
+  chart('chShape', { type:'line', data:{ datasets:[ line('Flat (constant real spending)', ret.map(r => ({x:r.age, y: S.spend})), c.muted, {borderDash:[5,4]}), line('Spending smile', ret.map(r => ({x:r.age, y: S.spend*SMILE(r.age)})), c.roth, {borderWidth:3}) ] }, options: baseOpts({ x:{min:S.retireAge, max:S.le}, xTitle:"Age · today's dollars", vlines:[{x:75, label:'Slow-go', color:c.muted}, {x:85, label:'No-go: health care rises', color:c.muted, row:1}] }) });
+  const alt = project(Object.assign({}, S, { spendShape: S.spendShape === 'smile' ? 'flat' : 'smile' }), { fast:true });
+  const altMc = monteCarlo(Object.assign({}, S, { spendShape: S.spendShape === 'smile' ? 'flat' : 'smile' }), alt, 500, 3).success;
+  const pt = project(Object.assign({}, S, { ptIncome: 20000, ptUntil: Math.max(S.retireAge + 3, 70) }), { fast:true });
+  const ptMc = monteCarlo(Object.assign({}, S, { ptIncome: 20000 }), pt, 500, 3).success;
+  $('#shapeOut').innerHTML = insight('acc','SMILE', `Research on actual retiree spending (e.g., Blanchett) finds real spending falls roughly 1–2% a year through the 70s and early 80s. With the <b>${S.spendShape === 'smile' ? 'smile' : 'flat'}</b> pattern you're using, success is ${pct(mcYes,0)}; the ${S.spendShape === 'smile' ? 'flat' : 'smile'} pattern gives ${pct(altMc,0)}.`) +
+    insight('good','WORK', `${+S.ptIncome ? `Part-time income of ${fmt(+S.ptIncome)}/yr until ${S.ptUntil} is in your plan.` : `Earning $20,000/yr part-time until ${Math.max(S.retireAge + 3, 70)} would lift success to ${pct(ptMc,0)} and leave ${fmtK(dv(pt.last.end, pt.last))} at ${S.le}.`} Set it in the sidebar.`);
+}
+
+/* ---------- MORE TOOLS ---------- */
+function renderTools(){
+  const c = COL(), mfj = S.filing === 'mfj', fil = mfj ? 'mfj' : 'single';
+  // state comparison
+  const r = PLAN.rows.find(x => x.retired && x.age >= Math.max(S.retireAge, S.claim)) || PLAN.retRow;
+  const keys = Object.keys(STATES).filter(k => k !== 'custom');
+  const data = keys.map(k => { const s2 = Object.assign({}, S, { state:k }); const t = calcTax({ ordinary: (r.ordBase || 0) + (r.work || 0), retInc: r.ordBase || 0, ltcg: r.ltBase || 0, ss: r.ss + r.ssSp, year: r.year, ages: r.ages || [r.age], fil, s: s2 });
+    return { k, n: STATES[k].name.replace(/ \(.*\)/, ''), inc: t.state/r.idx, prop: +S.adHome*((STATE_EXTRA[k]||{}).prop || .011), est: !!STATE_ESTATE[k] }; }).sort((a, b) => (a.inc + a.prop) - (b.inc + b.prop));
+  chart('chStates', { type:'bar', data:{ labels: data.map(d => d.n + (d.est ? ' *' : '')), datasets:[ bar('State income tax', data.map(d => d.inc), data.map(d => d.k === S.state ? c.accent : hexA(c.pre,.7))), bar('Property tax on your home', data.map(d => d.prop), data.map(d => d.k === S.state ? hexA(c.accent,.5) : hexA(c.tax,.6))) ] },
+    options: (() => { const o = baseOpts({ xType:'category', stacked:true }); o.indexAxis = 'y'; o.scales.y = { type:'category', stacked:true, grid:{display:false}, ticks:{color:c.muted} }; o.scales.x = { stacked:true, grid:{color:c.grid}, ticks:{ color:c.muted, callback: v => fmtK(v) } }; o.interaction = {mode:'index', axis:'y', intersect:false}; o.plugins.tooltip.callbacks.label = ctx => `${ctx.dataset.label}: ${fmt(ctx.parsed.x)}/yr`; return o; })() });
+  const cur = data.find(d => d.k === S.state) || data[0], best = data[0];
+  $('#stOut').innerHTML = insight('acc','YOU', `At age ${r.age} you'd pay about <b>${fmt(cur.inc)}</b> in ${cur.n} income tax plus <b>${fmt(cur.prop)}</b> property tax on a ${fmtK(+S.adHome)} home (today's dollars).`) +
+    insight(best.k === S.state ? 'good' : 'warn', 'BEST', best.k === S.state ? 'Your state is already among the cheapest for your income mix.' : `${best.n} would cost about <b>${fmt((cur.inc + cur.prop) - (best.inc + best.prop))}/yr</b> less for the same income and home value.`) +
+    insight('', 'ESTATE', '* marks states with an estate or inheritance tax (see the Wealth tab). Illinois exempts retirement income and Social Security but has high property taxes and a $4M estate tax.') +
+    insight('', 'MORE', 'Also weigh sales tax, cost of living, home insurance (high in FL and coastal areas), health-care access and family. To change domicile, move your license, voter registration, home and "near and dear" items, and file a final part-year return.');
+  // charitable
+  const rate = (+S.rvNow || 22)/100, std = TAX.std[fil] + (ageOn(S.birth) >= 65 ? TAX.add65[fil]*(mfj ? 2 : 1) : 0);
+  const salt = Math.min(40400, +S.adHome*((STATE_EXTRA[S.state]||{}).prop || .011) + S.salary*((STATES[S.state]||{}).rate || 0));
+  const other = salt + +S.adMort*.06;
+  const G = +S.cgAmt, N = +S.cgYears, agi = S.salary;
+  const floor = .005*agi;
+  const itemBenefit = extra => Math.max(0, (other + Math.max(0, extra - floor)) - std)*rate;
+  const cashEach = N*Math.max(itemBenefit(G), Math.min(G, mfj ? 2000 : 1000)*rate);
+  const daf = itemBenefit(G*N) + 0;
+  const stock = itemBenefit(G*N) + G*N*S.cgStockGain/100*.15;
+  const qcd = N*G*rate;
+  chart('chGive', { type:'bar', data:{ labels:['Cash each year','Bunch cash in a DAF','Bunch appreciated stock in a DAF','QCD from IRA (70½+)'], datasets:[ bar(`Tax saved over ${N} years`, [cashEach, daf, stock, qcd], [c.muted, c.pre, c.roth, c.hsa]) ] }, options: baseOpts({ xType:'category', legend:false }) });
+  const bestG = [['cash each year', cashEach], ['a DAF with cash', daf], ['a DAF with appreciated stock', stock], ['QCDs', qcd]].sort((a, b) => b[1] - a[1])[0];
+  $('#cgOut').innerHTML = insight('good','BEST', `Giving ${fmt(G)}/yr for ${N} years, <b>${bestG[0]}</b> saves the most: about ${fmt(bestG[1])}. Your other itemized deductions are about ${fmt(other)} vs. a ${fmt(std)} standard deduction.`) +
+    insight('', 'RULES', 'From 2026: non-itemizers can deduct up to $1,000 ($2,000 joint) of cash gifts to charities (not DAFs); itemized gifts only count above 0.5% of AGI; the SALT cap is about $40,400. QCDs (from 70½) skip AGI entirely, which also helps IRMAA and Social Security taxation.');
+  // equity comp
+  const sh = +S.eqShares, px = +S.eqPrice, gp = +S.eqGrant, sup = S.eqSup/100, marg = (+S.rvNow || 22)/100 + ((STATES[S.state]||{}).rate || 0);
+  let val, taxNow, note, gap = 0;
+  if (S.eqType === 'rsu'){ val = sh*px; taxNow = val*marg; gap = val*(marg - sup - ((STATES[S.state]||{}).rate || 0)); note = `RSUs are taxed as wages when they vest: ${fmtK(val)} of income. Employers withhold ${pct(sup,0)} federal, but your bracket is ${S.rvNow}%: set aside about <b>${fmtK(Math.max(0, gap))}</b> more for April. Selling at vest costs no extra tax and diversifies.`; }
+  else if (S.eqType === 'espp'){ const cost = sh*px*(1 - S.eqDiscount/100); val = sh*px - cost; taxNow = val*marg; note = `Buying ${sh} shares at a ${S.eqDiscount}% discount costs ${fmtK(cost)} for ${fmtK(sh*px)} of stock: an instant ${pct(S.eqDiscount/(100 - S.eqDiscount),1)} return. Selling right away (disqualifying) taxes the discount as wages; holding 2 years from offering and 1 from purchase makes later gains long-term.`; }
+  else if (S.eqType === 'iso'){ val = Math.max(0, px - gp)*sh; taxNow = Math.max(0, val - (mfj ? 140000 : 90000))*.26; note = `Exercising creates a ${fmtK(val)} "bargain element" that is not regular income but counts for the AMT; a rough AMT exposure is <b>${fmtK(taxNow)}</b>. Hold 1 year after exercise and 2 after grant for long-term gains on everything; exercise in low-income years or in tranches to stay under the AMT exemption.`; }
+  else { val = Math.max(0, px - gp)*sh; taxNow = val*(marg + .0765); note = `NSO exercise spread of ${fmtK(val)} is taxed as wages (income + payroll tax) when you exercise. Exercise and sell together to diversify, or exercise early when the spread is small.`; }
+  const nwT = S.bPre + S.bRoth + S.bTax + S.bHsa + Math.max(0, S.adHome - S.adMort);
+  kpis('eqKpis', [ { l:'Value / spread', v: val }, { l:'Tax at vest or exercise', v: taxNow, s: S.eqType === 'iso' ? 'Potential AMT' : `At about ${pct(marg,0)}` }, { l:'Concentration', v: sh*px/Math.max(1, nwT), f: v => pct(v,0), s: 'Of net worth in one stock', pill: sh*px/Math.max(1, nwT) > .1 ? ['warn','Over 10%'] : ['good','OK'] } ]);
+  $('#eqOut').innerHTML = insight('acc', S.eqType.toUpperCase(), note) + insight('', 'RISK', 'Keep any single stock under 10% of net worth. For large positions: sell systematically (10b5-1 plan if you are an insider), donate appreciated shares, use an exchange fund, or hold to death for the step-up.');
+  // ladder
+  const A = +S.ldAmt, n = clamp(+S.ldYears, 2, 30), ry = S.ldRate/100;
+  const P = ry ? A*ry/(1 - Math.pow(1+ry, -n)) : A/n; const infl = S.infl/100;
+  const lab = Array.from({length:n}, (_, i) => new Date().getFullYear() + i + 1);
+  const prin = lab.map((_, t) => P/Math.pow(1+ry, t+1)); const intr = prin.map(p => P - p);
+  const nom = t => S.ldType === 'tips' ? Math.pow(1 + infl, t+1) : 1;
+  chart('chLadder2', { type:'bar', data:{ labels: lab, datasets:[ bar('Principal maturing', prin.map((p, t) => p*nom(t)), c.pre), bar('Interest', intr.map((p, t) => p*nom(t)), c.roth) ] }, options: baseOpts({ xType:'category', stacked:true, tip: v => fmt(v) }) });
+  $('#ldOut').innerHTML = insight('acc','INCOME', `${fmtK(A)} buys <b>${fmt(P)}/yr</b> (${fmt(P/12)}/mo) for ${n} years${S.ldType === 'tips' ? ", rising with inflation (shown in future dollars)" : ', level'}. That's ${pct(P/A,1)} a year vs. 4% (${fmt(A*.04)}) from a balanced portfolio, but it ends after year ${n}.`) +
+    insight('', 'USE', S.ldType === 'tips' ? 'A TIPS ladder from retirement to 70 is a common way to bridge the years while delaying Social Security, inflation-protected. Hold TIPS in IRAs: their inflation adjustment is taxed yearly in taxable accounts.' : S.ldType === 'cd' ? 'CDs are FDIC-insured to $250,000 per bank per ownership category; brokered CDs make laddering across banks easy.' : 'Treasuries are state-tax-free and can be held to maturity with no price risk.');
+  // scenarios
+  const sc = S.scen || [];
+  $('#scTable').innerHTML = sc.length ? tbl(['Scenario','Saved','Retire','Claim SS','Spending','Success','At retirement','Money lasts','Lifetime tax','Legacy',''], sc.map((x, i) => [`<b>${esc(x.name)}</b>`, x.at, x.k.retire, x.k.claim, fmtK(x.k.spend), pct(x.k.succ,0), fmtK(x.k.nest), x.k.lasts, fmtK(x.k.tax), fmtK(x.k.legacy), `<button type="button" class="btn" data-scload="${i}">Load</button> <button type="button" class="btn" data-scdel="${i}" aria-label="Delete">✕</button>`]), [5,6,8,9]) : '<tbody><tr><td class="muted">No saved scenarios yet.</td></tr></tbody>';
+  $('#bkText').placeholder = 'Click "Copy plan" to copy your inputs, or paste a copied plan here and click "Load plan".';
+  // checklist
+  const chk = S.check || {}; let done = 0, all = 0;
+  $('#ckList').innerHTML = CHECK.map(([g, items]) => { const d = items.filter(i => chk[i[0]]).length; done += d; all += items.length;
+    return `<article class="cat"><h4><span>${g}</span><span class="pill ${d === items.length ? 'good' : ''}">${d}/${items.length}</span></h4>${items.map(([k, t]) => `<label class="check" style="align-items:flex-start"><input type="checkbox" data-chk="${k}" ${chk[k] ? 'checked' : ''}> <span>${t}</span></label>`).join('')}</article>`; }).join('');
+  $('#ckProg').textContent = `${done} of ${all} done (${pct(done/Math.max(1, all),0)}). Saved in this browser.`;
+  requestAnimationFrame(() => { $('#ckBar').style.width = (done/Math.max(1, all)*100) + '%'; });
+}
+function scenSnapshot(name){
+  const s = JSON.parse(JSON.stringify(S)); delete s.scen; delete s.check;
+  const rr = PLAN.retRow;
+  return { name: name || `Scenario ${(S.scen || []).length + 1}`, at: MONTHS[NOW.getMonth()] + ' ' + NOW.getDate(), s,
+    k: { retire: S.retireAge, claim: S.claim, spend: +S.spend, succ: MC.success, nest: rr.start/rr.idx, lasts: PLAN.depleted ? 'Age ' + PLAN.depleted.age : 'Past ' + S.le, tax: PLAN.lifeTaxReal, legacy: legacyOf(S, PLAN) } };
+}
+
 /* ---------- BENEFITS ---------- */
 function ssdiCalc(){
   const pia = piaFromAime(+S.sdAime);
@@ -3738,7 +4034,7 @@ function renderLeak(){
 }
 
 /* ---------- Router & init ---------- */
-const VIEWS = { overview: renderOverview, rentals: renderRentals, cockpit: renderCockpit, portfolio: renderPortfolio, healthcare: renderHealthcare, advisor: renderAdvisor, wealth: renderWealth, 'social-security': renderSS, pension: renderPension, annuities: renderAnnuities, accounts: renderAccounts, taxes: renderTaxes, insurance: renderInsurance, benefits: renderBenefits, investing: renderInvesting, leak: renderLeak };
+const VIEWS = { overview: renderOverview, planner: renderPlanner, tools: renderTools, rentals: renderRentals, cockpit: renderCockpit, portfolio: renderPortfolio, healthcare: renderHealthcare, advisor: renderAdvisor, wealth: renderWealth, 'social-security': renderSS, pension: renderPension, annuities: renderAnnuities, accounts: renderAccounts, taxes: renderTaxes, insurance: renderInsurance, benefits: renderBenefits, investing: renderInvesting, leak: renderLeak };
 function current(){ const h = location.hash.replace('#',''); return VIEWS[h] ? h : 'overview'; }
 function show(){
   const v = current();
@@ -3768,12 +4064,26 @@ function init(){
   document.addEventListener('input', e => { const el = e.target; if (el.dataset.k){ const k = el.dataset.k; if (el.type === 'checkbox') S[k] = el.checked; else if (el.type === 'number') S[k] = el.value === '' ? '' : +el.value; else S[k] = el.value; changed(); }
     if (el.dataset.h !== undefined && el.tagName !== 'SELECT'){ const i = +el.dataset.h, f = el.dataset.f; S.holdings[i][f] = el.type === 'number' ? +el.value : el.value; S._touched = true; save(); clearTimeout(tmr); tmr = setTimeout(() => { if (current() === 'portfolio') { const ae = document.activeElement; const sel = ae && ae.dataset ? [ae.dataset.h, ae.dataset.f] : null; renderPortfolio(); if (sel) { const n = document.querySelector(`[data-h="${sel[0]}"][data-f="${sel[1]}"]`); if (n) { n.focus(); } } } }, 450); }
     if (el.dataset.rpf !== undefined){ const k = el.dataset.rpf; const pr = S.props[+S.rpSel]; if (pr){ pr[k] = el.type === 'number' ? +el.value : el.value; S._touched = true; save(); clearTimeout(tmr); tmr = setTimeout(() => { recompute(); if (current() === 'rentals'){ const id = document.activeElement && document.activeElement.id; renderRentals(); if (id){ const n = document.getElementById(id); if (n) n.focus(); } } }, 450); } }
+    if (el.dataset.bud){ S.bud = S.bud || {}; S.bud[el.dataset.bud] = +el.value || 0; S._touched = true; save(); rowRefresh(renderPlanner); }
+    if (el.dataset.dbf !== undefined && el.tagName !== 'SELECT'){ const d = S.debts[+el.dataset.dbf]; if (d){ d[el.dataset.f] = el.type === 'number' ? +el.value : el.value; S._touched = true; save(); rowRefresh(renderPlanner); } }
+    if (el.dataset.evf !== undefined && el.tagName !== 'SELECT'){ const e2 = S.events[+el.dataset.evf]; if (e2){ e2[el.dataset.f] = el.type === 'number' ? +el.value : el.value; S._touched = true; save(); rowRefresh(renderPlanner); } }
+    if (el.dataset.chk){ S.check = S.check || {}; S.check[el.dataset.chk] = el.checked; save(); renderTools(); }
     if (el.dataset.va !== undefined){ const i = +el.dataset.va, f = el.dataset.f; S.vaRatings[i][f] = f === 'b' ? el.checked : f === 'r' ? +el.value : el.value; changed(); }
     if (el.id === 'acSearch') renderAccounts(); if (el.id === 'faqSearch') renderFaq(); });
-  document.addEventListener('change', e => { const el = e.target; if (el.dataset.h !== undefined && el.tagName === 'SELECT'){ S.holdings[+el.dataset.h][el.dataset.f] = el.value; save(); renderPortfolio(); } if (['wgFMarket','wgFEvent','wgFLife','wgFOnly'].includes(el.id)) renderWarGame(); if (el.tagName === 'SELECT' && el.dataset.k){ S[el.dataset.k] = el.value; changed(); } if (el.dataset.va !== undefined && el.tagName === 'SELECT'){ S.vaRatings[+el.dataset.va].r = +el.value; changed(); } });
+  document.addEventListener('change', e => { const el = e.target; if (el.dataset.evf !== undefined && el.tagName === 'SELECT'){ S.events[+el.dataset.evf][el.dataset.f] = el.value; save(); recompute(); renderPlanner(); } if (el.dataset.h !== undefined && el.tagName === 'SELECT'){ S.holdings[+el.dataset.h][el.dataset.f] = el.value; save(); renderPortfolio(); } if (['wgFMarket','wgFEvent','wgFLife','wgFOnly'].includes(el.id)) renderWarGame(); if (el.tagName === 'SELECT' && el.dataset.k){ S[el.dataset.k] = el.value; changed(); } if (el.dataset.va !== undefined && el.tagName === 'SELECT'){ S.vaRatings[+el.dataset.va].r = +el.value; changed(); } });
   document.addEventListener('click', e => { const t = e.target.closest('button'); if (!t) return;
     if (t.dataset.cat){ acCat = t.dataset.cat; renderAccounts(); }
     if (t.id === 'wgRun') runWarGame();
+    if (t.id === 'dbAdd'){ S.debts.push({ n:'New debt', bal:5000, rate:9, pay:150 }); changed(); }
+    if (t.dataset.dbtdel !== undefined){ S.debts.splice(+t.dataset.dbtdel, 1); changed(); }
+    if (t.id === 'evAdd'){ S.events.push({ n:'New event', age: Math.max(+S.retireAge, ageOn(S.birth) + 1), amt:10000, kind:'expense', yrs:1 }); changed(); }
+    if (t.dataset.evdel !== undefined){ S.events.splice(+t.dataset.evdel, 1); changed(); }
+    if (t.dataset.evp){ const a0 = ageOn(S.birth); const pre = { inherit:{ n:'Inheritance', age: a0 + 8, amt:150000, kind:'inflow', yrs:1 }, downsize:{ n:'Downsize: net proceeds from home sale', age:75, amt: Math.round(Math.max(0, S.adHome - S.adMort)*.4/5000)*5000 || 100000, kind:'inflow', yrs:1 }, wedding:{ n:"Child's wedding", age: a0 + 3, amt:30000, kind:'expense', yrs:1 }, care:{ n:'Help an aging parent', age: a0 + 2, amt:12000, kind:'expense', yrs:5 }, ltc:{ n:'Long-term care', age:84, amt: CARE.al*12, kind:'expense', yrs:3 } }[t.dataset.evp]; if (pre){ S.events.push(pre); changed(); } }
+    if (t.id === 'scSave'){ S.scen = S.scen || []; S.scen.push(scenSnapshot($('#scName').value.trim())); $('#scName').value = ''; save(); renderTools(); }
+    if (t.dataset.scload !== undefined){ const x = (S.scen || [])[+t.dataset.scload]; if (x){ const keep = { scen: S.scen, check: S.check, _real: S._real }; S = Object.assign({}, DEFAULTS, JSON.parse(JSON.stringify(x.s)), keep); changed(); } }
+    if (t.dataset.scdel !== undefined){ S.scen.splice(+t.dataset.scdel, 1); save(); renderTools(); }
+    if (t.id === 'bkCopy'){ const txt = JSON.stringify(Object.assign({}, S, { scen: undefined })); $('#bkText').value = txt; const note = $('#bkNote'); try { navigator.clipboard.writeText(txt).then(() => note.textContent = 'Copied.', () => { $('#bkText').select(); note.textContent = 'Select the text below and copy it.'; }); } catch(_){ $('#bkText').select(); note.textContent = 'Select the text below and copy it.'; } }
+    if (t.id === 'bkLoad'){ const note = $('#bkNote'); try { const o = JSON.parse($('#bkText').value); if (!o || typeof o !== 'object' || !o.birth) throw 0; const keep = { scen: S.scen }; S = Object.assign({}, DEFAULTS, o, keep); note.textContent = 'Plan loaded.'; changed(); } catch(_){ note.textContent = 'That text is not a plan backup. Copy it again from "Copy plan".'; } }
     if (t.dataset.rp !== undefined){ S.rpSel = +t.dataset.rp; save(); renderRentals(); }
     if (t.id === 'rpAdd'){ S.props.push({ n:'Property ' + (S.props.length + 1), py: NOW.getFullYear() - 5, price:300000, value:350000, loan:200000, rate:5, yrs:25, rent:2500, vac:5, ptax:6000, ins:1600, hoa:0, maint:8, mgmt:8, capex:5, land:20, app:3.5, rg:3, eg:3 }); S.rpSel = S.props.length - 1; changed(); }
     if (t.id === 'rpNew'){ const pr = 400000; S.props.push({ n:'New purchase', py: NOW.getFullYear() + 1, price:pr, value:pr, loan:pr*.75, rate:+S.rpNewRate, yrs:30, rent:3000, vac:5, ptax:7200, ins:1800, hoa:0, maint:8, mgmt:8, capex:5, land:20, app:3.5, rg:3, eg:3 }); S.rpSel = S.props.length - 1; changed(); }
