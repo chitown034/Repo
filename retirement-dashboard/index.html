@@ -220,6 +220,14 @@ tr.hl td{background:var(--accent-soft)}
 .org-kids{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; width:100%; position:relative; padding-top:12px; border-top:2px solid var(--line)}
 .org-node{display:flex; flex-direction:column; gap:5px; padding:10px 12px; border:1px solid var(--line); border-radius:var(--r); background:var(--surface-2); min-width:0}
 .org-node .pill{align-self:flex-start}
+.sankey-wrap{overflow-x:auto}
+.sankey-wrap svg{width:100%; min-width:640px; height:auto; display:block}
+.goals{display:flex; flex-direction:column; gap:10px; margin-top:12px}
+.goal-h{display:flex; justify-content:space-between; gap:10px; font-size:13px; flex-wrap:wrap}
+.goal-bar{height:12px; border-radius:7px; background:var(--surface-2); border:1px solid var(--line); overflow:hidden; margin-top:4px}
+.goal-bar i{display:block; height:100%; transition:width .9s cubic-bezier(.2,.7,.2,1)}
+.ledger-d summary{cursor:pointer; font-weight:600}
+#pfHold input, #pfHold select{font-size:12.5px; padding:4px 6px}
 .disclaimer{font-size:11.5px; color:var(--muted); border-top:1px solid var(--line); padding-top:12px; max-width:110ch}
 .foot-space{height:8px}
 @media (prefers-reduced-motion: reduce){ .view.on{animation:none} .kpi .bar i, .bracket-bar div, .flow-row .track i{transition:none} }
@@ -239,8 +247,11 @@ tr.hl td{background:var(--accent-soft)}
     </div>
     <nav class="tabs" aria-label="Sections">
       <a href="#overview">Overview</a>
+      <a href="#cockpit">Family office cockpit</a>
       <a href="#advisor">Advisor &amp; war-game</a>
       <a href="#wealth">Wealth &amp; family office</a>
+      <a href="#portfolio">Portfolio &amp; dividends</a>
+      <a href="#healthcare">Medicare &amp; healthcare</a>
       <a href="#social-security">Social Security</a>
       <a href="#pension">Pension</a>
       <a href="#annuities">Annuities</a>
@@ -489,6 +500,146 @@ tr.hl td{background:var(--accent-soft)}
         <div class="card"><div class="card-head"><h3>Family office analysis</h3></div><div class="insights" id="foOut"></div></div>
       </div>
       <div class="card"><div class="card-head"><h3>Family governance checklist</h3><p>What family offices put in place; most of it works at any wealth level.</p></div><div class="cat-grid" id="wlGov"></div></div>
+    </section>
+
+    <!-- COCKPIT -->
+    <section class="view" id="v-cockpit" aria-labelledby="h-ck">
+      <div class="view-head"><div><span class="eyebrow">Family office view</span><h2 id="h-ck">Family office cockpit</h2></div>
+        <p>The whole household on one screen: net worth across every asset, where each year's money comes from and goes, risks scored side by side, goals funded in priority order, and the cash ladder that protects spending from markets.</p></div>
+      <div class="card">
+        <div class="inline-fields">
+          <div class="field w"><label for="ckView">Lens</label><select id="ckView" data-k="ckView"><option value="household">Household plan as entered</option><option value="survivor">Survivor: spouse dies at 75</option><option value="crash">Crash in first year of retirement</option><option value="care">Long-term care: 3 years at 82</option><option value="long">Longevity: both live to 100</option></select></div>
+          <div class="field w"><label for="ckAge">Cash-flow year (age)</label><input type="range" id="ckAge" data-k="ckAge"></div>
+          <span class="pill acc" id="ckAgeLbl"></span>
+        </div>
+      </div>
+      <div class="kpis" id="ckKpis"></div>
+      <div class="card">
+        <div class="card-head"><h3>Family balance sheet over time</h3><p>Every asset class, with the mortgage as a liability, through age <span class="lbl-le"></span>.</p></div>
+        <div class="chart lg"><canvas id="chNW"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Where the money comes from and where it goes</h3><p id="ckFlowNote"></p></div>
+        <div class="sankey-wrap"><svg id="ckSankey" role="img" aria-label="Cash flow from income sources to uses"></svg></div>
+      </div>
+      <div class="grid g2">
+        <div class="card"><div class="card-head"><h3>Risk radar</h3><p>0 = well covered, 100 = serious exposure.</p></div><div class="chart"><canvas id="chRadar"></canvas></div><div class="insights" id="ckRisk" style="margin-top:10px"></div></div>
+        <div class="card">
+          <div class="card-head"><h3>Goals, funded in priority order</h3><p>Present value of each goal vs. resources, in today's dollars.</p></div>
+          <div class="inline-fields">
+            <div class="field"><label for="ckEss">Essential share of spending %</label><input type="number" id="ckEss" data-k="ckEss" step="5"></div>
+            <div class="field"><label for="ckWish">Wishes $/yr (travel, gifts)</label><input type="number" id="ckWish" data-k="ckWish" step="1000"></div>
+            <div class="field"><label for="ckWishTo">…until age</label><input type="number" id="ckWishTo" data-k="ckWishTo"></div>
+            <div class="field"><label for="ckLegacy">Legacy goal $</label><input type="number" id="ckLegacy" data-k="ckLegacy" step="50000"></div>
+          </div>
+          <div class="goals" id="ckGoals"></div>
+        </div>
+      </div>
+      <div class="grid g2">
+        <div class="card"><div class="card-head"><h3>Liquidity ladder (bucket strategy)</h3><p>Net withdrawals the portfolio must fund, matched to the assets that should hold them.</p></div><div class="chart"><canvas id="chLadder"></canvas></div><div class="insights" id="ckLadder" style="margin-top:10px"></div></div>
+        <div class="card">
+          <div class="card-head"><h3>How much do you need?</h3><p>Target nest egg from your spending gap and a withdrawal rate.</p></div>
+          <div class="inline-fields"><div class="field"><label for="ckSwr">Withdrawal rate</label><select id="ckSwr" data-k="ckSwr"><option value="3">3.0%</option><option value="3.5">3.5%</option><option value="4">4.0%</option><option value="4.5">4.5%</option><option value="5">5.0%</option></select></div></div>
+          <div class="big-callout" id="ckNeed" style="margin-top:10px"></div>
+          <div class="chart sm" style="margin-top:12px"><canvas id="chNeed2"></canvas></div>
+        </div>
+      </div>
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-head"><h3>Inflation and purchasing power</h3></div>
+          <div class="inline-fields"><div class="field"><label for="ckAmt">Amount today $</label><input type="number" id="ckAmt" data-k="ckAmt" step="10000"></div><div class="field"><label for="ckInfl">Your inflation %</label><input type="number" id="ckInfl" data-k="ckInfl" step="0.25"></div></div>
+          <div class="chart sm" style="margin-top:12px"><canvas id="chInflPP"></canvas></div><div class="insights" id="ckInflOut" style="margin-top:10px"></div>
+        </div>
+        <div class="card"><div class="card-head"><h3>Two-generation legacy</h3><p>What heirs receive and how it grows, by account type.</p></div><div class="chart sm"><canvas id="chGen"></canvas></div><div class="insights" id="ckGen" style="margin-top:10px"></div></div>
+      </div>
+      <div class="card"><div class="card-head"><h3>Holistic review</h3><p>Every planning area, its status from your numbers, and where to go next.</p></div><div class="tbl-wrap"><table id="ckReview"></table></div></div>
+    </section>
+
+    <!-- PORTFOLIO -->
+    <section class="view" id="v-portfolio" aria-labelledby="h-pf">
+      <div class="view-head"><div><span class="eyebrow">Mutual funds, ETFs &amp; brokerage</span><h2 id="h-pf">Portfolio &amp; dividend income</h2></div>
+        <p>Analyze your holdings for fees, taxes and asset location, then see how much a dividend portfolio can pay you each month at 4% with inflation, tested against real market history and 1,000 simulations.</p></div>
+      <div class="card">
+        <div class="card-head"><h3>Your holdings</h3><p>Edit funds, accounts and fees. Example holdings match the sidebar balances.</p></div>
+        <div class="tbl-wrap"><table id="pfHold"></table></div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px"><button class="btn" type="button" id="pfAdd">Add a holding</button><button class="btn" type="button" id="pfSync">Use these totals as my plan balances</button><span class="small muted" id="pfSyncNote" style="align-self:center"></span></div>
+      </div>
+      <div class="kpis" id="pfKpis"></div>
+      <div class="grid g3">
+        <div class="card"><div class="card-head"><h3>Asset allocation</h3></div><div class="chart sm"><canvas id="chAlloc"></canvas></div><div class="legend" id="pfAllocLeg"></div></div>
+        <div class="card"><div class="card-head"><h3>Asset location</h3><p>Asset classes by account.</p></div><div class="chart sm"><canvas id="chLoc"></canvas></div></div>
+        <div class="card"><div class="card-head"><h3>Annual income by holding</h3></div><div class="chart sm"><canvas id="chYield"></canvas></div></div>
+      </div>
+      <div class="grid g-side">
+        <div class="card"><div class="card-head"><h3>What fees and fund taxes cost over 30 years</h3><p>Your portfolio vs. the same mix at index-fund costs held tax-efficiently.</p></div><div class="chart"><canvas id="chFees"></canvas></div></div>
+        <div class="card"><div class="card-head"><h3>Holding-by-holding review</h3></div><div class="insights" id="pfOut"></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Dividend portfolio income: how much can you draw each month?</h3><p>Withdraw a set rate, raise it with inflation, and see whether the money lasts.</p></div>
+        <div class="inline-fields">
+          <div class="field"><label for="dvAmt">Portfolio $</label><input type="number" id="dvAmt" data-k="dvAmt" step="50000"></div>
+          <div class="field"><label for="dvRate">Withdrawal rate %</label><input type="number" id="dvRate" data-k="dvRate" step="0.25"></div>
+          <div class="field w"><label for="dvMethod">Withdrawal method</label><select id="dvMethod" data-k="dvMethod"><option value="real">4% rule: fixed, raised with inflation</option><option value="pct">Same % of each year's balance</option><option value="div">Spend dividends only</option><option value="guard">Guardrails (cut/raise 10%)</option></select></div>
+          <div class="field"><label for="dvYield">Dividend yield %</label><input type="number" id="dvYield" data-k="dvYield" step="0.1"></div>
+          <div class="field"><label for="dvDivG">Dividend growth %/yr</label><input type="number" id="dvDivG" data-k="dvDivG" step="0.25"></div>
+          <div class="field"><label for="dvPriceG">Price growth %/yr</label><input type="number" id="dvPriceG" data-k="dvPriceG" step="0.25"></div>
+          <div class="field"><label for="dvInfl">Inflation %</label><input type="number" id="dvInfl" data-k="dvInfl" step="0.25"></div>
+          <div class="field"><label for="dvYears">Years</label><input type="number" id="dvYears" data-k="dvYears" min="5" max="50"></div>
+          <div class="field"><label for="dvAcct">Held in</label><select id="dvAcct" data-k="dvAcct"><option value="tax">Taxable brokerage</option><option value="pre">IRA / 401(k)</option><option value="roth">Roth IRA</option></select></div>
+          <div class="field"><label for="dvTax">Tax rate on the income %</label><input type="number" id="dvTax" data-k="dvTax" step="1"></div>
+          <div class="field"><label for="dvMix">Stocks for risk tests</label><select id="dvMix" data-k="dvMix"><option value="100">100% stocks</option><option value="80">80 / 20</option><option value="60">60 / 40</option><option value="40">40 / 60</option></select></div>
+        </div>
+        <div class="big-callout" id="dvCallout" style="margin-top:12px"></div>
+        <div class="kpis" id="dvKpis" style="margin-top:12px"></div>
+        <div class="grid g2" style="margin-top:12px">
+          <div><h4 style="margin-bottom:6px">Balance path</h4><div class="chart"><canvas id="chDvBal"></canvas></div></div>
+          <div><h4 style="margin-bottom:6px">Monthly income: dividends vs. principal sold</h4><div class="chart"><canvas id="chDvInc"></canvas></div></div>
+        </div>
+        <div class="grid g2" style="margin-top:12px">
+          <div><h4 style="margin-bottom:6px">1,000 simulated markets</h4><div class="chart"><canvas id="chDvMC"></canvas></div></div>
+          <div><div class="card-head" style="margin-bottom:6px"><h4>Real history: retiring in each year since 1996</h4><div class="field" style="width:140px"><label for="dvStart">Highlight start year</label><select id="dvStart" data-k="dvStart"></select></div></div><div class="chart"><canvas id="chDvHist"></canvas></div></div>
+        </div>
+        <div style="margin-top:14px"><h4 style="margin-bottom:6px">Success rate by withdrawal rate and years (simulated, inflation-adjusted withdrawals)</h4><div class="tbl-wrap"><table id="dvHeat" class="heat"></table></div></div>
+        <div class="insights" id="dvOut" style="margin-top:12px"></div>
+        <details class="ledger-d" style="margin-top:12px"><summary>Year-by-year table</summary><div class="tbl-wrap" style="max-height:420px; margin-top:8px"><table id="dvTable"></table></div></details>
+      </div>
+      <div class="card"><div class="card-head"><h3>Mutual funds vs. ETFs vs. individual stocks</h3></div><div class="cat-grid" id="pfEdu"></div></div>
+    </section>
+
+    <!-- HEALTHCARE -->
+    <section class="view" id="v-healthcare" aria-labelledby="h-hc">
+      <div class="view-head"><div><span class="eyebrow">The biggest variable expense</span><h2 id="h-hc">Medicare &amp; healthcare</h2></div>
+        <p>Costs before and after 65, Medigap vs. Medicare Advantage, ACA subsidies before Medicare, IRMAA surcharges, enrollment deadlines, and lifetime healthcare spending with medical inflation.</p></div>
+      <div class="card">
+        <div class="inline-fields">
+          <div class="field w"><label for="mcPlan">Coverage after 65</label><select id="mcPlan" data-k="mcPlan"><option value="medigapG">Original Medicare + Medigap Plan G + Part D</option><option value="medigapN">Original Medicare + Medigap Plan N + Part D</option><option value="ma">Medicare Advantage (Part C)</option><option value="tfl">Medicare + TRICARE For Life</option><option value="employer">Employer retiree plan</option></select></div>
+          <div class="field w"><label for="mcUse">Expected health-care use</label><select id="mcUse" data-k="mcUse"><option value="low">Low (healthy, few visits)</option><option value="moderate">Moderate (a few conditions)</option><option value="high">High (chronic conditions)</option><option value="severe">Severe (hospitalization, specialists)</option></select></div>
+          <div class="field"><label for="mcGapPrem">Medigap/plan premium at 65 $/mo</label><input type="number" id="mcGapPrem" data-k="mcGapPrem" step="5"></div>
+          <div class="field"><label for="mcPartD">Part D premium $/mo</label><input type="number" id="mcPartD" data-k="mcPartD" step="5"></div>
+          <div class="field"><label for="mcDental">Dental, vision, hearing $/yr</label><input type="number" id="mcDental" data-k="mcDental" step="100"></div>
+          <div class="field"><label for="mcHInfl">Health-care inflation %</label><input type="number" id="mcHInfl" data-k="mcHInfl" step="0.25"></div>
+          <label class="check" style="width:auto"><input type="checkbox" id="hcInclude" data-k="hcInclude"> Add these costs on top of my spending goal in the plan</label>
+        </div>
+      </div>
+      <div class="kpis" id="mcKpis"></div>
+      <div class="card"><div class="card-head"><h3>Health-care costs every year of retirement</h3><p id="mcNote"></p></div><div class="chart lg"><canvas id="chMed"></canvas></div></div>
+      <div class="grid g2">
+        <div class="card"><div class="card-head"><h3>Medigap vs. Medicare Advantage by health</h3><p>Annual cost per person at 65 (premiums + out-of-pocket), today's dollars.</p></div><div class="chart"><canvas id="chMedCmp"></canvas></div></div>
+        <div class="card"><div class="card-head"><h3>IRMAA: income tiers and surcharges</h3><p>Yearly Part B + D surcharge per person by MAGI, 2026 thresholds.</p></div><div class="chart"><canvas id="chIrmaa"></canvas></div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Before 65: ACA marketplace premium after subsidy</h3><p>2026 rules: the enhanced credits expired, so the 400%-of-poverty cliff is back.</p></div>
+        <div class="inline-fields">
+          <div class="field"><label for="acaAge">Your age at retirement</label><input type="number" id="acaAge" data-k="acaAge" min="40" max="64"></div>
+          <div class="field"><label for="acaMagi">Household MAGI $</label><input type="number" id="acaMagi" data-k="acaMagi" step="1000"></div>
+          <div class="field"><label for="acaHH">Household size</label><input type="number" id="acaHH" data-k="acaHH" min="1" max="8"></div>
+          <button class="btn" type="button" id="acaUse">Use this premium as my pre-Medicare health cost</button>
+        </div>
+        <div class="grid g-side" style="margin-top:12px"><div class="chart"><canvas id="chAca"></canvas></div><div class="insights" id="acaOut"></div></div>
+      </div>
+      <div class="card"><div class="card-head"><h3>Enrollment deadlines for your household</h3></div><div class="timeline" id="mcTimeline"></div></div>
+      <div class="card"><div class="card-head"><h3>How Medicare and health coverage work</h3></div><div class="cat-grid" id="mcEdu"></div></div>
     </section>
 
     <!-- SOCIAL SECURITY -->
@@ -1424,6 +1575,62 @@ const FO_MODELS = [
  {n:'Single-family office', min:150e6, max:Infinity, cost: nw => Math.max(1500000, nw*.008), svc:'In-house CIO, tax, legal, security, private trust company'}
 ];
 
+/* ---------- Medicare, healthcare, portfolio & cockpit data ---------- */
+Object.assign(DEFAULTS, {
+  mcPlan:'medigapG', mcUse:'moderate', mcHInfl:5, mcPartD:40, mcGapPrem:175, mcDental:1200, hcInclude:false,
+  acaAge:62, acaMagi:62000, acaHH:2,
+  holdings:[
+    {n:'S&P 500 index fund (ETF)', t:'usLarge', a:'pre', v:280000, er:.03, y:1.3, cg:0},
+    {n:'Target-date 2030 mutual fund', t:'balanced', a:'pre', v:150000, er:.12, y:2.2, cg:.5},
+    {n:'Intermediate bond index fund', t:'bond', a:'pre', v:75000, er:.05, y:4.0, cg:0},
+    {n:'Actively managed growth mutual fund', t:'usLarge', a:'tax', v:60000, er:.85, y:.4, cg:6},
+    {n:'Dividend appreciation ETF', t:'dividend', a:'tax', v:50000, er:.06, y:1.8, cg:0},
+    {n:'Municipal bond fund', t:'muni', a:'tax', v:25000, er:.09, y:3.1, cg:0},
+    {n:'Money market fund', t:'cash', a:'tax', v:15000, er:.11, y:4.0, cg:0},
+    {n:'REIT index fund', t:'reit', a:'roth', v:30000, er:.13, y:3.8, cg:0},
+    {n:'International index fund', t:'intl', a:'roth', v:70000, er:.07, y:3.0, cg:0}
+  ],
+  dvAmt:1000000, dvRate:4, dvYield:3, dvDivG:5, dvPriceG:4.5, dvInfl:2.5, dvYears:30, dvTax:15, dvAcct:'tax', dvMethod:'real', dvMix:80, dvStart:2000,
+  ckView:'household', ckAge:70, ckEss:70, ckWish:10000, ckWishTo:80, ckLegacy:500000, ckSwr:4, ckInfl:3, ckAmt:100000
+});
+const ASSET_T = {
+  usLarge:{n:'U.S. stocks', k:'stock', r:7, sd:16, col:'pre'}, dividend:{n:'Dividend stocks', k:'stock', r:6.8, sd:14, col:'roth'}, intl:{n:'International stocks', k:'stock', r:7, sd:18, col:'hsa'},
+  smallMid:{n:'Small/mid-cap', k:'stock', r:7.5, sd:21, col:'ss'}, balanced:{n:'Balanced / target-date', k:'mix', r:5.8, sd:10, col:'pen'}, bond:{n:'Taxable bonds', k:'bond', r:4.5, sd:6, col:'tax'},
+  muni:{n:'Municipal bonds', k:'bond', r:3.4, sd:5, col:'ann'}, tips:{n:'TIPS', k:'bond', r:4.2, sd:6, col:'ss2'}, reit:{n:'REITs', k:'stock', r:6.5, sd:20, col:'ss2'}, cash:{n:'Cash / money market', k:'cash', r:3.5, sd:1, col:'muted'}
+};
+const ACCT_N = { tax:'Taxable brokerage', pre:'Pre-tax (IRA/401k)', roth:'Roth' };
+// Bloomberg U.S. Aggregate bond total returns and CPI-U (Dec/Dec), 1996–2025 (2025 approximate)
+const AGG_TOTAL = [3.63,9.65,8.69,-0.82,11.63,8.44,10.26,4.10,4.34,2.43,4.33,6.97,5.24,5.93,6.54,7.84,4.21,-2.02,5.97,0.55,2.65,3.54,0.01,8.72,7.51,-1.54,-13.01,5.53,1.25,7.3];
+const CPI_US = [3.3,1.7,1.6,2.7,3.4,1.6,2.4,1.9,3.3,3.4,2.5,4.1,0.1,2.7,1.5,3.0,1.7,1.5,0.8,0.7,2.1,2.1,1.9,2.3,1.4,7.0,6.5,3.4,2.9,2.7];
+const MED26 = { partB:202.90, partBDed:283, partADed:1736, partDCap:2100, maMoop:9250, fpl1:15650, fplAdd:5500, benchmark40:625 };
+const USE_LVL = { low:0, moderate:1, high:2, severe:3 };
+function medCost(s, age, use){
+  // per person, per year, today's dollars (2026), excluding IRMAA surcharges
+  const u = USE_LVL[use ?? s.mcUse] ?? 1, plan = s.mcPlan;
+  const ageF = Math.pow(1.03, Math.max(0, age - 65));
+  const b = MED26.partB*12;
+  const dPrem = s.mcPartD*12, dOop = [200, 650, 1500, MED26.partDCap][u];
+  const dental = +s.mcDental * (plan === 'ma' ? .6 : 1);
+  let prem = 0, oop = 0;
+  if (plan === 'medigapG'){ prem = s.mcGapPrem*12*ageF; oop = MED26.partBDed + [0, 50, 150, 300][u]; }
+  else if (plan === 'medigapN'){ prem = s.mcGapPrem*.75*12*ageF; oop = MED26.partBDed + [80, 450, 900, 1300][u]; }
+  else if (plan === 'ma'){ prem = 15*12; oop = [700, 2200, 5200, MED26.maMoop][u]; }
+  else if (plan === 'tfl'){ prem = 0; oop = [0, 50, 150, 300][u]; }
+  else if (plan === 'employer'){ prem = s.mcGapPrem*12; oop = [300, 900, 2000, 4000][u]; }
+  const d = plan === 'ma' ? Math.max(0, dPrem - 120) : dPrem;
+  return { b, d, dOop: plan === 'tfl' ? dOop*.3 : dOop, prem, oop, dental, total: b + d + (plan === 'tfl' ? dOop*.3 : dOop) + prem + oop + dental };
+}
+const ACA_F = [[21,1],[30,1.135],[40,1.278],[50,1.786],[55,2.23],[60,2.714],[64,3]];
+function acaAgeFactor(a){ a = clamp(a, 21, 64); for (let i = 1; i < ACA_F.length; i++){ const [a0, f0] = ACA_F[i-1], [a1, f1] = ACA_F[i]; if (a <= a1) return f0 + (f1 - f0)*(a - a0)/(a1 - a0); } return 3; }
+function acaCalc(magi, hh, ages){
+  const fpl = MED26.fpl1 + MED26.fplAdd*(hh - 1); const pctFpl = magi/fpl;
+  const bench = ages.reduce((a, g) => a + MED26.benchmark40/1.278*acaAgeFactor(g)*12, 0);
+  let ap; if (pctFpl < 1) ap = null; else if (pctFpl < 1.33) ap = .021; else if (pctFpl < 1.5) ap = .0314 + (pctFpl - 1.33)/(.17)*(.0419 - .0314); else if (pctFpl < 2) ap = .0419 + (pctFpl - 1.5)/.5*(.066 - .0419); else if (pctFpl < 2.5) ap = .066 + (pctFpl - 2)/.5*(.0844 - .066); else if (pctFpl < 3) ap = .0844 + (pctFpl - 2.5)/.5*(.0996 - .0844); else if (pctFpl <= 4) ap = .0996; else ap = null;
+  const expected = ap === null ? Infinity : magi*ap;
+  const credit = ap === null ? 0 : Math.max(0, bench - expected);
+  return { fpl, pctFpl, bench, credit, net: Math.max(0, bench - credit), ap };
+}
+
 /* ---------- Helpers ---------- */
 const $ = (s, r=document) => r.querySelector(s);
 const $$ = (s, r=document) => [...r.querySelectorAll(s)];
@@ -1594,7 +1801,9 @@ function project(s, o={}){
     const n65 = 1 + (mfj && spAge >= 65 ? 1 : 0);
     const work = o.work && age < o.work.until ? o.work.amt*idx : 0;
     const coreSpend = s.spend*idx*(spDead ? .8 : 1);
-    const extraSpend = (age < 65 ? s.health*idx : (mfj && !spDead && spAge < 65 ? s.health*idx*.5 : 0)) + (o.shock ? o.shock(age)*idx : 0);
+    const hcF = Math.pow(1 + (s.mcHInfl ?? 5)/100, yi);
+    const medX = s.hcInclude ? ((age >= 65 ? medCost(s, age).total : 0) + (mfj && !spDead && spAge >= 65 ? medCost(s, spAge).total : 0))*hcF : 0;
+    const extraSpend = (age < 65 ? s.health*idx : (mfj && !spDead && spAge < 65 ? s.health*idx*.5 : 0)) + (o.shock ? o.shock(age)*idx : 0) + medX;
     const prev = rows[rows.length - 2] || rows[rows.length - 1];
     const irm = age >= 65 && prev ? irmaaFor(prev.agi || 0, filY, idx, mfj && !spDead && spAge >= 65 ? 2 : 1) : {tier:0, cost:0};
     const rmd = age >= rmdAge ? B.pre / (ULT[Math.min(age,120)] || 2) : 0;
@@ -2741,6 +2950,392 @@ function renderWealth(){
   $('#wlGov').innerHTML = gov.map(g => catCard(g[0], '', `<p>${g[1]}</p>`)).join('');
 }
 
+/* ---------- MEDICARE & HEALTHCARE ---------- */
+function healthPath(s, plan){
+  const by = parseDate(s.birth).y, spBy = parseDate(s.spBirth).y, mfj = s.filing === 'mfj';
+  const rows = []; const h = s.mcHInfl/100;
+  for (const r of plan.rows){
+    const yi = r.year - BASE_YEAR, f = Math.pow(1 + h, yi);
+    const ppl = []; if (r.age >= 65) ppl.push(r.age); if (mfj && r.spAge >= 65) ppl.push(r.spAge);
+    const o = { age: r.age, year: r.year, idx: r.idx, b:0, d:0, prem:0, oop:0, dental:0, irmaa: r.irmaa || 0, pre65: 0 };
+    ppl.forEach(a => { const m = medCost(s, a); o.b += m.b*f; o.d += (m.d + m.dOop)*f; o.prem += m.prem*f; o.oop += m.oop*f; o.dental += m.dental*f; });
+    if (r.retired && r.age < 65) o.pre65 = s.health*f;
+    else if (r.retired && mfj && r.spAge < 65) o.pre65 = s.health*.5*f;
+    o.total = o.b + o.d + o.prem + o.oop + o.dental + o.irmaa + o.pre65;
+    rows.push(o);
+  }
+  return rows;
+}
+function renderHealthcare(){
+  const c = COL(), mfj = S.filing === 'mfj', age0 = ageOn(S.birth);
+  const hp = healthPath(S, PLAN).filter(r => r.age >= Math.min(S.retireAge, 65));
+  const m65 = medCost(S, 65);
+  const life = hp.reduce((a, r) => a + r.total, 0), lifeReal = hp.reduce((a, r) => a + r.total/r.idx, 0);
+  const r65 = PLAN.rows.find(r => r.age >= 65 && r.ss > 0) || PLAN.rows.find(r => r.ss > 0) || PLAN.retRow;
+  const ssShare = r65 ? (MED26.partB*12*(mfj ? 2 : 1))/Math.max(1, r65.ss + r65.ssSp) : 0;
+  const hsaYears = S.bHsa / Math.max(1, m65.total*(mfj ? 2 : 1));
+  const irm = PLAN.rows.filter(r => r.irmaa > 0);
+  kpis('mcKpis', [
+    { l:'Cost at 65, per person', v: m65.total, f: v => fmt(v), s: `${fmt(m65.total/12)}/mo, today's dollars` },
+    { l: mfj ? 'Household at 65' : 'At 65', v: m65.total*(mfj ? 2 : 1), f: v => fmt(v) + '/yr', s: 'Premiums + out-of-pocket + dental' },
+    { l:`Lifetime to ${S.le}`, v: S._real ? lifeReal : life, s: `${dLabel()}, incl. pre-65 and IRMAA` },
+    { l:'Part B takes from Social Security', v: ssShare, f: v => pct(v,0), s: 'Deducted from checks automatically' },
+    { l:'IRMAA years', text: String(irm.length), s: irm.length ? fmtK(irm.reduce((a, r) => a + dv(r.irmaa, r), 0)) + ' total' : 'None projected', pill: irm.length ? ['warn','Surcharge'] : ['good','Base premium'] },
+    { l:'HSA covers', text: hsaYears.toFixed(1) + ' yrs', s: 'Of Medicare-age costs at today\'s balance' }
+  ]);
+  $('#mcNote').textContent = `${dLabel()}. Health costs grow ${S.mcHInfl}% a year; Medigap premiums also rise about 3% a year with age. ${S.hcInclude ? 'These costs are included in your plan.' : 'Tick the box above to add them to your plan spending.'}`;
+  chart('chMed', { type:'bar', data:{ labels: hp.map(r => r.age), datasets:[
+      bar('Before Medicare (marketplace/COBRA)', hp.map(r => dv(r.pre65, r)), c.ss2), bar('Part B', hp.map(r => dv(r.b, r)), c.pre), bar('IRMAA surcharges', hp.map(r => dv(r.irmaa, r)), c.bad),
+      bar('Part D + drugs', hp.map(r => dv(r.d, r)), c.hsa), bar(S.mcPlan === 'ma' ? 'Advantage premium' : 'Medigap / plan premium', hp.map(r => dv(r.prem, r)), c.pen), bar('Out-of-pocket', hp.map(r => dv(r.oop, r)), c.tax), bar('Dental, vision, hearing', hp.map(r => dv(r.dental, r)), c.ann) ] },
+    options: baseOpts({ xType:'category', stacked:true }) });
+  const uses = ['low','moderate','high','severe'];
+  const plans = [['medigapG','Medigap G'], ['medigapN','Medigap N'], ['ma','Medicare Advantage']];
+  chart('chMedCmp', { type:'bar', data:{ labels: ['Low use','Moderate','High','Severe'], datasets: plans.map(([k, n], i) => bar(n, uses.map(u => medCost(Object.assign({}, S, {mcPlan:k, mcGapPrem: k === 'ma' ? S.mcGapPrem : S.mcGapPrem}), 65, u).total), [c.pre, c.pen, c.tax][i])) }, options: baseOpts({ xType:'category', tip: v => fmt(v) + '/yr' }) });
+  const fil = mfj ? 'mfj' : 'single', th = TAX.irmaa[fil];
+  const pts = []; for (let m = 0; m <= th[4]*1.15; m += th[0]/40){ const t = irmaaFor(m, fil, 1, 1); pts.push({x:m, y:t.cost}); }
+  const magiRow = PLAN.rows.find(r => r.age >= 65 && r.agi) || PLAN.rows.find(r => r.agi) || PLAN.retRow;
+  const myMagi = (magiRow.agi || 0)/(magiRow.idx || 1);
+  chart('chIrmaa', { type:'line', data:{ datasets:[ area('Annual surcharge per person', pts, c.bad, {stepped:true, backgroundColor: hexA(c.bad,.15)}) ] }, options: baseOpts({ legend:false, x:{min:0, max:th[4]*1.15, ticks:{callback: v => fmtK(v)}}, xTitle:'Modified AGI (2 years earlier)', vlines:[{x: myMagi, label:`Your MAGI at ${magiRow.age} (today $)`, color:c.ink}] }) });
+  // ACA
+  const ages = [ +S.acaAge ]; if (mfj && +S.acaHH >= 2) ages.push(+S.acaAge - (age0 - ageOn(S.spBirth)));
+  const aca = acaCalc(+S.acaMagi, +S.acaHH, ages);
+  const fpl = aca.fpl; const ap = [];
+  for (let k = 1; k <= 6.01; k += .05){ const q = acaCalc(fpl*k, +S.acaHH, ages); ap.push({x: fpl*k, y: q.net}); }
+  chart('chAca', { type:'line', data:{ datasets:[ area('Your annual premium after subsidy', ap, c.pen, {backgroundColor: hexA(c.pen,.15)}), line('Full benchmark premium', ap.map(p => ({x:p.x, y: aca.bench})), c.muted, {borderDash:[5,4]}) ] },
+    options: baseOpts({ x:{min:fpl, max:fpl*6, ticks:{callback: v => fmtK(v)}}, xTitle:'Household MAGI', vlines:[{x:+S.acaMagi, label:'You', color:c.ink}, {x:fpl*4, label:'400% FPL cliff', color:c.bad, row:1}] }) });
+  $('#acaOut').innerHTML = insight('acc','PREMIUM', `Benchmark silver coverage for ${ages.length > 1 ? 'two people aged ' + ages.join(' and ') : 'age ' + ages[0]} costs about <b>${fmt(aca.bench)}/yr</b>. At ${fmtK(+S.acaMagi)} MAGI (${pct(aca.pctFpl,0)} of poverty) you pay <b>${fmt(aca.net)}/yr</b> (${fmt(aca.net/12)}/mo) after a ${fmt(aca.credit)} tax credit.`) +
+    insight(aca.pctFpl > 4 ? 'bad' : aca.pctFpl > 3.6 ? 'warn' : 'good', 'CLIFF', aca.pctFpl > 4 ? `You are above 400% of poverty (${fmtK(fpl*4)}), so there is no subsidy. Lowering MAGI below the cliff would save about ${fmt(Math.max(0, aca.bench - acaCalc(fpl*3.99, +S.acaHH, ages).net))} a year.` : `Stay under ${fmtK(fpl*4)} MAGI to keep the credit. Roth withdrawals, cash and taxable-account basis don't raise MAGI; Roth conversions and IRA withdrawals do.`) +
+    insight('', 'MAGI', 'ACA MAGI adds tax-exempt interest and all Social Security benefits to AGI. HSA contributions and pre-tax 401(k) contributions lower it if you still work part-time.') +
+    insight('', 'OTHER', 'Alternatives before 65: COBRA (up to 18 months at 102% of cost), a spouse\'s employer plan, retiree coverage, or part-time work with benefits.');
+  // timeline
+  const tl = []; const add = (who, bd, extra) => { const b = parseDate(bd);
+    tl.push([b.y*12 + b.m + 65*12 - 3, `${who}: Initial enrollment opens`, 'Seven-month window: 3 months before the 65th-birthday month to 3 months after. Enroll in Parts A and B (and D or Advantage).']);
+    tl.push([b.y*12 + b.m + 65*12 - 6, `${who}: Stop HSA contributions`, 'Part A coverage is backdated up to 6 months when you enroll after 65, so stop HSA contributions 6 months before applying to avoid a tax penalty.']);
+    tl.push([b.y*12 + b.m + 65*12, `${who}: Medicare at 65 · Medigap open enrollment`, 'Six months from the first month you have Part B and are 65: buy any Medigap plan with no health questions. After that, insurers in most states can decline you or charge more.']);
+    tl.push([b.y*12 + b.m + 63*12, `${who}: IRMAA look-back year`, 'Your tax return for the year you turn 63 sets Medicare premiums at 65.']);
+    if (extra) tl.push(...extra); };
+  add('You', S.birth); if (mfj) add('Spouse', S.spBirth);
+  const nm = NOW.getFullYear()*12 + NOW.getMonth();
+  const oeY = (NOW.getMonth() === 11 && NOW.getDate() > 7) ? NOW.getFullYear() + 1 : NOW.getFullYear();
+  tl.push([oeY*12 + 9, 'Every year Oct 15–Dec 7: Open enrollment', 'Switch Part D or Medicare Advantage plans. MA enrollees also get Jan 1–Mar 31 to switch plans or return to Original Medicare.']);
+  const items = tl.filter(t => t[0] >= nm - 1).sort((a, b) => a[0] - b[0]);
+  $('#mcTimeline').innerHTML = items.map(t => `<div class="tl-row"><span class="tl-age num small">${MONTHS[((t[0] % 12)+12)%12]} ${Math.floor(t[0]/12)}</span><span class="tl-dot"></span><div><b>${t[1]}</b><p class="small">${t[2]}</p></div></div>`).join('');
+  const edu = [
+    ['Part A: hospital', 'Premium-free with 40 work quarters. 2026 inpatient deductible $1,736 per benefit period; skilled nursing days 21–100 have daily copays. Does not cover long-term custodial care.'],
+    ['Part B: doctors & outpatient', `$202.90/month standard premium and $283 deductible in 2026, then 20% coinsurance with no cap. Late enrollment adds 10% per year without coverage, for life.`],
+    ['Part D: prescriptions', `Out-of-pocket drug costs capped at $2,100 in 2026, with an option to spread costs monthly (Prescription Payment Plan). Late penalty 1% of the national base premium per month without coverage.`],
+    ['Medigap (supplement)', 'Plan G covers everything but the Part B deductible; Plan N adds small copays for lower premiums. Any doctor that takes Medicare, nationwide. Premiums rise with age in most states.'],
+    ['Medicare Advantage (Part C)', `Private plans replacing Original Medicare, often $0 premium with dental/vision extras, networks and prior authorization. In-network out-of-pocket max up to about $${MED26.maMoop.toLocaleString()} in 2026.`],
+    ['IRMAA', 'Income-related surcharges on Parts B and D based on MAGI two years earlier. Appeal with Form SSA-44 after retirement, marriage, divorce, death of a spouse or loss of a pension.'],
+    ['Working past 65', 'With employer coverage from 20+ employees, you can delay Part B without penalty and get an 8-month special enrollment period after the job or coverage ends. COBRA and retiree plans do not count.'],
+    ['Medicaid & dual eligibility', 'Medicaid pays nursing-home care after spend-down; Medicare Savings Programs pay Part B premiums for lower incomes; Extra Help cuts drug costs.'],
+    ['Veterans', 'TRICARE For Life requires Part B and acts as Medigap. VA care is separate; keeping Part B preserves options outside the VA.'],
+    ['Long-term care is not covered', 'Medicare pays only short skilled stays. Custodial care is paid out of pocket, by long-term care insurance, hybrid policies or Medicaid. See the Insurance tab.'],
+    ['HSA in retirement', 'HSA money pays Medicare premiums (not Medigap), deductibles, copays, dental and vision tax-free, and can reimburse old receipts.'],
+    ['Lifetime cost benchmarks', 'Fidelity estimates a 65-year-old needs roughly $170,000 after tax for health care in retirement, before long-term care. Your projection above is specific to your plan and health assumptions.']
+  ];
+  $('#mcEdu').innerHTML = edu.map(e => catCard(e[0], '', `<p>${e[1]}</p>`)).join('');
+}
+
+/* ---------- PORTFOLIO & DIVIDENDS ---------- */
+function holdStats(){
+  const H = S.holdings || [];
+  const tot = H.reduce((a, h) => a + +h.v, 0);
+  const er = H.reduce((a, h) => a + h.v*h.er/100, 0);
+  const inc = H.reduce((a, h) => a + h.v*h.y/100, 0);
+  const st = STATES[S.state] || {}; const stR = S.state === 'custom' ? S.stateRate/100 : (st.rate || 0);
+  const ordR = .22, divR = .15;
+  const taxDrag = H.filter(h => h.a === 'tax').reduce((a, h) => { const t = ASSET_T[h.t] || ASSET_T.usLarge;
+    const yTax = t.k === 'bond' && h.t !== 'muni' || h.t === 'cash' || h.t === 'reit' ? (ordR + stR) : h.t === 'muni' ? 0 : (divR + stR);
+    return a + h.v*h.y/100*yTax + h.v*h.cg/100*(divR + stR); }, 0);
+  const er2 = H.reduce((a, h) => { const t = ASSET_T[h.t] || ASSET_T.usLarge; return a + h.v*(t.k === 'cash' ? .1 : t.k === 'mix' ? .08 : .04)/100; }, 0);
+  const exp = H.reduce((a, h) => a + h.v*((ASSET_T[h.t] || ASSET_T.usLarge).r)/100, 0)/Math.max(1, tot);
+  return { H, tot, er, inc, taxDrag, er2, exp, wEr: er/Math.max(1, tot) };
+}
+function renderPortfolio(){
+  const c = COL(); const ps = holdStats(), H = ps.H;
+  $('#pfHold').innerHTML = `<thead><tr><th>Fund / holding</th><th>Asset class</th><th>Account</th><th class="n">Value $</th><th class="n">Expense %</th><th class="n">Yield %</th><th class="n">Cap-gain dist. %</th><th></th></tr></thead><tbody>${H.map((h, i) => `<tr>
+    <td><input type="text" data-h="${i}" data-f="n" value="${esc(h.n)}" aria-label="Holding name" style="min-width:180px"></td>
+    <td><select data-h="${i}" data-f="t" aria-label="Asset class">${Object.entries(ASSET_T).map(([k, t]) => `<option value="${k}" ${h.t === k ? 'selected' : ''}>${t.n}</option>`).join('')}</select></td>
+    <td><select data-h="${i}" data-f="a" aria-label="Account">${Object.entries(ACCT_N).map(([k, n]) => `<option value="${k}" ${h.a === k ? 'selected' : ''}>${n}</option>`).join('')}</select></td>
+    <td><input type="number" data-h="${i}" data-f="v" value="${h.v}" step="1000" aria-label="Value" style="width:110px"></td>
+    <td><input type="number" data-h="${i}" data-f="er" value="${h.er}" step="0.01" aria-label="Expense ratio" style="width:76px"></td>
+    <td><input type="number" data-h="${i}" data-f="y" value="${h.y}" step="0.1" aria-label="Yield" style="width:70px"></td>
+    <td><input type="number" data-h="${i}" data-f="cg" value="${h.cg}" step="0.5" aria-label="Capital gain distributions" style="width:70px"></td>
+    <td><button type="button" class="btn" data-hdel="${i}" aria-label="Remove">✕</button></td></tr>`).join('')}</tbody>`;
+  const byK = { stock:0, bond:0, cash:0 }; H.forEach(h => { const t = ASSET_T[h.t] || ASSET_T.usLarge; if (t.k === 'mix'){ byK.stock += h.v*.55; byK.bond += h.v*.45; } else byK[t.k] += +h.v; });
+  const fee30 = (() => { let a = ps.tot, b = ps.tot; const g = ps.exp; for (let y = 0; y < 30; y++){ a *= 1 + g - ps.wEr - ps.taxDrag/Math.max(1, ps.tot); b *= 1 + g - ps.er2/Math.max(1, ps.tot) - ps.taxDrag/Math.max(1, ps.tot)*.4; } return b - a; })();
+  kpis('pfKpis', [
+    { l:'Total invested', v: ps.tot, s: `${H.length} holdings` },
+    { l:'Weighted expense ratio', v: ps.wEr, f: v => pct(v, 2), s: `${fmt(ps.er)} a year in fund costs`, pill: ps.wEr > .004 ? ['warn','High'] : ['good','Low cost'] },
+    { l:'Portfolio income', v: ps.inc, f: v => fmt(v) + '/yr', s: `${pct(ps.inc/Math.max(1, ps.tot), 2)} yield, ${fmt(ps.inc/12)}/mo` },
+    { l:'Tax drag in taxable', v: ps.taxDrag, f: v => fmt(v) + '/yr', s: 'Dividends, interest and fund distributions' },
+    { l:'Stocks / bonds / cash', text: `${pct(byK.stock/Math.max(1, ps.tot),0)} / ${pct(byK.bond/Math.max(1, ps.tot),0)} / ${pct(byK.cash/Math.max(1, ps.tot),0)}`, s: `Sidebar says ${S.stock}% stocks` },
+    { l:'30-yr cost of fees & fund taxes', v: fee30, s: 'vs. index funds held tax-efficiently' }
+  ]);
+  const cls = {}; H.forEach(h => cls[h.t] = (cls[h.t] || 0) + +h.v);
+  const ks = Object.keys(cls);
+  chart('chAlloc', { type:'doughnut', data:{ labels: ks.map(k => ASSET_T[k].n), datasets:[{ data: ks.map(k => cls[k]), backgroundColor: ks.map(k => css('--c-' + ASSET_T[k].col) || c.muted), borderColor: c.surface, borderWidth:2 }] }, options:{ responsive:true, maintainAspectRatio:false, cutout:'60%', plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => `${ctx.label}: ${fmtK(ctx.parsed)} (${pct(ctx.parsed/ps.tot,0)})` } } } } });
+  $('#pfAllocLeg').innerHTML = ks.map(k => `<span><i style="background:${css('--c-' + ASSET_T[k].col)}"></i>${ASSET_T[k].n} ${pct(cls[k]/ps.tot,0)}</span>`).join('');
+  chart('chLoc', { type:'bar', data:{ labels: Object.values(ACCT_N), datasets: ks.map(k => bar(ASSET_T[k].n, Object.keys(ACCT_N).map(a => H.filter(h => h.a === a && h.t === k).reduce((s, h) => s + +h.v, 0)), css('--c-' + ASSET_T[k].col))) }, options: baseOpts({ xType:'category', stacked:true, legend:false }) });
+  chart('chYield', { type:'bar', data:{ labels: H.map(h => h.n.length > 22 ? h.n.slice(0, 21) + '…' : h.n), datasets:[ bar('Income', H.map(h => h.v*h.y/100), H.map(h => css('--c-' + (ASSET_T[h.t] || ASSET_T.usLarge).col))) ] }, options: (() => { const o = baseOpts({ xType:'category', legend:false, tip: v => fmt(v) + '/yr' }); o.indexAxis = 'y'; o.scales.y = { type:'category', grid:{display:false}, ticks:{color:c.muted, font:{size:10.5}} }; o.scales.x = { grid:{color:c.grid}, ticks:{color:c.muted, callback: v => fmtK(v)} }; o.interaction = {mode:'nearest', axis:'y', intersect:false}; o.plugins.tooltip.callbacks.label = ctx => fmt(ctx.parsed.x) + '/yr'; return o; })() });
+  const yrs = Array.from({length:31}, (_, i) => i); let a = ps.tot, b = ps.tot; const A = [], B = [];
+  yrs.forEach(() => { A.push(a); B.push(b); a *= 1 + ps.exp - ps.wEr - ps.taxDrag/Math.max(1, ps.tot); b *= 1 + ps.exp - ps.er2/Math.max(1, ps.tot) - ps.taxDrag/Math.max(1, ps.tot)*.4; });
+  chart('chFees', { type:'line', data:{ labels: yrs, datasets:[ area('Low-cost, tax-efficient version', B, c.roth, {backgroundColor: hexA(c.roth,.12)}), area('Your holdings as they are', A, c.tax, {backgroundColor: hexA(c.tax,.18)}) ] }, options: baseOpts({ xType:'category', xTitle:'Years (no withdrawals)' }) });
+  const out = [];
+  H.forEach(h => { const t = ASSET_T[h.t] || ASSET_T.usLarge;
+    if (h.er >= .5) out.push(insight('warn','FEE', `<b>${esc(h.n)}</b>: ${h.er}% expense ratio costs ${fmt(h.v*h.er/100)} a year. A comparable index fund at ~0.05% would save ${fmt(h.v*(h.er - .05)/100)} a year.`));
+    if (h.a === 'tax' && h.cg >= 2) out.push(insight('warn','TAX', `<b>${esc(h.n)}</b> distributes about ${h.cg}% a year in capital gains, taxable even if you never sell. An ETF version is usually far more tax-efficient. Selling to switch triggers gains; harvest losses elsewhere or switch gradually.`));
+    if (h.a === 'tax' && (t.k === 'bond' && h.t !== 'muni' || h.t === 'reit')) out.push(insight('acc','LOCATE', `<b>${esc(h.n)}</b> pays income taxed as ordinary income. It belongs in an IRA or 401(k); hold stock index funds or munis in taxable instead.`));
+    if (h.a !== 'tax' && h.t === 'muni') out.push(insight('bad','LOCATE', `<b>${esc(h.n)}</b> is tax-free income wasted inside a tax-sheltered account. Swap it for a taxable bond fund there.`));
+    if (h.a === 'roth' && t.k === 'bond') out.push(insight('acc','ROTH', `<b>${esc(h.n)}</b>: Roth space is best used for your highest-growth assets, since growth there is never taxed.`));
+  });
+  if (Math.abs(byK.stock/Math.max(1, ps.tot)*100 - S.stock) > 10) out.push(insight('acc','MIX', `Holdings are ${pct(byK.stock/ps.tot,0)} stocks but the plan assumes ${S.stock}%. Update the sidebar or rebalance.`));
+  const pre = H.filter(h => h.a === 'pre').reduce((s, h) => s + +h.v, 0), ro = H.filter(h => h.a === 'roth').reduce((s, h) => s + +h.v, 0), tx = H.filter(h => h.a === 'tax').reduce((s, h) => s + +h.v, 0);
+  if (Math.abs(pre - S.bPre) + Math.abs(ro - S.bRoth) + Math.abs(tx - S.bTax) > 1000) out.push(insight('', 'SYNC', `Holdings total pre-tax ${fmtK(pre)}, Roth ${fmtK(ro)}, taxable ${fmtK(tx)}, which differ from the sidebar. Use the sync button to update the plan.`));
+  if (!out.length) out.push(insight('good','OK', 'Low costs and sensible asset location. Rebalance once a year, and harvest losses in taxable accounts after market drops.'));
+  $('#pfOut').innerHTML = out.slice(0, 9).join('');
+  renderDividend();
+  const edu = [
+    ['Index mutual funds','Track an index at very low cost (0.02–0.20%). Priced once a day. Can distribute capital gains when other shareholders redeem.'],
+    ['Actively managed mutual funds','A manager picks securities. Typical costs 0.5–1.2%; most trail their index over 15+ years after fees. High turnover creates taxable distributions.'],
+    ['Share classes & loads','A shares charge an upfront load (up to 5.75%), C shares a level 1% a year, I/Admiral shares the lowest cost. 12b-1 marketing fees add up to 1% a year.'],
+    ['ETFs','Trade all day like stocks. The in-kind creation process means index ETFs rarely distribute capital gains, which makes them better for taxable accounts.'],
+    ['Target-date funds','One fund that shifts from stocks to bonds as the date nears. Great in 401(k)s; less ideal in taxable accounts, and they duplicate other holdings.'],
+    ['Dividend stocks & funds','Qualified dividends are taxed at 0/15/20%. Dividend-growth funds favor companies raising payouts; high-yield funds tilt to slower-growing sectors.'],
+    ['Individual stocks','No fund fees and full control of tax lots, but concentration risk. Direct indexing builds an index from individual stocks for loss harvesting.'],
+    ['Bond funds vs. individual bonds','Funds never mature, so prices move with rates; a ladder of individual Treasuries or CDs returns principal on known dates.'],
+    ['Money market funds','Cash yield near short-term rates. Treasury money funds are state-tax-free; brokerage sweeps often pay far less.'],
+    ['Brokerage account titling','Individual, joint (JTWROS), tenancy by the entirety, TOD, trust or LLC. Titling decides probate, creditor protection and step-up. See the Wealth tab.'],
+    ['Tax-lot selection','Choose specific lots when selling (highest cost first) instead of FIFO to cut realized gains.'],
+    ['Wash-sale rule','A loss is disallowed if you buy a substantially identical security within 30 days before or after, including in an IRA.']
+  ];
+  $('#pfEdu').innerHTML = edu.map(e => catCard(e[0], '', `<p>${e[1]}</p>`)).join('');
+}
+function dvSim(p){
+  // p: {amt, rate, method, yld, divG, priceG, infl, years, returns?: array of total returns, inflArr?, yieldArr?}
+  let bal = p.amt, W0 = p.amt*p.rate, W = W0, div = p.amt*p.yld; const out = []; let initRate = p.rate, failed = null;
+  for (let t = 0; t < p.years; t++){
+    const infl = p.inflArr ? p.inflArr[t] : p.infl;
+    const tr = p.returns ? p.returns[t] : null;
+    const y = p.yld;
+    const d = p.method === 'div' ? div : bal*y;
+    let w;
+    if (p.method === 'real') w = W;
+    else if (p.method === 'pct') w = bal*p.rate;
+    else if (p.method === 'div') w = d;
+    else { const r = W/Math.max(1, bal); if (r > initRate*1.2) W *= .9; else if (r < initRate*.8) W *= 1.1; w = W; }
+    w = Math.min(w, bal + d);
+    const startBal = bal;
+    if (tr === null){ bal = bal*(1 + p.priceG) + bal*y - w; }
+    else { bal = bal*(1 + tr) - w; }
+    if (p.method === 'div'){ div *= 1 + p.divG; }
+    if (bal <= 0 && failed === null){ failed = t + 1; bal = 0; }
+    out.push({ t, start: startBal, div: Math.min(d, w), sold: Math.max(0, w - d), w, end: Math.max(0, bal), infl });
+    if (p.method === 'real' || p.method === 'guard') W *= 1 + infl;
+  }
+  return { rows: out, failed };
+}
+function renderDividend(){
+  const c = COL(); const amt = +S.dvAmt, rate = S.dvRate/100, yld = S.dvYield/100, infl = S.dvInfl/100, years = clamp(+S.dvYears, 5, 50);
+  const p = { amt, rate, method: S.dvMethod, yld, divG: S.dvDivG/100, priceG: S.dvPriceG/100, infl, years };
+  const det = dvSim(p);
+  const taxR = S.dvAcct === 'roth' ? 0 : S.dvTax/100;
+  const mo1 = det.rows[0].w/12, moN = det.rows[years-1].w/12, moNreal = moN/Math.pow(1+infl, years-1);
+  const end = det.rows[years-1].end, endReal = end/Math.pow(1+infl, years);
+  // MC
+  const w = S.dvMix/100; const mu = w*(S.dvYield + S.dvPriceG)/100 + (1 - w)*.045; const sig = sigmaFor(S.dvMix);
+  const rng = mulberry32(17); const N = 1000; const paths = []; let ok = 0;
+  for (let k = 0; k < N; k++){ const rets = Array.from({length: years}, () => Math.exp(Math.log(1 + mu) - sig*sig/2 + sig*gauss(rng)) - 1); const r = dvSim(Object.assign({}, p, { returns: rets, yld: w*yld + (1-w)*.04 })); paths.push(r.rows.map(x => x.end)); if (!r.failed) ok++; }
+  const q = (t, pp) => { const a = paths.map(x => x[t]).sort((x, y) => x - y); return a[Math.floor(pp*(N-1))]; };
+  const succ = ok/N;
+  const maxRate = (() => { let lo = .01, hi = .1; const seqs = []; const r2 = mulberry32(5); for (let k = 0; k < 400; k++) seqs.push(Array.from({length: years}, () => Math.exp(Math.log(1 + mu) - sig*sig/2 + sig*gauss(r2)) - 1));
+    for (let i = 0; i < 18; i++){ const m = (lo + hi)/2; let good = 0; for (const s of seqs) if (!dvSim(Object.assign({}, p, { rate:m, method:'real', returns:s })).failed) good++; if (good/seqs.length >= .9) lo = m; else hi = m; } return lo; })();
+  const coverage = det.rows[0].div/Math.max(1, det.rows[0].w);
+  $('#dvCallout').innerHTML = `<div><span class="eyebrow">Monthly draw from ${fmtK(amt)} at ${S.dvRate}%</span><div class="v">${fmt(mo1)}/mo</div></div><div style="max-width:64ch"><p>${S.dvMethod === 'real' ? `Raised ${S.dvInfl}% a year for inflation, the check reaches <b>${fmt(moN)}/mo</b> in year ${years} (still ${fmt(moNreal)} in today's dollars).` : S.dvMethod === 'div' ? `Spending only dividends, income grows with dividend raises to <b>${fmt(moN)}/mo</b> in year ${years}, and principal is never sold.` : `Income varies with the portfolio: <b>${fmt(moN)}/mo</b> in year ${years} in the average case.`} After ${S.dvAcct === 'roth' ? 'no tax (Roth)' : `${S.dvTax}% tax`}, year-one take-home is <b>${fmt(mo1*(1 - taxR))}/mo</b>. ${det.failed ? `At average returns the money runs out in year <b>${det.failed}</b>.` : `At average returns ${fmtK(end)} remains after ${years} years (${fmtK(endReal)} today).`}</p></div>`;
+  kpis('dvKpis', [
+    { l:'Year-one income', v: det.rows[0].w, f: v => fmt(v) + '/yr', s: `${fmt(mo1)}/mo before tax` },
+    { l:'Dividends cover', v: coverage, f: v => pct(v,0), s: `${fmt(det.rows[0].div/12)}/mo from dividends; the rest from selling shares`, bar: coverage },
+    { l:`Monthly in year ${years}`, v: moN, f: v => fmt(v), s: `${fmt(moNreal)} in today's dollars` },
+    { l:'Success in 1,000 markets', v: succ, f: v => pct(v,0), s: `${S.dvMix}% stocks, ${years} years`, bar: succ, pill: succ >= .85 ? ['good','Sustainable'] : succ >= .7 ? ['warn','Some risk'] : ['bad','Risky'] },
+    { l:'Highest safe rate', v: maxRate, f: v => pct(v,2), s: `90% success: ${fmt(amt*maxRate/12)}/mo` },
+    { l:`Left after ${years} yrs`, v: end, s: `${fmtK(endReal)} in today's dollars` }
+  ]);
+  const yrsL = det.rows.map(r => r.t + 1);
+  chart('chDvBal', { type:'line', data:{ labels: yrsL, datasets:[ area('Balance (future $)', det.rows.map(r => r.end), c.pre, {backgroundColor: hexA(c.pre,.15)}), line("Balance (today's $)", det.rows.map((r, i) => r.end/Math.pow(1+infl, i+1)), c.roth, {borderWidth:2.5}), line('Cumulative withdrawals', det.rows.reduce((a, r) => { a.push((a[a.length-1] || 0) + r.w); return a; }, []), c.tax, {borderDash:[5,4]}) ] }, options: baseOpts({ xType:'category', xTitle:'Year' }) });
+  chart('chDvInc', { type:'bar', data:{ labels: yrsL, datasets:[ bar('From dividends', det.rows.map(r => r.div/12), c.roth), bar('From selling shares', det.rows.map(r => r.sold/12), c.tax), { type:'line', label:"Same check in today's $", data: det.rows.map((r, i) => r.w/12/Math.pow(1+infl, i)), borderColor: c.ink, borderWidth:2, pointRadius:0, stack:'ref' } ] }, options: baseOpts({ xType:'category', stacked:true, tip: v => fmt(v) + '/mo' }) });
+  chart('chDvMC', { type:'line', data:{ labels: yrsL, datasets:[ line('10th pct', yrsL.map((_, t) => q(t, .1)), hexA(c.accent,.35), {borderWidth:1}), line('90th pct', yrsL.map((_, t) => q(t, .9)), hexA(c.accent,.35), {borderWidth:1, fill:'-1', backgroundColor: hexA(c.accent,.12)}), line('25th pct', yrsL.map((_, t) => q(t, .25)), hexA(c.accent,.5), {borderWidth:1}), line('75th pct', yrsL.map((_, t) => q(t, .75)), hexA(c.accent,.5), {borderWidth:1, fill:'-1', backgroundColor: hexA(c.accent,.22)}), line('Median', yrsL.map((_, t) => q(t, .5)), c.accent, {borderWidth:3}) ] }, options: baseOpts({ xType:'category', xTitle:'Year' }) });
+  // history
+  const sel = $('#dvStart'); if (!sel.options.length) for (let y = 1996; y <= 2020; y++) sel.add(new Option(y, y)); sel.value = S.dvStart;
+  const hist = []; for (let s0 = 1996; s0 <= 2020; s0++){ const n = 2025 - s0 + 1; const i0 = s0 - 1996;
+    const rets = Array.from({length:n}, (_, k) => w*SP_TOTAL[i0+k]/100 + (1-w)*AGG_TOTAL[i0+k]/100); const inf = Array.from({length:n}, (_, k) => CPI_US[i0+k]/100);
+    const r = dvSim(Object.assign({}, p, { years:n, returns:rets, inflArr:inf, yld: w*yld + (1-w)*.04 })); hist.push({ s0, rows: r.rows, failed: r.failed, real: r.rows.map((x, k) => x.end/inf.slice(0, k+1).reduce((a, v) => a*(1+v), 1)) }); }
+  const hl = +S.dvStart;
+  chart('chDvHist', { type:'line', data:{ datasets: hist.map(h => line(String(h.s0), h.real.map((v, k) => ({x: h.s0 + k, y: v})), h.s0 === hl ? c.bad : h.s0 === 2008 || h.s0 === 2000 ? c.tax : hexA(c.pre, .25), { borderWidth: h.s0 === hl ? 3.5 : 1.25 })) },
+    options: (() => { const o = baseOpts({ x:{min:1996, max:2025, ticks:{ callback: v => String(v) }}, xTitle:"Calendar year (balance in today's $ of each start year)", legend:false, mode:'nearest' }); o.plugins.tooltip.callbacks.label = ctx => `Start ${ctx.dataset.label}: ${fmtK(ctx.parsed.y)}`; return o; })() });
+  // heat
+  const rates = [3,3.5,4,4.5,5,5.5,6], spans = [20,25,30,35,40]; const r3 = mulberry32(23); const seqs = Array.from({length:500}, () => Array.from({length:40}, () => Math.exp(Math.log(1 + mu) - sig*sig/2 + sig*gauss(r3)) - 1));
+  const cell = (rt, n) => { let good = 0; for (const s of seqs){ let b = 1, W = rt/100, f = false; for (let t = 0; t < n; t++){ b = b*(1 + s[t]) - W; W *= 1 + infl; if (b <= 0){ f = true; break; } } if (!f) good++; } return good/seqs.length; };
+  $('#dvHeat').innerHTML = `<thead><tr><th>Rate \\ years</th>${spans.map(n => `<th class="n">${n}</th>`).join('')}</tr></thead><tbody>${rates.map(rt => `<tr><td><b>${rt.toFixed(1)}%</b> <span class="small muted">${fmt(amt*rt/1200)}/mo</span></td>${spans.map(n => { const v = cell(rt, n); const col = v >= .9 ? c.good : v >= .75 ? c.warn : c.bad; return `<td style="background:${hexA(col, .18 + .25*(v >= .9 ? 1 : v >= .75 ? .5 : .2))}; ${Math.abs(rt - S.dvRate) < .01 && n === years ? 'outline:2px solid ' + c.ink + ';outline-offset:-2px;font-weight:700' : ''}">${pct(v,0)}</td>`; }).join('')}</tr>`).join('')}</tbody>`;
+  const worst = hist.filter(h => h.s0 <= 2010).sort((a, b) => a.real[a.real.length-1] - b.real[b.real.length-1])[0];
+  const out = [];
+  out.push(insight('acc','4%', `4% of ${fmtK(amt)} is <b>${fmt(amt*.04)}/yr = ${fmt(amt*.04/12)}/mo</b>. The rule comes from historical U.S. data showing a 4% start, raised with inflation, lasted 30 years in nearly every past period for a balanced portfolio.`));
+  out.push(insight(coverage >= 1 ? 'good' : 'acc', 'YIELD', coverage >= 1 ? `Dividends alone (${pct(yld,1)} yield) cover the withdrawal, so no shares need to be sold at first.` : `A ${pct(yld,1)} yield covers ${pct(coverage,0)} of a ${pct(rate,1)} withdrawal; the rest comes from selling shares. Total return, not yield, is what sustains withdrawals; chasing a higher yield usually means slower growth or more risk.`));
+  out.push(insight(worst && worst.failed ? 'bad' : 'warn', 'HISTORY', worst ? `Worst real-history start: <b>${worst.s0}</b>, ending at ${fmtK(worst.real[worst.real.length-1])} in today's dollars by 2025${worst.failed ? ` (ran out in year ${worst.failed})` : ''}. Retiring into 2000–2002 or 2008 shows sequence risk.` : ''));
+  out.push(insight('', 'TAX', S.dvAcct === 'tax' ? 'In a taxable account qualified dividends are taxed at 0/15/20% each year whether you spend them or not; shares sold are taxed only on the gain. In the 0% bracket (joint taxable income under $98,900) the income can be tax-free.' : S.dvAcct === 'pre' ? 'From an IRA every dollar withdrawn is ordinary income, regardless of whether it came from dividends.' : 'From a Roth IRA after 59½ and 5 years, every dollar is tax-free.'));
+  out.push(insight('', 'FLEX', 'Flexibility raises safe spending: guardrails, skipping inflation raises after down years, or a cash bucket to avoid selling in crashes. Try the method dropdown above.'));
+  $('#dvOut').innerHTML = out.join('');
+  $('#dvTable').innerHTML = tbl(['Year','Start balance','Dividends used','Shares sold','Total draw','Monthly','Monthly in today\'s $','End balance'], det.rows.map((r, i) => [i+1, fmtK(r.start), fmtK(r.div), fmtK(r.sold), fmtK(r.w), fmt(r.w/12), fmt(r.w/12/Math.pow(1+infl, i)), fmtK(r.end)]), [1,2,3,4,5,6,7]);
+}
+
+/* ---------- FAMILY OFFICE COCKPIT ---------- */
+function lensPlan(){
+  const v = S.ckView;
+  if (v === 'survivor') return project(S, { spDeath: 75 });
+  if (v === 'crash') return project(S, { retPath: (age, ret, r) => { const k = age - S.retireAge; return ret && k === 0 ? -.28 : ret && k === 1 ? -.12 : r; } });
+  if (v === 'care') return project(S, { shock: a => (a >= 82 && a < 85) ? CARE.al*12 : 0 });
+  if (v === 'long') return project(Object.assign({}, S, { le: 100 }));
+  return PLAN;
+}
+function homeAt(age){ const yrs = age - ageOn(S.birth); return { home: +S.adHome*Math.pow(1 + S.adHomeG/100, yrs), mort: Math.max(0, +S.adMort*(1 - yrs/Math.max(1, +S.mpYrs))) }; }
+function sankeySVG(el, sources, uses, c){
+  const W = 900, padT = 14, gap = 8, nodeW = 14, xL = 190, xR = W - 190 - nodeW, slot = 30, plotH = 330;
+  const T2 = Math.max(1, uses.reduce((a, s) => a + s.v, 0)), TT = Math.max(T2, sources.reduce((a, s) => a + s.v, 0));
+  const n = Math.max(sources.length, uses.length);
+  const sc = Math.max(0.0001, (plotH - gap*n) / TT);
+  let y = padT; sources.forEach(s => { s.h = Math.max(2, s.v*sc); s.y = y; y += Math.max(s.h, slot) + gap; });
+  const hL = y; y = padT; uses.forEach(u => { u.h = Math.max(2, u.v*sc); u.y = y; y += Math.max(u.h, slot) + gap; });
+  const H = Math.max(hL, y) + padT;
+  const offS = sources.map(() => 0), offU = uses.map(() => 0);
+  let paths = '';
+  sources.forEach((s, i) => uses.forEach((u, j) => { const v = s.v*u.v/T2; const h = v*sc; if (h < .3) return;
+    const y0 = s.y + offS[i], y1 = u.y + offU[j]; offS[i] += h; offU[j] += h;
+    const x0 = xL + nodeW, x1 = xR, mx = (x0 + x1)/2;
+    paths += `<path d="M${x0},${y0} C${mx},${y0} ${mx},${y1} ${x1},${y1} L${x1},${y1+h} C${mx},${y1+h} ${mx},${y0+h} ${x0},${y0+h} Z" fill="${hexA(s.col, .32)}"><title>${esc(s.n)} → ${esc(u.n)}: ${fmt(v)}</title></path>`; }));
+  const lab = (nm, x, yy, h, anchor, val) => { const mid = yy + Math.max(h, slot - 6)/2; return `<text x="${x}" y="${mid - 3}" text-anchor="${anchor}" font-size="12.5" font-weight="600" fill="${c.ink}">${esc(nm)}</text><text x="${x}" y="${mid + 12}" text-anchor="${anchor}" font-size="11.5" fill="${c.muted}" font-family="IBM Plex Mono, monospace">${val}</text>`; };
+  const nodes = sources.map(s => `<rect x="${xL}" y="${s.y}" width="${nodeW}" height="${s.h}" rx="2" fill="${s.col}"></rect>${lab(s.n, xL - 8, s.y, s.h, 'end', fmtK(s.v))}`).join('') + uses.map(u => `<rect x="${xR}" y="${u.y}" width="${nodeW}" height="${u.h}" rx="2" fill="${u.col}"></rect>${lab(u.n, xR + nodeW + 8, u.y, u.h, 'start', fmtK(u.v))}`).join('');
+  el.setAttribute('viewBox', `0 0 ${W} ${H}`); el.innerHTML = paths + nodes;
+}
+function renderCockpit(){
+  const c = COL(), mfj = S.filing === 'mfj', age0 = ageOn(S.birth);
+  const LP = lensPlan(); const rows = LP.rows; const mc = monteCarlo(S, LP, 500, 9);
+  $$('.lbl-le').forEach(e => e.textContent = rows[rows.length-1].age);
+  const ret = rows.filter(r => r.retired);
+  const rng = $('#ckAge'); rng.min = ret[0].age; rng.max = ret[ret.length-1].age; S.ckAge = clamp(+S.ckAge || 70, ret[0].age, ret[ret.length-1].age); rng.value = S.ckAge;
+  $('#ckAgeLbl').textContent = 'Age ' + S.ckAge;
+  const nwRow = r => { const h = homeAt(r.age); const yrs = r.age - age0; const g = Math.pow(1.03, yrs); return { pre: r.pre, roth: r.roth, tax: r.taxB, hsa: r.hsa, home: Math.max(0, h.home - h.mort - (r.hecmBal || 0)), rental: S.wRental*g, biz: S.wBiz*g, other: +S.wOther, cv: +S.wCV*Math.pow(1.04, yrs) }; };
+  const nwNow = S.bPre + S.bRoth + S.bTax + S.bHsa + Math.max(0, S.adHome - S.adMort) + +S.wRental + +S.wBiz + +S.wOther + +S.wCV;
+  const lastR = rows[rows.length-1], lastNW = Object.values(nwRow(lastR)).reduce((a, v) => a + v, 0);
+  const lifeInc = ret.reduce((a, r) => a + (r.ss + r.ssSp + r.pension + r.annuity + (r.work||0))/r.idx, 0);
+  kpis('ckKpis', [
+    { l:'Family net worth today', v: nwNow, s: 'All assets less the mortgage' },
+    { l:`Net worth at ${lastR.age}`, v: dv(lastNW, lastR), s: dLabel() },
+    { l:'Success under this lens', v: mc.success, f: v => pct(v,0), bar: mc.success, pill: mc.success >= .85 ? ['good','Resilient'] : mc.success >= .7 ? ['warn','Watch'] : ['bad','Vulnerable'] },
+    { l:'Lifetime guaranteed income', v: lifeInc, s: "Social Security, pension, annuity (today $)" },
+    { l:'Lifetime taxes', v: S._real ? LP.lifeTaxReal : LP.lifeTax, s: dLabel() },
+    { l:'Money lasts', text: LP.depleted ? `Age ${LP.depleted.age}` : `Past ${lastR.age}`, pill: LP.depleted ? ['bad','Shortfall'] : ['good','Funded'] }
+  ]);
+  const NW = rows.map(r => ({ r, v: nwRow(r) }));
+  const ser = (k) => NW.map(x => ({ x: x.r.age, y: dv(x.v[k], x.r) }));
+  chart('chNW', { type:'line', data:{ datasets:[ area('Pre-tax', ser('pre'), c.pre), area('Roth', ser('roth'), c.roth), area('Taxable', ser('tax'), c.tax), area('HSA', ser('hsa'), c.hsa), area('Home equity', ser('home'), c.pen), ...(S.wRental ? [area('Rental real estate', ser('rental'), c.ann)] : []), ...(S.wBiz ? [area('Business', ser('biz'), c.ss)] : []), ...(+S.wCV ? [area('Policy cash value', ser('cv'), c.ss2)] : []), area('Other', ser('other'), c.muted) ] },
+    options: baseOpts({ stacked:true, x:{min:rows[0].age, max:lastR.age}, xTitle:'Age', vlines:[{x:S.retireAge, label:'Retire', color:c.ink}] }) });
+  // sankey
+  const r = ret.find(x => x.age === +S.ckAge) || ret[0];
+  const healthNom = r.age < 65 ? S.health*r.idx : 0;
+  const k = v => dv(v, r);
+  const src = [ ['Social Security', r.ss, c.ss], ['Spouse Social Security', r.ssSp, c.ss2], ['Pension', r.pension, c.pen], ['Annuity', r.annuity, c.ann], ['Work income', r.work || 0, c.good], ['Required distributions', r.rmd, hexA(c.pre, .8)], ['Pre-tax withdrawals', r.wPre, c.pre], ['Taxable account', r.wTax, c.tax], ['Roth', r.wRoth, c.roth], ['HSA', r.wHsa, c.hsa], ['Reverse mortgage', r.loanCash || 0, c.accent], ['Shortfall', r.shortfall || 0, c.bad] ].filter(x => x[1] > 1).map(x => ({ n:x[0], v:k(x[1]), col:x[2] }));
+  const living = Math.max(0, r.spend - healthNom);
+  const usesA = [ ['Essentials', living*S.ckEss/100, c.pre], ['Lifestyle', living*(1 - S.ckEss/100), c.roth], ['Health care', healthNom, c.hsa], ['Federal tax', r.fed, c.bad], ['State tax', r.state, c.warn], ['Medicare IRMAA', r.irmaa, c.ss], ['Reinvested surplus', r.surplus, c.good] ].filter(x => x[1] > 1).map(x => ({ n:x[0], v:k(x[1]), col:x[2] }));
+  sankeySVG($('#ckSankey'), src, usesA, c);
+  $('#ckFlowNote').textContent = `Age ${r.age} (${r.year}), ${dLabel()}. ${fmtK(k(src.reduce((a, s) => a + s.v, 0)))} flows in; guaranteed income covers ${pct((r.ss + r.ssSp + r.pension + r.annuity)/Math.max(1, r.spend + r.total), 0)} of spending and taxes. Hover a band for its amount.`;
+  // risk radar
+  const p100 = project(Object.assign({}, S, { le:100 }), { fast:true });
+  const care = project(S, { fast:true, shock: a => (a >= 82 && a < 85) ? CARE.al*12 : 0 });
+  const surv = mfj ? project(S, { fast:true, spDeath:75 }) : null;
+  const rr = PLAN.rows.find(x => x.retired && x.age >= Math.max(S.claim, S.retireAge)) || PLAN.retRow; const indexed = (rr.ss + rr.ssSp + (S.pnCola > 0 ? rr.pension : 0))/Math.max(1, rr.spend);
+  const preShare = S.bPre/Math.max(1, S.bPre + S.bRoth + S.bTax + S.bHsa);
+  const liq = (S.bTax + S.bRoth*.3)/Math.max(1, S.spend);
+  const need = S.niDebt + S.salary*S.niYears + S.niMort + S.niEdu + S.niFinal - S.niHave - S.bTax*.5;
+  const hs = HOMESTEAD[S.state] ?? 50000; const expo = (S.wDAPT ? .15 : 1)*S.bTax + (S.wLLC ? .2 : 1)*(+S.wRental + +S.wBiz) + Math.max(0, S.adHome - S.adMort - hs);
+  const R = [
+    ['Longevity', p100.depleted ? clamp((101 - p100.depleted.age)*6, 30, 100) : 10, p100.depleted ? `Money runs short at ${p100.depleted.age} if you live to 100.` : 'Funded to 100.', 'Delay Social Security, add a QLAC or income annuity.'],
+    ['Market & sequence', clamp((1 - MC.success)*250, 5, 100), `${pct(MC.success,0)} of simulations funded.`, 'Bond tent, cash bucket, guardrails, HECM standby line.'],
+    ['Inflation', clamp(100 - indexed*110, 5, 100), `${pct(indexed,0)} of spending is inflation-indexed income.`, 'Delay Social Security, TIPS ladder, equities for growth.'],
+    ['Health & long-term care', care.shortTot > 1000 ? 85 : 45, care.shortTot > 1000 ? '3 years of assisted living causes a shortfall.' : 'Plan absorbs 3 years of assisted living.', 'Hybrid life/LTC, HSA, home-equity reserve.'],
+    ['Tax', clamp(preShare*110, 5, 100), `${pct(preShare,0)} of savings is pre-tax.`, 'Roth conversions in gap years, QCDs, asset location.'],
+    ['Liquidity', clamp(100 - liq*40, 5, 100), `${liq.toFixed(1)} years of spending outside pre-tax accounts.`, 'Build 1–2 years of cash; HECM or SBLOC as standby credit.'],
+    ['Liability & lawsuits', clamp(expo/Math.max(1, S.bPre + S.bRoth + S.bTax + S.adHome)*180, 5, 100), `${fmtK(expo)} reachable by creditors.`, 'Umbrella policy, LLCs, trust titling.'],
+    ['Survivor & mortality', mfj ? (surv && surv.shortTot > 1000 ? 80 : need > 0 ? 50 : 20) : 25, mfj ? (surv && surv.shortTot > 1000 ? 'The survivor runs short if a spouse dies at 75.' : need > 0 ? `${fmtK(need)} life insurance gap.` : 'Survivor stays funded.') : 'Single household.', 'Survivor pension option, life insurance, delay the higher earner\'s Social Security.']
+  ];
+  chart('chRadar', { type:'radar', data:{ labels: R.map(x => x[0]), datasets:[ { label:'Exposure', data: R.map(x => Math.round(x[1])), borderColor: c.bad, backgroundColor: hexA(c.bad,.18), pointBackgroundColor: c.bad, borderWidth:2 } ] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:c.surface, titleColor:c.ink, bodyColor:c.ink, borderColor:c.line, borderWidth:1 } }, scales:{ r:{ min:0, max:100, ticks:{ display:false, stepSize:25 }, grid:{ color:c.grid }, angleLines:{ color:c.grid }, pointLabels:{ color:c.ink, font:{ size:11.5 } } } } } });
+  $('#ckRisk').innerHTML = R.slice().sort((a, b) => b[1] - a[1]).slice(0, 3).map(x => insight(x[1] >= 70 ? 'bad' : x[1] >= 40 ? 'warn' : 'good', Math.round(x[1]) + '', `<b>${x[0]}:</b> ${x[2]} ${x[3]}`)).join('');
+  // goals
+  const realR = (S.rPost - S.infl)/100, realPre = (S.rPre - S.infl)/100;
+  const disc = (age) => { const y = age - age0; return Math.pow(1 + realPre, -Math.min(y, S.retireAge - age0))*Math.pow(1 + realR, -Math.max(0, y - (S.retireAge - age0))); };
+  let gEss = 0, gTax = 0, gWant = 0, gWish = 0, guarPV = 0, contribPV = 0;
+  rows.forEach(rw => { const d = disc(rw.age); if (!rw.retired){ contribPV += (rw.contrib||0)/rw.idx*d; return; }
+    const sp = rw.spend/rw.idx; gEss += sp*S.ckEss/100*d; gWant += sp*(1 - S.ckEss/100)*d; gTax += rw.total/rw.idx*d;
+    if (rw.age <= S.ckWishTo) gWish += S.ckWish*d; guarPV += (rw.ss + rw.ssSp + rw.pension + rw.annuity + (rw.work||0))/rw.idx*d; });
+  const gLeg = S.ckLegacy*disc(lastR.age);
+  const portPV = S.bPre*.85 + S.bRoth + S.bTax + S.bHsa + contribPV;
+  let pool = guarPV + portPV; const goals = [['Essential spending', gEss, c.pre], ['Taxes & Medicare surcharges', gTax, c.bad], ['Lifestyle spending', gWant, c.roth], ['Wishes (travel, gifts)', gWish, c.ann], ['Legacy goal', gLeg, c.hsa]];
+  const homeEqPV = Math.max(0, S.adHome - S.adMort);
+  $('#ckGoals').innerHTML = goals.map(g => { const f = Math.min(1, pool/Math.max(1, g[1])); pool = Math.max(0, pool - g[1]); return `<div class="goal"><div class="goal-h"><b>${g[0]}</b><span class="num">${fmtK(g[1])} · ${pct(f,0)} funded</span></div><div class="goal-bar"><i style="width:${f*100}%; background:${g[2]}"></i></div></div>`; }).join('') +
+    `<p class="small muted" style="margin-top:8px">Resources: guaranteed income worth ${fmtK(guarPV)} + savings and future contributions ${fmtK(portPV)} (pre-tax at 85%). ${pool > 0 ? `Surplus of ${fmtK(pool)} after all goals.` : ''} Home equity of ${fmtK(homeEqPV)} is held in reserve and not counted.</p>`;
+  // ladder
+  const net = ret.map(rw => ({ age: rw.age, v: Math.max(0, rw.wPre + rw.wTax + rw.wRoth + rw.wHsa + rw.rmd - rw.surplus)/rw.idx }));
+  const bk = i => i < 2 ? 0 : i < 7 ? 1 : 2;
+  chart('chLadder', { type:'bar', data:{ labels: net.map(n => n.age), datasets:[ bar('Bucket 1: cash (years 1–2)', net.map((n, i) => bk(i) === 0 ? n.v : 0), c.good), bar('Bucket 2: bonds/CDs (years 3–7)', net.map((n, i) => bk(i) === 1 ? n.v : 0), c.tax), bar('Bucket 3: stocks (year 8+)', net.map((n, i) => bk(i) === 2 ? n.v : 0), c.pre) ] }, options: baseOpts({ xType:'category', stacked:true, xTitle:"Age · today's dollars" }) });
+  const b1 = net.slice(0, 2).reduce((a, n) => a + n.v, 0), b2 = net.slice(2, 7).reduce((a, n) => a + n.v, 0);
+  const hold = S.holdings || []; const cashH = hold.filter(h => h.t === 'cash').reduce((a, h) => a + +h.v, 0), bondH = hold.filter(h => ['bond','muni','tips'].includes(h.t)).reduce((a, h) => a + +h.v, 0) + hold.filter(h => h.t === 'balanced').reduce((a, h) => a + h.v*.45, 0);
+  $('#ckLadder').innerHTML = insight(cashH >= b1 ? 'good' : 'warn', 'CASH', `Bucket 1 needs about <b>${fmtK(b1)}</b> at retirement for the first two years of withdrawals; holdings show ${fmtK(cashH)} in cash.`) + insight(bondH >= b2 ? 'good' : 'warn', 'BONDS', `Bucket 2 needs about <b>${fmtK(b2)}</b> for years 3–7; you hold about ${fmtK(bondH)} in bonds.`) + insight('', 'RULE', 'Refill bucket 1 from stocks after up years and from bonds after down years, so you never sell stocks in a crash.');
+  // how much do you need
+  const fra = fraMonths(parseDate(S.birth).y);
+  const guarFull = S.pia*ssFactor(S.claim*12, fra)*12 + (mfj ? S.spPia*12*ssFactor(S.spClaim*12, fraMonths(parseDate(S.spBirth).y)) : 0) + (S.pnChoice === 'annuity' ? pensionInfo(S).annual/Math.pow(1 + S.infl/100, Math.max(0, S.pnStart - age0)) : 0);
+  const gap = Math.max(0, S.spend - guarFull);
+  const bridge = Math.max(0, S.claim - S.retireAge)*Math.min(S.spend, guarFull - (S.pnChoice === 'annuity' ? pensionInfo(S).annual/Math.pow(1 + S.infl/100, Math.max(0, S.pnStart - age0)) : 0)) + Math.max(0, 65 - S.retireAge)*S.health;
+  const swrs = [3, 3.5, 4, 4.5, 5]; const target = rt => gap/(rt/100)*1.15 + bridge;
+  const proj = PLAN.retRow.start/PLAN.retRow.idx; const tg = target(+S.ckSwr);
+  const yrsTo = Math.max(1, S.retireAge - age0), mr = S.rPre/1200; const extraMo = proj >= tg ? 0 : (tg - proj)*Math.pow(1 + S.infl/100, yrsTo)*mr/(Math.pow(1+mr, yrsTo*12) - 1);
+  $('#ckNeed').innerHTML = `<div><span class="eyebrow">Target at ${S.ckSwr}%</span><div class="v">${fmtK(tg)}</div></div><div style="max-width:52ch"><p>Spending ${fmtK(S.spend)} minus guaranteed income ${fmtK(guarFull)} leaves a ${fmtK(gap)} gap, grossed up 15% for taxes, plus ${fmtK(bridge)} to bridge years before Social Security and Medicare. You're projected to have <b>${fmtK(proj)}</b>: ${proj >= tg ? `a surplus of ${fmtK(proj - tg)}.` : `short ${fmtK(tg - proj)}; saving about <b>${fmt(extraMo)}/mo</b> more would close it.`}</p></div>`;
+  chart('chNeed2', { type:'bar', data:{ labels: swrs.map(s => s + '%'), datasets:[ bar('Target nest egg', swrs.map(target), swrs.map(s => s === +S.ckSwr ? c.accent : hexA(c.accent,.35))), { type:'line', label:'Projected at retirement', data: swrs.map(() => proj), borderColor: c.ink, borderWidth:2, pointRadius:0, borderDash:[5,4] } ] }, options: baseOpts({ xType:'category' }) });
+  // inflation
+  const rates = [2, 3, 4, 6]; const yrsI = Array.from({length:31}, (_, i) => i);
+  chart('chInflPP', { type:'line', data:{ labels: yrsI, datasets: [...rates.map((rt, i) => line(rt + '% inflation', yrsI.map(y => S.ckAmt/Math.pow(1 + rt/100, y)), [c.roth, c.pre, c.tax, c.bad][i], {borderWidth: Math.abs(rt - S.ckInfl) < .01 ? 3 : 1.5})), ...(rates.includes(+S.ckInfl) ? [] : [line(S.ckInfl + '% (yours)', yrsI.map(y => S.ckAmt/Math.pow(1 + S.ckInfl/100, y)), c.ink, {borderWidth:3})])] }, options: baseOpts({ xType:'category', xTitle:'Years' }) });
+  $('#ckInflOut').innerHTML = insight('acc','PP', `At ${S.ckInfl}% inflation, ${fmtK(S.ckAmt)} buys what ${fmtK(S.ckAmt/Math.pow(1 + S.ckInfl/100, 20))} buys today in 20 years, and prices double every ${(72/S.ckInfl).toFixed(0)} years. Retirees often face higher personal inflation from health care (${S.mcHInfl}% assumed).`);
+  // two-generation legacy
+  const L2 = PLAN.last, hr = S.wHeirRate/100, g = .06;
+  const preI = (L2.pre + L2.hsa)/L2.idx, rothI = L2.roth/L2.idx, taxI = (L2.taxB)/L2.idx + Math.max(0, homeAt(L2.age).home - homeAt(L2.age).mort)/L2.idx;
+  const gy = Array.from({length:26}, (_, i) => i); let a = preI, side = 0; const A = [], Bv = [], Cv = [], Dv = [];
+  gy.forEach(y => { A.push(a + side); Bv.push(rothI*Math.pow(1+g, y)); Cv.push(taxI*Math.pow(1+g*.9, y)); Dv.push(preI*(1 - .24*0)*Math.pow(1+g, y));
+    if (y < 10){ const wd = a/(10 - y); a = (a - wd)*(1+g); side = side*(1 + g*.85) + wd*(1 - hr); } else { side *= 1 + g*.85; } });
+  chart('chGen', { type:'line', data:{ labels: gy, datasets:[ line('Inherited pre-tax (10-year rule, taxed)', A, c.pre, {borderWidth:2.5}), line('Same dollars if inherited as Roth', Dv, c.roth, {borderDash:[5,4]}), line('Inherited Roth', Bv, c.roth, {borderWidth:2.5}), line('Taxable + home (stepped-up)', Cv, c.tax, {borderWidth:2.5}) ] }, options: baseOpts({ xType:'category', xTitle:"Years after inheritance (today's $)" }) });
+  $('#ckGen').innerHTML = insight('acc','HEIRS', `After 25 years the inherited pre-tax money grows to about ${fmtK(A[25])}, versus ${fmtK(Dv[25])} if the same balance had been Roth: a <b>${fmtK(Dv[25] - A[25])}</b> difference from the heirs' ${S.wHeirRate}% tax under the 10-year rule.`);
+  // holistic review
+  const hp = healthPath(S, PLAN).reduce((s, r) => s + r.total/r.idx, 0);
+  const fastMo = (+S.lkF + +S.lkA + +S.lkS + +S.lkT);
+  const lt = lifeSim(S);
+  const st = (ok, warn) => ok ? '<span class="pill good">On track</span>' : warn ? '<span class="pill warn">Review</span>' : '<span class="pill bad">Act</span>';
+  const rows2 = [
+    ['Retirement income', st(MC.success >= .85, MC.success >= .7), `${pct(MC.success,0)} success`, 'Run the war-game; consider guardrails', 'advisor'],
+    ['Social Security', st(S.claim >= 67, S.claim >= 64), `Claim at ${S.claim}`, 'Compare breakeven and survivor benefit', 'social-security'],
+    ['Investments & fees', st(holdStats().wEr < .003, holdStats().wEr < .006), `${pct(holdStats().wEr,2)} expense ratio`, 'Fix asset location and high-fee funds', 'portfolio'],
+    ['Dividend / withdrawal income', st(+S.dvRate <= 4, +S.dvRate <= 5), `${S.dvRate}% of ${fmtK(+S.dvAmt)}`, 'Check success by rate and years', 'portfolio'],
+    ['Taxes', st(preShare < .6, preShare < .8), `${pct(preShare,0)} pre-tax`, 'Test Roth conversions', 'taxes'],
+    ['Medicare & health care', st(S.hcInclude, true), `${fmtK(hp)} lifetime (today $)`, S.hcInclude ? 'Review Medigap vs. Advantage' : 'Add health costs to the plan', 'healthcare'],
+    ['Long-term care', st(care.shortTot < 1000, false), care.shortTot < 1000 ? 'Absorbable' : 'Shortfall', 'Price hybrid LTC; plan home-equity use', 'insurance'],
+    ['Life insurance', st(need <= 0, need < 250000), need > 0 ? fmtK(need) + ' gap' : 'Covered', lt.lapsed.stress ? 'Stress-test any IUL' : 'Ladder term to match needs', 'insurance'],
+    ['Disability', st(true, true), 'See income replacement', 'Own-occupation coverage; SSDI timeline', 'benefits'],
+    ['Housing & home equity', st(S.adMort < S.adHome*.3, true), fmtK(Math.max(0, S.adHome - S.adMort)) + ' equity', 'Reverse mortgage standby line at 62', 'advisor'],
+    ['Estate & titling', st(S.wTrust, false), S.wTrust ? 'Trust funded' : 'Probate exposure', 'Revocable trust, beneficiary audit', 'wealth'],
+    ['Asset protection', st(expo < 250000, expo < 750000), fmtK(expo) + ' exposed', 'Umbrella, LLCs, titling', 'wealth'],
+    ['Spending habits', st(fastMo < 300, fastMo < 600), fmt(fastMo) + '/mo F.A.S.T.', 'Redirect to savings', 'leak'],
+    ['Family governance', '<span class="pill">Checklist</span>', '12 items', 'Family meeting, IPS, letter of instruction', 'wealth']
+  ];
+  $('#ckReview').innerHTML = tbl(['Area','Status','Key number','Next step',''], rows2.map(x => [`<b>${x[0]}</b>`, x[1], x[2], x[3], `<a href="#${x[4]}">Open →</a>`]));
+}
+
 /* ---------- BENEFITS ---------- */
 function ssdiCalc(){
   const pia = piaFromAime(+S.sdAime);
@@ -2914,7 +3509,7 @@ function renderLeak(){
 }
 
 /* ---------- Router & init ---------- */
-const VIEWS = { overview: renderOverview, advisor: renderAdvisor, wealth: renderWealth, 'social-security': renderSS, pension: renderPension, annuities: renderAnnuities, accounts: renderAccounts, taxes: renderTaxes, insurance: renderInsurance, benefits: renderBenefits, investing: renderInvesting, leak: renderLeak };
+const VIEWS = { overview: renderOverview, cockpit: renderCockpit, portfolio: renderPortfolio, healthcare: renderHealthcare, advisor: renderAdvisor, wealth: renderWealth, 'social-security': renderSS, pension: renderPension, annuities: renderAnnuities, accounts: renderAccounts, taxes: renderTaxes, insurance: renderInsurance, benefits: renderBenefits, investing: renderInvesting, leak: renderLeak };
 function current(){ const h = location.hash.replace('#',''); return VIEWS[h] ? h : 'overview'; }
 function show(){
   const v = current();
@@ -2942,12 +3537,17 @@ function init(){
   if (window.innerWidth < 1040) document.querySelectorAll('.panel details').forEach((d, i) => { if (i > 0) d.open = false; });
   syncInputs();
   document.addEventListener('input', e => { const el = e.target; if (el.dataset.k){ const k = el.dataset.k; if (el.type === 'checkbox') S[k] = el.checked; else if (el.type === 'number') S[k] = el.value === '' ? '' : +el.value; else S[k] = el.value; changed(); }
+    if (el.dataset.h !== undefined && el.tagName !== 'SELECT'){ const i = +el.dataset.h, f = el.dataset.f; S.holdings[i][f] = el.type === 'number' ? +el.value : el.value; S._touched = true; save(); clearTimeout(tmr); tmr = setTimeout(() => { if (current() === 'portfolio') { const ae = document.activeElement; const sel = ae && ae.dataset ? [ae.dataset.h, ae.dataset.f] : null; renderPortfolio(); if (sel) { const n = document.querySelector(`[data-h="${sel[0]}"][data-f="${sel[1]}"]`); if (n) { n.focus(); } } } }, 450); }
     if (el.dataset.va !== undefined){ const i = +el.dataset.va, f = el.dataset.f; S.vaRatings[i][f] = f === 'b' ? el.checked : f === 'r' ? +el.value : el.value; changed(); }
     if (el.id === 'acSearch') renderAccounts(); if (el.id === 'faqSearch') renderFaq(); });
-  document.addEventListener('change', e => { const el = e.target; if (['wgFMarket','wgFEvent','wgFLife','wgFOnly'].includes(el.id)) renderWarGame(); if (el.tagName === 'SELECT' && el.dataset.k){ S[el.dataset.k] = el.value; changed(); } if (el.dataset.va !== undefined && el.tagName === 'SELECT'){ S.vaRatings[+el.dataset.va].r = +el.value; changed(); } });
+  document.addEventListener('change', e => { const el = e.target; if (el.dataset.h !== undefined && el.tagName === 'SELECT'){ S.holdings[+el.dataset.h][el.dataset.f] = el.value; save(); renderPortfolio(); } if (['wgFMarket','wgFEvent','wgFLife','wgFOnly'].includes(el.id)) renderWarGame(); if (el.tagName === 'SELECT' && el.dataset.k){ S[el.dataset.k] = el.value; changed(); } if (el.dataset.va !== undefined && el.tagName === 'SELECT'){ S.vaRatings[+el.dataset.va].r = +el.value; changed(); } });
   document.addEventListener('click', e => { const t = e.target.closest('button'); if (!t) return;
     if (t.dataset.cat){ acCat = t.dataset.cat; renderAccounts(); }
     if (t.id === 'wgRun') runWarGame();
+    if (t.id === 'pfAdd'){ S.holdings.push({n:'New fund', t:'usLarge', a:'tax', v:10000, er:.05, y:1.5, cg:0}); save(); renderPortfolio(); }
+    if (t.dataset.hdel !== undefined){ S.holdings.splice(+t.dataset.hdel, 1); save(); renderPortfolio(); }
+    if (t.id === 'pfSync'){ const H = S.holdings; S.bPre = H.filter(h => h.a === 'pre').reduce((a, h) => a + +h.v, 0); S.bRoth = H.filter(h => h.a === 'roth').reduce((a, h) => a + +h.v, 0); S.bTax = H.filter(h => h.a === 'tax').reduce((a, h) => a + +h.v, 0); S.bBasis = Math.min(S.bBasis, S.bTax); $('#pfSyncNote').textContent = 'Plan balances updated.'; changed(); }
+    if (t.id === 'acaUse'){ const ag = [+S.acaAge]; if (S.filing === 'mfj' && +S.acaHH >= 2) ag.push(+S.acaAge - (ageOn(S.birth) - ageOn(S.spBirth))); S.health = Math.round(acaCalc(+S.acaMagi, +S.acaHH, ag).net + 1500*ag.length); changed(); }
     if (t.dataset.wglife){ wgLife = +t.dataset.wglife; S.wgLife = wgLife; save(); renderWarGame(); }
     if (t.dataset.lever !== undefined && LEVERS){ const l = LEVERS[+t.dataset.lever]; if (l) { Object.assign(S, l.ds); changed(); } }
     if (t.dataset.oi){ oiCat = t.dataset.oi; renderInsurance(); }
