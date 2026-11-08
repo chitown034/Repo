@@ -8,8 +8,8 @@ Which model each seat runs on, and the rules that bound how many run at once —
 |---|---|
 | Vanessa — orchestration, council chair, final synthesis | Claude Fable 5.1 masterminds |
 | Executives (Marcus, Sofia, Derek, Alexandra, Nadia, Victor, Elena, Elon) | Claude Opus 5.5 (since 2026-09-28) |
-| Reports, benches, execution and report-only seats | Claude Sonnet 5 |
-| Research heavy lifting | Claude web research — Sonnet 5 with WebSearch/WebFetch on Steven's subscription (Perplexity removed 2026-10-05) |
+| Reports, benches, execution and report-only seats | Claude Opus 5.5 (Steven, 2026-11-08: every seat on Opus 5.5) |
+| Research heavy lifting | Claude web research — Opus 5.5 with WebSearch/WebFetch on Steven's subscription (Perplexity removed 2026-10-05) |
 
 The deck's own toolkit snapshot (2026-09-16) shows this roughly reflected in the live agent roster: 1 agent on Fable 5.1 (Vanessa), 93 on Opus 5 (the executives have since moved to Opus 5.5), 78 on Sonnet 5. Model tiering is **decided and recorded** but, as of the same snapshot, **not yet enforced by tooling** — a seat's actual runtime model can drift from this table until that enforcement is built. Check the live roster before assuming a seat is on the model this table says it should be.
 

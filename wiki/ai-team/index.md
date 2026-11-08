@@ -20,7 +20,7 @@ hold the actual detail once you know which seat or layer you need.
 | `agent-os.md` | Every agent through Laya (lane), Jarvis (recall) and Orca (launch): `bin/brain os`, 172/172 reachable |
 | `cross-functional.md` | Who leads, who joins, the parallel waves, the gates and the HALT words — the rules `bin/brain route` runs |
 | `bot-crew.md` | The Bot Crew: 355 chat agents mirroring this org chart — 13 executive/mentor cards, named and desk seats, 8 pods and 12 workflows runnable, org-chart panel, 20 connectors behind approval cards (2026-10-22) |
-| `desk-seats.md` | The seven Sonnet 5 desk seats added 2026-10-22 (refi watch, sphere nurture, voicemail/inbox triage, document intake, open house, travel desk, meeting scribe): role, owns, HALT, starting page |
+| `desk-seats.md` | The seven desk seats (Opus 5.5 since 2026-11-08) added 2026-10-22 (refi watch, sphere nurture, voicemail/inbox triage, document intake, open house, travel desk, meeting scribe): role, owns, HALT, starting page |
 | `push-button-system.md` | The 2026-10-22 architecture: one `vanessaQueue`, the 6:05 → 6:25 → 6:34 → 6:40 morning schedule, the deck push-buttons, pods and gates, the one-word mods, Pabbly workflows 1–11, the Mac paste |
 | `mentors-and-benches.md` | Maxwell, Apex, James, Kevin (name settled 2026-10-07), and what a "bench" row actually counts |
 
@@ -37,14 +37,14 @@ hold the actual detail once you know which seat or layer you need.
 | Pipeline, conversion, the Six Levers | **Victor** — CRO | Opus 5.5 |
 | Data/cyber risk, credential hygiene, access | **Elena** — CISO | Opus 5.5 |
 | Feasibility of anything Nadia proposes; the engineering team | **Elon** — CTO Innovator, inward architect | Opus 5.5 |
-| Lending / real-estate specialist work | **Vanessa (broker skill)**, Harrison, Gwen, Marguerite | Opus 5.5 / Sonnet 5 |
+| Lending / real-estate specialist work | **Vanessa (broker skill)**, Harrison, Gwen, Marguerite | Opus 5.5 |
 | Broker coaching, weekly pipeline review | **Maxwell** — Broker Mentor & Coach | Opus 5.5 |
 | Order flow, market structure, a trade idea | **Apex** — Trade Advisor Mentor (research only) | Opus 5.5 |
 | Family office, tax strategy, estate | **James** — Wealth Advisor | Opus 5.5 |
 | Personal development, the 11-Dimension check | **Kevin** — Personal Development Mentor | Opus 5.5 |
-| Execution, reports, benches | The named report seat | Sonnet 5 |
+| Execution, reports, benches | The named report seat | Opus 5.5 |
 | Refi watch list, sphere touches, voicemail/inbox triage, contract dates, open-house follow-up, travel, meeting recaps | **Refi Watch Analyst**, **Sphere Nurture Coordinator**, **Voicemail & Inbox Triage**, **Document Intake Clerk**, **Open House Captain**, **Travel Desk**, **Meeting Scribe** — drafts only (`desk-seats.md`) | Sonnet 5 |
-| Research heavy lifting | **Claude web research** — WebSearch/WebFetch on Steven's Claude subscription (Perplexity removed 2026-10-05) | Sonnet 5 |
+| Research heavy lifting | **Claude web research** — WebSearch/WebFetch on Steven's Claude subscription (Perplexity removed 2026-10-05) | Opus 5.5 |
 
 **Kevin is the mentor seat's name everywhere** (Steven, 2026-10-07: "replace Cole with Kevin throughout"). The
 skill is `kevin-mentor` (`.claude/skills/kevin-mentor/`, and `integrations/claude-desktop/kevin-mentor.zip` for

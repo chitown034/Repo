@@ -841,3 +841,18 @@ through Apple Health and the same export file once Steven switches the nutrition
   routine) — a live-task change, so his yes. Until then a parked orchestrator session means stale tiles again, and the
   new heartbeat line will say so.
 - **Owner.** Derek (sync), Cole (health), Vanessa (routines). **Status.** Deck v259 (this splice), 2026-10-31.
+
+## 2026-11-08 — Every AI seat on Opus 5.5; Vanessa on Fable 5.1; one org chart on all three dashboards
+
+- **Request (Steven, verbatim).** *"ensure all ai agents are using opus 5.5 and vanessa use fable 5.1. ensure ai org chart are
+  up to date in both vommand desk, broker dashboard and loan dashboard. ensure they are linked to work as cross functional teams"*.
+- **Decision.** The Sonnet 5 tier is retired: reports, benches, desk seats and the web-research seat move to Opus 5.5
+  (89 roster rows); the eight executives stay on Opus 5.5; Vanessa runs on Fable 5.1 (agent file `model: claude-fable-5-1`).
+  The local PII tier (Bonsai 27B, Mac only) is unchanged: it is a privacy boundary, not a seat. CLAUDE.md tiering table,
+  `brain/agentfiles.py`, `brain/agentos.py`, the roster and the generated agent files follow.
+- **Org chart.** The Command Deck, the Broker Command Center and the Loan Dashboard carry the same chart: Steven at the top;
+  Steve, Vanessa, the human ISA/EA, Claude Duet, Fieldy AI and Violoop in the top row; every seat reporting to Vanessa
+  through its executive; the standing cross-functional pods (Deal, Lead, Listing, Mortgage, Growth...) dispatched by Vanessa
+  in parallel waves of at most eight through one queue (vanessaQueue).
+- **Cost note.** Opus on every seat costs more per run than Sonnet did; Marcus reports the AI team's monthly cost.
+- **Owner.** Vanessa (dispatch), Derek (agent files), Nadia (tiering). **Status.** Done 2026-11-08.

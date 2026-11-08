@@ -53,7 +53,7 @@ If nothing fits, say "not in the brain" and offer to queue research. Do not fill
    for anything it escalates. Spec and proof: `integrations/laya/README.md`.
 1. `bin/brain recall` (Claude Code / Codex) · `recall_brain` + the live deck snapshot (dashboard chat).
 2. `memory.md` + the wiki **index line**. Open the page only if the index line is not enough.
-3. `recall_research` / `request_research` — Claude web research (Sonnet 5 with WebSearch/WebFetch on
+3. `recall_research` / `request_research` — Claude web research (Opus 5.5 with WebSearch/WebFetch on
    Steven's Claude subscription; Perplexity removed 2026-10-05), capped, async. Queued requests are
    answered by the `vanessa-research-queue` Mac task, hourly at :30, 7:30 AM–9:30 PM PT.
 4. NotebookLM mirror — the brain as 13 Google Docs in Drive `SECOND BRAIN/` (rewritten weekly, `integrations/notebooklm/README.md`).
@@ -74,14 +74,14 @@ Never serve a cached answer past its TTL without saying its age. Rules: `recall-
 - Escalating a level costs roughly 5–10x the previous one. Say out loud when you escalate and why.
 - State the age of every fact you report. "As of <the doc's own stamp>", never today's date by default.
 
-## Model tiering (Steven's decisions, 2026-09-22; executives to Opus 5.5 on 2026-09-28; research to Claude on 2026-10-05)
+## Model tiering (Steven's decisions, 2026-09-22; executives to Opus 5.5 on 2026-09-28; research to Claude on 2026-10-05; every seat to Opus 5.5 on 2026-11-08)
 
 | Seat | Model |
 |---|---|
 | Vanessa — orchestration, council chair, final synthesis | Claude Fable 5.1 masterminds |
 | Executives (Marcus, Sofia, Derek, Alexandra, Nadia, Victor, Elena, Elon) | Claude Opus 5.5 |
-| Reports, benches, execution and report-only seats | Claude Sonnet 5 |
-| Research heavy lifting | Claude web research — Sonnet 5 with WebSearch/WebFetch on Steven's Claude subscription (Perplexity removed 2026-10-05) |
+| Reports, benches, execution and report-only seats | Claude Opus 5.5 |
+| Research heavy lifting | Claude web research — Opus 5.5 with WebSearch/WebFetch on Steven's Claude subscription (Perplexity removed 2026-10-05) |
 | Local tier — client-data (PII-gated) requests only, never a cloud fallback | Bonsai 27B via OmniRoute's `local` combo, on the Mac only — off until proven there (`integrations/omniroute/README.md`) |
 
 ## Sub-agent dispatch

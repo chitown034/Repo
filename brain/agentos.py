@@ -86,7 +86,7 @@ def entry(root: Path, a: dict, rules: dict) -> dict:
     seat = SEAT_OF_LEAD.get(a["slug"]) or SEAT_OF_LEAD.get(lead_slug)
     if not seat:   # benches with no lead: route the role text through the dispatch rules to find the owning lane
         seat = route_mod.route(root, a["role"], rules=rules, with_reads=False)["lead"]
-    model = {"opus": "Opus 5.5", "sonnet": "Sonnet 5", "fable": "Fable 5.1"}.get(a["model"], a["model"] or "Sonnet 5")  # fable: CLAUDE.md tiering, Vanessa
+    model = {"opus": "Opus 5.5", "sonnet": "Sonnet 5", "fable": "Fable 5.1"}.get(a["model"], a["model"] or "Opus 5.5")  # fable: CLAUDE.md tiering, Vanessa
     return {
         "slug": a["slug"], "tier": a["tier"], "model": model, "lead": lead_slug or None, "role": a["role"][:160],
         "laya": {"lane": seat, "starts_from": rules["starts"].get(seat)},

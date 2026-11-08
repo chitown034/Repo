@@ -1,4 +1,4 @@
-# Desk seats — seven Sonnet 5 report seats added 2026-10-22
+# Desk seats — seven report seats added 2026-10-22 (Opus 5.5 since 2026-11-08)
 
 Seven report-tier seats that prepare lists and drafts for Steven, the ISA and the executives. Every one is **drafts
 only**: it never sends, quotes, signs, books, pays or writes to a client-facing system — that step is a Needs-Steven

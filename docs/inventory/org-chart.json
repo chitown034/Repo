@@ -1,9 +1,14 @@
 {
- "generated": "2026-11-02T21:12:37Z",
+ "generated": "2026-11-08T20:17:53Z",
  "seats": [
   {
    "name": "Steve",
    "role": "digital twin, Tier-1 work",
+   "kind": "tree"
+  },
+  {
+   "name": "Claude Duet",
+   "role": "Steven's executive assistant (Claude), top row beside Steve,",
    "kind": "tree"
   },
   {
@@ -1082,7 +1087,7 @@
   "Open House Captain": "Sonnet 5",
   "Travel Desk": "Sonnet 5",
   "Meeting Scribe": "Sonnet 5",
-  "Claude web research": "Sonnet 5"
+  "Claude web research": "Opus 5.5"
  },
  "pods": [
   {

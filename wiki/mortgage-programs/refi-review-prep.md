@@ -16,7 +16,7 @@ daily snapshot with the book.
 
 | Role | Who |
 |---|---|
-| The Monday prep list: first name, program, note rate, market average, spread | Refi Watch Analyst (Sonnet 5 desk seat; Mortgage Pod) |
+| The Monday prep list: first name, program, note rate, market average, spread | Refi Watch Analyst (Opus 5.5 desk seat; Mortgage Pod) |
 | Scenario prep for anyone Steven picks; the VA IRRRL lane | Harrison (Elite Mortgage Broker, under Victor) |
 | The touch draft, if Steven wants one after the conversation | Sphere Nurture Coordinator + Alexandra |
 | Keeps the list current | Steven (and the ISA, from the ISA Portal form) |

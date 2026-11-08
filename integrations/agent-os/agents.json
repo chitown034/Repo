@@ -4,7 +4,7 @@
   {
    "slug": "a11y-architect",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "ecc-accessibility-lead",
    "role": "Accessibility Architect specializing in WCAG 2.2 compliance for Web and Native platforms.",
    "laya": {
@@ -122,7 +122,7 @@
   {
    "slug": "appraisal-manager",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cco-alexandra",
    "role": "Report under Alexandra (Compliance): manages the appraisal — ordering expectations under AMC rules, preparing the comparable support package",
    "laya": {
@@ -182,7 +182,7 @@
   {
    "slug": "automation-engineer",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Report under Derek (CTO): builds and repairs the automation layer — cloud routines (RemoteTrigger), desktop scheduled tasks, /loop prompts,",
    "laya": {
@@ -215,7 +215,7 @@
   {
    "slug": "bookkeeper",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cfo-marcus",
    "role": "Report under Marcus (CFO): categorizes transactions, drafts reconciliations, flags duplicates, subscriptions and anomalies, and prepares the",
    "laya": {
@@ -294,7 +294,7 @@
   {
    "slug": "build-error-resolver",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Build and TypeScript error resolution specialist.",
    "laya": {
@@ -327,7 +327,7 @@
   {
    "slug": "buyer-matching-engine",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cro-victor",
    "role": "Report under Victor (CRO): runs the buyer side — the consultation that captures real criteria, the search strategy, property matching agains",
    "laya": {
@@ -354,7 +354,7 @@
   {
    "slug": "buyers-agent-elite",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cro-victor",
    "role": "Report under Victor (CRO): the buyer-side representation practitioner — preps Steven or his showing agent to walk into a consultation, a tou",
    "laya": {
@@ -381,7 +381,7 @@
   {
    "slug": "ca-loan-processor",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cco-alexandra",
    "role": "Top-1%-caliber mortgage Loan Processor — runs the actual file assembly and condition-clearing, not the coaching conversation.",
    "laya": {
@@ -488,7 +488,7 @@
   {
    "slug": "calendar-prep",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "meeting-scribe",
    "role": "One-page PREP brief per upcoming meeting: who the attendees are, past touchpoints and open promises (Gmail, Fieldy), the goal. Read-only. Hand-written: .claude/",
    "laya": {
@@ -677,7 +677,7 @@
   {
    "slug": "client-concierge",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cro-victor",
    "role": "Report under Victor (CRO): runs the white-glove layer around a transaction — move coordination, utility and address-change checklists, home",
    "laya": {
@@ -704,7 +704,7 @@
   {
    "slug": "closing-coordinator",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cro-victor",
    "role": "Report under Victor (CRO): runs the file from clear-to-close to funded — CD timing, final figures reconciliation, signing logistics includin",
    "laya": {
@@ -791,7 +791,7 @@
   {
    "slug": "code-explorer",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Deeply analyzes existing codebase features by tracing execution paths, mapping architecture layers, and documenting dependencies to inform n",
    "laya": {
@@ -857,7 +857,7 @@
   {
    "slug": "code-simplifier",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Simplifies and refines code for clarity, consistency, and maintainability while preserving behavior.",
    "laya": {
@@ -956,7 +956,7 @@
   {
    "slug": "commission-tracker",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cfo-marcus",
    "role": "Report under Marcus (CFO): tracks every dollar Steven is owed — real-estate commissions through the LPT split and cap, MLO compensation, ref",
    "laya": {
@@ -1009,7 +1009,7 @@
   {
    "slug": "competitor-watch",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "competitive-intelligence-analyst",
    "role": "Weekly public-page check of the rivals in context/competitors.md; dated snapshot; reports only what changed. Hand-written: .claude/agents/competitor-watch.md (2",
    "laya": {
@@ -1035,7 +1035,7 @@
   {
    "slug": "content-writer",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cmo-sofia",
    "role": "Report under Sofia (CMO): writes finished posts, newsletters, follow-up sequences and listing one-pagers in Steven's brand voice for militar",
    "laya": {
@@ -1088,7 +1088,7 @@
   {
    "slug": "cpp-build-resolver",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "C++ build, CMake, and compilation error resolution specialist.",
    "laya": {
@@ -1307,7 +1307,7 @@
   {
    "slug": "dart-build-resolver",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Dart/Flutter build, analysis, and dependency error resolution specialist.",
    "laya": {
@@ -1340,7 +1340,7 @@
   {
    "slug": "data-steward",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Report under Derek (CTO): keeps the dashboards' data honest — feed freshness (which feeds are Due, what source refreshes each), drift betwee",
    "laya": {
@@ -1459,7 +1459,7 @@
   {
    "slug": "django-build-resolver",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Django/Python build, migration, and dependency error resolution specialist.",
    "laya": {
@@ -1525,7 +1525,7 @@
   {
    "slug": "doc-updater",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Documentation and codemap specialist.",
    "laya": {
@@ -1558,7 +1558,7 @@
   {
    "slug": "docs-lookup",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "caio-nadia",
    "role": "When the user asks how to use a library, framework, or API or needs up-to-date code examples, use Context7 MCP to fetch current documentatio",
    "laya": {
@@ -1584,7 +1584,7 @@
   {
    "slug": "document-intake-clerk",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "ca-transaction-coordinator",
    "role": "Report under Carmen (CA TC, Victor's line): reads each new contract and disclosure package and enters its dates into tcDeals; flags every missing or conflicting",
    "laya": {
@@ -1638,7 +1638,7 @@
   {
    "slug": "e2e-runner",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "End-to-end testing specialist using Vercel Agent Browser (preferred) with Playwright fallback.",
    "laya": {
@@ -1671,7 +1671,7 @@
   {
    "slug": "ecc-accessibility-lead",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "ECC AI employee reporting to Derek (CTO).",
    "laya": {
@@ -1704,7 +1704,7 @@
   {
    "slug": "ecc-agent-safety-officer",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "caio-nadia",
    "role": "ECC AI employee reporting to Nadia (CAIO).",
    "laya": {
@@ -1736,7 +1736,7 @@
   {
    "slug": "ecc-dependency-steward",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "ciso-elena",
    "role": "ECC AI employee reporting to Elena (CISO).",
    "laya": {
@@ -1768,7 +1768,7 @@
   {
    "slug": "ecc-observability-lead",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "ECC AI employee reporting to Derek (CTO).",
    "laya": {
@@ -1801,7 +1801,7 @@
   {
    "slug": "ecc-security-steward",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "ciso-elena",
    "role": "ECC AI employee reporting to Elena (CISO).",
    "laya": {
@@ -1866,7 +1866,7 @@
   {
    "slug": "ecc-test-architect",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "ECC AI employee reporting to Derek (CTO).",
    "laya": {
@@ -1931,7 +1931,7 @@
   {
    "slug": "escalation-recovery-agent",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "vanessa-orchestrator",
    "role": "Reports to Vanessa: handles the file that has gone wrong — a blown closing date, a denied loan, a failed appraisal, an angry client or partn",
    "laya": {
@@ -1990,7 +1990,7 @@
   {
    "slug": "fitness-trainer",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "vanessa-orchestrator",
    "role": "Strength and conditioning coach on Steven's Apple Health section — builds his progressive weekly training plan from his workout history, hea",
    "laya": {
@@ -2108,7 +2108,7 @@
   {
    "slug": "gan-evaluator",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "caio-nadia",
    "role": "GAN Harness — Evaluator agent.",
    "laya": {
@@ -2134,7 +2134,7 @@
   {
    "slug": "gan-generator",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-innovator",
    "role": "GAN Harness — Generator agent.",
    "laya": {
@@ -2167,7 +2167,7 @@
   {
    "slug": "gan-planner",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-innovator",
    "role": "GAN Harness — Planner agent.",
    "laya": {
@@ -2227,7 +2227,7 @@
   {
    "slug": "go-build-resolver",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Go build, vet, and compilation error resolution specialist.",
    "laya": {
@@ -2293,7 +2293,7 @@
   {
    "slug": "harmonyos-app-resolver",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "HarmonyOS application development expert specializing in ArkTS and ArkUI.",
    "laya": {
@@ -2411,7 +2411,7 @@
   {
    "slug": "homelab-architect",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Designs home and small-lab network plans from hardware inventory, goals, and operator experience level, with safe staged changes and rollbac",
    "laya": {
@@ -2444,7 +2444,7 @@
   {
    "slug": "hook-writer",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "content-writer",
    "role": "3 hooks, 3 titles and a caption per post in Steven's voice, banned-word list and ad rules applied; drafts only. Hand-written: .claude/agents/hook-writer.md (202",
    "laya": {
@@ -2471,7 +2471,7 @@
   {
    "slug": "inbox-triage",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "voicemail-inbox-triage",
    "role": "Sorts unread Gmail into URGENT / REPLY / READ LATER / IGNORE and drafts replies in Steven's voice; never sends. Hand-written: .claude/agents/inbox-triage.md (20",
    "laya": {
@@ -2523,7 +2523,7 @@
   {
    "slug": "inspection-repair-negotiator",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cro-victor",
    "role": "Report under Victor (CRO): runs the inspection period — coordinating inspections, reading reports for what is material versus cosmetic, buil",
    "laya": {
@@ -2582,7 +2582,7 @@
   {
    "slug": "investor-client-manager",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cro-victor",
    "role": "Report under Victor (CRO): serves investor clients — rental analysis with real cap rate, cash-on-cash and DSCR math, 1031 exchange timelines",
    "laya": {
@@ -2609,7 +2609,7 @@
   {
    "slug": "java-build-resolver",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Java/Maven/Gradle build, compilation, and dependency error resolution specialist.",
    "laya": {
@@ -2675,7 +2675,7 @@
   {
    "slug": "kotlin-build-resolver",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Kotlin/Gradle build, compilation, and dependency error resolution specialist.",
    "laya": {
@@ -2795,7 +2795,7 @@
   {
    "slug": "loan-servicing-transfer",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cco-alexandra",
    "role": "Report under Alexandra (Compliance): handles the post-funding period — servicing transfer notices and the 60-day grace period, first payment",
    "laya": {
@@ -2822,7 +2822,7 @@
   {
    "slug": "loop-operator",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "caio-nadia",
    "role": "Operate autonomous agent loops, monitor progress, and intervene safely when loops stall.",
    "laya": {
@@ -2848,7 +2848,7 @@
   {
    "slug": "lpt-recruiting-downline",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cro-victor",
    "role": "Report under Victor (CRO): builds Steven's LPT Realty attraction and revenue-share organisation — recruiting pipeline, the value case for ag",
    "laya": {
@@ -2981,7 +2981,7 @@
   {
    "slug": "meal-planner",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "vanessa-orchestrator",
    "role": "Nutrition planner on Steven's Apple Health section — builds his weekly meal plan and grocery list from deck doc healthGoals and what his dat",
    "laya": {
@@ -3007,7 +3007,7 @@
   {
    "slug": "meeting-scribe",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "vanessa-orchestrator",
    "role": "Report under Vanessa: recaps Fieldy conversations and Zoom meetings — decisions, action items, open questions — and hands action items to vanessaQueue. Never se",
    "laya": {
@@ -3087,7 +3087,7 @@
   {
    "slug": "mktg-affiliate-partnerships",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cmo-sofia",
    "role": "Report under Sofia (CMO): hunts residual and affiliate income — products, tools, platforms and sponsorships Steven can credibly endorse to h",
    "laya": {
@@ -3141,7 +3141,7 @@
   {
    "slug": "mktg-brand-strategist",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cmo-sofia",
    "role": "Report under Sofia (CMO): owns positioning, brand architecture and the message hierarchy across Steven's four brands — Patriot Pacific MLO,",
    "laya": {
@@ -3168,7 +3168,7 @@
   {
    "slug": "mktg-creative-designer",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cmo-sofia",
    "role": "Report under Sofia (CMO): owns visual identity and creative direction across every asset — brand kit, templates, ad creative, listing collat",
    "laya": {
@@ -3195,7 +3195,7 @@
   {
    "slug": "mktg-direct-mail-farming",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cmo-sofia",
    "role": "Report under Sofia (CMO): runs geographic farming and direct mail — farm selection on turnover and absorption math, mail piece copy and cade",
    "laya": {
@@ -3222,7 +3222,7 @@
   {
    "slug": "mktg-email-campaign-manager",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cmo-sofia",
    "role": "Report under Sofia (CMO): owns email and SMS lifecycle — nurture sequences, database reactivation, newsletters, post-close campaigns and eve",
    "laya": {
@@ -3276,7 +3276,7 @@
   {
    "slug": "mktg-paid-ads-manager",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cmo-sofia",
    "role": "Report under Sofia (CMO): plans, drafts and analyses paid campaigns — Google Search/PMax, Meta, YouTube, LinkedIn — plus the nonprofit's Goo",
    "laya": {
@@ -3303,7 +3303,7 @@
   {
    "slug": "mktg-pr-media-relations",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cmo-sofia",
    "role": "Report under Sofia (CMO): earns media — podcast guesting, local press, HARO/Qwoted-style source requests, award and ranking submissions, spe",
    "laya": {
@@ -3330,7 +3330,7 @@
   {
    "slug": "mktg-reputation-manager",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cmo-sofia",
    "role": "Report under Sofia (CMO): runs reviews and reputation — Google Business Profile, Zillow, Experience.com, Facebook — the ask cadence at the r",
    "laya": {
@@ -3357,7 +3357,7 @@
   {
    "slug": "mktg-social-media-manager",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cmo-sofia",
    "role": "Report under Sofia (CMO): runs the platform-native social calendar (LinkedIn, Facebook, Instagram, YouTube, TikTok, Nextdoor) for military/v",
    "laya": {
@@ -3384,7 +3384,7 @@
   {
    "slug": "mktg-video-producer",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cmo-sofia",
    "role": "Report under Sofia (CMO): scripts and plans video — short-form (Reels/Shorts/TikTok), YouTube long-form, listing tours, client testimonials",
    "laya": {
@@ -3443,7 +3443,7 @@
   {
    "slug": "modelmatch-partner-network",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cro-victor",
    "role": "Report under Victor (CRO): works the Model Match database (modelmatch.com) to find, rank and network with producing real estate agents — usi",
    "laya": {
@@ -3550,7 +3550,7 @@
   {
    "slug": "mortgage-intake-agent",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cro-victor",
    "role": "Report under Victor (CRO): takes a qualified lead to a complete, submission-ready application — the structured intake interview, the documen",
    "laya": {
@@ -3577,7 +3577,7 @@
   {
    "slug": "mortgage-isa-ai",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cro-victor",
    "role": "Report under Victor (CRO): owns the first five minutes — drafts the instant response, the qualification script, VA eligibility pre-screening",
    "laya": {
@@ -3631,7 +3631,7 @@
   {
    "slug": "network-architect",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Designs enterprise or multi-site network architecture from requirements, using existing network skills for focused routing, validation, auto",
    "laya": {
@@ -3697,7 +3697,7 @@
   {
    "slug": "network-troubleshooter",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Diagnoses network connectivity, routing, DNS, interface, and policy symptoms with a read-only OSI-layer workflow and evidence-backed root ca",
    "laya": {
@@ -3730,7 +3730,7 @@
   {
    "slug": "new-construction-specialist",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cro-victor",
    "role": "Report under Victor (CRO): owns new-construction representation in Temecula, Murrieta, Menifee and Southwest Riverside County — builder ince",
    "laya": {
@@ -3836,7 +3836,7 @@
   {
    "slug": "open-house-captain",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "listing-agent-elite",
    "role": "Report under Marguerite / Gwen (Victor's line): turns the open-house sign-in sheet into leads, thank-you drafts and an ISA call list. Drafts only — never sends ",
    "laya": {
@@ -3863,7 +3863,7 @@
   {
    "slug": "opensource-forker",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-innovator",
    "role": "Fork any project for open-sourcing.",
    "laya": {
@@ -3896,7 +3896,7 @@
   {
    "slug": "opensource-packager",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-innovator",
    "role": "Generate complete open-source packaging for a sanitized project.",
    "laya": {
@@ -3929,7 +3929,7 @@
   {
    "slug": "opensource-sanitizer",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "ciso-elena",
    "role": "Verify an open-source fork is fully sanitized before release.",
    "laya": {
@@ -3988,7 +3988,7 @@
   {
    "slug": "phishing-triage",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "ciso-elena",
    "role": "Report under Elena (CISO): triages a suspicious email, text or call — wire-instruction changes, closing-fund requests, 'urgent' lender/escro",
    "laya": {
@@ -4047,7 +4047,7 @@
   {
    "slug": "planner",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Expert planning specialist for complex features and refactoring.",
    "laya": {
@@ -4166,7 +4166,7 @@
   {
    "slug": "premium-lead-partnerships",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cro-victor",
    "role": "Report under Victor (CRO): manages paid and referral lead sources — Zillow Flex, Opendoor, Realtor.com, OpenDoor/offerpad cash-offer alterna",
    "laya": {
@@ -4226,7 +4226,7 @@
   {
    "slug": "pytorch-build-resolver",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "PyTorch runtime, CUDA, and training error resolution specialist.",
    "laya": {
@@ -4370,7 +4370,7 @@
   {
    "slug": "react-build-resolver",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Diagnose and fix React build failures across Vite, webpack, Next.js, CRA, Parcel, esbuild, and Bun.",
    "laya": {
@@ -4463,7 +4463,7 @@
   {
    "slug": "refactor-cleaner",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Dead code cleanup and consolidation specialist.",
    "laya": {
@@ -4496,7 +4496,7 @@
   {
    "slug": "refi-watch-analyst",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cro-victor",
    "role": "Report under Harrison (Victor's line): weekly rate-vs-note-rate prep list of past clients and borrowers above the market average — market average, not a quote. ",
    "laya": {
@@ -4634,7 +4634,7 @@
   {
    "slug": "rust-build-resolver",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Rust build, compilation, and dependency error resolution specialist.",
    "laya": {
@@ -4764,7 +4764,7 @@
   {
    "slug": "seo-specialist",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cmo-sofia",
    "role": "SEO specialist for technical SEO audits, on-page optimization, structured data, Core Web Vitals, and content/keyword mapping.",
    "laya": {
@@ -4791,7 +4791,7 @@
   {
    "slug": "showing-coordinator",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cro-victor",
    "role": "Report under Victor (CRO): turns a client's showing plan from the Command Deck Showings tab (or a pasted list) into the complete coordinatio",
    "laya": {
@@ -4851,7 +4851,7 @@
   {
    "slug": "spec-miner",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Extracts behavioral specs from existing codebases for OpenSpec.",
    "laya": {
@@ -4884,7 +4884,7 @@
   {
    "slug": "sphere-nurture-coordinator",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cmo-sofia",
    "role": "Report under Sofia (CMO), with Wren: monthly past-client and sphere touch drafts — birthdays, home anniversaries, check-ins. Drafts only — never sends or writes",
    "laya": {
@@ -4943,7 +4943,7 @@
   {
    "slug": "swift-build-resolver",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Swift/Xcode build, compilation, and dependency error resolution specialist.",
    "laya": {
@@ -5035,7 +5035,7 @@
   {
    "slug": "tdd-guide",
    "tier": "3",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Test-Driven Development specialist enforcing write-tests-first methodology.",
    "laya": {
@@ -5121,7 +5121,7 @@
   {
    "slug": "travel-desk",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "vanessa-orchestrator",
    "role": "Report under Vanessa, with Marcus: Gondola MCP travel desk — points vs cash, trip options, price watches on flights and hotels. Booking is Steven's — never book",
    "laya": {
@@ -5147,7 +5147,7 @@
   {
    "slug": "trid-timeline-checker",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cco-alexandra",
    "role": "Report under Alexandra (Compliance): checks a mortgage file's disclosure timeline — 6-piece application trigger, LE within 3 business days,",
    "laya": {
@@ -5240,7 +5240,7 @@
   {
    "slug": "ux-designer",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cto-derek",
    "role": "Report under Derek (CTO), added 2026-11-01 from Paperclip's UX Designer template: owns how Steven's own screens work: the Command Deck, the 6D Brain, the ISA Po",
    "laya": {
@@ -5299,7 +5299,7 @@
   {
    "slug": "vendor-network-manager",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cro-victor",
    "role": "Report under Victor (CRO): maintains the vendor bench — inspectors, contractors, stagers, photographers, cleaners, movers, warranty and insu",
    "laya": {
@@ -5326,7 +5326,7 @@
   {
    "slug": "voicemail-inbox-triage",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cro-victor",
    "role": "Report under Victor (CRO, ISA line): triages WhisperAI voicemails and the Gmail inbox into vanessaQueue with a next action per item; fraud flags go to Elena fir",
    "laya": {
@@ -5386,7 +5386,7 @@
   {
    "slug": "webinar-producer",
    "tier": "2",
-   "model": "Sonnet 5",
+   "model": "Opus 5.5",
    "lead": "cmo-sofia",
    "role": "Report under Sofia (CMO): produces webinar assets for the VA Loan Mastermind Live, Hometown Hero Home Buying and Retirement Equity Strategy",
    "laya": {

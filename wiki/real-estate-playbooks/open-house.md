@@ -16,7 +16,7 @@ Steven's licensed acts.
 |---|---|---|
 | The listing side — seller feedback, the seller weekly report line | Marguerite (Listing Agent) | Listing Pod |
 | The visitor side — who is a buyer, who is a neighbour, who has an agent | Gwen (Buyer's Agent) | Lead Pod |
-| Sign-in → lead list, thank-you drafts, ISA call list, next-open-house checklist | Open House Captain (Sonnet 5 desk seat, reports to Marguerite / Gwen) | Client Care Pod |
+| Sign-in → lead list, thank-you drafts, ISA call list, next-open-house checklist | Open House Captain (Opus 5.5 desk seat, reports to Marguerite / Gwen) | Client Care Pod |
 | Compliance line on every draft | Alexandra | gate, runs after the wave |
 | Calls the visitors, enters leads in Lofty, sends approved thank-yous | the human ISA / EA (Mon–Fri 12–4 PM PT) | from the ISA Portal |
 | Hosts the open house; any price, financing, offer or commission answer | Steven | licensed |

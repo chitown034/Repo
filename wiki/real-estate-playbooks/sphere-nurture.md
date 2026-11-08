@@ -15,7 +15,7 @@ after Steven approves the month's batch. No touch carries a rate, a refi suggest
 
 | Role | Who |
 |---|---|
-| The month's nurture calendar and the draft for each touch | Sphere Nurture Coordinator (Sonnet 5 desk seat, reports to Sofia, with Wren) |
+| The month's nurture calendar and the draft for each touch | Sphere Nurture Coordinator (Opus 5.5 desk seat, reports to Sofia, with Wren) |
 | Voice of the market note | Sofia (CMO) |
 | The referral ask — only when it fits (`referral-reciprocity.md`) | Wren |
 | Compliance line on every draft; RESPA §8 on anything of value | Alexandra |
