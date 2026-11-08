@@ -145,6 +145,9 @@ svg text{fill:var(--muted);font-family:var(--f-mono);font-size:11px}
 svg .barfill{fill:var(--accent)} svg .bartrack{fill:var(--surface-2)} svg .barval{fill:var(--ink)}
 .toast{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--surface);padding:10px 14px;border-radius:6px;font-size:.85rem;z-index:20}
 .muted{color:var(--muted)} .small{font-size:.82rem}
+.orgnode{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:1px solid var(--line);border-radius:4px;background:var(--surface-2);font-size:.85rem}
+.orgnode span{color:var(--muted);font-size:.8rem}
+.orgnode.lead{border-left:3px solid var(--accent);background:var(--surface)}
 .back{font-family:var(--f-mono);font-size:.78rem;text-decoration:none}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 @media (max-width:560px){.stat{border-right:0;border-bottom:1px solid var(--line)} h2{font-size:1.6rem}}
@@ -419,6 +422,7 @@ function defaults(){return{
   {ex:true,idea:"Laundromat roll-up near bases",market:4,fit:4,capital:3,speed:4,vet:3},
   {ex:true,idea:"AI proposal writer for small GovCon firms",market:4,fit:5,capital:4,speed:3,vet:5},
   {ex:true,idea:"PCS mid-term rental management",market:3,fit:5,capital:4,speed:4,vet:4}],
+ ...EXTRA_DEFAULTS(),
  calc:{price:1800000,sde:520000,down:10,seller:10,rate:10.5,years:10,srate:6,syears:7,mgr:90000,closing:3}
 };}
 function load(){try{const r=localStorage.getItem(LS);if(r){return Object.assign(defaults(),JSON.parse(r));}}catch(e){}return defaults();}
@@ -432,8 +436,8 @@ function save(){try{localStorage.setItem(LS,JSON.stringify(S));saveOk=true;}catc
    ========================================================= */
 const $=s=>document.querySelector(s);
 function h(s){return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
-const money=n=>{n=+n||0;const a=Math.abs(n);if(a>=1e6)return "$"+(n/1e6).toFixed(a>=1e7?1:2).replace(/\.?0+$/,"")+"M";if(a>=1e4)return "$"+Math.round(n/1e3)+"k";return "$"+Math.round(n).toLocaleString();};
-const fullMoney=n=>"$"+Math.round(+n||0).toLocaleString();
+const money=n=>{n=+n||0;if(n<0)return "-"+money(-n);const a=Math.abs(n);if(a>=1e6)return "$"+(n/1e6).toFixed(a>=1e7?1:2).replace(/\.?0+$/,"")+"M";if(a>=1e4)return "$"+Math.round(n/1e3)+"k";return "$"+Math.round(n).toLocaleString();};
+const fullMoney=n=>{n=Math.round(+n||0);return (n<0?"-$":"$")+Math.abs(n).toLocaleString();};
 function toast(t){const el=$("#toast");el.textContent=t;el.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>el.hidden=true,2200);}
 function vmeta(v){return Object.assign({},v.defaults,S.vmeta[v.id]||{});}
 function vprogress(v){let tot=0,done=0;v.phases.forEach((p,pi)=>p[1].forEach((_,ii)=>{tot++;if(S.checks[`${v.id}:${pi}:${ii}`])done++;}));return{tot,done,pct:tot?Math.round(done/tot*100):0};}
@@ -443,8 +447,9 @@ function checkItem(id,text){const on=!!S.checks[id];return `<label class="chk ${
 function phaseList(prefix,items){return items.map((t,i)=>checkItem(`${prefix}:${i}`,t)).join("");}
 
 /* Editable table: cols = [{k,label,type,opts,wide}] */
-function table(key,cols,opts){opts=opts||{};const rows=S[key];
- let out=`<div class="tbl-wrap"><table class="edit"><thead><tr>${cols.map(c=>`<th class="${c.type==="num"?"r":""}">${h(c.label)}</th>`).join("")}${opts.extra?`<th class="r">${h(opts.extra.label)}</th>`:""}<th></th></tr></thead><tbody>`;
+const EXTRA={},SUMMARY={};
+function table(key,cols,opts){opts=opts||{};const rows=S[key];if(opts.extra)EXTRA[key]=opts.extra.fn;if(opts.sum)SUMMARY[key]=opts.sum;
+ let out=`${opts.sum?`<div id="sum-${key}">${opts.sum()}</div>`:""}<div class="tbl-wrap"><table class="edit"><thead><tr>${cols.map(c=>`<th class="${c.type==="num"?"r":""}">${h(c.label)}</th>`).join("")}${opts.extra?`<th class="r">${h(opts.extra.label)}</th>`:""}<th></th></tr></thead><tbody>`;
  if(!rows.length)out+=`<tr><td colspan="${cols.length+2}" class="muted small">No rows yet. Add the first one below.</td></tr>`;
  rows.forEach((r,i)=>{out+="<tr>"+cols.map((c,ci)=>{const id=`${key}-${i}-${c.k}`;const v=r[c.k]==null?"":r[c.k];
    const tag=ci===0&&r.ex?`<span class="ex" title="Example row">EX</span>`:"";
@@ -472,7 +477,7 @@ const DEAL_STAGES=["Sourcing","NDA / CIM","Analysis","LOI","Due diligence","Fina
    VIEWS
    ========================================================= */
 const VIEWS={};
-const TABS=[["overview","Overview"],["ventures","Ventures"],["funding","Funding"],["acquisitions","Acquisitions"],["grants","Grants"],["govcon","Veteran GovCon"],["operator","SME Operator"],["automation","Automation"],["ideas","New Ventures"],["resources","Resources"]];
+const TABS=[["overview","Overview"],["ventures","Ventures"],["funding","Funding"],["acquisitions","Acquisitions"],["grants","Grants"],["govcon","Veteran GovCon"],["operator","SME Operator"],["automation","Automation"],["ideas","New Ventures"],["roadmap","Roadmap"],["finance","Finance"],["calculators","Calculators"],["playbooks","Playbooks"],["resources","Resources"]];
 
 VIEWS.overview=()=>{
  const active=VENTURES.filter(v=>!["Idea"].includes(vmeta(v).stage)).length;
@@ -488,6 +493,10 @@ VIEWS.overview=()=>{
  S.bids.forEach(b=>b.due&&dl.push([b.due,"Bid",b.title,b.agency]));
  S.deals.forEach(d=>d.next&&dl.push([d.next,"Deal",d.name,d.stage]));
  S.hires.forEach(x=>x.start&&dl.push([x.start,"Hire",x.role,x.status]));
+ (S.deadlines||[]).forEach(x=>x.date&&x.status!=="Done"&&dl.push([x.date,"Compliance",x.item,x.entity]));
+ (S.loans||[]).forEach(x=>x.close&&!["Funded","Withdrawn"].includes(x.stage)&&dl.push([x.close,"Loan close",x.borrower,x.program+" · "+x.stage]));
+ (S.clients||[]).forEach(x=>x.review&&dl.push([x.review,"Client review",x.household,x.stage]));
+ (S.rocks||[]).forEach(x=>x.due&&x.status!=="Done"&&dl.push([x.due,"Rock",x.rock,x.venture]));
  dl.sort((a,b)=>a[0].localeCompare(b[0]));
  const upcoming=dl.filter(d=>{const n=daysUntil(d[0]);return n!==null&&n>=-7&&n<=60;}).slice(0,10);
  // chart: funding by stage
@@ -551,6 +560,7 @@ function ventureView(v){
   <div class="panel sec"><h3>Who runs it day to day</h3><p class="small">${h(v.delegate)}</p></div>
   <div class="panel sec"><h3>Compliance watchlist</h3><ul class="plain">${v.compliance.map(x=>`<li>${h(x)}</li>`).join("")}</ul><p class="small muted">General information, not legal or tax advice. Confirm with a licensed professional.</p></div>
  </div>
+ ${ventureExtra(v)}
  <div class="sec"><h3>Notes</h3><textarea class="field" id="note-${v.id}" data-note="${v.id}" placeholder="Decisions, contacts, lessons learned…">${h(S.notes[v.id]||"")}</textarea></div>`;
 }
 
@@ -721,6 +731,346 @@ VIEWS.backup=()=>`
  </div>`;
 
 /* =========================================================
+   EXTENDED DATA
+   ========================================================= */
+function EXTRA_DEFAULTS(){return{
+ loans:[
+  {ex:true,borrower:"SSgt household (PCS, first home)",program:"VA",amount:385000,stage:"Processing",close:today(24),bps:200},
+  {ex:true,borrower:"Investor — duplex purchase",program:"DSCR",amount:420000,stage:"Underwriting",close:today(18),bps:225},
+  {ex:true,borrower:"First-time buyer (spouse referral)",program:"FHA",amount:290000,stage:"Pre-approved",close:"",bps:200}],
+ props:[
+  {ex:true,address:"Duplex near base (house hack)",type:"2–4 unit",units:2,value:410000,debt:395000,rent:1650,expenses:2900},
+  {ex:true,address:"Single-family rental",type:"SFR",units:1,value:285000,debt:212000,rent:2150,expenses:1720}],
+ clients:[
+  {ex:true,household:"Retired O-5 household",segment:"Military retiree",stage:"Ongoing",fee:300,review:today(30)},
+  {ex:true,household:"E-7 transitioning in 9 months",segment:"Transitioning",stage:"Discovery",fee:0,review:today(6)},
+  {ex:true,household:"Surviving spouse (SBP/DIC review)",segment:"Gold Star / survivor",stage:"Plan delivered",fee:150,review:today(45)}],
+ customers:[
+  {ex:true,account:"Small GovCon firm — proposal AI",segment:"GovCon",stage:"Pilot",mrr:1500,next:today(10)},
+  {ex:true,account:"Mortgage broker — document AI",segment:"Mortgage",stage:"Discovery",mrr:0,next:today(5)}],
+ donors:[
+  {ex:true,name:"Regional bank foundation",type:"Corporate",amount:25000,status:"Pledged",date:today(20)},
+  {ex:true,name:"Monthly donors (group)",type:"Individual",amount:6000,status:"Received",date:""}],
+ grantees:[
+  {ex:true,org:"Veteran founder accelerator (501(c)(3))",purpose:"Cohort scholarships",amount:15000,status:"Under review",date:today(40)}],
+ fin:[
+  {ex:true,entity:"HoldCo",rev:0,exp:2500,cash:40000,debt:0},
+  {ex:true,entity:"Real Estate",rev:3800,exp:4620,cash:18000,debt:607000},
+  {ex:true,entity:"Mortgage Broker / MLO",rev:7000,exp:2800,cash:9000,debt:0},
+  {ex:true,entity:"Military Family Office",rev:1200,exp:900,cash:6000,debt:0},
+  {ex:true,entity:"AI Company",rev:1500,exp:3200,cash:22000,debt:0},
+  {ex:true,entity:"Gov Contracts & Grants",rev:0,exp:400,cash:5000,debt:0}],
+ deadlines:[
+  {ex:true,item:"SAM.gov registration renewal",entity:"Gov Contracts & Grants",date:today(80),status:"Open"},
+  {ex:true,item:"NMLS license renewal + 8 hrs CE",entity:"Mortgage Broker / MLO",date:today(40),status:"Open"},
+  {ex:true,item:"Q4 estimated tax payment",entity:"Founder",date:today(68),status:"Open"}],
+ rocks:[
+  {ex:true,rock:"Submit VetCert application",venture:"Gov Contracts & Grants",owner:"Founder",quarter:"Q1",due:today(30),status:"On track"},
+  {ex:true,rock:"Pass SAFE MLO Test and get licensed",venture:"Mortgage Broker / MLO",owner:"Founder",quarter:"Q1",due:today(60),status:"On track"},
+  {ex:true,rock:"Hire Integrator",venture:"HoldCo",owner:"Founder",quarter:"Q1",due:today(75),status:"Off track"},
+  {ex:true,rock:"Submit 2 LOIs",venture:"Buy a Business",owner:"Founder",quarter:"Q2",due:today(120),status:"On track"}],
+ sops:[
+  {ex:true,sop:"Lead intake and follow-up",venture:"All",owner:"EA",status:"Drafted",reviewed:""},
+  {ex:true,sop:"Monthly close",venture:"HoldCo",owner:"Bookkeeper",status:"Not started",reviewed:""}],
+ calcs:{
+  rent:{price:410000,down:0,ff:2.15,rate:6.25,years:30,tax:4200,ins:1800,other:150,rents:1650,full:3500,vac:5,capex:8,mgmt:0,alt:1900},
+  rate:{dl:45,fringe:30,oh:20,ga:12,fee:8,hours:1880},
+  mlo:{units:6,avg:350000,bps:200,split:70,exp:2500},
+  payout:{assets:1000000,income:50000,grants:30000,admin:8000},
+  pst:{total:900000,pub:420000},
+  idea:{}
+ }
+};}
+
+const DETAIL={
+ mfo:{
+  icp:["Active duty E-7+ and O-3+ within 24 months of separation or retirement","Military retirees aged 40–60 with a pension plus VA compensation","Dual-military and military-spouse households","Gold Star families and surviving spouses (SBP and DIC coordination)","Veteran business owners planning an exit"],
+  rev:["Transition financial plan (one-time flat fee)","Ongoing planning subscription (monthly)","Advisory fee on managed assets through the RIA","Business-owner exit and succession planning","Paid workshops for employers, associations and veteran groups"],
+  num:["Planning assumption: flat-fee plans $2k–$6k; subscriptions $150–$400 a month (check your market)","Advisory fees commonly about 1% of assets, tiered down as balances grow","Capacity: roughly 80–120 households per advisor with support staff","Track revenue per household, client retention and referral rate"],
+  r90:["Choose the RIA path and file registration or affiliation paperwork","Build the military benefits review template","Sign 10 founding clients","Line up 3 referral partners (estate attorney, CPA, VSO)","Publish 8 educational posts or videos"],
+  risks:[["Giving advice before registering","Register (or affiliate) first; keep all advice inside the RIA"],["Conflicts from referrals to your own MLO or real estate businesses","Written disclosures, client choice, RESPA review"],["Charging for VA claim help","Only VA-accredited agents or attorneys may charge, and only after an initial decision. Refer to accredited VSOs instead"],["Key-person risk","Associate advisor and documented processes"],["Market drop cuts asset-based fees","Keep a large share of revenue as flat fees"]],
+  sops:["Client onboarding","Military benefits review","Annual review","Money movement and custody","Complaint handling","Marketing review and approval"],
+  roles:[["Outsourced compliance consultant","Day one"],["Client service associate","About 30 households"],["Paraplanner (virtual)","About 50 households"],["Associate advisor","About 80 households"]]},
+ ai:{
+  icp:["Small government contractors (proposal and compliance automation)","Mortgage brokers (document processing and borrower follow-up)","Veteran-owned small businesses (back-office agents)","Federal program offices (through SBIR and other transaction agreements)"],
+  rev:["SaaS subscriptions","Implementation and custom agent projects","Managed AI services retainers","SBIR/STTR awards","Federal contracts and subcontracts","Training workshops"],
+  num:["LTV to CAC of 3:1 or better","CAC payback under 12 months","Gross margin after model and hosting costs","Net revenue retention above 100%","Burn multiple (net burn ÷ net new ARR)"],
+  r90:["Choose one wedge and one buyer persona","30 discovery interviews","Ship an MVP to 5 design partners","Convert 3 pilots to paid","Submit 1 SBIR or agency proposal"],
+  risks:[["Model and API cost spikes","Usage-based pricing, caching, routing to cheaper models"],["Security incident","SOC 2 controls, least-privilege access, logging"],["Customer concentration","No customer above 25% of revenue"],["Founder bandwidth across ventures","Technical cofounder with equity and an operator for delivery"]],
+  sops:["Customer onboarding","Incident response","Release and evaluation process","Data handling and retention","Sales qualification"],
+  roles:[["Technical cofounder or fractional CTO","Before MVP"],["Full-stack engineer","First paid pilots"],["Customer success","10 customers"],["GovCon business developer","After the first federal award"]]},
+ re:{
+  icp:["PCS military families renting with BAH","Travel nurses and contractors (mid-term furnished rentals)","Markets near installations with steady BAH and landlord-friendly laws"],
+  rev:["Long-term rent","Mid-term furnished rentals (30+ day stays)","Cash-out refinance after value-add","Principal paydown and appreciation","Property management for others (usually needs a broker license)"],
+  num:["Use the 1% rule only as a quick screen","Target cash-on-cash 8–12% on non-owner-occupied deals","DSCR of 1.25x or better","Reserve 5–10% of rent for capital expenses and 5–8% for vacancy","Use the DoD BAH lookup to anchor rents near bases"],
+  r90:["Finalize buy box and target market","Request your VA Certificate of Eligibility","Get pre-approved (through your MLO arm)","Analyze 50 properties, offer on 5","Close the first house hack"],
+  risks:[["Vacancy from PCS seasons","Stagger lease end dates; add mid-term rentals"],["Capital expense surprises","Inspections and reserves"],["Interest rate risk","Fixed-rate debt; stress-test at +2%"],["Problem tenants","Consistent written screening; SCRA-aware leases"]],
+  sops:["Tenant screening","Move-in and move-out inspection","Maintenance triage","Rent collection and late process","Turnover checklist","Acquisition underwriting"],
+  roles:[["Bookkeeper","Day one"],["Third-party property manager","4+ doors or out of state"],["Vendor network (handyman, HVAC, plumber)","First property"],["Acquisitions analyst","Reviewing 20+ deals a month"]]},
+ mlo:{
+  icp:["Veterans and service members using VA loans (first-time and PCS buyers)","Investors needing DSCR or non-QM loans","Realtors near installations","Past clients (refinance and repeat purchases)"],
+  rev:["Lender-paid compensation per loan, set by your lender agreements","Borrower-paid compensation (never both on the same loan)","You cannot pay or receive referral fees under RESPA; partnerships run on co-marketing at fair value"],
+  num:["Monthly income ≈ units × average loan × comp (bps) ÷ 10,000","Pull-through rate (applications to funded loans)","Cost per funded loan","Days from application to close","Loan Estimate issued within 3 business days of application"],
+  r90:["Pass the SAFE test and get licensed","Choose a sponsoring broker or your own entity","Get approved with 3–5 wholesale lenders","Meet 20 realtors","Close the first 3 loans"],
+  risks:[["Rate-driven volume swings","Purchase-focused business; realtor partners"],["Compliance errors","Pre-closing QC checklist and outside audits"],["License lapse","Renewal and CE calendar"],["Mortgage fraud","Verify income and documents; IRS transcript checks"]],
+  sops:["Lead intake and pre-qualification","Disclosure delivery","Processing and conditions","Rate lock management","Closing and post-close","Complaint handling"],
+  roles:[["Compliance consultant","Day one"],["Contract processor","4+ loans a month"],["Loan officer assistant","8+ loans a month"],["Additional loan officers","Proven, steady pipeline"]]},
+ foundation:{
+  icp:["Veteran entrepreneurship nonprofits","Scholarship programs for Gold Star children","Financial literacy programs for military families"],
+  rev:["Inflows: founder and family gifts, business profits, investment returns"],
+  num:["Minimum distribution ≈ 5% of average net investment assets each year","1.39% excise tax on net investment income","Reasonable administrative costs count toward the payout"],
+  r90:["Decide between a DAF and a private foundation with your CPA and attorney","Write the mission and grant criteria","Open the investment account and adopt an investment policy","Run the first grant cycle"],
+  risks:[["Self-dealing with you or your businesses","Independent board members; written policy; counsel review. Paying your own advisory firm can raise self-dealing issues"],["Missing the payout requirement","Payout calculator and quarterly check"],["Admin costs creep","Outsource accounting and filings"]],
+  sops:["Grant cycle","Grantee due diligence (IRS Tax Exempt Organization Search)","Board meetings and minutes","Investment review"],
+  roles:[["CPA (990-PF)","Day one"],["Part-time administrator","First grant cycle"],["Independent investment adviser","Endowment over ~$1M"]]},
+ nonprofit:{
+  icp:["Veteran and military-spouse founders in their first 3 years","Transitioning service members exploring entrepreneurship","Corporate partners with veteran hiring or supplier goals"],
+  rev:["Foundation grants","Corporate sponsorships","Individual and recurring donors","Events","Program fees","Government grants and cooperative agreements"],
+  num:["Program expense ratio","Cost per founder served","Donor retention rate","Grant pipeline at 3x the annual grant goal"],
+  r90:["Seat a board of 3+","File Form 1023 or 1023-EZ","Run a pilot cohort of 10 founders","Submit 3 grant applications","Launch recurring giving"],
+  risks:[["Excess benefit transactions with your businesses","Conflict-of-interest policy; independent approval; fair-market terms"],["Restricted funding with no overhead","Ask for general operating support"],["Mission drift","Annual strategy review against the mission"],["Missed state registrations","Compliance calendar"]],
+  sops:["Program intake","Mentor matching","Grant writing and reporting","Donor stewardship","Volunteer onboarding and background checks","Financial controls"],
+  roles:[["Bookkeeper","Day one"],["Contract grant writer","First grant cycle"],["Program coordinator","First full cohort"],["Executive director","Budget supports a full-time salary"]]},
+ research:{
+  icp:["DoD (Army, Navy, Air Force/AFWERX, DARPA, others)","NSF","NIH","DOE","DHS"],
+  rev:["Phase I awards","Phase II awards","Technical and business assistance (TABA) funds","Phase III awards from any funding source","Commercial revenue from the resulting technology"],
+  num:["Award sizes and timelines vary by agency and topic: read each solicitation","Track win rate by agency","Proposal hours per submission","Commercialization revenue per award dollar"],
+  r90:["Finish all registrations","Pick 3 target topics","Contact topic authors during the pre-release window (DoD allows this only then)","Submit the first proposal"],
+  risks:[["Program authorization gaps","Diversify across BAAs and commercial revenue"],["Becoming dependent on grants","Commercialization plan from day one"],["Accounting noncompliance","Timekeeping and an accounting system that can pass DCAA review"]],
+  sops:["Topic screening","Proposal production","Budget build","Award setup and reporting","Timekeeping"],
+  roles:[["Principal investigator (technical lead)","First proposal"],["Contract proposal writer","2+ proposals a quarter"],["Federal-awards accountant","First award"]]},
+ govcon:{
+  icp:["VA (Vets First)","DoD components","DHS and GSA","Large primes that need small-business subcontractors"],
+  rev:["Prime contracts on set-asides","Subcontracts","GSA Schedule orders","Blanket purchase agreements and IDIQ task orders","Micro-purchases paid by government purchase card"],
+  num:["Win rate","Pipeline value (weighted)","Cost per proposal","Wrap rate","Backlog","CPARS ratings"],
+  r90:["SAM.gov registration and VetCert","Capability statement","10 meetings with agency OSDBUs or primes","Respond to 5 Sources Sought notices","Land the first subcontract"],
+  risks:[["Slow government payment","Line of credit or receivables financing"],["Size or status protests","Stay compliant with ownership, control and size rules"],["One contract is most of revenue","Diversify agencies and vehicles"],["Breaking limitations on subcontracting","Track the percentage on every award"]],
+  sops:["Opportunity qualification","Proposal process with color-team reviews","Pricing","Contract kickoff","Invoicing in the agency's system (e.g., PIEE for DoD)","Timekeeping"],
+  roles:[["Capture / BD manager","First $1M of pipeline"],["Proposal manager","2+ proposals a month"],["Contracts administrator","First prime award"],["Program manager","Each awarded contract"]]},
+ buyabiz:{
+  icp:["Owners 55+ with no succession plan","SDE $250k–$1.5M","HVAC, plumbing, electrical, landscaping, pest control, laundromats, car washes, self-storage, commercial cleaning, B2B services"],
+  rev:["Business cash flow","Operational improvements (pricing, scheduling, marketing)","Add-on acquisitions","Eventual sale at a higher multiple"],
+  num:["SDE adds back one owner's salary; EBITDA does not","Small businesses often trade around 2–4x SDE","Lender minimum DSCR around 1.25x","Equity injection usually about 10% on SBA deals","Budget working capital at close"],
+  r90:["Finalize buy box","Lender pre-approval","Contact 20 brokers","Review 50 deals","Submit 2 LOIs"],
+  risks:[["Overpaying","Quality of earnings review; disciplined multiple"],["Business depends on the owner","Transition agreement; keep key staff"],["Customers leave after the sale","Seller introductions; earn-out or seller note tied to retention"],["Hidden liabilities","Asset purchase, reps and warranties, escrow or holdback"]],
+  sops:["Deal screening","LOI drafting","Due diligence","Closing","100-day integration"],
+  roles:[["General manager","At or before close"],["Integration lead (the Integrator)","First acquisition"],["Bookkeeper","At close"]]},
+ holdco:{
+  icp:["Internal customers: each venture's operator"],
+  rev:["Documented management fees from subsidiaries","Distributions","Interest on intercompany loans"],
+  num:["Consolidated cash and runway","Return on capital by venture","Shared services cost per entity","Founder hours per week by venture"],
+  r90:["Draw the entity map with your CPA and attorney","Hire the Integrator","Monthly close process for every entity","Run this dashboard weekly"],
+  risks:[["Commingled funds","Separate bank accounts and books per entity"],["Liability spreading between ventures","Separate entities and insurance"],["Founder bottleneck","Integrator plus delegation levels"],["Holding structure breaks VetCert eligibility","Keep the certified company directly 51%+ owned by the veteran; confirm with counsel"]],
+  sops:["Monthly close","Capital request","Hiring approval","Vendor onboarding","Cash sweep between entities"],
+  roles:[["Executive assistant","Now"],["Integrator / Director of Operations","Now"],["Fractional CFO","3+ operating entities"],["Controller","Consolidated revenue over ~$2M"]]}
+};
+
+const VTRACK={
+ mlo:{key:"loans",title:"Loan pipeline",cols:[{k:"borrower",label:"Borrower",wide:true},{k:"program",label:"Program",type:"select",opts:["VA","FHA","Conventional","DSCR","Non-QM","USDA","Jumbo"]},{k:"amount",label:"Loan amount",type:"num"},{k:"stage",label:"Stage",type:"select",opts:["Lead","Pre-approved","Application","Processing","Underwriting","Clear to close","Funded","Withdrawn"]},{k:"close",label:"Est. close",type:"date"},{k:"bps",label:"Comp (bps)",type:"num"}],
+  extra:{label:"Est. comp",fn:r=>fullMoney((+r.amount||0)*(+r.bps||0)/10000)},
+  sum:()=>{const L=S.loans,act=L.filter(l=>!["Funded","Withdrawn"].includes(l.stage)),fun=L.filter(l=>l.stage==="Funded");const c=a=>a.reduce((s,l)=>s+(+l.amount||0)*(+l.bps||0)/10000,0);return sumStrip([["Active loans",act.length],["Active volume",money(act.reduce((s,l)=>s+(+l.amount||0),0))],["Pipeline comp",money(c(act))],["Funded comp",money(c(fun))]]);}},
+ re:{key:"props",title:"Property portfolio",cols:[{k:"address",label:"Property",wide:true},{k:"type",label:"Type",type:"select",opts:["SFR","2–4 unit","5+ multifamily","Mid-term rental","Short-term rental","Commercial","Land"]},{k:"units",label:"Units",type:"num"},{k:"value",label:"Value",type:"num"},{k:"debt",label:"Debt",type:"num"},{k:"rent",label:"Rent / mo",type:"num"},{k:"expenses",label:"All costs / mo",type:"num"}],
+  extra:{label:"Cash flow / mo",fn:r=>fullMoney((+r.rent||0)-(+r.expenses||0))},
+  sum:()=>{const P=S.props;const t=k=>P.reduce((s,p)=>s+(+p[k]||0),0);return sumStrip([["Doors",t("units")],["Portfolio value",money(t("value"))],["Equity",money(t("value")-t("debt"))],["Net cash flow / mo",fullMoney(t("rent")-t("expenses"))]]);}},
+ mfo:{key:"clients",title:"Client households",cols:[{k:"household",label:"Household",wide:true},{k:"segment",label:"Segment",type:"select",opts:["Transitioning","Active duty","Military retiree","Gold Star / survivor","Veteran business owner","Military spouse"]},{k:"stage",label:"Stage",type:"select",opts:["Prospect","Discovery","Plan delivered","Ongoing","Inactive"]},{k:"fee",label:"Fee / mo",type:"num"},{k:"review",label:"Next review",type:"date"}],
+  sum:()=>{const C=S.clients;return sumStrip([["Households",C.length],["Ongoing",C.filter(c=>c.stage==="Ongoing").length],["Recurring fees / mo",fullMoney(C.reduce((s,c)=>s+(+c.fee||0),0))],["Prospects",C.filter(c=>["Prospect","Discovery"].includes(c.stage)).length]]);}},
+ ai:{key:"customers",title:"Customer pipeline",cols:[{k:"account",label:"Account",wide:true},{k:"segment",label:"Segment",type:"select",opts:["GovCon","Mortgage","Veteran SMB","Federal agency","Other"]},{k:"stage",label:"Stage",type:"select",opts:["Discovery","Demo","Pilot","Paid","Churned"]},{k:"mrr",label:"MRR",type:"num"},{k:"next",label:"Next step",type:"date"}],
+  sum:()=>{const C=S.customers;return sumStrip([["Accounts",C.length],["Pilots",C.filter(c=>c.stage==="Pilot").length],["Paying",C.filter(c=>c.stage==="Paid").length],["MRR",fullMoney(C.filter(c=>c.stage!=="Churned").reduce((s,c)=>s+(+c.mrr||0),0))]]);}},
+ nonprofit:{key:"donors",title:"Donors & sponsors",cols:[{k:"name",label:"Donor",wide:true},{k:"type",label:"Type",type:"select",opts:["Individual","Corporate","Foundation","Government","Event"]},{k:"amount",label:"Amount",type:"num"},{k:"status",label:"Status",type:"select",opts:["Prospect","Asked","Pledged","Received","Declined"]},{k:"date",label:"Follow-up",type:"date"}],
+  sum:()=>{const D=S.donors;const t=s=>D.filter(d=>d.status===s).reduce((a,d)=>a+(+d.amount||0),0);return sumStrip([["Received",money(t("Received"))],["Pledged",money(t("Pledged"))],["Asked",money(t("Asked"))],["Donors",D.length]]);}},
+ foundation:{key:"grantees",title:"Grants made",cols:[{k:"org",label:"Organization",wide:true},{k:"purpose",label:"Purpose",wide:true},{k:"amount",label:"Amount",type:"num"},{k:"status",label:"Status",type:"select",opts:["Inquiry","Under review","Approved","Paid","Report due","Closed"]},{k:"date",label:"Next date",type:"date"}],
+  sum:()=>{const G=S.grantees;const t=f=>G.filter(f).reduce((a,g)=>a+(+g.amount||0),0);return sumStrip([["Paid",money(t(g=>["Paid","Report due","Closed"].includes(g.status)))],["Approved",money(t(g=>g.status==="Approved"))],["In review",money(t(g=>["Inquiry","Under review"].includes(g.status)))],["Grantees",G.length]]);}},
+ research:{link:"#grants",label:"Track solicitations and proposals in the Grants tab"},
+ govcon:{link:"#govcon",label:"Track opportunities and bids in the Veteran GovCon tab"},
+ buyabiz:{link:"#acquisitions",label:"Track deals and run the SBA calculator in the Acquisitions tab"},
+ holdco:{link:"#finance",label:"Track consolidated finances in the Finance tab"}
+};
+
+function sumStrip(items){return `<div class="stats" style="margin-bottom:10px">${items.map(([k,v])=>`<div class="stat"><span class="k">${h(k)}</span><span class="v" style="font-size:1.6rem">${h(v)}</span></div>`).join("")}</div>`;}
+function ul(a){return `<ul class="plain">${a.map(x=>`<li>${h(x)}</li>`).join("")}</ul>`;}
+function stepList(a){return `<ol class="steps">${a.map(s=>`<li><p class="small" style="padding-top:6px">${h(s)}</p></li>`).join("")}</ol>`;}
+function staticTable(head,rows,firstBold){return `<div class="tbl-wrap"><table><thead><tr>${head.map(x=>`<th>${h(x)}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((c,i)=>`<td class="${i?"small":""}">${i||!firstBold?h(c):`<b>${h(c)}</b>`}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;}
+
+function ventureExtra(v){const d=DETAIL[v.id];if(!d)return "";const t=VTRACK[v.id];
+ let track="";
+ if(t&&t.key)track=`<div class="sec"><h3>${h(t.title)}</h3>${table(t.key,t.cols,{extra:t.extra,sum:t.sum})}</div>`;
+ else if(t)track=`<div class="callout navy"><a href="${t.link}">${h(t.label)} →</a></div>`;
+ return `${track}
+ <div class="cols">
+  <div class="panel sec"><h3>Ideal customers</h3>${ul(d.icp)}</div>
+  <div class="panel sec"><h3>Revenue streams</h3>${ul(d.rev)}</div>
+  <div class="panel sec"><h3>Numbers that matter</h3>${ul(d.num)}</div>
+  <div class="panel sec phase"><div class="phase-h"><h3>First 90 days</h3><span class="pill">${d.r90.filter((_,i)=>S.checks[`r90:${v.id}:${i}`]).length}/${d.r90.length}</span></div>${phaseList(`r90:${v.id}`,d.r90)}</div>
+ </div>
+ <div class="sec"><h3>Risks & mitigations</h3>${staticTable(["Risk","Mitigation"],d.risks,true)}</div>
+ <div class="cols">
+  <div class="panel sec phase"><div class="phase-h"><h3>SOPs to write</h3><span class="pill">${d.sops.filter((_,i)=>S.checks[`sop:${v.id}:${i}`]).length}/${d.sops.length}</span></div>${phaseList(`sop:${v.id}`,d.sops)}<p class="small muted">Track them company-wide in <a href="#playbooks">Playbooks</a>.</p></div>
+  <div class="panel sec"><h3>Team build</h3>${staticTable(["Role","Hire when"],d.roles,true)}</div>
+ </div>`;}
+
+/* ---------- Extra resources ---------- */
+RESOURCES.push(
+ ["Veteran Programs","SBA Office of Veterans Business Development","https://www.sba.gov/about-sba/sba-locations/headquarters-offices/office-veterans-business-development","SBA's veteran programs hub: Boots to Business, VBOCs, events."],
+ ["Veteran Programs","SBA guide for veteran-owned businesses","https://www.sba.gov/business-guide/grow-your-business/veteran-owned-businesses","Overview of veteran funding, contracting and training resources."],
+ ["Veteran Programs","Patriot Boot Camp","https://patriotbootcamp.org","Accelerator programs for military and veteran founders and spouses."],
+ ["Veteran Programs","Warrior Rising","https://www.warriorrising.org","Nonprofit supporting veteran entrepreneurs with education and mentoring."],
+ ["Veteran Programs","VA accreditation search","https://www.va.gov/ogc/apps/accreditation/","Find VA-accredited representatives before referring clients for claim help."],
+ ["Federal Contracting","SBA size standards","https://www.sba.gov/federal-contracting/contracting-guide/size-standards","Check whether you're small for each NAICS code."],
+ ["Federal Contracting","SBA Mentor-Protégé Program","https://www.sba.gov/federal-contracting/contracting-assistance-programs/sba-mentor-protege-program","Team with an experienced contractor and bid together as a joint venture."],
+ ["Federal Contracting","NAICS codes (Census)","https://www.census.gov/naics/","Official NAICS definitions and search."],
+ ["Federal Contracting","GSA eLibrary","https://www.gsaelibrary.gsa.gov","See who holds GSA Schedule contracts in your category, and their prices."],
+ ["Federal Contracting","PIEE (DoD invoicing)","https://piee.eb.mil","Procurement Integrated Enterprise Environment, used for DoD invoicing."],
+ ["Funding & Loans","SBA Form 1919 (borrower information)","https://www.sba.gov/document/sba-form-1919-borrower-information-form","Required form in an SBA 7(a) loan package."],
+ ["Funding & Loans","SBA Form 413 (personal financial statement)","https://www.sba.gov/document/sba-form-413-personal-financial-statement","Personal financial statement lenders ask for."],
+ ["Funding & Loans","VA Certificate of Eligibility","https://www.va.gov/housing-assistance/home-loans/how-to-request-coe/","Request your COE before shopping for a VA loan."],
+ ["Real Estate","DoD BAH rate lookup","https://www.travel.dod.mil/Allowances/Basic-Allowance-for-Housing/BAH-Rate-Lookup/","Use local BAH to anchor rents for military tenants."],
+ ["Nonprofit & Foundation","IRS Tax Exempt Organization Search","https://apps.irs.gov/app/eos/","Verify a grantee's 501(c)(3) status before granting."],
+ ["Acquisitions","Codie Sanchez (videos)","https://www.youtube.com/results?search_query=Codie+Sanchez+buy+a+business","Main Street acquisition breakdowns and deal walk-throughs."],
+ ["Ops & Hiring","Hire Heroes USA","https://www.hireheroesusa.org","Free veteran hiring platform and candidate pool."],
+ ["Ops & Hiring","EOS Worldwide","https://www.eosworldwide.com","The Entrepreneurial Operating System: Visionary/Integrator, L10 meetings, rocks."]
+);
+
+/* =========================================================
+   VIEW EXTENSIONS
+   ========================================================= */
+const _funding=VIEWS.funding;
+VIEWS.funding=()=>_funding()+`
+ <div class="cols">
+  <div class="panel sec"><h3>Loan readiness</h3>${phaseList("fr",["Personal credit 680+ (many SBA lenders want it; check yours)","Business entity, EIN and separate business bank account","Business credit profile (Dun & Bradstreet, vendor trade lines)","Last 3 years of personal and business tax returns ready","Year-to-date P&L and balance sheet","Debt schedule for all business debt","Business plan with 3-year projections and assumptions","Resume showing industry or management experience (military leadership counts)","Cash for down payment plus 6 months of reserves documented","Collateral list (lenders take available collateral; it isn't always required)"])}</div>
+  <div class="panel sec"><h3>SBA 7(a) loan package</h3>${phaseList("sbapkg",["SBA Form 1919 (borrower information)","SBA Form 413 (personal financial statement) for each 20%+ owner","3 years of business and personal tax returns","Interim financial statements (within 90 days)","Business debt schedule","Business plan and projections","Purchase agreement or LOI (acquisitions)","Seller's 3 years of tax returns and financials (acquisitions)","Entity documents: articles, operating agreement, EIN letter","Lease or letter of intent for premises","Resumes for all owners and key managers","Use of proceeds breakdown"])}</div>
+ </div>
+ <div class="cols">
+  <div class="panel sec"><h3>Investor pitch deck (AI company)</h3>${stepList(["Problem: the painful, expensive workflow you fix","Solution and live demo","Why now: what changed in AI, regulation or buying behavior","Market size bottom-up (number of buyers × price)","Traction: pilots, revenue, retention, logos","Business model and unit economics","Go-to-market, including the federal lane via SDVOSB status","Competition and your unfair advantage","Team, including military leadership and clearances if relevant","The ask: amount, use of funds, 18-month milestones"])}</div>
+  <div class="panel sec"><h3>Veteran capital network</h3>${ul(["Hivers & Strivers: angel group of service academy graduates","Bunker Labs: veteran founder programs and investor connections","Patriot Boot Camp: accelerator for military founders and spouses","Warrior Rising: education and mentoring for veteran businesses","VBOCs and SBDCs: free help packaging SBA loan applications","SBA Lender Match: connects you to SBA lenders in your area","Community development financial institutions (CDFIs): flexible loans when banks say no"])}</div>
+ </div>`;
+
+const _acq=VIEWS.acquisitions;
+VIEWS.acquisitions=()=>_acq()+`
+ <div class="cols">
+  <div class="panel sec"><h3>LOI key terms</h3>${phaseList("loi",["Purchase price and how it's paid (cash, SBA loan, seller note, earn-out)","Asset purchase vs. stock purchase","What's included: equipment, inventory, customer lists, IP, phone numbers, domains","Working capital target or inventory peg","Seller note terms: rate, amortization, standby period for SBA","Seller transition period and consulting pay","Non-compete and non-solicit terms","Due diligence period (often 45–60 days) and exclusivity","Financing contingency","Key employee retention","Lease assignment or new lease","Target closing date"])}</div>
+  <div class="panel sec"><h3>Questions for the seller</h3>${ul(["Why are you selling, and why now?","What does a typical week look like for you?","Who are your top 10 customers, and how long have they been with you?","Which employees would the business struggle without?","What would you do with another $100k to invest?","What keeps you up at night about this business?","What's changed in the last 3 years: pricing, competitors, margins?","Is any revenue paid in cash, and how is it recorded?","Are there pending disputes, claims or inspections?","Would you finance part of the price?"])}</div>
+ </div>
+ <div class="cols">
+  <div class="panel sec"><h3>Red flags</h3>${ul(["Tax returns don't match the P&L","Large unexplained add-backs","Revenue falling for 2+ years","One customer above 20% of revenue","Owner is the only licensed or certified person","Seller won't carry any note","Lease expires soon with no renewal option","Deferred maintenance on key equipment","High staff turnover or no written roles","Pressure to skip quality of earnings or legal review"])}</div>
+  <div class="panel sec"><h3>Rough SDE multiples</h3>${staticTable(["Industry","Commonly seen"],[["HVAC / plumbing / electrical","2.5–4x"],["Landscaping / lawn care","2–3.5x"],["Commercial cleaning","2–3x"],["Pest control","3–4.5x (recurring routes)"],["Laundromat","3–5x (lease length matters)"],["Car wash","Often valued on real estate + cash flow"],["Self-storage","Valued on cap rate like real estate"],["B2B services","2.5–4x"]],true)}<p class="small muted">Rough guide only. Size, recurring revenue, staff depth and local market move these a lot.</p></div>
+ </div>
+ <div class="panel sec"><h3>First 100 days after close</h3>
+ <div class="cols">
+  <div class="phase"><div class="eyebrow">Days 1–30: stabilize</div>${phaseList("d100a",["Meet every employee one-on-one; announce no immediate changes","Call the top 20 customers with the seller","Take over banking, payroll and insurance","Learn every process by shadowing the seller","Set up the weekly scorecard"])}</div>
+  <div class="phase"><div class="eyebrow">Days 31–60: systematize</div>${phaseList("d100b",["Write SOPs for the 10 core processes","Move to your shared HoldCo tools (accounting, payroll, CRM)","Review pricing against competitors","Fix obvious cash leaks (unused subscriptions, waste)","Confirm the GM's responsibilities and delegation levels"])}</div>
+  <div class="phase"><div class="eyebrow">Days 61–100: improve</div>${phaseList("d100c",["Raise prices where justified","Launch basic marketing (Google Business Profile, reviews, email)","Add recurring revenue (maintenance plans, contracts)","Explore government work if the business qualifies for set-asides","Write the 12-month plan with the GM"])}</div>
+ </div></div>`;
+
+const _govcon=VIEWS.govcon;
+VIEWS.govcon=()=>_govcon()+`
+ <div class="callout bad"><b>Watch your ownership structure.</b> VetCert generally requires veterans to own at least 51% of the company directly and to control it. Putting the certified company under your HoldCo can break eligibility. Read 13 CFR 128 and confirm with counsel before you set up entities.</div>
+ <div class="sec"><h3>Set-aside programs</h3>${staticTable(["Program","Who qualifies","Where it applies"],[["Small business set-aside","Small under the NAICS size standard","All agencies"],["SDVOSB","51%+ owned and controlled by service-disabled veterans; VetCert required","All agencies; 5% government-wide goal"],["VOSB (Vets First)","51%+ veteran-owned and controlled; VetCert required","VA, which uses the Rule of Two to prefer SDVOSBs and VOSBs"],["8(a) Business Development","Socially and economically disadvantaged owners","All agencies; 9-year program"],["HUBZone","Principal office in a HUBZone and 35% of employees living in one","All agencies"],["WOSB / EDWOSB","51%+ women-owned, in eligible NAICS codes","All agencies"],["Mentor-Protégé joint ventures","Protégé teams with an experienced mentor","Joint venture can bid on the protégé's set-asides"]],true)}<p class="small muted">Sole-source limits and thresholds change; check current FAR Part 19 and SBA rules.</p></div>
+ <div class="sec"><h3>NAICS codes for your ventures</h3>${staticTable(["NAICS","Description","Venture"],[["541511","Custom computer programming services","AI Company"],["541512","Computer systems design services","AI Company"],["541519","Other computer related services","AI Company"],["541715","R&D in physical, engineering and life sciences","Research Grants"],["541611","Administrative and general management consulting","Gov Contracts / HoldCo"],["611430","Professional and management development training","Nonprofit / Gov Contracts"],["561210","Facilities support services","Gov Contracts"],["561720","Janitorial services","Buy a Business"],["561730","Landscaping services","Buy a Business"],["238220","Plumbing, heating and air-conditioning contractors","Buy a Business"],["812310","Coin-operated laundries and drycleaners","Buy a Business"],["531130","Lessors of miniwarehouses and self-storage units","Real Estate / Buy a Business"],["531210","Offices of real estate agents and brokers","Real Estate"],["522310","Mortgage and nonmortgage loan brokers","Mortgage Broker / MLO"],["523940","Portfolio management and investment advice","Military Family Office"]],false)}<p class="small muted">Confirm size standards for each code on the SBA size standards table.</p></div>
+ <div class="cols">
+  <div class="panel sec"><h3>Capability statement (1 page)</h3>${stepList(["Header: company name, logo, UEI, CAGE, VetCert status (SDVOSB/VOSB), NAICS and PSC codes","Core competencies: 3–5 bullets in the buyer's language","Differentiators: why you, in specifics (clearances, certifications, speed, veteran leadership)","Past performance: 3 short entries (customer, scope, value, result); use commercial and teammate work if needed","Company data: years in business, locations, size, contract vehicles, bonding capacity","Contact: one named person, phone, email, website"])}</div>
+  <div class="panel sec"><h3>Proposal outline</h3>${stepList(["Read Section L (instructions) and Section M (evaluation) first; build a compliance matrix","Cover letter and executive summary tied to the customer's mission","Technical approach mapped to each requirement","Management approach: staffing, schedule, quality control, risk","Past performance write-ups matching scope and size","Price volume built from your wrap rate","Reviews: pink (outline), red (full draft), gold (final) teams","Submit early and confirm receipt"])}</div>
+ </div>
+ <div class="cols">
+  <div class="panel sec"><h3>Prime outreach (sub-first route)</h3>${stepList(["Find primes winning in your NAICS on USAspending","Look up their small business liaison officer (SBLO)","Register in their supplier portals","Send a capability statement tailored to their current contracts","Ask what work they struggle to staff or subcontract","Offer to support a bid as a teaming partner","Deliver on the first small task to earn past performance"])}</div>
+  <div class="panel sec"><h3>GovCon glossary</h3><dl class="kv">${[["UEI","Unique Entity ID from SAM.gov"],["CAGE","Commercial and Government Entity code"],["NAICS","Industry code that sets your size standard"],["PSC","Product Service Code describing what is bought"],["RFI / Sources Sought","Market research notices; answer to shape set-asides"],["RFQ / RFP","Requests for quote or proposal"],["IDIQ","Indefinite-delivery contract that issues task orders"],["BPA","Blanket purchase agreement for repeat buys"],["GWAC","Government-wide acquisition contract (often IT)"],["OSDBU","Agency small business office"],["CO / COR","Contracting officer / their technical representative"],["CPARS","Government's past-performance rating system"],["LPTA","Lowest price technically acceptable"],["Rule of Two","Set aside when 2+ qualified small firms can do it at a fair price"],["Wrap rate","Multiplier from direct labor cost to billed rate"]].map(([a,b])=>`<dt><b>${a}</b></dt><dd>${b}</dd>`).join("")}</dl></div>
+ </div>`;
+
+const _operator=VIEWS.operator;
+VIEWS.operator=()=>_operator()+`
+ <div class="sec"><h3>Org chart</h3>
+ <div class="panel" style="display:flex;flex-direction:column;gap:12px;align-items:stretch">
+  <div class="orgnode lead"><b>Founder / Visionary</b><span>Capital, deals, key relationships, strategy</span></div>
+  <div class="orgnode lead"><b>Integrator / Director of Operations</b><span>Runs the weekly rhythm, owns the scorecard, manages venture leads</span></div>
+  <div class="cols-3">
+   <div class="orgnode"><b>Shared services</b><span>Fractional CFO · bookkeeper · EA · payroll/HR · marketing · IT</span></div>
+   ${VENTURES.map(v=>`<div class="orgnode"><b>${h(v.name)}</b><span>${h((DETAIL[v.id].roles.slice(-1)[0]||[""])[0])} → ${h(vmeta(v).owner)}</span></div>`).join("")}
+  </div>
+ </div></div>
+ <div class="sec"><h3>Hiring triggers across all ventures</h3>${staticTable(["Venture","Role","Hire when"],VENTURES.flatMap(v=>DETAIL[v.id].roles.map(r=>[v.name,r[0],r[1]])),true)}</div>
+ <div class="cols">
+  <div class="panel sec"><h3>Interview questions</h3>${ul(["Walk me through a process you took from chaos to running without you. What did you write down?","Tell me about a time you held a peer or boss accountable to a number.","What's your weekly meeting rhythm, and what happens in the first 15 minutes?","Which automations have you built yourself? Show me one.","A venture misses its numbers 3 weeks in a row. What do you do?","How do you decide what to escalate to the founder?","What did your last 3 bosses say you need to improve?"])}</div>
+  <div class="panel sec"><h3>Operator's weekly report</h3>${stepList(["Scorecard: every venture's KPIs, green/red","Rocks: on track or off track, with owner","Cash: balance by entity, 13-week forecast changes","Pipeline: deals, bids, loans, grants that moved","People: hires, exits, performance issues","Issues needing a founder decision (max 3)","Wins worth celebrating"])}</div>
+ </div>`;
+
+/* ---------- Roadmap ---------- */
+const ROADMAP=[
+ ["Months 0–6: Cash flow first",["Map entities with CPA and attorney (protect VetCert eligibility)","SAM.gov registration and VetCert","Complete SAFE pre-licensing, pass the test, start originating","First VA house hack","Hire an executive assistant","Start subcontract outreach to primes","Write the buy box and get SBA lender pre-approval"]],
+ ["Months 6–12: Build the machine",["Hire the Integrator","First 3 subcontracts or micro-purchases","Military Family Office launch (registration, first 10 clients)","AI company: 3 paid pilots","Nonprofit: file Form 1023 and run the pilot cohort","Submit first LOIs on acquisitions","Monthly close for every entity"]],
+ ["Year 2: Scale what works",["Close the first acquisition and install a GM","SBIR Phase I proposals","DSCR rentals 2–4","Hire processor and loan officer assistant","Nonprofit grant program and first corporate sponsor","Open a donor-advised fund for giving","First prime award on a set-aside"]],
+ ["Year 3: Portfolio",["Add-on acquisitions in the same industry","AI company: Phase II or priced seed round","Private foundation if assets justify it","An operator in every venture; founder on capital and strategy","GSA Schedule or IDIQ vehicle","Annual board of advisors meeting"]]];
+const SYNERGY=[["Mortgage Broker / MLO","Real Estate","Financing for your own purchases and investor clients (disclose affiliated business arrangements)"],["Military Family Office","Mortgage Broker / MLO","Clients buying with VA loans (RESPA-compliant, client chooses)"],["Gov Contracts & Grants","AI Company","Federal buyers and set-aside access for AI products"],["Research Grants","AI Company","Non-dilutive R&D money"],["Buy a Business","Gov Contracts & Grants","Acquired service companies can bid on facilities and maintenance set-asides"],["HoldCo","All","Shared finance, HR, marketing and tech lower each venture's costs"],["Foundation","Nonprofit","Grants to the charity, with independent approval and no private benefit"],["Nonprofit","Military Family Office","Free education builds reputation; never steer participants to your paid services"],["Real Estate","Military Family Office","Real estate know-how in client plans (with conflict disclosures)"]];
+VIEWS.roadmap=()=>`
+ <div class="sec"><div class="eyebrow">36-month plan</div><h2>Roadmap</h2><p class="lede">Launch order matters. Start with ventures that produce cash quickly and build licenses, certifications and past performance. Add capital-heavy ventures once you have cash flow and an operator.</p></div>
+ <div class="cols">${ROADMAP.map((p,i)=>{const n=p[1].filter((_,j)=>S.checks[`rm:${i}:${j}`]).length;return `<div class="panel phase"><div class="phase-h"><h3 style="font-size:1.1rem">${h(p[0])}</h3><span class="pill ${n===p[1].length?"good":""}">${n}/${p[1].length}</span></div>${phaseList(`rm:${i}`,p[1])}</div>`;}).join("")}</div>
+ <div class="sec"><h3>Quarterly rocks</h3><p class="small muted">3–7 priorities per quarter that must get done. Review in every weekly meeting.</p>
+ ${table("rocks",[{k:"rock",label:"Rock",wide:true},{k:"venture",label:"Venture",type:"select",opts:VNAMES},{k:"owner",label:"Owner"},{k:"quarter",label:"Quarter",type:"select",opts:["Q1","Q2","Q3","Q4"]},{k:"due",label:"Due",type:"date"},{k:"status",label:"Status",type:"select",opts:["On track","Off track","Done","Dropped"]}],{sum:()=>{const R=S.rocks;return sumStrip([["Rocks",R.length],["On track",R.filter(r=>r.status==="On track").length],["Off track",R.filter(r=>r.status==="Off track").length],["Done",R.filter(r=>r.status==="Done").length]]);}})}</div>
+ <div class="sec"><h3>How the ventures feed each other</h3>${staticTable(["From","To","How"],SYNERGY,true)}<p class="small muted">Referrals between your own companies need disclosures and, for mortgages, RESPA compliance. Charities and foundations can't give private benefit to your businesses.</p></div>`;
+
+/* ---------- Finance ---------- */
+function finSum(){const F=S.fin;const t=k=>F.reduce((s,r)=>s+(+r[k]||0),0);const net=t("rev")-t("exp");const cash=t("cash");return sumStrip([["Revenue / mo",money(t("rev"))],["Net / mo",(net<0?"-":"")+money(Math.abs(net))],["Cash on hand",money(cash)],["Runway",net>=0?"Positive":Math.floor(cash/(-net))+" mo"],["Total debt",money(t("debt"))]]);}
+VIEWS.finance=()=>`
+ <div class="sec"><div class="eyebrow">Consolidated</div><h2>Finance</h2><p class="lede">Monthly numbers for every entity, the entity map, and the compliance calendar. Update the table after each monthly close.</p></div>
+ ${table("fin",[{k:"entity",label:"Entity",wide:true},{k:"rev",label:"Revenue / mo",type:"num"},{k:"exp",label:"Expenses / mo",type:"num"},{k:"cash",label:"Cash on hand",type:"num"},{k:"debt",label:"Debt",type:"num"}],{extra:{label:"Net / mo",fn:r=>fullMoney((+r.rev||0)-(+r.exp||0))},sum:finSum})}
+ <div class="sec"><h3>Entity map (starting point for your CPA and attorney)</h3>${staticTable(["Entity","Common structure","Annual federal filing","Watch out for"],[
+  ["HoldCo","LLC (often taxed as partnership or S-corp) or C-corp","1065, 1120-S or 1120","Don't hold the VetCert company if it breaks direct veteran ownership"],
+  ["Military Family Office","LLC registered as an RIA (or IAR of another RIA)","Per tax election; Form ADV yearly","State vs. SEC registration thresholds"],
+  ["AI Company","Delaware C-corp if raising venture money, otherwise LLC","1120 or per election","QSBS (IRC 1202) may apply to C-corp stock; confirm current rules"],
+  ["Real Estate","LLC per property or series LLC where allowed","Usually 1065 or disregarded","Lenders may require personal guarantees; titling for VA loans is personal"],
+  ["Mortgage Broker / MLO","LLC or corporation licensed in each state","Per election; NMLS financial condition reports","Control persons need NMLS disclosure"],
+  ["Gov Contracts & Grants","LLC or corporation, 51%+ owned directly by the veteran","Per election","Ownership and control rules in 13 CFR 128"],
+  ["Foundation","Nonprofit corporation or trust","990-PF","Self-dealing and minimum distribution"],
+  ["Nonprofit","Nonprofit corporation","990, 990-EZ or 990-N","Excess benefit and state registrations"],
+  ["Acquired businesses","New LLC per acquisition","Per election","SBA loans sit at the operating company with personal guarantees"]],true)}</div>
+ <div class="sec"><h3>Federal compliance calendar (calendar-year filers)</h3>${staticTable(["When","What","Applies to"],[
+  ["Jan 15","Q4 estimated tax payment","Founder"],["Jan 31","W-2s and 1099-NECs due; Q4 Form 941","Any entity with staff or contractors"],["Mar 15","Forms 1065 and 1120-S","Partnerships, S-corps"],["Mar 31","Form ADV annual updating amendment (within 90 days of fiscal year end)","Military Family Office"],["Apr 15","Form 1040, Form 1120, Q1 estimated tax","Founder, C-corps"],["Apr 30","Q1 Form 941","Employers"],["May 15","Form 990 / 990-EZ / 990-N / 990-PF","Nonprofit, Foundation"],["Jun 15","Q2 estimated tax","Founder"],["Jul 31","Q2 Form 941","Employers"],["Sep 15","Q3 estimated tax; extended 1065 and 1120-S","Founder, pass-throughs"],["Oct 15","Extended 1040 and 1120","Founder, C-corps"],["Oct 31","Q3 Form 941","Employers"],["Nov 1 – Dec 31","NMLS renewal window; finish 8 hours of CE first","Mortgage Broker / MLO"],["Nov 15","Extended Form 990","Nonprofit, Foundation"],["Every 12 months","SAM.gov registration renewal","Gov Contracts, AI Company, Research"],["Varies","VetCert recertification, state annual reports, business licenses, insurance renewals","Check each entity"]],true)}<p class="small muted">General calendar only; your fiscal years, states and elections change these. Confirm with your CPA.</p></div>
+ <div class="sec"><h3>Your deadlines</h3>${table("deadlines",[{k:"item",label:"Item",wide:true},{k:"entity",label:"Entity"},{k:"date",label:"Due",type:"date"},{k:"status",label:"Status",type:"select",opts:["Open","In progress","Done"]}])}</div>
+ <div class="panel sec"><h3>Financial controls</h3>${phaseList("fc",["Separate bank account and card for every entity","Bookkeeping reconciled monthly for every entity","Two-person approval for payments over a set amount","13-week cash forecast updated weekly","Intercompany transactions documented with agreements","Owner pay through payroll or documented distributions only","Annual insurance review: general liability, E&O, cyber, umbrella, key person","Reserve account with 3–6 months of operating costs"])}</div>`;
+
+/* ---------- Calculators ---------- */
+const pmt=(P,r,y)=>{if(!P)return 0;const i=r/100/12,n=y*12;return i?P*i/(1-Math.pow(1+i,-n)):P/n;};
+const CALCS={
+ rent:{title:"VA house hack & rental analyzer",fields:[["price","Purchase price",1000],["down","Down payment %",.5],["ff","VA funding fee % (0 if exempt)",.05],["rate","Interest rate %",.05],["years","Term (years)",1],["tax","Property tax / yr",100],["ins","Insurance / yr",100],["other","HOA, utilities / mo",10],["rents","Rent from other units / mo",25],["full","Rent for all units after you move out / mo",25],["vac","Vacancy %",1],["capex","Repairs & capex %",1],["mgmt","Management %",1],["alt","What you'd pay to rent instead / mo",25]],
+  out:c=>{const base=c.price*(1-c.down/100);const loan=base*(1+c.ff/100);const pi=pmt(loan,c.rate,c.years);const ti=(c.tax+c.ins)/12;const piti=pi+ti;const cost=piti+c.other;const k=1-(c.vac+c.capex+c.mgmt)/100;const eff=c.rents*k;const net=cost-eff;const savings=c.alt-net;const fullEff=c.full*k;const cf=fullEff-cost;const noi=(fullEff-c.other)*12-c.tax-c.ins;const dscr=piti?c.full/piti:0;const cash=c.price*c.down/100+c.price*.02;
+   return out([["Loan amount (incl. funding fee)",fullMoney(loan)],["Principal & interest",fullMoney(pi)],["PITI",fullMoney(piti)],["Total monthly cost",fullMoney(cost)],["Effective rent from other units",fullMoney(eff)],["Your net housing cost",fullMoney(net),1],["Savings vs. renting",fullMoney(savings)],["Cash flow after you move out",fullMoney(cf),1],["Cap rate (NOI ÷ price)",(c.price?noi/c.price*100:0).toFixed(2)+"%"],["DSCR (rent ÷ PITI)",dscr.toFixed(2)+"x"],["Est. cash to close (down + ~2%)",fullMoney(cash)]])+`<p class="small muted">VA loans require you to live there initially. Funding fee is often financed and waived for many veterans with service-connected disability.</p>`;}},
+ rate:{title:"GovCon labor rate builder",fields:[["dl","Direct labor $ / hr",.5],["fringe","Fringe %",.5],["oh","Overhead %",.5],["ga","G&A %",.5],["fee","Fee / profit %",.5],["hours","Billable hours / yr",10]],
+  out:c=>{const f=c.dl*(1+c.fringe/100),o=f*(1+c.oh/100),g=o*(1+c.ga/100),r=g*(1+c.fee/100);return out([["With fringe",fullMoney(f)+"/hr"],["With overhead",fullMoney(o)+"/hr"],["With G&A (cost)",fullMoney(g)+"/hr"],["Billing rate",fullMoney(r)+"/hr",1],["Wrap rate",(c.dl?r/c.dl:0).toFixed(2)+"x",1],["Annual revenue per FTE",fullMoney(r*c.hours)],["Annual profit per FTE",fullMoney((r-g)*c.hours)]])+`<p class="small muted">Compare billing rates against GSA eLibrary prices and past awards on USAspending before you bid.</p>`;}},
+ mlo:{title:"MLO income",fields:[["units","Loans closed / mo",1],["avg","Average loan amount",5000],["bps","Comp (bps)",5],["split","Your share %",1],["exp","Your expenses / mo",100]],
+  out:c=>{const g=c.units*c.avg*c.bps/10000,y=g*c.split/100,n=y-c.exp;return out([["Monthly volume",fullMoney(c.units*c.avg)],["Gross comp / mo",fullMoney(g)],["Your share / mo",fullMoney(y)],["Net / mo",fullMoney(n),1],["Net / yr",fullMoney(n*12),1],["Per loan to you",fullMoney(c.units?y/c.units:0)]]);}},
+ payout:{title:"Foundation payout",fields:[["assets","Average net investment assets",1000],["income","Net investment income / yr",100],["grants","Grants paid this year",100],["admin","Qualifying admin costs this year",100]],
+  out:c=>{const mir=c.assets*.05,tax=c.income*.0139,dist=mir-tax,q=c.grants+c.admin,rem=Math.max(0,dist-q);return out([["Minimum investment return (5%)",fullMoney(mir)],["Excise tax (1.39%)",fullMoney(tax)],["Distributable amount (approx.)",fullMoney(dist)],["Qualifying distributions so far",fullMoney(q)],["Still to distribute",fullMoney(rem),1]])+`<p class="small muted">Simplified. Generally you have until the end of the following year to meet it. Your CPA confirms the exact figure on Form 990-PF.</p>`;}},
+ pst:{title:"Nonprofit public support test",fields:[["total","Total support, last 5 years",1000],["pub","Public support, last 5 years",1000]],
+  out:c=>{const p=c.total?c.pub/c.total*100:0;return out([["Public support %",p.toFixed(1)+"%",1],["Status",p>=33.34?"Passes the 33⅓% test":p>=10?"Below 33⅓%: may pass the 10% facts-and-circumstances test":"Below 10%: at risk of private foundation status"]])+`<p class="small muted">Simplified. Gifts from one donor above 2% of total support don't count fully as public support.</p>`;}}
+};
+function out(rows){return `<dl class="out">${rows.map(([a,b,big])=>`<dt class="${big?"big":""}">${h(a)}</dt><dd class="${big?"big":""}">${h(b)}</dd>`).join("")}</dl>`;}
+function calcBlock(id){const C=CALCS[id],v=S.calcs[id]=Object.assign({},EXTRA_DEFAULTS().calcs[id],S.calcs[id]||{});return `<div class="panel sec"><h3>${h(C.title)}</h3><div class="calc">${C.fields.map(([k,l,st])=>`<label class="lbl">${h(l)}<input class="field" type="number" step="${st}" id="cx-${id}-${k}" data-calcx="${id}:${k}" value="${h(v[k])}"></label>`).join("")}</div><div id="cx-${id}" style="margin-top:10px">${C.out(v)}</div></div>`;}
+VIEWS.calculators=()=>`
+ <div class="sec"><div class="eyebrow">Run the numbers</div><h2>Calculators</h2><p class="lede">Quick math for each venture. The SBA acquisition calculator is on the <a href="#acquisitions">Acquisitions</a> tab. Planning tools only; confirm with your lender or CPA.</p></div>
+ <div class="cols">${Object.keys(CALCS).map(calcBlock).join("")}</div>`;
+
+/* ---------- Playbooks ---------- */
+VIEWS.playbooks=()=>`
+ <div class="sec"><div class="eyebrow">Systems</div><h2>Playbooks</h2><p class="lede">How each venture moves from founder-run to operator-run: scaling stages, meeting cadence, decision rights and a company-wide SOP library.</p></div>
+ <div class="sec"><h3>Scaling stages</h3>${staticTable(["Stage","Typical signs","Founder's role","Move on when"],[
+  ["1. Solo","Founder does everything; under ~$250k revenue","Doer","Core processes are written down"],
+  ["2. Founder + assistant","EA or VA handles inbox, scheduling, admin","Doer and seller","Founder spends under 50% of time on admin"],
+  ["3. First manager","A manager runs delivery day to day","Seller and coach","Manager hits the scorecard 8 of 12 weeks"],
+  ["4. Operator-led","Integrator runs the venture; founder attends the monthly review","Board member","Venture is profitable without founder hours"],
+  ["5. Portfolio","Multiple operator-led ventures under the HoldCo","Capital allocator","Ongoing"]],true)}</div>
+ <div class="cols">
+  <div class="panel sec"><h3>Weekly leadership meeting (90 min)</h3>${staticTable(["Segment","Minutes"],[["Good news (personal and business)","5"],["Scorecard review","5"],["Rock review (on/off track)","5"],["Customer and employee headlines","5"],["To-do list from last week","5"],["Identify, discuss, solve issues","60"],["Recap, ratings 1–10","5"]],false)}</div>
+  <div class="panel sec"><h3>SOP template</h3>${stepList(["Title and purpose (one sentence)","Trigger: what starts this process","Owner and backup","Tools and logins needed","Steps (numbered, with screenshots or a recorded walkthrough)","Quality check: what 'done right' looks like","Metric that tells you it's working","Last reviewed date"])}</div>
+ </div>
+ <div class="sec"><h3>Decision rights</h3>${staticTable(["Decision","Founder","Integrator","Venture lead","Fractional CFO"],[
+  ["Start or buy a venture","Decides","Recommends","—","Reviews numbers"],["Annual budget per venture","Approves","Builds","Proposes","Reviews"],["Hire a venture lead","Approves","Decides","—","—"],["Hire inside a venture","Informed","Approves","Decides","—"],["Spend within budget","—","Informed","Decides","Tracks"],["Spend over budget","Approves over set limit","Approves","Requests","Reviews"],["Pricing changes","Informed","Approves","Proposes","Reviews margin"],["Bid / no-bid on contracts","Approves large bids","Decides","Recommends","Reviews pricing"],["Debt and capital raises","Decides","Recommends","—","Structures"]],true)}</div>
+ <div class="sec"><div class="sec-head"><h3>SOP library</h3><button class="btn" id="loadSops">Add all SOPs from venture plans</button></div>
+ ${table("sops",[{k:"sop",label:"SOP",wide:true},{k:"venture",label:"Venture",type:"select",opts:VNAMES},{k:"owner",label:"Owner"},{k:"status",label:"Status",type:"select",opts:["Not started","Drafted","Recorded","Live","Needs update"]},{k:"reviewed",label:"Last reviewed",type:"date"}],{sum:()=>{const P=S.sops;return sumStrip([["SOPs",P.length],["Live",P.filter(p=>p.status==="Live").length],["In progress",P.filter(p=>["Drafted","Recorded"].includes(p.status)).length],["Not started",P.filter(p=>p.status==="Not started").length]]);}})}</div>`;
+
+document.addEventListener("input",e=>{const t=e.target;if(!t.dataset||!t.dataset.calcx)return;const [id,k]=t.dataset.calcx.split(":");S.calcs[id][k]=+t.value||0;save();document.getElementById("cx-"+id).innerHTML=CALCS[id].out(S.calcs[id]);});
+document.addEventListener("click",e=>{const b=e.target.closest("#loadSops");if(!b)return;let n=0;VENTURES.forEach(v=>DETAIL[v.id].sops.forEach(sop=>{if(!S.sops.some(x=>x.sop===sop&&x.venture===v.name)){S.sops.push({sop,venture:v.name,owner:"",status:"Not started",reviewed:""});n++;}}));save();const y=window.scrollY;route();window.scrollTo(0,y);toast(n?`Added ${n} SOPs`:"All venture SOPs are already listed");});
+/* make sure saved data from an older version gets the new keys */
+(function(){const x=EXTRA_DEFAULTS();for(const k in x){if(S[k]==null)S[k]=x[k];}for(const c in x.calcs){if(!S.calcs[c])S.calcs[c]=x.calcs[c];}})();
+
+/* =========================================================
    ROUTER + EVENTS
    ========================================================= */
 function route(){
@@ -740,7 +1090,8 @@ function refreshDerived(key){
  if(key==="funding"&&$("#fundTot"))$("#fundTot").textContent=fullMoney(S.funding.reduce((a,f)=>a+(+f.amount||0),0));
  if(key==="autos"&&$("#hrsTot"))$("#hrsTot").textContent=S.autos.filter(a=>a.status==="Live").reduce((s,a)=>s+(+a.hours||0),0);
  if(key==="deals"&&$("#kanban"))$("#kanban").innerHTML=kanban();
- document.querySelectorAll(`[data-extra^="${key}:"]`).forEach(td=>{const i=+td.dataset.extra.split(":")[1];const r=S[key][i];if(!r)return;td.textContent=key==="ideas"?ideaScore(r):(+r.sde?(+r.price/+r.sde).toFixed(2)+"x":"—");});
+ document.querySelectorAll(`[data-extra^="${key}:"]`).forEach(td=>{const i=+td.dataset.extra.split(":")[1];const r=S[key][i];if(!r)return;if(EXTRA[key])td.textContent=EXTRA[key](r);});
+ if(SUMMARY[key]&&document.getElementById("sum-"+key))document.getElementById("sum-"+key).innerHTML=SUMMARY[key]();
 }
 
 document.addEventListener("change",e=>{const t=e.target;

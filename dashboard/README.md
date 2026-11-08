@@ -7,7 +7,14 @@ research grants, gov contracts & grants, buy-a-business, and the acquisition Hol
 Tabs: Overview, Ventures (KPIs + 4-phase execution checklists per venture), Funding, Acquisitions
 (deal board, SBA 7(a) + seller-note calculator, buy box, due diligence), Grants, Veteran GovCon
 (VetCert, VR&E, Boots to Business, VBOC, bid tracker), SME Operator (Integrator scorecard, hiring,
-30-60-90), Automation, New Ventures (idea scoring), Resources (50 official links), Backup.
+30-60-90), Automation, New Ventures (idea scoring), Roadmap (36-month plan, quarterly rocks, venture synergies),
+Finance (consolidated P&L, entity map, compliance calendar, deadlines), Calculators (VA house hack,
+GovCon labor rate, MLO income, foundation payout, public support test), Playbooks (scaling stages,
+meeting agenda, decision rights, SOP library), Resources (65+ official links), Backup.
+
+Each venture page also has: ideal customers, revenue streams, key numbers, first-90-day checklist,
+risks and mitigations, SOPs to write, team build with hire triggers, and a venture-specific tracker
+(loan pipeline, property portfolio, client households, customer pipeline, donors, grants made).
 
 Data is stored in the browser's localStorage. Use the Backup tab to copy/restore your data.
 Open `index.html` in any browser; no build step.
