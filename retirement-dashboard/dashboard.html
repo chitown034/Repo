@@ -221,6 +221,14 @@ tr.hl td{background:var(--accent-soft)}
 .goal-bar i{display:block; height:100%; transition:width .9s cubic-bezier(.2,.7,.2,1)}
 .ledger-d summary{cursor:pointer; font-weight:600}
 #pfHold input, #pfHold select{font-size:12.5px; padding:4px 6px}
+.ideal{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px}
+@media (max-width:1100px){ .ideal{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:520px){ .ideal{grid-template-columns:minmax(0,1fr)} }
+.ideal-c{display:grid; grid-template-columns:44px minmax(0,1fr); gap:10px; padding:12px; border:1px solid var(--line); border-radius:var(--r); background:var(--surface)}
+.ideal-l{width:44px; height:44px; border-radius:10px; background:var(--accent); color:var(--accent-ink); display:flex; align-items:center; justify-content:center; font-family:var(--f-display); font-weight:800; font-size:1.5rem}
+.ideal-c p{margin-top:2px}
+#rpForm .field{width:150px}
+#rpForm .field.w{width:230px}
 .disclaimer{font-size:11.5px; color:var(--muted); border-top:1px solid var(--line); padding-top:12px; max-width:110ch}
 .foot-space{height:8px}
 @media (prefers-reduced-motion: reduce){ .view.on{animation:none} .kpi .bar i, .bracket-bar div, .flow-row .track i{transition:none} }
@@ -244,6 +252,7 @@ tr.hl td{background:var(--accent-soft)}
       <a href="#advisor">Advisor &amp; war-game</a>
       <a href="#wealth">Wealth &amp; family office</a>
       <a href="#portfolio">Portfolio &amp; dividends</a>
+      <a href="#rentals">Rental properties</a>
       <a href="#healthcare">Medicare &amp; healthcare</a>
       <a href="#social-security">Social Security</a>
       <a href="#pension">Pension</a>
@@ -463,7 +472,7 @@ tr.hl td{background:var(--accent-soft)}
       <div class="card">
         <div class="inline-fields">
           <div class="field"><label for="wBiz">Business value $</label><input type="number" id="wBiz" data-k="wBiz" step="10000"></div>
-          <div class="field"><label for="wRental">Rental real estate equity $</label><input type="number" id="wRental" data-k="wRental" step="10000"></div>
+          <div class="field"><label for="wRental">Other rental equity $ (if not on Rental tab)</label><input type="number" id="wRental" data-k="wRental" step="10000"></div>
           <div class="field"><label for="wCV">Life insurance cash value $</label><input type="number" id="wCV" data-k="wCV" step="5000"></div>
           <div class="field"><label for="wOther">Other assets $</label><input type="number" id="wOther" data-k="wOther" step="5000"></div>
           <div class="field w"><label for="wRisk">Liability exposure</label><select id="wRisk" data-k="wRisk"><option value="low">Low (salaried, no rentals)</option><option value="med">Medium (homeowner, teen drivers)</option><option value="high">High (physician, landlord, business owner)</option></select></div>
@@ -598,6 +607,49 @@ tr.hl td{background:var(--accent-soft)}
         <details class="ledger-d" style="margin-top:12px"><summary>Year-by-year table</summary><div class="tbl-wrap" style="max-height:420px; margin-top:8px"><table id="dvTable"></table></div></details>
       </div>
       <div class="card"><div class="card-head"><h3>Mutual funds vs. ETFs vs. individual stocks</h3></div><div class="cat-grid" id="pfEdu"></div></div>
+    </section>
+
+    <!-- RENTALS -->
+    <section class="view" id="v-rentals" aria-labelledby="h-rp">
+      <div class="view-head"><div><span class="eyebrow">Investment real estate</span><h2 id="h-rp">Rental properties: the IDEAL investment</h2></div>
+        <p>Inflation, Depreciation, Equity, Appreciation and Leverage, modeled year by year for each property: rent and expense growth, mortgage payoff, tax shelter, equity build-up, and what you keep when you sell, exchange, refinance or pass it on.</p></div>
+      <div class="ideal" id="rpIdeal"></div>
+      <div class="card">
+        <div class="card-head"><h3>Your properties</h3><div class="chips" id="rpChips" role="group" aria-label="Choose a property"></div></div>
+        <div class="inline-fields" id="rpForm"></div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:12px">
+          <button class="btn" type="button" id="rpAdd">Add an owned property</button><button class="btn" type="button" id="rpNew">Analyze a new purchase (25% down)</button><button class="btn" type="button" id="rpDel">Remove this property</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="inline-fields">
+          <div class="field w"><label for="rpView">Show</label><select id="rpView" data-k="rpView"><option value="portfolio">All properties combined</option><option value="one">Selected property only</option></select></div>
+          <div class="field"><label for="rpTax">Your tax rate on rental income %</label><input type="number" id="rpTax" data-k="rpTax" step="1"></div>
+          <div class="field"><label for="rpCg">Capital gains rate at sale % (incl. NIIT, state)</label><input type="number" id="rpCg" data-k="rpCg" step="1"></div>
+          <div class="field"><label for="rpHold">Sell after (years)</label><input type="number" id="rpHold" data-k="rpHold" min="2" max="40"></div>
+          <div class="field"><label for="rpSellCost">Selling costs %</label><input type="number" id="rpSellCost" data-k="rpSellCost" step="0.5"></div>
+          <div class="field w"><label for="rpLoss">Rental tax losses</label><select id="rpLoss" data-k="rpLoss"><option value="usable">Usable now ($25K allowance or real estate pro)</option><option value="suspended">Suspended until sale (high income)</option></select></div>
+          <div class="field"><label for="rpNewRate">Mortgage rate for new loans %</label><input type="number" id="rpNewRate" data-k="rpNewRate" step="0.125"></div>
+          <label class="check" style="width:auto"><input type="checkbox" id="rpInclude" data-k="rpInclude"> Include rental cash flow and taxes in my retirement plan</label>
+        </div>
+      </div>
+      <div class="kpis" id="rpKpis"></div>
+      <div class="card"><div class="card-head"><h3>Cash flow every year</h3><p id="rpCfNote"></p></div><div class="chart lg"><canvas id="chRpCf"></canvas></div></div>
+      <div class="grid g2">
+        <div class="card"><div class="card-head"><h3>Equity: what you own vs. what you owe</h3><p>Property value split into loan, starting equity, principal paid down and appreciation.</p></div><div class="chart"><canvas id="chRpEq"></canvas></div></div>
+        <div class="card"><div class="card-head"><h3>IDEAL total return each year</h3><p>Dollar sources of return, with return on equity.</p></div><div class="chart"><canvas id="chRpIdeal"></canvas></div></div>
+      </div>
+      <div class="grid g2">
+        <div class="card"><div class="card-head"><h3>Inflation: rent in today's dollars vs. a fixed mortgage</h3><p>Rents rise with prices; the payment does not, so the debt shrinks in real terms.</p></div><div class="chart"><canvas id="chRpInfl"></canvas></div></div>
+        <div class="card"><div class="card-head"><h3>Leverage: down payment vs. return</h3><p>Same property bought today at the new-loan rate, held <span id="rpHoldLbl"></span> years.</p></div><div class="chart"><canvas id="chRpLev"></canvas></div><div class="insights" id="rpLevOut" style="margin-top:10px"></div></div>
+      </div>
+      <div class="grid g-side">
+        <div class="card"><div class="card-head"><h3>Exit options for the selected property</h3><p id="rpExitNote"></p></div><div class="tbl-wrap"><table id="rpExit"></table></div></div>
+        <div class="card"><div class="card-head"><h3>Depreciation &amp; taxes</h3></div><div class="insights" id="rpTaxOut"></div></div>
+      </div>
+      <div class="card"><div class="card-head"><h3>Portfolio summary</h3></div><div class="tbl-wrap"><table id="rpSum"></table></div></div>
+      <details class="card ledger-d"><summary>Year-by-year pro forma</summary><div class="tbl-wrap" style="max-height:460px; margin-top:10px"><table id="rpTable"></table></div></details>
+      <div class="card"><div class="card-head"><h3>Rental strategies</h3></div><div class="cat-grid" id="rpEdu"></div></div>
     </section>
 
     <!-- HEALTHCARE -->
@@ -1624,6 +1676,73 @@ function acaCalc(magi, hh, ages){
   return { fpl, pctFpl, bench, credit, net: Math.max(0, bench - credit), ap };
 }
 
+/* ---------- Rental properties ---------- */
+Object.assign(DEFAULTS, {
+  props:[
+    { n:'Duplex, Oak Park', py:2019, price:340000, value:420000, loan:245000, rate:3.75, yrs:23, rent:3400, vac:5, ptax:9800, ins:2100, hoa:0, maint:8, mgmt:8, capex:5, land:25, app:3.5, rg:3.5, eg:3 },
+    { n:'Single-family, Naperville', py:2023, price:365000, value:380000, loan:285000, rate:6.875, yrs:27, rent:2850, vac:5, ptax:8200, ins:1800, hoa:600, maint:7, mgmt:0, capex:5, land:20, app:3.5, rg:3, eg:3 }
+  ],
+  rpSel:0, rpTax:27, rpCg:24, rpHold:15, rpSellCost:6, rpLoss:'usable', rpInclude:true, rpNewRate:7, rpView:'portfolio'
+});
+function amortYear(bal, rate, monthsLeft){
+  // returns interest and principal for one year and new balance/months
+  const r = rate/1200; if (bal <= 0 || monthsLeft <= 0) return { int:0, prin:0, bal:0, ml:0, ds:0 };
+  const pmt = r ? bal*r/(1 - Math.pow(1+r, -monthsLeft)) : bal/monthsLeft;
+  let int = 0, prin = 0, ds = 0; let m = 0;
+  for (; m < 12 && bal > 0.01; m++){ const i = bal*r; const p = Math.min(bal, pmt - i); int += i; prin += p; ds += i + p; bal -= p; }
+  return { int, prin, bal: Math.max(0, bal), ml: monthsLeft - m, ds };
+}
+function propProject(p, s, years, opts={}){
+  const startY = BASE_YEAR + 1, infl = (s.infl ?? 2.5)/100, tr = (s.rpTax ?? 27)/100;
+  const bldg = p.price*(1 - p.land/100), annDep = bldg/27.5;
+  let value = +p.value, bal = +p.loan, ml = Math.round(+p.yrs*12), accDep = Math.min(bldg, annDep*Math.max(0, startY - p.py));
+  const rows = []; let payoff = null;
+  for (let t = 0; t < years; t++){
+    const year = startY + t;
+    const gross = p.rent*12*Math.pow(1 + p.rg/100, t), egi = gross*(1 - p.vac/100);
+    const fixed = (+p.ptax + +p.ins + +p.hoa)*Math.pow(1 + p.eg/100, t);
+    const varx = egi*(+p.maint + +p.mgmt + +p.capex)/100;
+    const noi = egi - fixed - varx;
+    const loanStart = bal;
+    const a = amortYear(bal, +p.rate, ml); bal = a.bal; ml = a.ml;
+    if (payoff === null && loanStart > 0 && bal <= 0.01) payoff = year;
+    const dep = accDep < bldg ? Math.min(annDep, bldg - accDep) : 0; accDep += dep;
+    const cfbt = noi - a.ds;
+    const taxable = noi - a.int - dep;
+    const tax = (s.rpLoss === 'suspended' ? Math.max(0, taxable) : taxable)*tr;
+    const vStart = value; value *= 1 + p.app/100;
+    rows.push({ year, t, gross, egi, opex: fixed + varx, noi, ds: a.ds, int: a.int, prin: a.prin, loanStart, loan: bal, dep, accDep, cfbt, taxable, tax, cfat: cfbt - tax,
+      depShield: dep*tr, incomeIDEAL: cfbt - (noi - a.int)*tr, appr: value - vStart, value, vStart, equity: value - bal, debtErosion: loanStart*infl, realRent: gross/Math.pow(1+infl, t+1) });
+  }
+  return { p, rows, payoff, bldg, annDep };
+}
+function rentalPortfolio(s, years){
+  const props = (s.props || []).map(p => propProject(p, s, years));
+  const byYear = {};
+  props.forEach(pp => pp.rows.forEach(r => { const y = byYear[r.year] || (byYear[r.year] = { cfbt:0, cfat:0, taxable:0, tax:0, noi:0, ds:0, equity:0, value:0, loan:0, dep:0, prin:0, appr:0, gross:0, opex:0, int:0, depShield:0, incomeIDEAL:0, debtErosion:0, vStart:0, loanStart:0, egi:0, realRent:0 });
+    for (const k in y) y[k] += r[k] || 0; }));
+  return { props, byYear };
+}
+function rentalEqNow(){ const p = (typeof S !== 'undefined' && S.props) || []; return p.length ? p.reduce((a, x) => a + (+x.value - +x.loan), 0) : +((typeof S !== 'undefined' && S.wRental) || 0); }
+function irr(flows){ let lo = -0.99, hi = 1; const npv = r => flows.reduce((a, f, i) => a + f/Math.pow(1+r, i), 0); if (npv(lo)*npv(hi) > 0) return null; for (let i = 0; i < 100; i++){ const m = (lo + hi)/2; if (npv(lo)*npv(m) <= 0) hi = m; else lo = m; } return (lo + hi)/2; }
+function exitAnalysis(pp, s, N){
+  const r = pp.rows[N-1], p = pp.p; const sellCost = r.value*s.rpSellCost/100;
+  const adjBasis = p.price - r.accDep; const gain = r.value - sellCost - adjBasis;
+  const recapture = Math.max(0, Math.min(r.accDep, gain))*.25; const cg = Math.max(0, gain - r.accDep)*s.rpCg/100;
+  const net = r.value - sellCost - r.loan;
+  const sellAfterTax = net - recapture - cg;
+  const eq0 = p.value - p.loan;
+  const flows = [-eq0, ...pp.rows.slice(0, N).map(x => x.cfat)]; flows[N] += sellAfterTax;
+  const unlev = [-p.value, ...pp.rows.slice(0, N).map(x => x.noi - (x.noi - x.dep)*s.rpTax/100)]; unlev[N] += r.value - sellCost - (Math.max(0, gain) > 0 ? Math.max(0, Math.min(r.accDep, gain))*.25 + Math.max(0, gain - r.accDep)*s.rpCg/100 : 0);
+  return { r, sellCost, gain, recapture, cg, net, sellAfterTax, irrLev: irr(flows), irrUnlev: irr(unlev), refiCash: Math.max(0, r.value*.75 - r.loan), stepUp: r.value - r.loan };
+}
+function leverageCurve(p, s, N){
+  return [100, 50, 35, 25, 20].map(dp => { const q = Object.assign({}, p, { price: p.value, py: BASE_YEAR + 1, loan: p.value*(1 - dp/100), rate: s.rpNewRate, yrs: 30 });
+    const pp = propProject(q, s, N); const ex = exitAnalysis(pp, s, N); const cash = p.value*dp/100 + p.value*.03;
+    const flows = [-cash, ...pp.rows.slice(0, N).map(x => x.cfat)]; flows[N] += ex.sellAfterTax;
+    return { dp, irr: irr(flows), coc: pp.rows[0].cfbt/cash, end: ex.sellAfterTax + pp.rows.slice(0, N).reduce((a, x) => a + x.cfat, 0), cash }; });
+}
+
 /* ---------- Helpers ---------- */
 const $ = (s, r=document) => r.querySelector(s);
 const $$ = (s, r=document) => [...r.querySelectorAll(s)];
@@ -1740,6 +1859,7 @@ function project(s, o={}){
   const an = (s.anInclude && s.anPremium > 0) ? annuityQuote(s, s.retireAge) : null;
   let anPay = 0, anBasisLeft = 0, anExcl = 0, anPay2 = 0;
   let idxAcc = 1, colaAcc = 1, prevRet = 0, spendMult = 1, initRate = null, hecmLoc = o.hecm ? o.hecm.limit : 0, hecmBal = 0, hecmDrawn = 0;
+  const RPY = (s.rpInclude && s.props && s.props.length) ? rentalPortfolio(s, Math.max(5, s.le - (BASE_YEAR + 1 - by) + 2)).byYear : null;
   const rows = [];
   for (let year = BASE_YEAR + 1; ; year++){
     const age = year - by; if (age > s.le) break;
@@ -1770,6 +1890,8 @@ function project(s, o={}){
     let annuity = 0, anTaxable = 0;
     if (anPay && age >= s.retireAge + (s.anDefer||0)){ annuity = anPay * Math.pow(1 + s.anCola/100, age - s.retireAge - (s.anDefer||0)); if (s.anSource === 'tax'){ const ex = Math.min(anBasisLeft, annuity*Math.min(1,anExcl)); anBasisLeft -= ex; anTaxable = annuity - ex; } else anTaxable = annuity; }
     if (anPay2 && age >= s.retireAge){ annuity += anPay2; anTaxable += anPay2; }
+    const rpy = RPY && RPY[year]; const rentCash = rpy ? rpy.cfbt : 0; const rentTax = rpy ? (s.rpLoss === 'suspended' ? Math.max(0, rpy.taxable) : Math.max(-25000, rpy.taxable)) : 0;
+    row.rental = rentCash; row.rentalEq = rpy ? rpy.equity : 0;
     row.ss = ss; row.ssSp = ssSp; row.pension = pension; row.annuity = annuity;
     if (!retired){
       const sal = disabled ? 0 : s.salary * Math.pow(1 + s.salGrowth/100, yi - 1);
@@ -1780,7 +1902,7 @@ function project(s, o={}){
       const ira = sal > 0 ? Math.min(s.ira*idx, iraLim) : 0;
       const hsa = (sal > 0 && age < 65) ? Math.min(s.hsa*idx, (mfj ? 8750 : 4400)*idx + (age >= 55 ? 1000 : 0)) : 0;
       const taxC = sal > 0 ? s.taxableC*idx : 0;
-      const extra = disabled ? 0 : (ss + ssSp + pension + annuity) * 0.8;
+      const extra = (disabled ? 0 : (ss + ssSp + pension + annuity) * 0.8) + rentCash*0.8;
       B.pre *= 1+r; B.roth *= 1+r; B.hsa *= 1+r; B.tax *= 1+r;
       B.pre += def - rothPart + match + (s.iraType === 'trad' ? ira : 0);
       B.roth += rothPart + (s.iraType === 'roth' ? ira : 0);
@@ -1805,13 +1927,13 @@ function project(s, o={}){
     const gainFrac = B.tax > 0 ? clamp(1 - B.basis/B.tax, 0, 1) : 0;
     let loanCash = 0;
     if (o.hecm && age >= o.hecm.start){ if (prevRet < 0 && hecmLoc > 0){ const d = Math.min(hecmLoc, Math.max(0, coreSpend + extraSpend - (ss + ssSp + pension + annuity + rmd + work))); loanCash += d; hecmLoc -= d; hecmBal += d; hecmDrawn += d; } }
-    const guaranteed = ss + ssSp + pension + annuity + rmd + work + loanCash;
+    const guaranteed = ss + ssSp + pension + annuity + rmd + work + loanCash + rentCash;
     if (o.guardrails){ const P = B.pre + B.roth + B.hsa + B.tax; const need = Math.max(0, coreSpend*spendMult + extraSpend - (guaranteed - loanCash)); const rate = need / Math.max(1, P);
       if (initRate === null) initRate = Math.max(.02, rate); else if (rate > initRate*1.2) spendMult = Math.max(.7, spendMult*.9); else if (rate < initRate*.8 && prevRet > 0) spendMult = Math.min(1.1, spendMult*1.1); }
     let spend = coreSpend*spendMult + extraSpend;
     const w = {pre:0, tax:0, roth:0, hsa:0}; let cv = 0;
     const avail = () => ({ pre: Math.max(0, B.pre - rmd - cv - w.pre), tax: Math.max(0, B.tax - w.tax), roth: Math.max(0, B.roth - w.roth), hsa: Math.max(0, B.hsa - w.hsa) });
-    const taxNow = () => calcTax({ ordinary: pension + anTaxable + rmd + w.pre + cv + work, retInc: pension + anTaxable + rmd + w.pre + cv, ltcg: w.tax*gainFrac, ss: ss + ssSp, year, ages, fil, s, idx });
+    const taxNow = () => calcTax({ ordinary: pension + anTaxable + rmd + w.pre + cv + work + rentTax, retInc: pension + anTaxable + rmd + w.pre + cv, ltcg: w.tax*gainFrac, ss: ss + ssSp, year, ages, fil, s, idx });
     const order = s.order === 'bracket' ? ['preFill','tax','pre','roth','hsa'] : ['tax','pre','roth','hsa'];
     function add(x){
       if (s.order === 'proportional'){ const a = avail(); const tot = a.pre + a.tax + a.roth + a.hsa; if (tot <= 0) return x; for (const k of ['pre','tax','roth','hsa']){ w[k] += x * a[k]/tot; } return 0; }
@@ -2078,7 +2200,7 @@ function renderOverview(){
   const lab = ret.map(r => r.age);
   chart('chIncome', { type:'bar', data:{ labels: lab, datasets:[
       bar('Social Security', ret.map(r => dv(r.ss,r)), c.ss), bar('Spouse SS', ret.map(r => dv(r.ssSp,r)), c.ss2),
-      bar('Pension', ret.map(r => dv(r.pension,r)), c.pen), bar('Annuity', ret.map(r => dv(r.annuity,r)), c.ann),
+      bar('Pension', ret.map(r => dv(r.pension,r)), c.pen), bar('Annuity', ret.map(r => dv(r.annuity,r)), c.ann), bar('Rental properties', ret.map(r => dv(r.rental || 0,r)), c.good),
       bar('RMD', ret.map(r => dv(r.rmd,r)), hexA(c.pre,.65)), bar('Pre-tax withdrawals', ret.map(r => dv(r.wPre,r)), c.pre),
       bar('Taxable', ret.map(r => dv(r.wTax,r)), c.tax), bar('Roth', ret.map(r => dv(r.wRoth,r)), c.roth), bar('HSA', ret.map(r => dv(r.wHsa,r)), c.hsa),
       { type:'line', label:'Spending + taxes', data: ret.map(r => dv(r.spend + r.total, r)), borderColor: c.ink, backgroundColor: c.ink, borderWidth: 2, pointRadius: 0, order: -1, stack: 'ref' } ] },
@@ -2847,7 +2969,7 @@ function renderWealth(){
   const homeEq = Math.max(0, +S.adHome - +S.adMort);
   const items = [
     ['Pre-tax retirement', +S.bPre, c.pre], ['Roth', +S.bRoth, c.roth], ['HSA', +S.bHsa, c.hsa], ['Taxable brokerage & cash', +S.bTax, c.tax],
-    ['Home equity', homeEq, c.pen], ['Rental real estate', +S.wRental, c.ann], ['Business', +S.wBiz, c.ss], ['Life insurance cash value', +S.wCV, c.ss2], ['Other', +S.wOther, c.muted]
+    ['Home equity', homeEq, c.pen], ['Rental real estate', rentalEqNow(), c.ann], ['Business', +S.wBiz, c.ss], ['Life insurance cash value', +S.wCV, c.ss2], ['Other', +S.wOther, c.muted]
   ];
   const nw = items.reduce((a, i) => a + i[1], 0);
   // protection
@@ -2859,7 +2981,7 @@ function renderWealth(){
     ['HSA', S.bHsa, ['IL','CA','MN','NY'].includes(st) ? 0 : S.bHsa*.5],
     ['Taxable brokerage & cash', S.bTax, S.wDAPT ? S.bTax*.15 : S.bTax*(tbe ? .6 : 1)],
     ['Home equity', homeEq, tbe ? 0 : Math.max(0, homeEq - hs)],
-    ['Rental real estate', +S.wRental, S.wLLC ? S.wRental*.2 : +S.wRental],
+    ['Rental real estate', rentalEqNow(), S.wLLC ? S.wRental*.2 : rentalEqNow()],
     ['Business', +S.wBiz, S.wLLC ? S.wBiz*.3 : +S.wBiz],
     ['Life insurance cash value', +S.wCV, ['IL','FL','TX'].includes(st) ? 0 : S.wCV*.5],
     ['Other', +S.wOther, +S.wOther]
@@ -2871,12 +2993,12 @@ function renderWealth(){
   const homeD = +S.adHome*Math.pow(1 + S.adHomeG/100, yrs)/idx;
   const growthR = Math.pow(1 + S.rPost/100, yrs)/idx;
   const lifeDb = S.wILIT ? 0 : +S.niHave;
-  const gross = (L.pre + L.roth + L.hsa + L.taxB)/idx + homeD + S.wRental*growthR + S.wBiz*growthR + S.wOther + lifeDb;
+  const gross = (L.pre + L.roth + L.hsa + L.taxB)/idx + homeD + rentalEqNow()*growthR + S.wBiz*growthR + S.wOther + lifeDb;
   const fedEx = 15000000*(mfj ? 2 : 1);
   const fedTax = Math.max(0, gross - fedEx)*.40;
   const se = STATE_ESTATE[st]; const stTax = se ? (se.ex ? Math.max(0, gross - se.ex)*se.r : gross*se.r) : 0;
   const ird = (L.pre + L.hsa)/idx*(S.wHeirRate/100);
-  const probateBase = S.wTrust ? 0 : (homeD*(mfj ? 0 : 1) + L.taxB/idx + S.wRental*growthR + S.wBiz*growthR + S.wOther);
+  const probateBase = S.wTrust ? 0 : (homeD*(mfj ? 0 : 1) + L.taxB/idx + rentalEqNow()*growthR + S.wBiz*growthR + S.wOther);
   const probate = probateBase*.04;
   const net = gross - fedTax - stTax - ird - probate;
   kpis('wlKpis', [
@@ -2904,7 +3026,7 @@ function renderWealth(){
   nodes.push(['You' + (mfj ? ' & spouse' : ''), 'Will, durable powers of attorney, health-care directive, HIPAA release', 'root']);
   const kids = [];
   kids.push(['Revocable living trust', `Holds: ${['home (or TBE/TODI deed)', S.bTax ? 'brokerage' : '', S.wRental || S.wBiz ? 'LLC interests' : '', 'bank accounts'].filter(Boolean).join(', ')}`, S.wTrust ? 'ok' : 'todo']);
-  if (S.wRental > 0) kids.push(['Rental LLC(s)', 'One property or small group per LLC; owned by the trust; landlord policy + umbrella', S.wLLC ? 'ok' : 'todo']);
+  if (rentalEqNow() > 0) kids.push(['Rental LLC(s)', 'One property or small group per LLC; owned by the trust; landlord policy + umbrella', S.wLLC ? 'ok' : 'todo']);
   if (S.wBiz > 0) kids.push(['Operating company (LLC / S-corp)', 'Buy-sell agreement funded with insurance; key-person coverage; succession plan', S.wLLC ? 'ok' : 'todo']);
   if (S.wRisk === 'high' || nw > 3e6) kids.push(['Family LP or asset-protection trust', 'Holds taxable investments; charging-order protection; valuation discounts for gifting', S.wDAPT ? 'ok' : 'todo']);
   if (S.niHave > 0 || gross > 3e6) kids.push(['ILIT', 'Owns life insurance; proceeds outside the estate; funds estate costs', S.wILIT ? 'ok' : (gross > (se ? se.ex || 4e6 : 12e6) ? 'todo' : 'opt')]);
@@ -2916,7 +3038,7 @@ function renderWealth(){
   $('#wlVehicles').innerHTML = tbl(['Vehicle','Creditor protection','How it passes','Heirs\' tax treatment','Best titling / beneficiary','Wealth strategy'], VEHICLE_WEALTH.map(v => [`<b>${v[0]}</b>`, ...v.slice(1)]));
   $('#wlEntities').innerHTML = tbl(['Entity / trust','Purpose','Creditor protection','Tax treatment','When it fits','Typical cost'], ENTITIES.map(e => [`<b>${e.n}</b>`, e.role, e.prot, e.tax, e.when, e.cost]));
   // family office
-  const complexity = (S.wBiz > 0 ? 1 : 0) + (S.wRental > 0 ? 1 : 0) + (S.wPhil ? 1 : 0) + (+S.wHeirs > 3 ? 1 : 0) + (S.wRisk === 'high' ? 1 : 0);
+  const complexity = (S.wBiz > 0 ? 1 : 0) + (rentalEqNow() > 0 ? 1 : 0) + (S.wPhil ? 1 : 0) + (+S.wHeirs > 3 ? 1 : 0) + (S.wRisk === 'high' ? 1 : 0);
   const adjNw = nw*(1 + complexity*.15);
   const fit = FO_MODELS.findIndex(m => adjNw >= m.min && adjNw < m.max);
   chart('chFO', { type:'bar', data:{ labels: FO_MODELS.map(m => m.n), datasets:[ bar('Est. annual cost at your net worth', FO_MODELS.map(m => m.cost(nw)), FO_MODELS.map((_, i) => i === fit ? c.accent : hexA(c.accent,.3))) ] },
@@ -3216,8 +3338,8 @@ function renderCockpit(){
   const ret = rows.filter(r => r.retired);
   const rng = $('#ckAge'); rng.min = ret[0].age; rng.max = ret[ret.length-1].age; S.ckAge = clamp(+S.ckAge || 70, ret[0].age, ret[ret.length-1].age); rng.value = S.ckAge;
   $('#ckAgeLbl').textContent = 'Age ' + S.ckAge;
-  const nwRow = r => { const h = homeAt(r.age); const yrs = r.age - age0; const g = Math.pow(1.03, yrs); return { pre: r.pre, roth: r.roth, tax: r.taxB, hsa: r.hsa, home: Math.max(0, h.home - h.mort - (r.hecmBal || 0)), rental: S.wRental*g, biz: S.wBiz*g, other: +S.wOther, cv: +S.wCV*Math.pow(1.04, yrs) }; };
-  const nwNow = S.bPre + S.bRoth + S.bTax + S.bHsa + Math.max(0, S.adHome - S.adMort) + +S.wRental + +S.wBiz + +S.wOther + +S.wCV;
+  const nwRow = r => { const h = homeAt(r.age); const yrs = r.age - age0; const g = Math.pow(1.03, yrs); return { pre: r.pre, roth: r.roth, tax: r.taxB, hsa: r.hsa, home: Math.max(0, h.home - h.mort - (r.hecmBal || 0)), rental: (S.props && S.props.length) ? (r.rentalEq || 0) : S.wRental*g, biz: S.wBiz*g, other: +S.wOther, cv: +S.wCV*Math.pow(1.04, yrs) }; };
+  const nwNow = S.bPre + S.bRoth + S.bTax + S.bHsa + Math.max(0, S.adHome - S.adMort) + rentalEqNow() + +S.wBiz + +S.wOther + +S.wCV;
   const lastR = rows[rows.length-1], lastNW = Object.values(nwRow(lastR)).reduce((a, v) => a + v, 0);
   const lifeInc = ret.reduce((a, r) => a + (r.ss + r.ssSp + r.pension + r.annuity + (r.work||0))/r.idx, 0);
   kpis('ckKpis', [
@@ -3230,13 +3352,13 @@ function renderCockpit(){
   ]);
   const NW = rows.map(r => ({ r, v: nwRow(r) }));
   const ser = (k) => NW.map(x => ({ x: x.r.age, y: dv(x.v[k], x.r) }));
-  chart('chNW', { type:'line', data:{ datasets:[ area('Pre-tax', ser('pre'), c.pre), area('Roth', ser('roth'), c.roth), area('Taxable', ser('tax'), c.tax), area('HSA', ser('hsa'), c.hsa), area('Home equity', ser('home'), c.pen), ...(S.wRental ? [area('Rental real estate', ser('rental'), c.ann)] : []), ...(S.wBiz ? [area('Business', ser('biz'), c.ss)] : []), ...(+S.wCV ? [area('Policy cash value', ser('cv'), c.ss2)] : []), area('Other', ser('other'), c.muted) ] },
+  chart('chNW', { type:'line', data:{ datasets:[ area('Pre-tax', ser('pre'), c.pre), area('Roth', ser('roth'), c.roth), area('Taxable', ser('tax'), c.tax), area('HSA', ser('hsa'), c.hsa), area('Home equity', ser('home'), c.pen), ...(rentalEqNow() ? [area('Rental real estate', ser('rental'), c.ann)] : []), ...(S.wBiz ? [area('Business', ser('biz'), c.ss)] : []), ...(+S.wCV ? [area('Policy cash value', ser('cv'), c.ss2)] : []), area('Other', ser('other'), c.muted) ] },
     options: baseOpts({ stacked:true, x:{min:rows[0].age, max:lastR.age}, xTitle:'Age', vlines:[{x:S.retireAge, label:'Retire', color:c.ink}] }) });
   // sankey
   const r = ret.find(x => x.age === +S.ckAge) || ret[0];
   const healthNom = r.age < 65 ? S.health*r.idx : 0;
   const k = v => dv(v, r);
-  const src = [ ['Social Security', r.ss, c.ss], ['Spouse Social Security', r.ssSp, c.ss2], ['Pension', r.pension, c.pen], ['Annuity', r.annuity, c.ann], ['Work income', r.work || 0, c.good], ['Required distributions', r.rmd, hexA(c.pre, .8)], ['Pre-tax withdrawals', r.wPre, c.pre], ['Taxable account', r.wTax, c.tax], ['Roth', r.wRoth, c.roth], ['HSA', r.wHsa, c.hsa], ['Reverse mortgage', r.loanCash || 0, c.accent], ['Shortfall', r.shortfall || 0, c.bad] ].filter(x => x[1] > 1).map(x => ({ n:x[0], v:k(x[1]), col:x[2] }));
+  const src = [ ['Social Security', r.ss, c.ss], ['Spouse Social Security', r.ssSp, c.ss2], ['Pension', r.pension, c.pen], ['Annuity', r.annuity, c.ann], ['Work income', r.work || 0, c.good], ['Rental properties', r.rental || 0, hexA(c.good, .7)], ['Required distributions', r.rmd, hexA(c.pre, .8)], ['Pre-tax withdrawals', r.wPre, c.pre], ['Taxable account', r.wTax, c.tax], ['Roth', r.wRoth, c.roth], ['HSA', r.wHsa, c.hsa], ['Reverse mortgage', r.loanCash || 0, c.accent], ['Shortfall', r.shortfall || 0, c.bad] ].filter(x => x[1] > 1).map(x => ({ n:x[0], v:k(x[1]), col:x[2] }));
   const living = Math.max(0, r.spend - healthNom);
   const usesA = [ ['Essentials', living*S.ckEss/100, c.pre], ['Lifestyle', living*(1 - S.ckEss/100), c.roth], ['Health care', healthNom, c.hsa], ['Federal tax', r.fed, c.bad], ['State tax', r.state, c.warn], ['Medicare IRMAA', r.irmaa, c.ss], ['Reinvested surplus', r.surplus, c.good] ].filter(x => x[1] > 1).map(x => ({ n:x[0], v:k(x[1]), col:x[2] }));
   sankeySVG($('#ckSankey'), src, usesA, c);
@@ -3249,7 +3371,7 @@ function renderCockpit(){
   const preShare = S.bPre/Math.max(1, S.bPre + S.bRoth + S.bTax + S.bHsa);
   const liq = (S.bTax + S.bRoth*.3)/Math.max(1, S.spend);
   const need = S.niDebt + S.salary*S.niYears + S.niMort + S.niEdu + S.niFinal - S.niHave - S.bTax*.5;
-  const hs = HOMESTEAD[S.state] ?? 50000; const expo = (S.wDAPT ? .15 : 1)*S.bTax + (S.wLLC ? .2 : 1)*(+S.wRental + +S.wBiz) + Math.max(0, S.adHome - S.adMort - hs);
+  const hs = HOMESTEAD[S.state] ?? 50000; const expo = (S.wDAPT ? .15 : 1)*S.bTax + (S.wLLC ? .2 : 1)*(rentalEqNow() + +S.wBiz) + Math.max(0, S.adHome - S.adMort - hs);
   const R = [
     ['Longevity', p100.depleted ? clamp((101 - p100.depleted.age)*6, 30, 100) : 10, p100.depleted ? `Money runs short at ${p100.depleted.age} if you live to 100.` : 'Funded to 100.', 'Delay Social Security, add a QLAC or income annuity.'],
     ['Market & sequence', clamp((1 - MC.success)*250, 5, 100), `${pct(MC.success,0)} of simulations funded.`, 'Bond tent, cash bucket, guardrails, HECM standby line.'],
@@ -3327,6 +3449,120 @@ function renderCockpit(){
     ['Family governance', '<span class="pill">Checklist</span>', '12 items', 'Family meeting, IPS, letter of instruction', 'wealth']
   ];
   $('#ckReview').innerHTML = tbl(['Area','Status','Key number','Next step',''], rows2.map(x => [`<b>${x[0]}</b>`, x[1], x[2], x[3], `<a href="#${x[4]}">Open →</a>`]));
+}
+
+/* ---------- RENTAL PROPERTIES ---------- */
+const RP_FIELDS = [
+  ['n','Property name','text'], ['py','Year bought','number',1], ['price','Purchase price (basis) $','number',5000], ['value','Value today $','number',5000],
+  ['loan','Loan balance $','number',1000], ['rate','Mortgage rate %','number',.125], ['yrs','Years left on loan','number',1], ['rent','Rent $/month','number',25],
+  ['vac','Vacancy %','number',1], ['ptax','Property tax $/yr','number',100], ['ins','Insurance $/yr','number',50], ['hoa','HOA / other $/yr','number',50],
+  ['maint','Maintenance % of rent','number',.5], ['mgmt','Management % of rent','number',.5], ['capex','Capital reserve % of rent','number',.5], ['land','Land share of price %','number',1],
+  ['app','Appreciation %/yr','number',.25], ['rg','Rent growth %/yr','number',.25], ['eg','Expense growth %/yr','number',.25]
+];
+function rpYears(){ return Math.max(30, S.le - ageOn(S.birth) + 1); }
+function renderRentals(){
+  const c = COL(), age0 = ageOn(S.birth), props = S.props || [];
+  const ideal = [['I','Inflation','Rents and values rise with prices while a fixed-rate payment does not, so tenants repay your loan with cheaper dollars.'],['D','Depreciation','The building (not land) is written off over 27.5 years, sheltering rental income from tax.'],['E','Equity','Every mortgage payment buys down the loan; principal paydown is forced savings.'],['A','Appreciation','Property values compound over decades, on the whole value, not just your down payment.'],['L','Leverage','A mortgage lets a small down payment control the whole property, multiplying return on equity, and risk.']];
+  const chips = $('#rpChips'); chips.innerHTML = props.map((p, i) => `<button type="button" class="chip" data-rp="${i}" aria-pressed="${i === +S.rpSel}">${esc(p.n)}</button>`).join('');
+  if (!props.length){ $('#rpForm').innerHTML = '<p class="muted">No properties yet. Add one to start.</p>'; ['rpKpis','rpIdeal'].forEach(id => $('#' + id).innerHTML = ''); return; }
+  S.rpSel = clamp(+S.rpSel || 0, 0, props.length - 1);
+  const P = props[S.rpSel];
+  $('#rpForm').innerHTML = RP_FIELDS.map(([k, l, t, st]) => `<div class="field${k === 'n' ? ' w' : ''}"><label for="rp_${k}">${l}</label><input type="${t}" id="rp_${k}" data-rpf="${k}" value="${esc(P[k])}" ${st ? `step="${st}"` : ''}></div>`).join('');
+  const N = rpYears(); const port = rentalPortfolio(S, N);
+  const one = port.props[S.rpSel];
+  const view = S.rpView === 'one' ? { rows: one.rows } : { rows: Object.keys(port.byYear).sort().map(y => Object.assign({ year:+y }, port.byYear[y])) };
+  const R = view.rows; const r0 = R[0];
+  const eq0 = (S.rpView === 'one' ? [P] : props).reduce((a, p) => a + (p.value - p.loan), 0);
+  const val0 = (S.rpView === 'one' ? [P] : props).reduce((a, p) => a + +p.value, 0);
+  const loan0 = (S.rpView === 'one' ? [P] : props).reduce((a, p) => a + +p.loan, 0);
+  const payoffs = port.props.map(pp => pp.payoff).filter(Boolean);
+  const lastPay = S.rpView === 'one' ? one.payoff : (payoffs.length ? Math.max(...payoffs) : null);
+  const ret = r0.cfat + r0.prin + r0.appr;
+  const capRate = r0.noi/Math.max(1, val0), dscr = r0.ds ? r0.noi/r0.ds : null, coc = r0.cfbt/Math.max(1, eq0);
+  const idx = t => Math.pow(1 + S.infl/100, t);
+  const y10 = R[Math.min(9, R.length-1)], y20 = R[Math.min(19, R.length-1)], post = lastPay ? R.find(x => x.year === lastPay + 1) : null;
+  kpis('rpKpis', [
+    { l:'Value / loan / equity', text: `${fmtK(val0)} / ${fmtK(loan0)}`, s: `${fmtK(eq0)} equity, ${pct(loan0/Math.max(1, val0),0)} loan-to-value` },
+    { l:'Cash flow, year 1', v: r0.cfbt/12, f: v => fmt(v) + '/mo', s: `${fmt(r0.cfat)}/yr after tax`, pill: r0.cfbt >= 0 ? ['good','Positive'] : ['warn','Negative'] },
+    { l:'Cash flow, year 10', v: y10.cfbt/12, f: v => fmt(v) + '/mo', s: `${fmt(y10.cfbt/12/idx(9))}/mo in today's $` },
+    { l: lastPay ? `After payoff (${lastPay})` : 'Year 20', v: (post || y20).cfbt/12, f: v => fmt(v) + '/mo', s: lastPay ? `Mortgage-free: ${fmt((post || y20).cfbt/12/idx((post||y20).year - BASE_YEAR - 1))}/mo today's $` : '' },
+    { l:'Cap rate · DSCR · cash-on-cash', text: `${pct(capRate,1)} · ${dscr ? dscr.toFixed(2) : '—'} · ${pct(coc,1)}`, s: dscr && dscr < 1.2 ? 'DSCR under 1.2: thin cushion' : 'Year 1' },
+    { l:'Total return on equity, yr 1', v: ret/Math.max(1, eq0), f: v => pct(v,1), s: `${fmt(ret)}: cash + paydown + appreciation` }
+  ]);
+  // IDEAL cards
+  const tr = S.rpTax/100;
+  const sumN = (k, n) => R.slice(0, n).reduce((a, x) => a + (x[k] || 0), 0);
+  const H = Math.min(+S.rpHold, R.length);
+  const unlevRet = (r0.noi - (r0.noi - r0.dep)*tr + r0.appr)/Math.max(1, val0);
+  const vals = {
+    I: `${fmtK(sumN('debtErosion', H))} of debt erased by ${S.infl}% inflation over ${H} yrs; rent ${pct(R[H-1].gross/r0.gross - 1, 0)} higher`,
+    D: `${fmtK(sumN('dep', H))} deducted, saving ${fmtK(sumN('depShield', H))} in tax over ${H} yrs`,
+    E: `${fmtK(sumN('prin', H))} of principal paid down in ${H} yrs`,
+    A: `${fmtK(R[H-1].value - val0)} of value gained in ${H} yrs`,
+    L: `${pct(ret/Math.max(1, eq0),1)} return on equity vs. ${pct(unlevRet,1)} all-cash in year 1`
+  };
+  $('#rpIdeal').innerHTML = ideal.map(([k, n, d]) => `<div class="ideal-c"><span class="ideal-l">${k}</span><div><b>${n}</b><p class="small">${d}</p><p class="small num"><b>${vals[k]}</b></p></div></div>`).join('');
+  const yrs = R.map(x => x.year);
+  const vl = []; if (lastPay) vl.push({ x: yrs.indexOf(lastPay), label:'Mortgage paid off', color:c.good });
+  vl.push({ x: yrs.indexOf(parseDate(S.birth).y + +S.retireAge), label:'You retire', color:c.ink, row:1 });
+  chart('chRpCf', { type:'bar', data:{ labels: yrs, datasets:[ bar('Cash flow after tax', R.map(x => x.cfat), R.map(x => x.cfat >= 0 ? c.roth : c.bad)), bar('Tax saved / paid', R.map(x => -x.tax), hexA(c.hsa,.6)),
+      { type:'line', label:'Rent collected', data: R.map(x => x.egi), borderColor: c.pre, borderWidth:2, pointRadius:0, stack:'a' }, { type:'line', label:'Operating expenses', data: R.map(x => x.opex), borderColor: c.tax, borderWidth:2, pointRadius:0, stack:'b' }, { type:'line', label:'Mortgage payment', data: R.map(x => x.ds), borderColor: c.ink, borderWidth:2, pointRadius:0, borderDash:[5,4], stepped:true, stack:'c' } ] },
+    options: baseOpts({ xType:'category', vlines: vl.filter(v => v.x >= 0) }) });
+  $('#rpCfNote').textContent = `Future dollars. Year-1 rent ${fmt(r0.egi)}, expenses ${fmt(r0.opex)}, mortgage ${fmt(r0.ds)}. ${lastPay ? `When the last mortgage is paid off in ${lastPay}, cash flow jumps by ${fmt(R.find(x => x.year === lastPay).ds)} a year.` : ''}`;
+  // equity stack
+  let cumPrin = 0, cumApp = 0; const eqP = [], eqA = [], eqS = [], lo = [];
+  R.forEach(x => { cumPrin += x.prin; cumApp += x.appr; eqS.push(eq0); eqP.push(cumPrin); eqA.push(cumApp); lo.push(x.loan); });
+  chart('chRpEq', { type:'line', data:{ labels: yrs, datasets:[ area('Loan balance', lo, c.bad, {backgroundColor: hexA(c.bad,.25)}), area('Equity you started with', eqS, c.muted), area('Principal paid down', eqP, c.pre), area('Appreciation', eqA, c.roth) ] }, options: baseOpts({ xType:'category', stacked:true }) });
+  chart('chRpIdeal', { type:'bar', data:{ labels: yrs.slice(0, 30), datasets:[ bar('Income (cash flow before depreciation)', R.slice(0,30).map(x => x.incomeIDEAL), c.roth), bar('Depreciation tax savings', R.slice(0,30).map(x => x.depShield), c.hsa), bar('Equity (principal paydown)', R.slice(0,30).map(x => x.prin), c.pre), bar('Appreciation', R.slice(0,30).map(x => x.appr), c.tax),
+      { type:'line', label:'Return on equity', yAxisID:'y2', data: R.slice(0,30).map(x => (x.cfat + x.prin + x.appr)/Math.max(1, x.vStart - x.loanStart)*100), borderColor: c.ink, borderWidth:2, pointRadius:0 } ] },
+    options: (() => { const o = baseOpts({ xType:'category', stacked:true, y2:{ fmt: v => v + '%', min:0 } }); o.scales.y2.stacked = false; o.plugins.tooltip.callbacks.label = ctx => ctx.dataset.yAxisID === 'y2' ? `Return on equity: ${ctx.parsed.y.toFixed(1)}%` : `${ctx.dataset.label}: ${fmtK(ctx.parsed.y)}`; return o; })() });
+  // inflation
+  chart('chRpInfl', { type:'line', data:{ labels: yrs, datasets:[ line("Rent, today's dollars", R.map(x => x.realRent), c.roth, {borderWidth:2.5}), line("Mortgage payment, today's dollars", R.map((x, t) => x.ds/idx(t+1)), c.bad, {borderWidth:2.5}), line("Loan balance, today's dollars", R.map((x, t) => x.loan/idx(t+1)), c.bad, {borderDash:[5,4], yAxisID:'y2'}) ] },
+    options: baseOpts({ xType:'category', y2:{ fmt: v => fmtK(v) } }) });
+  // leverage
+  const N2 = clamp(+S.rpHold, 2, 40); $('#rpHoldLbl').textContent = N2;
+  const lev = leverageCurve(P, S, N2);
+  chart('chRpLev', { type:'bar', data:{ labels: lev.map(x => x.dp === 100 ? 'All cash' : x.dp + '% down'), datasets:[ bar('IRR (after tax, incl. sale)', lev.map(x => (x.irr ?? 0)*100), lev.map(x => x.dp === 100 ? c.muted : c.accent)), bar('Year-1 cash-on-cash', lev.map(x => x.coc*100), lev.map(x => hexA(x.coc >= 0 ? c.roth : c.bad, .7))) ] }, options: baseOpts({ xType:'category', money:false, yFmt: v => v + '%', tip: v => v.toFixed(1) + '%', zero:true }) });
+  const best = lev.slice().sort((a, b) => (b.irr ?? -1) - (a.irr ?? -1))[0];
+  $('#rpLevOut').innerHTML = insight('acc','LEVER', `Bought today, ${P.n} returns about <b>${pct(lev[0].irr ?? 0,1)}</b> a year all-cash vs. <b>${pct(best.irr ?? 0,1)}</b> with ${best.dp}% down (after tax, including sale in year ${N2}). Leverage helps only while the property's return beats the ${S.rpNewRate}% loan rate.`) +
+    insight(lev[3].coc < 0 ? 'warn' : 'good', 'CASH', lev[3].coc < 0 ? `At ${S.rpNewRate}%, 25% down produces negative cash flow at first (${pct(lev[3].coc,1)} cash-on-cash): returns depend on appreciation and paydown, so keep reserves.` : `25% down still cash-flows (${pct(lev[3].coc,1)} cash-on-cash in year 1).`);
+  // exit
+  const ex = exitAnalysis(one, S, N2), exR = ex.r;
+  $('#rpExitNote').textContent = `${P.n} in year ${N2} (${exR.year}): value ${fmtK(exR.value)}, loan ${fmtK(exR.loan)}, ${fmtK(exR.accDep)} of depreciation taken.`;
+  const hold = one.rows[Math.min(one.rows.length - 1, Math.max(N2, (parseDate(S.birth).y + +S.le) - BASE_YEAR - 1))];
+  $('#rpExit').innerHTML = tbl(['Option','Taxes due','Cash in hand','Notes'], [
+    ['<b>Sell</b>', fmtK(ex.recapture + ex.cg), fmtK(ex.sellAfterTax), `25% depreciation recapture ${fmtK(ex.recapture)} + capital gains ${fmtK(ex.cg)}; selling costs ${fmtK(ex.sellCost)}. After-tax IRR ${ex.irrLev !== null ? pct(ex.irrLev,1) : '—'} vs. ${ex.irrUnlev !== null ? pct(ex.irrUnlev,1) : '—'} all-cash.`],
+    ['<b>1031 exchange</b>', '$0 now', fmtK(ex.net) + ' rolled', 'Defers all gain and recapture into a like-kind property (45 days to identify, 180 to close). Can chain exchanges until death.'],
+    ['<b>Cash-out refinance (75% LTV)</b>', '$0', fmtK(ex.refiCash), 'Loan proceeds are not taxable; you keep the property and depreciation, but take on a larger payment.'],
+    ['<b>Hold until death (step-up)</b>', '$0', fmtK(hold.value - hold.loan) + ' to heirs', `Heirs inherit at market value in ${hold.year}; recapture and gains disappear. Rental equity then joins the estate (see Wealth tab).`],
+    ['<b>Installment sale / seller financing</b>', 'Spread out', fmtK(ex.sellAfterTax) + ' over time', 'Spreads gain over the years payments arrive, smoothing brackets; recapture is still taxed in the year of sale.'],
+    ['<b>Exchange into a DST</b>', '$0 now', fmtK(ex.net) + ' rolled', 'Delaware Statutory Trust: passive, professionally managed real estate via 1031. Illiquid, with fees.']
+  ]);
+  const depLeft = Math.max(0, one.bldg - one.rows[0].accDep + one.rows[0].dep);
+  $('#rpTaxOut').innerHTML = insight('acc','DEP', `${P.n}: building basis ${fmtK(one.bldg)} (land isn't depreciable), ${fmt(one.annDep)} deducted each year for 27.5 years from ${P.py}; ${fmtK(depLeft)} left to deduct.`) +
+    insight(S.rpLoss === 'usable' ? 'good' : 'warn', 'LOSSES', S.rpLoss === 'usable' ? 'Rental losses offset other income: up to $25,000 if you actively manage and your MAGI is under $100,000 (phased out by $150,000), or without limit as a real estate professional.' : 'Losses are suspended and carried forward until you have passive income or sell the property.') +
+    insight('warn','RECAPTURE', `Selling taxes the depreciation you took at up to 25% (unrecaptured §1250 gain), even if you never claimed it. Holding until death or exchanging avoids it.`) +
+    insight('', 'COST SEG', 'A cost-segregation study reclassifies parts of a building to 5-, 7- and 15-year lives; 100% bonus depreciation was restored for property acquired after January 19, 2025, front-loading deductions.') +
+    insight('', 'RETIRE', S.rpInclude ? 'Rental cash flow and taxable rental income are included in your retirement plan (Overview, cockpit cash-flow map, taxes).' : 'Tick "Include rental cash flow" to add these properties to your retirement plan.');
+  // summary
+  $('#rpSum').innerHTML = tbl(['Property','Value','Loan','Equity','Rent/mo','NOI yr 1','Cap rate','DSCR','Cash flow/mo yr 1','Cash flow/mo yr 10','Paid off','After-tax IRR (sell yr ' + N2 + ')'], port.props.map((pp, i) => { const a = pp.rows[0], b = pp.rows[Math.min(9, pp.rows.length-1)], e = exitAnalysis(pp, S, N2);
+    return Object.assign([`<b>${esc(pp.p.n)}</b>`, fmtK(pp.p.value), fmtK(pp.p.loan), fmtK(pp.p.value - pp.p.loan), fmt(pp.p.rent), fmtK(a.noi), pct(a.noi/pp.p.value,1), a.ds ? (a.noi/a.ds).toFixed(2) : '—', fmt(a.cfbt/12), fmt(b.cfbt/12), pp.payoff || '—', e.irrLev !== null ? pct(e.irrLev,1) : '—'], { _hl: i === +S.rpSel }); }), [1,2,3,4,5,6,7,8,9,11]);
+  $('#rpTable').innerHTML = tbl(['Year','Rent','Expenses','NOI','Mortgage','Interest','Principal','Depreciation','Taxable','Cash flow','After tax','Value','Loan','Equity'], R.map(x => [x.year, fmtK(x.egi), fmtK(x.opex), fmtK(x.noi), fmtK(x.ds), fmtK(x.int), fmtK(x.prin), fmtK(x.dep), fmtK(x.taxable), fmtK(x.cfbt), fmtK(x.cfat), fmtK(x.value), fmtK(x.loan), fmtK(x.equity)]), [1,2,3,4,5,6,7,8,9,10,11,12,13]);
+  const edu = [
+    ['The 1% and 50% rules','Quick screens: monthly rent near 1% of price, and operating expenses (not the mortgage) near 50% of rent. Most U.S. markets today fall short of 1%, so check the full pro forma.'],
+    ['Cap rate and cash-on-cash','Cap rate = NOI ÷ value (unlevered yield). Cash-on-cash = cash flow ÷ cash invested. DSCR = NOI ÷ mortgage payment; lenders want 1.2+.'],
+    ['Pay off or keep the mortgage?','Paying down a 3.75% loan earns 3.75%; keep low-rate debt and invest. Paying off a 7% loan before retirement raises income and lowers risk.'],
+    ['BRRRR','Buy, rehab, rent, refinance, repeat: pull your capital back out with a cash-out refi to buy the next property. Works only with real forced appreciation.'],
+    ['House hacking','Live in one unit of a 2–4 unit property with an FHA or conventional owner-occupied loan (3.5–5% down); tenants pay most of the mortgage.'],
+    ['Short-term rentals','Higher gross rent, higher costs and regulation risk. An average stay under 7 days can make losses non-passive (the "STR loophole") if you materially participate.'],
+    ['Entity & insurance','Hold each property in an LLC owned by your revocable trust, carry landlord insurance plus an umbrella, and keep finances separate. See the Wealth tab.'],
+    ['1031 → DST → step-up','Exchange into larger or more passive properties over time, then hold until death so heirs inherit with a stepped-up basis: "swap till you drop."'],
+    ['Reserves','Keep 6 months of expenses per property for vacancies, roofs and HVAC. Capital expenditures average 5–10% of rent over time.'],
+    ['Retirement income role','Paid-off rentals act like an inflation-indexed pension. Self-directed IRAs can own rentals but leverage triggers UBTI and you can\'t use the property.'],
+    ['Property taxes & reassessment','Illinois has some of the highest property taxes in the U.S. (around 2%+ of value); they are often the largest expense and rise on reassessment.'],
+    ['Opportunity Zones & Qualified Opportunity Funds','Invest capital gains into an opportunity zone to defer tax; property held 10+ years can be sold with no tax on its appreciation.']
+  ];
+  $('#rpEdu').innerHTML = edu.map(e => catCard(e[0], '', `<p>${e[1]}</p>`)).join('');
 }
 
 /* ---------- BENEFITS ---------- */
@@ -3502,7 +3738,7 @@ function renderLeak(){
 }
 
 /* ---------- Router & init ---------- */
-const VIEWS = { overview: renderOverview, cockpit: renderCockpit, portfolio: renderPortfolio, healthcare: renderHealthcare, advisor: renderAdvisor, wealth: renderWealth, 'social-security': renderSS, pension: renderPension, annuities: renderAnnuities, accounts: renderAccounts, taxes: renderTaxes, insurance: renderInsurance, benefits: renderBenefits, investing: renderInvesting, leak: renderLeak };
+const VIEWS = { overview: renderOverview, rentals: renderRentals, cockpit: renderCockpit, portfolio: renderPortfolio, healthcare: renderHealthcare, advisor: renderAdvisor, wealth: renderWealth, 'social-security': renderSS, pension: renderPension, annuities: renderAnnuities, accounts: renderAccounts, taxes: renderTaxes, insurance: renderInsurance, benefits: renderBenefits, investing: renderInvesting, leak: renderLeak };
 function current(){ const h = location.hash.replace('#',''); return VIEWS[h] ? h : 'overview'; }
 function show(){
   const v = current();
@@ -3531,12 +3767,17 @@ function init(){
   syncInputs();
   document.addEventListener('input', e => { const el = e.target; if (el.dataset.k){ const k = el.dataset.k; if (el.type === 'checkbox') S[k] = el.checked; else if (el.type === 'number') S[k] = el.value === '' ? '' : +el.value; else S[k] = el.value; changed(); }
     if (el.dataset.h !== undefined && el.tagName !== 'SELECT'){ const i = +el.dataset.h, f = el.dataset.f; S.holdings[i][f] = el.type === 'number' ? +el.value : el.value; S._touched = true; save(); clearTimeout(tmr); tmr = setTimeout(() => { if (current() === 'portfolio') { const ae = document.activeElement; const sel = ae && ae.dataset ? [ae.dataset.h, ae.dataset.f] : null; renderPortfolio(); if (sel) { const n = document.querySelector(`[data-h="${sel[0]}"][data-f="${sel[1]}"]`); if (n) { n.focus(); } } } }, 450); }
+    if (el.dataset.rpf !== undefined){ const k = el.dataset.rpf; const pr = S.props[+S.rpSel]; if (pr){ pr[k] = el.type === 'number' ? +el.value : el.value; S._touched = true; save(); clearTimeout(tmr); tmr = setTimeout(() => { recompute(); if (current() === 'rentals'){ const id = document.activeElement && document.activeElement.id; renderRentals(); if (id){ const n = document.getElementById(id); if (n) n.focus(); } } }, 450); } }
     if (el.dataset.va !== undefined){ const i = +el.dataset.va, f = el.dataset.f; S.vaRatings[i][f] = f === 'b' ? el.checked : f === 'r' ? +el.value : el.value; changed(); }
     if (el.id === 'acSearch') renderAccounts(); if (el.id === 'faqSearch') renderFaq(); });
   document.addEventListener('change', e => { const el = e.target; if (el.dataset.h !== undefined && el.tagName === 'SELECT'){ S.holdings[+el.dataset.h][el.dataset.f] = el.value; save(); renderPortfolio(); } if (['wgFMarket','wgFEvent','wgFLife','wgFOnly'].includes(el.id)) renderWarGame(); if (el.tagName === 'SELECT' && el.dataset.k){ S[el.dataset.k] = el.value; changed(); } if (el.dataset.va !== undefined && el.tagName === 'SELECT'){ S.vaRatings[+el.dataset.va].r = +el.value; changed(); } });
   document.addEventListener('click', e => { const t = e.target.closest('button'); if (!t) return;
     if (t.dataset.cat){ acCat = t.dataset.cat; renderAccounts(); }
     if (t.id === 'wgRun') runWarGame();
+    if (t.dataset.rp !== undefined){ S.rpSel = +t.dataset.rp; save(); renderRentals(); }
+    if (t.id === 'rpAdd'){ S.props.push({ n:'Property ' + (S.props.length + 1), py: NOW.getFullYear() - 5, price:300000, value:350000, loan:200000, rate:5, yrs:25, rent:2500, vac:5, ptax:6000, ins:1600, hoa:0, maint:8, mgmt:8, capex:5, land:20, app:3.5, rg:3, eg:3 }); S.rpSel = S.props.length - 1; changed(); }
+    if (t.id === 'rpNew'){ const pr = 400000; S.props.push({ n:'New purchase', py: NOW.getFullYear() + 1, price:pr, value:pr, loan:pr*.75, rate:+S.rpNewRate, yrs:30, rent:3000, vac:5, ptax:7200, ins:1800, hoa:0, maint:8, mgmt:8, capex:5, land:20, app:3.5, rg:3, eg:3 }); S.rpSel = S.props.length - 1; changed(); }
+    if (t.id === 'rpDel' && S.props.length){ S.props.splice(+S.rpSel, 1); S.rpSel = 0; changed(); }
     if (t.id === 'pfAdd'){ S.holdings.push({n:'New fund', t:'usLarge', a:'tax', v:10000, er:.05, y:1.5, cg:0}); save(); renderPortfolio(); }
     if (t.dataset.hdel !== undefined){ S.holdings.splice(+t.dataset.hdel, 1); save(); renderPortfolio(); }
     if (t.id === 'pfSync'){ const H = S.holdings; S.bPre = H.filter(h => h.a === 'pre').reduce((a, h) => a + +h.v, 0); S.bRoth = H.filter(h => h.a === 'roth').reduce((a, h) => a + +h.v, 0); S.bTax = H.filter(h => h.a === 'tax').reduce((a, h) => a + +h.v, 0); S.bBasis = Math.min(S.bBasis, S.bTax); $('#pfSyncNote').textContent = 'Plan balances updated.'; changed(); }
