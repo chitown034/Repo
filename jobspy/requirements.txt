@@ -1,0 +1,1 @@
+python-jobspy[mcp]>=1.4.1

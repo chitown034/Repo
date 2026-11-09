@@ -1,0 +1,278 @@
+{
+  "_note": "Lane ids match RoleCompass search profiles so imported rows land in the right profile. Edit titles/locations here to change what jobspy_scan.py searches.",
+  "lanes": [
+    {
+      "id": "ai-transform",
+      "name": "AI transformation & AI program ops",
+      "active": true,
+      "priority": "primary",
+      "titles": [
+        "AI Program Manager",
+        "AI Adoption / Transformation Lead",
+        "AI Strategist",
+        "Data & AI Project Manager",
+        "Automation Program Manager"
+      ],
+      "keywords": [
+        "AI/ML",
+        "LLM",
+        "automation",
+        "Agile",
+        "SAFe",
+        "change management",
+        "data platform"
+      ],
+      "locations": [
+        "San Diego",
+        "Orange County",
+        "Remote US"
+      ],
+      "excludedTitles": [
+        "ML Engineer",
+        "Data Scientist"
+      ]
+    },
+    {
+      "id": "autonomy-uw",
+      "name": "Autonomous, undersea & Information Warfare programs",
+      "active": true,
+      "priority": "primary",
+      "titles": [
+        "Program Manager",
+        "Senior Program Manager",
+        "Program Management Senior Manager",
+        "Deputy Program Manager",
+        "Technical Program Manager",
+        "Program Integration Lead"
+      ],
+      "keywords": [
+        "UUV",
+        "USV",
+        "unmanned",
+        "autonomy",
+        "undersea",
+        "maritime autonomy",
+        "Information Warfare",
+        "C4I",
+        "ISR",
+        "PEO C4I",
+        "PEO USC",
+        "PMW 770",
+        "PMS 406",
+        "NAVWAR",
+        "DIU",
+        "T&E",
+        "fielding"
+      ],
+      "locations": [
+        "San Diego",
+        "Temecula / SoCal hybrid",
+        "Remote US"
+      ],
+      "excludedTitles": [
+        "Intern",
+        "Junior",
+        "Engineer I"
+      ]
+    },
+    {
+      "id": "defense-tpm",
+      "name": "Defense program management (Senior Manager / PM)",
+      "active": true,
+      "priority": "primary",
+      "titles": [
+        "Program Management Senior Manager",
+        "Senior Program Manager",
+        "Program Manager 3",
+        "Program Manager 4",
+        "Manager Programs",
+        "Deputy Program Manager",
+        "Technical Program Manager",
+        "Program Integration Director"
+      ],
+      "keywords": [
+        "DoD acquisition",
+        "IMS",
+        "WBS",
+        "EVM",
+        "cost/schedule/performance",
+        "NAVWAR",
+        "C4I",
+        "PMP",
+        "DAWIA",
+        "autonomous systems",
+        "unmanned",
+        "undersea",
+        "Information Warfare",
+        "C4I",
+        "ISR",
+        "T&E",
+        "Adaptive Acquisition Framework",
+        "capture",
+        "business development"
+      ],
+      "locations": [
+        "San Diego",
+        "Poway / Rancho Bernardo",
+        "Remote US"
+      ],
+      "excludedTitles": [
+        "Program Analyst I",
+        "Coordinator"
+      ]
+    },
+    {
+      "id": "federal-acq",
+      "name": "Federal program & acquisition",
+      "active": true,
+      "priority": "primary",
+      "titles": [
+        "Program Manager (GS-0340)",
+        "IT Program Manager (GS-2210)",
+        "Supervisory Program Manager",
+        "Acquisition PM (NH)"
+      ],
+      "keywords": [
+        "GS-0340",
+        "GS-0343",
+        "NH-III",
+        "NH-IV",
+        "specialized experience",
+        "veterans' preference",
+        "DAWIA"
+      ],
+      "locations": [
+        "San Diego",
+        "Coronado",
+        "Remote"
+      ],
+      "excludedTitles": []
+    },
+    {
+      "id": "mbse",
+      "name": "MBSE & digital engineering",
+      "active": true,
+      "priority": "secondary",
+      "titles": [
+        "MBSE Lead",
+        "Principal/Staff MBSE Engineer",
+        "Systems Engineering Manager",
+        "Digital Engineering Lead",
+        "Systems Architect"
+      ],
+      "keywords": [
+        "MBSE",
+        "SysML",
+        "Cameo",
+        "UAF",
+        "DoDAF",
+        "digital engineering",
+        "requirements traceability",
+        "NAVWAR",
+        "PEO C4I"
+      ],
+      "locations": [
+        "San Diego",
+        "Temecula / SoCal hybrid",
+        "Remote US"
+      ],
+      "excludedTitles": [
+        "Intern",
+        "Junior",
+        "Entry level"
+      ]
+    },
+    {
+      "id": "mortgage-lo",
+      "name": "Mortgage origination & VA lending (original board)",
+      "active": true,
+      "priority": "secondary",
+      "titles": [
+        "Senior Mortgage Loan Officer",
+        "VA Loan Specialist",
+        "Branch Manager",
+        "Mortgage Sales Manager"
+      ],
+      "keywords": [
+        "VA loans",
+        "NMLS",
+        "purchase",
+        "refinance",
+        "referral partners"
+      ],
+      "locations": [
+        "San Diego County",
+        "Temecula / Murrieta",
+        "Remote US"
+      ],
+      "excludedTitles": []
+    },
+    {
+      "id": "navwar-pss",
+      "name": "NAVWAR program support (PSS / APM)",
+      "active": true,
+      "priority": "primary",
+      "titles": [
+        "Assistant Program Manager Support",
+        "Senior Program Management Analyst",
+        "Program Analyst",
+        "Acquisition Analyst",
+        "Financial / Budget Analyst (PPBE)",
+        "Deputy Program Manager",
+        "Program Management Specialist",
+        "Integrated Master Scheduler"
+      ],
+      "keywords": [
+        "NAVWAR",
+        "PEO C4I",
+        "PEO Digital",
+        "NIWC Pacific",
+        "PMW",
+        "PSS",
+        "SETA",
+        "APB",
+        "POM",
+        "PPBE",
+        "spend plan",
+        "IMS",
+        "TS/SCI"
+      ],
+      "locations": [
+        "San Diego",
+        "Temecula / SoCal hybrid",
+        "Remote US"
+      ],
+      "excludedTitles": [
+        "Engineer",
+        "Developer"
+      ]
+    },
+    {
+      "id": "re-mortgage-tech",
+      "name": "Real-estate & mortgage tech leadership",
+      "active": true,
+      "priority": "secondary",
+      "titles": [
+        "Director of Mortgage Operations",
+        "VP Mortgage",
+        "Implementation Manager",
+        "Head of Lending Ops"
+      ],
+      "keywords": [
+        "mortgage operations",
+        "LOS",
+        "NMLS",
+        "VA loans",
+        "fintech",
+        "implementation"
+      ],
+      "locations": [
+        "Remote US",
+        "SoCal"
+      ],
+      "excludedTitles": [
+        "Loan Officer I"
+      ]
+    }
+  ]
+}
