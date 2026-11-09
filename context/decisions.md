@@ -847,7 +847,7 @@ through Apple Health and the same export file once Steven switches the nutrition
 - **Request (Steven, verbatim).** *"ensure all ai agents are using opus 5.5 and vanessa use fable 5.1. ensure ai org chart are
   up to date in both vommand desk, broker dashboard and loan dashboard. ensure they are linked to work as cross functional teams"*.
 - **Decision.** The Sonnet 5 tier is retired: reports, benches, desk seats and the web-research seat move to Opus 5.5
-  (89 roster rows); the eight executives stay on Opus 5.5; Vanessa runs on Fable 5.1 (agent file `model: claude-fable-5-1`).
+  (89 roster rows); the eight executives stay on Opus 5.5; Vanessa runs on Claude Fable 5.1 masterminds (agent file `model: claude-fable-5-1`).
   The local PII tier (Bonsai 27B, Mac only) is unchanged: it is a privacy boundary, not a seat. CLAUDE.md tiering table,
   `brain/agentfiles.py`, `brain/agentos.py`, the roster and the generated agent files follow.
 - **Org chart.** The Command Deck, the Broker Command Center and the Loan Dashboard carry the same chart: Steven at the top;
