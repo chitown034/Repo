@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-09T14:56:40Z",
+ "generated": "2026-11-09T15:20:10Z",
  "seats": [
   {
    "name": "Steve",
@@ -536,7 +536,14 @@
    "transfer tax",
    "sales tax",
    "zip code",
-   "area brief"
+   "area brief community 411",
+   "temecula",
+   "murrieta",
+   "menifee",
+   "winchester",
+   "french valley",
+   "master plan",
+   "san diego communities"
   ],
   "Rosa": [
    "pcs",
@@ -854,7 +861,9 @@
    "builder",
    "new build",
    "builder incentive",
-   "model home"
+   "model home new development",
+   "new homes in",
+   "builder co-op"
   ],
   "Lorenzo": [
    "investor",
