@@ -1,0 +1,2 @@
+linkedin-scraper>=3.1.2
+playwright>=1.40
