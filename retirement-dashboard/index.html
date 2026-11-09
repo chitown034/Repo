@@ -261,6 +261,7 @@ tr.hl td{background:var(--accent-soft)}
       <a href="#wealth">Wealth &amp; family office</a>
       <a href="#portfolio">Portfolio &amp; dividends</a>
       <a href="#rentals">Rental properties</a>
+      <a href="#business">Business exit</a>
       <a href="#healthcare">Medicare &amp; healthcare</a>
       <a href="#social-security">Social Security</a>
       <a href="#pension">Pension</a>
@@ -269,6 +270,7 @@ tr.hl td{background:var(--accent-soft)}
       <a href="#taxes">Taxes &amp; strategy</a>
       <a href="#insurance">Insurance</a>
       <a href="#benefits">Disability &amp; VA benefits</a>
+      <a href="#military">Military: stay or go</a>
       <a href="#investing">Investing &amp; risk</a>
       <a href="#leak">Spending leak</a>
       <a href="#tools">Tools &amp; checklists</a>
@@ -797,6 +799,97 @@ tr.hl td{background:var(--accent-soft)}
         <div class="card-head"><h3>Annual review &amp; estate checklist</h3><p id="ckProg"></p></div>
         <div class="goal-bar" style="margin-bottom:12px"><i id="ckBar" style="background:var(--good)"></i></div>
         <div class="cat-grid" id="ckList"></div>
+      </div>
+    </section>
+
+    <!-- BUSINESS EXIT -->
+    <section class="view" id="v-business" aria-labelledby="h-bz">
+      <div class="view-head"><div><span class="eyebrow">Business owners</span><h2 id="h-bz">Business value &amp; exit strategy</h2></div>
+        <p>What your company is worth, how to raise that value before you sell, and eight ways to exit compared after taxes, fees and timing, with the proceeds measured against what your retirement needs.</p></div>
+      <div class="card">
+        <div class="inline-fields">
+          <div class="field w"><label for="bzInd">Industry</label><select id="bzInd" data-k="bzInd"></select></div>
+          <div class="field"><label for="bzEntity">Entity</label><select id="bzEntity" data-k="bzEntity"><option value="s">S-corp</option><option value="llc">LLC / partnership</option><option value="c">C-corp</option></select></div>
+          <div class="field"><label for="bzRev">Revenue $</label><input type="number" id="bzRev" data-k="bzRev" step="50000"></div>
+          <div class="field"><label for="bzEbitda">EBITDA / owner earnings $</label><input type="number" id="bzEbitda" data-k="bzEbitda" step="10000"></div>
+          <div class="field"><label for="bzMult">Multiple (blank = estimate)</label><input type="number" id="bzMult" data-k="bzMult" step="0.25" placeholder="auto"></div>
+          <div class="field"><label for="bzGrowth">Earnings growth %/yr</label><input type="number" id="bzGrowth" data-k="bzGrowth" step="0.5"></div>
+          <div class="field"><label for="bzYears">Years until exit</label><input type="number" id="bzYears" data-k="bzYears" min="0" max="30"></div>
+          <div class="field"><label for="bzBasis">Your tax basis $</label><input type="number" id="bzBasis" data-k="bzBasis" step="10000"></div>
+          <div class="field"><label for="bzFees">Banker &amp; legal fees %</label><input type="number" id="bzFees" data-k="bzFees" step="0.5"></div>
+          <div class="field"><label for="bzDisc">Discount rate %</label><input type="number" id="bzDisc" data-k="bzDisc" step="0.5"></div>
+          <div class="field w"><label for="bzPlan">Exit path used in my plan</label><select id="bzPlan" data-k="bzPlan"><option value="sale">Third-party sale</option><option value="recap">Private-equity recap</option><option value="mbo">Management buyout</option><option value="esop">ESOP</option><option value="qsbs">QSBS sale</option><option value="family">Family transfer</option><option value="crt">CRT + sale</option><option value="liq">Liquidation</option></select></div>
+          <label class="check" style="width:auto"><input type="checkbox" id="bzOn" data-k="bzOn"> I own this business: include it in my net worth and the sale proceeds in my plan</label>
+        </div>
+      </div>
+      <div class="kpis" id="bzKpis"></div>
+      <div class="grid g-side">
+        <div class="card"><div class="card-head"><h3>Exit options, after tax</h3><p id="bzNote"></p></div><div class="chart lg"><canvas id="chBzOpts"></canvas></div></div>
+        <div class="card"><div class="card-head"><h3>Value drivers</h3><p>Each one moves the multiple buyers pay.</p></div><div id="bzDrivers" class="flow"></div><div class="insights" id="bzDrvOut" style="margin-top:12px"></div></div>
+      </div>
+      <div class="card"><div class="card-head"><h3>Every exit path compared</h3></div><div class="tbl-wrap"><table id="bzTable"></table></div></div>
+      <div class="grid g2">
+        <div class="card"><div class="card-head"><h3>Value growth to exit</h3><p>Today's readiness vs. fixing every value driver.</p></div><div class="chart"><canvas id="chBzVal"></canvas></div></div>
+        <div class="card"><div class="card-head"><h3>Your number: does the exit fund retirement?</h3></div><div class="big-callout" id="bzGap"></div><div class="insights" id="bzGapOut" style="margin-top:12px"></div></div>
+      </div>
+      <div class="card"><div class="card-head"><h3>Exit planning timeline</h3></div><div class="timeline" id="bzTimeline"></div></div>
+    </section>
+
+    <!-- MILITARY -->
+    <section class="view" id="v-military" aria-labelledby="h-mv">
+      <div class="view-head"><div><span class="eyebrow">Service members at 20 years</span><h2 id="h-mv">Stay in or retire? The true cost of serving past 20</h2></div>
+        <p>Every year you stay past 20 you give up a retirement check you've already earned and a civilian paycheck, in exchange for military pay, tax-free allowances and a bigger pension for life. This compares both paths year by year, with VA disability, concurrent receipt, SBP, TRICARE and taxes.</p></div>
+      <div class="card">
+        <div class="inline-fields">
+          <div class="field"><label for="mvAge">Your age now</label><input type="number" id="mvAge" data-k="mvAge"></div>
+          <div class="field"><label for="mvYos">Years of service now</label><input type="number" id="mvYos" data-k="mvYos" min="20" max="30"></div>
+          <div class="field"><label for="mvStay">Extra years if you stay</label><input type="range" id="mvStay" data-k="mvStay" min="1" max="10"><span class="small muted" id="mvStayLbl"></span></div>
+          <div class="field w"><label for="mvSys">Retirement system</label><select id="mvSys" data-k="mvSys"><option value="high3">High-3 (2.5% per year)</option><option value="brs">Blended Retirement System (2.0% + 5% TSP match)</option></select></div>
+          <div class="field"><label for="mvBase">Base pay $/mo</label><input type="number" id="mvBase" data-k="mvBase" step="50"></div>
+          <div class="field"><label for="mvRaise">Real pay raise %/yr</label><input type="number" id="mvRaise" data-k="mvRaise" step="0.25"></div>
+          <div class="field"><label for="mvBah">BAH $/mo (tax-free)</label><input type="number" id="mvBah" data-k="mvBah" step="50"></div>
+          <div class="field"><label for="mvBas">BAS $/mo (tax-free)</label><input type="number" id="mvBas" data-k="mvBas" step="5"></div>
+          <div class="field"><label for="mvSpecial">Special &amp; incentive pays $/mo (flight, sea, SDAP, HDP)</label><input type="number" id="mvSpecial" data-k="mvSpecial" step="25"></div>
+          <div class="field"><label for="mvBonus">Retention bonus for staying $ (total)</label><input type="number" id="mvBonus" data-k="mvBonus" step="1000"></div>
+          <div class="field"><label for="mvOtherFree">Other tax-free allowances $/mo (OCONUS COLA, FSA)</label><input type="number" id="mvOtherFree" data-k="mvOtherFree" step="25"></div>
+          <div class="field"><label for="mvClothing">Clothing allowance $/yr</label><input type="number" id="mvClothing" data-k="mvClothing" step="50"></div>
+          <div class="field"><label for="mvComm">Commissary/exchange savings $/yr</label><input type="number" id="mvComm" data-k="mvComm" step="100"></div>
+          <div class="field"><label for="mvCz">Combat-zone months per year (tax-free)</label><input type="number" id="mvCz" data-k="mvCz" min="0" max="12"></div>
+          <div class="field"><label for="mvCiv">Civilian salary $/yr</label><input type="number" id="mvCiv" data-k="mvCiv" step="1000"></div>
+          <div class="field"><label for="mvCivG">Civilian real raise %/yr</label><input type="number" id="mvCivG" data-k="mvCivG" step="0.25"></div>
+          <div class="field"><label for="mvCivMatch">Civilian 401(k) match %</label><input type="number" id="mvCivMatch" data-k="mvCivMatch" step="0.5"></div>
+          <div class="field"><label for="mvCivRet">Stop civilian work at</label><input type="number" id="mvCivRet" data-k="mvCivRet"></div>
+          <div class="field"><label for="mvRating">VA rating if you retire now %</label><input type="number" id="mvRating" data-k="mvRating" step="10" min="0" max="100"></div>
+          <div class="field"><label for="mvRatingStay">VA rating if you stay %</label><input type="number" id="mvRatingStay" data-k="mvRatingStay" step="10" min="0" max="100"></div>
+          <div class="field"><label for="mvDeps">VA dependents</label><select id="mvDeps" data-k="mvDeps"><option value="alone">Veteran alone</option><option value="s">Spouse</option><option value="sc">Spouse + 1 child</option><option value="sc2">Spouse + 2 children</option></select></div>
+          <div class="field"><label for="mvTri">TRICARE retiree cost $/yr</label><input type="number" id="mvTri" data-k="mvTri" step="10"></div>
+          <div class="field"><label for="mvDisc">Discount rate % (real)</label><input type="number" id="mvDisc" data-k="mvDisc" step="0.5"></div>
+          <div class="field"><label for="mvTo">Compare through age</label><input type="number" id="mvTo" data-k="mvTo"></div>
+          <label class="check" style="width:auto"><input type="checkbox" id="mvSbp" data-k="mvSbp"> Elect Survivor Benefit Plan (6.5%)</label>
+          <label class="check" style="width:auto"><input type="checkbox" id="mvCombat" data-k="mvCombat"> Combat-related disability (CRSC)</label>
+        </div>
+      </div>
+      <div class="big-callout" id="mvCallout"></div>
+      <div class="kpis" id="mvKpis"></div>
+      <div class="card">
+        <div class="card-head"><h3>High-3 vs. Blended Retirement System (BRS)</h3><p>Same career, both systems. BRS trades a smaller pension (2.0% vs 2.5% per year) for TSP matching, continuation pay and a lump-sum option.</p></div>
+        <div class="inline-fields"><div class="field"><label for="mvBrsYears">Years of BRS matching so far</label><input type="number" id="mvBrsYears" data-k="mvBrsYears" min="0" max="30"></div><div class="field"><label for="mvCP">Continuation pay (× monthly base)</label><input type="number" id="mvCP" data-k="mvCP" step="0.5" min="2.5" max="13"></div><div class="field"><label for="mvTspRet">TSP real return %</label><input type="number" id="mvTspRet" data-k="mvTspRet" step="0.5"></div></div>
+        <div class="grid g2" style="margin-top:12px"><div class="chart"><canvas id="chMvSys"></canvas></div><div class="chart"><canvas id="chMvSysVal"></canvas></div></div>
+        <div class="tbl-wrap" style="margin-top:12px"><table id="mvSysTable"></table></div>
+        <div class="insights" id="mvSysOut" style="margin-top:12px"></div>
+      </div>
+      <div class="grid g-side">
+        <div class="card"><div class="card-head"><h3>Full military compensation: every pay counted</h3><p>First year of staying, today's dollars. Retired pay is figured on base pay only.</p></div><div class="chart"><canvas id="chMvComp"></canvas></div></div>
+        <div class="card"><div class="card-head"><h3>Pay line by line</h3></div><div class="tbl-wrap"><table id="mvComp"></table></div><div class="insights" id="mvCompOut" style="margin-top:10px"></div></div>
+      </div>
+      <div class="card"><div class="card-head"><h3>After-tax income each year: retire now vs. stay</h3><p>Today's dollars. The dashed line is the running total in favor of staying (right axis).</p></div><div class="chart lg"><canvas id="chMvInc"></canvas></div></div>
+      <div class="grid g2">
+        <div class="card"><div class="card-head"><h3>The true cost of the extra years</h3><p>What you give up and what you gain, in today's dollars.</p></div><div class="chart"><canvas id="chMvCost"></canvas></div></div>
+        <div class="card"><div class="card-head"><h3>Lifetime value by years served</h3><p>Present value of after-tax income for every possible retirement point.</p></div><div class="chart"><canvas id="chMvPv"></canvas></div></div>
+      </div>
+      <div class="grid g-side">
+        <div class="card"><div class="card-head"><h3>Retired pay by years of service</h3></div><div class="tbl-wrap"><table id="mvTable"></table></div></div>
+        <div class="card"><div class="card-head"><h3>What the numbers mean</h3></div><div class="insights" id="mvOut"></div></div>
       </div>
     </section>
 
@@ -1903,6 +1996,110 @@ const STATE_EXTRA = { // property tax effective rate approximations, estate tax 
   none:{prop:.0095, n:'No income tax'}, IL:{prop:.021}, PA:{prop:.014}, MS:{prop:.0075}, IA:{prop:.015}, GA:{prop:.009}, NY:{prop:.017}, NC:{prop:.0082}, AZ:{prop:.0062}, CO:{prop:.0055}, MI:{prop:.0138}, NJ:{prop:.0247}, CA:{prop:.0075}, MN:{prop:.011}, custom:{prop:.011}
 };
 
+/* ---------- Business exit & military stay-or-go ---------- */
+Object.assign(DEFAULTS, {
+  bzOn:false, bzPlan:'sale', bzInd:'services', bzEntity:'s', bzRev:3000000, bzEbitda:600000, bzMult:'', bzGrowth:6, bzYears:5, bzBasis:250000, bzFees:5, bzDisc:8,
+  bzR:{ owner:false, recur:true, conc:true, books:false, mgmt:false, sop:false, growth:true },
+  mvAge:38, mvYos:20, mvStay:6, mvSys:'high3', mvBase:6130, mvRaise:0.5, mvBah:2300, mvBas:476, mvCiv:85000, mvCivG:1.0, mvCivMatch:4, mvCivRet:62, mvRating:60, mvRatingStay:60, mvDeps:'sc', mvSbp:true, mvTri:670, mvCivHealth:6500, mvDisc:3, mvTo:85, mvCombat:false, mvSpecial:375, mvBonus:0, mvClothing:600, mvOtherFree:0, mvComm:1500, mvCz:0, mvBrsYears:8, mvCP:2.5, mvTspRet:5
+});
+const BZ_IND = { services:['Business services', 4.5], trades:['Construction & trades', 4], mfg:['Manufacturing', 5.5], dist:['Distribution', 5], health:['Healthcare services', 7], saas:['Software / SaaS', 9], prof:['Professional services (CPA, insurance agency)', 6], rest:['Restaurants', 3], ecom:['E-commerce', 4], trans:['Transportation & logistics', 4.5], rebrok:['Real estate brokerage', 4], mtg:['Mortgage brokerage', 3.5] };
+const BZ_DRIVERS = [['owner','Runs without the owner for 30+ days',.5], ['recur','50%+ recurring or contracted revenue',.5], ['conc','No customer over 15% of revenue',.35], ['books','Reviewed/audited financials, clean add-backs',.4], ['mgmt','Second-in-command and management team in place',.5], ['sop','Documented systems & processes',.25], ['growth','3+ years of growth',.35]];
+function bizCalc(s){
+  const base = (BZ_IND[s.bzInd] || BZ_IND.services)[1];
+  const drv = BZ_DRIVERS.reduce((a, d) => a + ((s.bzR || {})[d[0]] ? d[2] : -d[2]*.4), 0);
+  const mult = +s.bzMult || Math.max(1.5, base + drv*.6);
+  const n = Math.max(0, +s.bzYears), infl = (s.infl ?? 2.5)/100, dr = s.bzDisc/100;
+  const ebitdaX = s.bzEbitda*Math.pow(1 + s.bzGrowth/100, n);
+  const V = ebitdaX*mult, Vnow = s.bzEbitda*mult, deflate = Math.pow(1 + infl, n);
+  const st = s.state === 'custom' ? s.stateRate/100 : ((STATES[s.state]||{}).rate || 0);
+  const ltcg = .20 + .038 + st, ord = .37 + st, basis = +s.bzBasis, fee = s.bzFees/100;
+  const pv = (amt, t) => amt/Math.pow(1 + dr, t);
+  const taxSale = (price, ordShare) => { const gain = Math.max(0, price*(1 - fee) - basis); return gain*ordShare*ord + gain*(1 - ordShare)*ltcg; };
+  const ordShare = s.bzEntity === 'c' ? 0 : .2;
+  const opts = [];
+  // 1 third-party sale
+  { const tax = taxSale(V, ordShare), fees = V*fee; opts.push({ k:'sale', n:'Sale to a strategic buyer or private equity', gross:V, tax, fees, net:V - tax - fees, later:0, pv:V - tax - fees, ctrl:'Exit fully; 6–24 months of transition, earnouts and escrow common', risk:'Medium', note: s.bzEntity === 'c' ? 'C-corp stock sale: all long-term capital gain (buyers prefer asset deals).' : 'Pass-through asset sale: about 20% of the gain (equipment recapture, non-competes) taxed as ordinary income.' }); }
+  // 2 PE recap with rollover
+  { const now = V*.65, roll = V*.35, second = roll*Math.pow(1.6, 1); const taxNow = taxSale(now, ordShare)*.95, fees = now*fee; const tax2 = Math.max(0, second - basis*.35)*ltcg;
+    opts.push({ k:'recap', n:'Private-equity recap (65% now, 35% rolled)', gross: now + second, tax: taxNow + tax2, fees: fees + second*fee, net: now - taxNow - fees, later: second - tax2 - second*fee, pv: now - taxNow - fees + pv(second - tax2 - second*fee, 5), ctrl:'Stay on as minority owner/CEO for ~5 years; "second bite" when the fund exits', risk:'Medium-high', note:'Rollover equity is tax-deferred. The second sale assumes the fund grows value 60% in 5 years.' }); }
+  // 3 MBO / installment
+  { const price = V*.85, down = price*.25, note = price - down, yrs = 7, r = .07; const pmt = note*r/(1 - Math.pow(1+r, -yrs)); const gainFrac = Math.max(0, price*(1 - fee) - basis)/price;
+    let pvSum = down*(1 - gainFrac*ltcg) - price*fee, nom = down - price*fee, tax = down*gainFrac*ltcg; let bal = note;
+    for (let t = 1; t <= yrs; t++){ const int = bal*r, prin = pmt - int; bal -= prin; const tx = int*ord + prin*gainFrac*ltcg; tax += tx; nom += pmt - tx; pvSum += pv(pmt - tx, t); }
+    opts.push({ k:'mbo', n:'Management buyout with seller financing', gross: price + pmt*yrs - note, tax, fees: price*fee, net: down - down*gainFrac*ltcg - price*fee, later: nom - (down - down*gainFrac*ltcg - price*fee), pv: pvSum, ctrl:'Legacy and employees protected; you act as the bank for 7 years', risk:'High (buyer credit)', note:'Installment sale spreads the gain over the payments, smoothing brackets; interest is ordinary income.' }); }
+  // 4 ESOP
+  { const price = V*.95, cash = price*.5, note = price - cash; const c = s.bzEntity === 'c'; const tax = c ? 0 : taxSale(price, ordShare); const fees = price*.03;
+    const notePv = [1,2,3,4,5,6,7].reduce((a, t) => a + pv(note/7*(1.06), t), 0);
+    opts.push({ k:'esop', n: c ? 'ESOP sale with §1042 rollover' : 'ESOP sale (S-corp ESOP)', gross: price + note*.06*4, tax, fees, net: cash - fees - tax*.5, later: note*1.24 - tax*.5, pv: cash - fees - tax*.5 + notePv - tax*.5*.7, ctrl:'Employees own the company; you can stay and keep control during the note', risk:'Medium', note: c ? 'C-corp owners selling 30%+ to an ESOP can defer all gain by reinvesting in U.S. operating-company securities (QRP); held until death, the gain is never taxed.' : 'An S-corp owned 100% by an ESOP pays no federal income tax, which helps it repay your note.' }); }
+  // 5 QSBS
+  { const c = s.bzEntity === 'c'; const excl = c ? Math.max(15e6, basis*10) : 0; const gain = Math.max(0, V*(1 - fee) - basis); const tax = c ? Math.max(0, gain - excl)*ltcg + (s.state === 'CA' ? Math.min(gain, excl)*st : 0) : taxSale(V, ordShare); const fees = V*fee;
+    opts.push({ k:'qsbs', n:'C-corp stock sale with QSBS (§1202) exclusion', gross:V, tax, fees, net:V - tax - fees, later:0, pv:V - tax - fees, ctrl:'Same as a sale', risk: c ? 'Low tax risk if qualified' : 'Not available today', note: c ? `Up to ${fmtK(excl)} of gain excluded (stock issued after July 4, 2025: 50% after 3 years, 75% after 4, 100% after 5). Gifting shares to non-grantor trusts can multiply the cap.` : 'Requires an original-issue C-corp held 3–5+ years. Converting now starts the clock; most service businesses (law, health, consulting) do not qualify.' }); }
+  // 6 Family / IDGT
+  { const discV = V*.7, yrs = 9, r = .043, pmt = discV*r/(1 - Math.pow(1+r, -yrs)); const pvP = [...Array(yrs)].reduce((a, _, t) => a + pv(pmt, t+1), 0);
+    const estSaved = Math.max(0, (V - discV) + V*.5)*.40*(V > 15e6 ? 1 : 0) + ((s.state === 'IL' && V > 4e6) ? (V - discV)*.12 : 0);
+    opts.push({ k:'family', n:'Transfer to family (sale to an IDGT)', gross: pmt*yrs, tax: 0, fees: 25000, net: -25000, later: pmt*yrs, pv: pvP - 25000, ctrl:'Business stays in the family; heirs run it', risk:'Medium (family readiness)', note:`Sold at a ~30% valuation discount for a 9-year note at the IRS rate; no income tax because the grantor trust is "you" for tax purposes. Future growth leaves your estate${estSaved ? `, saving about ${fmtK(estSaved)} of estate tax` : ''}.` }); }
+  // 7 CRT pre-sale
+  { const half = V*.5; const tax = taxSale(half, ordShare), fees = V*fee; const income = half*(1 - fee)*.06; const yrs = 25; const pvInc = [...Array(yrs)].reduce((a, _, t) => a + pv(income*(1 - ord*.7), t+1), 0); const ded = half*.3*Math.min(ord, .3*1);
+    opts.push({ k:'crt', n:'Half into a charitable remainder trust before the sale', gross: V, tax, fees, net: half - tax - fees + ded, later: income*yrs, pv: half - tax - fees + ded + pvInc, ctrl:'Same as a sale; trust pays you 6% a year for life, remainder to charity', risk:'Low', note:'Transfer must happen before a signed letter of intent. The trust sells tax-free and reinvests; you get a partial deduction now.' }); }
+  // 8 Liquidation
+  { const g = s.bzEbitda*1.2*Math.pow(1 + s.bzGrowth/100, n); const tax = Math.max(0, g - basis)*.3; opts.push({ k:'liq', n:'Close and liquidate assets', gross:g, tax, fees:g*.05, net:g - tax - g*.05, later:0, pv:g - tax - g*.05, ctrl:'Fast, total exit; employees and customers lost', risk:'Low price', note:'Only equipment, receivables and inventory are sold; goodwill disappears.' }); }
+  opts.forEach(o => { o.pvToday = o.pv/deflate; o.netToday = o.net/deflate; });
+  const best = opts.slice().sort((a, b) => b.pv - a.pv)[0];
+  const chosen = opts.find(o => o.k === s.bzPlan) || opts[0];
+  return { mult, base, drv, V, Vnow, ebitdaX, n, opts, best, chosen, exitAge: ageOn(s.birth) + n, deflate, planNet: (chosen.net + (chosen.later > 0 ? chosen.later*.6 : 0))/deflate };
+}
+function bizNow(){ return (typeof S !== 'undefined' && S.bzOn) ? (+S.bzEbitda)*bizCalc(S).mult : +((typeof S !== 'undefined' && S.wBiz) || 0); }
+function milCalc(s, stay){
+  const st = s.state === 'custom' ? s.stateRate/100 : ((STATES[s.state]||{}).rate || 0);
+  const exemptMil = !!(STATES[s.state]||{}).retExempt;
+  const fil = s.filing === 'mfj' ? 'mfj' : 'single';
+  const deps = { alone:{vaSpouse:false, vaKids:0}, s:{vaSpouse:true, vaKids:0}, sc:{vaSpouse:true, vaKids:1}, sc2:{vaSpouse:true, vaKids:2} }[s.mvDeps] || {};
+  const sVa = Object.assign({}, s, { vaSchool:0, vaParents:0, vaSmck:0, vaTdiu:false, vaSpouseAA:false }, deps);
+  const rating = stay > 0 ? +s.mvRatingStay : +s.mvRating;
+  const va = vaMonthly(sVa, Math.round(rating/10)*10)*12;
+  const yos = +s.mvYos + stay, sepAge = +s.mvAge + stay;
+  const mult = s.mvSys === 'brs' ? Math.min(.6, .02*yos) : Math.min(.75, .025*yos);
+  const high3 = s.mvBase*12*Math.pow(1 + s.mvRaise/100, Math.max(0, stay - 1));
+  let ret = high3*mult*(s.mvSbp ? .935 : 1);
+  const concurrent = rating >= 50 || s.mvCombat;
+  const retTaxable = concurrent ? ret : Math.max(0, ret - va);
+  const rows = [];
+  for (let a = +s.mvAge; a <= +s.mvTo; a++){
+    const k = a - s.mvAge; let mil = 0, allow = 0, civ = 0, rp = 0, vaY = 0, match = 0, health = 0;
+    let special = 0, perks = 0, milTax = 0;
+    if (a < sepAge){ const g = Math.pow(1 + s.mvRaise/100, k); const base = s.mvBase*12*g; special = (+s.mvSpecial || 0)*12*g + (stay > 0 ? (+s.mvBonus || 0)/stay : 0); mil = base + special;
+      allow = ((+s.mvBah || 0) + (+s.mvBas || 0) + (+s.mvOtherFree || 0))*12*g + (+s.mvClothing || 0); perks = +s.mvComm || 0; match = s.mvSys === 'brs' ? base*.05 : 0; milTax = mil*(1 - clamp(+s.mvCz || 0, 0, 12)/12); }
+    else { rp = retTaxable; vaY = va; health = s.mvTri; if (a < s.mvCivRet){ civ = s.mvCiv*Math.pow(1 + s.mvCivG/100, k); match = civ*s.mvCivMatch/100; } }
+    const t = calcTax({ ordinary: (a < sepAge ? milTax : 0) + civ + rp, retInc: rp + (exemptMil ? (a < sepAge ? milTax : 0) : 0), ltcg:0, ss:0, year: BASE_YEAR, ages:[Math.min(a, 64)], fil, s, idx:1 });
+    const fica = (mil + civ)*.0765;
+    const gross = mil + allow + perks + civ + rp + vaY + match;
+    const net = gross - t.fed - t.state - fica - health;
+    rows.push({ a, mil, special, allow, perks, civ, rp, va: vaY, match, health, tax: t.fed + t.state + fica, net });
+  }
+  const dr = s.mvDisc/100;
+  const pv = rows.reduce((acc, r, i) => acc + r.net/Math.pow(1 + dr, i), 0);
+  return { rows, pv, ret, retMo: ret/12, va, vaMo: va/12, concurrent, mult, yos, sepAge, high3, retTaxable, rating };
+}
+
+function sysCompare(s, stay){
+  const dr = s.mvDisc/100, out = {};
+  const pvStream = (annual, from, to) => { let pv = 0; for (let a = from; a <= to; a++) pv += annual/Math.pow(1 + dr, a - s.mvAge); return pv; };
+  for (const sys of ['high3', 'brs']){
+    const yos = +s.mvYos + stay, sep = +s.mvAge + stay;
+    const mult = sys === 'brs' ? Math.min(.6, .02*yos) : Math.min(.75, .025*yos);
+    const high3 = s.mvBase*12*Math.pow(1 + s.mvRaise/100, Math.max(0, stay - 1));
+    const ret = high3*mult*(s.mvSbp ? .935 : 1);
+    let tsp = 0;
+    if (sys === 'brs'){ const yrsM = Math.min(+s.mvBrsYears + stay, yos); for (let y = 0; y < yrsM; y++){ const base = s.mvBase*12*Math.pow(1.02, -(+s.mvBrsYears - 1 - y)); tsp = (tsp + base*.05)*(1 + s.mvTspRet/100); } }
+    const cp = sys === 'brs' ? +s.mvCP*s.mvBase*Math.pow(1.02, -(+s.mvYos - 12)) : 0;
+    const pvPension = pvStream(ret, sep, +s.mvTo);
+    const to67 = Math.max(0, 67 - sep);
+    const lumpBase = (() => { let pv = 0; const r = .067; for (let t = 0; t < to67; t++) pv += ret/Math.pow(1 + r, t); return pv; })();
+    out[sys] = { sys, yos, mult, ret, retMo: ret/12, tsp: tsp/Math.pow(1 + dr, stay), tspNom: tsp, cp, pvPension, total: pvPension + tsp/Math.pow(1 + dr, stay) + cp, lump25: lumpBase*.25, lump50: lumpBase*.5, to67 };
+  }
+  return out;
+}
+
 /* ---------- Helpers ---------- */
 const $ = (s, r=document) => r.querySelector(s);
 const $$ = (s, r=document) => [...r.querySelectorAll(s)];
@@ -2019,6 +2216,7 @@ function project(s, o={}){
   const an = (s.anInclude && s.anPremium > 0) ? annuityQuote(s, s.retireAge) : null;
   let anPay = 0, anBasisLeft = 0, anExcl = 0, anPay2 = 0;
   let idxAcc = 1, colaAcc = 1, prevRet = 0, spendMult = 1, initRate = null, hecmLoc = o.hecm ? o.hecm.limit : 0, hecmBal = 0, hecmDrawn = 0;
+  const BZ = s.bzOn ? bizCalc(s) : null;
   const DEBTY = (s.debts && s.debts.length) ? debtSchedule(s.debts, s.dbMethod, +s.dbExtra || 0).yearly : null;
   const RPY = (s.rpInclude && s.props && s.props.length) ? rentalPortfolio(s, Math.max(5, s.le - (BASE_YEAR + 1 - by) + 2)).byYear : null;
   const rows = [];
@@ -2036,6 +2234,7 @@ function project(s, o={}){
     const colaF = colaAcc;
     const row = { year, age, spAge, idx, retired, start: B.pre + B.roth + B.hsa + B.tax };
     let evExp = 0, evIn = 0; (s.events || []).forEach(e => { if (age >= +e.age && age < +e.age + Math.max(1, +e.yrs || 1)){ const v = (+e.amt || 0)*idx; if (e.kind === 'inflow') evIn += v; else evExp += v; } });
+    if (BZ && age === BZ.exitAge) evIn += BZ.planNet*idx;
     const debtPay = DEBTY ? (DEBTY[year - BASE_YEAR - 1] || 0) : 0; row.evExp = evExp; row.evIn = evIn; row.debtPay = debtPay;
     // Social Security
     let ss = age >= s.claim ? s.pia*ssF*12*colaF : 0;
@@ -3087,11 +3286,13 @@ function planContext(){
     levers: (LEVERS || []).map(l => ({ lever: l.n, successChangePts: Math.round(l.dSucc*100), legacyChange: Math.round(l.dLeg), taxChange: Math.round(l.dTax) })),
     reverseMortgage: (() => { const h = hecmCalc(S); return { ageAtClosing: h.age, netLine: Math.round(h.net), tenureMonthly: Math.round(h.tenure) }; })(),
     rentals: (S.props || []).map(p => ({ name: p.n, value: p.value, loan: p.loan, rate: p.rate, rentMonthly: p.rent })), lifeEvents: S.events, debts: S.debts, spendingPattern: S.spendShape, partTimeIncome: S.ptIncome, partTimeUntil: S.ptUntil,
-    medicare: { plan: S.mcPlan, includedInPlan: S.hcInclude }, dividendCalc: { amount: S.dvAmt, rate: S.dvRate, method: S.dvMethod } };
+    medicare: { plan: S.mcPlan, includedInPlan: S.hcInclude },
+    business: S.bzOn ? (() => { const b = bizCalc(S); return { industry: S.bzInd, entity: S.bzEntity, ebitda: S.bzEbitda, multiple: +b.mult.toFixed(2), valueAtExit: Math.round(b.V), yearsToExit: b.n, bestExit: b.best.n, bestAfterTaxPV: Math.round(b.best.pv) }; })() : null,
+    military: { age: S.mvAge, yos: S.mvYos, extraYears: S.mvStay, system: S.mvSys, civilianSalary: S.mvCiv, vaRating: S.mvRating, pvStayMinusGo: Math.round(milCalc(S, +S.mvStay).pv - milCalc(S, 0).pv) }, dividendCalc: { amount: S.dvAmt, rate: S.dvRate, method: S.dvMethod } };
   if (WG){ ctx.warGame = COAS.map((c, j) => ({ coa: c.n + ' ' + c.t, description: c.d, funded: WG.res.filter(x => x.r[j].funded).length + '/200', best: WG.res.filter(x => bestIdx(x.r) === j).length })); }
   return JSON.stringify(ctx);
 }
-const ASK_RULES = () => `You are a careful, plain-spoken retirement planning assistant inside a planning dashboard. You are not a licensed advisor; give educational analysis, not personal advice. Use ONLY the plan data below plus well-established U.S. rules (2026 tax law: TCJA brackets made permanent, $6,000 senior deduction 2025-2028, SECURE 2.0). Cite the user's own numbers. Cover tradeoffs and risks, including reverse mortgages, securities-based loans, annuities, Roth conversions, Social Security timing and insurance when relevant. When a dashboard tab can show more, name it (Overview, Family office cockpit, Budget & life events, Wealth & family office, Portfolio & dividends, Rental properties, Medicare & healthcare, Tools & checklists, Social Security, Pension, Annuities, Accounts, Taxes & strategy, Insurance, Disability & VA benefits, Investing & risk, Spending leak, Advisor & war-game). Keep answers under 250 words, use short paragraphs or bullets, no headings. Plan data (JSON): ${planContext()}`;
+const ASK_RULES = () => `You are a careful, plain-spoken retirement planning assistant inside a planning dashboard. You are not a licensed advisor; give educational analysis, not personal advice. Use ONLY the plan data below plus well-established U.S. rules (2026 tax law: TCJA brackets made permanent, $6,000 senior deduction 2025-2028, SECURE 2.0). Cite the user's own numbers. Cover tradeoffs and risks, including reverse mortgages, securities-based loans, annuities, Roth conversions, Social Security timing and insurance when relevant. When a dashboard tab can show more, name it (Overview, Family office cockpit, Budget & life events, Wealth & family office, Portfolio & dividends, Rental properties, Medicare & healthcare, Tools & checklists, Business exit, Military: stay or go, Social Security, Pension, Annuities, Accounts, Taxes & strategy, Insurance, Disability & VA benefits, Investing & risk, Spending leak, Advisor & war-game). Keep answers under 250 words, use short paragraphs or bullets, no headings. Plan data (JSON): ${planContext()}`;
 async function initAsk(){
   if (askInit) return; askInit = true;
   const chips = ['What are my three most important moves?','Should I use a reverse mortgage line of credit?','Is borrowing against my brokerage account smart for me?','How do I protect against a crash right after I retire?','When should my spouse and I claim Social Security?','Which course of action should I choose and why?'];
@@ -3135,7 +3336,7 @@ function renderWealth(){
   const homeEq = Math.max(0, +S.adHome - +S.adMort);
   const items = [
     ['Pre-tax retirement', +S.bPre, c.pre], ['Roth', +S.bRoth, c.roth], ['HSA', +S.bHsa, c.hsa], ['Taxable brokerage & cash', +S.bTax, c.tax],
-    ['Home equity', homeEq, c.pen], ['Rental real estate', rentalEqNow(), c.ann], ['Business', +S.wBiz, c.ss], ['Life insurance cash value', +S.wCV, c.ss2], ['Other', +S.wOther, c.muted]
+    ['Home equity', homeEq, c.pen], ['Rental real estate', rentalEqNow(), c.ann], ['Business', bizNow(), c.ss], ['Life insurance cash value', +S.wCV, c.ss2], ['Other', +S.wOther, c.muted]
   ];
   const nw = items.reduce((a, i) => a + i[1], 0);
   // protection
@@ -3148,7 +3349,7 @@ function renderWealth(){
     ['Taxable brokerage & cash', S.bTax, S.wDAPT ? S.bTax*.15 : S.bTax*(tbe ? .6 : 1)],
     ['Home equity', homeEq, tbe ? 0 : Math.max(0, homeEq - hs)],
     ['Rental real estate', rentalEqNow(), S.wLLC ? S.wRental*.2 : rentalEqNow()],
-    ['Business', +S.wBiz, S.wLLC ? S.wBiz*.3 : +S.wBiz],
+    ['Business', bizNow(), S.wLLC ? S.wBiz*.3 : bizNow()],
     ['Life insurance cash value', +S.wCV, ['IL','FL','TX'].includes(st) ? 0 : S.wCV*.5],
     ['Other', +S.wOther, +S.wOther]
   ].filter(p => p[1] > 0);
@@ -3159,12 +3360,12 @@ function renderWealth(){
   const homeD = +S.adHome*Math.pow(1 + S.adHomeG/100, yrs)/idx;
   const growthR = Math.pow(1 + S.rPost/100, yrs)/idx;
   const lifeDb = S.wILIT ? 0 : +S.niHave;
-  const gross = (L.pre + L.roth + L.hsa + L.taxB)/idx + homeD + rentalEqNow()*growthR + S.wBiz*growthR + S.wOther + lifeDb;
+  const gross = (L.pre + L.roth + L.hsa + L.taxB)/idx + homeD + rentalEqNow()*growthR + bizNow()*growthR + S.wOther + lifeDb;
   const fedEx = 15000000*(mfj ? 2 : 1);
   const fedTax = Math.max(0, gross - fedEx)*.40;
   const se = STATE_ESTATE[st]; const stTax = se ? (se.ex ? Math.max(0, gross - se.ex)*se.r : gross*se.r) : 0;
   const ird = (L.pre + L.hsa)/idx*(S.wHeirRate/100);
-  const probateBase = S.wTrust ? 0 : (homeD*(mfj ? 0 : 1) + L.taxB/idx + rentalEqNow()*growthR + S.wBiz*growthR + S.wOther);
+  const probateBase = S.wTrust ? 0 : (homeD*(mfj ? 0 : 1) + L.taxB/idx + rentalEqNow()*growthR + bizNow()*growthR + S.wOther);
   const probate = probateBase*.04;
   const net = gross - fedTax - stTax - ird - probate;
   kpis('wlKpis', [
@@ -3191,9 +3392,9 @@ function renderWealth(){
   const nodes = [];
   nodes.push(['You' + (mfj ? ' & spouse' : ''), 'Will, durable powers of attorney, health-care directive, HIPAA release', 'root']);
   const kids = [];
-  kids.push(['Revocable living trust', `Holds: ${['home (or TBE/TODI deed)', S.bTax ? 'brokerage' : '', S.wRental || S.wBiz ? 'LLC interests' : '', 'bank accounts'].filter(Boolean).join(', ')}`, S.wTrust ? 'ok' : 'todo']);
+  kids.push(['Revocable living trust', `Holds: ${['home (or TBE/TODI deed)', S.bTax ? 'brokerage' : '', S.wRental || bizNow() ? 'LLC interests' : '', 'bank accounts'].filter(Boolean).join(', ')}`, S.wTrust ? 'ok' : 'todo']);
   if (rentalEqNow() > 0) kids.push(['Rental LLC(s)', 'One property or small group per LLC; owned by the trust; landlord policy + umbrella', S.wLLC ? 'ok' : 'todo']);
-  if (S.wBiz > 0) kids.push(['Operating company (LLC / S-corp)', 'Buy-sell agreement funded with insurance; key-person coverage; succession plan', S.wLLC ? 'ok' : 'todo']);
+  if (bizNow() > 0) kids.push(['Operating company (LLC / S-corp)', 'Buy-sell agreement funded with insurance; key-person coverage; succession plan', S.wLLC ? 'ok' : 'todo']);
   if (S.wRisk === 'high' || nw > 3e6) kids.push(['Family LP or asset-protection trust', 'Holds taxable investments; charging-order protection; valuation discounts for gifting', S.wDAPT ? 'ok' : 'todo']);
   if (S.niHave > 0 || gross > 3e6) kids.push(['ILIT', 'Owns life insurance; proceeds outside the estate; funds estate costs', S.wILIT ? 'ok' : (gross > (se ? se.ex || 4e6 : 12e6) ? 'todo' : 'opt')]);
   kids.push(['Retirement accounts', 'Pass by beneficiary form: spouse primary → standalone retirement trust or heirs contingent; never "estate"', 'ok']);
@@ -3204,7 +3405,7 @@ function renderWealth(){
   $('#wlVehicles').innerHTML = tbl(['Vehicle','Creditor protection','How it passes','Heirs\' tax treatment','Best titling / beneficiary','Wealth strategy'], VEHICLE_WEALTH.map(v => [`<b>${v[0]}</b>`, ...v.slice(1)]));
   $('#wlEntities').innerHTML = tbl(['Entity / trust','Purpose','Creditor protection','Tax treatment','When it fits','Typical cost'], ENTITIES.map(e => [`<b>${e.n}</b>`, e.role, e.prot, e.tax, e.when, e.cost]));
   // family office
-  const complexity = (S.wBiz > 0 ? 1 : 0) + (rentalEqNow() > 0 ? 1 : 0) + (S.wPhil ? 1 : 0) + (+S.wHeirs > 3 ? 1 : 0) + (S.wRisk === 'high' ? 1 : 0);
+  const complexity = (bizNow() > 0 ? 1 : 0) + (rentalEqNow() > 0 ? 1 : 0) + (S.wPhil ? 1 : 0) + (+S.wHeirs > 3 ? 1 : 0) + (S.wRisk === 'high' ? 1 : 0);
   const adjNw = nw*(1 + complexity*.15);
   const fit = FO_MODELS.findIndex(m => adjNw >= m.min && adjNw < m.max);
   chart('chFO', { type:'bar', data:{ labels: FO_MODELS.map(m => m.n), datasets:[ bar('Est. annual cost at your net worth', FO_MODELS.map(m => m.cost(nw)), FO_MODELS.map((_, i) => i === fit ? c.accent : hexA(c.accent,.3))) ] },
@@ -3504,8 +3705,8 @@ function renderCockpit(){
   const ret = rows.filter(r => r.retired);
   const rng = $('#ckAge'); rng.min = ret[0].age; rng.max = ret[ret.length-1].age; S.ckAge = clamp(+S.ckAge || 70, ret[0].age, ret[ret.length-1].age); rng.value = S.ckAge;
   $('#ckAgeLbl').textContent = 'Age ' + S.ckAge;
-  const nwRow = r => { const h = homeAt(r.age); const yrs = r.age - age0; const g = Math.pow(1.03, yrs); return { pre: r.pre, roth: r.roth, tax: r.taxB, hsa: r.hsa, home: Math.max(0, h.home - h.mort - (r.hecmBal || 0)), rental: (S.props && S.props.length) ? (r.rentalEq || 0) : S.wRental*g, biz: S.wBiz*g, other: +S.wOther, cv: +S.wCV*Math.pow(1.04, yrs) }; };
-  const nwNow = S.bPre + S.bRoth + S.bTax + S.bHsa + Math.max(0, S.adHome - S.adMort) + rentalEqNow() + +S.wBiz + +S.wOther + +S.wCV;
+  const nwRow = r => { const h = homeAt(r.age); const yrs = r.age - age0; const g = Math.pow(1.03, yrs); return { pre: r.pre, roth: r.roth, tax: r.taxB, hsa: r.hsa, home: Math.max(0, h.home - h.mort - (r.hecmBal || 0)), rental: (S.props && S.props.length) ? (r.rentalEq || 0) : S.wRental*g, biz: bizNow()*g, other: +S.wOther, cv: +S.wCV*Math.pow(1.04, yrs) }; };
+  const nwNow = S.bPre + S.bRoth + S.bTax + S.bHsa + Math.max(0, S.adHome - S.adMort) + rentalEqNow() + bizNow() + +S.wOther + +S.wCV;
   const lastR = rows[rows.length-1], lastNW = Object.values(nwRow(lastR)).reduce((a, v) => a + v, 0);
   const lifeInc = ret.reduce((a, r) => a + (r.ss + r.ssSp + r.pension + r.annuity + (r.work||0))/r.idx, 0);
   kpis('ckKpis', [
@@ -3518,7 +3719,7 @@ function renderCockpit(){
   ]);
   const NW = rows.map(r => ({ r, v: nwRow(r) }));
   const ser = (k) => NW.map(x => ({ x: x.r.age, y: dv(x.v[k], x.r) }));
-  chart('chNW', { type:'line', data:{ datasets:[ area('Pre-tax', ser('pre'), c.pre), area('Roth', ser('roth'), c.roth), area('Taxable', ser('tax'), c.tax), area('HSA', ser('hsa'), c.hsa), area('Home equity', ser('home'), c.pen), ...(rentalEqNow() ? [area('Rental real estate', ser('rental'), c.ann)] : []), ...(S.wBiz ? [area('Business', ser('biz'), c.ss)] : []), ...(+S.wCV ? [area('Policy cash value', ser('cv'), c.ss2)] : []), area('Other', ser('other'), c.muted) ] },
+  chart('chNW', { type:'line', data:{ datasets:[ area('Pre-tax', ser('pre'), c.pre), area('Roth', ser('roth'), c.roth), area('Taxable', ser('tax'), c.tax), area('HSA', ser('hsa'), c.hsa), area('Home equity', ser('home'), c.pen), ...(rentalEqNow() ? [area('Rental real estate', ser('rental'), c.ann)] : []), ...(bizNow() ? [area('Business', ser('biz'), c.ss)] : []), ...(+S.wCV ? [area('Policy cash value', ser('cv'), c.ss2)] : []), area('Other', ser('other'), c.muted) ] },
     options: baseOpts({ stacked:true, x:{min:rows[0].age, max:lastR.age}, xTitle:'Age', vlines:[{x:S.retireAge, label:'Retire', color:c.ink}] }) });
   // sankey
   const r = ret.find(x => x.age === +S.ckAge) || ret[0];
@@ -3537,7 +3738,7 @@ function renderCockpit(){
   const preShare = S.bPre/Math.max(1, S.bPre + S.bRoth + S.bTax + S.bHsa);
   const liq = (S.bTax + S.bRoth*.3)/Math.max(1, S.spend);
   const need = S.niDebt + S.salary*S.niYears + S.niMort + S.niEdu + S.niFinal - S.niHave - S.bTax*.5;
-  const hs = HOMESTEAD[S.state] ?? 50000; const expo = (S.wDAPT ? .15 : 1)*S.bTax + (S.wLLC ? .2 : 1)*(rentalEqNow() + +S.wBiz) + Math.max(0, S.adHome - S.adMort - hs);
+  const hs = HOMESTEAD[S.state] ?? 50000; const expo = (S.wDAPT ? .15 : 1)*S.bTax + (S.wLLC ? .2 : 1)*(rentalEqNow() + bizNow()) + Math.max(0, S.adHome - S.adMort - hs);
   const R = [
     ['Longevity', p100.depleted ? clamp((101 - p100.depleted.age)*6, 30, 100) : 10, p100.depleted ? `Money runs short at ${p100.depleted.age} if you live to 100.` : 'Funded to 100.', 'Delay Social Security, add a QLAC or income annuity.'],
     ['Market & sequence', clamp((1 - MC.success)*250, 5, 100), `${pct(MC.success,0)} of simulations funded.`, 'Bond tent, cash bucket, guardrails, HECM standby line.'],
@@ -3868,6 +4069,116 @@ function scenSnapshot(name){
     k: { retire: S.retireAge, claim: S.claim, spend: +S.spend, succ: MC.success, nest: rr.start/rr.idx, lasts: PLAN.depleted ? 'Age ' + PLAN.depleted.age : 'Past ' + S.le, tax: PLAN.lifeTaxReal, legacy: legacyOf(S, PLAN) } };
 }
 
+/* ---------- BUSINESS EXIT ---------- */
+function renderBusiness(){
+  const c = COL(), age0 = ageOn(S.birth);
+  const ind = $('#bzInd'); if (!ind.options.length) Object.entries(BZ_IND).forEach(([k, v]) => ind.add(new Option(`${v[0]} (~${v[1]}×)`, k))); ind.value = S.bzInd;
+  const B = bizCalc(S); const opts = B.opts.slice().sort((a, b) => b.pv - a.pv);
+  kpis('bzKpis', [
+    { l:'Value today', v: B.Vnow, s: `${B.mult.toFixed(2)}× EBITDA of ${fmtK(+S.bzEbitda)}` },
+    { l:`Value at exit (${new Date().getFullYear() + B.n})`, v: B.V, s: `${fmtK(B.V/B.deflate)} in today's dollars` },
+    { l:'Best path after tax (PV)', v: B.best.pv, s: B.best.n },
+    { l:'Taxes on a straight sale', v: B.opts[0].tax, s: `${pct(B.opts[0].tax/Math.max(1, B.V),0)} of the price` },
+    { l:'Multiple vs. industry', text: `${B.mult.toFixed(2)}× vs ${B.base}×`, s: B.drv >= 0 ? 'Value drivers add to the multiple' : 'Weak drivers cut the multiple', pill: B.drv >= 0 ? ['good','Premium'] : ['warn','Discount'] }
+  ]);
+  $('#bzNote').textContent = `Exit in ${B.n} years at age ${B.exitAge}. Bars show cash at closing plus later payments, discounted at ${S.bzDisc}%.`;
+  chart('chBzOpts', { type:'bar', data:{ labels: opts.map(o => o.n), datasets:[ bar('After-tax value (PV)', opts.map(o => o.pv), opts.map(o => o.k === B.best.k ? c.good : o.k === S.bzPlan ? c.accent : hexA(c.pre,.65))), bar('Taxes', opts.map(o => o.tax), hexA(c.bad,.6)), bar('Fees & costs', opts.map(o => o.fees), hexA(c.warn,.6)) ] },
+    options: (() => { const o = baseOpts({ xType:'category', stacked:true }); o.indexAxis = 'y'; o.scales.y = { type:'category', stacked:true, grid:{display:false}, ticks:{color:c.muted, font:{size:11}} }; o.scales.x = { stacked:true, grid:{color:c.grid}, ticks:{color:c.muted, callback: v => fmtK(v)} }; o.interaction = {mode:'index', axis:'y', intersect:false}; o.plugins.tooltip.callbacks.label = ctx => `${ctx.dataset.label}: ${fmtK(ctx.parsed.x)}`; return o; })() });
+  const R = S.bzR || {};
+  $('#bzDrivers').innerHTML = BZ_DRIVERS.map(([k, t, w]) => `<label class="check" style="align-items:flex-start"><input type="checkbox" data-bzr="${k}" ${R[k] ? 'checked' : ''}> <span>${t} <span class="small muted">(${R[k] ? '+' : '−'}${(R[k] ? w*.6 : w*.24).toFixed(2)}× multiple)</span></span></label>`).join('');
+  const allIn = Object.assign({}, S, { bzR: Object.fromEntries(BZ_DRIVERS.map(d => [d[0], true])) }); const Bmax = bizCalc(allIn);
+  $('#bzDrvOut').innerHTML = insight(Bmax.V > B.V ? 'acc' : 'good', 'UPSIDE', Bmax.V > B.V ? `Fixing every driver before the sale lifts the multiple to ${Bmax.mult.toFixed(2)}× and the price by <b>${fmtK(Bmax.V - B.V)}</b>. Buyers pay most for a business that runs without its owner.` : 'Every value driver is in place: you are at the top of your industry range.');
+  $('#bzTable').innerHTML = tbl(['Exit path','Price / total','Taxes','Fees','Cash at close','Later payments','Value today (PV)','Control & timeline','Risk','How it works'], opts.map(o => Object.assign([`<b>${o.n}</b>${o.k === B.best.k ? ' <span class="pill good">Best</span>' : ''}`, fmtK(o.gross), fmtK(o.tax), fmtK(o.fees), fmtK(o.net), o.later ? fmtK(o.later) : '—', fmtK(o.pv), o.ctrl, o.risk, o.note], { _hl: o.k === S.bzPlan })), [1,2,3,4,5,6]);
+  const yrs = Array.from({length: B.n + 1}, (_, i) => i);
+  chart('chBzVal', { type:'line', data:{ labels: yrs.map(y => String(new Date().getFullYear() + y)), datasets:[ area('Value with today\'s readiness', yrs.map(y => S.bzEbitda*Math.pow(1 + S.bzGrowth/100, y)*B.mult), c.pre, {backgroundColor: hexA(c.pre,.15)}), line('Value with every driver fixed', yrs.map(y => S.bzEbitda*Math.pow(1 + S.bzGrowth/100, y)*(B.mult + (Bmax.mult - B.mult)*Math.min(1, y/Math.max(1, B.n)))), c.roth, {borderWidth:3}) ] }, options: baseOpts({ xType:'category' }) });
+  // retirement number
+  const fra = fraMonths(parseDate(S.birth).y);
+  const guar = S.pia*ssFactor(S.claim*12, fra)*12 + (S.filing === 'mfj' ? S.spPia*12 : 0) + (S.pnChoice === 'annuity' ? pensionInfo(S).annual/Math.pow(1 + S.infl/100, Math.max(0, S.pnStart - age0)) : 0);
+  const need = Math.max(0, S.spend - guar)/((+S.ckSwr || 4)/100)*1.15;
+  const have = PLAN.retRow.start/PLAN.retRow.idx - (S.bzOn ? B.planNet : 0);
+  const gap = need - have; const fromBiz = B.best.pvToday;
+  $('#bzGap').innerHTML = `<div><span class="eyebrow">Your number</span><div class="v">${fmtK(need)}</div></div><div style="max-width:56ch"><p>Spending ${fmtK(+S.spend)} less guaranteed income, at a ${S.ckSwr || 4}% withdrawal rate. Savings outside the business cover ${fmtK(Math.max(0, have))}, so the exit must deliver <b>${fmtK(Math.max(0, gap))}</b> after tax (today's dollars). The best path delivers about <b>${fmtK(fromBiz)}</b>: ${fromBiz >= gap ? `a cushion of ${fmtK(fromBiz - Math.max(0, gap))}.` : `a gap of ${fmtK(gap - fromBiz)}.`}</p></div>`;
+  $('#bzGapOut').innerHTML = insight(S.bzOn ? 'good' : 'acc', 'PLAN', S.bzOn ? `The ${opts.find(o => o.k === S.bzPlan).n.toLowerCase()} is in your plan: about ${fmtK(B.planNet)} (today's dollars) arrives at age ${B.exitAge}.` : 'Tick "I own this business" to add the sale proceeds to your projections, war-game and net worth.') +
+    insight('', 'AFTER', 'After a liquidity event: park proceeds in Treasuries or a muni ladder while you plan, max out a cash balance plan in the final year, fund a donor-advised fund in the sale year, and revisit estate documents (the business was probably your largest asset).');
+  const T = [[-5,'3–5 years out','Get a valuation; clean up financials (reviewed or audited); reduce owner dependence; consider C-corp conversion if QSBS could apply (5-year clock); set up a buy-sell agreement and key-person insurance.'],
+    [-3,'2–3 years out','Build the management team; add stay bonuses or phantom equity for key employees; diversify customers; grow recurring revenue; start estate gifting of shares at a discount (before value jumps).'],
+    [-1,'12–18 months out','Hire an investment banker or business broker, M&A attorney and CPA; quality-of-earnings review; fund a CRT or gift to trusts before any letter of intent.'],
+    [0,'Sale year','Negotiate asset vs. stock allocation, earnouts, escrow, non-compete and your transition role; maximize retirement-plan contributions; plan estimated taxes.'],
+    [1,'After the sale','Invest proceeds by plan, not by impulse; set up the family office structure (Wealth tab); update wills, trusts and beneficiaries.']];
+  $('#bzTimeline').innerHTML = T.map(x => `<div class="tl-row"><span class="tl-age num">${new Date().getFullYear() + B.n + x[0]}</span><span class="tl-dot"></span><div><b>${x[1]}</b><p class="small">${x[2]}</p></div></div>`).join('');
+}
+
+/* ---------- MILITARY STAY OR GO ---------- */
+function renderMilitary(){
+  const c = COL(); const N = clamp(+S.mvStay, 1, 10);
+  $('#mvStayLbl').textContent = `${N} more year${N > 1 ? 's' : ''} → ${+S.mvYos + N} years of service, separate at ${+S.mvAge + N}`;
+  const now = milCalc(S, 0), stay = milCalc(S, N);
+  let cn = 0, cs = 0, be = null; const diff = [];
+  now.rows.forEach((r, i) => { cn += r.net; cs += stay.rows[i].net; diff.push({x:r.a, y: cs - cn}); if (be === null && i >= N && cs >= cn) be = r.a; });
+  const pvGap = stay.pv - now.pv;
+  // civilian salary that makes the two equal
+  const civBE = (() => { let lo = 0, hi = 400000; for (let i = 0; i < 30; i++){ const m = (lo + hi)/2; const s2 = Object.assign({}, S, { mvCiv: m }); if (milCalc(s2, N).pv > milCalc(s2, 0).pv) lo = m; else hi = m; } return lo; })();
+  const costYears = now.rows.slice(0, N).reduce((a, r, i) => a + r.net - stay.rows[i].net, 0);
+  $('#mvCallout').innerHTML = `<div><span class="eyebrow">True cost of staying ${N} more year${N > 1 ? 's' : ''}</span><div class="v">${fmtK(costYears)}</div></div><div style="max-width:64ch"><p>That's the after-tax income you give up during those years (today's dollars) versus retiring now and starting a ${fmtK(+S.mvCiv)} civilian job. Staying raises retired pay from <b>${fmt(now.retMo)}</b> to <b>${fmt(stay.retMo)}/mo</b> for life. ${be ? `The bigger pension pays back that cost at age <b>${be}</b>.` : `It never pays back by age ${S.mvTo}.`} Over a lifetime, staying is worth <b>${pvGap >= 0 ? '+' : ''}${fmtK(pvGap)}</b> in present value. Staying only comes out ahead if your civilian offer is under about <b>${fmtK(civBE)}/yr</b>.</p></div>`;
+  kpis('mvKpis', [
+    { l:'Retired pay if you go now', v: now.retMo, f: v => fmt(v) + '/mo', s: `${pct(now.mult,1)} of high-3${S.mvSbp ? ', after SBP' : ''}` },
+    { l:`Retired pay at ${stay.yos} years`, v: stay.retMo, f: v => fmt(v) + '/mo', s: `+${fmt(stay.retMo - now.retMo)}/mo for life` },
+    { l:'VA compensation', v: now.vaMo, f: v => fmt(v) + '/mo', s: `${now.rating}% rating, tax-free` },
+    { l:'Concurrent receipt', text: now.concurrent ? (S.mvCombat ? 'CRSC' : 'CRDP') : 'Offset', s: now.concurrent ? 'Full retired pay plus VA' : 'VA pay replaces part of retired pay', pill: now.concurrent ? ['good','Both paid'] : ['warn','Under 50%'] },
+    { l:'Tax-free allowances', v: (+S.mvBah + +S.mvBas)*12, s: `Worth about ${fmtK((+S.mvBah + +S.mvBas)*12/(1 - .22 - .0765))} of taxable salary` },
+    { l:'Break-even civilian salary', v: civBE, s: 'Above this, retiring now wins' }
+  ]);
+  chart('chMvInc', { type:'line', data:{ datasets:[ line('Retire now, civilian job', now.rows.map(r => ({x:r.a, y:r.net})), c.roth, {borderWidth:3}), line(`Stay ${N} more years`, stay.rows.map(r => ({x:r.a, y:r.net})), c.pre, {borderWidth:3}), line('Running total: stay minus go', diff, c.ink, {borderDash:[5,4], borderWidth:1.5, yAxisID:'y2'}) ] },
+    options: (() => { const o = baseOpts({ x:{min:+S.mvAge, max:+S.mvTo}, xTitle:'Age', vlines:[{x:+S.mvAge + N, label:'Separate after staying', color:c.pre}, ...(be ? [{x:be, label:`Payback at ${be}`, color:c.good, row:1}] : []), {x:+S.mvCivRet, label:'Civilian work ends', color:c.muted, row:2}], y2:{ fmt: v => fmtK(v) } }); o.scales.y2.beginAtZero = false; o.scales.y2.min = undefined; return o; })() });
+  const sumN = (rows, k) => rows.slice(0, N).reduce((a, r) => a + r[k], 0);
+  const forgoneRet = sumN(now.rows, 'rp') + sumN(now.rows, 'va') - sumN(stay.rows, 'va');
+  const forgoneCiv = sumN(now.rows, 'civ') + sumN(now.rows, 'match');
+  const milPay = sumN(stay.rows, 'mil') + sumN(stay.rows, 'allow') + sumN(stay.rows, 'perks') + sumN(stay.rows, 'match');
+  const taxDiff = sumN(now.rows, 'tax') - sumN(stay.rows, 'tax');
+  const health = sumN(now.rows, 'health');
+  const laterGain = stay.rows.slice(N).reduce((a, r, i) => a + r.net - now.rows[N + i].net, 0);
+  chart('chMvCost', { type:'bar', data:{ labels:['Retired pay & VA you skip','Civilian pay & match you skip','All military pay, BAH, BAS, bonuses & perks','Taxes saved while serving','TRICARE premiums avoided','Bigger pension later (lifetime)','Net'], datasets:[ bar('Today\'s dollars', [-forgoneRet, -forgoneCiv, milPay, taxDiff, health, laterGain, -costYears + laterGain], [c.bad, c.bad, c.pre, c.roth, c.roth, c.good, (laterGain - costYears) >= 0 ? c.good : c.bad]) ] }, options: baseOpts({ xType:'category', legend:false, zero:true, xTicks:{ maxRotation:30 } }) });
+  // full compensation breakdown (first year of staying)
+  const y1 = stay.rows[0]; const g1 = 1; const fil = S.filing === 'mfj' ? 'mfj' : 'single';
+  const comp = [['Base pay', S.mvBase*12, 'Taxable; the only pay used for retired pay', c.pre], ['Special & incentive pays', (+S.mvSpecial || 0)*12, 'Taxable', c.pen], ['Retention bonus (per year)', N ? (+S.mvBonus || 0)/N : 0, 'Taxable', c.ann], ['BAH', (+S.mvBah || 0)*12, 'Tax-free', c.roth], ['BAS', (+S.mvBas || 0)*12, 'Tax-free', c.hsa], ['Other tax-free allowances', (+S.mvOtherFree || 0)*12, 'Tax-free', c.ss2], ['Clothing allowance', +S.mvClothing || 0, 'Tax-free', c.tax], ['TSP matching (BRS)', S.mvSys === 'brs' ? S.mvBase*12*.05 : 0, 'Retirement contribution', c.good], ['Commissary & exchange savings', +S.mvComm || 0, 'Non-cash', c.muted], ['Health care for the family', +S.mvCivHealth || 0, 'Non-cash: no premiums on active duty', c.ss]].filter(x => x[1] > 0);
+  const totalComp = comp.reduce((a, x) => a + x[1], 0);
+  const milNet = y1.net + (+S.mvCivHealth || 0);
+  const equiv = (() => { let lo = 0, hi = 600000; for (let i = 0; i < 40; i++){ const m = (lo + hi)/2; const t = calcTax({ ordinary: m*(1 - S.mvCivMatch/100*0), retInc:0, ltcg:0, ss:0, year: BASE_YEAR, ages:[Math.min(+S.mvAge, 64)], fil, s:S, idx:1 }); const net = m - t.fed - t.state - m*.0765 + m*S.mvCivMatch/100; if (net < milNet) lo = m; else hi = m; } return lo; })();
+  chart('chMvComp', { type:'bar', data:{ labels: comp.map(x => x[0]), datasets:[ bar('Per year', comp.map(x => x[1]), comp.map(x => x[3])) ] }, options: (() => { const o = baseOpts({ xType:'category', legend:false }); o.indexAxis = 'y'; o.scales.y = { type:'category', grid:{display:false}, ticks:{color:c.muted} }; o.scales.x = { grid:{color:c.grid}, ticks:{color:c.muted, callback: v => fmtK(v)} }; o.interaction = {mode:'nearest', axis:'y', intersect:false}; o.plugins.tooltip.callbacks.label = ctx => fmt(ctx.parsed.x) + '/yr'; return o; })() });
+  $('#mvComp').innerHTML = tbl(['Pay or benefit','Per year','Per month','Tax treatment'], [...comp.map(x => [x[0], fmt(x[1]), fmt(x[1]/12), x[2]]), ['<b>Total compensation</b>', `<b>${fmt(totalComp)}</b>`, `<b>${fmt(totalComp/12)}</b>`, ''], ['<b>Civilian salary needed to match it</b>', `<b>${fmt(equiv)}</b>`, fmt(equiv/12), `With a ${S.mvCivMatch}% 401(k) match and paying your own health premiums`]], [1,2]);
+  const freeShare = comp.filter(x => /Tax-free|Non-cash/.test(x[2])).reduce((a, x) => a + x[1], 0)/Math.max(1, totalComp);
+  $('#mvCompOut').innerHTML = insight('acc','TOTAL', `Counting every pay, staying is worth about <b>${fmtK(totalComp)}/yr</b>, ${pct(freeShare,0)} of it tax-free or non-cash. A civilian job would need to pay about <b>${fmtK(equiv)}</b> to match it after tax, versus your ${fmtK(+S.mvCiv)} offer.`) +
+    insight(+S.mvCiv + 0 >= equiv ? 'warn' : 'good', 'BUT', `That comparison ignores the ${fmt(now.retMo)}/mo retired pay${now.concurrent ? ' and ' + fmt(now.vaMo) + '/mo VA pay' : ''} you would collect on top of a civilian salary if you left now. Leaving pays ${fmtK(+S.mvCiv)} + ${fmtK(now.retMo*12)}${now.concurrent ? ' + ' + fmtK(now.vaMo*12) : ''} = <b>${fmtK(+S.mvCiv + now.retMo*12 + (now.concurrent ? now.vaMo*12 : 0))}/yr</b> before tax: that is the real bar staying must clear.`) +
+    insight('', 'CZTE', +S.mvCz ? `${S.mvCz} months in a combat zone makes that share of enlisted pay tax-free (officers are capped at the top enlisted rate plus imminent danger pay).` : 'Combat-zone months make pay tax-free for those months; enter them above if you expect deployments.');
+  // High-3 vs BRS
+  const sc0 = sysCompare(S, 0), scN = sysCompare(S, N);
+  const yosA = []; for (let y = 20; y <= 30; y++) yosA.push(y);
+  const h3 = y => Math.min(.75, .025*y), br = y => Math.min(.6, .02*y);
+  const hi3 = y => S.mvBase*Math.pow(1 + S.mvRaise/100, Math.max(0, y - +S.mvYos - 1));
+  chart('chMvSys', { type:'line', data:{ labels: yosA.map(y => y + ' yrs'), datasets:[ line('High-3 retired pay /mo', yosA.map(y => hi3(y)*h3(y)), c.pre, {borderWidth:3}), line('BRS retired pay /mo', yosA.map(y => hi3(y)*br(y)), c.roth, {borderWidth:3}) ] }, options: baseOpts({ xType:'category', tip: v => fmt(v) + '/mo' }) });
+  const lbl = ['High-3, retire now', 'BRS, retire now', `High-3, stay ${N}`, `BRS, stay ${N}`]; const arr = [sc0.high3, sc0.brs, scN.high3, scN.brs];
+  chart('chMvSysVal', { type:'bar', data:{ labels: lbl, datasets:[ bar('Pension (lifetime PV)', arr.map(x => x.pvPension), c.pre), bar('TSP matching', arr.map(x => x.tsp), c.roth), bar('Continuation pay', arr.map(x => x.cp), c.ann) ] }, options: baseOpts({ xType:'category', stacked:true }) });
+  const rowsS = [['Pension multiplier', pct(sc0.high3.mult,1), pct(sc0.brs.mult,1), pct(scN.high3.mult,1), pct(scN.brs.mult,1)], ['Retired pay /mo', fmt(sc0.high3.retMo), fmt(sc0.brs.retMo), fmt(scN.high3.retMo), fmt(scN.brs.retMo)], ['Pension, lifetime PV', fmtK(sc0.high3.pvPension), fmtK(sc0.brs.pvPension), fmtK(scN.high3.pvPension), fmtK(scN.brs.pvPension)],
+    ['TSP matching balance', '—', fmtK(sc0.brs.tspNom), '—', fmtK(scN.brs.tspNom)], ['Continuation pay (at 12 yrs)', '—', fmtK(sc0.brs.cp), '—', fmtK(scN.brs.cp)], ['BRS lump sum option (25% / 50%)', '—', `${fmtK(sc0.brs.lump25)} / ${fmtK(sc0.brs.lump50)}`, '—', `${fmtK(scN.brs.lump25)} / ${fmtK(scN.brs.lump50)}`],
+    ['<b>Total lifetime value</b>', `<b>${fmtK(sc0.high3.total)}</b>`, `<b>${fmtK(sc0.brs.total)}</b>`, `<b>${fmtK(scN.high3.total)}</b>`, `<b>${fmtK(scN.brs.total)}</b>`]];
+  $('#mvSysTable').innerHTML = tbl(['', ...lbl], rowsS.map(r => Object.assign(r, { _hl: false })), [1,2,3,4]);
+  const winner = sc0.high3.total >= sc0.brs.total ? 'High-3' : 'BRS';
+  $('#mvSysOut').innerHTML = insight('acc','WINNER', `For a full 20-year career, <b>${winner}</b> is worth more here: ${fmtK(Math.max(sc0.high3.total, sc0.brs.total))} vs ${fmtK(Math.min(sc0.high3.total, sc0.brs.total))} (present value through age ${S.mvTo}). High-3 pays ${fmt(sc0.high3.retMo - sc0.brs.retMo)}/mo more for life; BRS adds about ${fmtK(sc0.brs.tspNom + sc0.brs.cp)} of TSP matching and continuation pay.`) +
+    insight('', 'WHO', 'Members who joined before 2006 or had 12+ years in 2018 are under High-3. Those who joined from 2018 on, or opted in during 2018, are under BRS. The system you are in is fixed; this shows what each is worth and why BRS favors people who leave before 20.') +
+    insight('', 'LUMP', `BRS lets you take 25% or 50% of the discounted value of your pension until 67 as a lump sum (about ${fmtK(sc0.brs.lump50)} at 50%), with reduced retired pay until 67 and the full amount after. The discount rate is steep, so it usually only makes sense to pay off high-rate debt or fund a business.`) +
+    insight('', 'MATCH', 'BRS gives 1% automatic plus up to 4% matching into the TSP: contribute at least 5% of base pay to get it all. Matching stops at 26 years of service.');
+  const ns = Array.from({length:11}, (_, i) => i); const pvs = ns.map(n => n ? milCalc(S, n).pv : now.pv); const bestN = ns[pvs.indexOf(Math.max(...pvs))];
+  chart('chMvPv', { type:'bar', data:{ labels: ns.map(n => (+S.mvYos + n) + ' yrs'), datasets:[ bar('Lifetime after-tax value (PV)', pvs, ns.map(n => n === bestN ? c.good : n === N ? c.accent : hexA(c.pre,.5))) ] }, options: baseOpts({ xType:'category', legend:false, zero:false }) });
+  const tblRows = []; for (let y = 20; y <= 30; y++){ const n = y - +S.mvYos; if (n < 0) continue; const m = n ? milCalc(S, n) : now; tblRows.push(Object.assign([y, pct(m.mult,1), fmt(m.high3/12), fmt(m.retMo), fmt(m.vaMo), fmt(m.concurrent ? m.retMo + m.vaMo : Math.max(m.retMo, m.vaMo)), fmtK(m.pv)], { _hl: n === N })); }
+  $('#mvTable').innerHTML = tbl(['Years','Multiplier','High-3 /mo','Retired pay /mo','VA /mo','Total /mo','Lifetime PV'], tblRows, [1,2,3,4,5,6]);
+  $('#mvOut').innerHTML = insight('acc','HOW', `Each extra year adds ${S.mvSys === 'brs' ? '2.0%' : '2.5%'} of high-3 to your pension (capped at ${S.mvSys === 'brs' ? '60%' : '75%'}), but while serving you aren't collecting the ${fmt(now.retMo)}/mo you've already earned. In effect you work for military pay <i>minus</i> that pension and <i>minus</i> the civilian pay you could earn.`) +
+    insight(bestN === 0 ? 'warn' : 'good', 'BEST', bestN === 0 ? 'With these inputs, retiring at 20 maximizes lifetime value.' : `With these inputs, lifetime value peaks at <b>${+S.mvYos + bestN} years</b> of service.`) +
+    insight('', 'VA', `VA compensation is tax-free and counts the same either way unless your rating changes. At 50%+ with 20 years you receive both retired pay and VA pay (CRDP); below 50% VA pay replaces part of retired pay unless the disability is combat-related (CRSC). Get every condition documented before separating, and file a BDD claim 90–180 days before your last day.`) +
+    insight('', 'TAXES', `BAH and BAS are tax-free. ${STATES[S.state] && STATES[S.state].retExempt ? `${STATES[S.state].name} does not tax military retired pay.` : 'Many states exempt military retired pay; check yours on the Tools tab state comparison.'} Retired pay is federally taxable except the portion replaced by VA compensation.`) +
+    insight('', 'NOT IN THE MATH', 'Not counted: deployment and family time, promotion odds, GI Bill transfer (needs a 4-year commitment), TSP growth, Social Security differences, civilian job security, and the value of the TRICARE retiree benefit for your family beyond the premium difference.') +
+    insight('', 'SBP', `SBP costs 6.5% of retired pay (${fmt(stay.retMo/0.935*.065)}/mo at ${stay.yos} years) and pays your spouse 55% for life, inflation-adjusted. Compare with term life on the Insurance tab.`);
+}
+
 /* ---------- BENEFITS ---------- */
 function ssdiCalc(){
   const pia = piaFromAime(+S.sdAime);
@@ -4041,7 +4352,7 @@ function renderLeak(){
 }
 
 /* ---------- Router & init ---------- */
-const VIEWS = { overview: renderOverview, planner: renderPlanner, tools: renderTools, rentals: renderRentals, cockpit: renderCockpit, portfolio: renderPortfolio, healthcare: renderHealthcare, advisor: renderAdvisor, wealth: renderWealth, 'social-security': renderSS, pension: renderPension, annuities: renderAnnuities, accounts: renderAccounts, taxes: renderTaxes, insurance: renderInsurance, benefits: renderBenefits, investing: renderInvesting, leak: renderLeak };
+const VIEWS = { overview: renderOverview, business: renderBusiness, military: renderMilitary, planner: renderPlanner, tools: renderTools, rentals: renderRentals, cockpit: renderCockpit, portfolio: renderPortfolio, healthcare: renderHealthcare, advisor: renderAdvisor, wealth: renderWealth, 'social-security': renderSS, pension: renderPension, annuities: renderAnnuities, accounts: renderAccounts, taxes: renderTaxes, insurance: renderInsurance, benefits: renderBenefits, investing: renderInvesting, leak: renderLeak };
 function current(){ const h = location.hash.replace('#',''); return VIEWS[h] ? h : 'overview'; }
 function show(){
   const v = current();
@@ -4071,6 +4382,7 @@ function init(){
   document.addEventListener('input', e => { const el = e.target; if (el.dataset.k){ const k = el.dataset.k; if (el.type === 'checkbox') S[k] = el.checked; else if (el.type === 'number') S[k] = el.value === '' ? '' : +el.value; else S[k] = el.value; changed(); }
     if (el.dataset.h !== undefined && el.tagName !== 'SELECT'){ const i = +el.dataset.h, f = el.dataset.f; S.holdings[i][f] = el.type === 'number' ? +el.value : el.value; S._touched = true; save(); clearTimeout(tmr); tmr = setTimeout(() => { if (current() === 'portfolio') { const ae = document.activeElement; const sel = ae && ae.dataset ? [ae.dataset.h, ae.dataset.f] : null; renderPortfolio(); if (sel) { const n = document.querySelector(`[data-h="${sel[0]}"][data-f="${sel[1]}"]`); if (n) { n.focus(); } } } }, 450); }
     if (el.dataset.rpf !== undefined){ const k = el.dataset.rpf; const pr = S.props[+S.rpSel]; if (pr){ pr[k] = el.type === 'number' ? +el.value : el.value; S._touched = true; save(); clearTimeout(tmr); tmr = setTimeout(() => { recompute(); if (current() === 'rentals'){ const id = document.activeElement && document.activeElement.id; renderRentals(); if (id){ const n = document.getElementById(id); if (n) n.focus(); } } }, 450); } }
+    if (el.dataset.bzr){ S.bzR = Object.assign({}, S.bzR || {}, { [el.dataset.bzr]: el.checked }); changed(); }
     if (el.dataset.bud){ S.bud = S.bud || {}; S.bud[el.dataset.bud] = +el.value || 0; S._touched = true; save(); rowRefresh(renderPlanner); }
     if (el.dataset.dbf !== undefined && el.tagName !== 'SELECT'){ const d = S.debts[+el.dataset.dbf]; if (d){ d[el.dataset.f] = el.type === 'number' ? +el.value : el.value; S._touched = true; save(); rowRefresh(renderPlanner); } }
     if (el.dataset.evf !== undefined && el.tagName !== 'SELECT'){ const e2 = S.events[+el.dataset.evf]; if (e2){ e2[el.dataset.f] = el.type === 'number' ? +el.value : el.value; S._touched = true; save(); rowRefresh(renderPlanner); } }
