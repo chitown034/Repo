@@ -141,6 +141,14 @@ out = out.replace("/*SEATS*/null", j(seats), 1).replace("/*ENC*/null", j(enc), 1
 ask_json = j(ask)
 out = out.replace("/*ASK*/null", ask_json, 1)
 out = out.replace("/*BUILD*/null", json.dumps(date.today().isoformat()), 1)
+_ag = ROOT / "integrations/agent-os/agents.json"  # total AI agents on the team, shown first in the stats bar (Steven, 2026-11-09)
+try:
+    _al = json.loads(_ag.read_text(encoding="utf-8")); _al = _al if isinstance(_al, list) else _al.get("agents", [])
+    from collections import Counter as _C
+    _agents = {"total": len(_al), "byModel": dict(_C(a.get("model") or "?" for a in _al))}
+except (OSError, ValueError):
+    _agents = None
+out = out.replace("/*AGENTS*/null", json.dumps(_agents), 1)
 # the layers register (2026-10-23): every layer of the second brain with its own last-sync stamp and verdict
 from brain import layers as _layers  # noqa: E402
 out = out.replace("/*LAYERS*/null", j([{k: r.get(k) for k in ("key", "layer", "sync", "last", "age_days", "cadence_days", "verdict", "url")} for r in _layers.collect(ROOT)]), 1)

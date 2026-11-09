@@ -338,6 +338,7 @@ const LINKS = /*LINKS*/null;
 const SEC = /*SEC*/null;
 const RECS = /*RECS*/null;
 const LOOP = /*LOOP*/null;
+const AGENTS = /*AGENTS*/null;  // AI-agent head count from integrations/agent-os/agents.json (2026-11-09)
 const SEATS = /*SEATS*/null;   // seat -> {a: agents (agents.json laya.lane), s: "starts from" prefixes (cross-functional.md)}
 const ENC = /*ENC*/null;       // A-Z encyclopedia entries from brain/index.json + graph backlinks
 const ASK = /*ASK*/null;       // term index for in-page recall: vocab, df, per-file postings/ident, synonyms, priors
@@ -970,6 +971,7 @@ try { if (innerWidth <= 720) { $("lensWrap").open = false; $("chipsWrap").open =
 // stats (from the brain's own loop report)
 function stat(label, value, cls) { const d = document.createElement("div"); d.className = "stat " + (cls || ""); d.innerHTML = "<b></b><i></i>"; d.querySelector("b").textContent = value; d.querySelector("i").textContent = label; return d; }
 $("stats").replaceChildren(
+  ...(AGENTS ? [stat("AI agents", String(AGENTS.total), "good")] : []),
   stat("pages", String(G.files)), stat("sections", String(G.sections)), stat("links", String(links.length)),
   stat("test Qs right", `${LOOP.bench_correct}/${LOOP.bench_total}`, LOOP.bench_correct >= LOOP.bench_total - 2 ? "good" : "warn"),
   stat("org seats found", `${LOOP.org_covered}/${LOOP.org_total}`, LOOP.org_covered === LOOP.org_total ? "good" : "warn"),
