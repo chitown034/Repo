@@ -1,6 +1,6 @@
 # Projects and their status
 
-Second Brain export for NotebookLM · as of 2026-11-01 · bundle `03-projects`.
+Second Brain export for NotebookLM · as of 2026-11-09 · bundle `03-projects`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 
@@ -122,6 +122,14 @@ doc whose top level is not a single `v` key is a **writer bug to fix**, not a sh
 - **Closed since this list was written:** `r17-trading-day-log` is no longer failing (`ok`,
   last end 2026-09-22); and the old line here — "cloud routines cannot write to the artifact DB
   unattended" — is **disproved**, see `README.md` and `docs/CLOUD-WRITE-ARCHITECTURE.md`.
+
+## Status (2026-11-01) — version 271 (dashboards: Hormozi Offer Workbench, Music School, AI Academy)
+
+- Live: version 271 [phone masked]-1bac), published 2026-11-01. The dashboards menu now reads 41 dashboards and 3 job sites.
+- Daily writers still running: Big moves (bigMoves, vanessaRecommendations, aiTeamOrg), the health sync (appleHealth,
+  stravaSnapshot, healthDriveSync), the Fieldy desk, presenceAudit (new, monthly) and the hourly agentInbox sweep.
+- The layers report used to read only these status notes, so it showed the deck as stale for 11 days. It now also reads
+  `brain/deck-sync.json` and the daily Big-moves date (`brain/layers.py` `_deck_last`).
 
 ## Status (2026-10-22) — version 230 (list intake forms, tools per seat, Text me the brief, Zoom recaps)
 

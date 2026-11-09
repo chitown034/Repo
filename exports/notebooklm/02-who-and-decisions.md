@@ -1,6 +1,6 @@
 # Who Steven is, standing decisions, remembered facts
 
-Second Brain export for NotebookLM · as of 2026-11-01 · bundle `02-who-and-decisions`.
+Second Brain export for NotebookLM · as of 2026-11-09 · bundle `02-who-and-decisions`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 
@@ -976,6 +976,52 @@ through Apple Health and the same export file once Steven switches the nutrition
   routine) — a live-task change, so his yes. Until then a parked orchestrator session means stale tiles again, and the
   new heartbeat line will say so.
 - **Owner.** Derek (sync), Cole (health), Vanessa (routines). **Status.** Deck v259 (this splice), 2026-10-31.
+
+## 2026-11-08 — Every AI seat on Opus 5.5; Vanessa on Fable 5.1; one org chart on all three dashboards
+
+- **Request (Steven, verbatim).** *"ensure all ai agents are using opus 5.5 and vanessa use fable 5.1. ensure ai org chart are
+  up to date in both vommand desk, broker dashboard and loan dashboard. ensure they are linked to work as cross functional teams"*.
+- **Decision.** The Sonnet 5 tier is retired: reports, benches, desk seats and the web-research seat move to Opus 5.5
+  (89 roster rows); the eight executives stay on Opus 5.5; Vanessa runs on Fable 5.1 (agent file `model: claude-fable-5-1`).
+  The local PII tier (Bonsai 27B, Mac only) is unchanged: it is a privacy boundary, not a seat. CLAUDE.md tiering table,
+  `brain/agentfiles.py`, `brain/agentos.py`, the roster and the generated agent files follow.
+- **Org chart.** The Command Deck, the Broker Command Center and the Loan Dashboard carry the same chart: Steven at the top;
+  Steve, Vanessa, the human ISA/EA, Claude Duet, Fieldy AI and Violoop in the top row; every seat reporting to Vanessa
+  through its executive; the standing cross-functional pods (Deal, Lead, Listing, Mortgage, Growth...) dispatched by Vanessa
+  in parallel waves of at most eight through one queue (vanessaQueue).
+- **Cost note.** Opus on every seat costs more per run than Sonnet did; Marcus reports the AI team's monthly cost.
+- **Owner.** Vanessa (dispatch), Derek (agent files), Nadia (tiering). **Status.** Done 2026-11-08.
+
+## 2026-11-08 — One mirror across the Command Deck, the Broker Command Center and the Loan Dashboard
+
+- **Request (Steven, verbatim).** *"ensure all data and feeds from command desk, broker dashboard and loan dashboard. are
+  linked and mirrored across all 3 dashboards"*.
+- **Decision.** The Command Deck's database is the hub. Each dashboard writes its own snapshot to its own `state` collection
+  (Broker: `bccMetrics`, Loan: `loanMetrics`, new: the Loan Dashboard now declares `db`). The Deck relay scheduled task
+  (06:13 · 10:13 · 14:13 · 18:13 PT, trig_01A5Tbjwx1BMQiLZhobtdkq3) copies 16 feeds both ways, unchanged, stamped
+  `mirroredFrom`/`mirroredAt`: bccMetrics, loanMetrics, loftyLeads, zohoSync, zohoLeads, zohoDeals, ratesSnapshot,
+  refiWatchDesk, leadResponse, cosBrief, bigMoves, aiTeamOrg, marketSnapshot, newsSnapshot, weatherSnapshot, feedFreshness.
+  Each page shows them on one "Three-dashboard mirror" view (Deck: card above Zoho leads; Broker: System menu; Loan: AI Team
+  & Bridges), built from one shared module, `integrations/dashboard-mirror/mirror-core.js`.
+- **Limits.** Pages are separate artifacts with separate storage, so the mirror is as fresh as the last relay run; a feed
+  shows "awaiting relay" until its first copy lands. Health, finances and private chat logs stay on the Command Deck only.
+  `loanMetrics` carries counts only (no names, phones or e-mails); a loan pipeline still holding the built-in sample rows is
+  flagged "sample data".
+- **Owner.** Quincy (feeds), Derek (relay). **Status.** Done 2026-11-08; first relay pass run by hand the same day.
+
+## 2026-11-09 — Perplexica (Vane) and AI Engineering from Scratch installed on the Mac
+
+- **Request (Steven, verbatim).** *"install https://github.com/BunsDev/perplexica-search-engine-ai.git and
+  https://github.com/rohitg00/ai-engineering-from-scratch.git"*.
+- **Decision.** Both become Mac installs with a one-paste installer in `integrations/`. Perplexica (BunsDev's copy of
+  Vane 1.12.2) is built from the reviewed source at commit `348feca` and runs in Docker at http://localhost:3010, bound to
+  the Mac only (3000 is OpenStock's port). Steven picks its model in its own Settings: Ollama (local), or Anthropic with
+  his own key typed there. The curriculum is cloned to `~/Learning/ai-engineering-from-scratch`, with an optional
+  `--python` lab environment.
+- **Boundaries.** Perplexica is a manual research tool, not a recall level. Level 3 stays Claude web research. No client
+  detail ever goes into a Perplexica query. The curriculum is a reference, never indexed into the brain, and its lesson
+  outputs are not auto-installed.
+- **Owner.** Derek. **Status.** Installers committed 2026-11-09; they take effect when Steven pastes them on the Mac.
 
 
 ---

@@ -1,6 +1,6 @@
 # Real-estate playbooks
 
-Second Brain export for NotebookLM · as of 2026-11-01 · bundle `06-wiki-real-estate-playbooks`.
+Second Brain export for NotebookLM · as of 2026-11-09 · bundle `06-wiki-real-estate-playbooks`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 
@@ -376,7 +376,7 @@ Steven's licensed acts.
 |---|---|---|
 | The listing side — seller feedback, the seller weekly report line | Marguerite (Listing Agent) | Listing Pod |
 | The visitor side — who is a buyer, who is a neighbour, who has an agent | Gwen (Buyer's Agent) | Lead Pod |
-| Sign-in → lead list, thank-you drafts, ISA call list, next-open-house checklist | Open House Captain (Sonnet 5 desk seat, reports to Marguerite / Gwen) | Client Care Pod |
+| Sign-in → lead list, thank-you drafts, ISA call list, next-open-house checklist | Open House Captain (Opus 5.5 desk seat, reports to Marguerite / Gwen) | Client Care Pod |
 | Compliance line on every draft | Alexandra | gate, runs after the wave |
 | Calls the visitors, enters leads in Lofty, sends approved thank-yous | the human ISA / EA (Mon–Fri 12–4 PM PT) | from the ISA Portal |
 | Hosts the open house; any price, financing, offer or commission answer | Steven | licensed |
@@ -669,7 +669,7 @@ after Steven approves the month's batch. No touch carries a rate, a refi suggest
 
 | Role | Who |
 |---|---|
-| The month's nurture calendar and the draft for each touch | Sphere Nurture Coordinator (Sonnet 5 desk seat, reports to Sofia, with Wren) |
+| The month's nurture calendar and the draft for each touch | Sphere Nurture Coordinator (Opus 5.5 desk seat, reports to Sofia, with Wren) |
 | Voice of the market note | Sofia (CMO) |
 | The referral ask — only when it fits (`referral-reciprocity.md`) | Wren |
 | Compliance line on every draft; RESPA §8 on anything of value | Alexandra |

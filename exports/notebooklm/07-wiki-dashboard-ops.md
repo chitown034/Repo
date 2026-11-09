@@ -1,6 +1,6 @@
 # Dashboard operations: panels, DB docs, Mac tasks, routines
 
-Second Brain export for NotebookLM · as of 2026-11-01 · bundle `07-wiki-dashboard-ops`.
+Second Brain export for NotebookLM · as of 2026-11-09 · bundle `07-wiki-dashboard-ops`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 

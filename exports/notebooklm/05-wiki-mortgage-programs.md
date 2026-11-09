@@ -1,6 +1,6 @@
 # Mortgage programs and guidelines (prep only, never a quote)
 
-Second Brain export for NotebookLM · as of 2026-11-01 · bundle `05-wiki-mortgage-programs`.
+Second Brain export for NotebookLM · as of 2026-11-09 · bundle `05-wiki-mortgage-programs`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 
@@ -291,7 +291,7 @@ daily snapshot with the book.
 
 | Role | Who |
 |---|---|
-| The Monday prep list: first name, program, note rate, market average, spread | Refi Watch Analyst (Sonnet 5 desk seat; Mortgage Pod) |
+| The Monday prep list: first name, program, note rate, market average, spread | Refi Watch Analyst (Opus 5.5 desk seat; Mortgage Pod) |
 | Scenario prep for anyone Steven picks; the VA IRRRL lane | Harrison (Elite Mortgage Broker, under Victor) |
 | The touch draft, if Steven wants one after the conversation | Sphere Nurture Coordinator + Alexandra |
 | Keeps the list current | Steven (and the ISA, from the ISA Portal form) |
