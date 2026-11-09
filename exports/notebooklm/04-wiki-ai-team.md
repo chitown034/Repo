@@ -1,6 +1,6 @@
 # AI team: org chart, seats, pods, toolkit, push-button system
 
-Second Brain export for NotebookLM · as of 2026-11-01 · bundle `04-wiki-ai-team`.
+Second Brain export for NotebookLM · as of 2026-11-09 · bundle `04-wiki-ai-team`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 
@@ -371,7 +371,7 @@ Written 2026-10-09; desk seats (`desk-seats.md`), Client Care Pod and the fraud 
 <!-- source file: wiki/ai-team/desk-seats.md -->
 # FILE: wiki/ai-team/desk-seats.md
 
-# Desk seats — seven Sonnet 5 report seats added 2026-10-22
+# Desk seats — seven report seats added 2026-10-22 (Opus 5.5 since 2026-11-08)
 
 Seven report-tier seats that prepare lists and drafts for Steven, the ISA and the executives. Every one is **drafts
 only**: it never sends, quotes, signs, books, pays or writes to a client-facing system — that step is a Needs-Steven
@@ -726,7 +726,7 @@ hold the actual detail once you know which seat or layer you need.
 | `agent-os.md` | Every agent through Laya (lane), Jarvis (recall) and Orca (launch): `bin/brain os`, 172/172 reachable |
 | `cross-functional.md` | Who leads, who joins, the parallel waves, the gates and the HALT words — the rules `bin/brain route` runs |
 | `bot-crew.md` | The Bot Crew: 355 chat agents mirroring this org chart — 13 executive/mentor cards, named and desk seats, 8 pods and 12 workflows runnable, org-chart panel, 20 connectors behind approval cards (2026-10-22) |
-| `desk-seats.md` | The seven Sonnet 5 desk seats added 2026-10-22 (refi watch, sphere nurture, voicemail/inbox triage, document intake, open house, travel desk, meeting scribe): role, owns, HALT, starting page |
+| `desk-seats.md` | The seven desk seats (Opus 5.5 since 2026-11-08) added 2026-10-22 (refi watch, sphere nurture, voicemail/inbox triage, document intake, open house, travel desk, meeting scribe): role, owns, HALT, starting page |
 | `push-button-system.md` | The 2026-10-22 architecture: one `vanessaQueue`, the 6:05 → 6:25 → 6:34 → 6:40 morning schedule, the deck push-buttons, pods and gates, the one-word mods, Pabbly workflows 1–11, the Mac paste |
 | `mentors-and-benches.md` | Maxwell, Apex, James, Kevin (name settled 2026-10-07), and what a "bench" row actually counts |
 
@@ -743,14 +743,14 @@ hold the actual detail once you know which seat or layer you need.
 | Pipeline, conversion, the Six Levers | **Victor** — CRO | Opus 5.5 |
 | Data/cyber risk, credential hygiene, access | **Elena** — CISO | Opus 5.5 |
 | Feasibility of anything Nadia proposes; the engineering team | **Elon** — CTO Innovator, inward architect | Opus 5.5 |
-| Lending / real-estate specialist work | **Vanessa (broker skill)**, Harrison, Gwen, Marguerite | Opus 5.5 / Sonnet 5 |
+| Lending / real-estate specialist work | **Vanessa (broker skill)**, Harrison, Gwen, Marguerite | Opus 5.5 |
 | Broker coaching, weekly pipeline review | **Maxwell** — Broker Mentor & Coach | Opus 5.5 |
 | Order flow, market structure, a trade idea | **Apex** — Trade Advisor Mentor (research only) | Opus 5.5 |
 | Family office, tax strategy, estate | **James** — Wealth Advisor | Opus 5.5 |
 | Personal development, the 11-Dimension check | **Kevin** — Personal Development Mentor | Opus 5.5 |
-| Execution, reports, benches | The named report seat | Sonnet 5 |
+| Execution, reports, benches | The named report seat | Opus 5.5 |
 | Refi watch list, sphere touches, voicemail/inbox triage, contract dates, open-house follow-up, travel, meeting recaps | **Refi Watch Analyst**, **Sphere Nurture Coordinator**, **Voicemail & Inbox Triage**, **Document Intake Clerk**, **Open House Captain**, **Travel Desk**, **Meeting Scribe** — drafts only (`desk-seats.md`) | Sonnet 5 |
-| Research heavy lifting | **Claude web research** — WebSearch/WebFetch on Steven's Claude subscription (Perplexity removed 2026-10-05) | Sonnet 5 |
+| Research heavy lifting | **Claude web research** — WebSearch/WebFetch on Steven's Claude subscription (Perplexity removed 2026-10-05) | Opus 5.5 |
 
 **Kevin is the mentor seat's name everywhere** (Steven, 2026-10-07: "replace Cole with Kevin throughout"). The
 skill is `kevin-mentor` (`.claude/skills/kevin-mentor/`, and `integrations/claude-desktop/kevin-mentor.zip` for
@@ -831,8 +831,8 @@ Which model each seat runs on, and the rules that bound how many run at once —
 |---|---|
 | Vanessa — orchestration, council chair, final synthesis | Claude Fable 5.1 masterminds |
 | Executives (Marcus, Sofia, Derek, Alexandra, Nadia, Victor, Elena, Elon) | Claude Opus 5.5 (since 2026-09-28) |
-| Reports, benches, execution and report-only seats | Claude Sonnet 5 |
-| Research heavy lifting | Claude web research — Sonnet 5 with WebSearch/WebFetch on Steven's subscription (Perplexity removed 2026-10-05) |
+| Reports, benches, execution and report-only seats | Claude Opus 5.5 (Steven, 2026-11-08: every seat on Opus 5.5) |
+| Research heavy lifting | Claude web research — Opus 5.5 with WebSearch/WebFetch on Steven's subscription (Perplexity removed 2026-10-05) |
 
 The deck's own toolkit snapshot (2026-09-16) shows this roughly reflected in the live agent roster: 1 agent on Fable 5.1 (Vanessa), 93 on Opus 5 (the executives have since moved to Opus 5.5), 78 on Sonnet 5. Model tiering is **decided and recorded** but, as of the same snapshot, **not yet enforced by tooling** — a seat's actual runtime model can drift from this table until that enforcement is built. Check the live roster before assuming a seat is on the model this table says it should be.
 
@@ -877,13 +877,14 @@ Source: Command Deck, model-tiering table and dispatch rules (AI Team panel); `c
 
 # AI Team org chart
 
-The full seat map behind Vanessa: Steven at the top, then Steve (digital twin) / Vanessa (Chief of Staff) / the human ISA, then eight executives each with their own named reports and ruflo benches, then the mentor seats on call through Vanessa.
+The full seat map behind Vanessa: Steven at the top, then Steve (digital twin) / Vanessa (Chief of Staff) / the human ISA / Claude Duet (executive assistant), then eight executives each with their own named reports and ruflo benches, then the mentor seats on call through Vanessa.
 
 ## The shape
 
 ```
 Steven (Principal)
 ├─ Steve — digital twin, Tier-1 work
+├─ Claude Duet — Steven's executive assistant (Claude), top row beside Steve, Vanessa and the ISA/EA; hands team-sized work to Vanessa's queue (added 2026-11-03)
 ├─ Vanessa — Chief of Staff / COO / orchestrator, council chair — the 80/20 rule (Steven, 2026-10-20):
 │   │   AI, automations, Steve, Vanessa and the ISA/EA handle 80%; Steven personally does only the 20% on the HALT list
 │   ├─ Daily Chief-of-Staff cycle — cloud routine, weekdays 6:25 AM PT: backlog → Automation / AI team / ISA-EA /
@@ -1012,6 +1013,28 @@ Ideas carried as proposals, not seats: the Summarizer's format (lead with the 1�
 plain prose, no link dumps) for Vanessa's morning brief, which is a live routine prompt so it is Steven's call; and
 per-agent monthly budgets with auto-pause, for Marcus and Derek.
 
+## 2026-11-02: every seat reports to Vanessa
+
+Steven asked that every agent be a master of its craft, work cross-functionally and in parallel, and report to
+Vanessa. All 185 roster seats now have a reporting line that ends at `vanessa-orchestrator` (checked: no orphan, no
+loop, no duplicate slug). The 58 tier-3 bench seats that had no lead were given the executive whose lane fits:
+
+| Exec | Seats given a lead | What they are |
+|---|---|---|
+| Derek (`cto-derek`) | 45 | code/language reviewers, build resolvers, network, docs, tests, refactor |
+| Nadia (`caio-nadia`) | 4 | agent and ML evaluation (GAN evaluator, MLE, RAG, conversation analyzer) |
+| Elon (`cto-innovator`) | 4 | R&D: GAN planner/generator, open-source fork and packaging |
+| Elena (`ciso-elena`) | 2 | security reviewer, open-source sanitizer |
+| Sofia (`cmo-sofia`) | 2 | marketing agent, SEO specialist |
+| Alexandra (`cco-alexandra`) | 1 | healthcare-safety reviewer |
+
+**The standard every seat file now states** (`brain/agentfiles.py`, regenerated with `bin/brain os agents --write`):
+its full reporting line up to Vanessa; that it is the subject-matter expert for its role — cites its source, states
+each fact's age, says "not in the brain" rather than guess, self-checks before handing back; that it works inside its
+pod and in parallel waves (at most 8 seats, at most 4 doing web research); that handoffs go through Vanessa's queue
+(`vanessaQueue`), never a side channel; and that it returns one clear deliverable plus open questions. The HALT rules
+are unchanged. Seats with a hand-written `.claude/agents/` file keep their own prompt.
+
 ## The named seats worth knowing by name
 
 - **Harrison** — Elite Mortgage Broker, the senior mortgage authority across six standing lanes (VA purchase, VA IRRRL, conventional/high-balance, FHA, self-employed/non-QM, jumbo/portfolio). Preparation and analysis only — the licensed act stays Steven's.
@@ -1057,7 +1080,7 @@ click that submits, sends, pays or signs stops for Steven. `bin/brain route` bri
 
 ## Proposal-only seats
 
-Nadia (CAIO) and Elon (CTO Innovator) never ship a change themselves — Nadia scans outward and writes the weekly Disruption Brief (replace/upgrade/adopt, graded ADOPT/PILOT/WATCH/IGNORE); Elon vets every item for feasibility, integration cost and security risk before it can enter the test queue. Both report to Steven, cc Vanessa. The LLM Council and the digital twin are proposal-only in the same sense — see `wiki/ai-team/tool-integration-status.md` for what that means for Orca, Laya, and 77skills specifically.
+Nadia (CAIO) and Elon (CTO Innovator) never ship a change themselves — Nadia scans outward and writes the weekly Disruption Brief (replace/upgrade/adopt, graded ADOPT/PILOT/WATCH/IGNORE); Elon vets every item for feasibility, integration cost and security risk before it can enter the test queue. Both report to Vanessa like every seat (2026-11-02); their proposals reach Steven through her. The LLM Council and the digital twin are proposal-only in the same sense — see `wiki/ai-team/tool-integration-status.md` for what that means for Orca, Laya, and 77skills specifically.
 
 ## See also
 
@@ -1420,7 +1443,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
+toolkit: 48 skills · 7 Claude mods (plugins) · 53 connectors (3 ok, 50 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -1443,7 +1466,8 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need at
 - `Zoho CRM` — *attention*: self-client keys prompt in the paste; API 403 until the profile tick
 - `TidyCal` — *attention*: token prompt in the paste + read-only proof call
 - `Arive` — *attention*: credentials prompt in the paste; no call yet
-- `Kapso WhatsApp (Vanessa (202) 474-5223)` — *attention*: plugin + MCP + keys scripted; whatsappKapso deck doc stale since 10-22: the Mac tasks are not registered
+- `Mac runner` — *attention*: synced 2026-11-03 05:08 UTC, logged in; most tasks ok. Last-run refused/error: brain-weekly-verify, health-coaching-weekly, mortgage-desk-weekly, ops-knowledge-graph (error), r14-content-pipeline, ste
+- `Kapso WhatsApp` — *pending*: number connected; deck doc last synced 2026-10-31 23:55 UTC; Mac sign-in and Keychain keys pending; vanessa-whatsapp-inbox task disabled
 - `Jarvis = Vanessa` — *attention*: scripted (engine, recorded voice, persona, brain in memory) in fix-mine 3b + connect-all 6a/6b
 - `Jarvis knows the Second Brain` — *attention*: ready — the same script indexes the brain's pages (no client pages, no meeting digests, no findings) into Jarvis memory; the 6D layers row shows "speaks as Vanessa" + the page count once run
 - `WhatsApp (Kapso)` — *pending*: number …5223 assigned; nothing reads it — runner tasks kapso-inbox-sync / vanessa-whatsapp-inbox not registered; Kapso MCP sign-in pending; keys in the Keychain (connect report #3)
@@ -1605,6 +1629,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need at
 - `Lofty` — *attention*: two paths on Mac 1 (2026-10-23 13:05 PT): the old local bridge is the MCP named lofty (stdio, ~/Applications/lofty-bridge/mcp-server.js, connected — the runner tasks use its mcp__lofty__* tools; it re
 - `ShowingTime · Showami · homes.com` — *attention*: read-only CLI-Anything wrappers scripted (connect-all 7d)
 - `CLI-Anything` — *attention*: harnesses for homes.com / ShowingTime / Showami / Lofty installed by the paste
+- `claude.ai connectors in this session` — *attention*: Gmail, Calendar, Drive, Docs, Sheets, Slides, Notion, Slack, Zoho CRM, Fieldy, TidyCal, Strava, Composio, Inkbox present in the tool list; ListConnectors not callable from this routine, so per-connect
 
 **MCP servers**
 - `kapso` — *attention*: WhatsApp Business Cloud API read/answer (sandbox number first) · registered — needs Steven's sign-in (/mcp → kapso)
@@ -1693,7 +1718,6 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 52 connectors (3 ok, 49 need at
 - `Ticor Title property search` — *attention*: no API (integrations/ticor/README.md); county records already feed the deck
 - `OpenFlowKit MCP + skill · pr-lens skill · archify skill (the four repos, 2026-10-23)` — *pending*: installed in the repo (skills) / pending on the Macs (MCP by connect-all 6g, archify by install-mac.sh); integrations/skill-packs/REGISTRY-2026-10-23.md
 - `AI-search presence (AEO/GEO/SEO)` — *attention*: planned — playbook written (wiki/real-estate-playbooks/ai-search-visibility.md); monthly presence audit task live (1st, 7:10 AM PT)
-- `Mac runner · message tasks all day` — *attention*: restart + hours widening scripted (fix-mine 4)
 - `AnyDesk (Mac 1)` — *attention*: installed; ID [phone masked]; Screen Recording + Accessibility + unattended password are Steven's
 - `Pabbly ↔ Kapso webhooks, six workflows` — *attention*: Kapso login proven; webhook URLs and the six workflows are clicks at connect.pabbly.com
 - `Laya routes, Orca launches the AI team` — *attention*: installed on Mac 1 (connect report #3); connect-orca-laya.sh --apply + agent-os/install-mac.sh --apply re-run by the paste; brain os check is the proof

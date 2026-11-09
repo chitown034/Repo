@@ -1,6 +1,6 @@
 # Integrations: connections register, Pabbly workflows, per-integration READMEs
 
-Second Brain export for NotebookLM · as of 2026-11-01 · bundle `12-integrations`.
+Second Brain export for NotebookLM · as of 2026-11-09 · bundle `12-integrations`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 
@@ -658,6 +658,19 @@ live truth once Steven has run it.
 | CLI-Anything | harnesses for homes.com / ShowingTime / Showami / Lofty installed by the paste | sign-ins only | Steven |
 | Mac runner · message tasks all day | restart + hours widening scripted (fix-mine 4) | `bash setup.sh`; `runnerctl login` stays his if it is signed out | Steven (paste) |
 
+| Weekly layers sync, 2026-11-02 | 13/13 SB Google Docs rewritten (02 via chunked fallback), Notion layer directory updated; `bin/brain layers`: even no, Command Deck DB stale (stamp 2026-10-22, 11 days vs 1-day cadence) | Mac deck writers: `bash setup.sh` (runner restart), then check the deck snapshot task | Steven (paste) |
+| Layers fix, 2026-11-02 | The Command Deck DB "stale" reading was a stamp bug: it read only the status notes in projects/command-deck.md. `brain/layers.py` now also reads the daily Big-moves date and `brain/deck-sync.json`; `bin/brain layers`: even yes | none | cloud (done) |
+
+## Connection status — daily rebuild, 2026-11-03 11:35 UTC (6D Brain routine, 7-day re-check)
+
+Read from the Command Deck documents (runnerStatus, whatsappKapso); claude.ai connectors seen in the session's tool list. No keys, no numbers.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Mac runner | synced 2026-11-03 05:08 UTC, logged in; most tasks ok. Last-run `refused`/`error`: brain-weekly-verify, health-coaching-weekly, mortgage-desk-weekly, ops-knowledge-graph (error), r14-content-pipeline, steve-twin-sweep, vanessa-ops-review, vanessa-sweep, weekly-self-update. Disabled: r8-apple-health-snapshot, r9-feed-freshness-sweep, strava-daily-sync, vanessa-whatsapp-inbox | none from the cloud; look at the refused tasks on the Mac | Steven |
+| Kapso WhatsApp | number connected; deck doc last synced 2026-10-31 23:55 UTC; Mac sign-in and Keychain keys pending; `vanessa-whatsapp-inbox` task disabled | `bash setup.sh`, then `claude` → `/mcp` → kapso | Steven |
+| claude.ai connectors in this session | Gmail, Calendar, Drive, Docs, Sheets, Slides, Notion, Slack, Zoho CRM, Fieldy, TidyCal, Strava, Composio, Inkbox present in the tool list; ListConnectors not callable from this routine, so per-connector auth was not re-tested | none | cloud |
+
 
 ---
 
@@ -705,6 +718,35 @@ two pairing commands. Pairing itself is yours: the link is a secret you paste on
 
 Install, log in, pair or spend; send anything to a client; decide a licensed matter; edit a live prompt or task.
 The Windows script was only syntax-checked here, never executed on Windows.
+
+
+---
+
+<!-- source file: integrations/ai-engineering-from-scratch/README.md -->
+# FILE: integrations/ai-engineering-from-scratch/README.md
+
+# AI Engineering from Scratch — learning curriculum
+
+Installed 2026-11-09 at Steven's request ("install https://github.com/rohitg00/ai-engineering-from-scratch.git").
+It's an open curriculum (MIT) by rohitg00: 542 lessons in 20 phases. It runs from setup and math foundations through
+transformers, RAG and retrieval, agents and MCP servers, evaluation, and Claude certification tracks. Each lesson has an
+explainer, code with tests, a quiz, and a reusable output (skill, prompt, agent or MCP server). It's also on the web at
+https://aiengineeringfromscratch.com.
+
+**Install on the Mac (one paste):**
+```
+cd ~/Repo && git pull -q && bash integrations/ai-engineering-from-scratch/install.sh
+```
+It lands at `~/Learning/ai-engineering-from-scratch` (about 250 MB). Add `--python` to also build the lab environment.
+That pulls PyTorch, Transformers and friends, several GB, and is only needed to run the coding labs.
+
+**How the team uses it:**
+- It's a **reference**, not a store: registered in `references/index.md`. It is never indexed into the brain, the vector
+  index or the knowledge graph.
+- Derek (CTO) and Nadia (CAIO) may cite a lesson when proposing how an agent, RAG pipeline or eval should be built.
+- A lesson's `outputs/` skill or agent is **not** installed automatically. Adopting one is a proposal that goes through
+  the code-validation gate like any other code.
+- The Claude certification track (`certifications/claude/`) is the useful starting point for Steven.
 
 
 ---
@@ -1911,6 +1953,12 @@ undocumented and may change without notice; personal/experimental use, at your o
 **Links (2026-10-23):** `bin/brain links` prints every front door; `brain/links.py` is the one place to add a surface, and the
 6D Brain, the layers register and the Notion directory read it.
 
+## Phone numbers in the Docs (Steven, 2026-11-02)
+
+The two business service lines on the exporter allow-list (`brain/export_notebooklm.py` `ALLOW`): Vanessa's Kapso WhatsApp
+line and her Inkbox iMessage line, are shown in the Google Docs on purpose ("show the two numbers"). Every other phone
+number and e-mail stays masked. The weekly sync sends the export files as they are, with no extra masking.
+
 
 ---
 
@@ -3015,6 +3063,41 @@ there is no webhook, no n8n and no extra port.
 3. `cd ~/Applications/openwa && docker compose down -v`. The `-v` also deletes its stored data.
 4. `security delete-generic-password -s openwa-admin-key` and
    `security delete-generic-password -s openwa-vanessa-operator-key`.
+
+
+---
+
+<!-- source file: integrations/perplexica/README.md -->
+# FILE: integrations/perplexica/README.md
+
+# Perplexica (Vane) — private AI search on the Mac
+
+Installed 2026-11-09 at Steven's request ("install https://github.com/BunsDev/perplexica-search-engine-ai.git").
+It's BunsDev's copy of **Vane** (formerly Perplexica, MIT licence), version 1.12.2. It's a self-hosted answer engine:
+SearxNG searches the web without tracking, and an LLM you choose writes a cited answer. It has speed, balanced and quality
+modes, academic and discussion sources, file upload, image/video search and a local search history.
+
+**Where it runs:** on the Mac, in Docker, at **http://localhost:3010**. It's bound to 127.0.0.1, so only the Mac can
+open it. Port 3000 belongs to OpenStock.
+
+**Install / update / start (one paste on the Mac):**
+```
+cd ~/Repo && git pull -q && bash integrations/perplexica/install.sh
+```
+Stop it with `bash integrations/perplexica/install.sh stop`. Docker Desktop must be installed and open first.
+
+**First run — Steven only:** open http://localhost:3010 → Settings → choose a model.
+- **Ollama:** free and fully local. Needs Ollama on the Mac. This is the only choice allowed for anything touching a client.
+- **Anthropic (Claude):** you paste your own API key into Perplexica's own Settings. The key stays on the Mac and is never
+  put in the repo.
+
+**Where it fits the brain:** it's a manual research tool for Steven and the Mac. It is **not** a recall level. Recall
+level 3 stays Claude web research (CLAUDE.md, Perplexity removed 2026-10-05). Never put a client's name, phone, loan
+detail or any other PII into a search: queries go out to public search engines through SearxNG.
+
+**Security review (2026-11-09):** source pinned to commit `348feca`. Checked the Dockerfile, entrypoint.sh and
+package.json scripts: no install-time hooks, no remote script downloads, and SearxNG runs inside the container. The image
+is built from the reviewed source rather than pulled from Docker Hub. Bump `PIN` in install.sh only after a re-review.
 
 
 ---
