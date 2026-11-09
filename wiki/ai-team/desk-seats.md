@@ -294,3 +294,16 @@ test graded in the page (340 questions; a pass at 70% completes the module's qui
 reading every chapter marks the module read. The New Rules & Laws desk gained 45 foundational laws (filter Type →
 Foundational law) next to the 113 recent changes, and the reference library grew to about 170 official sources.
 Items the writers could not confirm are marked "verify" in the text. Vanessa tool: `course_material`.
+
+## Community & New Development 411 (Maya, with Halle)
+
+Added 2026-11-09. Local Markets → Community & New Development 411 in the Broker Command Center covers 38 areas:
+Southwest Riverside (Temecula, Murrieta, Menifee, Winchester, French Valley) and 33 San Diego County areas from
+the coast to East County and the South Bay. Each area has an overview, neighborhoods and master plans, schools,
+property tax and Mello-Roos, HOA, commute, military access (2026 San Diego BAH where relevant), hazards and
+insurance, amenities, employers, pros and cons, and the growth pipeline. New homes merge 123 researched
+communities with the October builder snapshot and each builder's co-op registration rule. A local services
+directory lists 183 offices: utilities, permits, schools, hospitals, DMV, transit and military housing. Compare
+up to four areas; copy or email a client guide carrying the DRE and NMLS numbers. Research dated November 2026;
+items marked "verify" (most Mello-Roos amounts, some builder prices) must be confirmed. Vanessa tool:
+`community_411`.
