@@ -873,3 +873,17 @@ through Apple Health and the same export file once Steven switches the nutrition
   `loanMetrics` carries counts only (no names, phones or e-mails); a loan pipeline still holding the built-in sample rows is
   flagged "sample data".
 - **Owner.** Quincy (feeds), Derek (relay). **Status.** Done 2026-11-08; first relay pass run by hand the same day.
+
+## 2026-11-09 — Perplexica (Vane) and AI Engineering from Scratch installed on the Mac
+
+- **Request (Steven, verbatim).** *"install https://github.com/BunsDev/perplexica-search-engine-ai.git and
+  https://github.com/rohitg00/ai-engineering-from-scratch.git"*.
+- **Decision.** Both become Mac installs with a one-paste installer in `integrations/`. Perplexica (BunsDev's copy of
+  Vane 1.12.2) is built from the reviewed source at commit `348feca` and runs in Docker at http://localhost:3010, bound to
+  the Mac only (3000 is OpenStock's port). Steven picks its model in its own Settings: Ollama (local), or Anthropic with
+  his own key typed there. The curriculum is cloned to `~/Learning/ai-engineering-from-scratch`, with an optional
+  `--python` lab environment.
+- **Boundaries.** Perplexica is a manual research tool, not a recall level. Level 3 stays Claude web research. No client
+  detail ever goes into a Perplexica query. The curriculum is a reference, never indexed into the brain, and its lesson
+  outputs are not auto-installed.
+- **Owner.** Derek. **Status.** Installers committed 2026-11-09; they take effect when Steven pastes them on the Mac.
