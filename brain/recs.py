@@ -309,6 +309,7 @@ def learn(root: Path, decisions: list[dict], today: date | None = None) -> dict:
     today = today or date.today()
     known = {(e["id"], e.get("at")) for e in read_ledger(root)}
     known_dec = {(e["id"], str(e.get("at"))): e.get("decision") for e in read_ledger(root)}
+    last_dec = {k: str(v.get("decision")) for k, v in decisions_by_id(root).items()}  # 2026-11-10: a re-fed decision whose source re-stamps it daily counted again each day
     cats = {c["id"]: c["category"] for c in candidates(root, today=today)}
     w = load_weights(root)
     added = 0
@@ -324,6 +325,9 @@ def learn(root: Path, decisions: list[dict], today: date | None = None) -> dict:
             at = str(d.get("at") or today.isoformat())
             if (rid, at) in known or (rid, dec, at[:10]) in {(k[0], e, k[1][:10]) for k, e in known_dec.items()}:
                 continue  # the same decision on the same day counts once, however it is fed
+            if last_dec.get(rid) == dec:
+                continue  # unchanged decision re-fed with a newer stamp (the deck rewrites ts daily): nothing new to learn
+            last_dec[rid] = dec
             known_dec[(rid, at)] = dec
             known.add((rid, at))
             cat = d.get("category") or cats.get(rid) or "ops"
