@@ -1,6 +1,6 @@
 # Encyclopedia of the second brain
 
-Generated 2026-11-09 by `bin/brain encyclopedia` from `brain/index.json` — 443 pages, 587 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
+Generated 2026-11-10 by `bin/brain encyclopedia` from `brain/index.json` — 443 pages, 587 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
 
 Jump: [#](#other) · [A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#g) · [H](#h) · [I](#i) · [J](#j) · [K](#k) · [L](#l) · [M](#m) · [N](#n) · [O](#o) · [P](#p) · [R](#r) · [S](#s) · [T](#t) · [U](#u) · [V](#v) · [W](#w) · [Z](#z)
 
@@ -40,7 +40,7 @@ Steven's 501(c)(3). Mission: getting active-duty, veteran and hometown-hero fami
 `projects/nonprofit.md` · Projects · newest date stamp 2026-09-22  
 Sections: Status (2026-09-22) — honest, from the deck's own counters; Grant pipeline (live doc: grantPipeline); Who works it; Open work; Where the live data lives  
 Linked from: `context/about-me.md`  
-See also: `integrations/ai-engineering-from-scratch/README.md`, `integrations/anydesk/README.md`
+See also: `integrations/anydesk/README.md`, `wiki/mortgage-programs/va-affordability.md`
 
 ### Agent OS — every agent through Laya, Jarvis and Orca
 How the org chart works as an operating system: Laya picks the lane, Jarvis recalls first, Orca runs the agents side…  
@@ -76,7 +76,7 @@ See also: `context/competitors.md`, `integrations/APIS.md`
 ### AI Engineering from Scratch — learning curriculum
 Installed 2026-11-09 at Steven's request ("install https://github.com/rohitg00/ai-engineering-from-scratch.git").  
 `integrations/ai-engineering-from-scratch/README.md` · Integrations · newest date stamp 2026-11-09  
-Linked from: `docs/ENGINEERING-BRIEF.md`, `projects/nonprofit.md`  
+Linked from: `docs/ENGINEERING-BRIEF.md`  
 See also: `integrations/browser-agents/README.md`, `integrations/pivo/README.md`
 
 ### AI Team
@@ -366,9 +366,9 @@ Not ingested yet (2026-10-23). This file is written by bin/brain ingest claude-e
 `memory/claude-chats.md` · Memory · newest date stamp 2026-10-23  
 See also: `integrations/MCP-SERVERS.md`, `integrations/pivo/README.md`, `wiki/real-estate-playbooks/showing-operations.md`
 
-### Claude Code sessions — ledger (generated 2026-11-03; newest first)
+### Claude Code sessions — ledger (generated 2026-11-09; newest first)
 Every Claude Code session on Steven's account: title, when, status.  
-`docs/inventory/claude-sessions.md` · Loop & findings · newest date stamp 2026-11-03  
+`docs/inventory/claude-sessions.md` · Loop & findings · newest date stamp 2026-11-09  
 Linked from: `docs/CAIO-DISRUPTION-BRIEF.md`, `memory.md`  
 See also: `docs/inventory/cloud-routines.md`
 
@@ -793,13 +793,13 @@ See also: `wiki/ai-team/toolkit.md`
 
 ### Decisions — append-only, dated
 One entry per decision. Append, never edit and never delete.  
-`context/decisions.md` · Who & why · newest date stamp 2026-11-09  
+`context/decisions.md` · Who & why · newest date stamp 2026-11-10  
 Sections: 2026-09-22 — Lofty is the real-estate CRM; 2026-09-22 — Zoho CRM API access is Steven's to grant; 2026-09-22 — Model tiering; 2026-09-22 — Backup specification; 2026-09-22 — Apple Health moves to the Notion recipe; 2026-09-22 — You.com is retired; 2026-09-22 — Mentor naming drift: open, Steven's call; 2026-09-22 — Correction: the Lofty entry above was edited in place, and it overstated  
 See also: `knowledge-graph/schema.md`, `memory.md`, `wiki/dashboard-ops/process-coverage.md`
 
 ### Desk seats — seven report seats added 2026-10-22 (Opus 5.5 since 2026-11-08)
 Seven report-tier seats that prepare lists and drafts for Steven, the ISA and the executives.  
-`wiki/ai-team/desk-seats.md` · AI team · newest date stamp 2026-11-08  
+`wiki/ai-team/desk-seats.md` · AI team · newest date stamp 2026-11-09  
 Sections: Refi Watch Analyst; Sphere Nurture Coordinator; Voicemail & Inbox Triage; Document Intake Clerk; Open House Captain; Travel Desk; Meeting Scribe; Booking Concierge  
 See also: `AGENTS.md`, `wiki/ai-team/index.md`, `wiki/real-estate-playbooks/buyer-process.md`
 
@@ -1330,7 +1330,7 @@ See also: `integrations/CONNECTIONS.md`
 
 ### Mac runner task specs — the five new integration tasks
 Baseline 2026-09-12 · verified 2026-09-22.  
-`integrations/mac-task-specs.md` · Integrations · newest date stamp 2026-10-23  
+`integrations/mac-task-specs.md` · Integrations · newest date stamp 2026-11-10  
 Sections: 1. lofty-crm-sync — NEW; 2. zoho-crm-sync — NEW; 3. health-notion-sync — NEW; 4. cli-anything-install — install is SCRIPTABLE, and the seven wrappers are pre-built; 5. vanessa-whatsapp-inbox — NEW (spec 2026-09-22 · not installed · not live); 5b. kapso-inbox-sync — NEW (spec 2026-10-13 · not installed · supersedes §5/§5a, which were never live); 5c. vanessa-whatsapp-inbox — KAPSO MODE (spec 2026-10-13 · not installed · replaces §5/§5a for the same task name); Registration checklist (whoever adds these to the runner)  
 Linked from: `docs/NEEDS-STEVEN-R4.append.md`, `docs/SETUP-RUNBOOK.md`, `integrations/kapso/README.md`, `integrations/openwa/README.md`, `routines/isa-escalation-ladder.md`, `routines/mac-task-repairs.md`  
 See also: `integrations/vanessa-voice-everywhere.md`
@@ -1473,8 +1473,8 @@ See also: `always-on/README.md`
 PCS-driven transactions: the ownership-versus-rent question, base-area intelligence, and the dual-licensed referral…  
 `wiki/real-estate-playbooks/military-relocation.md` · Real-estate wiki · newest date stamp undated  
 Sections: The seat that owns this; The VA house-hack mechanism (why PCS and VA eligibility connect); The dual-licensed referral opportunity; Known gap — flag rather than guess; See also  
-Linked from: `wiki/mortgage-programs/va-affordability.md`, `wiki/mortgage-programs/va-eligibility.md`  
-See also: `context/about-me.md`
+Linked from: `wiki/mortgage-programs/va-eligibility.md`  
+See also: `context/about-me.md`, `wiki/mortgage-programs/va-affordability.md`
 
 ### Model tiering and dispatch
 Which model each seat runs on, and the rules that bound how many run at once — Steven's decision, recorded 2026-09-22.  
@@ -2099,8 +2099,8 @@ See also: `always-on/README.md`
 
 ### Second Brain — L1 Router
 Read this file in full. Read nothing else until the routing table sends you there.  
-`CLAUDE.md` · Router · newest date stamp 2026-11-08  
-Sections: Routing table — load exactly ONE leaf, then answer; Recall order — stop at the first level that answers; Token rules; Model tiering (Steven's decisions, 2026-09-22; executives to Opus 5.5 on 2026-09-28; research to Claude on 2026-10-05; every seat to Opus 5.5 on 2026-11-08); Sub-agent dispatch; HALT — stop, write a Needs-Steven packet, do not proceed  
+`CLAUDE.md` · Router · newest date stamp 2026-11-10  
+Sections: Routing table — load exactly ONE leaf, then answer; Recall order — stop at the first level that answers; Token rules; Model tiering (Steven's decisions, 2026-09-22; executives to Opus 5.5 on 2026-09-28; research to Claude on 2026-10-05; every seat to Opus 5.5 on 2026-11-08; Vanessa to Fable 5.2 on 2026-11-10); Sub-agent dispatch; HALT — stop, write a Needs-Steven packet, do not proceed  
 Linked from: `AGENTS.md`, `references/index.md`  
 See also: `OPTIMIZATION.md`, `wiki/ai-team/model-tiering-dispatch.md`, `wiki/index.md`
 
@@ -2330,8 +2330,8 @@ See also: `docs/ROUTINE-BUDGET-2026-10-09.md`
 How a VA file actually qualifies on residual income rather than DTI alone: the Six-Step Pre-Approval Analysis, BAH/BAS…  
 `wiki/mortgage-programs/va-affordability.md` · Mortgage wiki · newest date stamp undated  
 Sections: The Six-Step Pre-Approval Analysis; Residual income mechanics; Seller concessions and closing costs; Duty-station and BAH considerations; See also  
-Linked from: `wiki/mortgage-programs/fha-usda.md`  
-See also: `wiki/mortgage-programs/va-eligibility.md`, `wiki/real-estate-playbooks/military-relocation.md`
+Linked from: `projects/nonprofit.md`, `wiki/mortgage-programs/fha-usda.md`, `wiki/real-estate-playbooks/military-relocation.md`  
+See also: `wiki/mortgage-programs/va-eligibility.md`
 
 ### VA Command Center — weekly avatar content drafts
 Sofia · cron CRON_TZ=America/Los_Angeles 58 14 * * 0 · on · SUCCEEDED @ 2026-10-18T21:58  
