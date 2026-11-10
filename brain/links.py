@@ -31,6 +31,7 @@ LINKS: list[dict] = [
     {"key": "venture_dashboard", "label": "Venture Dashboard", "url": "https://claude.ai/artifact/5ejZqskuueBj7ZCBaGzoCi", "store": None, "layer": None},
     {"key": "retirement_dashboard", "label": "Retirement Dashboard", "url": "https://claude.ai/artifact/QKRB5uNwSuEyxd7C9obPGf", "store": None, "layer": None},
     {"key": "loyalty_status_match", "label": "Loyalty & Status Match", "url": "https://claude.ai/artifact/NTpiHSCeU2Kp4jSrzcsBJC", "store": None, "layer": None},
+    {"key": "nonprofit_grant_dashboard", "label": "Non Profit Grant Dashboard", "url": "https://claude.ai/artifact/CaZx17jwyUYuJFPUFHhJ3t", "store": None, "layer": None},
     {"key": "music_school", "label": "Music School", "url": "https://claude.ai/artifact/XSK8iDXgrJ7U5BGPgHKxcy", "store": None, "layer": None},
     {"key": "ai_academy", "label": "AI Academy", "url": "https://claude.ai/artifact/NNYAh4ZhDtNU87srbNUZoH", "store": None, "layer": None},
     {"key": "health_wellness", "label": "Health and Wellness", "url": "https://claude.ai/artifact/Rmexwbuc7nqnVUsFzjbMrV", "store": None, "layer": None},
