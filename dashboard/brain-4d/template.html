@@ -971,7 +971,7 @@ try { if (innerWidth <= 720) { $("lensWrap").open = false; $("chipsWrap").open =
 // stats (from the brain's own loop report)
 function stat(label, value, cls) { const d = document.createElement("div"); d.className = "stat " + (cls || ""); d.innerHTML = "<b></b><i></i>"; d.querySelector("b").textContent = value; d.querySelector("i").textContent = label; return d; }
 $("stats").replaceChildren(
-  ...(AGENTS ? [stat("AI agents", String(AGENTS.total), "good")] : []),
+  ...(AGENTS ? [stat("AI agents · " + Object.entries(AGENTS.byModel || {}).sort((x, y) => y[1] - x[1]).map(([m, n]) => n + " " + m).join(" + "), String(AGENTS.total), "good")] : []),
   stat("pages", String(G.files)), stat("sections", String(G.sections)), stat("links", String(links.length)),
   stat("test Qs right", `${LOOP.bench_correct}/${LOOP.bench_total}`, LOOP.bench_correct >= LOOP.bench_total - 2 ? "good" : "warn"),
   stat("org seats found", `${LOOP.org_covered}/${LOOP.org_total}`, LOOP.org_covered === LOOP.org_total ? "good" : "warn"),
