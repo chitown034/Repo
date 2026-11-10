@@ -5,7 +5,7 @@ description: "The relentless 'Grill Me' interview: pulls what only Steven knows 
 
 # interview-me — Grill Me knowledge extraction (Second Brain L4 feed)
 
-Seat: runs under Vanessa (Claude Fable 5.1 chairs). The interview itself is a judgment seat —
+Seat: runs under Vanessa (Claude Fable 5.2 chairs). The interview itself is a judgment seat —
 **Claude Opus 5.5**. No research sub-agents, no web search: the only source is Steven.
 
 ## Trigger

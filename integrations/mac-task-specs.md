@@ -443,7 +443,7 @@ made. Shape: `docs/data/cliAnythingStatus.doc.json` (template). The task that fi
 |---|---|
 | **Cron (PT)** | `4-59/10 * * * *` — :04, :14, :24, :34, :44, :54. Checked against all **59** tasks in the live `runnerStatus` doc (the repo snapshot in `docs/inventory/mac-runner-status.md` is older): nothing else holds those minutes (iMessage inbox is `*/10` at :00, Discord `*/5`) |
 | **Cron (UTC)** | same minutes, every hour |
-| **Model** | Same seat as `vanessa-imessage-inbox` — Vanessa answers, so Fable 5.1 per the 2026-09-22 tiering; execution sub-steps on Sonnet 5 |
+| **Model** | Same seat as `vanessa-imessage-inbox` — Vanessa answers, so Fable 5.2 per the tiering (Vanessa moved to Fable 5.2 on 2026-11-10); execution sub-steps on Sonnet 5 |
 | **Skill / handler** | **The same inbound handler the iMessage task uses**: `vanessa-orchestrator` intake → answer as Vanessa with the AI team → HALT list → `agentInbox` log. Only the transport differs. Never `whatsapp-cli monitor auto-reply` — it calls `claude -p` itself and bypasses the handler, the HALT list and the log |
 | **Tools** | `Bash` allow-listed to exactly `whatsapp-cli --json session status`, `whatsapp-cli --json monitor since <ts> --chat <name>`, `whatsapp-cli --json message get <name> --after <iso>`, `whatsapp-cli message send <name> <text>` · `Artifact` `read_db` + `write_db`, collection `state` · otherwise identical to `vanessa-imessage-inbox` |
 | **Reads** | `whatsappInboxState` `{v:{chatName, allowFrom:"<the allow-listed sender JID>", lastSeenTime, lastSeenPk, pending:[{id,text,attempts}]}}`, then `monitor since <lastSeenTime>` filtered to `is_from_me:false` **and** `sender == allowFrom` |
@@ -480,7 +480,7 @@ made. Shape: `docs/data/cliAnythingStatus.doc.json` (template). The task that fi
 | | |
 |---|---|
 | **Cron (PT)** | `2-59/5 * * * *` — 5-minute poll; re-check against the live `runnerStatus` before registering |
-| **Model** | Vanessa answers, so Fable 5.1 per the 2026-09-22 tiering; execution sub-steps on Sonnet 5 |
+| **Model** | Vanessa answers, so Fable 5.2 per the tiering (Vanessa moved to Fable 5.2 on 2026-11-10); execution sub-steps on Sonnet 5 |
 | **Tools** | `Bash` allow-listed to exactly `python3 integrations/kapso/kapso-fetch.py --inbound --since <iso>` and `python3 integrations/kapso/kapso-send.py --text - --phone-number-id <the inbound message's phone_number_id>` with the reply on stdin (a quoted heredoc: `<<'REPLY'`) · `ArtifactData` get/set on collection `state`, docs `whatsappInboxState` and `agentInbox` (pin `if_version`) |
 | **Reads** | `whatsappInboxState.v.lastSeenAt` (ISO; empty on first run = the helper treats it as now, so nothing older than the first run is answered) |
 | **Writes** | `whatsappInboxState` `{v:{lastSeenAt, lastRunAt, answered, ignored}}`; `agentInbox` items `channel:"whatsapp"` in the iMessage shape — no number, body cut at 80 characters |

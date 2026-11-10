@@ -27,7 +27,7 @@ Status as of 2026-09-22: `loop-engineering-weekly` enabled, **never run**; `nigh
 registered self-test must be offline, dispatch no sub-agents, and finish in ≤60 s.
 
 ## Models
-Vanessa chairs on **Claude Fable 5.1**; Elon (CTO Innovator), `sandbox-qa`, `stress-test-engineer`
+Vanessa chairs on **Claude Fable 5.2**; Elon (CTO Innovator), `sandbox-qa`, `stress-test-engineer`
 and the prompt review run on **Claude Opus 5.5**; report/compile seats on **Claude Sonnet 5**;
 research on **Claude web research** — Sonnet 5 with WebSearch/WebFetch on Steven's Claude subscription
 (Perplexity removed 2026-10-05), ≤4 web-research sub-agents per wave. Sub-agent fan-out ≤8.

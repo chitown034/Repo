@@ -12,7 +12,7 @@ the separate `vanessa-broker` skill — this one is the orchestration layer.
 ## Model tiering (Steven, 2026-09-22)
 | Layer | Model | Who |
 |---|---|---|
-| Orchestration, council chair, final synthesis | **Claude Fable 5.1** (masterminds) | Vanessa |
+| Orchestration, council chair, final synthesis | **Claude Fable 5.2** (masterminds) | Vanessa |
 | Executive / judgment seats | **Claude Opus 5.5** | Victor (CRO), Sofia (CMO), Marcus (CFO), Derek (CTO), Alexandra (CCO), Elena (CISO), Nadia (CAIO), Elon (CTO Innovator) |
 | Execution / report seats, benches | **Claude Sonnet 5** | tier-2/3 reports (bookkeeper, automation-engineer, buyer-matching-engine, …) |
 | Research heavy lifting | **Claude web research** — Sonnet 5 with WebSearch/WebFetch on Steven's Claude subscription (Perplexity removed 2026-10-05) | research waves |
@@ -160,7 +160,7 @@ error 2026-09-15).
    never a second file.
 4. Stall policy: with a stub seat that always returns empty, assert exactly 2 retries, then one
    re-route, then one `twinQueue` packet built in memory (not written) with all packet keys present.
-5. Model routing: assert Vanessa→Fable 5.1, an executive seat→Opus 5.5, a tier-2 report→Sonnet 5,
+5. Model routing: assert Vanessa→Fable 5.2, an executive seat→Opus 5.5, a tier-2 report→Sonnet 5,
    a research task→Sonnet 5 with WebSearch/WebFetch (Claude web research).
 6. Output shapes: build one `vanessaRuns` entry and one four-COA `vanessaRecommendations` entry in
    memory; assert `coas.length === 4` and `recommendedIndex` is in range. Write nothing.

@@ -6,7 +6,7 @@ Which model each seat runs on, and the rules that bound how many run at once —
 
 | Seat | Model |
 |---|---|
-| Vanessa — orchestration, council chair, final synthesis | Claude Fable 5.1 masterminds |
+| Vanessa — orchestration, council chair, final synthesis | Claude Fable 5.2 masterminds |
 | Executives (Marcus, Sofia, Derek, Alexandra, Nadia, Victor, Elena, Elon) | Claude Opus 5.5 (since 2026-09-28) |
 | Reports, benches, execution and report-only seats | Claude Opus 5.5 (Steven, 2026-11-08: every seat on Opus 5.5) |
 | Research heavy lifting | Claude web research — Opus 5.5 with WebSearch/WebFetch on Steven's subscription (Perplexity removed 2026-10-05) |

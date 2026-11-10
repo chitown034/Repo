@@ -28,7 +28,7 @@ hold the actual detail once you know which seat or layer you need.
 
 | Owns (ask about) | Seat | Model tier |
 |---|---|---|
-| Anything at all, first | **Vanessa** — Chief of Staff / COO, orchestrator, council chair | Fable 5.1 masterminds |
+| Anything at all, first | **Vanessa** — Chief of Staff / COO, orchestrator, council chair | Fable 5.2 masterminds |
 | Net worth, income, budget, liabilities, close | **Marcus** — CFO | Opus 5.5 |
 | Marketing, campaigns, content, social, email | **Sofia** — CMO | Opus 5.5 |
 | Automation health, connectors, stack, what is broken | **Derek** — CTO | Opus 5.5 |

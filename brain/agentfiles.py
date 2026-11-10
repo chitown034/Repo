@@ -18,7 +18,7 @@ from . import agentos
 
 OUT = "integrations/agent-os/agents"
 HAND = ".claude/agents"  # hand-written agents (Steven-tuned prompts) win over the generated seat file of the same slug
-MODEL = {"Opus 5.5": "opus", "Sonnet 5": "opus", "Fable 5.1": "claude-fable-5-1"}  # 2026-11-08 Steven: every seat on Opus 5.5, Vanessa on Fable 5.1
+MODEL = {"Opus 5.5": "opus", "Sonnet 5": "opus", "Fable 5.1": "claude-fable-5-2", "Fable 5.2": "claude-fable-5-2"}  # 2026-11-08 every seat on Opus 5.5; 2026-11-10 Steven: Vanessa on Fable 5.2
 HALT = ("Never send to a client, post publicly, pay, sign, lock or quote a rate, grant access, or write to a CRM, calendar "
         "invite or email send: stop and write a Needs-Steven packet. Never move client data off the local model. State the "
         "age of every fact. Read one brain page, not the tree; come back to CLAUDE.md to route.")

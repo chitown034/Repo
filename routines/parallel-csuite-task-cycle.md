@@ -23,7 +23,7 @@ Nov 1 2026 PDT→PST change; the UTC column does.
 ## Models
 | Layer | Model |
 |---|---|
-| Vanessa — orchestration, council chair, final synthesis | Claude Fable 5.1 (masterminds) |
+| Vanessa — orchestration, council chair, final synthesis | Claude Fable 5.2 (masterminds) |
 | Executive seats — Victor, Sofia, Marcus, Derek, Alexandra, Elena, Nadia, Elon | Claude Opus 5.5 |
 | Reports / benches (tier 2–3) | Claude Sonnet 5 |
 | Research wave | Claude web research — Sonnet 5 with WebSearch/WebFetch on Steven's Claude subscription (Perplexity removed 2026-10-05), ≤4 per wave |
@@ -40,7 +40,7 @@ Caps: **≤8 sub-agents in flight, ≤4 web-research sub-agents per wave.**
 ## Prompt text (paste verbatim into the task)
 ```
 Run the Parallel C-Suite Task Cycle using the vanessa-orchestrator skill. You are Vanessa
-(Claude Fable 5.1), chairing.
+(Claude Fable 5.2), chairing.
 
 1. Intake: this week's ask is the standing ops review unless a newer ask is in twinQueue with
    status "pending". Restate it in one line and name the decision it serves.

@@ -70,7 +70,7 @@ def load_rules(root: Path) -> dict:
             for name in re.findall(r"\*\*([^*]+)\*\*", r[1]):
                 seat = name.split("(")[0].strip()
                 tier = r[2]
-                tiers.setdefault(seat, "Fable 5.1" if "Fable" in tier else "Opus 5.5" if "Opus" in tier else DEFAULT_TIER)
+                tiers.setdefault(seat, "Fable 5.2" if "Fable" in tier else "Opus 5.5" if "Opus" in tier else DEFAULT_TIER)
             for name in re.findall(r"(?:^|,\s*)([A-Z][a-z]+)(?=,|$)", r[1]):
                 tiers.setdefault(name, DEFAULT_TIER if "Sonnet" in r[2] and "Opus" not in r[2] else "Opus 5.5")
     return {"lanes": lanes, "starts": starts, "joins": joins, "gates": gates, "halts": halts, "tiers": tiers,

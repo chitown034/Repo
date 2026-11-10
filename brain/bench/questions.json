@@ -6,7 +6,7 @@
    "kind": "claude",
    "question": "Which model does Vanessa run on?",
    "expected_file": "CLAUDE.md",
-   "expected_phrase": "Fable 5.1 masterminds",
+   "expected_phrase": "Fable 5.2 masterminds",
    "alt_files": [
     "context/decisions.md",
     "wiki/ai-team/index.md"

@@ -74,11 +74,11 @@ Never serve a cached answer past its TTL without saying its age. Rules: `recall-
 - Escalating a level costs roughly 5–10x the previous one. Say out loud when you escalate and why.
 - State the age of every fact you report. "As of <the doc's own stamp>", never today's date by default.
 
-## Model tiering (Steven's decisions, 2026-09-22; executives to Opus 5.5 on 2026-09-28; research to Claude on 2026-10-05; every seat to Opus 5.5 on 2026-11-08)
+## Model tiering (Steven's decisions, 2026-09-22; executives to Opus 5.5 on 2026-09-28; research to Claude on 2026-10-05; every seat to Opus 5.5 on 2026-11-08; Vanessa to Fable 5.2 on 2026-11-10)
 
 | Seat | Model |
 |---|---|
-| Vanessa — orchestration, council chair, final synthesis | Claude Fable 5.1 masterminds |
+| Vanessa — orchestration, council chair, final synthesis | Claude Fable 5.2 masterminds |
 | Executives (Marcus, Sofia, Derek, Alexandra, Nadia, Victor, Elena, Elon) | Claude Opus 5.5 |
 | Reports, benches, execution and report-only seats | Claude Opus 5.5 |
 | Research heavy lifting | Claude web research — Opus 5.5 with WebSearch/WebFetch on Steven's Claude subscription (Perplexity removed 2026-10-05) |

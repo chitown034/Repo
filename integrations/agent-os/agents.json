@@ -5273,7 +5273,7 @@
   {
    "slug": "vanessa-orchestrator",
    "tier": "1",
-   "model": "Fable 5.1",
+   "model": "Fable 5.2",
    "lead": null,
    "role": "Vanessa as AI-agent ORCHESTRATOR for Steven Shearrill's AI Team.",
    "laya": {

@@ -856,6 +856,7 @@ through Apple Health and the same export file once Steven switches the nutrition
   in parallel waves of at most eight through one queue (vanessaQueue).
 - **Cost note.** Opus on every seat costs more per run than Sonnet did; Marcus reports the AI team's monthly cost.
 - **Owner.** Vanessa (dispatch), Derek (agent files), Nadia (tiering). **Status.** Done 2026-11-08.
+- **Superseded in part 2026-11-10:** Vanessa now runs on Claude Fable 5.2 (see that entry).
 
 ## 2026-11-08 — One mirror across the Command Deck, the Broker Command Center and the Loan Dashboard
 
@@ -887,3 +888,13 @@ through Apple Health and the same export file once Steven switches the nutrition
   detail ever goes into a Perplexica query. The curriculum is a reference, never indexed into the brain, and its lesson
   outputs are not auto-installed.
 - **Owner.** Derek. **Status.** Installers committed 2026-11-09; they take effect when Steven pastes them on the Mac.
+
+## 2026-11-10 — Which model Vanessa runs on: Claude Fable 5.2 masterminds (was Fable 5.1)
+
+- **Request (Steven, verbatim).** *"update vanessa to fable 5.2 update ai org chart and then update 6d brain and total agents"*.
+- **Decision.** Vanessa (orchestration, council chair, final synthesis) runs on **Claude Fable 5.2 masterminds**
+  (`claude-fable-5-2`, the successor to Fable 5.1 at a lower price). The other 184 seats stay on Opus 5.5. CLAUDE.md
+  tiering, `brain/agentfiles.py`, `brain/agentos.py`, `brain/route.py`, the roster-generated agent files and manifest,
+  the skills and routines that name her model, the org chart on all three dashboards and the 6D Brain follow.
+- **Team count.** 185 AI agents: 184 Opus 5.5 + 1 Fable 5.2.
+- **Owner.** Derek (agent files), Nadia (tiering). **Status.** Done 2026-11-10; Mac agent files take it at the next repo-sync paste.
