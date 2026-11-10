@@ -431,6 +431,7 @@ function defaults(){return{
   {ex:true,idea:"PCS mid-term rental management",market:3,fit:5,capital:4,speed:4,vet:4}],
  ...EXTRA_DEFAULTS(),
  ...EXTRA_DEFAULTS2(),
+ ...EXTRA_DEFAULTS3(),
  calc:{price:1800000,sde:520000,down:10,seller:10,rate:10.5,years:10,srate:6,syears:7,mgr:90000,closing:3}
 };}
 function load(){try{const r=localStorage.getItem(LS);if(r){return Object.assign(defaults(),JSON.parse(r));}}catch(e){}return defaults();}
@@ -505,6 +506,7 @@ VIEWS.overview=()=>{
  (S.loans||[]).forEach(x=>x.close&&!["Funded","Withdrawn"].includes(x.stage)&&dl.push([x.close,"Loan close",x.borrower,x.program+" · "+x.stage]));
  (S.clients||[]).forEach(x=>x.review&&dl.push([x.review,"Client review",x.household,x.stage]));
  (S.rocks||[]).forEach(x=>x.due&&x.status!=="Done"&&dl.push([x.due,"Rock",x.rock,x.venture]));
+ (S.certs||[]).forEach(x=>x.expires&&dl.push([x.expires,"Cert expires",x.cert,x.entity]));
  dl.sort((a,b)=>a[0].localeCompare(b[0]));
  const upcoming=dl.filter(d=>{const n=daysUntil(d[0]);return n!==null&&n>=-7&&n<=60;}).slice(0,10);
  // chart: funding by stage
@@ -1316,6 +1318,123 @@ document.addEventListener("change",e=>{const t=e.target;if(!t.dataset||!t.datase
  document.querySelectorAll(`tr[data-scrow="${i}"] input.wk`).forEach(inp=>{inp.closest("td").className=scClass(r,inp.value===""?"":+inp.value);});const sp=document.querySelector(`[data-spark="${i}"]`);if(sp)sp.innerHTML=spark(r,wks);});
 document.addEventListener("click",e=>{if(!e.target.closest("#addScore"))return;S.score.push({measure:"",venture:"All",owner:"",goal:0,dir:">=",w:{}});save();const y=window.scrollY;route();window.scrollTo(0,y);const inp=document.getElementById(`score-${S.score.length-1}-measure`);if(inp)inp.focus();});
 (function(){const x=EXTRA_DEFAULTS2();for(const k in x){if(S[k]==null)S[k]=x[k];}})();
+
+/* =========================================================
+   ROUND 4: CERTIFICATIONS & PREFERENCES
+   ========================================================= */
+function EXTRA_DEFAULTS3(){return{
+ certs:[
+  {ex:true,cert:"SAM.gov registration (UEI + CAGE)",entity:"Gov Contracts & Grants",status:"In progress",submitted:today(-3),approved:"",expires:""},
+  {ex:true,cert:"VetCert — SDVOSB",entity:"Gov Contracts & Grants",status:"Gathering documents",submitted:"",approved:"",expires:""},
+  {ex:true,cert:"State disabled-veteran business certification",entity:"Gov Contracts & Grants",status:"Researching",submitted:"",approved:"",expires:""},
+  {ex:true,cert:"NVBDC SDVOB (corporate supplier diversity)",entity:"AI Company",status:"Researching",submitted:"",approved:"",expires:""}],
+ vidprog:[
+  {program:"VetCert (SBA VOSB/SDVOSB certification)",type:"Certification",link:"https://veterans.certify.sba.gov",source:"Mindy video description",status:"To do"},
+  {program:"VR&E Chapter 31 self-employment track",type:"Funding / training",link:"https://www.va.gov/careers-employment/vocational-rehabilitation/programs/self-employment/",source:"Mindy video description",status:"To do"},
+  {program:"Boots to Business",type:"Training",link:"https://www.sba.gov/sba-learning-platform/boots-business",source:"Mindy video description",status:"To do"},
+  {program:"Veterans Business Outreach Center (VBOC)",type:"Counseling",link:"https://www.sba.gov/local-assistance/resource-partners/veterans-business-outreach-center-vboc-program",source:"Mindy video description",status:"To do"},
+  {program:"SBA veteran contracting programs",type:"Contracting",link:"https://www.sba.gov/federal-contracting/contracting-assistance-programs/veteran-contracting-assistance-programs",source:"Mindy video description",status:"To do"},
+  {program:"Mindy free guide: winning your first federal contract",type:"Guide",link:"https://getmindy.ai/free-resources",source:"Mindy video description",status:"To do"}]
+};}
+
+const CERT_TABLE=[
+ ["SAM.gov registration","Every business that wants federal money","Required before any federal contract, grant or certification","sam.gov","Free","Renew every 12 months"],
+ ["VetCert: SDVOSB","51%+ owned and controlled by veterans with a service-connected disability (VA or DoD determination)","Set-asides and sole-source awards at every agency; top priority at the VA (Vets First); 5% government-wide goal","veterans.certify.sba.gov","Free","3 years"],
+ ["VetCert: VOSB","51%+ owned and controlled by veterans","VA set-asides under Vets First; prime contractors' veteran subcontracting goals","veterans.certify.sba.gov","Free","3 years"],
+ ["8(a) Business Development","Socially and economically disadvantaged owner; disability can be part of an individual social-disadvantage showing","Set-asides, sole-source awards, mentor-protégé, business development help","certify.sba.gov","Free","9 years, one time only"],
+ ["HUBZone","Principal office in a HUBZone and 35% of employees living in one","Set-asides and a 10% price evaluation preference in full and open competitions","certify.sba.gov","Free","Periodic recertification"],
+ ["WOSB / EDWOSB","51%+ owned and controlled by women (e.g., a military spouse's business)","Set-asides in eligible NAICS codes","certify.sba.gov","Free","Periodic recertification"],
+ ["SBA Mentor-Protégé","Any small business paired with an experienced mentor","Joint ventures can bid on the protégé's set-asides","certify.sba.gov","Free","Agreement term"],
+ ["State veteran / disabled-veteran certification","Rules vary by state (often VA disability rating required)","State contract set-asides and goals (e.g., California DVBE, New York SDVOB, Texas HUB, Florida VBE)","Your state procurement office","Usually free","Varies"],
+ ["City / county / transit certifications","Varies by locality","Local contract goals, often on construction and services","Your city or county procurement office","Usually free","Varies"],
+ ["NVBDC VOB / SDVOB","Veteran or service-disabled veteran owners","Recognized by corporate supplier diversity programs (large companies that buy from veteran firms)","nvbdc.org","Fee","Annual"],
+ ["Disability:IN DOBE / SDV-DOBE","51%+ owned by people with disabilities, including service-disabled veterans","Corporate supplier diversity programs","disabilityin.org","Fee (often waived for SDVs; check)","Periodic"]];
+
+function certStatusSum(){const C=S.certs;const n=s=>C.filter(c=>c.status===s).length;const exp=C.filter(c=>{const d=daysUntil(c.expires);return d!=null&&d>=0&&d<=120;}).length;return sumStrip([["Certifications tracked",C.length],["Approved",n("Approved")],["Submitted",n("Submitted")+n("Under review")],["Expiring ≤ 120 days",exp]]);}
+
+VIEWS.certs=()=>`
+ <div class="sec"><div class="eyebrow">Get preference</div><h2>Certifications & preferences</h2><p class="lede">How to get certified as a service-disabled veteran-owned business, apply for 8(a), and stack state, local and corporate certifications. Below that: where being a veteran actually gets you better terms on loans and grants.</p></div>
+ <div class="callout"><b>Where certifications help, and where they don't.</b> Certifications give you preference in <b>contracts</b>: set-asides, sole-source awards and price preferences. They generally don't make you eligible for federal <b>grants</b>, which mostly go to nonprofits, researchers and governments. For <b>loans</b>, being a veteran-owned business (51%+) can lower SBA fees, but you don't need a certification for that. Private veteran grants and competitions are real, but they're small and competitive.</div>
+ <div class="sec"><h3>Your certification tracker</h3>
+ ${table("certs",[{k:"cert",label:"Certification",wide:true},{k:"entity",label:"Entity",type:"select",opts:VNAMES},{k:"status",label:"Status",type:"select",opts:["Researching","Gathering documents","Submitted","Under review","More info requested","Approved","Denied","Renewal due"]},{k:"submitted",label:"Submitted",type:"date"},{k:"approved",label:"Approved",type:"date"},{k:"expires",label:"Expires",type:"date"}],{sum:certStatusSum})}</div>
+ <div class="sec"><h3>Certification menu</h3>${staticTable(["Certification","Who qualifies","What it gets you","Apply at","Cost","Valid for"],CERT_TABLE,true)}</div>
+
+ <div class="cols">
+  <div class="panel sec"><h3>Step by step: SDVOSB through VetCert</h3>
+   <ol class="steps">${["Get or update your VA disability rating; you need a service-connected disability determination (any rating) from the VA or DoD","Download your DD-214 and the VA benefit summary / rating decision letter from VA.gov","Form the company so that you own at least 51% directly and unconditionally (not through your HoldCo)","Write the operating agreement so you control day-to-day operations and long-term decisions with no veto rights for minority owners","Register the company in SAM.gov (free) and wait for it to go active","Create a login.gov account and open MySBA Certifications at veterans.certify.sba.gov","Upload documents (list at right) and answer the ownership and control questions","Answer any SBA requests for information quickly; slow replies are the main cause of delay","Once approved, update SAM.gov and your SBA Small Business Search profile, and add the status to your capability statement","Calendar the renewal: VetCert lasts 3 years, and renewals now run through MySBA Certifications"].map((s,i)=>`<li>${checkItem("vc:"+i,s)}</li>`).join("")}</ol></div>
+  <div class="panel sec"><h3>VetCert document checklist</h3>${phaseList("vcd",["DD-214 (member 4 copy) for each veteran owner","VA disability rating decision or benefit summary letter (SDVOSB)","Government-issued photo ID","Articles of organization or incorporation","Signed operating agreement or bylaws, with all amendments","Ownership ledger or stock certificates","Meeting minutes or written consents showing who decides","Business and personal federal tax returns (recent years)","Resumes for owners and key managers","Leases, loan agreements and any agreements with other firms that could affect control","Licenses held by the business and who holds them","Bank signature cards showing who controls the money"])}
+   <p class="small muted">SBA's target is 90 days for a complete package. SBA reported average processing near 12 days after clearing its backlog in late 2025. Check the portal for current times.</p></div>
+ </div>
+
+ <div class="cols">
+  <div class="panel sec"><h3>Step by step: 8(a) Business Development</h3>
+   <div class="callout bad" style="margin-bottom:10px"><b>2026 changes.</b> SBA began a full audit of the 8(a) program and suspended more than 1,000 firms in January 2026. In June 2026 it proposed replacing the old presumption of social disadvantage with an individual, evidence-based test; reports say a final rule followed in late summer 2026. Check the current 13 CFR 124.103 and SBA guidance before you apply.</div>
+   <ol class="steps">${["Confirm the business is small for its main NAICS code and has typically been operating at least 2 years (SBA can waive this in some cases)","Check economic disadvantage: personal net worth under $850,000 (excluding your equity in the business and your home), plus SBA limits on average income and total assets","Build your social-disadvantage case: being a veteran alone does not qualify, but a service-connected disability can be part of a documented showing of disadvantage","Gather evidence of specific incidents where disability or another basis held you back in education, employment or business (dates, people, outcomes, documents)","Write the narrative with a government contracts attorney or your APEX Accelerator counselor","Make sure you own 51%+ and control the company, work in it full time, and haven't used 8(a) eligibility before (it's one time only)","Register in SAM.gov and apply in MySBA Certifications at certify.sba.gov","Submit personal financial statement, tax returns, ownership documents and business financials","Respond to SBA questions; plan for several months","Once accepted: write the business plan with your SBA business opportunity specialist and use the 9 years strategically"].map((s,i)=>`<li>${checkItem("8a:"+i,s)}</li>`).join("")}</ol></div>
+  <div class="panel sec"><h3>Should you pursue 8(a)?</h3>${staticTable(["Factor","What to weigh"],[["Your SDVOSB status","SDVOSB already gives government-wide set-asides and sole source. Many veterans start there and add 8(a) only if they clearly qualify"],["Evidence","The 2026 rules emphasize documented, individual disadvantage. Weak evidence wastes your one-time eligibility"],["Timing","The 9-year clock starts at approval. Apply when you can bid on work, not before"],["Net worth","Growth in your other ventures (real estate, HoldCo cash) can push you over the limit later"],["Program stability","The 2025–2026 audit and rule changes add uncertainty; follow SBA announcements"]],true)}
+   <h3 style="margin-top:14px">Other certifications to stack</h3>${ul(["HUBZone: check your office address on the SBA HUBZone map; a 10% price preference in open competitions","WOSB/EDWOSB: only if a woman (e.g., your spouse) truly owns and runs a separate business","Mentor-Protégé: pair with an experienced contractor to bid larger work as a joint venture","State programs: search your state's procurement site for 'disabled veteran business enterprise' or 'service-disabled veteran-owned business'","Corporate programs: NVBDC or Disability:IN certification gets you into large companies' supplier diversity databases"])}</div>
+ </div>
+
+ <div class="sec"><h3>Veteran preference in loans and funding</h3>${staticTable(["Program","Veteran advantage","How to get it","Check"],[
+  ["SBA Express loans","Upfront guaranty fee reported waived for businesses 51%+ veteran-owned (commonly cited up to $500k)","Ask an SBA Express lender; bring your DD-214","Fee notices change each fiscal year; confirm on sba.gov"],
+  ["SBA 7(a) standard loans","Reduced upfront fees for veteran-owned businesses on smaller loans in some years","SBA Lender Match or your bank's SBA desk","Current SBA fee notice"],
+  ["Military Reservist EIDL","Low-interest loan if an essential employee is called to active duty","Apply through SBA disaster assistance","Apply within the deadline after release from duty"],
+  ["SBA Microloans","Up to $50k plus counseling through nonprofit lenders","VBOC or SBDC can help package it","Lender availability by region"],
+  ["VR&E Chapter 31 self-employment","Eligible veterans can get help with business plan development and some start-up costs","Apply for VR&E at VA.gov and ask about the self-employment track","Eligibility depends on your disability rating and employment barriers"],
+  ["State veteran loan and grant programs","Some states offer veteran business loans, loan guarantees or grants","Your state veterans affairs department and economic development agency","Varies by state"],
+  ["CDFIs","Flexible small-business loans when banks say no","Search for a CDFI near you","Rates and terms vary"],
+  ["Private grants and competitions","Small grants for veteran entrepreneurs (e.g., through Hello Alice partner programs, NASE Growth Grants, company-sponsored contests)","Apply each cycle; keep a reusable application package","Competitive; verify every sponsor"],
+  ["Veteran founder programs","Training, mentoring, investor access (Bunker Labs, Patriot Boot Camp, Warrior Rising, Hivers & Strivers)","Apply to cohorts","Program-specific"],
+  ["VetFran franchise discounts","Many franchisors discount initial fees for veterans","Ask franchisors about VetFran","Discounts vary"]],true)}</div>
+
+ <div class="cols">
+  <div class="panel sec"><h3>Reusable application package</h3>${phaseList("pkg",["One-page company summary and capability statement","DD-214 and VA rating letter (kept in a secure folder, not emailed casually)","Certification approval letters (VetCert, state, corporate)","SAM.gov UEI and CAGE confirmation","3 years of tax returns and current financial statements","Personal financial statement (SBA Form 413)","Business plan with projections","Founder bio highlighting military leadership","Photos, logo and 2–3 customer testimonials","100-, 250- and 500-word versions of your story for grant forms"])}</div>
+  <div class="panel sec"><h3>Avoid scams</h3>${ul(["Government certifications are free. Nobody can sell you a faster VetCert or 8(a) approval","SAM.gov registration is free; ignore emails demanding fees to 'renew' it","There is no general federal grant to start a business; pay-to-apply 'grant' sites are a red flag","Never pay a fee to receive a grant","Consultants can help, but you sign and submit everything yourself through the official portals","Check any certifier or grant sponsor's reviews before sharing your DD-214 or financials"])}</div>
+ </div>
+
+ <div class="sec"><h3>Programs from videos and courses</h3><p class="small muted">Log every program, outlet or link a video recommends, then work the list. Rows below come from the Mindy veteran video description you shared. Add the outlets from any other video here.</p>
+ ${table("vidprog",[{k:"program",label:"Program / outlet",wide:true},{k:"type",label:"Type",type:"select",opts:["Certification","Loan","Grant","Funding / training","Training","Counseling","Contracting","Investor","Guide","Other"]},{k:"link",label:"Link",wide:true},{k:"source",label:"Where you heard it"},{k:"status",label:"Status",type:"select",opts:["To do","In progress","Applied","Done","Not a fit"]}])}
+ <div class="res" style="margin-top:4px"><b class="small">Quick links</b><div class="btn-row">${S.vidprog.filter(r=>/^https?:\/\//i.test(r.link||"")).map(r=>`<a class="small" href="${h(r.link)}" target="_blank" rel="noopener">${h(r.program)} ↗</a>`).join("")||'<span class="small muted">Add a link to a row to see it here.</span>'}</div></div></div>`;
+
+RESOURCES.push(
+ ["Certifications","MySBA Certifications (8(a), HUBZone, WOSB)","https://certify.sba.gov","Apply for and renew SBA certifications other than VetCert."],
+ ["Certifications","VetCert portal","https://veterans.certify.sba.gov","SDVOSB and VOSB applications and renewals."],
+ ["Certifications","SBA 8(a) Business Development program","https://www.sba.gov/federal-contracting/contracting-assistance-programs/8a-business-development-program","Eligibility, benefits and current program notices."],
+ ["Certifications","HUBZone map","https://maps.certify.sba.gov/hubzone/map","Check whether an address is in a HUBZone."],
+ ["Certifications","SBA HUBZone program","https://www.sba.gov/federal-contracting/contracting-assistance-programs/hubzone-program","HUBZone rules and benefits."],
+ ["Certifications","SBA Women-Owned Small Business program","https://www.sba.gov/federal-contracting/contracting-assistance-programs/women-owned-small-business-federal-contracting-program","WOSB/EDWOSB, e.g., for a military spouse's business."],
+ ["Certifications","NVBDC","https://nvbdc.org","Veteran and service-disabled veteran certification for corporate supplier diversity."],
+ ["Certifications","Disability:IN","https://disabilityin.org","DOBE and service-disabled veteran DOBE certification for corporate supply chains."],
+ ["Certifications","eCFR 13 CFR Part 124 (8(a) rules)","https://www.ecfr.gov/current/title-13/chapter-I/part-124","Current 8(a) eligibility rules, including social and economic disadvantage."],
+ ["Certifications","Federal Register","https://www.federalregister.gov","Check the latest 8(a) and VetCert rule changes."],
+ ["Funding & Loans","SBA Express loans","https://www.sba.gov/funding-programs/loans/7a-loans","Ask lenders about current veteran fee relief on Express and 7(a) loans."],
+ ["Funding & Loans","Hello Alice","https://helloalice.com","Small business grant listings, including veteran-focused programs."],
+ ["Funding & Loans","NASE Growth Grants","https://www.nase.org","Small grants for members of the National Association for the Self-Employed."],
+ ["Veteran Programs","VA.gov: download DD-214 and benefit letters","https://www.va.gov/records/","Get the documents VetCert asks for."]
+);
+
+TABS.splice(TABS.findIndex(t=>t[0]==="govcon")+1,0,["certs","Certifications"]);
+Object.assign(BLANK,{
+ loans:{borrower:"",program:"VA",amount:0,stage:"Lead",close:"",bps:200},
+ props:{address:"",type:"SFR",units:1,value:0,debt:0,rent:0,expenses:0},
+ clients:{household:"",segment:"Transitioning",stage:"Prospect",fee:0,review:""},
+ customers:{account:"",segment:"GovCon",stage:"Discovery",mrr:0,next:""},
+ donors:{name:"",type:"Individual",amount:0,status:"Prospect",date:""},
+ grantees:{org:"",purpose:"",amount:0,status:"Inquiry",date:""},
+ fin:{entity:"",rev:0,exp:0,cash:0,debt:0},
+ deadlines:{item:"",entity:"",date:"",status:"Open"},
+ rocks:{rock:"",venture:"All",owner:"",quarter:"Q1",due:"",status:"On track"},
+ sops:{sop:"",venture:"All",owner:"",status:"Not started",reviewed:""},
+ time:{venture:"All",plan:0,actual:0},
+ decisions:{date:today(0),venture:"All",decision:"",why:"",revisit:""},
+ contacts:{name:"",org:"",role:"Lender",venture:"All",last:"",next:""},
+ content:{date:"",channel:"LinkedIn",topic:"",venture:"All",status:"Idea"},
+ funnel:{venture:"All",month:"",leads:0,qualified:0,proposals:0,won:0},
+ risks:{risk:"",venture:"All",like:3,impact:3,owner:"",mitigation:""},
+ networth:{item:"",type:"Asset",cat:"Cash",value:0},
+ vals:{venture:"All",metric:"SDE",amount:0,mult:3},
+ certs:{cert:"",entity:"All",status:"Researching",submitted:"",approved:"",expires:""},
+ vidprog:{program:"",type:"Other",link:"",source:"",status:"To do"}});
+(function(){const x=EXTRA_DEFAULTS3();for(const k in x){if(S[k]==null)S[k]=x[k];}})();
 
 /* =========================================================
    ROUTER + EVENTS

@@ -9,7 +9,9 @@ goal coloring and trend lines), CEO Desk (time allocation, decision log, key rel
 Legal & Risk (risk register, insurance matrix, legal docs, data security), Wealth & Exit (net worth,
 venture valuations, exit options, veteran benefits, tax and estate checklists), Marketing (brand,
 channels, ad rules, funnel and content calendar), Ventures (KPIs + 4-phase execution checklists per venture), Funding, Acquisitions
-(deal board, SBA 7(a) + seller-note calculator, buy box, due diligence), Grants, Veteran GovCon
+(deal board, SBA 7(a) + seller-note calculator, buy box, due diligence), Grants, Certifications (SDVOSB/VetCert and 8(a) step-by-step
+guides, document checklists, certification menu and tracker, veteran loan and grant preferences,
+programs-from-videos tracker), Veteran GovCon
 (VetCert, VR&E, Boots to Business, VBOC, bid tracker), SME Operator (Integrator scorecard, hiring,
 30-60-90), Automation, New Ventures (idea scoring), Roadmap (36-month plan, quarterly rocks, venture synergies),
 Finance (consolidated P&L, entity map, compliance calendar, deadlines), Calculators (VA house hack,
