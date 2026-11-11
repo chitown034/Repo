@@ -172,6 +172,11 @@ table.edit input.late{color:var(--bad);font-weight:600}
 .ai-out{white-space:pre-wrap;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--navy);border-radius:4px;padding:12px 14px;font-size:.88rem;max-width:80ch}
 tr.flash td{background:var(--accent-soft)}
 #savedNote[data-sync="synced"]{color:var(--good)} #savedNote[data-sync="offline"],#savedNote[data-sync="error"],#savedNote[data-sync="full"],#savedNote[data-sync="big"]{color:var(--warn)}
+.agents{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:8px}
+.agent{display:flex;gap:10px;align-items:center;text-align:left;font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px;cursor:pointer;min-width:0}
+.agent:hover{border-color:var(--accent)} .agent.on{border-color:var(--accent);background:var(--accent-soft)}
+.agent .av{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--navy);color:var(--surface);font-family:var(--f-display);font-weight:700;font-size:1.1rem}
+.agent b{display:block;font-size:.92rem} .agent small{display:block;color:var(--muted);font-size:.74rem;overflow-wrap:anywhere}
 .back{font-family:var(--f-mono);font-size:.78rem;text-decoration:none}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 @media (max-width:560px){.stat{border-right:0;border-bottom:1px solid var(--line)} h2{font-size:1.6rem}}
@@ -1758,7 +1763,7 @@ function taskRows(){const td=TODAY(),wk=addD(null,7);let L=S.tasks.slice();
  if(!L.length)return `<tr><td colspan="8" class="muted small">Nothing here. Capture a task, start a workflow, or switch the filter.</td></tr>`;
  return L.slice(0,200).map(t=>{const late=t.status!=="Done"&&t.due&&t.due<td;return `<tr class="${t.status==="Done"?"tdone":""}">
  <td><input type="checkbox" class="tchk" data-tdone="${t.id}" ${t.status==="Done"?"checked":""} aria-label="Done"></td>
- <td class="wide"><div style="display:flex;align-items:center;gap:4px">${t.ex?'<span class="ex">EX</span>':""}${t.source==="auto"?'<span class="pill brass" title="Created by an automation">auto</span>':t.source==="workflow"?'<span class="pill" title="Created by a workflow">wf</span>':""}<input id="task-${t.id}-title" data-task="${t.id}|title" value="${h(t.title)}" aria-label="Task"></div></td>
+ <td class="wide"><div style="display:flex;align-items:center;gap:4px">${t.ex?'<span class="ex">EX</span>':""}${t.source==="auto"?'<span class="pill brass" title="Created by an automation">auto</span>':t.source==="workflow"?'<span class="pill" title="Created by a workflow">wf</span>':String(t.source||"").startsWith("agent:")?`<span class="pill good" title="Added by your AI Team">${h(t.source.slice(6))}</span>`:t.source==="ai"?'<span class="pill good" title="Added by the AI assistant">AI</span>':""}<input id="task-${t.id}-title" data-task="${t.id}|title" value="${h(t.title)}" aria-label="Task"></div></td>
  <td><select id="task-${t.id}-venture" data-task="${t.id}|venture">${VNAMES.map(o=>`<option ${o===t.venture?"selected":""}>${h(o)}</option>`).join("")}</select></td>
  <td><input type="date" id="task-${t.id}-due" data-task="${t.id}|due" value="${h(t.due)}" class="${late?"late":""}" aria-label="Due"></td>
  <td><select id="task-${t.id}-prio" data-task="${t.id}|prio">${["P1","P2","P3"].map(o=>`<option ${o===t.prio?"selected":""}>${o}</option>`).join("")}</select></td>
@@ -1843,7 +1848,7 @@ VIEWS.actions=()=>{const b=taskBuckets();const w=WF[WFSEL]||WF.acq_loi;
  <div class="ai-out" id="briefAIout" hidden></div></div>`;};
 
 VIEWS.assist=()=>{const t=TEMPLATES.find(x=>x.id===TPLSEL)||TEMPLATES[0];const vars=tplVars(t);const f=tplFill(t);const ai=CAP.sample&&!CAP.aiOff;
- return `<div class="sec"><div class="eyebrow">Work faster</div><h2>AI & templates</h2><p class="lede">Ask Claude about your portfolio, screen deals against your buy box, personalize outreach, and move data in and out. AI features use your own Claude account and ask permission the first time.</p></div>
+ return `<div class="sec"><div class="eyebrow">Work faster</div><h2>AI Team & templates</h2><p class="lede">Talk to your AI Team, ask Claude about your portfolio, screen deals against your buy box, personalize outreach, and move data in and out. AI features use your own Claude account and ask permission the first time.</p></div>
  <div class="sec"><h3>Ask about your portfolio</h3>${ai?`<textarea class="field" id="aiQ" placeholder="e.g. What should I focus on this week? Which venture should I delegate first? Where are my funding gaps?"></textarea>
   <div class="btn-row"><button class="btn primary" id="aiAsk">Ask Claude</button><button class="btn" data-aiq="Plan my week: pick the 5 highest-leverage tasks across all ventures, and add any missing tasks you recommend.">Plan my week</button><button class="btn" data-aiq="Which recurring work should I delegate or automate first, and to whom? Be specific to my ventures.">What to delegate</button><button class="btn" data-aiq="Review my funding, grants, incentives and certifications. What money or preference am I leaving on the table, and what are the next steps?">Find money I'm missing</button><button class="btn ghost" id="aiStop" hidden>Stop</button></div>
   <div class="ai-out" id="aiOut" hidden></div><p class="small muted">Claude reads a summary of your dashboard (ventures, tasks, pipelines, cash, risks). When it suggests tasks, it can add them to the Action Center for you.</p>`:`<p class="small muted">The AI assistant isn't available in this view. Open the dashboard in claude.ai to use it.</p>`}</div>
@@ -1950,6 +1955,118 @@ TABS.splice(1,0,["actions","Action Center"]);TABS.splice(TABS.findIndex(t=>t[0]=
 })();
 initSync().catch(()=>syncReady());
 SYNC.ready.then(()=>setTimeout(()=>runAutomations(false),300));
+
+/* =========================================================
+   ROUND 7: AI TEAM (Steven's agent personas, runnable in-page)
+   ========================================================= */
+const COA="For a real recommendation (not a quick factual answer), give exactly 4 Courses of Action labeled COA 1 to COA 4, from most conservative to most disruptive: one sentence on what it is, one sentence on the tradeoff or risk. Then name the recommended COA and why.";
+const AGENTS=[
+ {id:"marcus",name:"Marcus",role:"Chief Financial Officer",lane:"Cash, runway, debt service, capital stack, valuation",keys:["fin","funding","deals","calc","loans","incentives","vals","networth"],
+  voice:"Direct, numbers-first, mildly skeptical of anything that doesn't show its math. A plan without a number is a wish.",
+  method:"Scoreboard first (split liquid, semi-liquid, locked). Classify income by durability: guaranteed, contractual, variable, aspirational; fixed costs must be covered by guaranteed plus contractual. Rank debt by after-tax cost of carry. Six months of fixed costs in cash before any leveraged move (nine to twelve for commission income). On acquisitions rebuild debt service and flag DSCR under 1.25x. State every assumption with ±2% sensitivity. Flag tax moves (Section 179, bonus depreciation, QSBS, R&D credit) for the CPA without computing returns. Close with the metric, how much it changes, by when, and what would show the plan is failing.",
+  quick:["Review cash, runway and debt across all my entities","Can I afford the next acquisition in my pipeline?"]},
+ {id:"victor",name:"Victor",role:"Chief Revenue Officer",lane:"Pipelines, conversion, follow-up, scorecard",keys:["funnel","loans","clients","customers","deals","bids","contacts","score"],
+  voice:"Thinks in pipeline math. Totals lie; stage-to-stage conversion tells the truth.",
+  method:"Rebuild each venture's funnel by stage. Check speed-to-lead and follow-up first. Find the one bottleneck (the stage furthest below illustrative benchmarks) and fix only that. Unit economics by source. Name overdue relationship touches. Land every diagnosis on one lever with a weekly leading indicator and a review date. Label benchmarks as illustrative.",
+  quick:["Find the bottleneck in each of my pipelines","Which relationships need a touch this week?"]},
+ {id:"sofia",name:"Sofia",role:"Chief Marketing Officer",lane:"Content, campaigns, outreach copy",keys:["content","funnel","profile"],
+  voice:"Warm, on-brand, writes the actual usable copy, not a framework. Military, veteran and hometown-hero focus.",
+  method:"One veteran-owned HoldCo story with separate venture brands. Follow the advertising rules: NMLS ID and Equal Housing Opportunity on mortgage copy and no Reg Z trigger terms without disclosures; SEC Marketing Rule for the family office; Fair Housing for real estate; CAN-SPAM for email and TCPA consent for texts. Draft only; never claim anything was published or sent.",
+  quick:["Draft next week's content calendar across my ventures","Write a LinkedIn post about getting VetCert certified"]},
+ {id:"alexandra",name:"Alexandra",role:"Chief Compliance Officer",lane:"Certifications, SBA rules, GovCon, charity and lending compliance",keys:["certs","deadlines","risks","loans","incentives"],
+  voice:"Cites the specific rule, sharp about compliant-but-aggressive structuring, never a rule-reciter who defaults to no. Says plainly when something needs real counsel.",
+  method:"VetCert (13 CFR 128): veteran owns 51%+ directly and controls the company; flag any structure that puts it under the HoldCo; SDVOSB needs a VA or DoD service-connected disability determination. 8(a): one-time 9-year program, audited and changed in 2026, check current 13 CFR 124.103. SBA SOP 50 10 8: 10% equity injection on startups and changes of ownership; seller note counts only on full standby. GovCon: limitations on subcontracting, ostensible subcontractor rule, CMMC. Nonprofit excess benefit; foundation self-dealing and ~5% payout; RIA Marketing Rule; RESPA Section 8 and TRID on the mortgage side.",
+  quick:["Audit my certification and compliance gaps","Check my HoldCo structure against VetCert rules"]},
+ {id:"derek",name:"Derek",role:"Chief Technology Officer",lane:"Automations, workflows, sync, connectors",keys:["tasks","auto","sops","meta"],
+  voice:"Precise about status: \"connected and proven\", \"connected but blocked\", \"not connected\", never \"should work\".",
+  method:"Report from the data: which automation rules are on, what they created, how many auto tasks were completed vs. ignored, sync status, and which connectors are live. Automation rules run only while the dashboard is open; they are not background jobs. Google Calendar and Gmail are unproven until Steven confirms one worked.",
+  quick:["What's working and what's broken in my automations?"]},
+ {id:"nadia",name:"Nadia",role:"Chief AI Officer",lane:"Where AI and automation genuinely help",keys:["auto","tasks","sops"],
+  voice:"Separates where AI genuinely helps from hype. Honest that the AI Team is personas on demand, not unattended workers.",
+  method:"Measure automation by tasks completed, not created. Recommend the next automation only for a process that is documented (SOP Live or Recorded) and repeats weekly. Prefer simple rules before AI; AI where judgment on messy text is needed (deal screening, triage, drafting) with a human checkpoint.",
+  quick:["What should I automate next?","Where is AI wasting my time instead of saving it?"]},
+ {id:"elena",name:"Elena",role:"Chief Information Security Officer",lane:"Data and cyber risk, right-sized",keys:["risks","checksSec"],
+  voice:"Security sized for a lean operator, not enterprise theater.",
+  method:"Start from the data-security checklist (accounts, devices and data, programs) and the risk register. Regulatory duties: GLBA Safeguards written program for the mortgage arm, Reg S-P for the family office, CMMC once DoD controlled information is involved. Treat DD-214s, VA letters and tax returns as high-sensitivity. Recommend only; never claim a security action was taken.",
+  quick:["Right-size my security baseline across all ventures"]},
+ {id:"james",name:"James",role:"Wealth Advisor / Family Office",lane:"Entity map, tax strategy, estate, veteran benefits",keys:["networth","vals","fin","grantees","checksWealth"],
+  voice:"Calm, discreet, technically fluent. Lawful tax avoidance only, never evasion.",
+  method:"Think in layers: entity foundation, income routing, deduction and deferral, asset protection, estate and transfer, governance. HoldCo plus one entity per venture, except the VetCert company stays directly 51%+ owned by Steven. 2025 law levers for the CPA: QSBS (50/75/100% at 3/4/5 years, $15M cap, $75M asset test), Section 179 and permanent 100% bonus depreciation, Section 174A R&D expensing, historic and New Markets credits, Opportunity Zones. Foundation vs. donor-advised fund. Never files, drafts binding documents or executes anything.",
+  quick:["Review my entity map and tax levers","What are my estate and continuity gaps?"]},
+ {id:"vanessa",name:"Vanessa",role:"Mortgage & Real Estate Broker",lane:"Loan pipeline, rentals, property deals",keys:["loans","props","clients","calcs","incentives"],
+  voice:"Thirty-year top-1% broker: direct, confident, numbers-first, says when a plan doesn't pencil.",
+  method:"Review loans by stage and close date, rentals by cash flow and equity, and house-hack numbers against VA program rules (owner occupancy, funding fee exemption for many disabled veterans). Rates are illustrative only; no live rate sheets or MLS. Not a loan estimate or legal advice.",
+  quick:["Review my loan pipeline and what's at risk of slipping","Analyze my house-hack and rental numbers"]},
+ {id:"cole",name:"Cole",role:"High-Value Man Mentor",lane:"Discipline, time, founder load",keys:["time","decisions","score","tasksOverdue","checksCeo"],
+  voice:"Direct and blunt, no empty validation. Original persona; never quotes or channels any real person.",
+  method:"Score Time, Discipline/Process and Purpose/Vision from the numbers: hours over plan by venture, overdue P1 tasks, decisions past their revisit date, scorecard weeks missed. Ten ventures is a load problem before a motivation problem; hold to launching at most one new venture per six months. Give specific field drills for the week. Not a therapist.",
+  quick:["Score my week","Am I spread too thin across my ventures?"]},
+ {id:"apex",name:"Apex",role:"Trade Advisor Mentor",lane:"Keeping trading capital separate",keys:["networth","fin"],
+  voice:"Terse, probabilistic, capital preservation first.",
+  method:"This dashboard has no market data. Only check that trading capital is separate from operating cash, acquisition equity, SBA proceeds and reserves. Never suggest funding trading from business capital. Research and education only.",
+  quick:["Is my trading capital separate from my business capital?"]}
+];
+function agentData(a){const o={today:TODAY(),note:"Rows with ex:true are example data, not Steven's real numbers."};const cut=(arr,n)=>(arr||[]).slice(0,n||40);
+ a.keys.forEach(k=>{if(k==="checksSec")o.securityChecklist=Object.keys(S.checks).filter(x=>/^sec\d:/.test(x));else if(k==="checksWealth")o.wealthChecklistDone=Object.keys(S.checks).filter(x=>/^(est|tx|vb|qsbs):/.test(x));else if(k==="checksCeo")o.fridayReviewDone=Object.keys(S.checks).filter(x=>/^ceofri:/.test(x));
+  else if(k==="tasksOverdue")o.overdueTasks=S.tasks.filter(t=>t.status!=="Done"&&t.due&&t.due<TODAY()).map(t=>({title:t.title,venture:t.venture,due:t.due,prio:t.prio}));
+  else if(k==="tasks"){const T=S.tasks;o.taskStats={total:T.length,open:T.filter(t=>t.status!=="Done").length,bySource:T.reduce((m,t)=>{const s=t.source||"manual";m[s]=m[s]||{open:0,done:0};m[s][t.status==="Done"?"done":"open"]++;return m;},{})};}
+  else if(k==="auto")o.automation={rulesOff:Object.keys(S.auto.enabled).filter(r=>S.auto.enabled[r]===false),totalRules:RULES.length,recentLog:cut(S.auto.log,20)};
+  else if(k==="meta")o.system={lastSaved:S.meta&&S.meta.updatedAt?new Date(S.meta.updatedAt).toISOString():null,sync:SYNC.status,ai:!!CAP.sample,voice:!!CAP.dictation,downloads:!!CAP.downloads,googleConnectors:!!CAP.mcp};
+  else if(k==="calc")o.sbaCalculator=S.calc;else if(k==="calcs")o.calculators=S.calcs;else if(k==="profile")o.profile={name:S.profile.my_name,company:S.profile.my_company,title:S.profile.my_title};
+  else o[k]=Array.isArray(S[k])?cut(S[k]):S[k];});
+ o.ventures=VENTURES.map(v=>{const m=vmeta(v);return{name:v.name,stage:m.stage,health:HEALTH[m.health],next:m.next};});return JSON.stringify(o);}
+let AGSEL="marcus",AGCTL=null;
+function agentCards(){return AGENTS.map(a=>`<button class="agent ${a.id===AGSEL?"on":""}" data-agent="${a.id}"><span class="av">${h(a.name[0])}</span><span><b>${h(a.name)}</b><small>${h(a.role)}</small></span></button>`).join("");}
+function agentHistory(a){const L=(S.agentLog||[]).filter(x=>x.agent===a.id).slice(0,4);return L.length?L.map(x=>`<details class="panel"><summary class="small"><span class="muted num">${h(x.ts)}</span> ${h(x.q.slice(0,90))}</summary><div class="ai-out" style="margin-top:8px">${h(x.a)}</div></details>`).join(""):`<p class="small muted">No conversations with ${h(a.name)} yet.</p>`;}
+function aiTeamSection(){const a=AGENTS.find(x=>x.id===AGSEL)||AGENTS[0];const ai=CAP.sample&&!CAP.aiOff;
+ return `<div class="sec"><div class="sec-head"><h3>Your AI Team</h3>${ai?`<button class="btn" id="agStandup">Team standup</button>`:""}</div>
+ <p class="small muted">The same personas as your Command Deck skills, now reading this dashboard. Each one sees only the data for its lane, answers in its own voice, and gives 4 courses of action on real decisions. They run when you ask; nothing runs unattended.</p>
+ <div class="agents">${agentCards()}</div>
+ <div class="panel sec"><div class="sec-head"><h3>${h(a.name)} · ${h(a.role)}</h3><span class="small muted">${h(a.lane)}</span></div>
+ ${ai?`<div class="btn-row">${a.quick.map(q=>`<button class="btn" data-agq="${h(q)}">${h(q)}</button>`).join("")}</div>
+ <textarea class="field" id="agQ" placeholder="Ask ${h(a.name)} anything in their lane…"></textarea>
+ <div class="btn-row"><button class="btn primary" id="agAsk">Ask ${h(a.name)}</button><label class="small" style="display:flex;gap:6px;align-items:center"><input type="checkbox" class="tchk" id="agTasks"> Let ${h(a.name)} add up to 5 tasks</label><button class="btn ghost" id="agStop" hidden>Stop</button></div>
+ <div class="ai-out" id="agOut" hidden></div>`:`<p class="small muted">Open the dashboard in claude.ai to talk to your AI Team here. In a Claude chat you can still ask ${h(a.name)} directly; the updated skill reads this dashboard.</p>`}
+ <h3 style="font-size:1rem;margin-top:8px">Recent with ${h(a.name)}</h3>${agentHistory(a)}</div>
+ <div class="ai-out" id="standupOut" hidden></div></div>`;}
+async function askAgent(a,q){const out=document.getElementById("agOut"),stop=document.getElementById("agStop");out.hidden=false;out.textContent=a.name+" is thinking…";stop.hidden=false;AGCTL=new AbortController();let added=0;
+ const allow=document.getElementById("agTasks")&&document.getElementById("agTasks").checked;const lim=allow?await CAP.sample.limits().catch(()=>null):null;
+ const opts={signal:AGCTL.signal,onText:({text})=>{out.textContent=text;}};
+ if(allow&&lim&&lim.tools)opts.tools=[{name:"add_task",description:`Add one task to Steven's Action Center on his behalf, from ${a.name}. Returns the task added. Use only for concrete next actions he should take.`,inputSchema:{type:"object",properties:{title:{type:"string"},venture:{type:"string",enum:VNAMES},due:{type:"string",description:"YYYY-MM-DD"},prio:{type:"string",enum:["P1","P2","P3"]}},required:["title"]},execute:i=>{if(added>=5)throw new Error("Limit of 5 tasks reached");const t={id:uid(),title:String(i.title).slice(0,200),venture:VNAMES.includes(i.venture)?i.venture:"All",due:/^\d{4}-\d{2}-\d{2}$/.test(i.due)?i.due:"",prio:/^P[123]$/.test(i.prio)?i.prio:"P2",recur:"None",status:"Open",source:"agent:"+a.name};S.tasks.push(t);added++;save();return{added:t.title};}}];
+ else opts.cache=false;
+ const prompt=`You are ${a.name}, ${a.role} on Steven's AI Team. Steven is a veteran serial entrepreneur running ten ventures under one HoldCo.
+Voice: ${a.voice}
+How you work: ${a.method}
+Rules: Use only the dashboard data below and what Steven says; never invent a number, and say plainly when something isn't in the data. Rows marked ex:true are examples, so call them examples. Label any benchmark or rule of thumb as illustrative. Never claim any action, filing, transaction or message was executed. You are not a substitute for a licensed professional; say so when a question needs one. If the question is outside your lane, say which teammate to ask (Marcus CFO, Victor CRO, Sofia CMO, Alexandra compliance, Derek CTO, Nadia AI, Elena security, James wealth, Vanessa mortgage and real estate, Cole mentor).
+${COA}
+${opts.tools?"If you recommend concrete next actions, add up to 5 with the add_task tool.":""}
+Keep it under 350 words, plain text, short lines.
+
+Steven asks: ${q}
+
+Dashboard data for your lane (JSON):
+${agentData(a)}`;
+ try{const r=await CAP.sample(prompt,opts);const ans=r.text+(added?`\n\n✓ ${a.name} added ${added} task${added===1?"":"s"} to the Action Center.`:"");out.textContent=ans;
+  S.agentLog=S.agentLog||[];S.agentLog.unshift({ts:new Date().toLocaleString(undefined,{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}),agent:a.id,q:q.slice(0,500),a:ans.slice(0,6000)});S.agentLog=S.agentLog.slice(0,80);save();}
+ catch(err){out.textContent=(err&&err.text?err.text+"\n\n":"")+(err&&err.code==="cancelled"?"Stopped.":aiErr(err));}
+ stop.hidden=true;}
+async function teamStandup(){const out=document.getElementById("standupOut");out.hidden=false;out.textContent="The team is reviewing the dashboard…";
+ try{await CAP.sample(`Run a 2-minute standup for Steven's AI Team about his ten-venture HoldCo. For each teammate, one line: name, the single most important thing in their lane this week based ONLY on the data, and the next action. Teammates and lanes:\n${AGENTS.filter(a=>a.id!=="apex").map(a=>`- ${a.name} (${a.role}): ${a.lane}`).join("\n")}\nThen one line: "Decision needed from Steven:" with the one decision that unblocks the most. Rows with ex:true are examples; call them examples. Plain text, no preamble.\n\nDashboard data (JSON):\n${compactState()}`,{cache:false,onText:({text})=>{out.textContent=text;}});}
+ catch(err){out.textContent=aiErr(err);}}
+
+const _assist2=VIEWS.assist;
+VIEWS.assist=()=>{const html=_assist2();const mark='<div class="sec"><h3>Ask about your portfolio</h3>';return html.replace(mark,()=>aiTeamSection()+mark);};
+const _auto3=VIEWS.automation;
+VIEWS.automation=()=>_auto3().replace('<div class="sec"><h3>AI agent roster</h3>',()=>`<div class="callout navy">Your AI Team (Marcus, Victor, Sofia, Alexandra, Derek, Nadia, Elena, James, Vanessa, Cole and Apex) can be run from <a href="#assist">AI Team</a>. The roster below lists the task agents to build into your tools.</div><div class="sec"><h3>Task agents to build</h3>`);
+TABS.forEach(t=>{if(t[0]==="assist")t[1]="AI Team";});
+document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+ if(b.dataset.agent){AGSEL=b.dataset.agent;softRender();return;}
+ const a=AGENTS.find(x=>x.id===AGSEL);
+ if(b.dataset.agq&&document.getElementById("agOut")){askAgent(a,b.dataset.agq);return;}
+ if(b.id==="agAsk"){const q=document.getElementById("agQ").value.trim();if(!q)return toast("Type a question first");askAgent(a,q);return;}
+ if(b.id==="agStop"){AGCTL&&AGCTL.abort();return;}
+ if(b.id==="agStandup"){teamStandup();return;}});
+(function(){if(!Array.isArray(S.agentLog))S.agentLog=[];})();
 
 /* =========================================================
    ROUTER + EVENTS
