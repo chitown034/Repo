@@ -4,7 +4,10 @@ Single-file dashboard (`index.html`) for running a veteran-owned HoldCo and its 
 Military Family Office, AI company, real estate, mortgage broker/MLO, foundation, nonprofit,
 research grants, gov contracts & grants, buy-a-business, and the acquisition HoldCo.
 
-Tabs: Overview (with a Needs Attention alerts panel), Scorecard (13-week weekly measures with
+Tabs: Incentives & Tax (state incentives with TX/NC/GA/OH/LA examples, how to find and apply,
+SBA loan types and 2025-26 SOP changes, QSBS, Section 179 and bonus depreciation, historic
+rehabilitation credit, New Markets Tax Credit, Opportunity Zones, R&D credit, government-backed
+acquisition financing, debt leverage calculator, incentives tracker), Overview (with a Needs Attention alerts panel), Scorecard (13-week weekly measures with
 goal coloring and trend lines), CEO Desk (time allocation, decision log, key relationships),
 Legal & Risk (risk register, insurance matrix, legal docs, data security), Wealth & Exit (net worth,
 venture valuations, exit options, veteran benefits, tax and estate checklists), Marketing (brand,
