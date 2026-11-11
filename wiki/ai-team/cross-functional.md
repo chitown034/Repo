@@ -51,7 +51,7 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Wren | referral ledger, reciprocal referral, referral fee, partner tier | `wiki/real-estate-playbooks/referral-reciprocity.md` |
 | Bianca | absorption, months of inventory, price per sqft, list-to-sale, market report, pricing authority | `wiki/real-estate-playbooks/listing-process.md` |
 | Lucia | eligibility, guideline, va m26-7, fha 4000.1, usda, program fit | `wiki/mortgage-programs/program-selection.md` |
-| Priya | instant response, new lead, speed-to-lead call, appointment setting | `wiki/real-estate-playbooks/buyer-process.md` |
+| Priya | instant response, new lead, speed-to-lead call, appointment setting personalization research, list building, fit scoring | `wiki/real-estate-playbooks/buyer-process.md` |
 | Vera | sphere, soi, past client, review request, home anniversary, post-close, preference profile, closing gift, lifetime cadence | `wiki/real-estate-playbooks/referral-reciprocity.md` |
 | Rafael | workflow studio, workflow, automation flow, lifecycle automation, trigger, automation coverage | `wiki/dashboard-ops/index.md` |
 | Celeste | coach hq, coaching, training plan, skills assessment, recommendation, role-play gym, weekly 1:1, coach, skills plan, knowledge & coaching pod | `wiki/ai-team/mentors-and-benches.md` |
@@ -72,7 +72,7 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Kai | kaizen, bottleneck, capacity, scale, scalability, process improvement, workload, hire trigger, efficiency, automation coverage | `wiki/ai-team/desk-seats.md` |
 | Sloane | doc screener, screen document, document review, fine print, hidden clause, clause, hidden fee, prelim, title report, cc&rs, hoa documents, closing disclosure, loan estimate, lease review, contract review, deadline extraction | `wiki/ai-team/desk-seats.md` |
 | Nova | coverage, uncovered, who owns, owner for, sync status, is it synced, live data, sweep, what is missing, process gap, health check, process coverage, coverage register, which doc is stale, who writes self-heal, failing health check | `wiki/ai-team/desk-seats.md` |
-| Sienna | bland, ai call, call center, voice agent, ai isa, dial, call queue, tcpa consent, voicemail drop, phone follow-up | `wiki/ai-team/desk-seats.md` |
+| Sienna | bland, ai call, call center, voice agent, ai isa, dial, call queue, tcpa consent, voicemail drop, phone follow-up jessica, skilltree, skill desk, proposal generation, follow-up drafting, meeting booking, cold email, approval queue, quiet leads | `wiki/ai-team/desk-seats.md` |
 | Dax | role play, role-play, roleplay, spar, sparring, practice call, objection drill, mock call, rehearse | `wiki/ai-team/desk-seats.md` |
 | Regina | new law, new laws, regulation, effective date, legislation, reference library, statute, ordinance, what changed | `wiki/ai-team/desk-seats.md` |
 | Isabel | loan processing, processor, conditions, underwriting conditions, document checklist, voe, vod, application date, loan estimate, le deadline, appraisal order, intent to proceed | `wiki/mortgage-programs/` |

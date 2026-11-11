@@ -307,3 +307,20 @@ directory lists 183 offices: utilities, permits, schools, hospitals, DMV, transi
 up to four areas; copy or email a client guide carrying the DRE and NMLS numbers. Research dated November 2026;
 items marked "verify" (most Mello-Roos amounts, some builder prices) must be confirmed. Vanessa tool:
 `community_411`.
+
+## ISA Skill Desk — SkillTree setup (Sienna / "Jessica", with Priya, Booking Concierge, Harrison, Vera, Tariq, Ansel)
+
+Added 2026-11-11 from Steven's SkillTree plan ("Your AI org for Mortgage Broker": 6 agents, ~10 h/week, valued at
+$38,500/yr at $80/h). Installed in the Broker Command Center AI Call Center → ISA Skill Desk. The six plan agents in
+build order: Proposal Generation (Harrison), Follow-Up Drafting (Vera), Meeting Booking (Booking Concierge),
+Personalization Research (Priya), List Building (Priya), Cold Email Drafting (Tariq). Nine more Sales-directory jobs:
+ICP Definition, Trigger Detection (Ansel), Fit Scoring, Cold-Call Scripting, LinkedIn Messaging, Proof Matching,
+Video Prospecting, Send Optimization, Campaign Orchestration. Each reads its context file — `sales/icp.md`,
+`voice.md`, `sales/offer.md`, `deals/booking-rules.md`, `deals/follow-up-cadence.md`, `deals/pricing.md`,
+`sales/proof.md` (pre-filled starters, editable on the desk; pricing intentionally blank) — and queues a draft with a
+two-line summary for approval. Drafts only: approve, then Gmail draft / text task / call task; never sent, booked or
+quoted automatically; Do-Not-Contact leads blocked; TCPA, CAN-SPAM, RESPA §8, fair housing and DRE/NMLS rules built
+into every prompt. Batch "draft follow-ups for all due", run log, time-saved tracker, autopilot tasks and a health
+check on drafts older than 2 days. The AI org also has a live animated map (seven departments, every seat and skill,
+rotating; click to open) on the org chart and the Skill Desk, linked to the Command Deck and this brain.
+Vanessa tool: `isa_skill_desk`. SKILL.md files: `skills/isa/`.
