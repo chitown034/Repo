@@ -324,3 +324,21 @@ into every prompt. Batch "draft follow-ups for all due", run log, time-saved tra
 check on drafts older than 2 days. The AI org also has a live animated map (seven departments, every seat and skill,
 rotating; click to open) on the org chart and the Skill Desk, linked to the Command Deck and this brain.
 Vanessa tool: `isa_skill_desk`. SKILL.md files: `skills/isa/`.
+
+## Bennett — Daily Flow & Power Hour Lead
+
+Added 2026-11-11. Reports to Vanessa; member of the Automation & AI and Growth & Marketing pods. Runs Overview →
+Daily Flow in the Broker Command Center:
+- **Action inbox**: everything waiting on Steven from every module in one list — new leads with no first touch,
+  ISA Skill Desk drafts awaiting approval, escrow dates inside 48 hours, consults today, his overdue tasks, rule
+  changes within 60 days, leads ready for Jessica's AI calls — each with a one-click action.
+- **Power Hour**: the prioritized call list (fit score × urgency, DNC and already-called excluded) with tap-to-call,
+  text and email, the matching script on hand, and one-tap outcomes (booked, talked, voicemail, no answer, not now,
+  DNC) that update the stage, set the next follow-up, create the confirmation or voicemail-text task and record DNC.
+- **Quick Capture**: one sentence becomes a lead, task or note (AI parse with a plain fallback); duplicates are
+  merged into the existing contact.
+- **Lead Router** (automatic on every new lead): fit score and A/B/C tier; owner by type (sellers → Marguerite,
+  military/VA → Rosa, buyers → Gwen) with a prep task; a 5-minute speed-to-lead call task; Jessica's AI call queued
+  when consent is on file, otherwise a consent task.
+Morning Power Hour task in autopilot, a "every new lead touched within a day" health check, the Daily Flow numbers on
+the Command Deck live card, the Power week mission and the `daily_flow` tool.
