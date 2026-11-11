@@ -155,6 +155,23 @@ svg .spark{fill:none;stroke:var(--accent);stroke-width:1.6} svg .goal{stroke:var
 .alerts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:8px}
 .alert{display:flex;gap:10px;align-items:center;padding:9px 12px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:4px;font-size:.86rem;min-width:0}
 .alert.bad{border-left-color:var(--bad)} .alert span:last-child{min-width:0;overflow-wrap:anywhere}
+kbd{font-family:var(--f-mono);font-size:.68rem;border:1px solid var(--line);border-bottom-width:2px;border-radius:3px;padding:0 4px;background:var(--surface-2);color:var(--muted)}
+.modal-bg{position:fixed;inset:0;z-index:30;background:rgba(10,16,28,.55);display:flex;align-items:flex-start;justify-content:center;padding:calc(10vh + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px))}
+.modal-bg[hidden]{display:none!important}
+.modal-card{position:relative;width:min(640px,100%);max-height:80vh;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:10px;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.modal-x{position:absolute;top:6px;right:8px;border:0;background:transparent;color:var(--muted);font-size:1.4rem;cursor:pointer;line-height:1}
+.pal{font-size:1rem;padding:10px 12px}
+.pal-list{display:flex;flex-direction:column;gap:2px;max-height:52vh;overflow:auto}
+.pal-item{display:flex;justify-content:space-between;gap:12px;align-items:center;text-align:left;font:inherit;font-size:.9rem;color:var(--ink);background:transparent;border:0;border-radius:4px;padding:8px 10px;cursor:pointer;text-decoration:none}
+.pal-item span{min-width:0;overflow-wrap:anywhere} .pal-item small{color:var(--muted);font-family:var(--f-mono);font-size:.68rem;white-space:nowrap}
+.pal-item.on,.pal-item:hover{background:var(--accent-soft)}
+textarea.cap{min-height:74px}
+table.tasks tr.tdone input:not([type=checkbox]){text-decoration:line-through;color:var(--muted)}
+table.edit input.late{color:var(--bad);font-weight:600}
+.tchk{width:16px;height:16px;accent-color:var(--accent)}
+.ai-out{white-space:pre-wrap;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--navy);border-radius:4px;padding:12px 14px;font-size:.88rem;max-width:80ch}
+tr.flash td{background:var(--accent-soft)}
+#savedNote[data-sync="synced"]{color:var(--good)} #savedNote[data-sync="offline"],#savedNote[data-sync="error"],#savedNote[data-sync="full"],#savedNote[data-sync="big"]{color:var(--warn)}
 .back{font-family:var(--f-mono);font-size:.78rem;text-decoration:none}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 @media (max-width:560px){.stat{border-right:0;border-bottom:1px solid var(--line)} h2{font-size:1.6rem}}
@@ -164,13 +181,14 @@ svg .spark{fill:none;stroke:var(--accent);stroke-width:1.6} svg .goal{stroke:var
   <div class="wrap">
     <div class="bar-top">
       <div class="brand"><h1><span class="star">★</span> Venture Command Center</h1><span class="call">HOLDCO · 10 VENTURES · VETERAN-OWNED</span></div>
-      <div class="btn-row"><span class="small muted" id="savedNote">Saved in this browser</span><a class="btn ghost" href="#backup">Backup</a></div>
+      <div class="btn-row"><button class="btn" id="paletteBtn" aria-label="Search everything">Search <kbd>Ctrl K</kbd></button><button class="btn primary" id="captureBtn">+ Capture</button><span class="small muted" id="savedNote">Saved in this browser</span><a class="btn ghost" href="#backup">Backup</a></div>
     </div>
     <nav class="tabs" id="tabs" aria-label="Sections"></nav>
   </div>
 </header>
 <main class="wrap" id="app"></main>
 <div class="toast" id="toast" hidden></div>
+<div id="modal" class="modal-bg" hidden></div>
 
 <script>
 /* =========================================================
@@ -396,7 +414,7 @@ const RESOURCES=[
    STATE
    ========================================================= */
 const LS="vcc.v1";
-function today(off){const d=new Date();d.setDate(d.getDate()+(off||0));return d.toISOString().slice(0,10);}
+function today(off){const d=new Date();d.setDate(d.getDate()+(off||0));return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
 function defaults(){return{
  vmeta:{},kpi:{},checks:{},notes:{},
  funding:[
@@ -433,6 +451,7 @@ function defaults(){return{
  ...EXTRA_DEFAULTS2(),
  ...EXTRA_DEFAULTS3(),
  ...EXTRA_DEFAULTS4(),
+ ...EXTRA_DEFAULTS5(),
  calc:{price:1800000,sde:520000,down:10,seller:10,rate:10.5,years:10,srate:6,syears:7,mgr:90000,closing:3}
 };}
 function load(){try{const r=localStorage.getItem(LS);if(r){return Object.assign(defaults(),JSON.parse(r));}}catch(e){}return defaults();}
@@ -469,7 +488,7 @@ function table(key,cols,opts){opts=opts||{};const rows=S[key];if(opts.extra)EXTR
    return `<td class="${c.wide?"wide":""}"><div style="display:flex;align-items:center">${tag}${input}</div></td>`;}).join("")
   +(opts.extra?`<td class="r num" data-extra="${key}:${i}">${opts.extra.fn(r)}</td>`:"")
   +`<td><button class="del" data-del="${key}:${i}">Delete</button></td></tr>`;});
- out+=`</tbody></table></div><div class="btn-row"><button class="btn" data-add="${key}">+ Add row</button>${rows.some(r=>r.ex)?`<button class="btn ghost" data-clearex="${key}">Remove example rows</button>`:""}</div>`;
+ out+=`</tbody></table></div><div class="btn-row"><button class="btn" data-add="${key}">+ Add row</button><button class="btn ghost" data-csv="${key}">Export CSV</button>${rows.some(r=>r.ex)?`<button class="btn ghost" data-clearex="${key}">Remove example rows</button>`:""}</div>`;
  return out;}
 const BLANK={
  funding:{source:"",venture:"",amount:0,stage:"Researching",due:"",next:""},
@@ -508,6 +527,7 @@ VIEWS.overview=()=>{
  (S.clients||[]).forEach(x=>x.review&&dl.push([x.review,"Client review",x.household,x.stage]));
  (S.rocks||[]).forEach(x=>x.due&&x.status!=="Done"&&dl.push([x.due,"Rock",x.rock,x.venture]));
  (S.incentives||[]).forEach(x=>x.date&&!["Not a fit","Claimed"].includes(x.status)&&dl.push([x.date,"Incentive",x.program,x.status]));
+ (S.tasks||[]).forEach(x=>x.due&&x.status!=="Done"&&dl.push([x.due,"Task",x.title,x.venture]));
  (S.certs||[]).forEach(x=>x.expires&&dl.push([x.expires,"Cert expires",x.cert,x.entity]));
  dl.sort((a,b)=>a[0].localeCompare(b[0]));
  const upcoming=dl.filter(d=>{const n=daysUntil(d[0]);return n!==null&&n>=-7&&n<=60;}).slice(0,10);
@@ -1559,6 +1579,379 @@ TABS.splice(TABS.findIndex(t=>t[0]==="funding")+1,0,["incentives","Incentives & 
 (function(){const x=EXTRA_DEFAULTS4();for(const k in x){if(S[k]==null)S[k]=x[k];}})();
 
 /* =========================================================
+   ROUND 6: ACTION CENTER, AUTOMATIONS, AI, SYNC, CAPTURE
+   ========================================================= */
+function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function TODAY(){return iso(new Date());}
+function addD(s,n){const d=s?new Date(s+"T00:00:00"):new Date();d.setDate(d.getDate()+n);return iso(d);}
+function addM(s,n){const d=s?new Date(s+"T00:00:00"):new Date();d.setMonth(d.getMonth()+n);return iso(d);}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+function fmtD(s){if(!s)return "";const d=new Date(s+"T00:00:00");return d.toLocaleDateString(undefined,{month:"short",day:"numeric"});}
+
+function EXTRA_DEFAULTS5(){return{
+ tasks:[
+  {id:"t1",ex:true,title:"Call two SBA Preferred Lenders for pre-qualification",venture:"Buy a Business",due:addD(null,1),prio:"P1",recur:"None",status:"Open",source:"manual"},
+  {id:"t2",ex:true,title:"Upload DD-214 and VA rating letter to VetCert",venture:"Gov Contracts & Grants",due:addD(null,3),prio:"P1",recur:"None",status:"Open",source:"manual"},
+  {id:"t3",ex:true,title:"Publish one LinkedIn post",venture:"All",due:addD(null,2),prio:"P3",recur:"Weekly",status:"Open",source:"manual"}],
+ auto:{enabled:{},keys:[],log:[]},
+ profile:{my_name:"",my_company:"",my_phone:"",my_title:"Founder"},
+ meta:{}
+};}
+Object.assign(BLANK,{tasks:{title:"",venture:"All",due:"",prio:"P2",recur:"None",status:"Open",source:"manual"}});
+
+/* ---------- capability handles (resolve later; features light up) ---------- */
+const CAP={sample:null,dictation:null,downloads:null,mcp:null,aiOff:false};
+function cuse(name){try{return window.claude&&window.claude.use?window.claude.use(name).catch(()=>null):Promise.resolve(null);}catch(e){return Promise.resolve(null);}}
+function typing(){const a=document.activeElement;if(!a)return false;if(a.tagName==="TEXTAREA")return true;return a.tagName==="INPUT"&&!["checkbox","radio","button","submit"].includes(a.type);}
+function softRender(){if(typing())return;const y=window.scrollY;route();window.scrollTo(0,y);}
+
+/* ---------- save: local + cloud + automations ---------- */
+function persistLocal(){try{localStorage.setItem(LS,JSON.stringify(S));return true;}catch(e){return false;}}
+save=function(){S.meta=S.meta||{};S.meta.updatedAt=Date.now();saveOk=persistLocal();renderSync();queueCloudWrite();scheduleAutomations();};
+
+/* ---------- cloud sync (db + user) ---------- */
+const SYNC={ref:null,status:"local",timer:null,writing:false,again:false};let syncReady;SYNC.ready=new Promise(r=>syncReady=r);
+function setSync(s){SYNC.status=s;renderSync();}
+function renderSync(){const el=document.getElementById("savedNote");if(!el)return;const m={local:saveOk?"Saved in this browser":"Not saved: browser storage blocked. Use Backup.",connecting:"Connecting sync…",synced:"Synced to your account",saving:"Syncing…",offline:"Sync can't be reached; saved in this browser",readonly:"View only: changes stay in this browser",full:"Cloud storage is full; saved in this browser",error:"Sync stopped; saved in this browser",big:"Too much data to sync; saved in this browser"};el.textContent=m[SYNC.status]||m.local;el.dataset.sync=SYNC.status;}
+async function initSync(){
+ const db=await cuse("db");if(!db)return syncReady();const user=await cuse("user");let id=null;try{id=user?await user.id():null;}catch(e){}if(!id)return syncReady();
+ try{SYNC.ref=db.doc("data/users/"+id+"/state");}catch(e){return syncReady();}
+ setSync("connecting");let first=true;
+ const t=setTimeout(()=>{if(SYNC.status==="connecting")setSync("offline");syncReady();},10000);
+ SYNC.ref.onSnapshot(snap=>{
+  if(snap.metadata.hasPendingWrites)return;
+  if(!snap.metadata.fromCache){clearTimeout(t);}
+  const lu=+((S.meta||{}).updatedAt)||0;
+  if(!snap.exists){if(!snap.metadata.fromCache){setSync("synced");if(first){first=false;writeCloud();}syncReady();}return;}
+  const d=snap.data()||{};const ru=+d.updatedAt||0;
+  if(ru>lu&&d.state&&typeof d.state==="object"){applyRemote(d.state,ru);}
+  else if(lu>ru&&!snap.metadata.fromCache&&first){writeCloud();}
+  if(!snap.metadata.fromCache){first=false;if(SYNC.status!=="saving")setSync("synced");syncReady();}
+ },e=>{clearTimeout(t);setSync(e&&e.code==="revoked"?"local":"error");syncReady();});
+}
+function applyRemote(state,ru){S=Object.assign(defaults(),state);S.meta=Object.assign({},S.meta,{updatedAt:ru});persistLocal();if(typing()){SYNC.deferred=true;return;}softRender();toast("Updated from your other device");}
+document.addEventListener("focusout",()=>{if(SYNC.deferred){setTimeout(()=>{if(!typing()&&SYNC.deferred){SYNC.deferred=false;softRender();}},300);}});
+function queueCloudWrite(){if(!SYNC.ref||["readonly","full","big"].includes(SYNC.status))return;clearTimeout(SYNC.timer);SYNC.timer=setTimeout(writeCloud,1800);}
+async function writeCloud(){
+ if(!SYNC.ref)return;if(SYNC.writing){SYNC.again=true;return;}
+ const body={state:S,updatedAt:+((S.meta||{}).updatedAt)||Date.now(),v:1};
+ if(JSON.stringify(body).length>240000){setSync("big");return;}
+ SYNC.writing=true;setSync("saving");
+ try{await SYNC.ref.set(JSON.parse(JSON.stringify(body)));setSync("synced");}
+ catch(e){const c=e&&e.code;if(c==="invalid_argument")setSync("readonly");else if(c==="quota_exceeded")setSync("full");else if(c==="unavailable"){setTimeout(()=>{SYNC.writing=false;writeCloud();},1500+Math.random()*1500);return;}else setSync("error");}
+ SYNC.writing=false;if(SYNC.again){SYNC.again=false;queueCloudWrite();}
+}
+
+/* ---------- workflows ---------- */
+const WF={
+ acq_loi:{name:"Acquisition: LOI to close",venture:"Buy a Business",anchor:"Start date",steps:[[0,"Send signed LOI","P1"],[2,"Open diligence folder; confirm exclusivity","P2"],[3,"Send due diligence request list","P1"],[5,"Engage quality-of-earnings accountant","P1"],[7,"Submit SBA loan package to lenders","P1"],[14,"Review QoE draft and add-backs","P1"],[21,"Customer and key-employee diligence calls","P2"],[30,"Lease assignment and license transfers","P2"],[35,"Lender commitment letter signed","P1"],[40,"Asset purchase agreement draft with attorney","P1"],[45,"Final walkthrough; working capital true-up","P2"],[50,"Close","P1"],[51,"Day-1 announcement to staff and customers","P1"]]},
+ acq_100:{name:"First 100 days after close",venture:"Buy a Business",anchor:"Close date",steps:[[1,"Meet every employee one-on-one","P1"],[3,"Take over banking, payroll and insurance","P1"],[7,"Call top 20 customers with the seller","P1"],[14,"Set up the weekly scorecard","P2"],[30,"SOPs for 10 core processes","P2"],[45,"Move to HoldCo shared tools","P2"],[60,"Pricing review vs. competitors","P2"],[75,"Launch recurring maintenance plans","P2"],[90,"Check set-aside eligibility for government work","P3"],[100,"12-month plan with the GM","P1"]]},
+ bid:{name:"GovCon proposal",venture:"Gov Contracts & Grants",anchor:"Proposal due date",steps:[[-21,"Bid/no-bid decision and compliance matrix","P1"],[-20,"Submit questions to the contracting officer","P2"],[-18,"Confirm teaming partners and LOS","P2"],[-14,"Pink team: outline review","P2"],[-10,"Build pricing from wrap rates","P1"],[-7,"Red team: full draft review","P1"],[-4,"Gold team: final review","P1"],[-2,"Submit proposal","P1"],[0,"Confirm receipt","P2"],[14,"Request debrief if not awarded","P3"]]},
+ sources:{name:"Sources Sought / RFI response",venture:"Gov Contracts & Grants",anchor:"Response due date",steps:[[-5,"Read notice; decide to respond","P1"],[-3,"Draft capability response mapped to requirements","P1"],[-1,"Submit response","P1"],[30,"Follow up with the CO / OSDBU","P2"]]},
+ grant:{name:"Grant application",venture:"Nonprofit",anchor:"Grant deadline",steps:[[-30,"Confirm eligibility and registrations","P1"],[-25,"Outline against scoring criteria","P2"],[-20,"Budget and justification","P1"],[-15,"Request letters of support","P2"],[-10,"Full draft","P1"],[-7,"Internal review","P1"],[-2,"Submit","P1"],[7,"Confirm receipt; log in tracker","P3"]]},
+ loan_file:{name:"Mortgage loan file",venture:"Mortgage Broker / MLO",anchor:"Application date",steps:[[0,"Application taken; issue Loan Estimate within 3 business days","P1"],[1,"Order appraisal","P1"],[3,"Send condition list to borrower","P2"],[7,"Submit to underwriting","P1"],[14,"Clear conditions","P1"],[18,"Closing Disclosure issued (3 business days before closing)","P1"],[21,"Closing","P1"],[22,"Ask for a review; thank-you to the realtor","P2"],[30,"30-day check-in","P3"],[365,"Loan anniversary: rate and equity review","P3"]]},
+ sba:{name:"SBA loan application",venture:"Buy a Business",anchor:"Start date",steps:[[0,"Gather tax returns, financials, debt schedule","P1"],[3,"Complete SBA Forms 1919 and 413","P1"],[7,"Projections and use of proceeds","P1"],[10,"Submit to 2–3 SBA Preferred Lenders","P1"],[21,"Compare term sheets","P1"],[30,"Commitment letter","P1"],[45,"Closing","P1"]]},
+ vetcert:{name:"VetCert application",venture:"Gov Contracts & Grants",anchor:"Start date",steps:[[0,"Download DD-214 and VA rating letter","P1"],[2,"Confirm SAM.gov registration is active","P1"],[5,"Attorney review of operating agreement (51%+ direct ownership and control)","P1"],[7,"Submit in MySBA Certifications","P1"],[14,"Check portal; answer any information requests","P2"],[90,"Follow up if no decision","P3"]]},
+ hire:{name:"New hire onboarding",venture:"HoldCo",anchor:"Start date",steps:[[-7,"Accounts, equipment and paperwork ready","P1"],[0,"Day 1: welcome, tools, scorecard","P1"],[1,"Walk through SOPs","P2"],[7,"Week-1 check-in","P2"],[30,"30-day review","P1"],[60,"60-day review","P2"],[90,"90-day review and decision","P1"]]},
+ launch:{name:"New venture launch",venture:"HoldCo",anchor:"Start date",steps:[[0,"Entity, EIN and operating agreement","P1"],[3,"Business bank account","P1"],[7,"Licenses and registrations","P1"],[14,"Website, CRM and phone","P2"],[21,"First 10 customer conversations","P1"],[30,"Offer live","P1"],[60,"First revenue review","P2"],[90,"Go / no-go gate","P1"]]},
+ close:{name:"Monthly close",venture:"HoldCo",anchor:"First of the month",steps:[[0,"Reconcile all bank and card accounts","P1"],[3,"Categorize transactions for every entity","P2"],[5,"AR/AP review; chase overdue invoices","P1"],[7,"P&L and balance sheet per entity","P1"],[8,"Update the Finance tab","P2"],[10,"Send founder summary","P2"]]},
+ qplan:{name:"Quarterly planning",venture:"HoldCo",anchor:"Planning day",steps:[[0,"Review the 13-week scorecard","P1"],[1,"Set 3–7 rocks","P1"],[2,"Update the roadmap","P2"],[3,"Budget vs. actual review","P2"],[5,"Team kickoff","P2"]]},
+ incent:{name:"State incentive application",venture:"HoldCo",anchor:"Start date",steps:[[0,"One-page project profile","P1"],[3,"Call the local economic development organization","P1"],[7,"Meet the state agency","P1"],[14,"Compare incentive offers","P2"],[21,"Apply before announcing or signing","P1"],[45,"Negotiate performance agreement","P1"]]}
+};
+function launchWorkflow(id,{label,anchor,venture,keyPrefix,source}){const w=WF[id];if(!w)return 0;let n=0;const a=anchor||TODAY();
+ w.steps.forEach(([off,title,prio],i)=>{const key=keyPrefix?keyPrefix+":"+i:null;if(key&&S.auto.keys.includes(key))return;S.tasks.push({id:uid(),title:(label?label+": ":"")+title,venture:venture||w.venture,due:(addD(a,off)<TODAY()?TODAY():addD(a,off)),prio:prio||"P2",recur:"None",status:"Open",source:source||"workflow"});if(key)S.auto.keys.push(key);n++;});return n;}
+
+/* ---------- automation rules ---------- */
+const COMPLIANCE=[[1,15,"Q4 estimated tax payment","HoldCo"],[1,31,"W-2s/1099-NECs and Q4 Form 941","HoldCo"],[3,15,"Forms 1065 / 1120-S due","HoldCo"],[3,31,"Form ADV annual amendment","Military Family Office"],[4,15,"Form 1040 / 1120 and Q1 estimated tax","HoldCo"],[4,30,"Q1 Form 941","HoldCo"],[5,15,"Form 990 / 990-PF (calendar-year orgs)","Nonprofit"],[6,15,"Q2 estimated tax","HoldCo"],[7,31,"Q2 Form 941","HoldCo"],[9,15,"Q3 estimated tax; extended 1065 / 1120-S","HoldCo"],[10,15,"Extended Form 1040 / 1120","HoldCo"],[10,31,"Q3 Form 941","HoldCo"],[11,1,"NMLS renewal window opens; finish 8 hours of CE","Mortgage Broker / MLO"],[11,15,"Extended Form 990","Nonprofit"],[12,31,"NMLS license renewal deadline","Mortgage Broker / MLO"]];
+const RULES=[
+ {id:"deal_loi",name:"Deal reaches LOI → LOI-to-close checklist",run:c=>S.deals.forEach(d=>{if(d.stage==="LOI"&&d.name)c.wf("acq_loi",{label:d.name,anchor:d.next&&d.next>=TODAY()?d.next:TODAY(),venture:"Buy a Business",keyPrefix:"deal_loi:"+d.name});})},
+ {id:"deal_dd",name:"Deal in due diligence → lender and QoE follow-ups",run:c=>S.deals.forEach(d=>{if(d.stage==="Due diligence"&&d.name){c.task("deal_dd:"+d.name+":1",{title:d.name+": check QoE progress",venture:"Buy a Business",due:addD(null,3),prio:"P1"});c.task("deal_dd:"+d.name+":2",{title:d.name+": lender status call",venture:"Buy a Business",due:addD(null,7),prio:"P1"});}})},
+ {id:"deal_closed",name:"Deal closed → first-100-days plan",run:c=>S.deals.forEach(d=>{if(d.stage==="Closed"&&d.name)c.wf("acq_100",{label:d.name,anchor:TODAY(),venture:"Buy a Business",keyPrefix:"deal_closed:"+d.name});})},
+ {id:"bid",name:"Bid decision = Bid → proposal schedule backward from the due date",run:c=>S.bids.forEach(b=>{if(b.decision==="Bid"&&b.due&&b.title)c.wf(b.type==="Sources Sought"||b.type==="RFI"?"sources":"bid",{label:b.title,anchor:b.due,venture:"Gov Contracts & Grants",keyPrefix:"bid:"+b.title+":"+b.due});})},
+ {id:"grant",name:"Grant marked Drafting → grant schedule backward from the deadline",run:c=>S.grants.forEach(g=>{if(g.status==="Drafting"&&g.due&&g.program)c.wf("grant",{label:g.program,anchor:g.due,venture:g.venture||"Nonprofit",keyPrefix:"grant:"+g.program+":"+g.due});})},
+ {id:"loan",name:"Loan milestones → closing and post-close follow-ups",run:c=>(S.loans||[]).forEach(l=>{if(!l.borrower)return;if(l.stage==="Clear to close")c.task("loan_ctc:"+l.borrower,{title:l.borrower+": schedule closing; send CTC update to borrower and agent",venture:"Mortgage Broker / MLO",due:TODAY(),prio:"P1"});if(l.stage==="Funded"){c.task("loan_f1:"+l.borrower,{title:l.borrower+": ask for a review; thank the referral partner",venture:"Mortgage Broker / MLO",due:addD(null,1),prio:"P2"});c.task("loan_f2:"+l.borrower,{title:l.borrower+": 30-day check-in",venture:"Mortgage Broker / MLO",due:addD(null,30),prio:"P3"});c.task("loan_f3:"+l.borrower,{title:l.borrower+": 1-year anniversary review",venture:"Mortgage Broker / MLO",due:addD(null,365),prio:"P3"});}})},
+ {id:"hire",name:"Hire marked Hired → onboarding plan from start date",run:c=>S.hires.forEach(x=>{if(x.status==="Hired"&&x.role)c.wf("hire",{label:x.role,anchor:x.start||TODAY(),venture:x.venture||"HoldCo",keyPrefix:"hire:"+x.role});})},
+ {id:"cert",name:"Certification approved → expiry date and renewal reminder",run:c=>(S.certs||[]).forEach(x=>{if(x.status==="Approved"&&x.approved&&!x.expires&&/vetcert|sdvosb|vosb/i.test(x.cert)){x.expires=addM(x.approved,36);c.changed();c.log("Set "+x.cert+" expiry to "+x.expires);}if(x.expires&&x.cert)c.task("cert:"+x.cert+":"+x.expires,{title:"Start renewal: "+x.cert,venture:x.entity||"Gov Contracts & Grants",due:addD(x.expires,-90),prio:"P1"});})},
+ {id:"contacts",name:"Relationship touch overdue → follow-up task",run:c=>(S.contacts||[]).forEach(x=>{if(x.name&&x.next&&x.next<TODAY())c.task("contact:"+x.name+":"+x.next,{title:"Follow up with "+x.name+(x.org?" ("+x.org+")":""),venture:x.venture||"All",due:TODAY(),prio:"P2"});})},
+ {id:"reviews",name:"Client review within 14 days → prep task",run:c=>(S.clients||[]).forEach(x=>{const n=daysUntil(x.review);if(x.household&&n!=null&&n>=0&&n<=14)c.task("review:"+x.household+":"+x.review,{title:"Prep annual review: "+x.household,venture:"Military Family Office",due:addD(x.review,-3)<TODAY()?TODAY():addD(x.review,-3),prio:"P2"});})},
+ {id:"compliance",name:"Federal compliance dates → prep task 7 days ahead (next 60 days)",run:c=>{const now=new Date();[now.getFullYear(),now.getFullYear()+1].forEach(y=>COMPLIANCE.forEach(([m,d,t,v])=>{const due=iso(new Date(y,m-1,d));const n=daysUntil(due);if(n>=0&&n<=60)c.task("comp:"+due+":"+t,{title:"Prepare: "+t+" (due "+fmtD(due)+")",venture:v,due:addD(due,-7)<TODAY()?TODAY():addD(due,-7),prio:"P1"});}));}},
+ {id:"weekly",name:"Weekly rhythm → Monday scorecard and Friday CEO review",run:c=>{const mon=mondays(1)[0];c.task("wk_sc:"+mon,{title:"Enter this week's scorecard numbers",venture:"HoldCo",due:mon<TODAY()?TODAY():mon,prio:"P2"});const fri=addD(mon,4);if(fri>=TODAY())c.task("wk_ceo:"+mon,{title:"Friday CEO review (45 min)",venture:"HoldCo",due:fri,prio:"P2"});}},
+ {id:"rocks",name:"Rock off track → recovery plan task",run:c=>(S.rocks||[]).forEach(r=>{if(r.status==="Off track"&&r.rock)c.task("rock:"+r.rock,{title:"Write a recovery plan: "+r.rock,venture:r.venture||"All",due:addD(null,2),prio:"P1"});})},
+ {id:"funding",name:"Funding decision within 14 days → follow-up task",run:c=>S.funding.forEach(f=>{const n=daysUntil(f.due);if(f.source&&n!=null&&n>=0&&n<=14&&!["Funded","Declined"].includes(f.stage))c.task("fund:"+f.source+":"+f.due,{title:"Follow up: "+f.source+(f.next?" ("+f.next+")":""),venture:f.venture||"All",due:addD(f.due,-3)<TODAY()?TODAY():addD(f.due,-3),prio:"P1"});})},
+ {id:"incent",name:"Incentive with a date → reminder task",run:c=>(S.incentives||[]).forEach(x=>{if(x.program&&x.date&&!["Not a fit","Claimed"].includes(x.status)&&daysUntil(x.date)<=30&&daysUntil(x.date)>=0)c.task("inc:"+x.program+":"+x.date,{title:"Incentive next step: "+x.program,venture:x.venture||"All",due:x.date,prio:"P2"});})}
+];
+let autoTimer=null;
+function scheduleAutomations(){clearTimeout(autoTimer);SYNC.ready.then(()=>{clearTimeout(autoTimer);autoTimer=setTimeout(()=>runAutomations(false),900);});}
+function runAutomations(manual){
+ S.auto=S.auto||{enabled:{},keys:[],log:[]};let added=0,changed=false;const logs=[];
+ RULES.forEach(r=>{if(S.auto.enabled[r.id]===false)return;
+  const c={task:(key,t)=>{if(S.auto.keys.includes(key))return;S.tasks.push(Object.assign({id:uid(),recur:"None",status:"Open",source:"auto",prio:"P2"},t));S.auto.keys.push(key);added++;logs.push(r.name.split(" →")[0]+" → "+t.title);},
+   wf:(id,o)=>{const n=launchWorkflow(id,Object.assign({source:"auto"},o));if(n){added+=n;logs.push(r.name.split(" →")[0]+" → "+n+" tasks: "+WF[id].name+(o.label?" ("+o.label+")":""));}},
+   changed:()=>{changed=true;},log:m=>logs.push(m)};
+  try{r.run(c);}catch(e){}});
+ if(S.auto.keys.length>4000)S.auto.keys=S.auto.keys.slice(-3000);
+ if(logs.length){const ts=new Date().toLocaleString(undefined,{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});logs.forEach(m=>S.auto.log.unshift({ts,m}));S.auto.log=S.auto.log.slice(0,60);}
+ if(added||changed){S.meta=S.meta||{};S.meta.updatedAt=Date.now();persistLocal();queueCloudWrite();
+  if(/^#?(actions|overview)?$/.test(location.hash)||location.hash==="#actions")softRender();
+  toast(added?`Automations added ${added} task${added===1?"":"s"}`:"Automations updated your trackers");}
+ else if(manual)toast("Automations ran: nothing new to add");
+ return added;}
+
+/* ---------- capture (prefix parser) ---------- */
+const VALIAS={mfo:"Military Family Office",family:"Military Family Office",ai:"AI Company",re:"Real Estate",realestate:"Real Estate",mlo:"Mortgage Broker / MLO",mortgage:"Mortgage Broker / MLO",foundation:"Foundation",nonprofit:"Nonprofit",npo:"Nonprofit",research:"Research Grants",sbir:"Research Grants",govcon:"Gov Contracts & Grants",gov:"Gov Contracts & Grants",buy:"Buy a Business",buyabiz:"Buy a Business",acq:"Buy a Business",holdco:"HoldCo",hq:"HoldCo",all:"All"};
+const DOW=["sun","mon","tue","wed","thu","fri","sat"];
+function parseDue(tok){tok=tok.toLowerCase();if(/^\d{4}-\d{2}-\d{2}$/.test(tok))return tok;if(tok==="today")return TODAY();if(tok==="tomorrow"||tok==="tmr")return addD(null,1);let m=tok.match(/^\+(\d+)(d|w|m)?$/);if(m){const n=+m[1];return m[2]==="w"?addD(null,7*n):m[2]==="m"?addM(null,n):addD(null,n);}if(tok==="eow")return addD(null,(5-new Date().getDay()+7)%7||7);const i=DOW.indexOf(tok.slice(0,3));if(i>=0){let k=(i-new Date().getDay()+7)%7;if(k===0)k=7;return addD(null,k);}return null;}
+function parseMoney(s){const m=s.match(/\$\s?([\d.,]+)\s*([kKmM])?/);if(!m)return 0;let v=parseFloat(m[1].replace(/,/g,""));if(m[2]&&/k/i.test(m[2]))v*=1e3;if(m[2]&&/m/i.test(m[2]))v*=1e6;return Math.round(v);}
+function parseCapture(raw){let text=raw.trim();if(!text)return null;let type="task";const pm=text.match(/^(task|deal|bid|contact|idea|grant|loan|note|risk|incentive)\s*:\s*/i);if(pm){type=pm[1].toLowerCase();text=text.slice(pm[0].length);}
+ let venture=null,due=null,prio=null;
+ text=text.replace(/(^|\s)@([a-z]+)/gi,(a,s,v)=>{const n=VALIAS[v.toLowerCase()];if(n){venture=n;return s;}return a;});
+ text=text.replace(/(^|\s)due:(\S+)/gi,(a,s,d)=>{const p=parseDue(d);if(p){due=p;return s;}return a;});
+ text=text.replace(/(^|\s)!([123])(?=\s|$)/g,(a,s,p)=>{prio="P"+p;return s;});
+ text=text.replace(/\s+/g," ").trim();return {type,text,venture,due,prio,amount:parseMoney(text)};}
+function describeCapture(p){if(!p)return "Type something to capture.";const lab={task:"Task",deal:"Acquisition deal",bid:"GovCon bid",contact:"Contact",idea:"New venture idea",grant:"Grant",loan:"Mortgage loan",note:"Venture note",risk:"Risk",incentive:"Incentive"}[p.type];return `→ ${lab}: “${p.text||"…"}”${p.venture?" · "+p.venture:""}${p.due?" · due "+fmtD(p.due):""}${p.prio?" · "+p.prio:""}${p.amount?" · "+money(p.amount):""}`;}
+function commitCapture(p){if(!p||!p.text)return null;const v=p.venture;
+ switch(p.type){
+  case "deal":S.deals.push({name:p.text.replace(/\$\s?[\d.,]+\s*[kKmM]?/,"").trim(),industry:"",price:p.amount||0,sde:0,stage:"Sourcing",next:p.due||""});return ["acquisitions","Deal added to the pipeline"];
+  case "bid":S.bids.push({title:p.text,agency:"",naics:"",type:"Solicitation",value:p.amount||0,due:p.due||"",decision:"Evaluate"});return ["govcon","Opportunity added to the bid tracker"];
+  case "contact":{const [name,org]=p.text.split(/\s+-\s+|,\s*/);S.contacts.push({name:name||p.text,org:org||"",role:"Advisor",venture:v||"All",last:TODAY(),next:p.due||addD(null,14)});return ["ceo","Contact added to key relationships"];}
+  case "idea":S.ideas.push({idea:p.text,market:3,fit:3,capital:3,speed:3,vet:3});return ["ideas","Idea added to New Ventures"];
+  case "grant":S.grants.push({program:p.text,venture:v||"Nonprofit",amount:p.amount||0,status:"Researching",due:p.due||"",url:""});return ["grants","Grant added to the tracker"];
+  case "loan":{const prog=(p.text.match(/\b(VA|FHA|DSCR|USDA|Jumbo|Non-QM|Conventional)\b/i)||[])[1];S.loans.push({borrower:p.text.replace(/\$\s?[\d.,]+\s*[kKmM]?/,"").replace(/\b(VA|FHA|DSCR|USDA|Jumbo|Non-QM|Conventional)\b/i,"").trim(),program:prog?prog.replace(/^va$/i,"VA").replace(/^fha$/i,"FHA").replace(/^dscr$/i,"DSCR").replace(/^usda$/i,"USDA"):"VA",amount:p.amount||0,stage:"Lead",close:p.due||"",bps:200});return ["v-mlo","Loan added to the pipeline"];}
+  case "note":{const vv=VENTURES.find(x=>x.name===v)||VENTURES.find(x=>x.id==="holdco");S.notes[vv.id]=((S.notes[vv.id]||"")+"\n"+TODAY()+": "+p.text).trim();return ["v-"+vv.id,"Note added to "+vv.name];}
+  case "risk":S.risks.push({risk:p.text,venture:v||"All",like:3,impact:3,owner:"",mitigation:""});return ["legal","Risk added to the register"];
+  case "incentive":S.incentives.push({program:p.text,agency:"",type:"Grant",venture:v||"All",value:p.amount||0,status:"Researching",date:p.due||""});return ["incentives","Incentive added to the tracker"];
+  default:S.tasks.push({id:uid(),title:p.text,venture:v||"All",due:p.due||"",prio:p.prio||"P2",recur:"None",status:"Open",source:"capture"});return ["actions","Task added"];
+ }}
+
+/* ---------- modal (palette + capture) ---------- */
+function openModal(html,onOpen){const m=document.getElementById("modal");m.innerHTML=`<div class="modal-card" role="dialog" aria-modal="true"><button class="modal-x" id="modalClose" aria-label="Close">×</button>${html}</div>`;m.hidden=false;if(onOpen)onOpen(m);}
+function closeModal(){const m=document.getElementById("modal");m.hidden=true;m.innerHTML="";if(CAP.dictation&&CAP.dictation.active&&CAP.dictation.active())CAP.dictation.stop().catch(()=>{});}
+function capturePanel(idp){return `<label class="lbl" for="${idp}Text">Capture anything</label>
+ <textarea class="field cap" id="${idp}Text" placeholder="e.g. deal: HVAC company in Joliet $1.2M due:fri   ·   call lender about 7(a) @buy due:tomorrow !1   ·   contact: Jane Doe - Acme Prime @gov"></textarea>
+ <div class="small muted" id="${idp}Prev">Type something to capture.</div><div class="small muted" id="${idp}Partial"></div>
+ <div class="btn-row"><button class="btn primary" data-capsave="${idp}">Save</button>${CAP.sample&&!CAP.aiOff?`<button class="btn" data-capai="${idp}">AI: sort it for me</button>`:""}${CAP.dictation?`<button class="btn" data-capmic="${idp}">🎙 Dictate</button>`:""}</div>
+ <details class="small muted"><summary>Shortcuts</summary><p>Start with <b>task:</b> <b>deal:</b> <b>bid:</b> <b>contact:</b> <b>idea:</b> <b>grant:</b> <b>loan:</b> <b>note:</b> <b>risk:</b> or <b>incentive:</b> (no prefix = task). Add <b>@buy @mlo @gov @ai @re @mfo @npo @foundation @research @holdco</b>, <b>due:</b>today / tomorrow / fri / +3d / 2026-12-01, <b>!1 !2 !3</b> for priority, and <b>$1.2M</b> for amounts.</p></details>`;}
+function openCapture(){openModal(`<div class="sec"><h3>Quick capture</h3>${capturePanel("mc")}</div>`,()=>{const t=document.getElementById("mcText");t.focus();});}
+
+function paletteIndex(){const items=[];const go=(h,id)=>()=>{closeModal();location.hash=h;setTimeout(()=>{if(id){const el=document.getElementById(id);if(el){el.scrollIntoView({block:"center"});el.focus();el.closest("tr")?.classList.add("flash");}}},120);};
+ TABS.forEach(([k,l])=>items.push({l:l,s:"Tab",f:go("#"+k)}));
+ VENTURES.forEach(v=>items.push({l:v.name,s:"Venture",f:go("#v-"+v.id)}));
+ const MAP={deals:["acquisitions","name"],bids:["govcon","title"],loans:["v-mlo","borrower"],contacts:["ceo","name"],grants:["grants","program"],funding:["funding","source"],hires:["operator","role"],certs:["certs","cert"],incentives:["incentives","program"],risks:["legal","risk"],rocks:["roadmap","rock"],ideas:["ideas","idea"],props:["v-re","address"],clients:["v-mfo","household"],customers:["v-ai","account"],donors:["v-nonprofit","name"],sops:["playbooks","sop"],deadlines:["finance","item"]};
+ Object.entries(MAP).forEach(([k,[tab,f]])=>(S[k]||[]).forEach((r,i)=>{if(r[f])items.push({l:r[f],s:k.charAt(0).toUpperCase()+k.slice(1),f:go("#"+tab,`${k}-${i}-${f}`)});}));
+ S.tasks.filter(t=>t.status!=="Done").forEach(t=>items.push({l:t.title,s:"Task"+(t.due?" · "+fmtD(t.due):""),f:go("#actions","task-"+t.id+"-title")}));
+ Object.entries(WF).forEach(([id,w])=>items.push({l:"Start workflow: "+w.name,s:"Workflow",f:()=>{closeModal();WFSEL=id;location.hash="#actions";setTimeout(()=>document.getElementById("wfName")?.focus(),150);}}));
+ TEMPLATES.forEach(t=>items.push({l:"Template: "+t.name,s:"Message",f:()=>{closeModal();TPLSEL=t.id;location.hash="#assist";}}));
+ items.push({l:"Quick capture",s:"Action",f:()=>{closeModal();setTimeout(openCapture,50);}},{l:"Run automations now",s:"Action",f:()=>{closeModal();runAutomations(true);}},{l:"Weekly brief",s:"Action",f:go("#actions","briefBox")},{l:"Backup & restore",s:"Action",f:go("#backup")});
+ RESOURCES.forEach(r=>items.push({l:r[1],s:"Resource · "+r[0],url:r[2]}));return items;}
+let PAL=[],PALI=0;
+function openPalette(){PAL=paletteIndex();openModal(`<input class="field pal" id="palQ" placeholder="Search ventures, deals, contacts, tasks, workflows, resources…" autocomplete="off"><div class="pal-list" id="palList" role="listbox"></div><div class="small muted">↑ ↓ to move · Enter to open · Esc to close</div>`,()=>{const q=document.getElementById("palQ");q.focus();renderPal("");});}
+function renderPal(q){const toks=q.toLowerCase().split(/\s+/).filter(Boolean);const res=(toks.length?PAL.filter(it=>{const s=(it.l+" "+it.s).toLowerCase();return toks.every(t=>s.includes(t));}):PAL.slice(0,TABS.length+VENTURES.length)).slice(0,40);PALI=Math.min(PALI,Math.max(0,res.length-1));
+ document.getElementById("palList").innerHTML=res.length?res.map((it,i)=>it.url?`<a class="pal-item ${i===PALI?"on":""}" data-pal="${i}" href="${h(it.url)}" target="_blank" rel="noopener"><span>${h(it.l)}</span><small>${h(it.s)} ↗</small></a>`:`<button class="pal-item ${i===PALI?"on":""}" data-pal="${i}"><span>${h(it.l)}</span><small>${h(it.s)}</small></button>`).join(""):`<p class="small muted">No matches.</p>`;PAL.cur=res;}
+
+/* ---------- task list ---------- */
+let TFILT="active",TVEN="All";
+function taskBuckets(){const td=TODAY(),wk=addD(null,7);const open=S.tasks.filter(t=>t.status!=="Done");return{overdue:open.filter(t=>t.due&&t.due<td),today:open.filter(t=>t.due===td),week:open.filter(t=>t.due&&t.due>td&&t.due<=wk),nodate:open.filter(t=>!t.due),open};}
+function taskRows(){const td=TODAY(),wk=addD(null,7);let L=S.tasks.slice();
+ if(TFILT==="active")L=L.filter(t=>t.status!=="Done"&&(!t.due||t.due<=wk));if(TFILT==="overdue")L=L.filter(t=>t.status!=="Done"&&t.due&&t.due<td);if(TFILT==="today")L=L.filter(t=>t.status!=="Done"&&t.due===td);if(TFILT==="open")L=L.filter(t=>t.status!=="Done");if(TFILT==="done")L=L.filter(t=>t.status==="Done");
+ if(TVEN!=="All")L=L.filter(t=>t.venture===TVEN);
+ L.sort((a,b)=>(a.status==="Done")-(b.status==="Done")||((a.due||"9999")<(b.due||"9999")?-1:(a.due||"9999")>(b.due||"9999")?1:0)||a.prio.localeCompare(b.prio));
+ if(!L.length)return `<tr><td colspan="8" class="muted small">Nothing here. Capture a task, start a workflow, or switch the filter.</td></tr>`;
+ return L.slice(0,200).map(t=>{const late=t.status!=="Done"&&t.due&&t.due<td;return `<tr class="${t.status==="Done"?"tdone":""}">
+ <td><input type="checkbox" class="tchk" data-tdone="${t.id}" ${t.status==="Done"?"checked":""} aria-label="Done"></td>
+ <td class="wide"><div style="display:flex;align-items:center;gap:4px">${t.ex?'<span class="ex">EX</span>':""}${t.source==="auto"?'<span class="pill brass" title="Created by an automation">auto</span>':t.source==="workflow"?'<span class="pill" title="Created by a workflow">wf</span>':""}<input id="task-${t.id}-title" data-task="${t.id}|title" value="${h(t.title)}" aria-label="Task"></div></td>
+ <td><select id="task-${t.id}-venture" data-task="${t.id}|venture">${VNAMES.map(o=>`<option ${o===t.venture?"selected":""}>${h(o)}</option>`).join("")}</select></td>
+ <td><input type="date" id="task-${t.id}-due" data-task="${t.id}|due" value="${h(t.due)}" class="${late?"late":""}" aria-label="Due"></td>
+ <td><select id="task-${t.id}-prio" data-task="${t.id}|prio">${["P1","P2","P3"].map(o=>`<option ${o===t.prio?"selected":""}>${o}</option>`).join("")}</select></td>
+ <td><select id="task-${t.id}-recur" data-task="${t.id}|recur">${["None","Weekly","Monthly","Quarterly","Yearly"].map(o=>`<option ${o===t.recur?"selected":""}>${o}</option>`).join("")}</select></td>
+ <td>${CAP.mcp&&t.due?`<button class="del" data-tcal="${t.id}" title="Add to Google Calendar">📅</button>`:""}</td>
+ <td><button class="del" data-tdel="${t.id}">Delete</button></td></tr>`;}).join("");}
+
+/* ---------- weekly brief ---------- */
+function weeklyBrief(){const b=taskBuckets();const wks=mondays(13),last=wks[wks.length-2];const sc=(S.score||[]).filter(r=>r.w&&r.w[last]!=null&&r.w[last]!=="");const hit=sc.filter(r=>scClass(r,r.w[last])==="sc-good");
+ const fin=S.fin||[];const tot=k=>fin.reduce((s,r)=>s+(+r[k]||0),0);const net=tot("rev")-tot("exp");
+ const L=[];L.push(`WEEKLY BRIEF — week of ${fmtD(mondays(1)[0])}`,"");
+ L.push("SCORECARD",`- ${hit.length} of ${sc.length} measures hit goal last week`);sc.filter(r=>scClass(r,r.w[last])==="sc-bad").forEach(r=>L.push(`- Missed: ${r.measure} (${r.w[last]} vs goal ${r.goal})`));
+ L.push("","TASKS",`- Overdue: ${b.overdue.length} · Due today: ${b.today.length} · Due this week: ${b.week.length}`);b.overdue.slice(0,8).forEach(t=>L.push(`- OVERDUE ${fmtD(t.due)}: ${t.title} [${t.venture}]`));b.today.concat(b.week).slice(0,10).forEach(t=>L.push(`- ${fmtD(t.due)}: ${t.title} [${t.venture}]`));
+ L.push("","PIPELINES");const ds=DEAL_STAGES.map(s=>[s,S.deals.filter(d=>d.stage===s).length]).filter(x=>x[1]);L.push(`- Acquisitions: ${ds.map(x=>x[0]+" "+x[1]).join(", ")||"none"}`);
+ const bids=S.bids.filter(x=>["Evaluate","Bid"].includes(x.decision));L.push(`- GovCon: ${bids.length} open (${bids.filter(x=>x.decision==="Bid").length} bidding)`);
+ const lo=(S.loans||[]).filter(l=>!["Funded","Withdrawn"].includes(l.stage));L.push(`- Mortgage: ${lo.length} active loans, ${money(lo.reduce((s,l)=>s+(+l.amount||0),0))} volume`);
+ L.push(`- Funding in pipeline: ${money(S.funding.filter(f=>!["Funded","Declined"].includes(f.stage)).reduce((s,f)=>s+(+f.amount||0),0))}`);
+ L.push(`- Grants open: ${S.grants.filter(g=>!["Awarded","Declined"].includes(g.status)).length}`);
+ L.push("","CASH",`- Monthly revenue ${money(tot("rev"))}, net ${net<0?"-":""}${money(Math.abs(net))}, cash ${money(tot("cash"))}`);
+ const off=(S.rocks||[]).filter(r=>r.status==="Off track");if(off.length){L.push("","ROCKS OFF TRACK");off.forEach(r=>L.push(`- ${r.rock} (${r.owner||"no owner"})`));}
+ const hr=(S.risks||[]).filter(r=>(+r.like||0)*(+r.impact||0)>=15);if(hr.length){L.push("","HIGH RISKS");hr.forEach(r=>L.push(`- ${r.risk}: ${r.mitigation||"needs a plan"}`));}
+ const cx=(S.certs||[]).filter(c=>{const n=daysUntil(c.expires);return n!=null&&n<=120;});if(cx.length){L.push("","CERTIFICATIONS");cx.forEach(c=>L.push(`- ${c.cert} expires ${fmtD(c.expires)}`));}
+ L.push("","AT RISK VENTURES");const ar=VENTURES.filter(v=>vmeta(v).health!=="good");L.push(ar.length?ar.map(v=>`- ${v.name}: ${vmeta(v).next}`).join("\n"):"- None");return L.join("\n");}
+
+/* ---------- message templates ---------- */
+const TEMPLATES=[
+ {id:"owner",name:"Letter to a business owner (off-market acquisition)",venture:"Buy a Business",subject:"A question about the future of {business}",body:"Hi {owner_name},\n\nMy name is {my_name}. I'm a veteran and local business owner, and I'm looking to buy and run one {industry} business in {city} for the long term.\n\nIf you've ever thought about retirement or a succession plan for {business}, I'd value a confidential conversation. I keep your team in place, I'm prepared to move with SBA financing, and I can be flexible on timing and your role during the transition.\n\nNo pressure either way. You can reach me at {my_phone}.\n\nRespectfully,\n{my_name}\n{my_company}"},
+ {id:"broker",name:"Intro to a business broker",venture:"Buy a Business",subject:"Qualified buyer: {industry} businesses in {city}",body:"Hi {broker_name},\n\nI'm {my_name}, a veteran operator actively buying {industry} businesses in {city}.\n\nBuy box: SDE {sde_range}, recurring revenue, staff in place, owner ready to transition. I'm pre-qualified with SBA Preferred Lenders and can provide proof of funds.\n\nPlease add me to your buyer list for anything that fits. I respond to CIMs within 48 hours.\n\nThanks,\n{my_name} · {my_phone}"},
+ {id:"prime",name:"Prime contractor small business liaison",venture:"Gov Contracts & Grants",subject:"SDVOSB teaming partner for {contract_or_agency}",body:"Hi {contact_name},\n\nI lead {my_company}, a service-disabled veteran-owned small business (VetCert certified) in {naics_area}.\n\nI noticed {prime_company}'s work on {contract_or_agency}. We can help you meet small business and SDVOSB subcontracting goals with {capability}.\n\nCould we have 20 minutes to see where we fit on current or upcoming work? Capability statement attached.\n\nRespectfully,\n{my_name}\n{my_title}, {my_company} · {my_phone}"},
+ {id:"co",name:"Contracting officer / OSDBU capability intro",venture:"Gov Contracts & Grants",subject:"SDVOSB capability: {capability}",body:"Good morning {contact_name},\n\n{my_company} is a VetCert-certified service-disabled veteran-owned small business providing {capability} (NAICS {naics}).\n\nWe've reviewed {agency}'s forecast and are interested in {opportunity}. If there's a Sources Sought or market research effort coming, we would welcome the chance to respond.\n\nCapability statement attached. Thank you for your support of veteran-owned businesses.\n\n{my_name}\n{my_title}, {my_company} · {my_phone}"},
+ {id:"realtor",name:"Realtor partner intro (VA loans)",venture:"Mortgage Broker / MLO",subject:"VA loan partner for your military buyers",body:"Hi {realtor_name},\n\nI'm {my_name}, a veteran and licensed loan officer (NMLS {nmls_id}) focused on VA, FHA and DSCR loans near {base_or_city}.\n\nI close on time, keep you updated at every milestone, and I can pre-approve PCS buyers before they arrive. Coffee this week? I'd like to learn how you like to work.\n\n{my_name} · NMLS {nmls_id} · {my_phone}\nEqual Housing Opportunity"},
+ {id:"refi",name:"Past client rate check-in",venture:"Mortgage Broker / MLO",subject:"Quick check on your mortgage, {client_name}",body:"Hi {client_name},\n\nIt's been {months} months since we closed your loan. Rates and your home's value have both moved, so I'd like to run a free review to see if there's anything worth doing. Usually there isn't, but it's worth 10 minutes to know.\n\nReply with a good time to talk.\n\n{my_name} · NMLS {nmls_id} · {my_phone}\nEqual Housing Opportunity"},
+ {id:"lender",name:"SBA lender request",venture:"Buy a Business",subject:"SBA 7(a) request: {business} acquisition",body:"Hi {banker_name},\n\nI'm under LOI to acquire {business} for {price}. Trailing SDE is {sde}. I'm requesting an SBA 7(a) loan with {down_pct} equity injection and a seller note.\n\nAttached: LOI, 3 years of seller tax returns, interim financials, my resume, SBA Forms 1919 and 413, and projections.\n\nCould you share your initial read and timeline this week?\n\nThank you,\n{my_name} · {my_phone}"},
+ {id:"donor",name:"Donor thank-you",venture:"Nonprofit",subject:"Thank you, {donor_name}",body:"Dear {donor_name},\n\nThank you for your gift of {amount}. Because of you, {impact}.\n\nThis receipt confirms no goods or services were provided in exchange for your contribution. {org_name} is a 501(c)(3) organization, EIN {ein}.\n\nWith gratitude,\n{my_name}\n{org_name}"},
+ {id:"grant",name:"Funder inquiry (program officer)",venture:"Nonprofit",subject:"Inquiry: veteran entrepreneurship program",body:"Dear {officer_name},\n\nI lead {org_name}, which helps veteran and military-spouse founders start and grow businesses. Last year we served {served} founders, and {outcome}.\n\nYour foundation's focus on {funder_focus} aligns closely with our work. Would you be open to a short call about fit before your next cycle?\n\nRespectfully,\n{my_name}\n{org_name} · {my_phone}"},
+ {id:"cpa",name:"Referral partner (CPA / estate attorney)",venture:"Military Family Office",subject:"Serving military families together",body:"Hi {partner_name},\n\nI'm {my_name}. My firm helps military and veteran families with transition planning, TSP and BRS decisions, and VA benefits coordination.\n\nMany of your clients likely have these questions. I'd like to learn how you work and see whether a referral relationship (with full disclosure to clients) makes sense for both of us.\n\nLunch next week?\n\n{my_name}\n{my_company} · {my_phone}"},
+ {id:"investor",name:"Investor update (AI company)",venture:"AI Company",subject:"{company} update: {month}",body:"Hi {investor_name},\n\nHighlights\n- MRR: {mrr} ({growth} vs last month)\n- New customers: {new_customers}\n- Pipeline: {pipeline}\n\nLowlights\n- {lowlight}\n\nAsks\n- {ask}\n\nThanks for your support,\n{my_name}"}];
+let TPLSEL="owner",TPLVALS={},WFSEL="acq_loi";
+function tplVars(t){const set=new Set();(t.subject+" "+t.body).replace(/\{(\w+)\}/g,(a,k)=>set.add(k));return [...set];}
+function tplFill(t){const v=Object.assign({},S.profile||{},TPLVALS);const f=s=>s.replace(/\{(\w+)\}/g,(a,k)=>v[k]?v[k]:"["+k.replace(/_/g," ")+"]");return{subject:f(t.subject),body:f(t.body)};}
+
+/* ---------- capability helpers ---------- */
+function aiErr(e){const c=e&&e.code;if(["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"].includes(c)){CAP.aiOff=true;return "AI features aren't available here. Everything else still works.";}
+ return {rate_limited:"Claude is busy or you've reached a usage limit. Try again later.",refused:"Claude couldn't help with that request. Try rewording it.",invalid_json:"Couldn't read the answer. Try again.",prompt_too_large:"Too much data for one request. Try a narrower question.",session_expired:"Sign in to Claude again, then retry.",cancelled:"Stopped."}[c]||"Claude couldn't answer just now. Try again.";}
+function mcpErr(e,server){const c=e&&e.code;return {needs_reauth:`Reconnect ${server} in claude.ai Settings → Connectors.`,server_not_connected:`Add ${server} in claude.ai Settings → Connectors.`,selection_required:`Choose which ${server} account to use when claude.ai asks.`,not_in_manifest:`${server} isn't allowed for this page. Turn it on in the page's Permissions menu.`,approval_required:`${server} needs your approval. Try again and choose Allow.`,blocked_by_policy:`Your organization blocks this ${server} action.`,tool_error:`${server} reported a problem: ${(e&&e.message)||"unknown error"}`,server_unavailable:`${server} isn't responding. Try again in a moment.`}[c]||`Couldn't reach ${server}. Try again.`;}
+async function gmailDraft(to,subject,body){if(!CAP.mcp)return;const rec=String(to||"").split(/[,;\s]+/).filter(x=>/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(x));try{const r=await CAP.mcp.callTool("Gmail","create_draft",{to:rec,subject,body});const u=r&&r.payload&&typeof r.payload==="object"&&typeof r.payload.viewUrl==="string"?r.payload.viewUrl:"";toast("Draft saved in Gmail");return u;}catch(e){toast(mcpErr(e,"Gmail"));return null;}}
+async function calEvent(summary,date,description){if(!CAP.mcp)return;try{await CAP.mcp.callTool("Google Calendar","create_event",{summary,startTime:date+"T09:00:00",endTime:date+"T09:30:00",description:description||"From Venture Command Center"});toast("Added to Google Calendar");return true;}catch(e){toast(mcpErr(e,"Google Calendar"));return false;}}
+async function saveFile(name,data){if(CAP.downloads){try{await CAP.downloads.save({filename:name,data});toast("Saved "+name);return;}catch(e){if(e&&e.code==="declined")return;}}
+ try{await navigator.clipboard.writeText(data);toast("Downloads aren't available here, so it was copied to your clipboard");}catch(e){toast("Couldn't save or copy. Use the Backup tab instead.");}}
+function toCSV(key){const rows=S[key]||[];const cols=Object.keys(BLANK[key]||rows[0]||{}).filter(k=>k!=="ex"&&k!=="id");const esc=v=>{v=v==null?"":String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};return [cols.join(","),...rows.map(r=>cols.map(c=>esc(r[c])).join(","))].join("\n");}
+function parseCSV(txt){const out=[];let row=[],f="",q=false;for(let i=0;i<txt.length;i++){const ch=txt[i];if(q){if(ch==='"'){if(txt[i+1]==='"'){f+='"';i++;}else q=false;}else f+=ch;}else if(ch==='"')q=true;else if(ch===","){row.push(f);f="";}else if(ch==="\n"||ch==="\r"){if(ch==="\r"&&txt[i+1]==="\n")i++;row.push(f);out.push(row);row=[];f="";}else f+=ch;}if(f!==""||row.length){row.push(f);out.push(row);}return out.filter(r=>r.some(c=>c.trim()!==""));}
+function compactState(){const pick=(a,n,f)=>(a||[]).slice(0,n).map(f);return JSON.stringify({today:TODAY(),ventures:VENTURES.map(v=>{const m=vmeta(v);return{name:v.name,stage:m.stage,health:HEALTH[m.health],next:m.next};}),openTasks:pick(S.tasks.filter(t=>t.status!=="Done"),60,t=>({title:t.title,venture:t.venture,due:t.due,prio:t.prio})),deals:pick(S.deals,30,d=>({name:d.name,stage:d.stage,price:d.price,sde:d.sde})),bids:pick(S.bids,20,b=>({title:b.title,due:b.due,decision:b.decision,value:b.value})),loans:pick(S.loans,30,l=>({stage:l.stage,amount:l.amount,program:l.program})),funding:pick(S.funding,20,f=>({source:f.source,amount:f.amount,stage:f.stage,due:f.due})),grants:pick(S.grants,20,g=>({program:g.program,status:g.status,due:g.due})),finance:S.fin,rocks:S.rocks,risks:pick(S.risks,15,r=>({risk:r.risk,score:(+r.like||0)*(+r.impact||0)})),certs:pick(S.certs,10,c=>({cert:c.cert,status:c.status,expires:c.expires})),incentives:pick(S.incentives,15,x=>({program:x.program,status:x.status,value:x.value})),hoursPerWeek:S.time});}
+
+/* ---------- views ---------- */
+VIEWS.actions=()=>{const b=taskBuckets();const w=WF[WFSEL]||WF.acq_loi;
+ return `<div class="sec"><div class="eyebrow">Run the day</div><h2>Action Center</h2><p class="lede">Every task across your ventures in one list. Workflows turn a single event into a dated checklist, and automation rules watch your trackers and create the follow-ups for you. Press <kbd>Ctrl</kbd>/<kbd>⌘</kbd> <kbd>K</kbd> to search everything, or <kbd>C</kbd> to capture.</p></div>
+ ${sumStrip([["Overdue",b.overdue.length],["Due today",b.today.length],["Due in 7 days",b.week.length],["Open tasks",b.open.length],["Automations on",RULES.filter(r=>S.auto.enabled[r.id]!==false).length+" / "+RULES.length]])}
+ <div class="cols">
+  <div class="panel sec">${capturePanel("ac")}</div>
+  <div class="panel sec"><h3>Connected features</h3>${staticTable(["Feature","Status"],[["Cloud sync across devices",{local:"Off (this browser only)",connecting:"Connecting",synced:"On",saving:"On",offline:"Can't reach sync",readonly:"View only",full:"Storage full",error:"Stopped",big:"Too much data"}[SYNC.status]||"Off"],["AI assistant (Claude)",CAP.sample&&!CAP.aiOff?"Available":"Not available here"],["Voice capture",CAP.dictation?"Available":"Not available here (Chrome or the desktop app)"],["File downloads (CSV, JSON, Markdown)",CAP.downloads?"Available":"Copy-to-clipboard fallback"],["Google Calendar and Gmail",CAP.mcp?"Available (asks permission on first use)":"Not available here"]],true)}<p class="small muted">AI calls use your own Claude usage and ask permission the first time. Gmail creates drafts only; nothing is sent automatically.</p></div>
+ </div>
+ <div class="sec"><div class="sec-head"><h3>Tasks</h3><div class="btn-row"><select class="field" id="tVen" style="width:auto">${VNAMES.map(o=>`<option ${o===TVEN?"selected":""}>${h(o)}</option>`).join("")}</select><button class="btn" id="addTask">+ Add task</button>${S.tasks.some(t=>t.ex)?`<button class="btn ghost" id="clearExTasks">Remove example tasks</button>`:""}<button class="btn ghost" data-csv="tasks">Export CSV</button></div></div>
+ <div class="filters">${[["active","Next 7 days"],["overdue",`Overdue (${b.overdue.length})`],["today",`Today (${b.today.length})`],["open","All open"],["done","Done"]].map(([k,l])=>`<button class="chipbtn" data-tf="${k}" aria-pressed="${TFILT===k}">${l}</button>`).join("")}</div>
+ <div class="tbl-wrap"><table class="edit tasks"><thead><tr><th></th><th>Task</th><th>Venture</th><th>Due</th><th>Priority</th><th>Repeats</th><th></th><th></th></tr></thead><tbody id="taskBody">${taskRows()}</tbody></table></div>
+ <p class="small muted">Completing a repeating task creates the next one automatically.</p></div>
+ <div class="sec"><h3>Workflows</h3><p class="small muted">Pick a playbook, name it, set the anchor date, and every step lands in your task list with its own due date.</p>
+ <div class="cols">
+  <div class="panel sec"><div class="calc">
+   <label class="lbl">Workflow<select class="field" id="wfSel">${Object.entries(WF).map(([id,x])=>`<option value="${id}" ${id===WFSEL?"selected":""}>${h(x.name)}</option>`).join("")}</select></label>
+   <label class="lbl">Name (deal, bid, person…)<input class="field" id="wfName" placeholder="e.g. Joliet HVAC"></label>
+   <label class="lbl">${h(w.anchor)}<input class="field" type="date" id="wfDate" value="${TODAY()}"></label>
+   <label class="lbl">Venture<select class="field" id="wfVen">${VNAMES.map(o=>`<option ${o===w.venture?"selected":""}>${h(o)}</option>`).join("")}</select></label>
+  </div><div class="btn-row" style="margin-top:10px"><button class="btn primary" id="wfGo">Start workflow (${w.steps.length} tasks)</button></div></div>
+  <div class="panel sec"><h3 style="font-size:1rem">${h(w.name)}</h3><div class="tbl-wrap"><table><thead><tr><th>When</th><th>Step</th><th>Priority</th></tr></thead><tbody>${w.steps.map(s=>`<tr><td class="num small">${s[0]===0?"Day 0":s[0]>0?"+"+s[0]+" d":s[0]+" d"}</td><td class="small">${h(s[1])}</td><td><span class="pill ${s[2]==="P1"?"bad":s[2]==="P2"?"warn":""}">${s[2]}</span></td></tr>`).join("")}</tbody></table></div></div>
+ </div></div>
+ <div class="sec"><div class="sec-head"><h3>Automation rules</h3><div class="btn-row"><button class="btn" id="runAuto">Run automations now</button><button class="btn ghost" id="clearAuto">Clear open auto-created tasks</button><button class="btn ghost" id="forgetAuto">Let rules re-create tasks</button></div></div><p class="small muted">Rules run whenever you change a tracker and when the page opens. Each one creates a follow-up only once, so deleting a task won't bring it back.</p>
+ <div class="tbl-wrap"><table><thead><tr><th>On</th><th>When this happens → do this</th></tr></thead><tbody>${RULES.map(r=>`<tr><td><input type="checkbox" class="tchk" data-rule="${r.id}" ${S.auto.enabled[r.id]===false?"":"checked"} aria-label="Enable rule"></td><td class="small">${h(r.name)}</td></tr>`).join("")}</tbody></table></div>
+ <details class="panel" style="margin-top:6px"><summary><b>Automation log</b> <span class="small muted">(${S.auto.log.length})</span></summary><ul class="plain" style="margin-top:8px">${S.auto.log.slice(0,30).map(l=>`<li class="small"><span class="muted num">${h(l.ts)}</span> ${h(l.m)}</li>`).join("")||'<li class="small muted">Nothing yet.</li>'}</ul></details></div>
+ <div class="sec"><h3>Weekly brief</h3><p class="small muted">Built from your scorecard, tasks, pipelines, cash, rocks, risks and certifications. Send it to your Integrator or keep it for Friday review.</p>
+ <textarea class="field" id="briefBox" readonly style="min-height:260px;font-family:var(--f-mono);font-size:.8rem">${h(weeklyBrief())}</textarea>
+ <div class="btn-row"><button class="btn primary" id="briefCopy">Copy</button><button class="btn" id="briefSave">Save as file</button>${CAP.mcp?`<input class="field" id="briefTo" placeholder="Email for the Gmail draft" style="max-width:260px"><button class="btn" id="briefGmail">Draft in Gmail</button>`:""}${CAP.sample&&!CAP.aiOff?`<button class="btn" id="briefAI">AI: add priorities</button>`:""}</div>
+ <div class="ai-out" id="briefAIout" hidden></div></div>`;};
+
+VIEWS.assist=()=>{const t=TEMPLATES.find(x=>x.id===TPLSEL)||TEMPLATES[0];const vars=tplVars(t);const f=tplFill(t);const ai=CAP.sample&&!CAP.aiOff;
+ return `<div class="sec"><div class="eyebrow">Work faster</div><h2>AI & templates</h2><p class="lede">Ask Claude about your portfolio, screen deals against your buy box, personalize outreach, and move data in and out. AI features use your own Claude account and ask permission the first time.</p></div>
+ <div class="sec"><h3>Ask about your portfolio</h3>${ai?`<textarea class="field" id="aiQ" placeholder="e.g. What should I focus on this week? Which venture should I delegate first? Where are my funding gaps?"></textarea>
+  <div class="btn-row"><button class="btn primary" id="aiAsk">Ask Claude</button><button class="btn" data-aiq="Plan my week: pick the 5 highest-leverage tasks across all ventures, and add any missing tasks you recommend.">Plan my week</button><button class="btn" data-aiq="Which recurring work should I delegate or automate first, and to whom? Be specific to my ventures.">What to delegate</button><button class="btn" data-aiq="Review my funding, grants, incentives and certifications. What money or preference am I leaving on the table, and what are the next steps?">Find money I'm missing</button><button class="btn ghost" id="aiStop" hidden>Stop</button></div>
+  <div class="ai-out" id="aiOut" hidden></div><p class="small muted">Claude reads a summary of your dashboard (ventures, tasks, pipelines, cash, risks). When it suggests tasks, it can add them to the Action Center for you.</p>`:`<p class="small muted">The AI assistant isn't available in this view. Open the dashboard in claude.ai to use it.</p>`}</div>
+ <div class="sec"><h3>AI deal screener</h3>${ai?`<textarea class="field" id="dealText" placeholder="Paste a business-for-sale listing or CIM summary (BizBuySell, broker email, etc.)"></textarea><div class="btn-row"><button class="btn primary" id="dealGo">Screen against my buy box</button></div><div id="dealOut"></div>`:`<p class="small muted">Available when the page runs inside claude.ai.</p>`}</div>
+ <div class="sec"><h3>Message templates</h3>
+ <div class="cols">
+  <div class="panel sec"><label class="lbl">Template<select class="field" id="tplSel">${TEMPLATES.map(x=>`<option value="${x.id}" ${x.id===t.id?"selected":""}>${h(x.name)}</option>`).join("")}</select></label>
+   <div class="calc">${vars.map(k=>{const prof=["my_name","my_company","my_phone","my_title"].includes(k);const val=prof?(S.profile[k]||""):(TPLVALS[k]||"");return `<label class="lbl">${h(k.replace(/_/g," "))}${prof?" (saved)":""}<input class="field" id="tv-${k}" data-tplvar="${k}" value="${h(val)}"></label>`;}).join("")}</div></div>
+  <div class="panel sec"><label class="lbl">Subject<input class="field" id="tplSubj" value="${h(f.subject)}" readonly></label><label class="lbl">Message<textarea class="field" id="tplBody" style="min-height:260px">${h(f.body)}</textarea></label>
+   <div class="btn-row"><button class="btn primary" id="tplCopy">Copy</button>${CAP.mcp?`<input class="field" id="tplTo" placeholder="Recipient email" style="max-width:220px"><button class="btn" id="tplGmail">Draft in Gmail</button>`:""}${ai?`<input class="field" id="tplNotes" placeholder="Notes for AI (who they are, what you know)" style="max-width:280px"><button class="btn" id="tplAI">AI: personalize</button>`:""}</div></div>
+ </div></div>
+ <div class="sec"><h3>Data tools</h3><div class="cols">
+  <div class="panel sec"><h3 style="font-size:1rem">Export</h3><div class="btn-row">${["tasks","deals","bids","loans","contacts","funding","grants","incentives","certs","props","clients","fin"].map(k=>`<button class="btn" data-csv="${k}">${k} CSV</button>`).join("")}</div><div class="btn-row"><button class="btn primary" id="jsonDl">Full backup (.json)</button></div><p class="small muted">Open CSVs in Excel or Google Sheets.</p></div>
+  <div class="panel sec"><h3 style="font-size:1rem">Import CSV</h3><label class="lbl">Into tracker<select class="field" id="impKey">${Object.keys(BLANK).map(k=>`<option>${k}</option>`).join("")}</select></label><textarea class="field" id="impTxt" placeholder="Paste CSV with a header row. Column names should match the tracker's fields (export one first to see them)."></textarea><div class="btn-row"><button class="btn primary" id="impGo">Import rows</button></div></div>
+ </div></div>`;};
+
+/* ---------- events ---------- */
+document.addEventListener("keydown",e=>{const m=document.getElementById("modal");
+ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();openPalette();return;}
+ if(!m.hidden){if(e.key==="Escape"){closeModal();return;}const q=document.getElementById("palQ");if(q&&PAL.cur){if(e.key==="ArrowDown"){e.preventDefault();PALI=Math.min(PAL.cur.length-1,PALI+1);renderPal(q.value);}else if(e.key==="ArrowUp"){e.preventDefault();PALI=Math.max(0,PALI-1);renderPal(q.value);}else if(e.key==="Enter"){e.preventDefault();const it=PAL.cur[PALI];if(it){if(it.url){const a=document.querySelector(`[data-pal="${PALI}"]`);a&&a.click();}else it.f();}}}
+  if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)&&document.activeElement&&document.activeElement.id==="mcText"){e.preventDefault();document.querySelector('[data-capsave="mc"]').click();}return;}
+ if(typing())return;if(e.key==="/"){e.preventDefault();openPalette();}else if(e.key.toLowerCase()==="c"&&!e.ctrlKey&&!e.metaKey&&!e.altKey){e.preventDefault();openCapture();}});
+document.addEventListener("input",e=>{const t=e.target;
+ if(t.id==="palQ"){PALI=0;renderPal(t.value);}
+ if(t.id==="mcText"||t.id==="acText"){const p=t.id.slice(0,2);document.getElementById(p+"Prev").textContent=describeCapture(parseCapture(t.value));}
+ if(t.dataset&&t.dataset.tplvar){const k=t.dataset.tplvar;if(["my_name","my_company","my_phone","my_title"].includes(k)){S.profile[k]=t.value;clearTimeout(t._s);t._s=setTimeout(save,600);}else TPLVALS[k]=t.value;const tp=TEMPLATES.find(x=>x.id===TPLSEL);const f=tplFill(tp);document.getElementById("tplSubj").value=f.subject;document.getElementById("tplBody").value=f.body;}});
+document.addEventListener("change",e=>{const t=e.target;
+ if(t.dataset&&t.dataset.task){const [id,k]=t.dataset.task.split("|");const x=S.tasks.find(q=>q.id===id);if(x){x[k]=t.value;save();}}
+ else if(t.dataset&&t.dataset.tdone){const x=S.tasks.find(q=>q.id===t.dataset.tdone);if(!x)return;x.status=t.checked?"Done":"Open";if(t.checked){x.doneAt=TODAY();if(x.recur&&x.recur!=="None"&&!x.spawned){const base=x.due||TODAY();const nd=x.recur==="Weekly"?addD(base,7):x.recur==="Monthly"?addM(base,1):x.recur==="Quarterly"?addM(base,3):addM(base,12);S.tasks.push({id:uid(),title:x.title,venture:x.venture,due:nd,prio:x.prio,recur:x.recur,status:"Open",source:x.source});x.spawned=true;toast("Done. Next one scheduled for "+fmtD(nd));}else toast("Done");}save();softRender();}
+ else if(t.dataset&&t.dataset.rule){S.auto.enabled[t.dataset.rule]=t.checked;save();}
+ else if(t.id==="tVen"){TVEN=t.value;document.getElementById("taskBody").innerHTML=taskRows();}
+ else if(t.id==="wfSel"){WFSEL=t.value;softRender();}
+ else if(t.id==="tplSel"){TPLSEL=t.value;TPLVALS={};softRender();}});
+document.addEventListener("click",e=>{if(e.target&&e.target.id==="modal")closeModal();});
+document.addEventListener("click",async e=>{const b=e.target.closest("button,a.pal-item");if(!b)return;const d=b.dataset;
+ if(b.id==="paletteBtn")return openPalette();
+ if(b.id==="captureBtn")return openCapture();
+ if(b.id==="modalClose"||b.classList.contains("modal-bg"))return closeModal();
+ if(d.pal!==undefined&&!b.href){const it=PAL.cur&&PAL.cur[+d.pal];if(it)it.f();return;}
+ if(d.capsave){const ta=document.getElementById(d.capsave+"Text");const p=parseCapture(ta.value);const r=commitCapture(p);if(!r){toast("Type something first");return;}save();ta.value="";document.getElementById(d.capsave+"Prev").textContent="Type something to capture.";toast(r[1]);if(d.capsave==="mc")closeModal();if(location.hash!=="#"+r[0]&&d.capsave==="mc"){}else softRender();return;}
+ if(d.capai){const ta=document.getElementById(d.capai+"Text");if(!ta.value.trim())return toast("Type something first");const prev=document.getElementById(d.capai+"Prev");prev.textContent="Thinking…";b.disabled=true;
+  try{const r=await CAP.sample.json(`Sort this note from a serial entrepreneur into ONE record. Today is ${TODAY()}. Ventures: ${VNAMES.join(", ")}.
+Types: task, deal (business to acquire), bid (government contract opportunity), contact (person), idea (new venture), grant, loan (mortgage loan), note, risk, incentive.
+Reply with only JSON: {"type": one of the types, "text": short title or name, "venture": one of the ventures or null, "due": "YYYY-MM-DD" or null, "prio": "P1"|"P2"|"P3"|null, "amount": number or 0}
+Note: ${ta.value.slice(0,2000)}`,{modelTier:"quick"});
+   const p={type:["task","deal","bid","contact","idea","grant","loan","note","risk","incentive"].includes(r&&r.type)?r.type:"task",text:String((r&&r.text)||ta.value).slice(0,200),venture:VNAMES.includes(r&&r.venture)?r.venture:null,due:/^\d{4}-\d{2}-\d{2}$/.test(r&&r.due)?r.due:null,prio:/^P[123]$/.test(r&&r.prio)?r.prio:null,amount:+(r&&r.amount)||0};
+   const res=commitCapture(p);save();ta.value="";prev.textContent=describeCapture(p).replace("→","✓ Saved as");toast(res[1]);if(d.capai==="mc")setTimeout(closeModal,700);else softRender();}catch(err){prev.textContent=aiErr(err);}b.disabled=false;return;}
+ if(d.capmic){const dict=CAP.dictation;if(!dict)return;if(dict.active()){dict.stop().catch(()=>{});return;}DICT_TARGET=d.capmic+"Text";dict.start().catch(err=>{if(err&&err.code==="not_granted")toast("Microphone access is off for this page");else if(err&&err.code!=="stopped"&&err.code!=="dismissed")toast("Dictation isn't available right now");});return;}
+ if(d.tf){TFILT=d.tf;document.querySelectorAll("[data-tf]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.tf===TFILT));document.getElementById("taskBody").innerHTML=taskRows();return;}
+ if(b.id==="addTask"){const nt=Object.assign({id:uid()},BLANK.tasks,{due:TODAY(),venture:TVEN});S.tasks.push(nt);save();TFILT="active";softRender();document.getElementById("task-"+nt.id+"-title")?.focus();return;}
+ if(b.id==="clearExTasks"){S.tasks=S.tasks.filter(t=>!t.ex);save();softRender();return;}
+ if(d.tdel){if(!b.classList.contains("armed")){b.classList.add("armed");b.textContent="Confirm";setTimeout(()=>{if(b.isConnected){b.classList.remove("armed");b.textContent="Delete";}},3000);return;}S.tasks=S.tasks.filter(t=>t.id!==d.tdel);save();softRender();return;}
+ if(d.tcal){const x=S.tasks.find(q=>q.id===d.tcal);if(x){b.disabled=true;await calEvent(x.title,x.due,`${x.venture} · ${x.prio}\nFrom Venture Command Center`);b.disabled=false;}return;}
+ if(b.id==="wfGo"){const n=launchWorkflow(WFSEL,{label:document.getElementById("wfName").value.trim(),anchor:document.getElementById("wfDate").value||TODAY(),venture:document.getElementById("wfVen").value});save();TFILT="open";softRender();toast(`Added ${n} tasks`);return;}
+ if(b.id==="runAuto"){runAutomations(true);return;}
+ if(b.id==="clearAuto"){if(!b.classList.contains("armed")){b.classList.add("armed");b.textContent="Click again to clear";return;}const n=S.tasks.filter(t=>t.source==="auto"&&t.status!=="Done").length;S.tasks=S.tasks.filter(t=>!(t.source==="auto"&&t.status!=="Done"));save();softRender();toast(`Cleared ${n} tasks`);return;}
+ if(b.id==="forgetAuto"){S.auto.keys=[];save();toast("Rules will re-create any missing follow-ups on the next run");return;}
+ if(b.id==="briefCopy"){const box=document.getElementById("briefBox");try{await navigator.clipboard.writeText(box.value);toast("Brief copied");}catch(err){box.select();toast("Selected. Press Ctrl/Cmd+C to copy");}return;}
+ if(b.id==="briefSave"){saveFile(`weekly-brief-${TODAY()}.md`,document.getElementById("briefBox").value+(document.getElementById("briefAIout").textContent?"\n\nPRIORITIES (AI)\n"+document.getElementById("briefAIout").textContent:""));return;}
+ if(b.id==="briefGmail"){const extra=document.getElementById("briefAIout").textContent;await gmailDraft(document.getElementById("briefTo").value,"Weekly brief — "+fmtD(TODAY()),document.getElementById("briefBox").value+(extra?"\n\nPRIORITIES\n"+extra:""));return;}
+ if(b.id==="briefAI"){const o=document.getElementById("briefAIout");o.hidden=false;o.textContent="Thinking…";b.disabled=true;try{await CAP.sample(`You are an operating partner for a veteran serial entrepreneur running ${VENTURES.length} ventures. From this weekly brief, write the 5 most important priorities for this week as a numbered list (one line each, start with a verb, name the venture), then 3 things to delegate. Plain text, no markdown headings.\n\n${document.getElementById("briefBox").value}`,{onText:({text})=>{o.textContent=text;}});}catch(err){o.textContent=err&&err.text?err.text:aiErr(err);}b.disabled=false;return;}
+ if(b.id==="aiAsk"||d.aiq){const q=d.aiq||document.getElementById("aiQ").value.trim();if(!q)return toast("Type a question first");askAI(q);return;}
+ if(b.id==="aiStop"){AICTL&&AICTL.abort();return;}
+ if(b.id==="dealGo"){screenDeal();return;}
+ if(d.adddeal!==undefined){const r=LASTDEAL;if(!r)return;S.deals.push({name:String(r.name||"New deal").slice(0,120),industry:String(r.industry||""),price:+r.price||0,sde:+r.sde||0,stage:"Sourcing",next:addD(null,3)});S.tasks.push({id:uid(),title:"Request NDA and CIM: "+(r.name||"new deal"),venture:"Buy a Business",due:addD(null,2),prio:"P1",recur:"None",status:"Open",source:"capture"});save();toast("Added to the deal pipeline with a follow-up task");return;}
+ if(b.id==="tplCopy"){const txt="Subject: "+document.getElementById("tplSubj").value+"\n\n"+document.getElementById("tplBody").value;try{await navigator.clipboard.writeText(txt);toast("Message copied");}catch(err){document.getElementById("tplBody").select();toast("Selected. Press Ctrl/Cmd+C to copy");}return;}
+ if(b.id==="tplGmail"){b.disabled=true;await gmailDraft(document.getElementById("tplTo").value,document.getElementById("tplSubj").value,document.getElementById("tplBody").value);b.disabled=false;return;}
+ if(b.id==="tplAI"){const body=document.getElementById("tplBody");const notes=document.getElementById("tplNotes").value;const orig=body.value;b.disabled=true;body.value="Thinking…";try{const {text}=await CAP.sample(`Rewrite this outreach message so it reads as personal and specific, using the notes. Keep it under 180 words, keep any compliance lines (NMLS ID, Equal Housing Opportunity, receipt language) exactly, keep placeholders in [brackets] if information is missing, no flattery, plain text only. Reply with only the message body.\n\nNotes: ${notes||"(none)"}\n\nMessage:\n${orig}`,{cache:false});body.value=text.trim();}catch(err){body.value=orig;toast(aiErr(err));}b.disabled=false;return;}
+ if(d.csv){saveFile(`${d.csv}-${TODAY()}.csv`,toCSV(d.csv));return;}
+ if(b.id==="jsonDl"){saveFile(`venture-command-center-backup-${TODAY()}.json`,JSON.stringify(S,null,1));return;}
+ if(b.id==="impGo"){const key=document.getElementById("impKey").value;const rows=parseCSV(document.getElementById("impTxt").value);if(rows.length<2)return toast("Paste a header row and at least one data row");const head=rows[0].map(x=>x.trim());const tmpl=BLANK[key]||{};let n=0;rows.slice(1).forEach(r=>{const o=Object.assign({},tmpl);head.forEach((c,i)=>{if(c in tmpl){const v=r[i]==null?"":r[i].trim();o[c]=typeof tmpl[c]==="number"?(+v.replace(/[$,]/g,"")||0):v;}});if(key==="tasks")o.id=uid();S[key].push(o);n++;});save();toast(`Imported ${n} rows into ${key}`);document.getElementById("impTxt").value="";return;}
+});
+let DICT_TARGET="mcText",AICTL=null,LASTDEAL=null;
+async function askAI(q){const out=document.getElementById("aiOut"),stop=document.getElementById("aiStop");out.hidden=false;out.textContent="Thinking…";stop.hidden=false;AICTL=new AbortController();let added=0;
+ const lim=await CAP.sample.limits().catch(()=>null);const tools=lim&&lim.tools?[{name:"add_task",description:"Add one task to the user's Action Center. Returns the created task. Use only for concrete next actions the user should do.",inputSchema:{type:"object",properties:{title:{type:"string"},venture:{type:"string",enum:VNAMES},due:{type:"string",description:"YYYY-MM-DD"},prio:{type:"string",enum:["P1","P2","P3"]}},required:["title"]},execute:(i)=>{if(added>=10)throw new Error("Task limit reached for this request");const t={id:uid(),title:String(i.title).slice(0,200),venture:VNAMES.includes(i.venture)?i.venture:"All",due:/^\d{4}-\d{2}-\d{2}$/.test(i.due)?i.due:"",prio:/^P[123]$/.test(i.prio)?i.prio:"P2",recur:"None",status:"Open",source:"ai"};S.tasks.push(t);added++;save();return {added:t.title,due:t.due};}}]:undefined;
+ const opts={signal:AICTL.signal,onText:({text})=>{out.textContent=text;}};if(tools)opts.tools=tools;else opts.cache=false;
+ try{await CAP.sample(`You are the operating partner and chief of staff for a veteran serial entrepreneur. Answer the question using only the dashboard data below. Be specific: name ventures, deals, dates and dollar amounts. Keep it under 300 words, use short numbered or bulleted lines, plain text.${tools?" If you recommend concrete new tasks, add up to 10 with the add_task tool (don't duplicate tasks already open).":""}\n\nQuestion: ${q}\n\nDashboard data (JSON):\n${compactState()}`,opts);
+  if(added)out.textContent+=`\n\n✓ Added ${added} task${added===1?"":"s"} to the Action Center.`;}
+ catch(err){out.textContent=(err&&err.text?err.text+"\n\n":"")+(err&&err.code==="cancelled"?"Stopped.":aiErr(err));}
+ stop.hidden=true;}
+async function screenDeal(){const txt=document.getElementById("dealText").value.trim();const out=document.getElementById("dealOut");if(!txt)return toast("Paste a listing first");out.innerHTML=`<p class="small muted">Screening…</p>`;
+ const box=["SDE $250k–$1.5M with 3+ years of clean tax returns","Price at or below 3–4x SDE for service businesses","Recurring or repeat revenue","Owner is not the product; staff can run it","No customer above 15–20% of revenue","Within driving distance or a manager in place","Benefits from veteran ownership"];
+ try{const r=await CAP.sample.json(`Screen this business-for-sale listing against the buyer's buy box. Buy box:\n- ${box.join("\n- ")}\nReply with only JSON: {"name": string, "industry": string, "location": string, "price": number, "sde": number, "multiple": number, "score": 0-100 fit score, "verdict": "Pursue"|"Maybe"|"Pass", "fits": [strings], "misses": [strings], "red_flags": [strings], "questions": [5 questions to ask the seller], "sba_note": one sentence on SBA 7(a) financeability}. Use 0 for unknown numbers.\n\nListing:\n${txt.slice(0,12000)}`);
+  LASTDEAL=r;const L=a=>Array.isArray(a)&&a.length?`<ul class="plain">${a.slice(0,8).map(x=>`<li>${h(x)}</li>`).join("")}</ul>`:`<p class="small muted">None noted.</p>`;const cls=r.verdict==="Pursue"?"good":r.verdict==="Pass"?"bad":"warn";
+  out.innerHTML=`<div class="panel sec"><div class="sec-head"><h3>${h(r.name||"Listing")}</h3><span class="pill ${cls}">${h(r.verdict||"Maybe")} · ${+r.score||0}/100</span></div><p class="small">${h(r.industry||"")}${r.location?" · "+h(r.location):""} · Price ${money(+r.price||0)} · SDE ${money(+r.sde||0)}${+r.multiple?` · ${(+r.multiple).toFixed(2)}x`:""}</p>
+  <div class="cols"><div><h3 style="font-size:1rem">Fits</h3>${L(r.fits)}</div><div><h3 style="font-size:1rem">Misses</h3>${L(r.misses)}</div><div><h3 style="font-size:1rem">Red flags</h3>${L(r.red_flags)}</div><div><h3 style="font-size:1rem">Ask the seller</h3>${L(r.questions)}</div></div>
+  ${r.sba_note?`<p class="small"><b>SBA:</b> ${h(r.sba_note)}</p>`:""}<div class="btn-row"><button class="btn primary" data-adddeal="1">Add to deal pipeline</button></div><p class="small muted">AI screening is a first pass. Verify every number in diligence.</p></div>`;}
+ catch(err){out.innerHTML=`<p class="small muted">${h(aiErr(err))}</p>`;}}
+
+/* ---------- overview: action items ---------- */
+const _ov4=VIEWS.overview;
+VIEWS.overview=()=>{const b=taskBuckets();const html=_ov4();const mark='<div class="sec"><div class="sec-head"><h3>Needs attention</h3>';const strip=`<div class="sec"><div class="sec-head"><h3>Today</h3><a class="small" href="#actions">Open Action Center →</a></div>${sumStrip([["Overdue tasks",b.overdue.length],["Due today",b.today.length],["Due in 7 days",b.week.length],["Sync",{synced:"On",saving:"On"}[SYNC.status]||"This browser"]])}${b.overdue.concat(b.today).slice(0,6).map(t=>`<div class="alert ${t.due<TODAY()?"bad":""}"><span class="pill ${t.due<TODAY()?"bad":"warn"}">${t.due<TODAY()?"Overdue "+fmtD(t.due):"Today"}</span><span>${h(t.title)} <span class="muted">· ${h(t.venture)}</span></span></div>`).join("")}</div>`;return html.replace(mark,()=>strip+mark);};
+
+/* ---------- boot ---------- */
+TABS.splice(1,0,["actions","Action Center"]);TABS.splice(TABS.findIndex(t=>t[0]==="calculators"),0,["assist","AI & Templates"]);
+(function(){const x=EXTRA_DEFAULTS5();for(const k in x){if(S[k]==null)S[k]=x[k];}S.auto.enabled=S.auto.enabled||{};S.auto.keys=S.auto.keys||[];S.auto.log=S.auto.log||[];})();
+(async function(){
+ const [smp,dic,dl,mcp]=await Promise.all([cuse("sample"),cuse("dictation"),cuse("downloads"),cuse("mcp")]);
+ CAP.sample=smp;CAP.dictation=dic;CAP.downloads=dl;CAP.mcp=mcp;
+ if(dic){dic.onFinal(({text})=>{const ta=document.getElementById(DICT_TARGET);if(ta){ta.value=(ta.value?ta.value:"")+(ta.value?text:text.replace(/^\s+/,""));ta.dispatchEvent(new Event("input",{bubbles:true}));}});
+  dic.onPartial(({text})=>{const p=document.getElementById(DICT_TARGET.replace("Text","Partial"));if(p)p.textContent=text?"Hearing: "+text:"";});
+  dic.onState(({state})=>{document.querySelectorAll("[data-capmic]").forEach(x=>x.textContent=state==="idle"?"🎙 Dictate":"■ Stop dictation");});}
+ if(smp||dic||dl||mcp){if(/^#(actions|assist)$/.test(location.hash))softRender();}
+})();
+initSync().catch(()=>syncReady());
+SYNC.ready.then(()=>setTimeout(()=>runAutomations(false),300));
+
+/* =========================================================
    ROUTER + EVENTS
    ========================================================= */
 function route(){
@@ -1606,5 +1999,5 @@ document.addEventListener("click",e=>{const t=e.target.closest("button");if(!t)r
  else if(t.id==="resetBtn"){if(!t.classList.contains("armed")){t.classList.add("armed");t.textContent="Confirm reset";$("#resetNote").textContent="This replaces everything with the example data. Click again to confirm.";return;}
    S=defaults();save();toast("Reset to examples");route();}
 });
-route();save();
+route();persistLocal();renderSync();
 </script>

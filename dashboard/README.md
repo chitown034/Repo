@@ -25,5 +25,14 @@ Each venture page also has: ideal customers, revenue streams, key numbers, first
 risks and mitigations, SOPs to write, team build with hire triggers, and a venture-specific tracker
 (loan pipeline, property portfolio, client households, customer pipeline, donors, grants made).
 
-Data is stored in the browser's localStorage. Use the Backup tab to copy/restore your data.
+Workflow automation: Action Center (unified task list with recurring tasks, 13 one-click workflows,
+15 automation rules that create follow-ups from tracker changes, automation log, weekly brief),
+quick capture with smart prefixes (Ctrl/Cmd+K search, C to capture), AI & Templates (portfolio Q&A
+that can add tasks, AI deal screener, AI capture routing, 11 outreach templates with AI
+personalization), CSV import/export and JSON backup.
+
+When opened as a claude.ai artifact the page can also: sync data across devices (private per-user
+store), use Claude for AI features, take voice capture, save files, and create Google Calendar events
+and Gmail drafts. Each asks permission on first use. Opened as a plain file, data stays in this
+browser's localStorage; use the Backup tab to copy/restore it.
 Open `index.html` in any browser; no build step.
