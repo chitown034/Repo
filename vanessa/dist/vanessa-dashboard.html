@@ -49008,6 +49008,326 @@ if(typeof PB_TOOLS==="function"){const t0=PB_TOOLS;PB_TOOLS=()=>[...t0(),{name:"
  inputSchema:{type:"object",properties:{calculator:{type:"string"},inputs:{type:"object"}}},
  execute:i=>{const k=i&&i.calculator;const c=WS80.C.find(x=>x.k===k);if(!c)return{calculators:WS80.list()};const r=WS80.run(k,i.inputs||{});return{calculator:k,title:c.t,source:c.src.map(s=>({file:s[0],url:`https://drive.google.com/file/d/${s[1]}/view`})),results:r.out.map(o=>({label:o[0],value:o[1]})),checks:r.flags.map(f=>({pass:f[0],text:f[1]})),notes:r.notes||[],verify:c.verify}}}]}
 
+/* app81: SkillTree agents installed in the AI Call Center ISA — the six agents from Steven's SkillTree "AI workforce plan" (Mortgage Broker):
+   Proposal Generation, Follow-Up Drafting, Meeting Booking (Deals) · Personalization Research, List Building, Cold Email Drafting (Sales).
+   Each follows its SKILL.md: read the context file + voice file first, read the whole thread (never the last message alone), name the stage
+   (new lead / warm / went quiet / ready to buy) and why, draft the next move in Steven's voice using only facts from the context files,
+   flag anything uncertain, log every run, and queue the draft for approval. Drafts only: approving makes a Gmail DRAFT, a board card or an
+   ISA call draft — nothing is sent, posted, booked or dialed from here. Mortgage compliance layered on top (no rate/APR/payment/fee unless it is
+   in the context file or the input; NMLS/DRE on written drafts; out-of-state routing; TCPA/DNC; LO Comp Rule — never steer by compensation). */
+const ST_CTX_KEY="st_ctx",ST_Q="st_queue",ST_LOG="st_log";
+const ST_CTX_DEF={
+ voice:{f:"voice.md",n:"Voice",t:`# voice.md — how Steven writes
+- Retired Navy Chief. Direct, warm, plain English. Short sentences, one idea per line. No hype, no exclamation-mark spam.
+- Leads with what the client gets, then the one next step. Ends with a clear ask (a time, a document, a yes/no).
+- Uses first names. Says "I" not "we" unless it's the Patriot Pacific team.
+- Signs: Steven Shearrill · Mortgage Broker · NMLS 2449246 · CA DRE #01988316 · Patriot Pacific Financial Corp, NMLS 1921615
+- Never: slang, emojis in email (one is fine in a text), pressure, "act now", rate promises.
+
+## Three real examples (paste real messages here — they beat any description)
+1. [paste a real follow-up text or email Steven sent]
+2. [paste a real reply to a new lead]
+3. [paste a real note to a realtor partner]`},
+ pricing:{f:"deals/pricing.md",n:"Pricing & proposal structure",t:`# deals/pricing.md — what a proposal may contain
+## Rules
+- Never state a rate, APR, payment, points or fee unless it is written in the input (current lender rate sheet, Loan Estimate or Steven's notes). Otherwise write [rate from today's rate sheet] and flag it.
+- Advertised terms trigger Reg Z disclosures — if a payment or rate appears, the APR and terms must appear too.
+- Options are compared on borrower outcome (cash to close, payment, total cost, fit). Never on what Patriot Pacific earns (LO Comp Rule, 12 CFR 1026.36(e)).
+## Proposal structure (in this order)
+1. Your situation — 2-3 lines, their words.
+2. Your goal — one line.
+3. Options (2-3) — program, why it fits, key trade-off. Numbers only from the rate sheet / LE in the input.
+4. Estimated cash to close and what's in it (from the LE when available).
+5. What I need from you — documents checklist.
+6. Next step and timeline — one clear ask.
+7. Disclosures: "This is not a commitment to lend. Rates and terms are subject to change and credit approval." + NMLS/DRE line.
+## Fees we can name (fill)
+- Appraisal: [fill] · Credit report: [fill] · Lender fees: per lender LE · Broker compensation: per Loan Estimate (do not state here)`},
+ cadence:{f:"deals/follow-up-cadence.md",n:"Follow-up cadence",t:`# deals/follow-up-cadence.md
+- New web lead: call within 5 minutes (ISA speed-to-lead), text + email same hour.
+- No reply: day 1 text, day 2 email, day 4 call, day 7 text, day 14 email with something useful (VA video, guide), day 30 check-in, then monthly market note.
+- After a consult with no decision: day 2 recap email, day 5 call, day 10 "anything I can answer?", then monthly.
+- Pre-approved, not under contract: weekly touch; tell the agent partner when anything changes.
+- Went quiet after docs request: day 2 reminder with the exact missing list, day 5 call, day 10 last nudge then park.
+- Stop immediately on "stop", "not interested", DNC, or opt-out. Texts only with consent. Calls 8am–9pm the lead's local time (TCPA), honor state rules.
+- Every nudge adds value (a link, an answer, a number from the file) — never "just checking in".
+- Links: apply https://1921615.my1003app.com/2449246/register?time=1722983493450 · VA videos https://valoaneducator.tv/stevenshearrill-2449246 · guide https://patriotpacific.com/stevenshearrill/`},
+ booking:{f:"deals/booking-rules.md",n:"Booking rules",t:`# deals/booking-rules.md
+- Consult types: 15-min intro call (phone), 30-min strategy consult (Zoom or phone), 45-min reverse-mortgage consult (spouse/family welcome).
+- Hours: Mon–Fri 9:00–6:00 PT, Sat 10:00–2:00 PT. No Sundays. Leave 15 min between calls.
+- Offer exactly 2–3 specific times in the lead's time zone, or the booking link: [paste TidyCal link].
+- Confirm: name, best phone, property state, purchase or refi. Out-of-state (not CA, IL, NV, FL, AZ) → referral form + Charles's link, do not book a loan consult with Steven.
+- Never book on the lead's behalf — the draft offers times; Steven or the lead confirms.`},
+ icp:{f:"sales/icp.md",n:"Ideal customer (ICP)",t:`# sales/icp.md — who Steven serves
+- Veterans, active duty, Guard/Reserve, surviving spouses — VA purchase, IRRRL, VA cash-out (San Diego & Riverside counties first).
+- First-time buyers in San Diego / Temecula / Murrieta — FHA, conventional, CalHFA/DPA.
+- Self-employed and 1099 borrowers — bank-statement, P&L, DSCR (non-QM).
+- Homeowners 62+ — reverse mortgage / HECM for purchase.
+- Investors — DSCR, cash-out.
+- Realtor partners — buyer agents who work with veterans and first-time buyers.
+- Licensed states: CA, IL, NV, FL, AZ (Steven). Patriot Pacific is licensed in 43 states + DC — other states go to the referral form.
+- Fit signals: PCS orders, separation date, new job, rent ≥ $2,500, lease ending, baby/marriage, equity + high-rate debt, retirement.
+- Sources already in use: Speed-to-Lead leads, Zoho CRM, GoHighLevel, open-house sign-ins, VA associations and veteran events, past clients, realtor referrals. [add others]`},
+ offer:{f:"sales/offer.md",n:"Offer",t:`# sales/offer.md
+- Who: Steven Shearrill, retired Navy Chief, mortgage broker at Patriot Pacific Financial Corp — shops many wholesale lenders for one borrower.
+- What: VA, FHA, conventional, jumbo, non-QM (bank statement, DSCR, ITIN), reverse/HECM, refinance and cash-out.
+- Why him: veteran helping veterans; broker access instead of one bank's menu; plain-English guidance start to finish.
+- Free: 15-minute consult, pre-approval, VA entitlement check, rent-vs-buy and payment scenarios.
+- Call to action: one link or one time — apply https://1921615.my1003app.com/2449246/register?time=1722983493450 or a 15-min call.
+- Proof: [paste a review or two]
+- Never: guaranteed approval, "lowest rate", rate quotes in cold outreach, government-affiliation implications for VA.`}};
+const stCtx=()=>{const s=store.get(ST_CTX_KEY,{});const o={};Object.keys(ST_CTX_DEF).forEach(k=>o[k]=typeof s[k]==="string"&&s[k].trim()?s[k]:ST_CTX_DEF[k].t);return o};
+const ST_AGENTS=[
+ {k:"proposal",n:"Proposal Generation",cat:"Deals",ic:"📄",hrs:1.5,ctx:"pricing",rep:"writing proposals and quotes",reads:"Google Drive and Notion, plus the call transcript, your pricing file and past proposals",out:"a full proposal draft in your structure",inp:"Paste the call transcript or consult notes, plus any rate sheet / Loan Estimate figures",mode:"thread"},
+ {k:"followup",n:"Follow-Up Drafting",cat:"Deals",ic:"🔁",hrs:1.5,ctx:"cadence",rep:"chasing people who went quiet",reads:"Gmail, WhatsApp and GoHighLevel, plus the last exchange and your follow-up cadence",out:"the next nudge, drafted and queued for your approval",inp:"Paste the whole thread (or pick an ISA call / lead below)",mode:"thread"},
+ {k:"booking",n:"Meeting Booking",cat:"Deals",ic:"📅",hrs:1.5,ctx:"booking",rep:"replying to leads and booking calls",reads:"Gmail, Instagram and WhatsApp, plus the thread, your calendar rules and your offer file",out:"a drafted reply with times, ready to send",inp:"Paste the lead's message / thread",mode:"thread"},
+ {k:"research",n:"Personalization Research",cat:"Sales",ic:"🔎",hrs:1.5,ctx:"icp",rep:"researching prospects before I reach out",reads:"LinkedIn, GoHighLevel and Notion, plus the prospect's site, socials and recent news",out:"a one-paragraph brief and two personal openers",inp:"Prospect name, company, website or profile URL, anything you know",mode:"prospect"},
+ {k:"list",n:"List Building",cat:"Sales",ic:"🧾",hrs:1.5,ctx:"icp",rep:"building lead lists",reads:"GoHighLevel, LinkedIn and Notion, plus your ideal-customer file and the sources you already use",out:"a scored list with the reason each one fits",inp:"Paste names/rows to score, or describe the list you want (e.g. 'buyer agents in Temecula who work with veterans')",mode:"list"},
+ {k:"cold",n:"Cold Email Drafting",cat:"Sales",ic:"✉️",hrs:1.5,ctx:"offer",rep:"writing cold emails or DMs",reads:"Gmail, LinkedIn and Instagram, plus your offer file, your voice file and the prospect's site",out:"a first-pass email or DM per prospect, in your voice",inp:"One prospect per line: name — company/site — what you know",mode:"prospect"}];
+const stA=k=>ST_AGENTS.find(a=>a.k===k)||{k:"job",n:"SkillTree job",ic:"🌳",cat:"Sales",hrs:0,ctx:"icp",rep:"",out:"a first-pass draft",reads:"",inp:"",mode:"prospect"};
+const stQ=()=>store.get(ST_Q,[]),stSetQ=q=>store.set(ST_Q,q.slice(0,200));
+const stLogAdd=e=>{const L=store.get(ST_LOG,[]);L.unshift(e);store.set(ST_LOG,L.slice(0,300))};
+const ST_RULES=`MORTGAGE COMPLIANCE (always):
+- Drafts only. Never say a message was sent, a call booked or an application taken.
+- No rate, APR, payment, points or fee unless it appears in the INPUT or CONTEXT — otherwise write [from today's rate sheet] and add a flag. If a rate or payment appears, include "APR and terms subject to change and credit approval".
+- Never recommend or rank a lender or product by what the broker earns (LO Comp Rule, 12 CFR 1026.36(e)).
+- Written drafts end with: Steven Shearrill · NMLS 2449246 · CA DRE #01988316 · Patriot Pacific Financial Corp, NMLS 1921615.
+- Steven is licensed only in CA, IL, NV, FL, AZ. If the property state is anything else, do not draft a loan pitch or book a consult — draft a short note pointing to the Out-of-State Referral form https://patriotpacific.com/... (use exactly: https://patriotpacificmlo.com/out-of-state-referral/) and flag it.
+- Respect opt-outs/DNC; texts only with consent; no calls outside 8am–9pm the lead's local time. No "guaranteed approval", "lowest rate", or anything implying VA/government affiliation.
+- Use only facts from CONTEXT and INPUT. If it isn't written down, put it in "questions" instead of guessing. Never invent a price, date, time or promise.`;
+const ST_SHAPE={
+ proposal:'{"what":"one line: what this is","human":"one line: what needs a human","stage":"new lead|warm|went quiet|ready to buy","stage_why":"...","drafts":[{"channel":"email","subject":"...","body":"full proposal in the pricing.md structure"}],"flags":["..."],"questions":["..."]}',
+ followup:'{"what":"...","human":"...","stage":"new lead|warm|went quiet|ready to buy","stage_why":"...","cadence_step":"which step of the cadence this is and when the next one is due","drafts":[{"channel":"text|email|call script","subject":"(email only)","body":"..."}],"flags":["..."],"questions":["..."]}',
+ booking:'{"what":"...","human":"...","stage":"...","stage_why":"...","times":["2-3 specific proposed times with time zone, from the booking rules"],"drafts":[{"channel":"email|text","subject":"...","body":"reply offering those times or the booking link"}],"flags":["..."],"questions":["..."]}',
+ research:'{"what":"...","human":"...","brief":"one paragraph: what they do, one recent signal, one likely pain, why they fit the ICP","fit":"one line: why this prospect fits, approvable in five seconds","openers":["opener 1","opener 2"],"sources":["urls used"],"flags":["..."],"questions":["..."]}',
+ list:'{"what":"...","human":"...","list":[{"name":"...","type":"veteran|first-time buyer|self-employed|62+|investor|realtor partner|other","score":0,"why":"one line why it fits the ICP","source":"where it came from","next":"suggested first touch"}],"flags":["..."],"questions":["..."]}',
+ cold:'{"what":"...","human":"...","drafts":[{"prospect":"name","channel":"email|LinkedIn DM|Instagram DM","subject":"(email only)","body":"short first-pass message in Steven\'s voice","fit":"one line why they fit"}],"flags":["..."],"questions":["..."]}'};
+async function stRun(k,input,o){o=o||{};const a=stA(k),C=stCtx();let research=null;
+ if(o.live&&(a.mode==="prospect"||a.mode==="list")&&typeof cwAsk==="function"){o.prog&&o.prog("Researching live (Claude + Google)…");
+  try{research=await cwAsk(a.mode==="list"?`Find real, publicly listed candidates for this lead list for a California mortgage broker (Temecula / San Diego area). Request: ${input}\nReturn names, organization, public website or profile URL, and one public signal for each. No personal phone numbers or home addresses.`:`Research this prospect for a mortgage broker's personalized outreach: ${input}\nReport: what they do/sell, one recent public signal (news, post, listing, award) with date, one likely pain a mortgage broker could help with. Public business information only.`,{prog:o.prog})}catch(e){research={text:"(live research failed: "+((e&&e.message)||e)+")",cites:[]}}}
+ o.prog&&o.prog(`${a.n} is drafting…`);
+ const steps=a.cat==="Deals"?`1. Read the CONTEXT files, then the full thread/transcript in INPUT. Never answer from the last message alone.\n2. Identify the stage: new lead, warm, went quiet, ready to buy. Say which and why.\n3. Draft the next move in Steven's voice, using only prices and terms from the context file.\n4. Flag anything you are not sure of instead of guessing. Never invent a price, date or promise.`:`1. Read the CONTEXT file and the voice file first.\n2. Read everything provided about the prospect(s). Pull three specifics: what they do/sell, one recent signal, one likely pain.\n3. Draft in Steven's voice. Short. One idea per line. No opener fluff.\n4. Add a one-line note explaining why each prospect fits, so Steven can approve in five seconds.`;
+ const prompt=`You are the "${a.n}" agent (${a.cat}) in Steven Shearrill's AI Call Center ISA. Steven is a mortgage broker; you take the first pass at ${a.rep} so he approves instead of produces. Output: ${a.out}.\n\nSTEPS\n${steps}\n\n${ST_RULES}\n\nCONTEXT — voice.md\n${C.voice}\n\nCONTEXT — ${ST_CTX_DEF[a.ctx].f}\n${C[a.ctx]}${a.k==="booking"?"\n\nCONTEXT — sales/offer.md\n"+C.offer:""}\n\nToday: ${new Date().toLocaleString("en-US",{timeZone:"America/Los_Angeles"})} PT.${o.state?"\nProperty/lead state: "+o.state:""}\n\nINPUT\n${String(input).slice(0,12000)}${research?"\n\nLIVE RESEARCH (Claude + Google; cite only what is here)\n"+String(research.text).slice(0,6000)+"\nSources: "+(research.cites||[]).slice(0,8).join(" "):""}\n\nReply with ONLY JSON shaped like: ${ST_SHAPE[a.k]}`;
+ const out=await pbJson(prompt,"default");
+ if(o.state&&typeof oosRoute==="function"){const r=oosRoute(o.state);if(r.who!=="steven"){out.flags=(out.flags||[]).concat("Out-of-state ("+r.st+"): "+r.label)}}
+ if(research&&research.cites&&!out.sources)out.sources=research.cites.slice(0,8);
+ const item={id:"ST"+Date.now().toString(36)+Math.random().toString(36).slice(2,5),k,at:Date.now(),input:String(input).slice(0,4000),meta:o.meta||{},state:o.state||"",out,status:"pending"};
+ const Q=stQ();Q.unshift(item);stSetQ(Q);
+ stLogAdd({at:item.at,k,id:item.id,input:String(input).slice(0,200),output:String(out.what||"")+" — "+String(out.human||""),questions:(out.questions||[]).slice(0,6),flags:(out.flags||[]).length,auto:!!o.auto});
+ return item}
+/* approve: Gmail DRAFT (never send) / ISA call draft / board card */
+async function stApprove(id,how){const Q=stQ();const it=Q.find(x=>x.id===id);if(!it)return;const d=(it.out.drafts||[])[0]||{};let msg="";
+ if(how==="gmail"){const to=String(it.meta.email||prompt("Email address for the draft (a Gmail DRAFT is created — nothing is sent):","")||"").trim();if(!to)return;await pbCall("Gmail","create_draft",{to:[to],subject:String(d.subject||stA(it.k).n).slice(0,150),body:String(d.body||it.out.brief||"")});msg="Gmail draft created — review and send it yourself"}
+ else if(how==="isa"&&typeof acDraft==="function"){const ph=it.meta.phone||prompt("Phone for the ISA call draft (it still needs your approval on the Command tab):","");if(!ph)return;acDraft({name:it.meta.name||"",phone:ph,email:it.meta.email||"",state:it.state||"",src:"SkillTree · "+stA(it.k).n,notes:String(d.body||"").slice(0,300),camp:it.k==="booking"?"speed":"nurture"});msg="Added to the ISA queue as a draft — approve it on the Command tab"}
+ else{boardAdd({t:`${stA(it.k).ic} ${stA(it.k).n}: ${it.meta.name||String(it.out.what||"").slice(0,60)}`,d:[it.out.what,it.out.human,...(it.out.drafts||[]).map(x=>`[${x.channel}] ${x.subject?x.subject+" — ":""}${x.body}`),it.out.brief||"",...(it.out.flags||[]).map(f=>"⚠️ "+f)].filter(Boolean).join("\n\n").slice(0,4000),col:"todo"});msg="On the board"}
+ it.status="approved";it.how=how;it.done=Date.now();stSetQ(Q);toast(msg,5000)}
+/* ---- UI ---- */
+let stSel="followup",stView="map";
+const stText=it=>{const o=it.out||{};return[`${o.what||""}\n${o.human||""}`,o.stage?`Stage: ${o.stage} — ${o.stage_why||""}`:"",o.cadence_step?`Cadence: ${o.cadence_step}`:"",o.brief?`Brief: ${o.brief}`:"",o.fit?`Fit: ${o.fit}`:"",...(o.openers||[]).map((x,i)=>`Opener ${i+1}: ${x}`),...(o.times||[]).map(t=>"Time: "+t),...(o.drafts||[]).map(d=>`--- ${d.prospect?d.prospect+" · ":""}${d.channel||""}${d.subject?" · "+d.subject:""}\n${d.body||""}${d.fit?"\n(fit: "+d.fit+")":""}`),...(o.list||[]).map(r=>`${r.score} · ${r.name} (${r.type}) — ${r.why} [${r.source}] → ${r.next}`),...(o.flags||[]).map(f=>"⚠️ "+f),...(o.questions||[]).map(q=>"❓ "+q),...(o.sources||[]).map(u=>"Source: "+u)].filter(Boolean).join("\n")};
+function stItemHtml(it){const a=stA(it.k),o=it.out||{};return`<div class="card" style="margin:0 0 8px;border-left:4px solid ${it.status==="pending"?"#6b46c1":"var(--good,#2e9e5b)"}">
+ <div class="row" style="gap:6px;flex-wrap:wrap;align-items:center"><b class="sp">${a.ic} ${esc(it.meta.job||a.n)}${it.meta.name?" · "+esc(it.meta.name):""}</b><span class="sm mut">${new Date(it.at).toLocaleString([],{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})}${it.status!=="pending"?" · approved → "+esc(it.how||""):""}</span></div>
+ <div class="sm" style="margin:4px 0"><b>${esc(o.what||"")}</b><br><span style="color:#b7791f">${esc(o.human||"")}</span>${o.stage?`<br>Stage: <b>${esc(o.stage)}</b> — ${esc(o.stage_why||"")}`:""}</div>
+ <pre class="sm" style="white-space:pre-wrap;max-height:320px;overflow:auto;background:var(--panel2,#f0f2f5);padding:8px;border-radius:6px;margin:4px 0">${esc(stText(it).split("\n").slice(o.stage?3:2).join("\n"))}</pre>
+ <div class="row" style="gap:6px;flex-wrap:wrap">${it.status==="pending"?`<button class="btn sm st_ap" data-id="${it.id}" data-h="gmail">Approve → Gmail draft</button>${["followup","booking"].includes(it.k)?`<button class="btn ghost sm st_ap" data-id="${it.id}" data-h="isa">Approve → ISA call draft</button>`:""}<button class="btn ghost sm st_ap" data-id="${it.id}" data-h="board">Approve → Board</button><button class="btn ghost sm st_rj" data-id="${it.id}">Reject</button>`:""}<button class="btn ghost sm st_cp" data-id="${it.id}">Copy</button></div></div>`}
+function stPickSrc(){const Q=typeof acQ==="function"?acQ().filter(e=>e.res||e.ai).slice(0,40):[];const L=(store.get("ld_leads",[])||[]).slice(0,60);
+ return`<select id="st_src" style="width:auto;max-width:100%"><option value="">…or load from an ISA call / lead</option>${Q.length?`<optgroup label="ISA calls (with results)">${Q.map(e=>`<option value="ac:${esc(e.id)}">${esc(e.name||e.phone)} · ${esc((typeof acCamp==="function"?acCamp(e.camp).n:e.camp)||"")}</option>`).join("")}</optgroup>`:""}${L.length?`<optgroup label="Speed-to-Lead leads">${L.map(l=>`<option value="ld:${esc(l.id)}">${esc(l.name||l.email||l.phone||"lead")}${l.state?" · "+esc(l.state):""}</option>`).join("")}</optgroup>`:""}</select>`}
+function stSrcLoad(v){if(!v)return null;const [t,id]=[v.slice(0,2),v.slice(3)];
+ if(t==="ac"){const e=acQ().find(x=>x.id===id);if(!e)return null;const r=e.res||{},ai=e.ai||{};return{meta:{name:e.name,phone:e.phone,email:e.email},state:e.state||"",text:`Lead: ${e.name||""} · ${e.phone||""} · ${e.email||""} · state ${e.state||"?"}\nSource: ${e.src||""}\nNotes: ${e.notes||""}\nCampaign: ${e.camp}\nCall status: ${e.st} · answered by ${r.answeredBy||"?"}\nCall summary: ${ai.summary||r.summary||""}\nTimeline: ${ai.timeline||""} · Purpose: ${ai.purpose||""} · Next: ${ai.next_action||""}\nTranscript:\n${String(r.transcript||"").slice(0,8000)}`}}
+ const l=(store.get("ld_leads",[])||[]).find(x=>x.id===id);if(!l)return null;return{meta:{name:l.name,phone:l.phone,email:l.email},state:l.state||"",text:`Lead record:\n${JSON.stringify(l,null,1).slice(0,6000)}`}}
+const stHtml=()=>{const a=stA(stSel),Q=stQ(),P=Q.filter(x=>x.status==="pending"),L=store.get(ST_LOG,[]);const wk=L.filter(x=>Date.now()-x.at<7*864e5).length;
+ const tabs=[["map","🌌 AI Org Map"],["agents","Agents"],["queue",`Approval queue (${P.length})`],["context","Context files"],["log","Run log"]];
+ const head=`<div class="card" style="border-left:4px solid #6b46c1"><div class="row" style="gap:8px;flex-wrap:wrap;align-items:center"><div class="sp"><b>🌳 SkillTree agents</b> <span class="sm mut">6 agents from your SkillTree plan · Deals + Sales · ≈ 9 hrs/wk back · drafts only — you approve what goes out</span></div><span class="sm">${wk} run(s) this week · ${P.length} waiting</span></div><div class="row" style="gap:6px;flex-wrap:wrap;margin-top:6px">${tabs.map(t=>`<button class="btn ${stView===t[0]?"":"ghost "}sm st_v" data-v="${t[0]}">${esc(t[1])}</button>`).join("")}</div></div>`;
+ if(stView==="map"&&typeof omHtml==="function")return head+omHtml("st");
+ if(stView==="queue")return head+(P.length?P.map(stItemHtml).join(""):`<div class="card mut">Nothing waiting. Run an agent or turn on the daily follow-up sweep.</div>`)+(Q.filter(x=>x.status!=="pending").length?`<details class="card"><summary class="sm">Approved / rejected (${Q.filter(x=>x.status!=="pending").length})</summary>${Q.filter(x=>x.status!=="pending").slice(0,30).map(stItemHtml).join("")}</details>`:"");
+ if(stView==="context"){const C=stCtx();return head+`<div class="card"><p class="sm mut" style="margin:0 0 6px">Every agent reads its context file and <b>voice.md</b> before writing a word. Pre-filled for Steven; fill the [fill] blanks and paste three real messages into voice.md. Saved in this browser. Comp terms stay out of these files.</p>${Object.keys(ST_CTX_DEF).map(k=>`<details class="card" style="margin:0 0 6px"${k==="voice"?" open":""}><summary><b>${esc(ST_CTX_DEF[k].f)}</b> <span class="sm mut">${esc(ST_CTX_DEF[k].n)} · read by ${esc(ST_AGENTS.filter(a=>a.ctx===k).map(a=>a.n).join(", ")||"all agents")}</span></summary><textarea class="st_ctx" data-k="${k}" rows="12" style="width:100%;font:12px ui-monospace,monospace">${esc(C[k])}</textarea><div class="row" style="gap:6px"><button class="btn ghost sm st_rs" data-k="${k}">Reset to starter</button><button class="btn ghost sm st_dl" data-k="${k}">Download .md</button></div></details>`).join("")}<button class="btn" id="st_csave">Save context files</button></div>`}
+ if(stView==="log")return head+`<div class="card"><table class="sm"><thead><tr><th>When</th><th>Agent</th><th>Input</th><th>Output</th><th>Open questions</th></tr></thead><tbody>${L.slice(0,80).map(x=>`<tr><td>${new Date(x.at).toLocaleString([],{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})}${x.auto?" · auto":""}</td><td>${esc(stA(x.k).n)}</td><td>${esc(x.input)}</td><td>${esc(x.output)}${x.flags?` · ⚠️${x.flags}`:""}</td><td>${esc((x.questions||[]).join(" · "))}</td></tr>`).join("")||'<tr><td colspan="5" class="mut">No runs yet.</td></tr>'}</tbody></table><button class="btn ghost sm" id="st_logdl">Download log (CSV)</button></div>`;
+ return head+`<div class="grid g3">${ST_AGENTS.map((x,i)=>`<button class="card st_pick" data-k="${x.k}" style="text-align:left;cursor:pointer;margin:0;border:${x.k===stSel?"2px solid #6b46c1":"1px solid var(--line,#dfe3e9)"}"><div class="sm mut">${i+1} · ${x.cat} · ≈ ${x.hrs} hrs/wk back</div><b>${x.ic} ${esc(x.n)}</b><div class="sm">Hands you ${esc(x.out)}.</div><div class="sm mut">Starts from ${esc(ST_CTX_DEF[x.ctx].f)} + voice.md</div></button>`).join("")}</div>
+ <div class="card"><h3 style="margin:0">${a.ic} ${esc(a.n)} <span class="sub">because you said "${esc(a.rep)}"</span></h3><div class="sm mut" style="margin:2px 0 8px">Reads ${esc(a.reads)}. Hands you ${esc(a.out)}. Nothing goes out without you.</div>
+ ${a.mode==="thread"?`<div class="row" style="gap:6px;flex-wrap:wrap;margin-bottom:6px">${stPickSrc()}</div>`:""}<textarea id="st_in" rows="8" style="width:100%" placeholder="${esc(a.inp)}"></textarea>
+ <div class="row" style="gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px"><input id="st_name" placeholder="Name (optional)" style="max-width:180px"><input id="st_email" placeholder="Email (for a Gmail draft)" style="max-width:220px"><input id="st_phone" placeholder="Phone (for an ISA call draft)" style="max-width:170px"><input id="st_state" placeholder="State" maxlength="2" style="max-width:70px">${a.mode!=="thread"?`<label class="sm"><input type="checkbox" id="st_live" checked> research live (Claude + Google)</label>`:""}<button class="btn" id="st_go">Run ${esc(a.n)}</button></div><div id="st_out" style="margin-top:8px"></div></div>
+ <div class="card sm mut">Guardrails on every run: drafts only (approving makes a Gmail <b>draft</b>, an ISA call <b>draft</b> or a board card), only facts from the context files and input, no rates/fees unless they're in the input, NMLS/DRE line on written drafts, out-of-state leads routed to the referral form, opt-outs and calling hours honored, never steer by compensation. Every run is logged with its open questions. Daily 9:15 follow-up sweep: ${store.get("st_sweep",true)?"<b>on</b>":"off"} <button class="btn ghost sm" id="st_sw">${store.get("st_sweep",true)?"Turn off":"Turn on"}</button></div>`};
+function stMount(){const R=()=>{const v=$("#ac_view");if(v&&typeof acTab!=="undefined"&&acTab==="skilltree"){v.innerHTML=stHtml();stMount()}else if($("#st_page")){$("#st_page").innerHTML=stHtml();stMount()}};
+ $$(".st_v").forEach(b=>b.onclick=()=>{stView=b.dataset.v;R()});$$(".st_pick").forEach(b=>b.onclick=()=>{stSel=b.dataset.k;stView="agents";R()});
+ const sw=$("#st_sw");if(sw)sw.onclick=()=>{store.set("st_sweep",!store.get("st_sweep",true));R()};
+ const src=$("#st_src");if(src)src.onchange=()=>{const s=stSrcLoad(src.value);if(!s)return;$("#st_in").value=s.text;$("#st_name").value=s.meta.name||"";$("#st_email").value=s.meta.email||"";$("#st_phone").value=s.meta.phone||"";$("#st_state").value=s.state||""};
+ const go=$("#st_go");if(go)go.onclick=async()=>{const inp=$("#st_in").value.trim();if(!inp){toast("Paste the thread, transcript or prospect first");return}const out=$("#st_out");go.disabled=true;
+  try{const it=await stRun(stSel,inp,{live:!!($("#st_live")&&$("#st_live").checked),state:$("#st_state").value.trim().toUpperCase(),meta:{name:$("#st_name").value.trim(),email:$("#st_email").value.trim(),phone:$("#st_phone").value.trim()},prog:m=>{out.innerHTML=`<div class="sm mut">${esc(m)}</div>`}});out.innerHTML=stItemHtml(it);stWire(out,R)}
+  catch(e){out.innerHTML=`<div class="sm" style="color:var(--bad)">${esc(e&&e.code==="not_granted"?"Claude isn't available in this view — open VANESSA inside claude.ai.":(e&&e.message)||String(e))}</div>`}finally{go.disabled=false}};
+ $$(".st_ctx").length&&($("#st_csave").onclick=()=>{const o={};$$(".st_ctx").forEach(t=>o[t.dataset.k]=t.value);store.set(ST_CTX_KEY,o);toast("Context files saved")});
+ $$(".st_rs").forEach(b=>b.onclick=()=>{const t=document.querySelector(`.st_ctx[data-k="${b.dataset.k}"]`);if(t)t.value=ST_CTX_DEF[b.dataset.k].t});
+ $$(".st_dl").forEach(b=>b.onclick=()=>{const t=document.querySelector(`.st_ctx[data-k="${b.dataset.k}"]`);saveFile(ST_CTX_DEF[b.dataset.k].f.split("/").pop(),t?t.value:"","text/markdown")});
+ const ld=$("#st_logdl");if(ld)ld.onclick=()=>{const L=store.get(ST_LOG,[]);saveFile("skilltree-run-log.csv",[["date","agent","input","output","open questions","auto"],...L.map(x=>[new Date(x.at).toISOString(),stA(x.k).n,x.input,x.output,(x.questions||[]).join(" | "),x.auto?"yes":""])].map(r=>r.map(c=>`"${String(c==null?"":c).replace(/"/g,'""')}"`).join(",")).join("\n"),"text/csv")};
+ if(stView==="map"&&typeof omMount==="function")omMount("st",R);
+ stWire(document,R)}
+function stWire(root,R){root.querySelectorAll(".st_ap").forEach(b=>b.onclick=async()=>{b.disabled=true;try{await stApprove(b.dataset.id,b.dataset.h);R&&R()}catch(e){toast(typeof cxErr==="function"?cxErr(e):String((e&&e.message)||e),6000);b.disabled=false}});
+ root.querySelectorAll(".st_rj").forEach(b=>b.onclick=()=>{const Q=stQ();const it=Q.find(x=>x.id===b.dataset.id);if(it){it.status="rejected";it.how="rejected";stSetQ(Q)}R&&R()});
+ root.querySelectorAll(".st_cp").forEach(b=>b.onclick=()=>{const it=stQ().find(x=>x.id===b.dataset.id);if(it){copy(stText(it));toast("Copied")}})}
+/* install inside the ISA */
+if(typeof AC_TABS!=="undefined"&&!AC_TABS.some(t=>t[0]==="skilltree")){const i=AC_TABS.findIndex(t=>t[0]==="cmd");AC_TABS.splice(i>=0?i+1:AC_TABS.length,0,["skilltree","🌳 SkillTree Agents",()=>stHtml(),()=>stMount()])}
+PAGE.skilltree={html:()=>`<div id="st_page">${stHtml()}</div>`,mount(){stMount()}};
+if(typeof TITLES!=="undefined")TITLES.skilltree="🌳 SkillTree Agents (ISA)";
+if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^(skill ?tree|proposal generation|follow.?up draft|meeting booking|personali[sz]ation research|list building|cold (email|dm))/i,{hash:"skilltree"}]);
+{const O=PAGES.find(p=>p[0]==="Operate")||PAGES[0];if(O&&!O[1].some(x=>x[0]==="skilltree")){const i=O[1].findIndex(x=>x[0]==="callcenter");O[1].splice(i>=0?i+1:O[1].length,0,["skilltree","🌳 SkillTree Agents (ISA)"])}}
+/* seats, coverage, scheduler, tools */
+if(typeof AI_SEATS!=="undefined"&&Array.isArray(AI_SEATS))ST_AGENTS.forEach(a=>{const n=a.n+" Agent";if(!AI_SEATS.some(s=>s.n===n))AI_SEATS.push({n,r:`SkillTree ${a.cat} agent in the AI Call Center ISA: takes the first pass at ${a.rep}; hands Steven ${a.out}. Reads ${ST_CTX_DEF[a.ctx].f} + voice.md. Drafts only.`,a:"VANESSA › AI Call Center ISA › SkillTree Agents",b:"Vanessa",t:"sales",parent:"AI Call Center ISA"})});
+if(typeof CV_PROCS!=="undefined"&&Array.isArray(CV_PROCS)&&!CV_PROCS.some(r=>r[1]==="SkillTree ISA agents (proposal, follow-up, booking, research, lists, cold outreach)"))CV_PROCS.push([2,"SkillTree ISA agents (proposal, follow-up, booking, research, lists, cold outreach)","skilltree callcenter","Follow-Up Drafting Agent","Vanessa","On demand + daily 9:15 follow-up sweep","Six SkillTree agents draft proposals, follow-ups, booking replies, prospect briefs, scored lists and cold outreach from the context files; approval queue → Gmail draft / ISA call draft / board","Steven approves every draft"]);
+async function stSweep(){if(!store.get("st_sweep",true))return"sweep is off";const Q=typeof acQ==="function"?acQ():[];const done=new Set(stQ().map(x=>x.meta&&x.meta.src).filter(Boolean));const cut=Date.now()-2*864e5;
+ const C=Q.filter(e=>(e.res||e.ai)&&(e.done||e.created||0)<cut&&!done.has("ac:"+e.id)&&!/opt.?out|dnc|not interested/i.test(JSON.stringify(e.ai||{})+(e.st||""))&&!["cancelled"].includes(e.st)).slice(0,5);let n=0;
+ for(const e of C){const s=stSrcLoad("ac:"+e.id);if(!s)continue;try{const it=await stRun("followup",s.text,{state:s.state,meta:Object.assign({src:"ac:"+e.id},s.meta),auto:true});n++}catch(err){if(err&&err.code==="not_granted")break}}
+ return n+" follow-up draft(s) waiting for approval"}
+if(typeof AP_JOBS!=="undefined"&&!AP_JOBS.some(j=>j.k==="skilltreesweep"))AP_JOBS.push({k:"skilltreesweep",n:"SkillTree follow-up sweep (ISA calls gone quiet → drafts)",seat:"Follow-Up Drafting Agent",cad:"daily",at:9,needs:()=>typeof pbSampleFn==="function",run:stSweep});
+if(typeof PB_TOOLS==="function"){const t0=PB_TOOLS;PB_TOOLS=()=>[...t0(),
+ {name:"skilltree_run",description:"Run one of Steven's six SkillTree ISA agents (proposal, followup, booking, research, list, cold) on a thread, transcript or prospect. Returns the draft with stage, flags and open questions, and puts it in the approval queue. Drafts only — nothing is sent.",inputSchema:{type:"object",properties:{agent:{type:"string",enum:ST_AGENTS.map(a=>a.k)},input:{type:"string"},state:{type:"string"},name:{type:"string"},email:{type:"string"},live_research:{type:"boolean"}},required:["agent","input"]},execute:async i=>{const it=await stRun(i.agent,i.input,{live:!!i.live_research,state:String(i.state||"").toUpperCase(),meta:{name:i.name||"",email:i.email||""}});return{id:it.id,agent:stA(it.k).n,out:it.out,status:"pending approval in VANESSA › AI Call Center ISA › SkillTree Agents"}}},
+ {name:"skilltree_queue",description:"List SkillTree agent drafts waiting for Steven's approval.",inputSchema:{type:"object",properties:{}},execute:()=>stQ().filter(x=>x.status==="pending").slice(0,30).map(x=>({id:x.id,agent:stA(x.k).n,name:x.meta.name||"",what:x.out.what,human:x.out.human,at:new Date(x.at).toISOString()}))}]}
+
+/* app82: AI Org Map — Steven's whole AI workforce as a living, rotating constellation in the style of his SkillTree plan.
+   7 departments (Sales, Deals, Marketing, Operations, Intelligence, Customer, Back Office) ring a swirling core; every VANESSA AI seat
+   is a node on its department's branches, linked to the real agent (click → who it is, what it runs, its page, run it). The 22 SkillTree
+   Sales jobs are mapped onto the agents that cover them; uncovered jobs can be run once with Claude. The map rotates continuously, nodes
+   drift and pulse, lit = live agent; ‹ › swing a department to the top; hover pauses; Directory lists everything with search. */
+const OM_DEPTS=[
+ {k:"sales",n:"SALES",tag:"targeting · outreach · sequencing",c:"#f4a261",re:/\b(lead|prospect|outreach|isa\b|cold|list build|speed.to.lead|call center|campaign|referral partner|realtor partner|farm|door|open.house|recruit|sphere|sales)/i},
+ {k:"deals",n:"DEALS",tag:"replies · calls · closing · pipeline",c:"#e76f51",re:/\b(proposal|follow.?up|booking|consult|pipeline|closing|deal|scenario|pricing|lender match|quote|pre.?approv|loan officer|structur|offer|negotiat|escrow|contract)/i},
+ {k:"marketing",n:"MARKETING",tag:"content · brand · distribution",c:"#9b5de5",re:/\b(content|brand|social|video|aeo|seo|ads?\b|newsletter|marketing|instagram|youtube|linkedin|podcast|blog|creative|copy|canva|press)/i},
+ {k:"operations",n:"OPERATIONS",tag:"onboarding · builds · client ops",c:"#2ec4b6",re:/\b(processor|processing|file|loan step|onboard|automation|workflow|ops\b|operations|scheduler|coverage|condition|document|doc\b|underwrit|appraisal|title|disclos|tracker|inbox|calendar|chief of staff|orchestrat)/i},
+ {k:"intel",n:"INTELLIGENCE",tag:"companies · people · markets",c:"#4cc9f0",re:/\b(research|market|news|regulat|intel|data|analyt|rates?\b|lender intel|guideline|watch|monitor|forecast|economi|trend)/i},
+ {k:"customer",n:"CUSTOMER",tag:"support · success · community",c:"#f15bb5",re:/\b(client|journey|review|service|past client|borrower|servicing|support|success|community|retention|anniversar|gift|referral|concierge|veteran)/i},
+ {k:"back",n:"BACK OFFICE",tag:"money in · books · office · people",c:"#e9c46a",re:/\b(compliance|finance|books|bookkeep|license|licens|hr\b|admin|money|comp\b|accounting|tax|ce\b|training|audit|legal|insurance|budget|payroll|expense|mentor)/i}];
+const OM_COVER={"ICP Definition": "List Building Agent", "Market Mapping": "Bianca", "Trigger Detection": "PCS Relocation Specialist", "Lookalike Modeling": "Priya", "Database Mining": "GHL Inbox Agent", "Web & Maps Scraping": "Property Intel Agent", "Social Mining": "Tariq", "List Building": "List Building Agent", "Contact Enrichment": null, "Email Verification": null, "Account Enrichment": "Wren", "Fit Scoring": "Priya", "Personalization Research": "Personalization Research Agent", "Cold Email Drafting": "Cold Email Drafting Agent", "LinkedIn Messaging": "Cold Email Drafting Agent", "Proof Matching": "Delia", "Cold-Call Scripting": "Role-Play Coach", "Video Prospecting": "Rico", "Campaign Orchestration": "Nadine", "Campaign Launch": "Kenji", "Deliverability": "Call QA & TCPA Monitor", "Send Optimization": null};
+const OM_SALES_JOBS=[
+ ["ICP Definition","AUTO","Define who to target: segments, fit signals, disqualifiers — writes sales/icp.md.",null,/list build|icp|ideal/i],
+ ["Market Mapping","AUTO","Map the market: counties, segments, partner landscape and where the volume is.",null,/market|farm|territor/i],
+ ["Trigger Detection","ASSIST","Spot buying triggers: PCS orders, separations, lease ends, rate drops, new listings, life events.",null,/trigger|refi watch|rate.?drop|alert|signal/i],
+ ["Lookalike Modeling","ASSIST","Find more people like your best closed clients.",null,/lookalike|past client|sphere/i],
+ ["Database Mining","AUTO","Mine the CRM and past clients for dormant opportunities.",null,/database|crm|zoho|reactivat|dormant|past client/i],
+ ["Web & Maps Scraping","AUTO","Pull public business listings (realtors, builders, CPAs, VA orgs) from web and maps.",null,/maps|scrap|directory|association/i],
+ ["Social Mining","AUTO","Find prospects and signals on Instagram, LinkedIn, Facebook groups.",null,/social|instagram|facebook|linkedin/i],
+ ["List Building","AUTO","A scored list with the reason each one fits.","list",/list build/i],
+ ["Contact Enrichment","AUTO","Fill in emails, phones, brokerage, license and socials for each contact.",null,/enrich|contact/i],
+ ["Email Verification","AUTO","Check emails are valid before outreach to protect deliverability.",null,/verif|deliverab/i],
+ ["Account Enrichment","AUTO","Enrich partner accounts: brokerage size, production, specialties.",null,/realtor partner|brokerage|partner/i],
+ ["Fit Scoring","AUTO","Score each prospect against the ICP with a one-line reason.","list",/scor|fit|triage/i],
+ ["Personalization Research","AUTO","A one-paragraph brief and two personal openers.","research",/personali[sz]ation research/i],
+ ["Cold Email Drafting","AUTO","A first-pass email or DM per prospect, in your voice.","cold",/cold email/i],
+ ["LinkedIn Messaging","AUTO","Connection notes and DMs for LinkedIn, in your voice.","cold",/linkedin/i],
+ ["Proof Matching","AUTO","Match the right review, case or result to each prospect.",null,/review|testimonial|proof|case stud/i],
+ ["Cold-Call Scripting","AUTO","Call scripts and objection handling for the ISA and live calls.",null,/script|role.?play|objection|call center|isa/i],
+ ["Video Prospecting","AUTO","Short personal video scripts for prospects and partners.",null,/video/i],
+ ["Campaign Orchestration","AUTO","Sequence touches across call, text, email and social.",null,/campaign|sequence|cadence|drip/i],
+ ["Campaign Launch","AUTO","Launch approved campaigns with compliance gates.",null,/launch|campaign|autopilot/i],
+ ["Deliverability","ASSIST","Keep email and texting deliverable: domains, opt-outs, consent, A2P.",null,/deliverab|a2p|consent|opt.?out|dnc/i],
+ ["Send Optimization","AUTO","Pick the best time and channel for each touch.",null,/send time|optimi|best time|timing/i]];
+/* ---- data: seats → departments, jobs → seats ---- */
+function omHash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0)/4294967296}
+function omData(){const seats=(typeof AI_SEATS!=="undefined"&&Array.isArray(AI_SEATS)?AI_SEATS:[]).filter(s=>s&&s.n);const nodes=[];const seen=new Set();
+ const sk=s=>s.n+"|"+(s.r||"").slice(0,40);
+ seats.forEach(s=>{if(seen.has(sk(s)))return;seen.add(sk(s));const txt=`${s.n} ${s.r||""} ${s.a||""} ${(s.squads||[]).join(" ")}`;let d=null;
+  if(/SkillTree (Deals)/.test(s.r||""))d="deals";else if(/SkillTree (Sales)/.test(s.r||""))d="sales";
+  if(!d){let best=null,bs=0;OM_DEPTS.forEach(D=>{const m=(txt.match(new RegExp(D.re.source,"gi"))||[]).length;if(m>bs){bs=m;best=D.k}});d=best||(s.t==="compliance"||s.t==="training"||s.t==="mentor"?"back":"operations")}
+  nodes.push({id:"s:"+sk(s),kind:"seat",n:s.n,d,seat:s,live:true,core:["twin","coo","exec"].includes(s.t)})});
+ OM_SALES_JOBS.forEach(j=>{const ag=j[3]?seats.find(s=>s.n===(typeof ST_AGENTS!=="undefined"&&(ST_AGENTS.find(a=>a.k===j[3])||{}).n)+" Agent"):null;
+  const want=OM_COVER[j[0]];const cov=ag||(want?seats.find(s=>s.n===want):null);nodes.push({id:"j:"+j[0],kind:"job",n:j[0],d:"sales",job:j,tag:j[1],agentK:j[3],cover:cov||null,live:!!cov})});
+ return nodes}
+/* ---- layout: department hubs on a ring, nodes on short branching chains ---- */
+function omLayout(nodes){const L={};const W=2*Math.PI/OM_DEPTS.length;OM_DEPTS.forEach((D,i)=>{const list=nodes.filter(n=>n.d===D.k).sort((a,b)=>(b.kind==="job")-(a.kind==="job")||omHash(a.id)-omHash(b.id));const base=-Math.PI/2+i*W;
+  const nb=Math.max(4,Math.min(13,Math.ceil(Math.sqrt(list.length*1.6))));const steps=Math.max(1,Math.ceil(list.length/nb));
+  list.forEach((n,j)=>{const b=j%nb,step=Math.floor(j/nb);const spread=nb>1?(b-(nb-1)/2)/(nb-1):0;const ang=base+spread*W*.82+(omHash(n.id+"a")-.5)*.05+(step%2?.012:-.012);
+   const r=.25+.58*((step+.6+(omHash(n.id+"r")-.5)*.5)/(steps+.6));n.base=base;n.ang=ang;n.r=Math.min(.86,r);n.br=b;n.step=step;n.ph=omHash(n.id+"p")*Math.PI*2;n.sz=n.core?5:n.kind==="job"?3.6:2.3+omHash(n.id+"s")*1.4});
+  L[D.k]={base,list,nb}});return L}
+let omState=null;
+function omHtml(where){const N=omData();const live=N.filter(n=>n.live).length;const jobs=N.filter(n=>n.kind==="job");
+ return`<style>.omx .btn,.omx a.btn{background:#2b3240!important;color:#e8eef7!important;border:1px solid #3d4658!important}.omx .btn:hover{background:#364056!important}</style><div class="card omx" style="padding:0;overflow:hidden;background:#1d222c;border:1px solid #2b3240;color:#dfe6f0">
+ <div class="row" style="gap:10px;flex-wrap:wrap;align-items:center;padding:10px 14px;border-bottom:1px solid #2b3240"><div class="sp"><b style="letter-spacing:.12em">🌌 YOUR AI ORG</b> <span class="sm" style="color:#9aa7b8">${N.length} agents & jobs · ${live} live · ${OM_DEPTS.length} departments · linked to your VANESSA agents</span></div>
+ <button class="btn ghost sm om_b" data-a="play" style="color:#dfe6f0;border-color:#3a4354">⏸ Pause</button><button class="btn ghost sm om_b" data-a="dir" style="color:#dfe6f0;border-color:#3a4354">☰ Directory</button><button class="btn ghost sm om_b" data-a="full" style="color:#dfe6f0;border-color:#3a4354">⛶ Full screen</button></div>
+ <div style="position:relative" id="om_wrap_${where}"><canvas id="om_cv_${where}" style="display:block;width:100%;height:min(680px,92vw);cursor:grab;touch-action:none" aria-label="Animated map of Steven's AI agents by department. Use the Directory for a list."></canvas>
+ <button class="om_b" data-a="prev" aria-label="Previous department" style="position:absolute;left:10px;bottom:12px;background:#2b3240;color:#fff;border:0;border-radius:50%;width:38px;height:38px;font-size:20px;cursor:pointer">‹</button><button class="om_b" data-a="next" aria-label="Next department" style="position:absolute;right:10px;bottom:12px;background:#2b3240;color:#fff;border:0;border-radius:50%;width:38px;height:38px;font-size:20px;cursor:pointer">›</button>
+ <div id="om_tip_${where}" style="position:absolute;pointer-events:none;background:#2b3240;color:#fff;font:600 12px system-ui;padding:5px 9px;border-radius:6px;display:none;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.4)"></div>
+ <div id="om_dir_${where}" style="position:absolute;top:0;right:0;bottom:0;width:min(340px,92%);background:#161a22;border-left:1px solid #2b3240;overflow:auto;display:none;padding:12px"></div></div>
+ <div id="om_det_${where}" style="padding:10px 14px;border-top:1px solid #2b3240;min-height:44px" class="sm"><span style="color:#9aa7b8">Click any glowing node to open that agent. Drag to spin; ‹ › bring a department to the top. Sales: ${jobs.filter(j=>j.live).length} of ${jobs.length} SkillTree jobs covered by your agents.</span></div></div>`}
+function omDirHtml(N,q){q=(q||"").toLowerCase();return`<div style="font:700 11px system-ui;letter-spacing:.18em;color:#9aa7b8;margin-bottom:8px">DIRECTORY <button class="om_b" data-a="dir" style="float:right;background:none;border:0;color:#9aa7b8;cursor:pointer;font-size:16px">×</button></div>
+ <div style="display:flex;gap:16px;margin-bottom:8px"><div><div style="font:700 22px system-ui">${N.length}</div><div style="font-size:10px;color:#9aa7b8;letter-spacing:.1em">AGENTS & JOBS</div></div><div><div style="font:700 22px system-ui">${N.filter(n=>n.live).length}</div><div style="font-size:10px;color:#9aa7b8;letter-spacing:.1em">LIVE</div></div><div><div style="font:700 22px system-ui">${OM_DEPTS.length}</div><div style="font-size:10px;color:#9aa7b8;letter-spacing:.1em">DEPARTMENTS</div></div></div>
+ <input class="om_q" placeholder="Search agents and jobs…" value="${esc(q)}" style="width:100%;background:#1d222c;border:1px solid #3a4354;color:#fff;border-radius:8px;padding:7px 9px;margin-bottom:8px">
+ ${OM_DEPTS.map(D=>{const L=N.filter(n=>n.d===D.k&&(!q||(n.n+" "+((n.seat||{}).r||"")).toLowerCase().includes(q)));if(!L.length)return"";return`<div style="margin:10px 0 4px;font-weight:700"><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${D.c};margin-right:6px"></span>${D.n.charAt(0)+D.n.slice(1).toLowerCase()} <span style="float:right;color:#9aa7b8">${L.length}</span></div>${L.map(n=>`<div class="om_di" data-id="${esc(n.id)}" style="display:flex;gap:8px;align-items:center;padding:4px 6px 4px 14px;border-radius:6px;cursor:pointer"><span style="width:6px;height:6px;border-radius:50%;background:${n.live?"#5be38d":"#59606e"}"></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(n.n)}</span><span style="font-size:10px;letter-spacing:.08em;color:#9aa7b8">${n.kind==="job"?(n.live?"LIVE":n.tag):"AGENT"}</span></div>`).join("")}`}).join("")}`}
+function omPageFor(s){if(!s)return"";const a=String(s.a||"");const m=a.match(/VANESSA\s*›\s*([^·(;]+)/);if(!m)return"";const want=m[1].trim().toLowerCase().replace(/[^\w ]/g,"").trim();
+ for(const k in (typeof TITLES!=="undefined"?TITLES:{})){const t=String(TITLES[k]).toLowerCase().replace(/[^\w ]/g,"").trim();if(t&&(t===want||t.startsWith(want.slice(0,18))||want.startsWith(t.slice(0,18))))return k}
+ for(const g of PAGES)for(const x of g[1]){const t=String(x[1]).toLowerCase().replace(/[^\w ]/g,"").trim();if(t&&(t.startsWith(want.slice(0,16))||want.startsWith(t.slice(0,16))))return x[0]}return""}
+function omDetail(n,where){const el=$("#om_det_"+where);if(!el||!n)return;const D=OM_DEPTS.find(d=>d.k===n.d);let h="";
+ if(n.kind==="seat"){const s=n.seat,pg=omPageFor(s);const stk=(typeof ST_AGENTS!=="undefined"?ST_AGENTS:[]).find(a=>a.n+" Agent"===s.n);
+  h=`<div class="row" style="gap:8px;flex-wrap:wrap;align-items:center"><span style="width:10px;height:10px;border-radius:50%;background:${D.c};display:inline-block"></span><b style="font-size:14px">${esc(s.n)}</b><span style="color:#9aa7b8">${esc(D.n)} · ${s.t==="human"?"human":"AI agent"}${s.b?" · backup "+esc(s.b):""}${s.parent?" · under "+esc(s.parent):""}</span></div><div style="margin:4px 0;color:#dfe6f0">${esc(s.r||"")}</div>${s.a?`<div style="color:#9aa7b8">${esc(String(s.a).slice(0,300))}</div>`:""}
+  <div class="row" style="gap:6px;flex-wrap:wrap;margin-top:6px">${pg?`<a class="btn sm" href="#${esc(pg)}">Open ${esc(String(TITLES[pg]||pg).replace(/^\S+\s/,""))}</a>`:""}${stk?`<button class="btn sm om_run" data-k="${stk.k}">Run ${esc(stk.n)}</button>`:""}<a class="btn ghost sm" href="#aiteam" style="color:#dfe6f0">AI team roster</a></div>`}
+ else{const j=n.job,c=n.cover;h=`<div class="row" style="gap:8px;flex-wrap:wrap;align-items:center"><span style="width:10px;height:10px;border-radius:50%;background:${D.c};display:inline-block"></span><b style="font-size:14px">${esc(j[0])}</b><span style="color:#9aa7b8">SkillTree Sales job · ${esc(j[1])} · ${c?"<span style='color:#5be38d'>covered by your agent "+esc(c.n)+"</span>":"not yet covered by an agent"}</span></div><div style="margin:4px 0">${esc(j[2])}</div>
+  <div class="row" style="gap:6px;flex-wrap:wrap;margin-top:6px">${n.agentK?`<button class="btn sm om_run" data-k="${n.agentK}">Run ${esc((ST_AGENTS.find(a=>a.k===n.agentK)||{}).n||"")}</button>`:`<button class="btn sm om_job" data-j="${esc(j[0])}">Run this job with Claude</button>`}${c&&omPageFor(c)?`<a class="btn ghost sm" href="#${esc(omPageFor(c))}" style="color:#dfe6f0">Open ${esc(c.n)}'s desk</a>`:""}</div><div id="om_jout_${where}" style="margin-top:6px"></div>`}
+ el.innerHTML=h;
+ el.querySelectorAll(".om_run").forEach(b=>b.onclick=()=>{if(typeof stSel!=="undefined"){stSel=b.dataset.k;stView="agents"}if(location.hash.replace("#","")==="callcenter"&&typeof acRender==="function"){acTab="skilltree";acRender()}else location.hash="#skilltree";setTimeout(()=>{if(typeof route==="function"&&location.hash==="#skilltree")route()},30)});
+ el.querySelectorAll(".om_job").forEach(b=>b.onclick=async()=>{const j=OM_SALES_JOBS.find(x=>x[0]===b.dataset.j);const what=prompt(`${j[0]}: what should it work on? (e.g. a segment, a list of names, a market)`,"");if(!what)return;const o=$("#om_jout_"+where);o.innerHTML='<span style="color:#9aa7b8">Claude is working…</span>';
+  try{const it=await omRunJob(j,what);o.innerHTML=`<span style="color:#5be38d">Drafted: ${esc(it.out.what||"")}</span> — waiting in the SkillTree approval queue.`}catch(e){o.innerHTML=`<span style="color:#ff8a8a">${esc(e&&e.code==="not_granted"?"Claude isn't available in this view — open VANESSA inside claude.ai.":(e&&e.message)||String(e))}</span>`}})}
+async function omRunJob(j,what){const C=typeof stCtx==="function"?stCtx():{};const live=typeof cwAsk==="function"&&/scrap|mining|mapping|enrich|trigger|market/i.test(j[0])?await cwAsk(`${j[0]} for a California mortgage broker (Temecula/San Diego; licensed CA, IL, NV, FL, AZ): ${what}. Public business information only — no personal phone numbers or home addresses.`).catch(()=>null):null;
+ const out=await pbJson(`You are the SkillTree "${j[0]}" job in Steven Shearrill's AI Call Center ISA (mortgage broker). Job: ${j[2]}\nRequest: ${what}\n\n${typeof ST_RULES!=="undefined"?ST_RULES:""}\n\nCONTEXT — sales/icp.md\n${C.icp||""}\n\nCONTEXT — voice.md\n${C.voice||""}${live?"\n\nLIVE RESEARCH (Claude + Google)\n"+String(live.text).slice(0,5000)+"\nSources: "+(live.cites||[]).slice(0,8).join(" "):""}\n\nReply with ONLY JSON: {"what":"one line: what this is","human":"one line: what needs a human","result":"the work product (lists as lines, scripts as text)","flags":["..."],"questions":["..."],"sources":["urls"]}`,"default");
+ out.drafts=[{channel:"note",subject:j[0],body:String(out.result||"")}];const item={id:"ST"+Date.now().toString(36)+Math.random().toString(36).slice(2,5),k:"job",at:Date.now(),input:what,meta:{job:j[0]},state:"",out,status:"pending"};
+ if(typeof stQ==="function"){const Q=stQ();Q.unshift(item);stSetQ(Q);stLogAdd({at:item.at,k:"job",id:item.id,input:(j[0]+": "+what).slice(0,200),output:String(out.what||"")+" — "+String(out.human||""),questions:(out.questions||[]).slice(0,6),flags:(out.flags||[]).length})}return item}
+/* ---- animation ---- */
+function omMount(where){const cv=$("#om_cv_"+where);if(!cv)return;if(omState&&omState.raf)cancelAnimationFrame(omState.raf);
+ const N=omData(),L=omLayout(N);const RM=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+ const S=omState={raf:0,rot:0,target:null,play:!RM,hover:null,sel:null,focus:null,drag:null,vel:0,t0:performance.now(),where,N,L};
+ const parts=Array.from({length:260},(_,i)=>({a:omHash("p"+i)*Math.PI*2,r:Math.pow(omHash("q"+i),.7)*.17,s:.2+omHash("v"+i)*.9,c:OM_DEPTS[i%7].c,z:.6+omHash("z"+i)*1.4}));
+ const ctx=cv.getContext("2d");let W=0,H=0,DPR=1;
+ const size=()=>{const r=cv.getBoundingClientRect();DPR=Math.min(2,window.devicePixelRatio||1);W=r.width;H=r.height;cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);ctx.setTransform(DPR,0,0,DPR,0,0)};size();
+ const ro=window.ResizeObserver?new ResizeObserver(size):null;ro&&ro.observe(cv);
+ const P=(n,t)=>{const R=Math.min(W,H)*.47,cx=W/2,cy=H/2+8;const wob=Math.sin(t*.0009+n.ph)*.012,a=n.ang+S.rot+Math.cos(t*.0007+n.ph)*.018;return[cx+Math.cos(a)*(n.r+wob)*R,cy+Math.sin(a)*(n.r+wob)*R]};
+ const hubP=(D,t)=>{const R=Math.min(W,H)*.47,cx=W/2,cy=H/2+8;const a=L[D.k].base+S.rot;return[cx+Math.cos(a)*.17*R,cy+Math.sin(a)*.17*R]};
+ const deptAt=()=>{let best=null,bd=9;OM_DEPTS.forEach(D=>{let a=((L[D.k].base+S.rot)%(2*Math.PI)+2*Math.PI)%(2*Math.PI);const d=Math.abs(a-1.5*Math.PI);if(d<bd){bd=d;best=D.k}});return best};
+ function frame(t){if(!cv.isConnected){ro&&ro.disconnect();return}
+  const dt=Math.min(50,t-(S.last||t));S.last=t;
+  if(S.target!=null){const d=S.target-S.rot;S.rot+=d*Math.min(1,dt*.006);if(Math.abs(d)<.002){S.rot=S.target;S.target=null}}
+  else if(S.drag==null){if(Math.abs(S.vel)>.00001){S.rot+=S.vel*dt;S.vel*=.94}else if(S.play&&!S.hover)S.rot+=dt*.000055}
+  S.focus=deptAt();
+  ctx.clearRect(0,0,W,H);
+  // dotted backdrop
+  ctx.fillStyle="rgba(255,255,255,.035)";for(let x=10;x<W;x+=22)for(let y=10;y<H;y+=22)ctx.fillRect(x,y,1.2,1.2);
+  const cx=W/2,cy=H/2+8,R=Math.min(W,H)*.47;
+  // core swirl
+  parts.forEach(p=>{const a=p.a+t*.00012*p.s*(S.play?1:.15);const rr=p.r*R*.7*(1+.06*Math.sin(t*.001*p.s+p.a));ctx.globalAlpha=.55;ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr,p.z*.9,0,7);ctx.fill()});ctx.globalAlpha=1;
+  // department labels (upright text), hubs and branches
+  OM_DEPTS.forEach(D=>{const on=S.focus===D.k||(S.hover&&S.hover.d===D.k)||(S.sel&&S.sel.d===D.k);const a=L[D.k].base+S.rot;const fs=Math.max(12,Math.min(24,W/36));const lw=fs*D.n.length*.62;const lx=Math.max(lw/2+6,Math.min(W-lw/2-6,cx+Math.cos(a)*R*1.0)),ly=Math.max(fs+4,Math.min(H-22,cy+Math.sin(a)*R*.98));
+   ctx.textAlign="center";ctx.font=`${on?600:400} ${fs}px Georgia, 'Times New Roman', serif`;ctx.fillStyle=on?D.c:"rgba(200,210,225,.28)";ctx.save();ctx.letterSpacing="4px";ctx.fillText(D.n,lx,ly);ctx.restore();
+   ctx.font="10px system-ui";ctx.fillStyle=on?"rgba(220,230,240,.75)":"rgba(200,210,225,.2)";ctx.fillText(D.tag,lx,ly+16);
+   const [hx,hy]=hubP(D,t);const list=L[D.k].list;
+   // chains: hub → step0 of each branch → step1 …
+   ctx.lineWidth=1;for(let b=0;b<L[D.k].nb;b++){const ch=list.filter(n=>n.br===b).sort((x,y)=>x.step-y.step);let px=hx,py=hy;ch.forEach(n=>{const [x,y]=P(n,t);ctx.strokeStyle=on?(n.live?D.c+"aa":"rgba(200,210,225,.25)"):"rgba(200,210,225,.10)";ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(x,y);ctx.stroke();px=x;py=y})}
+   ctx.beginPath();ctx.arc(hx,hy,15,0,7);ctx.fillStyle="#1d222c";ctx.fill();ctx.strokeStyle=on?D.c:"rgba(200,210,225,.25)";ctx.lineWidth=on?2:1;ctx.stroke();if(on){ctx.globalAlpha=.25+.15*Math.sin(t*.003);ctx.beginPath();ctx.arc(hx,hy,22,0,7);ctx.strokeStyle=D.c;ctx.stroke();ctx.globalAlpha=1}
+   ctx.font="12px system-ui";ctx.fillStyle=on?D.c:"rgba(200,210,225,.4)";ctx.fillText(String(list.length),hx,hy+4)});
+  // nodes
+  N.forEach(n=>{const D=OM_DEPTS.find(d=>d.k===n.d);const on=S.focus===n.d||(S.hover&&S.hover.d===n.d)||(S.sel&&S.sel.d===n.d);const [x,y]=P(n,t);n._x=x;n._y=y;
+   const pulse=n.live?1+.25*Math.sin(t*.004+n.ph):1;const r=n.sz*pulse*(S.hover===n||S.sel===n?1.8:1);
+   if(n.live&&on){ctx.globalAlpha=.18;ctx.beginPath();ctx.arc(x,y,r*3,0,7);ctx.fillStyle=D.c;ctx.fill();ctx.globalAlpha=1}
+   ctx.beginPath();ctx.arc(x,y,r,0,7);if(n.live){ctx.fillStyle=on?"#f6f8ff":"rgba(220,228,240,.45)";ctx.fill()}else{ctx.strokeStyle=on?"rgba(220,228,240,.8)":"rgba(200,210,225,.3)";ctx.lineWidth=1.2;ctx.stroke()}
+   if(n.kind==="job"&&on){ctx.strokeStyle=D.c;ctx.lineWidth=1;ctx.beginPath();ctx.arc(x,y,r+3,0,7);ctx.stroke()}
+   if(S.sel===n){ctx.strokeStyle=D.c;ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,r+7+2*Math.sin(t*.006),0,7);ctx.stroke()}});
+  S.raf=requestAnimationFrame(frame)}
+ S.raf=requestAnimationFrame(frame);
+ const tip=$("#om_tip_"+where);const pick=(ex,ey)=>{let best=null,bd=14*14;N.forEach(n=>{const dx=n._x-ex,dy=n._y-ey,d=dx*dx+dy*dy;if(d<bd){bd=d;best=n}});return best};
+ const rel=e=>{const r=cv.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]};
+ cv.onpointermove=e=>{const [x,y]=rel(e);if(S.drag!=null){const a=Math.atan2(y-(H/2+8),x-W/2);let d=a-S.drag;if(d>Math.PI)d-=2*Math.PI;if(d<-Math.PI)d+=2*Math.PI;S.rot+=d;S.vel=d/16;S.drag=a;return}
+  const n=pick(x,y);S.hover=n;cv.style.cursor=n?"pointer":"grab";if(n){tip.style.display="block";tip.textContent=n.n+(n.kind==="job"?` · ${n.live?"covered by "+n.cover.n:n.tag}`:"");tip.style.left=Math.min(W-tip.offsetWidth-6,Math.max(6,x-tip.offsetWidth/2))+"px";tip.style.top=Math.max(4,y-38)+"px"}else tip.style.display="none"};
+ cv.onpointerleave=()=>{S.hover=null;tip.style.display="none";S.drag=null};
+ cv.onpointerdown=e=>{const [x,y]=rel(e);const n=pick(x,y);if(n){S.sel=n;omDetail(n,where);return}S.drag=Math.atan2(y-(H/2+8),x-W/2);S.target=null;cv.setPointerCapture&&cv.setPointerCapture(e.pointerId);cv.style.cursor="grabbing"};
+ cv.onpointerup=()=>{S.drag=null;cv.style.cursor="grab"};
+ const turn=dir=>{const i=OM_DEPTS.findIndex(d=>d.k===S.focus);const D=OM_DEPTS[(i+dir+OM_DEPTS.length)%OM_DEPTS.length];let tgt=1.5*Math.PI-L[D.k].base;while(tgt-S.rot>Math.PI)tgt-=2*Math.PI;while(tgt-S.rot<-Math.PI)tgt+=2*Math.PI;S.target=tgt;S.vel=0};
+ const dir=$("#om_dir_"+where);const paintDir=q=>{dir.innerHTML=omDirHtml(N,q);const qi=dir.querySelector(".om_q");qi.oninput=()=>{const v=qi.value,pos=qi.selectionStart;paintDir(v);const n2=dir.querySelector(".om_q");n2.focus();n2.setSelectionRange(pos,pos)};dir.querySelectorAll(".om_b").forEach(b=>b.onclick=()=>{dir.style.display="none"});
+  dir.querySelectorAll(".om_di").forEach(r=>{r.onmouseenter=()=>r.style.background="#222836";r.onmouseleave=()=>r.style.background="";r.onclick=()=>{const n=N.find(x=>x.id===r.dataset.id);if(!n)return;S.sel=n;omDetail(n,where);let tgt=1.5*Math.PI-n.ang;while(tgt-S.rot>Math.PI)tgt-=2*Math.PI;while(tgt-S.rot<-Math.PI)tgt+=2*Math.PI;S.target=tgt}})};
+ const root=cv.closest(".card");root.querySelectorAll(".om_b").forEach(b=>b.onclick=()=>{const a=b.dataset.a;
+  if(a==="prev")turn(-1);else if(a==="next")turn(1);
+  else if(a==="play"){S.play=!S.play;b.textContent=S.play?"⏸ Pause":"▶ Play"}
+  else if(a==="dir"){const v=dir.style.display==="none";dir.style.display=v?"block":"none";if(v)paintDir("")}
+  else if(a==="full"){const w=$("#om_wrap_"+where);if(document.fullscreenElement)document.exitFullscreen();else(root.requestFullscreen?root.requestFullscreen():null)}});
+ const pb=root.querySelector('.om_b[data-a="play"]');if(pb)pb.textContent=S.play?"⏸ Pause":"▶ Play"}
+/* standalone page + nav + tool */
+PAGE.aiorg={html:()=>omHtml("pg"),mount(){omMount("pg")}};
+if(typeof TITLES!=="undefined")TITLES.aiorg="🌌 AI Org Map";
+if(typeof SEARCH_ROUTES!=="undefined")SEARCH_ROUTES.unshift([/^(ai org|org map|skill ?tree map|constellation|agent map|my ai agents map)/i,{hash:"aiorg"}]);
+{const G=PAGES.find(p=>p[0]==="AI Team & Bridges")||PAGES[0];if(G&&!G[1].some(x=>x[0]==="aiorg"))G[1].unshift(["aiorg","🌌 AI Org Map"])}
+if(typeof PB_TOOLS==="function"){const t0=PB_TOOLS;PB_TOOLS=()=>[...t0(),{name:"ai_org_map",description:"Steven's AI workforce by SkillTree department (Sales, Deals, Marketing, Operations, Intelligence, Customer, Back Office): agent counts, and which of the 22 SkillTree Sales jobs are covered by which agent.",inputSchema:{type:"object",properties:{}},execute:()=>{const N=omData();return{departments:OM_DEPTS.map(D=>({dept:D.n,agents:N.filter(n=>n.d===D.k&&n.kind==="seat").length})),sales_jobs:N.filter(n=>n.kind==="job").map(n=>({job:n.n,tag:n.tag,covered_by:n.cover?n.cover.n:null}))}}}]}
+
 boot();
 
 </script>
