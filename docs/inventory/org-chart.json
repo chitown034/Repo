@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-10T14:12:36Z",
+ "generated": "2026-11-12T01:14:21Z",
  "seats": [
   {
    "name": "Steve",
@@ -781,7 +781,9 @@
    "instant response",
    "new lead",
    "speed-to-lead call",
-   "appointment setting"
+   "appointment setting personalization research",
+   "list building",
+   "fit scoring"
   ],
   "Vera": [
    "sphere",
@@ -1021,7 +1023,15 @@
    "call queue",
    "tcpa consent",
    "voicemail drop",
-   "phone follow-up"
+   "phone follow-up jessica",
+   "skilltree",
+   "skill desk",
+   "proposal generation",
+   "follow-up drafting",
+   "meeting booking",
+   "cold email",
+   "approval queue",
+   "quiet leads"
   ],
   "Dax": [
    "role play",
@@ -1044,6 +1054,17 @@
    "statute",
    "ordinance",
    "what changed"
+  ],
+  "Bennett": [
+   "daily flow",
+   "action inbox",
+   "what needs me",
+   "power hour",
+   "call list",
+   "who should i call",
+   "quick capture",
+   "lead router",
+   "route lead"
   ],
   "Isabel": [
    "loan processing",

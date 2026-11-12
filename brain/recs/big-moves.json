@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-10T14:12:36Z",
- "date": "2026-11-10",
+ "generated": "2026-11-12T01:14:20Z",
+ "date": "2026-11-12",
  "items": [
   {
    "id": "bm_08ef5bf8ac",
@@ -451,7 +451,7 @@
      "category": "brain",
      "topic": "",
      "title": "Fix the 1 gold question(s) the brain gets wrong",
-     "why": "bench 30/31 on 2026-11-10",
+     "why": "bench 30/31 on 2026-11-12",
      "owner": "Vanessa",
      "executor": "vanessa",
      "impact": 3,
@@ -542,95 +542,95 @@
    "about": "what is stale, failing or silent, and the action that heads it off",
    "items": [
     {
-     "id": "bm_88d2620c86",
-     "category": "revenue",
-     "topic": "",
-     "title": "Restart the ISA line",
-     "why": "isaLine: no ISA/team-authored message since 2026-09-22 (49 days); only Steven writes on the line.",
-     "owner": "Victor",
-     "executor": "vanessa",
-     "impact": 4,
-     "effort": 2,
-     "confidence": 0.8,
-     "plan": [
-      "Victor drafts a restart note and a 3-day check-in cadence for the line",
-      "Put the ISA seat decision (COA 2/3/4) in front of Steven as the gate",
-      "Nothing is sent to a person outside the team without Steven"
-     ],
-     "source": "isaLine",
-     "coa": "risk",
-     "weight": 1.0,
-     "score": 1.6,
-     "value": "medium",
-     "rank": 1
-    },
-    {
-     "id": "bm_83d63d2172",
-     "category": "connect",
-     "topic": "",
-     "title": "Connect EVRoutes \u00b7 Turo connectors",
-     "why": "\"needs reconnect\" on claude.ai (EVRoutes also failed to connect in this session)",
-     "owner": "Derek",
-     "executor": "steven",
-     "impact": 3,
-     "effort": 2,
-     "confidence": 0.8,
-     "plan": [
-      "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
-      "Steven: claude.ai \u2192 Settings \u2192 Connectors \u2192 Reconnect or remove",
-      "Vanessa re-checks the status on the next connect report and closes the item"
-     ],
-     "source": "toolkit:connector",
-     "weight": 1.0,
-     "score": 1.2,
-     "value": "medium",
-     "rank": 2,
-     "coa": "risk"
-    },
-    {
-     "id": "bm_cf7a037bfe",
-     "category": "connect",
-     "topic": "orca",
-     "title": "Connect Jarvis \u00b7 Laya \u00b7 Orca (Mac 2)",
-     "why": "partially set \u2014 engine unproven; runner not yet imported",
-     "owner": "Derek",
-     "executor": "steven",
-     "impact": 3,
-     "effort": 2,
-     "confidence": 0.8,
-     "plan": [
-      "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
-      "Steven: bash scripts/second-mac.sh + runner export/import (STEVEN-STEPS 1e)",
-      "Vanessa re-checks the status on the next connect report and closes the item"
-     ],
-     "source": "toolkit:connector",
-     "weight": 1.0,
-     "score": 1.2,
-     "value": "medium",
-     "rank": 3,
-     "coa": "risk"
-    },
-    {
-     "id": "bm_611b0b7a1a",
+     "id": "bm_a0cbe5ca2b",
      "category": "ops",
      "topic": "",
      "title": "Repair Mac task brain-weekly-verify",
-     "why": "runnerStatus lastStatus is refused (runnerStatus synced 2026-11-10T05:08Z).",
+     "why": "runnerStatus (2026-11-12) shows brain-weekly-verify last run refused.",
      "owner": "Derek",
      "executor": "vanessa",
      "impact": 3,
      "effort": 2,
-     "confidence": 0.7,
+     "confidence": 0.8,
      "plan": [
       "Read the task's log from the next connect-all REPORT",
       "Fix the spec in integrations/mac-task-specs.md",
       "Steven pastes `runnerctl run brain-weekly-verify`"
      ],
-     "source": "runnerStatus",
+     "source": "deck runnerStatus",
      "coa": "risk",
      "weight": 1.0,
-     "score": 1.05,
-     "value": "low",
+     "score": 1.2,
+     "value": "medium",
+     "rank": 1
+    },
+    {
+     "id": "bm_a1001f81be",
+     "category": "ops",
+     "topic": "",
+     "title": "Repair Mac task fabric-deck-sync",
+     "why": "runnerStatus (2026-11-12) shows fabric-deck-sync last run refused.",
+     "owner": "Derek",
+     "executor": "vanessa",
+     "impact": 3,
+     "effort": 2,
+     "confidence": 0.8,
+     "plan": [
+      "Read the task's log from the next connect-all REPORT",
+      "Fix the spec in integrations/mac-task-specs.md",
+      "Steven pastes `runnerctl run fabric-deck-sync`"
+     ],
+     "source": "deck runnerStatus",
+     "coa": "risk",
+     "weight": 1.0,
+     "score": 1.2,
+     "value": "medium",
+     "rank": 2
+    },
+    {
+     "id": "bm_240037e54a",
+     "category": "ops",
+     "topic": "",
+     "title": "Repair Mac task loop-engineering-weekly",
+     "why": "runnerStatus (2026-11-12) shows loop-engineering-weekly last run error.",
+     "owner": "Derek",
+     "executor": "vanessa",
+     "impact": 3,
+     "effort": 2,
+     "confidence": 0.8,
+     "plan": [
+      "Read the task's log from the next connect-all REPORT",
+      "Fix the spec in integrations/mac-task-specs.md",
+      "Steven pastes `runnerctl run loop-engineering-weekly`"
+     ],
+     "source": "deck runnerStatus",
+     "coa": "risk",
+     "weight": 1.0,
+     "score": 1.2,
+     "value": "medium",
+     "rank": 3
+    },
+    {
+     "id": "bm_cb6b14b020",
+     "category": "ops",
+     "topic": "",
+     "title": "Repair Mac task mortgage-desk-weekly",
+     "why": "runnerStatus (2026-11-12) shows mortgage-desk-weekly last run refused.",
+     "owner": "Derek",
+     "executor": "vanessa",
+     "impact": 3,
+     "effort": 2,
+     "confidence": 0.8,
+     "plan": [
+      "Read the task's log from the next connect-all REPORT",
+      "Fix the spec in integrations/mac-task-specs.md",
+      "Steven pastes `runnerctl run mortgage-desk-weekly`"
+     ],
+     "source": "deck runnerStatus",
+     "coa": "risk",
+     "weight": 1.0,
+     "score": 1.2,
+     "value": "medium",
      "rank": 4
     }
    ]
@@ -709,22 +709,22 @@
      "rank": 3
     },
     {
-     "id": "bm_bbf2732f6c",
+     "id": "bm_3a168cc2d0",
      "category": "marketing",
      "topic": "presence",
      "title": "Claim the profiles Sofia listed",
-     "why": "presenceAudit score 0 (0 of 16 searches mention Steven; as of 2026-11-01).",
+     "why": "presenceAudit score 0 (0 of 16 searches mention Steven)",
      "owner": "Sofia",
      "executor": "steven",
      "impact": 4,
      "effort": 2,
      "confidence": 0.8,
      "plan": [
-      "Claim + verify Google Business Profile and Bing Places (Steven signs in; Sofia drafts)",
-      "Claim the portal profiles (Zillow, Realtor.com, Homes.com, Yelp, LinkedIn); confirm NMLS Consumer Access",
-      "Send the DRE number and site host path for the /about entity page"
+      "Claim + verify Google Business Profile and Bing Places (Steven signs in; Sofia drafts description, posts, Q&A)",
+      "Claim identical portal profiles: Zillow agent+lender, Realtor.com, Homes.com, Yelp, LinkedIn; confirm NMLS Consumer Access shows Patriot Pacific Financial",
+      "Build the /about entity page (Person + RealEstateAgent + MortgageBroker JSON-LD) and llms.txt once Steven sends the DRE number and site host path"
      ],
-     "source": "presenceAudit",
+     "source": "deck presenceAudit",
      "coa": "opportunity",
      "weight": 1.0,
      "score": 1.6,
@@ -744,17 +744,17 @@
   },
   {
    "q": "What should I do about: Fix the 1 gold question(s) the brain gets wrong?",
-   "a": "bench 30/31 on 2026-11-10.",
+   "a": "bench 30/31 on 2026-11-12.",
    "action": "bin/brain loop \u2192 the failing questions",
    "coa": "improve",
    "ref": "bm_d72970e1e7"
   },
   {
-   "q": "What should I do about: Restart the ISA line?",
-   "a": "isaLine: no ISA/team-authored message since 2026-09-22 (49 days); only Steven writes on the line.",
-   "action": "Victor drafts a restart note and a 3-day check-in cadence for the line",
+   "q": "What should I do about: Repair Mac task brain-weekly-verify?",
+   "a": "runnerStatus (2026-11-12) shows brain-weekly-verify last run refused.",
+   "action": "Read the task's log from the next connect-all REPORT",
    "coa": "risk",
-   "ref": "bm_88d2620c86"
+   "ref": "bm_a0cbe5ca2b"
   },
   {
    "q": "What should I do about: Drips and texts?",
@@ -789,7 +789,7 @@
   },
   {
    "q": "What did the weekly loop find?",
-   "a": "last run 2026-11-10: bench 30/31, routes 23/23, 20 stale pages, 31 untested wiki pages, 0 tune proposals, 0/0 learned facts promoted",
+   "a": "last run 2026-11-12: bench 30/31, routes 23/23, 20 stale pages, 31 untested wiki pages, 0 tune proposals, 0/0 learned facts promoted",
    "action": "Open docs/reports/BRAIN-LOOP.md; the Self-improvement lane above carries the fixes",
    "coa": "question",
    "ref": "brain/loop-history.jsonl"
