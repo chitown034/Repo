@@ -70,4 +70,4 @@ _marketing, presence and new capabilities worth a move_
 - **Where is the morning brief and why did it not arrive?** Steven, 2026-10-23: "vanessa did not send morning brief today with voice imessage fix this." Found: on 2026-10-23 the cloud brief was written (morningBrief v1), the push went, this task ran at 06:53 PT and reported ok, voice-reply-render rendered — and nothing reached his phone, because Vanessa's shared iMessage line… → Open integrations/mac-task-specs.md § 8c. vanessa-morning-brief-text — AMENDMENT: when iMessage is not linked, the brief goes by e-mail with the voice note attached (2026-10-23)
 
 Category weights: brain 1.00, compliance 1.00, connect 1.00, marketing 1.00, money 1.00, opportunity 1.21, ops 1.00, revenue 1.00, steven 1.77, sync 1.00
-Generated 2026-11-12T01:14:20Z.
+Generated 2026-11-12T14:10:01Z.
