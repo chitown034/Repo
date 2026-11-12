@@ -658,3 +658,14 @@ Read from the Command Deck documents (runnerStatus, whatsappKapso); claude.ai co
 | Mac runner | synced 2026-11-03 05:08 UTC, logged in; most tasks ok. Last-run `refused`/`error`: brain-weekly-verify, health-coaching-weekly, mortgage-desk-weekly, ops-knowledge-graph (error), r14-content-pipeline, steve-twin-sweep, vanessa-ops-review, vanessa-sweep, weekly-self-update. Disabled: r8-apple-health-snapshot, r9-feed-freshness-sweep, strava-daily-sync, vanessa-whatsapp-inbox | none from the cloud; look at the refused tasks on the Mac | Steven |
 | Kapso WhatsApp | number connected; deck doc last synced 2026-10-31 23:55 UTC; Mac sign-in and Keychain keys pending; `vanessa-whatsapp-inbox` task disabled | `bash setup.sh`, then `claude` → `/mcp` → kapso | Steven |
 | claude.ai connectors in this session | Gmail, Calendar, Drive, Docs, Sheets, Slides, Notion, Slack, Zoho CRM, Fieldy, TidyCal, Strava, Composio, Inkbox present in the tool list; ListConnectors not callable from this routine, so per-connector auth was not re-tested | none | cloud |
+
+## Connection status — daily rebuild, 2026-11-12 01:15 UTC (6D Brain routine, 7-day re-check)
+
+Read from the Command Deck documents (runnerStatus, whatsappKapso) and ListConnectors. No keys, no numbers.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Mac runner | synced 2026-11-12T01:07:13Z, logged in. Last-run refused/error: brain-weekly-verify (refused), fabric-deck-sync (refused), loop-engineering-weekly (error), mortgage-desk-weekly (refused), ops-knowledge-graph (error), r4-quantvue-sync (refused), r9-feed-freshness-sweep (error), skills-refresh-weekly (error), steve-twin-sweep (refused), toolkit-deck-sync (error), vanessa-morning-brief-text (refused), weekly-self-update (error). Disabled: r8-apple-health-snapshot, r9-feed-freshness-sweep, strava-daily-sync, vanessa-whatsapp-inbox | look at the refused tasks on the Mac (next connect-all REPORT) | Steven |
+| Kapso WhatsApp | number connected; deck doc last synced 2026-10-31 23:55 UTC; Pabbly triggers wait on the Kapso webhook paste; Mac sign-in and Keychain keys pending | STEVEN-STEPS step 5; `claude` → `/mcp` → kapso | Steven |
+| claude.ai connectors (ListConnectors) | connected: Gmail, Calendar, Drive, Docs, Sheets, Slides, Notion, Slack, Zoho CRM, Fieldy, Strava, Composio, Inkbox, Candid, Canva, Zoom, Pabbly, WhisperAI, You.com, Context7. Needs reconnect: TidyCal, Turo. Connect incomplete: Lofty, Microsoft 365, BlackRock, Health Data Avatar, Plaid, PlayMCP, Similarweb. Not connected: Higgsfield | reconnect TidyCal and Lofty in claude.ai Settings → Connectors | Steven |
+
