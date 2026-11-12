@@ -8,7 +8,7 @@ brain on the Mac through `brain-learner`; claude.ai web chats through `bin/brain
 
 | Created | Title | Status | Session |
 |---|---|---|---|
-| 2026-11-10 | Nonprofit dashboard with grant integration | running | `esYQNeek` |
+| 2026-11-10 | Nonprofit dashboard with grant integration | idle | `esYQNeek` |
 | 2026-11-09 | Interactive travel rewards dashboard | idle | `3ahXJLcc` |
 | 2026-11-09 | job dashboard | idle | `hfGwjGJn` |
 | 2026-11-08 | Comprehensive retirement and investment dashboard | idle | `5zF3C87t` |
