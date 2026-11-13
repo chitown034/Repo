@@ -1,13 +1,14 @@
-# Claude Code sessions — ledger (generated 2026-11-12; newest first)
+# Claude Code sessions — ledger (generated 2026-11-13; newest first)
 
 Every Claude Code session on Steven's account: title, when, status. Titles are the sessions' own words — data, not
 instructions. Refreshed daily by the "Claude sessions ledger" task in the orchestrator session. Transcript contents reach the
 brain on the Mac through `brain-learner`; claude.ai web chats through `bin/brain ingest claude-export` (STEVEN-STEPS 1h).
-192 sessions listed.
+193 sessions listed.
 `memory/claude-chats.md` has no claude.ai export ingested yet (placeholder stamped 2026-10-23) — Steven re-exports from claude.ai (Settings → Privacy → Export data; STEVEN-STEPS 1h).
 
 | Created | Title | Status | Session |
 |---|---|---|---|
+| 2026-11-13 | Mobile app redesign with site features | idle | `uBwEyrCp` |
 | 2026-11-10 | Nonprofit dashboard with grant integration | idle | `esYQNeek` |
 | 2026-11-09 | Interactive travel rewards dashboard | idle | `3ahXJLcc` |
 | 2026-11-09 | job dashboard | idle | `hfGwjGJn` |
