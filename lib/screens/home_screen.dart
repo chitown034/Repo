@@ -222,89 +222,93 @@ class _HeroCard extends StatelessWidget {
     final t = context.t;
     return Padding(
       padding: const EdgeInsets.fromLTRB(kGutter, 6, kGutter, 0),
-      child: AppleCard(
-        gradient: Gradients.navy,
-        radius: 26,
-        padding: const EdgeInsets.fromLTRB(20, 20, 20, 18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                ClipRSuperellipse(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.asset('assets/images/logo_full.jpg', width: 48, height: 48, fit: BoxFit.cover),
+      child: ClipRSuperellipse(
+        borderRadius: BorderRadius.circular(26),
+        child: AppleCard(
+          gradient: const LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF081120), Color(0xFF0E1F3D), Color(0xFF081120)],
+          ),
+          radius: 26,
+          padding: EdgeInsets.zero,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Semantics(
+                label: 'Active Duty Veteran and Hometown Hero Homeowners Club',
+                image: true,
+                child: AspectRatio(
+                  aspectRatio: 3,
+                  child: Image.asset('assets/images/hero_banner.jpg', fit: BoxFit.cover),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Active Duty Veteran & Hometown Hero', style: t.titleSmall?.copyWith(color: Colors.white)),
-                      Text(
-                        '501(c)(3) Nonprofit · Temecula, CA',
-                        style: t.bodySmall?.copyWith(color: Colors.white.withValues(alpha: 0.65)),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 22),
-            Text(Org.tagline, style: t.displaySmall?.copyWith(color: Colors.white)),
-            const SizedBox(height: 8),
-            Text(
-              'Free education, benefits guidance, and career support for active duty, veterans, military '
-              'families, and the hometown heroes who keep our communities safe.',
-              style: t.bodyMedium?.copyWith(color: Colors.white.withValues(alpha: 0.78), height: 1.45),
-            ),
-            const SizedBox(height: 18),
-            Row(
-              children: [
-                Expanded(
-                  child: AppleButton(
-                    kind: ButtonStyleKind.white,
-                    label: 'Find Benefits',
-                    onPressed: () => AppShell.selectTab(context, 1),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: AppleButton(
-                    kind: ButtonStyleKind.red,
-                    icon: CupertinoIcons.heart_fill,
-                    label: 'Donate',
-                    onPressed: () => donate(context),
-                  ),
-                ),
-              ],
-            ),
-            if (stats.isNotEmpty) ...[
-              const SizedBox(height: 18),
-              Container(height: 0.5, color: Colors.white.withValues(alpha: 0.18)),
-              const SizedBox(height: 14),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  for (final s in stats)
-                    Expanded(
-                      child: Column(
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 18, 20, 18),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(Org.tagline, style: t.displaySmall?.copyWith(color: Colors.white)),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Free education, benefits guidance, and career support for active duty, veterans, military '
+                      'families, and the hometown heroes who keep our communities safe.',
+                      style: t.bodyMedium?.copyWith(color: Colors.white.withValues(alpha: 0.78), height: 1.45),
+                    ),
+                    const SizedBox(height: 18),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: AppleButton(
+                            kind: ButtonStyleKind.white,
+                            label: 'Find Benefits',
+                            onPressed: () => AppShell.selectTab(context, 1),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: AppleButton(
+                            kind: ButtonStyleKind.red,
+                            icon: CupertinoIcons.heart_fill,
+                            label: 'Donate',
+                            onPressed: () => donate(context),
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (stats.isNotEmpty) ...[
+                      const SizedBox(height: 18),
+                      Container(height: 0.5, color: Colors.white.withValues(alpha: 0.18)),
+                      const SizedBox(height: 14),
+                      Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(s.value, style: t.titleLarge?.copyWith(color: Colors.white)),
-                          const SizedBox(height: 2),
-                          Text(
-                            s.label,
-                            maxLines: 3,
-                            style: t.labelSmall?.copyWith(color: Colors.white.withValues(alpha: 0.6), fontSize: 11),
-                          ),
+                          for (final s in stats)
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(s.value, style: t.titleLarge?.copyWith(color: Colors.white)),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    s.label,
+                                    maxLines: 3,
+                                    style: t.labelSmall?.copyWith(
+                                      color: Colors.white.withValues(alpha: 0.6),
+                                      fontSize: 11,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                         ],
                       ),
-                    ),
-                ],
+                    ],
+                  ],
+                ),
               ),
             ],
-          ],
+          ),
         ),
       ),
     );

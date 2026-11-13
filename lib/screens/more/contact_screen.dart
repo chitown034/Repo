@@ -34,7 +34,7 @@ class ContactScreen extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(height: 4),
-                ClipOval(child: Image.asset('assets/images/logo_full.jpg', width: 88, height: 88, fit: BoxFit.cover)),
+                Image.asset('assets/images/logo_shield.png', height: 132, fit: BoxFit.contain),
                 const SizedBox(height: 12),
                 Text('Active Duty Veteran & Hometown Hero', textAlign: TextAlign.center, style: context.t.titleLarge),
                 const SizedBox(height: 4),

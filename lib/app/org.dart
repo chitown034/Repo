@@ -31,7 +31,7 @@ class Org {
   static const referralCcNumber = '619-368-7141';
 
   static const disclaimer =
-      'Active Duty Veteran and Hometown Hero Home-Owners Club, Inc. is a Temecula, '
+      'Active Duty Veteran and Hometown Hero Home-Owners Club, Inc. is a Southern '
       'California nonprofit providing free VA home buying education, veteran benefits '
       'navigation, career tools, and local resources for San Diego, Riverside, Orange, '
       'and Los Angeles counties. Donations may be tax-deductible as allowed by law. '

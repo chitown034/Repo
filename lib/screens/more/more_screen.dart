@@ -32,11 +32,9 @@ class MoreScreen extends StatelessWidget {
           child: InsetSection(
             children: [
               AppleRow(
-                leading: ClipOval(
-                  child: Image.asset('assets/images/logo_full.jpg', width: 58, height: 58, fit: BoxFit.cover),
-                ),
+                leading: Image.asset('assets/images/logo_shield.png', width: 58, height: 60, fit: BoxFit.contain),
                 title: 'Active Duty Veteran & Hometown Hero',
-                subtitle: '501(c)(3) Nonprofit · Temecula, CA',
+                subtitle: '501(c)(3) Nonprofit',
                 onTap: () => openLink(context, 'app://about-us'),
               ),
             ],
