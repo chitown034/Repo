@@ -20,7 +20,6 @@ class ContactScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fields = SiteContent.instance['contact-us']?.form?.fields ?? const [];
-    final maps = 'https://maps.apple.com/?q=${Uri.encodeComponent(Org.address)}';
     void message() => pushScreen(
       context,
       SiteFormScreen(title: 'New Message', fields: fields, webPath: 'contact-us'),
@@ -62,9 +61,9 @@ class ContactScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     CircleAction(
-                      icon: CupertinoIcons.map_fill,
-                      label: 'directions',
-                      onTap: () => openLink(context, maps),
+                      icon: CupertinoIcons.globe,
+                      label: 'website',
+                      onTap: () => openLink(context, Org.website),
                     ),
                   ],
                 ),
@@ -78,7 +77,6 @@ class ContactScreen extends StatelessWidget {
             children: [
               _InfoRow(label: 'phone', value: Org.phoneDisplay, onTap: () => openLink(context, Org.phoneTel)),
               _InfoRow(label: 'email', value: Org.email, onTap: () => openLink(context, 'mailto:${Org.email}')),
-              _InfoRow(label: 'address', value: Org.address, onTap: () => openLink(context, maps)),
             ],
           ),
         ),

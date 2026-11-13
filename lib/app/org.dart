@@ -7,7 +7,6 @@ class Org {
   static const shortName = 'Active Duty Veteran & Hometown Hero';
   static const tagline = 'Serving those who served.';
   static const ein = '84-3348125';
-  static const address = '41150 Crooked Stick Dr. Temecula, CA 92591';
   static const email = 'veteransandhometownhero@gmail.com';
   static const phoneDisplay = '(951) 267-0016';
   static const phoneTel = 'tel:9512670016';

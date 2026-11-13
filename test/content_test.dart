@@ -62,6 +62,17 @@ void main() {
     expect(File('assets/content/site.json').readAsStringSync(), isNot(contains('exprealty')));
   });
 
+  test('street address is not included anywhere in the app', () {
+    for (final f in [
+      File('assets/content/site.json'),
+      ...Directory('lib').listSync(recursive: true).whereType<File>(),
+    ]) {
+      final text = f.readAsStringSync();
+      expect(text, isNot(contains('Crooked Stick')), reason: f.path);
+      expect(text, isNot(contains('92591')), reason: f.path);
+    }
+  });
+
   test('website forms carry their fields', () {
     final contact = site['contact-us']!.form!;
     expect(contact.fields.map((f) => f.label), containsAll(['First Name', 'Last Name', 'Email', 'Phone', 'Comments']));
