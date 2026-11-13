@@ -1,8 +1,8 @@
-import 'package:material_ui/material_ui.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 
-import '../../app/theme.dart';
 import '../../data/site_content.dart';
 import '../../services/links.dart';
+import '../../ui/apple.dart';
 import '../../widgets/common.dart';
 
 class Testimonial {
@@ -37,73 +37,61 @@ class TestimonialsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Theme.of(context).textTheme;
-    final scheme = Theme.of(context).colorScheme;
     final items = parseTestimonials(SiteContent.instance['testimonials']!);
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          const SliverAppBar.large(title: Text('Testimonials')),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
-              child: Text(
-                'Hear from military families we have helped become homeowners.',
-                style: t.bodyLarge?.copyWith(color: scheme.onSurfaceVariant),
-              ),
+    final c = context.c;
+    return LargeTitleScaffold(
+      title: 'Testimonials',
+      slivers: [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(kGutter + 4, 0, kGutter, 16),
+            child: Text(
+              'Military families we helped become homeowners.',
+              style: context.t.bodyLarge?.copyWith(color: c.secondaryLabel),
             ),
           ),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            sliver: SliverList.separated(
-              itemCount: items.length,
-              separatorBuilder: (_, _) => const SizedBox(height: 12),
-              itemBuilder: (context, i) {
-                final x = items[i];
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(18),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+        ),
+        SliverPadding(
+          padding: kPage,
+          sliver: SliverList.separated(
+            itemCount: items.length,
+            separatorBuilder: (_, _) => const SizedBox(height: 12),
+            itemBuilder: (context, i) {
+              final x = items[i];
+              return AppleCard(
+                padding: const EdgeInsets.all(18),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
-                        Row(
-                          children: [
-                            for (var s = 0; s < 5; s++) const Icon(Icons.star_rounded, color: Brand.gold, size: 20),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Text('“${x.quote.join(' ')}”', style: t.bodyLarge?.copyWith(height: 1.5)),
-                        const SizedBox(height: 12),
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 16,
-                              backgroundColor: scheme.primary.withValues(alpha: 0.12),
-                              child: Text(x.name.characters.first, style: TextStyle(color: scheme.primary)),
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(child: Text(x.name, style: t.titleSmall)),
-                          ],
-                        ),
+                        for (var s = 0; s < 5; s++)
+                          const Icon(CupertinoIcons.star_fill, color: Color(0xFFFF9F0A), size: 15),
+                        const Spacer(),
+                        Icon(CupertinoIcons.quote_bubble_fill, color: c.tertiaryLabel, size: 20),
                       ],
                     ),
-                  ),
-                );
-              },
+                    const SizedBox(height: 10),
+                    Text(x.quote.join(' '), style: context.t.bodyLarge?.copyWith(height: 1.45)),
+                    const SizedBox(height: 12),
+                    Text('— ${x.name}', style: context.t.titleSmall?.copyWith(color: c.secondaryLabel)),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(kGutter, 22, kGutter, 0),
+            child: AppleButton(
+              label: 'Join the Free VA Webinar',
+              onPressed: () => openLink(context, 'app://va-home-buying-webinar'),
             ),
           ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-              child: FilledButton(
-                onPressed: () => openLink(context, 'app://va-home-buying-webinar'),
-                child: const Text('Join the free VA home buying webinar'),
-              ),
-            ),
-          ),
-          const SliverToBoxAdapter(child: OrgFooter()),
-        ],
-      ),
+        ),
+        const SliverToBoxAdapter(child: OrgFooter()),
+      ],
     );
   }
 }

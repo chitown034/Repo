@@ -1,179 +1,137 @@
+import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// Brand palette drawn from the club's shield logo: deep slate navy,
-/// brushed-steel blue, and patriotic red, with a touch of honor gold.
+import '../ui/apple.dart';
+
+/// Brand colors from the club's shield logo.
 class Brand {
   Brand._();
 
-  static const navy950 = Color(0xFF0C141D);
-  static const navy900 = Color(0xFF121C27);
-  static const navy800 = Color(0xFF1A2633);
-  static const navy700 = Color(0xFF22303F);
-  static const navy600 = Color(0xFF2F3E50);
-  static const blue = Color(0xFF23406A);
-  static const steel = Color(0xFF7E93B0);
+  static const navy950 = Color(0xFF0B1119);
+  static const navy900 = Color(0xFF15202E);
+  static const navy700 = Color(0xFF2B3D55);
   static const steelLight = Color(0xFFB9C7DA);
   static const red = Color(0xFFC8414B);
-  static const redBright = Color(0xFFE35D66);
   static const gold = Color(0xFFC9A227);
-  static const paper = Color(0xFFF4F6F9);
-
-  static const heroGradient = LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    colors: [navy700, navy900, navy950],
-  );
-
-  static const redGradient = LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    colors: [redBright, red],
-  );
 }
 
+/// Apple Human Interface Guidelines theme. iPhones use the system font
+/// (San Francisco); other platforms use Inter, its closest open equivalent.
 class AppTheme {
   AppTheme._();
 
   /// Tests turn this off so no fonts are downloaded.
   static bool useGoogleFonts = true;
 
-  static TextTheme _text(TextTheme base, Color ink) {
-    final body = useGoogleFonts ? GoogleFonts.interTextTheme(base) : base;
-    TextStyle? serif(TextStyle? s, {FontWeight w = FontWeight.w700}) => useGoogleFonts
-        ? GoogleFonts.volkhov(textStyle: s, fontWeight: w, color: ink, height: 1.15)
-        : s?.copyWith(fontWeight: w, color: ink, height: 1.15);
-    return body
-        .copyWith(
-          displayLarge: serif(base.displayLarge),
-          displayMedium: serif(base.displayMedium),
-          displaySmall: serif(base.displaySmall),
-          headlineLarge: serif(base.headlineLarge),
-          headlineMedium: serif(base.headlineMedium),
-          headlineSmall: serif(base.headlineSmall),
-          titleLarge: body.titleLarge?.copyWith(fontWeight: FontWeight.w700, letterSpacing: -0.2),
-          titleMedium: body.titleMedium?.copyWith(fontWeight: FontWeight.w600),
-          labelLarge: body.labelLarge?.copyWith(fontWeight: FontWeight.w600, letterSpacing: 0.1),
-        )
-        .apply(bodyColor: ink, displayColor: ink);
+  static bool get _systemFont => defaultTargetPlatform == TargetPlatform.iOS || !useGoogleFonts;
+
+  static TextTheme _text(Color ink) {
+    TextStyle s(double size, FontWeight w, double tracking, {double height = 1.25}) =>
+        TextStyle(fontSize: size, fontWeight: w, letterSpacing: tracking, height: height, color: ink);
+    final base = TextTheme(
+      displayLarge: s(40, FontWeight.w700, -0.8),
+      displayMedium: s(36, FontWeight.w700, -0.7),
+      displaySmall: s(34, FontWeight.w700, -0.6, height: 1.15), // Large Title
+      headlineLarge: s(30, FontWeight.w700, -0.5),
+      headlineMedium: s(28, FontWeight.w700, -0.5, height: 1.18), // Title 1
+      headlineSmall: s(22, FontWeight.w700, -0.35), // Title 2
+      titleLarge: s(20, FontWeight.w600, -0.3), // Title 3
+      titleMedium: s(17, FontWeight.w600, -0.3), // Headline
+      titleSmall: s(15, FontWeight.w600, -0.15), // Subheadline (bold)
+      bodyLarge: s(17, FontWeight.w400, -0.3, height: 1.3), // Body
+      bodyMedium: s(15, FontWeight.w400, -0.15, height: 1.33), // Subheadline
+      bodySmall: s(13, FontWeight.w400, -0.05), // Footnote
+      labelLarge: s(17, FontWeight.w600, -0.3), // Buttons
+      labelMedium: s(15, FontWeight.w500, -0.15),
+      labelSmall: s(12, FontWeight.w500, 0), // Caption
+    );
+    return _systemFont ? base : GoogleFonts.interTextTheme(base);
   }
 
-  static ThemeData light() {
-    final scheme = ColorScheme.fromSeed(seedColor: Brand.blue, brightness: Brightness.light).copyWith(
-      primary: Brand.blue,
+  static ThemeData light() => _build(AppPalette.light, Brightness.light);
+  static ThemeData dark() => _build(AppPalette.darkPalette, Brightness.dark);
+
+  static ThemeData _build(AppPalette c, Brightness brightness) {
+    final text = _text(c.label);
+    final scheme = ColorScheme.fromSeed(seedColor: c.tint, brightness: brightness).copyWith(
+      primary: c.tint,
       onPrimary: Colors.white,
-      secondary: Brand.red,
+      secondary: c.red,
       onSecondary: Colors.white,
-      tertiary: Brand.gold,
-      surface: Colors.white,
-      surfaceContainerLowest: Colors.white,
-      surfaceContainerLow: Brand.paper,
-      surfaceContainer: const Color(0xFFEDF0F5),
-      surfaceContainerHigh: const Color(0xFFE5E9F0),
-      onSurface: const Color(0xFF111A24),
-      onSurfaceVariant: const Color(0xFF4F5B6B),
-      outlineVariant: const Color(0xFFDDE2EA),
+      tertiary: c.gold,
+      surface: c.card,
+      surfaceContainerLowest: c.card,
+      surfaceContainerLow: c.bg,
+      surfaceContainer: c.card,
+      surfaceContainerHigh: c.cardRaised,
+      onSurface: c.label,
+      onSurfaceVariant: c.secondaryLabel,
+      outlineVariant: c.separator,
+      error: c.red,
     );
-    return _build(scheme, Brand.paper);
-  }
-
-  static ThemeData dark() {
-    final scheme = ColorScheme.fromSeed(seedColor: Brand.blue, brightness: Brightness.dark).copyWith(
-      primary: const Color(0xFFA9BDD9),
-      onPrimary: Brand.navy900,
-      secondary: Brand.redBright,
-      onSecondary: Colors.white,
-      tertiary: const Color(0xFFE0BE52),
-      surface: Brand.navy900,
-      surfaceContainerLowest: Brand.navy950,
-      surfaceContainerLow: const Color(0xFF16212C),
-      surfaceContainer: Brand.navy800,
-      surfaceContainerHigh: Brand.navy700,
-      onSurface: const Color(0xFFE9EEF5),
-      onSurfaceVariant: const Color(0xFFA7B3C3),
-      outlineVariant: const Color(0xFF2D3B4B),
+    final cupertino = CupertinoThemeData(
+      brightness: brightness,
+      primaryColor: c.tint,
+      scaffoldBackgroundColor: c.bg,
+      barBackgroundColor: c.bg.withValues(alpha: 0.86),
+      textTheme: CupertinoTextThemeData(
+        primaryColor: c.tint,
+        textStyle: text.bodyLarge,
+        actionTextStyle: text.bodyLarge?.copyWith(color: c.tint),
+        navTitleTextStyle: text.titleMedium,
+        navLargeTitleTextStyle: text.displaySmall,
+        navActionTextStyle: text.bodyLarge?.copyWith(color: c.tint),
+        tabLabelTextStyle: text.labelSmall?.copyWith(fontSize: 10, letterSpacing: 0.1),
+        pickerTextStyle: text.titleLarge?.copyWith(fontWeight: FontWeight.w400),
+      ),
     );
-    return _build(scheme, Brand.navy950);
-  }
-
-  static ThemeData _build(ColorScheme scheme, Color scaffold) {
-    final base = ThemeData(colorScheme: scheme, useMaterial3: true);
-    final text = _text(base.textTheme, scheme.onSurface);
-    final shape = RoundedRectangleBorder(borderRadius: BorderRadius.circular(14));
+    final base = ThemeData(colorScheme: scheme, useMaterial3: true, brightness: brightness);
     return base.copyWith(
-      scaffoldBackgroundColor: scaffold,
+      scaffoldBackgroundColor: c.bg,
+      canvasColor: c.bg,
       textTheme: text,
-      appBarTheme: AppBarTheme(
-        backgroundColor: scaffold,
-        foregroundColor: scheme.onSurface,
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        scrolledUnderElevation: 0.5,
-        centerTitle: false,
-      ),
-      cardTheme: CardThemeData(
-        color: scheme.surfaceContainerLowest,
-        elevation: 0,
-        margin: EdgeInsets.zero,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-          side: BorderSide(color: scheme.outlineVariant),
-        ),
-      ),
-      filledButtonTheme: FilledButtonThemeData(
-        style: FilledButton.styleFrom(
-          minimumSize: const Size(48, 50),
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          shape: shape,
-          textStyle: text.labelLarge,
-        ),
-      ),
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: OutlinedButton.styleFrom(
-          minimumSize: const Size(48, 50),
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          shape: shape,
-          textStyle: text.labelLarge,
-        ),
-      ),
-      textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(textStyle: text.labelLarge)),
-      chipTheme: base.chipTheme.copyWith(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        side: BorderSide(color: scheme.outlineVariant),
-        labelStyle: text.labelMedium,
-      ),
+      cupertinoOverrideTheme: cupertino,
+      // No Material ripples: iOS uses a quiet gray press highlight.
+      splashFactory: NoSplash.splashFactory,
+      highlightColor: c.fill,
+      hoverColor: c.fill.withValues(alpha: 0.5),
+      dividerTheme: DividerThemeData(color: c.separator, thickness: 0.5, space: 0.5),
+      iconTheme: IconThemeData(color: c.tint),
+      textSelectionTheme: TextSelectionThemeData(cursorColor: c.tint, selectionHandleColor: c.tint),
       inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: scheme.surfaceContainerLowest,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: scheme.outlineVariant),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: scheme.outlineVariant),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: scheme.primary, width: 1.6),
-        ),
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        errorBorder: InputBorder.none,
+        focusedErrorBorder: InputBorder.none,
+        isDense: true,
+        contentPadding: EdgeInsets.zero,
+        hintStyle: text.bodyLarge?.copyWith(color: c.tertiaryLabel),
+        errorStyle: text.bodySmall?.copyWith(color: c.red),
       ),
-      navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: scheme.surfaceContainerLowest,
-        indicatorColor: scheme.primary.withValues(alpha: 0.14),
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: c.dark ? const Color(0xFF2C2C2E) : const Color(0xF21C1C1E),
+        contentTextStyle: text.titleSmall?.copyWith(color: Colors.white),
+        behavior: SnackBarBehavior.floating,
+        elevation: 0,
+      ),
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: c.bg,
         surfaceTintColor: Colors.transparent,
-        height: 68,
-        labelTextStyle: WidgetStatePropertyAll(text.labelSmall?.copyWith(fontWeight: FontWeight.w600)),
+        showDragHandle: true,
+        dragHandleColor: c.tertiaryLabel,
+        shape: const RoundedSuperellipseBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(22))),
       ),
-      listTileTheme: ListTileThemeData(
-        iconColor: scheme.primary,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-        titleTextStyle: text.titleMedium,
-        subtitleTextStyle: text.bodySmall?.copyWith(color: scheme.onSurfaceVariant),
+      progressIndicatorTheme: ProgressIndicatorThemeData(color: c.tint),
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: {
+          TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+          TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+        },
       ),
-      dividerTheme: DividerThemeData(color: scheme.outlineVariant, space: 1),
-      snackBarTheme: const SnackBarThemeData(behavior: SnackBarBehavior.floating),
     );
   }
 }

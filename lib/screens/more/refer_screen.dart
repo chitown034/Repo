@@ -1,3 +1,4 @@
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:material_ui/material_ui.dart';
@@ -5,7 +6,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../app/org.dart';
-import '../../app/theme.dart';
+import '../../ui/apple.dart';
 
 /// The seminar invite text from the original app, personalized per friend.
 String referralMessage(String name) =>
@@ -66,12 +67,10 @@ class _ReferScreenState extends State<ReferScreen> {
         return;
       }
       final list = await FlutterContacts.getAll(properties: {ContactProperty.phone});
-      final out = <Invitee>[];
-      for (final c in list) {
-        if (c.phones.isEmpty) continue;
-        out.add(Invitee(c.displayName ?? 'No name', c.phones.first.number));
-      }
-      out.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+      final out = <Invitee>[
+        for (final c in list)
+          if (c.phones.isNotEmpty) Invitee(c.displayName ?? 'No Name', c.phones.first.number),
+      ]..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
       setState(() {
         _contacts = out;
         _loading = false;
@@ -87,29 +86,27 @@ class _ReferScreenState extends State<ReferScreen> {
   Future<void> _addManual() async {
     final name = TextEditingController();
     final phone = TextEditingController();
-    final ok = await showDialog<bool>(
+    final ok = await showCupertinoDialog<bool>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Add a friend'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: name,
-              decoration: const InputDecoration(labelText: 'Name'),
-              textCapitalization: TextCapitalization.words,
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: phone,
-              decoration: const InputDecoration(labelText: 'Mobile number'),
-              keyboardType: TextInputType.phone,
-            ),
-          ],
+      builder: (ctx) => CupertinoAlertDialog(
+        title: const Text('Add a Friend'),
+        content: Padding(
+          padding: const EdgeInsets.only(top: 12),
+          child: Column(
+            children: [
+              CupertinoTextField(controller: name, placeholder: 'Name', textCapitalization: TextCapitalization.words),
+              const SizedBox(height: 8),
+              CupertinoTextField(controller: phone, placeholder: 'Mobile Number', keyboardType: TextInputType.phone),
+            ],
+          ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
-          FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Add')),
+          CupertinoDialogAction(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Add'),
+          ),
         ],
       ),
     );
@@ -125,7 +122,7 @@ class _ReferScreenState extends State<ReferScreen> {
     if (ok) {
       setState(() => i.sent = true);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('No messaging app available')));
+      showToast(context, 'No messaging app available');
     }
   }
 
@@ -133,7 +130,6 @@ class _ReferScreenState extends State<ReferScreen> {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      showDragHandle: true,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setSheet) {
           final sel = _selected;
@@ -143,51 +139,65 @@ class _ReferScreenState extends State<ReferScreen> {
             initialChildSize: 0.6,
             builder: (ctx, controller) => ListView(
               controller: controller,
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
               children: [
-                Text(
-                  'Send ${sel.length} invite${sel.length == 1 ? '' : 's'}',
-                  style: Theme.of(ctx).textTheme.titleLarge,
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(kGutter + 4, 0, kGutter + 4, 6),
+                  child: Text('Send ${sel.length} Invite${sel.length == 1 ? '' : 's'}', style: ctx.t.headlineSmall),
                 ),
-                const SizedBox(height: 6),
-                Text(
-                  'Each invite opens your messaging app with a personal note. '
-                  '${Org.referralCcNumber} (our President, Steven) is included so he can answer questions.',
-                  style: Theme.of(ctx).textTheme.bodySmall,
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(kGutter + 4, 0, kGutter + 4, 16),
+                  child: Text(
+                    'Each invite opens Messages with a personal note. ${Org.referralCcNumber} (our President, '
+                    'Steven) is included so he can answer questions.',
+                    style: ctx.t.bodyMedium?.copyWith(color: ctx.c.secondaryLabel),
+                  ),
                 ),
-                const SizedBox(height: 12),
-                if (next != null)
-                  FilledButton.icon(
-                    onPressed: () async {
-                      await _send(next);
-                      setSheet(() {});
-                    },
-                    icon: const Icon(Icons.send),
-                    label: Text('Text ${next.name}'),
-                  )
-                else
-                  const ListTile(
-                    leading: Icon(Icons.check_circle, color: Colors.green),
-                    title: Text('All invites opened. Thank you!'),
-                  ),
-                const SizedBox(height: 8),
-                for (final i in sel)
-                  ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    leading: Icon(
-                      i.sent ? Icons.check_circle : Icons.radio_button_unchecked,
-                      color: i.sent ? Colors.green : null,
-                    ),
-                    title: Text(i.name),
-                    subtitle: Text(i.phone),
-                    trailing: TextButton(
-                      onPressed: () async {
-                        await _send(i);
-                        setSheet(() {});
-                      },
-                      child: Text(i.sent ? 'Resend' : 'Send'),
-                    ),
-                  ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(kGutter, 0, kGutter, 22),
+                  child: next != null
+                      ? AppleButton(
+                          icon: CupertinoIcons.paperplane_fill,
+                          label: 'Text ${next.name}',
+                          onPressed: () async {
+                            await _send(next);
+                            setSheet(() {});
+                          },
+                        )
+                      : AppleCard(
+                          child: Row(
+                            children: [
+                              Icon(CupertinoIcons.checkmark_seal_fill, color: ctx.c.green),
+                              const SizedBox(width: 10),
+                              Text('All invites opened. Thank you!', style: ctx.t.titleSmall),
+                            ],
+                          ),
+                        ),
+                ),
+                InsetSection(
+                  dividerIndent: 54,
+                  children: [
+                    for (final i in sel)
+                      AppleRow(
+                        leading: Icon(
+                          i.sent ? CupertinoIcons.checkmark_circle_fill : CupertinoIcons.circle,
+                          color: i.sent ? ctx.c.green : ctx.c.tertiaryLabel,
+                          size: 26,
+                        ),
+                        title: i.name,
+                        subtitle: i.phone,
+                        accessory: RowAccessory.none,
+                        trailing: CupertinoButton(
+                          padding: EdgeInsets.zero,
+                          minimumSize: const Size(44, 30),
+                          onPressed: () async {
+                            await _send(i);
+                            setSheet(() {});
+                          },
+                          child: Text(i.sent ? 'Resend' : 'Send', style: TextStyle(color: ctx.c.tint)),
+                        ),
+                      ),
+                  ],
+                ),
               ],
             ),
           );
@@ -198,160 +208,170 @@ class _ReferScreenState extends State<ReferScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final t = Theme.of(context).textTheme;
-    final scheme = Theme.of(context).colorScheme;
+    final c = context.c;
     final q = _search.toLowerCase();
     final visible = [
       for (final i in _all)
         if (q.isEmpty || i.name.toLowerCase().contains(q) || i.phone.contains(q)) i,
     ];
     final count = _selected.length;
-    return Scaffold(
-      appBar: AppBar(title: const Text('Invite Friends')),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Container(
-              margin: const EdgeInsets.fromLTRB(20, 4, 20, 12),
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(gradient: Brand.heroGradient, borderRadius: BorderRadius.circular(20)),
+    return LargeTitleScaffold(
+      title: 'Invite Friends',
+      bottomBar: count == 0
+          ? null
+          : DecoratedBox(
+              decoration: BoxDecoration(
+                color: c.bg.withValues(alpha: 0.94),
+                border: Border(top: BorderSide(color: c.separator, width: 0.5)),
+              ),
+              child: SafeArea(
+                top: false,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(kGutter, 10, kGutter, 10),
+                  child: AppleButton(
+                    icon: CupertinoIcons.paperplane_fill,
+                    label: 'Invite $count Friend${count == 1 ? '' : 's'}',
+                    onPressed: _openQueue,
+                  ),
+                ),
+              ),
+            ),
+      slivers: [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(kGutter + 4, 0, kGutter + 4, 16),
+            child: Text(
+              'Know someone who served, or will? Text them a personal invite to our free VA Home Buying Seminar.',
+              style: context.t.bodyLarge?.copyWith(color: c.secondaryLabel),
+            ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(kGutter, 0, kGutter, 22),
+            child: AppleCard(
+              padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const Icon(Icons.group_add, color: Colors.white),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Invite friends to the free VA Home Buying Seminar',
-                    style: t.titleLarge?.copyWith(color: Colors.white),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    'Pick people who served (or will). We’ll text each one a personal invite.',
-                    style: t.bodyMedium?.copyWith(color: Colors.white70),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: ExpansionTile(
-                tilePadding: EdgeInsets.zero,
-                title: Text('Preview message', style: t.titleSmall),
-                children: [
+                  Align(alignment: Alignment.centerLeft, child: Caption('Message Preview')),
+                  const SizedBox(height: 10),
+                  // iMessage-style bubble.
                   Container(
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      color: scheme.primary.withValues(alpha: 0.08),
-                      borderRadius: BorderRadius.circular(16),
+                    constraints: const BoxConstraints(maxWidth: 300),
+                    padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 9),
+                    decoration: const ShapeDecoration(
+                      color: Color(0xFF0A84FF),
+                      shape: RoundedSuperellipseBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(18),
+                          topRight: Radius.circular(18),
+                          bottomLeft: Radius.circular(18),
+                          bottomRight: Radius.circular(5),
+                        ),
+                      ),
                     ),
-                    child: Text(referralMessage('Alex'), style: t.bodyMedium),
+                    child: Text(
+                      referralMessage('Alex'),
+                      style: context.t.bodyMedium?.copyWith(color: Colors.white, height: 1.35),
+                    ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 4),
+                  Text('Delivered', style: context.t.labelSmall?.copyWith(color: c.secondaryLabel, fontSize: 11)),
                 ],
               ),
             ),
           ),
-          if (_contacts == null)
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    FilledButton.icon(
-                      onPressed: _loading ? null : _loadContacts,
-                      icon: _loading
-                          ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
-                          : const Icon(Icons.contacts_outlined),
-                      label: const Text('Choose from my contacts'),
-                    ),
-                    if (_denied) ...[
-                      const SizedBox(height: 8),
-                      Text(
-                        'Contacts access is off. You can turn it on in Settings, or add numbers below.',
-                        style: t.bodySmall,
-                        textAlign: TextAlign.center,
-                      ),
-                      TextButton(
-                        onPressed: () => FlutterContacts.permissions.openSettings(),
-                        child: const Text('Open Settings'),
-                      ),
-                    ],
-                  ],
+        ),
+        SliverToBoxAdapter(
+          child: InsetSection(
+            footer: _denied ? 'Contacts access is off. Turn it on in Settings, or add numbers yourself.' : null,
+            children: [
+              if (_contacts == null)
+                AppleRow(
+                  icon: CupertinoIcons.person_crop_circle_fill,
+                  iconColor: Hue.gray,
+                  title: 'Choose from Contacts',
+                  trailing: _loading ? const CupertinoActivityIndicator() : null,
+                  onTap: _loading ? null : _loadContacts,
                 ),
+              if (_denied)
+                AppleRow(
+                  icon: CupertinoIcons.settings,
+                  iconColor: Hue.gray,
+                  title: 'Open Settings',
+                  onTap: () => FlutterContacts.permissions.openSettings(),
+                ),
+              AppleRow(icon: CupertinoIcons.plus, iconColor: Hue.green, title: 'Add Phone Number', onTap: _addManual),
+              AppleRow(
+                icon: CupertinoIcons.share,
+                iconColor: Hue.blue,
+                title: 'Share Another Way',
+                onTap: () => SharePlus.instance.share(ShareParams(text: referralMessage(''))),
               ),
-            ),
+            ],
+          ),
+        ),
+        if (_all.isNotEmpty)
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
-              child: Row(
-                children: [
-                  OutlinedButton.icon(
-                    onPressed: _addManual,
-                    icon: const Icon(Icons.dialpad),
-                    label: const Text('Add number'),
-                  ),
-                  const SizedBox(width: 8),
-                  TextButton.icon(
-                    onPressed: () => SharePlus.instance.share(ShareParams(text: referralMessage(''))),
-                    icon: const Icon(Icons.ios_share),
-                    label: const Text('Share another way'),
-                  ),
-                ],
+              padding: const EdgeInsets.fromLTRB(kGutter, 0, kGutter, 12),
+              child: AppleSearchField(placeholder: 'Search', onChanged: (v) => setState(() => _search = v.trim())),
+            ),
+          ),
+        if (_contacts != null && _all.isEmpty)
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(32),
+              child: Text(
+                'No contacts with phone numbers.',
+                textAlign: TextAlign.center,
+                style: context.t.bodyLarge?.copyWith(color: c.secondaryLabel),
               ),
             ),
           ),
-          if (_all.isNotEmpty)
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),
-                child: TextField(
-                  onChanged: (v) => setState(() => _search = v.trim()),
-                  decoration: const InputDecoration(prefixIcon: Icon(Icons.search), hintText: 'Search contacts'),
-                ),
-              ),
-            ),
-          if (_contacts != null && _all.isEmpty)
-            const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.all(32),
-                child: Center(child: Text('No contacts with phone numbers found.')),
-              ),
-            ),
-          SliverList.builder(
+        // Lazily built inset-grouped list for large address books.
+        SliverPadding(
+          padding: kPage,
+          sliver: SliverList.builder(
             itemCount: visible.length,
             itemBuilder: (context, idx) {
               final i = visible[idx];
-              return CheckboxListTile(
-                value: i.selected,
-                onChanged: (v) => setState(() => i.selected = v ?? false),
-                secondary: CircleAvatar(
-                  backgroundColor: scheme.primary.withValues(alpha: 0.12),
-                  child: Text(
-                    i.name.isEmpty ? '#' : i.name.characters.first.toUpperCase(),
-                    style: TextStyle(color: scheme.primary),
+              final first = idx == 0;
+              final last = idx == visible.length - 1;
+              return ClipRSuperellipse(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(first ? 14 : 0),
+                  bottom: Radius.circular(last ? 14 : 0),
+                ),
+                child: ColoredBox(
+                  color: c.card,
+                  child: Column(
+                    children: [
+                      if (!first)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 54),
+                          child: Container(height: 0.5, color: c.separator),
+                        ),
+                      AppleRow(
+                        leading: Icon(
+                          i.selected ? CupertinoIcons.checkmark_circle_fill : CupertinoIcons.circle,
+                          color: i.selected ? c.tint : c.tertiaryLabel,
+                          size: 26,
+                        ),
+                        title: i.name.isEmpty ? i.phone : i.name,
+                        subtitle: i.phone,
+                        accessory: RowAccessory.none,
+                        onTap: () => setState(() => i.selected = !i.selected),
+                      ),
+                    ],
                   ),
                 ),
-                title: Text(i.name),
-                subtitle: Text(i.phone),
               );
             },
           ),
-          const SliverToBoxAdapter(child: SizedBox(height: 100)),
-        ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: count == 0
-          ? null
-          : FloatingActionButton.extended(
-              backgroundColor: Brand.red,
-              foregroundColor: Colors.white,
-              onPressed: _openQueue,
-              icon: const Icon(Icons.send),
-              label: Text('Invite $count friend${count == 1 ? '' : 's'}'),
-            ),
+        ),
+      ],
     );
   }
 }

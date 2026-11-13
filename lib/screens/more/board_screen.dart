@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../data/site_content.dart';
 import '../../services/links.dart';
+import '../../ui/apple.dart';
 import '../../widgets/common.dart';
 
 class BoardMember {
@@ -34,84 +35,75 @@ List<BoardMember> parseBoard(SitePage page) {
 class BoardScreen extends StatelessWidget {
   const BoardScreen({super.key});
 
+  Future<void> _contact(BuildContext context, BoardMember m) async {
+    final labels = [
+      for (final l in m.links)
+        l.url.startsWith('tel:')
+            ? 'Call ${l.text.replaceFirst(RegExp(r'Phone:\s*'), '')}'
+            : 'Visit ${Uri.parse(l.url).host.replaceFirst('www.', '')}',
+    ];
+    if (labels.isEmpty) return;
+    final i = await showAppleActions(context, title: m.name, message: m.role, actions: labels);
+    if (i != null && context.mounted) await openLink(context, m.links[i].url);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final t = Theme.of(context).textTheme;
-    final scheme = Theme.of(context).colorScheme;
     final members = parseBoard(SiteContent.instance['board-members']!);
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          const SliverAppBar.large(title: Text('Board Members')),
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-            sliver: SliverList.separated(
-              itemCount: members.length,
-              separatorBuilder: (_, _) => const SizedBox(height: 10),
-              itemBuilder: (context, i) {
-                final m = members[i];
-                final initials = m.name
-                    .replaceAll(RegExp(r'[“”"]'), '')
-                    .split(' ')
-                    .where((w) => w.isNotEmpty)
-                    .map((w) => w[0])
-                    .take(2)
-                    .join();
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CircleAvatar(
-                          radius: 24,
-                          backgroundColor: scheme.primary,
-                          child: Text(
-                            initials,
-                            style: TextStyle(color: scheme.onPrimary, fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                        const SizedBox(width: 14),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Badge2(m.role, color: scheme.secondary),
-                              const SizedBox(height: 6),
-                              Text(m.name, style: t.titleMedium),
-                              for (final d in m.details)
-                                Text(d, style: t.bodySmall?.copyWith(color: scheme.onSurfaceVariant)),
-                              if (m.links.isNotEmpty) ...[
-                                const SizedBox(height: 8),
-                                Wrap(
-                                  spacing: 8,
-                                  runSpacing: 4,
-                                  children: [
-                                    for (final l in m.links)
-                                      ActionChip(
-                                        avatar: Icon(l.url.startsWith('tel:') ? Icons.call : Icons.language, size: 16),
-                                        label: Text(
-                                          l.url.startsWith('tel:')
-                                              ? l.text.replaceFirst(RegExp(r'Phone:\s*'), '')
-                                              : Uri.parse(l.url).host.replaceFirst('www.', ''),
-                                        ),
-                                        onPressed: () => openLink(context, l.url),
-                                      ),
-                                  ],
-                                ),
-                              ],
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
+    return LargeTitleScaffold(
+      title: 'Board Members',
+      slivers: [
+        SliverToBoxAdapter(
+          child: InsetSection(
+            dividerIndent: 76,
+            children: [
+              for (final m in members)
+                AppleRow(
+                  leading: _Avatar(name: m.name),
+                  overline: m.role,
+                  title: m.name,
+                  subtitle: m.details.join(' · '),
+                  accessory: m.links.isEmpty ? RowAccessory.none : RowAccessory.chevron,
+                  onTap: m.links.isEmpty ? null : () => _contact(context, m),
+                ),
+            ],
           ),
-          const SliverToBoxAdapter(child: OrgFooter()),
-        ],
+        ),
+        const SliverToBoxAdapter(child: OrgFooter()),
+      ],
+    );
+  }
+}
+
+/// Monogram avatar, as in Contacts.
+class _Avatar extends StatelessWidget {
+  const _Avatar({required this.name});
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    final initials = name
+        .replaceAll(RegExp(r'[“”"]'), '')
+        .split(' ')
+        .where((w) => w.isNotEmpty)
+        .map((w) => w[0])
+        .take(2)
+        .join();
+    return Container(
+      width: 48,
+      height: 48,
+      alignment: Alignment.center,
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFFA5ADBA), Color(0xFF858D9A)],
+        ),
+      ),
+      child: Text(
+        initials,
+        style: const TextStyle(color: Colors.white, fontSize: 19, fontWeight: FontWeight.w600),
       ),
     );
   }

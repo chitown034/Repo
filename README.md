@@ -4,6 +4,13 @@ Flutter app for Android and iOS for Active Duty Veteran and Hometown Hero
 Home-Owners Club, Inc. It brings everything on
 [veteransresourcenetwork.org](https://www.veteransresourcenetwork.org) into a native app.
 
+## Design
+
+Apple Human Interface Guidelines throughout: large-title navigation bars that collapse and blur, an iOS tab bar,
+inset-grouped lists with Settings-style icon badges, continuous-corner cards, wheel pickers, action sheets,
+swipe-back navigation, and full dark mode. iPhones use the system font (San Francisco); Android uses Inter.
+Shared components live in `lib/ui/apple.dart`.
+
 ## What's in the app
 
 | Tab | Contents |

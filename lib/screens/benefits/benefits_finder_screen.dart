@@ -1,10 +1,10 @@
-import 'package:material_ui/material_ui.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 
 import '../../app/routes.dart';
 import '../../data/benefits.dart';
 import '../../data/prefs.dart';
 import '../../services/links.dart';
-import '../../widgets/common.dart';
+import '../../ui/apple.dart';
 import 'benefit_detail_screen.dart';
 import 'state_guide_screen.dart';
 
@@ -19,108 +19,82 @@ class BenefitsFinderScreen extends StatefulWidget {
 
 class _BenefitsFinderScreenState extends State<BenefitsFinderScreen> {
   late final Future<BenefitsDb> _db = BenefitsDb.load();
-  final _search = TextEditingController();
   String _query = '';
   String? _level;
   final Set<String> _cats = {};
   bool _savedOnly = false;
   bool _useState = true;
 
-  @override
-  void dispose() {
-    _search.dispose();
-    super.dispose();
-  }
-
   Future<void> _pickState(BenefitsDb db) async {
-    final code = await showModalBottomSheet<String>(
-      context: context,
-      isScrollControlled: true,
-      showDragHandle: true,
-      builder: (ctx) => DraggableScrollableSheet(
-        expand: false,
-        initialChildSize: 0.7,
-        builder: (ctx, controller) => ListView(
-          controller: controller,
-          children: [
-            const ListTile(title: Text('Your state'), subtitle: Text('Shows that state’s programs and guide')),
-            ListTile(
-              leading: const Icon(Icons.public),
-              title: const Text('All states'),
-              onTap: () => Navigator.pop(ctx, ''),
-            ),
-            for (final s in db.states)
-              ListTile(
-                leading: CircleAvatar(radius: 16, child: Text(s.code, style: const TextStyle(fontSize: 11))),
-                title: Text(s.name),
-                trailing: s.code == Prefs.instance.homeState ? const Icon(Icons.check) : null,
-                onTap: () => Navigator.pop(ctx, s.code),
-              ),
-          ],
-        ),
-      ),
-    );
-    if (code == null) return;
-    Prefs.instance.setHomeState(code.isEmpty ? null : code);
-    setState(() => _useState = code.isNotEmpty);
+    final options = ['All States', for (final s in db.states) s.name];
+    final current = db.states.indexWhere((s) => s.code == Prefs.instance.homeState);
+    final i = await showApplePicker(context, title: 'Your State', options: options, initial: current + 1);
+    if (i == null) return;
+    final code = i == 0 ? null : db.states[i - 1].code;
+    Prefs.instance.setHomeState(code);
+    setState(() => _useState = code != null);
   }
 
-  void _showPhones(BenefitsDb db) {
-    showModalBottomSheet<void>(
-      context: context,
-      showDragHandle: true,
-      isScrollControlled: true,
-      builder: (ctx) => DraggableScrollableSheet(
-        expand: false,
-        initialChildSize: 0.6,
-        builder: (ctx, controller) => ListView(
-          controller: controller,
-          children: [
-            const ListTile(title: Text('Important VA phone numbers')),
-            for (final p in db.phones)
-              ListTile(
-                leading: const Icon(Icons.call_outlined),
-                title: Text(p.what),
-                subtitle: Text(p.number),
-                onTap: () {
-                  final m = RegExp(r'1?-?\d{3}-\d{3}-\d{4}|\b\d{3}\b').firstMatch(p.number);
-                  if (m != null) openLink(context, 'tel:${m.group(0)!.replaceAll('-', '')}');
-                },
+  Future<void> _showPhones(BenefitsDb db) => Navigator.of(context).push(
+    appleRoute(
+      LargeTitleScaffold(
+        title: 'VA Phone Numbers',
+        slivers: [
+          SliverToBoxAdapter(
+            child: Builder(
+              builder: (context) => InsetSection(
+                children: [
+                  for (final p in db.phones)
+                    AppleRow(
+                      icon: CupertinoIcons.phone_fill,
+                      iconColor: Hue.green,
+                      title: p.what,
+                      subtitle: p.number,
+                      accessory: RowAccessory.none,
+                      onTap: () {
+                        final m = RegExp(r'1?-?\d{3}-\d{3}-\d{4}|\b\d{3}\b').firstMatch(p.number);
+                        if (m != null) openLink(context, 'tel:${m.group(0)!.replaceAll('-', '')}');
+                      },
+                    ),
+                ],
               ),
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
-    );
-  }
+      title: 'Benefits',
+    ),
+  );
 
   @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<BenefitsDb>(
-      future: _db,
-      builder: (context, snap) {
+  Widget build(BuildContext context) => FutureBuilder<BenefitsDb>(
+    future: _db,
+    builder: (context, snap) => ListenableBuilder(
+      listenable: Prefs.instance,
+      builder: (context, _) {
         final db = snap.data;
-        return ListenableBuilder(
-          listenable: Prefs.instance,
-          builder: (context, _) => Scaffold(body: db == null ? _loading(snap.error) : _body(db)),
-        );
+        if (db == null) {
+          return LargeTitleScaffold(
+            title: 'Benefits',
+            slivers: [
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Center(
+                  child: snap.hasError
+                      ? Text('Could not load benefits.', style: context.t.bodyLarge)
+                      : const CupertinoActivityIndicator(radius: 14),
+                ),
+              ),
+            ],
+          );
+        }
+        return _body(db);
       },
-    );
-  }
-
-  Widget _loading(Object? error) => CustomScrollView(
-    slivers: [
-      const SliverAppBar.large(title: Text('Benefits Finder')),
-      SliverFillRemaining(
-        child: Center(
-          child: error != null ? Text('Could not load benefits: $error') : const CircularProgressIndicator(),
-        ),
-      ),
-    ],
+    ),
   );
 
   Widget _body(BenefitsDb db) {
-    final t = Theme.of(context).textTheme;
-    final scheme = Theme.of(context).colorScheme;
+    final c = context.c;
     final state = _useState ? db.stateByCode(Prefs.instance.homeState) : null;
     final results = db.filter(
       query: _query,
@@ -129,96 +103,59 @@ class _BenefitsFinderScreenState extends State<BenefitsFinderScreen> {
       state: state,
       onlyIds: _savedOnly ? Prefs.instance.savedBenefitIds : null,
     );
-    return CustomScrollView(
+    return LargeTitleScaffold(
+      title: 'Benefits',
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          BarButton(icon: CupertinoIcons.phone, tooltip: 'VA phone numbers', onPressed: () => _showPhones(db)),
+          BarButton(
+            icon: _savedOnly ? CupertinoIcons.bookmark_fill : CupertinoIcons.bookmark,
+            tooltip: _savedOnly ? 'Show all' : 'Show saved',
+            onPressed: () => setState(() => _savedOnly = !_savedOnly),
+          ),
+        ],
+      ),
       slivers: [
-        SliverAppBar.large(
-          title: const Text('Benefits Finder'),
-          actions: [
-            IconButton(
-              tooltip: 'VA phone numbers',
-              onPressed: () => _showPhones(db),
-              icon: const Icon(Icons.contact_phone_outlined),
-            ),
-            IconButton(
-              tooltip: _savedOnly ? 'Show all' : 'Show saved',
-              onPressed: () => setState(() => _savedOnly = !_savedOnly),
-              icon: Icon(_savedOnly ? Icons.bookmark : Icons.bookmark_border),
-              color: _savedOnly ? scheme.secondary : null,
-            ),
-          ],
-        ),
         SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-            child: Text(
-              '${_fmt(db.items.length)} federal, state, and private benefits for service members, veterans, '
-              'families, survivors, and caregivers.',
-              style: t.bodyMedium?.copyWith(color: scheme.onSurfaceVariant),
-            ),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 14, 20, 6),
-            child: TextField(
-              controller: _search,
+            padding: const EdgeInsets.fromLTRB(kGutter, 0, kGutter, 12),
+            child: AppleSearchField(
+              placeholder: 'Search ${_fmt(db.items.length)} benefits',
               onChanged: (v) => setState(() => _query = v.trim()),
-              textInputAction: TextInputAction.search,
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
-                hintText: 'Try “property tax”, “GI Bill”, “dental”',
-                suffixIcon: _query.isEmpty
-                    ? null
-                    : IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () => setState(() {
-                          _search.clear();
-                          _query = '';
-                        }),
-                      ),
-              ),
+            ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(kGutter, 0, kGutter, 12),
+            child: AppleSegmented<String>(
+              value: _level ?? 'All',
+              segments: const {'All': 'All', 'Federal': 'Federal', 'State': 'State', 'Private': 'Private'},
+              onChanged: (v) => setState(() => _level = v == 'All' ? null : v),
             ),
           ),
         ),
         SliverToBoxAdapter(
           child: SizedBox(
-            height: 48,
+            height: 36,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+              padding: kPage,
               children: [
-                ActionChip(
-                  avatar: const Icon(Icons.place_outlined, size: 18),
-                  label: Text(state?.name ?? 'All states'),
-                  onPressed: () => _pickState(db),
+                Pill(
+                  icon: CupertinoIcons.location_solid,
+                  label: state?.name ?? 'All States',
+                  selected: state != null,
+                  onTap: () => _pickState(db),
                 ),
-                const SizedBox(width: 8),
-                for (final l in const ['Federal', 'State', 'Private']) ...[
-                  FilterChip(
-                    label: Text(l),
-                    selected: _level == l,
-                    onSelected: (v) => setState(() => _level = v ? l : null),
-                  ),
+                for (final cat in db.categories) ...[
                   const SizedBox(width: 8),
-                ],
-              ],
-            ),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: SizedBox(
-            height: 48,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-              children: [
-                for (final c in db.categories) ...[
-                  FilterChip(
-                    label: Text(_catLabel(c)),
-                    selected: _cats.contains(c),
-                    onSelected: (v) => setState(() => v ? _cats.add(c) : _cats.remove(c)),
+                  Pill(
+                    label: _catLabel(cat),
+                    selected: _cats.contains(cat),
+                    onTap: () => setState(() => _cats.contains(cat) ? _cats.remove(cat) : _cats.add(cat)),
                   ),
-                  const SizedBox(width: 8),
                 ],
               ],
             ),
@@ -227,33 +164,37 @@ class _BenefitsFinderScreenState extends State<BenefitsFinderScreen> {
         if (state != null)
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 4),
+              padding: const EdgeInsets.fromLTRB(kGutter, 16, kGutter, 0),
               child: _StateCard(state: state),
             ),
           ),
         SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 14, 20, 8),
-            child: Text(
-              _savedOnly ? '${results.length} saved' : '${_fmt(results.length)} matching benefits',
-              style: t.labelLarge?.copyWith(color: scheme.onSurfaceVariant),
-            ),
+            padding: const EdgeInsets.fromLTRB(kGutter + 4, 22, kGutter, 8),
+            child: Caption(_savedOnly ? '${results.length} Saved' : '${_fmt(results.length)} Benefits'),
           ),
         ),
         if (results.isEmpty)
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(32),
-              child: Text(
-                _savedOnly
-                    ? 'Tap the bookmark on any benefit to save it here.'
-                    : 'No benefits match. Try fewer filters.',
-                textAlign: TextAlign.center,
+              padding: const EdgeInsets.all(40),
+              child: Column(
+                children: [
+                  Icon(_savedOnly ? CupertinoIcons.bookmark : CupertinoIcons.search, size: 44, color: c.tertiaryLabel),
+                  const SizedBox(height: 10),
+                  Text(_savedOnly ? 'No Saved Benefits' : 'No Results', style: context.t.titleLarge),
+                  const SizedBox(height: 4),
+                  Text(
+                    _savedOnly ? 'Tap the bookmark on any benefit to save it.' : 'Try fewer filters.',
+                    textAlign: TextAlign.center,
+                    style: context.t.bodyMedium?.copyWith(color: c.secondaryLabel),
+                  ),
+                ],
               ),
             ),
           ),
         SliverPadding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+          padding: kPage,
           sliver: SliverList.separated(
             itemCount: results.length,
             separatorBuilder: (_, _) => const SizedBox(height: 10),
@@ -262,11 +203,12 @@ class _BenefitsFinderScreenState extends State<BenefitsFinderScreen> {
         ),
         SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+            padding: const EdgeInsets.fromLTRB(32, 24, 32, 0),
             child: Text(
-              'Independent nonprofit directory, last verified ${db.checked}. Every program links to its official '
-              'source. Confirm eligibility with the agency. Your choices stay on your phone.',
-              style: t.bodySmall?.copyWith(color: scheme.onSurfaceVariant),
+              'Independent nonprofit directory, last verified ${db.checked}. Every program links to its '
+              'official source; confirm eligibility with the agency. Your choices stay on this device.',
+              textAlign: TextAlign.center,
+              style: context.t.labelSmall?.copyWith(color: c.secondaryLabel, height: 1.4),
             ),
           ),
         ),
@@ -275,10 +217,17 @@ class _BenefitsFinderScreenState extends State<BenefitsFinderScreen> {
   }
 }
 
+String _fmt(int n) => n.toString().replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (_) => ',');
+
 String _catLabel(String c) => switch (c) {
   'GuardReserve' => 'Guard & Reserve',
-  'MST' => 'MST',
   _ => c,
+};
+
+Color levelColor(BuildContext context, String level) => switch (level) {
+  'Federal' => context.c.tint,
+  'State' => context.c.green,
+  _ => const Color(0xFFC77800),
 };
 
 class _StateCard extends StatelessWidget {
@@ -286,42 +235,39 @@ class _StateCard extends StatelessWidget {
   final UsState state;
 
   @override
-  Widget build(BuildContext context) {
-    final t = Theme.of(context).textTheme;
-    final scheme = Theme.of(context).colorScheme;
-    return Card(
-      color: scheme.primary.withValues(alpha: 0.07),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: () => pushScreen(context, StateGuideScreen(state: state)),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
+  Widget build(BuildContext context) => AppleCard(
+    onTap: () => pushScreen(context, StateGuideScreen(state: state), title: 'Benefits'),
+    child: Row(
+      children: [
+        IconBadge(CupertinoIcons.map_fill, color: Hue.teal, size: 40),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('${state.name} veteran guide', style: t.titleMedium),
-                    const SizedBox(height: 4),
-                    GenerosityStars(value: state.generosity),
-                    const SizedBox(height: 6),
-                    Text(state.headline, maxLines: 3, overflow: TextOverflow.ellipsis, style: t.bodySmall),
-                  ],
-                ),
+              Text('${state.name} Guide', style: context.t.titleMedium),
+              const SizedBox(height: 3),
+              GenerosityStars(value: state.generosity),
+              const SizedBox(height: 4),
+              Text(
+                state.headline,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: context.t.bodySmall?.copyWith(color: context.c.secondaryLabel),
               ),
-              const Icon(Icons.chevron_right),
             ],
           ),
         ),
-      ),
-    );
-  }
+        Icon(CupertinoIcons.chevron_forward, size: 16, color: context.c.tertiaryLabel),
+      ],
+    ),
+  );
 }
 
 class GenerosityStars extends StatelessWidget {
-  const GenerosityStars({super.key, required this.value});
+  const GenerosityStars({super.key, required this.value, this.color});
   final int value;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) => Row(
@@ -329,12 +275,12 @@ class GenerosityStars extends StatelessWidget {
     children: [
       for (var i = 1; i <= 5; i++)
         Icon(
-          i <= value ? Icons.star_rounded : Icons.star_outline_rounded,
-          size: 18,
-          color: Theme.of(context).colorScheme.tertiary,
+          i <= value ? CupertinoIcons.star_fill : CupertinoIcons.star,
+          size: 13,
+          color: color ?? const Color(0xFFFF9F0A),
         ),
       const SizedBox(width: 6),
-      Text('Generosity $value/5', style: Theme.of(context).textTheme.labelSmall),
+      Text('Generosity $value of 5', style: context.t.labelSmall?.copyWith(color: color ?? context.c.secondaryLabel)),
     ],
   );
 }
@@ -345,60 +291,50 @@ class _BenefitCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Theme.of(context).textTheme;
-    final scheme = Theme.of(context).colorScheme;
+    final c = context.c;
     final saved = Prefs.instance.isBenefitSaved(benefit.id);
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: () => pushScreen(context, BenefitDetailScreen(benefit: benefit)),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 14, 6, 14),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    return AppleCard(
+      radius: 16,
+      padding: const EdgeInsets.fromLTRB(16, 14, 6, 14),
+      onTap: () => pushScreen(context, BenefitDetailScreen(benefit: benefit), title: 'Benefits'),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
-                    Wrap(
-                      spacing: 6,
-                      runSpacing: 4,
-                      children: [
-                        Badge2(_catLabel(benefit.category)),
-                        Badge2(benefit.level, color: levelColor(context, benefit.level)),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(benefit.title, style: t.titleSmall, maxLines: 3, overflow: TextOverflow.ellipsis),
-                    const SizedBox(height: 4),
-                    Text(
-                      benefit.value,
-                      style: t.bodySmall?.copyWith(color: scheme.onSurfaceVariant),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    Tag(_catLabel(benefit.category)),
+                    const SizedBox(width: 6),
+                    Tag(benefit.level, color: levelColor(context, benefit.level)),
                   ],
                 ),
-              ),
-              IconButton(
-                tooltip: saved ? 'Remove from saved' : 'Save',
-                onPressed: () => Prefs.instance.toggleBenefit(benefit.id),
-                icon: Icon(saved ? Icons.bookmark : Icons.bookmark_border),
-                color: saved ? scheme.secondary : null,
-              ),
-            ],
+                const SizedBox(height: 8),
+                Text(benefit.title, style: context.t.titleMedium, maxLines: 3, overflow: TextOverflow.ellipsis),
+                const SizedBox(height: 4),
+                Text(
+                  benefit.value,
+                  style: context.t.bodyMedium?.copyWith(color: c.secondaryLabel),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
           ),
-        ),
+          CupertinoButton(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            minimumSize: const Size(36, 36),
+            onPressed: () => Prefs.instance.toggleBenefit(benefit.id),
+            child: Icon(
+              saved ? CupertinoIcons.bookmark_fill : CupertinoIcons.bookmark,
+              size: 20,
+              color: saved ? c.tint : c.tertiaryLabel,
+            ),
+          ),
+        ],
       ),
     );
   }
 }
-
-Color levelColor(BuildContext context, String level) => switch (level) {
-  'Federal' => const Color(0xFF2F5D8A),
-  'State' => const Color(0xFF2E6B5A),
-  _ => const Color(0xFF8A5A12),
-};
-
-String _fmt(int n) => n.toString().replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (_) => ',');

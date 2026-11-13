@@ -30,6 +30,7 @@ class HeroApp extends StatelessWidget {
       builder: (context, _) => MaterialApp(
         title: 'Hometown Hero',
         debugShowCheckedModeBanner: false,
+        scrollBehavior: const _BouncyScroll(),
         theme: AppTheme.light(),
         darkTheme: AppTheme.dark(),
         themeMode: Prefs.instance.themeMode,
@@ -37,4 +38,16 @@ class HeroApp extends StatelessWidget {
       ),
     );
   }
+}
+
+/// iOS-style rubber-band scrolling on every platform.
+class _BouncyScroll extends MaterialScrollBehavior {
+  const _BouncyScroll();
+
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) =>
+      const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics());
+
+  @override
+  Widget buildOverscrollIndicator(BuildContext context, Widget child, ScrollableDetails details) => child;
 }

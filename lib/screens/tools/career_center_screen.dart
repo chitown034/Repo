@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -11,6 +12,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 
 import '../../services/links.dart';
+import '../../ui/apple.dart';
 
 /// Bridges the bundled web tool to native features: external links open in
 /// the browser, downloads (backup, calendar) go to the share sheet, and
@@ -73,27 +75,12 @@ class _CareerCenterScreenState extends State<CareerCenterScreen> {
       )
       ..setOnJavaScriptConfirmDialog((req) async {
         if (!mounted) return false;
-        final ok = await showDialog<bool>(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            content: Text(req.message),
-            actions: [
-              TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
-              FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('OK')),
-            ],
-          ),
-        );
-        return ok ?? false;
+        final ok = await showAppleAlert(context, message: req.message, cancel: 'Cancel');
+        return ok;
       })
       ..setOnJavaScriptAlertDialog((req) async {
         if (!mounted) return;
-        await showDialog<void>(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            content: Text(req.message),
-            actions: [TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('OK'))],
-          ),
-        );
+        await showAppleAlert(context, message: req.message);
       });
 
     final platform = c.platform;
@@ -117,7 +104,7 @@ class _CareerCenterScreenState extends State<CareerCenterScreen> {
       case 'copy':
         await Clipboard.setData(ClipboardData(text: m['text'] as String));
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Copied')));
+          showToast(context, 'Copied');
         }
       case 'file':
         final dir = await getTemporaryDirectory();
@@ -129,28 +116,29 @@ class _CareerCenterScreenState extends State<CareerCenterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    const web = 'https://www.veteransresourcenetwork.org/career-command-center';
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Career Command Center'),
-        actions: [
-          IconButton(
-            tooltip: 'Open on website',
-            onPressed: () => openLink(context, 'https://www.veteransresourcenetwork.org/career-command-center'),
-            icon: const Icon(Icons.open_in_browser),
-          ),
-        ],
+      backgroundColor: context.c.bg,
+      appBar: appleBar(
+        context,
+        'Career Command Center',
+        trailing: BarButton(
+          icon: CupertinoIcons.compass,
+          tooltip: 'Open on website',
+          onPressed: () => openLink(context, web),
+        ),
       ),
       body: kIsWeb
           ? Center(
-              child: FilledButton(
-                onPressed: () => openLink(context, 'https://www.veteransresourcenetwork.org/career-command-center'),
-                child: const Text('Open Career Command Center'),
+              child: Padding(
+                padding: const EdgeInsets.all(32),
+                child: AppleButton(label: 'Open Career Command Center', onPressed: () => openLink(context, web)),
               ),
             )
           : Stack(
               children: [
                 if (_controller != null) WebViewWidget(controller: _controller!),
-                if (_loading) const LinearProgressIndicator(),
+                if (_loading) const Center(child: CupertinoActivityIndicator(radius: 14)),
               ],
             ),
     );

@@ -1,5 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 
+import '../data/catalog.dart';
+import '../ui/apple.dart';
+
 import '../screens/benefits/benefits_finder_screen.dart';
 import '../screens/content_page_screen.dart';
 import '../screens/more/board_screen.dart';
@@ -32,7 +35,7 @@ Widget screenForSlug(String slug, {String? anchor}) {
 }
 
 Route<void> routeForSlug(String slug, {String? anchor}) =>
-    MaterialPageRoute(builder: (_) => screenForSlug(slug, anchor: anchor));
+    appleRoute(screenForSlug(slug, anchor: anchor), title: titleForSlug(slug, ''));
 
-Future<void> pushScreen(BuildContext context, Widget screen) =>
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) => screen));
+Future<void> pushScreen(BuildContext context, Widget screen, {String? title}) =>
+    Navigator.of(context).push(appleRoute(screen, title: title));

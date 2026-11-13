@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../data/catalog.dart';
 import '../data/site_content.dart';
+import '../ui/apple.dart';
 import '../widgets/block_list.dart';
 import '../widgets/common.dart';
 
@@ -37,12 +38,12 @@ class _ContentPageScreenState extends State<ContentPageScreen> {
     final page = SiteContent.instance[widget.slug];
     final title = titleForSlug(widget.slug, page?.title ?? 'Resources');
     if (page == null) {
-      return Scaffold(
-        appBar: AppBar(title: Text(title)),
-        body: const Center(child: Text('This page is not available.')),
+      return LargeTitleScaffold(
+        title: title,
+        slivers: const [SliverFillRemaining(child: Center(child: Text('This page is not available.')))],
       );
     }
-    final cardCount =
+    final count =
         page.cards.length + page.blocks.whereType<LinkBlock>().where((l) => l.url.startsWith('app://')).length;
     var blocks = page.blocks;
     if (_filter.isNotEmpty) {
@@ -54,44 +55,43 @@ class _ContentPageScreenState extends State<ContentPageScreen> {
             b,
       ];
     }
-    final showTitle = page.title.isNotEmpty && page.title != title;
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar.medium(title: Text(title)),
-          if (showTitle)
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
-                child: Text(page.title, style: Theme.of(context).textTheme.headlineSmall),
-              ),
-            ),
-          if (cardCount >= 12)
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
-                child: TextField(
-                  onChanged: (v) => setState(() => _filter = v.trim()),
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.search),
-                    hintText: 'Filter $cardCount resources',
-                  ),
-                ),
-              ),
-            ),
+    final subtitle = page.title.isNotEmpty && page.title != title ? page.title : null;
+    return LargeTitleScaffold(
+      title: title,
+      slivers: [
+        if (subtitle != null)
           SliverToBoxAdapter(
-            child: BlockList(page: page, blocks: blocks, anchor: widget.anchor, anchorKey: _anchorKey),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(kGutter + 4, 0, kGutter, 8),
+              child: Text(subtitle, style: context.t.titleLarge?.copyWith(color: context.c.secondaryLabel)),
+            ),
           ),
-          if (_filter.isNotEmpty && blocks.isEmpty)
-            const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.all(32),
-                child: Center(child: Text('No matching resources')),
+        if (count >= 12)
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(kGutter, 4, kGutter, 14),
+              child: AppleSearchField(
+                placeholder: 'Search $count resources',
+                onChanged: (v) => setState(() => _filter = v.trim()),
               ),
             ),
-          const SliverToBoxAdapter(child: OrgFooter()),
-        ],
-      ),
+          ),
+        SliverToBoxAdapter(
+          child: BlockList(page: page, blocks: blocks, anchor: widget.anchor, anchorKey: _anchorKey),
+        ),
+        if (_filter.isNotEmpty && blocks.isEmpty)
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(40),
+              child: Text(
+                'No Results',
+                textAlign: TextAlign.center,
+                style: context.t.titleLarge?.copyWith(color: context.c.secondaryLabel),
+              ),
+            ),
+          ),
+        const SliverToBoxAdapter(child: OrgFooter()),
+      ],
     );
   }
 }

@@ -1,12 +1,15 @@
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../app/org.dart';
 import '../../app/routes.dart';
 import '../../data/site_content.dart';
 import '../../services/links.dart';
+import '../../ui/apple.dart';
 import '../../widgets/common.dart';
 import '../forms/site_form_screen.dart';
 import 'more_screen.dart';
+import 'refer_screen.dart';
 
 class ContactScreen extends StatelessWidget {
   const ContactScreen({super.key, this.isTab = false});
@@ -16,106 +19,165 @@ class ContactScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Theme.of(context).textTheme;
     final fields = SiteContent.instance['contact-us']?.form?.fields ?? const [];
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          const SliverAppBar.large(title: Text('Contact Us')),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
-              child: Text(
-                'Questions about VA home buying, benefits, or careers? We are glad to help, free and with no obligation.',
-                style: t.bodyLarge,
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: TileGroup(
+    final maps = 'https://maps.apple.com/?q=${Uri.encodeComponent(Org.address)}';
+    void message() => pushScreen(
+      context,
+      SiteFormScreen(title: 'New Message', fields: fields, webPath: 'contact-us'),
+      title: 'Contact',
+    );
+    return LargeTitleScaffold(
+      title: 'Contact',
+      slivers: [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(kGutter, 0, kGutter, 22),
+            child: Column(
               children: [
-                ListTile(
-                  leading: const Icon(Icons.call_outlined),
-                  title: const Text('Call'),
-                  subtitle: const Text(Org.phoneDisplay),
-                  onTap: () => openLink(context, Org.phoneTel),
+                const SizedBox(height: 4),
+                ClipOval(child: Image.asset('assets/images/logo_full.jpg', width: 88, height: 88, fit: BoxFit.cover)),
+                const SizedBox(height: 12),
+                Text('Active Duty Veteran & Hometown Hero', textAlign: TextAlign.center, style: context.t.titleLarge),
+                const SizedBox(height: 4),
+                Text(
+                  'Questions about VA home buying, benefits, or careers? We’re glad to help, free and with no obligation.',
+                  textAlign: TextAlign.center,
+                  style: context.t.bodyMedium?.copyWith(color: context.c.secondaryLabel),
                 ),
-                ListTile(
-                  leading: const Icon(Icons.mail_outline),
-                  title: const Text('Email'),
-                  subtitle: const Text(Org.email),
-                  onTap: () => openLink(context, 'mailto:${Org.email}'),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.place_outlined),
-                  title: const Text('Mailing address'),
-                  subtitle: const Text(Org.address),
-                  onTap: () => openLink(context, 'https://maps.google.com/?q=${Uri.encodeComponent(Org.address)}'),
-                ),
-              ],
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-              child: FilledButton.icon(
-                onPressed: () =>
-                    pushScreen(context, SiteFormScreen(title: 'Contact Us', fields: fields, webPath: 'contact-us')),
-                icon: const Icon(Icons.edit_outlined),
-                label: const Text('Send us a message'),
-              ),
-            ),
-          ),
-          const SliverToBoxAdapter(child: SectionHeader(title: 'Follow us')),
-          SliverToBoxAdapter(
-            child: TileGroup(
-              children: [
-                for (final (icon, name, url) in const [
-                  (Icons.facebook, 'Facebook', Org.facebookUrl),
-                  (Icons.camera_alt_outlined, 'Instagram', Org.instagramUrl),
-                  (Icons.smart_display_outlined, 'YouTube', Org.youtubeUrl),
-                  (Icons.language, 'Website', Org.website),
-                ])
-                  ListTile(
-                    leading: Icon(icon),
-                    title: Text(name),
-                    trailing: const Icon(Icons.open_in_new, size: 18),
-                    onTap: () => openLink(context, url),
-                  ),
-              ],
-            ),
-          ),
-          if (isTab) ...[
-            const SliverToBoxAdapter(child: SectionHeader(title: 'About us & more')),
-            SliverToBoxAdapter(
-              child: TileGroup(
-                children: [
-                  for (final (icon, title, target) in const [
-                    (Icons.info_outline, 'About us', 'app://about-us'),
-                    (Icons.groups_2_outlined, 'Board members', 'app://board-members'),
-                    (Icons.format_quote_outlined, 'Testimonials', 'app://testimonials'),
-                  ])
-                    ListTile(
-                      leading: Icon(icon),
-                      title: Text(title),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () => openLink(context, target),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    CircleAction(
+                      icon: CupertinoIcons.phone_fill,
+                      label: 'call',
+                      onTap: () => openLink(context, Org.phoneTel),
                     ),
-                  ListTile(
-                    leading: const Icon(Icons.more_horiz),
-                    title: const Text('Donate, invite friends & settings'),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: () => pushScreen(context, const MoreScreen()),
-                  ),
-                ],
-              ),
+                    const SizedBox(width: 8),
+                    CircleAction(icon: CupertinoIcons.chat_bubble_fill, label: 'message', onTap: message),
+                    const SizedBox(width: 8),
+                    CircleAction(
+                      icon: CupertinoIcons.envelope_fill,
+                      label: 'mail',
+                      onTap: () => openLink(context, 'mailto:${Org.email}'),
+                    ),
+                    const SizedBox(width: 8),
+                    CircleAction(
+                      icon: CupertinoIcons.map_fill,
+                      label: 'directions',
+                      onTap: () => openLink(context, maps),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
-          const SliverToBoxAdapter(child: SizedBox(height: 24)),
-          const SliverToBoxAdapter(child: CrisisBanner(compact: true)),
-          const SliverToBoxAdapter(child: OrgFooter()),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: InsetSection(
+            dividerIndent: 16,
+            children: [
+              _InfoRow(label: 'phone', value: Org.phoneDisplay, onTap: () => openLink(context, Org.phoneTel)),
+              _InfoRow(label: 'email', value: Org.email, onTap: () => openLink(context, 'mailto:${Org.email}')),
+              _InfoRow(label: 'address', value: Org.address, onTap: () => openLink(context, maps)),
+            ],
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(kGutter, 0, kGutter, 22),
+            child: AppleButton(icon: CupertinoIcons.square_pencil, label: 'Send Us a Message', onPressed: message),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: InsetSection(
+            header: 'Follow Us',
+            children: [
+              for (final (icon, color, name, url) in const [
+                (CupertinoIcons.person_2_fill, Color(0xFF1877F2), 'Facebook', Org.facebookUrl),
+                (CupertinoIcons.camera_fill, Color(0xFFE1306C), 'Instagram', Org.instagramUrl),
+                (CupertinoIcons.play_rectangle_fill, Color(0xFFFF0000), 'YouTube', Org.youtubeUrl),
+                (CupertinoIcons.globe, Hue.blue, 'Website', Org.website),
+              ])
+                AppleRow(
+                  icon: icon,
+                  iconColor: color,
+                  title: name,
+                  accessory: RowAccessory.external,
+                  onTap: () => openLink(context, url),
+                ),
+            ],
+          ),
+        ),
+        if (isTab) ...[
+          SliverToBoxAdapter(
+            child: InsetSection(
+              header: 'About Us',
+              children: [
+                for (final (icon, color, title, target) in const [
+                  (CupertinoIcons.info_circle_fill, Hue.navy, 'About Us', 'app://about-us'),
+                  (CupertinoIcons.person_3_fill, Hue.teal, 'Board Members', 'app://board-members'),
+                  (CupertinoIcons.quote_bubble_fill, Hue.orange, 'Testimonials', 'app://testimonials'),
+                ])
+                  AppleRow(icon: icon, iconColor: color, title: title, onTap: () => openLink(context, target)),
+              ],
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: InsetSection(
+              children: [
+                AppleRow(
+                  icon: CupertinoIcons.heart_fill,
+                  iconColor: Hue.red,
+                  title: 'Donate',
+                  accessory: RowAccessory.external,
+                  onTap: () => donate(context),
+                ),
+                AppleRow(
+                  icon: CupertinoIcons.person_badge_plus_fill,
+                  iconColor: Hue.blue,
+                  title: 'Invite Friends',
+                  onTap: () => pushScreen(context, const ReferScreen(), title: 'Contact'),
+                ),
+                AppleRow(
+                  icon: CupertinoIcons.ellipsis,
+                  iconColor: Hue.gray,
+                  title: 'More & Settings',
+                  onTap: () => pushScreen(context, const MoreScreen(), title: 'Contact'),
+                ),
+              ],
+            ),
+          ),
         ],
-      ),
+        const SliverToBoxAdapter(child: CrisisCard(compact: true)),
+        const SliverToBoxAdapter(child: OrgFooter()),
+      ],
     );
   }
+}
+
+/// Contacts-app style "label / value" row.
+class _InfoRow extends StatelessWidget {
+  const _InfoRow({required this.label, required this.value, required this.onTap});
+  final String label;
+  final String value;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => Material(
+    color: Colors.transparent,
+    child: InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(label, style: context.t.bodySmall?.copyWith(color: context.c.label)),
+            const SizedBox(height: 2),
+            Text(value, style: context.t.bodyLarge?.copyWith(color: context.c.tint)),
+          ],
+        ),
+      ),
+    ),
+  );
 }
