@@ -4,7 +4,7 @@ import 'package:active_duty/data/benefits.dart';
 import 'package:active_duty/data/catalog.dart';
 import 'package:active_duty/data/site_content.dart';
 import 'package:active_duty/screens/more/board_screen.dart';
-import 'package:active_duty/screens/more/refer_screen.dart';
+import 'package:active_duty/logic/referral.dart';
 import 'package:active_duty/screens/more/testimonials_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';

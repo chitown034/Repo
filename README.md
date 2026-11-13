@@ -21,8 +21,11 @@ Shared components live in `lib/ui/apple.dart`.
 | **Tools** | VA loan payment, funding fee, BAH buying power, and combined VA rating calculators (same math as the website); Career Command Center; webinar registration; request forms |
 | **Contact** | Call, email, message form, social links, About us, Board, Testimonials, and *Donate, invite friends & settings* |
 
-The **Invite Friends** referral feature from v1 is kept. It sends the same seminar invite, personalized per
-contact, as a group text that includes 619-368-7141.
+**Invite Friends** (the referral feature from v1, now with the Pay It Forward workflow): pick people from the
+phone's contacts with multi-select, choose a pre-drafted intro (Default, Short, Family, Direct, or the original
+seminar invite), then tap **Send**. Messages opens with a 3-way text for the first person (the friend, the sender,
+and Steven at 619-368-7141); each time the user comes back to the app, the next person's text opens, until everyone
+selected is done. Works the same on iPhone and Android. Logic is in `lib/logic/referral.dart`.
 
 ## App IDs (unchanged from v1 so the stores treat this as an update)
 

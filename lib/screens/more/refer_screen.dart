@@ -1,43 +1,16 @@
 import 'package:cupertino_ui/cupertino_ui.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../app/org.dart';
+import '../../app/routes.dart';
+import '../../logic/referral.dart';
 import '../../ui/apple.dart';
 
-/// The seminar invite text from the original app, personalized per friend.
-String referralMessage(String name) =>
-    'Hi ${name.trim().isEmpty ? 'there' : name.trim()}, I just attended this awesome VA Home Buying Seminar '
-    'hosted by Active Duty Veteran and Hometown Hero Homeowners Club, and I was amazed by all the information '
-    'shared at this event. Many MYTHS of credit score requirements were dispelled, NO private mortgage '
-    'insurance, ZERO down payment, LOW interest rates were all explained in detail and much MORE. I thought '
-    'you would appreciate learning about the VA Home Buying seminar for FREE. Just take an hour out of your '
-    'day to learn about this great benefit!';
-
-/// Builds the SMS composer link. Like the original app, each invite is a
-/// group text to the friend and the club's President so he can follow up.
-Uri referralSmsUri(List<String> recipients, String body, {TargetPlatform? platform}) {
-  final p = platform ?? defaultTargetPlatform;
-  final clean = [for (final r in recipients) r.replaceAll(RegExp(r'[^0-9+]'), '')];
-  final encoded = Uri.encodeComponent(body);
-  if (p == TargetPlatform.iOS) {
-    return Uri.parse('sms:/open?addresses=${clean.join(',')}&body=$encoded');
-  }
-  return Uri.parse('smsto:${clean.join(';')}?body=$encoded');
-}
-
-class Invitee {
-  Invitee(this.name, this.phone);
-  final String name;
-  final String phone;
-  bool selected = false;
-  bool sent = false;
-}
-
-/// "Invite friends to the VA seminar" referral feature.
+/// "Invite Friends" (Pay It Forward): pick people from the phone's contacts,
+/// choose a pre-drafted intro, and send each one a 3-way text with Steven.
 class ReferScreen extends StatefulWidget {
   const ReferScreen({super.key});
 
@@ -51,7 +24,12 @@ class _ReferScreenState extends State<ReferScreen> {
   String _search = '';
   bool _loading = false;
   bool _denied = false;
+  ReferralTone _tone = referralTones.first;
 
+  /// Wording edited by the user; null means the tone's own text.
+  String? _custom;
+
+  String get _template => _custom ?? _tone.template;
   List<Invitee> get _all => [..._manual, ...?_contacts];
   List<Invitee> get _selected => _all.where((i) => i.selected).toList();
 
@@ -66,13 +44,24 @@ class _ReferScreenState extends State<ReferScreen> {
         });
         return;
       }
-      final list = await FlutterContacts.getAll(properties: {ContactProperty.phone});
-      final out = <Invitee>[
-        for (final c in list)
-          if (c.phones.isNotEmpty) Invitee(c.displayName ?? 'No Name', c.phones.first.number),
-      ]..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+      final list = await FlutterContacts.getAll(properties: {ContactProperty.name, ContactProperty.phone});
+      final steven = phoneKey(Org.referralCcNumber);
+      final out = <Invitee>[];
+      for (final c in list) {
+        if (c.phones.isEmpty) continue;
+        // Prefer a mobile number: the intro is a text message.
+        final phone = c.phones.firstWhere(
+          (p) => p.label.label == PhoneLabel.mobile || p.label.label == PhoneLabel.iPhone,
+          orElse: () => c.phones.first,
+        );
+        if (phoneKey(phone.number) == steven) continue;
+        final first = (c.name?.first ?? '').trim();
+        out.add(Invitee(c.displayName ?? 'No Name', phone.number, firstName: first.isEmpty ? null : first));
+      }
+      out.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
       setState(() {
         _contacts = out;
+        _denied = false;
         _loading = false;
       });
     } catch (_) {
@@ -110,100 +99,57 @@ class _ReferScreenState extends State<ReferScreen> {
         ],
       ),
     );
-    if (ok == true && phone.text.replaceAll(RegExp(r'\D'), '').length >= 10) {
-      setState(() => _manual.insert(0, Invitee(name.text, phone.text)..selected = true));
-    }
-  }
-
-  Future<void> _send(Invitee i) async {
-    final uri = referralSmsUri([i.phone, Org.referralCcNumber], referralMessage(i.name));
-    final ok = await launchUrl(uri).catchError((_) => false);
-    if (!mounted) return;
-    if (ok) {
-      setState(() => i.sent = true);
+    if (ok != true || !mounted) return;
+    if (phoneKey(phone.text).length < 10) {
+      showToast(context, 'Enter a 10-digit mobile number');
+    } else if (phoneKey(phone.text) == phoneKey(Org.referralCcNumber)) {
+      showToast(context, "That's Steven's number. He's in every text.");
     } else {
-      showToast(context, 'No messaging app available');
+      setState(() => _manual.insert(0, Invitee(name.text.trim(), phone.text.trim())..selected = true));
     }
   }
 
-  void _openQueue() {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      builder: (ctx) => StatefulBuilder(
-        builder: (ctx, setSheet) {
-          final sel = _selected;
-          final next = sel.where((i) => !i.sent).firstOrNull;
-          return DraggableScrollableSheet(
-            expand: false,
-            initialChildSize: 0.6,
-            builder: (ctx, controller) => ListView(
-              controller: controller,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(kGutter + 4, 0, kGutter + 4, 6),
-                  child: Text('Send ${sel.length} Invite${sel.length == 1 ? '' : 's'}', style: ctx.t.headlineSmall),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(kGutter + 4, 0, kGutter + 4, 16),
-                  child: Text(
-                    'Each invite opens Messages with a personal note. ${Org.referralCcNumber} (our President, '
-                    'Steven) is included so he can answer questions.',
-                    style: ctx.t.bodyMedium?.copyWith(color: ctx.c.secondaryLabel),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(kGutter, 0, kGutter, 22),
-                  child: next != null
-                      ? AppleButton(
-                          icon: CupertinoIcons.paperplane_fill,
-                          label: 'Text ${next.name}',
-                          onPressed: () async {
-                            await _send(next);
-                            setSheet(() {});
-                          },
-                        )
-                      : AppleCard(
-                          child: Row(
-                            children: [
-                              Icon(CupertinoIcons.checkmark_seal_fill, color: ctx.c.green),
-                              const SizedBox(width: 10),
-                              Text('All invites opened. Thank you!', style: ctx.t.titleSmall),
-                            ],
-                          ),
-                        ),
-                ),
-                InsetSection(
-                  dividerIndent: 54,
-                  children: [
-                    for (final i in sel)
-                      AppleRow(
-                        leading: Icon(
-                          i.sent ? CupertinoIcons.checkmark_circle_fill : CupertinoIcons.circle,
-                          color: i.sent ? ctx.c.green : ctx.c.tertiaryLabel,
-                          size: 26,
-                        ),
-                        title: i.name,
-                        subtitle: i.phone,
-                        accessory: RowAccessory.none,
-                        trailing: CupertinoButton(
-                          padding: EdgeInsets.zero,
-                          minimumSize: const Size(44, 30),
-                          onPressed: () async {
-                            await _send(i);
-                            setSheet(() {});
-                          },
-                          child: Text(i.sent ? 'Resend' : 'Send', style: TextStyle(color: ctx.c.tint)),
-                        ),
-                      ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        },
+  Future<void> _pickTone() async {
+    final i = await showApplePicker(
+      context,
+      title: 'Message',
+      options: [for (final t in referralTones) t.name],
+      initial: referralTones.indexOf(_tone),
+    );
+    if (i != null) {
+      setState(() {
+        _tone = referralTones[i];
+        _custom = null;
+      });
+    }
+  }
+
+  Future<void> _editMessage() async {
+    final text = await Navigator.of(context).push<String>(
+      appleRoute(
+        _EditMessageScreen(initial: _template, original: _tone.template),
+        title: 'Back',
       ),
-    ).then((_) => setState(() {}));
+    );
+    if (text != null) setState(() => _custom = text.trim().isEmpty || text == _tone.template ? null : text);
+  }
+
+  Future<void> _startSending() async {
+    final people = _selected;
+    for (final p in people) {
+      p.sent = false;
+    }
+    await pushScreen(
+      context,
+      SendRunScreen(people: people, template: _template),
+      title: 'Back',
+    );
+    if (!mounted) return;
+    setState(() {
+      for (final p in people) {
+        if (p.sent) p.selected = false;
+      }
+    });
   }
 
   @override
@@ -214,7 +160,9 @@ class _ReferScreenState extends State<ReferScreen> {
       for (final i in _all)
         if (q.isEmpty || i.name.toLowerCase().contains(q) || i.phone.contains(q)) i,
     ];
-    final count = _selected.length;
+    final selected = _selected;
+    final count = selected.length;
+    final previewName = selected.isNotEmpty && selected.first.firstName.isNotEmpty ? selected.first.firstName : 'Alex';
     return LargeTitleScaffold(
       title: 'Invite Friends',
       bottomBar: count == 0
@@ -230,8 +178,8 @@ class _ReferScreenState extends State<ReferScreen> {
                   padding: const EdgeInsets.fromLTRB(kGutter, 10, kGutter, 10),
                   child: AppleButton(
                     icon: CupertinoIcons.paperplane_fill,
-                    label: 'Invite $count Friend${count == 1 ? '' : 's'}',
-                    onPressed: _openQueue,
+                    label: 'Send to $count Friend${count == 1 ? '' : 's'}',
+                    onPressed: _startSending,
                   ),
                 ),
               ),
@@ -241,43 +189,23 @@ class _ReferScreenState extends State<ReferScreen> {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(kGutter + 4, 0, kGutter + 4, 16),
             child: Text(
-              'Know someone who served, or will? Text them a personal invite to our free VA Home Buying Seminar.',
+              'Know a vet who should be using their VA benefit? Pick them from your contacts and each one gets '
+              'their own 3-way text with you and Steven.',
               style: context.t.bodyLarge?.copyWith(color: c.secondaryLabel),
             ),
           ),
         ),
         SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(kGutter, 0, kGutter, 22),
+            padding: const EdgeInsets.fromLTRB(kGutter, 0, kGutter, 12),
             child: AppleCard(
               padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Align(alignment: Alignment.centerLeft, child: Caption('Message Preview')),
+                  Align(alignment: Alignment.centerLeft, child: Caption('To: $previewName, Steven & You')),
                   const SizedBox(height: 10),
-                  // iMessage-style bubble.
-                  Container(
-                    constraints: const BoxConstraints(maxWidth: 300),
-                    padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 9),
-                    decoration: const ShapeDecoration(
-                      color: Color(0xFF0A84FF),
-                      shape: RoundedSuperellipseBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(18),
-                          topRight: Radius.circular(18),
-                          bottomLeft: Radius.circular(18),
-                          bottomRight: Radius.circular(5),
-                        ),
-                      ),
-                    ),
-                    child: Text(
-                      referralMessage('Alex'),
-                      style: context.t.bodyMedium?.copyWith(color: Colors.white, height: 1.35),
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text('Delivered', style: context.t.labelSmall?.copyWith(color: c.secondaryLabel, fontSize: 11)),
+                  _Bubble(text: fillReferral(_template, previewName)),
                 ],
               ),
             ),
@@ -285,13 +213,36 @@ class _ReferScreenState extends State<ReferScreen> {
         ),
         SliverToBoxAdapter(
           child: InsetSection(
+            dividerIndent: 16,
+            footer:
+                "Each friend's first name is filled in automatically. Steven (${Org.referralCcNumber}) is in "
+                'every text so he can take it from there.',
+            children: [
+              AppleRow(
+                title: 'Message',
+                value: _custom != null ? 'Custom' : _tone.name,
+                accessory: RowAccessory.none,
+                trailing: Padding(
+                  padding: const EdgeInsets.only(left: 6),
+                  child: Icon(CupertinoIcons.chevron_up_chevron_down, size: 15, color: c.tertiaryLabel),
+                ),
+                onTap: _pickTone,
+              ),
+              AppleRow(title: 'Edit Wording', onTap: _editMessage),
+            ],
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: InsetSection(
+            header: 'Who Comes to Mind?',
             footer: _denied ? 'Contacts access is off. Turn it on in Settings, or add numbers yourself.' : null,
             children: [
               if (_contacts == null)
                 AppleRow(
                   icon: CupertinoIcons.person_crop_circle_fill,
-                  iconColor: Hue.gray,
+                  iconColor: Hue.blue,
                   title: 'Choose from Contacts',
+                  subtitle: 'Opens your phone’s contact list',
                   trailing: _loading ? const CupertinoActivityIndicator() : null,
                   onTap: _loading ? null : _loadContacts,
                 ),
@@ -305,7 +256,7 @@ class _ReferScreenState extends State<ReferScreen> {
               AppleRow(icon: CupertinoIcons.plus, iconColor: Hue.green, title: 'Add Phone Number', onTap: _addManual),
               AppleRow(
                 icon: CupertinoIcons.share,
-                iconColor: Hue.blue,
+                iconColor: Hue.gray,
                 title: 'Share Another Way',
                 onTap: () => SharePlus.instance.share(ShareParams(text: referralMessage(''))),
               ),
@@ -316,7 +267,10 @@ class _ReferScreenState extends State<ReferScreen> {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(kGutter, 0, kGutter, 12),
-              child: AppleSearchField(placeholder: 'Search', onChanged: (v) => setState(() => _search = v.trim())),
+              child: AppleSearchField(
+                placeholder: 'Search contacts',
+                onChanged: (v) => setState(() => _search = v.trim()),
+              ),
             ),
           ),
         if (_contacts != null && _all.isEmpty)
@@ -361,6 +315,7 @@ class _ReferScreenState extends State<ReferScreen> {
                         ),
                         title: i.name.isEmpty ? i.phone : i.name,
                         subtitle: i.phone,
+                        value: i.sent ? 'Sent' : null,
                         accessory: RowAccessory.none,
                         onTap: () => setState(() => i.selected = !i.selected),
                       ),
@@ -374,4 +329,292 @@ class _ReferScreenState extends State<ReferScreen> {
       ],
     );
   }
+}
+
+/// iMessage-style bubble.
+class _Bubble extends StatelessWidget {
+  const _Bubble({required this.text});
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    constraints: const BoxConstraints(maxWidth: 300),
+    padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 9),
+    decoration: const ShapeDecoration(
+      color: Color(0xFF0A84FF),
+      shape: RoundedSuperellipseBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(18),
+          topRight: Radius.circular(18),
+          bottomLeft: Radius.circular(18),
+          bottomRight: Radius.circular(5),
+        ),
+      ),
+    ),
+    child: Text(text, style: context.t.bodyMedium?.copyWith(color: Colors.white, height: 1.35)),
+  );
+}
+
+/// Edits the wording used for everyone; keeps [referralToken] as the name placeholder.
+class _EditMessageScreen extends StatefulWidget {
+  const _EditMessageScreen({required this.initial, required this.original});
+  final String initial;
+  final String original;
+
+  @override
+  State<_EditMessageScreen> createState() => _EditMessageScreenState();
+}
+
+class _EditMessageScreenState extends State<_EditMessageScreen> {
+  late final _text = TextEditingController(text: widget.initial);
+
+  @override
+  void dispose() {
+    _text.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.c;
+    return Scaffold(
+      backgroundColor: c.bg,
+      appBar: appleBar(
+        context,
+        'Edit Wording',
+        trailing: CupertinoButton(
+          padding: EdgeInsets.zero,
+          minimumSize: const Size(44, 44),
+          onPressed: () => Navigator.pop(context, _text.text),
+          child: Text(
+            'Done',
+            style: TextStyle(color: c.tint, fontWeight: FontWeight.w600),
+          ),
+        ),
+      ),
+      body: ListView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        padding: const EdgeInsets.only(top: 16, bottom: 32),
+        children: [
+          InsetSection(
+            footer: 'Keep $referralToken where each friend’s name should go.',
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                child: TextField(
+                  controller: _text,
+                  minLines: 6,
+                  maxLines: 14,
+                  textCapitalization: TextCapitalization.sentences,
+                  style: context.t.bodyLarge?.copyWith(height: 1.4),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: kPage,
+            child: AppleButton(
+              kind: ButtonStyleKind.gray,
+              label: 'Reset to Original',
+              onPressed: () => setState(() => _text.text = widget.original),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Sends the intro to everyone selected: Messages opens for the first person,
+/// and each time the user comes back the next one opens, until all are done.
+class SendRunScreen extends StatefulWidget {
+  const SendRunScreen({super.key, required this.people, required this.template, this.open, this.autoStart = true});
+
+  final List<Invitee> people;
+  final String template;
+
+  /// Overridable for tests; defaults to opening the phone's messaging app.
+  final Future<bool> Function(Invitee)? open;
+  final bool autoStart;
+
+  @override
+  State<SendRunScreen> createState() => _SendRunScreenState();
+}
+
+class _SendRunScreenState extends State<SendRunScreen> with WidgetsBindingObserver {
+  late final SendRun _run = SendRun(widget.people, open: widget.open ?? _openMessages);
+
+  Future<bool> _openMessages(Invitee p) =>
+      launchUrl(referralSmsUri([p.phone, Org.referralCcNumber], fillReferral(widget.template, p.firstName)))
+          .catchError((_) => false);
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _run.addListener(_changed);
+    if (widget.autoStart) WidgetsBinding.instance.addPostFrameCallback((_) => _run.send());
+  }
+
+  void _changed() {
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _run.removeListener(_changed);
+    _run.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused || state == AppLifecycleState.hidden) {
+      _run.onLeftApp();
+    } else if (state == AppLifecycleState.resumed) {
+      final next = _run.onReturned();
+      if (next != null) {
+        // A short beat so the user sees who was sent before Messages opens again.
+        Future<void>.delayed(const Duration(milliseconds: 900), () {
+          if (mounted && _run.auto && _run.awaiting == null && !next.sent) _run.send(next);
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.c;
+    final t = context.t;
+    final total = _run.people.length;
+    final next = _run.next;
+    final awaiting = _run.awaiting;
+    final (IconData icon, Color color, String title, String body) = _run.done
+        ? (
+            CupertinoIcons.checkmark_seal_fill,
+            c.green,
+            'All $total sent. Thank you.',
+            'Steven will reply in each thread and take it from there.',
+          )
+        : _run.failed
+        ? (
+            CupertinoIcons.exclamationmark_circle_fill,
+            c.red,
+            'Messages didn’t open',
+            'This device has no messaging app available. Try again on your phone.',
+          )
+        : awaiting != null
+        ? (
+            CupertinoIcons.chat_bubble_2_fill,
+            c.tint,
+            'Messages is open for ${_name(awaiting)}',
+            'Tap Send there, then come back here. The next text opens by itself.',
+          )
+        : _run.auto && _run.sentCount > 0
+        ? (
+            CupertinoIcons.paperplane_fill,
+            c.tint,
+            'Opening Messages for ${_name(next!)}…',
+            'Sent ${_run.sentCount} of $total so far.',
+          )
+        : (
+            CupertinoIcons.paperplane_fill,
+            c.tint,
+            'Ready to send ${_run.sentCount == 0 ? total : total - _run.sentCount}',
+            'Each person gets their own 3-way text with you and Steven.',
+          );
+    return LargeTitleScaffold(
+      title: 'Sending',
+      slivers: [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(kGutter, 0, kGutter, 16),
+            child: AppleCard(
+              padding: const EdgeInsets.all(18),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(icon, color: color, size: 26),
+                      const SizedBox(width: 10),
+                      Expanded(child: Text(title, style: t.titleMedium)),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  Text(body, style: t.bodyMedium?.copyWith(color: c.secondaryLabel)),
+                  const SizedBox(height: 14),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(3),
+                    child: LinearProgressIndicator(
+                      value: total == 0 ? 0 : _run.sentCount / total,
+                      minHeight: 6,
+                      backgroundColor: c.fill,
+                      color: c.green,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text('${_run.sentCount} of $total sent', style: t.bodySmall?.copyWith(color: c.secondaryLabel)),
+                ],
+              ),
+            ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(kGutter, 0, kGutter, 22),
+            child: _run.done
+                ? AppleButton(label: 'Done', onPressed: () => Navigator.pop(context))
+                : awaiting != null
+                ? AppleButton(
+                    kind: ButtonStyleKind.gray,
+                    label: 'Open Messages Again',
+                    onPressed: () => _run.send(awaiting),
+                  )
+                : _run.auto && _run.sentCount > 0
+                ? AppleButton(kind: ButtonStyleKind.gray, label: 'Pause', onPressed: _run.pause)
+                : AppleButton(
+                    icon: CupertinoIcons.paperplane_fill,
+                    label: _run.sentCount == 0 ? 'Send to All $total' : 'Continue with ${_name(next!)}',
+                    onPressed: () {
+                      _run.auto = true;
+                      _run.send();
+                    },
+                  ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: InsetSection(
+            dividerIndent: 54,
+            footer: 'A text counts as sent once you come back from Messages. Didn’t send one? Tap Resend.',
+            children: [
+              for (final p in _run.people)
+                AppleRow(
+                  leading: Icon(
+                    p.sent ? CupertinoIcons.checkmark_circle_fill : CupertinoIcons.circle,
+                    color: p.sent ? c.green : c.tertiaryLabel,
+                    size: 26,
+                  ),
+                  title: p.name.isEmpty ? p.phone : p.name,
+                  subtitle: p.phone,
+                  accessory: RowAccessory.none,
+                  trailing: CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    minimumSize: const Size(44, 30),
+                    onPressed: () {
+                      if (p.sent) _run.retry(p);
+                      _run.send(p);
+                    },
+                    child: Text(p.sent ? 'Resend' : 'Send', style: TextStyle(color: c.tint)),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _name(Invitee p) => p.firstName.isNotEmpty ? p.firstName : (p.name.isNotEmpty ? p.name : p.phone);
 }
