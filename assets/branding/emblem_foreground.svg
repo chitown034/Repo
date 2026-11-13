@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#22303F"/><stop offset="1" stop-color="#121C27"/>
+    </linearGradient>
+    <linearGradient id="steel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#B9C7DA"/><stop offset=".55" stop-color="#7E93B0"/><stop offset="1" stop-color="#5A6F8C"/>
+    </linearGradient>
+    <linearGradient id="red" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F06A72"/><stop offset="1" stop-color="#C8414B"/>
+    </linearGradient>
+  </defs>
+  
+  <g id="mark" transform="translate(512 512) scale(0.62) translate(-512 -510)">
+    <!-- shield: arched top, straight shoulders, pointed base -->
+    <path d="M512 150 C620 150 712 176 760 214 L760 520 C760 690 640 790 512 870 C384 790 264 690 264 520 L264 214 C312 176 404 150 512 150 Z"
+          fill="none" stroke="url(#steel)" stroke-width="34" stroke-linejoin="round"/>
+    <!-- house body (roof slab) -->
+    <path d="M392 560 L470 330 L620 330 L560 560 Z" fill="url(#steel)"/>
+    <!-- chimney -->
+    <rect x="452" y="292" width="34" height="62" fill="url(#steel)"/>
+    <!-- red roof edge -->
+    <path d="M610 352 L636 336 L712 560 L684 560 Z" fill="url(#red)"/>
+    <!-- window -->
+    <g fill="url(#steel)">
+      <rect x="590" y="468" width="24" height="24"/><rect x="620" y="468" width="24" height="24"/>
+      <rect x="590" y="498" width="24" height="24"/><rect x="620" y="498" width="24" height="24"/>
+    </g>
+    <!-- divider bar -->
+    <rect x="330" y="600" width="364" height="22" rx="4" fill="url(#steel)"/>
+    <!-- star -->
+    <path transform="translate(512 718) scale(1.25)" fill="url(#red)"
+          d="M0,-52 L12.2,-16.8 L49.5,-16.1 L19.8,6.4 L30.6,42.1 L0,20.8 L-30.6,42.1 L-19.8,6.4 L-49.5,-16.1 L-12.2,-16.8 Z"/>
+  </g>
+</svg>

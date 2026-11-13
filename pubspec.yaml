@@ -1,0 +1,58 @@
+name: active_duty
+description: "Active Duty Veteran & Hometown Hero — free VA home buying education, benefits, careers, and local resources."
+publish_to: 'none'
+version: 2.0.0+20
+
+environment:
+  sdk: ^3.14.0
+
+dependencies:
+  file_picker: ^13.3.3
+  flutter:
+    sdk: flutter
+  flutter_contacts: ^2.6.0
+  google_fonts: ^9.0.0
+  material_ui: ^1.11.0
+  package_info_plus: ^10.2.2
+  path_provider: ^2.1.6
+  share_plus: ^13.3.1
+  shared_preferences: ^2.5.6
+  url_launcher: ^6.3.3
+  webview_flutter: ^4.14.1
+  webview_flutter_android: ^4.14.1
+  webview_flutter_wkwebview: ^3.27.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.8
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/content/
+    - assets/images/
+    - assets/tools/
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/branding/app_icon.png"
+  adaptive_icon_background: "#121C27"
+  adaptive_icon_foreground: "assets/branding/app_icon_foreground.png"
+  web:
+    generate: true
+    image_path: "assets/branding/app_icon.png"
+    background_color: "#121C27"
+    theme_color: "#121C27"
+
+flutter_native_splash:
+  color: "#121C27"
+  image: "assets/branding/splash_logo.png"
+  android_12:
+    color: "#121C27"
+    image: "assets/branding/splash_logo.png"
+  web: false
