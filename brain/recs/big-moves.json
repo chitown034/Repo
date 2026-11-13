@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-12T14:10:01Z",
- "date": "2026-11-12",
+ "generated": "2026-11-13T15:42:38Z",
+ "date": "2026-11-13",
  "items": [
   {
    "id": "bm_08ef5bf8ac",
@@ -451,7 +451,7 @@
      "category": "brain",
      "topic": "",
      "title": "Fix the 1 gold question(s) the brain gets wrong",
-     "why": "bench 30/31 on 2026-11-12",
+     "why": "bench 30/31 on 2026-11-13",
      "owner": "Vanessa",
      "executor": "vanessa",
      "impact": 3,
@@ -542,11 +542,55 @@
    "about": "what is stale, failing or silent, and the action that heads it off",
    "items": [
     {
+     "id": "bm_4d61c46e96",
+     "category": "ops",
+     "topic": "",
+     "title": "Clear Needs-Steven item 1 in today's brief (p1)",
+     "why": "cosBrief needsSteven, deadline overdue (39 days at Clear to Close)",
+     "owner": "Vanessa",
+     "executor": "steven",
+     "impact": 3,
+     "effort": 1,
+     "confidence": 0.8,
+     "plan": [
+      "Open the Command Deck cosBrief card",
+      "Act on the packet named there"
+     ],
+     "source": "deck cosBrief",
+     "weight": 1.0,
+     "score": 2.4,
+     "value": "high",
+     "rank": 1,
+     "coa": "risk"
+    },
+    {
+     "id": "bm_e57d7303c0",
+     "category": "ops",
+     "topic": "",
+     "title": "Clear Needs-Steven item 3 in today's brief (p1)",
+     "why": "cosBrief needsSteven, deadline overdue since 2026-11-09",
+     "owner": "Vanessa",
+     "executor": "steven",
+     "impact": 3,
+     "effort": 1,
+     "confidence": 0.8,
+     "plan": [
+      "Open the Command Deck cosBrief card",
+      "Act on the packet named there"
+     ],
+     "source": "deck cosBrief",
+     "weight": 1.0,
+     "score": 2.4,
+     "value": "high",
+     "rank": 2,
+     "coa": "risk"
+    },
+    {
      "id": "bm_a0cbe5ca2b",
      "category": "ops",
      "topic": "",
      "title": "Repair Mac task brain-weekly-verify",
-     "why": "runnerStatus (2026-11-12) shows brain-weekly-verify last run refused.",
+     "why": "runnerStatus (2026-11-13) shows brain-weekly-verify last run refused.",
      "owner": "Derek",
      "executor": "vanessa",
      "impact": 3,
@@ -562,60 +606,14 @@
      "weight": 1.0,
      "score": 1.2,
      "value": "medium",
-     "rank": 1
-    },
-    {
-     "id": "bm_a1001f81be",
-     "category": "ops",
-     "topic": "",
-     "title": "Repair Mac task fabric-deck-sync",
-     "why": "runnerStatus (2026-11-12) shows fabric-deck-sync last run refused.",
-     "owner": "Derek",
-     "executor": "vanessa",
-     "impact": 3,
-     "effort": 2,
-     "confidence": 0.8,
-     "plan": [
-      "Read the task's log from the next connect-all REPORT",
-      "Fix the spec in integrations/mac-task-specs.md",
-      "Steven pastes `runnerctl run fabric-deck-sync`"
-     ],
-     "source": "deck runnerStatus",
-     "coa": "risk",
-     "weight": 1.0,
-     "score": 1.2,
-     "value": "medium",
-     "rank": 2
-    },
-    {
-     "id": "bm_240037e54a",
-     "category": "ops",
-     "topic": "",
-     "title": "Repair Mac task loop-engineering-weekly",
-     "why": "runnerStatus (2026-11-12) shows loop-engineering-weekly last run error.",
-     "owner": "Derek",
-     "executor": "vanessa",
-     "impact": 3,
-     "effort": 2,
-     "confidence": 0.8,
-     "plan": [
-      "Read the task's log from the next connect-all REPORT",
-      "Fix the spec in integrations/mac-task-specs.md",
-      "Steven pastes `runnerctl run loop-engineering-weekly`"
-     ],
-     "source": "deck runnerStatus",
-     "coa": "risk",
-     "weight": 1.0,
-     "score": 1.2,
-     "value": "medium",
      "rank": 3
     },
     {
-     "id": "bm_cb6b14b020",
+     "id": "bm_b0b3c70b34",
      "category": "ops",
      "topic": "",
-     "title": "Repair Mac task mortgage-desk-weekly",
-     "why": "runnerStatus (2026-11-12) shows mortgage-desk-weekly last run refused.",
+     "title": "Repair Mac task calendar-daily-sync",
+     "why": "runnerStatus (2026-11-13) shows calendar-daily-sync last run refused.",
      "owner": "Derek",
      "executor": "vanessa",
      "impact": 3,
@@ -624,7 +622,7 @@
      "plan": [
       "Read the task's log from the next connect-all REPORT",
       "Fix the spec in integrations/mac-task-specs.md",
-      "Steven pastes `runnerctl run mortgage-desk-weekly`"
+      "Steven pastes `runnerctl run calendar-daily-sync`"
      ],
      "source": "deck runnerStatus",
      "coa": "risk",
@@ -744,17 +742,17 @@
   },
   {
    "q": "What should I do about: Fix the 1 gold question(s) the brain gets wrong?",
-   "a": "bench 30/31 on 2026-11-12.",
+   "a": "bench 30/31 on 2026-11-13.",
    "action": "bin/brain loop \u2192 the failing questions",
    "coa": "improve",
    "ref": "bm_d72970e1e7"
   },
   {
-   "q": "What should I do about: Repair Mac task brain-weekly-verify?",
-   "a": "runnerStatus (2026-11-12) shows brain-weekly-verify last run refused.",
-   "action": "Read the task's log from the next connect-all REPORT",
+   "q": "What should I do about: Clear Needs-Steven item 1 in today's brief (p1)?",
+   "a": "cosBrief needsSteven, deadline overdue (39 days at Clear to Close).",
+   "action": "Open the Command Deck cosBrief card",
    "coa": "risk",
-   "ref": "bm_a0cbe5ca2b"
+   "ref": "bm_4d61c46e96"
   },
   {
    "q": "What should I do about: Drips and texts?",
@@ -789,7 +787,7 @@
   },
   {
    "q": "What did the weekly loop find?",
-   "a": "last run 2026-11-12: bench 30/31, routes 23/23, 20 stale pages, 31 untested wiki pages, 0 tune proposals, 0/0 learned facts promoted",
+   "a": "last run 2026-11-13: bench 30/31, routes 23/23, 20 stale pages, 31 untested wiki pages, 0 tune proposals, 0/0 learned facts promoted",
    "action": "Open docs/reports/BRAIN-LOOP.md; the Self-improvement lane above carries the fixes",
    "coa": "question",
    "ref": "brain/loop-history.jsonl"
